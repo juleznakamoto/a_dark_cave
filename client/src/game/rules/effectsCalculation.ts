@@ -21,7 +21,6 @@ import {
   getBuilderBuildCostReduction,
   getBuilderBuildTimeReduction,
   getBuilderLevel,
-  isConstructionQueueEnabled,
 } from "@/game/constructionQueueSlots";
 
 // Tool hierarchy definitions
@@ -886,16 +885,13 @@ export const getTotalBuildingCostReduction = (state: GameState): number => {
     }
   }
 
-  if (isConstructionQueueEnabled(state)) {
-    reduction += getBuilderBuildCostReduction(getBuilderLevel(state));
-  }
+  reduction += getBuilderBuildCostReduction(getBuilderLevel(state));
 
   return reduction;
 };
 
 /** Builder-chain build time reduction (percentage, 0–0.20). */
 export const getTotalBuildingTimeReduction = (state: GameState): number => {
-  if (!isConstructionQueueEnabled(state)) return 0;
   return getBuilderBuildTimeReduction(getBuilderLevel(state));
 };
 

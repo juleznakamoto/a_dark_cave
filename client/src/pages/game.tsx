@@ -189,7 +189,6 @@ export default function Game() {
               hasLitFire: isGamePath ? true : savedState.flags?.hasLitFire,
               ...(isGamePath
                 ? {
-                  constructionQueueEnabled: true,
                   villagerCapsEnabled: true,
                 }
                 : {}),
@@ -271,7 +270,6 @@ export default function Game() {
                 ...useGameStore.getState().flags,
                 gameStarted: true,
                 hasLitFire: preInitFlags.hasLitFire,
-                constructionQueueEnabled: true,
                 villagerCapsEnabled: true,
               },
               story: preInitStory,
@@ -304,7 +302,6 @@ export default function Game() {
                 ...useGameStore.getState().flags,
                 gameStarted: true,
                 hasLitFire: true,
-                constructionQueueEnabled: true,
                 villagerCapsEnabled: true,
               },
             });

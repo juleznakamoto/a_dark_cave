@@ -19,7 +19,7 @@ import { ActionButtonSlot } from "@/components/game/GameActionButtonStack";
 import { ActionInsightBadge } from "@/components/game/ActionInsightBadge";
 import { ConstructionBoostBadge } from "@/components/game/ConstructionBoostBadge";
 import { isConstructionBoostAvailable } from "@/game/constructionQueueSlots";
-import { canRevealEffects } from "@/game/rules/insightReveal";
+import { isCraftDescriptionVisible } from "@/game/rules/insightReveal";
 import { getCraftItemDescription } from "@/game/rules/craftItemDescription";
 import { getRevealedEffectsForActionTooltip } from "@/game/rules/insightRevealTooltip";
 import { composeActionTooltip } from "@/game/rules/actionTooltipLayout";
@@ -109,6 +109,7 @@ export default function CavePanel() {
     },
     {
       title: t("cave.sectionCraft"),
+      isCraftSection: true,
       subGroups: [
         {
           actions: [
@@ -342,13 +343,10 @@ export default function CavePanel() {
         );
       }
 
-      const hasRevealedEffects = (state.revealedEffects ?? []).includes(
-        actionId,
-      );
       const craftDescription =
         isCraftAction &&
           !CRAFT_NO_BOOK_DESCRIPTION.has(actionId) &&
-          (state.books?.book_of_craftsmanship || hasRevealedEffects)
+          isCraftDescriptionVisible(state, actionId)
           ? getCraftItemDescription(actionId)
           : undefined;
       const revealedEffects = getRevealedEffectsForActionTooltip(
@@ -409,11 +407,10 @@ export default function CavePanel() {
 
       const isPriorEligible = PRIOR_ELIGIBLE_ACTIONS.has(actionId);
       const needsWrapper = upgradeKey || isPriorEligible;
-      const showInsightBadge = canRevealEffects(actionId, state);
       const showCraftingBoost =
         isCraftAction && isConstructionBoostAvailable(state, actionId);
       const wrapWithBadges = (inner: React.ReactNode) => {
-        if (!needsWrapper && !showInsightBadge && !showCraftingBoost) {
+        if (!needsWrapper && !showCraftingBoost) {
           return (
             <ActionButtonSlot key={actionId}>
               {inner}
@@ -426,9 +423,6 @@ export default function CavePanel() {
             {showCraftingBoost && <ConstructionBoostBadge actionId={actionId} />}
             {upgradeKey && <ButtonLevelBadge upgradeKey={upgradeKey} />}
             {isPriorEligible && <ButtonPriorBadge actionId={actionId} />}
-            {showInsightBadge && (
-              <ActionInsightBadge actionId={actionId} />
-            )}
           </ActionButtonSlot>
         );
       };
@@ -479,10 +473,9 @@ export default function CavePanel() {
 
     const isPriorEligible = PRIOR_ELIGIBLE_ACTIONS.has(actionId);
     const needsWrapper = upgradeKey || isPriorEligible;
-    const showInsightBadge = canRevealEffects(actionId, state);
     const showCraftingBoost =
       isCraftAction && isConstructionBoostAvailable(state, actionId);
-    if (!needsWrapper && !showInsightBadge && !showCraftingBoost) {
+    if (!needsWrapper && !showCraftingBoost) {
       return (
         <ActionButtonSlot key={actionId}>
           {button}
@@ -495,9 +488,6 @@ export default function CavePanel() {
         {showCraftingBoost && <ConstructionBoostBadge actionId={actionId} />}
         {upgradeKey && <ButtonLevelBadge upgradeKey={upgradeKey} />}
         {isPriorEligible && <ButtonPriorBadge actionId={actionId} />}
-        {showInsightBadge && (
-          <ActionInsightBadge actionId={actionId} />
-        )}
       </ActionButtonSlot>
     );
   };
@@ -524,8 +514,11 @@ export default function CavePanel() {
               return (
                 <div key={groupIndex} className="space-y-2">
                   {group.title && (
-                    <h3 className="text-xs font-medium text-foreground">
+                    <h3 className="inline-flex items-center gap-1.5 text-xs font-medium text-foreground">
                       {group.title}
+                      {"isCraftSection" in group && group.isCraftSection ? (
+                        <ActionInsightBadge target="craftDescriptions" />
+                      ) : null}
                     </h3>
                   )}
                   <div className={gameActionButtonRowsClassName("w-full")}>

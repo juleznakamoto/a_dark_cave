@@ -123,7 +123,8 @@ shared/schema.ts— Zod GameState schema (source of truth for persisted shape)
   `forestResearchActions.ts`, `bastionActions.ts`, …), `index.ts` (visibility/affordability + `allEvents`), effects
   (`actionEffects.ts`, `effectsCalculation.ts`, `costCalculation.ts`), events (`events.ts`
   → `EventManager`, `LogEntry`, plus topic files `events*.ts` incl. `eventsChainmaster.ts` — Leatherbound Book discovery + collector timed tab), `insightReveal.ts` /
-  `insightRevealTooltip.tsx`, `actionTooltipLayout.tsx` (`composeActionTooltip` — cost,
+  `insightRevealTooltip.tsx` (bulk building/craft description unlock via header insight badges;
+  per-action reveal removed), `actionTooltipLayout.tsx` (`composeActionTooltip` — cost,
   description, revealed effects), `focusTooltipIndicator.tsx` (focus `☩` icon on eligible action
   tooltips while focus is active), `buildingUpgradeTooltipIndicator.tsx` (upgrade `🠕` icon on
   construction tooltips for buildings that replace earlier tiers), `tooltips.tsx` / `itemTooltips.tsx`.
@@ -152,14 +153,13 @@ shared/schema.ts— Zod GameState schema (source of truth for persisted shape)
   free, cap-clamped); persisted in `villagerJobPresets` / `activePresetSlot` (`shared/schema.ts`). Store methods
   `saveVillagerJobPreset` / `applyVillagerJobPreset` / `setActivePresetSlot` (`state.ts`); UI row in the
   `VillagePanel` "Produce" header.
-- **`constructionQueueSlots.ts`** — parallel construction queue (base 1 slot when enabled; Builder's Lodge/Guild
+- **`constructionQueueSlots.ts`** — parallel construction queue (base 1 slot; Builder's Lodge/Guild
   unlock 2 extra slots purchasable with Insight = 3 max), build-time/cost reductions from Builder building tiers,
-  and Construction Boost (Insight skip 50% of build time). Gated by `flags.constructionQueueEnabled` (set `true` on
-  light fire). Same boost logic applies to crafting (Insight skip 50% of craft time) when Advanced Blacksmith is built;
-  enforced in `canExecuteAction`, `getExecutionTime`, `getTotalBuildingCostReduction`; persisted in
-  `constructionQueueSlotsPurchased` / `constructionBoostsUsed` (`shared/schema.ts`); store methods
-  `purchaseConstructionQueueSlot` / `boostConstruction` (`state.ts`); UI queue indicators + `ConstructionBoostBadge`
-  on build buttons in `VillagePanel` and craft buttons in `CavePanel`.
+  and Construction Boost (Insight skip 50% of build time). Same boost logic applies to crafting (Insight skip 50%
+  of craft time) when Advanced Blacksmith is built; enforced in `canExecuteAction`, `getExecutionTime`,
+  `getTotalBuildingCostReduction`; persisted in `constructionQueueSlotsPurchased` / `constructionBoostsUsed`
+  (`shared/schema.ts`); store methods `purchaseConstructionQueueSlot` / `boostConstruction` (`state.ts`); UI queue
+  indicators + `ConstructionBoostBadge` on build buttons in `VillagePanel` and craft buttons in `CavePanel`.
 - **`weaponEnchantments.ts`** — weapon enchantment via Insight, unlocked by Tomewarden Academy
   (`buildings.inkwardenAcademy`). Tiered bow/sword chains: only `blacksteel_bow` / `blacksteel_sword` are
   enchantable; other weapons enchant once (+`1 + floor(stat/10)` Strength/Knowledge each, cost `(added) × 250`);

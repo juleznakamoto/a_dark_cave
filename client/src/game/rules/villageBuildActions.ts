@@ -2649,7 +2649,6 @@ export const villageBuildActions: Record<string, Action> = {
     building: true,
     show_when: {
       1: {
-        "flags.constructionQueueEnabled": true,
         "buildings.woodenHut": 3,
         "buildings.buildersLodge": 0,
       },
@@ -2680,7 +2679,6 @@ export const villageBuildActions: Record<string, Action> = {
     building: true,
     show_when: {
       1: {
-        "flags.constructionQueueEnabled": true,
         "buildings.woodenHut": 6,
         "buildings.buildersLodge": 1,
         "buildings.buildersHall": 0,
@@ -2713,7 +2711,6 @@ export const villageBuildActions: Record<string, Action> = {
     building: true,
     show_when: {
       1: {
-        "flags.constructionQueueEnabled": true,
         "buildings.woodenHut": 9,
         "buildings.buildersHall": 1,
         "buildings.buildersGuild": 0,

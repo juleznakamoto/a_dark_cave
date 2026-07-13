@@ -152,6 +152,8 @@
     "priorAssign": "点击指派堕落修道院长",
     "insightRevealSeeEffects": "消耗 {{cost}} {{resource}} 查看效果",
     "insightRevealSeeStatEffects": "消耗 {{cost}} {{resource}} 查看属性效果",
+    "insightRevealBuildingDescriptions": "消耗 {{cost}} {{resource}} 解锁建筑描述",
+    "insightRevealCraftDescriptions": "消耗 {{cost}} {{resource}} 解锁制作物品描述",
     "bonus": "加成：",
     "nextBonus": "下一加成：",
     "craftMultiplier": "制作 ×{{amount}}",

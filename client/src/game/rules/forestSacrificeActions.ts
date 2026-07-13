@@ -47,6 +47,34 @@ export function getAnimalsCost(state: GameState): number {
   return 250 * (usageCount + 1);
 }
 
+const ANIMAL_SACRIFICE_ACHIEVEMENT_MAX = 10;
+
+/** True when the Forest → Animals action can never appear again. */
+export function isAnimalSacrificePermanentlyUnavailable(
+  state: GameState,
+): boolean {
+  if (Boolean(state.story?.seen?.animalsSacrificeMaxed)) {
+    return true;
+  }
+  // Pillar of Clarity replaces the Black Monolith and closes the sacrifice path.
+  if ((state.buildings?.pillarOfClarity ?? 0) >= 1) {
+    return true;
+  }
+  return false;
+}
+
+/** Achievement progress: completes when sacrifices are maxed or the path is closed. */
+export function getAnimalSacrificeAchievementCount(state: GameState): number {
+  const level = Math.min(
+    Number(state.story?.seen?.animalsSacrificeLevel) || 0,
+    ANIMAL_SACRIFICE_ACHIEVEMENT_MAX,
+  );
+  if (isAnimalSacrificePermanentlyUnavailable(state)) {
+    return ANIMAL_SACRIFICE_ACHIEVEMENT_MAX;
+  }
+  return level;
+}
+
 // Helper function to get dynamic cost for human sacrifices
 export function getHumansCost(state: GameState): number {
   const usageCount = Number(state.story?.seen?.humansSacrificeLevel) || 0;

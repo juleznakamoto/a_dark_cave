@@ -8,7 +8,7 @@ import { describe, it, expect } from "vitest";
 import { GameState } from "@shared/schema";
 import { executeGameAction, deductActionCosts } from "@/game/actions";
 import { getTotalMadness } from "./effectsCalculation";
-import { getBoneTotemsCost, getLeatherTotemsCost, getAnimalsCost, getHumansCost } from "./forestSacrificeActions";
+import { getBoneTotemsCost, getLeatherTotemsCost, getAnimalsCost, getHumansCost, getAnimalSacrificeAchievementCount, isAnimalSacrificePermanentlyUnavailable } from "./forestSacrificeActions";
 import { applyActionEffects } from "./actionEffects";
 
 // Minimal state factory - merge with createTestState pattern from resourceGains.test
@@ -739,5 +739,45 @@ describe("Totem sacrifice Prior scaling", () => {
 
     expect(avg).toBeGreaterThanOrEqual(55);
     expect(avg).toBeLessThan(125);
+  });
+});
+
+describe("Animal sacrifice achievement count", () => {
+  it("returns actual sacrifice level while the monolith path is still open", () => {
+    const state = createBaseState({
+      story: { seen: { animalsSacrificeLevel: 4 } },
+    });
+    expect(isAnimalSacrificePermanentlyUnavailable(state)).toBe(false);
+    expect(getAnimalSacrificeAchievementCount(state)).toBe(4);
+  });
+
+  it("returns max when animalsSacrificeMaxed is set", () => {
+    const state = createBaseState({
+      story: { seen: { animalsSacrificeLevel: 10, animalsSacrificeMaxed: true } },
+    });
+    expect(isAnimalSacrificePermanentlyUnavailable(state)).toBe(true);
+    expect(getAnimalSacrificeAchievementCount(state)).toBe(10);
+  });
+
+  it("returns max when Pillar of Clarity closes the sacrifice path", () => {
+    const state = createBaseState({
+      buildings: {
+        ...createBaseState().buildings,
+        blackMonolith: 0,
+        pillarOfClarity: 1,
+      },
+      story: { seen: { animalsSacrificeLevel: 2 } },
+    });
+    expect(isAnimalSacrificePermanentlyUnavailable(state)).toBe(true);
+    expect(getAnimalSacrificeAchievementCount(state)).toBe(10);
+  });
+
+  it("returns zero when monolith was never built and pillar is absent", () => {
+    const state = createBaseState({
+      buildings: { ...createBaseState().buildings, blackMonolith: 0 },
+      story: { seen: {} },
+    });
+    expect(isAnimalSacrificePermanentlyUnavailable(state)).toBe(false);
+    expect(getAnimalSacrificeAchievementCount(state)).toBe(0);
   });
 });

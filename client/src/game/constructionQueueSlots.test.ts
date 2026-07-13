@@ -23,7 +23,6 @@ import {
   isConstructionBoostAvailable,
   isConstructionBoostUnlocked,
   isCraftingBoostUnlocked,
-  isConstructionQueueEnabled,
   isQueueSlotActive,
   isQueueSlotBuildingLocked,
   isQueueSlotInUse,
@@ -38,7 +37,6 @@ function baseState(
 ): GameState {
   return {
     flags: {
-      constructionQueueEnabled: true,
       villagerCapsEnabled: true,
     } as GameState["flags"],
     buildings: {
@@ -56,16 +54,16 @@ function baseState(
 }
 
 describe("constructionQueueSlots", () => {
-  it("handleLightFire enables construction queue for new games", () => {
+  it("handleLightFire enables villager caps for new games", () => {
     const state = baseState({
       flags: {
         gameStarted: false,
-        constructionQueueEnabled: false,
+        villagerCapsEnabled: false,
       } as GameState["flags"],
       story: { seen: {}, merchantPurchases: 0, heavySleeperHours: 0 },
     });
     const result = handleLightFire(state, { stateUpdates: {}, logEntries: [] });
-    expect(result.stateUpdates.flags?.constructionQueueEnabled).toBe(true);
+    expect(result.stateUpdates.flags?.villagerCapsEnabled).toBe(true);
   });
 
   it("computes builder tier reductions (highest tier only)", () => {
@@ -367,15 +365,6 @@ describe("constructionQueueSlots", () => {
     });
     expect(isCraftingBoostUnlocked(state)).toBe(false);
     expect(isConstructionBoostAvailable(state, "craftIronSword")).toBe(false);
-  });
-
-  it("is disabled when feature flag is off", () => {
-    const state = baseState({
-      flags: { constructionQueueEnabled: false } as GameState["flags"],
-    });
-    expect(isConstructionQueueEnabled(state)).toBe(false);
-    expect(hasFreeQueueSlot(state)).toBe(true);
-    expect(getPurchasedQueueSlots(state)).toBe(0);
   });
 
   it("grandfathers legacy shop-purchased queue slots beyond the normal cap", () => {

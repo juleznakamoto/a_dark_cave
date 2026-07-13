@@ -100,7 +100,6 @@ export const gameStateSchema = z.object({
       hasFortress: z.boolean().default(false),
       hasHitResourceLimit: z.boolean().default(false),
       villagerCapsEnabled: z.boolean().default(false),
-      constructionQueueEnabled: z.boolean().default(false),
     })
     .default({}),
   schematics: z
@@ -670,6 +669,10 @@ export const gameStateSchema = z.object({
   seenResources: z.array(z.string()).default([]),
   /** Action IDs whose full effect rows were revealed via Insight (persisted). */
   revealedEffects: z.array(z.string()).default([]),
+  /** All village build action descriptions unlocked via Insight (Builder's Hall). */
+  buildingDescriptionsRevealed: z.boolean().default(false),
+  /** All cave craft action descriptions unlocked via Insight (Blacksmith). */
+  craftDescriptionsRevealed: z.boolean().default(false),
   /** Side-panel stat tooltips (luck/strength/knowledge/madness effect breakdown) unlocked via Insight. */
   statEffectsRevealed: z.boolean().default(false),
   isNewGame: z.boolean().default(false), // Track if this is a newly started game

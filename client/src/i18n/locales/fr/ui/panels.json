@@ -152,6 +152,8 @@
     "priorAssign": "Cliquez pour assigner le Prieur déchu",
     "insightRevealSeeEffects": "Voir les effets pour {{cost}} {{resource}}",
     "insightRevealSeeStatEffects": "Voir les effets des stats pour {{cost}} {{resource}}",
+    "insightRevealBuildingDescriptions": "Révéler les descriptions de bâtiments pour {{cost}} {{resource}}",
+    "insightRevealCraftDescriptions": "Révéler les descriptions d'artisanat pour {{cost}} {{resource}}",
     "bonus": "Bonus :",
     "nextBonus": "Prochain bonus :",
     "craftMultiplier": "Artisanat x{{amount}}",

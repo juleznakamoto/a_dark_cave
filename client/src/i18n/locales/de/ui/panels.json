@@ -152,6 +152,8 @@
     "priorAssign": "Klicken, um den Gefallenen Prior zuzuweisen", //ok
     "insightRevealSeeEffects": "Effekte für {{cost}} {{resource}} anzeigen",
     "insightRevealSeeStatEffects": "Stat-Effekte für {{cost}} {{resource}} anzeigen",
+    "insightRevealBuildingDescriptions": "Gebäudebeschreibungen für {{cost}} {{resource}} freischalten",
+    "insightRevealCraftDescriptions": "Herstellungsbeschreibungen für {{cost}} {{resource}} freischalten",
     "bonus": "Bonus:",
     "nextBonus": "Nächster Bonus:", //ok
     "craftMultiplier": "Herstellung x{{amount}}", //ok

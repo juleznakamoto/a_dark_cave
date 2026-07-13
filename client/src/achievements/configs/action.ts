@@ -1,6 +1,7 @@
 import { useGameStore } from "@/game/state";
 import type { AchievementChartConfig } from "../achievementTypes";
 import type { GameState } from "@shared/schema";
+import { getAnimalSacrificeAchievementCount } from "@/game/rules/forestSacrificeActions";
 
 export const actionChartConfig: AchievementChartConfig = {
   idPrefix: "action",
@@ -133,8 +134,7 @@ export const actionChartConfig: AchievementChartConfig = {
         maxCount: 10,
         label: "Animal Sacrificer",
         reward: 250,
-        getCount: (state: GameState) =>
-          Math.min(Number(state.story?.seen?.animalsSacrificeLevel) || 0, 10),
+        getCount: getAnimalSacrificeAchievementCount,
       },
       {
         segmentId: "2-craftBoneTotems",

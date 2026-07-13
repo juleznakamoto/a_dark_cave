@@ -16,6 +16,10 @@ export const INSIGHT_REVEAL_DURATION_MS = 3_000;
 export const INSIGHT_REVEAL_ACTION_COOLDOWN_SEC = 3;
 /** One-time cost to reveal all side-panel stat effect tooltips. */
 export const STAT_EFFECTS_INSIGHT_COST = 1000;
+/** One-time cost to reveal all village build action descriptions. */
+export const BUILDING_DESCRIPTIONS_INSIGHT_COST = 2500;
+/** One-time cost to reveal all cave craft action descriptions. */
+export const CRAFT_DESCRIPTIONS_INSIGHT_COST = 2500;
 /** One-time cost to reveal a hidden achievement title before any progress is made. */
 export const ACHIEVEMENT_TITLE_INSIGHT_COST = 250;
 /** Prefix for `insightRevealing` keys while an achievement title reveal animates. */
@@ -38,6 +42,10 @@ export function isInsightUnlocked(state: GameState): boolean {
 }
 /** `insightRevealing` key while the Stats header badge plays its reveal animation. */
 export const STAT_INSIGHT_REVEAL_KEY = "stats";
+/** `insightRevealing` key while the Build header description-unlock badge animates. */
+export const BUILDING_DESCRIPTIONS_INSIGHT_KEY = "buildingDescriptions";
+/** `insightRevealing` key while the Craft header description-unlock badge animates. */
+export const CRAFT_DESCRIPTIONS_INSIGHT_KEY = "craftDescriptions";
 /** `insightRevealing` key while the timed-event tab prolong badge plays its animation. */
 export const TIMED_EVENT_INSIGHT_PROLONG_KEY = "timedEventProlong";
 /** `insightRevealing` key while a villager preset slot unlock animates. */
@@ -133,10 +141,90 @@ export function getInsightRevealCost(
   return null;
 }
 
-export function canRevealEffects(actionId: string, state: GameState): boolean {
+export function isBuildingDescriptionsRevealed(state: GameState): boolean {
+  return Boolean(state.buildingDescriptionsRevealed);
+}
+
+export function isCraftDescriptionsRevealed(state: GameState): boolean {
+  return Boolean(state.craftDescriptionsRevealed);
+}
+
+export function isBuildingDescriptionsUnlockAvailable(
+  state: Pick<GameState, "buildings">,
+): boolean {
+  return (
+    (state.buildings.clerksHut ?? 0) >= 1 &&
+    (state.buildings.buildersHall ?? 0) >= 1
+  );
+}
+
+export function isCraftDescriptionsUnlockAvailable(
+  state: Pick<GameState, "buildings">,
+): boolean {
+  return (
+    (state.buildings.clerksHut ?? 0) >= 1 &&
+    (state.buildings.blacksmith ?? 0) >= 1
+  );
+}
+
+export function isBuildingDescriptionVisible(
+  state: GameState,
+  actionId: string,
+): boolean {
+  return Boolean(
+    state.books?.book_of_craftsmanship ||
+    isBuildingDescriptionsRevealed(state) ||
+    (state.revealedEffects ?? []).includes(actionId),
+  );
+}
+
+export function isCraftDescriptionVisible(
+  state: GameState,
+  actionId: string,
+): boolean {
+  return Boolean(
+    state.books?.book_of_craftsmanship ||
+    isCraftDescriptionsRevealed(state) ||
+    (state.revealedEffects ?? []).includes(actionId),
+  );
+}
+
+export function canRevealBuildingDescriptions(
+  state: GameState,
+  insightRevealing?: Record<string, number>,
+): boolean {
   if (!isInsightUnlocked(state)) return false;
-  if ((state.revealedEffects ?? []).includes(actionId)) return false;
-  return getInsightRevealCost(actionId, state) !== null;
+  if (!isBuildingDescriptionsUnlockAvailable(state)) return false;
+  if (isBuildingDescriptionsRevealed(state)) return false;
+  if (
+    isInsightRevealInProgress(
+      BUILDING_DESCRIPTIONS_INSIGHT_KEY,
+      insightRevealing,
+    )
+  ) {
+    return false;
+  }
+  return getInsightAmount(state) >= BUILDING_DESCRIPTIONS_INSIGHT_COST;
+}
+
+export function canRevealCraftDescriptions(
+  state: GameState,
+  insightRevealing?: Record<string, number>,
+): boolean {
+  if (!isInsightUnlocked(state)) return false;
+  if (!isCraftDescriptionsUnlockAvailable(state)) return false;
+  if (isCraftDescriptionsRevealed(state)) return false;
+  if (
+    isInsightRevealInProgress(CRAFT_DESCRIPTIONS_INSIGHT_KEY, insightRevealing)
+  ) {
+    return false;
+  }
+  return getInsightAmount(state) >= CRAFT_DESCRIPTIONS_INSIGHT_COST;
+}
+
+/** @deprecated Per-action build/craft insight reveal removed; always false. */
+export function canRevealEffects(_actionId: string, _state: GameState): boolean {
+  return false;
 }
 
 export function isInsightRevealInProgress(

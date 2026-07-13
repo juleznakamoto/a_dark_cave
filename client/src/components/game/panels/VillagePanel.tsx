@@ -79,7 +79,6 @@ import {
   getNextQueueSlotUnlockCost,
   getVisibleQueueSlotCount,
   isConstructionBoostAvailable,
-  isConstructionQueueEnabled,
   isQueueSlotBuildingLocked,
   isQueueSlotLockedForUi,
   isQueueSlotInsightPurchaseLocked,
@@ -96,7 +95,7 @@ import { ConstructionBoostBadge } from "@/components/game/ConstructionBoostBadge
 import { getRevealedEffectsForActionTooltip } from "@/game/rules/insightRevealTooltip";
 import { composeActionTooltip } from "@/game/rules/actionTooltipLayout";
 import {
-  canRevealEffects,
+  isBuildingDescriptionVisible,
   isInsightRevealInProgress,
   PRESET_UNLOCK_INSIGHT_KEY,
 } from "@/game/rules/insightReveal";
@@ -611,15 +610,15 @@ export default function VillagePanel() {
       });
       const investPlayTimeCooldown = active
         ? {
-            startPlayTime: active.startPlayTime,
-            endPlayTime: active.endPlayTime,
-            mode: "progress" as const,
-          }
+          startPlayTime: active.startPlayTime,
+          endPlayTime: active.endPlayTime,
+          mode: "progress" as const,
+        }
         : nextWave > 0 && currentPlayTime < nextWave
           ? {
-              startPlayTime: nextWave - getInvestmentWaveGapMs(),
-              endPlayTime: nextWave,
-            }
+            startPlayTime: nextWave - getInvestmentWaveGapMs(),
+            endPlayTime: nextWave,
+          }
           : null;
       const tooltipContent = !investReady ? (
         active ? (
@@ -693,9 +692,9 @@ export default function VillagePanel() {
       const merchantPlayTimeCooldown =
         isOnCooldown && callMerchantLastEndPlayTime != null
           ? {
-              startPlayTime: callMerchantLastEndPlayTime,
-              endPlayTime: cooldownEndPlayTime,
-            }
+            startPlayTime: callMerchantLastEndPlayTime,
+            endPlayTime: cooldownEndPlayTime,
+          }
           : null;
       const canAfford = (resources?.gold ?? 0) >= price;
       const isDisabled =
@@ -829,11 +828,9 @@ export default function VillagePanel() {
       displayLabel = getPalisadesTierLabel(buildings.palisades || 0);
     }
 
-    const hasRevealedEffects = (state.revealedEffects ?? []).includes(actionId);
-    const buildingDescription =
-      state.books?.book_of_craftsmanship || hasRevealedEffects
-        ? resolveActionDescription(actionId, action.description)
-        : undefined;
+    const buildingDescription = isBuildingDescriptionVisible(state, actionId)
+      ? resolveActionDescription(actionId, action.description)
+      : undefined;
     const buildingKey = actionId.startsWith("build")
       ? actionId.slice(5, 6).toLowerCase() + actionId.slice(6)
       : null;
@@ -899,17 +896,13 @@ export default function VillagePanel() {
       </CooldownButton>
     );
 
-    const showInsightReveal = canRevealEffects(actionId, state);
     const showConstructionBoost = isConstructionBoostAvailable(state, actionId);
 
-    if (showInsightReveal || showConstructionBoost) {
+    if (showConstructionBoost) {
       return (
         <ActionButtonSlot key={`${actionId}-wrapper`}>
           {button}
-          {showConstructionBoost && (
-            <ConstructionBoostBadge actionId={actionId} />
-          )}
-          {showInsightReveal && <ActionInsightBadge actionId={actionId} />}
+          <ConstructionBoostBadge actionId={actionId} />
         </ActionButtonSlot>
       );
     }
@@ -1212,188 +1205,188 @@ export default function VillagePanel() {
               <div key={groupIndex} className="space-y-2">
                 {group.title === "Build" ? (
                   <div className="flex w-full items-center gap-2">
-                    <h3 className="inline-flex shrink-0 items-center text-xs font-medium text-foreground leading-none">
+                    <h3 className="inline-flex shrink-0 items-center gap-1.5 text-xs font-medium text-foreground leading-none">
                       {t("village.sectionBuild")}
+                      <ActionInsightBadge target="buildingDescriptions" />
                     </h3>
-                    {isConstructionQueueEnabled(state) &&
-                      (() => {
-                        const nextUnlockCost =
-                          getNextQueueSlotUnlockCost(state);
-                        const visibleSlots = getVisibleQueueSlotCount();
-                        const nextUnlockIndex =
-                          getNextPurchasableQueueSlotIndex(state);
-                        const showQueueSlotUnlock =
-                          nextUnlockIndex !== null && nextUnlockCost !== null;
-                        const canUnlock = showQueueSlotUnlock
-                          ? canPurchaseQueueSlot(state, insightRevealing)
-                          : false;
-                        const canInteractQueueUnlock =
-                          canUnlock && !isQueueSlotUnlockAnimating;
-                        const hideQueueSlotUnlockAfterReveal =
-                          queueSlotUnlockRevealStartedRef.current &&
-                          !isQueueSlotUnlockAnimating;
-                        return (
-                          <div className="ml-auto flex shrink-0 items-center gap-1">
-                            {showQueueSlotUnlock &&
-                              !hideQueueSlotUnlockAfterReveal && (
-                                <TooltipWrapper
-                                  tooltipId="queue-slot-unlock"
-                                  tooltip={
-                                    <div className="text-xs">
-                                      {t("village.queueSlotUnlock", {
-                                        cost: formatNumber(nextUnlockCost),
-                                      })}
-                                    </div>
-                                  }
-                                  tooltipContentClassName="text-white"
-                                  className="inline-flex items-center"
-                                  tooltipTriggerClassName={
-                                    INSIGHT_BADGE_TOOLTIP_TRIGGER_CLASS
-                                  }
-                                  disabled={!canInteractQueueUnlock}
-                                  onMouseEnter={() => {
-                                    setHighlightedResources(["insight"]);
-                                  }}
-                                  onMouseLeave={() => {
-                                    setHighlightedResources([]);
-                                  }}
-                                >
-                                  <button
-                                    type="button"
-                                    data-testid="queue-slot-unlock"
-                                    className={cn(
-                                      getInsightBadgeTriggerClassName({
-                                        canAfford:
-                                          canUnlock ||
-                                          isQueueSlotUnlockAnimating,
-                                        playing: isQueueSlotUnlockAnimating,
-                                        className:
-                                          HEADER_SLOT_INSIGHT_BUTTON_CLASS,
-                                      }),
-                                    )}
-                                    aria-label={t("village.queueSlotUnlock", {
+                    {(() => {
+                      const nextUnlockCost =
+                        getNextQueueSlotUnlockCost(state);
+                      const visibleSlots = getVisibleQueueSlotCount();
+                      const nextUnlockIndex =
+                        getNextPurchasableQueueSlotIndex(state);
+                      const showQueueSlotUnlock =
+                        nextUnlockIndex !== null && nextUnlockCost !== null;
+                      const canUnlock = showQueueSlotUnlock
+                        ? canPurchaseQueueSlot(state, insightRevealing)
+                        : false;
+                      const canInteractQueueUnlock =
+                        canUnlock && !isQueueSlotUnlockAnimating;
+                      const hideQueueSlotUnlockAfterReveal =
+                        queueSlotUnlockRevealStartedRef.current &&
+                        !isQueueSlotUnlockAnimating;
+                      return (
+                        <div className="ml-auto flex shrink-0 items-center gap-1">
+                          {showQueueSlotUnlock &&
+                            !hideQueueSlotUnlockAfterReveal && (
+                              <TooltipWrapper
+                                tooltipId="queue-slot-unlock"
+                                tooltip={
+                                  <div className="text-xs">
+                                    {t("village.queueSlotUnlock", {
                                       cost: formatNumber(nextUnlockCost),
                                     })}
-                                    disabled={!canInteractQueueUnlock}
-                                    onClick={(e) => {
-                                      e.stopPropagation();
-                                      e.preventDefault();
-                                      if (canInteractQueueUnlock) {
-                                        handleQueueSlotUnlock();
-                                      }
-                                    }}
-                                  >
-                                    <BuildingActionBadge
-                                      key={
-                                        isQueueSlotUnlockAnimating
-                                          ? "reveal"
-                                          : "idle"
-                                      }
-                                      playing={isQueueSlotUnlockAnimating}
-                                      embedded
-                                      size="lg"
-                                    />
-                                  </button>
-                                </TooltipWrapper>
-                              )}
-                            {Array.from({ length: visibleSlots }).map(
-                              (_, i) => {
-                                const slot = i + 1;
-                                const isBuildingLocked =
-                                  isQueueSlotBuildingLocked(state, i);
-                                const isLocked = isQueueSlotLockedForUi(
-                                  state,
-                                  i,
-                                );
-                                const isInsightPurchaseLocked =
-                                  isQueueSlotInsightPurchaseLocked(state, i);
-                                const isUsed = isQueueSlotInUse(state, i);
-                                const insightUnlockCost =
-                                  isInsightPurchaseLocked && i > 0
-                                    ? getQueueSlotUnlockCost(i - 1)
-                                    : null;
-                                const queueTooltipId = `queue-slot-${slot}`;
-                                return (
-                                  <TooltipWrapper
-                                    key={queueTooltipId}
-                                    tooltipId={queueTooltipId}
-                                    tooltip={
-                                      <div className="text-xs">
-                                        {isBuildingLocked
-                                          ? t(
-                                              "village.slotBuildingNeededToUnlock",
-                                              {
-                                                defaultValue:
-                                                  "Building required to unlock",
-                                              },
-                                            )
-                                          : insightUnlockCost !== null
-                                            ? t(
-                                                "village.slotInsightUnlockAvailable",
-                                                {
-                                                  cost: formatNumber(
-                                                    insightUnlockCost,
-                                                  ),
-                                                  defaultValue:
-                                                    "Can be unlocked for {{cost}} Insight",
-                                                },
-                                              )
-                                            : isLocked
-                                              ? t("village.queueSlotLocked", {
-                                                  slot,
-                                                })
-                                              : isUsed
-                                                ? t("village.queueSlotUsed", {
-                                                    slot,
-                                                  })
-                                                : t("village.queueSlotFree", {
-                                                    slot,
-                                                  })}
-                                      </div>
+                                  </div>
+                                }
+                                tooltipContentClassName="text-white"
+                                className="inline-flex items-center"
+                                tooltipTriggerClassName={
+                                  INSIGHT_BADGE_TOOLTIP_TRIGGER_CLASS
+                                }
+                                disabled={!canInteractQueueUnlock}
+                                onMouseEnter={() => {
+                                  setHighlightedResources(["insight"]);
+                                }}
+                                onMouseLeave={() => {
+                                  setHighlightedResources([]);
+                                }}
+                              >
+                                <button
+                                  type="button"
+                                  data-testid="queue-slot-unlock"
+                                  className={cn(
+                                    getInsightBadgeTriggerClassName({
+                                      canAfford:
+                                        canUnlock ||
+                                        isQueueSlotUnlockAnimating,
+                                      playing: isQueueSlotUnlockAnimating,
+                                      className:
+                                        HEADER_SLOT_INSIGHT_BUTTON_CLASS,
+                                    }),
+                                  )}
+                                  aria-label={t("village.queueSlotUnlock", {
+                                    cost: formatNumber(nextUnlockCost),
+                                  })}
+                                  disabled={!canInteractQueueUnlock}
+                                  onClick={(e) => {
+                                    e.stopPropagation();
+                                    e.preventDefault();
+                                    if (canInteractQueueUnlock) {
+                                      handleQueueSlotUnlock();
                                     }
-                                    tooltipTriggerClassName="inline-flex items-center leading-none"
-                                    className="inline-flex items-center"
-                                  >
-                                    <span
-                                      data-testid={queueTooltipId}
-                                      className={cn(
-                                        HEADER_SLOT_SIZE_CLASS,
-                                        "relative inline-flex items-center justify-center rounded-md border border-neutral-400/50 box-border",
-                                        isBuildingLocked && "opacity-70",
-                                      )}
-                                    >
-                                      {isLocked ? (
-                                        isInsightPurchaseLocked ? (
-                                          <span
-                                            aria-hidden
-                                            className="font-noto-symbols-2 text-[12px] translate-y-[2px] font-extrabold leading-none text-muted-foreground/45 select-none"
-                                          >
-                                            +
-                                          </span>
-                                        ) : (
-                                          <span
-                                            aria-hidden
-                                            className="font-noto-symbols-2 text-[12px] translate-y-[2px] font-extrabold leading-none text-muted-foreground/45 select-none"
-                                          >
-                                            ×
-                                          </span>
-                                        )
-                                      ) : (
-                                        isUsed && (
-                                          <span
-                                            aria-hidden
-                                            className="absolute inset-[3px] rounded-[1px] bg-red-700"
-                                          />
-                                        )
-                                      )}
-                                    </span>
-                                  </TooltipWrapper>
-                                );
-                              },
+                                  }}
+                                >
+                                  <BuildingActionBadge
+                                    key={
+                                      isQueueSlotUnlockAnimating
+                                        ? "reveal"
+                                        : "idle"
+                                    }
+                                    playing={isQueueSlotUnlockAnimating}
+                                    embedded
+                                    size="lg"
+                                  />
+                                </button>
+                              </TooltipWrapper>
                             )}
-                          </div>
-                        );
-                      })()}
+                          {Array.from({ length: visibleSlots }).map(
+                            (_, i) => {
+                              const slot = i + 1;
+                              const isBuildingLocked =
+                                isQueueSlotBuildingLocked(state, i);
+                              const isLocked = isQueueSlotLockedForUi(
+                                state,
+                                i,
+                              );
+                              const isInsightPurchaseLocked =
+                                isQueueSlotInsightPurchaseLocked(state, i);
+                              const isUsed = isQueueSlotInUse(state, i);
+                              const insightUnlockCost =
+                                isInsightPurchaseLocked && i > 0
+                                  ? getQueueSlotUnlockCost(i - 1)
+                                  : null;
+                              const queueTooltipId = `queue-slot-${slot}`;
+                              return (
+                                <TooltipWrapper
+                                  key={queueTooltipId}
+                                  tooltipId={queueTooltipId}
+                                  tooltip={
+                                    <div className="text-xs">
+                                      {isBuildingLocked
+                                        ? t(
+                                          "village.slotBuildingNeededToUnlock",
+                                          {
+                                            defaultValue:
+                                              "Building required to unlock",
+                                          },
+                                        )
+                                        : insightUnlockCost !== null
+                                          ? t(
+                                            "village.slotInsightUnlockAvailable",
+                                            {
+                                              cost: formatNumber(
+                                                insightUnlockCost,
+                                              ),
+                                              defaultValue:
+                                                "Can be unlocked for {{cost}} Insight",
+                                            },
+                                          )
+                                          : isLocked
+                                            ? t("village.queueSlotLocked", {
+                                              slot,
+                                            })
+                                            : isUsed
+                                              ? t("village.queueSlotUsed", {
+                                                slot,
+                                              })
+                                              : t("village.queueSlotFree", {
+                                                slot,
+                                              })}
+                                    </div>
+                                  }
+                                  tooltipTriggerClassName="inline-flex items-center leading-none"
+                                  className="inline-flex items-center"
+                                >
+                                  <span
+                                    data-testid={queueTooltipId}
+                                    className={cn(
+                                      HEADER_SLOT_SIZE_CLASS,
+                                      "relative inline-flex items-center justify-center rounded-md border border-neutral-400/50 box-border",
+                                      isBuildingLocked && "opacity-70",
+                                    )}
+                                  >
+                                    {isLocked ? (
+                                      isInsightPurchaseLocked ? (
+                                        <span
+                                          aria-hidden
+                                          className="font-noto-symbols-2 text-[12px] translate-y-[2px] font-extrabold leading-none text-muted-foreground/45 select-none"
+                                        >
+                                          +
+                                        </span>
+                                      ) : (
+                                        <span
+                                          aria-hidden
+                                          className="font-noto-symbols-2 text-[12px] translate-y-[2px] font-extrabold leading-none text-muted-foreground/45 select-none"
+                                        >
+                                          ×
+                                        </span>
+                                      )
+                                    ) : (
+                                      isUsed && (
+                                        <span
+                                          aria-hidden
+                                          className="absolute inset-[3px] rounded-[1px] bg-red-700"
+                                        />
+                                      )
+                                    )}
+                                  </span>
+                                </TooltipWrapper>
+                              );
+                            },
+                          )}
+                        </div>
+                      );
+                    })()}
                   </div>
                 ) : (
                   group.title && (
@@ -2093,19 +2086,19 @@ export default function VillagePanel() {
                                   <div className="text-xs">
                                     {insightUnlockCost !== null
                                       ? t(
-                                          "village.slotInsightUnlockAvailable",
-                                          {
-                                            cost: formatNumber(
-                                              insightUnlockCost,
-                                            ),
-                                            defaultValue:
-                                              "Can be unlocked for {{cost}} Insight",
-                                          },
-                                        )
-                                      : t("village.presetLocked", {
+                                        "village.slotInsightUnlockAvailable",
+                                        {
+                                          cost: formatNumber(
+                                            insightUnlockCost,
+                                          ),
                                           defaultValue:
-                                            "Locked: available for purchase",
-                                        })}
+                                            "Can be unlocked for {{cost}} Insight",
+                                        },
+                                      )
+                                      : t("village.presetLocked", {
+                                        defaultValue:
+                                          "Locked: available for purchase",
+                                      })}
                                   </div>
                                 }
                                 tooltipTriggerClassName="inline-flex items-center leading-none"
@@ -2165,8 +2158,8 @@ export default function VillagePanel() {
                                   isActive
                                     ? "group-hover:bg-primary/90"
                                     : gameActionOutlineButtonClassName(false, {
-                                        groupHover: true,
-                                      }),
+                                      groupHover: true,
+                                    }),
                                 )}
                                 style={{ touchAction: "manipulation" }}
                               >

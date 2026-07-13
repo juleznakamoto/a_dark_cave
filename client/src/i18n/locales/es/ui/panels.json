@@ -152,6 +152,8 @@
     "priorAssign": "Haz clic para asignar al Prior deshonrado",
     "insightRevealSeeEffects": "Ver efectos por {{cost}} {{resource}}",
     "insightRevealSeeStatEffects": "Ver efectos de estadísticas por {{cost}} {{resource}}",
+    "insightRevealBuildingDescriptions": "Revelar descripciones de edificios por {{cost}} {{resource}}",
+    "insightRevealCraftDescriptions": "Revelar descripciones de artesanía por {{cost}} {{resource}}",
     "bonus": "Bonificación:",
     "nextBonus": "Próxima bonificación:",
     "craftMultiplier": "Artesanía x{{amount}}",

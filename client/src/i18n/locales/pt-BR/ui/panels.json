@@ -152,6 +152,8 @@
     "priorAssign": "Clique para atribuir o Prior Desonrado",
     "insightRevealSeeEffects": "Ver efeitos por {{cost}} {{resource}}",
     "insightRevealSeeStatEffects": "Ver efeitos de atributos por {{cost}} {{resource}}",
+    "insightRevealBuildingDescriptions": "Revelar descrições de construções por {{cost}} {{resource}}",
+    "insightRevealCraftDescriptions": "Revelar descrições de fabricação por {{cost}} {{resource}}",
     "bonus": "Bônus:",
     "nextBonus": "Próximo Bônus:",
     "craftMultiplier": "Fabricar x{{amount}}",

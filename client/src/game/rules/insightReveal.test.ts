@@ -4,7 +4,13 @@ import { createInitialState } from "@/game/state";
 import type { GameState } from "@shared/schema";
 import {
   canRevealEffects,
+  canRevealBuildingDescriptions,
+  canRevealCraftDescriptions,
   getInsightRevealCost,
+  isBuildingDescriptionVisible,
+  isCraftDescriptionVisible,
+  isBuildingDescriptionsUnlockAvailable,
+  isCraftDescriptionsUnlockAvailable,
   INSIGHT_REVEAL_BUILDING_COST,
   INSIGHT_REVEAL_BUILDING_COST_EARLY,
   INSIGHT_REVEAL_FORTIFICATION_COST,
@@ -79,28 +85,96 @@ describe("insightReveal", () => {
     expect(getInsightRevealCost("craftTorches", withHuts(0))).toBeNull();
   });
 
-  it("canRevealEffects is false when already revealed", () => {
-    const state = {
-      ...base(),
-      revealedEffects: ["craftStoneAxe"],
-    };
-    expect(canRevealEffects("craftStoneAxe", state)).toBe(false);
-  });
-
-  it("canRevealEffects is false before Clerks Hut is built", () => {
-    const state = base();
-    expect(canRevealEffects("craftStoneAxe", state)).toBe(false);
-    expect(canRevealEffects("buildWatchtower", state)).toBe(false);
-  });
-
-  it("canRevealEffects is true for craft-once and buildings after Clerks Hut", () => {
+  it("canRevealEffects is always false (per-action reveal removed)", () => {
     const state = {
       ...base(),
       buildings: { ...base().buildings, clerksHut: 1 },
     };
-    expect(canRevealEffects("craftStoneAxe", state)).toBe(true);
-    expect(canRevealEffects("buildClerksHut", state)).toBe(true);
-    expect(canRevealEffects("buildWatchtower", state)).toBe(true);
+    expect(canRevealEffects("craftStoneAxe", state)).toBe(false);
+    expect(canRevealEffects("buildClerksHut", state)).toBe(false);
+    expect(canRevealEffects("buildWatchtower", state)).toBe(false);
+  });
+
+  it("building descriptions unlock requires Clerks Hut and Builders Hall", () => {
+    expect(
+      isBuildingDescriptionsUnlockAvailable({
+        buildings: { clerksHut: 0, buildersHall: 1 },
+      } as GameState),
+    ).toBe(false);
+    expect(
+      isBuildingDescriptionsUnlockAvailable({
+        buildings: { clerksHut: 1, buildersHall: 0 },
+      } as GameState),
+    ).toBe(false);
+    expect(
+      isBuildingDescriptionsUnlockAvailable({
+        buildings: { clerksHut: 1, buildersHall: 1 },
+      } as GameState),
+    ).toBe(true);
+  });
+
+  it("craft descriptions unlock requires Clerks Hut and Blacksmith", () => {
+    expect(
+      isCraftDescriptionsUnlockAvailable({
+        buildings: { clerksHut: 0, blacksmith: 1 },
+      } as GameState),
+    ).toBe(false);
+    expect(
+      isCraftDescriptionsUnlockAvailable({
+        buildings: { clerksHut: 1, blacksmith: 0 },
+      } as GameState),
+    ).toBe(false);
+    expect(
+      isCraftDescriptionsUnlockAvailable({
+        buildings: { clerksHut: 1, blacksmith: 1 },
+      } as GameState),
+    ).toBe(true);
+  });
+
+  it("canRevealBuildingDescriptions checks insight and unlock state", () => {
+    const eligible = {
+      ...base(),
+      buildings: { ...base().buildings, clerksHut: 1, buildersHall: 1 },
+      resources: { ...base().resources, insight: 3000 },
+    };
+    expect(canRevealBuildingDescriptions(eligible)).toBe(true);
+    expect(
+      canRevealBuildingDescriptions({
+        ...eligible,
+        buildingDescriptionsRevealed: true,
+      }),
+    ).toBe(false);
+    expect(
+      canRevealBuildingDescriptions({
+        ...eligible,
+        resources: { ...eligible.resources, insight: 100 },
+      }),
+    ).toBe(false);
+  });
+
+  it("description visibility respects bulk flags and legacy per-action reveals", () => {
+    const state = base();
+    expect(isBuildingDescriptionVisible(state, "buildClerksHut")).toBe(false);
+    expect(isCraftDescriptionVisible(state, "craftStoneAxe")).toBe(false);
+
+    expect(
+      isBuildingDescriptionVisible(
+        { ...state, buildingDescriptionsRevealed: true },
+        "buildClerksHut",
+      ),
+    ).toBe(true);
+    expect(
+      isCraftDescriptionVisible(
+        { ...state, craftDescriptionsRevealed: true },
+        "craftStoneAxe",
+      ),
+    ).toBe(true);
+    expect(
+      isBuildingDescriptionVisible(
+        { ...state, revealedEffects: ["buildClerksHut"] },
+        "buildClerksHut",
+      ),
+    ).toBe(true);
   });
 
   it("isCraftOnceAction distinguishes one-time crafts", () => {

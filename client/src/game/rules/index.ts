@@ -16,10 +16,7 @@ import { calculateAdjustedCost } from "./costCalculation";
 import { getActionBonuses } from "./effectsCalculation";
 import { formatNumber } from "@/lib/utils";
 import { getVillagersInVillage } from "@/game/population";
-import {
-  hasFreeQueueSlot,
-  isConstructionQueueEnabled,
-} from "@/game/constructionQueueSlots";
+import { hasFreeQueueSlot } from "@/game/constructionQueueSlots";
 import { clothingEffects } from "./effects";
 import i18n from "i18next";
 import {
@@ -371,7 +368,6 @@ export function canExecuteAction(actionId: string, state: GameState): boolean {
     }
 
     if (
-      isConstructionQueueEnabled(state) &&
       !executionStartTimes?.[actionId] &&
       !hasFreeQueueSlot(state as GameState)
     ) {

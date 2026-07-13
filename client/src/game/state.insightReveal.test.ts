@@ -1,92 +1,164 @@
 import { describe, it, expect, beforeEach } from "vitest";
 import {
   STAT_INSIGHT_REVEAL_KEY,
+  BUILDING_DESCRIPTIONS_INSIGHT_KEY,
+  CRAFT_DESCRIPTIONS_INSIGHT_KEY,
+  BUILDING_DESCRIPTIONS_INSIGHT_COST,
+  CRAFT_DESCRIPTIONS_INSIGHT_COST,
   PRESET_UNLOCK_INSIGHT_KEY,
   TIMED_EVENT_INSIGHT_PROLONG_KEY,
   TIMED_EVENT_TAB_PROLONG_INSIGHT_COST,
   TIMED_EVENT_TAB_PROLONG_MS,
 } from "./rules/insightReveal";
 import { createInitialState, useGameStore } from "./state";
-describe("revealActionEffects", () => {
+
+describe("revealBuildingDescriptions", () => {
   beforeEach(() => {
     useGameStore.getState().initialize();
   });
 
-  it("deducts insight and starts reveal cooldown when affordable", () => {
+  it("deducts insight and starts reveal animation before flag is set", () => {
     useGameStore.setState({
       buildings: {
         ...useGameStore.getState().buildings,
         clerksHut: 1,
+        buildersHall: 1,
       },
       resources: {
         ...useGameStore.getState().resources,
-        insight: 100,
+        insight: 3000,
       },
     });
 
-    const ok = useGameStore.getState().revealActionEffects("craftStoneAxe");
+    const ok = useGameStore.getState().revealBuildingDescriptions();
     expect(ok).toBe(true);
 
     const after = useGameStore.getState();
-    expect(after.resources.insight).toBe(50);
-    expect(after.cooldowns.craftStoneAxe).toBe(3);
-    expect(after.initialCooldowns.craftStoneAxe).toBe(3);
-    expect(after.insightRevealing.craftStoneAxe).toBeGreaterThan(Date.now());
+    expect(after.resources.insight).toBe(
+      3000 - BUILDING_DESCRIPTIONS_INSIGHT_COST,
+    );
+    expect(after.buildingDescriptionsRevealed).toBeFalsy();
+    expect(
+      after.insightRevealing[BUILDING_DESCRIPTIONS_INSIGHT_KEY],
+    ).toBeGreaterThan(Date.now());
   });
 
-  it("does nothing when insight is insufficient", () => {
+  it("does nothing without prerequisites or insufficient insight", () => {
     useGameStore.setState({
       buildings: {
         ...useGameStore.getState().buildings,
         clerksHut: 1,
+        buildersHall: 0,
       },
       resources: {
         ...useGameStore.getState().resources,
-        insight: 5,
+        insight: 3000,
       },
     });
+    expect(useGameStore.getState().revealBuildingDescriptions()).toBe(false);
 
-    const ok = useGameStore.getState().revealActionEffects("craftStoneAxe");
-    expect(ok).toBe(false);
-    expect(useGameStore.getState().resources.insight).toBe(5);
-    expect(useGameStore.getState().insightRevealing.craftStoneAxe).toBeUndefined();
-  });
-
-  it("does nothing before Clerks Hut is built", () => {
     useGameStore.setState({
       buildings: {
         ...useGameStore.getState().buildings,
-        clerksHut: 0,
+        buildersHall: 1,
       },
       resources: {
         ...useGameStore.getState().resources,
         insight: 100,
       },
     });
-
-    const ok = useGameStore.getState().revealActionEffects("craftStoneAxe");
-    expect(ok).toBe(false);
+    expect(useGameStore.getState().revealBuildingDescriptions()).toBe(false);
     expect(useGameStore.getState().resources.insight).toBe(100);
-    expect(useGameStore.getState().insightRevealing.craftStoneAxe).toBeUndefined();
   });
 
-  it("moves action into revealedEffects after reveal window", () => {
+  it("sets buildingDescriptionsRevealed after reveal window", () => {
     useGameStore.setState({
-      resources: {
-        ...useGameStore.getState().resources,
-        insight: 50,
-      },
+      buildingDescriptionsRevealed: false,
       insightRevealing: {
-        craftStoneAxe: Date.now() - 1,
+        [BUILDING_DESCRIPTIONS_INSIGHT_KEY]: Date.now() - 1,
       },
-      revealedEffects: [],
     });
 
     useGameStore.getState().tickCooldowns();
 
     const after = useGameStore.getState();
-    expect(after.revealedEffects).toContain("craftStoneAxe");
-    expect(after.insightRevealing.craftStoneAxe).toBeUndefined();
+    expect(after.buildingDescriptionsRevealed).toBe(true);
+    expect(after.insightRevealing[BUILDING_DESCRIPTIONS_INSIGHT_KEY]).toBeUndefined();
+  });
+});
+
+describe("revealCraftDescriptions", () => {
+  beforeEach(() => {
+    useGameStore.getState().initialize();
+  });
+
+  it("deducts insight and starts reveal animation before flag is set", () => {
+    useGameStore.setState({
+      buildings: {
+        ...useGameStore.getState().buildings,
+        clerksHut: 1,
+        blacksmith: 1,
+      },
+      resources: {
+        ...useGameStore.getState().resources,
+        insight: 3000,
+      },
+    });
+
+    const ok = useGameStore.getState().revealCraftDescriptions();
+    expect(ok).toBe(true);
+
+    const after = useGameStore.getState();
+    expect(after.resources.insight).toBe(
+      3000 - CRAFT_DESCRIPTIONS_INSIGHT_COST,
+    );
+    expect(after.craftDescriptionsRevealed).toBeFalsy();
+    expect(
+      after.insightRevealing[CRAFT_DESCRIPTIONS_INSIGHT_KEY],
+    ).toBeGreaterThan(Date.now());
+  });
+
+  it("does nothing without prerequisites or insufficient insight", () => {
+    useGameStore.setState({
+      buildings: {
+        ...useGameStore.getState().buildings,
+        clerksHut: 1,
+        blacksmith: 0,
+      },
+      resources: {
+        ...useGameStore.getState().resources,
+        insight: 3000,
+      },
+    });
+    expect(useGameStore.getState().revealCraftDescriptions()).toBe(false);
+
+    useGameStore.setState({
+      buildings: {
+        ...useGameStore.getState().buildings,
+        blacksmith: 1,
+      },
+      resources: {
+        ...useGameStore.getState().resources,
+        insight: 100,
+      },
+    });
+    expect(useGameStore.getState().revealCraftDescriptions()).toBe(false);
+    expect(useGameStore.getState().resources.insight).toBe(100);
+  });
+
+  it("sets craftDescriptionsRevealed after reveal window", () => {
+    useGameStore.setState({
+      craftDescriptionsRevealed: false,
+      insightRevealing: {
+        [CRAFT_DESCRIPTIONS_INSIGHT_KEY]: Date.now() - 1,
+      },
+    });
+
+    useGameStore.getState().tickCooldowns();
+
+    const after = useGameStore.getState();
+    expect(after.craftDescriptionsRevealed).toBe(true);
+    expect(after.insightRevealing[CRAFT_DESCRIPTIONS_INSIGHT_KEY]).toBeUndefined();
   });
 });
 
@@ -236,11 +308,13 @@ describe("prolongTimedEventTab", () => {
 });
 
 describe("createInitialState insight fields", () => {
-  it("includes insight, scholar, and revealedEffects defaults", () => {
+  it("includes insight, scholar, and reveal defaults", () => {
     const state = createInitialState();
     expect(state.resources.insight).toBe(0);
     expect(state.villagers.scholar).toBe(0);
     expect(state.revealedEffects).toEqual([]);
+    expect(state.buildingDescriptionsRevealed).toBe(false);
+    expect(state.craftDescriptionsRevealed).toBe(false);
   });
 });
 

@@ -13,12 +13,22 @@ import {
   canProlongTimedEventTab,
   canRevealEffects,
   canRevealStatEffects,
+  canRevealBuildingDescriptions,
+  canRevealCraftDescriptions,
   getInsightAmount,
   getInsightRevealCost,
   isInsightUnlocked,
   isStatEffectsRevealed,
+  isBuildingDescriptionsRevealed,
+  isCraftDescriptionsRevealed,
+  isBuildingDescriptionsUnlockAvailable,
+  isCraftDescriptionsUnlockAvailable,
   STAT_EFFECTS_INSIGHT_COST,
+  BUILDING_DESCRIPTIONS_INSIGHT_COST,
+  CRAFT_DESCRIPTIONS_INSIGHT_COST,
   STAT_INSIGHT_REVEAL_KEY,
+  BUILDING_DESCRIPTIONS_INSIGHT_KEY,
+  CRAFT_DESCRIPTIONS_INSIGHT_KEY,
   TIMED_EVENT_INSIGHT_PROLONG_KEY,
   TIMED_EVENT_TAB_PROLONG_INSIGHT_COST,
   TIMED_EVENT_TAB_PROLONG_MS,
@@ -37,6 +47,8 @@ const STAT_EFFECT_PULSE_IDS = ["luck", "strength", "knowledge", "madness"] as co
 
 type ActionInsightBadgeProps =
   | { target: "stats"; layout?: "inline" }
+  | { target: "buildingDescriptions"; layout?: "inline" }
+  | { target: "craftDescriptions"; layout?: "inline" }
   | { target?: "action"; actionId: string; layout?: "overlay" }
   | {
     target: "timedEvent";
@@ -48,7 +60,12 @@ export function ActionInsightBadge(props: ActionInsightBadgeProps) {
   const target = props.target ?? "action";
   const layout =
     props.layout ??
-    (target === "stats" || target === "timedEvent" ? "inline" : "overlay");
+    (target === "stats" ||
+      target === "buildingDescriptions" ||
+      target === "craftDescriptions" ||
+      target === "timedEvent"
+      ? "inline"
+      : "overlay");
   const actionId = target === "action" ? props.actionId : undefined;
   const timeRemainingMs =
     target === "timedEvent" ? props.timeRemainingMs : 0;
@@ -63,14 +80,22 @@ export function ActionInsightBadge(props: ActionInsightBadgeProps) {
   const insightRevealEnd = useGameStore((s) =>
     target === "stats"
       ? s.insightRevealing?.[STAT_INSIGHT_REVEAL_KEY]
-      : target === "timedEvent"
-        ? s.insightRevealing?.[TIMED_EVENT_INSIGHT_PROLONG_KEY]
-        : actionId
-          ? s.insightRevealing?.[actionId]
-          : undefined,
+      : target === "buildingDescriptions"
+        ? s.insightRevealing?.[BUILDING_DESCRIPTIONS_INSIGHT_KEY]
+        : target === "craftDescriptions"
+          ? s.insightRevealing?.[CRAFT_DESCRIPTIONS_INSIGHT_KEY]
+          : target === "timedEvent"
+            ? s.insightRevealing?.[TIMED_EVENT_INSIGHT_PROLONG_KEY]
+            : actionId
+              ? s.insightRevealing?.[actionId]
+              : undefined,
   );
   const revealActionEffects = useGameStore((s) => s.revealActionEffects);
   const revealStatEffects = useGameStore((s) => s.revealStatEffects);
+  const revealBuildingDescriptions = useGameStore(
+    (s) => s.revealBuildingDescriptions,
+  );
+  const revealCraftDescriptions = useGameStore((s) => s.revealCraftDescriptions);
   const prolongTimedEventTab = useGameStore((s) => s.prolongTimedEventTab);
   const setHighlightedResources = useGameStore((s) => s.setHighlightedResources);
   const setHoveredTooltip = useGameStore((s) => s.setHoveredTooltip);
@@ -83,6 +108,8 @@ export function ActionInsightBadge(props: ActionInsightBadgeProps) {
   const [, forceUpdate] = useState(0);
 
   const isStats = target === "stats";
+  const isBuildingDescriptions = target === "buildingDescriptions";
+  const isCraftDescriptions = target === "craftDescriptions";
   const isTimedEvent = target === "timedEvent";
   const isInsightRevealAnimating =
     typeof insightRevealEnd === "number" && insightRevealEnd > Date.now();
@@ -103,7 +130,13 @@ export function ActionInsightBadge(props: ActionInsightBadgeProps) {
     : isStats
       ? isInsightUnlocked(state) &&
       (!isStatEffectsRevealed(state) || isInsightRevealAnimating)
-      : canRevealEffects(actionId!, state);
+      : isBuildingDescriptions
+        ? isBuildingDescriptionsUnlockAvailable(state) &&
+        (!isBuildingDescriptionsRevealed(state) || isInsightRevealAnimating)
+        : isCraftDescriptions
+          ? isCraftDescriptionsUnlockAvailable(state) &&
+          (!isCraftDescriptionsRevealed(state) || isInsightRevealAnimating)
+          : canRevealEffects(actionId!, state);
   const isExecuting = target === "action" && executionStart > 0 && executionDuration > 0;
   const isRevealing = isInsightRevealAnimating;
   const playing = canShow && !isExecuting && isRevealing;
@@ -133,7 +166,11 @@ export function ActionInsightBadge(props: ActionInsightBadgeProps) {
     ? TIMED_EVENT_TAB_PROLONG_INSIGHT_COST
     : isStats
       ? STAT_EFFECTS_INSIGHT_COST
-      : (actionId ? (getInsightRevealCost(actionId, state) ?? 0) : 0);
+      : isBuildingDescriptions
+        ? BUILDING_DESCRIPTIONS_INSIGHT_COST
+        : isCraftDescriptions
+          ? CRAFT_DESCRIPTIONS_INSIGHT_COST
+          : (actionId ? (getInsightRevealCost(actionId, state) ?? 0) : 0);
 
   const insightResource = formatTooltipResourceName("insight");
   // Resolve via the reactive `t` (same pattern as the other timed-event tooltips in
@@ -154,12 +191,26 @@ export function ActionInsightBadge(props: ActionInsightBadgeProps) {
             cost,
             resource: insightResource,
           })
-          : t("ui:badges.insightRevealSeeEffects", {
-            defaultValue: "See effects for {{cost}} {{resource}}",
-            cost,
-            resource: insightResource,
-          }),
-    [t, i18n.language, isTimedEvent, isStats, cost, insightResource],
+          : isBuildingDescriptions
+            ? t("ui:badges.insightRevealBuildingDescriptions", {
+              defaultValue:
+                "Reveal building descriptions for {{cost}} {{resource}}",
+              cost,
+              resource: insightResource,
+            })
+            : isCraftDescriptions
+              ? t("ui:badges.insightRevealCraftDescriptions", {
+                defaultValue:
+                  "Reveal craft item descriptions for {{cost}} {{resource}}",
+                cost,
+                resource: insightResource,
+              })
+              : t("ui:badges.insightRevealSeeEffects", {
+                defaultValue: "See effects for {{cost}} {{resource}}",
+                cost,
+                resource: insightResource,
+              }),
+    [t, i18n.language, isTimedEvent, isStats, isBuildingDescriptions, isCraftDescriptions, cost, insightResource],
   );
 
   if (!canShow || isExecuting) return null;
@@ -171,7 +222,11 @@ export function ActionInsightBadge(props: ActionInsightBadgeProps) {
     ? canProlongTimedEventTab(state, effectiveTimedRemaining)
     : isStats
       ? canRevealStatEffects(state, insightRevealing)
-      : getInsightAmount(state) >= cost;
+      : isBuildingDescriptions
+        ? canRevealBuildingDescriptions(state, insightRevealing)
+        : isCraftDescriptions
+          ? canRevealCraftDescriptions(state, insightRevealing)
+          : getInsightAmount(state) >= cost;
 
   const isBadgeDisabled = isTimedEvent
     ? !timedTimerUsable || !canAfford || playing
@@ -185,7 +240,11 @@ export function ActionInsightBadge(props: ActionInsightBadgeProps) {
     ? "timed-event-insight-prolong"
     : isStats
       ? "stats-insight-reveal"
-      : `${actionId}-insight-badge`;
+      : isBuildingDescriptions
+        ? "building-descriptions-insight-reveal"
+        : isCraftDescriptions
+          ? "craft-descriptions-insight-reveal"
+          : `${actionId}-insight-badge`;
 
   const handleClick = () => {
     if (isBadgeDisabled) return;
@@ -200,6 +259,14 @@ export function ActionInsightBadge(props: ActionInsightBadgeProps) {
       for (const statId of STAT_EFFECT_PULSE_IDS) {
         setHoveredTooltip(statId, false);
       }
+      return;
+    }
+    if (isBuildingDescriptions) {
+      revealBuildingDescriptions();
+      return;
+    }
+    if (isCraftDescriptions) {
+      revealCraftDescriptions();
       return;
     }
     revealActionEffects(actionId!);
@@ -222,7 +289,9 @@ export function ActionInsightBadge(props: ActionInsightBadgeProps) {
       }
       : undefined;
 
-  const isCompactInline = layout === "inline" && isStats;
+  const isCompactInline =
+    layout === "inline" &&
+    (isStats || isBuildingDescriptions || isCraftDescriptions);
 
   return (
     <div

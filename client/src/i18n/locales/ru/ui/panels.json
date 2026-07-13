@@ -152,6 +152,8 @@
     "priorAssign": "Нажмите, чтобы назначить Падшего приора",
     "insightRevealSeeEffects": "Показать эффекты за {{cost}} {{resource}}",
     "insightRevealSeeStatEffects": "Показать эффекты характеристик за {{cost}} {{resource}}",
+    "insightRevealBuildingDescriptions": "Открыть описания зданий за {{cost}} {{resource}}",
+    "insightRevealCraftDescriptions": "Открыть описания предметов за {{cost}} {{resource}}",
     "bonus": "Бонус:",
     "nextBonus": "Следующий бонус:",
     "craftMultiplier": "Создание ×{{amount}}",

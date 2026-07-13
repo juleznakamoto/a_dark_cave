@@ -608,9 +608,8 @@ describe('Cost Reduction Edge Cases', () => {
 });
 
 describe("getTotalBuildingTimeReduction", () => {
-  it("returns builder-chain reduction when construction queue is enabled", () => {
+  it("returns builder-chain reduction when builder buildings exist", () => {
     const state = createMockState({
-      flags: { constructionQueueEnabled: true } as GameState["flags"],
       buildings: {
         buildersLodge: 1,
         buildersHall: 1,
@@ -621,9 +620,7 @@ describe("getTotalBuildingTimeReduction", () => {
   });
 
   it("returns 0 without builder buildings", () => {
-    const state = createMockState({
-      flags: { constructionQueueEnabled: true } as GameState["flags"],
-    });
+    const state = createMockState({});
     expect(getTotalBuildingTimeReduction(state)).toBe(0);
   });
 });

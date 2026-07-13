@@ -53,6 +53,8 @@ import { computePersistedSocialTasksGold } from "@/game/socialTasksGold";
 import {
   canRevealEffects,
   canRevealStatEffects,
+  canRevealBuildingDescriptions,
+  canRevealCraftDescriptions,
   canRevealAchievementTitle,
   getInsightAmount,
   getInsightRevealCost,
@@ -62,7 +64,11 @@ import {
   INSIGHT_REVEAL_ACTION_COOLDOWN_SEC,
   INSIGHT_REVEAL_DURATION_MS,
   STAT_EFFECTS_INSIGHT_COST,
+  BUILDING_DESCRIPTIONS_INSIGHT_COST,
+  CRAFT_DESCRIPTIONS_INSIGHT_COST,
   STAT_INSIGHT_REVEAL_KEY,
+  BUILDING_DESCRIPTIONS_INSIGHT_KEY,
+  CRAFT_DESCRIPTIONS_INSIGHT_KEY,
   TIMED_EVENT_TAB_PROLONG_INSIGHT_COST,
   TIMED_EVENT_TAB_PROLONG_MS,
   TIMED_EVENT_INSIGHT_PROLONG_KEY,
@@ -520,6 +526,8 @@ interface GameStore extends GameState {
   insightRevealing: Record<string, number>;
   revealActionEffects: (actionId: string) => boolean;
   revealStatEffects: () => boolean;
+  revealBuildingDescriptions: () => boolean;
+  revealCraftDescriptions: () => boolean;
   prolongTimedEventTab: () => boolean;
 }
 
@@ -2359,6 +2367,50 @@ export const useGameStore = create<GameStore>((set, get) => ({
     return true;
   },
 
+  revealBuildingDescriptions: () => {
+    const state = get();
+    if (!canRevealBuildingDescriptions(state, state.insightRevealing)) {
+      return false;
+    }
+
+    const resourceUpdates = updateResource(
+      state,
+      "insight",
+      -BUILDING_DESCRIPTIONS_INSIGHT_COST,
+    );
+    set({
+      ...resourceUpdates,
+      insightRevealing: {
+        ...(state.insightRevealing ?? {}),
+        [BUILDING_DESCRIPTIONS_INSIGHT_KEY]:
+          Date.now() + INSIGHT_REVEAL_DURATION_MS,
+      },
+    });
+    return true;
+  },
+
+  revealCraftDescriptions: () => {
+    const state = get();
+    if (!canRevealCraftDescriptions(state, state.insightRevealing)) {
+      return false;
+    }
+
+    const resourceUpdates = updateResource(
+      state,
+      "insight",
+      -CRAFT_DESCRIPTIONS_INSIGHT_COST,
+    );
+    set({
+      ...resourceUpdates,
+      insightRevealing: {
+        ...(state.insightRevealing ?? {}),
+        [CRAFT_DESCRIPTIONS_INSIGHT_KEY]:
+          Date.now() + INSIGHT_REVEAL_DURATION_MS,
+      },
+    });
+    return true;
+  },
+
   prolongTimedEventTab: () => {
     syncTimedEventTabPauseTracking();
     const state = get();
@@ -2414,12 +2466,18 @@ export const useGameStore = create<GameStore>((set, get) => ({
       ];
       let revealChanged = false;
       let statEffectsRevealed = state.statEffectsRevealed;
+      let buildingDescriptionsRevealed = state.buildingDescriptionsRevealed;
+      let craftDescriptionsRevealed = state.craftDescriptionsRevealed;
       let presetUnlockUpdate: Partial<GameState> | null = null;
       let queueUnlockUpdate: Partial<GameState> | null = null;
       for (const [actionId, endTime] of Object.entries(state.insightRevealing ?? {})) {
         if (now >= endTime) {
           if (actionId === STAT_INSIGHT_REVEAL_KEY) {
             statEffectsRevealed = true;
+          } else if (actionId === BUILDING_DESCRIPTIONS_INSIGHT_KEY) {
+            buildingDescriptionsRevealed = true;
+          } else if (actionId === CRAFT_DESCRIPTIONS_INSIGHT_KEY) {
+            craftDescriptionsRevealed = true;
           } else if (actionId === TIMED_EVENT_INSIGHT_PROLONG_KEY) {
             // Timed-tab prolong: animation only (no revealedEffects entry).
           } else if (actionId === PRESET_UNLOCK_INSIGHT_KEY) {
@@ -2494,6 +2552,8 @@ export const useGameStore = create<GameStore>((set, get) => ({
             insightRevealing: newRevealing,
             revealedEffects,
             statEffectsRevealed,
+            buildingDescriptionsRevealed,
+            craftDescriptionsRevealed,
             revealedAchievementTitles,
             ...(presetUnlockUpdate ?? {}),
             ...(queueUnlockUpdate ?? {}),
@@ -2791,6 +2851,9 @@ export const useGameStore = create<GameStore>((set, get) => ({
           ...savedState.villagers,
         },
         revealedEffects: savedState.revealedEffects ?? [],
+        buildingDescriptionsRevealed:
+          savedState.buildingDescriptionsRevealed ?? false,
+        craftDescriptionsRevealed: savedState.craftDescriptionsRevealed ?? false,
         statEffectsRevealed: savedState.statEffectsRevealed ?? false,
         revealedAchievementTitles: savedState.revealedAchievementTitles ?? [],
         relics: {

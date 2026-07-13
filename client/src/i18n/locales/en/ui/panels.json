@@ -152,6 +152,8 @@
     "priorAssign": "Click to assign Disgraced Prior",
     "insightRevealSeeEffects": "See effects for {{cost}} {{resource}}",
     "insightRevealSeeStatEffects": "See Stats effects for {{cost}} {{resource}}",
+    "insightRevealBuildingDescriptions": "Reveal building descriptions for {{cost}} {{resource}}",
+    "insightRevealCraftDescriptions": "Reveal craft item descriptions for {{cost}} {{resource}}",
     "bonus": "Bonus:",
     "nextBonus": "Next Bonus:",
     "craftMultiplier": "Craft x{{amount}}",

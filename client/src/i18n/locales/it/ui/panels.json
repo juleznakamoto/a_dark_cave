@@ -152,6 +152,8 @@
     "priorAssign": "Clicca per assegnare il Priore Caduto in Disgrazia",
     "insightRevealSeeEffects": "Vedi gli effetti per {{cost}} {{resource}}",
     "insightRevealSeeStatEffects": "Vedi gli effetti delle statistiche per {{cost}} {{resource}}",
+    "insightRevealBuildingDescriptions": "Sblocca le descrizioni degli edifici per {{cost}} {{resource}}",
+    "insightRevealCraftDescriptions": "Sblocca le descrizioni degli oggetti per {{cost}} {{resource}}",
     "bonus": "Bonus:",
     "nextBonus": "Prossimo Bonus:",
     "craftMultiplier": "Fabbrica x{{amount}}",

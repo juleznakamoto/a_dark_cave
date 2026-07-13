@@ -26,12 +26,6 @@ export const MAX_QUEUE_SLOTS =
 
 export const QUEUE_SLOT_UNLOCK_INSIGHT_KEY = "constructionQueueSlotUnlock";
 
-export function isConstructionQueueEnabled(
-  state: Pick<GameState, "flags">,
-): boolean {
-  return state.flags?.constructionQueueEnabled === true;
-}
-
 export function getBuilderLevel(
   state: Pick<GameState, "buildings">,
 ): number {
@@ -273,7 +267,6 @@ export function canPurchaseQueueSlot(
   insightRevealing?: Record<string, number>,
 ): boolean {
   if (
-    !isConstructionQueueEnabled(state) ||
     isInsightRevealInProgress(QUEUE_SLOT_UNLOCK_INSIGHT_KEY, insightRevealing)
   ) {
     return false;
@@ -316,14 +309,13 @@ export function isQueueSlotInUse(
 }
 
 export function hasFreeQueueSlot(state: GameState): boolean {
-  if (!isConstructionQueueEnabled(state)) return true;
   return getActiveBuildCount(state) < getTotalQueueSlots(state);
 }
 
 export function isConstructionBoostUnlocked(
-  state: Pick<GameState, "flags" | "buildings">,
+  state: Pick<GameState, "buildings">,
 ): boolean {
-  return isConstructionQueueEnabled(state) && getBuilderLevel(state) >= 2;
+  return getBuilderLevel(state) >= 2;
 }
 
 export function isCraftingBoostUnlocked(
@@ -333,7 +325,7 @@ export function isCraftingBoostUnlocked(
 }
 
 function isExecutionBoostUnlockedForAction(
-  state: Pick<GameState, "flags" | "buildings">,
+  state: Pick<GameState, "buildings">,
   actionId: string,
 ): boolean {
   if (actionId.startsWith("build")) return isConstructionBoostUnlocked(state);
