@@ -22,10 +22,7 @@ import { isLocalOnlyEdition, isGalaxyEdition, isSteamBuild } from "@/lib/edition
 import { useSteamEditionActive } from "@/hooks/useSteamEditionActive";
 import { mountNotoSansSymbols2FontFace } from "@/lib/notoSansSymbols2FontFace";
 import type { TimedEventTabState } from "@/game/types";
-import {
-  initGalaxyDemoSession,
-  isGalaxyPlayTimeLimitReached,
-} from "@/game/galaxyDemo";
+import { isGalaxyDemoLimitReachedFromState } from "@/game/galaxyDemo";
 import {
   applySaveBoost,
   canApplySaveBoost,
@@ -397,9 +394,8 @@ export default function Game() {
 
         // Start game loop
         if (isGalaxyEdition()) {
-          const playTime = useGameStore.getState().playTime ?? 0;
-          initGalaxyDemoSession(playTime);
-          if (isGalaxyPlayTimeLimitReached(playTime)) {
+          const loadedState = useGameStore.getState();
+          if (isGalaxyDemoLimitReachedFromState(loadedState)) {
             useGameStore.setState({ galaxyTimeUpDialogOpen: true });
           }
         }

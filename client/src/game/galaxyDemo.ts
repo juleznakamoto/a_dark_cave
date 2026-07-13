@@ -1,85 +1,38 @@
 import { useGameStore } from "@/game/state";
 import { isGalaxyEdition } from "@/lib/edition";
 
-const GALAXY_DEMO_STORAGE_KEY = "adc-galaxy-demo-play-ms";
+/** Demo ends after this many stone huts have been built. */
+export const GALAXY_DEMO_STONE_HUT_LIMIT = 3;
 
-/** Total playable time on the Galaxy demo (2.5 hours). */
-export const GALAXY_PLAY_TIME_LIMIT_MS = 2.5 * 60 * 60 * 1000;
-
-let galaxyBankedPlayTimeMs = 0;
-let galaxySessionStartPlayTimeMs = 0;
-
-function loadBankedPlayTimeFromStorage(): number {
-  try {
-    const raw = localStorage.getItem(GALAXY_DEMO_STORAGE_KEY);
-    if (!raw) return 0;
-    const parsed = Number.parseInt(raw, 10);
-    return Number.isFinite(parsed) && parsed > 0 ? parsed : 0;
-  } catch {
-    return 0;
-  }
+export function getGalaxyStoneHutCount(buildings?: {
+  stoneHut?: number;
+}): number {
+  return buildings?.stoneHut ?? 0;
 }
 
-/** Call after a galaxy save is loaded or a new game session starts. */
-export function initGalaxyDemoSession(loadedPlayTimeMs: number): void {
-  if (!isGalaxyEdition()) return;
-  galaxyBankedPlayTimeMs = loadBankedPlayTimeFromStorage();
-  galaxySessionStartPlayTimeMs = Math.floor(loadedPlayTimeMs);
-}
-
-/** Persist cumulative demo play time (survives save restarts and tab closes). */
-export function persistGalaxyDemoProgress(currentPlayTimeMs: number): void {
-  if (!isGalaxyEdition()) return;
-  const total = getGalaxyTotalPlayTimeMs(currentPlayTimeMs);
-  galaxyBankedPlayTimeMs = total;
-  galaxySessionStartPlayTimeMs = Math.floor(currentPlayTimeMs);
-  try {
-    localStorage.setItem(GALAXY_DEMO_STORAGE_KEY, String(total));
-  } catch {
-    /* ignore quota / private mode */
-  }
-}
-
-export function getGalaxyTotalPlayTimeMs(currentPlayTimeMs: number): number {
-  if (!isGalaxyEdition()) return 0;
-  const segment = Math.max(
-    0,
-    Math.floor(currentPlayTimeMs) - galaxySessionStartPlayTimeMs,
-  );
-  return galaxyBankedPlayTimeMs + segment;
-}
-
-export function isGalaxyPlayTimeLimitReached(currentPlayTimeMs: number): boolean {
+export function isGalaxyDemoLimitReached(stoneHutCount: number): boolean {
   return (
-    isGalaxyEdition() &&
-    getGalaxyTotalPlayTimeMs(currentPlayTimeMs) >= GALAXY_PLAY_TIME_LIMIT_MS
+    isGalaxyEdition() && stoneHutCount >= GALAXY_DEMO_STONE_HUT_LIMIT
   );
 }
 
-export function processGalaxyPlayTimeLimit(): void {
+export function isGalaxyDemoLimitReachedFromState(state: {
+  buildings?: { stoneHut?: number };
+}): boolean {
+  return isGalaxyDemoLimitReached(getGalaxyStoneHutCount(state.buildings));
+}
+
+export function processGalaxyDemoLimit(): void {
   if (!isGalaxyEdition()) return;
   const state = useGameStore.getState();
   if (state.galaxyTimeUpDialogOpen) return;
 
-  persistGalaxyDemoProgress(state.playTime);
-
-  if (isGalaxyPlayTimeLimitReached(state.playTime)) {
+  if (isGalaxyDemoLimitReachedFromState(state)) {
     useGameStore.setState({ galaxyTimeUpDialogOpen: true });
   }
 }
 
-/** Clears cumulative demo play time (localStorage + in-memory). */
-export function resetGalaxyDemoProgress(): void {
-  galaxyBankedPlayTimeMs = 0;
-  galaxySessionStartPlayTimeMs = 0;
-  try {
-    localStorage.removeItem(GALAXY_DEMO_STORAGE_KEY);
-  } catch {
-    /* ignore */
-  }
-}
-
-/** Fresh run from the demo-end dialog — new save and reset play-time budget. */
+/** Fresh run from the demo-end dialog — new save and reset progress. */
 export async function startNewGalaxyDemoGame(): Promise<void> {
   if (!isGalaxyEdition()) return;
 
@@ -87,15 +40,6 @@ export async function startNewGalaxyDemoGame(): Promise<void> {
   const store = useGameStore.getState();
 
   store.setGalaxyTimeUpDialogOpen(false);
-  resetGalaxyDemoProgress();
   await deleteSave();
   await store.restartGame();
-  // restartGame persists demo time from the old run before resetting playTime.
-  resetGalaxyDemoProgress();
-  initGalaxyDemoSession(0);
-}
-
-/** Test helper — resets in-memory and localStorage demo counters. */
-export function resetGalaxyDemoStateForTests(): void {
-  resetGalaxyDemoProgress();
 }

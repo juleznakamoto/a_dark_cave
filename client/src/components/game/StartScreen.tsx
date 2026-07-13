@@ -18,10 +18,7 @@ import { useLocale } from "@/i18n/useLocale";
 import { OG_LOCALE_TAGS, SUPPORTED_LOCALES } from "@/i18n/locales";
 import { useSteamEditionActive } from "@/hooks/useSteamEditionActive";
 import { isGalaxyEdition } from "@/lib/edition";
-import {
-  initGalaxyDemoSession,
-  isGalaxyPlayTimeLimitReached,
-} from "@/game/galaxyDemo";
+import { isGalaxyDemoLimitReachedFromState } from "@/game/galaxyDemo";
 import GalaxyTimeUpDialog from "@/components/game/GalaxyTimeUpDialog";
 import { FullscreenButton } from "@/components/game/FullscreenButton";
 
@@ -104,16 +101,15 @@ export default function StartScreen() {
 
   const handleLightFire = () => {
     if (executedRef.current) return;
+    executedRef.current = true;
 
     if (isGalaxyEdition()) {
-      initGalaxyDemoSession(0);
-      if (isGalaxyPlayTimeLimitReached(0)) {
+      const state = useGameStore.getState();
+      if (isGalaxyDemoLimitReachedFromState(state)) {
         useGameStore.setState({ galaxyTimeUpDialogOpen: true });
         return;
       }
     }
-
-    executedRef.current = true;
 
     // Preload font dynamically (lazy-loaded for better Lighthouse scores)
     // Don't apply font-loaded class here - the Game component will apply it

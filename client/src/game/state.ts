@@ -219,7 +219,7 @@ interface GameStore extends GameState {
   leaderboardDialogOpen: boolean;
   shareDialogOpen: boolean;
   fullGamePurchaseDialogOpen: boolean;
-  /** Galaxy demo: blocking dialog when the 2.5h play limit is reached. */
+  /** Galaxy demo: blocking dialog when the stone hut limit is reached. */
   galaxyTimeUpDialogOpen: boolean;
   /**
    * Transient: when set, the shop dialog opens straight into checkout for this
@@ -2506,11 +2506,6 @@ export const useGameStore = create<GameStore>((set, get) => ({
   restartGame: async () => {
     const state = get();
 
-    const { persistGalaxyDemoProgress, initGalaxyDemoSession } = await import(
-      "@/game/galaxyDemo"
-    );
-    persistGalaxyDemoProgress(state.playTime);
-
     // Check if cruel mode is activated (support both old and new purchase ID formats)
     const isCruelModeActive =
       Object.keys(state.activatedPurchases || {}).some(
@@ -2619,7 +2614,6 @@ export const useGameStore = create<GameStore>((set, get) => ({
     }
 
     set(resetState);
-    initGalaxyDemoSession(0);
     StateManager.scheduleEffectsUpdate(get);
 
     const cruelMode = Boolean(preserved.cruelMode);
