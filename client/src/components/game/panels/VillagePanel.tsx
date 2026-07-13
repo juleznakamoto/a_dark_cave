@@ -153,18 +153,25 @@ const HEADER_SLOT_INSIGHT_BUTTON_CLASS = HEADER_SLOT_SIZE_CLASS;
 const HEADER_SLOT_BUTTON_CLASS = `${HEADER_SLOT_SIZE_CLASS} p-0 pointer-events-none inline-flex items-center justify-center leading-none transition-colors appearance-none [-webkit-appearance:none]`;
 
 /** − / count / + / cap columns — shared by summary, stat, and job rows. */
-const VILLAGER_COUNT_ROW_CLASS = "flex min-w-0 items-end";
+const VILLAGER_COUNT_BUTTON_SIZE_CLASS = "h-[18px] w-[18px]";
+const VILLAGER_COUNT_ROW_CLASS = "flex min-w-0 items-center";
 const VILLAGER_COUNT_CONTROL_GRID_CLASS =
-  "grid shrink-0 grid-cols-[1.5rem_3ch_1.5rem_4ch] items-end";
+  "grid shrink-0 grid-cols-[18px_3ch_18px_4ch] items-center";
 const VILLAGER_COUNT_BUTTON_CLASS = cn(
-  "min-h-0 min-w-0 shrink-0 self-end p-0 inline-flex items-end justify-center no-hover font-normal leading-none w-[1.5rem] tabular-nums text-base",
+  VILLAGER_COUNT_BUTTON_SIZE_CLASS,
+  "min-h-0 shrink-0 p-0 inline-flex items-center justify-center leading-none font-normal appearance-none [-webkit-appearance:none] disabled:opacity-100",
 );
+const villagerCountButtonClassName = (isDisabled: boolean) =>
+  cn(
+    VILLAGER_COUNT_BUTTON_CLASS,
+    gameActionOutlineButtonClassName(isDisabled),
+  );
 const VILLAGER_COUNT_CAP_CLASS = cn(
-  "notranslate inline-flex items-end self-end leading-none",
+  "notranslate inline-flex items-center self-center leading-none",
   ANIMATED_COUNTER_TEXT_CLASS,
 );
 const VILLAGER_COUNT_VALUE_CLASS = cn(
-  "notranslate inline-flex w-full items-end justify-center self-end leading-none",
+  "notranslate inline-flex w-full items-center justify-center self-center leading-none",
   ANIMATED_COUNTER_TEXT_CLASS,
 );
 const VILLAGER_COUNT_LABEL_CLASS =
@@ -1002,9 +1009,9 @@ export default function VillagePanel() {
   ) => (
     <div key={key} className={VILLAGER_COUNT_ROW_CLASS}>
       <div className={VILLAGER_COUNT_CONTROL_GRID_CLASS}>
-        <span className="inline-block w-[1.25rem]" aria-hidden />
+        <span className={cn(VILLAGER_COUNT_BUTTON_SIZE_CLASS, "inline-block")} aria-hidden />
         {renderVillagerCount(count, options?.className)}
-        <span className="inline-block w-[1.25rem]" aria-hidden />
+        <span className={cn(VILLAGER_COUNT_BUTTON_SIZE_CLASS, "inline-block")} aria-hidden />
         <span translate="no" className={VILLAGER_COUNT_CAP_CLASS} aria-hidden />
       </div>
       <span className={VILLAGER_COUNT_LABEL_CLASS}>
@@ -1019,9 +1026,9 @@ export default function VillagePanel() {
   const renderVillagersSummaryRow = () => (
     <div key="villagers-summary" className={VILLAGER_COUNT_ROW_CLASS}>
       <div className={VILLAGER_COUNT_CONTROL_GRID_CLASS}>
-        <span className="inline-block w-[1.25rem]" aria-hidden />
+        <span className={cn(VILLAGER_COUNT_BUTTON_SIZE_CLASS, "inline-block")} aria-hidden />
         {renderVillagerCount(totalPopulation)}
-        <span className="inline-block w-[1.25rem]" aria-hidden />
+        <span className={cn(VILLAGER_COUNT_BUTTON_SIZE_CLASS, "inline-block")} aria-hidden />
         <span
           translate="no"
           className={cn(VILLAGER_COUNT_CAP_CLASS, "text-muted-foreground")}
@@ -1101,17 +1108,20 @@ export default function VillagePanel() {
             }}
             onTouchCancel={() => stopHold(true)}
             disabled={currentCount === 0}
-            variant="ghost"
+            variant="outline"
             size="xs"
-            className={cn(
-              VILLAGER_COUNT_BUTTON_CLASS,
-              currentCount === 0 &&
-              "text-muted-foreground disabled:opacity-100",
-            )}
+            className={villagerCountButtonClassName(currentCount === 0)}
             style={{ touchAction: "manipulation" }}
             button_id={`unassign-${jobId}`}
           >
-            -
+            <span
+              className={cn(
+                "text-xs leading-none tabular-nums",
+                currentCount === 0 && "opacity-50",
+              )}
+            >
+              -
+            </span>
           </Button>
           {renderVillagerCount(currentCount)}
           <Button
@@ -1132,16 +1142,20 @@ export default function VillagePanel() {
             }}
             onTouchCancel={() => stopHold(true)}
             disabled={!canAssignMore}
-            variant="ghost"
+            variant="outline"
             size="xs"
-            className={cn(
-              VILLAGER_COUNT_BUTTON_CLASS,
-              !canAssignMore && "text-muted-foreground disabled:opacity-100",
-            )}
+            className={villagerCountButtonClassName(!canAssignMore)}
             style={{ touchAction: "manipulation" }}
             button_id={`assign-${jobId}`}
           >
-            +
+            <span
+              className={cn(
+                "text-xs leading-none tabular-nums",
+                !canAssignMore && "opacity-50",
+              )}
+            >
+              +
+            </span>
           </Button>
           <span
             translate="no"
