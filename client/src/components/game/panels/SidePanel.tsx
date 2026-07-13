@@ -5,7 +5,6 @@ import SidePanelSection, {
   SIDE_PANEL_SECTION_SPACING_CLASS,
 } from "./SidePanelSection";
 import StatEffectsTooltip from "@/components/game/StatEffectsTooltip";
-import { ActionInsightBadge } from "@/components/game/ActionInsightBadge";
 import { ResourceCoinIcon } from "@/components/ui/resource-coin-icon";
 import { ResourceInsightIcon } from "@/components/ui/resource-insight-icon";
 import { clothingEffects } from "@/game/rules/effects";
@@ -1006,7 +1005,6 @@ export default function SidePanel() {
               <SidePanelSection
                 sectionId="stats"
                 title={t("sidePanel.stats")}
-                titleExtra={<ActionInsightBadge target="stats" />}
                 items={statsItems}
               />
             )}

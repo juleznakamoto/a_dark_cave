@@ -17,9 +17,9 @@ export const INSIGHT_REVEAL_ACTION_COOLDOWN_SEC = 3;
 /** One-time cost to reveal all side-panel stat effect tooltips. */
 export const STAT_EFFECTS_INSIGHT_COST = 1000;
 /** One-time cost to reveal all village build action descriptions. */
-export const BUILDING_DESCRIPTIONS_INSIGHT_COST = 2500;
+export const BUILDING_DESCRIPTIONS_INSIGHT_COST = 1000;
 /** One-time cost to reveal all cave craft action descriptions. */
-export const CRAFT_DESCRIPTIONS_INSIGHT_COST = 2500;
+export const CRAFT_DESCRIPTIONS_INSIGHT_COST = 1000;
 /** One-time cost to reveal a hidden achievement title before any progress is made. */
 export const ACHIEVEMENT_TITLE_INSIGHT_COST = 250;
 /** Prefix for `insightRevealing` keys while an achievement title reveal animates. */
@@ -51,20 +51,16 @@ export const TIMED_EVENT_INSIGHT_PROLONG_KEY = "timedEventProlong";
 /** `insightRevealing` key while a villager preset slot unlock animates. */
 export const PRESET_UNLOCK_INSIGHT_KEY = "villagerPresetUnlock";
 
-export function isStatEffectsRevealed(state: GameState): boolean {
-  return Boolean(state.statEffectsRevealed);
+export function isStatEffectsRevealed(_state: GameState): boolean {
+  return true;
 }
 
+/** @deprecated Stat effect tooltips are always visible; always false. */
 export function canRevealStatEffects(
-  state: GameState,
-  insightRevealing?: Record<string, number>,
+  _state: GameState,
+  _insightRevealing?: Record<string, number>,
 ): boolean {
-  if (!isInsightUnlocked(state)) return false;
-  if (isStatEffectsRevealed(state)) return false;
-  if (isInsightRevealInProgress(STAT_INSIGHT_REVEAL_KEY, insightRevealing)) {
-    return false;
-  }
-  return getInsightAmount(state) >= STAT_EFFECTS_INSIGHT_COST;
+  return false;
 }
 
 const FORTIFICATION_BUILDING_KEYS = new Set([

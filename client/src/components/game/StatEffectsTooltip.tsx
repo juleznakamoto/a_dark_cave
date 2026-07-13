@@ -20,7 +20,6 @@ import {
 import { getMadnessProductionMultiplier } from "@/game/population";
 import { WAGER_TIERS, WAGER_LUCK_THRESHOLDS } from "@/game/diceFifteenGame";
 import { hasGamblerAppearedOnce } from "@/game/gamblerSession";
-import { isStatEffectsRevealed } from "@/game/rules/insightReveal";
 import { bombKnowledgeDamageBonus } from "@/game/rules/skillUpgrades";
 
 export type TooltipStatKey = "luck" | "strength" | "knowledge" | "madness";
@@ -307,21 +306,11 @@ export function getStatEffectLinesSignature(
   statKey: TooltipStatKey,
   state: GameState,
 ): string {
-  if (!isStatEffectsRevealed(state)) return "";
   const noopT = (key: string) => key;
   return getStatEffectLines(statKey, state, noopT)
     .map((line) => line.key)
     .sort()
     .join(",");
-}
-
-/** Side-panel stat label pulse: after insight reveal and when effect lines exist. */
-export function shouldPulseStatItem(
-  statKey: TooltipStatKey,
-  state: GameState,
-): boolean {
-  if (!isStatEffectsRevealed(state)) return false;
-  return getStatEffectLinesSignature(statKey, state).length > 0;
 }
 
 /**
@@ -335,7 +324,6 @@ export default function StatEffectsTooltip({
 }) {
   const { t } = useTranslation("ui");
   const state = useGameStore() as unknown as GameState;
-  if (!isStatEffectsRevealed(state)) return null;
   const rows = getStatEffectRows(statKey, state, t);
   if (rows.length === 0) return null;
   return (

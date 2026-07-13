@@ -28,14 +28,12 @@ import {
 } from "@/game/population";
 import {
   getStatEffectLinesSignature,
-  shouldPulseStatItem,
   type TooltipStatKey,
 } from "@/components/game/StatEffectsTooltip";
 import {
   getInsightAmount,
   INSIGHT_REVEAL_DURATION_MS,
   isInsightUnlocked,
-  isStatEffectsRevealed,
 } from "@/game/rules/insightReveal";
 import type { GameState } from "@shared/schema";
 import {
@@ -601,17 +599,19 @@ export default function SidePanelSection({
     }
   }, [globalTooltip.openTooltipId, hoveredTooltips, setHoveredTooltip]);
 
-  /** Last seen effect-line keys per stat; when new lines unlock, clear hover to re-pulse. */
+  /** Last seen effect-line keys per stat; when new lines unlock, pulse until hover. */
   const prevStatEffectSigsRef = useRef<Partial<Record<TooltipStatKey, string>>>(
     {},
   );
   const statEffectPulseInitializedRef = useRef(false);
+  const [statNewLinePulseKeys, setStatNewLinePulseKeys] = useState<
+    Set<TooltipStatKey>
+  >(new Set());
 
   useEffect(() => {
     if (sectionId !== "stats") return;
 
     const state = gameState as unknown as GameState;
-    if (!isStatEffectsRevealed(state)) return;
 
     for (const statId of STAT_EFFECT_PULSE_STAT_IDS) {
       const sig = getStatEffectLinesSignature(statId, state);
@@ -619,9 +619,6 @@ export default function SidePanelSection({
 
       if (!statEffectPulseInitializedRef.current) {
         prevStatEffectSigsRef.current[statId] = sig;
-        if (sig.length > 0) {
-          setHoveredTooltip(statId, false);
-        }
         continue;
       }
 
@@ -634,6 +631,7 @@ export default function SidePanelSection({
 
       if (gainedLine.length > 0) {
         setHoveredTooltip(statId, false);
+        setStatNewLinePulseKeys((prevKeys) => new Set(prevKeys).add(statId));
       }
 
       prevStatEffectSigsRef.current[statId] = sig;
@@ -641,6 +639,22 @@ export default function SidePanelSection({
 
     statEffectPulseInitializedRef.current = true;
   }, [gameState, sectionId, setHoveredTooltip]);
+
+  // Clear stat pulse flags once the player dismisses via hover or tooltip open.
+  useEffect(() => {
+    if (sectionId !== "stats") return;
+    setStatNewLinePulseKeys((prev) => {
+      let changed = false;
+      const next = new Set(prev);
+      for (const statId of STAT_EFFECT_PULSE_STAT_IDS) {
+        if (hoveredTooltips[statId] && next.has(statId)) {
+          next.delete(statId);
+          changed = true;
+        }
+      }
+      return changed ? next : prev;
+    });
+  }, [hoveredTooltips, sectionId]);
 
   const [maxAnimatedItems, setMaxAnimatedItems] = useState<Set<string>>(
     new Set(),
@@ -917,11 +931,11 @@ export default function SidePanelSection({
       ? (item.id as TooltipStatKey)
       : null;
 
-    // Pulse: effect items, building/fortification tooltips, or stat rows with revealed effect lines.
+    // Pulse: effect items, building/fortification tooltips, or stat rows with newly unlocked effect lines.
     // Stat tooltips are JSX (always truthy) — never use bare `item.tooltip` for the stats section.
     const shouldPulse =
       sectionId === "stats" && statPulseKey !== null
-        ? shouldPulseStatItem(statPulseKey, gameState as GameState)
+        ? statNewLinePulseKeys.has(statPulseKey)
         : (hasEffect &&
           sectionId !== undefined &&
           EFFECT_TOOLTIP_SECTIONS.has(sectionId)) ||

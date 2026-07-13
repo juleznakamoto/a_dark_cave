@@ -673,7 +673,7 @@ export const gameStateSchema = z.object({
   buildingDescriptionsRevealed: z.boolean().default(false),
   /** All cave craft action descriptions unlocked via Insight (Blacksmith). */
   craftDescriptionsRevealed: z.boolean().default(false),
-  /** Side-panel stat tooltips (luck/strength/knowledge/madness effect breakdown) unlocked via Insight. */
+  /** Legacy: stat effect tooltips are always visible; kept for save compatibility. */
   statEffectsRevealed: z.boolean().default(false),
   isNewGame: z.boolean().default(false), // Track if this is a newly started game
   startTime: z.number().default(0), // Timestamp when the current game was started
