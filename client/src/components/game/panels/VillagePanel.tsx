@@ -1131,10 +1131,7 @@ export default function VillagePanel() {
             disabled={!canAssignMore}
             variant="ghost"
             size="xs"
-            className={cn(
-              VILLAGER_COUNT_BUTTON_CLASS,
-              atCap && "disabled:opacity-100",
-            )}
+            className={VILLAGER_COUNT_BUTTON_CLASS}
             style={{ touchAction: "manipulation" }}
             button_id={`assign-${jobId}`}
           >

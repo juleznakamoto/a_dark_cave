@@ -714,11 +714,6 @@ export function GameHeaderControls() {
               handleManualSave();
               setAccountDropdownOpen(false);
             }}
-            className={
-              currentUser && cooldowns["manualSave"] > 0
-                ? "opacity-50 cursor-not-allowed"
-                : ""
-            }
           >
             <span className="flex items-center gap-1.5">
               <GameUiIcon name="saveGame" />

@@ -7,6 +7,7 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { DropdownMenuItem } from "@/components/ui/dropdown-menu";
+import { cn } from "@/lib/utils";
 
 type EventHandler<E> = (e: E) => void;
 
@@ -43,6 +44,8 @@ export interface DropdownMenuItemWithTooltipProps
  * - Single-tooltip-at-a-time global state
  * - Hold-to-show (250–300ms) on all devices
  * - Tap-to-show when disabled on mobile
+ * - Desktop hover tooltips when inactive (aria-disabled, not native disabled — Radix
+ *   sets pointer-events-none on disabled items, which blocks hover)
  * Cannot use TooltipWrapper here because its wrapper div breaks Radix DropdownMenu.
  */
 export function DropdownMenuItemWithTooltip({
@@ -51,11 +54,13 @@ export function DropdownMenuItemWithTooltip({
   disabled = false,
   onTooltipAction,
   tooltipContentClassName,
+  className,
   onMouseDown,
   onMouseUp,
   onTouchStart,
   onTouchEnd,
   onClick,
+  onSelect,
   ...props
 }: DropdownMenuItemWithTooltipProps) {
   const globalTooltip = useGlobalTooltip();
@@ -63,6 +68,16 @@ export function DropdownMenuItemWithTooltip({
   const wrappedAction = React.useCallback(() => {
     onTooltipAction?.();
   }, [onTooltipAction]);
+
+  const blockWhenDisabled = React.useCallback(
+    (e: { preventDefault: () => void; stopPropagation?: () => void }) => {
+      if (!disabled) return false;
+      e.preventDefault();
+      e.stopPropagation?.();
+      return true;
+    },
+    [disabled],
+  );
 
   return (
     <TooltipProvider>
@@ -74,7 +89,19 @@ export function DropdownMenuItemWithTooltip({
           <DropdownMenuItem
             data-tooltip-trigger-id={tooltipId}
             style={{ touchAction: "manipulation" }}
-            disabled={disabled}
+            aria-disabled={disabled || undefined}
+            className={cn(
+              disabled && "opacity-50 cursor-not-allowed",
+              className,
+            )}
+            onSelect={mergeHandlers(
+              (e) => {
+                if (disabled) {
+                  e.preventDefault();
+                }
+              },
+              onSelect,
+            )}
             onMouseDown={mergeHandlers(
               (e) =>
                 globalTooltip.handleMouseDown(tooltipId, disabled, false, e),
@@ -106,9 +133,14 @@ export function DropdownMenuItemWithTooltip({
               onTouchEnd
             )}
             onClick={mergeHandlers(
-              (e) =>
-                globalTooltip.handleWrapperClick(tooltipId, disabled, false, e),
-              onClick
+              (e) => {
+                if (blockWhenDisabled(e)) return;
+                globalTooltip.handleWrapperClick(tooltipId, disabled, false, e);
+              },
+              (e) => {
+                if (disabled) return;
+                onClick?.(e);
+              },
             )}
             {...props}
           />
