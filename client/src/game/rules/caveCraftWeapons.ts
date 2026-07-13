@@ -36,7 +36,7 @@ export const caveCraftWeapons: Record<string, Action> = {
     effects: {
       "weapons.steel_sword": true,
     },
-    executionTime: 20,
+    executionTime: 30,
     cooldown: 0,
   },
 
@@ -55,7 +55,7 @@ export const caveCraftWeapons: Record<string, Action> = {
     effects: {
       "weapons.obsidian_sword": true,
     },
-    executionTime: 25,
+    executionTime: 45,
     cooldown: 0,
   },
 
@@ -74,7 +74,7 @@ export const caveCraftWeapons: Record<string, Action> = {
     effects: {
       "weapons.adamant_sword": true,
     },
-    executionTime: 30,
+    executionTime: 60,
     cooldown: 0,
   },
 
@@ -131,7 +131,7 @@ export const caveCraftWeapons: Record<string, Action> = {
     effects: {
       "weapons.long_bow": true,
     },
-    executionTime: 20,
+    executionTime: 30,
     cooldown: 0,
   },
 
@@ -153,7 +153,7 @@ export const caveCraftWeapons: Record<string, Action> = {
       "story.seen.hasWarBow": true,
       "story.seen.actionCraftWarBow": true,
     },
-    executionTime: 25,
+    executionTime: 45,
     cooldown: 0,
   },
 
@@ -175,7 +175,7 @@ export const caveCraftWeapons: Record<string, Action> = {
       "story.seen.hasMasterBow": true,
       "story.seen.actionCraftMasterBow": true,
     },
-    executionTime: 30,
+    executionTime: 60,
     cooldown: 0,
   },
 
@@ -195,7 +195,7 @@ export const caveCraftWeapons: Record<string, Action> = {
     effects: {
       "weapons.arbalest": true,
     },
-    executionTime: 40,
+    executionTime: 120,
     cooldown: 0,
   },
 
@@ -214,7 +214,7 @@ export const caveCraftWeapons: Record<string, Action> = {
     effects: {
       "weapons.nightshade_bow": true,
     },
-    executionTime: 45,
+    executionTime: 120,
     cooldown: 0,
   },
 
@@ -234,7 +234,7 @@ export const caveCraftWeapons: Record<string, Action> = {
     effects: {
       "weapons.stormglass_halberd": true,
     },
-    executionTime: 60,
+    executionTime: 120,
     cooldown: 0,
   },
 
@@ -254,7 +254,7 @@ export const caveCraftWeapons: Record<string, Action> = {
       "weapons.frostglass_sword": true,
       "story.seen.hasFrostglassSword": true,
     },
-    executionTime: 150,
+    executionTime: 180,
     cooldown: 0,
   },
 
@@ -274,7 +274,7 @@ export const caveCraftWeapons: Record<string, Action> = {
       "story.seen.hasBlacksteelSword": true,
       "story.seen.actionCraftBlacksteelSword": true,
     },
-    executionTime: 30,
+    executionTime: 90,
     cooldown: 0,
   },
 
@@ -294,7 +294,7 @@ export const caveCraftWeapons: Record<string, Action> = {
       "story.seen.hasBlacksteelBow": true,
       "story.seen.actionCraftBlacksteelBow": true,
     },
-    executionTime: 30,
+    executionTime: 90,
     cooldown: 0,
   },
 
@@ -313,7 +313,7 @@ export const caveCraftWeapons: Record<string, Action> = {
       "weapons.bloodstone_staff": true,
       "story.seen.hasBloodstoneStaff": true,
     },
-    executionTime: 150,
+    executionTime: 180,
     cooldown: 0,
   },
 
@@ -332,7 +332,7 @@ export const caveCraftWeapons: Record<string, Action> = {
     effects: {
       "weapons.ashen_greatshield": true,
     },
-    executionTime: 60,
+    executionTime: 120,
     cooldown: 0,
   },
 };
