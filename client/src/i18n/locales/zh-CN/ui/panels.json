@@ -11,7 +11,9 @@
     "craftBoneTotem_other": "骨图腾",
     "craftLeatherTotem_one": "皮图腾",
     "craftLeatherTotem_other": "皮图腾",
-    "abortForGold": "花费 {{amount}} 金币中止"
+    "abortForGold": "花费 {{amount}} 金币中止",
+    "craftingBoost": "花费 {{cost}} {{resource}} 加速制作 {{time}}",
+    "craftingBoostFinish": "花费 {{cost}} {{resource}} 完成制作"
   },
   "forest": {
     "sectionSacrifice": "献祭",

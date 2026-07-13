@@ -169,6 +169,7 @@
       "addsConstructionQueueSlot_one": "增加 {{count}} 个建造队列槽位",
       "addsConstructionQueueSlot_other": "增加 {{count}} 个建造队列槽位",
       "constructionBoost": "建造加速：消耗洞见跳过 50% 建造时间（每次建造限用一次）",
+      "craftingBoost": "制作加速：消耗洞见跳过 50% 制作时间（每次制作限用一次）",
       "weaponEnchantment": "武器附魔"
     },
     "obsidianOrbFocusRate": "专注：每15分钟1点",

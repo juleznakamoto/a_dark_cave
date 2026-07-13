@@ -11,7 +11,9 @@
     "craftBoneTotem_other": "Костяные тотемы",
     "craftLeatherTotem_one": "Кожаный тотем",
     "craftLeatherTotem_other": "Кожаные тотемы",
-    "abortForGold": "Прервать за {{amount}} золота"
+    "abortForGold": "Прервать за {{amount}} золота",
+    "craftingBoost": "Ускорить создание на {{time}} за {{cost}} {{resource}}",
+    "craftingBoostFinish": "Завершить создание за {{cost}} {{resource}}"
   },
   "forest": {
     "sectionSacrifice": "Жертва",

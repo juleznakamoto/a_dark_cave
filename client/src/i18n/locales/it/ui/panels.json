@@ -11,7 +11,9 @@
     "craftBoneTotem_one": "Totem d'Ossa",
     "craftBoneTotem_other": "Totem d'Ossa",
     "craftLeatherTotem_one": "Totem di Cuoio",
-    "craftLeatherTotem_other": "Totem di Cuoio"
+    "craftLeatherTotem_other": "Totem di Cuoio",
+    "craftingBoost": "Accelera la fabbricazione di {{time}} per {{cost}} {{resource}}",
+    "craftingBoostFinish": "Completa la fabbricazione per {{cost}} {{resource}}"
   },
   "forest": {
     "sectionSacrifice": "Sacrifica",

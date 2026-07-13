@@ -92,22 +92,26 @@ export function ConstructionBoostBadge({ actionId }: ConstructionBoostBadgeProps
     now,
   );
 
+  const isCraftAction = actionId.startsWith("craft");
   const costTooltip = useMemo(
     () =>
       finishesBuild
-        ? t("village.constructionBoostFinish", {
-          defaultValue: "Finish construction for {{cost}} {{resource}}",
+        ? t(isCraftAction ? "cave.craftingBoostFinish" : "village.constructionBoostFinish", {
+          defaultValue: isCraftAction
+            ? "Finish crafting for {{cost}} {{resource}}"
+            : "Finish construction for {{cost}} {{resource}}",
           cost,
           resource: insightResource,
         })
-        : t("village.constructionBoost", {
-          defaultValue:
-            "Speed up construction by {{time}} for {{cost}} {{resource}}",
+        : t(isCraftAction ? "cave.craftingBoost" : "village.constructionBoost", {
+          defaultValue: isCraftAction
+            ? "Speed up crafting by {{time}} for {{cost}} {{resource}}"
+            : "Speed up construction by {{time}} for {{cost}} {{resource}}",
           time: savedTime,
           cost,
           resource: insightResource,
         }),
-    [t, finishesBuild, savedTime, cost, insightResource],
+    [t, isCraftAction, finishesBuild, savedTime, cost, insightResource],
   );
 
   if (!canShow) return null;

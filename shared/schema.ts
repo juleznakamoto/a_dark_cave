@@ -379,7 +379,7 @@ export const gameStateSchema = z.object({
   constructionQueueSlotsPurchased: z.number().default(0),
   // Legacy: extra queue slots from the removed shop item; grandfathered on load.
   constructionQueueSlotsFromShop: z.number().default(0),
-  // One-time Construction Boost per in-progress build action id.
+  // One-time Construction/Crafting Boost per in-progress build or craft action id.
   constructionBoostsUsed: z.record(z.string(), z.boolean()).default({}),
   // Weapon enchantment levels keyed by weapon id (Tomewarden Academy feature).
   weaponEnchantments: z.record(z.string(), z.number()).default({}),

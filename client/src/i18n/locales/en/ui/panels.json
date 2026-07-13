@@ -11,7 +11,9 @@
     "craftBoneTotem_one": "Bone Totem",
     "craftBoneTotem_other": "Bone Totems",
     "craftLeatherTotem_one": "Leather Totem",
-    "craftLeatherTotem_other": "Leather Totems"
+    "craftLeatherTotem_other": "Leather Totems",
+    "craftingBoost": "Speed up crafting by {{time}} for {{cost}} {{resource}}",
+    "craftingBoostFinish": "Finish crafting for {{cost}} {{resource}}"
   },
   "forest": {
     "sectionSacrifice": "Sacrifice",

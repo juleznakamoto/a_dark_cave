@@ -169,6 +169,7 @@
       "addsConstructionQueueSlot_one": "Fügt {{count}} Bauwarteschlange hinzu",
       "addsConstructionQueueSlot_other": "Fügt {{count}} Bauwarteschlangen hinzu",
       "constructionBoost": "Bau-Boost: Einsicht ausgeben, um 50 % der Bauzeit zu überspringen (einmal pro Bau)",
+      "craftingBoost": "Herstellungs-Boost: Einsicht ausgeben, um 50 % der Herstellungszeit zu überspringen (einmal pro Herstellung)",
       "weaponEnchantment": "Waffenverzauberung"
     },
     "obsidianOrbFocusRate": "Fokus: 1 alle 15 Minuten",

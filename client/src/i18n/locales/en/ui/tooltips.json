@@ -172,6 +172,7 @@
       "addsConstructionQueueSlot_one": "Adds {{count}} construction queue slot",
       "addsConstructionQueueSlot_other": "Adds {{count}} construction queue slots",
       "constructionBoost": "Construction Boost: spend Insight to skip 50% of build time (once per build)",
+      "craftingBoost": "Crafting Boost: spend Insight to skip 50% of craft time (once per craft)",
       "weaponEnchantment": "Weapon Enchantment"
     }
   }

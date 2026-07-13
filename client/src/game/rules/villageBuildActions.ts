@@ -47,6 +47,13 @@ function constructionBoostTooltip(): BuildingTooltipEffect {
   );
 }
 
+function craftingBoostTooltip(): BuildingTooltipEffect {
+  return bt(
+    "craftingBoost",
+    "Crafting Boost: spend Insight to skip 50% of craft time (once per craft)",
+  );
+}
+
 const WATCHTOWER_STATS_BY_LEVEL: Record<
   number,
   { defense: number; attack: number; integrity: number }
@@ -354,7 +361,11 @@ export const villageBuildActions: Record<string, Action> = {
     id: "buildAdvancedBlacksmith",
     label: "Advanced Blacksmith",
     description: "Improved blacksmith with better tools and techniques",
-    tooltipEffects: [bt("unlocksSchematicCrafting", "Unlocks Schematic Crafting"), bt("craftDiscountSpaced", "2.5 % Craft Discount")],
+    tooltipEffects: [
+      bt("unlocksSchematicCrafting", "Unlocks Schematic Crafting"),
+      bt("craftDiscountSpaced", "2.5 % Craft Discount"),
+      craftingBoostTooltip(),
+    ],
     building: true,
     show_when: {
       1: {

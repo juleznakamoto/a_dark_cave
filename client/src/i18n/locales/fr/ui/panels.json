@@ -11,7 +11,9 @@
     "craftBoneTotem_one": "Totem d'os",
     "craftBoneTotem_other": "Totems d'os",
     "craftLeatherTotem_one": "Totem de cuir",
-    "craftLeatherTotem_other": "Totems de cuir"
+    "craftLeatherTotem_other": "Totems de cuir",
+    "craftingBoost": "Accélérer l'artisanat de {{time}} pour {{cost}} {{resource}}",
+    "craftingBoostFinish": "Terminer l'artisanat pour {{cost}} {{resource}}"
   },
   "forest": {
     "sectionSacrifice": "Sacrifice",

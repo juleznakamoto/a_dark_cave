@@ -172,6 +172,7 @@
       "addsConstructionQueueSlot_one": "Adiciona {{count}} vaga na fila de construção",
       "addsConstructionQueueSlot_other": "Adiciona {{count}} vagas na fila de construção",
       "constructionBoost": "Impulso de construção: gaste Perspicácia para pular 50% do tempo de construção (uma vez por construção)",
+      "craftingBoost": "Impulso de fabricação: gaste Perspicácia para pular 50% do tempo de fabricação (uma vez por fabricação)",
       "weaponEnchantment": "Encantamento de armas"
     }
   }

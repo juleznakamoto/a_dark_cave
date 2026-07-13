@@ -22,6 +22,7 @@ import {
   hasFreeQueueSlot,
   isConstructionBoostAvailable,
   isConstructionBoostUnlocked,
+  isCraftingBoostUnlocked,
   isConstructionQueueEnabled,
   isQueueSlotActive,
   isQueueSlotBuildingLocked,
@@ -305,6 +306,67 @@ describe("constructionQueueSlots", () => {
     expect(canBoostConstruction(next as GameState, "buildWoodenHut")).toBe(
       false,
     );
+  });
+
+  it("computes crafting boost cost when Advanced Blacksmith is built", () => {
+    const state = baseState({
+      buildings: {
+        ...baseState().buildings,
+        blacksmith: 1,
+        advancedBlacksmith: 1,
+      } as GameState["buildings"],
+      executionStartTimes: { craftIronSword: Date.now() },
+      executionDurations: { craftIronSword: 360 },
+    });
+    expect(getConstructionBoostReductionSeconds(state, "craftIronSword")).toBe(
+      180,
+    );
+    expect(getConstructionBoostCost(state, "craftIronSword")).toBe(750);
+    expect(isCraftingBoostUnlocked(state)).toBe(true);
+    expect(isConstructionBoostAvailable(state, "craftIronSword")).toBe(true);
+    expect(canBoostConstruction(state, "craftIronSword")).toBe(true);
+  });
+
+  it("boostConstruction works for in-progress craft actions", () => {
+    const startTime = Date.now();
+    useGameStore.getState().initialize(
+      baseState({
+        executionStartTimes: { craftIronSword: startTime },
+        executionDurations: { craftIronSword: 360 },
+        buildings: {
+          ...baseState().buildings,
+          blacksmith: 1,
+          advancedBlacksmith: 1,
+        } as GameState["buildings"],
+        resources: { insight: 1000 } as GameState["resources"],
+      }) as Partial<GameState>,
+    );
+
+    const ok = useGameStore.getState().boostConstruction("craftIronSword");
+    expect(ok).toBe(true);
+
+    const next = useGameStore.getState();
+    expect(next.resources.insight).toBe(250);
+    expect(next.constructionBoostsUsed?.craftIronSword).toBe(true);
+    expect(next.executionStartTimes?.craftIronSword).toBe(
+      startTime - 180 * 1000,
+    );
+    expect(canBoostConstruction(next as GameState, "craftIronSword")).toBe(
+      false,
+    );
+  });
+
+  it("crafting boost stays locked before Advanced Blacksmith", () => {
+    const state = baseState({
+      buildings: {
+        ...baseState().buildings,
+        blacksmith: 1,
+      } as GameState["buildings"],
+      executionStartTimes: { craftIronSword: Date.now() },
+      executionDurations: { craftIronSword: 360 },
+    });
+    expect(isCraftingBoostUnlocked(state)).toBe(false);
+    expect(isConstructionBoostAvailable(state, "craftIronSword")).toBe(false);
   });
 
   it("is disabled when feature flag is off", () => {

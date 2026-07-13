@@ -155,10 +155,11 @@ shared/schema.ts— Zod GameState schema (source of truth for persisted shape)
 - **`constructionQueueSlots.ts`** — parallel construction queue (base 1 slot when enabled; Builder's Lodge/Guild
   unlock 2 extra slots purchasable with Insight = 3 max), build-time/cost reductions from Builder building tiers,
   and Construction Boost (Insight skip 50% of build time). Gated by `flags.constructionQueueEnabled` (set `true` on
-  light fire). Enforced in `canExecuteAction`, `getExecutionTime`, `getTotalBuildingCostReduction`; persisted in
+  light fire). Same boost logic applies to crafting (Insight skip 50% of craft time) when Advanced Blacksmith is built;
+  enforced in `canExecuteAction`, `getExecutionTime`, `getTotalBuildingCostReduction`; persisted in
   `constructionQueueSlotsPurchased` / `constructionBoostsUsed` (`shared/schema.ts`); store methods
   `purchaseConstructionQueueSlot` / `boostConstruction` (`state.ts`); UI queue indicators + `ConstructionBoostBadge`
-  on build buttons in `VillagePanel`.
+  on build buttons in `VillagePanel` and craft buttons in `CavePanel`.
 - **`weaponEnchantments.ts`** — weapon enchantment via Insight, unlocked by Tomewarden Academy
   (`buildings.inkwardenAcademy`). Tiered bow/sword chains: only `blacksteel_bow` / `blacksteel_sword` are
   enchantable; other weapons enchant once (+`1 + floor(stat/10)` Strength/Knowledge each, cost `(added) × 250`);

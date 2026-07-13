@@ -11,7 +11,9 @@
     "craftBoneTotem_other": "Knochentotems", //ok
     "craftLeatherTotem_one": "Ledertotem",
     "craftLeatherTotem_other": "Ledertotems",
-    "abortForGold": "Abbrechen für {{amount}} Gold" //ok
+    "abortForGold": "Abbrechen für {{amount}} Gold", //ok
+    "craftingBoost": "Herstellung um {{time}} für {{cost}} {{resource}} beschleunigen",
+    "craftingBoostFinish": "Herstellung für {{cost}} {{resource}} abschließen"
   },
   "forest": {
     "sectionSacrifice": "Opfer",

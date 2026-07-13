@@ -17,6 +17,8 @@ import CooldownButton, {
 } from "@/components/CooldownButton";
 import { ActionButtonSlot } from "@/components/game/GameActionButtonStack";
 import { ActionInsightBadge } from "@/components/game/ActionInsightBadge";
+import { ConstructionBoostBadge } from "@/components/game/ConstructionBoostBadge";
+import { isConstructionBoostAvailable } from "@/game/constructionQueueSlots";
 import { canRevealEffects } from "@/game/rules/insightReveal";
 import { getCraftItemDescription } from "@/game/rules/craftItemDescription";
 import { getRevealedEffectsForActionTooltip } from "@/game/rules/insightRevealTooltip";
@@ -408,8 +410,10 @@ export default function CavePanel() {
       const isPriorEligible = PRIOR_ELIGIBLE_ACTIONS.has(actionId);
       const needsWrapper = upgradeKey || isPriorEligible;
       const showInsightBadge = canRevealEffects(actionId, state);
+      const showCraftingBoost =
+        isCraftAction && isConstructionBoostAvailable(state, actionId);
       const wrapWithBadges = (inner: React.ReactNode) => {
-        if (!needsWrapper && !showInsightBadge) {
+        if (!needsWrapper && !showInsightBadge && !showCraftingBoost) {
           return (
             <ActionButtonSlot key={actionId}>
               {inner}
@@ -419,6 +423,7 @@ export default function CavePanel() {
         return (
           <ActionButtonSlot key={actionId}>
             {inner}
+            {showCraftingBoost && <ConstructionBoostBadge actionId={actionId} />}
             {upgradeKey && <ButtonLevelBadge upgradeKey={upgradeKey} />}
             {isPriorEligible && <ButtonPriorBadge actionId={actionId} />}
             {showInsightBadge && (
@@ -475,7 +480,9 @@ export default function CavePanel() {
     const isPriorEligible = PRIOR_ELIGIBLE_ACTIONS.has(actionId);
     const needsWrapper = upgradeKey || isPriorEligible;
     const showInsightBadge = canRevealEffects(actionId, state);
-    if (!needsWrapper && !showInsightBadge) {
+    const showCraftingBoost =
+      isCraftAction && isConstructionBoostAvailable(state, actionId);
+    if (!needsWrapper && !showInsightBadge && !showCraftingBoost) {
       return (
         <ActionButtonSlot key={actionId}>
           {button}
@@ -485,6 +492,7 @@ export default function CavePanel() {
     return (
       <ActionButtonSlot key={actionId}>
         {button}
+        {showCraftingBoost && <ConstructionBoostBadge actionId={actionId} />}
         {upgradeKey && <ButtonLevelBadge upgradeKey={upgradeKey} />}
         {isPriorEligible && <ButtonPriorBadge actionId={actionId} />}
         {showInsightBadge && (

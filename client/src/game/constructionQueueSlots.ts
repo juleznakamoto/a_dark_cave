@@ -42,6 +42,16 @@ export function getBuilderLevel(
   return 0;
 }
 
+export function getBlacksmithLevel(
+  state: Pick<GameState, "buildings">,
+): number {
+  const buildings = state.buildings ?? {};
+  if ((buildings.grandBlacksmith ?? 0) >= 1) return 3;
+  if ((buildings.advancedBlacksmith ?? 0) >= 1) return 2;
+  if ((buildings.blacksmith ?? 0) >= 1) return 1;
+  return 0;
+}
+
 /** Highest-tier-only build time reduction (0–0.20). */
 export function getBuilderBuildTimeReduction(level: number): number {
   if (level >= 3) return 0.2;
@@ -316,6 +326,21 @@ export function isConstructionBoostUnlocked(
   return isConstructionQueueEnabled(state) && getBuilderLevel(state) >= 2;
 }
 
+export function isCraftingBoostUnlocked(
+  state: Pick<GameState, "buildings">,
+): boolean {
+  return getBlacksmithLevel(state) >= 2;
+}
+
+function isExecutionBoostUnlockedForAction(
+  state: Pick<GameState, "flags" | "buildings">,
+  actionId: string,
+): boolean {
+  if (actionId.startsWith("build")) return isConstructionBoostUnlocked(state);
+  if (actionId.startsWith("craft")) return isCraftingBoostUnlocked(state);
+  return false;
+}
+
 export function isConstructionBoostUsed(
   state: Pick<GameState, "constructionBoostsUsed">,
   actionId: string,
@@ -384,8 +409,10 @@ export function isConstructionBoostAvailable(
   state: GameState,
   actionId: string,
 ): boolean {
-  if (!isConstructionBoostUnlocked(state)) return false;
-  if (!actionId.startsWith("build")) return false;
+  if (!actionId.startsWith("build") && !actionId.startsWith("craft")) {
+    return false;
+  }
+  if (!isExecutionBoostUnlockedForAction(state, actionId)) return false;
   if (!isBuildActionExecuting(state, actionId)) return false;
   if (isConstructionBoostUsed(state, actionId)) return false;
   if (!isInsightUnlocked(state)) return false;

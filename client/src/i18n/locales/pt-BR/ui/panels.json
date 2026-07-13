@@ -11,7 +11,9 @@
     "craftBoneTotem_one": "Totem de Osso",
     "craftBoneTotem_other": "Totens de Osso",
     "craftLeatherTotem_one": "Totem de Couro",
-    "craftLeatherTotem_other": "Totens de Couro"
+    "craftLeatherTotem_other": "Totens de Couro",
+    "craftingBoost": "Acelerar fabricação em {{time}} por {{cost}} {{resource}}",
+    "craftingBoostFinish": "Concluir fabricação por {{cost}} {{resource}}"
   },
   "forest": {
     "sectionSacrifice": "Sacrificar",

@@ -169,6 +169,7 @@
       "addsConstructionQueueSlot_one": "Añade {{count}} espacio de cola de construcción",
       "addsConstructionQueueSlot_other": "Añade {{count}} espacios de cola de construcción",
       "constructionBoost": "Impulso de construcción: gasta Perspicacia para saltarte el 50 % del tiempo de construcción (una vez por construcción)",
+      "craftingBoost": "Impulso de artesanía: gasta Perspicacia para saltarte el 50 % del tiempo de artesanía (una vez por artesanía)",
       "weaponEnchantment": "Encantamiento de armas"
     },
     "obsidianOrbFocusRate": "Concentración: 1 cada 15 minutos",
