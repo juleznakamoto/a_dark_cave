@@ -420,7 +420,7 @@ describe('Stripe Shop Integration', () => {
     });
 
     describe("Journey-complete Cruel Mode discount", () => {
-      it("should cap cruel_mode checkout at $3.49 when flag is true", async () => {
+      it("should cap cruel_mode checkout at $3.99 when flag is true", async () => {
         mockPaymentIntents.create.mockResolvedValue({
           client_secret: "test_secret",
         } as any);
@@ -440,10 +440,10 @@ describe('Stripe Shop Integration', () => {
 
         expect(mockPaymentIntents.create).toHaveBeenCalledWith(
           expect.objectContaining({
-            amount: 349,
+            amount: 399,
             metadata: expect.objectContaining({
               itemId: "cruel_mode",
-              priceInCents: "349",
+              priceInCents: "399",
               cruelModeJourneyCompleteDiscountApplied: "true",
             }),
           }),
@@ -470,7 +470,7 @@ describe('Stripe Shop Integration', () => {
 
         expect(mockPaymentIntents.create).toHaveBeenCalledWith(
           expect.objectContaining({
-            amount: 349,
+            amount: 399,
             metadata: expect.objectContaining({
               tradersGratitudeDiscountApplied: "true",
               cruelModeJourneyCompleteDiscountApplied: "true",

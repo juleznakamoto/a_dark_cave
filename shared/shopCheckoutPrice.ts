@@ -24,10 +24,10 @@ export const TRADERS_SON_DISCOUNT_PERCENT = Math.round(
 );
 
 /**
- * Checkout price for Cruel Mode when the journey-complete promo is active ($3.49).
+ * Checkout price for Cruel Mode when the journey-complete promo is active ($3.99).
  * Applied after %-discounts (Trader / Son / Playlight) as an extra cap for `cruel_mode` only.
  */
-export const CRUEL_MODE_JOURNEY_COMPLETE_PRICE_CENTS = 349;
+export const CRUEL_MODE_JOURNEY_COMPLETE_PRICE_CENTS = 399;
 
 export type ShopDiscountOptions = {
   playlightFirstPurchase?: boolean;
