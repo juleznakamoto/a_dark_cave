@@ -1052,13 +1052,6 @@ app.post("/api/leaderboard/update-username", leaderboardUpdateLimiter, async (re
             "This unsubscribe link is invalid or has already been used.",
         });
       }
-      if (row.used_at) {
-        return res.json({
-          ok: false,
-          status: "used",
-          message: "This unsubscribe link was already used.",
-        });
-      }
       const exp = new Date(row.expires_at).getTime();
       if (Number.isFinite(exp) && Date.now() > exp) {
         return res.json({
@@ -1068,14 +1061,20 @@ app.post("/api/leaderboard/update-username", leaderboardUpdateLimiter, async (re
         });
       }
 
-      const nowIso = new Date().toISOString();
-      const { error: useErr } = await adminClient
-        .from("marketing_unsubscribe_tokens")
-        .update({ used_at: nowIso })
-        .eq("id", row.id)
-        .is("used_at", null);
-      if (useErr) {
-        throw useErr;
+      // Unsubscribing is idempotent: a still-valid token may be used more than
+      // once (e.g. the same email link clicked again after re-subscribing).
+      // We stamp used_at on first use for auditing but never reject reuse —
+      // this keeps already-sent links working instead of showing "already used".
+      if (!row.used_at) {
+        const nowIso = new Date().toISOString();
+        const { error: useErr } = await adminClient
+          .from("marketing_unsubscribe_tokens")
+          .update({ used_at: nowIso })
+          .eq("id", row.id)
+          .is("used_at", null);
+        if (useErr) {
+          throw useErr;
+        }
       }
 
       await upsertMarketingPreferences(

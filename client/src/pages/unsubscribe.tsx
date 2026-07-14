@@ -1,65 +1,63 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { apiUrl } from "@/lib/apiUrl";
 import { Helmet } from "react-helmet-async";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 
-type UnsubStatus = "loading" | "ok" | "message";
+// "confirm" waits for an explicit click before hitting the server. This is
+// deliberate: email link scanners/prefetchers (Outlook & Defender Safe Links,
+// antivirus, etc.) load the page automatically, so auto-unsubscribing on mount
+// would let them silently unsubscribe people and burn one-time links.
+type UnsubStatus = "confirm" | "loading" | "ok" | "message";
 
 export default function UnsubscribePage() {
-  const [status, setStatus] = useState<UnsubStatus>("loading");
+  const [status, setStatus] = useState<UnsubStatus>("confirm");
   const [message, setMessage] = useState("");
+  const tokenRef = useRef("");
 
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
     const token = params.get("token")?.trim() ?? "";
+    tokenRef.current = token;
 
     if (!token) {
       setStatus("message");
       setMessage(
         "This page needs a valid unsubscribe link from an email we sent you.",
       );
-      return;
     }
-
-    let cancelled = false;
-    (async () => {
-      try {
-        const res = await fetch(apiUrl("/api/marketing/unsubscribe"), {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ token }),
-        });
-        const data = (await res.json()) as {
-          ok?: boolean;
-          message?: string;
-          status?: string;
-        };
-        if (cancelled) return;
-        if (data.ok && data.status === "unsubscribed") {
-          setStatus("ok");
-          setMessage(
-            "You've been unsubscribed from marketing emails.",
-          );
-        } else {
-          setStatus("message");
-          setMessage(
-            typeof data.message === "string" && data.message.length > 0
-              ? data.message
-              : "This link is invalid, expired, or already used.",
-          );
-        }
-      } catch {
-        if (!cancelled) {
-          setStatus("message");
-          setMessage("Something went wrong. Please try again later.");
-        }
-      }
-    })();
-
-    return () => {
-      cancelled = true;
-    };
   }, []);
+
+  const handleUnsubscribe = async () => {
+    const token = tokenRef.current;
+    if (!token || status === "loading") return;
+    setStatus("loading");
+    try {
+      const res = await fetch(apiUrl("/api/marketing/unsubscribe"), {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ token }),
+      });
+      const data = (await res.json()) as {
+        ok?: boolean;
+        message?: string;
+        status?: string;
+      };
+      if (data.ok && data.status === "unsubscribed") {
+        setStatus("ok");
+        setMessage("You've been unsubscribed from marketing emails.");
+      } else {
+        setStatus("message");
+        setMessage(
+          typeof data.message === "string" && data.message.length > 0
+            ? data.message
+            : "This link is invalid or expired.",
+        );
+      }
+    } catch {
+      setStatus("message");
+      setMessage("Something went wrong. Please try again later.");
+    }
+  };
 
   const description =
     status === "loading"
@@ -85,7 +83,21 @@ export default function UnsubscribePage() {
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-6">
-            {status === "loading" ? (
+            {status === "confirm" ? (
+              <>
+                <p className="text-sm text-gray-400">
+                  Click below to stop receiving marketing emails from A Dark
+                  Cave.
+                </p>
+                <button
+                  type="button"
+                  onClick={handleUnsubscribe}
+                  className="inline-block rounded border border-gray-700 bg-gray-800 px-4 py-2 text-sm text-gray-100 hover:bg-gray-700 transition-colors"
+                >
+                  Unsubscribe
+                </button>
+              </>
+            ) : status === "loading" ? (
               <p className="text-sm text-gray-500">Please wait…</p>
             ) : (
               <p
