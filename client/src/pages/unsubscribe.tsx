@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { apiUrl } from "@/lib/apiUrl";
 import { Helmet } from "react-helmet-async";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardDescription, CardHeader } from "@/components/ui/card";
 
 // "confirm" waits for an explicit click before hitting the server. This is
 // deliberate: email link scanners/prefetchers (Outlook & Defender Safe Links,
@@ -64,7 +64,7 @@ export default function UnsubscribePage() {
       ? "Processing your request…"
       : status === "ok"
         ? "You're all set"
-        : "Unsubscribe";
+        : "Unsubscribe from Email Updates";
 
   return (
     <>
@@ -75,10 +75,7 @@ export default function UnsubscribePage() {
       <div className="min-h-screen bg-black text-gray-300 flex flex-col items-center justify-center p-4">
         <Card className="w-full max-w-md bg-gray-900 border-gray-800">
           <CardHeader>
-            <CardTitle className="text-2xl font-light text-gray-100">
-              Email preferences
-            </CardTitle>
-            <CardDescription className="text-gray-400">
+            <CardDescription className="text-2xl font-light text-gray-100">
               {description}
             </CardDescription>
           </CardHeader>
