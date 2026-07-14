@@ -123,7 +123,7 @@ export default function InviteFriendsFloatingButton() {
             </span>
           </button>
         </TooltipWrapper>
-        <div className="absolute top-[-10px] right-[-7px] z-[30] pointer-events-auto">
+        <div className="absolute top-0 right-0 z-[30] pointer-events-auto translate-x-1/2 -translate-y-1/2">
           <button
             type="button"
             className="flex h-4 w-4 items-center justify-center rounded-full bg-red-950 text-white shadow-sm border border-red-800/50 hover:bg-red-900 transition-colors cursor-pointer"
