@@ -34,10 +34,14 @@ marketing/
 scripts/build-marketing-email-social-row.mjs
 scripts/embed-email-hero.mjs
 
-# Email hero only — hosted URL required for Outlook (blocks data: URIs)
+# Email assets — hosted HTTPS URLs required (Outlook blocks data: URIs; Gmail blocks footer data: URIs)
 client/public/email/*
 !client/public/email/
 !client/public/email/steam-announcement-header.jpg
+!client/public/email/icons/
+!client/public/email/icons/steam.png
+!client/public/email/icons/reddit.png
+!client/public/email/icons/instagram.png
 
 # Cursor IDE — local only (MCP keys, rules, hooks, settings)
 .cursor/
