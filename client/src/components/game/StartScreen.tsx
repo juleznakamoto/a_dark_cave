@@ -178,7 +178,7 @@ export default function StartScreen() {
   return (
     <div className="fixed inset-0 bg-black text-white overflow-hidden">
       <Helmet>
-        <title>A Dark Cave</title>
+        <title>{t("seo.title")}</title>
         <meta name="description" content={t("seo.description")} />
         <meta property="og:title" content={t("seo.title")} />
         <meta property="og:description" content={t("seo.description")} />

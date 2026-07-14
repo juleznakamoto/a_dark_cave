@@ -1,11 +1,12 @@
 import { Helmet } from "react-helmet-async";
+import { NOT_FOUND_SEO } from "@shared/publicSeo";
 
 export default function NotFound() {
   return (
     <div className="min-h-screen w-full flex flex-col items-center justify-center bg-black text-gray-300">
       <Helmet>
-        <title>Page Not Found - A Dark Cave</title>
-        <meta name="robots" content="noindex" />
+        <title>{NOT_FOUND_SEO.title}</title>
+        <meta name="robots" content={NOT_FOUND_SEO.robots} />
       </Helmet>
       <h1 className="text-4xl font-light mb-4 text-gray-100">404</h1>
       <p className="text-lg text-gray-400 mb-2">

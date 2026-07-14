@@ -6,6 +6,8 @@ import { createServer as createViteServer, createLogger } from "vite";
 import { type Server } from "http";
 import viteConfig from "../vite.config";
 import { nanoid } from "nanoid";
+import { isStaticAssetPath } from "@shared/publicSeo";
+import { sendSpaIndexHtml } from "./spaHtml";
 
 const viteLogger = createLogger();
 const logger = console;
@@ -123,7 +125,7 @@ export async function setupVite(app: Express, server: Server) {
         `src="/src/main.tsx?v=${nanoid()}"`,
       );
       const page = await vite.transformIndexHtml(url, template);
-      res.status(200).set({ "Content-Type": "text/html" }).end(page);
+      sendSpaIndexHtml(res, page, req.path || "/");
     } catch (e) {
       vite.ssrFixStacktrace(e as Error);
       next(e);
@@ -164,17 +166,11 @@ export function serveStatic(app: Express) {
   // Otherwise missing assets (e.g. old cached HTML after deploy) get HTML → MIME type error.
   app.use("*", (req, res) => {
     const reqPath = req.path || req.originalUrl?.split("?")[0] || "";
-    const isAssetRequest =
-      reqPath.startsWith("/assets/") ||
-      /\.[a-f0-9]{8,}\.(js|css|mjs)$/i.test(reqPath) ||
-      /\.(js|css|mjs|woff2?|ttf|otf|png|jpg|svg|ico|webp)$/i.test(reqPath);
-    if (isAssetRequest) {
+    if (isStaticAssetPath(reqPath)) {
       res.status(404).send("Not found");
       return;
     }
-    res.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
-    res.setHeader("Pragma", "no-cache");
-    res.setHeader("Expires", "0");
-    res.sendFile(path.resolve(distPath, "index.html"));
+    const indexPath = path.resolve(distPath, "index.html");
+    sendSpaIndexHtml(res, fs.readFileSync(indexPath, "utf-8"), reqPath);
   });
 }

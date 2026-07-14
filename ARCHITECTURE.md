@@ -21,7 +21,7 @@ in the client; **Supabase** handles auth/cloud saves and **Stripe** handles paym
 | `client/` | React SPA: UI, game engine, i18n, assets. Vite root. |
 | `electron/` | Steam desktop shell (Electron `main`/`preload` + loopback static server + steamworks.js). See [Steam edition](#steam-edition-electron) below. |
 | `server/` | Express server: API routes, Stripe/referral/marketing, dev Vite middleware, prod static serving. |
-| `shared/` | Cross-cutting TypeScript shared by client + server: Zod schemas, shop/referral pricing, admin dashboard aggregates (`gameCompletionAdminStats.ts`, `socialPromptAdminStats.ts`). |
+| `shared/` | Cross-cutting TypeScript shared by client + server: Zod schemas, shop/referral pricing, admin dashboard aggregates (`gameCompletionAdminStats.ts`, `socialPromptAdminStats.ts`), public SEO route metadata (`publicSeo.ts`). |
 | `supabase/` | SQL migrations + edge function (`functions/save-game/`) for Postgres/RLS. |
 | `scripts/` | Build & i18n tooling — see [Scripts](#scripts-scripts) below. |
 | `services/` | Internal auxiliary services (currently `gender-service/` — first-name gender inference, localhost only). |
@@ -337,7 +337,7 @@ rate-limited `/api/*` routes.
 | `/api/config` | inline | Public Supabase keys |
 | `/api/version` | inline | Deploy build sha + semver (`no-store`; client compares against `__BUILD_SHA__`) |
 
-Support: `server/vite.ts` (dev/prod hosting), `server/supabaseServerClient.ts` (service-role client),
+Support: `server/vite.ts` (dev/prod hosting + SPA fallback with route allowlist/404 and per-route HTML head patching via `server/spaHtml.ts` + `shared/publicSeo.ts`), `server/supabaseServerClient.ts` (service-role client),
 `server/paymentVerifyAuth.ts` (payment-verify session/body user match), `server/stripeFxQuote.ts`,
 `server/stripeWebhook.ts` (`POST /api/payment/webhook`, raw body + `STRIPE_WEBHOOK_SECRET_DEV` / `_PROD`),
 `server/resendContactCsv.ts` (marketing CSV rows + `unsubscribe_url` tokens; `loadResendLegacyCohorts` splits confirmed users into pre-consent / subscribed cohorts, oldest→newest),

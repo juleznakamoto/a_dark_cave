@@ -1,102 +1,105 @@
 import { Helmet } from "react-helmet-async";
+import { getPublicRouteSeo } from "@shared/publicSeo";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
+
+const imprintSeo = getPublicRouteSeo("/imprint")!;
 
 export default function Imprint() {
   return (
     <ScrollArea className="h-screen w-full bg-black">
       <Helmet>
-        <title>Imprint - A Dark Cave</title>
-        <meta name="description" content="Imprint and legal information for A Dark Cave." />
+        <title>{imprintSeo.title}</title>
+        <meta name="description" content={imprintSeo.description} />
         <link rel="canonical" href="https://a-dark-cave.com/imprint" />
       </Helmet>
       <div className="py-12 px-4">
         <div className="max-w-4xl mx-auto space-y-12">
-        <Card className="bg-gray-900 border-gray-800">
-          <CardHeader>
-            <CardTitle className="text-3xl text-white">
-              Impressum / Imprint
-            </CardTitle>
-          </CardHeader>
-          <CardContent className="prose prose-sm prose-invert max-w-none text-white legal-content">
-            <h3>
-              Angaben gemäß § 5 TMG / Information pursuant to § 5 TMG (German
-              Telemedia Act)
-            </h3>
-            <p>
-              <strong>Julian Bauer</strong>
-              <br />
-              Königsberger Straße 1<br />
-              97072
-              <br />
-              Deutschland
-            </p>
+          <Card className="bg-gray-900 border-gray-800">
+            <CardHeader>
+              <CardTitle className="text-3xl text-white">
+                Impressum / Imprint
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="prose prose-sm prose-invert max-w-none text-white legal-content">
+              <h3>
+                Angaben gemäß § 5 TMG / Information pursuant to § 5 TMG (German
+                Telemedia Act)
+              </h3>
+              <p>
+                <strong>Julian Bauer</strong>
+                <br />
+                Königsberger Straße 1<br />
+                97072
+                <br />
+                Deutschland
+              </p>
 
-            <h4>Vertreten durch / Represented by:</h4>
-            <p>Julian Bauer</p>
+              <h4>Vertreten durch / Represented by:</h4>
+              <p>Julian Bauer</p>
 
-            <h4>Kontakt / Contact:</h4>
-            <p>E-Mail: support@a-dark-cave.com</p>
+              <h4>Kontakt / Contact:</h4>
+              <p>E-Mail: support@a-dark-cave.com</p>
 
-            <h4>Umsatzsteuer-ID / VAT ID:</h4>
-            <p>
-              Umsatzsteuer-Identifikationsnummer gemäß § 27 a Umsatzsteuergesetz
-              / Value Added Tax Identification Number pursuant to § 27 a of the
-              German Value Added Tax Act:
-              <br />
-              DE362802949
-            </p>
+              <h4>Umsatzsteuer-ID / VAT ID:</h4>
+              <p>
+                Umsatzsteuer-Identifikationsnummer gemäß § 27 a Umsatzsteuergesetz
+                / Value Added Tax Identification Number pursuant to § 27 a of the
+                German Value Added Tax Act:
+                <br />
+                DE362802949
+              </p>
 
-            <h4>
-              Verantwortlich für den Inhalt nach § 55 Abs. 2 RStV / Responsible
-              for content pursuant to § 55 para. 2 RStV (German Interstate
-              Broadcasting Treaty):
-            </h4>
-            <p>
-              Julian Bauer
-              <br />
-              Königsberger Straße 1<br />
-              97072
-              <br />
-              Deutschland
-            </p>
+              <h4>
+                Verantwortlich für den Inhalt nach § 55 Abs. 2 RStV / Responsible
+                for content pursuant to § 55 para. 2 RStV (German Interstate
+                Broadcasting Treaty):
+              </h4>
+              <p>
+                Julian Bauer
+                <br />
+                Königsberger Straße 1<br />
+                97072
+                <br />
+                Deutschland
+              </p>
 
-            <h4>Streitschlichtung / Dispute Resolution:</h4>
-            <p>
-              Die Europäische Kommission stellt eine Plattform zur
-              Online-Streitbeilegung (OS) bereit:{" "}
-              <a
-                href="https://ec.europa.eu/consumers/odr"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                https://ec.europa.eu/consumers/odr
-              </a>
-              .<br />
-              Unsere E-Mail-Adresse finden Sie oben im Impressum.
-              <br />
-              Wir sind nicht bereit oder verpflichtet, an
-              Streitbeilegungsverfahren vor einer Verbraucherschlichtungsstelle
-              teilzunehmen.
-            </p>
-            <p>
-              The European Commission provides a platform for online dispute
-              resolution (OS):{" "}
-              <a
-                href="https://ec.europa.eu/consumers/odr"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                https://ec.europa.eu/consumers/odr
-              </a>
-              .<br />
-              You can find our email address in the legal notice above.
-              <br />
-              We are not willing or obliged to participate in dispute resolution
-              proceedings before a consumer arbitration board.
-            </p>
-          </CardContent>
-        </Card>
+              <h4>Streitschlichtung / Dispute Resolution:</h4>
+              <p>
+                Die Europäische Kommission stellt eine Plattform zur
+                Online-Streitbeilegung (OS) bereit:{" "}
+                <a
+                  href="https://ec.europa.eu/consumers/odr"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  https://ec.europa.eu/consumers/odr
+                </a>
+                .<br />
+                Unsere E-Mail-Adresse finden Sie oben im Impressum.
+                <br />
+                Wir sind nicht bereit oder verpflichtet, an
+                Streitbeilegungsverfahren vor einer Verbraucherschlichtungsstelle
+                teilzunehmen.
+              </p>
+              <p>
+                The European Commission provides a platform for online dispute
+                resolution (OS):{" "}
+                <a
+                  href="https://ec.europa.eu/consumers/odr"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  https://ec.europa.eu/consumers/odr
+                </a>
+                .<br />
+                You can find our email address in the legal notice above.
+                <br />
+                We are not willing or obliged to participate in dispute resolution
+                proceedings before a consumer arbitration board.
+              </p>
+            </CardContent>
+          </Card>
         </div>
       </div>
       <ScrollBar orientation="vertical" />

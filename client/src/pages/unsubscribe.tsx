@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { apiUrl } from "@/lib/apiUrl";
 import { Helmet } from "react-helmet-async";
+import { getPublicRouteSeo, NOT_FOUND_SEO } from "@shared/publicSeo";
 import { Card, CardContent, CardDescription, CardHeader } from "@/components/ui/card";
 
 // "confirm" waits for an explicit click before hitting the server. This is
@@ -8,6 +9,8 @@ import { Card, CardContent, CardDescription, CardHeader } from "@/components/ui/
 // antivirus, etc.) load the page automatically, so auto-unsubscribing on mount
 // would let them silently unsubscribe people and burn one-time links.
 type UnsubStatus = "confirm" | "loading" | "ok" | "message";
+
+const unsubscribeSeo = getPublicRouteSeo("/unsubscribe")!;
 
 export default function UnsubscribePage() {
   const [status, setStatus] = useState<UnsubStatus>("confirm");
@@ -69,8 +72,8 @@ export default function UnsubscribePage() {
   return (
     <>
       <Helmet>
-        <title>Unsubscribe — A Dark Cave</title>
-        <meta name="robots" content="noindex, nofollow" />
+        <title>{unsubscribeSeo.title}</title>
+        <meta name="robots" content={unsubscribeSeo.robots} />
       </Helmet>
       <div className="min-h-screen bg-black text-gray-300 flex flex-col items-center justify-center p-4">
         <Card className="w-full max-w-md bg-gray-900 border-gray-800">

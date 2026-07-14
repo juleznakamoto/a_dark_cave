@@ -1,13 +1,16 @@
 import { Helmet } from "react-helmet-async";
+import { getPublicRouteSeo } from "@shared/publicSeo";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
+
+const privacySeo = getPublicRouteSeo("/privacy")!;
 
 export default function Privacy() {
   return (
     <ScrollArea className="h-screen w-full bg-black">
       <Helmet>
-        <title>Privacy Policy - A Dark Cave</title>
-        <meta name="description" content="Privacy Policy for A Dark Cave. Learn how we handle your data in our text-based survival and settlement building game." />
+        <title>{privacySeo.title}</title>
+        <meta name="description" content={privacySeo.description} />
         <link rel="canonical" href="https://a-dark-cave.com/privacy" />
       </Helmet>
       <div className="py-12 px-4">
