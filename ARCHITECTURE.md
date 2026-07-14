@@ -68,7 +68,7 @@ in the client; **Supabase** handles auth/cloud saves and **Stripe** handles paym
 | `shared/schema.ts` | Zod `gameStateSchema` / `SaveData` + shared shop constants. |
 | `client/src/components/game/GameContainer.tsx` | Main game UI shell: tabs, panel switching, mounts all dialogs, hotkeys. |
 | `client/src/pages/game.tsx` | Game page init: auth, loop start/stop, payment return handling. |
-| `client/src/i18n/index.ts` | i18next bootstrap (eager-globs locale JSON). |
+| `client/src/i18n/index.ts` | i18next bootstrap (lazy locale shards via `loadLocaleResources.ts`). |
 | `server/index.ts` | Express API + static hosting entry point. |
 
 ---
@@ -196,8 +196,9 @@ shared/schema.ts— Zod GameState schema (source of truth for persisted shape)
 
 ## i18n (`client/src/i18n/`)
 
-- **`index.ts`** — i18next bootstrap; eager `import.meta.glob` of `locales/*/*.json` and
-  `locales/*/ui/*.json`. UI namespace assembled from shards under `locales/{lang}/ui/`.
+- **`index.ts`** — i18next bootstrap; lazy `import.meta.glob` of `locales/*/*.json` and
+  `locales/*/ui/*.json` via **`loadLocaleResources.ts`** (loads English + saved locale at boot;
+  other languages on `changeLanguage`). UI namespace assembled from shards under `locales/{lang}/ui/`.
 - **`locales.ts`** — supported: **en, de, fr, es, it, pt-BR, zh-CN, ru**. Namespaces: `common`, `ui`,
   `shop`, `actions`, `effects`, `events`, `achievements`.
 - **Resolution:** `resolveGameText.ts` (`tWithFallback`, resource/log names), `useUiTranslation.ts`

@@ -2,6 +2,7 @@ import { createRoot } from "react-dom/client";
 import { HelmetProvider } from "react-helmet-async";
 import { I18nextProvider } from "react-i18next";
 import i18n from "./i18n";
+import { ensureInitialLocalesLoaded } from "./i18n/loadLocaleResources";
 import App from "./App";
 import "./index.css";
 import { initTextScaleFromStorage } from "./lib/textScale";
@@ -50,10 +51,12 @@ if (typeof Node === "function" && Node.prototype) {
   } as typeof Node.prototype.insertBefore;
 }
 
-createRoot(document.getElementById("root")!).render(
-  <I18nextProvider i18n={i18n}>
-    <HelmetProvider>
-      <App />
-    </HelmetProvider>
-  </I18nextProvider>,
-);
+void ensureInitialLocalesLoaded().then(() => {
+  createRoot(document.getElementById("root")!).render(
+    <I18nextProvider i18n={i18n}>
+      <HelmetProvider>
+        <App />
+      </HelmetProvider>
+    </I18nextProvider>,
+  );
+});

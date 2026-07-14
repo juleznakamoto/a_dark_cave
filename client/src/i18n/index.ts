@@ -4,48 +4,14 @@ import {
   DEFAULT_LOCALE,
   I18N_NAMESPACES,
   getInitialLocale,
+  isSupportedLocale,
+  normalizeLocale,
   type SupportedLocale,
 } from "./locales";
-import { parseLocaleJson } from "./parseLocaleJson";
-
-const localeModules = import.meta.glob<string>(
-  ["./locales/*/*.json", "./locales/*/ui/*.json"],
-  { eager: true, query: "?raw", import: "default" },
-);
-
-function buildResources(): Record<
-  string,
-  Record<string, Record<string, unknown>>
-> {
-  const resources: Record<string, Record<string, Record<string, unknown>>> = {};
-
-  for (const [path, raw] of Object.entries(localeModules)) {
-    const parsed = parseLocaleJson(raw);
-    const uiShard = path.match(/\.\/locales\/([^/]+)\/ui\/([^/]+)\.json$/);
-    if (uiShard) {
-      const [, locale] = uiShard;
-      resources[locale] ??= {};
-      resources[locale].ui ??= {};
-      Object.assign(resources[locale].ui, parsed);
-      continue;
-    }
-
-    const match = path.match(/\.\/locales\/([^/]+)\/([^/]+)\.json$/);
-    if (!match) continue;
-    const [, locale, namespace] = match;
-    // ui namespace is loaded from ui/*.json shards only (no monolithic ui.json).
-    if (namespace === "ui") continue;
-    resources[locale] ??= {};
-    resources[locale][namespace] = parsed;
-  }
-
-  return resources;
-}
-
-const resources = buildResources();
+import { loadLocaleResources } from "./loadLocaleResources";
 
 void i18n.use(initReactI18next).init({
-  resources,
+  resources: {},
   lng: getInitialLocale(),
   fallbackLng: DEFAULT_LOCALE,
   ns: [...I18N_NAMESPACES],
@@ -56,6 +22,26 @@ void i18n.use(initReactI18next).init({
   returnEmptyString: false,
   returnNull: false,
 });
+
+const nativeChangeLanguage = i18n.changeLanguage.bind(i18n);
+
+async function changeLanguageWithLocaleLoad(
+  lng: string,
+  ...rest: Parameters<typeof nativeChangeLanguage> extends [string, ...infer R]
+    ? R
+    : never
+) {
+  const normalized = normalizeLocale(lng);
+  if (isSupportedLocale(normalized)) {
+    await loadLocaleResources(normalized);
+  }
+  return nativeChangeLanguage(lng, ...rest);
+}
+
+i18n.changeLanguage = ((lng, ...rest) =>
+  typeof lng === "string"
+    ? changeLanguageWithLocaleLoad(lng, ...rest)
+    : nativeChangeLanguage(lng, ...rest)) as typeof i18n.changeLanguage;
 
 if (import.meta.hot) {
   import.meta.hot.on("vite:beforeUpdate", (payload) => {
