@@ -89,7 +89,7 @@ export default function UnsubscribePage() {
                 <button
                   type="button"
                   onClick={handleUnsubscribe}
-                  className="inline-block rounded border border-gray-700 bg-gray-800 px-4 py-2 text-sm text-gray-100 hover:bg-gray-700 transition-colors"
+                  className="block w-fit rounded border border-gray-700 bg-gray-800 px-4 py-2 text-sm text-gray-100 hover:bg-gray-700 transition-colors"
                 >
                   Unsubscribe
                 </button>
