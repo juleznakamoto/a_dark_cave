@@ -4,7 +4,9 @@
  *
  * Marketing CSV includes a per-contact `unsubscribe_url` (Supabase one-time token).
  * In Resend: create a string Contact Property `unsubscribe_url`, map the CSV column,
- * and use `{{{unsubscribe_url}}}` in broadcast HTML — not `{{{RESEND_UNSUBSCRIBE_URL}}}`.
+ * and use `{{{contact.unsubscribe_url}}}` in broadcast HTML — not `{{{RESEND_UNSUBSCRIBE_URL}}}`.
+ * The property must exist before import (Resend drops values for unknown keys);
+ * `syncMarketingContactsToResend` calls `ensureResendUnsubscribeUrlProperty` to guarantee this.
  */
 
 import type { SupabaseClient, User } from "@supabase/supabase-js";

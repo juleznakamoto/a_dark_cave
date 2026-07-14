@@ -7,6 +7,44 @@ import {
 import type { AdminClient } from "./resendContactCsv";
 
 const RESEND_IMPORTS_URL = "https://api.resend.com/contacts/imports";
+const RESEND_CONTACT_PROPERTIES_URL = "https://api.resend.com/contact-properties";
+
+/**
+ * Ensure the `unsubscribe_url` Contact Property exists in Resend.
+ *
+ * Resend only attaches an imported property value if the property key already
+ * exists account-wide (otherwise the column is silently dropped and broadcast
+ * `{{{contact.unsubscribe_url}}}` renders empty). Creating it is idempotent:
+ * an "already exists" conflict is treated as success.
+ */
+export async function ensureResendUnsubscribeUrlProperty(
+  apiKey: string,
+): Promise<void> {
+  const res = await fetch(RESEND_CONTACT_PROPERTIES_URL, {
+    method: "POST",
+    headers: {
+      Authorization: `Bearer ${apiKey}`,
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      key: RESEND_UNSUBSCRIBE_URL_PROPERTY,
+      type: "string",
+    }),
+  });
+  if (res.ok || res.status === 409) return;
+
+  const body = (await res.json().catch(() => ({}))) as {
+    message?: string;
+    error?: string;
+    name?: string;
+  };
+  const detail = body.message ?? body.error ?? body.name ?? "";
+  // Some Resend responses signal a duplicate via message/name rather than 409.
+  if (/already exists|duplicate|conflict/i.test(detail)) return;
+  throw new Error(
+    detail || `Failed to create Resend contact property (${res.status})`,
+  );
+}
 
 export type ResendContactImportStatus = {
   id: string;
@@ -133,6 +171,7 @@ export async function syncMarketingContactsToResend(
   importId: string;
   status?: ResendContactImportStatus;
 }> {
+  await ensureResendUnsubscribeUrlProperty(apiKey);
   const { marketing } = await loadResendContactRowsSplit(admin);
   await attachUnsubscribeUrlsToMarketingRows(admin, marketing);
   const csv = rowsToResendMarketingContactCsv(marketing);
