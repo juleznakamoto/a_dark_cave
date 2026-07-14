@@ -29,5 +29,10 @@ attached_assets/
 # Resend contact exports (PII — never commit)
 exports/
 
+# Resend broadcast HTML, hero assets, and local email build scripts (not in repo)
+marketing/
+client/public/email/
+scripts/build-marketing-email-social-row.mjs
+
 # Cursor IDE — local only (MCP keys, rules, hooks, settings)
 .cursor/
