@@ -2850,6 +2850,36 @@ export const useGameStore = create<GameStore>((set, get) => ({
           ...defaultGameState.villagers,
           ...savedState.villagers,
         },
+        // Item/ownable slices MUST be backfilled from defaults just like resources
+        // above. Otherwise, if a loaded save is missing/empty for one of these keys,
+        // `set(loadedState)` (a shallow merge) leaves the slice at the PREVIOUS store
+        // value — which on the start screen is `createInitialState()` (all-false) —
+        // and the resulting empty/all-false slice gets autosaved, permanently wiping
+        // the player's tools/weapons/books (see mine-area regression).
+        tools: {
+          ...defaultGameState.tools,
+          ...savedState.tools,
+        },
+        weapons: {
+          ...defaultGameState.weapons,
+          ...savedState.weapons,
+        },
+        books: {
+          ...defaultGameState.books,
+          ...savedState.books,
+        },
+        blessings: {
+          ...defaultGameState.blessings,
+          ...savedState.blessings,
+        },
+        schematics: {
+          ...defaultGameState.schematics,
+          ...savedState.schematics,
+        },
+        fellowship: {
+          ...defaultGameState.fellowship,
+          ...savedState.fellowship,
+        },
         revealedEffects: savedState.revealedEffects ?? [],
         buildingDescriptionsRevealed:
           savedState.buildingDescriptionsRevealed ?? false,

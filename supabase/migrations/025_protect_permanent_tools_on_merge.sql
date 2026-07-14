@@ -9,11 +9,19 @@
 -- legacy shallow merge (`existing || diff`) and `jsonb_deep_merge_objects` overwrite each
 -- boolean tool key with the incoming `false`, zeroing out permanent, never-consumed tools.
 --
--- Fix: tools are permanent — no gameplay flow ever sets a tool from true→false (all
--- `"tools.x": false` occurrences in the client are `show_when` visibility gates, not effects).
--- On incremental saves we re-overlay every previously-owned tool on top of the merged state,
--- so a save can only ever ADD tools, never remove them. Game restarts
--- (`p_allow_playtime_overwrite`) are exempt so a fresh game legitimately resets tools.
+-- Fix: tools/weapons/books are permanent — no gameplay flow ever sets one from true→false
+-- (all `"tools.x": false` occurrences in the client are `show_when` visibility gates, not
+-- effects). On incremental saves we re-overlay every previously-owned item of these slices on
+-- top of the merged state, so a save can only ever ADD them, never remove them. Game restarts
+-- (`p_allow_playtime_overwrite`) are exempt so a fresh game legitimately resets these slices.
+-- `clothing`/`relics` are excluded because they can be legitimately lost/consumed.
+--
+-- Root cause (client): the store `loadGame` (used by the start-screen / post-sign-in paths)
+-- rebuilt state with a shallow `set()` that backfilled resources/villagers/relics/clothing from
+-- defaults but NOT tools/weapons/books. When a loaded save was missing/empty for one of those
+-- keys, the slice was left at the previous store value — `createInitialState()` (all-false) on
+-- the start screen — and that all-false slice was then autosaved. Fixed in
+-- client/src/game/state.ts by backfilling every item slice from defaults on load.
 
 CREATE OR REPLACE FUNCTION save_game_with_analytics(
   p_game_state_diff JSONB,
@@ -40,7 +48,8 @@ DECLARE
   v_playtime_key TEXT;
   v_existing_playtime NUMERIC;
   v_new_playtime NUMERIC;
-  v_owned_tools JSONB;
+  v_slice TEXT;
+  v_owned_items JSONB;
 BEGIN
   -- Get authenticated user ID from JWT context
   v_user_id := auth.uid();
@@ -85,28 +94,37 @@ BEGIN
     v_merged_state := p_game_state_diff;
   END IF;
 
-  -- ========== PERMANENT-TOOL PROTECTION ==========
-  -- Tools are permanent and never consumed in normal play. An incremental save must never
-  -- unset an owned tool, so re-overlay every previously-owned tool onto the merged state.
-  -- (Skipped on restart, where a fresh game legitimately clears tools.)
-  IF v_existing_state IS NOT NULL AND NOT p_allow_playtime_overwrite
-     AND v_existing_state ? 'tools' AND jsonb_typeof(v_existing_state->'tools') = 'object'
-  THEN
-    SELECT COALESCE(jsonb_object_agg(e.key, 'true'::jsonb), '{}'::jsonb)
-      INTO v_owned_tools
-    FROM jsonb_each(v_existing_state->'tools') AS e
-    WHERE e.value::text = 'true';
+  -- ========== PERMANENT-ITEM PROTECTION ==========
+  -- Tools, weapons and books are permanent and never consumed in normal play. An incremental
+  -- save must never unset an owned one, so re-overlay every previously-owned item of these
+  -- slices onto the merged state (a save can only ever ADD, never remove them).
+  -- (Skipped on restart, where a fresh game legitimately clears these slices.)
+  --
+  -- NOTE: `clothing` and `relics` are intentionally NOT protected here — those CAN be
+  -- legitimately lost/consumed (e.g. sacrifices, event costs), so guarding them would
+  -- prevent valid downgrades.
+  IF v_existing_state IS NOT NULL AND NOT p_allow_playtime_overwrite THEN
+    FOREACH v_slice IN ARRAY ARRAY['tools', 'weapons', 'books'] LOOP
+      IF v_existing_state ? v_slice
+         AND jsonb_typeof(v_existing_state->v_slice) = 'object'
+      THEN
+        SELECT COALESCE(jsonb_object_agg(e.key, 'true'::jsonb), '{}'::jsonb)
+          INTO v_owned_items
+        FROM jsonb_each(v_existing_state->v_slice) AS e
+        WHERE e.value::text = 'true';
 
-    IF v_owned_tools <> '{}'::jsonb THEN
-      v_merged_state := jsonb_set(
-        v_merged_state,
-        ARRAY['tools'],
-        COALESCE(v_merged_state->'tools', '{}'::jsonb) || v_owned_tools,
-        true
-      );
-    END IF;
+        IF v_owned_items <> '{}'::jsonb THEN
+          v_merged_state := jsonb_set(
+            v_merged_state,
+            ARRAY[v_slice],
+            COALESCE(v_merged_state->v_slice, '{}'::jsonb) || v_owned_items,
+            true
+          );
+        END IF;
+      END IF;
+    END LOOP;
   END IF;
-  -- ========== END PERMANENT-TOOL PROTECTION ==========
+  -- ========== END PERMANENT-ITEM PROTECTION ==========
 
   -- ========== RESOURCE MANIPULATION PREVENTION ==========
   -- Validates that resource values in the merged state are within allowed bounds.
@@ -366,7 +384,7 @@ END;
 $$;
 
 COMMENT ON FUNCTION save_game_with_analytics(JSONB, JSONB, JSONB, BOOLEAN, BOOLEAN) IS
-  'Incremental cloud save with deep-merge + permanent-tool protection (tools can only be added, never removed, on incremental saves).';
+  'Incremental cloud save with deep-merge + permanent-item protection (tools/weapons/books can only be added, never removed, on incremental saves).';
 
 -- Drop unused legacy overloads so the client can never hit a version without deep-merge /
 -- tool protection. The current edge function (supabase/functions/save-game/index.ts) calls
