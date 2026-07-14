@@ -27,6 +27,7 @@ import {
   applySaveBoost,
   canApplySaveBoost,
 } from "@/game/boost";
+import { HARD_RELOAD_CACHE_BUST_PARAM } from "@/lib/hardReload";
 
 export default function Game() {
   const initialize = useGameStore((state) => state.initialize);
@@ -70,6 +71,15 @@ export default function Game() {
         if (isEmailConfirmed) {
           logger.log("[GAME PAGE] Email confirmation callback detected");
           searchParams.delete("email_confirmed");
+          const newUrl = window.location.pathname +
+            (searchParams.toString() ? `?${searchParams.toString()}` : "") +
+            window.location.hash;
+          window.history.replaceState({}, document.title, newUrl);
+        }
+
+        // Strip cache-bust param left by hardReload after an app update.
+        if (searchParams.has(HARD_RELOAD_CACHE_BUST_PARAM)) {
+          searchParams.delete(HARD_RELOAD_CACHE_BUST_PARAM);
           const newUrl = window.location.pathname +
             (searchParams.toString() ? `?${searchParams.toString()}` : "") +
             window.location.hash;

@@ -52,6 +52,8 @@ import { ProfileMenuProvider } from "./ProfileMenu";
 import { logger } from "@/lib/logger";
 import { Z_INDEX } from "@/lib/z-index";
 import { toast } from "@/hooks/use-toast";
+import { startVersionCheck, stopVersionCheck } from "@/game/versionCheck";
+import { hardReload } from "@/lib/hardReload";
 import MistBackground from "@/components/ui/mist-background";
 import { SmokeBackground } from "@/components/ui/spooky-smoke-animation";
 import { isBloodMoonOverlayVisible, BLOOD_MOON_OVERLAY_FADE_MS } from "@/game/bloodMoonOverlay";
@@ -274,6 +276,47 @@ export default function GameContainer() {
       setVillageHotkeyTutorialOpen(true);
     }
   }, [flags.gameStarted, flags.villageUnlocked, villageHotkeyTutorialShown]);
+
+  // Prompt for a hard refresh when a new build is deployed while the tab stays open.
+  useEffect(() => {
+    const showUpdateToast = toast;
+    let updatePending = false;
+
+    const handleVisibilityReload = () => {
+      if (updatePending && document.visibilityState === "visible") {
+        void hardReload();
+      }
+    };
+    document.addEventListener("visibilitychange", handleVisibilityReload);
+
+    startVersionCheck(async () => {
+      try {
+        const { saveGame } = await import("@/game/save");
+        const state = useGameStore.getState();
+        await saveGame(state, false);
+        updatePending = true;
+        showUpdateToast({
+          title: i18n.t("versionUpdate.title", { ns: "ui" }),
+          description: i18n.t("versionUpdate.description", { ns: "ui" }),
+          variant: "default",
+          duration: Infinity,
+          action: {
+            label: i18n.t("versionUpdate.refresh", { ns: "ui" }),
+            onClick: () => {
+              void hardReload();
+            },
+          },
+        });
+      } catch (error) {
+        logger.error("[VERSION] Error showing update toast:", error);
+      }
+    });
+
+    return () => {
+      document.removeEventListener("visibilitychange", handleVisibilityReload);
+      stopVersionCheck();
+    };
+  }, []);
 
   // Ensure cave tab is ALWAYS active if no valid tab is selected
   useEffect(() => {

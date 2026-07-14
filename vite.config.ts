@@ -1,8 +1,24 @@
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
 import path from "path";
+import { execSync } from "node:child_process";
 import runtimeErrorOverlay from "@replit/vite-plugin-runtime-error-modal";
 import { compression } from "vite-plugin-compression2";
+
+/** Baked into the client bundle; compared against `/api/version` at runtime. */
+function resolveBuildSha(): string {
+  const envSha =
+    process.env.GIT_COMMIT_SHA ||
+    process.env.GITHUB_SHA ||
+    process.env.VERCEL_GIT_COMMIT_SHA ||
+    process.env.RAILWAY_GIT_COMMIT_SHA;
+  if (envSha && envSha.trim()) return envSha.trim();
+  try {
+    return execSync("git rev-parse HEAD", { encoding: "utf-8" }).trim() || "dev";
+  } catch {
+    return "dev";
+  }
+}
 
 const isSteamBuild = process.env.VITE_STEAM_BUILD === "1";
 const clientRoot = path.resolve(import.meta.dirname, "client");
@@ -23,6 +39,7 @@ export default defineConfig({
   ],
   define: {
     __BUILD_TIME__: JSON.stringify(new Date().toISOString()),
+    __BUILD_SHA__: JSON.stringify(resolveBuildSha()),
   },
   resolve: {
     alias: {
