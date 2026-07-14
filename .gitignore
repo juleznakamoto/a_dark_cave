@@ -29,8 +29,5 @@ attached_assets/
 # Resend contact exports (PII — never commit)
 exports/
 
-# Local cache for the ARCHITECTURE.md sync hook
-.cursor/.architecture-manifest.json
-
-# MCP secrets (API keys, project refs) — copy from mcp.json.example
-.cursor/mcp.json
+# Cursor IDE — local only (MCP keys, rules, hooks, settings)
+.cursor/
