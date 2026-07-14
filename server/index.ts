@@ -22,6 +22,7 @@ import {
   RESEND_MARKETING_CSV_FILENAME,
   RESEND_NO_MARKETING_CSV_FILENAME,
 } from "./resendContactCsv";
+import { syncMarketingContactsToResend } from "./resendContactSync";
 import { Filter } from "bad-words";
 
 // Supabase config endpoint for production
@@ -1312,6 +1313,48 @@ app.post("/api/leaderboard/update-username", leaderboardUpdateLimiter, async (re
       log("❌ /api/admin/resend-contact-csv failed:", error);
       return res.status(500).json({
         error: error?.message ?? "Export failed",
+      });
+    }
+  });
+
+  /**
+   * Production-only: import marketing opt-in contacts into Resend via Contacts Import API.
+   */
+  app.post("/api/admin/resend-sync-marketing-contacts", async (req, res) => {
+    try {
+      const sessionUser = await getSessionUserFromBearer(req);
+      if (!sessionUser?.email) {
+        return res.status(401).json({ error: "Authorization required" });
+      }
+      if (!isConfiguredAdminEmail(sessionUser.email)) {
+        return res.status(403).json({ error: "Forbidden" });
+      }
+
+      const apiKey =
+        process.env.RESEND_API_KEY_PROD?.trim() ||
+        process.env.RESEND_API_KEY?.trim();
+      if (!apiKey) {
+        return res.status(500).json({ error: "RESEND_API_KEY_PROD is not configured" });
+      }
+
+      const adminClient = getAdminClient("prod");
+      const wait = req.query.wait !== "0";
+      const result = await syncMarketingContactsToResend(adminClient, apiKey, {
+        wait,
+      });
+
+      log(
+        `📧 Resend marketing sync: ${result.contactCount} contacts, import=${result.importId}, admin=${sessionUser.email}`,
+      );
+      return res.status(200).json({
+        contactCount: result.contactCount,
+        importId: result.importId,
+        status: result.status ?? null,
+      });
+    } catch (error: any) {
+      log("❌ /api/admin/resend-sync-marketing-contacts failed:", error);
+      return res.status(500).json({
+        error: error?.message ?? "Resend sync failed",
       });
     }
   });

@@ -66,6 +66,8 @@ interface OverviewTabProps {
   showResendCsvExport?: boolean;
   resendCsvBusy?: null | "marketing" | "no-marketing";
   onResendCsvDownload?: (file: "marketing" | "no-marketing") => void | Promise<void>;
+  resendSyncBusy?: boolean;
+  onResendSyncMarketing?: () => void | Promise<void>;
 }
 
 export default function OverviewTab(props: OverviewTabProps) {
@@ -104,6 +106,8 @@ export default function OverviewTab(props: OverviewTabProps) {
     showResendCsvExport,
     resendCsvBusy,
     onResendCsvDownload,
+    resendSyncBusy,
+    onResendSyncMarketing,
   } = props;
 
   const [sessionData, setSessionData] = useState<SessionStats[]>([]);
@@ -362,26 +366,36 @@ export default function OverviewTab(props: OverviewTabProps) {
       {showResendCsvExport && onResendCsvDownload ? (
         <Card>
           <CardHeader>
-            <CardTitle>Resend contact export (production)</CardTitle>
+            <CardTitle>Resend contacts (production)</CardTitle>
             <CardDescription>
-              Download CSV for{" "}
+              Sync marketing opt-in users directly to Resend, or download CSV for manual import in{" "}
               <a
                 className="underline text-primary"
                 href="https://resend.com/docs/dashboard/audiences/contacts"
                 target="_blank"
                 rel="noopener noreferrer"
               >
-                Resend Audience → Import CSV
+                Resend Audience
               </a>
-              . Files are generated in memory and saved only to your device — nothing is written
-              to the server disk or repo.
+              . Nothing is written to the server disk or repo.
             </CardDescription>
           </CardHeader>
-          <CardContent className="flex flex-col sm:flex-row gap-3">
+          <CardContent className="flex flex-col sm:flex-row flex-wrap gap-3">
+            {onResendSyncMarketing ? (
+              <Button
+                type="button"
+                disabled={!!resendCsvBusy || !!resendSyncBusy}
+                onClick={() => onResendSyncMarketing()}
+              >
+                {resendSyncBusy
+                  ? "Syncing to Resend…"
+                  : "Sync marketing opt-in to Resend"}
+              </Button>
+            ) : null}
             <Button
               type="button"
               variant="secondary"
-              disabled={!!resendCsvBusy}
+              disabled={!!resendCsvBusy || !!resendSyncBusy}
               onClick={() => onResendCsvDownload("marketing")}
             >
               {resendCsvBusy === "marketing"
@@ -391,7 +405,7 @@ export default function OverviewTab(props: OverviewTabProps) {
             <Button
               type="button"
               variant="secondary"
-              disabled={!!resendCsvBusy}
+              disabled={!!resendCsvBusy || !!resendSyncBusy}
               onClick={() => onResendCsvDownload("no-marketing")}
             >
               {resendCsvBusy === "no-marketing"

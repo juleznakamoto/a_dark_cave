@@ -223,12 +223,14 @@ run ad hoc for locale maintenance.
 | `i18n:verify` | `list-unmigrated-events.mjs`, `check-event-coverage.mjs`, `audit-i18n-ui.mjs`, `audit-locale-length.mjs` | CI-style i18n parity checks (+ Vitest i18n tests). |
 | `i18n:sync` | `sync-locale-keys.mjs`, `fill-identical-locale-strings.mjs` | Align locale key sets across languages. |
 | `export:resend-csvs` | `export-resend-contact-csvs.ts` | Marketing contact CSV export (uses gender proxy). |
+| `sync:resend-marketing` | `sync-resend-marketing-contacts.ts` | Push marketing opt-in contacts to Resend via Contacts Import API (with `unsubscribe_url` tokens). |
 | `test:gender` | `test-gender-service.js` | Smoke-test `services/gender-service/`. |
 
 Support modules (not always npm-wired): `locale-catalog.mjs`, `parse-locale-json.mjs`,
 `i18n-ui-shards.mjs`, `audit-locale-translations.mjs`, `audit-timed-tab-i18n.mjs`,
 `apply-*-fix-translations.mjs`, `apply-cube-translations.mjs`, `restore-ok-comments.mjs`,
-`fix-es-locale-encoding.mjs`, plus `*-fix-translations.json` / `cube-events-translations.json`
+`fix-es-locale-encoding.mjs`, `sync-resend-marketing-contacts.mjs` (ad hoc Resend import from MCP SQL export),
+plus `*-fix-translations.json` / `cube-events-translations.json`
 data files for batch locale fixes.
 
 ---
@@ -327,13 +329,14 @@ rate-limited `/api/*` routes.
 | `/api/marketing/*` | `marketing.ts` | Email prefs, unsubscribe |
 | `/api/leaderboard/*`, `/api/account/*`, `/api/session/ping` | inline + Supabase | Leaderboard, account deletion, session heartbeat |
 | `/api/gender` | proxies `services/gender-service/app.py` | First-name gender for marketing CSVs |
-| `/api/admin/*` | inline + `server/adminDashboardData.ts` | Admin dashboard: split endpoints (`metrics`, `dau`, `saves`, `clicks`, `purchases`); saves return slim `game_state` projection |
+| `/api/admin/*` | inline + `server/adminDashboardData.ts` | Admin dashboard: split endpoints (`metrics`, `dau`, `saves`, `clicks`, `purchases`); Resend marketing CSV download + sync; saves return slim `game_state` projection |
 | `/api/config` | inline | Public Supabase keys |
 
 Support: `server/vite.ts` (dev/prod hosting), `server/supabaseServerClient.ts` (service-role client),
 `server/paymentVerifyAuth.ts` (payment-verify session/body user match), `server/stripeFxQuote.ts`,
 `server/stripeWebhook.ts` (`POST /api/payment/webhook`, raw body + `STRIPE_WEBHOOK_SECRET_DEV` / `_PROD`),
-`server/resendContactCsv.ts`.
+`server/resendContactCsv.ts` (marketing audience CSV rows + `unsubscribe_url` tokens),
+`server/resendContactSync.ts` (Resend Contacts Import API upload for admin sync / CLI).
 
 ---
 

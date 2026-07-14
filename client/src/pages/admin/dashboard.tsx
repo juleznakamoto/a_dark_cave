@@ -173,6 +173,7 @@ export default function AdminDashboard() {
   const [resendCsvBusy, setResendCsvBusy] = useState<
     null | "marketing" | "no-marketing"
   >(null);
+  const [resendSyncBusy, setResendSyncBusy] = useState(false);
 
   const [selectedButtons, setSelectedButtons] = useState<Set<string>>(
     new Set(["mine", "hunt", "chopWood", "caveExplore"]),
@@ -1061,6 +1062,40 @@ export default function AdminDashboard() {
     [environment],
   );
 
+  const syncResendMarketingContacts = useCallback(async () => {
+    if (environment !== "prod") return;
+    setResendSyncBusy(true);
+    try {
+      const supabase = await getSupabaseClient();
+      const {
+        data: { session },
+      } = await supabase.auth.getSession();
+      if (!session?.access_token) {
+        logger.error("Resend sync: no session");
+        return;
+      }
+      const res = await fetch("/api/admin/resend-sync-marketing-contacts", {
+        method: "POST",
+        headers: { Authorization: `Bearer ${session.access_token}` },
+      });
+      const body = (await res.json()) as {
+        error?: string;
+        contactCount?: number;
+        importId?: string;
+        status?: { imported_contacts?: number; failed_contacts?: number };
+      };
+      if (!res.ok) {
+        logger.error("Resend sync failed:", res.status, body.error ?? body);
+        return;
+      }
+      logger.log(
+        `Resend sync queued ${body.contactCount ?? 0} contacts (import ${body.importId ?? "?"})`,
+      );
+    } finally {
+      setResendSyncBusy(false);
+    }
+  }, [environment]);
+
   const formatTime = (minutes: number) => {
     const hours = Math.floor(minutes / 60);
     const mins = minutes % 60;
@@ -1384,6 +1419,8 @@ export default function AdminDashboard() {
                     showResendCsvExport={environment === "prod"}
                     resendCsvBusy={resendCsvBusy}
                     onResendCsvDownload={downloadResendProdCsv}
+                    resendSyncBusy={resendSyncBusy}
+                    onResendSyncMarketing={syncResendMarketingContacts}
                   />,
                 )}
               </TabsContent>
