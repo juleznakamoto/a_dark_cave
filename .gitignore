@@ -31,3 +31,6 @@ exports/
 
 # Local cache for the ARCHITECTURE.md sync hook
 .cursor/.architecture-manifest.json
+
+# MCP secrets (API keys, project refs) — copy from mcp.json.example
+.cursor/mcp.json
