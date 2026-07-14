@@ -29,10 +29,15 @@ attached_assets/
 # Resend contact exports (PII — never commit)
 exports/
 
-# Resend broadcast HTML, hero assets, and local email build scripts (not in repo)
+# Resend broadcast HTML and local email build scripts (not in repo)
 marketing/
-client/public/email/
 scripts/build-marketing-email-social-row.mjs
+scripts/embed-email-hero.mjs
+
+# Email hero only — hosted URL required for Outlook (blocks data: URIs)
+client/public/email/*
+!client/public/email/
+!client/public/email/steam-announcement-header.jpg
 
 # Cursor IDE — local only (MCP keys, rules, hooks, settings)
 .cursor/
