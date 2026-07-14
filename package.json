@@ -31,7 +31,8 @@
     "i18n:verify": "node scripts/list-unmigrated-events.mjs && node scripts/check-event-coverage.mjs && node scripts/audit-i18n-ui.mjs && node scripts/audit-locale-length.mjs --check && vitest run client/src/i18n/",
     "i18n:sync": "node scripts/sync-locale-keys.mjs && node scripts/fill-identical-locale-strings.mjs && node scripts/audit-locale-length.mjs --write",
     "export:resend-csvs": "tsx scripts/export-resend-contact-csvs.ts",
-    "sync:resend-marketing": "tsx scripts/sync-resend-marketing-contacts.ts"
+    "sync:resend-marketing": "tsx scripts/sync-resend-marketing-contacts.ts",
+    "import:resend-legacy-segments": "tsx scripts/import-legacy-resend-segments.ts"
   },
   "dependencies": {
     "@radix-ui/react-checkbox": "^1.1.5",

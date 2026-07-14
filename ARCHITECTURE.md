@@ -225,7 +225,7 @@ run ad hoc for locale maintenance.
 | `i18n:sync` | `sync-locale-keys.mjs`, `fill-identical-locale-strings.mjs` | Align locale key sets across languages. |
 | `export:resend-csvs` | `export-resend-contact-csvs.ts` | Marketing contact CSV export (uses gender proxy). |
 | `sync:resend-marketing` | `sync-resend-marketing-contacts.ts` | Push marketing opt-in contacts to Resend via Contacts Import API (with `unsubscribe_url` tokens). |
-| _(run ad hoc)_ | `import-legacy-resend-segments.ts` | One-time import of two legacy cohorts into Resend **Segments** (oldest→newest): pre-consent users (no `marketing_preferences` row) and currently-subscribed users. Shares env with `resendScriptEnv.ts`. |
+| `import:resend-legacy-segments` | `import-legacy-resend-segments.ts` | One-time import of two legacy cohorts into Resend **Segments** (oldest→newest): pre-consent users (no `marketing_preferences` row) and currently-subscribed users. Shares env with `resendScriptEnv.ts`. |
 | `test:gender` | `test-gender-service.js` | Smoke-test `services/gender-service/`. |
 
 Support modules (not always npm-wired): `write-build-meta.mjs` (git HEAD → `dist/build-meta.json` after client build), `locale-catalog.mjs`, `parse-locale-json.mjs`,
