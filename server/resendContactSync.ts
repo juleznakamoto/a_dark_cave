@@ -4,10 +4,69 @@ import {
   RESEND_UNSUBSCRIBE_URL_PROPERTY,
   rowsToResendMarketingContactCsv,
 } from "./resendContactCsv";
-import type { AdminClient } from "./resendContactCsv";
+import type { AdminClient, ResendMarketingContactRow } from "./resendContactCsv";
 
 const RESEND_IMPORTS_URL = "https://api.resend.com/contacts/imports";
 const RESEND_CONTACT_PROPERTIES_URL = "https://api.resend.com/contact-properties";
+const RESEND_SEGMENTS_URL = "https://api.resend.com/segments";
+
+export type ResendSegment = { id: string; name: string };
+
+/** List all Resend segments (used for idempotent find-or-create by name). */
+export async function listResendSegments(apiKey: string): Promise<ResendSegment[]> {
+  const res = await fetch(RESEND_SEGMENTS_URL, {
+    headers: { Authorization: `Bearer ${apiKey}` },
+  });
+  const body = (await res.json().catch(() => ({}))) as {
+    data?: ResendSegment[];
+    message?: string;
+    error?: string;
+  };
+  if (!res.ok) {
+    throw new Error(
+      body.message ?? body.error ?? `Resend list segments failed (${res.status})`,
+    );
+  }
+  return body.data ?? [];
+}
+
+/** Create a Resend segment, returning its id. */
+export async function createResendSegment(
+  name: string,
+  apiKey: string,
+): Promise<string> {
+  const res = await fetch(RESEND_SEGMENTS_URL, {
+    method: "POST",
+    headers: {
+      Authorization: `Bearer ${apiKey}`,
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ name }),
+  });
+  const body = (await res.json().catch(() => ({}))) as {
+    id?: string;
+    message?: string;
+    error?: string;
+  };
+  if (!res.ok || !body.id?.trim()) {
+    throw new Error(
+      body.message ?? body.error ?? `Resend create segment failed (${res.status})`,
+    );
+  }
+  return body.id;
+}
+
+/** Reuse an existing segment with the same name, else create it. */
+export async function findOrCreateResendSegment(
+  name: string,
+  apiKey: string,
+): Promise<{ id: string; created: boolean }> {
+  const existing = (await listResendSegments(apiKey)).find(
+    (s) => s.name.trim().toLowerCase() === name.trim().toLowerCase(),
+  );
+  if (existing) return { id: existing.id, created: false };
+  return { id: await createResendSegment(name, apiKey), created: true };
+}
 
 /**
  * Ensure the `unsubscribe_url` Contact Property exists in Resend.
@@ -82,7 +141,7 @@ function marketingImportColumnMap(includeUnsubscribeUrl: boolean): string {
 export async function createResendMarketingContactImport(
   csv: string,
   apiKey: string,
-  options: { includeUnsubscribeUrl?: boolean } = {},
+  options: { includeUnsubscribeUrl?: boolean; segmentIds?: string[] } = {},
 ): Promise<{ importId: string }> {
   const includeUnsubscribeUrl = options.includeUnsubscribeUrl !== false;
   const form = new FormData();
@@ -93,6 +152,12 @@ export async function createResendMarketingContactImport(
   );
   form.append("column_map", marketingImportColumnMap(includeUnsubscribeUrl));
   form.append("on_conflict", "upsert");
+  if (options.segmentIds?.length) {
+    form.append(
+      "segments",
+      JSON.stringify(options.segmentIds.map((id) => ({ id }))),
+    );
+  }
 
   const res = await fetch(RESEND_IMPORTS_URL, {
     method: "POST",
@@ -160,6 +225,43 @@ export async function waitForResendContactImport(
     }
     await new Promise((resolve) => setTimeout(resolve, pollMs));
   }
+}
+
+/**
+ * Import a pre-built set of marketing rows into a specific Resend segment.
+ *
+ * Rows must already be ordered as desired (the import preserves CSV row order).
+ * Each row is given a fresh Supabase unsubscribe token so broadcasts can render
+ * `{{{contact.unsubscribe_url}}}`. `on_conflict=upsert` makes re-runs safe.
+ */
+export async function importMarketingRowsToResendSegment(
+  admin: AdminClient,
+  apiKey: string,
+  rows: ResendMarketingContactRow[],
+  segmentId: string,
+  options: { wait?: boolean } = {},
+): Promise<{
+  contactCount: number;
+  importId: string;
+  status?: ResendContactImportStatus;
+}> {
+  await ensureResendUnsubscribeUrlProperty(apiKey);
+  await attachUnsubscribeUrlsToMarketingRows(admin, rows);
+  const csv = rowsToResendMarketingContactCsv(rows);
+  const { importId } = await createResendMarketingContactImport(csv, apiKey, {
+    segmentIds: [segmentId],
+  });
+  if (!options.wait) {
+    return { contactCount: rows.length, importId };
+  }
+  const status = await waitForResendContactImport(importId, apiKey);
+  if ((status.status ?? "").toLowerCase() === "failed") {
+    throw new Error(
+      status.error ??
+      `Resend import ${importId} failed (${status.failed_contacts ?? 0} failed)`,
+    );
+  }
+  return { contactCount: rows.length, importId, status };
 }
 
 export async function syncMarketingContactsToResend(

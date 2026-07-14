@@ -25,23 +25,7 @@ import {
   RESEND_MARKETING_CSV_FILENAME,
   RESEND_NO_MARKETING_CSV_FILENAME,
 } from "../server/resendContactCsv";
-
-function getSupabaseConfig(): { url: string; serviceKey: string } {
-  const dev = process.env.NODE_ENV === "development";
-  const url = dev
-    ? process.env.VITE_SUPABASE_URL_DEV
-    : process.env.VITE_SUPABASE_URL_PROD;
-  const serviceKey = dev
-    ? process.env.SUPABASE_SERVICE_ROLE_KEY_DEV
-    : process.env.SUPABASE_SERVICE_ROLE_KEY_PROD;
-  if (!url?.trim() || !serviceKey?.trim()) {
-    const which = dev ? "DEV" : "PROD";
-    throw new Error(
-      `Missing VITE_SUPABASE_URL_${which} or SUPABASE_SERVICE_ROLE_KEY_${which} (NODE_ENV=${process.env.NODE_ENV ?? "undefined"})`,
-    );
-  }
-  return { url: url.trim(), serviceKey: serviceKey.trim() };
-}
+import { getSupabaseConfig } from "./resendScriptEnv";
 
 function parseArgs(): { outDir: string; dryRun: boolean } {
   const argv = process.argv.slice(2);

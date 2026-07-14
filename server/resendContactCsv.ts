@@ -22,7 +22,7 @@ export const RESEND_NO_MARKETING_CSV_FILENAME = "resend-no-marketing.csv";
 /** Resend Contact Property key for Supabase unsubscribe links in broadcast HTML. */
 export const RESEND_UNSUBSCRIBE_URL_PROPERTY = "unsubscribe_url";
 
-function namesFromMetadata(
+export function namesFromMetadata(
   meta: User["user_metadata"] | undefined,
 ): { first_name: string; last_name: string } {
   if (!meta || typeof meta !== "object") {
@@ -113,7 +113,7 @@ export async function attachUnsubscribeUrlsToMarketingRows(
   }
 }
 
-async function fetchMarketingMap(admin: AdminClient): Promise<Map<string, boolean>> {
+export async function fetchMarketingMap(admin: AdminClient): Promise<Map<string, boolean>> {
   const map = new Map<string, boolean>();
   let from = 0;
   for (; ;) {
@@ -132,7 +132,7 @@ async function fetchMarketingMap(admin: AdminClient): Promise<Map<string, boolea
   return map;
 }
 
-async function fetchAllAuthUsers(admin: AdminClient): Promise<User[]> {
+export async function fetchAllAuthUsers(admin: AdminClient): Promise<User[]> {
   const users: User[] = [];
   let page = 1;
   for (; ;) {
@@ -198,6 +198,58 @@ export async function loadResendContactRowsSplit(admin: AdminClient): Promise<{
   const marketingByUserId = await fetchMarketingMap(admin);
   const users = await fetchAllAuthUsers(admin);
   return buildResendContactRows(users, marketingByUserId);
+}
+
+/** Ascending signup order so imports land oldest → newest. */
+function byCreatedAtAsc(a: User, b: User): number {
+  const ta = a.created_at ? Date.parse(a.created_at) : 0;
+  const tb = b.created_at ? Date.parse(b.created_at) : 0;
+  return ta - tb;
+}
+
+/**
+ * Split confirmed users into the two legacy Resend-segment cohorts, each sorted
+ * oldest → newest by signup date and de-duplicated by (lowercased) email:
+ *  - `preConsent`: users with NO `marketing_preferences` row (predate consent capture)
+ *  - `subscribed`: users with `marketing_opt_in = true`
+ *
+ * Explicit opt-outs (row present, `marketing_opt_in = false`) are excluded from both.
+ * The cohorts are mutually exclusive by email — if the same address is both subscribed
+ * and (via another user row) pre-consent, `subscribed` wins so it never lands in both.
+ */
+export async function loadResendLegacyCohorts(admin: AdminClient): Promise<{
+  preConsent: ResendMarketingContactRow[];
+  subscribed: ResendMarketingContactRow[];
+}> {
+  const marketingByUserId = await fetchMarketingMap(admin);
+  const users = [...(await fetchAllAuthUsers(admin))].sort(byCreatedAtAsc);
+
+  const subscribed: ResendMarketingContactRow[] = [];
+  const seenSubscribed = new Set<string>();
+  for (const u of users) {
+    if (!u.email_confirmed_at || !u.email?.trim()) continue;
+    if (marketingByUserId.get(u.id) !== true) continue;
+    const emailRaw = u.email.trim();
+    const emailKey = emailRaw.toLowerCase();
+    if (seenSubscribed.has(emailKey)) continue;
+    seenSubscribed.add(emailKey);
+    subscribed.push({ user_id: u.id, email: emailRaw, ...namesFromMetadata(u.user_metadata) });
+  }
+
+  const preConsent: ResendMarketingContactRow[] = [];
+  const seenPreConsent = new Set<string>();
+  for (const u of users) {
+    if (!u.email_confirmed_at || !u.email?.trim()) continue;
+    // Pre-consent = no preferences row at all (opt-in and opt-out both have rows).
+    if (marketingByUserId.has(u.id)) continue;
+    const emailRaw = u.email.trim();
+    const emailKey = emailRaw.toLowerCase();
+    if (seenSubscribed.has(emailKey) || seenPreConsent.has(emailKey)) continue;
+    seenPreConsent.add(emailKey);
+    preConsent.push({ user_id: u.id, email: emailRaw, ...namesFromMetadata(u.user_metadata) });
+  }
+
+  return { preConsent, subscribed };
 }
 
 export async function buildResendContactCsvExports(admin: AdminClient): Promise<{
