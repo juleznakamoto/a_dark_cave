@@ -27,7 +27,7 @@ in the client; **Supabase** handles auth/cloud saves and **Stripe** handles paym
 | `services/` | Internal auxiliary services (currently `gender-service/` — first-name gender inference, localhost only). |
 | `public/`, `attached_assets/` | Static assets (`@assets` alias → `attached_assets`). |
 | `dist/` | Build output (`dist/public` client, `dist/index.js` server). |
-| `build-resources/` | Electron/Windows packaging assets (`icon.ico` for taskbar/installer). |
+| `build-resources/` | Electron/Windows packaging assets (`logo-source.png` master, `icon.ico`/`icon.png` for taskbar/installer). |
 | `.cursor/` | Agent config: `rules/`, `hooks.json`, `hooks/`. |
 
 **Root config:** `package.json` (scripts/deps), `vite.config.ts` (client build, aliases, chunks),
@@ -228,7 +228,7 @@ run ad hoc for locale maintenance.
 | `import:resend-legacy-segments` | `import-legacy-resend-segments.ts` | One-time import of two legacy cohorts into Resend **Segments** (oldest→newest): pre-consent users (no `marketing_preferences` row) and currently-subscribed users. Shares env with `resendScriptEnv.ts`. |
 | `test:gender` | `test-gender-service.js` | Smoke-test `services/gender-service/`. |
 
-Support modules (not always npm-wired): `write-build-meta.mjs` (git HEAD → `dist/build-meta.json` after client build), `locale-catalog.mjs`, `parse-locale-json.mjs`,
+Support modules (not always npm-wired): `write-build-meta.mjs` (git HEAD → `dist/build-meta.json` after client build), `generate-logo-assets.py` (resize `build-resources/logo-source.png` → favicons, PWA, OG, Electron icons), `locale-catalog.mjs`, `parse-locale-json.mjs`,
 `i18n-ui-shards.mjs`, `audit-locale-translations.mjs`, `audit-timed-tab-i18n.mjs`,
 `apply-*-fix-translations.mjs`, `apply-cube-translations.mjs`, `restore-ok-comments.mjs`,
 `fix-es-locale-encoding.mjs`, `sync-resend-marketing-contacts.mjs` (ad hoc Resend import from MCP SQL export),
