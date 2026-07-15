@@ -202,12 +202,24 @@ export default function GameFooter() {
               );
 
               if (platform === "steam") {
+                const showWishlistCallout =
+                  isPaused || idleModeDialog.isOpen;
                 return (
                   <HoverCalloutTooltip
                     key={platform}
                     label={t("footer.wishlistOnSteam")}
                     side="top"
-                    forceVisible={isPaused || idleModeDialog.isOpen}
+                    forceVisible={showWishlistCallout}
+                    onCalloutClick={
+                      showWishlistCallout
+                        ? () =>
+                          window.open(
+                            href,
+                            "_blank",
+                            "noopener,noreferrer",
+                          )
+                        : undefined
+                    }
                   >
                     {socialLink}
                   </HoverCalloutTooltip>
