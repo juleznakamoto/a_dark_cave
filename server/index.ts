@@ -538,9 +538,11 @@ import {
   fetchAdminClicks,
   fetchAdminMetrics,
   fetchAdminPurchases,
+  fetchAdminSaveAnalysisInputs,
   fetchAdminSavesSlim,
   type AdminEnv,
 } from "./adminDashboardData";
+import { analyzeSaveGames } from "@shared/saveGameAnalysis";
 
 function adminDashboardCache(res: Response) {
   res.set("Cache-Control", "public, max-age=300");
@@ -582,6 +584,19 @@ app.get("/api/admin/saves", async (req, res) => {
     res.json({ saves });
   } catch (error: any) {
     log("❌ Admin saves fetch failed:", error);
+    res.status(500).json({ error: error.message });
+  }
+});
+
+app.get("/api/admin/save-analysis", async (req, res) => {
+  try {
+    adminDashboardCache(res);
+    const adminClient = getAdminClient(parseAdminEnv(req));
+    const inputs = await fetchAdminSaveAnalysisInputs(adminClient);
+    const analysis = analyzeSaveGames(inputs);
+    res.json({ analysis });
+  } catch (error: any) {
+    log("❌ Admin save analysis failed:", error);
     res.status(500).json({ error: error.message });
   }
 });

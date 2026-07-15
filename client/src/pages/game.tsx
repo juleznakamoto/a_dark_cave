@@ -14,6 +14,7 @@ import { gamblerDiceResumeOnLoad } from "@/game/gamblerSession";
 import {
   applyGameStateLoadMigrations,
   getTransientDialogResetOnLoad,
+  hydrateLoadedGameState,
 } from "@/game/stateHelpers";
 import { syncSocialPromoExclusiveRewardPending } from "@/game/socialPromoExclusiveReward";
 import { processStripePaymentReturn } from "@/lib/stripePaymentReturn";
@@ -165,7 +166,7 @@ export default function Game() {
         // Load saved game or initialize with defaults
         const rawSavedState = await loadGame();
         const savedState = rawSavedState
-          ? applyGameStateLoadMigrations(rawSavedState)
+          ? applyGameStateLoadMigrations(hydrateLoadedGameState(rawSavedState))
           : null;
         if (savedState) {
           // Track Google Ads source if present in URL and not already saved

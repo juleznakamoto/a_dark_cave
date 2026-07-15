@@ -14,7 +14,8 @@ export type AdminTabId =
   | "upgrades"
   | "sessions"
   | "logs"
-  | "lookup";
+  | "lookup"
+  | "saveAnalysis";
 
 /** Sections each tab needs. Sessions/logs/lookup fetch their own endpoints. */
 export const ADMIN_TAB_SECTIONS: Record<AdminTabId, AdminDataSection[]> = {
@@ -31,6 +32,7 @@ export const ADMIN_TAB_SECTIONS: Record<AdminTabId, AdminDataSection[]> = {
   sessions: [],
   logs: [],
   lookup: [],
+  saveAnalysis: [],
 };
 
 export function sectionsForTab(tab: AdminTabId): AdminDataSection[] {

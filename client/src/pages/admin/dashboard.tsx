@@ -52,6 +52,7 @@ import LookupTab from "./tabs/LookupTab";
 import SessionsTab from "./tabs/SessionsTab";
 import SocialPromptTab from "./tabs/SocialPromptTab";
 import LogsTab from "./tabs/LogsTab";
+import SaveGameAnalysisTab from "./tabs/SaveGameAnalysisTab";
 import { aggregateSocialPromptFromSaves } from "@shared/socialPromptAdminStats";
 import {
   buildDailyCompletionCounts,
@@ -1219,6 +1220,7 @@ export default function AdminDashboard() {
                   <TabsTrigger value="sessions">Sessions</TabsTrigger>
                   <TabsTrigger value="logs">Logs</TabsTrigger>
                   <TabsTrigger value="lookup">User Lookup</TabsTrigger>
+                  <TabsTrigger value="saveAnalysis">Save Analysis</TabsTrigger>
                 </TabsList>
                 <ScrollBar orientation="horizontal" />
               </ScrollArea>
@@ -1645,6 +1647,10 @@ export default function AdminDashboard() {
                   getLookupUserPurchases={getLookupUserPurchases}
                   formatTime={formatTime}
                 />
+              </TabsContent>
+
+              <TabsContent value="saveAnalysis">
+                <SaveGameAnalysisTab environment={environment} />
               </TabsContent>
             </Tabs>
           </div>

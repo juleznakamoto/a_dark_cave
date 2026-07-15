@@ -1,4 +1,4 @@
-import { GameState } from "@shared/schema";
+import { GameState, gameStateSchema } from "@shared/schema";
 import type { CombatResultSummary } from "./types";
 import { getCurrentPopulation, getMaxPopulation } from "./population";
 import {
@@ -665,6 +665,32 @@ function migrateSteamShopSlotsOnLoad(state: GameState): Partial<GameState> | nul
   return {
     villagerPresetSlotsFromShop: 0,
     constructionQueueSlotsFromShop: 0,
+  };
+}
+
+/**
+ * Backfill permanent item slices from schema defaults when a loaded save omits them.
+ * Prevents shallow store merges from leaving `createInitialState()` all-false tools
+ * (or stale slices) when cloud/local JSON lacks `tools` / `weapons` / `books`.
+ */
+export function hydrateLoadedGameState<T extends Partial<GameState>>(
+  savedState: T,
+): T & Pick<GameState, "tools" | "weapons" | "books"> {
+  const defaults = gameStateSchema.parse({});
+  return {
+    ...savedState,
+    tools: {
+      ...defaults.tools,
+      ...savedState.tools,
+    },
+    weapons: {
+      ...defaults.weapons,
+      ...savedState.weapons,
+    },
+    books: {
+      ...defaults.books,
+      ...savedState.books,
+    },
   };
 }
 

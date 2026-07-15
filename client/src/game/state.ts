@@ -42,6 +42,7 @@ import {
   extractCombatResultSummary,
   applyGameStateLoadMigrations,
   getTransientDialogResetOnLoad,
+  hydrateLoadedGameState,
   markSeenResources,
 } from "@/game/stateHelpers";
 import { capResourceToLimit } from "@/game/resourceLimits";
@@ -2840,8 +2841,10 @@ export const useGameStore = create<GameStore>((set, get) => ({
           ?.obsidian_orb,
       );
 
+      const hydratedPermanent = hydrateLoadedGameState(savedForHydration);
+
       const loadedState = {
-        ...savedForHydration,
+        ...hydratedPermanent,
         resources: {
           ...defaultGameState.resources,
           ...savedState.resources,
@@ -2849,24 +2852,6 @@ export const useGameStore = create<GameStore>((set, get) => ({
         villagers: {
           ...defaultGameState.villagers,
           ...savedState.villagers,
-        },
-        // Item/ownable slices MUST be backfilled from defaults just like resources
-        // above. Otherwise, if a loaded save is missing/empty for one of these keys,
-        // `set(loadedState)` (a shallow merge) leaves the slice at the PREVIOUS store
-        // value — which on the start screen is `createInitialState()` (all-false) —
-        // and the resulting empty/all-false slice gets autosaved, permanently wiping
-        // the player's tools/weapons/books (see mine-area regression).
-        tools: {
-          ...defaultGameState.tools,
-          ...savedState.tools,
-        },
-        weapons: {
-          ...defaultGameState.weapons,
-          ...savedState.weapons,
-        },
-        books: {
-          ...defaultGameState.books,
-          ...savedState.books,
         },
         blessings: {
           ...defaultGameState.blessings,

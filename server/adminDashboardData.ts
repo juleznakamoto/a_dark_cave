@@ -5,6 +5,7 @@
 
 export const ADMIN_DATA_CLICKS_LIMIT = 10_000;
 export const ADMIN_DATA_SAVES_LIMIT = 10_000;
+export const ADMIN_SAVE_ANALYSIS_LIMIT = 100;
 export const PURCHASES_LIST_COLUMNS =
   "user_id,item_id,item_name,price_paid,purchased_at,bundle_id,country,cruel_mode,currency,stripe_payment_intent_id,stripe_fx_quote_id,reporting_eur_cents,reporting_usd_cents,payment_type";
 
@@ -112,6 +113,34 @@ export async function fetchAdminSavesSlim(
     ...row,
     game_state: slimGameStateForAdmin(row.game_state),
   }));
+}
+
+/** Last N saves (by updated_at) with full game_state for integrity analysis. */
+export async function fetchAdminSaveAnalysisInputs(
+  adminClient: ReturnType<
+    typeof import("./supabaseServerClient").createServerSupabaseClient
+  >,
+  limit = ADMIN_SAVE_ANALYSIS_LIMIT,
+) {
+  const { data, error } = await adminClient
+    .from("game_saves")
+    .select("id,user_id,username,game_state,game_stats,updated_at,created_at")
+    .order("updated_at", { ascending: false })
+    .limit(limit);
+
+  if (error) {
+    throw error;
+  }
+
+  return (data ?? []) as Array<{
+    id: string;
+    user_id: string;
+    username: string | null;
+    game_state: unknown;
+    game_stats: unknown;
+    updated_at: string;
+    created_at: string;
+  }>;
 }
 
 export async function fetchAdminPurchases(
