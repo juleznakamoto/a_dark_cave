@@ -36,7 +36,7 @@ in the client; **Supabase** handles auth/cloud saves and **Stripe** handles paym
 `electron-builder.yml` (Steam Windows packaging), `electron-builder.demo.yml` (Steam demo packaging),
 `electron-builder.playtest.yml` (Steam playtest packaging),
 `steam_appid.txt` (full game App ID **4882240**), `steam_appid_demo.txt` (demo App ID **4971800**),
-`steam_appid_playtest.txt` (playtest App ID — set before playtest builds).
+`steam_appid_playtest.txt` (playtest App ID **4972040**).
 
 **Path aliases:** `@/*` → `client/src/*`, `@shared/*` → `shared/*`, `@assets` → `attached_assets`.
 
@@ -335,7 +335,7 @@ Demo saves: IndexedDB key `steamDemoSave` + `%APPDATA%\A Dark Cave Demo\adc-stea
 |------|----------------|
 | `client/src/lib/edition.ts` | `isSteamPlaytestBuild` (`VITE_STEAM_PLAYTEST=1`), `isSteamFullBuild`. |
 | `electron/paths.ts` | Playtest userdata subdirectory + cloud filename when `ADC_STEAM_PLAYTEST_BUILD=1`. |
-| `steam_appid_playtest.txt` | Playtest App ID baked into playtest packages. |
+| `steam_appid_playtest.txt` | Playtest App ID **4972040** baked into playtest packages. |
 | `scripts/package-steam-playtest.mjs` | `npm run electron:package:playtest` — build + package playtest. |
 | `scripts/steam-upload-playtest.ps1` | `npm run steam:playtest:upload` — build (optional) + SteamPipe upload. |
 | `scripts/UploadPlaytestToSteam.cmd` | Double-click / desktop shortcut wrapper for `steam-upload-playtest.ps1`. |
