@@ -625,8 +625,30 @@ const Hero: React.FC<HeroProps> = ({
             </div>
           )}
 
-          {/* Support Section */}
+          {/* Steam Wishlist Section */}
           <div className="py-3 flex flex-col items-center gap-3 mt-14 animate-fade-in-up animation-delay-4000 w-full min-w-0">
+            <p className="text-sm sm:text-base font-medium text-grey-200 text-center max-w-md px-2 sm:px-4 break-words">
+              A Dark Cave is soon launching on Steam. Add it to your wishlist
+              today so you'll be notified the moment it launches.
+            </p>
+            <div className="flex gap-2 sm:gap-3 flex-wrap justify-center px-2">
+              <button
+                onClick={() =>
+                  window.open(OFFICIAL_STEAM_URL, "_blank", "noopener,noreferrer")
+                }
+                className={END_SCREEN_CTA_BUTTON_CLASS}
+              >
+                <FooterSocialIcon
+                  platform="steam"
+                  className="h-5 w-5 shrink-0"
+                />
+                <span>Steam</span>
+              </button>
+            </div>
+          </div>
+
+          {/* Support Section */}
+          <div className="py-3 flex flex-col items-center gap-3 mt-8 animate-fade-in-up animation-delay-4500 w-full min-w-0">
             <p className="text-sm sm:text-base font-medium text-grey-200 text-center max-w-md px-2 sm:px-4 break-words">
               If you enjoyed the game, I would be very happy if you support me
               so I can continue to develop it.
@@ -649,28 +671,6 @@ const Hero: React.FC<HeroProps> = ({
               </span>
               <span>Buy Me a Coffee</span>
             </button>
-          </div>
-
-          {/* Steam Wishlist Section */}
-          <div className="py-3 flex flex-col items-center gap-3 mt-8 animate-fade-in-up animation-delay-4500 w-full min-w-0">
-            <p className="text-sm sm:text-base font-medium text-grey-200 text-center max-w-md px-2 sm:px-4 break-words">
-              A Dark Cave is soon launching on Steam. Add it to your wishlist
-              today so you'll be notified the moment it launches.
-            </p>
-            <div className="flex gap-2 sm:gap-3 flex-wrap justify-center px-2">
-              <button
-                onClick={() =>
-                  window.open(OFFICIAL_STEAM_URL, "_blank", "noopener,noreferrer")
-                }
-                className={END_SCREEN_CTA_BUTTON_CLASS}
-              >
-                <FooterSocialIcon
-                  platform="steam"
-                  className="h-5 w-5 shrink-0"
-                />
-                <span>Steam</span>
-              </button>
-            </div>
           </div>
 
           {/* Continue Playing and Social Links */}
