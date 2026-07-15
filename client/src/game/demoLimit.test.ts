@@ -25,7 +25,7 @@ vi.mock("@/lib/edition", async (importOriginal) => {
   const actual = await importOriginal<typeof import("@/lib/edition")>();
   return {
     ...actual,
-    isGalaxyEdition: vi.fn(() => true),
+    isDemoEdition: vi.fn(() => true),
   };
 });
 
@@ -46,14 +46,14 @@ vi.mock("@/game/state", () => ({
 }));
 
 import {
-  GALAXY_DEMO_STONE_HUT_LIMIT,
-  isGalaxyDemoLimitReached,
-  isGalaxyDemoLimitReachedFromState,
-  processGalaxyDemoLimit,
-  startNewGalaxyDemoGame,
-} from "./galaxyDemo";
+  DEMO_STONE_HUT_LIMIT,
+  isDemoLimitReached,
+  isDemoLimitReachedFromState,
+  processDemoLimit,
+  startNewDemoGame,
+} from "./demoLimit";
 
-describe("galaxyDemo", () => {
+describe("demoLimit", () => {
   beforeEach(() => {
     stoneHutCountRef.current = 0;
     galaxyTimeUpDialogOpenRef.current = false;
@@ -64,24 +64,22 @@ describe("galaxyDemo", () => {
   });
 
   it("detects when the stone hut limit is reached", () => {
-    expect(isGalaxyDemoLimitReached(GALAXY_DEMO_STONE_HUT_LIMIT - 1)).toBe(
-      false,
-    );
-    expect(isGalaxyDemoLimitReached(GALAXY_DEMO_STONE_HUT_LIMIT)).toBe(true);
+    expect(isDemoLimitReached(DEMO_STONE_HUT_LIMIT - 1)).toBe(false);
+    expect(isDemoLimitReached(DEMO_STONE_HUT_LIMIT)).toBe(true);
   });
 
   it("reads stone hut count from game state", () => {
     expect(
-      isGalaxyDemoLimitReachedFromState({
-        buildings: { stoneHut: GALAXY_DEMO_STONE_HUT_LIMIT },
+      isDemoLimitReachedFromState({
+        buildings: { stoneHut: DEMO_STONE_HUT_LIMIT },
       }),
     ).toBe(true);
   });
 
   it("opens the demo-end dialog when the limit is reached", () => {
-    stoneHutCountRef.current = GALAXY_DEMO_STONE_HUT_LIMIT;
+    stoneHutCountRef.current = DEMO_STONE_HUT_LIMIT;
 
-    processGalaxyDemoLimit();
+    processDemoLimit();
 
     expect(setStateMock).toHaveBeenCalledWith({
       galaxyTimeUpDialogOpen: true,
@@ -89,16 +87,16 @@ describe("galaxyDemo", () => {
   });
 
   it("does not reopen the dialog when it is already open", () => {
-    stoneHutCountRef.current = GALAXY_DEMO_STONE_HUT_LIMIT;
+    stoneHutCountRef.current = DEMO_STONE_HUT_LIMIT;
     galaxyTimeUpDialogOpenRef.current = true;
 
-    processGalaxyDemoLimit();
+    processDemoLimit();
 
     expect(setStateMock).not.toHaveBeenCalled();
   });
 
   it("starts a new demo run from the dialog", async () => {
-    await startNewGalaxyDemoGame();
+    await startNewDemoGame();
 
     expect(setGalaxyTimeUpDialogOpenMock).toHaveBeenCalledWith(false);
     expect(deleteSaveMock).toHaveBeenCalled();

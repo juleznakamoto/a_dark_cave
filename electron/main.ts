@@ -4,7 +4,11 @@ import { join, dirname } from "node:path";
 import { existsSync, readFileSync } from "node:fs";
 import { startLoopbackServer, type LoopbackServer } from "./loopbackServer";
 import { initSteam, getPlayerName, activateAchievement, isSteamReady } from "./steam";
-import { APP_USER_DATA_NAME, STEAM_CLOUD_SAVE_FILE } from "./paths";
+import {
+  APP_USER_DATA_NAME,
+  APP_WINDOW_TITLE,
+  STEAM_CLOUD_SAVE_FILE,
+} from "./paths";
 
 /**
  * Electron main process for the A Dark Cave Steam build.
@@ -70,7 +74,7 @@ function resolveWindowIcon(): string | undefined {
 async function createWindow(): Promise<void> {
   const iconPath = resolveWindowIcon();
   mainWindow = new BrowserWindow({
-    title: "A Dark Cave",
+    title: APP_WINDOW_TITLE,
     ...(iconPath ? { icon: iconPath } : {}),
     width: 1280,
     height: 800,

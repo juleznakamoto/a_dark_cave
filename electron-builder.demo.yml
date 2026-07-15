@@ -1,0 +1,6 @@
+extends: electron-builder.yml
+
+productName: A Dark Cave Demo
+
+win:
+  artifactName: ${productName}-${version}-setup.${ext}

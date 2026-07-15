@@ -6,6 +6,9 @@ steam/content
 steam/output
 steam/generated
 steam/config.local.json
+steam/config.demo.local.json
+steam/output-demo
+steam/generated-demo
 .DS_Store
 .env*
 !.env.example

@@ -33,7 +33,8 @@ in the client; **Supabase** handles auth/cloud saves and **Stripe** handles paym
 **Root config:** `package.json` (scripts/deps), `vite.config.ts` (client build, aliases, chunks),
 `tsconfig.json` (includes `client/src`, `shared`, `server`), `vitest.config.ts` + `vitest.setup.ts`,
 `tailwind.config.ts`, `components.json` (shadcn/ui), `drizzle.config.ts`,
-`electron-builder.yml` (Steam Windows packaging), `steam_appid.txt` (Steam App ID **4882240**).
+`electron-builder.yml` (Steam Windows packaging), `electron-builder.demo.yml` (Steam demo packaging),
+`steam_appid.txt` (full game App ID **4882240**), `steam_appid_demo.txt` (demo App ID **4971800**).
 
 **Path aliases:** `@/*` → `client/src/*`, `@shared/*` → `shared/*`, `@assets` → `attached_assets`.
 
@@ -300,21 +301,39 @@ App ID **4882240** in `steam_appid.txt`.
 6. **Testen:** Paket *developer comp* muss das Depot enthalten → Build-Branch `default` in der Steam-Bibliothek testen.
 7. **Veröffentlichen** (Tab *Veröffentlichen*): Cloud-, Build- und Store-Änderungen live schalten.
 
+**Steam demo** (separate Steamworks child app, capped at 3 stone huts):
+
+| Path | Responsibility |
+|------|----------------|
+| `client/src/lib/edition.ts` | `isSteamDemoBuild` (`VITE_STEAM_DEMO=1`), `isDemoEdition()`, `isSteamFullBuild`. |
+| `client/src/game/demoLimit.ts` | Shared stone-hut demo limit + `processDemoLimit()` (Galaxy + Steam demo). |
+| `client/src/components/game/DemoTimeUpDialog.tsx` | Blocking end-of-demo modal → Steam wishlist. |
+| `electron/paths.ts` | Demo userdata subdirectory + cloud filename when `ADC_STEAM_DEMO_BUILD=1`. |
+| `steam_appid_demo.txt` | Demo App ID **4971800** baked into demo packages. |
+| `scripts/package-steam-demo.mjs` | `npm run electron:package:demo` — build + package demo. |
+| `scripts/steam-upload-demo.ps1` | `npm run steam:demo:upload` — build (optional) + SteamPipe upload. |
+| `scripts/UploadDemoToSteam.cmd` | Double-click / desktop shortcut wrapper for `steam-upload-demo.ps1`. |
+| `steam/config.demo.example.json` | Demo `appId` / `depotId` template for upload script. |
+
+Demo saves: IndexedDB key `steamDemoSave` + `%APPDATA%\A Dark Cave Demo\adc-steam-demo-save.dat` (configure matching Auto-Cloud row on the **demo** app in Steamworks). Achievements use the same `ACH_*` mapping as the full game.
+
+**Scripts:** `build:steam-demo`, `electron:package:demo`, `steam:demo:upload` / `steam:demo:upload-only` / `steam:demo:stage`.
+
 ---
 
 ## Galaxy demo (`/galaxy`)
 
 Web demo for [galaxy.click](https://galaxy.click) at **`https://a-dark-cave.com/galaxy`**. Same gameplay
 shell as the Steam edition (no shop, Playlight, leaderboard, auth, or Supabase cloud saves) with the
-full game unlocked locally. Saves use IndexedDB key `galaxySave` (isolated from `mainSave`). The demo
-ends when the player builds their **3rd stone hut**; `GalaxyTimeUpDialog` then blocks the sim and links to the
+full game unlocked locally until the cap. Saves use IndexedDB key `galaxySave` (isolated from `mainSave`). The demo
+ends when the player builds their **3rd stone hut**; `DemoTimeUpDialog` then blocks the sim and links to the
 [Steam store page](https://store.steampowered.com/app/4882240/A_Dark_Cave/).
 
 | Path | Responsibility |
 |------|----------------|
-| `client/src/lib/edition.ts` | `isGalaxyEdition()` (URL prefix `/galaxy`), `isLocalOnlyEdition()`, `isFullGameUnlockedEdition()`. |
-| `client/src/game/galaxyDemo.ts` | Stone-hut demo limit + `processGalaxyDemoLimit()` (called from `loop.ts`). |
-| `client/src/components/game/GalaxyTimeUpDialog.tsx` | Blocking end-of-demo modal → Steam wishlist. |
+| `client/src/lib/edition.ts` | `isGalaxyEdition()` (URL prefix `/galaxy`), `isDemoEdition()`, `isLocalOnlyEdition()`, `isFullGameUnlockedEdition()`. |
+| `client/src/game/demoLimit.ts` | Stone-hut demo limit + `processDemoLimit()` (called from `loop.ts`). |
+| `client/src/components/game/DemoTimeUpDialog.tsx` | Blocking end-of-demo modal → Steam wishlist. |
 | `client/src/App.tsx` | Route `/galaxy` → `StartScreenPage`; skips Playlight init. |
 
 Edition behavior reuses `isSteamEditionActive()` / `useSteamEditionActive()` for UI (shop hidden, etc.).

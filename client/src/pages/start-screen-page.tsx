@@ -1,8 +1,8 @@
 import { useEffect, useState, Suspense, lazy } from "react";
 import StartScreen from "@/components/game/StartScreen";
 import { useGameStore } from "@/game/state";
-import { isGalaxyEdition } from "@/lib/edition";
-import { isGalaxyDemoLimitReachedFromState } from "@/game/galaxyDemo";
+import { isDemoEdition } from "@/lib/edition";
+import { isDemoLimitReachedFromState } from "@/game/demoLimit";
 
 // Lazy load Game component - only loaded when needed
 const Game = lazy(() => import("@/pages/game"));
@@ -46,9 +46,9 @@ export default function StartScreenPage() {
         // After loading, check if game has started
         const currentFlags = useGameStore.getState().flags;
         if (currentFlags.gameStarted) {
-          if (isGalaxyEdition()) {
+          if (isDemoEdition()) {
             const loadedState = useGameStore.getState();
-            if (isGalaxyDemoLimitReachedFromState(loadedState)) {
+            if (isDemoLimitReachedFromState(loadedState)) {
               useGameStore.setState({ galaxyTimeUpDialogOpen: true });
             }
           }

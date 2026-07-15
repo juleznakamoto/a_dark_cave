@@ -18,7 +18,7 @@ import {
 import { tWithFallback } from "@/i18n/resolveGameText";
 import { syncSocialPromoExclusiveRewardPending } from "./socialPromoExclusiveReward";
 import { buildGameState } from "./stateHelpers";
-import { isGalaxyEdition, isLocalOnlyEdition, isSteamBuild } from "@/lib/edition";
+import { isGalaxyEdition, isLocalOnlyEdition, isSteamBuild, isSteamDemoBuild } from "@/lib/edition";
 import {
   writeSteamCloudSave,
   readSteamCloudSave,
@@ -42,10 +42,13 @@ const DB_NAME = "ADarkCaveDB";
 const DB_VERSION = 2;
 const SAVE_KEY_MAIN = "mainSave";
 const SAVE_KEY_GALAXY = "galaxySave";
+const SAVE_KEY_STEAM_DEMO = "steamDemoSave";
 const LAST_CLOUD_STATE_KEY = "lastCloudState";
 
 function getSaveKey(): string {
-  return isGalaxyEdition() ? SAVE_KEY_GALAXY : SAVE_KEY_MAIN;
+  if (isSteamDemoBuild) return SAVE_KEY_STEAM_DEMO;
+  if (isGalaxyEdition()) return SAVE_KEY_GALAXY;
+  return SAVE_KEY_MAIN;
 }
 
 /**

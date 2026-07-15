@@ -17,9 +17,9 @@ import { tWithFallback } from "@/i18n/resolveGameText";
 import { useLocale } from "@/i18n/useLocale";
 import { OG_LOCALE_TAGS, SUPPORTED_LOCALES } from "@/i18n/locales";
 import { useSteamEditionActive } from "@/hooks/useSteamEditionActive";
-import { isGalaxyEdition } from "@/lib/edition";
-import { isGalaxyDemoLimitReachedFromState } from "@/game/galaxyDemo";
-import GalaxyTimeUpDialog from "@/components/game/GalaxyTimeUpDialog";
+import { isDemoEdition } from "@/lib/edition";
+import { isDemoLimitReachedFromState } from "@/game/demoLimit";
+import DemoTimeUpDialog from "@/components/game/DemoTimeUpDialog";
 import { FullscreenButton } from "@/components/game/FullscreenButton";
 
 const START_FOOTER_LINK_BASE =
@@ -103,9 +103,9 @@ export default function StartScreen() {
     if (executedRef.current) return;
     executedRef.current = true;
 
-    if (isGalaxyEdition()) {
+    if (isDemoEdition()) {
       const state = useGameStore.getState();
-      if (isGalaxyDemoLimitReachedFromState(state)) {
+      if (isDemoLimitReachedFromState(state)) {
         useGameStore.setState({ galaxyTimeUpDialogOpen: true });
         return;
       }
@@ -418,7 +418,7 @@ export default function StartScreen() {
           )}
         </div>
       </nav>
-      {isGalaxyEdition() && <GalaxyTimeUpDialog />}
+      {isDemoEdition() && <DemoTimeUpDialog />}
     </div>
   );
 }

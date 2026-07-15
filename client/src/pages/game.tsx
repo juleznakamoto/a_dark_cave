@@ -18,11 +18,11 @@ import {
 import { syncSocialPromoExclusiveRewardPending } from "@/game/socialPromoExclusiveReward";
 import { processStripePaymentReturn } from "@/lib/stripePaymentReturn";
 import { isPlaylightReferralUrl } from "@/lib/playlight";
-import { isLocalOnlyEdition, isGalaxyEdition, isSteamBuild } from "@/lib/edition";
+import { isLocalOnlyEdition, isDemoEdition, isSteamBuild } from "@/lib/edition";
 import { useSteamEditionActive } from "@/hooks/useSteamEditionActive";
 import { mountNotoSansSymbols2FontFace } from "@/lib/notoSansSymbols2FontFace";
 import type { TimedEventTabState } from "@/game/types";
-import { isGalaxyDemoLimitReachedFromState } from "@/game/galaxyDemo";
+import { isDemoLimitReachedFromState } from "@/game/demoLimit";
 import {
   applySaveBoost,
   canApplySaveBoost,
@@ -400,9 +400,9 @@ export default function Game() {
         }
 
         // Start game loop
-        if (isGalaxyEdition()) {
+        if (isDemoEdition()) {
           const loadedState = useGameStore.getState();
-          if (isGalaxyDemoLimitReachedFromState(loadedState)) {
+          if (isDemoLimitReachedFromState(loadedState)) {
             useGameStore.setState({ galaxyTimeUpDialogOpen: true });
           }
         }

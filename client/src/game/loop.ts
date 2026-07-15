@@ -38,7 +38,7 @@ import {
 import { CRUEL_MODE, cruelModeScale, getMaxStoneHutLevel, getMaxWoodenHutLevel } from "./cruelMode";
 import { getMadnessDeathChancePerCycle } from "./rules/effectsStats";
 import { processPlayTimeAutoPrompts } from "./playTimeAutoPrompts";
-import { processGalaxyDemoLimit } from "./galaxyDemo";
+import { processDemoLimit } from "./demoLimit";
 import { tickObsidianOrbFocus } from "@/game/obsidianOrb";
 let gameLoopId: number | null = null;
 let lastFrameTime = 0;
@@ -368,7 +368,7 @@ export function startGameLoop() {
     ) {
       currentState.updatePlayTime(deltaTime);
       useGameStore.getState().tickInvestmentHall();
-      processGalaxyDemoLimit();
+      processDemoLimit();
     }
 
     if (!IsDialogOpen) {
