@@ -16,7 +16,7 @@ const root = join(import.meta.dirname, "..");
 const mainAppIdPath = join(root, "steam_appid.txt");
 const demoAppIdPath = join(root, "steam_appid_demo.txt");
 
-function readDemoAppId(): string {
+function readDemoAppId() {
   if (!existsSync(demoAppIdPath)) {
     throw new Error(
       "Missing steam_appid_demo.txt — paste the demo App ID from Steamworks (Apps → A Dark Cave Demo).",
@@ -32,7 +32,7 @@ function readDemoAppId(): string {
   );
 }
 
-function run(command: string, env: Record<string, string> = {}) {
+function run(command, env = {}) {
   execSync(command, {
     cwd: root,
     stdio: "inherit",
