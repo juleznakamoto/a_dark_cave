@@ -6,4 +6,6 @@ win:
   target:
     - nsis
   icon: build-resources/icon.png
+  # Same exe name as the full game so Steam launch options stay identical.
+  executableName: A Dark Cave
   artifactName: ${productName}-${version}-setup.${ext}

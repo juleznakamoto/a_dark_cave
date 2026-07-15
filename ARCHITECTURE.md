@@ -301,7 +301,7 @@ App ID **4882240** in `steam_appid.txt`.
 2. **Lokal bauen:** `npm run electron:package` → erzeugt `release/win-unpacked/` (Spieldateien) und `release/A Dark Cave-*-setup.exe` (Installer, **nicht** zu Steam hochladen).
 3. **Steamworks SDK** von der Partner-Seite laden, Pfad in `config.local.json` → `steamworksSdk`.
 4. **Hochladen:** `npm run steam:upload` (baut bei Bedarf, lädt `release/win-unpacked/` direkt hoch). `SetLive` bleibt leer — Steam erlaubt kein automatisches Setzen von Branch `default` per steamcmd; Build danach manuell in SteamPipe → Builds auf `default` setzen (optional `setLiveBranch` in `config.local.json` für Beta-Branches).
-5. **Installation** (SteamPipe → Installation): Startprogramm = `A Dark Cave.exe` im Installationsverzeichnis.
+5. **Installation** (SteamPipe → Installation / Launch Options): Startprogramm = `A Dark Cave.exe` (demo build sets `executableName: A Dark Cave` in `electron-builder.demo.yml`).
 6. **Testen:** Paket *developer comp* muss das Depot enthalten → Build-Branch `default` in der Steam-Bibliothek testen.
 7. **Veröffentlichen** (Tab *Veröffentlichen*): Cloud-, Build- und Store-Änderungen live schalten.
 
