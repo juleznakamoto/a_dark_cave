@@ -1,19 +1,23 @@
 /**
  * Bundle the Electron main + preload TypeScript into CommonJS for packaging.
  *
- * Output goes to `dist-electron/` as `.cjs` so it loads as CommonJS regardless of
- * the package's `"type": "module"`. `electron` and `steamworks.js` (native) are
- * kept external and resolved from node_modules at runtime.
- *
- * Set `ADC_STEAM_DEMO=1` when packaging the Steam demo (see `package-steam-demo.mjs`).
+ * Set `ADC_STEAM_DEMO=1` or `ADC_STEAM_PLAYTEST=1` when packaging those variants
+ * (see `package-steam-demo.mjs` / `package-steam-playtest.mjs`).
  */
 import { build } from "esbuild";
 import { rmSync } from "node:fs";
 
 const OUTDIR = "dist-electron";
 const isSteamDemoBuild = process.env.ADC_STEAM_DEMO === "1";
+const isSteamPlaytestBuild = process.env.ADC_STEAM_PLAYTEST === "1";
 
 rmSync(OUTDIR, { recursive: true, force: true });
+
+const variantLabel = isSteamDemoBuild
+  ? " (Steam demo)"
+  : isSteamPlaytestBuild
+    ? " (Steam playtest)"
+    : "";
 
 const shared = {
   platform: "node",
@@ -26,6 +30,9 @@ const shared = {
   define: {
     "process.env.ADC_STEAM_DEMO_BUILD": JSON.stringify(
       isSteamDemoBuild ? "1" : "",
+    ),
+    "process.env.ADC_STEAM_PLAYTEST_BUILD": JSON.stringify(
+      isSteamPlaytestBuild ? "1" : "",
     ),
   },
 };
@@ -45,6 +52,4 @@ await build({
 });
 
 // eslint-disable-next-line no-console
-console.log(
-  `Electron main + preload bundled to dist-electron/${isSteamDemoBuild ? " (Steam demo)" : ""}`,
-);
+console.log(`Electron main + preload bundled to dist-electron/${variantLabel}`);

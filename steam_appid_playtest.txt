@@ -1,0 +1,2 @@
+# Playtest App ID from Steamworks → main game → Associated Packages & DLC → Create Playtest.
+# Paste the numeric App ID on the next line after you create the playtest app.

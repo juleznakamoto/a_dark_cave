@@ -7,8 +7,11 @@ steam/output
 steam/generated
 steam/config.local.json
 steam/config.demo.local.json
+steam/config.playtest.local.json
 steam/output-demo
 steam/generated-demo
+steam/output-playtest
+steam/generated-playtest
 .DS_Store
 .env*
 !.env.example

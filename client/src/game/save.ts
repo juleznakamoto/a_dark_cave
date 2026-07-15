@@ -18,7 +18,7 @@ import {
 import { tWithFallback } from "@/i18n/resolveGameText";
 import { syncSocialPromoExclusiveRewardPending } from "./socialPromoExclusiveReward";
 import { buildGameState } from "./stateHelpers";
-import { isGalaxyEdition, isLocalOnlyEdition, isSteamBuild, isSteamDemoBuild } from "@/lib/edition";
+import { isGalaxyEdition, isLocalOnlyEdition, isSteamBuild, isSteamDemoBuild, isSteamPlaytestBuild } from "@/lib/edition";
 import {
   writeSteamCloudSave,
   readSteamCloudSave,
@@ -43,9 +43,11 @@ const DB_VERSION = 2;
 const SAVE_KEY_MAIN = "mainSave";
 const SAVE_KEY_GALAXY = "galaxySave";
 const SAVE_KEY_STEAM_DEMO = "steamDemoSave";
+const SAVE_KEY_STEAM_PLAYTEST = "steamPlaytestSave";
 const LAST_CLOUD_STATE_KEY = "lastCloudState";
 
 function getSaveKey(): string {
+  if (isSteamPlaytestBuild) return SAVE_KEY_STEAM_PLAYTEST;
   if (isSteamDemoBuild) return SAVE_KEY_STEAM_DEMO;
   if (isGalaxyEdition()) return SAVE_KEY_GALAXY;
   return SAVE_KEY_MAIN;

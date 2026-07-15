@@ -8,6 +8,8 @@ interface ImportMetaEnv {
   readonly VITE_STEAM_BUILD?: string;
   /** "1" only in the Steam desktop demo build (`build:steam-demo`). */
   readonly VITE_STEAM_DEMO?: string;
+  /** "1" only in the Steam desktop playtest build (`build:steam-playtest`). */
+  readonly VITE_STEAM_PLAYTEST?: string;
 }
 
 interface ImportMeta {

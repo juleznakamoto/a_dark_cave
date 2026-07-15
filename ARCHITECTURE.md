@@ -34,7 +34,9 @@ in the client; **Supabase** handles auth/cloud saves and **Stripe** handles paym
 `tsconfig.json` (includes `client/src`, `shared`, `server`), `vitest.config.ts` + `vitest.setup.ts`,
 `tailwind.config.ts`, `components.json` (shadcn/ui), `drizzle.config.ts`,
 `electron-builder.yml` (Steam Windows packaging), `electron-builder.demo.yml` (Steam demo packaging),
-`steam_appid.txt` (full game App ID **4882240**), `steam_appid_demo.txt` (demo App ID **4971800**).
+`electron-builder.playtest.yml` (Steam playtest packaging),
+`steam_appid.txt` (full game App ID **4882240**), `steam_appid_demo.txt` (demo App ID **4971800**),
+`steam_appid_playtest.txt` (playtest App ID — set before playtest builds).
 
 **Path aliases:** `@/*` → `client/src/*`, `@shared/*` → `shared/*`, `@assets` → `attached_assets`.
 
@@ -255,16 +257,19 @@ shop, the whole game unlocked, merchant-sold dark artifacts, and local + Steam C
 | `electron/preload.ts` | `contextBridge` exposing `window.steamBridge` (achievements, Cloud save, full-screen toggle/events) to the sandboxed renderer. |
 | `electron/loopbackServer.ts` | Serves built `dist/public` over `http://127.0.0.1:<port>` (absolute-path routing needs HTTP, not `file://`). |
 | `electron/steam.ts` | Defensive `steamworks.js` wrapper (degrades to no-ops when Steam absent). |
-| `client/src/lib/edition.ts` | `isSteamBuild`, `isSteamDemoBuild`, `isDemoEdition()`, `isSteamEditionActive()` (+ dev `devSteamMode` override from Settings). |
+| `client/src/lib/edition.ts` | `isSteamBuild`, `isSteamDemoBuild`, `isSteamPlaytestBuild`, `isDemoEdition()`, `isSteamEditionActive()` (+ dev `devSteamMode` override from Settings). |
 | `client/src/lib/steam.ts` | Renderer-side safe wrapper over `window.steamBridge` (achievements, saves, full-screen; no-ops on web). |
 | `client/src/game/steamSaveAdapter.ts` | Mirrors the encoded `ADC2:` save blob to the Steam Cloud file; reconciles with IndexedDB by `playTime`. |
 | `client/src/achievements/steamAchievements.ts` | Maps the 62 ring achievements to Steam API names (`ACH_*`); unlocks on criteria-met (loop + load backfill). |
-| `scripts/build-electron.mjs` | esbuild bundles `main`/`preload` to `dist-electron/*.cjs` (`ADC_STEAM_DEMO=1` for demo paths). |
+| `scripts/build-electron.mjs` | esbuild bundles `main`/`preload` to `dist-electron/*.cjs` (`ADC_STEAM_DEMO=1` / `ADC_STEAM_PLAYTEST=1` for variants). |
 | `scripts/package-steam-demo.mjs` | `npm run electron:package:demo` — Vite demo build + Electron bundle + `electron-builder.demo.yml`. |
+| `scripts/package-steam-playtest.mjs` | `npm run electron:package:playtest` — Vite playtest build + Electron bundle + `electron-builder.playtest.yml`. |
 | `scripts/steam-upload.ps1` | Uploads `release/win-unpacked` to SteamPipe via `steamcmd` (`npm run steam:upload`). |
 | `scripts/steam-upload-demo.ps1` | Demo SteamPipe upload (`npm run steam:demo:upload`). |
+| `scripts/steam-upload-playtest.ps1` | Playtest SteamPipe upload (`npm run steam:playtest:upload`). |
 | `scripts/UploadToSteam.cmd` | Desktop wrapper for `steam-upload.ps1`. |
 | `scripts/UploadDemoToSteam.cmd` | Desktop wrapper for `steam-upload-demo.ps1`. |
+| `scripts/UploadPlaytestToSteam.cmd` | Desktop wrapper for `steam-upload-playtest.ps1`. |
 
 **Edition seams (guarded by `isSteamBuild`):** Supabase short-circuits in `lib/supabase.ts`;
 `App.tsx` skips Playlight; `pages/game.tsx` skips session tracker, auth, purchase rehydrate,
@@ -323,6 +328,22 @@ App ID **4882240** in `steam_appid.txt`.
 Demo saves: IndexedDB key `steamDemoSave` + `%APPDATA%\A Dark Cave Demo\adc-steam-demo-save.dat` (configure matching Auto-Cloud row on the **demo** app in Steamworks). Achievements use the same `ACH_*` mapping as the full game.
 
 **Scripts:** `build:steam-demo`, `electron:package:demo`, `steam:demo:upload` / `steam:demo:upload-only` / `steam:demo:stage`.
+
+**Steam playtest** (separate Steamworks child app, **full game**, gated signups on main store page):
+
+| Path | Responsibility |
+|------|----------------|
+| `client/src/lib/edition.ts` | `isSteamPlaytestBuild` (`VITE_STEAM_PLAYTEST=1`), `isSteamFullBuild`. |
+| `electron/paths.ts` | Playtest userdata subdirectory + cloud filename when `ADC_STEAM_PLAYTEST_BUILD=1`. |
+| `steam_appid_playtest.txt` | Playtest App ID baked into playtest packages. |
+| `scripts/package-steam-playtest.mjs` | `npm run electron:package:playtest` — build + package playtest. |
+| `scripts/steam-upload-playtest.ps1` | `npm run steam:playtest:upload` — build (optional) + SteamPipe upload. |
+| `scripts/UploadPlaytestToSteam.cmd` | Double-click / desktop shortcut wrapper for `steam-upload-playtest.ps1`. |
+| `steam/config.playtest.example.json` | Playtest `appId` / `depotId` template for upload script. |
+
+Playtest saves: IndexedDB key `steamPlaytestSave` + `%APPDATA%\A Dark Cave Playtest\adc-steam-playtest-save.dat` (matching Auto-Cloud row on the **playtest** app). No stone-hut cap — same full-game content as release.
+
+**Scripts:** `build:steam-playtest`, `electron:package:playtest`, `steam:playtest:upload` / `steam:playtest:upload-only` / `steam:playtest:stage`.
 
 ---
 

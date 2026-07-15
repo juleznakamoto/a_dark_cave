@@ -7,14 +7,19 @@
  * `electron:package:demo`). Everything Steam-specific (no online services, no real-money
  * shop, merchant-sold artifacts, local + Steam Cloud saves, Steam achievements)
  * keys off `isSteamBuild`; the demo cap keys off `isSteamDemoBuild` / `isDemoEdition()`.
+ * Playtest uses `VITE_STEAM_PLAYTEST=1` for an isolated save namespace (full game, no cap).
  */
 export const isSteamBuild = import.meta.env.VITE_STEAM_BUILD === "1";
 
 /** Steam desktop demo build (`VITE_STEAM_DEMO=1` with `VITE_STEAM_BUILD=1`). */
 export const isSteamDemoBuild = import.meta.env.VITE_STEAM_DEMO === "1";
 
-/** Full Steam desktop build (not the capped demo). */
-export const isSteamFullBuild = isSteamBuild && !isSteamDemoBuild;
+/** Steam desktop playtest build (`VITE_STEAM_PLAYTEST=1` with `VITE_STEAM_BUILD=1`). */
+export const isSteamPlaytestBuild = import.meta.env.VITE_STEAM_PLAYTEST === "1";
+
+/** Full Steam desktop build (release app — not demo or playtest). */
+export const isSteamFullBuild =
+  isSteamBuild && !isSteamDemoBuild && !isSteamPlaytestBuild;
 
 /** Convenience inverse for readability at web-only call sites. */
 export const isWebBuild = !isSteamBuild;

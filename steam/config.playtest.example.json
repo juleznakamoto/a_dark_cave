@@ -1,0 +1,7 @@
+{
+  "appId": "PASTE_PLAYTEST_APP_ID",
+  "depotId": "PASTE_PLAYTEST_DEPOT_ID",
+  "buildDesc": "A Dark Cave Playtest",
+  "setLiveBranch": "",
+  "steamworksSdk": "C:\\Users\\bauer\\Downloads\\steamworks_sdk_164\\sdk"
+}
