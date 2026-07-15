@@ -42,9 +42,10 @@ def main() -> None:
     save_square(build / "icon.png", 512)
     save_og_image(public / "og-image-1200x630.png", 1200, 630, 500)
 
-    ico_sizes = [16, 32, 48, 64, 128, 256]
+    ico_sizes = [256, 128, 64, 48, 32, 16]
     ico_images = [logo.resize((s, s), resample) for s in ico_sizes]
     for ico_path in (public / "favicon.ico", build / "icon.ico"):
+        # Largest frame first — some Pillow builds only persist the first ICO entry.
         ico_images[0].save(
             ico_path,
             format="ICO",
