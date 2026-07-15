@@ -654,8 +654,8 @@ const Hero: React.FC<HeroProps> = ({
           {/* Steam Wishlist Section */}
           <div className="py-3 flex flex-col items-center gap-3 mt-8 animate-fade-in-up animation-delay-4500 w-full min-w-0">
             <p className="text-sm sm:text-base font-medium text-grey-200 text-center max-w-md px-2 sm:px-4 break-words">
-              A Dark Cave is soon launching on Steam. Make sure to add it to your
-              Wishlist so you will be notified when it launches
+              A Dark Cave is soon launching on Steam. Add it to your wishlist
+              today so you'll be notified the moment it launches.
             </p>
             <div className="flex gap-2 sm:gap-3 flex-wrap justify-center px-2">
               <button
@@ -667,7 +667,6 @@ const Hero: React.FC<HeroProps> = ({
                 <FooterSocialIcon
                   platform="steam"
                   className="h-5 w-5 shrink-0"
-                  variant="brand"
                 />
                 <span>Steam</span>
               </button>
