@@ -1,6 +1,7 @@
 import type { GameState } from "@shared/schema";
 import {
   getInsightAmount,
+  isCraftOnceAction,
   isInsightRevealInProgress,
   isInsightUnlocked,
 } from "@/game/rules/insightReveal";
@@ -402,6 +403,9 @@ export function isConstructionBoostAvailable(
   actionId: string,
 ): boolean {
   if (!actionId.startsWith("build") && !actionId.startsWith("craft")) {
+    return false;
+  }
+  if (actionId.startsWith("craft") && !isCraftOnceAction(actionId)) {
     return false;
   }
   if (!isExecutionBoostUnlockedForAction(state, actionId)) return false;

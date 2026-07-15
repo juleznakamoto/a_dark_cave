@@ -367,6 +367,27 @@ describe("constructionQueueSlots", () => {
     expect(isConstructionBoostAvailable(state, "craftIronSword")).toBe(false);
   });
 
+  it("crafting boost is unavailable for repeatable crafts", () => {
+    const state = baseState({
+      buildings: {
+        ...baseState().buildings,
+        blacksmith: 1,
+        advancedBlacksmith: 1,
+      } as GameState["buildings"],
+      executionStartTimes: {
+        craftTorches: Date.now(),
+        craftBoneTotems: Date.now(),
+      },
+      executionDurations: {
+        craftTorches: 360,
+        craftBoneTotems: 360,
+      },
+    });
+    expect(isConstructionBoostAvailable(state, "craftTorches")).toBe(false);
+    expect(isConstructionBoostAvailable(state, "craftBoneTotems")).toBe(false);
+    expect(canBoostConstruction(state, "craftTorches")).toBe(false);
+  });
+
   it("grandfathers legacy shop-purchased queue slots beyond the normal cap", () => {
     const base = baseState();
     expect(getShopQueueSlotCount(base)).toBe(0);
