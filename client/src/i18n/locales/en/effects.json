@@ -278,6 +278,10 @@
       "description": "Your hunters' aim is improved",
       "name": "Sharp Aim"
     },
+    "skeleton_key_schematic": {
+      "description": "Blueprint for crafting a skeleton key",
+      "name": "Skeleton Key"
+    },
     "stonebinders_codex": {
       "description": "Tome from the hidden library revealing secrets of efficient construction",
       "name": "Stonebinder's Codex"

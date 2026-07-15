@@ -1304,6 +1304,13 @@ export const clothingEffects: Record<string, EffectDefinition> = {
     bonuses: {},
   },
 
+  skeleton_key_schematic: {
+    id: "skeleton_key_schematic",
+    name: "Skeleton Key",
+    description: "Blueprint for crafting a skeleton key",
+    bonuses: {},
+  },
+
   // Blessings
   whisperers_mark: {
     id: "whisperers_mark",

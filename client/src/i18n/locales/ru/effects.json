@@ -270,6 +270,10 @@
       "description": "Меткость ваших охотников улучшена",
       "name": "Острый глаз"
     },
+    "skeleton_key_schematic": {
+      "description": "Blueprint for crafting a skeleton key",
+      "name": "Skeleton Key"
+    },
     "stonebinders_codex": {
       "description": "Том из скрытой библиотеки, раскрывающий тайны эффективного строительства",
       "name": "Кодекс камневяза"

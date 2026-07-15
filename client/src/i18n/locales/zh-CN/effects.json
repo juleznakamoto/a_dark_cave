@@ -270,6 +270,10 @@
       "description": "你的猎人瞄准能力提升",
       "name": "精准瞄准"
     },
+    "skeleton_key_schematic": {
+      "description": "Blueprint for crafting a skeleton key",
+      "name": "Skeleton Key"
+    },
     "stonebinders_codex": {
       "description": "来自隐秘图书馆的典籍，揭示高效建造的秘密",
       "name": "缚石者法典"

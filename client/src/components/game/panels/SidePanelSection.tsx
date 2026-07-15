@@ -115,6 +115,33 @@ const EFFECT_TOOLTIP_SECTIONS = new Set<SidePanelSectionId>([
   "blessings",
 ]);
 
+function getSidePanelItemTooltipType(
+  sectionId: SidePanelSectionId | undefined,
+):
+  | "weapon"
+  | "tool"
+  | "blessing"
+  | "book"
+  | "building"
+  | "fellowship"
+  | null {
+  if (!sectionId) return null;
+  if (sectionId === "weapons" || sectionId === "combatItems") return "weapon";
+  if (sectionId === "tools") return "tool";
+  if (sectionId === "books") return "book";
+  if (sectionId === "fellowship") return "fellowship";
+  if (sectionId === "buildings") return "building";
+  if (
+    sectionId === "blessings" ||
+    sectionId === "clothing" ||
+    sectionId === "relics" ||
+    sectionId === "schematics"
+  ) {
+    return "blessing";
+  }
+  return null;
+}
+
 /** Shared layout for resource name + amount + production delta / change hint. */
 const RESOURCE_ROW_GRID_CLASS =
   "grid w-fit min-w-[calc(5.5rem+4rem+3rem+0.5rem+0.25rem)] max-w-full pr-1 grid-cols-[5.5rem_4rem_3rem] items-baseline gap-x-1";
@@ -1302,16 +1329,27 @@ export default function SidePanelSection({
     // If this item has a tooltip, render with tooltip
     if (item.tooltip) {
       const tooltipContent =
-        typeof item.tooltip === "string" ? (
-          <>
-            {isMadnessTooltip && (
-              <p className="whitespace-pre-line">{madnessTooltipContent}</p>
-            )}
-            {item.tooltip}
-          </>
-        ) : (
-          item.tooltip
-        );
+        item.tooltip === true
+          ? (() => {
+            const itemType = getSidePanelItemTooltipType(sectionId);
+            return itemType
+              ? renderItemTooltip(item.id, itemType)
+              : null;
+          })()
+          : typeof item.tooltip === "string" ? (
+            <>
+              {isMadnessTooltip && (
+                <p className="whitespace-pre-line">{madnessTooltipContent}</p>
+              )}
+              {item.tooltip}
+            </>
+          ) : (
+            item.tooltip
+          );
+
+      if (!tooltipContent) {
+        return <div key={item.id}>{itemContent}</div>;
+      }
 
       if (usesLabelValueGridLayout) {
         return <div key={item.id}>{renderLabelValueRow(tooltipContent)}</div>;

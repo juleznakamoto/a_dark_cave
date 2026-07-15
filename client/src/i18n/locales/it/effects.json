@@ -278,6 +278,10 @@
       "description": "La mira dei tuoi cacciatori è migliorata",
       "name": "Mira Acuta"
     },
+    "skeleton_key_schematic": {
+      "description": "Blueprint for crafting a skeleton key",
+      "name": "Skeleton Key"
+    },
     "stonebinders_codex": {
       "description": "Tomo della biblioteca nascosta che rivela i segreti di una costruzione efficiente",
       "name": "Codice del Legapietra"

@@ -278,6 +278,10 @@
       "description": "Die Treffsicherheit deiner Jäger ist verbessert", //ok
       "name": "Scharfes Ziel"
     },
+    "skeleton_key_schematic": {
+      "description": "Blueprint for crafting a skeleton key",
+      "name": "Skeleton Key"
+    },
     "stonebinders_codex": {
       "description": "Foliant aus der verborgenen Bibliothek, der Geheimnisse effizienten Bauens offenbart",
       "name": "Kodex des Steinbinders"

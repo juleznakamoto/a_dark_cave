@@ -278,6 +278,10 @@
       "description": "A mira dos seus caçadores é aprimorada",
       "name": "Mira Apurada"
     },
+    "skeleton_key_schematic": {
+      "description": "Blueprint for crafting a skeleton key",
+      "name": "Skeleton Key"
+    },
     "stonebinders_codex": {
       "description": "Tomo da biblioteca oculta que revela segredos de construção eficiente",
       "name": "Códice do Vinculador de Pedras"
