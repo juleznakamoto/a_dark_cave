@@ -3,14 +3,15 @@ import { gameStateSchema } from "@shared/schema";
 import { hydrateLoadedGameState } from "./stateHelpers";
 
 describe("hydrateLoadedGameState", () => {
-  it("backfills missing tools/weapons/books from schema defaults", () => {
+  it("backfills missing tools/weapons/books and rebuilds tools from story flags", () => {
     const defaults = gameStateSchema.parse({});
     const hydrated = hydrateLoadedGameState({
       playTime: 1000,
       story: { seen: { hasStoneAxe: true }, merchantPurchases: 0, heavySleeperHours: 0 },
     });
 
-    expect(hydrated.tools).toEqual(defaults.tools);
+    expect(hydrated.tools.stone_axe).toBe(true);
+    expect(hydrated.tools.stone_pickaxe).toBe(false);
     expect(hydrated.weapons).toEqual(defaults.weapons);
     expect(hydrated.books).toEqual(defaults.books);
     expect(Object.keys(hydrated.tools).length).toBeGreaterThan(0);

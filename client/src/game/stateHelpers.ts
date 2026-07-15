@@ -1,4 +1,5 @@
 import { GameState, gameStateSchema } from "@shared/schema";
+import { overlayToolsFromStorySeen } from "@shared/rebuildToolsFromStorySeen";
 import type { CombatResultSummary } from "./types";
 import { getCurrentPopulation, getMaxPopulation } from "./population";
 import {
@@ -670,19 +671,20 @@ function migrateSteamShopSlotsOnLoad(state: GameState): Partial<GameState> | nul
 
 /**
  * Backfill permanent item slices from schema defaults when a loaded save omits them.
- * Prevents shallow store merges from leaving `createInitialState()` all-false tools
- * (or stale slices) when cloud/local JSON lacks `tools` / `weapons` / `books`.
+ * Rebuilds owned craft tools from `story.seen` when flags exist but the tools slice
+ * is missing or empty (cloud corruption loop).
  */
 export function hydrateLoadedGameState<T extends Partial<GameState>>(
   savedState: T,
 ): T & Pick<GameState, "tools" | "weapons" | "books"> {
   const defaults = gameStateSchema.parse({});
+  const mergedTools = {
+    ...defaults.tools,
+    ...savedState.tools,
+  };
   return {
     ...savedState,
-    tools: {
-      ...defaults.tools,
-      ...savedState.tools,
-    },
+    tools: overlayToolsFromStorySeen(mergedTools, savedState.story?.seen),
     weapons: {
       ...defaults.weapons,
       ...savedState.weapons,

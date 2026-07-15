@@ -573,6 +573,12 @@ export async function saveGame(
           sanitizedState,
         );
 
+        // Permanent slices: always send full objects so incremental diffs cannot omit
+        // the `tools` key when lastCloudState and serialized state both lack it.
+        stateDiff.tools = sanitizedState.tools;
+        stateDiff.weapons = sanitizedState.weapons;
+        stateDiff.books = sanitizedState.books;
+
         // Always include startTime and gameId for completion tracking
         if (sanitizedState.startTime && !stateDiff.startTime) {
           stateDiff.startTime = sanitizedState.startTime;
