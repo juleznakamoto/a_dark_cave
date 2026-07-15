@@ -61,14 +61,6 @@ export default function EndScreenPage() {
     window.location.href = "mailto:support@a-dark-cave.com";
   };
 
-  const handleInstagram = () => {
-    window.open("https://www.instagram.com/a_dark_cave/", "_blank", "noopener,noreferrer");
-  };
-
-  const handleReddit = () => {
-    window.open("https://www.reddit.com/r/aDarkCave/", "_blank", "noopener,noreferrer");
-  };
-
   const handleMoreGames = async () => {
     let playlightSDK: { setDiscovery?: (open?: boolean) => void } | undefined =
       (window as typeof window & { playlightSDK?: typeof playlightSDK }).playlightSDK;
@@ -138,14 +130,6 @@ export default function EndScreenPage() {
                 buttonId: "end-screen-more-games",
               },
             }),
-        }}
-        socialButtons={{
-          instagram: {
-            onClick: handleInstagram,
-          },
-          reddit: {
-            onClick: handleReddit,
-          },
         }}
       />
     </div>

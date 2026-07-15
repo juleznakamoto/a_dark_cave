@@ -15,7 +15,7 @@ import type {
 const ISSUE_LABELS: Record<SaveGameIssueKind, string> = {
   invalid_game_state: "Invalid or empty game_state",
   negative_resource: "Negative resource",
-  non_numeric_resource: "Non-numeric / null resource",
+  non_numeric_resource: "Non-numeric resource",
   negative_villager: "Negative villager count",
   bad_playtime: "Bad playTime (null / NaN / missing)",
   negative_playtime: "Negative playTime",
@@ -24,7 +24,7 @@ const ISSUE_LABELS: Record<SaveGameIssueKind, string> = {
   bad_story_seen: "Malformed story.seen",
   bad_game_stats: "Malformed game_stats",
   updated_before_created: "updated_at before created_at",
-  population_mismatch: "current_population > total_population",
+  population_mismatch: "Villagers exceed housing cap",
 };
 
 interface SaveGameAnalysisTabProps {

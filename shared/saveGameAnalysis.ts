@@ -102,6 +102,50 @@ function asObject(value: unknown): Record<string, unknown> | null {
   return value as Record<string, unknown>;
 }
 
+function sumNumericRecordValues(record: Record<string, unknown>): number {
+  return Object.values(record).reduce<number>(
+    (sum, value) => sum + (typeof value === "number" ? value : 0),
+    0,
+  );
+}
+
+/** Mirrors client `getCurrentPopulation` — derived from villagers, not cached fields. */
+export function computeCurrentPopulationFromGameState(
+  gsObj: Record<string, unknown>,
+): number {
+  const villagers = asObject(gsObj.villagers) ?? {};
+  const expedition = asObject(gsObj.expeditionVillagers) ?? {};
+  return sumNumericRecordValues(villagers) + sumNumericRecordValues(expedition);
+}
+
+/** Mirrors client `getMaxPopulation` — housing cap from buildings + temple bonus. */
+export function computeMaxPopulationFromGameState(
+  gsObj: Record<string, unknown>,
+): number {
+  const buildings = asObject(gsObj.buildings) ?? {};
+  const blessings = asObject(gsObj.blessings) ?? {};
+  const buildingCount = (key: string): number => {
+    const value = buildings[key];
+    return typeof value === "number" ? value : 0;
+  };
+
+  let templeBonus = 0;
+  if (blessings.flames_touch === true) {
+    templeBonus = 4;
+  } else if (blessings.flames_touch_enhanced === true) {
+    templeBonus = 8;
+  }
+
+  return (
+    buildingCount("woodenHut") * 2 +
+    buildingCount("stoneHut") * 4 +
+    buildingCount("longhouse") * 8 +
+    buildingCount("furTents") * 4 +
+    buildingCount("blackEstate") * 10 +
+    templeBonus
+  );
+}
+
 export function hasCraftToolStoryFlags(storySeen: unknown): boolean {
   const seen = asObject(storySeen);
   if (!seen) return false;
@@ -146,11 +190,13 @@ export function analyzeSaveGameRow(
   const resources = asObject(gsObj.resources);
   if (resources) {
     for (const [key, value] of Object.entries(resources)) {
+      // null/undefined are treated as 0 throughout gameplay (`|| 0` / `?? 0` / numeric coercion).
+      if (value === null || value === undefined) continue;
       if (typeof value !== "number") {
         issues.push({
           kind: "non_numeric_resource",
           field: key,
-          detail: value === null ? "null" : typeof value,
+          detail: typeof value,
         });
       } else if (value < 0) {
         issues.push({ kind: "negative_resource", field: key, detail: String(value) });
@@ -202,16 +248,12 @@ export function analyzeSaveGameRow(
     });
   }
 
-  const currentPop = gsObj.current_population;
-  const totalPop = gsObj.total_population;
-  if (
-    typeof currentPop === "number" &&
-    typeof totalPop === "number" &&
-    currentPop > totalPop
-  ) {
+  const computedCurrent = computeCurrentPopulationFromGameState(gsObj);
+  const computedMax = computeMaxPopulationFromGameState(gsObj);
+  if (computedCurrent > computedMax) {
     issues.push({
       kind: "population_mismatch",
-      detail: `current=${currentPop} total=${totalPop}`,
+      detail: `current=${computedCurrent} max=${computedMax}`,
     });
   }
 

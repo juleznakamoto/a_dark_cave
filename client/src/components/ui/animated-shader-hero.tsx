@@ -1,6 +1,8 @@
 import React, { useRef, useEffect } from "react";
 import { logger } from "@/lib/logger";
 import { StarshipShader } from "@/components/ui/starship-shader";
+import { FooterSocialIcon } from "@/components/game/FooterSocialIcon";
+import { OFFICIAL_STEAM_URL } from "@/lib/gameFooterSocialLinks";
 
 export type EndScreenBackgroundVariant = "default" | "starship";
 
@@ -41,14 +43,6 @@ interface HeroProps {
       text: string;
       onClick?: () => void;
       buttonId?: string;
-    };
-  };
-  socialButtons?: {
-    instagram?: {
-      onClick?: () => void;
-    };
-    reddit?: {
-      onClick?: () => void;
     };
   };
   /** Default flame shader; `starship` for Cruel Mode completion end screen. */
@@ -435,7 +429,6 @@ const Hero: React.FC<HeroProps> = ({
   subtitle2,
   subtitle3,
   buttons,
-  socialButtons,
   backgroundVariant = "default",
   className = "",
 }) => {
@@ -658,45 +651,31 @@ const Hero: React.FC<HeroProps> = ({
             </button>
           </div>
 
-          {/* Vote Section */}
+          {/* Steam Wishlist Section */}
           <div className="py-3 flex flex-col items-center gap-3 mt-8 animate-fade-in-up animation-delay-4500 w-full min-w-0">
             <p className="text-sm sm:text-base font-medium text-grey-200 text-center max-w-md px-2 sm:px-4 break-words">
-              You can support the game for free by leaving a vote or review. It
-              makes a huge difference. Thank you! ♡
+              A Dark Cave is soon launching on Steam. Make sure to add it to your
+              Wishlist so you will be notified when it launches
             </p>
             <div className="flex gap-2 sm:gap-3 flex-wrap justify-center px-2">
               <button
                 onClick={() =>
-                  window.open(
-                    "https://a-dark-cave.itch.io/a-dark-cave",
-                    "_blank",
-                    "noopener,noreferrer",
-                  )
+                  window.open(OFFICIAL_STEAM_URL, "_blank", "noopener,noreferrer")
                 }
                 className={END_SCREEN_CTA_BUTTON_CLASS}
               >
-                <svg
-                  className="h-5 w-5 flex-shrink-0"
-                  viewBox="0 0 210 210"
-                  fill="currentColor"
-                  aria-hidden
-                >
-                  <path
-                    fillRule="evenodd"
-                    d="M38 26.25l-23 27v7.687c0 9.747 8.96 18.313 17.094 18.313 9.767 0 17.905-8.233 17.906-18 0 9.767 7.857 18 17.625 18S85 71.017 85 61.25c0 9.767 8.357 18 18.125 18 9.766 0 17.875-8.233 17.875-18 0 9.767 7.89 18 17.656 18 9.768 0 17.344-8.233 17.344-18 0 9.767 8.39 18 18.156 18 9.768 0 17.844-8.233 17.844-18v-8l-25-27c-43.646-.116-129 0-129 0z"
-                  />
-                  <path d="M50.006 74.75c-.93 1.66-2.224 3.08-3.563 4.412C42.757 82.828 37.672 85.1 32.1 85.1c-1.434 0-5.094-.845-5.094-.845v100h154V83.693c-2.3.904-4.234 1.406-6.844 1.406-5.577 0-10.656-2.27-14.344-5.938-1.336-1.332-2.477-2.843-3.406-4.5-.93 1.66-2.1 3.166-3.437 4.5-3.688 3.663-8.74 5.937-14.313 5.937-5.575 0-10.657-2.27-14.344-5.938-1.336-1.332-2.508-2.844-3.437-4.5-.93 1.66-2.065 3.166-3.405 4.5-3.688 3.663-8.77 5.937-14.344 5.937s-10.656-2.27-14.343-5.938c-1.337-1.33-2.477-2.844-3.406-4.5-.93 1.66-2.095 3.167-3.436 4.5C78.257 82.828 73.2 85.1 67.63 85.1c-5.574 0-10.656-2.27-14.343-5.938-1.336-1.33-2.35-2.756-3.28-4.412zm22.15 18.475c6.717 0 11.495 4.35 13.188 10.906h37.125c1.69-6.556 6.437-10.905 13.155-10.905 10.67 0 22.4 10.956 26.062 24.344l8.75 31.968c3.663 13.387-2.08 24.343-12.75 24.343-9.367 0-19.55-8.44-24.375-19.56H74.468c-4.824 11.12-15.006 19.56-24.374 19.56-10.672 0-16.413-10.955-12.75-24.343l8.75-31.968c3.662-13.39 15.39-24.345 26.062-24.345z" />
-                  <path d="M90.743 121.55L78.205 135h12.352v13.866h24.625V135h13.174l-12.54-13.45-12.536-13.45z" />
-                </svg>
-                <span>itch.io</span>
+                <FooterSocialIcon
+                  platform="steam"
+                  className="h-5 w-5 shrink-0"
+                  variant="brand"
+                />
+                <span>Steam</span>
               </button>
             </div>
           </div>
 
           {/* Continue Playing and Social Links */}
-          {(socialButtons?.instagram ||
-            socialButtons?.reddit ||
-            buttons?.feedback ||
+          {(buttons?.feedback ||
             buttons?.secondary ||
             buttons?.secondaryTrailing) && (
               <div className="flex flex-col items-center gap-4 animate-fade-in-up animation-delay-4500 px-2">
@@ -724,6 +703,32 @@ const Hero: React.FC<HeroProps> = ({
                   </div>
                 )}
                 <div className="flex flex-wrap justify-center gap-2 sm:gap-4 px-2">
+                  <button
+                    type="button"
+                    onClick={() =>
+                      window.open(
+                        "https://a-dark-cave.itch.io/a-dark-cave",
+                        "_blank",
+                        "noopener,noreferrer",
+                      )
+                    }
+                    className={END_SCREEN_LINK_BUTTON_CLASS}
+                  >
+                    <svg
+                      className="w-3.5 h-3.5 shrink-0"
+                      viewBox="0 0 210 210"
+                      fill="currentColor"
+                      aria-hidden
+                    >
+                      <path
+                        fillRule="evenodd"
+                        d="M38 26.25l-23 27v7.687c0 9.747 8.96 18.313 17.094 18.313 9.767 0 17.905-8.233 17.906-18 0 9.767 7.857 18 17.625 18S85 71.017 85 61.25c0 9.767 8.357 18 18.125 18 9.766 0 17.875-8.233 17.875-18 0 9.767 7.89 18 17.656 18 9.768 0 17.344-8.233 17.344-18 0 9.767 8.39 18 18.156 18 9.768 0 17.844-8.233 17.844-18v-8l-25-27c-43.646-.116-129 0-129 0z"
+                      />
+                      <path d="M50.006 74.75c-.93 1.66-2.224 3.08-3.563 4.412C42.757 82.828 37.672 85.1 32.1 85.1c-1.434 0-5.094-.845-5.094-.845v100h154V83.693c-2.3.904-4.234 1.406-6.844 1.406-5.577 0-10.656-2.27-14.344-5.938-1.336-1.332-2.477-2.843-3.406-4.5-.93 1.66-2.1 3.166-3.437 4.5-3.688 3.663-8.74 5.937-14.313 5.937-5.575 0-10.657-2.27-14.344-5.938-1.336-1.332-2.508-2.844-3.437-4.5-.93 1.66-2.065 3.166-3.405 4.5-3.688 3.663-8.77 5.937-14.344 5.937s-10.656-2.27-14.343-5.938c-1.337-1.33-2.477-2.844-3.406-4.5-.93 1.66-2.095 3.167-3.436 4.5C78.257 82.828 73.2 85.1 67.63 85.1c-5.574 0-10.656-2.27-14.343-5.938-1.336-1.33-2.35-2.756-3.28-4.412zm22.15 18.475c6.717 0 11.495 4.35 13.188 10.906h37.125c1.69-6.556 6.437-10.905 13.155-10.905 10.67 0 22.4 10.956 26.062 24.344l8.75 31.968c3.663 13.387-2.08 24.343-12.75 24.343-9.367 0-19.55-8.44-24.375-19.56H74.468c-4.824 11.12-15.006 19.56-24.374 19.56-10.672 0-16.413-10.955-12.75-24.343l8.75-31.968c3.662-13.39 15.39-24.345 26.062-24.345z" />
+                      <path d="M90.743 121.55L78.205 135h12.352v13.866h24.625V135h13.174l-12.54-13.45-12.536-13.45z" />
+                    </svg>
+                    <span>itch.io</span>
+                  </button>
                   <button
                     type="button"
                     onClick={() =>
@@ -757,36 +762,6 @@ const Hero: React.FC<HeroProps> = ({
                     </svg>
                     <span>Incremental DB</span>
                   </button>
-                  {socialButtons?.instagram && (
-                    <button
-                      onClick={socialButtons.instagram.onClick}
-                      className={END_SCREEN_LINK_BUTTON_CLASS}
-                    >
-                      <svg
-                        className="w-3.5 h-3.5 shrink-0"
-                        viewBox="0 0 24 24"
-                        fill="currentColor"
-                      >
-                        <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z" />
-                      </svg>
-                      <span>Instagram</span>
-                    </button>
-                  )}
-                  {socialButtons?.reddit && (
-                    <button
-                      onClick={socialButtons.reddit.onClick}
-                      className={END_SCREEN_LINK_BUTTON_CLASS}
-                    >
-                      <svg
-                        className="w-3.5 h-3.5 shrink-0"
-                        viewBox="0 0 24 24"
-                        fill="currentColor"
-                      >
-                        <path d="M12 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0zm5.01 4.744c.688 0 1.25.561 1.25 1.249a1.25 1.25 0 0 1-2.498.056l-2.597-.547-.8 3.747c1.824.07 3.48.632 4.674 1.488.308-.309.73-.491 1.207-.491.968 0 1.754.786 1.754 1.754 0 .716-.435 1.333-1.01 1.614a3.111 3.111 0 0 1 .042.52c0 2.694-3.13 4.87-7.004 4.87-3.874 0-7.004-2.176-7.004-4.87 0-.183.015-.366.043-.534A1.748 1.748 0 0 1 4.028 12c0-.968.786-1.754 1.754-1.754.463 0 .898.196 1.207.49 1.207-.883 2.878-1.43 4.744-1.487l.885-4.182a.342.342 0 0 1 .14-.197.35.35 0 0 1 .238-.042l2.906.617a1.214 1.214 0 0 1 1.108-.701zM9.25 12C8.561 12 8 12.562 8 13.25c0 .687.561 1.248 1.25 1.248.687 0 1.248-.561 1.248-1.249 0-.688-.561-1.249-1.249-1.249zm5.5 0c-.687 0-1.248.561-1.248 1.25 0 .687.561 1.248 1.249 1.248.688 0 1.249-.561 1.249-1.249 0-.687-.562-1.249-1.25-1.249zm-5.466 3.99a.327.327 0 0 0-.231.094.33.33 0 0 0 0 .463c.842.842 2.484.913 2.961.913.477 0 2.105-.056 2.961-.913a.361.361 0 0 0 .029-.463.33.33 0 0 0-.464 0c-.547.533-1.684.73-2.512.73-.828 0-1.979-.196-2.512-.73a.326.326 0 0 0-.232-.095z" />
-                      </svg>
-                      <span>Reddit</span>
-                    </button>
-                  )}
                   {buttons?.feedback && (
                     <button
                       onClick={buttons.feedback.onClick}
