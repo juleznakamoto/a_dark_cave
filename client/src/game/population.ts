@@ -461,19 +461,60 @@ export const getPopulationProduction = (
  * (e.g. base food/wood). Includes villagers on expeditions — they still count against max
  * population while away.
  */
-export function getCurrentPopulation(
-  state: Pick<GameState, "villagers" | "expeditionVillagers">,
-): number {
-  return getVillagersInVillage(state) + getExpeditionVillagerCount(state);
-}
-
-/** Count of villagers assigned to in-progress expeditions (deducted from `free`, tracked separately). */
+/** Sum of all `expeditionVillagers` values (includes stale cloud-merge ghosts). */
 export function getExpeditionVillagerCount(
   state: Pick<GameState, "expeditionVillagers">,
 ): number {
   return Object.values(state.expeditionVillagers ?? {}).reduce(
     (sum, count) => sum + (count || 0),
     0,
+  );
+}
+
+/**
+ * Expedition headcount that still has a matching in-flight execution (not overdue).
+ * Stale expedition keys (e.g. from cloud JSONB deep-merge never deleting completed
+ * actions) must not inflate population.
+ */
+export function getActiveExpeditionVillagerCount(
+  state: Pick<
+    GameState,
+    "expeditionVillagers" | "executionStartTimes" | "executionDurations"
+  >,
+  now = Date.now(),
+): number {
+  const starts = state.executionStartTimes ?? {};
+  const durations = state.executionDurations ?? {};
+  return Object.entries(state.expeditionVillagers ?? {}).reduce(
+    (sum, [actionId, count]) => {
+      if (!(count > 0)) return sum;
+      const startTime = starts[actionId];
+      const durationSec = durations[actionId];
+      if (
+        typeof startTime !== "number" ||
+        typeof durationSec !== "number" ||
+        durationSec <= 0
+      ) {
+        return sum;
+      }
+      if ((now - startTime) / 1000 >= durationSec) {
+        return sum;
+      }
+      return sum + count;
+    },
+    0,
+  );
+}
+
+export function getCurrentPopulation(
+  state: Pick<
+    GameState,
+    "villagers" | "expeditionVillagers" | "executionStartTimes" | "executionDurations"
+  >,
+  now = Date.now(),
+): number {
+  return (
+    getVillagersInVillage(state) + getActiveExpeditionVillagerCount(state, now)
   );
 }
 
@@ -586,9 +627,9 @@ export function getMaxPopulation(state: GameState): number {
 
   // Temple dedication bonuses
   let templeBonus = 0;
-  if (state.blessings.flames_touch) {
+  if (state.blessings?.flames_touch) {
     templeBonus = 4;
-  } else if (state.blessings.flames_touch_enhanced) {
+  } else if (state.blessings?.flames_touch_enhanced) {
     templeBonus = 8;
   }
 

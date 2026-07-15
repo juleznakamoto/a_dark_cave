@@ -259,22 +259,48 @@ describe('getCurrentPopulation', () => {
   });
 
   it('adds expedition assignments so totals match in-village headcount', () => {
+    const now = Date.now();
     const state = createTestState({
       villagers: { ...createTestState().villagers, free: 2, gatherer: 5 },
       expeditionVillagers: { exploreCave: 3 },
+      executionStartTimes: { exploreCave: now },
+      executionDurations: { exploreCave: 60 },
     });
-    expect(getCurrentPopulation(state)).toBe(10);
+    expect(getCurrentPopulation(state, now)).toBe(10);
+  });
+
+  it('ignores stale expedition keys without a matching in-flight execution', () => {
+    const state = createTestState({
+      villagers: { ...createTestState().villagers, free: 2, gatherer: 5 },
+      expeditionVillagers: { exploreCave: 3 },
+      executionStartTimes: {},
+    });
+    expect(getCurrentPopulation(state)).toBe(7);
+  });
+
+  it('ignores overdue expedition locks (completed but not cleared from cloud merge)', () => {
+    const now = 1_700_000_100_000;
+    const state = createTestState({
+      villagers: { ...createTestState().villagers, free: 2, gatherer: 5 },
+      expeditionVillagers: { exploreCave: 3 },
+      executionStartTimes: { exploreCave: now - 120_000 },
+      executionDurations: { exploreCave: 60 },
+    });
+    expect(getCurrentPopulation(state, now)).toBe(7);
   });
 });
 
 describe('getVillagersInVillage', () => {
   it('counts only job/free buckets, not expedition assignments', () => {
+    const now = Date.now();
     const state = createTestState({
       villagers: { ...createTestState().villagers, free: 1, gatherer: 4 },
       expeditionVillagers: { exploreCave: 5 },
+      executionStartTimes: { exploreCave: now },
+      executionDurations: { exploreCave: 60 },
     });
     expect(getVillagersInVillage(state)).toBe(5);
-    expect(getCurrentPopulation(state)).toBe(10);
+    expect(getCurrentPopulation(state, now)).toBe(10);
   });
 });
 

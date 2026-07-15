@@ -88,6 +88,47 @@ describe("saveGameAnalysis", () => {
     expect(result.issues.some((i) => i.kind === "population_mismatch")).toBe(true);
   });
 
+  it("does not count stale expedition locks without in-flight execution", () => {
+    const gs = {
+      playTime: 60_000,
+      villagers: { gatherer: 6 },
+      buildings: { woodenHut: 2 },
+      expeditionVillagers: { exploreCave: 20 },
+      executionStartTimes: {},
+    };
+    expect(computeCurrentPopulationFromGameState(gs)).toBe(6);
+    const result = analyzeSaveGameRow({ ...baseRow, game_state: gs });
+    expect(result.issues.some((i) => i.kind === "population_mismatch")).toBe(true);
+  });
+
+  it("counts expedition villagers only while their action is in flight", () => {
+    const updatedAt = "2026-07-15T15:00:00.000Z";
+    const updatedMs = Date.parse(updatedAt);
+    const gs = {
+      playTime: 60_000,
+      villagers: { gatherer: 3, free: 2 },
+      buildings: { woodenHut: 2 },
+      expeditionVillagers: { exploreCave: 3 },
+      executionStartTimes: { exploreCave: updatedMs - 30_000 },
+      executionDurations: { exploreCave: 60 },
+    };
+    expect(computeCurrentPopulationFromGameState(gs, updatedMs)).toBe(8);
+  });
+
+  it("ignores overdue expedition locks when analyzing cloud saves", () => {
+    const updatedAt = "2026-07-15T15:00:00.000Z";
+    const updatedMs = Date.parse(updatedAt);
+    const gs = {
+      playTime: 60_000,
+      villagers: { gatherer: 3, free: 2 },
+      buildings: { woodenHut: 2 },
+      expeditionVillagers: { exploreCave: 3 },
+      executionStartTimes: { exploreCave: updatedMs - 120_000 },
+      executionDurations: { exploreCave: 60 },
+    };
+    expect(computeCurrentPopulationFromGameState(gs, updatedMs)).toBe(5);
+  });
+
   it("ignores stale cached population fields when villager counts fit housing", () => {
     const result = analyzeSaveGameRow({
       ...baseRow,

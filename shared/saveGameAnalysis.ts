@@ -109,13 +109,42 @@ function sumNumericRecordValues(record: Record<string, unknown>): number {
   );
 }
 
+/** Mirrors client `getActiveExpeditionVillagerCount`. */
+export function computeActiveExpeditionFromGameState(
+  gsObj: Record<string, unknown>,
+  now = Date.now(),
+): number {
+  const expedition = asObject(gsObj.expeditionVillagers) ?? {};
+  const starts = asObject(gsObj.executionStartTimes) ?? {};
+  const durations = asObject(gsObj.executionDurations) ?? {};
+  return Object.entries(expedition).reduce((sum, [actionId, count]) => {
+    if (typeof count !== "number" || count <= 0) return sum;
+    const startTime = starts[actionId];
+    const durationSec = durations[actionId];
+    if (
+      typeof startTime !== "number" ||
+      typeof durationSec !== "number" ||
+      durationSec <= 0
+    ) {
+      return sum;
+    }
+    if ((now - startTime) / 1000 >= durationSec) {
+      return sum;
+    }
+    return sum + count;
+  }, 0);
+}
+
 /** Mirrors client `getCurrentPopulation` — derived from villagers, not cached fields. */
 export function computeCurrentPopulationFromGameState(
   gsObj: Record<string, unknown>,
+  now = Date.now(),
 ): number {
   const villagers = asObject(gsObj.villagers) ?? {};
-  const expedition = asObject(gsObj.expeditionVillagers) ?? {};
-  return sumNumericRecordValues(villagers) + sumNumericRecordValues(expedition);
+  return (
+    sumNumericRecordValues(villagers) +
+    computeActiveExpeditionFromGameState(gsObj, now)
+  );
 }
 
 /** Mirrors client `getMaxPopulation` — housing cap from buildings + temple bonus. */
@@ -248,7 +277,10 @@ export function analyzeSaveGameRow(
     });
   }
 
-  const computedCurrent = computeCurrentPopulationFromGameState(gsObj);
+  const computedCurrent = computeCurrentPopulationFromGameState(
+    gsObj,
+    Number.isFinite(updatedMs) ? updatedMs : Date.now(),
+  );
   const computedMax = computeMaxPopulationFromGameState(gsObj);
   if (computedCurrent > computedMax) {
     issues.push({

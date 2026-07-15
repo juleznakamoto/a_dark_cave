@@ -68,6 +68,36 @@ describe("reconcileInFlightExecutionsOnLoad", () => {
     expect(reconciled.expeditionVillagers).toEqual({});
     expect(reconciled.villagers?.free).toBe(5);
   });
+
+  it("drops ghost expedition locks without duplicating villagers on load", () => {
+    const state = {
+      ...baseState(),
+      villagers: {
+        free: 0,
+        gatherer: 20,
+        hunter: 0,
+        iron_miner: 0,
+        coal_miner: 0,
+        steel_forger: 0,
+        blacksteel_forger: 0,
+        sulfur_miner: 0,
+        obsidian_miner: 0,
+        adamant_miner: 0,
+        moonstone_miner: 0,
+        tanner: 0,
+        powder_maker: 0,
+        ashfire_dust_maker: 0,
+        scholar: 0,
+      },
+      buildings: { woodenHut: 2 },
+      expeditionVillagers: { exploreCave: 8 },
+    } as GameState;
+
+    const reconciled = reconcileInFlightExecutionsOnLoad(state, NOW);
+    expect(reconciled.expeditionVillagers).toEqual({});
+    expect(reconciled.villagers?.free).toBe(0);
+    expect(reconciled.villagers?.gatherer).toBe(20);
+  });
 });
 
 describe("applyGameStateLoadMigrations", () => {

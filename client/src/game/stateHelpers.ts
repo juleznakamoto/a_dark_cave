@@ -1,7 +1,7 @@
 import { GameState, gameStateSchema } from "@shared/schema";
 import { overlayToolsFromStorySeen } from "@shared/rebuildToolsFromStorySeen";
 import type { CombatResultSummary } from "./types";
-import { getCurrentPopulation, getMaxPopulation } from "./population";
+import { getCurrentPopulation, getMaxPopulation, getVillagersInVillage } from "./population";
 import {
   isResourceLimited,
   getResourceLimit,
@@ -621,11 +621,19 @@ export function reconcileInFlightExecutionsOnLoad(
     }
   }
 
+  const inVillage = getVillagersInVillage(state);
+  const maxPop = getMaxPopulation(state);
+  const free = state.villagers?.free ?? 0;
+  // Ghost expedition locks: villagers already returned to jobs but cloud merge kept
+  // stale expedition keys — refunding would duplicate headcount.
+  const isGhostExpeditionLock =
+    strandedExpeditionVillagers > 0 && free === 0 && inVillage > maxPop;
+
   const villagers =
-    strandedExpeditionVillagers > 0
+    strandedExpeditionVillagers > 0 && !isGhostExpeditionLock
       ? {
         ...state.villagers,
-        free: (state.villagers?.free || 0) + strandedExpeditionVillagers,
+        free: free + strandedExpeditionVillagers,
       }
       : state.villagers;
 
