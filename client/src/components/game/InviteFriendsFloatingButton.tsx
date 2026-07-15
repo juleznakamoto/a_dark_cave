@@ -14,6 +14,7 @@ import {
 import { isInviteFriendsFloatingButtonVisible } from "@/game/socialPromoExclusiveReward";
 import { useTranslation } from "react-i18next";
 import { GAME_FOOTER_INSET } from "./gameChrome";
+import { Z_INDEX } from "@/lib/z-index";
 
 export default function InviteFriendsFloatingButton() {
   const { t } = useTranslation("ui");
@@ -25,6 +26,7 @@ export default function InviteFriendsFloatingButton() {
   const fullGamePurchaseDialogOpen = useGameStore(
     (s) => s.fullGamePurchaseDialogOpen,
   );
+  const idleModeDialogOpen = useGameStore((s) => s.idleModeDialog.isOpen);
   const isUserSignedIn = useGameStore((s) => s.isUserSignedIn);
   const signupWelcomeGoldClaimed = useGameStore(
     (s) => s.signupWelcomeGoldClaimed === true,
@@ -86,8 +88,11 @@ export default function InviteFriendsFloatingButton() {
 
   return (
     <div
-      className="pointer-events-auto fixed right-4 z-30"
-      style={{ bottom: `calc(${GAME_FOOTER_INSET} + 1rem)` }}
+      className="pointer-events-auto fixed right-4"
+      style={{
+        bottom: `calc(${GAME_FOOTER_INSET} + 1rem)`,
+        zIndex: idleModeDialogOpen ? Z_INDEX.sleepPromo : 30,
+      }}
     >
       <div className="invite-friends-float relative inline-block">
         <TooltipWrapper

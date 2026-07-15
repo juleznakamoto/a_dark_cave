@@ -7,7 +7,7 @@ import {
   GAME_FOOTER_RIGHT_ICON_ORDER,
 } from "@/lib/gameFooterSocialLinks";
 import FullGamePurchaseDialog from "./FullGamePurchaseDialog";
-import { useState, useEffect, useRef, useCallback } from "react";
+import { useState, useEffect, useRef, useCallback, cloneElement } from "react";
 import { useTranslation } from "react-i18next";
 import { GameUiIcon } from "@/components/game/GameUiIcon";
 import { tWithFallback } from "@/i18n/resolveGameText";
@@ -181,9 +181,8 @@ export default function GameFooter() {
                 platform === "contact"
                   ? tWithFallback("ui", "footer.contact", title)
                   : title;
-              return (
+              const socialLink = (
                 <a
-                  key={platform}
                   href={href}
                   {...(href.startsWith("http")
                     ? {
@@ -201,6 +200,21 @@ export default function GameFooter() {
                   <span className={FOOTER_SOCIAL_LABEL}>{linkLabel}</span>
                 </a>
               );
+
+              if (platform === "steam") {
+                return (
+                  <HoverCalloutTooltip
+                    key={platform}
+                    label={t("footer.wishlistOnSteam")}
+                    side="top"
+                    forceVisible={isPaused || idleModeDialog.isOpen}
+                  >
+                    {socialLink}
+                  </HoverCalloutTooltip>
+                );
+              }
+
+              return cloneElement(socialLink, { key: platform });
             })}
             {!steamEditionActive && (
               <div className="flex flex-col items-end leading-tight sm:flex-row sm:items-center sm:gap-1">

@@ -3,6 +3,8 @@
  * Use these constants instead of magic numbers.
  *
  * Hierarchy (low → high):
+ * - sleepFog: Sleep-mode mist overlay (covers main panels; below footer and promos)
+ * - sleepPromo: Floating invite CTA during sleep (above fog, below footer)
  * - tabHotkeyOverlay: Pause / village hotkey tutorial callout (body-portaled, above buttons)
  * - gameParticleLayer: Click particles above side panel/tabs/log, below action buttons
  * - particles: Body-portaled effects (feed fire, explosions, dialog-adjacent bursts)
@@ -10,6 +12,10 @@
  * - topLayer: Full-screen overlays (end screen, start screen CTA)
  */
 export const Z_INDEX = {
+  /** Sleep mist overlay — same band as pause overlay; covers main content only. */
+  sleepFog: 40,
+  /** Floating invite button during sleep — above fog, below footer (50). */
+  sleepPromo: 45,
   /** Tab hotkey hint/box; must sit above action buttons and their badges. */
   tabHotkeyOverlay: 46,
   /** Fixed overlay in GameContainer `main`; above side panel/tabs/log, below action buttons. */

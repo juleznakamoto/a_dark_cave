@@ -1063,16 +1063,6 @@ export default function GameContainer() {
             document.body,
           )}
 
-        {/* Sleep Mode Mist Background - covers everything except header and footer */}
-        {idleModeDialog.isOpen && (
-          <div
-            className="fixed inset-0 z-[35] pointer-events-auto"
-            style={{ top: GAME_HEADER_INSET, bottom: GAME_FOOTER_INSET }}
-          >
-            <MistBackground />
-          </div>
-        )}
-
         {/* Main Content Area - Fills remaining space.
           Desktop (left → right): resources side panel, tabs/actions, event log.
           Mobile (stacked top → bottom): event log, side panel, tabs/actions. */}
@@ -1085,7 +1075,11 @@ export default function GameContainer() {
           <div
             id={GAME_PARTICLE_LAYER_ID}
             className="pointer-events-none absolute inset-0"
-            style={{ zIndex: Z_INDEX.gameParticleLayer }}
+            style={{
+              zIndex: idleModeDialog.isOpen
+                ? undefined
+                : Z_INDEX.gameParticleLayer,
+            }}
             aria-hidden
           />
 
@@ -1321,7 +1315,11 @@ export default function GameContainer() {
                 ? "overflow-hidden"
                 : "overflow-y-auto scrollbar-hide"
                 }`}
-              style={{ zIndex: Z_INDEX.gameActionButtons }}
+              style={{
+                zIndex: idleModeDialog.isOpen
+                  ? undefined
+                  : Z_INDEX.gameActionButtons,
+              }}
             >
               {activeTab === "cave" && <CavePanel />}
               {activeTab === "village" && <VillagePanel />}
@@ -1333,6 +1331,20 @@ export default function GameContainer() {
             </div>
           </section>
         </main>
+
+        {/* Sleep Mode Mist Background - covers main panels; header, footer, and promos stay above */}
+        {idleModeDialog.isOpen && (
+          <div
+            className="fixed inset-0 pointer-events-auto"
+            style={{
+              top: GAME_HEADER_INSET,
+              bottom: GAME_FOOTER_INSET,
+              zIndex: Z_INDEX.sleepFog,
+            }}
+          >
+            <MistBackground />
+          </div>
+        )}
 
         {/* Footer - above pause overlay (z-40) so hover tooltips stay visible when paused */}
         <div className="relative z-50 flex-shrink-0 pointer-events-auto">

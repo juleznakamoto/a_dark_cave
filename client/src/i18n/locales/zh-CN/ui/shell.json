@@ -40,7 +40,8 @@
     "unmuteMusic": "取消音乐静音",
     "muteSfx": "静音音效",
     "unmuteSfx": "取消音效静音",
-    "cruelModeActive": "残酷模式已启用"
+    "cruelModeActive": "残酷模式已启用",
+    "wishlistOnSteam": "加入 Steam 愿望单"
   },
   "profile": {
     "title": "菜单",

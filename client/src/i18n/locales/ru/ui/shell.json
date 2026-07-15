@@ -40,7 +40,8 @@
     "unmuteMusic": "Включить музыку",
     "muteSfx": "Выключить звуки",
     "unmuteSfx": "Включить звуки",
-    "cruelModeActive": "Жестокий режим включен"
+    "cruelModeActive": "Жестокий режим включен",
+    "wishlistOnSteam": "Добавить в список желаемого Steam"
   },
   "profile": {
     "title": "Меню",

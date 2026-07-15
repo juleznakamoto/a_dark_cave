@@ -40,7 +40,8 @@
     "unmuteMusic": "Musik einschalten", //ok
     "muteSfx": "Soundeffekte ausschalten", //ok
     "unmuteSfx": "Soundeffekte einschalten", //ok
-    "cruelModeActive": "Grausamer Modus aktiviert" //ok
+    "cruelModeActive": "Grausamer Modus aktiviert", //ok
+    "wishlistOnSteam": "Auf Steam wünschen"
   },
   "profile": {
     "title": "Menü",
