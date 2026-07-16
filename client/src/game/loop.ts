@@ -230,8 +230,12 @@ export function startGameLoop() {
     const now = Date.now();
     const state = useGameStore.getState();
 
-    // Sleep mode: intentional absence of input — not an AFK timeout
-    if (state.idleModeDialog?.isOpen || state.idleModeState?.isActive) {
+    // Pause / sleep: intentional absence of input — not an AFK timeout
+    if (
+      state.isPaused ||
+      state.idleModeDialog?.isOpen ||
+      state.idleModeState?.isActive
+    ) {
       lastUserActivity = now;
       return;
     }
