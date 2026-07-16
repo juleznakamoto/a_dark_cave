@@ -432,38 +432,40 @@ export default function EstatePanel() {
       <div className="w-full space-y-2 pt-2 md:pt-0 mt-0 md:mt-2 mb-2 pr-2 pb-2">
         {/* Sleep Mode Section */}
         <div className="space-y-">
-          <div className="flex w-full items-center gap-2 pb-2">
-            <h3 className="inline-flex shrink-0 items-center text-xs font-medium text-foreground leading-none">
-              {t("estate.rest")}
-            </h3>
-            {/* Focus Timer — same chrome as Produce header effect indicators */}
-            {focusState?.isActive && focusState.endTime > Date.now() && (
-              <TooltipWrapper
-                tooltip={
-                  <div className="text-xs">
-                    {focusTooltip.getContent(state)}
+          {/* Fixed 18px band matches Produce indicators so Sleep/Focus below don't jump */}
+          <div className="pb-2">
+            <div className="flex h-[18px] w-full items-center gap-2">
+              <h3 className="inline-flex shrink-0 items-center text-xs font-medium text-foreground leading-none">
+                {t("estate.rest")}
+              </h3>
+              {focusState?.isActive && focusState.endTime > Date.now() && (
+                <TooltipWrapper
+                  tooltip={
+                    <div className="text-xs">
+                      {focusTooltip.getContent(state)}
+                    </div>
+                  }
+                  tooltipId="focus-progress"
+                  disabled
+                  tooltipTriggerClassName={
+                    GAME_PANEL_HEADER_INDICATOR_TRIGGER_CLASS
+                  }
+                  className={GAME_PANEL_HEADER_INDICATOR_CLASS}
+                >
+                  <div className="relative inline-flex size-[18px] items-center justify-center">
+                    <CircularProgress
+                      value={focusProgress}
+                      size={18}
+                      strokeWidth={2}
+                      className="text-teal-400"
+                    />
+                    <span className="absolute inset-0 flex items-center justify-center text-[10px] font-extrabold leading-none text-teal-400">
+                      ☩
+                    </span>
                   </div>
-                }
-                tooltipId="focus-progress"
-                disabled
-                tooltipTriggerClassName={
-                  GAME_PANEL_HEADER_INDICATOR_TRIGGER_CLASS
-                }
-                className={GAME_PANEL_HEADER_INDICATOR_CLASS}
-              >
-                <div className="relative inline-flex items-center">
-                  <CircularProgress
-                    value={focusProgress}
-                    size={18}
-                    strokeWidth={2}
-                    className="text-teal-400"
-                  />
-                  <span className="font-noto-symbols-2 absolute inset-0 flex items-center justify-center font-extrabold text-[10px] leading-none text-teal-400">
-                    ☩
-                  </span>
-                </div>
-              </TooltipWrapper>
-            )}
+                </TooltipWrapper>
+              )}
+            </div>
           </div>
           <TooltipWrapper
             tooltip={
