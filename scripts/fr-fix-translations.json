@@ -42,7 +42,7 @@
   "events.witchsCurse.choices.payGold.cost": "50 or",
   "events.wizardOffer.choices.payGold.cost": "250 or",
   "events.exiledScholarVisit.choices.payScholar.cost": "250 or",
-  "actions.exploreCave.log.debrisScroll": "Unter den Trümmern findest du eine verwitterte Schriftrolle mit Weisheit, um in dieser unbarmherzigen Welt zu überleben.",
+  "actions.exploreCave.log.debrisScroll": "Unter den Trümmern findest du eine verwitterte Schriftrolle mit Weisheiten, um in dieser unbarmherzigen Welt zu überleben.",
   "actions.exploreCave.log.torchBag": "Vous trouvez eine alte, staubige Tasche mit 25 torchen in der grotte.",
   "actions.ventureDeeper.log.tarnishedAmulet": "In den Schatten der grotte glitzert etwas. Vous trouvez ein Amulette ternie.",
   "actions.ventureDeeper.log.mapFragment": "Auf dem grottenboden findest du ein zerrissenes Fragment de carte.",

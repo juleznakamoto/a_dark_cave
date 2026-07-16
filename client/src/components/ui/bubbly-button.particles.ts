@@ -76,7 +76,7 @@ export const CRAFT_PARTICLE_CONFIG: Partial<ParticleConfig> = {
   durationMin: 0.5,
   durationMax: 1,
   distanceMin: 40,
-  distanceMax: 70,
+  distanceMax: 60,
   sizeMin: 1,
   sizeMax: 8,
 };
@@ -416,12 +416,12 @@ export function mergeParticleConfig(
 ): MergedParticleConfig {
   const merged = override
     ? {
-        ...DEFAULT_PARTICLE_CONFIG,
-        ...base,
-        ...override,
-        colors:
-          override.colors ?? base.colors ?? DEFAULT_PARTICLE_CONFIG.colors,
-      }
+      ...DEFAULT_PARTICLE_CONFIG,
+      ...base,
+      ...override,
+      colors:
+        override.colors ?? base.colors ?? DEFAULT_PARTICLE_CONFIG.colors,
+    }
     : { ...DEFAULT_PARTICLE_CONFIG, ...base };
   // All particles start at once, so we only need durationMax + small buffer for cleanup
   return {
@@ -461,10 +461,10 @@ export function generateParticleData(
       config.sizeMin + Math.random() * (config.sizeMax - config.sizeMin);
     const colorPool =
       config.smallParticleOnlyColors?.length &&
-      size > config.smallParticleMaxSize
+        size > config.smallParticleMaxSize
         ? config.colors.filter(
-            (c) => !config.smallParticleOnlyColors!.includes(c),
-          )
+          (c) => !config.smallParticleOnlyColors!.includes(c),
+        )
         : config.smallParticleOnlyColors?.length
           ? [...config.colors, ...config.smallParticleOnlyColors]
           : config.colors;

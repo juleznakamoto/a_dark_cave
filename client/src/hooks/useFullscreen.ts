@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useState } from "react";
+import { useGameStore } from "@/game/state";
 import { isSteamBuild } from "@/lib/edition";
 import {
   hasSteamBridge,
@@ -11,35 +12,70 @@ function nudgeViewportResize(): void {
   window.dispatchEvent(new Event("resize"));
 }
 
+function isBrowserFullscreen(): boolean {
+  return !!document.fullscreenElement;
+}
+
+async function toggleBrowserFullscreen(): Promise<boolean> {
+  try {
+    if (document.fullscreenElement) {
+      await document.exitFullscreen();
+    } else {
+      await document.documentElement.requestFullscreen();
+    }
+  } catch {
+    // User gesture / permissions / unsupported — keep current state.
+  }
+  return isBrowserFullscreen();
+}
+
 export function useFullscreen() {
   const [isFullscreen, setIsFullscreen] = useState(false);
-  const available = isSteamBuild && hasSteamBridge();
+  const useSteamApi = hasSteamBridge();
+  const devGameMode = useGameStore((s) => s.devGameMode);
+  // Real Steam shell uses Electron IPC. DEV Game Mode in a browser has no
+  // bridge, so fall back to the document Fullscreen API for parity.
+  const useBrowserApi =
+    import.meta.env.DEV && !isSteamBuild && devGameMode !== "normal";
+  const available = useSteamApi || useBrowserApi;
 
   useEffect(() => {
     if (!available) return;
 
-    let cancelled = false;
-    void steamIsFullscreen().then((value) => {
-      if (!cancelled) setIsFullscreen(value);
-    });
+    if (useSteamApi) {
+      let cancelled = false;
+      void steamIsFullscreen().then((value) => {
+        if (!cancelled) setIsFullscreen(value);
+      });
 
-    const unsubscribe = steamOnFullscreenChanged((value) => {
-      setIsFullscreen(value);
+      const unsubscribe = steamOnFullscreenChanged((value) => {
+        setIsFullscreen(value);
+        nudgeViewportResize();
+      });
+
+      return () => {
+        cancelled = true;
+        unsubscribe?.();
+      };
+    }
+
+    const sync = () => {
+      setIsFullscreen(isBrowserFullscreen());
       nudgeViewportResize();
-    });
-
-    return () => {
-      cancelled = true;
-      unsubscribe?.();
     };
-  }, [available]);
+    sync();
+    document.addEventListener("fullscreenchange", sync);
+    return () => document.removeEventListener("fullscreenchange", sync);
+  }, [available, useSteamApi]);
 
   const toggleFullscreen = useCallback(async () => {
     if (!available) return;
-    const next = await steamToggleFullscreen();
+    const next = useSteamApi
+      ? await steamToggleFullscreen()
+      : await toggleBrowserFullscreen();
     setIsFullscreen(next);
     nudgeViewportResize();
-  }, [available]);
+  }, [available, useSteamApi]);
 
   return { isFullscreen, toggleFullscreen, available };
 }

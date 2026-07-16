@@ -20,7 +20,7 @@ export function FullscreenButton() {
     : t("profile.enterFullscreen", { defaultValue: "Full screen" });
 
   return (
-    <HoverCalloutTooltip label={label} side="left" arrowAlign="end">
+    <HoverCalloutTooltip label={label} side="left">
       <Button
         type="button"
         variant="ghost"

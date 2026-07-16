@@ -470,7 +470,7 @@
   "exploreCave": {
     "label": "Höhle erkunden",
     "log": {
-      "debrisScroll": "Unter den Trümmern findest du eine verwitterte Schriftrolle mit Weisheit, um in dieser unbarmherzigen Welt zu überleben.",
+      "debrisScroll": "Unter den Trümmern findest du eine verwitterte Schriftrolle mit Weisheiten, um in dieser unbarmherzigen Welt zu überleben.",
       "torchBag": "Du findest eine alte, staubige Tasche mit 25 Fackeln in der Höhle.",
       "firstVisit": "Das Fackellicht erhellt die Höhlenwände. Im flackernden Schein entdeckst du einen Pfad, der tiefer in die Höhlen führt."
     }
