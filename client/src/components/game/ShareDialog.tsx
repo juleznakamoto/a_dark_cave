@@ -24,6 +24,7 @@ import {
   buildingChartConfig,
   itemChartConfig,
   actionChartConfig,
+  overallChartConfig,
 } from "@/achievements";
 import { getOverallAchievementPercent } from "@/achievements/achievementProgress";
 import { COMBAT_ITEM_RESOURCES } from "@/game/resourceLimits";
@@ -70,6 +71,10 @@ const RING_ENTRIES: ShareRingEntry[] = [
   {
     config: actionChartConfig,
     centerSymbolStyle: { paddingTop: RING_SYMBOL_NUDGE_PX },
+  },
+  {
+    config: overallChartConfig,
+    centerSymbolStyle: { paddingTop: RING_SYMBOL_NUDGE_PX * 0.5 },
   },
 ];
 

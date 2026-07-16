@@ -357,6 +357,9 @@ export const cubeEvents: Record<string, GameEvent> = {
               cube13: true,
             },
             hasWonAnyGame: true,
+            ...(state.cruelMode
+              ? { hasWonCruelGame: true }
+              : { hasWonNormalGame: true }),
           };
         },
       },

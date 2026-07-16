@@ -509,6 +509,16 @@ export default function CombatDialog({
       setCurrentIntegrity((prev) => prev + healAmount);
       showIntegrityHeal(healAmount);
       gameState.updateResource("veinfire_elixir", -1);
+      useGameStore.setState((s) => ({
+        story: {
+          ...s.story,
+          seen: {
+            ...s.story?.seen,
+            veinfireElixirsUsed:
+              (Number(s.story?.seen?.veinfireElixirsUsed) || 0) + 1,
+          },
+        },
+      }));
       return;
     }
 

@@ -33,9 +33,6 @@
     "1-mineSulfur": {
       "label": "Minerador de Enxofre"
     },
-    "2-animals": {
-      "label": "Sacrificador de Animais"
-    },
     "2-boneTotems": {
       "label": "Sacrificador de Ossos"
     },
@@ -51,6 +48,9 @@
     "3-ashfireBombs": {
       "label": "Fabricante de Bombas de Cinzafogo"
     },
+    "3-burningVeins": {
+      "label": "Burning Veins"
+    },
     "3-emberBombs": {
       "label": "Fabricante de Bombas de Brasa"
     },
@@ -60,14 +60,26 @@
     "4-feedFire": {
       "label": "Alimentador do Fogo"
     },
+    "4-insightful": {
+      "label": "Insightful"
+    },
     "4-investor": {
       "label": "Investidor"
+    },
+    "4-luckyInvestor": {
+      "label": "Lucky Investor"
     },
     "4-mentalClarity": {
       "label": "Clareza Mental"
     },
     "4-merchantPurchases": {
       "label": "Negociador"
+    },
+    "4-pileOfDead": {
+      "label": "Pile of Dead"
+    },
+    "4-resourceMaxer": {
+      "label": "Resource Maxer"
     },
     "4-solsticeGatherings": {
       "label": "Celebrante do Solstício"
@@ -191,6 +203,14 @@
     },
     "4-blacksteel_tools": {
       "label": "Ferramentas Sombrias"
+    }
+  },
+  "overall": {
+    "0-winCruel": {
+      "label": "Cruel Victory"
+    },
+    "0-winNormal": {
+      "label": "Normal Victory"
     }
   }
 }

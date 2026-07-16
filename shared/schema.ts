@@ -557,6 +557,12 @@ export const gameStateSchema = z.object({
   activatedPurchases: z.record(z.boolean()).default({}),
   feastActivations: z.record(z.number()).default({}), // purchaseId -> activations remaining
   cruelMode: z.boolean().default(false), // Cruel mode flag
+  /** Meta: won the game at least once (any difficulty). Persists across restarts. */
+  hasWonAnyGame: z.boolean().default(false),
+  /** Meta: won while not in Cruel Mode. Persists across restarts. */
+  hasWonNormalGame: z.boolean().default(false),
+  /** Meta: won while in Cruel Mode. Persists across restarts. */
+  hasWonCruelGame: z.boolean().default(false),
   BTP: z.number().default(0), // Buy To Play mode (0 = normal, 1 = BTP active)
   attackWaveTimers: z.record(attackWaveTimerSchema).default({}),
   /** Post-story endless waves won (next wave number = 11 + this count). */

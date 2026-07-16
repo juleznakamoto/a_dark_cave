@@ -5,14 +5,16 @@ import {
   buildingChartConfig,
   itemChartConfig,
   actionChartConfig,
+  overallChartConfig,
 } from "./index";
 
-/** The four achievement category charts, in display order. */
+/** Achievement category charts, in display order. */
 export const ACHIEVEMENT_CHART_CONFIGS: AchievementChartConfig[] = [
   basicChartConfig,
   buildingChartConfig,
   itemChartConfig,
   actionChartConfig,
+  overallChartConfig,
 ];
 
 interface CompletionTally {
