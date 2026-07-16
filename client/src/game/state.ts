@@ -1,7 +1,13 @@
 // Removed duplicate keys and ensured gameId is correctly handled.
 import { create } from "zustand";
 import { GameState, gameStateSchema, Referral } from "@shared/schema";
-import { isFullGameUnlockedEdition, isSteamBuild, isSteamEditionActive, setDevSteamModeOverride } from "@/lib/edition";
+import {
+  isFullGameUnlockedEdition,
+  isSteamBuild,
+  isSteamEditionActive,
+  setDevGameModeOverride,
+  type DevGameMode,
+} from "@/lib/edition";
 import { gameActions, shouldShowAction, canExecuteAction } from "@/game/rules";
 import {
   EventManager,
@@ -196,8 +202,11 @@ interface GameStore extends GameState {
   | "achievements"
   | "timedevent";
   devMode: boolean;
-  /** Dev-only: simulate Steam edition UI without a Steam build. */
-  devSteamMode: boolean;
+  /**
+   * Dev-only: simulate Normal / Steam Game / Steam Playtest / Steam Demo
+   * without a Steam build (Settings → Game Mode).
+   */
+  devGameMode: DevGameMode;
   lastSaved: string;
   eventDialog: {
     isOpen: boolean;
@@ -498,7 +507,7 @@ interface GameStore extends GameState {
   setIdleModeDialog: (isOpen: boolean) => void;
   setRestartGameDialogOpen: (isOpen: boolean) => void;
   setSettingsDialogOpen: (isOpen: boolean) => void;
-  setDevSteamMode: (enabled: boolean) => void;
+  setDevGameMode: (mode: DevGameMode) => void;
   setDeleteAccountDialogOpen: (isOpen: boolean) => void;
   updateEffects: () => void;
   updateBastionStats: () => void;
@@ -1564,7 +1573,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
   ...defaultGameState,
   activeTab: "cave",
   devMode: import.meta.env.DEV,
-  devSteamMode: false,
+  devGameMode: "normal",
   lastSaved: "Never",
   cooldowns: {},
   executionStartTimes: {},
@@ -2619,6 +2628,9 @@ export const useGameStore = create<GameStore>((set, get) => ({
       // Cruel mode status
       cruelMode: isCruelModeActive,
 
+      // Dev Settings → Game Mode (session preference; not persisted to save)
+      devGameMode: state.devGameMode,
+
       // Preserve hasWonAnyGame across restarts
       hasWonAnyGame: state.hasWonAnyGame || false,
 
@@ -2638,7 +2650,6 @@ export const useGameStore = create<GameStore>((set, get) => ({
       // UI state
       activeTab: "cave",
       devMode: import.meta.env.DEV,
-      devSteamMode: false,
       idleModeDialog: { isOpen: false }, // Explicitly ensure idle mode dialog is closed
       ...getTimedEventTabCleanupPatch(get().activeTab),
       investDialogOpen: false,
@@ -2891,7 +2902,8 @@ export const useGameStore = create<GameStore>((set, get) => ({
         log: savedState.log || [],
         events: savedState.events || defaultGameState.events,
         devMode: import.meta.env.DEV,
-        devSteamMode: false,
+        // Keep session Game Mode; do not restore from save (UI-only).
+        devGameMode: get().devGameMode,
         boostApplied: savedState.boostApplied === true,
         effects: calculateTotalEffects(savedState),
         bastion_stats: calculateBastionStats(savedState),
@@ -3054,7 +3066,6 @@ export const useGameStore = create<GameStore>((set, get) => ({
         expeditionVillagers: {},
         log: [],
         devMode: import.meta.env.DEV,
-        devSteamMode: false,
         effects: calculateTotalEffects(defaultGameState),
         bastion_stats: calculateBastionStats(defaultGameState),
         startTime: Date.now(), // Set start time for new game
@@ -4259,12 +4270,12 @@ export const useGameStore = create<GameStore>((set, get) => ({
     set({ settingsDialogOpen: isOpen });
   },
 
-  setDevSteamMode: (enabled: boolean) => {
+  setDevGameMode: (mode: DevGameMode) => {
     if (!import.meta.env.DEV || isSteamBuild) return;
-    setDevSteamModeOverride(enabled);
-    if (enabled) {
+    setDevGameModeOverride(mode);
+    if (mode !== "normal") {
       set({
-        devSteamMode: true,
+        devGameMode: mode,
         shopDialogOpen: false,
         shopCheckoutItemId: null,
         authDialogOpen: false,
@@ -4275,7 +4286,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
         socialPromptDialogOpen: false,
       });
     } else {
-      set({ devSteamMode: false });
+      set({ devGameMode: "normal" });
     }
   },
 

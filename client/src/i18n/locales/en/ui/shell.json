@@ -3,7 +3,12 @@
     "title": "Settings",
     "music": "Music",
     "sound": "Sound",
-    "emails": "Emails"
+    "emails": "Emails",
+    "gameMode": "Game Mode",
+    "gameModeNormal": "Normal Mode",
+    "gameModeSteamGame": "Steam Game",
+    "gameModeSteamPlaytest": "Steam Playtest",
+    "gameModeSteamDemo": "Steam Demo"
   },
   "textScale": {
     "label": "Text size",
@@ -41,7 +46,8 @@
     "muteSfx": "Mute sound effects",
     "unmuteSfx": "Mute sound effects",
     "cruelModeActive": "Cruel Mode activated",
-    "wishlistOnSteam": "Wishlist on Steam"
+    "wishlistOnSteam": "Wishlist on Steam",
+    "demoProgress": "Demo Progress"
   },
   "profile": {
     "title": "Menu",

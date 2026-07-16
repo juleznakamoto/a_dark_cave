@@ -16,7 +16,7 @@ import { useTranslation } from "react-i18next";
 import { tWithFallback } from "@/i18n/resolveGameText";
 import { useLocale } from "@/i18n/useLocale";
 import { OG_LOCALE_TAGS, SUPPORTED_LOCALES } from "@/i18n/locales";
-import { useSteamEditionActive } from "@/hooks/useSteamEditionActive";
+import { useSteamEditionActive, useDemoEditionActive } from "@/hooks/useSteamEditionActive";
 import { isDemoEdition } from "@/lib/edition";
 import { isDemoLimitReachedFromState } from "@/game/demoLimit";
 import DemoTimeUpDialog from "@/components/game/DemoTimeUpDialog";
@@ -53,6 +53,7 @@ export default function StartScreen() {
   const { t } = useTranslation("ui");
   const { locale } = useLocale();
   const steamEditionActive = useSteamEditionActive();
+  const demoEditionActive = useDemoEditionActive();
 
   useEffect(() => {
     audioManager.setMusicVolume(musicVolume ?? 1);
@@ -418,7 +419,7 @@ export default function StartScreen() {
           )}
         </div>
       </nav>
-      {isDemoEdition() && <DemoTimeUpDialog />}
+      {demoEditionActive && <DemoTimeUpDialog />}
     </div>
   );
 }

@@ -7,10 +7,14 @@ import {
 import { Checkbox } from "@/components/ui/checkbox";
 import { useGameStore } from "@/game/state";
 import { audioManager } from "@/lib/audio";
-import { isSteamBuild } from "@/lib/edition";
+import {
+  DEV_GAME_MODE_OPTIONS,
+  isSteamBuild,
+  type DevGameMode,
+} from "@/lib/edition";
 import { useSteamEditionActive } from "@/hooks/useSteamEditionActive";
 import { GameUiIcon } from "@/components/game/GameUiIcon";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import LanguageSelector from "./LanguageSelector";
 import TextScaleSelector, {
@@ -19,6 +23,15 @@ import TextScaleSelector, {
 import {
   MARKETING_SUBSCRIBE_GOLD,
 } from "@/game/marketingEmailReward";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { Button } from "@/components/ui/button";
+import { ChevronDown } from "lucide-react";
+import cn from "clsx";
 
 interface SettingsDialogProps {
   isOpen: boolean;
@@ -47,6 +60,26 @@ const VOLUME_SLIDER =
   "[&::-moz-range-progress]:h-1.5 [&::-moz-range-progress]:rounded-full [&::-moz-range-progress]:bg-red-600 " +
   "[&::-moz-range-thumb]:h-3 [&::-moz-range-thumb]:w-3 [&::-moz-range-thumb]:rounded-full " +
   "[&::-moz-range-thumb]:border-0 [&::-moz-range-thumb]:bg-red-600";
+
+const GAME_MODE_LABEL_KEYS: Record<
+  DevGameMode,
+  | "settings.gameModeNormal"
+  | "settings.gameModeSteamGame"
+  | "settings.gameModeSteamPlaytest"
+  | "settings.gameModeSteamDemo"
+> = {
+  normal: "settings.gameModeNormal",
+  steamGame: "settings.gameModeSteamGame",
+  steamPlaytest: "settings.gameModeSteamPlaytest",
+  steamDemo: "settings.gameModeSteamDemo",
+};
+
+const GAME_MODE_DEFAULTS: Record<DevGameMode, string> = {
+  normal: "Normal Mode",
+  steamGame: "Steam Game",
+  steamPlaytest: "Steam Playtest",
+  steamDemo: "Steam Demo",
+};
 
 interface AudioControlRowProps {
   iconOn: string;
@@ -108,6 +141,79 @@ function AudioControlRow({
   );
 }
 
+function GameModeSelector({
+  value,
+  onChange,
+  menuPortalContainer,
+}: {
+  value: DevGameMode;
+  onChange: (mode: DevGameMode) => void;
+  menuPortalContainer: HTMLElement | null;
+}) {
+  const { t } = useTranslation("ui");
+  const [open, setOpen] = useState(false);
+  const dialogPortalReady = menuPortalContainer != null;
+
+  const handleOpenChange = (next: boolean) => {
+    if (next && !menuPortalContainer) return;
+    setOpen(next);
+  };
+
+  useEffect(() => {
+    if (!menuPortalContainer) {
+      setOpen(false);
+    }
+  }, [menuPortalContainer]);
+
+  return (
+    <DropdownMenu
+      open={open}
+      onOpenChange={handleOpenChange}
+      modal={false}
+    >
+      <DropdownMenuTrigger asChild>
+        <Button
+          variant="ghost"
+          size="xs"
+          className="group -mr-2 flex items-center gap-1 rounded-md px-2 py-1 text-sm hover:bg-muted/40 transition-colors"
+          aria-label={t("settings.gameMode", { defaultValue: "Game Mode" })}
+          aria-expanded={open}
+        >
+          <span className="inline">
+            {t(GAME_MODE_LABEL_KEYS[value], {
+              defaultValue: GAME_MODE_DEFAULTS[value],
+            })}
+          </span>
+          <ChevronDown className="w-3.5 h-3.5 shrink-0 opacity-70" aria-hidden />
+        </Button>
+      </DropdownMenuTrigger>
+      {dialogPortalReady && (
+        <DropdownMenuContent
+          align="end"
+          portalContainer={menuPortalContainer ?? undefined}
+          className="w-max min-w-0 text-sm z-[60]"
+          onCloseAutoFocus={(e) => e.preventDefault()}
+        >
+          {DEV_GAME_MODE_OPTIONS.map((option) => (
+            <DropdownMenuItem
+              key={option}
+              onClick={() => {
+                onChange(option);
+                setOpen(false);
+              }}
+              className={cn(value === option && "font-semibold", "text-sm")}
+            >
+              {t(GAME_MODE_LABEL_KEYS[option], {
+                defaultValue: GAME_MODE_DEFAULTS[option],
+              })}
+            </DropdownMenuItem>
+          ))}
+        </DropdownMenuContent>
+      )}
+    </DropdownMenu>
+  );
+}
+
 /**
  * Settings dialog opened from the Profile menu. Houses audio (music + sound effects),
  * language, email preferences, and account deletion. Blocking: while open, the
@@ -135,8 +241,8 @@ export default function SettingsDialog({
     setSfxMuted,
     setMusicVolume,
     setSfxVolume,
-    devSteamMode,
-    setDevSteamMode,
+    devGameMode,
+    setDevGameMode,
   } = useGameStore();
 
   const toggleMusic = () => {
@@ -172,7 +278,7 @@ export default function SettingsDialog({
 
   const steamEditionActive = useSteamEditionActive();
   const showAccountSettings = !steamEditionActive && !!currentUser;
-  const showDevSteamModeToggle = import.meta.env.DEV && !isSteamBuild;
+  const showDevGameMode = import.meta.env.DEV && !isSteamBuild;
   const [menuPortalContainer, setMenuPortalContainer] =
     useState<HTMLElement | null>(null);
 
@@ -244,23 +350,17 @@ export default function SettingsDialog({
             </div>
           </section>
 
-          {showDevSteamModeToggle && (
+          {showDevGameMode && (
             <>
               <div className="h-px bg-border my-1" />
               <div className={ROW}>
                 <span className="flex-1 text-sm">
-                  {t("settings.devSteamMode", {
-                    defaultValue: "Steam Mode (dev)",
-                  })}
+                  {t("settings.gameMode", { defaultValue: "Game Mode" })}
                 </span>
-                <Checkbox
-                  checked={devSteamMode}
-                  onCheckedChange={(checked) =>
-                    setDevSteamMode(checked === true)
-                  }
-                  aria-label={t("settings.devSteamMode", {
-                    defaultValue: "Steam Mode (dev)",
-                  })}
+                <GameModeSelector
+                  value={devGameMode}
+                  onChange={setDevGameMode}
+                  menuPortalContainer={menuPortalContainer}
                 />
               </div>
             </>

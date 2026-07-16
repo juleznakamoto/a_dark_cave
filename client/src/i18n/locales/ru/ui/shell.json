@@ -3,7 +3,12 @@
     "title": "Настройки",
     "music": "Музыка",
     "sound": "Звук",
-    "emails": "Эл. почта"
+    "emails": "Эл. почта",
+    "gameMode": "Game Mode",
+    "gameModeNormal": "Normal Mode",
+    "gameModeSteamGame": "Steam Game",
+    "gameModeSteamPlaytest": "Steam Playtest",
+    "gameModeSteamDemo": "Steam Demo"
   },
   "textScale": {
     "label": "Размер текста",
@@ -41,7 +46,8 @@
     "muteSfx": "Выключить звуки",
     "unmuteSfx": "Включить звуки",
     "cruelModeActive": "Жестокий режим включен",
-    "wishlistOnSteam": "Добавить в список желаемого Steam"
+    "wishlistOnSteam": "Добавить в список желаемого Steam",
+    "demoProgress": "Demo Progress"
   },
   "profile": {
     "title": "Меню",

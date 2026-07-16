@@ -11,12 +11,21 @@ import { useState, useEffect, useRef, useCallback, cloneElement } from "react";
 import { useTranslation } from "react-i18next";
 import { GameUiIcon } from "@/components/game/GameUiIcon";
 import { tWithFallback } from "@/i18n/resolveGameText";
-import { useSteamEditionActive } from "@/hooks/useSteamEditionActive";
+import {
+  useSteamDemoActive,
+  useSteamEditionActive,
+} from "@/hooks/useSteamEditionActive";
 import { isGalaxyEdition } from "@/lib/edition";
 import {
   handleDonateHeartAnimationEnd,
   pumpDonateHeart,
 } from "@/lib/exclusivePromoShockwave";
+import { Progress } from "@/components/ui/progress";
+import {
+  getDemoProgressCompleted,
+  getDemoProgressPercent,
+  getDemoProgressSegmentCount,
+} from "@/game/demoLimit";
 
 const FOOTER_CONTROL_BTN =
   "group shrink-0 px-1 py-1 text-xs text-neutral-300 hover hover:!text-red-600";
@@ -34,6 +43,43 @@ const FOOTER_LEGAL_LINK =
 const DONATE_HEART =
   "donate-heart text-red-600 opacity-80 group-hover:opacity-100 transition-opacity";
 
+function SteamDemoProgressBar() {
+  const { t } = useTranslation("ui");
+  const woodenHut = useGameStore((s) => s.buildings.woodenHut ?? 0);
+  const stoneHut = useGameStore((s) => s.buildings.stoneHut ?? 0);
+  const buildings = { woodenHut, stoneHut };
+  const segments = getDemoProgressSegmentCount();
+  const completed = getDemoProgressCompleted(buildings);
+  const percent = getDemoProgressPercent(buildings);
+  const label = t("footer.demoProgress", { defaultValue: "Demo Progress" });
+
+  return (
+    <div
+      className="pointer-events-none absolute inset-0 z-[1] flex items-center justify-center px-16 sm:px-24"
+      aria-hidden={false}
+    >
+      <div className="pointer-events-auto flex max-w-[min(14rem,40vw)] flex-col items-center gap-0.5 sm:max-w-[16rem]">
+        <span className="text-2xs leading-none text-neutral-400 whitespace-nowrap">
+          {label}
+        </span>
+        <Progress
+          value={percent}
+          segments={segments}
+          hideBorder
+          disableGlow
+          className="h-1.5 w-full min-w-[6rem]"
+          indicatorClassName="bg-green-600"
+          aria-label={label}
+          aria-valuenow={completed}
+          aria-valuemin={0}
+          aria-valuemax={segments}
+          data-testid="footer-demo-progress"
+        />
+      </div>
+    </div>
+  );
+}
+
 export default function GameFooter() {
   const {
     setShopDialogOpen,
@@ -48,6 +94,7 @@ export default function GameFooter() {
   const donateHeartRef = useRef<HTMLSpanElement>(null);
   const { t } = useTranslation("ui");
   const steamEditionActive = useSteamEditionActive();
+  const steamDemoActive = useSteamDemoActive();
   const showFooterDonate = !steamEditionActive || isGalaxyEdition();
 
   const triggerDonateHeartPump = useCallback(() => {
@@ -78,7 +125,8 @@ export default function GameFooter() {
         />
       )}
       <footer className="relative flex min-h-9 items-center border-t border-border px-2 py-1 text-xs text-muted-foreground pointer-events-auto overflow-visible">
-        <div className="flex w-full items-center justify-between">
+        {steamDemoActive && <SteamDemoProgressBar />}
+        <div className="relative z-0 flex w-full items-center justify-between">
           <div className="flex items-center gap-0.5 shrink-0">
             <HoverCalloutTooltip
               label={
