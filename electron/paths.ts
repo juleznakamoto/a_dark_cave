@@ -33,3 +33,17 @@ export const STEAM_CLOUD_SAVE_FILE = isPlaytestBuild
   : isDemoBuild
     ? "adc-steam-demo-save.dat"
     : "adc-steam-save.dat";
+
+/**
+ * Preferred loopback HTTP port for the packaged SPA.
+ *
+ * Must stay stable across launches: Chromium scopes `localStorage` (locale,
+ * text size, etc.) by origin including port. An ephemeral port each launch
+ * looks like a new site and resets those prefs. Variants use distinct ports
+ * so full/demo/playtest do not collide.
+ */
+export const LOOPBACK_PREFERRED_PORT = isPlaytestBuild
+  ? 47882
+  : isDemoBuild
+    ? 47881
+    : 47880;

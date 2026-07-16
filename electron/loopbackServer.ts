@@ -1,6 +1,7 @@
 import { createServer, type Server } from "node:http";
 import { readFile, stat } from "node:fs/promises";
 import { extname, join, normalize } from "node:path";
+import { LOOPBACK_PREFERRED_PORT } from "./paths";
 
 /**
  * Minimal loopback static server for the Steam/Electron build.
@@ -10,6 +11,10 @@ import { extname, join, normalize } from "node:path";
  * NOT work under the `file://` protocol. Serving the built SPA over
  * `http://127.0.0.1:<port>` keeps that routing intact while staying fully
  * offline. The server binds only to the loopback interface.
+ *
+ * The port is preferred-stable (`LOOPBACK_PREFERRED_PORT`) so Chromium
+ * `localStorage` (language, text size) survives restarts. Falls back to an
+ * ephemeral port only if the preferred one is already taken.
  */
 
 const MIME_TYPES: Record<string, string> = {
@@ -54,8 +59,27 @@ export interface LoopbackServer {
   close: () => Promise<void>;
 }
 
+function listenOnPort(server: Server, port: number): Promise<number> {
+  return new Promise((resolve, reject) => {
+    const onError = (error: NodeJS.ErrnoException) => {
+      server.off("listening", onListening);
+      reject(error);
+    };
+    const onListening = () => {
+      server.off("error", onError);
+      const address = server.address();
+      const bound =
+        typeof address === "object" && address ? address.port : port;
+      resolve(bound);
+    };
+    server.once("error", onError);
+    server.once("listening", onListening);
+    server.listen(port, "127.0.0.1");
+  });
+}
+
 /**
- * Serve `rootDir` (the Vite `dist/public` output) on a random loopback port with
+ * Serve `rootDir` (the Vite `dist/public` output) on a stable loopback port with
  * SPA fallback to `index.html` for unknown non-asset routes.
  */
 export async function startLoopbackServer(rootDir: string): Promise<LoopbackServer> {
@@ -97,12 +121,21 @@ export async function startLoopbackServer(rootDir: string): Promise<LoopbackServ
     }
   });
 
-  await new Promise<void>((resolve) => {
-    server.listen(0, "127.0.0.1", resolve);
-  });
-
-  const address = server.address();
-  const port = typeof address === "object" && address ? address.port : 0;
+  let port: number;
+  try {
+    port = await listenOnPort(server, LOOPBACK_PREFERRED_PORT);
+  } catch (error) {
+    const code =
+      error && typeof error === "object" && "code" in error
+        ? (error as NodeJS.ErrnoException).code
+        : undefined;
+    if (code !== "EADDRINUSE") throw error;
+    // eslint-disable-next-line no-console
+    console.warn(
+      `[STEAM] Preferred loopback port ${LOOPBACK_PREFERRED_PORT} in use; falling back to an ephemeral port. UI prefs (language, text size) may not persist this session.`,
+    );
+    port = await listenOnPort(server, 0);
+  }
 
   return {
     url: `http://127.0.0.1:${port}`,

@@ -253,9 +253,9 @@ shop, the whole game unlocked, merchant-sold dark artifacts, and local + Steam C
 | Path | Responsibility |
 |------|----------------|
 | `electron/main.ts` | Electron main process: Steamworks init + overlay, loopback server, save-file IPC, full-screen/layout IPC, window icon/title, single-instance, external-link handling. |
-| `electron/paths.ts` | `APP_USER_DATA_NAME` + `STEAM_CLOUD_SAVE_FILE` — must match Steamworks Auto-Cloud config (demo build uses `A Dark Cave Demo` / `adc-steam-demo-save.dat`). |
+| `electron/paths.ts` | `APP_USER_DATA_NAME` + `STEAM_CLOUD_SAVE_FILE` — must match Steamworks Auto-Cloud config (demo build uses `A Dark Cave Demo` / `adc-steam-demo-save.dat`); `LOOPBACK_PREFERRED_PORT` (stable origin for `localStorage` prefs). |
 | `electron/preload.ts` | `contextBridge` exposing `window.steamBridge` (achievements, Cloud save, full-screen toggle/events) to the sandboxed renderer. |
-| `electron/loopbackServer.ts` | Serves built `dist/public` over `http://127.0.0.1:<port>` (absolute-path routing needs HTTP, not `file://`). |
+| `electron/loopbackServer.ts` | Serves built `dist/public` over stable `http://127.0.0.1:<LOOPBACK_PREFERRED_PORT>` (absolute-path routing needs HTTP, not `file://`; fixed port so locale/text-size `localStorage` survives restarts). |
 | `electron/steam.ts` | Defensive `steamworks.js` wrapper (degrades to no-ops when Steam absent). |
 | `client/src/lib/edition.ts` | `isSteamBuild`, `isSteamDemoBuild`, `isSteamPlaytestBuild`, `isDemoEdition()`, `isSteamDemoActive()`, `isSteamEditionActive()` (+ DEV Settings → Game Mode override: Normal / Steam Game / Playtest / Demo). |
 | `client/src/lib/steam.ts` | Renderer-side safe wrapper over `window.steamBridge` (achievements, saves, full-screen; no-ops on web). |
