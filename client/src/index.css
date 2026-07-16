@@ -29,33 +29,11 @@ body {
   --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
   --font-mono: 'Courier New', monospace;
   --adc-text-scale: 1;
-  /* Extra leading when Settings → Text size is Large (on top of scaled rem line-heights). */
-  --adc-leading-scale: 1;
 }
 
-:root.adc-text-large {
-  --adc-leading-scale: 1.08;
-}
-
-/* Unitless leading utilities already track font-size; nudge them up for Large. */
-:root.adc-text-large .leading-tight {
-  line-height: calc(1.25 * var(--adc-leading-scale));
-}
-
-:root.adc-text-large .leading-snug {
-  line-height: calc(1.375 * var(--adc-leading-scale));
-}
-
-:root.adc-text-large .leading-normal {
-  line-height: calc(1.5 * var(--adc-leading-scale));
-}
-
-:root.adc-text-large .leading-relaxed {
-  line-height: calc(1.625 * var(--adc-leading-scale));
-}
-
-:root.adc-text-large .leading-loose {
-  line-height: calc(2 * var(--adc-leading-scale));
+/* Timed-tab event body: slightly roomier leading when Large text is on. */
+:root.adc-text-large .timed-event-message {
+  line-height: 1.55;
 }
 
 /* Apply Inter font as soon as it's loaded */
@@ -115,64 +93,50 @@ body {
 
   /*
    * Readable UI text scales with Settings → Text size (Large).
-   * Line-heights use the same scale (plus --adc-leading-scale) so they stay
-   * proportional — Tailwind’s default rem line-heights would otherwise stay
-   * fixed and look cramped when font-size grows.
    * Pixel-fixed symbol overlays are excluded — they keep arbitrary text-[Npx].
    */
   .text-3xs {
     font-size: calc(0.5625rem * var(--adc-text-scale, 1));
-    line-height: calc(0.75rem * var(--adc-text-scale, 1) * var(--adc-leading-scale, 1));
   }
 
   .text-2xs {
     font-size: calc(0.625rem * var(--adc-text-scale, 1));
-    line-height: calc(0.875rem * var(--adc-text-scale, 1) * var(--adc-leading-scale, 1));
   }
 
   .text-xxs {
     font-size: calc(0.6875rem * var(--adc-text-scale, 1));
-    line-height: calc(0.875rem * var(--adc-text-scale, 1) * var(--adc-leading-scale, 1));
   }
 
   .text-xs-plus {
     font-size: calc(0.8125rem * var(--adc-text-scale, 1));
-    line-height: calc(1.125rem * var(--adc-text-scale, 1) * var(--adc-leading-scale, 1));
   }
 
   .text-xs {
     font-size: calc(0.75rem * var(--adc-text-scale, 1));
-    line-height: calc(1rem * var(--adc-text-scale, 1) * var(--adc-leading-scale, 1));
   }
 
   .text-sm {
     font-size: calc(0.875rem * var(--adc-text-scale, 1));
-    line-height: calc(1.25rem * var(--adc-text-scale, 1) * var(--adc-leading-scale, 1));
   }
 
   .text-base {
     font-size: calc(1rem * var(--adc-text-scale, 1));
-    line-height: calc(1.5rem * var(--adc-text-scale, 1) * var(--adc-leading-scale, 1));
   }
 
   .text-lg {
     font-size: calc(1.125rem * var(--adc-text-scale, 1));
-    line-height: calc(1.75rem * var(--adc-text-scale, 1) * var(--adc-leading-scale, 1));
   }
 
   .text-xl {
     font-size: calc(1.25rem * var(--adc-text-scale, 1));
-    line-height: calc(1.75rem * var(--adc-text-scale, 1) * var(--adc-leading-scale, 1));
   }
 
   .text-2xl {
     font-size: calc(1.5rem * var(--adc-text-scale, 1));
-    line-height: calc(2rem * var(--adc-text-scale, 1) * var(--adc-leading-scale, 1));
   }
 
   .text-3xl {
     font-size: calc(1.875rem * var(--adc-text-scale, 1));
-    line-height: calc(2.25rem * var(--adc-text-scale, 1) * var(--adc-leading-scale, 1));
   }
 
   .adc-counter-text {

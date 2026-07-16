@@ -415,7 +415,9 @@ export default function TimedEventPanel() {
       )}
       {/* Event Message */}
       {displayMessage && (
-        <div className="text-xs text-muted-foreground">{displayMessage}</div>
+        <div className="timed-event-message text-xs text-muted-foreground">
+          {displayMessage}
+        </div>
       )}
 
       {/* Choices */}
