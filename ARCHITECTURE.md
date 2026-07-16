@@ -267,9 +267,11 @@ shop, the whole game unlocked, merchant-sold dark artifacts, and local + Steam C
 | `scripts/steam-upload.ps1` | Uploads `release/win-unpacked` to SteamPipe via `steamcmd` (`npm run steam:upload`). |
 | `scripts/steam-upload-demo.ps1` | Demo SteamPipe upload (`npm run steam:demo:upload`). |
 | `scripts/steam-upload-playtest.ps1` | Playtest SteamPipe upload (`npm run steam:playtest:upload`). |
+| `scripts/steam-upload-all.ps1` | Packages full + demo + playtest, stages each under `steam/staged-*`, then one `steamcmd` session uploads all three (`npm run steam:upload-all`). |
 | `scripts/UploadToSteam.cmd` | Desktop wrapper for `steam-upload.ps1`. |
 | `scripts/UploadDemoToSteam.cmd` | Desktop wrapper for `steam-upload-demo.ps1`. |
 | `scripts/UploadPlaytestToSteam.cmd` | Desktop wrapper for `steam-upload-playtest.ps1`. |
+| `scripts/UploadAllToSteam.cmd` | Desktop wrapper for `steam-upload-all.ps1` (all three editions, one Steam Guard prompt). |
 
 **Edition seams (guarded by `isSteamBuild`):** Supabase short-circuits in `lib/supabase.ts`;
 `App.tsx` skips Playlight; `pages/game.tsx` skips session tracker, auth, purchase rehydrate,
@@ -344,6 +346,8 @@ Demo saves: IndexedDB key `steamDemoSave` + `%APPDATA%\A Dark Cave Demo\adc-stea
 Playtest saves: IndexedDB key `steamPlaytestSave` + `%APPDATA%\A Dark Cave Playtest\adc-steam-playtest-save.dat` (matching Auto-Cloud row on the **playtest** app). No stone-hut cap — same full-game content as release.
 
 **Scripts:** `build:steam-playtest`, `electron:package:playtest`, `steam:playtest:upload` / `steam:playtest:upload-only` / `steam:playtest:stage`.
+
+**Upload all three at once:** `npm run steam:upload-all` (or double-click `scripts/UploadAllToSteam.cmd`). Builds full → demo → playtest, copies each into `steam/staged-*`, then one `steamcmd` login uploads all three. Variants: `steam:stage-all`, `steam:upload-all-only` (reuses existing staged folders).
 
 ---
 
