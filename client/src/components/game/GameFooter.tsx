@@ -33,10 +33,15 @@ const FOOTER_CONTROL_BTN_FADE =
   "opacity-80 transition-[opacity,color] group-hover:opacity-100";
 const FOOTER_CONTROL_SVG_ICON_HOVER =
   "w-4 h-4 text-neutral-300 opacity-80 transition-[opacity,color] group-hover:opacity-100 group-hover:!text-red-600";
+/** Steam editions: Reddit/Contact sit quieter at rest, full opacity on hover. */
+const FOOTER_CONTROL_SVG_ICON_HOVER_STEAM_MUTED =
+  "w-4 h-4 text-neutral-300 opacity-60 transition-[opacity,color] group-hover:opacity-100 group-hover:!text-red-600";
 const FOOTER_CONTROL_TEXT =
   `${FOOTER_CONTROL_BTN_FADE} group-hover:!text-red-600`;
 const FOOTER_SOCIAL_LABEL =
   `${FOOTER_CONTROL_TEXT} hidden sm:inline`;
+const FOOTER_SOCIAL_LABEL_STEAM_MUTED =
+  "opacity-60 transition-[opacity,color] group-hover:opacity-100 group-hover:!text-red-600 hidden sm:inline";
 const FOOTER_LEGAL_LINK =
   "text-2xs text-neutral-300 opacity-40 hover:opacity-100 transition-opacity";
 /** Heart stays red; opacity-only transition so scale pump is not overridden. */
@@ -58,7 +63,7 @@ function SteamDemoProgressBar() {
       className="pointer-events-none absolute inset-0 z-[1] flex items-center justify-center px-16 sm:px-24"
       aria-hidden={false}
     >
-      <div className="pointer-events-auto flex max-w-[min(14rem,40vw)] flex-col items-center gap-0.5 sm:max-w-[16rem]">
+      <div className="pointer-events-auto flex max-w-[min(18rem,50vw)] flex-col items-center gap-1 opacity-80 transition-opacity hover:opacity-100 sm:max-w-[20rem]">
         <span className="text-2xs leading-none text-neutral-400 whitespace-nowrap">
           {label}
         </span>
@@ -67,8 +72,8 @@ function SteamDemoProgressBar() {
           segments={segments}
           hideBorder
           disableGlow
-          className="h-1.5 w-full min-w-[6rem]"
-          indicatorClassName="bg-green-600"
+          className="h-1.5 w-full min-w-[8rem]"
+          indicatorClassName="bg-green-700"
           aria-label={label}
           aria-valuenow={completed}
           aria-valuemin={0}
@@ -96,6 +101,9 @@ export default function GameFooter() {
   const steamEditionActive = useSteamEditionActive();
   const steamDemoActive = useSteamDemoActive();
   const showFooterDonate = !steamEditionActive || isGalaxyEdition();
+  // Steam Game / Playtest / Demo (build or DEV Game Mode) — no Steam store URL in footer.
+  // Galaxy and Normal/web keep the wishlist link.
+  const hideSteamStoreLink = steamEditionActive && !isGalaxyEdition();
 
   const triggerDonateHeartPump = useCallback(() => {
     pumpDonateHeart(donateHeartRef.current);
@@ -223,12 +231,26 @@ export default function GameFooter() {
           </div>
           <div className="flex-1 flex justify-end gap-1 items-center">
             {GAME_FOOTER_RIGHT_ICON_ORDER.map((platform) => {
+              if (platform === "steam" && hideSteamStoreLink) {
+                return null;
+              }
+
               const { href, title } =
                 GAME_FOOTER_RIGHT_ICON_LINKS[platform];
               const linkLabel =
                 platform === "contact"
                   ? tWithFallback("ui", "footer.contact", title)
                   : title;
+              // Steam Game / Playtest / Demo: mute Reddit + Contact until hover.
+              const steamMutedSocial =
+                steamEditionActive &&
+                (platform === "reddit" || platform === "contact");
+              const platformIconClass = steamMutedSocial
+                ? `${FOOTER_CONTROL_SVG_ICON_HOVER_STEAM_MUTED}${isPaused ? " !opacity-100" : ""}`
+                : socialIconClass;
+              const platformLabelClass = steamMutedSocial
+                ? FOOTER_SOCIAL_LABEL_STEAM_MUTED
+                : FOOTER_SOCIAL_LABEL;
               const socialLink = (
                 <a
                   href={href}
@@ -243,9 +265,9 @@ export default function GameFooter() {
                 >
                   <FooterSocialIcon
                     platform={platform}
-                    className={socialIconClass}
+                    className={platformIconClass}
                   />
-                  <span className={FOOTER_SOCIAL_LABEL}>{linkLabel}</span>
+                  <span className={platformLabelClass}>{linkLabel}</span>
                 </a>
               );
 
