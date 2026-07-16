@@ -727,6 +727,29 @@ function migrateSteamShopSlotsOnLoad(state: GameState): Partial<GameState> | nul
 }
 
 /**
+ * Restore blacksteel armor from craft story flags. The clothing key was missing from
+ * the Zod schema, so older saves could lose ownership after parse/load.
+ */
+export function migrateBlacksteelArmorOnLoad(
+  state: GameState,
+): Partial<GameState> | null {
+  if (state.clothing?.blacksteel_armor) return null;
+  const seen = state.story?.seen as Record<string, unknown> | undefined;
+  if (
+    seen?.hasBlacksteelArmor !== true &&
+    seen?.actionCraftBlacksteelArmor !== true
+  ) {
+    return null;
+  }
+  return {
+    clothing: {
+      ...state.clothing,
+      blacksteel_armor: true,
+    },
+  };
+}
+
+/**
  * Backfill permanent item slices from schema defaults when a loaded save omits them.
  * Rebuilds owned craft tools from `story.seen` when flags exist but the tools slice
  * is missing or empty (cloud corruption loop).
@@ -777,6 +800,10 @@ export function applyGameStateLoadMigrations(state: GameState): GameState {
   const steamShopSlots = migrateSteamShopSlotsOnLoad(migrated);
   if (steamShopSlots) {
     migrated = { ...migrated, ...steamShopSlots };
+  }
+  const blacksteelArmor = migrateBlacksteelArmorOnLoad(migrated);
+  if (blacksteelArmor) {
+    migrated = { ...migrated, ...blacksteelArmor };
   }
   return migrated;
 }

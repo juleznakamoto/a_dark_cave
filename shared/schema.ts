@@ -197,6 +197,7 @@ export const gameStateSchema = z.object({
       devourer_crown: z.boolean().default(false),
       ring_of_obedience: z.boolean().default(false),
       gifted_ring: z.boolean().default(false),
+      blacksteel_armor: z.boolean().default(false),
     })
     .default({}),
   relics: z
@@ -563,6 +564,10 @@ export const gameStateSchema = z.object({
   hasWonNormalGame: z.boolean().default(false),
   /** Meta: won while in Cruel Mode. Persists across restarts. */
   hasWonCruelGame: z.boolean().default(false),
+  /** Meta: finished a game in under 5 hours. Persists across restarts. */
+  hasSpeedrunWin: z.boolean().default(false),
+  /** Meta: total play time across all runs (ms). Persists across restarts; increments with playTime. */
+  lifetimePlayTimeMs: z.number().min(0).default(0),
   BTP: z.number().default(0), // Buy To Play mode (0 = normal, 1 = BTP active)
   attackWaveTimers: z.record(attackWaveTimerSchema).default({}),
   /** Post-story endless waves won (next wave number = 11 + this count). */

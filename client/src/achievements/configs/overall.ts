@@ -1,9 +1,31 @@
 import type { AchievementChartConfig } from "../achievementTypes";
 import type { GameState } from "@shared/schema";
+import { isWebBuild } from "@/lib/edition";
+import {
+  SOCIAL_PROMO_EXCLUSIVE_STEP_TOTAL,
+  isSocialPromoExclusiveRewardComplete,
+  socialPromoExclusiveStepsCompleted,
+  type SocialPromoExclusiveSlice,
+} from "@/game/socialPromoExclusiveReward";
+
+const MS_PER_HOUR = 60 * 60 * 1000;
+export const SPEEDRUN_WIN_MAX_MS = 5 * MS_PER_HOUR;
+export const ENDURANT_HOURS = 30;
+
+function asSocialPromoSlice(state: GameState): SocialPromoExclusiveSlice {
+  const s = state as GameState & SocialPromoExclusiveSlice;
+  return {
+    social_media_rewards: s.social_media_rewards,
+    referralCount: s.referralCount,
+    referrals: s.referrals,
+    isUserSignedIn: s.isUserSignedIn,
+    signupWelcomeGoldClaimed: s.signupWelcomeGoldClaimed,
+  };
+}
 
 /**
  * Meta / overall achievements: persist across new games, never claimable.
- * Counts come from account-level win flags on the game state.
+ * Counts come from account-level flags / lifetime stats on the game state.
  */
 export const overallChartConfig: AchievementChartConfig = {
   idPrefix: "overall",
@@ -23,6 +45,42 @@ export const overallChartConfig: AchievementChartConfig = {
         label: "Cruel Victory",
         getCount: (state: GameState) => (state.hasWonCruelGame ? 1 : 0),
       },
+      {
+        segmentId: "0-speedrunner",
+        maxCount: 1,
+        label: "Speedrunner",
+        getCount: (state: GameState) => (state.hasSpeedrunWin ? 1 : 0),
+      },
+      {
+        segmentId: "0-endurant",
+        maxCount: ENDURANT_HOURS,
+        label: "Endurant",
+        segments: 10,
+        getCount: (state: GameState) =>
+          Math.min(
+            ENDURANT_HOURS,
+            Math.floor((Number(state.lifetimePlayTimeMs) || 0) / MS_PER_HOUR),
+          ),
+      },
+      ...(isWebBuild
+        ? [
+            {
+              segmentId: "0-supporter",
+              maxCount: SOCIAL_PROMO_EXCLUSIVE_STEP_TOTAL,
+              label: "Supporter",
+              getCount: (state: GameState) => {
+                const slice = asSocialPromoSlice(state);
+                if (isSocialPromoExclusiveRewardComplete(slice)) {
+                  return SOCIAL_PROMO_EXCLUSIVE_STEP_TOTAL;
+                }
+                return Math.min(
+                  SOCIAL_PROMO_EXCLUSIVE_STEP_TOTAL,
+                  socialPromoExclusiveStepsCompleted(slice),
+                );
+              },
+            },
+          ]
+        : []),
     ],
   ],
 };

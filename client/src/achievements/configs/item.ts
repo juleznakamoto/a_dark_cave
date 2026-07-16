@@ -142,7 +142,7 @@ export const itemChartConfig: AchievementChartConfig = {
     [
       {
         segmentId: "3-ancient_books",
-        maxCount: 4,
+        maxCount: 5,
         label: "Ancient Wisdom",
         reward: 250,
         getCount: (_state: GameState) =>
@@ -151,11 +151,12 @@ export const itemChartConfig: AchievementChartConfig = {
             "book_of_war",
             "book_of_trials",
             "book_of_craftsmanship",
+            "book_of_chainmaster",
           ]),
       },
       {
         segmentId: "3-fellowship",
-        maxCount: 4,
+        maxCount: 5,
         label: "Good Company",
         reward: 250,
         getCount: (_state: GameState) =>
@@ -164,6 +165,7 @@ export const itemChartConfig: AchievementChartConfig = {
             "restless_knight",
             "ashwraith_huntress",
             "disgraced_prior",
+            "one_eyed_crow",
           ]),
       },
     ],
