@@ -20,9 +20,9 @@ import { Howl, Howler } from 'howler';
   }
 })();
 import { logger } from './logger';
-import { SOUND_VOLUME } from './soundVolumes';
+import { EVENT_AMBIENCE_FADE_SECONDS, SOUND_VOLUME } from './soundVolumes';
 
-export { SOUND_VOLUME, feedFireVolume } from './soundVolumes';
+export { EVENT_AMBIENCE_FADE_SECONDS, SOUND_VOLUME, feedFireVolume } from './soundVolumes';
 
 export class AudioManager {
   private static instance: AudioManager;
@@ -37,6 +37,8 @@ export class AudioManager {
   private sfxMasterVolume: number = 1;
   /** Per-call requested volume (pre-master) so master changes can re-apply to live sounds. */
   private requestedVolumes: Map<string, number> = new Map();
+  /** Looping event ambience (cube, future madness beds, etc.) currently owning the mix. */
+  private activeEventAmbience: string | null = null;
 
   private constructor() { }
 
@@ -50,6 +52,18 @@ export class AudioManager {
     const master =
       name === 'backgroundMusic' ? this.musicMasterVolume : this.sfxMasterVolume;
     return volume * master;
+  }
+
+  private isSoundPlaying(name: string): boolean {
+    const sound = this.sounds.get(name);
+    return Boolean(sound && typeof sound.playing === 'function' && sound.playing());
+  }
+
+  private getCurrentVolume(name: string): number {
+    const sound = this.sounds.get(name);
+    if (!sound || typeof sound.volume !== 'function') return 0;
+    const value = sound.volume();
+    return typeof value === 'number' ? value : 0;
   }
 
   static getInstance(): AudioManager {
@@ -183,10 +197,17 @@ export class AudioManager {
 
       // IMPORTANT: Set loop BEFORE checking if playing, so loop is always enabled
       sound.loop(true);
-      sound.volume(effective);
 
-      // If sound is already playing with loop enabled, we're done
-      if (sound.playing && sound.playing()) return;
+      // Already playing: cancel any in-progress fade-out and move to target volume
+      if (sound.playing && sound.playing()) {
+        sound.off('fade');
+        if (fadeInDuration > 0) {
+          sound.fade(this.getCurrentVolume(name), effective, fadeInDuration * 1000);
+        } else {
+          sound.volume(effective);
+        }
+        return;
+      }
 
       if (fadeInDuration > 0) {
         // Clear any stale fade handlers from previous stop operations
@@ -195,6 +216,7 @@ export class AudioManager {
         sound.play();
         sound.fade(0, effective, fadeInDuration * 1000);
       } else {
+        sound.volume(effective);
         sound.play();
       }
     } catch (error) {
@@ -210,7 +232,11 @@ export class AudioManager {
       try {
         // Clear any stale fade handlers from previous stop/play cycles
         sound.off('fade');
-        const currentVolume = typeof sound.volume === 'function' ? (sound.volume() ?? 0) : 0;
+        if (!(sound.playing && sound.playing())) {
+          sound.stop();
+          return;
+        }
+        const currentVolume = this.getCurrentVolume(name);
         sound.fade(currentVolume, 0, fadeOutDuration * 1000);
         sound.once('fade', () => {
           sound.stop();
@@ -220,18 +246,95 @@ export class AudioManager {
         sound.stop();
       }
     } else {
-      sound.stop();
+      try {
+        sound.off('fade');
+        sound.stop();
+      } catch (error) {
+        logger.warn(`Error stopping sound ${name}:`, error);
+      }
     }
+  }
+
+  /**
+   * Crossfade from background music into a looping event bed (cube, future madness, etc.).
+   * Safe to call when the game loop also pauses — event ambience is preserved.
+   */
+  startEventAmbience(
+    name: string,
+    volume: number,
+    fadeSeconds: number = EVENT_AMBIENCE_FADE_SECONDS,
+  ): void {
+    if (this.isSoundPlaying('backgroundMusic') || this.wasBackgroundMusicPlaying) {
+      this.wasBackgroundMusicPlaying = !this.isMusicMuted;
+    }
+
+    this.activeEventAmbience = name;
+    this.stopLoopingSound('backgroundMusic', fadeSeconds);
+    this.playLoopingSound(name, volume, false, fadeSeconds);
+  }
+
+  /**
+   * Fade out event ambience. Background music is restored by {@link resumeSounds}
+   * when the simulation unpauses (typically when the event dialog closes).
+   */
+  stopEventAmbience(
+    name?: string,
+    fadeSeconds: number = EVENT_AMBIENCE_FADE_SECONDS,
+  ): void {
+    const soundName = name ?? this.activeEventAmbience;
+    if (!soundName) return;
+
+    if (this.activeEventAmbience === soundName) {
+      this.activeEventAmbience = null;
+    }
+    this.stopLoopingSound(soundName, fadeSeconds);
+  }
+
+  /** Stop looping SFX except BGM and the active event ambience bed. */
+  private stopNonAmbienceLoopingSounds(): void {
+    this.sounds.forEach((sound, name) => {
+      if (name === 'backgroundMusic') return;
+      if (name === this.activeEventAmbience) return;
+      if (!sound || typeof sound.loop !== 'function' || !sound.loop()) return;
+      if (typeof sound.playing === 'function' && !sound.playing()) return;
+      try {
+        sound.off('fade');
+        sound.stop();
+      } catch (error) {
+        logger.warn(`Error stopping looping sound ${name}:`, error);
+      }
+    });
+  }
+
+  /**
+   * Simulation pause (modal / user pause): fade BGM out and stop other loops,
+   * while preserving any active event ambience bed.
+   */
+  pauseForSimulation(
+    musicFadeOutSeconds: number = EVENT_AMBIENCE_FADE_SECONDS,
+  ): void {
+    if (this.isSoundPlaying('backgroundMusic')) {
+      this.wasBackgroundMusicPlaying = !this.isMusicMuted;
+      this.stopLoopingSound('backgroundMusic', musicFadeOutSeconds);
+    } else if (!this.isMusicMuted && this.wasBackgroundMusicPlaying) {
+      // Keep resume intent if BGM already faded for event ambience
+    } else if (!this.activeEventAmbience) {
+      this.wasBackgroundMusicPlaying = false;
+    }
+
+    this.stopNonAmbienceLoopingSounds();
   }
 
   stopAllSounds(): void {
     // Track if background music was playing before stopping
     const bgMusic = this.sounds.get('backgroundMusic');
     this.wasBackgroundMusicPlaying = (bgMusic && typeof bgMusic.playing === 'function') ? bgMusic.playing() : false;
+    this.activeEventAmbience = null;
 
     this.sounds.forEach(sound => {
       try {
         if (sound && typeof sound.stop === 'function') {
+          sound.off('fade');
           sound.stop();
         }
       } catch (error) {
@@ -307,10 +410,20 @@ export class AudioManager {
     }
   }
 
-  async resumeSounds(): Promise<void> {
+  async resumeSounds(
+    musicFadeInSeconds: number = EVENT_AMBIENCE_FADE_SECONDS,
+  ): Promise<void> {
+    // Event dialog still owns the mix — do not pull BGM back underneath it
+    if (this.activeEventAmbience) return;
+
     // Only resume background music if it was playing AND music is not muted
     if (this.wasBackgroundMusicPlaying && !this.isMusicMuted) {
-      this.playLoopingSound('backgroundMusic', this.backgroundMusicVolume);
+      this.playLoopingSound(
+        'backgroundMusic',
+        this.backgroundMusicVolume,
+        false,
+        musicFadeInSeconds,
+      );
     }
   }
 
@@ -334,6 +447,10 @@ export class AudioManager {
       this.sounds.forEach((sound, name) => {
         if (sound && name !== 'backgroundMusic' && sound.loop() && typeof sound.stop === 'function') {
           try {
+            if (name === this.activeEventAmbience) {
+              this.activeEventAmbience = null;
+            }
+            sound.off('fade');
             sound.stop();
           } catch (error) {
             logger.warn(`Error stopping looping sound ${name}:`, error);
@@ -350,7 +467,10 @@ export class AudioManager {
       this.stopLoopingSound('backgroundMusic', 1);
     } else {
       this.wasBackgroundMusicPlaying = true; // Track that music should be playing
-      this.playLoopingSound('backgroundMusic', this.backgroundMusicVolume, false, 1);
+      // Don't restart BGM under an active event bed
+      if (!this.activeEventAmbience) {
+        this.playLoopingSound('backgroundMusic', this.backgroundMusicVolume, false, 1);
+      }
     }
   }
 
