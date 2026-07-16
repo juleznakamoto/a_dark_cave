@@ -1107,6 +1107,10 @@ html[data-tab-hidden] .exclusive-promo-shockwave-ring:not(.exclusive-promo-shock
   animation: focus-glow 3s ease-in-out infinite;
 }
 
+.focus-glow-hover {
+  transition: box-shadow 1s ease;
+}
+
 .focus-glow-hover:hover:not([aria-disabled="true"]) {
   box-shadow: 0 0 10px rgba(20, 184, 166, .5), 0 0 8px rgba(20, 184, 166, .3);
 }

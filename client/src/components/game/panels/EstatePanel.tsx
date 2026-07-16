@@ -431,7 +431,7 @@ export default function EstatePanel() {
       <div className="w-full space-y-2 pt-2 md:pt-0 mt-0 md:mt-2 mb-2 pr-2 pb-2">
         {/* Sleep Mode Section */}
         <div className="space-y-">
-          <div className="flex items-center gap-2 pb-2">
+          <div className="flex min-h-5 items-center gap-2 pb-3">
             <h3 className="text-xs font-medium text-foreground">{t("estate.rest")}</h3>
             {/* Focus Timer */}
             {focusState?.isActive && focusState.endTime > Date.now() && (
