@@ -427,9 +427,11 @@ export default function EstatePanel() {
       <div className="w-full space-y-2 pt-2 md:pt-0 mt-0 md:mt-2 mb-2 pr-2 pb-2">
         {/* Sleep Mode Section */}
         <div className="space-y-">
-          <div className="flex items-center gap-2 pb-2">
-            <h3 className="text-xs font-medium text-foreground">{t("estate.rest")}</h3>
-            {/* Focus Timer */}
+          <div className="flex h-[18px] items-center gap-2 pb-2">
+            <h3 className="text-xs font-medium leading-none text-foreground">
+              {t("estate.rest")}
+            </h3>
+            {/* Focus Timer — fixed row height so Rest doesn't shift when this mounts */}
             {focusState?.isActive && focusState.endTime > Date.now() && (
               <TooltipWrapper
                 tooltip={
@@ -439,19 +441,18 @@ export default function EstatePanel() {
                 }
                 tooltipId="focus-progress"
                 disabled
+                className="relative inline-flex h-[18px] w-[18px] shrink-0 items-center justify-center"
               >
-                <div className="text-xs text-primary flex items-center gap-0.5 cursor-pointer">
-                  <div className="relative inline-flex items-center gap-1 mt-[0px]">
-                    <CircularProgress
-                      value={focusProgress}
-                      size={18}
-                      strokeWidth={2}
-                      className="text-teal-400"
-                    />
-                    <span className="absolute inset-0 flex items-center justify-center font-extrabold text-[10px] -mt-[0px] text-teal-400">
-                      ☩
-                    </span>
-                  </div>
+                <div className="relative inline-flex h-[18px] w-[18px] cursor-pointer items-center justify-center">
+                  <CircularProgress
+                    value={focusProgress}
+                    size={18}
+                    strokeWidth={2}
+                    className="text-teal-400"
+                  />
+                  <span className="absolute inset-0 flex items-center justify-center font-extrabold text-[10px] leading-none text-teal-400">
+                    ☩
+                  </span>
                 </div>
               </TooltipWrapper>
             )}
