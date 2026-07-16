@@ -26,11 +26,16 @@ import {
 } from "@/game/rules/skillUpgrades";
 import { stackTimedDebuff } from "@/game/stateHelpers";
 import { focusTooltip } from "@/game/rules/tooltips";
+import {
+  GAME_PANEL_HEADER_INDICATOR_CLASS,
+  GAME_PANEL_HEADER_INDICATOR_TRIGGER_CLASS,
+} from "@/components/game/gameChrome";
 import { formatNumber } from "@/lib/utils";
 import cn from "clsx";
 import { buildLocalizedEventLogEntry } from "@/i18n/buildEventLogEntry";
 import { useUiTranslation } from "@/i18n/useUiTranslation";
 import { formatTooltipCostLine } from "@/i18n/tooltipLabels";
+
 
 const ESTATE_BAR_GROW_ANIMATION_MS = 500;
 
@@ -427,11 +432,11 @@ export default function EstatePanel() {
       <div className="w-full space-y-2 pt-2 md:pt-0 mt-0 md:mt-2 mb-2 pr-2 pb-2">
         {/* Sleep Mode Section */}
         <div className="space-y-">
-          <div className="flex h-[18px] items-center gap-2 pb-2">
-            <h3 className="text-xs font-medium leading-none text-foreground">
+          <div className="flex w-full items-center gap-2 pb-2">
+            <h3 className="inline-flex shrink-0 items-center text-xs font-medium text-foreground leading-none">
               {t("estate.rest")}
             </h3>
-            {/* Focus Timer — fixed row height so Rest doesn't shift when this mounts */}
+            {/* Focus Timer — same chrome as Produce header effect indicators */}
             {focusState?.isActive && focusState.endTime > Date.now() && (
               <TooltipWrapper
                 tooltip={
@@ -441,16 +446,19 @@ export default function EstatePanel() {
                 }
                 tooltipId="focus-progress"
                 disabled
-                className="relative inline-flex h-[18px] w-[18px] shrink-0 items-center justify-center"
+                tooltipTriggerClassName={
+                  GAME_PANEL_HEADER_INDICATOR_TRIGGER_CLASS
+                }
+                className={GAME_PANEL_HEADER_INDICATOR_CLASS}
               >
-                <div className="relative inline-flex h-[18px] w-[18px] cursor-pointer items-center justify-center">
+                <div className="relative inline-flex items-center">
                   <CircularProgress
                     value={focusProgress}
                     size={18}
                     strokeWidth={2}
                     className="text-teal-400"
                   />
-                  <span className="absolute inset-0 flex items-center justify-center font-extrabold text-[10px] leading-none text-teal-400">
+                  <span className="font-noto-symbols-2 absolute inset-0 flex items-center justify-center font-extrabold text-[10px] leading-none text-teal-400">
                     ☩
                   </span>
                 </div>
