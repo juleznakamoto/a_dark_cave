@@ -196,8 +196,10 @@ export default function EstatePanel() {
     return () => clearInterval(interval);
   }, [focusState]);
 
-  // Focus button - only show if there are focus points available
-  const showFocusButton = focusState?.points > 0;
+  // Keep Focus button mounted while active so Sleep upgrades don't jump up when points hit 0
+  const showFocusButton =
+    (focusState?.points ?? 0) > 0 ||
+    Boolean(focusState?.isActive && focusState.endTime > Date.now());
 
   // Calculate Focus duration: 1 focus point = 1 minute of Focus time
   const calculateFocusDuration = (focusPoints: number) => {
@@ -431,7 +433,7 @@ export default function EstatePanel() {
       <div className="w-full space-y-2 pt-2 md:pt-0 mt-0 md:mt-2 mb-2 pr-2 pb-2">
         {/* Sleep Mode Section */}
         <div className="space-y-">
-          <div className="flex min-h-5 items-center gap-2 pb-3">
+          <div className="flex items-center gap-2 pb-2">
             <h3 className="text-xs font-medium text-foreground">{t("estate.rest")}</h3>
             {/* Focus Timer */}
             {focusState?.isActive && focusState.endTime > Date.now() && (
