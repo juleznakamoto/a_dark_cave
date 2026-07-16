@@ -12,7 +12,7 @@ export const SOUND_VOLUME = {
   },
   newVillager: 0.02,
   buildingComplete: 0.5,
-  craft: 0.5,
+  craft: 0.3,
   mining: 0.5,
   chopWood: 0.8,
   hunt: 0.2,

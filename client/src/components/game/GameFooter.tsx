@@ -35,7 +35,7 @@ const FOOTER_CONTROL_SVG_ICON_HOVER =
   "w-4 h-4 text-neutral-300 opacity-80 transition-[opacity,color] group-hover:opacity-100 group-hover:!text-red-600";
 /** Steam editions: Reddit/Contact sit quieter at rest, full opacity on hover. */
 const FOOTER_CONTROL_SVG_ICON_HOVER_STEAM_MUTED =
-  "w-4 h-4 text-neutral-300 opacity-60 transition-[opacity,color] group-hover:opacity-100 group-hover:!text-red-600";
+  "w-4 h-4 text-neutral-300 opacity-40 transition-[opacity,color] group-hover:opacity-100 group-hover:!text-red-600";
 const FOOTER_CONTROL_TEXT =
   `${FOOTER_CONTROL_BTN_FADE} group-hover:!text-red-600`;
 const FOOTER_SOCIAL_LABEL =
