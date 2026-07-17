@@ -6,11 +6,21 @@ import { getSupabaseClient } from "@/lib/supabase";
 export const SAVE_SCHEMA_VERSION_V2 = 1;
 
 /**
- * Rich V2 cloud dual-write is DEV-only (Vite `import.meta.env.DEV`).
- * Production builds never call it; SQL also no-ops unless app_config.environment=development.
+ * Sidecar dual-write of the full blob to `game_saves.game_state_v2`.
+ * On by default in all builds (load still uses legacy `game_state`).
+ * Kill switch: `VITE_SAVE_GAME_V2_CLOUD=0`.
+ * Requires migration 028 on the target DB.
  */
 export function isSaveGameV2CloudEnabled(): boolean {
-  return import.meta.env.DEV === true;
+  return import.meta.env.VITE_SAVE_GAME_V2_CLOUD !== "0";
+}
+
+/**
+ * Rich V2 path (analytics, playTime OCC, completion, anti-cheat via migration 029).
+ * DEV-only until cutover; SQL also no-ops unless `app_config.environment=development`.
+ */
+export function isSaveGameV2RichEnabled(): boolean {
+  return import.meta.env.DEV === true && isSaveGameV2CloudEnabled();
 }
 
 export type SaveGameV2CloudOptions = {
@@ -22,7 +32,8 @@ export type SaveGameV2CloudOptions = {
 
 /**
  * Best-effort sidecar write of the full game state to `game_saves.game_state_v2`.
- * DEV-only rich path: playTime OCC, anti-cheat (prod DB only), completion stats, analytics.
+ * Thin path (PROD): full blob only — matches migration 028 signature.
+ * Rich path (DEV): blob + OCC/analytics — matches migration 029.
  * Must never throw — legacy save/load must be unaffected if this fails.
  */
 export async function dualWriteSaveGameV2(
@@ -63,24 +74,30 @@ export async function dualWriteSaveGameV2(
       return;
     }
 
-    const clickAnalytics =
-      options.clickAnalytics && Object.keys(options.clickAnalytics).length > 0
-        ? options.clickAnalytics
-        : null;
-    const resourceAnalytics =
-      options.resourceAnalytics &&
-        Object.keys(options.resourceAnalytics).length > 0
-        ? options.resourceAnalytics
-        : null;
-
-    const { error } = await supabase.rpc("save_game_state_v2", {
+    const rich = isSaveGameV2RichEnabled();
+    const rpcArgs: Record<string, unknown> = {
       p_game_state: sanitized,
       p_schema_version: SAVE_SCHEMA_VERSION_V2,
-      p_click_analytics: clickAnalytics,
-      p_resource_analytics: resourceAnalytics,
-      p_clear_analytics: options.clearAnalytics === true,
-      p_allow_playtime_overwrite: options.allowPlaytimeOverwrite === true,
-    });
+    };
+
+    if (rich) {
+      const clickAnalytics =
+        options.clickAnalytics && Object.keys(options.clickAnalytics).length > 0
+          ? options.clickAnalytics
+          : null;
+      const resourceAnalytics =
+        options.resourceAnalytics &&
+          Object.keys(options.resourceAnalytics).length > 0
+          ? options.resourceAnalytics
+          : null;
+      rpcArgs.p_click_analytics = clickAnalytics;
+      rpcArgs.p_resource_analytics = resourceAnalytics;
+      rpcArgs.p_clear_analytics = options.clearAnalytics === true;
+      rpcArgs.p_allow_playtime_overwrite =
+        options.allowPlaytimeOverwrite === true;
+    }
+
+    const { error } = await supabase.rpc("save_game_state_v2", rpcArgs);
 
     if (error) {
       logger.warn("[SAVE V2] dual-write failed (ignored):", error.message ?? error);
@@ -90,10 +107,11 @@ export async function dualWriteSaveGameV2(
     logger.log("[SAVE V2] ✅ dual-write ok", {
       schemaVersion: SAVE_SCHEMA_VERSION_V2,
       playTime: Math.floor(Number(sanitized.playTime) || 0),
-      hasClickAnalytics: !!clickAnalytics,
-      hasResourceAnalytics: !!resourceAnalytics,
-      clearAnalytics: options.clearAnalytics === true,
-      allowOverwrite: options.allowPlaytimeOverwrite === true,
+      rich,
+      hasClickAnalytics: rich && !!rpcArgs.p_click_analytics,
+      hasResourceAnalytics: rich && !!rpcArgs.p_resource_analytics,
+      clearAnalytics: rich && options.clearAnalytics === true,
+      allowOverwrite: rich && options.allowPlaytimeOverwrite === true,
     });
   } catch (error) {
     logger.warn("[SAVE V2] dual-write failed (ignored):", error);

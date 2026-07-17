@@ -23,6 +23,7 @@ vi.mock("@/lib/logger", () => ({
 import {
   dualWriteSaveGameV2,
   isSaveGameV2CloudEnabled,
+  isSaveGameV2RichEnabled,
   SAVE_SCHEMA_VERSION_V2,
 } from "./saveGameV2";
 import { logger } from "@/lib/logger";
@@ -36,9 +37,10 @@ describe("dualWriteSaveGameV2", () => {
     });
   });
 
-  it("is enabled only in Vite DEV mode", () => {
+  it("enables thin dual-write by default; rich path only in Vite DEV", () => {
     // Vitest runs with import.meta.env.DEV === true
     expect(isSaveGameV2CloudEnabled()).toBe(true);
+    expect(isSaveGameV2RichEnabled()).toBe(true);
   });
 
   it("no-ops without a session and never throws", async () => {
@@ -51,7 +53,7 @@ describe("dualWriteSaveGameV2", () => {
     expect(mockRpc).not.toHaveBeenCalled();
   });
 
-  it("writes full state + analytics via save_game_state_v2 RPC", async () => {
+  it("writes full state + analytics via save_game_state_v2 RPC in DEV (rich)", async () => {
     mockGetSession.mockResolvedValue({
       data: { session: { access_token: "tok" } },
     });
@@ -83,7 +85,7 @@ describe("dualWriteSaveGameV2", () => {
     });
   });
 
-  it("omits empty analytics objects", async () => {
+  it("omits empty analytics objects on rich path", async () => {
     mockGetSession.mockResolvedValue({
       data: { session: { access_token: "tok" } },
     });

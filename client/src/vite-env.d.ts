@@ -10,6 +10,8 @@ interface ImportMetaEnv {
   readonly VITE_STEAM_DEMO?: string;
   /** "1" only in the Steam desktop playtest build (`build:steam-playtest`). */
   readonly VITE_STEAM_PLAYTEST?: string;
+  /** Set to "0" to disable game_state_v2 sidecar dual-write (on by default). */
+  readonly VITE_SAVE_GAME_V2_CLOUD?: string;
 }
 
 interface ImportMeta {

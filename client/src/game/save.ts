@@ -24,7 +24,11 @@ import {
   readSteamCloudSave,
   pickNewerSave,
 } from "./steamSaveAdapter";
-import { dualWriteSaveGameV2, isSaveGameV2CloudEnabled } from "./saveGameV2";
+import {
+  dualWriteSaveGameV2,
+  isSaveGameV2CloudEnabled,
+  isSaveGameV2RichEnabled,
+} from "./saveGameV2";
 
 const isDev = import.meta.env.DEV;
 
@@ -571,12 +575,13 @@ export async function saveGame(
           });
         }
 
-        // DEV rich-V2 dual-write owns analytics to avoid double-counting in button_clicks.
-        // PROD (and non-DEV): analytics stay on the legacy V1 edge path only.
+        // Rich V2 (DEV) owns analytics to avoid double-counting in button_clicks.
+        // Thin dual-write (PROD): analytics stay on the legacy V1 edge path.
         const v2CloudEnabled = isSaveGameV2CloudEnabled();
-        const legacyClickAnalytics = v2CloudEnabled ? null : clickData;
-        const legacyResourceAnalytics = v2CloudEnabled ? null : resourceData;
-        const legacyClearAnalytics = v2CloudEnabled ? false : isNewGame;
+        const v2RichEnabled = isSaveGameV2RichEnabled();
+        const legacyClickAnalytics = v2RichEnabled ? null : clickData;
+        const legacyResourceAnalytics = v2RichEnabled ? null : resourceData;
+        const legacyClearAnalytics = v2RichEnabled ? false : isNewGame;
 
         // Get last cloud state for diff calculation
         const lastCloudState = await getLastCloudState(db);
@@ -623,6 +628,7 @@ export async function saveGame(
           willAllowOverwrite: allowOverwrite,
           currentPlayTime: stateDiff.playTime,
           v2CloudEnabled,
+          v2RichEnabled,
         });
 
         // Save via Edge Function → save_game_with_analytics (deep-merges nested JSONB
@@ -667,14 +673,14 @@ export async function saveGame(
           logger.log("[SAVE] 🔓 Cleared allowPlayTimeOverwrite flag after successful cloud save");
         }
 
-        // DEV-only rich V2 sidecar (full blob + OCC + analytics). Never throws;
-        // never changes PROD clients (isSaveGameV2CloudEnabled is false there).
+        // Sidecar dual-write to game_state_v2 (thin on PROD, rich on DEV). Never throws;
+        // load still uses legacy game_state only.
         if (v2CloudEnabled) {
           try {
             await dualWriteSaveGameV2(sanitizedState, {
-              clickAnalytics: clickData,
-              resourceAnalytics: resourceData,
-              clearAnalytics: isNewGame,
+              clickAnalytics: v2RichEnabled ? clickData : null,
+              resourceAnalytics: v2RichEnabled ? resourceData : null,
+              clearAnalytics: v2RichEnabled ? isNewGame : false,
               allowPlaytimeOverwrite: allowOverwrite,
             });
           } catch (v2Error) {
