@@ -7,6 +7,8 @@ export const GAME_ENDING_CUBE_EVENT_IDS = [
   "cube14d",
   "cube15a",
   "cube15b",
+  "cube16a",
+  "cube16b",
 ] as const;
 
 const UTC_MONTH_NAMES = [

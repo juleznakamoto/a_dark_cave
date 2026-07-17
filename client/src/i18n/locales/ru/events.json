@@ -2604,4 +2604,22 @@
     "message": "Прибывает богато украшенная женщина восточного вида с двумя мускулистыми спутниками. Она предлагает поделиться знанием о создании могущественной обсидиановой сферы в обмен на золото или жителей.",
     "title": "Обсидиановая сфера"
   }
+    "cube16a": {
+      "choices": {
+        "close": {
+          "label": "Close"
+        }
+      },
+      "message": "Next to the slain creatures you find what seems to be one of the skull devices. It's broken, but you can still read some letters on it saying 'N**RAL**K'.",
+      "title": "The Skull Device"
+    },
+    "cube16b": {
+      "choices": {
+        "close": {
+          "label": "Close"
+        }
+      },
+      "message": "The creatures give you what seems to be one of the skull devices. It's broken, but you can still read some letters on it saying 'N**RAL**K'.",
+      "title": "The Skull Device"
+    },
 }

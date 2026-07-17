@@ -58,8 +58,14 @@ export default function CubeDialog({
   const handleClose = async () => {
     onChoice(eventChoices[0]?.id);
 
-    // Check if this is one of the final cube events (cube15a or cube15b)
-    if (event?.id?.includes('cube15a') || event?.id?.includes('cube15b')) {
+    const baseEventId = event?.id?.split("-")?.[0] ?? "";
+    const cruelMode = useGameStore.getState().cruelMode;
+    // Normal: recognition (15). Cruel: skull-device epilogue (16) before end screen.
+    const isFinalCubeEvent = cruelMode
+      ? baseEventId === "cube16a" || baseEventId === "cube16b"
+      : baseEventId === "cube15a" || baseEventId === "cube15b";
+
+    if (isFinalCubeEvent) {
       const completionLogId = "game-finished";
       const completionMessage = t("cube.completionLog");
 
