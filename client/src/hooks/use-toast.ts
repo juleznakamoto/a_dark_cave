@@ -13,6 +13,8 @@ type ToasterToast = ToastProps & {
   title?: React.ReactNode
   description?: React.ReactNode
   action?: ToastActionElement
+  /** When false, hide the close button and ignore swipe/dismiss. Default true. */
+  dismissible?: boolean
 }
 
 const actionTypes = {
@@ -33,21 +35,21 @@ type ActionType = typeof actionTypes
 
 type Action =
   | {
-      type: ActionType["ADD_TOAST"]
-      toast: ToasterToast
-    }
+    type: ActionType["ADD_TOAST"]
+    toast: ToasterToast
+  }
   | {
-      type: ActionType["UPDATE_TOAST"]
-      toast: Partial<ToasterToast>
-    }
+    type: ActionType["UPDATE_TOAST"]
+    toast: Partial<ToasterToast>
+  }
   | {
-      type: ActionType["DISMISS_TOAST"]
-      toastId?: ToasterToast["id"]
-    }
+    type: ActionType["DISMISS_TOAST"]
+    toastId?: ToasterToast["id"]
+  }
   | {
-      type: ActionType["REMOVE_TOAST"]
-      toastId?: ToasterToast["id"]
-    }
+    type: ActionType["REMOVE_TOAST"]
+    toastId?: ToasterToast["id"]
+  }
 
 interface State {
   toasts: ToasterToast[]
@@ -73,12 +75,19 @@ const addToRemoveQueue = (toastId: string) => {
 
 const reducer = (state: State, action: Action): State => {
   switch (action.type) {
-    case "ADD_TOAST":
-      const newState = {
-        ...state,
-        toasts: [action.toast, ...state.toasts].slice(0, TOAST_LIMIT),
-      };
-      return newState;
+    case "ADD_TOAST": {
+      const sticky = state.toasts.filter((t) => t.dismissible === false)
+      if (action.toast.dismissible === false) {
+        // One sticky toast at a time; keep existing regular toasts.
+        const regular = state.toasts.filter((t) => t.dismissible !== false).slice(0, TOAST_LIMIT)
+        return { ...state, toasts: [action.toast, ...regular] }
+      }
+      const regular = [action.toast, ...state.toasts.filter((t) => t.dismissible !== false)].slice(
+        0,
+        TOAST_LIMIT
+      )
+      return { ...state, toasts: [...sticky, ...regular] }
+    }
 
     case "UPDATE_TOAST":
       return {
@@ -91,24 +100,27 @@ const reducer = (state: State, action: Action): State => {
     case "DISMISS_TOAST": {
       const { toastId } = action
 
+      const shouldDismiss = (t: ToasterToast) => {
+        if (t.dismissible === false) return false
+        return toastId === undefined || t.id === toastId
+      }
+
       // ! Side effects ! - This could be extracted into a dismissToast() action,
       // but I'll keep it here for simplicity
-      if (toastId) {
-        addToRemoveQueue(toastId)
-      } else {
-        state.toasts.forEach((toast) => {
+      state.toasts.forEach((toast) => {
+        if (shouldDismiss(toast)) {
           addToRemoveQueue(toast.id)
-        })
-      }
+        }
+      })
 
       return {
         ...state,
         toasts: state.toasts.map((t) =>
-          t.id === toastId || toastId === undefined
+          shouldDismiss(t)
             ? {
-                ...t,
-                open: false,
-              }
+              ...t,
+              open: false,
+            }
             : t
         ),
       }
@@ -117,7 +129,8 @@ const reducer = (state: State, action: Action): State => {
       if (action.toastId === undefined) {
         return {
           ...state,
-          toasts: [],
+          // Never wipe sticky toasts via a blanket clear.
+          toasts: state.toasts.filter((t) => t.dismissible === false),
         }
       }
       return {
@@ -146,7 +159,7 @@ type Toast = Omit<ToasterToast, "id"> & {
   };
 }
 
-function toast({ action, ...props }: Toast) {
+function toast({ action, dismissible = true, ...props }: Toast) {
   const id = genId()
 
   const update = (props: ToasterToast) =>
@@ -155,6 +168,7 @@ function toast({ action, ...props }: Toast) {
       toast: { ...props, id },
     })
   const dismiss = () => {
+    if (!dismissible) return
     dispatch({ type: "DISMISS_TOAST", toastId: id });
   }
 
@@ -166,7 +180,7 @@ function toast({ action, ...props }: Toast) {
       {
         onClick: () => {
           action.onClick();
-          dismiss();
+          if (dismissible) dismiss();
         },
         className: 'inline-flex h-8 shrink-0 items-center justify-center rounded-md border-0 bg-primary hover:bg-primary/90 text-white px-3 text-sm font-medium ring-offset-background transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2',
       },
@@ -178,9 +192,17 @@ function toast({ action, ...props }: Toast) {
     ...props,
     id,
     open: true,
+    dismissible,
     action: actionElement,
     onOpenChange: (open: boolean) => {
-      if (!open) dismiss()
+      if (!open) {
+        if (!dismissible) {
+          // Swipe/escape tried to close a sticky toast — keep it open.
+          update({ open: true })
+          return
+        }
+        dismiss()
+      }
     },
   };
 

@@ -284,12 +284,35 @@ export default function GameContainer() {
 
   // Prompt for a hard refresh when a new build is deployed while the tab stays open.
   useEffect(() => {
-    const showUpdateToast = toast;
+    const AUTO_RELOAD_MS = 15 * 60 * 1000;
+    const AUTO_RELOAD_MINUTES = 15;
     let updatePending = false;
+    let reloadAtMs = 0;
+    let autoReloadTimeout: ReturnType<typeof setTimeout> | null = null;
+    let reloading = false;
+
+    const saveAndHardReload = async () => {
+      if (reloading) return;
+      reloading = true;
+      try {
+        const { saveGame } = await import("@/game/save");
+        await saveGame(useGameStore.getState(), false);
+      } catch (error) {
+        logger.error("[VERSION] Error saving before reload:", error);
+      }
+      await hardReload();
+    };
 
     const handleVisibilityReload = () => {
-      if (updatePending && document.visibilityState === "visible") {
-        void hardReload();
+      // Mobile often suspends timers while backgrounded — catch up if the
+      // 15-minute window already elapsed when the player returns.
+      if (
+        updatePending &&
+        document.visibilityState === "visible" &&
+        reloadAtMs > 0 &&
+        Date.now() >= reloadAtMs
+      ) {
+        void saveAndHardReload();
       }
     };
     document.addEventListener("visibilitychange", handleVisibilityReload);
@@ -300,15 +323,24 @@ export default function GameContainer() {
         const state = useGameStore.getState();
         await saveGame(state, false);
         updatePending = true;
-        showUpdateToast({
+        reloadAtMs = Date.now() + AUTO_RELOAD_MS;
+        if (autoReloadTimeout) clearTimeout(autoReloadTimeout);
+        autoReloadTimeout = setTimeout(() => {
+          void saveAndHardReload();
+        }, AUTO_RELOAD_MS);
+        toast({
           title: i18n.t("versionUpdate.title", { ns: "ui" }),
-          description: i18n.t("versionUpdate.description", { ns: "ui" }),
+          description: i18n.t("versionUpdate.description", {
+            ns: "ui",
+            minutes: AUTO_RELOAD_MINUTES,
+          }),
           variant: "default",
           duration: Infinity,
+          dismissible: false,
           action: {
             label: i18n.t("versionUpdate.refresh", { ns: "ui" }),
             onClick: () => {
-              void hardReload();
+              void saveAndHardReload();
             },
           },
         });
@@ -319,6 +351,7 @@ export default function GameContainer() {
 
     return () => {
       document.removeEventListener("visibilitychange", handleVisibilityReload);
+      if (autoReloadTimeout) clearTimeout(autoReloadTimeout);
       stopVersionCheck();
     };
   }, []);
