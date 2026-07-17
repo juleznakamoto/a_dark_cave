@@ -95,6 +95,9 @@
     "0-hunter": {
       "label": "猎人"
     },
+    "0-tanner": {
+      "label": "制革工"
+    },
     "0-ironMiner": {
       "label": "采集铁矿"
     },

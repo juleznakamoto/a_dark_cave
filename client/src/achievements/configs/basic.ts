@@ -69,7 +69,7 @@ export const basicChartConfig: AchievementChartConfig = {
         segmentId: "0-steelForger",
         maxCount: 250,
         label: "Forge Steel",
-        rewards: { silver: 100 },
+        rewards: { insight: 500 },
         getCount: (state: GameState) =>
           Number(state.story?.seen?.steelForgedTotal) || 0,
         segments: 10,
@@ -81,6 +81,15 @@ export const basicChartConfig: AchievementChartConfig = {
         rewards: { wood: 500 },
         getCount: (state: GameState) =>
           Number(state.story?.seen?.totalFoodGathered) || 0,
+        segments: 10,
+      },
+      {
+        segmentId: "0-tanner",
+        maxCount: 250,
+        label: "Tanner",
+        rewards: { insight: 500 },
+        getCount: (state: GameState) =>
+          Number(state.story?.seen?.totalLeatherGathered) || 0,
         segments: 10,
       },
     ],

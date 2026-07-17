@@ -95,6 +95,9 @@
     "0-hunter": {
       "label": "Cazador"
     },
+    "0-tanner": {
+      "label": "Curtidor"
+    },
     "0-ironMiner": {
       "label": "Reunir hierro"
     },

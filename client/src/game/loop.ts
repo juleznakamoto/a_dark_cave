@@ -1030,12 +1030,15 @@ function accumulateScholarProduction(
   production.forEach((prod) => accumulateProduction(prod, available, deltas));
 }
 
-/** Returns the steel forged this cycle (for the "Forge Steel" achievement). */
+/**
+ * Returns steel forged and leather created this cycle
+ * (for the "Forge Steel" and "Tanner" achievements).
+ */
 function accumulateMinerProduction(
   state: GameState,
   available: Record<string, number>,
   deltas: Record<string, number>,
-): number {
+): { steelForgedThisTick: number; leatherCreatedThisTick: number } {
   const allProduction: { job: string; production: any[] }[] = [];
   Object.entries(state.villagers).forEach(([job, count]) => {
     if (
@@ -1052,6 +1055,7 @@ function accumulateMinerProduction(
   });
 
   let steelForgedThisTick = 0;
+  let leatherCreatedThisTick = 0;
 
   // Process jobs sequentially so each consumer's affordability reflects earlier jobs this cycle.
   allProduction.forEach(({ job, production }) => {
@@ -1061,10 +1065,13 @@ function accumulateMinerProduction(
       if (job === "steel_forger" && prod.resource === "steel" && prod.totalAmount > 0) {
         steelForgedThisTick += prod.totalAmount;
       }
+      if (job === "tanner" && prod.resource === "leather" && prod.totalAmount > 0) {
+        leatherCreatedThisTick += prod.totalAmount;
+      }
     });
   });
 
-  return steelForgedThisTick;
+  return { steelForgedThisTick, leatherCreatedThisTick };
 }
 
 function accumulatePopulationSurvival(
@@ -1118,20 +1125,33 @@ function runProductionCycle(): void {
   accumulateGathererProduction(state, available, deltas);
   accumulateHunterProduction(state, available, deltas);
   accumulateScholarProduction(state, available, deltas);
-  const steelForgedThisTick = accumulateMinerProduction(state, available, deltas);
+  const { steelForgedThisTick, leatherCreatedThisTick } =
+    accumulateMinerProduction(state, available, deltas);
   accumulatePopulationSurvival(state, available, deltas);
 
   // Single capped write: applyResourceDeltas applies storage limits to the net result.
   commitResourceDeltas(deltas);
 
-  if (steelForgedThisTick > 0) {
+  if (steelForgedThisTick > 0 || leatherCreatedThisTick > 0) {
     useGameStore.setState((s) => ({
       story: {
         ...s.story,
         seen: {
           ...s.story.seen,
-          steelForgedTotal:
-            (Number(s.story?.seen?.steelForgedTotal) || 0) + steelForgedThisTick,
+          ...(steelForgedThisTick > 0
+            ? {
+              steelForgedTotal:
+                (Number(s.story?.seen?.steelForgedTotal) || 0) +
+                steelForgedThisTick,
+            }
+            : {}),
+          ...(leatherCreatedThisTick > 0
+            ? {
+              totalLeatherGathered:
+                (Number(s.story?.seen?.totalLeatherGathered) || 0) +
+                leatherCreatedThisTick,
+            }
+            : {}),
         },
       },
     }));

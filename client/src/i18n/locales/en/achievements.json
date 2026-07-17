@@ -95,6 +95,9 @@
     "0-hunter": {
       "label": "Hunter"
     },
+    "0-tanner": {
+      "label": "Tanner"
+    },
     "0-ironMiner": {
       "label": "Gather Iron"
     },
