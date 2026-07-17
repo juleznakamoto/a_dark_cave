@@ -111,7 +111,10 @@ export type SaveGameAnalysisSummary = {
   v2Compare?: SaveV2CompareSummary;
 };
 
-/** Critical gameplay slices compared between legacy game_state and game_state_v2. */
+/**
+ * High-signal slices listed first in mismatch details (full compare still covers
+ * every top-level key).
+ */
 export const SAVE_V2_COMPARE_SLICES = [
   "playTime",
   "tools",
@@ -122,6 +125,9 @@ export const SAVE_V2_COMPARE_SLICES = [
   "villagers",
   "flags",
 ] as const;
+
+/** Cap mismatch detail keys in the admin payload (full set can be large). */
+const SAVE_V2_MISMATCH_DETAILS_CAP = 40;
 
 export type SaveV2CompareStatus =
   | "missing_v2"
@@ -134,7 +140,10 @@ export type SaveV2CompareRow = {
   user_id: string | null;
   username?: string | null;
   status: SaveV2CompareStatus;
+  /** Differing top-level keys (and v1-only / v2-only markers). */
   details: string[];
+  /** Total differing keys before details cap (null when not a mismatch). */
+  mismatchCount: number | null;
   save_revision: number | null;
   schema_version: number | null;
 };
@@ -424,22 +433,49 @@ export function analyzeSaveGames(
   };
 }
 
-function normalizeSliceValue(key: string, value: unknown): unknown {
-  if (key === "playTime") {
-    if (typeof value !== "number" || !Number.isFinite(value)) return value;
-    return Math.floor(value);
+/** Floor top-level playTime so sub-ms float jitter is not a false mismatch. */
+function normalizeGameStateForCompare(
+  state: Record<string, unknown>,
+): Record<string, unknown> {
+  const copy: Record<string, unknown> = { ...state };
+  if (typeof copy.playTime === "number" && Number.isFinite(copy.playTime)) {
+    copy.playTime = Math.floor(copy.playTime);
   }
-  return value;
+  return copy;
 }
 
-function sliceFingerprint(value: unknown): string {
-  return JSON.stringify(value ?? null);
+/** Order-independent JSON canonicalize for deep equality fingerprints. */
+function canonicalize(value: unknown): unknown {
+  if (value === null || typeof value !== "object") {
+    return value;
+  }
+  if (Array.isArray(value)) {
+    return value.map(canonicalize);
+  }
+  const obj = value as Record<string, unknown>;
+  const out: Record<string, unknown> = {};
+  for (const key of Object.keys(obj).sort()) {
+    out[key] = canonicalize(obj[key]);
+  }
+  return out;
+}
+
+function valueFingerprint(value: unknown): string {
+  return JSON.stringify(canonicalize(value ?? null));
+}
+
+function prioritizeMismatchDetails(keys: string[]): string[] {
+  const critical = new Set<string>(SAVE_V2_COMPARE_SLICES);
+  const criticalHits = keys.filter((k) => critical.has(k.split(" ")[0]!));
+  const rest = keys.filter((k) => !critical.has(k.split(" ")[0]!));
+  return [...criticalHits, ...rest];
 }
 
 /**
- * Compare legacy `game_state` vs sidecar `game_state_v2` on critical slices.
- * Mismatches can be expected while deep-merge protections diverge from client truth;
- * this is a coverage / drift signal, not a load-path change.
+ * Full top-level deep compare of legacy `game_state` vs sidecar `game_state_v2`.
+ * Every key on either side is checked (nested values via canonical JSON).
+ * Mismatches are expected while V1 deep-merge drifts from the client full blob;
+ * this is a cutover readiness signal, not a load-path change.
  */
 export function compareLegacyVsV2Row(
   row: SaveGameAnalysisInput,
@@ -453,68 +489,79 @@ export function compareLegacyVsV2Row(
       ? row.schema_version
       : null;
 
+  const base = {
+    user_id: row.user_id,
+    username: row.username,
+    save_revision: revision,
+    schema_version: schemaVersion,
+    mismatchCount: null as number | null,
+  };
+
   const legacy = asObject(row.game_state);
   if (!legacy) {
     return {
-      user_id: row.user_id,
-      username: row.username,
+      ...base,
       status: "invalid_legacy",
       details: ["legacy game_state missing or not an object"],
-      save_revision: revision,
-      schema_version: schemaVersion,
     };
   }
 
   if (row.game_state_v2 === null || row.game_state_v2 === undefined) {
     return {
-      user_id: row.user_id,
-      username: row.username,
+      ...base,
       status: "missing_v2",
       details: ["game_state_v2 is null"],
-      save_revision: revision,
-      schema_version: schemaVersion,
     };
   }
 
   const v2 = asObject(row.game_state_v2);
   if (!v2) {
     return {
-      user_id: row.user_id,
-      username: row.username,
+      ...base,
       status: "invalid_v2",
       details: ["game_state_v2 is not an object"],
-      save_revision: revision,
-      schema_version: schemaVersion,
     };
   }
 
-  const details: string[] = [];
-  for (const key of SAVE_V2_COMPARE_SLICES) {
-    const a = normalizeSliceValue(key, legacy[key]);
-    const b = normalizeSliceValue(key, v2[key]);
-    if (sliceFingerprint(a) !== sliceFingerprint(b)) {
-      details.push(key);
+  const a = normalizeGameStateForCompare(legacy);
+  const b = normalizeGameStateForCompare(v2);
+  const allKeys = new Set([...Object.keys(a), ...Object.keys(b)]);
+  const mismatched: string[] = [];
+
+  for (const key of allKeys) {
+    const inA = Object.prototype.hasOwnProperty.call(a, key);
+    const inB = Object.prototype.hasOwnProperty.call(b, key);
+    if (!inA) {
+      mismatched.push(`${key} (v2-only)`);
+      continue;
+    }
+    if (!inB) {
+      mismatched.push(`${key} (v1-only)`);
+      continue;
+    }
+    if (valueFingerprint(a[key]) !== valueFingerprint(b[key])) {
+      mismatched.push(key);
     }
   }
 
-  if (details.length > 0) {
+  if (mismatched.length > 0) {
+    const ordered = prioritizeMismatchDetails(mismatched);
+    const details = ordered.slice(0, SAVE_V2_MISMATCH_DETAILS_CAP);
+    if (ordered.length > SAVE_V2_MISMATCH_DETAILS_CAP) {
+      details.push(`…+${ordered.length - SAVE_V2_MISMATCH_DETAILS_CAP} more`);
+    }
     return {
-      user_id: row.user_id,
-      username: row.username,
+      ...base,
       status: "mismatch",
       details,
-      save_revision: revision,
-      schema_version: schemaVersion,
+      mismatchCount: mismatched.length,
     };
   }
 
   return {
-    user_id: row.user_id,
-    username: row.username,
+    ...base,
     status: "match",
     details: [],
-    save_revision: revision,
-    schema_version: schemaVersion,
   };
 }
 

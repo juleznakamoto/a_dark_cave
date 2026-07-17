@@ -177,10 +177,11 @@ export default function SaveGameAnalysisTab({
           <CardHeader>
             <CardTitle className="text-base">Save V2 sidecar (dual-write)</CardTitle>
             <CardDescription>
-              Coverage of <code className="text-xs">game_state_v2</code> vs legacy{" "}
-              <code className="text-xs">game_state</code> on critical slices. Load still
-              uses legacy only. Slice mismatches can be expected while deep-merge
-              protections diverge from the client full blob.
+              Full deep compare of every top-level key in{" "}
+              <code className="text-xs">game_state_v2</code> vs legacy{" "}
+              <code className="text-xs">game_state</code> (playTime floored). Load still
+              uses legacy only. Mismatches often mean V1 deep-merge drift vs the client
+              full blob — not that V2 failed to write.
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-3">
@@ -247,6 +248,9 @@ export default function SaveGameAnalysisTab({
                           {row.save_revision ?? "—"}
                         </td>
                         <td className="py-2 text-muted-foreground">
+                          {row.mismatchCount != null && row.mismatchCount > 0
+                            ? `(${row.mismatchCount}) `
+                            : ""}
                           {row.details.join(", ") || "—"}
                         </td>
                       </tr>

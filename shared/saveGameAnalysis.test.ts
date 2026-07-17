@@ -226,7 +226,7 @@ describe("saveGameAnalysis", () => {
     expect(result.status).toBe("missing_v2");
   });
 
-  it("compareLegacyVsV2Row reports match on critical slices", () => {
+  it("compareLegacyVsV2Row reports match on full state (playTime floored)", () => {
     const gs = {
       playTime: 1000.9,
       tools: { stone_axe: true },
@@ -236,6 +236,7 @@ describe("saveGameAnalysis", () => {
       flags: { gameStarted: true },
       weapons: {},
       books: {},
+      story: { seen: { fireLit: true } },
     };
     const result = compareLegacyVsV2Row({
       ...baseRow,
@@ -245,7 +246,57 @@ describe("saveGameAnalysis", () => {
       schema_version: 1,
     });
     expect(result.status).toBe("match");
+    expect(result.mismatchCount).toBeNull();
     expect(result.save_revision).toBe(3);
+  });
+
+  it("compareLegacyVsV2Row flags any top-level key drift, not only critical slices", () => {
+    const gs = {
+      playTime: 1000,
+      tools: { stone_axe: true },
+      buildings: {},
+      resources: {},
+      villagers: {},
+      flags: {},
+      weapons: {},
+      books: {},
+      story: { seen: { fireLit: true } },
+    };
+    const result = compareLegacyVsV2Row({
+      ...baseRow,
+      game_state: gs,
+      game_state_v2: {
+        ...gs,
+        story: { seen: { fireLit: true, gatherWood: true } },
+      },
+      save_revision: 1,
+      schema_version: 1,
+    });
+    expect(result.status).toBe("mismatch");
+    expect(result.details).toContain("story");
+    expect(result.mismatchCount).toBe(1);
+  });
+
+  it("compareLegacyVsV2Row reports keys only present on one side", () => {
+    const result = compareLegacyVsV2Row({
+      ...baseRow,
+      game_state: {
+        playTime: 1,
+        tools: {},
+        extraLegacy: true,
+      },
+      game_state_v2: {
+        playTime: 1,
+        tools: {},
+        extraV2: true,
+      },
+      save_revision: 1,
+      schema_version: 1,
+    });
+    expect(result.status).toBe("mismatch");
+    expect(result.details).toEqual(
+      expect.arrayContaining(["extraLegacy (v1-only)", "extraV2 (v2-only)"]),
+    );
   });
 
   it("compareLegacyAndV2Saves summarizes coverage", () => {

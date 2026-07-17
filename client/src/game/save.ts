@@ -596,6 +596,9 @@ export async function saveGame(
         stateDiff.tools = sanitizedState.tools;
         stateDiff.weapons = sanitizedState.weapons;
         stateDiff.books = sanitizedState.books;
+        // Same for villagers — otherwise lastCloudState desync leaves V1 job counts stale
+        // while V2 (full blob) is correct (same playTime, different villagers).
+        stateDiff.villagers = sanitizedState.villagers;
 
         // Execution / expedition slices use delete semantics (completed actions remove
         // keys). Cloud save uses JSONB deep-merge, so partial diffs cannot express
