@@ -52,6 +52,45 @@ describe("saveGameAnalysis", () => {
     expect(result.issues).toHaveLength(0);
   });
 
+  it("detects wiped buildings (key present, zero total, build flags)", () => {
+    const result = analyzeSaveGameRow({
+      ...baseRow,
+      game_state: {
+        playTime: 120_000,
+        buildings: { woodenHut: 0, cabin: 0 },
+        story: { seen: { actionBuildWoodenHut: true } },
+      },
+    });
+    expect(result.issues.some((i) => i.kind === "wiped_buildings")).toBe(true);
+    expect(result.buildings_total).toBe(0);
+  });
+
+  it("detects missing buildings key with village story evidence", () => {
+    const result = analyzeSaveGameRow({
+      ...baseRow,
+      game_state: {
+        playTime: 120_000,
+        story: { seen: { hasVillagers: true } },
+      },
+    });
+    expect(
+      result.issues.some((i) => i.kind === "missing_buildings_with_build_flags"),
+    ).toBe(true);
+  });
+
+  it("passes clean save with buildings and build flags", () => {
+    const result = analyzeSaveGameRow({
+      ...baseRow,
+      game_state: {
+        playTime: 120_000,
+        buildings: { woodenHut: 3 },
+        story: { seen: { actionBuildWoodenHut: true } },
+      },
+    });
+    expect(result.issues).toHaveLength(0);
+    expect(result.buildings_total).toBe(3);
+  });
+
   it("does not flag null or undefined resources (treated as 0 at runtime)", () => {
     const result = analyzeSaveGameRow({
       ...baseRow,

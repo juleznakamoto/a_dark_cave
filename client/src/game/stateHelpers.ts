@@ -1,5 +1,9 @@
 import { GameState, gameStateSchema } from "@shared/schema";
 import { overlayToolsFromStorySeen } from "@shared/rebuildToolsFromStorySeen";
+import {
+  overlayBuildingsFromStorySeen,
+  overlayFlagsFromStorySeen,
+} from "@shared/rebuildBuildingsFromStorySeen";
 import type { CombatResultSummary } from "./types";
 import { getCurrentPopulation, getMaxPopulation, getVillagersInVillage } from "./population";
 import {
@@ -752,15 +756,24 @@ export function migrateBlacksteelArmorOnLoad(
 /**
  * Backfill permanent item slices from schema defaults when a loaded save omits them.
  * Rebuilds owned craft tools from `story.seen` when flags exist but the tools slice
- * is missing or empty (cloud corruption loop).
+ * is missing or empty (cloud corruption loop). Same for buildings wiped to all-zero
+ * while actionBuild* flags remain (sibling of tools wipe).
  */
 export function hydrateLoadedGameState<T extends Partial<GameState>>(
   savedState: T,
-): T & Pick<GameState, "tools" | "weapons" | "books"> {
+): T & Pick<GameState, "tools" | "weapons" | "books" | "buildings" | "flags"> {
   const defaults = gameStateSchema.parse({});
   const mergedTools = {
     ...defaults.tools,
     ...savedState.tools,
+  };
+  const mergedBuildings = {
+    ...defaults.buildings,
+    ...savedState.buildings,
+  };
+  const mergedFlags = {
+    ...defaults.flags,
+    ...savedState.flags,
   };
   return {
     ...savedState,
@@ -773,6 +786,15 @@ export function hydrateLoadedGameState<T extends Partial<GameState>>(
       ...defaults.books,
       ...savedState.books,
     },
+    buildings: overlayBuildingsFromStorySeen(
+      mergedBuildings,
+      savedState.story?.seen,
+    ),
+    flags: overlayFlagsFromStorySeen(
+      mergedFlags,
+      savedState.story?.seen,
+      Number(savedState.playTime) || 0,
+    ),
   };
 }
 

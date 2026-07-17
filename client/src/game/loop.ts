@@ -44,6 +44,7 @@ import { getMadnessDeathChancePerCycle } from "./rules/effectsStats";
 import { processPlayTimeAutoPrompts } from "./playTimeAutoPrompts";
 import { processDemoLimit } from "./demoLimit";
 import { tickObsidianOrbFocus } from "@/game/obsidianOrb";
+import { classifySessionCheckFailure } from "./sessionCheck";
 let gameLoopId: number | null = null;
 let lastFrameTime = 0;
 
@@ -134,6 +135,7 @@ const INACTIVITY_TIMEOUT = 15 * 60 * 1000; // 15 minute in milliseconds
 const TARGET_FPS = 4;
 const FRAME_DURATION = 1000 / TARGET_FPS; // 250ms per frame at 4 FPS
 const SESSION_CHECK_INTERVAL = 5 * 60 * 1000; // Check session every 5 minutes
+const SESSION_TRANSIENT_RETRY_DELAY_MS = 5 * 1000; // Quick retry after network/5xx/timeout
 
 let tickAccumulator = 0;
 /** Elapsed ms toward the next event roll; frozen during pause like `tickAccumulator` (not timestamp-based). */
@@ -146,6 +148,8 @@ let lastRenderTime = 0;
 let lastUserActivity = 0;
 let inactivityCheckInterval: NodeJS.Timeout | null = null;
 let sessionCheckInterval: NodeJS.Timeout | null = null; // Added for session checking
+let sessionTransientRetryTimeout: ReturnType<typeof setTimeout> | null = null;
+let sessionCheckInFlight = false;
 let isInactive = false;
 let lastGameLoadTime = 0; // Track when game was last loaded
 
@@ -248,22 +252,51 @@ export function startGameLoop() {
     }
   }, 30000); // Check every 30 seconds
 
-  // Start session validation checker (every 60 seconds)
-  // This checks if the user's session is still valid (not invalidated by another login)
+  // Session validation: refreshSession forces a server token exchange.
+  // Transient network/5xx/timeout → silent retry. Hard failure → re-auth (keep local save).
   if (sessionCheckInterval) {
     clearInterval(sessionCheckInterval);
   }
-  const checkSession = async () => {
-    const state = useGameStore.getState();
+  if (sessionTransientRetryTimeout) {
+    clearTimeout(sessionTransientRetryTimeout);
+    sessionTransientRetryTimeout = null;
+  }
 
-    // Check if user is signed in
-    if (!state.isUserSignedIn) {
-      return; // Not signed in, no need to check session
+  const handleSessionReauthRequired = async (reason: string) => {
+    logger.log("[SESSION] Re-auth required — keeping local save:", reason);
+
+    // Persist locally before pausing cloud sync / showing the dialog.
+    try {
+      const state = useGameStore.getState();
+      await saveGame(state, false);
+      logger.log("[SESSION] Local save written before re-auth dialog");
+    } catch (saveError) {
+      logger.error("[SESSION] Failed to save before re-auth dialog:", saveError);
     }
 
+    stopGameLoop();
+    useGameStore.setState({
+      isUserSignedIn: false,
+      inactivityDialogOpen: true,
+      inactivityReason: "session",
+    });
+  };
+
+  const checkSession = async (isRetry = false) => {
+    const state = useGameStore.getState();
+
+    if (!state.isUserSignedIn) {
+      return;
+    }
+    if (state.inactivityDialogOpen) {
+      return;
+    }
+    if (sessionCheckInFlight) {
+      return;
+    }
+
+    sessionCheckInFlight = true;
     try {
-      // Use refreshSession() to FORCE a server-side token exchange
-      // This is the ONLY way to detect if the session was revoked by single-session enforcement
       const { getSupabaseClient } = await import("@/lib/supabase");
       const supabase = await getSupabaseClient();
       const {
@@ -271,28 +304,60 @@ export function startGameLoop() {
         error,
       } = await supabase.auth.refreshSession();
 
-      // If there's an error or no session, the token was invalidated server-side
-      if (error || !session) {
-        logger.log("[SESSION] Session invalidated - another login detected");
-        // Delete local save when session is invalidated
-        try {
-          const { deleteSave } = await import("./save");
-          await deleteSave();
-        } catch (deleteError) {
-          logger.error("[SESSION] Failed to delete save:", deleteError);
-        }
-
-        stopGameLoop();
-        useGameStore.setState({
-          inactivityDialogOpen: true,
-          inactivityReason: "multitab",
-        });
+      if (!error && session) {
+        return;
       }
+
+      const kind = classifySessionCheckFailure(error, session);
+      if (kind === "transient") {
+        logger.warn("[SESSION] Transient session check failure — will retry:", {
+          isRetry,
+          message: error instanceof Error ? error.message : String(error ?? "no session"),
+        });
+        if (!isRetry) {
+          if (sessionTransientRetryTimeout) {
+            clearTimeout(sessionTransientRetryTimeout);
+          }
+          sessionTransientRetryTimeout = setTimeout(() => {
+            sessionTransientRetryTimeout = null;
+            void checkSession(true);
+          }, SESSION_TRANSIENT_RETRY_DELAY_MS);
+        }
+        // After a failed retry, wait for the next interval — do not scare the player.
+        return;
+      }
+
+      await handleSessionReauthRequired(
+        error
+          ? `refresh failed: ${error instanceof Error ? error.message : String(error)}`
+          : "no session",
+      );
     } catch (error) {
-      logger.error("[SESSION] Session check failed:", error);
+      const kind = classifySessionCheckFailure(error, null);
+      if (kind === "transient") {
+        logger.warn("[SESSION] Transient session check throw — will retry:", error);
+        if (!isRetry) {
+          if (sessionTransientRetryTimeout) {
+            clearTimeout(sessionTransientRetryTimeout);
+          }
+          sessionTransientRetryTimeout = setTimeout(() => {
+            sessionTransientRetryTimeout = null;
+            void checkSession(true);
+          }, SESSION_TRANSIENT_RETRY_DELAY_MS);
+        }
+        return;
+      }
+      logger.error("[SESSION] Session check failed (re-auth):", error);
+      await handleSessionReauthRequired(
+        error instanceof Error ? error.message : String(error),
+      );
+    } finally {
+      sessionCheckInFlight = false;
     }
   };
-  sessionCheckInterval = setInterval(checkSession, SESSION_CHECK_INTERVAL);
+  sessionCheckInterval = setInterval(() => {
+    void checkSession(false);
+  }, SESSION_CHECK_INTERVAL);
 
   // Check if idle mode needs to be displayed (user left during idle mode)
   const state = useGameStore.getState();
@@ -550,6 +615,10 @@ async function handleInactivity() {
     clearInterval(sessionCheckInterval);
     sessionCheckInterval = null;
   }
+  if (sessionTransientRetryTimeout) {
+    clearTimeout(sessionTransientRetryTimeout);
+    sessionTransientRetryTimeout = null;
+  }
 
   // Save game before showing dialog (must happen before setting inactivityDialogOpen,
   // since saveGame skips when inactivityDialogOpen is true)
@@ -581,6 +650,30 @@ export function resumeFromInactivity() {
   useGameStore.setState({
     inactivityDialogOpen: false,
     inactivityReason: null,
+  });
+
+  flushOverdueActionExecutions();
+  clearExpiredTimedEventTab();
+  resetProductionCycle();
+  startGameLoop();
+}
+
+/**
+ * Resume after the player signs back in following a hard session loss.
+ * Local save was preserved; AuthDialog / caller should have run loadGame() already.
+ */
+export function resumeFromSessionLoss() {
+  const state = useGameStore.getState();
+  if (!state.inactivityDialogOpen || state.inactivityReason !== "session") {
+    return;
+  }
+
+  logger.log("[SESSION] Resuming after re-auth");
+
+  useGameStore.setState({
+    inactivityDialogOpen: false,
+    inactivityReason: null,
+    isUserSignedIn: true,
   });
 
   flushOverdueActionExecutions();
@@ -622,7 +715,10 @@ export function stopGameLoop() {
     clearInterval(sessionCheckInterval);
     sessionCheckInterval = null;
   }
-
+  if (sessionTransientRetryTimeout) {
+    clearTimeout(sessionTransientRetryTimeout);
+    sessionTransientRetryTimeout = null;
+  }
 
   detachActivityListeners();
 

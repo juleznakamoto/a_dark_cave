@@ -252,7 +252,7 @@ interface GameStore extends GameState {
     needsDisplay: boolean; // Track if user needs to see results
   };
   inactivityDialogOpen: boolean;
-  inactivityReason: "timeout" | "multitab" | null;
+  inactivityReason: "timeout" | "multitab" | "session" | null;
   restartGameDialogOpen: boolean;
   deleteAccountDialogOpen: boolean;
   settingsDialogOpen: boolean;

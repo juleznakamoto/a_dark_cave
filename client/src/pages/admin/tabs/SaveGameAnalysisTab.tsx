@@ -21,6 +21,8 @@ const ISSUE_LABELS: Record<SaveGameIssueKind, string> = {
   negative_playtime: "Negative playTime",
   wiped_tools: "Wiped tools (craft flags but zero owned)",
   missing_tools_with_craft_flags: "Missing tools key + craft flags",
+  wiped_buildings: "Wiped buildings (build/village flags but zero total)",
+  missing_buildings_with_build_flags: "Missing buildings key + build flags",
   bad_story_seen: "Malformed story.seen",
   bad_game_stats: "Malformed game_stats",
   updated_before_created: "updated_at before created_at",
@@ -201,6 +203,7 @@ export default function SaveGameAnalysisTab({
                   <th className="py-2 pr-3 font-medium">User</th>
                   <th className="py-2 pr-3 font-medium">Play</th>
                   <th className="py-2 pr-3 font-medium">Tools</th>
+                  <th className="py-2 pr-3 font-medium">Bldgs</th>
                   <th className="py-2 font-medium">Issues</th>
                 </tr>
               </thead>
@@ -218,6 +221,9 @@ export default function SaveGameAnalysisTab({
                     </td>
                     <td className="py-2 pr-3 tabular-nums">
                       {row.has_tools_key ? row.tools_owned : "missing"}
+                    </td>
+                    <td className="py-2 pr-3 tabular-nums">
+                      {row.has_buildings_key ? row.buildings_total : "missing"}
                     </td>
                     <td className="py-2">
                       <ul className="space-y-0.5">
@@ -271,7 +277,8 @@ export default function SaveGameAnalysisTab({
                   <th className="py-2 pr-3 font-medium">Updated</th>
                   <th className="py-2 pr-3 font-medium">User</th>
                   <th className="py-2 pr-3 font-medium">Play</th>
-                  <th className="py-2 font-medium">Tools</th>
+                  <th className="py-2 pr-3 font-medium">Tools</th>
+                  <th className="py-2 font-medium">Bldgs</th>
                 </tr>
               </thead>
               <tbody>
@@ -288,7 +295,8 @@ export default function SaveGameAnalysisTab({
                       <td className="py-2 pr-3 tabular-nums">
                         {row.playmin != null ? `${row.playmin}m` : "—"}
                       </td>
-                      <td className="py-2 tabular-nums">{row.tools_owned}</td>
+                      <td className="py-2 pr-3 tabular-nums">{row.tools_owned}</td>
+                      <td className="py-2 tabular-nums">{row.buildings_total}</td>
                     </tr>
                   ))}
               </tbody>

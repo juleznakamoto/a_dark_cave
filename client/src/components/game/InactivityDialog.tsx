@@ -13,7 +13,9 @@ import { logger } from "@/lib/logger";
 import { useTranslation } from "react-i18next";
 
 export default function InactivityDialog() {
-  const { inactivityReason } = useGameStore();
+  const inactivityReason = useGameStore((s) => s.inactivityReason);
+  const authDialogOpen = useGameStore((s) => s.authDialogOpen);
+  const setAuthDialogOpen = useGameStore((s) => s.setAuthDialogOpen);
   const { t } = useTranslation("ui");
 
   const handleContinue = () => {
@@ -26,8 +28,19 @@ export default function InactivityDialog() {
     window.location.reload();
   };
 
+  const handleSignIn = () => {
+    logger.log("[SESSION] User opening sign-in from session-loss dialog");
+    setAuthDialogOpen(true);
+  };
+
   const isMultiTab = inactivityReason === "multitab";
   const isTimeout = inactivityReason === "timeout";
+  const isSession = inactivityReason === "session";
+
+  // Let AuthDialog sit on top while the player re-authenticates.
+  if (isSession && authDialogOpen) {
+    return null;
+  }
 
   return (
     <Dialog open={true} onOpenChange={() => { }}>
@@ -41,10 +54,12 @@ export default function InactivityDialog() {
       >
         <DialogHeader>
           <DialogTitle className="leading-6">
+            {isSession && t("inactivity.session")}
             {isMultiTab && t("inactivity.multiTab")}
             {isTimeout && t("inactivity.timeout")}
           </DialogTitle>
           <DialogDescription className="py-4 space-y-2">
+            {isSession && <p>{t("inactivity.sessionDesc")}</p>}
             {isMultiTab && <p>{t("inactivity.multiTabDesc")}</p>}
             {isTimeout && <p>{t("inactivity.timeoutDesc")}</p>}
           </DialogDescription>
@@ -52,6 +67,11 @@ export default function InactivityDialog() {
         {isTimeout && (
           <Button onClick={handleContinue} className="w-full">
             {t("inactivity.resume")}
+          </Button>
+        )}
+        {isSession && (
+          <Button onClick={handleSignIn} className="w-full">
+            {t("inactivity.signInAgain")}
           </Button>
         )}
         {isMultiTab && (

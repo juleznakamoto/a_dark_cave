@@ -268,14 +268,19 @@ export default function GameContainer() {
   // Show on load for existing saves that haven't seen the tutorial yet.
   useEffect(() => {
     if (!flags.gameStarted) return;
+    if (!flags.villageUnlocked || !flags.forestUnlocked) return;
     if (villageHotkeyTutorialCheckedRef.current) return;
     villageHotkeyTutorialCheckedRef.current = true;
 
-    if (!flags.villageUnlocked) return;
     if (!villageHotkeyTutorialShown) {
       setVillageHotkeyTutorialOpen(true);
     }
-  }, [flags.gameStarted, flags.villageUnlocked, villageHotkeyTutorialShown]);
+  }, [
+    flags.gameStarted,
+    flags.villageUnlocked,
+    flags.forestUnlocked,
+    villageHotkeyTutorialShown,
+  ]);
 
   // Prompt for a hard refresh when a new build is deployed while the tab stays open.
   useEffect(() => {
@@ -543,7 +548,9 @@ export default function GameContainer() {
     }
 
     if (
-      newlyUnlocked.includes("village") &&
+      (newlyUnlocked.includes("village") || newlyUnlocked.includes("forest")) &&
+      current.villageUnlocked &&
+      current.forestUnlocked &&
       !useGameStore.getState().villageHotkeyTutorialShown
     ) {
       setVillageHotkeyTutorialOpen(true);

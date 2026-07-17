@@ -173,7 +173,7 @@ export interface TimedEventTabState {
 /**
  * Inactivity reason
  */
-export type InactivityReason = "timeout" | "multitab" | null;
+export type InactivityReason = "timeout" | "multitab" | "session" | null;
 
 /**
  * Currency type

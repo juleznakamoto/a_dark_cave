@@ -1,7 +1,12 @@
 /**
  * Integrity checks for cloud save rows (admin Save Game Analysis tab).
- * Mirrors the ad-hoc Supabase scans used during the tools-wipe investigation.
+ * Mirrors the ad-hoc Supabase scans used during the tools-wipe / buildings-wipe investigations.
  */
+
+import {
+  hasBuildStoryFlags,
+  sumBuildingCounts,
+} from "./rebuildBuildingsFromStorySeen";
 
 export const SAVE_GAME_ANALYSIS_DEFAULT_LIMIT = 100;
 
@@ -53,6 +58,8 @@ export type SaveGameIssueKind =
   | "negative_playtime"
   | "wiped_tools"
   | "missing_tools_with_craft_flags"
+  | "wiped_buildings"
+  | "missing_buildings_with_build_flags"
   | "bad_story_seen"
   | "bad_game_stats"
   | "updated_before_created"
@@ -83,6 +90,8 @@ export type SaveGameAnalysisRow = {
   playmin: number | null;
   tools_owned: number;
   has_tools_key: boolean;
+  buildings_total: number;
+  has_buildings_key: boolean;
   issues: SaveGameIssue[];
 };
 
@@ -299,6 +308,21 @@ export function analyzeSaveGameRow(
     issues.push({ kind: "wiped_tools" });
   }
 
+  const hasBuildingsKey = Object.prototype.hasOwnProperty.call(gsObj, "buildings");
+  const buildingsTotal = sumBuildingCounts(gsObj.buildings);
+  const buildFlags = hasBuildStoryFlags(storySeen);
+  // Mid-game village evidence without any structures — same hybrid wipe class as tools.
+  const villageEvidence =
+    buildFlags ||
+    (storySeen?.hasVillagers === true) ||
+    (storySeen?.tabUnlockBlinkSeen_village === true);
+
+  if (villageEvidence && !hasBuildingsKey) {
+    issues.push({ kind: "missing_buildings_with_build_flags" });
+  } else if (villageEvidence && buildingsTotal === 0) {
+    issues.push({ kind: "wiped_buildings" });
+  }
+
   return {
     id: row.id,
     user_id: row.user_id,
@@ -308,6 +332,8 @@ export function analyzeSaveGameRow(
     playmin,
     tools_owned: toolsOwned,
     has_tools_key: hasToolsKey,
+    buildings_total: buildingsTotal,
+    has_buildings_key: hasBuildingsKey,
     issues,
   };
 }

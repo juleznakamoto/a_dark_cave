@@ -1,0 +1,1835 @@
+{
+  "g": null,
+  "CM": 0,
+  "fn": null,
+  "BTP": 0,
+  "log": [
+    {
+      "id": "stranger-approaches-1783751825058",
+      "type": "system",
+      "logKey": "stranger.variant3",
+      "message": "Someone approaches the village and settles in.",
+      "timestamp": 1783751825058,
+      "newVillagers": true
+    },
+    {
+      "id": "whisperingVoices-1783751835923",
+      "type": "event",
+      "title": "Whispering Voices",
+      "eventId": "whisperingVoices",
+      "message": "You hear faint whispers in the wind, speaking words in no language you recognize, but somehow you understand them. They speak of ancient things buried beneath the earth. The voices grow clearer until in the evening they are suddenly gone.",
+      "timestamp": 1783751835923
+    },
+    {
+      "id": "levelup_mineIron_1783964135126",
+      "type": "system",
+      "logKey": "buttonUpgrade.deepens",
+      "logVars": {
+        "skillKey": "mineIron"
+      },
+      "message": "Your mastery of Iron Mining deepens.",
+      "timestamp": 1783964135126
+    },
+    {
+      "id": "clerks-hut-built-1783964503070",
+      "type": "system",
+      "logKey": "building.clerksHut",
+      "message": "A Clerk's Hut stands complete. Scholars gather within to study the world and sharpen their knowledge.",
+      "timestamp": 1783964503070
+    },
+    {
+      "id": "stranger-approaches-1783965357754",
+      "type": "system",
+      "logKey": "stranger.multiple2",
+      "logVars": {
+        "count": 2
+      },
+      "message": "2 wanderers arrive and join the community.",
+      "timestamp": 1783965357754,
+      "newVillagers": true
+    },
+    {
+      "id": "stranger-approaches-1783965974756",
+      "type": "system",
+      "logKey": "stranger.multiple1",
+      "logVars": {
+        "count": 4
+      },
+      "message": "4 travelers arrive and decide to stay.",
+      "timestamp": 1783965974756,
+      "newVillagers": true
+    },
+    {
+      "id": "levelup_caveExplore_1783966494531",
+      "type": "system",
+      "logKey": "buttonUpgrade.deepens",
+      "logVars": {
+        "skillKey": "caveExplore"
+      },
+      "message": "Your mastery of Cave Exploring deepens.",
+      "timestamp": 1783966494531
+    },
+    {
+      "id": "stranger-approaches-1783967095823",
+      "type": "system",
+      "logKey": "stranger.variant2",
+      "message": "A wanderer appears and becomes part of the community.",
+      "timestamp": 1783967095823,
+      "newVillagers": true
+    },
+    {
+      "id": "stranger-approaches-1783967216268",
+      "type": "system",
+      "logKey": "stranger.variant2",
+      "message": "A wanderer appears and becomes part of the community.",
+      "timestamp": 1783967216268,
+      "newVillagers": true
+    },
+    {
+      "id": "starvation-1783967231407",
+      "type": "system",
+      "logKey": "starvationDeath.one",
+      "message": "One villager succumbs to starvation.",
+      "timestamp": 1783967231407
+    },
+    {
+      "id": "stranger-approaches-1783967681283",
+      "type": "system",
+      "logKey": "stranger.multiple1",
+      "logVars": {
+        "count": 3
+      },
+      "message": "3 travelers arrive and decide to stay.",
+      "timestamp": 1783967681283,
+      "newVillagers": true
+    },
+    {
+      "id": "stranger-approaches-1783968041227",
+      "type": "system",
+      "logKey": "stranger.variant5",
+      "message": "A newcomer arrives and makes themselves at home.",
+      "timestamp": 1783968041227,
+      "newVillagers": true
+    },
+    {
+      "id": "stranger-approaches-1783968056458",
+      "type": "system",
+      "logKey": "stranger.variant5",
+      "message": "A newcomer arrives and makes themselves at home.",
+      "timestamp": 1783968056458,
+      "newVillagers": true
+    },
+    {
+      "id": "stranger-approaches-1784005737003",
+      "type": "system",
+      "logKey": "stranger.variant1",
+      "message": "A traveler arrives and decides to stay.",
+      "timestamp": 1784005737003,
+      "newVillagers": true
+    },
+    {
+      "id": "starvation-1784005769724",
+      "type": "system",
+      "logKey": "starvationDeath.one",
+      "message": "One villager succumbs to starvation.",
+      "timestamp": 1784005769724
+    },
+    {
+      "id": "stranger-approaches-1784007085011",
+      "type": "system",
+      "logKey": "stranger.variant1",
+      "message": "A traveler arrives and decides to stay.",
+      "timestamp": 1784007085011,
+      "newVillagers": true
+    },
+    {
+      "id": "stranger-approaches-1784007149704",
+      "type": "system",
+      "logKey": "stranger.multiple1",
+      "logVars": {
+        "count": 5
+      },
+      "message": "5 travelers arrive and decide to stay.",
+      "timestamp": 1784007149704,
+      "newVillagers": true
+    },
+    {
+      "id": "stranger-approaches-1784008170917",
+      "type": "system",
+      "logKey": "stranger.variant1",
+      "message": "A traveler arrives and decides to stay.",
+      "timestamp": 1784008170917,
+      "newVillagers": true
+    },
+    {
+      "id": "levelup_chopWood_1784020583454",
+      "type": "system",
+      "logKey": "buttonUpgrade.deepens",
+      "logVars": {
+        "skillKey": "chopWood"
+      },
+      "message": "Your mastery of Woodcutting deepens.",
+      "timestamp": 1784020583454
+    },
+    {
+      "id": "levelup_caveExplore_1784020583457",
+      "type": "system",
+      "logKey": "buttonUpgrade.deepens",
+      "logVars": {
+        "skillKey": "caveExplore"
+      },
+      "message": "Your mastery of Cave Exploring deepens.",
+      "timestamp": 1784020583457
+    },
+    {
+      "id": "levelup_mineIron_1784038958083",
+      "type": "system",
+      "logKey": "buttonUpgrade.deepens",
+      "logVars": {
+        "skillKey": "mineIron"
+      },
+      "message": "Your mastery of Iron Mining deepens.",
+      "timestamp": 1784038958083
+    },
+    {
+      "id": "stranger-approaches-1784039201177",
+      "type": "system",
+      "logKey": "stranger.multiple0",
+      "logVars": {
+        "count": 2
+      },
+      "message": "2 strangers join the village.",
+      "timestamp": 1784039201177,
+      "newVillagers": true
+    },
+    {
+      "id": "stranger-approaches-1784039682422",
+      "type": "system",
+      "logKey": "stranger.multiple0",
+      "logVars": {
+        "count": 5
+      },
+      "message": "5 strangers join the village.",
+      "timestamp": 1784039682422,
+      "newVillagers": true
+    },
+    {
+      "id": "stranger-approaches-1784049496279",
+      "type": "system",
+      "logKey": "stranger.multiple1",
+      "logVars": {
+        "count": 5
+      },
+      "message": "5 travelers arrive and decide to stay.",
+      "timestamp": 1784049496279,
+      "newVillagers": true
+    },
+    {
+      "id": "stranger-approaches-1784049684565",
+      "type": "system",
+      "logKey": "stranger.variant1",
+      "message": "A traveler arrives and decides to stay.",
+      "timestamp": 1784049684565,
+      "newVillagers": true
+    },
+    {
+      "id": "stranger-approaches-1784052841067",
+      "type": "system",
+      "logKey": "stranger.multiple1",
+      "logVars": {
+        "count": 4
+      },
+      "message": "4 travelers arrive and decide to stay.",
+      "timestamp": 1784052841067,
+      "newVillagers": true
+    },
+    {
+      "id": "levelup_caveExplore_1784106722523",
+      "type": "system",
+      "logKey": "buttonUpgrade.deepens",
+      "logVars": {
+        "skillKey": "caveExplore"
+      },
+      "message": "Your mastery of Cave Exploring deepens.",
+      "timestamp": 1784106722523
+    },
+    {
+      "id": "stranger-approaches-1784107310807",
+      "type": "system",
+      "logKey": "stranger.multiple0",
+      "logVars": {
+        "count": 5
+      },
+      "message": "5 strangers join the village.",
+      "timestamp": 1784107310807,
+      "newVillagers": true
+    },
+    {
+      "id": "stranger-approaches-1784117777629",
+      "type": "system",
+      "logKey": "stranger.variant0",
+      "message": "A stranger approaches and joins the village.",
+      "timestamp": 1784117777629,
+      "newVillagers": true
+    },
+    {
+      "id": "stranger-approaches-1784125403538",
+      "type": "system",
+      "logKey": "stranger.multiple0",
+      "logVars": {
+        "count": 3
+      },
+      "message": "3 strangers join the village.",
+      "timestamp": 1784125403538,
+      "newVillagers": true
+    },
+    {
+      "id": "idle-mode-end-1784125651272",
+      "type": "system",
+      "message": "You gained 46 Focus from your rest. Villagers produced: Fur: +150, Food: +341, Bones: +150",
+      "timestamp": 1784125651272
+    },
+    {
+      "id": "levelup_caveExplore_1784132169148",
+      "type": "system",
+      "logKey": "buttonUpgrade.deepens",
+      "logVars": {
+        "skillKey": "caveExplore"
+      },
+      "message": "Your mastery of Cave Exploring deepens.",
+      "timestamp": 1784132169148
+    },
+    {
+      "id": "madness-death-1784181428891",
+      "type": "system",
+      "logKey": "madnessDeath.one",
+      "message": "One villager succumbs to madness and takes his own life.",
+      "timestamp": 1784181428891
+    },
+    {
+      "id": "stranger-approaches-1784183137344",
+      "type": "system",
+      "logKey": "stranger.multiple2",
+      "logVars": {
+        "count": 5
+      },
+      "message": "5 wanderers arrive and join the community.",
+      "timestamp": 1784183137344,
+      "newVillagers": true
+    },
+    {
+      "id": "stranger-approaches-1784183850726",
+      "type": "system",
+      "logKey": "stranger.variant5",
+      "message": "A newcomer arrives and makes themselves at home.",
+      "timestamp": 1784183850726,
+      "newVillagers": true
+    },
+    {
+      "id": "stranger-approaches-1784183865876",
+      "type": "system",
+      "logKey": "stranger.multiple2",
+      "logVars": {
+        "count": 5
+      },
+      "message": "5 wanderers arrive and join the community.",
+      "timestamp": 1784183865876,
+      "newVillagers": true
+    },
+    {
+      "id": "stranger-approaches-1784184002293",
+      "type": "system",
+      "logKey": "stranger.multiple1",
+      "logVars": {
+        "count": 3
+      },
+      "message": "3 travelers arrive and decide to stay.",
+      "timestamp": 1784184002293,
+      "newVillagers": true
+    },
+    {
+      "id": "stranger-approaches-1784185794103",
+      "type": "system",
+      "logKey": "stranger.variant1",
+      "message": "A traveler arrives and decides to stay.",
+      "timestamp": 1784185794103,
+      "newVillagers": true
+    },
+    {
+      "id": "levelup_mineIron_1784187168868",
+      "type": "system",
+      "logKey": "buttonUpgrade.deepens",
+      "logVars": {
+        "skillKey": "mineIron"
+      },
+      "message": "Your mastery of Iron Mining deepens.",
+      "timestamp": 1784187168868
+    },
+    {
+      "id": "stranger-approaches-1784187608481",
+      "type": "system",
+      "logKey": "stranger.variant3",
+      "message": "Someone approaches the village and settles in.",
+      "timestamp": 1784187608481,
+      "newVillagers": true
+    },
+    {
+      "id": "levelup_chopWood_1784189518818",
+      "type": "system",
+      "logKey": "buttonUpgrade.deepens",
+      "logVars": {
+        "skillKey": "chopWood"
+      },
+      "message": "Your mastery of Woodcutting deepens.",
+      "timestamp": 1784189518818
+    },
+    {
+      "id": "stranger-approaches-1784202584184",
+      "type": "system",
+      "logKey": "stranger.multiple0",
+      "logVars": {
+        "count": 5
+      },
+      "message": "5 strangers join the village.",
+      "timestamp": 1784202584184,
+      "newVillagers": true
+    },
+    {
+      "id": "stranger-approaches-1784203910788",
+      "type": "system",
+      "logKey": "stranger.variant4",
+      "message": "A stranger joins the community.",
+      "timestamp": 1784203910788,
+      "newVillagers": true
+    },
+    {
+      "id": "stranger-approaches-1784203925904",
+      "type": "system",
+      "logKey": "stranger.variant0",
+      "message": "A stranger approaches and joins the village.",
+      "timestamp": 1784203925904,
+      "newVillagers": true
+    },
+    {
+      "id": "stranger-approaches-1784205752657",
+      "type": "system",
+      "logKey": "stranger.multiple0",
+      "logVars": {
+        "count": 4
+      },
+      "message": "4 strangers join the village.",
+      "timestamp": 1784205752657,
+      "newVillagers": true
+    },
+    {
+      "id": "stranger-approaches-1784205787563",
+      "type": "system",
+      "logKey": "stranger.multiple1",
+      "logVars": {
+        "count": 3
+      },
+      "message": "3 travelers arrive and decide to stay.",
+      "timestamp": 1784205787563,
+      "newVillagers": true
+    },
+    {
+      "id": "madness-death-1784212245574",
+      "type": "system",
+      "logKey": "madnessDeath.other",
+      "logVars": {
+        "count": 2
+      },
+      "message": "2 villagers succumb to madness and take their own lives.",
+      "timestamp": 1784212245574
+    },
+    {
+      "id": "madness-death-1784212260697",
+      "type": "system",
+      "logKey": "madnessDeath.one",
+      "message": "One villager succumbs to madness and takes his own life.",
+      "timestamp": 1784212260697
+    },
+    {
+      "id": "stranger-approaches-1784212260697",
+      "type": "system",
+      "logKey": "stranger.variant5",
+      "message": "A newcomer arrives and makes themselves at home.",
+      "timestamp": 1784212260697,
+      "newVillagers": true
+    },
+    {
+      "id": "levelup_caveExplore_1784268399755",
+      "type": "system",
+      "logKey": "buttonUpgrade.deepens",
+      "logVars": {
+        "skillKey": "caveExplore"
+      },
+      "message": "Your mastery of Cave Exploring deepens.",
+      "timestamp": 1784268399755
+    },
+    {
+      "id": "scriptorium-built-1784269326059",
+      "type": "system",
+      "logKey": "building.scriptorium",
+      "message": "The Scriptorium is finished. A hub of wisdom where scholars deepen their knowledge.",
+      "timestamp": 1784269326059
+    }
+  ],
+  "books": {
+    "book_of_war": true,
+    "book_of_trials": true,
+    "book_of_ascension": true,
+    "book_of_chainmaster": false,
+    "book_of_craftsmanship": false
+  },
+  "flags": {
+    "hasCity": false,
+    "hasLitFire": true,
+    "gameStarted": true,
+    "hasFortress": false,
+    "forestUnlocked": true,
+    "bastionUnlocked": false,
+    "firstWolfAttack": false,
+    "villageUnlocked": true,
+    "monolithUnlocked": true,
+    "starvationActive": false,
+    "hasHitResourceLimit": true,
+    "villagerCapsEnabled": true,
+    "humanSacrificeUnlocked": false,
+    "constructionQueueEnabled": true
+  },
+  "focus": 0,
+  "stats": {
+    "luck": 28,
+    "madness": 36,
+    "strength": 20,
+    "knowledge": 34,
+    "madnessFromEvents": 5,
+    "villagerDeathsLifetime": 59
+  },
+  "story": {
+    "seen": {
+      "fireLit": true,
+      "hasCoal": true,
+      "hasIron": true,
+      "hasWood": true,
+      "hasStone": true,
+      "hasHunted": true,
+      "hasWarBow": true,
+      "hashunter": true,
+      "hasIronAxe": true,
+      "hasStoneAxe": true,
+      "hasgatherer": true,
+      "caveExplored": true,
+      "hasVillagers": true,
+      "hasMinedStone": true,
+      "torchBagFound": true,
+      "traderSettled": true,
+      "woodcutterMet": true,
+      "hasIronLantern": true,
+      "hasIronPickaxe": true,
+      "venturedDeeper": true,
+      "woodcutter1Met": true,
+      "actionLightFire": true,
+      "firstWolfAttack": true,
+      "hasStonePickaxe": true,
+      "silverSackFound": true,
+      "actionBuildCabin": true,
+      "actionCraftTorch": true,
+      "caveExploreCount": 131,
+      "descendedFurther": true,
+      "furTentsUnlocked": true,
+      "gamblerEventSeen": true,
+      "slaveTraderEvent": true,
+      "witchsCurseEvent": true,
+      "actionCraftWarBow": true,
+      "firstWoodGathered": true,
+      "totalCoalGathered": 1636,
+      "totalFoodGathered": 404,
+      "totalInsightSpent": 1350,
+      "totalIronGathered": 2412,
+      "totalWoodGathered": 2989,
+      "actionCraftIronAxe": true,
+      "actionCraftLongBow": true,
+      "clarityElixirsUsed": 1,
+      "feedFireUsageCount": 12,
+      "forestCaveExplored": true,
+      "lastSurvivorHelped": true,
+      "totalStoneGathered": 2228,
+      "actionBuildStoneHut": true,
+      "actionCraftCrudeBow": true,
+      "actionCraftStoneAxe": true,
+      "cthulhuFigureChoice": true,
+      "torchesCraftedTotal": 21,
+      "woodcutter1Accepted": true,
+      "actionBuildClerksHut": true,
+      "actionBuildHeartfire": true,
+      "actionBuildSupplyHut": true,
+      "actionBuildTradePost": true,
+      "actionBuildWoodenHut": true,
+      "actionCraftIronSword": true,
+      "disgracedPriorJoined": true,
+      "maxPopulationReached": 51,
+      "actionBuildBlacksmith": true,
+      "actionBuildDarkEstate": true,
+      "actionBuildShallowPit": true,
+      "actionBuildStorehouse": true,
+      "actionCraftSteelSword": true,
+      "actionBuildScriptorium": true,
+      "actionCraftHuntsmanBow": true,
+      "actionCraftIronLantern": true,
+      "actionCraftIronPickaxe": true,
+      "bloodstainedBeltChoice": true,
+      "callMerchantUsageCount": 3,
+      "actionBuildBuildersHall": true,
+      "actionCraftStonePickaxe": true,
+      "actionTradeGoldForSteel": true,
+      "actionTradeGoldForTorch": true,
+      "forestTribeHelpAccepted": true,
+      "forestTribeHelpRejected": false,
+      "villageGrowthSuggestion": true,
+      "actionBuildBuildersLodge": true,
+      "actionBuildScribesOffice": true,
+      "actionCraftObsidianSword": true,
+      "actionTradeSilverForGold": true,
+      "actionTradeGoldForLeather": true,
+      "tabUnlockBlinkSeen_estate": true,
+      "tabUnlockBlinkSeen_forest": true,
+      "tabUnlockBlinkSeen_trader": true,
+      "traderShopUnlockV2Applied": true,
+      "tabUnlockBlinkSeen_village": true,
+      "village4VillagersMilestone": true,
+      "callMerchantLastEndPlayTime": 44721418.30000003,
+      "gamblerTutorialPlaysRemaining": 3,
+      "actionBuildFortifiedStorehouse": true,
+      "clarityElixirFoundVentureDeeper": true,
+      "mapFragmentMerchantWoodenBought": true,
+      "tabUnlockBlinkSeen_achievements": true,
+      "scholarResearchExpeditionsUnlocked": true,
+      "achievementTabPulseSeen_building-0-0": true,
+      "achievementTabPulseSeen_basic-1-builder": true,
+      "achievementTabPulseSeen_basic-1-explorer": true,
+      "achievementTabPulseSeen_basic-0-coalMiner": true,
+      "achievementTabPulseSeen_basic-0-ironMiner": true,
+      "achievementTabPulseSeen_basic-0-stoneMiner": true,
+      "achievementTabPulseSeen_action-4-wellRested": true,
+      "achievementTabPulseSeen_basic-1-toolCrafter": true,
+      "achievementTabPulseSeen_basic-0-woodGatherer": true,
+      "achievementTabPulseSeen_basic-1-communityBuilder": true
+    },
+    "heavySleeperHours": 46,
+    "merchantPurchases": 6
+  },
+  "tools": {
+    "lantern": false,
+    "bone_saw": false,
+    "iron_axe": true,
+    "steel_axe": false,
+    "stone_axe": true,
+    "giant_trap": false,
+    "adamant_axe": false,
+    "crow_harness": false,
+    "iron_lantern": true,
+    "iron_pickaxe": true,
+    "obsidian_axe": false,
+    "skeleton_key": false,
+    "occultist_map": false,
+    "skull_lantern": false,
+    "steel_lantern": false,
+    "steel_pickaxe": false,
+    "stone_pickaxe": true,
+    "blacksteel_axe": false,
+    "adamant_lantern": false,
+    "adamant_pickaxe": false,
+    "reinforced_rope": false,
+    "natharit_pickaxe": false,
+    "obsidian_lantern": false,
+    "obsidian_pickaxe": false,
+    "blacksmith_hammer": false,
+    "blacksteel_lantern": false,
+    "blacksteel_pickaxe": false,
+    "hidden_library_map": false,
+    "mastermason_chisel": false
+  },
+  "events": {
+    "log": [],
+    "active": [],
+    "cube01": true,
+    "cube02": true,
+    "cube03": false,
+    "cube04": false,
+    "cube05": false,
+    "cube06": false,
+    "cube07": false,
+    "cube08": false,
+    "cube09": false,
+    "cube10": false,
+    "cube11": false,
+    "cube12": false,
+    "cube13": false,
+    "cube14a": false,
+    "cube14b": false,
+    "cube14c": false,
+    "cube14d": false,
+    "cube15a": false,
+    "cube15b": false,
+    "available": [],
+    "shadowsMove": false,
+    "bloodInWater": true,
+    "facesInWalls": true,
+    "riddleOfAges": false,
+    "skinCrawling": false,
+    "creatureInHut": false,
+    "riddleOfTears": false,
+    "monolithDemand": true,
+    "villagerStares": true,
+    "wrongVillagers": false,
+    "mercenaryDemand": false,
+    "riddleOfEternal": false,
+    "riddleOfDevourer": false,
+    "whisperersReward": false,
+    "whisperingVoices": true,
+    "wrongReflections": false,
+    "bloodiedAwakening": false,
+    "elder_scroll_found": true,
+    "whispererInTheDark": true,
+    "desperateAmputation": false,
+    "villagersStareAtSky": false,
+    "humanSacrificeDemand": false,
+    "riddleOfAges_correct": false,
+    "riddleOfAges_variant": true,
+    "slaughteredCreatures": false,
+    "riddleOfTears_correct": false,
+    "riddleOfEternal_correct": false,
+    "riddleOfDevourer_correct": false,
+    "communicatedWithCreatures": false,
+    "encounteredCreaturesChoice": false,
+    "whispererInTheDark_correct": true,
+    "whispererInTheDark_variant": true
+  },
+  "gameId": "game-1783489199130-4phbcoj",
+  "relics": {
+    "bone_dice": false,
+    "black_wood": false,
+    "bloodstone": false,
+    "frostglass": false,
+    "ravens_orb": false,
+    "lycan_blood": false,
+    "odd_trinket": false,
+    "elder_scroll": true,
+    "obsidian_orb": false,
+    "sealed_chest": false,
+    "shadow_flute": false,
+    "unnamed_book": true,
+    "chitin_plates": false,
+    "wooden_figure": true,
+    "ancient_scrolls": false,
+    "survivors_notes": true,
+    "whispering_cube": true,
+    "blackened_mirror": false,
+    "rootseeker_charm": false,
+    "leatherbound_book": false,
+    "necromancer_blood": false,
+    "tarnished_compass": false,
+    "occultist_grimoire": false,
+    "stonebinders_codex": false,
+    "bone_devourer_blood": false,
+    "hollow_king_scepter": false
+  },
+  "devMode": true,
+  "effects": {
+    "statBonuses": {
+      "luck": 28,
+      "madness": 31,
+      "strength": 20,
+      "knowledge": 34
+    },
+    "actionBonuses": {
+      "war_bow": {
+        "hunt": {
+          "resourceMultiplier": 2.75,
+          "executionTimeReduction": 2
+        }
+      },
+      "iron_axe": {
+        "chopWood": {
+          "resourceMultiplier": 2,
+          "executionTimeReduction": 0.5
+        }
+      },
+      "long_bow": {
+        "hunt": {
+          "resourceMultiplier": 2,
+          "executionTimeReduction": 1.5
+        }
+      },
+      "crude_bow": {
+        "hunt": {
+          "resourceMultiplier": 1.25,
+          "executionTimeReduction": 0.5
+        }
+      },
+      "stone_axe": {
+        "chopWood": {
+          "resourceMultiplier": 1.5,
+          "executionTimeReduction": 0.25
+        }
+      },
+      "huntsman_bow": {
+        "hunt": {
+          "resourceMultiplier": 1.5,
+          "executionTimeReduction": 1
+        }
+      },
+      "iron_lantern": {
+        "mining": {
+          "resourceMultiplier": 1.25,
+          "executionTimeReduction": 1
+        },
+        "caveExplore": {
+          "resourceMultiplier": 1.25
+        }
+      },
+      "iron_pickaxe": {
+        "mining": {
+          "resourceMultiplier": 1.5,
+          "executionTimeReduction": 1
+        }
+      },
+      "cracked_crown": {},
+      "stone_pickaxe": {
+        "mining": {
+          "resourceMultiplier": 1.25,
+          "executionTimeReduction": 1
+        }
+      },
+      "survivors_last_words": {}
+    },
+    "resource_bonus": {},
+    "madness_reduction": {},
+    "probability_bonus": {},
+    "cooldown_reduction": {},
+    "resource_multiplier": {
+      "hunt": 2.75,
+      "mining": 1.75,
+      "chopWood": 2,
+      "caveExplore": 1.25
+    },
+    "execution_time_reduction": {
+      "hunt": 2,
+      "mining": 2,
+      "chopWood": 0.5
+    }
+  },
+  "isMuted": false,
+  "madness": null,
+  "version": 2,
+  "weapons": {
+    "war_bow": true,
+    "arbalest": false,
+    "long_bow": true,
+    "crude_bow": true,
+    "iron_sword": true,
+    "master_bow": false,
+    "steel_sword": true,
+    "ashen_dagger": false,
+    "compound_bow": false,
+    "huntsman_bow": true,
+    "adamant_sword": false,
+    "blacksteel_bow": false,
+    "nightshade_bow": false,
+    "nordic_war_axe": false,
+    "obsidian_sword": true,
+    "blacksteel_sword": false,
+    "bloodstone_staff": false,
+    "frostglass_sword": false,
+    "stormglass_halberd": false
+  },
+  "clothing": {
+    "red_mask": false,
+    "ebony_ring": false,
+    "ravens_orb": false,
+    "alphas_hide": false,
+    "gifted_ring": false,
+    "feeding_ring": true,
+    "hunter_cloak": false,
+    "obsidian_orb": false,
+    "shadow_boots": false,
+    "unnamed_book": false,
+    "bone_necklace": false,
+    "cracked_crown": true,
+    "explorer_pack": false,
+    "flask_harness": false,
+    "grenadier_bag": false,
+    "moon_bracelet": false,
+    "black_bear_fur": false,
+    "devourer_crown": false,
+    "loggers_gloves": false,
+    "highpriest_robe": false,
+    "ring_of_clarity": false,
+    "ring_of_drowned": false,
+    "muttering_amulet": true,
+    "tarnished_amulet": false,
+    "bloodstained_belt": false,
+    "ring_of_obedience": false,
+    "sacrificial_tunic": false,
+    "occultist_grimoire": false,
+    "ravenfeather_mantle": true
+  },
+  "fogState": {
+    "endTime": 0,
+    "duration": 0,
+    "isActive": false
+  },
+  "isPaused": false,
+  "playTime": 46968936,
+  "sfxMuted": true,
+  "username": null,
+  "activeTab": "estate",
+  "blessings": {
+    "sharp_aim": false,
+    "ebon_grace": false,
+    "dagons_gift": false,
+    "ravens_mark": false,
+    "fishers_hand": false,
+    "flames_touch": false,
+    "ashen_embrace": false,
+    "bell_blessing": false,
+    "forests_grace": false,
+    "blood_baptized": false,
+    "knights_burden": false,
+    "dagons_gift_enhanced": false,
+    "ravens_mark_enhanced": false,
+    "survivors_last_words": true,
+    "flames_touch_enhanced": false,
+    "ashen_embrace_enhanced": false
+  },
+  "boostMode": false,
+  "buildings": {
+    "bank": 0,
+    "altar": 0,
+    "cabin": 1,
+    "traps": 0,
+    "quarry": 0,
+    "shrine": 0,
+    "temple": 0,
+    "bastion": 0,
+    "deepPit": 0,
+    "foundry": 0,
+    "sanctum": 0,
+    "tannery": 0,
+    "boneyard": 0,
+    "furTents": 0,
+    "stoneHut": 4,
+    "treasury": 0,
+    "clerksHut": 1,
+    "coinhouse": 0,
+    "heartfire": 1,
+    "longhouse": 0,
+    "paleCross": 0,
+    "palisades": 0,
+    "supplyHut": 1,
+    "tradePost": 1,
+    "woodenHut": 12,
+    "blacksmith": 1,
+    "boneTemple": 0,
+    "darkEstate": 1,
+    "greatCabin": 0,
+    "greatVault": 0,
+    "shallowPit": 1,
+    "storehouse": 1,
+    "timberMill": 0,
+    "watchtower": 0,
+    "blackEstate": 0,
+    "grandBazaar": 0,
+    "highTannery": 0,
+    "recordsHall": 0,
+    "scriptorium": 1,
+    "wizardTower": 0,
+    "buildersHall": 1,
+    "deepeningPit": 0,
+    "grandArchive": 0,
+    "primeFoundry": 0,
+    "alchemistHall": 0,
+    "blackMonolith": 0,
+    "bottomlessPit": 0,
+    "buildersGuild": 0,
+    "buildersLodge": 1,
+    "chitinPlating": 0,
+    "fortifiedMoat": 0,
+    "improvedTraps": 0,
+    "masterTannery": 0,
+    "scribesOffice": 1,
+    "merchantsGuild": 0,
+    "grandBlacksmith": 0,
+    "grandRepository": 0,
+    "pillarOfClarity": 0,
+    "grandHunterLodge": 0,
+    "inkwardenAcademy": 0,
+    "villageWarehouse": 0,
+    "masterworkFoundry": 0,
+    "advancedBlacksmith": 0,
+    "fortifiedStorehouse": 1,
+    "consecratedPaleCross": 0
+  },
+  "cooldowns": {
+    "hunt": 0,
+    "chopWood": 0,
+    "feedFire": 19.25,
+    "mineCoal": 0,
+    "mineIron": 0,
+    "lightFire": 0,
+    "mineStone": 0,
+    "buildCabin": 0,
+    "forestCave": 0,
+    "manualSave": 0,
+    "craftWarBow": 0,
+    "exploreCave": 0,
+    "craftIronAxe": 0,
+    "craftLongBow": 0,
+    "craftTorches": 0,
+    "buildStoneHut": 0,
+    "craftCrudeBow": 0,
+    "craftStoneAxe": 0,
+    "ventureDeeper": 0,
+    "buildClerksHut": 0,
+    "buildSupplyHut": 0,
+    "buildTradePost": 0,
+    "buildWoodenHut": 0,
+    "craftIronSword": 0,
+    "descendFurther": 0,
+    "buildBlacksmith": 0,
+    "buildDarkEstate": 0,
+    "buildShallowPit": 0,
+    "buildStorehouse": 0,
+    "craftSteelSword": 0,
+    "buildScriptorium": 0,
+    "craftHuntsmanBow": 0,
+    "craftIronLantern": 0,
+    "craftIronPickaxe": 0,
+    "tradeGoldForFood": 0,
+    "tradeGoldForWood": 0,
+    "buildBuildersHall": 0,
+    "craftStonePickaxe": 0,
+    "tradeGoldForSteel": 0,
+    "tradeGoldForStone": 0,
+    "tradeGoldForTorch": 0,
+    "buildBuildersLodge": 0,
+    "buildScribesOffice": 0,
+    "craftObsidianSword": 0,
+    "tradeSilverForGold": 0,
+    "tradeGoldForLeather": 0,
+    "buildFortifiedStorehouse": 0
+  },
+  "cruelMode": false,
+  "isNewGame": false,
+  "lastSaved": 1784270063653,
+  "referrals": [],
+  "resources": {
+    "fur": 5000,
+    "coal": 5000,
+    "food": 418,
+    "gold": 865,
+    "iron": 5000,
+    "wood": 5000,
+    "bones": 5000,
+    "steel": 2500,
+    "stone": 5000,
+    "torch": 3189,
+    "silver": 49980,
+    "sulfur": 5000,
+    "adamant": 0,
+    "insight": 1550,
+    "leather": 2500,
+    "obsidian": 914,
+    "veinroot": 0,
+    "moonstone": 0,
+    "void_bomb": 0,
+    "blacksteel": 0,
+    "bone_totem": 0,
+    "ember_bomb": 0,
+    "ashfire_bomb": 0,
+    "ashfire_dust": 0,
+    "black_powder": 0,
+    "leather_totem": 0,
+    "veinfire_elixir": 0
+  },
+  "sfxVolume": 1,
+  "startTime": 1783149716837,
+  "villagers": {
+    "free": 9,
+    "hunter": 5,
+    "tanner": 0,
+    "scholar": 30,
+    "gatherer": 5,
+    "coal_miner": 0,
+    "iron_miner": 2,
+    "powder_maker": 0,
+    "steel_forger": 0,
+    "sulfur_miner": 0,
+    "adamant_miner": 0,
+    "obsidian_miner": 0,
+    "moonstone_miner": 0,
+    "blacksteel_forger": 0,
+    "ashfire_dust_maker": 0
+  },
+  "curseState": {
+    "endTime": 0,
+    "isActive": false
+  },
+  "feastState": {
+    "endTime": 1784206465549,
+    "isActive": false,
+    "lastAcceptedLevel": 1
+  },
+  "fellowship": {
+    "disgraced_prior": true
+  },
+  "focusState": {
+    "points": 0,
+    "endTime": 1784214049371,
+    "duration": 1800000,
+    "isActive": false,
+    "startTime": 1784212249371
+  },
+  "game_stats": [],
+  "musicMuted": true,
+  "panelSizes": {
+    "mobileLogPanelPx": null,
+    "desktopLogPanelPx": 366,
+    "mobileSidePanelPx": null,
+    "desktopSidePanelPx": 399
+  },
+  "schematics": {
+    "arbalest_schematic": false,
+    "obsidian_orb_schematic": false,
+    "skeleton_key_schematic": false,
+    "nightshade_bow_schematic": false,
+    "stormglass_halberd_schematic": false
+  },
+  "_logMessage": "The creatures overwhelm your defenses. 5 villagers fall before the remaining creatures retreat to the depths.",
+  "eventDialog": {
+    "isOpen": false,
+    "currentEvent": null
+  },
+  "gamblerGame": null,
+  "musicVolume": 1,
+  "boostApplied": false,
+  "combatDialog": {
+    "enemy": null,
+    "isOpen": false,
+    "onDefeat": null,
+    "onVictory": null,
+    "eventTitle": "",
+    "eventMessage": ""
+  },
+  "combatSkills": {
+    "crushingStrikeLevel": 0,
+    "bloodflameSphereLevel": 0
+  },
+  "disgustState": {
+    "endTime": 0,
+    "duration": 0,
+    "isActive": false
+  },
+  "g_fn_checked": true,
+  "loopProgress": 61.223333333333144,
+  "referralCode": null,
+  "rewardDialog": {
+    "data": null,
+    "isOpen": false
+  },
+  "bastion_stats": {
+    "attack": 10,
+    "defense": 0,
+    "integrity": 0,
+    "attackFromStrength": 10,
+    "attackFromFortifications": 0
+  },
+  "hasWonAnyGame": true,
+  "huntingSkills": {
+    "level": 0
+  },
+  "idleModeState": {
+    "isActive": false,
+    "startTime": 0,
+    "needsDisplay": false
+  },
+  "madnessDialog": {
+    "data": null,
+    "isOpen": false
+  },
+  "referralCount": 0,
+  "referredUsers": [],
+  "seenResources": [
+    "wood",
+    "torch",
+    "stone",
+    "iron",
+    "coal",
+    "fur",
+    "food",
+    "bones",
+    "silver",
+    "sulfur",
+    "gold",
+    "steel",
+    "leather",
+    "obsidian",
+    "insight"
+  ],
+  "showEndScreen": true,
+  "sleepUpgrades": {
+    "lengthLevel": 4,
+    "intensityLevel": 2
+  },
+  "solsticeState": {
+    "tier": 2,
+    "endTime": 1784049685913,
+    "isActive": false,
+    "activationsCount": 1
+  },
+  "timedEventTab": {
+    "event": null,
+    "isActive": false,
+    "startTime": 1784269845985,
+    "expiryTime": 0,
+    "pauseAccumMs": 0,
+    "pauseStartedAt": 0,
+    "insightProlongUsed": false,
+    "gamblerRoundsRemaining": 3
+  },
+  "_combatSummary": {
+    "goldReward": 150
+  },
+  "authDialogOpen": false,
+  "bloodMoonState": {
+    "hasWon": false,
+    "occurrenceCount": 1
+  },
+  "buttonUpgrades": {
+    "hunt": {
+      "level": 0,
+      "clicks": 6
+    },
+    "chopWood": {
+      "level": 2,
+      "clicks": 65
+    },
+    "mineCoal": {
+      "level": 0,
+      "clicks": 4
+    },
+    "mineIron": {
+      "level": 3,
+      "clicks": 62
+    },
+    "mineStone": {
+      "level": 0,
+      "clicks": 7
+    },
+    "mineSulfur": {
+      "level": 0,
+      "clicks": 0
+    },
+    "caveExplore": {
+      "level": 6,
+      "clicks": 117
+    },
+    "mineAdamant": {
+      "level": 0,
+      "clicks": 0
+    },
+    "craftTorches": {
+      "level": 0,
+      "clicks": 9
+    },
+    "mineObsidian": {
+      "level": 0,
+      "clicks": 0
+    },
+    "craftBoneTotems": {
+      "level": 0,
+      "clicks": 0
+    },
+    "craftLeatherTotems": {
+      "level": 0,
+      "clicks": 0
+    }
+  },
+  "clickAnalytics": {
+    "hunt": 1,
+    "chopWood": 1,
+    "feedFire": 1,
+    "mineCoal": 1,
+    "mineIron": 1,
+    "mineStone": 1,
+    "buildCabin": 1,
+    "forestCave": 1,
+    "craftWarBow": 1,
+    "cube-cube01": 1,
+    "exploreCave": 1,
+    "callMerchant": 1,
+    "craftIronAxe": 1,
+    "craftLongBow": 1,
+    "craftTorches": 1,
+    "assign-hunter": 5,
+    "buildStoneHut": 1,
+    "craftCrudeBow": 1,
+    "craftStoneAxe": 1,
+    "ventureDeeper": 1,
+    "activate-focus": 1,
+    "assign-scholar": 9,
+    "buildClerksHut": 1,
+    "buildHeartfire": 1,
+    "buildSupplyHut": 1,
+    "buildTradePost": 1,
+    "buildWoodenHut": 2,
+    "craftIronSword": 1,
+    "descendFurther": 1,
+    "assign-gatherer": 4,
+    "buildBlacksmith": 1,
+    "buildDarkEstate": 1,
+    "buildGreatCabin": 1,
+    "buildShallowPit": 2,
+    "buildStorehouse": 1,
+    "craftSteelSword": 1,
+    "unassign-hunter": 4,
+    "buildScriptorium": 1,
+    "craftHuntsmanBow": 1,
+    "craftIronLantern": 1,
+    "craftIronPickaxe": 1,
+    "tradeGoldForFood": 1,
+    "tradeGoldForWood": 1,
+    "unassign-scholar": 3,
+    "assign-iron_miner": 8,
+    "buildBuildersHall": 1,
+    "craftStonePickaxe": 1,
+    "tradeGoldForSteel": 1,
+    "tradeGoldForStone": 2,
+    "tradeGoldForTorch": 1,
+    "unassign-gatherer": 6,
+    "buildBuildersLodge": 1,
+    "buildScribesOffice": 1,
+    "craftObsidianSword": 1,
+    "tradeSilverForGold": 1,
+    "activate-sleep-mode": 1,
+    "event-choice-accept": 1,
+    "tradeGoldForLeather": 1,
+    "unassign-iron_miner": 3,
+    "event-choice-examine": 1,
+    "timedevent-sellBones": 1,
+    "upgrade-sleep-length": 2,
+    "event-choice-continue": 1,
+    "event-choice-doNotPay": 1,
+    "event-choice-keepRing": 1,
+    "event-choice-allowStay": 1,
+    "event-choice-unpack_it": 1,
+    "reward-dialog-continue": 2,
+    "timedevent-say_goodbye": 1,
+    "buildAdvancedBlacksmith": 1,
+    "event-choice-answerBird": 1,
+    "event-choice-freeSlaves": 1,
+    "event-choice-keepFigure": 1,
+    "event-choice-letHimStay": 1,
+    "timedevent-hostSolstice": 1,
+    "upgrade-sleep-intensity": 1,
+    "buildFortifiedStorehouse": 1,
+    "event-choice-acceptTribe": 1,
+    "event-choice-accept_help": 1,
+    "event-choice-acknowledge": 1,
+    "event-choice-answerPearl": 1,
+    "event-choice-drink_water": 1,
+    "event-choice-hideAndWait": 1,
+    "event-choice-investigate": 2,
+    "event-choice-offerShelter": 1,
+    "timedevent-acceptServices": 1,
+    "event-choice-defendVillage": 1,
+    "event-choice-fightCannibals": 1,
+    "event-choice-investigateHut": 1,
+    "timedevent-trade_book_of_war": 1,
+    "timedevent-buy_wood_1000_mid1": 1,
+    "timedevent-sell_coal_250_mid1": 1,
+    "timedevent-sell_bones_250_mid1": 1,
+    "village-effect-dialog-continue": 1,
+    "cube-close-cube01-1783686287885": 1,
+    "cube-close-cube01-1783686331542": 1,
+    "cube-close-cube02-1783697239201": 1,
+    "timedevent-trade_book_of_trials": 1,
+    "timedevent-trade_map_fragment_wooden": 1,
+    "cube-close-cubeDiscovery-1783679734877": 1
+  },
+  "crowsEyeSkills": {
+    "level": 0
+  },
+  "eventCooldowns": {
+    "cube01": 1783686287885,
+    "cube02": 1783697239200,
+    "feast1": 1784184549147,
+    "feast2": 1784269845983,
+    "gambler": 1784188096074,
+    "merchant": 1784269567872,
+    "frostfall": 1784203294223,
+    "hiddenLake": 1783694896261,
+    "madBeduine": 1783967921034,
+    "paleFigure": 1783964136670,
+    "veiledSeer": 1783696055469,
+    "wolfAttack": 1784201507627,
+    "feedingRing": 1784268821932,
+    "shadowsMove": 1783966155441,
+    "slaveTrader": 1783686450226,
+    "witchsCurse": 1783697461704,
+    "woodcutter1": 1783686179396,
+    "woodcutter2": 1784204092465,
+    "bloodInWater": 1784269567882,
+    "cannibalRaid": 1784211577997,
+    "facesInWalls": 1784269731594,
+    "lastSurvivor": 1783687174812,
+    "riddleOfAges": 1784006129094,
+    "boneDevourer1": 1783967006500,
+    "boneDevourer2": 1784039507287,
+    "cthulhuFigure": 1783696691821,
+    "cubeDiscovery": 1783679734876,
+    "traderSettles": 1783695221987,
+    "monolithDemand": 1783968345343,
+    "mysteriousBook": 1783686296858,
+    "villagerStares": 1784006321922,
+    "wanderingTribe": 1784188237292,
+    "blackenedMirror": 1783695846650,
+    "bloodMoonAttack": 1784182810522,
+    "findElderScroll": 1783695397976,
+    "mysteriousWoman": 1784186724666,
+    "traders_daughter": 1784211472450,
+    "whisperingVoices": 1783751835922,
+    "solsticeGathering": 1784268528947,
+    "wildlingBloodOath": 1784269036472,
+    "whispersBeneathHut": 1783695121297,
+    "disgracedPriorOffer": 1783697205849,
+    "wandering_collector": 1784202536460,
+    "riddleOfAges_variant": 1783697651976,
+    "forestTribeHelpRequest": 1783695857389,
+    "scholarResearchProposal": 1783966069126,
+    "whispererInTheDark_variant": 1783694972559
+  },
+  "feastPurchases": {},
+  "frostfallState": {
+    "endTime": 0,
+    "isActive": false
+  },
+  "hasSpeedrunWin": false,
+  "heartfireState": {
+    "level": 1,
+    "lastLevelDecrease": 1784270053019
+  },
+  "idleModeDialog": {
+    "isOpen": false
+  },
+  "isUserSignedIn": true,
+  "merchantTrades": {
+    "choices": [],
+    "purchasedIds": []
+  },
+  "shopDialogOpen": false,
+  "googleAdsSource": null,
+  "greatFeastState": {
+    "endTime": 0,
+    "isActive": false
+  },
+  "hasWonCruelGame": false,
+  "hoveredTooltips": {
+    "madness": true,
+    "strength": true,
+    "tradePost": true,
+    "woodenHut": true,
+    "blacksmith": true,
+    "darkEstate": true,
+    "storehouse": true,
+    "buildersHall": true,
+    "iron_lantern": true,
+    "iron_pickaxe": true,
+    "map_fragment": true,
+    "buildersLodge": true,
+    "cracked_crown": true,
+    "muttering_amulet": true,
+    "solstice-progress": true,
+    "button-build-traps": true,
+    "heartfire-progress": true,
+    "madness-production": true,
+    "ravenfeather_mantle": true,
+    "button-0.5806444077934095": true,
+    "production-cycle-progress": true,
+    "villager-cap-upgrade-clerksHut": true,
+    "villager-cap-upgrade-scriptorium": true,
+    "building-descriptions-insight-reveal": true
+  },
+  "revealedEffects": [],
+  "shareDialogOpen": true,
+  "templeDedicated": false,
+  "triggeredEvents": {
+    "madBeduine": true,
+    "veiledSeer": true,
+    "feedingRing": true,
+    "shadowsMove": true,
+    "witchsCurse": true,
+    "bloodInWater": true,
+    "facesInWalls": true,
+    "lastSurvivor": true,
+    "riddleOfAges": true,
+    "boneDevourer1": true,
+    "cthulhuFigure": true,
+    "monolithDemand": true,
+    "villagerStares": true,
+    "blackenedMirror": true,
+    "findElderScroll": true,
+    "mysteriousWoman": true,
+    "whisperingVoices": true,
+    "solsticeGathering": true,
+    "wildlingBloodOath": true,
+    "boneDevourer1_seen": true,
+    "boneDevourer2_seen": true,
+    "whispersBeneathHut": true,
+    "disgracedPriorOffer": true,
+    "riddleOfAges_variant": true,
+    "bloodstainedBeltChoice": true,
+    "whispererInTheDark_variant": true,
+    "clarityElixirCaveFoundVentureDeeper": true
+  },
+  "villagersKilled": 2,
+  "woodcutterState": {
+    "endTime": 1784204272467,
+    "isActive": true
+  },
+  "activePresetSlot": 1,
+  "attackWaveTimers": {},
+  "damagedBuildings": {
+    "bastion": false,
+    "palisades": false,
+    "watchtower": false
+  },
+  "detectedCurrency": "EUR",
+  "feastActivations": {
+    "purchase-great_feast_1-24e49f83-c926-4e5a-90a4-19e05c523d54": 1,
+    "purchase-great_feast_1-91eecdc2-86e5-4ee0-8331-1cdf259c63c7": 1,
+    "purchase-great_feast_1-9371bdba-910f-456e-a0e1-665c5e1f6ec0": 1,
+    "purchase-great_feast_3-4f5a0e32-6f08-463a-bef1-4706eb900f1d": 3,
+    "purchase-great_feast_3-50f7cdbe-b8ad-48e6-b235-bbcd5c681820": 3,
+    "purchase-great_feast_3-553c5992-87b8-4199-9e7a-4a0c2595da26": 3,
+    "purchase-great_feast_3-7a099839-7d4a-4744-a4cf-83311a5536d3": 3,
+    "purchase-great_feast_3-93ac3a16-bd81-429b-9016-88f56209a8e6": 3,
+    "purchase-great_feast_3-ca858d9c-11aa-409a-a842-2574193d997e": 3,
+    "purchase-great_feast_3-d7c0e4f2-effe-4215-afbc-dbe88da87128": 3,
+    "purchase-great_feast_3-f38b2b78-026a-459c-be80-937a81c3354b": 3
+  },
+  "hasWonNormalGame": true,
+  "inactivityReason": null,
+  "initialCooldowns": {
+    "hunt": 0,
+    "chopWood": 0,
+    "feedFire": 30,
+    "mineCoal": 0,
+    "mineIron": 0,
+    "mineStone": 0,
+    "buildCabin": 0,
+    "forestCave": 0,
+    "craftWarBow": 0,
+    "exploreCave": 0,
+    "craftIronAxe": 0,
+    "craftLongBow": 0,
+    "craftTorches": 0,
+    "buildStoneHut": 0,
+    "craftCrudeBow": 0,
+    "craftStoneAxe": 0,
+    "ventureDeeper": 0,
+    "buildClerksHut": 0,
+    "buildSupplyHut": 0,
+    "buildTradePost": 0,
+    "buildWoodenHut": 0,
+    "craftIronSword": 0,
+    "descendFurther": 0,
+    "buildBlacksmith": 0,
+    "buildDarkEstate": 0,
+    "buildShallowPit": 0,
+    "buildStorehouse": 0,
+    "craftSteelSword": 0,
+    "buildScriptorium": 0,
+    "craftHuntsmanBow": 0,
+    "craftIronLantern": 0,
+    "craftIronPickaxe": 0,
+    "buildBuildersHall": 0,
+    "craftStonePickaxe": 0,
+    "buildBuildersLodge": 0,
+    "buildScribesOffice": 0,
+    "craftObsidianSword": 0,
+    "buildFortifiedStorehouse": 0
+  },
+  "insightRevealing": {},
+  "investDialogOpen": false,
+  "isGameLoopActive": true,
+  "miningBoostState": {
+    "endTime": 0,
+    "isActive": false
+  },
+  "obsidianOrbState": {
+    "nextFocusGainTime": 0
+  },
+  "timedTabDuration": 0,
+  "totalFocusEarned": 46,
+  "total_population": 124,
+  "boneDevourerState": {
+    "lastAcceptedLevel": 1
+  },
+  "chainmasterSkills": {
+    "level": 0
+  },
+  "compassGlowButton": null,
+  "cooldownDurations": {},
+  "lastFreeGoldClaim": 0,
+  "merchantPurchases": {},
+  "resourceAnalytics": {
+    "fur": 872,
+    "food": 4594,
+    "gold": -270,
+    "wood": 11862,
+    "bones": 872,
+    "stone": 6165,
+    "silver": 500
+  },
+  "templeDedicatedTo": "",
+  "traderDialogOpens": 6,
+  "activatedPurchases": {},
+  "current_population": 124,
+  "executionDurations": {
+    "chopWood": 3.5,
+    "mineIron": 19,
+    "forestCave": 45,
+    "exploreCave": 7.5,
+    "craftLongBow": 20,
+    "ventureDeeper": 15,
+    "buildWoodenHut": 24,
+    "craftSteelSword": 20,
+    "craftHuntsmanBow": 15,
+    "craftIronLantern": 15
+  },
+  "exiledScholarState": {
+    "hasPaid": false
+  },
+  "feedbackDialogOpen": false,
+  "isPausedPreviously": false,
+  "lifetimePlayTimeMs": 48968939.0000013,
+  "villagerJobPresets": [],
+  "weaponEnchantments": {},
+  "claimedAchievements": [
+    "basic-1-toolCrafter",
+    "basic-1-builder"
+  ],
+  "crushingStrikeLevel": 0,
+  "executionStartTimes": {
+    "chopWood": 1783686238300,
+    "mineIron": 1783686245876,
+    "forestCave": 1784268779920,
+    "exploreCave": 1783665415254,
+    "craftLongBow": 1783686353961,
+    "ventureDeeper": 1783686246499,
+    "buildWoodenHut": 1783686294642,
+    "craftSteelSword": 1783686354339,
+    "craftHuntsmanBow": 1783686243970,
+    "craftIronLantern": 1783686245034
+  },
+  "expeditionVillagers": {
+    "forestCave": 10
+  },
+  "feedbackPromptShown": true,
+  "investmentHallState": {
+    "active": null,
+    "offers": [],
+    "nextWavePlayTime": 0
+  },
+  "scrollIndicatorSeen": {
+    "event-log": true,
+    "achievements-action": true,
+    "achievements-building": true,
+    "shop-dialog-purchases": true
+  },
+  "statEffectsRevealed": false,
+  "tradeEstablishState": {
+    "remainingOptions": [
+      "mountain_monastery",
+      "swamp_tribe",
+      "shore_fishermen"
+    ]
+  },
+  "villagerCapUpgrades": {
+    "scholar": 2
+  },
+  "_completingExecution": null,
+  "authNotificationSeen": true,
+  "disgracedPriorSkills": {
+    "level": 0
+  },
+  "highlightedResources": [],
+  "inactivityDialogOpen": false,
+  "priorAssignedActions": [],
+  "resourceChangeEvents": [],
+  "shopNotificationSeen": true,
+  "social_media_rewards": {},
+  "unlockedAchievements": [],
+  "gamblerDiceDialogOpen": false,
+  "greatFeastActivations": 0,
+  "leaderboardDialogOpen": false,
+  "restartGameDialogOpen": false,
+  "socialPromptAutoPhase": 0,
+  "tradersGratitudeState": {
+    "accepted": false
+  },
+  "allowPlayTimeOverwrite": true,
+  "allowPlaytimeOverwrite": true,
+  "constructionBoostsUsed": {
+    "chopWood": false,
+    "mineIron": false,
+    "forestCave": false,
+    "exploreCave": false,
+    "craftLongBow": false,
+    "ventureDeeper": false,
+    "buildWoodenHut": false,
+    "buildGreatCabin": false,
+    "craftSteelSword": false,
+    "craftHuntsmanBow": false,
+    "craftIronLantern": false
+  },
+  "executionAbortEligible": {
+    "chopWood": true,
+    "mineIron": true,
+    "forestCave": true,
+    "exploreCave": true,
+    "craftLongBow": true,
+    "ventureDeeper": true,
+    "buildWoodenHut": true,
+    "craftSteelSword": true,
+    "craftHuntsmanBow": true,
+    "craftIronLantern": true
+  },
+  "hasMadeNonFreePurchase": false,
+  "investmentResultDialog": {
+    "data": null,
+    "isOpen": false
+  },
+  "merchantPurchasedItems": {},
+  "priorAutomationPending": [
+    "exploreCitadel",
+    "mineStone",
+    "chopWood"
+  ],
+  "productHuntDialogShown": true,
+  "shopCruelModeHighlight": false,
+  "signUpPromptDialogOpen": false,
+  "socialPromptDialogOpen": false,
+  "versionCheckDialogOpen": false,
+  "authNotificationVisible": true,
+  "deleteAccountDialogOpen": false,
+  "executionSpendSnapshots": {
+    "chopWood": {
+      "resourceRefund": {},
+      "villagerRefund": {},
+      "expeditionLocked": 0
+    },
+    "mineIron": {
+      "resourceRefund": {
+        "food": 10,
+        "torch": 1
+      },
+      "villagerRefund": {},
+      "expeditionLocked": 0
+    },
+    "forestCave": {
+      "resourceRefund": {
+        "food": 1000
+      },
+      "villagerRefund": {
+        "free": 10
+      },
+      "expeditionLocked": 10
+    },
+    "exploreCave": {
+      "resourceRefund": {
+        "torch": 2
+      },
+      "villagerRefund": {},
+      "expeditionLocked": 0
+    },
+    "craftLongBow": {
+      "resourceRefund": {
+        "wood": 1000,
+        "steel": 100
+      },
+      "villagerRefund": {},
+      "expeditionLocked": 0
+    },
+    "ventureDeeper": {
+      "resourceRefund": {
+        "food": 25,
+        "torch": 5
+      },
+      "villagerRefund": {},
+      "expeditionLocked": 0
+    },
+    "buildWoodenHut": {
+      "resourceRefund": {
+        "wood": 2000
+      },
+      "villagerRefund": {},
+      "expeditionLocked": 0
+    },
+    "craftSteelSword": {
+      "resourceRefund": {
+        "steel": 150
+      },
+      "villagerRefund": {},
+      "expeditionLocked": 0
+    },
+    "craftHuntsmanBow": {
+      "resourceRefund": {
+        "iron": 50,
+        "wood": 500
+      },
+      "villagerRefund": {},
+      "expeditionLocked": 0
+    },
+    "craftIronLantern": {
+      "resourceRefund": {
+        "iron": 150,
+        "wood": 250
+      },
+      "villagerRefund": {},
+      "expeditionLocked": 0
+    }
+  },
+  "shopNotificationVisible": false,
+  "lastResourceSnapshotTime": 44911335.200000115,
+  "lastSignUpPromptPlayTime": 0,
+  "lastSocialPromptPlayTime": 0,
+  "signupWelcomeGoldClaimed": false,
+  "tradersSonGratitudeState": {
+    "accepted": false
+  },
+  "villagerPresetsPurchased": 0,
+  "craftDescriptionsRevealed": true,
+  "revealedAchievementTitles": [],
+  "fullGamePurchaseDialogOpen": false,
+  "playlightWelcomeDialogOpen": false,
+  "socialPromptMilestoneIndex": 5,
+  "villageHotkeyTutorialShown": true,
+  "completePurchaseDialogOpens": 0,
+  "signUpPromptEligibleForGold": false,
+  "villagerPresetSlotsFromShop": 0,
+  "buildingDescriptionsRevealed": true,
+  "lastAuthNotificationPlayTime": 38348904,
+  "postCompletionAttackWaveCount": 0,
+  "constructionQueueSlotsFromShop": 0,
+  "mystNoteDonateNotificationSeen": false,
+  "constructionQueueSlotsPurchased": 0,
+  "playlightThirtyMinSidebarOpened": true,
+  "playlightExitIntentMilestoneIndex": 5,
+  "socialPromoExclusiveRewardPending": false,
+  "mysteriousNoteShopNotificationSeen": true,
+  "mysteriousNoteDonateNotificationSeen": false
+}

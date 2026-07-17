@@ -120,6 +120,12 @@ export default function AuthDialog({
         const { useGameStore } = await import("@/game/state");
         await useGameStore.getState().loadGame();
 
+        // Session-loss dialog: resume loop only after loadGame so local/cloud reconcile first.
+        if (useGameStore.getState().inactivityReason === "session") {
+          const { resumeFromSessionLoss } = await import("@/game/loop");
+          resumeFromSessionLoss();
+        }
+
         onAuthSuccess();
         onClose();
       } else if (mode === "signup") {
