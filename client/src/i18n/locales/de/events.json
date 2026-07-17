@@ -2604,22 +2604,4 @@
     "message": "Eine junge Frau tritt an dich heran, Tränen strömen über ihr Gesicht. 'Meine beiden Eltern wurden diesem verfluchten Monolithen geopfert', ruft sie. 'Dieses barbarische Verhalten muss aufhören!'",
     "title": "Die Bitte der jungen Frau"
   }
-    "cube16a": {
-      "choices": {
-        "close": {
-          "label": "Close"
-        }
-      },
-      "message": "Next to the slain creatures you find what seems to be one of the skull devices. It's broken, but you can still read some letters on it saying 'N**RAL**K'.",
-      "title": "The Skull Device"
-    },
-    "cube16b": {
-      "choices": {
-        "close": {
-          "label": "Close"
-        }
-      },
-      "message": "The creatures give you what seems to be one of the skull devices. It's broken, but you can still read some letters on it saying 'N**RAL**K'.",
-      "title": "The Skull Device"
-    },
 }

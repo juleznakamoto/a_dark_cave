@@ -349,7 +349,7 @@ export default function IdleModeDialog() {
         (async () => {
           const { saveGame } = await import("@/game/save");
           const currentState = useGameStore.getState();
-          await saveGame(currentState, false);
+          await saveGame(currentState, currentState.playTime);
         })();
       }
     }

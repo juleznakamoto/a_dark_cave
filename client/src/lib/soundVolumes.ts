@@ -1,10 +1,6 @@
 /**
  * Howler volume values (0–1). Tune the overall mix here only.
  */
-
-/** Crossfade length when event ambience takes over from (or returns to) BGM. */
-export const EVENT_AMBIENCE_FADE_SECONDS = 2;
-
 export const SOUND_VOLUME = {
   wind: 0.2,
   lightFire: 0.8,
@@ -16,7 +12,7 @@ export const SOUND_VOLUME = {
   },
   newVillager: 0.02,
   buildingComplete: 0.5,
-  craft: 0.25,
+  craft: 0.05,
   mining: 0.5,
   chopWood: 0.8,
   hunt: 0.2,

@@ -40,9 +40,11 @@ export default function AchievementMiniRingChart({
   size = BASE_SIZE,
   centerSymbolStyle,
 }: Props) {
-  // Full store subscription — ring fill uses many slices (buildings, tools,
-  // story, …); getState() + a sleeper-only selector left charts stale.
-  const state = useGameStore((s) => s);
+  const state = useGameStore.getState();
+  void useGameStore(
+    (s) =>
+      (s.story?.heavySleeperHours ?? 0) + (s.totalFocusEarned ?? 0),
+  );
 
   // Radii are in chart pixel units; scale them with the outer size so larger
   // charts (e.g. share image) keep the same ring proportions as the tab icon.

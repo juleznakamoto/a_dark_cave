@@ -33,6 +33,9 @@
     "1-mineSulfur": {
       "label": "硫磺矿工"
     },
+    "2-animals": {
+      "label": "牲祭执行者"
+    },
     "2-boneTotems": {
       "label": "骨祭执行者"
     },
@@ -48,9 +51,6 @@
     "3-ashfireBombs": {
       "label": "灰火炸弹工匠"
     },
-    "3-burningVeins": {
-      "label": "Burning Veins"
-    },
     "3-emberBombs": {
       "label": "余烬炸弹工匠"
     },
@@ -60,26 +60,14 @@
     "4-feedFire": {
       "label": "添火者"
     },
-    "4-insightful": {
-      "label": "Insightful"
-    },
     "4-investor": {
       "label": "投资者"
-    },
-    "4-luckyInvestor": {
-      "label": "Lucky Investor"
     },
     "4-mentalClarity": {
       "label": "心智清明"
     },
     "4-merchantPurchases": {
       "label": "交易好手"
-    },
-    "4-pileOfDead": {
-      "label": "Pile of Dead"
-    },
-    "4-resourceMaxer": {
-      "label": "Resource Maxer"
     },
     "4-solsticeGatherings": {
       "label": "至日庆祝者"
@@ -94,9 +82,6 @@
     },
     "0-hunter": {
       "label": "猎人"
-    },
-    "0-tanner": {
-      "label": "制革工"
     },
     "0-ironMiner": {
       "label": "采集铁矿"
@@ -206,23 +191,6 @@
     },
     "4-blacksteel_tools": {
       "label": "黑暗工具"
-    }
-  },
-  "overall": {
-    "0-endurant": {
-      "label": "Endurant"
-    },
-    "0-speedrunner": {
-      "label": "Speedrunner"
-    },
-    "0-supporter": {
-      "label": "Supporter"
-    },
-    "0-winCruel": {
-      "label": "Cruel Victory"
-    },
-    "0-winNormal": {
-      "label": "Normal Victory"
     }
   }
 }

@@ -458,7 +458,7 @@
   "events.riddleOfEternal_variant.choices.answerAir.label": "Gold",
   "events.exiledScholarVisit.choices.payScholar.cost": "250 Gold",
   "actions.craftArbalest.label": "Armbrust",
-  "actions.exploreCave.log.debrisScroll": "Unter den Trümmern findest du eine verwitterte Schriftrolle mit Weisheiten, um in dieser unbarmherzigen Welt zu überleben.",
+  "actions.exploreCave.log.debrisScroll": "Unter den Trümmern findest du eine verwitterte Schriftrolle mit Weisheit, um in dieser unbarmherzigen Welt zu überleben.",
   "actions.exploreCave.log.torchBag": "Du findest eine alte, staubige Tasche mit 25 Fackeln in der Höhle.",
   "actions.ventureDeeper.log.tarnishedAmulet": "In den Schatten der Höhle glitzert etwas. Du findest ein Angelaufenes Amulett.",
   "actions.ventureDeeper.log.mapFragment": "Auf dem Höhlenboden findest du ein zerrissenes Kartenfragment.",

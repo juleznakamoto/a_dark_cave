@@ -2604,22 +2604,4 @@
     "message": "一位装束华美的东方女子带着两名壮硕随从到来。她愿以金币或村民为交换，分享锻造强大黑曜石宝珠的秘法。",
     "title": "黑曜石宝珠"
   }
-    "cube16a": {
-      "choices": {
-        "close": {
-          "label": "Close"
-        }
-      },
-      "message": "Next to the slain creatures you find what seems to be one of the skull devices. It's broken, but you can still read some letters on it saying 'N**RAL**K'.",
-      "title": "The Skull Device"
-    },
-    "cube16b": {
-      "choices": {
-        "close": {
-          "label": "Close"
-        }
-      },
-      "message": "The creatures give you what seems to be one of the skull devices. It's broken, but you can still read some letters on it saying 'N**RAL**K'.",
-      "title": "The Skull Device"
-    },
 }

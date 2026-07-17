@@ -16,8 +16,8 @@ import { useTranslation } from "react-i18next";
 import { tWithFallback } from "@/i18n/resolveGameText";
 import { useLocale } from "@/i18n/useLocale";
 import { OG_LOCALE_TAGS, SUPPORTED_LOCALES } from "@/i18n/locales";
-import { useSteamEditionActive, useDemoEditionActive } from "@/hooks/useSteamEditionActive";
-import { isDemoEdition, isGalaxyEdition } from "@/lib/edition";
+import { useSteamEditionActive } from "@/hooks/useSteamEditionActive";
+import { isDemoEdition } from "@/lib/edition";
 import { isDemoLimitReachedFromState } from "@/game/demoLimit";
 import DemoTimeUpDialog from "@/components/game/DemoTimeUpDialog";
 import { FullscreenButton } from "@/components/game/FullscreenButton";
@@ -53,10 +53,6 @@ export default function StartScreen() {
   const { t } = useTranslation("ui");
   const { locale } = useLocale();
   const steamEditionActive = useSteamEditionActive();
-  const demoEditionActive = useDemoEditionActive();
-  // Steam Game / Playtest / Demo (build or DEV Game Mode) — no social/store links in footer.
-  // Galaxy and Normal/web keep Steam / Reddit / Contact.
-  const hideStartScreenSocialLinks = steamEditionActive && !isGalaxyEdition();
 
   useEffect(() => {
     audioManager.setMusicVolume(musicVolume ?? 1);
@@ -361,46 +357,45 @@ export default function StartScreen() {
           </HoverCalloutTooltip>
         </div>
         <div className="flex flex-wrap justify-end items-center gap-x-3 gap-y-1.5">
-          {!hideStartScreenSocialLinks &&
-            GAME_FOOTER_RIGHT_ICON_ORDER.map((platform) => {
-              const { href, title } = GAME_FOOTER_RIGHT_ICON_LINKS[platform];
-              const linkLabel =
-                platform === "contact"
-                  ? tWithFallback("ui", "footer.contact", title)
-                  : title;
-              const linkContent = (
-                <>
-                  <FooterSocialIcon
-                    platform={platform}
-                    className="w-3.5 h-3.5 shrink-0"
-                  />
-                  <span className="sr-only sm:not-sr-only sm:inline">
-                    {linkLabel}
-                  </span>
-                </>
-              );
-              return href.startsWith("http") ? (
-                <a
-                  key={platform}
-                  href={href}
-                  target="_blank"
-                  rel="noopener noreferrer me"
-                  className={START_FOOTER_SOCIAL_LINK}
-                  aria-label={linkLabel}
-                >
-                  {linkContent}
-                </a>
-              ) : (
-                <a
-                  key={platform}
-                  href={href}
-                  className={START_FOOTER_SOCIAL_LINK}
-                  aria-label={linkLabel}
-                >
-                  {linkContent}
-                </a>
-              );
-            })}
+          {GAME_FOOTER_RIGHT_ICON_ORDER.map((platform) => {
+            const { href, title } = GAME_FOOTER_RIGHT_ICON_LINKS[platform];
+            const linkLabel =
+              platform === "contact"
+                ? tWithFallback("ui", "footer.contact", title)
+                : title;
+            const linkContent = (
+              <>
+                <FooterSocialIcon
+                  platform={platform}
+                  className="w-3.5 h-3.5 shrink-0"
+                />
+                <span className="sr-only sm:not-sr-only sm:inline">
+                  {linkLabel}
+                </span>
+              </>
+            );
+            return href.startsWith("http") ? (
+              <a
+                key={platform}
+                href={href}
+                target="_blank"
+                rel="noopener noreferrer me"
+                className={START_FOOTER_SOCIAL_LINK}
+                aria-label={linkLabel}
+              >
+                {linkContent}
+              </a>
+            ) : (
+              <a
+                key={platform}
+                href={href}
+                className={START_FOOTER_SOCIAL_LINK}
+                aria-label={linkLabel}
+              >
+                {linkContent}
+              </a>
+            );
+          })}
           {!steamEditionActive && (
             <div className="flex flex-col items-end leading-tight sm:flex-row sm:items-center sm:gap-x-3">
               <a
@@ -423,7 +418,7 @@ export default function StartScreen() {
           )}
         </div>
       </nav>
-      {demoEditionActive && <DemoTimeUpDialog />}
+      {isDemoEdition() && <DemoTimeUpDialog />}
     </div>
   );
 }

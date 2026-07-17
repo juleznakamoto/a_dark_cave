@@ -64,16 +64,8 @@ vi.mock('@/lib/supabase', () => ({
       onAuthStateChange: vi.fn(() => ({ data: { subscription: { unsubscribe: vi.fn() } } })),
     },
     functions: { invoke: vi.fn() },
-    rpc: vi.fn().mockResolvedValue({ data: null, error: null }),
     from: vi.fn(() => ({ select: vi.fn().mockReturnThis(), eq: vi.fn().mockReturnThis(), maybeSingle: vi.fn() })),
   }),
-}));
-
-vi.mock('./saveGameV2', () => ({
-  dualWriteSaveGameV2: vi.fn().mockResolvedValue(undefined),
-  isSaveGameV2CloudEnabled: vi.fn().mockReturnValue(false),
-  isSaveGameV2RichEnabled: vi.fn().mockReturnValue(false),
-  SAVE_SCHEMA_VERSION_V2: 1,
 }));
 
 describe('Save Game System - Comprehensive Tests', () => {
@@ -215,37 +207,13 @@ describe('Save Game System - Comprehensive Tests', () => {
 
     it('should not update lastCloudState when cloud save fails', async () => {
       const auth = await import('./auth');
-      const supabase = await import('@/lib/supabase');
-      const state = await import('./state');
-      vi.mocked(auth.getCurrentUser).mockResolvedValue({
-        id: 'user-1',
-        email: 'test@example.com',
-      } as any);
-      vi.mocked(state.useGameStore.getState).mockReturnValue({
-        inactivityDialogOpen: false,
-        isUserSignedIn: true,
-        getAndResetClickAnalytics: vi.fn().mockReturnValue(null),
-        getAndResetResourceAnalytics: vi.fn().mockReturnValue(null),
-      } as any);
-      vi.mocked(supabase.getSupabaseClient).mockResolvedValue({
-        auth: {
-          getSession: vi.fn().mockResolvedValue({
-            data: { session: { access_token: 'tok' } },
-          }),
-        },
-        functions: {
-          invoke: vi.fn().mockResolvedValue({
-            data: null,
-            error: { message: 'Network error' },
-          }),
-        },
-      } as any);
+      vi.mocked(auth.getCurrentUser).mockResolvedValue({ id: 'user-1', email: 'test@example.com' });
+      vi.mocked(auth.saveGameToSupabase).mockRejectedValue(new Error('Network error'));
 
-      const result = await saveGame(createMockGameState(), true);
+      await saveGame(createMockGameState(), true);
 
-      expect(result).toEqual({ cloudSaved: false });
       const lastCloudStateCalls = mockPut.mock.calls.filter(
-        (call: any) => call[0] === 'lastCloudState' || call[2] === 'lastCloudState',
+        (call: any) => call[2] === 'lastCloudState'
       );
       expect(lastCloudStateCalls.length).toBe(0);
     });
@@ -269,19 +237,6 @@ describe('Save Game System - Comprehensive Tests', () => {
         (call: any) => call[2] === 'mainSave'
       );
       expect(localSaveCalls.length).toBe(2);
-    });
-
-    it('V2 dual-write rejection never fails local saveGame', async () => {
-      const saveGameV2 = await import('./saveGameV2');
-      vi.mocked(saveGameV2.dualWriteSaveGameV2).mockRejectedValue(
-        new Error('v2 boom'),
-      );
-
-      await expect(saveGame(createMockGameState(), true)).resolves.toEqual({
-        cloudSaved: expect.any(Boolean),
-      });
-      expect(readMainSave(mockStores)).toBeDefined();
-      expect(readMainSave(mockStores)!.playTime).toBe(1000);
     });
   });
 

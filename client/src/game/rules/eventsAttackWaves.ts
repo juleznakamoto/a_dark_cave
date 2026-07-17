@@ -101,11 +101,8 @@ const POST_WAVE_HEALTH_INCREMENT = 50;
 const POST_WAVE_ATTACK_INCREMENT = 10;
 const POST_WAVE_GOLD_INCREMENT = 50;
 
-/** True after the final cube choice (15 normally; 16 in Cruel Mode). */
+/** True after the final cube choice (cube15a/b). */
 export function isGameStoryCompleted(state: GameState): boolean {
-  if (state.cruelMode) {
-    return Boolean(state.events?.cube16a || state.events?.cube16b);
-  }
   return Boolean(state.events?.cube15a || state.events?.cube15b);
 }
 

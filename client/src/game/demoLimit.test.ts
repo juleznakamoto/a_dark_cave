@@ -47,10 +47,6 @@ vi.mock("@/game/state", () => ({
 
 import {
   DEMO_STONE_HUT_LIMIT,
-  DEMO_WOODEN_HUT_SEGMENTS,
-  getDemoProgressCompleted,
-  getDemoProgressPercent,
-  getDemoProgressSegmentCount,
   isDemoLimitReached,
   isDemoLimitReachedFromState,
   processDemoLimit,
@@ -105,27 +101,5 @@ describe("demoLimit", () => {
     expect(setGalaxyTimeUpDialogOpenMock).toHaveBeenCalledWith(false);
     expect(deleteSaveMock).toHaveBeenCalled();
     expect(restartGameMock).toHaveBeenCalled();
-  });
-
-  it("counts wooden + stone hut segments for demo progress", () => {
-    expect(DEMO_WOODEN_HUT_SEGMENTS).toBe(10);
-    expect(getDemoProgressSegmentCount()).toBe(
-      DEMO_WOODEN_HUT_SEGMENTS + DEMO_STONE_HUT_LIMIT,
-    );
-    expect(
-      getDemoProgressCompleted({ woodenHut: 4, stoneHut: 1 }),
-    ).toBe(5);
-    expect(
-      getDemoProgressCompleted({
-        woodenHut: 99,
-        stoneHut: DEMO_STONE_HUT_LIMIT + 5,
-      }),
-    ).toBe(DEMO_WOODEN_HUT_SEGMENTS + DEMO_STONE_HUT_LIMIT);
-    expect(
-      getDemoProgressPercent({
-        woodenHut: DEMO_WOODEN_HUT_SEGMENTS,
-        stoneHut: DEMO_STONE_HUT_LIMIT,
-      }),
-    ).toBe(100);
   });
 });

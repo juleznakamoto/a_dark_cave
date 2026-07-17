@@ -26,12 +26,7 @@ export function getAchievementSegmentWeight(
 }
 
 export interface AchievementChartConfig {
-  idPrefix: "building" | "item" | "action" | "basic" | "overall";
+  idPrefix: "building" | "item" | "action" | "basic";
   centerSymbol: string;
   rings: AchievementSegment[][];
-  /**
-   * When false, achievements never show Claim and are excluded from unclaimed pulse.
-   * Defaults to true.
-   */
-  claimable?: boolean;
 }

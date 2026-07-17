@@ -1,13 +1,7 @@
 // Removed duplicate keys and ensured gameId is correctly handled.
 import { create } from "zustand";
 import { GameState, gameStateSchema, Referral } from "@shared/schema";
-import {
-  isFullGameUnlockedEdition,
-  isSteamBuild,
-  isSteamEditionActive,
-  setDevGameModeOverride,
-  type DevGameMode,
-} from "@/lib/edition";
+import { isFullGameUnlockedEdition, isSteamBuild, isSteamEditionActive, setDevSteamModeOverride } from "@/lib/edition";
 import { gameActions, shouldShowAction, canExecuteAction } from "@/game/rules";
 import {
   EventManager,
@@ -202,11 +196,8 @@ interface GameStore extends GameState {
   | "achievements"
   | "timedevent";
   devMode: boolean;
-  /**
-   * Dev-only: simulate Normal / Steam Game / Steam Playtest / Steam Demo
-   * without a Steam build (Settings → Game Mode).
-   */
-  devGameMode: DevGameMode;
+  /** Dev-only: simulate Steam edition UI without a Steam build. */
+  devSteamMode: boolean;
   lastSaved: string;
   eventDialog: {
     isOpen: boolean;
@@ -252,7 +243,7 @@ interface GameStore extends GameState {
     needsDisplay: boolean; // Track if user needs to see results
   };
   inactivityDialogOpen: boolean;
-  inactivityReason: "timeout" | "multitab" | "session" | null;
+  inactivityReason: "timeout" | "multitab" | null;
   restartGameDialogOpen: boolean;
   deleteAccountDialogOpen: boolean;
   settingsDialogOpen: boolean;
@@ -385,10 +376,6 @@ interface GameStore extends GameState {
   // Game completion tracking
   game_stats: GameStats[];
   hasWonAnyGame: boolean;
-  hasWonNormalGame: boolean;
-  hasWonCruelGame: boolean;
-  hasSpeedrunWin: boolean;
-  lifetimePlayTimeMs: number;
 
   // Reward dialog
   rewardDialog: {
@@ -511,7 +498,7 @@ interface GameStore extends GameState {
   setIdleModeDialog: (isOpen: boolean) => void;
   setRestartGameDialogOpen: (isOpen: boolean) => void;
   setSettingsDialogOpen: (isOpen: boolean) => void;
-  setDevGameMode: (mode: DevGameMode) => void;
+  setDevSteamMode: (enabled: boolean) => void;
   setDeleteAccountDialogOpen: (isOpen: boolean) => void;
   updateEffects: () => void;
   updateBastionStats: () => void;
@@ -1095,23 +1082,6 @@ const mergeStateUpdates = (
       stateUpdates.hasWonAnyGame !== undefined
         ? stateUpdates.hasWonAnyGame
         : prevState.hasWonAnyGame,
-    // Once true, meta win flags stay true (OR merge so partial updates cannot clear them)
-    hasWonNormalGame: Boolean(
-      stateUpdates.hasWonNormalGame || prevState.hasWonNormalGame,
-    ),
-    hasWonCruelGame: Boolean(
-      stateUpdates.hasWonCruelGame || prevState.hasWonCruelGame,
-    ),
-    hasSpeedrunWin: Boolean(
-      stateUpdates.hasSpeedrunWin || prevState.hasSpeedrunWin,
-    ),
-    lifetimePlayTimeMs:
-      stateUpdates.lifetimePlayTimeMs !== undefined
-        ? Math.max(
-          stateUpdates.lifetimePlayTimeMs,
-          prevState.lifetimePlayTimeMs ?? 0,
-        )
-        : (prevState.lifetimePlayTimeMs ?? 0),
     // Merchant trades state
     merchantTrades: stateUpdates.merchantTrades || prevState.merchantTrades,
   };
@@ -1594,7 +1564,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
   ...defaultGameState,
   activeTab: "cave",
   devMode: import.meta.env.DEV,
-  devGameMode: "normal",
+  devSteamMode: false,
   lastSaved: "Never",
   cooldowns: {},
   executionStartTimes: {},
@@ -2520,7 +2490,6 @@ export const useGameStore = create<GameStore>((set, get) => ({
               presetUnlockUpdate = {
                 villagerPresetsPurchased: nextPurchased,
               };
-              // Only jump selection when the current slot is no longer valid.
               if (
                 !isPresetSlotUnlocked(state, currentIndex) ||
                 currentIndex >= nextPurchased
@@ -2650,15 +2619,8 @@ export const useGameStore = create<GameStore>((set, get) => ({
       // Cruel mode status
       cruelMode: isCruelModeActive,
 
-      // Dev Settings → Game Mode (session preference; not persisted to save)
-      devGameMode: state.devGameMode,
-
-      // Preserve meta win flags / lifetime stats across restarts
+      // Preserve hasWonAnyGame across restarts
       hasWonAnyGame: state.hasWonAnyGame || false,
-      hasWonNormalGame: state.hasWonNormalGame || false,
-      hasWonCruelGame: state.hasWonCruelGame || false,
-      hasSpeedrunWin: state.hasSpeedrunWin || false,
-      lifetimePlayTimeMs: state.lifetimePlayTimeMs || 0,
 
       // Preserve detected currency across restarts (persists forever)
       detectedCurrency: state.detectedCurrency || null,
@@ -2676,6 +2638,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
       // UI state
       activeTab: "cave",
       devMode: import.meta.env.DEV,
+      devSteamMode: false,
       idleModeDialog: { isOpen: false }, // Explicitly ensure idle mode dialog is closed
       ...getTimedEventTabCleanupPatch(get().activeTab),
       investDialogOpen: false,
@@ -2928,8 +2891,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
         log: savedState.log || [],
         events: savedState.events || defaultGameState.events,
         devMode: import.meta.env.DEV,
-        // Keep session Game Mode; do not restore from save (UI-only).
-        devGameMode: get().devGameMode,
+        devSteamMode: false,
         boostApplied: savedState.boostApplied === true,
         effects: calculateTotalEffects(savedState),
         bastion_stats: calculateBastionStats(savedState),
@@ -3065,27 +3027,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
         hasWonAnyGame:
           savedState.hasWonAnyGame !== undefined
             ? savedState.hasWonAnyGame
-            : false,
-        hasWonNormalGame:
-          (savedState as { hasWonNormalGame?: boolean }).hasWonNormalGame ===
-          true ||
-          // Legacy: older saves only tracked hasWonAnyGame
-          (savedState.hasWonAnyGame === true &&
-            (savedState as { hasWonCruelGame?: boolean }).hasWonCruelGame !==
-            true &&
-            (savedState as { hasWonNormalGame?: boolean }).hasWonNormalGame !==
-            true),
-        hasWonCruelGame:
-          (savedState as { hasWonCruelGame?: boolean }).hasWonCruelGame ===
-          true,
-        hasSpeedrunWin:
-          (savedState as { hasSpeedrunWin?: boolean }).hasSpeedrunWin === true,
-        // Seed lifetime from current-run playTime for older saves that lack the field
-        lifetimePlayTimeMs: Math.max(
-          (savedState as { lifetimePlayTimeMs?: number }).lifetimePlayTimeMs ??
-          0,
-          loadedPlayTime || 0,
-        ),
+            : false, // Load hasWonAnyGame
         merchantTrades: savedState.merchantTrades || {
           choices: [],
           purchasedIds: [],
@@ -3112,6 +3054,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
         expeditionVillagers: {},
         log: [],
         devMode: import.meta.env.DEV,
+        devSteamMode: false,
         effects: calculateTotalEffects(defaultGameState),
         bastion_stats: calculateBastionStats(defaultGameState),
         startTime: Date.now(), // Set start time for new game
@@ -4116,16 +4059,6 @@ export const useGameStore = create<GameStore>((set, get) => ({
             isOpen: true,
             data: buildInvestmentResultDialogPayload(active),
           },
-          ...(active.success && {
-            story: {
-              ...state.story,
-              seen: {
-                ...state.story.seen,
-                investmentSuccesses:
-                  (Number(state.story?.seen?.investmentSuccesses) || 0) + 1,
-              },
-            },
-          }),
         };
       }
       if (
@@ -4326,12 +4259,12 @@ export const useGameStore = create<GameStore>((set, get) => ({
     set({ settingsDialogOpen: isOpen });
   },
 
-  setDevGameMode: (mode: DevGameMode) => {
+  setDevSteamMode: (enabled: boolean) => {
     if (!import.meta.env.DEV || isSteamBuild) return;
-    setDevGameModeOverride(mode);
-    if (mode !== "normal") {
+    setDevSteamModeOverride(enabled);
+    if (enabled) {
       set({
-        devGameMode: mode,
+        devSteamMode: true,
         shopDialogOpen: false,
         shopCheckoutItemId: null,
         authDialogOpen: false,
@@ -4342,7 +4275,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
         socialPromptDialogOpen: false,
       });
     } else {
-      set({ devGameMode: "normal" });
+      set({ devSteamMode: false });
     }
   },
 
@@ -4411,7 +4344,6 @@ export const useGameStore = create<GameStore>((set, get) => ({
       if (!state.isPaused && !state.isPausedPreviously) {
         return {
           playTime: state.playTime + deltaTime,
-          lifetimePlayTimeMs: (state.lifetimePlayTimeMs || 0) + deltaTime,
         };
       }
       // If paused or was previously paused, return state without updating playTime

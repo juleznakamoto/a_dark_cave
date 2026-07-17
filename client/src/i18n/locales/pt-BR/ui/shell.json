@@ -3,12 +3,7 @@
     "title": "Configurações",
     "music": "Música",
     "sound": "Som",
-    "emails": "E-mails",
-    "gameMode": "Game Mode",
-    "gameModeNormal": "Normal Mode",
-    "gameModeSteamGame": "Steam Game",
-    "gameModeSteamPlaytest": "Steam Playtest",
-    "gameModeSteamDemo": "Steam Demo"
+    "emails": "E-mails"
   },
   "textScale": {
     "label": "Tamanho do texto",
@@ -46,8 +41,7 @@
     "muteSfx": "Silenciar efeitos sonoros",
     "unmuteSfx": "Silenciar efeitos sonoros",
     "cruelModeActive": "Modo Cruel ativado",
-    "wishlistOnSteam": "Adicionar à lista de desejos na Steam",
-    "demoProgress": "Demo Progress"
+    "wishlistOnSteam": "Adicionar à lista de desejos na Steam"
   },
   "profile": {
     "title": "Menu",

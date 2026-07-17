@@ -197,7 +197,6 @@ export const gameStateSchema = z.object({
       devourer_crown: z.boolean().default(false),
       ring_of_obedience: z.boolean().default(false),
       gifted_ring: z.boolean().default(false),
-      blacksteel_armor: z.boolean().default(false),
     })
     .default({}),
   relics: z
@@ -436,8 +435,6 @@ export const gameStateSchema = z.object({
       cube14d: z.boolean().default(false),
       cube15a: z.boolean().default(false),
       cube15b: z.boolean().default(false),
-      cube16a: z.boolean().default(false),
-      cube16b: z.boolean().default(false),
       slaughteredCreatures: z.boolean().default(false),
       communicatedWithCreatures: z.boolean().default(false),
       encounteredCreaturesChoice: z.boolean().default(false),
@@ -560,16 +557,6 @@ export const gameStateSchema = z.object({
   activatedPurchases: z.record(z.boolean()).default({}),
   feastActivations: z.record(z.number()).default({}), // purchaseId -> activations remaining
   cruelMode: z.boolean().default(false), // Cruel mode flag
-  /** Meta: won the game at least once (any difficulty). Persists across restarts. */
-  hasWonAnyGame: z.boolean().default(false),
-  /** Meta: won while not in Cruel Mode. Persists across restarts. */
-  hasWonNormalGame: z.boolean().default(false),
-  /** Meta: won while in Cruel Mode. Persists across restarts. */
-  hasWonCruelGame: z.boolean().default(false),
-  /** Meta: finished a game in under 5 hours. Persists across restarts. */
-  hasSpeedrunWin: z.boolean().default(false),
-  /** Meta: total play time across all runs (ms). Persists across restarts; increments with playTime. */
-  lifetimePlayTimeMs: z.number().min(0).default(0),
   BTP: z.number().default(0), // Buy To Play mode (0 = normal, 1 = BTP active)
   attackWaveTimers: z.record(attackWaveTimerSchema).default({}),
   /** Post-story endless waves won (next wave number = 11 + this count). */

@@ -24,8 +24,6 @@ import {
   buildingChartConfig,
   itemChartConfig,
   actionChartConfig,
-  isOverallAchievementCategoryEnabled,
-  overallChartConfig,
 } from "@/achievements";
 import { getOverallAchievementPercent } from "@/achievements/achievementProgress";
 import { COMBAT_ITEM_RESOURCES } from "@/game/resourceLimits";
@@ -73,14 +71,6 @@ const RING_ENTRIES: ShareRingEntry[] = [
     config: actionChartConfig,
     centerSymbolStyle: { paddingTop: RING_SYMBOL_NUDGE_PX },
   },
-  ...(isOverallAchievementCategoryEnabled
-    ? [
-      {
-        config: overallChartConfig,
-        centerSymbolStyle: { paddingTop: RING_SYMBOL_NUDGE_PX * 0.5 },
-      },
-    ]
-    : []),
 ];
 
 /** Shared size for the "Resources" and "Achievements: X %" headings. */

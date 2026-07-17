@@ -357,13 +357,6 @@ export const cubeEvents: Record<string, GameEvent> = {
               cube13: true,
             },
             hasWonAnyGame: true,
-            ...(state.cruelMode
-              ? { hasWonCruelGame: true }
-              : { hasWonNormalGame: true }),
-            // Speedrunner overall achievement: finish under 5 hours
-            ...(state.playTime < 5 * 60 * 60 * 1000
-              ? { hasSpeedrunWin: true }
-              : {}),
           };
         },
       },
@@ -507,54 +500,6 @@ export const cubeEvents: Record<string, GameEvent> = {
             events: {
               ...state.events,
               cube15b: true,
-            },
-          };
-        },
-      },
-    ],
-  },
-
-  cube16a: {
-    id: "cube16a",
-    condition: (state: GameState) =>
-      Boolean(
-        state.cruelMode && state.events.cube15a && !state.events.cube16a,
-      ),
-    timeProbability: 0.02,
-    priority: 3,
-    repeatable: true,
-    choices: [
-      {
-        id: "close",
-        effect: (state: GameState) => {
-          return {
-            events: {
-              ...state.events,
-              cube16a: true,
-            },
-          };
-        },
-      },
-    ],
-  },
-
-  cube16b: {
-    id: "cube16b",
-    condition: (state: GameState) =>
-      Boolean(
-        state.cruelMode && state.events.cube15b && !state.events.cube16b,
-      ),
-    timeProbability: 0.02,
-    priority: 3,
-    repeatable: true,
-    choices: [
-      {
-        id: "close",
-        effect: (state: GameState) => {
-          return {
-            events: {
-              ...state.events,
-              cube16b: true,
             },
           };
         },

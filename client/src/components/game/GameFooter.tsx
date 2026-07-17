@@ -11,21 +11,12 @@ import { useState, useEffect, useRef, useCallback, cloneElement } from "react";
 import { useTranslation } from "react-i18next";
 import { GameUiIcon } from "@/components/game/GameUiIcon";
 import { tWithFallback } from "@/i18n/resolveGameText";
-import {
-  useSteamDemoActive,
-  useSteamEditionActive,
-} from "@/hooks/useSteamEditionActive";
+import { useSteamEditionActive } from "@/hooks/useSteamEditionActive";
 import { isGalaxyEdition } from "@/lib/edition";
 import {
   handleDonateHeartAnimationEnd,
   pumpDonateHeart,
 } from "@/lib/exclusivePromoShockwave";
-import { Progress } from "@/components/ui/progress";
-import {
-  getDemoProgressCompleted,
-  getDemoProgressPercent,
-  getDemoProgressSegmentCount,
-} from "@/game/demoLimit";
 
 const FOOTER_CONTROL_BTN =
   "group shrink-0 px-1 py-1 text-xs text-neutral-300 hover hover:!text-red-600";
@@ -33,57 +24,15 @@ const FOOTER_CONTROL_BTN_FADE =
   "opacity-80 transition-[opacity,color] group-hover:opacity-100";
 const FOOTER_CONTROL_SVG_ICON_HOVER =
   "w-4 h-4 text-neutral-300 opacity-80 transition-[opacity,color] group-hover:opacity-100 group-hover:!text-red-600";
-/** Steam editions: Reddit/Contact sit quieter at rest, full opacity on hover. */
-const FOOTER_CONTROL_SVG_ICON_HOVER_STEAM_MUTED =
-  "w-4 h-4 text-neutral-300 opacity-40 transition-[opacity,color] group-hover:opacity-100 group-hover:!text-red-600";
 const FOOTER_CONTROL_TEXT =
   `${FOOTER_CONTROL_BTN_FADE} group-hover:!text-red-600`;
 const FOOTER_SOCIAL_LABEL =
   `${FOOTER_CONTROL_TEXT} hidden sm:inline`;
-const FOOTER_SOCIAL_LABEL_STEAM_MUTED =
-  "opacity-60 transition-[opacity,color] group-hover:opacity-100 group-hover:!text-red-600 hidden sm:inline";
 const FOOTER_LEGAL_LINK =
   "text-2xs text-neutral-300 opacity-40 hover:opacity-100 transition-opacity";
 /** Heart stays red; opacity-only transition so scale pump is not overridden. */
 const DONATE_HEART =
   "donate-heart text-red-600 opacity-80 group-hover:opacity-100 transition-opacity";
-
-function SteamDemoProgressBar() {
-  const { t } = useTranslation("ui");
-  const woodenHut = useGameStore((s) => s.buildings.woodenHut ?? 0);
-  const stoneHut = useGameStore((s) => s.buildings.stoneHut ?? 0);
-  const buildings = { woodenHut, stoneHut };
-  const segments = getDemoProgressSegmentCount();
-  const completed = getDemoProgressCompleted(buildings);
-  const percent = getDemoProgressPercent(buildings);
-  const label = t("footer.demoProgress", { defaultValue: "Demo Progress" });
-
-  return (
-    <div
-      className="pointer-events-none absolute inset-0 z-[1] flex items-center justify-center px-16 sm:px-24"
-      aria-hidden={false}
-    >
-      <div className="pointer-events-auto flex max-w-[min(18rem,50vw)] flex-col items-center gap-1 opacity-80 transition-opacity hover:opacity-100 sm:max-w-[20rem]">
-        <span className="text-2xs leading-none text-neutral-400 whitespace-nowrap">
-          {label}
-        </span>
-        <Progress
-          value={percent}
-          segments={segments}
-          hideBorder
-          disableGlow
-          className="h-1.5 w-full min-w-[8rem]"
-          indicatorClassName="bg-green-700"
-          aria-label={label}
-          aria-valuenow={completed}
-          aria-valuemin={0}
-          aria-valuemax={segments}
-          data-testid="footer-demo-progress"
-        />
-      </div>
-    </div>
-  );
-}
 
 export default function GameFooter() {
   const {
@@ -99,11 +48,7 @@ export default function GameFooter() {
   const donateHeartRef = useRef<HTMLSpanElement>(null);
   const { t } = useTranslation("ui");
   const steamEditionActive = useSteamEditionActive();
-  const steamDemoActive = useSteamDemoActive();
   const showFooterDonate = !steamEditionActive || isGalaxyEdition();
-  // Steam Game / Playtest / Demo (build or DEV Game Mode) — no Steam store URL in footer.
-  // Galaxy and Normal/web keep the wishlist link.
-  const hideSteamStoreLink = steamEditionActive && !isGalaxyEdition();
 
   const triggerDonateHeartPump = useCallback(() => {
     pumpDonateHeart(donateHeartRef.current);
@@ -133,8 +78,7 @@ export default function GameFooter() {
         />
       )}
       <footer className="relative flex min-h-9 items-center border-t border-border px-2 py-1 text-xs text-muted-foreground pointer-events-auto overflow-visible">
-        {steamDemoActive && <SteamDemoProgressBar />}
-        <div className="relative z-0 flex w-full items-center justify-between">
+        <div className="flex w-full items-center justify-between">
           <div className="flex items-center gap-0.5 shrink-0">
             <HoverCalloutTooltip
               label={
@@ -231,26 +175,12 @@ export default function GameFooter() {
           </div>
           <div className="flex-1 flex justify-end gap-1 items-center">
             {GAME_FOOTER_RIGHT_ICON_ORDER.map((platform) => {
-              if (platform === "steam" && hideSteamStoreLink) {
-                return null;
-              }
-
               const { href, title } =
                 GAME_FOOTER_RIGHT_ICON_LINKS[platform];
               const linkLabel =
                 platform === "contact"
                   ? tWithFallback("ui", "footer.contact", title)
                   : title;
-              // Steam Game / Playtest / Demo: mute Reddit + Contact until hover.
-              const steamMutedSocial =
-                steamEditionActive &&
-                (platform === "reddit" || platform === "contact");
-              const platformIconClass = steamMutedSocial
-                ? `${FOOTER_CONTROL_SVG_ICON_HOVER_STEAM_MUTED}${isPaused ? " !opacity-100" : ""}`
-                : socialIconClass;
-              const platformLabelClass = steamMutedSocial
-                ? FOOTER_SOCIAL_LABEL_STEAM_MUTED
-                : FOOTER_SOCIAL_LABEL;
               const socialLink = (
                 <a
                   href={href}
@@ -265,9 +195,9 @@ export default function GameFooter() {
                 >
                   <FooterSocialIcon
                     platform={platform}
-                    className={platformIconClass}
+                    className={socialIconClass}
                   />
-                  <span className={platformLabelClass}>{linkLabel}</span>
+                  <span className={FOOTER_SOCIAL_LABEL}>{linkLabel}</span>
                 </a>
               );
 

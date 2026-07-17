@@ -12,9 +12,6 @@ steam/output-demo
 steam/generated-demo
 steam/output-playtest
 steam/generated-playtest
-steam/staged-full
-steam/staged-demo
-steam/staged-playtest
 .DS_Store
 .env*
 !.env.example

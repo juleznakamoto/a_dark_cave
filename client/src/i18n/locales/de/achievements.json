@@ -33,6 +33,9 @@
     "1-mineSulfur": {
       "label": "Schwefelschürfer" //ok
     },
+    "2-animals": {
+      "label": "Tieropferer"
+    },
     "2-boneTotems": {
       "label": "Knochentotemopferer" //ok
     },
@@ -48,9 +51,6 @@
     "3-ashfireBombs": {
       "label": "Aschfeuerbombenmacher"
     },
-    "3-burningVeins": {
-      "label": "Burning Veins"
-    },
     "3-emberBombs": {
       "label": "Glutbombenmacher"
     },
@@ -60,26 +60,14 @@
     "4-feedFire": {
       "label": "Feuerschürer"
     },
-    "4-insightful": {
-      "label": "Insightful"
-    },
     "4-investor": {
       "label": "Investor"
-    },
-    "4-luckyInvestor": {
-      "label": "Lucky Investor"
     },
     "4-mentalClarity": {
       "label": "Geistige Klarheit"
     },
     "4-merchantPurchases": {
       "label": "Handelspartner" //ok
-    },
-    "4-pileOfDead": {
-      "label": "Pile of Dead"
-    },
-    "4-resourceMaxer": {
-      "label": "Resource Maxer"
     },
     "4-solsticeGatherings": {
       "label": "Sonnenwendfeierer"
@@ -94,9 +82,6 @@
     },
     "0-hunter": {
       "label": "Jagen"
-    },
-    "0-tanner": {
-      "label": "Gerber"
     },
     "0-ironMiner": {
       "label": "Eisen sammeln"
@@ -206,23 +191,6 @@
     },
     "4-blacksteel_tools": {
       "label": "Dunkle Werkzeuge" //ok
-    }
-  },
-  "overall": {
-    "0-endurant": {
-      "label": "Endurant"
-    },
-    "0-speedrunner": {
-      "label": "Speedrunner"
-    },
-    "0-supporter": {
-      "label": "Supporter"
-    },
-    "0-winCruel": {
-      "label": "Cruel Victory"
-    },
-    "0-winNormal": {
-      "label": "Normal Victory"
     }
   }
 }

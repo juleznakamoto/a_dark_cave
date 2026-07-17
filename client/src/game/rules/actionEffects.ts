@@ -1,14 +1,13 @@
 import { GameState } from "@shared/schema";
 import {
-  BOMB_RESOURCES,
   getMaxBombLimit,
   getMaxVeinfireElixirLimit,
   isBombResource,
   isVeinfireElixirResource,
   isResourceLimited,
   capResourceToLimit,
+  BOMB_RESOURCES,
 } from "@/game/resourceLimits";
-import { collectStorageMaxHitSeenUpdates } from "@/game/resourceStorageMax";
 import {
   getActionBonuses as getActionBonusesCalc,
   getTotalLuck as getTotalLuckCalc,
@@ -798,23 +797,6 @@ export function applyActionEffects(
       if (isBombResource(resourceKey)) continue;
       updates.resources[resourceKey as keyof typeof updates.resources] =
         capResourceToLimit(resourceKey, value, state);
-    }
-
-    const storageMaxHits = collectStorageMaxHitSeenUpdates(
-      state,
-      updates.resources as Partial<Record<string, number>>,
-    );
-    if (Object.keys(storageMaxHits).length > 0) {
-      updates.story = {
-        ...state.story,
-        ...(updates.story as GameState["story"] | undefined),
-        seen: {
-          ...state.story?.seen,
-          ...(updates.story as { seen?: Record<string, unknown> } | undefined)
-            ?.seen,
-          ...storageMaxHits,
-        },
-      };
     }
   }
 

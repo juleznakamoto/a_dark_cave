@@ -463,7 +463,7 @@ describe("resolveLogPanelMessage", () => {
       },
     );
     expect(text).toBe(
-      "Unter den Trümmern findest du eine verwitterte Schriftrolle mit Weisheiten, um in dieser unbarmherzigen Welt zu überleben.",
+      "Unter den Trümmern findest du eine verwitterte Schriftrolle mit Weisheit, um in dieser unbarmherzigen Welt zu überleben.",
     );
   });
 

@@ -66,17 +66,14 @@ export function getAchievementRows(
   claimedAchievements: string[]
 ): AchievementRow[] {
   const BTP = state.BTP ?? 0;
-  const claimable = config.claimable !== false;
   const rows: AchievementRow[] = [];
   config.rings.forEach((segments) => {
     segments.forEach((seg) => {
       const currentCount = seg.getCount(state);
       const achievementId = `${config.idPrefix}-${seg.segmentId}`;
       const isFull = currentCount >= seg.maxCount;
-      const isClaimed = claimable
-        ? claimedAchievements.includes(achievementId)
-        : isFull;
-      const rewards = claimable ? computeAchievementRewards(seg, BTP) : {};
+      const isClaimed = claimedAchievements.includes(achievementId);
+      const rewards = computeAchievementRewards(seg, BTP);
       rows.push({
         segmentId: seg.segmentId,
         label: getAchievementLabel(config.idPrefix, seg.segmentId, seg.label),
@@ -84,7 +81,7 @@ export function getAchievementRows(
         currentCount,
         maxCount: seg.maxCount,
         achievementId,
-        reward: claimable ? seg.reward : undefined,
+        reward: seg.reward,
         rewards,
         isFull,
         isClaimed,

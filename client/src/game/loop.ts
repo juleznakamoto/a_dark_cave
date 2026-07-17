@@ -20,11 +20,7 @@ import {
   buildGameState,
   applyResourceDeltas,
 } from "@/game/stateHelpers";
-import {
-  audioManager,
-  EVENT_AMBIENCE_FADE_SECONDS,
-  SOUND_VOLUME,
-} from "@/lib/audio";
+import { audioManager, SOUND_VOLUME } from "@/lib/audio";
 import {
   getTotalMadness,
   getStrangerApproachProbability,
@@ -44,7 +40,6 @@ import { getMadnessDeathChancePerCycle } from "./rules/effectsStats";
 import { processPlayTimeAutoPrompts } from "./playTimeAutoPrompts";
 import { processDemoLimit } from "./demoLimit";
 import { tickObsidianOrbFocus } from "@/game/obsidianOrb";
-import { classifySessionCheckFailure } from "./sessionCheck";
 let gameLoopId: number | null = null;
 let lastFrameTime = 0;
 
@@ -135,7 +130,6 @@ const INACTIVITY_TIMEOUT = 15 * 60 * 1000; // 15 minute in milliseconds
 const TARGET_FPS = 4;
 const FRAME_DURATION = 1000 / TARGET_FPS; // 250ms per frame at 4 FPS
 const SESSION_CHECK_INTERVAL = 5 * 60 * 1000; // Check session every 5 minutes
-const SESSION_TRANSIENT_RETRY_DELAY_MS = 5 * 1000; // Quick retry after network/5xx/timeout
 
 let tickAccumulator = 0;
 /** Elapsed ms toward the next event roll; frozen during pause like `tickAccumulator` (not timestamp-based). */
@@ -148,8 +142,6 @@ let lastRenderTime = 0;
 let lastUserActivity = 0;
 let inactivityCheckInterval: NodeJS.Timeout | null = null;
 let sessionCheckInterval: NodeJS.Timeout | null = null; // Added for session checking
-let sessionTransientRetryTimeout: ReturnType<typeof setTimeout> | null = null;
-let sessionCheckInFlight = false;
 let isInactive = false;
 let lastGameLoadTime = 0; // Track when game was last loaded
 
@@ -234,12 +226,8 @@ export function startGameLoop() {
     const now = Date.now();
     const state = useGameStore.getState();
 
-    // Pause / sleep: intentional absence of input — not an AFK timeout
-    if (
-      state.isPaused ||
-      state.idleModeDialog?.isOpen ||
-      state.idleModeState?.isActive
-    ) {
+    // Sleep mode: intentional absence of input — not an AFK timeout
+    if (state.idleModeDialog?.isOpen || state.idleModeState?.isActive) {
       lastUserActivity = now;
       return;
     }
@@ -252,51 +240,22 @@ export function startGameLoop() {
     }
   }, 30000); // Check every 30 seconds
 
-  // Session validation: refreshSession forces a server token exchange.
-  // Transient network/5xx/timeout → silent retry. Hard failure → re-auth (keep local save).
+  // Start session validation checker (every 60 seconds)
+  // This checks if the user's session is still valid (not invalidated by another login)
   if (sessionCheckInterval) {
     clearInterval(sessionCheckInterval);
   }
-  if (sessionTransientRetryTimeout) {
-    clearTimeout(sessionTransientRetryTimeout);
-    sessionTransientRetryTimeout = null;
-  }
-
-  const handleSessionReauthRequired = async (reason: string) => {
-    logger.log("[SESSION] Re-auth required — keeping local save:", reason);
-
-    // Persist locally before pausing cloud sync / showing the dialog.
-    try {
-      const state = useGameStore.getState();
-      await saveGame(state, false);
-      logger.log("[SESSION] Local save written before re-auth dialog");
-    } catch (saveError) {
-      logger.error("[SESSION] Failed to save before re-auth dialog:", saveError);
-    }
-
-    stopGameLoop();
-    useGameStore.setState({
-      isUserSignedIn: false,
-      inactivityDialogOpen: true,
-      inactivityReason: "session",
-    });
-  };
-
-  const checkSession = async (isRetry = false) => {
+  const checkSession = async () => {
     const state = useGameStore.getState();
 
+    // Check if user is signed in
     if (!state.isUserSignedIn) {
-      return;
-    }
-    if (state.inactivityDialogOpen) {
-      return;
-    }
-    if (sessionCheckInFlight) {
-      return;
+      return; // Not signed in, no need to check session
     }
 
-    sessionCheckInFlight = true;
     try {
+      // Use refreshSession() to FORCE a server-side token exchange
+      // This is the ONLY way to detect if the session was revoked by single-session enforcement
       const { getSupabaseClient } = await import("@/lib/supabase");
       const supabase = await getSupabaseClient();
       const {
@@ -304,60 +263,28 @@ export function startGameLoop() {
         error,
       } = await supabase.auth.refreshSession();
 
-      if (!error && session) {
-        return;
-      }
+      // If there's an error or no session, the token was invalidated server-side
+      if (error || !session) {
+        logger.log("[SESSION] Session invalidated - another login detected");
+        // Delete local save when session is invalidated
+        try {
+          const { deleteSave } = await import("./save");
+          await deleteSave();
+        } catch (deleteError) {
+          logger.error("[SESSION] Failed to delete save:", deleteError);
+        }
 
-      const kind = classifySessionCheckFailure(error, session);
-      if (kind === "transient") {
-        logger.warn("[SESSION] Transient session check failure — will retry:", {
-          isRetry,
-          message: error instanceof Error ? error.message : String(error ?? "no session"),
+        stopGameLoop();
+        useGameStore.setState({
+          inactivityDialogOpen: true,
+          inactivityReason: "multitab",
         });
-        if (!isRetry) {
-          if (sessionTransientRetryTimeout) {
-            clearTimeout(sessionTransientRetryTimeout);
-          }
-          sessionTransientRetryTimeout = setTimeout(() => {
-            sessionTransientRetryTimeout = null;
-            void checkSession(true);
-          }, SESSION_TRANSIENT_RETRY_DELAY_MS);
-        }
-        // After a failed retry, wait for the next interval — do not scare the player.
-        return;
       }
-
-      await handleSessionReauthRequired(
-        error
-          ? `refresh failed: ${error instanceof Error ? error.message : String(error)}`
-          : "no session",
-      );
     } catch (error) {
-      const kind = classifySessionCheckFailure(error, null);
-      if (kind === "transient") {
-        logger.warn("[SESSION] Transient session check throw — will retry:", error);
-        if (!isRetry) {
-          if (sessionTransientRetryTimeout) {
-            clearTimeout(sessionTransientRetryTimeout);
-          }
-          sessionTransientRetryTimeout = setTimeout(() => {
-            sessionTransientRetryTimeout = null;
-            void checkSession(true);
-          }, SESSION_TRANSIENT_RETRY_DELAY_MS);
-        }
-        return;
-      }
-      logger.error("[SESSION] Session check failed (re-auth):", error);
-      await handleSessionReauthRequired(
-        error instanceof Error ? error.message : String(error),
-      );
-    } finally {
-      sessionCheckInFlight = false;
+      logger.error("[SESSION] Session check failed:", error);
     }
   };
-  sessionCheckInterval = setInterval(() => {
-    void checkSession(false);
-  }, SESSION_CHECK_INTERVAL);
+  sessionCheckInterval = setInterval(checkSession, SESSION_CHECK_INTERVAL);
 
   // Check if idle mode needs to be displayed (user left during idle mode)
   const state = useGameStore.getState();
@@ -398,9 +325,9 @@ export function startGameLoop() {
       state.idleModeState?.isActive;
 
     if (isPaused) {
-      // Fade BGM out on pause; keep event ambience beds (cube, etc.) playing
+      // Stop all sounds when paused (unless already stopped by mute)
       if (!state.isPausedPreviously && (!state.sfxMuted || !state.musicMuted)) {
-        audioManager.pauseForSimulation(EVENT_AMBIENCE_FADE_SECONDS);
+        audioManager.stopAllSounds();
         useGameStore.setState({ isPausedPreviously: true });
       }
       // Freeze production timer while paused so it can resume from remaining time.
@@ -419,9 +346,9 @@ export function startGameLoop() {
       productionPauseStartedAt = null;
     }
 
-    // Resume sounds when exiting pause state (crossfade BGM back in)
+    // Resume sounds when exiting pause state
     if (state.isPausedPreviously) {
-      audioManager.resumeSounds(EVENT_AMBIENCE_FADE_SECONDS);
+      audioManager.resumeSounds();
       useGameStore.setState({ isPausedPreviously: false });
     }
 
@@ -615,10 +542,6 @@ async function handleInactivity() {
     clearInterval(sessionCheckInterval);
     sessionCheckInterval = null;
   }
-  if (sessionTransientRetryTimeout) {
-    clearTimeout(sessionTransientRetryTimeout);
-    sessionTransientRetryTimeout = null;
-  }
 
   // Save game before showing dialog (must happen before setting inactivityDialogOpen,
   // since saveGame skips when inactivityDialogOpen is true)
@@ -650,30 +573,6 @@ export function resumeFromInactivity() {
   useGameStore.setState({
     inactivityDialogOpen: false,
     inactivityReason: null,
-  });
-
-  flushOverdueActionExecutions();
-  clearExpiredTimedEventTab();
-  resetProductionCycle();
-  startGameLoop();
-}
-
-/**
- * Resume after the player signs back in following a hard session loss.
- * Local save was preserved; AuthDialog / caller should have run loadGame() already.
- */
-export function resumeFromSessionLoss() {
-  const state = useGameStore.getState();
-  if (!state.inactivityDialogOpen || state.inactivityReason !== "session") {
-    return;
-  }
-
-  logger.log("[SESSION] Resuming after re-auth");
-
-  useGameStore.setState({
-    inactivityDialogOpen: false,
-    inactivityReason: null,
-    isUserSignedIn: true,
   });
 
   flushOverdueActionExecutions();
@@ -715,10 +614,7 @@ export function stopGameLoop() {
     clearInterval(sessionCheckInterval);
     sessionCheckInterval = null;
   }
-  if (sessionTransientRetryTimeout) {
-    clearTimeout(sessionTransientRetryTimeout);
-    sessionTransientRetryTimeout = null;
-  }
+
 
   detachActivityListeners();
 
@@ -1030,15 +926,12 @@ function accumulateScholarProduction(
   production.forEach((prod) => accumulateProduction(prod, available, deltas));
 }
 
-/**
- * Returns steel forged and leather created this cycle
- * (for the "Forge Steel" and "Tanner" achievements).
- */
+/** Returns the steel forged this cycle (for the "Forge Steel" achievement). */
 function accumulateMinerProduction(
   state: GameState,
   available: Record<string, number>,
   deltas: Record<string, number>,
-): { steelForgedThisTick: number; leatherCreatedThisTick: number } {
+): number {
   const allProduction: { job: string; production: any[] }[] = [];
   Object.entries(state.villagers).forEach(([job, count]) => {
     if (
@@ -1055,7 +948,6 @@ function accumulateMinerProduction(
   });
 
   let steelForgedThisTick = 0;
-  let leatherCreatedThisTick = 0;
 
   // Process jobs sequentially so each consumer's affordability reflects earlier jobs this cycle.
   allProduction.forEach(({ job, production }) => {
@@ -1065,13 +957,10 @@ function accumulateMinerProduction(
       if (job === "steel_forger" && prod.resource === "steel" && prod.totalAmount > 0) {
         steelForgedThisTick += prod.totalAmount;
       }
-      if (job === "tanner" && prod.resource === "leather" && prod.totalAmount > 0) {
-        leatherCreatedThisTick += prod.totalAmount;
-      }
     });
   });
 
-  return { steelForgedThisTick, leatherCreatedThisTick };
+  return steelForgedThisTick;
 }
 
 function accumulatePopulationSurvival(
@@ -1125,33 +1014,20 @@ function runProductionCycle(): void {
   accumulateGathererProduction(state, available, deltas);
   accumulateHunterProduction(state, available, deltas);
   accumulateScholarProduction(state, available, deltas);
-  const { steelForgedThisTick, leatherCreatedThisTick } =
-    accumulateMinerProduction(state, available, deltas);
+  const steelForgedThisTick = accumulateMinerProduction(state, available, deltas);
   accumulatePopulationSurvival(state, available, deltas);
 
   // Single capped write: applyResourceDeltas applies storage limits to the net result.
   commitResourceDeltas(deltas);
 
-  if (steelForgedThisTick > 0 || leatherCreatedThisTick > 0) {
+  if (steelForgedThisTick > 0) {
     useGameStore.setState((s) => ({
       story: {
         ...s.story,
         seen: {
           ...s.story.seen,
-          ...(steelForgedThisTick > 0
-            ? {
-              steelForgedTotal:
-                (Number(s.story?.seen?.steelForgedTotal) || 0) +
-                steelForgedThisTick,
-            }
-            : {}),
-          ...(leatherCreatedThisTick > 0
-            ? {
-              totalLeatherGathered:
-                (Number(s.story?.seen?.totalLeatherGathered) || 0) +
-                leatherCreatedThisTick,
-            }
-            : {}),
+          steelForgedTotal:
+            (Number(s.story?.seen?.steelForgedTotal) || 0) + steelForgedThisTick,
         },
       },
     }));
@@ -1339,7 +1215,11 @@ async function handleAutoSave() {
   const gameState: GameState = buildGameState(state);
 
   try {
-    await saveGame(gameState, true);
+    // If this is a new game, save playTime as the current session time only
+    // Otherwise, save the accumulated playTime
+    const playTimeToSave = state.isNewGame ? 0 : state.playTime;
+
+    await saveGame(gameState, playTimeToSave);
     const timestamp = formatSaveTimestamp();
 
     useGameStore.setState({
@@ -1510,7 +1390,10 @@ export async function manualSave() {
   const gameState: GameState = buildGameState(state);
 
   try {
-    await saveGame(gameState, false);
+    // If this is a new game, save playTime as 0 to reset the counter
+    // Otherwise, save the accumulated playTime
+    const playTimeToSave = state.isNewGame ? 0 : state.playTime;
+    await saveGame(gameState, playTimeToSave);
     const now = new Date().toLocaleTimeString();
     useGameStore.setState({ lastSaved: now, isNewGame: false });
   } catch (error) {

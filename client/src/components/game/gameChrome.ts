@@ -13,12 +13,6 @@ export const GAME_PANEL_HEADER_BAND =
 export const GAME_PANEL_HEADER_INSIGHT_BADGE_CLASS =
   "h-[18px] w-[18px] min-h-0 shrink-0";
 
-/** 18px circular progress indicators next to section titles (Produce effects, Focus timer). */
-export const GAME_PANEL_HEADER_INDICATOR_CLASS =
-  "inline-flex h-[18px] w-[18px] shrink-0 items-center justify-center self-center cursor-pointer rounded-full opacity-80 transition-opacity duration-150 hover:opacity-100";
-export const GAME_PANEL_HEADER_INDICATOR_TRIGGER_CLASS =
-  "inline-flex items-center leading-none";
-
 /** Anchor tall tab SVG masks (e.g. hourglass) to the icon box bottom. */
 export const TAB_ICON_MASK_BOTTOM =
   "[mask-position:bottom] [-webkit-mask-position:bottom]";

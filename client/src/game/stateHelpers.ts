@@ -1,9 +1,5 @@
 import { GameState, gameStateSchema } from "@shared/schema";
 import { overlayToolsFromStorySeen } from "@shared/rebuildToolsFromStorySeen";
-import {
-  overlayBuildingsFromStorySeen,
-  overlayFlagsFromStorySeen,
-} from "@shared/rebuildBuildingsFromStorySeen";
 import type { CombatResultSummary } from "./types";
 import { getCurrentPopulation, getMaxPopulation, getVillagersInVillage } from "./population";
 import {
@@ -11,7 +7,6 @@ import {
   getResourceLimit,
   capResourceToLimit,
 } from "./resourceLimits";
-import { collectStorageMaxHitSeenUpdates } from "./resourceStorageMax";
 import { getTotalEventDeathReduction } from "./rules/effectsCalculation";
 import { getVillagerCapForJob } from "./villagerCapUpgrades";
 import { getExecutionTime } from "./rules/executionTime";
@@ -103,22 +98,6 @@ export function updateResource(
   const isLimitedResource = isResourceLimited(resource, state);
   const reachedLimit = isLimitedResource && cappedAmount >= limit && !state.flags.hasHitResourceLimit;
 
-  const insightSpent =
-    resource === "insight" && amount < 0
-      ? Math.max(0, currentAmount - cappedAmount)
-      : 0;
-  const storageMaxHits = collectStorageMaxHitSeenUpdates(state, {
-    [resource]: cappedAmount,
-  });
-  const storySeenPatch: Record<string, boolean | number> = {
-    ...storageMaxHits,
-  };
-  if (insightSpent > 0) {
-    storySeenPatch.totalInsightSpent =
-      (Number(state.story?.seen?.totalInsightSpent) || 0) + insightSpent;
-  }
-  const hasStoryPatch = Object.keys(storySeenPatch).length > 0;
-
   return {
     resources: {
       ...state.resources,
@@ -131,15 +110,6 @@ export function updateResource(
       flags: {
         ...state.flags,
         hasHitResourceLimit: true,
-      },
-    }),
-    ...(hasStoryPatch && {
-      story: {
-        ...state.story,
-        seen: {
-          ...state.story?.seen,
-          ...storySeenPatch,
-        },
       },
     }),
   };
@@ -159,7 +129,6 @@ export function applyResourceDeltas(
   const newResources = { ...state.resources };
   const limit = getResourceLimit(state);
   let reachedLimit = false;
-  let insightSpent = 0;
 
   for (const [key, delta] of Object.entries(deltas)) {
     if (typeof delta !== 'number' || delta === 0) continue;
@@ -167,24 +136,11 @@ export function applyResourceDeltas(
     const currentAmount = newResources[resource] || 0;
     const newAmount = Math.max(0, currentAmount + delta);
     const cappedAmount = capResourceToLimit(resource, newAmount, state);
-    if (resource === "insight" && delta < 0) {
-      insightSpent += Math.max(0, currentAmount - cappedAmount);
-    }
     newResources[resource] = cappedAmount;
     if (isResourceLimited(resource, state) && cappedAmount >= limit) {
       reachedLimit = true;
     }
   }
-
-  const storageMaxHits = collectStorageMaxHitSeenUpdates(state, newResources);
-  const storySeenPatch: Record<string, boolean | number> = {
-    ...storageMaxHits,
-  };
-  if (insightSpent > 0) {
-    storySeenPatch.totalInsightSpent =
-      (Number(state.story?.seen?.totalInsightSpent) || 0) + insightSpent;
-  }
-  const hasStoryPatch = Object.keys(storySeenPatch).length > 0;
 
   return {
     resources: newResources,
@@ -193,15 +149,6 @@ export function applyResourceDeltas(
       flags: {
         ...state.flags,
         hasHitResourceLimit: true,
-      },
-    }),
-    ...(hasStoryPatch && {
-      story: {
-        ...state.story,
-        seen: {
-          ...state.story?.seen,
-          ...storySeenPatch,
-        },
       },
     }),
   };
@@ -437,7 +384,7 @@ export function killVillagers(state: GameState, deathCount: number): Partial<Gam
 const UI_ONLY_PROPERTIES = [
   'activeTab',
   'devMode',
-  'devGameMode',
+  'devSteamMode',
   'lastSaved',
   'eventDialog',
   'combatDialog',
@@ -731,49 +678,17 @@ function migrateSteamShopSlotsOnLoad(state: GameState): Partial<GameState> | nul
 }
 
 /**
- * Restore blacksteel armor from craft story flags. The clothing key was missing from
- * the Zod schema, so older saves could lose ownership after parse/load.
- */
-export function migrateBlacksteelArmorOnLoad(
-  state: GameState,
-): Partial<GameState> | null {
-  if (state.clothing?.blacksteel_armor) return null;
-  const seen = state.story?.seen as Record<string, unknown> | undefined;
-  if (
-    seen?.hasBlacksteelArmor !== true &&
-    seen?.actionCraftBlacksteelArmor !== true
-  ) {
-    return null;
-  }
-  return {
-    clothing: {
-      ...state.clothing,
-      blacksteel_armor: true,
-    },
-  };
-}
-
-/**
  * Backfill permanent item slices from schema defaults when a loaded save omits them.
  * Rebuilds owned craft tools from `story.seen` when flags exist but the tools slice
- * is missing or empty (cloud corruption loop). Same for buildings wiped to all-zero
- * while actionBuild* flags remain (sibling of tools wipe).
+ * is missing or empty (cloud corruption loop).
  */
 export function hydrateLoadedGameState<T extends Partial<GameState>>(
   savedState: T,
-): T & Pick<GameState, "tools" | "weapons" | "books" | "buildings" | "flags"> {
+): T & Pick<GameState, "tools" | "weapons" | "books"> {
   const defaults = gameStateSchema.parse({});
   const mergedTools = {
     ...defaults.tools,
     ...savedState.tools,
-  };
-  const mergedBuildings = {
-    ...defaults.buildings,
-    ...savedState.buildings,
-  };
-  const mergedFlags = {
-    ...defaults.flags,
-    ...savedState.flags,
   };
   return {
     ...savedState,
@@ -786,15 +701,6 @@ export function hydrateLoadedGameState<T extends Partial<GameState>>(
       ...defaults.books,
       ...savedState.books,
     },
-    buildings: overlayBuildingsFromStorySeen(
-      mergedBuildings,
-      savedState.story?.seen,
-    ),
-    flags: overlayFlagsFromStorySeen(
-      mergedFlags,
-      savedState.story?.seen,
-      Number(savedState.playTime) || 0,
-    ),
   };
 }
 
@@ -822,10 +728,6 @@ export function applyGameStateLoadMigrations(state: GameState): GameState {
   const steamShopSlots = migrateSteamShopSlotsOnLoad(migrated);
   if (steamShopSlots) {
     migrated = { ...migrated, ...steamShopSlots };
-  }
-  const blacksteelArmor = migrateBlacksteelArmorOnLoad(migrated);
-  if (blacksteelArmor) {
-    migrated = { ...migrated, ...blacksteelArmor };
   }
   return migrated;
 }

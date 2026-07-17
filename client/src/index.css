@@ -31,11 +31,6 @@ body {
   --adc-text-scale: 1;
 }
 
-/* Timed-tab event body: slightly roomier leading when Large text is on. */
-:root.adc-text-large .timed-event-message {
-  line-height: 1.55;
-}
-
 /* Apply Inter font as soon as it's loaded */
 :root.font-loaded {
   --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
@@ -1105,10 +1100,6 @@ html[data-tab-hidden] .exclusive-promo-shockwave-ring:not(.exclusive-promo-shock
 
 .focus-glow {
   animation: focus-glow 3s ease-in-out infinite;
-}
-
-.focus-glow-hover {
-  transition: box-shadow 1s ease;
 }
 
 .focus-glow-hover:hover:not([aria-disabled="true"]) {

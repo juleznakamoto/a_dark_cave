@@ -33,6 +33,9 @@
     "1-mineSulfur": {
       "label": "Добытчик серы"
     },
+    "2-animals": {
+      "label": "Жертвователь животных"
+    },
     "2-boneTotems": {
       "label": "Жертвователь костей"
     },
@@ -48,9 +51,6 @@
     "3-ashfireBombs": {
       "label": "Мастер пепельных бомб"
     },
-    "3-burningVeins": {
-      "label": "Burning Veins"
-    },
     "3-emberBombs": {
       "label": "Мастер угольных бомб"
     },
@@ -60,26 +60,14 @@
     "4-feedFire": {
       "label": "Хранитель огня"
     },
-    "4-insightful": {
-      "label": "Insightful"
-    },
     "4-investor": {
       "label": "Инвестор"
-    },
-    "4-luckyInvestor": {
-      "label": "Lucky Investor"
     },
     "4-mentalClarity": {
       "label": "Ясность ума"
     },
     "4-merchantPurchases": {
       "label": "Умелый торговец"
-    },
-    "4-pileOfDead": {
-      "label": "Pile of Dead"
-    },
-    "4-resourceMaxer": {
-      "label": "Resource Maxer"
     },
     "4-solsticeGatherings": {
       "label": "Празднующий солнцестояние"
@@ -90,25 +78,22 @@
   },
   "basic": {
     "0-coalMiner": {
-      "label": "Собирать уголь" //x1.3
+      "label": "Собирать уголь"  //x1.3
     },
     "0-hunter": {
       "label": "Охотник"
     },
-    "0-tanner": {
-      "label": "Дубильщик"
-    },
     "0-ironMiner": {
-      "label": "Собирать железо" //x1.4
+      "label": "Собирать железо"  //x1.4
     },
     "0-steelForger": {
       "label": "Ковать сталь"
     },
     "0-stoneMiner": {
-      "label": "Собирать камень" //x1.3
+      "label": "Собирать камень"  //x1.3
     },
     "0-woodGatherer": {
-      "label": "Собирать дерево" //x1.4
+      "label": "Собирать дерево"  //x1.4
     },
     "1-builder": {
       "label": "Строить здания"
@@ -190,7 +175,7 @@
       "label": "Мечи"
     },
     "2-explorer_pack": {
-      "label": "Кожевенное дело" //x1.3
+      "label": "Кожевенное дело"  //x1.3
     },
     "2-schematic_weapons": {
       "label": "Чертежи"
@@ -206,23 +191,6 @@
     },
     "4-blacksteel_tools": {
       "label": "Темные инструменты"
-    }
-  },
-  "overall": {
-    "0-endurant": {
-      "label": "Endurant"
-    },
-    "0-speedrunner": {
-      "label": "Speedrunner"
-    },
-    "0-supporter": {
-      "label": "Supporter"
-    },
-    "0-winCruel": {
-      "label": "Cruel Victory"
-    },
-    "0-winNormal": {
-      "label": "Normal Victory"
     }
   }
 }

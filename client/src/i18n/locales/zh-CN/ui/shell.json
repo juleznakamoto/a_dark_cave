@@ -3,12 +3,7 @@
     "title": "设置",
     "music": "音乐",
     "sound": "音效",
-    "emails": "邮件",
-    "gameMode": "Game Mode",
-    "gameModeNormal": "Normal Mode",
-    "gameModeSteamGame": "Steam Game",
-    "gameModeSteamPlaytest": "Steam Playtest",
-    "gameModeSteamDemo": "Steam Demo"
+    "emails": "邮件"
   },
   "textScale": {
     "label": "文字大小",
@@ -46,8 +41,7 @@
     "muteSfx": "静音音效",
     "unmuteSfx": "取消音效静音",
     "cruelModeActive": "残酷模式已启用",
-    "wishlistOnSteam": "加入 Steam 愿望单",
-    "demoProgress": "Demo Progress"
+    "wishlistOnSteam": "加入 Steam 愿望单"
   },
   "profile": {
     "title": "菜单",

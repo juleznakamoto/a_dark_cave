@@ -163,10 +163,8 @@ function registerIpc(): void {
   ipcMain.handle("window:toggle-fullscreen", () => {
     if (!mainWindow) return false;
     const next = !mainWindow.isFullScreen();
-    // setFullScreen is async; isFullScreen() often still reflects the old
-    // state if read immediately, so return the intended value.
     mainWindow.setFullScreen(next);
-    return next;
+    return mainWindow.isFullScreen();
   });
 }
 

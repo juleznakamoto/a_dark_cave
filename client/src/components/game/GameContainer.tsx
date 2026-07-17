@@ -71,7 +71,8 @@ import {
   type TabUnlockBlinkId,
 } from "@/game/tabUnlockBlink";
 import { TraderTabButton } from "@/components/game/TraderTabButton";
-import { useSteamEditionActive, useDemoEditionActive } from "@/hooks/useSteamEditionActive";
+import { useSteamEditionActive } from "@/hooks/useSteamEditionActive";
+import { isDemoEdition } from "@/lib/edition";
 import DemoTimeUpDialog from "./DemoTimeUpDialog";
 import i18n from "@/i18n";
 import { useTranslation } from "react-i18next";
@@ -89,7 +90,6 @@ const WebOnlyDialogs = steamBuild
 export default function GameContainer() {
   const { t } = useTranslation();
   const steamEditionActive = useSteamEditionActive();
-  const demoEditionActive = useDemoEditionActive();
   const {
     activeTab,
     flags,
@@ -268,51 +268,23 @@ export default function GameContainer() {
   // Show on load for existing saves that haven't seen the tutorial yet.
   useEffect(() => {
     if (!flags.gameStarted) return;
-    if (!flags.villageUnlocked || !flags.forestUnlocked) return;
     if (villageHotkeyTutorialCheckedRef.current) return;
     villageHotkeyTutorialCheckedRef.current = true;
 
+    if (!flags.villageUnlocked) return;
     if (!villageHotkeyTutorialShown) {
       setVillageHotkeyTutorialOpen(true);
     }
-  }, [
-    flags.gameStarted,
-    flags.villageUnlocked,
-    flags.forestUnlocked,
-    villageHotkeyTutorialShown,
-  ]);
+  }, [flags.gameStarted, flags.villageUnlocked, villageHotkeyTutorialShown]);
 
   // Prompt for a hard refresh when a new build is deployed while the tab stays open.
   useEffect(() => {
-    const AUTO_RELOAD_MS = 15 * 60 * 1000;
-    const AUTO_RELOAD_MINUTES = 15;
+    const showUpdateToast = toast;
     let updatePending = false;
-    let reloadAtMs = 0;
-    let autoReloadTimeout: ReturnType<typeof setTimeout> | null = null;
-    let reloading = false;
-
-    const saveAndHardReload = async () => {
-      if (reloading) return;
-      reloading = true;
-      try {
-        const { saveGame } = await import("@/game/save");
-        await saveGame(useGameStore.getState(), false);
-      } catch (error) {
-        logger.error("[VERSION] Error saving before reload:", error);
-      }
-      await hardReload();
-    };
 
     const handleVisibilityReload = () => {
-      // Mobile often suspends timers while backgrounded — catch up if the
-      // 15-minute window already elapsed when the player returns.
-      if (
-        updatePending &&
-        document.visibilityState === "visible" &&
-        reloadAtMs > 0 &&
-        Date.now() >= reloadAtMs
-      ) {
-        void saveAndHardReload();
+      if (updatePending && document.visibilityState === "visible") {
+        void hardReload();
       }
     };
     document.addEventListener("visibilitychange", handleVisibilityReload);
@@ -323,24 +295,15 @@ export default function GameContainer() {
         const state = useGameStore.getState();
         await saveGame(state, false);
         updatePending = true;
-        reloadAtMs = Date.now() + AUTO_RELOAD_MS;
-        if (autoReloadTimeout) clearTimeout(autoReloadTimeout);
-        autoReloadTimeout = setTimeout(() => {
-          void saveAndHardReload();
-        }, AUTO_RELOAD_MS);
-        toast({
+        showUpdateToast({
           title: i18n.t("versionUpdate.title", { ns: "ui" }),
-          description: i18n.t("versionUpdate.description", {
-            ns: "ui",
-            minutes: AUTO_RELOAD_MINUTES,
-          }),
+          description: i18n.t("versionUpdate.description", { ns: "ui" }),
           variant: "default",
           duration: Infinity,
-          dismissible: false,
           action: {
             label: i18n.t("versionUpdate.refresh", { ns: "ui" }),
             onClick: () => {
-              void saveAndHardReload();
+              void hardReload();
             },
           },
         });
@@ -351,7 +314,6 @@ export default function GameContainer() {
 
     return () => {
       document.removeEventListener("visibilitychange", handleVisibilityReload);
-      if (autoReloadTimeout) clearTimeout(autoReloadTimeout);
       stopVersionCheck();
     };
   }, []);
@@ -581,9 +543,7 @@ export default function GameContainer() {
     }
 
     if (
-      (newlyUnlocked.includes("village") || newlyUnlocked.includes("forest")) &&
-      current.villageUnlocked &&
-      current.forestUnlocked &&
+      newlyUnlocked.includes("village") &&
       !useGameStore.getState().villageHotkeyTutorialShown
     ) {
       setVillageHotkeyTutorialOpen(true);
@@ -1452,7 +1412,7 @@ export default function GameContainer() {
           data={villageEffectDialog.data}
           onClose={() => setVillageEffectDialog(false)}
         />
-        {demoEditionActive && <DemoTimeUpDialog />}
+        {isDemoEdition() && <DemoTimeUpDialog />}
       </div>
     </ProfileMenuProvider>
   );

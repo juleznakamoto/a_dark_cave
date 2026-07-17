@@ -33,6 +33,9 @@
     "1-mineSulfur": {
       "label": "Minatore di Zolfo"
     },
+    "2-animals": {
+      "label": "Sacrificatore di Animali"
+    },
     "2-boneTotems": {
       "label": "Sacrificatore di Ossa"
     },
@@ -48,9 +51,6 @@
     "3-ashfireBombs": {
       "label": "Fabbricante di Bombe di Cenerardente"
     },
-    "3-burningVeins": {
-      "label": "Burning Veins"
-    },
     "3-emberBombs": {
       "label": "Fabbricante di Bombe di Brace"
     },
@@ -60,26 +60,14 @@
     "4-feedFire": {
       "label": "Guardiano del Fuoco"
     },
-    "4-insightful": {
-      "label": "Insightful"
-    },
     "4-investor": {
       "label": "Investitore"
-    },
-    "4-luckyInvestor": {
-      "label": "Lucky Investor"
     },
     "4-mentalClarity": {
       "label": "Lucidità Mentale"
     },
     "4-merchantPurchases": {
       "label": "Affarista"
-    },
-    "4-pileOfDead": {
-      "label": "Pile of Dead"
-    },
-    "4-resourceMaxer": {
-      "label": "Resource Maxer"
     },
     "4-solsticeGatherings": {
       "label": "Celebrante del Solstizio"
@@ -94,9 +82,6 @@
     },
     "0-hunter": {
       "label": "Cacciatore"
-    },
-    "0-tanner": {
-      "label": "Conciatore"
     },
     "0-ironMiner": {
       "label": "Raccogli Ferro"
@@ -206,23 +191,6 @@
     },
     "4-blacksteel_tools": {
       "label": "Strumenti Oscuri"
-    }
-  },
-  "overall": {
-    "0-endurant": {
-      "label": "Endurant"
-    },
-    "0-speedrunner": {
-      "label": "Speedrunner"
-    },
-    "0-supporter": {
-      "label": "Supporter"
-    },
-    "0-winCruel": {
-      "label": "Cruel Victory"
-    },
-    "0-winNormal": {
-      "label": "Normal Victory"
     }
   }
 }

@@ -13,6 +13,12 @@ import CooldownButton, {
   gameActionOutlineButtonClassName,
 } from "@/components/CooldownButton";
 import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
+import {
   CHAINMASTER_UPGRADES,
   chainmasterUpgradeDisgustMs,
   CRUSHING_STRIKE_UPGRADES,
@@ -26,16 +32,11 @@ import {
 } from "@/game/rules/skillUpgrades";
 import { stackTimedDebuff } from "@/game/stateHelpers";
 import { focusTooltip } from "@/game/rules/tooltips";
-import {
-  GAME_PANEL_HEADER_INDICATOR_CLASS,
-  GAME_PANEL_HEADER_INDICATOR_TRIGGER_CLASS,
-} from "@/components/game/gameChrome";
 import { formatNumber } from "@/lib/utils";
 import cn from "clsx";
 import { buildLocalizedEventLogEntry } from "@/i18n/buildEventLogEntry";
 import { useUiTranslation } from "@/i18n/useUiTranslation";
 import { formatTooltipCostLine } from "@/i18n/tooltipLabels";
-
 
 const ESTATE_BAR_GROW_ANIMATION_MS = 500;
 
@@ -195,10 +196,8 @@ export default function EstatePanel() {
     return () => clearInterval(interval);
   }, [focusState]);
 
-  // Keep Focus button mounted while active so Sleep upgrades don't jump up when points hit 0
-  const showFocusButton =
-    (focusState?.points ?? 0) > 0 ||
-    Boolean(focusState?.isActive && focusState.endTime > Date.now());
+  // Focus button - only show if there are focus points available
+  const showFocusButton = focusState?.points > 0;
 
   // Calculate Focus duration: 1 focus point = 1 minute of Focus time
   const calculateFocusDuration = (focusPoints: number) => {
@@ -291,7 +290,7 @@ export default function EstatePanel() {
 
     // Immediately save to Supabase so user can close tab
     const { saveGame } = await import("@/game/save");
-    await saveGame(currentState, false);
+    await saveGame(currentState, currentState.playTime);
 
     setIdleModeDialog(true);
   };
@@ -432,40 +431,34 @@ export default function EstatePanel() {
       <div className="w-full space-y-2 pt-2 md:pt-0 mt-0 md:mt-2 mb-2 pr-2 pb-2">
         {/* Sleep Mode Section */}
         <div className="space-y-">
-          {/* Fixed 18px band matches Produce indicators so Sleep/Focus below don't jump */}
-          <div className="pb-2">
-            <div className="flex h-[18px] w-full items-center gap-2">
-              <h3 className="inline-flex shrink-0 items-center text-xs font-medium text-foreground leading-none">
-                {t("estate.rest")}
-              </h3>
-              {focusState?.isActive && focusState.endTime > Date.now() && (
-                <TooltipWrapper
-                  tooltip={
-                    <div className="text-xs">
-                      {focusTooltip.getContent(state)}
-                    </div>
-                  }
-                  tooltipId="focus-progress"
-                  disabled
-                  tooltipTriggerClassName={
-                    GAME_PANEL_HEADER_INDICATOR_TRIGGER_CLASS
-                  }
-                  className={GAME_PANEL_HEADER_INDICATOR_CLASS}
-                >
-                  <div className="relative inline-flex size-[18px] items-center justify-center">
+          <div className="flex items-center gap-2 pb-2">
+            <h3 className="text-xs font-medium text-foreground">{t("estate.rest")}</h3>
+            {/* Focus Timer */}
+            {focusState?.isActive && focusState.endTime > Date.now() && (
+              <TooltipWrapper
+                tooltip={
+                  <div className="text-xs">
+                    {focusTooltip.getContent(state)}
+                  </div>
+                }
+                tooltipId="focus-progress"
+                disabled
+              >
+                <div className="text-xs text-primary flex items-center gap-0.5 cursor-pointer">
+                  <div className="relative inline-flex items-center gap-1 mt-[0px]">
                     <CircularProgress
                       value={focusProgress}
                       size={18}
                       strokeWidth={2}
                       className="text-teal-400"
                     />
-                    <span className="absolute inset-0 flex items-center justify-center text-[10px] font-extrabold leading-none text-teal-400">
+                    <span className="absolute inset-0 flex items-center justify-center font-extrabold text-[10px] -mt-[0px] text-teal-400">
                       ☩
                     </span>
                   </div>
-                </TooltipWrapper>
-              )}
-            </div>
+                </div>
+              </TooltipWrapper>
+            )}
           </div>
           <TooltipWrapper
             tooltip={
@@ -521,23 +514,34 @@ export default function EstatePanel() {
                 disabled={!focusState?.points || focusState.points === 0 || focusState?.isActive}
                 tooltip={
                   <div className="text-xs whitespace-nowrap">
-                    <div>{t("estate.focusPointTooltip")}</div>
-                    <div>
-                      {t("estate.focusRewardTooltip", {
-                        count: focusState?.points || 0,
-                      })}
-                    </div>
+                    {t("estate.focusRewardTooltip", {
+                      count: focusState?.points || 0,
+                    })}
                   </div>
                 }
               >
                 {t("estate.focus")}
               </CooldownButton>
               {focusState && focusState.points > 0 && (
-                <div
-                  className="absolute -top-[9px] right-[-9px] flex items-center justify-center w-5 h-5 bg-teal-950 rounded-full text-[10px] font-medium z-[20] pointer-events-none"
-                >
-                  {focusState.points}
-                </div>
+                <TooltipProvider>
+                  <Tooltip>
+                    <TooltipTrigger asChild>
+                      <div
+                        className="absolute -top-[9px] right-[-9px] flex items-center justify-center w-5 h-5 bg-teal-950 rounded-full text-[10px] font-medium z-[20] cursor-pointer hover:bg-teal-900 transition-colors duration-300"
+                        onClick={(e) => e.stopPropagation()}
+                        onPointerDown={(e) => e.stopPropagation()}
+                      >
+                        {focusState.points}
+                      </div>
+                    </TooltipTrigger>
+                    <TooltipContent
+                      side="right"
+                      className="max-w-xs bg-popover text-white border text-xs whitespace-nowrap"
+                    >
+                      {t("estate.focusPointTooltip")}
+                    </TooltipContent>
+                  </Tooltip>
+                </TooltipProvider>
               )}
             </div>
           )}

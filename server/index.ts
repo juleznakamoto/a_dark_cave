@@ -590,8 +590,7 @@ app.get("/api/admin/saves", async (req, res) => {
 
 app.get("/api/admin/save-analysis", async (req, res) => {
   try {
-    // Fresh shape (incl. v2Compare); do not share-cache across deploys.
-    res.set("Cache-Control", "private, no-store");
+    adminDashboardCache(res);
     const adminClient = getAdminClient(parseAdminEnv(req));
     const inputs = await fetchAdminSaveAnalysisInputs(adminClient);
     const analysis = analyzeSaveGames(inputs);

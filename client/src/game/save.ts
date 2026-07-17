@@ -24,11 +24,6 @@ import {
   readSteamCloudSave,
   pickNewerSave,
 } from "./steamSaveAdapter";
-import {
-  dualWriteSaveGameV2,
-  isSaveGameV2CloudEnabled,
-  isSaveGameV2RichEnabled,
-} from "./saveGameV2";
 
 const isDev = import.meta.env.DEV;
 
@@ -450,31 +445,17 @@ async function processUnclaimedReferralsImpl(
   }
 }
 
-/** Result of {@link saveGame}. Local save may succeed even when cloud does not. */
-export type SaveGameResult = {
-  /**
-   * True only when the legacy cloud write succeeded and `lastCloudState` was updated.
-   * False for guests, skipped saves, or cloud failures — callers must not invent a baseline.
-   */
-  cloudSaved: boolean;
-};
-
-/**
- * Persist game state locally (and to cloud when signed in).
- * @param isAutosave When true, also flush resource analytics to the cloud payload.
- *   Pass an explicit boolean — never playTime or other numbers.
- */
 export async function saveGame(
   gameState: GameState,
   isAutosave: boolean = true,
-): Promise<SaveGameResult> {
+): Promise<void> {
   try {
     // Check if game is inactive - if so, don't save
     const { useGameStore } = await import("./state");
     const currentState = useGameStore.getState();
     if (currentState.inactivityDialogOpen) {
       logger.log("[SAVE] ⚠️ Game is inactive - skipping save");
-      return { cloudSaved: false };
+      return;
     }
 
     const db = await getDB();
@@ -518,7 +499,7 @@ export async function saveGame(
 
     // Guests: local IndexedDB only — no Supabase / edge-function / server calls.
     if (!currentState.isUserSignedIn) {
-      return { cloudSaved: false };
+      return;
     }
 
     // Try to save to cloud if user is authenticated
@@ -584,14 +565,6 @@ export async function saveGame(
           });
         }
 
-        // Rich V2 (DEV) owns analytics to avoid double-counting in button_clicks.
-        // Thin dual-write (PROD): analytics stay on the legacy V1 edge path.
-        const v2CloudEnabled = isSaveGameV2CloudEnabled();
-        const v2RichEnabled = isSaveGameV2RichEnabled();
-        const legacyClickAnalytics = v2RichEnabled ? null : clickData;
-        const legacyResourceAnalytics = v2RichEnabled ? null : resourceData;
-        const legacyClearAnalytics = v2RichEnabled ? false : isNewGame;
-
         // Get last cloud state for diff calculation
         const lastCloudState = await getLastCloudState(db);
         let stateDiff = omitPlayTimeFromDiffIfUnchanged(
@@ -605,15 +578,6 @@ export async function saveGame(
         stateDiff.tools = sanitizedState.tools;
         stateDiff.weapons = sanitizedState.weapons;
         stateDiff.books = sanitizedState.books;
-        // Same for villagers — otherwise lastCloudState desync leaves V1 job counts stale
-        // while V2 (full blob) is correct (same playTime, different villagers).
-        stateDiff.villagers = sanitizedState.villagers;
-        // Critical progression slices — V1 deep-merge never learns keys the diff omitted
-        // (seen as sparse V1 vs full V2 in admin compare, e.g. missing `flags`).
-        stateDiff.flags = sanitizedState.flags;
-        stateDiff.buildings = sanitizedState.buildings;
-        stateDiff.story = sanitizedState.story;
-        stateDiff.resources = sanitizedState.resources;
 
         // Execution / expedition slices use delete semantics (completed actions remove
         // keys). Cloud save uses JSONB deep-merge, so partial diffs cannot express
@@ -645,8 +609,6 @@ export async function saveGame(
           isNewGame: sanitizedState.isNewGame,
           willAllowOverwrite: allowOverwrite,
           currentPlayTime: stateDiff.playTime,
-          v2CloudEnabled,
-          v2RichEnabled,
         });
 
         // Save via Edge Function → save_game_with_analytics (deep-merges nested JSONB
@@ -662,9 +624,9 @@ export async function saveGame(
         const { data, error } = await supabaseClient.functions.invoke('save-game', {
           body: {
             gameStateDiff: stateDiff,
-            clickAnalytics: legacyClickAnalytics,
-            resourceAnalytics: legacyResourceAnalytics,
-            clearAnalytics: legacyClearAnalytics,
+            clickAnalytics: clickData,
+            resourceAnalytics: resourceData,
+            clearAnalytics: isNewGame,
             allowPlaytimeOverwrite: allowOverwrite
           }
         });
@@ -690,31 +652,10 @@ export async function saveGame(
           useGameStore.setState({ allowPlaytimeOverwrite: false });
           logger.log("[SAVE] 🔓 Cleared allowPlayTimeOverwrite flag after successful cloud save");
         }
-
-        // Sidecar dual-write to game_state_v2 (thin on PROD, rich on DEV). Never throws;
-        // load still uses legacy game_state only.
-        if (v2CloudEnabled) {
-          try {
-            await dualWriteSaveGameV2(sanitizedState, {
-              clickAnalytics: v2RichEnabled ? clickData : null,
-              resourceAnalytics: v2RichEnabled ? resourceData : null,
-              clearAnalytics: v2RichEnabled ? isNewGame : false,
-              allowPlaytimeOverwrite: allowOverwrite,
-            });
-          } catch (v2Error) {
-            logger.warn("[SAVE V2] dual-write unexpected error (ignored):", v2Error);
-          }
-        }
-
-        return { cloudSaved: true };
       }
-
-      return { cloudSaved: false };
     } catch (cloudError) {
       logger.error("[SAVE] Cloud save failed:", cloudError);
-      // Don't throw - local save succeeded. Keep lastCloudState untouched so the
-      // next save still full-syncs instead of diffing against a phantom baseline.
-      return { cloudSaved: false };
+      // Don't throw - local save succeeded
     }
   } catch (error) {
     logger.error("[SAVE] ❌ Failed to save game locally:", error);
@@ -795,16 +736,19 @@ export async function loadGame(): Promise<GameState | null> {
             const processedState = await processUnclaimedReferrals(stateWithDefaults);
             const reconciled = mergeSavePlayTimeIntoState(localSave, processedState);
 
-            // Sync local progress to cloud. saveGame alone owns lastCloudState —
-            // never mark a baseline here if the upload failed (would cause sparse V1 diffs).
-            await db.delete("lastCloudState", LAST_CLOUD_STATE_KEY);
-            const { cloudSaved } = await saveGame(reconciled, false);
-            if (cloudSaved) {
+            // Sync local progress to cloud
+            try {
+              await db.delete("lastCloudState", LAST_CLOUD_STATE_KEY);
+              await saveGame(reconciled, false);
+              await putLastCloudState(db, reconciled);
               logger.log("[LOAD] ✅ Local progress synced to cloud");
-            } else {
-              logger.warn(
-                "[LOAD] ⚠️ Local→cloud sync did not confirm cloud write; lastCloudState left unset",
-              );
+            } catch (syncError: any) {
+              if (syncError.message?.includes("OCC violation")) {
+                logger.log("[LOAD] 📊 Cloud already has this save state - skipping sync");
+                await putLastCloudState(db, reconciled);
+              } else {
+                throw syncError;
+              }
             }
 
             return reconciled;
@@ -884,17 +828,21 @@ export async function loadGame(): Promise<GameState | null> {
           const processedState = await processUnclaimedReferrals(stateWithDefaults);
           const reconciled = mergeSavePlayTimeIntoState(localSave, processedState);
 
-          // Force sync by clearing lastCloudState; saveGame sets it only after a
-          // confirmed legacy cloud write (do not invent a baseline on failure).
-          await db.delete("lastCloudState", LAST_CLOUD_STATE_KEY);
-          // Do NOT use allowPlaytimeOverwrite here - this is not a new game
-          const { cloudSaved } = await saveGame(reconciled, false);
-          if (cloudSaved) {
-            logger.log("[LOAD] ✅ Local save synced to cloud");
-          } else {
-            logger.warn(
-              "[LOAD] ⚠️ First cloud sync did not confirm cloud write; lastCloudState left unset so the next save can full-upload",
-            );
+          try {
+            // Force sync by clearing lastCloudState, then saveGame will handle it
+            await db.delete("lastCloudState", LAST_CLOUD_STATE_KEY);
+            // Do NOT use allowPlaytimeOverwrite here - this is not a new game
+            await saveGame(reconciled, false);
+            await putLastCloudState(db, reconciled);
+          } catch (syncError: any) {
+            // If OCC violates due to equal playTimes, that's fine - cloud already has this state
+            if (syncError.message?.includes("OCC violation")) {
+              if (isDev)
+                logger.log("[LOAD] 📊 Cloud already has this save state - skipping sync");
+              await putLastCloudState(db, reconciled);
+            } else {
+              throw syncError;
+            }
           }
 
           return reconciled;

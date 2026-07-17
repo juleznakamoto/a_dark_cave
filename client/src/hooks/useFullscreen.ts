@@ -1,5 +1,4 @@
-import { useCallback, useEffect, useRef, useState } from "react";
-import { useGameStore } from "@/game/state";
+import { useCallback, useEffect, useState } from "react";
 import { isSteamBuild } from "@/lib/edition";
 import {
   hasSteamBridge,
@@ -12,81 +11,35 @@ function nudgeViewportResize(): void {
   window.dispatchEvent(new Event("resize"));
 }
 
-function isBrowserFullscreen(): boolean {
-  return !!document.fullscreenElement;
-}
-
-async function toggleBrowserFullscreen(): Promise<boolean> {
-  try {
-    if (document.fullscreenElement) {
-      await document.exitFullscreen();
-    } else {
-      await document.documentElement.requestFullscreen();
-    }
-  } catch {
-    // User gesture / permissions / unsupported — keep current state.
-  }
-  return isBrowserFullscreen();
-}
-
 export function useFullscreen() {
   const [isFullscreen, setIsFullscreen] = useState(false);
-  // Bumped on toggle / native fullscreen events so a slow initial
-  // steamIsFullscreen() read cannot overwrite a newer known state.
-  const syncEpochRef = useRef(0);
-  const useSteamApi = hasSteamBridge();
-  const devGameMode = useGameStore((s) => s.devGameMode);
-  // Real Steam shell uses Electron IPC. DEV Game Mode in a browser has no
-  // bridge, so fall back to the document Fullscreen API for parity.
-  const useBrowserApi =
-    import.meta.env.DEV && !isSteamBuild && devGameMode !== "normal";
-  const available = useSteamApi || useBrowserApi;
+  const available = isSteamBuild && hasSteamBridge();
 
   useEffect(() => {
     if (!available) return;
 
-    if (useSteamApi) {
-      let cancelled = false;
-      const fetchEpoch = syncEpochRef.current;
-      void steamIsFullscreen().then((value) => {
-        if (!cancelled && syncEpochRef.current === fetchEpoch) {
-          setIsFullscreen(value);
-        }
-      });
+    let cancelled = false;
+    void steamIsFullscreen().then((value) => {
+      if (!cancelled) setIsFullscreen(value);
+    });
 
-      const unsubscribe = steamOnFullscreenChanged((value) => {
-        syncEpochRef.current += 1;
-        setIsFullscreen(value);
-        nudgeViewportResize();
-      });
-
-      return () => {
-        cancelled = true;
-        unsubscribe?.();
-      };
-    }
-
-    const sync = () => {
-      setIsFullscreen(isBrowserFullscreen());
+    const unsubscribe = steamOnFullscreenChanged((value) => {
+      setIsFullscreen(value);
       nudgeViewportResize();
+    });
+
+    return () => {
+      cancelled = true;
+      unsubscribe?.();
     };
-    sync();
-    document.addEventListener("fullscreenchange", sync);
-    return () => document.removeEventListener("fullscreenchange", sync);
-  }, [available, useSteamApi]);
+  }, [available]);
 
   const toggleFullscreen = useCallback(async () => {
     if (!available) return;
-    syncEpochRef.current += 1;
-    // Optimistic update so the icon flips immediately; Steam's setFullScreen
-    // (and the matching IPC return) can lag behind the click.
-    setIsFullscreen((prev) => !prev);
-    const next = useSteamApi
-      ? await steamToggleFullscreen()
-      : await toggleBrowserFullscreen();
+    const next = await steamToggleFullscreen();
     setIsFullscreen(next);
     nudgeViewportResize();
-  }, [available, useSteamApi]);
+  }, [available]);
 
   return { isFullscreen, toggleFullscreen, available };
 }

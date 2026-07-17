@@ -3,12 +3,7 @@
     "title": "Einstellungen",
     "music": "Musik",
     "sound": "Sound",
-    "emails": "E-Mails",
-    "gameMode": "Spielmodus",
-    "gameModeNormal": "Normaler Modus",
-    "gameModeSteamGame": "Steam-Spiel",
-    "gameModeSteamPlaytest": "Steam-Playtest",
-    "gameModeSteamDemo": "Steam-Demo"
+    "emails": "E-Mails"
   },
   "textScale": {
     "label": "Textgröße",
@@ -46,8 +41,7 @@
     "muteSfx": "Soundeffekte ausschalten", //ok
     "unmuteSfx": "Soundeffekte einschalten", //ok
     "cruelModeActive": "Grausamer Modus aktiviert", //ok
-    "wishlistOnSteam": "Auf Steam wünschen",
-    "demoProgress": "Demo-Fortschritt"
+    "wishlistOnSteam": "Auf Steam wünschen"
   },
   "profile": {
     "title": "Menü",

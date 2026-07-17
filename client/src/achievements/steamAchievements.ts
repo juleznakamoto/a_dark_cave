@@ -17,8 +17,6 @@ import {
   buildingChartConfig,
   itemChartConfig,
   actionChartConfig,
-  isOverallAchievementCategoryEnabled,
-  overallChartConfig,
 } from "./index";
 import { isSteamBuild } from "@/lib/edition";
 import { hasSteamBridge, steamUnlockAchievement } from "@/lib/steam";
@@ -28,7 +26,6 @@ const ALL_CONFIGS: AchievementChartConfig[] = [
   buildingChartConfig,
   itemChartConfig,
   actionChartConfig,
-  ...(isOverallAchievementCategoryEnabled ? [overallChartConfig] : []),
 ];
 
 /** Canonical in-game achievement id → Steam API name. */
