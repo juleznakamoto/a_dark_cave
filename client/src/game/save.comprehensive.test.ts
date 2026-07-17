@@ -215,13 +215,37 @@ describe('Save Game System - Comprehensive Tests', () => {
 
     it('should not update lastCloudState when cloud save fails', async () => {
       const auth = await import('./auth');
-      vi.mocked(auth.getCurrentUser).mockResolvedValue({ id: 'user-1', email: 'test@example.com' });
-      vi.mocked(auth.saveGameToSupabase).mockRejectedValue(new Error('Network error'));
+      const supabase = await import('@/lib/supabase');
+      const state = await import('./state');
+      vi.mocked(auth.getCurrentUser).mockResolvedValue({
+        id: 'user-1',
+        email: 'test@example.com',
+      } as any);
+      vi.mocked(state.useGameStore.getState).mockReturnValue({
+        inactivityDialogOpen: false,
+        isUserSignedIn: true,
+        getAndResetClickAnalytics: vi.fn().mockReturnValue(null),
+        getAndResetResourceAnalytics: vi.fn().mockReturnValue(null),
+      } as any);
+      vi.mocked(supabase.getSupabaseClient).mockResolvedValue({
+        auth: {
+          getSession: vi.fn().mockResolvedValue({
+            data: { session: { access_token: 'tok' } },
+          }),
+        },
+        functions: {
+          invoke: vi.fn().mockResolvedValue({
+            data: null,
+            error: { message: 'Network error' },
+          }),
+        },
+      } as any);
 
-      await saveGame(createMockGameState(), true);
+      const result = await saveGame(createMockGameState(), true);
 
+      expect(result).toEqual({ cloudSaved: false });
       const lastCloudStateCalls = mockPut.mock.calls.filter(
-        (call: any) => call[2] === 'lastCloudState'
+        (call: any) => call[0] === 'lastCloudState' || call[2] === 'lastCloudState',
       );
       expect(lastCloudStateCalls.length).toBe(0);
     });
@@ -253,7 +277,9 @@ describe('Save Game System - Comprehensive Tests', () => {
         new Error('v2 boom'),
       );
 
-      await expect(saveGame(createMockGameState(), true)).resolves.toBeUndefined();
+      await expect(saveGame(createMockGameState(), true)).resolves.toEqual({
+        cloudSaved: expect.any(Boolean),
+      });
       expect(readMainSave(mockStores)).toBeDefined();
       expect(readMainSave(mockStores)!.playTime).toBe(1000);
     });
