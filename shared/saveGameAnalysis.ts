@@ -73,7 +73,8 @@ export type SaveGameIssue = {
 
 export type SaveGameAnalysisInput = {
   id?: string;
-  user_id: string;
+  /** Null when the account was anonymized / deleted (migration 009). */
+  user_id: string | null;
   username?: string | null;
   updated_at: string;
   created_at: string;
@@ -87,7 +88,7 @@ export type SaveGameAnalysisInput = {
 
 export type SaveGameAnalysisRow = {
   id?: string;
-  user_id: string;
+  user_id: string | null;
   username?: string | null;
   updated_at: string;
   created_at: string;
@@ -130,7 +131,7 @@ export type SaveV2CompareStatus =
   | "invalid_legacy";
 
 export type SaveV2CompareRow = {
-  user_id: string;
+  user_id: string | null;
   username?: string | null;
   status: SaveV2CompareStatus;
   details: string[];

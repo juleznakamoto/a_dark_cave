@@ -124,7 +124,7 @@ export async function fetchAdminSaveAnalysisInputs(
 ) {
   type SaveAnalysisRow = {
     id: string;
-    user_id: string;
+    user_id: string | null;
     username: string | null;
     game_state: unknown;
     game_stats: unknown;

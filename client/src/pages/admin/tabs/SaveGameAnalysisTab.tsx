@@ -29,6 +29,18 @@ const ISSUE_LABELS: Record<SaveGameIssueKind, string> = {
   population_mismatch: "Villagers exceed housing cap",
 };
 
+/** `user_id` can be null after account anonymization (migration 009). */
+function formatSaveUserLabel(row: {
+  username?: string | null;
+  user_id?: string | null;
+  id?: string;
+}): string {
+  if (row.username) return row.username;
+  if (row.user_id) return `${row.user_id.slice(0, 8)}…`;
+  if (row.id) return `anon:${row.id.slice(0, 8)}…`;
+  return "anonymous";
+}
+
 interface SaveGameAnalysisTabProps {
   environment: "dev" | "prod";
 }
@@ -222,10 +234,13 @@ export default function SaveGameAnalysisTab({
                     </tr>
                   </thead>
                   <tbody>
-                    {analysis.v2Compare.rows.slice(0, 40).map((row) => (
-                      <tr key={row.user_id} className="border-b border-border/60">
+                    {analysis.v2Compare.rows.slice(0, 40).map((row, idx) => (
+                      <tr
+                        key={row.user_id ?? `v2-${idx}`}
+                        className="border-b border-border/60"
+                      >
                         <td className="py-2 pr-3 font-mono text-xs">
-                          {row.username ?? row.user_id.slice(0, 8)}
+                          {formatSaveUserLabel(row)}
                         </td>
                         <td className="py-2 pr-3">{row.status}</td>
                         <td className="py-2 pr-3 font-mono tabular-nums">
@@ -292,13 +307,16 @@ export default function SaveGameAnalysisTab({
                 </tr>
               </thead>
               <tbody>
-                {issueRows.map((row) => (
-                  <tr key={row.id ?? row.user_id} className="border-b align-top">
+                {issueRows.map((row, idx) => (
+                  <tr
+                    key={row.id ?? row.user_id ?? `issue-${idx}`}
+                    className="border-b align-top"
+                  >
                     <td className="py-2 pr-3 whitespace-nowrap font-mono text-xs">
                       {row.updated_at.slice(0, 19)}
                     </td>
                     <td className="py-2 pr-3 font-mono text-xs max-w-[140px] truncate">
-                      {row.username ?? row.user_id.slice(0, 8) + "…"}
+                      {formatSaveUserLabel(row)}
                     </td>
                     <td className="py-2 pr-3 tabular-nums">
                       {row.playmin != null ? `${row.playmin}m` : "—"}
@@ -368,13 +386,16 @@ export default function SaveGameAnalysisTab({
               <tbody>
                 {analysis.rows
                   .filter((row) => row.issues.length === 0)
-                  .map((row) => (
-                    <tr key={row.id ?? row.user_id} className="border-b">
+                  .map((row, idx) => (
+                    <tr
+                      key={row.id ?? row.user_id ?? `clean-${idx}`}
+                      className="border-b"
+                    >
                       <td className="py-2 pr-3 font-mono text-xs">
                         {row.updated_at.slice(0, 19)}
                       </td>
                       <td className="py-2 pr-3 font-mono text-xs">
-                        {row.username ?? row.user_id.slice(0, 8) + "…"}
+                        {formatSaveUserLabel(row)}
                       </td>
                       <td className="py-2 pr-3 tabular-nums">
                         {row.playmin != null ? `${row.playmin}m` : "—"}
