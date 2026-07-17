@@ -1108,9 +1108,9 @@ const mergeStateUpdates = (
     lifetimePlayTimeMs:
       stateUpdates.lifetimePlayTimeMs !== undefined
         ? Math.max(
-            stateUpdates.lifetimePlayTimeMs,
-            prevState.lifetimePlayTimeMs ?? 0,
-          )
+          stateUpdates.lifetimePlayTimeMs,
+          prevState.lifetimePlayTimeMs ?? 0,
+        )
         : (prevState.lifetimePlayTimeMs ?? 0),
     // Merchant trades state
     merchantTrades: stateUpdates.merchantTrades || prevState.merchantTrades,
@@ -2515,17 +2515,12 @@ export const useGameStore = create<GameStore>((set, get) => ({
             const slotIndex = getNextPurchasablePresetSlotIndex(state);
             if (slotIndex !== null) {
               const insightBefore = getInsightPurchasedPresetCount(state);
-              const currentIndex = state.activePresetSlot - 1;
               const nextPurchased = insightBefore + 1;
+              // Select the new slot so save targets it without an extra click.
               presetUnlockUpdate = {
                 villagerPresetsPurchased: nextPurchased,
+                activePresetSlot: slotIndex + 1,
               };
-              if (
-                !isPresetSlotUnlocked(state, currentIndex) ||
-                currentIndex >= nextPurchased
-              ) {
-                presetUnlockUpdate.activePresetSlot = slotIndex + 1;
-              }
             }
           } else if (actionId === QUEUE_SLOT_UNLOCK_INSIGHT_KEY) {
             const slotIndex = getNextPurchasableQueueSlotIndex(state);
@@ -3082,7 +3077,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
         // Seed lifetime from current-run playTime for older saves that lack the field
         lifetimePlayTimeMs: Math.max(
           (savedState as { lifetimePlayTimeMs?: number }).lifetimePlayTimeMs ??
-            0,
+          0,
           loadedPlayTime || 0,
         ),
         merchantTrades: savedState.merchantTrades || {

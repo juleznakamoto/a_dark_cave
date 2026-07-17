@@ -322,4 +322,63 @@ describe("purchaseVillagerPresetSlot", () => {
     expect(after.activePresetSlot).toBe(1);
     expect(after.insightRevealing[PRESET_UNLOCK_INSIGHT_KEY]).toBeUndefined();
   });
+
+  it("selects the newly unlocked slot even when another slot is already active", () => {
+    useGameStore.setState({
+      buildings: {
+        ...useGameStore.getState().buildings,
+        scribesOffice: 1,
+      },
+      villagerPresetsPurchased: 1,
+      activePresetSlot: 1,
+      insightRevealing: {
+        [PRESET_UNLOCK_INSIGHT_KEY]: Date.now() - 1,
+      },
+    });
+
+    useGameStore.getState().tickCooldowns();
+
+    const after = useGameStore.getState();
+    expect(after.villagerPresetsPurchased).toBe(2);
+    expect(after.activePresetSlot).toBe(2);
+  });
+
+  it("saves and applies a second unlocked preset slot", () => {
+    useGameStore.setState({
+      buildings: {
+        ...useGameStore.getState().buildings,
+        scribesOffice: 1,
+      },
+      villagerPresetsPurchased: 2,
+      activePresetSlot: 1,
+      villagers: {
+        ...useGameStore.getState().villagers,
+        free: 5,
+        gatherer: 3,
+        hunter: 0,
+      },
+    });
+
+    useGameStore.getState().saveVillagerJobPreset(2);
+    expect(useGameStore.getState().activePresetSlot).toBe(2);
+    expect(
+      useGameStore.getState().villagerJobPresets?.[1]?.assignments,
+    ).toEqual({ gatherer: 3 });
+
+    useGameStore.setState({
+      villagers: {
+        ...useGameStore.getState().villagers,
+        free: 8,
+        gatherer: 0,
+        hunter: 0,
+      },
+      activePresetSlot: 1,
+    });
+
+    useGameStore.getState().applyVillagerJobPreset(2);
+    const after = useGameStore.getState();
+    expect(after.activePresetSlot).toBe(2);
+    expect(after.villagers.gatherer).toBe(3);
+    expect(after.villagers.free).toBe(5);
+  });
 });

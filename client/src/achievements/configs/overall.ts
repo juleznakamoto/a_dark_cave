@@ -26,7 +26,12 @@ function asSocialPromoSlice(state: GameState): SocialPromoExclusiveSlice {
 /**
  * Meta / overall achievements: persist across new games, never claimable.
  * Counts come from account-level flags / lifetime stats on the game state.
+ *
+ * Dev-only until this category is ready to ship — keep UI, progress %, share
+ * card, and Steam sync behind this flag.
  */
+export const isOverallAchievementCategoryEnabled = import.meta.env.DEV;
+
 export const overallChartConfig: AchievementChartConfig = {
   idPrefix: "overall",
   centerSymbol: "✦",
@@ -64,22 +69,22 @@ export const overallChartConfig: AchievementChartConfig = {
       },
       ...(isWebBuild
         ? [
-            {
-              segmentId: "0-supporter",
-              maxCount: SOCIAL_PROMO_EXCLUSIVE_STEP_TOTAL,
-              label: "Supporter",
-              getCount: (state: GameState) => {
-                const slice = asSocialPromoSlice(state);
-                if (isSocialPromoExclusiveRewardComplete(slice)) {
-                  return SOCIAL_PROMO_EXCLUSIVE_STEP_TOTAL;
-                }
-                return Math.min(
-                  SOCIAL_PROMO_EXCLUSIVE_STEP_TOTAL,
-                  socialPromoExclusiveStepsCompleted(slice),
-                );
-              },
+          {
+            segmentId: "0-supporter",
+            maxCount: SOCIAL_PROMO_EXCLUSIVE_STEP_TOTAL,
+            label: "Supporter",
+            getCount: (state: GameState) => {
+              const slice = asSocialPromoSlice(state);
+              if (isSocialPromoExclusiveRewardComplete(slice)) {
+                return SOCIAL_PROMO_EXCLUSIVE_STEP_TOTAL;
+              }
+              return Math.min(
+                SOCIAL_PROMO_EXCLUSIVE_STEP_TOTAL,
+                socialPromoExclusiveStepsCompleted(slice),
+              );
             },
-          ]
+          },
+        ]
         : []),
     ],
   ],

@@ -5,6 +5,7 @@ import {
   buildingChartConfig,
   itemChartConfig,
   actionChartConfig,
+  isOverallAchievementCategoryEnabled,
   overallChartConfig,
 } from "./index";
 
@@ -14,7 +15,7 @@ export const ACHIEVEMENT_CHART_CONFIGS: AchievementChartConfig[] = [
   buildingChartConfig,
   itemChartConfig,
   actionChartConfig,
-  overallChartConfig,
+  ...(isOverallAchievementCategoryEnabled ? [overallChartConfig] : []),
 ];
 
 interface CompletionTally {

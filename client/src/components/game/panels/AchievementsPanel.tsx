@@ -16,6 +16,7 @@ import {
   itemChartConfig,
   actionChartConfig,
   basicChartConfig,
+  isOverallAchievementCategoryEnabled,
   overallChartConfig,
 } from "@/achievements";
 import { getAchievementRows, claimAchievement, formatRewardsTooltip } from "@/achievements/achievementHelpers";
@@ -355,7 +356,15 @@ export default function AchievementsPanel() {
   const bookOfTrials = useGameStore((s) => s.books?.book_of_trials);
   const survivorsNotes = useGameStore((s) => s.relics?.survivors_notes);
   const hasBasicTab = !!survivorsNotes || !!bookOfTrials;
-  const tabCount = (hasBasicTab ? 1 : 0) + 4; // basic? + building/item/action + overall (last)
+  const showOverallTab = isOverallAchievementCategoryEnabled;
+  // basic? + building/item/action + overall? (overall is last when enabled)
+  const tabCount = (hasBasicTab ? 1 : 0) + 3 + (showOverallTab ? 1 : 0);
+  const tabGridClass =
+    tabCount === 5
+      ? "grid-cols-5"
+      : tabCount === 4
+        ? "grid-cols-4"
+        : "grid-cols-3";
   const [activeTab, setActiveTab] = useState(hasBasicTab ? "basic" : "building");
   const effectiveTab = hasBasicTab
     ? activeTab
@@ -372,8 +381,7 @@ export default function AchievementsPanel() {
         className="flex h-full flex-col flex-1 min-h-0 overflow-hidden"
       >
         <TabsList
-          className={`sticky top-0 z-10 grid w-full mb-2 shrink-0 overflow-visible h-auto min-h-12 bg-transparent py-1 pl-2 ${tabCount === 5 ? "grid-cols-5" : "grid-cols-4"
-            }`}
+          className={`sticky top-0 z-10 grid w-full mb-2 shrink-0 overflow-visible h-auto min-h-12 bg-transparent py-1 pl-2 ${tabGridClass}`}
         >
           {hasBasicTab && (
             <TabsTrigger value="basic" className={TAB_TRIGGER_CLASS}>
@@ -409,15 +417,17 @@ export default function AchievementsPanel() {
             chartUnavailable={chartUnavailable}
             centerSymbolClassName="pt-1"
           />
-          <TabsTrigger value="overall" className={TAB_TRIGGER_CLASS}>
-            <ChartErrorBoundary unavailableLabel={chartUnavailable}>
-              <AchievementMiniRingChart
-                config={overallChartConfig}
-                isActive={effectiveTab === "overall"}
-                centerSymbolClassName="pt-0.5"
-              />
-            </ChartErrorBoundary>
-          </TabsTrigger>
+          {showOverallTab && (
+            <TabsTrigger value="overall" className={TAB_TRIGGER_CLASS}>
+              <ChartErrorBoundary unavailableLabel={chartUnavailable}>
+                <AchievementMiniRingChart
+                  config={overallChartConfig}
+                  isActive={effectiveTab === "overall"}
+                  centerSymbolClassName="pt-0.5"
+                />
+              </ChartErrorBoundary>
+            </TabsTrigger>
+          )}
         </TabsList>
         {hasBasicTab && (
           <TabsContent value="basic" className="mt-0 flex-1 min-h-0 data-[state=inactive]:hidden flex flex-col overflow-hidden">
@@ -433,11 +443,13 @@ export default function AchievementsPanel() {
         <TabsContent value="action" className="mt-0 flex-1 min-h-0 data-[state=inactive]:hidden flex flex-col overflow-hidden">
           {effectiveTab === "action" && <AchievementTabContent config={actionChartConfig} tabId="action" />}
         </TabsContent>
-        <TabsContent value="overall" className="mt-0 flex-1 min-h-0 data-[state=inactive]:hidden flex flex-col overflow-hidden">
-          {effectiveTab === "overall" && (
-            <AchievementTabContent config={overallChartConfig} tabId="overall" />
-          )}
-        </TabsContent>
+        {showOverallTab && (
+          <TabsContent value="overall" className="mt-0 flex-1 min-h-0 data-[state=inactive]:hidden flex flex-col overflow-hidden">
+            {effectiveTab === "overall" && (
+              <AchievementTabContent config={overallChartConfig} tabId="overall" />
+            )}
+          </TabsContent>
+        )}
       </Tabs>
     </div>
   );

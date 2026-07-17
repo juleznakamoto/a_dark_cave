@@ -2,7 +2,10 @@ import { getUnclaimedBuildingIds, buildingChartConfig } from "./configs/building
 import { getUnclaimedItemIds, itemChartConfig } from "./configs/item";
 import { getUnclaimedActionIds, actionChartConfig } from "./configs/action";
 import { getUnclaimedBasicIds, basicChartConfig } from "./configs/basic";
-import { overallChartConfig } from "./configs/overall";
+import {
+  isOverallAchievementCategoryEnabled,
+  overallChartConfig,
+} from "./configs/overall";
 
 /**
  * Returns IDs of achievements that are full (claimable) but not yet claimed.
@@ -32,6 +35,7 @@ export {
   itemChartConfig,
   actionChartConfig,
   basicChartConfig,
+  isOverallAchievementCategoryEnabled,
   overallChartConfig,
 };
 
