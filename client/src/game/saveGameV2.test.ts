@@ -20,7 +20,11 @@ vi.mock("@/lib/logger", () => ({
   },
 }));
 
-import { dualWriteSaveGameV2, SAVE_SCHEMA_VERSION_V2 } from "./saveGameV2";
+import {
+  dualWriteSaveGameV2,
+  isSaveGameV2CloudEnabled,
+  SAVE_SCHEMA_VERSION_V2,
+} from "./saveGameV2";
 import { logger } from "@/lib/logger";
 
 describe("dualWriteSaveGameV2", () => {
@@ -30,6 +34,11 @@ describe("dualWriteSaveGameV2", () => {
       auth: { getSession: mockGetSession },
       rpc: mockRpc,
     });
+  });
+
+  it("is enabled only in Vite DEV mode", () => {
+    // Vitest runs with import.meta.env.DEV === true
+    expect(isSaveGameV2CloudEnabled()).toBe(true);
   });
 
   it("no-ops without a session and never throws", async () => {
@@ -42,7 +51,7 @@ describe("dualWriteSaveGameV2", () => {
     expect(mockRpc).not.toHaveBeenCalled();
   });
 
-  it("writes full state via save_game_state_v2 RPC", async () => {
+  it("writes full state + analytics via save_game_state_v2 RPC", async () => {
     mockGetSession.mockResolvedValue({
       data: { session: { access_token: "tok" } },
     });
@@ -54,7 +63,12 @@ describe("dualWriteSaveGameV2", () => {
       resources: { wood: 10 },
     };
 
-    await dualWriteSaveGameV2(state as any);
+    await dualWriteSaveGameV2(state as any, {
+      clickAnalytics: { gather_wood: 3 },
+      resourceAnalytics: { wood: 10 },
+      clearAnalytics: false,
+      allowPlaytimeOverwrite: true,
+    });
 
     expect(mockRpc).toHaveBeenCalledWith("save_game_state_v2", {
       p_game_state: expect.objectContaining({
@@ -62,7 +76,33 @@ describe("dualWriteSaveGameV2", () => {
         tools: { stone_axe: true },
       }),
       p_schema_version: SAVE_SCHEMA_VERSION_V2,
+      p_click_analytics: { gather_wood: 3 },
+      p_resource_analytics: { wood: 10 },
+      p_clear_analytics: false,
+      p_allow_playtime_overwrite: true,
     });
+  });
+
+  it("omits empty analytics objects", async () => {
+    mockGetSession.mockResolvedValue({
+      data: { session: { access_token: "tok" } },
+    });
+    mockRpc.mockResolvedValue({ data: null, error: null });
+
+    await dualWriteSaveGameV2({ playTime: 1 } as any, {
+      clickAnalytics: {},
+      resourceAnalytics: {},
+    });
+
+    expect(mockRpc).toHaveBeenCalledWith(
+      "save_game_state_v2",
+      expect.objectContaining({
+        p_click_analytics: null,
+        p_resource_analytics: null,
+        p_clear_analytics: false,
+        p_allow_playtime_overwrite: false,
+      }),
+    );
   });
 
   it("swallows RPC errors so legacy save is unaffected", async () => {

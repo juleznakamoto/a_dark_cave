@@ -259,18 +259,14 @@ function AchievementTabContent({
   config: AchievementChartConfig;
   tabId: string;
 }) {
-  const claimedAchievements = useGameStore(
-    (s) => s.claimedAchievements || []
-  );
-  /** Heavy Sleeper reads story.heavySleeperHours (+ legacy totalFocusEarned); keep in sync with merchant-style story fields */
-  void useGameStore(
-    (s) =>
-      (s.story?.heavySleeperHours ?? 0) + (s.totalFocusEarned ?? 0),
-  );
+  // Subscribe to the store (not getState-only): Claim buttons depend on
+  // buildings/tools/story/etc., and a narrow selector left rows stale so
+  // completed achievements never flipped to canClaim until remount.
+  const state = useGameStore((s) => s);
   const rows = getAchievementRows(
     config,
-    useGameStore.getState(),
-    claimedAchievements
+    state,
+    state.claimedAchievements || [],
   );
   const indicatorClassIncomplete = INDICATOR_CLASS_INCOMPLETE[config.idPrefix] ?? "bg-red-500/60";
   const indicatorClassComplete = INDICATOR_CLASS_COMPLETE[config.idPrefix] ?? "bg-red-800";

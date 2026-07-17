@@ -67,7 +67,7 @@ in the client; **Supabase** handles auth/cloud saves and **Stripe** handles paym
 | `client/src/game/rules/actionsRegistry.ts` | Central `gameActions` map; action modules register via `registerActions()`. |
 | `client/src/game/rules/executionTime.ts` | `getExecutionTime()` — action duration lookup without importing `rules/index` (avoids registration cycles). |
 | `client/src/game/save.ts` | Load/save orchestration: IndexedDB + Supabase cloud diff sync. |
-| `client/src/game/saveGameV2.ts` | Sidecar dual-write of full state to `game_state_v2` (never used for load yet). |
+| `client/src/game/saveGameV2.ts` | DEV-only rich sidecar dual-write (`game_state_v2` + analytics/OCC); no-op in production builds. |
 | `client/src/game/stateHelpers.ts` | Pure state mutations + `buildGameState()` + `UI_ONLY_PROPERTIES` (keys excluded from saves). |
 | `shared/schema.ts` | Zod `gameStateSchema` / `SaveData` + shared shop constants. |
 | `client/src/components/game/GameContainer.tsx` | Main game UI shell: tabs, panel switching, mounts all dialogs, hotkeys. |
@@ -184,10 +184,11 @@ shared/schema.ts— Zod GameState schema (source of truth for persisted shape)
   (XOR+Base64, `ADC2:` prefix); signed-in saves diff against last cloud state → Supabase
   (`omitPlayTimeFromDiffIfUnchanged` drops unchanged `playTime` so the server skips OCC).
   Load applies migrations (e.g. `migrateTraderShopUnlockOnLoad`). After a successful legacy
-  cloud save, **`saveGameV2.ts`** best-effort dual-writes the full blob to
-  `game_saves.game_state_v2` (+ `save_revision` / `schema_version`) via RPC `save_game_state_v2`
-  (migration `028_save_game_state_v2_sidecar.sql`). V2 failures are ignored; **load still uses
-  legacy `game_state` only**.
+  cloud save, **DEV only** (`import.meta.env.DEV`): **`saveGameV2.ts`** dual-writes the full
+  blob via rich RPC `save_game_state_v2` (migration `029_save_game_state_v2_rich_dev.sql`) —
+  playTime OCC, completion → `game_stats`, click/resource analytics, optional anti-cheat.
+  SQL no-ops unless `app_config.environment=development`. **Load still uses legacy
+  `game_state` only.** PROD clients never call V2.
 - **`auth.ts`** — Supabase auth (incl. anonymous guest-checkout via `ensureAnonymousSession`),
   `saveGameToSupabase`/`loadGameFromSupabase`, referral metadata.
 - **`shopPurchases.ts`** — Supabase `purchases` fetch/rehydrate, feast-activation merge, purchase ID helpers (used by `ShopDialog`, payment return).

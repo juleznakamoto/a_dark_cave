@@ -24,7 +24,7 @@ import {
   readSteamCloudSave,
   pickNewerSave,
 } from "./steamSaveAdapter";
-import { dualWriteSaveGameV2 } from "./saveGameV2";
+import { dualWriteSaveGameV2, isSaveGameV2CloudEnabled } from "./saveGameV2";
 
 const isDev = import.meta.env.DEV;
 
@@ -571,6 +571,13 @@ export async function saveGame(
           });
         }
 
+        // DEV rich-V2 dual-write owns analytics to avoid double-counting in button_clicks.
+        // PROD (and non-DEV): analytics stay on the legacy V1 edge path only.
+        const v2CloudEnabled = isSaveGameV2CloudEnabled();
+        const legacyClickAnalytics = v2CloudEnabled ? null : clickData;
+        const legacyResourceAnalytics = v2CloudEnabled ? null : resourceData;
+        const legacyClearAnalytics = v2CloudEnabled ? false : isNewGame;
+
         // Get last cloud state for diff calculation
         const lastCloudState = await getLastCloudState(db);
         let stateDiff = omitPlayTimeFromDiffIfUnchanged(
@@ -615,6 +622,7 @@ export async function saveGame(
           isNewGame: sanitizedState.isNewGame,
           willAllowOverwrite: allowOverwrite,
           currentPlayTime: stateDiff.playTime,
+          v2CloudEnabled,
         });
 
         // Save via Edge Function → save_game_with_analytics (deep-merges nested JSONB
@@ -630,9 +638,9 @@ export async function saveGame(
         const { data, error } = await supabaseClient.functions.invoke('save-game', {
           body: {
             gameStateDiff: stateDiff,
-            clickAnalytics: clickData,
-            resourceAnalytics: resourceData,
-            clearAnalytics: isNewGame,
+            clickAnalytics: legacyClickAnalytics,
+            resourceAnalytics: legacyResourceAnalytics,
+            clearAnalytics: legacyClearAnalytics,
             allowPlaytimeOverwrite: allowOverwrite
           }
         });
@@ -659,12 +667,19 @@ export async function saveGame(
           logger.log("[SAVE] 🔓 Cleared allowPlayTimeOverwrite flag after successful cloud save");
         }
 
-        // Sidecar V2 full-document dual-write. Never throws; never touches legacy
-        // game_state / lastCloudState / load path. Failures are logged only.
-        try {
-          await dualWriteSaveGameV2(sanitizedState);
-        } catch (v2Error) {
-          logger.warn("[SAVE V2] dual-write unexpected error (ignored):", v2Error);
+        // DEV-only rich V2 sidecar (full blob + OCC + analytics). Never throws;
+        // never changes PROD clients (isSaveGameV2CloudEnabled is false there).
+        if (v2CloudEnabled) {
+          try {
+            await dualWriteSaveGameV2(sanitizedState, {
+              clickAnalytics: clickData,
+              resourceAnalytics: resourceData,
+              clearAnalytics: isNewGame,
+              allowPlaytimeOverwrite: allowOverwrite,
+            });
+          } catch (v2Error) {
+            logger.warn("[SAVE V2] dual-write unexpected error (ignored):", v2Error);
+          }
         }
       }
     } catch (cloudError) {

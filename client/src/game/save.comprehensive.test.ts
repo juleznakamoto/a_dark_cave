@@ -71,6 +71,7 @@ vi.mock('@/lib/supabase', () => ({
 
 vi.mock('./saveGameV2', () => ({
   dualWriteSaveGameV2: vi.fn().mockResolvedValue(undefined),
+  isSaveGameV2CloudEnabled: vi.fn().mockReturnValue(false),
   SAVE_SCHEMA_VERSION_V2: 1,
 }));
 
