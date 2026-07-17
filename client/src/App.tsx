@@ -4,6 +4,7 @@ import { QueryClientProvider } from "@tanstack/react-query";
 import { queryClient } from "./lib/queryClient";
 import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
+import LazyRouteErrorBoundary from "@/components/LazyRouteErrorBoundary";
 import { initPlaylight } from "@/lib/playlight";
 import { isGalaxyEdition } from "@/lib/edition";
 
@@ -50,33 +51,35 @@ const CombatDialogDemo = lazy(() => import("@/pages/combat-dialog-demo"));
 
 function Router() {
   return (
-    <Suspense
-      fallback={
-        <div className="fixed inset-0 bg-black"></div>
-      }
-    >
-      <Switch>
-        <Route path="/" component={StartScreenPage} />
-        <Route path="/galaxy" component={StartScreenPage} />
-        <Route path="/boost" component={StartScreenPage} />
-        <Route path="/game">{() => <Redirect to="/" />}</Route>
-        <Route path="/end-screen" component={EndScreenPage} />
-        <Route path="/imprint" component={Imprint} />
-        <Route path="/privacy" component={Privacy} />
-        <Route path="/terms" component={Terms} />
-        <Route path="/withdrawal" component={Withdrawal} />
-        <Route path="/unsubscribe" component={Unsubscribe} />
-        <Route path="/reset-password" component={ResetPassword} />
-        <Route path="/admin/dashboard" component={AdminDashboard} />
-        <Route path="/dev/starship-shader" component={StarshipShaderDemo} />
-        <Route path="/dev/animations" component={AnimationsDemo} />
-        <Route path="/dev/combat-dialog" component={CombatDialogDemo} />
-        <Route path="/dev/estate-bar-upgrade">
-          {() => <Redirect to="/dev/animations#estate-bars" />}
-        </Route>
-        <Route component={NotFound} />
-      </Switch>
-    </Suspense>
+    <LazyRouteErrorBoundary label="The page failed to load.">
+      <Suspense
+        fallback={
+          <div className="fixed inset-0 bg-black"></div>
+        }
+      >
+        <Switch>
+          <Route path="/" component={StartScreenPage} />
+          <Route path="/galaxy" component={StartScreenPage} />
+          <Route path="/boost" component={StartScreenPage} />
+          <Route path="/game">{() => <Redirect to="/" />}</Route>
+          <Route path="/end-screen" component={EndScreenPage} />
+          <Route path="/imprint" component={Imprint} />
+          <Route path="/privacy" component={Privacy} />
+          <Route path="/terms" component={Terms} />
+          <Route path="/withdrawal" component={Withdrawal} />
+          <Route path="/unsubscribe" component={Unsubscribe} />
+          <Route path="/reset-password" component={ResetPassword} />
+          <Route path="/admin/dashboard" component={AdminDashboard} />
+          <Route path="/dev/starship-shader" component={StarshipShaderDemo} />
+          <Route path="/dev/animations" component={AnimationsDemo} />
+          <Route path="/dev/combat-dialog" component={CombatDialogDemo} />
+          <Route path="/dev/estate-bar-upgrade">
+            {() => <Redirect to="/dev/animations#estate-bars" />}
+          </Route>
+          <Route component={NotFound} />
+        </Switch>
+      </Suspense>
+    </LazyRouteErrorBoundary>
   );
 }
 
