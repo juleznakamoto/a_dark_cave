@@ -1286,6 +1286,7 @@ export default function VillagePanel() {
                                     cost: formatNumber(nextUnlockCost),
                                   })}
                                   disabled={!canInteractQueueUnlock}
+                                  aria-busy={isQueueSlotUnlockAnimating}
                                   onClick={(e) => {
                                     e.stopPropagation();
                                     e.preventDefault();
@@ -1294,16 +1295,7 @@ export default function VillagePanel() {
                                     }
                                   }}
                                 >
-                                  <BuildingActionBadge
-                                    key={
-                                      isQueueSlotUnlockAnimating
-                                        ? "reveal"
-                                        : "idle"
-                                    }
-                                    playing={isQueueSlotUnlockAnimating}
-                                    embedded
-                                    size="lg"
-                                  />
+                                  <BuildingActionBadge embedded size="lg" />
                                 </button>
                               </TooltipWrapper>
                             )}
@@ -2000,7 +1992,7 @@ export default function VillagePanel() {
                             tooltipContentClassName="text-white"
                             className="inline-flex items-center"
                             tooltipTriggerClassName={
-                              GAME_PANEL_HEADER_INDICATOR_TRIGGER_CLASS
+                              INSIGHT_BADGE_TOOLTIP_TRIGGER_CLASS
                             }
                             disabled={!canInteractPresetUnlock}
                             onMouseEnter={() => {
@@ -2025,6 +2017,7 @@ export default function VillagePanel() {
                                 cost: formatNumber(nextUnlockCost),
                               })}
                               disabled={!canInteractPresetUnlock}
+                              aria-busy={isPresetUnlockAnimating}
                               onClick={(e) => {
                                 e.stopPropagation();
                                 e.preventDefault();
@@ -2033,14 +2026,7 @@ export default function VillagePanel() {
                                 }
                               }}
                             >
-                              <BuildingActionBadge
-                                key={
-                                  isPresetUnlockAnimating ? "reveal" : "idle"
-                                }
-                                playing={isPresetUnlockAnimating}
-                                embedded
-                                size="lg"
-                              />
+                              <BuildingActionBadge embedded size="lg" />
                             </button>
                           </TooltipWrapper>
                         )}
