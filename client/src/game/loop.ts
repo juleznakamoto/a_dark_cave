@@ -1319,11 +1319,7 @@ async function handleAutoSave() {
   const gameState: GameState = buildGameState(state);
 
   try {
-    // If this is a new game, save playTime as the current session time only
-    // Otherwise, save the accumulated playTime
-    const playTimeToSave = state.isNewGame ? 0 : state.playTime;
-
-    await saveGame(gameState, playTimeToSave);
+    await saveGame(gameState, true);
     const timestamp = formatSaveTimestamp();
 
     useGameStore.setState({
@@ -1494,10 +1490,7 @@ export async function manualSave() {
   const gameState: GameState = buildGameState(state);
 
   try {
-    // If this is a new game, save playTime as 0 to reset the counter
-    // Otherwise, save the accumulated playTime
-    const playTimeToSave = state.isNewGame ? 0 : state.playTime;
-    await saveGame(gameState, playTimeToSave);
+    await saveGame(gameState, false);
     const now = new Date().toLocaleTimeString();
     useGameStore.setState({ lastSaved: now, isNewGame: false });
   } catch (error) {

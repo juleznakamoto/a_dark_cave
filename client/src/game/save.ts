@@ -445,6 +445,11 @@ async function processUnclaimedReferralsImpl(
   }
 }
 
+/**
+ * Persist game state locally (and to cloud when signed in).
+ * @param isAutosave When true, also flush resource analytics to the cloud payload.
+ *   Pass an explicit boolean — never playTime or other numbers.
+ */
 export async function saveGame(
   gameState: GameState,
   isAutosave: boolean = true,

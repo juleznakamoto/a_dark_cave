@@ -291,7 +291,7 @@ export default function EstatePanel() {
 
     // Immediately save to Supabase so user can close tab
     const { saveGame } = await import("@/game/save");
-    await saveGame(currentState, currentState.playTime);
+    await saveGame(currentState, false);
 
     setIdleModeDialog(true);
   };
