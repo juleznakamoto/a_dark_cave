@@ -28,12 +28,13 @@ import {
   applySaveBoost,
   canApplySaveBoost,
 } from "@/game/boost";
-import { HARD_RELOAD_CACHE_BUST_PARAM } from "@/lib/hardReload";
+import { hardReload } from "@/lib/hardReload";
 
 export default function Game() {
   const initialize = useGameStore((state) => state.initialize);
   const { setShopDialogOpen, setIsUserSignedIn } = useGameStore();
   const [isInitialized, setIsInitialized] = useState(false);
+  const [initError, setInitError] = useState<string | null>(null);
   const [emailConfirmedDialogOpen, setEmailConfirmedDialogOpen] = useState(false);
   const steamEditionActive = useSteamEditionActive();
   useEffect(() => {
@@ -72,15 +73,6 @@ export default function Game() {
         if (isEmailConfirmed) {
           logger.log("[GAME PAGE] Email confirmation callback detected");
           searchParams.delete("email_confirmed");
-          const newUrl = window.location.pathname +
-            (searchParams.toString() ? `?${searchParams.toString()}` : "") +
-            window.location.hash;
-          window.history.replaceState({}, document.title, newUrl);
-        }
-
-        // Strip cache-bust param left by hardReload after an app update.
-        if (searchParams.has(HARD_RELOAD_CACHE_BUST_PARAM)) {
-          searchParams.delete(HARD_RELOAD_CACHE_BUST_PARAM);
           const newUrl = window.location.pathname +
             (searchParams.toString() ? `?${searchParams.toString()}` : "") +
             window.location.hash;
@@ -436,6 +428,7 @@ export default function Game() {
         }
       } catch (error) {
         logger.error("[GAME PAGE] Failed to initialize game:", error);
+        setInitError("The game failed to start after loading your save.");
       }
     };
 
@@ -446,6 +439,23 @@ export default function Game() {
       stopGameLoop();
     };
   }, []); // Empty dependency array - only run once on mount
+
+  if (initError) {
+    return (
+      <div className="flex min-h-screen flex-col items-center justify-center gap-4 bg-black px-6 text-center text-neutral-400">
+        <p className="max-w-md text-sm leading-relaxed">{initError}</p>
+        <button
+          type="button"
+          className="rounded border border-neutral-600 px-4 py-2 text-sm text-neutral-200 hover:border-neutral-400 hover:text-white"
+          onClick={() => {
+            void hardReload();
+          }}
+        >
+          Reload game
+        </button>
+      </div>
+    );
+  }
 
   if (!isInitialized) {
     return <div className="min-h-screen bg-black"></div>; // Black screen while loading

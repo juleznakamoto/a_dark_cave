@@ -8,6 +8,10 @@ import "./index.css";
 import { initTextScaleFromStorage } from "./lib/textScale";
 import { initTabVisibilityClass } from "./lib/tabVisibility";
 import { installSuppressReplitFragmentWarnings } from "./lib/suppressReplitFragmentWarnings";
+import { bootstrapAfterHardReload, hardReload, installStaleChunkAutoReload, MODULE_LOAD_RETRY_KEY } from "./lib/hardReload";
+
+bootstrapAfterHardReload();
+installStaleChunkAutoReload();
 
 installSuppressReplitFragmentWarnings();
 initTextScaleFromStorage();
@@ -50,6 +54,17 @@ if (typeof Node === "function" && Node.prototype) {
     ] as unknown as [Node, Node | null]) as T;
   } as typeof Node.prototype.insertBefore;
 }
+
+window.addEventListener("vite:preloadError", (event) => {
+  event.preventDefault();
+  try {
+    if (sessionStorage.getItem(MODULE_LOAD_RETRY_KEY)) return;
+    sessionStorage.setItem(MODULE_LOAD_RETRY_KEY, String(Date.now()));
+  } catch {
+    return;
+  }
+  void hardReload();
+});
 
 void ensureInitialLocalesLoaded().then(() => {
   createRoot(document.getElementById("root")!).render(

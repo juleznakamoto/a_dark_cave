@@ -35,7 +35,14 @@ async function checkVersion() {
   if (RUNNING_BUILD_SHA === "dev") return;
 
   const serverSha = await fetchServerSha();
-  if (!serverSha || serverSha === RUNNING_BUILD_SHA) return;
+  if (!serverSha || serverSha === RUNNING_BUILD_SHA) {
+    try {
+      sessionStorage.removeItem(RELOAD_ATTEMPT_STORAGE_KEY);
+    } catch {
+      // ignore
+    }
+    return;
+  }
 
   // A different build is deployed. Guard against reload loops: if we already
   // prompted/reloaded for this server sha in this session and are still on the old

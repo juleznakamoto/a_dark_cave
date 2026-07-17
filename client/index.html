@@ -274,6 +274,45 @@
 </head>
 
 <body>
+  <script>
+    (function () {
+      var RETRY_KEY = "adc_module_load_retry";
+
+      try {
+        var u = new URL(window.location.href);
+        if (u.searchParams.has("_cb")) {
+          u.searchParams.delete("_cb");
+          history.replaceState(
+            {},
+            document.title,
+            u.pathname + (u.search ? u.search : "") + (u.hash || ""),
+          );
+        }
+      } catch (e) {}
+
+      window.addEventListener(
+        "error",
+        function (event) {
+          var target = event.target;
+          if (!target || target.tagName !== "SCRIPT") return;
+          var src = target.src || "";
+          if (target.type !== "module" && !/\.js(\?|$)/i.test(src)) return;
+          try {
+            if (sessionStorage.getItem(RETRY_KEY)) return;
+            sessionStorage.setItem(RETRY_KEY, String(Date.now()));
+          } catch (err) {
+            return;
+          }
+          try {
+            var retryUrl = new URL(window.location.href);
+            retryUrl.searchParams.set("_cb", String(Date.now()));
+            location.replace(retryUrl.toString());
+          } catch (err2) {}
+        },
+        true,
+      );
+    })();
+  </script>
   <div id="root"></div>
   <main id="seo-fallback" aria-hidden="true" style="display: none">
     <h1 style="color: #444444">

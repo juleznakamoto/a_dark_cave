@@ -1,8 +1,11 @@
 import { useEffect, useState, Suspense, lazy } from "react";
 import StartScreen from "@/components/game/StartScreen";
+import LazyRouteErrorBoundary from "@/components/LazyRouteErrorBoundary";
 import { useGameStore } from "@/game/state";
 import { isDemoEdition } from "@/lib/edition";
 import { isDemoLimitReachedFromState } from "@/game/demoLimit";
+import { HARD_RELOAD_CACHE_BUST_PARAM } from "@/lib/hardReload";
+import { logger } from "@/lib/logger";
 
 // Lazy load Game component - only loaded when needed
 const Game = lazy(() => import("@/pages/game"));
@@ -20,6 +23,14 @@ export default function StartScreenPage() {
   useEffect(() => {
     const checkGameState = async () => {
       const searchParams = new URLSearchParams(window.location.search);
+      if (searchParams.has(HARD_RELOAD_CACHE_BUST_PARAM)) {
+        searchParams.delete(HARD_RELOAD_CACHE_BUST_PARAM);
+        const cleanUrl =
+          window.location.pathname +
+          (searchParams.toString() ? `?${searchParams.toString()}` : "") +
+          window.location.hash;
+        window.history.replaceState({}, document.title, cleanUrl);
+      }
       // Stripe PayPal (etc.): return URL includes these; we must load Game to verify and update state
       if (
         searchParams.get("payment_intent") &&
@@ -42,7 +53,12 @@ export default function StartScreenPage() {
 
       // Load saved game state to check if game has already started
       try {
-        await useGameStore.getState().loadGame();
+        await Promise.race([
+          useGameStore.getState().loadGame(),
+          new Promise<void>((_, reject) =>
+            setTimeout(() => reject(new Error("loadGame timeout")), 15000),
+          ),
+        ]);
         // After loading, check if game has started
         const currentFlags = useGameStore.getState().flags;
         if (currentFlags.gameStarted) {
@@ -55,8 +71,7 @@ export default function StartScreenPage() {
           setShouldLoadGame(true);
         }
       } catch (error) {
-        // If loading fails, just show start screen
-        console.error("Failed to check saved game state:", error);
+        logger.error("Failed to check saved game state:", error);
       } finally {
         setIsChecking(false);
       }
@@ -80,9 +95,11 @@ export default function StartScreenPage() {
   // Dynamically load Game component only when needed
   if (shouldLoadGame) {
     return (
-      <Suspense fallback={<div className="min-h-screen bg-black"></div>}>
-        <Game />
-      </Suspense>
+      <LazyRouteErrorBoundary label="The game failed to load after an update.">
+        <Suspense fallback={<div className="min-h-screen bg-black"></div>}>
+          <Game />
+        </Suspense>
+      </LazyRouteErrorBoundary>
     );
   }
 
