@@ -599,6 +599,12 @@ export async function saveGame(
         // Same for villagers — otherwise lastCloudState desync leaves V1 job counts stale
         // while V2 (full blob) is correct (same playTime, different villagers).
         stateDiff.villagers = sanitizedState.villagers;
+        // Critical progression slices — V1 deep-merge never learns keys the diff omitted
+        // (seen as sparse V1 vs full V2 in admin compare, e.g. missing `flags`).
+        stateDiff.flags = sanitizedState.flags;
+        stateDiff.buildings = sanitizedState.buildings;
+        stateDiff.story = sanitizedState.story;
+        stateDiff.resources = sanitizedState.resources;
 
         // Execution / expedition slices use delete semantics (completed actions remove
         // keys). Cloud save uses JSONB deep-merge, so partial diffs cannot express

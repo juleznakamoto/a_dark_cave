@@ -391,7 +391,7 @@ rate-limited `/api/*` routes.
 | `/api/marketing/*` | `marketing.ts` | Email prefs, unsubscribe |
 | `/api/leaderboard/*`, `/api/account/*`, `/api/session/ping` | inline + Supabase | Leaderboard, account deletion, session heartbeat |
 | `/api/gender` | proxies `services/gender-service/app.py` | First-name gender for marketing CSVs |
-| `/api/admin/*` | inline + `server/adminDashboardData.ts` | Admin dashboard: split endpoints (`metrics`, `dau`, `saves`, `save-analysis`, `clicks`, `purchases`); Resend marketing CSV download + sync; saves return slim `game_state` projection; `save-analysis` runs `shared/saveGameAnalysis.ts` on last 100 full saves (legacy integrity + full top-level deep compare of `game_state` vs `game_state_v2`; lazy-loaded tab) |
+| `/api/admin/*` | inline + `server/adminDashboardData.ts` | Admin dashboard: split endpoints (`metrics`, `dau`, `saves`, `save-analysis`, `clicks`, `purchases`); Resend marketing CSV download + sync; saves return slim `game_state` projection; `save-analysis` runs `shared/saveGameAnalysis.ts` on last 100 full saves (legacy integrity + V1/V2 compare; value `mismatch` vs `shape_drift` vs `expected_noise`; issue table is value mismatch/invalid only; lazy-loaded tab) |
 | `/api/config` | inline | Public Supabase keys |
 | `/api/version` | inline | Deploy build sha + semver (`no-store`; client compares against `__BUILD_SHA__`) |
 

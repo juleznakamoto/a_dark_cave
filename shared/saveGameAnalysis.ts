@@ -112,8 +112,8 @@ export type SaveGameAnalysisSummary = {
 };
 
 /**
- * High-signal slices listed first in mismatch details (full compare still covers
- * every top-level key).
+ * High-signal slices listed first in mismatch details (full compare still
+ * covers every top-level key; expected-noise keys are classified separately).
  */
 export const SAVE_V2_COMPARE_SLICES = [
   "playTime",
@@ -126,12 +126,85 @@ export const SAVE_V2_COMPARE_SLICES = [
   "flags",
 ] as const;
 
-/** Cap mismatch detail keys in the admin payload (full set can be large). */
+/**
+ * Keys whose V1/V2 drift is expected during dual-write soak (not cutover blockers).
+ * Still detected and counted as `expected_noise`, not treated as `mismatch`:
+ * - UI-only store fields (stripped by `buildGameState` for V2; often still on V1)
+ * - Transient / delete-semantic maps that V1 deep-merge cannot prune
+ * - Client analytics buffers not part of gameplay state
+ *
+ * Keep UI keys in sync with `UI_ONLY_PROPERTIES` in `client/src/game/stateHelpers.ts`.
+ */
+export const SAVE_V2_COMPARE_EXPECTED_NOISE_KEYS = new Set<string>([
+  // UI_ONLY_PROPERTIES (+ shopCruelModeHighlight from dialog reset)
+  "activeTab",
+  "devMode",
+  "devGameMode",
+  "lastSaved",
+  "eventDialog",
+  "combatDialog",
+  "authDialogOpen",
+  "shopDialogOpen",
+  "shopCruelModeHighlight",
+  "investDialogOpen",
+  "investmentResultDialog",
+  "idleModeDialog",
+  "inactivityDialogOpen",
+  "inactivityReason",
+  "restartGameDialogOpen",
+  "deleteAccountDialogOpen",
+  "settingsDialogOpen",
+  "playlightWelcomeDialogOpen",
+  "feedbackDialogOpen",
+  "socialPromptDialogOpen",
+  "signUpPromptEligibleForGold",
+  "resourceChangeEvents",
+  "current_population",
+  "total_population",
+  "gamblerDiceDialogOpen",
+  "rewardDialog",
+  "leaderboardDialogOpen",
+  "shareDialogOpen",
+  "fullGamePurchaseDialogOpen",
+  "galaxyTimeUpDialogOpen",
+  "shopCheckoutItemId",
+  "madnessDialog",
+  "insightPotionDialog",
+  "villageEffectDialog",
+  "insightRevealing",
+  "_completingExecution",
+  // Transient / merge ghosts (V1 deep-merge vs V2 full replace)
+  "cooldowns",
+  "initialCooldowns",
+  "cooldownDurations",
+  "executionStartTimes",
+  "executionDurations",
+  "executionAbortEligible",
+  "executionSpendSnapshots",
+  "expeditionVillagers",
+  "effects",
+  "timedEventTab",
+  "constructionBoostsUsed",
+  "miningBoostState",
+  // Non-gameplay buffers
+  "clickAnalytics",
+  "isPaused",
+]);
+
+/** Cap detail keys in the admin payload (full set can be large). */
 const SAVE_V2_MISMATCH_DETAILS_CAP = 40;
 
 export type SaveV2CompareStatus =
   | "missing_v2"
   | "match"
+  /** Core gameplay keys match; only UI/transient/analytics keys differ. */
+  | "expected_noise"
+  /**
+   * Keys present on only one side (usually V1 diff-save sparsity vs V2 full blob).
+   * Not a value conflict — both sides agree where they overlap.
+   */
+  | "shape_drift"
+  /** Same key on both sides with different values (cutover-relevant). */
   | "mismatch"
   | "invalid_v2"
   | "invalid_legacy";
@@ -140,10 +213,19 @@ export type SaveV2CompareRow = {
   user_id: string | null;
   username?: string | null;
   status: SaveV2CompareStatus;
-  /** Differing top-level keys (and v1-only / v2-only markers). */
+  /**
+   * Primary detail keys for this status:
+   * - mismatch → gameplay value diffs
+   * - shape_drift → gameplay presence-only diffs
+   * - expected_noise → noise key diffs
+   */
   details: string[];
-  /** Total differing keys before details cap (null when not a mismatch). */
+  /** Gameplay value diffs before details cap (null when none). */
   mismatchCount: number | null;
+  /** Gameplay presence-only diffs (v1-only / v2-only); null when none. */
+  shapeDriftCount: number | null;
+  /** Expected-noise key diffs (null when none). Present alongside mismatch too. */
+  expectedNoiseCount: number | null;
   save_revision: number | null;
   schema_version: number | null;
 };
@@ -153,10 +235,14 @@ export type SaveV2CompareSummary = {
   withV2: number;
   missingV2: number;
   match: number;
+  /** Rows with only UI/transient/analytics drift (still dual-write OK). */
+  expectedNoise: number;
+  /** Rows whose only non-noise diffs are key presence (V1 sparse vs V2 full). */
+  shapeDrift: number;
   mismatch: number;
   invalidV2: number;
   invalidLegacy: number;
-  /** Non-match rows (and optionally matches omitted to keep payload small). */
+  /** Real issues only (value mismatch / invalid). Other buckets are counts only. */
   rows: SaveV2CompareRow[];
 };
 
@@ -471,11 +557,21 @@ function prioritizeMismatchDetails(keys: string[]): string[] {
   return [...criticalHits, ...rest];
 }
 
+function capDetailKeys(keys: string[]): string[] {
+  const ordered = prioritizeMismatchDetails(keys);
+  const details = ordered.slice(0, SAVE_V2_MISMATCH_DETAILS_CAP);
+  if (ordered.length > SAVE_V2_MISMATCH_DETAILS_CAP) {
+    details.push(`…+${ordered.length - SAVE_V2_MISMATCH_DETAILS_CAP} more`);
+  }
+  return details;
+}
+
 /**
- * Full top-level deep compare of legacy `game_state` vs sidecar `game_state_v2`.
- * Every key on either side is checked (nested values via canonical JSON).
- * Mismatches are expected while V1 deep-merge drifts from the client full blob;
- * this is a cutover readiness signal, not a load-path change.
+ * Top-level deep compare of legacy `game_state` vs sidecar `game_state_v2`.
+ *
+ * - Value conflicts on shared gameplay keys → `mismatch` (cutover signal)
+ * - Key only on one side → `shape_drift` (V1 diff sparsity vs V2 full blob)
+ * - UI / transient / analytics keys → `expected_noise`
  */
 export function compareLegacyVsV2Row(
   row: SaveGameAnalysisInput,
@@ -495,6 +591,8 @@ export function compareLegacyVsV2Row(
     save_revision: revision,
     schema_version: schemaVersion,
     mismatchCount: null as number | null,
+    shapeDriftCount: null as number | null,
+    expectedNoiseCount: null as number | null,
   };
 
   const legacy = asObject(row.game_state);
@@ -526,35 +624,58 @@ export function compareLegacyVsV2Row(
   const a = normalizeGameStateForCompare(legacy);
   const b = normalizeGameStateForCompare(v2);
   const allKeys = new Set([...Object.keys(a), ...Object.keys(b)]);
-  const mismatched: string[] = [];
+  const valueMismatches: string[] = [];
+  const shapeDrifts: string[] = [];
+  const expectedNoise: string[] = [];
 
   for (const key of allKeys) {
     const inA = Object.prototype.hasOwnProperty.call(a, key);
     const inB = Object.prototype.hasOwnProperty.call(b, key);
+    const isNoise = SAVE_V2_COMPARE_EXPECTED_NOISE_KEYS.has(key);
+
     if (!inA) {
-      mismatched.push(`${key} (v2-only)`);
+      (isNoise ? expectedNoise : shapeDrifts).push(`${key} (v2-only)`);
       continue;
     }
     if (!inB) {
-      mismatched.push(`${key} (v1-only)`);
+      (isNoise ? expectedNoise : shapeDrifts).push(`${key} (v1-only)`);
       continue;
     }
     if (valueFingerprint(a[key]) !== valueFingerprint(b[key])) {
-      mismatched.push(key);
+      (isNoise ? expectedNoise : valueMismatches).push(key);
     }
   }
 
-  if (mismatched.length > 0) {
-    const ordered = prioritizeMismatchDetails(mismatched);
-    const details = ordered.slice(0, SAVE_V2_MISMATCH_DETAILS_CAP);
-    if (ordered.length > SAVE_V2_MISMATCH_DETAILS_CAP) {
-      details.push(`…+${ordered.length - SAVE_V2_MISMATCH_DETAILS_CAP} more`);
-    }
+  const noiseCount = expectedNoise.length > 0 ? expectedNoise.length : null;
+  const shapeCount = shapeDrifts.length > 0 ? shapeDrifts.length : null;
+
+  if (valueMismatches.length > 0) {
     return {
       ...base,
       status: "mismatch",
-      details,
-      mismatchCount: mismatched.length,
+      details: capDetailKeys(valueMismatches),
+      mismatchCount: valueMismatches.length,
+      shapeDriftCount: shapeCount,
+      expectedNoiseCount: noiseCount,
+    };
+  }
+
+  if (shapeDrifts.length > 0) {
+    return {
+      ...base,
+      status: "shape_drift",
+      details: capDetailKeys(shapeDrifts),
+      shapeDriftCount: shapeDrifts.length,
+      expectedNoiseCount: noiseCount,
+    };
+  }
+
+  if (expectedNoise.length > 0) {
+    return {
+      ...base,
+      status: "expected_noise",
+      details: capDetailKeys(expectedNoise),
+      expectedNoiseCount: expectedNoise.length,
     };
   }
 
@@ -565,6 +686,15 @@ export function compareLegacyVsV2Row(
   };
 }
 
+/** Rows that should appear in the admin issue table (value conflicts / invalid). */
+function isSaveV2DashboardIssue(row: SaveV2CompareRow): boolean {
+  return (
+    row.status === "mismatch" ||
+    row.status === "invalid_v2" ||
+    row.status === "invalid_legacy"
+  );
+}
+
 export function compareLegacyAndV2Saves(
   inputs: SaveGameAnalysisInput[],
 ): SaveV2CompareSummary {
@@ -572,6 +702,8 @@ export function compareLegacyAndV2Saves(
   let withV2 = 0;
   let missingV2 = 0;
   let match = 0;
+  let expectedNoise = 0;
+  let shapeDrift = 0;
   let mismatch = 0;
   let invalidV2 = 0;
   let invalidLegacy = 0;
@@ -584,6 +716,14 @@ export function compareLegacyAndV2Saves(
       case "match":
         withV2 += 1;
         match += 1;
+        break;
+      case "expected_noise":
+        withV2 += 1;
+        expectedNoise += 1;
+        break;
+      case "shape_drift":
+        withV2 += 1;
+        shapeDrift += 1;
         break;
       case "mismatch":
         withV2 += 1;
@@ -604,9 +744,12 @@ export function compareLegacyAndV2Saves(
     withV2,
     missingV2,
     match,
+    expectedNoise,
+    shapeDrift,
     mismatch,
     invalidV2,
     invalidLegacy,
-    rows: compared.filter((r) => r.status !== "match"),
+    // Coverage / shape / noise stay in summary counts — issue table is value conflicts.
+    rows: compared.filter(isSaveV2DashboardIssue),
   };
 }

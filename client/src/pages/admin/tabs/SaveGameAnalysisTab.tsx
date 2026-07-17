@@ -177,15 +177,16 @@ export default function SaveGameAnalysisTab({
           <CardHeader>
             <CardTitle className="text-base">Save V2 sidecar (dual-write)</CardTitle>
             <CardDescription>
-              Full deep compare of every top-level key in{" "}
+              Compares{" "}
               <code className="text-xs">game_state_v2</code> vs legacy{" "}
-              <code className="text-xs">game_state</code> (playTime floored). Load still
-              uses legacy only. Mismatches often mean V1 deep-merge drift vs the client
-              full blob — not that V2 failed to write.
+              <code className="text-xs">game_state</code> (playTime floored).{" "}
+              Mismatch = same key, different values. Shape drift = key only on one
+              side (V1 diff vs V2 full blob). Expected noise = UI/cooldowns. Table
+              lists value mismatches / invalid only. Load still uses legacy.
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-3">
-            <div className="grid gap-3 sm:grid-cols-3 lg:grid-cols-6 text-sm">
+            <div className="grid gap-3 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-8 text-sm">
               <div>
                 <div className="text-muted-foreground">With V2</div>
                 <div className="font-mono text-lg tabular-nums">
@@ -202,6 +203,18 @@ export default function SaveGameAnalysisTab({
                 <div className="text-muted-foreground">Match</div>
                 <div className="font-mono text-lg tabular-nums">
                   {analysis.v2Compare.match}
+                </div>
+              </div>
+              <div>
+                <div className="text-muted-foreground">Expected noise</div>
+                <div className="font-mono text-lg tabular-nums">
+                  {analysis.v2Compare.expectedNoise}
+                </div>
+              </div>
+              <div>
+                <div className="text-muted-foreground">Shape drift</div>
+                <div className="font-mono text-lg tabular-nums">
+                  {analysis.v2Compare.shapeDrift}
                 </div>
               </div>
               <div>
@@ -252,6 +265,14 @@ export default function SaveGameAnalysisTab({
                             ? `(${row.mismatchCount}) `
                             : ""}
                           {row.details.join(", ") || "—"}
+                          {row.shapeDriftCount != null &&
+                            row.shapeDriftCount > 0
+                            ? ` · +${row.shapeDriftCount} shape`
+                            : ""}
+                          {row.expectedNoiseCount != null &&
+                            row.expectedNoiseCount > 0
+                            ? ` · +${row.expectedNoiseCount} noise`
+                            : ""}
                         </td>
                       </tr>
                     ))}
