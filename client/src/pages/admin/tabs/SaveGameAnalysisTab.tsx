@@ -160,6 +160,90 @@ export default function SaveGameAnalysisTab({
         </Card>
       </div>
 
+      {analysis.v2Compare ? (
+        <Card>
+          <CardHeader>
+            <CardTitle className="text-base">Save V2 sidecar (dual-write)</CardTitle>
+            <CardDescription>
+              Coverage of <code className="text-xs">game_state_v2</code> vs legacy{" "}
+              <code className="text-xs">game_state</code> on critical slices. Load still
+              uses legacy only. Slice mismatches can be expected while deep-merge
+              protections diverge from the client full blob.
+            </CardDescription>
+          </CardHeader>
+          <CardContent className="space-y-3">
+            <div className="grid gap-3 sm:grid-cols-3 lg:grid-cols-6 text-sm">
+              <div>
+                <div className="text-muted-foreground">With V2</div>
+                <div className="font-mono text-lg tabular-nums">
+                  {analysis.v2Compare.withV2}
+                </div>
+              </div>
+              <div>
+                <div className="text-muted-foreground">Missing V2</div>
+                <div className="font-mono text-lg tabular-nums">
+                  {analysis.v2Compare.missingV2}
+                </div>
+              </div>
+              <div>
+                <div className="text-muted-foreground">Match</div>
+                <div className="font-mono text-lg tabular-nums">
+                  {analysis.v2Compare.match}
+                </div>
+              </div>
+              <div>
+                <div className="text-muted-foreground">Mismatch</div>
+                <div className="font-mono text-lg tabular-nums">
+                  {analysis.v2Compare.mismatch}
+                </div>
+              </div>
+              <div>
+                <div className="text-muted-foreground">Invalid V2</div>
+                <div className="font-mono text-lg tabular-nums">
+                  {analysis.v2Compare.invalidV2}
+                </div>
+              </div>
+              <div>
+                <div className="text-muted-foreground">Invalid legacy</div>
+                <div className="font-mono text-lg tabular-nums">
+                  {analysis.v2Compare.invalidLegacy}
+                </div>
+              </div>
+            </div>
+            {analysis.v2Compare.rows.length > 0 ? (
+              <div className="overflow-x-auto">
+                <table className="w-full text-sm">
+                  <thead>
+                    <tr className="border-b text-left text-muted-foreground">
+                      <th className="py-2 pr-3 font-medium">User</th>
+                      <th className="py-2 pr-3 font-medium">Status</th>
+                      <th className="py-2 pr-3 font-medium">Rev</th>
+                      <th className="py-2 font-medium">Details</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {analysis.v2Compare.rows.slice(0, 40).map((row) => (
+                      <tr key={row.user_id} className="border-b border-border/60">
+                        <td className="py-2 pr-3 font-mono text-xs">
+                          {row.username ?? row.user_id.slice(0, 8)}
+                        </td>
+                        <td className="py-2 pr-3">{row.status}</td>
+                        <td className="py-2 pr-3 font-mono tabular-nums">
+                          {row.save_revision ?? "—"}
+                        </td>
+                        <td className="py-2 text-muted-foreground">
+                          {row.details.join(", ") || "—"}
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            ) : null}
+          </CardContent>
+        </Card>
+      ) : null}
+
       {Object.keys(analysis.byKind).length > 0 ? (
         <Card>
           <CardHeader>

@@ -122,25 +122,52 @@ export async function fetchAdminSaveAnalysisInputs(
   >,
   limit = ADMIN_SAVE_ANALYSIS_LIMIT,
 ) {
-  const { data, error } = await adminClient
-    .from("game_saves")
-    .select("id,user_id,username,game_state,game_stats,updated_at,created_at")
-    .order("updated_at", { ascending: false })
-    .limit(limit);
-
-  if (error) {
-    throw error;
-  }
-
-  return (data ?? []) as Array<{
+  type SaveAnalysisRow = {
     id: string;
     user_id: string;
     username: string | null;
     game_state: unknown;
     game_stats: unknown;
+    game_state_v2?: unknown;
+    save_revision?: number | null;
+    schema_version?: number | null;
     updated_at: string;
     created_at: string;
-  }>;
+  };
+
+  const withV2 = await adminClient
+    .from("game_saves")
+    .select(
+      "id,user_id,username,game_state,game_stats,game_state_v2,save_revision,schema_version,updated_at,created_at",
+    )
+    .order("updated_at", { ascending: false })
+    .limit(limit);
+
+  if (!withV2.error) {
+    return (withV2.data ?? []) as SaveAnalysisRow[];
+  }
+
+  // Migration 028 not applied yet — keep legacy admin analysis working.
+  const missingV2Column =
+    withV2.error.code === "42703" ||
+    /game_state_v2|save_revision|schema_version/i.test(
+      withV2.error.message ?? "",
+    );
+  if (!missingV2Column) {
+    throw withV2.error;
+  }
+
+  const legacy = await adminClient
+    .from("game_saves")
+    .select("id,user_id,username,game_state,game_stats,updated_at,created_at")
+    .order("updated_at", { ascending: false })
+    .limit(limit);
+
+  if (legacy.error) {
+    throw legacy.error;
+  }
+
+  return (legacy.data ?? []) as SaveAnalysisRow[];
 }
 
 export async function fetchAdminPurchases(

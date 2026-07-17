@@ -79,6 +79,10 @@ export type SaveGameAnalysisInput = {
   created_at: string;
   game_state: unknown;
   game_stats?: unknown;
+  /** Sidecar full blob (migration 028). Optional — ignored by legacy analysis. */
+  game_state_v2?: unknown;
+  save_revision?: number | null;
+  schema_version?: number | null;
 };
 
 export type SaveGameAnalysisRow = {
@@ -102,6 +106,48 @@ export type SaveGameAnalysisSummary = {
   newestUpdated: string | null;
   byKind: Partial<Record<SaveGameIssueKind, number>>;
   rows: SaveGameAnalysisRow[];
+  /** Parallel V2 dual-write coverage / slice compare (Phase 1). */
+  v2Compare?: SaveV2CompareSummary;
+};
+
+/** Critical gameplay slices compared between legacy game_state and game_state_v2. */
+export const SAVE_V2_COMPARE_SLICES = [
+  "playTime",
+  "tools",
+  "weapons",
+  "books",
+  "buildings",
+  "resources",
+  "villagers",
+  "flags",
+] as const;
+
+export type SaveV2CompareStatus =
+  | "missing_v2"
+  | "match"
+  | "mismatch"
+  | "invalid_v2"
+  | "invalid_legacy";
+
+export type SaveV2CompareRow = {
+  user_id: string;
+  username?: string | null;
+  status: SaveV2CompareStatus;
+  details: string[];
+  save_revision: number | null;
+  schema_version: number | null;
+};
+
+export type SaveV2CompareSummary = {
+  scanned: number;
+  withV2: number;
+  missingV2: number;
+  match: number;
+  mismatch: number;
+  invalidV2: number;
+  invalidLegacy: number;
+  /** Non-match rows (and optionally matches omitted to keep payload small). */
+  rows: SaveV2CompareRow[];
 };
 
 function asObject(value: unknown): Record<string, unknown> | null {
@@ -373,5 +419,146 @@ export function analyzeSaveGames(
   return {
     ...summarizeSaveGameAnalysis(rows),
     rows,
+    v2Compare: compareLegacyAndV2Saves(inputs),
+  };
+}
+
+function normalizeSliceValue(key: string, value: unknown): unknown {
+  if (key === "playTime") {
+    if (typeof value !== "number" || !Number.isFinite(value)) return value;
+    return Math.floor(value);
+  }
+  return value;
+}
+
+function sliceFingerprint(value: unknown): string {
+  return JSON.stringify(value ?? null);
+}
+
+/**
+ * Compare legacy `game_state` vs sidecar `game_state_v2` on critical slices.
+ * Mismatches can be expected while deep-merge protections diverge from client truth;
+ * this is a coverage / drift signal, not a load-path change.
+ */
+export function compareLegacyVsV2Row(
+  row: SaveGameAnalysisInput,
+): SaveV2CompareRow {
+  const revision =
+    typeof row.save_revision === "number" && Number.isFinite(row.save_revision)
+      ? row.save_revision
+      : null;
+  const schemaVersion =
+    typeof row.schema_version === "number" && Number.isFinite(row.schema_version)
+      ? row.schema_version
+      : null;
+
+  const legacy = asObject(row.game_state);
+  if (!legacy) {
+    return {
+      user_id: row.user_id,
+      username: row.username,
+      status: "invalid_legacy",
+      details: ["legacy game_state missing or not an object"],
+      save_revision: revision,
+      schema_version: schemaVersion,
+    };
+  }
+
+  if (row.game_state_v2 === null || row.game_state_v2 === undefined) {
+    return {
+      user_id: row.user_id,
+      username: row.username,
+      status: "missing_v2",
+      details: ["game_state_v2 is null"],
+      save_revision: revision,
+      schema_version: schemaVersion,
+    };
+  }
+
+  const v2 = asObject(row.game_state_v2);
+  if (!v2) {
+    return {
+      user_id: row.user_id,
+      username: row.username,
+      status: "invalid_v2",
+      details: ["game_state_v2 is not an object"],
+      save_revision: revision,
+      schema_version: schemaVersion,
+    };
+  }
+
+  const details: string[] = [];
+  for (const key of SAVE_V2_COMPARE_SLICES) {
+    const a = normalizeSliceValue(key, legacy[key]);
+    const b = normalizeSliceValue(key, v2[key]);
+    if (sliceFingerprint(a) !== sliceFingerprint(b)) {
+      details.push(key);
+    }
+  }
+
+  if (details.length > 0) {
+    return {
+      user_id: row.user_id,
+      username: row.username,
+      status: "mismatch",
+      details,
+      save_revision: revision,
+      schema_version: schemaVersion,
+    };
+  }
+
+  return {
+    user_id: row.user_id,
+    username: row.username,
+    status: "match",
+    details: [],
+    save_revision: revision,
+    schema_version: schemaVersion,
+  };
+}
+
+export function compareLegacyAndV2Saves(
+  inputs: SaveGameAnalysisInput[],
+): SaveV2CompareSummary {
+  const compared = inputs.map(compareLegacyVsV2Row);
+  let withV2 = 0;
+  let missingV2 = 0;
+  let match = 0;
+  let mismatch = 0;
+  let invalidV2 = 0;
+  let invalidLegacy = 0;
+
+  for (const row of compared) {
+    switch (row.status) {
+      case "missing_v2":
+        missingV2 += 1;
+        break;
+      case "match":
+        withV2 += 1;
+        match += 1;
+        break;
+      case "mismatch":
+        withV2 += 1;
+        mismatch += 1;
+        break;
+      case "invalid_v2":
+        withV2 += 1;
+        invalidV2 += 1;
+        break;
+      case "invalid_legacy":
+        invalidLegacy += 1;
+        break;
+    }
+  }
+
+  return {
+    scanned: compared.length,
+    withV2,
+    missingV2,
+    match,
+    mismatch,
+    invalidV2,
+    invalidLegacy,
+    rows: compared.filter((r) => r.status !== "match"),
   };
 }

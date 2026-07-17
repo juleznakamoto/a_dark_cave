@@ -1,0 +1,91 @@
+import { beforeEach, describe, expect, it, vi } from "vitest";
+
+const { mockRpc, mockGetSession, mockGetSupabaseClient } = vi.hoisted(() => {
+  const mockRpc = vi.fn();
+  const mockGetSession = vi.fn();
+  const mockGetSupabaseClient = vi.fn();
+  return { mockRpc, mockGetSession, mockGetSupabaseClient };
+});
+
+vi.mock("@/lib/supabase", () => ({
+  getSupabaseClient: mockGetSupabaseClient,
+}));
+
+vi.mock("@/lib/logger", () => ({
+  logger: {
+    log: vi.fn(),
+    warn: vi.fn(),
+    error: vi.fn(),
+    debug: vi.fn(),
+  },
+}));
+
+import { dualWriteSaveGameV2, SAVE_SCHEMA_VERSION_V2 } from "./saveGameV2";
+import { logger } from "@/lib/logger";
+
+describe("dualWriteSaveGameV2", () => {
+  beforeEach(() => {
+    vi.clearAllMocks();
+    mockGetSupabaseClient.mockResolvedValue({
+      auth: { getSession: mockGetSession },
+      rpc: mockRpc,
+    });
+  });
+
+  it("no-ops without a session and never throws", async () => {
+    mockGetSession.mockResolvedValue({ data: { session: null } });
+
+    await expect(
+      dualWriteSaveGameV2({ playTime: 1000 } as any),
+    ).resolves.toBeUndefined();
+
+    expect(mockRpc).not.toHaveBeenCalled();
+  });
+
+  it("writes full state via save_game_state_v2 RPC", async () => {
+    mockGetSession.mockResolvedValue({
+      data: { session: { access_token: "tok" } },
+    });
+    mockRpc.mockResolvedValue({ data: null, error: null });
+
+    const state = {
+      playTime: 12_345.7,
+      tools: { stone_axe: true },
+      resources: { wood: 10 },
+    };
+
+    await dualWriteSaveGameV2(state as any);
+
+    expect(mockRpc).toHaveBeenCalledWith("save_game_state_v2", {
+      p_game_state: expect.objectContaining({
+        playTime: 12_345.7,
+        tools: { stone_axe: true },
+      }),
+      p_schema_version: SAVE_SCHEMA_VERSION_V2,
+    });
+  });
+
+  it("swallows RPC errors so legacy save is unaffected", async () => {
+    mockGetSession.mockResolvedValue({
+      data: { session: { access_token: "tok" } },
+    });
+    mockRpc.mockResolvedValue({
+      data: null,
+      error: { message: "function missing" },
+    });
+
+    await expect(
+      dualWriteSaveGameV2({ playTime: 1, tools: {} } as any),
+    ).resolves.toBeUndefined();
+
+    expect(logger.warn).toHaveBeenCalled();
+  });
+
+  it("swallows unexpected exceptions", async () => {
+    mockGetSupabaseClient.mockRejectedValue(new Error("network down"));
+
+    await expect(
+      dualWriteSaveGameV2({ playTime: 1 } as any),
+    ).resolves.toBeUndefined();
+  });
+});

@@ -2,6 +2,8 @@ import { describe, expect, it } from "vitest";
 import {
   analyzeSaveGameRow,
   analyzeSaveGames,
+  compareLegacyAndV2Saves,
+  compareLegacyVsV2Row,
   computeCurrentPopulationFromGameState,
   computeMaxPopulationFromGameState,
   hasCraftToolStoryFlags,
@@ -205,5 +207,94 @@ describe("saveGameAnalysis", () => {
   it("hasCraftToolStoryFlags respects flag list", () => {
     expect(hasCraftToolStoryFlags({ hasSteelAxe: true })).toBe(true);
     expect(hasCraftToolStoryFlags({ fireLit: true })).toBe(false);
+  });
+
+  it("compareLegacyVsV2Row reports missing_v2", () => {
+    const result = compareLegacyVsV2Row({
+      ...baseRow,
+      game_state: {
+        playTime: 1000,
+        tools: { stone_axe: true },
+        buildings: { woodenHut: 1 },
+        resources: { wood: 1 },
+        villagers: { free: 1 },
+        flags: { gameStarted: true },
+        weapons: {},
+        books: {},
+      },
+    });
+    expect(result.status).toBe("missing_v2");
+  });
+
+  it("compareLegacyVsV2Row reports match on critical slices", () => {
+    const gs = {
+      playTime: 1000.9,
+      tools: { stone_axe: true },
+      buildings: { woodenHut: 1 },
+      resources: { wood: 1 },
+      villagers: { free: 1 },
+      flags: { gameStarted: true },
+      weapons: {},
+      books: {},
+    };
+    const result = compareLegacyVsV2Row({
+      ...baseRow,
+      game_state: gs,
+      game_state_v2: { ...gs, playTime: 1000.2 },
+      save_revision: 3,
+      schema_version: 1,
+    });
+    expect(result.status).toBe("match");
+    expect(result.save_revision).toBe(3);
+  });
+
+  it("compareLegacyAndV2Saves summarizes coverage", () => {
+    const summary = compareLegacyAndV2Saves([
+      {
+        ...baseRow,
+        game_state: { playTime: 1, tools: {}, buildings: {}, resources: {}, villagers: {}, flags: {}, weapons: {}, books: {} },
+      },
+      {
+        ...baseRow,
+        user_id: "user-2",
+        game_state: {
+          playTime: 1,
+          tools: { stone_axe: true },
+          buildings: {},
+          resources: {},
+          villagers: {},
+          flags: {},
+          weapons: {},
+          books: {},
+        },
+        game_state_v2: {
+          playTime: 1,
+          tools: { stone_axe: false },
+          buildings: {},
+          resources: {},
+          villagers: {},
+          flags: {},
+          weapons: {},
+          books: {},
+        },
+        save_revision: 1,
+        schema_version: 1,
+      },
+    ]);
+    expect(summary.missingV2).toBe(1);
+    expect(summary.mismatch).toBe(1);
+    expect(summary.withV2).toBe(1);
+    expect(summary.rows).toHaveLength(2);
+  });
+
+  it("analyzeSaveGames includes v2Compare without changing legacy issue counts", () => {
+    const summary = analyzeSaveGames([
+      {
+        ...baseRow,
+        game_state: { playTime: 0, resources: { wood: 1 } },
+      },
+    ]);
+    expect(summary.rowsWithIssues).toBe(0);
+    expect(summary.v2Compare?.missingV2).toBe(1);
   });
 });

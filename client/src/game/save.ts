@@ -24,6 +24,7 @@ import {
   readSteamCloudSave,
   pickNewerSave,
 } from "./steamSaveAdapter";
+import { dualWriteSaveGameV2 } from "./saveGameV2";
 
 const isDev = import.meta.env.DEV;
 
@@ -656,6 +657,14 @@ export async function saveGame(
           const { useGameStore } = await import("./state");
           useGameStore.setState({ allowPlaytimeOverwrite: false });
           logger.log("[SAVE] 🔓 Cleared allowPlayTimeOverwrite flag after successful cloud save");
+        }
+
+        // Sidecar V2 full-document dual-write. Never throws; never touches legacy
+        // game_state / lastCloudState / load path. Failures are logged only.
+        try {
+          await dualWriteSaveGameV2(sanitizedState);
+        } catch (v2Error) {
+          logger.warn("[SAVE V2] dual-write unexpected error (ignored):", v2Error);
         }
       }
     } catch (cloudError) {
