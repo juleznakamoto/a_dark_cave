@@ -2149,6 +2149,8 @@ export default function VillagePanel() {
                               }
                               tooltipTriggerClassName="inline-flex items-center leading-none"
                               className="group flex items-center cursor-pointer"
+                              preferNativeClick={false}
+                              onClick={() => applyVillagerJobPreset(slot)}
                             >
                               <Button
                                 size="xs"
@@ -2165,7 +2167,6 @@ export default function VillagePanel() {
                                     }),
                                 )}
                                 style={{ touchAction: "manipulation" }}
-                                onClick={() => applyVillagerJobPreset(slot)}
                               >
                                 <span
                                   className={cn(!hasPreset && "opacity-70")}
@@ -2188,6 +2189,8 @@ export default function VillagePanel() {
                             }
                             tooltipTriggerClassName="inline-flex items-center leading-none"
                             className="group flex items-center cursor-pointer"
+                            preferNativeClick={false}
+                            onClick={handlePresetSave}
                           >
                             <Button
                               size="xs"
@@ -2201,7 +2204,6 @@ export default function VillagePanel() {
                                 }),
                               )}
                               style={{ touchAction: "manipulation" }}
-                              onClick={handlePresetSave}
                             >
                               <span
                                 className={

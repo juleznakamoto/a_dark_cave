@@ -323,7 +323,7 @@ describe("purchaseVillagerPresetSlot", () => {
     expect(after.insightRevealing[PRESET_UNLOCK_INSIGHT_KEY]).toBeUndefined();
   });
 
-  it("selects the newly unlocked slot even when another slot is already active", () => {
+  it("keeps the current active slot when unlocking another while still on a valid slot", () => {
     useGameStore.setState({
       buildings: {
         ...useGameStore.getState().buildings,
@@ -340,7 +340,27 @@ describe("purchaseVillagerPresetSlot", () => {
 
     const after = useGameStore.getState();
     expect(after.villagerPresetsPurchased).toBe(2);
-    expect(after.activePresetSlot).toBe(2);
+    expect(after.activePresetSlot).toBe(1);
+  });
+
+  it("selects the newly unlocked slot when the current active slot is invalid", () => {
+    useGameStore.setState({
+      buildings: {
+        ...useGameStore.getState().buildings,
+        scribesOffice: 1,
+      },
+      villagerPresetsPurchased: 0,
+      activePresetSlot: 2,
+      insightRevealing: {
+        [PRESET_UNLOCK_INSIGHT_KEY]: Date.now() - 1,
+      },
+    });
+
+    useGameStore.getState().tickCooldowns();
+
+    const after = useGameStore.getState();
+    expect(after.villagerPresetsPurchased).toBe(1);
+    expect(after.activePresetSlot).toBe(1);
   });
 
   it("saves and applies a second unlocked preset slot", () => {
