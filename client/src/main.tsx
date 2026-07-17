@@ -8,9 +8,10 @@ import "./index.css";
 import { initTextScaleFromStorage } from "./lib/textScale";
 import { initTabVisibilityClass } from "./lib/tabVisibility";
 import { installSuppressReplitFragmentWarnings } from "./lib/suppressReplitFragmentWarnings";
-import { bootstrapAfterHardReload, hardReload, MODULE_LOAD_RETRY_KEY } from "./lib/hardReload";
+import { bootstrapAfterHardReload, hardReload, installStaleChunkAutoReload, MODULE_LOAD_RETRY_KEY } from "./lib/hardReload";
 
 bootstrapAfterHardReload();
+installStaleChunkAutoReload();
 
 installSuppressReplitFragmentWarnings();
 initTextScaleFromStorage();

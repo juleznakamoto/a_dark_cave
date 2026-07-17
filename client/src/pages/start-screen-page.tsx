@@ -5,6 +5,7 @@ import { useGameStore } from "@/game/state";
 import { isDemoEdition } from "@/lib/edition";
 import { isDemoLimitReachedFromState } from "@/game/demoLimit";
 import { HARD_RELOAD_CACHE_BUST_PARAM } from "@/lib/hardReload";
+import { logger } from "@/lib/logger";
 
 // Lazy load Game component - only loaded when needed
 const Game = lazy(() => import("@/pages/game"));
@@ -52,7 +53,12 @@ export default function StartScreenPage() {
 
       // Load saved game state to check if game has already started
       try {
-        await useGameStore.getState().loadGame();
+        await Promise.race([
+          useGameStore.getState().loadGame(),
+          new Promise<void>((_, reject) =>
+            setTimeout(() => reject(new Error("loadGame timeout")), 15000),
+          ),
+        ]);
         // After loading, check if game has started
         const currentFlags = useGameStore.getState().flags;
         if (currentFlags.gameStarted) {
@@ -65,8 +71,7 @@ export default function StartScreenPage() {
           setShouldLoadGame(true);
         }
       } catch (error) {
-        // If loading fails, just show start screen
-        console.error("Failed to check saved game state:", error);
+        logger.error("Failed to check saved game state:", error);
       } finally {
         setIsChecking(false);
       }

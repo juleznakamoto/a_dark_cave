@@ -9,6 +9,79 @@ export const HARD_RELOAD_PENDING_KEY = "adc_hard_reload_pending";
 /** Guards the one automatic module-load retry in index.html. */
 export const MODULE_LOAD_RETRY_KEY = "adc_module_load_retry";
 
+const DYNAMIC_IMPORT_FAIL_RE =
+  /Failed to fetch dynamically imported module|Importing a module script failed/i;
+
+function canAutoReloadForStaleChunk(): boolean {
+  try {
+    return !sessionStorage.getItem(MODULE_LOAD_RETRY_KEY);
+  } catch {
+    return true;
+  }
+}
+
+function markStaleChunkReloadAttempted(): void {
+  try {
+    sessionStorage.setItem(MODULE_LOAD_RETRY_KEY, String(Date.now()));
+  } catch {
+    // ignore
+  }
+}
+
+/** Call after React mounts so a later deploy can auto-retry again. */
+export function clearStaleChunkReloadGuard(): void {
+  try {
+    sessionStorage.removeItem(MODULE_LOAD_RETRY_KEY);
+  } catch {
+    // ignore
+  }
+}
+
+function isStaleChunkLoadFailure(reason: unknown): boolean {
+  const message =
+    reason instanceof Error
+      ? reason.message
+      : typeof reason === "string"
+        ? reason
+        : "";
+  return DYNAMIC_IMPORT_FAIL_RE.test(message);
+}
+
+function tryAutoReloadForStaleChunk(reason: unknown): boolean {
+  if (!isStaleChunkLoadFailure(reason)) return false;
+  if (!canAutoReloadForStaleChunk()) return false;
+  markStaleChunkReloadAttempted();
+  void hardReload();
+  return true;
+}
+
+/**
+ * After a deploy, stale cached HTML can reference deleted JS chunks. React lazy()
+ * then rejects with "Failed to fetch dynamically imported module" and Suspense
+ * shows a permanent black screen. Retry once with a cache-busted reload.
+ */
+export function installStaleChunkAutoReload(): void {
+  window.addEventListener("unhandledrejection", (event) => {
+    if (tryAutoReloadForStaleChunk(event.reason)) {
+      event.preventDefault();
+    }
+  });
+
+  window.addEventListener(
+    "error",
+    (event) => {
+      const target = event.target;
+      if (!target || !(target instanceof HTMLScriptElement)) return;
+      const src = target.src || "";
+      if (target.type !== "module" && !/\.js(\?|$)/i.test(src)) return;
+      if (!canAutoReloadForStaleChunk()) return;
+      markStaleChunkReloadAttempted();
+      void hardReload();
+    },
+    true,
+  );
+}
+
 /**
  * Remove the cache-bust query param from the address bar.
  * Safe to call synchronously on every boot (also runs inline in index.html).
@@ -56,12 +129,6 @@ export async function purgeStaleAppCaches(): Promise<void> {
  */
 export function bootstrapAfterHardReload(): void {
   stripHardReloadCacheBustParam();
-
-  try {
-    sessionStorage.removeItem(MODULE_LOAD_RETRY_KEY);
-  } catch {
-    // ignore
-  }
 
   let pendingPurge = false;
   try {

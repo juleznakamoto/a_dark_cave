@@ -5,6 +5,7 @@ import { queryClient } from "./lib/queryClient";
 import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import LazyRouteErrorBoundary from "@/components/LazyRouteErrorBoundary";
+import { clearStaleChunkReloadGuard } from "@/lib/hardReload";
 import { initPlaylight } from "@/lib/playlight";
 import { isGalaxyEdition } from "@/lib/edition";
 
@@ -84,6 +85,10 @@ function Router() {
 }
 
 function App() {
+  useEffect(() => {
+    clearStaleChunkReloadGuard();
+  }, []);
+
   useEffect(() => {
     // Playlight is a web-only discovery SDK; Steam and Galaxy editions ship no online services.
     if (steamBuild || isGalaxyEdition()) return;
