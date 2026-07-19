@@ -23,6 +23,7 @@ interface SessionStats {
 
 interface OverviewTabProps {
   environment: "dev" | "prod";
+  getCurrentlyPlaying: () => number;
   getDailyActiveUsers: () => number;
   getWeeklyActiveUsers: () => number;
   getMonthlyActiveUsers: () => number;
@@ -73,6 +74,7 @@ interface OverviewTabProps {
 export default function OverviewTab(props: OverviewTabProps) {
   const {
     environment,
+    getCurrentlyPlaying,
     getDailyActiveUsers,
     getWeeklyActiveUsers,
     getMonthlyActiveUsers,
@@ -233,7 +235,17 @@ export default function OverviewTab(props: OverviewTabProps) {
 
   return (
     <div className="space-y-4">
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
+        <Card>
+          <CardHeader>
+            <CardTitle>Currently playing</CardTitle>
+            <CardDescription>Save updated in last 10 min</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <p className="text-4xl font-bold">{getCurrentlyPlaying()}</p>
+          </CardContent>
+        </Card>
+
         <Card>
           <CardHeader>
             <CardTitle>DAU</CardTitle>

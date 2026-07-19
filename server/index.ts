@@ -1304,14 +1304,24 @@ app.post("/api/leaderboard/update-username", leaderboardUpdateLimiter, async (re
         return res.status(500).json({ error: 'Failed to fetch DAU data' });
       }
 
-      // Compute DAU/WAU/MAU and signup aggregates via DB functions to avoid the PostgREST max_rows cap
+      const tenMinutesAgo = new Date(Date.now() - 10 * 60 * 1000).toISOString();
+
+      // Compute currently-playing / DAU/WAU/MAU and signup aggregates.
+      // DAU/WAU/MAU/signups use DB functions to avoid the PostgREST max_rows cap.
+      // Currently playing is a narrow time window, so an exact count filter is enough.
       const [
+        { count: currentlyPlayingCount, error: currentlyPlayingError },
         { data: dauRpc, error: dauRpcError },
         { data: wauData, error: wauError },
         { data: mauData, error: mauError },
         { data: dailySignupsData, error: dailySignupsError },
         { data: hourlySignupsData, error: hourlySignupsError },
       ] = await Promise.all([
+        adminClient
+          .from('game_saves')
+          .select('user_id', { count: 'exact', head: true })
+          .gte('updated_at', tenMinutesAgo)
+          .not('user_id', 'is', null),
         adminClient.rpc('get_daily_active_users'),
         adminClient.rpc('get_weekly_active_users'),
         adminClient.rpc('get_monthly_active_users'),
@@ -1319,20 +1329,23 @@ app.post("/api/leaderboard/update-username", leaderboardUpdateLimiter, async (re
         adminClient.rpc('get_hourly_signups'),
       ]);
 
+      if (currentlyPlayingError) log('❌ Error fetching currently playing:', currentlyPlayingError);
       if (dauRpcError) log('❌ Error fetching DAU:', dauRpcError);
       if (wauError) log('❌ Error fetching WAU:', wauError);
       if (mauError) log('❌ Error fetching MAU:', mauError);
       if (dailySignupsError) log('❌ Error fetching daily signups:', dailySignupsError);
       if (hourlySignupsError) log('❌ Error fetching hourly signups:', hourlySignupsError);
 
+      const currentlyPlaying: number = currentlyPlayingCount ?? 0;
       const currentDau: number = typeof dauRpc === 'number' ? dauRpc : 0;
       const currentWau: number = typeof wauData === 'number' ? wauData : 0;
       const currentMau: number = typeof mauData === 'number' ? mauData : 0;
 
-      log(`📊 DAU: ${currentDau}, WAU: ${currentWau}, MAU: ${currentMau}`);
+      log(`📊 Currently playing: ${currentlyPlaying}, DAU: ${currentDau}, WAU: ${currentWau}, MAU: ${currentMau}`);
 
       res.json({
         dau: dauData || [],
+        currentlyPlaying,
         currentDau: currentDau,
         currentWau: currentWau,
         currentMau: currentMau,

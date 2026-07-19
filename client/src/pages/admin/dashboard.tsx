@@ -138,6 +138,7 @@ export default function AdminDashboard() {
   const [totalUserCount, setTotalUserCount] = useState<number>(0);
   const [lastUpdated, setLastUpdated] = useState<Date>(new Date()); // State to track last data update
   const [dauData, setDauData] = useState<Array<{ date: string; active_user_count: number }>>([]);
+  const [currentlyPlaying, setCurrentlyPlaying] = useState<number>(0);
   const [currentDau, setCurrentDau] = useState<number>(0);
   const [currentWau, setCurrentWau] = useState<number>(0);
   const [currentMau, setCurrentMau] = useState<number>(0);
@@ -329,6 +330,7 @@ export default function AdminDashboard() {
     setRawAuthSignups([]);
     setTotalUserCount(0);
     setDauData([]);
+    setCurrentlyPlaying(0);
     setCurrentDau(0);
     setCurrentWau(0);
     setCurrentMau(0);
@@ -427,6 +429,9 @@ export default function AdminDashboard() {
           }
           const data = await response.json();
           if (data.dau) setDauData(data.dau);
+          if (typeof data.currentlyPlaying === "number") {
+            setCurrentlyPlaying(data.currentlyPlaying);
+          }
           if (typeof data.currentDau === "number") setCurrentDau(data.currentDau);
           if (typeof data.currentWau === "number") setCurrentWau(data.currentWau);
           if (typeof data.currentMau === "number") setCurrentMau(data.currentMau);
@@ -1233,6 +1238,7 @@ export default function AdminDashboard() {
                     gameSaves={gameSaves}
                     dailyActiveUsersData={dauData}
                     registrationMethodStats={registrationMethodStats}
+                    getCurrentlyPlaying={() => currentlyPlaying}
                     getDailyActiveUsers={() => currentDau}
                     getWeeklyActiveUsers={() => currentWau}
                     getMonthlyActiveUsers={() => currentMau}
