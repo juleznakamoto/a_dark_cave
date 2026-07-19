@@ -24,6 +24,11 @@ import {
   readSteamCloudSave,
   pickNewerSave,
 } from "./steamSaveAdapter";
+import {
+  dualWriteSaveGameV2,
+  isSaveGameV2CloudEnabled,
+  isSaveGameV2RichEnabled,
+} from "./saveGameV2";
 
 const isDev = import.meta.env.DEV;
 
@@ -570,6 +575,14 @@ export async function saveGame(
           });
         }
 
+        // Rich V2 (DEV) owns analytics to avoid double-counting in button_clicks.
+        // Thin dual-write (PROD): analytics stay on the legacy V1 edge path.
+        const v2CloudEnabled = isSaveGameV2CloudEnabled();
+        const v2RichEnabled = isSaveGameV2RichEnabled();
+        const legacyClickAnalytics = v2RichEnabled ? null : clickData;
+        const legacyResourceAnalytics = v2RichEnabled ? null : resourceData;
+        const legacyClearAnalytics = v2RichEnabled ? false : isNewGame;
+
         // Get last cloud state for diff calculation
         const lastCloudState = await getLastCloudState(db);
         let stateDiff = omitPlayTimeFromDiffIfUnchanged(
@@ -622,6 +635,8 @@ export async function saveGame(
           isNewGame: sanitizedState.isNewGame,
           willAllowOverwrite: allowOverwrite,
           currentPlayTime: stateDiff.playTime,
+          v2CloudEnabled,
+          v2RichEnabled,
         });
 
         // Save via Edge Function → save_game_with_analytics (deep-merges nested JSONB
@@ -637,9 +652,9 @@ export async function saveGame(
         const { data, error } = await supabaseClient.functions.invoke('save-game', {
           body: {
             gameStateDiff: stateDiff,
-            clickAnalytics: clickData,
-            resourceAnalytics: resourceData,
-            clearAnalytics: isNewGame,
+            clickAnalytics: legacyClickAnalytics,
+            resourceAnalytics: legacyResourceAnalytics,
+            clearAnalytics: legacyClearAnalytics,
             allowPlaytimeOverwrite: allowOverwrite
           }
         });
@@ -664,6 +679,21 @@ export async function saveGame(
           const { useGameStore } = await import("./state");
           useGameStore.setState({ allowPlaytimeOverwrite: false });
           logger.log("[SAVE] 🔓 Cleared allowPlayTimeOverwrite flag after successful cloud save");
+        }
+
+        // Sidecar dual-write to game_state_v2 (thin on PROD, rich on DEV). Never throws;
+        // load still uses legacy game_state only.
+        if (v2CloudEnabled) {
+          try {
+            await dualWriteSaveGameV2(sanitizedState, {
+              clickAnalytics: v2RichEnabled ? clickData : null,
+              resourceAnalytics: v2RichEnabled ? resourceData : null,
+              clearAnalytics: v2RichEnabled ? isNewGame : false,
+              allowPlaytimeOverwrite: allowOverwrite,
+            });
+          } catch (v2Error) {
+            logger.warn("[SAVE V2] dual-write unexpected error (ignored):", v2Error);
+          }
         }
       }
     } catch (cloudError) {
