@@ -285,15 +285,12 @@ export default function GameContainer() {
   }, [flags.gameStarted, villageTabVisible, villageHotkeyTutorialShown]);
 
   // Prompt for a hard refresh when a new build is deployed while the tab stays open.
-  // Forced 5-minute hardReload is temporarily limited to a prod test account;
-  // everyone else gets toast + reload-on-tab-visible only.
+  // Sticky toast + 5-minute forced hardReload (navigate-first; cache purge on next boot).
+  // versionCheck.ts stamps sessionStorage so a failed/stale reload does not loop.
   useEffect(() => {
-    /** Temporary prod canary — remove after forced-reload soak. */
-    const FORCE_RELOAD_TEST_EMAIL = "bauer-j@outlook.de";
     const AUTO_RELOAD_MS = 5 * 60 * 1000;
     const AUTO_RELOAD_MINUTES = 5;
     let updatePending = false;
-    let forceReloadEnabled = false;
     let reloadAtMs = 0;
     let autoReloadTimeout: ReturnType<typeof setTimeout> | null = null;
     let reloading = false;
@@ -311,70 +308,48 @@ export default function GameContainer() {
     };
 
     const handleVisibilityReload = () => {
-      if (!updatePending || document.visibilityState !== "visible") return;
-      if (forceReloadEnabled) {
-        // Mobile often suspends timers while backgrounded — catch up if the
-        // grace window already elapsed when the player returns.
-        if (reloadAtMs > 0 && Date.now() >= reloadAtMs) {
-          void saveAndHardReload();
-        }
-        return;
+      // Mobile often suspends timers while backgrounded — catch up if the
+      // grace window already elapsed when the player returns.
+      if (
+        updatePending &&
+        document.visibilityState === "visible" &&
+        reloadAtMs > 0 &&
+        Date.now() >= reloadAtMs
+      ) {
+        void saveAndHardReload();
       }
-      void hardReload();
     };
     document.addEventListener("visibilitychange", handleVisibilityReload);
 
     startVersionCheck(async () => {
       try {
         const { saveGame } = await import("@/game/save");
-        const { getCurrentUser } = await import("@/game/auth");
         const state = useGameStore.getState();
         await saveGame(state, false);
-        updatePending = true;
 
-        const user = await getCurrentUser();
-        forceReloadEnabled =
-          (user?.email ?? "").trim().toLowerCase() === FORCE_RELOAD_TEST_EMAIL;
-
-        if (forceReloadEnabled) {
-          reloadAtMs = Date.now() + AUTO_RELOAD_MS;
-          if (autoReloadTimeout) clearTimeout(autoReloadTimeout);
-          autoReloadTimeout = setTimeout(() => {
-            void saveAndHardReload();
-          }, AUTO_RELOAD_MS);
-          toast({
-            title: i18n.t("versionUpdate.title", { ns: "ui" }),
-            description: i18n.t("versionUpdate.description", {
-              ns: "ui",
-              minutes: AUTO_RELOAD_MINUTES,
-            }),
-            variant: "default",
-            duration: Infinity,
-            dismissible: false,
-            action: {
-              label: i18n.t("versionUpdate.refresh", { ns: "ui" }),
-              onClick: () => {
-                void saveAndHardReload();
-              },
-            },
-          });
-          return;
-        }
-
+        // Arm toast + timer before visibility catch-up can fire.
+        reloadAtMs = Date.now() + AUTO_RELOAD_MS;
+        if (autoReloadTimeout) clearTimeout(autoReloadTimeout);
+        autoReloadTimeout = setTimeout(() => {
+          void saveAndHardReload();
+        }, AUTO_RELOAD_MS);
         toast({
           title: i18n.t("versionUpdate.title", { ns: "ui" }),
-          description: i18n.t("versionUpdate.descriptionToastOnly", {
+          description: i18n.t("versionUpdate.description", {
             ns: "ui",
+            minutes: AUTO_RELOAD_MINUTES,
           }),
           variant: "default",
           duration: Infinity,
+          dismissible: false,
           action: {
-            label: i18n.t("versionUpdate.refreshToastOnly", { ns: "ui" }),
+            label: i18n.t("versionUpdate.refresh", { ns: "ui" }),
             onClick: () => {
-              void hardReload();
+              void saveAndHardReload();
             },
           },
         });
+        updatePending = true;
       } catch (error) {
         logger.error("[VERSION] Error showing update toast:", error);
       }
