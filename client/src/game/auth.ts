@@ -799,6 +799,8 @@ export async function saveGameToSupabase(
   isNewGame: boolean = false,
   clickAnalytics: Record<string, number> | null = null,
   resourceAnalytics: Record<string, number> | null = null,
+  /** Only pass true when `gameState` is a full document (see `isSaveFullReplaceEnabled`). */
+  fullReplace: boolean = false,
 ): Promise<void> {
   const user = await getCurrentUser();
   if (!user) {
@@ -887,6 +889,7 @@ export async function saveGameToSupabase(
       resourceAnalytics: resourceAnalyticsParam,
       clearAnalytics: isNewGame,
       allowPlaytimeOverwrite: allowOverwrite,
+      fullReplace: fullReplace === true,
     },
   });
 

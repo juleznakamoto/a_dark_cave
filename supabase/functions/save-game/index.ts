@@ -136,11 +136,15 @@ serve(async (req) => {
       clickAnalytics,
       resourceAnalytics,
       clearAnalytics,
-      allowPlaytimeOverwrite
+      allowPlaytimeOverwrite,
+      fullReplace,
     } = body
+
+    const fullReplaceFlag = fullReplace === true
 
     console.log(`[${requestId}] Request body keys:`, Object.keys(body))
     console.log(`[${requestId}] gameStateDiff type:`, typeof gameStateDiff, 'is array:', Array.isArray(gameStateDiff))
+    console.log(`[${requestId}] fullReplace:`, fullReplaceFlag)
 
     // Validate request shape
     if (!gameStateDiff || typeof gameStateDiff !== 'object' || Array.isArray(gameStateDiff)) {
@@ -202,7 +206,8 @@ serve(async (req) => {
       p_click_analytics: clickAnalytics || null,
       p_resource_analytics: resourceAnalytics || null,
       p_clear_analytics: clearAnalytics || false,
-      p_allow_playtime_overwrite: allowPlaytimeOverwrite || false
+      p_allow_playtime_overwrite: allowPlaytimeOverwrite || false,
+      p_full_replace: fullReplaceFlag,
     })
 
     if (dbError) {

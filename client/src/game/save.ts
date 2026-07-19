@@ -32,6 +32,15 @@ import {
 
 const isDev = import.meta.env.DEV;
 
+/**
+ * Cloud save full-document replace on the V1 path (`game_state`).
+ * On by default for new clients. Rollback to diff + deep-merge: `VITE_SAVE_FULL_REPLACE=0`.
+ * Requires migration 030 + updated `save-game` edge function.
+ */
+export function isSaveFullReplaceEnabled(): boolean {
+  return import.meta.env.VITE_SAVE_FULL_REPLACE !== "0";
+}
+
 interface GameDB extends DBSchema {
   saves: {
     key: string;
@@ -636,50 +645,52 @@ export async function saveGame(
         const legacyResourceAnalytics = v2RichEnabled ? null : resourceData;
         const legacyClearAnalytics = v2RichEnabled ? false : isNewGame;
 
-        // Get last cloud state for diff calculation
-        const lastCloudState = await getLastCloudState(db);
-        let stateDiff = omitPlayTimeFromDiffIfUnchanged(
-          calculateStateDiff(lastCloudState || null, sanitizedState),
-          lastCloudState,
-          sanitizedState,
-        );
+        const fullReplace = isSaveFullReplaceEnabled();
+        let stateDiff: Partial<GameState>;
 
-        // Permanent / foundational slices: always send full objects. Incremental diffs
-        // omit unchanged keys; JSONB deep-merge into an empty or partial cloud row then
-        // permanently drops them. Seen in prod: wiped tools, missing unlock flags, and
-        // missing `buildings` (housing/cap reads as 0 while villagers remain).
-        //
-        // Include every stable progression map in the same class — not only
-        // tools/weapons/books/flags. Clothing/relics can legitimately downgrade in play,
-        // but omitting the top-level key entirely is still corruption (distinct from the
-        // server OR-merge guard in migration 025, which intentionally skips them).
-        for (const key of ALWAYS_FULL_CLOUD_SLICES) {
-          stateDiff[key] = sanitizedState[key] as never;
-        }
+        if (fullReplace) {
+          // Full document — server stores as game_state when p_full_replace=true.
+          stateDiff = sanitizedState as Partial<GameState>;
+          if (stateDiff.playTime !== undefined) {
+            stateDiff.playTime = Math.floor(Number(stateDiff.playTime));
+          }
+        } else {
+          // Legacy path: diff + deep-merge (old clients / kill switch).
+          const lastCloudState = await getLastCloudState(db);
+          stateDiff = omitPlayTimeFromDiffIfUnchanged(
+            calculateStateDiff(lastCloudState || null, sanitizedState),
+            lastCloudState,
+            sanitizedState,
+          );
 
-        // Execution / expedition slices use delete semantics (completed actions remove
-        // keys). Cloud save uses JSONB deep-merge, so partial diffs cannot express
-        // deletions — always send full objects (best-effort; client load also drops
-        // completed one-shot ghosts so stale keys cannot re-grant villagers).
-        for (const key of ALWAYS_FULL_DELETE_SEMANTIC_CLOUD_SLICES) {
-          (stateDiff as Record<string, unknown>)[key] =
-            (sanitizedState as Record<string, unknown>)[key];
-        }
+          // Permanent / foundational slices: always send full objects. Incremental diffs
+          // omit unchanged keys; JSONB deep-merge into an empty/partial cloud row then
+          // permanently drops them. Seen in prod: wiped tools, missing unlock flags, and
+          // missing `buildings` (housing/cap reads as 0 while villagers remain).
+          for (const key of ALWAYS_FULL_CLOUD_SLICES) {
+            stateDiff[key] = sanitizedState[key] as never;
+          }
 
-        // Always include startTime and gameId for completion tracking
-        if (sanitizedState.startTime && !stateDiff.startTime) {
-          stateDiff.startTime = sanitizedState.startTime;
-        }
-        if (sanitizedState.gameId && !stateDiff.gameId) {
-          stateDiff.gameId = sanitizedState.gameId;
-        }
+          // Execution / expedition slices use delete semantics (completed actions remove
+          // keys). Cloud save uses JSONB deep-merge, so partial diffs cannot express
+          // deletions — always send full objects.
+          for (const key of ALWAYS_FULL_DELETE_SEMANTIC_CLOUD_SLICES) {
+            (stateDiff as Record<string, unknown>)[key] =
+              (sanitizedState as Record<string, unknown>)[key];
+          }
 
-        // Always refresh build SHA even when nothing else in the diff changed.
-        stateDiff.clientBuildSha = sanitizedState.clientBuildSha;
+          if (sanitizedState.startTime && !stateDiff.startTime) {
+            stateDiff.startTime = sanitizedState.startTime;
+          }
+          if (sanitizedState.gameId && !stateDiff.gameId) {
+            stateDiff.gameId = sanitizedState.gameId;
+          }
 
-        // Ensure playTime is an integer for the database
-        if (stateDiff.playTime !== undefined) {
-          stateDiff.playTime = Math.floor(stateDiff.playTime);
+          stateDiff.clientBuildSha = sanitizedState.clientBuildSha;
+
+          if (stateDiff.playTime !== undefined) {
+            stateDiff.playTime = Math.floor(stateDiff.playTime);
+          }
         }
 
         // Check if this is a new game that needs playtime overwrite
@@ -690,12 +701,13 @@ export async function saveGame(
           isNewGame: sanitizedState.isNewGame,
           willAllowOverwrite: allowOverwrite,
           currentPlayTime: stateDiff.playTime,
+          fullReplace,
           v2CloudEnabled,
           v2RichEnabled,
         });
 
-        // Save via Edge Function → save_game_with_analytics (deep-merges nested JSONB
-        // objects server-side; see supabase/migrations/024_jsonb_deep_merge_game_state.sql).
+        // Save via Edge Function → save_game_with_analytics.
+        // fullReplace: full blob replace (migration 030); else deep-merge (024/025).
         const supabaseClient = await getSupabaseClient();
 
         // Verify we have an active session (Supabase client will automatically include the JWT)
@@ -710,7 +722,8 @@ export async function saveGame(
             clickAnalytics: legacyClickAnalytics,
             resourceAnalytics: legacyResourceAnalytics,
             clearAnalytics: legacyClearAnalytics,
-            allowPlaytimeOverwrite: allowOverwrite
+            allowPlaytimeOverwrite: allowOverwrite,
+            fullReplace,
           }
         });
 
