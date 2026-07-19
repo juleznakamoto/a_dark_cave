@@ -140,7 +140,7 @@ shared/schema.ts— Zod GameState schema (source of truth for persisted shape)
   skips 150m and 270m when Playlight discover social task is fulfilled;
   `getActivePlaylightExitMilestone()`; consumed count persisted as `playlightExitIntentMilestoneIndex`
   in save (read/written by `lib/playlight.ts` on SDK `exitIntent`).
-- **`versionCheck.ts`** — polls `/api/version` against compile-time `__BUILD_SHA__` (focus/visibility + 5m interval); on mismatch saves game and shows update toast in `GameContainer` (hard reload via `lib/hardReload.ts`).
+- **`versionCheck.ts`** — polls `/api/version` against compile-time `__BUILD_SHA__` (focus/visibility + 5m interval); on mismatch saves game and shows an update toast in `GameContainer`. Forced 5-minute `hardReload` is temporarily canaried to one test account; others get toast + reload-on-tab-visible only.
 - **`boost.ts`** — one-time `/boost` URL resource bonus for started saves; gated by persisted
   `boostApplied` (`shared/schema.ts`, migrated from legacy `boostMode`); applied on load in
   `pages/game.tsx` via `canApplySaveBoost` / `applySaveBoost`.

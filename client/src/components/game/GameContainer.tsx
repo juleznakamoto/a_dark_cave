@@ -285,30 +285,91 @@ export default function GameContainer() {
   }, [flags.gameStarted, villageTabVisible, villageHotkeyTutorialShown]);
 
   // Prompt for a hard refresh when a new build is deployed while the tab stays open.
+  // Forced 5-minute hardReload is temporarily limited to a prod test account;
+  // everyone else gets toast + reload-on-tab-visible only.
   useEffect(() => {
-    const showUpdateToast = toast;
+    /** Temporary prod canary — remove after forced-reload soak. */
+    const FORCE_RELOAD_TEST_EMAIL = "bauer-j@outlook.de";
+    const AUTO_RELOAD_MS = 5 * 60 * 1000;
+    const AUTO_RELOAD_MINUTES = 5;
     let updatePending = false;
+    let forceReloadEnabled = false;
+    let reloadAtMs = 0;
+    let autoReloadTimeout: ReturnType<typeof setTimeout> | null = null;
+    let reloading = false;
+
+    const saveAndHardReload = async () => {
+      if (reloading) return;
+      reloading = true;
+      try {
+        const { saveGame } = await import("@/game/save");
+        await saveGame(useGameStore.getState(), false);
+      } catch (error) {
+        logger.error("[VERSION] Error saving before reload:", error);
+      }
+      await hardReload();
+    };
 
     const handleVisibilityReload = () => {
-      if (updatePending && document.visibilityState === "visible") {
-        void hardReload();
+      if (!updatePending || document.visibilityState !== "visible") return;
+      if (forceReloadEnabled) {
+        // Mobile often suspends timers while backgrounded — catch up if the
+        // grace window already elapsed when the player returns.
+        if (reloadAtMs > 0 && Date.now() >= reloadAtMs) {
+          void saveAndHardReload();
+        }
+        return;
       }
+      void hardReload();
     };
     document.addEventListener("visibilitychange", handleVisibilityReload);
 
     startVersionCheck(async () => {
       try {
         const { saveGame } = await import("@/game/save");
+        const { getCurrentUser } = await import("@/game/auth");
         const state = useGameStore.getState();
         await saveGame(state, false);
         updatePending = true;
-        showUpdateToast({
+
+        const user = await getCurrentUser();
+        forceReloadEnabled =
+          (user?.email ?? "").trim().toLowerCase() === FORCE_RELOAD_TEST_EMAIL;
+
+        if (forceReloadEnabled) {
+          reloadAtMs = Date.now() + AUTO_RELOAD_MS;
+          if (autoReloadTimeout) clearTimeout(autoReloadTimeout);
+          autoReloadTimeout = setTimeout(() => {
+            void saveAndHardReload();
+          }, AUTO_RELOAD_MS);
+          toast({
+            title: i18n.t("versionUpdate.title", { ns: "ui" }),
+            description: i18n.t("versionUpdate.description", {
+              ns: "ui",
+              minutes: AUTO_RELOAD_MINUTES,
+            }),
+            variant: "default",
+            duration: Infinity,
+            dismissible: false,
+            action: {
+              label: i18n.t("versionUpdate.refresh", { ns: "ui" }),
+              onClick: () => {
+                void saveAndHardReload();
+              },
+            },
+          });
+          return;
+        }
+
+        toast({
           title: i18n.t("versionUpdate.title", { ns: "ui" }),
-          description: i18n.t("versionUpdate.description", { ns: "ui" }),
+          description: i18n.t("versionUpdate.descriptionToastOnly", {
+            ns: "ui",
+          }),
           variant: "default",
           duration: Infinity,
           action: {
-            label: i18n.t("versionUpdate.refresh", { ns: "ui" }),
+            label: i18n.t("versionUpdate.refreshToastOnly", { ns: "ui" }),
             onClick: () => {
               void hardReload();
             },
@@ -321,6 +382,7 @@ export default function GameContainer() {
 
     return () => {
       document.removeEventListener("visibilitychange", handleVisibilityReload);
+      if (autoReloadTimeout) clearTimeout(autoReloadTimeout);
       stopVersionCheck();
     };
   }, []);
