@@ -21,7 +21,7 @@ in the client; **Supabase** handles auth/cloud saves and **Stripe** handles paym
 | `client/` | React SPA: UI, game engine, i18n, assets. Vite root. |
 | `electron/` | Steam desktop shell (Electron `main`/`preload` + loopback static server + steamworks.js). See [Steam edition](#steam-edition-electron) below. |
 | `server/` | Express server: API routes, Stripe/referral/marketing, dev Vite middleware, prod static serving. |
-| `shared/` | Cross-cutting TypeScript shared by client + server: Zod schemas, shop/referral pricing, admin dashboard aggregates (`gameCompletionAdminStats.ts`, `socialPromptAdminStats.ts`), save integrity checks (`saveGameAnalysis.ts`), tool rebuild from story flags (`rebuildToolsFromStorySeen.ts`), public SEO route metadata (`publicSeo.ts`). |
+| `shared/` | Cross-cutting TypeScript shared by client + server: Zod schemas, shop/referral pricing, admin dashboard aggregates (`gameCompletionAdminStats.ts`, `socialPromptAdminStats.ts`), save integrity + client-build version checks + V1/V2 sidecar compare (`saveGameAnalysis.ts`), tool rebuild from story flags (`rebuildToolsFromStorySeen.ts`), public SEO route metadata (`publicSeo.ts`). |
 | `supabase/` | SQL migrations + edge function (`functions/save-game/`) for Postgres/RLS. |
 | `scripts/` | Build & i18n tooling — see [Scripts](#scripts-scripts) below. |
 | `services/` | Internal auxiliary services (currently `gender-service/` — first-name gender inference, localhost only). |
@@ -379,7 +379,7 @@ rate-limited `/api/*` routes.
 | `/api/marketing/*` | `marketing.ts` | Email prefs, unsubscribe |
 | `/api/leaderboard/*`, `/api/account/*`, `/api/session/ping` | inline + Supabase | Leaderboard, account deletion, session heartbeat |
 | `/api/gender` | proxies `services/gender-service/app.py` | First-name gender for marketing CSVs |
-| `/api/admin/*` | inline + `server/adminDashboardData.ts` | Admin dashboard: split endpoints (`metrics`, `dau`, `saves`, `save-analysis`, `clicks`, `purchases`); Resend marketing CSV download + sync; saves return slim `game_state` projection; `save-analysis` runs `shared/saveGameAnalysis.ts` on last 100 full saves (lazy-loaded tab) |
+| `/api/admin/*` | inline + `server/adminDashboardData.ts` | Admin dashboard: split endpoints (`metrics`, `dau`, `saves`, `save-analysis`, `clicks`, `purchases`); Resend marketing CSV download + sync; saves return slim `game_state` projection; `save-analysis` runs `shared/saveGameAnalysis.ts` on last 100 full saves (integrity + `clientBuildSha` vs deploy SHA + V1/V2 `game_state_v2` compare: `mismatch` / `shape_drift` / `expected_noise`; lazy-loaded tab) |
 | `/api/config` | inline | Public Supabase keys |
 | `/api/version` | inline | Deploy build sha + semver (`no-store`; client compares against `__BUILD_SHA__`) |
 

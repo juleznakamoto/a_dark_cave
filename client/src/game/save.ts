@@ -488,6 +488,11 @@ export async function saveGame(
     const now = Date.now();
     sanitizedState.lastSaved = now;
 
+    // Stamp the running client build so cloud saves can be audited for stale bundles.
+    const runningBuildSha =
+      typeof __BUILD_SHA__ !== "undefined" ? __BUILD_SHA__ : "dev";
+    sanitizedState.clientBuildSha = runningBuildSha;
+
     const saveData: SaveData = {
       gameState: sanitizedState,
       timestamp: now,
@@ -595,6 +600,9 @@ export async function saveGame(
         if (sanitizedState.gameId && !stateDiff.gameId) {
           stateDiff.gameId = sanitizedState.gameId;
         }
+
+        // Always refresh build SHA even when nothing else in the diff changed.
+        stateDiff.clientBuildSha = sanitizedState.clientBuildSha;
 
         // Ensure playTime is an integer for the database
         if (stateDiff.playTime !== undefined) {

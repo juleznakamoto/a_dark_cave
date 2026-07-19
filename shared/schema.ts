@@ -663,6 +663,11 @@ export const gameStateSchema = z.object({
   signupWelcomeGoldClaimed: z.boolean().default(false),
   detectedCurrency: z.enum(["EUR", "USD"]).nullable().default(null), // Currency detection (persists across game restarts)
   googleAdsSource: z.string().nullable().default(null), // Google Ads source tracking (persists across game restarts)
+  /**
+   * Git SHA of the client bundle that last wrote this save (`__BUILD_SHA__`).
+   * Empty for saves from before version tracking; stamped on every save.
+   */
+  clientBuildSha: z.string().default(""),
   playTime: z.number().default(0), // Track total play time in milliseconds
   lastResourceSnapshotTime: z.number().default(0).optional(),
   /** Resource keys that have appeared in the side panel (persisted once amount > 0). */

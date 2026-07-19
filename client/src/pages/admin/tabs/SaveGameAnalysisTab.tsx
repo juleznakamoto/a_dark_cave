@@ -27,6 +27,18 @@ const ISSUE_LABELS: Record<SaveGameIssueKind, string> = {
   population_mismatch: "Villagers exceed housing cap",
 };
 
+/** `user_id` can be null after account anonymization (migration 009). */
+function formatSaveUserLabel(row: {
+  username?: string | null;
+  user_id?: string | null;
+  id?: string;
+}): string {
+  if (row.username) return row.username;
+  if (row.user_id) return `${row.user_id.slice(0, 8)}…`;
+  if (row.id) return `anon:${row.id.slice(0, 8)}…`;
+  return "anonymous";
+}
+
 interface SaveGameAnalysisTabProps {
   environment: "dev" | "prod";
 }
@@ -71,9 +83,19 @@ export default function SaveGameAnalysisTab({
     return analysis.rows.filter((row) => row.issues.length > 0);
   }, [analysis]);
 
+  const outdatedRows = useMemo(() => {
+    if (!analysis) return [];
+    return analysis.rows.filter((row) => !row.isCurrentVersion);
+  }, [analysis]);
+
   const cleanCount = analysis
     ? analysis.scanned - analysis.rowsWithIssues
     : 0;
+
+  const shortSha = (sha: string | null | undefined) => {
+    if (!sha) return "—";
+    return sha.length > 12 ? `${sha.slice(0, 12)}…` : sha;
+  };
 
   if (loading) {
     return (
@@ -122,6 +144,15 @@ export default function SaveGameAnalysisTab({
                 {analysis.newestUpdated.slice(0, 19)} UTC)
               </>
             ) : null}
+            {analysis.currentBuildSha ? (
+              <>
+                {" · "}
+                current build{" "}
+                <code className="text-xs">
+                  {shortSha(analysis.currentBuildSha)}
+                </code>
+              </>
+            ) : null}
           </p>
         </div>
         <button
@@ -133,11 +164,21 @@ export default function SaveGameAnalysisTab({
         </button>
       </div>
 
-      <div className="grid gap-4 sm:grid-cols-3">
+      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
         <Card>
           <CardHeader className="pb-2">
             <CardDescription>Scanned</CardDescription>
             <CardTitle className="text-2xl">{analysis.scanned}</CardTitle>
+          </CardHeader>
+        </Card>
+        <Card>
+          <CardHeader className="pb-2">
+            <CardDescription>Not on current version</CardDescription>
+            <CardTitle
+              className={`text-2xl ${analysis.notOnCurrentVersion > 0 ? "text-amber-600 dark:text-amber-400" : ""}`}
+            >
+              {analysis.notOnCurrentVersion}
+            </CardTitle>
           </CardHeader>
         </Card>
         <Card>
@@ -157,6 +198,178 @@ export default function SaveGameAnalysisTab({
           </CardHeader>
         </Card>
       </div>
+
+      {analysis.v2Compare ? (
+        <Card>
+          <CardHeader>
+            <CardTitle className="text-base">Save V2 sidecar (dual-write)</CardTitle>
+            <CardDescription>
+              Compares{" "}
+              <code className="text-xs">game_state_v2</code> vs legacy{" "}
+              <code className="text-xs">game_state</code> (playTime floored).{" "}
+              Mismatch = same key, different values. Shape drift = key only on one
+              side (V1 diff vs V2 full blob). Expected noise = UI/cooldowns. Table
+              lists value mismatches / invalid only. Load still uses legacy.
+            </CardDescription>
+          </CardHeader>
+          <CardContent className="space-y-3">
+            <div className="grid gap-3 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-8 text-sm">
+              <div>
+                <div className="text-muted-foreground">With V2</div>
+                <div className="font-mono text-lg tabular-nums">
+                  {analysis.v2Compare.withV2}
+                </div>
+              </div>
+              <div>
+                <div className="text-muted-foreground">Missing V2</div>
+                <div className="font-mono text-lg tabular-nums">
+                  {analysis.v2Compare.missingV2}
+                </div>
+              </div>
+              <div>
+                <div className="text-muted-foreground">Match</div>
+                <div className="font-mono text-lg tabular-nums">
+                  {analysis.v2Compare.match}
+                </div>
+              </div>
+              <div>
+                <div className="text-muted-foreground">Expected noise</div>
+                <div className="font-mono text-lg tabular-nums">
+                  {analysis.v2Compare.expectedNoise}
+                </div>
+              </div>
+              <div>
+                <div className="text-muted-foreground">Shape drift</div>
+                <div className="font-mono text-lg tabular-nums">
+                  {analysis.v2Compare.shapeDrift}
+                </div>
+              </div>
+              <div>
+                <div className="text-muted-foreground">Mismatch</div>
+                <div className="font-mono text-lg tabular-nums">
+                  {analysis.v2Compare.mismatch}
+                </div>
+              </div>
+              <div>
+                <div className="text-muted-foreground">Invalid V2</div>
+                <div className="font-mono text-lg tabular-nums">
+                  {analysis.v2Compare.invalidV2}
+                </div>
+              </div>
+              <div>
+                <div className="text-muted-foreground">Invalid legacy</div>
+                <div className="font-mono text-lg tabular-nums">
+                  {analysis.v2Compare.invalidLegacy}
+                </div>
+              </div>
+            </div>
+            {analysis.v2Compare.rows.length > 0 ? (
+              <div className="overflow-x-auto">
+                <table className="w-full text-sm">
+                  <thead>
+                    <tr className="border-b text-left text-muted-foreground">
+                      <th className="py-2 pr-3 font-medium">User</th>
+                      <th className="py-2 pr-3 font-medium">Status</th>
+                      <th className="py-2 pr-3 font-medium">Rev</th>
+                      <th className="py-2 font-medium">Details</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {analysis.v2Compare.rows.slice(0, 40).map((row, idx) => (
+                      <tr
+                        key={row.user_id ?? `v2-${idx}`}
+                        className="border-b border-border/60"
+                      >
+                        <td className="py-2 pr-3 font-mono text-xs">
+                          {formatSaveUserLabel(row)}
+                        </td>
+                        <td className="py-2 pr-3">{row.status}</td>
+                        <td className="py-2 pr-3 font-mono tabular-nums">
+                          {row.save_revision ?? "—"}
+                        </td>
+                        <td className="py-2 text-muted-foreground">
+                          {row.mismatchCount != null && row.mismatchCount > 0
+                            ? `(${row.mismatchCount}) `
+                            : ""}
+                          {row.details.join(", ") || "—"}
+                          {row.shapeDriftCount != null &&
+                            row.shapeDriftCount > 0
+                            ? ` · +${row.shapeDriftCount} shape`
+                            : ""}
+                          {row.expectedNoiseCount != null &&
+                            row.expectedNoiseCount > 0
+                            ? ` · +${row.expectedNoiseCount} noise`
+                            : ""}
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            ) : null}
+          </CardContent>
+        </Card>
+      ) : null}
+
+      <Card>
+        <CardHeader>
+          <CardTitle className="text-base">Outdated / unknown clients</CardTitle>
+          <CardDescription>
+            {analysis.notOnCurrentVersion} of {analysis.scanned} recent saves
+            are not on the current deploy
+            {analysis.currentBuildSha
+              ? ` (${shortSha(analysis.currentBuildSha)})`
+              : " (current deploy SHA unknown)"}
+            . Missing SHA usually means the player has not saved since version
+            tracking was added.
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+          {outdatedRows.length === 0 ? (
+            <p className="py-4 text-center text-sm text-muted-foreground">
+              All scanned saves are on the current version.
+            </p>
+          ) : (
+            <div className="overflow-x-auto">
+              <table className="w-full text-sm">
+                <thead>
+                  <tr className="border-b text-left text-muted-foreground">
+                    <th className="py-2 pr-3 font-medium">Updated</th>
+                    <th className="py-2 pr-3 font-medium">User</th>
+                    <th className="py-2 pr-3 font-medium">Play</th>
+                    <th className="py-2 pr-3 font-medium">Client SHA</th>
+                    <th className="py-2 font-medium">Status</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {outdatedRows.map((row) => (
+                    <tr
+                      key={row.id ?? row.user_id}
+                      className="border-b align-top"
+                    >
+                      <td className="py-2 pr-3 whitespace-nowrap font-mono text-xs">
+                        {row.updated_at.slice(0, 19)}
+                      </td>
+                      <td className="py-2 pr-3 font-mono text-xs max-w-[140px] truncate">
+                        {formatSaveUserLabel(row)}
+                      </td>
+                      <td className="py-2 pr-3 tabular-nums">
+                        {row.playmin != null ? `${row.playmin}m` : "—"}
+                      </td>
+                      <td className="py-2 pr-3 font-mono text-xs">
+                        {shortSha(row.clientBuildSha)}
+                      </td>
+                      <td className="py-2 text-xs">
+                        {row.clientBuildSha ? "Outdated build" : "No version stamped"}
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          )}
+        </CardContent>
+      </Card>
 
       {Object.keys(analysis.byKind).length > 0 ? (
         <Card>
@@ -200,6 +413,7 @@ export default function SaveGameAnalysisTab({
                   <th className="py-2 pr-3 font-medium">Updated</th>
                   <th className="py-2 pr-3 font-medium">User</th>
                   <th className="py-2 pr-3 font-medium">Play</th>
+                  <th className="py-2 pr-3 font-medium">Build</th>
                   <th className="py-2 pr-3 font-medium">Tools</th>
                   <th className="py-2 font-medium">Issues</th>
                 </tr>
@@ -211,10 +425,13 @@ export default function SaveGameAnalysisTab({
                       {row.updated_at.slice(0, 19)}
                     </td>
                     <td className="py-2 pr-3 font-mono text-xs max-w-[140px] truncate">
-                      {row.username ?? row.user_id.slice(0, 8) + "…"}
+                      {formatSaveUserLabel(row)}
                     </td>
                     <td className="py-2 pr-3 tabular-nums">
                       {row.playmin != null ? `${row.playmin}m` : "—"}
+                    </td>
+                    <td className="py-2 pr-3 font-mono text-xs">
+                      {shortSha(row.clientBuildSha)}
                     </td>
                     <td className="py-2 pr-3 tabular-nums">
                       {row.has_tools_key ? row.tools_owned : "missing"}
@@ -271,6 +488,7 @@ export default function SaveGameAnalysisTab({
                   <th className="py-2 pr-3 font-medium">Updated</th>
                   <th className="py-2 pr-3 font-medium">User</th>
                   <th className="py-2 pr-3 font-medium">Play</th>
+                  <th className="py-2 pr-3 font-medium">Build</th>
                   <th className="py-2 font-medium">Tools</th>
                 </tr>
               </thead>
@@ -283,10 +501,13 @@ export default function SaveGameAnalysisTab({
                         {row.updated_at.slice(0, 19)}
                       </td>
                       <td className="py-2 pr-3 font-mono text-xs">
-                        {row.username ?? row.user_id.slice(0, 8) + "…"}
+                        {formatSaveUserLabel(row)}
                       </td>
                       <td className="py-2 pr-3 tabular-nums">
                         {row.playmin != null ? `${row.playmin}m` : "—"}
+                      </td>
+                      <td className="py-2 pr-3 font-mono text-xs">
+                        {shortSha(row.clientBuildSha)}
                       </td>
                       <td className="py-2 tabular-nums">{row.tools_owned}</td>
                     </tr>
