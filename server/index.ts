@@ -543,6 +543,7 @@ import {
   type AdminEnv,
 } from "./adminDashboardData";
 import { analyzeSaveGames } from "@shared/saveGameAnalysis";
+import { resolveCurrentBuildShaForAdmin } from "./publishedBuildSha";
 
 function adminDashboardCache(res: Response) {
   res.set("Cache-Control", "public, max-age=300");
@@ -592,11 +593,13 @@ app.get("/api/admin/save-analysis", async (req, res) => {
   try {
     // Fresh shape (incl. v2Compare); do not share-cache across deploys.
     res.set("Cache-Control", "private, no-store");
-    const adminClient = getAdminClient(parseAdminEnv(req));
-    const inputs = await fetchAdminSaveAnalysisInputs(adminClient);
-    const analysis = analyzeSaveGames(inputs, {
-      currentBuildSha: DEPLOY_GIT_SHA,
-    });
+    const env = parseAdminEnv(req);
+    const adminClient = getAdminClient(env);
+    const [inputs, currentBuildSha] = await Promise.all([
+      fetchAdminSaveAnalysisInputs(adminClient),
+      resolveCurrentBuildShaForAdmin(env, DEPLOY_GIT_SHA),
+    ]);
+    const analysis = analyzeSaveGames(inputs, { currentBuildSha });
     res.json({ analysis });
   } catch (error: any) {
     log("❌ Admin save analysis failed:", error);

@@ -544,10 +544,51 @@ type InFlightExecutionSlice = {
 };
 
 /**
+ * True when a one-shot action's completion flag is already set in `story.seen`.
+ * Used to drop cloud deep-merge ghosts that would re-complete (and re-refund
+ * expedition villagers) on every reload.
+ *
+ * Matches `show_when` gates like:
+ * - `"!story.seen.swampSanctuaryExplored": true`
+ * - `"story.seen.occultistChamberExplored": false`
+ */
+export function isCompletedOneShotExecutionGhost(
+  actionId: string,
+  state: GameState,
+): boolean {
+  const action = getGameActions()[actionId];
+  const showWhen = action?.show_when;
+  if (!showWhen || typeof showWhen !== "object") return false;
+
+  const keys = Object.keys(showWhen);
+  // Tiered merchant-style show_when uses numeric keys — skip those.
+  if (keys.some((key) => /^\d+$/.test(key))) return false;
+
+  const seen = state.story?.seen ?? {};
+
+  for (const [path, expectedValue] of Object.entries(showWhen)) {
+    if (path.startsWith("!story.seen.") && expectedValue === true) {
+      const flag = path.slice("!story.seen.".length);
+      if (seen[flag as keyof typeof seen]) return true;
+    }
+    if (path.startsWith("story.seen.") && expectedValue === false) {
+      const flag = path.slice("story.seen.".length);
+      if (seen[flag as keyof typeof seen]) return true;
+    }
+  }
+
+  return false;
+}
+
+/**
  * Keep valid in-flight executions from a save so reload can resume the progress
  * bar; drop corrupt/orphan entries that would block buttons forever (e.g.
  * startTime without duration). Expedition villagers stay locked only for
  * resumed actions; stranded locks from dropped entries return to the free pool.
+ *
+ * Completed one-shot expeditions that linger in cloud JSONB (deep-merge cannot
+ * delete keys) are dropped without refunding — villagers were already returned
+ * on the real completion.
  */
 export function reconcileInFlightExecutionsOnLoad(
   state: GameState,
@@ -565,6 +606,8 @@ export function reconcileInFlightExecutionsOnLoad(
   const executionAbortEligible: Record<string, boolean> = {};
   const executionSpendSnapshots: Record<string, unknown> = {};
   const expeditionVillagers: Record<string, number> = {};
+  /** Completed one-shots kept as merge ghosts — do not refund their locks. */
+  const completedGhostActionIds = new Set<string>();
 
   const actionIds = new Set([
     ...Object.keys(rawStart),
@@ -575,6 +618,11 @@ export function reconcileInFlightExecutionsOnLoad(
   for (const actionId of actionIds) {
     const isCallMerchant = actionId === "callMerchant";
     if (!isCallMerchant && !getGameActions()[actionId]) {
+      continue;
+    }
+
+    if (!isCallMerchant && isCompletedOneShotExecutionGhost(actionId, state)) {
+      completedGhostActionIds.add(actionId);
       continue;
     }
 
@@ -617,6 +665,9 @@ export function reconcileInFlightExecutionsOnLoad(
 
   let strandedExpeditionVillagers = 0;
   for (const [actionId, count] of Object.entries(rawExpedition)) {
+    if (completedGhostActionIds.has(actionId)) {
+      continue;
+    }
     if (!executionStartTimes[actionId]) {
       strandedExpeditionVillagers += count || 0;
     }

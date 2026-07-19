@@ -1932,15 +1932,15 @@ export const choiceEvents: Record<string, GameEvent> = {
         cost: (state: GameState) => {
           const timesOccurred =
             (state.story?.seen?.frostfallCount as number) || 0;
-          const woodCost = 1000 * (timesOccurred + 1);
-          const foodCost = 1000 * (timesOccurred + 1);
+          const woodCost = 500 * (timesOccurred + 1);
+          const foodCost = 500 * (timesOccurred + 1);
           return `${woodCost} wood, ${foodCost} food`;
         },
         effect: (state: GameState) => {
           const timesOccurred =
             (state.story?.seen?.frostfallCount as number) || 0;
-          const woodCost = 1000 * (timesOccurred + 1);
-          const foodCost = 1000 * (timesOccurred + 1);
+          const woodCost = 500 * (timesOccurred + 1);
+          const foodCost = 500 * (timesOccurred + 1);
 
           return {
             resources: {

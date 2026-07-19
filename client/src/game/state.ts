@@ -44,6 +44,7 @@ import {
   getTransientDialogResetOnLoad,
   hydrateLoadedGameState,
   markSeenResources,
+  isCompletedOneShotExecutionGhost,
 } from "@/game/stateHelpers";
 import { capResourceToLimit } from "@/game/resourceLimits";
 import {
@@ -2219,6 +2220,20 @@ export const useGameStore = create<GameStore>((set, get) => ({
     const updatedExpeditionVillagers = { ...state.expeditionVillagers };
     if (releasedVillagers > 0) {
       delete updatedExpeditionVillagers[actionId];
+    }
+
+    // Cloud deep-merge ghosts can keep completed one-shots "in flight". Clearing
+    // without refund/re-run prevents duplicate villagers + repeating dialogs.
+    if (isCompletedOneShotExecutionGhost(actionId, state)) {
+      set({
+        executionStartTimes: newStartTimes,
+        executionDurations: newDurations,
+        executionAbortEligible: newAbortEligible,
+        executionSpendSnapshots: newSpendSnapshots,
+        constructionBoostsUsed: newConstructionBoostsUsed,
+        expeditionVillagers: updatedExpeditionVillagers,
+      });
+      return;
     }
 
     set({

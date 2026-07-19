@@ -589,12 +589,14 @@ export async function saveGame(
 
         // Execution / expedition slices use delete semantics (completed actions remove
         // keys). Cloud save uses JSONB deep-merge, so partial diffs cannot express
-        // deletions — always replace these objects wholesale (mirrors tools above).
+        // deletions — always send full objects. Server wholesale-replaces these keys
+        // after deep-merge (see migration 029).
         stateDiff.expeditionVillagers = sanitizedState.expeditionVillagers;
         stateDiff.executionStartTimes = sanitizedState.executionStartTimes;
         stateDiff.executionDurations = sanitizedState.executionDurations;
         stateDiff.executionAbortEligible = sanitizedState.executionAbortEligible;
         stateDiff.executionSpendSnapshots = sanitizedState.executionSpendSnapshots;
+        stateDiff.constructionBoostsUsed = sanitizedState.constructionBoostsUsed;
 
         // Always include startTime and gameId for completion tracking
         if (sanitizedState.startTime && !stateDiff.startTime) {

@@ -2,6 +2,7 @@ import { describe, expect, it } from "vitest";
 import type { GameState } from "@shared/schema";
 import {
   applyGameStateLoadMigrations,
+  isCompletedOneShotExecutionGhost,
   reconcileInFlightExecutionsOnLoad,
 } from "./stateHelpers";
 import { canExecuteAction } from "./rules";
@@ -97,6 +98,46 @@ describe("reconcileInFlightExecutionsOnLoad", () => {
     expect(reconciled.expeditionVillagers).toEqual({});
     expect(reconciled.villagers?.free).toBe(0);
     expect(reconciled.villagers?.gatherer).toBe(20);
+  });
+
+  it("drops completed one-shot expedition ghosts without refunding villagers", () => {
+    const state = {
+      ...baseState(),
+      villagers: { free: 10, gatherer: 0 },
+      story: {
+        seen: {
+          swampSanctuaryExplored: true,
+          occultistChamberExplored: true,
+        },
+      },
+      executionStartTimes: {
+        swampSanctuary: NOW - 200_000,
+        occultistChamber: NOW - 100_000,
+        chopWood: NOW - 1000,
+      },
+      executionDurations: {
+        swampSanctuary: 180,
+        occultistChamber: 60,
+        chopWood: 4,
+      },
+      expeditionVillagers: {
+        swampSanctuary: 20,
+        occultistChamber: 6,
+      },
+    } as GameState;
+
+    expect(isCompletedOneShotExecutionGhost("swampSanctuary", state)).toBe(true);
+    expect(isCompletedOneShotExecutionGhost("occultistChamber", state)).toBe(
+      true,
+    );
+    expect(isCompletedOneShotExecutionGhost("chopWood", state)).toBe(false);
+
+    const reconciled = reconcileInFlightExecutionsOnLoad(state, NOW);
+    expect(reconciled.executionStartTimes).toEqual({ chopWood: NOW - 1000 });
+    expect(reconciled.executionDurations).toEqual({ chopWood: 4 });
+    expect(reconciled.expeditionVillagers).toEqual({});
+    // Ghosts already returned villagers on real completion — do not double-count.
+    expect(reconciled.villagers?.free).toBe(10);
   });
 });
 

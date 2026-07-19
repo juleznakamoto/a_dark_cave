@@ -148,7 +148,7 @@ export default function SaveGameAnalysisTab({
             {analysis.currentBuildSha ? (
               <>
                 {" · "}
-                current build{" "}
+                published build{" "}
                 <code className="text-xs">
                   {shortSha(analysis.currentBuildSha)}
                 </code>
@@ -174,7 +174,7 @@ export default function SaveGameAnalysisTab({
         </Card>
         <Card>
           <CardHeader className="pb-2">
-            <CardDescription>Not on current version</CardDescription>
+            <CardDescription>Not on published build</CardDescription>
             <CardTitle
               className={`text-2xl ${analysis.notOnCurrentVersion > 0 ? "text-amber-600 dark:text-amber-400" : ""}`}
             >
@@ -208,13 +208,15 @@ export default function SaveGameAnalysisTab({
               Compares{" "}
               <code className="text-xs">game_state_v2</code> vs legacy{" "}
               <code className="text-xs">game_state</code> (playTime floored).{" "}
-              Mismatch = same key, different values. Shape drift = key only on one
-              side (V1 diff vs V2 full blob). Expected noise = UI/cooldowns. Table
-              lists value mismatches / invalid only. Load still uses legacy.
+              Mismatch = same playTime, different gameplay values. V2 stale =
+              legacy ahead of sidecar (expected while dual-write is best-effort).
+              Shape drift = key only on one side. Expected noise = UI/timers.
+              Table lists same-moment mismatches / invalid only. Load still uses
+              legacy.
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-3">
-            <div className="grid gap-3 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-8 text-sm">
+            <div className="grid gap-3 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-9 text-sm">
               <div>
                 <div className="text-muted-foreground">With V2</div>
                 <div className="font-mono text-lg tabular-nums">
@@ -246,8 +248,19 @@ export default function SaveGameAnalysisTab({
                 </div>
               </div>
               <div>
-                <div className="text-muted-foreground">Mismatch</div>
+                <div className="text-muted-foreground">V2 stale</div>
                 <div className="font-mono text-lg tabular-nums">
+                  {analysis.v2Compare.v2Stale ?? 0}
+                </div>
+              </div>
+              <div>
+                <div className="text-muted-foreground">Mismatch</div>
+                <div
+                  className={`font-mono text-lg tabular-nums ${analysis.v2Compare.mismatch > 0
+                      ? "text-destructive"
+                      : ""
+                    }`}
+                >
                   {analysis.v2Compare.mismatch}
                 </div>
               </div>
@@ -317,18 +330,20 @@ export default function SaveGameAnalysisTab({
           <CardTitle className="text-base">Outdated / unknown clients</CardTitle>
           <CardDescription>
             {analysis.notOnCurrentVersion} of {analysis.scanned} recent saves
-            are not on the current deploy
+            are not on the published build
             {analysis.currentBuildSha
               ? ` (${shortSha(analysis.currentBuildSha)})`
-              : " (current deploy SHA unknown)"}
-            . Missing SHA usually means the player has not saved since version
-            tracking was added.
+              : " (published SHA unknown)"}
+            . For prod this is{" "}
+            <code className="text-xs">a-dark-cave.com/api/version</code>, not
+            this admin host. Missing SHA usually means the player has not saved
+            since version tracking was added.
           </CardDescription>
         </CardHeader>
         <CardContent>
           {outdatedRows.length === 0 ? (
             <p className="py-4 text-center text-sm text-muted-foreground">
-              All scanned saves are on the current version.
+              All scanned saves are on the published build.
             </p>
           ) : (
             <div className="overflow-x-auto">

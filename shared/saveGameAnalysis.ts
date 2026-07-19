@@ -110,6 +110,7 @@ export type SaveGameAnalysisSummary = {
   newestUpdated: string | null;
   byKind: Partial<Record<SaveGameIssueKind, number>>;
   /** Deploy SHA used for version comparison (null when unknown). */
+  /** Published build SHA used for the comparison (see AnalyzeSaveGamesOptions). */
   currentBuildSha: string | null;
   /** Saves whose clientBuildSha matches currentBuildSha. */
   onCurrentVersion: number;
@@ -139,7 +140,8 @@ export const SAVE_V2_COMPARE_SLICES = [
  * Keys whose V1/V2 drift is expected during dual-write soak (not cutover blockers).
  * Still detected and counted as `expected_noise`, not treated as `mismatch`:
  * - UI-only store fields (stripped by `buildGameState` for V2; often still on V1)
- * - Transient / delete-semantic maps that V1 deep-merge cannot prune
+ * - Transient / delete-semantic maps (execution/expedition wholesale-replaced since
+ *   migration 029; cooldowns and other maps can still diverge under V1 deep-merge)
  * - Client analytics buffers not part of gameplay state
  *
  * Keep UI keys in sync with `UI_ONLY_PROPERTIES` in `client/src/game/stateHelpers.ts`.
@@ -196,6 +198,8 @@ export const SAVE_V2_COMPARE_EXPECTED_NOISE_KEYS = new Set<string>([
   "timedEventTab",
   "constructionBoostsUsed",
   "miningBoostState",
+  // Wall-clock / loop timers (elapsedTime drifts; optional keys like `provoked`)
+  "attackWaveTimers",
   // Non-gameplay buffers
   "clickAnalytics",
   "isPaused",
@@ -214,7 +218,13 @@ export type SaveV2CompareStatus =
    * Not a value conflict — both sides agree where they overlap.
    */
   | "shape_drift"
-  /** Same key on both sides with different values (cutover-relevant). */
+  /**
+   * Legacy playTime is ahead of the sidecar — expected while V2 dual-write is
+   * DEV-only / best-effort and prod clients keep updating V1 only.
+   * Not a same-moment cutover conflict.
+   */
+  | "v2_stale"
+  /** Same key on both sides with different values at the same playTime (cutover-relevant). */
   | "mismatch"
   | "invalid_v2"
   | "invalid_legacy";
@@ -249,15 +259,20 @@ export type SaveV2CompareSummary = {
   expectedNoise: number;
   /** Rows whose only non-noise diffs are key presence (V1 sparse vs V2 full). */
   shapeDrift: number;
+  /** Legacy ahead of sidecar (DEV-only / failed dual-write lag). */
+  v2Stale: number;
   mismatch: number;
   invalidV2: number;
   invalidLegacy: number;
-  /** Real issues only (value mismatch / invalid). Other buckets are counts only. */
+  /** Real issues only (same-moment value mismatch / invalid). Other buckets are counts only. */
   rows: SaveV2CompareRow[];
 };
 
 export type AnalyzeSaveGamesOptions = {
-  /** Current deploy SHA from `/api/version` / build-meta. */
+  /**
+   * Published build SHA for the analyzed env (prod: live site `/api/version`;
+   * dev: admin host deploy SHA).
+   */
   currentBuildSha?: string | null;
 };
 
@@ -635,10 +650,17 @@ function capDetailKeys(keys: string[]): string[] {
   return details;
 }
 
+function flooredPlayTime(state: Record<string, unknown>): number | null {
+  const raw = state.playTime;
+  if (typeof raw !== "number" || !Number.isFinite(raw)) return null;
+  return Math.floor(raw);
+}
+
 /**
  * Top-level deep compare of legacy `game_state` vs sidecar `game_state_v2`.
  *
- * - Value conflicts on shared gameplay keys → `mismatch` (cutover signal)
+ * - Value conflicts at the same playTime → `mismatch` (cutover signal)
+ * - Legacy playTime ahead of sidecar → `v2_stale` (expected dual-write lag)
  * - Key only on one side → `shape_drift` (V1 diff sparsity vs V2 full blob)
  * - UI / transient / analytics keys → `expected_noise`
  */
@@ -717,8 +739,30 @@ export function compareLegacyVsV2Row(
 
   const noiseCount = expectedNoise.length > 0 ? expectedNoise.length : null;
   const shapeCount = shapeDrifts.length > 0 ? shapeDrifts.length : null;
+  const v1Play = flooredPlayTime(a);
+  const v2Play = flooredPlayTime(b);
+  const legacyAhead =
+    v1Play !== null && v2Play !== null && v1Play > v2Play;
 
   if (valueMismatches.length > 0) {
+    // Comparing different moments in time is not a cutover bug — prod often
+    // updates V1 without refreshing the DEV-only / best-effort sidecar.
+    if (legacyAhead) {
+      const aheadMs = v1Play! - v2Play!;
+      const details = capDetailKeys([
+        `playTime (v1 ahead ${aheadMs}ms)`,
+        ...valueMismatches.filter((key) => key !== "playTime"),
+      ]);
+      return {
+        ...base,
+        status: "v2_stale",
+        details,
+        mismatchCount: valueMismatches.length,
+        shapeDriftCount: shapeCount,
+        expectedNoiseCount: noiseCount,
+      };
+    }
+
     return {
       ...base,
       status: "mismatch",
@@ -755,7 +799,7 @@ export function compareLegacyVsV2Row(
   };
 }
 
-/** Rows that should appear in the admin issue table (value conflicts / invalid). */
+/** Rows that should appear in the admin issue table (same-moment conflicts / invalid). */
 function isSaveV2DashboardIssue(row: SaveV2CompareRow): boolean {
   return (
     row.status === "mismatch" ||
@@ -773,6 +817,7 @@ export function compareLegacyAndV2Saves(
   let match = 0;
   let expectedNoise = 0;
   let shapeDrift = 0;
+  let v2Stale = 0;
   let mismatch = 0;
   let invalidV2 = 0;
   let invalidLegacy = 0;
@@ -793,6 +838,10 @@ export function compareLegacyAndV2Saves(
       case "shape_drift":
         withV2 += 1;
         shapeDrift += 1;
+        break;
+      case "v2_stale":
+        withV2 += 1;
+        v2Stale += 1;
         break;
       case "mismatch":
         withV2 += 1;
@@ -815,10 +864,11 @@ export function compareLegacyAndV2Saves(
     match,
     expectedNoise,
     shapeDrift,
+    v2Stale,
     mismatch,
     invalidV2,
     invalidLegacy,
-    // Coverage / shape / noise stay in summary counts — issue table is value conflicts.
+    // Coverage / shape / noise / stale stay in summary counts — issue table is cutover conflicts.
     rows: compared.filter(isSaveV2DashboardIssue),
   };
 }

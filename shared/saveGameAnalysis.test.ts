@@ -400,6 +400,69 @@ describe("saveGameAnalysis", () => {
     expect(result.expectedNoiseCount).toBe(1);
   });
 
+  it("compareLegacyVsV2Row treats legacy-ahead playTime as v2_stale, not mismatch", () => {
+    const result = compareLegacyVsV2Row({
+      ...baseRow,
+      game_state: {
+        playTime: 50_000,
+        tools: { stone_axe: true },
+        resources: { wood: 100 },
+      },
+      game_state_v2: {
+        playTime: 10_000,
+        tools: { stone_axe: false },
+        resources: { wood: 20 },
+      },
+      save_revision: 2,
+      schema_version: 1,
+    });
+    expect(result.status).toBe("v2_stale");
+    expect(result.details[0]).toBe("playTime (v1 ahead 40000ms)");
+    expect(result.details).toEqual(
+      expect.arrayContaining(["tools", "resources"]),
+    );
+    expect(result.mismatchCount).toBe(3);
+  });
+
+  it("compareLegacyVsV2Row treats attackWaveTimers drift as expected_noise", () => {
+    const core = {
+      playTime: 1000,
+      tools: {},
+      buildings: {},
+      resources: {},
+      villagers: {},
+      flags: {},
+      weapons: {},
+      books: {},
+    };
+    const result = compareLegacyVsV2Row({
+      ...baseRow,
+      game_state: {
+        ...core,
+        attackWaveTimers: {
+          tenthWave: {
+            startTime: 1,
+            elapsedTime: 100.5,
+            provoked: false,
+          },
+        },
+      },
+      game_state_v2: {
+        ...core,
+        attackWaveTimers: {
+          tenthWave: {
+            startTime: 1,
+            elapsedTime: 100.5,
+          },
+        },
+      },
+      save_revision: 1,
+      schema_version: 1,
+    });
+    expect(result.status).toBe("expected_noise");
+    expect(result.details).toContain("attackWaveTimers");
+  });
+
   it("compareLegacyAndV2Saves summarizes coverage but only lists value mismatches", () => {
     const summary = compareLegacyAndV2Saves([
       {
@@ -485,13 +548,30 @@ describe("saveGameAnalysis", () => {
         save_revision: 1,
         schema_version: 1,
       },
+      {
+        ...baseRow,
+        user_id: "user-5",
+        game_state: {
+          playTime: 90_000,
+          tools: { stone_axe: true },
+          resources: { wood: 50 },
+        },
+        game_state_v2: {
+          playTime: 10_000,
+          tools: { stone_axe: true },
+          resources: { wood: 10 },
+        },
+        save_revision: 3,
+        schema_version: 1,
+      },
     ]);
     expect(summary.missingV2).toBe(1);
     expect(summary.mismatch).toBe(1);
+    expect(summary.v2Stale).toBe(1);
     expect(summary.expectedNoise).toBe(1);
     expect(summary.shapeDrift).toBe(1);
     expect(summary.match).toBe(0);
-    expect(summary.withV2).toBe(3);
+    expect(summary.withV2).toBe(4);
     expect(summary.rows).toHaveLength(1);
     expect(summary.rows[0]?.status).toBe("mismatch");
   });
