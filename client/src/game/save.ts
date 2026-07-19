@@ -51,6 +51,59 @@ const SAVE_KEY_STEAM_DEMO = "steamDemoSave";
 const SAVE_KEY_STEAM_PLAYTEST = "steamPlaytestSave";
 const LAST_CLOUD_STATE_KEY = "lastCloudState";
 
+/**
+ * Top-level slices always written in full on cloud save (not only when the diff
+ * thinks they changed). Omitted keys + JSONB deep-merge into an empty/partial row
+ * permanently drops progression (tools wipe, missing tab flags, missing buildings).
+ */
+const ALWAYS_FULL_CLOUD_SLICES = [
+  // Ownership / unlock maps (same class as the original tools/flags fix)
+  "tools",
+  "weapons",
+  "books",
+  "flags",
+  "buildings",
+  "clothing",
+  "schematics",
+  "relics",
+  "blessings",
+  "fellowship",
+  // Core progression — often unchanged for a stretch, catastrophic if omitted
+  "stats",
+  "story",
+  "villagers",
+  "resources",
+  // Mid/late progression maps missed by the same sparse first-write path
+  "bastion_stats",
+  "sleepUpgrades",
+  "combatSkills",
+  "huntingSkills",
+  "chainmasterSkills",
+  "crowsEyeSkills",
+  "disgracedPriorSkills",
+  "weaponEnchantments",
+  "merchantTrades",
+  "triggeredEvents",
+  "effects",
+  "unlockedAchievements",
+  "claimedAchievements",
+  "buttonUpgrades",
+] as const satisfies ReadonlyArray<keyof GameState>;
+
+/**
+ * Delete-semantic maps: completed actions remove keys; diffs cannot express deletes.
+ * Some keys live on the runtime store / sanitized blob but are not all on the Zod
+ * `GameState` type — keep this list untyped against `keyof GameState`.
+ */
+const ALWAYS_FULL_DELETE_SEMANTIC_CLOUD_SLICES = [
+  "expeditionVillagers",
+  "executionStartTimes",
+  "executionDurations",
+  "executionAbortEligible",
+  "executionSpendSnapshots",
+  "constructionBoostsUsed",
+] as const;
+
 function getSaveKey(): string {
   if (isSteamPlaytestBuild) return SAVE_KEY_STEAM_PLAYTEST;
   if (isSteamDemoBuild) return SAVE_KEY_STEAM_DEMO;
@@ -591,25 +644,27 @@ export async function saveGame(
           sanitizedState,
         );
 
-        // Permanent slices: always send full objects so incremental diffs cannot omit
-        // the `tools` key when lastCloudState and serialized state both lack it.
-        // Same for `flags` — a missing/partial flags object in cloud is how village/forest
-        // tab unlocks were wiped after account create / reload.
-        stateDiff.tools = sanitizedState.tools;
-        stateDiff.weapons = sanitizedState.weapons;
-        stateDiff.books = sanitizedState.books;
-        stateDiff.flags = sanitizedState.flags;
+        // Permanent / foundational slices: always send full objects. Incremental diffs
+        // omit unchanged keys; JSONB deep-merge into an empty or partial cloud row then
+        // permanently drops them. Seen in prod: wiped tools, missing unlock flags, and
+        // missing `buildings` (housing/cap reads as 0 while villagers remain).
+        //
+        // Include every stable progression map in the same class — not only
+        // tools/weapons/books/flags. Clothing/relics can legitimately downgrade in play,
+        // but omitting the top-level key entirely is still corruption (distinct from the
+        // server OR-merge guard in migration 025, which intentionally skips them).
+        for (const key of ALWAYS_FULL_CLOUD_SLICES) {
+          stateDiff[key] = sanitizedState[key] as never;
+        }
 
         // Execution / expedition slices use delete semantics (completed actions remove
         // keys). Cloud save uses JSONB deep-merge, so partial diffs cannot express
         // deletions — always send full objects (best-effort; client load also drops
         // completed one-shot ghosts so stale keys cannot re-grant villagers).
-        stateDiff.expeditionVillagers = sanitizedState.expeditionVillagers;
-        stateDiff.executionStartTimes = sanitizedState.executionStartTimes;
-        stateDiff.executionDurations = sanitizedState.executionDurations;
-        stateDiff.executionAbortEligible = sanitizedState.executionAbortEligible;
-        stateDiff.executionSpendSnapshots = sanitizedState.executionSpendSnapshots;
-        stateDiff.constructionBoostsUsed = sanitizedState.constructionBoostsUsed;
+        for (const key of ALWAYS_FULL_DELETE_SEMANTIC_CLOUD_SLICES) {
+          (stateDiff as Record<string, unknown>)[key] =
+            (sanitizedState as Record<string, unknown>)[key];
+        }
 
         // Always include startTime and gameId for completion tracking
         if (sanitizedState.startTime && !stateDiff.startTime) {
