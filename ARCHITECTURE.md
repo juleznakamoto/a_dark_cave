@@ -22,7 +22,7 @@ in the client; **Supabase** handles auth/cloud saves and **Stripe** handles paym
 | `electron/` | Steam desktop shell (Electron `main`/`preload` + loopback static server + steamworks.js). See [Steam edition](#steam-edition-electron) below. |
 | `server/` | Express server: API routes, Stripe/referral/marketing, dev Vite middleware, prod static serving. |
 | `shared/` | Cross-cutting TypeScript shared by client + server: Zod schemas, shop/referral pricing, admin dashboard aggregates (`gameCompletionAdminStats.ts`, `socialPromptAdminStats.ts`), save integrity + client-build version checks + V1/V2 sidecar compare (`saveGameAnalysis.ts`), tool rebuild from story flags (`rebuildToolsFromStorySeen.ts`), tab-unlock flag repair from progression evidence (`repairUnlockFlags.ts`), public SEO route metadata (`publicSeo.ts`). |
-| `supabase/` | SQL migrations + edge function (`functions/save-game/`) for Postgres/RLS. Notable: `024` deep-merge saves, `025` permanent tools/weapons/books protection, `028` thin `game_state_v2` sidecar RPC, `029` wholesale-replace of delete-semantic execution/expedition maps (stops ghost re-completions on reload), `030` rich V2 sidecar (DEV DB only — OCC/analytics; no-op unless `app_config.environment=development`). |
+| `supabase/` | SQL migrations + edge function (`functions/save-game/`) for Postgres/RLS. Notable: `024` deep-merge saves, `025` permanent tools/weapons/books protection, `028` thin `game_state_v2` sidecar RPC, `029` rich V2 sidecar (DEV DB only — OCC/analytics; no-op unless `app_config.environment=development`). |
 | `scripts/` | Build & i18n tooling — see [Scripts](#scripts-scripts) below. |
 | `services/` | Internal auxiliary services (currently `gender-service/` — first-name gender inference, localhost only). |
 | `public/`, `attached_assets/` | Static assets (`@assets` alias → `attached_assets`). |
@@ -186,7 +186,7 @@ shared/schema.ts— Zod GameState schema (source of truth for persisted shape)
   (`save_game_state_v2` → `game_state_v2`; load still uses legacy `game_state` only).
   Load applies migrations (e.g. `migrateTraderShopUnlockOnLoad`).
 - **`saveGameV2.ts`** — `dualWriteSaveGameV2()`; thin full-blob write in all builds
-  (migration 028); rich OCC/analytics path only when `import.meta.env.DEV` (migration 030 on DEV DB).
+  (migration 028); rich OCC/analytics path only when `import.meta.env.DEV` (migration 029 on DEV DB).
 - **`auth.ts`** — Supabase auth (incl. anonymous guest-checkout via `ensureAnonymousSession`),
   `saveGameToSupabase`/`loadGameFromSupabase`, referral metadata.
 - **`shopPurchases.ts`** — Supabase `purchases` fetch/rehydrate, feast-activation merge, purchase ID helpers (used by `ShopDialog`, payment return).

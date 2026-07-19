@@ -602,8 +602,8 @@ export async function saveGame(
 
         // Execution / expedition slices use delete semantics (completed actions remove
         // keys). Cloud save uses JSONB deep-merge, so partial diffs cannot express
-        // deletions — always send full objects. Server wholesale-replaces these keys
-        // after deep-merge (see migration 029).
+        // deletions — always send full objects (best-effort; client load also drops
+        // completed one-shot ghosts so stale keys cannot re-grant villagers).
         stateDiff.expeditionVillagers = sanitizedState.expeditionVillagers;
         stateDiff.executionStartTimes = sanitizedState.executionStartTimes;
         stateDiff.executionDurations = sanitizedState.executionDurations;

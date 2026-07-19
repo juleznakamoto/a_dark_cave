@@ -140,8 +140,7 @@ export const SAVE_V2_COMPARE_SLICES = [
  * Keys whose V1/V2 drift is expected during dual-write soak (not cutover blockers).
  * Still detected and counted as `expected_noise`, not treated as `mismatch`:
  * - UI-only store fields (stripped by `buildGameState` for V2; often still on V1)
- * - Transient / delete-semantic maps (execution/expedition wholesale-replaced since
- *   migration 029; cooldowns and other maps can still diverge under V1 deep-merge)
+ * - Transient / delete-semantic maps that V1 deep-merge cannot prune
  * - Client analytics buffers not part of gameplay state
  *
  * Keep UI keys in sync with `UI_ONLY_PROPERTIES` in `client/src/game/stateHelpers.ts`.
