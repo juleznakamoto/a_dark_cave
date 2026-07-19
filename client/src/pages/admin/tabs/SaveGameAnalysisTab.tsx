@@ -1,16 +1,73 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import {
+  Bar,
+  BarChart,
+  CartesianGrid,
+  Cell,
+  LabelList,
+  XAxis,
+  YAxis,
+} from "recharts";
+import {
   Card,
   CardContent,
   CardDescription,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import {
+  ChartContainer,
+  ChartTooltip,
+  ChartTooltipContent,
+} from "@/components/ui/chart";
 import { logger } from "@/lib/logger";
 import type {
+  SaveGameAnalysisRow,
   SaveGameAnalysisSummary,
   SaveGameIssueKind,
 } from "@shared/saveGameAnalysis";
+
+const VERSION_BUCKET_COLORS = {
+  current: "#22c55e",
+  last: "#f59e0b",
+  older: "#94a3b8",
+} as const;
+
+/** Mode of non-current stamped SHAs in the sample (= "last version" bucket). */
+function resolveLastVersionSha(
+  rows: SaveGameAnalysisRow[],
+): string | null {
+  const counts = new Map<string, { count: number; newestUpdated: string }>();
+  for (const row of rows) {
+    if (row.isCurrentVersion || !row.clientBuildSha) continue;
+    const prev = counts.get(row.clientBuildSha);
+    if (!prev) {
+      counts.set(row.clientBuildSha, {
+        count: 1,
+        newestUpdated: row.updated_at,
+      });
+      continue;
+    }
+    prev.count += 1;
+    if (row.updated_at > prev.newestUpdated) {
+      prev.newestUpdated = row.updated_at;
+    }
+  }
+  let bestSha: string | null = null;
+  let bestCount = 0;
+  let bestNewest = "";
+  for (const [sha, { count, newestUpdated }] of counts) {
+    if (
+      count > bestCount ||
+      (count === bestCount && newestUpdated > bestNewest)
+    ) {
+      bestSha = sha;
+      bestCount = count;
+      bestNewest = newestUpdated;
+    }
+  }
+  return bestSha;
+}
 
 const ISSUE_LABELS: Record<SaveGameIssueKind, string> = {
   invalid_game_state: "Invalid or empty game_state",
@@ -87,6 +144,52 @@ export default function SaveGameAnalysisTab({
   const outdatedRows = useMemo(() => {
     if (!analysis) return [];
     return analysis.rows.filter((row) => !row.isCurrentVersion);
+  }, [analysis]);
+
+  const versionDistribution = useMemo(() => {
+    if (!analysis) {
+      return {
+        lastBuildSha: null as string | null,
+        chartData: [] as {
+          name: string;
+          count: number;
+          fill: string;
+        }[],
+      };
+    }
+    const lastBuildSha = resolveLastVersionSha(analysis.rows);
+    let current = 0;
+    let last = 0;
+    let older = 0;
+    for (const row of analysis.rows) {
+      if (row.isCurrentVersion) {
+        current += 1;
+      } else if (lastBuildSha && row.clientBuildSha === lastBuildSha) {
+        last += 1;
+      } else {
+        older += 1;
+      }
+    }
+    return {
+      lastBuildSha,
+      chartData: [
+        {
+          name: "Current version",
+          count: current,
+          fill: VERSION_BUCKET_COLORS.current,
+        },
+        {
+          name: "Last version",
+          count: last,
+          fill: VERSION_BUCKET_COLORS.last,
+        },
+        {
+          name: "Older version",
+          count: older,
+          fill: VERSION_BUCKET_COLORS.older,
+        },
+      ],
+    };
   }, [analysis]);
 
   const cleanCount = analysis
@@ -200,6 +303,54 @@ export default function SaveGameAnalysisTab({
         </Card>
       </div>
 
+      <Card>
+        <CardHeader>
+          <CardTitle className="text-base">Client version distribution</CardTitle>
+          <CardDescription>
+            Last {analysis.scanned} saves: published build vs the most common
+            other stamped SHA (last version) vs everything else (older SHAs or
+            missing stamp)
+            {versionDistribution.lastBuildSha ? (
+              <>
+                {" · "}last{" "}
+                <code className="text-xs">
+                  {shortSha(versionDistribution.lastBuildSha)}
+                </code>
+              </>
+            ) : null}
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+          <ChartContainer config={{}} className="h-[220px] w-full">
+            <BarChart
+              layout="vertical"
+              data={versionDistribution.chartData}
+              margin={{ top: 8, right: 36, bottom: 8, left: 8 }}
+            >
+              <CartesianGrid strokeDasharray="3 3" horizontal={false} />
+              <XAxis type="number" allowDecimals={false} />
+              <YAxis
+                type="category"
+                dataKey="name"
+                width={120}
+                tick={{ fontSize: 12 }}
+              />
+              <ChartTooltip content={<ChartTooltipContent />} />
+              <Bar dataKey="count" radius={[0, 4, 4, 0]} barSize={28}>
+                {versionDistribution.chartData.map((entry) => (
+                  <Cell key={entry.name} fill={entry.fill} />
+                ))}
+                <LabelList
+                  dataKey="count"
+                  position="right"
+                  className="fill-foreground text-xs"
+                />
+              </Bar>
+            </BarChart>
+          </ChartContainer>
+        </CardContent>
+      </Card>
+
       {analysis.v2Compare ? (
         <Card>
           <CardHeader>
@@ -257,8 +408,8 @@ export default function SaveGameAnalysisTab({
                 <div className="text-muted-foreground">Mismatch</div>
                 <div
                   className={`font-mono text-lg tabular-nums ${analysis.v2Compare.mismatch > 0
-                      ? "text-destructive"
-                      : ""
+                    ? "text-destructive"
+                    : ""
                     }`}
                 >
                   {analysis.v2Compare.mismatch}
