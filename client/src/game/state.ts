@@ -2845,6 +2845,12 @@ export const useGameStore = create<GameStore>((set, get) => ({
 
       const loadedState = {
         ...hydratedPermanent,
+        // Explicit merge so a missing `flags` key cannot leave createInitialState
+        // unlocks stuck false (hydrateLoadedGameState also repairs from evidence).
+        flags: {
+          ...defaultGameState.flags,
+          ...hydratedPermanent.flags,
+        },
         resources: {
           ...defaultGameState.resources,
           ...savedState.resources,

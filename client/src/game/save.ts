@@ -580,9 +580,12 @@ export async function saveGame(
 
         // Permanent slices: always send full objects so incremental diffs cannot omit
         // the `tools` key when lastCloudState and serialized state both lack it.
+        // Same for `flags` — a missing/partial flags object in cloud is how village/forest
+        // tab unlocks were wiped after account create / reload.
         stateDiff.tools = sanitizedState.tools;
         stateDiff.weapons = sanitizedState.weapons;
         stateDiff.books = sanitizedState.books;
+        stateDiff.flags = sanitizedState.flags;
 
         // Execution / expedition slices use delete semantics (completed actions remove
         // keys). Cloud save uses JSONB deep-merge, so partial diffs cannot express

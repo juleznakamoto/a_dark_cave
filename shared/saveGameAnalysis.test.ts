@@ -48,10 +48,26 @@ describe("saveGameAnalysis", () => {
       game_state: {
         playTime: 120_000,
         tools: { stone_axe: true },
+        flags: { villageUnlocked: true, gameStarted: true },
         story: { seen: { hasStoneAxe: true } },
       },
     });
     expect(result.issues).toHaveLength(0);
+  });
+
+  it("detects missing villageUnlocked despite stone axe / huts", () => {
+    const result = analyzeSaveGameRow({
+      ...baseRow,
+      game_state: {
+        playTime: 120_000,
+        tools: { stone_axe: true },
+        buildings: { woodenHut: 3 },
+        flags: { gameStarted: true, villagerCapsEnabled: true },
+      },
+    });
+    expect(result.issues.some((i) => i.kind === "missing_unlock_flags")).toBe(
+      true,
+    );
   });
 
   it("does not flag null or undefined resources (treated as 0 at runtime)", () => {
@@ -175,6 +191,7 @@ describe("saveGameAnalysis", () => {
             playTime: 0,
             clientBuildSha: "abc123",
             tools: { stone_axe: true },
+            flags: { villageUnlocked: true },
             story: { seen: { hasStoneAxe: true } },
           },
         },
@@ -185,6 +202,7 @@ describe("saveGameAnalysis", () => {
             playTime: 0,
             clientBuildSha: "old999",
             tools: { stone_axe: true },
+            flags: { villageUnlocked: true },
             story: { seen: { hasStoneAxe: true } },
           },
         },
@@ -194,6 +212,7 @@ describe("saveGameAnalysis", () => {
           game_state: {
             playTime: 0,
             tools: { stone_axe: true },
+            flags: { villageUnlocked: true },
             story: { seen: { hasStoneAxe: true } },
           },
         },

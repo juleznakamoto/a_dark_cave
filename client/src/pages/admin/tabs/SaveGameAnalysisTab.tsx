@@ -21,6 +21,7 @@ const ISSUE_LABELS: Record<SaveGameIssueKind, string> = {
   negative_playtime: "Negative playTime",
   wiped_tools: "Wiped tools (craft flags but zero owned)",
   missing_tools_with_craft_flags: "Missing tools key + craft flags",
+  missing_unlock_flags: "Missing tab unlock flags (village/forest/bastion)",
   bad_story_seen: "Malformed story.seen",
   bad_game_stats: "Malformed game_stats",
   updated_before_created: "updated_at before created_at",

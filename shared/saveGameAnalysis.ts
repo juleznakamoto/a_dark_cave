@@ -4,6 +4,12 @@
  * Also compares legacy `game_state` vs sidecar `game_state_v2` (dual-write soak).
  */
 
+import {
+  hasBastionUnlockEvidence,
+  hasForestUnlockEvidence,
+  hasVillageUnlockEvidence,
+} from "./repairUnlockFlags";
+
 export const SAVE_GAME_ANALYSIS_DEFAULT_LIMIT = 100;
 
 /** Story flags that prove at least one craftable tool was owned (migration 026 set). */
@@ -54,6 +60,7 @@ export type SaveGameIssueKind =
   | "negative_playtime"
   | "wiped_tools"
   | "missing_tools_with_craft_flags"
+  | "missing_unlock_flags"
   | "bad_story_seen"
   | "bad_game_stats"
   | "updated_before_created"
@@ -466,6 +473,50 @@ export function analyzeSaveGameRow(
     issues.push({ kind: "missing_tools_with_craft_flags" });
   } else if (craftFlags && toolsOwned === 0) {
     issues.push({ kind: "wiped_tools" });
+  }
+
+  const flagsObj = asObject(gsObj.flags);
+  const unlockEvidence = {
+    flags: (flagsObj ?? {}) as {
+      villageUnlocked?: boolean;
+      forestUnlocked?: boolean;
+      bastionUnlocked?: boolean;
+      hasFortress?: boolean;
+    },
+    tools: asObject(gsObj.tools) as Record<string, boolean | undefined> | null,
+    weapons: asObject(gsObj.weapons) as Record<string, boolean | undefined> | null,
+    buildings: asObject(gsObj.buildings) as Record<
+      string,
+      number | undefined
+    > | null,
+    story: story
+      ? { seen: storySeen as Record<string, unknown> | null }
+      : null,
+  };
+  const missingUnlocks: string[] = [];
+  if (
+    hasVillageUnlockEvidence(unlockEvidence) &&
+    unlockEvidence.flags.villageUnlocked !== true
+  ) {
+    missingUnlocks.push("villageUnlocked");
+  }
+  if (
+    hasForestUnlockEvidence(unlockEvidence) &&
+    unlockEvidence.flags.forestUnlocked !== true
+  ) {
+    missingUnlocks.push("forestUnlocked");
+  }
+  if (
+    hasBastionUnlockEvidence(unlockEvidence) &&
+    unlockEvidence.flags.bastionUnlocked !== true
+  ) {
+    missingUnlocks.push("bastionUnlocked");
+  }
+  if (missingUnlocks.length > 0) {
+    issues.push({
+      kind: "missing_unlock_flags",
+      detail: missingUnlocks.join(","),
+    });
   }
 
   const clientBuildSha = normalizeBuildSha(gsObj.clientBuildSha);

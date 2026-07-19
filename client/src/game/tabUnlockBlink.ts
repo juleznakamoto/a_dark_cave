@@ -1,4 +1,9 @@
 import type { GameState } from "@shared/schema";
+import {
+  isBastionTabVisible,
+  isForestTabVisible,
+  isVillageTabVisible,
+} from "@shared/repairUnlockFlags";
 import { isTraderShopUnlocked } from "@/game/stateHelpers";
 
 /** Persisted in `story.seen` once the unlock blink for a tab was shown or dismissed. */
@@ -23,21 +28,21 @@ export type TabUnlockSnapshot = {
 };
 
 export function buildTabUnlockSnapshot(state: {
-  flags: Pick<
-    GameState["flags"],
-    "villageUnlocked" | "forestUnlocked" | "bastionUnlocked"
-  >;
-  buildings: Pick<GameState["buildings"], "darkEstate">;
+  flags: GameState["flags"];
+  buildings: GameState["buildings"];
+  tools?: GameState["tools"];
+  weapons?: GameState["weapons"];
   relics?: GameState["relics"];
   books?: GameState["books"];
   story?: GameState["story"];
   traderDialogOpens?: number;
 }): TabUnlockSnapshot {
   return {
-    villageUnlocked: !!state.flags.villageUnlocked,
-    forestUnlocked: !!state.flags.forestUnlocked,
+    // Flag OR progression evidence (same repair path as hydrateLoadedGameState).
+    villageUnlocked: isVillageTabVisible(state),
+    forestUnlocked: isForestTabVisible(state),
     estateUnlocked: (state.buildings.darkEstate ?? 0) >= 1,
-    bastionUnlocked: !!state.flags.bastionUnlocked,
+    bastionUnlocked: isBastionTabVisible(state),
     traderUnlocked: isTraderShopUnlocked({
       story: state.story,
       traderDialogOpens: state.traderDialogOpens,

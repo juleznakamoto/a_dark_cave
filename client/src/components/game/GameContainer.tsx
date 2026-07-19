@@ -216,27 +216,34 @@ export default function GameContainer() {
   const traderUnlocked = isTraderShopUnlocked({ story, traderDialogOpens });
   const achievementsUnlocked =
     !!relics?.survivors_notes || !!books?.book_of_trials;
+  const tools = useGameStore((state) => state.tools);
+  const weapons = useGameStore((state) => state.weapons);
   const tabUnlockSnapshot = useMemo(
     () =>
       buildTabUnlockSnapshot({
         flags,
         buildings,
+        tools,
+        weapons,
         relics,
         books,
         story,
         traderDialogOpens,
       }),
     [
-      flags.villageUnlocked,
-      flags.forestUnlocked,
-      flags.bastionUnlocked,
-      buildings.darkEstate,
+      flags,
+      buildings,
+      tools,
+      weapons,
       relics?.survivors_notes,
       books?.book_of_trials,
-      story?.seen?.traderSettled,
+      story,
       traderDialogOpens,
     ],
   );
+  const villageTabVisible = tabUnlockSnapshot.villageUnlocked;
+  const forestTabVisible = tabUnlockSnapshot.forestUnlocked;
+  const bastionTabVisible = tabUnlockSnapshot.bastionUnlocked;
   const prevTabUnlockRef = useRef(tabUnlockSnapshot);
   /** Tabs mid unlock-blink; avoids re-trigger while fade timeout is pending. */
   const tabUnlockBlinkPendingRef = useRef<Set<TabUnlockBlinkId>>(new Set());
@@ -271,11 +278,11 @@ export default function GameContainer() {
     if (villageHotkeyTutorialCheckedRef.current) return;
     villageHotkeyTutorialCheckedRef.current = true;
 
-    if (!flags.villageUnlocked) return;
+    if (!villageTabVisible) return;
     if (!villageHotkeyTutorialShown) {
       setVillageHotkeyTutorialOpen(true);
     }
-  }, [flags.gameStarted, flags.villageUnlocked, villageHotkeyTutorialShown]);
+  }, [flags.gameStarted, villageTabVisible, villageHotkeyTutorialShown]);
 
   // Prompt for a hard refresh when a new build is deployed while the tab stays open.
   useEffect(() => {
@@ -431,7 +438,7 @@ export default function GameContainer() {
   // Apply pulse animation to Bastion tab when wave countdown is in last 30 seconds
   useEffect(() => {
     const tabButton = document.querySelector('[data-testid="tab-bastion"]');
-    if (!tabButton || !flags.bastionUnlocked) return;
+    if (!tabButton || !bastionTabVisible) return;
 
     const updatePulse = () => {
       const timers = useGameStore.getState().attackWaveTimers || {};
@@ -462,7 +469,7 @@ export default function GameContainer() {
       clearInterval(interval);
       tabButton.classList.remove("timer-tab-pulse");
     };
-  }, [flags.bastionUnlocked]);
+  }, [bastionTabVisible]);
 
   const maybeAdvancePrevTabUnlockRef = useCallback(() => {
     if (tabUnlockBlinkPendingRef.current.size === 0) {
@@ -568,10 +575,10 @@ export default function GameContainer() {
   }, [
     tabUnlockSnapshot,
     scheduleTabUnlockFadeEndForTabs,
-    flags.villageUnlocked,
-    flags.forestUnlocked,
+    villageTabVisible,
+    forestTabVisible,
     estateUnlocked,
-    flags.bastionUnlocked,
+    bastionTabVisible,
     traderUnlocked,
     achievementsUnlocked,
   ]);
@@ -590,7 +597,7 @@ export default function GameContainer() {
       },
     ];
 
-    if (flags.villageUnlocked) {
+    if (villageTabVisible) {
       tabs.push({
         id: "village",
         icon: <Landmark />,
@@ -599,7 +606,7 @@ export default function GameContainer() {
       });
     }
 
-    if (flags.forestUnlocked) {
+    if (forestTabVisible) {
       tabs.push({
         id: "forest",
         icon: <Trees />,
@@ -618,7 +625,7 @@ export default function GameContainer() {
       });
     }
 
-    if (flags.bastionUnlocked) {
+    if (bastionTabVisible) {
       tabs.push({
         id: "bastion",
         icon: <Castle />,
@@ -657,10 +664,10 @@ export default function GameContainer() {
 
     return tabs;
   }, [
-    flags.villageUnlocked,
-    flags.forestUnlocked,
+    villageTabVisible,
+    forestTabVisible,
     estateUnlocked,
-    flags.bastionUnlocked,
+    bastionTabVisible,
     buildings.stoneHut,
     setActiveTab,
     relics?.survivors_notes,
@@ -673,18 +680,18 @@ export default function GameContainer() {
   const visibleHotkeyTabs = useMemo(
     () =>
       getVisibleHotkeyTabs({
-        villageUnlocked: flags.villageUnlocked,
-        forestUnlocked: flags.forestUnlocked,
-        bastionUnlocked: flags.bastionUnlocked,
+        villageUnlocked: villageTabVisible,
+        forestUnlocked: forestTabVisible,
+        bastionUnlocked: bastionTabVisible,
         darkEstate: buildings.darkEstate ?? 0,
         survivorsNotes: !!relics?.survivors_notes,
         bookOfTrials: !!books?.book_of_trials,
         timedEventActive: timedEventTab.isActive,
       }),
     [
-      flags.villageUnlocked,
-      flags.forestUnlocked,
-      flags.bastionUnlocked,
+      villageTabVisible,
+      forestTabVisible,
+      bastionTabVisible,
       buildings.darkEstate,
       relics?.survivors_notes,
       books?.book_of_trials,
@@ -1159,7 +1166,7 @@ export default function GameContainer() {
                         {t("tabs.cave", { ns: "common" })}
                       </button>
 
-                      {flags.villageUnlocked && (
+                      {villageTabVisible && (
                         <button
                           className={`${tabButtonClass} ${animatingTabs.has("village")
                             ? fadePhaseTabs.has("village")
@@ -1181,7 +1188,7 @@ export default function GameContainer() {
                         </button>
                       )}
 
-                      {flags.forestUnlocked && (
+                      {forestTabVisible && (
                         <button
                           className={`${tabButtonClass} ${animatingTabs.has("forest")
                             ? fadePhaseTabs.has("forest")
@@ -1222,7 +1229,7 @@ export default function GameContainer() {
                         </button>
                       )}
 
-                      {flags.bastionUnlocked && (
+                      {bastionTabVisible && (
                         <button
                           className={`${tabButtonClass} ${animatingTabs.has("bastion")
                             ? fadePhaseTabs.has("bastion")

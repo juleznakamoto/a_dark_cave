@@ -1,5 +1,6 @@
 import { GameState, gameStateSchema } from "@shared/schema";
 import { overlayToolsFromStorySeen } from "@shared/rebuildToolsFromStorySeen";
+import { repairUnlockFlags } from "@shared/repairUnlockFlags";
 import type { CombatResultSummary } from "./types";
 import { getCurrentPopulation, getMaxPopulation, getVillagersInVillage } from "./population";
 import {
@@ -681,16 +682,17 @@ function migrateSteamShopSlotsOnLoad(state: GameState): Partial<GameState> | nul
  * Backfill permanent item slices from schema defaults when a loaded save omits them.
  * Rebuilds owned craft tools from `story.seen` when flags exist but the tools slice
  * is missing or empty (cloud corruption loop).
+ * Also merges/repairs tab-unlock flags from progression evidence (village/forest/bastion).
  */
 export function hydrateLoadedGameState<T extends Partial<GameState>>(
   savedState: T,
-): T & Pick<GameState, "tools" | "weapons" | "books"> {
+): T & Pick<GameState, "tools" | "weapons" | "books" | "flags"> {
   const defaults = gameStateSchema.parse({});
   const mergedTools = {
     ...defaults.tools,
     ...savedState.tools,
   };
-  return {
+  const withItems = {
     ...savedState,
     tools: overlayToolsFromStorySeen(mergedTools, savedState.story?.seen),
     weapons: {
@@ -702,6 +704,7 @@ export function hydrateLoadedGameState<T extends Partial<GameState>>(
       ...savedState.books,
     },
   };
+  return repairUnlockFlags(withItems, defaults.flags);
 }
 
 /** Run one-time load migrations on loaded saves (trader shop unlock gate). */

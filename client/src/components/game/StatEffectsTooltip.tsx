@@ -1,6 +1,7 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
 import type { GameState } from "@shared/schema";
+import { isBastionTabVisible } from "@shared/repairUnlockFlags";
 import { useGameStore } from "@/game/state";
 import {
   getTotalLuck,
@@ -57,9 +58,9 @@ export function hasMerchantAppearedOnce(state: GameState): boolean {
   return false;
 }
 
-/** Bastion tab is visible in the main game UI (`flags.bastionUnlocked`). */
+/** Bastion tab is visible in the main game UI (flag or bastion-building evidence). */
 export function isBastionTabUnlocked(state: GameState): boolean {
-  return Boolean(state.flags?.bastionUnlocked);
+  return isBastionTabVisible(state);
 }
 
 /** Highest gambler wager amount currently unlocked by the player's luck. */
