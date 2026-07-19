@@ -54,6 +54,7 @@ import { Z_INDEX } from "@/lib/z-index";
 import { toast } from "@/hooks/use-toast";
 import { startVersionCheck, stopVersionCheck } from "@/game/versionCheck";
 import { hardReload } from "@/lib/hardReload";
+import { formatMinutesSeconds } from "@/lib/utils";
 import MistBackground from "@/components/ui/mist-background";
 import { SmokeBackground } from "@/components/ui/spooky-smoke-animation";
 import { isBloodMoonOverlayVisible, BLOOD_MOON_OVERLAY_FADE_MS } from "@/game/bloodMoonOverlay";
@@ -285,19 +286,30 @@ export default function GameContainer() {
   }, [flags.gameStarted, villageTabVisible, villageHotkeyTutorialShown]);
 
   // Prompt for a hard refresh when a new build is deployed while the tab stays open.
-  // Sticky toast + 5-minute forced hardReload (navigate-first; cache purge on next boot).
-  // versionCheck.ts stamps sessionStorage so a failed/stale reload does not loop.
+  // Sticky toast + live countdown + 5-minute forced hardReload (navigate-first;
+  // cache purge on next boot). versionCheck.ts stamps sessionStorage so a
+  // failed/stale reload does not loop.
   useEffect(() => {
     const AUTO_RELOAD_MS = 5 * 60 * 1000;
-    const AUTO_RELOAD_MINUTES = 5;
     let updatePending = false;
     let reloadAtMs = 0;
     let autoReloadTimeout: ReturnType<typeof setTimeout> | null = null;
+    let countdownInterval: ReturnType<typeof setInterval> | null = null;
     let reloading = false;
+
+    const versionUpdateDescription = (remainingMs: number) =>
+      i18n.t("versionUpdate.description", {
+        ns: "ui",
+        time: formatMinutesSeconds(Math.ceil(remainingMs / 1000)),
+      });
 
     const saveAndHardReload = async () => {
       if (reloading) return;
       reloading = true;
+      if (countdownInterval) {
+        clearInterval(countdownInterval);
+        countdownInterval = null;
+      }
       try {
         const { saveGame } = await import("@/game/save");
         await saveGame(useGameStore.getState(), false);
@@ -330,15 +342,13 @@ export default function GameContainer() {
         // Arm toast + timer before visibility catch-up can fire.
         reloadAtMs = Date.now() + AUTO_RELOAD_MS;
         if (autoReloadTimeout) clearTimeout(autoReloadTimeout);
+        if (countdownInterval) clearInterval(countdownInterval);
         autoReloadTimeout = setTimeout(() => {
           void saveAndHardReload();
         }, AUTO_RELOAD_MS);
-        toast({
+        const updateToast = toast({
           title: i18n.t("versionUpdate.title", { ns: "ui" }),
-          description: i18n.t("versionUpdate.description", {
-            ns: "ui",
-            minutes: AUTO_RELOAD_MINUTES,
-          }),
+          description: versionUpdateDescription(AUTO_RELOAD_MS),
           variant: "default",
           duration: Infinity,
           dismissible: false,
@@ -349,6 +359,16 @@ export default function GameContainer() {
             },
           },
         });
+        countdownInterval = setInterval(() => {
+          const remainingMs = Math.max(0, reloadAtMs - Date.now());
+          updateToast.update({
+            description: versionUpdateDescription(remainingMs),
+          });
+          if (remainingMs <= 0 && countdownInterval) {
+            clearInterval(countdownInterval);
+            countdownInterval = null;
+          }
+        }, 1000);
         updatePending = true;
       } catch (error) {
         logger.error("[VERSION] Error showing update toast:", error);
@@ -358,6 +378,7 @@ export default function GameContainer() {
     return () => {
       document.removeEventListener("visibilitychange", handleVisibilityReload);
       if (autoReloadTimeout) clearTimeout(autoReloadTimeout);
+      if (countdownInterval) clearInterval(countdownInterval);
       stopVersionCheck();
     };
   }, []);
