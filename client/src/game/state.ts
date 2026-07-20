@@ -50,6 +50,7 @@ import {
   applyGameStateLoadMigrations,
   getTransientDialogResetOnLoad,
   hydrateLoadedGameState,
+  coalesceBuildings,
   markSeenResources,
   isCompletedOneShotExecutionGhost,
 } from "@/game/stateHelpers";
@@ -943,7 +944,10 @@ const mergeStateUpdates = (
     seenResources,
     weapons: { ...prevState.weapons, ...stateUpdates.weapons },
     tools: { ...prevState.tools, ...stateUpdates.tools },
-    buildings: { ...prevState.buildings, ...stateUpdates.buildings },
+    buildings: {
+      ...(prevState.buildings ?? {}),
+      ...(stateUpdates.buildings ?? {}),
+    },
     flags: { ...prevState.flags, ...stateUpdates.flags },
     villagers: { ...prevState.villagers, ...stateUpdates.villagers },
     current_population:
@@ -1836,9 +1840,11 @@ export const useGameStore = create<GameStore>((set, get) => ({
   },
 
   initialize: (initialState?: Partial<GameState>) => {
-    const stateToSet = initialState
+    const merged = initialState
       ? { ...defaultGameState, ...initialState }
-      : defaultGameState;
+      : { ...defaultGameState };
+    // Never let `buildings: undefined|null` from a partial wipe schema defaults.
+    const stateToSet = coalesceBuildings(merged, defaultGameState.buildings);
 
     set((state) => ({
       ...stateToSet,
@@ -2980,8 +2986,17 @@ export const useGameStore = create<GameStore>((set, get) => ({
         // Keep session Game Mode; do not restore from save (UI-only).
         devGameMode: get().devGameMode,
         boostApplied: savedState.boostApplied === true,
-        effects: calculateTotalEffects(savedState),
-        bastion_stats: calculateBastionStats(savedState),
+        buildings: {
+          ...defaultGameState.buildings,
+          ...hydratedPermanent.buildings,
+        },
+        // Use hydrated state — raw saves can omit `buildings` and crash here.
+        effects: calculateTotalEffects(
+          coalesceBuildings(hydratedPermanent, defaultGameState.buildings),
+        ),
+        bastion_stats: calculateBastionStats(
+          coalesceBuildings(hydratedPermanent, defaultGameState.buildings),
+        ),
         cruelMode:
           savedState.cruelMode !== undefined
             ? savedState.cruelMode
@@ -3216,7 +3231,15 @@ export const useGameStore = create<GameStore>((set, get) => ({
   },
 
   checkEvents: () => {
-    const state = get();
+    let state = get();
+    // Write-boundary safety net: sparse cloud merges can wipe `buildings`
+    // before event conditions read `state.buildings.woodenHut`.
+    if (state.buildings == null) {
+      set({
+        buildings: { ...defaultGameState.buildings },
+      });
+      state = get();
+    }
     // If the game is paused, do not process events
     if (state.isPaused) return;
 

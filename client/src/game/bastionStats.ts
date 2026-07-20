@@ -21,6 +21,7 @@ export function calculateBastionStats(state: GameState): BastionStats {
   let defense = 0;
   let attackFromFortifications = 0;
   let baseIntegrity = 0;
+  const buildings = state.buildings ?? {};
 
   // Apply damage multipliers to buildings if damaged
   const bastionDamaged = state.story?.seen?.bastionDamaged || false;
@@ -33,7 +34,7 @@ export function calculateBastionStats(state: GameState): BastionStats {
   const palisadesMultiplier = palisadesDamaged ? 0.5 : 1;
 
   // Bastion
-  if (state.buildings.bastion > 0) {
+  if ((buildings.bastion ?? 0) > 0) {
     const defenseBonus = Math.floor(10 * bastionMultiplier);
     const attackBonus = Math.floor(10 * bastionMultiplier);
     const integrityBonus = Math.floor(60 * bastionMultiplier);
@@ -44,7 +45,7 @@ export function calculateBastionStats(state: GameState): BastionStats {
   }
 
   // Watchtower
-  const watchtowerLevel = state.buildings.watchtower || 0;
+  const watchtowerLevel = buildings.watchtower || 0;
   if (watchtowerLevel === 1) {
     // Level 1: Basic Watchtower
     defense += Math.floor(2 * watchtowerMultiplier);
@@ -72,7 +73,7 @@ export function calculateBastionStats(state: GameState): BastionStats {
   }
 
   // Palisades
-  const palisadesLevel = state.buildings.palisades || 0;
+  const palisadesLevel = buildings.palisades || 0;
   if (palisadesLevel === 1) {
     // Level 1: Wooden Palisades
     defense += Math.floor(5 * palisadesMultiplier);
@@ -95,12 +96,12 @@ export function calculateBastionStats(state: GameState): BastionStats {
   }
 
   // Fortified Moat (cannot be damaged, no integrity bonus)
-  if (state.buildings.fortifiedMoat > 0) {
+  if ((buildings.fortifiedMoat ?? 0) > 0) {
     defense += 10;
   }
 
   // Chitin Plating
-  if (state.buildings.chitinPlating > 0) {
+  if ((buildings.chitinPlating ?? 0) > 0) {
     defense += 10;
     baseIntegrity += 20;
   }

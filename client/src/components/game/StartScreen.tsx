@@ -159,10 +159,10 @@ export default function StartScreen() {
 
     // Show button effect for 3 seconds on both mobile and desktop
     setShowParticles(true);
-    setTimeout(async () => {
-      // Ensure game loop is running (may have been stopped by sign out)
-      const { startGameLoop } = await import("@/game/loop");
-      startGameLoop();
+    setTimeout(() => {
+      // Do NOT start the sim loop here — Game.tsx starts it after load/hydrate.
+      // Starting early let event checks run against a store that a concurrent
+      // sparse load could wipe (`state.buildings.woodenHut` crash on mobile).
       executeAction("lightFire");
     }, 3000);
   };

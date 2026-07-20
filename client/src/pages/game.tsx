@@ -15,7 +15,9 @@ import {
   applyGameStateLoadMigrations,
   getTransientDialogResetOnLoad,
   hydrateLoadedGameState,
+  coalesceBuildings,
 } from "@/game/stateHelpers";
+import { gameStateSchema } from "@shared/schema";
 import { syncSocialPromoExclusiveRewardPending } from "@/game/socialPromoExclusiveReward";
 import { processStripePaymentReturn } from "@/lib/stripePaymentReturn";
 import { isPlaylightReferralUrl } from "@/lib/playlight";
@@ -182,24 +184,29 @@ export default function Game() {
           });
 
           // Gambler in-progress state is persisted in save data and resumed on load.
-          useGameStore.setState({
-            ...savedState,
-            timedEventTab,
-            ...stateUpdates,
-            ...resumeUi,
-            flags: {
-              ...(savedState.flags ?? {}),
-              gameStarted: isGamePath ? true : savedState.flags?.gameStarted,
-              hasLitFire: isGamePath ? true : savedState.flags?.hasLitFire,
-              ...(isGamePath
-                ? {
-                  villagerCapsEnabled: true,
-                }
-                : {}),
-            },
-            // Never restore transient dialog UI from older saves that persisted these fields.
-            ...getTransientDialogResetOnLoad(),
-          });
+          useGameStore.setState(
+            coalesceBuildings(
+              {
+                ...savedState,
+                timedEventTab,
+                ...stateUpdates,
+                ...resumeUi,
+                flags: {
+                  ...(savedState.flags ?? {}),
+                  gameStarted: isGamePath ? true : savedState.flags?.gameStarted,
+                  hasLitFire: isGamePath ? true : savedState.flags?.hasLitFire,
+                  ...(isGamePath
+                    ? {
+                      villagerCapsEnabled: true,
+                    }
+                    : {}),
+                },
+                // Never restore transient dialog UI from older saves that persisted these fields.
+                ...getTransientDialogResetOnLoad(),
+              },
+              gameStateSchema.parse({}).buildings,
+            ),
+          );
           const { flushOverdueActionExecutions } = await import("@/game/loop");
           flushOverdueActionExecutions();
           logger.log("[GAME] Game loaded from save");

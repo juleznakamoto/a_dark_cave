@@ -851,6 +851,25 @@ function migrateSteamShopSlotsOnLoad(state: GameState): Partial<GameState> | nul
  * is missing or empty (cloud corruption loop).
  * Also merges/repairs tab-unlock flags from progression evidence (village/forest/bastion).
  */
+/**
+ * Coalesce `buildings` at write boundaries. Zustand shallow-merges, so an own
+ * property `buildings: undefined|null` from a sparse cloud/local blob wipes a
+ * good in-memory slice and crashes event checks on `state.buildings.woodenHut`.
+ */
+export function coalesceBuildings<T extends Partial<GameState>>(
+  state: T,
+  defaults?: GameState["buildings"],
+): T & { buildings: GameState["buildings"] } {
+  const base = defaults ?? gameStateSchema.parse({}).buildings;
+  return {
+    ...state,
+    buildings: {
+      ...base,
+      ...(state.buildings ?? {}),
+    },
+  };
+}
+
 export function hydrateLoadedGameState<T extends Partial<GameState>>(
   savedState: T,
 ): T & Pick<GameState, "tools" | "weapons" | "books" | "flags" | "buildings"> {
@@ -859,24 +878,21 @@ export function hydrateLoadedGameState<T extends Partial<GameState>>(
     ...defaults.tools,
     ...savedState.tools,
   };
-  const withItems = {
-    ...savedState,
-    tools: overlayToolsFromStorySeen(mergedTools, savedState.story?.seen),
-    weapons: {
-      ...defaults.weapons,
-      ...savedState.weapons,
+  const withItems = coalesceBuildings(
+    {
+      ...savedState,
+      tools: overlayToolsFromStorySeen(mergedTools, savedState.story?.seen),
+      weapons: {
+        ...defaults.weapons,
+        ...savedState.weapons,
+      },
+      books: {
+        ...defaults.books,
+        ...savedState.books,
+      },
     },
-    books: {
-      ...defaults.books,
-      ...savedState.books,
-    },
-    // Same sparse-save backfill as tools/flags — missing `buildings` used to
-    // crash mobile on `state.buildings.woodenHut` during population updates.
-    buildings: {
-      ...defaults.buildings,
-      ...savedState.buildings,
-    },
-  };
+    defaults.buildings,
+  );
   return repairUnlockFlags(withItems, defaults.flags);
 }
 

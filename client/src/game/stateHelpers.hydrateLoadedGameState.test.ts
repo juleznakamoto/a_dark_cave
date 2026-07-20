@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { gameStateSchema } from "@shared/schema";
-import { hydrateLoadedGameState } from "./stateHelpers";
+import { coalesceBuildings, hydrateLoadedGameState } from "./stateHelpers";
 
 describe("hydrateLoadedGameState", () => {
   it("backfills missing tools/weapons/books and rebuilds tools from story flags", () => {
@@ -43,6 +43,22 @@ describe("hydrateLoadedGameState", () => {
 
     expect(hydrated.buildings.woodenHut).toBe(4);
     expect(hydrated.buildings.stoneHut).toBe(0);
+  });
+
+  it("coalesceBuildings repairs nullish buildings from shallow merges", () => {
+    const defaults = gameStateSchema.parse({});
+    const wiped = coalesceBuildings({
+      playTime: 1,
+      buildings: undefined,
+    } as Partial<ReturnType<typeof gameStateSchema.parse>>);
+
+    expect(wiped.buildings.woodenHut).toBe(0);
+    expect(wiped.buildings).toEqual(defaults.buildings);
+
+    const fromNull = coalesceBuildings({
+      buildings: null,
+    } as unknown as Partial<ReturnType<typeof gameStateSchema.parse>>);
+    expect(fromNull.buildings.woodenHut).toBe(0);
   });
 
   it("repairs missing unlock flags from buildings/weapons (account-create wipe)", () => {
