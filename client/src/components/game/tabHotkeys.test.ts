@@ -10,8 +10,7 @@ describe("getVisibleHotkeyTabs", () => {
         forestUnlocked: false,
         bastionUnlocked: false,
         darkEstate: 0,
-        survivorsNotes: false,
-        bookOfTrials: false,
+        achievementsUnlocked: false,
         timedEventActive: false,
       }),
     ).toEqual(["cave"]);
@@ -24,8 +23,7 @@ describe("getVisibleHotkeyTabs", () => {
         forestUnlocked: true,
         bastionUnlocked: true,
         darkEstate: 1,
-        survivorsNotes: true,
-        bookOfTrials: false,
+        achievementsUnlocked: true,
         timedEventActive: true,
       }),
     ).toEqual([
@@ -46,8 +44,7 @@ describe("getVisibleHotkeyTabs", () => {
         forestUnlocked: false,
         bastionUnlocked: false,
         darkEstate: 0,
-        survivorsNotes: false,
-        bookOfTrials: true,
+        achievementsUnlocked: true,
         timedEventActive: false,
       }),
     ).toEqual(["cave", "achievements"]);

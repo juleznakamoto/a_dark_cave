@@ -57,7 +57,8 @@ import { formatMinutesSeconds } from "@/lib/utils";
 import MistBackground from "@/components/ui/mist-background";
 import { SmokeBackground } from "@/components/ui/spooky-smoke-animation";
 import { isBloodMoonOverlayVisible, BLOOD_MOON_OVERLAY_FADE_MS } from "@/game/bloodMoonOverlay";
-import { getUnclaimedAchievementIds } from "@/achievements";
+import { getUnclaimedAchievementIds, isAchievementsGameTabUnlocked } from "@/achievements";
+import type { GameState } from "@shared/schema";
 import { getVisibleHotkeyTabs, isEditableKeyboardTarget } from "./tabHotkeys";
 import { isTraderShopUnlocked } from "@/game/stateHelpers";
 import {
@@ -217,8 +218,35 @@ export default function GameContainer() {
 
   // Track unlocked tabs to trigger one-time blink until clicked (persisted in story.seen)
   const traderUnlocked = isTraderShopUnlocked({ story, traderDialogOpens });
-  const achievementsUnlocked =
-    !!relics?.survivors_notes || !!books?.book_of_trials;
+  const hasWonNormalGame = useGameStore((s) => s.hasWonNormalGame);
+  const hasWonCruelGame = useGameStore((s) => s.hasWonCruelGame);
+  const hasSpeedrunWin = useGameStore((s) => s.hasSpeedrunWin);
+  const lifetimePlayTimeMs = useGameStore((s) => s.lifetimePlayTimeMs);
+  const lifetimeStorageMaxHits = useGameStore((s) => s.lifetimeStorageMaxHits);
+  const hasAchievementMaxer = useGameStore((s) => s.hasAchievementMaxer);
+  const achievementsUnlocked = useMemo(
+    () =>
+      isAchievementsGameTabUnlocked({
+        relics,
+        books,
+        hasWonNormalGame,
+        hasWonCruelGame,
+        hasSpeedrunWin,
+        lifetimePlayTimeMs,
+        lifetimeStorageMaxHits,
+        hasAchievementMaxer,
+      } as GameState),
+    [
+      relics,
+      books,
+      hasWonNormalGame,
+      hasWonCruelGame,
+      hasSpeedrunWin,
+      lifetimePlayTimeMs,
+      lifetimeStorageMaxHits,
+      hasAchievementMaxer,
+    ],
+  );
   const tools = useGameStore((state) => state.tools);
   const weapons = useGameStore((state) => state.weapons);
   const tabUnlockSnapshot = useMemo(
@@ -232,6 +260,12 @@ export default function GameContainer() {
         books,
         story,
         traderDialogOpens,
+        hasWonNormalGame,
+        hasWonCruelGame,
+        hasSpeedrunWin,
+        lifetimePlayTimeMs,
+        lifetimeStorageMaxHits,
+        hasAchievementMaxer,
       }),
     [
       flags,
@@ -242,6 +276,12 @@ export default function GameContainer() {
       books?.book_of_trials,
       story,
       traderDialogOpens,
+      hasWonNormalGame,
+      hasWonCruelGame,
+      hasSpeedrunWin,
+      lifetimePlayTimeMs,
+      lifetimeStorageMaxHits,
+      hasAchievementMaxer,
     ],
   );
   const villageTabVisible = tabUnlockSnapshot.villageUnlocked;
@@ -701,8 +741,8 @@ export default function GameContainer() {
       });
     }
 
-    // Add Achievements tab if Survivor's Notes or Book of Trials (backwards compat)
-    if (relics?.survivors_notes || books?.book_of_trials) {
+    // Add Achievements tab if Survivor's Notes, Book of Trials, or general progress
+    if (achievementsUnlocked) {
       tabs.push({
         id: "achievements",
         icon: <GameUiIcon name="achievements" sizeClassName={TAB_ICON_SIZE} />,
@@ -737,8 +777,7 @@ export default function GameContainer() {
     bastionTabVisible,
     buildings.stoneHut,
     setActiveTab,
-    relics?.survivors_notes,
-    books?.book_of_trials,
+    achievementsUnlocked,
     timedEventTab.isActive,
     timedEventTab.event,
     t,
@@ -751,8 +790,7 @@ export default function GameContainer() {
         forestUnlocked: forestTabVisible,
         bastionUnlocked: bastionTabVisible,
         darkEstate: buildings.darkEstate ?? 0,
-        survivorsNotes: !!relics?.survivors_notes,
-        bookOfTrials: !!books?.book_of_trials,
+        achievementsUnlocked,
         timedEventActive: timedEventTab.isActive,
       }),
     [
@@ -760,8 +798,7 @@ export default function GameContainer() {
       forestTabVisible,
       bastionTabVisible,
       buildings.darkEstate,
-      relics?.survivors_notes,
-      books?.book_of_trials,
+      achievementsUnlocked,
       timedEventTab.isActive,
     ],
   );
@@ -1319,7 +1356,7 @@ export default function GameContainer() {
                       )}
 
                       {/* Achievements Tab Button */}
-                      {(relics?.survivors_notes || books?.book_of_trials) && (
+                      {achievementsUnlocked && (
                         <button
                           className={`${tabButtonClass} ${animatingTabs.has("achievements")
                             ? fadePhaseTabs.has("achievements")

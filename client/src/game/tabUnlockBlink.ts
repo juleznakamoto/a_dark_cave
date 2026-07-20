@@ -5,6 +5,7 @@ import {
   isVillageTabVisible,
 } from "@shared/repairUnlockFlags";
 import { isTraderShopUnlocked } from "@/game/stateHelpers";
+import { isAchievementsGameTabUnlocked } from "@/achievements/configs/overall";
 
 /** Persisted in `story.seen` once the unlock blink for a tab was shown or dismissed. */
 export const TAB_UNLOCK_BLINK_SEEN_KEYS = {
@@ -36,6 +37,18 @@ export function buildTabUnlockSnapshot(state: {
   books?: GameState["books"];
   story?: GameState["story"];
   traderDialogOpens?: number;
+  hasWonNormalGame?: boolean;
+  hasWonCruelGame?: boolean;
+  hasSpeedrunWin?: boolean;
+  hasWonAnyGame?: boolean;
+  lifetimePlayTimeMs?: number;
+  lifetimeStorageMaxHits?: GameState["lifetimeStorageMaxHits"];
+  hasAchievementMaxer?: boolean;
+  social_media_rewards?: GameState["social_media_rewards"];
+  referralCount?: number;
+  referrals?: GameState["referrals"];
+  isUserSignedIn?: boolean;
+  signupWelcomeGoldClaimed?: boolean;
 }): TabUnlockSnapshot {
   return {
     // Flag OR progression evidence (same repair path as hydrateLoadedGameState).
@@ -47,8 +60,7 @@ export function buildTabUnlockSnapshot(state: {
       story: state.story,
       traderDialogOpens: state.traderDialogOpens,
     }),
-    achievementsUnlocked:
-      !!state.relics?.survivors_notes || !!state.books?.book_of_trials,
+    achievementsUnlocked: isAchievementsGameTabUnlocked(state as GameState),
   };
 }
 

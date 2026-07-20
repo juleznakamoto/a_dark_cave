@@ -14,8 +14,7 @@ export type VisibleHotkeyTabsParams = {
   bastionUnlocked: boolean;
   /** Used for estate tab visibility (matches tab bar: `estateUnlocked || buildings.darkEstate >= 1`). */
   darkEstate: number;
-  survivorsNotes: boolean;
-  bookOfTrials: boolean;
+  achievementsUnlocked: boolean;
   timedEventActive: boolean;
 };
 
@@ -26,7 +25,7 @@ export function getVisibleHotkeyTabs(p: VisibleHotkeyTabsParams): GameTab[] {
   if (p.forestUnlocked) tabs.push("forest");
   if (p.darkEstate >= 1) tabs.push("estate");
   if (p.bastionUnlocked) tabs.push("bastion");
-  if (p.survivorsNotes || p.bookOfTrials) tabs.push("achievements");
+  if (p.achievementsUnlocked) tabs.push("achievements");
   if (p.timedEventActive) tabs.push("timedevent");
   return tabs;
 }

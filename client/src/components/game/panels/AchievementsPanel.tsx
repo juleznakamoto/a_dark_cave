@@ -17,6 +17,7 @@ import {
   actionChartConfig,
   basicChartConfig,
   isOverallAchievementCategoryEnabled,
+  isOverallAchievementTabUnlocked,
   overallChartConfig,
 } from "@/achievements";
 import { getAchievementRows, claimAchievement, formatRewardsTooltip } from "@/achievements/achievementHelpers";
@@ -203,10 +204,15 @@ function AchievementRowComponent({
         <div className="flex items-center gap-1 min-w-0 flex-1">
           {isTitleVisible ? (
             <span className="text-xs font-medium text-foreground truncate">
-              {row.label}{" "}
-              <span className="text-muted-foreground font-normal">
-                {progressLabel}
-              </span>
+              {row.label}
+              {row.maxCount > 1 && (
+                <>
+                  {" "}
+                  <span className="text-muted-foreground font-normal">
+                    {progressLabel}
+                  </span>
+                </>
+              )}
             </span>
           ) : (
             <>
@@ -353,10 +359,12 @@ function TabTriggerWithTooltipWhenLocked({
 
 export default function AchievementsPanel() {
   const { t } = useTranslation("ui");
-  const bookOfTrials = useGameStore((s) => s.books?.book_of_trials);
-  const survivorsNotes = useGameStore((s) => s.relics?.survivors_notes);
-  const hasBasicTab = !!survivorsNotes || !!bookOfTrials;
+  const gameState = useGameStore((s) => s as unknown as GameState);
+  const bookOfTrials = !!gameState.books?.book_of_trials;
+  const survivorsNotes = !!gameState.relics?.survivors_notes;
+  const hasBasicTab = survivorsNotes || bookOfTrials;
   const showOverallTab = isOverallAchievementCategoryEnabled;
+  const overallUnlocked = isOverallAchievementTabUnlocked(gameState);
   // basic? + building/item/action + overall? (overall is last when enabled)
   const tabCount = (hasBasicTab ? 1 : 0) + 3 + (showOverallTab ? 1 : 0);
   const tabGridClass =
@@ -365,12 +373,18 @@ export default function AchievementsPanel() {
       : tabCount === 4
         ? "grid-cols-4"
         : "grid-cols-3";
-  const [activeTab, setActiveTab] = useState(hasBasicTab ? "basic" : "building");
-  const effectiveTab = hasBasicTab
-    ? activeTab
-    : activeTab === "basic"
-      ? "building"
-      : activeTab;
+  const defaultTab = hasBasicTab
+    ? "basic"
+    : overallUnlocked
+      ? "overall"
+      : "building";
+  const [activeTab, setActiveTab] = useState(defaultTab);
+  let effectiveTab = activeTab;
+  if (!hasBasicTab && effectiveTab === "basic") {
+    effectiveTab = overallUnlocked ? "overall" : "building";
+  } else if (effectiveTab === "overall" && !overallUnlocked) {
+    effectiveTab = hasBasicTab ? "basic" : "building";
+  }
   const lockedTooltip = t("achievements.notUnlocked");
   const chartUnavailable = t("achievements.chartUnavailable");
   return (
@@ -418,15 +432,15 @@ export default function AchievementsPanel() {
             centerSymbolClassName="pt-1"
           />
           {showOverallTab && (
-            <TabsTrigger value="overall" className={TAB_TRIGGER_CLASS}>
-              <ChartErrorBoundary unavailableLabel={chartUnavailable}>
-                <AchievementMiniRingChart
-                  config={overallChartConfig}
-                  isActive={effectiveTab === "overall"}
-                  centerSymbolClassName="pt-0.5"
-                />
-              </ChartErrorBoundary>
-            </TabsTrigger>
+            <TabTriggerWithTooltipWhenLocked
+              value="overall"
+              config={overallChartConfig}
+              isActive={effectiveTab === "overall"}
+              disabled={!overallUnlocked}
+              lockedTooltip={lockedTooltip}
+              chartUnavailable={chartUnavailable}
+              centerSymbolClassName="pt-0.5"
+            />
           )}
         </TabsList>
         {hasBasicTab && (
@@ -445,7 +459,7 @@ export default function AchievementsPanel() {
         </TabsContent>
         {showOverallTab && (
           <TabsContent value="overall" className="mt-0 flex-1 min-h-0 data-[state=inactive]:hidden flex flex-col overflow-hidden">
-            {effectiveTab === "overall" && (
+            {effectiveTab === "overall" && overallUnlocked && (
               <AchievementTabContent config={overallChartConfig} tabId="overall" />
             )}
           </TabsContent>

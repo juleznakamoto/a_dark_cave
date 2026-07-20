@@ -127,3 +127,31 @@ export const overallChartConfig: AchievementChartConfig = {
 export function getUnclaimedOverallIds(): string[] {
   return [];
 }
+
+/** True when at least one overall (general / meta) achievement is fully complete. */
+export function hasAnyOverallAchievementReached(state: GameState): boolean {
+  for (const ring of overallChartConfig.rings) {
+    for (const seg of ring) {
+      if (seg.getCount(state) >= seg.maxCount) return true;
+    }
+  }
+  return false;
+}
+
+/**
+ * Overall (general) category tab: unlocked by Book of Trials, or when any
+ * overall achievement is already reached (so it stays available on later runs).
+ */
+export function isOverallAchievementTabUnlocked(state: GameState): boolean {
+  if (!isOverallAchievementCategoryEnabled) return false;
+  return !!state.books?.book_of_trials || hasAnyOverallAchievementReached(state);
+}
+
+/** Main Achievements game tab: notes, book, or overall progress from a prior run. */
+export function isAchievementsGameTabUnlocked(state: GameState): boolean {
+  return (
+    !!state.relics?.survivors_notes ||
+    !!state.books?.book_of_trials ||
+    isOverallAchievementTabUnlocked(state)
+  );
+}

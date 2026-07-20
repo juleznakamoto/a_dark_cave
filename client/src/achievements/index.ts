@@ -5,6 +5,9 @@ import { getUnclaimedBasicIds, basicChartConfig } from "./configs/basic";
 import {
   isOverallAchievementCategoryEnabled,
   overallChartConfig,
+  hasAnyOverallAchievementReached,
+  isOverallAchievementTabUnlocked,
+  isAchievementsGameTabUnlocked,
 } from "./configs/overall";
 
 /**
@@ -37,6 +40,9 @@ export {
   basicChartConfig,
   isOverallAchievementCategoryEnabled,
   overallChartConfig,
+  hasAnyOverallAchievementReached,
+  isOverallAchievementTabUnlocked,
+  isAchievementsGameTabUnlocked,
 };
 
 // Re-export types
