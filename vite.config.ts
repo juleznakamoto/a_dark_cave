@@ -27,7 +27,16 @@ export default defineConfig({
   plugins: [
     react(),
     compression(),
-    runtimeErrorOverlay(),
+    // Safari often reports module-load failures with an empty stack. This plugin
+    // then Object.assign's onto a server Error and shows a Node/WebSocket stack
+    // in a full-screen overlay — hide those so they don't block the phone UI.
+    runtimeErrorOverlay({
+      filter(error) {
+        return !/Importing a module script failed|Failed to fetch dynamically imported module/i.test(
+          error.message ?? "",
+        );
+      },
+    }),
     ...(process.env.NODE_ENV !== "production" &&
       process.env.REPL_ID !== undefined
       ? [
