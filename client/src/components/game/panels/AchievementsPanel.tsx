@@ -184,6 +184,7 @@ function AchievementRowComponent({
     row.achievementId,
     row.currentCount,
   );
+  const progressLabel = `${Math.min(Math.floor(row.currentCount), row.maxCount)}/${row.maxCount}`;
 
   const handleClaim = () => {
     if (canClaim) {
@@ -202,7 +203,10 @@ function AchievementRowComponent({
         <div className="flex items-center gap-1 min-w-0 flex-1">
           {isTitleVisible ? (
             <span className="text-xs font-medium text-foreground truncate">
-              {row.label}
+              {row.label}{" "}
+              <span className="text-muted-foreground font-normal">
+                {progressLabel}
+              </span>
             </span>
           ) : (
             <>
@@ -235,7 +239,7 @@ function AchievementRowComponent({
         )}
       </div>
       <TooltipWrapper
-        tooltip={`${Math.min(Math.floor(row.currentCount), row.maxCount)}/${row.maxCount}`}
+        tooltip={progressLabel}
         tooltipId={`achievement-progress-${row.achievementId}`}
         disabled
         className="w-full"
