@@ -525,22 +525,22 @@
     }
   },
   "cube16a": {
+    "title": "El dispositivo craneal",
+    "message": "Junto a las criaturas abatidas encuentras lo que parece ser uno de los dispositivos craneales. Está roto, pero aún puedes leer algunas letras que dicen «N**RAL**K».",
     "choices": {
       "close": {
-        "label": "Close"
+        "label": "Cerrar"
       }
-    },
-    "message": "Next to the slain creatures you find what seems to be one of the skull devices. It's broken, but you can still read some letters on it saying 'N**RAL**K'.",
-    "title": "The Skull Device"
+    }
   },
   "cube16b": {
+    "title": "El dispositivo craneal",
+    "message": "Las criaturas te entregan lo que parece ser uno de los dispositivos craneales. Está roto, pero aún puedes leer algunas letras que dicen «N**RAL**K».",
     "choices": {
       "close": {
-        "label": "Close"
+        "label": "Cerrar"
       }
-    },
-    "message": "The creatures give you what seems to be one of the skull devices. It's broken, but you can still read some letters on it saying 'N**RAL**K'.",
-    "title": "The Skull Device"
+    }
   },
   "cubeDiscovery": {
     "title": "El cubo susurrante",

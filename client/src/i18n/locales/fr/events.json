@@ -525,22 +525,22 @@
     }
   },
   "cube16a": {
+    "title": "Le dispositif crânien",
+    "message": "À côté des créatures abattues, vous trouvez ce qui semble être l'un des dispositifs crâniens. Il est brisé, mais vous pouvez encore y lire quelques lettres : « N**RAL**K ».",
     "choices": {
       "close": {
-        "label": "Close"
+        "label": "Fermer"
       }
-    },
-    "message": "Next to the slain creatures you find what seems to be one of the skull devices. It's broken, but you can still read some letters on it saying 'N**RAL**K'.",
-    "title": "The Skull Device"
+    }
   },
   "cube16b": {
+    "title": "Le dispositif crânien",
+    "message": "Les créatures vous remettent ce qui semble être l'un des dispositifs crâniens. Il est brisé, mais vous pouvez encore y lire quelques lettres : « N**RAL**K ».",
     "choices": {
       "close": {
-        "label": "Close"
+        "label": "Fermer"
       }
-    },
-    "message": "The creatures give you what seems to be one of the skull devices. It's broken, but you can still read some letters on it saying 'N**RAL**K'.",
-    "title": "The Skull Device"
+    }
   },
   "cubeDiscovery": {
     "title": "Le cube murmurant",

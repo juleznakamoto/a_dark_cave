@@ -525,22 +525,22 @@
     }
   },
   "cube16a": {
+    "title": "颅骨装置",
+    "message": "在被击杀的生物旁边，你发现了似乎是颅骨装置之一的东西。它已经损坏，但你仍能读出上面的一些字母：「N**RAL**K」。",
     "choices": {
       "close": {
-        "label": "Close"
+        "label": "关闭"
       }
-    },
-    "message": "Next to the slain creatures you find what seems to be one of the skull devices. It's broken, but you can still read some letters on it saying 'N**RAL**K'.",
-    "title": "The Skull Device"
+    }
   },
   "cube16b": {
+    "title": "颅骨装置",
+    "message": "那些生物把似乎是颅骨装置之一的东西交给你。它已经损坏，但你仍能读出上面的一些字母：「N**RAL**K」。",
     "choices": {
       "close": {
-        "label": "Close"
+        "label": "关闭"
       }
-    },
-    "message": "The creatures give you what seems to be one of the skull devices. It's broken, but you can still read some letters on it saying 'N**RAL**K'.",
-    "title": "The Skull Device"
+    }
   },
   "cubeDiscovery": {
     "title": "低语立方体",

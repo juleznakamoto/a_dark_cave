@@ -8,6 +8,10 @@ import {
   getResourceLimit,
   capResourceToLimit,
 } from "./resourceLimits";
+import {
+  collectStorageMaxHitUpdates,
+  getLifetimeStorageMaxHits,
+} from "./resourceStorageMax";
 import { getTotalEventDeathReduction } from "./rules/effectsCalculation";
 import { getVillagerCapForJob } from "./villagerCapUpgrades";
 import { getExecutionTime } from "./rules/executionTime";
@@ -99,6 +103,22 @@ export function updateResource(
   const isLimitedResource = isResourceLimited(resource, state);
   const reachedLimit = isLimitedResource && cappedAmount >= limit && !state.flags.hasHitResourceLimit;
 
+  const insightSpent =
+    resource === "insight" && amount < 0
+      ? Math.max(0, currentAmount - cappedAmount)
+      : 0;
+  const storageMaxHits = collectStorageMaxHitUpdates(state, {
+    [resource]: cappedAmount,
+  });
+  const storySeenPatch: Record<string, boolean | number> = {
+    ...storageMaxHits.storySeen,
+  };
+  if (insightSpent > 0) {
+    storySeenPatch.totalInsightSpent =
+      (Number(state.story?.seen?.totalInsightSpent) || 0) + insightSpent;
+  }
+  const hasStoryPatch = Object.keys(storySeenPatch).length > 0;
+
   return {
     resources: {
       ...state.resources,
@@ -112,6 +132,18 @@ export function updateResource(
         ...state.flags,
         hasHitResourceLimit: true,
       },
+    }),
+    ...(hasStoryPatch && {
+      story: {
+        ...state.story,
+        seen: {
+          ...state.story?.seen,
+          ...storySeenPatch,
+        },
+      },
+    }),
+    ...(storageMaxHits.lifetimeStorageMaxHits && {
+      lifetimeStorageMaxHits: storageMaxHits.lifetimeStorageMaxHits,
     }),
   };
 }
@@ -130,6 +162,7 @@ export function applyResourceDeltas(
   const newResources = { ...state.resources };
   const limit = getResourceLimit(state);
   let reachedLimit = false;
+  let insightSpent = 0;
 
   for (const [key, delta] of Object.entries(deltas)) {
     if (typeof delta !== 'number' || delta === 0) continue;
@@ -137,11 +170,24 @@ export function applyResourceDeltas(
     const currentAmount = newResources[resource] || 0;
     const newAmount = Math.max(0, currentAmount + delta);
     const cappedAmount = capResourceToLimit(resource, newAmount, state);
+    if (resource === "insight" && delta < 0) {
+      insightSpent += Math.max(0, currentAmount - cappedAmount);
+    }
     newResources[resource] = cappedAmount;
     if (isResourceLimited(resource, state) && cappedAmount >= limit) {
       reachedLimit = true;
     }
   }
+
+  const storageMaxHits = collectStorageMaxHitUpdates(state, newResources);
+  const storySeenPatch: Record<string, boolean | number> = {
+    ...storageMaxHits.storySeen,
+  };
+  if (insightSpent > 0) {
+    storySeenPatch.totalInsightSpent =
+      (Number(state.story?.seen?.totalInsightSpent) || 0) + insightSpent;
+  }
+  const hasStoryPatch = Object.keys(storySeenPatch).length > 0;
 
   return {
     resources: newResources,
@@ -151,6 +197,18 @@ export function applyResourceDeltas(
         ...state.flags,
         hasHitResourceLimit: true,
       },
+    }),
+    ...(hasStoryPatch && {
+      story: {
+        ...state.story,
+        seen: {
+          ...state.story?.seen,
+          ...storySeenPatch,
+        },
+      },
+    }),
+    ...(storageMaxHits.lifetimeStorageMaxHits && {
+      lifetimeStorageMaxHits: storageMaxHits.lifetimeStorageMaxHits,
     }),
   };
 }
@@ -846,6 +904,14 @@ export function applyGameStateLoadMigrations(state: GameState): GameState {
   const housingClamp = clampVillagersToHousingCap(migrated);
   if (housingClamp) {
     migrated = { ...migrated, ...housingClamp };
+  }
+  // Lift legacy story.seen storageMaxHit_* flags into lifetime Resource Maxer hits.
+  const lifetimeHits = getLifetimeStorageMaxHits(migrated);
+  if (
+    lifetimeHits.length >
+    (migrated.lifetimeStorageMaxHits?.length ?? 0)
+  ) {
+    migrated = { ...migrated, lifetimeStorageMaxHits: lifetimeHits };
   }
   return migrated;
 }

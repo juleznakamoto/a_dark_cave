@@ -567,6 +567,13 @@ export const gameStateSchema = z.object({
   hasSpeedrunWin: z.boolean().default(false),
   /** Meta: total play time across all runs (ms). Persists across restarts; increments with playTime. */
   lifetimePlayTimeMs: z.number().min(0).default(0),
+  /**
+   * Meta: resource keys that have hit Great Vault storage max (Resource Maxer).
+   * Persists across restarts; union-merged on save/load.
+   */
+  lifetimeStorageMaxHits: z.array(z.string()).default([]),
+  /** Meta: completed every non-overall achievement at least once. Persists across restarts. */
+  hasAchievementMaxer: z.boolean().default(false),
   BTP: z.number().default(0), // Buy To Play mode (0 = normal, 1 = BTP active)
   attackWaveTimers: z.record(attackWaveTimerSchema).default({}),
   /** Post-story endless waves won (next wave number = 11 + this count). */

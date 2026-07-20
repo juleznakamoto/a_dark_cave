@@ -527,20 +527,20 @@
   "cube16a": {
     "choices": {
       "close": {
-        "label": "Close"
+        "label": "Chiudi"
       }
     },
-    "message": "Next to the slain creatures you find what seems to be one of the skull devices. It's broken, but you can still read some letters on it saying 'N**RAL**K'.",
-    "title": "The Skull Device"
+    "message": "Accanto alle creature abbattute trovi quello che sembra essere uno dei dispositivi a teschio. È rotto, ma riesci ancora a leggere alcune lettere: 'N**RAL**K'.",
+    "title": "Il dispositivo a teschio"
   },
   "cube16b": {
     "choices": {
       "close": {
-        "label": "Close"
+        "label": "Chiudi"
       }
     },
-    "message": "The creatures give you what seems to be one of the skull devices. It's broken, but you can still read some letters on it saying 'N**RAL**K'.",
-    "title": "The Skull Device"
+    "message": "Le creature ti consegnano quello che sembra essere uno dei dispositivi a teschio. È rotto, ma riesci ancora a leggere alcune lettere: 'N**RAL**K'.",
+    "title": "Il dispositivo a teschio"
   },
   "cubeDiscovery": {
     "choices": {

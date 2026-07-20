@@ -8,6 +8,7 @@ import {
   capResourceToLimit,
   BOMB_RESOURCES,
 } from "@/game/resourceLimits";
+import { collectStorageMaxHitUpdates } from "@/game/resourceStorageMax";
 import {
   getActionBonuses as getActionBonusesCalc,
   getTotalLuck as getTotalLuckCalc,
@@ -797,6 +798,30 @@ export function applyActionEffects(
       if (isBombResource(resourceKey)) continue;
       updates.resources[resourceKey as keyof typeof updates.resources] =
         capResourceToLimit(resourceKey, value, state);
+    }
+
+    const storageMaxHits = collectStorageMaxHitUpdates(
+      state,
+      updates.resources as Partial<Record<string, number>>,
+    );
+    if (
+      Object.keys(storageMaxHits.storySeen).length > 0 ||
+      storageMaxHits.lifetimeStorageMaxHits
+    ) {
+      updates.story = {
+        ...state.story,
+        ...(updates.story as GameState["story"] | undefined),
+        seen: {
+          ...state.story?.seen,
+          ...(updates.story as { seen?: Record<string, unknown> } | undefined)
+            ?.seen,
+          ...storageMaxHits.storySeen,
+        },
+      };
+      if (storageMaxHits.lifetimeStorageMaxHits) {
+        (updates as Partial<GameState>).lifetimeStorageMaxHits =
+          storageMaxHits.lifetimeStorageMaxHits;
+      }
     }
   }
 

@@ -83,6 +83,15 @@ export const basicChartConfig: AchievementChartConfig = {
           Number(state.story?.seen?.totalFoodGathered) || 0,
         segments: 10,
       },
+      {
+        segmentId: "0-tanner",
+        maxCount: 250,
+        label: "Tanner",
+        rewards: { insight: 500 },
+        getCount: (state: GameState) =>
+          Number(state.story?.seen?.totalLeatherGathered) || 0,
+        segments: 10,
+      },
     ],
     [
       {

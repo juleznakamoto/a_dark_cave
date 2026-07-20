@@ -525,22 +525,22 @@
     }
   },
   "cube16a": {
+    "title": "Черепное устройство",
+    "message": "Рядом с убитыми существами вы находите то, что похоже на одно из черепных устройств. Оно разбито, но на нём ещё можно прочитать несколько букв: «N**RAL**K».",
     "choices": {
       "close": {
-        "label": "Close"
+        "label": "Закрыть"
       }
-    },
-    "message": "Next to the slain creatures you find what seems to be one of the skull devices. It's broken, but you can still read some letters on it saying 'N**RAL**K'.",
-    "title": "The Skull Device"
+    }
   },
   "cube16b": {
+    "title": "Черепное устройство",
+    "message": "Существа протягивают вам то, что похоже на одно из черепных устройств. Оно разбито, но на нём ещё можно прочитать несколько букв: «N**RAL**K».",
     "choices": {
       "close": {
-        "label": "Close"
+        "label": "Закрыть"
       }
-    },
-    "message": "The creatures give you what seems to be one of the skull devices. It's broken, but you can still read some letters on it saying 'N**RAL**K'.",
-    "title": "The Skull Device"
+    }
   },
   "cubeDiscovery": {
     "title": "Шепчущий куб",

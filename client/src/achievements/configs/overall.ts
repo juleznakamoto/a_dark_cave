@@ -2,11 +2,16 @@ import type { AchievementChartConfig } from "../achievementTypes";
 import type { GameState } from "@shared/schema";
 import { isWebBuild } from "@/lib/edition";
 import {
+  getResourcesReachedStorageMaxCount,
+  getStorageMaxerResourceTotal,
+} from "@/game/resourceStorageMax";
+import {
   SOCIAL_PROMO_EXCLUSIVE_STEP_TOTAL,
   isSocialPromoExclusiveRewardComplete,
   socialPromoExclusiveStepsCompleted,
   type SocialPromoExclusiveSlice,
 } from "@/game/socialPromoExclusiveReward";
+import { isAllNonOverallAchievementsComplete } from "../nonOverallCompletion";
 
 const MS_PER_HOUR = 60 * 60 * 1000;
 export const SPEEDRUN_WIN_MAX_MS = 5 * MS_PER_HOUR;
@@ -86,6 +91,27 @@ export const overallChartConfig: AchievementChartConfig = {
           },
         ]
         : []),
+      {
+        segmentId: "0-resourceMaxer",
+        maxCount: getStorageMaxerResourceTotal(),
+        label: "Resource Maxer",
+        segments: 10,
+        getCount: (state: GameState) =>
+          Math.min(
+            getResourcesReachedStorageMaxCount(state),
+            getStorageMaxerResourceTotal(),
+          ),
+      },
+      {
+        segmentId: "0-achievementMaxer",
+        maxCount: 1,
+        label: "Achievement Maxer",
+        getCount: (state: GameState) =>
+          state.hasAchievementMaxer ||
+            isAllNonOverallAchievementsComplete(state)
+            ? 1
+            : 0,
+      },
     ],
   ],
 };

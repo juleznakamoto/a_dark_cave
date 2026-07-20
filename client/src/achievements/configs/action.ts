@@ -184,8 +184,16 @@ export const actionChartConfig: AchievementChartConfig = {
         getCount: (state: GameState) =>
           Math.min(Number(state.story?.seen?.veinfireElixirsCrafted) || 0, 10),
       },
+      {
+        segmentId: "3-burningVeins",
+        maxCount: 10,
+        label: "Burning Veins",
+        reward: 250,
+        getCount: (state: GameState) =>
+          Math.min(Number(state.story?.seen?.veinfireElixirsUsed) || 0, 10),
+      },
     ],
-    // Fifth ring: Merchant Purchases
+    // Fifth ring: Merchant Purchases & late-game milestones
     [
       {
         segmentId: "4-merchantPurchases",
@@ -272,6 +280,32 @@ export const actionChartConfig: AchievementChartConfig = {
         segments: 10,
         getCount: (state: GameState) =>
           Math.min(Number(state.story?.seen?.totalGoldInvested) || 0, 2500),
+      },
+      {
+        segmentId: "4-luckyInvestor",
+        maxCount: 10,
+        label: "Lucky Investor",
+        reward: 250,
+        getCount: (state: GameState) =>
+          Math.min(Number(state.story?.seen?.investmentSuccesses) || 0, 10),
+      },
+      {
+        segmentId: "4-insightful",
+        maxCount: 10000,
+        label: "Insightful",
+        reward: 250,
+        segments: 10,
+        getCount: (state: GameState) =>
+          Math.min(Number(state.story?.seen?.totalInsightSpent) || 0, 10000),
+      },
+      {
+        segmentId: "4-pileOfDead",
+        maxCount: 250,
+        label: "Pile of Dead",
+        reward: 250,
+        segments: 10,
+        getCount: (state: GameState) =>
+          Math.min(Number(state.stats?.villagerDeathsLifetime) || 0, 250),
       },
     ],
   ],

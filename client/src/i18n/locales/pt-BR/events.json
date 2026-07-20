@@ -527,20 +527,20 @@
   "cube16a": {
     "choices": {
       "close": {
-        "label": "Close"
+        "label": "Fechar"
       }
     },
-    "message": "Next to the slain creatures you find what seems to be one of the skull devices. It's broken, but you can still read some letters on it saying 'N**RAL**K'.",
-    "title": "The Skull Device"
+    "message": "Ao lado das criaturas abatidas, você encontra o que parece ser um dos dispositivos cranianos. Está quebrado, mas ainda dá para ler algumas letras nele: 'N**RAL**K'.",
+    "title": "O dispositivo craniano"
   },
   "cube16b": {
     "choices": {
       "close": {
-        "label": "Close"
+        "label": "Fechar"
       }
     },
-    "message": "The creatures give you what seems to be one of the skull devices. It's broken, but you can still read some letters on it saying 'N**RAL**K'.",
-    "title": "The Skull Device"
+    "message": "As criaturas lhe entregam o que parece ser um dos dispositivos cranianos. Está quebrado, mas ainda dá para ler algumas letras nele: 'N**RAL**K'.",
+    "title": "O dispositivo craniano"
   },
   "cubeDiscovery": {
     "choices": {

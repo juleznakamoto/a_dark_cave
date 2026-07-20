@@ -527,20 +527,20 @@
   "cube16a": {
     "choices": {
       "close": {
-        "label": "Close"
+        "label": "Schließen"
       }
     },
-    "message": "Next to the slain creatures you find what seems to be one of the skull devices. It's broken, but you can still read some letters on it saying 'N**RAL**K'.",
-    "title": "The Skull Device"
+    "message": "Neben den erschlagenen Kreaturen findest du etwas, das wie eines der Schädelgeräte aussieht. Es ist zerbrochen, doch du kannst noch einige Buchstaben darauf lesen: ‚N**RAL**K‘.",
+    "title": "Das Schädelgerät"
   },
   "cube16b": {
     "choices": {
       "close": {
-        "label": "Close"
+        "label": "Schließen"
       }
     },
-    "message": "The creatures give you what seems to be one of the skull devices. It's broken, but you can still read some letters on it saying 'N**RAL**K'.",
-    "title": "The Skull Device"
+    "message": "Die Kreaturen geben dir etwas, das wie eines der Schädelgeräte aussieht. Es ist zerbrochen, doch du kannst noch einige Buchstaben darauf lesen: ‚N**RAL**K‘.",
+    "title": "Das Schädelgerät"
   },
   "cubeDiscovery": {
     "choices": {

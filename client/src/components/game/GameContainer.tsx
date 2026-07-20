@@ -71,8 +71,10 @@ import {
   type TabUnlockBlinkId,
 } from "@/game/tabUnlockBlink";
 import { TraderTabButton } from "@/components/game/TraderTabButton";
-import { useSteamEditionActive } from "@/hooks/useSteamEditionActive";
-import { isDemoEdition } from "@/lib/edition";
+import {
+  useDemoEditionActive,
+  useSteamEditionActive,
+} from "@/hooks/useSteamEditionActive";
 import DemoTimeUpDialog from "./DemoTimeUpDialog";
 import i18n from "@/i18n";
 import { useTranslation } from "react-i18next";
@@ -90,6 +92,7 @@ const WebOnlyDialogs = steamBuild
 export default function GameContainer() {
   const { t } = useTranslation();
   const steamEditionActive = useSteamEditionActive();
+  const demoEditionActive = useDemoEditionActive();
   const {
     activeTab,
     flags,
@@ -1482,7 +1485,7 @@ export default function GameContainer() {
           data={villageEffectDialog.data}
           onClose={() => setVillageEffectDialog(false)}
         />
-        {isDemoEdition() && <DemoTimeUpDialog />}
+        {demoEditionActive && <DemoTimeUpDialog />}
       </div>
     </ProfileMenuProvider>
   );

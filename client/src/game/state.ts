@@ -391,6 +391,8 @@ interface GameStore extends GameState {
   hasWonCruelGame: boolean;
   hasSpeedrunWin: boolean;
   lifetimePlayTimeMs: number;
+  lifetimeStorageMaxHits: string[];
+  hasAchievementMaxer: boolean;
 
   // Reward dialog
   rewardDialog: {
@@ -1114,6 +1116,17 @@ const mergeStateUpdates = (
           prevState.lifetimePlayTimeMs ?? 0,
         )
         : (prevState.lifetimePlayTimeMs ?? 0),
+    // Union lifetime Resource Maxer hits (partial updates must not wipe prior keys)
+    lifetimeStorageMaxHits: (() => {
+      const merged = new Set<string>([
+        ...(prevState.lifetimeStorageMaxHits ?? []),
+        ...(stateUpdates.lifetimeStorageMaxHits ?? []),
+      ]);
+      return Array.from(merged);
+    })(),
+    hasAchievementMaxer: Boolean(
+      stateUpdates.hasAchievementMaxer || prevState.hasAchievementMaxer,
+    ),
     // Merchant trades state
     merchantTrades: stateUpdates.merchantTrades || prevState.merchantTrades,
   };
@@ -2676,6 +2689,8 @@ export const useGameStore = create<GameStore>((set, get) => ({
       hasWonCruelGame: state.hasWonCruelGame || false,
       hasSpeedrunWin: state.hasSpeedrunWin || false,
       lifetimePlayTimeMs: state.lifetimePlayTimeMs || 0,
+      lifetimeStorageMaxHits: state.lifetimeStorageMaxHits || [],
+      hasAchievementMaxer: state.hasAchievementMaxer || false,
 
       // Preserve detected currency across restarts (persists forever)
       detectedCurrency: state.detectedCurrency || null,
@@ -3109,6 +3124,20 @@ export const useGameStore = create<GameStore>((set, get) => ({
           0,
           loadedPlayTime || 0,
         ),
+        lifetimeStorageMaxHits: Array.isArray(
+          (savedState as { lifetimeStorageMaxHits?: string[] })
+            .lifetimeStorageMaxHits,
+        )
+          ? [
+            ...new Set(
+              (savedState as { lifetimeStorageMaxHits: string[] })
+                .lifetimeStorageMaxHits,
+            ),
+          ]
+          : [],
+        hasAchievementMaxer:
+          (savedState as { hasAchievementMaxer?: boolean })
+            .hasAchievementMaxer === true,
         merchantTrades: savedState.merchantTrades || {
           choices: [],
           purchasedIds: [],
@@ -4142,6 +4171,16 @@ export const useGameStore = create<GameStore>((set, get) => ({
             isOpen: true,
             data: buildInvestmentResultDialogPayload(active),
           },
+          ...(active.success && {
+            story: {
+              ...state.story,
+              seen: {
+                ...state.story.seen,
+                investmentSuccesses:
+                  (Number(state.story?.seen?.investmentSuccesses) || 0) + 1,
+              },
+            },
+          }),
         };
       }
       if (

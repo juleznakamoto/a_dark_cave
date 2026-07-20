@@ -143,4 +143,9 @@ export function claimAchievement(
     ].slice(-100),
     claimedAchievements: [...(s.claimedAchievements || []), achievementId],
   }));
+
+  void import("./nonOverallCompletion").then(
+    ({ persistAchievementMaxerIfComplete }) =>
+      persistAchievementMaxerIfComplete(),
+  );
 }
