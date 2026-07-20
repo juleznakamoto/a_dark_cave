@@ -11,7 +11,10 @@ import {
   socialPromoExclusiveStepsCompleted,
   type SocialPromoExclusiveSlice,
 } from "@/game/socialPromoExclusiveReward";
-import { isAllNonOverallAchievementsComplete } from "../nonOverallCompletion";
+import {
+  getNonOverallAchievementTotal,
+  getNonOverallAchievementsCompletedCount,
+} from "../nonOverallCompletion";
 
 const MS_PER_HOUR = 60 * 60 * 1000;
 export const SPEEDRUN_WIN_MAX_MS = 5 * MS_PER_HOUR;
@@ -104,13 +107,17 @@ export const overallChartConfig: AchievementChartConfig = {
       },
       {
         segmentId: "0-achievementMaxer",
-        maxCount: 1,
+        maxCount: getNonOverallAchievementTotal(),
         label: "Achievement Maxer",
-        getCount: (state: GameState) =>
-          state.hasAchievementMaxer ||
-            isAllNonOverallAchievementsComplete(state)
-            ? 1
-            : 0,
+        segments: 20,
+        getCount: (state: GameState) => {
+          const total = getNonOverallAchievementTotal();
+          if (state.hasAchievementMaxer) return total;
+          return Math.min(
+            getNonOverallAchievementsCompletedCount(state),
+            total,
+          );
+        },
       },
     ],
   ],

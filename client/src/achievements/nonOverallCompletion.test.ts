@@ -1,6 +1,8 @@
 import { describe, expect, it } from "vitest";
 import { createInitialState } from "@/game/state";
 import {
+  getNonOverallAchievementTotal,
+  getNonOverallAchievementsCompletedCount,
   isAllNonOverallAchievementsComplete,
   NON_OVERALL_ACHIEVEMENT_CONFIGS,
 } from "./nonOverallCompletion";
@@ -20,5 +22,18 @@ describe("nonOverallCompletion", () => {
     expect(isAllNonOverallAchievementsComplete(createInitialState())).toBe(
       false,
     );
+  });
+
+  it("exposes a positive total used as Achievement Maxer Y", () => {
+    const total = getNonOverallAchievementTotal();
+    expect(total).toBeGreaterThan(20);
+    expect(getNonOverallAchievementsCompletedCount(createInitialState())).toBe(
+      0,
+    );
+    const maxer = overallChartConfig.rings
+      .flat()
+      .find((s) => s.segmentId === "0-achievementMaxer");
+    expect(maxer?.maxCount).toBe(total);
+    expect(maxer?.segments).toBe(20);
   });
 });

@@ -14,16 +14,38 @@ export const NON_OVERALL_ACHIEVEMENT_CONFIGS: AchievementChartConfig[] = [
   actionChartConfig,
 ];
 
-/** True when every non-overall achievement has reached its max count. */
-export function isAllNonOverallAchievementsComplete(state: GameState): boolean {
+/** Total number of non-overall achievements (Y in X/Y progress). */
+export function getNonOverallAchievementTotal(): number {
+  let total = 0;
+  for (const config of NON_OVERALL_ACHIEVEMENT_CONFIGS) {
+    for (const ring of config.rings) {
+      total += ring.length;
+    }
+  }
+  return total;
+}
+
+/** How many non-overall achievements have reached their max count (X in X/Y). */
+export function getNonOverallAchievementsCompletedCount(
+  state: GameState,
+): number {
+  let completed = 0;
   for (const config of NON_OVERALL_ACHIEVEMENT_CONFIGS) {
     for (const ring of config.rings) {
       for (const seg of ring) {
-        if (seg.getCount(state) < seg.maxCount) return false;
+        if (seg.getCount(state) >= seg.maxCount) completed += 1;
       }
     }
   }
-  return true;
+  return completed;
+}
+
+/** True when every non-overall achievement has reached its max count. */
+export function isAllNonOverallAchievementsComplete(state: GameState): boolean {
+  const total = getNonOverallAchievementTotal();
+  return (
+    total > 0 && getNonOverallAchievementsCompletedCount(state) >= total
+  );
 }
 
 /** Persist Achievement Maxer once all non-overall achievements are complete. */
