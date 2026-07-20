@@ -524,6 +524,24 @@
       }
     }
   },
+  "cube16a": {
+    "choices": {
+      "close": {
+        "label": "Close"
+      }
+    },
+    "message": "Next to the slain creatures you find what seems to be one of the skull devices. It's broken, but you can still read some letters on it saying 'N**RAL**K'.",
+    "title": "The Skull Device"
+  },
+  "cube16b": {
+    "choices": {
+      "close": {
+        "label": "Close"
+      }
+    },
+    "message": "The creatures give you what seems to be one of the skull devices. It's broken, but you can still read some letters on it saying 'N**RAL**K'.",
+    "title": "The Skull Device"
+  },
   "cubeDiscovery": {
     "title": "El cubo susurrante",
     "message": "Cerca de la entrada de la cueva descubres un cubo de metal perfectamente pulido. Al principio parece inmóvil, pero luego sientes una leve vibración, como un pulso lento y rítmico, casi un latido.",

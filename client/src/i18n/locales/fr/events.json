@@ -524,6 +524,24 @@
       }
     }
   },
+  "cube16a": {
+    "choices": {
+      "close": {
+        "label": "Close"
+      }
+    },
+    "message": "Next to the slain creatures you find what seems to be one of the skull devices. It's broken, but you can still read some letters on it saying 'N**RAL**K'.",
+    "title": "The Skull Device"
+  },
+  "cube16b": {
+    "choices": {
+      "close": {
+        "label": "Close"
+      }
+    },
+    "message": "The creatures give you what seems to be one of the skull devices. It's broken, but you can still read some letters on it saying 'N**RAL**K'.",
+    "title": "The Skull Device"
+  },
   "cubeDiscovery": {
     "title": "Le cube murmurant",
     "message": "Près de l'entrée de la grotte, vous découvrez un cube de métal parfaitement poli. Il semble d'abord immobile, puis vous sentez une légère vibration, comme un pouls lent et régulier, presque un battement de cœur.",

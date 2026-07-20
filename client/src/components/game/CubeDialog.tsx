@@ -40,31 +40,32 @@ export default function CubeDialog({
   const eventChoices = event.choices || [];
 
   useEffect(() => {
-    let timeoutId: NodeJS.Timeout | null = null;
-
     if (isOpen) {
-      timeoutId = setTimeout(() => {
-        audioManager.playLoopingSound('whisperingCube', SOUND_VOLUME.whisperingCube);
-      }, 500);
+      // Crossfade: BGM fades out while cube ambience fades in (same duration)
+      audioManager.startEventAmbience(
+        "whisperingCube",
+        SOUND_VOLUME.whisperingCube,
+      );
     } else {
-      audioManager.stopLoopingSound('whisperingCube');
+      audioManager.stopEventAmbience("whisperingCube");
     }
 
-    // Cleanup on unmount
     return () => {
-      if (timeoutId) {
-        clearTimeout(timeoutId);
-      }
-      audioManager.stopLoopingSound('whisperingCube');
+      audioManager.stopEventAmbience("whisperingCube");
     };
   }, [isOpen]);
 
   const handleClose = async () => {
-    audioManager.stopLoopingSound('whisperingCube');
     onChoice(eventChoices[0]?.id);
 
-    // Check if this is one of the final cube events (cube15a or cube15b)
-    if (event?.id?.includes('cube15a') || event?.id?.includes('cube15b')) {
+    const baseEventId = event?.id?.split("-")?.[0] ?? "";
+    const cruelMode = useGameStore.getState().cruelMode;
+    // Normal: recognition (15). Cruel: skull-device epilogue (16) before end screen.
+    const isFinalCubeEvent = cruelMode
+      ? baseEventId === "cube16a" || baseEventId === "cube16b"
+      : baseEventId === "cube15a" || baseEventId === "cube15b";
+
+    if (isFinalCubeEvent) {
       const completionLogId = "game-finished";
       const completionMessage = t("cube.completionLog");
 

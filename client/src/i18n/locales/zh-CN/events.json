@@ -524,6 +524,24 @@
       }
     }
   },
+  "cube16a": {
+    "choices": {
+      "close": {
+        "label": "Close"
+      }
+    },
+    "message": "Next to the slain creatures you find what seems to be one of the skull devices. It's broken, but you can still read some letters on it saying 'N**RAL**K'.",
+    "title": "The Skull Device"
+  },
+  "cube16b": {
+    "choices": {
+      "close": {
+        "label": "Close"
+      }
+    },
+    "message": "The creatures give you what seems to be one of the skull devices. It's broken, but you can still read some letters on it saying 'N**RAL**K'.",
+    "title": "The Skull Device"
+  },
   "cubeDiscovery": {
     "title": "低语立方体",
     "message": "在洞口附近，你发现了一个抛光完美的金属立方体。起初它似乎静止不动，随后你感到一阵轻微的震动，如同缓慢而有节奏的脉动，几乎像心跳一般。",

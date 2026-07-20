@@ -8,6 +8,9 @@
  * shop, merchant-sold artifacts, local + Steam Cloud saves, Steam achievements)
  * keys off `isSteamBuild`; the demo cap keys off `isSteamDemoBuild` / `isDemoEdition()`.
  * Playtest uses `VITE_STEAM_PLAYTEST=1` for an isolated save namespace (full game, no cap).
+ *
+ * In DEV (non-Steam builds), Settings → Game Mode can simulate Steam Game / Playtest /
+ * Demo via {@link setDevGameModeOverride}.
  */
 export const isSteamBuild = import.meta.env.VITE_STEAM_BUILD === "1";
 
@@ -26,6 +29,20 @@ export const isWebBuild = !isSteamBuild;
 
 const GALAXY_PATH_PREFIX = "/galaxy";
 
+/** Dev Settings → Game Mode values (web DEV only; ignored in Steam / prod builds). */
+export type DevGameMode =
+  | "normal"
+  | "steamGame"
+  | "steamPlaytest"
+  | "steamDemo";
+
+export const DEV_GAME_MODE_OPTIONS: readonly DevGameMode[] = [
+  "normal",
+  "steamGame",
+  "steamPlaytest",
+  "steamDemo",
+] as const;
+
 /** Galaxy.click demo hosted at https://a-dark-cave.com/galaxy */
 export function isGalaxyEdition(): boolean {
   if (typeof window === "undefined") return false;
@@ -35,7 +52,26 @@ export function isGalaxyEdition(): boolean {
 
 /** Web Galaxy demo or Steam desktop demo — capped at the stone hut limit. */
 export function isDemoEdition(): boolean {
-  return isGalaxyEdition() || isSteamDemoBuild;
+  return (
+    isGalaxyEdition() ||
+    isSteamDemoBuild ||
+    (import.meta.env.DEV &&
+      !isSteamBuild &&
+      devGameModeOverride === "steamDemo")
+  );
+}
+
+/**
+ * Steam demo build or DEV Game Mode = Steam Demo.
+ * Used for Steam-demo-only UI (e.g. footer demo progress bar).
+ */
+export function isSteamDemoActive(): boolean {
+  return (
+    isSteamDemoBuild ||
+    (import.meta.env.DEV &&
+      !isSteamBuild &&
+      devGameModeOverride === "steamDemo")
+  );
 }
 
 /** Steam desktop or Galaxy web demo — no Supabase cloud saves or online services. */
@@ -48,25 +84,39 @@ export function isFullGameUnlockedEdition(): boolean {
   return isSteamBuild || isGalaxyEdition();
 }
 
-/** Dev-only override synced from `devSteamMode` in the game store. */
-let devSteamModeOverride = false;
+/** Dev-only Game Mode override synced from the game store Settings dropdown. */
+let devGameModeOverride: DevGameMode = "normal";
 
-/** Called by the store when the dev settings toggle changes. No-op in production. */
-export function setDevSteamModeOverride(enabled: boolean): void {
+/** Called by the store when Settings → Game Mode changes. No-op in production. */
+export function setDevGameModeOverride(mode: DevGameMode): void {
   if (import.meta.env.DEV) {
-    devSteamModeOverride = enabled;
+    devGameModeOverride = mode;
   }
 }
 
 /**
- * Runtime Steam edition check — compile-time Steam build or dev Steam Mode UI
- * toggle. Use for UI and shop-slot behavior; keep `isSteamBuild` for build-time
- * stubs, save backends, and Steam API bridges.
+ * Legacy boolean Steam Mode toggle → maps to Steam Game / Normal.
+ * Prefer {@link setDevGameModeOverride}.
+ */
+export function setDevSteamModeOverride(enabled: boolean): void {
+  setDevGameModeOverride(enabled ? "steamGame" : "normal");
+}
+
+export function getDevGameModeOverride(): DevGameMode {
+  return import.meta.env.DEV ? devGameModeOverride : "normal";
+}
+
+/**
+ * Runtime Steam edition check — compile-time Steam build or DEV Game Mode
+ * (Steam Game / Playtest / Demo). Use for UI and shop-slot behavior; keep
+ * `isSteamBuild` for build-time stubs, save backends, and Steam API bridges.
  */
 export function isSteamEditionActive(): boolean {
   return (
     isSteamBuild ||
     isGalaxyEdition() ||
-    (import.meta.env.DEV && devSteamModeOverride)
+    (import.meta.env.DEV &&
+      !isSteamBuild &&
+      devGameModeOverride !== "normal")
   );
 }

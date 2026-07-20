@@ -513,4 +513,52 @@ export const cubeEvents: Record<string, GameEvent> = {
       },
     ],
   },
+
+  cube16a: {
+    id: "cube16a",
+    condition: (state: GameState) =>
+      Boolean(
+        state.cruelMode && state.events.cube15a && !state.events.cube16a,
+      ),
+    timeProbability: 0.02,
+    priority: 3,
+    repeatable: true,
+    choices: [
+      {
+        id: "close",
+        effect: (state: GameState) => {
+          return {
+            events: {
+              ...state.events,
+              cube16a: true,
+            },
+          };
+        },
+      },
+    ],
+  },
+
+  cube16b: {
+    id: "cube16b",
+    condition: (state: GameState) =>
+      Boolean(
+        state.cruelMode && state.events.cube15b && !state.events.cube16b,
+      ),
+    timeProbability: 0.02,
+    priority: 3,
+    repeatable: true,
+    choices: [
+      {
+        id: "close",
+        effect: (state: GameState) => {
+          return {
+            events: {
+              ...state.events,
+              cube16b: true,
+            },
+          };
+        },
+      },
+    ],
+  },
 };

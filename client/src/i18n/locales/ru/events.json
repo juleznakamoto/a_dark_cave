@@ -524,6 +524,24 @@
       }
     }
   },
+  "cube16a": {
+    "choices": {
+      "close": {
+        "label": "Close"
+      }
+    },
+    "message": "Next to the slain creatures you find what seems to be one of the skull devices. It's broken, but you can still read some letters on it saying 'N**RAL**K'.",
+    "title": "The Skull Device"
+  },
+  "cube16b": {
+    "choices": {
+      "close": {
+        "label": "Close"
+      }
+    },
+    "message": "The creatures give you what seems to be one of the skull devices. It's broken, but you can still read some letters on it saying 'N**RAL**K'.",
+    "title": "The Skull Device"
+  },
   "cubeDiscovery": {
     "title": "Шепчущий куб",
     "message": "У входа в пещеру вы находите идеально отполированный металлический куб. Сначала он кажется неподвижным, но затем вы чувствуете слабую вибрацию — медленный ритмичный пульс, почти как биение сердца.",

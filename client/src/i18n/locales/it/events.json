@@ -524,6 +524,24 @@
     "message": "Dopo aver concluso la loro storia uno dei sopravvissuti si fa avanti, indicandoti: 'Tu sei l'uomo che è svanito attraverso il cancello. Sei uno di noi.",
     "title": "Riconoscimento"
   },
+  "cube16a": {
+    "choices": {
+      "close": {
+        "label": "Close"
+      }
+    },
+    "message": "Next to the slain creatures you find what seems to be one of the skull devices. It's broken, but you can still read some letters on it saying 'N**RAL**K'.",
+    "title": "The Skull Device"
+  },
+  "cube16b": {
+    "choices": {
+      "close": {
+        "label": "Close"
+      }
+    },
+    "message": "The creatures give you what seems to be one of the skull devices. It's broken, but you can still read some letters on it saying 'N**RAL**K'.",
+    "title": "The Skull Device"
+  },
   "cubeDiscovery": {
     "choices": {
       "close": {

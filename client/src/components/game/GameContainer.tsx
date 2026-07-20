@@ -39,7 +39,6 @@ import type { GameTab } from "@/game/types";
 import EventDialog from "./EventDialog";
 import CombatDialog from "./CombatDialog";
 import IdleModeDialog from "./IdleModeDialog";
-import CubeDialog from "./CubeDialog";
 import InactivityDialog from "./InactivityDialog";
 import RewardDialog from "./RewardDialog";
 import InvestmentResultDialog from "./InvestmentResultDialog";
@@ -276,14 +275,19 @@ export default function GameContainer() {
   // Show on load for existing saves that haven't seen the tutorial yet.
   useEffect(() => {
     if (!flags.gameStarted) return;
+    if (!flags.villageUnlocked || !flags.forestUnlocked) return;
     if (villageHotkeyTutorialCheckedRef.current) return;
     villageHotkeyTutorialCheckedRef.current = true;
 
-    if (!villageTabVisible) return;
     if (!villageHotkeyTutorialShown) {
       setVillageHotkeyTutorialOpen(true);
     }
-  }, [flags.gameStarted, villageTabVisible, villageHotkeyTutorialShown]);
+  }, [
+    flags.gameStarted,
+    flags.villageUnlocked,
+    flags.forestUnlocked,
+    villageHotkeyTutorialShown,
+  ]);
 
   // Prompt for a hard refresh when a new build is deployed while the tab stays open.
   // Sticky toast + live countdown + 5-minute forced hardReload (navigate-first;
@@ -608,7 +612,9 @@ export default function GameContainer() {
     }
 
     if (
-      newlyUnlocked.includes("village") &&
+      (newlyUnlocked.includes("village") || newlyUnlocked.includes("forest")) &&
+      current.villageUnlocked &&
+      current.forestUnlocked &&
       !useGameStore.getState().villageHotkeyTutorialShown
     ) {
       setVillageHotkeyTutorialOpen(true);
@@ -1436,7 +1442,6 @@ export default function GameContainer() {
 
         {/* Idle Mode Dialog */}
         <IdleModeDialog />
-        <CubeDialog />
         {WebOnlyDialogs && !steamEditionActive && (
           <Suspense fallback={null}>
             <WebOnlyDialogs
