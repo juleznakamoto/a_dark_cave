@@ -14,6 +14,12 @@ export interface ParticleConfig {
   distanceMax?: number;
   sizeMin?: number;
   sizeMax?: number;
+  /**
+   * Spawn ring radius (px from burst center). When max > 0, particles start on that
+   * ring (random angle) then travel in a random direction — useful for edge emission.
+   */
+  spawnRadiusMin?: number;
+  spawnRadiusMax?: number;
   /** Cubic bezier for framer-motion, e.g. [0, 0, 0.5, 1] */
   ease?: number[];
 }
@@ -49,6 +55,8 @@ const DEFAULT_PARTICLE_CONFIG: Required<ParticleConfig> = {
   distanceMax: 80,
   sizeMin: 5,
   sizeMax: 25,
+  spawnRadiusMin: 0,
+  spawnRadiusMax: 0,
   ease: [0, 0, 0.5, 1],
 };
 
@@ -273,7 +281,7 @@ export const GOLD_COIN_PARTICLE_CONFIG: Partial<ParticleConfig> = {
   sizeMax: 3,
 };
 
-/** Page-load spinner — gold-coin cadence in fire (red / orange / yellow) tones. */
+/** Page-load spinner — bursts from ring center in random directions (fire tones). */
 export const FIRE_LOAD_PARTICLE_CONFIG: Partial<ParticleConfig> = {
   colors: [
     tailwindToHex("red-500"),
@@ -283,11 +291,11 @@ export const FIRE_LOAD_PARTICLE_CONFIG: Partial<ParticleConfig> = {
     tailwindToHex("yellow-500"),
     tailwindToHex("amber-500"),
   ],
-  count: 4,
-  durationMin: 0.5,
-  durationMax: 1.5,
-  distanceMin: 10,
-  distanceMax: 28,
+  count: 10,
+  durationMin: 0.55,
+  durationMax: 1.4,
+  distanceMin: 28,
+  distanceMax: 48,
   sizeMin: 1,
   sizeMax: 3,
 };
@@ -463,6 +471,8 @@ export function generateParticleData(
   size: number;
   color: string;
   duration: number;
+  startX: number;
+  startY: number;
   endX: number;
   endY: number;
 }> {
@@ -472,7 +482,6 @@ export function generateParticleData(
       : (configOrColors ?? {}),
   );
   return Array.from({ length: config.count }).map(() => {
-    const angle = Math.random() * Math.PI * 2;
     const distance =
       config.distanceMin +
       Math.random() * (config.distanceMax - config.distanceMin);
@@ -493,9 +502,23 @@ export function generateParticleData(
     const duration =
       config.durationMin +
       Math.random() * (config.durationMax - config.durationMin);
-    const endX = Math.cos(angle) * distance;
-    const endY = Math.sin(angle) * distance;
-    return { size, color, duration, endX, endY };
+
+    const spawnRadiusSpan = Math.max(
+      0,
+      config.spawnRadiusMax - config.spawnRadiusMin,
+    );
+    const spawnRadius =
+      config.spawnRadiusMax > 0
+        ? config.spawnRadiusMin + Math.random() * spawnRadiusSpan
+        : 0;
+    const spawnAngle = Math.random() * Math.PI * 2;
+    const startX = Math.cos(spawnAngle) * spawnRadius;
+    const startY = Math.sin(spawnAngle) * spawnRadius;
+    // Travel direction is independent of spawn angle so bursts feel random.
+    const moveAngle = Math.random() * Math.PI * 2;
+    const endX = startX + Math.cos(moveAngle) * distance;
+    const endY = startY + Math.sin(moveAngle) * distance;
+    return { size, color, duration, startX, startY, endX, endY };
   });
 }
 

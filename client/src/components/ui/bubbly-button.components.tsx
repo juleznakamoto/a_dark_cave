@@ -292,7 +292,12 @@ function BubblyButtonGlobalPortalContent({
                   willChange: "transform",
                   transform: "translateZ(0)",
                 }}
-                initial={{ opacity: 1, scale: 1, x: 0, y: 0 }}
+                initial={{
+                  opacity: 1,
+                  scale: 1,
+                  x: particle.startX,
+                  y: particle.startY,
+                }}
                 animate={{
                   opacity: 1,
                   scale: 0.0,

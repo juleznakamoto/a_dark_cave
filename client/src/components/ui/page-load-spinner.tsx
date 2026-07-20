@@ -1,7 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { useCoinHoverParticles } from "@/components/ui/coin-hover-particles";
 import { FIRE_LOAD_PARTICLE_CONFIG } from "@/components/ui/bubbly-button.particles";
-import { Z_INDEX } from "@/lib/z-index";
 
 const SPINNER_DELAY_MS = 500;
 const BOOT_SPINNER_ID = "adc-boot-spinner";
@@ -52,7 +51,8 @@ export default function PageLoadSpinner() {
     particleOriginRef: originRef,
     particleConfig: FIRE_LOAD_PARTICLE_CONFIG,
     enabled: showSpinner,
-    zIndex: Z_INDEX.particles,
+    // Below the spinner layer (z=2) so embers emerge from under the rim.
+    zIndex: 1,
   });
 
   useEffect(() => {
@@ -84,25 +84,29 @@ export default function PageLoadSpinner() {
   }, [showSpinner, setForcedEmit]);
 
   return (
-    <div
-      className="fixed inset-0 flex min-h-screen items-center justify-center bg-black"
-      role="status"
-      aria-live="polite"
-      aria-busy="true"
-      aria-label="Loading"
-    >
+    <>
+      <div
+        className="fixed inset-0 bg-black"
+        style={{ zIndex: 0 }}
+        role="status"
+        aria-live="polite"
+        aria-busy="true"
+        aria-label="Loading"
+      />
+      {portal}
       {showSpinner ? (
-        <span
-          ref={originRef}
-          className="adc-page-load-spinner"
+        <div
+          className="pointer-events-none fixed inset-0 flex items-center justify-center"
+          style={{ zIndex: 2 }}
           aria-hidden="true"
         >
-          <span className="adc-page-load-spinner__ring">
-            <span className="adc-page-load-spinner__core" />
+          <span ref={originRef} className="adc-page-load-spinner">
+            <span className="adc-page-load-spinner__ring">
+              <span className="adc-page-load-spinner__core" />
+            </span>
           </span>
-        </span>
+        </div>
       ) : null}
-      {portal}
-    </div>
+    </>
   );
 }
