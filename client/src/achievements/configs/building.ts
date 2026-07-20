@@ -13,7 +13,7 @@ export const buildingChartConfig: AchievementChartConfig = {
         maxCount: 10,
         label: "Basic Shelter",
         reward: 250,
-        getCount: (state: GameState) => state.buildings.woodenHut || 0,
+        getCount: (state: GameState) => state.buildings?.woodenHut || 0,
       },
       {
         segmentId: "0-1",

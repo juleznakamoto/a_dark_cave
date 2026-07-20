@@ -1272,7 +1272,7 @@ function handleStrangerApproach() {
     let strangersCount = 1; // Default to 1 stranger
 
     // multiple strangers approach at once
-    if (state.buildings.stoneHut >= 1) {
+    if ((state.buildings?.stoneHut ?? 0) >= 1) {
       let multiStrangerMultiplier = 1.0;
       if (state.blessings?.ravens_mark) {
         multiStrangerMultiplier += 0.2;
@@ -1281,15 +1281,15 @@ function handleStrangerApproach() {
         multiStrangerMultiplier += 0.3;
       }
 
-      if (state.buildings.woodenHut >= getMaxWoodenHutLevel(state)) {
+      if ((state.buildings?.woodenHut ?? 0) >= getMaxWoodenHutLevel(state)) {
         multiStrangerMultiplier += 0.15;
       }
 
-      if (state.buildings.stoneHut >= getMaxStoneHutLevel(state)) {
+      if ((state.buildings?.stoneHut ?? 0) >= getMaxStoneHutLevel(state)) {
         multiStrangerMultiplier += 0.2;
       }
 
-      if (state.buildings.longhouse >= 5) {
+      if ((state.buildings?.longhouse ?? 0) >= 5) {
         multiStrangerMultiplier += 0.1;
       }
 

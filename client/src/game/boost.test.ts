@@ -8,6 +8,12 @@ import {
 import { applyGameStateLoadMigrations } from "@/game/stateHelpers";
 
 describe("save boost", () => {
+  it("createInitialState always materialises buildings.woodenHut", () => {
+    const fresh = createInitialState();
+    expect(fresh.buildings).toBeDefined();
+    expect(fresh.buildings.woodenHut).toBe(0);
+  });
+
   it("can apply only when the game has started and boost was not used", () => {
     const fresh = createInitialState();
     expect(canApplySaveBoost(fresh)).toBe(false);
