@@ -663,11 +663,11 @@ function CheckoutForm({
         <div className="text-red-500 text-sm">{errorMessage}</div>
       )}
 
-      <div className="flex gap-3 pt-1 justify-center">
+      <div className="flex flex-col gap-2 pt-1 sm:flex-row sm:justify-center sm:gap-3">
         <Button
           type="submit"
           disabled={!stripe || isProcessing}
-          className="flex-1 font-bold"
+          className="w-full min-w-0 font-bold sm:flex-1"
           button_id="shop-complete-purchase"
         >
           {isProcessing
@@ -680,7 +680,7 @@ function CheckoutForm({
         <Button
           variant="outline"
           onClick={onCancel}
-          className="flex-2"
+          className="w-full sm:w-auto sm:shrink-0"
           button_id="shop-cancel-payment"
           type="button"
         >
@@ -1613,8 +1613,8 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
                     </TabsTrigger>
                   </TabsList>
                   {activeTab === "shop" && (
-                    <div className="mt-3 flex flex-wrap items-center gap-1 text-xs font-normal text-foreground">
-                      <span className="inline-flex shrink-0 items-center justify-center w-4 h-4 text-muted-foreground">
+                    <div className="mt-3 flex items-start gap-1.5 text-xs font-normal text-foreground">
+                      <span className="mt-0.5 inline-flex h-4 w-4 shrink-0 items-center justify-center text-muted-foreground">
                         <span
                           className="inline-flex shrink-0 items-center justify-center font-noto-symbols-2 text-sm font-normal leading-none"
                           aria-hidden
@@ -1622,7 +1622,9 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
                           🛈
                         </span>
                       </span>
-                      <span>{t("ui:shop.forSalePlaythroughNote")}</span>
+                      <span className="min-w-0 flex-1">
+                        {t("ui:shop.forSalePlaythroughNote")}
+                      </span>
                     </div>
                   )}
                   {activeTab === "purchases" && (

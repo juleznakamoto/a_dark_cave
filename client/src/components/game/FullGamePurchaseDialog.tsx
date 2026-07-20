@@ -202,11 +202,11 @@ function CheckoutForm({
         <div className="text-red-500 text-sm">{errorMessage}</div>
       )}
 
-      <div className="flex gap-3 pt-1 justify-center">
+      <div className="flex flex-col gap-2 pt-1 sm:flex-row sm:justify-center sm:gap-3">
         <Button
           type="submit"
           disabled={!stripe || isProcessing}
-          className="w-auto px-6"
+          className="w-full min-w-0 font-bold sm:flex-1"
           button_id="full-game-complete-purchase"
         >
           {isProcessing
@@ -218,7 +218,7 @@ function CheckoutForm({
         <Button
           variant="outline"
           onClick={onCancel}
-          className="w-auto px-6"
+          className="w-full sm:w-auto sm:shrink-0"
           button_id="full-game-back-to-details"
           type="button"
           disabled={isProcessing}
