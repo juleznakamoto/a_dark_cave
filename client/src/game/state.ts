@@ -36,6 +36,7 @@ import {
   updateResource,
   updateFlag,
   updatePopulationCounts,
+  clampVillagersToHousingCap,
   assignVillagerToJob,
   unassignVillagerFromJob,
   mergeCombatVictoryState,
@@ -2061,11 +2062,13 @@ export const useGameStore = create<GameStore>((set, get) => ({
         setTimeout(() => get().updateBastionStats(), 0);
       }
 
-      // Update population when housing buildings change
+      // Update population when housing buildings change (also clamps over-cap)
       if (
         buildingChanges.woodenHut !== undefined ||
         buildingChanges.stoneHut !== undefined ||
-        buildingChanges.longhouse !== undefined
+        buildingChanges.longhouse !== undefined ||
+        buildingChanges.furTents !== undefined ||
+        buildingChanges.blackEstate !== undefined
       ) {
         setTimeout(() => get().updatePopulation(), 0);
       }
@@ -3793,10 +3796,13 @@ export const useGameStore = create<GameStore>((set, get) => ({
 
   updatePopulation: () => {
     set((state) => {
-      const updates = updatePopulationCounts(state);
+      const clampPatch = clampVillagersToHousingCap(state);
+      const next = clampPatch ? { ...state, ...clampPatch } : state;
+      const updates = updatePopulationCounts(next);
 
       return {
         ...state,
+        ...clampPatch,
         ...updates,
       };
     });

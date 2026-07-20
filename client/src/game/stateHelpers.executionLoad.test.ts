@@ -60,6 +60,8 @@ describe("reconcileInFlightExecutionsOnLoad", () => {
   it("returns expedition villagers stranded on dropped executions to the free pool", () => {
     const state = {
       ...baseState(),
+      // Housing room required — at/over cap stranded locks are treated as ghosts.
+      buildings: { woodenHut: 6 },
       executionStartTimes: { staleExpedition: NOW - 1000 },
       executionDurations: { staleExpedition: 60 },
       expeditionVillagers: { staleExpedition: 2, exploreCave: 1 },

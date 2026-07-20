@@ -228,6 +228,63 @@ export function addFreeVillagersWithinCap(
   };
 }
 
+/**
+ * Enforce housing cap as an invariant: if headcount (in-village + active
+ * expeditions) exceeds `getMaxPopulation`, remove excess from `free` first,
+ * then from assigned jobs in stable key order.
+ *
+ * Used on load (corrupt/legacy saves) and whenever population is refreshed
+ * after housing changes. Does not increment death stats — this is integrity
+ * enforcement, not a narrative casualty.
+ */
+export function clampVillagersToHousingCap(
+  state: GameState,
+  now = Date.now(),
+): Partial<GameState> | null {
+  const maxPop = getMaxPopulation(state);
+  const current = getCurrentPopulation(state, now);
+  if (current <= maxPop) return null;
+
+  const inVillage = getVillagersInVillage(state);
+  const activeExpedition = current - inVillage;
+  // Active expeditions still count against housing; only in-village can be cut.
+  const maxInVillage = Math.max(0, maxPop - activeExpedition);
+  let remaining = inVillage - maxInVillage;
+  if (remaining <= 0) return null;
+
+  const updatedVillagers = { ...state.villagers };
+
+  const freeCount = updatedVillagers.free || 0;
+  const freeToRemove = Math.min(remaining, freeCount);
+  if (freeToRemove > 0) {
+    updatedVillagers.free = freeCount - freeToRemove;
+    remaining -= freeToRemove;
+  }
+
+  if (remaining > 0) {
+    const jobKeys = (
+      Object.keys(updatedVillagers) as Array<keyof typeof updatedVillagers>
+    )
+      .filter((key) => key !== "free")
+      .sort();
+
+    for (const job of jobKeys) {
+      if (remaining <= 0) break;
+      const count = updatedVillagers[job] || 0;
+      if (count <= 0) continue;
+      const remove = Math.min(remaining, count);
+      updatedVillagers[job] = count - remove;
+      remaining -= remove;
+    }
+  }
+
+  const nextState: GameState = { ...state, villagers: updatedVillagers };
+  return {
+    villagers: updatedVillagers,
+    ...updatePopulationCounts(nextState),
+  };
+}
+
 export function assignVillagerToJob(
   state: GameState,
   job: keyof GameState['villagers']
@@ -676,10 +733,11 @@ export function reconcileInFlightExecutionsOnLoad(
   const inVillage = getVillagersInVillage(state);
   const maxPop = getMaxPopulation(state);
   const free = state.villagers?.free ?? 0;
-  // Ghost expedition locks: villagers already returned to jobs but cloud merge kept
-  // stale expedition keys — refunding would duplicate headcount.
+  // Ghost expedition locks: villagers already returned to the village pool but
+  // cloud JSONB deep-merge kept stale expedition keys. If in-village headcount
+  // is already at/over housing, refunding would duplicate them into `free`.
   const isGhostExpeditionLock =
-    strandedExpeditionVillagers > 0 && free === 0 && inVillage > maxPop;
+    strandedExpeditionVillagers > 0 && inVillage >= maxPop;
 
   const villagers =
     strandedExpeditionVillagers > 0 && !isGhostExpeditionLock
@@ -782,6 +840,12 @@ export function applyGameStateLoadMigrations(state: GameState): GameState {
   const steamShopSlots = migrateSteamShopSlotsOnLoad(migrated);
   if (steamShopSlots) {
     migrated = { ...migrated, ...steamShopSlots };
+  }
+  // After expedition reconcile (and any other load repairs), enforce housing cap
+  // so legacy/corrupt over-population cannot persist into the live session.
+  const housingClamp = clampVillagersToHousingCap(migrated);
+  if (housingClamp) {
+    migrated = { ...migrated, ...housingClamp };
   }
   return migrated;
 }
