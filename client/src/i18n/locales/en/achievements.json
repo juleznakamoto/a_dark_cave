@@ -192,5 +192,22 @@
     "4-blacksteel_tools": {
       "label": "Dark Tools"
     }
+  },
+  "overall": {
+    "0-endurant": {
+      "label": "Endurant"
+    },
+    "0-speedrunner": {
+      "label": "Speedrunner"
+    },
+    "0-supporter": {
+      "label": "Supporter"
+    },
+    "0-winCruel": {
+      "label": "Cruel Victory"
+    },
+    "0-winNormal": {
+      "label": "Normal Victory"
+    }
   }
 }

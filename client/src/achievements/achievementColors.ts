@@ -1,7 +1,12 @@
 import { tailwindToHex } from "@/lib/tailwindColors";
 
 /** Achievement category IDs */
-export type AchievementCategoryId = "building" | "item" | "action" | "basic";
+export type AchievementCategoryId =
+  | "building"
+  | "item"
+  | "action"
+  | "basic"
+  | "overall";
 
 /** Background: circle charts (Recharts) use hex, bar charts use Tailwind. */
 const BACKGROUND_TAILWIND = "neutral-800";
@@ -38,6 +43,11 @@ const ACHIEVEMENT_COLORS: Record<
     complete: "bg-amber-600",
     completeIcon: "bg-amber-500",
   },
+  overall: {
+    incomplete: "bg-violet-800/50",
+    complete: "bg-violet-800",
+    completeIcon: "bg-violet-600",
+  },
 };
 
 /** Tailwind classes for Progress bar indicators (incomplete state). */
@@ -46,6 +56,7 @@ export const INDICATOR_CLASS_INCOMPLETE: Record<string, string> = {
   item: ACHIEVEMENT_COLORS.item.incomplete,
   action: ACHIEVEMENT_COLORS.action.incomplete,
   basic: ACHIEVEMENT_COLORS.basic.incomplete,
+  overall: ACHIEVEMENT_COLORS.overall.incomplete,
 };
 
 /** Tailwind classes for Progress bar indicators (complete state). */
@@ -54,6 +65,7 @@ export const INDICATOR_CLASS_COMPLETE: Record<string, string> = {
   item: ACHIEVEMENT_COLORS.item.complete,
   action: ACHIEVEMENT_COLORS.action.complete,
   basic: ACHIEVEMENT_COLORS.basic.complete,
+  overall: ACHIEVEMENT_COLORS.overall.complete,
 };
 
 /** Claim button styling per tab (matches bar color). */
@@ -66,6 +78,8 @@ export const CLAIM_BUTTON_CLASS: Record<string, string> = {
     "bg-green-950/30 hover:bg-green-950/70 hover:text-foreground border border-border border-green-800/50 rounded-xl",
   basic:
     "bg-amber-950/30 hover:bg-amber-950/70 hover:text-foreground border border-border border-amber-800/50 rounded-xl",
+  overall:
+    "bg-violet-950/30 hover:bg-violet-950/70 hover:text-foreground border border-border border-violet-800/50 rounded-xl",
 };
 
 /** Hex/rgba colors for Recharts (circle charts). Derived from ACHIEVEMENT_COLORS. */
@@ -77,6 +91,7 @@ export const INCOMPLETE_COLOR: Record<string, string> = {
   item: tailwindToHex(tailwindColor(ACHIEVEMENT_COLORS.item.incomplete)),
   action: tailwindToHex(tailwindColor(ACHIEVEMENT_COLORS.action.incomplete)),
   basic: tailwindToHex(tailwindColor(ACHIEVEMENT_COLORS.basic.incomplete)),
+  overall: tailwindToHex(tailwindColor(ACHIEVEMENT_COLORS.overall.incomplete)),
 };
 
 export const COMPLETE_COLOR: Record<string, string> = {
@@ -84,6 +99,7 @@ export const COMPLETE_COLOR: Record<string, string> = {
   item: tailwindToHex(tailwindColor(ACHIEVEMENT_COLORS.item.complete)),
   action: tailwindToHex(tailwindColor(ACHIEVEMENT_COLORS.action.complete)),
   basic: tailwindToHex(tailwindColor(ACHIEVEMENT_COLORS.basic.complete)),
+  overall: tailwindToHex(tailwindColor(ACHIEVEMENT_COLORS.overall.complete)),
 };
 
 /** Brighter hex colors for the center icon when a category is fully complete. */
@@ -94,4 +110,7 @@ export const COMPLETE_ICON_COLOR: Record<string, string> = {
   item: tailwindToHex(tailwindColor(ACHIEVEMENT_COLORS.item.completeIcon)),
   action: tailwindToHex(tailwindColor(ACHIEVEMENT_COLORS.action.completeIcon)),
   basic: tailwindToHex(tailwindColor(ACHIEVEMENT_COLORS.basic.completeIcon)),
+  overall: tailwindToHex(
+    tailwindColor(ACHIEVEMENT_COLORS.overall.completeIcon),
+  ),
 };

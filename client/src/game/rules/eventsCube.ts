@@ -357,6 +357,13 @@ export const cubeEvents: Record<string, GameEvent> = {
               cube13: true,
             },
             hasWonAnyGame: true,
+            ...(state.cruelMode
+              ? { hasWonCruelGame: true }
+              : { hasWonNormalGame: true }),
+            // Speedrunner overall achievement: finish under 5 hours
+            ...(state.playTime < 5 * 60 * 60 * 1000
+              ? { hasSpeedrunWin: true }
+              : {}),
           };
         },
       },

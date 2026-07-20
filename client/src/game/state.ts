@@ -378,6 +378,10 @@ interface GameStore extends GameState {
   // Game completion tracking
   game_stats: GameStats[];
   hasWonAnyGame: boolean;
+  hasWonNormalGame: boolean;
+  hasWonCruelGame: boolean;
+  hasSpeedrunWin: boolean;
+  lifetimePlayTimeMs: number;
 
   // Reward dialog
   rewardDialog: {
@@ -1084,6 +1088,23 @@ const mergeStateUpdates = (
       stateUpdates.hasWonAnyGame !== undefined
         ? stateUpdates.hasWonAnyGame
         : prevState.hasWonAnyGame,
+    // Once true, meta win flags stay true (OR merge so partial updates cannot clear them)
+    hasWonNormalGame: Boolean(
+      stateUpdates.hasWonNormalGame || prevState.hasWonNormalGame,
+    ),
+    hasWonCruelGame: Boolean(
+      stateUpdates.hasWonCruelGame || prevState.hasWonCruelGame,
+    ),
+    hasSpeedrunWin: Boolean(
+      stateUpdates.hasSpeedrunWin || prevState.hasSpeedrunWin,
+    ),
+    lifetimePlayTimeMs:
+      stateUpdates.lifetimePlayTimeMs !== undefined
+        ? Math.max(
+          stateUpdates.lifetimePlayTimeMs,
+          prevState.lifetimePlayTimeMs ?? 0,
+        )
+        : (prevState.lifetimePlayTimeMs ?? 0),
     // Merchant trades state
     merchantTrades: stateUpdates.merchantTrades || prevState.merchantTrades,
   };
@@ -2637,8 +2658,12 @@ export const useGameStore = create<GameStore>((set, get) => ({
       // Cruel mode status
       cruelMode: isCruelModeActive,
 
-      // Preserve hasWonAnyGame across restarts
+      // Preserve meta win flags / lifetime stats across restarts
       hasWonAnyGame: state.hasWonAnyGame || false,
+      hasWonNormalGame: state.hasWonNormalGame || false,
+      hasWonCruelGame: state.hasWonCruelGame || false,
+      hasSpeedrunWin: state.hasSpeedrunWin || false,
+      lifetimePlayTimeMs: state.lifetimePlayTimeMs || 0,
 
       // Preserve detected currency across restarts (persists forever)
       detectedCurrency: state.detectedCurrency || null,
@@ -3051,7 +3076,27 @@ export const useGameStore = create<GameStore>((set, get) => ({
         hasWonAnyGame:
           savedState.hasWonAnyGame !== undefined
             ? savedState.hasWonAnyGame
-            : false, // Load hasWonAnyGame
+            : false,
+        hasWonNormalGame:
+          (savedState as { hasWonNormalGame?: boolean }).hasWonNormalGame ===
+          true ||
+          // Legacy: older saves only tracked hasWonAnyGame
+          (savedState.hasWonAnyGame === true &&
+            (savedState as { hasWonCruelGame?: boolean }).hasWonCruelGame !==
+            true &&
+            (savedState as { hasWonNormalGame?: boolean }).hasWonNormalGame !==
+            true),
+        hasWonCruelGame:
+          (savedState as { hasWonCruelGame?: boolean }).hasWonCruelGame ===
+          true,
+        hasSpeedrunWin:
+          (savedState as { hasSpeedrunWin?: boolean }).hasSpeedrunWin === true,
+        // Seed lifetime from current-run playTime for older saves that lack the field
+        lifetimePlayTimeMs: Math.max(
+          (savedState as { lifetimePlayTimeMs?: number }).lifetimePlayTimeMs ??
+          0,
+          loadedPlayTime || 0,
+        ),
         merchantTrades: savedState.merchantTrades || {
           choices: [],
           purchasedIds: [],
@@ -4371,6 +4416,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
       if (!state.isPaused && !state.isPausedPreviously) {
         return {
           playTime: state.playTime + deltaTime,
+          lifetimePlayTimeMs: (state.lifetimePlayTimeMs || 0) + deltaTime,
         };
       }
       // If paused or was previously paused, return state without updating playTime

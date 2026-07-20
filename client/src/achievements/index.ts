@@ -2,9 +2,14 @@ import { getUnclaimedBuildingIds, buildingChartConfig } from "./configs/building
 import { getUnclaimedItemIds, itemChartConfig } from "./configs/item";
 import { getUnclaimedActionIds, actionChartConfig } from "./configs/action";
 import { getUnclaimedBasicIds, basicChartConfig } from "./configs/basic";
+import {
+  isOverallAchievementCategoryEnabled,
+  overallChartConfig,
+} from "./configs/overall";
 
 /**
  * Returns IDs of achievements that are full (claimable) but not yet claimed.
+ * Overall (meta) achievements are never claimable and are excluded.
  * @param includeBasic — basic ring (Survivor's Notes or Book of Trials)
  * @param includeAdvanced — building/item/action rings (only claimable in UI with Book of Trials)
  */
@@ -25,7 +30,14 @@ export function getUnclaimedAchievementIds(
 }
 
 // Re-export chart configs for convenience
-export { buildingChartConfig, itemChartConfig, actionChartConfig, basicChartConfig };
+export {
+  buildingChartConfig,
+  itemChartConfig,
+  actionChartConfig,
+  basicChartConfig,
+  isOverallAchievementCategoryEnabled,
+  overallChartConfig,
+};
 
 // Re-export types
 export type { AchievementChartConfig, AchievementSegment } from "./achievementTypes";
