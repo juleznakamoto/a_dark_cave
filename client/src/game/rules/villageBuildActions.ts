@@ -149,19 +149,6 @@ export const getNextBuildingLevel = (
   let buildingKey = actionId.slice(5);
   buildingKey = buildingKey.charAt(0).toLowerCase() + buildingKey.slice(1);
 
-  // #region agent log
-  if (state.buildings == null) {
-    void import("@/lib/debugAgentLog").then(({ debugAgentLog }) => {
-      debugAgentLog(
-        "villageBuildActions.ts:getNextBuildingLevel",
-        "buildings nullish before woodenHut/level read",
-        { actionId, buildingKey },
-        "B",
-      );
-    });
-  }
-  // #endregion
-
   return (
     (state.buildings[buildingKey as keyof GameState["buildings"]] || 0) + 1
   );

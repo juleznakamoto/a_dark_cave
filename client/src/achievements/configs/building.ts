@@ -13,21 +13,7 @@ export const buildingChartConfig: AchievementChartConfig = {
         maxCount: 10,
         label: "Basic Shelter",
         reward: 250,
-        getCount: (state: GameState) => {
-          // #region agent log
-          if (state.buildings == null) {
-            void import("@/lib/debugAgentLog").then(({ debugAgentLog }) => {
-              debugAgentLog(
-                "building.ts:getCount",
-                "buildings nullish in achievement getCount",
-                { segmentId: "0-0" },
-                "D",
-              );
-            });
-          }
-          // #endregion
-          return state.buildings?.woodenHut || 0;
-        },
+        getCount: (state: GameState) => state.buildings.woodenHut || 0,
       },
       {
         segmentId: "0-1",

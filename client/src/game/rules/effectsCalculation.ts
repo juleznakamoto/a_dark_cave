@@ -924,7 +924,7 @@ export const calculateTotalEffects = (state: GameState) => {
   const knowledgeBonusBuildings: string[] = [];
 
   // Iterate through all buildings and collect their statsEffects
-  Object.entries(state.buildings ?? {}).forEach(([buildingKey, buildingCount]) => {
+  Object.entries(state.buildings).forEach(([buildingKey, buildingCount]) => {
     if (buildingCount > 0) {
       const actionId = getBuildActionId(buildingKey);
       const buildAction = villageBuildActions[actionId];

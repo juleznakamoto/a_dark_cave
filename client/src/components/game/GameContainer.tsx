@@ -8,12 +8,6 @@ import {
   lazy,
   Suspense,
 } from "react";
-// #region agent log
-import {
-  buildingsDebugSnapshot,
-  debugAgentLog,
-} from "@/lib/debugAgentLog";
-// #endregion
 import { createPortal } from "react-dom";
 import { Helmet } from "react-helmet-async";
 import GameTabs from "./GameTabs";
@@ -96,20 +90,6 @@ const WebOnlyDialogs = steamBuild
   : lazy(() => import("./WebOnlyDialogs"));
 
 export default function GameContainer() {
-  // #region agent log
-  if (!(window as unknown as { __adcGcLogged?: boolean }).__adcGcLogged) {
-    (window as unknown as { __adcGcLogged?: boolean }).__adcGcLogged = true;
-    debugAgentLog(
-      "GameContainer.tsx:render",
-      "First GameContainer render",
-      {
-        ...buildingsDebugSnapshot(useGameStore.getState()),
-        activeTab: useGameStore.getState().activeTab,
-      },
-      "A",
-    );
-  }
-  // #endregion
   const { t } = useTranslation();
   const steamEditionActive = useSteamEditionActive();
   const demoEditionActive = useDemoEditionActive();
@@ -243,30 +223,22 @@ export default function GameContainer() {
   const lifetimePlayTimeMs = useGameStore((s) => s.lifetimePlayTimeMs);
   const lifetimeStorageMaxHits = useGameStore((s) => s.lifetimeStorageMaxHits);
   const hasAchievementMaxer = useGameStore((s) => s.hasAchievementMaxer);
-  // Must pass the full store: in DEV, unlock checks overall "Achievement Maxer",
-  // which tallies building getCount(state.buildings.woodenHut). A partial
-  // `{ relics, books, ... } as GameState` crashed mobile after Light Fire.
-  const achievementsUnlocked = useMemo(() => {
-    const full = useGameStore.getState();
-    // #region agent log
-    debugAgentLog(
-      "GameContainer.tsx:achievementsUnlocked",
-      "Unlock check with full store",
-      buildingsDebugSnapshot(full),
-      "D",
-    );
-    // #endregion
-    return isAchievementsGameTabUnlocked(full);
-  }, [
-    relics,
-    books,
-    hasWonNormalGame,
-    hasWonCruelGame,
-    hasSpeedrunWin,
-    lifetimePlayTimeMs,
-    lifetimeStorageMaxHits,
-    hasAchievementMaxer,
-  ]);
+  // Full store required: in DEV, unlock checks overall "Achievement Maxer",
+  // which tallies building getCount(state.buildings.*). A partial
+  // `{ relics, books, ... } as GameState` omitted buildings and crashed after Light Fire.
+  const achievementsUnlocked = useMemo(
+    () => isAchievementsGameTabUnlocked(useGameStore.getState()),
+    [
+      relics,
+      books,
+      hasWonNormalGame,
+      hasWonCruelGame,
+      hasSpeedrunWin,
+      lifetimePlayTimeMs,
+      lifetimeStorageMaxHits,
+      hasAchievementMaxer,
+    ],
+  );
   const tools = useGameStore((state) => state.tools);
   const weapons = useGameStore((state) => state.weapons);
   const tabUnlockSnapshot = useMemo(

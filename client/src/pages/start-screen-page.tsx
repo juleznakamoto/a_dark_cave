@@ -81,13 +81,6 @@ export default function StartScreenPage() {
     checkGameState();
   }, []);
 
-  // Warm the Game chunk while the start screen is visible so Light Fire does
-  // not flood Replit's proxy with a sudden burst of module requests on mobile.
-  useEffect(() => {
-    if (isChecking || shouldLoadGame) return;
-    void import("@/pages/game");
-  }, [isChecking, shouldLoadGame]);
-
   // Also watch for gameStarted flag changes (when Light Fire is clicked)
   useEffect(() => {
     if (flags.gameStarted) {

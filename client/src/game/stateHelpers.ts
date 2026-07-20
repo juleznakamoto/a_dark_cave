@@ -851,48 +851,26 @@ function migrateSteamShopSlotsOnLoad(state: GameState): Partial<GameState> | nul
  * is missing or empty (cloud corruption loop).
  * Also merges/repairs tab-unlock flags from progression evidence (village/forest/bastion).
  */
-/**
- * Coalesce `buildings` at write boundaries. Zustand shallow-merges, so an own
- * property `buildings: undefined|null` from a sparse cloud/local blob wipes a
- * good in-memory slice and crashes event checks on `state.buildings.woodenHut`.
- */
-export function coalesceBuildings<T extends Partial<GameState>>(
-  state: T,
-  defaults?: GameState["buildings"],
-): T & { buildings: GameState["buildings"] } {
-  const base = defaults ?? gameStateSchema.parse({}).buildings;
-  return {
-    ...state,
-    buildings: {
-      ...base,
-      ...(state.buildings ?? {}),
-    },
-  };
-}
-
 export function hydrateLoadedGameState<T extends Partial<GameState>>(
   savedState: T,
-): T & Pick<GameState, "tools" | "weapons" | "books" | "flags" | "buildings"> {
+): T & Pick<GameState, "tools" | "weapons" | "books" | "flags"> {
   const defaults = gameStateSchema.parse({});
   const mergedTools = {
     ...defaults.tools,
     ...savedState.tools,
   };
-  const withItems = coalesceBuildings(
-    {
-      ...savedState,
-      tools: overlayToolsFromStorySeen(mergedTools, savedState.story?.seen),
-      weapons: {
-        ...defaults.weapons,
-        ...savedState.weapons,
-      },
-      books: {
-        ...defaults.books,
-        ...savedState.books,
-      },
+  const withItems = {
+    ...savedState,
+    tools: overlayToolsFromStorySeen(mergedTools, savedState.story?.seen),
+    weapons: {
+      ...defaults.weapons,
+      ...savedState.weapons,
     },
-    defaults.buildings,
-  );
+    books: {
+      ...defaults.books,
+      ...savedState.books,
+    },
+  };
   return repairUnlockFlags(withItems, defaults.flags);
 }
 

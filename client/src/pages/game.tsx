@@ -15,9 +15,7 @@ import {
   applyGameStateLoadMigrations,
   getTransientDialogResetOnLoad,
   hydrateLoadedGameState,
-  coalesceBuildings,
 } from "@/game/stateHelpers";
-import { gameStateSchema } from "@shared/schema";
 import { syncSocialPromoExclusiveRewardPending } from "@/game/socialPromoExclusiveReward";
 import { processStripePaymentReturn } from "@/lib/stripePaymentReturn";
 import { isPlaylightReferralUrl } from "@/lib/playlight";
@@ -32,10 +30,6 @@ import {
 } from "@/game/boost";
 import { hardReload } from "@/lib/hardReload";
 import PageLoadSpinner from "@/components/ui/page-load-spinner";
-import {
-  buildingsDebugSnapshot,
-  debugAgentLog,
-} from "@/lib/debugAgentLog";
 
 export default function Game() {
   const initialize = useGameStore((state) => state.initialize);
@@ -168,18 +162,6 @@ export default function Game() {
           ? applyGameStateLoadMigrations(hydrateLoadedGameState(rawSavedState))
           : null;
         if (savedState) {
-          // #region agent log
-          (window as unknown as { __adcHadSaved?: boolean }).__adcHadSaved = true;
-          debugAgentLog(
-            "game.tsx:saved-branch",
-            "Loading from savedState",
-            {
-              ...buildingsDebugSnapshot(savedState),
-              savedKeys: Object.keys(savedState).slice(0, 40),
-            },
-            "E",
-          );
-          // #endregion
           // Track Google Ads source if present in URL and not already saved
           const stateUpdates: any = {};
           if (googleAdsSource && !savedState.googleAdsSource) {
@@ -200,29 +182,24 @@ export default function Game() {
           });
 
           // Gambler in-progress state is persisted in save data and resumed on load.
-          useGameStore.setState(
-            coalesceBuildings(
-              {
-                ...savedState,
-                timedEventTab,
-                ...stateUpdates,
-                ...resumeUi,
-                flags: {
-                  ...(savedState.flags ?? {}),
-                  gameStarted: isGamePath ? true : savedState.flags?.gameStarted,
-                  hasLitFire: isGamePath ? true : savedState.flags?.hasLitFire,
-                  ...(isGamePath
-                    ? {
-                      villagerCapsEnabled: true,
-                    }
-                    : {}),
-                },
-                // Never restore transient dialog UI from older saves that persisted these fields.
-                ...getTransientDialogResetOnLoad(),
-              },
-              gameStateSchema.parse({}).buildings,
-            ),
-          );
+          useGameStore.setState({
+            ...savedState,
+            timedEventTab,
+            ...stateUpdates,
+            ...resumeUi,
+            flags: {
+              ...(savedState.flags ?? {}),
+              gameStarted: isGamePath ? true : savedState.flags?.gameStarted,
+              hasLitFire: isGamePath ? true : savedState.flags?.hasLitFire,
+              ...(isGamePath
+                ? {
+                  villagerCapsEnabled: true,
+                }
+                : {}),
+            },
+            // Never restore transient dialog UI from older saves that persisted these fields.
+            ...getTransientDialogResetOnLoad(),
+          });
           const { flushOverdueActionExecutions } = await import("@/game/loop");
           flushOverdueActionExecutions();
           logger.log("[GAME] Game loaded from save");
@@ -290,15 +267,6 @@ export default function Game() {
           // Preserve flags/story already set by executeAction("lightFire") before Game mounted
           const preInitFlags = useGameStore.getState().flags;
           const preInitStory = useGameStore.getState().story;
-          // #region agent log
-          (window as unknown as { __adcHadSaved?: boolean }).__adcHadSaved = false;
-          debugAgentLog(
-            "game.tsx:no-save-branch",
-            "No savedState; calling initialize()",
-            buildingsDebugSnapshot(useGameStore.getState()),
-            "E",
-          );
-          // #endregion
           initialize();
           if (preInitFlags.gameStarted) {
             useGameStore.setState({
@@ -403,23 +371,6 @@ export default function Game() {
         }
 
         // Mark as initialized
-        // #region agent log
-        {
-          const snap = useGameStore.getState();
-          debugAgentLog(
-            "game.tsx:pre-initialized",
-            "About to setIsInitialized(true)",
-            {
-              ...buildingsDebugSnapshot(snap),
-              path: window.location.pathname,
-              hadSavedState: Boolean(
-                (window as unknown as { __adcHadSaved?: boolean }).__adcHadSaved,
-              ),
-            },
-            "A",
-          );
-        }
-        // #endregion
         setIsInitialized(true);
 
         // Sync audio mute state immediately (before starting game loop)

@@ -466,17 +466,9 @@ async function processReferralInBackground(): Promise<void> {
             const { useGameStore } = await import('./state');
             const currentState = useGameStore.getState();
 
-            // Merge the fresh state while preserving UI state.
-            // Always hydrate + coalesce buildings — sparse cloud rows can omit
-            // or null `buildings` and wipe the live store on shallow setState.
-            const { hydrateLoadedGameState, coalesceBuildings } = await import(
-              "./stateHelpers"
-            );
-            const hydrated = coalesceBuildings(
-              hydrateLoadedGameState(freshStateData.gameState ?? {}),
-            );
+            // Merge the fresh state while preserving UI state
             useGameStore.setState({
-              ...hydrated,
+              ...freshStateData.gameState, // Use the extracted gameState
               // Preserve UI-only state
               activeTab: currentState.activeTab,
               hoveredTooltips: currentState.hoveredTooltips,

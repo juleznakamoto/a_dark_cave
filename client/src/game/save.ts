@@ -667,13 +667,8 @@ export async function saveGame(
           // omit unchanged keys; JSONB deep-merge into an empty/partial cloud row then
           // permanently drops them. Seen in prod: wiped tools, missing unlock flags, and
           // missing `buildings` (housing/cap reads as 0 while villagers remain).
-          // Never write `undefined` into the diff — that can persist nullish slices
-          // and later wipe the live store on shallow setState merges.
           for (const key of ALWAYS_FULL_CLOUD_SLICES) {
-            const value = sanitizedState[key];
-            if (value != null) {
-              stateDiff[key] = value as never;
-            }
+            stateDiff[key] = sanitizedState[key] as never;
           }
 
           // Execution / expedition slices use delete semantics (completed actions remove

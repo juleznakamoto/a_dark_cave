@@ -620,14 +620,10 @@ export const getPopulationProductionText = (jobId: string): string => {
 };
 
 export function getMaxPopulation(state: GameState): number {
-  // `buildings` must never be required to exist — GameTabs calls updatePopulation
-  // on mount, and a missing slice crashes with
-  // "undefined is not an object (evaluating 'state.buildings.woodenHut')".
-  const buildings = state.buildings ?? {};
-  const woodenHutCapacity = (buildings.woodenHut || 0) * 2;
-  const stoneHutCapacity = (buildings.stoneHut || 0) * 4;
-  const longhouseCapacity = (buildings.longhouse || 0) * 8;
-  const furTentsCapacity = (buildings.furTents || 0) * 4;
+  const woodenHutCapacity = (state.buildings.woodenHut || 0) * 2;
+  const stoneHutCapacity = (state.buildings.stoneHut || 0) * 4;
+  const longhouseCapacity = (state.buildings.longhouse || 0) * 8;
+  const furTentsCapacity = (state.buildings.furTents || 0) * 4;
 
   // Temple dedication bonuses
   let templeBonus = 0;
@@ -637,7 +633,7 @@ export function getMaxPopulation(state: GameState): number {
     templeBonus = 8;
   }
 
-  const blackEstateCapacity = (buildings.blackEstate || 0) * 10;
+  const blackEstateCapacity = (state.buildings.blackEstate || 0) * 10;
 
   return (
     woodenHutCapacity +
