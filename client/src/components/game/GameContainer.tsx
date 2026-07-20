@@ -64,7 +64,6 @@ import MistBackground from "@/components/ui/mist-background";
 import { SmokeBackground } from "@/components/ui/spooky-smoke-animation";
 import { isBloodMoonOverlayVisible, BLOOD_MOON_OVERLAY_FADE_MS } from "@/game/bloodMoonOverlay";
 import { getUnclaimedAchievementIds, isAchievementsGameTabUnlocked } from "@/achievements";
-import type { GameState } from "@shared/schema";
 import { getVisibleHotkeyTabs, isEditableKeyboardTarget } from "./tabHotkeys";
 import { isTraderShopUnlocked } from "@/game/stateHelpers";
 import {
