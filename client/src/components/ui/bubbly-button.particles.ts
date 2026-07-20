@@ -292,10 +292,10 @@ export const FIRE_LOAD_PARTICLE_CONFIG: Partial<ParticleConfig> = {
     tailwindToHex("amber-500"),
   ],
   count: 10,
-  durationMin: 0.55,
+  durationMin: 0.6,
   durationMax: 1.4,
-  distanceMin: 28,
-  distanceMax: 48,
+  distanceMin: 40,
+  distanceMax: 80,
   sizeMin: 1,
   sizeMax: 3,
 };
