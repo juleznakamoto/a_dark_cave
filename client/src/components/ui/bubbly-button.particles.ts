@@ -295,7 +295,7 @@ export const FIRE_LOAD_PARTICLE_CONFIG: Partial<ParticleConfig> = {
   durationMin: 0.6,
   durationMax: 1.4,
   distanceMin: 40,
-  distanceMax: 80,
+  distanceMax: 100,
   sizeMin: 1,
   sizeMax: 3,
 };
