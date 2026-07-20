@@ -270,6 +270,106 @@
       min-height: 100dvh;
       background-color: #000;
     }
+
+    /* Boot / page-load spinner (fire tones). Decorative — aria-hidden; outside SEO fallback. */
+    #adc-boot-spinner {
+      position: fixed;
+      inset: 0;
+      z-index: 2147483646;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      pointer-events: none;
+      background: #000;
+      opacity: 0;
+      transition: opacity 0.2s ease;
+    }
+
+    #adc-boot-spinner.adc-boot-spinner--visible {
+      opacity: 1;
+    }
+
+    .adc-page-load-spinner {
+      position: relative;
+      display: block;
+      width: 100px;
+      height: 100px;
+    }
+
+    .adc-page-load-spinner__ring {
+      display: block;
+      background-image: linear-gradient(
+        rgb(255, 56, 0) 20%,
+        rgb(255, 140, 0) 55%,
+        rgb(255, 210, 40)
+      );
+      width: 100px;
+      height: 100px;
+      animation: adc-page-load-spin 1.7s linear infinite;
+      text-align: center;
+      border-radius: 50px;
+      filter: blur(1px);
+      box-shadow:
+        0px -5px 20px 0px rgb(255, 70, 0),
+        0px 5px 20px 0px rgb(255, 180, 0);
+    }
+
+    .adc-page-load-spinner__core {
+      display: block;
+      background-color: rgb(0, 0, 0);
+      width: 100px;
+      height: 100px;
+      border-radius: 50px;
+      filter: blur(10px);
+    }
+
+    .adc-page-load-spinner__ember {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      width: 2px;
+      height: 2px;
+      margin: -1px 0 0 -1px;
+      border-radius: 50%;
+      background: var(--adc-ember-color, #ff8c00);
+      opacity: 0;
+      animation: adc-page-load-ember 1.35s ease-out infinite;
+      animation-delay: var(--adc-ember-delay, 0s);
+      box-shadow: 0 0 4px var(--adc-ember-color, #ff8c00);
+    }
+
+    @keyframes adc-page-load-spin {
+      to {
+        transform: rotate(360deg);
+      }
+    }
+
+    @keyframes adc-page-load-ember {
+      0% {
+        transform: rotate(var(--adc-ember-angle, 0deg)) translateY(0) scale(1);
+        opacity: 0.9;
+      }
+      100% {
+        transform: rotate(var(--adc-ember-angle, 0deg)) translateY(-30px) scale(0.4);
+        opacity: 0;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .adc-page-load-spinner__ring {
+        animation: none;
+      }
+
+      .adc-page-load-spinner__ember {
+        animation: none;
+        opacity: 0;
+      }
+    }
+
+    html[data-tab-hidden] .adc-page-load-spinner__ring,
+    html[data-tab-hidden] .adc-page-load-spinner__ember {
+      animation-play-state: paused;
+    }
   </style>
 </head>
 
@@ -311,8 +411,37 @@
         },
         true,
       );
+
+      // Show boot spinner only after 500ms (avoids flash; decorative / non-SEO).
+      window.__ADC_BOOT_SPINNER_TIMER = setTimeout(function () {
+        window.__ADC_BOOT_SPINNER_TIMER = undefined;
+        var el = document.getElementById("adc-boot-spinner");
+        if (!el) return;
+        el.dataset.visible = "1";
+        el.classList.add("adc-boot-spinner--visible");
+      }, 500);
     })();
   </script>
+  <!-- Decorative boot loader: aria-hidden, outside #seo-fallback, no indexable copy -->
+  <div id="adc-boot-spinner" aria-hidden="true">
+    <span class="adc-page-load-spinner">
+      <span class="adc-page-load-spinner__ring">
+        <span class="adc-page-load-spinner__core"></span>
+      </span>
+      <span class="adc-page-load-spinner__ember" style="--adc-ember-angle: 0deg; --adc-ember-delay: 0s; --adc-ember-color: #ff3a00"></span>
+      <span class="adc-page-load-spinner__ember" style="--adc-ember-angle: 40deg; --adc-ember-delay: 0.12s; --adc-ember-color: #ff8c00"></span>
+      <span class="adc-page-load-spinner__ember" style="--adc-ember-angle: 80deg; --adc-ember-delay: 0.24s; --adc-ember-color: #ffd228"></span>
+      <span class="adc-page-load-spinner__ember" style="--adc-ember-angle: 120deg; --adc-ember-delay: 0.36s; --adc-ember-color: #ff5600"></span>
+      <span class="adc-page-load-spinner__ember" style="--adc-ember-angle: 160deg; --adc-ember-delay: 0.48s; --adc-ember-color: #ffb000"></span>
+      <span class="adc-page-load-spinner__ember" style="--adc-ember-angle: 200deg; --adc-ember-delay: 0.6s; --adc-ember-color: #ff3a00"></span>
+      <span class="adc-page-load-spinner__ember" style="--adc-ember-angle: 240deg; --adc-ember-delay: 0.72s; --adc-ember-color: #ff8c00"></span>
+      <span class="adc-page-load-spinner__ember" style="--adc-ember-angle: 280deg; --adc-ember-delay: 0.84s; --adc-ember-color: #ffd228"></span>
+      <span class="adc-page-load-spinner__ember" style="--adc-ember-angle: 320deg; --adc-ember-delay: 0.96s; --adc-ember-color: #ff5600"></span>
+      <span class="adc-page-load-spinner__ember" style="--adc-ember-angle: 20deg; --adc-ember-delay: 1.08s; --adc-ember-color: #ffb000"></span>
+      <span class="adc-page-load-spinner__ember" style="--adc-ember-angle: 100deg; --adc-ember-delay: 0.3s; --adc-ember-color: #ff6a00"></span>
+      <span class="adc-page-load-spinner__ember" style="--adc-ember-angle: 220deg; --adc-ember-delay: 0.66s; --adc-ember-color: #ffc800"></span>
+    </span>
+  </div>
   <div id="root"></div>
   <main id="seo-fallback" aria-hidden="true" style="display: none">
     <h1 style="color: #444444">

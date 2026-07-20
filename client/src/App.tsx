@@ -4,6 +4,9 @@ import { QueryClientProvider } from "@tanstack/react-query";
 import { queryClient } from "./lib/queryClient";
 import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
+import PageLoadSpinner, {
+  dismissBootSpinner,
+} from "@/components/ui/page-load-spinner";
 import LazyRouteErrorBoundary from "@/components/LazyRouteErrorBoundary";
 import { clearStaleChunkReloadGuard } from "@/lib/hardReload";
 import { initPlaylight } from "@/lib/playlight";
@@ -53,11 +56,7 @@ const CombatDialogDemo = lazy(() => import("@/pages/combat-dialog-demo"));
 function Router() {
   return (
     <LazyRouteErrorBoundary label="The page failed to load.">
-      <Suspense
-        fallback={
-          <div className="fixed inset-0 bg-black"></div>
-        }
-      >
+      <Suspense fallback={<PageLoadSpinner />}>
         <Switch>
           <Route path="/" component={StartScreenPage} />
           <Route path="/galaxy" component={StartScreenPage} />
@@ -87,6 +86,11 @@ function Router() {
 function App() {
   useEffect(() => {
     clearStaleChunkReloadGuard();
+  }, []);
+
+  useEffect(() => {
+    // Safety: drop the HTML boot spinner if a route never mounts PageLoadSpinner.
+    dismissBootSpinner();
   }, []);
 
   useEffect(() => {

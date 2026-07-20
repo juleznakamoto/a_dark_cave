@@ -1,6 +1,7 @@
 import { useEffect, useState, Suspense, lazy } from "react";
 import StartScreen from "@/components/game/StartScreen";
 import LazyRouteErrorBoundary from "@/components/LazyRouteErrorBoundary";
+import PageLoadSpinner from "@/components/ui/page-load-spinner";
 import { useGameStore } from "@/game/state";
 import { isDemoEdition } from "@/lib/edition";
 import { isDemoLimitReachedFromState } from "@/game/demoLimit";
@@ -89,14 +90,14 @@ export default function StartScreenPage() {
 
   // Show loading state while checking
   if (isChecking) {
-    return <div className="min-h-screen bg-black"></div>;
+    return <PageLoadSpinner />;
   }
 
   // Dynamically load Game component only when needed
   if (shouldLoadGame) {
     return (
       <LazyRouteErrorBoundary label="The game failed to load after an update.">
-        <Suspense fallback={<div className="min-h-screen bg-black"></div>}>
+        <Suspense fallback={<PageLoadSpinner />}>
           <Game />
         </Suspense>
       </LazyRouteErrorBoundary>

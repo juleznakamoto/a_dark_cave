@@ -29,6 +29,7 @@ import {
   canApplySaveBoost,
 } from "@/game/boost";
 import { hardReload } from "@/lib/hardReload";
+import PageLoadSpinner from "@/components/ui/page-load-spinner";
 
 export default function Game() {
   const initialize = useGameStore((state) => state.initialize);
@@ -458,7 +459,7 @@ export default function Game() {
   }
 
   if (!isInitialized) {
-    return <div className="min-h-screen bg-black"></div>; // Black screen while loading
+    return <PageLoadSpinner />;
   }
 
   return (

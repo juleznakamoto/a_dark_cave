@@ -273,6 +273,25 @@ export const GOLD_COIN_PARTICLE_CONFIG: Partial<ParticleConfig> = {
   sizeMax: 3,
 };
 
+/** Page-load spinner — gold-coin cadence in fire (red / orange / yellow) tones. */
+export const FIRE_LOAD_PARTICLE_CONFIG: Partial<ParticleConfig> = {
+  colors: [
+    tailwindToHex("red-500"),
+    tailwindToHex("red-600"),
+    tailwindToHex("orange-500"),
+    tailwindToHex("orange-600"),
+    tailwindToHex("yellow-500"),
+    tailwindToHex("amber-500"),
+  ],
+  count: 4,
+  durationMin: 0.5,
+  durationMax: 1.5,
+  distanceMin: 10,
+  distanceMax: 28,
+  sizeMin: 1,
+  sizeMax: 3,
+};
+
 function adjustHexBrightness(hex: string, factor: number): string {
   const m = /^#([0-9a-f]{6})$/i.exec(hex.trim());
   if (!m) return hex;
@@ -416,12 +435,12 @@ export function mergeParticleConfig(
 ): MergedParticleConfig {
   const merged = override
     ? {
-        ...DEFAULT_PARTICLE_CONFIG,
-        ...base,
-        ...override,
-        colors:
-          override.colors ?? base.colors ?? DEFAULT_PARTICLE_CONFIG.colors,
-      }
+      ...DEFAULT_PARTICLE_CONFIG,
+      ...base,
+      ...override,
+      colors:
+        override.colors ?? base.colors ?? DEFAULT_PARTICLE_CONFIG.colors,
+    }
     : { ...DEFAULT_PARTICLE_CONFIG, ...base };
   // All particles start at once, so we only need durationMax + small buffer for cleanup
   return {
@@ -461,10 +480,10 @@ export function generateParticleData(
       config.sizeMin + Math.random() * (config.sizeMax - config.sizeMin);
     const colorPool =
       config.smallParticleOnlyColors?.length &&
-      size > config.smallParticleMaxSize
+        size > config.smallParticleMaxSize
         ? config.colors.filter(
-            (c) => !config.smallParticleOnlyColors!.includes(c),
-          )
+          (c) => !config.smallParticleOnlyColors!.includes(c),
+        )
         : config.smallParticleOnlyColors?.length
           ? [...config.colors, ...config.smallParticleOnlyColors]
           : config.colors;
