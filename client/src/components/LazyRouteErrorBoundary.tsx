@@ -1,5 +1,11 @@
 import { Component, type ErrorInfo, type ReactNode } from "react";
 import { hardReload } from "@/lib/hardReload";
+import {
+  buildingsDebugSnapshot,
+  debugAgentLog,
+  formatStoredDebugAgentLogs,
+} from "@/lib/debugAgentLog";
+import { useGameStore } from "@/game/state";
 
 type Props = {
   children: ReactNode;
@@ -11,46 +17,48 @@ type State = {
   hasError: boolean;
   errorMessage: string | null;
   componentStack: string | null;
+  debugDump: string | null;
 };
 
 /**
  * Recovers from failed dynamic imports instead of leaving a permanent Suspense black screen.
  */
 export default class LazyRouteErrorBoundary extends Component<Props, State> {
-  state: State = { hasError: false, errorMessage: null, componentStack: null };
+  state: State = {
+    hasError: false,
+    errorMessage: null,
+    componentStack: null,
+    debugDump: null,
+  };
 
-  static getDerivedStateFromError(error: Error): State {
+  static getDerivedStateFromError(error: Error): Partial<State> {
     return {
       hasError: true,
       errorMessage: error?.message ? String(error.message) : null,
-      componentStack: null,
     };
   }
 
   componentDidCatch(error: Error, info: ErrorInfo): void {
+    const snap = useGameStore.getState();
+    const buildingsSnap = buildingsDebugSnapshot(snap);
     // #region agent log
-    void import("@/lib/debugAgentLog").then(
-      ({ buildingsDebugSnapshot, debugAgentLog }) => {
-        void import("@/game/state").then(({ useGameStore }) => {
-          const snap = useGameStore.getState();
-          debugAgentLog(
-            "LazyRouteErrorBoundary.tsx:componentDidCatch",
-            "Caught render/chunk error",
-            {
-              errorMessage: error?.message ?? String(error),
-              componentStack: (info.componentStack ?? "").slice(0, 800),
-              ...buildingsDebugSnapshot(snap),
-            },
-            "A",
-          );
-        });
+    debugAgentLog(
+      "LazyRouteErrorBoundary.tsx:componentDidCatch",
+      "Caught render/chunk error",
+      {
+        errorMessage: error?.message ?? String(error),
+        componentStack: (info.componentStack ?? "").slice(0, 800),
+        ...buildingsSnap,
       },
+      "A",
     );
     // #endregion
+    const trail = formatStoredDebugAgentLogs(15);
     this.setState({
       componentStack: info.componentStack
-        ? String(info.componentStack).slice(0, 500)
+        ? String(info.componentStack).slice(0, 600)
         : null,
+      debugDump: `buildings=${JSON.stringify(buildingsSnap)}\n${trail}`,
     });
     void import("@/lib/logger").then(({ logger }) => {
       logger.error("[LazyRouteErrorBoundary] Chunk load failed:", error, info);
@@ -73,8 +81,13 @@ export default class LazyRouteErrorBoundary extends Component<Props, State> {
           </p>
         ) : null}
         {this.state.componentStack ? (
-          <pre className="max-h-40 max-w-md overflow-auto whitespace-pre-wrap break-words text-left font-mono text-[10px] text-neutral-600">
+          <pre className="max-h-32 max-w-md overflow-auto whitespace-pre-wrap break-words text-left font-mono text-[10px] text-neutral-600">
             {this.state.componentStack}
+          </pre>
+        ) : null}
+        {this.state.debugDump ? (
+          <pre className="max-h-48 max-w-md overflow-auto whitespace-pre-wrap break-words text-left font-mono text-[10px] text-amber-700/90">
+            {this.state.debugDump}
           </pre>
         ) : null}
         <button
