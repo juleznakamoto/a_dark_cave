@@ -405,11 +405,11 @@ export default function FullGamePurchaseDialog({
   return (
     <Dialog open={isOpen} onOpenChange={requiresPurchase ? undefined : onClose}>
       <DialogContent
-        className={`[--adc-dialog-max-w:28rem] ${requiresPurchase ? '[&>button]:hidden' : ''}`}
+        className={`flex max-h-[min(80dvh,80vh)] flex-col overflow-hidden gap-2 p-4 sm:p-6 [--adc-dialog-max-w:28rem] ${requiresPurchase ? "[&>button]:hidden" : ""}`}
         onEscapeKeyDown={(e) => requiresPurchase && e.preventDefault()}
         onPointerDownOutside={(e) => requiresPurchase && e.preventDefault()}
       >
-        <DialogHeader className="px-6 pt-6">
+        <DialogHeader className="shrink-0">
           <DialogTitle>
             {!clientSecret
               ? t("ui:fullGame.titleTrial")
@@ -421,81 +421,79 @@ export default function FullGamePurchaseDialog({
             </DialogDescription>
           )}
         </DialogHeader>
-        <div className="max-h-[85vh] overflow-y-auto overflow-x-hidden scrollbar-hide">
-          <div className="px-6 pb-6">
-            {!clientSecret ? (
-              <div className="space-y-4">
-                <div className="border rounded-lg p-4 bg-muted/50">
-                  <div className="space-y-4">
-                    <div>
-                      <h3 className="font-semibold text-lg">{item.name}</h3>
-                      <p className="text-sm text-muted-foreground mt-1 mb-3">
-                        {item.description}
-                      </p>
-                      <div className="text-2xl font-bold">
-                        {item.originalPrice != null &&
-                          item.originalPrice > item.price && (
-                            <span className="line-through text-muted-foreground mr-2 text-lg">
-                              {formatPrice(item.originalPrice)}
-                            </span>
-                          )}
-                        {formatPrice(fullGameChargeCents)}
-                      </div>
-                      <p className="text-xs text-muted-foreground mt-1">
-                        {t("ui:fullGame.oneTimePurchase")}
-                      </p>
+        <div className="min-h-0 flex-1 overflow-y-auto overflow-x-hidden overscroll-contain scrollbar-hide">
+          {!clientSecret ? (
+            <div className="space-y-4">
+              <div className="border rounded-lg p-4 bg-muted/50">
+                <div className="space-y-4">
+                  <div>
+                    <h3 className="font-semibold text-lg">{item.name}</h3>
+                    <p className="text-sm text-muted-foreground mt-1 mb-3">
+                      {item.description}
+                    </p>
+                    <div className="text-2xl font-bold">
+                      {item.originalPrice != null &&
+                        item.originalPrice > item.price && (
+                          <span className="line-through text-muted-foreground mr-2 text-lg">
+                            {formatPrice(item.originalPrice)}
+                          </span>
+                        )}
+                      {formatPrice(fullGameChargeCents)}
                     </div>
-                    <div className="text-sm text-muted-foreground border-t border-border pt-4">
-                      <ul className="space-y-1">
-                        <li>• {t("ui:fullGame.featureHours")}</li>
-                        <li>• {t("ui:fullGame.featureStructures")}</li>
-                        <li>• {t("ui:fullGame.featureItems")}</li>
-                        <li>• {t("ui:fullGame.featureAchievements")}</li>
-                        <li>• {t("ui:fullGame.featureStory")}</li>
-                      </ul>
-                    </div>
-                  </div>
-                </div>
-                {!currentUser && (
-                  <div className="bg-red-600/10 border border-red-600/50 rounded-lg p-3">
-                    <p className="text-sm text-red-200">
-                      {t("ui:fullGame.signInRequired")}
+                    <p className="text-xs text-muted-foreground mt-1">
+                      {t("ui:fullGame.oneTimePurchase")}
                     </p>
                   </div>
-                )}
-
-                <div className="flex gap-3 justify-center pt-2">
-                  <Button
-                    onClick={handlePurchaseClick}
-                    disabled={!currentUser}
-                    className="w-full"
-                    button_id="full-game-purchase"
-                  >
-                    {t("ui:fullGame.continueJourney")}
-                  </Button>
+                  <div className="text-sm text-muted-foreground border-t border-border pt-4">
+                    <ul className="space-y-1">
+                      <li>• {t("ui:fullGame.featureHours")}</li>
+                      <li>• {t("ui:fullGame.featureStructures")}</li>
+                      <li>• {t("ui:fullGame.featureItems")}</li>
+                      <li>• {t("ui:fullGame.featureAchievements")}</li>
+                      <li>• {t("ui:fullGame.featureStory")}</li>
+                    </ul>
+                  </div>
                 </div>
-
-                <div className="bg-gray-600/10 border border-gray-600/50 rounded-lg p-3">
-                  <p className="text-sm text-gray-400">
-                    {t("ui:fullGame.progressSaved")}
+              </div>
+              {!currentUser && (
+                <div className="bg-red-600/10 border border-red-600/50 rounded-lg p-3">
+                  <p className="text-sm text-red-200">
+                    {t("ui:fullGame.signInRequired")}
                   </p>
                 </div>
+              )}
+
+              <div className="flex gap-3 justify-center pt-2">
+                <Button
+                  onClick={handlePurchaseClick}
+                  disabled={!currentUser}
+                  className="w-full"
+                  button_id="full-game-purchase"
+                >
+                  {t("ui:fullGame.continueJourney")}
+                </Button>
               </div>
-            ) : stripePromise ? (
-              <Elements stripe={stripePromise} options={{ clientSecret }}>
-                <CheckoutForm
-                  onSuccess={handlePurchaseSuccess}
-                  currency={currency}
-                  onCancel={() => setClientSecret(null)}
-                  chargeAmountCents={fullGameChargeCents}
-                />
-              </Elements>
-            ) : (
-              <div className="flex justify-center py-8">
-                <div className="text-muted-foreground">{t("ui:fullGame.loadingPayment")}</div>
+
+              <div className="bg-gray-600/10 border border-gray-600/50 rounded-lg p-3">
+                <p className="text-sm text-gray-400">
+                  {t("ui:fullGame.progressSaved")}
+                </p>
               </div>
-            )}
-          </div>
+            </div>
+          ) : stripePromise ? (
+            <Elements stripe={stripePromise} options={{ clientSecret }}>
+              <CheckoutForm
+                onSuccess={handlePurchaseSuccess}
+                currency={currency}
+                onCancel={() => setClientSecret(null)}
+                chargeAmountCents={fullGameChargeCents}
+              />
+            </Elements>
+          ) : (
+            <div className="flex justify-center py-8">
+              <div className="text-muted-foreground">{t("ui:fullGame.loadingPayment")}</div>
+            </div>
+          )}
         </div>
       </DialogContent>
     </Dialog>

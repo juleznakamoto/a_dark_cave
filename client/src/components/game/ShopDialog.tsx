@@ -2357,11 +2357,11 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
       {clientSecret && selectedItem && (
         <Dialog open={true} onOpenChange={handlePaymentDialogOpenChange}>
           <DialogContent
-            className="[--adc-dialog-max-w:28rem] max-h-[80vh] z-[80] gap-2 [&>button]:hidden"
+            className="flex max-h-[min(80dvh,80vh)] flex-col overflow-hidden z-[80] gap-2 p-4 sm:p-6 [--adc-dialog-max-w:28rem] [&>button]:hidden"
             onPointerDownOutside={(e) => e.preventDefault()}
             onInteractOutside={(e) => e.preventDefault()}
           >
-            <DialogHeader className="space-y-1 pb-0">
+            <DialogHeader className="shrink-0 space-y-1 pb-0">
               <DialogTitle>
                 {SHOP_ITEMS[selectedItem]
                   ? resolveShopItemName(SHOP_ITEMS[selectedItem])
@@ -2376,7 +2376,7 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
               </DialogDescription>
             </DialogHeader>
             {checkoutPriceBreakdown && (
-              <div className="border-b border-border/70 pb-3 text-sm">
+              <div className="shrink-0 border-b border-border/70 pb-3 text-sm">
                 {checkoutPriceBreakdown.hasCatalogSale &&
                   checkoutPriceBreakdown.catalogSaleListCents != null && (
                     <>
@@ -2434,7 +2434,7 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
                 </div>
               </div>
             )}
-            <div className="max-h-[calc(85vh-120px)] overflow-y-auto overflow-x-hidden pb-4 scrollbar-hide">
+            <div className="min-h-0 flex-1 overflow-y-auto overflow-x-hidden overscroll-contain pb-1 scrollbar-hide">
               {stripePromise ? (
                 <Elements stripe={stripePromise} options={{ clientSecret }}>
                   <CheckoutForm
