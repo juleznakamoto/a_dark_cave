@@ -141,11 +141,6 @@ export default function SaveGameAnalysisTab({
     return analysis.rows.filter((row) => row.issues.length > 0);
   }, [analysis]);
 
-  const outdatedRows = useMemo(() => {
-    if (!analysis) return [];
-    return analysis.rows.filter((row) => !row.isCurrentVersion);
-  }, [analysis]);
-
   const versionDistribution = useMemo(() => {
     if (!analysis) {
       return {
@@ -475,68 +470,6 @@ export default function SaveGameAnalysisTab({
           </CardContent>
         </Card>
       ) : null}
-
-      <Card>
-        <CardHeader>
-          <CardTitle className="text-base">Outdated / unknown clients</CardTitle>
-          <CardDescription>
-            {analysis.notOnCurrentVersion} of {analysis.scanned} recent saves
-            are not on the published build
-            {analysis.currentBuildSha
-              ? ` (${shortSha(analysis.currentBuildSha)})`
-              : " (published SHA unknown)"}
-            . For prod this is{" "}
-            <code className="text-xs">a-dark-cave.com/api/version</code>, not
-            this admin host. Missing SHA usually means the player has not saved
-            since version tracking was added.
-          </CardDescription>
-        </CardHeader>
-        <CardContent>
-          {outdatedRows.length === 0 ? (
-            <p className="py-4 text-center text-sm text-muted-foreground">
-              All scanned saves are on the published build.
-            </p>
-          ) : (
-            <div className="overflow-x-auto">
-              <table className="w-full text-sm">
-                <thead>
-                  <tr className="border-b text-left text-muted-foreground">
-                    <th className="py-2 pr-3 font-medium">Updated</th>
-                    <th className="py-2 pr-3 font-medium">User</th>
-                    <th className="py-2 pr-3 font-medium">Play</th>
-                    <th className="py-2 pr-3 font-medium">Client SHA</th>
-                    <th className="py-2 font-medium">Status</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {outdatedRows.map((row) => (
-                    <tr
-                      key={row.id ?? row.user_id}
-                      className="border-b align-top"
-                    >
-                      <td className="py-2 pr-3 whitespace-nowrap font-mono text-xs">
-                        {row.updated_at.slice(0, 19)}
-                      </td>
-                      <td className="py-2 pr-3 font-mono text-xs max-w-[140px] truncate">
-                        {formatSaveUserLabel(row)}
-                      </td>
-                      <td className="py-2 pr-3 tabular-nums">
-                        {row.playmin != null ? `${row.playmin}m` : "—"}
-                      </td>
-                      <td className="py-2 pr-3 font-mono text-xs">
-                        {shortSha(row.clientBuildSha)}
-                      </td>
-                      <td className="py-2 text-xs">
-                        {row.clientBuildSha ? "Outdated build" : "No version stamped"}
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          )}
-        </CardContent>
-      </Card>
 
       {Object.keys(analysis.byKind).length > 0 ? (
         <Card>
