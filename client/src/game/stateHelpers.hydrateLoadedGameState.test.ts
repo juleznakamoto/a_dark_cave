@@ -26,6 +26,25 @@ describe("hydrateLoadedGameState", () => {
     expect(hydrated.tools.stone_axe).toBe(true);
   });
 
+  it("backfills missing buildings with schema defaults", () => {
+    const defaults = gameStateSchema.parse({});
+    const hydrated = hydrateLoadedGameState({
+      playTime: 50,
+    });
+
+    expect(hydrated.buildings).toEqual(defaults.buildings);
+    expect(hydrated.buildings.woodenHut).toBe(0);
+  });
+
+  it("preserves owned building counts over defaults", () => {
+    const hydrated = hydrateLoadedGameState({
+      buildings: { woodenHut: 4 },
+    } as Partial<ReturnType<typeof gameStateSchema.parse>>);
+
+    expect(hydrated.buildings.woodenHut).toBe(4);
+    expect(hydrated.buildings.stoneHut).toBe(0);
+  });
+
   it("repairs missing unlock flags from buildings/weapons (account-create wipe)", () => {
     const hydrated = hydrateLoadedGameState({
       flags: {

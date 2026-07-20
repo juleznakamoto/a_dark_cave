@@ -853,7 +853,7 @@ function migrateSteamShopSlotsOnLoad(state: GameState): Partial<GameState> | nul
  */
 export function hydrateLoadedGameState<T extends Partial<GameState>>(
   savedState: T,
-): T & Pick<GameState, "tools" | "weapons" | "books" | "flags"> {
+): T & Pick<GameState, "tools" | "weapons" | "books" | "flags" | "buildings"> {
   const defaults = gameStateSchema.parse({});
   const mergedTools = {
     ...defaults.tools,
@@ -869,6 +869,12 @@ export function hydrateLoadedGameState<T extends Partial<GameState>>(
     books: {
       ...defaults.books,
       ...savedState.books,
+    },
+    // Same sparse-save backfill as tools/flags — missing `buildings` used to
+    // crash mobile on `state.buildings.woodenHut` during population updates.
+    buildings: {
+      ...defaults.buildings,
+      ...savedState.buildings,
     },
   };
   return repairUnlockFlags(withItems, defaults.flags);

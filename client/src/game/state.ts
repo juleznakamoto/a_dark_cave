@@ -1185,194 +1185,205 @@ const generateDefaultGameState = (): GameState => {
   return extractDefaultsFromSchema(gameStateSchema) as GameState;
 };
 
-export const createInitialState = (): GameState => ({
-  gameId: `game-${Date.now()}-${Math.random().toString(36).substring(2, 9)}`,
-  playTime: 0,
-  startTime: Date.now(),
-  ...generateDefaultGameState(),
-  effects: {
-    resource_bonus: {},
-    resource_multiplier: {},
-    probability_bonus: {},
-    cooldown_reduction: {},
-  },
-  bastion_stats: {
-    defense: 0,
-    attack: 0,
-    integrity: 0,
-  },
-  hoveredTooltips: {},
-  triggeredEvents: {},
-  books: {
-    book_of_ascension: false,
-    book_of_war: false,
-    book_of_trials: false,
-  },
-  fellowship: {},
-  feastState: {
-    isActive: false,
-    endTime: 0,
-    lastAcceptedLevel: 0,
-  },
-  boneDevourerState: {
-    lastAcceptedLevel: 0,
-  },
-  greatFeastState: {
-    isActive: false,
-    endTime: 0,
-  },
-  solsticeState: {
-    isActive: false,
-    endTime: 0,
-    tier: 1,
-    activationsCount: 0,
-  },
-  bloodMoonState: {
-    hasWon: false,
-    occurrenceCount: 0,
-  },
-  curseState: {
-    isActive: false,
-    endTime: 0,
-  },
-  frostfallState: {
-    isActive: false,
-    endTime: 0,
-  },
-  woodcutterState: {
-    isActive: false,
-    endTime: 0,
-  },
-  tradersGratitudeState: {
-    accepted: false,
-  },
-  tradersSonGratitudeState: {
-    accepted: false,
-  },
-  fogState: {
-    isActive: false,
-    endTime: 0,
-    duration: 0,
-  },
-  disgustState: {
-    isActive: false,
-    endTime: 0,
-    duration: 0,
-  },
-  obsidianOrbState: {
-    nextFocusGainTime: 0,
-  },
-  combatSkills: {
-    crushingStrikeLevel: 0,
-    bloodflameSphereLevel: 0,
-  },
-  // Steam build: the whole game is unlocked (single one-time Steam purchase) and
-  // runs in BTP mode so the travelling merchant sells the dark artifacts and the
-  // rebalanced economy applies. Granting `full_game` keeps the loop's paywall
-  // gate from ever pausing the sim (see loop.ts `requiresFullGamePurchase`).
-  activatedPurchases: isFullGameUnlockedEdition() ? { full_game: true } : {},
-  BTP: isFullGameUnlockedEdition() ? 1 : 0,
-  feastActivations: {},
-  cruelMode: false,
-  attackWaveTimers: {},
-  loopProgress: 0,
-  isGameLoopActive: false,
-  isPaused: false,
-  musicMuted: false,
-  sfxMuted: false,
-  musicVolume: 1,
-  sfxVolume: 1,
-  // Initialize auth notification state
-  authNotificationSeen: false,
-  authNotificationVisible: false,
-
-  signUpPromptEligibleForGold: false,
-  lastAuthNotificationPlayTime: 0,
-  lastSignUpPromptPlayTime: 0,
-  socialPromptDialogOpen: false,
-  lastSocialPromptPlayTime: 0,
-  socialPromptMilestoneIndex: 0,
-  playlightExitIntentMilestoneIndex: 0,
-  socialPromptAutoPhase: 0,
-  socialPromoExclusiveRewardPending: false,
-  feedbackDialogOpen: false,
-  feedbackPromptShown: false,
-  villageHotkeyTutorialShown: false,
-
-  // Initialize resource highlighting state (array for serialization)
-  highlightedResources: [],
-
-  // Initialize free gold claim tracking
-  lastFreeGoldClaim: 0,
-
-  // Initialize currency detection
-  detectedCurrency: null,
-
-  // Initialize Google Ads source tracking
-  googleAdsSource: null,
-
-  // Initialize cooldown management
-  cooldowns: {},
-  initialCooldowns: {},
-  executionStartTimes: {},
-  executionDurations: {},
-  executionAbortEligible: {},
-  executionSpendSnapshots: {},
-  expeditionVillagers: {},
-
-  // Initialize compass glow
-  compassGlowButton: null,
-
-  insightRevealing: {},
-
-  // Initialize analytics tracking
-  clickAnalytics: {},
-  lastResourceSnapshotTime: 0,
-  isPausedPreviously: false, // Initialize isPausedPreviously
-
-  // Initialize merchant trades state
-  merchantTrades: {
-    choices: [],
-    purchasedIds: [],
-  },
-
-  // Initialize gambler game state
-  gamblerGame: null,
-
-  story: {
-    seen: {
-      [GAMBLER_TUTORIAL_PLAYS_REMAINING_SEEN_KEY]: GAMBLER_TUTORIAL_PLAYS,
+export const createInitialState = (): GameState => {
+  const schemaDefaults = gameStateSchema.parse({});
+  const state: GameState = {
+    gameId: `game-${Date.now()}-${Math.random().toString(36).substring(2, 9)}`,
+    playTime: 0,
+    startTime: Date.now(),
+    ...generateDefaultGameState(),
+    effects: {
+      resource_bonus: {},
+      resource_multiplier: {},
+      probability_bonus: {},
+      cooldown_reduction: {},
     },
-    merchantPurchases: 0,
-  },
+    bastion_stats: {
+      defense: 0,
+      attack: 0,
+      integrity: 0,
+    },
+    hoveredTooltips: {},
+    triggeredEvents: {},
+    books: {
+      book_of_ascension: false,
+      book_of_war: false,
+      book_of_trials: false,
+    },
+    fellowship: {},
+    feastState: {
+      isActive: false,
+      endTime: 0,
+      lastAcceptedLevel: 0,
+    },
+    boneDevourerState: {
+      lastAcceptedLevel: 0,
+    },
+    greatFeastState: {
+      isActive: false,
+      endTime: 0,
+    },
+    solsticeState: {
+      isActive: false,
+      endTime: 0,
+      tier: 1,
+      activationsCount: 0,
+    },
+    bloodMoonState: {
+      hasWon: false,
+      occurrenceCount: 0,
+    },
+    curseState: {
+      isActive: false,
+      endTime: 0,
+    },
+    frostfallState: {
+      isActive: false,
+      endTime: 0,
+    },
+    woodcutterState: {
+      isActive: false,
+      endTime: 0,
+    },
+    tradersGratitudeState: {
+      accepted: false,
+    },
+    tradersSonGratitudeState: {
+      accepted: false,
+    },
+    fogState: {
+      isActive: false,
+      endTime: 0,
+      duration: 0,
+    },
+    disgustState: {
+      isActive: false,
+      endTime: 0,
+      duration: 0,
+    },
+    obsidianOrbState: {
+      nextFocusGainTime: 0,
+    },
+    combatSkills: {
+      crushingStrikeLevel: 0,
+      bloodflameSphereLevel: 0,
+    },
+    // Steam build: the whole game is unlocked (single one-time Steam purchase) and
+    // runs in BTP mode so the travelling merchant sells the dark artifacts and the
+    // rebalanced economy applies. Granting `full_game` keeps the loop's paywall
+    // gate from ever pausing the sim (see loop.ts `requiresFullGamePurchase`).
+    activatedPurchases: isFullGameUnlockedEdition() ? { full_game: true } : {},
+    BTP: isFullGameUnlockedEdition() ? 1 : 0,
+    feastActivations: {},
+    cruelMode: false,
+    attackWaveTimers: {},
+    loopProgress: 0,
+    isGameLoopActive: false,
+    isPaused: false,
+    musicMuted: false,
+    sfxMuted: false,
+    musicVolume: 1,
+    sfxVolume: 1,
+    // Initialize auth notification state
+    authNotificationSeen: false,
+    authNotificationVisible: false,
 
-  // Achievements
-  unlockedAchievements: [],
-  claimedAchievements: [],
-  revealedAchievementTitles: [],
+    signUpPromptEligibleForGold: false,
+    lastAuthNotificationPlayTime: 0,
+    lastSignUpPromptPlayTime: 0,
+    socialPromptDialogOpen: false,
+    lastSocialPromptPlayTime: 0,
+    socialPromptMilestoneIndex: 0,
+    playlightExitIntentMilestoneIndex: 0,
+    socialPromptAutoPhase: 0,
+    socialPromoExclusiveRewardPending: false,
+    feedbackDialogOpen: false,
+    feedbackPromptShown: false,
+    villageHotkeyTutorialShown: false,
 
-  // Reward dialog
-  rewardDialog: {
-    isOpen: false,
-    data: null,
-  },
-  investmentResultDialog: {
-    isOpen: false,
-    data: null,
-  },
-  madnessDialog: {
-    isOpen: false,
-    data: null,
-  },
-  insightPotionDialog: {
-    isOpen: false,
-    data: null,
-  },
-  villageEffectDialog: {
-    isOpen: false,
-    data: null,
-  },
-});
+    // Initialize resource highlighting state (array for serialization)
+    highlightedResources: [],
+
+    // Initialize free gold claim tracking
+    lastFreeGoldClaim: 0,
+
+    // Initialize currency detection
+    detectedCurrency: null,
+
+    // Initialize Google Ads source tracking
+    googleAdsSource: null,
+
+    // Initialize cooldown management
+    cooldowns: {},
+    initialCooldowns: {},
+    executionStartTimes: {},
+    executionDurations: {},
+    executionAbortEligible: {},
+    executionSpendSnapshots: {},
+    expeditionVillagers: {},
+
+    // Initialize compass glow
+    compassGlowButton: null,
+
+    insightRevealing: {},
+
+    // Initialize analytics tracking
+    clickAnalytics: {},
+    lastResourceSnapshotTime: 0,
+    isPausedPreviously: false, // Initialize isPausedPreviously
+
+    // Initialize merchant trades state
+    merchantTrades: {
+      choices: [],
+      purchasedIds: [],
+    },
+
+    // Initialize gambler game state
+    gamblerGame: null,
+
+    story: {
+      seen: {
+        [GAMBLER_TUTORIAL_PLAYS_REMAINING_SEEN_KEY]: GAMBLER_TUTORIAL_PLAYS,
+      },
+      merchantPurchases: 0,
+    },
+
+    // Achievements
+    unlockedAchievements: [],
+    claimedAchievements: [],
+    revealedAchievementTitles: [],
+
+    // Reward dialog
+    rewardDialog: {
+      isOpen: false,
+      data: null,
+    },
+    investmentResultDialog: {
+      isOpen: false,
+      data: null,
+    },
+    madnessDialog: {
+      isOpen: false,
+      data: null,
+    },
+    insightPotionDialog: {
+      isOpen: false,
+      data: null,
+    },
+    villageEffectDialog: {
+      isOpen: false,
+      data: null,
+    },
+  };
+
+  // Guarantee nested defaults the hand extractor can miss (mobile crash:
+  // state.buildings.woodenHut when buildings is undefined on a fresh session).
+  state.buildings = {
+    ...schemaDefaults.buildings,
+    ...(state.buildings ?? {}),
+  };
+  return state;
+};
 
 const defaultGameState: GameState = createInitialState();
 
@@ -3881,12 +3892,21 @@ export const useGameStore = create<GameStore>((set, get) => ({
 
   updatePopulation: () => {
     set((state) => {
-      const clampPatch = clampVillagersToHousingCap(state);
-      const next = clampPatch ? { ...state, ...clampPatch } : state;
+      const withBuildings =
+        state.buildings != null
+          ? state
+          : {
+            ...state,
+            buildings: { ...defaultGameState.buildings },
+          };
+      const clampPatch = clampVillagersToHousingCap(withBuildings);
+      const next = clampPatch
+        ? { ...withBuildings, ...clampPatch }
+        : withBuildings;
       const updates = updatePopulationCounts(next);
 
       return {
-        ...state,
+        ...withBuildings,
         ...clampPatch,
         ...updates,
       };

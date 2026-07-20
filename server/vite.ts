@@ -80,11 +80,56 @@ export function log(message: string, source = "express") {
   logger.log(`${formattedTime} [${sourceText}] ${message}`);
 }
 
+/** Dev module / asset paths that must never fall through to SPA index.html. */
+function isViteDevAssetPath(pathname: string): boolean {
+  const reqPath = (pathname.split("?")[0] || "").replace(/\/+$/, "") || "/";
+  if (isStaticAssetPath(reqPath)) return true;
+  return (
+    reqPath.startsWith("/src/") ||
+    reqPath.startsWith("/@vite/") ||
+    reqPath.startsWith("/@fs/") ||
+    reqPath.startsWith("/@id/") ||
+    reqPath.startsWith("/@react-refresh") ||
+    reqPath.startsWith("/node_modules/") ||
+    reqPath.includes("/.vite/") ||
+    /\.(tsx?|jsx?|mjs|cjs|css|scss|sass|less)(\?|$)/i.test(reqPath)
+  );
+}
+
+function isMobileUserAgent(ua: string | undefined): boolean {
+  return Boolean(ua && /Mobile|iPhone|iPad|Android/i.test(ua));
+}
+
+/**
+ * On Replit, phones often fail while loading `/@vite/client` (HMR) over the
+ * proxy. Desktop keeps HMR; mobile gets a plain module graph without the
+ * Vite client / runtime-error overlay scripts.
+ */
+function stripViteClientForMobile(html: string, ua: string | undefined): string {
+  if (!process.env.REPL_ID || !isMobileUserAgent(ua)) return html;
+  return html
+    .replace(
+      /<script[^>]*\bsrc=["']\/@vite\/client["'][^>]*><\/script>/gi,
+      "",
+    )
+    .replace(
+      /<script[^>]*type=["']module["'][^>]*>\s*import\s*\{[\s\S]*?\}\s*from\s*["']\/@vite\/client["'][\s\S]*?<\/script>/gi,
+      "",
+    );
+}
+
 export async function setupVite(app: Express, server: Server) {
+  // Replit (and similar HTTPS reverse proxies) terminate TLS at :443. Without
+  // clientPort/protocol, the Vite client on phones often opens the wrong WS
+  // URL → "Importing a module script failed" while desktop still works.
+  const behindReplitProxy = Boolean(process.env.REPL_ID);
   const serverOptions = {
+    ...viteConfig.server,
     middlewareMode: true,
-    hmr: { server },
     allowedHosts: true as const,
+    hmr: behindReplitProxy
+      ? { server, protocol: "wss" as const, clientPort: 443 }
+      : { server },
   };
 
   const vite = await createViteServer({
@@ -101,13 +146,31 @@ export async function setupVite(app: Express, server: Server) {
     appType: "custom",
   });
 
+  // Safari can cache a failed module response and keep failing until cleared.
+  if (behindReplitProxy) {
+    app.use((req, res, next) => {
+      if (isViteDevAssetPath(req.path || "")) {
+        res.setHeader("Cache-Control", "no-store");
+      }
+      next();
+    });
+  }
+
   app.use(vite.middlewares);
   app.use("*", async (req, res, next) => {
     const url = req.originalUrl;
+    const pathname = req.path || url.split("?")[0] || "/";
 
     // Skip Vite middleware for API routes - let Express handle them
-    if (url.startsWith('/api/')) {
+    if (url.startsWith("/api/")) {
       return next();
+    }
+
+    // Never serve index.html for a JS/TS module URL (Safari: "Importing a
+    // module script failed" when it gets HTML with the wrong MIME type).
+    if (isViteDevAssetPath(pathname)) {
+      res.status(404).send("Not found");
+      return;
     }
 
     try {
@@ -124,7 +187,8 @@ export async function setupVite(app: Express, server: Server) {
         `src="/src/main.tsx"`,
         `src="/src/main.tsx?v=${nanoid()}"`,
       );
-      const page = await vite.transformIndexHtml(url, template);
+      let page = await vite.transformIndexHtml(url, template);
+      page = stripViteClientForMobile(page, req.headers["user-agent"]);
       sendSpaIndexHtml(res, page, req.path || "/");
     } catch (e) {
       vite.ssrFixStacktrace(e as Error);

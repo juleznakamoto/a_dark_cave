@@ -23,8 +23,6 @@ const AdminDashboard = lazy(() =>
   steamBuild ? redirectHome() : import("@/pages/admin/dashboard"),
 );
 
-// Lazy load game page (only loads after Light Fire click)
-const Game = lazy(() => import("@/pages/game"));
 // Start screen page - lightweight wrapper that conditionally loads Game
 const StartScreenPage = lazy(() => import("@/pages/start-screen-page"));
 
