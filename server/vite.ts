@@ -81,10 +81,17 @@ export function log(message: string, source = "express") {
 }
 
 export async function setupVite(app: Express, server: Server) {
+  // Replit (and similar HTTPS reverse proxies) terminate TLS at :443. Without
+  // clientPort/protocol, the Vite client on phones often opens the wrong WS
+  // URL → "Importing a module script failed" while desktop still works.
+  const behindReplitProxy = Boolean(process.env.REPL_ID);
   const serverOptions = {
+    ...viteConfig.server,
     middlewareMode: true,
-    hmr: { server },
     allowedHosts: true as const,
+    hmr: behindReplitProxy
+      ? { server, protocol: "wss" as const, clientPort: 443 }
+      : { server },
   };
 
   const vite = await createViteServer({
