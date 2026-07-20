@@ -3,26 +3,18 @@ import { useGameStore } from "@/game/state";
 import { useEffect } from "react";
 
 export default function GameTabs() {
-  const woodenHut = useGameStore((s) => s.buildings?.woodenHut ?? 0);
-  const stoneHut = useGameStore((s) => s.buildings?.stoneHut ?? 0);
-  const longhouse = useGameStore((s) => s.buildings?.longhouse ?? 0);
-  const flamesTouch = useGameStore((s) => s.blessings?.flames_touch);
-  const flamesTouchEnhanced = useGameStore(
-    (s) => s.blessings?.flames_touch_enhanced,
-  );
-  const villagers = useGameStore((s) => s.villagers);
-  const updatePopulation = useGameStore((s) => s.updatePopulation);
+  const { buildings, blessings, villagers, updatePopulation } = useGameStore();
 
-  // Update population whenever housing / temple bonuses change
+  // Update population whenever the component renders
   useEffect(() => {
     updatePopulation();
   }, [
     villagers,
-    woodenHut,
-    stoneHut,
-    longhouse,
-    flamesTouch,
-    flamesTouchEnhanced,
+    buildings.woodenHut,
+    buildings.stoneHut,
+    buildings.longhouse,
+    blessings.flames_touch,
+    blessings.flames_touch_enhanced,
     updatePopulation,
   ]);
 
