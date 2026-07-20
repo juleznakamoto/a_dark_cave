@@ -3235,6 +3235,16 @@ export const useGameStore = create<GameStore>((set, get) => ({
     // Write-boundary safety net: sparse cloud merges can wipe `buildings`
     // before event conditions read `state.buildings.woodenHut`.
     if (state.buildings == null) {
+      // #region agent log
+      void import("@/lib/debugAgentLog").then(({ debugAgentLog }) => {
+        debugAgentLog(
+          "state.ts:checkEvents",
+          "buildings nullish at checkEvents entry",
+          { repaired: true },
+          "C",
+        );
+      });
+      // #endregion
       set({
         buildings: { ...defaultGameState.buildings },
       });

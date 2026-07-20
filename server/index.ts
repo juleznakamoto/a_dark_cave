@@ -382,6 +382,20 @@ app.post(
 
 app.use(express.json());
 
+// Temporary debug-session ingest (session 6ea380). Remove after mobile crash fix.
+app.post("/api/debug-agent-log", (req, res) => {
+  try {
+    const line = `${JSON.stringify({
+      ...(req.body && typeof req.body === "object" ? req.body : { raw: req.body }),
+      receivedAt: Date.now(),
+    })}\n`;
+    fs.appendFileSync(path.resolve(process.cwd(), "debug-6ea380.log"), line, "utf8");
+    res.status(204).end();
+  } catch {
+    res.status(500).end();
+  }
+});
+
 async function getSessionUserFromBearer(
   req: Request,
 ): Promise<{ id: string; email: string | undefined } | null> {

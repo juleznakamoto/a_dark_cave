@@ -8,6 +8,12 @@ import {
   lazy,
   Suspense,
 } from "react";
+// #region agent log
+import {
+  buildingsDebugSnapshot,
+  debugAgentLog,
+} from "@/lib/debugAgentLog";
+// #endregion
 import { createPortal } from "react-dom";
 import { Helmet } from "react-helmet-async";
 import GameTabs from "./GameTabs";
@@ -91,6 +97,20 @@ const WebOnlyDialogs = steamBuild
   : lazy(() => import("./WebOnlyDialogs"));
 
 export default function GameContainer() {
+  // #region agent log
+  if (!(window as unknown as { __adcGcLogged?: boolean }).__adcGcLogged) {
+    (window as unknown as { __adcGcLogged?: boolean }).__adcGcLogged = true;
+    debugAgentLog(
+      "GameContainer.tsx:render",
+      "First GameContainer render",
+      {
+        ...buildingsDebugSnapshot(useGameStore.getState()),
+        activeTab: useGameStore.getState().activeTab,
+      },
+      "A",
+    );
+  }
+  // #endregion
   const { t } = useTranslation();
   const steamEditionActive = useSteamEditionActive();
   const demoEditionActive = useDemoEditionActive();
