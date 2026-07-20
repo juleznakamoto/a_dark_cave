@@ -292,8 +292,8 @@
     .adc-page-load-spinner {
       position: relative;
       display: block;
-      width: 72px;
-      height: 72px;
+      width: 50px;
+      height: 50px;
     }
 
     .adc-page-load-spinner__ring {
@@ -305,24 +305,24 @@
         rgb(255, 140, 0) 55%,
         rgb(255, 210, 40)
       );
-      width: 72px;
-      height: 72px;
+      width: 50px;
+      height: 50px;
       animation: adc-page-load-spin 1.7s linear infinite;
       text-align: center;
-      border-radius: 36px;
+      border-radius: 25px;
       filter: blur(1px);
       box-shadow:
-        0px -4px 16px 0px rgb(255, 70, 0),
-        0px 4px 16px 0px rgb(255, 180, 0);
+        0px -3px 12px 0px rgb(255, 70, 0),
+        0px 3px 12px 0px rgb(255, 180, 0);
     }
 
     .adc-page-load-spinner__core {
       display: block;
       background-color: rgb(0, 0, 0);
-      width: 72px;
-      height: 72px;
-      border-radius: 36px;
-      filter: blur(8px);
+      width: 50px;
+      height: 50px;
+      border-radius: 25px;
+      filter: blur(7px);
     }
 
     .adc-page-load-spinner__ember {
@@ -433,18 +433,18 @@
         <span class="adc-page-load-spinner__core"></span>
       </span>
       <!-- Center spawn → random travel (ex/ey); shared delays = multiple at once -->
-      <span class="adc-page-load-spinner__ember" style="--adc-ember-ex: 40px; --adc-ember-ey: 8px; --adc-ember-delay: 0s; --adc-ember-color: #ff3a00"></span>
-      <span class="adc-page-load-spinner__ember" style="--adc-ember-ex: -28px; --adc-ember-ey: 32px; --adc-ember-delay: 0s; --adc-ember-color: #ff8c00"></span>
-      <span class="adc-page-load-spinner__ember" style="--adc-ember-ex: 6px; --adc-ember-ey: -42px; --adc-ember-delay: 0s; --adc-ember-color: #ffd228"></span>
-      <span class="adc-page-load-spinner__ember" style="--adc-ember-ex: 30px; --adc-ember-ey: 30px; --adc-ember-delay: 0s; --adc-ember-color: #ff5600"></span>
-      <span class="adc-page-load-spinner__ember" style="--adc-ember-ex: -42px; --adc-ember-ey: -6px; --adc-ember-delay: 0.4s; --adc-ember-color: #ffb000"></span>
-      <span class="adc-page-load-spinner__ember" style="--adc-ember-ex: 36px; --adc-ember-ey: -28px; --adc-ember-delay: 0.4s; --adc-ember-color: #ff3a00"></span>
-      <span class="adc-page-load-spinner__ember" style="--adc-ember-ex: -18px; --adc-ember-ey: -38px; --adc-ember-delay: 0.4s; --adc-ember-color: #ff8c00"></span>
-      <span class="adc-page-load-spinner__ember" style="--adc-ember-ex: 22px; --adc-ember-ey: 38px; --adc-ember-delay: 0.4s; --adc-ember-color: #ffc800"></span>
-      <span class="adc-page-load-spinner__ember" style="--adc-ember-ex: -36px; --adc-ember-ey: 22px; --adc-ember-delay: 0.8s; --adc-ember-color: #ffd228"></span>
-      <span class="adc-page-load-spinner__ember" style="--adc-ember-ex: 12px; --adc-ember-ey: 44px; --adc-ember-delay: 0.8s; --adc-ember-color: #ff6a00"></span>
-      <span class="adc-page-load-spinner__ember" style="--adc-ember-ex: 44px; --adc-ember-ey: -12px; --adc-ember-delay: 0.8s; --adc-ember-color: #ff5600"></span>
-      <span class="adc-page-load-spinner__ember" style="--adc-ember-ex: -32px; --adc-ember-ey: -30px; --adc-ember-delay: 0.8s; --adc-ember-color: #ffb000"></span>
+      <span class="adc-page-load-spinner__ember" style="--adc-ember-ex: 28px; --adc-ember-ey: 6px; --adc-ember-delay: 0s; --adc-ember-color: #ff3a00"></span>
+      <span class="adc-page-load-spinner__ember" style="--adc-ember-ex: -19px; --adc-ember-ey: 22px; --adc-ember-delay: 0s; --adc-ember-color: #ff8c00"></span>
+      <span class="adc-page-load-spinner__ember" style="--adc-ember-ex: 4px; --adc-ember-ey: -29px; --adc-ember-delay: 0s; --adc-ember-color: #ffd228"></span>
+      <span class="adc-page-load-spinner__ember" style="--adc-ember-ex: 21px; --adc-ember-ey: 21px; --adc-ember-delay: 0s; --adc-ember-color: #ff5600"></span>
+      <span class="adc-page-load-spinner__ember" style="--adc-ember-ex: -29px; --adc-ember-ey: -4px; --adc-ember-delay: 0.4s; --adc-ember-color: #ffb000"></span>
+      <span class="adc-page-load-spinner__ember" style="--adc-ember-ex: 25px; --adc-ember-ey: -19px; --adc-ember-delay: 0.4s; --adc-ember-color: #ff3a00"></span>
+      <span class="adc-page-load-spinner__ember" style="--adc-ember-ex: -12px; --adc-ember-ey: -26px; --adc-ember-delay: 0.4s; --adc-ember-color: #ff8c00"></span>
+      <span class="adc-page-load-spinner__ember" style="--adc-ember-ex: 15px; --adc-ember-ey: 26px; --adc-ember-delay: 0.4s; --adc-ember-color: #ffc800"></span>
+      <span class="adc-page-load-spinner__ember" style="--adc-ember-ex: -25px; --adc-ember-ey: 15px; --adc-ember-delay: 0.8s; --adc-ember-color: #ffd228"></span>
+      <span class="adc-page-load-spinner__ember" style="--adc-ember-ex: 8px; --adc-ember-ey: 31px; --adc-ember-delay: 0.8s; --adc-ember-color: #ff6a00"></span>
+      <span class="adc-page-load-spinner__ember" style="--adc-ember-ex: 31px; --adc-ember-ey: -8px; --adc-ember-delay: 0.8s; --adc-ember-color: #ff5600"></span>
+      <span class="adc-page-load-spinner__ember" style="--adc-ember-ex: -22px; --adc-ember-ey: -21px; --adc-ember-delay: 0.8s; --adc-ember-color: #ffb000"></span>
     </span>
   </div>
   <div id="root"></div>
