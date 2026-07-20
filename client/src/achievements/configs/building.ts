@@ -26,7 +26,7 @@ export const buildingChartConfig: AchievementChartConfig = {
             });
           }
           // #endregion
-          return state.buildings.woodenHut || 0;
+          return state.buildings?.woodenHut || 0;
         },
       },
       {

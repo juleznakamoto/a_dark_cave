@@ -244,29 +244,30 @@ export default function GameContainer() {
   const lifetimePlayTimeMs = useGameStore((s) => s.lifetimePlayTimeMs);
   const lifetimeStorageMaxHits = useGameStore((s) => s.lifetimeStorageMaxHits);
   const hasAchievementMaxer = useGameStore((s) => s.hasAchievementMaxer);
-  const achievementsUnlocked = useMemo(
-    () =>
-      isAchievementsGameTabUnlocked({
-        relics,
-        books,
-        hasWonNormalGame,
-        hasWonCruelGame,
-        hasSpeedrunWin,
-        lifetimePlayTimeMs,
-        lifetimeStorageMaxHits,
-        hasAchievementMaxer,
-      } as GameState),
-    [
-      relics,
-      books,
-      hasWonNormalGame,
-      hasWonCruelGame,
-      hasSpeedrunWin,
-      lifetimePlayTimeMs,
-      lifetimeStorageMaxHits,
-      hasAchievementMaxer,
-    ],
-  );
+  // Must pass the full store: in DEV, unlock checks overall "Achievement Maxer",
+  // which tallies building getCount(state.buildings.woodenHut). A partial
+  // `{ relics, books, ... } as GameState` crashed mobile after Light Fire.
+  const achievementsUnlocked = useMemo(() => {
+    const full = useGameStore.getState();
+    // #region agent log
+    debugAgentLog(
+      "GameContainer.tsx:achievementsUnlocked",
+      "Unlock check with full store",
+      buildingsDebugSnapshot(full),
+      "D",
+    );
+    // #endregion
+    return isAchievementsGameTabUnlocked(full);
+  }, [
+    relics,
+    books,
+    hasWonNormalGame,
+    hasWonCruelGame,
+    hasSpeedrunWin,
+    lifetimePlayTimeMs,
+    lifetimeStorageMaxHits,
+    hasAchievementMaxer,
+  ]);
   const tools = useGameStore((state) => state.tools);
   const weapons = useGameStore((state) => state.weapons);
   const tabUnlockSnapshot = useMemo(
