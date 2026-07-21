@@ -3,7 +3,13 @@ import { readFile, writeFile, mkdir } from "node:fs/promises";
 import { join, dirname } from "node:path";
 import { existsSync, readFileSync } from "node:fs";
 import { startLoopbackServer, type LoopbackServer } from "./loopbackServer";
-import { initSteam, getPlayerName, activateAchievement, isSteamReady } from "./steam";
+import {
+  enableSteamOverlay,
+  initSteam,
+  getPlayerName,
+  activateAchievement,
+  isSteamReady,
+} from "./steam";
 import {
   APP_USER_DATA_NAME,
   APP_WINDOW_TITLE,
@@ -172,6 +178,11 @@ function registerIpc(): void {
 if (!app.requestSingleInstanceLock()) {
   app.quit();
 } else {
+  // Steam overlay + API must run before `app.whenReady()` / BrowserWindow creation.
+  // `enableSteamOverlay` appends Chromium switches that are ignored once ready.
+  enableSteamOverlay();
+  initSteam(resolveAppId());
+
   app.on("second-instance", () => {
     if (mainWindow) {
       if (mainWindow.isMinimized()) mainWindow.restore();
@@ -180,7 +191,6 @@ if (!app.requestSingleInstanceLock()) {
   });
 
   app.whenReady().then(async () => {
-    initSteam(resolveAppId());
     registerIpc();
     await createWindow();
 

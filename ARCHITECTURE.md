@@ -262,7 +262,7 @@ shop, the whole game unlocked, merchant-sold dark artifacts, and local + Steam C
 | `electron/paths.ts` | `APP_USER_DATA_NAME` + `STEAM_CLOUD_SAVE_FILE` — must match Steamworks Auto-Cloud config (demo build uses `A Dark Cave Demo` / `adc-steam-demo-save.dat`). |
 | `electron/preload.ts` | `contextBridge` exposing `window.steamBridge` (achievements, Cloud save, full-screen toggle/events) to the sandboxed renderer. |
 | `electron/loopbackServer.ts` | Serves built `dist/public` over `http://127.0.0.1:<port>` (absolute-path routing needs HTTP, not `file://`). |
-| `electron/steam.ts` | Defensive `steamworks.js` wrapper (degrades to no-ops when Steam absent). |
+| `electron/steam.ts` | Defensive `steamworks.js` wrapper; `enableSteamOverlay` + `initSteam` must run before `app.whenReady()` (Chromium overlay switches). |
 | `client/src/lib/edition.ts` | `isSteamBuild`, `isSteamDemoBuild`, `isSteamPlaytestBuild`, `isDemoEdition()`, `isSteamDemoActive()`, `isSteamEditionActive()` (+ DEV Settings → Game Mode: Normal / Steam Game / Playtest / Demo). |
 | `client/src/lib/steam.ts` | Renderer-side safe wrapper over `window.steamBridge` (achievements, saves, full-screen; no-ops on web). |
 | `client/src/game/steamSaveAdapter.ts` | Mirrors the encoded `ADC2:` save blob to the Steam Cloud file; reconciles with IndexedDB by `playTime`. |
