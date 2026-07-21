@@ -101,3 +101,49 @@ export function ChartTimeRangeSelectTwelveMonth({
     </Select>
   );
 }
+
+import type { HutLadderCohortDays } from "@shared/hutLadderAdminStats";
+
+export function hutLadderCohortTitleSuffix(days: HutLadderCohortDays): string {
+  switch (days) {
+    case 7:
+      return "Last 7 Days";
+    case 30:
+      return "Last 30 Days";
+    case 60:
+      return "Last 60 Days";
+    case 90:
+      return "Last 90 Days";
+    default:
+      return "Last 60 Days";
+  }
+}
+
+type ChartTimeRangeSelectHutLadderProps = {
+  value: HutLadderCohortDays;
+  onChange: (days: HutLadderCohortDays) => void;
+  triggerClassName?: string;
+};
+
+export function ChartTimeRangeSelectHutLadder({
+  value,
+  onChange,
+  triggerClassName = "w-[140px]",
+}: ChartTimeRangeSelectHutLadderProps) {
+  return (
+    <Select
+      value={String(value)}
+      onValueChange={(v) => onChange(Number(v) as HutLadderCohortDays)}
+    >
+      <SelectTrigger className={triggerClassName}>
+        <SelectValue placeholder="Cohort" />
+      </SelectTrigger>
+      <SelectContent>
+        <SelectItem value="7">Last 7 Days</SelectItem>
+        <SelectItem value="30">Last 30 Days</SelectItem>
+        <SelectItem value="60">Last 60 Days</SelectItem>
+        <SelectItem value="90">Last 90 Days</SelectItem>
+      </SelectContent>
+    </Select>
+  );
+}

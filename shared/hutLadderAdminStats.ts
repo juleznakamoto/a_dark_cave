@@ -1,0 +1,179 @@
+/**
+ * Admin hut-ladder funnel: reach ≥N wooden/stone huts among gameStarted saves.
+ * First stone hut unlocks at woodenHut ≥ 10 (normal and cruel).
+ */
+
+export const HUT_LADDER_MAX_LEVEL = 10;
+
+export type HutLadderCohortDays = 7 | 30 | 60 | 90;
+
+export type HutLadderSaveRow = {
+  created_at?: string | null;
+  game_state?: {
+    flags?: { gameStarted?: boolean };
+    buildings?: {
+      woodenHut?: number;
+      stoneHut?: number;
+    };
+  } | null;
+};
+
+export type HutLadderReachPoint = {
+  level: number;
+  label: string;
+  players: number;
+  pctOfStarted: number;
+  /** % lost vs previous level; null for level 0. */
+  stepDropPct: number | null;
+  /** % of previous level who still reach this; null for level 0. */
+  stepKeepPct: number | null;
+};
+
+export type HutLadderFunnel = {
+  cohortDays: HutLadderCohortDays;
+  startedCount: number;
+  wooden: HutLadderReachPoint[];
+  stone: HutLadderReachPoint[];
+  /** Players with woodenHut ≥ 10 who also have stoneHut ≥ 1. */
+  wooden10WithStone: number;
+  wooden10Count: number;
+};
+
+function buildingCount(
+  buildings: { woodenHut?: number; stoneHut?: number } | undefined,
+  key: "woodenHut" | "stoneHut",
+): number {
+  if (!buildings) return 0;
+  const raw = buildings[key];
+  const n = typeof raw === "number" ? raw : Number(raw);
+  return Number.isFinite(n) && n > 0 ? Math.floor(n) : 0;
+}
+
+export function isGameStartedSave(save: HutLadderSaveRow): boolean {
+  return save.game_state?.flags?.gameStarted === true;
+}
+
+export function filterHutLadderCohort(
+  saves: HutLadderSaveRow[],
+  cohortDays: HutLadderCohortDays,
+  now: Date = new Date(),
+): HutLadderSaveRow[] {
+  const cutoffMs = now.getTime() - cohortDays * 24 * 60 * 60 * 1000;
+  return saves.filter((save) => {
+    if (!isGameStartedSave(save)) return false;
+    if (!save.created_at) return false;
+    const created = Date.parse(save.created_at);
+    if (!Number.isFinite(created)) return false;
+    return created >= cutoffMs;
+  });
+}
+
+function buildReachSeries(
+  counts: number[],
+  startedCount: number,
+  labelForLevel: (level: number) => string,
+): HutLadderReachPoint[] {
+  const points: HutLadderReachPoint[] = [];
+  for (let level = 0; level <= HUT_LADDER_MAX_LEVEL; level++) {
+    const players = counts[level] ?? 0;
+    const prev = level === 0 ? null : (counts[level - 1] ?? 0);
+    const stepKeepPct =
+      prev === null || prev === 0
+        ? null
+        : Math.round((1000 * players) / prev) / 10;
+    const stepDropPct =
+      stepKeepPct === null ? null : Math.round((1000 - stepKeepPct * 10)) / 10;
+    points.push({
+      level,
+      label: labelForLevel(level),
+      players,
+      pctOfStarted:
+        startedCount === 0
+          ? 0
+          : Math.round((1000 * players) / startedCount) / 10,
+      stepDropPct,
+      stepKeepPct,
+    });
+  }
+  return points;
+}
+
+/**
+ * Reach funnel: for each N in 0..10, how many cohort members have hut count ≥ N.
+ */
+export function computeHutLadderFunnel(
+  saves: HutLadderSaveRow[],
+  cohortDays: HutLadderCohortDays,
+  now: Date = new Date(),
+): HutLadderFunnel {
+  const cohort = filterHutLadderCohort(saves, cohortDays, now);
+  const startedCount = cohort.length;
+
+  const woodenCounts = Array.from({ length: HUT_LADDER_MAX_LEVEL + 1 }, () => 0);
+  const stoneCounts = Array.from({ length: HUT_LADDER_MAX_LEVEL + 1 }, () => 0);
+  let wooden10Count = 0;
+  let wooden10WithStone = 0;
+
+  for (const save of cohort) {
+    const wooden = buildingCount(save.game_state?.buildings, "woodenHut");
+    const stone = buildingCount(save.game_state?.buildings, "stoneHut");
+    for (let level = 0; level <= HUT_LADDER_MAX_LEVEL; level++) {
+      if (wooden >= level) woodenCounts[level]!++;
+      if (stone >= level) stoneCounts[level]!++;
+    }
+    if (wooden >= 10) {
+      wooden10Count++;
+      if (stone >= 1) wooden10WithStone++;
+    }
+  }
+
+  return {
+    cohortDays,
+    startedCount,
+    wooden: buildReachSeries(woodenCounts, startedCount, (level) =>
+      level === 0
+        ? "≥0 started"
+        : level === 1
+          ? "≥1 first"
+          : level === 10
+            ? "≥10 stone unlock"
+            : `≥${level}`,
+    ),
+    stone: buildReachSeries(stoneCounts, startedCount, (level) =>
+      level === 0
+        ? "≥0 started"
+        : level === 1
+          ? "≥1 (needs 10 wooden)"
+          : level === 10
+            ? "≥10 normal max"
+            : `≥${level}`,
+    ),
+    wooden10Count,
+    wooden10WithStone,
+  };
+}
+
+/** Chart rows: one point per level with both series for Recharts. */
+export function hutLadderReachChartData(funnel: HutLadderFunnel): Array<{
+  level: string;
+  wooden: number;
+  stone: number;
+}> {
+  return funnel.wooden.map((w, i) => ({
+    level: String(w.level),
+    wooden: w.players,
+    stone: funnel.stone[i]?.players ?? 0,
+  }));
+}
+
+export function hutLadderStepDropChartData(funnel: HutLadderFunnel): Array<{
+  level: string;
+  woodenDrop: number;
+  stoneDrop: number;
+}> {
+  return funnel.wooden.map((w, i) => ({
+    level: String(w.level),
+    woodenDrop: w.stepDropPct ?? 0,
+    stoneDrop: funnel.stone[i]?.stepDropPct ?? 0,
+  }));
+}

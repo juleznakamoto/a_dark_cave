@@ -19,6 +19,8 @@ describe("slimGameStateForAdmin", () => {
       social_media_rewards: { instagram: { claimed: true } },
       socialPromoExclusiveRewardPending: false,
       clothing: { gifted_ring: true, other: "ignored" },
+      flags: { gameStarted: true, villageUnlocked: true },
+      buildings: { woodenHut: 7, stoneHut: 0, cabin: 3 },
       resources: { gold: 9999 },
       story: { seen: { huge: true } },
     });
@@ -33,10 +35,14 @@ describe("slimGameStateForAdmin", () => {
       referralCount: 2,
       social_media_rewards: { instagram: { claimed: true } },
       clothing: { gifted_ring: true },
+      flags: { gameStarted: true },
+      buildings: { woodenHut: 7, stoneHut: 0 },
     });
     expect(slim).not.toHaveProperty("resources");
     expect(slim).not.toHaveProperty("story");
     expect(slim?.events).not.toHaveProperty("merchantArrives");
+    expect(slim?.flags).not.toHaveProperty("villageUnlocked");
+    expect(slim?.buildings).not.toHaveProperty("cabin");
   });
 
   it("returns null for missing state", () => {

@@ -224,22 +224,22 @@ export const villageBuildActions: Record<string, Action> = {
         "resources.wood": 500,
       },
       6: {
-        "resources.wood": 1000,
+        "resources.wood": 750,
       },
       7: {
-        "resources.wood": 2000,
+        "resources.wood": 1000,
       },
       8: {
-        "resources.wood": 3000,
+        "resources.wood": 1500,
       },
       9: {
-        "resources.wood": 4000,
+        "resources.wood": 2000,
       },
       10: {
-        "resources.wood": 5000,
+        "resources.wood": 2500,
       },
       11: {
-        "resources.wood": 7500,
+        "resources.wood": 5000,
       },
       12: {
         "resources.wood": 10000,

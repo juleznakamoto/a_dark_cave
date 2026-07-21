@@ -1,8 +1,19 @@
+import { useMemo, useState } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { LineChart, Line, BarChart, Bar, CartesianGrid, XAxis, YAxis, Legend, ResponsiveContainer } from "recharts";
+import { LineChart, Line, BarChart, Bar, CartesianGrid, XAxis, YAxis, Legend } from "recharts";
 import { ChartContainer, ChartTooltip, ChartTooltipContent } from "@/components/ui/chart";
 import { format, differenceInDays, subDays, startOfDay, endOfDay, isWithinInterval, parseISO } from "date-fns";
+import {
+  computeHutLadderFunnel,
+  hutLadderReachChartData,
+  hutLadderStepDropChartData,
+  type HutLadderCohortDays,
+} from "@shared/hutLadderAdminStats";
+import {
+  ChartTimeRangeSelectHutLadder,
+  hutLadderCohortTitleSuffix,
+} from "../adminChartTimeRange";
 
 const MAX_PLAYTIME_CHART_HOURS = 18;
 const MAX_PLAYTIME_CHART_MINUTES = MAX_PLAYTIME_CHART_HOURS * 60;
@@ -27,6 +38,28 @@ export default function ChurnTab(props: ChurnTabProps) {
     setSelectedCubeEvents,
     COLORS,
   } = props;
+
+  const [hutLadderDays, setHutLadderDays] = useState<HutLadderCohortDays>(60);
+
+  const hutLadderFunnel = useMemo(
+    () => computeHutLadderFunnel(gameSaves, hutLadderDays),
+    [gameSaves, hutLadderDays],
+  );
+  const hutReachChart = useMemo(
+    () => hutLadderReachChartData(hutLadderFunnel),
+    [hutLadderFunnel],
+  );
+  const hutDropChart = useMemo(
+    () => hutLadderStepDropChartData(hutLadderFunnel),
+    [hutLadderFunnel],
+  );
+  const wooden10StonePct =
+    hutLadderFunnel.wooden10Count > 0
+      ? Math.round(
+        (1000 * hutLadderFunnel.wooden10WithStone) /
+        hutLadderFunnel.wooden10Count,
+      ) / 10
+      : 0;
 
   const getCubeEventNumber = (eventId: string): number | null => {
     const match = eventId.match(/cube(\d+)/);
@@ -605,6 +638,190 @@ export default function ChurnTab(props: ChurnTabProps) {
 
   return (
     <div className="space-y-4">
+      <Card>
+        <CardHeader className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between space-y-0">
+          <div>
+            <CardTitle>Hut ladder — wooden → stone</CardTitle>
+            <CardDescription>
+              Reach funnel among gameStarted saves created in the{" "}
+              {hutLadderCohortTitleSuffix(hutLadderDays).toLowerCase()} (n=
+              {hutLadderFunnel.startedCount}). First stone hut unlocks at wooden
+              hut ≥10 (both modes). Cruel only raises caps 10→12.
+            </CardDescription>
+          </div>
+          <ChartTimeRangeSelectHutLadder
+            value={hutLadderDays}
+            onChange={setHutLadderDays}
+          />
+        </CardHeader>
+        <CardContent className="space-y-6">
+          <p className="text-sm text-muted-foreground">
+            Of players who reach wooden ≥10, {hutLadderFunnel.wooden10WithStone}/
+            {hutLadderFunnel.wooden10Count} ({wooden10StonePct}%) also have stone
+            ≥1 — the large “first stone” drop is mostly failing to finish the
+            wooden ladder, not failing the stone build.
+          </p>
+
+          <div>
+            <h3 className="text-sm font-medium mb-2">
+              Players reaching ≥N huts
+            </h3>
+            <ChartContainer
+              config={{
+                wooden: { label: "Wooden hut ≥N", color: COLORS[0] },
+                stone: { label: "Stone hut ≥N", color: COLORS[1] },
+              }}
+              className="h-[320px] w-full"
+            >
+              <BarChart data={hutReachChart}>
+                <CartesianGrid strokeDasharray="3 3" />
+                <XAxis
+                  dataKey="level"
+                  label={{
+                    value: "Hut count threshold",
+                    position: "insideBottom",
+                    offset: -2,
+                  }}
+                />
+                <YAxis
+                  allowDecimals={false}
+                  label={{
+                    value: "Players",
+                    angle: -90,
+                    position: "insideLeft",
+                  }}
+                />
+                <ChartTooltip content={<ChartTooltipContent />} />
+                <Legend />
+                <Bar dataKey="wooden" name="Wooden hut ≥N" fill={COLORS[0]} />
+                <Bar dataKey="stone" name="Stone hut ≥N" fill={COLORS[1]} />
+              </BarChart>
+            </ChartContainer>
+          </div>
+
+          <div>
+            <h3 className="text-sm font-medium mb-2">
+              Step drop-off at each hut (%)
+            </h3>
+            <ChartContainer
+              config={{
+                woodenDrop: {
+                  label: "Wooden step drop %",
+                  color: COLORS[2] ?? COLORS[0],
+                },
+                stoneDrop: {
+                  label: "Stone step drop %",
+                  color: COLORS[3] ?? COLORS[1],
+                },
+              }}
+              className="h-[280px] w-full"
+            >
+              <BarChart data={hutDropChart}>
+                <CartesianGrid strokeDasharray="3 3" />
+                <XAxis dataKey="level" />
+                <YAxis
+                  unit="%"
+                  label={{
+                    value: "Drop vs previous (%)",
+                    angle: -90,
+                    position: "insideLeft",
+                  }}
+                />
+                <ChartTooltip content={<ChartTooltipContent />} />
+                <Legend />
+                <Bar
+                  dataKey="woodenDrop"
+                  name="Wooden step drop %"
+                  fill={COLORS[2] ?? COLORS[0]}
+                />
+                <Bar
+                  dataKey="stoneDrop"
+                  name="Stone step drop %"
+                  fill={COLORS[3] ?? COLORS[1]}
+                />
+              </BarChart>
+            </ChartContainer>
+            <p className="text-xs text-muted-foreground mt-2">
+              Level 0 is the baseline (0% drop). Stone’s large 0→1 bar is the
+              wooden ≥10 unlock filter.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+            <div className="overflow-x-auto">
+              <h3 className="text-sm font-medium mb-2">Wooden hut reach</h3>
+              <table className="w-full text-sm">
+                <thead>
+                  <tr className="border-b text-left text-muted-foreground">
+                    <th className="py-1.5 pr-2 font-medium">Own</th>
+                    <th className="py-1.5 pr-2 font-medium">Players</th>
+                    <th className="py-1.5 pr-2 font-medium">% started</th>
+                    <th className="py-1.5 pr-2 font-medium">Step drop</th>
+                    <th className="py-1.5 font-medium">Keep</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {hutLadderFunnel.wooden.map((row) => (
+                    <tr key={`wh-${row.level}`} className="border-b border-border/60">
+                      <td className="py-1.5 pr-2">{row.label}</td>
+                      <td className="py-1.5 pr-2 tabular-nums">{row.players}</td>
+                      <td className="py-1.5 pr-2 tabular-nums">
+                        {row.pctOfStarted.toFixed(1)}%
+                      </td>
+                      <td className="py-1.5 pr-2 tabular-nums">
+                        {row.stepDropPct === null
+                          ? "—"
+                          : `−${row.stepDropPct.toFixed(1)}%`}
+                      </td>
+                      <td className="py-1.5 tabular-nums">
+                        {row.stepKeepPct === null
+                          ? "—"
+                          : `${row.stepKeepPct.toFixed(1)}%`}
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+            <div className="overflow-x-auto">
+              <h3 className="text-sm font-medium mb-2">Stone hut reach</h3>
+              <table className="w-full text-sm">
+                <thead>
+                  <tr className="border-b text-left text-muted-foreground">
+                    <th className="py-1.5 pr-2 font-medium">Own</th>
+                    <th className="py-1.5 pr-2 font-medium">Players</th>
+                    <th className="py-1.5 pr-2 font-medium">% started</th>
+                    <th className="py-1.5 pr-2 font-medium">Step drop</th>
+                    <th className="py-1.5 font-medium">Keep</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {hutLadderFunnel.stone.map((row) => (
+                    <tr key={`sh-${row.level}`} className="border-b border-border/60">
+                      <td className="py-1.5 pr-2">{row.label}</td>
+                      <td className="py-1.5 pr-2 tabular-nums">{row.players}</td>
+                      <td className="py-1.5 pr-2 tabular-nums">
+                        {row.pctOfStarted.toFixed(1)}%
+                      </td>
+                      <td className="py-1.5 pr-2 tabular-nums">
+                        {row.stepDropPct === null
+                          ? "—"
+                          : `−${row.stepDropPct.toFixed(1)}%`}
+                      </td>
+                      <td className="py-1.5 tabular-nums">
+                        {row.stepKeepPct === null
+                          ? "—"
+                          : `${row.stepKeepPct.toFixed(1)}%`}
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+
       <div className="flex items-center gap-4 mb-4">
         <label className="text-sm font-medium">
           Churn definition (inactive for at least):

@@ -42,6 +42,27 @@ export function slimGameStateForAdmin(
     }
   }
 
+  const flags = gs.flags;
+  let slimFlags: { gameStarted?: boolean } | undefined;
+  if (flags && typeof flags === "object") {
+    if ((flags as Record<string, unknown>).gameStarted === true) {
+      slimFlags = { gameStarted: true };
+    }
+  }
+
+  const buildings = gs.buildings;
+  let slimBuildings: { woodenHut?: number; stoneHut?: number } | undefined;
+  if (buildings && typeof buildings === "object") {
+    const b = buildings as Record<string, unknown>;
+    const woodenHut = typeof b.woodenHut === "number" ? b.woodenHut : undefined;
+    const stoneHut = typeof b.stoneHut === "number" ? b.stoneHut : undefined;
+    if (woodenHut !== undefined || stoneHut !== undefined) {
+      slimBuildings = {};
+      if (woodenHut !== undefined) slimBuildings.woodenHut = woodenHut;
+      if (stoneHut !== undefined) slimBuildings.stoneHut = stoneHut;
+    }
+  }
+
   const slim: Record<string, unknown> = {
     playTime: gs.playTime,
     gameComplete: gs.gameComplete,
@@ -56,6 +77,12 @@ export function slimGameStateForAdmin(
     socialPromoExclusiveRewardPending: gs.socialPromoExclusiveRewardPending,
   };
 
+  if (slimFlags) {
+    slim.flags = slimFlags;
+  }
+  if (slimBuildings) {
+    slim.buildings = slimBuildings;
+  }
   if (slimClothing) {
     slim.clothing = slimClothing;
   }
