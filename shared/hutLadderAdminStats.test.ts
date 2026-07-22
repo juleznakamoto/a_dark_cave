@@ -11,11 +11,13 @@ function save(opts: {
   gameStarted?: boolean;
   woodenHut?: number;
   stoneHut?: number;
+  referralProcessed?: boolean;
 }) {
   return {
     created_at: opts.created_at,
     game_state: {
       flags: { gameStarted: opts.gameStarted ?? true },
+      referralProcessed: opts.referralProcessed,
       buildings: {
         woodenHut: opts.woodenHut ?? 0,
         stoneHut: opts.stoneHut ?? 0,
@@ -27,7 +29,7 @@ function save(opts: {
 describe("hutLadderAdminStats", () => {
   const now = new Date("2026-07-21T12:00:00.000Z");
 
-  it("filters to gameStarted within cohort window", () => {
+  it("filters to gameStarted within cohort window and drops referrals", () => {
     const saves = [
       save({ created_at: "2026-07-20T00:00:00.000Z", woodenHut: 3 }),
       save({
@@ -39,6 +41,11 @@ describe("hutLadderAdminStats", () => {
         created_at: "2026-07-19T00:00:00.000Z",
         gameStarted: false,
         woodenHut: 10,
+      }),
+      save({
+        created_at: "2026-07-20T00:00:00.000Z",
+        woodenHut: 0,
+        referralProcessed: true,
       }),
     ];
     const cohort = filterHutLadderCohort(saves, 7, now);

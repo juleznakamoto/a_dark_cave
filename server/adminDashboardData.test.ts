@@ -21,6 +21,7 @@ describe("slimGameStateForAdmin", () => {
       clothing: { gifted_ring: true, other: "ignored" },
       flags: { gameStarted: true, villageUnlocked: true },
       buildings: { woodenHut: 7, stoneHut: 0, cabin: 3 },
+      referralProcessed: true,
       resources: { gold: 9999 },
       story: { seen: { huge: true } },
     });
@@ -37,6 +38,7 @@ describe("slimGameStateForAdmin", () => {
       clothing: { gifted_ring: true },
       flags: { gameStarted: true },
       buildings: { woodenHut: 7, stoneHut: 0 },
+      referralProcessed: true,
     });
     expect(slim).not.toHaveProperty("resources");
     expect(slim).not.toHaveProperty("story");

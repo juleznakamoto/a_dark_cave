@@ -614,10 +614,11 @@ export default function ChurnTab(props: ChurnTabProps) {
           <div>
             <CardTitle>Hut ladder — wooden → stone</CardTitle>
             <CardDescription>
-              Reach funnel among gameStarted saves created in the{" "}
+              Reach funnel among non-referred gameStarted saves created in the{" "}
               {hutLadderCohortTitleSuffix(hutLadderDays).toLowerCase()} (n=
-              {hutLadderFunnel.startedCount}). First stone hut unlocks at wooden
-              hut ≥10 (both modes). Cruel only raises caps 10→12.
+              {hutLadderFunnel.startedCount}). Referred accounts excluded
+              (bonus-farm noise). First stone hut unlocks at wooden hut ≥10
+              (both modes). Cruel only raises caps 10→12.
             </CardDescription>
           </div>
           <ChartTimeRangeSelectHutLadder

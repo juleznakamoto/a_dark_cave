@@ -7,7 +7,7 @@ export const ADMIN_DATA_CLICKS_LIMIT = 10_000;
 export const ADMIN_DATA_SAVES_LIMIT = 10_000;
 export const ADMIN_SAVE_ANALYSIS_LIMIT = 100;
 /** Bump when slimGameStateForAdmin shape changes so clients can bust cache. */
-export const ADMIN_SAVES_SLIM_VERSION = 2;
+export const ADMIN_SAVES_SLIM_VERSION = 3;
 export const PURCHASES_LIST_COLUMNS =
   "user_id,item_id,item_name,price_paid,purchased_at,bundle_id,country,cruel_mode,currency,stripe_payment_intent_id,stripe_fx_quote_id,reporting_eur_cents,reporting_usd_cents,payment_type";
 
@@ -78,6 +78,11 @@ export function slimGameStateForAdmin(
     social_media_rewards: gs.social_media_rewards,
     socialPromoExclusiveRewardPending: gs.socialPromoExclusiveRewardPending,
   };
+
+  // Hut-ladder cohort excludes referred accounts (bonus-farm / self-refer stubs).
+  if (gs.referralProcessed === true) {
+    slim.referralProcessed = true;
+  }
 
   if (slimFlags) {
     slim.flags = slimFlags;

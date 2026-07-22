@@ -1,6 +1,9 @@
 /**
  * Admin hut-ladder funnel: reach ≥N wooden/stone huts among gameStarted saves.
  * First stone hut unlocks at woodenHut ≥ 10 (normal and cruel).
+ *
+ * Referred players (`referralProcessed`) are excluded — many only Make Fire to
+ * grant the referrer bonus, which inflates early wooden-hut drop-off.
  */
 
 export const HUT_LADDER_MAX_LEVEL = 10;
@@ -11,6 +14,8 @@ export type HutLadderSaveRow = {
   created_at?: string | null;
   game_state?: {
     flags?: { gameStarted?: boolean };
+    /** Set when this account was created via a referral link. */
+    referralProcessed?: boolean;
     buildings?: {
       woodenHut?: number;
       stoneHut?: number;
@@ -53,6 +58,10 @@ export function isGameStartedSave(save: HutLadderSaveRow): boolean {
   return save.game_state?.flags?.gameStarted === true;
 }
 
+export function isReferredSave(save: HutLadderSaveRow): boolean {
+  return save.game_state?.referralProcessed === true;
+}
+
 export function filterHutLadderCohort(
   saves: HutLadderSaveRow[],
   cohortDays: HutLadderCohortDays,
@@ -61,6 +70,7 @@ export function filterHutLadderCohort(
   const cutoffMs = now.getTime() - cohortDays * 24 * 60 * 60 * 1000;
   return saves.filter((save) => {
     if (!isGameStartedSave(save)) return false;
+    if (isReferredSave(save)) return false;
     if (!save.created_at) return false;
     const created = Date.parse(save.created_at);
     if (!Number.isFinite(created)) return false;

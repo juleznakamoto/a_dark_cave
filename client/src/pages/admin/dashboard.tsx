@@ -446,8 +446,8 @@ export default function AdminDashboard() {
           break;
         }
         case "saves": {
-          // cache: no-store — hut-ladder needs flags/buildings in slim payload (v2+)
-          const response = await fetch(`/api/admin/saves?${query}&slim=2`, {
+          // cache: no-store — hut-ladder needs flags/buildings/referralProcessed (slim v3+)
+          const response = await fetch(`/api/admin/saves?${query}&slim=3`, {
             cache: "no-store",
           });
           if (!response.ok) {
@@ -565,18 +565,23 @@ export default function AdminDashboard() {
     ensureSectionsLoaded,
   ]);
 
-  // One-shot refetch when saves were cached before slim v2 (flags/buildings for hut ladder).
+  // One-shot refetch when saves were cached before slim v3 (hut + referralProcessed).
   useEffect(() => {
     if (!isAuthorized || loading || hutLadderSavesRefetchRef.current) return;
-    if (!loadedSections.has("saves") || rawGameSaves.length === 0) return;
-    const hasHutFields = rawGameSaves.some(
-      (s) =>
-        s?.game_state?.flags?.gameStarted === true ||
-        typeof s?.game_state?.buildings?.woodenHut === "number" ||
-        typeof s?.game_state?.buildings?.stoneHut === "number",
-    );
-    if (hasHutFields) return;
+    if (!loadedSections.has("saves")) return;
+    const slimKey = "adminSavesSlimVersion";
+    const storedSlim = Number(sessionStorage.getItem(slimKey) || 0);
+    const hasHutFields =
+      rawGameSaves.length > 0 &&
+      rawGameSaves.some(
+        (s) =>
+          s?.game_state?.flags?.gameStarted === true ||
+          typeof s?.game_state?.buildings?.woodenHut === "number" ||
+          typeof s?.game_state?.buildings?.stoneHut === "number",
+      );
+    if (storedSlim >= 3 && hasHutFields) return;
     hutLadderSavesRefetchRef.current = true;
+    sessionStorage.setItem(slimKey, "3");
     loadedSectionsRef.current.delete("saves");
     setLoadedSections(new Set(loadedSectionsRef.current));
     void ensureSectionsLoaded(["saves"]);
