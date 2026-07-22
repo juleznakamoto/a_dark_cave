@@ -17,6 +17,14 @@ export type ChurnRateDayPoint = {
   eligibleCount: number;
 };
 
+/** Row shape from `admin_churn_rate_over_time` RPC (snake_case). */
+export type ChurnRateRpcRow = {
+  day: string;
+  churn_rate: number | string;
+  churned_count: number | string;
+  eligible_count: number | string;
+};
+
 const MONTH_LABELS = [
   "Jan",
   "Feb",
@@ -36,7 +44,7 @@ function endOfLocalDay(year: number, month: number, day: number): Date {
   return new Date(year, month, day, 23, 59, 59, 999);
 }
 
-function dayLabel(
+function dayLabelFromParts(
   year: number,
   month: number,
   day: number,
@@ -45,6 +53,44 @@ function dayLabel(
   const monthName = MONTH_LABELS[month] ?? "Jan";
   if (compact) return `${monthName} ${day}`;
   return `${monthName} ${String(day).padStart(2, "0")}`;
+}
+
+/** Format an ISO date (`YYYY-MM-DD` or timestamptz) for the churn chart axis. */
+export function formatChurnRateDayLabel(
+  isoDay: string,
+  windowDays: number,
+): string {
+  const compact = windowDays > 90;
+  // Prefer calendar date from the string to avoid TZ shifting the day.
+  const m = /^(\d{4})-(\d{2})-(\d{2})/.exec(isoDay);
+  if (m) {
+    return dayLabelFromParts(
+      Number(m[1]),
+      Number(m[2]) - 1,
+      Number(m[3]),
+      compact,
+    );
+  }
+  const d = new Date(isoDay);
+  if (!Number.isFinite(d.getTime())) return isoDay;
+  return dayLabelFromParts(
+    d.getUTCFullYear(),
+    d.getUTCMonth(),
+    d.getUTCDate(),
+    compact,
+  );
+}
+
+export function mapChurnRateRpcRows(
+  rows: ChurnRateRpcRow[],
+  windowDays: number,
+): ChurnRateDayPoint[] {
+  return rows.map((row) => ({
+    day: formatChurnRateDayLabel(String(row.day), windowDays),
+    churnRate: Math.round(Number(row.churn_rate) || 0),
+    churnedCount: Math.round(Number(row.churned_count) || 0),
+    eligibleCount: Math.round(Number(row.eligible_count) || 0),
+  }));
 }
 
 export function hasGameEndingEvents(
@@ -57,13 +103,15 @@ export function hasGameEndingEvents(
 /**
  * Daily churn % for the last `windowDays` (inclusive of today).
  *
+ * Prefer the DB RPC `admin_churn_rate_over_time` in the admin dashboard —
+ * this client-side path remains for unit tests / fallback.
+ *
  * Among non-referred saves with created_at ≤ end of calendar day D:
  *   churned = !game-ending && updated_at < end of (D − churnDays)
  *   rate = churned / eligible
  *
  * Uses current save.updated_at (no historical activity log). Returners look
- * “never churned” on earlier days. Does **not** require click data — recent
- * click samples caused a flat 0% early in the window (survivorship bias).
+ * “never churned” on earlier days.
  */
 export function computeChurnRateOverTime(
   saves: ChurnRateSaveRow[],
@@ -120,7 +168,7 @@ export function computeChurnRateOverTime(
     }
 
     points.push({
-      day: dayLabel(
+      day: dayLabelFromParts(
         dayEnd.getFullYear(),
         dayEnd.getMonth(),
         dayEnd.getDate(),

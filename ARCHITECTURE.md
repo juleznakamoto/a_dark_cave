@@ -388,7 +388,7 @@ rate-limited `/api/*` routes.
 | `/api/marketing/*` | `marketing.ts` | Email prefs, unsubscribe |
 | `/api/leaderboard/*`, `/api/account/*`, `/api/session/ping` | inline + Supabase | Leaderboard, account deletion, session heartbeat |
 | `/api/gender` | proxies `services/gender-service/app.py` | First-name gender for marketing CSVs |
-| `/api/admin/*` | inline + `server/adminDashboardData.ts` | Admin dashboard: split endpoints (`metrics`, `dau`, `saves`, `save-analysis`, `clicks`, `purchases`); Resend marketing CSV download + sync; saves return slim `game_state` projection; `save-analysis` runs `shared/saveGameAnalysis.ts` on last 100 full saves (integrity + `clientBuildSha` vs published build via `server/publishedBuildSha.ts` â€” prod fetches `a-dark-cave.com/api/version` â€” + V1/V2 `game_state_v2` compare: `mismatch` / `v2_stale` / `shape_drift` / `expected_noise`; lazy-loaded tab) |
+| `/api/admin/*` | inline + `server/adminDashboardData.ts` | Admin dashboard: split endpoints (`metrics`, `dau`, `saves`, `churn-rate`, `save-analysis`, `clicks`, `purchases`); Resend marketing CSV download + sync; saves return slim `game_state` projection (paginated past PostgREST max_rows); `churn-rate` calls `admin_churn_rate_over_time` RPC; `save-analysis` runs `shared/saveGameAnalysis.ts` on last 100 full saves (integrity + `clientBuildSha` vs published build via `server/publishedBuildSha.ts` — prod fetches `a-dark-cave.com/api/version` — + V1/V2 `game_state_v2` compare: `mismatch` / `v2_stale` / `shape_drift` / `expected_noise`; lazy-loaded tab) |
 | `/api/config` | inline | Public Supabase keys |
 | `/api/version` | inline | Deploy build sha + semver (`no-store`; client compares against `__BUILD_SHA__`) |
 

@@ -1,5 +1,9 @@
 import { describe, expect, it } from "vitest";
-import { computeChurnRateOverTime } from "./churnRateAdminStats";
+import {
+  computeChurnRateOverTime,
+  formatChurnRateDayLabel,
+  mapChurnRateRpcRows,
+} from "./churnRateAdminStats";
 
 describe("computeChurnRateOverTime", () => {
   const now = new Date(2026, 6, 22, 15, 0, 0); // local Jul 22 2026
@@ -115,5 +119,45 @@ describe("computeChurnRateOverTime", () => {
     expect(series[0]?.eligibleCount).toBe(2);
     expect(series[0]?.churnedCount).toBe(1);
     expect(series[0]?.churnRate).toBe(50);
+  });
+});
+
+describe("mapChurnRateRpcRows", () => {
+  it("maps snake_case RPC rows to chart points with axis labels", () => {
+    const points = mapChurnRateRpcRows(
+      [
+        {
+          day: "2026-07-01",
+          churn_rate: 42,
+          churned_count: 100,
+          eligible_count: 240,
+        },
+        {
+          day: "2026-07-22",
+          churn_rate: "67",
+          churned_count: "200",
+          eligible_count: "300",
+        },
+      ],
+      30,
+    );
+    expect(points).toEqual([
+      {
+        day: "Jul 01",
+        churnRate: 42,
+        churnedCount: 100,
+        eligibleCount: 240,
+      },
+      {
+        day: "Jul 22",
+        churnRate: 67,
+        churnedCount: 200,
+        eligibleCount: 300,
+      },
+    ]);
+  });
+
+  it("uses compact labels for long windows", () => {
+    expect(formatChurnRateDayLabel("2026-07-22", 180)).toBe("Jul 22");
   });
 });

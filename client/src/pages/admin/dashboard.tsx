@@ -446,8 +446,8 @@ export default function AdminDashboard() {
           break;
         }
         case "saves": {
-          // cache: no-store — hut-ladder needs flags/buildings/referralProcessed (slim v3+)
-          const response = await fetch(`/api/admin/saves?${query}&slim=3`, {
+          // cache: no-store — hut-ladder + full save set (paginated past PostgREST max_rows)
+          const response = await fetch(`/api/admin/saves?${query}&slim=4`, {
             cache: "no-store",
           });
           if (!response.ok) {
@@ -565,7 +565,8 @@ export default function AdminDashboard() {
     ensureSectionsLoaded,
   ]);
 
-  // One-shot refetch when saves were cached before slim v3 (hut + referralProcessed).
+  // One-shot refetch when saves were cached before slim v4 (paginated past
+  // PostgREST max_rows so churn / hut ladder see the full year of saves).
   useEffect(() => {
     if (!isAuthorized || loading || hutLadderSavesRefetchRef.current) return;
     if (!loadedSections.has("saves")) return;
@@ -579,9 +580,9 @@ export default function AdminDashboard() {
           typeof s?.game_state?.buildings?.woodenHut === "number" ||
           typeof s?.game_state?.buildings?.stoneHut === "number",
       );
-    if (storedSlim >= 3 && hasHutFields) return;
+    if (storedSlim >= 4 && hasHutFields) return;
     hutLadderSavesRefetchRef.current = true;
-    sessionStorage.setItem(slimKey, "3");
+    sessionStorage.setItem(slimKey, "4");
     loadedSectionsRef.current.delete("saves");
     setLoadedSections(new Set(loadedSectionsRef.current));
     void ensureSectionsLoaded(["saves"]);
@@ -1615,6 +1616,7 @@ export default function AdminDashboard() {
                     selectedCubeEvents={selectedCubeEvents}
                     setSelectedCubeEvents={setSelectedCubeEvents}
                     COLORS={COLORS}
+                    environment={environment}
                   />,
                 )}
               </TabsContent>

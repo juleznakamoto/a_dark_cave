@@ -6,8 +6,10 @@
 export const ADMIN_DATA_CLICKS_LIMIT = 10_000;
 export const ADMIN_DATA_SAVES_LIMIT = 10_000;
 export const ADMIN_SAVE_ANALYSIS_LIMIT = 100;
+/** PostgREST max_rows is typically 1000 — page with .range(), never rely on .limit(>1000). */
+export const ADMIN_DATA_PAGE_SIZE = 1000;
 /** Bump when slimGameStateForAdmin shape changes so clients can bust cache. */
-export const ADMIN_SAVES_SLIM_VERSION = 3;
+export const ADMIN_SAVES_SLIM_VERSION = 4;
 export const PURCHASES_LIST_COLUMNS =
   "user_id,item_id,item_name,price_paid,purchased_at,bundle_id,country,cruel_mode,currency,stripe_payment_intent_id,stripe_fx_quote_id,reporting_eur_cents,reporting_usd_cents,payment_type";
 
@@ -118,17 +120,36 @@ export async function fetchAdminClicks(
     typeof import("./supabaseServerClient").createServerSupabaseClient
   >,
 ) {
-  const { data, error } = await adminClient
-    .from("button_clicks")
-    .select("user_id,timestamp,clicks,resources")
-    .gte("timestamp", thirtyDaysAgoFilter())
-    .order("timestamp", { ascending: false })
-    .limit(ADMIN_DATA_CLICKS_LIMIT);
+  const all: Record<string, unknown>[] = [];
+  let offset = 0;
 
-  if (error) {
-    throw error;
+  while (all.length < ADMIN_DATA_CLICKS_LIMIT) {
+    const pageEnd = Math.min(
+      offset + ADMIN_DATA_PAGE_SIZE,
+      ADMIN_DATA_CLICKS_LIMIT,
+    );
+    const { data, error } = await adminClient
+      .from("button_clicks")
+      .select("user_id,timestamp,clicks,resources")
+      .gte("timestamp", thirtyDaysAgoFilter())
+      .order("timestamp", { ascending: false })
+      .order("user_id", { ascending: true })
+      .range(offset, pageEnd - 1);
+
+    if (error) {
+      throw error;
+    }
+    if (!data || data.length === 0) {
+      break;
+    }
+    all.push(...data);
+    if (data.length < pageEnd - offset) {
+      break;
+    }
+    offset += data.length;
   }
-  return data ?? [];
+
+  return all;
 }
 
 export async function fetchAdminSavesSlim(
@@ -136,18 +157,47 @@ export async function fetchAdminSavesSlim(
     typeof import("./supabaseServerClient").createServerSupabaseClient
   >,
 ) {
-  const { data, error } = await adminClient
-    .from("game_saves")
-    .select("user_id,username,game_state,game_stats,updated_at,created_at")
-    .or(`created_at.gte.${oneYearAgoFilter()},updated_at.gte.${oneYearAgoFilter()}`)
-    .order("updated_at", { ascending: false })
-    .limit(ADMIN_DATA_SAVES_LIMIT);
+  // Paginate: PostgREST silently caps a single response at max_rows (~1000).
+  // A plain .limit(10000) only returned the 1000 most-recently-updated saves,
+  // which zeroed early "Churn Rate Over Time" (survivorship bias).
+  const all: Array<{
+    user_id: string | null;
+    username: string | null;
+    game_state: unknown;
+    game_stats: unknown;
+    updated_at: string;
+    created_at: string;
+  }> = [];
+  let offset = 0;
+  const yearFilter = oneYearAgoFilter();
 
-  if (error) {
-    throw error;
+  while (all.length < ADMIN_DATA_SAVES_LIMIT) {
+    const pageEnd = Math.min(
+      offset + ADMIN_DATA_PAGE_SIZE,
+      ADMIN_DATA_SAVES_LIMIT,
+    );
+    const { data, error } = await adminClient
+      .from("game_saves")
+      .select("user_id,username,game_state,game_stats,updated_at,created_at")
+      .or(`created_at.gte.${yearFilter},updated_at.gte.${yearFilter}`)
+      .order("updated_at", { ascending: false })
+      .order("user_id", { ascending: true })
+      .range(offset, pageEnd - 1);
+
+    if (error) {
+      throw error;
+    }
+    if (!data || data.length === 0) {
+      break;
+    }
+    all.push(...data);
+    if (data.length < pageEnd - offset) {
+      break;
+    }
+    offset += data.length;
   }
 
-  return (data ?? []).map((row) => ({
+  return all.map((row) => ({
     ...row,
     game_state: slimGameStateForAdmin(row.game_state),
   }));
@@ -213,7 +263,7 @@ export async function fetchAdminPurchases(
     typeof import("./supabaseServerClient").createServerSupabaseClient
   >,
 ) {
-  const PURCHASES_PAGE_SIZE = 1000;
+  const PURCHASES_PAGE_SIZE = ADMIN_DATA_PAGE_SIZE;
   const allPurchases: Record<string, unknown>[] = [];
   let purchaseOffset = 0;
 
@@ -393,4 +443,40 @@ export async function fetchAdminMetrics(
     purchaseMetrics,
     referralMetrics,
   };
+}
+
+export type AdminChurnRateRow = {
+  day: string;
+  churn_rate: number;
+  churned_count: number;
+  eligible_count: number;
+};
+
+/** DB aggregate for Churn Rate Over Time — avoids shipping all saves to the client. */
+export async function fetchAdminChurnRateOverTime(
+  adminClient: ReturnType<
+    typeof import("./supabaseServerClient").createServerSupabaseClient
+  >,
+  churnDays: number,
+  windowDays: number,
+): Promise<AdminChurnRateRow[]> {
+  const { data, error } = await adminClient.rpc("admin_churn_rate_over_time", {
+    p_churn_days: churnDays,
+    p_window_days: windowDays,
+  });
+
+  if (error) {
+    throw error;
+  }
+
+  if (!Array.isArray(data)) {
+    return [];
+  }
+
+  return data.map((row: Record<string, unknown>) => ({
+    day: String(row.day ?? ""),
+    churn_rate: Number(row.churn_rate) || 0,
+    churned_count: Number(row.churned_count) || 0,
+    eligible_count: Number(row.eligible_count) || 0,
+  }));
 }
