@@ -436,6 +436,13 @@ describe("TimedEventPanel gold shop badge", () => {
         ...state.resources,
         gold: 10,
       },
+      story: {
+        ...state.story,
+        seen: {
+          ...state.story.seen,
+          traderSettled: true,
+        },
+      },
       timedEventTab: {
         isActive: true,
         event: {
@@ -479,12 +486,64 @@ describe("TimedEventPanel gold shop badge", () => {
     expect(applyEventChoice).not.toHaveBeenCalled();
   });
 
+  it("does not show a buy-gold badge before the trader has settled", () => {
+    useGameStore.setState((state) => ({
+      ...state,
+      resources: {
+        ...state.resources,
+        gold: 10,
+      },
+      story: {
+        ...state.story,
+        seen: {
+          ...state.story.seen,
+          traderSettled: false,
+        },
+      },
+      traderDialogOpens: 0,
+      timedEventTab: {
+        isActive: true,
+        event: {
+          id: "test_gold_event-1",
+          eventId: "test_gold_event",
+          title: "Costly Offer",
+          message: "Pay gold?",
+          choices: [
+            {
+              id: "buy",
+              label: "Buy the ring",
+              cost: "100 Gold",
+              sellResource: "gold",
+              sellAmount: 100,
+              effect: () => ({}),
+            },
+          ],
+        },
+        expiryTime: Date.now() + 60_000,
+        startTime: Date.now() - 2_000,
+      },
+    }));
+
+    act(() => {
+      render(<TimedEventPanel />);
+    });
+
+    expect(screen.queryByTestId("timedevent-buy-buy-gold")).toBeNull();
+  });
+
   it("does not show a buy-gold badge when the player can afford the gold cost", () => {
     useGameStore.setState((state) => ({
       ...state,
       resources: {
         ...state.resources,
         gold: 200,
+      },
+      story: {
+        ...state.story,
+        seen: {
+          ...state.story.seen,
+          traderSettled: true,
+        },
       },
       timedEventTab: {
         isActive: true,

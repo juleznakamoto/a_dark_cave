@@ -20,6 +20,7 @@ import {
 import { cn } from "@/lib/utils";
 import { Plus } from "lucide-react";
 import { TooltipWrapper } from "@/components/game/TooltipWrapper";
+import { isTraderShopUnlocked } from "@/game/stateHelpers";
 import { getMerchantTradeEffectTooltipLine } from "@/game/rules/eventsMerchant";
 import { EventChoice, type LogEntry } from "@/game/rules/events";
 import { logger } from "@/lib/logger";
@@ -524,6 +525,7 @@ export default function TimedEventPanel() {
               const showGoldShopBadge =
                 !isPurchased &&
                 timeRemaining > 0 &&
+                isTraderShopUnlocked(gameState) &&
                 affordance.costs.some((c) => c.resource === "gold") &&
                 affordance.individualAffordance.gold === false;
 
