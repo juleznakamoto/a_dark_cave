@@ -231,7 +231,7 @@
     "awake": "Vous êtes réveillé !",
     "wakingIn": "Réveil dans : {{time}}",
     "villageProduction": "Production du village : {{percent}}%",
-    "wake": "Se réveiller",
+    "wake": "Se réveiller maintenant",
     "getUp": "Se lever",
     "focusGainedLog": "Vous avez gagné {{count}} de concentration grâce à votre repos.",
     "villagersProducedLog": "Les villageois ont produit : {{resources}}"

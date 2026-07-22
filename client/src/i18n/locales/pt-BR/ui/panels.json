@@ -231,7 +231,7 @@
     "awake": "Você está acordado!",
     "wakingIn": "Acordando em: {{time}}",
     "villageProduction": "Produção da vila: {{percent}}%",
-    "wake": "Acordar",
+    "wake": "Acordar agora",
     "getUp": "Levantar",
     "focusGainedLog": "Você ganhou {{count}} de Foco com seu descanso.",
     "villagersProducedLog": "Os aldeões produziram: {{resources}}"

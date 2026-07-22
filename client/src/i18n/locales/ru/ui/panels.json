@@ -231,7 +231,7 @@
     "awake": "Вы проснулись!",
     "wakingIn": "Пробуждение через: {{time}}",
     "villageProduction": "Производство деревни: {{percent}}%",
-    "wake": "Проснуться",
+    "wake": "Проснуться сейчас",
     "getUp": "Встать",
     "focusGainedLog": "Вы получили {{count}} фокуса за отдых.",
     "villagersProducedLog": "Жители произвели: {{resources}}"

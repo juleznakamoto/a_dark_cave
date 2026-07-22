@@ -231,7 +231,7 @@
     "awake": "你已醒来！",
     "wakingIn": "醒来倒计时：{{time}}",
     "villageProduction": "村庄产量：{{percent}}%",
-    "wake": "醒来",
+    "wake": "现在醒来",
     "getUp": "起床",
     "focusGainedLog": "你通过休息获得了 {{count}} 点专注。",
     "villagersProducedLog": "村民生产了：{{resources}}"
