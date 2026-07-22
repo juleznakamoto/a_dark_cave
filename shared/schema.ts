@@ -453,6 +453,7 @@ export const gameStateSchema = z.object({
       bloodiedAwakening: z.boolean().default(false),
       desperateAmputation: z.boolean().default(false),
       mercenaryDemand: z.boolean().default(false),
+      mercenaryReturnDemand: z.boolean().default(false),
     })
     .default({}),
   effects: z

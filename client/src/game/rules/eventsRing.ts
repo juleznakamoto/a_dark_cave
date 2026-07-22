@@ -1,9 +1,94 @@
 // estate 1, stone hut 4, 5
 
-import { GameEvent, calculateSuccessChance } from "./events";
+import { EventChoice, GameEvent, calculateSuccessChance } from "./events";
 import { GameState } from "@shared/schema";
 import { killVillagers } from "@/game/stateHelpers";
 import { cruelModeScale } from "../cruelMode";
+
+const mercenaryDemandRefuse: EventChoice = {
+  id: "refuse",
+  relevant_stats: ["strength"],
+  success_chance: (state: GameState) => {
+    return calculateSuccessChance(state, 0.1, {
+      type: "strength",
+      multiplier: 0.005,
+    });
+  },
+  effect: (state: GameState) => {
+    const success =
+      Math.random() <
+      calculateSuccessChance(state, 0.1, {
+        type: "strength",
+        multiplier: 0.005,
+      });
+
+    if (success) {
+      return {
+        events: {
+          ...state.events,
+          mercenaryDemand: true,
+        },
+        _logMessageKey: "outcome1",
+      };
+    }
+
+    const deaths = 18 + 6 * cruelModeScale(state);
+    const deathResult = killVillagers(state, deaths);
+    return {
+      ...deathResult,
+      events: {
+        ...state.events,
+        mercenaryDemand: true,
+      },
+      _logMessageKey: "outcome2",
+      _logMessageVars: {
+        deaths: deathResult.villagersKilled ?? deaths,
+      },
+    };
+  },
+};
+
+const mercenaryReturnDemandRefuse: EventChoice = {
+  id: "refuse",
+  relevant_stats: ["strength"],
+  success_chance: (state: GameState) => {
+    return calculateSuccessChance(state, 0.1, {
+      type: "strength",
+      multiplier: 0.005,
+    });
+  },
+  effect: (state: GameState) => {
+    const successChance = calculateSuccessChance(state, 0.0, {
+      type: "strength",
+      multiplier: 0.005,
+    });
+    const success = Math.random() < successChance;
+
+    if (success) {
+      return {
+        events: {
+          ...state.events,
+          mercenaryReturnDemand: true,
+        },
+        _logMessageKey: "outcome1",
+      };
+    }
+
+    const deaths = 24 + 6 * cruelModeScale(state);
+    const deathResult = killVillagers(state, deaths);
+    return {
+      ...deathResult,
+      events: {
+        ...state.events,
+        mercenaryReturnDemand: true,
+      },
+      _logMessageKey: "outcome2",
+      _logMessageVars: {
+        deaths: deathResult.villagersKilled ?? deaths,
+      },
+    };
+  },
+};
 
 export const ringEvents: Record<string, GameEvent> = {
   feedingRing: {
@@ -116,12 +201,19 @@ export const ringEvents: Record<string, GameEvent> = {
       state.buildings.darkEstate >= 1 &&
       state.buildings.stoneHut >= 6 &&
       !state.clothing.feeding_ring &&
-      (state.events.bloodiedAwakening || state.events.desperateAmputation),
+      (state.events.bloodiedAwakening || state.events.desperateAmputation) &&
+      !state.events.mercenaryDemand &&
+      !state.story.seen.mercenaryDemand_giveRing &&
+      !state.story.seen.mercenaryDemand_payGold,
 
     timeProbability: 60,
 
     priority: 4,
-    repeatable: false,
+    repeatable: true,
+    showAsTimedTab: true,
+    timedTabDuration: 5 * 60 * 1000, // 5 minutes
+    skipEventLog: true,
+    fallbackChoice: mercenaryDemandRefuse,
     choices: [
       {
         id: "payGold",
@@ -132,54 +224,30 @@ export const ringEvents: Record<string, GameEvent> = {
               ...state.resources,
               gold: state.resources.gold - 100,
             },
+            events: {
+              ...state.events,
+              mercenaryDemand: true,
+            },
+            story: {
+              ...state.story,
+              seen: {
+                ...state.story.seen,
+                mercenaryDemand_payGold: true,
+              },
+            },
             _logMessageKey: "outcome0",
           };
         },
       },
-      {
-        id: "refuse",
-        relevant_stats: ["strength"],
-        success_chance: (state: GameState) => {
-          return calculateSuccessChance(state, 0.1, {
-            type: "strength",
-            multiplier: 0.005,
-          });
-        },
-        effect: (state: GameState) => {
-          const success = Math.random() < calculateSuccessChance(state, 0.1, {
-            type: "strength",
-            multiplier: 0.005,
-          });
-
-          if (success) {
-            return {
-              events: {
-                ...state.events,
-                mercenaryDemand: true,
-              },
-              _logMessageKey: "outcome1",
-            };
-          } else {
-            const deaths = 18 + 6 * cruelModeScale(state);
-            const deathResult = killVillagers(state, deaths);
-            return {
-              ...deathResult,
-              events: {
-                ...state.events,
-                mercenaryDemand: true,
-              },
-              _logMessageKey: "outcome2",
-              _logMessageVars: {
-                deaths: deathResult.villagersKilled ?? deaths,
-              },
-            };
-          }
-        },
-      },
+      mercenaryDemandRefuse,
       {
         id: "giveRing",
         effect: (state: GameState) => {
           return {
+            events: {
+              ...state.events,
+              mercenaryDemand: true,
+            },
             story: {
               ...state.story,
               seen: {
@@ -199,12 +267,18 @@ export const ringEvents: Record<string, GameEvent> = {
     condition: (state: GameState) =>
       state.buildings.darkEstate >= 1 &&
       state.events.mercenaryDemand &&
-      state.story.seen.mercenaryDemand_payGold,
+      state.story.seen.mercenaryDemand_payGold &&
+      !state.events.mercenaryReturnDemand &&
+      !state.story.seen.mercenaryReturnDemand_giveRing,
 
     timeProbability: 30,
 
     priority: 4,
-    repeatable: false,
+    repeatable: true,
+    showAsTimedTab: true,
+    timedTabDuration: 5 * 60 * 1000, // 5 minutes
+    skipEventLog: true,
+    fallbackChoice: mercenaryReturnDemandRefuse,
     choices: [
       {
         id: "payGold",
@@ -215,47 +289,23 @@ export const ringEvents: Record<string, GameEvent> = {
               ...state.resources,
               gold: state.resources.gold - 200,
             },
+            events: {
+              ...state.events,
+              mercenaryReturnDemand: true,
+            },
             _logMessageKey: "outcome0",
           };
         },
       },
-      {
-        id: "refuse",
-        relevant_stats: ["strength"],
-        success_chance: (state: GameState) => {
-          return calculateSuccessChance(state, 0.1, {
-            type: "strength",
-            multiplier: 0.005,
-          });
-        },
-        effect: (state: GameState) => {
-          const successChance = calculateSuccessChance(state, 0.0, {
-            type: "strength",
-            multiplier: 0.005,
-          });
-          const success = Math.random() < successChance;
-
-          if (success) {
-            return {
-              _logMessageKey: "outcome1",
-            };
-          } else {
-            const deaths = 24 + 6 * cruelModeScale(state);
-            const deathResult = killVillagers(state, deaths);
-            return {
-              ...deathResult,
-              _logMessageKey: "outcome2",
-              _logMessageVars: {
-                deaths: deathResult.villagersKilled ?? deaths,
-              },
-            };
-          }
-        },
-      },
+      mercenaryReturnDemandRefuse,
       {
         id: "giveRing",
         effect: (state: GameState) => {
           return {
+            events: {
+              ...state.events,
+              mercenaryReturnDemand: true,
+            },
             story: {
               ...state.story,
               seen: {

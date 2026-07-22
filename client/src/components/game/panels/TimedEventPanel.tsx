@@ -15,8 +15,10 @@ import { Button } from "@/components/ui/button";
 import {
   gameActionButtonGridClassName,
   gameActionOutlineButtonClassName,
+  GAME_ACTION_BUTTON_STACK_CLASS,
 } from "@/components/CooldownButton";
 import { cn } from "@/lib/utils";
+import { Plus } from "lucide-react";
 import { TooltipWrapper } from "@/components/game/TooltipWrapper";
 import { getMerchantTradeEffectTooltipLine } from "@/game/rules/eventsMerchant";
 import { EventChoice, type LogEntry } from "@/game/rules/events";
@@ -69,6 +71,7 @@ export default function TimedEventPanel() {
     setEventDialog,
     setHighlightedResources,
     setShopDialogOpen,
+    setShopFilter,
     setGamblerDiceDialogOpen,
   } = useGameStore();
   const gameState = useGameStore();
@@ -518,6 +521,20 @@ export default function TimedEventPanel() {
                 timeRemaining <= 0 ||
                 isPurchased;
 
+              const showGoldShopBadge =
+                !isPurchased &&
+                timeRemaining > 0 &&
+                affordance.costs.some((c) => c.resource === "gold") &&
+                affordance.individualAffordance.gold === false;
+
+              const openGoldShop = () => {
+                useGameStore
+                  .getState()
+                  .trackButtonClick("shop-open-timedevent-buy-gold");
+                setShopFilter("gold");
+                setShopDialogOpen(true);
+              };
+
               // Calculate success percentage if this choice has odds (Book of War)
               let successPercentage: string | null = null;
               if (
@@ -539,9 +556,18 @@ export default function TimedEventPanel() {
                 !!(choice.relevant_stats && choice.relevant_stats.length > 0) ||
                 isPurchased;
 
+              const goldShopTooltip = t("ui:timedEvent.buyGold", {
+                defaultValue: "Buy Gold",
+              });
+
               const buttonContent = (
                 <Button
                   onClick={(e) => {
+                    if (showGoldShopBadge) {
+                      e.stopPropagation();
+                      openGoldShop();
+                      return;
+                    }
                     if (isDisabled) return;
                     e.stopPropagation();
                     handleChoice(choice.id);
@@ -549,10 +575,15 @@ export default function TimedEventPanel() {
                   variant="outline"
                   size="xs"
                   aria-disabled={isDisabled || undefined}
-                  button_id={`timedevent-${choice.id}`}
+                  button_id={
+                    showGoldShopBadge
+                      ? undefined
+                      : `timedevent-${choice.id}`
+                  }
                   className={cn(
                     "h-auto min-h-7 w-fit max-w-full gap-2 py-1 text-left justify-start whitespace-normal",
-                    isDisabled && "pointer-events-none opacity-50",
+                    isDisabled && "opacity-50",
+                    isDisabled && !showGoldShopBadge && "pointer-events-none",
                     gameActionOutlineButtonClassName(isDisabled),
                   )}
                 >
@@ -648,31 +679,67 @@ export default function TimedEventPanel() {
                 }
               };
 
-              return tooltipContent ? (
-                <TooltipWrapper
+              const goldShopBadge = showGoldShopBadge ? (
+                <div className="absolute bottom-[-10px] right-[-7px] z-[30] pointer-events-auto">
+                  <TooltipWrapper
+                    tooltip={goldShopTooltip}
+                    tooltipId={`timedevent-${choice.id}-buy-gold`}
+                    className="inline-flex"
+                  >
+                    <button
+                      type="button"
+                      className="flex h-4 w-4 items-center justify-center rounded-full bg-yellow-700 text-white shadow-sm border border-yellow-500/60 hover:bg-yellow-600 transition-colors cursor-pointer"
+                      data-testid={`timedevent-${choice.id}-buy-gold`}
+                      aria-label={goldShopTooltip}
+                      onPointerDown={(e) => e.stopPropagation()}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        e.preventDefault();
+                        openGoldShop();
+                      }}
+                    >
+                      <Plus className="h-2.5 w-2.5 stroke-[3]" />
+                    </button>
+                  </TooltipWrapper>
+                </div>
+              ) : null;
+
+              return (
+                <div
                   key={choice.id}
-                  className="relative inline-block w-fit max-w-full"
-                  tooltipTriggerClassName="inline-block w-fit max-w-full"
-                  tooltip={tooltipContent}
-                  tooltipId={`timedevent-${choice.id}`}
-                  disabled={isDisabled}
-                  onClick={isDisabled ? undefined : () => handleChoice(choice.id)}
-                  onMouseEnter={
-                    costText || costBreakdown.length > 0
-                      ? highlightCostResources
-                      : undefined
-                  }
-                  onMouseLeave={
-                    costText || costBreakdown.length > 0
-                      ? () => setHighlightedResources([])
-                      : undefined
-                  }
+                  className={cn(GAME_ACTION_BUTTON_STACK_CLASS, "w-fit max-w-full")}
                 >
-                  {buttonContent}
-                </TooltipWrapper>
-              ) : (
-                <div key={choice.id} className="w-fit max-w-full">
-                  {buttonContent}
+                  {tooltipContent ? (
+                    <TooltipWrapper
+                      className="relative inline-block w-fit max-w-full"
+                      tooltipTriggerClassName="inline-block w-fit max-w-full"
+                      tooltip={tooltipContent}
+                      tooltipId={`timedevent-${choice.id}`}
+                      disabled={isDisabled && !showGoldShopBadge}
+                      onClick={
+                        showGoldShopBadge
+                          ? openGoldShop
+                          : isDisabled
+                            ? undefined
+                            : () => handleChoice(choice.id)
+                      }
+                      onMouseEnter={
+                        costText || costBreakdown.length > 0
+                          ? highlightCostResources
+                          : undefined
+                      }
+                      onMouseLeave={
+                        costText || costBreakdown.length > 0
+                          ? () => setHighlightedResources([])
+                          : undefined
+                      }
+                    >
+                      {buttonContent}
+                    </TooltipWrapper>
+                  ) : (
+                    buttonContent
+                  )}
+                  {goldShopBadge}
                 </div>
               );
             })}

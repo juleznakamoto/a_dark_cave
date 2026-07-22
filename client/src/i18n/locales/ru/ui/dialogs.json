@@ -205,7 +205,8 @@
     "discountFromKnowledge": "{{percent}} % от Знания{{max}}",
     "knowledgeMax": " (макс.)",
     "discountFromRing": "5 % от Кольца повиновения",
-    "prolongForInsight": "Продлить время на {{minutes}} мин. за {{cost}} {{resource}}"
+    "prolongForInsight": "Продлить время на {{minutes}} мин. за {{cost}} {{resource}}",
+    "buyGold": "Купить золото"
   },
   "share": {
     "title": "Поделиться прогрессом",

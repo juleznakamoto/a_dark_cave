@@ -727,6 +727,7 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
   const shopCruelModeHighlight = useGameStore(
     (state) => state.shopCruelModeHighlight,
   );
+  const shopFilter = useGameStore((state) => state.shopFilter);
   const shopCheckoutItemId = useGameStore((state) => state.shopCheckoutItemId);
   const setShopCheckoutItemId = useGameStore(
     (state) => state.setShopCheckoutItemId,
@@ -738,13 +739,17 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
   const activatedPurchases = gameState.activatedPurchases || {};
   const { toast } = useToast();
 
-  // Reset filter when dialog closes
+  // Reset filter when dialog closes; apply store-requested filter when opening
   useEffect(() => {
     if (!isOpen) {
       setSelectedFilter(null);
       setShowSecurePurchasePrompt(false);
+      return;
     }
-  }, [isOpen]);
+    if (shopFilter) {
+      setSelectedFilter(shopFilter);
+    }
+  }, [isOpen, shopFilter]);
 
   useEffect(() => {
     if (!isOpen || !shopCruelModeHighlight) return;

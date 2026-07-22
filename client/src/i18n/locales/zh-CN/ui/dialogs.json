@@ -205,7 +205,8 @@
     "discountFromKnowledge": "知识 {{percent}}%{{max}}",
     "knowledgeMax": "（上限）",
     "discountFromRing": "顺从之戒 5%",
-    "prolongForInsight": "消耗 {{cost}} {{resource}} 延长 {{minutes}} 分钟"
+    "prolongForInsight": "消耗 {{cost}} {{resource}} 延长 {{minutes}} 分钟",
+    "buyGold": "购买金币"
   },
   "share": {
     "title": "分享进度",

@@ -205,7 +205,8 @@
     "discountFromKnowledge": "{{percent}}% por Conhecimento{{max}}",
     "knowledgeMax": " (máx.)",
     "discountFromRing": "5% do Anel da Obediência",
-    "prolongForInsight": "Estender o tempo em {{minutes}} min por {{cost}} {{resource}}"
+    "prolongForInsight": "Estender o tempo em {{minutes}} min por {{cost}} {{resource}}",
+    "buyGold": "Comprar ouro"
   },
   "share": {
     "title": "Compartilhar seu progresso",

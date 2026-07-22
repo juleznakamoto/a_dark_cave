@@ -392,3 +392,133 @@ describe("TimedEventPanel gambler coverage", () => {
     );
   });
 });
+
+describe("TimedEventPanel gold shop badge", () => {
+  beforeEach(() => {
+    vi.useFakeTimers();
+    vi.setSystemTime(new Date("2026-03-21T12:00:00Z"));
+    vi.clearAllTimers();
+
+    Object.defineProperty(window, "matchMedia", {
+      writable: true,
+      value: vi.fn().mockImplementation((query: string) => ({
+        matches: false,
+        media: query,
+        onchange: null,
+        addListener: vi.fn(),
+        removeListener: vi.fn(),
+        addEventListener: vi.fn(),
+        removeEventListener: vi.fn(),
+        dispatchEvent: vi.fn(),
+      })),
+    });
+
+    useGameStore.getState().initialize();
+  });
+
+  afterEach(() => {
+    cleanup();
+    vi.clearAllTimers();
+    vi.useRealTimers();
+  });
+
+  it("shows a buy-gold badge and opens the shop gold filter when gold cost cannot be afforded", () => {
+    const setShopDialogOpen = vi.fn();
+    const setShopFilter = vi.fn();
+    const trackButtonClick = vi.fn();
+    const applyEventChoice = vi.fn(() => true);
+
+    useGameStore.setState((state) => ({
+      ...state,
+      applyEventChoice: applyEventChoice as typeof state.applyEventChoice,
+      setShopDialogOpen: setShopDialogOpen as typeof state.setShopDialogOpen,
+      setShopFilter: setShopFilter as typeof state.setShopFilter,
+      trackButtonClick: trackButtonClick as typeof state.trackButtonClick,
+      resources: {
+        ...state.resources,
+        gold: 10,
+      },
+      timedEventTab: {
+        isActive: true,
+        event: {
+          id: "test_gold_event-1",
+          eventId: "test_gold_event",
+          title: "Costly Offer",
+          message: "Pay gold?",
+          choices: [
+            {
+              id: "buy",
+              label: "Buy the ring",
+              cost: "100 Gold",
+              sellResource: "gold",
+              sellAmount: 100,
+              effect: () => ({}),
+            },
+            {
+              id: "decline",
+              label: "Decline",
+              effect: () => ({}),
+            },
+          ],
+        },
+        expiryTime: Date.now() + 60_000,
+        startTime: Date.now() - 2_000,
+      },
+    }));
+
+    act(() => {
+      render(<TimedEventPanel />);
+    });
+
+    const badge = screen.getByTestId("timedevent-buy-buy-gold");
+    expect(badge).toBeTruthy();
+
+    act(() => {
+      fireEvent.click(badge);
+    });
+
+    expect(trackButtonClick).toHaveBeenCalledWith(
+      "shop-open-timedevent-buy-gold",
+    );
+    expect(setShopFilter).toHaveBeenCalledWith("gold");
+    expect(setShopDialogOpen).toHaveBeenCalledWith(true);
+    expect(applyEventChoice).not.toHaveBeenCalled();
+  });
+
+  it("does not show a buy-gold badge when the player can afford the gold cost", () => {
+    useGameStore.setState((state) => ({
+      ...state,
+      resources: {
+        ...state.resources,
+        gold: 200,
+      },
+      timedEventTab: {
+        isActive: true,
+        event: {
+          id: "test_gold_event-1",
+          eventId: "test_gold_event",
+          title: "Costly Offer",
+          message: "Pay gold?",
+          choices: [
+            {
+              id: "buy",
+              label: "Buy the ring",
+              cost: "100 Gold",
+              sellResource: "gold",
+              sellAmount: 100,
+              effect: () => ({}),
+            },
+          ],
+        },
+        expiryTime: Date.now() + 60_000,
+        startTime: Date.now() - 2_000,
+      },
+    }));
+
+    act(() => {
+      render(<TimedEventPanel />);
+    });
+
+    expect(screen.queryByTestId("timedevent-buy-buy-gold")).toBeNull();
+  });
+});

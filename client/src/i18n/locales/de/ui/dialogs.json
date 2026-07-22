@@ -205,7 +205,8 @@
     "discountFromKnowledge": "{{percent}} % durch Wissen{{max}}",
     "knowledgeMax": " (max.)",
     "discountFromRing": "5 % durch Ring des Gehorsams",
-    "prolongForInsight": "Zeit um {{minutes}} Min. für {{cost}} {{resource}} verlängern"
+    "prolongForInsight": "Zeit um {{minutes}} Min. für {{cost}} {{resource}} verlängern",
+    "buyGold": "Gold kaufen"
   },
   "share": {
     "title": "Fortschritt teilen",

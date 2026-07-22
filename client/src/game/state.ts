@@ -226,6 +226,8 @@ interface GameStore extends GameState {
   shopDialogOpen: boolean;
   /** Transient: pulse Cruel Mode shop card (e.g. after end-screen "Cruel Mode" → open shop). Cleared when shop closes. */
   shopCruelModeHighlight: boolean;
+  /** Transient: open shop on a specific filter tab (e.g. gold packs). Cleared when shop closes. */
+  shopFilter: "gold" | "artifacts" | "boosts" | "bundles" | null;
   /** True while the obsessed gambler dice minigame UI is open (freezes production like other modal dialogs). */
   gamblerDiceDialogOpen: boolean;
   /** Village Invest modal open; game loop treats offer-picker as modal pause but keeps sim running while an investment is maturing. */
@@ -496,6 +498,9 @@ interface GameStore extends GameState {
   setAuthDialogOpen: (isOpen: boolean) => void;
   setShopDialogOpen: (isOpen: boolean) => void;
   setShopCruelModeHighlight: (highlight: boolean) => void;
+  setShopFilter: (
+    filter: "gold" | "artifacts" | "boosts" | "bundles" | null,
+  ) => void;
   recordCompletePurchaseDialogOpen: () => void;
   setGamblerDiceDialogOpen: (isOpen: boolean) => void;
   setInvestDialogOpen: (isOpen: boolean) => void;
@@ -1638,6 +1643,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
   authDialogOpen: false,
   shopDialogOpen: false,
   shopCruelModeHighlight: false,
+  shopFilter: null,
   gamblerDiceDialogOpen: false,
   investDialogOpen: false,
   investmentResultDialog: {
@@ -4269,13 +4275,19 @@ export const useGameStore = create<GameStore>((set, get) => ({
     } else {
       set({
         shopDialogOpen: isOpen,
-        ...(!isOpen ? { shopCruelModeHighlight: false } : {}),
+        ...(!isOpen
+          ? { shopCruelModeHighlight: false, shopFilter: null }
+          : {}),
       });
     }
   },
 
   setShopCruelModeHighlight: (highlight: boolean) => {
     set({ shopCruelModeHighlight: highlight });
+  },
+
+  setShopFilter: (filter) => {
+    set({ shopFilter: filter });
   },
 
   recordCompletePurchaseDialogOpen: () => {
