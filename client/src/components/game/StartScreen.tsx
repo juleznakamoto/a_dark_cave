@@ -229,14 +229,16 @@ export default function StartScreen() {
           pointer-events: none;
         }
 
+        /* Opacity stays 1 so LCP can fire on first paint; only un-blur for atmosphere. */
         @keyframes fade-in-text {
-          0% { opacity: 0; filter: blur(10px); }
-          100% { opacity: 1; filter: blur(0px); }
+          0% { filter: blur(10px); }
+          100% { filter: blur(0px); }
         }
 
         .animate-fade-in-text {
-          animation: fade-in-text 1s ease-in 0.5s forwards;
-          opacity: 0;
+          animation: fade-in-text 1s ease-in forwards;
+          opacity: 1;
+          filter: blur(10px);
         }
 
         @keyframes fade-in-featured {
