@@ -548,19 +548,16 @@ export default function AdminDashboard() {
 
     if (needsFullReload) {
       hutLadderSavesRefetchRef.current = false;
-      setLoading(true);
-      void ensureSectionsLoaded(sectionsForTab(activeTab), { reset: true }).finally(
-        () => setLoading(false),
-      );
+      // Keep the shell visible; tab gates show "Loading tab data…" while
+      // heavy sections (saves/purchases) load — don't block on full-page Loading.
+      void ensureSectionsLoaded(sectionsForTab(activeTab), { reset: true });
       return;
     }
 
-    if (loading) return;
     void ensureSectionsLoaded(sectionsForTab(activeTab));
   }, [
     activeTab,
     isAuthorized,
-    loading,
     environment,
     ensureSectionsLoaded,
   ]);
@@ -1047,6 +1044,7 @@ export default function AdminDashboard() {
       }
 
       setIsAuthorized(true);
+      setLoading(false);
     } catch (error) {
       logger.error("Auth check failed:", error);
       setLoading(false);
