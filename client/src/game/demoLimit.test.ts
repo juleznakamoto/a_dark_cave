@@ -5,10 +5,10 @@ const {
   restartGameMock,
   setGalaxyTimeUpDialogOpenMock,
   setStateMock,
-  stoneHutCountRef,
+  woodenHutCountRef,
   galaxyTimeUpDialogOpenRef,
 } = vi.hoisted(() => {
-  const stoneHutCountRef = { current: 0 };
+  const woodenHutCountRef = { current: 0 };
   const galaxyTimeUpDialogOpenRef = { current: false };
 
   return {
@@ -16,7 +16,7 @@ const {
     restartGameMock: vi.fn(async () => { }),
     setGalaxyTimeUpDialogOpenMock: vi.fn(),
     setStateMock: vi.fn(),
-    stoneHutCountRef,
+    woodenHutCountRef,
     galaxyTimeUpDialogOpenRef,
   };
 });
@@ -36,7 +36,7 @@ vi.mock("@/game/save", () => ({
 vi.mock("@/game/state", () => ({
   useGameStore: {
     getState: () => ({
-      buildings: { stoneHut: stoneHutCountRef.current },
+      buildings: { woodenHut: woodenHutCountRef.current },
       galaxyTimeUpDialogOpen: galaxyTimeUpDialogOpenRef.current,
       setGalaxyTimeUpDialogOpen: setGalaxyTimeUpDialogOpenMock,
       restartGame: restartGameMock,
@@ -46,7 +46,9 @@ vi.mock("@/game/state", () => ({
 }));
 
 import {
-  DEMO_STONE_HUT_LIMIT,
+  DEMO_WOODEN_HUT_LIMIT,
+  getDemoProgressCompleted,
+  getDemoProgressSegmentCount,
   isDemoLimitReached,
   isDemoLimitReachedFromState,
   processDemoLimit,
@@ -55,7 +57,7 @@ import {
 
 describe("demoLimit", () => {
   beforeEach(() => {
-    stoneHutCountRef.current = 0;
+    woodenHutCountRef.current = 0;
     galaxyTimeUpDialogOpenRef.current = false;
     deleteSaveMock.mockClear();
     restartGameMock.mockClear();
@@ -63,21 +65,29 @@ describe("demoLimit", () => {
     setStateMock.mockClear();
   });
 
-  it("detects when the stone hut limit is reached", () => {
-    expect(isDemoLimitReached(DEMO_STONE_HUT_LIMIT - 1)).toBe(false);
-    expect(isDemoLimitReached(DEMO_STONE_HUT_LIMIT)).toBe(true);
+  it("detects when the wooden hut limit is reached", () => {
+    expect(isDemoLimitReached(DEMO_WOODEN_HUT_LIMIT - 1)).toBe(false);
+    expect(isDemoLimitReached(DEMO_WOODEN_HUT_LIMIT)).toBe(true);
   });
 
-  it("reads stone hut count from game state", () => {
+  it("reads wooden hut count from game state", () => {
     expect(
       isDemoLimitReachedFromState({
-        buildings: { stoneHut: DEMO_STONE_HUT_LIMIT },
+        buildings: { woodenHut: DEMO_WOODEN_HUT_LIMIT },
       }),
     ).toBe(true);
   });
 
+  it("uses eight wooden-hut progress segments", () => {
+    expect(getDemoProgressSegmentCount()).toBe(8);
+    expect(
+      getDemoProgressCompleted({ woodenHut: 8, stoneHut: 99 }),
+    ).toBe(8);
+    expect(getDemoProgressCompleted({ woodenHut: 3 })).toBe(3);
+  });
+
   it("opens the demo-end dialog when the limit is reached", () => {
-    stoneHutCountRef.current = DEMO_STONE_HUT_LIMIT;
+    woodenHutCountRef.current = DEMO_WOODEN_HUT_LIMIT;
 
     processDemoLimit();
 
@@ -87,7 +97,7 @@ describe("demoLimit", () => {
   });
 
   it("does not reopen the dialog when it is already open", () => {
-    stoneHutCountRef.current = DEMO_STONE_HUT_LIMIT;
+    woodenHutCountRef.current = DEMO_WOODEN_HUT_LIMIT;
     galaxyTimeUpDialogOpenRef.current = true;
 
     processDemoLimit();

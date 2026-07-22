@@ -51,8 +51,7 @@ const DONATE_HEART =
 function SteamDemoProgressBar() {
   const { t } = useTranslation("ui");
   const woodenHut = useGameStore((s) => s.buildings.woodenHut ?? 0);
-  const stoneHut = useGameStore((s) => s.buildings.stoneHut ?? 0);
-  const buildings = { woodenHut, stoneHut };
+  const buildings = { woodenHut };
   const segments = getDemoProgressSegmentCount();
   const completed = getDemoProgressCompleted(buildings);
   const percent = getDemoProgressPercent(buildings);

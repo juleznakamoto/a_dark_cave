@@ -1,47 +1,49 @@
 import { useGameStore } from "@/game/state";
 import { isDemoEdition } from "@/lib/edition";
-import { CRUEL_MODE } from "@/game/cruelMode";
 
-/** Demo ends after this many stone huts have been built. */
-export const DEMO_STONE_HUT_LIMIT = 3;
+/** Demo ends after this many wooden huts have been built. */
+export const DEMO_WOODEN_HUT_LIMIT = 8;
 
-/**
- * Wooden-hut segments for the Steam demo progress bar (normal-mode max wooden huts).
- * Total segments = this + {@link DEMO_STONE_HUT_LIMIT} (e.g. 10 + 3 = 13).
- */
-export const DEMO_WOODEN_HUT_SEGMENTS = CRUEL_MODE.huts.maxWoodenHut.normal;
+/** @deprecated Use {@link DEMO_WOODEN_HUT_LIMIT}. */
+export const DEMO_STONE_HUT_LIMIT = DEMO_WOODEN_HUT_LIMIT;
 
-/** @deprecated Use {@link DEMO_STONE_HUT_LIMIT}. */
-export const GALAXY_DEMO_STONE_HUT_LIMIT = DEMO_STONE_HUT_LIMIT;
+/** @deprecated Use {@link DEMO_WOODEN_HUT_LIMIT}. */
+export const GALAXY_DEMO_STONE_HUT_LIMIT = DEMO_WOODEN_HUT_LIMIT;
 
+/** Footer progress segments — one per wooden hut up to the demo end. */
+export const DEMO_WOODEN_HUT_SEGMENTS = DEMO_WOODEN_HUT_LIMIT;
+
+export function getDemoWoodenHutCount(buildings?: {
+  woodenHut?: number;
+}): number {
+  return buildings?.woodenHut ?? 0;
+}
+
+/** @deprecated Use {@link getDemoWoodenHutCount}. */
 export function getDemoStoneHutCount(buildings?: {
+  woodenHut?: number;
   stoneHut?: number;
 }): number {
-  return buildings?.stoneHut ?? 0;
+  return getDemoWoodenHutCount(buildings);
 }
 
-/** @deprecated Use {@link getDemoStoneHutCount}. */
-export const getGalaxyStoneHutCount = getDemoStoneHutCount;
+/** @deprecated Use {@link getDemoWoodenHutCount}. */
+export const getGalaxyStoneHutCount = getDemoWoodenHutCount;
 
-/** Total footer progress segments: each wooden hut + each stone hut up to the demo end. */
+/** Total footer progress segments: each wooden hut up to the demo end. */
 export function getDemoProgressSegmentCount(): number {
-  return DEMO_WOODEN_HUT_SEGMENTS + DEMO_STONE_HUT_LIMIT;
+  return DEMO_WOODEN_HUT_LIMIT;
 }
 
-/** Completed segments from built wooden/stone huts (capped at segment totals). */
+/** Completed segments from built wooden huts (capped at the demo limit). */
 export function getDemoProgressCompleted(buildings?: {
   woodenHut?: number;
   stoneHut?: number;
 }): number {
-  const wooden = Math.min(
+  return Math.min(
     Math.max(0, buildings?.woodenHut ?? 0),
-    DEMO_WOODEN_HUT_SEGMENTS,
+    DEMO_WOODEN_HUT_LIMIT,
   );
-  const stone = Math.min(
-    Math.max(0, buildings?.stoneHut ?? 0),
-    DEMO_STONE_HUT_LIMIT,
-  );
-  return wooden + stone;
 }
 
 /** 0–100 progress for the Steam demo footer bar. */
@@ -54,17 +56,17 @@ export function getDemoProgressPercent(buildings?: {
   return (getDemoProgressCompleted(buildings) / total) * 100;
 }
 
-export function isDemoLimitReached(stoneHutCount: number): boolean {
-  return isDemoEdition() && stoneHutCount >= DEMO_STONE_HUT_LIMIT;
+export function isDemoLimitReached(woodenHutCount: number): boolean {
+  return isDemoEdition() && woodenHutCount >= DEMO_WOODEN_HUT_LIMIT;
 }
 
 /** @deprecated Use {@link isDemoLimitReached}. */
 export const isGalaxyDemoLimitReached = isDemoLimitReached;
 
 export function isDemoLimitReachedFromState(state: {
-  buildings?: { stoneHut?: number };
+  buildings?: { woodenHut?: number };
 }): boolean {
-  return isDemoLimitReached(getDemoStoneHutCount(state.buildings));
+  return isDemoLimitReached(getDemoWoodenHutCount(state.buildings));
 }
 
 /** @deprecated Use {@link isDemoLimitReachedFromState}. */

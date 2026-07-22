@@ -50,7 +50,7 @@ export function isGalaxyEdition(): boolean {
   return path === GALAXY_PATH_PREFIX || path.startsWith(`${GALAXY_PATH_PREFIX}/`);
 }
 
-/** Web Galaxy demo or Steam desktop demo — capped at the stone hut limit. */
+/** Web Galaxy demo or Steam desktop demo — capped at the wooden hut limit. */
 export function isDemoEdition(): boolean {
   return (
     isGalaxyEdition() ||

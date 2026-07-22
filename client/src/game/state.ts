@@ -237,7 +237,7 @@ interface GameStore extends GameState {
   leaderboardDialogOpen: boolean;
   shareDialogOpen: boolean;
   fullGamePurchaseDialogOpen: boolean;
-  /** Demo edition (Galaxy / Steam demo): blocking dialog when the stone hut limit is reached. */
+  /** Demo edition (Galaxy / Steam demo): blocking dialog when the wooden hut limit is reached. */
   galaxyTimeUpDialogOpen: boolean;
   /**
    * Transient: when set, the shop dialog opens straight into checkout for this
