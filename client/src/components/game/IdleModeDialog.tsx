@@ -193,8 +193,7 @@ function getProductionPerInterval(
     ...Object.keys(simulatedResources),
   ]);
   allResources.forEach((resource) => {
-    const delta =
-      (simulatedResources[resource] || 0) - (before[resource] || 0);
+    const delta = (simulatedResources[resource] || 0) - (before[resource] || 0);
     if (delta !== 0) {
       productionPerInterval[resource] = delta;
     }
@@ -529,8 +528,7 @@ export default function IdleModeDialog() {
         totalFocusEarned: (prev.totalFocusEarned || 0) + hoursSlept,
         story: {
           ...prev.story,
-          heavySleeperHours:
-            (prev.story?.heavySleeperHours ?? 0) + hoursSlept,
+          heavySleeperHours: (prev.story?.heavySleeperHours ?? 0) + hoursSlept,
         },
       }));
     }
@@ -621,9 +619,7 @@ export default function IdleModeDialog() {
       productionPerInterval[r] !== 0 &&
       !BOMB_RESOURCES.includes(r as (typeof BOMB_RESOURCES)[number]),
   );
-  const displayResources = [...resourceKeys].sort((a, b) =>
-    a.localeCompare(b),
-  );
+  const displayResources = [...resourceKeys].sort((a, b) => a.localeCompare(b));
   if (focusPoints > 0) displayResources.push("Focus");
 
   const isTimeUp = remainingTime <= 0;
@@ -638,7 +634,7 @@ export default function IdleModeDialog() {
   return (
     <Dialog
       open={idleModeDialog.isOpen}
-      onOpenChange={() => { }}
+      onOpenChange={() => {}}
       modal={!shareDialogOpen}
     >
       <DialogContent
@@ -667,8 +663,10 @@ export default function IdleModeDialog() {
         </DialogHeader>
 
         <div className="pb-1.5 border-border text-xs space-y-0.5">
-          <div className="text-muted-foreground">
-            {t("idleMode.villageProduction", { percent: villageProductionPercent })}
+          <div className="text-muted-foreground pb-1">
+            {t("idleMode.villageProduction", {
+              percent: villageProductionPercent,
+            })}
           </div>
           {displayResources.map((resource) => {
             const isFocus = resource === "Focus";
@@ -678,30 +676,25 @@ export default function IdleModeDialog() {
             const currentAmount = isFocus
               ? focusPoints
               : Math.floor(
-                (initialResources[resource] || 0) +
-                (accumulatedResources[resource] || 0),
-              );
+                  (initialResources[resource] || 0) +
+                    (accumulatedResources[resource] || 0),
+                );
             const productionRate = isFocus
               ? null
-              : productionPerInterval[resource] ?? 0;
+              : (productionPerInterval[resource] ?? 0);
             const totalSinceStart = isFocus
               ? focusPoints
               : Math.floor(accumulatedResources[resource] || 0);
             return (
               <div
                 key={resource}
-                className={cn(
-                  "grid gap-x-4 items-center",
-                  isFocus && "mt-1.5",
-                )}
+                className={cn("grid gap-x-4 items-center", isFocus && "mt-1.5")}
                 style={{
                   gridTemplateColumns:
                     "minmax(0,1fr) minmax(4rem,1fr) minmax(4rem,1fr) minmax(5rem,1.5fr)",
                 }}
               >
-                <div className="text-gray-400 truncate">
-                  {resourceLabel}
-                </div>
+                <div className="text-gray-400 truncate">{resourceLabel}</div>
                 <div className="text-right font-mono text-gray-300 tabular-nums flex justify-end">
                   {currentAmount < 0 && "-"}
                   <AnimatedCounter value={Math.abs(currentAmount)} />
