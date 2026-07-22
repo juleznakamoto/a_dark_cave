@@ -10,6 +10,7 @@ import {
   hutLadderStepDropChartData,
   type HutLadderCohortDays,
 } from "@shared/hutLadderAdminStats";
+import { computeChurnRateOverTime } from "@shared/churnRateAdminStats";
 import {
   ChartTimeRangeSelectHutLadder,
   hutLadderCohortTitleSuffix,
@@ -444,56 +445,15 @@ export default function ChurnTab(props: ChurnTabProps) {
     return result;
   };
 
-  const getChurnRateOverTime = () => {
-    const data: { day: string; churnRate: number }[] = [];
-
-    for (let i = 30; i >= 0; i--) {
-      const date = subDays(new Date(), i);
-      const dayStart = startOfDay(date);
-
-      const usersWithClicks = new Set<string>();
-      clickData.forEach((entry) => usersWithClicks.add(entry.user_id));
-
-      let churnedCount = 0;
-      let totalCount = 0;
-
-      gameSaves.forEach((save) => {
-        const createdDate = parseISO(save.created_at);
-        if (createdDate > dayStart) return;
-
-        totalCount++;
-
-        const cutoffDate = subDays(dayStart, churnDays);
-        const activityDate = parseISO(save.updated_at);
-        const hasCompletedGame =
-          save.game_state?.events?.cube15a ||
-          save.game_state?.events?.cube15b ||
-          save.game_state?.events?.cube13 ||
-          save.game_state?.events?.cube14a ||
-          save.game_state?.events?.cube14b ||
-          save.game_state?.events?.cube14c ||
-          save.game_state?.events?.cube14d;
-
-        if (
-          activityDate < cutoffDate &&
-          !hasCompletedGame &&
-          usersWithClicks.has(save.user_id)
-        ) {
-          churnedCount++;
-        }
-      });
-
-      const churnRate =
-        totalCount > 0 ? Math.round((churnedCount / totalCount) * 100) : 0;
-
-      data.push({
-        day: format(date, "MMM dd"),
-        churnRate,
-      });
-    }
-
-    return data;
-  };
+  const churnRateOverTime = useMemo(() => {
+    const clickUserIds = new Set<string>();
+    clickData.forEach((entry) => {
+      if (entry?.user_id) clickUserIds.add(entry.user_id);
+    });
+    return computeChurnRateOverTime(gameSaves, clickUserIds, churnDays, {
+      windowDays: 30,
+    });
+  }, [gameSaves, clickData, churnDays]);
 
   const getChurnPointDistribution = () => {
     const now = new Date();
@@ -766,8 +726,8 @@ export default function ChurnTab(props: ChurnTabProps) {
               </BarChart>
             </ChartContainer>
             <p className="text-xs text-muted-foreground mt-2">
-              Level 0 is the baseline (0% drop). Stone’s large 0→1 bar is the
-              wooden ≥10 unlock filter.
+              Level 0 is the baseline (0% drop). Stone ≥1 step drop is vs wooden
+              ≥10 (unlock gate), not vs all starters.
             </p>
           </div>
 
@@ -1209,15 +1169,23 @@ export default function ChurnTab(props: ChurnTabProps) {
         <CardHeader>
           <CardTitle>Churn Rate Over Time (Last 30 Days)</CardTitle>
           <CardDescription>
-            Percentage of churned players over time (inactive for {churnDays}+ days, excluding completed games)
+            Among players with click activity in the loaded window: % inactive
+            for {churnDays}+ days as of each day (completed games excluded from
+            churned). Same population as the Churned Players card.
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <ChartContainer config={{}} className="h-[400px] w-full">
-            <LineChart data={getChurnRateOverTime()}>
+          <ChartContainer
+            config={{
+              churnRate: { label: "Churn Rate (%)", color: "#dc2626" },
+            }}
+            className="h-[400px] w-full"
+          >
+            <LineChart data={churnRateOverTime}>
               <CartesianGrid strokeDasharray="3 3" />
               <XAxis dataKey="day" />
               <YAxis
+                domain={[0, 100]}
                 label={{
                   value: "Churn Rate (%)",
                   angle: -90,

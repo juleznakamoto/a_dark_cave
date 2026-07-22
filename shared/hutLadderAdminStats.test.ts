@@ -75,6 +75,10 @@ describe("hutLadderAdminStats", () => {
     expect(funnel.wooden[1]?.stepDropPct).toBe(25);
     expect(funnel.wooden[1]?.stepKeepPct).toBe(75);
 
+    // Stone ≥1 step vs wooden ≥10 (2→2), not vs all starters (4→2)
+    expect(funnel.stone[1]?.stepKeepPct).toBe(100);
+    expect(funnel.stone[1]?.stepDropPct).toBe(0);
+
     const reach = hutLadderReachChartData(funnel);
     expect(reach[10]).toEqual({ level: "10", wooden: 2, stone: 0 });
     // stone ≥10 is 0 in this fixture
@@ -83,5 +87,21 @@ describe("hutLadderAdminStats", () => {
     const drops = hutLadderStepDropChartData(funnel);
     expect(drops[0]?.woodenDrop).toBe(0);
     expect(drops[1]?.woodenDrop).toBe(25);
+    expect(drops[1]?.stoneDrop).toBe(0);
+  });
+
+  it("stone ≥1 step drop is vs wooden ≥10 unlock cohort", () => {
+    const saves = [
+      save({ created_at: "2026-07-15T00:00:00.000Z", woodenHut: 10, stoneHut: 0 }),
+      save({ created_at: "2026-07-15T00:00:00.000Z", woodenHut: 10, stoneHut: 0 }),
+      save({ created_at: "2026-07-15T00:00:00.000Z", woodenHut: 10, stoneHut: 1 }),
+      save({ created_at: "2026-07-15T00:00:00.000Z", woodenHut: 5, stoneHut: 0 }),
+    ];
+    const funnel = computeHutLadderFunnel(saves, 30, now);
+    // 3 at wooden ≥10, 1 built first stone → keep 33.3%, drop 66.7%
+    expect(funnel.wooden10Count).toBe(3);
+    expect(funnel.stone[1]?.players).toBe(1);
+    expect(funnel.stone[1]?.stepKeepPct).toBe(33.3);
+    expect(funnel.stone[1]?.stepDropPct).toBe(66.7);
   });
 });

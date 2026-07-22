@@ -72,11 +72,16 @@ function buildReachSeries(
   counts: number[],
   startedCount: number,
   labelForLevel: (level: number) => string,
+  /** Optional previous-level denominator override (e.g. stone ≥1 vs wooden ≥10). */
+  prevCountForLevel?: (level: number, defaultPrev: number | null) => number | null,
 ): HutLadderReachPoint[] {
   const points: HutLadderReachPoint[] = [];
   for (let level = 0; level <= HUT_LADDER_MAX_LEVEL; level++) {
     const players = counts[level] ?? 0;
-    const prev = level === 0 ? null : (counts[level - 1] ?? 0);
+    const defaultPrev = level === 0 ? null : (counts[level - 1] ?? 0);
+    const prev = prevCountForLevel
+      ? prevCountForLevel(level, defaultPrev)
+      : defaultPrev;
     const stepKeepPct =
       prev === null || prev === 0
         ? null
@@ -139,14 +144,21 @@ export function computeHutLadderFunnel(
             ? "≥10 stone unlock"
             : `≥${level}`,
     ),
-    stone: buildReachSeries(stoneCounts, startedCount, (level) =>
-      level === 0
-        ? "≥0 started"
-        : level === 1
-          ? "≥1 (needs 10 wooden)"
-          : level === 10
-            ? "≥10 normal max"
-            : `≥${level}`,
+    // First stone unlocks at wooden ≥10 — step drop/keep at stone ≥1 uses that
+    // denominator, not stone ≥0 (all starters).
+    stone: buildReachSeries(
+      stoneCounts,
+      startedCount,
+      (level) =>
+        level === 0
+          ? "≥0 started"
+          : level === 1
+            ? "≥1 (needs 10 wooden)"
+            : level === 10
+              ? "≥10 normal max"
+              : `≥${level}`,
+      (level, defaultPrev) =>
+        level === 1 ? wooden10Count : defaultPrev,
     ),
     wooden10Count,
     wooden10WithStone,
