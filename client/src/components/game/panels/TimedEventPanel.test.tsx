@@ -425,7 +425,6 @@ describe("TimedEventPanel gold shop badge", () => {
   it("shows a buy-gold badge and opens the shop gold filter when gold cost cannot be afforded", () => {
     const setShopDialogOpen = vi.fn();
     const setShopFilter = vi.fn();
-    const trackButtonClick = vi.fn();
     const applyEventChoice = vi.fn(() => true);
 
     useGameStore.setState((state) => ({
@@ -433,7 +432,6 @@ describe("TimedEventPanel gold shop badge", () => {
       applyEventChoice: applyEventChoice as typeof state.applyEventChoice,
       setShopDialogOpen: setShopDialogOpen as typeof state.setShopDialogOpen,
       setShopFilter: setShopFilter as typeof state.setShopFilter,
-      trackButtonClick: trackButtonClick as typeof state.trackButtonClick,
       resources: {
         ...state.resources,
         gold: 10,
@@ -477,11 +475,7 @@ describe("TimedEventPanel gold shop badge", () => {
       fireEvent.click(badge);
     });
 
-    expect(trackButtonClick).toHaveBeenCalledWith(
-      "shop-open-timedevent-buy-gold",
-    );
-    expect(setShopFilter).toHaveBeenCalledWith("gold");
-    expect(setShopDialogOpen).toHaveBeenCalledWith(true);
+    expect(setShopDialogOpen).toHaveBeenCalledWith(true, "timedevent-buy-gold");
     expect(applyEventChoice).not.toHaveBeenCalled();
   });
 

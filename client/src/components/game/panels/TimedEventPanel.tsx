@@ -349,7 +349,7 @@ export default function TimedEventPanel() {
 
     // For Trader's Gratitude: Accept opens the Shop (real-money) but event continues until time runs out or player declines
     if (eventId === "traders_gratitude" && choiceId === "accept_traders_gratitude") {
-      setShopDialogOpen(true);
+      setShopDialogOpen(true, "gratitude");
       return;
     }
 
@@ -357,7 +357,7 @@ export default function TimedEventPanel() {
       eventId === "traders_son_gratitude" &&
       choiceId === "accept_traders_son_gratitude"
     ) {
-      setShopDialogOpen(true);
+      setShopDialogOpen(true, "gratitude");
       return;
     }
 
@@ -528,11 +528,8 @@ export default function TimedEventPanel() {
                 affordance.individualAffordance.gold === false;
 
               const openGoldShop = () => {
-                useGameStore
-                  .getState()
-                  .trackButtonClick("shop-open-timedevent-buy-gold");
                 setShopFilter("gold");
-                setShopDialogOpen(true);
+                setShopDialogOpen(true, "timedevent-buy-gold");
               };
 
               // Calculate success percentage if this choice has odds (Book of War)

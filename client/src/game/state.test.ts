@@ -285,6 +285,25 @@ describe("Reward Dialog System", () => {
       expect(rewardPayloadHasPositiveChanges(rewards)).toBe(false);
       expect(rewardPayloadHasOutcomeLosses(rewards)).toBe(true);
     });
+
+    it("does not treat madness-only changes as reward gains", () => {
+      const currentState = {
+        ...initialState,
+        stats: {
+          ...initialState.stats,
+          madnessFromEvents: 0,
+        },
+      };
+      const stateUpdates = {
+        stats: {
+          ...currentState.stats,
+          madnessFromEvents: 1,
+        },
+      };
+      const rewards = detectRewards(stateUpdates, currentState, "shadowsMove");
+      expect(rewards.stats).toBeUndefined();
+      expect(rewardPayloadHasPositiveChanges(rewards)).toBe(false);
+    });
   });
 
   describe("layTrap action", () => {

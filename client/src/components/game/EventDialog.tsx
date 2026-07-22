@@ -199,7 +199,7 @@ export default function EventDialog({
           fallbackExecutedRef.current = true;
           applyEventChoice(choiceId, eventId);
           onClose();
-          gameState.setShopDialogOpen(true);
+          gameState.setShopDialogOpen(true, "event");
           return;
         }
 

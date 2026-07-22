@@ -115,6 +115,10 @@ import {
   GAMBLER_TUTORIAL_PLAYS_REMAINING_SEEN_KEY,
 } from "@/game/gamblerSession";
 import { logger } from "@/lib/logger";
+import {
+  shopOpenButtonId,
+  type ShopOpenSource,
+} from "@/game/shopOpenSource";
 import { madnessEvents } from "@/game/rules/eventsMadness";
 import { DISGRACED_PRIOR_UPGRADES } from "@/game/rules/skillUpgrades";
 import {
@@ -496,7 +500,7 @@ interface GameStore extends GameState {
   ) => { ok: true } | { ok: false; reason: string };
   tickInvestmentHall: () => void;
   setAuthDialogOpen: (isOpen: boolean) => void;
-  setShopDialogOpen: (isOpen: boolean) => void;
+  setShopDialogOpen: (isOpen: boolean, source?: ShopOpenSource) => void;
   setShopCruelModeHighlight: (highlight: boolean) => void;
   setShopFilter: (
     filter: "gold" | "artifacts" | "boosts" | "bundles" | null,
@@ -555,10 +559,15 @@ interface GameStore extends GameState {
 }
 
 /**
- * Stats that change in `stateUpdates.stats` but are bookkeeping / internal only.
- * They must not appear as "+N …" in reward or madness outcome UI.
+ * Stats that change in `stateUpdates.stats` but must not count as RewardDialog gains.
+ * Madness is shown via MadnessDialog / the dedicated madnessChange line instead.
+ * villagerDeathsLifetime is bookkeeping only.
  */
-const REWARD_UI_HIDDEN_STATS = new Set<string>(["villagerDeathsLifetime"]);
+const REWARD_UI_HIDDEN_STATS = new Set<string>([
+  "villagerDeathsLifetime",
+  "madness",
+  "madnessFromEvents",
+]);
 
 // Helper function to detect rewards from state updates
 export const detectRewards = (
@@ -4265,9 +4274,13 @@ export const useGameStore = create<GameStore>((set, get) => ({
     set({ authDialogOpen: isOpen });
   },
 
-  setShopDialogOpen: (isOpen: boolean) => {
+  setShopDialogOpen: (isOpen, source) => {
     const prev = get().shopDialogOpen;
     if (isOpen && !prev) {
+      // Analytics (button_clicks); traderDialogOpens stays for event gates.
+      get().trackButtonClick(
+        source ? shopOpenButtonId(source) : "shop-open-unknown",
+      );
       set((s) => ({
         shopDialogOpen: true,
         traderDialogOpens: (s.traderDialogOpens ?? 0) + 1,

@@ -417,7 +417,7 @@ export default function Game() {
             if (cruelShopHighlight) {
               useGameStore.getState().setShopCruelModeHighlight(true);
             }
-            setShopDialogOpen(true);
+            setShopDialogOpen(true, "url");
           }, 500);
         }
 

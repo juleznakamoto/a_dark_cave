@@ -1403,7 +1403,7 @@ export default function GameContainer() {
                         isFadePhase={fadePhaseTabs.has("trader")}
                         onClick={() => {
                           clearTabAnimation("trader");
-                          setShopDialogOpen(true);
+                          setShopDialogOpen(true, "tab");
                         }}
                       />
                     )}

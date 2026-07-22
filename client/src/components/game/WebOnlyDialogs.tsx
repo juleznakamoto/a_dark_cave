@@ -3,10 +3,11 @@ import { ShopDialog } from "./ShopDialog";
 import LeaderboardDialog from "./LeaderboardDialog";
 import ShareDialog from "./ShareDialog";
 import InviteFriendsFloatingButton from "./InviteFriendsFloatingButton";
+import type { ShopOpenSource } from "@/game/shopOpenSource";
 
 export interface WebOnlyDialogsProps {
   shopDialogOpen: boolean;
-  setShopDialogOpen: (open: boolean) => void;
+  setShopDialogOpen: (open: boolean, source?: ShopOpenSource) => void;
   leaderboardDialogOpen: boolean;
   setLeaderboardDialogOpen: (open: boolean) => void;
   fullGamePurchaseDialogOpen: boolean;

@@ -184,7 +184,7 @@ export default function GameFooter() {
                 <Button
                   variant="ghost"
                   size="xs"
-                  onClick={() => setShopDialogOpen(true)}
+                  onClick={() => setShopDialogOpen(true, "footer")}
                   aria-label={t("footer.openShop")}
                   className={FOOTER_CONTROL_BTN}
                 >
