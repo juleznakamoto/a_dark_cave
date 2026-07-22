@@ -1148,43 +1148,46 @@ export default function ChurnTab(props: ChurnTabProps) {
             <p className="text-sm text-muted-foreground">Loading churn rate…</p>
           ) : churnRateError ? (
             <p className="text-sm text-amber-700 dark:text-amber-400">
-              {churnRateError}. Apply migration{" "}
-              <code className="text-xs">031_admin_churn_rate_over_time.sql</code>{" "}
-              if the RPC is missing.
+              {churnRateError}
+              {/timeout/i.test(churnRateError)
+                ? " — apply migration 032_admin_churn_rate_over_time_fast.sql (faster RPC)."
+                : /function|does not exist|schema cache/i.test(churnRateError)
+                  ? " — apply migration 031_admin_churn_rate_over_time.sql (or 032)."
+                  : null}
             </p>
           ) : (
-          <ChartContainer
-            config={{
-              churnRate: { label: "Churn Rate (%)", color: "#dc2626" },
-            }}
-            className="h-[400px] w-full"
-          >
-            <LineChart data={churnRateOverTime}>
-              <CartesianGrid strokeDasharray="3 3" />
-              <XAxis
-                dataKey="day"
-                interval={adminChartXAxisIntervalForDays(churnRateChartDays)}
-              />
-              <YAxis
-                domain={[0, 100]}
-                label={{
-                  value: "Churn Rate (%)",
-                  angle: -90,
-                  position: "insideLeft",
-                }}
-              />
-              <ChartTooltip content={<ChartTooltipContent />} />
-              <Legend />
-              <Line
-                type="monotone"
-                dataKey="churnRate"
-                stroke="#dc2626"
-                strokeWidth={2}
-                dot={churnRateChartDays <= 30 ? { r: 3 } : false}
-                name="Churn Rate (%)"
-              />
-            </LineChart>
-          </ChartContainer>
+            <ChartContainer
+              config={{
+                churnRate: { label: "Churn Rate (%)", color: "#dc2626" },
+              }}
+              className="h-[400px] w-full"
+            >
+              <LineChart data={churnRateOverTime}>
+                <CartesianGrid strokeDasharray="3 3" />
+                <XAxis
+                  dataKey="day"
+                  interval={adminChartXAxisIntervalForDays(churnRateChartDays)}
+                />
+                <YAxis
+                  domain={[0, 100]}
+                  label={{
+                    value: "Churn Rate (%)",
+                    angle: -90,
+                    position: "insideLeft",
+                  }}
+                />
+                <ChartTooltip content={<ChartTooltipContent />} />
+                <Legend />
+                <Line
+                  type="monotone"
+                  dataKey="churnRate"
+                  stroke="#dc2626"
+                  strokeWidth={2}
+                  dot={churnRateChartDays <= 30 ? { r: 3 } : false}
+                  name="Churn Rate (%)"
+                />
+              </LineChart>
+            </ChartContainer>
           )}
         </CardContent>
       </Card>
