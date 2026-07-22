@@ -2,8 +2,7 @@ import { lazy, Suspense, useEffect } from "react";
 import { Switch, Route, Redirect } from "wouter";
 import { QueryClientProvider } from "@tanstack/react-query";
 import { queryClient } from "./lib/queryClient";
-import { Toaster } from "@/components/ui/toaster";
-import { TooltipProvider } from "@/components/ui/tooltip";
+import DeferredAppChrome from "@/components/DeferredAppChrome";
 import PageLoadSpinner, {
   dismissBootSpinner,
 } from "@/components/ui/page-load-spinner";
@@ -93,10 +92,9 @@ function App() {
 
   return (
     <QueryClientProvider client={queryClient}>
-      <TooltipProvider>
-        <Toaster />
+      <DeferredAppChrome>
         <Router />
-      </TooltipProvider>
+      </DeferredAppChrome>
     </QueryClientProvider>
   );
 }

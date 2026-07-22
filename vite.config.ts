@@ -69,6 +69,21 @@ export default defineConfig({
         drop_debugger: true,
       },
     },
+    // Keep heavy vendors off the HTML entry modulepreload list so the start
+    // screen is not competing with framer/radix/supabase on first paint.
+    // They still load with the chunks that import them (StartScreen, game, etc.).
+    modulePreload: {
+      resolveDependencies: (_filename, deps, { hostType }) => {
+        if (hostType !== "html") return deps;
+        return deps.filter(
+          (dep) =>
+            !dep.includes("vendor-framer") &&
+            !dep.includes("vendor-radix") &&
+            !dep.includes("vendor-supabase") &&
+            !dep.includes("vendor-stripe"),
+        );
+      },
+    },
     rollupOptions: {
       output: {
         manualChunks: isSteamBuild
