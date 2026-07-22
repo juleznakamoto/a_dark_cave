@@ -56,8 +56,9 @@
   <!-- Web App Manifest -->
   <link rel="manifest" href="/manifest.json" />
 
-  <!-- Inter: preload so CriOS/Safari share the same metrics before React mounts -->
-  <link rel="preload" href="/fonts/inter.woff2" as="font" type="font/woff2" crossorigin />
+  <!-- Inter (~344KB) is NOT preloaded here: start screen uses system fonts.
+       Game loads Inter after Light Fire (see pages/game.tsx). Preloading it on
+       the landing path steals bandwidth from LCP even though Inter isn't used yet. -->
 
   <!-- Application Tags -->
   <meta name="application-name" content="A Dark Cave" />
@@ -67,8 +68,7 @@
   <meta name="apple-mobile-web-app-title" content="A Dark Cave" />
   <meta name="format-detection" content="telephone=no" />
 
-  <!-- Playlight SDK CSS -->
-  <link rel="stylesheet" href="https://sdk.playlight.dev/playlight-sdk.css">
+  <!-- Playlight CSS is loaded with the SDK after Light Fire (see lib/playlight.ts) -->
 
   <!-- adc:jsonld-home -->
   <!-- Structured Data (JSON-LD) - WebApplication -->
@@ -300,11 +300,9 @@
       position: relative;
       z-index: 2;
       display: block;
-      background-image: linear-gradient(
-        rgb(255, 56, 0) 20%,
-        rgb(255, 140, 0) 55%,
-        rgba(255, 203, 16, 0.616)
-      );
+      background-image: linear-gradient(rgb(255, 56, 0) 20%,
+          rgb(255, 140, 0) 55%,
+          rgba(255, 203, 16, 0.616));
       width: 50px;
       height: 50px;
       animation: adc-page-load-spin 2.4s linear infinite;
@@ -356,6 +354,7 @@
         transform: translate(0, 0) scale(1);
         opacity: 0.95;
       }
+
       100% {
         transform: translate(var(--adc-ember-ex, 0px), var(--adc-ember-ey, -30px)) scale(0.35);
         opacity: 0;
@@ -395,7 +394,7 @@
             u.pathname + (u.search ? u.search : "") + (u.hash || ""),
           );
         }
-      } catch (e) {}
+      } catch (e) { }
 
       window.addEventListener(
         "error",
@@ -414,7 +413,7 @@
             var retryUrl = new URL(window.location.href);
             retryUrl.searchParams.set("_cb", String(Date.now()));
             location.replace(retryUrl.toString());
-          } catch (err2) {}
+          } catch (err2) { }
         },
         true,
       );
@@ -436,18 +435,30 @@
         <span class="adc-page-load-spinner__core"></span>
       </span>
       <!-- Center spawn → random travel (ex/ey); shared delays = multiple at once -->
-      <span class="adc-page-load-spinner__ember" style="--adc-ember-ex: 28px; --adc-ember-ey: 6px; --adc-ember-delay: 0s; --adc-ember-color: #ff3a00"></span>
-      <span class="adc-page-load-spinner__ember" style="--adc-ember-ex: -19px; --adc-ember-ey: 22px; --adc-ember-delay: 0s; --adc-ember-color: #ff8c00"></span>
-      <span class="adc-page-load-spinner__ember" style="--adc-ember-ex: 4px; --adc-ember-ey: -29px; --adc-ember-delay: 0s; --adc-ember-color: #ffd228"></span>
-      <span class="adc-page-load-spinner__ember" style="--adc-ember-ex: 21px; --adc-ember-ey: 21px; --adc-ember-delay: 0s; --adc-ember-color: #ff5600"></span>
-      <span class="adc-page-load-spinner__ember" style="--adc-ember-ex: -29px; --adc-ember-ey: -4px; --adc-ember-delay: 0.4s; --adc-ember-color: #ffb000"></span>
-      <span class="adc-page-load-spinner__ember" style="--adc-ember-ex: 25px; --adc-ember-ey: -19px; --adc-ember-delay: 0.4s; --adc-ember-color: #ff3a00"></span>
-      <span class="adc-page-load-spinner__ember" style="--adc-ember-ex: -12px; --adc-ember-ey: -26px; --adc-ember-delay: 0.4s; --adc-ember-color: #ff8c00"></span>
-      <span class="adc-page-load-spinner__ember" style="--adc-ember-ex: 15px; --adc-ember-ey: 26px; --adc-ember-delay: 0.4s; --adc-ember-color: #ffc800"></span>
-      <span class="adc-page-load-spinner__ember" style="--adc-ember-ex: -25px; --adc-ember-ey: 15px; --adc-ember-delay: 0.8s; --adc-ember-color: #ffd228"></span>
-      <span class="adc-page-load-spinner__ember" style="--adc-ember-ex: 8px; --adc-ember-ey: 31px; --adc-ember-delay: 0.8s; --adc-ember-color: #ff6a00"></span>
-      <span class="adc-page-load-spinner__ember" style="--adc-ember-ex: 31px; --adc-ember-ey: -8px; --adc-ember-delay: 0.8s; --adc-ember-color: #ff5600"></span>
-      <span class="adc-page-load-spinner__ember" style="--adc-ember-ex: -22px; --adc-ember-ey: -21px; --adc-ember-delay: 0.8s; --adc-ember-color: #ffb000"></span>
+      <span class="adc-page-load-spinner__ember"
+        style="--adc-ember-ex: 28px; --adc-ember-ey: 6px; --adc-ember-delay: 0s; --adc-ember-color: #ff3a00"></span>
+      <span class="adc-page-load-spinner__ember"
+        style="--adc-ember-ex: -19px; --adc-ember-ey: 22px; --adc-ember-delay: 0s; --adc-ember-color: #ff8c00"></span>
+      <span class="adc-page-load-spinner__ember"
+        style="--adc-ember-ex: 4px; --adc-ember-ey: -29px; --adc-ember-delay: 0s; --adc-ember-color: #ffd228"></span>
+      <span class="adc-page-load-spinner__ember"
+        style="--adc-ember-ex: 21px; --adc-ember-ey: 21px; --adc-ember-delay: 0s; --adc-ember-color: #ff5600"></span>
+      <span class="adc-page-load-spinner__ember"
+        style="--adc-ember-ex: -29px; --adc-ember-ey: -4px; --adc-ember-delay: 0.4s; --adc-ember-color: #ffb000"></span>
+      <span class="adc-page-load-spinner__ember"
+        style="--adc-ember-ex: 25px; --adc-ember-ey: -19px; --adc-ember-delay: 0.4s; --adc-ember-color: #ff3a00"></span>
+      <span class="adc-page-load-spinner__ember"
+        style="--adc-ember-ex: -12px; --adc-ember-ey: -26px; --adc-ember-delay: 0.4s; --adc-ember-color: #ff8c00"></span>
+      <span class="adc-page-load-spinner__ember"
+        style="--adc-ember-ex: 15px; --adc-ember-ey: 26px; --adc-ember-delay: 0.4s; --adc-ember-color: #ffc800"></span>
+      <span class="adc-page-load-spinner__ember"
+        style="--adc-ember-ex: -25px; --adc-ember-ey: 15px; --adc-ember-delay: 0.8s; --adc-ember-color: #ffd228"></span>
+      <span class="adc-page-load-spinner__ember"
+        style="--adc-ember-ex: 8px; --adc-ember-ey: 31px; --adc-ember-delay: 0.8s; --adc-ember-color: #ff6a00"></span>
+      <span class="adc-page-load-spinner__ember"
+        style="--adc-ember-ex: 31px; --adc-ember-ey: -8px; --adc-ember-delay: 0.8s; --adc-ember-color: #ff5600"></span>
+      <span class="adc-page-load-spinner__ember"
+        style="--adc-ember-ex: -22px; --adc-ember-ey: -21px; --adc-ember-delay: 0.8s; --adc-ember-color: #ffb000"></span>
     </span>
   </div>
   <div id="root"></div>

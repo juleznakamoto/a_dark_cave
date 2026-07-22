@@ -44,6 +44,12 @@ export default function Game() {
     if (!isLocalOnlyEdition()) {
       initSessionTracker();
     }
+    // Playlight is web-only and only needed in gameplay (not the start screen).
+    if (!isLocalOnlyEdition()) {
+      void import("@/lib/playlight")
+        .then(({ initPlaylight }) => initPlaylight())
+        .catch(() => {});
+    }
     const initializeGame = async () => {
       try {
         // Wait for first paint

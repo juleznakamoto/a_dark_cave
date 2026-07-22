@@ -81,6 +81,9 @@ export function noteExitIntentForcedEnabled() {
   lastAppliedExitIntentEnabled = true;
 }
 
+const PLAYLIGHT_CSS_HREF = "https://sdk.playlight.dev/playlight-sdk.css";
+const PLAYLIGHT_CSS_ID = "playlight-sdk-css";
+
 // Track Playlight SDK initialization state to prevent duplicate subscriptions
 let playlightSDKInstance: any = null;
 let gameStoreUnsubscribe: (() => void) | null = null;
@@ -103,7 +106,21 @@ function teardownLongPauseDiscoveryPoll() {
   longPauseDiscoveryFiredThisPauseStreak = false;
 }
 
-// Export Playlight SDK initialization function - call after main component mounts
+/** Inject Playlight CSS on demand — never in index.html (blocks start-screen LCP). */
+function ensurePlaylightStylesheet(): void {
+  if (typeof document === "undefined") return;
+  if (document.getElementById(PLAYLIGHT_CSS_ID)) return;
+  const link = document.createElement("link");
+  link.id = PLAYLIGHT_CSS_ID;
+  link.rel = "stylesheet";
+  link.href = PLAYLIGHT_CSS_HREF;
+  document.head.appendChild(link);
+}
+
+/**
+ * Load Playlight SDK + CSS. Call only after Light Fire / when gameplay mounts —
+ * not needed on the start screen.
+ */
 export async function initPlaylight() {
   // If initialization is already in progress or completed, return the existing promise
   if (initPlaylightPromise) {
@@ -113,6 +130,7 @@ export async function initPlaylight() {
   // Create and store the initialization promise immediately to prevent race conditions
   initPlaylightPromise = (async () => {
     try {
+      ensurePlaylightStylesheet();
       const module = await import("https://sdk.playlight.dev/playlight-sdk.es.js");
       const playlightSDK = module.default;
       playlightSDKInstance = playlightSDK;

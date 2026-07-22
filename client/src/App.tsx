@@ -9,8 +9,6 @@ import PageLoadSpinner, {
 } from "@/components/ui/page-load-spinner";
 import LazyRouteErrorBoundary from "@/components/LazyRouteErrorBoundary";
 import { clearStaleChunkReloadGuard } from "@/lib/hardReload";
-import { initPlaylight } from "@/lib/playlight";
-import { isGalaxyEdition } from "@/lib/edition";
 
 const steamBuild = import.meta.env.VITE_STEAM_BUILD === "1";
 
@@ -91,12 +89,6 @@ function App() {
   useEffect(() => {
     // Safety: drop the HTML boot spinner if a route never mounts PageLoadSpinner.
     dismissBootSpinner();
-  }, []);
-
-  useEffect(() => {
-    // Playlight is a web-only discovery SDK; Steam and Galaxy editions ship no online services.
-    if (steamBuild || isGalaxyEdition()) return;
-    initPlaylight().catch(() => { });
   }, []);
 
   return (
