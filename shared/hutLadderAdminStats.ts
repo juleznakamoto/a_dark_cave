@@ -37,6 +37,8 @@ export type HutLadderReachPoint = {
 export type HutLadderFunnel = {
   cohortDays: HutLadderCohortDays;
   startedCount: number;
+  /** gameStarted in window but excluded as referred. */
+  excludedReferredCount: number;
   wooden: HutLadderReachPoint[];
   stone: HutLadderReachPoint[];
   /** Players with woodenHut ≥ 10 who also have stoneHut ≥ 1. */
@@ -49,7 +51,7 @@ function buildingCount(
   key: "woodenHut" | "stoneHut",
 ): number {
   if (!buildings) return 0;
-  const raw = buildings[key];
+  const raw = buildings[key] as unknown;
   const n = typeof raw === "number" ? raw : Number(raw);
   return Number.isFinite(n) && n > 0 ? Math.floor(n) : 0;
 }
@@ -76,6 +78,25 @@ export function filterHutLadderCohort(
     if (!Number.isFinite(created)) return false;
     return created >= cutoffMs;
   });
+}
+
+/** gameStarted + in window (includes referred) — for exclusion counts. */
+export function countHutLadderWindowStarted(
+  saves: HutLadderSaveRow[],
+  cohortDays: HutLadderCohortDays,
+  now: Date = new Date(),
+): { startedIncludingReferred: number; referred: number } {
+  const cutoffMs = now.getTime() - cohortDays * 24 * 60 * 60 * 1000;
+  let startedIncludingReferred = 0;
+  let referred = 0;
+  for (const save of saves) {
+    if (!isGameStartedSave(save) || !save.created_at) continue;
+    const created = Date.parse(save.created_at);
+    if (!Number.isFinite(created) || created < cutoffMs) continue;
+    startedIncludingReferred++;
+    if (isReferredSave(save)) referred++;
+  }
+  return { startedIncludingReferred, referred };
 }
 
 function buildReachSeries(
@@ -121,6 +142,11 @@ export function computeHutLadderFunnel(
   cohortDays: HutLadderCohortDays,
   now: Date = new Date(),
 ): HutLadderFunnel {
+  const { referred: excludedReferredCount } = countHutLadderWindowStarted(
+    saves,
+    cohortDays,
+    now,
+  );
   const cohort = filterHutLadderCohort(saves, cohortDays, now);
   const startedCount = cohort.length;
 
@@ -145,6 +171,7 @@ export function computeHutLadderFunnel(
   return {
     cohortDays,
     startedCount,
+    excludedReferredCount,
     wooden: buildReachSeries(woodenCounts, startedCount, (level) =>
       level === 0
         ? "≥0 started"

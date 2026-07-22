@@ -56,8 +56,12 @@ export function slimGameStateForAdmin(
   let slimBuildings: { woodenHut?: number; stoneHut?: number } | undefined;
   if (buildings && typeof buildings === "object") {
     const b = buildings as Record<string, unknown>;
-    const woodenHut = typeof b.woodenHut === "number" ? b.woodenHut : undefined;
-    const stoneHut = typeof b.stoneHut === "number" ? b.stoneHut : undefined;
+    const coerceCount = (raw: unknown): number | undefined => {
+      const n = typeof raw === "number" ? raw : Number(raw);
+      return Number.isFinite(n) ? n : undefined;
+    };
+    const woodenHut = coerceCount(b.woodenHut);
+    const stoneHut = coerceCount(b.stoneHut);
     if (woodenHut !== undefined || stoneHut !== undefined) {
       slimBuildings = {};
       if (woodenHut !== undefined) slimBuildings.woodenHut = woodenHut;

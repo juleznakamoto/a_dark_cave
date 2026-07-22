@@ -616,9 +616,12 @@ export default function ChurnTab(props: ChurnTabProps) {
             <CardDescription>
               Reach funnel among non-referred gameStarted saves created in the{" "}
               {hutLadderCohortTitleSuffix(hutLadderDays).toLowerCase()} (n=
-              {hutLadderFunnel.startedCount}). Referred accounts excluded
-              (bonus-farm noise). First stone hut unlocks at wooden hut ≥10
-              (both modes). Cruel only raises caps 10→12.
+              {hutLadderFunnel.startedCount}
+              {hutLadderFunnel.excludedReferredCount > 0
+                ? `; excluded ${hutLadderFunnel.excludedReferredCount} referred`
+                : ""}
+              ). First stone hut unlocks at wooden hut ≥10 (both modes). Cruel
+              only raises caps 10→12.
             </CardDescription>
           </div>
           <ChartTimeRangeSelectHutLadder
@@ -632,6 +635,13 @@ export default function ChurnTab(props: ChurnTabProps) {
               Loaded saves are missing hut fields (flags/buildings). Restart the
               local API server, then hard-refresh this page so Churn can refetch
               saves.
+            </p>
+          ) : hutLadderFunnel.startedCount > 100 &&
+            hutLadderFunnel.excludedReferredCount === 0 ? (
+            <p className="text-sm text-amber-700 dark:text-amber-400">
+              No referred saves were excluded in this window — slim payload may
+              be missing referralProcessed. Restart the API and hard-refresh so
+              early hut drop isn&apos;t inflated by referral bonus-farms.
             </p>
           ) : hutLadderFunnel.startedCount === 0 ? (
             <p className="text-sm text-muted-foreground">

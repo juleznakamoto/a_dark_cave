@@ -51,6 +51,9 @@ describe("hutLadderAdminStats", () => {
     const cohort = filterHutLadderCohort(saves, 7, now);
     expect(cohort).toHaveLength(1);
     expect(cohort[0]?.game_state?.buildings?.woodenHut).toBe(3);
+    const funnel = computeHutLadderFunnel(saves, 7, now);
+    expect(funnel.excludedReferredCount).toBe(1);
+    expect(funnel.startedCount).toBe(1);
   });
 
   it("computes reach and step drops through stone unlock", () => {
@@ -70,6 +73,7 @@ describe("hutLadderAdminStats", () => {
     ];
     const funnel = computeHutLadderFunnel(saves, 30, now);
     expect(funnel.startedCount).toBe(4);
+    expect(funnel.excludedReferredCount).toBe(0);
     expect(funnel.wooden[0]?.players).toBe(4);
     expect(funnel.wooden[1]?.players).toBe(3);
     expect(funnel.wooden[5]?.players).toBe(3);
