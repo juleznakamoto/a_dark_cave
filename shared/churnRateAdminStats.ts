@@ -6,6 +6,7 @@ export type ChurnRateSaveRow = {
   updated_at?: string | null;
   game_state?: {
     events?: Record<string, unknown>;
+    referralProcessed?: boolean;
   } | null;
 };
 
@@ -35,8 +36,14 @@ function endOfLocalDay(year: number, month: number, day: number): Date {
   return new Date(year, month, day, 23, 59, 59, 999);
 }
 
-function dayLabel(year: number, month: number, day: number): string {
+function dayLabel(
+  year: number,
+  month: number,
+  day: number,
+  compact: boolean,
+): string {
   const monthName = MONTH_LABELS[month] ?? "Jan";
+  if (compact) return `${monthName} ${day}`;
   return `${monthName} ${String(day).padStart(2, "0")}`;
 }
 
@@ -50,26 +57,22 @@ export function hasGameEndingEvents(
 /**
  * Daily churn % for the last `windowDays` (inclusive of today).
  *
- * Population matches the rest of the Churn tab: users who appear in click data
- * and have a save. For each calendar day D, among those users with
- * created_at ≤ end of D:
+ * Among non-referred saves with created_at ≤ end of calendar day D:
  *   churned = !game-ending && updated_at < end of (D − churnDays)
  *   rate = churned / eligible
  *
- * Uses current save.updated_at (no historical activity log), so returners are
- * not counted as churned on earlier days.
+ * Uses current save.updated_at (no historical activity log). Returners look
+ * “never churned” on earlier days. Does **not** require click data — recent
+ * click samples caused a flat 0% early in the window (survivorship bias).
  */
 export function computeChurnRateOverTime(
   saves: ChurnRateSaveRow[],
-  clickUserIds: Iterable<string>,
   churnDays: number,
   options?: { windowDays?: number; now?: Date },
 ): ChurnRateDayPoint[] {
   const windowDays = options?.windowDays ?? 30;
   const now = options?.now ?? new Date();
-  const withClicks = clickUserIds instanceof Set
-    ? clickUserIds
-    : new Set(clickUserIds);
+  const compactLabels = windowDays > 90;
 
   type Indexed = {
     createdMs: number;
@@ -80,7 +83,8 @@ export function computeChurnRateOverTime(
   const byUser = new Map<string, Indexed>();
   for (const save of saves) {
     const userId = save.user_id;
-    if (!userId || !withClicks.has(userId)) continue;
+    if (!userId) continue;
+    if (save.game_state?.referralProcessed === true) continue;
     if (!save.created_at || !save.updated_at) continue;
     const createdMs = Date.parse(save.created_at);
     const activityMs = Date.parse(save.updated_at);
@@ -116,7 +120,12 @@ export function computeChurnRateOverTime(
     }
 
     points.push({
-      day: dayLabel(dayEnd.getFullYear(), dayEnd.getMonth(), dayEnd.getDate()),
+      day: dayLabel(
+        dayEnd.getFullYear(),
+        dayEnd.getMonth(),
+        dayEnd.getDate(),
+        compactLabels,
+      ),
       churnRate:
         eligibleCount > 0
           ? Math.round((churnedCount / eligibleCount) * 100)

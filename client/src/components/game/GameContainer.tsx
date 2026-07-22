@@ -223,7 +223,7 @@ export default function GameContainer() {
   const lifetimePlayTimeMs = useGameStore((s) => s.lifetimePlayTimeMs);
   const lifetimeStorageMaxHits = useGameStore((s) => s.lifetimeStorageMaxHits);
   const hasAchievementMaxer = useGameStore((s) => s.hasAchievementMaxer);
-  // Full store required: in DEV, unlock checks overall "Achievement Maxer",
+  // Full store required: unlock checks overall "Achievement Maxer",
   // which tallies building getCount(state.buildings.*). A partial
   // `{ relics, books, ... } as GameState` omitted buildings and crashed after Light Fire.
   const achievementsUnlocked = useMemo(

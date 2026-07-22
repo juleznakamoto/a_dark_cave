@@ -3,7 +3,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { LineChart, Line, BarChart, Bar, CartesianGrid, XAxis, YAxis, Legend } from "recharts";
 import { ChartContainer, ChartTooltip, ChartTooltipContent } from "@/components/ui/chart";
-import { format, differenceInDays, subDays, startOfDay, endOfDay, isWithinInterval, parseISO } from "date-fns";
+import { differenceInDays, subDays, startOfDay, endOfDay, isWithinInterval, parseISO } from "date-fns";
 import {
   computeHutLadderFunnel,
   hutLadderReachChartData,
@@ -12,8 +12,12 @@ import {
 } from "@shared/hutLadderAdminStats";
 import { computeChurnRateOverTime } from "@shared/churnRateAdminStats";
 import {
+  ADMIN_TWELVE_MONTH_CHART_DAYS,
+  adminChartXAxisIntervalForDays,
   ChartTimeRangeSelectHutLadder,
+  ChartTimeRangeSelectTwelveMonth,
   hutLadderCohortTitleSuffix,
+  type AdminTwelveMonthChartRange,
 } from "../adminChartTimeRange";
 
 const MAX_PLAYTIME_CHART_HOURS = 18;
@@ -41,6 +45,9 @@ export default function ChurnTab(props: ChurnTabProps) {
   } = props;
 
   const [hutLadderDays, setHutLadderDays] = useState<HutLadderCohortDays>(60);
+  const [churnRateChartRange, setChurnRateChartRange] =
+    useState<AdminTwelveMonthChartRange>("1m");
+  const churnRateChartDays = ADMIN_TWELVE_MONTH_CHART_DAYS[churnRateChartRange];
 
   const hutLadderFunnel = useMemo(
     () => computeHutLadderFunnel(gameSaves, hutLadderDays),
@@ -445,15 +452,13 @@ export default function ChurnTab(props: ChurnTabProps) {
     return result;
   };
 
-  const churnRateOverTime = useMemo(() => {
-    const clickUserIds = new Set<string>();
-    clickData.forEach((entry) => {
-      if (entry?.user_id) clickUserIds.add(entry.user_id);
-    });
-    return computeChurnRateOverTime(gameSaves, clickUserIds, churnDays, {
-      windowDays: 30,
-    });
-  }, [gameSaves, clickData, churnDays]);
+  const churnRateOverTime = useMemo(
+    () =>
+      computeChurnRateOverTime(gameSaves, churnDays, {
+        windowDays: churnRateChartDays,
+      }),
+    [gameSaves, churnDays, churnRateChartDays],
+  );
 
   const getChurnPointDistribution = () => {
     const now = new Date();
@@ -874,36 +879,6 @@ export default function ChurnTab(props: ChurnTabProps) {
 
       <Card>
         <CardHeader>
-          <CardTitle>Churned Players List</CardTitle>
-          <CardDescription>
-            Players who stopped playing (sorted by inactivity)
-          </CardDescription>
-        </CardHeader>
-        <CardContent>
-          <div className="space-y-2 max-h-96 overflow-y-auto">
-            {getChurnedPlayers().map((player, index) => (
-              <div
-                key={index}
-                className="flex justify-between items-center border-b pb-2"
-              >
-                <div>
-                  <p className="font-medium">{player.userId}</p>
-                  <p className="text-sm text-muted-foreground">
-                    Last activity:{" "}
-                    {format(player.lastActivity, "MMM dd, yyyy HH:mm")}
-                  </p>
-                </div>
-                <p className="font-bold text-red-500">
-                  {player.daysSinceActivity} days ago
-                </p>
-              </div>
-            ))}
-          </div>
-        </CardContent>
-      </Card>
-
-      <Card>
-        <CardHeader>
           <CardTitle>Top 20 Last Buttons Clicked Before Churning</CardTitle>
           <CardDescription>
             What were the last actions churned players performed at their final playtime?
@@ -1177,13 +1152,20 @@ export default function ChurnTab(props: ChurnTabProps) {
       </Card>
 
       <Card>
-        <CardHeader>
-          <CardTitle>Churn Rate Over Time (Last 30 Days)</CardTitle>
-          <CardDescription>
-            Among players with click activity in the loaded window: % inactive
-            for {churnDays}+ days as of each day (completed games excluded from
-            churned). Same population as the Churned Players card.
-          </CardDescription>
+        <CardHeader className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between space-y-0">
+          <div>
+            <CardTitle>Churn Rate Over Time</CardTitle>
+            <CardDescription>
+              Among non-referred saves that existed by each day: % with last
+              activity older than {churnDays}+ days (completed games excluded
+              from churned). Based on current updated_at (returners won&apos;t
+              show as historically churned).
+            </CardDescription>
+          </div>
+          <ChartTimeRangeSelectTwelveMonth
+            value={churnRateChartRange}
+            onChange={setChurnRateChartRange}
+          />
         </CardHeader>
         <CardContent>
           <ChartContainer
@@ -1194,7 +1176,10 @@ export default function ChurnTab(props: ChurnTabProps) {
           >
             <LineChart data={churnRateOverTime}>
               <CartesianGrid strokeDasharray="3 3" />
-              <XAxis dataKey="day" />
+              <XAxis
+                dataKey="day"
+                interval={adminChartXAxisIntervalForDays(churnRateChartDays)}
+              />
               <YAxis
                 domain={[0, 100]}
                 label={{
@@ -1210,7 +1195,7 @@ export default function ChurnTab(props: ChurnTabProps) {
                 dataKey="churnRate"
                 stroke="#dc2626"
                 strokeWidth={2}
-                dot={{ r: 4 }}
+                dot={churnRateChartDays <= 30 ? { r: 3 } : false}
                 name="Churn Rate (%)"
               />
             </LineChart>

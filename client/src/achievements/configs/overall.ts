@@ -35,10 +35,10 @@ function asSocialPromoSlice(state: GameState): SocialPromoExclusiveSlice {
  * Meta / overall achievements: persist across new games, never claimable.
  * Counts come from account-level flags / lifetime stats on the game state.
  *
- * Dev-only until this category is ready to ship — keep UI, progress %, share
- * card, and Steam sync behind this flag.
+ * Keep UI, progress %, share card, and Steam sync behind this flag so the
+ * category can be disabled without ripping out the wiring.
  */
-export const isOverallAchievementCategoryEnabled = import.meta.env.DEV;
+export const isOverallAchievementCategoryEnabled = true;
 
 export const overallChartConfig: AchievementChartConfig = {
   idPrefix: "overall",
