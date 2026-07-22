@@ -5,6 +5,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import type { HutLadderCohortDays } from "@shared/hutLadderAdminStats";
 
 /** DAU, sign-ups, buyers/gain charts: last bucket is `1y` (365 days). */
 export type AdminOverviewChartRange = "1m" | "3m" | "6m" | "1y";
@@ -102,10 +103,10 @@ export function ChartTimeRangeSelectTwelveMonth({
   );
 }
 
-import type { HutLadderCohortDays } from "@shared/hutLadderAdminStats";
-
 export function hutLadderCohortTitleSuffix(days: HutLadderCohortDays): string {
   switch (days) {
+    case 3:
+      return "Last 3 Days";
     case 7:
       return "Last 7 Days";
     case 30:
@@ -139,6 +140,7 @@ export function ChartTimeRangeSelectHutLadder({
         <SelectValue placeholder="Cohort" />
       </SelectTrigger>
       <SelectContent>
+        <SelectItem value="3">Last 3 Days</SelectItem>
         <SelectItem value="7">Last 7 Days</SelectItem>
         <SelectItem value="30">Last 30 Days</SelectItem>
         <SelectItem value="60">Last 60 Days</SelectItem>

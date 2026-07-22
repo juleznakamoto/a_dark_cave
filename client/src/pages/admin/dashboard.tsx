@@ -194,6 +194,8 @@ export default function AdminDashboard() {
   const adminReloadKeyRef = useRef<{ env: "dev" | "prod"; authorized: boolean } | null>(
     null,
   );
+  /** One-shot refetch when saves were loaded before slim v2 (hut ladder fields). */
+  const hutLadderSavesRefetchRef = useRef(false);
   const [showCompletedOnly, setShowCompletedOnly] = useState<boolean>(false);
   const [churnDays, setChurnDays] = useState<1 | 3 | 5 | 7>(3);
 
@@ -444,7 +446,10 @@ export default function AdminDashboard() {
           break;
         }
         case "saves": {
-          const response = await fetch(`/api/admin/saves?${query}`);
+          // cache: no-store — hut-ladder needs flags/buildings in slim payload (v2+)
+          const response = await fetch(`/api/admin/saves?${query}&slim=2`, {
+            cache: "no-store",
+          });
           if (!response.ok) {
             throw new Error(`Failed to fetch saves: ${response.status}`);
           }
@@ -542,6 +547,7 @@ export default function AdminDashboard() {
     adminReloadKeyRef.current = { env: environment, authorized: true };
 
     if (needsFullReload) {
+      hutLadderSavesRefetchRef.current = false;
       setLoading(true);
       void ensureSectionsLoaded(sectionsForTab(activeTab), { reset: true }).finally(
         () => setLoading(false),
@@ -556,6 +562,29 @@ export default function AdminDashboard() {
     isAuthorized,
     loading,
     environment,
+    ensureSectionsLoaded,
+  ]);
+
+  // One-shot refetch when saves were cached before slim v2 (flags/buildings for hut ladder).
+  useEffect(() => {
+    if (!isAuthorized || loading || hutLadderSavesRefetchRef.current) return;
+    if (!loadedSections.has("saves") || rawGameSaves.length === 0) return;
+    const hasHutFields = rawGameSaves.some(
+      (s) =>
+        s?.game_state?.flags?.gameStarted === true ||
+        typeof s?.game_state?.buildings?.woodenHut === "number" ||
+        typeof s?.game_state?.buildings?.stoneHut === "number",
+    );
+    if (hasHutFields) return;
+    hutLadderSavesRefetchRef.current = true;
+    loadedSectionsRef.current.delete("saves");
+    setLoadedSections(new Set(loadedSectionsRef.current));
+    void ensureSectionsLoaded(["saves"]);
+  }, [
+    isAuthorized,
+    loading,
+    loadedSections,
+    rawGameSaves,
     ensureSectionsLoaded,
   ]);
 

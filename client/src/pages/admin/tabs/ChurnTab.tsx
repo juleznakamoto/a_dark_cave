@@ -61,6 +61,17 @@ export default function ChurnTab(props: ChurnTabProps) {
       ) / 10
       : 0;
 
+  /** Old slim payloads omitted flags/buildings — funnel stays empty until API restart + refetch. */
+  const hutLadderPayloadReady = useMemo(() => {
+    if (gameSaves.length === 0) return true;
+    return gameSaves.some(
+      (s) =>
+        s?.game_state?.flags?.gameStarted === true ||
+        typeof s?.game_state?.buildings?.woodenHut === "number" ||
+        typeof s?.game_state?.buildings?.stoneHut === "number",
+    );
+  }, [gameSaves]);
+
   const getCubeEventNumber = (eventId: string): number | null => {
     const match = eventId.match(/cube(\d+)/);
     return match ? parseInt(match[1]) : null;
@@ -655,12 +666,25 @@ export default function ChurnTab(props: ChurnTabProps) {
           />
         </CardHeader>
         <CardContent className="space-y-6">
-          <p className="text-sm text-muted-foreground">
-            Of players who reach wooden ≥10, {hutLadderFunnel.wooden10WithStone}/
-            {hutLadderFunnel.wooden10Count} ({wooden10StonePct}%) also have stone
-            ≥1 — the large “first stone” drop is mostly failing to finish the
-            wooden ladder, not failing the stone build.
-          </p>
+          {!hutLadderPayloadReady ? (
+            <p className="text-sm text-amber-700 dark:text-amber-400">
+              Loaded saves are missing hut fields (flags/buildings). Restart the
+              local API server, then hard-refresh this page so Churn can refetch
+              saves.
+            </p>
+          ) : hutLadderFunnel.startedCount === 0 ? (
+            <p className="text-sm text-muted-foreground">
+              No gameStarted saves with created_at in this window (or saves not
+              loaded yet).
+            </p>
+          ) : (
+            <p className="text-sm text-muted-foreground">
+              Of players who reach wooden ≥10, {hutLadderFunnel.wooden10WithStone}/
+              {hutLadderFunnel.wooden10Count} ({wooden10StonePct}%) also have stone
+              ≥1 — the large “first stone” drop is mostly failing to finish the
+              wooden ladder, not failing the stone build.
+            </p>
+          )}
 
           <div>
             <h3 className="text-sm font-medium mb-2">

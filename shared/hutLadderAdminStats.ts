@@ -5,7 +5,7 @@
 
 export const HUT_LADDER_MAX_LEVEL = 10;
 
-export type HutLadderCohortDays = 7 | 30 | 60 | 90;
+export type HutLadderCohortDays = 3 | 7 | 30 | 60 | 90;
 
 export type HutLadderSaveRow = {
   created_at?: string | null;

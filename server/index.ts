@@ -535,6 +535,7 @@ app.post("/api/gender", async (req, res) => {
 });
 
 import {
+  ADMIN_SAVES_SLIM_VERSION,
   fetchAdminClicks,
   fetchAdminMetrics,
   fetchAdminPurchases,
@@ -579,10 +580,11 @@ app.get("/api/admin/clicks", async (req, res) => {
 
 app.get("/api/admin/saves", async (req, res) => {
   try {
-    adminDashboardCache(res);
+    // Slim shape changes (flags/buildings) must not be stuck behind shared cache.
+    res.set("Cache-Control", "private, no-store");
     const adminClient = getAdminClient(parseAdminEnv(req));
     const saves = await fetchAdminSavesSlim(adminClient);
-    res.json({ saves });
+    res.json({ saves, slimVersion: ADMIN_SAVES_SLIM_VERSION });
   } catch (error: any) {
     log("❌ Admin saves fetch failed:", error);
     res.status(500).json({ error: error.message });
