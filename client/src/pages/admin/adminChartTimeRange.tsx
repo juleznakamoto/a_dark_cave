@@ -149,3 +149,74 @@ export function ChartTimeRangeSelectHutLadder({
     </Select>
   );
 }
+
+/** Sessions intra-day volume: fixed hours + step pairs (always ~24 buckets). */
+export type AdminSessionIntradayRange = "48h" | "24h" | "12h" | "6h" | "2h";
+
+export const ADMIN_SESSION_INTRADAY_RANGES: Record<
+  AdminSessionIntradayRange,
+  { hours: number; stepMinutes: number; label: string; titleSuffix: string }
+> = {
+  "48h": {
+    hours: 48,
+    stepMinutes: 120,
+    label: "48 Hours",
+    titleSuffix: "Last 48 Hours · 2h steps",
+  },
+  "24h": {
+    hours: 24,
+    stepMinutes: 60,
+    label: "24 Hours",
+    titleSuffix: "Last 24 Hours · 1h steps",
+  },
+  "12h": {
+    hours: 12,
+    stepMinutes: 30,
+    label: "12 Hours",
+    titleSuffix: "Last 12 Hours · 30m steps",
+  },
+  "6h": {
+    hours: 6,
+    stepMinutes: 15,
+    label: "6 Hours",
+    titleSuffix: "Last 6 Hours · 15m steps",
+  },
+  "2h": {
+    hours: 2,
+    stepMinutes: 5,
+    label: "2 Hours",
+    titleSuffix: "Last 2 Hours · 5m steps",
+  },
+};
+
+type ChartTimeRangeSelectSessionIntradayProps = {
+  value: AdminSessionIntradayRange;
+  onChange: (range: AdminSessionIntradayRange) => void;
+  triggerClassName?: string;
+};
+
+export function ChartTimeRangeSelectSessionIntraday({
+  value,
+  onChange,
+  triggerClassName = "w-[140px]",
+}: ChartTimeRangeSelectSessionIntradayProps) {
+  return (
+    <Select
+      value={value}
+      onValueChange={(v) => onChange(v as AdminSessionIntradayRange)}
+    >
+      <SelectTrigger className={triggerClassName}>
+        <SelectValue placeholder="Time range" />
+      </SelectTrigger>
+      <SelectContent>
+        {(
+          Object.keys(ADMIN_SESSION_INTRADAY_RANGES) as AdminSessionIntradayRange[]
+        ).map((key) => (
+          <SelectItem key={key} value={key}>
+            {ADMIN_SESSION_INTRADAY_RANGES[key].label}
+          </SelectItem>
+        ))}
+      </SelectContent>
+    </Select>
+  );
+}

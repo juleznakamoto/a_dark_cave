@@ -1382,6 +1382,43 @@ app.post("/api/leaderboard/update-username", leaderboardUpdateLimiter, async (re
     }
   });
 
+  // Intra-day session volume (estimated start = updated_at - duration)
+  const SESSION_INTRADAY_RANGES: Record<
+    string,
+    { hours: number; stepMinutes: number }
+  > = {
+    "48h": { hours: 48, stepMinutes: 120 },
+    "24h": { hours: 24, stepMinutes: 60 },
+    "12h": { hours: 12, stepMinutes: 30 },
+    "6h": { hours: 6, stepMinutes: 15 },
+    "2h": { hours: 2, stepMinutes: 5 },
+  };
+
+  app.get("/api/admin/sessions/intraday", async (req, res) => {
+    try {
+      const env = (req.query.env as "dev" | "prod") || "dev";
+      const rangeKey = String(req.query.range || "24h");
+      const range = SESSION_INTRADAY_RANGES[rangeKey] ?? SESSION_INTRADAY_RANGES["24h"];
+      const adminClient = getAdminClient(env);
+
+      const { data, error } = await adminClient.rpc("get_session_intraday_stats", {
+        p_hours_back: range.hours,
+        p_step_minutes: range.stepMinutes,
+      });
+
+      if (error) {
+        log("❌ Session intraday stats error:", error);
+        return res.status(500).json({ error: error.message });
+      }
+
+      res.set("Cache-Control", "public, max-age=60");
+      res.json(data || []);
+    } catch (error: any) {
+      log("❌ Session intraday stats failed:", error);
+      res.status(500).json({ error: error.message });
+    }
+  });
+
   /**
    * Production-only Resend CSV export for admins. Streams CSV in memory (no repo files).
    * Query: file=marketing | no-marketing

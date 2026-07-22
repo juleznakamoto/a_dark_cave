@@ -26,10 +26,13 @@ import {
 import { format, parseISO } from "date-fns";
 import {
   ADMIN_OVERVIEW_CHART_DAYS,
+  ADMIN_SESSION_INTRADAY_RANGES,
   adminChartXAxisIntervalForDays,
   adminOverviewChartTitleSuffix,
   ChartTimeRangeSelectOverview,
+  ChartTimeRangeSelectSessionIntraday,
   type AdminOverviewChartRange,
+  type AdminSessionIntradayRange,
 } from "../adminChartTimeRange";
 
 interface SessionStats {
@@ -44,6 +47,11 @@ interface SessionStats {
   b_2h_3h: number;
   b_3h_4h: number;
   b_4h_plus: number;
+}
+
+interface IntradayBucket {
+  bucket_start: string;
+  session_count: number;
 }
 
 interface SessionsTabProps {
@@ -74,11 +82,26 @@ const BUCKETS = [
   { key: "b_4h_plus", label: "4h+", color: BUCKET_COLORS["4h+"] },
 ] as const;
 
+function formatIntradayTick(
+  iso: string,
+  range: AdminSessionIntradayRange,
+): string {
+  const d = parseISO(iso);
+  if (range === "48h" || range === "24h") {
+    return format(d, "MMM d HH:mm");
+  }
+  return format(d, "HH:mm");
+}
+
 export default function SessionsTab({ environment }: SessionsTabProps) {
   const [data, setData] = useState<SessionStats[]>([]);
   const [loading, setLoading] = useState(true);
   const [chartTimeRange, setChartTimeRange] =
     useState<AdminOverviewChartRange>("1m");
+  const [intradayRange, setIntradayRange] =
+    useState<AdminSessionIntradayRange>("24h");
+  const [intradayData, setIntradayData] = useState<IntradayBucket[]>([]);
+  const [intradayLoading, setIntradayLoading] = useState(true);
 
   useEffect(() => {
     setLoading(true);
@@ -88,6 +111,17 @@ export default function SessionsTab({ environment }: SessionsTabProps) {
       .catch(() => setData([]))
       .finally(() => setLoading(false));
   }, [environment]);
+
+  useEffect(() => {
+    setIntradayLoading(true);
+    fetch(
+      `/api/admin/sessions/intraday?env=${environment}&range=${intradayRange}`,
+    )
+      .then((r) => r.json())
+      .then((d) => setIntradayData(Array.isArray(d) ? d : []))
+      .catch(() => setIntradayData([]))
+      .finally(() => setIntradayLoading(false));
+  }, [environment, intradayRange]);
 
   const chartDays = ADMIN_OVERVIEW_CHART_DAYS[chartTimeRange];
 
@@ -130,6 +164,16 @@ export default function SessionsTab({ environment }: SessionsTabProps) {
         "4h+": d.total > 0 ? (d.b_4h_plus / d.total) * 100 : 0,
       })),
     [filteredData],
+  );
+
+  const intradayChartData = useMemo(
+    () =>
+      intradayData.map((d) => ({
+        time: formatIntradayTick(d.bucket_start, intradayRange),
+        sessions: Number(d.session_count) || 0,
+        bucket_start: d.bucket_start,
+      })),
+    [intradayData, intradayRange],
   );
 
   const totals = useMemo(() => {
@@ -255,6 +299,52 @@ export default function SessionsTab({ environment }: SessionsTabProps) {
           );
         })}
       </div>
+
+      {/* Intra-day volume */}
+      <Card>
+        <CardHeader>
+          <div className="flex flex-col gap-2 sm:flex-row sm:justify-between sm:items-start">
+            <div>
+              <CardTitle>
+                Sessions Over Time (
+                {ADMIN_SESSION_INTRADAY_RANGES[intradayRange].titleSuffix})
+              </CardTitle>
+              <CardDescription>
+                Estimated session starts (last ping − duration). Times in your
+                local timezone.
+              </CardDescription>
+            </div>
+            <ChartTimeRangeSelectSessionIntraday
+              value={intradayRange}
+              onChange={setIntradayRange}
+            />
+          </div>
+        </CardHeader>
+        <CardContent>
+          {intradayLoading ? (
+            <div className="text-muted-foreground h-[350px] flex items-center justify-center">
+              Loading…
+            </div>
+          ) : (
+            <ChartContainer config={{}} className="h-[350px] w-full">
+              <BarChart data={intradayChartData}>
+                <CartesianGrid strokeDasharray="3 3" />
+                <XAxis
+                  dataKey="time"
+                  interval={3}
+                  tick={{ fontSize: 11 }}
+                  angle={-35}
+                  textAnchor="end"
+                  height={60}
+                />
+                <YAxis allowDecimals={false} />
+                <ChartTooltip content={<ChartTooltipContent />} />
+                <Bar dataKey="sessions" fill="#3b82f6" name="Sessions" />
+              </BarChart>
+            </ChartContainer>
+          )}
+        </CardContent>
+      </Card>
 
       {/* Stacked bar chart */}
       <Card>
