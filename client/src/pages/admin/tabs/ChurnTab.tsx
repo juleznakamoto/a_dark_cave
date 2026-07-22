@@ -1,7 +1,7 @@
 import { useMemo, useState } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { LineChart, Line, BarChart, Bar, CartesianGrid, XAxis, YAxis, Legend } from "recharts";
+import { LineChart, Line, BarChart, Bar, Cell, CartesianGrid, XAxis, YAxis, Legend } from "recharts";
 import { ChartContainer, ChartTooltip, ChartTooltipContent } from "@/components/ui/chart";
 import { differenceInDays, subDays, startOfDay, endOfDay, isWithinInterval, parseISO } from "date-fns";
 import {
@@ -664,21 +664,22 @@ export default function ChurnTab(props: ChurnTabProps) {
 
           <div>
             <h3 className="text-sm font-medium mb-2">
-              Players reaching ≥N huts
+              Players reaching ≥N huts (W0–W10, then S1–S10)
             </h3>
             <ChartContainer
               config={{
-                wooden: { label: "Wooden hut ≥N", color: COLORS[0] },
-                stone: { label: "Stone hut ≥N", color: COLORS[1] },
+                players: { label: "Players ≥N", color: COLORS[0] },
               }}
               className="h-[320px] w-full"
             >
               <BarChart data={hutReachChart}>
                 <CartesianGrid strokeDasharray="3 3" />
                 <XAxis
-                  dataKey="level"
+                  dataKey="step"
+                  interval={0}
+                  tick={{ fontSize: 10 }}
                   label={{
-                    value: "Hut count threshold",
+                    value: "Hut ladder step",
                     position: "insideBottom",
                     offset: -2,
                   }}
@@ -692,33 +693,48 @@ export default function ChurnTab(props: ChurnTabProps) {
                   }}
                 />
                 <ChartTooltip content={<ChartTooltipContent />} />
-                <Legend />
-                <Bar dataKey="wooden" name="Wooden hut ≥N" fill={COLORS[0]} />
-                <Bar dataKey="stone" name="Stone hut ≥N" fill={COLORS[1]} />
+                <Legend
+                  payload={[
+                    {
+                      value: "Wooden hut ≥N",
+                      type: "square",
+                      color: COLORS[0],
+                    },
+                    {
+                      value: "Stone hut ≥N",
+                      type: "square",
+                      color: COLORS[1],
+                    },
+                  ]}
+                />
+                <Bar dataKey="players" name="Players ≥N">
+                  {hutReachChart.map((entry) => (
+                    <Cell
+                      key={`reach-${entry.step}`}
+                      fill={entry.kind === "wooden" ? COLORS[0] : COLORS[1]}
+                    />
+                  ))}
+                </Bar>
               </BarChart>
             </ChartContainer>
           </div>
 
           <div>
             <h3 className="text-sm font-medium mb-2">
-              Step drop-off at each hut (%)
+              Step drop-off at each hut (%) (W0–W10, then S1–S10)
             </h3>
             <ChartContainer
               config={{
-                woodenDrop: {
-                  label: "Wooden step drop %",
+                drop: {
+                  label: "Step drop %",
                   color: COLORS[2] ?? COLORS[0],
-                },
-                stoneDrop: {
-                  label: "Stone step drop %",
-                  color: COLORS[3] ?? COLORS[1],
                 },
               }}
               className="h-[280px] w-full"
             >
               <BarChart data={hutDropChart}>
                 <CartesianGrid strokeDasharray="3 3" />
-                <XAxis dataKey="level" />
+                <XAxis dataKey="step" interval={0} tick={{ fontSize: 10 }} />
                 <YAxis
                   unit="%"
                   label={{
@@ -728,22 +744,37 @@ export default function ChurnTab(props: ChurnTabProps) {
                   }}
                 />
                 <ChartTooltip content={<ChartTooltipContent />} />
-                <Legend />
-                <Bar
-                  dataKey="woodenDrop"
-                  name="Wooden step drop %"
-                  fill={COLORS[2] ?? COLORS[0]}
+                <Legend
+                  payload={[
+                    {
+                      value: "Wooden step drop %",
+                      type: "square",
+                      color: COLORS[2] ?? COLORS[0],
+                    },
+                    {
+                      value: "Stone step drop %",
+                      type: "square",
+                      color: COLORS[3] ?? COLORS[1],
+                    },
+                  ]}
                 />
-                <Bar
-                  dataKey="stoneDrop"
-                  name="Stone step drop %"
-                  fill={COLORS[3] ?? COLORS[1]}
-                />
+                <Bar dataKey="drop" name="Step drop %">
+                  {hutDropChart.map((entry) => (
+                    <Cell
+                      key={`drop-${entry.step}`}
+                      fill={
+                        entry.kind === "wooden"
+                          ? (COLORS[2] ?? COLORS[0])
+                          : (COLORS[3] ?? COLORS[1])
+                      }
+                    />
+                  ))}
+                </Bar>
               </BarChart>
             </ChartContainer>
             <p className="text-xs text-muted-foreground mt-2">
-              Level 0 is the baseline (0% drop). Stone ≥1 step drop is vs wooden
-              ≥10 (unlock gate), not vs all starters.
+              W0 is the baseline (0% drop). S1 step drop is vs wooden ≥10
+              (unlock gate), not vs all starters.
             </p>
           </div>
 

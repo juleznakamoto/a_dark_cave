@@ -91,14 +91,38 @@ describe("hutLadderAdminStats", () => {
     expect(funnel.stone[1]?.stepDropPct).toBe(0);
 
     const reach = hutLadderReachChartData(funnel);
-    expect(reach[10]).toEqual({ level: "10", wooden: 2, stone: 0 });
-    // stone ≥10 is 0 in this fixture
-    expect(reach[0]).toEqual({ level: "0", wooden: 4, stone: 4 });
+    // Wooden W0..W10 then stone S1..S10 (21 points)
+    expect(reach).toHaveLength(21);
+    expect(reach[0]).toEqual({
+      step: "W0",
+      level: 0,
+      kind: "wooden",
+      players: 4,
+    });
+    expect(reach[10]).toEqual({
+      step: "W10",
+      level: 10,
+      kind: "wooden",
+      players: 2,
+    });
+    expect(reach[11]).toEqual({
+      step: "S1",
+      level: 1,
+      kind: "stone",
+      players: 2,
+    });
+    expect(reach[20]).toEqual({
+      step: "S10",
+      level: 10,
+      kind: "stone",
+      players: 0,
+    });
 
     const drops = hutLadderStepDropChartData(funnel);
-    expect(drops[0]?.woodenDrop).toBe(0);
-    expect(drops[1]?.woodenDrop).toBe(25);
-    expect(drops[1]?.stoneDrop).toBe(0);
+    expect(drops).toHaveLength(21);
+    expect(drops[0]?.drop).toBe(0);
+    expect(drops[1]?.drop).toBe(25);
+    expect(drops[11]?.drop).toBe(0); // S1 vs wooden ≥10
   });
 
   it("stone ≥1 step drop is vs wooden ≥10 unlock cohort", () => {

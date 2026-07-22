@@ -202,27 +202,63 @@ export function computeHutLadderFunnel(
   };
 }
 
-/** Chart rows: one point per level with both series for Recharts. */
-export function hutLadderReachChartData(funnel: HutLadderFunnel): Array<{
-  level: string;
-  wooden: number;
-  stone: number;
-}> {
-  return funnel.wooden.map((w, i) => ({
-    level: String(w.level),
-    wooden: w.players,
-    stone: funnel.stone[i]?.players ?? 0,
+export type HutLadderChartKind = "wooden" | "stone";
+
+export type HutLadderReachChartPoint = {
+  /** Short x-axis label, e.g. "W5" / "S1". */
+  step: string;
+  level: number;
+  kind: HutLadderChartKind;
+  players: number;
+};
+
+export type HutLadderStepDropChartPoint = {
+  step: string;
+  level: number;
+  kind: HutLadderChartKind;
+  drop: number;
+};
+
+/**
+ * Chart rows as one progression: wooden ≥0..≥10, then stone ≥1..≥10
+ * (stone ≥0 omitted — same baseline as wooden ≥0 / all starters).
+ */
+export function hutLadderReachChartData(
+  funnel: HutLadderFunnel,
+): HutLadderReachChartPoint[] {
+  const wooden = funnel.wooden.map((w) => ({
+    step: `W${w.level}`,
+    level: w.level,
+    kind: "wooden" as const,
+    players: w.players,
   }));
+  const stone = funnel.stone
+    .filter((s) => s.level >= 1)
+    .map((s) => ({
+      step: `S${s.level}`,
+      level: s.level,
+      kind: "stone" as const,
+      players: s.players,
+    }));
+  return [...wooden, ...stone];
 }
 
-export function hutLadderStepDropChartData(funnel: HutLadderFunnel): Array<{
-  level: string;
-  woodenDrop: number;
-  stoneDrop: number;
-}> {
-  return funnel.wooden.map((w, i) => ({
-    level: String(w.level),
-    woodenDrop: w.stepDropPct ?? 0,
-    stoneDrop: funnel.stone[i]?.stepDropPct ?? 0,
+export function hutLadderStepDropChartData(
+  funnel: HutLadderFunnel,
+): HutLadderStepDropChartPoint[] {
+  const wooden = funnel.wooden.map((w) => ({
+    step: `W${w.level}`,
+    level: w.level,
+    kind: "wooden" as const,
+    drop: w.stepDropPct ?? 0,
   }));
+  const stone = funnel.stone
+    .filter((s) => s.level >= 1)
+    .map((s) => ({
+      step: `S${s.level}`,
+      level: s.level,
+      kind: "stone" as const,
+      drop: s.stepDropPct ?? 0,
+    }));
+  return [...wooden, ...stone];
 }
