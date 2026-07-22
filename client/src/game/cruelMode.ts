@@ -224,7 +224,7 @@ export const CRUEL_MODE = {
 
   gambler: {
     /** Average minutes between gambler time-based rolls (`GameEvent.timeProbability`). Lower = more frequent. */
-    timeProbabilityMinutes: { normal: 50, cruel: 40 },
+    timeProbabilityMinutes: { normal: 40, cruel: 35 },
   },
 
   investmentHall: {
