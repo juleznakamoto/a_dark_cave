@@ -276,7 +276,7 @@ shop, the whole game unlocked, merchant-sold dark artifacts, and local + Steam C
 | `scripts/UploadToSteam.cmd` | Desktop wrapper for `steam-upload.ps1`. |
 | `scripts/UploadDemoToSteam.cmd` | Desktop wrapper for `steam-upload-demo.ps1`. |
 | `scripts/UploadPlaytestToSteam.cmd` | Desktop wrapper for `steam-upload-playtest.ps1`. |
-| `scripts/steam-upload-all.ps1` | Build/stage/upload full + demo + playtest in one SteamCMD session (`npm run steam:upload-all`). |
+| `scripts/steam-upload-all.ps1` | Build/stage/upload full + demo + playtest in one SteamCMD session (`npm run steam:upload-all`). Stages under `%LOCALAPPDATA%\a-dark-cave-steam\` (outside the repo). |
 | `scripts/UploadAllToSteam.cmd` | Desktop wrapper for `steam-upload-all.ps1`. |
 
 **Edition seams (guarded by `isSteamBuild`):** Supabase short-circuits in `lib/supabase.ts`;

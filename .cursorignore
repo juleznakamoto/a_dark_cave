@@ -1,0 +1,5 @@
+﻿# Built Electron trees — binary app.asar locks break steam:upload-all staging.
+steam/staged-full/
+steam/staged-demo/
+steam/staged-playtest/
+release/

@@ -10,9 +10,11 @@
   Run:  npm run steam:upload-all
   Or double-click: scripts\UploadAllToSteam.cmd
 
-  Each edition is packaged, then copied to steam\staged-{full,demo,playtest} so
-  the shared release\win-unpacked folder can be reused. All three SteamPipe uploads
-  then run in a single steamcmd session (one login / Steam Guard prompt).
+  Each edition is packaged, then copied to
+  %LOCALAPPDATA%\a-dark-cave-steam\staged-{full,demo,playtest} so the shared
+  release\win-unpacked folder can be reused. Staging lives outside the repo so
+  IDE/antivirus file locks on app.asar do not break the copy step. All three
+  SteamPipe uploads then run in a single steamcmd session (one login / Steam Guard).
 #>
 param(
   [switch]$SkipBuild,
@@ -23,6 +25,8 @@ param(
 $ErrorActionPreference = "Stop"
 $Root = Split-Path -Parent (Split-Path -Parent $MyInvocation.MyCommand.Path)
 Set-Location $Root
+# Outside the workspace: Cursor (and similar) often lock app.asar under steam\staged-*.
+$SteamStageRoot = Join-Path $env:LOCALAPPDATA "a-dark-cave-steam"
 
 function Write-Utf8NoBom([string]$Path, [string]$Content) {
   $utf8NoBom = New-Object System.Text.UTF8Encoding($false)
@@ -61,15 +65,62 @@ function Get-SetLiveBranch($config) {
   return ""
 }
 
+function Stop-ProcessesUsingPath([string]$PathRoot) {
+  $rootFull = [System.IO.Path]::GetFullPath($PathRoot).TrimEnd('\')
+  $stopped = @()
+  Get-CimInstance Win32_Process -ErrorAction SilentlyContinue | ForEach-Object {
+    $exePath = $_.ExecutablePath
+    if (-not $exePath) { return }
+    try {
+      $full = [System.IO.Path]::GetFullPath($exePath)
+    } catch {
+      return
+    }
+    if ($full.StartsWith($rootFull, [System.StringComparison]::OrdinalIgnoreCase)) {
+      Write-Host "  Stopping process locking stage: $($_.Name) (PID $($_.ProcessId))" -ForegroundColor Yellow
+      Stop-Process -Id $_.ProcessId -Force -ErrorAction SilentlyContinue
+      $stopped += $_.ProcessId
+    }
+  }
+  if ($stopped.Count -gt 0) {
+    Start-Sleep -Seconds 1
+  }
+}
+
+function Remove-StageDir([string]$StageDir) {
+  if (-not (Test-Path $StageDir)) { return }
+
+  Stop-ProcessesUsingPath $StageDir
+
+  $maxAttempts = 8
+  for ($attempt = 1; $attempt -le $maxAttempts; $attempt++) {
+    try {
+      Remove-Item $StageDir -Recurse -Force -ErrorAction Stop
+      return
+    } catch {
+      if ($attempt -eq $maxAttempts) {
+        Write-Host ""
+        Write-Host "Cannot clear stage folder (file in use):" -ForegroundColor Red
+        Write-Host "  $StageDir" -ForegroundColor Red
+        Write-Host "  Close 'A Dark Cave' if it is running from that folder," -ForegroundColor Yellow
+        Write-Host "  close Explorer windows open on it, then re-run." -ForegroundColor Yellow
+        Write-Host "  $($_.Exception.Message)" -ForegroundColor DarkGray
+        exit 1
+      }
+      Write-Host "  Stage folder busy (attempt $attempt/$maxAttempts), retrying..." -ForegroundColor DarkYellow
+      Stop-ProcessesUsingPath $StageDir
+      Start-Sleep -Seconds ([Math]::Min(2 * $attempt, 8))
+    }
+  }
+}
+
 function Copy-WinUnpackedToStage([string]$StageDir) {
   $source = Join-Path $Root "release\win-unpacked"
   if (-not (Test-Path $source)) {
     Write-Host "Missing release\win-unpacked after package step." -ForegroundColor Red
     exit 1
   }
-  if (Test-Path $StageDir) {
-    Remove-Item $StageDir -Recurse -Force
-  }
+  Remove-StageDir $StageDir
   New-Item -ItemType Directory -Path (Split-Path -Parent $StageDir) -Force | Out-Null
   Copy-Item $source $StageDir -Recurse -Force
   $exe = Get-ChildItem $StageDir -Filter "*.exe" | Select-Object -First 1
@@ -157,7 +208,7 @@ $editions = @(
     Name = "full"
     Config = $fullConfig
     PackageCmd = "npm run electron:package"
-    StageDir = (Join-Path $Root "steam\staged-full")
+    StageDir = (Join-Path $SteamStageRoot "staged-full")
     GeneratedDir = (Join-Path $Root "steam\generated")
     OutputDir = (Join-Path $Root "steam\output")
   },
@@ -165,7 +216,7 @@ $editions = @(
     Name = "demo"
     Config = $demoConfig
     PackageCmd = "npm run electron:package:demo"
-    StageDir = (Join-Path $Root "steam\staged-demo")
+    StageDir = (Join-Path $SteamStageRoot "staged-demo")
     GeneratedDir = (Join-Path $Root "steam\generated-demo")
     OutputDir = (Join-Path $Root "steam\output-demo")
   },
@@ -173,7 +224,7 @@ $editions = @(
     Name = "playtest"
     Config = $playtestConfig
     PackageCmd = "npm run electron:package:playtest"
-    StageDir = (Join-Path $Root "steam\staged-playtest")
+    StageDir = (Join-Path $SteamStageRoot "staged-playtest")
     GeneratedDir = (Join-Path $Root "steam\generated-playtest")
     OutputDir = (Join-Path $Root "steam\output-playtest")
   }
