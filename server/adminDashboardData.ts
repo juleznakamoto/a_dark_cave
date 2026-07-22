@@ -140,7 +140,6 @@ export async function fetchAdminSavesSlim(
 ) {
   // Single page only: paginating full game_state blobs (10×~1000) made
   // /api/admin/saves hang and left the dashboard on "Loading...".
-  // Churn Rate Over Time uses admin_churn_rate_over_time RPC instead.
   // Hut ladder still uses this sample until it gets its own RPC.
   const yearFilter = oneYearAgoFilter();
   const { data, error } = await adminClient
@@ -400,40 +399,4 @@ export async function fetchAdminMetrics(
     purchaseMetrics,
     referralMetrics,
   };
-}
-
-export type AdminChurnRateRow = {
-  day: string;
-  churn_rate: number;
-  churned_count: number;
-  eligible_count: number;
-};
-
-/** DB aggregate for Churn Rate Over Time — avoids shipping all saves to the client. */
-export async function fetchAdminChurnRateOverTime(
-  adminClient: ReturnType<
-    typeof import("./supabaseServerClient").createServerSupabaseClient
-  >,
-  churnDays: number,
-  windowDays: number,
-): Promise<AdminChurnRateRow[]> {
-  const { data, error } = await adminClient.rpc("admin_churn_rate_over_time", {
-    p_churn_days: churnDays,
-    p_window_days: windowDays,
-  });
-
-  if (error) {
-    throw error;
-  }
-
-  if (!Array.isArray(data)) {
-    return [];
-  }
-
-  return data.map((row: Record<string, unknown>) => ({
-    day: String(row.day ?? ""),
-    churn_rate: Number(row.churn_rate) || 0,
-    churned_count: Number(row.churned_count) || 0,
-    eligible_count: Number(row.eligible_count) || 0,
-  }));
 }

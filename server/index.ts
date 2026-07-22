@@ -536,7 +536,6 @@ app.post("/api/gender", async (req, res) => {
 
 import {
   ADMIN_SAVES_SLIM_VERSION,
-  fetchAdminChurnRateOverTime,
   fetchAdminClicks,
   fetchAdminMetrics,
   fetchAdminPurchases,
@@ -588,30 +587,6 @@ app.get("/api/admin/saves", async (req, res) => {
     res.json({ saves, slimVersion: ADMIN_SAVES_SLIM_VERSION });
   } catch (error: any) {
     log("❌ Admin saves fetch failed:", error);
-    res.status(500).json({ error: error.message });
-  }
-});
-
-app.get("/api/admin/churn-rate", async (req, res) => {
-  try {
-    res.set("Cache-Control", "private, no-store");
-    const adminClient = getAdminClient(parseAdminEnv(req));
-    const churnDays = Math.max(
-      1,
-      Math.min(30, Math.floor(Number(req.query.churnDays) || 3)),
-    );
-    const windowDays = Math.max(
-      0,
-      Math.min(365, Math.floor(Number(req.query.windowDays) || 30)),
-    );
-    const series = await fetchAdminChurnRateOverTime(
-      adminClient,
-      churnDays,
-      windowDays,
-    );
-    res.json({ series, churnDays, windowDays });
-  } catch (error: any) {
-    log("❌ Admin churn-rate fetch failed:", error);
     res.status(500).json({ error: error.message });
   }
 });

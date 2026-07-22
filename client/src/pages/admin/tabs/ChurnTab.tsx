@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { LineChart, Line, BarChart, Bar, Cell, CartesianGrid, XAxis, YAxis, Legend } from "recharts";
@@ -11,17 +11,8 @@ import {
   type HutLadderCohortDays,
 } from "@shared/hutLadderAdminStats";
 import {
-  mapChurnRateRpcRows,
-  type ChurnRateDayPoint,
-} from "@shared/churnRateAdminStats";
-import { logger } from "@/lib/logger";
-import {
-  ADMIN_TWELVE_MONTH_CHART_DAYS,
-  adminChartXAxisIntervalForDays,
   ChartTimeRangeSelectHutLadder,
-  ChartTimeRangeSelectTwelveMonth,
   hutLadderCohortTitleSuffix,
-  type AdminTwelveMonthChartRange,
 } from "../adminChartTimeRange";
 
 const MAX_PLAYTIME_CHART_HOURS = 18;
@@ -35,7 +26,6 @@ interface ChurnTabProps {
   selectedCubeEvents: Set<string>;
   setSelectedCubeEvents: (value: Set<string>) => void;
   COLORS: string[];
-  environment: "dev" | "prod";
 }
 
 export default function ChurnTab(props: ChurnTabProps) {
@@ -47,18 +37,9 @@ export default function ChurnTab(props: ChurnTabProps) {
     selectedCubeEvents,
     setSelectedCubeEvents,
     COLORS,
-    environment,
   } = props;
 
   const [hutLadderDays, setHutLadderDays] = useState<HutLadderCohortDays>(60);
-  const [churnRateChartRange, setChurnRateChartRange] =
-    useState<AdminTwelveMonthChartRange>("1m");
-  const churnRateChartDays = ADMIN_TWELVE_MONTH_CHART_DAYS[churnRateChartRange];
-  const [churnRateOverTime, setChurnRateOverTime] = useState<ChurnRateDayPoint[]>(
-    [],
-  );
-  const [churnRateLoading, setChurnRateLoading] = useState(false);
-  const [churnRateError, setChurnRateError] = useState<string | null>(null);
 
   const hutLadderFunnel = useMemo(
     () => computeHutLadderFunnel(gameSaves, hutLadderDays),
@@ -79,51 +60,6 @@ export default function ChurnTab(props: ChurnTabProps) {
         hutLadderFunnel.wooden10Count,
       ) / 10
       : 0;
-
-  useEffect(() => {
-    let cancelled = false;
-    setChurnRateLoading(true);
-    setChurnRateError(null);
-
-    const query = new URLSearchParams({
-      env: environment,
-      churnDays: String(churnDays),
-      windowDays: String(churnRateChartDays),
-    });
-
-    fetch(`/api/admin/churn-rate?${query}`, { cache: "no-store" })
-      .then(async (res) => {
-        if (!res.ok) {
-          const body = await res.json().catch(() => ({}));
-          throw new Error(
-            typeof body?.error === "string"
-              ? body.error
-              : `Failed to load churn rate (${res.status})`,
-          );
-        }
-        return res.json();
-      })
-      .then((data) => {
-        if (cancelled) return;
-        const series = Array.isArray(data?.series) ? data.series : [];
-        setChurnRateOverTime(mapChurnRateRpcRows(series, churnRateChartDays));
-      })
-      .catch((err) => {
-        if (cancelled) return;
-        logger.error("Failed to load churn rate over time:", err);
-        setChurnRateOverTime([]);
-        setChurnRateError(
-          err instanceof Error ? err.message : "Failed to load churn rate",
-        );
-      })
-      .finally(() => {
-        if (!cancelled) setChurnRateLoading(false);
-      });
-
-    return () => {
-      cancelled = true;
-    };
-  }, [environment, churnDays, churnRateChartDays]);
 
   /** Old slim payloads omitted flags/buildings — funnel stays empty until API restart + refetch. */
   const hutLadderPayloadReady = useMemo(() => {
@@ -1123,72 +1059,6 @@ export default function ChurnTab(props: ChurnTabProps) {
               />
             </LineChart>
           </ChartContainer>
-        </CardContent>
-      </Card>
-
-      <Card>
-        <CardHeader className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between space-y-0">
-          <div>
-            <CardTitle>Churn Rate Over Time</CardTitle>
-            <CardDescription>
-              Among non-referred saves that existed by each day: % with last
-              activity older than {churnDays}+ days (completed games excluded
-              from churned). Aggregated in Supabase (UTC day boundaries). Based
-              on current updated_at (returners won&apos;t show as historically
-              churned).
-            </CardDescription>
-          </div>
-          <ChartTimeRangeSelectTwelveMonth
-            value={churnRateChartRange}
-            onChange={setChurnRateChartRange}
-          />
-        </CardHeader>
-        <CardContent>
-          {churnRateLoading ? (
-            <p className="text-sm text-muted-foreground">Loading churn rate…</p>
-          ) : churnRateError ? (
-            <p className="text-sm text-amber-700 dark:text-amber-400">
-              {churnRateError}
-              {/timeout/i.test(churnRateError)
-                ? " — apply migration 032_admin_churn_rate_over_time_fast.sql (faster RPC)."
-                : /function|does not exist|schema cache/i.test(churnRateError)
-                  ? " — apply migration 031_admin_churn_rate_over_time.sql (or 032)."
-                  : null}
-            </p>
-          ) : (
-            <ChartContainer
-              config={{
-                churnRate: { label: "Churn Rate (%)", color: "#dc2626" },
-              }}
-              className="h-[400px] w-full"
-            >
-              <LineChart data={churnRateOverTime}>
-                <CartesianGrid strokeDasharray="3 3" />
-                <XAxis
-                  dataKey="day"
-                  interval={adminChartXAxisIntervalForDays(churnRateChartDays)}
-                />
-                <YAxis
-                  domain={[0, 100]}
-                  label={{
-                    value: "Churn Rate (%)",
-                    angle: -90,
-                    position: "insideLeft",
-                  }}
-                />
-                <ChartTooltip content={<ChartTooltipContent />} />
-                <Legend />
-                <Line
-                  type="monotone"
-                  dataKey="churnRate"
-                  stroke="#dc2626"
-                  strokeWidth={2}
-                  dot={churnRateChartDays <= 30 ? { r: 3 } : false}
-                  name="Churn Rate (%)"
-                />
-              </LineChart>
-            </ChartContainer>
-          )}
         </CardContent>
       </Card>
 

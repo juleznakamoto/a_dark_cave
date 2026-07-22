@@ -1614,7 +1614,6 @@ export default function AdminDashboard() {
                     selectedCubeEvents={selectedCubeEvents}
                     setSelectedCubeEvents={setSelectedCubeEvents}
                     COLORS={COLORS}
-                    environment={environment}
                   />,
                 )}
               </TabsContent>
