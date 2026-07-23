@@ -16,8 +16,12 @@ import { useTranslation } from "react-i18next";
 import { tWithFallback } from "@/i18n/resolveGameText";
 import { useLocale } from "@/i18n/useLocale";
 import { OG_LOCALE_TAGS, SUPPORTED_LOCALES } from "@/i18n/locales";
-import { useSteamEditionActive, useDemoEditionActive } from "@/hooks/useSteamEditionActive";
-import { isDemoEdition, isGalaxyEdition } from "@/lib/edition";
+import {
+  useSteamDesktopEditionActive,
+  useSteamEditionActive,
+  useDemoEditionActive,
+} from "@/hooks/useSteamEditionActive";
+import { isDemoEdition } from "@/lib/edition";
 import { isDemoLimitReachedFromState } from "@/game/demoLimit";
 import DemoTimeUpDialog from "@/components/game/DemoTimeUpDialog";
 import { FullscreenButton } from "@/components/game/FullscreenButton";
@@ -53,10 +57,11 @@ export default function StartScreen() {
   const { t } = useTranslation("ui");
   const { locale } = useLocale();
   const steamEditionActive = useSteamEditionActive();
+  const steamDesktopEditionActive = useSteamDesktopEditionActive();
   const demoEditionActive = useDemoEditionActive();
   // Steam Game / Playtest / Demo (build or DEV Game Mode) — no social/store links in footer.
   // Galaxy and Normal/web keep Steam / Reddit / Contact.
-  const hideStartScreenSocialLinks = steamEditionActive && !isGalaxyEdition();
+  const hideStartScreenSocialLinks = steamDesktopEditionActive;
 
   useEffect(() => {
     audioManager.setMusicVolume(musicVolume ?? 1);

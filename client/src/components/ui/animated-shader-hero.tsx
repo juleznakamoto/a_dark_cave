@@ -47,6 +47,8 @@ interface HeroProps {
   };
   /** Default flame shader; `starship` for Cruel Mode completion end screen. */
   backgroundVariant?: EndScreenBackgroundVariant;
+  /** Hide Steam wishlist CTA (Steam desktop editions — already on Steam). */
+  hideSteamWishlist?: boolean;
   className?: string;
 }
 
@@ -430,6 +432,7 @@ const Hero: React.FC<HeroProps> = ({
   subtitle3,
   buttons,
   backgroundVariant = "default",
+  hideSteamWishlist = false,
   className = "",
 }) => {
   const useDefaultBackground = backgroundVariant === "default";
@@ -625,27 +628,29 @@ const Hero: React.FC<HeroProps> = ({
             </div>
           )}
 
-          {/* Steam Wishlist Section */}
-          <div className="pt-3 flex flex-col items-center gap-3 mt-14 animate-fade-in-up animation-delay-4000 w-full min-w-0">
-            <p className="text-sm sm:text-base font-medium text-grey-200 text-center max-w-md px-2 sm:px-4 break-words">
-              A Dark Cave is soon launching on Steam. Add it to your wishlist
-              today so you'll be notified the moment it launches.
-            </p>
-            <div className="flex gap-2 sm:gap-3 flex-wrap justify-center px-2">
-              <button
-                onClick={() =>
-                  window.open(OFFICIAL_STEAM_URL, "_blank", "noopener,noreferrer")
-                }
-                className={END_SCREEN_CTA_BUTTON_CLASS}
-              >
-                <FooterSocialIcon
-                  platform="steam"
-                  className="h-5 w-5 shrink-0"
-                />
-                <span>Steam</span>
-              </button>
+          {/* Steam Wishlist Section — hidden on Steam desktop (already on Steam). */}
+          {!hideSteamWishlist && (
+            <div className="pt-3 flex flex-col items-center gap-3 mt-14 animate-fade-in-up animation-delay-4000 w-full min-w-0">
+              <p className="text-sm sm:text-base font-medium text-grey-200 text-center max-w-md px-2 sm:px-4 break-words">
+                A Dark Cave is soon launching on Steam. Add it to your wishlist
+                today so you'll be notified the moment it launches.
+              </p>
+              <div className="flex gap-2 sm:gap-3 flex-wrap justify-center px-2">
+                <button
+                  onClick={() =>
+                    window.open(OFFICIAL_STEAM_URL, "_blank", "noopener,noreferrer")
+                  }
+                  className={END_SCREEN_CTA_BUTTON_CLASS}
+                >
+                  <FooterSocialIcon
+                    platform="steam"
+                    className="h-5 w-5 shrink-0"
+                  />
+                  <span>Steam</span>
+                </button>
+              </div>
             </div>
-          </div>
+          )}
 
           {/* Support Section */}
           <div className="py-3 flex flex-col items-center gap-3 mt-8 animate-fade-in-up animation-delay-4500 w-full min-w-0">

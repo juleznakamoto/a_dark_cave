@@ -22,6 +22,8 @@ interface ImportMeta {
  */
 interface SteamBridge {
   readonly available: boolean;
+  /** True in the packaged Steam demo shell (`ADC_STEAM_DEMO_BUILD`). */
+  readonly isDemoBuild?: boolean;
   isSteamRunning(): Promise<boolean>;
   getPlayerName(): Promise<string | null>;
   unlockAchievement(apiName: string): Promise<boolean>;

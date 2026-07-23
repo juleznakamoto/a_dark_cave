@@ -6,12 +6,16 @@ import { mountNotoSansSymbols2FontFace } from "@/lib/notoSansSymbols2FontFace";
 import { useGameStore } from "@/game/state";
 import { useTranslation } from "react-i18next";
 import { isSteamBuild } from "@/lib/edition";
-import { useSteamEditionActive } from "@/hooks/useSteamEditionActive";
+import {
+  useSteamDesktopEditionActive,
+  useSteamEditionActive,
+} from "@/hooks/useSteamEditionActive";
 import { logger } from "@/lib/logger";
 
 export default function EndScreenPage() {
   const { t } = useTranslation("ui");
   const steamEditionActive = useSteamEditionActive();
+  const steamDesktopEditionActive = useSteamDesktopEditionActive();
   const [isCruelModeRun, setIsCruelModeRun] = useState<boolean | null>(null);
 
   useEffect(() => {
@@ -90,6 +94,7 @@ export default function EndScreenPage() {
       </Helmet>
       <Hero
         backgroundVariant={isCruelModeCompletion ? "starship" : "default"}
+        hideSteamWishlist={steamDesktopEditionActive}
         trustBadge={{
           text: t("endScreen.trustBadge"),
         }}

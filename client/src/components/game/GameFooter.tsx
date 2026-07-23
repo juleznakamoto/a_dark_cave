@@ -13,6 +13,7 @@ import { GameUiIcon } from "@/components/game/GameUiIcon";
 import { tWithFallback } from "@/i18n/resolveGameText";
 import {
   useSteamDemoActive,
+  useSteamDesktopEditionActive,
   useSteamEditionActive,
 } from "@/hooks/useSteamEditionActive";
 import { isGalaxyEdition } from "@/lib/edition";
@@ -98,11 +99,12 @@ export default function GameFooter() {
   const donateHeartRef = useRef<HTMLSpanElement>(null);
   const { t } = useTranslation("ui");
   const steamEditionActive = useSteamEditionActive();
+  const steamDesktopEditionActive = useSteamDesktopEditionActive();
   const steamDemoActive = useSteamDemoActive();
   const showFooterDonate = !steamEditionActive || isGalaxyEdition();
-  // Steam Game / Playtest / Demo (build or DEV Game Mode) — no Steam store URL in footer.
+  // Steam Game / Playtest / Demo (build or DEV Game Mode) — no "Steam" in footer.
   // Galaxy and Normal/web keep the wishlist link.
-  const hideSteamStoreLink = steamEditionActive && !isGalaxyEdition();
+  const hideSteamStoreLink = steamDesktopEditionActive;
 
   const triggerDonateHeartPump = useCallback(() => {
     pumpDonateHeart(donateHeartRef.current);
@@ -242,7 +244,7 @@ export default function GameFooter() {
                   : title;
               // Steam Game / Playtest / Demo: mute Reddit + Contact until hover.
               const steamMutedSocial =
-                steamEditionActive &&
+                steamDesktopEditionActive &&
                 (platform === "reddit" || platform === "contact");
               const platformIconClass = steamMutedSocial
                 ? `${FOOTER_CONTROL_SVG_ICON_HOVER_STEAM_MUTED}${isPaused ? " !opacity-100" : ""}`

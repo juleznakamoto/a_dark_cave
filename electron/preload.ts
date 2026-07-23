@@ -6,9 +6,15 @@ import { contextBridge, ipcRenderer } from "electron";
  * gets Node/Electron internals (contextIsolation stays on, nodeIntegration off).
  *
  * Mirrors the `SteamBridge` interface declared in `client/src/vite-env.d.ts`.
+ *
+ * `isDemoBuild` is baked in by `scripts/build-electron.mjs` when packaging the
+ * Steam demo (`ADC_STEAM_DEMO=1` → `ADC_STEAM_DEMO_BUILD`).
  */
+const isDemoBuild = process.env.ADC_STEAM_DEMO_BUILD === "1";
+
 contextBridge.exposeInMainWorld("steamBridge", {
   available: true,
+  isDemoBuild,
   isSteamRunning: (): Promise<boolean> => ipcRenderer.invoke("steam:is-running"),
   getPlayerName: (): Promise<string | null> => ipcRenderer.invoke("steam:player-name"),
   unlockAchievement: (apiName: string): Promise<boolean> =>

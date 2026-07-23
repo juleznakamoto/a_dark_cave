@@ -17,6 +17,17 @@ export const isSteamBuild = import.meta.env.VITE_STEAM_BUILD === "1";
 /** Steam desktop demo build (`VITE_STEAM_DEMO=1` with `VITE_STEAM_BUILD=1`). */
 export const isSteamDemoBuild = import.meta.env.VITE_STEAM_DEMO === "1";
 
+/**
+ * Runtime Steam-demo check for the renderer: Vite demo flag, or the Electron
+ * shell's baked `isDemoBuild` (covers a client bundle that missed VITE_STEAM_DEMO).
+ * Prefer this over {@link isSteamDemoBuild} in UI that must show in packaged demos.
+ */
+export function isSteamDemoRuntime(): boolean {
+  if (isSteamDemoBuild) return true;
+  if (typeof window === "undefined") return false;
+  return window.steamBridge?.available === true && window.steamBridge.isDemoBuild === true;
+}
+
 /** Steam desktop playtest build (`VITE_STEAM_PLAYTEST=1` with `VITE_STEAM_BUILD=1`). */
 export const isSteamPlaytestBuild = import.meta.env.VITE_STEAM_PLAYTEST === "1";
 
@@ -54,7 +65,7 @@ export function isGalaxyEdition(): boolean {
 export function isDemoEdition(): boolean {
   return (
     isGalaxyEdition() ||
-    isSteamDemoBuild ||
+    isSteamDemoRuntime() ||
     (import.meta.env.DEV &&
       !isSteamBuild &&
       devGameModeOverride === "steamDemo")
@@ -67,7 +78,7 @@ export function isDemoEdition(): boolean {
  */
 export function isSteamDemoActive(): boolean {
   return (
-    isSteamDemoBuild ||
+    isSteamDemoRuntime() ||
     (import.meta.env.DEV &&
       !isSteamBuild &&
       devGameModeOverride === "steamDemo")

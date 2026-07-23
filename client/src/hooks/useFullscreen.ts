@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { isSteamBuild } from "@/lib/edition";
 import {
   hasSteamBridge,
@@ -13,17 +13,24 @@ function nudgeViewportResize(): void {
 
 export function useFullscreen() {
   const [isFullscreen, setIsFullscreen] = useState(false);
+  // Bumped on toggle / native fullscreen events so a slow initial
+  // steamIsFullscreen() read cannot overwrite a newer known state.
+  const syncEpochRef = useRef(0);
   const available = isSteamBuild && hasSteamBridge();
 
   useEffect(() => {
     if (!available) return;
 
     let cancelled = false;
+    const fetchEpoch = syncEpochRef.current;
     void steamIsFullscreen().then((value) => {
-      if (!cancelled) setIsFullscreen(value);
+      if (!cancelled && syncEpochRef.current === fetchEpoch) {
+        setIsFullscreen(value);
+      }
     });
 
     const unsubscribe = steamOnFullscreenChanged((value) => {
+      syncEpochRef.current += 1;
       setIsFullscreen(value);
       nudgeViewportResize();
     });
@@ -36,6 +43,10 @@ export function useFullscreen() {
 
   const toggleFullscreen = useCallback(async () => {
     if (!available) return;
+    syncEpochRef.current += 1;
+    // Optimistic update so the icon flips immediately; Steam's setFullScreen
+    // (and the matching IPC return) can lag behind the click.
+    setIsFullscreen((prev) => !prev);
     const next = await steamToggleFullscreen();
     setIsFullscreen(next);
     nudgeViewportResize();

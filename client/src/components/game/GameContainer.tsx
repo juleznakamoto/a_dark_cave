@@ -866,8 +866,11 @@ export default function GameContainer() {
     return () => window.clearTimeout(id);
   }, [villageHotkeyTutorialOpen, closeVillageHotkeyTutorial]);
 
+  // Tab hotkey hint/badges only make sense once Village + Forest exist to switch between.
+  const tabHotkeysUnlocked = villageTabVisible && forestTabVisible;
   const showTabHotkeyOverlay =
-    (isPaused || villageHotkeyTutorialOpen) && !useLimelightNav;
+    ((isPaused && tabHotkeysUnlocked) || villageHotkeyTutorialOpen) &&
+    !useLimelightNav;
   const showVillageHotkeyBox = villageHotkeyTutorialOpen && !isPaused;
 
   const measureTabHotkeyOverlay = useCallback(() => {
