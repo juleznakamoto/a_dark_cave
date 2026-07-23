@@ -47,6 +47,7 @@ scripts/embed-email-hero.mjs
 client/public/email/*
 !client/public/email/
 !client/public/email/steam-announcement-header.jpg
+!client/public/email/steam-demo-header.jpg
 !client/public/email/icons/
 !client/public/email/icons/steam.png
 !client/public/email/icons/reddit.png
