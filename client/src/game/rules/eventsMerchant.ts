@@ -27,6 +27,9 @@ const PRICES = {
   adamant: 1.2,
   moonstone: 1.5,
   leather: 0.5,
+  // Craft material value: 100 bones / 30 leather
+  bone_totem: 5,
+  leather_totem: 15,
   steel: 0.6,
   blacksteel: 3.0,
   torch: 0.3,
@@ -135,7 +138,15 @@ const TIER_CONDITIONS = {
   mid2: (state: GameState) =>
     state.buildings.stoneHut >= 3 && state.buildings.stoneHut <= 8,
   end: (state: GameState) => state.buildings.stoneHut >= 7,
+  /** After the final chart attack wave (wave 10) is won. */
+  postLastWave: (state: GameState) =>
+    Boolean(state.story?.seen?.tenthWaveVictory),
 };
+
+const POST_LAST_WAVE_BUY_TRADE_IDS = new Set([
+  "buy_bone_totem_500_post_wave",
+  "buy_leather_totem_500_post_wave",
+]);
 
 // Define trade configurations based on progression tiers
 const buyTrades = [
@@ -333,6 +344,22 @@ const buyTrades = [
     50,
     TIER_CONDITIONS.end,
     ["wood", "stone", "food", "leather", "steel", "gold"],
+  ),
+
+  // Post last wave — one or both offered when eligible (see generateMerchantChoices)
+  createBuyTrade(
+    "buy_bone_totem_500_post_wave",
+    "bone_totem",
+    500,
+    TIER_CONDITIONS.postLastWave,
+    ["steel", "blacksteel"],
+  ),
+  createBuyTrade(
+    "buy_leather_totem_500_post_wave",
+    "leather_totem",
+    500,
+    TIER_CONDITIONS.postLastWave,
+    ["steel", "blacksteel"],
   ),
 ];
 
@@ -1096,10 +1123,16 @@ export function generateMerchantChoices(state: GameState): MerchantTradeData[] {
   const usedResourcePairs = new Set<string>();
   const usedRewardTypes = new Set<string>();
 
-  // Filter buy trades
+  // Filter buy trades (post-last-wave totems are appended separately so they always appear)
   const filteredBuyTrades = buyTrades.filter((trade) => {
-    return trade.condition(state);
+    return (
+      trade.condition(state) && !POST_LAST_WAVE_BUY_TRADE_IDS.has(trade.id)
+    );
   });
+  const filteredPostLastWaveBuyTrades = buyTrades.filter(
+    (trade) =>
+      POST_LAST_WAVE_BUY_TRADE_IDS.has(trade.id) && trade.condition(state),
+  );
 
   // Determine number of buy trades based on buildings (check highest tier first)
   let numBuyTrades = 2;
@@ -1121,6 +1154,7 @@ export function generateMerchantChoices(state: GameState): MerchantTradeData[] {
     numBuyTrades,
     numSellTrades,
     filteredBuyTradesCount: filteredBuyTrades.length,
+    filteredPostLastWaveBuyTradesCount: filteredPostLastWaveBuyTrades.length,
   });
 
   const availableBuyTrades = selectTrades(
@@ -1131,6 +1165,32 @@ export function generateMerchantChoices(state: GameState): MerchantTradeData[] {
     usedRewardTypes,
     true,
   );
+
+  // Guaranteed after wave 10: offer 1 or 2 of bone/leather totems (500)
+  // (selected one-at-a-time so both can share payment resources like gold/steel)
+  const postLastWaveBuyTrades = (() => {
+    if (filteredPostLastWaveBuyTrades.length === 0) return [];
+    const count =
+      1 +
+      Math.floor(
+        Math.random() * Math.min(2, filteredPostLastWaveBuyTrades.length),
+      );
+    const shuffled = [...filteredPostLastWaveBuyTrades].sort(
+      () => Math.random() - 0.5,
+    );
+    return shuffled
+      .slice(0, count)
+      .flatMap((trade) =>
+        selectTrades(
+          [trade],
+          1,
+          discount,
+          new Set<string>(),
+          new Set<string>(),
+          true,
+        ),
+      );
+  })();
 
   // Filter sell trades (use separate resource pair tracking)
   const filteredSellTrades = sellTrades.filter((trade) => {
@@ -1192,13 +1252,14 @@ export function generateMerchantChoices(state: GameState): MerchantTradeData[] {
 
   const finalChoices: MerchantTradeData[] = [
     ...availableBuyTrades,
+    ...postLastWaveBuyTrades,
     ...availableSellTrades,
     ...availableToolTrades,
   ];
 
   logger.log("[MERCHANT TRADES] Final choices generated:", {
     totalChoices: finalChoices.length,
-    buyTrades: availableBuyTrades.length,
+    buyTrades: availableBuyTrades.length + postLastWaveBuyTrades.length,
     sellTrades: availableSellTrades.length,
     choices: finalChoices.map((c) => ({
       id: c.id,
