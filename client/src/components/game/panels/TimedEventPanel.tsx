@@ -62,9 +62,11 @@ import {
   RelevantStatIcon,
 } from "@/components/game/EventChoiceSuccessTooltip";
 import { ActionInsightBadge } from "@/components/game/ActionInsightBadge";
+import { useSteamEditionActive } from "@/hooks/useSteamEditionActive";
 
 export default function TimedEventPanel() {
   const { t } = useTranslation(["ui", "common"]);
+  const steamEditionActive = useSteamEditionActive();
   const {
     timedEventTab,
     applyEventChoice,
@@ -523,6 +525,7 @@ export default function TimedEventPanel() {
                 isPurchased;
 
               const showGoldShopBadge =
+                !steamEditionActive &&
                 !isPurchased &&
                 timeRemaining > 0 &&
                 isTraderShopUnlocked(gameState) &&

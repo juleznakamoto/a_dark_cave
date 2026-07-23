@@ -33,10 +33,11 @@ export const solsticeGatheringEvent: GameEvent = {
       return false;
     }
 
-    return (state.buildings.woodenHut || 0) >= 3;
+    return (state.buildings.woodenHut || 0) >= 4;
   },
 
-  timeProbability: 40,
+  timeProbability: (state: GameState) =>
+    (state.solsticeState?.activationsCount ?? 0) === 0 ? 10 : 40,
   cooldownPercent: 0.65,
   priority: 3,
   repeatable: true,

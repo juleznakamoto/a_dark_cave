@@ -7,6 +7,7 @@ import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import TimedEventPanel from "./TimedEventPanel";
 import { useGameStore } from "@/game/state";
 import { GAMBLER_TUTORIAL_PLAYS_REMAINING_SEEN_KEY } from "@/game/gamblerSession";
+import { useSteamEditionActive } from "@/hooks/useSteamEditionActive";
 
 vi.mock("@/components/game/TooltipWrapper", () => ({
   TooltipWrapper: ({ children }: { children: React.ReactElement }) => children,
@@ -43,6 +44,10 @@ vi.mock("@/lib/logger", () => ({
     warn: vi.fn(),
     error: vi.fn(),
   },
+}));
+
+vi.mock("@/hooks/useSteamEditionActive", () => ({
+  useSteamEditionActive: vi.fn(() => false),
 }));
 
 function makeGamblerEvent(overrides: Record<string, unknown> = {}) {
@@ -398,6 +403,7 @@ describe("TimedEventPanel gold shop badge", () => {
     vi.useFakeTimers();
     vi.setSystemTime(new Date("2026-03-21T12:00:00Z"));
     vi.clearAllTimers();
+    vi.mocked(useSteamEditionActive).mockReturnValue(false);
 
     Object.defineProperty(window, "matchMedia", {
       writable: true,
@@ -537,6 +543,52 @@ describe("TimedEventPanel gold shop badge", () => {
       resources: {
         ...state.resources,
         gold: 200,
+      },
+      story: {
+        ...state.story,
+        seen: {
+          ...state.story.seen,
+          traderSettled: true,
+        },
+      },
+      timedEventTab: {
+        isActive: true,
+        event: {
+          id: "test_gold_event-1",
+          eventId: "test_gold_event",
+          title: "Costly Offer",
+          message: "Pay gold?",
+          choices: [
+            {
+              id: "buy",
+              label: "Buy the ring",
+              cost: "100 Gold",
+              sellResource: "gold",
+              sellAmount: 100,
+              effect: () => ({}),
+            },
+          ],
+        },
+        expiryTime: Date.now() + 60_000,
+        startTime: Date.now() - 2_000,
+      },
+    }));
+
+    act(() => {
+      render(<TimedEventPanel />);
+    });
+
+    expect(screen.queryByTestId("timedevent-buy-buy-gold")).toBeNull();
+  });
+
+  it("does not show a buy-gold badge on Steam edition", () => {
+    vi.mocked(useSteamEditionActive).mockReturnValue(true);
+
+    useGameStore.setState((state) => ({
+      ...state,
+      resources: {
+        ...state.resources,
+        gold: 10,
       },
       story: {
         ...state.story,
