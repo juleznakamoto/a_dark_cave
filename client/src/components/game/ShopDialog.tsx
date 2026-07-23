@@ -1663,16 +1663,23 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
                   {/* Pinned via flex split below TabsList + intro (sticky breaks under dialog transforms). */}
                   {SHOP_ITEMS.cruel_mode.price === 0 && (
                     <div className="mb-3 shrink-0 rounded-md border border-green-500/40 bg-green-500/5 px-2 py-2 text-xs font-normal text-foreground">
-                      {t("ui:shop.cruelModeSteamDemoBannerBefore")}{" "}
+                      {t("ui:shop.cruelModeSteamDemoBannerBefore", {
+                        defaultValue:
+                          "Cruel Mode is currently free to celebrate the Demo Launch on",
+                      })}{" "}
                       <a
                         href={OFFICIAL_STEAM_URL}
                         target="_blank"
                         rel="noopener noreferrer"
                         className="font-medium text-green-700 underline underline-offset-2 hover:text-green-600 dark:text-green-400 dark:hover:text-green-300"
                       >
-                        {t("ui:shop.cruelModeSteamDemoBannerSteam")}
+                        {t("ui:shop.cruelModeSteamDemoBannerSteam", {
+                          defaultValue: "Steam",
+                        })}
                       </a>
-                      {t("ui:shop.cruelModeSteamDemoBannerAfter")}
+                      {t("ui:shop.cruelModeSteamDemoBannerAfter", {
+                        defaultValue: ".",
+                      })}
                     </div>
                   )}
                   <div className="flex shrink-0 flex-wrap gap-x-1.5 gap-y-4 pb-3">

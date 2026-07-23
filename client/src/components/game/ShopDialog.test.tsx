@@ -2,7 +2,7 @@
  * @vitest-environment jsdom
  */
 import React from 'react';
-import { describe, it, expect, beforeEach, vi, afterEach } from 'vitest';
+import { describe, it, expect, beforeEach, vi, afterEach, beforeAll } from 'vitest';
 import { render, screen, waitFor, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
@@ -35,6 +35,8 @@ import { ShopDialog } from './ShopDialog';
 import { useGameStore } from '@/game/state';
 import { SHOP_ITEMS, bundleComponentsCatalogPriceSumCents, bundleComponentsListPriceSumCents } from '@shared/shopItems';
 import { createShopDialogFetchMock, resetShopDialogAuthMocks } from './shopDialogTestMocks';
+import i18n from '@/i18n';
+import { ensureInitialLocalesLoaded } from '@/i18n/loadLocaleResources';
 
 /** Paid shop card CTA (checkout step still uses "Complete Purchase…"). */
 const SHOP_PAID_ITEM_CTA = /^(Continue|Purchase)$/i;
@@ -118,6 +120,11 @@ vi.mock('@stripe/react-stripe-js', () => ({
 }));
 
 describe('ShopDialog', { timeout: 15_000 }, () => {
+  beforeAll(async () => {
+    await ensureInitialLocalesLoaded();
+    await i18n.changeLanguage('en');
+  });
+
   beforeEach(() => {
     resetShopDialogAuthMocks(shopAuthMocks);
     global.fetch = createShopDialogFetchMock();
@@ -1727,7 +1734,7 @@ describe('ShopDialog', { timeout: 15_000 }, () => {
       render(<ShopDialog isOpen={true} onClose={onClose} />);
 
       await waitFor(() => {
-        expect(screen.getByText(/sign in to claim/i)).toBeInTheDocument();
+        expect(screen.getAllByText(/sign in to claim/i).length).toBeGreaterThan(0);
       });
     });
 

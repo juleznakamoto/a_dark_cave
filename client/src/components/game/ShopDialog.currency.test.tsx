@@ -2,11 +2,13 @@
  * @vitest-environment jsdom
  */
 import React from 'react';
-import { describe, it, expect, beforeEach, vi, afterEach } from 'vitest';
+import { describe, it, expect, beforeEach, vi, afterEach, beforeAll } from 'vitest';
 import { render, screen, waitFor, fireEvent } from '@testing-library/react';
 import { ShopDialog } from './ShopDialog';
 import { useGameStore } from '@/game/state';
 import { createShopDialogFetchMock, resetShopDialogAuthMocks } from './shopDialogTestMocks';
+import i18n from '@/i18n';
+import { ensureInitialLocalesLoaded } from '@/i18n/loadLocaleResources';
 
 const SHOP_PAID_ITEM_CTA = /^(Continue|Purchase)$/i;
 
@@ -81,6 +83,11 @@ vi.mock('@stripe/react-stripe-js', () => ({
 }));
 
 describe('ShopDialog Currency Detection', { timeout: 15_000 }, () => {
+  beforeAll(async () => {
+    await ensureInitialLocalesLoaded();
+    await i18n.changeLanguage('en');
+  });
+
   beforeEach(() => {
     // jsdom doesn't implement matchMedia - required by use-mobile hook
     Object.defineProperty(window, "matchMedia", {

@@ -237,7 +237,7 @@ run ad hoc for locale maintenance.
 | `export:resend-csvs` | `export-resend-contact-csvs.ts` | Marketing contact CSV export (uses gender proxy). |
 | `sync:resend-marketing` | `sync-resend-marketing-contacts.ts` | Push marketing opt-in contacts to Resend via Contacts Import API (with `unsubscribe_url` tokens). |
 | `import:resend-legacy-segments` | `import-legacy-resend-segments.ts` | One-time import of two legacy cohorts into Resend **Segments** (oldestâ†’newest): pre-consent users (no `marketing_preferences` row) and currently-subscribed users. Shares env with `resendScriptEnv.ts`. |
-| (ad hoc `tsx`) | `rebuild-resend-marketing-contacts.ts` | Wipe all Resend contacts, then re-import the same pre-consent + subscribed cohorts (excludes opt-outs; `--dry-run` / `--skip-delete`). |
+| `rebuild:resend-marketing` | `rebuild-resend-marketing-contacts.ts` | Wipe all Resend contacts, then re-import pre-consent + subscribed cohorts (excludes opt-outs; `--dry-run` / `--skip-delete`). |
 | `test:gender` | `test-gender-service.js` | Smoke-test `services/gender-service/`. |
 
 Support modules (not always npm-wired): `write-build-meta.mjs` (git HEAD â†’ `dist/build-meta.json` after client build), `generate-logo-assets.py` (resize `build-resources/logo-source.png` â†’ favicons, PWA, OG, Electron icons), `locale-catalog.mjs`, `parse-locale-json.mjs`,

@@ -37,6 +37,7 @@ attached_assets/
 
 # Resend contact exports (PII — never commit)
 exports/
+tmp/resend-rebuild/
 
 # Resend broadcast HTML and local email build scripts (not in repo)
 marketing/
