@@ -80,7 +80,7 @@ function createWoodcutterEvent(config: WoodcutterConfig): GameEvent {
       // Check if this specific event was already accepted
       if (
         state.story.seen[
-          `woodcutter${level}Accepted` as keyof typeof state.story.seen
+        `woodcutter${level}Accepted` as keyof typeof state.story.seen
         ]
       ) {
         return false;
@@ -96,7 +96,7 @@ function createWoodcutterEvent(config: WoodcutterConfig): GameEvent {
       // For subsequent events, check if previous event was met
       if (
         !state.story.seen[
-          `woodcutter${level - 1}Met` as keyof typeof state.story.seen
+        `woodcutter${level - 1}Met` as keyof typeof state.story.seen
         ]
       ) {
         return false;
@@ -107,7 +107,7 @@ function createWoodcutterEvent(config: WoodcutterConfig): GameEvent {
       return canTrigger;
     },
 
-    timeProbability: 20,
+    timeProbability: 15,
     effect: (state: GameState) => {
       return {
         woodcutterState: {

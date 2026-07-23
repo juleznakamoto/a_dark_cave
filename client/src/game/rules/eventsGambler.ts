@@ -2,6 +2,7 @@ import { tWithFallback } from "@/i18n/resolveGameText";
 import { GameEvent } from "./events";
 import { GameState } from "@shared/schema";
 import { CRUEL_MODE } from "../cruelMode";
+import { getSeenResourceKeys } from "@/game/stateHelpers";
 
 const GAMBLER_LEAVE_AFTER_GAMES_FALLBACK =
   "The gambler pockets his dice, gives a last crooked smile, and disappears into the darkness of the woods.";
@@ -22,12 +23,15 @@ export const GAMBLER_LEAVE_AFTER_GAMES_MESSAGE =
 export const gamblerEvents: Record<string, GameEvent> = {
   gambler: {
     id: "gambler",
-    condition: (state: GameState) => state.buildings.woodenHut >= 4,
+    condition: (state: GameState) =>
+      state.buildings.woodenHut >= 4 &&
+      getSeenResourceKeys(state).includes("gold"),
+
     timeProbability: (state: GameState) =>
       state.cruelMode
         ? CRUEL_MODE.gambler.timeProbabilityMinutes.cruel
         : CRUEL_MODE.gambler.timeProbabilityMinutes.normal,
-    cooldownPercent: 0.5,
+    cooldownPercent: 0.5,
 
     priority: 2,
     repeatable: true,
