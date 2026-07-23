@@ -2377,7 +2377,7 @@
       "outcome0": "Du hebst die Dielen an und findest ein seltsames Amulett, das leise flüstert.",
       "outcome1": "Du entscheidest dich, die Hütte in Ruhe zu lassen. Bis zum Morgen verschwindet das Flüstern, doch eine Kälte bleibt in der Luft."
     },
-    "message": "In der Nacht scheinen leise Flüstern unter dem Boden einer der Hütten aufzusteigen. Die Dorfbewohner sind unruhig. Untersuchst du es?",
+    "message": "In der Nacht scheint ein leises Flüstern von unter dem Boden einer der Hütten zu kommen. Die Dorfbewohner sind beunruhigt. Untersuchst du es?",
     "title": "Flüstern unter der Hütte"
   },
   "wildlingBloodOath": {

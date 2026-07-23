@@ -3,6 +3,7 @@ import { GameState } from "@shared/schema";
 import { killVillagers } from "@/game/stateHelpers";
 import { getMaxVeinfireElixirLimit } from "@/game/resourceLimits";
 import { getMapFragmentCount, MAP_FRAGMENT_TOTAL } from "../mapFragments";
+import { isSteamEditionActive } from "@/lib/edition";
 
 export const storyEvents: Record<string, GameEvent> = {
   portalDiscovered: {
@@ -167,7 +168,9 @@ export const storyEvents: Record<string, GameEvent> = {
   traderSettles: {
     id: "traderSettles",
     condition: (state: GameState) =>
-      (state.buildings.woodenHut ?? 0) >= 5 && !state.story.seen.traderSettled,
+      !isSteamEditionActive() &&
+      (state.buildings.woodenHut ?? 0) >= 5 &&
+      !state.story.seen.traderSettled,
     timeProbability: 5,
     priority: 5,
     repeatable: true,

@@ -1,6 +1,7 @@
 import { formatNumber } from "@/lib/utils";
 import { GameEvent } from "./events";
 import { GameState } from "@shared/schema";
+import { getSeenResourceKeys } from "@/game/stateHelpers";
 
 interface WoodcutterConfig {
   level: number;
@@ -12,7 +13,7 @@ interface WoodcutterConfig {
 }
 
 const woodcutterConfigs: WoodcutterConfig[] = [
-  { level: 1, woodenHuts: 2, foodCost: 25, woodReward: 200 },
+  { level: 1, woodenHuts: 2, foodCost: 25, woodReward: 250 },
   { level: 2, woodenHuts: 3, foodCost: 50, woodReward: 500 },
   { level: 3, woodenHuts: 4, foodCost: 100, woodReward: 1000 },
   {
@@ -86,11 +87,12 @@ function createWoodcutterEvent(config: WoodcutterConfig): GameEvent {
         return false;
       }
 
-      // For first event, just check building requirement
+      // For first event: 2 huts + player has seen food (cost gated on accept)
       if (level === 1) {
-        const canTrigger =
-          state.buildings.woodenHut >= woodenHuts && state.resources.food > 25;
-        return canTrigger;
+        return (
+          state.buildings.woodenHut >= woodenHuts &&
+          getSeenResourceKeys(state).includes("food")
+        );
       }
 
       // For subsequent events, check if previous event was met
