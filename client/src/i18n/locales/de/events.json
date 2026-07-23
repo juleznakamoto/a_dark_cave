@@ -951,10 +951,10 @@
   "madBeduine": {
     "choices": {
       "allowStay": {
-        "label": "Bleiben erlauben"
+        "label": "Erlauben"
       },
       "turnAway": {
-        "label": "Wegwenden"
+        "label": "Wegschicken"
       }
     },
     "log": {

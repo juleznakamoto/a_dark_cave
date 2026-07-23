@@ -33,6 +33,12 @@ const DEV_SERVER_URL = process.env.ADC_DEV_SERVER_URL; // set by electron:dev to
 
 let mainWindow: BrowserWindow | null = null;
 let loopback: LoopbackServer | null = null;
+/**
+ * Intended fullscreen state while Electron/Windows catches up.
+ * On Windows (esp. with Steam overlay), `maximize` fires during fullscreen
+ * transitions and `isFullScreen()` can lag — never trust a raw read mid-toggle.
+ */
+let fullscreenIntent: boolean | null = null;
 
 /** Resolve the Steam App ID from steam_appid.txt (defaults to Valve's test id 480). */
 function resolveAppId(): number {
@@ -116,19 +122,25 @@ async function createWindow(): Promise<void> {
 
   const notifyLayoutChange = (): void => {
     mainWindow?.webContents.send("window:layout-changed");
-    mainWindow?.webContents.send(
-      "window:fullscreen-changed",
-      mainWindow.isFullScreen(),
-    );
   };
 
-  mainWindow.on("enter-full-screen", notifyLayoutChange);
-  mainWindow.on("leave-full-screen", notifyLayoutChange);
+  const notifyFullscreenChange = (isFullscreen: boolean): void => {
+    fullscreenIntent = isFullscreen;
+    mainWindow?.webContents.send("window:fullscreen-changed", isFullscreen);
+    notifyLayoutChange();
+  };
+
+  // Only enter/leave-full-screen own the icon state. maximize/unmaximize also
+  // fire on Windows during fullscreen transitions and must not broadcast a
+  // stale isFullScreen() false that snaps the UI icon back.
+  mainWindow.on("enter-full-screen", () => notifyFullscreenChange(true));
+  mainWindow.on("leave-full-screen", () => notifyFullscreenChange(false));
   mainWindow.on("maximize", notifyLayoutChange);
   mainWindow.on("unmaximize", notifyLayoutChange);
 
   mainWindow.on("closed", () => {
     mainWindow = null;
+    fullscreenIntent = null;
   });
 }
 
@@ -164,14 +176,26 @@ function registerIpc(): void {
     app.quit();
   });
 
-  ipcMain.handle("window:is-fullscreen", () => mainWindow?.isFullScreen() ?? false);
+  ipcMain.handle("window:is-fullscreen", () => {
+    if (fullscreenIntent !== null) return fullscreenIntent;
+    return mainWindow?.isFullScreen() ?? false;
+  });
 
   ipcMain.handle("window:toggle-fullscreen", () => {
     if (!mainWindow) return false;
-    const next = !mainWindow.isFullScreen();
+    const currently =
+      fullscreenIntent !== null ? fullscreenIntent : mainWindow.isFullScreen();
+    const next = !currently;
     // setFullScreen is async; isFullScreen() often still reflects the old
-    // state if read immediately, so return the intended value.
+    // state if read immediately, so keep and broadcast the intended value.
+    fullscreenIntent = next;
     mainWindow.setFullScreen(next);
+    // Windows may leave the window maximized after leaving fullscreen.
+    if (!next && mainWindow.isMaximized()) {
+      mainWindow.unmaximize();
+    }
+    mainWindow.webContents.send("window:fullscreen-changed", next);
+    mainWindow.webContents.send("window:layout-changed");
     return next;
   });
 }

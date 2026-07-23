@@ -11,8 +11,11 @@ function nudgeViewportResize(): void {
   window.dispatchEvent(new Event("resize"));
 }
 
+/** Survives FullscreenButton remounts during the first fullscreen layout pass. */
+let sharedIsFullscreen = false;
+
 export function useFullscreen() {
-  const [isFullscreen, setIsFullscreen] = useState(false);
+  const [isFullscreen, setIsFullscreen] = useState(sharedIsFullscreen);
   // Bumped on toggle / native fullscreen events so a slow initial
   // steamIsFullscreen() read cannot overwrite a newer known state.
   const syncEpochRef = useRef(0);
@@ -25,12 +28,14 @@ export function useFullscreen() {
     const fetchEpoch = syncEpochRef.current;
     void steamIsFullscreen().then((value) => {
       if (!cancelled && syncEpochRef.current === fetchEpoch) {
+        sharedIsFullscreen = value;
         setIsFullscreen(value);
       }
     });
 
     const unsubscribe = steamOnFullscreenChanged((value) => {
       syncEpochRef.current += 1;
+      sharedIsFullscreen = value;
       setIsFullscreen(value);
       nudgeViewportResize();
     });
@@ -46,8 +51,13 @@ export function useFullscreen() {
     syncEpochRef.current += 1;
     // Optimistic update so the icon flips immediately; Steam's setFullScreen
     // (and the matching IPC return) can lag behind the click.
-    setIsFullscreen((prev) => !prev);
+    setIsFullscreen((prev) => {
+      const next = !prev;
+      sharedIsFullscreen = next;
+      return next;
+    });
     const next = await steamToggleFullscreen();
+    sharedIsFullscreen = next;
     setIsFullscreen(next);
     nudgeViewportResize();
   }, [available]);
