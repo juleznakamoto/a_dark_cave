@@ -20,7 +20,11 @@ import {
   buildGameState,
   applyResourceDeltas,
 } from "@/game/stateHelpers";
-import { audioManager, SOUND_VOLUME } from "@/lib/audio";
+import {
+  audioManager,
+  EVENT_AMBIENCE_FADE_SECONDS,
+  SOUND_VOLUME,
+} from "@/lib/audio";
 import {
   getTotalMadness,
   getStrangerApproachProbability,
@@ -325,9 +329,9 @@ export function startGameLoop() {
       state.idleModeState?.isActive;
 
     if (isPaused) {
-      // Stop all sounds when paused (unless already stopped by mute)
+      // Fade BGM out on pause; keep event ambience beds (cube, etc.) playing
       if (!state.isPausedPreviously && (!state.sfxMuted || !state.musicMuted)) {
-        audioManager.stopAllSounds();
+        audioManager.pauseForSimulation(EVENT_AMBIENCE_FADE_SECONDS);
         useGameStore.setState({ isPausedPreviously: true });
       }
       // Freeze production timer while paused so it can resume from remaining time.
@@ -346,9 +350,9 @@ export function startGameLoop() {
       productionPauseStartedAt = null;
     }
 
-    // Resume sounds when exiting pause state
+    // Resume sounds when exiting pause state (crossfade BGM back in)
     if (state.isPausedPreviously) {
-      audioManager.resumeSounds();
+      audioManager.resumeSounds(EVENT_AMBIENCE_FADE_SECONDS);
       useGameStore.setState({ isPausedPreviously: false });
     }
 
