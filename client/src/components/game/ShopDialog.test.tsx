@@ -510,8 +510,9 @@ describe('ShopDialog', { timeout: 15_000 }, () => {
 
       await waitFor(() => {
         if (import.meta.env.DEV) {
-          const purchaseButtons = screen.getAllByRole('button', { name: SHOP_PAID_ITEM_CTA });
-          const cruelModeButton = purchaseButtons.find((b) => {
+          // Free during Steam demo promo — claim CTA instead of paid checkout
+          const claimButtons = screen.getAllByRole('button', { name: /^Claim$/i });
+          const cruelModeButton = claimButtons.find((b) => {
             let el: HTMLElement | null = b.parentElement;
             while (el) {
               if (el.textContent?.includes('Cruel Mode')) return true;
@@ -519,7 +520,7 @@ describe('ShopDialog', { timeout: 15_000 }, () => {
             }
             return false;
           });
-          expect(cruelModeButton ?? purchaseButtons[0]).not.toBeDisabled();
+          expect(cruelModeButton ?? claimButtons[0]).not.toBeDisabled();
         }
       });
     });

@@ -46,6 +46,7 @@ import {
   assignVillagerToJob,
   unassignVillagerFromJob,
   mergeCombatVictoryState,
+  mergeCombatDefeatState,
   extractCombatResultSummary,
   applyGameStateLoadMigrations,
   getTransientDialogResetOnLoad,
@@ -3325,8 +3326,10 @@ export const useGameStore = create<GameStore>((set, get) => ({
               prevState,
             );
             set((prevState) => ({
-              ...prevState,
-              ...(stateUpdates as object),
+              ...mergeCombatDefeatState(
+                prevState,
+                stateUpdates as Parameters<typeof mergeCombatDefeatState>[1],
+              ),
               log: _logMessage
                 ? [
                   ...prevState.log,
@@ -3687,8 +3690,10 @@ export const useGameStore = create<GameStore>((set, get) => ({
             prevState,
           );
           set((prevState) => ({
-            ...prevState,
-            ...(stateUpdates as object),
+            ...mergeCombatDefeatState(
+              prevState,
+              stateUpdates as Parameters<typeof mergeCombatDefeatState>[1],
+            ),
             log: _logMessage
               ? [
                 ...prevState.log,

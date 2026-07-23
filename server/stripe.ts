@@ -155,10 +155,9 @@ export async function createPaymentIntent(
     throw new Error('Invalid item');
   }
 
-  // SECURITY: Prevent claiming paid items as free
-  // Only gold_100_free may be price 0 (claimed directly on the client).
-  if (item.price === 0 && itemId !== 'gold_100_free') {
-    logger.error(`Attempt to claim paid item as free: ${itemId}`);
+  // Free catalog items are claimed on the client — never via Stripe PaymentIntents.
+  if (item.price === 0) {
+    logger.error(`Attempt to create payment intent for free item: ${itemId}`);
     throw new Error('Invalid item configuration');
   }
 

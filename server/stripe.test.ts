@@ -286,29 +286,18 @@ describe('Stripe Shop Integration', () => {
         );
       });
 
-      it('should not apply discount for free items', async () => {
-        mockPaymentIntents.create.mockResolvedValue({
-          client_secret: 'test_secret',
-        } as any);
-
-        await createPaymentIntent(
-          'gold_100_free',
-          undefined,
-          undefined,
-          undefined,
-          undefined,
-          true
-        );
-
-        // Free items stay at 0, no discount metadata
-        expect(mockPaymentIntents.create).toHaveBeenCalledWith(
-          expect.objectContaining({
-            amount: 0,
-            metadata: expect.not.objectContaining({
-              tradersGratitudeDiscountApplied: expect.anything(),
-            }),
-          })
-        );
+      it('should reject payment intents for free catalog items', async () => {
+        await expect(
+          createPaymentIntent(
+            'gold_100_free',
+            undefined,
+            undefined,
+            undefined,
+            undefined,
+            true,
+          ),
+        ).rejects.toThrow('Invalid item configuration');
+        expect(mockPaymentIntents.create).not.toHaveBeenCalled();
       });
 
       it('should floor discounted amount correctly', async () => {
@@ -420,63 +409,22 @@ describe('Stripe Shop Integration', () => {
     });
 
     describe("Journey-complete Cruel Mode discount", () => {
-      it("should cap cruel_mode checkout at $3.99 when flag is true", async () => {
-        mockPaymentIntents.create.mockResolvedValue({
-          client_secret: "test_secret",
-        } as any);
-
-        await createPaymentIntent(
-          "cruel_mode",
-          undefined,
-          undefined,
-          undefined,
-          undefined,
-          undefined,
-          undefined,
-          undefined,
-          undefined,
-          true,
-        );
-
-        expect(mockPaymentIntents.create).toHaveBeenCalledWith(
-          expect.objectContaining({
-            amount: 399,
-            metadata: expect.objectContaining({
-              itemId: "cruel_mode",
-              priceInCents: "399",
-              cruelModeJourneyCompleteDiscountApplied: "true",
-            }),
-          }),
-        );
-      });
-
-      it("should apply journey cap after Trader gratitude on cruel_mode", async () => {
-        mockPaymentIntents.create.mockResolvedValue({
-          client_secret: "test_secret",
-        } as any);
-
-        await createPaymentIntent(
-          "cruel_mode",
-          undefined,
-          undefined,
-          undefined,
-          undefined,
-          true,
-          undefined,
-          undefined,
-          undefined,
-          true,
-        );
-
-        expect(mockPaymentIntents.create).toHaveBeenCalledWith(
-          expect.objectContaining({
-            amount: 399,
-            metadata: expect.objectContaining({
-              tradersGratitudeDiscountApplied: "true",
-              cruelModeJourneyCompleteDiscountApplied: "true",
-            }),
-          }),
-        );
+      it("rejects payment intents while cruel_mode is free (Steam demo promo)", async () => {
+        await expect(
+          createPaymentIntent(
+            "cruel_mode",
+            undefined,
+            undefined,
+            undefined,
+            undefined,
+            undefined,
+            undefined,
+            undefined,
+            undefined,
+            true,
+          ),
+        ).rejects.toThrow("Invalid item configuration");
+        expect(mockPaymentIntents.create).not.toHaveBeenCalled();
       });
     });
 
@@ -840,7 +788,7 @@ describe('Purchase Restrictions', () => {
 
     // Should allow creating payment intent even for non-repeatable items
     // (the enforcement of "already purchased" should happen client-side and during purchase verification)
-    const result = await createPaymentIntent('cruel_mode');
+    const result = await createPaymentIntent('skull_lantern');
     expect(result.clientSecret).toBe('test_secret');
   });
 

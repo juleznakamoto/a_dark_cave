@@ -72,6 +72,7 @@ import {
 } from "@/i18n/shopLabels";
 import { useTranslation } from "react-i18next";
 import { cn } from "@/lib/utils";
+import { OFFICIAL_STEAM_URL } from "@/lib/gameFooterSocialLinks";
 
 const stripePublishableKey = import.meta.env.PROD
   ? import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY_PROD
@@ -1660,6 +1661,20 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
                   className="mt-0 flex min-h-0 flex-1 flex-col overflow-hidden outline-none ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 data-[state=inactive]:hidden"
                 >
                   {/* Pinned via flex split below TabsList + intro (sticky breaks under dialog transforms). */}
+                  {SHOP_ITEMS.cruel_mode.price === 0 && (
+                    <div className="mb-3 shrink-0 rounded-md border border-green-500/40 bg-green-500/5 px-2 py-2 text-xs font-normal text-foreground">
+                      {t("ui:shop.cruelModeSteamDemoBannerBefore")}{" "}
+                      <a
+                        href={OFFICIAL_STEAM_URL}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="font-medium text-green-700 underline underline-offset-2 hover:text-green-600 dark:text-green-400 dark:hover:text-green-300"
+                      >
+                        {t("ui:shop.cruelModeSteamDemoBannerSteam")}
+                      </a>
+                      {t("ui:shop.cruelModeSteamDemoBannerAfter")}
+                    </div>
+                  )}
                   <div className="flex shrink-0 flex-wrap gap-x-1.5 gap-y-4 pb-3">
                     <Button
                       variant={selectedFilter === null ? "default" : "outline"}

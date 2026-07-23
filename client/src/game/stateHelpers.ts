@@ -42,17 +42,58 @@ export function extractCombatResultSummary(
 }
 
 /**
+ * Deep-merge `story.seen` from a combat outcome onto the live store.
+ * Outcome callbacks close over combat-start state, so a shallow replace would wipe mid-combat
+ * counters (e.g. `veinfireElixirsUsed`). Numeric keys keep `Math.max(live, incoming)`.
+ */
+export function mergeCombatStorySeen(
+  liveSeen: GameState["story"]["seen"],
+  incomingSeen: GameState["story"]["seen"] | undefined,
+): GameState["story"]["seen"] {
+  if (!incomingSeen) return liveSeen;
+  const out: Record<string, unknown> = { ...liveSeen };
+  for (const [key, value] of Object.entries(incomingSeen)) {
+    const live = out[key];
+    if (typeof value === "number" && typeof live === "number") {
+      out[key] = Math.max(live, value);
+    } else {
+      out[key] = value;
+    }
+  }
+  return out as GameState["story"]["seen"];
+}
+
+function mergeCombatStorySlice(
+  prevState: GameState,
+  incoming: GameState["story"] | undefined,
+): GameState["story"] | undefined {
+  if (!incoming) return undefined;
+  return {
+    ...prevState.story,
+    ...incoming,
+    seen: mergeCombatStorySeen(prevState.story.seen, incoming.seen),
+  };
+}
+
+/**
  * Merge combat victory updates onto live `prevState`. Combat `onVictory` must not spread stale
  * `state.resources` (that would revert bombs spent during combat). `silver` and `gold` in
- * `victoryResult.resources` are **deltas** added to the live store.
+ * `victoryResult.resources` are **deltas** added to the live store. `story.seen` is deep-merged
+ * so mid-combat increments are preserved.
  */
 export function mergeCombatVictoryState(
   prevState: GameState,
   victoryResult: Partial<GameState> & { _combatSummary?: unknown },
 ): Partial<GameState> {
-  const { resources: vr, ...rest } = victoryResult;
+  const { resources: vr, story: vs, ...rest } = victoryResult;
+  const story = mergeCombatStorySlice(prevState, vs);
+
   if (vr === undefined) {
-    return { ...prevState, ...victoryResult };
+    return {
+      ...prevState,
+      ...rest,
+      ...(story ? { story } : {}),
+    };
   }
   const resources = {
     ...prevState.resources,
@@ -62,8 +103,30 @@ export function mergeCombatVictoryState(
   return {
     ...prevState,
     ...rest,
+    ...(story ? { story } : {}),
     resources,
     seenResources: markSeenResources(prevState.seenResources, resources),
+  };
+}
+
+/**
+ * Merge combat defeat updates onto live `prevState`. Same `story.seen` rule as victory —
+ * do not replace the live slice with a combat-start snapshot.
+ */
+export function mergeCombatDefeatState(
+  prevState: GameState,
+  defeatResult: Partial<GameState> & {
+    _combatSummary?: unknown;
+    _logMessage?: string;
+  },
+): Partial<GameState> {
+  const { story: ds, _combatSummary: _cs, _logMessage: _lm, ...rest } =
+    defeatResult;
+  const story = mergeCombatStorySlice(prevState, ds);
+  return {
+    ...prevState,
+    ...rest,
+    ...(story ? { story } : {}),
   };
 }
 
