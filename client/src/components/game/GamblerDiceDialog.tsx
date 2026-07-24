@@ -621,7 +621,6 @@ export default function GamblerDiceDialog({
                         onClick={() => handleWager(tier)}
                         className={cn(
                           "text-xs",
-                          !isUnlocked && "opacity-40",
                           gameActionOutlineButtonClassName(isDisabled),
                         )}
                         button_id={`gambler-wager-${tier}`}

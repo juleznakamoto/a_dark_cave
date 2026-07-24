@@ -364,7 +364,7 @@ export default function EventDialog({
                     aria-disabled={isDisabled || undefined}
                     className={cn(
                       "h-auto min-h-7 w-fit max-w-full flex items-center justify-start gap-2 py-1 text-left whitespace-normal",
-                      isDisabled && "pointer-events-none opacity-50",
+                      isDisabled && "pointer-events-none",
                       gameActionOutlineButtonClassName(isDisabled),
                     )}
                     button_id={`event-choice-${choice.id}`}

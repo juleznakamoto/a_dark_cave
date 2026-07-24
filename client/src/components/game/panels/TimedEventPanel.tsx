@@ -584,7 +584,6 @@ export default function TimedEventPanel() {
                   }
                   className={cn(
                     "h-auto min-h-7 w-fit max-w-full gap-2 py-1 text-left justify-start whitespace-normal",
-                    isDisabled && "opacity-50",
                     isDisabled && !showGoldShopBadge && "pointer-events-none",
                     gameActionOutlineButtonClassName(isDisabled),
                   )}

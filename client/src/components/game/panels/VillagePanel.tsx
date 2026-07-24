@@ -165,6 +165,8 @@ const villagerCountButtonClassName = (isDisabled: boolean) =>
   cn(
     VILLAGER_COUNT_BUTTON_CLASS,
     gameActionOutlineButtonClassName(isDisabled),
+    // Tiny −/+ keep full chrome; only the glyph dims (see spans below).
+    "opacity-100 disabled:opacity-100",
   );
 const VILLAGER_COUNT_CAP_CLASS = cn(
   "notranslate ml-1 inline-flex items-center self-center leading-tight",
@@ -1117,7 +1119,7 @@ export default function VillagePanel() {
             <span
               className={cn(
                 "text-xs leading-none tabular-nums",
-                currentCount === 0 && "opacity-50",
+                currentCount === 0 && "opacity-60",
               )}
             >
               -
@@ -1151,7 +1153,7 @@ export default function VillagePanel() {
             <span
               className={cn(
                 "text-xs leading-none tabular-nums",
-                !canAssignMore && "opacity-50",
+                !canAssignMore && "opacity-60",
               )}
             >
               +

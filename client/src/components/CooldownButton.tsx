@@ -34,7 +34,8 @@ export function gameActionOutlineButtonClassName(
   const hoverPrefix = options?.groupHover ? "group-hover:" : "hover:";
   return cn(
     disabled
-      ? "border-orange-950/50 !bg-transparent hover:!bg-transparent"
+      ? // Whole-button fade (overrides base disabled:opacity-50 via twMerge). Full border — no /50 stack.
+      "border-orange-950 opacity-60 disabled:opacity-60 !bg-transparent hover:!bg-transparent"
       : "border-orange-950 text-foreground",
     !disabled &&
     `${hoverPrefix}bg-accent ${hoverPrefix}text-accent-foreground bg-neutral-600/10`,
@@ -283,6 +284,8 @@ const CooldownButton = forwardRef<HTMLButtonElement, CooldownButtonProps>(
           isButtonDisabled &&
           "!bg-transparent hover:!bg-transparent hover:!text-foreground",
           isButtonDisabled && "active:scale-100",
+          // Non-outline variants still need the shared inactive fade.
+          isButtonDisabled && variant !== "outline" && "opacity-60",
           isCompassGlowing && "compass-glow",
           variant === "outline" && gameActionOutlineButtonClassName(isButtonDisabled),
           className,
@@ -290,7 +293,7 @@ const CooldownButton = forwardRef<HTMLButtonElement, CooldownButtonProps>(
         data-testid={testId}
         button_id={props.button_id || actionIdFromProps}
         {...props}
-        style={{ opacity: 1, position: "relative", ...style }}
+        style={{ position: "relative", ...style }}
       >
         {particleConfig && (
           <div
@@ -300,7 +303,7 @@ const CooldownButton = forwardRef<HTMLButtonElement, CooldownButtonProps>(
         )}
 
         {/* Button content */}
-        <span className={`relative transition-opacity duration-200 ${isCoolingDown || isExecuting || isInsightRevealing || isPlayTimeOverlayActive || disabled ? "opacity-50" : ""}`}>{children}</span>
+        <span className="relative">{children}</span>
 
         {/* Cooldown, execution, or insight-reveal progress overlay */}
         {(isCoolingDown || isExecuting || isInsightRevealing || isPlayTimeOverlayActive) && (
