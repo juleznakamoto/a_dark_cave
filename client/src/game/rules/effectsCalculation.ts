@@ -22,11 +22,6 @@ import {
   getBuilderBuildTimeReduction,
   getBuilderLevel,
 } from "@/game/constructionQueueSlots";
-import { isSteamDemoActive } from "@/lib/edition";
-
-/** Steam Demo: +50% resources from player actions (explore, mine, chop, etc.). */
-export const STEAM_DEMO_ACTION_RESOURCE_BONUS = 0.5;
-
 // Tool hierarchy definitions
 const AXE_HIERARCHY = [
   "stone_axe",
@@ -391,11 +386,6 @@ export const getActionBonuses = (
       }
     }
   });
-
-  // Steam Demo: +50% action resource yields (tooltips + applyActionEffects share this SSOT)
-  if (isSteamDemoActive()) {
-    resourceMultiplier += STEAM_DEMO_ACTION_RESOURCE_BONUS;
-  }
 
   return {
     resourceMultiplier,
