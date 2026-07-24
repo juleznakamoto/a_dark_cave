@@ -47,7 +47,7 @@ export default function BlessingOfferDialog() {
           defaultValue: "Choose a Blessing",
         })}
       >
-        <div className="flex max-w-[min(96vw,52rem)] flex-row items-stretch justify-center gap-3">
+        <div className="flex max-w-[min(96vw,52rem)] flex-row items-stretch justify-center gap-2 sm:gap-3">
           {offered.map((blessingId) => {
             const effect = clothingEffects[blessingId];
             const title = getEffectName(
@@ -60,7 +60,7 @@ export default function BlessingOfferDialog() {
               <div
                 key={blessingId}
                 className={cn(
-                  "group relative z-0 flex w-[13.5rem] flex-col overflow-visible rounded-lg border border-border bg-background p-4 shadow-2xl sm:w-[16rem] sm:p-5",
+                  "group relative z-0 flex w-[13.5rem] flex-col overflow-visible rounded-lg border border-border bg-background p-3 shadow-2xl sm:w-[16rem] sm:p-5",
                   "transition-colors duration-500 hover:border-blue-600 focus-within:border-blue-600",
                 )}
                 data-testid={`blessing-offer-card-${blessingId}`}
@@ -70,7 +70,7 @@ export default function BlessingOfferDialog() {
                 <div className="mb-3 flex justify-center text-foreground">
                   <SidePanelSectionIcon
                     sectionId="blessings"
-                    sizeClassName="h-9 w-9 sm:h-10 sm:w-10"
+                    sizeClassName="h-8 w-8 sm:h-10 sm:w-10"
                     className="opacity-90"
                   />
                 </div>
