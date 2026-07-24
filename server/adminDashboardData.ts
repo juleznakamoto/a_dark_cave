@@ -3,11 +3,13 @@
  * per tab and avoid shipping full game_state blobs when not needed.
  */
 
+import { ATTACK_WAVE_VICTORY_FLAGS } from "@shared/hutLadderAdminStats";
+
 /** Soft docs only — PostgREST max_rows caps a single response near this size. */
 export const ADMIN_DATA_PAGE_SIZE = 1000;
 export const ADMIN_SAVE_ANALYSIS_LIMIT = 100;
 /** Bump when slimGameStateForAdmin shape changes so clients can bust cache. */
-export const ADMIN_SAVES_SLIM_VERSION = 4;
+export const ADMIN_SAVES_SLIM_VERSION = 5;
 export const PURCHASES_LIST_COLUMNS =
   "user_id,item_id,item_name,price_paid,purchased_at,bundle_id,country,cruel_mode,currency,stripe_payment_intent_id,stripe_fx_quote_id,reporting_eur_cents,reporting_usd_cents,payment_type";
 
@@ -96,6 +98,23 @@ export function slimGameStateForAdmin(
   }
   if (slimClothing) {
     slim.clothing = slimClothing;
+  }
+
+  // Attack-wave victories for hut-ladder A1–A10 funnel (after stone ≥10).
+  const story = gs.story;
+  if (story && typeof story === "object") {
+    const seen = (story as Record<string, unknown>).seen;
+    if (seen && typeof seen === "object") {
+      const slimSeen: Record<string, true> = {};
+      for (const flag of ATTACK_WAVE_VICTORY_FLAGS) {
+        if ((seen as Record<string, unknown>)[flag] === true) {
+          slimSeen[flag] = true;
+        }
+      }
+      if (Object.keys(slimSeen).length > 0) {
+        slim.story = { seen: slimSeen };
+      }
+    }
   }
 
   return slim;

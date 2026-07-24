@@ -1,14 +1,37 @@
 /**
- * Admin hut-ladder funnel: reach ≥N wooden/stone huts among gameStarted saves.
+ * Admin hut-ladder funnel: reach ≥N wooden/stone huts among gameStarted saves,
+ * then attack-wave victories A1–A10 (after stone ≥10).
  * First stone hut unlocks at woodenHut ≥ 10 (normal and cruel).
  *
  * Referred players (`referralProcessed`) are excluded — many only Make Fire to
  * grant the referrer bonus, which inflates early wooden-hut drop-off.
  */
 
+import { hasReachedGameEnding } from "./gameCompletionAdminStats";
+
 export const HUT_LADDER_MAX_LEVEL = 10;
 
+/** story.seen victory flags for the 10 canonical attack waves (order = A1..A10). */
+export const ATTACK_WAVE_VICTORY_FLAGS = [
+  "firstWaveVictory",
+  "secondWaveVictory",
+  "thirdWaveVictory",
+  "fourthWaveVictory",
+  "fifthWaveVictory",
+  "sixthWaveVictory",
+  "seventhWaveVictory",
+  "eighthWaveVictory",
+  "ninthWaveVictory",
+  "tenthWaveVictory",
+] as const;
+
+export type AttackWaveVictoryFlag = (typeof ATTACK_WAVE_VICTORY_FLAGS)[number];
+
 export type HutLadderCohortDays = 3 | 7 | 30 | 60 | 90;
+
+export const HUT_LADDER_COHORT_DAYS: HutLadderCohortDays[] = [
+  3, 7, 30, 60, 90,
+];
 
 export type HutLadderSaveRow = {
   created_at?: string | null;
@@ -16,9 +39,14 @@ export type HutLadderSaveRow = {
     flags?: { gameStarted?: boolean };
     /** Set when this account was created via a referral link. */
     referralProcessed?: boolean;
+    gameComplete?: boolean;
+    events?: Record<string, unknown>;
     buildings?: {
       woodenHut?: number;
       stoneHut?: number;
+    };
+    story?: {
+      seen?: Partial<Record<AttackWaveVictoryFlag, boolean>>;
     };
   } | null;
 };
@@ -41,9 +69,20 @@ export type HutLadderFunnel = {
   excludedReferredCount: number;
   wooden: HutLadderReachPoint[];
   stone: HutLadderReachPoint[];
+  /** Attack-wave victories ≥1..≥10 (A1 after stone ≥10). */
+  waves: HutLadderReachPoint[];
   /** Players with woodenHut ≥ 10 who also have stoneHut ≥ 1. */
   wooden10WithStone: number;
   wooden10Count: number;
+  stone10Count: number;
+};
+
+export type FinisherRateCohort = {
+  days: HutLadderCohortDays;
+  startedCount: number;
+  finishedCount: number;
+  /** finished / started × 100; 0 when startedCount is 0. */
+  ratePct: number;
 };
 
 function buildingCount(
@@ -54,6 +93,21 @@ function buildingCount(
   const raw = buildings[key] as unknown;
   const n = typeof raw === "number" ? raw : Number(raw);
   return Number.isFinite(n) && n > 0 ? Math.floor(n) : 0;
+}
+
+/** Highest attack-wave victory index 0..10 (0 = none won). */
+export function highestAttackWaveWon(
+  seen: Partial<Record<AttackWaveVictoryFlag, boolean>> | undefined,
+): number {
+  if (!seen) return 0;
+  let highest = 0;
+  for (let i = 0; i < ATTACK_WAVE_VICTORY_FLAGS.length; i++) {
+    const flag = ATTACK_WAVE_VICTORY_FLAGS[i]!;
+    if (seen[flag] === true) {
+      highest = i + 1;
+    }
+  }
+  return highest;
 }
 
 export function isGameStartedSave(save: HutLadderSaveRow): boolean {
@@ -105,11 +159,15 @@ function buildReachSeries(
   labelForLevel: (level: number) => string,
   /** Optional previous-level denominator override (e.g. stone ≥1 vs wooden ≥10). */
   prevCountForLevel?: (level: number, defaultPrev: number | null) => number | null,
+  options?: { minLevel?: number; maxLevel?: number },
 ): HutLadderReachPoint[] {
+  const minLevel = options?.minLevel ?? 0;
+  const maxLevel = options?.maxLevel ?? HUT_LADDER_MAX_LEVEL;
   const points: HutLadderReachPoint[] = [];
-  for (let level = 0; level <= HUT_LADDER_MAX_LEVEL; level++) {
+  for (let level = minLevel; level <= maxLevel; level++) {
     const players = counts[level] ?? 0;
-    const defaultPrev = level === 0 ? null : (counts[level - 1] ?? 0);
+    const defaultPrev =
+      level === minLevel ? null : (counts[level - 1] ?? 0);
     const prev = prevCountForLevel
       ? prevCountForLevel(level, defaultPrev)
       : defaultPrev;
@@ -118,7 +176,7 @@ function buildReachSeries(
         ? null
         : Math.round((1000 * players) / prev) / 10;
     const stepDropPct =
-      stepKeepPct === null ? null : Math.round((1000 - stepKeepPct * 10)) / 10;
+      stepKeepPct === null ? null : Math.round(1000 - stepKeepPct * 10) / 10;
     points.push({
       level,
       label: labelForLevel(level),
@@ -135,7 +193,8 @@ function buildReachSeries(
 }
 
 /**
- * Reach funnel: for each N in 0..10, how many cohort members have hut count ≥ N.
+ * Reach funnel: for each N in 0..10, how many cohort members have hut count ≥ N;
+ * then attack-wave victories ≥1..≥10.
  */
 export function computeHutLadderFunnel(
   saves: HutLadderSaveRow[],
@@ -152,20 +211,25 @@ export function computeHutLadderFunnel(
 
   const woodenCounts = Array.from({ length: HUT_LADDER_MAX_LEVEL + 1 }, () => 0);
   const stoneCounts = Array.from({ length: HUT_LADDER_MAX_LEVEL + 1 }, () => 0);
+  const waveCounts = Array.from({ length: HUT_LADDER_MAX_LEVEL + 1 }, () => 0);
   let wooden10Count = 0;
   let wooden10WithStone = 0;
+  let stone10Count = 0;
 
   for (const save of cohort) {
     const wooden = buildingCount(save.game_state?.buildings, "woodenHut");
     const stone = buildingCount(save.game_state?.buildings, "stoneHut");
+    const wavesWon = highestAttackWaveWon(save.game_state?.story?.seen);
     for (let level = 0; level <= HUT_LADDER_MAX_LEVEL; level++) {
       if (wooden >= level) woodenCounts[level]!++;
       if (stone >= level) stoneCounts[level]!++;
+      if (wavesWon >= level) waveCounts[level]!++;
     }
     if (wooden >= 10) {
       wooden10Count++;
       if (stone >= 1) wooden10WithStone++;
     }
+    if (stone >= 10) stone10Count++;
   }
 
   return {
@@ -192,24 +256,67 @@ export function computeHutLadderFunnel(
           : level === 1
             ? "≥1 (needs 10 wooden)"
             : level === 10
-              ? "≥10 normal max"
+              ? "≥10 wave unlock"
               : `≥${level}`,
       (level, defaultPrev) =>
         level === 1 ? wooden10Count : defaultPrev,
     ),
+    // Waves start after stone ≥10 — A1 step drop uses that denominator.
+    waves: buildReachSeries(
+      waveCounts,
+      startedCount,
+      (level) =>
+        level === 1
+          ? "≥1 (needs 10 stone)"
+          : level === 10
+            ? "≥10 final wave"
+            : `≥${level}`,
+      (level, defaultPrev) =>
+        level === 1 ? stone10Count : defaultPrev,
+      { minLevel: 1, maxLevel: HUT_LADDER_MAX_LEVEL },
+    ),
     wooden10Count,
     wooden10WithStone,
+    stone10Count,
   };
 }
 
-export type HutLadderChartKind = "wooden" | "stone";
+/**
+ * Finisher rate among the same non-referred gameStarted cohorts used by the
+ * hut ladder, for each window in {@link HUT_LADDER_COHORT_DAYS}.
+ */
+export function computeFinisherRatesByCohort(
+  saves: HutLadderSaveRow[],
+  now: Date = new Date(),
+): FinisherRateCohort[] {
+  return HUT_LADDER_COHORT_DAYS.map((days) => {
+    const cohort = filterHutLadderCohort(saves, days, now);
+    const startedCount = cohort.length;
+    let finishedCount = 0;
+    for (const save of cohort) {
+      if (hasReachedGameEnding(save.game_state)) finishedCount++;
+    }
+    return {
+      days,
+      startedCount,
+      finishedCount,
+      ratePct:
+        startedCount === 0
+          ? 0
+          : Math.round((1000 * finishedCount) / startedCount) / 10,
+    };
+  });
+}
+
+export type HutLadderChartKind = "wooden" | "stone" | "wave";
 
 export type HutLadderReachChartPoint = {
-  /** Short x-axis label, e.g. "W5" / "S1". */
+  /** Short x-axis label, e.g. "W5" / "S1" / "A3". */
   step: string;
   level: number;
   kind: HutLadderChartKind;
   players: number;
+  pctOfStarted: number;
 };
 
 export type HutLadderStepDropChartPoint = {
@@ -220,8 +327,8 @@ export type HutLadderStepDropChartPoint = {
 };
 
 /**
- * Chart rows as one progression: wooden ≥0..≥10, then stone ≥1..≥10
- * (stone ≥0 omitted — same baseline as wooden ≥0 / all starters).
+ * Chart rows as one progression: wooden ≥0..≥10, stone ≥1..≥10, then
+ * attack waves ≥1..≥10 (stone ≥0 / wave ≥0 omitted — same baseline as starters).
  */
 export function hutLadderReachChartData(
   funnel: HutLadderFunnel,
@@ -231,6 +338,7 @@ export function hutLadderReachChartData(
     level: w.level,
     kind: "wooden" as const,
     players: w.players,
+    pctOfStarted: w.pctOfStarted,
   }));
   const stone = funnel.stone
     .filter((s) => s.level >= 1)
@@ -239,8 +347,16 @@ export function hutLadderReachChartData(
       level: s.level,
       kind: "stone" as const,
       players: s.players,
+      pctOfStarted: s.pctOfStarted,
     }));
-  return [...wooden, ...stone];
+  const waves = funnel.waves.map((w) => ({
+    step: `A${w.level}`,
+    level: w.level,
+    kind: "wave" as const,
+    players: w.players,
+    pctOfStarted: w.pctOfStarted,
+  }));
+  return [...wooden, ...stone, ...waves];
 }
 
 export function hutLadderStepDropChartData(
@@ -260,5 +376,11 @@ export function hutLadderStepDropChartData(
       kind: "stone" as const,
       drop: s.stepDropPct ?? 0,
     }));
-  return [...wooden, ...stone];
+  const waves = funnel.waves.map((w) => ({
+    step: `A${w.level}`,
+    level: w.level,
+    kind: "wave" as const,
+    drop: w.stepDropPct ?? 0,
+  }));
+  return [...wooden, ...stone, ...waves];
 }

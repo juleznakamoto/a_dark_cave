@@ -194,7 +194,7 @@ export default function AdminDashboard() {
   const adminReloadKeyRef = useRef<{ env: "dev" | "prod"; authorized: boolean } | null>(
     null,
   );
-  /** One-shot refetch when saves were loaded before slim v2 (hut ladder fields). */
+  /** One-shot refetch when saves were loaded before slim v5 (attack-wave fields). */
   const hutLadderSavesRefetchRef = useRef(false);
   const [showCompletedOnly, setShowCompletedOnly] = useState<boolean>(false);
   const [churnDays, setChurnDays] = useState<1 | 3 | 5 | 7>(3);
@@ -562,8 +562,8 @@ export default function AdminDashboard() {
     ensureSectionsLoaded,
   ]);
 
-  // One-shot refetch when saves were cached before slim v4 (paginated past
-  // PostgREST max_rows so churn / hut ladder see the full year of saves).
+  // One-shot refetch when saves were cached before slim v5 (attack-wave
+  // victory flags for hut-ladder A1–A10 after stone ≥10).
   useEffect(() => {
     if (!isAuthorized || loading || hutLadderSavesRefetchRef.current) return;
     if (!loadedSections.has("saves")) return;
@@ -577,9 +577,9 @@ export default function AdminDashboard() {
           typeof s?.game_state?.buildings?.woodenHut === "number" ||
           typeof s?.game_state?.buildings?.stoneHut === "number",
       );
-    if (storedSlim >= 4 && hasHutFields) return;
+    if (storedSlim >= 5 && hasHutFields) return;
     hutLadderSavesRefetchRef.current = true;
-    sessionStorage.setItem(slimKey, "4");
+    sessionStorage.setItem(slimKey, "5");
     loadedSectionsRef.current.delete("saves");
     setLoadedSections(new Set(loadedSectionsRef.current));
     void ensureSectionsLoaded(["saves"]);

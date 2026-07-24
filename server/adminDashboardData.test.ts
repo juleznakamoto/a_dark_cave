@@ -23,7 +23,13 @@ describe("slimGameStateForAdmin", () => {
       buildings: { woodenHut: 7, stoneHut: 0, cabin: 3 },
       referralProcessed: true,
       resources: { gold: 9999 },
-      story: { seen: { huge: true } },
+      story: {
+        seen: {
+          huge: true,
+          firstWaveVictory: true,
+          thirdWaveVictory: true,
+        },
+      },
     });
 
     expect(slim).toMatchObject({
@@ -39,9 +45,15 @@ describe("slimGameStateForAdmin", () => {
       flags: { gameStarted: true },
       buildings: { woodenHut: 7, stoneHut: 0 },
       referralProcessed: true,
+      story: {
+        seen: {
+          firstWaveVictory: true,
+          thirdWaveVictory: true,
+        },
+      },
     });
     expect(slim).not.toHaveProperty("resources");
-    expect(slim).not.toHaveProperty("story");
+    expect(slim?.story?.seen).not.toHaveProperty("huge");
     expect(slim?.events).not.toHaveProperty("merchantArrives");
     expect(slim?.flags).not.toHaveProperty("villageUnlocked");
     expect(slim?.buildings).not.toHaveProperty("cabin");

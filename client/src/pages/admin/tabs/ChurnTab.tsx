@@ -5,6 +5,7 @@ import { LineChart, Line, BarChart, Bar, Cell, CartesianGrid, XAxis, YAxis, Lege
 import { ChartContainer, ChartTooltip, ChartTooltipContent } from "@/components/ui/chart";
 import { differenceInDays, subDays } from "date-fns";
 import {
+  computeFinisherRatesByCohort,
   computeHutLadderFunnel,
   hutLadderReachChartData,
   hutLadderStepDropChartData,
@@ -53,6 +54,10 @@ export default function ChurnTab(props: ChurnTabProps) {
     () => hutLadderStepDropChartData(hutLadderFunnel),
     [hutLadderFunnel],
   );
+  const finisherRates = useMemo(
+    () => computeFinisherRatesByCohort(gameSaves),
+    [gameSaves],
+  );
   const wooden10StonePct =
     hutLadderFunnel.wooden10Count > 0
       ? Math.round(
@@ -60,6 +65,17 @@ export default function ChurnTab(props: ChurnTabProps) {
         hutLadderFunnel.wooden10Count,
       ) / 10
       : 0;
+
+  const reachBarFill = (kind: "wooden" | "stone" | "wave") => {
+    if (kind === "wooden") return COLORS[0];
+    if (kind === "stone") return COLORS[1];
+    return COLORS[4] ?? COLORS[0];
+  };
+  const dropBarFill = (kind: "wooden" | "stone" | "wave") => {
+    if (kind === "wooden") return COLORS[2] ?? COLORS[0];
+    if (kind === "stone") return COLORS[3] ?? COLORS[1];
+    return COLORS[5] ?? COLORS[4] ?? COLORS[0];
+  };
 
   /** Old slim payloads omitted flags/buildings — funnel stays empty until API restart + refetch. */
   const hutLadderPayloadReady = useMemo(() => {
@@ -522,7 +538,7 @@ export default function ChurnTab(props: ChurnTabProps) {
       <Card>
         <CardHeader className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between space-y-0">
           <div>
-            <CardTitle>Hut ladder — wooden → stone</CardTitle>
+            <CardTitle>Hut ladder — wooden → stone → waves</CardTitle>
             <CardDescription>
               Reach funnel among non-referred gameStarted saves created in the{" "}
               {hutLadderCohortTitleSuffix(hutLadderDays).toLowerCase()} (n=
@@ -530,8 +546,8 @@ export default function ChurnTab(props: ChurnTabProps) {
               {hutLadderFunnel.excludedReferredCount > 0
                 ? `; excluded ${hutLadderFunnel.excludedReferredCount} referred`
                 : ""}
-              ). First stone hut unlocks at wooden hut ≥10 (both modes). Cruel
-              only raises caps 10→12.
+              ). First stone hut unlocks at wooden hut ≥10; attack waves A1–A10
+              follow stone hut ≥10. Cruel only raises hut caps 10→12.
             </CardDescription>
           </div>
           <ChartTimeRangeSelectHutLadder
@@ -540,6 +556,36 @@ export default function ChurnTab(props: ChurnTabProps) {
           />
         </CardHeader>
         <CardContent className="space-y-6">
+          <Card>
+            <CardHeader className="pb-2">
+              <CardTitle className="text-base">Finisher rate</CardTitle>
+              <CardDescription>
+                % of non-referred gameStarted saves in each window who finished
+                the game (gameComplete or ending cube)
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <div className="grid grid-cols-2 sm:grid-cols-5 gap-3">
+                {finisherRates.map((row) => (
+                  <div
+                    key={`finisher-${row.days}`}
+                    className="rounded-md border border-border/60 px-3 py-2"
+                  >
+                    <p className="text-xs text-muted-foreground">
+                      Last {row.days}d
+                    </p>
+                    <p className="text-2xl font-semibold tabular-nums">
+                      {row.ratePct.toFixed(1)}%
+                    </p>
+                    <p className="text-xs text-muted-foreground tabular-nums">
+                      {row.finishedCount}/{row.startedCount}
+                    </p>
+                  </div>
+                ))}
+              </div>
+            </CardContent>
+          </Card>
+
           {!hutLadderPayloadReady ? (
             <p className="text-sm text-amber-700 dark:text-amber-400">
               Loaded saves are missing hut fields (flags/buildings). Restart the
@@ -568,12 +614,18 @@ export default function ChurnTab(props: ChurnTabProps) {
           )}
 
           <div>
+            <p className="text-sm font-medium mb-1">
+              Total players: {hutLadderFunnel.startedCount}
+            </p>
             <h3 className="text-sm font-medium mb-2">
-              Players reaching ≥N huts (W0–W10, then S1–S10)
+              % of starters reaching ≥N (W0–W10, S1–S10, then A1–A10)
             </h3>
             <ChartContainer
               config={{
-                players: { label: "Players ≥N", color: COLORS[0] },
+                pctOfStarted: {
+                  label: "% of starters ≥N",
+                  color: COLORS[0],
+                },
               }}
               className="h-[320px] w-full"
             >
@@ -582,22 +634,39 @@ export default function ChurnTab(props: ChurnTabProps) {
                 <XAxis
                   dataKey="step"
                   interval={0}
-                  tick={{ fontSize: 10 }}
+                  tick={{ fontSize: 9 }}
                   label={{
-                    value: "Hut ladder step",
+                    value: "Ladder step",
                     position: "insideBottom",
                     offset: -2,
                   }}
                 />
                 <YAxis
-                  allowDecimals={false}
+                  unit="%"
+                  domain={[0, 100]}
                   label={{
-                    value: "Players",
+                    value: "% of starters",
                     angle: -90,
                     position: "insideLeft",
                   }}
                 />
-                <ChartTooltip content={<ChartTooltipContent />} />
+                <ChartTooltip
+                  content={
+                    <ChartTooltipContent
+                      formatter={(value, name, item) => (
+                        <>
+                          <span className="text-muted-foreground">{name}</span>
+                          <span className="font-mono font-medium tabular-nums text-foreground">
+                            {typeof value === "number"
+                              ? value.toFixed(1)
+                              : value}
+                            % ({item.payload?.players ?? 0} players)
+                          </span>
+                        </>
+                      )}
+                    />
+                  }
+                />
                 <Legend
                   payload={[
                     {
@@ -610,13 +679,18 @@ export default function ChurnTab(props: ChurnTabProps) {
                       type: "square",
                       color: COLORS[1],
                     },
+                    {
+                      value: "Attack wave ≥N",
+                      type: "square",
+                      color: COLORS[4] ?? COLORS[0],
+                    },
                   ]}
                 />
-                <Bar dataKey="players" name="Players ≥N">
+                <Bar dataKey="pctOfStarted" name="% of starters ≥N">
                   {hutReachChart.map((entry) => (
                     <Cell
                       key={`reach-${entry.step}`}
-                      fill={entry.kind === "wooden" ? COLORS[0] : COLORS[1]}
+                      fill={reachBarFill(entry.kind)}
                     />
                   ))}
                 </Bar>
@@ -626,7 +700,7 @@ export default function ChurnTab(props: ChurnTabProps) {
 
           <div>
             <h3 className="text-sm font-medium mb-2">
-              Step drop-off at each hut (%) (W0–W10, then S1–S10)
+              Step drop-off (%) (W0–W10, S1–S10, then A1–A10)
             </h3>
             <ChartContainer
               config={{
@@ -639,7 +713,7 @@ export default function ChurnTab(props: ChurnTabProps) {
             >
               <BarChart data={hutDropChart}>
                 <CartesianGrid strokeDasharray="3 3" />
-                <XAxis dataKey="step" interval={0} tick={{ fontSize: 10 }} />
+                <XAxis dataKey="step" interval={0} tick={{ fontSize: 9 }} />
                 <YAxis
                   unit="%"
                   label={{
@@ -661,29 +735,30 @@ export default function ChurnTab(props: ChurnTabProps) {
                       type: "square",
                       color: COLORS[3] ?? COLORS[1],
                     },
+                    {
+                      value: "Wave step drop %",
+                      type: "square",
+                      color: COLORS[5] ?? COLORS[4] ?? COLORS[0],
+                    },
                   ]}
                 />
                 <Bar dataKey="drop" name="Step drop %">
                   {hutDropChart.map((entry) => (
                     <Cell
                       key={`drop-${entry.step}`}
-                      fill={
-                        entry.kind === "wooden"
-                          ? (COLORS[2] ?? COLORS[0])
-                          : (COLORS[3] ?? COLORS[1])
-                      }
+                      fill={dropBarFill(entry.kind)}
                     />
                   ))}
                 </Bar>
               </BarChart>
             </ChartContainer>
             <p className="text-xs text-muted-foreground mt-2">
-              W0 is the baseline (0% drop). S1 step drop is vs wooden ≥10
-              (unlock gate), not vs all starters.
+              W0 is the baseline (0% drop). S1 step drop is vs wooden ≥10; A1
+              step drop is vs stone ≥10 (unlock gates), not vs all starters.
             </p>
           </div>
 
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
             <div className="overflow-x-auto">
               <h3 className="text-sm font-medium mb-2">Wooden hut reach</h3>
               <table className="w-full text-sm">
@@ -734,6 +809,41 @@ export default function ChurnTab(props: ChurnTabProps) {
                 <tbody>
                   {hutLadderFunnel.stone.map((row) => (
                     <tr key={`sh-${row.level}`} className="border-b border-border/60">
+                      <td className="py-1.5 pr-2">{row.label}</td>
+                      <td className="py-1.5 pr-2 tabular-nums">{row.players}</td>
+                      <td className="py-1.5 pr-2 tabular-nums">
+                        {row.pctOfStarted.toFixed(1)}%
+                      </td>
+                      <td className="py-1.5 pr-2 tabular-nums">
+                        {row.stepDropPct === null
+                          ? "—"
+                          : `−${row.stepDropPct.toFixed(1)}%`}
+                      </td>
+                      <td className="py-1.5 tabular-nums">
+                        {row.stepKeepPct === null
+                          ? "—"
+                          : `${row.stepKeepPct.toFixed(1)}%`}
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+            <div className="overflow-x-auto">
+              <h3 className="text-sm font-medium mb-2">Attack wave reach</h3>
+              <table className="w-full text-sm">
+                <thead>
+                  <tr className="border-b text-left text-muted-foreground">
+                    <th className="py-1.5 pr-2 font-medium">Won</th>
+                    <th className="py-1.5 pr-2 font-medium">Players</th>
+                    <th className="py-1.5 pr-2 font-medium">% started</th>
+                    <th className="py-1.5 pr-2 font-medium">Step drop</th>
+                    <th className="py-1.5 font-medium">Keep</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {hutLadderFunnel.waves.map((row) => (
+                    <tr key={`aw-${row.level}`} className="border-b border-border/60">
                       <td className="py-1.5 pr-2">{row.label}</td>
                       <td className="py-1.5 pr-2 tabular-nums">{row.players}</td>
                       <td className="py-1.5 pr-2 tabular-nums">
