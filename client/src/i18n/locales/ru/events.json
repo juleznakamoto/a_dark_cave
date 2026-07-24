@@ -2635,5 +2635,24 @@
     },
     "message": "Прибывает богато украшенная женщина восточного вида с двумя мускулистыми спутниками. Она предлагает поделиться знанием о создании могущественной обсидиановой сферы в обмен на золото или жителей.",
     "title": "Обсидиановая сфера"
+  },
+  "insightBlessingOffer": {
+    "choices": {
+      "receiveBlessing": {
+        "cost": "{{insightCost}} Insight",
+        "label": "Receive Blessing"
+      },
+      "sendAway": {
+        "label": "Send away"
+      }
+    },
+    "log": {
+      "outcomeChosen": "Without another word, the figure quietly departs, leaving you with a newfound blessing.",
+      "outcomeSendAway": "You turn the figure away. They leave without a word, but you sense they may return.",
+      "outcomeFallback": "The figure waits no longer and slips back into the dark."
+    },
+    "message": "A hooded figure appears at the estate, silent, then whispering in a low voice. They offer to give you a blessing.",
+    "title": "A Quiet Offering"
   }
+
 }

@@ -45,6 +45,7 @@ import InvestmentResultDialog from "./InvestmentResultDialog";
 import MadnessDialog from "./MadnessDialog";
 import InsightPotionDialog from "./InsightPotionDialog";
 import VillageEffectDialog from "./VillageEffectDialog";
+import BlessingOfferDialog from "./BlessingOfferDialog";
 import { LimelightNav, NavItem } from "@/components/ui/limelight-nav";
 import { Mountain, Trees, Castle, Landmark, X } from "lucide-react";
 import { ProfileMenuProvider } from "./ProfileMenu";
@@ -1517,6 +1518,7 @@ export default function GameContainer() {
           data={villageEffectDialog.data}
           onClose={() => setVillageEffectDialog(false)}
         />
+        <BlessingOfferDialog />
         {demoEditionActive && <DemoTimeUpDialog />}
       </div>
     </ProfileMenuProvider>

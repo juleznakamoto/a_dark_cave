@@ -238,5 +238,11 @@
     "wishlistButton": "Ajouter à la liste de souhaits Steam",
     "startNewGameButton": "Nouvelle partie",
     "releaseNote": "Sortie prévue : T4 2026"
+  },
+  "blessingOffer": {
+    "title": "Choose a Blessing",
+    "srDescription": "Select one of the offered blessings",
+    "chooseBlessing": "Choose Blessing"
   }
+
 }

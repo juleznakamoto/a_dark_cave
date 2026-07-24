@@ -321,7 +321,32 @@
     "obsidian_orb_schematic": {
       "description": "Schéma pour forger un puissant orbe d'obsidienne",
       "name": "Orbe d'obsidienne"
+    },
+    "depths_gift": {
+      "description": "Cave exploration yields more",
+      "name": "Depth's Gift"
+    },
+    "fresh_blood": {
+      "description": "Strangers approach the village more often",
+      "name": "Fresh Blood"
+    },
+    "keen_builder": {
+      "description": "Building costs are reduced",
+      "name": "Keen Builder"
+    },
+    "rich_veins": {
+      "description": "Your ability to mine is improved",
+      "name": "Rich Veins"
+    },
+    "skilled_hands": {
+      "description": "Crafting costs are reduced",
+      "name": "Skilled Hands"
+    },
+    "trail_sense": {
+      "description": "Your hunters bring back more food",
+      "name": "Trail Sense"
     }
+
   },
   "fellowship": {
     "ashwraith_huntress": {

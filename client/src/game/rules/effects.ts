@@ -1387,6 +1387,80 @@ export const clothingEffects: Record<string, EffectDefinition> = {
     },
   },
 
+  trail_sense: {
+    id: "trail_sense",
+    name: "Trail Sense",
+    description: "Your hunters bring back more food",
+    bonuses: {
+      actionBonuses: {
+        hunter: {
+          resourceBonus: {
+            food: 3,
+          },
+        },
+      },
+    },
+  },
+
+  skilled_hands: {
+    id: "skilled_hands",
+    name: "Skilled Hands",
+    description: "Crafting costs are reduced",
+    bonuses: {
+      generalBonuses: {
+        craftingCostReduction: 0.05,
+      },
+    },
+  },
+
+  keen_builder: {
+    id: "keen_builder",
+    name: "Keen Builder",
+    description: "Building costs are reduced",
+    bonuses: {
+      generalBonuses: {
+        buildingCostReduction: 0.05,
+      },
+    },
+  },
+
+  fresh_blood: {
+    id: "fresh_blood",
+    name: "Fresh Blood",
+    description: "Strangers approach the village more often",
+    bonuses: {
+      generalBonuses: {
+        strangerApproachBonus: 0.05,
+      },
+    },
+  },
+
+  depths_gift: {
+    id: "depths_gift",
+    name: "Depth's Gift",
+    description: "Cave exploration yields more",
+    bonuses: {
+      actionBonuses: {
+        caveExplore: {
+          resourceMultiplier: 1.25,
+        },
+      },
+    },
+  },
+
+  rich_veins: {
+    id: "rich_veins",
+    name: "Rich Veins",
+    description: "Your ability to mine is improved",
+    bonuses: {
+      actionBonuses: {
+        mining: {
+          resourceMultiplier: 1.5,
+        },
+      },
+    },
+  },
+
   bell_blessing: {
     id: "bell_blessing",
     name: "Bell Blessing",

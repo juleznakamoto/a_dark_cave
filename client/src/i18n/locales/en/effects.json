@@ -98,6 +98,10 @@
       "description": "Your ability to hunt is improved",
       "name": "Dagon's Gift"
     },
+    "depths_gift": {
+      "description": "Cave exploration yields more",
+      "name": "Depth's Gift"
+    },
     "dagons_gift_enhanced": {
       "description": "Your ability to hunt is greatly improved",
       "name": "Dagon's Great Gift"
@@ -142,9 +146,17 @@
       "description": "The deers of the forest seem to notice you less",
       "name": "Forest's Grace"
     },
+    "fresh_blood": {
+      "description": "Strangers approach the village more often",
+      "name": "Fresh Blood"
+    },
     "frostglass": {
       "description": "Crystalline material radiating cold",
       "name": "Frostglass"
+    },
+    "keen_builder": {
+      "description": "Building costs are reduced",
+      "name": "Keen Builder"
     },
     "gifted_ring": {
       "description": "Plain ring someone left for you to find",
@@ -230,6 +242,10 @@
       "description": "Strangers approach the village more often",
       "name": "Raven's Mark"
     },
+    "rich_veins": {
+      "description": "Your ability to mine is improved",
+      "name": "Rich Veins"
+    },
     "ravens_mark_enhanced": {
       "description": "Strangers approach the village much more often",
       "name": "Raven's Great Mark"
@@ -278,6 +294,10 @@
       "description": "Your hunters' aim is improved",
       "name": "Sharp Aim"
     },
+    "skilled_hands": {
+      "description": "Crafting costs are reduced",
+      "name": "Skilled Hands"
+    },
     "skeleton_key_schematic": {
       "description": "Blueprint for crafting a skeleton key",
       "name": "Skeleton Key"
@@ -305,6 +325,10 @@
     "tarnished_compass": {
       "description": "Ancient relic for those seeking guidance.",
       "name": "Tarnished Compass"
+    },
+    "trail_sense": {
+      "description": "Your hunters bring back more food",
+      "name": "Trail Sense"
     },
     "unnamed_book": {
       "description": "Book bound in human skin filled with forbidden knowledge",

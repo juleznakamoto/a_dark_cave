@@ -76,6 +76,7 @@ export default function TimedEventPanel() {
     setShopDialogOpen,
     setShopFilter,
     setGamblerDiceDialogOpen,
+    setBlessingOfferDialogOpen,
   } = useGameStore();
   const gameState = useGameStore();
 
@@ -371,6 +372,16 @@ export default function TimedEventPanel() {
           return;
         }
         openGamblerDiceDialog();
+      } else {
+        setTimedEventTab(false);
+      }
+      return;
+    }
+
+    // Insight blessing offer: Receive opens the card picker; Send away closes the tab
+    if (eventId === "insightBlessingOffer") {
+      if (choiceId === "receiveBlessing") {
+        setBlessingOfferDialogOpen(true);
       } else {
         setTimedEventTab(false);
       }

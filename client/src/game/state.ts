@@ -86,6 +86,12 @@ import {
   canProlongTimedEventTab,
 } from "@/game/rules/insightReveal";
 import {
+  getInsightBlessingCost,
+  getVisibleInsightBlessingOffers,
+  isInsightBlessingId,
+  purchaseInsightBlessingFromOffer,
+} from "@/game/rules/insightBlessings";
+import {
   calculateTotalEffects,
   getTotalLuck,
   getTotalStrength,
@@ -235,6 +241,8 @@ interface GameStore extends GameState {
   shopFilter: "gold" | "artifacts" | "boosts" | "bundles" | null;
   /** True while the obsessed gambler dice minigame UI is open (freezes production like other modal dialogs). */
   gamblerDiceDialogOpen: boolean;
+  /** True while the Insight blessing card-picker overlay is open (blocking). */
+  blessingOfferDialogOpen: boolean;
   /** Village Invest modal open; game loop treats offer-picker as modal pause but keeps sim running while an investment is maturing. */
   investDialogOpen: boolean;
   investmentResultDialog: {
@@ -508,6 +516,9 @@ interface GameStore extends GameState {
   ) => void;
   recordCompletePurchaseDialogOpen: () => void;
   setGamblerDiceDialogOpen: (isOpen: boolean) => void;
+  setBlessingOfferDialogOpen: (isOpen: boolean) => void;
+  /** Spend Insight and grant a blessing from the active Insight blessing offer. */
+  chooseInsightBlessing: (blessingId: string) => boolean;
   setInvestDialogOpen: (isOpen: boolean) => void;
   setInvestmentResultDialog: (
     isOpen: boolean,
@@ -996,6 +1007,9 @@ const mergeStateUpdates = (
       ...stateUpdates.triggeredEvents,
     },
     feastState: stateUpdates.feastState || prevState.feastState,
+    insightBlessingOfferState:
+      stateUpdates.insightBlessingOfferState ||
+      prevState.insightBlessingOfferState,
     boneDevourerState:
       stateUpdates.boneDevourerState || prevState.boneDevourerState,
     greatFeastState: stateUpdates.greatFeastState || prevState.greatFeastState,
@@ -1444,6 +1458,7 @@ function isBlockingDialogOpen(state: GameStore): boolean {
     state.authDialogOpen ||
     state.shopDialogOpen ||
     state.gamblerDiceDialogOpen ||
+    state.blessingOfferDialogOpen ||
     state.leaderboardDialogOpen ||
     state.shareDialogOpen ||
     state.fullGamePurchaseDialogOpen ||
@@ -1614,6 +1629,7 @@ export function getTimedEventTabCleanupPatch(
     timedEventTab: INACTIVE_TIMED_EVENT_TAB,
     gamblerGame: null,
     gamblerDiceDialogOpen: false,
+    blessingOfferDialogOpen: false,
     merchantTrades: { choices: [], purchasedIds: [] },
     ...(activeTab === "timedevent" ? { activeTab: "cave" as const } : {}),
   };
@@ -1655,6 +1671,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
   shopCruelModeHighlight: false,
   shopFilter: null,
   gamblerDiceDialogOpen: false,
+  blessingOfferDialogOpen: false,
   investDialogOpen: false,
   investmentResultDialog: {
     isOpen: false,
@@ -4011,6 +4028,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
             pauseStartedAt: 0,
             insightProlongUsed: false,
           },
+          blessingOfferDialogOpen: false,
           merchantTrades: {
             choices: [],
             purchasedIds: [],
@@ -4316,6 +4334,73 @@ export const useGameStore = create<GameStore>((set, get) => ({
 
   setGamblerDiceDialogOpen: (isOpen: boolean) => {
     set({ gamblerDiceDialogOpen: isOpen });
+  },
+
+  setBlessingOfferDialogOpen: (isOpen: boolean) => {
+    set({ blessingOfferDialogOpen: isOpen });
+  },
+
+  chooseInsightBlessing: (blessingId: string) => {
+    const state = get();
+    if (state.isPaused || !state.blessingOfferDialogOpen) return false;
+    if (!isInsightBlessingId(blessingId)) return false;
+
+    const offered = getVisibleInsightBlessingOffers(state);
+    if (!offered.includes(blessingId)) return false;
+    if (state.blessings?.[blessingId]) return false;
+
+    const cost = getInsightBlessingCost(state);
+    if (getInsightAmount(state) < cost) return false;
+
+    const nextOffer = purchaseInsightBlessingFromOffer(state, blessingId);
+    const updatedChanges: Partial<GameState> = {
+      resources: {
+        ...state.resources,
+        insight: (state.resources.insight ?? 0) - cost,
+      },
+      blessings: {
+        ...state.blessings,
+        [blessingId]: true,
+      },
+      insightBlessingOfferState: nextOffer,
+    };
+
+    const rewards = detectRewards(updatedChanges, state, "insightBlessingOffer");
+    const logMessage = resolveEventLogMessage(
+      "insightBlessingOffer",
+      "outcomeChosen",
+    );
+
+    set((prevState) => {
+      const mergedUpdates = mergeStateUpdates(prevState, updatedChanges);
+      return {
+        ...prevState,
+        ...mergedUpdates,
+        blessingOfferDialogOpen: false,
+        ...getTimedEventTabCleanupPatch(prevState.activeTab),
+      };
+    });
+
+    StateManager.schedulePopulationUpdate(get);
+    StateManager.scheduleEffectsUpdate(get);
+
+    if (rewardPayloadHasPositiveChanges(rewards) || logMessage) {
+      const title =
+        resolveEventTitle("insightBlessingOffer", undefined, state) ||
+        tWithFallback("ui", "event.fallbackTitle", "Event");
+      scheduleRewardDialogWhenClear(
+        get,
+        {
+          rewards,
+          successLog: logMessage || undefined,
+          variant: "success",
+          title,
+        },
+        200,
+      );
+    }
+
+    return true;
   },
 
   setInvestDialogOpen: (isOpen: boolean) => {

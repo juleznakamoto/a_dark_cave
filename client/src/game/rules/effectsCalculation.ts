@@ -714,14 +714,14 @@ export function getStrangerApproachProbability(state: GameState): {
   }
 
   let fromBlessings = 0;
-  if (state.blessings?.ravens_mark) {
-    const effect = clothingEffects.ravens_mark;
-    fromBlessings += effect?.bonuses?.generalBonuses?.strangerApproachBonus ?? 0.1;
-  }
-  if (state.blessings?.ravens_mark_enhanced) {
-    const effect = clothingEffects.ravens_mark_enhanced;
-    fromBlessings += effect?.bonuses?.generalBonuses?.strangerApproachBonus ?? 0.2;
-  }
+  Object.entries(state.blessings || {}).forEach(([key, owned]) => {
+    if (!owned) return;
+    const bonus =
+      clothingEffects[key]?.bonuses?.generalBonuses?.strangerApproachBonus;
+    if (bonus) {
+      fromBlessings += bonus;
+    }
+  });
 
   const isSolsticeActive =
     state.solsticeState?.isActive &&

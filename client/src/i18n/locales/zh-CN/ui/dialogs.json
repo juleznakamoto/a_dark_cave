@@ -238,5 +238,11 @@
     "wishlistButton": "加入 Steam 愿望单",
     "startNewGameButton": "开始新游戏",
     "releaseNote": "计划发售：2026 年第四季度"
+  },
+  "blessingOffer": {
+    "title": "Choose a Blessing",
+    "srDescription": "Select one of the offered blessings",
+    "chooseBlessing": "Choose Blessing"
   }
+
 }

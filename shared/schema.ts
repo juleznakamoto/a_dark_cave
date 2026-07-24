@@ -248,6 +248,12 @@ export const gameStateSchema = z.object({
       blood_baptized: z.boolean().default(false),
       ebon_grace: z.boolean().default(false),
       knights_burden: z.boolean().default(false),
+      trail_sense: z.boolean().default(false),
+      skilled_hands: z.boolean().default(false),
+      keen_builder: z.boolean().default(false),
+      fresh_blood: z.boolean().default(false),
+      depths_gift: z.boolean().default(false),
+      rich_veins: z.boolean().default(false),
     })
     .default({}),
   books: z
@@ -594,6 +600,16 @@ export const gameStateSchema = z.object({
     })
     .default({
       hasPaid: false,
+    }),
+  /** Persisted offer slots for the Insight blessing timed-tab event. */
+  insightBlessingOfferState: z
+    .object({
+      slots: z.array(z.string().nullable()).default([]),
+      nextIndex: z.number().default(0),
+    })
+    .default({
+      slots: [],
+      nextIndex: 0,
     }),
   frostfallState: z
     .object({

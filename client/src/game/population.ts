@@ -336,6 +336,9 @@ export const getPopulationProduction = (
         if (state.blessings?.sharp_aim) {
           bonusFood += 5; // +5 food per hunter from Sharp Aim blessing
         }
+        if (state.blessings?.trail_sense) {
+          bonusFood += 3; // +3 food per hunter from Trail Sense blessing
+        }
         prod.totalAmount += bonusFood * count;
       }
       if (prod.resource === "fur" && prod.baseAmount > 0) {
