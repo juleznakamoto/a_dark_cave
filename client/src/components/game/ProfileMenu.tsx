@@ -89,9 +89,6 @@ function useProfileMenuState() {
     restartGame,
     setAuthDialogOpen: setGameAuthDialogOpen,
     authDialogOpen: gameAuthDialogOpen,
-    authNotificationSeen,
-    setAuthNotificationSeen,
-    authNotificationVisible,
     socialPromptDialogOpen,
     setSocialPromptDialogOpen,
     setSignUpPromptEligibleForGold,
@@ -384,9 +381,6 @@ function useProfileMenuState() {
     setSocialPromptDialogOpen,
     accountDropdownOpen,
     setAccountDropdownOpen,
-    setAuthNotificationSeen,
-    authNotificationVisible,
-    authNotificationSeen,
     currentUser,
     handleManualSave,
     cooldowns,
@@ -511,7 +505,6 @@ export function GameHeaderControls() {
     setSocialPromptDialogOpen,
     accountDropdownOpen,
     setAccountDropdownOpen,
-    setAuthNotificationSeen,
     currentUser,
     handleManualSave,
     cooldowns,
@@ -627,12 +620,7 @@ export function GameHeaderControls() {
       )}
       <DropdownMenu
         open={accountDropdownOpen}
-        onOpenChange={(open) => {
-          setAccountDropdownOpen(open);
-          if (open) {
-            setAuthNotificationSeen(true);
-          }
-        }}
+        onOpenChange={setAccountDropdownOpen}
         modal={false}
       >
         <DropdownMenuTrigger asChild>
@@ -758,7 +746,6 @@ export function GameHeaderControls() {
                 onClick={() => {
                   setAccountDropdownOpen(false);
                   handleSetAuthDialogOpen(true);
-                  setAuthNotificationSeen(true);
                 }}
               >
                 <span className="flex items-center gap-1.5">

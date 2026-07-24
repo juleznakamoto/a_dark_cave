@@ -724,6 +724,9 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
   const [isDetectingCurrency, setIsDetectingCurrency] = useState(false);
   const gameState = useGameStore();
   const setAuthDialogOpen = useGameStore((state) => state.setAuthDialogOpen);
+  const setSignUpPromptEligibleForGold = useGameStore(
+    (state) => state.setSignUpPromptEligibleForGold,
+  );
   const setTimedEventTab = useGameStore((state) => state.setTimedEventTab);
   const shopCruelModeHighlight = useGameStore(
     (state) => state.shopCruelModeHighlight,
@@ -847,6 +850,8 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
 
   const openSignInFromShop = () => {
     onClose();
+    // Signup intent: secure-purchase upsell + free-gift claim (same as Rewards / referral)
+    setSignUpPromptEligibleForGold(true);
     setAuthDialogOpen(true);
   };
 

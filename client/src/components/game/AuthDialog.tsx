@@ -48,24 +48,27 @@ export default function AuthDialog({
   onAuthSuccess,
 }: AuthDialogProps) {
   const { t } = useTranslation("ui");
-  const signUpPromptEligibleForGold = useGameStore(
-    (state) => state.signUpPromptEligibleForGold
-  );
 
   const getReferralCode = () => {
     const params = new URLSearchParams(window.location.search);
     return parseRefParam(params.get("ref"));
   };
 
-  const [mode, setMode] = useState<"signin" | "signup" | "reset">(
-    getReferralCode() || signUpPromptEligibleForGold ? "signup" : "signin",
+  const [mode, setMode] = useState<"signin" | "signup" | "reset">(() =>
+    getReferralCode() || useGameStore.getState().signUpPromptEligibleForGold
+      ? "signup"
+      : "signin",
   );
 
+  // Profile opens Auth without the flag → sign-in. Rewards / referral / shop
+  // signup CTAs set signUpPromptEligibleForGold (or have ?ref=) before open → signup.
   useEffect(() => {
-    if (isOpen && signUpPromptEligibleForGold) {
-      setMode("signup");
-    }
-  }, [isOpen, signUpPromptEligibleForGold]);
+    if (!isOpen) return;
+    const preferSignup =
+      Boolean(getReferralCode()) ||
+      useGameStore.getState().signUpPromptEligibleForGold;
+    setMode(preferSignup ? "signup" : "signin");
+  }, [isOpen]);
 
   const flushBeforeSignUp = async () => {
     if (useGameStore.getState().isUserSignedIn) return;

@@ -102,7 +102,6 @@ import { calculateBastionStats } from "@/game/bastionStats";
 import { getCurrentPopulation, getMaxPopulation } from "@/game/population";
 import { audioManager, SOUND_VOLUME } from "@/lib/audio";
 import { GAME_CONSTANTS, getCallMerchantGoldCost } from "@/game/constants";
-import { lastAuthNotificationPlayTimeFloorOnLoad } from "@/game/authNotificationAuto";
 import {
   isPlaylightDiscoverSocialTaskFulfilled,
   playlightExitIntentMilestoneFloorFromPlayTime,
@@ -280,14 +279,16 @@ interface GameStore extends GameState {
   /** Persisted: village tab hotkey tutorial (boxed overlay) was dismissed or timed out. */
   villageHotkeyTutorialShown: boolean;
 
-  // Notification state for auth
+  /** Legacy; guest Profile sign-in dot schedule removed. */
   authNotificationSeen: boolean;
+  /** Legacy; unused (see authNotificationSeen). */
   authNotificationVisible: boolean;
 
-  signUpPromptEligibleForGold: boolean; // Set when opening auth from rewards sign-up task; cleared after signup or dialog close
-  /** Play time (ms) when guest Profile sign-in notification was last triggered. */
+  /** Open AuthDialog in signup mode (rewards, shop secure-purchase / free gift); cleared after signup or dialog close. */
+  signUpPromptEligibleForGold: boolean;
+  /** Legacy; unused (see authNotificationSeen). */
   lastAuthNotificationPlayTime: number;
-  /** Legacy; migrated to `lastAuthNotificationPlayTime` on load. */
+  /** Legacy alias of lastAuthNotificationPlayTime; retained for save compatibility. */
   lastSignUpPromptPlayTime: number;
 
   /** Social / email / invite / sign-up rewards prompt (guest + signed-in schedules in game loop). */
@@ -443,10 +444,7 @@ interface GameStore extends GameState {
   setSfxMuted: (muted: boolean) => void;
   setMusicVolume: (volume: number) => void;
   setSfxVolume: (volume: number) => void;
-  setAuthNotificationSeen: (seen: boolean) => void;
-  setAuthNotificationVisible: (visible: boolean) => void;
   setSignUpPromptEligibleForGold: (eligible: boolean) => void;
-  setLastAuthNotificationPlayTime: (playTime: number) => void;
   setSocialPromptDialogOpen: (isOpen: boolean) => void;
   setHighlightedResources: (resources: string[]) => void;
   emitResourceChange: (resource: string, amount: number) => void;
@@ -1311,10 +1309,8 @@ export const createInitialState = (): GameState => ({
   sfxMuted: false,
   musicVolume: 1,
   sfxVolume: 1,
-  // Initialize auth notification state
   authNotificationSeen: false,
   authNotificationVisible: false,
-
   signUpPromptEligibleForGold: false,
   lastAuthNotificationPlayTime: 0,
   lastSignUpPromptPlayTime: 0,
@@ -1713,7 +1709,6 @@ export const useGameStore = create<GameStore>((set, get) => ({
     points: 0,
   },
   totalFocusEarned: 0,
-  // Initialize auth notification state
   authNotificationSeen: false,
   authNotificationVisible: false,
   signUpPromptEligibleForGold: false,
@@ -1791,14 +1786,8 @@ export const useGameStore = create<GameStore>((set, get) => ({
     set({ musicVolume: Math.max(0, Math.min(1, volume)) }),
   setSfxVolume: (volume: number) =>
     set({ sfxVolume: Math.max(0, Math.min(1, volume)) }),
-  setAuthNotificationSeen: (seen: boolean) =>
-    set({ authNotificationSeen: seen }),
-  setAuthNotificationVisible: (visible: boolean) =>
-    set({ authNotificationVisible: visible }),
   setSignUpPromptEligibleForGold: (eligible: boolean) =>
     set({ signUpPromptEligibleForGold: eligible }),
-  setLastAuthNotificationPlayTime: (playTime: number) =>
-    set({ lastAuthNotificationPlayTime: playTime }),
   setSocialPromptDialogOpen: (isOpen: boolean) =>
     set({ socialPromptDialogOpen: isOpen }),
   setHighlightedResources: (resources: string[]) => {
@@ -3032,16 +3021,12 @@ export const useGameStore = create<GameStore>((set, get) => ({
           savedState.authNotificationVisible !== undefined
             ? savedState.authNotificationVisible
             : false,
-        lastAuthNotificationPlayTime: lastAuthNotificationPlayTimeFloorOnLoad(
-          loadedPlayTime,
-          Math.max(
-            (savedState as { lastAuthNotificationPlayTime?: number })
-              .lastAuthNotificationPlayTime ?? 0,
-            savedState.lastSignUpPromptPlayTime !== undefined
-              ? savedState.lastSignUpPromptPlayTime
-              : 0,
-          ),
-          savedState.authNotificationSeen === true,
+        lastAuthNotificationPlayTime: Math.max(
+          (savedState as { lastAuthNotificationPlayTime?: number })
+            .lastAuthNotificationPlayTime ?? 0,
+          savedState.lastSignUpPromptPlayTime !== undefined
+            ? savedState.lastSignUpPromptPlayTime
+            : 0,
         ),
         lastSignUpPromptPlayTime:
           savedState.lastSignUpPromptPlayTime !== undefined

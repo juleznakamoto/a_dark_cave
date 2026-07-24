@@ -668,11 +668,13 @@ export const gameStateSchema = z.object({
     .default({
       nextFocusGainTime: 0,
     }),
-  authNotificationSeen: z.boolean().default(false), // Added new field for auth notification
-  authNotificationVisible: z.boolean().default(false), // Added new field for auth notification visibility
-  /** Play time (ms) when the guest Profile sign-in dot was last shown; schedules repeat via `authNotificationAuto`. */
+  /** Legacy; guest Profile sign-in dot schedule removed (rewards-tasks icon pulse replaced it). */
+  authNotificationSeen: z.boolean().default(false),
+  /** Legacy; unused (see authNotificationSeen). */
+  authNotificationVisible: z.boolean().default(false),
+  /** Legacy; unused (see authNotificationSeen). */
   lastAuthNotificationPlayTime: z.number().default(0),
-  /** Legacy alias; migrated into `lastAuthNotificationPlayTime` on load. */
+  /** Legacy alias of lastAuthNotificationPlayTime; retained for save compatibility. */
   lastSignUpPromptPlayTime: z.number().default(0),
   /** Legacy; lastSocialPromptPlayTime is no longer used to schedule auto-open. */
   lastSocialPromptPlayTime: z.number().default(0),

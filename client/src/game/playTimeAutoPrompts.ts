@@ -1,9 +1,5 @@
 import { useGameStore, isModalDialogOpen } from "@/game/state";
 import {
-  guestAuthNotificationTriggerUpdates,
-  shouldTriggerGuestAuthNotification,
-} from "@/game/authNotificationAuto";
-import {
   socialPromptHighestMilestoneIndexToOpen,
   socialPromptMilestoneIndexAfterOpen,
 } from "@/game/socialPromptAuto";
@@ -15,39 +11,17 @@ import {
 import { isSteamEditionActive } from "@/lib/edition";
 
 /**
- * Play-time auto prompts from the game loop. Non-blocking updates (auth dot) may
- * run alongside at most one blocking modal per invocation; each candidate re-reads
- * the store so same-tick stale snapshots cannot open two dialogs at once.
+ * Play-time auto prompts from the game loop. At most one blocking modal per
+ * invocation; each candidate re-reads the store so same-tick stale snapshots
+ * cannot open two dialogs at once.
  */
 export function processPlayTimeAutoPrompts(): void {
-  // Social rewards, feedback, and guest auth prompts are web-only.
+  // Social rewards and feedback prompts are web-only.
   if (isSteamEditionActive()) return;
 
+  const playTimeMs = useGameStore.getState().playTime || 0;
+
   let state = useGameStore.getState();
-  const playTimeMs = state.playTime || 0;
-
-  if (!state.isUserSignedIn) {
-    const lastShown = state.lastAuthNotificationPlayTime ?? 0;
-    if (
-      shouldTriggerGuestAuthNotification({
-        playTimeMs,
-        lastShownPlayTimeMs: lastShown,
-        authNotificationSeen: state.authNotificationSeen,
-        authNotificationVisible: state.authNotificationVisible,
-      })
-    ) {
-      useGameStore.setState(
-        guestAuthNotificationTriggerUpdates({
-          playTimeMs,
-          lastShownPlayTimeMs: lastShown,
-          authNotificationSeen: state.authNotificationSeen,
-          authNotificationVisible: state.authNotificationVisible,
-        }),
-      );
-    }
-  }
-
-  state = useGameStore.getState();
   if (tryOpenSocialRewardsPrompt(state, playTimeMs)) {
     return;
   }
