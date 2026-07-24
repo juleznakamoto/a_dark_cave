@@ -47,7 +47,7 @@ export default function BlessingOfferDialog() {
           defaultValue: "Choose a Blessing",
         })}
       >
-        <div className="flex max-w-[min(96vw,28rem)] flex-row items-stretch justify-center gap-2">
+        <div className="flex max-w-[min(96vw,40rem)] flex-row items-stretch justify-center gap-2.5">
           {offered.map((blessingId) => {
             const effect = clothingEffects[blessingId];
             const title = getEffectName(
@@ -60,26 +60,26 @@ export default function BlessingOfferDialog() {
               <div
                 key={blessingId}
                 className={cn(
-                  "group relative z-0 flex w-12rem] flex-col overflow-visible rounded-lg border border-border bg-background p-3 shadow-2xl sm:w-[16rem] sm:p-4",
+                  "group relative z-0 flex w-[10.5rem] flex-col overflow-visible rounded-lg border border-border bg-background p-3 shadow-2xl sm:w-[12rem] sm:p-3.5",
                   "transition-colors duration-500 hover:border-blue-600 focus-within:border-blue-600",
                 )}
                 data-testid={`blessing-offer-card-${blessingId}`}
               >
                 <div className="pointer-events-none absolute inset-0 -z-10 rounded-lg opacity-0 transition-opacity duration-500 group-hover:opacity-100 group-focus-within:opacity-100 blessing-offer-card-glow" />
 
-                <div className="mb-1.5 flex justify-center text-foreground">
+                <div className="mb-2 flex justify-center text-foreground">
                   <SidePanelSectionIcon
                     sectionId="blessings"
-                    sizeClassName="h-6 w-6"
+                    sizeClassName="h-7 w-7"
                     className="opacity-90"
                   />
                 </div>
 
-                <h3 className="mb-1 text-center text-xs font-semibold leading-tight">
+                <h3 className="mb-1.5 text-center text-xs font-semibold leading-tight sm:text-sm">
                   {title}
                 </h3>
 
-                <div className="mb-3 text-center text-[11px] leading-snug text-muted-foreground">
+                <div className="mb-3 text-center text-[11px] leading-snug text-muted-foreground sm:text-xs">
                   {renderItemTooltip(blessingId, "blessing", undefined, {
                     showTitle: false,
                     showDescription: false,
