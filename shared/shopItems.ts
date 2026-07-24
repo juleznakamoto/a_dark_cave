@@ -321,15 +321,35 @@ hydrateBundleDescriptions(SHOP_ITEMS);
 
 /** Ordered list of items to show in the "Highlights" tab (replaces old "All" filter).
  * Order is deliberate for conversion optimization.
+ * Gold slot uses `gold_20000` as the even-playTime default; see `getHighlightsOrder`.
  */
 export const HIGHLIGHTS_ORDER = [
   "gold_100_free", // Free Gift - shown first with special blue border
   "cruel_mode",
   "artifact_bundle", // Dark Artifacts Bundle
-  "gold_20000", // 20'000 Gold
+  "gold_20000", // 20'000 Gold (even playTime); swapped to gold_1000 when odd
   "advanced_bundle", // Pale King's Bundle
   "ashen_throne_bundle",
 ] as const;
+
+/** Highlights gold SKU: even whole play minutes → 20k; odd → 1k. Stable while shop is open (sim paused). */
+export function getHighlightsGoldPackId(
+  playTimeMs: number,
+): "gold_20000" | "gold_1000" {
+  return Math.floor(playTimeMs / 60_000) % 2 === 0
+    ? "gold_20000"
+    : "gold_1000";
+}
+
+/** Highlights tab order with gold pack chosen from playTime parity. */
+export function getHighlightsOrder(
+  playTimeMs: number,
+): Array<(typeof HIGHLIGHTS_ORDER)[number] | "gold_1000"> {
+  const goldId = getHighlightsGoldPackId(playTimeMs);
+  return HIGHLIGHTS_ORDER.map((id) =>
+    id === "gold_20000" ? goldId : id,
+  );
+}
 
 /** Sum of each component's list price (`originalPrice`, else `price`). */
 export function bundleComponentsListPriceSumCents(

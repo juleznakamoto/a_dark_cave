@@ -49,7 +49,7 @@ import { userOwnsShopItemFromPurchaseRows } from "@shared/shopPurchaseEligibilit
 import {
   GREAT_FEAST_DURATION_MS,
   SHOP_ITEMS,
-  HIGHLIGHTS_ORDER,
+  getHighlightsOrder,
   bundleComponentsListPriceSumCents,
   isShopPaidGoldPackItem,
   type ShopItem,
@@ -1772,9 +1772,9 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
                   >
                     <div className="grid w-full grid-cols-1 gap-4 md:grid-cols-3">
                       {(selectedFilter === null
-                        ? HIGHLIGHTS_ORDER.map((id) => SHOP_ITEMS[id]).filter(
-                          Boolean,
-                        )
+                        ? getHighlightsOrder(gameState.playTime || 0)
+                          .map((id) => SHOP_ITEMS[id])
+                          .filter(Boolean)
                         : Object.values(SHOP_ITEMS)
                       )
                         .filter((item) => {

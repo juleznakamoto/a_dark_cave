@@ -1,6 +1,9 @@
 import { describe, it, expect } from 'vitest';
 import {
   SHOP_ITEMS,
+  HIGHLIGHTS_ORDER,
+  getHighlightsGoldPackId,
+  getHighlightsOrder,
   bundleComponentsListPriceSumCents,
   bundleComponentsCatalogPriceSumCents,
   shopPackageSavingsPercent,
@@ -103,6 +106,27 @@ describe('Shop Items Configuration', () => {
       expect(isShopPaidGoldPackItem('gold_100_free')).toBe(false);
       expect(isShopPaidGoldPackItem('gold_1000')).toBe(true);
       expect(isShopPaidGoldPackItem('gold_250')).toBe(true);
+    });
+  });
+
+  describe('Highlights gold pack by playTime parity', () => {
+    it('shows gold_20000 when whole playTime minutes are even', () => {
+      expect(getHighlightsGoldPackId(0)).toBe('gold_20000');
+      expect(getHighlightsGoldPackId(59_999)).toBe('gold_20000');
+      expect(getHighlightsGoldPackId(120_000)).toBe('gold_20000');
+      expect(getHighlightsOrder(0)).toEqual(
+        HIGHLIGHTS_ORDER.map((id) => id),
+      );
+    });
+
+    it('shows gold_1000 when whole playTime minutes are odd', () => {
+      expect(getHighlightsGoldPackId(60_000)).toBe('gold_1000');
+      expect(getHighlightsGoldPackId(119_999)).toBe('gold_1000');
+      expect(getHighlightsOrder(60_000)).toEqual(
+        HIGHLIGHTS_ORDER.map((id) =>
+          id === 'gold_20000' ? 'gold_1000' : id,
+        ),
+      );
     });
   });
 
