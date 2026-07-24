@@ -31,10 +31,12 @@ import LogPanel from "./panels/LogPanel";
 import StartScreen from "./StartScreen";
 import {
   useGameStore,
+  isModalDialogOpen,
   shouldBlockGameHotkeys,
   syncTimedEventTabPauseTracking,
   getTimedEventTabEffectiveRemainingMs,
 } from "@/game/state";
+import { closeAllGlobalTooltips } from "@/hooks/useGlobalTooltip";
 import type { GameTab } from "@/game/types";
 import EventDialog from "./EventDialog";
 import CombatDialog from "./CombatDialog";
@@ -150,8 +152,16 @@ export default function GameContainer() {
   );
   const story = useGameStore((state) => state.story);
   const traderDialogOpens = useGameStore((state) => state.traderDialogOpens);
+  const modalDialogOpen = useGameStore(isModalDialogOpen);
   // Estate unlocks when Dark Estate is built
   const estateUnlocked = buildings.darkEstate >= 1;
+
+  // Tooltips sit above modal overlays (z-10000); dismiss them when any blocking dialog opens.
+  useEffect(() => {
+    if (modalDialogOpen) {
+      closeAllGlobalTooltips();
+    }
+  }, [modalDialogOpen]);
 
   const [animatingTabs, setAnimatingTabs] = useState<Set<string>>(new Set());
   const [fadePhaseTabs, setFadePhaseTabs] = useState<Set<string>>(new Set());

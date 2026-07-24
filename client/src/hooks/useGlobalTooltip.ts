@@ -81,6 +81,12 @@ class GlobalTooltipManager {
 
 const globalTooltipManager = new GlobalTooltipManager();
 
+/** Close any open tooltip and cancel in-progress long-press timers. */
+export function closeAllGlobalTooltips() {
+  globalTooltipManager.clearAllPressTimers();
+  globalTooltipManager.setOpenTooltip(null);
+}
+
 /**
  * Hook for managing tooltip state globally
  * Ensures only one tooltip is open at a time
@@ -299,7 +305,7 @@ export function useGlobalTooltip() {
   }, [isMobile]);
 
   const closeTooltip = useCallback(() => {
-    globalTooltipManager.setOpenTooltip(null);
+    closeAllGlobalTooltips();
   }, []);
 
   return {
