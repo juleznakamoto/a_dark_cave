@@ -5,6 +5,7 @@ import {
   filterHutLadderCohort,
   hutLadderReachChartData,
   hutLadderStepDropChartData,
+  hutLadderDropVsStartedChartData,
 } from "./hutLadderAdminStats";
 
 function save(opts: {
@@ -177,6 +178,18 @@ describe("hutLadderAdminStats", () => {
     expect(drops[1]?.drop).toBe(25);
     expect(drops[11]?.drop).toBe(0); // S1 vs wooden ≥10
     expect(drops[21]?.drop).toBe(0); // A1 vs stone ≥10
+
+    // Absolute drop vs starters: 4→3 at W1 = 25% of cohort (same as step %
+    // here only because prev was also the full cohort).
+    const dropsVsStart = hutLadderDropVsStartedChartData(funnel);
+    expect(dropsVsStart).toHaveLength(31);
+    expect(dropsVsStart[0]?.drop).toBe(0);
+    expect(dropsVsStart[1]?.drop).toBe(25); // 1 of 4
+    expect(dropsVsStart[6]?.drop).toBe(25); // W6: 3→2 = 1 of 4
+    expect(dropsVsStart[10]?.drop).toBe(0); // W10: already 2 at W6+
+    expect(dropsVsStart[11]?.drop).toBe(0); // S1: wooden10 2→2
+    expect(dropsVsStart[22]?.drop).toBe(25); // A2: 2→1 = 1 of 4
+    expect(dropsVsStart[30]?.drop).toBe(0); // A10: already 0 at A4+
   });
 
   it("stone ≥1 step drop is vs wooden ≥10 unlock cohort", () => {
@@ -192,6 +205,10 @@ describe("hutLadderAdminStats", () => {
     expect(funnel.stone[1]?.players).toBe(1);
     expect(funnel.stone[1]?.stepKeepPct).toBe(33.3);
     expect(funnel.stone[1]?.stepDropPct).toBe(66.7);
+    // Same loss as % of starters: (3−1)/4 = 50%
+    const dropsVsStart = hutLadderDropVsStartedChartData(funnel);
+    const s1 = dropsVsStart.find((d) => d.step === "S1");
+    expect(s1?.drop).toBe(50);
   });
 
   it("A1 step drop is vs stone ≥10 unlock cohort", () => {

@@ -384,3 +384,69 @@ export function hutLadderStepDropChartData(
   }));
   return [...wooden, ...stone, ...waves];
 }
+
+export type HutLadderDropVsStartedChartPoint = {
+  step: string;
+  level: number;
+  kind: HutLadderChartKind;
+  /** Players lost at this step as % of the original started cohort. */
+  drop: number;
+};
+
+function dropVsStartedPct(
+  prevPlayers: number | null,
+  players: number,
+  startedCount: number,
+): number {
+  if (prevPlayers === null || startedCount === 0) return 0;
+  const lost = Math.max(0, prevPlayers - players);
+  return Math.round((1000 * lost) / startedCount) / 10;
+}
+
+/**
+ * Same step order as {@link hutLadderStepDropChartData}, but each bar is
+ * players lost at that step ÷ started cohort (not ÷ previous step).
+ * S1 / A1 still use wooden≥10 / stone≥10 as the previous count.
+ */
+export function hutLadderDropVsStartedChartData(
+  funnel: HutLadderFunnel,
+): HutLadderDropVsStartedChartPoint[] {
+  const { startedCount } = funnel;
+  const wooden = funnel.wooden.map((w, i) => ({
+    step: `W${w.level}`,
+    level: w.level,
+    kind: "wooden" as const,
+    drop: dropVsStartedPct(
+      i === 0 ? null : (funnel.wooden[i - 1]?.players ?? 0),
+      w.players,
+      startedCount,
+    ),
+  }));
+  const stone = funnel.stone
+    .filter((s) => s.level >= 1)
+    .map((s) => {
+      const prev =
+        s.level === 1
+          ? funnel.wooden10Count
+          : (funnel.stone.find((p) => p.level === s.level - 1)?.players ?? 0);
+      return {
+        step: `S${s.level}`,
+        level: s.level,
+        kind: "stone" as const,
+        drop: dropVsStartedPct(prev, s.players, startedCount),
+      };
+    });
+  const waves = funnel.waves.map((w) => {
+    const prev =
+      w.level === 1
+        ? funnel.stone10Count
+        : (funnel.waves.find((p) => p.level === w.level - 1)?.players ?? 0);
+    return {
+      step: `A${w.level}`,
+      level: w.level,
+      kind: "wave" as const,
+      drop: dropVsStartedPct(prev, w.players, startedCount),
+    };
+  });
+  return [...wooden, ...stone, ...waves];
+}

@@ -9,6 +9,7 @@ import {
   computeHutLadderFunnel,
   hutLadderReachChartData,
   hutLadderStepDropChartData,
+  hutLadderDropVsStartedChartData,
   type HutLadderCohortDays,
 } from "@shared/hutLadderAdminStats";
 import {
@@ -52,6 +53,10 @@ export default function ChurnTab(props: ChurnTabProps) {
   );
   const hutDropChart = useMemo(
     () => hutLadderStepDropChartData(hutLadderFunnel),
+    [hutLadderFunnel],
+  );
+  const hutDropVsStartedChart = useMemo(
+    () => hutLadderDropVsStartedChartData(hutLadderFunnel),
     [hutLadderFunnel],
   );
   const finisherRates = useMemo(
@@ -755,6 +760,68 @@ export default function ChurnTab(props: ChurnTabProps) {
             <p className="text-xs text-muted-foreground mt-2">
               W0 is the baseline (0% drop). S1 step drop is vs wooden ≥10; A1
               step drop is vs stone ≥10 (unlock gates), not vs all starters.
+            </p>
+          </div>
+
+          <div>
+            <h3 className="text-sm font-medium mb-2">
+              Drop vs starters (%) (W0–W10, S1–S10, then A1–A10)
+            </h3>
+            <ChartContainer
+              config={{
+                drop: {
+                  label: "Drop vs starters %",
+                  color: COLORS[2] ?? COLORS[0],
+                },
+              }}
+              className="h-[280px] w-full"
+            >
+              <BarChart data={hutDropVsStartedChart}>
+                <CartesianGrid strokeDasharray="3 3" />
+                <XAxis dataKey="step" interval={0} tick={{ fontSize: 9 }} />
+                <YAxis
+                  unit="%"
+                  label={{
+                    value: "Drop vs starters (%)",
+                    angle: -90,
+                    position: "insideLeft",
+                  }}
+                />
+                <ChartTooltip content={<ChartTooltipContent />} />
+                <Legend
+                  payload={[
+                    {
+                      value: "Wooden drop vs starters %",
+                      type: "square",
+                      color: COLORS[2] ?? COLORS[0],
+                    },
+                    {
+                      value: "Stone drop vs starters %",
+                      type: "square",
+                      color: COLORS[3] ?? COLORS[1],
+                    },
+                    {
+                      value: "Wave drop vs starters %",
+                      type: "square",
+                      color: COLORS[5] ?? COLORS[4] ?? COLORS[0],
+                    },
+                  ]}
+                />
+                <Bar dataKey="drop" name="Drop vs starters %">
+                  {hutDropVsStartedChart.map((entry) => (
+                    <Cell
+                      key={`drop-start-${entry.step}`}
+                      fill={dropBarFill(entry.kind)}
+                    />
+                  ))}
+                </Bar>
+              </BarChart>
+            </ChartContainer>
+            <p className="text-xs text-muted-foreground mt-2">
+              Same steps as above, but each bar is players lost at that step ÷
+              total starters (not ÷ previous step). Bars sum toward total cohort
+              loss along the ladder. S1 / A1 still use wooden ≥10 / stone ≥10 as
+              the previous count.
             </p>
           </div>
 
