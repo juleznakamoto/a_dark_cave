@@ -7,6 +7,7 @@ import { useIsMobile } from "./use-mobile";
  */
 class GlobalTooltipManager {
   private openTooltipId: string | null = null;
+  private suppressed = false;
   private listeners: Set<(id: string | null) => void> = new Set();
   private pressTimers: Map<string, NodeJS.Timeout> = new Map();
   private pressingIds: Set<string> = new Set();
@@ -19,7 +20,15 @@ class GlobalTooltipManager {
     };
   }
 
+  private notify() {
+    this.listeners.forEach((listener) => listener(this.openTooltipId));
+  }
+
   setOpenTooltip(id: string | null, openedByTimer: boolean = false) {
+    if (this.suppressed && id !== null) {
+      return;
+    }
+
     // Clear any existing press timers when opening a new tooltip
     if (id !== this.openTooltipId) {
       this.clearAllPressTimers();
@@ -30,7 +39,22 @@ class GlobalTooltipManager {
     if (openedByTimer && id) {
       this.tooltipsOpenedByTimer.add(id);
     }
-    this.listeners.forEach((listener) => listener(id));
+    this.notify();
+  }
+
+  setSuppressed(suppressed: boolean) {
+    if (this.suppressed === suppressed) return;
+    this.suppressed = suppressed;
+    if (suppressed) {
+      this.clearAllPressTimers();
+      this.openTooltipId = null;
+      this.tooltipsOpenedByTimer.clear();
+    }
+    this.notify();
+  }
+
+  isSuppressed() {
+    return this.suppressed;
   }
 
   getOpenTooltip() {
@@ -38,6 +62,7 @@ class GlobalTooltipManager {
   }
 
   isTooltipOpen(id: string) {
+    if (this.suppressed) return false;
     return this.openTooltipId === id;
   }
 
@@ -88,21 +113,35 @@ export function closeAllGlobalTooltips() {
 }
 
 /**
+ * While true, all global tooltips stay forced closed (blocks hover + long-press).
+ * Use when a blocking modal overlay is open — tooltips are z-10000 and would
+ * otherwise paint through the dimmed backdrop.
+ */
+export function setGlobalTooltipsSuppressed(suppressed: boolean) {
+  globalTooltipManager.setSuppressed(suppressed);
+}
+
+/**
  * Hook for managing tooltip state globally
  * Ensures only one tooltip is open at a time
  */
 export function useGlobalTooltip() {
   const isMobile = useIsMobile();
   const [openTooltipId, setOpenTooltipId] = useState<string | null>(null);
+  const [tooltipsSuppressed, setTooltipsSuppressed] = useState(
+    () => globalTooltipManager.isSuppressed(),
+  );
 
   useEffect(() => {
     // Subscribe to global tooltip changes
     const unsubscribe = globalTooltipManager.subscribe((id) => {
       setOpenTooltipId(id);
+      setTooltipsSuppressed(globalTooltipManager.isSuppressed());
     });
 
     // Initialize with current global state
     setOpenTooltipId(globalTooltipManager.getOpenTooltip());
+    setTooltipsSuppressed(globalTooltipManager.isSuppressed());
 
     return unsubscribe;
   }, []);
@@ -144,9 +183,12 @@ export function useGlobalTooltip() {
   }, []);
 
   const isTooltipOpen = useCallback((id: string) => {
+    // Force closed while modals suppress tooltips (hover tooltips use uncontrolled
+    // mode via `undefined`, so only `false` actually hides them under overlays).
+    if (globalTooltipManager.isSuppressed()) return false;
     // Return tooltip open state for long press tooltips (works on all devices)
     return globalTooltipManager.isTooltipOpen(id) ? true : undefined;
-  }, []);
+  }, [tooltipsSuppressed]);
 
   const handleWrapperClick = useCallback((id: string, disabled: boolean, isCoolingDown: boolean, e: React.MouseEvent) => {
     if (!isMobile || isCoolingDown) return;
@@ -311,6 +353,7 @@ export function useGlobalTooltip() {
   return {
     isMobile,
     openTooltipId,
+    tooltipsSuppressed,
     setOpenTooltip,
     isTooltipOpen,
     handleWrapperClick,

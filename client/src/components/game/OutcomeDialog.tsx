@@ -161,12 +161,12 @@ export default function OutcomeDialog({
               </div>
             )}
             {hasBodyContent ? (
-              <div className="mt-2 mb-3 h-px w-full bg-white/10" />
+              <div className="mt-2 h-px w-full bg-white/10" />
             ) : null}
           </DialogHeader>
 
           {hasBodyContent ? (
-            <div className="text-sm pb-2 space-y-1 text-left">{children}</div>
+            <div className="text-sm pt-4 pb-2 space-y-1 text-left">{children}</div>
           ) : null}
 
           <div className="flex justify-center">

@@ -36,7 +36,7 @@ import {
   syncTimedEventTabPauseTracking,
   getTimedEventTabEffectiveRemainingMs,
 } from "@/game/state";
-import { closeAllGlobalTooltips } from "@/hooks/useGlobalTooltip";
+import { setGlobalTooltipsSuppressed } from "@/hooks/useGlobalTooltip";
 import type { GameTab } from "@/game/types";
 import EventDialog from "./EventDialog";
 import CombatDialog from "./CombatDialog";
@@ -156,11 +156,12 @@ export default function GameContainer() {
   // Estate unlocks when Dark Estate is built
   const estateUnlocked = buildings.darkEstate >= 1;
 
-  // Tooltips sit above modal overlays (z-10000); dismiss them when any blocking dialog opens.
+  // Tooltips sit above modal overlays (z-10000). Force them closed for the whole
+  // time a blocking dialog is open — closeAll alone leaves hover tooltips visible
+  // because Radix stays uncontrolled when `open` is `undefined`.
   useEffect(() => {
-    if (modalDialogOpen) {
-      closeAllGlobalTooltips();
-    }
+    setGlobalTooltipsSuppressed(modalDialogOpen);
+    return () => setGlobalTooltipsSuppressed(false);
   }, [modalDialogOpen]);
 
   const [animatingTabs, setAnimatingTabs] = useState<Set<string>>(new Set());
