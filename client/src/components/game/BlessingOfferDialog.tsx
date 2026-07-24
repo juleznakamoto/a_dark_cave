@@ -66,11 +66,11 @@ export default function BlessingOfferDialog() {
                 key={blessingId}
                 className={cn(
                   "group relative z-0 flex min-h-0 min-w-0 flex-1 flex-col overflow-visible rounded-lg border-2 border-border bg-background p-2.5 shadow-2xl sm:min-h-[14rem] sm:p-4",
-                  "hover:border-blue-600 focus-within:border-blue-600",
+                  "transition-colors duration-500 hover:border-blue-600 focus-within:border-blue-600",
                 )}
                 data-testid={`blessing-offer-card-${blessingId}`}
               >
-                <div className="pointer-events-none absolute inset-0 -z-10 rounded-lg opacity-0 group-hover:opacity-100 group-focus-within:opacity-100 blessing-offer-card-glow" />
+                <div className="pointer-events-none absolute inset-0 -z-10 rounded-lg opacity-0 transition-opacity duration-500 group-hover:opacity-100 group-focus-within:opacity-100 blessing-offer-card-glow" />
 
                 <div className="mb-2 flex justify-center text-foreground sm:mb-3">
                   <SidePanelSectionIcon
