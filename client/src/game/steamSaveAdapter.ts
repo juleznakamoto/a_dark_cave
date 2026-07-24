@@ -2,14 +2,15 @@
  * Steam Cloud save adapter.
  *
  * In the Steam build the game keeps using IndexedDB for fast local persistence,
- * but also mirrors the already-encoded (`ADC2:`) save blob to a flat file in the
- * Electron `userData` directory via the preload bridge. That file is what Steam
- * Auto-Cloud syncs across machines — paths in `electron/paths.ts`, form values in
+ * but also mirrors the already-encoded (`ADC2:`) save blob to a flat file via the
+ * preload bridge. Full game + demo share `%APPDATA%\A Dark Cave\adc-steam-save.dat`
+ * so demo progress continues in the full game; Electron also reads the legacy
+ * demo path as a fallback. Paths in `electron/paths.ts`, Steamworks form values in
  * `ARCHITECTURE.md` (Steam edition → Steamworks Auto-Cloud).
  *
  * On load we prefer whichever copy (IndexedDB vs Steam file) has more `playTime`,
- * so a fresh machine that only has the cloud-synced file restores correctly and
- * an up-to-date local machine is never overwritten by a stale cloud copy.
+ * so a fresh full-game install that only has the demo cloud file restores correctly
+ * and an up-to-date local machine is never overwritten by a stale cloud copy.
  */
 import type { SaveData } from "@shared/schema";
 import { isSteamBuild } from "@/lib/edition";

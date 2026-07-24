@@ -260,8 +260,8 @@ shop, the whole game unlocked, merchant-sold dark artifacts, and local + Steam C
 
 | Path | Responsibility |
 |------|----------------|
-| `electron/main.ts` | Electron main process: Steamworks init + overlay, loopback server, save-file IPC, full-screen/layout IPC, window icon/title, single-instance, external-link handling. |
-| `electron/paths.ts` | `APP_USER_DATA_NAME` + `STEAM_CLOUD_SAVE_FILE` â€” must match Steamworks Auto-Cloud config (demo build uses `A Dark Cave Demo` / `adc-steam-demo-save.dat`). |
+| `electron/main.ts` | Electron main process: Steamworks init + overlay, loopback server, save-file IPC (shared cloud path + legacy demo read/dual-write), full-screen/layout IPC, window icon/title, single-instance, external-link handling. |
+| `electron/paths.ts` | Electron `APP_USER_DATA_NAME` (IndexedDB) + shared Auto-Cloud path (`STEAM_CLOUD_DIR_NAME` / `STEAM_CLOUD_SAVE_FILE`); demo keeps userdata `A Dark Cave Demo` but writes the same cloud file as full; legacy demo path read/dual-write in `main.ts`. |
 | `electron/preload.ts` | `contextBridge` exposing `window.steamBridge` (achievements, Cloud save, full-screen toggle/events) to the sandboxed renderer. |
 | `electron/loopbackServer.ts` | Serves built `dist/public` over `http://127.0.0.1:<port>` (absolute-path routing needs HTTP, not `file://`). |
 | `electron/steam.ts` | Defensive `steamworks.js` wrapper; `enableSteamOverlay` + `initSteam` must run before `app.whenReady()` (Chromium overlay switches). |
@@ -302,13 +302,13 @@ Steam Cloud, then add one Auto-Cloud row (Windows-only build):
 | Field (DE / EN) | Value |
 |-----------------|-------|
 | Stammverzeichnis / Root | `WinAppDataRoaming` |
-| Unterverzeichnis / Subdirectory | `A Dark Cave` (`electron/paths.ts` â†’ `APP_USER_DATA_NAME`) |
+| Unterverzeichnis / Subdirectory | `A Dark Cave` (`electron/paths.ts` â†’ `STEAM_CLOUD_DIR_NAME`) |
 | Muster / Pattern | `adc-steam-save.dat` (`STEAM_CLOUD_SAVE_FILE`) |
 | Betriebssystem / OS | Windows |
 | Rekursiv / Recursive | off |
 
 On disk: `%APPDATA%\A Dark Cave\adc-steam-save.dat`. Root overrides empty (Windows-only).
-App ID **4882240** in `steam_appid.txt`.
+App ID **4882240** in `steam_appid.txt`. Full + demo share this Auto-Cloud path (demoâ†’full continue). At full release, set the demo appâ€™s **Shared cloud APP ID** to `4882240`.
 
 **SteamPipe upload** (partner backend â†’ SteamPipe â†’ Builds):
 
@@ -328,14 +328,14 @@ App ID **4882240** in `steam_appid.txt`.
 | `client/src/game/demoLimit.ts` | Shared wooden-hut demo limit + `processDemoLimit()` (Galaxy + Steam demo). |
 | `client/src/game/galaxyDemo.ts` | Deprecated re-exports from `demoLimit.ts`. |
 | `client/src/components/game/DemoTimeUpDialog.tsx` | Blocking end-of-demo modal â†’ Steam wishlist. |
-| `electron/paths.ts` | Demo userdata subdirectory + cloud filename when `ADC_STEAM_DEMO_BUILD=1`. |
+| `electron/paths.ts` | Demo keeps Electron userdata `A Dark Cave Demo` (IndexedDB) when `ADC_STEAM_DEMO_BUILD=1`; cloud file is the shared full-game path. |
 | `steam_appid_demo.txt` | Demo App ID **4971800** baked into demo packages. |
 | `scripts/package-steam-demo.mjs` | `npm run electron:package:demo` â€” build + package demo. |
 | `scripts/steam-upload-demo.ps1` | `npm run steam:demo:upload` â€” build (optional) + SteamPipe upload. |
 | `scripts/UploadDemoToSteam.cmd` | Double-click / desktop shortcut wrapper for `steam-upload-demo.ps1`. |
 | `steam/config.demo.example.json` | Demo `appId` / `depotId` template for upload script. |
 
-Demo saves: IndexedDB key `steamDemoSave` + `%APPDATA%\A Dark Cave Demo\adc-steam-demo-save.dat` (configure matching Auto-Cloud row on the **demo** app in Steamworks). Achievements use the same `ACH_*` mapping as the full game.
+Demo saves: IndexedDB key `steamDemoSave` under `%APPDATA%\A Dark Cave Demo\` + Steam Cloud file `%APPDATA%\A Dark Cave\adc-steam-save.dat` (same Auto-Cloud row as the full game). Legacy file `%APPDATA%\A Dark Cave Demo\adc-steam-demo-save.dat` is still read as fallback and dual-written by the demo during cutover â€” keep a second Auto-Cloud row for that legacy path until the transition is done. Achievements use the same `ACH_*` mapping as the full game.
 
 **Scripts:** `build:steam-demo`, `electron:package:demo`, `steam:demo:upload` / `steam:demo:upload-only` / `steam:demo:stage`.
 

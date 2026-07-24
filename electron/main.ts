@@ -13,7 +13,10 @@ import {
 import {
   APP_USER_DATA_NAME,
   APP_WINDOW_TITLE,
-  STEAM_CLOUD_SAVE_FILE,
+  isSteamDemoBuild,
+  isSteamPlaytestBuild,
+  resolveLegacyDemoSavePath,
+  resolveSteamCloudSavePath,
 } from "./paths";
 
 /**
@@ -22,11 +25,11 @@ import {
  * Responsibilities:
  *  - Initialize Steamworks (achievements, overlay).
  *  - Serve the built SPA over a loopback HTTP server (absolute-path routing).
- *  - Persist saves to a flat file in userData (synced to the cloud via Steam
- *    Auto-Cloud, configured in the Steamworks partner backend).
+ *  - Persist saves to a flat Steam Cloud file (full + demo share one path;
+ *    Auto-Cloud configured in the Steamworks partner backend).
  */
 
-// Must run before `app.whenReady()` so userData matches Steam Auto-Cloud Unterverzeichnis.
+// Must run before `app.whenReady()` so Electron userData (IndexedDB) is per-variant.
 app.setName(APP_USER_DATA_NAME);
 
 const DEV_SERVER_URL = process.env.ADC_DEV_SERVER_URL; // set by electron:dev to use Vite dev server
@@ -63,7 +66,51 @@ function resolveAppId(): number {
 
 /** Full path of the Steam Cloud save file (`%APPDATA%\\A Dark Cave\\adc-steam-save.dat` on Windows). */
 function saveFilePath(): string {
-  return join(app.getPath("userData"), STEAM_CLOUD_SAVE_FILE);
+  return resolveSteamCloudSavePath(app.getPath("appData"), app.getPath("userData"));
+}
+
+/** Legacy demo cloud path from before demo/full shared Auto-Cloud. */
+function legacyDemoSaveFilePath(): string {
+  return resolveLegacyDemoSavePath(app.getPath("appData"));
+}
+
+async function readSavePayload(): Promise<string | null> {
+  try {
+    return await readFile(saveFilePath(), "utf-8");
+  } catch {
+    /* try legacy below */
+  }
+  if (isSteamPlaytestBuild) return null;
+  try {
+    return await readFile(legacyDemoSaveFilePath(), "utf-8");
+  } catch {
+    return null;
+  }
+}
+
+async function writeSavePayload(payload: string): Promise<boolean> {
+  try {
+    const file = saveFilePath();
+    await mkdir(dirname(file), { recursive: true });
+    await writeFile(file, String(payload), "utf-8");
+
+    // Demo: keep the legacy file fresh so the pre-cutover Auto-Cloud row still syncs.
+    if (isSteamDemoBuild) {
+      try {
+        const legacy = legacyDemoSaveFilePath();
+        await mkdir(dirname(legacy), { recursive: true });
+        await writeFile(legacy, String(payload), "utf-8");
+      } catch (error) {
+        // eslint-disable-next-line no-console
+        console.warn("[STEAM] legacy demo save:write failed:", error);
+      }
+    }
+    return true;
+  } catch (error) {
+    // eslint-disable-next-line no-console
+    console.warn("[STEAM] save:write failed:", error);
+    return false;
+  }
 }
 
 function resolveClientDir(): string {
@@ -151,26 +198,11 @@ function registerIpc(): void {
     activateAchievement(String(apiName)),
   );
 
-  ipcMain.handle("save:read", async (): Promise<string | null> => {
-    try {
-      return await readFile(saveFilePath(), "utf-8");
-    } catch {
-      return null;
-    }
-  });
+  ipcMain.handle("save:read", async (): Promise<string | null> => readSavePayload());
 
-  ipcMain.handle("save:write", async (_event, payload: string): Promise<boolean> => {
-    try {
-      const file = saveFilePath();
-      await mkdir(dirname(file), { recursive: true });
-      await writeFile(file, String(payload), "utf-8");
-      return true;
-    } catch (error) {
-      // eslint-disable-next-line no-console
-      console.warn("[STEAM] save:write failed:", error);
-      return false;
-    }
-  });
+  ipcMain.handle("save:write", async (_event, payload: string): Promise<boolean> =>
+    writeSavePayload(payload),
+  );
 
   ipcMain.handle("app:quit", () => {
     app.quit();
