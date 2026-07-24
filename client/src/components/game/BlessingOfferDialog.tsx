@@ -1,6 +1,5 @@
 import { createPortal } from "react-dom";
 import { Button } from "@/components/ui/button";
-import { gameActionOutlineButtonClassName } from "@/components/CooldownButton";
 import { cn } from "@/lib/utils";
 import { useGameStore } from "@/game/state";
 import type { GameState } from "@shared/schema";
@@ -94,8 +93,10 @@ export default function BlessingOfferDialog() {
                   disabled={!canAfford}
                   button_id={`blessing-offer-choose-${blessingId}`}
                   className={cn(
-                    "mt-auto w-full",
-                    gameActionOutlineButtonClassName(!canAfford),
+                    "mt-auto w-full border-blue-600 bg-blue-600/10 text-foreground",
+                    "hover:bg-blue-600/20 hover:text-foreground",
+                    !canAfford &&
+                    "border-blue-950 opacity-60 disabled:opacity-60 hover:bg-transparent",
                   )}
                   onClick={() => chooseInsightBlessing(blessingId)}
                 >
