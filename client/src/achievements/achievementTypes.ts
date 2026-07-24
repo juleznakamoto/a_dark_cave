@@ -16,6 +16,11 @@ export interface AchievementSegment {
    * Defaults to maxCount.
    */
   segments?: number;
+  /**
+   * Web-only (social / account promo, etc.). Hidden in Steam edition UI,
+   * progress tallies, and Steam achievement sync.
+   */
+  webOnly?: boolean;
 }
 
 /** Ring slice width and progress-bar ticks; completion still uses maxCount. */

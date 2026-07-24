@@ -48,6 +48,12 @@ export {
 // Re-export types
 export type { AchievementChartConfig, AchievementSegment } from "./achievementTypes";
 
+export {
+  filterWebOnlyAchievements,
+  getAchievementConfigForEdition,
+  getAchievementConfigForSteam,
+} from "./achievementEdition";
+
 // Re-export achievement colors (SSoT for circle + bar charts)
 export {
   INDICATOR_CLASS_INCOMPLETE,

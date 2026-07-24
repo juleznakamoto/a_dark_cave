@@ -8,6 +8,7 @@ import {
   getAchievementSegmentWeight,
   type AchievementChartConfig,
 } from "./achievementTypes";
+import { getAchievementConfigForEdition } from "./achievementEdition";
 import {
   INCOMPLETE_COLOR,
   COMPLETE_COLOR,
@@ -43,6 +44,7 @@ export default function AchievementMiniRingChart({
   // Full store subscription — ring fill uses many slices (buildings, tools,
   // story, meta wins, …); getState() + a sleeper-only selector left charts stale.
   const state = useGameStore((s) => s);
+  const editionConfig = getAchievementConfigForEdition(config);
 
   // Radii are in chart pixel units; scale them with the outer size so larger
   // charts (e.g. share image) keep the same ring proportions as the tab icon.
@@ -52,7 +54,7 @@ export default function AchievementMiniRingChart({
   const spaceBetweenRings = 1.7 * scale;
   const cornerRadius = 2 * scale;
 
-  const ringConfigs = config.rings.map((segments, index) => {
+  const ringConfigs = editionConfig.rings.map((segments, index) => {
     const innerRadius =
       centerHoleRadius + index * (ringSize + spaceBetweenRings);
     const outerRadius = innerRadius + ringSize;
@@ -64,9 +66,9 @@ export default function AchievementMiniRingChart({
 
   const categoryComplete =
     !hideProgress &&
-    isCategoryFullyComplete(config, state as unknown as GameState);
+    isCategoryFullyComplete(editionConfig, state as unknown as GameState);
   const centerIconColor = categoryComplete
-    ? (COMPLETE_ICON_COLOR[config.idPrefix] ?? undefined)
+    ? (COMPLETE_ICON_COLOR[editionConfig.idPrefix] ?? undefined)
     : undefined;
 
   const ringOpacity = isActive ? 1 : 0.9;
@@ -108,12 +110,12 @@ export default function AchievementMiniRingChart({
               const progressEndAngle = startA - segmentDegrees * progress;
               currentStartAngle = startA - segmentDegrees - paddingAngle;
 
-              const achievementId = `${config.idPrefix}-${seg.segmentId}`;
+              const achievementId = `${editionConfig.idPrefix}-${seg.segmentId}`;
               const isFull = currentCount >= seg.maxCount;
               const fill = isFull
-                ? (COMPLETE_COLOR[config.idPrefix] ??
+                ? (COMPLETE_COLOR[editionConfig.idPrefix] ??
                   tailwindToHex("gray-400/50"))
-                : (INCOMPLETE_COLOR[config.idPrefix] ??
+                : (INCOMPLETE_COLOR[editionConfig.idPrefix] ??
                   tailwindToHex("gray-400/50"));
 
               return {

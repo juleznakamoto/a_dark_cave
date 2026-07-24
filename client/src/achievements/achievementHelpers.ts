@@ -1,5 +1,6 @@
 import { useGameStore } from "@/game/state";
 import type { AchievementChartConfig } from "./achievementTypes";
+import { getAchievementConfigForEdition } from "./achievementEdition";
 import {
   getAchievementLabel,
   interpolateFallback,
@@ -65,13 +66,14 @@ export function getAchievementRows(
   state: ReturnType<typeof useGameStore.getState>,
   claimedAchievements: string[]
 ): AchievementRow[] {
+  const editionConfig = getAchievementConfigForEdition(config);
   const BTP = state.BTP ?? 0;
-  const claimable = config.claimable !== false;
+  const claimable = editionConfig.claimable !== false;
   const rows: AchievementRow[] = [];
-  config.rings.forEach((segments) => {
+  editionConfig.rings.forEach((segments) => {
     segments.forEach((seg) => {
       const currentCount = seg.getCount(state);
-      const achievementId = `${config.idPrefix}-${seg.segmentId}`;
+      const achievementId = `${editionConfig.idPrefix}-${seg.segmentId}`;
       const isFull = currentCount >= seg.maxCount;
       const isClaimed = claimable
         ? claimedAchievements.includes(achievementId)
@@ -79,7 +81,11 @@ export function getAchievementRows(
       const rewards = claimable ? computeAchievementRewards(seg, BTP) : {};
       rows.push({
         segmentId: seg.segmentId,
-        label: getAchievementLabel(config.idPrefix, seg.segmentId, seg.label),
+        label: getAchievementLabel(
+          editionConfig.idPrefix,
+          seg.segmentId,
+          seg.label,
+        ),
         englishLabel: seg.label,
         currentCount,
         maxCount: seg.maxCount,

@@ -1,6 +1,5 @@
 import type { AchievementChartConfig } from "../achievementTypes";
 import type { GameState } from "@shared/schema";
-import { isWebBuild } from "@/lib/edition";
 import {
   getResourcesReachedStorageMaxCount,
   getStorageMaxerResourceTotal,
@@ -15,6 +14,7 @@ import {
   getNonOverallAchievementTotal,
   getNonOverallAchievementsCompletedCount,
 } from "../nonOverallCompletion";
+import { getAchievementConfigForEdition } from "../achievementEdition";
 
 const MS_PER_HOUR = 60 * 60 * 1000;
 export const SPEEDRUN_WIN_MAX_MS = 5 * MS_PER_HOUR;
@@ -75,25 +75,23 @@ export const overallChartConfig: AchievementChartConfig = {
             Math.floor((Number(state.lifetimePlayTimeMs) || 0) / MS_PER_HOUR),
           ),
       },
-      ...(isWebBuild
-        ? [
-          {
-            segmentId: "0-supporter",
-            maxCount: SOCIAL_PROMO_EXCLUSIVE_STEP_TOTAL,
-            label: "Supporter",
-            getCount: (state: GameState) => {
-              const slice = asSocialPromoSlice(state);
-              if (isSocialPromoExclusiveRewardComplete(slice)) {
-                return SOCIAL_PROMO_EXCLUSIVE_STEP_TOTAL;
-              }
-              return Math.min(
-                SOCIAL_PROMO_EXCLUSIVE_STEP_TOTAL,
-                socialPromoExclusiveStepsCompleted(slice),
-              );
-            },
-          },
-        ]
-        : []),
+      {
+        segmentId: "0-supporter",
+        maxCount: SOCIAL_PROMO_EXCLUSIVE_STEP_TOTAL,
+        label: "Supporter",
+        /** Social / account promo track — not available on Steam. */
+        webOnly: true,
+        getCount: (state: GameState) => {
+          const slice = asSocialPromoSlice(state);
+          if (isSocialPromoExclusiveRewardComplete(slice)) {
+            return SOCIAL_PROMO_EXCLUSIVE_STEP_TOTAL;
+          }
+          return Math.min(
+            SOCIAL_PROMO_EXCLUSIVE_STEP_TOTAL,
+            socialPromoExclusiveStepsCompleted(slice),
+          );
+        },
+      },
       {
         segmentId: "0-resourceMaxer",
         maxCount: getStorageMaxerResourceTotal(),
@@ -130,7 +128,8 @@ export function getUnclaimedOverallIds(): string[] {
 
 /** True when at least one overall (general / meta) achievement is fully complete. */
 export function hasAnyOverallAchievementReached(state: GameState): boolean {
-  for (const ring of overallChartConfig.rings) {
+  const config = getAchievementConfigForEdition(overallChartConfig);
+  for (const ring of config.rings) {
     for (const seg of ring) {
       if (seg.getCount(state) >= seg.maxCount) return true;
     }

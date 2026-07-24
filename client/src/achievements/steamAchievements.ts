@@ -20,6 +20,7 @@ import {
   isOverallAchievementCategoryEnabled,
   overallChartConfig,
 } from "./index";
+import { getAchievementConfigForSteam } from "./achievementEdition";
 import { isSteamBuild } from "@/lib/edition";
 import { hasSteamBridge, steamUnlockAchievement } from "@/lib/steam";
 
@@ -48,7 +49,8 @@ let cachedEntries: AchievementEntry[] | null = null;
 function getEntries(): AchievementEntry[] {
   if (cachedEntries) return cachedEntries;
   const entries: AchievementEntry[] = [];
-  for (const config of ALL_CONFIGS) {
+  for (const raw of ALL_CONFIGS) {
+    const config = getAchievementConfigForSteam(raw);
     for (const ring of config.rings) {
       for (const seg of ring) {
         const canonicalId = `${config.idPrefix}-${seg.segmentId}`;

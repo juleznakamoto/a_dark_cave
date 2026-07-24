@@ -8,8 +8,9 @@ import {
   isOverallAchievementCategoryEnabled,
   overallChartConfig,
 } from "./index";
+import { getAchievementConfigForEdition } from "./achievementEdition";
 
-/** Achievement category charts, in display order. */
+/** Achievement category charts, in display order (raw configs; filter per edition at use). */
 export const ACHIEVEMENT_CHART_CONFIGS: AchievementChartConfig[] = [
   basicChartConfig,
   buildingChartConfig,
@@ -27,9 +28,10 @@ function tallyConfig(
   config: AchievementChartConfig,
   state: GameState,
 ): CompletionTally {
+  const editionConfig = getAchievementConfigForEdition(config);
   let completed = 0;
   let total = 0;
-  for (const ring of config.rings) {
+  for (const ring of editionConfig.rings) {
     for (const seg of ring) {
       total += 1;
       if (seg.getCount(state) >= seg.maxCount) completed += 1;
