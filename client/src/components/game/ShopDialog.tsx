@@ -198,6 +198,8 @@ function getCheckoutPriceBreakdown(
   finalCents: number;
   hasCatalogSale: boolean;
   hasEventDiscount: boolean;
+  /** Catalog savings from bundle component sum (vs MSRP `originalPrice` sale). */
+  isBundleDiscount: boolean;
 } {
   const catalogCents = item.price;
   const finalCents = getDiscountedShopPriceCents(
@@ -213,6 +215,9 @@ function getCheckoutPriceBreakdown(
       : 0;
   const additionalDiscountCents =
     catalogCents > finalCents ? catalogCents - finalCents : 0;
+  const isBundleDiscount =
+    catalogSaleDiscountCents > 0 &&
+    !!(item.bundleComponents && item.bundleComponents.length > 0);
   return {
     catalogSaleListCents,
     catalogSaleDiscountCents,
@@ -221,6 +226,7 @@ function getCheckoutPriceBreakdown(
     finalCents,
     hasCatalogSale: catalogSaleDiscountCents > 0,
     hasEventDiscount: additionalDiscountCents > 0,
+    isBundleDiscount,
   };
 }
 
@@ -2418,7 +2424,11 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
                         </span>
                       </div>
                       <div className="flex justify-between gap-4 text-emerald-600 dark:text-emerald-500">
-                        <span>{t("ui:shop.saleDiscount")}</span>
+                        <span>
+                          {checkoutPriceBreakdown.isBundleDiscount
+                            ? t("ui:shop.bundleDiscount")
+                            : t("ui:shop.saleDiscount")}
+                        </span>
                         <span className="shrink-0 text-right tabular-nums">
                           −
                           {formatPrice(
@@ -2439,7 +2449,7 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
                       </div>
                     )}
                     <div className="flex justify-between gap-4 text-emerald-600 dark:text-emerald-500">
-                      <span>{t("ui:shop.additionalDiscount")}</span>
+                      <span>{t("ui:shop.eventDiscount")}</span>
                       <span className="shrink-0 text-right tabular-nums">
                         −
                         {formatPrice(

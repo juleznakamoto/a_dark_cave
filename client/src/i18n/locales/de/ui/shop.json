@@ -36,8 +36,10 @@
     "paymentSrDescription": "Schließe deine Zahlung für {{name}} ab",
     "originalPrice": "Originalpreis",
     "saleDiscount": "Sale-Rabatt",
+    "bundleDiscount": "Bundle-Rabatt",
     "betaDiscount": "Beta-Rabatt",
     "additionalDiscount": "Zusätzlicher Rabatt",
+    "eventDiscount": "Event-Rabatt",
     "total": "Gesamt",
     "legalConsent": "Du erhältst nach dem Kauf sofortigen Zugang zu den digitalen Inhalten.",
     "termsOfService": "Nutzungsbedingungen", //ok
