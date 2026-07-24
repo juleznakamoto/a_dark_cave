@@ -161,7 +161,7 @@ export default function OutcomeDialog({
               </div>
             )}
             {hasBodyContent ? (
-              <div className="my-2 h-px w-full bg-white/10" />
+              <div className="mt-2 mb-3 h-px w-full bg-white/10" />
             ) : null}
           </DialogHeader>
 
