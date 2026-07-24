@@ -32,6 +32,7 @@
     "cruelModeSteamDemoBannerBefore": "Grausamer Modus ist derzeit kostenlos, um den Demo-Launch auf",
     "cruelModeSteamDemoBannerSteam": "Steam",
     "cruelModeSteamDemoBannerAfter": " zu feiern.",
+    "loadingPayment": "Loading payment system...",
     "paymentSrDescription": "Schließe deine Zahlung für {{name}} ab",
     "originalPrice": "Originalpreis",
     "saleDiscount": "Sale-Rabatt",

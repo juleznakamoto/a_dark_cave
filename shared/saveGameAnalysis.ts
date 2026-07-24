@@ -176,7 +176,6 @@ export const SAVE_V2_COMPARE_EXPECTED_NOISE_KEYS = new Set<string>([
   "rewardDialog",
   "leaderboardDialogOpen",
   "shareDialogOpen",
-  "fullGamePurchaseDialogOpen",
   "galaxyTimeUpDialogOpen",
   "shopCheckoutItemId",
   "madnessDialog",

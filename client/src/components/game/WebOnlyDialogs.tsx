@@ -1,4 +1,3 @@
-import FullGamePurchaseDialog from "./FullGamePurchaseDialog";
 import { ShopDialog } from "./ShopDialog";
 import LeaderboardDialog from "./LeaderboardDialog";
 import ShareDialog from "./ShareDialog";
@@ -10,18 +9,14 @@ export interface WebOnlyDialogsProps {
   setShopDialogOpen: (open: boolean, source?: ShopOpenSource) => void;
   leaderboardDialogOpen: boolean;
   setLeaderboardDialogOpen: (open: boolean) => void;
-  fullGamePurchaseDialogOpen: boolean;
-  setFullGamePurchaseDialogOpen: (open: boolean) => void;
 }
 
-/** Shop, leaderboard, share, purchases, invite — bundled only in the web build. */
+/** Shop, leaderboard, share, invite — bundled only in the web build. */
 export default function WebOnlyDialogs({
   shopDialogOpen,
   setShopDialogOpen,
   leaderboardDialogOpen,
   setLeaderboardDialogOpen,
-  fullGamePurchaseDialogOpen,
-  setFullGamePurchaseDialogOpen,
 }: WebOnlyDialogsProps) {
   return (
     <>
@@ -35,10 +30,6 @@ export default function WebOnlyDialogs({
         onClose={() => setLeaderboardDialogOpen(false)}
       />
       <ShareDialog />
-      <FullGamePurchaseDialog
-        isOpen={fullGamePurchaseDialogOpen}
-        onClose={() => setFullGamePurchaseDialogOpen(false)}
-      />
       <InviteFriendsFloatingButton />
     </>
   );

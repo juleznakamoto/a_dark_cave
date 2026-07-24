@@ -205,10 +205,8 @@ function getCheckoutPriceBreakdown(
     getShopCheckoutDiscountOptions(item, gameState),
     item.id,
   );
-  const catalogSaleListCents =
-    item.originalPrice != null && item.originalPrice > catalogCents
-      ? item.originalPrice
-      : null;
+  // Same list price as shop cards: MSRP (`originalPrice`) or bundle component-sum.
+  const catalogSaleListCents = shopCardCatalogSaleListCents(item);
   const catalogSaleDiscountCents =
     catalogSaleListCents != null
       ? catalogSaleListCents - catalogCents
@@ -1514,12 +1512,16 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
                   : ""}
               </DialogTitle>
               <DialogDescription className="sr-only">
-                {t("ui:fullGame.loadingPayment")}
+                {t("ui:shop.loadingPayment", {
+                  defaultValue: "Loading payment system...",
+                })}
               </DialogDescription>
             </DialogHeader>
             <div className="flex justify-center py-8">
               <div className="text-muted-foreground">
-                {t("ui:fullGame.loadingPayment")}
+                {t("ui:shop.loadingPayment", {
+                  defaultValue: "Loading payment system...",
+                })}
               </div>
             </div>
           </DialogContent>
@@ -1772,11 +1774,6 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
                         .filter((item) => {
                           // Items sold only via a dedicated checkout dialog are never listed here.
                           if (item.hiddenFromShop) {
-                            return false;
-                          }
-
-                          // Hide full_game item when BTP=0
-                          if (item.id === "full_game" && gameState.BTP === 0) {
                             return false;
                           }
 

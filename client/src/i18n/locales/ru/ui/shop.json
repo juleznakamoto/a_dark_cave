@@ -32,6 +32,7 @@
     "cruelModeSteamDemoBannerBefore": "Жестокий режим сейчас бесплатен в честь запуска демо на",
     "cruelModeSteamDemoBannerSteam": "Steam",
     "cruelModeSteamDemoBannerAfter": ".",
+    "loadingPayment": "Loading payment system...",
     "paymentSrDescription": "Завершите оплату: {{name}}",
     "originalPrice": "Исходная цена",
     "saleDiscount": "Скидка по акции",

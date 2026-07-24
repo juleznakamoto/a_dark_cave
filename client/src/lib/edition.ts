@@ -90,7 +90,7 @@ export function isLocalOnlyEdition(): boolean {
   return isSteamBuild || isGalaxyEdition();
 }
 
-/** Editions where the full game is unlocked without the web shop paywall. */
+/** Steam desktop or Galaxy — buy-once editions (BTP economy; no web MTX paywall). */
 export function isFullGameUnlockedEdition(): boolean {
   return isSteamBuild || isGalaxyEdition();
 }

@@ -314,18 +314,12 @@ export function startGameLoop() {
     // Get fresh state on each tick to avoid stale dialog states
     const state = useGameStore.getState();
 
-    // Force pause if full game purchase is required (villageElderDecision seen and BTP=1)
-    const requiresFullGamePurchase = state.story?.seen?.villageElderDecision && state.BTP === 1 && !Object.keys(state.activatedPurchases || {}).some(
-      key => (key === 'full_game' || key.startsWith('purchase-full_game-')) && state.activatedPurchases?.[key]
-    );
-
     // Blocking modals: `isModalDialogOpen` in state.ts (add new dialogs there only).
     const IsDialogOpen = isModalDialogOpen(state);
 
     const isPaused =
       state.isPaused ||
       IsDialogOpen ||
-      requiresFullGamePurchase ||
       state.idleModeState?.isActive;
 
     if (isPaused) {

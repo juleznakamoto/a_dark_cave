@@ -122,12 +122,6 @@ export default function GameContainer() {
   const setLeaderboardDialogOpen = useGameStore(
     (state) => state.setLeaderboardDialogOpen,
   );
-  const fullGamePurchaseDialogOpen = useGameStore(
-    (state) => state.fullGamePurchaseDialogOpen,
-  );
-  const setFullGamePurchaseDialogOpen = useGameStore(
-    (state) => state.setFullGamePurchaseDialogOpen,
-  );
   const rewardDialog = useGameStore((state) => state.rewardDialog);
   const setRewardDialog = useGameStore((state) => state.setRewardDialog);
   const investmentResultDialog = useGameStore(
@@ -1496,8 +1490,6 @@ export default function GameContainer() {
               setShopDialogOpen={setShopDialogOpen}
               leaderboardDialogOpen={leaderboardDialogOpen}
               setLeaderboardDialogOpen={setLeaderboardDialogOpen}
-              fullGamePurchaseDialogOpen={fullGamePurchaseDialogOpen}
-              setFullGamePurchaseDialogOpen={setFullGamePurchaseDialogOpen}
             />
           </Suspense>
         )}

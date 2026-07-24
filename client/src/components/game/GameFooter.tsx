@@ -6,7 +6,6 @@ import {
   GAME_FOOTER_RIGHT_ICON_LINKS,
   GAME_FOOTER_RIGHT_ICON_ORDER,
 } from "@/lib/gameFooterSocialLinks";
-import FullGamePurchaseDialog from "./FullGamePurchaseDialog";
 import { useState, useEffect, useRef, useCallback, cloneElement } from "react";
 import { useTranslation } from "react-i18next";
 import { GameUiIcon } from "@/components/game/GameUiIcon";
@@ -91,9 +90,6 @@ export default function GameFooter() {
     isPaused,
     togglePause,
     idleModeDialog,
-    setFullGamePurchaseDialogOpen,
-    fullGamePurchaseDialogOpen,
-    BTP,
   } = useGameStore();
   const [glowingButton, setGlowingButton] = useState<string | null>(null);
   const donateHeartRef = useRef<HTMLSpanElement>(null);
@@ -126,13 +122,6 @@ export default function GameFooter() {
 
   return (
     <>
-      {!steamEditionActive && (
-        <FullGamePurchaseDialog
-          isOpen={fullGamePurchaseDialogOpen}
-          onClose={() => setFullGamePurchaseDialogOpen(false)}
-          openedFromFooter={true}
-        />
-      )}
       <footer className="relative flex min-h-9 items-center border-t border-border px-2 py-1 text-xs text-muted-foreground pointer-events-auto overflow-visible">
         {steamDemoActive && <SteamDemoProgressBar />}
         <div className="relative z-0 flex w-full items-center justify-between">
@@ -167,16 +156,6 @@ export default function GameFooter() {
               </Button>
             </HoverCalloutTooltip>
 
-            {BTP === 1 && !steamEditionActive ? (
-              <Button
-                variant="ghost"
-                size="xs"
-                onClick={() => setFullGamePurchaseDialogOpen(true)}
-                className={FOOTER_CONTROL_BTN}
-              >
-                <span className={FOOTER_CONTROL_TEXT}>{t("footer.fullGame")}</span>
-              </Button>
-            ) : null}
             {/* Shop is web-only (Stripe). Donate is web + Galaxy (external tip jar). */}
             {!steamEditionActive && (
               <HoverCalloutTooltip

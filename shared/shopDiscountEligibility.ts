@@ -16,7 +16,7 @@ export function getEligibleShopDiscountOptions(
   gameState: ShopDiscountGameState | null | undefined,
   itemId: string,
 ): ShopDiscountOptions {
-  if (!gameState || itemId === "full_game") {
+  if (!gameState) {
     return {};
   }
 
@@ -60,8 +60,8 @@ export function resolveAppliedShopDiscountOptions(
       eligible.tradersSonGratitude && { tradersSonGratitude: true }),
     ...(requested.cruelModeJourneyComplete &&
       eligible.cruelModeJourneyComplete && {
-        cruelModeJourneyComplete: true,
-      }),
+      cruelModeJourneyComplete: true,
+    }),
   };
 }
 

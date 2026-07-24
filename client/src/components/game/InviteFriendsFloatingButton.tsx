@@ -23,9 +23,6 @@ export default function InviteFriendsFloatingButton() {
   const referrals = useGameStore((s) => s.referrals ?? []);
   const social_media_rewards = useGameStore((s) => s.social_media_rewards);
   const shopDialogOpen = useGameStore((s) => s.shopDialogOpen);
-  const fullGamePurchaseDialogOpen = useGameStore(
-    (s) => s.fullGamePurchaseDialogOpen,
-  );
   const idleModeDialogOpen = useGameStore((s) => s.idleModeDialog.isOpen);
   const isUserSignedIn = useGameStore((s) => s.isUserSignedIn);
   const signupWelcomeGoldClaimed = useGameStore(
@@ -61,12 +58,7 @@ export default function InviteFriendsFloatingButton() {
     signupWelcomeGoldClaimed,
   });
 
-  if (
-    dismissed ||
-    !showFloatingInvite ||
-    shopDialogOpen ||
-    fullGamePurchaseDialogOpen
-  ) {
+  if (dismissed || !showFloatingInvite || shopDialogOpen) {
     return null;
   }
 

@@ -250,7 +250,6 @@ interface GameStore extends GameState {
   };
   leaderboardDialogOpen: boolean;
   shareDialogOpen: boolean;
-  fullGamePurchaseDialogOpen: boolean;
   /** Demo edition (Galaxy / Steam demo): blocking dialog when the wooden hut limit is reached. */
   galaxyTimeUpDialogOpen: boolean;
   /**
@@ -524,7 +523,6 @@ interface GameStore extends GameState {
   ) => void;
   setLeaderboardDialogOpen: (isOpen: boolean) => void;
   setShareDialogOpen: (isOpen: boolean) => void;
-  setFullGamePurchaseDialogOpen: (isOpen: boolean) => void;
   setGalaxyTimeUpDialogOpen: (isOpen: boolean) => void;
   setShopCheckoutItemId: (itemId: string | null) => void;
   /** Grandfather legacy `additional_preset_slots` shop purchases. */
@@ -1293,10 +1291,9 @@ export const createInitialState = (): GameState => ({
     crushingStrikeLevel: 0,
     bloodflameSphereLevel: 0,
   },
-  // Steam build: the whole game is unlocked (single one-time Steam purchase) and
-  // runs in BTP mode so the travelling merchant sells the dark artifacts and the
-  // rebalanced economy applies. Granting `full_game` keeps the loop's paywall
-  // gate from ever pausing the sim (see loop.ts `requiresFullGamePurchase`).
+  // Steam/Galaxy: one-time purchase editions run in BTP mode (merchant sells dark
+  // artifacts + rebalanced economy). `full_game` on activatedPurchases is an
+  // entitlement sentinel only — web no longer sells a Full Game SKU (MTX shop).
   activatedPurchases: isFullGameUnlockedEdition() ? { full_game: true } : {},
   BTP: isFullGameUnlockedEdition() ? 1 : 0,
   feastActivations: {},
@@ -1457,7 +1454,6 @@ function isBlockingDialogOpen(state: GameStore): boolean {
     state.blessingOfferDialogOpen ||
     state.leaderboardDialogOpen ||
     state.shareDialogOpen ||
-    state.fullGamePurchaseDialogOpen ||
     state.galaxyTimeUpDialogOpen ||
     state.idleModeDialog.isOpen ||
     state.restartGameDialogOpen ||
@@ -1675,7 +1671,6 @@ export const useGameStore = create<GameStore>((set, get) => ({
   },
   leaderboardDialogOpen: false,
   shareDialogOpen: false,
-  fullGamePurchaseDialogOpen: false,
   galaxyTimeUpDialogOpen: false,
   shopCheckoutItemId: null,
   musicMuted: false,
@@ -2671,7 +2666,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
     // Preserve these across game restarts
     const preserved = {
       // Purchases that persist
-      // Steam build: always keep `full_game` so the paywall never reappears.
+      // Steam/Galaxy: keep the `full_game` entitlement sentinel across restarts.
       activatedPurchases: {
         ...(isFullGameUnlockedEdition() ? { full_game: true } : {}),
         ...(cruelModePurchaseKey
@@ -4409,10 +4404,6 @@ export const useGameStore = create<GameStore>((set, get) => ({
     set({ shareDialogOpen: isOpen });
   },
 
-  setFullGamePurchaseDialogOpen: (isOpen: boolean) => {
-    set({ fullGamePurchaseDialogOpen: isOpen });
-  },
-
   setGalaxyTimeUpDialogOpen: (isOpen: boolean) => {
     set({ galaxyTimeUpDialogOpen: isOpen });
   },
@@ -4492,7 +4483,6 @@ export const useGameStore = create<GameStore>((set, get) => ({
         authDialogOpen: false,
         shareDialogOpen: false,
         leaderboardDialogOpen: false,
-        fullGamePurchaseDialogOpen: false,
         deleteAccountDialogOpen: false,
         socialPromptDialogOpen: false,
       });

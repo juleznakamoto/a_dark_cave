@@ -6,7 +6,6 @@ import { getCurrentPopulation, getMaxPopulation } from "@/game/population";
 import { woodcutterEvents } from "./eventsWoodcutter";
 import { loreEvents } from "./eventsLore";
 import { shopItemEvents } from "./eventsShopItems";
-import { fullGameUnlockEvents } from "./eventsFullGameUnlock";
 import {
   CRUEL_MODE,
   curseLikeDurationMs,
@@ -30,7 +29,6 @@ export const choiceEvents: Record<string, GameEvent> = {
   ...woodcutterEvents,
   ...loreEvents,
   ...shopItemEvents,
-  ...fullGameUnlockEvents,
   paleFigure: {
     id: "paleFigure",
     condition: (state: GameState) =>

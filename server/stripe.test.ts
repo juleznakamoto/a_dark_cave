@@ -428,33 +428,22 @@ describe('Stripe Shop Integration', () => {
       });
     });
 
-    describe("Full game (no shop discounts)", () => {
-      it("should charge catalog price and ignore discount flags", async () => {
-        mockPaymentIntents.create.mockResolvedValue({
-          client_secret: "test_secret",
-        } as any);
-
-        await createPaymentIntent(
-          "full_game",
-          undefined,
-          undefined,
-          undefined,
-          undefined,
-          true,
-          undefined,
-          true,
-          true,
-        );
-
-        const call = mockPaymentIntents.create.mock.calls[0][0];
-        expect(call.amount).toBe(799);
-        expect(call.metadata).toMatchObject({
-          itemId: "full_game",
-          priceInCents: "799",
-        });
-        expect(call.metadata).not.toHaveProperty("tradersGratitudeDiscountApplied");
-        expect(call.metadata).not.toHaveProperty("playlightFirstPurchaseDiscountApplied");
-        expect(call.metadata).not.toHaveProperty("tradersSonGratitudeDiscountApplied");
+    describe("Retired full_game SKU", () => {
+      it("should reject create-intent for the removed buy-to-play product", async () => {
+        await expect(
+          createPaymentIntent(
+            "full_game",
+            undefined,
+            undefined,
+            undefined,
+            undefined,
+            true,
+            undefined,
+            true,
+            true,
+          ),
+        ).rejects.toThrow("Invalid item");
+        expect(mockPaymentIntents.create).not.toHaveBeenCalled();
       });
     });
   });

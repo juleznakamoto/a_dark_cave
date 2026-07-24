@@ -48,20 +48,8 @@ export const SHOP_ITEMS: Record<string, ShopItem> = {
     symbolColor: "text-sky-600",
   },
 
-  full_game: {
-    id: "full_game",
-    name: "Full Game",
-    description:
-      "Unlock the full game and continue your journey.",
-    price: 799, // 7.99 €
-    rewards: {},
-    canPurchaseMultipleTimes: false,
-    category: "blessing",
-    activationMessage:
-      "Full Game unlocked and activated! The journey continues without restrictions.",
-    symbol: "◆",
-    symbolColor: "text-emerald-600",
-  },
+  // `full_game` was a web buy-to-play SKU; web is MTX-only now. Steam/Galaxy still
+  // use the entitlement key `full_game` on `activatedPurchases` (not a shop item).
 
   cruel_mode: {
     id: "cruel_mode",

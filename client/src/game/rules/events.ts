@@ -77,7 +77,6 @@ import { loreEvents } from "./eventsLore";
 import { fellowshipEvents } from "./eventsFellowship";
 import { riddleEvents } from "./eventsRiddles";
 import { ringEvents } from "./eventsRing";
-import { fullGameUnlockEvents } from "./eventsFullGameUnlock";
 import { crowEvents } from "./eventsCrow";
 import { wanderingCollectorEvents } from "./eventsWanderingCollector";
 import { exiledScholarEvents } from "./eventsExiledScholar";
@@ -202,7 +201,6 @@ export const gameEvents: Record<string, GameEvent> = {
   ...fellowshipEvents,
   ...riddleEvents,
   ...ringEvents,
-  ...fullGameUnlockEvents,
   ...crowEvents,
   ...wanderingCollectorEvents,
   ...exiledScholarEvents,

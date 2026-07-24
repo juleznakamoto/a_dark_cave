@@ -150,6 +150,11 @@ export async function createPaymentIntent(
   cruelModeJourneyCompleteDiscount?: boolean,
   supabase?: Parameters<typeof assertCanPurchaseShopItem>[0],
 ) {
+  // Retired web buy-to-play SKU — never create new PaymentIntents for it.
+  if (itemId === 'full_game') {
+    throw new Error('Invalid item');
+  }
+
   const item = SHOP_ITEMS[itemId];
   if (!item) {
     throw new Error('Invalid item');
@@ -179,21 +184,15 @@ export async function createPaymentIntent(
       })
       : {
         playlightFirstPurchase:
-          itemId !== 'full_game' &&
-            item.price > 0 &&
-            playlightFirstPurchaseDiscount === true
+          item.price > 0 && playlightFirstPurchaseDiscount === true
             ? true
             : undefined,
         tradersGratitude:
-          itemId !== 'full_game' &&
-            item.price > 0 &&
-            tradersGratitudeDiscount === true
+          item.price > 0 && tradersGratitudeDiscount === true
             ? true
             : undefined,
         tradersSonGratitude:
-          itemId !== 'full_game' &&
-            item.price > 0 &&
-            tradersSonGratitudeDiscount === true
+          item.price > 0 && tradersSonGratitudeDiscount === true
             ? true
             : undefined,
         cruelModeJourneyComplete:
@@ -290,57 +289,63 @@ export async function verifyPayment(paymentIntentId: string, userId: string, sup
 
     const itemId = paymentIntent.metadata.itemId;
     const item = SHOP_ITEMS[itemId];
-    if (item) {
-      if (!item.canPurchaseMultipleTimes) {
-        const alreadyOwned = await userAlreadyOwnsShopItem(
-          supabase,
-          userId,
-          itemId,
-        );
-        if (alreadyOwned) {
-          logger.error(
-            `Duplicate purchase blocked for item ${itemId}, user ${userId}`,
-          );
-          return {
-            success: false,
-            error: 'Item already purchased',
-          };
-        }
-      }
+    if (!item) {
+      logger.error(`Payment verification for unknown/retired item: ${itemId}`);
+      return {
+        success: false,
+        error: 'Invalid item',
+      };
+    }
 
-      const discountMetadata = shopDiscountFlagsFromPaymentMetadata(
-        paymentIntent.metadata,
-      );
-      const gameState = await fetchShopDiscountGameState(supabase, userId);
-      const discountCheck = assertShopDiscountMetadataAllowed(
-        gameState,
+    if (!item.canPurchaseMultipleTimes) {
+      const alreadyOwned = await userAlreadyOwnsShopItem(
+        supabase,
+        userId,
         itemId,
-        paymentIntent.metadata,
       );
-      if (!discountCheck.ok) {
+      if (alreadyOwned) {
         logger.error(
-          `Shop discount rejected for item ${itemId}, user ${userId}: ${discountCheck.error}`,
+          `Duplicate purchase blocked for item ${itemId}, user ${userId}`,
         );
         return {
           success: false,
-          error: discountCheck.error,
+          error: 'Item already purchased',
         };
       }
+    }
 
-      const expectedAmount = getDiscountedShopPriceCents(
-        item.price,
-        discountMetadata,
-        itemId,
+    const discountMetadata = shopDiscountFlagsFromPaymentMetadata(
+      paymentIntent.metadata,
+    );
+    const gameState = await fetchShopDiscountGameState(supabase, userId);
+    const discountCheck = assertShopDiscountMetadataAllowed(
+      gameState,
+      itemId,
+      paymentIntent.metadata,
+    );
+    if (!discountCheck.ok) {
+      logger.error(
+        `Shop discount rejected for item ${itemId}, user ${userId}: ${discountCheck.error}`,
       );
-      if (paymentIntent.amount !== expectedAmount) {
-        logger.error(
-          `Payment amount mismatch for item ${itemId}. Expected: ${expectedAmount}. Got: ${paymentIntent.amount}`
-        );
-        return {
-          success: false,
-          error: 'Payment amount verification failed',
-        };
-      }
+      return {
+        success: false,
+        error: discountCheck.error,
+      };
+    }
+
+    const expectedAmount = getDiscountedShopPriceCents(
+      item.price,
+      discountMetadata,
+      itemId,
+    );
+    if (paymentIntent.amount !== expectedAmount) {
+      logger.error(
+        `Payment amount mismatch for item ${itemId}. Expected: ${expectedAmount}. Got: ${paymentIntent.amount}`
+      );
+      return {
+        success: false,
+        error: 'Payment amount verification failed',
+      };
     }
 
     const chargeRaw = paymentIntent.latest_charge;

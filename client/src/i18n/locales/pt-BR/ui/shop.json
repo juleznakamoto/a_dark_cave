@@ -32,6 +32,7 @@
     "cruelModeSteamDemoBannerBefore": "O Modo Cruel está gratuito no momento para celebrar o lançamento da demo na",
     "cruelModeSteamDemoBannerSteam": "Steam",
     "cruelModeSteamDemoBannerAfter": ".",
+    "loadingPayment": "Loading payment system...",
     "paymentSrDescription": "Conclua o pagamento de {{name}}",
     "originalPrice": "Preço original",
     "saleDiscount": "Desconto promocional",

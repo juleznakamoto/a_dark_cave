@@ -118,7 +118,7 @@ shared/schema.tsâ€” Zod GameState schema (source of truth for persisted sha
   `shouldBlockGameHotkeys()`, `detectRewards()`.
 - **`loop.ts`** â€” `TARGET_FPS = 4`. ~15s production cycle (`PRODUCTION_INTERVAL`), fixed tick
   (`TICK_INTERVAL` from `constants.ts`), pause gates (manual pause, idle, inactivity,
-  `isModalDialogOpen`, full-game purchase gate), autosave (15s guest / 60s signed-in cloud diff),
+  `isModalDialogOpen`), autosave (15s guest / 60s signed-in cloud diff),
   attack-wave timer, play-time accumulation. Started/stopped from `pages/game.tsx` via
   `startGameLoop()` / `stopGameLoop()`.
 - **`rules/`** â€” `actionsRegistry.ts` (central `gameActions`), per-area action modules
@@ -283,9 +283,10 @@ shop, the whole game unlocked, merchant-sold dark artifacts, and local + Steam C
 `pages/game.tsx` skips Playlight init, session tracker, auth, purchase rehydrate,
 and Stripe return; `game/save.ts` takes the local-only path + Steam Cloud mirror; `game/loop.ts`
 syncs Steam achievements; `state.ts` `createInitialState`/`restartGame`
-set `BTP=1` and grant `full_game` (merchant artifacts, no paywall); `GameContainer`/`ProfileMenu`
-hide shop/leaderboard/share/invite/auth; `pages/end-screen.tsx` unlocks Cruel Mode free once
-`hasWonAnyGame` is set.
+set `BTP=1` and grant `activatedPurchases.full_game` as an entitlement sentinel (merchant
+artifacts + BTP economy; web no longer sells a Full Game SKU — MTX shop only);
+`GameContainer`/`ProfileMenu` hide shop/leaderboard/share/invite/auth; `pages/end-screen.tsx`
+unlocks Cruel Mode free once `hasWonAnyGame` is set.
 
 **Scripts:** `build:steam` (Vite client build with the flag), `electron:build` (bundle shell),
 `electron:dev` (build + run), `electron:package` (electron-builder Windows installer â†’ `release/`).
