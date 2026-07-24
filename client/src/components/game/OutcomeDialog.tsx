@@ -82,6 +82,8 @@ export default function OutcomeDialog({
     !effectTheme && variant === "madness" ? "items-end pb-1.5" : "items-center";
   const iconUsesColoredGlyph =
     Boolean(effectTheme) || variant === "madness" || variant === "insight";
+  // Empty fragments (e.g. RewardDialog with no items) must not count as body content.
+  const hasBodyContent = React.Children.toArray(children).some(Boolean);
 
   return (
     <>
@@ -158,10 +160,12 @@ export default function OutcomeDialog({
                 {successLog}
               </div>
             )}
-            <div className="my-2 h-px w-full bg-white/10" />
+            {hasBodyContent ? (
+              <div className="my-2 h-px w-full bg-white/10" />
+            ) : null}
           </DialogHeader>
 
-          {children ? (
+          {hasBodyContent ? (
             <div className="text-sm pb-2 space-y-1 text-left">{children}</div>
           ) : null}
 
