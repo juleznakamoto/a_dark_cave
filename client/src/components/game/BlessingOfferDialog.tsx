@@ -105,7 +105,7 @@ export default function BlessingOfferDialog() {
                   onClick={() => chooseInsightBlessing(blessingId)}
                 >
                   {t("blessingOffer.chooseBlessing", {
-                    defaultValue: "Choose Blessing",
+                    defaultValue: "Choose",
                   })}
                 </Button>
               </div>
