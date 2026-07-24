@@ -2338,7 +2338,21 @@
     "title": "El regalo del susurrador"
   },
   "whisperingVoices": {
-    "message": "Oyes susurros tenues en el viento, palabras en una lengua que no reconoces, pero que de algún modo entiendes. Hablan de cosas antiguas enterradas bajo la tierra. Las voces se vuelven más claras hasta que, al anochecer, desaparecen de pronto.",
+    "choices": {
+      "ignore": {
+        "label": "Ignorar",
+        "reward": "+2 Locura"
+      },
+      "listen": {
+        "label": "Escuchar",
+        "reward": "+1 Locura"
+      }
+    },
+    "log": {
+      "outcome0": "Aguzas el oído. Las voces se vuelven más claras hasta que, al anochecer, desaparecen de pronto.",
+      "outcome1": "Intentas ahuyentarlas, pero los susurros se aferran. Solo se desvanecen tras la caída de la noche, pero siguen en tu memoria."
+    },
+    "message": "Oyes susurros tenues en el viento, palabras en una lengua que no reconoces, pero que de algún modo entiendes. Hablan de cosas antiguas enterradas bajo la tierra.",
     "title": "Voces susurrantes"
   },
   "whispersBeneathHut": {

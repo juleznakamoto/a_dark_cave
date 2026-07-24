@@ -2361,7 +2361,21 @@
     "title": "Die Gabe des Flüsterers"
   },
   "whisperingVoices": {
-    "message": "Du hörst leises Flüstern im Wind, Worte in keiner Sprache, die du kennst, und doch verstehst du sie. Sie sprechen von alten Dingen, die unter der Erde begraben liegen. Die Stimmen werden klarer, bis sie am Abend plötzlich verstummen.",
+    "choices": {
+      "ignore": {
+        "label": "Ignorieren",
+        "reward": "+2 Wahnsinn"
+      },
+      "listen": {
+        "label": "Zuhören",
+        "reward": "+1 Wahnsinn"
+      }
+    },
+    "log": {
+      "outcome0": "Du spitzt die Ohren. Die Stimmen werden klarer, bis sie am Abend plötzlich verstummen.",
+      "outcome1": "Du versuchst, sie auszublenden, doch das Flüstern bleibt. Erst nach Einbruch der Nacht verblassen sie, bleiben aber in deiner Erinnerung."
+    },
+    "message": "Du hörst leises Flüstern im Wind, Worte in keiner Sprache, die du kennst, und doch verstehst du sie. Sie sprechen von alten Dingen, die unter der Erde begraben liegen.",
     "title": "Flüsternde Stimmen"
   },
   "whispersBeneathHut": {

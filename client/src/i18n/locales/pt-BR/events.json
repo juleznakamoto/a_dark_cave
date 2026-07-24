@@ -2361,7 +2361,21 @@
     "title": "O Presente do Sussurrante"
   },
   "whisperingVoices": {
-    "message": "Você ouve leves sussurros no vento, proferindo palavras em nenhuma língua que você reconheça, mas de algum modo você as compreende. Elas falam de coisas antigas soterradas sob a terra. As vozes ficam mais claras até que, ao anoitecer, subitamente se vão.",
+    "choices": {
+      "ignore": {
+        "label": "Ignorar",
+        "reward": "+2 de Loucura"
+      },
+      "listen": {
+        "label": "Ouvir",
+        "reward": "+1 de Loucura"
+      }
+    },
+    "log": {
+      "outcome0": "Você esforça-se para ouvir. As vozes ficam mais claras até que, ao anoitecer, subitamente se vão.",
+      "outcome1": "Você tenta afastá-los, mas os sussurros se agarram. Só se esvaem após o anoitecer, mas ainda permanecem na sua memória."
+    },
+    "message": "Você ouve leves sussurros no vento, proferindo palavras em nenhuma língua que você reconheça, mas de algum modo você as compreende. Elas falam de coisas antigas soterradas sob a terra.",
     "title": "Vozes Sussurrantes"
   },
   "whispersBeneathHut": {

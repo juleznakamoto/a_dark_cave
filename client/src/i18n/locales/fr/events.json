@@ -2338,7 +2338,21 @@
     "title": "Le Don du Murmureur"
   },
   "whisperingVoices": {
-    "message": "Vous entendez de faibles murmures dans le vent, prononçant des mots dans aucune langue que vous reconnaissiez, et pourtant vous les comprenez. Ils parlent de choses anciennes enfouies sous la terre. Les voix deviennent plus claires jusqu'à ce que, le soir venu, elles disparaissent soudain.",
+    "choices": {
+      "ignore": {
+        "label": "Ignorer",
+        "reward": "+2 Folie"
+      },
+      "listen": {
+        "label": "Écouter",
+        "reward": "+1 Folie"
+      }
+    },
+    "log": {
+      "outcome0": "Vous tendez l'oreille. Les voix deviennent plus claires jusqu'à ce que, le soir venu, elles disparaissent soudain.",
+      "outcome1": "Vous essayez de les chasser, mais les murmures s'accrochent. Ils ne s'estompent qu'après la tombée de la nuit, mais restent dans votre mémoire."
+    },
+    "message": "Vous entendez de faibles murmures dans le vent, prononçant des mots dans aucune langue que vous reconnaissiez, et pourtant vous les comprenez. Ils parlent de choses anciennes enfouies sous la terre.",
     "title": "Voix murmurantes"
   },
   "whispersBeneathHut": {

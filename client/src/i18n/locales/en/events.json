@@ -2361,7 +2361,21 @@
     "title": "The Whisperer's Gift"
   },
   "whisperingVoices": {
-    "message": "You hear faint whispers in the wind, speaking words in no language you recognize, but somehow you understand them. They speak of ancient things buried beneath the earth. The voices grow clearer until in the evening they are suddenly gone.",
+    "choices": {
+      "ignore": {
+        "label": "Ignore",
+        "reward": "+2 Madness"
+      },
+      "listen": {
+        "label": "Listen",
+        "reward": "+1 Madness"
+      }
+    },
+    "log": {
+      "outcome0": "You strain to hear. The voices grow clearer until in the evening they are suddenly gone.",
+      "outcome1": "You try to shut them out, but the whispers cling on. They fade only after nightfall, but still remaining in your memory."
+    },
+    "message": "You hear faint whispers in the wind, speaking words in no language you recognize, but somehow you understand them. They speak of ancient things buried beneath the earth.",
     "title": "Whispering Voices"
   },
   "whispersBeneathHut": {

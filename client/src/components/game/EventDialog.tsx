@@ -38,6 +38,7 @@ import {
   hasEventChoiceSuccessTooltip,
   RelevantStatIcon,
 } from "@/components/game/EventChoiceSuccessTooltip";
+import { madnessEvents } from "@/game/rules/eventsMadness";
 
 interface EventDialogProps {
   isOpen: boolean;
@@ -231,16 +232,9 @@ export default function EventDialog({
 
   const isCubeEvent = event?.id?.startsWith("cube");
 
-  // Check if this is a madness event with choices (dialog)
-  const madnessEventIds = [
-    "villagerStares",
-    "facesInWalls",
-    "skinCrawling",
-    "creatureInHut",
-    "wrongReflections",
-    "villagersStareAtSky"
-  ];
-  const isMadnessEvent = event?.id && madnessEventIds.some(id => event.id.startsWith(id));
+  // Violet glow for all madness-ladder dialogs (SSOT: madnessEvents keys)
+  const eventBaseId = event?.id?.split("-")[0];
+  const isMadnessEvent = !!eventBaseId && eventBaseId in madnessEvents;
 
   const displayTitle =
     resolveEventDisplayTitle(catalogId, event.title, gameState, ruleEventId) ||

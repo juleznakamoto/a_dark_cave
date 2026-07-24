@@ -17,18 +17,42 @@ export const madnessEvents: Record<string, GameEvent> = {
     timeProbability: 30,
     priority: 2,
     repeatable: false,
-    effect: (state: GameState) => ({
-      events: {
-        ...state.events,
-        whisperingVoices: true,
+    isTimedChoice: true,
+    baseDecisionTime: 15,
+    choices: [
+      {
+        id: "listen",
+        effect: (state: GameState) => ({
+          events: {
+            ...state.events,
+            whisperingVoices: true,
+          },
+          stats: {
+            ...state.stats,
+            madnessFromEvents:
+              (state.stats.madnessFromEvents || 0) +
+              withCruelMadnessBonus(state, 1),
+          },
+          _logMessageKey: "outcome0",
+        }),
       },
-      stats: {
-        ...state.stats,
-        madnessFromEvents:
-          (state.stats.madnessFromEvents || 0) +
-          withCruelMadnessBonus(state, 1),
+      {
+        id: "ignore",
+        effect: (state: GameState) => ({
+          events: {
+            ...state.events,
+            whisperingVoices: true,
+          },
+          stats: {
+            ...state.stats,
+            madnessFromEvents:
+              (state.stats.madnessFromEvents || 0) +
+              withCruelMadnessBonus(state, 2),
+          },
+          _logMessageKey: "outcome1",
+        }),
       },
-    }),
+    ],
   },
 
   shadowsMove: {

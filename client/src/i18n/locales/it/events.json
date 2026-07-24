@@ -2361,7 +2361,21 @@
     "title": "Il Dono del Sussurratore"
   },
   "whisperingVoices": {
-    "message": "Senti deboli sussurri nel vento, che pronunciano parole in nessuna lingua che riconosci, eppure in qualche modo le comprendi. Parlano di cose antiche sepolte sotto la terra. Le voci si fanno più chiare finché, di sera, all'improvviso non ci sono più.",
+    "choices": {
+      "ignore": {
+        "label": "Ignora",
+        "reward": "+2 Follia"
+      },
+      "listen": {
+        "label": "Ascolta",
+        "reward": "+1 Follia"
+      }
+    },
+    "log": {
+      "outcome0": "Tendi l'orecchio. Le voci si fanno più chiare finché, di sera, all'improvviso non ci sono più.",
+      "outcome1": "Cerchi di scacciarli, ma i sussurri restano. Svaporano solo dopo il calar della notte, ma rimangono nella tua memoria."
+    },
+    "message": "Senti deboli sussurri nel vento, che pronunciano parole in nessuna lingua che riconosci, eppure in qualche modo le comprendi. Parlano di cose antiche sepolte sotto la terra.",
     "title": "Voci Sussurranti"
   },
   "whispersBeneathHut": {
