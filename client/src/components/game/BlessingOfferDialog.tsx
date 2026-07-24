@@ -60,7 +60,7 @@ export default function BlessingOfferDialog() {
               <div
                 key={blessingId}
                 className={cn(
-                  "group relative z-0 flex w-[8.5rem] flex-col overflow-visible rounded-lg border border-border bg-background p-2.5 shadow-2xl sm:w-[9.5rem] sm:p-3",
+                  "group relative z-0 flex w-12rem] flex-col overflow-visible rounded-lg border border-border bg-background p-3 shadow-2xl sm:w-[16rem] sm:p-4",
                   "transition-colors duration-500 hover:border-blue-600 focus-within:border-blue-600",
                 )}
                 data-testid={`blessing-offer-card-${blessingId}`}
@@ -79,7 +79,7 @@ export default function BlessingOfferDialog() {
                   {title}
                 </h3>
 
-                <div className="mb-2 text-center text-[11px] leading-snug text-muted-foreground">
+                <div className="mb-3 text-center text-[11px] leading-snug text-muted-foreground">
                   {renderItemTooltip(blessingId, "blessing", undefined, {
                     showTitle: false,
                     showDescription: false,
