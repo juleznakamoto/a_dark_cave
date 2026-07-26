@@ -757,12 +757,19 @@ export function renderItemTooltip(
 
   const hasTitle = Boolean(showTitle && effect.name);
   const hasDescription = Boolean(showDescription && effect.description);
+  const hasGeneralBonusEffects = Boolean(
+    effect.bonuses?.generalBonuses &&
+    Object.keys(effect.bonuses.generalBonuses).length > 0,
+  );
+  const hasActionBonusEffects = Boolean(
+    effect.bonuses?.actionBonuses &&
+    Object.keys(effect.bonuses.actionBonuses).length > 0,
+  );
   const hasAnyEffects =
     showEffects &&
     Boolean(
-      effect.bonuses?.generalBonuses ||
-      (effect.bonuses?.actionBonuses &&
-        Object.keys(effect.bonuses.actionBonuses).length > 0) ||
+      hasGeneralBonusEffects ||
+      hasActionBonusEffects ||
       (itemId === "obsidian_orb" &&
         useGameStore.getState().relics?.obsidian_orb) ||
       itemId === "bone_dice" ||
@@ -818,7 +825,7 @@ export function renderItemTooltip(
       {hasAnyEffects && (hasTitle || hasDescription) && (
         <ActionTooltipSeparator />
       )}
-      {showEffects && effect.bonuses?.generalBonuses && (
+      {showEffects && hasGeneralBonusEffects && effect.bonuses?.generalBonuses && (
         <div>
           {effect.bonuses.generalBonuses.actionBonusChance != null &&
             effect.bonuses.generalBonuses.actionBonusChance > 0 && (
@@ -1041,7 +1048,7 @@ export function renderItemTooltip(
           )}
         </div>
       )}
-      {showEffects && effect.bonuses?.actionBonuses &&
+      {showEffects && hasActionBonusEffects && effect.bonuses?.actionBonuses &&
         Object.entries(effect.bonuses.actionBonuses).map(
           ([actionId, bonus]) => {
             const actionLabel = getActionLabel(
