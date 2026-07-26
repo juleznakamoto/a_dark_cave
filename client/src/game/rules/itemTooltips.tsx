@@ -755,6 +755,21 @@ export function renderItemTooltip(
   const enchantBonusStrength = enchantBonus?.enchantStrength ?? 0;
   const enchantBonusKnowledge = enchantBonus?.enchantKnowledge ?? 0;
 
+  const hasTitle = Boolean(showTitle && effect.name);
+  const hasDescription = Boolean(showDescription && effect.description);
+  const hasAnyEffects =
+    showEffects &&
+    Boolean(
+      effect.bonuses?.generalBonuses ||
+      (effect.bonuses?.actionBonuses &&
+        Object.keys(effect.bonuses.actionBonuses).length > 0) ||
+      (itemId === "obsidian_orb" &&
+        useGameStore.getState().relics?.obsidian_orb) ||
+      itemId === "bone_dice" ||
+      itemId === "ebon_grace" ||
+      (itemType === "weapon" && itemId === "nightshade_bow"),
+    );
+
   return (
     <div className="text-xs">
       {showTitle &&
@@ -796,193 +811,186 @@ export function renderItemTooltip(
           </div>
         ))}
       {showDescription && effect.description && (
-        <div
-          className={
-            showTitle && effect.name ? "mt-1 text-gray-400" : "text-gray-400"
-          }
-        >
+        <div className={hasTitle ? "mt-1 text-gray-400" : "text-gray-400"}>
           {getEffectDescription(effectCategory, itemId, effect.description)}
         </div>
       )}
+      {hasAnyEffects && (hasTitle || hasDescription) && (
+        <ActionTooltipSeparator />
+      )}
       {showEffects && effect.bonuses?.generalBonuses && (
-        <>
-          {(Boolean(showTitle && effect.name) ||
-            Boolean(showDescription && effect.description)) && (
-              <ActionTooltipSeparator />
-            )}
-          <div>
-            {effect.bonuses.generalBonuses.actionBonusChance != null &&
-              effect.bonuses.generalBonuses.actionBonusChance > 0 && (
-                <div>
-                  {getUiTooltip(
-                    "doubleActionChance",
-                    "{{percent}}% chance to double action gains",
-                    {
-                      percent: formatProbabilityPercent(
-                        effect.bonuses.generalBonuses.actionBonusChance,
-                      ),
-                    },
-                  )}
-                </div>
-              )}
-            {effect.bonuses.generalBonuses.luck && (
-              <div>
-                {getUiTooltip("luck", "Luck: +{{value}}", {
-                  value: effect.bonuses.generalBonuses.luck,
-                })}
-              </div>
-            )}
-            {(baseStrength > 0 ||
-              enchantBaseStrength > 0 ||
-              enchantBonusStrength > 0) && (
-                <div>
-                  {getUiTooltip("strength", "Strength: +{{value}}", {
-                    value: baseStrength,
-                  })}
-                  {renderEnchantStatSuffix(enchantBaseStrength)}
-                  {renderEnchantStatSuffix(enchantBonusStrength)}
-                </div>
-              )}
-            {(baseKnowledge > 0 ||
-              enchantBaseKnowledge > 0 ||
-              enchantBonusKnowledge > 0) && (
-                <div>
-                  {getUiTooltip("knowledge", "Knowledge: +{{value}}", {
-                    value: baseKnowledge,
-                  })}
-                  {renderEnchantStatSuffix(enchantBaseKnowledge)}
-                  {renderEnchantStatSuffix(enchantBonusKnowledge)}
-                </div>
-              )}
-            {madnessValue && (
-              <div>
-                {getUiTooltip("madnessStat", "Madness:{{sign}}{{value}}", {
-                  sign: madnessValue > 0 ? " +" : " ",
-                  value: madnessValue,
-                })}
-              </div>
-            )}
-            {effect.bonuses.generalBonuses.craftingCostReduction && (
-              <div>
-                {getUiTooltip("craftDiscount", "Craft Discount: -{{percent}}%", {
-                  percent: Math.floor(
-                    effect.bonuses.generalBonuses.craftingCostReduction * 100,
-                  ),
-                })}
-              </div>
-            )}
-            {effect.bonuses.generalBonuses.buildingCostReduction && (
-              <div>
-                {getUiTooltip("buildDiscount", "Build Discount: -{{percent}}%", {
-                  percent: Math.floor(
-                    effect.bonuses.generalBonuses.buildingCostReduction * 100,
-                  ),
-                })}
-              </div>
-            )}
-            {effect.bonuses.generalBonuses.merchantDiscount && (
+        <div>
+          {effect.bonuses.generalBonuses.actionBonusChance != null &&
+            effect.bonuses.generalBonuses.actionBonusChance > 0 && (
               <div>
                 {getUiTooltip(
-                  "merchantDiscount",
-                  "Merchant Discount: +{{percent}}%",
+                  "doubleActionChance",
+                  "{{percent}}% chance to double action gains",
                   {
-                    percent: Math.floor(
-                      effect.bonuses.generalBonuses.merchantDiscount * 100,
+                    percent: formatProbabilityPercent(
+                      effect.bonuses.generalBonuses.actionBonusChance,
                     ),
                   },
                 )}
               </div>
             )}
-            {effect.bonuses.generalBonuses.veinrootFindMultiplier != null &&
-              effect.bonuses.generalBonuses.veinrootFindMultiplier > 1 && (
-                <div>
-                  {getUiTooltip(
-                    "veinrootFindMultiplier",
-                    "Doubles chance of finding Veinroot",
-                  )}
-                </div>
+          {effect.bonuses.generalBonuses.luck && (
+            <div>
+              {getUiTooltip("luck", "Luck: +{{value}}", {
+                value: effect.bonuses.generalBonuses.luck,
+              })}
+            </div>
+          )}
+          {(baseStrength > 0 ||
+            enchantBaseStrength > 0 ||
+            enchantBonusStrength > 0) && (
+              <div>
+                {getUiTooltip("strength", "Strength: +{{value}}", {
+                  value: baseStrength,
+                })}
+                {renderEnchantStatSuffix(enchantBaseStrength)}
+                {renderEnchantStatSuffix(enchantBonusStrength)}
+              </div>
+            )}
+          {(baseKnowledge > 0 ||
+            enchantBaseKnowledge > 0 ||
+            enchantBonusKnowledge > 0) && (
+              <div>
+                {getUiTooltip("knowledge", "Knowledge: +{{value}}", {
+                  value: baseKnowledge,
+                })}
+                {renderEnchantStatSuffix(enchantBaseKnowledge)}
+                {renderEnchantStatSuffix(enchantBonusKnowledge)}
+              </div>
+            )}
+          {madnessValue && (
+            <div>
+              {getUiTooltip("madnessStat", "Madness:{{sign}}{{value}}", {
+                sign: madnessValue > 0 ? " +" : " ",
+                value: madnessValue,
+              })}
+            </div>
+          )}
+          {effect.bonuses.generalBonuses.craftingCostReduction && (
+            <div>
+              {getUiTooltip("craftDiscount", "Craft Discount: -{{percent}}%", {
+                percent: Math.floor(
+                  effect.bonuses.generalBonuses.craftingCostReduction * 100,
+                ),
+              })}
+            </div>
+          )}
+          {effect.bonuses.generalBonuses.buildingCostReduction && (
+            <div>
+              {getUiTooltip("buildDiscount", "Build Discount: -{{percent}}%", {
+                percent: Math.floor(
+                  effect.bonuses.generalBonuses.buildingCostReduction * 100,
+                ),
+              })}
+            </div>
+          )}
+          {effect.bonuses.generalBonuses.merchantDiscount && (
+            <div>
+              {getUiTooltip(
+                "merchantDiscount",
+                "Merchant Discount: +{{percent}}%",
+                {
+                  percent: Math.floor(
+                    effect.bonuses.generalBonuses.merchantDiscount * 100,
+                  ),
+                },
               )}
-            {effect.bonuses.generalBonuses.strangerApproachBonus != null &&
-              effect.bonuses.generalBonuses.strangerApproachBonus > 0 && (
-                <div>
-                  {getUiTooltip(
-                    "newVillagerChanceStat",
-                    "New Villager Chance: +{{percent}}%",
-                    {
-                      percent: Math.round(
-                        effect.bonuses.generalBonuses.strangerApproachBonus * 100,
-                      ),
-                    },
-                  )}
-                </div>
-              )}
-            {effect.bonuses.generalBonuses.criticalChance && (
+            </div>
+          )}
+          {effect.bonuses.generalBonuses.veinrootFindMultiplier != null &&
+            effect.bonuses.generalBonuses.veinrootFindMultiplier > 1 && (
               <div>
                 {getUiTooltip(
-                  "criticalStrike",
-                  "Critical Strike Chance: +{{percent}}%",
-                  {
-                    percent: effect.bonuses.generalBonuses.criticalChance,
-                  },
+                  "veinrootFindMultiplier",
+                  "Doubles chance of finding Veinroot",
                 )}
               </div>
             )}
-            {effect.bonuses.generalBonuses.eventDeathReduction && (
+          {effect.bonuses.generalBonuses.strangerApproachBonus != null &&
+            effect.bonuses.generalBonuses.strangerApproachBonus > 0 && (
               <div>
                 {getUiTooltip(
-                  "villagerDeathReduction",
-                  "Villager Deaths in Fights: -{{percent}}%",
+                  "newVillagerChanceStat",
+                  "New Villager Chance: +{{percent}}%",
                   {
-                    percent: Math.floor(
-                      effect.bonuses.generalBonuses.eventDeathReduction * 100,
+                    percent: Math.round(
+                      effect.bonuses.generalBonuses.strangerApproachBonus * 100,
                     ),
                   },
                 )}
               </div>
             )}
-            {effect.bonuses.generalBonuses.caveExploreMultiplier &&
-              effect.bonuses.generalBonuses.caveExploreMultiplier !== 1 && (
-                <div>
-                  {getUiTooltip(
-                    "caveExploreBonus",
-                    "Cave Explore: +{{percent}}% Bonus",
-                    {
-                      percent: Math.round(
-                        (effect.bonuses.generalBonuses.caveExploreMultiplier -
-                          1) *
-                        100,
-                      ),
-                    },
-                  )}
-                </div>
+          {effect.bonuses.generalBonuses.criticalChance && (
+            <div>
+              {getUiTooltip(
+                "criticalStrike",
+                "Critical Strike Chance: +{{percent}}%",
+                {
+                  percent: effect.bonuses.generalBonuses.criticalChance,
+                },
               )}
-            {(effect.bonuses.generalBonuses.MAX_EMBER_BOMBS ||
-              effect.bonuses.generalBonuses.MAX_CINDERFLAME_BOMBS ||
-              effect.bonuses.generalBonuses.MAX_VOID_BOMBS) && (
-                <div>
-                  {getUiTooltip(
-                    "bombCapacityCombat",
-                    "+1 Capacity for all bombs (combat)",
-                  )}
-                </div>
+            </div>
+          )}
+          {effect.bonuses.generalBonuses.eventDeathReduction && (
+            <div>
+              {getUiTooltip(
+                "villagerDeathReduction",
+                "Villager Deaths in Fights: -{{percent}}%",
+                {
+                  percent: Math.floor(
+                    effect.bonuses.generalBonuses.eventDeathReduction * 100,
+                  ),
+                },
               )}
-            {effect.bonuses.generalBonuses.MAX_BOMB_STORAGE && (
-              <div>
-                {getUiTooltip("maxBombsPerType", "Max {{count}} bombs per type", {
-                  count: 10 + effect.bonuses.generalBonuses.MAX_BOMB_STORAGE,
-                })}
-              </div>
-            )}
-            {effect.bonuses.generalBonuses.MAX_VEINFIRE_ELIXIRS && (
+            </div>
+          )}
+          {effect.bonuses.generalBonuses.caveExploreMultiplier &&
+            effect.bonuses.generalBonuses.caveExploreMultiplier !== 1 && (
               <div>
                 {getUiTooltip(
-                  "elixirCapacityCombat",
-                  "+1 Veinfire Elixir per combat",
+                  "caveExploreBonus",
+                  "Cave Explore: +{{percent}}% Bonus",
+                  {
+                    percent: Math.round(
+                      (effect.bonuses.generalBonuses.caveExploreMultiplier -
+                        1) *
+                      100,
+                    ),
+                  },
                 )}
               </div>
             )}
-          </div>
-        </>
+          {(effect.bonuses.generalBonuses.MAX_EMBER_BOMBS ||
+            effect.bonuses.generalBonuses.MAX_CINDERFLAME_BOMBS ||
+            effect.bonuses.generalBonuses.MAX_VOID_BOMBS) && (
+              <div>
+                {getUiTooltip(
+                  "bombCapacityCombat",
+                  "+1 Capacity for all bombs (combat)",
+                )}
+              </div>
+            )}
+          {effect.bonuses.generalBonuses.MAX_BOMB_STORAGE && (
+            <div>
+              {getUiTooltip("maxBombsPerType", "Max {{count}} bombs per type", {
+                count: 10 + effect.bonuses.generalBonuses.MAX_BOMB_STORAGE,
+              })}
+            </div>
+          )}
+          {effect.bonuses.generalBonuses.MAX_VEINFIRE_ELIXIRS && (
+            <div>
+              {getUiTooltip(
+                "elixirCapacityCombat",
+                "+1 Veinfire Elixir per combat",
+              )}
+            </div>
+          )}
+        </div>
       )}
       {showEffects && itemId === "obsidian_orb" &&
         useGameStore.getState().relics?.obsidian_orb && (
