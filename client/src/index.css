@@ -1102,6 +1102,13 @@ html[data-tab-hidden] .exclusive-promo-shockwave-ring:not(.exclusive-promo-shock
   animation: focus-glow 3s ease-in-out infinite;
 }
 
+/* Include box-shadow so the teal glow eases in/out (button base only transitions color/transform). */
+.focus-glow-hover {
+  transition-property: color, transform, box-shadow;
+  transition-duration: 100ms, 100ms, 300ms;
+  transition-timing-function: ease-out, ease-out, ease;
+}
+
 .focus-glow-hover:hover:not([aria-disabled="true"]) {
   box-shadow: 0 0 10px rgba(20, 184, 166, .5), 0 0 8px rgba(20, 184, 166, .3);
 }

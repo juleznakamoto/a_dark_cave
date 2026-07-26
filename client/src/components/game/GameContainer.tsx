@@ -1061,12 +1061,15 @@ export default function GameContainer() {
   const tabButtonClass =
     `${GAME_PANEL_HEADER_BAND} bg-transparent font-normal outline-none focus:outline-none focus-visible:outline-none`;
 
+  const tabHotkeyCount = visibleHotkeyTabs.length;
   const pauseHotkeyHintContent = (
     <span className="inline-flex flex-nowrap items-baseline justify-center gap-x-1">
       <span>{t("pauseHotkey.hintPrefix", { ns: "ui" })}</span>
-      <span className="text-sm font-medium">{"← →"}</span>
-      <span>{t("pauseHotkey.hintOr", { ns: "ui" })}</span>
-      <span className="text-sm font-medium">{"A D"}</span>
+      <span className="text-sm font-medium text-red-600">{`1-${tabHotkeyCount}`}</span>
+      <span>{t("pauseHotkey.hintSelect", { ns: "ui" })}</span>
+      <span className="text-sm font-medium text-red-600">{"← →"}</span>
+      <span>/</span>
+      <span className="text-sm font-medium text-red-600">{"A D"}</span>
       <span>{t("pauseHotkey.hintSuffix", { ns: "ui" })}</span>
     </span>
   );
@@ -1152,7 +1155,7 @@ export default function GameContainer() {
               {pauseHotkeyBadges.map((b) => (
                 <span
                   key={b.key}
-                  className="pause-hotkey-badge-animated absolute z-[1] text-xs font-semibold leading-none text-foreground drop-shadow"
+                  className="pause-hotkey-badge-animated absolute z-[1] text-xs font-semibold leading-none text-red-600 drop-shadow"
                   style={{
                     left: b.left,
                     top: b.top,

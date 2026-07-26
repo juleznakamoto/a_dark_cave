@@ -92,8 +92,8 @@
   },
   "pauseHotkey": {
     "hintPrefix": "Usa ",
-    "hintOr": "o",
-    "hintSuffix": " o i tasti qui sopra per cambiare scheda"
+    "hintSelect": " per selezionare scheda o ",
+    "hintSuffix": " per cambiare scheda"
   },
   "villageHotkeyTutorial": {
     "dismiss": "Ignora"

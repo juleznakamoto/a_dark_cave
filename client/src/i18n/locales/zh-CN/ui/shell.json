@@ -92,8 +92,8 @@
   },
   "pauseHotkey": {
     "hintPrefix": "使用 ",
-    "hintOr": "或",
-    "hintSuffix": " 或上方按键切换标签页"
+    "hintSelect": " 选择标签页，或用 ",
+    "hintSuffix": " 切换标签页"
   },
   "villageHotkeyTutorial": {
     "dismiss": "关闭"

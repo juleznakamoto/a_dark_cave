@@ -92,8 +92,8 @@
   },
   "pauseHotkey": {
     "hintPrefix": "Используйте ",
-    "hintOr": "или",
-    "hintSuffix": " или клавиши выше для переключения между вкладками"
+    "hintSelect": " для выбора вкладки или ",
+    "hintSuffix": " для переключения вкладок"
   },
   "villageHotkeyTutorial": {
     "dismiss": "Закрыть"

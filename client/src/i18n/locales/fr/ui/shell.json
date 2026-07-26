@@ -92,8 +92,8 @@
   },
   "pauseHotkey": {
     "hintPrefix": "Utilisez ",
-    "hintOr": "ou",
-    "hintSuffix": " ou les touches ci-dessus pour changer d'onglet"
+    "hintSelect": " pour sélectionner un onglet ou ",
+    "hintSuffix": " pour changer d'onglet"
   },
   "villageHotkeyTutorial": {
     "dismiss": "Fermer"

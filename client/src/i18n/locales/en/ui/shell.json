@@ -92,8 +92,8 @@
   },
   "pauseHotkey": {
     "hintPrefix": "Use ",
-    "hintOr": "or",
-    "hintSuffix": " or keys above to switch between tabs"
+    "hintSelect": " to select tab or ",
+    "hintSuffix": " to switch tabs"
   },
   "villageHotkeyTutorial": {
     "dismiss": "Dismiss"

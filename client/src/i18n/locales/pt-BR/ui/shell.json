@@ -92,8 +92,8 @@
   },
   "pauseHotkey": {
     "hintPrefix": "Use ",
-    "hintOr": "ou",
-    "hintSuffix": " ou as teclas acima para alternar entre as abas"
+    "hintSelect": " para selecionar aba ou ",
+    "hintSuffix": " para alternar abas"
   },
   "villageHotkeyTutorial": {
     "dismiss": "Dispensar"

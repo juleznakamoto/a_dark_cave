@@ -92,8 +92,8 @@
   },
   "pauseHotkey": {
     "hintPrefix": "Usa ",
-    "hintOr": "o",
-    "hintSuffix": " o las teclas de arriba para cambiar entre pestañas"
+    "hintSelect": " para seleccionar pestaña o ",
+    "hintSuffix": " para cambiar de pestaña"
   },
   "villageHotkeyTutorial": {
     "dismiss": "Cerrar"
