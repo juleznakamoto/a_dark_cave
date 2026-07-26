@@ -166,7 +166,7 @@ export default function GameContainer() {
     left: number;
   } | null>(null);
   const [pauseHotkeyBadges, setPauseHotkeyBadges] = useState<
-    { key: string; left: number; top: number; label: string }[]
+    { key: string; left: number; top: number; number: number }[]
   >([]);
   const [villageHotkeyTutorialOpen, setVillageHotkeyTutorialOpen] =
     useState(false);
@@ -916,7 +916,7 @@ export default function GameContainer() {
     const HINT_GAP = 2; // badges → hint
     const HINT_LINE_H = 14; // hint row
     const badgeRowTop = navRect.bottom + TAB_HOTKEY_GAP;
-    const next: { key: string; left: number; top: number; label: string }[] =
+    const next: { key: string; left: number; top: number; number: number }[] =
       [];
     visibleHotkeyTabs.forEach((tab, i) => {
       const el = queryTabButton(`tab-${tab}`);
@@ -926,7 +926,7 @@ export default function GameContainer() {
         key: `hotkey-${tab}`,
         left: r.left + r.width / 2,
         top: badgeRowTop,
-        label: `[${i + 1}]`,
+        number: i + 1,
       });
     });
     setPauseHotkeyBadges(next);
@@ -956,7 +956,7 @@ export default function GameContainer() {
         minLeft = Math.min(minLeft, hr.left);
         maxRight = Math.max(maxRight, hr.right);
       }
-      const padX = 10;
+      const padX = 20;
       const padY = 8;
       const boxLeft = minLeft - padX;
       const boxWidth = maxRight - minLeft + padX * 2;
@@ -1065,7 +1065,11 @@ export default function GameContainer() {
   const pauseHotkeyHintContent = (
     <span className="inline-flex flex-nowrap items-baseline justify-center gap-x-1">
       <span>{t("pauseHotkey.hintPrefix", { ns: "ui" })}</span>
-      <span className="text-sm font-medium text-red-600">{`1-${tabHotkeyCount}`}</span>
+      <span className="text-sm font-medium">
+        <span className="text-red-600">1</span>
+        {"-"}
+        <span className="text-red-600">{tabHotkeyCount}</span>
+      </span>
       <span>{t("pauseHotkey.hintSelect", { ns: "ui" })}</span>
       <span className="text-sm font-medium text-red-600">{"← →"}</span>
       <span>/</span>
@@ -1101,7 +1105,7 @@ export default function GameContainer() {
 
         <GameHeader />
 
-        {/* Pause Overlay - covers panels; header, tabs, and footer stay above */}
+        {/* Pause Overlay - covers panels; header and footer stay above */}
         {isPaused && (
           <div
             className="fixed inset-0 bg-black/80 pointer-events-auto overlay-fade-in"
@@ -1155,14 +1159,14 @@ export default function GameContainer() {
               {pauseHotkeyBadges.map((b) => (
                 <span
                   key={b.key}
-                  className="pause-hotkey-badge-animated absolute z-[1] text-xs font-semibold leading-none text-red-600 drop-shadow"
+                  className="pause-hotkey-badge-animated absolute z-[1] text-xs font-semibold leading-none text-foreground drop-shadow"
                   style={{
                     left: b.left,
                     top: b.top,
                     transform: "translate(-50%, 0)",
                   }}
                 >
-                  {b.label}
+                  [<span className="text-red-600">{b.number}</span>]
                 </span>
               ))}
               {pauseHotkeyHint != null && (
@@ -1243,9 +1247,7 @@ export default function GameContainer() {
               instead of growing with the active tab's content. (Ignored on desktop grid.) */}
           <section className="order-3 md:order-2 flex-1 min-w-0 flex flex-col min-h-0 overflow-hidden md:pl-0">
             {/* Horizontal Game Tabs */}
-            <nav
-              className={`relative border-t md:border-t-0 border-border pl-2 pr-2 flex-shrink-0${isPaused ? " z-[41] pointer-events-auto" : ""}`}
-            >
+            <nav className="relative border-t md:border-t-0 border-border pl-2 pr-2 flex-shrink-0">
               {useLimelightNav ? (
                 // Alternative LimelightNav design
                 <LimelightNav
