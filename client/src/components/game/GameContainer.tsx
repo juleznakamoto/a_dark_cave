@@ -166,7 +166,7 @@ export default function GameContainer() {
     left: number;
   } | null>(null);
   const [pauseHotkeyBadges, setPauseHotkeyBadges] = useState<
-    { key: string; left: number; top: number; number: number }[]
+    { key: string; left: number; top: number; label: string }[]
   >([]);
   const [villageHotkeyTutorialOpen, setVillageHotkeyTutorialOpen] =
     useState(false);
@@ -916,7 +916,7 @@ export default function GameContainer() {
     const HINT_GAP = 2; // badges → hint
     const HINT_LINE_H = 14; // hint row
     const badgeRowTop = navRect.bottom + TAB_HOTKEY_GAP;
-    const next: { key: string; left: number; top: number; number: number }[] =
+    const next: { key: string; left: number; top: number; label: string }[] =
       [];
     visibleHotkeyTabs.forEach((tab, i) => {
       const el = queryTabButton(`tab-${tab}`);
@@ -926,7 +926,7 @@ export default function GameContainer() {
         key: `hotkey-${tab}`,
         left: r.left + r.width / 2,
         top: badgeRowTop,
-        number: i + 1,
+        label: `[${i + 1}]`,
       });
     });
     setPauseHotkeyBadges(next);
@@ -1065,15 +1065,11 @@ export default function GameContainer() {
   const pauseHotkeyHintContent = (
     <span className="inline-flex flex-nowrap items-baseline justify-center gap-x-1">
       <span>{t("pauseHotkey.hintPrefix", { ns: "ui" })}</span>
-      <span className="text-sm font-medium">
-        <span className="text-red-600">1</span>
-        {"-"}
-        <span className="text-red-600">{tabHotkeyCount}</span>
-      </span>
+      <span className="text-sm font-medium">{`1-${tabHotkeyCount}`}</span>
       <span>{t("pauseHotkey.hintSelect", { ns: "ui" })}</span>
-      <span className="text-sm font-medium text-red-600">{"← →"}</span>
+      <span className="text-sm font-medium">{"← →"}</span>
       <span>/</span>
-      <span className="text-sm font-medium text-red-600">{"A D"}</span>
+      <span className="text-sm font-medium">{"A D"}</span>
       <span>{t("pauseHotkey.hintSuffix", { ns: "ui" })}</span>
     </span>
   );
@@ -1166,7 +1162,7 @@ export default function GameContainer() {
                     transform: "translate(-50%, 0)",
                   }}
                 >
-                  [<span className="text-red-600">{b.number}</span>]
+                  {b.label}
                 </span>
               ))}
               {pauseHotkeyHint != null && (
