@@ -1116,7 +1116,7 @@ export default function GameContainer() {
             >
               {villageHotkeyBoxLayout != null && (
                 <div
-                  className={`absolute z-0 rounded bg-neutral-800${showVillageHotkeyBox ? " pointer-events-auto" : " pointer-events-none"}`}
+                  className={`absolute z-0 rounded bg-neutral-950${showVillageHotkeyBox ? " pointer-events-auto" : " pointer-events-none"}`}
                   style={{
                     top: villageHotkeyBoxLayout.top,
                     left: villageHotkeyBoxLayout.left,
