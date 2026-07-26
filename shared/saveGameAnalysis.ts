@@ -1,9 +1,9 @@
 /**
  * Integrity checks for cloud save rows (admin Save Game Analysis tab).
- * Mirrors the ad-hoc Supabase scans used during the tools-wipe investigation.
- * Also compares legacy `game_state` vs sidecar `game_state_v2` (dual-write soak).
+ * Deep scans of the last N cloud saves for wipe / shape / cross-slice corruption.
  */
 
+import { TOOL_REBUILD_FROM_STORY_SEEN } from "./rebuildToolsFromStorySeen";
 import {
   hasBastionUnlockEvidence,
   hasForestUnlockEvidence,
@@ -13,53 +13,76 @@ import {
 export const SAVE_GAME_ANALYSIS_DEFAULT_LIMIT = 100;
 
 /** Story flags that prove at least one craftable tool was owned (migration 026 set). */
-export const CRAFT_TOOL_STORY_FLAG_KEYS = [
-  "hasStoneAxe",
-  "actionCraftStoneAxe",
-  "hasStonePickaxe",
-  "actionCraftStonePickaxe",
-  "hasIronAxe",
-  "actionCraftIronAxe",
-  "hasIronPickaxe",
-  "actionCraftIronPickaxe",
-  "hasIronLantern",
-  "actionCraftIronLantern",
-  "hasSteelAxe",
-  "actionCraftSteelAxe",
-  "hasSteelPickaxe",
-  "actionCraftSteelPickaxe",
-  "hasSteelLantern",
-  "actionCraftSteelLantern",
-  "hasObsidianAxe",
-  "actionCraftObsidianAxe",
-  "hasObsidianPickaxe",
-  "actionCraftObsidianPickaxe",
-  "hasObsidianLantern",
-  "actionCraftObsidianLantern",
-  "hasAdamantAxe",
-  "actionCraftAdamantAxe",
-  "hasAdamantPickaxe",
-  "actionCraftAdamantPickaxe",
-  "hasAdamantLantern",
-  "actionCraftAdamantLantern",
-  "hasBlacksteelAxe",
-  "actionCraftBlacksteelAxe",
-  "hasBlacksteelPickaxe",
-  "actionCraftBlacksteelPickaxe",
-  "hasBlacksteelLantern",
-  "actionCraftBlacksteelLantern",
-  "blacksmithHammerChoice",
+export const CRAFT_TOOL_STORY_FLAG_KEYS = TOOL_REBUILD_FROM_STORY_SEEN.flatMap(
+  (entry) => [...entry.seenKeys],
+);
+
+/**
+ * Mid/late weapons that stamp craft story flags (early bows often do not).
+ * Same wipe class as tools — permanent ownership maps.
+ */
+export const WEAPON_REBUILD_FROM_STORY_SEEN = [
+  { weaponKey: "war_bow", seenKeys: ["hasWarBow", "actionCraftWarBow"] },
+  { weaponKey: "master_bow", seenKeys: ["hasMasterBow", "actionCraftMasterBow"] },
+  { weaponKey: "frostglass_sword", seenKeys: ["hasFrostglassSword"] },
+  {
+    weaponKey: "blacksteel_sword",
+    seenKeys: ["hasBlacksteelSword", "actionCraftBlacksteelSword"],
+  },
+  {
+    weaponKey: "blacksteel_bow",
+    seenKeys: ["hasBlacksteelBow", "actionCraftBlacksteelBow"],
+  },
+  { weaponKey: "bloodstone_staff", seenKeys: ["hasBloodstoneStaff"] },
 ] as const;
+
+/** Craft clothing that stamps story flags (sacrifices can remove other clothing). */
+export const CLOTHING_REBUILD_FROM_STORY_SEEN = [
+  {
+    clothingKey: "explorer_pack",
+    seenKeys: ["hasExplorerPack", "actionCraftExplorerPack"],
+  },
+  {
+    clothingKey: "hunter_cloak",
+    seenKeys: ["hasHunterCloak", "actionCraftHunterCloak"],
+  },
+] as const;
+
+/** Object slices that must exist once a save has meaningful progress. */
+export const FOUNDATIONAL_OBJECT_SLICES = [
+  "tools",
+  "flags",
+  "buildings",
+  "resources",
+  "villagers",
+  "story",
+  "stats",
+] as const;
+
+/** Playtime (ms) above which missing foundational slices are suspicious. */
+export const PROGRESSED_PLAYTIME_MS = 5 * 60_000;
 
 export type SaveGameIssueKind =
   | "invalid_game_state"
   | "negative_resource"
   | "non_numeric_resource"
   | "negative_villager"
+  | "negative_building"
+  | "non_numeric_building"
   | "bad_playtime"
   | "negative_playtime"
   | "wiped_tools"
   | "missing_tools_with_craft_flags"
+  | "tool_craft_mismatch"
+  | "wiped_weapons"
+  | "missing_weapons_with_craft_flags"
+  | "weapon_craft_mismatch"
+  | "wiped_craft_clothing"
+  | "missing_buildings_with_progress"
+  | "missing_foundational_slices"
+  | "bad_slice_shape"
+  | "missing_ascension_book"
+  | "missing_game_started"
   | "missing_unlock_flags"
   | "bad_story_seen"
   | "bad_game_stats"
@@ -81,10 +104,6 @@ export type SaveGameAnalysisInput = {
   created_at: string;
   game_state: unknown;
   game_stats?: unknown;
-  /** Sidecar full blob (migration 028). Optional — ignored by legacy analysis. */
-  game_state_v2?: unknown;
-  save_revision?: number | null;
-  schema_version?: number | null;
 };
 
 export type SaveGameAnalysisRow = {
@@ -117,153 +136,6 @@ export type SaveGameAnalysisSummary = {
   /** Saves missing a SHA or on a different build (subset of last N). */
   notOnCurrentVersion: number;
   rows: SaveGameAnalysisRow[];
-  /** Parallel V2 dual-write coverage / slice compare (Phase 1). */
-  v2Compare?: SaveV2CompareSummary;
-};
-
-/**
- * High-signal slices listed first in mismatch details (full compare still
- * covers every top-level key; expected-noise keys are classified separately).
- */
-export const SAVE_V2_COMPARE_SLICES = [
-  "playTime",
-  "tools",
-  "weapons",
-  "books",
-  "buildings",
-  "resources",
-  "villagers",
-  "flags",
-] as const;
-
-/**
- * Keys whose V1/V2 drift is expected during dual-write soak (not cutover blockers).
- * Still detected and counted as `expected_noise`, not treated as `mismatch`:
- * - UI-only store fields (stripped by `buildGameState` for V2; often still on V1)
- * - Transient / delete-semantic maps that V1 deep-merge cannot prune
- * - Client analytics buffers not part of gameplay state
- *
- * Keep UI keys in sync with `UI_ONLY_PROPERTIES` in `client/src/game/stateHelpers.ts`.
- */
-export const SAVE_V2_COMPARE_EXPECTED_NOISE_KEYS = new Set<string>([
-  // UI_ONLY_PROPERTIES (+ shopCruelModeHighlight from dialog reset)
-  "activeTab",
-  "devMode",
-  "devSteamMode",
-  "devGameMode",
-  "lastSaved",
-  "eventDialog",
-  "combatDialog",
-  "authDialogOpen",
-  "shopDialogOpen",
-  "shopCruelModeHighlight",
-  "investDialogOpen",
-  "investmentResultDialog",
-  "idleModeDialog",
-  "inactivityDialogOpen",
-  "inactivityReason",
-  "restartGameDialogOpen",
-  "deleteAccountDialogOpen",
-  "settingsDialogOpen",
-  "playlightWelcomeDialogOpen",
-  "feedbackDialogOpen",
-  "socialPromptDialogOpen",
-  "signUpPromptEligibleForGold",
-  "resourceChangeEvents",
-  "current_population",
-  "total_population",
-  "gamblerDiceDialogOpen",
-  "rewardDialog",
-  "leaderboardDialogOpen",
-  "shareDialogOpen",
-  "galaxyTimeUpDialogOpen",
-  "shopCheckoutItemId",
-  "madnessDialog",
-  "insightPotionDialog",
-  "villageEffectDialog",
-  "insightRevealing",
-  "_completingExecution",
-  // Transient / merge ghosts (V1 deep-merge vs V2 full replace)
-  "cooldowns",
-  "initialCooldowns",
-  "cooldownDurations",
-  "executionStartTimes",
-  "executionDurations",
-  "executionAbortEligible",
-  "executionSpendSnapshots",
-  "expeditionVillagers",
-  "effects",
-  "timedEventTab",
-  "constructionBoostsUsed",
-  "miningBoostState",
-  // Wall-clock / loop timers (elapsedTime drifts; optional keys like `provoked`)
-  "attackWaveTimers",
-  // Non-gameplay buffers
-  "clickAnalytics",
-  "isPaused",
-]);
-
-/** Cap detail keys in the admin payload (full set can be large). */
-const SAVE_V2_MISMATCH_DETAILS_CAP = 40;
-
-export type SaveV2CompareStatus =
-  | "missing_v2"
-  | "match"
-  /** Core gameplay keys match; only UI/transient/analytics keys differ. */
-  | "expected_noise"
-  /**
-   * Keys present on only one side (usually V1 diff-save sparsity vs V2 full blob).
-   * Not a value conflict — both sides agree where they overlap.
-   */
-  | "shape_drift"
-  /**
-   * Legacy playTime is ahead of the sidecar — expected while V2 dual-write is
-   * DEV-only / best-effort and prod clients keep updating V1 only.
-   * Not a same-moment cutover conflict.
-   */
-  | "v2_stale"
-  /** Same key on both sides with different values at the same playTime (cutover-relevant). */
-  | "mismatch"
-  | "invalid_v2"
-  | "invalid_legacy";
-
-export type SaveV2CompareRow = {
-  user_id: string | null;
-  username?: string | null;
-  status: SaveV2CompareStatus;
-  /**
-   * Primary detail keys for this status:
-   * - mismatch → gameplay value diffs
-   * - shape_drift → gameplay presence-only diffs
-   * - expected_noise → noise key diffs
-   */
-  details: string[];
-  /** Gameplay value diffs before details cap (null when none). */
-  mismatchCount: number | null;
-  /** Gameplay presence-only diffs (v1-only / v2-only); null when none. */
-  shapeDriftCount: number | null;
-  /** Expected-noise key diffs (null when none). Present alongside mismatch too. */
-  expectedNoiseCount: number | null;
-  save_revision: number | null;
-  schema_version: number | null;
-};
-
-export type SaveV2CompareSummary = {
-  scanned: number;
-  withV2: number;
-  missingV2: number;
-  match: number;
-  /** Rows with only UI/transient/analytics drift (still dual-write OK). */
-  expectedNoise: number;
-  /** Rows whose only non-noise diffs are key presence (V1 sparse vs V2 full). */
-  shapeDrift: number;
-  /** Legacy ahead of sidecar (DEV-only / failed dual-write lag). */
-  v2Stale: number;
-  mismatch: number;
-  invalidV2: number;
-  invalidLegacy: number;
-  /** Real issues only (same-moment value mismatch / invalid). Other buckets are counts only. */
-  rows: SaveV2CompareRow[];
 };
 
 export type AnalyzeSaveGamesOptions = {
@@ -366,10 +238,61 @@ export function hasCraftToolStoryFlags(storySeen: unknown): boolean {
   return CRAFT_TOOL_STORY_FLAG_KEYS.some((key) => seen[key] === true);
 }
 
-export function countOwnedTools(tools: unknown): number {
-  const obj = asObject(tools);
+export function hasCraftWeaponStoryFlags(storySeen: unknown): boolean {
+  const seen = asObject(storySeen);
+  if (!seen) return false;
+  return WEAPON_REBUILD_FROM_STORY_SEEN.some(({ seenKeys }) =>
+    seenKeys.some((key) => seen[key] === true),
+  );
+}
+
+export function countOwnedBooleanSlice(slice: unknown): number {
+  const obj = asObject(slice);
   if (!obj) return 0;
   return Object.values(obj).filter((v) => v === true).length;
+}
+
+export function countOwnedTools(tools: unknown): number {
+  return countOwnedBooleanSlice(tools);
+}
+
+function seenTrue(
+  seen: Record<string, unknown> | null,
+  key: string,
+): boolean {
+  return seen?.[key] === true;
+}
+
+function sumBuildingCounts(buildings: Record<string, unknown> | null): number {
+  if (!buildings) return 0;
+  return Object.values(buildings).reduce<number>((sum, value) => {
+    return sum + (typeof value === "number" && Number.isFinite(value) ? value : 0);
+  }, 0);
+}
+
+function hasButtonUpgradeLevels(buttonUpgrades: unknown): boolean {
+  const upgrades = asObject(buttonUpgrades);
+  if (!upgrades) return false;
+  for (const value of Object.values(upgrades)) {
+    const entry = asObject(value);
+    if (!entry) continue;
+    if (typeof entry.level === "number" && entry.level > 0) return true;
+  }
+  return false;
+}
+
+function listMismatchedOwnedKeys(
+  slice: Record<string, unknown> | null,
+  mappings: ReadonlyArray<{ key: string; seenKeys: readonly string[] }>,
+  seen: Record<string, unknown> | null,
+): string[] {
+  if (!seen) return [];
+  const missing: string[] = [];
+  for (const { key, seenKeys } of mappings) {
+    if (!seenKeys.some((seenKey) => seen[seenKey] === true)) continue;
+    if (slice?.[key] !== true) missing.push(key);
+  }
+  return missing;
 }
 
 export function analyzeSaveGameRow(
@@ -431,8 +354,32 @@ export function analyzeSaveGameRow(
     }
   }
 
+  const buildings = asObject(gsObj.buildings);
+  const hasBuildingsKey = Object.prototype.hasOwnProperty.call(gsObj, "buildings");
+  if (hasBuildingsKey && buildings === null) {
+    issues.push({ kind: "bad_slice_shape", detail: "buildings" });
+  } else if (buildings) {
+    for (const [key, value] of Object.entries(buildings)) {
+      if (value === null || value === undefined) continue;
+      if (typeof value !== "number") {
+        issues.push({
+          kind: "non_numeric_building",
+          field: key,
+          detail: typeof value,
+        });
+      } else if (value < 0) {
+        issues.push({
+          kind: "negative_building",
+          field: key,
+          detail: String(value),
+        });
+      }
+    }
+  }
+
   const playTimeRaw = gsObj.playTime;
   let playmin: number | null = null;
+  let playTimeMs: number | null = null;
   if (playTimeRaw === null || playTimeRaw === undefined) {
     issues.push({ kind: "bad_playtime", detail: "missing" });
   } else if (typeof playTimeRaw !== "number") {
@@ -443,6 +390,7 @@ export function analyzeSaveGameRow(
     if (playTimeRaw < 0) {
       issues.push({ kind: "negative_playtime", detail: String(playTimeRaw) });
     }
+    playTimeMs = playTimeRaw;
     playmin = Math.round((playTimeRaw / 60_000) * 10) / 10;
   }
 
@@ -479,6 +427,10 @@ export function analyzeSaveGameRow(
   }
 
   const hasToolsKey = Object.prototype.hasOwnProperty.call(gsObj, "tools");
+  const toolsObj = asObject(gsObj.tools);
+  if (hasToolsKey && toolsObj === null) {
+    issues.push({ kind: "bad_slice_shape", detail: "tools" });
+  }
   const toolsOwned = countOwnedTools(gsObj.tools);
   const craftFlags = hasCraftToolStoryFlags(storySeen);
 
@@ -486,49 +438,182 @@ export function analyzeSaveGameRow(
     issues.push({ kind: "missing_tools_with_craft_flags" });
   } else if (craftFlags && toolsOwned === 0) {
     issues.push({ kind: "wiped_tools" });
+  } else if (craftFlags && hasToolsKey) {
+    const mismatchedTools = listMismatchedOwnedKeys(
+      toolsObj,
+      TOOL_REBUILD_FROM_STORY_SEEN.map((entry) => ({
+        key: entry.toolKey,
+        seenKeys: entry.seenKeys,
+      })),
+      storySeen,
+    );
+    if (mismatchedTools.length > 0) {
+      issues.push({
+        kind: "tool_craft_mismatch",
+        detail: mismatchedTools.slice(0, 12).join(","),
+      });
+    }
+  }
+
+  const hasWeaponsKey = Object.prototype.hasOwnProperty.call(gsObj, "weapons");
+  const weaponsObj = asObject(gsObj.weapons);
+  if (hasWeaponsKey && weaponsObj === null) {
+    issues.push({ kind: "bad_slice_shape", detail: "weapons" });
+  }
+  const weaponsOwned = countOwnedBooleanSlice(gsObj.weapons);
+  const weaponCraftFlags = hasCraftWeaponStoryFlags(storySeen);
+  if (weaponCraftFlags && !hasWeaponsKey) {
+    issues.push({ kind: "missing_weapons_with_craft_flags" });
+  } else if (weaponCraftFlags && weaponsOwned === 0) {
+    issues.push({ kind: "wiped_weapons" });
+  } else if (weaponCraftFlags && hasWeaponsKey) {
+    const mismatchedWeapons = listMismatchedOwnedKeys(
+      weaponsObj,
+      WEAPON_REBUILD_FROM_STORY_SEEN.map((entry) => ({
+        key: entry.weaponKey,
+        seenKeys: entry.seenKeys,
+      })),
+      storySeen,
+    );
+    if (mismatchedWeapons.length > 0) {
+      issues.push({
+        kind: "weapon_craft_mismatch",
+        detail: mismatchedWeapons.slice(0, 12).join(","),
+      });
+    }
+  }
+
+  const hasClothingKey = Object.prototype.hasOwnProperty.call(gsObj, "clothing");
+  const clothingObj = asObject(gsObj.clothing);
+  if (hasClothingKey && clothingObj === null) {
+    issues.push({ kind: "bad_slice_shape", detail: "clothing" });
+  }
+  const mismatchedClothing = listMismatchedOwnedKeys(
+    clothingObj,
+    CLOTHING_REBUILD_FROM_STORY_SEEN.map((entry) => ({
+      key: entry.clothingKey,
+      seenKeys: entry.seenKeys,
+    })),
+    storySeen,
+  );
+  if (mismatchedClothing.length > 0) {
+    issues.push({
+      kind: "wiped_craft_clothing",
+      detail: mismatchedClothing.join(","),
+    });
   }
 
   const flagsObj = asObject(gsObj.flags);
+  const hasFlagsKey = Object.prototype.hasOwnProperty.call(gsObj, "flags");
+  if (hasFlagsKey && flagsObj === null) {
+    issues.push({ kind: "bad_slice_shape", detail: "flags" });
+  }
+
   const unlockEvidence = {
     flags: (flagsObj ?? {}) as {
       villageUnlocked?: boolean;
       forestUnlocked?: boolean;
       bastionUnlocked?: boolean;
       hasFortress?: boolean;
+      gameStarted?: boolean;
     },
-    tools: asObject(gsObj.tools) as Record<string, boolean | undefined> | null,
-    weapons: asObject(gsObj.weapons) as Record<string, boolean | undefined> | null,
-    buildings: asObject(gsObj.buildings) as Record<
-      string,
-      number | undefined
-    > | null,
+    tools: toolsObj as Record<string, boolean | undefined> | null,
+    weapons: weaponsObj as Record<string, boolean | undefined> | null,
+    buildings: buildings as Record<string, number | undefined> | null,
     story: story
       ? { seen: storySeen as Record<string, unknown> | null }
       : null,
   };
-  const missingUnlocks: string[] = [];
+
+  const villageEvidence = hasVillageUnlockEvidence(unlockEvidence);
+  const forestEvidence = hasForestUnlockEvidence(unlockEvidence);
+  const bastionEvidence = hasBastionUnlockEvidence(unlockEvidence);
+
+  // Older deep-merge saves often omit empty object keys — only require full
+  // foundational shape once playTime shows the player is past the first minutes.
+  if (playTimeMs !== null && playTimeMs >= PROGRESSED_PLAYTIME_MS) {
+    const missingSlices: string[] = [];
+    for (const key of FOUNDATIONAL_OBJECT_SLICES) {
+      if (!Object.prototype.hasOwnProperty.call(gsObj, key)) {
+        missingSlices.push(key);
+        continue;
+      }
+      if (
+        asObject(gsObj[key]) === null &&
+        !issues.some(
+          (issue) => issue.kind === "bad_slice_shape" && issue.detail === key,
+        )
+      ) {
+        issues.push({ kind: "bad_slice_shape", detail: key });
+      }
+    }
+    if (missingSlices.length > 0) {
+      issues.push({
+        kind: "missing_foundational_slices",
+        detail: missingSlices.join(","),
+      });
+    }
+  }
+
+  const villagerTotal = villagers ? sumNumericRecordValues(villagers) : 0;
+  const buildingTotal = sumBuildingCounts(buildings);
   if (
-    hasVillageUnlockEvidence(unlockEvidence) &&
-    unlockEvidence.flags.villageUnlocked !== true
+    (villagerTotal > 0 || craftFlags || villageEvidence) &&
+    (!hasBuildingsKey || buildingTotal === 0)
   ) {
+    // Brand-new village can have stone axe before first hut — only flag when
+    // villagers exist or mid+ craft evidence (iron+) / housing should exist.
+    const midCraft =
+      seenTrue(storySeen, "hasIronAxe") ||
+      seenTrue(storySeen, "actionCraftIronAxe") ||
+      seenTrue(storySeen, "hasSteelAxe") ||
+      toolsObj?.iron_axe === true ||
+      toolsObj?.steel_axe === true;
+    if (villagerTotal > 0 || midCraft || bastionEvidence) {
+      issues.push({
+        kind: "missing_buildings_with_progress",
+        detail: !hasBuildingsKey
+          ? "buildings key missing"
+          : `buildingTotal=0 villagers=${villagerTotal}`,
+      });
+    }
+  }
+
+  if (
+    hasFlagsKey &&
+    (villageEvidence || forestEvidence || bastionEvidence || craftFlags) &&
+    unlockEvidence.flags.gameStarted !== true
+  ) {
+    issues.push({ kind: "missing_game_started" });
+  }
+
+  const missingUnlocks: string[] = [];
+  if (villageEvidence && unlockEvidence.flags.villageUnlocked !== true) {
     missingUnlocks.push("villageUnlocked");
   }
-  if (
-    hasForestUnlockEvidence(unlockEvidence) &&
-    unlockEvidence.flags.forestUnlocked !== true
-  ) {
+  if (forestEvidence && unlockEvidence.flags.forestUnlocked !== true) {
     missingUnlocks.push("forestUnlocked");
   }
-  if (
-    hasBastionUnlockEvidence(unlockEvidence) &&
-    unlockEvidence.flags.bastionUnlocked !== true
-  ) {
+  if (bastionEvidence && unlockEvidence.flags.bastionUnlocked !== true) {
     missingUnlocks.push("bastionUnlocked");
   }
   if (missingUnlocks.length > 0) {
     issues.push({
       kind: "missing_unlock_flags",
       detail: missingUnlocks.join(","),
+    });
+  }
+
+  const books = asObject(gsObj.books);
+  if (
+    hasButtonUpgradeLevels(gsObj.buttonUpgrades) &&
+    books?.book_of_ascension !== true
+  ) {
+    issues.push({
+      kind: "missing_ascension_book",
+      detail: Object.prototype.hasOwnProperty.call(gsObj, "books")
+        ? "book_of_ascension false"
+        : "books key missing",
     });
   }
 
@@ -597,276 +682,5 @@ export function analyzeSaveGames(
   return {
     ...summarizeSaveGameAnalysis(rows, options),
     rows,
-    v2Compare: compareLegacyAndV2Saves(inputs),
-  };
-}
-
-/** Floor top-level playTime so sub-ms float jitter is not a false mismatch. */
-function normalizeGameStateForCompare(
-  state: Record<string, unknown>,
-): Record<string, unknown> {
-  const copy: Record<string, unknown> = { ...state };
-  if (typeof copy.playTime === "number" && Number.isFinite(copy.playTime)) {
-    copy.playTime = Math.floor(copy.playTime);
-  }
-  return copy;
-}
-
-/** Order-independent JSON canonicalize for deep equality fingerprints. */
-function canonicalize(value: unknown): unknown {
-  if (value === null || typeof value !== "object") {
-    return value;
-  }
-  if (Array.isArray(value)) {
-    return value.map(canonicalize);
-  }
-  const obj = value as Record<string, unknown>;
-  const out: Record<string, unknown> = {};
-  for (const key of Object.keys(obj).sort()) {
-    out[key] = canonicalize(obj[key]);
-  }
-  return out;
-}
-
-function valueFingerprint(value: unknown): string {
-  return JSON.stringify(canonicalize(value ?? null));
-}
-
-function prioritizeMismatchDetails(keys: string[]): string[] {
-  const critical = new Set<string>(SAVE_V2_COMPARE_SLICES);
-  const criticalHits = keys.filter((k) => critical.has(k.split(" ")[0]!));
-  const rest = keys.filter((k) => !critical.has(k.split(" ")[0]!));
-  return [...criticalHits, ...rest];
-}
-
-function capDetailKeys(keys: string[]): string[] {
-  const ordered = prioritizeMismatchDetails(keys);
-  const details = ordered.slice(0, SAVE_V2_MISMATCH_DETAILS_CAP);
-  if (ordered.length > SAVE_V2_MISMATCH_DETAILS_CAP) {
-    details.push(`…+${ordered.length - SAVE_V2_MISMATCH_DETAILS_CAP} more`);
-  }
-  return details;
-}
-
-function flooredPlayTime(state: Record<string, unknown>): number | null {
-  const raw = state.playTime;
-  if (typeof raw !== "number" || !Number.isFinite(raw)) return null;
-  return Math.floor(raw);
-}
-
-/**
- * Top-level deep compare of legacy `game_state` vs sidecar `game_state_v2`.
- *
- * - Value conflicts at the same playTime → `mismatch` (cutover signal)
- * - Legacy playTime ahead of sidecar → `v2_stale` (expected dual-write lag)
- * - Key only on one side → `shape_drift` (V1 diff sparsity vs V2 full blob)
- * - UI / transient / analytics keys → `expected_noise`
- */
-export function compareLegacyVsV2Row(
-  row: SaveGameAnalysisInput,
-): SaveV2CompareRow {
-  const revision =
-    typeof row.save_revision === "number" && Number.isFinite(row.save_revision)
-      ? row.save_revision
-      : null;
-  const schemaVersion =
-    typeof row.schema_version === "number" && Number.isFinite(row.schema_version)
-      ? row.schema_version
-      : null;
-
-  const base = {
-    user_id: row.user_id,
-    username: row.username,
-    save_revision: revision,
-    schema_version: schemaVersion,
-    mismatchCount: null as number | null,
-    shapeDriftCount: null as number | null,
-    expectedNoiseCount: null as number | null,
-  };
-
-  const legacy = asObject(row.game_state);
-  if (!legacy) {
-    return {
-      ...base,
-      status: "invalid_legacy",
-      details: ["legacy game_state missing or not an object"],
-    };
-  }
-
-  if (row.game_state_v2 === null || row.game_state_v2 === undefined) {
-    return {
-      ...base,
-      status: "missing_v2",
-      details: ["game_state_v2 is null"],
-    };
-  }
-
-  const v2 = asObject(row.game_state_v2);
-  if (!v2) {
-    return {
-      ...base,
-      status: "invalid_v2",
-      details: ["game_state_v2 is not an object"],
-    };
-  }
-
-  const a = normalizeGameStateForCompare(legacy);
-  const b = normalizeGameStateForCompare(v2);
-  const allKeys = new Set([...Object.keys(a), ...Object.keys(b)]);
-  const valueMismatches: string[] = [];
-  const shapeDrifts: string[] = [];
-  const expectedNoise: string[] = [];
-
-  for (const key of allKeys) {
-    const inA = Object.prototype.hasOwnProperty.call(a, key);
-    const inB = Object.prototype.hasOwnProperty.call(b, key);
-    const isNoise = SAVE_V2_COMPARE_EXPECTED_NOISE_KEYS.has(key);
-
-    if (!inA) {
-      (isNoise ? expectedNoise : shapeDrifts).push(`${key} (v2-only)`);
-      continue;
-    }
-    if (!inB) {
-      (isNoise ? expectedNoise : shapeDrifts).push(`${key} (v1-only)`);
-      continue;
-    }
-    if (valueFingerprint(a[key]) !== valueFingerprint(b[key])) {
-      (isNoise ? expectedNoise : valueMismatches).push(key);
-    }
-  }
-
-  const noiseCount = expectedNoise.length > 0 ? expectedNoise.length : null;
-  const shapeCount = shapeDrifts.length > 0 ? shapeDrifts.length : null;
-  const v1Play = flooredPlayTime(a);
-  const v2Play = flooredPlayTime(b);
-  const legacyAhead =
-    v1Play !== null && v2Play !== null && v1Play > v2Play;
-
-  if (valueMismatches.length > 0) {
-    // Comparing different moments in time is not a cutover bug — prod often
-    // updates V1 without refreshing the DEV-only / best-effort sidecar.
-    if (legacyAhead) {
-      const aheadMs = v1Play! - v2Play!;
-      const details = capDetailKeys([
-        `playTime (v1 ahead ${aheadMs}ms)`,
-        ...valueMismatches.filter((key) => key !== "playTime"),
-      ]);
-      return {
-        ...base,
-        status: "v2_stale",
-        details,
-        mismatchCount: valueMismatches.length,
-        shapeDriftCount: shapeCount,
-        expectedNoiseCount: noiseCount,
-      };
-    }
-
-    return {
-      ...base,
-      status: "mismatch",
-      details: capDetailKeys(valueMismatches),
-      mismatchCount: valueMismatches.length,
-      shapeDriftCount: shapeCount,
-      expectedNoiseCount: noiseCount,
-    };
-  }
-
-  if (shapeDrifts.length > 0) {
-    return {
-      ...base,
-      status: "shape_drift",
-      details: capDetailKeys(shapeDrifts),
-      shapeDriftCount: shapeDrifts.length,
-      expectedNoiseCount: noiseCount,
-    };
-  }
-
-  if (expectedNoise.length > 0) {
-    return {
-      ...base,
-      status: "expected_noise",
-      details: capDetailKeys(expectedNoise),
-      expectedNoiseCount: expectedNoise.length,
-    };
-  }
-
-  return {
-    ...base,
-    status: "match",
-    details: [],
-  };
-}
-
-/** Rows that should appear in the admin issue table (same-moment conflicts / invalid). */
-function isSaveV2DashboardIssue(row: SaveV2CompareRow): boolean {
-  return (
-    row.status === "mismatch" ||
-    row.status === "invalid_v2" ||
-    row.status === "invalid_legacy"
-  );
-}
-
-export function compareLegacyAndV2Saves(
-  inputs: SaveGameAnalysisInput[],
-): SaveV2CompareSummary {
-  const compared = inputs.map(compareLegacyVsV2Row);
-  let withV2 = 0;
-  let missingV2 = 0;
-  let match = 0;
-  let expectedNoise = 0;
-  let shapeDrift = 0;
-  let v2Stale = 0;
-  let mismatch = 0;
-  let invalidV2 = 0;
-  let invalidLegacy = 0;
-
-  for (const row of compared) {
-    switch (row.status) {
-      case "missing_v2":
-        missingV2 += 1;
-        break;
-      case "match":
-        withV2 += 1;
-        match += 1;
-        break;
-      case "expected_noise":
-        withV2 += 1;
-        expectedNoise += 1;
-        break;
-      case "shape_drift":
-        withV2 += 1;
-        shapeDrift += 1;
-        break;
-      case "v2_stale":
-        withV2 += 1;
-        v2Stale += 1;
-        break;
-      case "mismatch":
-        withV2 += 1;
-        mismatch += 1;
-        break;
-      case "invalid_v2":
-        withV2 += 1;
-        invalidV2 += 1;
-        break;
-      case "invalid_legacy":
-        invalidLegacy += 1;
-        break;
-    }
-  }
-
-  return {
-    scanned: compared.length,
-    withV2,
-    missingV2,
-    match,
-    expectedNoise,
-    shapeDrift,
-    v2Stale,
-    mismatch,
-    invalidV2,
-    invalidLegacy,
-    // Coverage / shape / noise / stale stay in summary counts — issue table is cutover conflicts.
-    rows: compared.filter(isSaveV2DashboardIssue),
   };
 }

@@ -74,10 +74,22 @@ const ISSUE_LABELS: Record<SaveGameIssueKind, string> = {
   negative_resource: "Negative resource",
   non_numeric_resource: "Non-numeric resource",
   negative_villager: "Negative villager count",
+  negative_building: "Negative building count",
+  non_numeric_building: "Non-numeric building count",
   bad_playtime: "Bad playTime (null / NaN / missing)",
   negative_playtime: "Negative playTime",
   wiped_tools: "Wiped tools (craft flags but zero owned)",
   missing_tools_with_craft_flags: "Missing tools key + craft flags",
+  tool_craft_mismatch: "Craft flags without matching tools",
+  wiped_weapons: "Wiped weapons (craft flags but zero owned)",
+  missing_weapons_with_craft_flags: "Missing weapons key + craft flags",
+  weapon_craft_mismatch: "Craft flags without matching weapons",
+  wiped_craft_clothing: "Craft clothing missing (explorer pack / hunter cloak)",
+  missing_buildings_with_progress: "Missing/zero buildings with progress",
+  missing_foundational_slices: "Missing foundational object slices",
+  bad_slice_shape: "Slice present but not an object",
+  missing_ascension_book: "Button upgrades without book of ascension",
+  missing_game_started: "Progress evidence but gameStarted false",
   missing_unlock_flags: "Missing tab unlock flags (village/forest/bastion)",
   bad_story_seen: "Malformed story.seen",
   bad_game_stats: "Malformed game_stats",
@@ -234,8 +246,10 @@ export default function SaveGameAnalysisTab({
         <div>
           <h2 className="text-lg font-semibold">Save Game Analysis</h2>
           <p className="text-sm text-muted-foreground">
-            Last {analysis.scanned} saves by{" "}
+            Deep integrity scan of the last {analysis.scanned} saves by{" "}
             <code className="text-xs">updated_at</code>
+            {" "}
+            (wipes, slice shape, unlock/craft mismatches, population, build SHA)
             {analysis.oldestUpdated && analysis.newestUpdated ? (
               <>
                 {" "}
@@ -345,131 +359,6 @@ export default function SaveGameAnalysisTab({
           </ChartContainer>
         </CardContent>
       </Card>
-
-      {analysis.v2Compare ? (
-        <Card>
-          <CardHeader>
-            <CardTitle className="text-base">Save V2 sidecar (dual-write)</CardTitle>
-            <CardDescription>
-              Compares{" "}
-              <code className="text-xs">game_state_v2</code> vs legacy{" "}
-              <code className="text-xs">game_state</code> (playTime floored).{" "}
-              Mismatch = same playTime, different gameplay values. V2 stale =
-              legacy ahead of sidecar (expected while dual-write is best-effort).
-              Shape drift = key only on one side. Expected noise = UI/timers.
-              Table lists same-moment mismatches / invalid only. Load still uses
-              legacy.
-            </CardDescription>
-          </CardHeader>
-          <CardContent className="space-y-3">
-            <div className="grid gap-3 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-9 text-sm">
-              <div>
-                <div className="text-muted-foreground">With V2</div>
-                <div className="font-mono text-lg tabular-nums">
-                  {analysis.v2Compare.withV2}
-                </div>
-              </div>
-              <div>
-                <div className="text-muted-foreground">Missing V2</div>
-                <div className="font-mono text-lg tabular-nums">
-                  {analysis.v2Compare.missingV2}
-                </div>
-              </div>
-              <div>
-                <div className="text-muted-foreground">Match</div>
-                <div className="font-mono text-lg tabular-nums">
-                  {analysis.v2Compare.match}
-                </div>
-              </div>
-              <div>
-                <div className="text-muted-foreground">Expected noise</div>
-                <div className="font-mono text-lg tabular-nums">
-                  {analysis.v2Compare.expectedNoise}
-                </div>
-              </div>
-              <div>
-                <div className="text-muted-foreground">Shape drift</div>
-                <div className="font-mono text-lg tabular-nums">
-                  {analysis.v2Compare.shapeDrift}
-                </div>
-              </div>
-              <div>
-                <div className="text-muted-foreground">V2 stale</div>
-                <div className="font-mono text-lg tabular-nums">
-                  {analysis.v2Compare.v2Stale ?? 0}
-                </div>
-              </div>
-              <div>
-                <div className="text-muted-foreground">Mismatch</div>
-                <div
-                  className={`font-mono text-lg tabular-nums ${analysis.v2Compare.mismatch > 0
-                    ? "text-destructive"
-                    : ""
-                    }`}
-                >
-                  {analysis.v2Compare.mismatch}
-                </div>
-              </div>
-              <div>
-                <div className="text-muted-foreground">Invalid V2</div>
-                <div className="font-mono text-lg tabular-nums">
-                  {analysis.v2Compare.invalidV2}
-                </div>
-              </div>
-              <div>
-                <div className="text-muted-foreground">Invalid legacy</div>
-                <div className="font-mono text-lg tabular-nums">
-                  {analysis.v2Compare.invalidLegacy}
-                </div>
-              </div>
-            </div>
-            {analysis.v2Compare.rows.length > 0 ? (
-              <div className="overflow-x-auto">
-                <table className="w-full text-sm">
-                  <thead>
-                    <tr className="border-b text-left text-muted-foreground">
-                      <th className="py-2 pr-3 font-medium">User</th>
-                      <th className="py-2 pr-3 font-medium">Status</th>
-                      <th className="py-2 pr-3 font-medium">Rev</th>
-                      <th className="py-2 font-medium">Details</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {analysis.v2Compare.rows.slice(0, 40).map((row, idx) => (
-                      <tr
-                        key={row.user_id ?? `v2-${idx}`}
-                        className="border-b border-border/60"
-                      >
-                        <td className="py-2 pr-3 font-mono text-xs">
-                          {formatSaveUserLabel(row)}
-                        </td>
-                        <td className="py-2 pr-3">{row.status}</td>
-                        <td className="py-2 pr-3 font-mono tabular-nums">
-                          {row.save_revision ?? "—"}
-                        </td>
-                        <td className="py-2 text-muted-foreground">
-                          {row.mismatchCount != null && row.mismatchCount > 0
-                            ? `(${row.mismatchCount}) `
-                            : ""}
-                          {row.details.join(", ") || "—"}
-                          {row.shapeDriftCount != null &&
-                            row.shapeDriftCount > 0
-                            ? ` · +${row.shapeDriftCount} shape`
-                            : ""}
-                          {row.expectedNoiseCount != null &&
-                            row.expectedNoiseCount > 0
-                            ? ` · +${row.expectedNoiseCount} noise`
-                            : ""}
-                        </td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
-            ) : null}
-          </CardContent>
-        </Card>
-      ) : null}
 
       {Object.keys(analysis.byKind).length > 0 ? (
         <Card>

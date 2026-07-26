@@ -2,8 +2,6 @@ import { describe, expect, it } from "vitest";
 import {
   analyzeSaveGameRow,
   analyzeSaveGames,
-  compareLegacyAndV2Saves,
-  compareLegacyVsV2Row,
   computeCurrentPopulationFromGameState,
   computeMaxPopulationFromGameState,
   hasCraftToolStoryFlags,
@@ -50,6 +48,10 @@ describe("saveGameAnalysis", () => {
         tools: { stone_axe: true },
         flags: { villageUnlocked: true, gameStarted: true },
         story: { seen: { hasStoneAxe: true } },
+        buildings: {},
+        resources: { wood: 1 },
+        villagers: {},
+        stats: { luck: 0, strength: 0, knowledge: 0, madness: 0 },
       },
     });
     expect(result.issues).toHaveLength(0);
@@ -66,6 +68,119 @@ describe("saveGameAnalysis", () => {
       },
     });
     expect(result.issues.some((i) => i.kind === "missing_unlock_flags")).toBe(
+      true,
+    );
+  });
+
+  it("detects tool craft mismatch when some tools are wiped", () => {
+    const result = analyzeSaveGameRow({
+      ...baseRow,
+      game_state: {
+        playTime: 120_000,
+        tools: { stone_axe: true, iron_axe: false },
+        flags: { villageUnlocked: true, gameStarted: true },
+        story: { seen: { hasStoneAxe: true, hasIronAxe: true } },
+      },
+    });
+    expect(result.issues.some((i) => i.kind === "tool_craft_mismatch")).toBe(
+      true,
+    );
+    expect(
+      result.issues.find((i) => i.kind === "tool_craft_mismatch")?.detail,
+    ).toContain("iron_axe");
+  });
+
+  it("detects wiped weapons from craft story flags", () => {
+    const result = analyzeSaveGameRow({
+      ...baseRow,
+      game_state: {
+        playTime: 120_000,
+        tools: { stone_axe: true },
+        weapons: { war_bow: false },
+        flags: {
+          villageUnlocked: true,
+          forestUnlocked: true,
+          gameStarted: true,
+        },
+        story: { seen: { hasStoneAxe: true, hasWarBow: true } },
+      },
+    });
+    expect(result.issues.some((i) => i.kind === "wiped_weapons")).toBe(true);
+  });
+
+  it("detects missing ascension book when button upgrades exist", () => {
+    const result = analyzeSaveGameRow({
+      ...baseRow,
+      game_state: {
+        playTime: 60_000,
+        books: { book_of_ascension: false },
+        buttonUpgrades: { caveExplore: { clicks: 10, level: 2 } },
+      },
+    });
+    expect(result.issues.some((i) => i.kind === "missing_ascension_book")).toBe(
+      true,
+    );
+  });
+
+  it("detects missing foundational slices on progressed saves", () => {
+    const result = analyzeSaveGameRow({
+      ...baseRow,
+      game_state: {
+        playTime: 10 * 60_000,
+        tools: { stone_axe: true },
+        flags: { villageUnlocked: true, gameStarted: true },
+        story: { seen: { hasStoneAxe: true } },
+      },
+    });
+    expect(
+      result.issues.some((i) => i.kind === "missing_foundational_slices"),
+    ).toBe(true);
+    expect(
+      result.issues.find((i) => i.kind === "missing_foundational_slices")
+        ?.detail,
+    ).toEqual(expect.stringContaining("buildings"));
+  });
+
+  it("detects missing buildings when villagers remain", () => {
+    const result = analyzeSaveGameRow({
+      ...baseRow,
+      game_state: {
+        playTime: 60_000,
+        villagers: { free: 2 },
+        tools: { stone_axe: true },
+        flags: { villageUnlocked: true, gameStarted: true },
+      },
+    });
+    expect(
+      result.issues.some((i) => i.kind === "missing_buildings_with_progress"),
+    ).toBe(true);
+  });
+
+  it("detects wiped craft clothing", () => {
+    const result = analyzeSaveGameRow({
+      ...baseRow,
+      game_state: {
+        playTime: 60_000,
+        clothing: { explorer_pack: false },
+        story: { seen: { hasExplorerPack: true } },
+      },
+    });
+    expect(result.issues.some((i) => i.kind === "wiped_craft_clothing")).toBe(
+      true,
+    );
+  });
+
+  it("detects missing gameStarted despite unlock evidence", () => {
+    const result = analyzeSaveGameRow({
+      ...baseRow,
+      game_state: {
+        playTime: 60_000,
+        tools: { stone_axe: true },
+        flags: { villageUnlocked: true, gameStarted: false },
+        story: { seen: { hasStoneAxe: true } },
+      },
+    });
+    expect(result.issues.some((i) => i.kind === "missing_game_started")).toBe(
       true,
     );
   });
@@ -191,7 +306,7 @@ describe("saveGameAnalysis", () => {
             playTime: 0,
             clientBuildSha: "abc123",
             tools: { stone_axe: true },
-            flags: { villageUnlocked: true },
+            flags: { villageUnlocked: true, gameStarted: true },
             story: { seen: { hasStoneAxe: true } },
           },
         },
@@ -202,7 +317,7 @@ describe("saveGameAnalysis", () => {
             playTime: 0,
             clientBuildSha: "old999",
             tools: { stone_axe: true },
-            flags: { villageUnlocked: true },
+            flags: { villageUnlocked: true, gameStarted: true },
             story: { seen: { hasStoneAxe: true } },
           },
         },
@@ -212,7 +327,7 @@ describe("saveGameAnalysis", () => {
           game_state: {
             playTime: 0,
             tools: { stone_axe: true },
-            flags: { villageUnlocked: true },
+            flags: { villageUnlocked: true, gameStarted: true },
             story: { seen: { hasStoneAxe: true } },
           },
         },
@@ -240,350 +355,15 @@ describe("saveGameAnalysis", () => {
     expect(hasCraftToolStoryFlags({ fireLit: true })).toBe(false);
   });
 
-  it("compareLegacyVsV2Row reports missing_v2", () => {
-    const result = compareLegacyVsV2Row({
-      ...baseRow,
-      game_state: {
-        playTime: 1000,
-        tools: { stone_axe: true },
-        buildings: { woodenHut: 1 },
-        resources: { wood: 1 },
-        villagers: { free: 1 },
-        flags: { gameStarted: true },
-        weapons: {},
-        books: {},
-      },
-    });
-    expect(result.status).toBe("missing_v2");
-  });
-
-  it("compareLegacyVsV2Row reports match on full state (playTime floored)", () => {
-    const gs = {
-      playTime: 1000.9,
-      tools: { stone_axe: true },
-      buildings: { woodenHut: 1 },
-      resources: { wood: 1 },
-      villagers: { free: 1 },
-      flags: { gameStarted: true },
-      weapons: {},
-      books: {},
-      story: { seen: { fireLit: true } },
-    };
-    const result = compareLegacyVsV2Row({
-      ...baseRow,
-      game_state: gs,
-      game_state_v2: { ...gs, playTime: 1000.2 },
-      save_revision: 3,
-      schema_version: 1,
-    });
-    expect(result.status).toBe("match");
-    expect(result.mismatchCount).toBeNull();
-    expect(result.expectedNoiseCount).toBeNull();
-    expect(result.save_revision).toBe(3);
-  });
-
-  it("compareLegacyVsV2Row flags any top-level key drift, not only critical slices", () => {
-    const gs = {
-      playTime: 1000,
-      tools: { stone_axe: true },
-      buildings: {},
-      resources: {},
-      villagers: {},
-      flags: {},
-      weapons: {},
-      books: {},
-      story: { seen: { fireLit: true } },
-    };
-    const result = compareLegacyVsV2Row({
-      ...baseRow,
-      game_state: gs,
-      game_state_v2: {
-        ...gs,
-        story: { seen: { fireLit: true, gatherWood: true } },
-      },
-      save_revision: 1,
-      schema_version: 1,
-    });
-    expect(result.status).toBe("mismatch");
-    expect(result.details).toContain("story");
-    expect(result.mismatchCount).toBe(1);
-  });
-
-  it("compareLegacyVsV2Row treats presence-only diffs as shape_drift", () => {
-    const result = compareLegacyVsV2Row({
-      ...baseRow,
-      game_state: {
-        playTime: 1,
-        tools: {},
-        buildings: { woodenHut: 1 },
-        story: { seen: { fireLit: true } },
-      },
-      game_state_v2: {
-        playTime: 1,
-        tools: {},
-        buildings: { woodenHut: 1 },
-        story: { seen: { fireLit: true } },
-        flags: { gameStarted: true },
-        relics: { survivors_notes: true },
-      },
-      save_revision: 1,
-      schema_version: 1,
-    });
-    expect(result.status).toBe("shape_drift");
-    expect(result.mismatchCount).toBeNull();
-    expect(result.details).toEqual(
-      expect.arrayContaining(["flags (v2-only)", "relics (v2-only)"]),
-    );
-    expect(result.details).not.toContain("buildings");
-    expect(result.details).not.toContain("story");
-  });
-
-  it("compareLegacyVsV2Row classifies UI / transient drift as expected_noise", () => {
-    const core = {
-      playTime: 1000,
-      tools: { stone_axe: true },
-      buildings: { woodenHut: 1 },
-      resources: { wood: 5 },
-      villagers: { free: 1 },
-      flags: { gameStarted: true },
-      weapons: {},
-      books: {},
-    };
-    const result = compareLegacyVsV2Row({
-      ...baseRow,
-      game_state: {
-        ...core,
-        activeTab: "village",
-        shopDialogOpen: true,
-        cooldowns: { gatherWood: 123 },
-        executionStartTimes: { hunt: 1 },
-        clickAnalytics: { clicks: 9 },
-      },
-      game_state_v2: {
-        ...core,
-        cooldownDurations: { gatherWood: 5000 },
-      },
-      save_revision: 2,
-      schema_version: 1,
-    });
-    expect(result.status).toBe("expected_noise");
-    expect(result.mismatchCount).toBeNull();
-    expect(result.expectedNoiseCount).toBeGreaterThan(0);
-    expect(result.details).toEqual(
-      expect.arrayContaining([
-        "activeTab (v1-only)",
-        "cooldowns (v1-only)",
-        "cooldownDurations (v2-only)",
-      ]),
-    );
-  });
-
-  it("compareLegacyVsV2Row keeps gameplay mismatch when noise is also present", () => {
-    const result = compareLegacyVsV2Row({
-      ...baseRow,
-      game_state: {
-        playTime: 1,
-        tools: { stone_axe: true },
-        activeTab: "village",
-      },
-      game_state_v2: {
-        playTime: 1,
-        tools: { stone_axe: false },
-      },
-      save_revision: 1,
-      schema_version: 1,
-    });
-    expect(result.status).toBe("mismatch");
-    expect(result.details).toContain("tools");
-    expect(result.details).not.toContain("activeTab (v1-only)");
-    expect(result.mismatchCount).toBe(1);
-    expect(result.expectedNoiseCount).toBe(1);
-  });
-
-  it("compareLegacyVsV2Row treats legacy-ahead playTime as v2_stale, not mismatch", () => {
-    const result = compareLegacyVsV2Row({
-      ...baseRow,
-      game_state: {
-        playTime: 50_000,
-        tools: { stone_axe: true },
-        resources: { wood: 100 },
-      },
-      game_state_v2: {
-        playTime: 10_000,
-        tools: { stone_axe: false },
-        resources: { wood: 20 },
-      },
-      save_revision: 2,
-      schema_version: 1,
-    });
-    expect(result.status).toBe("v2_stale");
-    expect(result.details[0]).toBe("playTime (v1 ahead 40000ms)");
-    expect(result.details).toEqual(
-      expect.arrayContaining(["tools", "resources"]),
-    );
-    expect(result.mismatchCount).toBe(3);
-  });
-
-  it("compareLegacyVsV2Row treats attackWaveTimers drift as expected_noise", () => {
-    const core = {
-      playTime: 1000,
-      tools: {},
-      buildings: {},
-      resources: {},
-      villagers: {},
-      flags: {},
-      weapons: {},
-      books: {},
-    };
-    const result = compareLegacyVsV2Row({
-      ...baseRow,
-      game_state: {
-        ...core,
-        attackWaveTimers: {
-          tenthWave: {
-            startTime: 1,
-            elapsedTime: 100.5,
-            provoked: false,
-          },
-        },
-      },
-      game_state_v2: {
-        ...core,
-        attackWaveTimers: {
-          tenthWave: {
-            startTime: 1,
-            elapsedTime: 100.5,
-          },
-        },
-      },
-      save_revision: 1,
-      schema_version: 1,
-    });
-    expect(result.status).toBe("expected_noise");
-    expect(result.details).toContain("attackWaveTimers");
-  });
-
-  it("compareLegacyAndV2Saves summarizes coverage but only lists value mismatches", () => {
-    const summary = compareLegacyAndV2Saves([
-      {
-        ...baseRow,
-        game_state: {
-          playTime: 1,
-          tools: {},
-          buildings: {},
-          resources: {},
-          villagers: {},
-          flags: {},
-          weapons: {},
-          books: {},
-        },
-      },
-      {
-        ...baseRow,
-        user_id: "user-2",
-        game_state: {
-          playTime: 1,
-          tools: { stone_axe: true },
-          buildings: {},
-          resources: {},
-          villagers: {},
-          flags: {},
-          weapons: {},
-          books: {},
-        },
-        game_state_v2: {
-          playTime: 1,
-          tools: { stone_axe: false },
-          buildings: {},
-          resources: {},
-          villagers: {},
-          flags: {},
-          weapons: {},
-          books: {},
-        },
-        save_revision: 1,
-        schema_version: 1,
-      },
-      {
-        ...baseRow,
-        user_id: "user-3",
-        game_state: {
-          playTime: 1,
-          tools: {},
-          buildings: {},
-          resources: {},
-          villagers: {},
-          flags: {},
-          weapons: {},
-          books: {},
-          activeTab: "cave",
-        },
-        game_state_v2: {
-          playTime: 1,
-          tools: {},
-          buildings: {},
-          resources: {},
-          villagers: {},
-          flags: {},
-          weapons: {},
-          books: {},
-        },
-        save_revision: 1,
-        schema_version: 1,
-      },
-      {
-        ...baseRow,
-        user_id: "user-4",
-        game_state: {
-          playTime: 1,
-          tools: {},
-          buildings: { woodenHut: 1 },
-        },
-        game_state_v2: {
-          playTime: 1,
-          tools: {},
-          buildings: { woodenHut: 1 },
-          flags: { gameStarted: true },
-        },
-        save_revision: 1,
-        schema_version: 1,
-      },
-      {
-        ...baseRow,
-        user_id: "user-5",
-        game_state: {
-          playTime: 90_000,
-          tools: { stone_axe: true },
-          resources: { wood: 50 },
-        },
-        game_state_v2: {
-          playTime: 10_000,
-          tools: { stone_axe: true },
-          resources: { wood: 10 },
-        },
-        save_revision: 3,
-        schema_version: 1,
-      },
-    ]);
-    expect(summary.missingV2).toBe(1);
-    expect(summary.mismatch).toBe(1);
-    expect(summary.v2Stale).toBe(1);
-    expect(summary.expectedNoise).toBe(1);
-    expect(summary.shapeDrift).toBe(1);
-    expect(summary.match).toBe(0);
-    expect(summary.withV2).toBe(4);
-    expect(summary.rows).toHaveLength(1);
-    expect(summary.rows[0]?.status).toBe("mismatch");
-  });
-
-  it("analyzeSaveGames includes v2Compare without changing legacy issue counts", () => {
+  it("analyzeSaveGames summarizes rows without v2 sidecar compare", () => {
     const summary = analyzeSaveGames([
       {
         ...baseRow,
         game_state: { playTime: 0, resources: { wood: 1 } },
       },
     ]);
+    expect(summary.scanned).toBe(1);
     expect(summary.rowsWithIssues).toBe(0);
-    expect(summary.v2Compare?.missingV2).toBe(1);
+    expect(summary.rows).toHaveLength(1);
   });
 });

@@ -43,13 +43,6 @@ vi.mock("@/lib/supabase", () => ({
   getSupabaseClient: mockGetSupabaseClient,
 }));
 
-vi.mock("./saveGameV2", () => ({
-  dualWriteSaveGameV2: vi.fn().mockResolvedValue(undefined),
-  isSaveGameV2CloudEnabled: vi.fn().mockReturnValue(false),
-  isSaveGameV2RichEnabled: vi.fn().mockReturnValue(false),
-  SAVE_SCHEMA_VERSION_V2: 1,
-}));
-
 vi.mock("./steamSaveAdapter", () => ({
   writeSteamCloudSave: vi.fn(),
   readSteamCloudSave: vi.fn().mockResolvedValue(null),

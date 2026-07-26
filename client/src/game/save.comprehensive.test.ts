@@ -69,13 +69,6 @@ vi.mock('@/lib/supabase', () => ({
   }),
 }));
 
-vi.mock('./saveGameV2', () => ({
-  dualWriteSaveGameV2: vi.fn().mockResolvedValue(undefined),
-  isSaveGameV2CloudEnabled: vi.fn().mockReturnValue(false),
-  isSaveGameV2RichEnabled: vi.fn().mockReturnValue(false),
-  SAVE_SCHEMA_VERSION_V2: 1,
-}));
-
 describe('Save Game System - Comprehensive Tests', () => {
   let mockDB: any;
 
@@ -247,17 +240,6 @@ describe('Save Game System - Comprehensive Tests', () => {
       expect(localSaveCalls.length).toBe(2);
     });
 
-    it('V2 dual-write rejection never fails local saveGame', async () => {
-      const saveGameV2 = await import('./saveGameV2');
-      vi.mocked(saveGameV2.isSaveGameV2CloudEnabled).mockReturnValue(true);
-      vi.mocked(saveGameV2.dualWriteSaveGameV2).mockRejectedValue(
-        new Error('v2 boom'),
-      );
-
-      await expect(saveGame(createMockGameState(), true)).resolves.toBeUndefined();
-      expect(readMainSave(mockStores)).toBeDefined();
-      expect(readMainSave(mockStores)!.playTime).toBe(1000);
-    });
   });
 
   describe('2. Multi-Device Conflicts', () => {
