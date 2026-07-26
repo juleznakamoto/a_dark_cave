@@ -59,7 +59,7 @@ export function composeActionTooltip({
         <div
           className={cn(
             "whitespace-normal text-muted-foreground",
-            hasHeader && "mt-1.5",
+            hasHeader && "mt-1",
           )}
         >
           {description}

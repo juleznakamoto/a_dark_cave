@@ -17,7 +17,7 @@ describe("composeActionTooltip", () => {
     expect(screen.getByText("A fine bow.")).toBeTruthy();
     expect(screen.getByTestId("effects")).toBeTruthy();
     expect(document.querySelectorAll(".border-t").length).toBe(1);
-    expect(screen.getByText("A fine bow.").className).toContain("mt-1.5");
+    expect(screen.getByText("A fine bow.").className).toContain("mt-1");
   });
 
   it("omits title from description section", () => {

@@ -426,7 +426,7 @@ function renderBuildingItemTooltip(
   );
   if (buildDescription) {
     tooltipParts.push(
-      <div key="description" className="mt-1.5 text-gray-400">
+      <div key="description" className="mt-1 text-gray-400">
         {buildDescription}
       </div>,
     );
@@ -459,7 +459,7 @@ function renderBuildingItemTooltip(
       buildDescription ? (
         effectsBlock
       ) : (
-        <div key="effects-wrap" className="mt-1.5">
+        <div key="effects-wrap" className="mt-1">
           {effectsBlock}
         </div>
       ),
@@ -584,7 +584,7 @@ export function renderFortificationTooltip(
         </span>
       </div>
       {buildDescription && (
-        <div className="mt-1.5 text-gray-400">{buildDescription}</div>
+        <div className="mt-1 text-gray-400">{buildDescription}</div>
       )}
       {effectsBlock &&
         (buildDescription ? (
@@ -593,7 +593,7 @@ export function renderFortificationTooltip(
             {effectsBlock}
           </>
         ) : (
-          <div className="mt-1.5">{effectsBlock}</div>
+          <div className="mt-1">{effectsBlock}</div>
         ))}
     </div>
   );
@@ -643,7 +643,7 @@ export function renderItemTooltip(
             </div>
           )}
           {showDescription && effect?.description && (
-            <div className={showTitle ? "mt-1.5 text-gray-400" : "text-gray-400"}>
+            <div className={showTitle ? "mt-1 text-gray-400" : "text-gray-400"}>
               {getEffectDescription("weapons", itemId, effect.description)}
             </div>
           )}
@@ -702,7 +702,7 @@ export function renderItemTooltip(
           <div
             className={
               showTitle && effect.name
-                ? "mt-1.5 text-gray-400"
+                ? "mt-1 text-gray-400"
                 : "text-gray-400"
             }
           >
@@ -798,7 +798,7 @@ export function renderItemTooltip(
       {showDescription && effect.description && (
         <div
           className={
-            showTitle && effect.name ? "mt-1.5 text-gray-400" : "text-gray-400"
+            showTitle && effect.name ? "mt-1 text-gray-400" : "text-gray-400"
           }
         >
           {getEffectDescription(effectCategory, itemId, effect.description)}
