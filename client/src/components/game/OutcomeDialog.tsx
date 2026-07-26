@@ -126,7 +126,7 @@ export default function OutcomeDialog({
       `}</style>
       <Dialog open={isOpen} onOpenChange={() => { }}>
         <DialogContent
-          className={`[--adc-dialog-max-w:24rem] z-[70] [&>button]:hidden border-2 shadow-2xl ${border}`}
+          className={`[--adc-dialog-max-w:24rem] z-[70] gap-4 [&>button]:hidden border-2 shadow-2xl ${border}`}
         >
           <div
             className={`absolute inset-0 -z-10 pointer-events-none ${glowClass}`}
@@ -139,7 +139,7 @@ export default function OutcomeDialog({
                 : undefined
             }
           />
-          <DialogHeader>
+          <DialogHeader className="space-y-0">
             <div className="relative z-[1] flex w-full justify-center">
               <div
                 className={cn(
@@ -152,22 +152,23 @@ export default function OutcomeDialog({
                 {icon}
               </div>
             </div>
-            <DialogTitle className="text-center text-lg font-semibold text-foreground tracking-tight">
+            <DialogTitle className="mt-1.5 text-center text-lg font-semibold text-foreground tracking-tight">
               {title}
             </DialogTitle>
             {successLog && (
-              <div className="text-sm text-muted-foreground leading-relaxed mt-2 pb-2">
+              <div className="mt-2 text-sm text-muted-foreground leading-relaxed">
                 {successLog}
               </div>
             )}
             {hasBodyContent ? (
-              <div className="mt-2 h-px w-full bg-white/10" />
+              <>
+                <div className="mt-3 h-px w-full bg-white/10" />
+                <div className="mt-3 space-y-1 text-left text-sm">
+                  {children}
+                </div>
+              </>
             ) : null}
           </DialogHeader>
-
-          {hasBodyContent ? (
-            <div className="text-sm pt-4 pb-2 space-y-1 text-left">{children}</div>
-          ) : null}
 
           <div className="flex justify-center">
             <Button
