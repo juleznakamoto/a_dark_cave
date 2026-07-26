@@ -1,7 +1,8 @@
 import React from "react";
+import { cn } from "@/lib/utils";
 
 export function ActionTooltipSeparator() {
-  return <div className="border-t border-border my-1" />;
+  return <div className="my-1 border-t border-neutral-800" />;
 }
 
 export type ActionTooltipParts = {
@@ -17,7 +18,7 @@ export type ActionTooltipParts = {
   style?: React.CSSProperties;
 };
 
-/** Standard action tooltip order: header → separator → description → separator → effects. */
+/** Standard action tooltip order: header → description → divider → effects. */
 /** Matches building upgrade tooltips: trailing icon sits in the header row only. */
 export function wrapTooltipHeaderWithTrailing(
   header: React.ReactNode,
@@ -51,37 +52,25 @@ export function composeActionTooltip({
     return null;
   }
 
-  const sections: React.ReactNode[] = [];
-
-  const push = (node: React.ReactNode) => {
-    if (sections.length > 0) {
-      sections.push(
-        <ActionTooltipSeparator key={`sep-${sections.length}`} />,
-      );
-    }
-    sections.push(node);
-  };
-
-  if (hasHeader) {
-    push(wrapTooltipHeaderWithTrailing(header, headerTrailing));
-  }
-  if (hasDescription) {
-    push(
-      <div
-        key="description"
-        className="text-muted-foreground whitespace-normal"
-      >
-        {description}
-      </div>,
-    );
-  }
-  if (hasEffects) {
-    push(<div key="effects">{effects}</div>);
-  }
-
   return (
     <div className={className} style={style}>
-      {sections}
+      {hasHeader ? wrapTooltipHeaderWithTrailing(header, headerTrailing) : null}
+      {hasDescription ? (
+        <div
+          className={cn(
+            "whitespace-normal text-muted-foreground",
+            hasHeader && "mt-1.5",
+          )}
+        >
+          {description}
+        </div>
+      ) : null}
+      {hasEffects ? (
+        <>
+          {hasHeader || hasDescription ? <ActionTooltipSeparator /> : null}
+          <div>{effects}</div>
+        </>
+      ) : null}
     </div>
   );
 }
