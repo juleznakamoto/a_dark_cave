@@ -7,6 +7,8 @@
  * - sleepPromo: Floating invite CTA during sleep (above fog, below footer)
  * - tabHotkeyOverlay: Pause / village hotkey tutorial callout (body-portaled, above buttons)
  * - gameParticleLayer: Click particles above side panel/tabs/log, below action buttons
+ * - gameActionButtons: Action panel column (estate bars, cooldown buttons)
+ * - floatingPromo: Awake-mode floating invite CTA (above action panels; spatially above footer)
  * - particles: Body-portaled effects (feed fire, explosions, dialog-adjacent bursts)
  * - tooltip: Tooltips, must appear above dialogs
  * - topLayer: Full-screen overlays (end screen, start screen CTA)
@@ -22,6 +24,8 @@ export const Z_INDEX = {
   gameParticleLayer: 49,
   /** Action button column in GameContainer; must stay above `gameParticleLayer`. */
   gameActionButtons: 50,
+  /** Floating invite CTA while awake — must sit above `gameActionButtons` (estate bars etc.). */
+  floatingPromo: 51,
   particles: 1000,
   particlesForeground: 1001,
   tooltip: 10000,

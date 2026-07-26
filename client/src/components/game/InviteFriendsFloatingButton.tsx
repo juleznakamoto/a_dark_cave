@@ -83,7 +83,9 @@ export default function InviteFriendsFloatingButton() {
       className="pointer-events-auto fixed right-4"
       style={{
         bottom: `calc(${GAME_FOOTER_INSET} + 1rem)`,
-        zIndex: idleModeDialogOpen ? Z_INDEX.sleepPromo : 30,
+        zIndex: idleModeDialogOpen
+          ? Z_INDEX.sleepPromo
+          : Z_INDEX.floatingPromo,
       }}
     >
       <div className="invite-friends-float relative inline-block">
