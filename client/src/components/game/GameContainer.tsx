@@ -1101,8 +1101,12 @@ export default function GameContainer() {
         {/* Pause Overlay - covers panels; header, tabs, and footer stay above */}
         {isPaused && (
           <div
-            className="fixed inset-0 bg-black/80 z-40 pointer-events-auto overlay-fade-in"
-            style={{ top: GAME_HEADER_INSET, bottom: GAME_FOOTER_INSET }}
+            className="fixed inset-0 bg-black/80 pointer-events-auto overlay-fade-in"
+            style={{
+              top: GAME_HEADER_INSET,
+              bottom: GAME_FOOTER_INSET,
+              zIndex: Z_INDEX.sleepFog,
+            }}
           />
         )}
 
@@ -1183,14 +1187,16 @@ export default function GameContainer() {
           className="relative flex-1 pb-0 flex flex-col md:grid md:w-full md:grid-cols-[minmax(20rem,28rem)_minmax(24rem,1fr)_minmax(14rem,26rem)] min-h-0 overflow-hidden"
           style={panelResize.mainStyle}
         >
-          {/* Click-particle portal — above side panel, tabs, log; below action buttons (z-50) */}
+          {/* Click-particle portal — above side panel, tabs, log; below action buttons (z-50).
+              Drop elevation during pause/sleep so the fog overlays (z-40) can cover content. */}
           <div
             id={GAME_PARTICLE_LAYER_ID}
             className="pointer-events-none absolute inset-0"
             style={{
-              zIndex: idleModeDialog.isOpen
-                ? undefined
-                : Z_INDEX.gameParticleLayer,
+              zIndex:
+                idleModeDialog.isOpen || isPaused
+                  ? undefined
+                  : Z_INDEX.gameParticleLayer,
             }}
             aria-hidden
           />
@@ -1421,16 +1427,18 @@ export default function GameContainer() {
               )}
             </nav>
 
-            {/* Action Panels — above particle layer so bursts stay behind buttons */}
+            {/* Action Panels — above particle layer so bursts stay behind buttons.
+                Clear z-index while paused/sleeping so the overlay (z-40) blocks clicks. */}
             <div
               className={`relative flex-1 overflow-x-hidden min-h-0 ${activeTab === "achievements"
                 ? "overflow-hidden"
                 : "overflow-y-auto scrollbar-hide"
                 }`}
               style={{
-                zIndex: idleModeDialog.isOpen
-                  ? undefined
-                  : Z_INDEX.gameActionButtons,
+                zIndex:
+                  idleModeDialog.isOpen || isPaused
+                    ? undefined
+                    : Z_INDEX.gameActionButtons,
               }}
             >
               {activeTab === "cave" && <CavePanel />}
@@ -1458,7 +1466,7 @@ export default function GameContainer() {
           </div>
         )}
 
-        {/* Footer - above pause overlay (z-40) so hover tooltips stay visible when paused */}
+        {/* Footer - above pause overlay so hover tooltips stay visible when paused */}
         <div className="relative z-50 flex-shrink-0 pointer-events-auto">
           <GameFooter />
         </div>
