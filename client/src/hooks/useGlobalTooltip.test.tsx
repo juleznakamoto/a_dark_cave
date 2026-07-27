@@ -4,7 +4,10 @@
 import { describe, it, expect, beforeEach, afterEach, vi } from "vitest";
 import { render, screen, fireEvent, act } from "@testing-library/react";
 import React from "react";
-import { useGlobalTooltip } from "./useGlobalTooltip";
+import {
+  useGlobalTooltip,
+  setGlobalTooltipsSuppressed,
+} from "./useGlobalTooltip";
 
 vi.mock("./use-mobile", () => ({
   useIsMobile: vi.fn(() => true),
@@ -59,9 +62,11 @@ function TestTooltipButton({
 describe("useGlobalTooltip - mobile long-press behavior", () => {
   beforeEach(() => {
     vi.useFakeTimers();
+    setGlobalTooltipsSuppressed(false);
   });
 
   afterEach(() => {
+    setGlobalTooltipsSuppressed(false);
     vi.useRealTimers();
   });
 
@@ -184,5 +189,105 @@ describe("useGlobalTooltip - mobile long-press behavior", () => {
 
     expect(onDisabledAction).not.toHaveBeenCalled();
     expect(onEnabledAction).not.toHaveBeenCalled();
+  });
+});
+
+describe("useGlobalTooltip - modal suppression", () => {
+  beforeEach(() => {
+    vi.useFakeTimers();
+    setGlobalTooltipsSuppressed(false);
+  });
+
+  afterEach(() => {
+    setGlobalTooltipsSuppressed(false);
+    vi.useRealTimers();
+  });
+
+  it("still opens tooltips for triggers inside a dialog while suppressed", async () => {
+    const onAction = vi.fn();
+    render(
+      <div role="dialog">
+        <TestTooltipButton
+          id="shop-info"
+          disabled={true}
+          onAction={onAction}
+        />
+      </div>,
+    );
+
+    await act(async () => {
+      setGlobalTooltipsSuppressed(true);
+    });
+
+    const trigger = screen.getByTestId("trigger-shop-info");
+    const state = screen.getByTestId("open-shop-info");
+
+    await act(async () => {
+      fireEvent.touchStart(trigger);
+      fireEvent.touchEnd(trigger);
+    });
+
+    expect(onAction).not.toHaveBeenCalled();
+    expect(state.textContent).toBe("open");
+  });
+
+  it.each([
+    "gambler-rules",
+    "invest-dialog-info",
+    "combat-luck-madness",
+    "social-prompt-signup-info",
+    "share-dialog-invite",
+    "event-time-bonus",
+  ])(
+    "allows dialog info tooltip id %s while suppressed",
+    async (tooltipId) => {
+      const onAction = vi.fn();
+      render(
+        <div role="dialog">
+          <TestTooltipButton
+            id={tooltipId}
+            disabled={true}
+            onAction={onAction}
+          />
+        </div>,
+      );
+
+      await act(async () => {
+        setGlobalTooltipsSuppressed(true);
+      });
+
+      await act(async () => {
+        fireEvent.touchStart(screen.getByTestId(`trigger-${tooltipId}`));
+        fireEvent.touchEnd(screen.getByTestId(`trigger-${tooltipId}`));
+      });
+
+      expect(screen.getByTestId(`open-${tooltipId}`).textContent).toBe("open");
+    },
+  );
+
+  it("keeps behind-modal tooltips forced closed while suppressed", async () => {
+    const onAction = vi.fn();
+    render(
+      <TestTooltipButton
+        id="behind-modal"
+        disabled={true}
+        onAction={onAction}
+      />,
+    );
+
+    await act(async () => {
+      setGlobalTooltipsSuppressed(true);
+    });
+
+    const trigger = screen.getByTestId("trigger-behind-modal");
+    const state = screen.getByTestId("open-behind-modal");
+
+    await act(async () => {
+      fireEvent.touchStart(trigger);
+      fireEvent.touchEnd(trigger);
+    });
+
+    expect(onAction).not.toHaveBeenCalled();
+    expect(state.textContent).toBe("closed");
   });
 });

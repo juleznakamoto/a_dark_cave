@@ -1784,7 +1784,7 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
                   <ScrollAreaWithIndicator
                     className="min-h-0 flex-1"
                     scrollAreaId="shop-dialog-for-sale"
-                    viewportClassName="pl-1.5 pr-3 py-1.5"
+                    viewportClassName="pl-0 pr-2"
                   >
                     <div className="grid w-full grid-cols-1 gap-4 md:grid-cols-3">
                       {(selectedFilter === null

@@ -1,6 +1,22 @@
 import { useState, useEffect, useRef, useCallback } from "react";
 import { useIsMobile } from "./use-mobile";
 
+/** True when the tooltip trigger lives inside an open dialog (e.g. shop / gambler / invest info icons). */
+function isTooltipTriggerInsideDialog(id: string): boolean {
+  if (typeof document === "undefined") return false;
+  try {
+    const trigger = document.querySelector(
+      `[data-tooltip-trigger-id="${CSS.escape(id)}"]`,
+    );
+    // Radix DialogContent + custom portals (e.g. BlessingOfferDialog) use role="dialog".
+    return Boolean(
+      trigger?.closest('[role="dialog"], [role="alertdialog"]'),
+    );
+  } catch {
+    return false;
+  }
+}
+
 /**
  * Global tooltip state manager
  * Ensures only one tooltip is open at a time across the entire application
@@ -25,7 +41,13 @@ class GlobalTooltipManager {
   }
 
   setOpenTooltip(id: string | null, openedByTimer: boolean = false) {
-    if (this.suppressed && id !== null) {
+    // Modal suppression blocks game-chrome tooltips, but not triggers inside
+    // the open dialog (shop / settings info icons still need to work).
+    if (
+      this.suppressed &&
+      id !== null &&
+      !isTooltipTriggerInsideDialog(id)
+    ) {
       return;
     }
 
@@ -62,8 +84,9 @@ class GlobalTooltipManager {
   }
 
   isTooltipOpen(id: string) {
-    if (this.suppressed) return false;
-    return this.openTooltipId === id;
+    if (this.openTooltipId !== id) return false;
+    if (this.suppressed && !isTooltipTriggerInsideDialog(id)) return false;
+    return true;
   }
 
   clearAllPressTimers() {
@@ -113,9 +136,9 @@ export function closeAllGlobalTooltips() {
 }
 
 /**
- * While true, all global tooltips stay forced closed (blocks hover + long-press).
- * Use when a blocking modal overlay is open — tooltips are z-10000 and would
- * otherwise paint through the dimmed backdrop.
+ * While true, tooltips from behind a blocking modal stay forced closed (z-10000
+ * would otherwise paint through the dimmed backdrop). Triggers inside the open
+ * dialog itself are still allowed (shop info icons, etc.).
  */
 export function setGlobalTooltipsSuppressed(suppressed: boolean) {
   globalTooltipManager.setSuppressed(suppressed);
@@ -183,9 +206,15 @@ export function useGlobalTooltip() {
   }, []);
 
   const isTooltipOpen = useCallback((id: string) => {
-    // Force closed while modals suppress tooltips (hover tooltips use uncontrolled
-    // mode via `undefined`, so only `false` actually hides them under overlays).
-    if (globalTooltipManager.isSuppressed()) return false;
+    // Force closed for behind-modal triggers while suppressed. Hover tooltips use
+    // uncontrolled mode via `undefined`, so only `false` actually hides them.
+    // Triggers inside the open dialog stay usable (shop info icons, etc.).
+    if (
+      globalTooltipManager.isSuppressed() &&
+      !isTooltipTriggerInsideDialog(id)
+    ) {
+      return false;
+    }
     // Return tooltip open state for long press tooltips (works on all devices)
     return globalTooltipManager.isTooltipOpen(id) ? true : undefined;
   }, [tooltipsSuppressed]);

@@ -150,9 +150,10 @@ export default function GameContainer() {
   // Estate unlocks when Dark Estate is built
   const estateUnlocked = buildings.darkEstate >= 1;
 
-  // Tooltips sit above modal overlays (z-10000). Force them closed for the whole
-  // time a blocking dialog is open — closeAll alone leaves hover tooltips visible
-  // because Radix stays uncontrolled when `open` is `undefined`.
+  // Tooltips sit above modal overlays (z-10000). Force behind-modal tooltips
+  // closed while a blocking dialog is open — closeAll alone leaves hover
+  // tooltips visible because Radix stays uncontrolled when `open` is `undefined`.
+  // Triggers inside the open dialog remain allowed (e.g. shop info icons).
   useEffect(() => {
     setGlobalTooltipsSuppressed(modalDialogOpen);
     return () => setGlobalTooltipsSuppressed(false);
