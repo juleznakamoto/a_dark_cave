@@ -23,9 +23,8 @@ import { buildGameState } from "@/game/stateHelpers";
 import { useToast } from "@/hooks/use-toast";
 import { useGameStore } from "@/game/state";
 import { logger } from "@/lib/logger";
-import { cn } from "@/lib/utils";
 import { parseRefParam } from "@shared/referralCode";
-import { useTranslation } from "react-i18next";
+import { Trans, useTranslation } from "react-i18next";
 
 interface AuthDialogProps {
   isOpen: boolean;
@@ -82,7 +81,6 @@ export default function AuthDialog({
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
-  const [acceptedTerms, setAcceptedTerms] = useState(false);
   const [marketingOptIn, setMarketingOptIn] = useState(false);
   const [signupSuccess, setSignupSuccess] = useState(false);
   const { toast } = useToast();
@@ -92,7 +90,6 @@ export default function AuthDialog({
       setSignupSuccess(false);
       setEmail("");
       setPassword("");
-      setAcceptedTerms(false);
       setMarketingOptIn(false);
       onClose();
     }
@@ -100,15 +97,6 @@ export default function AuthDialog({
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-
-    if (mode === "signup" && !acceptedTerms) {
-      toast({
-        title: t("auth.termsRequired"),
-        description: t("auth.termsRequiredDesc"),
-        variant: "destructive",
-      });
-      return;
-    }
 
     setLoading(true);
 
@@ -158,15 +146,6 @@ export default function AuthDialog({
   };
 
   const handleGoogleSignIn = async () => {
-    if (mode === "signup" && !acceptedTerms) {
-      toast({
-        title: t("auth.termsRequired"),
-        description: t("auth.termsRequiredDesc"),
-        variant: "destructive",
-      });
-      return;
-    }
-
     setLoading(true);
     try {
       if (mode === "signup") {
@@ -189,8 +168,6 @@ export default function AuthDialog({
       setLoading(false);
     }
   };
-
-  const signupNeedsTerms = mode === "signup" && !acceptedTerms;
 
   const dialogTitle = signupSuccess
     ? t("auth.accountCreatedTitle")
@@ -274,40 +251,6 @@ export default function AuthDialog({
             {mode === "signup" && (
               <div className="flex items-start space-x-2">
                 <Checkbox
-                  id="terms"
-                  checked={acceptedTerms}
-                  onCheckedChange={(checked) =>
-                    setAcceptedTerms(checked === true)
-                  }
-                />
-                <label
-                  htmlFor="terms"
-                  className="text-sm leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-                >
-                  {t("auth.acceptTermsPrefix")}{" "}
-                  <a
-                    href="/terms"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="underline"
-                  >
-                    {t("auth.termsOfService")}
-                  </a>{" "}
-                  {t("auth.acceptTermsAnd")}{" "}
-                  <a
-                    href="/privacy"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="underline"
-                  >
-                    {t("auth.privacyPolicy")}
-                  </a>
-                </label>
-              </div>
-            )}
-            {mode === "signup" && (
-              <div className="flex items-start space-x-2">
-                <Checkbox
                   id="marketing"
                   checked={marketingOptIn}
                   onCheckedChange={(checked) =>
@@ -325,15 +268,37 @@ export default function AuthDialog({
             <div className="flex flex-col space-y-2">
               <Button
                 type="submit"
-                className={cn(
-                  "font-medium text-sm",
-                  signupNeedsTerms && "opacity-50",
-                )}
+                className="font-medium text-sm"
                 disabled={loading}
-                aria-disabled={signupNeedsTerms || undefined}
               >
                 {submitLabel}
               </Button>
+              {mode === "signup" && (
+                <p className="text-xs text-center text-muted-foreground leading-snug px-1">
+                  <Trans
+                    i18nKey="auth.signupTermsHint"
+                    ns="ui"
+                    components={{
+                      terms: (
+                        <a
+                          href="/terms"
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="underline hover:text-foreground/80"
+                        />
+                      ),
+                      privacy: (
+                        <a
+                          href="/privacy"
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="underline hover:text-foreground/80"
+                        />
+                      ),
+                    }}
+                  />
+                </p>
+              )}
               {mode !== "reset" && (
                 <>
                   <div className="relative">
@@ -351,11 +316,7 @@ export default function AuthDialog({
                     variant="outline"
                     onClick={handleGoogleSignIn}
                     disabled={loading}
-                    aria-disabled={signupNeedsTerms || undefined}
-                    className={cn(
-                      "font-medium text-sm",
-                      signupNeedsTerms && "opacity-50",
-                    )}
+                    className="font-medium text-sm"
                   >
                     <svg className="mr-2 h-4 w-4" viewBox="0 0 24 24">
                       <path
@@ -388,7 +349,6 @@ export default function AuthDialog({
                 className="text-sm"
                 onClick={() => {
                   setMode(mode === "signin" ? "signup" : "signin");
-                  setAcceptedTerms(false);
                   setMarketingOptIn(false);
                 }}
               >
