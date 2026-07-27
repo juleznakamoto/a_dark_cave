@@ -34,7 +34,8 @@ export function gameActionOutlineButtonClassName(
   const hoverPrefix = options?.groupHover ? "group-hover:" : "hover:";
   return cn(
     disabled
-      ? // Whole-button fade (overrides base disabled:opacity-50 via twMerge). Full border — no /50 stack.
+      ? // Full border — no /50 stack. Callers that need an opaque face (CooldownButton
+      // click particles) must force opacity: 1 themselves; others get a whole-button fade.
       "border-orange-950 opacity-60 disabled:opacity-60 !bg-transparent hover:!bg-transparent"
       : "border-orange-950 text-foreground",
     !disabled &&
@@ -284,8 +285,6 @@ const CooldownButton = forwardRef<HTMLButtonElement, CooldownButtonProps>(
           isButtonDisabled &&
           "!bg-transparent hover:!bg-transparent hover:!text-foreground",
           isButtonDisabled && "active:scale-100",
-          // Non-outline variants still need the shared inactive fade.
-          isButtonDisabled && variant !== "outline" && "opacity-60",
           isCompassGlowing && "compass-glow",
           variant === "outline" && gameActionOutlineButtonClassName(isButtonDisabled),
           className,
@@ -293,7 +292,10 @@ const CooldownButton = forwardRef<HTMLButtonElement, CooldownButtonProps>(
         data-testid={testId}
         button_id={props.button_id || actionIdFromProps}
         {...props}
-        style={{ position: "relative", ...style }}
+        // opacity: 1 is load-bearing — whole-button opacity lets portaled particles
+        // (z behind the button) show through and look like they are in front.
+        // Keep it last so a caller `style.opacity` cannot undo the particle fix.
+        style={{ position: "relative", ...style, opacity: 1 }}
       >
         {particleConfig && (
           <div
@@ -302,8 +304,19 @@ const CooldownButton = forwardRef<HTMLButtonElement, CooldownButtonProps>(
           />
         )}
 
-        {/* Button content */}
-        <span className="relative">{children}</span>
+        {/* Fade label only — keep chrome/backdrop-blur opaque so particles stay behind */}
+        <span
+          className={`relative transition-opacity duration-200 ${isCoolingDown ||
+              isExecuting ||
+              isInsightRevealing ||
+              isPlayTimeOverlayActive ||
+              disabled
+              ? "opacity-60"
+              : ""
+            }`}
+        >
+          {children}
+        </span>
 
         {/* Cooldown, execution, or insight-reveal progress overlay */}
         {(isCoolingDown || isExecuting || isInsightRevealing || isPlayTimeOverlayActive) && (
