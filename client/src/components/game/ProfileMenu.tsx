@@ -166,7 +166,9 @@ function useProfileMenuState() {
 
   // Sync auth dialog state from store (e.g. when opened from ShopDialog)
   useEffect(() => {
-    setAuthDialogOpen(gameAuthDialogOpen);
+    if (gameAuthDialogOpen) {
+      setAuthDialogOpen(true);
+    }
   }, [gameAuthDialogOpen]);
 
   const checkAuth = async () => {
