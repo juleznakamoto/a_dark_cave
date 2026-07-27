@@ -1464,15 +1464,15 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
                 }
 
                 .shop-item-card:hover {
-                  box-shadow: inset 0 0 10px 0 rgb(212 212 212 / 0.5);
+                  box-shadow: 0 0 6px 1px rgb(212 212 212 / 0.55);
                 }
 
                 .shop-item-card.shop-item-card--bundle:hover {
-                  box-shadow: inset 0 0 10px 0 rgba(250, 204, 21, 0.55);
+                  box-shadow: 0 0 6px 1px rgba(250, 204, 21, 0.6);
                 }
 
                 .shop-item-card.shop-item-card--cruel:hover {
-                  box-shadow: inset 0 0 10px 0 rgba(248, 113, 113, 0.55);
+                  box-shadow: 0 0 6px 1px rgba(248, 113, 113, 0.6);
                 }
 
                 .bundle-card-glow {
@@ -1784,7 +1784,7 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
                   <ScrollAreaWithIndicator
                     className="min-h-0 flex-1"
                     scrollAreaId="shop-dialog-for-sale"
-                    viewportClassName="pl-0 pr-2"
+                    viewportClassName="pl-1.5 pr-3 py-1.5"
                   >
                     <div className="grid w-full grid-cols-1 gap-4 md:grid-cols-3">
                       {(selectedFilter === null
