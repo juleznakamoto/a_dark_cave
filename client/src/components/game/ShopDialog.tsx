@@ -1460,61 +1460,19 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
     <>
       <style>{`
                 .shop-item-card {
-                  transition: box-shadow 0.3s ease;
+                  transition: box-shadow 0.25s ease;
                 }
 
                 .shop-item-card:hover {
-                  animation: shop-card-hover-glow 1.4s ease-in-out infinite;
+                  box-shadow: 0 0 6px 1px rgb(212 212 212 / 0.55);
                 }
 
                 .shop-item-card.shop-item-card--bundle:hover {
-                  animation-name: shop-card-hover-glow-bundle;
+                  box-shadow: 0 0 6px 1px rgba(250, 204, 21, 0.6);
                 }
 
                 .shop-item-card.shop-item-card--cruel:hover {
-                  animation-name: shop-card-hover-glow-cruel;
-                }
-
-                @keyframes shop-card-hover-glow {
-                  0%, 100% {
-                    box-shadow: 0 0 8px 1px rgb(163 163 163 / 0.25);
-                  }
-                  50% {
-                    box-shadow: 0 0 14px 2px rgb(212 212 212 / 0.4);
-                  }
-                }
-
-                @keyframes shop-card-hover-glow-bundle {
-                  0%, 100% {
-                    box-shadow: 0 0 8px 1px rgba(234, 179, 8, 0.3);
-                  }
-                  50% {
-                    box-shadow: 0 0 14px 2px rgba(250, 204, 21, 0.45);
-                  }
-                }
-
-                @keyframes shop-card-hover-glow-cruel {
-                  0%, 100% {
-                    box-shadow: 0 0 8px 1px rgba(220, 38, 38, 0.3);
-                  }
-                  50% {
-                    box-shadow: 0 0 14px 2px rgba(248, 113, 113, 0.45);
-                  }
-                }
-
-                @media (prefers-reduced-motion: reduce) {
-                  .shop-item-card:hover {
-                    animation: none;
-                    box-shadow: 0 0 10px 1px rgb(163 163 163 / 0.3);
-                  }
-
-                  .shop-item-card.shop-item-card--bundle:hover {
-                    box-shadow: 0 0 10px 1px rgba(234, 179, 8, 0.35);
-                  }
-
-                  .shop-item-card.shop-item-card--cruel:hover {
-                    box-shadow: 0 0 10px 1px rgba(220, 38, 38, 0.35);
-                  }
+                  box-shadow: 0 0 6px 1px rgba(248, 113, 113, 0.6);
                 }
 
                 .bundle-card-glow {
