@@ -34,9 +34,9 @@ export function gameActionOutlineButtonClassName(
   const hoverPrefix = options?.groupHover ? "group-hover:" : "hover:";
   return cn(
     disabled
-      ? // Full border — no /50 stack. Callers that need an opaque face (CooldownButton
-      // click particles) must force opacity: 1 themselves; others get a whole-button fade.
-      "border-orange-950 opacity-60 disabled:opacity-60 !bg-transparent hover:!bg-transparent"
+      ? // Fade via border alpha + CooldownButton label opacity — never whole-button
+      // opacity (that lets portaled click particles show through the chrome).
+      "border-orange-950/60 !bg-transparent hover:!bg-transparent"
       : "border-orange-950 text-foreground",
     !disabled &&
     `${hoverPrefix}bg-accent ${hoverPrefix}text-accent-foreground bg-neutral-600/10`,
@@ -307,12 +307,12 @@ const CooldownButton = forwardRef<HTMLButtonElement, CooldownButtonProps>(
         {/* Fade label only — keep chrome/backdrop-blur opaque so particles stay behind */}
         <span
           className={`relative transition-opacity duration-200 ${isCoolingDown ||
-              isExecuting ||
-              isInsightRevealing ||
-              isPlayTimeOverlayActive ||
-              disabled
-              ? "opacity-60"
-              : ""
+            isExecuting ||
+            isInsightRevealing ||
+            isPlayTimeOverlayActive ||
+            disabled
+            ? "opacity-60"
+            : ""
             }`}
         >
           {children}
