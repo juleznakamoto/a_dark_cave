@@ -297,7 +297,7 @@ export const FIRE_LOAD_PARTICLE_CONFIG: Partial<ParticleConfig> = {
   distanceMin: 40,
   distanceMax: 100,
   sizeMin: 1,
-  sizeMax: 3,
+  sizeMax: 5,
 };
 
 function adjustHexBrightness(hex: string, factor: number): string {
