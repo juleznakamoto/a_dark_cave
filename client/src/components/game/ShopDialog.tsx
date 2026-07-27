@@ -1459,22 +1459,6 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
   return (
     <>
       <style>{`
-                .shop-item-card {
-                  transition: box-shadow 0.25s ease;
-                }
-
-                .shop-item-card:hover {
-                  box-shadow: 0 0 6px 1px rgb(212 212 212 / 0.55);
-                }
-
-                .shop-item-card.shop-item-card--bundle:hover {
-                  box-shadow: 0 0 6px 1px rgba(250, 204, 21, 0.6);
-                }
-
-                .shop-item-card.shop-item-card--cruel:hover {
-                  box-shadow: 0 0 6px 1px rgba(248, 113, 113, 0.6);
-                }
-
                 .bundle-card-glow {
                   animation: bundle-glow-pulse 3.5s ease-in-out infinite;
                 }
@@ -1784,7 +1768,7 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
                   <ScrollAreaWithIndicator
                     className="min-h-0 flex-1"
                     scrollAreaId="shop-dialog-for-sale"
-                    viewportClassName="pl-0 pr-2"
+                    viewportClassName="!pl-0 !pr-0"
                   >
                     <div className="grid w-full grid-cols-1 gap-4 md:grid-cols-3">
                       {(selectedFilter === null
@@ -1839,12 +1823,12 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
                                       ? "shop-card-cruel_mode"
                                       : undefined
                                   }
-                                  className={`shop-item-card border-neutral-500 flex flex-col relative ${item.category === "bundle"
-                                    ? "shop-item-card--bundle border border-amber-600"
+                                  className={`border-neutral-500 flex flex-col relative transition-[border-width] duration-150 hover:border-2 ${item.category === "bundle"
+                                    ? "border border-amber-600"
                                     : ""
                                     }${item.id === "cruel_mode" &&
                                       shopCruelModeHighlight
-                                      ? " shop-item-card--cruel border border-red-600"
+                                      ? " border border-red-600"
                                       : ""
                                     }`}
                                 >
@@ -2259,7 +2243,7 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
                     <ScrollAreaWithIndicator
                       className="min-h-0 flex-1"
                       scrollAreaId="shop-dialog-purchases"
-                      viewportClassName="pl-0 pr-2"
+                      viewportClassName="!pl-0 !pr-0"
                     >
                       <div className="w-full space-y-2">
                         {Object.entries(gameState.feastActivations || {}).map(
