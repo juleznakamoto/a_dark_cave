@@ -1464,15 +1464,15 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
                 }
 
                 .shop-item-card:hover {
-                  box-shadow: 0 0 6px 1px rgb(212 212 212 / 0.55);
+                  box-shadow: inset 0 0 10px 0 rgb(212 212 212 / 0.5);
                 }
 
                 .shop-item-card.shop-item-card--bundle:hover {
-                  box-shadow: 0 0 6px 1px rgba(250, 204, 21, 0.6);
+                  box-shadow: inset 0 0 10px 0 rgba(250, 204, 21, 0.55);
                 }
 
                 .shop-item-card.shop-item-card--cruel:hover {
-                  box-shadow: 0 0 6px 1px rgba(248, 113, 113, 0.6);
+                  box-shadow: inset 0 0 10px 0 rgba(248, 113, 113, 0.55);
                 }
 
                 .bundle-card-glow {
