@@ -1823,12 +1823,12 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
                                       ? "shop-card-cruel_mode"
                                       : undefined
                                   }
-                                  className={`border-neutral-500 flex flex-col relative transition-[border-width] duration-150 hover:border-2 ${item.category === "bundle"
-                                    ? "border border-amber-600"
+                                  className={`border-neutral-500 flex flex-col relative transition-[outline-color] duration-150 hover:outline hover:outline-2 hover:outline-offset-[-2px] hover:outline-neutral-400 ${item.category === "bundle"
+                                    ? "border border-amber-600 hover:outline-amber-500"
                                     : ""
                                     }${item.id === "cruel_mode" &&
                                       shopCruelModeHighlight
-                                      ? " border border-red-600"
+                                      ? " border border-red-600 hover:outline-red-500"
                                       : ""
                                     }`}
                                 >
