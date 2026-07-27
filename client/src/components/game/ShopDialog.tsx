@@ -1460,59 +1460,60 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
     <>
       <style>{`
                 .shop-item-card {
-                  transition:
-                    border-color 0.3s ease,
-                    box-shadow 0.3s ease;
+                  transition: box-shadow 0.3s ease;
                 }
 
                 .shop-item-card:hover {
-                  border-color: rgb(212 212 212);
-                  box-shadow: 0 0 0 1px rgb(163 163 163 / 0.55);
-                  animation: shop-card-border-highlight 1.4s ease-in-out infinite;
+                  animation: shop-card-hover-glow 1.4s ease-in-out infinite;
                 }
 
                 .shop-item-card.shop-item-card--bundle:hover {
-                  border-color: rgb(250 204 21);
-                  box-shadow: 0 0 0 1px rgba(234, 179, 8, 0.55);
-                  animation-name: shop-card-border-highlight-bundle;
+                  animation-name: shop-card-hover-glow-bundle;
                 }
 
                 .shop-item-card.shop-item-card--cruel:hover {
-                  border-color: rgb(248 113 113);
-                  box-shadow: 0 0 0 1px rgba(220, 38, 38, 0.55);
-                  animation-name: shop-card-border-highlight-cruel;
+                  animation-name: shop-card-hover-glow-cruel;
                 }
 
-                @keyframes shop-card-border-highlight {
+                @keyframes shop-card-hover-glow {
                   0%, 100% {
-                    box-shadow: 0 0 0 1px rgb(163 163 163 / 0.45);
+                    box-shadow: 0 0 8px 1px rgb(163 163 163 / 0.25);
                   }
                   50% {
-                    box-shadow: 0 0 0 1px rgb(212 212 212 / 0.8);
-                  }
-                }
-
-                @keyframes shop-card-border-highlight-bundle {
-                  0%, 100% {
-                    box-shadow: 0 0 0 1px rgba(234, 179, 8, 0.45);
-                  }
-                  50% {
-                    box-shadow: 0 0 0 1px rgba(250, 204, 21, 0.8);
+                    box-shadow: 0 0 14px 2px rgb(212 212 212 / 0.4);
                   }
                 }
 
-                @keyframes shop-card-border-highlight-cruel {
+                @keyframes shop-card-hover-glow-bundle {
                   0%, 100% {
-                    box-shadow: 0 0 0 1px rgba(220, 38, 38, 0.45);
+                    box-shadow: 0 0 8px 1px rgba(234, 179, 8, 0.3);
                   }
                   50% {
-                    box-shadow: 0 0 0 1px rgba(248, 113, 113, 0.8);
+                    box-shadow: 0 0 14px 2px rgba(250, 204, 21, 0.45);
+                  }
+                }
+
+                @keyframes shop-card-hover-glow-cruel {
+                  0%, 100% {
+                    box-shadow: 0 0 8px 1px rgba(220, 38, 38, 0.3);
+                  }
+                  50% {
+                    box-shadow: 0 0 14px 2px rgba(248, 113, 113, 0.45);
                   }
                 }
 
                 @media (prefers-reduced-motion: reduce) {
                   .shop-item-card:hover {
                     animation: none;
+                    box-shadow: 0 0 10px 1px rgb(163 163 163 / 0.3);
+                  }
+
+                  .shop-item-card.shop-item-card--bundle:hover {
+                    box-shadow: 0 0 10px 1px rgba(234, 179, 8, 0.35);
+                  }
+
+                  .shop-item-card.shop-item-card--cruel:hover {
+                    box-shadow: 0 0 10px 1px rgba(220, 38, 38, 0.35);
                   }
                 }
 
