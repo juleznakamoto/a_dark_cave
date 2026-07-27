@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import {
   Dialog,
   DialogContent,
@@ -24,6 +24,7 @@ import { useGameStore } from "@/game/state";
 import { logger } from "@/lib/logger";
 import { parseRefParam } from "@shared/referralCode";
 import { Trans, useTranslation } from "react-i18next";
+import { Eye, EyeOff } from "lucide-react";
 
 interface AuthDialogProps {
   isOpen: boolean;
@@ -46,6 +47,7 @@ export default function AuthDialog({
   onAuthSuccess,
 }: AuthDialogProps) {
   const { t } = useTranslation("ui");
+  const emailInputRef = useRef<HTMLInputElement>(null);
 
   const getReferralCode = () => {
     const params = new URLSearchParams(window.location.search);
@@ -58,6 +60,15 @@ export default function AuthDialog({
       : "signin",
   );
 
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [formError, setFormError] = useState<string | null>(null);
+  const [marketingOptIn, setMarketingOptIn] = useState(false);
+  const [signupSuccess, setSignupSuccess] = useState(false);
+  const { toast } = useToast();
+
   // Profile opens Auth without the flag → sign-in. Rewards / referral / shop
   // signup CTAs set signUpPromptEligibleForGold (or have ?ref=) before open → signup.
   useEffect(() => {
@@ -68,6 +79,15 @@ export default function AuthDialog({
     setMode(preferSignup ? "signup" : "signin");
   }, [isOpen]);
 
+  // DialogContent suppresses Radix open autofocus; focus email ourselves.
+  useEffect(() => {
+    if (!isOpen || signupSuccess) return;
+    const id = window.setTimeout(() => {
+      emailInputRef.current?.focus();
+    }, 0);
+    return () => window.clearTimeout(id);
+  }, [isOpen, signupSuccess]);
+
   const flushBeforeSignUp = async () => {
     if (useGameStore.getState().isUserSignedIn) return;
     try {
@@ -77,18 +97,20 @@ export default function AuthDialog({
     }
   };
 
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [loading, setLoading] = useState(false);
-  const [marketingOptIn, setMarketingOptIn] = useState(false);
-  const [signupSuccess, setSignupSuccess] = useState(false);
-  const { toast } = useToast();
+  const authErrorMessage = (error: unknown, fallback: string) => {
+    const err = error as { message?: string };
+    return isFetchNetworkError(error, err.message)
+      ? t("auth.networkErrorDesc")
+      : err.message || fallback;
+  };
 
   const handleOpenChange = (open: boolean) => {
     if (!open) {
       setSignupSuccess(false);
       setEmail("");
       setPassword("");
+      setShowPassword(false);
+      setFormError(null);
       setMarketingOptIn(false);
       onClose();
     }
@@ -96,7 +118,7 @@ export default function AuthDialog({
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-
+    setFormError(null);
     setLoading(true);
 
     try {
@@ -131,20 +153,14 @@ export default function AuthDialog({
         setMode("signin");
       }
     } catch (error: unknown) {
-      const err = error as { message?: string };
-      toast({
-        title: t("auth.errorTitle"),
-        description: isFetchNetworkError(error, err.message)
-          ? t("auth.networkErrorDesc")
-          : err.message || t("auth.authFailed"),
-        variant: "destructive",
-      });
+      setFormError(authErrorMessage(error, t("auth.authFailed")));
     } finally {
       setLoading(false);
     }
   };
 
   const handleGoogleSignIn = async () => {
+    setFormError(null);
     setLoading(true);
     try {
       if (mode === "signup") {
@@ -156,16 +172,16 @@ export default function AuthDialog({
         referralCode: mode === "signup" ? getReferralCode() : undefined,
       });
     } catch (error: unknown) {
-      const err = error as { message?: string };
-      toast({
-        title: t("auth.errorTitle"),
-        description: isFetchNetworkError(error, err.message)
-          ? t("auth.networkErrorDesc")
-          : err.message || t("auth.googleSignInFailed"),
-        variant: "destructive",
-      });
+      setFormError(authErrorMessage(error, t("auth.googleSignInFailed")));
       setLoading(false);
     }
+  };
+
+  const switchMode = (next: "signin" | "signup" | "reset") => {
+    setMode(next);
+    setFormError(null);
+    setShowPassword(false);
+    if (next !== "signup") setMarketingOptIn(false);
   };
 
   const dialogTitle = signupSuccess
@@ -194,7 +210,10 @@ export default function AuthDialog({
 
   return (
     <Dialog open={isOpen} onOpenChange={handleOpenChange}>
-      <DialogContent className="[--adc-dialog-max-w:28rem] z-[70]">
+      <DialogContent
+        className="[--adc-dialog-max-w:28rem]"
+        layerZIndex={70}
+      >
         <DialogHeader>
           <DialogTitle>{dialogTitle}</DialogTitle>
           <DialogDescription>{dialogDescription}</DialogDescription>
@@ -213,32 +232,64 @@ export default function AuthDialog({
           <form onSubmit={handleSubmit} className="space-y-4 pt-2">
             <div className="space-y-2">
               <Input
+                ref={emailInputRef}
                 id="email"
                 type="email"
+                name="email"
                 value={email}
-                onChange={(e) => setEmail(e.target.value)}
+                onChange={(e) => {
+                  setEmail(e.target.value);
+                  if (formError) setFormError(null);
+                }}
                 required
+                autoComplete="email"
                 placeholder={t("auth.email")}
                 aria-label={t("auth.email")}
               />
             </div>
             {mode !== "reset" && (
               <div className="space-y-2">
-                <Input
-                  id="password"
-                  type="password"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  required
-                  placeholder={t("auth.password")}
-                  aria-label={t("auth.password")}
-                  minLength={6}
-                />
+                <div className="relative">
+                  <Input
+                    id="password"
+                    type={showPassword ? "text" : "password"}
+                    name="password"
+                    value={password}
+                    onChange={(e) => {
+                      setPassword(e.target.value);
+                      if (formError) setFormError(null);
+                    }}
+                    required
+                    autoComplete={
+                      mode === "signup" ? "new-password" : "current-password"
+                    }
+                    placeholder={t("auth.password")}
+                    aria-label={t("auth.password")}
+                    minLength={6}
+                    className="pr-10"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setShowPassword((v) => !v)}
+                    className="absolute right-2 top-1/2 -translate-y-1/2 rounded-sm p-1 text-muted-foreground hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+                    aria-label={
+                      showPassword
+                        ? t("auth.hidePassword")
+                        : t("auth.showPassword")
+                    }
+                  >
+                    {showPassword ? (
+                      <EyeOff className="h-4 w-4" aria-hidden="true" />
+                    ) : (
+                      <Eye className="h-4 w-4" aria-hidden="true" />
+                    )}
+                  </button>
+                </div>
                 {mode === "signin" && (
                   <div className="flex justify-end pt-0.5">
                     <button
                       type="button"
-                      onClick={() => setMode("reset")}
+                      onClick={() => switchMode("reset")}
                       className="text-xs text-muted-foreground hover:text-foreground/70 underline-offset-2 hover:underline"
                     >
                       {t("auth.forgotPassword")}
@@ -263,6 +314,14 @@ export default function AuthDialog({
                   {t("auth.marketingOptIn")}
                 </label>
               </div>
+            )}
+            {formError && (
+              <p
+                role="alert"
+                className="text-sm text-red-600 leading-snug"
+              >
+                {formError}
+              </p>
             )}
             <div className="flex flex-col space-y-2">
               <Button
@@ -334,10 +393,9 @@ export default function AuthDialog({
                 type="button"
                 variant="ghost"
                 className="text-sm"
-                onClick={() => {
-                  setMode(mode === "signin" ? "signup" : "signin");
-                  setMarketingOptIn(false);
-                }}
+                onClick={() =>
+                  switchMode(mode === "signin" ? "signup" : "signin")
+                }
               >
                 {mode === "signin" ? (
                   <Trans
