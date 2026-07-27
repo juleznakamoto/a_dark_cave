@@ -8,7 +8,6 @@ import {
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
 import {
   signIn,
@@ -213,26 +212,26 @@ export default function AuthDialog({
         ) : (
           <form onSubmit={handleSubmit} className="space-y-4">
             <div className="space-y-2">
-              <Label htmlFor="email">{t("auth.email")}</Label>
               <Input
                 id="email"
                 type="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required
-                placeholder={t("auth.emailPlaceholder")}
+                placeholder={t("auth.email")}
+                aria-label={t("auth.email")}
               />
             </div>
             {mode !== "reset" && (
               <div className="space-y-2">
-                <Label htmlFor="password">{t("auth.password")}</Label>
                 <Input
                   id="password"
                   type="password"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   required
-                  placeholder="••••••••"
+                  placeholder={t("auth.password")}
+                  aria-label={t("auth.password")}
                   minLength={6}
                 />
                 {mode === "signin" && (
