@@ -210,7 +210,7 @@ export default function AuthDialog({
             </div>
           </div>
         ) : (
-          <form onSubmit={handleSubmit} className="space-y-4">
+          <form onSubmit={handleSubmit} className="space-y-4 pt-2">
             <div className="space-y-2">
               <Input
                 id="email"
