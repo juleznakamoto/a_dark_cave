@@ -1459,6 +1459,63 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
   return (
     <>
       <style>{`
+                .shop-item-card {
+                  transition:
+                    border-color 0.3s ease,
+                    box-shadow 0.3s ease;
+                }
+
+                .shop-item-card:hover {
+                  border-color: rgb(212 212 212);
+                  box-shadow: 0 0 0 1px rgb(163 163 163 / 0.55);
+                  animation: shop-card-border-highlight 1.4s ease-in-out infinite;
+                }
+
+                .shop-item-card.shop-item-card--bundle:hover {
+                  border-color: rgb(250 204 21);
+                  box-shadow: 0 0 0 1px rgba(234, 179, 8, 0.55);
+                  animation-name: shop-card-border-highlight-bundle;
+                }
+
+                .shop-item-card.shop-item-card--cruel:hover {
+                  border-color: rgb(248 113 113);
+                  box-shadow: 0 0 0 1px rgba(220, 38, 38, 0.55);
+                  animation-name: shop-card-border-highlight-cruel;
+                }
+
+                @keyframes shop-card-border-highlight {
+                  0%, 100% {
+                    box-shadow: 0 0 0 1px rgb(163 163 163 / 0.45);
+                  }
+                  50% {
+                    box-shadow: 0 0 0 1px rgb(212 212 212 / 0.8);
+                  }
+                }
+
+                @keyframes shop-card-border-highlight-bundle {
+                  0%, 100% {
+                    box-shadow: 0 0 0 1px rgba(234, 179, 8, 0.45);
+                  }
+                  50% {
+                    box-shadow: 0 0 0 1px rgba(250, 204, 21, 0.8);
+                  }
+                }
+
+                @keyframes shop-card-border-highlight-cruel {
+                  0%, 100% {
+                    box-shadow: 0 0 0 1px rgba(220, 38, 38, 0.45);
+                  }
+                  50% {
+                    box-shadow: 0 0 0 1px rgba(248, 113, 113, 0.8);
+                  }
+                }
+
+                @media (prefers-reduced-motion: reduce) {
+                  .shop-item-card:hover {
+                    animation: none;
+                  }
+                }
+
                 .bundle-card-glow {
                   animation: bundle-glow-pulse 3.5s ease-in-out infinite;
                 }
@@ -1823,12 +1880,12 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
                                       ? "shop-card-cruel_mode"
                                       : undefined
                                   }
-                                  className={`border-neutral-500 flex flex-col relative ${item.category === "bundle"
-                                    ? "border border-amber-600"
+                                  className={`shop-item-card border-neutral-500 flex flex-col relative ${item.category === "bundle"
+                                    ? "shop-item-card--bundle border border-amber-600"
                                     : ""
                                     }${item.id === "cruel_mode" &&
                                       shopCruelModeHighlight
-                                      ? " border border-red-600"
+                                      ? " shop-item-card--cruel border border-red-600"
                                       : ""
                                     }`}
                                 >
