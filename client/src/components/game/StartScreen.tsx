@@ -378,7 +378,7 @@ export default function StartScreen() {
                       }
                       font={introVaporFont}
                       color={START_INTRO_VAPORIZE_COLOR}
-                      spread={8}
+                      spread={10}
                       density={5}
                       animation={START_INTRO_VAPORIZE_ANIMATION}
                       direction="left-to-right"
