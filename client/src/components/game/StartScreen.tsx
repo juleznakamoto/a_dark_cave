@@ -29,8 +29,8 @@ import { FullscreenButton } from "@/components/game/FullscreenButton";
 
 const START_INTRO_VAPORIZE_COLOR = "rgba(209, 213, 219, 0.9)";
 const START_INTRO_VAPORIZE_ANIMATION = {
-  vaporizeDuration: 0.8,
-  fadeInDuration: 0.35,
+  vaporizeDuration: 0.5,
+  fadeInDuration: 0.3,
   waitDuration: 0,
 } as const;
 const START_INTRO_VAPORIZE_FONT_FALLBACK = {
