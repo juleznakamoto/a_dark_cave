@@ -139,6 +139,7 @@ export default function OutcomeDialog({
                 : undefined
             }
           />
+          {/* space-y-0 kills DialogHeader's space-y-1.5; use pt-* (not mt-*) — space-y overrides child margins */}
           <DialogHeader className="space-y-0">
             <div className="relative z-[1] flex w-full justify-center">
               <div
@@ -152,21 +153,21 @@ export default function OutcomeDialog({
                 {icon}
               </div>
             </div>
-            <DialogTitle className="mt-1.5 text-center text-lg font-semibold text-foreground tracking-tight">
+            <DialogTitle className="pt-1.5 text-center text-lg font-semibold text-foreground tracking-tight">
               {title}
             </DialogTitle>
             {successLog && (
-              <div className="mt-2 text-sm text-muted-foreground leading-relaxed">
+              <div className="pt-2 text-sm text-muted-foreground leading-relaxed">
                 {successLog}
               </div>
             )}
             {hasBodyContent ? (
-              <>
-                <div className="mt-3 h-px w-full bg-white/10" />
-                <div className="mt-3 space-y-1 text-left text-sm">
+              <div className="pt-3">
+                <div className="h-px w-full bg-white/10" />
+                <div className="pt-3 space-y-1 text-left text-sm">
                   {children}
                 </div>
-              </>
+              </div>
             ) : null}
           </DialogHeader>
 
