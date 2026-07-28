@@ -1,10 +1,9 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, lazy, Suspense } from "react";
 import { Helmet } from "react-helmet-async";
 import { ParticleButton } from "@/components/ui/particle-button";
 import { Button } from "@/components/ui/button";
 import { useGameStore } from "@/game/state";
 import CloudShader from "@/components/ui/cloud-shader";
-import VaporizeTextCycle, { Tag } from "@/components/ui/vapour-text-effect";
 import { audioManager, SOUND_VOLUME } from "@/lib/audio";
 import { HoverCalloutTooltip } from "@/components/game/HoverCalloutTooltip";
 import { FooterSocialIcon } from "@/components/game/FooterSocialIcon";
@@ -33,6 +32,15 @@ const START_INTRO_VAPORIZE_FONT = {
   fontWeight: 400,
 } as const;
 const START_INTRO_VAPORIZE_COLOR = "rgba(209, 213, 219, 0.9)";
+const START_INTRO_VAPORIZE_ANIMATION = {
+  vaporizeDuration: 1.6,
+  fadeInDuration: 0.4,
+  waitDuration: 0,
+} as const;
+
+const VaporizeTextCycle = lazy(
+  () => import("@/components/ui/vapour-text-effect"),
+);
 
 const START_FOOTER_LINK_BASE =
   "inline-flex items-center gap-0 sm:gap-1 hover:text-foreground transition-opacity";
@@ -290,39 +298,37 @@ export default function StartScreen() {
       <main className="relative z-10 flex-1 flex flex-col items-center justify-center min-h-screen">
         <div className="text-center mb-4 w-full max-w-xl px-4">
           {showParticles ? (
-            <div className="flex flex-col items-center gap-0">
-              {(isCruelMode
-                ? [
-                  t("startScreen.titleCruel"),
-                  t("startScreen.airCruel"),
-                  t("startScreen.seeCruel"),
-                ]
-                : [
-                  t("startScreen.titleNormal"),
-                  t("startScreen.airNormal"),
-                  t("startScreen.seeNormal"),
-                ]
-              ).map((line, index) => (
-                <div key={`${index}-${line}`} className="h-7 w-full">
-                  <VaporizeTextCycle
-                    texts={[line]}
-                    loop={false}
-                    font={START_INTRO_VAPORIZE_FONT}
-                    color={START_INTRO_VAPORIZE_COLOR}
-                    spread={5}
-                    density={5}
-                    animation={{
-                      vaporizeDuration: 1.6,
-                      fadeInDuration: 0.4,
-                      waitDuration: 0,
-                    }}
-                    direction="left-to-right"
-                    alignment="center"
-                    tag={index === 0 ? Tag.H1 : Tag.P}
-                  />
-                </div>
-              ))}
-            </div>
+            <Suspense fallback={null}>
+              <div className="flex flex-col items-center gap-0">
+                {(isCruelMode
+                  ? [
+                    t("startScreen.titleCruel"),
+                    t("startScreen.airCruel"),
+                    t("startScreen.seeCruel"),
+                  ]
+                  : [
+                    t("startScreen.titleNormal"),
+                    t("startScreen.airNormal"),
+                    t("startScreen.seeNormal"),
+                  ]
+                ).map((line, index) => (
+                  <div key={`${index}-${line}`} className="h-7 w-full">
+                    <VaporizeTextCycle
+                      texts={[line]}
+                      loop={false}
+                      font={START_INTRO_VAPORIZE_FONT}
+                      color={START_INTRO_VAPORIZE_COLOR}
+                      spread={5}
+                      density={5}
+                      animation={START_INTRO_VAPORIZE_ANIMATION}
+                      direction="left-to-right"
+                      alignment="center"
+                      tag={index === 0 ? "h1" : "p"}
+                    />
+                  </div>
+                ))}
+              </div>
+            </Suspense>
           ) : (
             <>
               <h1 className="animate-fade-in-text text-lg text-gray-300/90 leading-relaxed font-normal">
