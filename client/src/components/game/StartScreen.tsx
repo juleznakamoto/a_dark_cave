@@ -29,7 +29,7 @@ import { FullscreenButton } from "@/components/game/FullscreenButton";
 
 const START_INTRO_VAPORIZE_COLOR = "rgba(209, 213, 219, 0.9)";
 const START_INTRO_VAPORIZE_ANIMATION = {
-  vaporizeDuration: 1.6,
+  vaporizeDuration: 2,
   fadeInDuration: 0.4,
   waitDuration: 0,
 } as const;
@@ -72,6 +72,7 @@ export default function StartScreen() {
     fontFamily: string;
     fontSize: string;
     fontWeight: number;
+    letterSpacing?: string;
   }>(START_INTRO_VAPORIZE_FONT_FALLBACK);
   const introCanvasReady = introCanvasReadyCount >= 3;
   const introLineRefs = useRef<Array<HTMLSpanElement | null>>([]);
@@ -159,6 +160,7 @@ export default function StartScreen() {
         fontFamily: style.fontFamily,
         fontSize: style.fontSize,
         fontWeight: parseInt(style.fontWeight, 10) || 400,
+        letterSpacing: style.letterSpacing,
       });
     }
 
@@ -325,15 +327,15 @@ export default function StartScreen() {
         <div className="text-center mb-4 w-full max-w-xl px-4">
           {(isCruelMode
             ? [
-                t("startScreen.titleCruel"),
-                t("startScreen.airCruel"),
-                t("startScreen.seeCruel"),
-              ]
+              t("startScreen.titleCruel"),
+              t("startScreen.airCruel"),
+              t("startScreen.seeCruel"),
+            ]
             : [
-                t("startScreen.titleNormal"),
-                t("startScreen.airNormal"),
-                t("startScreen.seeNormal"),
-              ]
+              t("startScreen.titleNormal"),
+              t("startScreen.airNormal"),
+              t("startScreen.seeNormal"),
+            ]
           ).map((line, index) => {
             const LineTag = index === 0 ? "h1" : "p";
             return (
@@ -350,7 +352,7 @@ export default function StartScreen() {
                       onReady={handleIntroCanvasReady}
                       font={introVaporFont}
                       color={START_INTRO_VAPORIZE_COLOR}
-                      spread={5}
+                      spread={7}
                       density={5}
                       animation={START_INTRO_VAPORIZE_ANIMATION}
                       direction="left-to-right"
@@ -360,9 +362,8 @@ export default function StartScreen() {
                   </div>
                 )}
                 <LineTag
-                  className={`relative z-10 m-0 text-lg leading-relaxed font-normal ${
-                    showParticles ? "" : "animate-fade-in-text"
-                  } ${introCanvasReady ? "invisible" : ""}`}
+                  className={`relative z-10 m-0 text-lg leading-relaxed font-normal ${showParticles ? "" : "animate-fade-in-text"
+                    } ${introCanvasReady ? "invisible" : ""}`}
                 >
                   <span
                     ref={(el) => {

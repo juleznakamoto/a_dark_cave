@@ -23,6 +23,7 @@ type VaporizeTextCycleProps = {
     fontFamily?: string;
     fontSize?: string;
     fontWeight?: number;
+    letterSpacing?: string;
   };
   color?: string;
   spread?: number;
@@ -142,7 +143,17 @@ export default function VaporizeTextCycle({
   };
 
   const globalDpr =
-    typeof window !== "undefined" ? window.devicePixelRatio * 1.5 || 1 : 1;
+    typeof window !== "undefined" ? window.devicePixelRatio || 1 : 1;
+
+  const solidTextRef = useRef<{
+    text: string;
+    textX: number;
+    textY: number;
+    font: string;
+    color: string;
+    alignment: "left" | "center" | "right";
+    letterSpacing: string;
+  } | null>(null);
 
   const sampleCanvas = (width: number, height: number, textIndex: number) => {
     const canvas = canvasRef.current;
@@ -155,14 +166,17 @@ export default function VaporizeTextCycle({
       alignment: align,
     } = propsRef.current;
 
+    const fontSize = parseFloat(fontProp.fontSize?.replace("px", "") || "50");
+    const letterSpacing = fontProp.letterSpacing ?? "0px";
     const key = [
       Math.round(width),
       Math.round(height),
       textIndex,
       textList[textIndex] ?? "",
       fontProp.fontFamily,
-      fontProp.fontSize,
+      fontSize,
       fontProp.fontWeight,
+      letterSpacing,
       colorProp,
       align,
       globalDpr,
@@ -180,16 +194,26 @@ export default function VaporizeTextCycle({
     canvas.width = Math.floor(width * globalDpr);
     canvas.height = Math.floor(height * globalDpr);
 
-    const fontSize = parseInt(fontProp.fontSize?.replace("px", "") || "50");
     const fontStr = `${fontProp.fontWeight ?? 400} ${fontSize * globalDpr}px ${fontProp.fontFamily ?? "sans-serif"}`;
     const parsedColor = parseColor(colorProp ?? "rgb(153, 153, 153)");
     const currentText = textList[textIndex] || "";
+    const letterSpacingCanvas = scaleCssLength(letterSpacing, globalDpr);
 
     let textX: number;
     const textY = canvas.height / 2;
     if (align === "center") textX = canvas.width / 2;
     else if (align === "left") textX = 0;
     else textX = canvas.width;
+
+    solidTextRef.current = {
+      text: currentText,
+      textX,
+      textY,
+      font: fontStr,
+      color: parsedColor,
+      alignment: align || "left",
+      letterSpacing: letterSpacingCanvas,
+    };
 
     const { particles, textBoundaries } = createParticles(
       ctx,
@@ -200,18 +224,25 @@ export default function VaporizeTextCycle({
       fontStr,
       parsedColor,
       align || "left",
+      letterSpacingCanvas,
     );
 
     particlesRef.current = particles;
     textBoundariesRef.current = textBoundaries;
   };
 
-  const paintStaticFrame = () => {
+  const paintSolidText = () => {
     const canvas = canvasRef.current;
     const ctx = canvas?.getContext("2d");
-    if (!canvas || !ctx || !particlesRef.current.length) return;
+    const solid = solidTextRef.current;
+    if (!canvas || !ctx || !solid) return;
     ctx.clearRect(0, 0, canvas.width, canvas.height);
-    renderParticles(ctx, particlesRef.current, globalDpr);
+    drawSolidText(ctx, solid);
+  };
+
+  const paintStaticFrame = () => {
+    // Solid fillText matches DOM width/weight; particles alone look thinner.
+    paintSolidText();
   };
 
   const notifyReady = () => {
@@ -255,7 +286,7 @@ export default function VaporizeTextCycle({
 
   // Re-sample when text content / font / color props actually change.
   const textsKey = texts.join("\0");
-  const fontKey = `${font.fontFamily}|${font.fontSize}|${font.fontWeight}`;
+  const fontKey = `${font.fontFamily}|${font.fontSize}|${font.fontWeight}|${font.letterSpacing ?? ""}`;
   useEffect(() => {
     if (animationStateRef.current === "done") return;
     const { width, height } = wrapperSizeRef.current;
@@ -326,7 +357,7 @@ export default function VaporizeTextCycle({
       const VAPORIZE_DURATION = (anim.vaporizeDuration ?? 2) * 1000;
       const FADE_IN_DURATION = (anim.fadeInDuration ?? 1) * 1000;
       const WAIT_DURATION = (anim.waitDuration ?? 0.5) * 1000;
-      const fontSize = parseInt(fontProp.fontSize?.replace("px", "") || "50");
+      const fontSize = parseFloat(fontProp.fontSize?.replace("px", "") || "50");
       const multipliedSpread = calculateVaporizeSpread(fontSize) * spreadProp;
       const transformedDensity = transformValue(
         densityProp,
@@ -345,7 +376,7 @@ export default function VaporizeTextCycle({
 
       switch (state) {
         case "static": {
-          renderParticles(ctx, particlesRef.current, globalDpr);
+          paintSolidText();
           break;
         }
         case "vaporizing": {
@@ -370,7 +401,20 @@ export default function VaporizeTextCycle({
             dir,
             transformedDensity,
           );
-          renderParticles(ctx, particlesRef.current, globalDpr);
+
+          // Keep crisp fillText on the untouched side so width matches the DOM.
+          paintSolidText();
+          if (dir === "left-to-right") {
+            ctx.clearRect(0, 0, Math.ceil(vaporizeX), canvas.height);
+          } else {
+            ctx.clearRect(
+              Math.floor(vaporizeX),
+              0,
+              canvas.width - Math.floor(vaporizeX),
+              canvas.height,
+            );
+          }
+          renderParticles(ctx, particlesRef.current, vaporizeX, dir);
 
           if (vaporizeProgressRef.current >= 100 && allVaporized) {
             const isLastText =
@@ -398,7 +442,6 @@ export default function VaporizeTextCycle({
           fadeOpacityRef.current += (deltaTime * 1000) / FADE_IN_DURATION;
 
           ctx.save();
-          ctx.scale(globalDpr, globalDpr);
           particlesRef.current.forEach((particle) => {
             particle.x = particle.originalX;
             particle.y = particle.originalY;
@@ -408,12 +451,7 @@ export default function VaporizeTextCycle({
               /[\d.]+\)$/,
               `${opacity})`,
             );
-            ctx.fillRect(
-              particle.x / globalDpr,
-              particle.y / globalDpr,
-              1,
-              1,
-            );
+            ctx.fillRect(particle.x, particle.y, 1, 1);
           });
           ctx.restore();
 
@@ -429,7 +467,7 @@ export default function VaporizeTextCycle({
           break;
         }
         case "waiting": {
-          renderParticles(ctx, particlesRef.current, globalDpr);
+          paintSolidText();
           break;
         }
       }
@@ -495,13 +533,17 @@ const createParticles = (
   font: string,
   color: string,
   alignment: "left" | "center" | "right",
+  letterSpacing = "0px",
 ) => {
   const particles: Particle[] = [];
 
   ctx.clearRect(0, 0, canvas.width, canvas.height);
-  ctx.fillStyle = color;
-  ctx.font = font;
-  ctx.textAlign = alignment;
+  applyTextStyle(ctx, {
+    font,
+    color,
+    alignment,
+    letterSpacing,
+  });
   ctx.textBaseline = "middle";
   ctx.imageSmoothingQuality = "high";
   ctx.imageSmoothingEnabled = true;
@@ -523,19 +565,15 @@ const createParticles = (
 
   const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
   const data = imageData.data;
-  const dpr =
-    canvas.clientWidth > 0
-      ? canvas.width / canvas.clientWidth
-      : window.devicePixelRatio * 1.5 || 1;
-  const baseDPR = 3;
-  const sampleRate = Math.max(1, Math.round(dpr / baseDPR));
+  // Sample every pixel so the at-rest glyph matches DOM weight/width.
+  const sampleRate = 1;
 
   for (let y = 0; y < canvas.height; y += sampleRate) {
     for (let x = 0; x < canvas.width; x += sampleRate) {
       const index = (y * canvas.width + x) * 4;
       const alpha = data[index + 3];
       if (alpha > 0) {
-        const originalAlpha = (alpha / 255) * (sampleRate / dpr);
+        const originalAlpha = alpha / 255;
         particles.push({
           x,
           y,
@@ -556,6 +594,59 @@ const createParticles = (
   ctx.clearRect(0, 0, canvas.width, canvas.height);
   return { particles, textBoundaries };
 };
+
+const applyTextStyle = (
+  ctx: CanvasRenderingContext2D,
+  {
+    font,
+    color,
+    alignment,
+    letterSpacing,
+  }: {
+    font: string;
+    color: string;
+    alignment: "left" | "center" | "right";
+    letterSpacing: string;
+  },
+) => {
+  ctx.fillStyle = color;
+  ctx.font = font;
+  ctx.textAlign = alignment;
+  if ("letterSpacing" in ctx) {
+    (
+      ctx as CanvasRenderingContext2D & { letterSpacing: string }
+    ).letterSpacing = letterSpacing;
+  }
+};
+
+const drawSolidText = (
+  ctx: CanvasRenderingContext2D,
+  solid: {
+    text: string;
+    textX: number;
+    textY: number;
+    font: string;
+    color: string;
+    alignment: "left" | "center" | "right";
+    letterSpacing: string;
+  },
+) => {
+  applyTextStyle(ctx, solid);
+  ctx.textBaseline = "middle";
+  ctx.imageSmoothingQuality = "high";
+  ctx.imageSmoothingEnabled = true;
+  ctx.fillText(solid.text, solid.textX, solid.textY);
+};
+
+/** Scale a CSS length (px/em) by DPR for canvas bitmap space. */
+function scaleCssLength(value: string, dpr: number): string {
+  if (!value || value === "normal") return "0px";
+  const pxMatch = value.trim().match(/^(-?[\d.]+)px$/i);
+  if (pxMatch) {
+    return `${parseFloat(pxMatch[1]) * dpr}px`;
+  }
+  return value;
+}
 
 const updateParticles = (
   particles: Particle[],
@@ -638,20 +729,24 @@ const updateParticles = (
 const renderParticles = (
   ctx: CanvasRenderingContext2D,
   particles: Particle[],
-  globalDpr: number,
+  vaporizeX?: number,
+  direction?: string,
 ) => {
-  ctx.save();
-  ctx.scale(globalDpr, globalDpr);
   for (const particle of particles) {
-    if (particle.opacity > 0) {
-      ctx.fillStyle = particle.color.replace(
-        /[\d.]+\)$/,
-        `${particle.opacity})`,
-      );
-      ctx.fillRect(particle.x / globalDpr, particle.y / globalDpr, 1, 1);
+    if (particle.opacity <= 0) continue;
+    if (vaporizeX != null && direction) {
+      const reached =
+        direction === "left-to-right"
+          ? particle.originalX <= vaporizeX
+          : particle.originalX >= vaporizeX;
+      if (!reached) continue;
     }
+    ctx.fillStyle = particle.color.replace(
+      /[\d.]+\)$/,
+      `${particle.opacity})`,
+    );
+    ctx.fillRect(particle.x, particle.y, 1, 1);
   }
-  ctx.restore();
 };
 
 const resetParticles = (particles: Particle[]) => {
