@@ -196,7 +196,7 @@ const shaderSource = `#version 300 es
       vec2 mPos = mouse / R;
       mPos.x *= R.x / R.y;
       float dist = distance(aspectUv, mPos);
-      float mouseGlow = smoothstep(0.35, 0.0, dist);
+      float mouseGlow = smoothstep(0.21, 0.0, dist);
       cloudColor += mouseGlow * 0.05 * vec3(0.6, 0.7, 1.0);
 
       O=vec4(cloudColor,1);

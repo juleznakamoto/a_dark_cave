@@ -67,7 +67,6 @@ export default function StartScreen() {
   const executedRef = useRef(false);
   const isCruelMode = cruelMode;
   const [showParticles, setShowParticles] = useState(false);
-  const [introCanvasReadyCount, setIntroCanvasReadyCount] = useState(0);
   const [introFadeInDone, setIntroFadeInDone] = useState(false);
   const [introVaporFont, setIntroVaporFont] = useState<{
     fontFamily: string;
@@ -75,8 +74,8 @@ export default function StartScreen() {
     fontWeight: number;
     letterSpacing?: string;
   }>(START_INTRO_VAPORIZE_FONT_FALLBACK);
-  const introCanvasReady = introCanvasReadyCount >= 3;
   const introLineRefs = useRef<Array<HTMLSpanElement | null>>([]);
+  const introLineClipRefs = useRef<Array<HTMLElement | null>>([]);
   const { t } = useTranslation("ui");
   const { locale } = useLocale();
   const steamEditionActive = useSteamEditionActive();
@@ -87,13 +86,18 @@ export default function StartScreen() {
   const hideStartScreenSocialLinks = steamDesktopEditionActive;
 
   useEffect(() => {
-    if (!showParticles) {
-      setIntroCanvasReadyCount(0);
-    }
+    if (showParticles) return;
+    // Reset wipe clips if start screen is shown again.
+    introLineClipRefs.current.forEach((el) => {
+      if (el) el.style.clipPath = "";
+    });
   }, [showParticles]);
 
-  const handleIntroCanvasReady = useCallback(() => {
-    setIntroCanvasReadyCount((count) => count + 1);
+  // Imperative clip updates avoid per-frame React re-renders (mobile layout jitter).
+  const handleIntroVaporProgress = useCallback((index: number, progress: number) => {
+    const el = introLineClipRefs.current[index];
+    if (!el) return;
+    el.style.clipPath = `inset(0 0 0 ${progress}%)`;
   }, []);
 
   useEffect(() => {
@@ -359,30 +363,36 @@ export default function StartScreen() {
             return (
               <div
                 key={`${index}-${line}`}
-                className="relative text-lg leading-relaxed text-gray-300/90 font-normal"
+                className="relative mx-auto w-fit text-lg leading-relaxed text-gray-300/90 font-normal"
               >
                 {showParticles && (
-                  <div className="absolute inset-0 z-0">
+                  <div className="pointer-events-none absolute inset-0 z-10">
                     <VaporizeTextCycle
                       texts={[line]}
                       loop={false}
-                      play={introCanvasReady}
-                      onReady={handleIntroCanvasReady}
+                      play={showParticles}
+                      overlayParticlesOnly
                       matchSource={introLineRefs.current[index]}
+                      onProgress={(progress) =>
+                        handleIntroVaporProgress(index, progress)
+                      }
                       font={introVaporFont}
                       color={START_INTRO_VAPORIZE_COLOR}
                       spread={8}
                       density={5}
                       animation={START_INTRO_VAPORIZE_ANIMATION}
                       direction="left-to-right"
-                      alignment="center"
+                      alignment="left"
                       tag={index === 0 ? "h1" : "p"}
                     />
                   </div>
                 )}
                 <LineTag
-                  className={`relative z-10 m-0 text-lg leading-relaxed font-normal ${introFadeInDone || showParticles ? "" : "animate-fade-in-text"
-                    } ${introCanvasReady ? "invisible" : ""}`}
+                  ref={(el: HTMLHeadingElement | HTMLParagraphElement | null) => {
+                    introLineClipRefs.current[index] = el;
+                  }}
+                  className={`relative z-0 m-0 text-lg leading-relaxed font-normal ${introFadeInDone ? "" : "animate-fade-in-text"
+                    }`}
                 >
                   <span
                     ref={(el) => {

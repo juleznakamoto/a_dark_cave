@@ -47,6 +47,13 @@ type VaporizeTextCycleProps = {
    * Use this for start-screen handoff so canvas text does not jump.
    */
   matchSource?: HTMLElement | null;
+  /**
+   * When true, never draws solid fillText — only dissolving particles.
+   * Pair with keeping the real DOM text visible and clipping it via onProgress.
+   */
+  overlayParticlesOnly?: boolean;
+  /** Vaporize wipe progress 0–100 (for clipping a DOM twin). */
+  onProgress?: (progress: number) => void;
 };
 
 type Particle = {
@@ -96,6 +103,8 @@ export default function VaporizeTextCycle({
   play = true,
   onReady,
   matchSource = null,
+  overlayParticlesOnly = false,
+  onProgress,
 }: VaporizeTextCycleProps) {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const wrapperRef = useRef<HTMLDivElement | null>(null);
@@ -111,8 +120,12 @@ export default function VaporizeTextCycle({
   const readyFiredRef = useRef(false);
   const onReadyRef = useRef(onReady);
   onReadyRef.current = onReady;
+  const onProgressRef = useRef(onProgress);
+  onProgressRef.current = onProgress;
   const matchSourceRef = useRef(matchSource);
   matchSourceRef.current = matchSource;
+  const overlayParticlesOnlyRef = useRef(overlayParticlesOnly);
+  overlayParticlesOnlyRef.current = overlayParticlesOnly;
 
   const propsRef = useRef({
     texts,
@@ -264,6 +277,12 @@ export default function VaporizeTextCycle({
   };
 
   const paintSolidText = () => {
+    if (overlayParticlesOnlyRef.current) {
+      const canvas = canvasRef.current;
+      const ctx = canvas?.getContext("2d");
+      if (canvas && ctx) ctx.clearRect(0, 0, canvas.width, canvas.height);
+      return;
+    }
     const canvas = canvasRef.current;
     const ctx = canvas?.getContext("2d");
     const solid = solidTextRef.current;
@@ -419,6 +438,7 @@ export default function VaporizeTextCycle({
           if (!textBoundaries) break;
 
           const progress = Math.min(100, vaporizeProgressRef.current);
+          onProgressRef.current?.(progress);
           const vaporizeX =
             dir === "left-to-right"
               ? textBoundaries.left + (textBoundaries.width * progress) / 100
@@ -434,17 +454,20 @@ export default function VaporizeTextCycle({
             transformedDensity,
           );
 
-          // Keep crisp fillText on the untouched side so width matches the DOM.
-          paintSolidText();
-          if (dir === "left-to-right") {
-            ctx.clearRect(0, 0, Math.ceil(vaporizeX), canvas.height);
-          } else {
-            ctx.clearRect(
-              Math.floor(vaporizeX),
-              0,
-              canvas.width - Math.floor(vaporizeX),
-              canvas.height,
-            );
+          ctx.clearRect(0, 0, canvas.width, canvas.height);
+          if (!overlayParticlesOnlyRef.current) {
+            // Keep crisp fillText on the untouched side so width matches the DOM.
+            paintSolidText();
+            if (dir === "left-to-right") {
+              ctx.clearRect(0, 0, Math.ceil(vaporizeX), canvas.height);
+            } else {
+              ctx.clearRect(
+                Math.floor(vaporizeX),
+                0,
+                canvas.width - Math.floor(vaporizeX),
+                canvas.height,
+              );
+            }
           }
           renderParticles(ctx, particlesRef.current, vaporizeX, dir);
 
@@ -454,6 +477,7 @@ export default function VaporizeTextCycle({
             if (!shouldLoop && isLastText) {
               particlesRef.current = [];
               ctx.clearRect(0, 0, canvas.width, canvas.height);
+              onProgressRef.current?.(100);
               setAnimationState("done");
               return;
             }
