@@ -1,9 +1,10 @@
-import { useEffect, useRef, useState, lazy, Suspense } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Helmet } from "react-helmet-async";
 import { ParticleButton } from "@/components/ui/particle-button";
 import { Button } from "@/components/ui/button";
 import { useGameStore } from "@/game/state";
 import CloudShader from "@/components/ui/cloud-shader";
+import VaporizeTextCycle from "@/components/ui/vapour-text-effect";
 import { audioManager, SOUND_VOLUME } from "@/lib/audio";
 import { HoverCalloutTooltip } from "@/components/game/HoverCalloutTooltip";
 import { FooterSocialIcon } from "@/components/game/FooterSocialIcon";
@@ -37,10 +38,6 @@ const START_INTRO_VAPORIZE_ANIMATION = {
   fadeInDuration: 0.4,
   waitDuration: 0,
 } as const;
-
-const VaporizeTextCycle = lazy(
-  () => import("@/components/ui/vapour-text-effect"),
-);
 
 const START_FOOTER_LINK_BASE =
   "inline-flex items-center gap-0 sm:gap-1 hover:text-foreground transition-opacity";
@@ -296,56 +293,58 @@ export default function StartScreen() {
       )}
 
       <main className="relative z-10 flex-1 flex flex-col items-center justify-center min-h-screen">
-        <div className="text-center mb-4 w-full max-w-xl px-4">
-          {showParticles ? (
-            <Suspense fallback={null}>
-              <div className="flex flex-col items-center gap-0">
-                {(isCruelMode
-                  ? [
-                    t("startScreen.titleCruel"),
-                    t("startScreen.airCruel"),
-                    t("startScreen.seeCruel"),
-                  ]
-                  : [
-                    t("startScreen.titleNormal"),
-                    t("startScreen.airNormal"),
-                    t("startScreen.seeNormal"),
-                  ]
-                ).map((line, index) => (
-                  <div key={`${index}-${line}`} className="h-7 w-full">
-                    <VaporizeTextCycle
-                      texts={[line]}
-                      loop={false}
-                      font={START_INTRO_VAPORIZE_FONT}
-                      color={START_INTRO_VAPORIZE_COLOR}
-                      spread={5}
-                      density={5}
-                      animation={START_INTRO_VAPORIZE_ANIMATION}
-                      direction="left-to-right"
-                      alignment="center"
-                      tag={index === 0 ? "h1" : "p"}
-                    />
-                  </div>
-                ))}
-              </div>
-            </Suspense>
-          ) : (
-            <>
-              <h1 className="animate-fade-in-text text-lg text-gray-300/90 leading-relaxed font-normal">
-                {isCruelMode
-                  ? t("startScreen.titleCruel")
-                  : t("startScreen.titleNormal")}
-              </h1>
-              <p className="animate-fade-in-text text-lg text-gray-300/90 leading-relaxed">
-                {isCruelMode
-                  ? t("startScreen.airCruel")
-                  : t("startScreen.airNormal")}
-                <br />
-                {isCruelMode
-                  ? t("startScreen.seeCruel")
-                  : t("startScreen.seeNormal")}
-              </p>
-            </>
+        <div className="relative text-center mb-4 w-full max-w-xl px-4">
+          {/* Always keep static lines mounted so Make Fire never jumps when vaporize starts. */}
+          <div
+            className={showParticles ? "invisible" : undefined}
+            aria-hidden={showParticles}
+          >
+            <h1 className="animate-fade-in-text text-lg text-gray-300/90 leading-relaxed font-normal">
+              {isCruelMode
+                ? t("startScreen.titleCruel")
+                : t("startScreen.titleNormal")}
+            </h1>
+            <p className="animate-fade-in-text text-lg text-gray-300/90 leading-relaxed">
+              {isCruelMode
+                ? t("startScreen.airCruel")
+                : t("startScreen.airNormal")}
+              <br />
+              {isCruelMode
+                ? t("startScreen.seeCruel")
+                : t("startScreen.seeNormal")}
+            </p>
+          </div>
+
+          {showParticles && (
+            <div className="absolute inset-0 flex flex-col">
+              {(isCruelMode
+                ? [
+                  t("startScreen.titleCruel"),
+                  t("startScreen.airCruel"),
+                  t("startScreen.seeCruel"),
+                ]
+                : [
+                  t("startScreen.titleNormal"),
+                  t("startScreen.airNormal"),
+                  t("startScreen.seeNormal"),
+                ]
+              ).map((line, index) => (
+                <div key={`${index}-${line}`} className="min-h-0 w-full flex-1">
+                  <VaporizeTextCycle
+                    texts={[line]}
+                    loop={false}
+                    font={START_INTRO_VAPORIZE_FONT}
+                    color={START_INTRO_VAPORIZE_COLOR}
+                    spread={5}
+                    density={5}
+                    animation={START_INTRO_VAPORIZE_ANIMATION}
+                    direction="left-to-right"
+                    alignment="center"
+                    tag={index === 0 ? "h1" : "p"}
+                  />
+                </div>
+              ))}
+            </div>
           )}
         </div>
 

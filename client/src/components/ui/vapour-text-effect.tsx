@@ -1,6 +1,7 @@
 import React, {
   useRef,
   useEffect,
+  useLayoutEffect,
   useState,
   createElement,
   memo,
@@ -195,7 +196,8 @@ export default function VaporizeTextCycle({
   };
 
   // Measure wrapper once + on real size changes (ignore sub-pixel thrash).
-  useEffect(() => {
+  // useLayoutEffect so the first paint already has sampled particles (no blank flash).
+  useLayoutEffect(() => {
     const container = wrapperRef.current;
     if (!container) return;
 
