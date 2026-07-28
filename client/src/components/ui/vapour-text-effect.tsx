@@ -42,6 +42,11 @@ type VaporizeTextCycleProps = {
   play?: boolean;
   /** Fires once after the first canvas sample + paint (for seamless DOM→canvas handoff). */
   onReady?: () => void;
+  /**
+   * DOM node to pixel-align with (alphabetic baseline + left edge).
+   * Use this for start-screen handoff so canvas text does not jump.
+   */
+  matchSource?: HTMLElement | null;
 };
 
 type Particle = {
@@ -90,6 +95,7 @@ export default function VaporizeTextCycle({
   loop = true,
   play = true,
   onReady,
+  matchSource = null,
 }: VaporizeTextCycleProps) {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const wrapperRef = useRef<HTMLDivElement | null>(null);
@@ -105,6 +111,8 @@ export default function VaporizeTextCycle({
   const readyFiredRef = useRef(false);
   const onReadyRef = useRef(onReady);
   onReadyRef.current = onReady;
+  const matchSourceRef = useRef(matchSource);
+  matchSourceRef.current = matchSource;
 
   const propsRef = useRef({
     texts,
@@ -153,6 +161,7 @@ export default function VaporizeTextCycle({
     color: string;
     alignment: "left" | "center" | "right";
     letterSpacing: string;
+    textBaseline: CanvasTextBaseline;
   } | null>(null);
 
   const sampleCanvas = (width: number, height: number, textIndex: number) => {
@@ -168,6 +177,7 @@ export default function VaporizeTextCycle({
 
     const fontSize = parseFloat(fontProp.fontSize?.replace("px", "") || "50");
     const letterSpacing = fontProp.letterSpacing ?? "0px";
+    const matchEl = matchSourceRef.current;
     const key = [
       Math.round(width),
       Math.round(height),
@@ -180,6 +190,7 @@ export default function VaporizeTextCycle({
       colorProp,
       align,
       globalDpr,
+      matchEl ? "match" : "free",
     ].join("|");
 
     // Skip identical re-samples — prevents mid-animation particle resets.
@@ -200,10 +211,29 @@ export default function VaporizeTextCycle({
     const letterSpacingCanvas = scaleCssLength(letterSpacing, globalDpr);
 
     let textX: number;
-    const textY = canvas.height / 2;
-    if (align === "center") textX = canvas.width / 2;
-    else if (align === "left") textX = 0;
-    else textX = canvas.width;
+    let textY: number;
+    let drawAlign: "left" | "center" | "right" = align || "left";
+    let textBaseline: CanvasTextBaseline = "middle";
+
+    const matched = matchEl
+      ? measureDomTextAnchor(matchEl, canvas)
+      : null;
+
+    if (matched) {
+      // Pin to the live DOM glyph box — avoids middle-baseline jump on handoff.
+      const canvasRect = canvas.getBoundingClientRect();
+      const scaleX = canvas.width / Math.max(1, canvasRect.width);
+      const scaleY = canvas.height / Math.max(1, canvasRect.height);
+      textX = matched.textX * scaleX;
+      textY = matched.textY * scaleY;
+      drawAlign = "left";
+      textBaseline = "alphabetic";
+    } else {
+      textY = canvas.height / 2;
+      if (align === "center") textX = canvas.width / 2;
+      else if (align === "left") textX = 0;
+      else textX = canvas.width;
+    }
 
     solidTextRef.current = {
       text: currentText,
@@ -211,8 +241,9 @@ export default function VaporizeTextCycle({
       textY,
       font: fontStr,
       color: parsedColor,
-      alignment: align || "left",
+      alignment: drawAlign,
       letterSpacing: letterSpacingCanvas,
+      textBaseline,
     };
 
     const { particles, textBoundaries } = createParticles(
@@ -223,8 +254,9 @@ export default function VaporizeTextCycle({
       textY,
       fontStr,
       parsedColor,
-      align || "left",
+      drawAlign,
       letterSpacingCanvas,
+      textBaseline,
     );
 
     particlesRef.current = particles;
@@ -534,6 +566,7 @@ const createParticles = (
   color: string,
   alignment: "left" | "center" | "right",
   letterSpacing = "0px",
+  textBaseline: CanvasTextBaseline = "middle",
 ) => {
   const particles: Particle[] = [];
 
@@ -544,7 +577,7 @@ const createParticles = (
     alignment,
     letterSpacing,
   });
-  ctx.textBaseline = "middle";
+  ctx.textBaseline = textBaseline;
   ctx.imageSmoothingQuality = "high";
   ctx.imageSmoothingEnabled = true;
 
@@ -629,14 +662,41 @@ const drawSolidText = (
     color: string;
     alignment: "left" | "center" | "right";
     letterSpacing: string;
+    textBaseline: CanvasTextBaseline;
   },
 ) => {
   applyTextStyle(ctx, solid);
-  ctx.textBaseline = "middle";
+  ctx.textBaseline = solid.textBaseline;
   ctx.imageSmoothingQuality = "high";
   ctx.imageSmoothingEnabled = true;
   ctx.fillText(solid.text, solid.textX, solid.textY);
 };
+
+/**
+ * Measure a DOM text node's left edge + alphabetic baseline relative to a canvas
+ * (CSS pixel space). Used so canvas fillText can sit on the same glyphs.
+ */
+function measureDomTextAnchor(
+  matchEl: HTMLElement,
+  canvas: HTMLCanvasElement,
+): { textX: number; textY: number } | null {
+  const canvasRect = canvas.getBoundingClientRect();
+  if (canvasRect.width < 1 || canvasRect.height < 1) return null;
+
+  const probe = document.createElement("span");
+  probe.setAttribute("aria-hidden", "true");
+  probe.style.cssText =
+    "display:inline-block;width:0;height:0;overflow:hidden;vertical-align:baseline;";
+  matchEl.appendChild(probe);
+  const baseline = probe.getBoundingClientRect().top;
+  matchEl.removeChild(probe);
+
+  const matchRect = matchEl.getBoundingClientRect();
+  return {
+    textX: matchRect.left - canvasRect.left,
+    textY: baseline - canvasRect.top,
+  };
+}
 
 /** Scale a CSS length (px/em) by DPR for canvas bitmap space. */
 function scaleCssLength(value: string, dpr: number): string {

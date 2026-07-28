@@ -82,6 +82,15 @@ class WebGLRenderer {
     gl.vertexAttribPointer(position, 2, gl.FLOAT, false, 0, 0);
     (program as any).resolution = gl.getUniformLocation(program, "resolution");
     (program as any).time = gl.getUniformLocation(program, "time");
+    (program as any).mouse = gl.getUniformLocation(program, "mouse");
+  }
+
+  private mouseX = 0;
+  private mouseY = 0;
+
+  setMouse(canvasX: number, canvasY: number) {
+    this.mouseX = canvasX;
+    this.mouseY = canvasY;
   }
 
   render(now = 0) {
@@ -98,6 +107,7 @@ class WebGLRenderer {
       this.canvas.height,
     );
     gl.uniform1f((program as any).time, now * 1e-3);
+    gl.uniform2f((program as any).mouse, this.mouseX, this.mouseY);
     gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
   }
 
@@ -126,6 +136,7 @@ const shaderSource = `#version 300 es
     out vec4 O;
     uniform vec2 resolution;
     uniform float time;
+    uniform vec2 mouse;
     #define FC gl_FragCoord.xy
     #define T time
     #define R resolution
@@ -178,6 +189,16 @@ const shaderSource = `#version 300 es
       vec2 uv=(FC-.5*R)/MN,st=uv*vec2(2,1);
       float bg=clouds(vec2(st.x+T*CLOUD_SPEED,-st.y));
       vec3 cloudColor = BACKGROUND_TINT * (1.0 + (bg - 0.5) * CLOUD_COLOR_DEVIATION);
+
+      // Same mouse glow as sleep mist (MistBackground)
+      vec2 aspectUv = FC / R;
+      aspectUv.x *= R.x / R.y;
+      vec2 mPos = mouse / R;
+      mPos.x *= R.x / R.y;
+      float dist = distance(aspectUv, mPos);
+      float mouseGlow = smoothstep(0.35, 0.0, dist);
+      cloudColor += mouseGlow * 0.05 * vec3(0.6, 0.7, 1.0);
+
       O=vec4(cloudColor,1);
     }`;
 
@@ -249,9 +270,35 @@ export default function CloudShader({ className = "" }: CloudShaderProps) {
 
     const unsubscribeViewport = subscribeViewportResize(handleResize);
 
+    const syncMouseFromClient = (clientX: number, clientY: number) => {
+      const canvas = canvasRef.current;
+      const renderer = rendererRef.current;
+      if (!canvas || !renderer) return;
+      const rect = canvas.getBoundingClientRect();
+      if (rect.width < 1 || rect.height < 1) return;
+      const canvasX = ((clientX - rect.left) / rect.width) * canvas.width;
+      const canvasY =
+        (1 - (clientY - rect.top) / rect.height) * canvas.height;
+      renderer.setMouse(canvasX, canvasY);
+    };
+
+    const handleMouseMove = (e: MouseEvent) => {
+      syncMouseFromClient(e.clientX, e.clientY);
+    };
+    const handleTouchMove = (e: TouchEvent) => {
+      const touch = e.touches[0];
+      if (!touch) return;
+      syncMouseFromClient(touch.clientX, touch.clientY);
+    };
+
+    window.addEventListener("mousemove", handleMouseMove, { passive: true });
+    window.addEventListener("touchmove", handleTouchMove, { passive: true });
+
     return () => {
       isActiveRef.current = false;
       unsubscribeViewport();
+      window.removeEventListener("mousemove", handleMouseMove);
+      window.removeEventListener("touchmove", handleTouchMove);
       if (animationFrameRef.current)
         cancelAnimationFrame(animationFrameRef.current);
       if (rendererRef.current) {

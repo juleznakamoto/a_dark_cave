@@ -30,7 +30,7 @@ import { FullscreenButton } from "@/components/game/FullscreenButton";
 const START_INTRO_VAPORIZE_COLOR = "rgba(209, 213, 219, 0.9)";
 const START_INTRO_VAPORIZE_ANIMATION = {
   vaporizeDuration: 1.5,
-  fadeInDuration: 0.4,
+  fadeInDuration: 0.35,
   waitDuration: 0,
 } as const;
 const START_INTRO_VAPORIZE_FONT_FALLBACK = {
@@ -68,6 +68,7 @@ export default function StartScreen() {
   const isCruelMode = cruelMode;
   const [showParticles, setShowParticles] = useState(false);
   const [introCanvasReadyCount, setIntroCanvasReadyCount] = useState(0);
+  const [introFadeInDone, setIntroFadeInDone] = useState(false);
   const [introVaporFont, setIntroVaporFont] = useState<{
     fontFamily: string;
     fontSize: string;
@@ -139,6 +140,23 @@ export default function StartScreen() {
     btn.addEventListener("animationend", handleAnimationEnd);
     return () => btn.removeEventListener("animationend", handleAnimationEnd);
   }, []);
+
+  // Drop intro fade-in class after it finishes so Make Fire does not clear a
+  // filter containing-block (that subtle layout shift looked like the text jumping).
+  useEffect(() => {
+    if (introFadeInDone) return;
+    const firstLine = introLineRefs.current[0]?.parentElement;
+    if (!firstLine) return;
+
+    const handleIntroAnimationEnd = (event: AnimationEvent) => {
+      if (event.animationName !== "fade-in-text") return;
+      setIntroFadeInDone(true);
+    };
+
+    firstLine.addEventListener("animationend", handleIntroAnimationEnd);
+    return () =>
+      firstLine.removeEventListener("animationend", handleIntroAnimationEnd);
+  }, [introFadeInDone]);
 
   const handleLightFire = () => {
     if (executedRef.current) return;
@@ -350,6 +368,7 @@ export default function StartScreen() {
                       loop={false}
                       play={introCanvasReady}
                       onReady={handleIntroCanvasReady}
+                      matchSource={introLineRefs.current[index]}
                       font={introVaporFont}
                       color={START_INTRO_VAPORIZE_COLOR}
                       spread={8}
@@ -362,7 +381,7 @@ export default function StartScreen() {
                   </div>
                 )}
                 <LineTag
-                  className={`relative z-10 m-0 text-lg leading-relaxed font-normal ${showParticles ? "" : "animate-fade-in-text"
+                  className={`relative z-10 m-0 text-lg leading-relaxed font-normal ${introFadeInDone || showParticles ? "" : "animate-fade-in-text"
                     } ${introCanvasReady ? "invisible" : ""}`}
                 >
                   <span
