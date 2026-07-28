@@ -29,7 +29,7 @@ import { FullscreenButton } from "@/components/game/FullscreenButton";
 
 const START_INTRO_VAPORIZE_COLOR = "rgba(209, 213, 219, 0.9)";
 const START_INTRO_VAPORIZE_ANIMATION = {
-  vaporizeDuration: 1.7,
+  vaporizeDuration: 1.5,
   fadeInDuration: 0.4,
   waitDuration: 0,
 } as const;
@@ -352,7 +352,7 @@ export default function StartScreen() {
                       onReady={handleIntroCanvasReady}
                       font={introVaporFont}
                       color={START_INTRO_VAPORIZE_COLOR}
-                      spread={7}
+                      spread={8}
                       density={5}
                       animation={START_INTRO_VAPORIZE_ANIMATION}
                       direction="left-to-right"
