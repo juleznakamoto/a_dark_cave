@@ -20,8 +20,10 @@ export const STAT_EFFECTS_INSIGHT_COST = 1000;
 export const BUILDING_DESCRIPTIONS_INSIGHT_COST = 1000;
 /** One-time cost to reveal all cave craft action descriptions. */
 export const CRAFT_DESCRIPTIONS_INSIGHT_COST = 1000;
-/** One-time cost to reveal a hidden achievement title before any progress is made. */
-export const ACHIEVEMENT_TITLE_INSIGHT_COST = 250;
+/** Insight cost to unveil a first-ring (tier 0 / leftmost) achievement title. */
+export const ACHIEVEMENT_TITLE_INSIGHT_COST_TIER_0 = 250;
+/** Insight cost to unveil achievement titles on outer rings (tier 1+). */
+export const ACHIEVEMENT_TITLE_INSIGHT_COST = 500;
 /** Prefix for `insightRevealing` keys while an achievement title reveal animates. */
 export const ACHIEVEMENT_TITLE_INSIGHT_KEY_PREFIX = "achievementTitle:";
 
@@ -32,6 +34,19 @@ export function getAchievementTitleInsightKey(achievementId: string): string {
 export function parseAchievementTitleInsightKey(key: string): string | null {
   if (!key.startsWith(ACHIEVEMENT_TITLE_INSIGHT_KEY_PREFIX)) return null;
   return key.slice(ACHIEVEMENT_TITLE_INSIGHT_KEY_PREFIX.length) || null;
+}
+
+/**
+ * Ring index from `{category}-{ring}-…` IDs (e.g. `basic-0-woodGatherer` → 0).
+ * First ring stays cheaper; unknown shapes use the higher default cost.
+ */
+export function getAchievementTitleInsightCost(achievementId: string): number {
+  const parts = achievementId.split("-");
+  const ringIndex = Number(parts[1]);
+  if (parts.length >= 2 && Number.isInteger(ringIndex) && ringIndex === 0) {
+    return ACHIEVEMENT_TITLE_INSIGHT_COST_TIER_0;
+  }
+  return ACHIEVEMENT_TITLE_INSIGHT_COST;
 }
 /** Spend Insight to extend an active timed-event tab countdown. */
 export const TIMED_EVENT_TAB_PROLONG_INSIGHT_COST = 500;
@@ -266,7 +281,7 @@ export function canRevealAchievementTitle(
   ) {
     return false;
   }
-  return getInsightAmount(state) >= ACHIEVEMENT_TITLE_INSIGHT_COST;
+  return getInsightAmount(state) >= getAchievementTitleInsightCost(achievementId);
 }
 
 export function canProlongTimedEventTab(

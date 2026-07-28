@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { Helmet } from "react-helmet-async";
 import { ParticleButton } from "@/components/ui/particle-button";
 import { Button } from "@/components/ui/button";
@@ -67,6 +67,8 @@ export default function StartScreen() {
   const executedRef = useRef(false);
   const isCruelMode = cruelMode;
   const [showParticles, setShowParticles] = useState(false);
+  const [introCanvasReadyCount, setIntroCanvasReadyCount] = useState(0);
+  const introCanvasReady = introCanvasReadyCount >= 3;
   const { t } = useTranslation("ui");
   const { locale } = useLocale();
   const steamEditionActive = useSteamEditionActive();
@@ -75,6 +77,16 @@ export default function StartScreen() {
   // Steam Game / Playtest / Demo (build or DEV Game Mode) — no social/store links in footer.
   // Galaxy and Normal/web keep Steam / Reddit / Contact.
   const hideStartScreenSocialLinks = steamDesktopEditionActive;
+
+  useEffect(() => {
+    if (!showParticles) {
+      setIntroCanvasReadyCount(0);
+    }
+  }, [showParticles]);
+
+  const handleIntroCanvasReady = useCallback(() => {
+    setIntroCanvasReadyCount((count) => count + 1);
+  }, []);
 
   useEffect(() => {
     audioManager.setMusicVolume(musicVolume ?? 1);
@@ -294,29 +306,9 @@ export default function StartScreen() {
 
       <main className="relative z-10 flex-1 flex flex-col items-center justify-center min-h-screen">
         <div className="relative text-center mb-4 w-full max-w-xl px-4">
-          {/* Always keep static lines mounted so Make Fire never jumps when vaporize starts. */}
-          <div
-            className={showParticles ? "invisible" : undefined}
-            aria-hidden={showParticles}
-          >
-            <h1 className="animate-fade-in-text text-lg text-gray-300/90 leading-relaxed font-normal">
-              {isCruelMode
-                ? t("startScreen.titleCruel")
-                : t("startScreen.titleNormal")}
-            </h1>
-            <p className="animate-fade-in-text text-lg text-gray-300/90 leading-relaxed">
-              {isCruelMode
-                ? t("startScreen.airCruel")
-                : t("startScreen.airNormal")}
-              <br />
-              {isCruelMode
-                ? t("startScreen.seeCruel")
-                : t("startScreen.seeNormal")}
-            </p>
-          </div>
-
+          {/* Canvases sit under the DOM copy; DOM stays visible until every canvas has painted. */}
           {showParticles && (
-            <div className="absolute inset-0 flex flex-col">
+            <div className="absolute inset-0 z-0 flex flex-col">
               {(isCruelMode
                 ? [
                   t("startScreen.titleCruel"),
@@ -333,6 +325,8 @@ export default function StartScreen() {
                   <VaporizeTextCycle
                     texts={[line]}
                     loop={false}
+                    play={introCanvasReady}
+                    onReady={handleIntroCanvasReady}
                     font={START_INTRO_VAPORIZE_FONT}
                     color={START_INTRO_VAPORIZE_COLOR}
                     spread={5}
@@ -346,6 +340,26 @@ export default function StartScreen() {
               ))}
             </div>
           )}
+
+          <div
+            className={`relative z-10 ${introCanvasReady ? "invisible" : ""}`}
+            aria-hidden={introCanvasReady}
+          >
+            <h1 className="animate-fade-in-text text-lg text-gray-300/90 leading-relaxed font-normal">
+              {isCruelMode
+                ? t("startScreen.titleCruel")
+                : t("startScreen.titleNormal")}
+            </h1>
+            <p className="animate-fade-in-text text-lg text-gray-300/90 leading-relaxed">
+              {isCruelMode
+                ? t("startScreen.airCruel")
+                : t("startScreen.airNormal")}
+              <br />
+              {isCruelMode
+                ? t("startScreen.seeCruel")
+                : t("startScreen.seeNormal")}
+            </p>
+          </div>
         </div>
 
         <div className={showParticles ? undefined : "fire-glow-hint"}>

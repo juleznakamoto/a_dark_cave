@@ -37,6 +37,10 @@ type VaporizeTextCycleProps = {
   tag?: Tag | "h1" | "h2" | "h3" | "p";
   /** When false, stops after the last text vaporises (no fade-in / loop). Default true. */
   loop?: boolean;
+  /** When false, keeps a static particle render and does not vaporize yet. Default true. */
+  play?: boolean;
+  /** Fires once after the first canvas sample + paint (for seamless DOM→canvas handoff). */
+  onReady?: () => void;
 };
 
 type Particle = {
@@ -83,6 +87,8 @@ export default function VaporizeTextCycle({
   alignment = "center",
   tag = Tag.P,
   loop = true,
+  play = true,
+  onReady,
 }: VaporizeTextCycleProps) {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const wrapperRef = useRef<HTMLDivElement | null>(null);
@@ -95,6 +101,9 @@ export default function VaporizeTextCycle({
   const animationStateRef = useRef<AnimationState>("static");
   const wrapperSizeRef = useRef({ width: 0, height: 0 });
   const sampledKeyRef = useRef<string>("");
+  const readyFiredRef = useRef(false);
+  const onReadyRef = useRef(onReady);
+  onReadyRef.current = onReady;
 
   const propsRef = useRef({
     texts,
@@ -106,6 +115,7 @@ export default function VaporizeTextCycle({
     direction,
     alignment,
     loop,
+    play,
   });
   propsRef.current = {
     texts,
@@ -117,6 +127,7 @@ export default function VaporizeTextCycle({
     direction,
     alignment,
     loop,
+    play,
   };
 
   const isInView = useIsInView(wrapperRef as React.RefObject<HTMLElement>);
@@ -195,6 +206,21 @@ export default function VaporizeTextCycle({
     textBoundariesRef.current = textBoundaries;
   };
 
+  const paintStaticFrame = () => {
+    const canvas = canvasRef.current;
+    const ctx = canvas?.getContext("2d");
+    if (!canvas || !ctx || !particlesRef.current.length) return;
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    renderParticles(ctx, particlesRef.current, globalDpr);
+  };
+
+  const notifyReady = () => {
+    if (readyFiredRef.current) return;
+    if (!particlesRef.current.length) return;
+    readyFiredRef.current = true;
+    onReadyRef.current?.();
+  };
+
   // Measure wrapper once + on real size changes (ignore sub-pixel thrash).
   // useLayoutEffect so the first paint already has sampled particles (no blank flash).
   useLayoutEffect(() => {
@@ -209,6 +235,8 @@ export default function VaporizeTextCycle({
       wrapperSizeRef.current = { width, height };
       if (animationStateRef.current !== "done") {
         sampleCanvas(width, height, currentTextIndexRef.current);
+        paintStaticFrame();
+        notifyReady();
       }
     };
 
@@ -232,23 +260,30 @@ export default function VaporizeTextCycle({
     if (animationStateRef.current === "done") return;
     const { width, height } = wrapperSizeRef.current;
     sampleCanvas(width, height, currentTextIndexRef.current);
+    paintStaticFrame();
+    notifyReady();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [textsKey, fontKey, color, alignment, density, spread]);
 
-  // Start vaporizing when in view.
+  // Start vaporizing only when in view AND play is true (handoff can finish first).
   useEffect(() => {
-    if (isInView) {
+    if (isInView && play) {
       if (animationStateRef.current === "done") return;
       vaporizeProgressRef.current = 0;
       setAnimationState("vaporizing");
-    } else {
+    } else if (!play && animationStateRef.current !== "done") {
+      vaporizeProgressRef.current = 0;
+      resetParticles(particlesRef.current);
+      animationStateRef.current = "static";
+      paintStaticFrame();
+    } else if (!isInView) {
       if (waitTimeoutRef.current) {
         clearTimeout(waitTimeoutRef.current);
         waitTimeoutRef.current = null;
       }
       setAnimationState("static");
     }
-  }, [isInView]);
+  }, [isInView, play]);
 
   // Single stable rAF loop — reads state from refs so it never tears down mid-vaporize.
   useEffect(() => {

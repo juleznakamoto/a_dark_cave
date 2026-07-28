@@ -7,10 +7,13 @@ import {
   canRevealBuildingDescriptions,
   canRevealCraftDescriptions,
   getInsightRevealCost,
+  getAchievementTitleInsightCost,
   isBuildingDescriptionVisible,
   isCraftDescriptionVisible,
   isBuildingDescriptionsUnlockAvailable,
   isCraftDescriptionsUnlockAvailable,
+  ACHIEVEMENT_TITLE_INSIGHT_COST,
+  ACHIEVEMENT_TITLE_INSIGHT_COST_TIER_0,
   INSIGHT_REVEAL_BUILDING_COST,
   INSIGHT_REVEAL_BUILDING_COST_EARLY,
   INSIGHT_REVEAL_FORTIFICATION_COST,
@@ -180,5 +183,26 @@ describe("insightReveal", () => {
   it("isCraftOnceAction distinguishes one-time crafts", () => {
     expect(isCraftOnceAction("craftStoneAxe")).toBe(true);
     expect(isCraftOnceAction("craftTorches")).toBe(false);
+  });
+
+  it("getAchievementTitleInsightCost is 250 for first ring, 500 for outer rings", () => {
+    expect(getAchievementTitleInsightCost("basic-0-woodGatherer")).toBe(
+      ACHIEVEMENT_TITLE_INSIGHT_COST_TIER_0,
+    );
+    expect(getAchievementTitleInsightCost("building-0-0")).toBe(
+      ACHIEVEMENT_TITLE_INSIGHT_COST_TIER_0,
+    );
+    expect(getAchievementTitleInsightCost("overall-0-speedrunner")).toBe(
+      ACHIEVEMENT_TITLE_INSIGHT_COST_TIER_0,
+    );
+    expect(getAchievementTitleInsightCost("basic-1-explorer")).toBe(
+      ACHIEVEMENT_TITLE_INSIGHT_COST,
+    );
+    expect(getAchievementTitleInsightCost("building-1-0")).toBe(
+      ACHIEVEMENT_TITLE_INSIGHT_COST,
+    );
+    expect(getAchievementTitleInsightCost("action-2-something")).toBe(
+      ACHIEVEMENT_TITLE_INSIGHT_COST,
+    );
   });
 });

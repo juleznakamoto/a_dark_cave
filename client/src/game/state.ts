@@ -68,7 +68,7 @@ import {
   canRevealAchievementTitle,
   getInsightAmount,
   getInsightRevealCost,
-  ACHIEVEMENT_TITLE_INSIGHT_COST,
+  getAchievementTitleInsightCost,
   getAchievementTitleInsightKey,
   parseAchievementTitleInsightKey,
   INSIGHT_REVEAL_ACTION_COOLDOWN_SEC,
@@ -1751,7 +1751,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
     const resourceUpdates = updateResource(
       state,
       "insight",
-      -ACHIEVEMENT_TITLE_INSIGHT_COST,
+      -getAchievementTitleInsightCost(achievementId),
     );
     set({
       ...resourceUpdates,

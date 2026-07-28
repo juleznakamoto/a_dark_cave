@@ -61,7 +61,7 @@ export const overallChartConfig: AchievementChartConfig = {
       {
         segmentId: "0-speedrunner",
         maxCount: 1,
-        label: "Speedrunner",
+        label: `Speedrunner (<${SPEEDRUN_WIN_MAX_MS / MS_PER_HOUR} hours)`,
         getCount: (state: GameState) => (state.hasSpeedrunWin ? 1 : 0),
       },
       {

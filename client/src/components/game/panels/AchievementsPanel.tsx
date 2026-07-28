@@ -22,8 +22,8 @@ import {
 } from "@/achievements";
 import { getAchievementRows, claimAchievement, formatRewardsTooltip } from "@/achievements/achievementHelpers";
 import {
-  ACHIEVEMENT_TITLE_INSIGHT_COST,
   canRevealAchievementTitle,
+  getAchievementTitleInsightCost,
   getAchievementTitleInsightKey,
   getInsightAmount,
   isAchievementTitleVisible,
@@ -111,11 +111,12 @@ function AchievementTitleInsightBadge({
     currentCount,
     gameState.insightRevealing,
   );
-  const affordable = getInsightAmount(gameState) >= ACHIEVEMENT_TITLE_INSIGHT_COST;
+  const insightCost = getAchievementTitleInsightCost(achievementId);
+  const affordable = getInsightAmount(gameState) >= insightCost;
   const playing = isRevealing;
   const isDisabled = playing || !canUnlock;
   const unlockLabel = t("achievements.unlockTitleForInsight", {
-    cost: ACHIEVEMENT_TITLE_INSIGHT_COST,
+    cost: insightCost,
     defaultValue: "Unlock title for {{cost}} Insight",
   });
 
