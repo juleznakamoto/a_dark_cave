@@ -27,16 +27,16 @@ import { isDemoLimitReachedFromState } from "@/game/demoLimit";
 import DemoTimeUpDialog from "@/components/game/DemoTimeUpDialog";
 import { FullscreenButton } from "@/components/game/FullscreenButton";
 
-const START_INTRO_VAPORIZE_FONT = {
-  fontFamily: "ui-sans-serif, system-ui, sans-serif",
-  fontSize: "18px",
-  fontWeight: 400,
-} as const;
 const START_INTRO_VAPORIZE_COLOR = "rgba(209, 213, 219, 0.9)";
 const START_INTRO_VAPORIZE_ANIMATION = {
   vaporizeDuration: 1.6,
   fadeInDuration: 0.4,
   waitDuration: 0,
+} as const;
+const START_INTRO_VAPORIZE_FONT_FALLBACK = {
+  fontFamily: "ui-sans-serif, system-ui, sans-serif",
+  fontSize: "18px",
+  fontWeight: 400,
 } as const;
 
 const START_FOOTER_LINK_BASE =
@@ -68,7 +68,13 @@ export default function StartScreen() {
   const isCruelMode = cruelMode;
   const [showParticles, setShowParticles] = useState(false);
   const [introCanvasReadyCount, setIntroCanvasReadyCount] = useState(0);
+  const [introVaporFont, setIntroVaporFont] = useState<{
+    fontFamily: string;
+    fontSize: string;
+    fontWeight: number;
+  }>(START_INTRO_VAPORIZE_FONT_FALLBACK);
   const introCanvasReady = introCanvasReadyCount >= 3;
+  const introLineRefs = useRef<Array<HTMLSpanElement | null>>([]);
   const { t } = useTranslation("ui");
   const { locale } = useLocale();
   const steamEditionActive = useSteamEditionActive();
@@ -143,6 +149,17 @@ export default function StartScreen() {
         useGameStore.setState({ galaxyTimeUpDialogOpen: true });
         return;
       }
+    }
+
+    // Match canvas type to the live DOM line (includes --adc-text-scale).
+    const sampleLine = introLineRefs.current.find(Boolean);
+    if (sampleLine) {
+      const style = window.getComputedStyle(sampleLine);
+      setIntroVaporFont({
+        fontFamily: style.fontFamily,
+        fontSize: style.fontSize,
+        fontWeight: parseInt(style.fontWeight, 10) || 400,
+      });
     }
 
     // Preload font dynamically (lazy-loaded for better Lighthouse scores)
@@ -305,61 +322,59 @@ export default function StartScreen() {
       )}
 
       <main className="relative z-10 flex-1 flex flex-col items-center justify-center min-h-screen">
-        <div className="relative text-center mb-4 w-full max-w-xl px-4">
-          {/* Canvases sit under the DOM copy; DOM stays visible until every canvas has painted. */}
-          {showParticles && (
-            <div className="absolute inset-0 z-0 flex flex-col">
-              {(isCruelMode
-                ? [
-                  t("startScreen.titleCruel"),
-                  t("startScreen.airCruel"),
-                  t("startScreen.seeCruel"),
-                ]
-                : [
-                  t("startScreen.titleNormal"),
-                  t("startScreen.airNormal"),
-                  t("startScreen.seeNormal"),
-                ]
-              ).map((line, index) => (
-                <div key={`${index}-${line}`} className="min-h-0 w-full flex-1">
-                  <VaporizeTextCycle
-                    texts={[line]}
-                    loop={false}
-                    play={introCanvasReady}
-                    onReady={handleIntroCanvasReady}
-                    font={START_INTRO_VAPORIZE_FONT}
-                    color={START_INTRO_VAPORIZE_COLOR}
-                    spread={5}
-                    density={5}
-                    animation={START_INTRO_VAPORIZE_ANIMATION}
-                    direction="left-to-right"
-                    alignment="center"
-                    tag={index === 0 ? "h1" : "p"}
-                  />
-                </div>
-              ))}
-            </div>
-          )}
-
-          <div
-            className={`relative z-10 ${introCanvasReady ? "invisible" : ""}`}
-            aria-hidden={introCanvasReady}
-          >
-            <h1 className="animate-fade-in-text text-lg text-gray-300/90 leading-relaxed font-normal">
-              {isCruelMode
-                ? t("startScreen.titleCruel")
-                : t("startScreen.titleNormal")}
-            </h1>
-            <p className="animate-fade-in-text text-lg text-gray-300/90 leading-relaxed">
-              {isCruelMode
-                ? t("startScreen.airCruel")
-                : t("startScreen.airNormal")}
-              <br />
-              {isCruelMode
-                ? t("startScreen.seeCruel")
-                : t("startScreen.seeNormal")}
-            </p>
-          </div>
+        <div className="text-center mb-4 w-full max-w-xl px-4">
+          {(isCruelMode
+            ? [
+                t("startScreen.titleCruel"),
+                t("startScreen.airCruel"),
+                t("startScreen.seeCruel"),
+              ]
+            : [
+                t("startScreen.titleNormal"),
+                t("startScreen.airNormal"),
+                t("startScreen.seeNormal"),
+              ]
+          ).map((line, index) => {
+            const LineTag = index === 0 ? "h1" : "p";
+            return (
+              <div
+                key={`${index}-${line}`}
+                className="relative text-lg leading-relaxed text-gray-300/90 font-normal"
+              >
+                {showParticles && (
+                  <div className="absolute inset-0 z-0">
+                    <VaporizeTextCycle
+                      texts={[line]}
+                      loop={false}
+                      play={introCanvasReady}
+                      onReady={handleIntroCanvasReady}
+                      font={introVaporFont}
+                      color={START_INTRO_VAPORIZE_COLOR}
+                      spread={5}
+                      density={5}
+                      animation={START_INTRO_VAPORIZE_ANIMATION}
+                      direction="left-to-right"
+                      alignment="center"
+                      tag={index === 0 ? "h1" : "p"}
+                    />
+                  </div>
+                )}
+                <LineTag
+                  className={`relative z-10 m-0 text-lg leading-relaxed font-normal ${
+                    showParticles ? "" : "animate-fade-in-text"
+                  } ${introCanvasReady ? "invisible" : ""}`}
+                >
+                  <span
+                    ref={(el) => {
+                      introLineRefs.current[index] = el;
+                    }}
+                  >
+                    {line}
+                  </span>
+                </LineTag>
+              </div>
+            );
+          })}
         </div>
 
         <div className={showParticles ? undefined : "fire-glow-hint"}>
