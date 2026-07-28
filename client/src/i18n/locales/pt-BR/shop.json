@@ -50,6 +50,11 @@
     "description": "Uma pequena clemência diária num mundo gélido",
     "name": "Presente de 100 Ouro"
   },
+  "gold_15000": {
+    "activationMessage": "15'000 Ouro foram adicionados ao seu inventário.",
+    "description": "Quantias profanas de Ouro",
+    "name": "15'000 Ouro"
+  },
   "gold_20000": {
     "activationMessage": "20'000 Ouro foram adicionados ao seu inventário.",
     "description": "Quantias profanas de Ouro",

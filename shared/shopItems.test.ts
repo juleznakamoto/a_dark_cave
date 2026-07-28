@@ -44,6 +44,7 @@ describe('Shop Items Configuration', () => {
       expect(SHOP_ITEMS.gold_2500.canPurchaseMultipleTimes).toBe(true);
       expect(SHOP_ITEMS.gold_5000.canPurchaseMultipleTimes).toBe(true);
       expect(SHOP_ITEMS.gold_20000.canPurchaseMultipleTimes).toBe(true);
+      expect(SHOP_ITEMS.gold_15000.canPurchaseMultipleTimes).toBe(true);
     });
 
     it('should allow multiple purchases of feast items', () => {
@@ -64,6 +65,7 @@ describe('Shop Items Configuration', () => {
         SHOP_ITEMS.gold_1000,
         SHOP_ITEMS.gold_2500,
         SHOP_ITEMS.gold_5000,
+        SHOP_ITEMS.gold_15000,
         SHOP_ITEMS.gold_20000,
       ];
 
@@ -101,19 +103,27 @@ describe('Shop Items Configuration', () => {
   describe('Paid gold pack IDs', () => {
     it('lists paid gold SKUs for hover FX / parity with packs', () => {
       expect([...SHOP_PAID_GOLD_PACK_IDS].sort()).toEqual(
-        ['gold_1000', 'gold_20000', 'gold_250', 'gold_2500', 'gold_5000'].sort(),
+        [
+          'gold_1000',
+          'gold_15000',
+          'gold_20000',
+          'gold_250',
+          'gold_2500',
+          'gold_5000',
+        ].sort(),
       );
       expect(isShopPaidGoldPackItem('gold_100_free')).toBe(false);
       expect(isShopPaidGoldPackItem('gold_1000')).toBe(true);
+      expect(isShopPaidGoldPackItem('gold_15000')).toBe(true);
       expect(isShopPaidGoldPackItem('gold_250')).toBe(true);
     });
   });
 
   describe('Highlights gold pack by playTime parity', () => {
-    it('shows gold_20000 when whole playTime minutes are even', () => {
-      expect(getHighlightsGoldPackId(0)).toBe('gold_20000');
-      expect(getHighlightsGoldPackId(59_999)).toBe('gold_20000');
-      expect(getHighlightsGoldPackId(120_000)).toBe('gold_20000');
+    it('shows gold_15000 when whole playTime minutes are even', () => {
+      expect(getHighlightsGoldPackId(0)).toBe('gold_15000');
+      expect(getHighlightsGoldPackId(59_999)).toBe('gold_15000');
+      expect(getHighlightsGoldPackId(120_000)).toBe('gold_15000');
       expect(getHighlightsOrder(0)).toEqual(
         HIGHLIGHTS_ORDER.map((id) => id),
       );
@@ -124,9 +134,23 @@ describe('Shop Items Configuration', () => {
       expect(getHighlightsGoldPackId(119_999)).toBe('gold_1000');
       expect(getHighlightsOrder(60_000)).toEqual(
         HIGHLIGHTS_ORDER.map((id) =>
-          id === 'gold_20000' ? 'gold_1000' : id,
+          id === 'gold_15000' ? 'gold_1000' : id,
         ),
       );
+    });
+  });
+
+  describe('Legacy gold_20000 vs shop gold_15000', () => {
+    it('keeps legacy 20k grant for unactivated old purchases', () => {
+      expect(SHOP_ITEMS.gold_20000.rewards.resources?.gold).toBe(20000);
+      expect(SHOP_ITEMS.gold_20000.hiddenFromShop).toBe(true);
+      expect(SHOP_ITEMS.gold_20000.price).toBe(899);
+    });
+
+    it('sells 15k as the current top shop pack', () => {
+      expect(SHOP_ITEMS.gold_15000.rewards.resources?.gold).toBe(15000);
+      expect(SHOP_ITEMS.gold_15000.hiddenFromShop).toBeFalsy();
+      expect(SHOP_ITEMS.gold_15000.price).toBe(899);
     });
   });
 
@@ -296,7 +320,7 @@ describe('Shop Items Configuration', () => {
 
     it('should have correct components for advanced bundle', () => {
       const bundle = SHOP_ITEMS.advanced_bundle;
-      expect(bundle.bundleComponents).toContain('gold_20000');
+      expect(bundle.bundleComponents).toContain('gold_15000');
       expect(bundle.bundleComponents).toContain('great_feast_3');
       expect(bundle.bundleComponents?.length).toBe(2);
     });
@@ -305,13 +329,13 @@ describe('Shop Items Configuration', () => {
       const bundle = SHOP_ITEMS.advanced_bundle;
       expect(bundle.price).toBe(999);
       expect(bundleComponentsListPriceSumCents(bundle.bundleComponents!, SHOP_ITEMS)).toBe(
-        SHOP_ITEMS.gold_20000.price + SHOP_ITEMS.great_feast_3.price,
+        SHOP_ITEMS.gold_15000.price + SHOP_ITEMS.great_feast_3.price,
       );
     });
 
     it('should have correct rewards for advanced bundle', () => {
       const bundle = SHOP_ITEMS.advanced_bundle;
-      expect(bundle.rewards.resources?.gold).toBe(20000);
+      expect(bundle.rewards.resources?.gold).toBe(15000);
       expect(bundle.rewards.feastActivations).toBe(3);
     });
 
@@ -350,10 +374,10 @@ describe('Shop Items Configuration', () => {
 
     it('should have bundle price less than sum of individual component sale prices', () => {
       const bundle = SHOP_ITEMS.advanced_bundle;
-      const gold20000 = SHOP_ITEMS.gold_20000;
+      const gold15000 = SHOP_ITEMS.gold_15000;
       const feast3 = SHOP_ITEMS.great_feast_3;
 
-      const individualPricesTotal = gold20000.price + feast3.price;
+      const individualPricesTotal = gold15000.price + feast3.price;
 
       expect(bundle.price).toBeLessThan(individualPricesTotal);
     });
@@ -383,7 +407,7 @@ describe('Shop Items Configuration', () => {
     it('should list five leaf components in a fixed order', () => {
       const bundle = SHOP_ITEMS.ashen_throne_bundle;
       expect(bundle.bundleComponents).toEqual([
-        'gold_20000',
+        'gold_15000',
         'great_feast_3',
         'skull_lantern',
         'tarnished_compass',
@@ -413,7 +437,7 @@ describe('Shop Items Configuration', () => {
 
     it('should merge Pale King and Dark Artifacts rewards', () => {
       const bundle = SHOP_ITEMS.ashen_throne_bundle;
-      expect(bundle.rewards.resources?.gold).toBe(20000);
+      expect(bundle.rewards.resources?.gold).toBe(15000);
       expect(bundle.rewards.feastActivations).toBe(3);
       expect(bundle.rewards.tools).toEqual(['skull_lantern', 'crow_harness']);
       expect(bundle.rewards.relics).toEqual(['tarnished_compass']);
@@ -467,7 +491,7 @@ describe('Shop Items Configuration', () => {
 
     it('returns savings vs catalog baselines only (no optional sale originalPrice)', () => {
       expect(shopPackageSavingsPercent(SHOP_ITEMS.gold_1000)).toBeNull();
-      expect(shopPackageSavingsPercent(SHOP_ITEMS.gold_2500)).toBe(6);
+      expect(shopPackageSavingsPercent(SHOP_ITEMS.gold_2500)).toBe(20);
       expect(shopPackageSavingsPercent(SHOP_ITEMS.great_feast_3)).toBe(33);
       const bundle = SHOP_ITEMS.basic_survival_bundle;
       const catalogSum = bundleComponentsCatalogPriceSumCents(

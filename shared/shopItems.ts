@@ -101,7 +101,7 @@ export const SHOP_ITEMS: Record<string, ShopItem> = {
     id: "gold_2500",
     name: "2'500 Gold",
     description: "A substantial treasure",
-    price: 349, // 3.49 €
+    price: 299, // 2.99 €
     rewards: {
       resources: { gold: 2500 },
     },
@@ -127,6 +127,25 @@ export const SHOP_ITEMS: Record<string, ShopItem> = {
     symbolColor: "text-yellow-600",
   },
 
+  gold_15000: {
+    id: "gold_15000",
+    name: "15'000 Gold",
+    description: "Unholy amounts of Gold",
+    price: 899, // 8.99 €
+    rewards: {
+      resources: { gold: 15000 },
+    },
+    canPurchaseMultipleTimes: true,
+    category: "resource",
+    activationMessage: "15'000 Gold have been added to your inventory.",
+    symbol: "🟔",
+    symbolColor: "text-yellow-600",
+  },
+
+  /**
+   * Legacy top gold pack (20'000). Kept so unactivated old purchases / bundle
+   * components still grant the original amount. Not listed in the shop UI.
+   */
   gold_20000: {
     id: "gold_20000",
     name: "20'000 Gold",
@@ -140,6 +159,7 @@ export const SHOP_ITEMS: Record<string, ShopItem> = {
     activationMessage: "20'000 Gold have been added to your inventory.",
     symbol: "🟔",
     symbolColor: "text-yellow-600",
+    hiddenFromShop: true,
   },
 
   great_feast_1: {
@@ -264,7 +284,7 @@ export const SHOP_ITEMS: Record<string, ShopItem> = {
     description: "",
     price: 999, // 9.99 €
     rewards: {
-      resources: { gold: 20000 },
+      resources: { gold: 15000 },
       feastActivations: 3,
     },
     canPurchaseMultipleTimes: true,
@@ -273,7 +293,7 @@ export const SHOP_ITEMS: Record<string, ShopItem> = {
       "Pale King's Bundle components have been added to your purchases!",
     symbol: "✣",
     symbolColor: "text-rose-600",
-    bundleComponents: ["gold_20000", "great_feast_3"], // Component items
+    bundleComponents: ["gold_15000", "great_feast_3"], // Component items
   },
 
   ashen_throne_bundle: {
@@ -282,7 +302,7 @@ export const SHOP_ITEMS: Record<string, ShopItem> = {
     description: "",
     price: 1499, // 14.99 €
     rewards: {
-      resources: { gold: 20000 },
+      resources: { gold: 15000 },
       feastActivations: 3,
       tools: ["skull_lantern", "crow_harness"],
       relics: ["tarnished_compass"],
@@ -294,7 +314,7 @@ export const SHOP_ITEMS: Record<string, ShopItem> = {
     symbol: "⯓",
     symbolColor: "text-stone-300",
     bundleComponents: [
-      "gold_20000",
+      "gold_15000",
       "great_feast_3",
       "skull_lantern",
       "tarnished_compass",
@@ -321,23 +341,23 @@ hydrateBundleDescriptions(SHOP_ITEMS);
 
 /** Ordered list of items to show in the "Highlights" tab (replaces old "All" filter).
  * Order is deliberate for conversion optimization.
- * Gold slot uses `gold_20000` as the even-playTime default; see `getHighlightsOrder`.
+ * Gold slot uses `gold_15000` as the even-playTime default; see `getHighlightsOrder`.
  */
 export const HIGHLIGHTS_ORDER = [
   "gold_100_free", // Free Gift - shown first with special blue border
   "cruel_mode",
   "artifact_bundle", // Dark Artifacts Bundle
-  "gold_20000", // 20'000 Gold (even playTime); swapped to gold_1000 when odd
+  "gold_15000", // 15'000 Gold (even playTime); swapped to gold_1000 when odd
   "advanced_bundle", // Pale King's Bundle
   "ashen_throne_bundle",
 ] as const;
 
-/** Highlights gold SKU: even whole play minutes → 20k; odd → 1k. Stable while shop is open (sim paused). */
+/** Highlights gold SKU: even whole play minutes → 15k; odd → 1k. Stable while shop is open (sim paused). */
 export function getHighlightsGoldPackId(
   playTimeMs: number,
-): "gold_20000" | "gold_1000" {
+): "gold_15000" | "gold_1000" {
   return Math.floor(playTimeMs / 60_000) % 2 === 0
-    ? "gold_20000"
+    ? "gold_15000"
     : "gold_1000";
 }
 
@@ -347,7 +367,7 @@ export function getHighlightsOrder(
 ): Array<(typeof HIGHLIGHTS_ORDER)[number] | "gold_1000"> {
   const goldId = getHighlightsGoldPackId(playTimeMs);
   return HIGHLIGHTS_ORDER.map((id) =>
-    id === "gold_20000" ? goldId : id,
+    id === "gold_15000" ? goldId : id,
   );
 }
 
@@ -377,7 +397,7 @@ export function bundleComponentsCatalogPriceSumCents(
 export const SMALLEST_GOLD_PACK_ID = "gold_1000" as const;
 
 /**
- * Paid gold currency SKUs (matches Gold-tab packs + legacy `gold_250`).
+ * Paid gold currency SKUs (matches Gold-tab packs + legacy `gold_250` / `gold_20000`).
  * Excludes daily gift `gold_100_free` and bundles that merely contain gold.
  */
 export const SHOP_PAID_GOLD_PACK_IDS: ReadonlySet<string> = new Set([
@@ -385,6 +405,7 @@ export const SHOP_PAID_GOLD_PACK_IDS: ReadonlySet<string> = new Set([
   "gold_1000",
   "gold_2500",
   "gold_5000",
+  "gold_15000",
   "gold_20000",
 ]);
 

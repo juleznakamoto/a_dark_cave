@@ -205,6 +205,25 @@ describe('Stripe Shop Integration', () => {
       await expect(createPaymentIntent('invalid_item')).rejects.toThrow('Invalid item');
     });
 
+    it('should reject legacy gold_20000 (kept only for activating old purchases)', async () => {
+      await expect(createPaymentIntent('gold_20000')).rejects.toThrow('Invalid item');
+    });
+
+    it('should allow current top gold pack gold_15000', async () => {
+      mockPaymentIntents.create.mockResolvedValue({
+        client_secret: 'test_secret',
+      } as any);
+
+      const result = await createPaymentIntent('gold_15000');
+      expect(result.clientSecret).toBe('test_secret');
+      expect(mockPaymentIntents.create).toHaveBeenCalledWith(
+        expect.objectContaining({
+          amount: 899,
+          metadata: expect.objectContaining({ itemId: 'gold_15000' }),
+        }),
+      );
+    });
+
     it('should always use server-side price, never client price', async () => {
       mockPaymentIntents.create.mockResolvedValue({
         client_secret: 'test_secret',
@@ -311,10 +330,10 @@ describe('Stripe Shop Integration', () => {
           expect.objectContaining({ amount: 119 })
         );
 
-        // gold_2500 = 349; 349 * 0.8 = 279.2 -> floor = 279
+        // gold_2500 = 299; 299 * 0.8 = 239.2 -> floor = 239
         await createPaymentIntent('gold_2500', undefined, undefined, undefined, undefined, true);
         expect(mockPaymentIntents.create).toHaveBeenCalledWith(
-          expect.objectContaining({ amount: 279 })
+          expect.objectContaining({ amount: 239 })
         );
       });
     });

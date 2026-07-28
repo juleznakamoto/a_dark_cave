@@ -50,6 +50,11 @@
     "description": "Kleine tägliche Gnade in einer kalten Welt", //ok
     "name": "100 Gold Geschenk" //ok
   },
+  "gold_15000": {
+    "activationMessage": "15'000 Gold wurden deinem Inventar hinzugefügt.",
+    "description": "Unheilige Mengen Gold",
+    "name": "15'000 Gold"
+  },
   "gold_20000": {
     "activationMessage": "20'000 Gold wurden deinem Inventar hinzugefügt.",
     "description": "Unheilige Mengen Gold",

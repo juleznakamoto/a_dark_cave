@@ -50,6 +50,11 @@
     "description": "寒冷世界里每日的一点怜悯",
     "name": "100 黄金赠礼"
   },
+  "gold_15000": {
+    "activationMessage": "15'000 黄金已加入你的库存。",
+    "description": "近乎亵渎的巨量黄金",
+    "name": "15'000 黄金"
+  },
   "gold_20000": {
     "activationMessage": "20'000 黄金已加入你的库存。",
     "description": "近乎亵渎的巨量黄金",

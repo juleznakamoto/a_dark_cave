@@ -50,6 +50,11 @@
     "description": "A small daily mercy in a cold world",
     "name": "100 Gold Gift"
   },
+  "gold_15000": {
+    "activationMessage": "15'000 Gold have been added to your inventory.",
+    "description": "Unholy amounts of Gold",
+    "name": "15'000 Gold"
+  },
   "gold_20000": {
     "activationMessage": "20'000 Gold have been added to your inventory.",
     "description": "Unholy amounts of Gold",

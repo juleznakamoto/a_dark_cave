@@ -150,8 +150,9 @@ export async function createPaymentIntent(
   cruelModeJourneyCompleteDiscount?: boolean,
   supabase?: Parameters<typeof assertCanPurchaseShopItem>[0],
 ) {
-  // Retired web buy-to-play SKU — never create new PaymentIntents for it.
-  if (itemId === 'full_game') {
+  // Retired / legacy SKUs — never create new PaymentIntents for them.
+  // `gold_20000` stays in the catalog so old unactivated purchases still grant 20k.
+  if (itemId === 'full_game' || itemId === 'gold_20000') {
     throw new Error('Invalid item');
   }
 

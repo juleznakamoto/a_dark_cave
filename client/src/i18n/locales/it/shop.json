@@ -50,6 +50,11 @@
     "description": "Una piccola grazia quotidiana in un mondo freddo",
     "name": "Regalo di 100 Oro"
   },
+  "gold_15000": {
+    "activationMessage": "15'000 Oro sono stati aggiunti al tuo inventario.",
+    "description": "Quantità empie di Oro",
+    "name": "15'000 Oro"
+  },
   "gold_20000": {
     "activationMessage": "20'000 Oro sono stati aggiunti al tuo inventario.",
     "description": "Quantità empie di Oro",

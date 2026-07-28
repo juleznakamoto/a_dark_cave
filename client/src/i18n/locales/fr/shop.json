@@ -50,6 +50,11 @@
     "description": "Une petite faveur quotidienne dans un monde froid",
     "name": "Cadeau de 100 or"
   },
+  "gold_15000": {
+    "activationMessage": "15'000 or ont été ajoutés à votre inventaire.",
+    "description": "Une quantité impie d'or",
+    "name": "15'000 or"
+  },
   "gold_20000": {
     "activationMessage": "20'000 or ont été ajoutés à votre inventaire.",
     "description": "Une quantité impie d'or",

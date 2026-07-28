@@ -142,11 +142,12 @@ function shopCardStrikethroughCents(
   return shopCardCatalogSaleListCents(item);
 }
 
-/** Gold tab listings: paid resource packs with gold (excludes free gift + legacy `gold_250`). */
+/** Gold tab listings: paid resource packs with gold (excludes free gift + legacy packs). */
 function shopItemMatchesGoldFilterTab(item: ShopItem): boolean {
   return (
     item.id !== "gold_100_free" &&
     item.id !== "gold_250" &&
+    item.id !== "gold_20000" &&
     item.category === "resource" &&
     item.rewards.resources?.gold !== undefined
   );
@@ -1485,11 +1486,11 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
                 }
               }
 
-                .shop-3x-value-badge-pulse {
-                  animation: shop-3x-value-badge-shadow-pulse 4.75s ease-in-out infinite;
+                .shop-value-badge-pulse {
+                  animation: shop-value-badge-shadow-pulse 4.75s ease-in-out infinite;
                 }
 
-              @keyframes shop-3x-value-badge-shadow-pulse {
+              @keyframes shop-value-badge-shadow-pulse {
                 0%, 100% {
                   box-shadow:
                     0 0 10px rgba(239, 68, 68, 0.55),
@@ -2141,14 +2142,14 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
                                   </CardContent>
                                   <CardFooter className="pl-4 pr-4 pb-4 flex-col gap-2">
                                     <div className="relative z-0 w-full overflow-visible pt-1">
-                                      {item.id === "gold_20000" && (
+                                      {item.id === "gold_15000" && (
                                         <div
-                                          className="shop-3x-value-badge-pulse pointer-events-none absolute right-[-16px] top-[-16px] z-20 flex size-[32px] items-center justify-center rounded-full border border-red-600 bg-red-800"
+                                          className="shop-value-badge-pulse pointer-events-none absolute right-[-16px] top-[-16px] z-20 flex size-[36px] items-center justify-center rounded-full border border-red-600 bg-red-800"
                                           aria-hidden
                                         >
                                           <span className="flex flex-col items-center gap-px px-0.5 text-[8px] font-medium leading-none text-white">
-                                            <span className="text-[10px] font-semibold">
-                                              3x
+                                            <span className="text-[9px] font-semibold">
+                                              2.5x
                                             </span>
                                             <span>{t("ui:shop.threeXValue")}</span>
                                           </span>
