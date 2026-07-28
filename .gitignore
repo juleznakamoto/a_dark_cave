@@ -42,6 +42,7 @@ tmp/resend-rebuild/
 # Resend broadcast HTML and local email build scripts (not in repo)
 marketing/
 scripts/build-marketing-email-social-row.mjs
+supabase/email-templates/
 scripts/embed-email-hero.mjs
 
 # Email assets — hosted HTTPS URLs required (Outlook blocks data: URIs; Gmail blocks footer data: URIs)
