@@ -1402,15 +1402,15 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
       logger.error("[SHOP] Post-purchase save failed:", e);
     }
 
-    // Wait out the hold so glow + particles finish, then close checkout.
+    // Wait out the hold so glow + particles finish, then leave checkout.
     await holdCheckoutOpen;
-    setClientSecret(null);
-    setSelectedItem(null);
 
-    // Direct-checkout items (hidden from the grid) have no purchases list to
-    // return to — their entitlement was already applied by loadPurchasedItems.
-    // Just close the shop after a successful purchase.
+    // Resolve the next shop surface BEFORE dismissing checkout. Clearing
+    // clientSecret first remounts the main shop DialogContent (enter animation)
+    // and can flash the wrong panel while we await auth checks.
     if (isDirectCheckout) {
+      setClientSecret(null);
+      setSelectedItem(null);
       setShopCheckoutItemId(null);
       onClose();
       return;
@@ -1422,6 +1422,8 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
     } else {
       setActiveTab("purchases");
     }
+    setClientSecret(null);
+    setSelectedItem(null);
   };
 
   const handleActivatePurchase = (purchaseId: string, itemId: string) => {
@@ -1695,12 +1697,16 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
             </div>
           </DialogContent>
         )}
-        {!isPaymentMode && !isDirectCheckout && (
+        {/* Keep mounted during payment (hidden) so returning from checkout does
+            not remount DialogContent and replay the enter animation. */}
+        {!isDirectCheckout && (
           <DialogContent
+            hideOverlay={isPaymentMode}
             className={cn(
               showSecurePurchasePrompt
                 ? "[--adc-dialog-max-w:28rem] max-h-[80vh] z-[70] gap-2"
                 : "[--adc-dialog-max-w:56rem] flex h-[82vh] min-h-0 flex-col gap-3 overflow-hidden z-[70] p-6",
+              isPaymentMode && "hidden",
             )}
             style={
               showSecurePurchasePrompt
