@@ -2701,7 +2701,7 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
               </DialogDescription>
             </DialogHeader>
             {checkoutPriceBreakdown && (
-              <div className="shrink-0 border-b border-border/70 pb-3 text-sm">
+              <div className="shrink-0 pb-3 text-sm">
                 {checkoutPriceBreakdown.hasCatalogSale &&
                   checkoutPriceBreakdown.catalogSaleListCents != null && (
                     <>
