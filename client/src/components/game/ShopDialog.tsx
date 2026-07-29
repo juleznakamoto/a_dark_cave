@@ -696,7 +696,7 @@ function CheckoutForm({
         <Button
           type="submit"
           disabled={!stripe || isProcessing || isPurchaseSuccess}
-          className="w-full min-w-0 font-bold sm:flex-1 disabled:opacity-100"
+          className="w-full min-w-0 font-bold sm:flex-1"
           button_id="shop-complete-purchase"
         >
           {isPurchaseSuccess ? (
