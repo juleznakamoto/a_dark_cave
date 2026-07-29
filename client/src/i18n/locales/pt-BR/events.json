@@ -841,7 +841,10 @@
       "lakeDrownOne": "A criatura se ergue como um pesadelo, a beleza mascarando uma intenção mortal. Com força sobrenatural, ela arrasta um aldeão para baixo das águas. Restam apenas ondulações e gritos fracos enquanto os demais fogem aterrorizados.",
       "lakeDrownMany": "A criatura se ergue como um pesadelo, a beleza mascarando uma intenção mortal. Com força sobrenatural, ela arrasta os aldeões para baixo das águas. Restam apenas ondulações e gritos fracos enquanto os demais fogem aterrorizados."
     },
-    "message": "Enquanto coletavam madeira na floresta, os aldeões descobrem um lago oculto entre as árvores. Um aldeão jura ter visto uma figura semelhante a uma mulher emergir brevemente, seu olhar belo, porém desumano. O que você faz?",
+    "message": {
+      "firstTime": "Enquanto coletavam madeira na floresta, os aldeões descobrem um lago oculto entre as árvores. Um aldeão jura ter visto uma figura semelhante a uma mulher emergir brevemente, seu olhar belo, porém desumano. O que você faz?",
+      "repeat": "Enquanto coletavam madeira na floresta, os aldeões retornam ao lago oculto entre as árvores. Mais uma vez, um aldeão jura ter visto uma figura semelhante a uma mulher emergir brevemente, seu olhar belo, porém desumano. O que você faz?"
+    },
     "title": "O Lago Escondido"
   },
   "hollowKingScepterChoice": {
@@ -2654,5 +2657,4 @@
     "message": "A hooded figure appears at the estate, silent, then whispering in a low voice. They offer to give you a blessing.",
     "title": "A Quiet Offering"
   }
-
 }

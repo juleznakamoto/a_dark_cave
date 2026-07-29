@@ -468,6 +468,8 @@ export const choiceEvents: Record<string, GameEvent> = {
       state.buildings.woodenHut >= 4 &&
       !state.clothing.cracked_crown,
     timeProbability: 40,
+    message: (state: GameState) =>
+      state.eventCooldowns?.hiddenLake ? "repeat" : "firstTime",
     priority: 3,
     repeatable: true,
     choices: [

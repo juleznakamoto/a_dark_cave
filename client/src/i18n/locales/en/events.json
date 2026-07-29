@@ -859,7 +859,10 @@
       "lakeDrownOne": "The creature rises like a nightmare, beauty masking deadly intent. With unnatural strength, she drags a villager beneath the waters. Only ripples and faint screams remain as the rest flee in terror.",
       "lakeDrownMany": "The creature rises like a nightmare, beauty masking deadly intent. With unnatural strength, she drags the villagers beneath the waters. Only ripples and faint screams remain as the rest flee in terror."
     },
-    "message": "While gathering wood in the forest, the villagers discover a lake hidden among trees. One villager swears he saw a woman-like figure surface briefly, her gaze beautiful yet inhuman. What do you do?",
+    "message": {
+      "firstTime": "While gathering wood in the forest, the villagers discover a lake hidden among trees. One villager swears he saw a woman-like figure surface briefly, her gaze beautiful yet inhuman. What do you do?",
+      "repeat": "While gathering wood in the forest, the villagers return to the lake hidden among the trees. Once more, a villager swears he saw a woman-like figure surface briefly, her gaze beautiful yet inhuman. What do you do?"
+    },
     "title": "The Hidden Lake"
   },
   "hollowKingScepterChoice": {

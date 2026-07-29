@@ -1,7 +1,7 @@
 {
   "alchemistArrives": {
     "message": "El alquimista emerge de su salón: 'He estado realizando experimentos día y noche', dice, sosteniendo un vial de polvo resplandeciente. 'He creado algo extraordinario y terriblemente peligroso'.",
-    "title": "El descubrimiento del alquimista"  //x1.3
+    "title": "El descubrimiento del alquimista" //x1.3
   },
   "ashwraithCanyonTradeOffer": {
     "choices": {
@@ -76,7 +76,7 @@
   "bloodiedAwakening": {
     "choices": {
       "investigateMurders": {
-        "label": "Investigar los asesinatos"  //x1.3
+        "label": "Investigar los asesinatos" //x1.3
       },
       "severFinger": {
         "label": "Cortar el dedo"
@@ -109,11 +109,11 @@
   "bloodMoonAttack": {
     "choices": {
       "prepareForAttack": {
-        "label": "Prepararse para el ataque"  //x1.4
+        "label": "Prepararse para el ataque" //x1.4
       },
       "sacrificeVillagers": {
         "cost": "{{sacrificeAmount}} Aldeanos",
-        "label": "Prepararse para el ataque"  //x1.3
+        "label": "Prepararse para el ataque" //x1.3
       }
     },
     "log": {
@@ -615,7 +615,7 @@
   "establishTradeProposal": {
     "choices": {
       "mountainMonastery": {
-        "label": "Monasterio de la Montaña"  //x1.3
+        "label": "Monasterio de la Montaña" //x1.3
       },
       "swampTribe": {
         "label": "Tribu del Pantano"
@@ -859,7 +859,10 @@
       "lakeDrownOne": "La criatura surge como una pesadilla, la belleza ocultando una intención mortal. Con fuerza antinatural, arrastra a un aldeano bajo las aguas. Solo quedan ondas y gritos apagados mientras el resto huye aterrorizado.",
       "lakeDrownMany": "La criatura surge como una pesadilla, la belleza ocultando una intención mortal. Con fuerza antinatural, arrastra a los aldeanos bajo las aguas. Solo quedan ondas y gritos apagados mientras el resto huye aterrorizado."
     },
-    "message": "Mientras reúnen madera en el bosque, los aldeanos descubren un lago oculto entre los árboles. Un aldeano jura haber visto emerger por un instante una figura parecida a una mujer, de mirada hermosa pero inhumana. ¿Qué haces?",
+    "message": {
+      "firstTime": "Mientras reúnen madera en el bosque, los aldeanos descubren un lago oculto entre los árboles. Un aldeano jura haber visto emerger por un instante una figura parecida a una mujer, de mirada hermosa pero inhumana. ¿Qué haces?",
+      "repeat": "Mientras reúnen madera en el bosque, los aldeanos regresan al lago oculto entre los árboles. Una vez más, un aldeano jura haber visto emerger por un instante una figura parecida a una mujer, de mirada hermosa pero inhumana. ¿Qué haces?"
+    },
     "title": "El lago oculto"
   },
   "hollowKingScepterChoice": {
@@ -1020,7 +1023,7 @@
   "mercenaryDemand": {
     "choices": {
       "giveRing": {
-        "label": "Dar el anillo de alimentación"  //x1.7
+        "label": "Dar el anillo de alimentación" //x1.7
       },
       "payGold": {
         "cost": "100 oro",
@@ -1042,7 +1045,7 @@
   "mercenaryReturnDemand": {
     "choices": {
       "giveRing": {
-        "label": "Dar el anillo de alimentación"  //x1.7
+        "label": "Dar el anillo de alimentación" //x1.7
       },
       "payGold": {
         "cost": "200 oro",
@@ -1078,7 +1081,7 @@
         "message": "Compras el esquema del arco sombrío. El mercader sonríe con oscuridad: «El diseño de este arco es cruel. Sus flechas envenenarán a tus enemigos.»"
       },
       "trade_skull_lantern": {
-        "label": "Linterna de cráneo",  //x1.4
+        "label": "Linterna de cráneo", //x1.4
         "message": "Compras la linterna de cráneo. Forjada con hueso maldito, su luz inquietante te guiará por las profundidades más hondas."
       },
       "trade_tarnished_compass": {
@@ -1086,19 +1089,19 @@
         "message": "Compras la brújula deslustrada. Artefacto de la civilización desaparecida, su aguja señala lugares ocultos."
       },
       "trade_rootseeker_charm": {
-        "label": "Amuleto buscador de raíces",  //x1.6
+        "label": "Amuleto buscador de raíces", //x1.6
         "message": "Compras el Amuleto buscador de raíces. El mercader murmura algo sobre plantas devoradoras de hombres que, según dicen, crecen en lo profundo de los bosques antiguos."
       },
       "trade_map_fragment_wooden": {
-        "label": "Fragmento de mapa",  //x1.4
+        "label": "Fragmento de mapa", //x1.4
         "message": "Compras un fragmento de mapa hecho jirones."
       },
       "trade_map_fragment_stone": {
-        "label": "Fragmento de mapa",  //x1.4
+        "label": "Fragmento de mapa", //x1.4
         "message": "Compras un fragmento de mapa hecho jirones."
       },
       "trade_crow_harness": {
-        "label": "Arnés de cuervo",  //x1.3
+        "label": "Arnés de cuervo", //x1.3
         "message": "Compras el arnés de cuervo. Un arnés especialmente fabricado para cuervos mensajeros."
       },
       "trade_clarity_elixir": {
@@ -1106,7 +1109,7 @@
         "message": "Bebes el Elixir de claridad. Tu mente se siente más ligera."
       },
       "trade_veinfire_elixir": {
-        "label": "Elixir de fuego venoso",  //x1.5
+        "label": "Elixir de fuego venoso", //x1.5
         "message": "Compras una botella de Elixir de fuego venoso."
       },
       "trade_book_of_trials": {
@@ -1119,7 +1122,7 @@
       },
       "trade_book_of_war": {
         "message": "Compras el Libro de la guerra. El mercader asiente con gravedad: «Conocimiento de un reino desaparecido hace mucho en el lejano oriente. Con esto entenderás mejor las consecuencias de tus decisiones.»",
-        "label": "Libro de la guerra"  //x1.6
+        "label": "Libro de la guerra" //x1.6
       },
       "trade_reinforced_rope": {
         "message": "Compras la cuerda reforzada. Esta cuerda soporta una tensión enorme y alcanza lugares en las cámaras más profundas de la cueva.",
@@ -1127,11 +1130,11 @@
       },
       "trade_occultist_map": {
         "message": "Al comprar el Mapa del ocultista, el mercader susurra: «Un viejo ocultista ocultó sus secretos en una cámara profunda de la cueva. Este mapa te guiará.»",
-        "label": "Mapa del ocultista"  //x1.2
+        "label": "Mapa del ocultista" //x1.2
       },
       "trade_giant_trap": {
         "message": "Al comprar la trampa gigante, el mercader sonríe: «Con esto puedes atrapar algo gigantesco en el bosque. Úsala con sabiduría.»",
-        "label": "Trampa gigante"  //x1.4
+        "label": "Trampa gigante" //x1.4
       },
       "trade_arbalest_schematic": {
         "message": "Compras el esquema de ballesta. El mercader despliega un plano intrincado: «Un diseño de un ingeniero maestro. Con esto puedes fabricar un arma poderosa.»",
@@ -1143,7 +1146,7 @@
       },
       "trade_stormglass_halberd_schematic": {
         "message": "Compras el esquema de alabarda de cristal de tormenta. El mercader muestra los planos desvaídos: «Con este diseño puedes forjar una alabarda de poder tremendo.»",
-        "label": "Esquema de alabarda de cristal de tormenta"  //x1.5
+        "label": "Esquema de alabarda de cristal de tormenta" //x1.5
       },
       "trade_natharit_pickaxe": {
         "message": "Compras el pico de natharit. El mercader te entrega la herramienta robusta: «Un pico extremadamente duradero de material desconocido. Su calidad es excepcional.»",
@@ -1257,8 +1260,8 @@
     "choices": {
       "allowStay": {
         "label": {
-          "woman": "Dejarla quedarse",  //x1.3
-          "man": "Dejarlo quedarse"  //x1.3
+          "woman": "Dejarla quedarse", //x1.3
+          "man": "Dejarlo quedarse" //x1.3
         }
       },
       "refuseStay": {
@@ -1797,7 +1800,7 @@
         "label": "Dedicar a todos"
       },
       "deepenDevotion": {
-        "label": "Profundizar la devoción"  //x1.5
+        "label": "Profundizar la devoción" //x1.5
       }
     },
     "log": {
@@ -1907,7 +1910,7 @@
   "slaveTrader": {
     "choices": {
       "freeSlaves": {
-        "label": "Intentar liberar esclavos"  //x1.4
+        "label": "Intentar liberar esclavos" //x1.4
       },
       "refuseTrader": {
         "label": "Rechazar la oferta"
@@ -1929,7 +1932,7 @@
     "choices": {
       "hostSolstice": {
         "cost": "{{goldCost}} oro, {{foodCost}} comida",
-        "label": "Organizar la celebración"  //x1.7
+        "label": "Organizar la celebración" //x1.7
       },
       "refuseSolstice": {
         "label": "Rechazar"
@@ -2039,7 +2042,7 @@
       },
       "send_search_party": {
         "cost": "500 comida, 50 antorcha",
-        "label": "Enviar grupo de búsqueda"  //x1.4
+        "label": "Enviar grupo de búsqueda" //x1.4
       }
     },
     "log": {
@@ -2461,7 +2464,7 @@
   },
   "wizardBloodstoneStaff": {
     "message": "El mago examina las gemas de piedra de sangre que recuperaste del Templo Hundido. 'Con estas piedras de sangre, ya tenemos todo lo necesario. Ahora podemos fabricar el Bastón de Piedra de Sangre. Junto con la Espada de Cristal de Escarcha, tendremos los medios para enfrentar la oscuridad que acecha abajo'.",
-    "title": "El Bastón de Piedra de Sangre"  //x1.5
+    "title": "El Bastón de Piedra de Sangre" //x1.5
   },
   "wizardDecryptsScrolls": {
     "message": "El mago sale de su torre. 'He descifrado los pergaminos antiguos', dice. 'Las criaturas de abajo solo pueden morir con armas de gran poder: una espada de cristal de escarcha y un bastón coronado con piedra de sangre. En lo profundo del bosque yace la tumba de un rey antiguo, cuyos tesoros podrían contener el cristal de escarcha que necesitamos'.",
@@ -2643,7 +2646,7 @@
         "label": "Sacrificarla"
       },
       "stopSacrifices": {
-        "label": "Detener los sacrificios humanos"  //x1.5
+        "label": "Detener los sacrificios humanos" //x1.5
       }
     },
     "log": {

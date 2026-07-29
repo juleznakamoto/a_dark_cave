@@ -841,7 +841,10 @@
       "lakeDrownOne": "La creatura si solleva come un incubo, la bellezza che maschera un intento mortale. Con forza innaturale, trascina un abitante sotto le acque. Restano solo increspature e deboli urla mentre gli altri fuggono terrorizzati.",
       "lakeDrownMany": "La creatura si solleva come un incubo, la bellezza che maschera un intento mortale. Con forza innaturale, trascina gli abitanti sotto le acque. Restano solo increspature e deboli urla mentre gli altri fuggono terrorizzati."
     },
-    "message": "Mentre raccolgono legna nella foresta, gli abitanti scoprono un lago nascosto tra gli alberi. Un abitante giura di aver visto una figura simile a una donna emergere per un istante, lo sguardo bellissimo eppure inumano. Cosa fai?",
+    "message": {
+      "firstTime": "Mentre raccolgono legna nella foresta, gli abitanti scoprono un lago nascosto tra gli alberi. Un abitante giura di aver visto una figura simile a una donna emergere per un istante, lo sguardo bellissimo eppure inumano. Cosa fai?",
+      "repeat": "Mentre raccolgono legna nella foresta, gli abitanti tornano al lago nascosto tra gli alberi. Ancora una volta, un abitante giura di aver visto una figura simile a una donna emergere per un istante, lo sguardo bellissimo eppure inumano. Cosa fai?"
+    },
     "title": "Il Lago Nascosto"
   },
   "hollowKingScepterChoice": {
@@ -2654,5 +2657,4 @@
     "message": "A hooded figure appears at the estate, silent, then whispering in a low voice. They offer to give you a blessing.",
     "title": "A Quiet Offering"
   }
-
 }
