@@ -10,6 +10,7 @@ import { useGameStore } from "@/game/state";
 import { SHOP_ITEMS } from "../../../shared/shopItems";
 import { FIRST_PURCHASE_INSIGHT_BONUS } from "@shared/firstPurchaseInsightBonus";
 import { INSIGHT_GLYPH } from "@/game/villagerCapUpgrades";
+import { formatNumber } from "@/lib/utils";
 import { logger } from "@/lib/logger";
 import i18n from "@/i18n";
 
@@ -117,10 +118,10 @@ export async function processStripePaymentReturn(): Promise<void> {
         : "Thank you for your purchase.";
       const insightBonusMessage = grantedFirstPurchaseInsight
         ? i18n.t("ui:shop.firstPurchaseInsightGranted", {
-            amount: FIRST_PURCHASE_INSIGHT_BONUS.toLocaleString(),
-            glyph: INSIGHT_GLYPH,
-            defaultValue: "First purchase gift: +{{amount}} {{glyph}} Insight",
-          })
+          amount: formatNumber(FIRST_PURCHASE_INSIGHT_BONUS),
+          glyph: INSIGHT_GLYPH,
+          defaultValue: "First purchase gift: +{{amount}} {{glyph}} Insight",
+        })
         : null;
       toast({
         title: "Purchase complete",

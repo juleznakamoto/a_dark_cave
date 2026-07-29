@@ -95,9 +95,9 @@
     "securePurchaseBody": "Il tuo acquisto è salvato solo su questo browser. Crea un account per conservare acquisti e progressi se cambi dispositivo o cancelli i dati del browser.",
     "securePurchaseSignUp": "Registrati",
     "securePurchaseLater": "Forse più tardi",
-    "firstPurchaseInsightBannerBefore": "Receive",
+    "firstPurchaseInsightBannerBefore": "Get",
     "firstPurchaseInsightBannerInsight": "Insight",
-    "firstPurchaseInsightBannerAfter": "with your first purchase",
+    "firstPurchaseInsightBannerAfter": "free with your first purchase",
     "firstPurchaseInsightGranted": "First purchase gift: +{{amount}} {{glyph}} Insight"
   }
 }
