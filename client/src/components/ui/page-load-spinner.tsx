@@ -101,9 +101,8 @@ export default function PageLoadSpinner() {
           aria-hidden="true"
         >
           <span ref={originRef} className="adc-page-load-spinner">
-            <span className="adc-page-load-spinner__ring">
-              <span className="adc-page-load-spinner__core" />
-            </span>
+            <span className="adc-page-load-spinner__ring" />
+            <span className="adc-page-load-spinner__core" />
           </span>
         </div>
       ) : null}

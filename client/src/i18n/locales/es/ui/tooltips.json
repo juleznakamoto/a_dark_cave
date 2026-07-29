@@ -24,7 +24,7 @@
     "madnessTitle": "Locura",
     "productionBonus": "Bonificación de producción: {{value}}", //x1.4
     "madnessLevel": "Locura: {{value}}",
-    "deathByMadnessChanceEachCycle": "Probabilidad de muerte por locura cada ciclo: {{value}} %",
+    "deathByMadnessChanceEachCycle": "Probabilidad de muerte por locura por ciclo: {{value}} %",
     "minRemaining": "{{count}} min restantes",
     "minUntilDecrease": "{{time}} hasta bajar de nivel",
     "greatVillageFeast": "Gran festín del pueblo",

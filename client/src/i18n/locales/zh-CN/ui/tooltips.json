@@ -24,7 +24,7 @@
     "madnessTitle": "疯狂",
     "productionBonus": "生产加成：{{value}}",
     "madnessLevel": "疯狂：{{value}}",
-    "deathByMadnessChanceEachCycle": "每周期因疯狂死亡几率：{{value}}%",
+    "deathByMadnessChanceEachCycle": "每周期疯狂死亡几率：{{value}}%",
     "minRemaining": "剩余 {{count}} 分钟",
     "minUntilDecrease": "{{time}} 后等级下降",
     "greatVillageFeast": "村庄大宴",

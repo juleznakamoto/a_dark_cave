@@ -24,7 +24,7 @@
     "madnessTitle": "Madness",
     "productionBonus": "Production Bonus: {{value}}",
     "madnessLevel": "Madness: {{value}}",
-    "deathByMadnessChanceEachCycle": "Death by Madness Chance each Cycle: {{value}}%",
+    "deathByMadnessChanceEachCycle": "Madness Death Chance per Cycle: {{value}}%",
     "minRemaining": "{{count}} min remaining",
     "minUntilDecrease": "{{time}} until level decrease",
     "greatVillageFeast": "Great Village Feast",

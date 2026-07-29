@@ -24,7 +24,7 @@
     "madnessTitle": "Wahnsinn",
     "productionBonus": "Produktionsbonus: {{value}}",
     "madnessLevel": "Wahnsinn: {{value}}",
-    "deathByMadnessChanceEachCycle": "Chance auf Wahnsinnstod pro Zyklus: {{value}}%",
+    "deathByMadnessChanceEachCycle": "Wahnsinnstod-Chance pro Zyklus: {{value}}%",
     "minRemaining": "Noch {{count}} Min.",
     "minUntilDecrease": "{{time}} bis Stufenabfall",
     "greatVillageFeast": "Großes Dorffest",

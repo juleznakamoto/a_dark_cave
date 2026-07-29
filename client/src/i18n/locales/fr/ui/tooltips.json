@@ -24,7 +24,7 @@
     "madnessTitle": "Folie",
     "productionBonus": "Bonus de production : {{value}}",
     "madnessLevel": "Folie : {{value}}",
-    "deathByMadnessChanceEachCycle": "Chance de mort par folie chaque cycle : {{value}} %",
+    "deathByMadnessChanceEachCycle": "Chance de mort par folie par cycle : {{value}} %",
     "minRemaining": "{{count}} min restantes",
     "minUntilDecrease": "{{time}} avant la baisse de niveau",
     "greatVillageFeast": "Grand festin du village", //x1.2

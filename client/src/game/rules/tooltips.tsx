@@ -515,7 +515,7 @@ export const madnessProductionTooltip: TooltipConfig = {
         <div>
           {getUiTooltip(
             "deathByMadnessChanceEachCycle",
-            "Death by Madness Chance each Cycle: {{value}}%",
+            "Madness Death Chance per Cycle: {{value}}%",
             { value: deathPercent },
           )}
         </div>
