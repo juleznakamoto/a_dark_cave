@@ -24,7 +24,7 @@ import {
   DISGRACED_PRIOR_FOOD_PER_ASSIGNED_ACTION_PER_CYCLE,
   DISGRACED_PRIOR_UPGRADES,
 } from "@/game/rules/skillUpgrades";
-import { stackTimedDebuff } from "@/game/stateHelpers";
+import { isTraderShopUnlocked, stackTimedDebuff } from "@/game/stateHelpers";
 import { focusTooltip } from "@/game/rules/tooltips";
 import {
   GAME_PANEL_HEADER_INDICATOR_CLASS,
@@ -35,9 +35,30 @@ import cn from "clsx";
 import { buildLocalizedEventLogEntry } from "@/i18n/buildEventLogEntry";
 import { useUiTranslation } from "@/i18n/useUiTranslation";
 import { formatTooltipCostLine } from "@/i18n/tooltipLabels";
+import { useSteamEditionActive } from "@/hooks/useSteamEditionActive";
 
 
 const ESTATE_BAR_GROW_ANIMATION_MS = 500;
+
+/** Open Trader gold filter when an Improve costs more gold than the player has. */
+function useEstateGoldShopClick(canAfford: boolean) {
+  const setShopDialogOpen = useGameStore((s) => s.setShopDialogOpen);
+  const setShopFilter = useGameStore((s) => s.setShopFilter);
+  const story = useGameStore((s) => s.story);
+  const traderDialogOpens = useGameStore((s) => s.traderDialogOpens);
+  const steamEditionActive = useSteamEditionActive();
+  if (
+    canAfford ||
+    steamEditionActive ||
+    !isTraderShopUnlocked({ story, traderDialogOpens })
+  ) {
+    return undefined;
+  }
+  return () => {
+    setShopFilter("gold");
+    setShopDialogOpen(true, "estate-buy-gold");
+  };
+}
 
 /** Header row for estate upgrade bars — reserves Improve button width/height when maxed. */
 function EstateUpgradeRowHeader({
@@ -83,6 +104,7 @@ function SkillUpgradeRow({
   description,
 }: SkillUpgradeRowProps) {
   const setHighlightedResources = useGameStore((s) => s.setHighlightedResources);
+  const openShop = useEstateGoldShopClick(canAfford);
   const costLine = formatTooltipCostLine(upgradeCost, "gold");
   return (
     <div className="w-full space-y-1 pt-2">
@@ -101,13 +123,15 @@ function SkillUpgradeRow({
                 </div>
               }
               tooltipId={tooltipId}
-              disabled={!canAfford}
+              disabled={!canAfford && !openShop}
+              onClick={openShop}
               onMouseEnter={() => setHighlightedResources(["gold"])}
               onMouseLeave={() => setHighlightedResources([])}
             >
               <ImproveButton
                 onClick={onUpgrade}
                 disabled={!canAfford}
+                onUnaffordableClick={openShop}
                 button_id={buttonId}
               />
             </TooltipWrapper>
@@ -418,6 +442,7 @@ export default function EstatePanel() {
   const canUpgradeLength =
     sleepUpgrades.lengthLevel < MAX_SLEEP_LENGTH_LEVEL &&
     resources.gold >= (nextLengthUpgrade?.cost || 0);
+  const openShopForLength = useEstateGoldShopClick(canUpgradeLength);
 
   const currentIntensityUpgrade =
     SLEEP_INTENSITY_UPGRADES[sleepUpgrades.intensityLevel];
@@ -426,6 +451,7 @@ export default function EstatePanel() {
   const canUpgradeIntensity =
     sleepUpgrades.intensityLevel < MAX_SLEEP_INTENSITY_LEVEL &&
     resources.gold >= (nextIntensityUpgrade?.cost || 0);
+  const openShopForIntensity = useEstateGoldShopClick(canUpgradeIntensity);
 
   return (
     <ScrollArea className="h-full w-full">
@@ -572,7 +598,8 @@ export default function EstatePanel() {
                       </div>
                     }
                     tooltipId="upgrade-length-button"
-                    disabled={!canUpgradeLength}
+                    disabled={!canUpgradeLength && !openShopForLength}
+                    onClick={openShopForLength}
                     onMouseEnter={() => {
                       setHighlightedResources(["gold"]);
                     }}
@@ -583,6 +610,7 @@ export default function EstatePanel() {
                     <ImproveButton
                       onClick={handleSleepLengthUpgrade}
                       disabled={!canUpgradeLength}
+                      onUnaffordableClick={openShopForLength}
                       button_id="upgrade-sleep-length"
                     />
                   </TooltipWrapper>
@@ -633,7 +661,8 @@ export default function EstatePanel() {
                       </div>
                     }
                     tooltipId="upgrade-intensity-button"
-                    disabled={!canUpgradeIntensity}
+                    disabled={!canUpgradeIntensity && !openShopForIntensity}
+                    onClick={openShopForIntensity}
                     onMouseEnter={() => {
                       setHighlightedResources(["gold"]);
                     }}
@@ -644,6 +673,7 @@ export default function EstatePanel() {
                     <ImproveButton
                       onClick={handleSleepIntensityUpgrade}
                       disabled={!canUpgradeIntensity}
+                      onUnaffordableClick={openShopForIntensity}
                       button_id="upgrade-sleep-intensity"
                     />
                   </TooltipWrapper>

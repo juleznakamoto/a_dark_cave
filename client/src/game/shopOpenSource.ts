@@ -5,6 +5,7 @@ export const SHOP_OPEN_SOURCES = [
   "gratitude",
   "url",
   "timedevent-buy-gold",
+  "estate-buy-gold",
   "event",
 ] as const;
 
