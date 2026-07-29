@@ -133,7 +133,6 @@ import {
   GAME_PANEL_HEADER_INSIGHT_BADGE_CLASS,
 } from "@/components/game/gameChrome";
 
-
 const VILLAGE_INDICATOR_TOOLTIP_IDS = [
   "production-cycle-progress",
   "feast-progress",
@@ -619,15 +618,15 @@ export default function VillagePanel() {
       });
       const investPlayTimeCooldown = active
         ? {
-          startPlayTime: active.startPlayTime,
-          endPlayTime: active.endPlayTime,
-          mode: "progress" as const,
-        }
+            startPlayTime: active.startPlayTime,
+            endPlayTime: active.endPlayTime,
+            mode: "progress" as const,
+          }
         : nextWave > 0 && currentPlayTime < nextWave
           ? {
-            startPlayTime: nextWave - getInvestmentWaveGapMs(),
-            endPlayTime: nextWave,
-          }
+              startPlayTime: nextWave - getInvestmentWaveGapMs(),
+              endPlayTime: nextWave,
+            }
           : null;
       const tooltipContent = !investReady ? (
         active ? (
@@ -701,9 +700,9 @@ export default function VillagePanel() {
       const merchantPlayTimeCooldown =
         isOnCooldown && callMerchantLastEndPlayTime != null
           ? {
-            startPlayTime: callMerchantLastEndPlayTime,
-            endPlayTime: cooldownEndPlayTime,
-          }
+              startPlayTime: callMerchantLastEndPlayTime,
+              endPlayTime: cooldownEndPlayTime,
+            }
           : null;
       const canAfford = (resources?.gold ?? 0) >= price;
       const isDisabled =
@@ -1011,9 +1010,15 @@ export default function VillagePanel() {
   ) => (
     <div key={key} className={VILLAGER_COUNT_ROW_CLASS}>
       <div className={VILLAGER_COUNT_CONTROL_GRID_CLASS}>
-        <span className={cn(VILLAGER_COUNT_BUTTON_SIZE_CLASS, "inline-block")} aria-hidden />
+        <span
+          className={cn(VILLAGER_COUNT_BUTTON_SIZE_CLASS, "inline-block")}
+          aria-hidden
+        />
         {renderVillagerCount(count, options?.className)}
-        <span className={cn(VILLAGER_COUNT_BUTTON_SIZE_CLASS, "inline-block")} aria-hidden />
+        <span
+          className={cn(VILLAGER_COUNT_BUTTON_SIZE_CLASS, "inline-block")}
+          aria-hidden
+        />
         <span translate="no" className={VILLAGER_COUNT_CAP_CLASS} aria-hidden />
       </div>
       <span className={VILLAGER_COUNT_LABEL_CLASS}>
@@ -1028,9 +1033,15 @@ export default function VillagePanel() {
   const renderVillagersSummaryRow = () => (
     <div key="villagers-summary" className={VILLAGER_COUNT_ROW_CLASS}>
       <div className={VILLAGER_COUNT_CONTROL_GRID_CLASS}>
-        <span className={cn(VILLAGER_COUNT_BUTTON_SIZE_CLASS, "inline-block")} aria-hidden />
+        <span
+          className={cn(VILLAGER_COUNT_BUTTON_SIZE_CLASS, "inline-block")}
+          aria-hidden
+        />
         {renderVillagerCount(totalPopulation)}
-        <span className={cn(VILLAGER_COUNT_BUTTON_SIZE_CLASS, "inline-block")} aria-hidden />
+        <span
+          className={cn(VILLAGER_COUNT_BUTTON_SIZE_CLASS, "inline-block")}
+          aria-hidden
+        />
         <span
           translate="no"
           className={cn(VILLAGER_COUNT_CAP_CLASS, "text-muted-foreground")}
@@ -1230,8 +1241,7 @@ export default function VillagePanel() {
                       <ActionInsightBadge target="buildingDescriptions" />
                     </h3>
                     {(() => {
-                      const nextUnlockCost =
-                        getNextQueueSlotUnlockCost(state);
+                      const nextUnlockCost = getNextQueueSlotUnlockCost(state);
                       const visibleSlots = getVisibleQueueSlotCount();
                       const nextUnlockIndex =
                         getNextPurchasableQueueSlotIndex(state);
@@ -1277,8 +1287,7 @@ export default function VillagePanel() {
                                   className={cn(
                                     getInsightBadgeTriggerClassName({
                                       canAfford:
-                                        canUnlock ||
-                                        isQueueSlotUnlockAnimating,
+                                        canUnlock || isQueueSlotUnlockAnimating,
                                       playing: isQueueSlotUnlockAnimating,
                                       className:
                                         HEADER_SLOT_INSIGHT_BUTTON_CLASS,
@@ -1301,39 +1310,37 @@ export default function VillagePanel() {
                                 </button>
                               </TooltipWrapper>
                             )}
-                          {Array.from({ length: visibleSlots }).map(
-                            (_, i) => {
-                              const slot = i + 1;
-                              const isBuildingLocked =
-                                isQueueSlotBuildingLocked(state, i);
-                              const isLocked = isQueueSlotLockedForUi(
-                                state,
-                                i,
-                              );
-                              const isInsightPurchaseLocked =
-                                isQueueSlotInsightPurchaseLocked(state, i);
-                              const isUsed = isQueueSlotInUse(state, i);
-                              const insightUnlockCost =
-                                isInsightPurchaseLocked && i > 0
-                                  ? getQueueSlotUnlockCost(i - 1)
-                                  : null;
-                              const queueTooltipId = `queue-slot-${slot}`;
-                              return (
-                                <TooltipWrapper
-                                  key={queueTooltipId}
-                                  tooltipId={queueTooltipId}
-                                  tooltip={
-                                    <div className="text-xs">
-                                      {isBuildingLocked
-                                        ? t(
+                          {Array.from({ length: visibleSlots }).map((_, i) => {
+                            const slot = i + 1;
+                            const isBuildingLocked = isQueueSlotBuildingLocked(
+                              state,
+                              i,
+                            );
+                            const isLocked = isQueueSlotLockedForUi(state, i);
+                            const isInsightPurchaseLocked =
+                              isQueueSlotInsightPurchaseLocked(state, i);
+                            const isUsed = isQueueSlotInUse(state, i);
+                            const insightUnlockCost =
+                              isInsightPurchaseLocked && i > 0
+                                ? getQueueSlotUnlockCost(i - 1)
+                                : null;
+                            const queueTooltipId = `queue-slot-${slot}`;
+                            return (
+                              <TooltipWrapper
+                                key={queueTooltipId}
+                                tooltipId={queueTooltipId}
+                                tooltip={
+                                  <div className="text-xs">
+                                    {isBuildingLocked
+                                      ? t(
                                           "village.slotBuildingNeededToUnlock",
                                           {
                                             defaultValue:
                                               "Building required to unlock",
                                           },
                                         )
-                                        : insightUnlockCost !== null
-                                          ? t(
+                                      : insightUnlockCost !== null
+                                        ? t(
                                             "village.slotInsightUnlockAvailable",
                                             {
                                               cost: formatNumber(
@@ -1343,59 +1350,58 @@ export default function VillagePanel() {
                                                 "Can be unlocked for {{cost}} Insight",
                                             },
                                           )
-                                          : isLocked
-                                            ? t("village.queueSlotLocked", {
+                                        : isLocked
+                                          ? t("village.queueSlotLocked", {
                                               slot,
                                             })
-                                            : isUsed
-                                              ? t("village.queueSlotUsed", {
+                                          : isUsed
+                                            ? t("village.queueSlotUsed", {
                                                 slot,
                                               })
-                                              : t("village.queueSlotFree", {
+                                            : t("village.queueSlotFree", {
                                                 slot,
                                               })}
-                                    </div>
-                                  }
-                                  tooltipTriggerClassName="inline-flex items-center leading-none"
-                                  className="inline-flex items-center"
+                                  </div>
+                                }
+                                tooltipTriggerClassName="inline-flex items-center leading-none"
+                                className="inline-flex items-center"
+                              >
+                                <span
+                                  data-testid={queueTooltipId}
+                                  className={cn(
+                                    HEADER_SLOT_SIZE_CLASS,
+                                    "relative inline-flex items-center justify-center rounded-md border border-neutral-400/50 box-border",
+                                    isBuildingLocked && "opacity-70",
+                                  )}
                                 >
-                                  <span
-                                    data-testid={queueTooltipId}
-                                    className={cn(
-                                      HEADER_SLOT_SIZE_CLASS,
-                                      "relative inline-flex items-center justify-center rounded-md border border-neutral-400/50 box-border",
-                                      isBuildingLocked && "opacity-70",
-                                    )}
-                                  >
-                                    {isLocked ? (
-                                      isInsightPurchaseLocked ? (
-                                        <span
-                                          aria-hidden
-                                          className="font-noto-symbols-2 text-[12px] translate-y-[2px] font-extrabold leading-none text-muted-foreground/45 select-none"
-                                        >
-                                          +
-                                        </span>
-                                      ) : (
-                                        <span
-                                          aria-hidden
-                                          className="font-noto-symbols-2 text-[12px] translate-y-[2px] font-extrabold leading-none text-muted-foreground/45 select-none"
-                                        >
-                                          ×
-                                        </span>
-                                      )
+                                  {isLocked ? (
+                                    isInsightPurchaseLocked ? (
+                                      <span
+                                        aria-hidden
+                                        className="font-noto-symbols-2 text-[12px] translate-y-[2px] font-extrabold leading-none text-muted-foreground/45 select-none"
+                                      >
+                                        +
+                                      </span>
                                     ) : (
-                                      isUsed && (
-                                        <span
-                                          aria-hidden
-                                          className="absolute inset-[3px] rounded-[1px] bg-red-700"
-                                        />
-                                      )
-                                    )}
-                                  </span>
-                                </TooltipWrapper>
-                              );
-                            },
-                          )}
+                                      <span
+                                        aria-hidden
+                                        className="font-noto-symbols-2 text-[12px] translate-y-[2px] font-extrabold leading-none text-muted-foreground/45 select-none"
+                                      >
+                                        ×
+                                      </span>
+                                    )
+                                  ) : (
+                                    isUsed && (
+                                      <span
+                                        aria-hidden
+                                        className="absolute inset-[3px] rounded-[1px] bg-red-700"
+                                      />
+                                    )
+                                  )}
+                                </span>
+                              </TooltipWrapper>
+                            );
+                          })}
                         </div>
                       );
                     })()}
@@ -1582,7 +1588,7 @@ export default function VillagePanel() {
                               }
                             />
                             <span
-                              className={`font-noto-symbols-2 absolute inset-0 flex items-center justify-center font-extrabold ${isGreatFeast ? "text-[12px] -mt-[0px] text-orange-600" : "text-[12px] mt-[2px] text-yellow-600"}`}
+                              className={`font-noto-symbols-2 absolute inset-0 flex items-center justify-center font-extrabold ${isGreatFeast ? "text-[12px] mt-[2px] text-orange-600" : "text-[12px] mt-[2px] text-yellow-600"}`}
                             >
                               {isGreatFeast ? "✦" : "⟡"}
                             </span>
@@ -2092,19 +2098,19 @@ export default function VillagePanel() {
                                   <div className="text-xs">
                                     {insightUnlockCost !== null
                                       ? t(
-                                        "village.slotInsightUnlockAvailable",
-                                        {
-                                          cost: formatNumber(
-                                            insightUnlockCost,
-                                          ),
-                                          defaultValue:
-                                            "Can be unlocked for {{cost}} Insight",
-                                        },
-                                      )
+                                          "village.slotInsightUnlockAvailable",
+                                          {
+                                            cost: formatNumber(
+                                              insightUnlockCost,
+                                            ),
+                                            defaultValue:
+                                              "Can be unlocked for {{cost}} Insight",
+                                          },
+                                        )
                                       : t("village.presetLocked", {
-                                        defaultValue:
-                                          "Locked: available for purchase",
-                                      })}
+                                          defaultValue:
+                                            "Locked: available for purchase",
+                                        })}
                                   </div>
                                 }
                                 tooltipTriggerClassName="inline-flex items-center leading-none"
@@ -2165,8 +2171,8 @@ export default function VillagePanel() {
                                   isActive
                                     ? "group-hover:bg-primary/90"
                                     : gameActionOutlineButtonClassName(false, {
-                                      groupHover: true,
-                                    }),
+                                        groupHover: true,
+                                      }),
                                 )}
                                 style={{ touchAction: "manipulation" }}
                               >
