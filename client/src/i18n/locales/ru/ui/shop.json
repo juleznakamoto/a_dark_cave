@@ -46,7 +46,7 @@
     "additionalDiscount": "Дополнительная скидка",
     "eventDiscount": "Скидка за событие", //x1.2
     "total": "Итого",
-    "legalConsent": "После покупки вы сразу получаете доступ к цифровому контенту.",
+    "legalConsent": "Мгновенный доступ к цифровому контенту после покупки.",
     "termsOfService": "Условия",
     "rightOfWithdrawal": "Отказ",
     "completePurchaseFor": "Завершить покупку за {{price}}",

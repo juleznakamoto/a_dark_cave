@@ -151,7 +151,7 @@
     "loadingPayment": "Загрузка платёжной системы…",
     "purchaseSuccessful": "Покупка успешна!",
     "purchaseSuccessfulDesc": "Полная версия разблокирована! Продолжайте путешествие без ограничений.",
-    "legalConsent": "После покупки вы сразу получаете доступ к цифровому контенту.",
+    "legalConsent": "Мгновенный доступ к цифровому контенту после покупки.",
     "termsOfService": "Условия",
     "rightOfWithdrawal": "Отказ",
     "completePurchaseFor": "Завершить покупку за {{price}}",

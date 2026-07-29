@@ -151,7 +151,7 @@
     "loadingPayment": "Chargement du système de paiement…", //x1.4
     "purchaseSuccessful": "Achat réussi !",
     "purchaseSuccessfulDesc": "Jeu complet débloqué et activé ! Vous pouvez poursuivre votre voyage sans restrictions.",
-    "legalConsent": "Vous accédez immédiatement au contenu numérique après l'achat.",
+    "legalConsent": "Accès immédiat au contenu numérique après l'achat.",
     "termsOfService": "Conditions",
     "rightOfWithdrawal": "Rétractation",
     "completePurchaseFor": "Finaliser l'achat pour {{price}}",

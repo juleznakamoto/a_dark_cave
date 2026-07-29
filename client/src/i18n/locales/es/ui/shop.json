@@ -46,7 +46,7 @@
     "additionalDiscount": "Descuento adicional",
     "eventDiscount": "Descuento de evento", //x1.4
     "total": "Total",
-    "legalConsent": "Obtienes acceso instantáneo al contenido digital tras la compra.",
+    "legalConsent": "Acceso instantáneo al contenido digital tras la compra.",
     "termsOfService": "Condiciones",
     "rightOfWithdrawal": "Desistimiento",
     "completePurchaseFor": "Completar compra por {{price}}",

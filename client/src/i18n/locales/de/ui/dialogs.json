@@ -151,7 +151,7 @@
     "loadingPayment": "Zahlungssystem wird geladen…",
     "purchaseSuccessful": "Kauf erfolgreich!",
     "purchaseSuccessfulDesc": "Vollversion freigeschaltet und aktiviert! Du kannst deine Reise nun ohne Einschränkungen fortsetzen.",
-    "legalConsent": "Du erhältst nach dem Kauf sofortigen Zugang zu den digitalen Inhalten.",
+    "legalConsent": "Sofortiger Zugang zu digitalen Inhalten nach dem Kauf.",
     "termsOfService": "AGB",
     "rightOfWithdrawal": "Widerruf",
     "completePurchaseFor": "Kauf abschließen für {{price}}",

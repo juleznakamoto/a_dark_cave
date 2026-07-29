@@ -146,7 +146,7 @@
     "loadingPayment": "Carregando o sistema de pagamento...",
     "purchaseSuccessful": "Compra Concluída!",
     "purchaseSuccessfulDesc": "Jogo Completo desbloqueado e ativado! Agora você pode continuar sua jornada sem restrições.",
-    "legalConsent": "Você obtém acesso instantâneo ao conteúdo digital após a compra.",
+    "legalConsent": "Acesso instantâneo ao conteúdo digital após a compra.",
     "termsOfService": "Termos",
     "rightOfWithdrawal": "Arrependimento",
     "completePurchaseFor": "Concluir Compra por {{price}}",
