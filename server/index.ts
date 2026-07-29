@@ -136,7 +136,8 @@ const authLimiter = rateLimit({
 
 const paymentLimiter = rateLimit({
   windowMs: 60 * 60 * 1000, // 1 hour
-  max: 10, // Limit each IP to 10 payment requests per hour
+  // Prod: 10/hour. Dev: 100/hour so checkout testing does not trip the cap quickly.
+  max: process.env.NODE_ENV === "production" ? 10 : 100,
   message: "Too many payment requests, please try again later.",
 });
 

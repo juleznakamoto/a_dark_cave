@@ -51,6 +51,7 @@
     "rightOfWithdrawal": "Right of Withdrawal",
     "completePurchaseFor": "Complete Purchase for {{price}}",
     "paymentFailed": "Payment failed",
+    "tooManyPaymentRequests": "Too many payment requests, please try again later.",
     "notAuthenticated": "User not authenticated",
     "verificationFailed": "Payment verification failed. Please contact support.",
     "unexpectedError": "An unexpected error occurred",

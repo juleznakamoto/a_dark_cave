@@ -1128,13 +1128,43 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
       }),
     });
 
-    const body = await response.json();
-    if (body.error) {
+    const rawBody = await response.text();
+    let body: { error?: string; message?: string; clientSecret?: string } = {};
+    try {
+      body = rawBody ? JSON.parse(rawBody) : {};
+    } catch {
+      body = {
+        error:
+          rawBody.trim() ||
+          (response.status === 429
+            ? t("ui:shop.tooManyPaymentRequests", {
+              defaultValue:
+                "Too many payment requests, please try again later.",
+            })
+            : t("ui:shop.unexpectedError")),
+      };
+    }
+
+    if (!response.ok || body.error) {
+      const message =
+        body.error ||
+        body.message ||
+        (response.status === 429
+          ? t("ui:shop.tooManyPaymentRequests", {
+            defaultValue:
+              "Too many payment requests, please try again later.",
+          })
+          : t("ui:shop.unexpectedError"));
       gameState.addLogEntry({
         id: `payment-blocked-${Date.now()}`,
-        message: body.error,
+        message,
         timestamp: Date.now(),
         type: "system",
+      });
+      toast({
+        title: t("ui:shop.paymentFailed"),
+        description: message,
+        variant: "destructive",
       });
       return;
     }
