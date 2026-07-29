@@ -299,10 +299,10 @@ void main() {
  * Closest defaults to the builder recipe (#031C26 → #EAF9FF).
  */
 export const SMOKE_SHADER_COLOR_TOKENS = [
-  "cyan-950",
-  "sky-700",
-  "sky-300",
-  "sky-50",
+  "blue-950",
+  "blue-800",
+  "blue-600",
+  "blue-100",
 ] as const;
 
 function hexToRgb01(hex: string): [number, number, number] {
@@ -402,7 +402,8 @@ class SmokeWebGLRenderer {
     );
 
     const position = gl.getAttribLocation(program, "position");
-    if (position < 0) throw new Error("Smoke shader missing position attribute");
+    if (position < 0)
+      throw new Error("Smoke shader missing position attribute");
     gl.enableVertexAttribArray(position);
     gl.vertexAttribPointer(position, 2, gl.FLOAT, false, 0, 0);
 
@@ -582,7 +583,10 @@ export function SmokeShader({
     <canvas
       ref={canvasRef}
       aria-hidden
-      className={cn("pointer-events-none absolute inset-0 h-full w-full", className)}
+      className={cn(
+        "pointer-events-none absolute inset-0 h-full w-full",
+        className,
+      )}
     />
   );
 }
