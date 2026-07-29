@@ -290,12 +290,12 @@ export const GOLD_COIN_PARTICLE_CONFIG: Partial<ParticleConfig> = {
 /** Page-load spinner — bursts from ring center in random directions (fire tones). */
 export const FIRE_LOAD_PARTICLE_CONFIG: Partial<ParticleConfig> = {
   colors: [
-    tailwindToHex("red-500"),
     tailwindToHex("red-600"),
-    tailwindToHex("orange-500"),
+    tailwindToHex("red-700"),
     tailwindToHex("orange-600"),
-    tailwindToHex("yellow-600"),
-    tailwindToHex("amber-600"),
+    tailwindToHex("orange-700"),
+    tailwindToHex("yellow-700"),
+    tailwindToHex("amber-700"),
   ],
   count: 10,
   durationMin: 0.6,
