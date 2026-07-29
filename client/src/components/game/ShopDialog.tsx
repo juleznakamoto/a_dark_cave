@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useMemo } from "react";
 import { useCoinHoverParticles } from "@/components/ui/coin-hover-particles";
+import { useInlineButtonParticles } from "@/components/ui/bubbly-button";
 import {
   Dialog,
   DialogContent,
@@ -10,6 +11,7 @@ import {
 import { logger } from "@/lib/logger";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
+import { Z_INDEX } from "@/lib/z-index";
 import {
   Card,
   CardContent,
@@ -66,7 +68,7 @@ import {
 } from "../../../../shared/shopCheckoutPrice";
 import { PLAYLIGHT_FIRST_PURCHASE_DISCOUNT_PERCENT } from "@/game/playlightRewards";
 import { tailwindToHex } from "@/lib/tailwindColors";
-import { getShopGlyphHoverParticleConfig } from "@/components/ui/bubbly-button.particles";
+import { getShopGlyphHoverParticleConfig, CHECKOUT_SUCCESS_PARTICLE_CONFIG } from "@/components/ui/bubbly-button.particles";
 import { getStripeReturnUrlForConfirm } from "@/lib/stripePaymentReturn";
 import { verifyPaymentWithRetry } from "@/lib/paymentVerify";
 import { StripePoweredBy } from "@/components/game/StripePoweredBy";
@@ -636,13 +638,15 @@ function CheckoutForm({
               completePaidShopPurchaseInStore().grantedFirstPurchaseInsight;
           }
 
+          // Keep processing (green border) until the dialog unmounts — clearing it
+          // here flashes the idle border before clientSecret is cleared.
           onSuccess(result.discountMetadata, { grantedFirstPurchaseInsight });
         } else {
           // Payment succeeded on Stripe but server verification failed (e.g. DB error).
           // Do NOT release discount reservation - user was charged; requires manual intervention.
           setErrorMessage(result.error || t("ui:shop.verificationFailed"));
+          setIsProcessing(false);
         }
-        setIsProcessing(false);
       }
     } catch (e: any) {
       logger.error("Payment submission error:", e);
@@ -762,6 +766,12 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
   const directCheckoutStartedRef = React.useRef(false);
   const activatedPurchases = gameState.activatedPurchases || {};
   const { toast } = useToast();
+  const { triggerParticles: triggerCheckoutSuccessBurst, portal: checkoutSuccessParticlePortal } =
+    useInlineButtonParticles(CHECKOUT_SUCCESS_PARTICLE_CONFIG, {
+      zIndex: Z_INDEX.particles,
+      // Body portal so the burst stays visible after checkout unmounts (above dialogs).
+      portalTarget: null,
+    });
 
   // Reset filter when dialog closes; apply store-requested filter when opening
   useEffect(() => {
@@ -1194,8 +1204,23 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
     discountMetadata?: Record<string, string | undefined>,
     extras?: { grantedFirstPurchaseInsight?: boolean },
   ) => {
-    const item = SHOP_ITEMS[selectedItem!];
+    const purchasedItemId = selectedItem!;
+    const item = SHOP_ITEMS[purchasedItemId];
     const storeBeforeDiscount = useGameStore.getState();
+
+    // Green burst from dialog center, then dismiss checkout immediately.
+    const checkoutDialog = document.querySelector<HTMLElement>(
+      "[data-checkout-dialog]",
+    );
+    if (checkoutDialog) {
+      const rect = checkoutDialog.getBoundingClientRect();
+      triggerCheckoutSuccessBurst({
+        x: rect.left + rect.width / 2,
+        y: rect.top + rect.height / 2,
+      });
+    }
+    setClientSecret(null);
+    setSelectedItem(null);
 
     // Prefer grant before discount consumption (Playlight consumption also sets
     // hasMadeNonFreePurchase). CheckoutForm usually already granted; this is a
@@ -1211,7 +1236,7 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
 
     applyShopDiscountConsumptionFromPaymentMetadata(discountMetadata);
 
-    if (selectedItem === "cruel_mode") {
+    if (purchasedItemId === "cruel_mode") {
       useGameStore.setState((s) => ({
         story: {
           ...s.story,
@@ -1253,7 +1278,7 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
     if (item.rewards.feastActivations && !item.bundleComponents) {
       // Get the latest purchase for this item (the one just created)
       const latestPurchaseId = updatedPurchasedItems
-        .filter((pid) => purchaseIdToItemId(pid) === selectedItem)
+        .filter((pid) => purchaseIdToItemId(pid) === purchasedItemId)
         .pop(); // Get the last one (newest)
 
       if (latestPurchaseId) {
@@ -1295,7 +1320,7 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
     // Items granted immediately on purchase should show as activated in Purchases tab
     if (item.grantedOnPurchase) {
       const latestPurchaseId = updatedPurchasedItems
-        .filter((pid) => purchaseIdToItemId(pid) === selectedItem)
+        .filter((pid) => purchaseIdToItemId(pid) === purchasedItemId)
         .pop();
 
       if (latestPurchaseId) {
@@ -1347,9 +1372,6 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
     } catch (e) {
       logger.error("[SHOP] Post-purchase save failed:", e);
     }
-
-    setClientSecret(null);
-    setSelectedItem(null);
 
     // Direct-checkout items (hidden from the grid) have no purchases list to
     // return to — their entitlement was already applied by loadPurchasedItems.
@@ -2690,6 +2712,7 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
           </DialogContent>
         </Dialog>
       )}
+      {checkoutSuccessParticlePortal}
     </>
   );
 }
