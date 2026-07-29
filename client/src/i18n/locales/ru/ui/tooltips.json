@@ -70,6 +70,7 @@
     "strength": "Сила: +{{value}}",
     "knowledge": "Знания: +{{value}}",
     "madnessStat": "Безумие:{{sign}}{{value}}",
+    "insightPerCycle": "Produces {{amount}} Insight per cycle",
     "craftDiscount": "Скидка на крафт: -{{percent}} %",
     "buildDiscount": "Скидка на строительство: -{{percent}} %",
     "merchantDiscount": "Скидка у торговца: +{{percent}} %",

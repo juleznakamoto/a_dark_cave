@@ -28,6 +28,7 @@ import {
   SLEEP_LENGTH_UPGRADES,
   SLEEP_INTENSITY_UPGRADES,
 } from "@/game/rules/skillUpgrades";
+import { getPassiveInsightPerCycle } from "@/game/rules/effectsCalculation";
 
 /** Match live play: limited resources cannot exceed storage cap during sleep simulation. */
 function clampSimulatedResourcesToStorage(
@@ -144,6 +145,17 @@ function simulateMinerProduction(
   });
 }
 
+function simulatePassiveEffectProduction(
+  state: any,
+  multiplier: number,
+  accumulatedResources: Record<string, number>,
+) {
+  const insight = getPassiveInsightPerCycle(state);
+  if (insight <= 0) return;
+  accumulatedResources["insight"] =
+    (accumulatedResources["insight"] || 0) + insight * multiplier;
+}
+
 function simulatePopulationConsumption(
   state: any,
   multiplier: number,
@@ -185,6 +197,7 @@ function getProductionPerInterval(
   simulateGathererProduction(state, multiplier, simulatedResources);
   simulateHunterProduction(state, multiplier, simulatedResources);
   simulateMinerProduction(state, multiplier, simulatedResources);
+  simulatePassiveEffectProduction(state, multiplier, simulatedResources);
   simulatePopulationConsumption(state, multiplier, simulatedResources);
   clampSimulatedResourcesToStorage(simulatedResources, state);
   const productionPerInterval: Record<string, number> = {};
@@ -287,6 +300,11 @@ export default function IdleModeDialog() {
             offlineResources,
           );
           simulateMinerProduction(
+            currentState,
+            PRODUCTION_SPEED_MULTIPLIER,
+            offlineResources,
+          );
+          simulatePassiveEffectProduction(
             currentState,
             PRODUCTION_SPEED_MULTIPLIER,
             offlineResources,
@@ -439,6 +457,11 @@ export default function IdleModeDialog() {
           simulatedResources,
         );
         simulateMinerProduction(
+          currentState,
+          PRODUCTION_SPEED_MULTIPLIER,
+          simulatedResources,
+        );
+        simulatePassiveEffectProduction(
           currentState,
           PRODUCTION_SPEED_MULTIPLIER,
           simulatedResources,

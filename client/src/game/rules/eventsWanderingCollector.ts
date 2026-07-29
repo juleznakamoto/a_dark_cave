@@ -15,6 +15,7 @@ const COLLECTOR_ITEMS = [
   "blackened_mirror",
   "shadow_flute",
   "hollow_king_scepter",
+  "unnamed_book",
 ] as const;
 
 const COLLECTOR_REWARD = 100

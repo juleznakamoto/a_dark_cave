@@ -878,6 +878,18 @@ export function renderItemTooltip(
               })}
             </div>
           )}
+          {effect.bonuses.generalBonuses.insightPerCycle != null &&
+            effect.bonuses.generalBonuses.insightPerCycle > 0 && (
+              <div>
+                {getUiTooltip(
+                  "insightPerCycle",
+                  "Produces {{amount}} Insight per cycle",
+                  {
+                    amount: effect.bonuses.generalBonuses.insightPerCycle,
+                  },
+                )}
+              </div>
+            )}
           {effect.bonuses.generalBonuses.craftingCostReduction && (
             <div>
               {getUiTooltip("craftDiscount", "Craft Discount: -{{percent}}%", {

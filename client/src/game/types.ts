@@ -320,6 +320,8 @@ export interface EffectDefinition {
       strangerApproachBonus?: number; // Bonus to stranger approach probability (0.1 = 10%)
       /** Multiplier for veinroot find chance on Hunt and Gather Wood (2 = doubles). */
       veinrootFindMultiplier?: number;
+      /** Flat Insight granted each production cycle while this effect is owned. */
+      insightPerCycle?: number;
     };
   };
 }

@@ -28,6 +28,7 @@ import {
 import {
   getTotalMadness,
   getStrangerApproachProbability,
+  getPassiveInsightPerCycle,
 } from "./rules/effectsCalculation";
 import { GAME_CONSTANTS } from "./constants";
 import { POST_COMPLETION_ATTACK_WAVE_ID } from "./rules/attackWaveOrder";
@@ -928,6 +929,20 @@ function accumulateScholarProduction(
   production.forEach((prod) => accumulateProduction(prod, available, deltas));
 }
 
+function accumulatePassiveEffectProduction(
+  state: GameState,
+  available: Record<string, number>,
+  deltas: Record<string, number>,
+): void {
+  const insight = getPassiveInsightPerCycle(state);
+  if (insight <= 0) return;
+  accumulateProduction(
+    { resource: "insight", totalAmount: insight },
+    available,
+    deltas,
+  );
+}
+
 /** Returns the steel forged this cycle (for the "Forge Steel" achievement). */
 function accumulateMinerProduction(
   state: GameState,
@@ -1020,6 +1035,7 @@ function runProductionCycle(): void {
   accumulateGathererProduction(state, available, deltas);
   accumulateHunterProduction(state, available, deltas);
   accumulateScholarProduction(state, available, deltas);
+  accumulatePassiveEffectProduction(state, available, deltas);
   const { steelForgedThisTick, leatherCreatedThisTick } =
     accumulateMinerProduction(state, available, deltas);
   accumulatePopulationSurvival(state, available, deltas);

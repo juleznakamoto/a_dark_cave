@@ -809,6 +809,16 @@ export const getTotalMadness = (state: GameState): number => {
   return getMadnessComponents(state).total;
 };
 
+/** Sum of `insightPerCycle` from all active effects (e.g. Unnamed Book). */
+export const getPassiveInsightPerCycle = (state: GameState): number => {
+  let total = 0;
+  for (const effect of getActiveEffects(state)) {
+    const amount = effect.bonuses.generalBonuses?.insightPerCycle;
+    if (amount && amount > 0) total += amount;
+  }
+  return total;
+};
+
 // Helper function to calculate total crafting cost reduction
 export const getTotalCraftingCostReduction = (state: GameState): number => {
   const activeEffects = getActiveEffects(state);

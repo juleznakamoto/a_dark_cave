@@ -70,6 +70,7 @@
     "strength": "力量：+{{value}}",
     "knowledge": "知识：+{{value}}",
     "madnessStat": "疯狂：{{sign}}{{value}}",
+    "insightPerCycle": "Produces {{amount}} Insight per cycle",
     "craftDiscount": "制作折扣：-{{percent}}%",
     "buildDiscount": "建造折扣：-{{percent}}%",
     "merchantDiscount": "商人折扣：+{{percent}}%",

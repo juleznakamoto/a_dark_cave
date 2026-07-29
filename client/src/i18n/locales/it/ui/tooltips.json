@@ -70,6 +70,7 @@
     "strength": "Forza: +{{value}}",
     "knowledge": "Conoscenza: +{{value}}",
     "madnessStat": "Follia:{{sign}}{{value}}",
+    "insightPerCycle": "Produces {{amount}} Insight per cycle",
     "craftDiscount": "Sconto Fabbricazione: -{{percent}}%",
     "buildDiscount": "Sconto Costruzione: -{{percent}}%",
     "merchantDiscount": "Sconto Mercante: +{{percent}}%",

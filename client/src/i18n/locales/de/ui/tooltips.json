@@ -70,6 +70,7 @@
     "strength": "Stärke: +{{value}}",
     "knowledge": "Wissen: +{{value}}",
     "madnessStat": "Wahnsinn:{{sign}}{{value}}",
+    "insightPerCycle": "Produces {{amount}} Insight per cycle",
     "craftDiscount": "Handwerksrabatt: -{{percent}} %",
     "buildDiscount": "Baurabatt: -{{percent}} %",
     "merchantDiscount": "Händlerrabatt: +{{percent}} %",
