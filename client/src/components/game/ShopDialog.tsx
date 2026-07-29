@@ -1691,22 +1691,35 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
                   {/* Pinned via flex split below TabsList + intro (sticky breaks under dialog transforms). */}
                   {(import.meta.env.DEV ||
                     !gameState.hasMadeNonFreePurchase) && (
-                      <div className="mb-3 shrink-0 rounded-md border border-blue-500/40 bg-blue-500/5 px-2 py-2 text-xs font-normal text-foreground">
+                      <div className="mb-3 shrink-0 rounded-md border border-blue-500/40 bg-blue-500/5 px-2 py-2 text-sm font-normal text-foreground">
                         {t("ui:shop.firstPurchaseInsightBannerBefore", {
-                          defaultValue: "First purchase gift:",
+                          defaultValue: "Receive",
                         })}{" "}
                         <span
                           className={cn(
-                            "font-medium font-noto-symbols-2 tabular-nums",
+                            "font-bold tabular-nums",
                             INSIGHT_TEXT_CLASS,
                           )}
                         >
-                          {t("ui:shop.firstPurchaseInsightBannerBonus", {
-                            amount: FIRST_PURCHASE_INSIGHT_BONUS.toLocaleString(),
-                            glyph: INSIGHT_GLYPH,
-                            defaultValue: "+{{amount}} {{glyph}} Insight",
+                          {FIRST_PURCHASE_INSIGHT_BONUS}
+                        </span>{" "}
+                        <span
+                          className={cn(
+                            "font-noto-symbols-2",
+                            INSIGHT_TEXT_CLASS,
+                          )}
+                          aria-hidden
+                        >
+                          {INSIGHT_GLYPH}
+                        </span>{" "}
+                        <span className={cn("font-bold", INSIGHT_TEXT_CLASS)}>
+                          {t("ui:shop.firstPurchaseInsightBannerInsight", {
+                            defaultValue: "Insight",
                           })}
-                        </span>
+                        </span>{" "}
+                        {t("ui:shop.firstPurchaseInsightBannerAfter", {
+                          defaultValue: "with your first purchase",
+                        })}
                       </div>
                     )}
                   <div className="flex shrink-0 flex-wrap gap-x-1.5 gap-y-4 pb-3">

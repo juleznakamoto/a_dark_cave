@@ -95,8 +95,9 @@
     "securePurchaseBody": "Sua compra fica salva apenas neste navegador. Crie uma conta para manter compras e progresso se trocar de dispositivo ou limpar os dados do navegador.",
     "securePurchaseSignUp": "Cadastrar-se",
     "securePurchaseLater": "Talvez depois",
-    "firstPurchaseInsightBannerBefore": "First purchase gift:",
-    "firstPurchaseInsightBannerBonus": "+{{amount}} {{glyph}} Insight",
+    "firstPurchaseInsightBannerBefore": "Receive",
+    "firstPurchaseInsightBannerInsight": "Insight",
+    "firstPurchaseInsightBannerAfter": "with your first purchase",
     "firstPurchaseInsightGranted": "First purchase gift: +{{amount}} {{glyph}} Insight"
   }
 }
