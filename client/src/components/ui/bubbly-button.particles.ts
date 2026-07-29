@@ -399,10 +399,10 @@ export const REWARDS_TASKS_PARTICLE_CONFIG: Partial<ParticleConfig> = {
 /** Checkout success — large green burst from behind the dialog edges. */
 export const CHECKOUT_SUCCESS_PARTICLE_CONFIG: Partial<ParticleConfig> = {
   colors: [
-    tailwindToHex("green-400"),
-    tailwindToHex("green-500"),
-    tailwindToHex("lime-400"),
-    tailwindToHex("emerald-400"),
+    tailwindToHex("green-600"),
+    tailwindToHex("green-700"),
+    tailwindToHex("lime-600"),
+    tailwindToHex("emerald-600"),
     "#4ade80",
     "#86efac",
   ],
