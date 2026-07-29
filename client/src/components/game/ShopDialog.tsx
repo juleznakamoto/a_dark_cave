@@ -1702,7 +1702,7 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
                   {/* Pinned via flex split below TabsList + intro (sticky breaks under dialog transforms). */}
                   {(import.meta.env.DEV ||
                     !gameState.hasMadeNonFreePurchase) && (
-                      <div className="relative mb-3 shrink-0 overflow-hidden rounded-md border border-blue-500/40">
+                      <div className="relative mb-3 shrink-0 overflow-hidden rounded-md border border-blue-500/40 bg-blue-950">
                         <SmokeShader scale={SMOKE_SHADER_BANNER_SCALE} />
                         {/* Soft scrim so bright smoke peaks don't wash out the copy. */}
                         <div

@@ -1,7 +1,34 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { cn } from "@/lib/utils";
 import { logger } from "@/lib/logger";
 import { tailwindToHex } from "@/lib/tailwindColors";
+
+/**
+ * Solid fallback when WebGL is skipped or fails. Matches the dark end of the
+ * smoke palette (`blue-950`) so the shop banner still reads as intentional.
+ */
+export const SMOKE_SHADER_FALLBACK_CLASS = "bg-blue-950";
+
+/**
+ * Skip the animated shader on weak / battery-sensitive devices. Nested fbm
+ * per pixel at 60fps is fine on a tiny banner for most phones, but reduced
+ * motion, Data Saver, and very low-RAM devices should get the CSS fallback.
+ */
+export function shouldAnimateSmokeShader(): boolean {
+  if (typeof window === "undefined") return false;
+  if (window.matchMedia?.("(prefers-reduced-motion: reduce)")?.matches) {
+    return false;
+  }
+  const nav = navigator as Navigator & {
+    deviceMemory?: number;
+    connection?: { saveData?: boolean };
+  };
+  if (nav.connection?.saveData) return false;
+  if (typeof nav.deviceMemory === "number" && nav.deviceMemory <= 2) {
+    return false;
+  }
+  return true;
+}
 
 /**
  * "Smoke" flow shader.
@@ -471,10 +498,10 @@ class SmokeWebGLRenderer {
   resizeToDisplay(displayWidth: number, displayHeight: number) {
     const width = Math.max(1, Math.round(displayWidth));
     const height = Math.max(1, Math.round(displayHeight));
-    const dpr = Math.min(2, Math.max(1, window.devicePixelRatio || 1));
-    this.canvas.width = Math.max(1, Math.round(width * dpr));
-    this.canvas.height = Math.max(1, Math.round(height * dpr));
-    this.gl.viewport(0, 0, this.canvas.width, this.canvas.height);
+    // Banner is small; 1× CSS pixels is enough and cuts GPU fill on phones.
+    this.canvas.width = width;
+    this.canvas.height = height;
+    this.gl.viewport(0, 0, width, height);
   }
 
   render() {
@@ -512,7 +539,7 @@ interface SmokeShaderProps {
   scale?: number;
 }
 
-/** Animated Smoke flow shader canvas (WebGL1). Sized to its offset parent. */
+/** Animated Smoke flow shader (WebGL1), with a solid blue CSS fallback. */
 export function SmokeShader({
   className,
   scale = SMOKE_SHADER_DEFAULT_SCALE,
@@ -523,14 +550,23 @@ export function SmokeShader({
   const isActiveRef = useRef(true);
   const scaleRef = useRef(scale);
   scaleRef.current = scale;
+  const [useShader, setUseShader] = useState(false);
+
+  // Decide on the client only (SSR / first paint stay on the CSS fallback).
+  useEffect(() => {
+    setUseShader(shouldAnimateSmokeShader());
+  }, []);
 
   // Mount WebGL once; scale updates go through setScale (full re-init breaks HMR).
   useEffect(() => {
+    if (!useShader) return;
+
     const canvas = canvasRef.current;
     if (!canvas) return;
 
     isActiveRef.current = true;
     let resizeObserver: ResizeObserver | null = null;
+    let frameCount = 0;
 
     const resizeFromParent = () => {
       const parent = canvas.parentElement;
@@ -543,8 +579,12 @@ export function SmokeShader({
       if (!isActiveRef.current || !rendererRef.current || document.hidden) {
         return;
       }
-      rendererRef.current.setScale(scaleRef.current);
-      rendererRef.current.render();
+      // ~30fps: half the fill cost, still smooth enough for a shop banner.
+      if (frameCount % 2 === 0) {
+        rendererRef.current.setScale(scaleRef.current);
+        rendererRef.current.render();
+      }
+      frameCount++;
       animationFrameRef.current = requestAnimationFrame(loop);
     };
 
@@ -576,7 +616,8 @@ export function SmokeShader({
       startLoop();
     } catch (err) {
       const message = err instanceof Error ? err.message : String(err);
-      logger.error("[SmokeShader] WebGL init failed:", message);
+      logger.warn("[SmokeShader] WebGL init failed, using blue fallback:", message);
+      setUseShader(false);
     }
 
     const parent = canvas.parentElement;
@@ -600,16 +641,28 @@ export function SmokeShader({
         rendererRef.current = null;
       }
     };
-  }, []);
+  }, [useShader]);
 
   return (
-    <canvas
-      ref={canvasRef}
-      aria-hidden
-      className={cn(
-        "pointer-events-none absolute inset-0 h-full w-full",
-        className,
-      )}
-    />
+    <>
+      <div
+        className={cn(
+          "pointer-events-none absolute inset-0",
+          SMOKE_SHADER_FALLBACK_CLASS,
+          className,
+        )}
+        aria-hidden
+      />
+      {useShader ? (
+        <canvas
+          ref={canvasRef}
+          aria-hidden
+          className={cn(
+            "pointer-events-none absolute inset-0 h-full w-full",
+            className,
+          )}
+        />
+      ) : null}
+    </>
   );
 }
