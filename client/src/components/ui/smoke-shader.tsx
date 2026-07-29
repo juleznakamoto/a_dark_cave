@@ -327,8 +327,8 @@ void main() {
  */
 export const SMOKE_SHADER_COLOR_TOKENS = [
   "blue-950",
-  "indigo-800",
-  "blue-600",
+  "indigo-900",
+  "blue-700",
   "blue-100",
 ] as const;
 
