@@ -231,7 +231,7 @@ run ad hoc for locale maintenance.
 | `i18n:translate` | `translate-locales.mjs` | Machine-translate missing locale keys. |
 | `i18n:events:extract` / `i18n:events:migrate` | `extract-events-i18n.mjs`, `migrate-events-i18n.mjs` | Events namespace extraction + migration. |
 | `i18n:verify` | `list-unmigrated-events.mjs`, `check-event-coverage.mjs`, `audit-i18n-ui.mjs`, `audit-locale-length.mjs` | CI-style i18n parity checks (+ Vitest i18n tests). |
-| `i18n:sync` | `sync-locale-keys.mjs`, `fill-identical-locale-strings.mjs` | Align locale key sets across languages. |
+| `i18n:sync` | `sync-locale-keys.mjs`, `fill-identical-locale-strings.mjs` | Align locale key sets across languages (`sync-locale-keys.test.ts` covers insert/prune). |
 | `export:resend-csvs` | `export-resend-contact-csvs.ts` | Marketing contact CSV export (uses gender proxy). |
 | `sync:resend-marketing` | `sync-resend-marketing-contacts.ts` | Push marketing opt-in contacts to Resend via Contacts Import API (with `unsubscribe_url` tokens). |
 | `import:resend-legacy-segments` | `import-legacy-resend-segments.ts` | One-time import of two legacy cohorts into Resend **Segments** (oldestâ†’newest): pre-consent users (no `marketing_preferences` row) and currently-subscribed users. Shares env with `resendScriptEnv.ts`. |

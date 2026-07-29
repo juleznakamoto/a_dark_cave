@@ -45,6 +45,40 @@ function loadNamespace(locale: string, ns: string): Record<string, unknown> {
   );
 }
 
+/** Relative catalog paths under a locale dir (top-level + ui/*.json shards). */
+function listCatalogFiles(localeDir: string): string[] {
+  const paths: string[] = [];
+  for (const f of fs.readdirSync(localeDir)) {
+    if (f.endsWith(".json")) paths.push(f);
+  }
+  const uiDir = path.join(localeDir, "ui");
+  if (fs.existsSync(uiDir)) {
+    for (const f of fs.readdirSync(uiDir)) {
+      if (f.endsWith(".json")) paths.push(`ui/${f}`);
+    }
+  }
+  return paths.sort();
+}
+
+describe("locale JSON parse validity", () => {
+  for (const locale of [SOURCE_LOCALE, ...TARGET_LOCALES]) {
+    const files = listCatalogFiles(path.join(LOCALES_DIR, locale));
+
+    it.each(files)(`${locale}/%s parses as locale JSON`, (rel) => {
+      const filePath = path.join(LOCALES_DIR, locale, rel);
+      const raw = fs.readFileSync(filePath, "utf8");
+      expect(
+        () => parseLocaleJson(raw),
+        `Invalid locale JSON: ${locale}/${rel}`,
+      ).not.toThrow();
+      const parsed = parseLocaleJson(raw);
+      expect(parsed).toBeTypeOf("object");
+      expect(parsed).not.toBeNull();
+      expect(Array.isArray(parsed)).toBe(false);
+    });
+  }
+});
+
 describe("i18n catalog parity", () => {
   const enNamespaces = listNamespaces(path.join(LOCALES_DIR, SOURCE_LOCALE));
 
