@@ -102,4 +102,7 @@
     "securePurchaseSignUp": "Registrarse", //x1.6
     "securePurchaseLater": "Quizá más tarde" //x1.4
   }
+    "shop": {
+      "tooManyPaymentRequests": "Too many payment requests, please try again later."
+    },
 }

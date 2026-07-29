@@ -224,7 +224,14 @@
     "chartUnavailable": "Gráfico no disponible",
     "claim": "Reclamar",
     "unlockTitleForInsight": "Desbloquear título por {{cost}} Perspicacia",
-    "completeLog": "Logro completado: {{name}}: {{rewards}}"
+    "completeLog": "Logro completado: {{name}}: {{rewards}}",
+    "categories": {
+      "basic": "Básicos",
+      "building": "Edificios",
+      "item": "Objetos",
+      "action": "Acciones",
+      "overall": "Épico"
+    }
   },
   "idleMode": {
     "title": "Modo sueño",

@@ -339,6 +339,14 @@ export function getAchievementLabel(
   return tWithFallback("achievements", `${chartPrefix}.${segmentId}.label`, fallback);
 }
 
+export function getAchievementDetailLabel(
+  chartPrefix: string,
+  segmentId: string,
+  fallback: string,
+): string {
+  return tWithFallback("achievements", `${chartPrefix}.${segmentId}.detail`, fallback);
+}
+
 export function getResourceName(resourceKey: string, fallback: string): string {
   return tWithFallback("common", `resources.${resourceKey}`, fallback);
 }

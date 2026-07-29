@@ -224,7 +224,14 @@
     "chartUnavailable": "Diagramm nicht verfügbar", //x1.4
     "claim": "Einfordern",
     "unlockTitleForInsight": "Titel für {{cost}} Einsicht freischalten",
-    "completeLog": "Erfolg abgeschlossen: {{name}}: {{rewards}}"
+    "completeLog": "Erfolg abgeschlossen: {{name}}: {{rewards}}",
+    "categories": {
+      "basic": "Grundlagen",
+      "building": "Gebäude",
+      "item": "Gegenstände",
+      "action": "Aktionen",
+      "overall": "Episch"
+    }
   },
   "idleMode": {
     "title": "Schlafmodus",

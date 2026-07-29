@@ -102,4 +102,7 @@
     "firstPurchaseInsightGranted": "First purchase gift: +{{amount}} {{glyph}} Insight",
     "firstPurchaseInsightCheckoutFree": "for free"
   }
+    "shop": {
+      "tooManyPaymentRequests": "Too many payment requests, please try again later."
+    },
 }

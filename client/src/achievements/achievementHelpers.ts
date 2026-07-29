@@ -2,6 +2,7 @@ import { useGameStore } from "@/game/state";
 import type { AchievementChartConfig } from "./achievementTypes";
 import { getAchievementConfigForEdition } from "./achievementEdition";
 import {
+  getAchievementDetailLabel,
   getAchievementLabel,
   interpolateFallback,
 } from "@/i18n/resolveGameText";
@@ -12,6 +13,8 @@ export interface AchievementRow {
   label: string;
   /** English config label — used as save fallback for log re-localization. */
   englishLabel: string;
+  /** Optional muted suffix (e.g. speedrun time gate). */
+  detailLabel?: string;
   currentCount: number;
   maxCount: number;
   achievementId: string;
@@ -87,6 +90,13 @@ export function getAchievementRows(
           seg.label,
         ),
         englishLabel: seg.label,
+        detailLabel: seg.detailLabel
+          ? getAchievementDetailLabel(
+            editionConfig.idPrefix,
+            seg.segmentId,
+            seg.detailLabel,
+          )
+          : undefined,
         currentCount,
         maxCount: seg.maxCount,
         achievementId,

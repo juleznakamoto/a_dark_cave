@@ -102,4 +102,7 @@
     "securePurchaseSignUp": "注册",
     "securePurchaseLater": "以后再说"
   }
+    "shop": {
+      "tooManyPaymentRequests": "Too many payment requests, please try again later."
+    },
 }

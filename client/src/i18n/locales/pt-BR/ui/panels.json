@@ -224,7 +224,14 @@
     "chartUnavailable": "Gráfico indisponível",
     "claim": "Resgatar",
     "unlockTitleForInsight": "Desbloquear título por {{cost}} Perspicácia",
-    "completeLog": "Conquista {{name}} concluída: {{rewards}}"
+    "completeLog": "Conquista {{name}} concluída: {{rewards}}",
+    "categories": {
+      "basic": "Básicos",
+      "building": "Construções",
+      "item": "Itens",
+      "action": "Ações",
+      "overall": "Épico"
+    }
   },
   "idleMode": {
     "title": "Modo de Sono",

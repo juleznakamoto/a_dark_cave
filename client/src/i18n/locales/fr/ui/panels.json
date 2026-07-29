@@ -224,7 +224,14 @@
     "chartUnavailable": "Graphique indisponible", //x1.3
     "claim": "Récupérer",
     "unlockTitleForInsight": "Débloquer le titre pour {{cost}} Perspicacité", //x1.4
-    "completeLog": "Succès terminé : {{name}} : {{rewards}}"
+    "completeLog": "Succès terminé : {{name}} : {{rewards}}",
+    "categories": {
+      "basic": "Bases",
+      "building": "Bâtiments",
+      "item": "Objets",
+      "action": "Actions",
+      "overall": "Épique"
+    }
   },
   "idleMode": {
     "title": "Mode sommeil", //x1.2

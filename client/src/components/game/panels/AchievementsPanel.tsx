@@ -10,7 +10,6 @@ import {
   INSIGHT_BADGE_TOOLTIP_TRIGGER_CLASS,
 } from "@/components/game/BuildingActionBadge";
 import { useGameStore } from "@/game/state";
-import { cn } from "@/lib/utils";
 import {
   buildingChartConfig,
   itemChartConfig,
@@ -39,8 +38,30 @@ import type { AchievementRow } from "@/achievements/achievementHelpers";
 import type { AchievementChartConfig } from "@/achievements";
 import { getAchievementSegmentWeight } from "@/achievements/achievementTypes";
 import AchievementMiniRingChart from "@/achievements/AchievementMiniRingChart";
-import { useTranslation } from "react-i18next";
+import { useUiTranslation } from "@/i18n/useUiTranslation";
 import type { GameState } from "@shared/schema";
+
+const CATEGORY_HEADER_KEYS: Record<
+  AchievementChartConfig["idPrefix"],
+  string
+> = {
+  basic: "achievements.categories.basic",
+  building: "achievements.categories.building",
+  item: "achievements.categories.item",
+  action: "achievements.categories.action",
+  overall: "achievements.categories.overall",
+};
+
+const CATEGORY_HEADER_DEFAULTS: Record<
+  AchievementChartConfig["idPrefix"],
+  string
+> = {
+  basic: "Basics",
+  building: "Buildings",
+  item: "Items",
+  action: "Actions",
+  overall: "Epic",
+};
 
 class ChartErrorBoundary extends Component<
   { children: ReactNode; unavailableLabel?: string },
@@ -74,7 +95,7 @@ function AchievementTitleInsightBadge({
   achievementId: string;
   currentCount: number;
 }) {
-  const { t } = useTranslation("ui");
+  const { t } = useUiTranslation();
   const gameState = useGameStore((s) => s as unknown as GameState);
   const revealAchievementTitle = useGameStore((s) => s.revealAchievementTitle);
   const setHighlightedResources = useGameStore((s) => s.setHighlightedResources);
@@ -177,7 +198,7 @@ function AchievementRowComponent({
   indicatorClassComplete: string;
   claimButtonClass: string;
 }) {
-  const { t } = useTranslation("ui");
+  const { t } = useUiTranslation();
   const gameState = useGameStore((s) => s as unknown as GameState);
   const canClaim = row.isFull && !row.isClaimed;
   const tooltipText = canClaim ? formatRewardsTooltip(row.rewards) : "";
@@ -187,6 +208,8 @@ function AchievementRowComponent({
     row.currentCount,
   );
   const progressLabel = `${Math.min(Math.floor(row.currentCount), row.maxCount)}/${row.maxCount}`;
+  const mutedSuffix =
+    row.maxCount > 1 ? progressLabel : row.detailLabel;
 
   const handleClaim = () => {
     if (canClaim) {
@@ -206,11 +229,11 @@ function AchievementRowComponent({
           {isTitleVisible ? (
             <span className="text-xs font-medium text-foreground truncate">
               {row.label}
-              {row.maxCount > 1 && (
+              {mutedSuffix && (
                 <>
                   {" "}
                   <span className="text-muted-foreground font-normal">
-                    {progressLabel}
+                    {mutedSuffix}
                   </span>
                 </>
               )}
@@ -270,6 +293,7 @@ function AchievementTabContent({
   config: AchievementChartConfig;
   tabId: string;
 }) {
+  const { t } = useUiTranslation();
   // Subscribe to the store (not getState-only): Claim buttons depend on
   // buildings/tools/story/etc., and a narrow selector left rows stale so
   // completed achievements never flipped to canClaim until remount.
@@ -282,11 +306,17 @@ function AchievementTabContent({
   const indicatorClassIncomplete = INDICATOR_CLASS_INCOMPLETE[config.idPrefix] ?? "bg-red-500/60";
   const indicatorClassComplete = INDICATOR_CLASS_COMPLETE[config.idPrefix] ?? "bg-red-800";
   const claimButtonClass = CLAIM_BUTTON_CLASS[config.idPrefix] ?? CLAIM_BUTTON_CLASS.item;
+  const categoryHeader = t(CATEGORY_HEADER_KEYS[config.idPrefix], {
+    defaultValue: CATEGORY_HEADER_DEFAULTS[config.idPrefix],
+  });
 
   return (
     <div className="flex-1 min-h-0 overflow-hidden flex flex-col w-full">
       <ScrollAreaWithIndicator className="h-full w-full" scrollAreaId={`achievements-${tabId}`}>
         <div className="pb-6 space-y-1">
+          <h3 className="pt-1 pb-1 text-xs font-medium text-foreground">
+            {categoryHeader}
+          </h3>
           {rows.map((row) => (
             <AchievementRowComponent
               key={row.achievementId}
@@ -359,7 +389,7 @@ function TabTriggerWithTooltipWhenLocked({
 }
 
 export default function AchievementsPanel() {
-  const { t } = useTranslation("ui");
+  const { t } = useUiTranslation();
   const gameState = useGameStore((s) => s as unknown as GameState);
   const bookOfTrials = !!gameState.books?.book_of_trials;
   const survivorsNotes = !!gameState.relics?.survivors_notes;

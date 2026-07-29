@@ -198,7 +198,8 @@
       "label": "Endurant"
     },
     "0-speedrunner": {
-      "label": "Speedrunner (<5 ore)"
+      "label": "Speedrunner",
+      "detail": "<5 ore"
     },
     "0-supporter": {
       "label": "Supporter"

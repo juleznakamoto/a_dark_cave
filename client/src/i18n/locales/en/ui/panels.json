@@ -224,7 +224,14 @@
     "chartUnavailable": "Chart unavailable",
     "claim": "Claim",
     "unlockTitleForInsight": "Unlock title for {{cost}} Insight",
-    "completeLog": "{{name}} Achievement complete: {{rewards}}"
+    "completeLog": "{{name}} Achievement complete: {{rewards}}",
+    "categories": {
+      "basic": "Basics",
+      "building": "Buildings",
+      "item": "Items",
+      "action": "Actions",
+      "overall": "Epic"
+    }
   },
   "idleMode": {
     "title": "Sleep Mode",

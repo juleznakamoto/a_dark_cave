@@ -224,7 +224,14 @@
     "chartUnavailable": "График недоступен",
     "claim": "Забрать",
     "unlockTitleForInsight": "Открыть название за {{cost}} Проницательности", //x1.4
-    "completeLog": "Достижение завершено: {{name}}: {{rewards}}"
+    "completeLog": "Достижение завершено: {{name}}: {{rewards}}",
+    "categories": {
+      "basic": "Базовые",
+      "building": "Здания",
+      "item": "Предметы",
+      "action": "Действия",
+      "overall": "Эпические"
+    }
   },
   "idleMode": {
     "title": "Режим сна",

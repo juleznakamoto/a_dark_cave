@@ -102,4 +102,7 @@
     "securePurchaseSignUp": "Créer un compte", //x2.1
     "securePurchaseLater": "Plus tard"
   }
+    "shop": {
+      "tooManyPaymentRequests": "Too many payment requests, please try again later."
+    },
 }

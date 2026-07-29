@@ -7,7 +7,8 @@ import {
   DialogFooter,
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
-import { useTranslation } from "react-i18next";
+import { useUiTranslation } from "@/i18n/useUiTranslation";
+import { useSteamEditionActive } from "@/hooks/useSteamEditionActive";
 
 interface RestartGameDialogProps {
   isOpen: boolean;
@@ -20,7 +21,8 @@ export function RestartGameDialog({
   onClose,
   onConfirm,
 }: RestartGameDialogProps) {
-  const { t } = useTranslation("ui");
+  const { t } = useUiTranslation();
+  const isSteamEdition = useSteamEditionActive();
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
@@ -29,10 +31,18 @@ export function RestartGameDialog({
           <DialogTitle className="leading-6">{t("restart.title")}</DialogTitle>
           <DialogDescription className="py-2 space-y-2">
             <div className="text-center space-y-2">
-              <div className="bg-red-600/5 border border-red-600/50 rounded-lg p-3">
+              <div className="bg-red-600/5 border border-red-600/50 rounded-lg p-3 space-y-2">
                 <p className="text-md font-medium text-red-600">
                   {t("restart.warning")}
                 </p>
+                {!isSteamEdition && (
+                  <p className="text-sm text-muted-foreground">
+                    {t("restart.achievementsNote", {
+                      defaultValue:
+                        "All achievements will be reset except for Epic Achievements",
+                    })}
+                  </p>
+                )}
               </div>
             </div>
           </DialogDescription>

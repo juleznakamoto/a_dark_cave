@@ -5,6 +5,11 @@ export interface AchievementSegment {
   segmentId: string;
   maxCount: number;
   label: string;
+  /**
+   * Optional muted suffix next to the title (e.g. speedrun time gate).
+   * Shown like progress `current/max` when maxCount is 1.
+   */
+  detailLabel?: string;
   /** @deprecated Use rewards instead for multi-resource support */
   reward?: number;
   /** Resource keys (e.g. silver, gold) to amounts. Overrides reward when present. */

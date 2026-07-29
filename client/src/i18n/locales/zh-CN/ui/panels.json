@@ -224,7 +224,14 @@
     "chartUnavailable": "图表不可用",
     "claim": "领取",
     "unlockTitleForInsight": "花费 {{cost}} 洞察解锁标题",
-    "completeLog": "成就完成：{{name}}：{{rewards}}"
+    "completeLog": "成就完成：{{name}}：{{rewards}}",
+    "categories": {
+      "basic": "基础",
+      "building": "建筑",
+      "item": "物品",
+      "action": "行动",
+      "overall": "史诗"
+    }
   },
   "idleMode": {
     "title": "睡眠模式",

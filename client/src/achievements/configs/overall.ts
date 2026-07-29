@@ -32,7 +32,7 @@ function asSocialPromoSlice(state: GameState): SocialPromoExclusiveSlice {
 }
 
 /**
- * Meta / overall achievements: persist across new games, never claimable.
+ * Meta / overall (UI: Epic) achievements: persist across new games, never claimable.
  * Counts come from account-level flags / lifetime stats on the game state.
  *
  * Keep UI, progress %, share card, and Steam sync behind this flag so the
@@ -61,7 +61,8 @@ export const overallChartConfig: AchievementChartConfig = {
       {
         segmentId: "0-speedrunner",
         maxCount: 1,
-        label: `Speedrunner (<${SPEEDRUN_WIN_MAX_MS / MS_PER_HOUR} hours)`,
+        label: "Speedrunner",
+        detailLabel: `<${SPEEDRUN_WIN_MAX_MS / MS_PER_HOUR} hours`,
         getCount: (state: GameState) => (state.hasSpeedrunWin ? 1 : 0),
       },
       {

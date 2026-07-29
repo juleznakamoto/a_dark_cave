@@ -224,7 +224,14 @@
     "chartUnavailable": "Grafico non disponibile",
     "claim": "Riscatta",
     "unlockTitleForInsight": "Sblocca titolo per {{cost}} Intuizione",
-    "completeLog": "Obiettivo {{name}} completato: {{rewards}}"
+    "completeLog": "Obiettivo {{name}} completato: {{rewards}}",
+    "categories": {
+      "basic": "Base",
+      "building": "Edifici",
+      "item": "Oggetti",
+      "action": "Azioni",
+      "overall": "Epico"
+    }
   },
   "idleMode": {
     "title": "Modalità Sonno",
