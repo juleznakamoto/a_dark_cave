@@ -34,12 +34,20 @@ export function gameActionOutlineButtonClassName(
   const hoverPrefix = options?.groupHover ? "group-hover:" : "hover:";
   return cn(
     disabled
-      ? // Fade via border alpha + CooldownButton label opacity — never whole-button
+      ? // Fade via border alpha + gameActionDisabledLabelClassName — never whole-button
       // opacity (that lets portaled click particles show through the chrome).
       "border-orange-950/50 !bg-transparent hover:!bg-transparent"
       : "border-orange-950 text-foreground",
     !disabled &&
     `${hoverPrefix}bg-accent ${hoverPrefix}text-accent-foreground bg-neutral-600/10`,
+  );
+}
+
+/** Label fade for disabled game action buttons (pairs with gameActionOutlineButtonClassName). */
+export function gameActionDisabledLabelClassName(disabled = false): string {
+  return cn(
+    "relative transition-opacity duration-200",
+    disabled && "opacity-60",
   );
 }
 
@@ -306,14 +314,13 @@ const CooldownButton = forwardRef<HTMLButtonElement, CooldownButtonProps>(
 
         {/* Fade label only — keep chrome/backdrop-blur opaque so particles stay behind */}
         <span
-          className={`relative transition-opacity duration-200 ${isCoolingDown ||
-            isExecuting ||
-            isInsightRevealing ||
-            isPlayTimeOverlayActive ||
-            disabled
-            ? "opacity-60"
-            : ""
-            }`}
+          className={gameActionDisabledLabelClassName(
+            isCoolingDown ||
+              isExecuting ||
+              isInsightRevealing ||
+              isPlayTimeOverlayActive ||
+              disabled,
+          )}
         >
           {children}
         </span>

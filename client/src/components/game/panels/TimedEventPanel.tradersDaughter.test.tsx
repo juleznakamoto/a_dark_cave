@@ -92,6 +92,8 @@ describe("TimedEventPanel traders_daughter choice styling", () => {
     expect(sendButton).toBeDisabled();
     expect(declineButton).not.toBeDisabled();
     expect(declineButton.className).toContain("bg-neutral-600/10");
+    expect(sendButton.querySelector(".opacity-60")).not.toBeNull();
+    expect(declineButton.querySelector(".opacity-60")).toBeNull();
   });
 
   it("renders Do not help as an enabled, active-looking choice", () => {

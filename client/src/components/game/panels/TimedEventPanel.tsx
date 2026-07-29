@@ -14,6 +14,7 @@ import {
 import { Button } from "@/components/ui/button";
 import {
   gameActionButtonGridClassName,
+  gameActionDisabledLabelClassName,
   gameActionOutlineButtonClassName,
   GAME_ACTION_BUTTON_STACK_CLASS,
 } from "@/components/CooldownButton";
@@ -599,26 +600,33 @@ export default function TimedEventPanel() {
                     gameActionOutlineButtonClassName(isDisabled),
                   )}
                 >
-                  <span>{labelText}</span>
-                  {hasChoiceMeta && (
-                    <span className="inline-flex items-center gap-1.5 flex-shrink-0">
-                      {successPercentage && (
-                        <span className="text-xs text-muted-foreground whitespace-nowrap">
-                          {successPercentage}
-                        </span>
-                      )}
-                      {choice.relevant_stats &&
-                        choice.relevant_stats.length > 0 &&
-                        choice.relevant_stats.map((stat) => (
-                          <RelevantStatIcon key={stat} stat={stat} />
-                        ))}
-                      {isPurchased && (
-                        <span className="inline-flex items-center justify-center text-[12px] leading-none">
-                          ✓
-                        </span>
-                      )}
-                    </span>
-                  )}
+                  <span
+                    className={cn(
+                      "inline-flex items-center gap-2",
+                      gameActionDisabledLabelClassName(isDisabled),
+                    )}
+                  >
+                    <span>{labelText}</span>
+                    {hasChoiceMeta && (
+                      <span className="inline-flex items-center gap-1.5 flex-shrink-0">
+                        {successPercentage && (
+                          <span className="text-xs text-muted-foreground whitespace-nowrap">
+                            {successPercentage}
+                          </span>
+                        )}
+                        {choice.relevant_stats &&
+                          choice.relevant_stats.length > 0 &&
+                          choice.relevant_stats.map((stat) => (
+                            <RelevantStatIcon key={stat} stat={stat} />
+                          ))}
+                        {isPurchased && (
+                          <span className="inline-flex items-center justify-center text-[12px] leading-none">
+                            ✓
+                          </span>
+                        )}
+                      </span>
+                    )}
+                  </span>
                 </Button>
               );
 

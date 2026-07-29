@@ -12,7 +12,11 @@ import {
   DialogDescription,
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
-import { gameActionButtonGridClassName, gameActionOutlineButtonClassName } from "@/components/CooldownButton";
+import {
+  gameActionButtonGridClassName,
+  gameActionDisabledLabelClassName,
+  gameActionOutlineButtonClassName,
+} from "@/components/CooldownButton";
 import { cn } from "@/lib/utils";
 import { Progress } from "@/components/ui/progress";
 import { TooltipWrapper } from "@/components/game/TooltipWrapper";
@@ -369,24 +373,31 @@ export default function EventDialog({
                     )}
                     button_id={`event-choice-${choice.id}`}
                   >
-                    <span>{labelText}</span>
-                    {(successPercentage ||
-                      (choice.relevant_stats && choice.relevant_stats.length > 0)) && (
-                        <span className="inline-flex items-center gap-1.5 flex-shrink-0">
-                          {successPercentage && (
-                            <span className="text-xs text-muted-foreground whitespace-nowrap">
-                              {successPercentage}
-                            </span>
-                          )}
-                          {choice.relevant_stats && choice.relevant_stats.length > 0 && (
-                            <>
-                              {choice.relevant_stats.map((stat) => (
-                                <RelevantStatIcon key={stat} stat={stat} />
-                              ))}
-                            </>
-                          )}
-                        </span>
+                    <span
+                      className={cn(
+                        "inline-flex items-center gap-2",
+                        gameActionDisabledLabelClassName(isDisabled),
                       )}
+                    >
+                      <span>{labelText}</span>
+                      {(successPercentage ||
+                        (choice.relevant_stats && choice.relevant_stats.length > 0)) && (
+                          <span className="inline-flex items-center gap-1.5 flex-shrink-0">
+                            {successPercentage && (
+                              <span className="text-xs text-muted-foreground whitespace-nowrap">
+                                {successPercentage}
+                              </span>
+                            )}
+                            {choice.relevant_stats && choice.relevant_stats.length > 0 && (
+                              <>
+                                {choice.relevant_stats.map((stat) => (
+                                  <RelevantStatIcon key={stat} stat={stat} />
+                                ))}
+                              </>
+                            )}
+                          </span>
+                        )}
+                    </span>
                   </Button>
                 );
 
