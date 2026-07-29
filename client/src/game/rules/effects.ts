@@ -1180,7 +1180,7 @@ export const clothingEffects: Record<string, EffectDefinition> = {
       generalBonuses: {
         knowledge: 8,
         madness: 6,
-        insightPerCycle: 10,
+        insightPerCycle: 15,
       },
     },
   },
