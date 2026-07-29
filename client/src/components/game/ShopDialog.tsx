@@ -1689,25 +1689,26 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
                   className="mt-0 flex min-h-0 flex-1 flex-col overflow-hidden outline-none ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 data-[state=inactive]:hidden"
                 >
                   {/* Pinned via flex split below TabsList + intro (sticky breaks under dialog transforms). */}
-                  {!gameState.hasMadeNonFreePurchase && (
-                    <div className="mb-3 shrink-0 rounded-md border border-blue-500/40 bg-blue-500/5 px-2 py-2 text-xs font-normal text-foreground">
-                      {t("ui:shop.firstPurchaseInsightBannerBefore", {
-                        defaultValue: "First purchase gift:",
-                      })}{" "}
-                      <span
-                        className={cn(
-                          "font-medium font-noto-symbols-2 tabular-nums",
-                          INSIGHT_TEXT_CLASS,
-                        )}
-                      >
-                        {t("ui:shop.firstPurchaseInsightBannerBonus", {
-                          amount: FIRST_PURCHASE_INSIGHT_BONUS.toLocaleString(),
-                          glyph: INSIGHT_GLYPH,
-                          defaultValue: "+{{amount}} {{glyph}} Insight",
-                        })}
-                      </span>
-                    </div>
-                  )}
+                  {(import.meta.env.DEV ||
+                    !gameState.hasMadeNonFreePurchase) && (
+                      <div className="mb-3 shrink-0 rounded-md border border-blue-500/40 bg-blue-500/5 px-2 py-2 text-xs font-normal text-foreground">
+                        {t("ui:shop.firstPurchaseInsightBannerBefore", {
+                          defaultValue: "First purchase gift:",
+                        })}{" "}
+                        <span
+                          className={cn(
+                            "font-medium font-noto-symbols-2 tabular-nums",
+                            INSIGHT_TEXT_CLASS,
+                          )}
+                        >
+                          {t("ui:shop.firstPurchaseInsightBannerBonus", {
+                            amount: FIRST_PURCHASE_INSIGHT_BONUS.toLocaleString(),
+                            glyph: INSIGHT_GLYPH,
+                            defaultValue: "+{{amount}} {{glyph}} Insight",
+                          })}
+                        </span>
+                      </div>
+                    )}
                   <div className="flex shrink-0 flex-wrap gap-x-1.5 gap-y-4 pb-3">
                     <Button
                       variant={selectedFilter === null ? "default" : "outline"}
