@@ -407,18 +407,18 @@ export const CHECKOUT_SUCCESS_PARTICLE_CONFIG: Partial<ParticleConfig> = {
     "#86efac",
   ],
   count: 120,
-  durationMin: 0.6,
-  durationMax: 1.4,
+  durationMin: 0.75,
+  durationMax: 1.45,
   // Extra travel past the dialog edge (spawn ring is sized to the dialog).
   distanceMin: 120,
   distanceMax: 280,
   sizeMin: 4,
-  sizeMax: 14,
+  sizeMax: 12,
   radialOutward: true,
 };
 
 /** Hold checkout open (with glow) after success while the burst plays out. */
-export const CHECKOUT_SUCCESS_HOLD_MS = 2000;
+export const CHECKOUT_SUCCESS_HOLD_MS = 1500;
 
 // Silver coin - slow gentle emission for hover
 export const SILVER_COIN_PARTICLE_CONFIG: Partial<ParticleConfig> = {
