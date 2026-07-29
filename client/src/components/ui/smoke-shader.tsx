@@ -315,6 +315,9 @@ type SmokeUniforms = {
   cursor: WebGLUniformLocation;
 };
 
+/** Recipe default for u_shape.x (zoom). Lower = larger on-screen smoke features. */
+export const SMOKE_SHADER_DEFAULT_SCALE = 1.72;
+
 class SmokeWebGLRenderer {
   private canvas: HTMLCanvasElement;
   private gl: WebGLRenderingContext;
@@ -322,9 +325,11 @@ class SmokeWebGLRenderer {
   private buffer: WebGLBuffer;
   private uniforms: SmokeUniforms;
   private startMs = performance.now();
+  private scale: number;
 
-  constructor(canvas: HTMLCanvasElement) {
+  constructor(canvas: HTMLCanvasElement, scale = SMOKE_SHADER_DEFAULT_SCALE) {
     this.canvas = canvas;
+    this.scale = scale;
     const gl = canvas.getContext("webgl", {
       alpha: false,
       antialias: false,
@@ -391,7 +396,7 @@ class SmokeWebGLRenderer {
     gl.useProgram(program);
     gl.uniform3fv(this.uniforms.colors, COLORS);
     // Packed recipe (cursor presence = 0 — cursor off).
-    gl.uniform4f(this.uniforms.shape, 1.72, 0.6, 0.5, 0.0);
+    gl.uniform4f(this.uniforms.shape, this.scale, 0.6, 0.5, 0.0);
     gl.uniform4f(this.uniforms.surface, 2.4, 1.22, 0.0, 1.0);
     gl.uniform4f(this.uniforms.finish, 0.0, 0.0, 0.0, 0.0);
     gl.uniform4f(this.uniforms.transform, 635.0, 0.0, 0.0, 0.0);
@@ -448,10 +453,18 @@ class SmokeWebGLRenderer {
 
 interface SmokeShaderProps {
   className?: string;
+  /**
+   * Field zoom (`u_shape.x`). Recipe default is 1.72. Lower values enlarge
+   * smoke features — useful for small surfaces like banners.
+   */
+  scale?: number;
 }
 
 /** Animated Smoke flow shader canvas (WebGL1). Sized to its offset parent. */
-export function SmokeShader({ className }: SmokeShaderProps) {
+export function SmokeShader({
+  className,
+  scale = SMOKE_SHADER_DEFAULT_SCALE,
+}: SmokeShaderProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const rendererRef = useRef<SmokeWebGLRenderer | null>(null);
   const animationFrameRef = useRef<number>();
@@ -501,7 +514,7 @@ export function SmokeShader({ className }: SmokeShaderProps) {
     };
 
     try {
-      const renderer = new SmokeWebGLRenderer(canvas);
+      const renderer = new SmokeWebGLRenderer(canvas, scale);
       rendererRef.current = renderer;
       resizeFromParent();
       startLoop();
@@ -531,7 +544,7 @@ export function SmokeShader({ className }: SmokeShaderProps) {
         rendererRef.current = null;
       }
     };
-  }, []);
+  }, [scale]);
 
   return (
     <canvas

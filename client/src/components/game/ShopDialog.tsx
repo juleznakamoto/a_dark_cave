@@ -1696,7 +1696,7 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
                   {(import.meta.env.DEV ||
                     !gameState.hasMadeNonFreePurchase) && (
                       <div className="relative mb-3 shrink-0 overflow-hidden rounded-md border border-blue-500/40">
-                        <SmokeShader />
+                        <SmokeShader scale={0.55} />
                         {/* Soft scrim so bright smoke peaks don't wash out the copy. */}
                         <div
                           className="pointer-events-none absolute inset-0 bg-[#031C26]/55"
