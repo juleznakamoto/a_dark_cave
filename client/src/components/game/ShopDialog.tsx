@@ -768,12 +768,31 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
   const directCheckoutStartedRef = React.useRef(false);
   const activatedPurchases = gameState.activatedPurchases || {};
   const { toast } = useToast();
+  const checkoutBurstDialogSizeRef = React.useRef<{
+    width: number;
+    height: number;
+  } | null>(null);
   const { triggerParticles: triggerCheckoutSuccessBurst, portal: checkoutSuccessParticlePortal } =
-    useInlineButtonParticles(CHECKOUT_SUCCESS_PARTICLE_CONFIG, {
-      zIndex: CHECKOUT_SUCCESS_PARTICLE_Z,
-      // Body portal, stacked under checkout (z-80) so particles emerge from the edges.
-      portalTarget: null,
-    });
+    useInlineButtonParticles(
+      () => {
+        const size = checkoutBurstDialogSizeRef.current;
+        // Spawn on a ring roughly at the dialog perimeter so particles are
+        // already at the edge (visible) before flying outward.
+        const halfW = (size?.width ?? 448) / 2;
+        const halfH = (size?.height ?? 520) / 2;
+        const edge = Math.sqrt(halfW * halfW + halfH * halfH);
+        return {
+          ...CHECKOUT_SUCCESS_PARTICLE_CONFIG,
+          spawnRadiusMin: edge * 0.92,
+          spawnRadiusMax: edge * 1.05,
+        };
+      },
+      {
+        zIndex: CHECKOUT_SUCCESS_PARTICLE_Z,
+        // Body portal, stacked under checkout (z-80) so particles emerge from the edges.
+        portalTarget: null,
+      },
+    );
 
   // Reset filter when dialog closes; apply store-requested filter when opening
   useEffect(() => {
@@ -1216,6 +1235,10 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
     );
     if (checkoutDialog) {
       const rect = checkoutDialog.getBoundingClientRect();
+      checkoutBurstDialogSizeRef.current = {
+        width: rect.width,
+        height: rect.height,
+      };
       triggerCheckoutSuccessBurst({
         x: rect.left + rect.width / 2,
         y: rect.top + rect.height / 2,

@@ -20,6 +20,11 @@ export interface ParticleConfig {
    */
   spawnRadiusMin?: number;
   spawnRadiusMax?: number;
+  /**
+   * When true (and spawn radius > 0), particles travel outward along their spawn
+   * angle — useful for “burst from behind a dialog edge” effects.
+   */
+  radialOutward?: boolean;
   /** Cubic bezier for framer-motion, e.g. [0, 0, 0.5, 1] */
   ease?: number[];
 }
@@ -57,6 +62,7 @@ const DEFAULT_PARTICLE_CONFIG: Required<ParticleConfig> = {
   sizeMax: 25,
   spawnRadiusMin: 0,
   spawnRadiusMax: 0,
+  radialOutward: false,
   ease: [0, 0, 0.5, 1],
 };
 
@@ -400,13 +406,15 @@ export const CHECKOUT_SUCCESS_PARTICLE_CONFIG: Partial<ParticleConfig> = {
     "#4ade80",
     "#86efac",
   ],
-  count: 100,
-  durationMin: 0.55,
-  durationMax: 1.35,
-  distanceMin: 80,
-  distanceMax: 180,
-  sizeMin: 3,
-  sizeMax: 12,
+  count: 120,
+  durationMin: 0.6,
+  durationMax: 1.4,
+  // Extra travel past the dialog edge (spawn ring is sized to the dialog).
+  distanceMin: 120,
+  distanceMax: 280,
+  sizeMin: 4,
+  sizeMax: 14,
+  radialOutward: true,
 };
 
 /** Hold checkout open (with glow) after success while the burst plays out. */
@@ -536,8 +544,11 @@ export function generateParticleData(
     const spawnAngle = Math.random() * Math.PI * 2;
     const startX = Math.cos(spawnAngle) * spawnRadius;
     const startY = Math.sin(spawnAngle) * spawnRadius;
-    // Travel direction is independent of spawn angle so bursts feel random.
-    const moveAngle = Math.random() * Math.PI * 2;
+    // Default: random travel. Checkout-style bursts keep flying outward from the rim.
+    const moveAngle =
+      config.radialOutward && spawnRadius > 0
+        ? spawnAngle
+        : Math.random() * Math.PI * 2;
     const endX = startX + Math.cos(moveAngle) * distance;
     const endY = startY + Math.sin(moveAngle) * distance;
     return { size, color, duration, startX, startY, endX, endY };
