@@ -5,7 +5,7 @@
     "owned": "Owned",
     "notEnoughGold": "You don't have enough gold.",
     "forSale": "For Sale",
-    "forSalePlaythroughNote": "All purchases can be used once in every playthrough.",
+    "forSalePlaythroughNote": "All purchases can be used again in every playthrough.",
     "purchases": "Purchases",
     "srDescription": "Shop for gold, artifacts, boosts, and bundles",
     "betaDiscountTitle": "Beta discounts of up to {{percent}} off are currently active.",
