@@ -713,11 +713,11 @@ function CheckoutForm({
         <div className="text-red-500 text-sm">{errorMessage}</div>
       )}
 
-      <div className="flex flex-col gap-2 pt-1 sm:flex-row sm:justify-center sm:gap-3">
+      <div className="flex flex-col items-center gap-2 pt-1">
         <Button
           type="submit"
           disabled={!stripe || isProcessing || isPurchaseSuccess}
-          className="w-full min-w-0 font-bold sm:flex-1"
+          className="w-full min-w-0 font-bold"
           button_id="shop-complete-purchase"
         >
           {isPurchaseSuccess ? (
@@ -734,12 +734,12 @@ function CheckoutForm({
           )}
         </Button>
         <Button
-          variant="outline"
-          onClick={onCancel}
-          className="w-full sm:w-auto sm:shrink-0"
-          button_id="shop-cancel-payment"
           type="button"
+          variant="link"
+          onClick={onCancel}
           disabled={isProcessing || isPurchaseSuccess}
+          button_id="shop-cancel-payment"
+          className="h-auto p-0 text-sm font-normal text-muted-foreground underline-offset-2 hover:text-foreground"
         >
           {t("common:buttons.cancel")}
         </Button>
@@ -2750,9 +2750,9 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
                   </>
                 )}
                 <div
-                  className={`flex justify-between gap-4 font-semibold${checkoutPriceBreakdown.hasCatalogSale ||
+                  className={`flex justify-between gap-4 text-base font-semibold${checkoutPriceBreakdown.hasCatalogSale ||
                     checkoutPriceBreakdown.hasEventDiscount
-                    ? " border-t border-border/50 pt-2"
+                    ? " mt-2 border-t border-border/50 pt-2"
                     : ""
                     }`}
                 >

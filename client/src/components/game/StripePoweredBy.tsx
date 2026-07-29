@@ -1,7 +1,6 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { PaymentMethodLogos } from "@/components/game/paymentMethodLogos";
-import { tWithFallback } from "@/i18n/resolveGameText";
 
 const STRIPE_BRAND_COLOR = "#635BFF";
 
@@ -58,15 +57,6 @@ export function StripePoweredBy({ className = "" }: { className?: string }) {
         </span>
         <span>{t("ui:shop.securePaymentWith")}</span>
         <PaymentMethodLogos />
-      </div>
-      <div className="flex flex-wrap items-center justify-center gap-x-1 gap-y-1.5 text-xs text-foreground">
-        <span>
-          {tWithFallback(
-            "ui",
-            "shop.noCardDataStored",
-            "No card data is stored on our servers.",
-          )}
-        </span>
       </div>
     </div>
   );
