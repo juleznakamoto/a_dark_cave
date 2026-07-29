@@ -34,10 +34,12 @@ export const wanderingCollectorEvents: Record<string, GameEvent> = {
 
       const visitCountValue = state.story?.seen?.collectorVisitCount;
       const visitCount = typeof visitCountValue === "number" ? visitCountValue : 0;
-      if (visitCount >= 3) return false;
+      if (visitCount >= 5) return false;
       if (visitCount == 0) return state.buildings.woodenHut >= 6;
       if (visitCount == 1) return state.buildings.woodenHut >= 10;
-      if (visitCount == 2) return state.buildings.stoneHut >= 5;
+      if (visitCount == 2) return state.buildings.stoneHut >= 4;
+      if (visitCount == 3) return state.buildings.stoneHut >= 8;
+      if (visitCount == 4) return state.buildings.stoneHut >= 10;
 
       return ownedItems.length >= 3;
     },
