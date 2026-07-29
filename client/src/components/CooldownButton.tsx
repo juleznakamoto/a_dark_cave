@@ -36,7 +36,7 @@ export function gameActionOutlineButtonClassName(
     disabled
       ? // Fade via border alpha + CooldownButton label opacity — never whole-button
       // opacity (that lets portaled click particles show through the chrome).
-      "border-orange-950/60 !bg-transparent hover:!bg-transparent"
+      "border-orange-950/50 !bg-transparent hover:!bg-transparent"
       : "border-orange-950 text-foreground",
     !disabled &&
     `${hoverPrefix}bg-accent ${hoverPrefix}text-accent-foreground bg-neutral-600/10`,
