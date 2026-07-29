@@ -1,6 +1,7 @@
 import { createServerSupabaseClient } from './supabaseServerClient';
 import { REFERRAL_REWARD_GOLD } from '@shared/schema';
 import { resolveReferrerUserId } from './referralCodes';
+import type { SupabaseClient } from '@supabase/supabase-js';
 
 type ReferralEntry = { userId: string; claimed?: boolean; timestamp?: number };
 
@@ -19,6 +20,86 @@ const getSupabaseAdmin = () => {
 
   return createServerSupabaseClient(supabaseUrl, supabaseServiceKey);
 };
+
+/**
+ * Ensure the referrer’s referrals[] contains newUserId.
+ * Does not grant gold. Used for first-time process and clobber repair.
+ */
+export async function ensureReferrerHasReferral(
+  adminClient: SupabaseClient,
+  referrerUserId: string,
+  newUserId: string,
+  opts?: { enforceLimit?: boolean; timestamp?: number },
+): Promise<
+  | { ok: true; alreadyPresent: boolean }
+  | {
+      ok: false;
+      reason:
+        | 'referrer_fetch_error'
+        | 'referrer_no_save'
+        | 'referrer_limit_reached'
+        | 'referrer_update_error';
+    }
+> {
+  const { data: referrerSave, error: referrerError } = await adminClient
+    .from('game_saves')
+    .select('game_state')
+    .eq('user_id', referrerUserId)
+    .maybeSingle();
+
+  if (referrerError) {
+    return { ok: false, reason: 'referrer_fetch_error' };
+  }
+
+  if (!referrerSave || !referrerSave.game_state) {
+    return { ok: false, reason: 'referrer_no_save' };
+  }
+
+  const referrerState = referrerSave.game_state;
+  const referrals: ReferralEntry[] = Array.isArray(referrerState.referrals)
+    ? referrerState.referrals
+    : [];
+
+  if (referrals.some((r) => r.userId === newUserId)) {
+    return { ok: true, alreadyPresent: true };
+  }
+
+  if (opts?.enforceLimit !== false && referrals.length >= 10) {
+    return { ok: false, reason: 'referrer_limit_reached' };
+  }
+
+  const updatedReferrerState = {
+    ...referrerState,
+    referrals: [
+      ...referrals,
+      {
+        userId: newUserId,
+        claimed: false,
+        timestamp: opts?.timestamp ?? Date.now(),
+      },
+    ],
+    referralCount: Math.max(
+      typeof referrerState.referralCount === 'number'
+        ? referrerState.referralCount
+        : 0,
+      referrals.length + 1,
+    ),
+  };
+
+  const { error: referrerUpdateError } = await adminClient
+    .from('game_saves')
+    .update({
+      game_state: updatedReferrerState,
+      updated_at: new Date().toISOString(),
+    })
+    .eq('user_id', referrerUserId);
+
+  if (referrerUpdateError) {
+    return { ok: false, reason: 'referrer_update_error' };
+  }
+
+  return { ok: true, alreadyPresent: false };
+}
 
 export async function processReferral(newUserId: string, referralCode: string) {
   const adminClient = getSupabaseAdmin();
@@ -42,7 +123,7 @@ export async function processReferral(newUserId: string, referralCode: string) {
     return { success: false, reason: 'self_referral' };
   }
 
-  // Check if referral has already been processed
+  // Check if referral has already been processed on the new user
   const { data: newUserSave } = await adminClient
     .from('game_saves')
     .select('game_state')
@@ -50,61 +131,35 @@ export async function processReferral(newUserId: string, referralCode: string) {
     .maybeSingle();
 
   if (newUserSave?.game_state?.referralProcessed) {
-    return { success: false, reason: 'already_processed' };
+    // New user already got invite gold; still repair referrer list if a later
+    // full-replace wiped the entry (do not enforce the 10-cap on repair).
+    const repair = await ensureReferrerHasReferral(
+      adminClient,
+      referrerUserId,
+      newUserId,
+      { enforceLimit: false },
+    );
+    if (!repair.ok) {
+      return { success: false, reason: repair.reason };
+    }
+    return {
+      success: true,
+      reason: repair.alreadyPresent ? 'already_processed' : 'referrer_repaired',
+    };
   }
 
-  // Fetch referrer's game save (bypasses RLS)
-  const { data: referrerSave, error: referrerError } = await adminClient
-    .from('game_saves')
-    .select('game_state')
-    .eq('user_id', referrerUserId)
-    .maybeSingle();
-
-  if (referrerError) {
-    return { success: false, reason: 'referrer_fetch_error' };
+  const ensure = await ensureReferrerHasReferral(
+    adminClient,
+    referrerUserId,
+    newUserId,
+    { enforceLimit: true },
+  );
+  if (!ensure.ok) {
+    return { success: false, reason: ensure.reason };
   }
-
-  if (!referrerSave || !referrerSave.game_state) {
-    return { success: false, reason: 'referrer_no_save' };
-  }
-
-  const referrerState = referrerSave.game_state;
-  const referrals = referrerState.referrals || [];
-  const referralCount = referrals.length;
-
-  if (referralCount >= 10) {
-    return { success: false, reason: 'referrer_limit_reached' };
-  }
-
-  // Check if this user was already referred
-  if (referrals.some((r: ReferralEntry) => r.userId === newUserId)) {
-    return { success: false, reason: 'already_referred' };
-  }
-
-  // Update referrer's game state - add unclaimed referral
-  const updatedReferrerState = {
-    ...referrerState,
-    referrals: [
-      ...referrals,
-      {
-        userId: newUserId,
-        claimed: false,
-        timestamp: Date.now(),
-      }
-    ],
-    referralCount: referrals.length + 1,
-  };
-
-  const { error: referrerUpdateError } = await adminClient
-    .from('game_saves')
-    .update({
-      game_state: updatedReferrerState,
-      updated_at: new Date().toISOString(),
-    })
-    .eq('user_id', referrerUserId);
-
-  if (referrerUpdateError) {
-    return { success: false, reason: 'referrer_update_error' };
+  if (ensure.alreadyPresent) {
+    // Referrer already has them; still mark new user processed + grant gold below
+    // only if not already processed (handled above). Fall through.
   }
 
   // Update new user's game state

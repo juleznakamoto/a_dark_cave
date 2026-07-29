@@ -21,8 +21,8 @@ in the client; **Supabase** handles auth/cloud saves and **Stripe** handles paym
 | `client/` | React SPA: UI, game engine, i18n, assets. Vite root. |
 | `electron/` | Steam desktop shell (Electron `main`/`preload` + loopback static server + steamworks.js). See [Steam edition](#steam-edition-electron) below. |
 | `server/` | Express server: API routes, Stripe/referral/marketing, dev Vite middleware, prod static serving. |
-| `shared/` | Cross-cutting TypeScript shared by client + server: Zod schemas, shop/referral pricing, admin dashboard aggregates (`gameCompletionAdminStats.ts`, `socialPromptAdminStats.ts`, `hutLadderAdminStats.ts`), save integrity + client-build version checks (`saveGameAnalysis.ts`), tool rebuild from story flags (`rebuildToolsFromStorySeen.ts`), tab-unlock flag repair from progression evidence (`repairUnlockFlags.ts`), public SEO route metadata (`publicSeo.ts`). |
-| `supabase/` | SQL migrations + edge function (`functions/save-game/`) for Postgres/RLS. Notable: `024` deep-merge saves, `025` permanent tools/weapons/books protection, `030` flagged full-document replace on V1 (`p_full_replace`; old clients keep deep-merge), `034` admin session intra-day stats RPC, `035` drop abandoned `game_state_v2` dual-write sidecar (historical `028`/`029`), `036` raise per-save gold/silver delta caps (5000 / 10000). |
+| `shared/` | Cross-cutting TypeScript shared by client + server: Zod schemas, shop/referral pricing, referral list union-merge (`referralMerge.ts`), admin dashboard aggregates (`gameCompletionAdminStats.ts`, `socialPromptAdminStats.ts`, `hutLadderAdminStats.ts`), save integrity + client-build version checks (`saveGameAnalysis.ts`), tool rebuild from story flags (`rebuildToolsFromStorySeen.ts`), tab-unlock flag repair from progression evidence (`repairUnlockFlags.ts`), public SEO route metadata (`publicSeo.ts`). |
+| `supabase/` | SQL migrations + edge function (`functions/save-game/`) for Postgres/RLS. Notable: `024` deep-merge saves, `025` permanent tools/weapons/books protection, `030` flagged full-document replace on V1 (`p_full_replace`; old clients keep deep-merge), `034` admin session intra-day stats RPC, `035` drop abandoned `game_state_v2` dual-write sidecar (historical `028`/`029`), `036` raise per-save gold/silver delta caps (5000 / 10000), `037` referral union-merge + row lock on full-replace (prevents wiping server-written invite rewards). |
 | `scripts/` | Build & i18n tooling â€” see [Scripts](#scripts-scripts) below. |
 | `services/` | Internal auxiliary services (currently `gender-service/` â€” first-name gender inference, localhost only). |
 | `public/`, `attached_assets/` | Static assets (`@assets` alias â†’ `attached_assets`). |
@@ -182,6 +182,9 @@ shared/schema.tsâ€” Zod GameState schema (source of truth for persisted sha
   **full-document replace by default** (`fullReplace: true` â†’ SQL `p_full_replace`,
   migration 030); kill switch `VITE_SAVE_FULL_REPLACE=0` restores diff + deep-merge
   against `lastCloudState` (legacy clients omit the flag and keep merge).
+  Migration `037` union-merges `referrals` on save (with row lock) so server-written
+  invite rewards survive stale full-replace payloads; `shared/referralMerge.ts` mirrors
+  that merge on load.
   Load applies migrations (e.g. `migrateTraderShopUnlockOnLoad`).
 - **`auth.ts`** â€” Supabase auth (incl. anonymous guest-checkout via `ensureAnonymousSession`),
   `saveGameToSupabase`/`loadGameFromSupabase`, referral metadata.

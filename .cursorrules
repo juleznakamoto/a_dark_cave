@@ -31,6 +31,7 @@ standards below — it does not duplicate the architecture map.
 
 ### Dev and Prod Environment
 - There is a dev and a prod environment. Secrets end with either `_DEV` or `_PROD`.
+- **Database SQL**: Never run SQL against the database (dev or prod) — including `execute_sql`, `apply_migration`, or any other query via MCP/CLI — without asking the user first and getting explicit approval.
 
 ### Coding Standards
 - **Tooltips**: Always use the centralized tooltip system (`TooltipWrapper` from `@/components/game/TooltipWrapper` with `useGlobalTooltip`). Do not use `TooltipProvider` + `TooltipTrigger` + `TooltipContent` directly or `useMobileTooltip`—the centralized system provides consistent tap-and-hold behavior on mobile and single-tooltip-at-a-time globally.

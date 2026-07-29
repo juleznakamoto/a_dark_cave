@@ -1,5 +1,6 @@
 import { openDB, DBSchema } from "idb";
 import { GameState, SaveData, REFERRAL_REWARD_GOLD } from "@shared/schema";
+import { mergeReferralLists } from "@shared/referralMerge";
 import {
   saveGameToSupabase,
   loadGameFromSupabase,
@@ -308,23 +309,10 @@ async function getDB() {
   }
 }
 
-type ReferralEntry = GameState["referrals"][number];
-
-function mergeReferralEntries(
-  local: ReferralEntry,
-  cloud: ReferralEntry,
-): ReferralEntry {
-  return {
-    userId: local.userId,
-    claimed: local.claimed || cloud.claimed,
-    timestamp: Math.max(local.timestamp, cloud.timestamp),
-  };
-}
-
 /**
  * Server-side referral processing updates the referrer's cloud save directly.
  * When local IndexedDB has more playTime, load still prefers local — merge cloud
- * referrals so invite rewards are not lost.
+ * referrals so invite rewards are not lost. (SQL save path also union-merges.)
  */
 export function mergeCloudReferralsIntoState(
   localState: GameState,
@@ -333,44 +321,30 @@ export function mergeCloudReferralsIntoState(
   const localRefs = Array.isArray(localState.referrals) ? localState.referrals : [];
   const cloudRefs = Array.isArray(cloudState.referrals) ? cloudState.referrals : [];
 
-  const byUserId = new Map<string, ReferralEntry>();
-  for (const entry of localRefs) {
-    if (entry?.userId) byUserId.set(entry.userId, entry);
-  }
-  for (const entry of cloudRefs) {
-    if (!entry?.userId) continue;
-    const existing = byUserId.get(entry.userId);
-    byUserId.set(
-      entry.userId,
-      existing ? mergeReferralEntries(existing, entry) : entry,
-    );
-  }
-
-  const mergedReferrals = Array.from(byUserId.values()).sort(
-    (a, b) => a.timestamp - b.timestamp,
+  const { referrals, referralCount, referredUsers } = mergeReferralLists(
+    localRefs,
+    cloudRefs,
+    {
+      localReferralCount: localState.referralCount ?? 0,
+      cloudReferralCount: cloudState.referralCount ?? 0,
+    },
   );
-  const referralCount = Math.max(
-    localState.referralCount ?? 0,
-    cloudState.referralCount ?? 0,
-    mergedReferrals.length,
-  );
-  const referredUsers = mergedReferrals.map((entry) => entry.userId);
 
   const unchanged =
-    mergedReferrals.length === localRefs.length &&
+    referrals.length === localRefs.length &&
     (localState.referralCount ?? 0) === referralCount &&
     localRefs.every(
       (entry, index) =>
-        entry.userId === mergedReferrals[index]?.userId &&
-        entry.claimed === mergedReferrals[index]?.claimed &&
-        entry.timestamp === mergedReferrals[index]?.timestamp,
+        entry.userId === referrals[index]?.userId &&
+        entry.claimed === referrals[index]?.claimed &&
+        entry.timestamp === referrals[index]?.timestamp,
     );
 
   if (unchanged) return localState;
 
   return {
     ...localState,
-    referrals: mergedReferrals,
+    referrals,
     referralCount,
     referredUsers,
   };

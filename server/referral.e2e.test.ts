@@ -87,7 +87,7 @@ describe('Referral E2E Flow', () => {
     );
   });
 
-  it('should prevent referral after user has already started playing', async () => {
+  it('should repair referrer when new user already processed', async () => {
     const newUserId = 'existing-user-123';
     const referralCode = 'XY2Z4W';
 
@@ -95,26 +95,46 @@ describe('Referral E2E Flow', () => {
       userId: 'referrer-456',
     });
 
-    mockSupabaseClient.from.mockReturnValue({
+    let selectCount = 0;
+    const mockUpdate = vi.fn().mockReturnValue({
+      eq: vi.fn().mockResolvedValue({ error: null }),
+    });
+
+    mockSupabaseClient.from.mockImplementation(() => ({
       select: vi.fn().mockReturnValue({
         eq: vi.fn().mockReturnValue({
-          maybeSingle: vi.fn().mockResolvedValue({
-            data: {
-              game_state: {
-                referralProcessed: true,
-                playTime: 5000,
+          maybeSingle: vi.fn().mockImplementation(() => {
+            selectCount++;
+            if (selectCount === 1) {
+              return Promise.resolve({
+                data: {
+                  game_state: {
+                    referralProcessed: true,
+                    playTime: 5000,
+                  },
+                },
+              });
+            }
+            return Promise.resolve({
+              data: {
+                game_state: {
+                  referrals: [],
+                  resources: { gold: 0 },
+                },
               },
-            },
+            });
           }),
         }),
       }),
-    });
+      update: mockUpdate,
+    }));
 
     const result = await processReferral(newUserId, referralCode);
 
     expect(result).toEqual({
-      success: false,
-      reason: 'already_processed',
+      success: true,
+      reason: 'referrer_repaired',
     });
+    expect(mockUpdate).toHaveBeenCalled();
   });
 });

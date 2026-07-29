@@ -46,7 +46,65 @@ describe('Referral System', () => {
     });
   });
 
-  it('should prevent duplicate referral processing', async () => {
+  it('should repair referrer list when already processed but missing', async () => {
+    const newUserId = 'new-user-123';
+    const referralCode = 'AB3K9M';
+    const referrerId = 'referrer-456';
+
+    vi.mocked(resolveReferrerUserId).mockResolvedValue({
+      userId: referrerId,
+    });
+
+    const mockUpdate = vi.fn().mockReturnValue({
+      eq: vi.fn().mockResolvedValue({ error: null }),
+    });
+
+    let selectCount = 0;
+    mockSupabaseClient.from.mockImplementation(() => ({
+      select: vi.fn().mockReturnValue({
+        eq: vi.fn().mockReturnValue({
+          maybeSingle: vi.fn().mockImplementation(() => {
+            selectCount++;
+            if (selectCount === 1) {
+              return Promise.resolve({
+                data: {
+                  game_state: {
+                    referralProcessed: true,
+                    referralCode,
+                  },
+                },
+              });
+            }
+            // referrer save — empty referrals (clobbered)
+            return Promise.resolve({
+              data: {
+                game_state: {
+                  referrals: [],
+                  referralCount: 0,
+                  resources: { gold: 10 },
+                },
+              },
+            });
+          }),
+        }),
+      }),
+      update: mockUpdate,
+    }));
+
+    const result = await processReferral(newUserId, referralCode);
+
+    expect(result).toEqual({
+      success: true,
+      reason: 'referrer_repaired',
+    });
+    expect(mockUpdate).toHaveBeenCalled();
+    const updatePayload = mockUpdate.mock.calls[0][0];
+    expect(updatePayload.game_state.referrals).toEqual([
+      expect.objectContaining({ userId: newUserId, claimed: false }),
+    ]);
+  });
+
+  it('should return already_processed when referrer already has the entry', async () => {
     const newUserId = 'new-user-123';
     const referralCode = 'AB3K9M';
 
@@ -54,26 +112,41 @@ describe('Referral System', () => {
       userId: 'referrer-456',
     });
 
-    mockSupabaseClient.from.mockReturnValue({
+    let selectCount = 0;
+    const mockUpdate = vi.fn().mockReturnValue({
+      eq: vi.fn().mockResolvedValue({ error: null }),
+    });
+
+    mockSupabaseClient.from.mockImplementation(() => ({
       select: vi.fn().mockReturnValue({
         eq: vi.fn().mockReturnValue({
-          maybeSingle: vi.fn().mockResolvedValue({
-            data: {
-              game_state: {
-                referralProcessed: true,
+          maybeSingle: vi.fn().mockImplementation(() => {
+            selectCount++;
+            if (selectCount === 1) {
+              return Promise.resolve({
+                data: { game_state: { referralProcessed: true } },
+              });
+            }
+            return Promise.resolve({
+              data: {
+                game_state: {
+                  referrals: [{ userId: newUserId, claimed: true, timestamp: 1 }],
+                },
               },
-            },
+            });
           }),
         }),
       }),
-    });
+      update: mockUpdate,
+    }));
 
     const result = await processReferral(newUserId, referralCode);
 
     expect(result).toEqual({
-      success: false,
+      success: true,
       reason: 'already_processed',
     });
+    expect(mockUpdate).not.toHaveBeenCalled();
   });
 
   it('should handle referrer not found', async () => {
@@ -129,7 +202,7 @@ describe('Referral System', () => {
     });
   });
 
-  it('should prevent duplicate referral of same user', async () => {
+  it('should still process new user when already on referrer list', async () => {
     const newUserId = 'new-user-123';
     const referralCode = 'AB3K9M';
 
@@ -137,33 +210,41 @@ describe('Referral System', () => {
       userId: 'referrer-456',
     });
 
-    let callCount = 0;
-    mockSupabaseClient.from.mockReturnValue({
-      select: vi.fn().mockReturnValue({
-        eq: vi.fn().mockReturnValue({
-          maybeSingle: vi.fn().mockImplementation(() => {
-            callCount++;
-            if (callCount === 1) {
-              return Promise.resolve({ data: null });
-            }
-            return Promise.resolve({
-              data: {
-                game_state: {
-                  referrals: [{ userId: newUserId, claimed: false }],
-                },
+    let selectCallCount = 0;
+    const mockSelect = vi.fn().mockReturnValue({
+      eq: vi.fn().mockReturnValue({
+        maybeSingle: vi.fn().mockImplementation(() => {
+          selectCallCount++;
+          if (selectCallCount === 1) {
+            return Promise.resolve({ data: null });
+          }
+          return Promise.resolve({
+            data: {
+              game_state: {
+                referrals: [{ userId: newUserId, claimed: false }],
               },
-            });
-          }),
+            },
+          });
         }),
       }),
     });
 
+    const mockUpdate = vi.fn().mockReturnValue({
+      eq: vi.fn().mockResolvedValue({ error: null }),
+    });
+
+    const mockUpsert = vi.fn().mockResolvedValue({ error: null });
+
+    mockSupabaseClient.from.mockImplementation(() => ({
+      select: mockSelect,
+      update: mockUpdate,
+      upsert: mockUpsert,
+    }));
+
     const result = await processReferral(newUserId, referralCode);
 
-    expect(result).toEqual({
-      success: false,
-      reason: 'already_referred',
-    });
+    expect(result).toEqual({ success: true });
+    expect(mockUpsert).toHaveBeenCalled();
   });
 
   it('should successfully process valid referral', async () => {
