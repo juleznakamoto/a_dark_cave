@@ -1110,6 +1110,11 @@ html[data-tab-hidden] .exclusive-promo-shockwave-ring:not(.exclusive-promo-shock
 }
 
 .focus-glow-hover:hover:not([aria-disabled="true"]) {
+  /* Override game-action outline hover (red accent) with focus teal. */
+  background-color: rgb(4 47 46) !important;
+  /* teal-950 */
+  color: rgb(45 212 191) !important;
+  /* teal-400 */
   box-shadow: 0 0 10px rgba(20, 184, 166, .5), 0 0 8px rgba(20, 184, 166, .3);
 }
 
