@@ -211,6 +211,7 @@
     "madnessFromItems": "{{value}} de Itens",
     "madnessFromBuildings": "{{value}} de Edifícios",
     "madnessFromEvents": "{{value}} de Eventos",
+    "bonusSourceEffect": "{{source}}: {{effect}}",
     "bastionDefenseTooltip": "Reduz o dano recebido durante o combate",
     "bastionIntegrityTooltip": "Se a integridade chegar a 0, você perde a batalha",
     "bastionAttackTooltip": "Dano que você causa aos inimigos a cada rodada de combate",

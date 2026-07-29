@@ -519,22 +519,33 @@ export const getAllActionBonuses = (
     }
   });
 
-  // Add button upgrade bonuses (only if book_of_ascension is owned)
-  // Craft actions handle their own cost/gain scaling in the action definitions
+  // Add button upgrade bonuses (only if book_of_ascension is owned).
+  // Craft actions handle their own cost/gain scaling in the action definitions.
+  // Deduplicate by upgrade key so shared keys (e.g. caveExplore → many actions)
+  // contribute once to the sidebar total.
   if (state.books?.book_of_ascension) {
+    const appliedUpgradeKeys = new Set<string>();
     Object.entries(ACTION_TO_UPGRADE_KEY).forEach(([actionId, upgradeKey]) => {
-      if (upgradeKey && !CRAFT_UPGRADE_ACTIONS.includes(actionId)) {
-        const bonus = getUpgradeBonus(upgradeKey, state);
-        if (bonus > 0) {
-          const existing = bonusMap.get(actionId) || {
-            multiplier: 1,
-            flatBonus: 0,
-          };
-          // Button upgrades are percentage bonuses, convert to multiplier
-          existing.multiplier += bonus / 100;
-          bonusMap.set(actionId, existing);
-        }
+      if (
+        !upgradeKey ||
+        CRAFT_UPGRADE_ACTIONS.includes(
+          actionId as (typeof CRAFT_UPGRADE_ACTIONS)[number],
+        )
+      ) {
+        return;
       }
+      if (appliedUpgradeKeys.has(upgradeKey)) return;
+      appliedUpgradeKeys.add(upgradeKey);
+      const bonus = getUpgradeBonus(upgradeKey, state);
+      if (bonus <= 0) return;
+      // Canonical id matches sidebar merge keys (caveExplore, chopWood, mineStone, …)
+      const targetId = upgradeKey;
+      const existing = bonusMap.get(targetId) || {
+        multiplier: 1,
+        flatBonus: 0,
+      };
+      existing.multiplier += bonus / 100;
+      bonusMap.set(targetId, existing);
     });
   }
 

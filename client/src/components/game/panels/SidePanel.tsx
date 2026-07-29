@@ -5,6 +5,8 @@ import SidePanelSection, {
   SIDE_PANEL_SECTION_SPACING_CLASS,
 } from "./SidePanelSection";
 import StatEffectsTooltip from "@/components/game/StatEffectsTooltip";
+import BonusCompositionTooltip from "@/components/game/BonusCompositionTooltip";
+import { hasBonusComposition } from "@/game/rules/bonusComposition";
 import { ResourceCoinIcon } from "@/components/ui/resource-coin-icon";
 import { ResourceInsightIcon } from "@/components/ui/resource-insight-icon";
 import { clothingEffects } from "@/game/rules/effects";
@@ -762,6 +764,9 @@ export default function SidePanel() {
     value: bonus.displayValue,
     testId: `bonus-${bonus.id}`,
     visible: true,
+    tooltip: hasBonusComposition(bonus.id, gameState) ? (
+      <BonusCompositionTooltip bonusId={bonus.id} />
+    ) : undefined,
   }));
 
   // Add crafting cost reduction if present
@@ -773,6 +778,9 @@ export default function SidePanel() {
       value: `${Number((craftingCostReduction * 100).toFixed(1))}%`,
       testId: "bonus-crafting-cost-reduction",
       visible: true,
+      tooltip: hasBonusComposition("craftingCostReduction", gameState) ? (
+        <BonusCompositionTooltip bonusId="craftingCostReduction" />
+      ) : undefined,
     });
   }
 
@@ -785,6 +793,9 @@ export default function SidePanel() {
       value: `${Number((buildingCostReduction * 100).toFixed(1))}%`,
       testId: "bonus-building-cost-reduction",
       visible: true,
+      tooltip: hasBonusComposition("buildingCostReduction", gameState) ? (
+        <BonusCompositionTooltip bonusId="buildingCostReduction" />
+      ) : undefined,
     });
   }
 
@@ -796,6 +807,9 @@ export default function SidePanel() {
       value: `-${Number((buildingTimeReduction * 100).toFixed(1))}%`,
       testId: "bonus-building-time-reduction",
       visible: true,
+      tooltip: hasBonusComposition("buildingTimeReduction", gameState) ? (
+        <BonusCompositionTooltip bonusId="buildingTimeReduction" />
+      ) : undefined,
     });
   }
 
@@ -808,6 +822,9 @@ export default function SidePanel() {
       value: `${Math.round(chainmasterProductionBonus * 100)}%`,
       testId: "bonus-villager-production",
       visible: true,
+      tooltip: hasBonusComposition("villagerProductionBonus", gameState) ? (
+        <BonusCompositionTooltip bonusId="villagerProductionBonus" />
+      ) : undefined,
     });
   }
 
@@ -819,6 +836,9 @@ export default function SidePanel() {
       value: `${Number((doubleGainChance * 100).toFixed(1))}%`,
       testId: "bonus-double-gain-chance",
       visible: true,
+      tooltip: hasBonusComposition("doubleGainChance", gameState) ? (
+        <BonusCompositionTooltip bonusId="doubleGainChance" />
+      ) : undefined,
     });
   }
 
