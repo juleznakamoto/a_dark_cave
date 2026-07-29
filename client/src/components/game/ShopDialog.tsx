@@ -11,7 +11,6 @@ import {
 import { logger } from "@/lib/logger";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
-import { Z_INDEX } from "@/lib/z-index";
 import {
   Card,
   CardContent,
@@ -68,7 +67,7 @@ import {
 } from "../../../../shared/shopCheckoutPrice";
 import { PLAYLIGHT_FIRST_PURCHASE_DISCOUNT_PERCENT } from "@/game/playlightRewards";
 import { tailwindToHex } from "@/lib/tailwindColors";
-import { getShopGlyphHoverParticleConfig, CHECKOUT_SUCCESS_PARTICLE_CONFIG } from "@/components/ui/bubbly-button.particles";
+import { getShopGlyphHoverParticleConfig, CHECKOUT_SUCCESS_PARTICLE_CONFIG, CHECKOUT_SUCCESS_HOLD_MS } from "@/components/ui/bubbly-button.particles";
 import { getStripeReturnUrlForConfirm } from "@/lib/stripePaymentReturn";
 import { verifyPaymentWithRetry } from "@/lib/paymentVerify";
 import { StripePoweredBy } from "@/components/game/StripePoweredBy";
@@ -404,6 +403,9 @@ function ShopGlyphForItem({
 
 /** Above `DialogContent` z-[70] so particles match the coin effect but stay visible. */
 const SHOP_GOLD_GLYPH_HOVER_PARTICLE_Z = 90;
+
+/** Behind checkout dialog (z-80) so the burst reads as coming out from its edges. */
+const CHECKOUT_SUCCESS_PARTICLE_Z = 75;
 
 /** Full-card hover for shop items; burst origin stays on the corner glyph span; tint matches `symbolColor`. */
 function ShopItemGlyphParticleScope({
@@ -768,8 +770,8 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
   const { toast } = useToast();
   const { triggerParticles: triggerCheckoutSuccessBurst, portal: checkoutSuccessParticlePortal } =
     useInlineButtonParticles(CHECKOUT_SUCCESS_PARTICLE_CONFIG, {
-      zIndex: Z_INDEX.particles,
-      // Body portal so the burst stays visible after checkout unmounts (above dialogs).
+      zIndex: CHECKOUT_SUCCESS_PARTICLE_Z,
+      // Body portal, stacked under checkout (z-80) so particles emerge from the edges.
       portalTarget: null,
     });
 
@@ -1208,7 +1210,7 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
     const item = SHOP_ITEMS[purchasedItemId];
     const storeBeforeDiscount = useGameStore.getState();
 
-    // Green burst from dialog center, then dismiss checkout immediately.
+    // Burst behind the dialog; keep checkout open with green glow for HOLD_MS.
     const checkoutDialog = document.querySelector<HTMLElement>(
       "[data-checkout-dialog]",
     );
@@ -1219,8 +1221,9 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
         y: rect.top + rect.height / 2,
       });
     }
-    setClientSecret(null);
-    setSelectedItem(null);
+    const holdCheckoutOpen = new Promise<void>((resolve) => {
+      window.setTimeout(resolve, CHECKOUT_SUCCESS_HOLD_MS);
+    });
 
     // Prefer grant before discount consumption (Playlight consumption also sets
     // hasMadeNonFreePurchase). CheckoutForm usually already granted; this is a
@@ -1372,6 +1375,11 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
     } catch (e) {
       logger.error("[SHOP] Post-purchase save failed:", e);
     }
+
+    // Wait out the hold so glow + particles finish, then close checkout.
+    await holdCheckoutOpen;
+    setClientSecret(null);
+    setSelectedItem(null);
 
     // Direct-checkout items (hidden from the grid) have no purchases list to
     // return to — their entitlement was already applied by loadPurchasedItems.

@@ -390,7 +390,7 @@ export const REWARDS_TASKS_PARTICLE_CONFIG: Partial<ParticleConfig> = {
   sizeMax: 3.5,
 };
 
-/** Checkout success — green burst from dialog center when purchase completes. */
+/** Checkout success — large green burst from behind the dialog edges. */
 export const CHECKOUT_SUCCESS_PARTICLE_CONFIG: Partial<ParticleConfig> = {
   colors: [
     tailwindToHex("green-400"),
@@ -398,15 +398,19 @@ export const CHECKOUT_SUCCESS_PARTICLE_CONFIG: Partial<ParticleConfig> = {
     tailwindToHex("lime-400"),
     tailwindToHex("emerald-400"),
     "#4ade80",
+    "#86efac",
   ],
-  count: 36,
-  durationMin: 0.45,
-  durationMax: 0.95,
-  distanceMin: 45,
-  distanceMax: 100,
-  sizeMin: 2,
-  sizeMax: 8,
+  count: 100,
+  durationMin: 0.55,
+  durationMax: 1.35,
+  distanceMin: 80,
+  distanceMax: 180,
+  sizeMin: 3,
+  sizeMax: 12,
 };
+
+/** Hold checkout open (with glow) after success while the burst plays out. */
+export const CHECKOUT_SUCCESS_HOLD_MS = 1500;
 
 // Silver coin - slow gentle emission for hover
 export const SILVER_COIN_PARTICLE_CONFIG: Partial<ParticleConfig> = {
