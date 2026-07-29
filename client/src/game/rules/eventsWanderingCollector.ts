@@ -18,12 +18,25 @@ const COLLECTOR_ITEMS = [
   "unnamed_book",
 ] as const;
 
-const COLLECTOR_REWARD = 100
+const COLLECTOR_BASE_REWARD = 100;
+const COLLECTOR_REWARD_STEP = 50;
+
+function getCollectorVisitCount(state: GameState): number {
+  const visitCountValue = state.story?.seen?.collectorVisitCount;
+  return typeof visitCountValue === "number" ? visitCountValue : 0;
+}
+
+/** First visit pays base gold; each later visit pays +50 more. */
+function getCollectorReward(visitCount: number): number {
+  return COLLECTOR_BASE_REWARD + visitCount * COLLECTOR_REWARD_STEP;
+}
 
 export const wanderingCollectorEvents: Record<string, GameEvent> = {
   wandering_collector: {
     id: "wandering_collector",
-    i18nVars: { reward: COLLECTOR_REWARD },
+    i18nVars: (state: GameState) => ({
+      reward: getCollectorReward(getCollectorVisitCount(state)),
+    }),
     condition: (state: GameState) => {
       const ownedItems = COLLECTOR_ITEMS.filter((itemId) => {
         if (state.clothing && (state.clothing as any)[itemId]) return true;
@@ -32,8 +45,7 @@ export const wanderingCollectorEvents: Record<string, GameEvent> = {
       });
       if (ownedItems.length === 0) return false;
 
-      const visitCountValue = state.story?.seen?.collectorVisitCount;
-      const visitCount = typeof visitCountValue === "number" ? visitCountValue : 0;
+      const visitCount = getCollectorVisitCount(state);
       if (visitCount >= 5) return false;
       if (visitCount == 0) return state.buildings.woodenHut >= 6;
       if (visitCount == 1) return state.buildings.woodenHut >= 10;
@@ -44,8 +56,7 @@ export const wanderingCollectorEvents: Record<string, GameEvent> = {
       return ownedItems.length >= 3;
     },
     message: (state: GameState) => {
-      const visitCountValue = state.story?.seen?.collectorVisitCount;
-      const visitCount = typeof visitCountValue === "number" ? visitCountValue : 0;
+      const visitCount = getCollectorVisitCount(state);
       return "visit" + Math.min(visitCount, 2);
     },
     timeProbability: 15,
@@ -61,8 +72,8 @@ export const wanderingCollectorEvents: Record<string, GameEvent> = {
       });
 
       // Deterministic selection based on collectorVisitCount
-      const visitCountValue = state.story?.seen?.collectorVisitCount;
-      const visitCount = typeof visitCountValue === "number" ? visitCountValue : 0;
+      const visitCount = getCollectorVisitCount(state);
+      const reward = getCollectorReward(visitCount);
 
       // We use a simple seed-based shuffle or just sort by a stable property
       // To keep it simple and deterministic for the user:
@@ -80,13 +91,12 @@ export const wanderingCollectorEvents: Record<string, GameEvent> = {
         id: `sell_${itemId}`,
         label: getClothingOrRelicEffectName(itemId),
         effect: (innerState: GameState) => {
-          const vCountValue = innerState.story?.seen?.collectorVisitCount;
-          const vCount = typeof vCountValue === "number" ? vCountValue : 0;
+          const vCount = getCollectorVisitCount(innerState);
           const newVisitCount = vCount + 1;
           const newState: Partial<GameState> = {
             resources: {
               ...innerState.resources,
-              gold: (innerState.resources.gold || 0) + COLLECTOR_REWARD,
+              gold: (innerState.resources.gold || 0) + reward,
             },
             story: {
               ...innerState.story,
@@ -116,8 +126,7 @@ export const wanderingCollectorEvents: Record<string, GameEvent> = {
       choices.push({
         id: "sell_nothing",
         effect: (innerState: GameState) => {
-          const vCountValue = innerState.story?.seen?.collectorVisitCount;
-          const vCount = typeof vCountValue === "number" ? vCountValue : 0;
+          const vCount = getCollectorVisitCount(innerState);
           const newVisitCount = vCount + 1;
           return {
             story: {

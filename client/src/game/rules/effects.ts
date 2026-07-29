@@ -533,6 +533,8 @@ export const weaponEffects: Record<string, EffectDefinition> = {
     bonuses: {
       generalBonuses: {
         strength: 5,
+        madness: 1,
+        criticalChance: 2.5, // 2.5% critical strike chance in combat
       },
     },
   },
