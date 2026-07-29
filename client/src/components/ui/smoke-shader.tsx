@@ -1,6 +1,7 @@
 import { useEffect, useRef } from "react";
 import { cn } from "@/lib/utils";
 import { logger } from "@/lib/logger";
+import { tailwindToHex } from "@/lib/tailwindColors";
 
 /**
  * "Smoke" flow shader — 21st.dev Shader Builder recipe.
@@ -292,17 +293,48 @@ void main() {
 }
 `;
 
-/** Recipe colours (sRGB 0–1), first four used; remaining slots padded. */
-const COLORS = new Float32Array([
-  0.012, 0.11, 0.149,
-  0.106, 0.424, 0.659,
-  0.353, 0.824, 0.957,
-  0.918, 0.976, 1.0,
-  0.918, 0.976, 1.0,
-  0.918, 0.976, 1.0,
-  0.918, 0.976, 1.0,
-  0.918, 0.976, 1.0,
-]);
+/**
+ * Smoke palette as Tailwind colour tokens (low → high).
+ * Edit these — they feed `u_colors` via `tailwindToHex` (see `@/lib/tailwindColors`).
+ * Closest defaults to the builder recipe (#031C26 → #EAF9FF).
+ */
+export const SMOKE_SHADER_COLOR_TOKENS = [
+  "cyan-950",
+  "sky-700",
+  "sky-300",
+  "sky-50",
+] as const;
+
+function hexToRgb01(hex: string): [number, number, number] {
+  const raw = hex.startsWith("#") ? hex.slice(1) : hex;
+  if (raw.length !== 6) {
+    logger.warn("[SmokeShader] Expected #RRGGBB from tailwindToHex, got:", hex);
+    return [0, 0, 0];
+  }
+  return [
+    parseInt(raw.slice(0, 2), 16) / 255,
+    parseInt(raw.slice(2, 4), 16) / 255,
+    parseInt(raw.slice(4, 6), 16) / 255,
+  ];
+}
+
+/** Recipe colours (sRGB 0–1), first N used; remaining slots padded with the last. */
+function buildSmokeColors(
+  tokens: readonly string[] = SMOKE_SHADER_COLOR_TOKENS,
+): Float32Array {
+  const rgb = tokens.map((token) => hexToRgb01(tailwindToHex(token)));
+  const last = rgb[rgb.length - 1] ?? ([0, 0, 0] as [number, number, number]);
+  const out = new Float32Array(8 * 3);
+  for (let i = 0; i < 8; i++) {
+    const [r, g, b] = rgb[i] ?? last;
+    out[i * 3] = r;
+    out[i * 3 + 1] = g;
+    out[i * 3 + 2] = b;
+  }
+  return out;
+}
+
+const COLORS = buildSmokeColors();
 
 type SmokeUniforms = {
   colors: WebGLUniformLocation;
@@ -439,7 +471,7 @@ class SmokeWebGLRenderer {
       this.canvas.width,
       this.canvas.height,
       seconds,
-      4.0,
+      SMOKE_SHADER_COLOR_TOKENS.length,
     );
     gl.drawArrays(gl.TRIANGLES, 0, 3);
   }

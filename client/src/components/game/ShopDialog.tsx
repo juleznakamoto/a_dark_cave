@@ -1699,7 +1699,7 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
                         <SmokeShader scale={0.55} />
                         {/* Soft scrim so bright smoke peaks don't wash out the copy. */}
                         <div
-                          className="pointer-events-none absolute inset-0 bg-[#031C26]/55"
+                          className="pointer-events-none absolute inset-0 bg-cyan-950/55"
                           aria-hidden
                         />
                         <div className="relative z-10 px-2 py-2 text-center text-sm font-normal text-white">
