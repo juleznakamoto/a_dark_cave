@@ -33,6 +33,7 @@
     "firstPurchaseInsightBannerInsight": "Insight",
     "firstPurchaseInsightBannerAfter": "free with your first purchase",
     "firstPurchaseInsightGranted": "First purchase gift: +{{amount}} {{glyph}} Insight",
+    "firstPurchaseInsightCheckoutBonus": "+{{amount}} {{glyph}} Insight for free"
     "cruelModeSteamDemoBannerBefore": "Grausamer Modus ist derzeit kostenlos, um den Demo-Launch auf",
     "cruelModeSteamDemoBannerSteam": "Steam",
     "cruelModeSteamDemoBannerAfter": " zu feiern.", //x11.0

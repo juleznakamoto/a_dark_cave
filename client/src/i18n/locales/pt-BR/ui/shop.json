@@ -98,6 +98,7 @@
     "firstPurchaseInsightBannerBefore": "Get",
     "firstPurchaseInsightBannerInsight": "Insight",
     "firstPurchaseInsightBannerAfter": "free with your first purchase",
-    "firstPurchaseInsightGranted": "First purchase gift: +{{amount}} {{glyph}} Insight"
+    "firstPurchaseInsightGranted": "First purchase gift: +{{amount}} {{glyph}} Insight",
+    "firstPurchaseInsightCheckoutBonus": "+{{amount}} {{glyph}} Insight for free"
   }
 }

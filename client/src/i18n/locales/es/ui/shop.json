@@ -33,6 +33,7 @@
     "firstPurchaseInsightBannerInsight": "Insight",
     "firstPurchaseInsightBannerAfter": "free with your first purchase",
     "firstPurchaseInsightGranted": "First purchase gift: +{{amount}} {{glyph}} Insight",
+    "firstPurchaseInsightCheckoutBonus": "+{{amount}} {{glyph}} Insight for free"
     "cruelModeSteamDemoBannerBefore": "El Modo cruel es gratis actualmente para celebrar el lanzamiento de la demo en",
     "cruelModeSteamDemoBannerSteam": "Steam",
     "cruelModeSteamDemoBannerAfter": ".",

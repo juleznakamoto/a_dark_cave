@@ -2475,10 +2475,28 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
             onInteractOutside={(e) => e.preventDefault()}
           >
             <DialogHeader className="shrink-0 space-y-1 pb-0">
-              <DialogTitle>
-                {SHOP_ITEMS[selectedItem]
-                  ? resolveShopItemName(SHOP_ITEMS[selectedItem])
-                  : ""}
+              <DialogTitle className="flex items-center justify-between gap-3">
+                <span className="min-w-0 truncate">
+                  {SHOP_ITEMS[selectedItem]
+                    ? resolveShopItemName(SHOP_ITEMS[selectedItem])
+                    : ""}
+                </span>
+                {(import.meta.env.DEV ||
+                  !gameState.hasMadeNonFreePurchase) && (
+                  <span
+                    className={cn(
+                      "shrink-0 text-sm font-medium font-noto-symbols-2 tabular-nums",
+                      INSIGHT_TEXT_CLASS,
+                    )}
+                  >
+                    {t("ui:shop.firstPurchaseInsightCheckoutBonus", {
+                      amount: formatNumber(FIRST_PURCHASE_INSIGHT_BONUS),
+                      glyph: INSIGHT_GLYPH,
+                      defaultValue:
+                        "+{{amount}} {{glyph}} Insight for free",
+                    })}
+                  </span>
+                )}
               </DialogTitle>
               <DialogDescription className="sr-only">
                 {t("ui:shop.paymentSrDescription", {
