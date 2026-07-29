@@ -77,7 +77,10 @@ import {
 } from "@/i18n/shopLabels";
 import { useTranslation } from "react-i18next";
 import { cn, formatNumber } from "@/lib/utils";
-import { SmokeShader } from "@/components/ui/smoke-shader";
+import {
+  SmokeShader,
+  SMOKE_SHADER_BANNER_SCALE,
+} from "@/components/ui/smoke-shader";
 
 const stripePublishableKey = import.meta.env.PROD
   ? import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY_PROD
@@ -1700,7 +1703,7 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
                   {(import.meta.env.DEV ||
                     !gameState.hasMadeNonFreePurchase) && (
                       <div className="relative mb-3 shrink-0 overflow-hidden rounded-md border border-blue-500/40">
-                        <SmokeShader scale={0.55} />
+                        <SmokeShader scale={SMOKE_SHADER_BANNER_SCALE} />
                         {/* Soft scrim so bright smoke peaks don't wash out the copy. */}
                         <div
                           className="pointer-events-none absolute inset-0 bg-cyan-950/55"

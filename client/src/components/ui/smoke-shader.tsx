@@ -4,10 +4,10 @@ import { logger } from "@/lib/logger";
 import { tailwindToHex } from "@/lib/tailwindColors";
 
 /**
- * "Smoke" flow shader — 21st.dev Shader Builder recipe.
- * WebGL1 fullscreen triangle; packed uniforms match the builder export.
+ * "Smoke" flow shader.
+ * WebGL1 fullscreen triangle with packed uniforms.
  */
-const FRAGMENT_SHADER = `// "Smoke" — made with the 21st.dev Shader Builder
+const FRAGMENT_SHADER = `// "Smoke" flow shader
 // Packed WebGL1 uniforms (the shader exposes readable u_* aliases as macros):
 //   u_colors[8] (first 4 used)
 //   vec3(0.012, 0.110, 0.149)
@@ -160,7 +160,7 @@ vec3 mixColour(vec3 a, vec3 b, float t) {
   return mix(a, b, t);
 }
 
-// Mix through the recipe colours; x is clamped to 0..1. WebGL1 forbids
+// Mix through the palette colours; x is clamped to 0..1. WebGL1 forbids
 // dynamic uniform indexing in fragment shaders, hence the constant loop.
 vec3 palette(float x) {
   float n = max(u_colorCount - 1.0, 1.0);
@@ -296,7 +296,7 @@ void main() {
 /**
  * Smoke palette as Tailwind colour tokens (low → high).
  * Edit these — they feed `u_colors` via `tailwindToHex` (see `@/lib/tailwindColors`).
- * Closest defaults to the builder recipe (#031C26 → #EAF9FF).
+ * Default range: #031C26 → #EAF9FF.
  */
 export const SMOKE_SHADER_COLOR_TOKENS = [
   "blue-950",
@@ -318,7 +318,7 @@ function hexToRgb01(hex: string): [number, number, number] {
   ];
 }
 
-/** Recipe colours (sRGB 0–1), first N used; remaining slots padded with the last. */
+/** Palette colours (sRGB 0–1), first N used; remaining slots padded with the last. */
 function buildSmokeColors(
   tokens: readonly string[] = SMOKE_SHADER_COLOR_TOKENS,
 ): Float32Array {
@@ -347,8 +347,14 @@ type SmokeUniforms = {
   cursor: WebGLUniformLocation;
 };
 
-/** Recipe default for u_shape.x (zoom). Lower = larger on-screen smoke features. */
+/** Default for u_shape.x (zoom). Lower = larger on-screen smoke features. */
 export const SMOKE_SHADER_DEFAULT_SCALE = 1.72;
+
+/**
+ * Shop insight-banner zoom. Edit this (not DEFAULT) — ShopDialog passes it
+ * explicitly, so DEFAULT alone never reaches the live banner.
+ */
+export const SMOKE_SHADER_BANNER_SCALE = 0.55;
 
 class SmokeWebGLRenderer {
   private canvas: HTMLCanvasElement;
@@ -428,13 +434,24 @@ class SmokeWebGLRenderer {
 
     gl.useProgram(program);
     gl.uniform3fv(this.uniforms.colors, COLORS);
-    // Packed recipe (cursor presence = 0 — cursor off).
-    gl.uniform4f(this.uniforms.shape, this.scale, 0.6, 0.5, 0.0);
+    // Packed uniforms (cursor presence = 0 — cursor off).
+    this.writeShapeUniform();
     gl.uniform4f(this.uniforms.surface, 2.4, 1.22, 0.0, 1.0);
     gl.uniform4f(this.uniforms.finish, 0.0, 0.0, 0.0, 0.0);
     gl.uniform4f(this.uniforms.transform, 635.0, 0.0, 0.0, 0.0);
     gl.uniform4f(this.uniforms.space, 0.0, 0.0, 0.0, 0.0);
     gl.uniform4f(this.uniforms.cursor, 0.0, 2.0, 0.65, 0.46);
+  }
+
+  /** Field zoom (`u_shape.x`). Safe to call every frame / on prop change. */
+  setScale(scale: number) {
+    this.scale = scale;
+    this.gl.useProgram(this.program);
+    this.writeShapeUniform();
+  }
+
+  private writeShapeUniform() {
+    this.gl.uniform4f(this.uniforms.shape, this.scale, 0.6, 0.5, 0.0);
   }
 
   private compile(type: number, source: string, label: string): WebGLShader {
@@ -467,6 +484,8 @@ class SmokeWebGLRenderer {
     gl.clear(gl.COLOR_BUFFER_BIT);
     gl.useProgram(this.program);
     gl.bindBuffer(gl.ARRAY_BUFFER, this.buffer);
+    // Re-upload zoom each frame so HMR / setScale cannot leave a stale uniform.
+    this.writeShapeUniform();
     gl.uniform4f(
       this.uniforms.scene,
       this.canvas.width,
@@ -487,7 +506,7 @@ class SmokeWebGLRenderer {
 interface SmokeShaderProps {
   className?: string;
   /**
-   * Field zoom (`u_shape.x`). Recipe default is 1.72. Lower values enlarge
+   * Field zoom (`u_shape.x`). Default is 1.72. Lower values enlarge
    * smoke features — useful for small surfaces like banners.
    */
   scale?: number;
@@ -502,7 +521,10 @@ export function SmokeShader({
   const rendererRef = useRef<SmokeWebGLRenderer | null>(null);
   const animationFrameRef = useRef<number>();
   const isActiveRef = useRef(true);
+  const scaleRef = useRef(scale);
+  scaleRef.current = scale;
 
+  // Mount WebGL once; scale updates go through setScale (full re-init breaks HMR).
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
@@ -521,6 +543,7 @@ export function SmokeShader({
       if (!isActiveRef.current || !rendererRef.current || document.hidden) {
         return;
       }
+      rendererRef.current.setScale(scaleRef.current);
       rendererRef.current.render();
       animationFrameRef.current = requestAnimationFrame(loop);
     };
@@ -547,7 +570,7 @@ export function SmokeShader({
     };
 
     try {
-      const renderer = new SmokeWebGLRenderer(canvas, scale);
+      const renderer = new SmokeWebGLRenderer(canvas, scaleRef.current);
       rendererRef.current = renderer;
       resizeFromParent();
       startLoop();
@@ -577,7 +600,7 @@ export function SmokeShader({
         rendererRef.current = null;
       }
     };
-  }, [scale]);
+  }, []);
 
   return (
     <canvas
