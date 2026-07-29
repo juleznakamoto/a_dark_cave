@@ -102,7 +102,13 @@ export default function PageLoadSpinner() {
         >
           <span ref={originRef} className="adc-page-load-spinner">
             <span className="adc-page-load-spinner__ring" />
-            <span className="adc-page-load-spinner__core" />
+            <span className="adc-page-load-spinner__core">
+              <img
+                className="adc-page-load-spinner__logo"
+                src="/apple-touch-icon.png"
+                alt=""
+              />
+            </span>
           </span>
         </div>
       ) : null}

@@ -321,11 +321,19 @@
       left: 50%;
       z-index: 3;
       display: block;
+      overflow: hidden;
       background-color: rgb(0, 0, 0);
       width: 34px;
       height: 34px;
       margin: -17px 0 0 -17px;
       border-radius: 50%;
+    }
+
+    .adc-page-load-spinner__logo {
+      display: block;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
     }
 
     .adc-page-load-spinner__ember {
@@ -434,7 +442,9 @@
   <div id="adc-boot-spinner" aria-hidden="true">
     <span class="adc-page-load-spinner">
       <span class="adc-page-load-spinner__ring"></span>
-      <span class="adc-page-load-spinner__core"></span>
+      <span class="adc-page-load-spinner__core">
+        <img class="adc-page-load-spinner__logo" src="/apple-touch-icon.png" alt="" />
+      </span>
       <!-- Center spawn → random travel (ex/ey); shared delays = multiple at once -->
       <span class="adc-page-load-spinner__ember"
         style="--adc-ember-ex: 28px; --adc-ember-ey: 6px; --adc-ember-delay: 0s; --adc-ember-color: #ff3a00"></span>
