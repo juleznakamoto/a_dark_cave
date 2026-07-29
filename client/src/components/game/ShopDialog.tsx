@@ -1509,7 +1509,7 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
 
                 .checkout-dialog-processing {
                   border-width: 2px;
-                  animation: checkout-processing-glow-pulse 1.4s ease-in-out infinite;
+                  animation: checkout-processing-border-pulse 1.4s ease-in-out infinite;
                 }
 
               @keyframes bundle-glow-pulse {
@@ -1530,18 +1530,25 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
                 }
               }
 
-              @keyframes checkout-processing-glow-pulse {
+              @keyframes checkout-processing-border-pulse {
                 0%, 100% {
-                  border-color: rgba(253, 224, 71, 0.65);
+                  border-color: rgba(234, 179, 8, 0.55);
+                  outline: 1px solid rgba(250, 204, 21, 0.35);
+                  outline-offset: -1px;
                   box-shadow:
-                    0 0 10px 2px rgba(253, 224, 71, 0.45),
-                    0 0 24px 6px rgba(255, 255, 255, 0.2);
+                    0 10px 15px -3px rgb(0 0 0 / 0.1),
+                    0 4px 6px -4px rgb(0 0 0 / 0.1),
+                    0 0 6px 0 rgba(250, 204, 21, 0.45);
                 }
                 50% {
-                  border-color: rgba(254, 243, 199, 1);
+                  border-color: rgb(254, 240, 138);
+                  outline: 1px solid rgba(254, 243, 199, 0.95);
+                  outline-offset: 0px;
                   box-shadow:
-                    0 0 28px 10px rgba(250, 204, 21, 0.95),
-                    0 0 56px 18px rgba(255, 255, 255, 0.55);
+                    0 10px 15px -3px rgb(0 0 0 / 0.1),
+                    0 4px 6px -4px rgb(0 0 0 / 0.1),
+                    0 0 10px 0 rgba(253, 224, 71, 0.85),
+                    0 0 2px 1px rgba(254, 243, 199, 0.7);
                 }
               }
 
