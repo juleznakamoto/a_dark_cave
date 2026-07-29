@@ -33,16 +33,12 @@ export function RestartGameDialog({
             <div className="text-center">
               <div className="bg-red-600/5 border border-red-600/50 rounded-lg p-3">
                 <p className="text-md font-medium text-red-600">
-                  {t("restart.warning")}
-                  {!isSteamEdition && (
-                    <>
-                      {" "}
-                      {t("restart.achievementsNote", {
-                        defaultValue:
-                          "All achievements will be reset except for Epic Achievements.",
-                      })}
-                    </>
-                  )}
+                  {isSteamEdition
+                    ? t("restart.warning")
+                    : t("restart.warningWeb", {
+                      defaultValue:
+                        "Starting a new game will erase your current progress and reset all achievements except Epic Achievements.",
+                    })}
                 </p>
               </div>
             </div>
