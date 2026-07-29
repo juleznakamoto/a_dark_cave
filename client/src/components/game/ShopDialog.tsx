@@ -471,6 +471,27 @@ function ShopCardCornerGlyph({
   );
 }
 
+/** Checkout header: item name with colored symbol to the right. */
+function ShopCheckoutItemTitle({ item }: { item: ShopItem }) {
+  const hex =
+    item.symbol && item.symbolColor
+      ? tailwindToHex(item.symbolColor.replace("text-", ""))
+      : undefined;
+  return (
+    <span className="flex min-w-0 items-center gap-2">
+      <span className="min-w-0 truncate">{resolveShopItemName(item)}</span>
+      {item.symbol ? (
+        <ShopGlyphForItem
+          item={item}
+          className="inline-flex shrink-0 items-center justify-center text-center leading-none"
+          style={hex ? { color: hex } : undefined}
+          ariaHidden
+        />
+      ) : null}
+    </span>
+  );
+}
+
 /** Bundles: one row per `bundleComponents` entry (colored symbol + name); artifact rows keep info glyphs. */
 function ShopItemDescriptionParagraph({ item }: { item: ShopItem }) {
   if (item.category === "bundle" && item.bundleComponents?.length) {
@@ -1684,9 +1705,13 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
           >
             <DialogHeader className="space-y-1 pb-0">
               <DialogTitle>
-                {shopCheckoutItemId && SHOP_ITEMS[shopCheckoutItemId]
-                  ? resolveShopItemName(SHOP_ITEMS[shopCheckoutItemId])
-                  : ""}
+                {shopCheckoutItemId && SHOP_ITEMS[shopCheckoutItemId] ? (
+                  <ShopCheckoutItemTitle
+                    item={SHOP_ITEMS[shopCheckoutItemId]}
+                  />
+                ) : (
+                  ""
+                )}
               </DialogTitle>
               <DialogDescription className="sr-only">
                 {t("ui:shop.loadingPayment", {
@@ -2631,10 +2656,12 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
           >
             <DialogHeader className="shrink-0 space-y-1 pb-0">
               <DialogTitle className="flex items-center justify-between gap-3">
-                <span className="min-w-0 truncate">
-                  {SHOP_ITEMS[selectedItem]
-                    ? resolveShopItemName(SHOP_ITEMS[selectedItem])
-                    : ""}
+                <span className="min-w-0">
+                  {SHOP_ITEMS[selectedItem] ? (
+                    <ShopCheckoutItemTitle item={SHOP_ITEMS[selectedItem]} />
+                  ) : (
+                    ""
+                  )}
                 </span>
                 {(import.meta.env.DEV ||
                   !gameState.hasMadeNonFreePurchase) && (
