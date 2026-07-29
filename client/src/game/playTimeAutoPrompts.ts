@@ -11,23 +11,62 @@ import {
 import { isSteamEditionActive } from "@/lib/edition";
 
 /**
+ * After one play-time auto prompt closes, wait this long (wall clock) before
+ * opening another. Prevents social + feedback from stacking when both
+ * thresholds were crossed while the tab was backgrounded.
+ */
+export const PLAY_TIME_AUTO_PROMPT_HANDOFF_MS = 90 * 1000;
+
+let autoPromptWasOpen = false;
+let nextAutoPromptEligibleAtMs = 0;
+
+/** Reset handoff state (game loop start / tests). */
+export function resetPlayTimeAutoPromptHandoff(): void {
+  autoPromptWasOpen = false;
+  nextAutoPromptEligibleAtMs = 0;
+}
+
+function isPlayTimeAutoPromptOpen(
+  state: ReturnType<typeof useGameStore.getState>,
+): boolean {
+  return state.socialPromptDialogOpen || state.feedbackDialogOpen;
+}
+
+/**
  * Play-time auto prompts from the game loop. At most one blocking modal per
- * invocation; each candidate re-reads the store so same-tick stale snapshots
- * cannot open two dialogs at once.
+ * invocation; after one closes, another waits {@link PLAY_TIME_AUTO_PROMPT_HANDOFF_MS}
+ * so returning to a tab past multiple thresholds does not stack dialogs.
  */
 export function processPlayTimeAutoPrompts(): void {
   // Social rewards and feedback prompts are web-only.
   if (isSteamEditionActive()) return;
 
-  const playTimeMs = useGameStore.getState().playTime || 0;
-
   let state = useGameStore.getState();
+  const playTimeMs = state.playTime || 0;
+
+  if (isPlayTimeAutoPromptOpen(state)) {
+    autoPromptWasOpen = true;
+    return;
+  }
+
+  if (autoPromptWasOpen) {
+    autoPromptWasOpen = false;
+    nextAutoPromptEligibleAtMs = Date.now() + PLAY_TIME_AUTO_PROMPT_HANDOFF_MS;
+  }
+
+  if (Date.now() < nextAutoPromptEligibleAtMs) {
+    return;
+  }
+
   if (tryOpenSocialRewardsPrompt(state, playTimeMs)) {
+    autoPromptWasOpen = true;
     return;
   }
 
   state = useGameStore.getState();
-  tryOpenFeedbackPrompt(state, playTimeMs);
+  if (tryOpenFeedbackPrompt(state, playTimeMs)) {
+    autoPromptWasOpen = true;
+  }
 }
 
 function tryOpenSocialRewardsPrompt(

@@ -41,7 +41,10 @@ import {
 } from "./rules/skillUpgrades";
 import { CRUEL_MODE, cruelModeScale, getMaxStoneHutLevel, getMaxWoodenHutLevel } from "./cruelMode";
 import { getMadnessDeathChancePerCycle } from "./rules/effectsStats";
-import { processPlayTimeAutoPrompts } from "./playTimeAutoPrompts";
+import {
+  processPlayTimeAutoPrompts,
+  resetPlayTimeAutoPromptHandoff,
+} from "./playTimeAutoPrompts";
 import { processDemoLimit } from "./demoLimit";
 import { tickObsidianOrbFocus } from "@/game/obsidianOrb";
 let gameLoopId: number | null = null;
@@ -207,6 +210,7 @@ export function startGameLoop() {
 
   // Clear any timed event that expired while the game was closed (stale saved state).
   clearExpiredTimedEventTab();
+  resetPlayTimeAutoPromptHandoff();
 
   useGameStore.setState({ isGameLoopActive: true });
   const now = performance.now();
