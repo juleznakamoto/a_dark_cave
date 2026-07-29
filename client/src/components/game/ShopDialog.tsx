@@ -111,6 +111,10 @@ const getSupabaseClient = async () => {
 const SHOP_CARD_PROMO_TAG_CLASS =
   "ml-1 px-1 py-[1px] leading-tight text-xs text-green-500 font-medium border border-green-500/40 rounded bg-green-500/5";
 
+/** Same promo-pill shape as `SHOP_CARD_PROMO_TAG_CLASS`, Insight / blue variant. */
+const SHOP_INSIGHT_PROMO_TAG_CLASS =
+  "shrink-0 px-1 py-[1px] leading-tight text-xs font-normal border border-blue-500/40 rounded bg-blue-500/5";
+
 /** Future sale MSRP or bundle component-sum list price (not event discounts). */
 function shopCardCatalogSaleListCents(item: ShopItem): number | null {
   if (item.originalPrice != null && item.originalPrice > item.price) {
@@ -2483,20 +2487,30 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
                 </span>
                 {(import.meta.env.DEV ||
                   !gameState.hasMadeNonFreePurchase) && (
-                  <span
-                    className={cn(
-                      "shrink-0 text-sm font-medium font-noto-symbols-2 tabular-nums",
-                      INSIGHT_TEXT_CLASS,
-                    )}
-                  >
-                    {t("ui:shop.firstPurchaseInsightCheckoutBonus", {
-                      amount: formatNumber(FIRST_PURCHASE_INSIGHT_BONUS),
-                      glyph: INSIGHT_GLYPH,
-                      defaultValue:
-                        "+{{amount}} {{glyph}} Insight for free",
-                    })}
-                  </span>
-                )}
+                    <span className={SHOP_INSIGHT_PROMO_TAG_CLASS}>
+                      +
+                      <span className="font-bold tabular-nums">
+                        {formatNumber(FIRST_PURCHASE_INSIGHT_BONUS)}
+                      </span>{" "}
+                      <span
+                        className={cn(
+                          "font-noto-symbols-2",
+                          INSIGHT_TEXT_CLASS,
+                        )}
+                        aria-hidden
+                      >
+                        {INSIGHT_GLYPH}
+                      </span>{" "}
+                      <span className="font-bold">
+                        {t("ui:shop.firstPurchaseInsightBannerInsight", {
+                          defaultValue: "Insight",
+                        })}
+                      </span>{" "}
+                      {t("ui:shop.firstPurchaseInsightCheckoutFree", {
+                        defaultValue: "for free",
+                      })}
+                    </span>
+                  )}
               </DialogTitle>
               <DialogDescription className="sr-only">
                 {t("ui:shop.paymentSrDescription", {

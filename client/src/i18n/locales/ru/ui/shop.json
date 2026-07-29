@@ -33,7 +33,7 @@
     "firstPurchaseInsightBannerInsight": "Insight",
     "firstPurchaseInsightBannerAfter": "free with your first purchase",
     "firstPurchaseInsightGranted": "First purchase gift: +{{amount}} {{glyph}} Insight",
-    "firstPurchaseInsightCheckoutBonus": "+{{amount}} {{glyph}} Insight for free"
+    "firstPurchaseInsightCheckoutFree": "for free",
     "cruelModeSteamDemoBannerBefore": "Жестокий режим сейчас бесплатен в честь запуска демо на",
     "cruelModeSteamDemoBannerSteam": "Steam",
     "cruelModeSteamDemoBannerAfter": ".",

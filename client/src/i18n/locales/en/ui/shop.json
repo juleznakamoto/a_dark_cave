@@ -32,7 +32,7 @@
     "firstPurchaseInsightBannerBefore": "Get",
     "firstPurchaseInsightBannerInsight": "Insight",
     "firstPurchaseInsightBannerAfter": "free with your first purchase",
-    "firstPurchaseInsightCheckoutBonus": "+{{amount}} {{glyph}} Insight for free",
+    "firstPurchaseInsightCheckoutFree": "for free",
     "firstPurchaseInsightGranted": "First purchase gift: +{{amount}} {{glyph}} Insight",
     "cruelModeSteamDemoBannerBefore": "Cruel Mode is currently free to celebrate the Demo Launch on",
     "cruelModeSteamDemoBannerSteam": "Steam",
