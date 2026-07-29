@@ -51,6 +51,7 @@
     "rightOfWithdrawal": "Rétractation",
     "completePurchaseFor": "Finaliser l'achat pour {{price}}",
     "paymentFailed": "Paiement échoué",
+    "tooManyPaymentRequests": "Too many payment requests, please try again later.",
     "notAuthenticated": "Utilisateur non authentifié", //x1.2
     "verificationFailed": "La vérification du paiement a échoué. Veuillez contacter le support.",
     "unexpectedError": "Une erreur inattendue s'est produite",
@@ -102,7 +103,4 @@
     "securePurchaseSignUp": "Créer un compte", //x2.1
     "securePurchaseLater": "Plus tard"
   }
-    "shop": {
-      "tooManyPaymentRequests": "Too many payment requests, please try again later."
-    },
 }

@@ -51,6 +51,7 @@
     "rightOfWithdrawal": "撤回",
     "completePurchaseFor": "完成购买 {{price}}",
     "paymentFailed": "支付失败",
+    "tooManyPaymentRequests": "Too many payment requests, please try again later.",
     "notAuthenticated": "用户未认证",
     "verificationFailed": "支付验证失败，请联系支持。",
     "unexpectedError": "发生意外错误",
@@ -102,7 +103,4 @@
     "securePurchaseSignUp": "注册",
     "securePurchaseLater": "以后再说"
   }
-    "shop": {
-      "tooManyPaymentRequests": "Too many payment requests, please try again later."
-    },
 }

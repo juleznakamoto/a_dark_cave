@@ -51,6 +51,7 @@
     "rightOfWithdrawal": "Widerruf",
     "completePurchaseFor": "Kauf abschließen für {{price}}",
     "paymentFailed": "Zahlung fehlgeschlagen", //x1.6
+    "tooManyPaymentRequests": "Too many payment requests, please try again later.",
     "notAuthenticated": "Benutzer nicht authentifiziert", //x1.4
     "verificationFailed": "Zahlungsüberprüfung fehlgeschlagen. Bitte kontaktiere den Support.",
     "unexpectedError": "Ein unerwarteter Fehler ist aufgetreten", //x1.4
@@ -102,7 +103,4 @@
     "securePurchaseSignUp": "Registrieren", //x1.7
     "securePurchaseLater": "Vielleicht später" //x1.5
   }
-    "shop": {
-      "tooManyPaymentRequests": "Too many payment requests, please try again later."
-    },
 }

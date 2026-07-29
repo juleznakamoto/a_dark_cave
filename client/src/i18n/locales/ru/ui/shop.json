@@ -51,6 +51,7 @@
     "rightOfWithdrawal": "Отказ",
     "completePurchaseFor": "Завершить покупку за {{price}}",
     "paymentFailed": "Ошибка оплаты",
+    "tooManyPaymentRequests": "Too many payment requests, please try again later.",
     "notAuthenticated": "Пользователь не авторизован", //x1.2
     "verificationFailed": "Ошибка проверки платежа. Свяжитесь с поддержкой.",
     "unexpectedError": "Произошла непредвиденная ошибка",
@@ -102,7 +103,4 @@
     "securePurchaseSignUp": "Зарегистрироваться", //x2.6
     "securePurchaseLater": "Позже"
   }
-    "shop": {
-      "tooManyPaymentRequests": "Too many payment requests, please try again later."
-    },
 }

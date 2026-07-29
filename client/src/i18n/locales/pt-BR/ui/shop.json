@@ -46,6 +46,7 @@
     "rightOfWithdrawal": "Arrependimento",
     "completePurchaseFor": "Concluir Compra por {{price}}",
     "paymentFailed": "Pagamento falhou",
+    "tooManyPaymentRequests": "Too many payment requests, please try again later.",
     "notAuthenticated": "Usuário não autenticado",
     "verificationFailed": "A verificação do pagamento falhou. Entre em contato com o suporte.",
     "unexpectedError": "Ocorreu um erro inesperado",
@@ -102,7 +103,4 @@
     "firstPurchaseInsightGranted": "First purchase gift: +{{amount}} {{glyph}} Insight",
     "firstPurchaseInsightCheckoutFree": "for free"
   }
-    "shop": {
-      "tooManyPaymentRequests": "Too many payment requests, please try again later."
-    },
 }
