@@ -1538,22 +1538,9 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
                   animation: cruel-mode-glow-pulse 3.5s ease-in-out infinite;
                 }
 
-                /* Border-only processing cue: animate a ring overlay, never the
-                   dialog panel itself (panel animation restarts enter/zoom). */
+                /* Pulse the dialog's own border only — no ::after ring (that
+                   stacked a second border on top of the panel edge). */
                 [data-checkout-dialog][data-processing="true"] {
-                  border-width: 2px;
-                  border-color: rgb(255, 255, 255);
-                }
-
-                [data-checkout-dialog][data-processing="true"]::after {
-                  content: "";
-                  position: absolute;
-                  inset: 0;
-                  z-index: 50;
-                  pointer-events: none;
-                  border-radius: inherit;
-                  border: 2px solid rgba(255, 255, 255, 0.85);
-                  box-shadow: 0 0 6px 0 rgba(255, 255, 255, 0.4);
                   animation: checkout-processing-border-pulse 1.4s ease-in-out infinite;
                 }
 
@@ -1577,16 +1564,20 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
 
               @keyframes checkout-processing-border-pulse {
                 0%, 100% {
-                  border-width: 2px;
-                  border-color: rgba(255, 255, 255, 0.65);
-                  box-shadow: 0 0 4px 0 rgba(255, 255, 255, 0.3);
+                  border-width: 1px;
+                  border-color: rgba(255, 255, 255, 0.7);
+                  box-shadow:
+                    0 10px 15px -3px rgb(0 0 0 / 0.1),
+                    0 4px 6px -4px rgb(0 0 0 / 0.1),
+                    0 0 4px 0 rgba(255, 255, 255, 0.35);
                 }
                 50% {
                   border-width: 3px;
                   border-color: rgb(255, 255, 255);
                   box-shadow:
-                    0 0 10px 0 rgba(255, 255, 255, 0.75),
-                    inset 0 0 4px 0 rgba(255, 255, 255, 0.2);
+                    0 10px 15px -3px rgb(0 0 0 / 0.1),
+                    0 4px 6px -4px rgb(0 0 0 / 0.1),
+                    0 0 10px 0 rgba(255, 255, 255, 0.8);
                 }
               }
 
