@@ -561,6 +561,7 @@ interface CheckoutFormProps {
   currency: "EUR" | "USD";
   onCancel: () => void;
   displayPriceCents: number;
+  onProcessingChange?: (isProcessing: boolean) => void;
 }
 
 function CheckoutForm({
@@ -569,12 +570,18 @@ function CheckoutForm({
   currency,
   onCancel,
   displayPriceCents,
+  onProcessingChange,
 }: CheckoutFormProps) {
   const { t } = useTranslation(["ui", "common"]);
   const stripe = useStripe();
   const elements = useElements();
   const [isProcessing, setIsProcessing] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
+
+  useEffect(() => {
+    onProcessingChange?.(isProcessing);
+    return () => onProcessingChange?.(false);
+  }, [isProcessing, onProcessingChange]);
 
   const formatPrice = (cents: number) => {
     const amount = (cents / 100).toFixed(2);
@@ -709,6 +716,7 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
   const { t } = useTranslation(["ui", "common"]);
   const [selectedItem, setSelectedItem] = useState<string | null>(null);
   const [clientSecret, setClientSecret] = useState<string | null>(null);
+  const [isCheckoutProcessing, setIsCheckoutProcessing] = useState(false);
   const [purchasedItems, setPurchasedItems] = useState<string[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [activeTab, setActiveTab] = useState<"shop" | "purchases">("shop");
@@ -1138,6 +1146,7 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
   const handleCancelPayment = () => {
     setClientSecret(null);
     setSelectedItem(null);
+    setIsCheckoutProcessing(false);
     // In direct-checkout mode the grid was never shown, so cancelling closes
     // the whole shop instead of returning to an (empty) shop view.
     if (isDirectCheckout) {
@@ -1307,6 +1316,7 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
 
     setClientSecret(null);
     setSelectedItem(null);
+    setIsCheckoutProcessing(false);
 
     // Direct-checkout items (hidden from the grid) have no purchases list to
     // return to — their entitlement was already applied by loadPurchasedItems.
@@ -1467,6 +1477,7 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
     if (!open) {
       setClientSecret(null);
       setSelectedItem(null);
+      setIsCheckoutProcessing(false);
       setShopCheckoutItemId(null);
       onClose();
     }
@@ -1476,6 +1487,7 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
     if (!open) {
       setClientSecret(null);
       setSelectedItem(null);
+      setIsCheckoutProcessing(false);
       if (isDirectCheckout) {
         setShopCheckoutItemId(null);
         onClose();
@@ -1495,6 +1507,11 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
                   animation: cruel-mode-glow-pulse 3.5s ease-in-out infinite;
                 }
 
+                .checkout-dialog-processing {
+                  border-width: 2px;
+                  animation: checkout-processing-glow-pulse 1.4s ease-in-out infinite;
+                }
+
               @keyframes bundle-glow-pulse {
                 0%, 100% {
                   box-shadow: 0 0 7px 2px rgba(234, 179, 8, 0.25);
@@ -1510,6 +1527,21 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
                 }
                 50% {
                   box-shadow: 0 0 0px 0px rgba(220, 38, 38, 0.55);
+                }
+              }
+
+              @keyframes checkout-processing-glow-pulse {
+                0%, 100% {
+                  border-color: rgba(253, 224, 71, 0.65);
+                  box-shadow:
+                    0 0 10px 2px rgba(253, 224, 71, 0.45),
+                    0 0 24px 6px rgba(255, 255, 255, 0.2);
+                }
+                50% {
+                  border-color: rgba(254, 243, 199, 1);
+                  box-shadow:
+                    0 0 28px 10px rgba(250, 204, 21, 0.95),
+                    0 0 56px 18px rgba(255, 255, 255, 0.55);
                 }
               }
 
@@ -2477,7 +2509,10 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
       {clientSecret && selectedItem && (
         <Dialog open={true} onOpenChange={handlePaymentDialogOpenChange}>
           <DialogContent
-            className="flex max-h-[min(80dvh,80vh)] flex-col overflow-hidden z-[80] gap-2 p-4 sm:p-6 [--adc-dialog-max-w:28rem] [&>button]:hidden"
+            className={cn(
+              "flex max-h-[min(80dvh,80vh)] flex-col overflow-hidden z-[80] gap-2 p-4 sm:p-6 [--adc-dialog-max-w:28rem] [&>button]:hidden",
+              isCheckoutProcessing && "checkout-dialog-processing",
+            )}
             onPointerDownOutside={(e) => e.preventDefault()}
             onInteractOutside={(e) => e.preventDefault()}
           >
@@ -2597,6 +2632,7 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
                     currency={currency}
                     onCancel={handleCancelPayment}
                     displayPriceCents={checkoutPriceBreakdown?.finalCents ?? 0}
+                    onProcessingChange={setIsCheckoutProcessing}
                   />
                 </Elements>
               ) : (
