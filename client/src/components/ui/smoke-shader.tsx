@@ -327,7 +327,7 @@ void main() {
  */
 export const SMOKE_SHADER_COLOR_TOKENS = [
   "blue-950",
-  "blue-800",
+  "indigo-800",
   "blue-600",
   "blue-100",
 ] as const;
@@ -616,7 +616,10 @@ export function SmokeShader({
       startLoop();
     } catch (err) {
       const message = err instanceof Error ? err.message : String(err);
-      logger.warn("[SmokeShader] WebGL init failed, using blue fallback:", message);
+      logger.warn(
+        "[SmokeShader] WebGL init failed, using blue fallback:",
+        message,
+      );
       setUseShader(false);
     }
 

@@ -116,7 +116,7 @@ const SHOP_CARD_PROMO_TAG_CLASS =
 
 /** Same promo-pill shape as `SHOP_CARD_PROMO_TAG_CLASS`, Insight / blue variant. */
 const SHOP_INSIGHT_PROMO_TAG_CLASS =
-  "inline-flex shrink-0 items-center gap-x-1 px-1.5 py-1 leading-none text-sm font-normal border border-blue-800 rounded bg-blue-500/5";
+  "inline-flex shrink-0 items-center gap-x-1 px-1.5 py-1 leading-none text-sm font-normal border border-blue-800 rounded bg-blue-950/60";
 
 /** Future sale MSRP or bundle component-sum list price (not event discounts). */
 function shopCardCatalogSaleListCents(item: ShopItem): number | null {
