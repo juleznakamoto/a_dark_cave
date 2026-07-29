@@ -579,6 +579,7 @@ function CheckoutForm({
   const stripe = useStripe();
   const elements = useElements();
   const [isProcessing, setIsProcessing] = useState(false);
+  const [isPurchaseSuccess, setIsPurchaseSuccess] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
 
   // Toggle border glow on the dialog DOM node — avoid React state in the parent
@@ -586,13 +587,13 @@ function CheckoutForm({
   useEffect(() => {
     const dialog = document.querySelector<HTMLElement>("[data-checkout-dialog]");
     if (!dialog) return;
-    if (isProcessing) {
+    if (isProcessing || isPurchaseSuccess) {
       dialog.setAttribute("data-processing", "true");
     } else {
       dialog.removeAttribute("data-processing");
     }
     return () => dialog.removeAttribute("data-processing");
-  }, [isProcessing]);
+  }, [isProcessing, isPurchaseSuccess]);
 
   const formatPrice = (cents: number) => {
     const amount = (cents / 100).toFixed(2);
@@ -641,8 +642,8 @@ function CheckoutForm({
               completePaidShopPurchaseInStore().grantedFirstPurchaseInsight;
           }
 
-          // Keep processing (green border) until the dialog unmounts — clearing it
-          // here flashes the idle border before clientSecret is cleared.
+          // Keep processing glow + success label until the dialog unmounts.
+          setIsPurchaseSuccess(true);
           onSuccess(result.discountMetadata, { grantedFirstPurchaseInsight });
         } else {
           // Payment succeeded on Stripe but server verification failed (e.g. DB error).
@@ -694,11 +695,15 @@ function CheckoutForm({
       <div className="flex flex-col gap-2 pt-1 sm:flex-row sm:justify-center sm:gap-3">
         <Button
           type="submit"
-          disabled={!stripe || isProcessing}
-          className="w-full min-w-0 font-bold sm:flex-1"
+          disabled={!stripe || isProcessing || isPurchaseSuccess}
+          className="w-full min-w-0 font-bold sm:flex-1 disabled:opacity-100"
           button_id="shop-complete-purchase"
         >
-          {isProcessing ? (
+          {isPurchaseSuccess ? (
+            t("ui:shop.purchaseSuccess", {
+              defaultValue: "Purchase Success",
+            })
+          ) : isProcessing ? (
             <TextShimmer>{t("common:status.processing")}</TextShimmer>
           ) : (
             t("ui:shop.completePurchaseFor", {
@@ -713,6 +718,7 @@ function CheckoutForm({
           className="w-full sm:w-auto sm:shrink-0"
           button_id="shop-cancel-payment"
           type="button"
+          disabled={isProcessing || isPurchaseSuccess}
         >
           {t("common:buttons.cancel")}
         </Button>

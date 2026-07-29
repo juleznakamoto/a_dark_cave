@@ -29,8 +29,8 @@ export function TextShimmer({
       className={cn(
         "inline-block bg-clip-text text-transparent",
         tone === "onPrimary"
-          ? "[--shimmer-dim:rgba(255,255,255,0.42)] [--shimmer-bright:#ffffff]"
-          : "[--shimmer-dim:var(--muted-foreground)] [--shimmer-bright:var(--foreground)]",
+          ? "[--shimmer-dim:rgba(255,255,255,0.88)] [--shimmer-bright:#ffffff]"
+          : "[--shimmer-dim:color-mix(in_oklab,var(--foreground)_70%,transparent)] [--shimmer-bright:var(--foreground)]",
         className,
       )}
       style={{

@@ -55,6 +55,7 @@
     "verificationFailed": "La vérification du paiement a échoué. Veuillez contacter le support.",
     "unexpectedError": "Une erreur inattendue s'est produite",
     "purchaseSuccessful": "Achat réussi !",
+    "purchaseSuccess": "Achat réussi",
     "purchaseAddedSingle": "{{name}} a été ajouté à vos achats. Consultez l'onglet « Achats » pour l'activer.",
     "purchaseAddedBundle": "Les composants de {{name}} ont été ajoutés à vos achats. Consultez l'onglet « Achats » pour les activer.",
     "freeGoldAdded": "{{amount}} or a été ajouté à vos ressources !",

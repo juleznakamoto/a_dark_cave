@@ -50,6 +50,7 @@
     "verificationFailed": "A verificação do pagamento falhou. Entre em contato com o suporte.",
     "unexpectedError": "Ocorreu um erro inesperado",
     "purchaseSuccessful": "Compra Concluída!",
+    "purchaseSuccess": "Compra concluída",
     "purchaseAddedSingle": "{{name}} foi adicionado às suas compras. Acesse a aba Compras para ativá-lo.",
     "purchaseAddedBundle": "Os componentes de {{name}} foram adicionados às suas compras. Acesse a aba Compras para ativá-los.",
     "freeGoldAdded": "{{amount}} Ouro foi adicionado aos seus recursos!",

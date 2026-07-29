@@ -55,6 +55,7 @@
     "verificationFailed": "支付验证失败，请联系支持。",
     "unexpectedError": "发生意外错误",
     "purchaseSuccessful": "购买成功！",
+    "purchaseSuccess": "购买成功",
     "purchaseAddedSingle": "{{name}} 已加入购买项，请在购买页激活。",
     "purchaseAddedBundle": "{{name}} 组件已加入购买项，请在购买页激活。",
     "freeGoldAdded": "已将 {{amount}} 金币加入你的资源！",

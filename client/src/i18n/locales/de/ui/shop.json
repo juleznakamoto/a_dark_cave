@@ -55,6 +55,7 @@
     "verificationFailed": "Zahlungsüberprüfung fehlgeschlagen. Bitte kontaktiere den Support.",
     "unexpectedError": "Ein unerwarteter Fehler ist aufgetreten", //x1.4
     "purchaseSuccessful": "Kauf erfolgreich!",
+    "purchaseSuccess": "Kauf erfolgreich",
     "purchaseAddedSingle": "{{name}} wurde deinen Käufen hinzugefügt. Prüfe den Tab „Käufe“, um es zu aktivieren.",
     "purchaseAddedBundle": "Die Bestandteile von {{name}} wurden deinen Käufen hinzugefügt. Prüfe den Tab „Käufe“, um sie zu aktivieren.",
     "freeGoldAdded": "100 Gold wurden deinen Ressourcen hinzugefügt!",

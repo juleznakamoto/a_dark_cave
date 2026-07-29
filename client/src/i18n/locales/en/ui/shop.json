@@ -56,6 +56,7 @@
     "verificationFailed": "Payment verification failed. Please contact support.",
     "unexpectedError": "An unexpected error occurred",
     "purchaseSuccessful": "Purchase Successful!",
+    "purchaseSuccess": "Purchase Success",
     "purchaseAddedSingle": "{{name}} has been added to your purchases. Check the Purchases tab to activate it.",
     "purchaseAddedBundle": "{{name}} components have been added to your purchases. Check the Purchases tab to activate them.",
     "freeGoldAdded": "{{amount}} Gold has been added to your resources!",
