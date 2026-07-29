@@ -98,6 +98,10 @@
       "description": "你的狩猎能力提升",
       "name": "达贡的馈赠"
     },
+    "depths_gift": {
+      "description": "洞穴 exploration yields more",
+      "name": "Depth's Gift"
+    },
     "dagons_gift_enhanced": {
       "description": "你的狩猎能力大幅提升",
       "name": "达贡的伟大馈赠"
@@ -142,9 +146,17 @@
       "description": "森林中的鹿似乎更不容易注意到你",
       "name": "森林恩典"
     },
+    "fresh_blood": {
+      "description": "Strangers approach the village more often",
+      "name": "Fresh Blood"
+    },
     "frostglass": {
       "description": "散发寒意的晶体材料",
       "name": "霜晶"
+    },
+    "keen_builder": {
+      "description": "建造ing costs are reduced",
+      "name": "Keen 建造er"
     },
     "gifted_ring": {
       "description": "某人留下、等你发现的朴素戒指",
@@ -206,6 +218,14 @@
       "description": "用于制作毒弓的蓝图",
       "name": "夜影弓"
     },
+    "obsidian_orb": {
+      "description": "强大的火山玻璃宝珠，赋予精神力量",
+      "name": "黑曜石宝珠"
+    },
+    "obsidian_orb_schematic": {
+      "description": "锻造强大黑曜石宝珠的图纸",
+      "name": "黑曜石宝珠"
+    },
     "occultist_grimoire": {
       "description": "记录异端秘术师亵渎知识的魔典",
       "name": "秘术师魔典"
@@ -221,6 +241,10 @@
     "ravens_mark": {
       "description": "陌生人更常接近村庄",
       "name": "渡鸦印记"
+    },
+    "rich_veins": {
+      "description": "Your ability to mine is improved",
+      "name": "Rich Veins"
     },
     "ravens_mark_enhanced": {
       "description": "陌生人更频繁地接近村庄",
@@ -270,6 +294,10 @@
       "description": "你的猎人瞄准能力提升",
       "name": "精准瞄准"
     },
+    "skilled_hands": {
+      "description": "Crafting costs are reduced",
+      "name": "Skilled Hands"
+    },
     "skeleton_key_schematic": {
       "description": "Blueprint for crafting a skeleton key",
       "name": "Skeleton Key"
@@ -298,6 +326,10 @@
       "description": "为寻求指引者准备的古代遗物。",
       "name": "晦暗罗盘"
     },
+    "trail_sense": {
+      "description": "Your hunters bring back more food",
+      "name": "Trail Sense"
+    },
     "unnamed_book": {
       "description": "以人皮装订、写满禁忌知识的书",
       "name": "无名之书"
@@ -313,40 +345,7 @@
     "wooden_figure": {
       "description": "雕刻着触手怪物的木像，令人不安",
       "name": "木雕像"
-    },
-    "obsidian_orb": {
-      "description": "强大的火山玻璃宝珠，赋予精神力量",
-      "name": "黑曜石宝珠"
-    },
-    "obsidian_orb_schematic": {
-      "description": "锻造强大黑曜石宝珠的图纸",
-      "name": "黑曜石宝珠"
-    },
-    "depths_gift": {
-      "description": "Cave exploration yields more",
-      "name": "Depth's Gift"
-    },
-    "fresh_blood": {
-      "description": "Strangers approach the village more often",
-      "name": "Fresh Blood"
-    },
-    "keen_builder": {
-      "description": "Building costs are reduced",
-      "name": "Keen Builder"
-    },
-    "rich_veins": {
-      "description": "Your ability to mine is improved",
-      "name": "Rich Veins"
-    },
-    "skilled_hands": {
-      "description": "Crafting costs are reduced",
-      "name": "Skilled Hands"
-    },
-    "trail_sense": {
-      "description": "Your hunters bring back more food",
-      "name": "Trail Sense"
     }
-
   },
   "fellowship": {
     "ashwraith_huntress": {

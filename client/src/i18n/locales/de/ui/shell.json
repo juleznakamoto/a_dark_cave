@@ -1,11 +1,11 @@
 {
   "settings": {
-    "title": "Einstellungen",
+    "title": "Einstellungen",  //x1.6
     "music": "Musik",
     "sound": "Sound",
     "emails": "E-Mails",
     "gameMode": "Spielmodus",
-    "gameModeNormal": "Normaler Modus",
+    "gameModeNormal": "Normaler Modus",  //x1.3
     "gameModeSteamGame": "Steam-Spiel",
     "gameModeSteamPlaytest": "Steam-Playtest",
     "gameModeSteamDemo": "Steam-Demo"
@@ -21,79 +21,79 @@
     "ariaLabel": "Sprache auswählen"
   },
   "startScreen": {
-    "titleNormal": "Eine dunkle Höhle.", //ok
-    "titleCruel": "Eine sehr dunkle Höhle.", //ok
+    "titleNormal": "Eine dunkle Höhle.",  //x1.5
+    "titleCruel": "Eine sehr dunkle Höhle.",  //x1.4
     "airNormal": "Die Luft ist kalt und feucht.",
     "airCruel": "Die Luft ist eiskalt und feucht.",
     "seeNormal": "Du erkennst kaum die Umrisse um dich herum.",
     "seeCruel": "Du erkennst kaum etwas um dich herum.",
-    "makeFire": "Feuer machen", //ok
+    "makeFire": "Feuer machen",  //x1.3
     "recommendedBy": "Empfohlen von"
   },
   "footer": {
-    "fullGame": "Vollversion", //ok
+    "fullGame": "Vollversion",  //x1.2
     "trader": "Händler",
-    "openShop": "Shop öffnen", //ok
+    "openShop": "Shop öffnen",  //x1.2
     "donate": "Spenden",
-    "supportGame": "Spiel unterstützen", //ok
-    "privacy": "Datenschutz", //ok
+    "supportGame": "Spiel unterstützen",  //x1.5
+    "privacy": "Datenschutz",  //x1.6
     "imprint": "Impressum",
     "contact": "Kontakt",
-    "pauseGame": "Spiel pausieren", //ok
-    "resumeGame": "Spiel fortsetzen", //ok
-    "muteMusic": "Musik ausschalten", //ok
-    "unmuteMusic": "Musik einschalten", //ok
-    "muteSfx": "Soundeffekte ausschalten", //ok
-    "unmuteSfx": "Soundeffekte einschalten", //ok
-    "cruelModeActive": "Grausamer Modus aktiviert", //ok
+    "pauseGame": "Spiel pausieren",  //x1.5
+    "resumeGame": "Spiel fortsetzen",  //x1.5
+    "muteMusic": "Musik ausschalten",  //x1.7
+    "unmuteMusic": "Musik einschalten",  //x1.4
+    "muteSfx": "Soundeffekte ausschalten",  //x1.3
+    "unmuteSfx": "Soundeffekte einschalten",  //x1.3
+    "cruelModeActive": "Grausamer Modus aktiviert",  //x1.3
     "wishlistOnSteam": "Auf Steam wünschen",
-    "demoProgress": "Demo-Fortschritt"
+    "demoProgress": "Demo-Fortschritt"  //x1.2
   },
   "profile": {
     "title": "Menü",
-    "signInUp": "Anmelden/Registrieren", //ok
+    "signInUp": "Anmelden/Registrieren",  //x2.1
     "emailsOn": "E-Mails an",
     "emailsOff": "E-Mails aus",
     "marketingOnTooltip": "Du erhältst derzeit E-Mails mit Updates, Rabatten und exklusiven Belohnungen. Tippe, um sie abzustellen.",
     "marketingOffTooltip": "Du erhältst derzeit keine E-Mails mit Updates, Rabatten und exklusiven Belohnungen. Tippe, um sie einzuschalten.",
-    "rewardsTasks": "Belohnungen verdienen", //ok
+    "rewardsTasks": "Belohnungen verdienen",  //x1.6
     "save": "Speichern",
     "newGame": "Neues Spiel",
-    "restart": "Neu starten", //ok
+    "restart": "Neu starten",  //x1.6
     "signIn": "Anmelden",
     "signOut": "Abmelden",
     "leaderboard": "Bestenliste",
-    "rewards": "Belohnungen", //ok
+    "rewards": "Belohnungen",  //x1.6
     "deleteAccount": "Konto löschen",
     "marketingSubscribe": "E-Mails abonnieren",
     "marketingUnsubscribe": "E-Mails abbestellen",
-    "autoSaveSignedIn": "Spiel wird jede Minute automatisch gespeichert", //ok
-    "autoSaveGuest": "Spiel wird alle 15 Sekunden automatisch gespeichert", //ok
-    "signUpCloudSave": "Registriere dich, um in der Cloud zu speichern", //ok
-    "lastSave": "Letztes Speichern: {{time}}", //ok
+    "autoSaveSignedIn": "Spiel wird jede Minute automatisch gespeichert",  //x1.6
+    "autoSaveGuest": "Spiel wird alle 15 Sekunden automatisch gespeichert",  //x1.6
+    "signUpCloudSave": "Registriere dich, um in der Cloud zu speichern",  //x1.4
+    "autoSaveSteam": "Game auto-saves every 15 seconds",
+    "steamCloudSave": "Progress syncs to Steam Cloud when you save.",
+    "lastSave": "Letztes Speichern: {{time}}",  //x1.4
     "signedOut": "Erfolgreich abgemeldet",
-    "signOutError": "Fehler beim Abmelden", //ok
-    "gameSaved": "Spiel erfolgreich gespeichert", //ok
-    "saveFailed": "Speichern fehlgeschlagen", //ok
+    "signOutError": "Fehler beim Abmelden",
+    "gameSaved": "Spiel erfolgreich gespeichert",  //x1.3
+    "saveFailed": "Speichern fehlgeschlagen",  //x1.3
     "accountDeleted": "Dein Konto wurde gelöscht",
     "accountDeletedDesc": "Du wurdest abgemeldet und der lokale Speicherstand auf diesem Gerät wurde gelöscht.",
-    "deleteAccountFailed": "Konto konnte nicht gelöscht werden", //ok
-    "tryAgainLater": "Versuche es später erneut.", //ok
-    "notSignedIn": "Nicht angemeldet", //ok
+    "deleteAccountFailed": "Konto konnte nicht gelöscht werden",  //x1.4
+    "tryAgainLater": "Versuche es später erneut.",  //x1.6
+    "notSignedIn": "Nicht angemeldet",  //x1.2
     "subscribed": "Du bist abonniert",
     "unsubscribed": "Du bist abgemeldet",
     "subscribedDesc": "Wir senden dir gelegentlich Updates und Angebote per E-Mail.",
     "unsubscribedDesc": "Du erhältst keine Marketing-E-Mails von uns.",
-    "preferenceUpdateFailed": "Einstellung konnte nicht aktualisiert werden",
+    "preferenceUpdateFailed": "Einstellung konnte nicht aktualisiert werden",  //x1.6
     "enterFullscreen": "Full screen",
-    "exitFullscreen": "Exit full screen",
-    "autoSaveSteam": "Game auto-saves every 15 seconds",
-    "steamCloudSave": "Progress syncs to Steam Cloud when you save."
+    "exitFullscreen": "Exit full screen"
   },
   "pauseHotkey": {
     "hintPrefix": "Nutze ",
     "hintSelect": " um Tab zu wählen oder ",
-    "hintSuffix": " zum Wechseln zwischen Tabs"
+    "hintSuffix": " zum Wechseln zwischen Tabs"  //x1.8
   },
   "villageHotkeyTutorial": {
     "dismiss": "Schließen"

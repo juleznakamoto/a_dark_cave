@@ -186,6 +186,7 @@ shared/schema.tsâ€” Zod GameState schema (source of truth for persisted sha
 - **`auth.ts`** â€” Supabase auth (incl. anonymous guest-checkout via `ensureAnonymousSession`),
   `saveGameToSupabase`/`loadGameFromSupabase`, referral metadata.
 - **`shopPurchases.ts`** â€” Supabase `purchases` fetch/rehydrate, feast-activation merge, purchase ID helpers (used by `ShopDialog`, payment return).
+- **`shopPostPurchaseState.ts`** â€” After paid checkout: discount consumption + first-purchase Insight bonus (`shared/firstPurchaseInsightBonus.ts`).
 - **`shopOpenSource.ts`** — Trader shop open entry sources → `shop-open-{source}` button_clicks IDs (tab/footer/gratitude/url); `traderDialogOpens` remains for events.
 - **`shared/schema.ts`** â€” Zod schema = source of truth; `createInitialState()` derives defaults from it.
   Playlight exit-intent quota: `playlightExitIntentMilestoneIndex` (load floor from `playTime` in `state.ts` `loadGame`, same pattern as `socialPromptMilestoneIndex`).

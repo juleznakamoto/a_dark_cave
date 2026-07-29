@@ -44,7 +44,12 @@ import {
   purchaseIdToItemId,
   purchaseIdsFromRows,
 } from "@/game/shopPurchases";
-import { applyShopDiscountConsumptionFromPaymentMetadata } from "@/game/shopPostPurchaseState";
+import {
+  applyShopDiscountConsumptionFromPaymentMetadata,
+  completePaidShopPurchaseInStore,
+} from "@/game/shopPostPurchaseState";
+import { FIRST_PURCHASE_INSIGHT_BONUS } from "@shared/firstPurchaseInsightBonus";
+import { INSIGHT_GLYPH, INSIGHT_TEXT_CLASS } from "@/game/villagerCapUpgrades";
 import { userOwnsShopItemFromPurchaseRows } from "@shared/shopPurchaseEligibility";
 import {
   GREAT_FEAST_DURATION_MS,
@@ -72,7 +77,6 @@ import {
 } from "@/i18n/shopLabels";
 import { useTranslation } from "react-i18next";
 import { cn } from "@/lib/utils";
-import { OFFICIAL_STEAM_URL } from "@/lib/gameFooterSocialLinks";
 
 const stripePublishableKey = import.meta.env.PROD
   ? import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY_PROD
@@ -101,19 +105,6 @@ const getSupabaseClient = async () => {
   // you would handle it here to ensure the client is ready before use.
   return supabase;
 };
-
-function completePaidShopPurchaseInStore() {
-  useGameStore.setState((s) => ({
-    hasMadeNonFreePurchase: true,
-    story: {
-      ...s.story,
-      seen: {
-        ...s.story.seen,
-        playlightFirstPurchaseDiscountActive: false,
-      },
-    },
-  }));
-}
 
 /** Small pill on shop cards (green border / tint); e.g. featured labels. */
 const SHOP_CARD_PROMO_TAG_CLASS =
@@ -551,7 +542,10 @@ async function detectCurrency(): Promise<"EUR" | "USD"> {
 
 interface CheckoutFormProps {
   itemId: string;
-  onSuccess: (discountMetadata?: Record<string, string | undefined>) => void;
+  onSuccess: (
+    discountMetadata?: Record<string, string | undefined>,
+    extras?: { grantedFirstPurchaseInsight?: boolean },
+  ) => void;
   currency: "EUR" | "USD";
   onCancel: () => void;
   displayPriceCents: number;
@@ -613,12 +607,14 @@ function CheckoutForm({
         if (result.success && result.itemId) {
           const item = SHOP_ITEMS[result.itemId];
 
-          // Set hasMadeNonFreePurchase flag if this is a paid item
+          let grantedFirstPurchaseInsight = false;
+          // Set hasMadeNonFreePurchase + first-purchase Insight before discount consumption
           if (item.price > 0) {
-            completePaidShopPurchaseInStore();
+            grantedFirstPurchaseInsight =
+              completePaidShopPurchaseInStore().grantedFirstPurchaseInsight;
           }
 
-          onSuccess(result.discountMetadata);
+          onSuccess(result.discountMetadata, { grantedFirstPurchaseInsight });
         } else {
           // Payment succeeded on Stripe but server verification failed (e.g. DB error).
           // Do NOT release discount reservation - user was charged; requires manual intervention.
@@ -1140,9 +1136,22 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
 
   const handlePurchaseSuccess = async (
     discountMetadata?: Record<string, string | undefined>,
+    extras?: { grantedFirstPurchaseInsight?: boolean },
   ) => {
     const item = SHOP_ITEMS[selectedItem!];
     const storeBeforeDiscount = useGameStore.getState();
+
+    // Prefer grant before discount consumption (Playlight consumption also sets
+    // hasMadeNonFreePurchase). CheckoutForm usually already granted; this is a
+    // fallback when payment success skipped that path.
+    let grantedFirstPurchaseInsight =
+      extras?.grantedFirstPurchaseInsight === true;
+    if (item.price > 0 && !grantedFirstPurchaseInsight) {
+      grantedFirstPurchaseInsight =
+        completePaidShopPurchaseInStore().grantedFirstPurchaseInsight;
+    } else if (item.price > 0) {
+      completePaidShopPurchaseInStore();
+    }
 
     applyShopDiscountConsumptionFromPaymentMetadata(discountMetadata);
 
@@ -1169,11 +1178,6 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
       discountMetadata?.tradersSonGratitudeDiscountApplied === "true"
     ) {
       setTimedEventTab(false);
-    }
-
-    // Set hasMadeNonFreePurchase flag if this is a paid item
-    if (item.price > 0) {
-      completePaidShopPurchaseInStore();
     }
 
     // NOTE: Bundle purchases are already created by the server in the payment verification
@@ -1256,10 +1260,20 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
       (item.bundleComponents
         ? t("ui:shop.purchaseAddedBundle", { name: resolvedPurchaseName })
         : t("ui:shop.purchaseAddedSingle", { name: resolvedPurchaseName }));
+    const insightBonusMessage = grantedFirstPurchaseInsight
+      ? t("ui:shop.firstPurchaseInsightGranted", {
+        amount: FIRST_PURCHASE_INSIGHT_BONUS.toLocaleString(),
+        glyph: INSIGHT_GLYPH,
+        defaultValue: "First purchase gift: +{{amount}} {{glyph}} Insight",
+      })
+      : null;
+    const successDescription = insightBonusMessage
+      ? `${purchaseSuccessMessage} ${insightBonusMessage}`
+      : purchaseSuccessMessage;
 
     gameState.addLogEntry({
       id: `purchase-${Date.now()}`,
-      message: purchaseSuccessMessage,
+      message: successDescription,
       timestamp: Date.now(),
       type: "system",
     });
@@ -1267,7 +1281,7 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
     // Show success message
     toast({
       title: t("ui:shop.purchaseSuccessful"),
-      description: purchaseSuccessMessage,
+      description: successDescription,
     });
 
     try {
@@ -1675,25 +1689,23 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
                   className="mt-0 flex min-h-0 flex-1 flex-col overflow-hidden outline-none ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 data-[state=inactive]:hidden"
                 >
                   {/* Pinned via flex split below TabsList + intro (sticky breaks under dialog transforms). */}
-                  {SHOP_ITEMS.cruel_mode.price === 0 && (
-                    <div className="mb-3 shrink-0 rounded-md border border-green-500/40 bg-green-500/5 px-2 py-2 text-xs font-normal text-foreground">
-                      {t("ui:shop.cruelModeSteamDemoBannerBefore", {
-                        defaultValue:
-                          "Cruel Mode is currently free to celebrate the Demo Launch on",
+                  {!gameState.hasMadeNonFreePurchase && (
+                    <div className="mb-3 shrink-0 rounded-md border border-blue-500/40 bg-blue-500/5 px-2 py-2 text-xs font-normal text-foreground">
+                      {t("ui:shop.firstPurchaseInsightBannerBefore", {
+                        defaultValue: "First purchase gift:",
                       })}{" "}
-                      <a
-                        href={OFFICIAL_STEAM_URL}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="font-medium text-green-700 underline underline-offset-2 hover:text-green-600 dark:text-green-400 dark:hover:text-green-300"
+                      <span
+                        className={cn(
+                          "font-medium font-noto-symbols-2 tabular-nums",
+                          INSIGHT_TEXT_CLASS,
+                        )}
                       >
-                        {t("ui:shop.cruelModeSteamDemoBannerSteam", {
-                          defaultValue: "Steam",
+                        {t("ui:shop.firstPurchaseInsightBannerBonus", {
+                          amount: FIRST_PURCHASE_INSIGHT_BONUS.toLocaleString(),
+                          glyph: INSIGHT_GLYPH,
+                          defaultValue: "+{{amount}} {{glyph}} Insight",
                         })}
-                      </a>
-                      {t("ui:shop.cruelModeSteamDemoBannerAfter", {
-                        defaultValue: ".",
-                      })}
+                      </span>
                     </div>
                   )}
                   <div className="flex shrink-0 flex-wrap gap-x-1.5 gap-y-4 pb-3">

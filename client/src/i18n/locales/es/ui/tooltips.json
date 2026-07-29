@@ -1,12 +1,12 @@
 {
   "tooltips": {
-    "veinrootChanceChopWood": "0,5 % de probabilidad de Raíz de vena",
-    "veinrootChanceHunt": "1 % de probabilidad de Raíz de vena",
-    "veinrootChance": "{{percent}} % de probabilidad de Raíz de vena",
+    "veinrootChanceChopWood": "0,5 % de probabilidad de Raíz de vena",  //x1.6
+    "veinrootChanceHunt": "1 % de probabilidad de Raíz de vena",  //x1.7
+    "veinrootChance": "{{percent}} % de probabilidad de Raíz de vena",  //x1.5
     "veinrootChanceWood": "{{percent}} % de probabilidad de {{amount}} Raíz de vena",
-    "veinrootFindMultiplier": "Duplica la probabilidad de encontrar Raíz de vena",
+    "veinrootFindMultiplier": "Duplica la probabilidad de encontrar Raíz de vena",  //x1.4
     "maxBombsReached": "Máximo de bombas alcanzado ({{limit}} por tipo)",
-    "maxVeinfireElixirReached": "Máximo de elixir de fuego de vena alcanzado ({{limit}})",
+    "maxVeinfireElixirReached": "Máximo de elixir de fuego de vena alcanzado ({{limit}})",  //x1.4
     "gainExact": "+{{amount}} {{resource}}",
     "gainRange": "+{{min}}-{{max}} {{resource}}",
     "gainUnknown": "+? {{resource}}",
@@ -22,26 +22,29 @@
     "madnessFromBuildings": "{{value}} de edificios",
     "madnessFromEvents": "{{value}} de eventos",
     "madnessTitle": "Locura",
-    "productionBonus": "Bonificación de producción: {{value}}",
+    "productionBonus": "Bonificación de producción: {{value}}",  //x1.4
     "madnessLevel": "Locura: {{value}}",
     "minRemaining": "{{count}} min restantes",
     "minUntilDecrease": "{{time}} hasta bajar de nivel",
     "greatVillageFeast": "Gran festín del pueblo",
-    "villageFeast": "Festín del pueblo",
+    "villageFeast": "Festín del pueblo",  //x1.3
     "solsticeGathering": "Reunión del solsticio",
     "newVillagerChanceBonus": "Probabilidad de nuevo aldeano +{{percent}} %",
-    "witchsCurse": "Maldición de la bruja",
-    "villagerDisgust": "Asco de los aldeanos",
+    "witchsCurse": "Maldición de la bruja",  //x1.6
+    "villagerDisgust": "Asco de los aldeanos",  //x1.3
     "miningBoost": "Impulso minero",
-    "miningBonus": "Bonificación minera: {{percent}} %",
-    "heartfire": "Fuego del corazón",
+    "miningBonus": "Bonificación minera: {{percent}} %",  //x1.3
+    "heartfire": "Fuego del corazón",  //x1.9
     "newVillagerChance": "Probabilidad de nuevo aldeano: +{{percent}} %",
-    "frostfall": "Caída de escarcha",
-    "chokingFog": "Niebla asfixiante",
-    "focus": "Concentración",
-    "actionBonus": "Bonificación de acción: {{multiplier}}x",
+    "frostfall": "Caída de escarcha",  //x1.9
+    "chokingFog": "Niebla asfixiante",  //x1.5
+    "focus": "Concentración",  //x2.6
+    "obsidianOrbFocusRate": "Concentración: 1 cada 15 minutos",  //x1.4
+    "obsidianOrbFocusCountdown": "{{time}} hasta el próximo punto de concentración",
+    "obsidianOrbFocusCap": "Reserva de concentración llena ({{max}})",  //x1.4
+    "actionBonus": "Bonificación de acción: {{multiplier}}x",  //x1.3
     "baseDamage": "Daño base: {{value}}",
-    "knowledgeBonus": "Bonificación de conocimiento: +{{value}}",
+    "knowledgeBonus": "Bonificación de conocimiento: +{{value}}",  //x1.5
     "totalDamage": "Daño total: {{value}}",
     "totalDamageForRounds": "Daño total: {{value}} durante {{rounds}} rondas",
     "selfDamageChance": "5 % de probabilidad de dañarte",
@@ -58,30 +61,30 @@
     "level": "Nivel {{level}}",
     "improveForInsight": "Mejorar por {{cost}} Perspicacia",
     "unlockMoreJobsForInsight": "Desbloquear más trabajos por {{cost}} Perspicacia",
-    "villagerCapJobs": "{{count}} trabajos",
+    "villagerCapJobs": "{{count}} trabajos",  //x1.3
     "enchantForInsight": "Encantar por {{cost}} Perspicacia",
     "maxHeld": "Máx.: {{value}}",
-    "doubleActionChance": "{{percent}} % de probabilidad de duplicar ganancias de acción",
+    "doubleActionChance": "{{percent}} % de probabilidad de duplicar ganancias de acción",  //x1.5
     "luck": "Suerte: +{{value}}",
     "strength": "Fuerza: +{{value}}",
     "knowledge": "Conocimiento: +{{value}}",
     "madnessStat": "Locura:{{sign}}{{value}}",
     "craftDiscount": "Descuento de artesanía: -{{percent}} %",
-    "buildDiscount": "Descuento de construcción: -{{percent}} %",
+    "buildDiscount": "Descuento de construcción: -{{percent}} %",  //x1.4
     "merchantDiscount": "Descuento mercante: +{{percent}} %",
     "newVillagerChanceStat": "Probabilidad de nuevo aldeano: +{{percent}} %",
     "criticalStrike": "Probabilidad de golpe crítico: +{{percent}} %",
     "villagerDeathReduction": "Muertes de aldeanos en combates: -{{percent}} %",
-    "caveExploreBonus": "Exploración de cueva: +{{percent}} % de bonificación",
+    "caveExploreBonus": "Exploración de cueva: +{{percent}} % de bonificación",  //x1.6
     "bombCapacityCombat": "+1 capacidad para todas las bombas (combate)",
     "elixirCapacityCombat": "+1 Elixir de fuego venal por combate",
     "maxBombsPerType": "Máx. {{count}} bombas por tipo",
     "boneDiceGambler": "Juega dos rondas contra el jugador por visita",
-    "ebonGraceHeartfire": "Duplica la bonificación de producción del Fuego del corazón",
-    "actionBonusPercent": "{{action}}: +{{percent}} % de bonificación",
+    "ebonGraceHeartfire": "Duplica la bonificación de producción del Fuego del corazón",  //x1.5
+    "actionBonusPercent": "{{action}}: +{{percent}} % de bonificación",  //x1.4
     "actionResourceBonus": "{{action}}: +{{amount}} {{resource}}",
     "actionProbabilityBonus": "{{action}}: {{percent}} % de probabilidad de +50 {{resource}}",
-    "cooldownReduction": "{{action}}: -{{seconds}}s de enfriamiento",
+    "cooldownReduction": "{{action}}: -{{seconds}}s de enfriamiento",  //x1.2
     "durationReduction": "{{action}}: -{{seconds}}s de duración",
     "poisonArrowsAvailable": "Disponible: 1/1 por combate",
     "poisonEnchantRound_one": "+{{count}} ronda",
@@ -90,62 +93,62 @@
     "productionBonusLine": "+{{amount}} {{resource}} ({{job}})",
     "secRemaining": "Quedan {{count}} s",
     "buildings": {
-      "unlocksHunters": "Desbloquea cazadores",
-      "unlocksCrafting": "Desbloquea artesanía",
+      "unlocksHunters": "Desbloquea cazadores",  //x1.3
+      "unlocksCrafting": "Desbloquea artesanía",  //x1.3
       "unlocksSchematicCrafting": "Desbloquea artesanía de planos",
       "unlocksBlacksteelCrafting": "Desbloquea artesanía de acero negro",
-      "unlocksBlacksteelForgers": "Desbloquea forjadores de acero negro",
-      "unlocksIronMiners": "Desbloquea mineros de hierro",
-      "unlocksCoalMiners": "Desbloquea mineros de carbón",
-      "unlocksSulfurMiners": "Desbloquea mineros de azufre",
-      "unlocksObsidianMiners": "Desbloquea mineros de obsidiana",
-      "unlocksAdamantMiners": "Desbloquea mineros de adamantio",
-      "unlocksMoonstoneMiners": "Desbloquea mineros de piedra lunar",
-      "unlocksSteelForgers": "Desbloquea forjadores de acero",
-      "unlocksTanners": "Desbloquea curtidores",
+      "unlocksBlacksteelForgers": "Desbloquea forjadores de acero negro",  //x1.4
+      "unlocksIronMiners": "Desbloquea mineros de hierro",  //x1.5
+      "unlocksCoalMiners": "Desbloquea mineros de carbón",  //x1.5
+      "unlocksSulfurMiners": "Desbloquea mineros de azufre",  //x1.3
+      "unlocksObsidianMiners": "Desbloquea mineros de obsidiana",  //x1.3
+      "unlocksAdamantMiners": "Desbloquea mineros de adamantio",  //x1.4
+      "unlocksMoonstoneMiners": "Desbloquea mineros de piedra lunar",  //x1.4
+      "unlocksSteelForgers": "Desbloquea forjadores de acero",  //x1.4
+      "unlocksTanners": "Desbloquea curtidores",  //x1.4
       "unlocksInvestments": "Desbloquea inversiones",
-      "unlocksPowderMakers": "Desbloquea fabricantes de pólvora",
-      "unlocksCallMerchant": "Desbloquea llamar al mercader",
-      "unlocksWizardStory": "Desbloquea historia del mago",
-      "unlocksEstateTab": "Desbloquea pestaña de la finca",
-      "unlocksFeedFireAction": "Desbloquea acción alimentar el fuego",
-      "craftDiscountSpaced": "2,5 % de descuento de artesanía",
-      "craftDiscountSpaced5": "5 % de descuento de artesanía",
-      "craftDiscount": "{{percent}} % de descuento de artesanía",
-      "buildDiscount": "{{percent}} % de descuento de construcción",
+      "unlocksPowderMakers": "Desbloquea fabricantes de pólvora",  //x1.6
+      "unlocksCallMerchant": "Desbloquea llamar al mercader",  //x1.4
+      "unlocksWizardStory": "Desbloquea historia del mago",  //x1.4
+      "unlocksEstateTab": "Desbloquea pestaña de la finca",  //x1.7
+      "unlocksFeedFireAction": "Desbloquea acción alimentar el fuego",  //x1.5
+      "craftDiscountSpaced": "2,5 % de descuento de artesanía",  //x1.6
+      "craftDiscountSpaced5": "5 % de descuento de artesanía",  //x1.6
+      "craftDiscount": "{{percent}} % de descuento de artesanía",  //x1.4
+      "buildDiscount": "{{percent}} % de descuento de construcción",  //x1.6
       "gathererWood": "Recolector: +{{amount}} madera",
       "gathererStone": "Recolector: +{{amount}} piedra",
       "hunterFood": "Cazador: +{{amount}} comida",
       "hunterFur": "Cazador: +{{amount}} piel",
       "hunterBones": "Cazador: +{{amount}} huesos",
       "knowledgeBonus": "+{{amount}} conocimiento",
-      "resourceChangeHints": "Indicaciones de cambio de recursos",
-      "improvedResourceChangeHints": "Indicaciones mejoradas de cambio de recursos",
+      "resourceChangeHints": "Indicaciones de cambio de recursos",  //x1.6
+      "improvedResourceChangeHints": "Indicaciones mejoradas de cambio de recursos",  //x1.5
       "resourceHighlighting": "Resaltado de recursos",
-      "unlocksScholar": "Desbloquea eruditos",
+      "unlocksScholar": "Desbloquea eruditos",  //x1.3
       "addsVillagerPreset_one": "Añade {{count}} preset de trabajos",
       "addsVillagerPreset_other": "Añade {{count}} presets de trabajos",
       "scholarInsight1": "El erudito produce 1 perspicacia por ciclo",
       "scholarInsight2": "El erudito produce 2 perspicacias por ciclo",
       "scholarInsight3": "El erudito produce 3 perspicacias por ciclo",
-      "insightRevealCost": "{{cost}} perspicacia",
+      "insightRevealCost": "{{cost}} perspicacia",  //x1.3
       "insightRevealSeeEffects": "Ver efectos por {{cost}} {{resource}}",
       "insightRevealEffects": "Efectos",
-      "abortActions": "Cancelar acciones",
+      "abortActions": "Cancelar acciones",  //x1.3
       "madnessReduction": "-{{amount}} locura",
       "madnessIncrease": "+{{amount}} locura",
       "defenseBonus": "+{{amount}} defensa",
       "attackBonus": "+{{amount}} ataque",
       "integrityBonus": "+{{amount}} integridad",
-      "luckyChance": "+{{percent}} % de probabilidad de suerte",
+      "luckyChance": "+{{percent}} % de probabilidad de suerte",  //x1.5
       "investUpToGold": "Invertir hasta {{amount}} oro",
-      "higherTradeAmounts": "Montos de comercio más altos",
+      "higherTradeAmounts": "Montos de comercio más altos",  //x1.4
       "tradesAtMerchant_one": "+{{count}} intercambio con el mercader ambulante",
       "tradesAtMerchant_other": "+{{count}} intercambios con el mercader ambulante",
       "trapWinChance10": "+10 % de probabilidad de victoria contra enemigos atacantes y menos aldeanos muertos",
       "trapWinChance20": "+20 % de probabilidad de victoria contra enemigos atacantes y menos aldeanos muertos",
       "boneyardUpTo": "Hasta -10 de locura",
-      "boneyardPerDeath": "-1 locura por cada 50 aldeanos perdidos desde su construcción",
+      "boneyardPerDeath": "-1 locura por cada 50 aldeanos perdidos desde su construcción",  //x1.4
       "boneyardCurrent": "Actual: -{{amount}} locura",
       "madnessFromAnimalSacrifices": "-{{amount}} locura de sacrificios de animales",
       "madnessPerAnimalSacrifice": "-1 locura por sacrificio de animal (máx. -10)",
@@ -153,27 +156,24 @@
       "madnessPerHumanSacrifice": "-2 locura por sacrificio humano (máx. -20)",
       "totemSilverGain": "10-25 plata",
       "totemGoldGain": "10-25 oro",
-      "insightGain": "+{{amount}} Perspicacia",
-      "boneTotemSacrificeBonus": "Bonificación de sacrificio de tótem de hueso: 50–100 oro",
-      "totemSacrificesBonus": "Sacrificios de tótem: +25 % de bonificación",
+      "insightGain": "+{{amount}} Perspicacia",  //x1.2
+      "boneTotemSacrificeBonus": "Bonificación de sacrificio de tótem de hueso: 50–100 oro",  //x1.4
+      "totemSacrificesBonus": "Sacrificios de tótem: +25 % de bonificación",  //x1.5
       "sleepLengthHours": "Duración del sueño +{{hours}} horas",
       "sleepIntensityPercent": "Intensidad del sueño +{{percent}} %",
       "maxVillagers": "+{{amount}} aldeanos máx.",
       "resourceLimit": "Límite de recursos: {{limit}} (sin límite para plata, oro y perspicacia)",
       "maxPopulation": "+{{amount}} población máx.",
-      "newVillagerChancePercent": "+{{percent}} % de probabilidad de nuevo aldeano",
+      "newVillagerChancePercent": "+{{percent}} % de probabilidad de nuevo aldeano",  //x1.4
       "steelForgerSteel": "Forjador de acero: +{{amount}} acero",
       "tannerLeather": "Curtidor: +{{amount}} cuero",
-      "buildTimeReduction": "-{{percent}} % de tiempo de construcción",
-      "buildingCostReduction": "-{{percent}} % de costes de construcción",
+      "buildTimeReduction": "-{{percent}} % de tiempo de construcción",  //x1.7
+      "buildingCostReduction": "-{{percent}} % de costes de construcción",  //x1.4
       "addsConstructionQueueSlot_one": "Añade {{count}} espacio de cola de construcción",
       "addsConstructionQueueSlot_other": "Añade {{count}} espacios de cola de construcción",
-      "constructionBoost": "Impulso de construcción: gasta Perspicacia para saltarte el 50 % del tiempo de construcción (una vez por construcción)",
-      "craftingBoost": "Impulso de artesanía: gasta Perspicacia para saltarte el 50 % del tiempo de artesanía (una vez por artesanía)",
-      "weaponEnchantment": "Encantamiento de armas"
-    },
-    "obsidianOrbFocusRate": "Concentración: 1 cada 15 minutos",
-    "obsidianOrbFocusCountdown": "{{time}} hasta el próximo punto de concentración",
-    "obsidianOrbFocusCap": "Reserva de concentración llena ({{max}})"
+      "constructionBoost": "Impulso de construcción: gasta Perspicacia para saltarte el 50 % del tiempo de construcción (una vez por construcción)",  //x1.6
+      "craftingBoost": "Impulso de artesanía: gasta Perspicacia para saltarte el 50 % del tiempo de artesanía (una vez por artesanía)",  //x1.5
+      "weaponEnchantment": "Encantamiento de armas"  //x1.2
+    }
   }
 }

@@ -56,8 +56,7 @@ export const SHOP_ITEMS: Record<string, ShopItem> = {
     name: "Cruel Mode",
     description:
       "A more cruel world, expanded story, more items, deadlier foes. Endure, or vanish.",
-    price: 0, // Free for Steam demo launch promo
-    originalPrice: 499, // $4.99 — strikethrough while promo is active
+    price: 499, // 4.99 €
     rewards: {},
     canPurchaseMultipleTimes: false,
     category: "blessing",

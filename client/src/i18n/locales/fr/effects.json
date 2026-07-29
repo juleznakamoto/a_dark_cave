@@ -10,7 +10,7 @@
     },
     "book_of_chainmaster": {
       "description": "Livre du Maître des chaînes mort depuis longtemps, contenant des méthodes cruelles pour pousser les ouvriers au-delà de leurs limites.",
-      "name": "Livre du Maître des chaînes"
+      "name": "Livre du Maître des chaînes"  //x1.4
     },
     "book_of_trials": {
       "description": "Livre sur la traversée des épreuves de la vie. Débloque des récompenses pour ceux qui font leurs preuves par les succès.",
@@ -40,11 +40,11 @@
     },
     "ashen_embrace_enhanced": {
       "description": "Votre aptitude à miner est grandement améliorée",
-      "name": "Étreinte cendreuse profonde"
+      "name": "Étreinte cendreuse profonde"  //x1.5
     },
     "bell_blessing": {
       "description": "Une mystérieuse marque de cloche sur votre avant-bras. Double les points de concentration gagnés pendant le sommeil.",
-      "name": "Bénédiction de la cloche"
+      "name": "Bénédiction de la cloche"  //x1.8
     },
     "black_bear_fur": {
       "description": "Fourrure noire maudite provenant d'un ours géant d'un autre monde",
@@ -98,6 +98,10 @@
       "description": "Votre aptitude à chasser est améliorée",
       "name": "Don de Dagon"
     },
+    "depths_gift": {
+      "description": "Grotte exploration yields more",
+      "name": "Depth's Gift"
+    },
     "dagons_gift_enhanced": {
       "description": "Votre aptitude à chasser est grandement améliorée",
       "name": "Grand don de Dagon"
@@ -136,15 +140,23 @@
     },
     "flames_touch_enhanced": {
       "description": "Les coûts d'artisanat sont fortement réduits",
-      "name": "Puissant toucher de flamme"
+      "name": "Puissant toucher de flamme"  //x1.3
     },
     "forests_grace": {
       "description": "Les cerfs de la forêt semblent moins vous remarquer",
       "name": "Grâce de la forêt"
     },
+    "fresh_blood": {
+      "description": "Strangers approach the village more often",
+      "name": "Fresh Blood"
+    },
     "frostglass": {
       "description": "Matériau cristallin irradiant le froid",
       "name": "Verre-givre"
+    },
+    "keen_builder": {
+      "description": "Construireing costs are reduced",
+      "name": "Keen Construireer"
     },
     "gifted_ring": {
       "description": "Anneau simple que quelqu'un vous a laissé trouver",
@@ -206,6 +218,14 @@
       "description": "Plan pour fabriquer un arc empoisonné",
       "name": "Arc de belladone"
     },
+    "obsidian_orb": {
+      "description": "Puissante sphère de verre volcanique conférant une force mentale",
+      "name": "Orbe d'obsidienne"
+    },
+    "obsidian_orb_schematic": {
+      "description": "Schéma pour forger un puissant orbe d'obsidienne",
+      "name": "Orbe d'obsidienne"
+    },
     "occultist_grimoire": {
       "description": "Grimoire contenant le savoir impie d'un occultiste hérétique",
       "name": "Grimoire occultiste"
@@ -216,19 +236,23 @@
     },
     "ravenfeather_mantle": {
       "description": "Manteau mystique tissé de plumes de corbeau chatoyantes",
-      "name": "Manteau de plumes de corbeau"
+      "name": "Manteau de plumes de corbeau"  //x1.5
     },
     "ravens_mark": {
       "description": "Les étrangers approchent le village plus souvent",
       "name": "Marque du corbeau"
     },
+    "rich_veins": {
+      "description": "Your ability to mine is improved",
+      "name": "Rich Veins"
+    },
     "ravens_mark_enhanced": {
       "description": "Les étrangers approchent le village beaucoup plus souvent",
-      "name": "Grande marque du corbeau"
+      "name": "Grande marque du corbeau"  //x1.3
     },
     "rootseeker_charm": {
       "description": "Charme sculpté qui attire la racine de veine vers ceux qui récoltent dans la nature.",
-      "name": "Charme du cherche-racines"
+      "name": "Charme du cherche-racines"  //x1.6
     },
     "ravens_orb": {
       "description": "Orbe sombre béni par les corbeaux et chargé de savoir ancien",
@@ -270,6 +294,10 @@
       "description": "La précision de vos chasseurs est améliorée",
       "name": "Visée sûre"
     },
+    "skilled_hands": {
+      "description": "Crafting costs are reduced",
+      "name": "Skilled Hands"
+    },
     "skeleton_key_schematic": {
       "description": "Blueprint for crafting a skeleton key",
       "name": "Skeleton Key"
@@ -280,11 +308,11 @@
     },
     "stormglass_halberd_schematic": {
       "description": "Plan pour fabriquer une hallebarde redoutable",
-      "name": "Hallebarde de verre-tempête"
+      "name": "Hallebarde de verre-tempête"  //x1.5
     },
     "survivors_last_words": {
       "description": "La bénédiction finale d'un étranger mourant",
-      "name": "Dernières paroles du survivant"
+      "name": "Dernières paroles du survivant"  //x1.4
     },
     "survivors_notes": {
       "description": "Parchemin usé par le temps, rempli de conseils pratiques laissés par quelqu'un qui vécut ici il y a longtemps. Débloque les succès de base.",
@@ -297,6 +325,10 @@
     "tarnished_compass": {
       "description": "Relique ancienne pour ceux qui cherchent une direction.",
       "name": "Boussole ternie"
+    },
+    "trail_sense": {
+      "description": "Your hunters bring back more food",
+      "name": "Trail Sense"
     },
     "unnamed_book": {
       "description": "Livre relié de peau humaine, rempli de savoir interdit",
@@ -313,45 +345,12 @@
     "wooden_figure": {
       "description": "Figurine de bois sculptée représentant une créature troublante aux tentacules",
       "name": "Figurine de bois"
-    },
-    "obsidian_orb": {
-      "description": "Puissante sphère de verre volcanique conférant une force mentale",
-      "name": "Orbe d'obsidienne"
-    },
-    "obsidian_orb_schematic": {
-      "description": "Schéma pour forger un puissant orbe d'obsidienne",
-      "name": "Orbe d'obsidienne"
-    },
-    "depths_gift": {
-      "description": "Cave exploration yields more",
-      "name": "Depth's Gift"
-    },
-    "fresh_blood": {
-      "description": "Strangers approach the village more often",
-      "name": "Fresh Blood"
-    },
-    "keen_builder": {
-      "description": "Building costs are reduced",
-      "name": "Keen Builder"
-    },
-    "rich_veins": {
-      "description": "Your ability to mine is improved",
-      "name": "Rich Veins"
-    },
-    "skilled_hands": {
-      "description": "Crafting costs are reduced",
-      "name": "Skilled Hands"
-    },
-    "trail_sense": {
-      "description": "Your hunters bring back more food",
-      "name": "Trail Sense"
     }
-
   },
   "fellowship": {
     "ashwraith_huntress": {
       "description": "Chasseresse sauvage d'une tribu forestière liée par serment de sang. Débloque les améliorations de compétence de chasse et de production des chasseurs.",
-      "name": "Chasseresse spectre-cendre"
+      "name": "Chasseresse spectre-cendre"  //x1.4
     },
     "disgraced_prior": {
       "description": "Ancien prieur rejeté par son ordre. Il se rachète par un labeur sans fin. Peut être assigné à répéter automatiquement des actions.",
@@ -413,7 +412,7 @@
     },
     "hidden_library_map": {
       "description": "Carte du monastère révélant l'emplacement d'une bibliothèque cachée au fond de la grotte",
-      "name": "Carte de la bibliothèque cachée"
+      "name": "Carte de la bibliothèque cachée"  //x1.7
     },
     "iron_axe": {
       "description": "Hache affûtée pour les gros travaux de coupe",
@@ -499,7 +498,7 @@
     },
     "ashen_greatshield": {
       "description": "Immense bouclier forgé avec les os de la créature du lac souterrain",
-      "name": "Grand bouclier cendreux"
+      "name": "Grand bouclier cendreux"  //x1.4
     },
     "ashfire_bomb": {
       "description": "Bombe dévastatrice luisant d'un feu d'un autre monde",
@@ -515,7 +514,7 @@
     },
     "bloodstone_staff": {
       "description": "Bâton couronné de pierre de sang, palpitant d'énergie sombre",
-      "name": "Bâton de pierre de sang"
+      "name": "Bâton de pierre de sang"  //x1.4
     },
     "compound_bow": {
       "description": "Arme de haute précision issue de la civilisation disparue",
@@ -555,7 +554,7 @@
     },
     "nordic_war_axe": {
       "description": "Hache de guerre légendaire forgée par un maître forgeron viking",
-      "name": "Hache de guerre nordique"
+      "name": "Hache de guerre nordique"  //x1.7
     },
     "obsidian_sword": {
       "description": "Lame rasoir forgée dans le verre volcanique",
@@ -567,7 +566,7 @@
     },
     "stormglass_halberd": {
       "description": "Hallebarde suprême forgée dans un adamant magistralement raffiné",
-      "name": "Hallebarde de verre-tempête"
+      "name": "Hallebarde de verre-tempête"  //x1.5
     },
     "veinfire_elixir": {
       "description": "Élixir de soin alchimique distillé à partir de rare racine-veine",

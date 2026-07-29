@@ -1,11 +1,17 @@
 import { verifyPaymentWithRetry } from "@/lib/paymentVerify";
 import { getSessionUser } from "@/game/auth";
-import { applyShopDiscountConsumptionFromPaymentMetadata } from "@/game/shopPostPurchaseState";
+import {
+  applyShopDiscountConsumptionFromPaymentMetadata,
+  completePaidShopPurchaseInStore,
+} from "@/game/shopPostPurchaseState";
 import { rehydratePurchasesFromSupabase } from "@/game/shopPurchases";
 import { toast } from "@/hooks/use-toast";
 import { useGameStore } from "@/game/state";
 import { SHOP_ITEMS } from "../../../shared/shopItems";
+import { FIRST_PURCHASE_INSIGHT_BONUS } from "@shared/firstPurchaseInsightBonus";
+import { INSIGHT_GLYPH } from "@/game/villagerCapUpgrades";
 import { logger } from "@/lib/logger";
+import i18n from "@/i18n";
 
 /**
  * Return URL for Stripe `confirmPayment` (required for PayPal and other redirect methods).
@@ -33,19 +39,6 @@ function stripStripeReturnParamsFromUrl(): void {
   const qs = url.searchParams.toString();
   const next = url.pathname + (qs ? `?${qs}` : "") + url.hash;
   window.history.replaceState({}, document.title, next);
-}
-
-function applyStoreAfterVerifiedPurchase(): void {
-  useGameStore.setState((s) => ({
-    hasMadeNonFreePurchase: true,
-    story: {
-      ...s.story,
-      seen: {
-        ...s.story.seen,
-        playlightFirstPurchaseDiscountActive: false,
-      },
-    },
-  }));
 }
 
 /**
@@ -104,8 +97,10 @@ export async function processStripePaymentReturn(): Promise<void> {
     const result = await verifyPaymentWithRetry(paymentIntentId, user.id);
     if (result.success && result.itemId) {
       const item = SHOP_ITEMS[result.itemId];
+      let grantedFirstPurchaseInsight = false;
       if (item && item.price > 0) {
-        applyStoreAfterVerifiedPurchase();
+        grantedFirstPurchaseInsight =
+          completePaidShopPurchaseInStore().grantedFirstPurchaseInsight;
       }
       applyShopDiscountConsumptionFromPaymentMetadata(result.discountMetadata);
       await rehydratePurchasesFromSupabase();
@@ -117,11 +112,21 @@ export async function processStripePaymentReturn(): Promise<void> {
         logger.error("[Stripe] Post-return save failed:", e);
       }
       stripStripeReturnParamsFromUrl();
+      const baseDescription = item?.name
+        ? `${item.name} is now available.`
+        : "Thank you for your purchase.";
+      const insightBonusMessage = grantedFirstPurchaseInsight
+        ? i18n.t("ui:shop.firstPurchaseInsightGranted", {
+            amount: FIRST_PURCHASE_INSIGHT_BONUS.toLocaleString(),
+            glyph: INSIGHT_GLYPH,
+            defaultValue: "First purchase gift: +{{amount}} {{glyph}} Insight",
+          })
+        : null;
       toast({
         title: "Purchase complete",
-        description: item?.name
-          ? `${item.name} is now available.`
-          : "Thank you for your purchase.",
+        description: insightBonusMessage
+          ? `${baseDescription} ${insightBonusMessage}`
+          : baseDescription,
       });
     } else {
       stripStripeReturnParamsFromUrl();

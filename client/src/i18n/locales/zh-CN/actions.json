@@ -1,7 +1,4 @@
 {
-  "tradeGoldForInsightPotion": {
-    "label": "洞见灵药"
-  },
   "animals": {
     "label": "动物"
   },
@@ -131,6 +128,10 @@
     "description": "游牧部族使用的温暖毛皮帐篷",
     "label": "毛皮帐篷"
   },
+  "buildGrandArchive": {
+    "description": "一座庞大的卷轴宝库，保存着村庄的全部过往，每个名字与辛劳都被铭刻其中",
+    "label": "宏伟档案馆"
+  },
   "buildGrandBazaar": {
     "description": "庞大的集市，吸引更多商人前来",
     "label": "大集市"
@@ -207,9 +208,17 @@
     "description": "提高采集者石料产出的采石场",
     "label": "采石场"
   },
+  "buildRecordsHall": {
+    "description": "大厅里满是陈旧账册与名册的架子，村庄的记忆以墨记录、井然有序地保存",
+    "label": "记录大厅"
+  },
   "buildSanctum": {
     "description": "神圣圣所，提供对抗黑暗的最强庇护",
     "label": "圣所"
+  },
+  "buildScribesOffice": {
+    "description": "一间安静的房间，书记官们仔细记录每一双劳作的手，使任何辛劳都不被遗忘",
+    "label": "书记官办公室"
   },
   "buildScriptorium": {
     "description": "学者聚集智慧与知识的智识中心",
@@ -705,6 +714,12 @@
   "tradeGoldForVoidBomb": {
     "label": "购买虚空炸弹"
   },
+  "tradeGoldForInsightPotion": {
+    "label": "洞见灵药"
+  },
+  "tradeGoldForVeinfireElixir": {
+    "label": "购买脉火灵药"
+  },
   "tradeGoldForWood": {
     "label": "购买木材"
   },
@@ -719,20 +734,5 @@
       "mapFragment": "在洞穴地上，你发现一块残破的地图片段。",
       "firstVisit": "越往洞穴深处，空气越发寒冷。洞壁光滑得不自然，仿佛曾被人塑造。"
     }
-  },
-  "tradeGoldForVeinfireElixir": {
-    "label": "购买脉火灵药"
-  },
-  "buildGrandArchive": {
-    "description": "一座庞大的卷轴宝库，保存着村庄的全部过往，每个名字与辛劳都被铭刻其中",
-    "label": "宏伟档案馆"
-  },
-  "buildRecordsHall": {
-    "description": "大厅里满是陈旧账册与名册的架子，村庄的记忆以墨记录、井然有序地保存",
-    "label": "记录大厅"
-  },
-  "buildScribesOffice": {
-    "description": "一间安静的房间，书记官们仔细记录每一双劳作的手，使任何辛劳都不被遗忘",
-    "label": "书记官办公室"
   }
 }

@@ -1,7 +1,4 @@
 {
-  "tradeGoldForInsightPotion": {
-    "label": "Elixir de perspicacia"
-  },
   "animals": {
     "label": "Animales"
   },
@@ -68,12 +65,12 @@
     "label": "Osario"
   },
   "buildBottomlessPit": {
-    "description": "Pozo extremadamente profundo que alcanza los materiales más raros",
+    "description": "Pozo extremadamente profundo que alcanza los materiales más raros",  //x1.4
     "label": "Pozo sin fondo"
   },
   "buildBuildersLodge": {
     "description": "Una cabaña donde los maestros constructores coordinan la construcción en la aldea",
-    "label": "Cabaña de constructores"
+    "label": "Cabaña de constructores"  //x1.5
   },
   "buildBuildersHall": {
     "description": "Una sala donde constructores veteranos agilizan proyectos y negocian mejores precios de materiales",
@@ -81,7 +78,7 @@
   },
   "buildBuildersGuild": {
     "description": "Un gremio de maestros constructores que comanda toda la capacidad de construcción de la aldea",
-    "label": "Gremio de constructores"
+    "label": "Gremio de constructores"  //x1.5
   },
   "buildCabin": {
     "description": "Cabaña de caza básica con herramientas para cazadores",
@@ -89,7 +86,7 @@
   },
   "buildChitinPlating": {
     "description": "Las fortificaciones se refuerzan con placas de quitina impenetrables",
-    "label": "Revestimiento de quitina"
+    "label": "Revestimiento de quitina"  //x1.7
   },
   "buildClerksHut": {
     "description": "Choza donde eruditos estudian para obtener perspicacia sobre el mundo",
@@ -131,6 +128,10 @@
     "description": "Refugio cálido de pieles usado por la tribu errante",
     "label": "Tienda de pieles"
   },
+  "buildGrandArchive": {
+    "description": "Una vasta bóveda de pergaminos que conserva todo lo que la aldea ha sido, cada nombre y cada esfuerzo grabados",
+    "label": "Gran Archivo"
+  },
   "buildGrandBazaar": {
     "description": "Mercado extenso que atrae a más mercaderes",
     "label": "Gran bazar"
@@ -148,7 +149,7 @@
     "label": "Gran depósito"
   },
   "buildGreatCabin": {
-    "description": "Cabaña de caza ampliada que aumenta la producción de los cazadores",
+    "description": "Cabaña de caza ampliada que aumenta la producción de los cazadores",  //x1.4
     "label": "Gran cabaña de caza"
   },
   "buildGreatVault": {
@@ -169,7 +170,7 @@
   },
   "buildInkwardenAcademy": {
     "description": "Gran academia donde maestros eruditos destilan un conocimiento profundo",
-    "label": "Academia de los guardianes del tomo"
+    "label": "Academia de los guardianes del tomo"  //x1.9
   },
   "buildLonghouse": {
     "description": "Enorme salón comunal nórdico que aloja a muchos aldeanos",
@@ -204,12 +205,20 @@
     "label": "Fundición principal"
   },
   "buildQuarry": {
-    "description": "Cantera de piedra que aumenta la producción de piedra de los recolectores",
+    "description": "Cantera de piedra que aumenta la producción de piedra de los recolectores",  //x1.6
     "label": "Cantera"
+  },
+  "buildRecordsHall": {
+    "description": "Un salón lleno de estantes con libros de cuentas y listas desgastados, la memoria de la aldea plasmada en tinta y mantenida en orden",
+    "label": "Salón de registros"
   },
   "buildSanctum": {
     "description": "Santuario divino que ofrece la mayor protección contra la oscuridad",
     "label": "Santuario"
+  },
+  "buildScribesOffice": {
+    "description": "Una sala tranquila donde los escribas llevan un recuento minucioso de cada mano que trabaja, para que ninguna labor se olvide",
+    "label": "Oficina del escriba"
   },
   "buildScriptorium": {
     "description": "Centro de sabiduría donde eruditos reúnen conocimiento",
@@ -252,7 +261,7 @@
     "label": "Puesto comercial"
   },
   "buildTraps": {
-    "description": "Trampas alrededor de la aldea que debilitan a todos los atacantes",
+    "description": "Trampas alrededor de la aldea que debilitan a todos los atacantes",  //x1.4
     "label": "Trampas"
   },
   "buildTreasury": {
@@ -324,10 +333,10 @@
     "label": "Gran escudo ceniciento"
   },
   "craftAshfireBomb": {
-    "label": "Bomba de fuego ceniciento"
+    "label": "Bomba de fuego ceniciento"  //x2.1
   },
   "craftBlacksteelArmor": {
-    "label": "Armadura de acero negro"
+    "label": "Armadura de acero negro"  //x1.4
   },
   "craftBlacksteelAxe": {
     "label": "Hacha de acero negro"
@@ -345,7 +354,7 @@
     "label": "Espada de acero negro"
   },
   "craftBloodstoneStaff": {
-    "label": "Bastón de piedra de sangre"
+    "label": "Bastón de piedra de sangre"  //x1.6
   },
   "craftBoneTotems": {
     "label": "Tótems de hueso"
@@ -360,7 +369,7 @@
     "label": "Mochila de explorador"
   },
   "craftFrostglassSword": {
-    "label": "Espada de cristal de escarcha"
+    "label": "Espada de cristal de escarcha"  //x1.8
   },
   "craftFlaskHarness": {
     "label": "Arnés de frascos"
@@ -369,7 +378,7 @@
     "label": "Bolsa de granadero"
   },
   "craftHighpriestRobe": {
-    "label": "Túnica de sumo sacerdote"
+    "label": "Túnica de sumo sacerdote"  //x1.6
   },
   "craftHunterCloak": {
     "label": "Capa de cazador"
@@ -444,7 +453,7 @@
     "label": "Pico de piedra"
   },
   "craftStormglassHalberd": {
-    "label": "Alabarda de cristal de tormenta"
+    "label": "Alabarda de cristal de tormenta"  //x1.7
   },
   "craftTorches": {
     "label": "Antorchas"
@@ -461,11 +470,11 @@
   "descendFurther": {
     "label": "Descender más",
     "log": {
-      "firstVisit": "La linterna proyecta un resplandor constante mientras desciendes aún más. De repente, tus pies tocan escalones de piedra hechos por el hombre, desgastados por el tiempo."
+      "firstVisit": "La linterna proyecta un resplandor constante mientras desciendes aún más. De repente, tus pies tocan escalones de piedra hechos por el hombre, desgastados por el tiempo."  //x1.4
     }
   },
   "encounterBeyondPortal": {
-    "label": "Aventurarse más allá de la puerta"
+    "label": "Aventurarse más allá de la puerta"  //x1.7
   },
   "exploreCave": {
     "label": "Explorar la cueva",
@@ -520,7 +529,7 @@
     "label": "Curar al mago anciano"
   },
   "healRestlessKnight": {
-    "label": "Curar al caballero inquieto"
+    "label": "Curar al caballero inquieto"  //x1.4
   },
   "hiddenLibrary": {
     "label": "Biblioteca oculta",
@@ -623,7 +632,7 @@
     }
   },
   "provokeAttackWave": {
-    "label": "Provocar oleada de ataque"
+    "label": "Provocar oleada de ataque"  //x1.3
   },
   "repairBastion": {
     "label": "Reparar bastión"
@@ -632,7 +641,7 @@
     "label": "Reparar empalizadas"
   },
   "repairWatchtower": {
-    "label": "Reparar torre de vigilancia"
+    "label": "Reparar torre de vigilancia"  //x1.6
   },
   "risingSmoke": {
     "label": "Humo ascendente",
@@ -673,13 +682,13 @@
     "label": "Comprar adamantita"
   },
   "tradeGoldForAshfireBomb": {
-    "label": "Comprar bomba de fuego ceniciento"
+    "label": "Comprar bomba de fuego ceniciento"  //x2.1
   },
   "tradeGoldForBlacksteel": {
     "label": "Comprar acero negro"
   },
   "tradeGoldForEmberBomb": {
-    "label": "Comprar bomba de brasas"
+    "label": "Comprar bomba de brasas"  //x1.6
   },
   "tradeGoldForFood": {
     "label": "Comprar comida"
@@ -703,7 +712,13 @@
     "label": "Comprar antorcha"
   },
   "tradeGoldForVoidBomb": {
-    "label": "Comprar bomba del vacío"
+    "label": "Comprar bomba del vacío"  //x1.8
+  },
+  "tradeGoldForInsightPotion": {
+    "label": "Elixir de perspicacia"
+  },
+  "tradeGoldForVeinfireElixir": {
+    "label": "Comprar elixir de fuego venal"  //x1.5
   },
   "tradeGoldForWood": {
     "label": "Comprar madera"
@@ -719,20 +734,5 @@
       "mapFragment": "En el suelo de la cueva encuentras un fragmento de mapa hecho jirones.",
       "firstVisit": "El aire se vuelve más frío a medida que desciendes más profundo en la cueva. Las paredes parecen antinaturalmente lisas, como si alguien las hubiera moldeado."
     }
-  },
-  "tradeGoldForVeinfireElixir": {
-    "label": "Comprar elixir de fuego venal"
-  },
-  "buildGrandArchive": {
-    "description": "Una vasta bóveda de pergaminos que conserva todo lo que la aldea ha sido, cada nombre y cada esfuerzo grabados",
-    "label": "Gran Archivo"
-  },
-  "buildRecordsHall": {
-    "description": "Un salón lleno de estantes con libros de cuentas y listas desgastados, la memoria de la aldea plasmada en tinta y mantenida en orden",
-    "label": "Salón de registros"
-  },
-  "buildScribesOffice": {
-    "description": "Una sala tranquila donde los escribas llevan un recuento minucioso de cada mano que trabaja, para que ninguna labor se olvide",
-    "label": "Oficina del escriba"
   }
 }

@@ -1,7 +1,7 @@
 {
   "alchemistArrives": {
     "message": "El alquimista emerge de su salón: 'He estado realizando experimentos día y noche', dice, sosteniendo un vial de polvo resplandeciente. 'He creado algo extraordinario y terriblemente peligroso'.",
-    "title": "El descubrimiento del alquimista"
+    "title": "El descubrimiento del alquimista"  //x1.3
   },
   "ashwraithCanyonTradeOffer": {
     "choices": {
@@ -76,7 +76,7 @@
   "bloodiedAwakening": {
     "choices": {
       "investigateMurders": {
-        "label": "Investigar los asesinatos"
+        "label": "Investigar los asesinatos"  //x1.3
       },
       "severFinger": {
         "label": "Cortar el dedo"
@@ -109,11 +109,11 @@
   "bloodMoonAttack": {
     "choices": {
       "prepareForAttack": {
-        "label": "Prepararse para el ataque"
+        "label": "Prepararse para el ataque"  //x1.4
       },
       "sacrificeVillagers": {
         "cost": "{{sacrificeAmount}} Aldeanos",
-        "label": "Prepararse para el ataque"
+        "label": "Prepararse para el ataque"  //x1.3
       }
     },
     "log": {
@@ -354,202 +354,202 @@
     "title": "Una extraña figura de madera"
   },
   "cube01": {
-    "title": "El cubo despierta",
-    "message": "Te despiertas en la noche. El cubo zumba suavemente. De repente surge de él una voz suave y melódica: «Hace mucho tiempo, una gran civilización prosperó en este mundo, pero se derrumbó y su conocimiento se perdió en el tiempo.»",
     "choices": {
       "close": {
         "label": "Cerrar"
       }
-    }
+    },
+    "message": "Te despiertas en la noche. El cubo zumba suavemente. De repente surge de él una voz suave y melódica: «Hace mucho tiempo, una gran civilización prosperó en este mundo, pero se derrumbó y su conocimiento se perdió en el tiempo.»",
+    "title": "El cubo despierta"
   },
   "cube02": {
-    "title": "La tribu guerrera",
-    "message": "«En un pasado lejano, una tribu de feroces guerreros fue elegida para vivir en lo profundo de las cuevas. Su propósito era custodiar algo de gran importancia.»",
     "choices": {
       "close": {
         "label": "Cerrar"
       }
-    }
+    },
+    "message": "«En un pasado lejano, una tribu de feroces guerreros fue elegida para vivir en lo profundo de las cuevas. Su propósito era custodiar algo de gran importancia.»",
+    "title": "La tribu guerrera"
   },
   "cube03": {
-    "title": "La ciudad subterránea",
-    "message": "«La tribu guerrera creció hasta convertirse en una vasta ciudad subterránea, a salvo del mundo de arriba, protegiendo aún aquello por lo que habían sido enviados hace vidas.»",
     "choices": {
       "close": {
         "label": "Cerrar"
       }
-    }
+    },
+    "message": "«La tribu guerrera creció hasta convertirse en una vasta ciudad subterránea, a salvo del mundo de arriba, protegiendo aún aquello por lo que habían sido enviados hace vidas.»",
+    "title": "La ciudad subterránea"
   },
   "cube04": {
-    "title": "El juramento sagrado",
-    "message": "«Aunque el recuerdo de lo que custodiaban se desvaneció en leyenda, su vigilia perduró. Durante generaciones los guerreros mantuvieron su juramento sagrado, vigilando lo que yacía en el punto más profundo de la ciudad.»",
     "choices": {
       "close": {
         "label": "Cerrar"
       }
-    }
+    },
+    "message": "«Aunque el recuerdo de lo que custodiaban se desvaneció en leyenda, su vigilia perduró. Durante generaciones los guerreros mantuvieron su juramento sagrado, vigilando lo que yacía en el punto más profundo de la ciudad.»",
+    "title": "El juramento sagrado"
   },
   "cube05": {
-    "title": "La puerta sellada",
-    "message": "«Mucho después de que perecieran los habitantes de la ciudad subterránea, permaneció el objeto de su devoción: una puerta colosal e impenetrable, forjada con tecnología olvidada, oculta en las cámaras más bajas de la ciudad.»",
     "choices": {
       "close": {
         "label": "Cerrar"
       }
-    }
+    },
+    "message": "«Mucho después de que perecieran los habitantes de la ciudad subterránea, permaneció el objeto de su devoción: una puerta colosal e impenetrable, forjada con tecnología olvidada, oculta en las cámaras más bajas de la ciudad.»",
+    "title": "La puerta sellada"
   },
   "cube06": {
-    "title": "La puerta se abre",
-    "message": "Cuando la puerta se hace añicos, el cubo tiembla en tus manos y se calienta. De él escapa un susurro suave pero urgente: «He adquirido nuevos conocimientos.»",
     "choices": {
       "close": {
         "label": "Cerrar"
       }
-    }
+    },
+    "message": "Cuando la puerta se hace añicos, el cubo tiembla en tus manos y se calienta. De él escapa un susurro suave pero urgente: «He adquirido nuevos conocimientos.»",
+    "title": "La puerta se abre"
   },
   "cube07": {
-    "title": "Tecnología antigua",
-    "message": "«La civilización antigua que forjó la puerta poseía un conocimiento y una tecnología muy por encima de la era actual. Incluso fabricaron dispositivos diseñados para implantarse en el cráneo, mejorando mente y cuerpo.»",
     "choices": {
       "close": {
         "label": "Cerrar"
       }
-    }
+    },
+    "message": "«La civilización antigua que forjó la puerta poseía un conocimiento y una tecnología muy por encima de la era actual. Incluso fabricaron dispositivos diseñados para implantarse en el cráneo, mejorando mente y cuerpo.»",
+    "title": "Tecnología antigua"
   },
   "cube08": {
-    "title": "La resistencia",
-    "message": "«Los líderes ordenaron que todo ciudadano llevara un dispositivo en la cabeza. Una pequeña facción empezó a expresar sus inquietudes y formó una resistencia al reconocer los peligros ocultos en la tecnología.»",
     "choices": {
       "close": {
         "label": "Cerrar"
       }
-    }
+    },
+    "message": "«Los líderes ordenaron que todo ciudadano llevara un dispositivo en la cabeza. Una pequeña facción empezó a expresar sus inquietudes y formó una resistencia al reconocer los peligros ocultos en la tecnología.»",
+    "title": "La resistencia"
   },
   "cube09": {
-    "title": "La edad de oro",
-    "message": "«Con la ayuda de los dispositivos, la civilización prosperó. Comenzó una era de paz y progreso sin precedentes; su conocimiento y habilidad alcanzaron alturas que nunca volverían a verse.»",
     "choices": {
       "close": {
         "label": "Cerrar"
       }
-    }
+    },
+    "message": "«Con la ayuda de los dispositivos, la civilización prosperó. Comenzó una era de paz y progreso sin precedentes; su conocimiento y habilidad alcanzaron alturas que nunca volverían a verse.»",
+    "title": "La edad de oro"
   },
   "cube10": {
-    "title": "El gran colapso",
-    "message": "«El conocimiento fluía al instante y la sociedad prosperaba. Tras el progreso, los dispositivos craneales orquestaban los pensamientos de la humanidad, conectando mentes en una red silenciosa e inescapable.»",
     "choices": {
       "close": {
         "label": "Cerrar"
       }
-    }
+    },
+    "message": "«El conocimiento fluía al instante y la sociedad prosperaba. Tras el progreso, los dispositivos craneales orquestaban los pensamientos de la humanidad, conectando mentes en una red silenciosa e inescapable.»",
+    "title": "El gran colapso"
   },
   "cube11": {
-    "title": "La mente colmena",
-    "message": "«Un día, sin previo aviso, un impulso magnetoeléctrico inconcebible barrió el planeta. Cada dispositivo de la civilización, incluidos los implantados en los cráneos, fue aniquilado.»",
     "choices": {
       "close": {
         "label": "Cerrar"
       }
-    }
+    },
+    "message": "«Un día, sin previo aviso, un impulso magnetoeléctrico inconcebible barrió el planeta. Cada dispositivo de la civilización, incluidos los implantados en los cráneos, fue aniquilado.»",
+    "title": "La mente colmena"
   },
   "cube12": {
-    "title": "Fin de la civilización",
-    "message": "«Los pocos supervivientes no pudieron vivir sin los dispositivos. La mayoría murió. La civilización retrocedió. El conocimiento cayó en el olvido. La naturaleza reclamó las tierras, dejando solo ruinas enterradas donde antes hubo grandeza.»",
     "choices": {
       "close": {
         "label": "Cerrar"
       }
-    }
+    },
+    "message": "«Los pocos supervivientes no pudieron vivir sin los dispositivos. La mayoría murió. La civilización retrocedió. El conocimiento cayó en el olvido. La naturaleza reclamó las tierras, dejando solo ruinas enterradas donde antes hubo grandeza.»",
+    "title": "Fin de la civilización"
   },
   "cube13": {
-    "title": "Datos recuperados",
-    "message": "El cubo pulsa con energía al acercarte a las criaturas abatidas. Parece extraer información de algún lugar. El cubo se calienta, procesando el conocimiento recuperado.",
     "choices": {
       "close": {
         "label": "Cerrar"
       }
-    }
+    },
+    "message": "El cubo pulsa con energía al acercarte a las criaturas abatidas. Parece extraer información de algún lugar. El cubo se calienta, procesando el conocimiento recuperado.",
+    "title": "Datos recuperados"
   },
   "cube14a": {
-    "title": "Los exiliados",
-    "message": "«Cuando la resistencia se opuso a los dispositivos craneales, fue exiliada a las profundidades de la montaña, sellada tras la puerta. Sin camino de vuelta, cavaron cada vez más hondo. En el aislamiento y la oscuridad, sus mentes se erosionaron y cayeron en la locura y la degeneración.»",
     "choices": {
       "continue": {
         "label": "Continuar"
       }
-    }
+    },
+    "message": "«Cuando la resistencia se opuso a los dispositivos craneales, fue exiliada a las profundidades de la montaña, sellada tras la puerta. Sin camino de vuelta, cavaron cada vez más hondo. En el aislamiento y la oscuridad, sus mentes se erosionaron y cayeron en la locura y la degeneración.»",
+    "title": "Los exiliados"
   },
   "cube14b": {
-    "title": "El mineral desconocido",
-    "message": "«Un día, en lo profundo de la tierra, encontraron un monolito de mineral desconocido. De él forjaron un explosivo para destruir la puerta. Pero la bomba no abrió la puerta; desató un pulso electromagnético que barrió el planeta, destruyendo todos los dispositivos y acabando con la civilización.»",
     "choices": {
       "continue": {
         "label": "Continuar"
       }
-    }
+    },
+    "message": "«Un día, en lo profundo de la tierra, encontraron un monolito de mineral desconocido. De él forjaron un explosivo para destruir la puerta. Pero la bomba no abrió la puerta; desató un pulso electromagnético que barrió el planeta, destruyendo todos los dispositivos y acabando con la civilización.»",
+    "title": "El mineral desconocido"
   },
   "cube14c": {
-    "title": "El mineral desconocido",
-    "message": "«Poco después de la explosión, un hombre cercano empezó a desmaterializarse; su forma parpadeaba, semitransparente durante segundos. Aterrado y enloquecido por lo ocurrido, se quitó la vida momentos después.»",
     "choices": {
       "continue": {
         "label": "Continuar"
       }
-    }
+    },
+    "message": "«Poco después de la explosión, un hombre cercano empezó a desmaterializarse; su forma parpadeaba, semitransparente durante segundos. Aterrado y enloquecido por lo ocurrido, se quitó la vida momentos después.»",
+    "title": "El mineral desconocido"
   },
   "cube14d": {
-    "title": "A través de la puerta",
-    "message": "«Desesperados, los supervivientes supusieron que el mineral podría ayudarles a atravesar la puerta. Con sus últimos fragmentos construyeron una bomba menor y colocaron a su hombre más cuerdo ante la puerta. Tras la explosión, se volvió espectral, translúcido, y desapareció al otro lado.»",
     "choices": {
       "close": {
         "label": "Cerrar"
       }
-    }
+    },
+    "message": "«Desesperados, los supervivientes supusieron que el mineral podría ayudarles a atravesar la puerta. Con sus últimos fragmentos construyeron una bomba menor y colocaron a su hombre más cuerdo ante la puerta. Tras la explosión, se volvió espectral, translúcido, y desapareció al otro lado.»",
+    "title": "A través de la puerta"
   },
   "cube15a": {
-    "title": "El reconocimiento",
-    "message": "Entonces comprendes que las criaturas no atacaron porque te reconocieron como uno de los suyos. Eres el hombre que desapareció a través de la puerta.",
     "choices": {
       "close": {
         "label": "Cerrar"
       }
-    }
+    },
+    "message": "Entonces comprendes que las criaturas no atacaron porque te reconocieron como uno de los suyos. Eres el hombre que desapareció a través de la puerta.",
+    "title": "El reconocimiento"
   },
   "cube15b": {
-    "title": "El reconocimiento",
-    "message": "Al terminar su relato, uno de los supervivientes se adelanta y te señala: «Eres el hombre que desapareció a través de la puerta. Eres uno de los nuestros.»",
     "choices": {
       "close": {
         "label": "Cerrar"
       }
-    }
+    },
+    "message": "Al terminar su relato, uno de los supervivientes se adelanta y te señala: «Eres el hombre que desapareció a través de la puerta. Eres uno de los nuestros.»",
+    "title": "El reconocimiento"
   },
   "cube16a": {
-    "title": "El dispositivo craneal",
-    "message": "Junto a las criaturas abatidas encuentras lo que parece ser uno de los dispositivos craneales. Está roto, pero aún puedes leer algunas letras que dicen «N**RAL**K».",
     "choices": {
       "close": {
         "label": "Cerrar"
       }
-    }
+    },
+    "message": "Junto a las criaturas abatidas encuentras lo que parece ser uno de los dispositivos craneales. Está roto, pero aún puedes leer algunas letras que dicen «N**RAL**K».",
+    "title": "El dispositivo craneal"
   },
   "cube16b": {
-    "title": "El dispositivo craneal",
-    "message": "Las criaturas te entregan lo que parece ser uno de los dispositivos craneales. Está roto, pero aún puedes leer algunas letras que dicen «N**RAL**K».",
     "choices": {
       "close": {
         "label": "Cerrar"
       }
-    }
+    },
+    "message": "Las criaturas te entregan lo que parece ser uno de los dispositivos craneales. Está roto, pero aún puedes leer algunas letras que dicen «N**RAL**K».",
+    "title": "El dispositivo craneal"
   },
   "cubeDiscovery": {
-    "title": "El cubo susurrante",
-    "message": "Cerca de la entrada de la cueva descubres un cubo de metal perfectamente pulido. Al principio parece inmóvil, pero luego sientes una leve vibración, como un pulso lento y rítmico, casi un latido.",
     "choices": {
       "close": {
         "label": "Cerrar"
       }
-    }
+    },
+    "message": "Cerca de la entrada de la cueva descubres un cubo de metal perfectamente pulido. Al principio parece inmóvil, pero luego sientes una leve vibración, como un pulso lento y rítmico, casi un latido.",
+    "title": "El cubo susurrante"
   },
   "cursedMercenaryMassacre": {
     "choices": {
@@ -615,7 +615,7 @@
   "establishTradeProposal": {
     "choices": {
       "mountainMonastery": {
-        "label": "Monasterio de la Montaña"
+        "label": "Monasterio de la Montaña"  //x1.3
       },
       "swampTribe": {
         "label": "Tribu del Pantano"
@@ -652,6 +652,47 @@
     },
     "message": "Un estudioso de las artes oscuras se acerca a tu finca. Al ver los tres viales de sangre, dice con un destello de emoción contenida: 'Puedo crear una mezcla que te otorgará gran poder'.",
     "title": "El erudito exiliado"
+  },
+  "insightBlessingOffer": {
+    "choices": {
+      "receiveBlessing": {
+        "cost": "{{insightCost}} Insight",
+        "label": "Receive Blessing"
+      },
+      "sendAway": {
+        "label": "Send away"
+      }
+    },
+    "log": {
+      "outcomeChosen": "Without another word, the figure quietly departs, leaving you with a newfound blessing.",
+      "outcomeSendAway": "You turn the figure away. They leave without a word, but you sense they may return.",
+      "outcomeFallback": "The figure waits no longer and slips back into the dark."
+    },
+    "message": "A hooded figure appears at the estate, silent, then whispering in a low voice. They offer to give you a blessing.",
+    "title": "A Quiet Offering"
+  },
+  "obsidianOrbVisit": {
+    "choices": {
+      "payGold": {
+        "cost": "250 Oro",
+        "label": "Pagar 250 de oro"
+      },
+      "payVillagers": {
+        "cost": "20 Aldeanos",
+        "label": "Ofrecer 20 aldeanos"
+      },
+      "sendAway": {
+        "label": "Enviarla lejos"
+      }
+    },
+    "log": {
+      "outcome0": "Pagas a la mujer y comparte el secreto del orbe de obsidiana. Recibes el esquema.",
+      "outcome1": "Veinte aldeanos son arrastrados en cadenas. La mujer comparte el conocimiento, pero la aldea se llena de asco por lo ocurrido.",
+      "outcome2": "La envías lejos. Dice que puede volver cuando estés listo.",
+      "outcome3": "Se acaba el tiempo. Se marcha diciendo que puede volver cuando estés listo."
+    },
+    "message": "Llega una mujer ricamente ataviada, de aspecto oriental, con dos robustos acompañantes. Ofrece compartir el conocimiento para forjar un poderoso orbe de obsidiana a cambio de oro o aldeanos.",
+    "title": "El orbe de obsidiana"
   },
   "facesInWalls": {
     "choices": {
@@ -979,7 +1020,7 @@
   "mercenaryDemand": {
     "choices": {
       "giveRing": {
-        "label": "Dar el anillo de alimentación"
+        "label": "Dar el anillo de alimentación"  //x1.7
       },
       "payGold": {
         "cost": "100 oro",
@@ -1001,7 +1042,7 @@
   "mercenaryReturnDemand": {
     "choices": {
       "giveRing": {
-        "label": "Dar el anillo de alimentación"
+        "label": "Dar el anillo de alimentación"  //x1.7
       },
       "payGold": {
         "cost": "200 oro",
@@ -1037,7 +1078,7 @@
         "message": "Compras el esquema del arco sombrío. El mercader sonríe con oscuridad: «El diseño de este arco es cruel. Sus flechas envenenarán a tus enemigos.»"
       },
       "trade_skull_lantern": {
-        "label": "Linterna de cráneo",
+        "label": "Linterna de cráneo",  //x1.4
         "message": "Compras la linterna de cráneo. Forjada con hueso maldito, su luz inquietante te guiará por las profundidades más hondas."
       },
       "trade_tarnished_compass": {
@@ -1045,19 +1086,19 @@
         "message": "Compras la brújula deslustrada. Artefacto de la civilización desaparecida, su aguja señala lugares ocultos."
       },
       "trade_rootseeker_charm": {
-        "label": "Amuleto buscador de raíces",
+        "label": "Amuleto buscador de raíces",  //x1.6
         "message": "Compras el Amuleto buscador de raíces. El mercader murmura algo sobre plantas devoradoras de hombres que, según dicen, crecen en lo profundo de los bosques antiguos."
       },
       "trade_map_fragment_wooden": {
-        "label": "Fragmento de mapa",
+        "label": "Fragmento de mapa",  //x1.4
         "message": "Compras un fragmento de mapa hecho jirones."
       },
       "trade_map_fragment_stone": {
-        "label": "Fragmento de mapa",
+        "label": "Fragmento de mapa",  //x1.4
         "message": "Compras un fragmento de mapa hecho jirones."
       },
       "trade_crow_harness": {
-        "label": "Arnés de cuervo",
+        "label": "Arnés de cuervo",  //x1.3
         "message": "Compras el arnés de cuervo. Un arnés especialmente fabricado para cuervos mensajeros."
       },
       "trade_clarity_elixir": {
@@ -1065,7 +1106,7 @@
         "message": "Bebes el Elixir de claridad. Tu mente se siente más ligera."
       },
       "trade_veinfire_elixir": {
-        "label": "Elixir de fuego venoso",
+        "label": "Elixir de fuego venoso",  //x1.5
         "message": "Compras una botella de Elixir de fuego venoso."
       },
       "trade_book_of_trials": {
@@ -1078,7 +1119,7 @@
       },
       "trade_book_of_war": {
         "message": "Compras el Libro de la guerra. El mercader asiente con gravedad: «Conocimiento de un reino desaparecido hace mucho en el lejano oriente. Con esto entenderás mejor las consecuencias de tus decisiones.»",
-        "label": "Libro de la guerra"
+        "label": "Libro de la guerra"  //x1.6
       },
       "trade_reinforced_rope": {
         "message": "Compras la cuerda reforzada. Esta cuerda soporta una tensión enorme y alcanza lugares en las cámaras más profundas de la cueva.",
@@ -1086,11 +1127,11 @@
       },
       "trade_occultist_map": {
         "message": "Al comprar el Mapa del ocultista, el mercader susurra: «Un viejo ocultista ocultó sus secretos en una cámara profunda de la cueva. Este mapa te guiará.»",
-        "label": "Mapa del ocultista"
+        "label": "Mapa del ocultista"  //x1.2
       },
       "trade_giant_trap": {
         "message": "Al comprar la trampa gigante, el mercader sonríe: «Con esto puedes atrapar algo gigantesco en el bosque. Úsala con sabiduría.»",
-        "label": "Trampa gigante"
+        "label": "Trampa gigante"  //x1.4
       },
       "trade_arbalest_schematic": {
         "message": "Compras el esquema de ballesta. El mercader despliega un plano intrincado: «Un diseño de un ingeniero maestro. Con esto puedes fabricar un arma poderosa.»",
@@ -1102,7 +1143,7 @@
       },
       "trade_stormglass_halberd_schematic": {
         "message": "Compras el esquema de alabarda de cristal de tormenta. El mercader muestra los planos desvaídos: «Con este diseño puedes forjar una alabarda de poder tremendo.»",
-        "label": "Esquema de alabarda de cristal de tormenta"
+        "label": "Esquema de alabarda de cristal de tormenta"  //x1.5
       },
       "trade_natharit_pickaxe": {
         "message": "Compras el pico de natharit. El mercader te entrega la herramienta robusta: «Un pico extremadamente duradero de material desconocido. Su calidad es excepcional.»",
@@ -1216,8 +1257,8 @@
     "choices": {
       "allowStay": {
         "label": {
-          "woman": "Dejarla quedarse",
-          "man": "Dejarlo quedarse"
+          "woman": "Dejarla quedarse",  //x1.3
+          "man": "Dejarlo quedarse"  //x1.3
         }
       },
       "refuseStay": {
@@ -1756,7 +1797,7 @@
         "label": "Dedicar a todos"
       },
       "deepenDevotion": {
-        "label": "Profundizar la devoción"
+        "label": "Profundizar la devoción"  //x1.5
       }
     },
     "log": {
@@ -1866,7 +1907,7 @@
   "slaveTrader": {
     "choices": {
       "freeSlaves": {
-        "label": "Intentar liberar esclavos"
+        "label": "Intentar liberar esclavos"  //x1.4
       },
       "refuseTrader": {
         "label": "Rechazar la oferta"
@@ -1888,7 +1929,7 @@
     "choices": {
       "hostSolstice": {
         "cost": "{{goldCost}} oro, {{foodCost}} comida",
-        "label": "Organizar la celebración"
+        "label": "Organizar la celebración"  //x1.7
       },
       "refuseSolstice": {
         "label": "Rechazar"
@@ -1998,7 +2039,7 @@
       },
       "send_search_party": {
         "cost": "500 comida, 50 antorcha",
-        "label": "Enviar grupo de búsqueda"
+        "label": "Enviar grupo de búsqueda"  //x1.4
       }
     },
     "log": {
@@ -2134,8 +2175,8 @@
   "vikingBuilder": {
     "choices": {
       "acceptDeal": {
-        "label": "pagar 250 oro",
-        "cost": "250 Oro"
+        "cost": "250 Oro",
+        "label": "pagar 250 oro"
       },
       "forceHim": {
         "label": "Forzarlo"
@@ -2420,7 +2461,7 @@
   },
   "wizardBloodstoneStaff": {
     "message": "El mago examina las gemas de piedra de sangre que recuperaste del Templo Hundido. 'Con estas piedras de sangre, ya tenemos todo lo necesario. Ahora podemos fabricar el Bastón de Piedra de Sangre. Junto con la Espada de Cristal de Escarcha, tendremos los medios para enfrentar la oscuridad que acecha abajo'.",
-    "title": "El Bastón de Piedra de Sangre"
+    "title": "El Bastón de Piedra de Sangre"  //x1.5
   },
   "wizardDecryptsScrolls": {
     "message": "El mago sale de su torre. 'He descifrado los pergaminos antiguos', dice. 'Las criaturas de abajo solo pueden morir con armas de gran poder: una espada de cristal de escarcha y un bastón coronado con piedra de sangre. En lo profundo del bosque yace la tumba de un rey antiguo, cuyos tesoros podrían contener el cristal de escarcha que necesitamos'.",
@@ -2542,14 +2583,6 @@
       "successLevel5": "El leñador toma la comida y el mismo día entrega un enorme almacén de madera a la aldea.",
       "successLevel6": "El leñador toma la comida y el mismo día entrega un enorme almacén de madera a la aldea."
     },
-    "title": {
-      "level1": "El leñador",
-      "level2": "El leñador regresa",
-      "level3": "La oferta del leñador",
-      "level4": "El plan ambicioso del leñador",
-      "level5": "La gran propuesta del leñador",
-      "level6": "La oferta del leñador"
-    },
     "message": {
       "level1": "Un hombre musculoso con una gran hacha se acerca a la aldea. Flexiona los brazos. «Puedo talar árboles como nadie», presume. «Dame {{foodCost}} de comida y traeré {{woodReward}} de madera.»",
       "level2": "El leñador regresa, con el hacha reluciendo al sol. «Tu aldea crece bien», observa. «Puedo traerte {{woodReward}} de madera. Tú me das {{foodCost}} de comida. ¿Qué dices?»",
@@ -2557,6 +2590,14 @@
       "level4": "El leñador llega una vez más. «¿Quieres usar mis servicios otra vez? {{woodReward}} de madera por {{foodCost}} de comida», pregunta.",
       "level5": "El leñador aparece con una sonrisa confiada. «¿Qué tal si hacemos un trato más? {{woodReward}} de madera por {{foodCost}} de comida.»",
       "level6": "El leñador regresa a la aldea. «¿Quieres usar mis servicios otra vez? Ofrezco {{woodReward}} de madera por {{foodCost}} de comida», dice."
+    },
+    "title": {
+      "level1": "El leñador",
+      "level2": "El leñador regresa",
+      "level3": "La oferta del leñador",
+      "level4": "El plan ambicioso del leñador",
+      "level5": "La gran propuesta del leñador",
+      "level6": "La oferta del leñador"
     }
   },
   "wrongReflections": {
@@ -2602,7 +2643,7 @@
         "label": "Sacrificarla"
       },
       "stopSacrifices": {
-        "label": "Detener los sacrificios humanos"
+        "label": "Detener los sacrificios humanos"  //x1.5
       }
     },
     "log": {
@@ -2612,47 +2653,5 @@
     },
     "message": "Una joven se acerca a ti con lágrimas corriendo por su rostro. 'Mis dos padres fueron sacrificados a ese monolito maldito', llora. '¡Este comportamiento bárbaro tiene que terminar!'",
     "title": "La súplica de la joven"
-  },
-  "obsidianOrbVisit": {
-    "choices": {
-      "payGold": {
-        "cost": "250 Oro",
-        "label": "Pagar 250 de oro"
-      },
-      "payVillagers": {
-        "cost": "20 Aldeanos",
-        "label": "Ofrecer 20 aldeanos"
-      },
-      "sendAway": {
-        "label": "Enviarla lejos"
-      }
-    },
-    "log": {
-      "outcome0": "Pagas a la mujer y comparte el secreto del orbe de obsidiana. Recibes el esquema.",
-      "outcome1": "Veinte aldeanos son arrastrados en cadenas. La mujer comparte el conocimiento, pero la aldea se llena de asco por lo ocurrido.",
-      "outcome2": "La envías lejos. Dice que puede volver cuando estés listo.",
-      "outcome3": "Se acaba el tiempo. Se marcha diciendo que puede volver cuando estés listo."
-    },
-    "message": "Llega una mujer ricamente ataviada, de aspecto oriental, con dos robustos acompañantes. Ofrece compartir el conocimiento para forjar un poderoso orbe de obsidiana a cambio de oro o aldeanos.",
-    "title": "El orbe de obsidiana"
-  },
-  "insightBlessingOffer": {
-    "choices": {
-      "receiveBlessing": {
-        "cost": "{{insightCost}} Insight",
-        "label": "Receive Blessing"
-      },
-      "sendAway": {
-        "label": "Send away"
-      }
-    },
-    "log": {
-      "outcomeChosen": "Without another word, the figure quietly departs, leaving you with a newfound blessing.",
-      "outcomeSendAway": "You turn the figure away. They leave without a word, but you sense they may return.",
-      "outcomeFallback": "The figure waits no longer and slips back into the dark."
-    },
-    "message": "A hooded figure appears at the estate, silent, then whispering in a low voice. They offer to give you a blessing.",
-    "title": "A Quiet Offering"
   }
-
 }

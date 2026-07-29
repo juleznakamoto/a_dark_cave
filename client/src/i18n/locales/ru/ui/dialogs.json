@@ -1,8 +1,4 @@
 {
-  "insightPotion": {
-    "title": "Эликсир прозрения",
-    "message": "Вы пьёте Эликсир прозрения. Понимание расцветает в вашем разуме."
-  },
   "event": {
     "fallbackTitle": "Событие",
     "choose": "Выберите вариант",
@@ -16,47 +12,56 @@
   "reward": {
     "title": "Награда",
     "loss": "Потеря",
-    "actionReward": "Награда за действие", //x1.5
+    "actionReward": "Награда за действие",  //x1.5
     "claimRewards": "Забрать награды"
   },
   "madness": {
     "title": "Событие безумия",
     "change": "{{sign}} {{amount}} безумия"
   },
+  "insightPotion": {
+    "title": "Эликсир прозрения",  //x1.2
+    "message": "Вы пьёте Эликсир прозрения. Понимание расцветает в вашем разуме."
+  },
+  "blessingOffer": {
+    "title": "Choose a Blessing",
+    "srDescription": "Select one of the offered blessings",
+    "chooseBlessing": "Choose"
+  },
   "socialPrompt": {
     "title": "Оставайтесь на связи и получайте награды",
     "description": "Выполните задачи ниже, чтобы получить бонусы. Выполните все — получите эксклюзивный предмет.",
-    "signUpRequiresSignInTooltip": "зарегистрируйтесь для выполнения задачи", //x1.6
-    "signUpTitle": "Регистрация",
+    "signUpRequiresSignInTooltip": "зарегистрируйтесь для выполнения задачи",  //x1.6
+    "signUpTitle": "Регистрация",  //x1.6
     "signUpDesc": "Создайте бесплатный аккаунт, чтобы синхронизировать прогресс между устройствами. Без аккаунта прогресс сохраняется только локально и может быть потерян.",
-    "signUpButton": "Регистрация",
-    "emailUpdatesTitle": "Рассылка по электронной почте", //x1.6
-    "subscribe": "Подписаться", //x1.2
+    "signUpButton": "Регистрация",  //x1.6
+    "emailUpdatesTitle": "Рассылка по электронной почте",  //x2.2
+    "subscribe": "Подписаться",  //x1.2
     "claim": "Забрать",
     "playlightTitle": "Открыть 1 игру",
     "discoverGames": "Открыть игры",
-    "inviteTitle": "Пригласить 1 друга",
+    "inviteTitle": "Пригласить 1 друга",  //x1.2
     "inviteDesc": "Вы можете пригласить до {{cap}} друзей. Каждый раз вы оба получаете {{amount}} золота ({{count}}/{{cap}} приглашено).",
-    "copyInviteLink": "Копировать ссылку-приглашение",
+    "copyInviteLink": "Копировать ссылку-приглашение",  //x1.8
     "progressComplete": "Вы выполнили все задачи. Скоро получите награду.",
     "tasksRemaining_one": "Осталась 1 задача",
     "tasksRemaining_other": "Осталось {{count}} задач",
-    "progressToward": "Эксклюзивная награда:",
-    "progressAriaLabel": "Эксклюзивная награда",
+    "progressToward": "Эксклюзивная награда:",  //x1.2
+    "progressAriaLabel": "Эксклюзивная награда",  //x1.3
     "alreadyClaimedReward": "Вы уже получили эту награду!",
+    "playlightDiscoverRewardLog": "Вы получили {{amount}} золота за открытие игр!",
+    "marketingSubscribeLog": "Вы получили {{amount}} золота за подписку на рассылку по электронной почте!",
     "followRewardLog": "Вы получили {{amount}} золота за подписку на нас в {{platform}}!",
     "platforms": {
       "instagram": {
         "title": "Instagram",
-        "actionFollow": "Подписаться" //x1.8
+        "actionFollow": "Подписаться"  //x1.8
       },
       "reddit": {
         "title": "Reddit",
         "actionJoin": "Вступить"
       }
-    },
-    "playlightDiscoverRewardLog": "Вы получили {{amount}} золота за открытие игр!",
-    "marketingSubscribeLog": "Вы получили {{amount}} золота за подписку на рассылку по электронной почте!"
+    }
   },
   "referral": {
     "invitedLog": "Вы пригласили нового жителя в этот мир! +{{amount}} золота"
@@ -64,13 +69,13 @@
   "invite": {
     "button": "Пригласить",
     "goldBonus": "+{{amount}} золота",
-    "linkCopied": "Ссылка-приглашение скопирована!",
+    "linkCopied": "Ссылка-приглашение скопирована!",  //x1.6
     "linkCopiedDesc": "Поделитесь ссылкой с друзьями — каждый получит {{amount}} золота.",
     "copyFailed": "Не удалось скопировать ссылку",
     "tooltip": "Пригласите друзей — вы оба получите {{amount}} золота. Можно пригласить до {{cap}} друзей. ({{count}}/{{cap}} приглашено)."
   },
   "invest": {
-    "title": "Инвестировать",
+    "title": "Инвестировать",  //x2.2
     "strategy": "Стратегия инвестиций",
     "amount": "Сумма инвестиции",
     "potentialProfit": "Возможная прибыль:",
@@ -87,7 +92,7 @@
       "profit": "Прибыль",
       "lucky": "Удача",
       "loss": "Потеря",
-      "wipeout": "Полная потеря"
+      "wipeout": "Полная потеря"  //x1.9
     },
     "tooltip": {
       "time": "Длительность инвестиции.",
@@ -102,7 +107,7 @@
   "gambler": {
     "title": "Одержимый игрок",
     "srDescription": "Игра в кости с одержимым игроком",
-    "rulesAriaLabel": "Правила игры в кости", //x1.3
+    "rulesAriaLabel": "Правила игры в кости",  //x1.3
     "rulesTurns": "Вы и игрок по очереди бросаете кость.",
     "rulesTotals": "Броски каждого игрока суммируются.",
     "rulesGoal": "Цель — 15 очков.",
@@ -114,15 +119,15 @@
     "gamesRemaining": "Осталось игр: {{remaining}} из {{total}}.",
     "requiresLuck": "Требуется {{luck}} удачи для разблокировки",
     "bet": "Ставка:",
-    "practiceBet": "Тренировка (0 золота)", //x1.2
+    "practiceBet": "Тренировка (0 золота)",  //x1.2
     "goal": "Цель:",
     "you": "Вы",
     "gambler": "Игрок",
     "roll": "Бросить",
     "noRoll": "Не бросать",
-    "youWin": "Вы победили",
-    "youLose": "Вы проиграли",
-    "practiceOutcome": "Тренировочный раунд. Золото не выиграно и не проиграно.", //x1.5
+    "youWin": "Вы победили",  //x1.6
+    "youLose": "Вы проиграли",  //x1.5
+    "practiceOutcome": "Тренировочный раунд. Золото не выиграно и не проиграно.",  //x1.5
     "goldWon": "+{{amount}} золота",
     "goldLost": "-{{amount}} золота",
     "practiceWinRemaining": "Вы выиграли тренировочный раунд (золото не ставится). Осталось {{remaining}} из {{total}} тренировочных игр.",
@@ -147,15 +152,15 @@
     "purchaseSuccessful": "Покупка успешна!",
     "purchaseSuccessfulDesc": "Полная версия разблокирована! Продолжайте путешествие без ограничений.",
     "legalConsent": "После покупки вы сразу получаете доступ к цифровому контенту.",
-    "termsOfService": "Условия использования",
+    "termsOfService": "Условия использования",  //x1.3
     "rightOfWithdrawal": "Право на отказ",
     "completePurchaseFor": "Завершить покупку за {{price}}",
     "paymentFailed": "Ошибка оплаты",
-    "notAuthenticated": "Пользователь не авторизован",
+    "notAuthenticated": "Пользователь не авторизован",  //x1.2
     "unexpectedError": "Произошла непредвиденная ошибка"
   },
   "leaderboard": {
-    "title": "Таблица лидеров", //x1.4
+    "title": "Таблица лидеров",  //x1.4
     "dev": "Разраб.",
     "prod": "Релиз",
     "rank": "#",
@@ -164,13 +169,13 @@
     "noEntries": "Пока нет записей",
     "lastUpdated": "Обновлено: {{time}}",
     "recentCompletionsNote": "Показываются только прохождения за последние 6 месяцев.",
-    "username": "Имя пользователя:",
+    "username": "Имя пользователя:",  //x1.9
     "notSet": "Не задано",
     "currentPlaytime": "Текущее время игры:",
     "enterName": "Введите имя",
     "normalMode": "Обычный режим",
-    "cruelMode": "Жестокий режим",
-    "loadFailed": "Не удалось загрузить таблицу лидеров",
+    "cruelMode": "Жестокий режим",  //x1.4
+    "loadFailed": "Не удалось загрузить таблицу лидеров",  //x1.4
     "invalidUsername": "Недопустимое имя",
     "usernameEmpty": "Имя не может быть пустым",
     "usernameTooLong": "Имя — не более 20 символов",
@@ -206,25 +211,25 @@
     "knowledgeMax": " (макс.)",
     "discountFromRing": "5 % от Кольца повиновения",
     "prolongForInsight": "Продлить время на {{minutes}} мин. за {{cost}} {{resource}}",
-    "buyGold": "Купить золото"
+    "buyGold": "Купить золото"  //x1.6
   },
   "share": {
     "title": "Поделиться прогрессом",
-    "description": "Сохраните или отправьте изображение вашего игрового прогресса.",
+    "description": "Сохраните или отправьте изображение вашего игрового прогресса.",  //x1.4
     "resources": "Ресурсы: {{percent}} %",
     "achievements": "Достижения: {{percent}} %",
-    "cruelMode": "Жестокий режим",
+    "cruelMode": "Жестокий режим",  //x1.4
     "on": "Вкл",
     "off": "Выкл",
     "playTime": "Время игры",
     "download": "Скачать",
     "generating": "Создание…",
     "share": "Поделиться",
-    "errorTitle": "Не удалось создать изображение",
+    "errorTitle": "Не удалось создать изображение",  //x1.4
     "errorDesc": "При создании изображения что-то пошло не так."
   },
   "feedback": {
-    "title": "Обратная связь", //x1.8
+    "title": "Обратная связь",  //x1.8
     "message": "Если вы нашли ошибки, проблемы с переводом или хотите поделиться идеями и отзывами, буду рад услышать вас.",
     "contactVia": "Связаться со мной можно через:",
     "reddit": "Reddit",
@@ -233,16 +238,10 @@
     "email": "E-Mail"
   },
   "galaxy": {
-    "title": "Демо заканчивается здесь",
+    "title": "Демо заканчивается здесь",  //x1.7
     "description": "Добавьте полную игру в список желаемого Steam, чтобы продолжить путешествие после выхода.",
-    "wishlistButton": "Добавить в список желаемого Steam",
-    "startNewGameButton": "Начать новую игру",
+    "wishlistButton": "Добавить в список желаемого Steam",  //x1.9
+    "startNewGameButton": "Начать новую игру",  //x1.2
     "releaseNote": "Планируемый релиз: Q4 2026"
-  },
-  "blessingOffer": {
-    "title": "Choose a Blessing",
-    "srDescription": "Select one of the offered blessings",
-    "chooseBlessing": "Choose"
   }
-
 }

@@ -40,7 +40,7 @@
     },
     "ashen_embrace_enhanced": {
       "description": "Ваше умение добывать руду значительно улучшено",
-      "name": "Глубокое пепельное объятие"
+      "name": "Глубокое пепельное объятие"  //x1.4
     },
     "bell_blessing": {
       "description": "Таинственный знак колокола на предплечье. Удваивает очки фокуса, получаемые во сне.",
@@ -98,6 +98,10 @@
       "description": "Ваше умение охотиться улучшено",
       "name": "Дар Дагона"
     },
+    "depths_gift": {
+      "description": "Пещера exploration yields more",
+      "name": "Depth's Gift"
+    },
     "dagons_gift_enhanced": {
       "description": "Ваше умение охотиться значительно улучшено",
       "name": "Великий дар Дагона"
@@ -142,9 +146,17 @@
       "description": "Олени в лесу, кажется, замечают вас реже",
       "name": "Милость леса"
     },
+    "fresh_blood": {
+      "description": "Strangers approach the village more often",
+      "name": "Fresh Blood"
+    },
     "frostglass": {
       "description": "Кристаллический материал, источающий холод",
       "name": "Морозное стекло"
+    },
+    "keen_builder": {
+      "description": "Построитьing costs are reduced",
+      "name": "Keen Построитьer"
     },
     "gifted_ring": {
       "description": "Простое кольцо, которое кто-то оставил вам на находку",
@@ -176,7 +188,7 @@
     },
     "leatherbound_book": {
       "description": "Древняя книга в кожаном переплёте с клеймом цепи на обложке",
-      "name": "Книга в кожаном переплёте"
+      "name": "Книга в кожаном переплёте"  //x1.5
     },
     "loggers_gloves": {
       "description": "Прочные кожаные перчатки, помогающие собирать дерево",
@@ -206,6 +218,14 @@
       "description": "Чертеж для создания ядовитого лука",
       "name": "Лук паслена"
     },
+    "obsidian_orb": {
+      "description": "Могущественная сфера из вулканического стекла, дарующая силу духа",
+      "name": "Обсидиановая сфера"
+    },
+    "obsidian_orb_schematic": {
+      "description": "Схема создания могущественной обсидиановой сферы",
+      "name": "Обсидиановая сфера"
+    },
     "occultist_grimoire": {
       "description": "Гримуар с нечестивым знанием еретика-оккультиста",
       "name": "Гримуар оккультиста"
@@ -222,13 +242,17 @@
       "description": "Чужаки чаще подходят к деревне",
       "name": "Знак ворона"
     },
+    "rich_veins": {
+      "description": "Your ability to mine is improved",
+      "name": "Rich Veins"
+    },
     "ravens_mark_enhanced": {
       "description": "Чужаки подходят к деревне намного чаще",
       "name": "Великий знак ворона"
     },
     "rootseeker_charm": {
       "description": "Резной талисман, притягивающий жилекорень к тем, кто собирает дары природы.",
-      "name": "Талисман искателя корней"
+      "name": "Талисман искателя корней"  //x1.5
     },
     "ravens_orb": {
       "description": "Темная сфера, благословленная воронами древним знанием",
@@ -270,6 +294,10 @@
       "description": "Меткость ваших охотников улучшена",
       "name": "Острый глаз"
     },
+    "skilled_hands": {
+      "description": "Crafting costs are reduced",
+      "name": "Skilled Hands"
+    },
     "skeleton_key_schematic": {
       "description": "Blueprint for crafting a skeleton key",
       "name": "Skeleton Key"
@@ -280,7 +308,7 @@
     },
     "stormglass_halberd_schematic": {
       "description": "Чертеж для создания грозной алебарды",
-      "name": "Алебарда из грозового стекла"
+      "name": "Алебарда из грозового стекла"  //x1.6
     },
     "survivors_last_words": {
       "description": "Последнее благословение умирающего чужака",
@@ -298,6 +326,10 @@
       "description": "Древняя реликвия для тех, кто ищет путь.",
       "name": "Потускневший компас"
     },
+    "trail_sense": {
+      "description": "Your hunters bring back more food",
+      "name": "Trail Sense"
+    },
     "unnamed_book": {
       "description": "Книга в переплете из человеческой кожи, полная запретного знания",
       "name": "Безымянная книга"
@@ -313,45 +345,12 @@
     "wooden_figure": {
       "description": "Резная деревянная фигурка тревожного существа с щупальцами",
       "name": "Деревянная фигурка"
-    },
-    "obsidian_orb": {
-      "description": "Могущественная сфера из вулканического стекла, дарующая силу духа",
-      "name": "Обсидиановая сфера"
-    },
-    "obsidian_orb_schematic": {
-      "description": "Схема создания могущественной обсидиановой сферы",
-      "name": "Обсидиановая сфера"
-    },
-    "depths_gift": {
-      "description": "Cave exploration yields more",
-      "name": "Depth's Gift"
-    },
-    "fresh_blood": {
-      "description": "Strangers approach the village more often",
-      "name": "Fresh Blood"
-    },
-    "keen_builder": {
-      "description": "Building costs are reduced",
-      "name": "Keen Builder"
-    },
-    "rich_veins": {
-      "description": "Your ability to mine is improved",
-      "name": "Rich Veins"
-    },
-    "skilled_hands": {
-      "description": "Crafting costs are reduced",
-      "name": "Skilled Hands"
-    },
-    "trail_sense": {
-      "description": "Your hunters bring back more food",
-      "name": "Trail Sense"
     }
-
   },
   "fellowship": {
     "ashwraith_huntress": {
       "description": "Дикая охотница из лесного племени, связанная кровной клятвой. Открывает улучшения навыка охоты и производства охотников.",
-      "name": "Охотница Пепельных Теней"
+      "name": "Охотница Пепельных Теней"  //x1.3
     },
     "disgraced_prior": {
       "description": "Бывший приор, изгнанный из ордена. Искупает себя бесконечным трудом. Может быть назначен автоматически повторять действия.",
@@ -413,7 +412,7 @@
     },
     "hidden_library_map": {
       "description": "Карта из монастыря, открывающая местоположение скрытой библиотеки глубоко в пещере",
-      "name": "Карта скрытой библиотеки"
+      "name": "Карта скрытой библиотеки"  //x1.3
     },
     "iron_axe": {
       "description": "Острый топор для тяжелой рубки",
@@ -429,7 +428,7 @@
     },
     "mastermason_chisel": {
       "description": "Изысканно сделанный инструмент давно забытого мастера-строителя",
-      "name": "Резец мастера-каменщика"
+      "name": "Резец мастера-каменщика"  //x1.3
     },
     "natharit_pickaxe": {
       "description": "Крайне прочная кирка из неизвестного материала исключительного качества",
@@ -531,7 +530,7 @@
     },
     "frostglass_sword": {
       "description": "Клинок из морозного стекла, источающий холодную силу",
-      "name": "Меч из морозного стекла"
+      "name": "Меч из морозного стекла"  //x1.4
     },
     "huntsman_bow": {
       "description": "Улучшенный лук, точно сбалансированный и меткий",
@@ -567,7 +566,7 @@
     },
     "stormglass_halberd": {
       "description": "Превосходная алебарда из мастерски очищенного адаманта",
-      "name": "Алебарда из грозового стекла"
+      "name": "Алебарда из грозового стекла"  //x1.6
     },
     "veinfire_elixir": {
       "description": "Алхимический целебный эликсир, вытянутый из редкого жилокорня",

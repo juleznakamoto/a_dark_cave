@@ -1,7 +1,4 @@
 {
-  "tradeGoldForInsightPotion": {
-    "label": "Einsicht-Elixier"
-  },
   "animals": {
     "label": "Tiere"
   },
@@ -29,7 +26,7 @@
   },
   "buildAdvancedBlacksmith": {
     "description": "Verbesserte Schmiede mit besseren Werkzeugen und Techniken",
-    "label": "Fortgeschrittene Schmiede" //ok
+    "label": "Fortgeschrittene Schmiede"  //x1.3
   },
   "buildAlchemistHall": {
     "description": "Halle, in der der Alchemist Pulver und Sprengstoffe herstellt",
@@ -131,6 +128,10 @@
     "description": "Warme Fellunterkunft des wandernden Stammes",
     "label": "Fellzelt"
   },
+  "buildGrandArchive": {
+    "description": "Ein riesiges Gewölbe voller Schriftrollen, das alles bewahrt, was das Dorf je war – jeder Name und jede Mühe in Tinte verewigt",  //x1.4
+    "label": "Großes Archiv"
+  },
   "buildGrandBazaar": {
     "description": "Weitläufiger Marktplatz, der mehr Händler anzieht",
     "label": "Großer Basar"
@@ -169,14 +170,14 @@
   },
   "buildInkwardenAcademy": {
     "description": "Große Akademie, in der Meistergelehrte tiefes Wissen destillieren",
-    "label": "Schriftenwächterakademie" //ok
+    "label": "Schriftenwächterakademie"  //x1.3
   },
   "buildLonghouse": {
-    "description": "Massive nordische Hütte, die viele Dorfbewohner beherbergt", //ok
+    "description": "Massive nordische Hütte, die viele Dorfbewohner beherbergt",
     "label": "Langhaus"
   },
   "buildMasterTannery": {
-    "description": "Fortgeschrittene Gerberei, die die Lederproduktion verbessert", //ok
+    "description": "Fortgeschrittene Gerberei, die die Lederproduktion verbessert",  //x1.4
     "label": "Meistergerberei"
   },
   "buildMasterworkFoundry": {
@@ -207,9 +208,17 @@
     "description": "Steinbruch, der den Steinertrag der Sammler erhöht",
     "label": "Steinbruch"
   },
+  "buildRecordsHall": {
+    "description": "Eine Halle voller Regale mit verwitterten Registern und Verzeichnissen – das in Tinte festgehaltene und geordnete Gedächtnis des Dorfes",
+    "label": "Urkundenhalle"
+  },
   "buildSanctum": {
     "description": "Göttliches Heiligtum, das den größten Schutz vor der Dunkelheit bietet",
     "label": "Heiligtum"
+  },
+  "buildScribesOffice": {
+    "description": "Ein stiller Raum, in dem Schreiber sorgsam jede Arbeitskraft verzeichnen, damit keine Mühe vergessen wird",
+    "label": "Schreiberstube"
   },
   "buildScriptorium": {
     "description": "Zentrum der Weisheit, in dem Gelehrte Wissen sammeln",
@@ -461,7 +470,7 @@
   "descendFurther": {
     "label": "Tiefer hinabsteigen",
     "log": {
-      "firstVisit": "Die Laterne wirft ein gleichmäßiges Licht, während du noch tiefer hinabsteigst. Plötzlich berühren deine Füße von Menschenhand gemeißelte Steinstufen, vom Alter abgenutzt." //ok
+      "firstVisit": "Die Laterne wirft ein gleichmäßiges Licht, während du noch tiefer hinabsteigst. Plötzlich berühren deine Füße von Menschenhand gemeißelte Steinstufen, vom Alter abgenutzt."  //x1.4
     }
   },
   "encounterBeyondPortal": {
@@ -623,7 +632,7 @@
     }
   },
   "provokeAttackWave": {
-    "label": "Angriffswelle provozieren" //ok
+    "label": "Angriffswelle provozieren"  //x1.3
   },
   "repairBastion": {
     "label": "Bastion reparieren"
@@ -673,7 +682,7 @@
     "label": "Adamant kaufen"
   },
   "tradeGoldForAshfireBomb": {
-    "label": "Aschfeuerbombe kaufen" //ok
+    "label": "Aschfeuerbombe kaufen"
   },
   "tradeGoldForBlacksteel": {
     "label": "Schwarzstahl kaufen"
@@ -705,8 +714,11 @@
   "tradeGoldForVoidBomb": {
     "label": "Leerenbombe kaufen"
   },
+  "tradeGoldForInsightPotion": {
+    "label": "Einsicht-Elixier"
+  },
   "tradeGoldForVeinfireElixir": {
-    "label": "Aderfeuer-Elixier kaufen" //ok
+    "label": "Aderfeuer-Elixier kaufen"  //x1.3
   },
   "tradeGoldForWood": {
     "label": "Holz kaufen"
@@ -722,17 +734,5 @@
       "mapFragment": "Auf dem Höhlenboden findest du ein zerrissenes Kartenfragment.",
       "firstVisit": "Die Luft wird kälter, während du den Pfad tiefer in die Höhle hinabsteigst. Die Wände wirken unnatürlich glatt, als hätte sie jemand geformt."
     }
-  },
-  "buildGrandArchive": {
-    "description": "Ein riesiges Gewölbe voller Schriftrollen, das alles bewahrt, was das Dorf je war – jeder Name und jede Mühe in Tinte verewigt",
-    "label": "Großes Archiv"
-  },
-  "buildRecordsHall": {
-    "description": "Eine Halle voller Regale mit verwitterten Registern und Verzeichnissen – das in Tinte festgehaltene und geordnete Gedächtnis des Dorfes",
-    "label": "Urkundenhalle"
-  },
-  "buildScribesOffice": {
-    "description": "Ein stiller Raum, in dem Schreiber sorgsam jede Arbeitskraft verzeichnen, damit keine Mühe vergessen wird",
-    "label": "Schreiberstube"
   }
 }

@@ -1,8 +1,4 @@
 {
-  "insightPotion": {
-    "title": "洞见灵药",
-    "message": "你饮下洞见灵药，领悟在心中绽放。"
-  },
   "event": {
     "fallbackTitle": "事件",
     "choose": "请选择一个选项",
@@ -22,6 +18,15 @@
   "madness": {
     "title": "疯狂事件",
     "change": "{{sign}} {{amount}} 疯狂"
+  },
+  "insightPotion": {
+    "title": "洞见灵药",
+    "message": "你饮下洞见灵药，领悟在心中绽放。"
+  },
+  "blessingOffer": {
+    "title": "Choose a Blessing",
+    "srDescription": "Select one of the offered blessings",
+    "chooseBlessing": "Choose"
   },
   "socialPrompt": {
     "title": "保持联系，赢取奖励",
@@ -44,6 +49,8 @@
     "progressToward": "专属奖励：",
     "progressAriaLabel": "专属奖励",
     "alreadyClaimedReward": "你已领取此奖励！",
+    "playlightDiscoverRewardLog": "发现游戏奖励：获得 {{amount}} 金币！",
+    "marketingSubscribeLog": "订阅邮件更新奖励：获得 {{amount}} 金币！",
     "followRewardLog": "关注 {{platform}} 获得 {{amount}} 黄金！",
     "platforms": {
       "instagram": {
@@ -54,9 +61,7 @@
         "title": "红迪",
         "actionJoin": "加入"
       }
-    },
-    "playlightDiscoverRewardLog": "发现游戏奖励：获得 {{amount}} 金币！",
-    "marketingSubscribeLog": "订阅邮件更新奖励：获得 {{amount}} 金币！"
+    }
   },
   "referral": {
     "invitedLog": "你邀请了新朋友来到这个世界！+{{amount}} 金币"
@@ -238,11 +243,5 @@
     "wishlistButton": "加入 Steam 愿望单",
     "startNewGameButton": "开始新游戏",
     "releaseNote": "计划发售：2026 年第四季度"
-  },
-  "blessingOffer": {
-    "title": "Choose a Blessing",
-    "srDescription": "Select one of the offered blessings",
-    "chooseBlessing": "Choose"
   }
-
 }

@@ -39,6 +39,9 @@
     "frostfall": "霜降",
     "chokingFog": "窒息迷雾",
     "focus": "专注",
+    "obsidianOrbFocusRate": "专注：每15分钟1点",
+    "obsidianOrbFocusCountdown": "{{time}} 后获得下一点专注",
+    "obsidianOrbFocusCap": "专注储备已满 ({{max}})",
     "actionBonus": "行动加成：{{multiplier}}倍",
     "baseDamage": "基础伤害：{{value}}",
     "knowledgeBonus": "知识加成：+{{value}}",
@@ -171,9 +174,6 @@
       "constructionBoost": "建造加速：消耗洞见跳过 50% 建造时间（每次建造限用一次）",
       "craftingBoost": "制作加速：消耗洞见跳过 50% 制作时间（每次制作限用一次）",
       "weaponEnchantment": "武器附魔"
-    },
-    "obsidianOrbFocusRate": "专注：每15分钟1点",
-    "obsidianOrbFocusCountdown": "{{time}} 后获得下一点专注",
-    "obsidianOrbFocusCap": "专注储备已满 ({{max}})"
+    }
   }
 }

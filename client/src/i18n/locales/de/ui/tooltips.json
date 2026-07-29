@@ -12,13 +12,13 @@
     "gainUnknown": "+? {{resource}}",
     "costLine": "-{{amount}} {{resource}}",
     "duration": "{{duration}}",
-    "villagerCost_one": "-{{count}} Dorfbewohner", //ok
+    "villagerCost_one": "-{{count}} Dorfbewohner",  //x1.2
     "villagerCost_other": "-{{count}} Dorfbewohner",
-    "freeVillagerCost_one": "-{{count}} freier Dorfbewohner",
+    "freeVillagerCost_one": "-{{count}} freier Dorfbewohner",  //x1.3
     "freeVillagerCost_other": "-{{count}} freie Dorfbewohner",
     "mapFragmentProgress": "{{count}} von {{total}} Kartenfragmenten",
-    "defense": "Verteidigung: {{value}}", //ok
-    "madnessFromItems": "{{value}} von Gegenständen", //ok
+    "defense": "Verteidigung: {{value}}",  //x1.3
+    "madnessFromItems": "{{value}} von Gegenständen",  //x1.3
     "madnessFromBuildings": "{{value}} von Gebäuden",
     "madnessFromEvents": "{{value}} von Ereignissen",
     "madnessTitle": "Wahnsinn",
@@ -31,21 +31,24 @@
     "solsticeGathering": "Sonnenwendversammlung",
     "newVillagerChanceBonus": "Chance auf neue Dorfbewohner +{{percent}} %",
     "witchsCurse": "Hexenfluch",
-    "villagerDisgust": "Ekel der Dorfbewohner", //ok
+    "villagerDisgust": "Ekel der Dorfbewohner",  //x1.3
     "miningBoost": "Abbau-Boost",
     "miningBonus": "Abbau-Bonus: {{percent}} %",
     "heartfire": "Herzfeuer",
     "newVillagerChance": "Chance auf neue Dorfbewohner: +{{percent}} %",
     "frostfall": "Froststurz",
-    "chokingFog": "Erstickender Nebel", //ok
+    "chokingFog": "Erstickender Nebel",  //x1.6
     "focus": "Fokus",
+    "obsidianOrbFocusRate": "Fokus: 1 alle 15 Minuten",
+    "obsidianOrbFocusCountdown": "{{time}} bis zum nächsten Fokuspunkt",
+    "obsidianOrbFocusCap": "Fokusreserve voll ({{max}})",
     "actionBonus": "Aktionsbonus: {{multiplier}}x",
     "baseDamage": "Grundschaden: {{value}}",
     "knowledgeBonus": "Wissensbonus: +{{value}}",
     "totalDamage": "Gesamtschaden: {{value}}",
     "totalDamageForRounds": "Gesamtschaden: {{value}} für {{rounds}} Runden",
     "selfDamageChance": "5 % Chance, dir selbst Schaden zuzufügen",
-    "restoreIntegrity": "Stellt bis zu {{amount}} Integrität wieder her", //ok
+    "restoreIntegrity": "Stellt bis zu {{amount}} Integrität wieder her",  //x1.4
     "damage": "Schaden: {{value}}",
     "stunDuration_one": "Betäubungsdauer: {{rounds}} Runde",
     "stunDuration_other": "Betäubungsdauer: {{rounds}} Runden",
@@ -54,7 +57,7 @@
     "burnDamage_other": "{{damage}} Schaden für {{rounds}} Runden",
     "healthCost": "Lebenskosten: {{value}}",
     "currentResource": "Aktuell: {{amount}} {{resource}}",
-    "damaged": "(beschädigt)", //ok
+    "damaged": "(beschädigt)",  //x1.3
     "level": "Stufe {{level}}",
     "improveForInsight": "Verbessern für {{cost}} Einsicht",
     "unlockMoreJobsForInsight": "Weitere Jobs für {{cost}} Einsicht freischalten",
@@ -90,27 +93,27 @@
     "productionBonusLine": "+{{percent}} % Produktion",
     "secRemaining": "Noch {{count}} Sek.",
     "buildings": {
-      "unlocksHunters": "Schaltet Jäger frei", //ok
-      "unlocksCrafting": "Schaltet Herstellung frei", //ok
-      "unlocksSchematicCrafting": "Schaltet Bauplanherstellung frei", //ok
-      "unlocksBlacksteelCrafting": "Schaltet Schwarzstahlherstellung frei", //ok
-      "unlocksBlacksteelForgers": "Schaltet Schwarzstahlschmiede frei", //ok
-      "unlocksIronMiners": "Schaltet Eisenbergleute frei", //ok
-      "unlocksCoalMiners": "Schaltet Kohlebergleute frei", //ok
-      "unlocksSulfurMiners": "Schaltet Schwefelbergleute frei", //ok
-      "unlocksObsidianMiners": "Schaltet Obsidianbergleute frei", //ok
-      "unlocksAdamantMiners": "Schaltet Adamantbergleute frei", //ok
-      "unlocksMoonstoneMiners": "Schaltet Mondsteinbergleute frei", //ok
-      "unlocksSteelForgers": "Schaltet Stahlschmiede frei", //ok
-      "unlocksTanners": "Schaltet Gerber frei", //ok
-      "unlocksInvestments": "Schaltet Investitionen frei", //ok
-      "unlocksPowderMakers": "Schaltet Pulvermacher frei", //ok
-      "unlocksCallMerchant": "Schaltet Händler rufen frei", //ok
-      "unlocksWizardStory": "Schaltet Magier Storyline frei", //ok
-      "unlocksEstateTab": "Schaltet Anwesen-Tab frei", //ok
+      "unlocksHunters": "Schaltet Jäger frei",  //x1.3
+      "unlocksCrafting": "Schaltet Herstellung frei",  //x1.6
+      "unlocksSchematicCrafting": "Schaltet Bauplanherstellung frei",  //x1.2
+      "unlocksBlacksteelCrafting": "Schaltet Schwarzstahlherstellung frei",  //x1.4
+      "unlocksBlacksteelForgers": "Schaltet Schwarzstahlschmiede frei",  //x1.3
+      "unlocksIronMiners": "Schaltet Eisenbergleute frei",  //x1.5
+      "unlocksCoalMiners": "Schaltet Kohlebergleute frei",  //x1.5
+      "unlocksSulfurMiners": "Schaltet Schwefelbergleute frei",  //x1.5
+      "unlocksObsidianMiners": "Schaltet Obsidianbergleute frei",  //x1.3
+      "unlocksAdamantMiners": "Schaltet Adamantbergleute frei",  //x1.4
+      "unlocksMoonstoneMiners": "Schaltet Mondsteinbergleute frei",  //x1.3
+      "unlocksSteelForgers": "Schaltet Stahlschmiede frei",  //x1.3
+      "unlocksTanners": "Schaltet Gerber frei",  //x1.3
+      "unlocksInvestments": "Schaltet Investitionen frei",  //x1.4
+      "unlocksPowderMakers": "Schaltet Pulvermacher frei",  //x1.2
+      "unlocksCallMerchant": "Schaltet Händler rufen frei",  //x1.3
+      "unlocksWizardStory": "Schaltet Magier Storyline frei",  //x1.5
+      "unlocksEstateTab": "Schaltet Anwesen-Tab frei",  //x1.4
       "unlocksFeedFireAction": "Schaltet Feuer schüren frei",
-      "craftDiscountSpaced": "2,5 % Herstellungsrabatt", //ok
-      "craftDiscountSpaced5": "5 % Herstellungsrabatt", //ok
+      "craftDiscountSpaced": "2,5 % Herstellungsrabatt",  //x1.2
+      "craftDiscountSpaced5": "5 % Herstellungsrabatt",  //x1.2
       "craftDiscount": "{{percent}} % Herstellungsrabatt",
       "buildDiscount": "{{percent}} % Baurabatt",
       "gathererWood": "Sammler: +{{amount}} Holz",
@@ -119,10 +122,10 @@
       "hunterFur": "Jäger: +{{amount}} Fell",
       "hunterBones": "Jäger: +{{amount}} Knochen",
       "knowledgeBonus": "+{{amount}} Wissen",
-      "resourceChangeHints": "Hinweise zu Ressourcenänderungen", //ok
-      "improvedResourceChangeHints": "Verbesserte Hinweise zu Ressourcenänderungen",
+      "resourceChangeHints": "Hinweise zu Ressourcenänderungen",  //x1.5
+      "improvedResourceChangeHints": "Verbesserte Hinweise zu Ressourcenänderungen",  //x1.5
       "resourceHighlighting": "Ressourcen-Hervorhebung",
-      "unlocksScholar": "Schaltet Gelehrte frei",
+      "unlocksScholar": "Schaltet Gelehrte frei",  //x1.5
       "addsVillagerPreset_one": "Fügt {{count}} Job-Vorlage hinzu",
       "addsVillagerPreset_other": "Fügt {{count}} Job-Vorlagen hinzu",
       "scholarInsight1": "Gelehrter produziert 1 Einsicht pro Zyklus",
@@ -131,10 +134,10 @@
       "insightRevealCost": "{{cost}} Einsicht",
       "insightRevealSeeEffects": "Effekte für {{cost}} {{resource}} anzeigen",
       "insightRevealEffects": "Effekte",
-      "abortActions": "Aktionen abbrechen", //ok
+      "abortActions": "Aktionen abbrechen",  //x1.4
       "madnessReduction": "-{{amount}} Wahnsinn",
       "madnessIncrease": "+{{amount}} Wahnsinn",
-      "defenseBonus": "+{{amount}} Verteidigung", //ok
+      "defenseBonus": "+{{amount}} Verteidigung",  //x1.3
       "attackBonus": "+{{amount}} Angriff",
       "integrityBonus": "+{{amount}} Integrität",
       "luckyChance": "+{{percent}} % Glückschance",
@@ -169,11 +172,8 @@
       "addsConstructionQueueSlot_one": "Fügt {{count}} Bauwarteschlange hinzu",
       "addsConstructionQueueSlot_other": "Fügt {{count}} Bauwarteschlangen hinzu",
       "constructionBoost": "Bau-Boost: Einsicht ausgeben, um 50 % der Bauzeit zu überspringen (einmal pro Bau)",
-      "craftingBoost": "Herstellungs-Boost: Einsicht ausgeben, um 50 % der Herstellungszeit zu überspringen (einmal pro Herstellung)",
+      "craftingBoost": "Herstellungs-Boost: Einsicht ausgeben, um 50 % der Herstellungszeit zu überspringen (einmal pro Herstellung)",  //x1.5
       "weaponEnchantment": "Waffenverzauberung"
-    },
-    "obsidianOrbFocusRate": "Fokus: 1 alle 15 Minuten",
-    "obsidianOrbFocusCountdown": "{{time}} bis zum nächsten Fokuspunkt",
-    "obsidianOrbFocusCap": "Fokusreserve voll ({{max}})"
+    }
   }
 }

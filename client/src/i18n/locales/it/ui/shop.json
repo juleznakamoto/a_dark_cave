@@ -94,6 +94,9 @@
     "securePurchaseTitle": "Metti al sicuro il tuo acquisto",
     "securePurchaseBody": "Il tuo acquisto è salvato solo su questo browser. Crea un account per conservare acquisti e progressi se cambi dispositivo o cancelli i dati del browser.",
     "securePurchaseSignUp": "Registrati",
-    "securePurchaseLater": "Forse più tardi"
+    "securePurchaseLater": "Forse più tardi",
+    "firstPurchaseInsightBannerBefore": "First purchase gift:",
+    "firstPurchaseInsightBannerBonus": "+{{amount}} {{glyph}} Insight",
+    "firstPurchaseInsightGranted": "First purchase gift: +{{amount}} {{glyph}} Insight"
   }
 }

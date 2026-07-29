@@ -11,8 +11,8 @@
     "gameModeSteamDemo": "Steam Demo"
   },
   "textScale": {
-    "label": "Размер текста",
-    "ariaLabel": "Выбрать размер текста",
+    "label": "Размер текста",  //x1.4
+    "ariaLabel": "Выбрать размер текста",  //x1.3
     "normal": "Обычный",
     "large": "Крупный"
   },
@@ -27,54 +27,56 @@
     "airCruel": "Воздух ледяной и сырой.",
     "seeNormal": "Вы едва различаете очертания вокруг.",
     "seeCruel": "Вы почти ничего не видите вокруг.",
-    "makeFire": "Развести огонь",
+    "makeFire": "Развести огонь",  //x1.6
     "recommendedBy": "Рекомендует"
   },
   "footer": {
-    "fullGame": "Полная версия",
+    "fullGame": "Полная версия",  //x1.4
     "trader": "Торговец",
-    "openShop": "Открыть магазин",
-    "donate": "Пожертвовать",
-    "supportGame": "Поддержать игру",
-    "privacy": "Конфиденциальность",
-    "imprint": "Правовая информация",
+    "openShop": "Открыть магазин",  //x1.7
+    "donate": "Пожертвовать",  //x2.0
+    "supportGame": "Поддержать игру",  //x1.3
+    "privacy": "Конфиденциальность",  //x2.6
+    "imprint": "Правовая информация",  //x2.7
     "contact": "Контакты",
-    "pauseGame": "Приостановить игру",
-    "resumeGame": "Продолжить игру",
-    "muteMusic": "Выключить музыку",
-    "unmuteMusic": "Включить музыку",
+    "pauseGame": "Приостановить игру",  //x1.8
+    "resumeGame": "Продолжить игру",  //x1.4
+    "muteMusic": "Выключить музыку",  //x1.6
+    "unmuteMusic": "Включить музыку",  //x1.3
     "muteSfx": "Выключить звуки",
     "unmuteSfx": "Включить звуки",
     "cruelModeActive": "Жестокий режим включен",
-    "wishlistOnSteam": "Добавить в список желаемого Steam",
+    "wishlistOnSteam": "Добавить в список желаемого Steam",  //x1.9
     "demoProgress": "Demo Progress"
   },
   "profile": {
     "title": "Меню",
-    "signInUp": "Вход / регистрация",
-    "emailsOn": "Письма вкл.",
-    "emailsOff": "Письма выкл.",
+    "signInUp": "Вход / регистрация",  //x1.8
+    "emailsOn": "Письма вкл.",  //x1.2
+    "emailsOff": "Письма выкл.",  //x1.2
     "marketingOnTooltip": "Вы получаете письма с обновлениями, скидками и наградами. Нажмите, чтобы отключить.",
     "marketingOffTooltip": "Вы не получаете письма с обновлениями. Нажмите, чтобы включить.",
-    "rewardsTasks": "Задачи с наградами",
+    "rewardsTasks": "Задачи с наградами",  //x1.4
     "save": "Сохранить",
     "newGame": "Новая игра",
-    "restart": "Начать заново",
+    "restart": "Начать заново",  //x1.9
     "signIn": "Войти",
     "signOut": "Выйти",
-    "leaderboard": "Таблица лидеров",
+    "leaderboard": "Таблица лидеров",  //x1.4
     "rewards": "Награды",
     "deleteAccount": "Удалить аккаунт",
-    "marketingSubscribe": "Подписаться на рассылку",
+    "marketingSubscribe": "Подписаться на рассылку",  //x1.2
     "marketingUnsubscribe": "Отписаться от рассылки",
-    "autoSaveSignedIn": "Игра автосохраняется каждую минуту",
+    "autoSaveSignedIn": "Игра автосохраняется каждую минуту",  //x1.2
     "autoSaveGuest": "Игра автосохраняется каждые 15 секунд",
-    "signUpCloudSave": "Зарегистрируйтесь, чтобы сохранять игру в облаке",
-    "lastSave": "Последнее сохранение: {{time}}",
+    "signUpCloudSave": "Зарегистрируйтесь, чтобы сохранять игру в облаке",  //x1.5
+    "autoSaveSteam": "Game auto-saves every 15 seconds",
+    "steamCloudSave": "Progress syncs to Steam Cloud when you save.",
+    "lastSave": "Последнее сохранение: {{time}}",  //x1.6
     "signedOut": "Вы успешно вышли",
     "signOutError": "Ошибка выхода",
     "gameSaved": "Игра сохранена",
-    "saveFailed": "Не удалось сохранить игру",
+    "saveFailed": "Не удалось сохранить игру",  //x1.3
     "accountDeleted": "Ваш аккаунт удален",
     "accountDeletedDesc": "Вы вышли из аккаунта, а локальное сохранение на этом устройстве очищено.",
     "deleteAccountFailed": "Не удалось удалить аккаунт",
@@ -86,14 +88,12 @@
     "unsubscribedDesc": "Вы не будете получать от нас рекламные письма.",
     "preferenceUpdateFailed": "Не удалось обновить настройку",
     "enterFullscreen": "Full screen",
-    "exitFullscreen": "Exit full screen",
-    "autoSaveSteam": "Game auto-saves every 15 seconds",
-    "steamCloudSave": "Progress syncs to Steam Cloud when you save."
+    "exitFullscreen": "Exit full screen"
   },
   "pauseHotkey": {
-    "hintPrefix": "Используйте ",
-    "hintSelect": " для выбора вкладки или ",
-    "hintSuffix": " для переключения вкладок"
+    "hintPrefix": "Используйте ",  //x3.0
+    "hintSelect": " для выбора вкладки или ",  //x1.3
+    "hintSuffix": " для переключения вкладок"  //x1.7
   },
   "villageHotkeyTutorial": {
     "dismiss": "Закрыть"

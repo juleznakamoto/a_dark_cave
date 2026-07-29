@@ -70,6 +70,8 @@
     "autoSaveSignedIn": "游戏每分钟自动保存",
     "autoSaveGuest": "游戏每 15 秒自动保存",
     "signUpCloudSave": "注册以将游戏保存到云端",
+    "autoSaveSteam": "Game auto-saves every 15 seconds",
+    "steamCloudSave": "Progress syncs to Steam Cloud when you save.",
     "lastSave": "上次保存：{{time}}",
     "signedOut": "已成功退出登录",
     "signOutError": "退出登录时出错",
@@ -86,9 +88,7 @@
     "unsubscribedDesc": "你将不会收到我们的营销邮件。",
     "preferenceUpdateFailed": "无法更新偏好设置",
     "enterFullscreen": "Full screen",
-    "exitFullscreen": "Exit full screen",
-    "autoSaveSteam": "Game auto-saves every 15 seconds",
-    "steamCloudSave": "Progress syncs to Steam Cloud when you save."
+    "exitFullscreen": "Exit full screen"
   },
   "pauseHotkey": {
     "hintPrefix": "使用 ",

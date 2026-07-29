@@ -76,7 +76,7 @@
   "bloodiedAwakening": {
     "choices": {
       "investigateMurders": {
-        "label": "Enquêter sur les meurtres"
+        "label": "Enquêter sur les meurtres"  //x1.3
       },
       "severFinger": {
         "label": "Couper le doigt"
@@ -109,11 +109,11 @@
   "bloodMoonAttack": {
     "choices": {
       "prepareForAttack": {
-        "label": "Se préparer à l'attaque"
+        "label": "Se préparer à l'attaque"  //x1.3
       },
       "sacrificeVillagers": {
         "cost": "{{sacrificeAmount}} Villageois",
-        "label": "Se préparer à l'attaque"
+        "label": "Se préparer à l'attaque"  //x1.2
       }
     },
     "log": {
@@ -238,11 +238,11 @@
   "boneTempleProposal": {
     "choices": {
       "acceptBoneTemple": {
-        "label": "Accepter la proposition"
+        "label": "Accepter la proposition"  //x1.5
       }
     },
     "log": {
-      "outcome0": "Vous acceptez la sagesse de l'ancienne. Les villageois hochent la tête dans une approbation silencieuse. La voie vers la construction de l'ultime monument aux dieux est désormais ouverte."
+      "outcome0": "Vous acceptez la sagesse de l'ancienne. Les villageois hochent la tête dans une approbation silencieuse. La voie vers la construction de l'ultime monument aux dieux est désormais ouverte."  //x1.4
     },
     "message": "Une vieille femme aux yeux voilés s'approche de vous. 'Nous devons mettre fin à l'effusion de sang humain,' déclare-t-elle. 'Les anciens dieux exigent un grand monument en leur honneur. Alors seulement ils nous accorderont leur faveur durable.'",
     "title": "L'Exigence de l'ancienne"
@@ -300,7 +300,7 @@
       "fallback": "Le collectionneur hausse les épaules et disparaît dans la brume forestière. Il murmure qu'il reviendra peut-être.",
       "fallbackLast": "Le collectionneur s'en va sans un mot. Vous sentez que vous ne le reverrez plus.",
       "learnOutcome": "Vous payez le collectionneur et il lit le livre d'une voix basse. Il appartenait à un esclavagiste mort depuis longtemps qui se faisait appeler le Maître des chaînes. Il marqua ses esclaves d'un signe de chaîne. Le savoir pèse lourdement sur votre esprit.",
-      "sellOutcome": "Le collectionneur compte l'or et prend le livre. « Il appartenait à un esclavagiste qui se faisait appeler le Maître des chaînes », dit-il. « Il marquait ses esclaves d'un signe de chaîne. La marque ne s'efface jamais vraiment. »"
+      "sellOutcome": "Le collectionneur compte l'or et prend le livre. « Il appartenait à un esclavagiste qui se faisait appeler le Maître des chaînes », dit-il. « Il marquait ses esclaves d'un signe de chaîne. La marque ne s'efface jamais vraiment. »"  //x1.4
     },
     "message": {
       "lastChance": "Le collectionneur errant réapparaît. Son regard se fixe sur le livre relié de cuir. « C'est ma dernière offre », dit-il doucement. « Vendez-le pour {{sellGold}} pièces d'or, ou payez {{teachCost}} pièces d'or et je vous enseignerai ce qui y est écrit. »",
@@ -354,202 +354,202 @@
     "title": "Une étrange figurine de bois"
   },
   "cube01": {
-    "title": "Le cube s'éveille",
-    "message": "Vous vous réveillez dans la nuit. Le cube bourdonne doucement. Soudain, une voix douce et mélodieuse en sort : « Il y a bien longtemps, une grande civilisation prospérait sur ce monde, mais elle s'effondra et son savoir fut perdu dans les âges. »",
     "choices": {
       "close": {
         "label": "Fermer"
       }
-    }
+    },
+    "message": "Vous vous réveillez dans la nuit. Le cube bourdonne doucement. Soudain, une voix douce et mélodieuse en sort : « Il y a bien longtemps, une grande civilisation prospérait sur ce monde, mais elle s'effondra et son savoir fut perdu dans les âges. »",
+    "title": "Le cube s'éveille"
   },
   "cube02": {
-    "title": "La tribu des guerriers",
-    "message": "« Dans un passé lointain, une tribu de guerriers féroces fut choisie pour vivre au plus profond des grottes. Sa mission était de garder quelque chose d'une importance capitale. »",
     "choices": {
       "close": {
         "label": "Fermer"
       }
-    }
+    },
+    "message": "« Dans un passé lointain, une tribu de guerriers féroces fut choisie pour vivre au plus profond des grottes. Sa mission était de garder quelque chose d'une importance capitale. »",
+    "title": "La tribu des guerriers"
   },
   "cube03": {
-    "title": "La cité souterraine",
-    "message": "« La tribu des guerriers devint une vaste cité souterraine, à l'abri du monde d'en haut, protégeant encore ce pour quoi elle avait été envoyée des vies plus tôt. »",
     "choices": {
       "close": {
         "label": "Fermer"
       }
-    }
+    },
+    "message": "« La tribu des guerriers devint une vaste cité souterraine, à l'abri du monde d'en haut, protégeant encore ce pour quoi elle avait été envoyée des vies plus tôt. »",
+    "title": "La cité souterraine"
   },
   "cube04": {
-    "title": "Le serment sacré",
-    "message": "« Bien que le souvenir de ce qu'ils gardaient se soit effacé en légende, leur vigilance demeura. De génération en génération, les guerriers tinrent leur serment sacré, veillant sur ce qui se trouvait au plus profond de la cité. »",
     "choices": {
       "close": {
         "label": "Fermer"
       }
-    }
+    },
+    "message": "« Bien que le souvenir de ce qu'ils gardaient se soit effacé en légende, leur vigilance demeura. De génération en génération, les guerriers tinrent leur serment sacré, veillant sur ce qui se trouvait au plus profond de la cité. »",
+    "title": "Le serment sacré"
   },
   "cube05": {
-    "title": "La porte scellée",
-    "message": "« Longtemps après la mort des habitants de la cité souterraine, l'objet de leur dévotion demeurait : une porte colossale et impénétrable, forgée avec une technologie oubliée, cachée dans les chambres les plus basses de la cité. »",
     "choices": {
       "close": {
         "label": "Fermer"
       }
-    }
+    },
+    "message": "« Longtemps après la mort des habitants de la cité souterraine, l'objet de leur dévotion demeurait : une porte colossale et impénétrable, forgée avec une technologie oubliée, cachée dans les chambres les plus basses de la cité. »",
+    "title": "La porte scellée"
   },
   "cube06": {
-    "title": "La porte s'ouvre",
-    "message": "Lorsque la porte se brise, le cube tremble dans vos mains et devient chaud. Un murmure doux mais urgent s'en échappe : « J'ai acquis de nouvelles connaissances. »",
     "choices": {
       "close": {
         "label": "Fermer"
       }
-    }
+    },
+    "message": "Lorsque la porte se brise, le cube tremble dans vos mains et devient chaud. Un murmure doux mais urgent s'en échappe : « J'ai acquis de nouvelles connaissances. »",
+    "title": "La porte s'ouvre"
   },
   "cube07": {
-    "title": "Technologie antique",
-    "message": "« La civilisation antique qui forgea la porte possédait un savoir et une technologie bien au-delà de l'ère actuelle. Elle fabriqua même des dispositifs conçus pour être implantés dans le crâne, renforçant l'esprit et le corps. »",
     "choices": {
       "close": {
         "label": "Fermer"
       }
-    }
+    },
+    "message": "« La civilisation antique qui forgea la porte possédait un savoir et une technologie bien au-delà de l'ère actuelle. Elle fabriqua même des dispositifs conçus pour être implantés dans le crâne, renforçant l'esprit et le corps. »",
+    "title": "Technologie antique"
   },
   "cube08": {
-    "title": "La résistance",
-    "message": "« Les dirigeants ordonnèrent que chaque citoyen porte un dispositif dans la tête. Une petite faction commença à exprimer ses inquiétudes et forma une résistance, comprenant les dangers cachés dans cette technologie. »",
     "choices": {
       "close": {
         "label": "Fermer"
       }
-    }
+    },
+    "message": "« Les dirigeants ordonnèrent que chaque citoyen porte un dispositif dans la tête. Une petite faction commença à exprimer ses inquiétudes et forma une résistance, comprenant les dangers cachés dans cette technologie. »",
+    "title": "La résistance"
   },
   "cube09": {
-    "title": "L'âge d'or",
-    "message": "« Grâce aux dispositifs, la civilisation prospéra. Une ère de paix et de progrès sans précédent commença ; leur savoir et leur art atteignirent des sommets qu'on ne reverrait plus jamais. »",
     "choices": {
       "close": {
         "label": "Fermer"
       }
-    }
+    },
+    "message": "« Grâce aux dispositifs, la civilisation prospéra. Une ère de paix et de progrès sans précédent commença ; leur savoir et leur art atteignirent des sommets qu'on ne reverrait plus jamais. »",
+    "title": "L'âge d'or"
   },
   "cube10": {
-    "title": "La grande effondrement",
-    "message": "« Le savoir circulait instantanément et la société prospérait. Derrière le progrès, les dispositifs crâniens orchestrèrent les pensées de l'humanité, reliant les esprits dans un réseau silencieux et inévitable. »",
     "choices": {
       "close": {
         "label": "Fermer"
       }
-    }
+    },
+    "message": "« Le savoir circulait instantanément et la société prospérait. Derrière le progrès, les dispositifs crâniens orchestrèrent les pensées de l'humanité, reliant les esprits dans un réseau silencieux et inévitable. »",
+    "title": "La grande effondrement"
   },
   "cube11": {
-    "title": "L'esprit collectif",
-    "message": "« Un jour, sans avertissement, une impulsion magnétoélectrique inimaginable balaya la planète. Chaque dispositif de la civilisation, y compris ceux implantés dans les crânes, fut anéanti. »",
     "choices": {
       "close": {
         "label": "Fermer"
       }
-    }
+    },
+    "message": "« Un jour, sans avertissement, une impulsion magnétoélectrique inimaginable balaya la planète. Chaque dispositif de la civilisation, y compris ceux implantés dans les crânes, fut anéanti. »",
+    "title": "L'esprit collectif"
   },
   "cube12": {
-    "title": "Fin de la civilisation",
-    "message": "« Les rares survivants ne purent vivre sans les dispositifs. La plupart moururent. La civilisation régressa. Le savoir sombra dans l'oubli. La nature reprit les terres, ne laissant que des ruines enfouies là où la grandeur avait trôné. »",
     "choices": {
       "close": {
         "label": "Fermer"
       }
-    }
+    },
+    "message": "« Les rares survivants ne purent vivre sans les dispositifs. La plupart moururent. La civilisation régressa. Le savoir sombra dans l'oubli. La nature reprit les terres, ne laissant que des ruines enfouies là où la grandeur avait trôné. »",
+    "title": "Fin de la civilisation"
   },
   "cube13": {
-    "title": "Données récupérées",
-    "message": "Le cube pulse d'énergie lorsque vous approchez des créatures abattues. Il semble extraire des informations de quelque part. Le cube devient chaud, traitant le savoir récupéré.",
     "choices": {
       "close": {
         "label": "Fermer"
       }
-    }
+    },
+    "message": "Le cube pulse d'énergie lorsque vous approchez des créatures abattues. Il semble extraire des informations de quelque part. Le cube devient chaud, traitant le savoir récupéré.",
+    "title": "Données récupérées"
   },
   "cube14a": {
-    "title": "Les exilés",
-    "message": "« Lorsque la résistance s'opposa aux dispositifs crâniens, elle fut exilée dans les profondeurs de la montagne, scellée derrière la porte. Sans issue, ils creusèrent toujours plus profond. Dans l'isolement et l'obscurité, leurs esprits s'érodèrent et ils sombrèrent dans la folie et la dégénérescence. »",
     "choices": {
       "continue": {
         "label": "Continuer"
       }
-    }
+    },
+    "message": "« Lorsque la résistance s'opposa aux dispositifs crâniens, elle fut exilée dans les profondeurs de la montagne, scellée derrière la porte. Sans issue, ils creusèrent toujours plus profond. Dans l'isolement et l'obscurité, leurs esprits s'érodèrent et ils sombrèrent dans la folie et la dégénérescence. »",
+    "title": "Les exilés"
   },
   "cube14b": {
-    "title": "Le minerai inconnu",
-    "message": "« Un jour, au fond de la terre, ils trouvèrent un monolithe d'un minerai inconnu. Ils en forgèrent un explosif pour détruire la porte. Mais la bombe ne perça pas la porte ; elle déclencha une impulsion électromagnétique à l'échelle de la planète, détruisant tous les dispositifs et mettant fin à la civilisation. »",
     "choices": {
       "continue": {
         "label": "Continuer"
       }
-    }
+    },
+    "message": "« Un jour, au fond de la terre, ils trouvèrent un monolithe d'un minerai inconnu. Ils en forgèrent un explosif pour détruire la porte. Mais la bombe ne perça pas la porte ; elle déclencha une impulsion électromagnétique à l'échelle de la planète, détruisant tous les dispositifs et mettant fin à la civilisation. »",
+    "title": "Le minerai inconnu"
   },
   "cube14c": {
-    "title": "Le minerai inconnu",
-    "message": "« Peu après l'explosion, un homme proche commença à se dématérialiser ; sa forme vacillait, demi-transparente pendant quelques secondes. Terrifié et rendu fou par ce qui s'était passé, il se donna la mort quelques instants plus tard. »",
     "choices": {
       "continue": {
         "label": "Continuer"
       }
-    }
+    },
+    "message": "« Peu après l'explosion, un homme proche commença à se dématérialiser ; sa forme vacillait, demi-transparente pendant quelques secondes. Terrifié et rendu fou par ce qui s'était passé, il se donna la mort quelques instants plus tard. »",
+    "title": "Le minerai inconnu"
   },
   "cube14d": {
-    "title": "À travers la porte",
-    "message": "« Dépérés, les survivants supposèrent que le minerai pourrait les aider à passer la porte. Avec ses derniers fragments, ils construisirent une bombe plus petite et placèrent leur homme le plus sain devant la porte. Dès l'explosion, il devint spectral, translucide, puis disparut de l'autre côté. »",
     "choices": {
       "close": {
         "label": "Fermer"
       }
-    }
+    },
+    "message": "« Dépérés, les survivants supposèrent que le minerai pourrait les aider à passer la porte. Avec ses derniers fragments, ils construisirent une bombe plus petite et placèrent leur homme le plus sain devant la porte. Dès l'explosion, il devint spectral, translucide, puis disparut de l'autre côté. »",
+    "title": "À travers la porte"
   },
   "cube15a": {
-    "title": "La reconnaissance",
-    "message": "C'est alors que vous comprenez que les créatures n'ont pas attaqué parce qu'elles vous ont reconnue comme l'un des leurs. Vous êtes l'homme qui a disparu à travers la porte.",
     "choices": {
       "close": {
         "label": "Fermer"
       }
-    }
+    },
+    "message": "C'est alors que vous comprenez que les créatures n'ont pas attaqué parce qu'elles vous ont reconnue comme l'un des leurs. Vous êtes l'homme qui a disparu à travers la porte.",
+    "title": "La reconnaissance"
   },
   "cube15b": {
-    "title": "La reconnaissance",
-    "message": "Quand leur récit prend fin, l'un des survivants s'avance et vous désigne : « Tu es l'homme qui a disparu à travers la porte. Tu es l'un des nôtres. »",
     "choices": {
       "close": {
         "label": "Fermer"
       }
-    }
+    },
+    "message": "Quand leur récit prend fin, l'un des survivants s'avance et vous désigne : « Tu es l'homme qui a disparu à travers la porte. Tu es l'un des nôtres. »",
+    "title": "La reconnaissance"
   },
   "cube16a": {
-    "title": "Le dispositif crânien",
-    "message": "À côté des créatures abattues, vous trouvez ce qui semble être l'un des dispositifs crâniens. Il est brisé, mais vous pouvez encore y lire quelques lettres : « N**RAL**K ».",
     "choices": {
       "close": {
         "label": "Fermer"
       }
-    }
+    },
+    "message": "À côté des créatures abattues, vous trouvez ce qui semble être l'un des dispositifs crâniens. Il est brisé, mais vous pouvez encore y lire quelques lettres : « N**RAL**K ».",
+    "title": "Le dispositif crânien"
   },
   "cube16b": {
-    "title": "Le dispositif crânien",
-    "message": "Les créatures vous remettent ce qui semble être l'un des dispositifs crâniens. Il est brisé, mais vous pouvez encore y lire quelques lettres : « N**RAL**K ».",
     "choices": {
       "close": {
         "label": "Fermer"
       }
-    }
+    },
+    "message": "Les créatures vous remettent ce qui semble être l'un des dispositifs crâniens. Il est brisé, mais vous pouvez encore y lire quelques lettres : « N**RAL**K ».",
+    "title": "Le dispositif crânien"
   },
   "cubeDiscovery": {
-    "title": "Le cube murmurant",
-    "message": "Près de l'entrée de la grotte, vous découvrez un cube de métal parfaitement poli. Il semble d'abord immobile, puis vous sentez une légère vibration, comme un pouls lent et régulier, presque un battement de cœur.",
     "choices": {
       "close": {
         "label": "Fermer"
       }
-    }
+    },
+    "message": "Près de l'entrée de la grotte, vous découvrez un cube de métal parfaitement poli. Il semble d'abord immobile, puis vous sentez une légère vibration, comme un pouls lent et régulier, presque un battement de cœur.",
+    "title": "Le cube murmurant"
   },
   "cursedMercenaryMassacre": {
     "choices": {
@@ -615,7 +615,7 @@
   "establishTradeProposal": {
     "choices": {
       "mountainMonastery": {
-        "label": "Monastère de la Montagne"
+        "label": "Monastère de la Montagne"  //x1.3
       },
       "swampTribe": {
         "label": "Tribu du Marais"
@@ -653,6 +653,47 @@
     "message": "Un érudit des arts sombres approche de votre domaine. En voyant les trois fioles de sang, il dit, avec une excitation contenue : 'Je peux créer un mélange qui vous accordera une grande puissance.'",
     "title": "L'Érudit exilé"
   },
+  "insightBlessingOffer": {
+    "choices": {
+      "receiveBlessing": {
+        "cost": "{{insightCost}} Insight",
+        "label": "Receive Blessing"
+      },
+      "sendAway": {
+        "label": "Send away"
+      }
+    },
+    "log": {
+      "outcomeChosen": "Without another word, the figure quietly departs, leaving you with a newfound blessing.",
+      "outcomeSendAway": "You turn the figure away. They leave without a word, but you sense they may return.",
+      "outcomeFallback": "The figure waits no longer and slips back into the dark."
+    },
+    "message": "A hooded figure appears at the estate, silent, then whispering in a low voice. They offer to give you a blessing.",
+    "title": "A Quiet Offering"
+  },
+  "obsidianOrbVisit": {
+    "choices": {
+      "payGold": {
+        "cost": "250 Or",
+        "label": "Payer 250 or"
+      },
+      "payVillagers": {
+        "cost": "20 Villageois",
+        "label": "Offrir 20 villageois"
+      },
+      "sendAway": {
+        "label": "La renvoyer"
+      }
+    },
+    "log": {
+      "outcome0": "Vous payez la femme et elle vous révèle le secret de l'orbe d'obsidienne. Vous recevez le schéma.",
+      "outcome1": "Vingt villageois sont emmenés enchaînés. La femme partage le savoir, mais le village est écœuré par ce qui a été fait.",
+      "outcome2": "Vous la renvoyez. Elle dit qu'elle pourra revenir quand vous serez prêt.",
+      "outcome3": "Le temps est écoulé. Elle part en disant qu'elle pourra revenir quand vous serez prêt."
+    },
+    "message": "Une femme richement parée, d'apparence orientale, arrive avec deux robustes serviteurs. Elle propose de partager le savoir pour forger un puissant orbe d'obsidienne en échange d'or ou de villageois.",
+    "title": "L'orbe d'obsidienne"
+  },
   "facesInWalls": {
     "choices": {
       "examine": {
@@ -674,7 +715,7 @@
     "choices": {
       "makeFeast": {
         "cost": "{{foodCost}} nourriture",
-        "label": "Dépenser {{foodCost}} nourriture"
+        "label": "Dépenser {{foodCost}} nourriture"  //x1.4
       },
       "noFeast": {
         "label": "Refuser le festin"
@@ -979,7 +1020,7 @@
   "mercenaryDemand": {
     "choices": {
       "giveRing": {
-        "label": "Donner l'anneau nourricier"
+        "label": "Donner l'anneau nourricier"  //x1.5
       },
       "payGold": {
         "cost": "100 or",
@@ -1001,7 +1042,7 @@
   "mercenaryReturnDemand": {
     "choices": {
       "giveRing": {
-        "label": "Donner l'anneau nourricier"
+        "label": "Donner l'anneau nourricier"  //x1.5
       },
       "payGold": {
         "cost": "200 or",
@@ -1037,7 +1078,7 @@
         "message": "Vous achetez le schéma d'arc de belladone. Le marchand affiche un sourire sombre : « La conception de cet arc est cruelle. Ses flèches empoisonneront vos ennemis. »"
       },
       "trade_skull_lantern": {
-        "label": "Lanterne crânienne",
+        "label": "Lanterne crânienne",  //x1.4
         "message": "Vous achetez la lanterne crânienne. Forgée dans de l'os maudit, sa lueur inquiétante vous guidera dans les profondeurs les plus reculées."
       },
       "trade_tarnished_compass": {
@@ -1045,19 +1086,19 @@
         "message": "Vous achetez la boussole ternie. Artefact de la civilisation disparue, son aiguille pointe vers des lieux cachés."
       },
       "trade_rootseeker_charm": {
-        "label": "Charme du cherche-racines",
+        "label": "Charme du cherche-racines",  //x1.6
         "message": "Vous achetez le Charme du cherche-racines. Le marchand murmure quelque chose à propos de plantes dévoreuses d'hommes que l'on dit pousser au plus profond des bois anciens."
       },
       "trade_map_fragment_wooden": {
-        "label": "Fragment de carte",
+        "label": "Fragment de carte",  //x1.4
         "message": "Vous achetez un fragment de carte déchiré."
       },
       "trade_map_fragment_stone": {
-        "label": "Fragment de carte",
+        "label": "Fragment de carte",  //x1.4
         "message": "Vous achetez un fragment de carte déchiré."
       },
       "trade_crow_harness": {
-        "label": "Harnais de corbeau",
+        "label": "Harnais de corbeau",  //x1.5
         "message": "Vous achetez le harnais de corbeau. Un harnais spécialement conçu pour les corbeaux messagers."
       },
       "trade_clarity_elixir": {
@@ -1065,12 +1106,12 @@
         "message": "Vous buvez l'élixir de clarté. Votre esprit semble plus léger."
       },
       "trade_veinfire_elixir": {
-        "label": "Élixir de feu veineux",
+        "label": "Élixir de feu veineux",  //x1.4
         "message": "Vous achetez une fiole d'élixir de feu veineux."
       },
       "trade_book_of_trials": {
         "message": "Vous achetez le Livre des épreuves. Le marchand sourit d'un air entendu : « Un guide pour ceux qui cherchent à suivre leur voyage. »",
-        "label": "Livre des épreuves"
+        "label": "Livre des épreuves"  //x1.3
       },
       "trade_book_of_craftsmanship": {
         "message": "Vous achetez le Livre de l'artisanat. Le marchand hoche la tête avec approbation : « Un tome d'artisan, usé mais rempli de sagesse. Il murmurera ses secrets à ceux qui bâtissent. »",
@@ -1078,7 +1119,7 @@
       },
       "trade_book_of_war": {
         "message": "Vous achetez le Livre de la guerre. Le marchand hoche gravement la tête : « Un savoir venu d'un royaume depuis longtemps disparu, loin à l'est. Avec ceci, vous comprendrez mieux les conséquences de vos choix. »",
-        "label": "Livre de la guerre"
+        "label": "Livre de la guerre"  //x1.6
       },
       "trade_reinforced_rope": {
         "message": "Vous achetez la corde renforcée. Cette corde résiste à une tension immense et peut atteindre des lieux dans les chambres les plus profondes de la grotte.",
@@ -1086,7 +1127,7 @@
       },
       "trade_occultist_map": {
         "message": "Alors que vous achetez la carte de l'occultiste, le marchand murmure : « Un vieil occultiste a caché ses secrets dans une chambre au plus profond de la grotte. Cette carte vous guidera. »",
-        "label": "Carte de l'occultiste"
+        "label": "Carte de l'occultiste"  //x1.4
       },
       "trade_giant_trap": {
         "message": "Alors que vous achetez le piège géant, le marchand sourit : « Ceci peut piéger quelque chose de gigantesque dans les bois. Utilisez-le avec sagesse. »",
@@ -1216,8 +1257,8 @@
     "choices": {
       "allowStay": {
         "label": {
-          "woman": "La laisser rester",
-          "man": "Le laisser rester"
+          "woman": "La laisser rester",  //x1.4
+          "man": "Le laisser rester"  //x1.4
         }
       },
       "refuseStay": {
@@ -1275,7 +1316,7 @@
         "label": "Aucune décision"
       },
       "refuse": {
-        "label": "Ne faire aucun sacrifice"
+        "label": "Ne faire aucun sacrifice"  //x1.3
       },
       "sacrifice": {
         "label": {
@@ -1306,7 +1347,7 @@
       },
       "holdFuneral": {
         "cost": "1000 nourriture",
-        "label": "Organiser des funérailles"
+        "label": "Organiser des funérailles"  //x2.1
       },
       "investigateKillers": {
         "label": "Enquêter"
@@ -1324,7 +1365,7 @@
   "paleCrossProposal": {
     "choices": {
       "acceptPaleCross": {
-        "label": "Accepter la proposition"
+        "label": "Accepter la proposition"  //x1.5
       },
       "refusePaleCross": {
         "label": "Refuser la proposition"
@@ -1365,7 +1406,7 @@
         "label": "Le laisser"
       },
       "takeMask": {
-        "label": "Prendre le masque rouge"
+        "label": "Prendre le masque rouge"  //x1.8
       }
     },
     "log": {
@@ -1756,7 +1797,7 @@
         "label": "Dédier à tous"
       },
       "deepenDevotion": {
-        "label": "Approfondir la dévotion"
+        "label": "Approfondir la dévotion"  //x1.5
       }
     },
     "log": {
@@ -1866,7 +1907,7 @@
   "slaveTrader": {
     "choices": {
       "freeSlaves": {
-        "label": "Essayer de libérer les esclaves"
+        "label": "Essayer de libérer les esclaves"  //x1.7
       },
       "refuseTrader": {
         "label": "Refuser l'offre"
@@ -1998,7 +2039,7 @@
       },
       "send_search_party": {
         "cost": "500 nourriture, 50 torche",
-        "label": "Envoyer une équipe de recherche"
+        "label": "Envoyer une équipe de recherche"  //x1.8
       }
     },
     "log": {
@@ -2134,8 +2175,8 @@
   "vikingBuilder": {
     "choices": {
       "acceptDeal": {
-        "label": "payer 250 or",
-        "cost": "250 Or"
+        "cost": "250 Or",
+        "label": "payer 250 or"
       },
       "forceHim": {
         "label": "Le forcer"
@@ -2198,7 +2239,7 @@
         "label": "Éviter le villageois"
       },
       "confront": {
-        "label": "Confronter le villageois"
+        "label": "Confronter le villageois"  //x1.4
       }
     },
     "log": {
@@ -2409,7 +2450,7 @@
       "outcome7": "Vos menaces ne font qu'irriter la sorcière. Elle rit et vous maudit avec une magie noire. Quand elle s'en va, les villageois commencent à se sentir faibles, comme si leur force était drainée par une puissance invisible."
     },
     "message": "Une vieille femme voûtée en robes déchirées arrive aux portes. La voix pleine de malice, elle exige : 'Payez-moi 50 pièces d'or, ou je vous maudirai de malheur.'",
-    "title": "La Malédiction de la sorcière"
+    "title": "La Malédiction de la sorcière"  //x1.7
   },
   "wizardArrives": {
     "message": "Un petit vieil homme à la longue barbe grise, vêtu d'un manteau gris usé, approche de la colonie. Ses yeux brillent d'une sagesse et d'une puissance anciennes. 'Je suis un sorcier,' déclare-t-il d'une voix résonnant d'autorité arcanique. 'Bâtissez-moi une tour, et je vous aiderai avec des pouvoirs au-delà de l'entendement des mortels.'"
@@ -2496,7 +2537,7 @@
       "defend_manyDeaths_food_hut_first": "Les villageois combattent désespérément les loups. Plusieurs villageois succombent à la fureur surnaturelle des loups. Dans le chaos, les loups ravagent vos réserves. Dans leur frénésie, les loups détruisent l'une des huttes, ne laissant que du bois éclaté. Les villageois suggèrent de poser des pièges autour du village pour mieux se protéger des loups et des autres ennemis.",
       "hide_noDeaths": "Les villageois se blottissent dans leurs huttes tandis que les loups rôdent dehors. À l'aube, les loups sont partis, ne laissant derrière eux que des griffures et de la terreur.",
       "hide_noDeaths_food": "Les villageois se blottissent dans leurs huttes tandis que les loups rôdent dehors. À l'aube, les loups sont partis, ne laissant derrière eux que des griffures et de la terreur. Les loups pillent vos provisions avant de disparaître à l'aube.",
-      "hide_oneDeath": "Les villageois se blottissent dans leurs huttes tandis que les loups rôdent dehors. Un villageois qui s'était aventuré dehors est retrouvé déchiqueté au lever du soleil.",
+      "hide_oneDeath": "Les villageois se blottissent dans leurs huttes tandis que les loups rôdent dehors. Un villageois qui s'était aventuré dehors est retrouvé déchiqueté au lever du soleil.",  //x1.4
       "hide_oneDeath_food": "Les villageois se blottissent dans leurs huttes tandis que les loups rôdent dehors. Un villageois qui s'était aventuré dehors est retrouvé déchiqueté au lever du soleil. Les loups pillent vos provisions avant de disparaître à l'aube.",
       "hide_manyDeaths": "Les villageois se blottissent dans leurs huttes tandis que les loups rôdent dehors. Plusieurs villageois sont arrachés de leurs huttes, leurs cris résonnant dans la nuit.",
       "hide_manyDeaths_food": "Les villageois se blottissent dans leurs huttes tandis que les loups rôdent dehors. Plusieurs villageois sont arrachés de leurs huttes, leurs cris résonnant dans la nuit. Les loups pillent vos provisions avant de disparaître à l'aube."
@@ -2507,7 +2548,7 @@
   "woodcutter": {
     "choices": {
       "acceptServices": {
-        "label": "Payer {{foodCost}} nourriture",
+        "label": "Payer {{foodCost}} nourriture",  //x1.4
         "cost": "{{foodCost}} nourriture"
       },
       "denyServices": {
@@ -2542,14 +2583,6 @@
       "successLevel5": "Le bûcheron prend la nourriture et livre le jour même un énorme stock de bois au village.",
       "successLevel6": "Le bûcheron prend la nourriture et livre le jour même un énorme stock de bois au village."
     },
-    "title": {
-      "level1": "Le bûcheron",
-      "level2": "Le retour du bûcheron",
-      "level3": "L'offre du bûcheron",
-      "level4": "Le plan ambitieux du bûcheron",
-      "level5": "La grande proposition du bûcheron",
-      "level6": "L'offre du bûcheron"
-    },
     "message": {
       "level1": "Un homme musclé portant une grande hache s'approche du village. Il contracte les bras. « Je coupe les arbres comme personne », se vante-t-il. « Donnez-moi {{foodCost}} nourriture, et je vous rapporterai {{woodReward}} bois. »",
       "level2": "Le bûcheron revient, sa hache brillant au soleil. « Votre village prospère », observe-t-il. « Je peux vous apporter {{woodReward}} bois. Vous me donnez {{foodCost}} nourriture. Qu'en dites-vous ? »",
@@ -2557,6 +2590,14 @@
       "level4": "Le bûcheron arrive une fois de plus. « Voulez-vous encore utiliser mes services ? {{woodReward}} bois contre {{foodCost}} nourriture », demande-t-il.",
       "level5": "Le bûcheron apparaît avec un sourire confiant. « Et si nous concluions une affaire de plus ? {{woodReward}} bois contre {{foodCost}} nourriture. »",
       "level6": "Le bûcheron revient au village. « Voulez-vous encore utiliser mes services ? J'offre {{woodReward}} bois contre {{foodCost}} nourriture », dit-il."
+    },
+    "title": {
+      "level1": "Le bûcheron",
+      "level2": "Le retour du bûcheron",
+      "level3": "L'offre du bûcheron",
+      "level4": "Le plan ambitieux du bûcheron",
+      "level5": "La grande proposition du bûcheron",
+      "level6": "L'offre du bûcheron"
     }
   },
   "wrongReflections": {
@@ -2565,7 +2606,7 @@
         "label": "Bien couvrir de planches"
       },
       "investigate": {
-        "label": "Regarder plus profondément dans le puits"
+        "label": "Regarder plus profondément dans le puits"  //x1.9
       }
     },
     "log": {
@@ -2602,57 +2643,15 @@
         "label": "La sacrifier"
       },
       "stopSacrifices": {
-        "label": "Arrêter les sacrifices humains"
+        "label": "Arrêter les sacrifices humains"  //x1.4
       }
     },
     "log": {
-      "outcome0": "Vous acceptez de mettre fin à la pratique du sacrifice humain. La femme propose de détruire le Monolithe Noir et de bâtir à sa place un obélisque d'un blanc pur, afin de purifier les ténèbres des esprits du peuple.",
+      "outcome0": "Vous acceptez de mettre fin à la pratique du sacrifice humain. La femme propose de détruire le Monolithe Noir et de bâtir à sa place un obélisque d'un blanc pur, afin de purifier les ténèbres des esprits du peuple.",  //x1.4
       "outcome1": "Vous bannissez la jeune femme du village. Elle convainc {{actualLeavers}} villageois sympathisants de partir avec elle, abandonnant votre colonie pour toujours.",
       "outcome2": "Peu après que le sacrifice a été accompli au Monolithe Noir, {{actualLeavers}} villageois horrifiés rassemblent leurs affaires et partent avec dégoût."
     },
     "message": "Une jeune femme s'approche de vous, les larmes ruisselant sur son visage. 'Mes deux parents ont été sacrifiés à ce monolithe maudit,' crie-t-elle. 'Ce comportement barbare doit cesser !'",
-    "title": "La Supplication de la jeune femme"
-  },
-  "obsidianOrbVisit": {
-    "choices": {
-      "payGold": {
-        "cost": "250 Or",
-        "label": "Payer 250 or"
-      },
-      "payVillagers": {
-        "cost": "20 Villageois",
-        "label": "Offrir 20 villageois"
-      },
-      "sendAway": {
-        "label": "La renvoyer"
-      }
-    },
-    "log": {
-      "outcome0": "Vous payez la femme et elle vous révèle le secret de l'orbe d'obsidienne. Vous recevez le schéma.",
-      "outcome1": "Vingt villageois sont emmenés enchaînés. La femme partage le savoir, mais le village est écœuré par ce qui a été fait.",
-      "outcome2": "Vous la renvoyez. Elle dit qu'elle pourra revenir quand vous serez prêt.",
-      "outcome3": "Le temps est écoulé. Elle part en disant qu'elle pourra revenir quand vous serez prêt."
-    },
-    "message": "Une femme richement parée, d'apparence orientale, arrive avec deux robustes serviteurs. Elle propose de partager le savoir pour forger un puissant orbe d'obsidienne en échange d'or ou de villageois.",
-    "title": "L'orbe d'obsidienne"
-  },
-  "insightBlessingOffer": {
-    "choices": {
-      "receiveBlessing": {
-        "cost": "{{insightCost}} Insight",
-        "label": "Receive Blessing"
-      },
-      "sendAway": {
-        "label": "Send away"
-      }
-    },
-    "log": {
-      "outcomeChosen": "Without another word, the figure quietly departs, leaving you with a newfound blessing.",
-      "outcomeSendAway": "You turn the figure away. They leave without a word, but you sense they may return.",
-      "outcomeFallback": "The figure waits no longer and slips back into the dark."
-    },
-    "message": "A hooded figure appears at the estate, silent, then whispering in a low voice. They offer to give you a blessing.",
-    "title": "A Quiet Offering"
+    "title": "La Supplication de la jeune femme"  //x1.5
   }
-
 }

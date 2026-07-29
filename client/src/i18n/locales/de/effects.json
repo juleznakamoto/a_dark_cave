@@ -10,7 +10,7 @@
     },
     "book_of_chainmaster": {
       "description": "Buch des längst totem Kettenmeisters mit harten Methoden, Arbeiter über ihre Grenzen hinaus zu treiben.",
-      "name": "Buch des Kettenmeisters"
+      "name": "Buch des Kettenmeisters"  //x1.2
     },
     "book_of_trials": {
       "description": "Buch über das Bestehen der Prüfungen des Lebens. Schaltet Belohnungen für jene frei, die sich durch Erfolge beweisen.",
@@ -47,7 +47,7 @@
       "name": "Glockensegen"
     },
     "black_bear_fur": {
-      "description": "Verfluchtes schwarzes Fell eines riesigen Bären aus einer anderen Welt", //ok
+      "description": "Verfluchtes schwarzes Fell eines riesigen Bären aus einer anderen Welt",
       "name": "Schwarzbärenfell"
     },
     "black_wood": {
@@ -71,7 +71,7 @@
       "name": "Blutbefleckter Gürtel"
     },
     "bloodstone": {
-      "description": "Karmesinroter Edelstein, der vor dunkler Energie pulsiert", //ok
+      "description": "Karmesinroter Edelstein, der vor dunkler Energie pulsiert",
       "name": "Blutstein"
     },
     "bone_devourer_blood": {
@@ -97,6 +97,10 @@
     "dagons_gift": {
       "description": "Deine Jagdfähigkeit ist verbessert",
       "name": "Dagons Gabe"
+    },
+    "depths_gift": {
+      "description": "Höhle exploration yields more",
+      "name": "Depth's Gift"
     },
     "dagons_gift_enhanced": {
       "description": "Deine Jagdfähigkeit ist stark verbessert",
@@ -131,23 +135,31 @@
       "name": "Hand des Fischers"
     },
     "flames_touch": {
-      "description": "Herstellungskosten sind reduziert", //ok
+      "description": "Herstellungskosten sind reduziert",
       "name": "Berührung der Flamme"
     },
     "flames_touch_enhanced": {
       "description": "Herstellungskosten sind stark reduziert",
-      "name": "Starke Berührung der Flamme" //ok
+      "name": "Starke Berührung der Flamme"  //x1.4
     },
     "forests_grace": {
       "description": "Die Hirsche des Waldes scheinen dich weniger zu bemerken",
       "name": "Gnade des Waldes"
     },
+    "fresh_blood": {
+      "description": "Strangers approach the village more often",
+      "name": "Fresh Blood"
+    },
     "frostglass": {
       "description": "Kristallines Material, das Kälte ausstrahlt",
       "name": "Frostglas"
     },
+    "keen_builder": {
+      "description": "Baueing costs are reduced",
+      "name": "Keen Baueer"
+    },
     "gifted_ring": {
-      "description": "Schlichter Ring, den jemand für dich zurückgelassen hat", //ok
+      "description": "Schlichter Ring, den jemand für dich zurückgelassen hat",
       "name": "Geschenkter Ring"
     },
     "flask_harness": {
@@ -164,7 +176,7 @@
     },
     "hollow_king_scepter": {
       "description": "Zepter des verlorenen Königs, strahlend vor Macht und Wahnsinn. Bergbauaktionen haben eine Chance von 5 %, die Belohnungen zu verdoppeln.",
-      "name": "Zepter des Hohlen Königs" //ok
+      "name": "Zepter des Hohlen Königs"  //x1.3
     },
     "hunter_cloak": {
       "description": "Geschmeidiger Lederumhang, der jede Bewegung dämpft",
@@ -195,7 +207,7 @@
       "name": "Mondarmband"
     },
     "muttering_amulet": {
-      "description": "Rätselhaftes Amulett, das seltsame Laute von sich gibt", //ok
+      "description": "Rätselhaftes Amulett, das seltsame Laute von sich gibt",
       "name": "Murmelndes Amulett"
     },
     "necromancer_blood": {
@@ -229,6 +241,10 @@
     "ravens_mark": {
       "description": "Fremde nähern sich dem Dorf häufiger",
       "name": "Mal des Raben"
+    },
+    "rich_veins": {
+      "description": "Your ability to mine is improved",
+      "name": "Rich Veins"
     },
     "ravens_mark_enhanced": {
       "description": "Fremde nähern sich dem Dorf sehr viel häufiger",
@@ -275,8 +291,12 @@
       "name": "Schattenflöte"
     },
     "sharp_aim": {
-      "description": "Die Treffsicherheit deiner Jäger ist verbessert", //ok
+      "description": "Die Treffsicherheit deiner Jäger ist verbessert",
       "name": "Scharfes Ziel"
+    },
+    "skilled_hands": {
+      "description": "Crafting costs are reduced",
+      "name": "Skilled Hands"
     },
     "skeleton_key_schematic": {
       "description": "Blueprint for crafting a skeleton key",
@@ -287,7 +307,7 @@
       "name": "Kodex des Steinbinders"
     },
     "stormglass_halberd_schematic": {
-      "description": "Bauplan zur Herstellung einer furchteinflößenden Hellebarde", //ok
+      "description": "Bauplan zur Herstellung einer furchteinflößenden Hellebarde",
       "name": "Sturmglas-Hellebarde"
     },
     "survivors_last_words": {
@@ -296,7 +316,7 @@
     },
     "survivors_notes": {
       "description": "Alte Schriftrolle voller praktischer Ratschläge, hinterlassen von jemandem, der vor langer Zeit hier lebte. Schaltet einfache Erfolge frei.",
-      "name": "Notizen des Überlebenden" //ok
+      "name": "Notizen des Überlebenden"  //x1.5
     },
     "tarnished_amulet": {
       "description": "Altes Amulett, das Glück bringt",
@@ -305,6 +325,10 @@
     "tarnished_compass": {
       "description": "Altes Relikt für jene, die Führung suchen.",
       "name": "Angelaufener Kompass"
+    },
+    "trail_sense": {
+      "description": "Your hunters bring back more food",
+      "name": "Trail Sense"
     },
     "unnamed_book": {
       "description": "In Menschenhaut gebundenes Buch voller verbotenem Wissen",
@@ -321,32 +345,7 @@
     "wooden_figure": {
       "description": "Geschnitzte Holzfigur einer beunruhigenden Kreatur mit Tentakeln",
       "name": "Holzfigur"
-    },
-    "depths_gift": {
-      "description": "Cave exploration yields more",
-      "name": "Depth's Gift"
-    },
-    "fresh_blood": {
-      "description": "Strangers approach the village more often",
-      "name": "Fresh Blood"
-    },
-    "keen_builder": {
-      "description": "Building costs are reduced",
-      "name": "Keen Builder"
-    },
-    "rich_veins": {
-      "description": "Your ability to mine is improved",
-      "name": "Rich Veins"
-    },
-    "skilled_hands": {
-      "description": "Crafting costs are reduced",
-      "name": "Skilled Hands"
-    },
-    "trail_sense": {
-      "description": "Your hunters bring back more food",
-      "name": "Trail Sense"
     }
-
   },
   "fellowship": {
     "ashwraith_huntress": {
@@ -413,7 +412,7 @@
     },
     "hidden_library_map": {
       "description": "Karte aus dem Kloster, die den Ort einer verborgenen Bibliothek tief in der Höhle zeigt",
-      "name": "Karte der verborgenen Bibliothek" //ok
+      "name": "Karte der verborgenen Bibliothek"  //x1.8
     },
     "iron_axe": {
       "description": "Scharfe Axt für schweres Hacken",
@@ -456,7 +455,7 @@
       "name": "Verstärktes Seil"
     },
     "skeleton_key": {
-      "description": "Ein rätselhafter Schlüssel, von dem es heißt, er öffne jedes Schloss", //ok
+      "description": "Ein rätselhafter Schlüssel, von dem es heißt, er öffne jedes Schloss",
       "name": "Skelettschlüssel"
     },
     "skull_lantern": {

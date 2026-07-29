@@ -354,202 +354,202 @@
     "title": "奇怪的木像"
   },
   "cube01": {
-    "title": "立方体苏醒",
-    "message": "你在夜里醒来。立方体轻轻嗡鸣。忽然，一个柔和而悦耳的声音从中传出：「很久以前，一个伟大的文明曾在这世界上繁荣昌盛，但它崩溃了，其知识湮没在岁月之中。」",
     "choices": {
       "close": {
         "label": "关闭"
       }
-    }
+    },
+    "message": "你在夜里醒来。立方体轻轻嗡鸣。忽然，一个柔和而悦耳的声音从中传出：「很久以前，一个伟大的文明曾在这世界上繁荣昌盛，但它崩溃了，其知识湮没在岁月之中。」",
+    "title": "立方体苏醒"
   },
   "cube02": {
-    "title": "战士部落",
-    "message": "「在遥远的过去，一个凶猛战士的部落被选中，深居于洞穴之中。他们的使命是守护某样极为重要的东西。」",
     "choices": {
       "close": {
         "label": "关闭"
       }
-    }
+    },
+    "message": "「在遥远的过去，一个凶猛战士的部落被选中，深居于洞穴之中。他们的使命是守护某样极为重要的东西。」",
+    "title": "战士部落"
   },
   "cube03": {
-    "title": "地下之城",
-    "message": "「战士部落发展成了一座庞大的地下城市，与世隔绝，仍守护着多年前被托付守护之物。」",
     "choices": {
       "close": {
         "label": "关闭"
       }
-    }
+    },
+    "message": "「战士部落发展成了一座庞大的地下城市，与世隔绝，仍守护着多年前被托付守护之物。」",
+    "title": "地下之城"
   },
   "cube04": {
-    "title": "神圣誓言",
-    "message": "「尽管他们所守护之物的记忆已化为传说，他们的警觉却从未松懈。世代以来，战士们恪守神圣誓言，守望城市最深处的一切。」",
     "choices": {
       "close": {
         "label": "关闭"
       }
-    }
+    },
+    "message": "「尽管他们所守护之物的记忆已化为传说，他们的警觉却从未松懈。世代以来，战士们恪守神圣誓言，守望城市最深处的一切。」",
+    "title": "神圣誓言"
   },
   "cube05": {
-    "title": "封印之门",
-    "message": "「地下城的居民死去很久之后，他们虔诚守护的对象依然存在：一扇以失传技艺锻造、坚不可摧的巨门，隐藏在城市最底层的密室中。」",
     "choices": {
       "close": {
         "label": "关闭"
       }
-    }
+    },
+    "message": "「地下城的居民死去很久之后，他们虔诚守护的对象依然存在：一扇以失传技艺锻造、坚不可摧的巨门，隐藏在城市最底层的密室中。」",
+    "title": "封印之门"
   },
   "cube06": {
-    "title": "大门开启",
-    "message": "大门碎裂之时，你手中的立方体颤抖起来，渐渐发热。一声轻柔而急切的低语逸出：「我获得了新的洞见。」",
     "choices": {
       "close": {
         "label": "关闭"
       }
-    }
+    },
+    "message": "大门碎裂之时，你手中的立方体颤抖起来，渐渐发热。一声轻柔而急切的低语逸出：「我获得了新的洞见。」",
+    "title": "大门开启"
   },
   "cube07": {
-    "title": "远古科技",
-    "message": "「铸造大门的古老文明拥有远超当今时代的知识与技术。他们甚至制造了可植入颅内的装置，用以强化身心。」",
     "choices": {
       "close": {
         "label": "关闭"
       }
-    }
+    },
+    "message": "「铸造大门的古老文明拥有远超当今时代的知识与技术。他们甚至制造了可植入颅内的装置，用以强化身心。」",
+    "title": "远古科技"
   },
   "cube08": {
-    "title": "抵抗者",
-    "message": "「统治者下令，每位公民都必须在脑中植入装置。一小撮人开始表达忧虑，并在认清技术中潜藏的危险后组成了抵抗组织。」",
     "choices": {
       "close": {
         "label": "关闭"
       }
-    }
+    },
+    "message": "「统治者下令，每位公民都必须在脑中植入装置。一小撮人开始表达忧虑，并在认清技术中潜藏的危险后组成了抵抗组织。」",
+    "title": "抵抗者"
   },
   "cube09": {
-    "title": "黄金时代",
-    "message": "「借助这些装置，文明蓬勃发展。一个前所未有的和平与进步时代开始了；他们的知识与技艺达到了此后再也无法企及的高度。」",
     "choices": {
       "close": {
         "label": "关闭"
       }
-    }
+    },
+    "message": "「借助这些装置，文明蓬勃发展。一个前所未有的和平与进步时代开始了；他们的知识与技艺达到了此后再也无法企及的高度。」",
+    "title": "黄金时代"
   },
   "cube10": {
-    "title": "大崩溃",
-    "message": "「知识瞬间流通，社会欣欣向荣。在进步的背后，颅骨装置操纵着人类的思维，将心智联结进一张寂静而无法逃脱的网。」",
     "choices": {
       "close": {
         "label": "关闭"
       }
-    }
+    },
+    "message": "「知识瞬间流通，社会欣欣向荣。在进步的背后，颅骨装置操纵着人类的思维，将心智联结进一张寂静而无法逃脱的网。」",
+    "title": "大崩溃"
   },
   "cube11": {
-    "title": "蜂巢意识",
-    "message": "「某日，毫无预警，一道难以想象的磁电脉冲席卷全球。文明的一切装置，包括植入颅内的那些，尽数毁灭。」",
     "choices": {
       "close": {
         "label": "关闭"
       }
-    }
+    },
+    "message": "「某日，毫无预警，一道难以想象的磁电脉冲席卷全球。文明的一切装置，包括植入颅内的那些，尽数毁灭。」",
+    "title": "蜂巢意识"
   },
   "cube12": {
-    "title": "文明终结",
-    "message": "「少数幸存者无法在没有装置的情况下生存。大多数人死去。文明倒退。知识沉入遗忘。自然夺回大地，只留下曾辉煌一时的埋骨废墟。」",
     "choices": {
       "close": {
         "label": "关闭"
       }
-    }
+    },
+    "message": "「少数幸存者无法在没有装置的情况下生存。大多数人死去。文明倒退。知识沉入遗忘。自然夺回大地，只留下曾辉煌一时的埋骨废墟。」",
+    "title": "文明终结"
   },
   "cube13": {
-    "title": "回收的数据",
-    "message": "当你靠近那些被击杀的生物时，立方体脉动着能量。它似乎从某处抽取信息。立方体发热，处理着回收的知识。",
     "choices": {
       "close": {
         "label": "关闭"
       }
-    }
+    },
+    "message": "当你靠近那些被击杀的生物时，立方体脉动着能量。它似乎从某处抽取信息。立方体发热，处理着回收的知识。",
+    "title": "回收的数据"
   },
   "cube14a": {
-    "title": "被放逐者",
-    "message": "「当抵抗者反对颅骨装置时，他们被放逐到山峦深处，封死在大门之后。无路可返，他们越挖越深。在孤寂与黑暗中，心智崩坏，他们堕入疯狂与退化。」",
     "choices": {
       "continue": {
         "label": "继续"
       }
-    }
+    },
+    "message": "「当抵抗者反对颅骨装置时，他们被放逐到山峦深处，封死在大门之后。无路可返，他们越挖越深。在孤寂与黑暗中，心智崩坏，他们堕入疯狂与退化。」",
+    "title": "被放逐者"
   },
   "cube14b": {
-    "title": "未知矿石",
-    "message": "「某日，在地下深处，他们发现了一块未知矿石的巨石。他们用它锻造炸药以摧毁大门。但炸弹未能击穿大门，反而释放出席卷全球的电磁脉冲，摧毁一切装置，终结了文明。」",
     "choices": {
       "continue": {
         "label": "继续"
       }
-    }
+    },
+    "message": "「某日，在地下深处，他们发现了一块未知矿石的巨石。他们用它锻造炸药以摧毁大门。但炸弹未能击穿大门，反而释放出席卷全球的电磁脉冲，摧毁一切装置，终结了文明。」",
+    "title": "未知矿石"
   },
   "cube14c": {
-    "title": "未知矿石",
-    "message": "「爆炸后不久，附近一名男子开始非物质化，身形闪烁，数秒间半透明。他被发生的事吓得发疯，片刻之后自尽身亡。」",
     "choices": {
       "continue": {
         "label": "继续"
       }
-    }
+    },
+    "message": "「爆炸后不久，附近一名男子开始非物质化，身形闪烁，数秒间半透明。他被发生的事吓得发疯，片刻之后自尽身亡。」",
+    "title": "未知矿石"
   },
   "cube14d": {
-    "title": "穿越大门",
-    "message": "「绝望之中，幸存者推测矿石或许能帮他们穿过大门。他们用最后几块碎片造了一枚较小的炸弹，将神志最清醒者安置于门前。爆炸刚起，他便变得如鬼魅般半透明，随即穿门而去，消失不见。」",
     "choices": {
       "close": {
         "label": "关闭"
       }
-    }
+    },
+    "message": "「绝望之中，幸存者推测矿石或许能帮他们穿过大门。他们用最后几块碎片造了一枚较小的炸弹，将神志最清醒者安置于门前。爆炸刚起，他便变得如鬼魅般半透明，随即穿门而去，消失不见。」",
+    "title": "穿越大门"
   },
   "cube15a": {
-    "title": "认出",
-    "message": "这时你明白，那些生物没有攻击，是因为它们把你认作同类。你就是穿门而去的那个人。",
     "choices": {
       "close": {
         "label": "关闭"
       }
-    }
+    },
+    "message": "这时你明白，那些生物没有攻击，是因为它们把你认作同类。你就是穿门而去的那个人。",
+    "title": "认出"
   },
   "cube15b": {
-    "title": "认出",
-    "message": "故事讲完，一名幸存者走上前来，指向你：「你就是穿门而去的人。你是我们中的一员。」",
     "choices": {
       "close": {
         "label": "关闭"
       }
-    }
+    },
+    "message": "故事讲完，一名幸存者走上前来，指向你：「你就是穿门而去的人。你是我们中的一员。」",
+    "title": "认出"
   },
   "cube16a": {
-    "title": "颅骨装置",
-    "message": "在被击杀的生物旁边，你发现了似乎是颅骨装置之一的东西。它已经损坏，但你仍能读出上面的一些字母：「N**RAL**K」。",
     "choices": {
       "close": {
         "label": "关闭"
       }
-    }
+    },
+    "message": "在被击杀的生物旁边，你发现了似乎是颅骨装置之一的东西。它已经损坏，但你仍能读出上面的一些字母：「N**RAL**K」。",
+    "title": "颅骨装置"
   },
   "cube16b": {
-    "title": "颅骨装置",
-    "message": "那些生物把似乎是颅骨装置之一的东西交给你。它已经损坏，但你仍能读出上面的一些字母：「N**RAL**K」。",
     "choices": {
       "close": {
         "label": "关闭"
       }
-    }
+    },
+    "message": "那些生物把似乎是颅骨装置之一的东西交给你。它已经损坏，但你仍能读出上面的一些字母：「N**RAL**K」。",
+    "title": "颅骨装置"
   },
   "cubeDiscovery": {
-    "title": "低语立方体",
-    "message": "在洞口附近，你发现了一个抛光完美的金属立方体。起初它似乎静止不动，随后你感到一阵轻微的震动，如同缓慢而有节奏的脉动，几乎像心跳一般。",
     "choices": {
       "close": {
         "label": "关闭"
       }
-    }
+    },
+    "message": "在洞口附近，你发现了一个抛光完美的金属立方体。起初它似乎静止不动，随后你感到一阵轻微的震动，如同缓慢而有节奏的脉动，几乎像心跳一般。",
+    "title": "低语立方体"
   },
   "cursedMercenaryMassacre": {
     "choices": {
@@ -652,6 +652,47 @@
     },
     "message": "一名研究黑暗技艺的学者来到你的庄园。看见那三小瓶血后，他带着压抑的兴奋说道：“我能调制一种混合物，赐予你强大的力量。”",
     "title": "流放学者"
+  },
+  "insightBlessingOffer": {
+    "choices": {
+      "receiveBlessing": {
+        "cost": "{{insightCost}} Insight",
+        "label": "Receive Blessing"
+      },
+      "sendAway": {
+        "label": "Send away"
+      }
+    },
+    "log": {
+      "outcomeChosen": "Without another word, the figure quietly departs, leaving you with a newfound blessing.",
+      "outcomeSendAway": "You turn the figure away. They leave without a word, but you sense they may return.",
+      "outcomeFallback": "The figure waits no longer and slips back into the dark."
+    },
+    "message": "A hooded figure appears at the estate, silent, then whispering in a low voice. They offer to give you a blessing.",
+    "title": "A Quiet Offering"
+  },
+  "obsidianOrbVisit": {
+    "choices": {
+      "payGold": {
+        "cost": "250 金币",
+        "label": "支付 250 金币"
+      },
+      "payVillagers": {
+        "cost": "20 村民",
+        "label": "献出 20 名村民"
+      },
+      "sendAway": {
+        "label": "送她离开"
+      }
+    },
+    "log": {
+      "outcome0": "你向女子付钱，她分享了黑曜石宝珠的秘密。你获得了图纸。",
+      "outcome1": "二十名村民被锁链拖走。女子分享了知识，但村庄因所作所为而充满厌恶。",
+      "outcome2": "你送她离开。她说等你准备好时可能会再来。",
+      "outcome3": "时间耗尽。她离去，并说等你准备好时可能会再来。"
+    },
+    "message": "一位装束华美的东方女子带着两名壮硕随从到来。她愿以金币或村民为交换，分享锻造强大黑曜石宝珠的秘法。",
+    "title": "黑曜石宝珠"
   },
   "facesInWalls": {
     "choices": {
@@ -2134,8 +2175,8 @@
   "vikingBuilder": {
     "choices": {
       "acceptDeal": {
-        "label": "支付 250 金币",
-        "cost": "250 金币"
+        "cost": "250 金币",
+        "label": "支付 250 金币"
       },
       "forceHim": {
         "label": "强迫他"
@@ -2542,14 +2583,6 @@
       "successLevel5": "樵夫拿走食物，当天就将大量木材送到了村庄。",
       "successLevel6": "樵夫拿走食物，当天就将大量木材送到了村庄。"
     },
-    "title": {
-      "level1": "樵夫",
-      "level2": "樵夫归来",
-      "level3": "樵夫的提议",
-      "level4": "樵夫的雄心计划",
-      "level5": "樵夫的宏伟提案",
-      "level6": "樵夫的提议"
-    },
     "message": {
       "level1": "一个肌肉结实、扛着大斧的男人来到村庄。他弯起手臂炫耀道：「没人比我更会砍树。给我 {{foodCost}} 食物，我就带来 {{woodReward}} 木材。」",
       "level2": "樵夫回来了，斧头在阳光下闪闪发亮。「你的村庄发展得不错，」他打量着说道，「我能带来 {{woodReward}} 木材。你给我 {{foodCost}} 食物。怎么样？」",
@@ -2557,6 +2590,14 @@
       "level4": "樵夫又一次到来。「还想再用一次我的服务吗？{{woodReward}} 木材换 {{foodCost}} 食物，」他问道。",
       "level5": "樵夫带着自信的笑容出现。「再做一笔交易怎么样？{{woodReward}} 木材换 {{foodCost}} 食物。」",
       "level6": "樵夫回到村庄。「还想再用一次我的服务吗？我提供 {{woodReward}} 木材，换 {{foodCost}} 食物，」他说。"
+    },
+    "title": {
+      "level1": "樵夫",
+      "level2": "樵夫归来",
+      "level3": "樵夫的提议",
+      "level4": "樵夫的雄心计划",
+      "level5": "樵夫的宏伟提案",
+      "level6": "樵夫的提议"
     }
   },
   "wrongReflections": {
@@ -2612,47 +2653,5 @@
     },
     "message": "一名年轻女人走近你，泪水顺着脸颊流下。“我的父母都被献给了那座受诅的方尖碑，”她哭喊，“这种野蛮行为必须停止！”",
     "title": "年轻女人的恳求"
-  },
-  "obsidianOrbVisit": {
-    "choices": {
-      "payGold": {
-        "cost": "250 金币",
-        "label": "支付 250 金币"
-      },
-      "payVillagers": {
-        "cost": "20 村民",
-        "label": "献出 20 名村民"
-      },
-      "sendAway": {
-        "label": "送她离开"
-      }
-    },
-    "log": {
-      "outcome0": "你向女子付钱，她分享了黑曜石宝珠的秘密。你获得了图纸。",
-      "outcome1": "二十名村民被锁链拖走。女子分享了知识，但村庄因所作所为而充满厌恶。",
-      "outcome2": "你送她离开。她说等你准备好时可能会再来。",
-      "outcome3": "时间耗尽。她离去，并说等你准备好时可能会再来。"
-    },
-    "message": "一位装束华美的东方女子带着两名壮硕随从到来。她愿以金币或村民为交换，分享锻造强大黑曜石宝珠的秘法。",
-    "title": "黑曜石宝珠"
-  },
-  "insightBlessingOffer": {
-    "choices": {
-      "receiveBlessing": {
-        "cost": "{{insightCost}} Insight",
-        "label": "Receive Blessing"
-      },
-      "sendAway": {
-        "label": "Send away"
-      }
-    },
-    "log": {
-      "outcomeChosen": "Without another word, the figure quietly departs, leaving you with a newfound blessing.",
-      "outcomeSendAway": "You turn the figure away. They leave without a word, but you sense they may return.",
-      "outcomeFallback": "The figure waits no longer and slips back into the dark."
-    },
-    "message": "A hooded figure appears at the estate, silent, then whispering in a low voice. They offer to give you a blessing.",
-    "title": "A Quiet Offering"
   }
-
 }

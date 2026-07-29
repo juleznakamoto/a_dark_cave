@@ -428,22 +428,34 @@ describe('Stripe Shop Integration', () => {
     });
 
     describe("Journey-complete Cruel Mode discount", () => {
-      it("rejects payment intents while cruel_mode is free (Steam demo promo)", async () => {
-        await expect(
-          createPaymentIntent(
-            "cruel_mode",
-            undefined,
-            undefined,
-            undefined,
-            undefined,
-            undefined,
-            undefined,
-            undefined,
-            undefined,
-            true,
-          ),
-        ).rejects.toThrow("Invalid item configuration");
-        expect(mockPaymentIntents.create).not.toHaveBeenCalled();
+      it("creates a payment intent for paid cruel_mode with journey-complete cap", async () => {
+        mockPaymentIntents.create.mockResolvedValue({
+          client_secret: "test_secret",
+        } as any);
+
+        const result = await createPaymentIntent(
+          "cruel_mode",
+          undefined,
+          undefined,
+          undefined,
+          undefined,
+          undefined,
+          undefined,
+          undefined,
+          undefined,
+          true,
+        );
+
+        expect(result.clientSecret).toBe("test_secret");
+        expect(mockPaymentIntents.create).toHaveBeenCalledWith(
+          expect.objectContaining({
+            amount: 399,
+            metadata: expect.objectContaining({
+              itemId: "cruel_mode",
+              cruelModeJourneyCompleteDiscountApplied: "true",
+            }),
+          }),
+        );
       });
     });
 
