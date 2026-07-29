@@ -24,6 +24,7 @@
     "madnessTitle": "Follia",
     "productionBonus": "Bonus di Produzione: {{value}}",
     "madnessLevel": "Follia: {{value}}",
+    "deathByMadnessChanceEachCycle": "Probabilità di morte per follia ogni ciclo: {{value}}%",
     "minRemaining": "{{count}} min rimanenti",
     "minUntilDecrease": "{{time}} alla riduzione del livello",
     "greatVillageFeast": "Grande Banchetto del Villaggio",

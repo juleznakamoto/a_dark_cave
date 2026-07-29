@@ -24,6 +24,7 @@
     "madnessTitle": "Loucura",
     "productionBonus": "Bônus de Produção: {{value}}",
     "madnessLevel": "Loucura: {{value}}",
+    "deathByMadnessChanceEachCycle": "Chance de morte por loucura a cada ciclo: {{value}}%",
     "minRemaining": "{{count}} min restantes",
     "minUntilDecrease": "{{time}} até a redução do nível",
     "greatVillageFeast": "Grande Banquete da Aldeia",

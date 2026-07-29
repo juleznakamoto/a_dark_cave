@@ -10,6 +10,11 @@ import {
   getVeinrootFindMultiplier,
   computeResourceRandomRange,
 } from "./effectsCalculation";
+import { getMadnessProductionMultiplier } from "@/game/population";
+import {
+  getMadnessDeathChancePerCycle,
+  madnessDeathChanceToTooltipPercent,
+} from "./effectsStats";
 import { isCraftUpgradeAction } from "@/game/craftUpgradeUtils";
 import { getTotemSacrificeUsageFlatBonus } from "./forestSacrificeActions";
 import { gameActions } from "./index";
@@ -487,29 +492,32 @@ export const madnessProductionTooltip: TooltipConfig = {
     const totalMadness = getTotalMadness(state);
     if (totalMadness < 10) return null;
 
-    const penalty =
-      totalMadness >= 50
-        ? 50
-        : totalMadness >= 40
-          ? 40
-          : totalMadness >= 30
-            ? 30
-            : totalMadness >= 20
-              ? 20
-              : 10;
+    const cruelMode = Boolean(state.cruelMode);
+    const productionPenalty = Math.round(
+      (1 - getMadnessProductionMultiplier(totalMadness, cruelMode)) * 100,
+    );
+    const deathPercent = madnessDeathChanceToTooltipPercent(
+      getMadnessDeathChancePerCycle(totalMadness, cruelMode),
+    );
 
     return (
       <>
-        <div className="font-bold">{getUiTooltip("madnessTitle", "Madness")}</div>
-        <div>
-          {getUiTooltip("productionBonus", "Production Bonus: {{value}}", {
-            value: `-${penalty}%`,
-          })}
-        </div>
         <div>
           {getUiTooltip("madnessLevel", "Madness: {{value}}", {
             value: totalMadness,
           })}
+        </div>
+        <div>
+          {getUiTooltip("productionBonus", "Production Bonus: {{value}}", {
+            value: `-${productionPenalty}%`,
+          })}
+        </div>
+        <div>
+          {getUiTooltip(
+            "deathByMadnessChanceEachCycle",
+            "Death by Madness Chance each Cycle: {{value}}%",
+            { value: deathPercent },
+          )}
         </div>
       </>
     );
