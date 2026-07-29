@@ -418,7 +418,7 @@ export const CHECKOUT_SUCCESS_PARTICLE_CONFIG: Partial<ParticleConfig> = {
 };
 
 /** Hold checkout open (with glow) after success while the burst plays out. */
-export const CHECKOUT_SUCCESS_HOLD_MS = 2500;
+export const CHECKOUT_SUCCESS_HOLD_MS = 2000;
 
 // Silver coin - slow gentle emission for hover
 export const SILVER_COIN_PARTICLE_CONFIG: Partial<ParticleConfig> = {

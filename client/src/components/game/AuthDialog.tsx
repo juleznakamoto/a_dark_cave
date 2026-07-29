@@ -7,6 +7,7 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
+import { TextShimmer } from "@/components/ui/text-shimmer";
 import { Input } from "@/components/ui/input";
 import { Checkbox } from "@/components/ui/checkbox";
 import {
@@ -330,7 +331,7 @@ export default function AuthDialog({
                 className="font-medium text-sm"
                 disabled={loading}
               >
-                {submitLabel}
+                {loading ? <TextShimmer>{submitLabel}</TextShimmer> : submitLabel}
               </Button>
               {mode !== "reset" && (
                 <Button
@@ -358,9 +359,17 @@ export default function AuthDialog({
                       fill="#EA4335"
                     />
                   </svg>
-                  {mode === "signup"
-                    ? t("auth.signUpWithGoogle")
-                    : t("auth.signInWithGoogle")}
+                  {loading ? (
+                    <TextShimmer>
+                      {mode === "signup"
+                        ? t("auth.signUpWithGoogle")
+                        : t("auth.signInWithGoogle")}
+                    </TextShimmer>
+                  ) : mode === "signup" ? (
+                    t("auth.signUpWithGoogle")
+                  ) : (
+                    t("auth.signInWithGoogle")
+                  )}
                 </Button>
               )}
               {mode === "signup" && (

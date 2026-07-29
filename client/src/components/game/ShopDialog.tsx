@@ -11,6 +11,7 @@ import {
 import { logger } from "@/lib/logger";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
+import { TextShimmer } from "@/components/ui/text-shimmer";
 import {
   Card,
   CardContent,
@@ -697,12 +698,14 @@ function CheckoutForm({
           className="w-full min-w-0 font-bold sm:flex-1"
           button_id="shop-complete-purchase"
         >
-          {isProcessing
-            ? t("common:status.processing")
-            : t("ui:shop.completePurchaseFor", {
+          {isProcessing ? (
+            <TextShimmer>{t("common:status.processing")}</TextShimmer>
+          ) : (
+            t("ui:shop.completePurchaseFor", {
               price:
                 displayPriceCents > 0 ? formatPrice(displayPriceCents) : "",
-            })}
+            })
+          )}
         </Button>
         <Button
           variant="outline"
@@ -783,8 +786,8 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
         const edge = Math.sqrt(halfW * halfW + halfH * halfH);
         return {
           ...CHECKOUT_SUCCESS_PARTICLE_CONFIG,
-          spawnRadiusMin: edge * 0.92,
-          spawnRadiusMax: edge * 1.05,
+          spawnRadiusMin: edge * 0.72,
+          spawnRadiusMax: edge * 0.88,
         };
       },
       {

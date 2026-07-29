@@ -241,6 +241,48 @@ body {
   }
 }
 
+/* Loading button labels — highlight sweeps across inherited text color */
+.text-shimmer-host {
+  color: inherit;
+  --text-shimmer-color: currentColor;
+}
+
+.text-shimmer {
+  background-image: linear-gradient(90deg,
+      color-mix(in oklab, var(--text-shimmer-color) 40%, transparent) 0%,
+      var(--text-shimmer-color) 45%,
+      color-mix(in oklab, var(--text-shimmer-color) 40%, transparent) 90%);
+  background-size: 220% 100%;
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+  animation: text-shimmer-sweep var(--text-shimmer-duration, 1.4s) linear infinite;
+}
+
+@keyframes text-shimmer-sweep {
+  0% {
+    background-position: 100% center;
+  }
+
+  100% {
+    background-position: -100% center;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .text-shimmer {
+    animation: none;
+    background-image: none;
+    background-clip: unset;
+    -webkit-background-clip: unset;
+    color: var(--text-shimmer-color);
+  }
+}
+
+html[data-tab-hidden] .text-shimmer {
+  animation-play-state: paused;
+}
+
 @keyframes tab-fade-in {
   0% {
     opacity: 0;

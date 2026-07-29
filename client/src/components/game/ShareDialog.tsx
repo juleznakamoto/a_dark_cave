@@ -9,6 +9,7 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
+import { TextShimmer } from "@/components/ui/text-shimmer";
 import { TooltipWrapper } from "@/components/game/TooltipWrapper";
 import { useGameStore } from "@/game/state";
 import { copyInviteLinkToClipboard } from "@/game/copyInviteLink";
@@ -596,9 +597,13 @@ export default function ShareDialog() {
             onClick={handleShare}
             disabled={busy}
           >
-            {busy
-              ? t("share.generating", { defaultValue: "Generating…" })
-              : t("share.share", { defaultValue: "Share" })}
+            {busy ? (
+              <TextShimmer>
+                {t("share.generating", { defaultValue: "Generating…" })}
+              </TextShimmer>
+            ) : (
+              t("share.share", { defaultValue: "Share" })
+            )}
           </Button>
         </div>
       </DialogContent>

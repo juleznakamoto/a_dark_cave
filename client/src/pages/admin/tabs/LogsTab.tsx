@@ -7,6 +7,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import { TextShimmer } from "@/components/ui/text-shimmer";
 import {
   Select,
   SelectContent,
@@ -120,7 +121,7 @@ export default function LogsTab() {
                 onClick={() => void loadLogs()}
                 disabled={loading}
               >
-                {loading ? "Refreshing…" : "Refresh"}
+                {loading ? <TextShimmer>Refreshing…</TextShimmer> : "Refresh"}
               </Button>
             </div>
           </div>
