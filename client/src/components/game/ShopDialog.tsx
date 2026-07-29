@@ -1538,10 +1538,16 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
                   animation: cruel-mode-glow-pulse 3.5s ease-in-out infinite;
                 }
 
-                /* Pulse the dialog's own border only — no ::after ring (that
-                   stacked a second border on top of the panel edge). */
+                /* Grow once outward (outline — does not shrink content), then
+                   pulse glow only. overflow-visible on the dialog so it isn't clipped. */
                 [data-checkout-dialog][data-processing="true"] {
-                  animation: checkout-processing-border-pulse 1.4s ease-in-out infinite;
+                  border-color: rgb(255, 255, 255);
+                  outline-style: solid;
+                  outline-color: rgb(255, 255, 255);
+                  outline-offset: 0;
+                  animation:
+                    checkout-processing-border-grow 0.35s ease-out forwards,
+                    checkout-processing-glow-pulse 1.4s ease-in-out 0.35s infinite;
                 }
 
               @keyframes bundle-glow-pulse {
@@ -1562,22 +1568,27 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
                 }
               }
 
-              @keyframes checkout-processing-border-pulse {
+              @keyframes checkout-processing-border-grow {
+                from {
+                  outline-width: 0;
+                }
+                to {
+                  outline-width: 2px;
+                }
+              }
+
+              @keyframes checkout-processing-glow-pulse {
                 0%, 100% {
-                  border-width: 1px;
-                  border-color: rgba(255, 255, 255, 0.7);
                   box-shadow:
                     0 10px 15px -3px rgb(0 0 0 / 0.1),
                     0 4px 6px -4px rgb(0 0 0 / 0.1),
-                    0 0 4px 0 rgba(255, 255, 255, 0.35);
+                    0 0 5px 0 rgba(255, 255, 255, 0.35);
                 }
                 50% {
-                  border-width: 3px;
-                  border-color: rgb(255, 255, 255);
                   box-shadow:
                     0 10px 15px -3px rgb(0 0 0 / 0.1),
                     0 4px 6px -4px rgb(0 0 0 / 0.1),
-                    0 0 10px 0 rgba(255, 255, 255, 0.8);
+                    0 0 14px 0 rgba(255, 255, 255, 0.9);
                 }
               }
 
@@ -2546,7 +2557,7 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
         <Dialog open={true} onOpenChange={handlePaymentDialogOpenChange}>
           <DialogContent
             data-checkout-dialog
-            className="flex max-h-[min(80dvh,80vh)] flex-col overflow-hidden z-[80] gap-2 p-4 sm:p-6 [--adc-dialog-max-w:28rem] [&>button]:hidden"
+            className="flex max-h-[min(80dvh,80vh)] flex-col overflow-visible z-[80] gap-2 p-4 sm:p-6 [--adc-dialog-max-w:28rem] [&>button]:hidden"
             onPointerDownOutside={(e) => e.preventDefault()}
             onInteractOutside={(e) => e.preventDefault()}
           >
