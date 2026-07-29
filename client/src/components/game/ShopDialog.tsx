@@ -1541,13 +1541,13 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
                 /* Grow once outward (outline — does not shrink content), then
                    pulse glow only. overflow-visible on the dialog so it isn't clipped. */
                 [data-checkout-dialog][data-processing="true"] {
-                  border-color: rgb(255, 255, 255);
+                  border-color: rgb(34, 197, 94);
                   outline-style: solid;
-                  outline-color: rgb(255, 255, 255);
+                  outline-color: rgb(34, 197, 94);
                   outline-offset: 0;
                   animation:
                     checkout-processing-border-grow 0.35s ease-out forwards,
-                    checkout-processing-glow-pulse 1.4s ease-in-out 0.35s infinite;
+                    checkout-processing-glow-pulse 0.9s ease-in-out 0.35s infinite;
                 }
 
               @keyframes bundle-glow-pulse {
@@ -1582,13 +1582,13 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
                   box-shadow:
                     0 10px 15px -3px rgb(0 0 0 / 0.1),
                     0 4px 6px -4px rgb(0 0 0 / 0.1),
-                    0 0 5px 0 rgba(255, 255, 255, 0.35);
+                    0 0 5px 0 rgba(34, 197, 94, 0.4);
                 }
                 50% {
                   box-shadow:
                     0 10px 15px -3px rgb(0 0 0 / 0.1),
                     0 4px 6px -4px rgb(0 0 0 / 0.1),
-                    0 0 14px 0 rgba(255, 255, 255, 0.9);
+                    0 0 14px 0 rgba(34, 197, 94, 0.95);
                 }
               }
 
