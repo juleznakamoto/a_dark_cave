@@ -29,9 +29,9 @@ export function RestartGameDialog({
       <DialogContent className="[--adc-dialog-max-w:28rem] z-[70]">
         <DialogHeader>
           <DialogTitle className="leading-6">{t("restart.title")}</DialogTitle>
-          <DialogDescription className="py-2 space-y-2">
-            <div className="text-center space-y-2">
-              <div className="bg-red-600/5 border border-red-600/50 rounded-lg p-3 space-y-2">
+          <DialogDescription asChild className="py-2">
+            <div className="text-center">
+              <div className="bg-red-600/5 border border-red-600/50 rounded-lg p-3 flex flex-col gap-3">
                 <p className="text-md font-medium text-red-600">
                   {t("restart.warning")}
                 </p>
@@ -39,7 +39,7 @@ export function RestartGameDialog({
                   <p className="text-sm text-muted-foreground">
                     {t("restart.achievementsNote", {
                       defaultValue:
-                        "All achievements will be reset except for Epic Achievements",
+                        "All achievements will be reset except for Epic Achievements.",
                     })}
                   </p>
                 )}
