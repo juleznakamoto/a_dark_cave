@@ -121,7 +121,11 @@ export default function LogsTab() {
                 onClick={() => void loadLogs()}
                 disabled={loading}
               >
-                {loading ? <TextShimmer>Refreshing…</TextShimmer> : "Refresh"}
+                {loading ? (
+                  <TextShimmer tone="onSurface">Refreshing…</TextShimmer>
+                ) : (
+                  "Refresh"
+                )}
               </Button>
             </div>
           </div>

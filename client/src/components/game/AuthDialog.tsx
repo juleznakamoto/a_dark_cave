@@ -360,7 +360,7 @@ export default function AuthDialog({
                     />
                   </svg>
                   {loading ? (
-                    <TextShimmer>
+                    <TextShimmer tone="onSurface">
                       {mode === "signup"
                         ? t("auth.signUpWithGoogle")
                         : t("auth.signInWithGoogle")}

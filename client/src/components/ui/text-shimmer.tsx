@@ -1,34 +1,55 @@
-import * as React from "react";
+"use client";
+
+import { motion } from "framer-motion";
 import { cn } from "@/lib/utils";
 
 type TextShimmerProps = {
-  children: React.ReactNode;
+  children: string;
   className?: string;
-  /** Seconds for one shimmer sweep. Default 1.4. */
+  /** Seconds for one shimmer sweep. Default 1.5. */
   duration?: number;
-  as?: "span" | "p" | "div";
+  /**
+   * onPrimary — filled buttons (light label on dark).
+   * onSurface — outline/ghost buttons (foreground label).
+   */
+  tone?: "onPrimary" | "onSurface";
 };
 
 /**
- * Loading / in-progress text: a highlight sweeps across the label.
- * Inherits the parent text color (works on primary and outline buttons).
+ * Loading / in-progress label: a highlight sweeps across the text.
  */
 export function TextShimmer({
   children,
   className,
-  duration = 1.4,
-  as: Comp = "span",
+  duration = 1.5,
+  tone = "onPrimary",
 }: TextShimmerProps) {
   return (
-    <Comp
-      className={cn("text-shimmer-host inline-block", className)}
-      style={
-        {
-          ["--text-shimmer-duration" as string]: `${duration}s`,
-        } as React.CSSProperties
-      }
+    <motion.span
+      className={cn(
+        "inline-block bg-clip-text text-transparent",
+        tone === "onPrimary"
+          ? "[--shimmer-dim:rgba(255,255,255,0.42)] [--shimmer-bright:#ffffff]"
+          : "[--shimmer-dim:var(--muted-foreground)] [--shimmer-bright:var(--foreground)]",
+        className,
+      )}
+      style={{
+        backgroundImage:
+          "linear-gradient(90deg, var(--shimmer-dim) 0%, var(--shimmer-bright) 50%, var(--shimmer-dim) 100%)",
+        backgroundSize: "250% 100%",
+        WebkitBackgroundClip: "text",
+        backgroundClip: "text",
+        WebkitTextFillColor: "transparent",
+      }}
+      initial={{ backgroundPosition: "100% center" }}
+      animate={{ backgroundPosition: "0% center" }}
+      transition={{
+        repeat: Infinity,
+        duration,
+        ease: "linear",
+      }}
     >
-      <span className="text-shimmer">{children}</span>
-    </Comp>
+      {children}
+    </motion.span>
   );
 }
