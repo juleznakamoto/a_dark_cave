@@ -113,7 +113,7 @@ const SHOP_CARD_PROMO_TAG_CLASS =
 
 /** Same promo-pill shape as `SHOP_CARD_PROMO_TAG_CLASS`, Insight / blue variant. */
 const SHOP_INSIGHT_PROMO_TAG_CLASS =
-  "inline-flex shrink-0 items-center gap-x-1 px-1.5 py-0.5 leading-none text-sm font-normal border border-blue-800 rounded bg-blue-500/5";
+  "inline-flex shrink-0 items-center gap-x-1 px-1.5 py-1 leading-none text-sm font-normal border border-blue-800 rounded bg-blue-500/5";
 
 /** Future sale MSRP or bundle component-sum list price (not event discounts). */
 function shopCardCatalogSaleListCents(item: ShopItem): number | null {
@@ -2496,7 +2496,7 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
                       </span>
                       <span
                         className={cn(
-                          "inline-flex items-center font-noto-symbols-2",
+                          "inline-flex items-center justify-center font-noto-symbols-2 leading-none translate-y-[0.12em]",
                           INSIGHT_TEXT_CLASS,
                         )}
                         aria-hidden
