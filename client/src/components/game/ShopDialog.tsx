@@ -113,7 +113,7 @@ const SHOP_CARD_PROMO_TAG_CLASS =
 
 /** Same promo-pill shape as `SHOP_CARD_PROMO_TAG_CLASS`, Insight / blue variant. */
 const SHOP_INSIGHT_PROMO_TAG_CLASS =
-  "shrink-0 px-1.5 py-0.5 leading-tight text-sm font-normal border border-blue-800 rounded bg-blue-500/5";
+  "inline-flex shrink-0 items-center gap-x-1 px-1.5 py-0.5 leading-none text-sm font-normal border border-blue-800 rounded bg-blue-500/5";
 
 /** Future sale MSRP or bundle component-sum list price (not event discounts). */
 function shopCardCatalogSaleListCents(item: ShopItem): number | null {
@@ -2488,27 +2488,31 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
                 {(import.meta.env.DEV ||
                   !gameState.hasMadeNonFreePurchase) && (
                     <span className={SHOP_INSIGHT_PROMO_TAG_CLASS}>
-                      +
-                      <span className="font-bold tabular-nums">
-                        {formatNumber(FIRST_PURCHASE_INSIGHT_BONUS)}
-                      </span>{" "}
+                      <span>
+                        +
+                        <span className="font-bold tabular-nums">
+                          {formatNumber(FIRST_PURCHASE_INSIGHT_BONUS)}
+                        </span>
+                      </span>
                       <span
                         className={cn(
-                          "font-noto-symbols-2",
+                          "inline-flex items-center font-noto-symbols-2",
                           INSIGHT_TEXT_CLASS,
                         )}
                         aria-hidden
                       >
                         {INSIGHT_GLYPH}
-                      </span>{" "}
-                      <span className="font-bold">
-                        {t("ui:shop.firstPurchaseInsightBannerInsight", {
-                          defaultValue: "Insight",
+                      </span>
+                      <span>
+                        <span className="font-bold">
+                          {t("ui:shop.firstPurchaseInsightBannerInsight", {
+                            defaultValue: "Insight",
+                          })}
+                        </span>{" "}
+                        {t("ui:shop.firstPurchaseInsightCheckoutFree", {
+                          defaultValue: "for free",
                         })}
-                      </span>{" "}
-                      {t("ui:shop.firstPurchaseInsightCheckoutFree", {
-                        defaultValue: "for free",
-                      })}
+                      </span>
                     </span>
                   )}
               </DialogTitle>
