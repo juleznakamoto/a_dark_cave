@@ -31,12 +31,10 @@ export function RestartGameDialog({
           <DialogTitle className="leading-6">{t("restart.title")}</DialogTitle>
           <DialogDescription asChild className="py-2">
             <div className="text-center">
-              <div className="bg-red-600/5 border border-red-600/50 rounded-lg p-3 flex flex-col gap-3">
-                <p className="text-md font-medium text-red-600">
-                  {t("restart.warning")}
-                </p>
+              <div className="bg-red-600/5 border border-red-600/50 rounded-lg p-3 text-md font-medium text-red-600 space-y-1">
+                <p>{t("restart.warning")}</p>
                 {!isSteamEdition && (
-                  <p className="text-sm text-muted-foreground">
+                  <p>
                     {t("restart.achievementsNote", {
                       defaultValue:
                         "All achievements will be reset except for Epic Achievements.",
