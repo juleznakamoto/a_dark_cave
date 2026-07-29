@@ -47,8 +47,8 @@
     "eventDiscount": "Descuento de evento", //x1.4
     "total": "Total",
     "legalConsent": "Obtienes acceso instantáneo al contenido digital tras la compra.",
-    "termsOfService": "Condiciones del servicio", //x1.5
-    "rightOfWithdrawal": "Derecho de desistimiento", //x1.3
+    "termsOfService": "Condiciones",
+    "rightOfWithdrawal": "Desistimiento",
     "completePurchaseFor": "Completar compra por {{price}}",
     "paymentFailed": "Pago fallido",
     "notAuthenticated": "Usuario no autenticado",

@@ -147,8 +147,8 @@
     "purchaseSuccessful": "Compra Concluída!",
     "purchaseSuccessfulDesc": "Jogo Completo desbloqueado e ativado! Agora você pode continuar sua jornada sem restrições.",
     "legalConsent": "Você obtém acesso instantâneo ao conteúdo digital após a compra.",
-    "termsOfService": "Termos de Serviço",
-    "rightOfWithdrawal": "Direito de Arrependimento",
+    "termsOfService": "Termos",
+    "rightOfWithdrawal": "Arrependimento",
     "completePurchaseFor": "Concluir Compra por {{price}}",
     "paymentFailed": "Pagamento falhou",
     "notAuthenticated": "Usuário não autenticado",
@@ -244,5 +244,4 @@
     "srDescription": "Select one of the offered blessings",
     "chooseBlessing": "Choose"
   }
-
 }

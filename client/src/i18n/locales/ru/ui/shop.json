@@ -47,8 +47,8 @@
     "eventDiscount": "Скидка за событие", //x1.2
     "total": "Итого",
     "legalConsent": "После покупки вы сразу получаете доступ к цифровому контенту.",
-    "termsOfService": "Условия использования", //x1.3
-    "rightOfWithdrawal": "Право на отказ",
+    "termsOfService": "Условия",
+    "rightOfWithdrawal": "Отказ",
     "completePurchaseFor": "Завершить покупку за {{price}}",
     "paymentFailed": "Ошибка оплаты",
     "notAuthenticated": "Пользователь не авторизован", //x1.2

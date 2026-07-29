@@ -47,8 +47,8 @@
     "eventDiscount": "Remise d'événement", //x1.3
     "total": "Total",
     "legalConsent": "Vous accédez immédiatement au contenu numérique après l'achat.",
-    "termsOfService": "Conditions d'utilisation", //x1.5
-    "rightOfWithdrawal": "Droit de rétractation",
+    "termsOfService": "Conditions",
+    "rightOfWithdrawal": "Rétractation",
     "completePurchaseFor": "Finaliser l'achat pour {{price}}",
     "paymentFailed": "Paiement échoué",
     "notAuthenticated": "Utilisateur non authentifié", //x1.2

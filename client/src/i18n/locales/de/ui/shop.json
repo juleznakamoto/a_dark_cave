@@ -47,8 +47,8 @@
     "eventDiscount": "Event-Rabatt",
     "total": "Gesamt",
     "legalConsent": "Du erhältst nach dem Kauf sofortigen Zugang zu den digitalen Inhalten.",
-    "termsOfService": "Nutzungsbedingungen",
-    "rightOfWithdrawal": "Widerrufsrecht",
+    "termsOfService": "AGB",
+    "rightOfWithdrawal": "Widerruf",
     "completePurchaseFor": "Kauf abschließen für {{price}}",
     "paymentFailed": "Zahlung fehlgeschlagen", //x1.6
     "notAuthenticated": "Benutzer nicht authentifiziert", //x1.4

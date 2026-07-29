@@ -7,16 +7,16 @@
     "knowledgeTimeBonusMax": " (max.)",
     "successChance": "Erfolgschance: {{percent}}%",
     "successChanceLocked": "Erfolgschance: ??%",
-    "influencedBy": "Beeinflusst durch:"  //x1.3
+    "influencedBy": "Beeinflusst durch:" //x1.3
   },
   "reward": {
     "title": "Belohnung",
     "loss": "Verlust",
     "actionReward": "Belohnung",
-    "claimRewards": "Belohnungen nehmen"  //x1.4
+    "claimRewards": "Belohnungen nehmen" //x1.4
   },
   "madness": {
-    "title": "Wahnsinnsereignis",  //x1.3
+    "title": "Wahnsinnsereignis", //x1.3
     "change": "{{sign}} {{amount}} Wahnsinn"
   },
   "insightPotion": {
@@ -29,12 +29,12 @@
     "chooseBlessing": "Choose"
   },
   "socialPrompt": {
-    "title": "Bleib in Verbindung und verdiene Belohnungen",  //x1.4
+    "title": "Bleib in Verbindung und verdiene Belohnungen", //x1.4
     "description": "Schließe die Aufgaben unten ab, um Boni zu erhalten. Schließe alle Aufgaben ab, um einen exklusiven Gegenstand zu erhalten.",
-    "signUpRequiresSignInTooltip": "Registriere dich, um die Aufgabe abzuschließen",  //x1.9
-    "signUpTitle": "Registrieren",  //x1.7
+    "signUpRequiresSignInTooltip": "Registriere dich, um die Aufgabe abzuschließen", //x1.9
+    "signUpTitle": "Registrieren", //x1.7
     "signUpDesc": "Erstelle ein kostenloses Konto, um deinen Spielfortschritt geräteübergreifend zu synchronisieren. Ohne Konto wird dein Fortschritt nur lokal gespeichert und kann verloren gehen.",
-    "signUpButton": "Registrieren",  //x1.7
+    "signUpButton": "Registrieren", //x1.7
     "emailUpdatesTitle": "E-Mail-Updates",
     "subscribe": "Abonnieren",
     "claim": "Abholen",
@@ -69,19 +69,19 @@
   "invite": {
     "button": "Einladen",
     "goldBonus": "+{{amount}} Gold",
-    "linkCopied": "Einladungslink kopiert!",  //x1.2
+    "linkCopied": "Einladungslink kopiert!", //x1.2
     "linkCopiedDesc": "Teile ihn mit Freunden, um beide {{amount}} Gold zu verdienen.",
-    "copyFailed": "Einladungslink konnte nicht kopiert werden",  //x1.6
+    "copyFailed": "Einladungslink konnte nicht kopiert werden", //x1.6
     "tooltip": "Lade deine Freunde ein – ihr beide erhaltet {{amount}} Gold. Du kannst bis zu {{cap}} Freunde einladen. ({{count}}/{{cap}} eingeladen)."
   },
   "invest": {
-    "title": "Investieren",  //x1.8
+    "title": "Investieren", //x1.8
     "strategy": "Investitionsstrategie",
     "amount": "Investitionsbetrag",
     "potentialProfit": "Möglicher Gewinn:",
     "startInvestment": "Investition starten",
     "infoAriaLabel": "Investitionen und Strategietabelle erklären",
-    "unlockTooltip": "Wird bei höherer Gebäudestufe freigeschaltet",  //x1.4
+    "unlockTooltip": "Wird bei höherer Gebäudestufe freigeschaltet", //x1.4
     "minutes": "{{count}} Min.",
     "luckBonus": "+{{pct}} % Erfolgschance durch Glück (in Tabelle enthalten).",
     "buildingLuckyBonus2": "+2 % Glückschance durch Gebäudestufe (in Tabelle enthalten).",
@@ -92,7 +92,7 @@
       "profit": "Gewinn",
       "lucky": "Glück",
       "loss": "Verlust",
-      "wipeout": "Totalverlust"  //x1.7
+      "wipeout": "Totalverlust" //x1.7
     },
     "tooltip": {
       "time": "Wie lange die Investition läuft.",
@@ -115,7 +115,7 @@
     "rulesStand": "Hat der Spieler am Zug mehr Punkte als der Gegner, kann er wählen, nicht zu würfeln.",
     "tutorialIntro": "Um dir das Spiel beizubringen, bietet der Spieler an, {{count}} Mal ohne Einsatz zu spielen.",
     "boneDiceIntro": "Setze deinen Einsatz. Mit Knochenwürfeln kannst du zweimal gegen den Spieler antreten.",
-    "placeBet": "Setze deinen Einsatz.",  //x1.4
+    "placeBet": "Setze deinen Einsatz.", //x1.4
     "gamesRemaining": "Noch {{remaining}} von {{total}} Spielen.",
     "requiresLuck": "Erfordert {{luck}} Glück zum Freischalten",
     "bet": "Einsatz:",
@@ -124,9 +124,9 @@
     "you": "Du",
     "gambler": "Spieler",
     "roll": "Würfeln",
-    "noRoll": "Nicht würfeln",  //x1.9
-    "youWin": "Du gewinnst",  //x1.6
-    "youLose": "Du verlierst",  //x1.5
+    "noRoll": "Nicht würfeln", //x1.9
+    "youWin": "Du gewinnst", //x1.6
+    "youLose": "Du verlierst", //x1.5
     "practiceOutcome": "Übungsrunde. Kein Gold gewonnen oder verloren.",
     "goldWon": "+{{amount}} Gold",
     "goldLost": "-{{amount}} Gold",
@@ -144,7 +144,7 @@
     "featureStructures": "100+ Gebäude",
     "featureItems": "250+ Gegenstände, Gefährten, Bücher, Segen…",
     "featureAchievements": "50+ Erfolge",
-    "featureStory": "Düstere und herausfordernde Geschichte basierend auf deinen Entscheidungen",  //x1.5
+    "featureStory": "Düstere und herausfordernde Geschichte basierend auf deinen Entscheidungen", //x1.5
     "signInRequired": "Bitte melde dich an, um die Vollversion zu kaufen.",
     "continueJourney": "Reise fortsetzen",
     "progressSaved": "Dein Fortschritt ist gespeichert. Du kannst jederzeit zurückkehren und dort weiterspielen, wo du aufgehört hast.",
@@ -152,12 +152,12 @@
     "purchaseSuccessful": "Kauf erfolgreich!",
     "purchaseSuccessfulDesc": "Vollversion freigeschaltet und aktiviert! Du kannst deine Reise nun ohne Einschränkungen fortsetzen.",
     "legalConsent": "Du erhältst nach dem Kauf sofortigen Zugang zu den digitalen Inhalten.",
-    "termsOfService": "Nutzungsbedingungen",
-    "rightOfWithdrawal": "Widerrufsrecht",
+    "termsOfService": "AGB",
+    "rightOfWithdrawal": "Widerruf",
     "completePurchaseFor": "Kauf abschließen für {{price}}",
-    "paymentFailed": "Zahlung fehlgeschlagen",  //x1.6
-    "notAuthenticated": "Benutzer nicht authentifiziert",  //x1.4
-    "unexpectedError": "Ein unerwarteter Fehler ist aufgetreten"  //x1.4
+    "paymentFailed": "Zahlung fehlgeschlagen", //x1.6
+    "notAuthenticated": "Benutzer nicht authentifiziert", //x1.4
+    "unexpectedError": "Ein unerwarteter Fehler ist aufgetreten" //x1.4
   },
   "leaderboard": {
     "title": "Bestenliste",
@@ -166,34 +166,34 @@
     "rank": "#",
     "player": "Spieler",
     "completionTime": "Abschlusszeit",
-    "noEntries": "Noch keine Einträge",  //x1.4
-    "lastUpdated": "Zuletzt aktualisiert: {{time}}",  //x1.4
+    "noEntries": "Noch keine Einträge", //x1.4
+    "lastUpdated": "Zuletzt aktualisiert: {{time}}", //x1.4
     "recentCompletionsNote": "Es werden nur Abschlüsse der letzten 6 Monate angezeigt.",
-    "username": "Benutzername:",  //x1.4
-    "notSet": "Nicht festgelegt",  //x2.3
+    "username": "Benutzername:", //x1.4
+    "notSet": "Nicht festgelegt", //x2.3
     "currentPlaytime": "Aktuelle Spielzeit:",
-    "enterName": "Namen eingeben",  //x1.4
-    "normalMode": "Normaler Modus",  //x1.3
-    "cruelMode": "Grausamer Modus",  //x1.5
-    "loadFailed": "Bestenliste konnte nicht geladen werden",  //x1.5
-    "invalidUsername": "Ungültiger Benutzername",  //x1.4
-    "usernameEmpty": "Benutzername darf nicht leer sein",  //x1.4
+    "enterName": "Namen eingeben", //x1.4
+    "normalMode": "Normaler Modus", //x1.3
+    "cruelMode": "Grausamer Modus", //x1.5
+    "loadFailed": "Bestenliste konnte nicht geladen werden", //x1.5
+    "invalidUsername": "Ungültiger Benutzername", //x1.4
+    "usernameEmpty": "Benutzername darf nicht leer sein", //x1.4
     "usernameTooLong": "Benutzername darf höchstens 20 Zeichen lang sein",
-    "mustSignIn": "Du musst angemeldet sein, um einen Benutzernamen festzulegen",  //x1.5
-    "usernameNotAllowed": "Benutzername nicht erlaubt",  //x1.3
+    "mustSignIn": "Du musst angemeldet sein, um einen Benutzernamen festzulegen", //x1.5
+    "usernameNotAllowed": "Benutzername nicht erlaubt", //x1.3
     "usernameInappropriate": "Dieser Benutzername enthält unangemessene Sprache. Bitte wähle einen anderen.",
-    "usernameTaken": "Benutzername vergeben",  //x1.5
+    "usernameTaken": "Benutzername vergeben", //x1.5
     "usernameTakenDesc": "Dieser Benutzername ist bereits vergeben. Bitte wähle einen anderen.",
-    "usernameSaved": "Benutzername gespeichert",  //x1.7
-    "usernameSavedDesc": "Dein Benutzername wurde aktualisiert",  //x1.2
-    "saveFailed": "Benutzername konnte nicht gespeichert werden"  //x1.9
+    "usernameSaved": "Benutzername gespeichert", //x1.7
+    "usernameSavedDesc": "Dein Benutzername wurde aktualisiert", //x1.2
+    "saveFailed": "Benutzername konnte nicht gespeichert werden" //x1.9
   },
   "investmentResult": {
     "title": "Investitionsergebnis",
     "success": "Deine {{amount}} Gold-Investition war erfolgreich.",
     "luckyChance": "Glückstreffer. Der Gewinn deiner {{amount}} Gold-Investition wird mit {{multiplier}} multipliziert.",
     "wipeout": "Totalverlust. Du hast deine gesamte {{amount}} Gold-Investition verloren.",
-    "partialLoss": "Deine {{amount}} Gold-Investition ist fehlgeschlagen."  //x1.4
+    "partialLoss": "Deine {{amount}} Gold-Investition ist fehlgeschlagen." //x1.4
   },
   "cube": {
     "fallbackTitle": "Der flüsternde Würfel",
@@ -218,14 +218,14 @@
     "description": "Speichere oder teile ein Bild deines Spielfortschritts.",
     "resources": "Ressourcen: {{percent}} %",
     "achievements": "Erfolge: {{percent}} %",
-    "cruelMode": "Grausamer Modus",  //x1.5
+    "cruelMode": "Grausamer Modus", //x1.5
     "on": "An",
     "off": "Aus",
     "playTime": "Spielzeit",
-    "download": "Herunterladen",  //x1.6
-    "generating": "Wird erstellt…",  //x1.3
+    "download": "Herunterladen", //x1.6
+    "generating": "Wird erstellt…", //x1.3
     "share": "Teilen",
-    "errorTitle": "Bild konnte nicht erstellt werden",  //x1.5
+    "errorTitle": "Bild konnte nicht erstellt werden", //x1.5
     "errorDesc": "Beim Erstellen des Bildes ist etwas schiefgelaufen."
   },
   "feedback": {
@@ -238,10 +238,10 @@
     "email": "E-Mail"
   },
   "galaxy": {
-    "title": "Die Demo endet hier",  //x1.4
-    "description": "Setze das vollständige Spiel auf deine Steam-Wunschliste, um die Reise nach der Veröffentlichung fortzusetzen.",  //x1.5
+    "title": "Die Demo endet hier", //x1.4
+    "description": "Setze das vollständige Spiel auf deine Steam-Wunschliste, um die Reise nach der Veröffentlichung fortzusetzen.", //x1.5
     "wishlistButton": "Auf Steam wünschen",
-    "startNewGameButton": "Neues Spiel starten",  //x1.4
-    "releaseNote": "Geplante Veröffentlichung: Q4 2026"  //x1.4
+    "startNewGameButton": "Neues Spiel starten", //x1.4
+    "releaseNote": "Geplante Veröffentlichung: Q4 2026" //x1.4
   }
 }
