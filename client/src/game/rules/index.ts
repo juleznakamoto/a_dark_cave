@@ -171,6 +171,30 @@ export const shouldShowAction = (
   const action = getGameActions()[actionId];
   if (!action?.show_when) return false;
 
+  // Lantern-gated explore stages hide once the next lantern is crafted. If the
+  // matching story.seen flag was never set (skip / wipe), keep the button until
+  // the flag is written so cube progression cannot softlock.
+  if (actionId === "ventureDeeper") {
+    if ((state.buildings.blacksmith || 0) < 1) return false;
+    if (!state.story?.seen?.venturedDeeper) return true;
+    return !state.tools.iron_lantern;
+  }
+  if (actionId === "descendFurther") {
+    if (!state.tools.iron_lantern) return false;
+    if (!state.story?.seen?.descendedFurther) return true;
+    return !state.tools.steel_lantern;
+  }
+  if (actionId === "exploreRuins") {
+    if (!state.tools.steel_lantern) return false;
+    if (!state.story?.seen?.exploredRuins) return true;
+    return !state.tools.obsidian_lantern;
+  }
+  if (actionId === "exploreTemple") {
+    if (!state.tools.obsidian_lantern) return false;
+    if (!state.story?.seen?.exploredTemple) return true;
+    return !state.tools.adamant_lantern;
+  }
+
   // For building actions, also check if the next level exists
   if (action.building) {
     const nextLevel = getNextBuildingLevel(actionId, state);
