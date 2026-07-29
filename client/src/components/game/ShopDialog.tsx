@@ -561,7 +561,6 @@ interface CheckoutFormProps {
   currency: "EUR" | "USD";
   onCancel: () => void;
   displayPriceCents: number;
-  onProcessingChange?: (isProcessing: boolean) => void;
 }
 
 function CheckoutForm({
@@ -570,7 +569,6 @@ function CheckoutForm({
   currency,
   onCancel,
   displayPriceCents,
-  onProcessingChange,
 }: CheckoutFormProps) {
   const { t } = useTranslation(["ui", "common"]);
   const stripe = useStripe();
@@ -578,10 +576,18 @@ function CheckoutForm({
   const [isProcessing, setIsProcessing] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
 
+  // Toggle border glow on the dialog DOM node — avoid React state in the parent
+  // (re-renders remount Stripe Elements and restart the dialog enter animation).
   useEffect(() => {
-    onProcessingChange?.(isProcessing);
-    return () => onProcessingChange?.(false);
-  }, [isProcessing, onProcessingChange]);
+    const dialog = document.querySelector<HTMLElement>("[data-checkout-dialog]");
+    if (!dialog) return;
+    if (isProcessing) {
+      dialog.setAttribute("data-processing", "true");
+    } else {
+      dialog.removeAttribute("data-processing");
+    }
+    return () => dialog.removeAttribute("data-processing");
+  }, [isProcessing]);
 
   const formatPrice = (cents: number) => {
     const amount = (cents / 100).toFixed(2);
@@ -716,7 +722,6 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
   const { t } = useTranslation(["ui", "common"]);
   const [selectedItem, setSelectedItem] = useState<string | null>(null);
   const [clientSecret, setClientSecret] = useState<string | null>(null);
-  const [isCheckoutProcessing, setIsCheckoutProcessing] = useState(false);
   const [purchasedItems, setPurchasedItems] = useState<string[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [activeTab, setActiveTab] = useState<"shop" | "purchases">("shop");
@@ -1146,7 +1151,6 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
   const handleCancelPayment = () => {
     setClientSecret(null);
     setSelectedItem(null);
-    setIsCheckoutProcessing(false);
     // In direct-checkout mode the grid was never shown, so cancelling closes
     // the whole shop instead of returning to an (empty) shop view.
     if (isDirectCheckout) {
@@ -1316,7 +1320,6 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
 
     setClientSecret(null);
     setSelectedItem(null);
-    setIsCheckoutProcessing(false);
 
     // Direct-checkout items (hidden from the grid) have no purchases list to
     // return to — their entitlement was already applied by loadPurchasedItems.
@@ -1477,7 +1480,6 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
     if (!open) {
       setClientSecret(null);
       setSelectedItem(null);
-      setIsCheckoutProcessing(false);
       setShopCheckoutItemId(null);
       onClose();
     }
@@ -1487,7 +1489,6 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
     if (!open) {
       setClientSecret(null);
       setSelectedItem(null);
-      setIsCheckoutProcessing(false);
       if (isDirectCheckout) {
         setShopCheckoutItemId(null);
         onClose();
@@ -1507,8 +1508,24 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
                   animation: cruel-mode-glow-pulse 3.5s ease-in-out infinite;
                 }
 
-                .checkout-dialog-processing {
+                /* Border-only processing cue: animate a ring overlay, never the
+                   dialog panel itself (panel animation restarts enter/zoom). */
+                [data-checkout-dialog][data-processing="true"] {
                   border-width: 2px;
+                  border-color: rgb(250, 204, 21);
+                }
+
+                [data-checkout-dialog][data-processing="true"]::after {
+                  content: "";
+                  position: absolute;
+                  inset: 0;
+                  z-index: 50;
+                  pointer-events: none;
+                  border-radius: inherit;
+                  border: 2px solid rgba(254, 240, 138, 0.85);
+                  box-shadow:
+                    0 0 8px 0 rgba(250, 204, 21, 0.55),
+                    inset 0 0 6px 0 rgba(250, 204, 21, 0.25);
                   animation: checkout-processing-border-pulse 1.4s ease-in-out infinite;
                 }
 
@@ -1532,23 +1549,16 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
 
               @keyframes checkout-processing-border-pulse {
                 0%, 100% {
-                  border-color: rgba(234, 179, 8, 0.55);
-                  outline: 1px solid rgba(250, 204, 21, 0.35);
-                  outline-offset: -1px;
+                  border-color: rgba(234, 179, 8, 0.5);
                   box-shadow:
-                    0 10px 15px -3px rgb(0 0 0 / 0.1),
-                    0 4px 6px -4px rgb(0 0 0 / 0.1),
-                    0 0 6px 0 rgba(250, 204, 21, 0.45);
+                    0 0 4px 0 rgba(250, 204, 21, 0.35),
+                    inset 0 0 4px 0 rgba(250, 204, 21, 0.15);
                 }
                 50% {
-                  border-color: rgb(254, 240, 138);
-                  outline: 1px solid rgba(254, 243, 199, 0.95);
-                  outline-offset: 0px;
+                  border-color: rgb(254, 243, 199);
                   box-shadow:
-                    0 10px 15px -3px rgb(0 0 0 / 0.1),
-                    0 4px 6px -4px rgb(0 0 0 / 0.1),
-                    0 0 10px 0 rgba(253, 224, 71, 0.85),
-                    0 0 2px 1px rgba(254, 243, 199, 0.7);
+                    0 0 12px 0 rgba(253, 224, 71, 0.85),
+                    inset 0 0 8px 0 rgba(250, 204, 21, 0.35);
                 }
               }
 
@@ -2516,10 +2526,8 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
       {clientSecret && selectedItem && (
         <Dialog open={true} onOpenChange={handlePaymentDialogOpenChange}>
           <DialogContent
-            className={cn(
-              "flex max-h-[min(80dvh,80vh)] flex-col overflow-hidden z-[80] gap-2 p-4 sm:p-6 [--adc-dialog-max-w:28rem] [&>button]:hidden",
-              isCheckoutProcessing && "checkout-dialog-processing",
-            )}
+            data-checkout-dialog
+            className="flex max-h-[min(80dvh,80vh)] flex-col overflow-hidden z-[80] gap-2 p-4 sm:p-6 [--adc-dialog-max-w:28rem] [&>button]:hidden"
             onPointerDownOutside={(e) => e.preventDefault()}
             onInteractOutside={(e) => e.preventDefault()}
           >
@@ -2639,7 +2647,6 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
                     currency={currency}
                     onCancel={handleCancelPayment}
                     displayPriceCents={checkoutPriceBreakdown?.finalCents ?? 0}
-                    onProcessingChange={setIsCheckoutProcessing}
                   />
                 </Elements>
               ) : (
