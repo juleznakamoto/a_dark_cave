@@ -2490,7 +2490,7 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
                     <span className={SHOP_INSIGHT_PROMO_TAG_CLASS}>
                       <span>
                         +
-                        <span className="font-bold tabular-nums">
+                        <span className="tabular-nums">
                           {formatNumber(FIRST_PURCHASE_INSIGHT_BONUS)}
                         </span>
                       </span>
@@ -2504,11 +2504,9 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
                         {INSIGHT_GLYPH}
                       </span>
                       <span>
-                        <span className="font-bold">
-                          {t("ui:shop.firstPurchaseInsightBannerInsight", {
-                            defaultValue: "Insight",
-                          })}
-                        </span>{" "}
+                        {t("ui:shop.firstPurchaseInsightBannerInsight", {
+                          defaultValue: "Insight",
+                        })}{" "}
                         {t("ui:shop.firstPurchaseInsightCheckoutFree", {
                           defaultValue: "for free",
                         })}
