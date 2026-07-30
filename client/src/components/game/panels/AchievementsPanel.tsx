@@ -158,7 +158,8 @@ function AchievementTitleInsightBadge({
       onMouseLeave={() => {
         if (!playing) setHighlightedResources([]);
       }}
-      className="inline-flex shrink-0 items-center self-center"
+      className="inline-flex size-5 shrink-0 items-center justify-center self-center"
+      tooltipTriggerAsChild
     >
       <button
         type="button"
@@ -176,12 +177,7 @@ function AchievementTitleInsightBadge({
           className: "h-5 w-5",
         })}
       >
-        <BuildingActionBadge
-          key={playing ? "reveal" : "idle"}
-          embedded
-          size="lg"
-          playing={playing}
-        />
+        <BuildingActionBadge embedded size="lg" />
       </button>
     </TooltipWrapper>
   );
