@@ -127,8 +127,8 @@
     "goldLost": "-{{amount}} de Ouro",
     "practiceWinRemaining": "Você venceu a rodada de treino (sem ouro em jogo). {{remaining}} de {{total}} jogos de treino restantes.",
     "practiceLoseRemaining": "Você perdeu a rodada de treino (sem ouro em jogo). {{remaining}} de {{total}} jogos de treino restantes.",
-    "practiceWinComplete": "Você venceu a rodada de treino (sem ouro em jogo). Treino concluído — você já pode fazer uma aposta de ouro.",
-    "practiceLoseComplete": "Você perdeu a rodada de treino (sem ouro em jogo). Treino concluído — você já pode fazer uma aposta de ouro."
+    "practiceWinComplete": "Você venceu a rodada de treino (sem ouro em jogo). Treino concluído - você já pode fazer uma aposta de ouro.",
+    "practiceLoseComplete": "Você perdeu a rodada de treino (sem ouro em jogo). Treino concluído - você já pode fazer uma aposta de ouro."
   },
   "fullGame": {
     "titleTrial": "A Jornada Continua",

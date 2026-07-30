@@ -132,8 +132,8 @@
     "goldLost": "-{{amount}} Gold",
     "practiceWinRemaining": "You won the practice round (no Gold at stake). {{remaining}} of {{total}} practice games remaining.",
     "practiceLoseRemaining": "You lost the practice round (no Gold at stake). {{remaining}} of {{total}} practice games remaining.",
-    "practiceWinComplete": "You won the practice round (no Gold at stake). Practice complete — you may place a Gold wager.",
-    "practiceLoseComplete": "You lost the practice round (no Gold at stake). Practice complete — you may place a Gold wager."
+    "practiceWinComplete": "You won the practice round (no Gold at stake). Practice complete. You may place a Gold wager.",
+    "practiceLoseComplete": "You lost the practice round (no Gold at stake). Practice complete. You may place a Gold wager."
   },
   "fullGame": {
     "titleTrial": "The Journey Continues",

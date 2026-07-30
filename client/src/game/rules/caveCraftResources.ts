@@ -234,7 +234,7 @@ export function handleCraftVeinfireElixir(
       result,
       "veinfire-elixir-crafted",
       "crafting.veinfireElixirFirst",
-      "The alchemist distills glowing essence from veinroot fibers. You now hold a Veinfire Elixir — a potion rumored to bolster the bastion when all seems lost.",
+      "The alchemist distills glowing essence from veinroot fibers. You now hold a Veinfire Elixir, a potion rumored to bolster the bastion when all seems lost.",
     );
   }
 

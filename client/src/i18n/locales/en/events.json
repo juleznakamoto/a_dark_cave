@@ -2255,6 +2255,9 @@
   },
   "wandering_collector": {
     "choices": {
+      "_buyItem": {
+        "cost": "{{goldCost}} Gold"
+      },
       "_sellItem": {
         "reward": "+{{reward}} Gold"
       },
@@ -2270,8 +2273,14 @@
     "title": "The Wandering Collector",
     "message": {
       "visit0": "A figure wrapped in tattered robes approaches. He seems intrigued by what you've gathered. 'I sense value among your possessions,' he murmurs. 'Allow me to take one, in exchange for {{reward}} gold.'",
+      "visit0_both": "A figure wrapped in tattered robes approaches. 'I sense value among your possessions,' he murmurs. 'Sell me one for {{reward}} gold, or buy back what others left behind for {{goldCost}} gold.'",
+      "visit0_buy": "A figure wrapped in tattered robes approaches, a satchel of discarded relics at his side. 'I gather what others refuse,' he murmurs. 'Any of these can be yours for {{goldCost}} gold.'",
       "visit1": "The robed figure returns, his steps soundless on the ground. 'More artifacts, more secrets', he whispers. 'Let me claim one again, and your purse will be {{reward}} gold heavier.'",
-      "visit2": "The collector appears again, eyes glowing within the hood. 'Our dealings near their end,' he says softly. 'Sell me one more, and {{reward}} gold shall be yours.'"
+      "visit1_both": "The robed figure returns, silent as before. 'Sell me another for {{reward}} gold,' he whispers, 'or claim one I recovered for {{goldCost}} gold.'",
+      "visit1_buy": "The robed figure returns with forgotten relics. 'What you once refused, I kept,' he whispers. '{{goldCost}} gold, and any may be yours.'",
+      "visit2": "The collector appears again, eyes glowing within the hood. 'Our dealings near their end,' he says softly. 'Sell me one more, and {{reward}} gold shall be yours.'",
+      "visit2_both": "The collector appears again, eyes glowing within the hood. 'Sell me one more for {{reward}} gold,' he says softly, 'or buy from what I carry for {{goldCost}} gold.'",
+      "visit2_buy": "The collector appears again with a few recovered relics. 'Our dealings near their end,' he says softly. 'For {{goldCost}} gold, take one.'"
     }
   },
   "wanderingFirecrafter": {

@@ -132,8 +132,8 @@
     "goldLost": "-{{amount}} 黄金",
     "practiceWinRemaining": "你赢得了练习局（不涉及金币）。剩余 {{remaining}}/{{total}} 局练习。",
     "practiceLoseRemaining": "你输掉了练习局（不涉及金币）。剩余 {{remaining}}/{{total}} 局练习。",
-    "practiceWinComplete": "你赢得了练习局（不涉及金币）。练习完成——现在可以下注金币。",
-    "practiceLoseComplete": "你输掉了练习局（不涉及金币）。练习完成——现在可以下注金币。"
+    "practiceWinComplete": "你赢得了练习局（不涉及金币）。练习完成，现在可以下注金币。",
+    "practiceLoseComplete": "你输掉了练习局（不涉及金币）。练习完成，现在可以下注金币。"
   },
   "fullGame": {
     "titleTrial": "旅程继续",

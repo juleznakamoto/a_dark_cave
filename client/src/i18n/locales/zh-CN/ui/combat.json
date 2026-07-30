@@ -5,7 +5,7 @@
     "fight": "战斗",
     "fighting": "战斗中...",
     "startFight": "开始战斗",
-    "roundTitle": "战斗 — 第 {{round}} 回合",
+    "roundTitle": "战斗 - 第 {{round}} 回合",
     "youLost": "你输了",
     "youWin": "你赢了",
     "bastion": "堡垒",

@@ -75,7 +75,7 @@ const ROUTE_SEO: Record<string, PublicRouteSeo> = {
     pageName: "Right of Withdrawal",
   },
   "/unsubscribe": {
-    title: "Unsubscribe — A Dark Cave",
+    title: "Unsubscribe | A Dark Cave",
     description: "Unsubscribe from A Dark Cave marketing emails.",
     includeHomeJsonLd: false,
     robots: "noindex, nofollow",

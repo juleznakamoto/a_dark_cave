@@ -2260,6 +2260,9 @@
       },
       "sell_nothing": {
         "label": "Rien"
+      },
+      "_buyItem": {
+        "cost": "{{goldCost}} or"
       }
     },
     "log": {
@@ -2271,7 +2274,13 @@
     "message": {
       "visit0": "Une silhouette enveloppée de robes en lambeaux s'approche. Elle semble intriguée par ce que vous avez amassé. « Je sens de la valeur parmi vos possessions », murmure-t-elle. « Laissez-moi en prendre une, en échange de {{reward}} pièces d'or. »",
       "visit1": "La silhouette revient, ses pas silencieux sur le sol. « Plus d'artefacts, plus de secrets », chuchote-t-elle. « Laissez-moi en reprendre un, et votre bourse sera plus lourde de {{reward}} pièces d'or. »",
-      "visit2": "Le collectionneur réapparaît, les yeux brillant sous sa capuche. « Nos échanges touchent à leur fin », dit-elle doucement. « Vendez-m'en un de plus, et {{reward}} pièces d'or seront vôtres. »"
+      "visit2": "Le collectionneur réapparaît, les yeux brillant sous sa capuche. « Nos échanges touchent à leur fin », dit-elle doucement. « Vendez-m'en un de plus, et {{reward}} pièces d'or seront vôtres. »",
+      "visit0_both": "A figure wrapped in tattered robes approaches. 'I sense value among your possessions,' he murmurs. 'Sell me one for {{reward}} gold - or buy back what others left behind for {{goldCost}} gold.'",
+      "visit0_buy": "A figure wrapped in tattered robes approaches, a satchel of discarded relics at his side. 'I gather what others refuse,' he murmurs. 'Any of these can be yours for {{goldCost}} gold.'",
+      "visit1_both": "The robed figure returns, silent as before. 'Sell me another for {{reward}} gold,' he whispers, 'or claim one I recovered for {{goldCost}} gold.'",
+      "visit1_buy": "The robed figure returns with forgotten relics. 'What you once refused, I kept,' he whispers. '{{goldCost}} gold, and any may be yours.'",
+      "visit2_both": "The collector appears again, eyes glowing within the hood. 'Sell me one more for {{reward}} gold,' he says softly, 'or buy from what I carry for {{goldCost}} gold.'",
+      "visit2_buy": "The collector appears again with a few recovered relics. 'Our dealings near their end,' he says softly. 'For {{goldCost}} gold, take one.'"
     }
   },
   "wanderingFirecrafter": {

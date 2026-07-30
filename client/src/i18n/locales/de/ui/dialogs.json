@@ -132,8 +132,8 @@
     "goldLost": "-{{amount}} Gold",
     "practiceWinRemaining": "Du hast die Übungsrunde gewonnen (kein Gold im Einsatz). Noch {{remaining}} von {{total}} Übungsspielen.",
     "practiceLoseRemaining": "Du hast die Übungsrunde verloren (kein Gold im Einsatz). Noch {{remaining}} von {{total}} Übungsspielen.",
-    "practiceWinComplete": "Du hast die Übungsrunde gewonnen (kein Gold im Einsatz). Übung abgeschlossen — du kannst Gold setzen.",
-    "practiceLoseComplete": "Du hast die Übungsrunde verloren (kein Gold im Einsatz). Übung abgeschlossen — du kannst Gold setzen."
+    "practiceWinComplete": "Du hast die Übungsrunde gewonnen (kein Gold im Einsatz). Übung abgeschlossen - du kannst Gold setzen.",
+    "practiceLoseComplete": "Du hast die Übungsrunde verloren (kein Gold im Einsatz). Übung abgeschlossen - du kannst Gold setzen."
   },
   "fullGame": {
     "titleTrial": "Die Reise geht weiter",

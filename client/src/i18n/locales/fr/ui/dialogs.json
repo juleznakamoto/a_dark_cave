@@ -72,7 +72,7 @@
     "linkCopied": "Lien d'invitation copié !", //x1.3
     "linkCopiedDesc": "Partagez-le avec des amis pour gagner {{amount}} or chacun.",
     "copyFailed": "Impossible de copier le lien d'invitation", //x1.6
-    "tooltip": "Invitez vos amis — vous recevrez tous les deux {{amount}} or. Vous pouvez inviter jusqu'à {{cap}} amis. ({{count}}/{{cap}} invités)."
+    "tooltip": "Invitez vos amis - vous recevrez tous les deux {{amount}} or. Vous pouvez inviter jusqu'à {{cap}} amis. ({{count}}/{{cap}} invités)."
   },
   "invest": {
     "title": "Investir",
@@ -132,8 +132,8 @@
     "goldLost": "-{{amount}} or",
     "practiceWinRemaining": "Vous avez gagné la manche d'entraînement (sans mise d'or). {{remaining}} sur {{total}} parties d'entraînement restantes.",
     "practiceLoseRemaining": "Vous avez perdu la manche d'entraînement (sans mise d'or). {{remaining}} sur {{total}} parties d'entraînement restantes.",
-    "practiceWinComplete": "Vous avez gagné la manche d'entraînement (sans mise d'or). Entraînement terminé — vous pouvez miser de l'or.",
-    "practiceLoseComplete": "Vous avez perdu la manche d'entraînement (sans mise d'or). Entraînement terminé — vous pouvez miser de l'or."
+    "practiceWinComplete": "Vous avez gagné la manche d'entraînement (sans mise d'or). Entraînement terminé - vous pouvez miser de l'or.",
+    "practiceLoseComplete": "Vous avez perdu la manche d'entraînement (sans mise d'or). Entraînement terminé - vous pouvez miser de l'or."
   },
   "fullGame": {
     "titleTrial": "Le voyage continue",

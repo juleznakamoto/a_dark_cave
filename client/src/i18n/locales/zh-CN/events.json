@@ -68,7 +68,7 @@
       }
     },
     "message": {
-      "firstTime": "一天早晨，6 名村民被发现死在床上，面色苍白，血液被抽干。皮肤上布满细小的刺孔。一些村民怀疑这与森林中倒塌的塔楼有关——猎人们曾在那里听到奇怪的声音。",
+      "firstTime": "一天早晨，6 名村民被发现死在床上，面色苍白，血液被抽干。皮肤上布满细小的刺孔。一些村民怀疑这与森林中倒塌的塔楼有关，猎人们曾在那里听到奇怪的声音。",
       "repeat": "再次，又有 8 名村民在黎明时被发现有同样的神秘印记，身体被抽干血液。要求对倒塌塔楼中栖息之物采取行动的呼声越来越响。"
     },
     "title": "被吸干的尸体"
@@ -1102,7 +1102,7 @@
       },
       "trade_crow_harness": {
         "label": "乌鸦挽具",
-        "message": "你买下了乌鸦挽具——专为信使乌鸦打造。"
+        "message": "你买下了乌鸦挽具，专为信使乌鸦打造。"
       },
       "trade_clarity_elixir": {
         "label": "清晰灵药",
@@ -1861,7 +1861,7 @@
       }
     },
     "log": {
-      "outcome0": "你凝视那些游移的影子，直到它们静止不动。也许什么都没发生——至少你是这么告诉自己的。",
+      "outcome0": "你凝视那些游移的影子，直到它们静止不动。也许什么都没发生，至少你是这么告诉自己的。",
       "outcome1": "影子向你倾来。视野边缘凝聚出形状，有什么东西用如枯叶般的声音低语你的名字。",
       "outcome2": "你移开目光，但那种异样感并未消失。用余光看去，在你停止注视很久之后，影子仍在移动。"
     },
@@ -2023,7 +2023,7 @@
       }
     },
     "log": {
-      "outcome0": "{{added}} 名幸存者加入了你的村庄——他们心怀感激，却仍被林中的遭遇所折磨。",
+      "outcome0": "{{added}} 名幸存者加入了你的村庄，他们心怀感激，却仍被林中的遭遇所折磨。",
       "outcome1": "你拒绝接纳他们。一种苦涩的不安笼罩村庄，村民对你的决定并不满意。",
       "outcome2": "你拒绝接纳他们。一种苦涩的不安笼罩村庄，村民对你的决定并不满意。",
       "outcome3": "你想接纳他们，但村里没有空间容纳更多村民。"
@@ -2260,6 +2260,9 @@
       },
       "sell_nothing": {
         "label": "无"
+      },
+      "_buyItem": {
+        "cost": "{{goldCost}} 金币"
       }
     },
     "log": {
@@ -2271,7 +2274,13 @@
     "message": {
       "visit0": "一个裹着破袍的人影走近。他似乎对你收集的东西很感兴趣。「我感觉到你的财物中有价值之物，」他低语，「让我带走一件，换 {{reward}} 金币。」",
       "visit1": "黑袍人影再度归来，脚步无声。「更多遗物，更多秘密，」他低语，「再让我取走一件，你的钱袋将多出 {{reward}} 金币。」",
-      "visit2": "收藏家再次出现，兜帽下双眼发光。「我们的交易快结束了，」他轻声说，「再卖我一件，{{reward}} 金币归你。」"
+      "visit2": "收藏家再次出现，兜帽下双眼发光。「我们的交易快结束了，」他轻声说，「再卖我一件，{{reward}} 金币归你。」",
+      "visit0_both": "A figure wrapped in tattered robes approaches. 'I sense value among your possessions,' he murmurs. 'Sell me one for {{reward}} gold - or buy back what others left behind for {{goldCost}} gold.'",
+      "visit0_buy": "A figure wrapped in tattered robes approaches, a satchel of discarded relics at his side. 'I gather what others refuse,' he murmurs. 'Any of these can be yours for {{goldCost}} gold.'",
+      "visit1_both": "The robed figure returns, silent as before. 'Sell me another for {{reward}} gold,' he whispers, 'or claim one I recovered for {{goldCost}} gold.'",
+      "visit1_buy": "The robed figure returns with forgotten relics. 'What you once refused, I kept,' he whispers. '{{goldCost}} gold, and any may be yours.'",
+      "visit2_both": "The collector appears again, eyes glowing within the hood. 'Sell me one more for {{reward}} gold,' he says softly, 'or buy from what I carry for {{goldCost}} gold.'",
+      "visit2_buy": "The collector appears again with a few recovered relics. 'Our dealings near their end,' he says softly. 'For {{goldCost}} gold, take one.'"
     }
   },
   "wanderingFirecrafter": {

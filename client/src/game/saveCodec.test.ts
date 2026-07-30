@@ -68,7 +68,7 @@ describe("saveCodec", () => {
           {
             id: "1",
             timestamp: 1,
-            message: "Cave dweller — welcome",
+            message: "Cave dweller - welcome",
             type: "system",
           },
         ],
@@ -76,6 +76,6 @@ describe("saveCodec", () => {
     };
 
     const decoded = decodeLocalSave(encodeLocalSave(data));
-    expect(decoded?.gameState.log?.[0]?.message).toBe("Cave dweller — welcome");
+    expect(decoded?.gameState.log?.[0]?.message).toBe("Cave dweller - welcome");
   });
 });

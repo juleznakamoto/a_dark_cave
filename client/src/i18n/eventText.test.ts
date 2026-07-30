@@ -2,6 +2,7 @@ import { describe, it, expect, beforeEach } from "vitest";
 import i18n from "./index";
 import {
   localizeEventChoices,
+  resolveEventChoiceCost,
   resolveEventChoiceReward,
   resolveEventMessage,
   resolveEventTitle,
@@ -262,6 +263,14 @@ describe("resolveEventChoiceReward", () => {
         reward: 100,
       }),
     ).toBe("+100 Gold");
+  });
+
+  it("uses shared buy-item cost for dynamic wandering collector choices", () => {
+    expect(
+      resolveEventChoiceCost("wandering_collector", "buy_bone_dice", undefined, {
+        goldCost: 250,
+      }),
+    ).toBe("250 Gold");
   });
 
   it("does not apply shared sell reward to sell_nothing", () => {

@@ -1240,7 +1240,7 @@
       "outcome0": "Du zerknüllst die Notiz und lässt sie aus deinen Fingern fallen. Du verstehst die Worte, und doch ergeben sie keinen Sinn. Als das Papier davontreibt, hörst du etwas im Wind, schwach und fern. Es klingt wie leises, einsames Weinen, das in der Nacht verklingt."
     },
     "title": "Eine rätselhafte Notiz",
-    "message": "In der Dämmerung findest du ein Blatt Papier auf der Schwelle deines Anwesens. Jemand hat eine Notiz in sorgfältiger, eleganter Handschrift hinterlassen:\n \"Ich hoffe, du genießt deine Zeit hier. Wenn dem so ist, erwäge bitte, die Reise voraus zu unterstützen — im Shop oder durch eine Spende. Deine Hilfe hält diese Welt lebendig und frei genießbar. Danke!\""
+    "message": "In der Dämmerung findest du ein Blatt Papier auf der Schwelle deines Anwesens. Jemand hat eine Notiz in sorgfältiger, eleganter Handschrift hinterlassen:\n \"Ich hoffe, du genießt deine Zeit hier. Wenn dem so ist, erwäge bitte, die Reise voraus zu unterstützen - im Shop oder durch eine Spende. Deine Hilfe hält diese Welt lebendig und frei genießbar. Danke!\""
   },
   "mysteriousWoman": {
     "log": {
@@ -2023,7 +2023,7 @@
       }
     },
     "log": {
-      "outcome0": "{{added}} Überlebende schließen sich deinem Dorf an — dankbar, doch gezeichnet von dem, was sie im Wald erduldet haben.",
+      "outcome0": "{{added}} Überlebende schließen sich deinem Dorf an - dankbar, doch gezeichnet von dem, was sie im Wald erduldet haben.",
       "outcome1": "Du weist sie ab. Eine bittere Unruhe legt sich über das Dorf, denn die Dorfbewohner sind mit deiner Entscheidung nicht einverstanden.",
       "outcome2": "Du weist sie ab. Eine bittere Unruhe legt sich über das Dorf, denn die Dorfbewohner sind mit deiner Entscheidung nicht einverstanden.",
       "outcome3": "Du nimmst sie auf, aber im Dorf ist kein Platz für weitere Bewohner."
@@ -2260,6 +2260,9 @@
       },
       "sell_nothing": {
         "label": "Nichts"
+      },
+      "_buyItem": {
+        "cost": "{{goldCost}} Gold"
       }
     },
     "log": {
@@ -2269,9 +2272,15 @@
     },
     "title": "Der wandernde Sammler",
     "message": {
-      "visit0": "Eine Gestalt in zerrissenen Roben nähert sich. Sie scheint fasziniert von dem, was du gesammelt hast. \"Ich spüre Wert unter deinen Besitztümern\", murmelt sie. \"Erlaube mir, eines mitzunehmen — im Tausch gegen {{reward}} Gold.\"",
+      "visit0": "Eine Gestalt in zerrissenen Roben nähert sich. Sie scheint fasziniert von dem, was du gesammelt hast. \"Ich spüre Wert unter deinen Besitztümern\", murmelt sie. \"Erlaube mir, eines mitzunehmen - im Tausch gegen {{reward}} Gold.\"",
       "visit1": "Die verhüllte Gestalt kehrt zurück, ihre Schritte lautlos auf dem Boden. \"Mehr Artefakte, mehr Geheimnisse\", flüstert sie. \"Lass mich wieder eines nehmen, und dein Beutel wird um {{reward}} Gold schwerer.\"",
-      "visit2": "Der Sammler erscheint erneut, Augen glühend unter der Kapuze. \"Unsere Geschäfte neigen sich dem Ende zu\", sagt sie leise. \"Verkaufe mir noch eines, und {{reward}} Gold soll dein sein.\""
+      "visit2": "Der Sammler erscheint erneut, Augen glühend unter der Kapuze. \"Unsere Geschäfte neigen sich dem Ende zu\", sagt sie leise. \"Verkaufe mir noch eines, und {{reward}} Gold soll dein sein.\"",
+      "visit0_both": "A figure wrapped in tattered robes approaches. 'I sense value among your possessions,' he murmurs. 'Sell me one for {{reward}} gold - or buy back what others left behind for {{goldCost}} gold.'",
+      "visit0_buy": "A figure wrapped in tattered robes approaches, a satchel of discarded relics at his side. 'I gather what others refuse,' he murmurs. 'Any of these can be yours for {{goldCost}} gold.'",
+      "visit1_both": "The robed figure returns, silent as before. 'Sell me another for {{reward}} gold,' he whispers, 'or claim one I recovered for {{goldCost}} gold.'",
+      "visit1_buy": "The robed figure returns with forgotten relics. 'What you once refused, I kept,' he whispers. '{{goldCost}} gold, and any may be yours.'",
+      "visit2_both": "The collector appears again, eyes glowing within the hood. 'Sell me one more for {{reward}} gold,' he says softly, 'or buy from what I carry for {{goldCost}} gold.'",
+      "visit2_buy": "The collector appears again with a few recovered relics. 'Our dealings near their end,' he says softly. 'For {{goldCost}} gold, take one.'"
     }
   },
   "wanderingFirecrafter": {

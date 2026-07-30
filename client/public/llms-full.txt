@@ -24,7 +24,7 @@
 
 - [Core Loop](https://a-dark-cave.com): Start in darkness, light a fire, gather wood and food. Progress through the cave phase, village phase, and world exploration. Unlock crafting, buildings, villagers, and companions.
 - [Combat](https://a-dark-cave.com): Turn-based combat with crafted weapons (arbalest, nightshade bow, stormglass halberd), bombs, and combat skills. Defend the settlement from attack waves.
-- [Companions](https://a-dark-cave.com): Recruit companions with storylines—wandering knight, aging wizard, wildling huntress, and more. Each earned through choices and changes gameplay.
+- [Companions](https://a-dark-cave.com): Recruit companions with storylines: wandering knight, aging wizard, wildling huntress, and more. Each earned through choices and changes gameplay.
 
 ## Key Facts
 

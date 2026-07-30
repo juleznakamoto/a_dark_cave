@@ -390,9 +390,37 @@ export default function TimedEventPanel() {
     }
 
     // For merchant events, only close on "say_goodbye"
-    // For other timed events (feast, master archer, etc.), close after any choice
+    // Collector: one buy + one sell per visit; close when both sides are finished
+    // Other timed events close after any choice
     if (isMerchantEvent) {
       if (choiceId === "say_goodbye") {
+        setTimedEventTab(false);
+      }
+    } else if (isCollectorEvent) {
+      if (choiceId === "sell_nothing") {
+        setTimedEventTab(false);
+        return;
+      }
+
+      const justBuy = choiceId.startsWith("buy_");
+      const justSell =
+        choiceId.startsWith("sell_") && choiceId !== "sell_nothing";
+
+      useGameStore.setState((s) => ({
+        timedEventTab: {
+          ...s.timedEventTab,
+          ...(justBuy ? { collectorBuyDone: true } : {}),
+          ...(justSell ? { collectorSellDone: true } : {}),
+        },
+      }));
+
+      const tab = useGameStore.getState().timedEventTab;
+      const buyFinished =
+        tab.collectorBuyDone === true || tab.collectorBuyAvailable !== true;
+      const sellFinished =
+        tab.collectorSellDone === true || tab.collectorSellAvailable !== true;
+
+      if (buyFinished && sellFinished) {
         setTimedEventTab(false);
       }
     } else {
@@ -409,6 +437,343 @@ export default function TimedEventPanel() {
       return match[1].trim().toLowerCase().replace(/\s+/g, "_");
     }
     return null;
+  };
+
+  const renderChoiceButton = (choice: EventChoice) => {
+    const tradeChoice = choice as EventChoice & Partial<MerchantTradeData>;
+    const cost = choice.cost;
+    const costText = typeof cost === "function" ? cost(gameState) : cost;
+
+    const affordance = getEventChoiceAffordance(choice, gameState, {
+      catalogId,
+      vars: eventI18nVars,
+    });
+    const hasBlockingCost = eventChoiceHasBlockingCost(choice, gameState, {
+      catalogId,
+      vars: eventI18nVars,
+    });
+    const canAfford = affordance.canAfford;
+    const costBreakdown = getEventChoiceCostBreakdown(cost, gameState, {
+      catalogId,
+      choiceId: choice.id,
+      vars: eventI18nVars,
+      sellResource: tradeChoice.sellResource,
+      sellAmount: tradeChoice.sellAmount,
+    });
+
+    const labelText = typeof choice.label === "string" ? choice.label : "";
+
+    const isPurchased =
+      isMerchantEvent &&
+      gameState.merchantTrades?.purchasedIds?.includes(choice.id);
+
+    const isDisabled =
+      (hasBlockingCost && !canAfford) || timeRemaining <= 0 || isPurchased;
+
+    const showGoldShopBadge =
+      !steamEditionActive &&
+      !isPurchased &&
+      timeRemaining > 0 &&
+      isTraderShopUnlocked(gameState) &&
+      affordance.costs.some((c) => c.resource === "gold") &&
+      affordance.individualAffordance.gold === false;
+
+    const openGoldShop = () => {
+      setShopFilter("gold");
+      setShopDialogOpen(true, "timedevent-buy-gold");
+    };
+
+    let successPercentage: string | null = null;
+    if (
+      hasDefinedSuccessChance(choice.success_chance) &&
+      gameState.books?.book_of_war
+    ) {
+      const successPercent = getEventChoiceSuccessPercent(choice, gameState);
+      if (successPercent !== null) {
+        successPercentage = `${successPercent}%`;
+      }
+    }
+    const showSuccessTooltip = hasEventChoiceSuccessTooltip(choice);
+
+    const hasChoiceMeta =
+      !!successPercentage ||
+      !!(choice.relevant_stats && choice.relevant_stats.length > 0) ||
+      isPurchased;
+
+    const goldShopTooltip = t("ui:timedEvent.buyGold", {
+      defaultValue: "Buy Gold",
+    });
+
+    const buttonContent = (
+      <Button
+        onClick={(e) => {
+          if (showGoldShopBadge) {
+            e.stopPropagation();
+            openGoldShop();
+            return;
+          }
+          if (isDisabled) return;
+          e.stopPropagation();
+          handleChoice(choice.id);
+        }}
+        variant="outline"
+        size="xs"
+        aria-disabled={isDisabled || undefined}
+        button_id={showGoldShopBadge ? undefined : `timedevent-${choice.id}`}
+        className={cn(
+          "h-auto min-h-7 w-fit max-w-full gap-2 py-1 text-left justify-start whitespace-normal",
+          isDisabled && !showGoldShopBadge && "pointer-events-none",
+          gameActionOutlineButtonClassName(isDisabled),
+        )}
+      >
+        <span
+          className={cn(
+            "inline-flex items-center gap-2",
+            gameActionDisabledLabelClassName(isDisabled),
+          )}
+        >
+          <span>{labelText}</span>
+          {hasChoiceMeta && (
+            <span className="inline-flex items-center gap-1.5 flex-shrink-0">
+              {successPercentage && (
+                <span className="text-xs text-muted-foreground whitespace-nowrap">
+                  {successPercentage}
+                </span>
+              )}
+              {choice.relevant_stats &&
+                choice.relevant_stats.length > 0 &&
+                choice.relevant_stats.map((stat) => (
+                  <RelevantStatIcon key={stat} stat={stat} />
+                ))}
+              {isPurchased && (
+                <span className="inline-flex items-center justify-center text-[12px] leading-none">
+                  ✓
+                </span>
+              )}
+            </span>
+          )}
+        </span>
+      </Button>
+    );
+
+    const merchantEffectLine =
+      isMerchantEvent && tradeChoice.buyItem
+        ? getMerchantTradeEffectTooltipLine(tradeChoice)
+        : null;
+
+    const rewardText = catalogId
+      ? resolveEventChoiceReward(catalogId, choice.id, eventI18nVars)
+      : undefined;
+
+    const tooltipContent =
+      costText ||
+        costBreakdown.length > 0 ||
+        rewardText ||
+        showSuccessTooltip ||
+        merchantEffectLine ? (
+        <div className="text-xs whitespace-nowrap">
+          {costBreakdown.length > 0 ? (
+            <div>
+              {costBreakdown.map((costItem, index) => (
+                <div
+                  key={index}
+                  className={
+                    costItem.satisfied
+                      ? "text-foreground"
+                      : "text-muted-foreground"
+                  }
+                >
+                  {costItem.text}
+                </div>
+              ))}
+            </div>
+          ) : (
+            costText && <div>{costText}</div>
+          )}
+          {(costText || costBreakdown.length > 0) && rewardText && (
+            <div className="border-t border-border my-1" />
+          )}
+          {rewardText && <div className="text-foreground">{rewardText}</div>}
+          {(costText || costBreakdown.length > 0 || rewardText) &&
+            (showSuccessTooltip || merchantEffectLine) && (
+              <div className="border-t border-border my-1" />
+            )}
+          {merchantEffectLine && <div>{merchantEffectLine}</div>}
+          {showSuccessTooltip && (
+            <EventChoiceSuccessTooltipContent
+              choice={choice}
+              gameState={gameState}
+            />
+          )}
+        </div>
+      ) : undefined;
+
+    const highlightCostResources = () => {
+      const costResources = affordance.costs.map(({ resource }) => resource);
+      if (costResources.length > 0) {
+        if (isMerchantEvent) {
+          const buyResource = extractBuyResourceFromLabel(labelText);
+          const highlightResources = buyResource
+            ? [...costResources, buyResource]
+            : costResources;
+          setHighlightedResources(highlightResources);
+        } else {
+          setHighlightedResources(costResources);
+        }
+      }
+    };
+
+    const goldShopBadge = showGoldShopBadge ? (
+      <div className="absolute bottom-[-10px] right-[-7px] z-[30] pointer-events-auto">
+        <TooltipWrapper
+          tooltip={goldShopTooltip}
+          tooltipId={`timedevent-${choice.id}-buy-gold`}
+          className="inline-flex"
+        >
+          <button
+            type="button"
+            className="flex h-4 w-4 items-center justify-center rounded-full bg-yellow-700 text-white shadow-sm border border-yellow-500/60 hover:bg-yellow-600 transition-colors cursor-pointer"
+            data-testid={`timedevent-${choice.id}-buy-gold`}
+            aria-label={goldShopTooltip}
+            onPointerDown={(e) => e.stopPropagation()}
+            onClick={(e) => {
+              e.stopPropagation();
+              e.preventDefault();
+              openGoldShop();
+            }}
+          >
+            <Plus className="h-2.5 w-2.5 stroke-[3]" />
+          </button>
+        </TooltipWrapper>
+      </div>
+    ) : null;
+
+    return (
+      <div
+        key={choice.id}
+        className={cn(GAME_ACTION_BUTTON_STACK_CLASS, "w-fit max-w-full")}
+      >
+        {tooltipContent ? (
+          <TooltipWrapper
+            className="relative inline-block w-fit max-w-full"
+            tooltipTriggerClassName="inline-block w-fit max-w-full"
+            tooltip={tooltipContent}
+            tooltipId={`timedevent-${choice.id}`}
+            disabled={isDisabled && !showGoldShopBadge}
+            onClick={
+              showGoldShopBadge
+                ? openGoldShop
+                : isDisabled
+                  ? undefined
+                  : () => handleChoice(choice.id)
+            }
+            onMouseEnter={
+              costText || costBreakdown.length > 0
+                ? highlightCostResources
+                : undefined
+            }
+            onMouseLeave={
+              costText || costBreakdown.length > 0
+                ? () => setHighlightedResources([])
+                : undefined
+            }
+          >
+            {buttonContent}
+          </TooltipWrapper>
+        ) : (
+          buttonContent
+        )}
+        {goldShopBadge}
+      </div>
+    );
+  };
+
+  const merchantDiscountBadge = isMerchantEvent
+    ? (() => {
+      const knowledge = gameState.stats?.knowledge || 0;
+      const totalDiscount = getTotalMerchantDiscount(gameState);
+      const knowledgeDiscount = calculateMerchantDiscount(knowledge);
+      const hasRingOfObedience =
+        gameState.clothing?.ring_of_obedience ?? false;
+
+      if (totalDiscount <= 0) return null;
+
+      return (
+        <TooltipWrapper
+          tooltip={
+            <div className="text-xs whitespace-nowrap">
+              {t("ui:timedEvent.discount", {
+                percent: Math.round(totalDiscount * 100),
+              })}
+              {(knowledgeDiscount > 0 || hasRingOfObedience) && (
+                <>
+                  <br />
+                  {knowledgeDiscount > 0 && (
+                    <span className="text-gray-400/70">
+                      {t("ui:timedEvent.discountFromKnowledge", {
+                        percent: Math.round(knowledgeDiscount * 100),
+                        max: isKnowledgeBonusMaxed(knowledge)
+                          ? t("ui:timedEvent.knowledgeMax")
+                          : "",
+                      })}
+                    </span>
+                  )}
+                  {knowledgeDiscount > 0 && hasRingOfObedience && <br />}
+                  {hasRingOfObedience && (
+                    <span className="text-gray-400/70">
+                      {t("ui:timedEvent.discountFromRing")}
+                    </span>
+                  )}
+                </>
+              )}
+            </div>
+          }
+          tooltipId="merchant-discount"
+          disabled
+        >
+          <span className="font-noto-symbols-2 text-blue-300/80 cursor-pointer hover:text-blue-300 transition-colors inline-flex shrink-0 items-center justify-center text-sm leading-none">
+            ✧
+          </span>
+        </TooltipWrapper>
+      );
+    })()
+    : null;
+
+  const collectorBuyChoices = isCollectorEvent
+    ? eventChoices.filter(
+      (c) =>
+        c.id.startsWith("buy_") && !timedEventTab.collectorBuyDone,
+    )
+    : [];
+  const collectorSellChoices = isCollectorEvent
+    ? eventChoices.filter(
+      (c) =>
+        c.id.startsWith("sell_") &&
+        c.id !== "sell_nothing" &&
+        !timedEventTab.collectorSellDone,
+    )
+    : [];
+  const collectorNothingChoice = isCollectorEvent
+    ? eventChoices.find((c) => c.id === "sell_nothing")
+    : undefined;
+
+  const renderChoiceSection = (
+    title: string,
+    choices: EventChoice[],
+    titleExtra?: React.ReactNode,
+  ) => {
+    if (choices.length === 0) return null;
+    return (
+      <div className="space-y-2">
+        <h3 className="text-xs font-medium inline-flex items-center gap-1.5">
+          <span className="leading-none">{title}</span>
+          {titleExtra}
+        </h3>
+        <div className={gameActionButtonGridClassName("mt-2")}>
+          {choices.map((choice) => renderChoiceButton(choice))}
+        </div>
+      </div>
+    );
   };
 
   return (
@@ -438,351 +803,57 @@ export default function TimedEventPanel() {
 
       {/* Choices */}
       <div className="space-y-2 pt-1">
-        {(isMerchantEvent || isCollectorEvent) && (
-          <h3 className="text-xs font-medium inline-flex items-center gap-1.5">
-            <span className="leading-none">
-              {isMerchantEvent ? t("ui:timedEvent.buy") : t("ui:timedEvent.sell")}
-            </span>
-            {isMerchantEvent &&
-              (() => {
-                const knowledge = gameState.stats?.knowledge || 0;
-                const totalDiscount = getTotalMerchantDiscount(gameState);
-                const knowledgeDiscount = calculateMerchantDiscount(knowledge);
-                const hasRingOfObedience =
-                  gameState.clothing?.ring_of_obedience ?? false;
+        {isCollectorEvent ? (
+          <>
+            {renderChoiceSection(
+              t("ui:timedEvent.buy"),
+              collectorSellChoices,
+            )}
+            {renderChoiceSection(
+              t("ui:timedEvent.sell"),
+              collectorBuyChoices,
+            )}
+            {collectorNothingChoice && (
+              <div className={gameActionButtonGridClassName("mt-2")}>
+                {renderChoiceButton(collectorNothingChoice)}
+              </div>
+            )}
+          </>
+        ) : (
+          <>
+            {isMerchantEvent && (
+              <h3 className="text-xs font-medium inline-flex items-center gap-1.5">
+                <span className="leading-none">{t("ui:timedEvent.buy")}</span>
+                {merchantDiscountBadge}
+              </h3>
+            )}
+            <div className={gameActionButtonGridClassName("mt-2")}>
+              {Array.isArray(eventChoices) &&
+                eventChoices.map((choice) => renderChoiceButton(choice))}
 
-                if (totalDiscount > 0) {
-                  return (
-                    <TooltipWrapper
-                      tooltip={
-                        <div className="text-xs whitespace-nowrap">
-                          {t("ui:timedEvent.discount", {
-                            percent: Math.round(totalDiscount * 100),
-                          })}
-                          {(knowledgeDiscount > 0 || hasRingOfObedience) && (
-                            <>
-                              <br />
-                              {knowledgeDiscount > 0 && (
-                                <span className="text-gray-400/70">
-                                  {t("ui:timedEvent.discountFromKnowledge", {
-                                    percent: Math.round(knowledgeDiscount * 100),
-                                    max: isKnowledgeBonusMaxed(knowledge)
-                                      ? t("ui:timedEvent.knowledgeMax")
-                                      : "",
-                                  })}
-                                </span>
-                              )}
-                              {knowledgeDiscount > 0 &&
-                                hasRingOfObedience && <br />}
-                              {hasRingOfObedience && (
-                                <span className="text-gray-400/70">
-                                  {t("ui:timedEvent.discountFromRing")}
-                                </span>
-                              )}
-                            </>
-                          )}
-                        </div>
-                      }
-                      tooltipId="merchant-discount"
-                      disabled
-                    >
-                      <span className="font-noto-symbols-2 text-blue-300/80 cursor-pointer hover:text-blue-300 transition-colors inline-flex shrink-0 items-center justify-center text-sm leading-none">
-                        ✧
-                      </span>
-                    </TooltipWrapper>
-                  );
-                }
-                return null;
-              })()}
-          </h3>
-        )}
-        <div className={gameActionButtonGridClassName("mt-2")}>
-          {Array.isArray(eventChoices) &&
-            eventChoices.map((choice) => {
-              const tradeChoice = choice as EventChoice & Partial<MerchantTradeData>;
-              const cost = choice.cost;
-              // Evaluate cost if it's a function
-              const costText =
-                typeof cost === "function" ? cost(gameState) : cost;
-
-              const affordance = getEventChoiceAffordance(choice, gameState, {
-                catalogId,
-                vars: eventI18nVars,
-              });
-              const hasBlockingCost = eventChoiceHasBlockingCost(
-                choice,
-                gameState,
-                { catalogId, vars: eventI18nVars },
-              );
-              const canAfford = affordance.canAfford;
-              const costBreakdown = getEventChoiceCostBreakdown(cost, gameState, {
-                catalogId,
-                choiceId: choice.id,
-                vars: eventI18nVars,
-                sellResource: tradeChoice.sellResource,
-                sellAmount: tradeChoice.sellAmount,
-              });
-
-              // Evaluate label if it's a function
-              const labelText =
-                typeof choice.label === "string" ? choice.label : "";
-
-              const isPurchased =
-                isMerchantEvent &&
-                gameState.merchantTrades?.purchasedIds?.includes(choice.id);
-
-              const isDisabled =
-                (hasBlockingCost && !canAfford) ||
-                timeRemaining <= 0 ||
-                isPurchased;
-
-              const showGoldShopBadge =
-                !steamEditionActive &&
-                !isPurchased &&
-                timeRemaining > 0 &&
-                isTraderShopUnlocked(gameState) &&
-                affordance.costs.some((c) => c.resource === "gold") &&
-                affordance.individualAffordance.gold === false;
-
-              const openGoldShop = () => {
-                setShopFilter("gold");
-                setShopDialogOpen(true, "timedevent-buy-gold");
-              };
-
-              // Calculate success percentage if this choice has odds (Book of War)
-              let successPercentage: string | null = null;
-              if (
-                hasDefinedSuccessChance(choice.success_chance) &&
-                gameState.books?.book_of_war
-              ) {
-                const successPercent = getEventChoiceSuccessPercent(
-                  choice,
-                  gameState,
-                );
-                if (successPercent !== null) {
-                  successPercentage = `${successPercent}%`;
-                }
-              }
-              const showSuccessTooltip = hasEventChoiceSuccessTooltip(choice);
-
-              const hasChoiceMeta =
-                !!successPercentage ||
-                !!(choice.relevant_stats && choice.relevant_stats.length > 0) ||
-                isPurchased;
-
-              const goldShopTooltip = t("ui:timedEvent.buyGold", {
-                defaultValue: "Buy Gold",
-              });
-
-              const buttonContent = (
-                <Button
-                  onClick={(e) => {
-                    if (showGoldShopBadge) {
+              {isMerchantEvent && (
+                <div className="basis-full">
+                  <Button
+                    onClick={(e) => {
                       e.stopPropagation();
-                      openGoldShop();
-                      return;
-                    }
-                    if (isDisabled) return;
-                    e.stopPropagation();
-                    handleChoice(choice.id);
-                  }}
-                  variant="outline"
-                  size="xs"
-                  aria-disabled={isDisabled || undefined}
-                  button_id={
-                    showGoldShopBadge
-                      ? undefined
-                      : `timedevent-${choice.id}`
-                  }
-                  className={cn(
-                    "h-auto min-h-7 w-fit max-w-full gap-2 py-1 text-left justify-start whitespace-normal",
-                    isDisabled && !showGoldShopBadge && "pointer-events-none",
-                    gameActionOutlineButtonClassName(isDisabled),
-                  )}
-                >
-                  <span
-                    className={cn(
-                      "inline-flex items-center gap-2",
-                      gameActionDisabledLabelClassName(isDisabled),
+                      setHighlightedResources([]);
+                      setTimedEventTab(false);
+                    }}
+                    variant="outline"
+                    size="xs"
+                    disabled={timeRemaining <= 0}
+                    className={gameActionOutlineButtonClassName(
+                      timeRemaining <= 0,
                     )}
+                    button_id="timedevent-say_goodbye"
                   >
-                    <span>{labelText}</span>
-                    {hasChoiceMeta && (
-                      <span className="inline-flex items-center gap-1.5 flex-shrink-0">
-                        {successPercentage && (
-                          <span className="text-xs text-muted-foreground whitespace-nowrap">
-                            {successPercentage}
-                          </span>
-                        )}
-                        {choice.relevant_stats &&
-                          choice.relevant_stats.length > 0 &&
-                          choice.relevant_stats.map((stat) => (
-                            <RelevantStatIcon key={stat} stat={stat} />
-                          ))}
-                        {isPurchased && (
-                          <span className="inline-flex items-center justify-center text-[12px] leading-none">
-                            ✓
-                          </span>
-                        )}
-                      </span>
-                    )}
-                  </span>
-                </Button>
-              );
-
-              const merchantEffectLine =
-                isMerchantEvent && tradeChoice.buyItem
-                  ? getMerchantTradeEffectTooltipLine(tradeChoice)
-                  : null;
-
-              const rewardText = catalogId
-                ? resolveEventChoiceReward(catalogId, choice.id, eventI18nVars)
-                : undefined;
-
-              const tooltipContent =
-                costText ||
-                  costBreakdown.length > 0 ||
-                  rewardText ||
-                  showSuccessTooltip ||
-                  merchantEffectLine ? (
-                  <div className="text-xs whitespace-nowrap">
-                    {costBreakdown.length > 0 ? (
-                      <div>
-                        {costBreakdown.map((costItem, index) => (
-                          <div
-                            key={index}
-                            className={
-                              costItem.satisfied
-                                ? "text-foreground"
-                                : "text-muted-foreground"
-                            }
-                          >
-                            {costItem.text}
-                          </div>
-                        ))}
-                      </div>
-                    ) : (
-                      costText && <div>{costText}</div>
-                    )}
-                    {(costText || costBreakdown.length > 0) && rewardText && (
-                      <div className="border-t border-border my-1" />
-                    )}
-                    {rewardText && (
-                      <div className="text-foreground">{rewardText}</div>
-                    )}
-                    {(costText || costBreakdown.length > 0 || rewardText) &&
-                      (showSuccessTooltip || merchantEffectLine) && (
-                        <div className="border-t border-border my-1" />
-                      )}
-                    {merchantEffectLine && <div>{merchantEffectLine}</div>}
-                    {showSuccessTooltip && (
-                      <EventChoiceSuccessTooltipContent
-                        choice={choice}
-                        gameState={gameState}
-                      />
-                    )}
-                  </div>
-                ) : undefined;
-
-              const highlightCostResources = () => {
-                const costResources = affordance.costs.map(({ resource }) => resource);
-                if (costResources.length > 0) {
-                  if (isMerchantEvent) {
-                    const buyResource = extractBuyResourceFromLabel(labelText);
-                    const highlightResources = buyResource
-                      ? [...costResources, buyResource]
-                      : costResources;
-                    setHighlightedResources(highlightResources);
-                  } else {
-                    setHighlightedResources(costResources);
-                  }
-                }
-              };
-
-              const goldShopBadge = showGoldShopBadge ? (
-                <div className="absolute bottom-[-10px] right-[-7px] z-[30] pointer-events-auto">
-                  <TooltipWrapper
-                    tooltip={goldShopTooltip}
-                    tooltipId={`timedevent-${choice.id}-buy-gold`}
-                    className="inline-flex"
-                  >
-                    <button
-                      type="button"
-                      className="flex h-4 w-4 items-center justify-center rounded-full bg-yellow-700 text-white shadow-sm border border-yellow-500/60 hover:bg-yellow-600 transition-colors cursor-pointer"
-                      data-testid={`timedevent-${choice.id}-buy-gold`}
-                      aria-label={goldShopTooltip}
-                      onPointerDown={(e) => e.stopPropagation()}
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        e.preventDefault();
-                        openGoldShop();
-                      }}
-                    >
-                      <Plus className="h-2.5 w-2.5 stroke-[3]" />
-                    </button>
-                  </TooltipWrapper>
+                    {t("ui:timedEvent.sayGoodbye")}
+                  </Button>
                 </div>
-              ) : null;
-
-              return (
-                <div
-                  key={choice.id}
-                  className={cn(GAME_ACTION_BUTTON_STACK_CLASS, "w-fit max-w-full")}
-                >
-                  {tooltipContent ? (
-                    <TooltipWrapper
-                      className="relative inline-block w-fit max-w-full"
-                      tooltipTriggerClassName="inline-block w-fit max-w-full"
-                      tooltip={tooltipContent}
-                      tooltipId={`timedevent-${choice.id}`}
-                      disabled={isDisabled && !showGoldShopBadge}
-                      onClick={
-                        showGoldShopBadge
-                          ? openGoldShop
-                          : isDisabled
-                            ? undefined
-                            : () => handleChoice(choice.id)
-                      }
-                      onMouseEnter={
-                        costText || costBreakdown.length > 0
-                          ? highlightCostResources
-                          : undefined
-                      }
-                      onMouseLeave={
-                        costText || costBreakdown.length > 0
-                          ? () => setHighlightedResources([])
-                          : undefined
-                      }
-                    >
-                      {buttonContent}
-                    </TooltipWrapper>
-                  ) : (
-                    buttonContent
-                  )}
-                  {goldShopBadge}
-                </div>
-              );
-            })}
-
-          {isMerchantEvent && (
-            <div className="basis-full">
-              <Button
-                onClick={(e) => {
-                  e.stopPropagation();
-                  setHighlightedResources([]);
-                  setTimedEventTab(false);
-                }}
-                variant="outline"
-                size="xs"
-                disabled={timeRemaining <= 0}
-                className={gameActionOutlineButtonClassName(timeRemaining <= 0)}
-                button_id="timedevent-say_goodbye"
-              >
-                {t("ui:timedEvent.sayGoodbye")}
-              </Button>
+              )}
             </div>
-          )}
-        </div>
+          </>
+        )}
       </div>
 
       {/* Gambler dice dialog */}
@@ -947,9 +1018,9 @@ export default function TimedEventPanel() {
                   "gambler.practiceLoseRemaining":
                     "You lost the practice round (no Gold at stake). {{remaining}} of {{total}} practice games remaining.",
                   "gambler.practiceWinComplete":
-                    "You won the practice round (no Gold at stake). Practice complete — you may place a Gold wager.",
+                    "You won the practice round (no Gold at stake). Practice complete. You may place a Gold wager.",
                   "gambler.practiceLoseComplete":
-                    "You lost the practice round (no Gold at stake). Practice complete — you may place a Gold wager.",
+                    "You lost the practice round (no Gold at stake). Practice complete. You may place a Gold wager.",
                 };
                 const logVars = {
                   remaining: next,

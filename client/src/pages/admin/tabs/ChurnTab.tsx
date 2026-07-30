@@ -543,7 +543,7 @@ export default function ChurnTab(props: ChurnTabProps) {
       <Card>
         <CardHeader className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between space-y-0">
           <div>
-            <CardTitle>Hut ladder — wooden → stone → waves</CardTitle>
+            <CardTitle>Hut ladder: wooden → stone → waves</CardTitle>
             <CardDescription>
               Reach funnel among non-referred gameStarted saves created in the{" "}
               {hutLadderCohortTitleSuffix(hutLadderDays).toLowerCase()} (n=
@@ -600,7 +600,7 @@ export default function ChurnTab(props: ChurnTabProps) {
           ) : hutLadderFunnel.startedCount > 100 &&
             hutLadderFunnel.excludedReferredCount === 0 ? (
             <p className="text-sm text-amber-700 dark:text-amber-400">
-              No referred saves were excluded in this window — slim payload may
+              No referred saves were excluded in this window. Slim payload may
               be missing referralProcessed. Restart the API and hard-refresh so
               early hut drop isn&apos;t inflated by referral bonus-farms.
             </p>
@@ -613,7 +613,7 @@ export default function ChurnTab(props: ChurnTabProps) {
             <p className="text-sm text-muted-foreground">
               Of players who reach wooden ≥10, {hutLadderFunnel.wooden10WithStone}/
               {hutLadderFunnel.wooden10Count} ({wooden10StonePct}%) also have stone
-              ≥1 — the large “first stone” drop is mostly failing to finish the
+              ≥1. The large “first stone” drop is mostly failing to finish the
               wooden ladder, not failing the stone build.
             </p>
           )}

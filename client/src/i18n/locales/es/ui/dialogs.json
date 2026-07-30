@@ -72,7 +72,7 @@
     "linkCopied": "¡Enlace de invitación copiado!", //x1.6
     "linkCopiedDesc": "Compártelo con amigos para ganar {{amount}} de oro cada uno.",
     "copyFailed": "No se pudo copiar el enlace de invitación", //x1.6
-    "tooltip": "Invita a tus amigos — ambos recibiréis {{amount}} de oro. Puedes invitar hasta {{cap}} amigos. ({{count}}/{{cap}} invitados)."
+    "tooltip": "Invita a tus amigos - ambos recibiréis {{amount}} de oro. Puedes invitar hasta {{cap}} amigos. ({{count}}/{{cap}} invitados)."
   },
   "invest": {
     "title": "Invertir",
@@ -132,8 +132,8 @@
     "goldLost": "-{{amount}} oro",
     "practiceWinRemaining": "Ganaste la ronda de práctica (sin oro en juego). Quedan {{remaining}} de {{total}} partidas de práctica.",
     "practiceLoseRemaining": "Perdiste la ronda de práctica (sin oro en juego). Quedan {{remaining}} de {{total}} partidas de práctica.",
-    "practiceWinComplete": "Ganaste la ronda de práctica (sin oro en juego). Práctica completa — puedes apostar oro.",
-    "practiceLoseComplete": "Perdiste la ronda de práctica (sin oro en juego). Práctica completa — puedes apostar oro."
+    "practiceWinComplete": "Ganaste la ronda de práctica (sin oro en juego). Práctica completa - puedes apostar oro.",
+    "practiceLoseComplete": "Perdiste la ronda de práctica (sin oro en juego). Práctica completa - puedes apostar oro."
   },
   "fullGame": {
     "titleTrial": "El viaje continúa",

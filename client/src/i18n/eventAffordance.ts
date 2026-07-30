@@ -83,12 +83,22 @@ function getCatalogCostTemplate(
 ): string | null {
   const key = eventCatalogKey(catalogId, `choices.${choiceId}.cost`);
   const fullKey = `events:${key}`;
-  if (!i18n.exists(fullKey)) {
-    return null;
+  if (i18n.exists(fullKey)) {
+    const template = i18n.getResource(i18n.language, "events", key);
+    if (typeof template === "string") return template;
   }
 
-  const template = i18n.getResource(i18n.language, "events", key);
-  return typeof template === "string" ? template : null;
+  // Dynamic buy choices (e.g. wandering_collector buy_bone_dice)
+  if (choiceId.startsWith("buy_")) {
+    const sharedKey = eventCatalogKey(catalogId, "choices._buyItem.cost");
+    const sharedFull = `events:${sharedKey}`;
+    if (i18n.exists(sharedFull)) {
+      const template = i18n.getResource(i18n.language, "events", sharedKey);
+      if (typeof template === "string") return template;
+    }
+  }
+
+  return null;
 }
 
 export function getResourceCostsFromCatalogTemplate(

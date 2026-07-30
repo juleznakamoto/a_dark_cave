@@ -76,7 +76,7 @@
       "emberBombFirst": "El conocimiento del alquimista resulta invaluable. Fabricas una poderosa bomba de brasa, cuyo núcleo brilla con calor intenso y potencial destructivo.",
       "ashfireBombFirst": "Usando el polvo místico de fuego de ceniza, fabricas una bomba extraordinaria que pulsa con fuego de otro mundo. Sus llamas arden con colores que no pertenecen a este reino.",
       "voidBombFirst": "Combinando polvo de fuego de ceniza con obsidiana y pólvora negra, creas un arma de aterradora potencia. La bomba del vacío parece distorsionar el espacio a su alrededor; la realidad misma retrocede ante su presencia.",
-      "veinfireElixirFirst": "El alquimista destila esencia luminosa de fibras de raíz vena. Ahora tienes un elixir de fuego venoso — una poción de la que se rumorea que refuerza el bastión cuando todo parece perdido.",
+      "veinfireElixirFirst": "El alquimista destila esencia luminosa de fibras de raíz vena. Ahora tienes un elixir de fuego venoso - una poción de la que se rumorea que refuerza el bastión cuando todo parece perdido.",
       "frostglassSword": "La forja del herrero arde con llamas azules etéreas mientras el vidrio de escarcha se moldea en una magnífica espada. La hoja brilla con una luz fría de otro mundo, irradiando un inmenso poder.",
       "arbalest": "Siguiendo el esquema, fabricas una ballesta meticulosamente decorada. Su ingeniería es impecable, diseñada por un maestro artesano.",
       "nightshadeBow": "Fabricas un arco de madera oscura. Sus flechas llevarán veneno a tus enemigos.",
@@ -96,16 +96,16 @@
     "buttonUpgrade": {
       "deepens": "Tu dominio de {{skill}} se profundiza.",
       "skills": {
-        "caveExplore": "exploración de cuevas",  //x1.5
-        "mineStone": "extracción de piedra",  //x1.7
-        "mineIron": "extracción de hierro",  //x1.8
-        "mineCoal": "extracción de carbón",  //x1.8
-        "mineSulfur": "extracción de azufre",  //x1.5
-        "mineObsidian": "extracción de obsidiana",  //x1.5
-        "mineAdamant": "extracción de adamantio",  //x1.6
-        "mineMoonstone": "extracción de Piedra lunar",  //x1.6
+        "caveExplore": "exploración de cuevas", //x1.5
+        "mineStone": "extracción de piedra", //x1.7
+        "mineIron": "extracción de hierro", //x1.8
+        "mineCoal": "extracción de carbón", //x1.8
+        "mineSulfur": "extracción de azufre", //x1.5
+        "mineObsidian": "extracción de obsidiana", //x1.5
+        "mineAdamant": "extracción de adamantio", //x1.6
+        "mineMoonstone": "extracción de Piedra lunar", //x1.6
         "hunt": "caza",
-        "chopWood": "tala de madera",  //x1.3
+        "chopWood": "tala de madera", //x1.3
         "craftTorches": "fabricación de antorchas",
         "craftBoneTotems": "fabricación de tótems de hueso",
         "craftLeatherTotems": "fabricación de tótems de cuero"  //x1.4

@@ -1,16 +1,18 @@
 import { GameEvent } from "./events";
 import { GameState } from "@shared/schema";
+import { markCollectorItemRejectedInSeen } from "./collectorRejectedItems";
 
 export const huntEvents: Record<string, GameEvent> = {
   blacksmithHammerChoice: {
     id: "blacksmithHammerChoice",
     condition: (state: GameState) => false, // Only triggered by hunt action
-    
+
+
     priority: 5,
     repeatable: false,
     choices: [
       {
-        id: "takeHammer",
+        id: "takeHammer",
         effect: (state: GameState) => {
           return {
             tools: {
@@ -29,7 +31,7 @@ export const huntEvents: Record<string, GameEvent> = {
         },
       },
       {
-        id: "leaveHammer",
+        id: "leaveHammer",
         effect: (state: GameState) => {
           return {
             story: {
@@ -49,12 +51,13 @@ export const huntEvents: Record<string, GameEvent> = {
   redMaskChoice: {
     id: "redMaskChoice",
     condition: (state: GameState) => false, // Only triggered by hunt action
-    
+
+
     priority: 5,
     repeatable: false,
     choices: [
       {
-        id: "takeMask",
+        id: "takeMask",
         effect: (state: GameState) => {
           return {
             clothing: {
@@ -73,15 +76,18 @@ export const huntEvents: Record<string, GameEvent> = {
         },
       },
       {
-        id: "leaveMask",
+        id: "leaveMask",
         effect: (state: GameState) => {
           return {
             story: {
               ...state.story,
-              seen: {
-                ...state.story.seen,
-                redMaskChoice: true,
-              },
+              seen: markCollectorItemRejectedInSeen(
+                {
+                  ...state.story.seen,
+                  redMaskChoice: true,
+                },
+                "red_mask",
+              ),
             },
             _logMessageKey: "outcome1",
           };

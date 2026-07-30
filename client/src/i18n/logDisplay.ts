@@ -217,7 +217,7 @@ function buildExactLegacySystemLogMap(): Record<string, string> {
     "A Clerk's Hut stands complete. Scholars gather within to study the world and sharpen their Insight."
   ] = "building.clerksHut";
   map[
-    "The Scriptorium is finished—a hub of wisdom where scholars deepen their Knowledge."
+    "The Scriptorium is finished, a hub of wisdom where scholars deepen their Knowledge."
   ] = "building.scriptorium";
   map[
     "The Tomewarden Academy rises, a grand hall where master scholars distill the deepest Knowledge."
@@ -538,7 +538,7 @@ const LEGACY_ACTION_LOG_MESSAGES: Array<{
       actionId: "canyonBridge",
       logKey: "complete",
       message:
-        "The canyon bridge stands complete. Ashwraith traders can now reach your settlement—and you can sell goods to them at agreed rates.",
+        "The canyon bridge stands complete. Ashwraith traders can now reach your settlement, and you can sell goods to them at agreed rates.",
     },
     {
       actionId: "collapsedTower",

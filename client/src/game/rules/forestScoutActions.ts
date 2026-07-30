@@ -1336,7 +1336,7 @@ export function handleCanyonBridge(
     message: getActionLogMessage(
       "canyonBridge",
       "complete",
-      "The canyon bridge stands complete. Ashwraith traders can now reach your settlement—and you can sell goods to them at agreed rates.",
+      "The canyon bridge stands complete. Ashwraith traders can now reach your settlement, and you can sell goods to them at agreed rates.",
     ),
     timestamp: Date.now(),
     type: "system",

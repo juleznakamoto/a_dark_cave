@@ -65,7 +65,7 @@
     "label": "Cimetière"
   },
   "buildBottomlessPit": {
-    "description": "Fosse extrêmement profonde atteignant les matériaux les plus rares",  //x1.4
+    "description": "Fosse extrêmement profonde atteignant les matériaux les plus rares", //x1.4
     "label": "Fosse sans fond"
   },
   "buildBuildersLodge": {
@@ -81,7 +81,7 @@
     "label": "Guilde des bâtisseurs"
   },
   "buildCabin": {
-    "description": "Cabane de chasse rudimentaire avec des outils pour les chasseurs",  //x1.5
+    "description": "Cabane de chasse rudimentaire avec des outils pour les chasseurs", //x1.5
     "label": "Cabane de chasse"
   },
   "buildChitinPlating": {
@@ -109,11 +109,11 @@
     "label": "Fosse profonde"
   },
   "buildDeepeningPit": {
-    "description": "Fosse plus profonde atteignant davantage de ressources souterraines",  //x1.6
+    "description": "Fosse plus profonde atteignant davantage de ressources souterraines", //x1.6
     "label": "Fosse approfondie"
   },
   "buildFortifiedMoat": {
-    "description": "Douves défensives ralentissant et affaiblissant les assaillants",  //x1.4
+    "description": "Douves défensives ralentissant et affaiblissant les assaillants", //x1.4
     "label": "Douves fortifiées"
   },
   "buildFortifiedStorehouse": {
@@ -149,7 +149,7 @@
     "label": "Grand dépôt"
   },
   "buildGreatCabin": {
-    "description": "Pavillon de chasse agrandi augmentant la production des chasseurs",  //x1.4
+    "description": "Pavillon de chasse agrandi augmentant la production des chasseurs", //x1.4
     "label": "Grande cabane de chasse"  //x1.3
   },
   "buildGreatVault": {
@@ -205,7 +205,7 @@
     "label": "Fonderie majeure"
   },
   "buildQuarry": {
-    "description": "Carrière de pierre augmentant la production de pierre des récolteurs",  //x1.5
+    "description": "Carrière de pierre augmentant la production de pierre des récolteurs", //x1.5
     "label": "Carrière"
   },
   "buildRecordsHall": {
@@ -217,7 +217,7 @@
     "label": "Sanctuaire"
   },
   "buildScribesOffice": {
-    "description": "Une pièce tranquille où les scribes tiennent un décompte minutieux de chaque bras au travail, afin qu'aucun labeur ne soit oublié",  //x1.4
+    "description": "Une pièce tranquille où les scribes tiennent un décompte minutieux de chaque bras au travail, afin qu'aucun labeur ne soit oublié", //x1.4
     "label": "Bureau du scribe"
   },
   "buildScriptorium": {
@@ -237,7 +237,7 @@
     "label": "Hutte de pierre"
   },
   "buildStorehouse": {
-    "description": "Installation de stockage agrandie pour davantage de ressources",  //x1.4
+    "description": "Installation de stockage agrandie pour davantage de ressources", //x1.4
     "label": "Entrepôt"
   },
   "buildSupplyHut": {
@@ -257,7 +257,7 @@
     "label": "Scierie"
   },
   "buildTradePost": {
-    "description": "Comptoir commercial attirant des marchands qui vendent des biens",  //x1.4
+    "description": "Comptoir commercial attirant des marchands qui vendent des biens", //x1.4
     "label": "Comptoir commercial"
   },
   "buildTraps": {
@@ -287,7 +287,7 @@
   "canyonBridge": {
     "label": "Pont du canyon",
     "log": {
-      "complete": "Le pont du canyon est achevé. Les marchands Ashwraith peuvent désormais atteindre votre colonie — et vous pouvez leur vendre des marchandises à des tarifs convenus."
+      "complete": "Le pont du canyon est achevé. Les marchands Ashwraith peuvent désormais atteindre votre colonie - et vous pouvez leur vendre des marchandises à des tarifs convenus."
     }
   },
   "castleRuins": {
@@ -632,7 +632,7 @@
     "label": "Minage"
   },
   "occultistChamber": {
-    "label": "Chambre de l'occultiste",  //x1.4
+    "label": "Chambre de l'occultiste", //x1.4
     "log": {
       "complete": "En suivant la carte de l'occultiste, vous trouvez la chambre qui contient ses trésors. Parmi eux se trouve son grimoire, rempli de savoir interdit et de secrets arcanes."
     }
@@ -733,7 +733,7 @@
     "label": "Acheter de l'or"
   },
   "ventureDeeper": {
-    "label": "S'aventurer plus profond",  //x1.7
+    "label": "S'aventurer plus profond", //x1.7
     "log": {
       "tarnishedAmulet": "Dans l'ombre de la grotte, quelque chose scintille. Vous trouvez un amulette ternie.",
       "silverSack": "Vous trouvez un petit sac en cuir contenant 50 pièces d'argent.",

@@ -171,7 +171,15 @@ export function resolveEventChoiceCost(
   vars?: TranslateOptions,
 ): string | undefined {
   const cost = tEvent(catalogId, `choices.${choiceId}.cost`, vars);
-  return cost || fallback;
+  if (cost) return cost;
+
+  // Dynamic buy choices (e.g. wandering_collector buy_bone_dice)
+  if (choiceId.startsWith("buy_")) {
+    const shared = tEvent(catalogId, "choices._buyItem.cost", vars);
+    if (shared) return shared;
+  }
+
+  return fallback;
 }
 
 export function resolveEventChoiceReward(

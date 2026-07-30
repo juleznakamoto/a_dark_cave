@@ -31,7 +31,7 @@ export default function SocialPromptTab(props: {
     <div className="space-y-4">
       <Card>
         <CardHeader>
-          <CardTitle>Social prompt dialog — cohort</CardTitle>
+          <CardTitle>Social prompt dialog: cohort</CardTitle>
           <CardDescription>{aggregate.cohortNote}</CardDescription>
         </CardHeader>
         <CardContent>
@@ -162,7 +162,7 @@ export default function SocialPromptTab(props: {
 
       <Card>
         <CardHeader>
-          <CardTitle>Steps complete — distribution (B)</CardTitle>
+          <CardTitle>Steps complete: distribution (B)</CardTitle>
           <CardDescription>
             Users per count of exclusive-track steps done (0–6)
           </CardDescription>

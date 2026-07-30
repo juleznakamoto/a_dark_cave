@@ -359,6 +359,12 @@ interface GameStore extends GameState {
     pauseStartedAt?: number;
     /** Insight +3 min prolong already bought this timed-tab visit; badge hidden after use. */
     insightProlongUsed?: boolean;
+    /** Wandering collector: whether buy_/sell_ offers existed when the visit opened. */
+    collectorBuyAvailable?: boolean;
+    collectorSellAvailable?: boolean;
+    /** Wandering collector: one buy and one sell allowed per visit. */
+    collectorBuyDone?: boolean;
+    collectorSellDone?: boolean;
   };
 
   // Merchant trades state
@@ -4051,6 +4057,8 @@ export const useGameStore = create<GameStore>((set, get) => ({
       set((state) => {
         const isGambler =
           !!(isActive && event && event.id.split("-")[0] === "gambler");
+        const isCollector =
+          !!(isActive && event && event.id.split("-")[0] === "wandering_collector");
         const tutorialLeft = getGamblerTutorialPlaysRemaining(
           state.story?.seen,
         );
@@ -4061,6 +4069,19 @@ export const useGameStore = create<GameStore>((set, get) => ({
               ? 2
               : 1
           : undefined;
+        const eventChoices = Array.isArray(event?.choices) ? event.choices : [];
+        const collectorTradeFlags = isCollector
+          ? {
+            collectorBuyAvailable: eventChoices.some((c) =>
+              c.id.startsWith("buy_"),
+            ),
+            collectorSellAvailable: eventChoices.some(
+              (c) => c.id.startsWith("sell_") && c.id !== "sell_nothing",
+            ),
+            collectorBuyDone: false,
+            collectorSellDone: false,
+          }
+          : {};
         return {
           timedEventTab: {
             isActive,
@@ -4071,6 +4092,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
             pauseStartedAt: 0,
             insightProlongUsed: false,
             ...(gamblerRoundsRemaining != null && { gamblerRoundsRemaining }),
+            ...collectorTradeFlags,
           },
           ...(isGambler && {
             story: {

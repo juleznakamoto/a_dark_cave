@@ -127,8 +127,8 @@
     "goldLost": "-{{amount}} Oro",
     "practiceWinRemaining": "Hai vinto il round di pratica (nessun oro in gioco). {{remaining}} di {{total}} partite di pratica rimanenti.",
     "practiceLoseRemaining": "Hai perso il round di pratica (nessun oro in gioco). {{remaining}} di {{total}} partite di pratica rimanenti.",
-    "practiceWinComplete": "Hai vinto il round di pratica (nessun oro in gioco). Pratica completata — puoi piazzare una puntata in oro.",
-    "practiceLoseComplete": "Hai perso il round di pratica (nessun oro in gioco). Pratica completata — puoi piazzare una puntata in oro."
+    "practiceWinComplete": "Hai vinto il round di pratica (nessun oro in gioco). Pratica completata - puoi piazzare una puntata in oro.",
+    "practiceLoseComplete": "Hai perso il round di pratica (nessun oro in gioco). Pratica completata - puoi piazzare una puntata in oro."
   },
   "fullGame": {
     "titleTrial": "Il Viaggio Continua",

@@ -613,7 +613,7 @@ export default function OverviewTab(props: OverviewTabProps) {
             <div>
               <CardTitle>Customer Conversion Rate</CardTitle>
               <CardDescription>
-                Sign-ups ÷ (sessions − returning users) — what % of new-visitor sessions convert to a registration.
+                Sign-ups ÷ (sessions − returning users): what % of new-visitor sessions convert to a registration.
                 Days without session tracking or with inconsistent inputs are omitted.
               </CardDescription>
             </div>
@@ -649,7 +649,7 @@ export default function OverviewTab(props: OverviewTabProps) {
                 labelFormatter={(label, payload) => {
                   const row = payload?.[0]?.payload as (typeof conversionChartData)[number] | undefined;
                   if (!row) return label;
-                  return `${label} — ${row.signups} sign-ups, ${row.sessions} sessions, ${row.dau} DAU`;
+                  return `${label}: ${row.signups} sign-ups, ${row.sessions} sessions, ${row.dau} DAU`;
                 }}
               />
               <Line
@@ -664,12 +664,12 @@ export default function OverviewTab(props: OverviewTabProps) {
           </ChartContainer>
           {sessionData.length === 0 && (
             <p className="text-xs text-muted-foreground mt-2">
-              Session data not yet loaded — make sure the sessions endpoint is reachable.
+              Session data not yet loaded. Make sure the sessions endpoint is reachable.
             </p>
           )}
           {sessionData.length > 0 && !conversionChartHasReliableData && (
             <p className="text-xs text-muted-foreground mt-2">
-              No reliable conversion points in this range — session tracking may not cover these dates yet.
+              No reliable conversion points in this range. Session tracking may not cover these dates yet.
             </p>
           )}
         </CardContent>

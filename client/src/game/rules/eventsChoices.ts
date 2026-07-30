@@ -12,6 +12,10 @@ import {
   disgustDurationMs,
   cruelModeScale,
 } from "../cruelMode";
+import {
+  collectorItemRejectedStoryPatch,
+  markCollectorItemRejectedInSeen,
+} from "./collectorRejectedItems";
 
 /** Death outcomes only draw from unassigned villagers at the forest edge. */
 function paleFigureFreeVillagers(state: GameState): number {
@@ -162,6 +166,7 @@ export const choiceEvents: Record<string, GameEvent> = {
         id: "ignoreHut",
         effect: (state: GameState) => {
           return {
+            ...collectorItemRejectedStoryPatch(state, "muttering_amulet"),
             _logMessageKey: "outcome1",
           };
         },
@@ -202,6 +207,7 @@ export const choiceEvents: Record<string, GameEvent> = {
         id: "refuseMirror",
         effect: (state: GameState) => {
           return {
+            ...collectorItemRejectedStoryPatch(state, "blackened_mirror"),
             _logMessageKey: "outcome1",
           };
         },
@@ -244,10 +250,13 @@ export const choiceEvents: Record<string, GameEvent> = {
           return {
             story: {
               ...state.story,
-              seen: {
-                ...state.story.seen,
-                cthulhuFigureChoice: true,
-              },
+              seen: markCollectorItemRejectedInSeen(
+                {
+                  ...state.story.seen,
+                  cthulhuFigureChoice: true,
+                },
+                "wooden_figure",
+              ),
             },
             _logMessageKey: "outcome1",
           };

@@ -88,7 +88,7 @@ export function EstateBarsSection() {
     <DemoSection
       id="estate-bars"
       title="Estate upgrade bars"
-      description="Segmented progress bars with grow transition, tip glow, and canvas sparks — used in EstatePanel skill/sleep upgrades."
+      description="Segmented progress bars with grow transition, tip glow, and canvas sparks. Used in EstatePanel skill/sleep upgrades."
     >
       <div className="w-full max-w-md space-y-1">
         <div className="flex h-6 items-center justify-between">
@@ -128,7 +128,7 @@ export function ImproveButtonSection() {
     <DemoSection
       id="improve-button"
       title="Improve button"
-      description="Estate upgrade control — brief red text flash on click."
+      description="Estate upgrade control: brief red text flash on click."
     >
       <DemoRow label="Enabled">
         <ImproveButton
@@ -159,7 +159,7 @@ export function InsightBadgeSection() {
     <DemoSection
       id="insight-badge"
       title="Insight / action badges"
-      description="BuildingActionBadge — hover the badge for preview animation; toggle Playing for the insight-reveal loop."
+      description="BuildingActionBadge: hover the badge for preview animation; toggle Playing for the insight-reveal loop."
     >
       <div className="flex flex-wrap gap-2">
         <Button
@@ -257,7 +257,7 @@ export function ButtonParticlesSection() {
     <DemoSection
       id="button-particles"
       title="Button click particles"
-      description="CooldownButton click particle bursts — village build vs cave craft presets."
+      description="CooldownButton click particle bursts: village build vs cave craft presets."
     >
       <div className="flex flex-wrap gap-4">
         {PARTICLE_PRESETS.map((preset) => (
@@ -293,7 +293,7 @@ export function HoverParticlesSection() {
     <DemoSection
       id="hover-particles"
       title="Hover particles"
-      description="Coin / insight / trader tab hover bursts — hover each glyph to preview."
+      description="Coin / insight / trader tab hover bursts: hover each glyph to preview."
     >
       <DemoRow label="Gold">
         <ResourceCoinIcon resource="gold" />

@@ -1,6 +1,7 @@
-import { GameEvent } from "./rules/events";
+import { GameEvent } from "./events";
 import { GameState } from "@shared/schema";
 import { killVillagers } from "@/game/stateHelpers";
+import { markCollectorItemRejectedInSeen } from "./collectorRejectedItems";
 
 function createClarityElixirCaveFoundEvent(
   id: string,
@@ -71,10 +72,13 @@ export const caveEvents: Record<string, GameEvent> = {
           return {
             story: {
               ...state.story,
-              seen: {
-                ...state.story.seen,
-                ringOfDrownedChoice: true,
-              },
+              seen: markCollectorItemRejectedInSeen(
+                {
+                  ...state.story.seen,
+                  ringOfDrownedChoice: true,
+                },
+                "ring_of_drowned",
+              ),
             },
             _logMessageKey: "outcome1",
           };
@@ -89,10 +93,13 @@ export const caveEvents: Record<string, GameEvent> = {
           ...deathResult,
           story: {
             ...state.story,
-            seen: {
-              ...state.story.seen,
-              ringOfDrownedChoice: true,
-            },
+            seen: markCollectorItemRejectedInSeen(
+              {
+                ...state.story.seen,
+                ringOfDrownedChoice: true,
+              },
+              "ring_of_drowned",
+            ),
           },
           _logMessageKey: "outcome2",
         };
@@ -134,10 +141,13 @@ export const caveEvents: Record<string, GameEvent> = {
           return {
             story: {
               ...state.story,
-              seen: {
-                ...state.story.seen,
-                shadowFluteChoice: true,
-              },
+              seen: markCollectorItemRejectedInSeen(
+                {
+                  ...state.story.seen,
+                  shadowFluteChoice: true,
+                },
+                "shadow_flute",
+              ),
             },
             _logMessageKey: "outcome1",
           };
@@ -156,10 +166,13 @@ export const caveEvents: Record<string, GameEvent> = {
           ...deathResult,
           story: {
             ...state.story,
-            seen: {
-              ...state.story.seen,
-              shadowFluteChoice: true,
-            },
+            seen: markCollectorItemRejectedInSeen(
+              {
+                ...state.story.seen,
+                shadowFluteChoice: true,
+              },
+              "shadow_flute",
+            ),
           },
           _logMessageKey: "outcome2",
           _logMessageVars: { actualDevoured },
@@ -202,10 +215,13 @@ export const caveEvents: Record<string, GameEvent> = {
           return {
             story: {
               ...state.story,
-              seen: {
-                ...state.story.seen,
-                hollowKingScepterChoice: true,
-              },
+              seen: markCollectorItemRejectedInSeen(
+                {
+                  ...state.story.seen,
+                  hollowKingScepterChoice: true,
+                },
+                "hollow_king_scepter",
+              ),
             },
             _logMessageKey: "outcome1",
           };
@@ -223,10 +239,13 @@ export const caveEvents: Record<string, GameEvent> = {
           ...deathResult,
           story: {
             ...state.story,
-            seen: {
-              ...state.story.seen,
-              hollowKingScepterChoice: true,
-            },
+            seen: markCollectorItemRejectedInSeen(
+              {
+                ...state.story.seen,
+                hollowKingScepterChoice: true,
+              },
+              "hollow_king_scepter",
+            ),
           },
           _logMessageKey: "outcome2",
           _logMessageVars: { actualDeaths },
@@ -269,10 +288,13 @@ export const caveEvents: Record<string, GameEvent> = {
           return {
             story: {
               ...state.story,
-              seen: {
-                ...state.story.seen,
-                bloodstainedBeltChoice: true,
-              },
+              seen: markCollectorItemRejectedInSeen(
+                {
+                  ...state.story.seen,
+                  bloodstainedBeltChoice: true,
+                },
+                "bloodstained_belt",
+              ),
             },
             _logMessageKey: "outcome1",
           };
@@ -287,10 +309,13 @@ export const caveEvents: Record<string, GameEvent> = {
           ...deathResult,
           story: {
             ...state.story,
-            seen: {
-              ...state.story.seen,
-              bloodstainedBeltChoice: true,
-            },
+            seen: markCollectorItemRejectedInSeen(
+              {
+                ...state.story.seen,
+                bloodstainedBeltChoice: true,
+              },
+              "bloodstained_belt",
+            ),
           },
           _logMessageKey: "outcome2",
         };
@@ -332,10 +357,13 @@ export const caveEvents: Record<string, GameEvent> = {
           return {
             story: {
               ...state.story,
-              seen: {
-                ...state.story.seen,
-                boneDiceChoice: true,
-              },
+              seen: markCollectorItemRejectedInSeen(
+                {
+                  ...state.story.seen,
+                  boneDiceChoice: true,
+                },
+                "bone_dice",
+              ),
             },
             _logMessageKey: "outcome1",
           };
@@ -348,10 +376,13 @@ export const caveEvents: Record<string, GameEvent> = {
         return {
           story: {
             ...state.story,
-            seen: {
-              ...state.story.seen,
-              boneDiceChoice: true,
-            },
+            seen: markCollectorItemRejectedInSeen(
+              {
+                ...state.story.seen,
+                boneDiceChoice: true,
+              },
+              "bone_dice",
+            ),
           },
           _logMessageKey: "outcome2",
         };
