@@ -29,21 +29,22 @@ export function RestartGameDialog({
       <DialogContent className="[--adc-dialog-max-w:28rem] z-[70]">
         <DialogHeader>
           <DialogTitle className="leading-6">{t("restart.title")}</DialogTitle>
-          <DialogDescription asChild className="py-2">
-            <div className="text-center">
-              <div className="bg-red-600/5 border border-red-600/50 rounded-lg p-3">
-                <p className="text-md font-medium text-red-600">
-                  {isSteamEdition
-                    ? t("restart.warning")
-                    : t("restart.warningWeb", {
-                      defaultValue:
-                        "Starting a new game will erase your current progress and reset all achievements except Epic Achievements.",
-                    })}
-                </p>
-              </div>
-            </div>
-          </DialogDescription>
         </DialogHeader>
+
+        <DialogDescription asChild className="py-2">
+          <div className="w-full text-center">
+            <div className="w-full rounded-lg border border-red-600/50 bg-red-600/5 p-3">
+              <p className="text-md font-medium text-red-600">
+                {isSteamEdition
+                  ? t("restart.warning")
+                  : t("restart.warningWeb", {
+                    defaultValue:
+                      "Starting a new game will erase your current progress and reset all achievements except Epic Achievements.",
+                  })}
+              </p>
+            </div>
+          </div>
+        </DialogDescription>
 
         <DialogFooter className="grid w-full grid-cols-2 gap-2 sm:space-x-0">
           <Button
