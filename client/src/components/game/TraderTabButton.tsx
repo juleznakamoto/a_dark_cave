@@ -92,8 +92,8 @@ export function TraderTabButton({
       >
         <span
           className={cn(
-            // Hug label baseline so the chip lines up with Cave/City/… tabs (items-end + pb-2).
-            "inline-flex items-center gap-1 rounded-sm px-1 py-px leading-none",
+            // Compact chip; border (not ring) so rounded corners render.
+            "inline-flex items-center gap-1 rounded px-1.5 py-0.5 leading-none",
             LIME_ACCENT_BORDER_IDLE,
             LIME_ACCENT_BORDER_GLOW_HOVER,
             showActiveGlow && LIME_ACCENT_BORDER_GLOW,
@@ -102,7 +102,8 @@ export function TraderTabButton({
           <span
             ref={iconRef}
             className={cn(
-              "font-noto-symbols-2 text-[15px] leading-none text-lime-500",
+              // ◬ sits high in its em-box; nudge down to optically center with the label.
+              "font-noto-symbols-2 text-[16px] leading-none text-lime-500 translate-y-[2px]",
               LIME_ACCENT_ICON_IDLE,
               showActiveGlow
                 ? cn("opacity-100", LIME_ACCENT_GLOW_TEXT_SHADOW_ACTIVE)
@@ -112,27 +113,19 @@ export function TraderTabButton({
           >
             ◬
           </span>
-          <span className="inline-grid">
-            <span
-              className="invisible col-start-1 row-start-1 font-semibold"
-              aria-hidden
-            >
-              {t("tabs.trader", { ns: "common" })}
-            </span>
-            <span
-              className={cn(
-                "col-start-1 row-start-1 font-normal transition-opacity",
-                isAnimating
-                  ? ""
-                  : showActiveGlow
-                    ? "opacity-100 font-semibold"
-                    : isPaused
-                      ? tabInactiveTextClass
-                      : "opacity-80 group-hover:opacity-100 group-hover:font-semibold",
-              )}
-            >
-              {t("tabs.trader", { ns: "common" })}
-            </span>
+          <span
+            className={cn(
+              "font-normal transition-opacity",
+              isAnimating
+                ? ""
+                : showActiveGlow
+                  ? "opacity-100"
+                  : isPaused
+                    ? tabInactiveTextClass
+                    : "opacity-80 group-hover:opacity-100",
+            )}
+          >
+            {t("tabs.trader", { ns: "common" })}
           </span>
         </span>
       </button>

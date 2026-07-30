@@ -59,15 +59,15 @@ export const LIME_ACCENT_GLOW_TEXT_SHADOW_ACTIVE =
 export const LIME_ACCENT_GLOW_TEXT_SHADOW_HOVER =
   "group-hover:[text-shadow:0_0_4px_rgba(132,204,22,1),0_0_8px_rgba(132,204,22,1),0_0_16px_rgba(132,204,22,1),0_0_32px_rgba(132,204,22,1)] group-focus-visible:[text-shadow:0_0_4px_rgba(132,204,22,1),0_0_8px_rgba(132,204,22,1),0_0_16px_rgba(132,204,22,1),0_0_32px_rgba(132,204,22,1)]";
 
-/** Compact lime chip ring + hover glow (trader tab). Ring keeps tab text baselines aligned. */
+/** Compact lime chip border + hover glow (trader tab). */
 export const LIME_ACCENT_BORDER_IDLE =
-  "ring-1 ring-lime-500/60 transition-[box-shadow]";
+  "border border-lime-500/60 transition-[border-color,box-shadow]";
 
 export const LIME_ACCENT_BORDER_GLOW =
-  "ring-lime-500 shadow-[0_0_6px_rgba(132,204,22,0.85),0_0_14px_rgba(132,204,22,0.5),0_0_24px_rgba(132,204,22,0.3)]";
+  "border-lime-500 shadow-[0_0_6px_rgba(132,204,22,0.85),0_0_14px_rgba(132,204,22,0.5),0_0_24px_rgba(132,204,22,0.3)]";
 
 export const LIME_ACCENT_BORDER_GLOW_HOVER =
-  "group-hover:ring-lime-500 group-hover:shadow-[0_0_6px_rgba(132,204,22,0.85),0_0_14px_rgba(132,204,22,0.5),0_0_24px_rgba(132,204,22,0.3)] group-focus-visible:ring-lime-500 group-focus-visible:shadow-[0_0_6px_rgba(132,204,22,0.85),0_0_14px_rgba(132,204,22,0.5),0_0_24px_rgba(132,204,22,0.3)]";
+  "group-hover:border-lime-500 group-hover:shadow-[0_0_6px_rgba(132,204,22,0.85),0_0_14px_rgba(132,204,22,0.5),0_0_24px_rgba(132,204,22,0.3)] group-focus-visible:border-lime-500 group-focus-visible:shadow-[0_0_6px_rgba(132,204,22,0.85),0_0_14px_rgba(132,204,22,0.5),0_0_24px_rgba(132,204,22,0.3)]";
 
 /** Mask SVG icons (e.g. rewards tasks diamond) — glow via `.lime-accent-mask-icon` in index.css. */
 export const LIME_ACCENT_MASK_ICON_CLASS = "lime-accent-mask-icon";
