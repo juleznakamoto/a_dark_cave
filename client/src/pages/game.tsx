@@ -28,14 +28,14 @@ import {
   applySaveBoost,
   canApplySaveBoost,
 } from "@/game/boost";
-import { hardReload } from "@/lib/hardReload";
 import PageLoadSpinner from "@/components/ui/page-load-spinner";
+import PageErrorScreen from "@/components/ui/page-error-screen";
 
 export default function Game() {
   const initialize = useGameStore((state) => state.initialize);
   const { setShopDialogOpen, setIsUserSignedIn } = useGameStore();
   const [isInitialized, setIsInitialized] = useState(false);
-  const [initError, setInitError] = useState<string | null>(null);
+  const [initError, setInitError] = useState(false);
   const [emailConfirmedDialogOpen, setEmailConfirmedDialogOpen] = useState(false);
   const steamEditionActive = useSteamEditionActive();
   useEffect(() => {
@@ -443,7 +443,7 @@ export default function Game() {
         }
       } catch (error) {
         logger.error("[GAME PAGE] Failed to initialize game:", error);
-        setInitError("The game failed to start after loading your save.");
+        setInitError(true);
       }
     };
 
@@ -456,20 +456,7 @@ export default function Game() {
   }, []); // Empty dependency array - only run once on mount
 
   if (initError) {
-    return (
-      <div className="flex min-h-screen flex-col items-center justify-center gap-4 bg-black px-6 text-center text-neutral-400">
-        <p className="max-w-md text-sm leading-relaxed">{initError}</p>
-        <button
-          type="button"
-          className="rounded border border-neutral-600 px-4 py-2 text-sm text-neutral-200 hover:border-neutral-400 hover:text-white"
-          onClick={() => {
-            void hardReload();
-          }}
-        >
-          Reload game
-        </button>
-      </div>
-    );
+    return <PageErrorScreen />;
   }
 
   if (!isInitialized) {

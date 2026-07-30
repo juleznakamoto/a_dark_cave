@@ -98,5 +98,9 @@
   "villageHotkeyTutorial": {
     "dismiss": "关闭"
   },
-  "never": "从未"
+  "never": "从未",
+  "errorScreen": {
+    "message": "We are digging deeper. Please check back soon.",
+    "reload": "Reload game"
+  }
 }

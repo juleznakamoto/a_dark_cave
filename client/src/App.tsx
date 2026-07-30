@@ -6,7 +6,7 @@ import DeferredAppChrome from "@/components/DeferredAppChrome";
 import PageLoadSpinner, {
   dismissBootSpinner,
 } from "@/components/ui/page-load-spinner";
-import LazyRouteErrorBoundary from "@/components/LazyRouteErrorBoundary";
+import AppErrorBoundary from "@/components/AppErrorBoundary";
 import { clearStaleChunkReloadGuard } from "@/lib/hardReload";
 
 const steamBuild = import.meta.env.VITE_STEAM_BUILD === "1";
@@ -52,31 +52,29 @@ const CombatDialogDemo = lazy(() => import("@/pages/combat-dialog-demo"));
 
 function Router() {
   return (
-    <LazyRouteErrorBoundary label="The page failed to load.">
-      <Suspense fallback={<PageLoadSpinner />}>
-        <Switch>
-          <Route path="/" component={StartScreenPage} />
-          <Route path="/galaxy" component={StartScreenPage} />
-          <Route path="/boost" component={StartScreenPage} />
-          <Route path="/game">{() => <Redirect to="/" />}</Route>
-          <Route path="/end-screen" component={EndScreenPage} />
-          <Route path="/imprint" component={Imprint} />
-          <Route path="/privacy" component={Privacy} />
-          <Route path="/terms" component={Terms} />
-          <Route path="/withdrawal" component={Withdrawal} />
-          <Route path="/unsubscribe" component={Unsubscribe} />
-          <Route path="/reset-password" component={ResetPassword} />
-          <Route path="/admin/dashboard" component={AdminDashboard} />
-          <Route path="/dev/starship-shader" component={StarshipShaderDemo} />
-          <Route path="/dev/animations" component={AnimationsDemo} />
-          <Route path="/dev/combat-dialog" component={CombatDialogDemo} />
-          <Route path="/dev/estate-bar-upgrade">
-            {() => <Redirect to="/dev/animations#estate-bars" />}
-          </Route>
-          <Route component={NotFound} />
-        </Switch>
-      </Suspense>
-    </LazyRouteErrorBoundary>
+    <Suspense fallback={<PageLoadSpinner />}>
+      <Switch>
+        <Route path="/" component={StartScreenPage} />
+        <Route path="/galaxy" component={StartScreenPage} />
+        <Route path="/boost" component={StartScreenPage} />
+        <Route path="/game">{() => <Redirect to="/" />}</Route>
+        <Route path="/end-screen" component={EndScreenPage} />
+        <Route path="/imprint" component={Imprint} />
+        <Route path="/privacy" component={Privacy} />
+        <Route path="/terms" component={Terms} />
+        <Route path="/withdrawal" component={Withdrawal} />
+        <Route path="/unsubscribe" component={Unsubscribe} />
+        <Route path="/reset-password" component={ResetPassword} />
+        <Route path="/admin/dashboard" component={AdminDashboard} />
+        <Route path="/dev/starship-shader" component={StarshipShaderDemo} />
+        <Route path="/dev/animations" component={AnimationsDemo} />
+        <Route path="/dev/combat-dialog" component={CombatDialogDemo} />
+        <Route path="/dev/estate-bar-upgrade">
+          {() => <Redirect to="/dev/animations#estate-bars" />}
+        </Route>
+        <Route component={NotFound} />
+      </Switch>
+    </Suspense>
   );
 }
 
@@ -91,11 +89,13 @@ function App() {
   }, []);
 
   return (
-    <QueryClientProvider client={queryClient}>
-      <DeferredAppChrome>
-        <Router />
-      </DeferredAppChrome>
-    </QueryClientProvider>
+    <AppErrorBoundary>
+      <QueryClientProvider client={queryClient}>
+        <DeferredAppChrome>
+          <Router />
+        </DeferredAppChrome>
+      </QueryClientProvider>
+    </AppErrorBoundary>
   );
 }
 

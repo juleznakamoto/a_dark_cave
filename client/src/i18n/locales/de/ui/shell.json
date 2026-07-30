@@ -98,5 +98,9 @@
   "villageHotkeyTutorial": {
     "dismiss": "Schließen"
   },
-  "never": "Nie"
+  "never": "Nie",
+  "errorScreen": {
+    "message": "Wir graben tiefer. Bitte schau bald wieder vorbei.",
+    "reload": "Spiel neu laden"
+  }
 }

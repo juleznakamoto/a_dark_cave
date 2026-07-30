@@ -30,6 +30,10 @@
     "makeFire": "Make Fire",
     "recommendedBy": "Recommended by"
   },
+  "errorScreen": {
+    "message": "We are digging deeper. Please check back soon.",
+    "reload": "Reload game"
+  },
   "footer": {
     "fullGame": "Full Game",
     "trader": "Trader",

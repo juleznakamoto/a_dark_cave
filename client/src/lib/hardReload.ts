@@ -1,4 +1,5 @@
 import { logger } from "@/lib/logger";
+import { mountFatalErrorScreen } from "@/lib/fatalErrorScreen";
 
 /** Query param added to force a fresh index.html fetch after deploy. */
 export const HARD_RELOAD_CACHE_BUST_PARAM = "_cb";
@@ -49,7 +50,10 @@ function isStaleChunkLoadFailure(reason: unknown): boolean {
 
 function tryAutoReloadForStaleChunk(reason: unknown): boolean {
   if (!isStaleChunkLoadFailure(reason)) return false;
-  if (!canAutoReloadForStaleChunk()) return false;
+  if (!canAutoReloadForStaleChunk()) {
+    mountFatalErrorScreen(reason);
+    return true;
+  }
   markStaleChunkReloadAttempted();
   void hardReload();
   return true;
@@ -58,7 +62,8 @@ function tryAutoReloadForStaleChunk(reason: unknown): boolean {
 /**
  * After a deploy, stale cached HTML can reference deleted JS chunks. React lazy()
  * then rejects with "Failed to fetch dynamically imported module" and Suspense
- * shows a permanent black screen. Retry once with a cache-busted reload.
+ * shows a permanent black screen. Retry once with a cache-busted reload; if that
+ * already ran, show the dig-deeper error screen instead of hanging forever.
  */
 export function installStaleChunkAutoReload(): void {
   window.addEventListener("unhandledrejection", (event) => {
@@ -74,7 +79,10 @@ export function installStaleChunkAutoReload(): void {
       if (!target || !(target instanceof HTMLScriptElement)) return;
       const src = target.src || "";
       if (target.type !== "module" && !/\.js(\?|$)/i.test(src)) return;
-      if (!canAutoReloadForStaleChunk()) return;
+      if (!canAutoReloadForStaleChunk()) {
+        mountFatalErrorScreen(event.error ?? src);
+        return;
+      }
       markStaleChunkReloadAttempted();
       void hardReload();
     },

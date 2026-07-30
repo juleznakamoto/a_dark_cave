@@ -98,5 +98,9 @@
   "villageHotkeyTutorial": {
     "dismiss": "Закрыть"
   },
-  "never": "Никогда"
+  "never": "Никогда",
+  "errorScreen": {
+    "message": "We are digging deeper. Please check back soon.",
+    "reload": "Reload game"
+  }
 }

@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { useCoinHoverParticles } from "@/components/ui/coin-hover-particles";
 import { FIRE_LOAD_PARTICLE_CONFIG } from "@/components/ui/bubbly-button.particles";
+import { mountFatalErrorScreen, FATAL_UI_TIMEOUT_MS } from "@/lib/fatalErrorScreen";
 
 const SPINNER_DELAY_MS = 500;
 const BOOT_SPINNER_ID = "adc-boot-spinner";
@@ -14,6 +15,11 @@ declare global {
     __ADC_BOOT_SPINNER_TIMER?: ReturnType<typeof setTimeout>;
   }
 }
+
+type PageLoadSpinnerProps = {
+  /** After this many ms still mounted, show the fatal error screen (default FATAL_UI_TIMEOUT_MS). Pass 0 to disable. */
+  escalateAfterMs?: number;
+};
 
 /** Clear the HTML boot spinner / its 500ms reveal timer (safe to call repeatedly). */
 export function dismissBootSpinner(): void {
@@ -37,8 +43,11 @@ function takeOverBootSpinner(): boolean {
  * Full-viewport black loading screen with a fire-colored spinner.
  * Spinner (and particles) appear only after 500ms to avoid a flash on fast loads.
  * Decorative only — does not replace SEO fallback content in index.html.
+ * Escalates to the fatal error screen if still mounted after escalateAfterMs.
  */
-export default function PageLoadSpinner() {
+export default function PageLoadSpinner({
+  escalateAfterMs = FATAL_UI_TIMEOUT_MS,
+}: PageLoadSpinnerProps = {}) {
   const [showSpinner, setShowSpinner] = useState(() => {
     if (takeOverBootSpinner()) {
       sharedSpinnerVisible = true;
@@ -65,6 +74,16 @@ export default function PageLoadSpinner() {
       }
     };
   }, []);
+
+  useEffect(() => {
+    if (!escalateAfterMs || escalateAfterMs <= 0) return;
+    const timer = setTimeout(() => {
+      mountFatalErrorScreen(
+        new Error(`Page load spinner still mounted after ${escalateAfterMs}ms`),
+      );
+    }, escalateAfterMs);
+    return () => clearTimeout(timer);
+  }, [escalateAfterMs]);
 
   useEffect(() => {
     if (showSpinner) {
