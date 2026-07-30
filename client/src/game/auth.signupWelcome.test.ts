@@ -150,6 +150,7 @@ describe("signup welcome gold eligibility", () => {
     vi.mocked(useGameStore.getState).mockReturnValue({
       isUserSignedIn: true,
       signupWelcomeGoldClaimed: false,
+      setIsUserSignedIn: vi.fn(),
       updateResource: vi.fn(),
       addLogEntry: vi.fn(),
     } as any);
@@ -163,6 +164,7 @@ describe("signup welcome gold eligibility", () => {
           data: {
             user: {
               id: "user-old",
+              email_confirmed_at: "2024-01-01T00:00:00Z",
               created_at: new Date(
                 NOW - SIGNUP_WELCOME_CLAIM_MAX_ACCOUNT_AGE_MS - 1,
               ).toISOString(),
@@ -185,6 +187,7 @@ describe("signup welcome gold eligibility", () => {
     vi.mocked(useGameStore.getState).mockReturnValue({
       isUserSignedIn: true,
       signupWelcomeGoldClaimed: false,
+      setIsUserSignedIn: vi.fn(),
       updateResource,
       addLogEntry,
     } as any);
@@ -199,6 +202,7 @@ describe("signup welcome gold eligibility", () => {
           data: {
             user: {
               id: "user-new",
+              email_confirmed_at: createdAt,
               created_at: createdAt,
             },
           },
@@ -211,5 +215,35 @@ describe("signup welcome gold eligibility", () => {
     await expect(claimSignupWelcomeGold()).resolves.toBe(true);
     expect(updateResource).toHaveBeenCalledWith("gold", expect.any(Number));
     expect(sessionStorage.getItem(PENDING_SIGNUP_WELCOME_KEY)).toBeNull();
+  });
+
+  it("isSignupWelcomeGoldClaimEligible recovers when store flag was cleared by save hydrate", async () => {
+    const setIsUserSignedIn = vi.fn();
+    const { useGameStore } = await import("./state");
+    vi.mocked(useGameStore.getState).mockReturnValue({
+      isUserSignedIn: false,
+      signupWelcomeGoldClaimed: false,
+      setIsUserSignedIn,
+    } as any);
+
+    const createdAt = new Date(NOW - 60 * 1000).toISOString();
+    const { getSupabaseClient } = await import("@/lib/supabase");
+    vi.mocked(getSupabaseClient).mockResolvedValue({
+      auth: {
+        getUser: vi.fn().mockResolvedValue({
+          data: {
+            user: {
+              id: "user-new",
+              email_confirmed_at: createdAt,
+              created_at: createdAt,
+            },
+          },
+          error: null,
+        }),
+      },
+    } as any);
+
+    await expect(isSignupWelcomeGoldClaimEligible()).resolves.toBe(true);
+    expect(setIsUserSignedIn).toHaveBeenCalledWith(true);
   });
 });

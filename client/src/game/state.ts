@@ -60,6 +60,7 @@ import {
   type VillageEffectDialogData,
 } from "@/game/villageEffectThemes";
 import { computePersistedSocialTasksGold } from "@/game/socialTasksGold";
+import { getLifetimeGamesWonFromSave } from "@/game/winAchievements";
 import {
   canRevealEffects,
   canRevealStatEffects,
@@ -405,6 +406,7 @@ interface GameStore extends GameState {
   hasWonNormalGame: boolean;
   hasWonCruelGame: boolean;
   hasSpeedrunWin: boolean;
+  lifetimeGamesWon: number;
   lifetimePlayTimeMs: number;
   lifetimeStorageMaxHits: string[];
   hasAchievementMaxer: boolean;
@@ -1134,6 +1136,13 @@ const mergeStateUpdates = (
     hasSpeedrunWin: Boolean(
       stateUpdates.hasSpeedrunWin || prevState.hasSpeedrunWin,
     ),
+    lifetimeGamesWon:
+      stateUpdates.lifetimeGamesWon !== undefined
+        ? Math.max(
+          stateUpdates.lifetimeGamesWon,
+          prevState.lifetimeGamesWon ?? 0,
+        )
+        : (prevState.lifetimeGamesWon ?? 0),
     lifetimePlayTimeMs:
       stateUpdates.lifetimePlayTimeMs !== undefined
         ? Math.max(
@@ -2705,6 +2714,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
       hasWonNormalGame: state.hasWonNormalGame || false,
       hasWonCruelGame: state.hasWonCruelGame || false,
       hasSpeedrunWin: state.hasSpeedrunWin || false,
+      lifetimeGamesWon: state.lifetimeGamesWon || 0,
       lifetimePlayTimeMs: state.lifetimePlayTimeMs || 0,
       lifetimeStorageMaxHits: state.lifetimeStorageMaxHits || [],
       hasAchievementMaxer: state.hasAchievementMaxer || false,
@@ -3131,6 +3141,16 @@ export const useGameStore = create<GameStore>((set, get) => ({
           true,
         hasSpeedrunWin:
           (savedState as { hasSpeedrunWin?: boolean }).hasSpeedrunWin === true,
+        lifetimeGamesWon: getLifetimeGamesWonFromSave({
+          lifetimeGamesWon: (savedState as { lifetimeGamesWon?: number })
+            .lifetimeGamesWon,
+          game_stats: savedState.game_stats,
+          hasWonAnyGame: savedState.hasWonAnyGame,
+          hasWonNormalGame: (savedState as { hasWonNormalGame?: boolean })
+            .hasWonNormalGame,
+          hasWonCruelGame: (savedState as { hasWonCruelGame?: boolean })
+            .hasWonCruelGame,
+        }),
         // Seed lifetime from current-run playTime for older saves that lack the field
         lifetimePlayTimeMs: Math.max(
           (savedState as { lifetimePlayTimeMs?: number }).lifetimePlayTimeMs ??

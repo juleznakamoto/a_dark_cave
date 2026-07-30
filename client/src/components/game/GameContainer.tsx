@@ -227,6 +227,7 @@ export default function GameContainer() {
   const hasWonNormalGame = useGameStore((s) => s.hasWonNormalGame);
   const hasWonCruelGame = useGameStore((s) => s.hasWonCruelGame);
   const hasSpeedrunWin = useGameStore((s) => s.hasSpeedrunWin);
+  const lifetimeGamesWon = useGameStore((s) => s.lifetimeGamesWon);
   const lifetimePlayTimeMs = useGameStore((s) => s.lifetimePlayTimeMs);
   const lifetimeStorageMaxHits = useGameStore((s) => s.lifetimeStorageMaxHits);
   const hasAchievementMaxer = useGameStore((s) => s.hasAchievementMaxer);
@@ -241,6 +242,7 @@ export default function GameContainer() {
       hasWonNormalGame,
       hasWonCruelGame,
       hasSpeedrunWin,
+      lifetimeGamesWon,
       lifetimePlayTimeMs,
       lifetimeStorageMaxHits,
       hasAchievementMaxer,
@@ -262,6 +264,7 @@ export default function GameContainer() {
         hasWonNormalGame,
         hasWonCruelGame,
         hasSpeedrunWin,
+        lifetimeGamesWon,
         lifetimePlayTimeMs,
         lifetimeStorageMaxHits,
         hasAchievementMaxer,
@@ -278,6 +281,7 @@ export default function GameContainer() {
       hasWonNormalGame,
       hasWonCruelGame,
       hasSpeedrunWin,
+      lifetimeGamesWon,
       lifetimePlayTimeMs,
       lifetimeStorageMaxHits,
       hasAchievementMaxer,

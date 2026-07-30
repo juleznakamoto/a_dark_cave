@@ -161,7 +161,7 @@ export function getScholarInsightPerWorker(
 }
 
 export interface GetPopulationProductionOptions {
-  /** When true, excludes temporary bonuses (feast, solstice gathering, curse, frostfall, fog, disgust, mining boost) and Disgraced Prior food upkeep. Use for sleep / idle eligibility: those effects are inactive while the sim is paused in sleep, and the Prior does not auto-execute. */
+  /** When true, excludes temporary bonuses (feast, solstice gathering, heartfire, curse, frostfall, fog, disgust, mining boost) and Disgraced Prior food upkeep. Use for sleep / idle eligibility: those effects are inactive while the sim is paused in sleep, and the Prior does not auto-execute. */
   excludeTemporaryBonuses?: boolean;
 }
 
@@ -412,9 +412,9 @@ export const getPopulationProduction = (
     }
   }
 
-  // Apply heartfire multiplier if active
+  // Heartfire multiplier — temporary, inactive during sleep
   const heartfireLevel = state.heartfireState?.level || 0;
-  if (heartfireLevel > 0) {
+  if (!excludeTemporary && heartfireLevel > 0) {
     const perLevel = state.blessings?.ebon_grace ? 0.1 : 0.05;
     const heartfireBonus = 1 + heartfireLevel * perLevel;
     baseProduction.forEach((prod) => {

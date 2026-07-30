@@ -1,5 +1,6 @@
 import { GameEvent } from "./events";
 import { GameState } from "@shared/schema";
+import { getGameWinAchievementUpdates } from "@/game/winAchievements";
 
 export const cubeEvents: Record<string, GameEvent> = {
   cubeDiscovery: {
@@ -356,14 +357,7 @@ export const cubeEvents: Record<string, GameEvent> = {
               ...state.events,
               cube13: true,
             },
-            hasWonAnyGame: true,
-            ...(state.cruelMode
-              ? { hasWonCruelGame: true }
-              : { hasWonNormalGame: true }),
-            // Speedrunner overall achievement: finish under 5 hours
-            ...(state.playTime < 5 * 60 * 60 * 1000
-              ? { hasSpeedrunWin: true }
-              : {}),
+            ...getGameWinAchievementUpdates(state),
           };
         },
       },
@@ -482,6 +476,8 @@ export const cubeEvents: Record<string, GameEvent> = {
               ...state.events,
               cube15a: true,
             },
+            // Redundant with cube13 on slaughter path; OR-merged if already set.
+            ...getGameWinAchievementUpdates(state),
           };
         },
       },
@@ -508,6 +504,8 @@ export const cubeEvents: Record<string, GameEvent> = {
               ...state.events,
               cube15b: true,
             },
+            // Communicate path skips cube13 — award win flags here.
+            ...getGameWinAchievementUpdates(state),
           };
         },
       },
@@ -532,6 +530,7 @@ export const cubeEvents: Record<string, GameEvent> = {
               ...state.events,
               cube16a: true,
             },
+            ...getGameWinAchievementUpdates(state),
           };
         },
       },
@@ -556,6 +555,7 @@ export const cubeEvents: Record<string, GameEvent> = {
               ...state.events,
               cube16b: true,
             },
+            ...getGameWinAchievementUpdates(state),
           };
         },
       },

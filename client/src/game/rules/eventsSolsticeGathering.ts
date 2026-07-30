@@ -37,7 +37,7 @@ export const solsticeGatheringEvent: GameEvent = {
   },
 
   timeProbability: (state: GameState) =>
-    (state.solsticeState?.activationsCount ?? 0) === 0 ? 10 : 40,
+    (state.solsticeState?.activationsCount ?? 0) === 0 ? 10 : 45,
   cooldownPercent: 0.65,
   priority: 3,
   repeatable: true,

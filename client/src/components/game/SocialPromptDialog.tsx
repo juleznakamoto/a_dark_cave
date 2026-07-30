@@ -318,6 +318,8 @@ export default function SocialPromptDialog({
         const optIn = await fetchMarketingOptInPreference();
         if (!cancelled && optIn !== null) {
           setMarketingOptIn(optIn);
+          // Already opted in (e.g. Google signup checkbox) → activate email task.
+          if (optIn) markMarketingEmailFulfilled();
         }
       } catch {
         /* ignore — rows still usable */

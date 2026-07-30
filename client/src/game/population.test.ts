@@ -484,6 +484,31 @@ describe('Population Production Display Tests', () => {
       );
       expect(sleepProjection.food).toBe(baselineNoPriorAssignments.food);
     });
+
+    it('does not apply heartfire bonus when excludeTemporaryBonuses (sleep / idle)', () => {
+      const state = createTestState({
+        villagers: { ...createTestState().villagers, gatherer: 2, free: 3 },
+        heartfireState: { level: 5, lastLevelDecrease: 0 },
+      });
+
+      const awake = getPopulationProduction('gatherer', 2, state);
+      const sleep = getPopulationProduction('gatherer', 2, state, {
+        excludeTemporaryBonuses: true,
+      });
+      const baseline = getPopulationProduction(
+        'gatherer',
+        2,
+        { ...state, heartfireState: { level: 0, lastLevelDecrease: 0 } },
+        { excludeTemporaryBonuses: true },
+      );
+
+      const awakeWood = awake.find((p) => p.resource === 'wood')!.totalAmount;
+      const sleepWood = sleep.find((p) => p.resource === 'wood')!.totalAmount;
+      const baselineWood = baseline.find((p) => p.resource === 'wood')!.totalAmount;
+
+      expect(awakeWood).toBeGreaterThan(baselineWood);
+      expect(sleepWood).toBe(baselineWood);
+    });
   });
 
   describe('Miner production matches display', () => {

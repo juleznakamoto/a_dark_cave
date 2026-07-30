@@ -209,6 +209,9 @@
     },
     "0-winNormal": {
       "label": "Normal Victory"
+    },
+    "0-caveVeteran": {
+      "label": "Cave Veteran"
     }
   }
 }

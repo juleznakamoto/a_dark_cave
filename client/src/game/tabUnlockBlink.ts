@@ -41,6 +41,7 @@ export function buildTabUnlockSnapshot(state: {
   hasWonCruelGame?: boolean;
   hasSpeedrunWin?: boolean;
   hasWonAnyGame?: boolean;
+  lifetimeGamesWon?: number;
   lifetimePlayTimeMs?: number;
   lifetimeStorageMaxHits?: GameState["lifetimeStorageMaxHits"];
   hasAchievementMaxer?: boolean;

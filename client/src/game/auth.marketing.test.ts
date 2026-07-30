@@ -11,6 +11,10 @@ vi.mock("@/lib/supabase", () => ({
   getCachedAuthUser: vi.fn(),
 }));
 
+vi.mock("./marketingEmailReward", () => ({
+  markMarketingEmailFulfilled: vi.fn(),
+}));
+
 async function mockConfirmedUser(accessToken: string | null) {
   const { getSupabaseClient, isAuthStateReady, getCachedAuthUser } =
     await import("@/lib/supabase");
@@ -94,6 +98,10 @@ describe("marketing signup pending + flush", () => {
     expect(sessionStorage.removeItem).toHaveBeenCalledWith(
       PENDING_MARKETING_OPT_IN_KEY,
     );
+    const { markMarketingEmailFulfilled } = await import(
+      "./marketingEmailReward"
+    );
+    expect(markMarketingEmailFulfilled).toHaveBeenCalled();
   });
 
   it("flushPendingMarketingPreferences uses email_signup when not google", async () => {
@@ -109,6 +117,10 @@ describe("marketing signup pending + flush", () => {
     const body = JSON.parse((init?.body as string) ?? "{}");
     expect(body.consent_source).toBe("email_signup");
     expect(body.marketing_opt_in).toBe(false);
+    const { markMarketingEmailFulfilled } = await import(
+      "./marketingEmailReward"
+    );
+    expect(markMarketingEmailFulfilled).not.toHaveBeenCalled();
   });
 
   it("flushPendingMarketingPreferences skips fetch without confirmed user", async () => {

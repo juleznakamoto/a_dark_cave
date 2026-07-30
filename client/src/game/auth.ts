@@ -220,14 +220,20 @@ async function applySignupWelcomeGoldBonus(): Promise<boolean> {
 export async function isSignupWelcomeGoldClaimEligible(): Promise<boolean> {
   const { useGameStore } = await import("./state");
   const s = useGameStore.getState();
-  if (!s.isUserSignedIn || s.signupWelcomeGoldClaimed) return false;
+  if (s.signupWelcomeGoldClaimed) return false;
 
   const supabase = await getSupabaseClient();
   const {
     data: { user },
     error,
   } = await supabase.auth.getUser();
-  if (error || !user?.created_at) return false;
+  // Prefer auth session over the persisted store flag — guest saves can overwrite
+  // isUserSignedIn:false after Google OAuth return and briefly desync the UI.
+  if (error || !user?.created_at || !user.email_confirmed_at) return false;
+
+  if (!s.isUserSignedIn) {
+    useGameStore.getState().setIsUserSignedIn(true);
+  }
 
   return isAuthUserEligibleForSignupWelcomeClaim(
     user.created_at,
@@ -333,6 +339,21 @@ export async function flushPendingMarketingPreferences(): Promise<void> {
     });
     if (res.ok) {
       sessionStorage.removeItem(PENDING_MARKETING_OPT_IN_KEY);
+      // Signup checkbox opt-in should activate the email rewards social task
+      // the same way Subscribe does in SocialPromptDialog.
+      if (parsed.optIn === true) {
+        try {
+          const { markMarketingEmailFulfilled } = await import(
+            "./marketingEmailReward"
+          );
+          markMarketingEmailFulfilled();
+        } catch (e) {
+          logger.warn(
+            "[MARKETING] Failed to mark email social task fulfilled:",
+            e,
+          );
+        }
+      }
     } else {
       const errBody = await res.json().catch(() => ({}));
       logger.warn('[MARKETING] flush pending failed:', res.status, errBody);

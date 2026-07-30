@@ -15,9 +15,14 @@ import {
   getNonOverallAchievementsCompletedCount,
 } from "../nonOverallCompletion";
 import { getAchievementConfigForEdition } from "../achievementEdition";
+import {
+  CAVE_VETERAN_WINS,
+  SPEEDRUN_WIN_MAX_MS,
+} from "@/game/winAchievements";
+
+export { CAVE_VETERAN_WINS, SPEEDRUN_WIN_MAX_MS };
 
 const MS_PER_HOUR = 60 * 60 * 1000;
-export const SPEEDRUN_WIN_MAX_MS = 5 * MS_PER_HOUR;
 export const ENDURANT_HOURS = 30;
 
 function asSocialPromoSlice(state: GameState): SocialPromoExclusiveSlice {
@@ -57,6 +62,16 @@ export const overallChartConfig: AchievementChartConfig = {
         maxCount: 1,
         label: "Cruel Victory",
         getCount: (state: GameState) => (state.hasWonCruelGame ? 1 : 0),
+      },
+      {
+        segmentId: "0-caveVeteran",
+        maxCount: CAVE_VETERAN_WINS,
+        label: "Cave Veteran",
+        getCount: (state: GameState) =>
+          Math.min(
+            CAVE_VETERAN_WINS,
+            Math.max(0, Math.floor(Number(state.lifetimeGamesWon) || 0)),
+          ),
       },
       {
         segmentId: "0-speedrunner",

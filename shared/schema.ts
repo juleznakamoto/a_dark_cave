@@ -572,6 +572,11 @@ export const gameStateSchema = z.object({
   hasWonCruelGame: z.boolean().default(false),
   /** Meta: finished a game in under 5 hours. Persists across restarts. */
   hasSpeedrunWin: z.boolean().default(false),
+  /**
+   * Meta: times finished (normal or cruel). Persists across restarts.
+   * Increments once per completed run (Cave Veteran).
+   */
+  lifetimeGamesWon: z.number().min(0).default(0),
   /** Meta: total play time across all runs (ms). Persists across restarts; increments with playTime. */
   lifetimePlayTimeMs: z.number().min(0).default(0),
   /**

@@ -48,7 +48,7 @@ export default function Game() {
     if (!isLocalOnlyEdition()) {
       void import("@/lib/playlight")
         .then(({ initPlaylight }) => initPlaylight())
-        .catch(() => {});
+        .catch(() => { });
     }
     const initializeGame = async () => {
       try {
@@ -318,6 +318,14 @@ export default function Game() {
           }
 
           logger.log("[GAME] Game initialized with defaults");
+        }
+
+        // Guest/local saves persist isUserSignedIn:false. Hydrating that after
+        // OAuth (or any confirmed session) would clear the live auth flag and
+        // leave rewards Sign Up claim eligibility stuck off — re-sync from the
+        // session we already resolved above.
+        if (user) {
+          setIsUserSignedIn(true);
         }
 
         // Online entitlement/payment flows are web only. The Steam build grants
