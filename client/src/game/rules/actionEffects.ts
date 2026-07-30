@@ -256,6 +256,7 @@ export function applyActionEffects(
     "mineSulfur",
     "mineObsidian",
     "mineAdamant",
+    "mineMoonstone",
     "chopWood",
     "hunt",
   ];

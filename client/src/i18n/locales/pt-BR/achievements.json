@@ -24,6 +24,9 @@
     "1-mineIron": {
       "label": "Minerador de Ferro"
     },
+    "1-mineMoonstone": {
+      "label": "Minerador de Pedra-da-Lua"
+    },
     "1-mineObsidian": {
       "label": "Minerador de Obsidiana"
     },

@@ -583,6 +583,12 @@
       "natharitSilverVein": "A picareta de natharit revela um veio de prata! +{{amount}} {{resource}}"
     }
   },
+  "mineMoonstone": {
+    "label": "Pedra-da-Lua",
+    "log": {
+      "natharitSilverVein": "A picareta de natharit revela um veio de prata! +{{amount}} {{resource}}"
+    }
+  },
   "mineCoal": {
     "label": "Carvão",
     "log": {

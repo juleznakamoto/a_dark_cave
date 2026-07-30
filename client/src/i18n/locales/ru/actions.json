@@ -592,6 +592,12 @@
       "natharitSilverVein": "Кирка из натарита обнажает жилу серебра! +{{amount}} {{resource}}"
     }
   },
+  "mineMoonstone": {
+    "label": "Лунный камень",
+    "log": {
+      "natharitSilverVein": "Кирка из натарита обнажает жилу серебра! +{{amount}} {{resource}}"
+    }
+  },
   "mineCoal": {
     "label": "Уголь",
     "log": {

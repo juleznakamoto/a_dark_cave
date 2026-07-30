@@ -583,6 +583,12 @@
       "natharitSilverVein": "Il piccone di natharit rivela una vena d'argento! +{{amount}} {{resource}}"
     }
   },
+  "mineMoonstone": {
+    "label": "Pietra di Luna",
+    "log": {
+      "natharitSilverVein": "Il piccone di natharit rivela una vena d'argento! +{{amount}} {{resource}}"
+    }
+  },
   "mineCoal": {
     "label": "Carbone",
     "log": {

@@ -1550,6 +1550,23 @@ describe('Resource Gain Tests', () => {
       expect(minActual).toBeGreaterThanOrEqual(expectedGains.adamant.min);
       expect(maxActual).toBeLessThanOrEqual(expectedGains.adamant.max);
     });
+
+    it('mineMoonstone gains match tooltip', () => {
+      const state = createTestState({
+        buildings: { bottomlessPit: 1 },
+        tools: { adamant_pickaxe: true },
+      });
+      const { expectedGains, actualGains } = testActionGains('mineMoonstone', state);
+
+      expect(expectedGains.moonstone).toBeDefined();
+      expect(actualGains.moonstone).toBeDefined();
+
+      const minActual = Math.min(...actualGains.moonstone);
+      const maxActual = Math.max(...actualGains.moonstone);
+
+      expect(minActual).toBeGreaterThanOrEqual(expectedGains.moonstone.min);
+      expect(maxActual).toBeLessThanOrEqual(expectedGains.moonstone.max);
+    });
   });
 
   describe('Trade Actions', () => {

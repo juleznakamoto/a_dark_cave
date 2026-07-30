@@ -103,6 +103,7 @@
         "mineSulfur": "extracción de azufre",  //x1.5
         "mineObsidian": "extracción de obsidiana",  //x1.5
         "mineAdamant": "extracción de adamantio",  //x1.6
+        "mineMoonstone": "extracción de Piedra lunar",  //x1.6
         "hunt": "caza",
         "chopWood": "tala de madera",  //x1.3
         "craftTorches": "fabricación de antorchas",

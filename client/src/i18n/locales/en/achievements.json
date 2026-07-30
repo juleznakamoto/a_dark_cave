@@ -24,6 +24,9 @@
     "1-mineIron": {
       "label": "Iron Miner"
     },
+    "1-mineMoonstone": {
+      "label": "Moonstone Miner"
+    },
     "1-mineObsidian": {
       "label": "Obsidian Miner"
     },

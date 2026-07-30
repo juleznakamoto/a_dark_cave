@@ -238,6 +238,34 @@ export const caveMineActions: Record<string, Action> = {
     cooldown: 0,
     upgrade_key: "mineAdamant",
   },
+
+  mineMoonstone: {
+    id: "mineMoonstone",
+    label: "Moonstone",
+    show_when: {
+      "buildings.bottomlessPit": 1,
+    },
+    cost: {
+      "resources.food": 200,
+      "resources.torch": 20,
+    },
+    effects: (state: GameState) => {
+      const bonus = state.BTP === 1 ? 1 : 0;
+      return {
+        "resources.moonstone": `random(${1 + bonus},${3 + bonus})`,
+        "resources.silver": {
+          probability: miningBonusSilverProbability,
+          value: 50,
+          logMessageKey: "natharitSilverVein",
+          logMessageVars: { amount: 50 },
+        },
+        "story.seen.hasMoonstone": true,
+      };
+    },
+    executionTime: 35,
+    cooldown: 0,
+    upgrade_key: "mineMoonstone",
+  },
 };
 
 // Action handlers
@@ -263,4 +291,8 @@ export function handleMineObsidian(state: GameState, result: ActionResult): Acti
 
 export function handleMineAdamant(state: GameState, result: ActionResult): ActionResult {
   return handleMineAction("mineAdamant", state, result);
+}
+
+export function handleMineMoonstone(state: GameState, result: ActionResult): ActionResult {
+  return handleMineAction("mineMoonstone", state, result);
 }

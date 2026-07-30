@@ -592,6 +592,12 @@
       "natharitSilverVein": "El pico de natharit revela una veta de plata. +{{amount}} {{resource}}"
     }
   },
+  "mineMoonstone": {
+    "label": "Piedra lunar",
+    "log": {
+      "natharitSilverVein": "El pico de natharit revela una veta de plata. +{{amount}} {{resource}}"
+    }
+  },
   "mineCoal": {
     "label": "Carbón",
     "log": {

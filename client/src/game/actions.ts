@@ -199,6 +199,7 @@ import {
   handleMineSulfur,
   handleMineObsidian,
   handleMineAdamant,
+  handleMineMoonstone,
 } from "@/game/rules/caveMineActions";
 
 // Re-export for backward compatibility
@@ -531,6 +532,8 @@ export function executeGameAction(
       return handleMineObsidian(state, result);
     case "mineAdamant":
       return handleMineAdamant(state, result);
+    case "mineMoonstone":
+      return handleMineMoonstone(state, result);
 
     // Village Build Actions
     case "buildWoodenHut":

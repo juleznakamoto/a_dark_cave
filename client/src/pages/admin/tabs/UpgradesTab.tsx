@@ -108,7 +108,7 @@ export default function UpgradesTab(props: UpgradesTabProps) {
           <div className="mb-4 space-y-2">
             <div className="flex gap-2">
               <button
-                onClick={() => setSelectedMiningTypes(new Set(["mineStone", "mineIron", "mineCoal", "mineSulfur", "mineObsidian", "mineAdamant"]))}
+                onClick={() => setSelectedMiningTypes(new Set(["mineStone", "mineIron", "mineCoal", "mineSulfur", "mineObsidian", "mineAdamant", "mineMoonstone"]))}
                 className="px-3 py-1 text-sm bg-primary text-primary-foreground rounded-md hover:bg-primary/90"
               >
                 Select All
@@ -129,6 +129,7 @@ export default function UpgradesTab(props: UpgradesTabProps) {
                 { key: "mineSulfur", label: "Sulfur Mining", color: "#0088FE" },
                 { key: "mineObsidian", label: "Obsidian Mining", color: "#00C49F" },
                 { key: "mineAdamant", label: "Adamant Mining", color: "#a0522d" },
+                { key: "mineMoonstone", label: "Moonstone Mining", color: "#38bdf8" },
                 { key: "hunt", label: "Hunting", color: "#9b59b6" },
                 { key: "chopWood", label: "Woodcutting", color: "#27ae60" },
               ].map((miningType) => (
@@ -240,6 +241,16 @@ export default function UpgradesTab(props: UpgradesTabProps) {
                   strokeWidth={2}
                   dot={{ r: 3 }}
                   name="Adamant Mining"
+                />
+              )}
+              {selectedMiningTypes.has("mineMoonstone") && (
+                <Line
+                  type="monotone"
+                  dataKey="mineMoonstone"
+                  stroke="#38bdf8"
+                  strokeWidth={2}
+                  dot={{ r: 3 }}
+                  name="Moonstone Mining"
                 />
               )}
             </LineChart>

@@ -612,8 +612,9 @@ export const getAllActionBonuses = (
     mineSulfur: 7,
     mineObsidian: 8,
     mineAdamant: 9,
-    craftBoneTotems: 10,
-    craftLeatherTotems: 11,
+    mineMoonstone: 10,
+    craftBoneTotems: 11,
+    craftLeatherTotems: 12,
   };
 
   actionBonuses.sort((a, b) => {

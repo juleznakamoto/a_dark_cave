@@ -592,6 +592,12 @@
       "natharitSilverVein": "纳萨里特镐发现了银矿脉！+{{amount}} {{resource}}"
     }
   },
+  "mineMoonstone": {
+    "label": "月石",
+    "log": {
+      "natharitSilverVein": "纳萨里特镐发现了银矿脉！+{{amount}} {{resource}}"
+    }
+  },
   "mineCoal": {
     "label": "煤炭",
     "log": {

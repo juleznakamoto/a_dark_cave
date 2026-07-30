@@ -592,6 +592,12 @@
       "natharitSilverVein": "Die Natharit-Spitzhacke legt eine Silberader frei! +{{amount}} {{resource}}"
     }
   },
+  "mineMoonstone": {
+    "label": "Mondstein",
+    "log": {
+      "natharitSilverVein": "Die Natharit-Spitzhacke legt eine Silberader frei! +{{amount}} {{resource}}"
+    }
+  },
   "mineCoal": {
     "label": "Kohle",
     "log": {

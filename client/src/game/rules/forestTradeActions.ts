@@ -1,5 +1,5 @@
 import { Action, GameState } from "@shared/schema";
-import { ActionResult } from "@/game/actions";
+import type { ActionResult } from "@/game/types";
 import { applyActionEffects } from "./actionEffects";
 import {
   getMerchantGoldPricePerUnit,
@@ -26,6 +26,41 @@ function calculateForestBridgeSellGold(
 ): number {
   return roundForestSellGold(
     amount * getMerchantGoldPricePerUnit(resource) * FOREST_BRIDGE_SELL_GOLD_RATIO,
+  );
+}
+
+/** First Insight Elixir costs this much gold. */
+export const INSIGHT_ELIXIR_GOLD_BASE = 250;
+/** Ladder rises by 50 until this price. */
+export const INSIGHT_ELIXIR_GOLD_MID = 500;
+/** Ladder rises by 100 until this cap (then stays). */
+export const INSIGHT_ELIXIR_GOLD_MAX = 1000;
+export const INSIGHT_ELIXIR_STEP_TO_MID = 50;
+export const INSIGHT_ELIXIR_STEP_TO_MAX = 100;
+
+export function getInsightElixirPurchaseCount(
+  state: Pick<GameState, "story">,
+): number {
+  return Number(state.story?.seen?.insightElixirPurchases) || 0;
+}
+
+/**
+ * Gold cost for the next Insight Elixir: 250, then +50 to 500, then +100 to 1000.
+ * `insightElixirPurchases` is completed buys (0 = first drink).
+ */
+export function getInsightElixirGoldCost(
+  state: Pick<GameState, "story">,
+): number {
+  const n = getInsightElixirPurchaseCount(state);
+  const stepsToMid =
+    (INSIGHT_ELIXIR_GOLD_MID - INSIGHT_ELIXIR_GOLD_BASE) /
+    INSIGHT_ELIXIR_STEP_TO_MID;
+  if (n <= stepsToMid) {
+    return INSIGHT_ELIXIR_GOLD_BASE + INSIGHT_ELIXIR_STEP_TO_MID * n;
+  }
+  return Math.min(
+    INSIGHT_ELIXIR_GOLD_MAX,
+    INSIGHT_ELIXIR_GOLD_MID + INSIGHT_ELIXIR_STEP_TO_MAX * (n - stepsToMid),
   );
 }
 
@@ -599,19 +634,13 @@ export const forestTradeActions: Record<string, Action> = {
     id: "tradeGoldForInsightPotion",
     label: "Insight Elixir",
     show_when: {
-      1: {
-        "buildings.scriptorium": 1,
-      },
+      "buildings.scriptorium": 1,
     },
-    cost: {
-      1: {
-        "resources.gold": 250,
-      },
-    },
+    cost: (state: GameState) => ({
+      "resources.gold": getInsightElixirGoldCost(state),
+    }),
     effects: {
-      1: {
-        "resources.insight": 3000,
-      },
+      "resources.insight": 3000,
     },
   },
 };
@@ -626,6 +655,19 @@ export function handleTradeAction(
 ): ActionResult {
   const effectUpdates = applyActionEffects(actionId, state);
   Object.assign(result.stateUpdates, effectUpdates);
+
+  if (actionId === "tradeGoldForInsightPotion") {
+    const purchases = getInsightElixirPurchaseCount(state);
+    const storyBase = result.stateUpdates.story ?? state.story;
+    result.stateUpdates.story = {
+      ...storyBase,
+      seen: {
+        ...state.story.seen,
+        ...(storyBase.seen ?? {}),
+        insightElixirPurchases: purchases + 1,
+      },
+    };
+  }
 
   result.stateUpdates.cooldowns = {
     ...result.stateUpdates.cooldowns,

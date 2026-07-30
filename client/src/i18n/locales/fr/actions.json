@@ -592,6 +592,12 @@
       "natharitSilverVein": "La pioche de natharit révèle une veine d'argent ! +{{amount}} {{resource}}"
     }
   },
+  "mineMoonstone": {
+    "label": "Pierre de lune",
+    "log": {
+      "natharitSilverVein": "La pioche de natharit révèle une veine d'argent ! +{{amount}} {{resource}}"
+    }
+  },
   "mineCoal": {
     "label": "Charbon",
     "log": {

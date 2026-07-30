@@ -592,6 +592,12 @@
       "natharitSilverVein": "The natharit pickaxe reveals a vein of silver! +{{amount}} {{resource}}"
     }
   },
+  "mineMoonstone": {
+    "label": "Moonstone",
+    "log": {
+      "natharitSilverVein": "The natharit pickaxe reveals a vein of silver! +{{amount}} {{resource}}"
+    }
+  },
   "mineCoal": {
     "label": "Coal",
     "log": {

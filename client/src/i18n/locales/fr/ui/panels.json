@@ -140,6 +140,7 @@
     "mineSulfur": "Extraire du soufre", //x1.6
     "mineObsidian": "Extraire de l'obsidienne", //x1.8
     "mineAdamant": "Extraire de l'adamantine", //x2.0
+    "mineMoonstone": "Extraire de la pierre de lune", //x2.0
     "boneTotems": "Totems d'os",
     "leatherTotems": "Totems de cuir",
     "craftDiscount": "Réduction d'artisanat", //x1.5

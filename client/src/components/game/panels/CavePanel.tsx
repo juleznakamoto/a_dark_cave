@@ -105,6 +105,7 @@ export default function CavePanel() {
         { id: "mineSulfur", label: "Sulfur" },
         { id: "mineObsidian", label: "Obsidian" },
         { id: "mineAdamant", label: "Adamant" },
+        { id: "mineMoonstone", label: "Moonstone" },
       ],
     },
     {

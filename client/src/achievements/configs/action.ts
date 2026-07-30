@@ -110,6 +110,16 @@ export const actionChartConfig: AchievementChartConfig = {
           return count === 1 ? 1.8 : count;
         },
       },
+      {
+        segmentId: "1-mineMoonstone",
+        maxCount: 10,
+        label: "Moonstone Miner",
+        reward: 250,
+        getCount: (state: GameState) => {
+          const count = state.buttonUpgrades?.mineMoonstone?.level || 0;
+          return count === 1 ? 1.8 : count;
+        },
+      },
     ],
     // Third ring: Mining Actions
     [

@@ -24,6 +24,9 @@
     "1-mineIron": {
       "label": "Добытчик железа"
     },
+    "1-mineMoonstone": {
+      "label": "Добытчик лунного камня"
+    },
     "1-mineObsidian": {
       "label": "Добытчик обсидиана"
     },

@@ -853,6 +853,12 @@ export const gameStateSchema = z.object({
           level: z.number().default(0),
         })
         .default({ clicks: 0, level: 0 }),
+      mineMoonstone: z
+        .object({
+          clicks: z.number().default(0),
+          level: z.number().default(0),
+        })
+        .default({ clicks: 0, level: 0 }),
       hunt: z
         .object({
           clicks: z.number().default(0),
@@ -892,6 +898,7 @@ export const gameStateSchema = z.object({
       mineSulfur: { clicks: 0, level: 0 },
       mineObsidian: { clicks: 0, level: 0 },
       mineAdamant: { clicks: 0, level: 0 },
+      mineMoonstone: { clicks: 0, level: 0 },
       hunt: { clicks: 0, level: 0 },
       chopWood: { clicks: 0, level: 0 },
       craftTorches: { clicks: 0, level: 0 },

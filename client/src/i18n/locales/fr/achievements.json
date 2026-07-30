@@ -24,6 +24,9 @@
     "1-mineIron": {
       "label": "Mineur de fer"
     },
+    "1-mineMoonstone": {
+      "label": "Mineur de pierre de lune"
+    },
     "1-mineObsidian": {
       "label": "Mineur d'obsidienne"
     },

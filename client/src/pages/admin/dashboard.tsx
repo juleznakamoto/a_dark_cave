@@ -218,7 +218,7 @@ export default function AdminDashboard() {
 
   // State for selected mining types
   const [selectedMiningTypes, setSelectedMiningTypes] = useState<Set<string>>(
-    new Set(["caveExplore", "mineStone", "mineIron", "mineCoal", "mineSulfur", "mineObsidian", "mineAdamant", "hunt", "chopWood"]),
+    new Set(["caveExplore", "mineStone", "mineIron", "mineCoal", "mineSulfur", "mineObsidian", "mineAdamant", "mineMoonstone", "hunt", "chopWood"]),
   );
 
   // State for selected cube events
@@ -863,13 +863,13 @@ export default function AdminDashboard() {
     if (relevant.length === 0) {
       return Array.from({ length: 24 }, (_, i) => ({
         time: `${i}h`,
-        caveExplore: 0, mineStone: 0, mineIron: 0, mineCoal: 0, mineSulfur: 0, mineObsidian: 0, mineAdamant: 0, hunt: 0, chopWood: 0,
+        caveExplore: 0, mineStone: 0, mineIron: 0, mineCoal: 0, mineSulfur: 0, mineObsidian: 0, mineAdamant: 0, mineMoonstone: 0, hunt: 0, chopWood: 0,
       }));
     }
 
-    const timeMap = new Map<number, { caveExplore: number[], mineStone: number[], mineIron: number[], mineCoal: number[], mineSulfur: number[], mineObsidian: number[], mineAdamant: number[], hunt: number[], chopWood: number[] }>();
+    const timeMap = new Map<number, { caveExplore: number[], mineStone: number[], mineIron: number[], mineCoal: number[], mineSulfur: number[], mineObsidian: number[], mineAdamant: number[], mineMoonstone: number[], hunt: number[], chopWood: number[] }>();
     for (let i = 0; i < 24; i++) {
-      timeMap.set(i, { caveExplore: [], mineStone: [], mineIron: [], mineCoal: [], mineSulfur: [], mineObsidian: [], mineAdamant: [], hunt: [], chopWood: [] });
+      timeMap.set(i, { caveExplore: [], mineStone: [], mineIron: [], mineCoal: [], mineSulfur: [], mineObsidian: [], mineAdamant: [], mineMoonstone: [], hunt: [], chopWood: [] });
     }
 
     // Use game saves to get button upgrade levels at different playtimes
@@ -904,6 +904,9 @@ export default function AdminDashboard() {
         if (selectedMiningTypes.has('mineAdamant') && upgrades.mineAdamant) {
           data.mineAdamant.push(upgrades.mineAdamant.level || 0);
         }
+        if (selectedMiningTypes.has('mineMoonstone') && upgrades.mineMoonstone) {
+          data.mineMoonstone.push(upgrades.mineMoonstone.level || 0);
+        }
         if (selectedMiningTypes.has('hunt') && upgrades.hunt) {
           data.hunt.push(upgrades.hunt.level || 0);
         }
@@ -924,6 +927,7 @@ export default function AdminDashboard() {
         mineSulfur: levels.mineSulfur.length > 0 ? levels.mineSulfur.reduce((a, b) => a + b, 0) / levels.mineSulfur.length : 0,
         mineObsidian: levels.mineObsidian.length > 0 ? levels.mineObsidian.reduce((a, b) => a + b, 0) / levels.mineObsidian.length : 0,
         mineAdamant: levels.mineAdamant.length > 0 ? levels.mineAdamant.reduce((a, b) => a + b, 0) / levels.mineAdamant.length : 0,
+        mineMoonstone: levels.mineMoonstone.length > 0 ? levels.mineMoonstone.reduce((a, b) => a + b, 0) / levels.mineMoonstone.length : 0,
         hunt: levels.hunt.length > 0 ? levels.hunt.reduce((a, b) => a + b, 0) / levels.hunt.length : 0,
         chopWood: levels.chopWood.length > 0 ? levels.chopWood.reduce((a, b) => a + b, 0) / levels.chopWood.length : 0,
       };

@@ -140,6 +140,7 @@
     "mineSulfur": "Schwefel abbauen", //x1.5
     "mineObsidian": "Obsidian abbauen", //x1.2
     "mineAdamant": "Adamant abbauen", //x1.3
+    "mineMoonstone": "Mondstein abbauen", //x1.3
     "boneTotems": "Knochentotems",
     "leatherTotems": "Ledertotems",
     "craftDiscount": "Herstellungsrabatt", //x1.3

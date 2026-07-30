@@ -24,6 +24,9 @@
     "1-mineIron": {
       "label": "铁矿工"
     },
+    "1-mineMoonstone": {
+      "label": "月石矿工"
+    },
     "1-mineObsidian": {
       "label": "黑曜石矿工"
     },

@@ -113,6 +113,7 @@ const MINE_HIGHLIGHT_COLORS: Record<string, string[]> = {
   mineSulfur: [tailwindToHex("yellow-400"), tailwindToHex("amber-400")],
   mineObsidian: [tailwindToHex("violet-500"), tailwindToHex("purple-500")],
   mineAdamant: [tailwindToHex("indigo-400"), tailwindToHex("blue-400")],
+  mineMoonstone: [tailwindToHex("sky-400"), tailwindToHex("cyan-300")],
 };
 
 /** Particle count: 50 base + 10 per level, max 150 */

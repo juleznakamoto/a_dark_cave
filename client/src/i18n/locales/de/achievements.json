@@ -24,6 +24,9 @@
     "1-mineIron": {
       "label": "Eisenschürfer" //ok
     },
+    "1-mineMoonstone": {
+      "label": "Mondsteinschürfer"
+    },
     "1-mineObsidian": {
       "label": "Obsidianschürfer"
     },

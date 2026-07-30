@@ -13,6 +13,7 @@ export type UpgradeKey =
   | "mineSulfur"
   | "mineObsidian"
   | "mineAdamant"
+  | "mineMoonstone"
   | "hunt"
   | "chopWood"
   | "caveExplore"
@@ -121,7 +122,7 @@ export const CRAFT_TOTEM_UPGRADE_LEVELS: UpgradeLevel[] = [
 
 // Get the appropriate upgrade levels for a given key
 export function getUpgradeLevelsForKey(key: UpgradeKey): UpgradeLevel[] {
-  const mineKeys: UpgradeKey[] = ["mineStone", "mineIron", "mineCoal", "mineSulfur", "mineObsidian", "mineAdamant"];
+  const mineKeys: UpgradeKey[] = ["mineStone", "mineIron", "mineCoal", "mineSulfur", "mineObsidian", "mineAdamant", "mineMoonstone"];
 
   if (mineKeys.includes(key)) {
     return MINE_UPGRADE_LEVELS;
@@ -166,6 +167,7 @@ export const UPGRADE_LABELS: Record<UpgradeKey, string> = {
   mineSulfur: "Sulfur Mining",
   mineObsidian: "Obsidian Mining",
   mineAdamant: "Adamant Mining",
+  mineMoonstone: "Moonstone Mining",
   hunt: "Hunting",
   chopWood: "Woodcutting",
   caveExplore: "Cave Exploring",
@@ -191,6 +193,7 @@ export const PRIOR_ELIGIBLE_ACTIONS = new Set<string>([
   "mineSulfur",
   "mineObsidian",
   "mineAdamant",
+  "mineMoonstone",
   "craftTorches",
   "craftBoneTotems",
   "craftLeatherTotems",
@@ -251,6 +254,7 @@ export const ACTION_TO_UPGRADE_KEY: Record<string, UpgradeKey | undefined> = {
   mineSulfur: "mineSulfur",
   mineObsidian: "mineObsidian",
   mineAdamant: "mineAdamant",
+  mineMoonstone: "mineMoonstone",
   hunt: "hunt",
   chopWood: "chopWood",
   caveExplore: "caveExplore",

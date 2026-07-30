@@ -188,6 +188,7 @@ const MINE_ACTION_RESOURCE_KEY: Record<string, string> = {
   mineSulfur: "sulfur",
   mineObsidian: "obsidian",
   mineAdamant: "adamant",
+  mineMoonstone: "moonstone",
 };
 
 export function getActionLabel(actionId: string, fallback: string): string {
@@ -419,6 +420,7 @@ const BONUS_SIDEBAR_LABEL_KEYS: Record<string, string> = {
   mineSulfur: "bonuses.mineSulfur",
   mineObsidian: "bonuses.mineObsidian",
   mineAdamant: "bonuses.mineAdamant",
+  mineMoonstone: "bonuses.mineMoonstone",
   craftBoneTotems: "bonuses.boneTotems",
   craftLeatherTotems: "bonuses.leatherTotems",
 };
