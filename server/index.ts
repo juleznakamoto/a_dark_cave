@@ -789,7 +789,7 @@ app.get("/api/leaderboard/:mode", async (req, res) => {
     const completionCutoff = getLeaderboardCompletionCutoff();
     const { data, error } = await adminClient
       .from("leaderboard")
-      .select("id, username, email, play_time, completed_at")
+      .select("id, user_id, username, email, play_time, completed_at")
       .eq("cruel_mode", cruelMode)
       .gte("completed_at", completionCutoff)
       .order("play_time", { ascending: true })
@@ -804,6 +804,7 @@ app.get("/api/leaderboard/:mode", async (req, res) => {
     // Mask emails server-side
     const maskedData = (data ?? []).map((entry: any) => ({
       id: entry.id,
+      userId: entry.user_id,
       username: entry.username,
       displayName: entry.username || maskEmail(entry.email),
       play_time: entry.play_time,

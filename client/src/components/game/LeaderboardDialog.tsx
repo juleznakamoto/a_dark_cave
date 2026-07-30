@@ -22,6 +22,7 @@ const isDev = import.meta.env.DEV;
 
 interface LeaderboardEntry {
   id: string;
+  userId?: string;
   displayName: string;
   play_time: number;
   completed_at: string;
@@ -37,6 +38,8 @@ interface LeaderboardTabProps {
   loading: boolean;
   lastUpdated: string | null;
   tabId: string;
+  currentUserId?: string | null;
+  currentUsername?: string;
 }
 
 const formatTime = (ms: number) => {
@@ -46,7 +49,14 @@ const formatTime = (ms: number) => {
   return `${hours.toString().padStart(2, "0")}:${minutes.toString().padStart(2, "0")}`;
 };
 
-function LeaderboardTab({ entries, loading, lastUpdated, tabId }: LeaderboardTabProps) {
+function LeaderboardTab({
+  entries,
+  loading,
+  lastUpdated,
+  tabId,
+  currentUserId,
+  currentUsername,
+}: LeaderboardTabProps) {
   const { t } = useTranslation(["ui", "common"]);
 
   const getCrown = (index: number) => {
@@ -82,6 +92,11 @@ function LeaderboardTab({ entries, loading, lastUpdated, tabId }: LeaderboardTab
           ) : (
             entries.map((entry, index) => {
               const crown = getCrown(index);
+              const isOwnEntry =
+                (!!currentUserId && entry.userId === currentUserId) ||
+                (!!currentUsername &&
+                  entry.displayName.toLowerCase() ===
+                  currentUsername.toLowerCase());
               return (
                 <div
                   key={entry.id}
@@ -93,7 +108,11 @@ function LeaderboardTab({ entries, loading, lastUpdated, tabId }: LeaderboardTab
                     >
                       {crown ? crown.symbol : index + 1}
                     </span>
-                    <span className="font-sm">{entry.displayName}</span>
+                    <span
+                      className={`font-sm ${isOwnEntry ? "text-green-500" : ""}`}
+                    >
+                      {entry.displayName}
+                    </span>
                   </div>
                   <span className="text-muted-foreground">
                     {formatTime(entry.play_time)}
@@ -135,11 +154,13 @@ export default function LeaderboardDialog({
   const [tempUsername, setTempUsername] = useState(username || "");
   const [lastUpdated, setLastUpdated] = useState<string | null>(null);
   const [useDevStats, setUseDevStats] = useState(false);
+  const [currentUserId, setCurrentUserId] = useState<string | null>(null);
   const { toast } = useToast();
 
   useEffect(() => {
     if (isOpen) {
       fetchLeaderboards();
+      getCurrentUser().then((user) => setCurrentUserId(user?.id ?? null));
     }
   }, [isOpen, useDevStats]);
 
@@ -378,6 +399,8 @@ export default function LeaderboardDialog({
               loading={loading}
               lastUpdated={lastUpdated}
               tabId="normal"
+              currentUserId={currentUserId}
+              currentUsername={username}
             />
           </TabsContent>
           <TabsContent value="cruel" className="flex-1 min-h-0 flex flex-col overflow-hidden data-[state=inactive]:hidden">
@@ -386,6 +409,8 @@ export default function LeaderboardDialog({
               loading={loading}
               lastUpdated={lastUpdated}
               tabId="cruel"
+              currentUserId={currentUserId}
+              currentUsername={username}
             />
           </TabsContent>
         </Tabs>
