@@ -814,7 +814,7 @@ export default function TimedEventPanel() {
               collectorSellChoices,
             )}
             {collectorNothingChoice && (
-              <div className="pt-3">
+              <div className="!mt-4">
                 <Button
                   onClick={(e) => {
                     e.stopPropagation();
