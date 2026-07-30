@@ -7,6 +7,9 @@ import { useCoinHoverParticles } from "@/components/ui/coin-hover-particles";
 import { TRADER_TAB_PARTICLE_CONFIG } from "@/components/ui/bubbly-button.particles";
 import { useGameStore } from "@/game/state";
 import {
+  LIME_ACCENT_BORDER_GLOW,
+  LIME_ACCENT_BORDER_GLOW_HOVER,
+  LIME_ACCENT_BORDER_IDLE,
   LIME_ACCENT_GLOW_TEXT_SHADOW_ACTIVE,
   LIME_ACCENT_GLOW_TEXT_SHADOW_HOVER,
   LIME_ACCENT_ICON_IDLE,
@@ -89,15 +92,17 @@ export function TraderTabButton({
       >
         <span
           className={cn(
-            "inline-flex items-center gap-1.5 rounded border border-lime-500/60 px-1.5 py-0.5 transition-colors",
-            "group-hover:border-lime-500 group-focus-visible:border-lime-500",
-            showActiveGlow && "border-lime-500",
+            // Hug label baseline so the chip lines up with Cave/City/… tabs (items-end + pb-2).
+            "inline-flex items-center gap-1 rounded-sm px-1 py-px leading-none",
+            LIME_ACCENT_BORDER_IDLE,
+            LIME_ACCENT_BORDER_GLOW_HOVER,
+            showActiveGlow && LIME_ACCENT_BORDER_GLOW,
           )}
         >
           <span
             ref={iconRef}
             className={cn(
-              "font-noto-symbols-2 text-[19px] leading-none text-lime-500 translate-y-[4px]",
+              "font-noto-symbols-2 text-[15px] leading-none text-lime-500",
               LIME_ACCENT_ICON_IDLE,
               showActiveGlow
                 ? cn("opacity-100", LIME_ACCENT_GLOW_TEXT_SHADOW_ACTIVE)
