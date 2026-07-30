@@ -7,7 +7,7 @@ export const HARD_RELOAD_CACHE_BUST_PARAM = "_cb";
 /** Set before navigation; cleared on the next boot to run cache cleanup after load. */
 export const HARD_RELOAD_PENDING_KEY = "adc_hard_reload_pending";
 
-/** Guards the one automatic module-load retry in index.html. */
+/** Guards the one automatic module-load retry in public/boot.js. */
 export const MODULE_LOAD_RETRY_KEY = "adc_module_load_retry";
 
 const DYNAMIC_IMPORT_FAIL_RE =
@@ -92,7 +92,7 @@ export function installStaleChunkAutoReload(): void {
 
 /**
  * Remove the cache-bust query param from the address bar.
- * Safe to call synchronously on every boot (also runs inline in index.html).
+ * Safe to call synchronously on every boot (also runs in public/boot.js).
  */
 export function stripHardReloadCacheBustParam(): boolean {
   try {
@@ -132,7 +132,7 @@ export async function purgeStaleAppCaches(): Promise<void> {
 }
 
 /**
- * Run once at app startup (after index.html inline bootstrap).
+ * Run once at app startup (after public/boot.js deferred bootstrap).
  * Defers cache/SW cleanup until after the fresh bundle has loaded.
  */
 export function bootstrapAfterHardReload(): void {

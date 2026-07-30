@@ -6,6 +6,7 @@ import fs from "fs";
 import { spawn, spawnSync } from "child_process";
 import { fileURLToPath } from "url";
 import { setupVite, serveStatic, log, getRecentLogs, type LogLevel } from "./vite";
+import { securityHeadersMiddleware } from "./securityHeaders";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -118,6 +119,9 @@ const app = express();
 // CRITICAL: Enable trust proxy for accurate rate limiting behind reverse proxy
 app.set('trust proxy', 1);
 
+// Phase A browser safety headers (nosniff, frame deny, referrer policy)
+app.use(securityHeadersMiddleware);
+
 // Rate limiting configurations (defined before routes; JSON parser registered after webhook)
 const generalLimiter = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 minutes
@@ -197,6 +201,12 @@ app.use((req, res, next) => {
   // Cache hashed assets from Vite build for 1 year
   if (req.path.startsWith('/assets/')) {
     res.set('Cache-Control', 'public, max-age=31536000, immutable');
+  }
+  // Boot helper must stay fresh across deploys (referenced without a content hash)
+  else if (req.path === '/boot.js') {
+    res.set('Cache-Control', 'no-cache, no-store, must-revalidate');
+    res.set('Pragma', 'no-cache');
+    res.set('Expires', '0');
   }
   // Cache audio files for 1 month
   else if (req.path.startsWith('/sounds/')) {

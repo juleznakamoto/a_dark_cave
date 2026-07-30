@@ -73,6 +73,10 @@ describe("publicSeo", () => {
     expect(html).not.toContain('"@type":"WebPage"');
   });
 
+  it("keeps home meta description within search snippet length", () => {
+    expect(HOME_SEO.description.length).toBeLessThanOrEqual(160);
+  });
+
   it("customizes 404 metadata", () => {
     const html = customizeSpaIndexHtml(SAMPLE_HTML, "/missing", {
       notFound: true,

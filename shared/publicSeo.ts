@@ -4,8 +4,9 @@ export const SITE_ORIGIN = "https://a-dark-cave.com";
 
 export const HOME_SEO = {
   title: "A Dark Cave - Survive the Darkness, Build Your Settlement",
+  /** Keep ≤160 chars so search snippets are not truncated mid-sentence. */
   description:
-    "A text-based survival and settlement building game. Start with nothing, explore an ancient cave and build your way to survival. Gather resources, craft tools, manage villagers, and uncover dark secrets.",
+    "A text-based survival game. Light a fire in an ancient cave, gather resources, build a settlement, and uncover dark secrets. Free in your browser.",
 } as const;
 
 export type PublicRouteSeo = {

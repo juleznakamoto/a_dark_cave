@@ -151,7 +151,8 @@ export function serveStatic(app: Express) {
         maxAge: "1y",
         immutable: true,
         setHeaders: (res, filepath) => {
-          if (filepath.endsWith("index.html")) {
+          // index.html and boot.js must not be cached forever — they change across deploys.
+          if (filepath.endsWith("index.html") || filepath.endsWith(`${path.sep}boot.js`) || filepath.endsWith("/boot.js")) {
             res.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
             res.setHeader("Pragma", "no-cache");
             res.setHeader("Expires", "0");
