@@ -9,9 +9,12 @@ export const GAME_PARTICLE_LAYER_ID = "adc-game-particle-layer";
 export const GAME_PANEL_HEADER_BAND =
   "inline-flex h-9 items-end pb-2 text-sm leading-none";
 
-/** Insight unlock blobs in game-panel section headers (Build/Craft, queue slot unlock). */
+/**
+ * Insight unlock blobs + construction/preset slot chrome in panel headers.
+ * Sized in CSS so Large text (`--adc-control-scale`) grows them slightly.
+ */
 export const GAME_PANEL_HEADER_INSIGHT_BADGE_CLASS =
-  "h-[18px] w-[18px] min-h-0 shrink-0";
+  "game-panel-header-slot min-h-0 shrink-0";
 
 /** 18px circular progress indicators next to section titles (Produce effects, Focus timer). */
 export const GAME_PANEL_HEADER_INDICATOR_CLASS =

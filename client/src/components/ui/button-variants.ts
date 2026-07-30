@@ -17,12 +17,14 @@ export const buttonVariants = cva(
         link: "text-primary underline-offset-4 hover:underline",
       },
       size: {
-        // Heights/padding use --adc-control-scale (see index.css .adc-btn-size-*).
-        // Call sites that force fixed h-* (header icon chrome, claim chips) stay unscaled.
-        default: "adc-btn-size-default",
-        xs: "adc-btn-size-xs rounded-md",
-        sm: "adc-btn-size-sm rounded-md",
-        lg: "adc-btn-size-lg rounded-md",
+        // Heights use --adc-control-scale (see index.css .adc-btn-size-*).
+        // Padding stays as Tailwind px-* so it beats preflight `button { padding: 0 }`
+        // (scaled padding inside :where() has 0 specificity and was dropped).
+        // Call sites that force fixed h-* / p-0 (header icon chrome) still win via twMerge.
+        default: "adc-btn-size-default px-4 py-2",
+        xs: "adc-btn-size-xs rounded-md px-2",
+        sm: "adc-btn-size-sm rounded-md px-3",
+        lg: "adc-btn-size-lg rounded-md px-8",
         icon: "adc-btn-size-icon",
       },
     },

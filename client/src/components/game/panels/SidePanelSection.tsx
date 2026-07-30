@@ -12,6 +12,7 @@ import {
 import {
   BuildingActionBadge,
   getInsightBadgeTriggerClassName,
+  INSIGHT_BADGE_SIDE_PANEL_SIZE_CLASS,
   INSIGHT_BADGE_TOOLTIP_TRIGGER_CLASS,
 } from "@/components/game/BuildingActionBadge";
 import { TooltipWrapper } from "@/components/game/TooltipWrapper";
@@ -409,7 +410,8 @@ function BuildingCapUpgradeBadge({ buildingKey }: { buildingKey: string }) {
           suppressHover,
           className: cn(
             pulseClassName,
-            "h-[1em] w-[1em] text-[14px] leading-none",
+            INSIGHT_BADGE_SIDE_PANEL_SIZE_CLASS,
+            "leading-none",
           ),
         })}
       >
@@ -521,7 +523,8 @@ function WeaponEnchantBadge({ weaponId }: { weaponId: string }) {
           suppressHover,
           className: cn(
             pulseClassName,
-            "h-[1em] w-[1em] text-[14px] leading-none",
+            INSIGHT_BADGE_SIDE_PANEL_SIZE_CLASS,
+            "leading-none",
           ),
         })}
       >

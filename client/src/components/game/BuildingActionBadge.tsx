@@ -8,6 +8,12 @@ export const INSIGHT_BADGE_TOOLTIP_TRIGGER_CLASS =
 /** Fills a fixed-size overlay host (action-button corner badges). */
 export const INSIGHT_BADGE_TOOLTIP_TRIGGER_OVERLAY_CLASS =
   "flex h-full w-full items-center leading-none";
+/**
+ * Side-panel row badges (cap upgrade, enchant). Sized in CSS so Large text
+ * (`--adc-control-scale`) grows the hit target + embedded animation together.
+ */
+export const INSIGHT_BADGE_SIDE_PANEL_SIZE_CLASS =
+  "insight-action-badge-trigger--side-panel";
 
 /** Shared insight badge button: single-layer opacity (no nested badge opacity). */
 export function getInsightBadgeTriggerClassName({
@@ -22,7 +28,8 @@ export function getInsightBadgeTriggerClassName({
   className?: string;
 }) {
   return cn(
-    "insight-action-badge-trigger relative inline-flex shrink-0 items-center justify-center overflow-hidden border-0 bg-transparent p-0 leading-none min-h-0 min-w-0 appearance-none [-webkit-appearance:none] outline-none transition-opacity duration-200 enabled:cursor-pointer disabled:cursor-default",
+    // overflow-visible: new-item-pulse / glyph drop-shadow / blob blur must not clip
+    "insight-action-badge-trigger relative inline-flex shrink-0 items-center justify-center overflow-visible border-0 bg-transparent p-0 leading-none min-h-0 min-w-0 appearance-none [-webkit-appearance:none] outline-none transition-opacity duration-200 enabled:cursor-pointer disabled:cursor-default",
     className,
     playing && "insight-action-badge-trigger--playing opacity-100",
     !playing &&

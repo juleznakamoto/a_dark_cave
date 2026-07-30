@@ -91,49 +91,62 @@ body {
   /*
    * Readable UI text scales with Settings → Text size (Large).
    * Pixel-fixed symbol overlays are excluded — they keep arbitrary text-[Npx].
+   * Line-heights use the same scale so wrapped copy keeps (and grows) spacing
+   * instead of staying on a fixed rem and getting cramped.
    */
   .text-3xs {
     font-size: calc(0.5625rem * var(--adc-text-scale, 1));
+    line-height: 1;
   }
 
   .text-2xs {
     font-size: calc(0.625rem * var(--adc-text-scale, 1));
+    line-height: 1;
   }
 
   .text-xxs {
     font-size: calc(0.6875rem * var(--adc-text-scale, 1));
+    line-height: 1;
   }
 
   .text-xs-plus {
     font-size: calc(0.8125rem * var(--adc-text-scale, 1));
+    line-height: 1;
   }
 
   .text-xs {
     font-size: calc(0.75rem * var(--adc-text-scale, 1));
+    line-height: calc(1rem * var(--adc-text-scale, 1));
   }
 
   .text-sm {
     font-size: calc(0.875rem * var(--adc-text-scale, 1));
+    line-height: calc(1.25rem * var(--adc-text-scale, 1));
   }
 
   .text-base {
     font-size: calc(1rem * var(--adc-text-scale, 1));
+    line-height: calc(1.5rem * var(--adc-text-scale, 1));
   }
 
   .text-lg {
     font-size: calc(1.125rem * var(--adc-text-scale, 1));
+    line-height: calc(1.75rem * var(--adc-text-scale, 1));
   }
 
   .text-xl {
     font-size: calc(1.25rem * var(--adc-text-scale, 1));
+    line-height: calc(1.75rem * var(--adc-text-scale, 1));
   }
 
   .text-2xl {
     font-size: calc(1.5rem * var(--adc-text-scale, 1));
+    line-height: calc(2rem * var(--adc-text-scale, 1));
   }
 
   .text-3xl {
     font-size: calc(1.875rem * var(--adc-text-scale, 1));
+    line-height: calc(2.25rem * var(--adc-text-scale, 1));
   }
 
   .adc-counter-text {
@@ -143,34 +156,26 @@ body {
   }
 
   /*
-   * Button size chrome scales with Settings → Text size (Large), but using
+   * Button height/width scales with Settings → Text size (Large) via
    * --adc-control-scale (milder than text). Wrapped in :where() so fixed
    * h-* / w-* overrides (header icon chrome, claim chips) still win.
+   * Horizontal padding stays on the CVA size classes (px-*) — putting it in
+   * :where() loses to Tailwind preflight `button { padding: 0 }` (0 specificity).
    */
   :where(.adc-btn-size-xs) {
     height: calc(1.75rem * var(--adc-control-scale, 1));
-    padding-left: calc(0.5rem * var(--adc-control-scale, 1));
-    padding-right: calc(0.5rem * var(--adc-control-scale, 1));
   }
 
   :where(.adc-btn-size-sm) {
     height: calc(2.25rem * var(--adc-control-scale, 1));
-    padding-left: calc(0.75rem * var(--adc-control-scale, 1));
-    padding-right: calc(0.75rem * var(--adc-control-scale, 1));
   }
 
   :where(.adc-btn-size-default) {
     height: calc(2.5rem * var(--adc-control-scale, 1));
-    padding-left: calc(1rem * var(--adc-control-scale, 1));
-    padding-right: calc(1rem * var(--adc-control-scale, 1));
-    padding-top: calc(0.5rem * var(--adc-control-scale, 1));
-    padding-bottom: calc(0.5rem * var(--adc-control-scale, 1));
   }
 
   :where(.adc-btn-size-lg) {
     height: calc(2.75rem * var(--adc-control-scale, 1));
-    padding-left: calc(2rem * var(--adc-control-scale, 1));
-    padding-right: calc(2rem * var(--adc-control-scale, 1));
   }
 
   :where(.adc-btn-size-icon) {
@@ -329,13 +334,26 @@ body {
 }
 
 .building-action-badge--sm {
-  width: 16px;
-  height: 16px;
+  width: calc(16px * var(--adc-control-scale, 1));
+  height: calc(16px * var(--adc-control-scale, 1));
 }
 
 .building-action-badge--lg {
   width: 20px;
   height: 20px;
+}
+
+/* Side-panel insight hit target; scales with Settings → Large text. */
+.insight-action-badge-trigger--side-panel {
+  width: calc(14px * var(--adc-control-scale, 1));
+  height: calc(14px * var(--adc-control-scale, 1));
+  font-size: calc(14px * var(--adc-control-scale, 1));
+}
+
+/* Village header slots (construction queue, job presets, insight unlocks). */
+.game-panel-header-slot {
+  width: calc(18px * var(--adc-control-scale, 1));
+  height: calc(18px * var(--adc-control-scale, 1));
 }
 
 /* Fills the trigger hit target without participating in flex layout (avoids
@@ -386,7 +404,7 @@ body {
 }
 
 .building-action-badge--sm .building-action-badge__glyph {
-  font-size: 14px;
+  font-size: calc(14px * var(--adc-control-scale, 1));
 }
 
 .building-action-badge--lg .building-action-badge__glyph {
