@@ -2424,7 +2424,7 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
                                                 item.id,
                                             ))
                                         }
-                                        className="relative z-10 h-10 w-full"
+                                        className="relative z-10 w-full"
                                         button_id={`shop-purchase-${item.id}`}
                                       >
                                         {item.price === 0 &&

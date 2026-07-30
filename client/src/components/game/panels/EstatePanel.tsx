@@ -512,10 +512,7 @@ export default function EstatePanel() {
                 disabled={!canActivateIdle}
                 size="xs"
                 variant="outline"
-                className={cn(
-                  "h-7",
-                  gameActionOutlineButtonClassName(!canActivateIdle),
-                )}
+                className={gameActionOutlineButtonClassName(!canActivateIdle)}
                 button_id="activate-sleep-mode"
               >
                 {t("estate.sleep")}
@@ -542,7 +539,7 @@ export default function EstatePanel() {
                 cooldownMs={0}
                 size="xs"
                 variant="outline"
-                className="h-7 focus-glow-hover"
+                className="focus-glow-hover"
                 button_id="activate-focus"
                 disabled={!focusState?.points || focusState.points === 0 || focusState?.isActive}
                 tooltip={

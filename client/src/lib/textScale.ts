@@ -9,6 +9,12 @@ export const DEFAULT_TEXT_SCALE: TextScale = "normal";
 /** Readable UI text multiplier when Large is selected (symbols stay px-fixed). */
 export const LARGE_TEXT_SCALE_FACTOR = 1.125;
 
+/**
+ * Milder multiplier for button chrome (height/padding) when Large is selected.
+ * Kept below text scale so labeled actions breathe without blowing up header/footer layout.
+ */
+export const LARGE_CONTROL_SCALE_FACTOR = 1.06;
+
 export const TEXT_SCALE_CHANGE_EVENT = "adc-text-scale-change";
 
 export function isTextScale(value: string): value is TextScale {
@@ -24,6 +30,10 @@ export function normalizeTextScale(
 
 export function getTextScaleFactor(scale: TextScale): number {
   return scale === "large" ? LARGE_TEXT_SCALE_FACTOR : 1;
+}
+
+export function getControlScaleFactor(scale: TextScale): number {
+  return scale === "large" ? LARGE_CONTROL_SCALE_FACTOR : 1;
 }
 
 export function getStoredTextScale(): TextScale {
@@ -47,8 +57,11 @@ export function setStoredTextScale(scale: TextScale): void {
 export function applyTextScaleToDocument(scale: TextScale): void {
   if (typeof document === "undefined") return;
   const root = document.documentElement;
-  const factor = getTextScaleFactor(scale);
-  root.style.setProperty("--adc-text-scale", String(factor));
+  root.style.setProperty("--adc-text-scale", String(getTextScaleFactor(scale)));
+  root.style.setProperty(
+    "--adc-control-scale",
+    String(getControlScaleFactor(scale)),
+  );
   root.classList.toggle("adc-text-large", scale === "large");
   window.dispatchEvent(
     new CustomEvent(TEXT_SCALE_CHANGE_EVENT, { detail: { scale } }),

@@ -2,9 +2,11 @@
 import { describe, expect, it, beforeEach, afterEach } from "vitest";
 import {
   DEFAULT_TEXT_SCALE,
+  LARGE_CONTROL_SCALE_FACTOR,
   LARGE_TEXT_SCALE_FACTOR,
   TEXT_SCALE_STORAGE_KEY,
   applyTextScaleToDocument,
+  getControlScaleFactor,
   getStoredTextScale,
   getTextScaleFactor,
   normalizeTextScale,
@@ -17,12 +19,14 @@ describe("textScale", () => {
     localStorage.clear();
     document.documentElement.classList.remove("adc-text-large");
     document.documentElement.style.removeProperty("--adc-text-scale");
+    document.documentElement.style.removeProperty("--adc-control-scale");
   });
 
   afterEach(() => {
     localStorage.clear();
     document.documentElement.classList.remove("adc-text-large");
     document.documentElement.style.removeProperty("--adc-text-scale");
+    document.documentElement.style.removeProperty("--adc-control-scale");
   });
 
   it("normalizes invalid stored values to normal", () => {
@@ -36,7 +40,7 @@ describe("textScale", () => {
     expect(getStoredTextScale()).toBe("large");
   });
 
-  it("applies CSS variable and html class for large", () => {
+  it("applies CSS variables and html class for large", () => {
     applyTextScaleToDocument("large");
     expect(document.documentElement.classList.contains("adc-text-large")).toBe(
       true,
@@ -44,12 +48,16 @@ describe("textScale", () => {
     expect(
       document.documentElement.style.getPropertyValue("--adc-text-scale"),
     ).toBe(String(LARGE_TEXT_SCALE_FACTOR));
+    expect(
+      document.documentElement.style.getPropertyValue("--adc-control-scale"),
+    ).toBe(String(LARGE_CONTROL_SCALE_FACTOR));
   });
 
   it("setTextScale updates storage and document", () => {
     setTextScale("large");
     expect(getStoredTextScale()).toBe("large");
     expect(getTextScaleFactor("large")).toBe(LARGE_TEXT_SCALE_FACTOR);
+    expect(getControlScaleFactor("large")).toBe(LARGE_CONTROL_SCALE_FACTOR);
 
     setTextScale("normal");
     expect(getStoredTextScale()).toBe("normal");
@@ -58,6 +66,9 @@ describe("textScale", () => {
     );
     expect(
       document.documentElement.style.getPropertyValue("--adc-text-scale"),
+    ).toBe("1");
+    expect(
+      document.documentElement.style.getPropertyValue("--adc-control-scale"),
     ).toBe("1");
   });
 });

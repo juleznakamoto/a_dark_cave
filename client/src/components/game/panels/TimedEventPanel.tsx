@@ -551,7 +551,7 @@ export default function TimedEventPanel() {
         aria-disabled={isDisabled || undefined}
         button_id={showGoldShopBadge ? undefined : `timedevent-${choice.id}`}
         className={cn(
-          "h-auto min-h-7 w-fit max-w-full gap-2 py-1 text-left justify-start whitespace-normal",
+          "h-auto adc-btn-min-h-xs w-fit max-w-full gap-2 py-1 text-left justify-start whitespace-normal",
           isDisabled && !showGoldShopBadge && "pointer-events-none",
           gameActionOutlineButtonClassName(isDisabled),
         )}
