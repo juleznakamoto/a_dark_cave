@@ -45,11 +45,11 @@ export function RestartGameDialog({
           </DialogDescription>
         </DialogHeader>
 
-        <DialogFooter className="flex gap-2 sm:gap-2">
+        <DialogFooter className="grid w-full grid-cols-2 gap-2 sm:space-x-0">
           <Button
             onClick={onClose}
             variant="outline"
-            className="flex-1"
+            className="w-full"
             button_id="restart-cancel"
           >
             {t("restart.cancel")}
@@ -57,7 +57,7 @@ export function RestartGameDialog({
           <Button
             onClick={onConfirm}
             variant="destructive"
-            className="flex-1"
+            className="w-full"
             button_id="restart-confirm"
           >
             {t("restart.confirm")}
