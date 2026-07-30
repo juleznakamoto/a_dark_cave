@@ -20,10 +20,10 @@ export const GAME_PANEL_HEADER_INSIGHT_BADGE_CLASS =
 
 /**
  * Circular progress indicators next to section titles (Produce effects, Focus).
- * Box is 22px × `--adc-control-scale` (see `.game-panel-header-indicator` in CSS).
+ * Normal: 18px. Large text: 22px (see `.game-panel-header-indicator` in CSS).
  * Pair with `CircularProgress fill` + `GAME_PANEL_HEADER_INDICATOR_GLYPH_CLASS`.
  */
-export const GAME_PANEL_HEADER_INDICATOR_SIZE_PX = 22;
+export const GAME_PANEL_HEADER_INDICATOR_SIZE_PX = 18;
 
 export const GAME_PANEL_HEADER_INDICATOR_CLASS =
   "game-panel-header-indicator inline-flex shrink-0 items-center justify-center self-center cursor-pointer rounded-full opacity-80 transition-opacity duration-150 hover:opacity-100";

@@ -389,27 +389,48 @@ body {
   height: calc(18px * var(--adc-control-scale, 1));
 }
 
-/* Produce / Focus circular indicators (22px base; grows with Large text). */
+/* Produce / Focus circular indicators — 18px normal, 22px in Large text only. */
 .game-panel-header-indicator {
-  width: calc(22px * var(--adc-control-scale, 1));
-  height: calc(22px * var(--adc-control-scale, 1));
+  width: 18px;
+  height: 18px;
+}
+
+html.adc-text-large .game-panel-header-indicator {
+  width: 22px;
+  height: 22px;
 }
 
 .game-panel-header-indicator-glyph {
-  font-size: calc(13px * var(--adc-control-scale, 1));
+  font-size: 12px;
 }
 
 .game-panel-header-indicator-glyph--sm {
-  font-size: calc(11px * var(--adc-control-scale, 1));
+  font-size: 10px;
 }
 
 .game-panel-header-indicator-glyph--xs {
-  font-size: calc(9px * var(--adc-control-scale, 1));
+  font-size: 7px;
+}
+
+html.adc-text-large .game-panel-header-indicator-glyph {
+  font-size: 15px;
+}
+
+html.adc-text-large .game-panel-header-indicator-glyph--sm {
+  font-size: 12px;
+}
+
+html.adc-text-large .game-panel-header-indicator-glyph--xs {
+  font-size: 9px;
 }
 
 /* Estate "Rest" title row — matches indicator height so Sleep/Focus don't jump. */
 .game-panel-header-indicator-row {
-  height: calc(22px * var(--adc-control-scale, 1));
+  height: 18px;
+}
+
+html.adc-text-large .game-panel-header-indicator-row {
+  height: 22px;
 }
 
 /* Profile header accent mask icons (rewards / exclusive) inside w-7 buttons. */

@@ -547,27 +547,27 @@ export default function VillagePanel() {
     > = {
       1: {
         symbol: "·",
-        textSize: "text-[18px]",
+        textSize: "text-[16px]",
         fontWeight: 800,
       },
       2: {
         symbol: ":",
-        textSize: "text-[14px]",
+        textSize: "text-[12px]",
         fontWeight: 800,
       },
       3: {
         symbol: "∴",
-        textSize: "text-[14px]",
+        textSize: "text-[12px]",
         fontWeight: 900,
       },
       4: {
         symbol: "⁘",
-        textSize: "text-[18px]",
+        textSize: "text-[16px]",
         fontWeight: 700,
       },
       5: {
         symbol: "⁙",
-        textSize: "text-[16px]",
+        textSize: "text-[14px]",
         fontWeight: 700,
       },
     };
