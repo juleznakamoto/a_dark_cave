@@ -129,6 +129,9 @@ import { GREAT_FEAST_DURATION_MS } from "@shared/shopItems";
 import { useNewItemPulseTooltips } from "@/hooks/useNewItemPulseTooltip";
 import {
   GAME_PANEL_HEADER_INDICATOR_CLASS,
+  GAME_PANEL_HEADER_INDICATOR_GLYPH_CLASS,
+  GAME_PANEL_HEADER_INDICATOR_INNER_CLASS,
+  GAME_PANEL_HEADER_INDICATOR_SIZE_PX,
   GAME_PANEL_HEADER_INDICATOR_TRIGGER_CLASS,
   GAME_PANEL_HEADER_INSIGHT_BADGE_CLASS,
 } from "@/components/game/gameChrome";
@@ -152,10 +155,10 @@ const HEADER_SLOT_INSIGHT_BUTTON_CLASS = HEADER_SLOT_SIZE_CLASS;
 const HEADER_SLOT_BUTTON_CLASS = `${HEADER_SLOT_SIZE_CLASS} p-0 pointer-events-none inline-flex items-center justify-center leading-none transition-colors appearance-none [-webkit-appearance:none]`;
 
 /** − / count / + / cap columns — shared by summary, stat, and job rows. */
-const VILLAGER_COUNT_BUTTON_SIZE_CLASS = "h-[18px] w-[18px]";
+const VILLAGER_COUNT_BUTTON_SIZE_CLASS = "villager-count-button";
 const VILLAGER_COUNT_ROW_CLASS = "flex min-w-0 items-center";
 const VILLAGER_COUNT_CONTROL_GRID_CLASS =
-  "grid shrink-0 grid-cols-[18px_3.5ch_18px_4.5ch] items-center";
+  "grid shrink-0 grid-cols-[auto_3.5ch_auto_4.5ch] items-center";
 const VILLAGER_COUNT_BUTTON_CLASS = cn(
   VILLAGER_COUNT_BUTTON_SIZE_CLASS,
   "min-h-0 shrink-0 p-0 inline-flex items-center justify-center leading-none font-normal appearance-none [-webkit-appearance:none] disabled:opacity-100",
@@ -538,39 +541,33 @@ export default function VillagePanel() {
       number,
       {
         symbol: string;
-        marginTop: string;
         textSize: string;
         fontWeight?: number;
       }
     > = {
       1: {
         symbol: "·",
-        marginTop: "3px",
-        textSize: "text-[16px]",
+        textSize: "text-[18px]",
         fontWeight: 800,
       },
       2: {
         symbol: ":",
-        marginTop: "1px",
-        textSize: "text-[12px]",
+        textSize: "text-[14px]",
         fontWeight: 800,
       },
       3: {
         symbol: "∴",
-        marginTop: "1px",
-        textSize: "text-[12px]",
+        textSize: "text-[14px]",
         fontWeight: 900,
       },
       4: {
         symbol: "⁘",
-        marginTop: "0px",
-        textSize: "text-[16px]",
+        textSize: "text-[18px]",
         fontWeight: 700,
       },
       5: {
         symbol: "⁙",
-        marginTop: "0px",
-        textSize: "text-[14px]",
+        textSize: "text-[16px]",
         fontWeight: 700,
       },
     };
@@ -581,10 +578,7 @@ export default function VillagePanel() {
     return (
       <span
         className={entry.textSize}
-        style={{
-          marginTop: entry.marginTop,
-          fontWeight: entry.fontWeight,
-        }}
+        style={{ fontWeight: entry.fontWeight }}
       >
         {entry.symbol}
       </span>
@@ -618,15 +612,15 @@ export default function VillagePanel() {
       });
       const investPlayTimeCooldown = active
         ? {
-            startPlayTime: active.startPlayTime,
-            endPlayTime: active.endPlayTime,
-            mode: "progress" as const,
-          }
+          startPlayTime: active.startPlayTime,
+          endPlayTime: active.endPlayTime,
+          mode: "progress" as const,
+        }
         : nextWave > 0 && currentPlayTime < nextWave
           ? {
-              startPlayTime: nextWave - getInvestmentWaveGapMs(),
-              endPlayTime: nextWave,
-            }
+            startPlayTime: nextWave - getInvestmentWaveGapMs(),
+            endPlayTime: nextWave,
+          }
           : null;
       const tooltipContent = !investReady ? (
         active ? (
@@ -700,9 +694,9 @@ export default function VillagePanel() {
       const merchantPlayTimeCooldown =
         isOnCooldown && callMerchantLastEndPlayTime != null
           ? {
-              startPlayTime: callMerchantLastEndPlayTime,
-              endPlayTime: cooldownEndPlayTime,
-            }
+            startPlayTime: callMerchantLastEndPlayTime,
+            endPlayTime: cooldownEndPlayTime,
+          }
           : null;
       const canAfford = (resources?.gold ?? 0) >= price;
       const isDisabled =
@@ -1333,34 +1327,34 @@ export default function VillagePanel() {
                                   <div className="text-xs">
                                     {isBuildingLocked
                                       ? t(
-                                          "village.slotBuildingNeededToUnlock",
-                                          {
-                                            defaultValue:
-                                              "Building required to unlock",
-                                          },
-                                        )
+                                        "village.slotBuildingNeededToUnlock",
+                                        {
+                                          defaultValue:
+                                            "Building required to unlock",
+                                        },
+                                      )
                                       : insightUnlockCost !== null
                                         ? t(
-                                            "village.slotInsightUnlockAvailable",
-                                            {
-                                              cost: formatNumber(
-                                                insightUnlockCost,
-                                              ),
-                                              defaultValue:
-                                                "Can be unlocked for {{cost}} Insight",
-                                            },
-                                          )
+                                          "village.slotInsightUnlockAvailable",
+                                          {
+                                            cost: formatNumber(
+                                              insightUnlockCost,
+                                            ),
+                                            defaultValue:
+                                              "Can be unlocked for {{cost}} Insight",
+                                          },
+                                        )
                                         : isLocked
                                           ? t("village.queueSlotLocked", {
-                                              slot,
-                                            })
+                                            slot,
+                                          })
                                           : isUsed
                                             ? t("village.queueSlotUsed", {
-                                                slot,
-                                              })
+                                              slot,
+                                            })
                                             : t("village.queueSlotFree", {
-                                                slot,
-                                              })}
+                                              slot,
+                                            })}
                                   </div>
                                 }
                                 tooltipTriggerClassName="inline-flex items-center leading-none"
@@ -1512,14 +1506,17 @@ export default function VillagePanel() {
                   onMouseEnter={() => onMouseEnter("production-cycle-progress")}
                   onMouseLeave={() => onMouseLeave("production-cycle-progress")}
                 >
-                  <div className="relative inline-flex items-center">
+                  <div className={GAME_PANEL_HEADER_INDICATOR_INNER_CLASS}>
                     <CircularProgress
                       value={loopProgress}
-                      size={18}
+                      size={GAME_PANEL_HEADER_INDICATOR_SIZE_PX}
+                      fill
                       strokeWidth={2}
                       className="text-gray-400"
                     />
-                    <span className="absolute inset-0 flex items-center justify-center font-noto-symbols-2 text-[10px] leading-none translate-x-[0.05em] translate-y-[0.1em] text-gray-400">
+                    <span
+                      className={`${GAME_PANEL_HEADER_INDICATOR_GLYPH_CLASS} game-panel-header-indicator-glyph--sm text-gray-400`}
+                    >
                       ↦
                     </span>
                   </div>
@@ -1576,10 +1573,11 @@ export default function VillagePanel() {
                           onMouseEnter={() => onMouseEnter("feast-progress")}
                           onMouseLeave={() => onMouseLeave("feast-progress")}
                         >
-                          <div className="relative inline-flex items-center gap-1 mt-[0px]">
+                          <div className={GAME_PANEL_HEADER_INDICATOR_INNER_CLASS}>
                             <CircularProgress
                               value={feastProgress}
-                              size={18}
+                              size={GAME_PANEL_HEADER_INDICATOR_SIZE_PX}
+                              fill
                               strokeWidth={2}
                               className={
                                 isGreatFeast
@@ -1588,7 +1586,7 @@ export default function VillagePanel() {
                               }
                             />
                             <span
-                              className={`font-noto-symbols-2 absolute inset-0 flex items-center justify-center font-extrabold ${isGreatFeast ? "text-[12px] mt-[2px] text-orange-600" : "text-[12px] mt-[2px] text-yellow-600"}`}
+                              className={`${GAME_PANEL_HEADER_INDICATOR_GLYPH_CLASS} ${isGreatFeast ? "text-orange-600" : "text-yellow-600"}`}
                             >
                               {isGreatFeast ? "✦" : "⟡"}
                             </span>
@@ -1616,14 +1614,17 @@ export default function VillagePanel() {
                           onMouseEnter={() => onMouseEnter("solstice-progress")}
                           onMouseLeave={() => onMouseLeave("solstice-progress")}
                         >
-                          <div className="relative inline-flex items-center gap-1 mt-[0px]">
+                          <div className={GAME_PANEL_HEADER_INDICATOR_INNER_CLASS}>
                             <CircularProgress
                               value={solsticeProgress}
-                              size={18}
+                              size={GAME_PANEL_HEADER_INDICATOR_SIZE_PX}
+                              fill
                               strokeWidth={2}
                               className="text-orange-500"
                             />
-                            <span className="font-noto-symbols-2 absolute inset-0 flex items-center justify-center font-extrabold text-[10px] mt-[3px] text-orange-500">
+                            <span
+                              className={`${GAME_PANEL_HEADER_INDICATOR_GLYPH_CLASS} game-panel-header-indicator-glyph--sm text-orange-500`}
+                            >
                               ☼
                             </span>
                           </div>
@@ -1650,7 +1651,7 @@ export default function VillagePanel() {
                           onMouseEnter={() => onMouseEnter("curse-progress")}
                           onMouseLeave={() => onMouseLeave("curse-progress")}
                         >
-                          <div className="relative inline-flex items-center gap-1 mt-[0px]">
+                          <div className={GAME_PANEL_HEADER_INDICATOR_INNER_CLASS}>
                             <CircularProgress
                               value={(() => {
                                 const timeRemaining = Math.max(
@@ -1666,11 +1667,14 @@ export default function VillagePanel() {
                                   (elapsed / totalDuration) * 100,
                                 );
                               })()}
-                              size={18}
+                              size={GAME_PANEL_HEADER_INDICATOR_SIZE_PX}
+                              fill
                               strokeWidth={2}
                               className="text-purple-600"
                             />
-                            <span className="font-noto-symbols-2 absolute inset-0 flex items-center justify-center font-extrabold text-[12px] -mt-[0px] text-purple-600">
+                            <span
+                              className={`${GAME_PANEL_HEADER_INDICATOR_GLYPH_CLASS} text-purple-600`}
+                            >
                               ✶
                             </span>
                           </div>
@@ -1697,7 +1701,7 @@ export default function VillagePanel() {
                           onMouseEnter={() => onMouseEnter("disgust-progress")}
                           onMouseLeave={() => onMouseLeave("disgust-progress")}
                         >
-                          <div className="relative inline-flex items-center gap-1 mt-[0px]">
+                          <div className={GAME_PANEL_HEADER_INDICATOR_INNER_CLASS}>
                             <CircularProgress
                               value={(() => {
                                 const timeRemaining = Math.max(
@@ -1713,11 +1717,14 @@ export default function VillagePanel() {
                                   (elapsed / totalDuration) * 100,
                                 );
                               })()}
-                              size={18}
+                              size={GAME_PANEL_HEADER_INDICATOR_SIZE_PX}
+                              fill
                               strokeWidth={2}
                               className="text-green-800"
                             />
-                            <span className="font-noto-symbols-2 absolute inset-0 flex items-center justify-center font-normal text-[12px] mt-[4px] text-green-800">
+                            <span
+                              className={`${GAME_PANEL_HEADER_INDICATOR_GLYPH_CLASS} font-normal text-green-800`}
+                            >
                               ❢
                             </span>
                           </div>
@@ -1748,7 +1755,7 @@ export default function VillagePanel() {
                             onMouseLeave("mining-boost-progress")
                           }
                         >
-                          <div className="relative inline-flex items-center gap-1 mt-[0px]">
+                          <div className={GAME_PANEL_HEADER_INDICATOR_INNER_CLASS}>
                             <CircularProgress
                               value={(() => {
                                 const boostDuration = 30 * 60 * 1000;
@@ -1757,11 +1764,14 @@ export default function VillagePanel() {
                                   (miningBoostState.endTime - Date.now());
                                 return (boostElapsed / boostDuration) * 100;
                               })()}
-                              size={18}
+                              size={GAME_PANEL_HEADER_INDICATOR_SIZE_PX}
+                              fill
                               strokeWidth={2}
                               className="text-amber-600"
                             />
-                            <span className="font-noto-symbols-2 absolute inset-0 flex items-center justify-center font-extrabold text-[7px] mt-[2px] text-amber-600">
+                            <span
+                              className={`${GAME_PANEL_HEADER_INDICATOR_GLYPH_CLASS} game-panel-header-indicator-glyph--xs text-amber-600`}
+                            >
                               ⛰
                             </span>
                           </div>
@@ -1792,7 +1802,7 @@ export default function VillagePanel() {
                             onMouseLeave("heartfire-progress")
                           }
                         >
-                          <div className="relative inline-flex items-center gap-1 mt-[0px]">
+                          <div className={GAME_PANEL_HEADER_INDICATOR_INNER_CLASS}>
                             <CircularProgress
                               value={(() => {
                                 const now = Date.now();
@@ -1801,11 +1811,14 @@ export default function VillagePanel() {
                                 const elapsed = now - lastDecrease;
                                 return Math.min(100, (elapsed / 90000) * 100);
                               })()}
-                              size={18}
+                              size={GAME_PANEL_HEADER_INDICATOR_SIZE_PX}
+                              fill
                               strokeWidth={2}
                               className="text-red-700"
                             />
-                            <span className="font-noto-symbols-2 absolute inset-0 flex items-center justify-center font-extrabold text-red-700">
+                            <span
+                              className={`${GAME_PANEL_HEADER_INDICATOR_GLYPH_CLASS} text-red-700`}
+                            >
                               {getHeartfireSymbol(state.heartfireState.level)}
                             </span>
                           </div>
@@ -1836,7 +1849,7 @@ export default function VillagePanel() {
                             onMouseLeave("frostfall-progress")
                           }
                         >
-                          <div className="relative inline-flex items-center gap-1 mt-[0px]">
+                          <div className={GAME_PANEL_HEADER_INDICATOR_INNER_CLASS}>
                             <CircularProgress
                               value={(() => {
                                 const frostfallDuration = curseLikeDurationMs(
@@ -1853,11 +1866,14 @@ export default function VillagePanel() {
                                   (elapsed / frostfallDuration) * 100,
                                 );
                               })()}
-                              size={18}
+                              size={GAME_PANEL_HEADER_INDICATOR_SIZE_PX}
+                              fill
                               strokeWidth={2}
                               className="text-blue-600"
                             />
-                            <span className="font-noto-symbols-2 absolute inset-0 flex items-center justify-center font-extrabold text-[12px] mt-[2px] text-blue-600">
+                            <span
+                              className={`${GAME_PANEL_HEADER_INDICATOR_GLYPH_CLASS} text-blue-600`}
+                            >
                               ✼
                             </span>
                           </div>
@@ -1891,7 +1907,7 @@ export default function VillagePanel() {
                             onMouseEnter={() => onMouseEnter("fog-progress")}
                             onMouseLeave={() => onMouseLeave("fog-progress")}
                           >
-                            <div className="relative inline-flex items-center gap-1 mt-[0px]">
+                            <div className={GAME_PANEL_HEADER_INDICATOR_INNER_CLASS}>
                               <CircularProgress
                                 value={(() => {
                                   const fogDuration = riddleFogDurationMs(
@@ -1907,11 +1923,14 @@ export default function VillagePanel() {
                                     (elapsed / fogDuration) * 100,
                                   );
                                 })()}
-                                size={18}
+                                size={GAME_PANEL_HEADER_INDICATOR_SIZE_PX}
+                                fill
                                 strokeWidth={2}
                                 className="text-gray-500"
                               />
-                              <span className="font-noto-symbols-2 absolute inset-0 flex items-center justify-center font-extrabold text-[12px] leading-none mt-[1px] text-gray-500">
+                              <span
+                                className={`${GAME_PANEL_HEADER_INDICATOR_GLYPH_CLASS} text-gray-500`}
+                              >
                                 ≋
                               </span>
                             </div>
@@ -1946,14 +1965,17 @@ export default function VillagePanel() {
                               onMouseLeave("madness-production")
                             }
                           >
-                            <div className="relative inline-flex items-center gap-1 mt-[0px]">
+                            <div className={GAME_PANEL_HEADER_INDICATOR_INNER_CLASS}>
                               <CircularProgress
                                 value={100}
-                                size={18}
+                                size={GAME_PANEL_HEADER_INDICATOR_SIZE_PX}
+                                fill
                                 strokeWidth={2}
                                 className="text-violet-600"
                               />
-                              <span className="font-noto-symbols-2 absolute inset-0 flex items-center justify-center font-extrabold text-[12px] leading-none mt-[2px] text-violet-600">
+                              <span
+                                className={`${GAME_PANEL_HEADER_INDICATOR_GLYPH_CLASS} text-violet-600`}
+                              >
                                 ✺
                               </span>
                             </div>
@@ -2098,19 +2120,19 @@ export default function VillagePanel() {
                                   <div className="text-xs">
                                     {insightUnlockCost !== null
                                       ? t(
-                                          "village.slotInsightUnlockAvailable",
-                                          {
-                                            cost: formatNumber(
-                                              insightUnlockCost,
-                                            ),
-                                            defaultValue:
-                                              "Can be unlocked for {{cost}} Insight",
-                                          },
-                                        )
-                                      : t("village.presetLocked", {
+                                        "village.slotInsightUnlockAvailable",
+                                        {
+                                          cost: formatNumber(
+                                            insightUnlockCost,
+                                          ),
                                           defaultValue:
-                                            "Locked: available for purchase",
-                                        })}
+                                            "Can be unlocked for {{cost}} Insight",
+                                        },
+                                      )
+                                      : t("village.presetLocked", {
+                                        defaultValue:
+                                          "Locked: available for purchase",
+                                      })}
                                   </div>
                                 }
                                 tooltipTriggerClassName="inline-flex items-center leading-none"
@@ -2171,8 +2193,8 @@ export default function VillagePanel() {
                                   isActive
                                     ? "group-hover:bg-primary/90"
                                     : gameActionOutlineButtonClassName(false, {
-                                        groupHover: true,
-                                      }),
+                                      groupHover: true,
+                                    }),
                                 )}
                                 style={{ touchAction: "manipulation" }}
                               >

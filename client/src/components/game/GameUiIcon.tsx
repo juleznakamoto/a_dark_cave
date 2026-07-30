@@ -31,11 +31,11 @@ const DEFAULT_CLASS =
 export function GameUiIcon({
   name,
   className,
-  sizeClassName = "w-3.5 h-3.5",
+  sizeClassName = "game-tab-icon",
 }: {
   name: GameUiIconName;
   className?: string;
-  /** Tailwind size utilities, e.g. `w-5 h-5`. */
+  /** Tailwind/CSS size utilities, e.g. `w-5 h-5` or `game-tab-icon`. */
   sizeClassName?: string;
 }) {
   const src = GAME_UI_ICON_SRC[name];

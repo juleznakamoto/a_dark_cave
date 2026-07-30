@@ -26,7 +26,7 @@ const DEFAULT_CLASS =
 export function SidePanelSectionIcon({
   sectionId,
   className,
-  sizeClassName = "w-3.5 h-3.5",
+  sizeClassName = "game-tab-icon",
 }: {
   sectionId: SidePanelSectionId;
   className?: string;

@@ -18,11 +18,22 @@ export const GAME_PANEL_HEADER_BAND =
 export const GAME_PANEL_HEADER_INSIGHT_BADGE_CLASS =
   "game-panel-header-slot min-h-0 shrink-0";
 
-/** 18px circular progress indicators next to section titles (Produce effects, Focus timer). */
+/**
+ * Circular progress indicators next to section titles (Produce effects, Focus).
+ * Box is 22px × `--adc-control-scale` (see `.game-panel-header-indicator` in CSS).
+ * Pair with `CircularProgress fill` + `GAME_PANEL_HEADER_INDICATOR_GLYPH_CLASS`.
+ */
+export const GAME_PANEL_HEADER_INDICATOR_SIZE_PX = 22;
+
 export const GAME_PANEL_HEADER_INDICATOR_CLASS =
-  "inline-flex h-[18px] w-[18px] shrink-0 items-center justify-center self-center cursor-pointer rounded-full opacity-80 transition-opacity duration-150 hover:opacity-100";
+  "game-panel-header-indicator inline-flex shrink-0 items-center justify-center self-center cursor-pointer rounded-full opacity-80 transition-opacity duration-150 hover:opacity-100";
 export const GAME_PANEL_HEADER_INDICATOR_TRIGGER_CLASS =
   "inline-flex items-center leading-none";
+/** Centered glyph over a header indicator ring (no manual mt nudges). */
+export const GAME_PANEL_HEADER_INDICATOR_GLYPH_CLASS =
+  "game-panel-header-indicator-glyph font-noto-symbols-2 absolute inset-0 flex items-center justify-center font-extrabold leading-none";
+export const GAME_PANEL_HEADER_INDICATOR_INNER_CLASS =
+  "relative inline-flex h-full w-full items-center justify-center";
 
 /** Anchor tall tab SVG masks (e.g. hourglass) to the icon box bottom. */
 export const TAB_ICON_MASK_BOTTOM =
@@ -30,6 +41,9 @@ export const TAB_ICON_MASK_BOTTOM =
 
 /** Optical align tab mask icons with capital labels in GAME_PANEL_HEADER_BAND. */
 export const TAB_ICON_ALIGN_CLASS = "-translate-y-[2px]";
+
+/** Default size for Cave/City/… tab mask icons (scales with `--adc-text-scale`). */
+export const TAB_ICON_SIZE_CLASS = "game-tab-icon";
 
 /** Timed-event hourglass tab icon alignment (tweak translate if needed). */
 export const TAB_TIMED_EVENT_ICON_CLASS = `${TAB_ICON_MASK_BOTTOM} ${TAB_ICON_ALIGN_CLASS}`;

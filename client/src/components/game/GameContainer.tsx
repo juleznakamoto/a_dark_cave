@@ -19,6 +19,7 @@ import {
   GAME_PANEL_HEADER_BAND,
   GAME_PARTICLE_LAYER_ID,
   TAB_ICON_ALIGN_CLASS,
+  TAB_ICON_SIZE_CLASS,
   TAB_TIMED_EVENT_ICON_CLASS,
 } from "./gameChrome";
 import CavePanel from "./panels/CavePanel";
@@ -87,7 +88,7 @@ import { usePanelResize } from "./panelResize";
 import PanelResizeHandle from "./PanelResizeHandle";
 import { GameUiIcon } from "@/components/game/GameUiIcon";
 
-const TAB_ICON_SIZE = "w-3.5 h-3.5";
+const TAB_ICON_SIZE = TAB_ICON_SIZE_CLASS;
 const steamBuild = import.meta.env.VITE_STEAM_BUILD === "1";
 const WebOnlyDialogs = steamBuild
   ? null

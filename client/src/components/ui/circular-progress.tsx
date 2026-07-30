@@ -4,7 +4,13 @@ import { cn } from "@/lib/utils"
 
 interface CircularProgressProps {
   value: number // 0-100
+  /** Geometry / pixel box when not filling the parent. */
   size?: number
+  /**
+   * Fill the parent box (e.g. `.game-panel-header-indicator`). SVG uses a
+   * `size`-unit viewBox so stroke math stays correct while CSS scales the host.
+   */
+  fill?: boolean
   strokeWidth?: number
   className?: string
 }
@@ -12,7 +18,7 @@ interface CircularProgressProps {
 const CircularProgress = React.forwardRef<
   HTMLDivElement,
   CircularProgressProps
->(({ value, size = 20, strokeWidth = 2, className }, ref) => {
+>(({ value, size = 20, fill = false, strokeWidth = 2, className }, ref) => {
   const [prevValue, setPrevValue] = React.useState(value)
   const [shouldAnimate, setShouldAnimate] = React.useState(true)
 
@@ -36,13 +42,19 @@ const CircularProgress = React.forwardRef<
   return (
     <div
       ref={ref}
-      className={cn("relative inline-flex", className)}
-      style={{ width: size, height: size }}
+      className={cn(
+        "relative inline-flex",
+        fill && "h-full w-full",
+        className,
+      )}
+      style={fill ? undefined : { width: size, height: size }}
     >
       <svg
-        width={size}
-        height={size}
-        className="transform -rotate-90"
+        viewBox={`0 0 ${size} ${size}`}
+        width={fill ? undefined : size}
+        height={fill ? undefined : size}
+        className={cn("transform -rotate-90", fill && "h-full w-full")}
+        aria-hidden
       >
         {/* Background circle */}
         <circle

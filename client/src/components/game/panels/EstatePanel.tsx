@@ -28,6 +28,9 @@ import { isTraderShopUnlocked, stackTimedDebuff } from "@/game/stateHelpers";
 import { focusTooltip } from "@/game/rules/tooltips";
 import {
   GAME_PANEL_HEADER_INDICATOR_CLASS,
+  GAME_PANEL_HEADER_INDICATOR_GLYPH_CLASS,
+  GAME_PANEL_HEADER_INDICATOR_INNER_CLASS,
+  GAME_PANEL_HEADER_INDICATOR_SIZE_PX,
   GAME_PANEL_HEADER_INDICATOR_TRIGGER_CLASS,
 } from "@/components/game/gameChrome";
 import { formatNumber } from "@/lib/utils";
@@ -458,9 +461,9 @@ export default function EstatePanel() {
       <div className="w-full space-y-2 pt-2 md:pt-0 mt-0 md:mt-2 mb-2 pr-2 pb-2">
         {/* Sleep Mode Section */}
         <div className="space-y-">
-          {/* Fixed 18px band matches Produce indicators so Sleep/Focus below don't jump */}
+          {/* Indicator-height band matches Produce rings so Sleep/Focus below don't jump */}
           <div className="pb-2">
-            <div className="flex h-[18px] w-full items-center gap-2">
+            <div className="game-panel-header-indicator-row flex w-full items-center gap-2">
               <h3 className="inline-flex shrink-0 items-center text-xs font-medium text-foreground leading-none">
                 {t("estate.rest")}
               </h3>
@@ -478,14 +481,17 @@ export default function EstatePanel() {
                   }
                   className={GAME_PANEL_HEADER_INDICATOR_CLASS}
                 >
-                  <div className="relative inline-flex size-[18px] items-center justify-center">
+                  <div className={GAME_PANEL_HEADER_INDICATOR_INNER_CLASS}>
                     <CircularProgress
                       value={focusProgress}
-                      size={18}
+                      size={GAME_PANEL_HEADER_INDICATOR_SIZE_PX}
+                      fill
                       strokeWidth={2}
                       className="text-teal-400"
                     />
-                    <span className="absolute inset-0 flex items-center justify-center text-[10px] font-extrabold leading-none text-teal-400">
+                    <span
+                      className={`${GAME_PANEL_HEADER_INDICATOR_GLYPH_CLASS} game-panel-header-indicator-glyph--sm text-teal-400`}
+                    >
                       ☩
                     </span>
                   </div>

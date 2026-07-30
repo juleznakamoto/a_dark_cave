@@ -68,7 +68,7 @@ function pingRewardsTasksRing(ring: HTMLSpanElement | null): void {
 const HEADER_ICON_BTN =
   "group shrink-0 p-0 w-7 h-7 flex items-center justify-center";
 /** Slightly larger mask icons for header actions (button stays w-7 h-7). */
-const HEADER_ACCENT_ICON_SIZE = "w-[18px] h-[18px]";
+const HEADER_ACCENT_ICON_SIZE = "game-header-accent-icon";
 const HEADER_ICON_SYMBOL_HOVER =
   "text-neutral-300 opacity-80 transition-[opacity,color] group-hover:opacity-100 group-hover:!text-red-600";
 

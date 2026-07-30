@@ -389,6 +389,47 @@ body {
   height: calc(18px * var(--adc-control-scale, 1));
 }
 
+/* Produce / Focus circular indicators (22px base; grows with Large text). */
+.game-panel-header-indicator {
+  width: calc(22px * var(--adc-control-scale, 1));
+  height: calc(22px * var(--adc-control-scale, 1));
+}
+
+.game-panel-header-indicator-glyph {
+  font-size: calc(13px * var(--adc-control-scale, 1));
+}
+
+.game-panel-header-indicator-glyph--sm {
+  font-size: calc(11px * var(--adc-control-scale, 1));
+}
+
+.game-panel-header-indicator-glyph--xs {
+  font-size: calc(9px * var(--adc-control-scale, 1));
+}
+
+/* Estate "Rest" title row — matches indicator height so Sleep/Focus don't jump. */
+.game-panel-header-indicator-row {
+  height: calc(22px * var(--adc-control-scale, 1));
+}
+
+/* Profile header accent mask icons (rewards / exclusive) inside w-7 buttons. */
+.game-header-accent-icon {
+  width: calc(18px * var(--adc-control-scale, 1));
+  height: calc(18px * var(--adc-control-scale, 1));
+}
+
+/* Main tab + side-panel section mask icons (~14px); track text scale with labels. */
+.game-tab-icon {
+  width: calc(0.875rem * var(--adc-text-scale, 1));
+  height: calc(0.875rem * var(--adc-text-scale, 1));
+}
+
+/* Village − / + assignment hit targets. */
+.villager-count-button {
+  width: calc(18px * var(--adc-control-scale, 1));
+  height: calc(18px * var(--adc-control-scale, 1));
+}
+
 /* Shared dialog X: square hit target + icon grow slightly with Large text. */
 .adc-dialog-close {
   width: calc(1.5rem * var(--adc-control-scale, 1));
