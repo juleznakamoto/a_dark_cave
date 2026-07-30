@@ -64,10 +64,10 @@ export const LIME_ACCENT_BORDER_IDLE =
   "border border-lime-500/60 transition-[border-color,box-shadow]";
 
 export const LIME_ACCENT_BORDER_GLOW =
-  "border-lime-500 shadow-[0_0_6px_rgba(132,204,22,0.85),0_0_14px_rgba(132,204,22,0.5),0_0_24px_rgba(132,204,22,0.3)]";
+  "border-lime-500 shadow-[0_0_4px_rgba(132,204,22,0.45),0_0_8px_rgba(132,204,22,0.25)]";
 
 export const LIME_ACCENT_BORDER_GLOW_HOVER =
-  "group-hover:border-lime-500 group-hover:shadow-[0_0_6px_rgba(132,204,22,0.85),0_0_14px_rgba(132,204,22,0.5),0_0_24px_rgba(132,204,22,0.3)] group-focus-visible:border-lime-500 group-focus-visible:shadow-[0_0_6px_rgba(132,204,22,0.85),0_0_14px_rgba(132,204,22,0.5),0_0_24px_rgba(132,204,22,0.3)]";
+  "group-hover:border-lime-500 group-hover:shadow-[0_0_4px_rgba(132,204,22,0.45),0_0_8px_rgba(132,204,22,0.25)] group-focus-visible:border-lime-500 group-focus-visible:shadow-[0_0_4px_rgba(132,204,22,0.45),0_0_8px_rgba(132,204,22,0.25)]";
 
 /** Mask SVG icons (e.g. rewards tasks diamond) — glow via `.lime-accent-mask-icon` in index.css. */
 export const LIME_ACCENT_MASK_ICON_CLASS = "lime-accent-mask-icon";

@@ -40,6 +40,7 @@ export function TraderTabButton({
   const { hoverHandlers, portal, setForcedEmit } = useCoinHoverParticles("gold", {
     particleOriginRef: iconRef,
     particleConfig: TRADER_TAB_PARTICLE_CONFIG,
+    emitIntervalMs: 700,
     zIndex: 50,
   });
   const [isHintActive, setIsHintActive] = useState(false);
@@ -93,7 +94,7 @@ export function TraderTabButton({
         <span
           className={cn(
             // Compact chip; border (not ring) so rounded corners render.
-            "inline-flex items-center gap-1 rounded px-1.5 py-0.5 leading-none",
+            "inline-flex items-center gap-1 rounded-md px-1.5 py-0.5 leading-none",
             LIME_ACCENT_BORDER_IDLE,
             LIME_ACCENT_BORDER_GLOW_HOVER,
             showActiveGlow && LIME_ACCENT_BORDER_GLOW,
