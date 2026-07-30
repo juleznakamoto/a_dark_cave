@@ -7,7 +7,9 @@ export const GAME_PARTICLE_LAYER_ID = "adc-game-particle-layer";
 
 /** Shared bottom-aligned header label band (tabs + side-panel section titles). */
 export const GAME_PANEL_HEADER_BAND =
-  "inline-flex h-9 items-end pb-2 text-sm leading-none";
+  // !leading-none: scaled .text-sm line-height must not inflate this band or
+  // icon tabs (quest book) sit below the text baselines.
+  "inline-flex h-9 items-end pb-2 text-sm !leading-none";
 
 /**
  * Insight unlock blobs + construction/preset slot chrome in panel headers.
@@ -26,8 +28,11 @@ export const GAME_PANEL_HEADER_INDICATOR_TRIGGER_CLASS =
 export const TAB_ICON_MASK_BOTTOM =
   "[mask-position:bottom] [-webkit-mask-position:bottom]";
 
-/** Timed-event hourglass tab icon alignment (tweak `-translate-y-[2px]` if needed). */
-export const TAB_TIMED_EVENT_ICON_CLASS = `${TAB_ICON_MASK_BOTTOM} -translate-y-[2px]`;
+/** Optical align tab mask icons with capital labels in GAME_PANEL_HEADER_BAND. */
+export const TAB_ICON_ALIGN_CLASS = "-translate-y-[2px]";
+
+/** Timed-event hourglass tab icon alignment (tweak translate if needed). */
+export const TAB_TIMED_EVENT_ICON_CLASS = `${TAB_ICON_MASK_BOTTOM} ${TAB_ICON_ALIGN_CLASS}`;
 
 /** Lime accent icon idle + hover (trader tab, rewards tasks shortcut). */
 export const LIME_ACCENT_ICON_IDLE =

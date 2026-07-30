@@ -18,6 +18,7 @@ import {
   GAME_HEADER_INSET,
   GAME_PANEL_HEADER_BAND,
   GAME_PARTICLE_LAYER_ID,
+  TAB_ICON_ALIGN_CLASS,
   TAB_TIMED_EVENT_ICON_CLASS,
 } from "./gameChrome";
 import CavePanel from "./panels/CavePanel";
@@ -748,7 +749,13 @@ export default function GameContainer() {
     if (achievementsUnlocked) {
       tabs.push({
         id: "achievements",
-        icon: <GameUiIcon name="achievements" sizeClassName={TAB_ICON_SIZE} />,
+        icon: (
+          <GameUiIcon
+            name="achievements"
+            sizeClassName={TAB_ICON_SIZE}
+            className={TAB_ICON_ALIGN_CLASS}
+          />
+        ),
         label: "Achievements",
         onClick: () => setActiveTab("achievements"),
       });
@@ -1391,6 +1398,7 @@ export default function GameContainer() {
                           <GameUiIcon
                             name="achievements"
                             sizeClassName={TAB_ICON_SIZE}
+                            className={TAB_ICON_ALIGN_CLASS}
                           />
                         </button>
                       )}

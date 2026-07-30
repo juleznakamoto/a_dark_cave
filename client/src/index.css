@@ -91,61 +91,94 @@ body {
   /*
    * Readable UI text scales with Settings → Text size (Large).
    * Pixel-fixed symbol overlays are excluded — they keep arbitrary text-[Npx].
-   * Line-heights use the same scale so wrapped copy keeps (and grows) spacing
-   * instead of staying on a fixed rem and getting cramped.
+   * Default line-heights live in :where() so explicit leading-* (e.g. DialogTitle
+   * leading-none) still wins — otherwise header chrome looks misaligned vs the X.
    */
   .text-3xs {
     font-size: calc(0.5625rem * var(--adc-text-scale, 1));
+  }
+
+  :where(.text-3xs) {
     line-height: 1;
   }
 
   .text-2xs {
     font-size: calc(0.625rem * var(--adc-text-scale, 1));
+  }
+
+  :where(.text-2xs) {
     line-height: 1;
   }
 
   .text-xxs {
     font-size: calc(0.6875rem * var(--adc-text-scale, 1));
+  }
+
+  :where(.text-xxs) {
     line-height: 1;
   }
 
   .text-xs-plus {
     font-size: calc(0.8125rem * var(--adc-text-scale, 1));
+  }
+
+  :where(.text-xs-plus) {
     line-height: 1;
   }
 
   .text-xs {
     font-size: calc(0.75rem * var(--adc-text-scale, 1));
+  }
+
+  :where(.text-xs) {
     line-height: calc(1rem * var(--adc-text-scale, 1));
   }
 
   .text-sm {
     font-size: calc(0.875rem * var(--adc-text-scale, 1));
+  }
+
+  :where(.text-sm) {
     line-height: calc(1.25rem * var(--adc-text-scale, 1));
   }
 
   .text-base {
     font-size: calc(1rem * var(--adc-text-scale, 1));
+  }
+
+  :where(.text-base) {
     line-height: calc(1.5rem * var(--adc-text-scale, 1));
   }
 
   .text-lg {
     font-size: calc(1.125rem * var(--adc-text-scale, 1));
+  }
+
+  :where(.text-lg) {
     line-height: calc(1.75rem * var(--adc-text-scale, 1));
   }
 
   .text-xl {
     font-size: calc(1.25rem * var(--adc-text-scale, 1));
+  }
+
+  :where(.text-xl) {
     line-height: calc(1.75rem * var(--adc-text-scale, 1));
   }
 
   .text-2xl {
     font-size: calc(1.5rem * var(--adc-text-scale, 1));
+  }
+
+  :where(.text-2xl) {
     line-height: calc(2rem * var(--adc-text-scale, 1));
   }
 
   .text-3xl {
     font-size: calc(1.875rem * var(--adc-text-scale, 1));
+  }
+
+  :where(.text-3xl) {
     line-height: calc(2.25rem * var(--adc-text-scale, 1));
   }
 
@@ -354,6 +387,17 @@ body {
 .game-panel-header-slot {
   width: calc(18px * var(--adc-control-scale, 1));
   height: calc(18px * var(--adc-control-scale, 1));
+}
+
+/* Shared dialog X: square hit target + icon grow slightly with Large text. */
+.adc-dialog-close {
+  width: calc(1.5rem * var(--adc-control-scale, 1));
+  height: calc(1.5rem * var(--adc-control-scale, 1));
+}
+
+.adc-dialog-close-icon {
+  width: calc(1rem * var(--adc-control-scale, 1));
+  height: calc(1rem * var(--adc-control-scale, 1));
 }
 
 /* Fills the trigger hit target without participating in flex layout (avoids
