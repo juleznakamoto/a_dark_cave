@@ -193,7 +193,13 @@ export default function TimedEventPanel() {
         return;
       }
 
-      const remaining = getTimedEventTabEffectiveRemainingMs(st) ?? 0;
+      const remaining = getTimedEventTabEffectiveRemainingMs(st);
+      // null = tab inactive / no expiry (e.g. already closed after max collector
+      // trades). Do not coalesce to 0 — that would re-run fallback and double-apply
+      // leave effects like collectorVisitCount.
+      if (remaining == null) {
+        return;
+      }
 
       setTimeRemaining(remaining);
 
@@ -202,6 +208,10 @@ export default function TimedEventPanel() {
         expiryHandled = true;
 
         const currentState = useGameStore.getState();
+        // Tab may have been closed since this tick started (another leave path).
+        if (!currentState.timedEventTab.isActive) {
+          return;
+        }
         const gamblerPrefix = event.id.split("-")[0] === "gambler";
         const gg = currentState.gamblerGame;
         let gamblerMidRoundForfeitHandled = false;

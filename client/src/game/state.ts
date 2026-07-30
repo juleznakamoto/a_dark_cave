@@ -883,14 +883,38 @@ export function mergeRewardPayloads(
     left.resources as Record<string, number> | undefined,
     right.resources as Record<string, number> | undefined,
   );
-  if (resources) merged.resources = resources as typeof merged.resources;
-
   const resourceLosses = mergeAmountMaps(
     left.resourceLosses as Record<string, number> | undefined,
     right.resourceLosses as Record<string, number> | undefined,
   );
-  if (resourceLosses) {
-    merged.resourceLosses = resourceLosses as typeof merged.resourceLosses;
+
+  // Net gains vs losses per resource (e.g. collector sell +400 / buy -800 → -400).
+  if (resources || resourceLosses) {
+    const nettedResources: Record<string, number> = { ...(resources || {}) };
+    const nettedLosses: Record<string, number> = { ...(resourceLosses || {}) };
+    const keys = new Set([
+      ...Object.keys(nettedResources),
+      ...Object.keys(nettedLosses),
+    ]);
+    for (const key of keys) {
+      const net = (nettedResources[key] || 0) - (nettedLosses[key] || 0);
+      if (net > 0) {
+        nettedResources[key] = net;
+        delete nettedLosses[key];
+      } else if (net < 0) {
+        nettedLosses[key] = Math.abs(net);
+        delete nettedResources[key];
+      } else {
+        delete nettedResources[key];
+        delete nettedLosses[key];
+      }
+    }
+    if (Object.keys(nettedResources).length > 0) {
+      merged.resources = nettedResources as typeof merged.resources;
+    }
+    if (Object.keys(nettedLosses).length > 0) {
+      merged.resourceLosses = nettedLosses as typeof merged.resourceLosses;
+    }
   }
 
   const stats = mergeAmountMaps(

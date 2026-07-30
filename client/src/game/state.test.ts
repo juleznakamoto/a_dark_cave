@@ -3,6 +3,7 @@ import {
   createInitialState,
   useGameStore,
   detectRewards,
+  mergeRewardPayloads,
   rewardDialogActions,
   rewardPayloadHasPositiveChanges,
   rewardPayloadHasOutcomeLosses,
@@ -258,6 +259,19 @@ describe("Reward Dialog System", () => {
           resources: { gold: 5 },
         }),
       ).toBe(true);
+    });
+  });
+
+  describe("mergeRewardPayloads", () => {
+    it("nets gold gains against gold losses into a single amount", () => {
+      const merged = mergeRewardPayloads(
+        { resources: { gold: 400 }, clothingLost: ["bloodstained_belt"] as any },
+        { resourceLosses: { gold: 800 }, relics: ["unnamed_book"] as any },
+      );
+      expect(merged.resources).toBeUndefined();
+      expect(merged.resourceLosses).toEqual({ gold: 400 });
+      expect(merged.clothingLost).toEqual(["bloodstained_belt"]);
+      expect(merged.relics).toEqual(["unnamed_book"]);
     });
   });
 
