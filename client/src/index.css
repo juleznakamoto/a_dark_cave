@@ -400,6 +400,13 @@ html.adc-text-large .game-panel-header-indicator {
   height: 22px;
 }
 
+/* Side-panel resource/building rows: slightly more vertical room when Large. */
+html.adc-text-large .side-panel-item-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.125rem;
+}
+
 .game-panel-header-indicator-glyph {
   font-size: 12px;
 }

@@ -1406,7 +1406,7 @@ export default function SidePanelSection({
   return (
     <div className={cn("min-w-0 w-full", className)}>
       <div className="min-w-0 flex-1">{titleHeading}</div>
-      <div className="min-w-0 text-xs">
+      <div className="side-panel-item-list min-w-0 text-xs">
         {visibleItems.map((item) => (
           <div
             key={item.id}
