@@ -122,7 +122,7 @@ function AudioControlRow({
             }`}
         />
       </button>
-      <span className="w-16 shrink-0 text-sm">{title}</span>
+      <span className="w-24 shrink-0 whitespace-nowrap text-sm">{title}</span>
       <div className="flex flex-1 items-center">
         <input
           type="range"
