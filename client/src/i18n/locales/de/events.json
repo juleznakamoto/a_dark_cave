@@ -2268,19 +2268,17 @@
     "log": {
       "whisper0": "Der Sammler seufzt und wendet sich ab. „Auf meinen Reisen habe ich viele Relikte der alten Zivilisation entdeckt. Sie waren weit fortgeschrittener als wir je waren“, flüstert er, bevor er in der Dunkelheit verschwindet.",
       "whisper1": "Ein leises Summen dringt unter der Kapuze hervor. „Die große Explosion zerstörte die meisten Artefakte der alten Zivilisation. Was übrig blieb, ist verstreut und selten“, murmelt er.",
-      "whisper2": "Ein schwacher Atem entweicht dem Sammler. „Ich habe auf meinen Reisen viel über die alte Zivilisation gelernt. Vor der großen Explosion gab es keine Magie in dieser Welt. Sie wurde in jenem Moment geboren“, flüstert er, während er geht."
+      "whisper2": "Ein schwacher Atem entweicht dem Sammler. „Ich habe auf meinen Reisen viel über die alte Zivilisation gelernt. Vor der großen Explosion gab es keine Magie in dieser Welt. Sie wurde in jenem Moment geboren“, flüstert er, während er geht.",
+      "whisperGeneric": "Der Sammler nickt einmal und entschwindet."
     },
     "title": "Der wandernde Sammler",
     "message": {
-      "visit0": "Eine Gestalt in zerrissenen Roben nähert sich. Sie scheint fasziniert von dem, was du gesammelt hast. \"Ich spüre Wert unter deinen Besitztümern\", murmelt sie. \"Erlaube mir, eines mitzunehmen - im Tausch gegen {{reward}} Gold.\"",
-      "visit1": "Die verhüllte Gestalt kehrt zurück, ihre Schritte lautlos auf dem Boden. \"Mehr Artefakte, mehr Geheimnisse\", flüstert sie. \"Lass mich wieder eines nehmen, und dein Beutel wird um {{reward}} Gold schwerer.\"",
-      "visit2": "Der Sammler erscheint erneut, Augen glühend unter der Kapuze. \"Unsere Geschäfte neigen sich dem Ende zu\", sagt sie leise. \"Verkaufe mir noch eines, und {{reward}} Gold soll dein sein.\"",
-      "visit0_both": "A figure wrapped in tattered robes approaches. 'I sense value among your possessions,' he murmurs. 'Sell me one for {{reward}} gold - or buy back what others left behind for {{goldCost}} gold.'",
-      "visit0_buy": "A figure wrapped in tattered robes approaches, a satchel of discarded relics at his side. 'I gather what others refuse,' he murmurs. 'Any of these can be yours for {{goldCost}} gold.'",
-      "visit1_both": "The robed figure returns, silent as before. 'Sell me another for {{reward}} gold,' he whispers, 'or claim one I recovered for {{goldCost}} gold.'",
-      "visit1_buy": "The robed figure returns with forgotten relics. 'What you once refused, I kept,' he whispers. '{{goldCost}} gold, and any may be yours.'",
-      "visit2_both": "The collector appears again, eyes glowing within the hood. 'Sell me one more for {{reward}} gold,' he says softly, 'or buy from what I carry for {{goldCost}} gold.'",
-      "visit2_buy": "The collector appears again with a few recovered relics. 'Our dealings near their end,' he says softly. 'For {{goldCost}} gold, take one.'"
+      "visit0": "Eine Gestalt in zerrissenen Roben nähert sich. Sie scheint fasziniert von dem, was du gesammelt hast. \"Ich spüre Wert unter deinen Besitztümern\", murmelt sie. \"Erlaube mir, eines mitzunehmen.\"",
+      "visit1": "Die verhüllte Gestalt kehrt zurück, ihre Schritte lautlos auf dem Boden. \"Mehr Artefakte, mehr Geheimnisse\", flüstert sie. \"Lass mich wieder eines nehmen.\"",
+      "visit0_both": "A figure wrapped in tattered robes approaches. 'I sense value among your possessions,' he murmurs. 'Sell me one, or buy back what others left behind.'",
+      "visit0_buy": "A figure wrapped in tattered robes approaches, a satchel of discarded relics at his side. 'I gather what others refuse,' he murmurs. 'Any of these can be yours.'",
+      "visit1_both": "The robed figure returns, silent as before. 'Sell me another,' he whispers, 'or claim one I found.'",
+      "visit1_buy": "The robed figure returns with forgotten relics. 'What others once refused, I kept,' he whispers. 'Any may be yours.'"
     }
   },
   "wanderingFirecrafter": {

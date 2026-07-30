@@ -2250,19 +2250,17 @@
     "log": {
       "whisper0": "O colecionador suspira e se vira. 'Em minhas viagens, descobri muitas relíquias da antiga civilização. Eles eram muito mais avançados do que nós jamais fomos,' sussurra ele antes de se esvair na escuridão.",
       "whisper1": "Um zumbido grave escapa de sob o capuz. 'A grande explosão destruiu a maioria dos artefatos da antiga civilização. O pouco que resta está espalhado e é raro,' murmura ele.",
-      "whisper2": "Um leve sopro escapa do colecionador. 'Aprendi muito sobre a antiga civilização em minhas jornadas. Antes da grande explosão, não havia magia neste mundo. Ela nasceu naquele instante,' sussurra ele ao partir."
+      "whisper2": "Um leve sopro escapa do colecionador. 'Aprendi muito sobre a antiga civilização em minhas jornadas. Antes da grande explosão, não havia magia neste mundo. Ela nasceu naquele instante,' sussurra ele ao partir.",
+      "whisperGeneric": "O colecionador acena uma vez e se afasta."
     },
     "title": "O Colecionador Errante",
     "message": {
-      "visit0": "Uma figura envolta em vestes esfarrapadas se aproxima. Ela parece intrigada com o que você reuniu. 'Sinto valor entre seus pertences,' murmura ela. 'Permita-me levar um, em troca de {{reward}} ouro.'",
-      "visit1": "A figura em vestes retorna, seus passos silenciosos sobre o chão. 'Mais artefatos, mais segredos', sussurra ela. 'Deixe-me reivindicar mais um, e sua bolsa ficará {{reward}} ouro mais pesada.'",
-      "visit2": "O colecionador aparece de novo, os olhos brilhando sob o capuz. 'Nossos negócios se aproximam do fim,' diz ele suavemente. 'Venda-me mais um, e {{reward}} ouro serão seus.'",
-      "visit0_both": "A figure wrapped in tattered robes approaches. 'I sense value among your possessions,' he murmurs. 'Sell me one for {{reward}} gold - or buy back what others left behind for {{goldCost}} gold.'",
-      "visit0_buy": "A figure wrapped in tattered robes approaches, a satchel of discarded relics at his side. 'I gather what others refuse,' he murmurs. 'Any of these can be yours for {{goldCost}} gold.'",
-      "visit1_both": "The robed figure returns, silent as before. 'Sell me another for {{reward}} gold,' he whispers, 'or claim one I recovered for {{goldCost}} gold.'",
-      "visit1_buy": "The robed figure returns with forgotten relics. 'What you once refused, I kept,' he whispers. '{{goldCost}} gold, and any may be yours.'",
-      "visit2_both": "The collector appears again, eyes glowing within the hood. 'Sell me one more for {{reward}} gold,' he says softly, 'or buy from what I carry for {{goldCost}} gold.'",
-      "visit2_buy": "The collector appears again with a few recovered relics. 'Our dealings near their end,' he says softly. 'For {{goldCost}} gold, take one.'"
+      "visit0": "Uma figura envolta em vestes esfarrapadas se aproxima. Ela parece intrigada com o que você reuniu. 'Sinto valor entre seus pertences,' murmura ela. 'Permita-me levar um.'",
+      "visit1": "A figura em vestes retorna, seus passos silenciosos sobre o chão. 'Mais artefatos, mais segredos', sussurra ela. 'Deixe-me reivindicar mais um.'",
+      "visit0_both": "A figure wrapped in tattered robes approaches. 'I sense value among your possessions,' he murmurs. 'Sell me one, or buy back what others left behind.'",
+      "visit0_buy": "A figure wrapped in tattered robes approaches, a satchel of discarded relics at his side. 'I gather what others refuse,' he murmurs. 'Any of these can be yours.'",
+      "visit1_both": "The robed figure returns, silent as before. 'Sell me another,' he whispers, 'or claim one I found.'",
+      "visit1_buy": "The robed figure returns with forgotten relics. 'What others once refused, I kept,' he whispers. 'Any may be yours.'"
     }
   },
   "wanderingFirecrafter": {

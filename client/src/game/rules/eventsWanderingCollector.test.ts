@@ -2,6 +2,7 @@ import { describe, expect, it } from "vitest";
 import { createInitialState } from "@/game/state";
 import type { GameState } from "@shared/schema";
 import {
+  getCollectorDepartureLogKey,
   shouldEndCollectorVisitAfterTrade,
   wanderingCollectorEvents,
 } from "./eventsWanderingCollector";
@@ -33,6 +34,21 @@ function baseState(overrides: Partial<GameState> = {}): GameState {
     },
   };
 }
+
+describe("collector departure whispers", () => {
+  it("uses special lore after 1st, 3rd, and 5th visits", () => {
+    expect(getCollectorDepartureLogKey(1)).toBe("whisper0");
+    expect(getCollectorDepartureLogKey(3)).toBe("whisper1");
+    expect(getCollectorDepartureLogKey(5)).toBe("whisper2");
+  });
+
+  it("uses the short generic line on other visits", () => {
+    expect(getCollectorDepartureLogKey(2)).toBe("whisperGeneric");
+    expect(getCollectorDepartureLogKey(4)).toBe("whisperGeneric");
+    expect(getCollectorDepartureLogKey(6)).toBe("whisperGeneric");
+    expect(getCollectorDepartureLogKey(7)).toBe("whisperGeneric");
+  });
+});
 
 describe("collectorRejectedItems", () => {
   it("tracks rejected items and excludes owned ones", () => {
@@ -122,6 +138,19 @@ describe("wandering_collector buy/sell", () => {
       typeof event.choices === "function" ? event.choices(state) : [];
     expect(choices.filter((c) => c.id.startsWith("buy_"))).toHaveLength(0);
     expect(choices.some((c) => c.id.startsWith("sell_"))).toBe(true);
+  });
+
+  it("uses visit1 copy for all return visits", () => {
+    const state = baseState({
+      buildings: { woodenHut: 10, stoneHut: 10 } as any,
+      clothing: { bloodstained_belt: true } as any,
+      story: {
+        seen: { collectorVisitCount: 4 },
+        merchantPurchases: 0,
+        heavySleeperHours: 0,
+      },
+    });
+    expect(event.message?.(state as any)).toBe("visit1");
   });
 
   it("can arrive with only rejected items to buy (no sell section stock)", () => {

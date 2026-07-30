@@ -2268,19 +2268,17 @@
     "log": {
       "whisper0": "Коллекционер вздыхает и отворачивается. «В странствиях я нашёл множество реликвий древней цивилизации. Они были куда развитее нас», - шепчет он, растворяясь во мраке.",
       "whisper1": "Из-под капюшона доносится низкий гул. «Великий взрыв уничтожил большинство артефактов древней цивилизации. Остатки редки и разбросаны», - бормочет он.",
-      "whisper2": "Коллекционер едва дышит. «В странствиях я много узнал о древней цивилизации. До Великого взрыва магии не было - она родилась в тот миг», - шепчет он, уходя."
+      "whisper2": "Коллекционер едва дышит. «В странствиях я много узнал о древней цивилизации. До Великого взрыва магии не было - она родилась в тот миг», - шепчет он, уходя.",
+      "whisperGeneric": "Коллекционер кивает раз и исчезает."
     },
     "title": "Странствующий коллекционер",
     "message": {
-      "visit0": "К вашему жилищу приближается фигура в лохмотьях. Её заинтересовало ваше имущество. «Я чую ценность среди ваших вещей», - шепчет она. «Позвольте забрать одну - за {{reward}} золота.»",
-      "visit1": "Фигура возвращается, шаги бесшумны. «Больше артефактов, больше тайн», - шепчет она. «Отдайте ещё одну - и ваш кошель станет тяжелее на {{reward}} золота.»",
-      "visit2": "Коллекционер снова появляется, глаза светятся из-под капюшона. «Наши сделки подходят к концу», - тихо говорит она. «Продайте ещё одну - и {{reward}} золота ваши.»",
-      "visit0_both": "A figure wrapped in tattered robes approaches. 'I sense value among your possessions,' he murmurs. 'Sell me one for {{reward}} gold - or buy back what others left behind for {{goldCost}} gold.'",
-      "visit0_buy": "A figure wrapped in tattered robes approaches, a satchel of discarded relics at his side. 'I gather what others refuse,' he murmurs. 'Any of these can be yours for {{goldCost}} gold.'",
-      "visit1_both": "The robed figure returns, silent as before. 'Sell me another for {{reward}} gold,' he whispers, 'or claim one I recovered for {{goldCost}} gold.'",
-      "visit1_buy": "The robed figure returns with forgotten relics. 'What you once refused, I kept,' he whispers. '{{goldCost}} gold, and any may be yours.'",
-      "visit2_both": "The collector appears again, eyes glowing within the hood. 'Sell me one more for {{reward}} gold,' he says softly, 'or buy from what I carry for {{goldCost}} gold.'",
-      "visit2_buy": "The collector appears again with a few recovered relics. 'Our dealings near their end,' he says softly. 'For {{goldCost}} gold, take one.'"
+      "visit0": "К вашему жилищу приближается фигура в лохмотьях. Её заинтересовало ваше имущество. «Я чую ценность среди ваших вещей», - шепчет она. «Позвольте забрать одну.»",
+      "visit1": "Фигура возвращается, шаги бесшумны. «Больше артефактов, больше тайн», - шепчет она. «Отдайте ещё одну.»",
+      "visit0_both": "A figure wrapped in tattered robes approaches. 'I sense value among your possessions,' he murmurs. 'Sell me one, or buy back what others left behind.'",
+      "visit0_buy": "A figure wrapped in tattered robes approaches, a satchel of discarded relics at his side. 'I gather what others refuse,' he murmurs. 'Any of these can be yours.'",
+      "visit1_both": "The robed figure returns, silent as before. 'Sell me another,' he whispers, 'or claim one I found.'",
+      "visit1_buy": "The robed figure returns with forgotten relics. 'What others once refused, I kept,' he whispers. 'Any may be yours.'"
     }
   },
   "wanderingFirecrafter": {

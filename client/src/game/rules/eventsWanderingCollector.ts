@@ -132,11 +132,21 @@ function removeCollectorItem(
   return {};
 }
 
+function getCollectorDepartureLogKey(newVisitCount: number): string {
+  // Special lore after the 1st, 3rd, and 5th visits; short generic line otherwise
+  if (newVisitCount === 1) return "whisper0";
+  if (newVisitCount === 3) return "whisper1";
+  if (newVisitCount === 5) return "whisper2";
+  return "whisperGeneric";
+}
+
+export { getCollectorDepartureLogKey };
+
 function endVisitPatch(state: GameState): Partial<GameState> {
   const { story, newVisitCount } = incrementCollectorVisit(state);
   return {
     story,
-    _logMessageKey: `whisper${Math.min(newVisitCount - 1, 2)}`,
+    _logMessageKey: getCollectorDepartureLogKey(newVisitCount),
   } as Partial<GameState>;
 }
 
@@ -161,7 +171,8 @@ export const wanderingCollectorEvents: Record<string, GameEvent> = {
     },
     message: (state: GameState) => {
       const visitCount = getCollectorVisitCount(state);
-      const visitKey = Math.min(visitCount, 2);
+      // First visit vs every return visit (no special "final visit" copy)
+      const visitKey = visitCount === 0 ? 0 : 1;
       const hasGoods = getRejectedCollectorItems(state).length > 0;
       const hasOwned = getOwnedCollectorItems(state).length > 0;
       if (hasGoods && hasOwned) return `visit${visitKey}_both`;

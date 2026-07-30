@@ -2268,19 +2268,17 @@
     "log": {
       "whisper0": "收藏家叹息着转身。「我游历中发现许多古代文明遗物，他们远比我们先进，」他低语着消失在黑暗中。",
       "whisper1": "兜帽下渗出低鸣。「大爆炸摧毁了古代文明的大部分遗物，残存者稀少而分散，」他呢喃。",
-      "whisper2": "收藏家轻轻吐息。「我在旅途中学到许多古代文明之事。大爆炸前世上没有魔法，它在那一刻诞生，」他离去时低语。"
+      "whisper2": "收藏家轻轻吐息。「我在旅途中学到许多古代文明之事。大爆炸前世上没有魔法，它在那一刻诞生，」他离去时低语。",
+      "whisperGeneric": "收藏家点一点头，悄然离去。"
     },
     "title": "流浪收藏家",
     "message": {
-      "visit0": "一个裹着破袍的人影走近。他似乎对你收集的东西很感兴趣。「我感觉到你的财物中有价值之物，」他低语，「让我带走一件，换 {{reward}} 金币。」",
-      "visit1": "黑袍人影再度归来，脚步无声。「更多遗物，更多秘密，」他低语，「再让我取走一件，你的钱袋将多出 {{reward}} 金币。」",
-      "visit2": "收藏家再次出现，兜帽下双眼发光。「我们的交易快结束了，」他轻声说，「再卖我一件，{{reward}} 金币归你。」",
-      "visit0_both": "A figure wrapped in tattered robes approaches. 'I sense value among your possessions,' he murmurs. 'Sell me one for {{reward}} gold - or buy back what others left behind for {{goldCost}} gold.'",
-      "visit0_buy": "A figure wrapped in tattered robes approaches, a satchel of discarded relics at his side. 'I gather what others refuse,' he murmurs. 'Any of these can be yours for {{goldCost}} gold.'",
-      "visit1_both": "The robed figure returns, silent as before. 'Sell me another for {{reward}} gold,' he whispers, 'or claim one I recovered for {{goldCost}} gold.'",
-      "visit1_buy": "The robed figure returns with forgotten relics. 'What you once refused, I kept,' he whispers. '{{goldCost}} gold, and any may be yours.'",
-      "visit2_both": "The collector appears again, eyes glowing within the hood. 'Sell me one more for {{reward}} gold,' he says softly, 'or buy from what I carry for {{goldCost}} gold.'",
-      "visit2_buy": "The collector appears again with a few recovered relics. 'Our dealings near their end,' he says softly. 'For {{goldCost}} gold, take one.'"
+      "visit0": "一个裹着破袍的人影走近。他似乎对你收集的东西很感兴趣。「我感觉到你的财物中有价值之物，」他低语，「让我带走一件。」",
+      "visit1": "黑袍人影再度归来，脚步无声。「更多遗物，更多秘密，」他低语，「再让我取走一件。」",
+      "visit0_both": "A figure wrapped in tattered robes approaches. 'I sense value among your possessions,' he murmurs. 'Sell me one, or buy back what others left behind.'",
+      "visit0_buy": "A figure wrapped in tattered robes approaches, a satchel of discarded relics at his side. 'I gather what others refuse,' he murmurs. 'Any of these can be yours.'",
+      "visit1_both": "The robed figure returns, silent as before. 'Sell me another,' he whispers, 'or claim one I found.'",
+      "visit1_buy": "The robed figure returns with forgotten relics. 'What others once refused, I kept,' he whispers. 'Any may be yours.'"
     }
   },
   "wanderingFirecrafter": {

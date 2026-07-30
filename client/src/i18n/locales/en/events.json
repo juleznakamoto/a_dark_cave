@@ -2268,19 +2268,17 @@
     "log": {
       "whisper0": "The collector sighs and turns away. 'In my travels, I uncovered many relics of the ancient civilization. They were far more advanced than we ever were,' he whispers before fading into the dark.",
       "whisper1": "A low hum seeps from beneath the hood. 'The great explosion destroyed most artifacts of the ancient civilization. What little remains is scattered and rare,' he murmurs.",
-      "whisper2": "A faint breath escapes the collector. 'I learned much of the ancient civilization on my journeys. Before the great explosion, there was no magic in this world. It was born in that moment,' he whispers as he departs."
+      "whisper2": "A faint breath escapes the collector. 'I learned much of the ancient civilization on my journeys. Before the great explosion, there was no magic in this world. It was born in that moment,' he whispers as he departs.",
+      "whisperGeneric": "The collector nods once and slips away."
     },
     "title": "The Wandering Collector",
     "message": {
-      "visit0": "A figure wrapped in tattered robes approaches. He seems intrigued by what you've gathered. 'I sense value among your possessions,' he murmurs. 'Allow me to take one, in exchange for {{reward}} gold.'",
-      "visit0_both": "A figure wrapped in tattered robes approaches. 'I sense value among your possessions,' he murmurs. 'Sell me one for {{reward}} gold, or buy back what others left behind for {{goldCost}} gold.'",
-      "visit0_buy": "A figure wrapped in tattered robes approaches, a satchel of discarded relics at his side. 'I gather what others refuse,' he murmurs. 'Any of these can be yours for {{goldCost}} gold.'",
-      "visit1": "The robed figure returns, his steps soundless on the ground. 'More artifacts, more secrets', he whispers. 'Let me claim one again, and your purse will be {{reward}} gold heavier.'",
-      "visit1_both": "The robed figure returns, silent as before. 'Sell me another for {{reward}} gold,' he whispers, 'or claim one I recovered for {{goldCost}} gold.'",
-      "visit1_buy": "The robed figure returns with forgotten relics. 'What you once refused, I kept,' he whispers. '{{goldCost}} gold, and any may be yours.'",
-      "visit2": "The collector appears again, eyes glowing within the hood. 'Our dealings near their end,' he says softly. 'Sell me one more, and {{reward}} gold shall be yours.'",
-      "visit2_both": "The collector appears again, eyes glowing within the hood. 'Sell me one more for {{reward}} gold,' he says softly, 'or buy from what I carry for {{goldCost}} gold.'",
-      "visit2_buy": "The collector appears again with a few recovered relics. 'Our dealings near their end,' he says softly. 'For {{goldCost}} gold, take one.'"
+      "visit0": "A figure wrapped in tattered robes approaches. He seems intrigued by what you've gathered. 'I sense value among your possessions,' he murmurs. 'Allow me to take one.'",
+      "visit0_both": "A figure wrapped in tattered robes approaches. 'I sense value among your possessions,' he murmurs. 'Sell me one, or buy back what others left behind.'",
+      "visit0_buy": "A figure wrapped in tattered robes approaches, a satchel of discarded relics at his side. 'I gather what others refuse,' he murmurs. 'Any of these can be yours.'",
+      "visit1": "The robed figure returns, his steps soundless on the ground. 'More artifacts, more secrets,' he whispers. 'Let me claim one again.'",
+      "visit1_both": "The robed figure returns, silent as before. 'Sell me another,' he whispers, 'or claim one I found.'",
+      "visit1_buy": "The robed figure returns with forgotten relics. 'What others once refused, I kept,' he whispers. 'Any may be yours.'"
     }
   },
   "wanderingFirecrafter": {

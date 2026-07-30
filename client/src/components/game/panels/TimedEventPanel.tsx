@@ -807,15 +807,30 @@ export default function TimedEventPanel() {
           <>
             {renderChoiceSection(
               t("ui:timedEvent.buy"),
-              collectorSellChoices,
+              collectorBuyChoices,
             )}
             {renderChoiceSection(
               t("ui:timedEvent.sell"),
-              collectorBuyChoices,
+              collectorSellChoices,
             )}
             {collectorNothingChoice && (
-              <div className={gameActionButtonGridClassName("mt-2")}>
-                {renderChoiceButton(collectorNothingChoice)}
+              <div className="pt-3">
+                <Button
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setHighlightedResources([]);
+                    handleChoice("sell_nothing");
+                  }}
+                  variant="outline"
+                  size="xs"
+                  disabled={timeRemaining <= 0}
+                  className={gameActionOutlineButtonClassName(
+                    timeRemaining <= 0,
+                  )}
+                  button_id="timedevent-say_goodbye"
+                >
+                  {t("ui:timedEvent.sayGoodbye")}
+                </Button>
               </div>
             )}
           </>
