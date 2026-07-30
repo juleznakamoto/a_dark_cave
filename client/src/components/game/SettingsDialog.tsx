@@ -84,7 +84,7 @@ const GAME_MODE_DEFAULTS: Record<DevGameMode, string> = {
 interface AudioControlRowProps {
   iconOn: string;
   iconOff: string;
-  /** Visible channel name, e.g. "Music" / "Sound". */
+  /** Visible channel name, e.g. "Ambience" / "Sound". */
   title: string;
   /** Accessible mute/unmute action label. */
   label: string;
@@ -215,7 +215,7 @@ function GameModeSelector({
 }
 
 /**
- * Settings dialog opened from the Profile menu. Houses audio (music + sound effects),
+ * Settings dialog opened from the Profile menu. Houses audio (ambience + sound effects),
  * language, email preferences, and account deletion. Blocking: while open, the
  * simulation is frozen and no new event/combat dialogs spawn over it — its
  * `settingsDialogOpen` store flag is part of `isNonRewardBlockingModalOpen` in

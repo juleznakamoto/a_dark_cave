@@ -1,7 +1,7 @@
 {
   "settings": {
     "title": "Settings",
-    "music": "Music",
+    "music": "Ambience",
     "sound": "Sound",
     "emails": "Emails",
     "gameMode": "Game Mode",
@@ -41,8 +41,8 @@
     "contact": "Contact",
     "pauseGame": "Pause game",
     "resumeGame": "Resume game",
-    "muteMusic": "Mute music",
-    "unmuteMusic": "Unmute music",
+    "muteMusic": "Mute ambience",
+    "unmuteMusic": "Unmute ambience",
     "muteSfx": "Mute sound effects",
     "unmuteSfx": "Mute sound effects",
     "cruelModeActive": "Cruel Mode activated",

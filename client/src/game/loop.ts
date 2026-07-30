@@ -36,7 +36,7 @@ import { logger } from "@/lib/logger";
 import { formatSaveTimestamp } from "@/lib/utils";
 import { gameActions, canExecuteAction, shouldShowAction } from "./rules";
 import { getResourceLimit, isResourceLimited } from "./resourceLimits";
-import { getPriorActionSuccessor } from "./buttonUpgrades";
+import { getPriorActionSuccessor, isPriorActionEligible } from "./buttonUpgrades";
 import {
   DISGRACED_PRIOR_UPGRADES,
 } from "./rules/skillUpgrades";
@@ -74,6 +74,9 @@ function canPriorExecute(actionId: string, state: GameState): boolean {
   if (now - (priorLastCompleted.get(actionId) ?? 0) < PRIOR_EXECUTION_GAP_MS) return false;
   // Never re-trigger while this action is still executing.
   if ((state as any).executionStartTimes?.[actionId]) return false;
+
+  // Gated Prior actions (e.g. Finance Expedition after first max-tier clear).
+  if (!isPriorActionEligible(actionId, state)) return false;
 
   // Don't execute actions that are no longer visible (e.g. superseded by a tool upgrade).
   // Without this check, the Prior drains resources for a hidden action indefinitely because

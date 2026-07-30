@@ -1,7 +1,7 @@
 {
   "settings": {
     "title": "Impostazioni",
-    "music": "Musica",
+    "music": "Ambiente",
     "sound": "Suono",
     "emails": "Email",
     "gameMode": "Game Mode",
@@ -41,8 +41,8 @@
     "contact": "Contatti",
     "pauseGame": "Metti in pausa",
     "resumeGame": "Riprendi il gioco",
-    "muteMusic": "Silenzia musica",
-    "unmuteMusic": "Riattiva musica",
+    "muteMusic": "Silenzia ambiente",
+    "unmuteMusic": "Riattiva ambiente",
     "muteSfx": "Silenzia effetti sonori",
     "unmuteSfx": "Silenzia effetti sonori",
     "cruelModeActive": "Modalità Crudele attivata",

@@ -4,7 +4,9 @@ import {
   FINANCE_EXPEDITION_TIERS,
   getFinanceExpeditionTierIndex,
   handleFinanceExpedition,
+  isFinanceExpeditionPriorUnlocked,
 } from "./forestResearchActions";
+import { isPriorActionEligible } from "@/game/buttonUpgrades";
 import type { ActionResult } from "@/game/actions";
 
 function baseState(usageCount: number) {
@@ -71,5 +73,34 @@ describe("handleFinanceExpedition", () => {
     expect(
       result.logEntries!.some((e) => e.eventId === "leatherboundBookFound"),
     ).toBe(false);
+  });
+});
+
+describe("isFinanceExpeditionPriorUnlocked", () => {
+  it("is locked until the max tier has been completed once", () => {
+    expect(isFinanceExpeditionPriorUnlocked(baseState(0))).toBe(false);
+    expect(
+      isFinanceExpeditionPriorUnlocked(
+        baseState(FINANCE_EXPEDITION_TIERS.length - 1),
+      ),
+    ).toBe(false);
+    expect(
+      isFinanceExpeditionPriorUnlocked(
+        baseState(FINANCE_EXPEDITION_TIERS.length),
+      ),
+    ).toBe(true);
+    expect(
+      isFinanceExpeditionPriorUnlocked(
+        baseState(FINANCE_EXPEDITION_TIERS.length + 3),
+      ),
+    ).toBe(true);
+  });
+
+  it("gates Prior eligibility for financeExpedition only", () => {
+    const locked = baseState(FINANCE_EXPEDITION_TIERS.length - 1);
+    const unlocked = baseState(FINANCE_EXPEDITION_TIERS.length);
+    expect(isPriorActionEligible("financeExpedition", locked)).toBe(false);
+    expect(isPriorActionEligible("financeExpedition", unlocked)).toBe(true);
+    expect(isPriorActionEligible("chopWood", locked)).toBe(true);
   });
 });

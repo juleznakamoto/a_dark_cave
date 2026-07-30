@@ -44,6 +44,13 @@ export function getFinanceExpeditionInsightReward(state: GameState): number {
   return getFinanceExpeditionTier(state).insight;
 }
 
+/** Prior may automate Finance Expedition only after the max tier has been completed once. */
+export function isFinanceExpeditionPriorUnlocked(
+  state: Pick<GameState, "story">,
+): boolean {
+  return getFinanceExpeditionUsageCount(state) >= FINANCE_EXPEDITION_TIERS.length;
+}
+
 export const forestResearchActions: Record<string, Action> = {
   financeExpedition: {
     id: "financeExpedition",

@@ -112,6 +112,7 @@ import { socialPromoExclusiveStepsCompleted } from "@/game/socialPromoExclusiveR
 import {
   ACTION_TO_UPGRADE_KEY,
   incrementButtonUsage,
+  isPriorActionEligible,
 } from "@/game/buttonUpgrades";
 import { getExecutionTime } from "@/game/rules";
 import {
@@ -2194,6 +2195,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
       if (assigned.includes(actionId)) {
         return { priorAssignedActions: assigned.filter((id) => id !== actionId) };
       }
+      if (!isPriorActionEligible(actionId, state)) return {};
       if (assigned.length >= maxActions) return {};
       return { priorAssignedActions: [...assigned, actionId] };
     });

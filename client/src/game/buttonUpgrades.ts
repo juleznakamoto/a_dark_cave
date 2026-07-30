@@ -1,4 +1,5 @@
 import { GameState } from "@shared/schema";
+import { isFinanceExpeditionPriorUnlocked } from "@/game/rules/forestResearchActions";
 
 export type UpgradeKey =
   | "exploreCave"
@@ -203,7 +204,20 @@ export const PRIOR_ELIGIBLE_ACTIONS = new Set<string>([
   "craftAshfireBomb",
   "craftVoidBomb",
   "craftVeinfireElixir",
+  "financeExpedition",
 ]);
+
+/** Whether the Prior badge/assignment is available for this action in the current state. */
+export function isPriorActionEligible(
+  actionId: string,
+  state: Pick<GameState, "story">,
+): boolean {
+  if (!PRIOR_ELIGIBLE_ACTIONS.has(actionId)) return false;
+  if (actionId === "financeExpedition") {
+    return isFinanceExpeditionPriorUnlocked(state);
+  }
+  return true;
+}
 
 /**
  * Upgrade chains for Prior-eligible actions.

@@ -1,7 +1,7 @@
 {
   "settings": {
     "title": "Ajustes",
-    "music": "Música",
+    "music": "Ambiente",
     "sound": "Sonido",
     "emails": "Correos",
     "gameMode": "Game Mode",
@@ -11,59 +11,59 @@
     "gameModeSteamDemo": "Steam Demo"
   },
   "textScale": {
-    "label": "Tamaño del texto",  //x1.8
-    "ariaLabel": "Seleccionar tamaño del texto",  //x1.8
+    "label": "Tamaño del texto", //x1.8
+    "ariaLabel": "Seleccionar tamaño del texto", //x1.8
     "normal": "Normal",
     "large": "Grande"
   },
   "languageSelector": {
     "label": "Idioma",
-    "ariaLabel": "Seleccionar idioma"  //x1.2
+    "ariaLabel": "Seleccionar idioma" //x1.2
   },
   "startScreen": {
-    "titleNormal": "Una cueva oscura.",  //x1.4
-    "titleCruel": "Una cueva muy oscura.",  //x1.2
+    "titleNormal": "Una cueva oscura.", //x1.4
+    "titleCruel": "Una cueva muy oscura.", //x1.2
     "airNormal": "El aire es frío y húmedo.",
     "airCruel": "El aire es gélido y húmedo.",
     "seeNormal": "Apenas distingues las formas a tu alrededor.",
     "seeCruel": "Apenas ves nada a tu alrededor.",
-    "makeFire": "Encender fuego",  //x1.6
+    "makeFire": "Encender fuego", //x1.6
     "recommendedBy": "Recomendado por"
   },
   "footer": {
-    "fullGame": "Juego completo",  //x1.6
+    "fullGame": "Juego completo", //x1.6
     "trader": "Mercader",
-    "openShop": "Abrir tienda",  //x1.3
+    "openShop": "Abrir tienda", //x1.3
     "donate": "Donar",
-    "supportGame": "Apoyar el juego",  //x1.3
+    "supportGame": "Apoyar el juego", //x1.3
     "privacy": "Privacidad",
-    "imprint": "Aviso legal",  //x1.6
+    "imprint": "Aviso legal", //x1.6
     "contact": "Contacto",
-    "pauseGame": "Pausar juego",  //x1.2
-    "resumeGame": "Reanudar juego",  //x1.3
-    "muteMusic": "Silenciar música",  //x1.6
-    "unmuteMusic": "Activar música",
+    "pauseGame": "Pausar juego", //x1.2
+    "resumeGame": "Reanudar juego", //x1.3
+    "muteMusic": "Silenciar ambiente", //x1.6
+    "unmuteMusic": "Activar ambiente",
     "muteSfx": "Silenciar efectos",
     "unmuteSfx": "Activar efectos",
     "cruelModeActive": "Modo cruel activado",
-    "wishlistOnSteam": "Añadir a la lista de deseados en Steam",  //x2.2
+    "wishlistOnSteam": "Añadir a la lista de deseados en Steam", //x2.2
     "demoProgress": "Demo Progress"
   },
   "profile": {
     "title": "Menú",
-    "signInUp": "Iniciar sesión/Registrarse",  //x2.6
-    "emailsOn": "Correos activados",  //x1.9
-    "emailsOff": "Correos desactivados",  //x2.0
+    "signInUp": "Iniciar sesión/Registrarse", //x2.6
+    "emailsOn": "Correos activados", //x1.9
+    "emailsOff": "Correos desactivados", //x2.0
     "marketingOnTooltip": "Actualmente recibes correos con actualizaciones, descuentos y recompensas exclusivas. Toca para desactivarlos.",
     "marketingOffTooltip": "Actualmente no recibes correos con actualizaciones, descuentos y recompensas exclusivas. Toca para activarlos.",
-    "rewardsTasks": "Tareas de recompensas",  //x1.6
+    "rewardsTasks": "Tareas de recompensas", //x1.6
     "save": "Guardar",
-    "newGame": "Nueva partida",  //x1.6
+    "newGame": "Nueva partida", //x1.6
     "restart": "Reiniciar",
-    "signIn": "Iniciar sesión",  //x2.0
-    "signOut": "Cerrar sesión",  //x1.6
+    "signIn": "Iniciar sesión", //x2.0
+    "signOut": "Cerrar sesión", //x1.6
     "leaderboard": "Clasificación",
-    "rewards": "Recompensas",  //x1.6
+    "rewards": "Recompensas", //x1.6
     "deleteAccount": "Eliminar cuenta",
     "marketingSubscribe": "Suscribirse a correos",
     "marketingUnsubscribe": "Cancelar suscripción",
@@ -72,16 +72,16 @@
     "signUpCloudSave": "Regístrate para guardar en la nube",
     "autoSaveSteam": "Game auto-saves every 15 seconds",
     "steamCloudSave": "Progress syncs to Steam Cloud when you save.",
-    "lastSave": "Último guardado: {{time}}",  //x1.3
-    "signedOut": "Sesión cerrada correctamente",  //x1.2
-    "signOutError": "Error al cerrar sesión",  //x1.3
-    "gameSaved": "Partida guardada correctamente",  //x1.3
-    "saveFailed": "No se pudo guardar la partida",  //x1.5
+    "lastSave": "Último guardado: {{time}}", //x1.3
+    "signedOut": "Sesión cerrada correctamente", //x1.2
+    "signOutError": "Error al cerrar sesión", //x1.3
+    "gameSaved": "Partida guardada correctamente", //x1.3
+    "saveFailed": "No se pudo guardar la partida", //x1.5
     "accountDeleted": "Tu cuenta fue eliminada",
     "accountDeletedDesc": "Se cerró tu sesión y se borró el guardado local de este dispositivo.",
     "deleteAccountFailed": "No se pudo eliminar la cuenta",
-    "tryAgainLater": "Inténtalo más tarde.",  //x1.3
-    "notSignedIn": "Sin sesión iniciada",  //x1.5
+    "tryAgainLater": "Inténtalo más tarde.", //x1.3
+    "notSignedIn": "Sin sesión iniciada", //x1.5
     "subscribed": "Estás suscrito",
     "unsubscribed": "No estás suscrito",
     "subscribedDesc": "Te enviaremos actualizaciones y ofertas ocasionales por correo.",
@@ -92,8 +92,8 @@
   },
   "pauseHotkey": {
     "hintPrefix": "Usa ",
-    "hintSelect": " para seleccionar pestaña o ",  //x1.6
-    "hintSuffix": " para cambiar de pestaña"  //x1.6
+    "hintSelect": " para seleccionar pestaña o ", //x1.6
+    "hintSuffix": " para cambiar de pestaña" //x1.6
   },
   "villageHotkeyTutorial": {
     "dismiss": "Cerrar"

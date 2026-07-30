@@ -21,7 +21,7 @@ import { ButtonLevelBadge } from "@/components/game/ButtonLevelBadge";
 import { ButtonPriorBadge } from "@/components/game/ButtonPriorBadge";
 import {
   ACTION_TO_UPGRADE_KEY,
-  PRIOR_ELIGIBLE_ACTIONS,
+  isPriorActionEligible,
 } from "@/game/buttonUpgrades";
 import { resolveActionLabel } from "@/i18n/actionLabels";
 import { getResourceName } from "@/i18n/resolveGameText";
@@ -463,7 +463,7 @@ export default function ForestPanel() {
         </CooldownButton>
       );
 
-      const isPriorEligible = PRIOR_ELIGIBLE_ACTIONS.has(actionId);
+      const isPriorEligible = isPriorActionEligible(actionId, state);
       const needsWrapper = upgradeKey || isPriorEligible;
       return needsWrapper ? (
         <ActionButtonSlot key={actionId}>
@@ -512,7 +512,7 @@ export default function ForestPanel() {
       </CooldownButton>
     );
 
-    const isPriorEligible = PRIOR_ELIGIBLE_ACTIONS.has(actionId);
+    const isPriorEligible = isPriorActionEligible(actionId, state);
     const needsWrapper = upgradeKey || isPriorEligible;
     return needsWrapper ? (
       <ActionButtonSlot key={actionId}>
