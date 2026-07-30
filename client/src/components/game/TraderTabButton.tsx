@@ -7,9 +7,6 @@ import { useCoinHoverParticles } from "@/components/ui/coin-hover-particles";
 import { TRADER_TAB_PARTICLE_CONFIG } from "@/components/ui/bubbly-button.particles";
 import { useGameStore } from "@/game/state";
 import {
-  LIME_ACCENT_BORDER_GLOW,
-  LIME_ACCENT_BORDER_GLOW_HOVER,
-  LIME_ACCENT_BORDER_IDLE,
   LIME_ACCENT_GLOW_TEXT_SHADOW_ACTIVE,
   LIME_ACCENT_GLOW_TEXT_SHADOW_HOVER,
   LIME_ACCENT_ICON_IDLE,
@@ -40,7 +37,6 @@ export function TraderTabButton({
   const { hoverHandlers, portal, setForcedEmit } = useCoinHoverParticles("gold", {
     particleOriginRef: iconRef,
     particleConfig: TRADER_TAB_PARTICLE_CONFIG,
-    emitIntervalMs: 700,
     zIndex: 50,
   });
   const [isHintActive, setIsHintActive] = useState(false);
@@ -85,45 +81,42 @@ export function TraderTabButton({
         {...hoverHandlers}
         className={cn(
           tabButtonClass,
-          "group shrink-0",
+          "group shrink-0 gap-1.5",
           isAnimating ? (isFadePhase ? "tab-fade-in" : "tab-blink-new") : "",
         )}
         onClick={onClick}
         data-testid="tab-trader"
       >
         <span
+          ref={iconRef}
           className={cn(
-            // Compact chip; border (not ring) so rounded corners render.
-            "inline-flex items-center gap-1 rounded-md px-1.5 py-0.5 leading-none",
-            LIME_ACCENT_BORDER_IDLE,
-            LIME_ACCENT_BORDER_GLOW_HOVER,
-            showActiveGlow && LIME_ACCENT_BORDER_GLOW,
+            "font-noto-symbols-2 text-[19px] leading-none text-lime-500 translate-y-[4px]",
+            LIME_ACCENT_ICON_IDLE,
+            showActiveGlow
+              ? cn("opacity-100", LIME_ACCENT_GLOW_TEXT_SHADOW_ACTIVE)
+              : cn(LIME_ACCENT_GLOW_TEXT_SHADOW_HOVER),
           )}
+          aria-hidden
         >
+          ◬
+        </span>
+        <span className="inline-grid">
           <span
-            ref={iconRef}
-            className={cn(
-              // ◬ sits high in its em-box; nudge down to optically center with the label.
-              "font-noto-symbols-2 text-[16px] leading-none text-lime-500 translate-y-[2px]",
-              LIME_ACCENT_ICON_IDLE,
-              showActiveGlow
-                ? cn("opacity-100", LIME_ACCENT_GLOW_TEXT_SHADOW_ACTIVE)
-                : cn(LIME_ACCENT_GLOW_TEXT_SHADOW_HOVER),
-            )}
+            className="invisible col-start-1 row-start-1 font-semibold"
             aria-hidden
           >
-            ◬
+            {t("tabs.trader", { ns: "common" })}
           </span>
           <span
             className={cn(
-              "font-normal transition-opacity",
+              "col-start-1 row-start-1 font-normal transition-opacity",
               isAnimating
                 ? ""
                 : showActiveGlow
-                  ? "opacity-100"
+                  ? "opacity-100 font-semibold"
                   : isPaused
                     ? tabInactiveTextClass
-                    : "opacity-80 group-hover:opacity-100",
+                    : "opacity-80 group-hover:opacity-100 group-hover:font-semibold",
             )}
           >
             {t("tabs.trader", { ns: "common" })}
