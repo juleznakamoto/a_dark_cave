@@ -29,7 +29,7 @@ export const GAME_PANEL_HEADER_INDICATOR_CLASS =
   "game-panel-header-indicator inline-flex shrink-0 items-center justify-center self-center cursor-pointer rounded-full opacity-80 transition-opacity duration-150 hover:opacity-100";
 export const GAME_PANEL_HEADER_INDICATOR_TRIGGER_CLASS =
   "inline-flex items-center leading-none";
-/** Centered glyph over a header indicator ring (no manual mt nudges). */
+/** Centered glyph over a header indicator ring; keep per-glyph mt/translate optical nudges at call sites. */
 export const GAME_PANEL_HEADER_INDICATOR_GLYPH_CLASS =
   "game-panel-header-indicator-glyph font-noto-symbols-2 absolute inset-0 flex items-center justify-center font-extrabold leading-none";
 export const GAME_PANEL_HEADER_INDICATOR_INNER_CLASS =
