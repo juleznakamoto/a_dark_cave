@@ -372,8 +372,53 @@ body {
 }
 
 .building-action-badge--lg {
-  width: 20px;
-  height: 20px;
+  width: calc(20px * var(--adc-control-scale, 1));
+  height: calc(20px * var(--adc-control-scale, 1));
+}
+
+/* Action-button corner badges (level / prior / insight / boost hosts). */
+.button-level-badge {
+  position: absolute;
+  top: calc(-7px * var(--adc-control-scale, 1));
+  right: calc(-7px * var(--adc-control-scale, 1));
+  width: calc(1rem * var(--adc-control-scale, 1));
+  height: calc(1rem * var(--adc-control-scale, 1));
+  /* Control scale only — avoid stacking --adc-text-scale from .text-2xs. */
+  font-size: calc(0.625rem * var(--adc-control-scale, 1));
+  line-height: 1;
+}
+
+.button-prior-badge {
+  position: absolute;
+  bottom: calc(-4px * var(--adc-control-scale, 1));
+  right: calc(-4px * var(--adc-control-scale, 1));
+  width: calc(10px * var(--adc-control-scale, 1));
+  height: calc(10px * var(--adc-control-scale, 1));
+}
+
+.button-prior-badge--assigned {
+  bottom: calc(-3px * var(--adc-control-scale, 1));
+  right: calc(-3px * var(--adc-control-scale, 1));
+  width: calc(8px * var(--adc-control-scale, 1));
+  height: calc(8px * var(--adc-control-scale, 1));
+}
+
+.action-button-corner-badge {
+  position: absolute;
+  width: calc(20px * var(--adc-control-scale, 1));
+  height: calc(20px * var(--adc-control-scale, 1));
+  z-index: 30;
+  pointer-events: auto;
+}
+
+.action-button-corner-badge--insight {
+  bottom: calc(-9px * var(--adc-control-scale, 1));
+  right: calc(-9px * var(--adc-control-scale, 1));
+}
+
+.action-button-corner-badge--boost {
+  top: calc(-9px * var(--adc-control-scale, 1));
+  right: calc(-9px * var(--adc-control-scale, 1));
 }
 
 /* Side-panel insight hit target; scales with Settings → Large text. */
@@ -521,7 +566,7 @@ html.adc-text-large .game-panel-header-indicator-row {
 }
 
 .building-action-badge--lg .building-action-badge__glyph {
-  font-size: 17px;
+  font-size: calc(17px * var(--adc-control-scale, 1));
 }
 
 .building-action-badge__svg {

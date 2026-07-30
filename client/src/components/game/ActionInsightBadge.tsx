@@ -38,7 +38,6 @@ import { cn } from "@/lib/utils";
 import { GAME_PANEL_HEADER_INSIGHT_BADGE_CLASS } from "@/components/game/gameChrome";
 import type { GameState } from "@shared/schema";
 
-const BADGE_SIZE_PX = 20;
 const PROLONG_MINUTES = TIMED_EVENT_TAB_PROLONG_MS / 60_000;
 
 type ActionInsightBadgeProps =
@@ -306,16 +305,7 @@ export function ActionInsightBadge(props: ActionInsightBadgeProps) {
   if (layout === "overlay") {
     return (
       <div
-        className="inline-flex shrink-0 items-center self-center"
-        style={{
-          position: "absolute",
-          bottom: "-9px",
-          right: "-9px",
-          width: BADGE_SIZE_PX,
-          height: BADGE_SIZE_PX,
-          zIndex: 30,
-          pointerEvents: "auto",
-        }}
+        className="action-button-corner-badge action-button-corner-badge--insight inline-flex shrink-0 items-center self-center"
         onPointerDown={(e) => e.stopPropagation()}
       >
         {badgeTooltip}

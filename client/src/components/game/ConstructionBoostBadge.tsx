@@ -20,7 +20,6 @@ import { formatTooltipResourceName } from "@/i18n/tooltipLabels";
 import { cn, formatMinutesSeconds } from "@/lib/utils";
 import type { GameState } from "@shared/schema";
 
-const BADGE_SIZE_PX = 20;
 const BOOST_GLYPH = "\u23E9";
 
 interface ConstructionBoostBadgeProps {
@@ -120,15 +119,7 @@ export function ConstructionBoostBadge({ actionId }: ConstructionBoostBadgeProps
 
   return (
     <div
-      style={{
-        position: "absolute",
-        top: "-9px",
-        right: "-9px",
-        width: BADGE_SIZE_PX,
-        height: BADGE_SIZE_PX,
-        zIndex: 30,
-        pointerEvents: "auto",
-      }}
+      className="action-button-corner-badge action-button-corner-badge--boost"
       onPointerDown={(e) => e.stopPropagation()}
     >
       <TooltipWrapper
