@@ -390,7 +390,8 @@ export default function TimedEventPanel() {
     }
 
     // For merchant events, only close on "say_goodbye"
-    // Collector: one buy + one sell per visit; close when both sides are finished
+    // Collector: keep sections after trades (checkmark + disable siblings); leave on
+    // say goodbye / timeout / when max buy+sell for this visit are done
     // Other timed events close after any choice
     if (isMerchantEvent) {
       if (choiceId === "say_goodbye") {
@@ -409,8 +410,12 @@ export default function TimedEventPanel() {
       useGameStore.setState((s) => ({
         timedEventTab: {
           ...s.timedEventTab,
-          ...(justBuy ? { collectorBuyDone: true } : {}),
-          ...(justSell ? { collectorSellDone: true } : {}),
+          ...(justBuy
+            ? { collectorBuyDone: true, collectorBuyChoiceId: choiceId }
+            : {}),
+          ...(justSell
+            ? { collectorSellDone: true, collectorSellChoiceId: choiceId }
+            : {}),
         },
       }));
 
@@ -421,6 +426,8 @@ export default function TimedEventPanel() {
         tab.collectorSellDone === true || tab.collectorSellAvailable !== true;
 
       if (buyFinished && sellFinished) {
+        // Max trades done — leave via sell_nothing so visit count + reward dialog run once
+        applyEventChoice("sell_nothing", eventId, event);
         setTimedEventTab(false);
       }
     } else {
@@ -464,11 +471,24 @@ export default function TimedEventPanel() {
     const labelText = typeof choice.label === "string" ? choice.label : "";
 
     const isPurchased =
-      isMerchantEvent &&
-      gameState.merchantTrades?.purchasedIds?.includes(choice.id);
+      (isMerchantEvent &&
+        gameState.merchantTrades?.purchasedIds?.includes(choice.id)) ||
+      (isCollectorEvent &&
+        (choice.id === timedEventTab.collectorBuyChoiceId ||
+          choice.id === timedEventTab.collectorSellChoiceId));
+
+    const collectorSectionLocked =
+      isCollectorEvent &&
+      ((choice.id.startsWith("buy_") && timedEventTab.collectorBuyDone === true) ||
+        (choice.id.startsWith("sell_") &&
+          choice.id !== "sell_nothing" &&
+          timedEventTab.collectorSellDone === true));
 
     const isDisabled =
-      (hasBlockingCost && !canAfford) || timeRemaining <= 0 || isPurchased;
+      (hasBlockingCost && !canAfford) ||
+      timeRemaining <= 0 ||
+      isPurchased ||
+      collectorSectionLocked;
 
     const showGoldShopBadge =
       !steamEditionActive &&
@@ -740,17 +760,11 @@ export default function TimedEventPanel() {
     : null;
 
   const collectorBuyChoices = isCollectorEvent
-    ? eventChoices.filter(
-      (c) =>
-        c.id.startsWith("buy_") && !timedEventTab.collectorBuyDone,
-    )
+    ? eventChoices.filter((c) => c.id.startsWith("buy_"))
     : [];
   const collectorSellChoices = isCollectorEvent
     ? eventChoices.filter(
-      (c) =>
-        c.id.startsWith("sell_") &&
-        c.id !== "sell_nothing" &&
-        !timedEventTab.collectorSellDone,
+      (c) => c.id.startsWith("sell_") && c.id !== "sell_nothing",
     )
     : [];
   const collectorNothingChoice = isCollectorEvent

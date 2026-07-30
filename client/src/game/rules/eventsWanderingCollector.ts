@@ -22,7 +22,22 @@ export type CollectorTimedTabTradeState = {
   collectorSellAvailable?: boolean;
   collectorBuyDone?: boolean;
   collectorSellDone?: boolean;
+  /** Choice id that received the checkmark in the Buy section. */
+  collectorBuyChoiceId?: string;
+  /** Choice id that received the checkmark in the Sell section. */
+  collectorSellChoiceId?: string;
 };
+
+export function isCollectorTradeChoiceId(choiceId: string): boolean {
+  return (
+    choiceId.startsWith("buy_") ||
+    (choiceId.startsWith("sell_") && choiceId !== "sell_nothing")
+  );
+}
+
+export function isCollectorLeaveChoiceId(choiceId: string): boolean {
+  return choiceId === "sell_nothing";
+}
 
 function getCollectorVisitCount(state: GameState): number {
   const visitCountValue = state.story?.seen?.collectorVisitCount;
@@ -204,7 +219,7 @@ export const wanderingCollectorEvents: Record<string, GameEvent> = {
 
       const choices: EventChoice[] = [];
 
-      // Player buys rejected items from the collector
+      // Player buys rejected items from the collector (visit ends via leave choice, not here)
       for (const itemId of selectedToSellToPlayer) {
         choices.push({
           id: `buy_${itemId}`,
@@ -213,7 +228,7 @@ export const wanderingCollectorEvents: Record<string, GameEvent> = {
           effect: (innerState: GameState) => {
             const gold = (innerState.resources.gold || 0) - goldCost;
             const granted = grantCollectorItem(innerState, itemId);
-            const tradeResult: Partial<GameState> = {
+            return {
               ...granted,
               resources: {
                 ...innerState.resources,
@@ -226,33 +241,25 @@ export const wanderingCollectorEvents: Record<string, GameEvent> = {
                   itemId,
                 ),
               },
-            };
-            if (shouldEndCollectorVisitAfterTrade(innerState, "buy")) {
-              return { ...tradeResult, ...endVisitPatch(innerState) } as any;
-            }
-            return tradeResult as any;
+            } as any;
           },
         });
       }
 
-      // Player sells owned items to the collector
+      // Player sells owned items to the collector (visit ends via leave choice, not here)
       for (const itemId of selectedToBuyFromPlayer) {
         choices.push({
           id: `sell_${itemId}`,
           label: getClothingOrRelicEffectName(itemId),
           effect: (innerState: GameState) => {
             const removed = removeCollectorItem(innerState, itemId);
-            const tradeResult: Partial<GameState> = {
+            return {
               ...removed,
               resources: {
                 ...innerState.resources,
                 gold: (innerState.resources.gold || 0) + reward,
               },
-            };
-            if (shouldEndCollectorVisitAfterTrade(innerState, "sell")) {
-              return { ...tradeResult, ...endVisitPatch(innerState) } as any;
-            }
-            return tradeResult as any;
+            } as any;
           },
         });
       }

@@ -174,6 +174,10 @@ import {
   merchantEvents,
 } from "@/game/rules/eventsMerchant";
 import {
+  isCollectorLeaveChoiceId,
+  isCollectorTradeChoiceId,
+} from "@/game/rules/eventsWanderingCollector";
+import {
   buildInvestmentResultDialogPayload,
   commitInvestmentRolls,
   getInvestmentCompletionLogMeta,
@@ -362,9 +366,18 @@ interface GameStore extends GameState {
     /** Wandering collector: whether buy_/sell_ offers existed when the visit opened. */
     collectorBuyAvailable?: boolean;
     collectorSellAvailable?: boolean;
-    /** Wandering collector: one buy and one sell allowed per visit. */
+    // Wandering collector: one buy and one sell allowed per visit.
     collectorBuyDone?: boolean;
     collectorSellDone?: boolean;
+    /** Choice id that got the Buy-section checkmark this visit. */
+    collectorBuyChoiceId?: string;
+    /** Choice id that got the Sell-section checkmark this visit. */
+    collectorSellChoiceId?: string;
+    /**
+     * Rewards from mid-visit buy/sell trades, shown in RewardDialog only when
+     * the collector leaves (say goodbye, timeout, or max trades).
+     */
+    collectorPendingRewards?: Record<string, unknown>;
   };
 
   // Merchant trades state
@@ -836,6 +849,87 @@ export const rewardPayloadHasOutcomeLosses = (
   }
   return false;
 };
+
+/** Merge two detectRewards payloads (e.g. deferred collector trades). */
+export function mergeRewardPayloads(
+  a?: ReturnType<typeof detectRewards> | null,
+  b?: ReturnType<typeof detectRewards> | null,
+): ReturnType<typeof detectRewards> {
+  const left = a || {};
+  const right = b || {};
+  const merged: ReturnType<typeof detectRewards> = {};
+
+  const mergeAmountMaps = (
+    x?: Record<string, number>,
+    y?: Record<string, number>,
+  ): Record<string, number> | undefined => {
+    if (!x && !y) return undefined;
+    const out: Record<string, number> = { ...(x || {}) };
+    for (const [key, value] of Object.entries(y || {})) {
+      out[key] = (out[key] || 0) + value;
+    }
+    return Object.keys(out).length > 0 ? out : undefined;
+  };
+
+  const mergeStringArrays = <T extends string>(
+    x?: T[],
+    y?: T[],
+  ): T[] | undefined => {
+    if (!x?.length && !y?.length) return undefined;
+    return [...new Set([...(x || []), ...(y || [])])] as T[];
+  };
+
+  const resources = mergeAmountMaps(
+    left.resources as Record<string, number> | undefined,
+    right.resources as Record<string, number> | undefined,
+  );
+  if (resources) merged.resources = resources as typeof merged.resources;
+
+  const resourceLosses = mergeAmountMaps(
+    left.resourceLosses as Record<string, number> | undefined,
+    right.resourceLosses as Record<string, number> | undefined,
+  );
+  if (resourceLosses) {
+    merged.resourceLosses = resourceLosses as typeof merged.resourceLosses;
+  }
+
+  const stats = mergeAmountMaps(
+    left.stats as Record<string, number> | undefined,
+    right.stats as Record<string, number> | undefined,
+  );
+  if (stats) merged.stats = stats as typeof merged.stats;
+
+  if ((left.villagersLost || 0) + (right.villagersLost || 0) > 0) {
+    merged.villagersLost = (left.villagersLost || 0) + (right.villagersLost || 0);
+  }
+  if ((left.populationGained || 0) + (right.populationGained || 0) > 0) {
+    merged.populationGained =
+      (left.populationGained || 0) + (right.populationGained || 0);
+  }
+
+  const tools = mergeStringArrays(left.tools, right.tools);
+  if (tools) merged.tools = tools;
+  const weapons = mergeStringArrays(left.weapons, right.weapons);
+  if (weapons) merged.weapons = weapons;
+  const clothing = mergeStringArrays(left.clothing, right.clothing);
+  if (clothing) merged.clothing = clothing;
+  const clothingLost = mergeStringArrays(left.clothingLost, right.clothingLost);
+  if (clothingLost) merged.clothingLost = clothingLost;
+  const relics = mergeStringArrays(left.relics, right.relics);
+  if (relics) merged.relics = relics;
+  const relicsLost = mergeStringArrays(left.relicsLost, right.relicsLost);
+  if (relicsLost) merged.relicsLost = relicsLost;
+  const blessings = mergeStringArrays(left.blessings, right.blessings);
+  if (blessings) merged.blessings = blessings;
+  const books = mergeStringArrays(left.books, right.books);
+  if (books) merged.books = books;
+  const schematics = mergeStringArrays(left.schematics, right.schematics);
+  if (schematics) merged.schematics = schematics;
+  const fellowship = mergeStringArrays(left.fellowship, right.fellowship);
+  if (fellowship) merged.fellowship = fellowship;
+
+  return merged;
+}
 
 const detectMadnessChange = (
   stateUpdates: Partial<GameState>,
@@ -3545,8 +3639,67 @@ export const useGameStore = create<GameStore>((set, get) => ({
       const isMerchantEvent = eventId === "merchant" || eventId?.startsWith?.("merchant-");
       const isCubeDiscoveryEvent = eventId === "cubeDiscovery";
       const isFeastEvent = eventId?.startsWith?.("feast");
+      const isCollectorEvent =
+        eventId === "wandering_collector" ||
+        eventId?.startsWith?.("wandering_collector-");
+      const isCollectorTrade =
+        isCollectorEvent && isCollectorTradeChoiceId(choiceId);
+      const isCollectorLeave =
+        isCollectorEvent && isCollectorLeaveChoiceId(choiceId);
 
-      if (hasRewards && !isMerchantEvent && !isCubeDiscoveryEvent && !isFeastEvent) {
+      // Mid-visit collector trades: bank rewards for the leave dialog (no popup yet).
+      if (isCollectorTrade) {
+        const pending = mergeRewardPayloads(
+          state.timedEventTab?.collectorPendingRewards as
+          | ReturnType<typeof detectRewards>
+          | undefined,
+          rewards,
+        );
+        // Stash on timed tab via the apply set() below (not GameState schema).
+        (updatedChanges as any)._collectorPendingRewards = pending;
+      } else if (
+        isCollectorLeave &&
+        (rewardPayloadHasPositiveChanges(
+          (state.timedEventTab?.collectorPendingRewards ||
+            {}) as ReturnType<typeof detectRewards>,
+        ) ||
+          rewardPayloadHasOutcomeLosses(
+            (state.timedEventTab?.collectorPendingRewards ||
+              {}) as ReturnType<typeof detectRewards>,
+          ) ||
+          hasRewards)
+      ) {
+        const mergedRewards = mergeRewardPayloads(
+          state.timedEventTab?.collectorPendingRewards as
+          | ReturnType<typeof detectRewards>
+          | undefined,
+          rewards,
+        );
+        const rewardTitle =
+          resolveEventTitle(catalogId, eventDef?.title, state as any, {
+            ...i18nVars,
+            ...logMessageVars,
+          }) ||
+          (logEntry?.title && !isI18nReturnedObjectError(logEntry.title)
+            ? logEntry.title
+            : undefined) ||
+          tWithFallback("ui", "event.fallbackTitle", "Event");
+        rewardDialogData = {
+          rewards: mergedRewards,
+          successLog,
+          variant: "success",
+          title: rewardTitle,
+          ...(madnessChange !== 0 ? { madnessChange } : {}),
+        };
+        shouldShowRewardDialog = true;
+        (updatedChanges as any)._clearCollectorPendingRewards = true;
+      } else if (
+        hasRewards &&
+        !isMerchantEvent &&
+        !isCubeDiscoveryEvent &&
+        !isFeastEvent &&
+        !isCollectorTrade
+      ) {
         const rewardTitle =
           resolveEventTitle(catalogId, eventDef?.title, state as any, {
             ...i18nVars,
@@ -3585,14 +3738,45 @@ export const useGameStore = create<GameStore>((set, get) => ({
     }
 
     // Apply state changes FIRST - this includes relics, resources, schematics, etc.
-    if (Object.keys(updatedChanges).length > 0) {
+    const collectorPendingRewards = (updatedChanges as any)
+      ._collectorPendingRewards as
+      | ReturnType<typeof detectRewards>
+      | undefined;
+    const clearCollectorPendingRewards = Boolean(
+      (updatedChanges as any)._clearCollectorPendingRewards,
+    );
+    delete (updatedChanges as any)._collectorPendingRewards;
+    delete (updatedChanges as any)._clearCollectorPendingRewards;
+
+    if (
+      Object.keys(updatedChanges).length > 0 ||
+      collectorPendingRewards ||
+      clearCollectorPendingRewards
+    ) {
       set((prevState) => {
         // Use the same mergeStateUpdates function that other actions use
         const mergedUpdates = mergeStateUpdates(prevState, updatedChanges);
 
+        const timedEventTab =
+          collectorPendingRewards || clearCollectorPendingRewards
+            ? {
+              ...prevState.timedEventTab,
+              ...(collectorPendingRewards
+                ? {
+                  collectorPendingRewards:
+                    collectorPendingRewards as Record<string, unknown>,
+                }
+                : {}),
+              ...(clearCollectorPendingRewards
+                ? { collectorPendingRewards: undefined }
+                : {}),
+            }
+            : prevState.timedEventTab;
+
         const newState = {
           ...prevState,
           ...mergedUpdates,
+          timedEventTab,
         };
 
         return newState;
@@ -4080,6 +4264,9 @@ export const useGameStore = create<GameStore>((set, get) => ({
             ),
             collectorBuyDone: false,
             collectorSellDone: false,
+            collectorBuyChoiceId: undefined,
+            collectorSellChoiceId: undefined,
+            collectorPendingRewards: undefined,
           }
           : {};
         return {

@@ -203,7 +203,7 @@ describe("wandering_collector buy/sell", () => {
     expect((afterBuy.story?.seen as any)?.collectorVisitCount).toBeUndefined();
   });
 
-  it("ends visit after buy when sell side had no offers", () => {
+  it("trade effects never increment visit count (leave choice does that)", () => {
     const state = {
       ...baseState({
         buildings: { woodenHut: 6 } as any,
@@ -227,7 +227,11 @@ describe("wandering_collector buy/sell", () => {
       typeof event.choices === "function" ? event.choices(state) : []
     ).find((c) => c.id === "buy_bone_dice")!;
     const afterBuy = buyChoice.effect(state);
-    expect((afterBuy.story?.seen as any)?.collectorVisitCount).toBe(1);
+    expect((afterBuy.story?.seen as any)?.collectorVisitCount).toBeUndefined();
+    expect((afterBuy as any)._logMessageKey).toBeUndefined();
+
+    const leave = event.fallbackChoice!.effect(state);
+    expect((leave.story?.seen as any)?.collectorVisitCount).toBe(1);
   });
 
   it("gates 6th and 7th visits on 4th and 8th wave victories", () => {
