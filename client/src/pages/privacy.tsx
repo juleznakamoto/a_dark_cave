@@ -20,7 +20,7 @@ export default function Privacy() {
               <CardTitle className="text-3xl text-white">
                 Privacy Policy
               </CardTitle>
-              <p className="text-sm text-gray-400">Last Updated: 04.04.2026</p>
+              <p className="text-sm text-gray-400">Last Updated: 31.07.2026</p>
             </CardHeader>
             <CardContent className="prose prose-sm prose-invert max-w-none text-white legal-content">
               <h3>1. General Information</h3>
@@ -109,11 +109,26 @@ export default function Privacy() {
               <p>
                 For authenticated users, your complete game state is stored in
                 our database to allow you to continue your game across different
-                devices. This is a core function of the service. The legal basis
-                is Art. 6(1)(b) GDPR (performance of a contract).
+                devices. This may include progress, settings, play statistics,
+                and related gameplay data. We may also store limited internal
+                product analytics linked to your account (for example aggregated
+                in-game button-click counts). The legal basis is Art. 6(1)(b)
+                GDPR (performance of a contract) and, for limited analytics,
+                Art. 6(1)(f) GDPR (legitimate interest in improving the game).
               </p>
 
-              <h4>d) In-Game Purchases:</h4>
+              <h4>d) Leaderboard:</h4>
+              <p>
+                If you complete the game, we may store a leaderboard entry
+                linked to your account (for example play time, completion time,
+                game mode, and email address used for the account). Public
+                leaderboard displays use a username you choose or a masked form
+                of your email, not your full email address. The legal basis is
+                Art. 6(1)(b) GDPR (performance of a contract) and Art. 6(1)(f)
+                GDPR (legitimate interest in operating the leaderboard).
+              </p>
+
+              <h4>e) In-Game Purchases:</h4>
               <p>
                 When you make a purchase, we store a record of the transaction
                 (user ID, item, price, timestamp). This is necessary for
@@ -122,14 +137,14 @@ export default function Privacy() {
                 Art. 6(1)(b) GDPR (performance of a contract).
               </p>
 
-              <h4>e) Optional marketing emails:</h4>
+              <h4>f) Optional marketing emails:</h4>
               <p>
                 We may send promotional emails (updates, discounts, rewards)
                 <strong> only if you opt in</strong> via a separate optional
                 checkbox at sign-up or later in your profile. The legal basis
                 is <strong>Art. 6(1)(a) GDPR (consent)</strong>. You can withdraw
                 consent at any time without affecting your account or cloud
-                save—use the unsubscribe link in any marketing email, or use
+                save: use the unsubscribe link in any marketing email, or use
                 the subscribe / unsubscribe control in the in-game profile
                 menu.
               </p>
@@ -160,7 +175,7 @@ export default function Privacy() {
                 We do not use tracking, analytics, or marketing{" "}
                 <em>cookies</em> for advertising. Optional marketing{" "}
                 <em>emails</em> are only sent with your separate consent (see
-                section 3e).
+                section 3f).
               </p>
 
               <h3>5. Third-Party Services</h3>
@@ -197,8 +212,8 @@ export default function Privacy() {
               <p>
                 We use Resend Inc. (USA) to send email on our behalf, including
                 account-related messages (e.g. sign-up or password reset, where
-                applicable) and—if you have opted in—promotional emails as
-                described in section 3e. Resend processes the recipient address
+                applicable) and, if you have opted in, promotional emails as
+                described in section 3f. Resend processes the recipient address
                 and the content needed to deliver each message. The legal basis
                 is Art. 6(1)(b) GDPR for emails necessary to provide the
                 service, and Art. 6(1)(a) GDPR for marketing emails (consent).
@@ -206,7 +221,44 @@ export default function Privacy() {
                 processor relationships.
               </p>
 
-              <h3>6. Data Retention</h3>
+              <h4>d) Replit:</h4>
+              <p>
+                We host the A Dark Cave website and application backend via
+                Replit, Inc. Replit processes technical data necessary to
+                deliver the service (for example connection and server log
+                data). Replit runs published apps on Google Cloud
+                infrastructure. The legal basis is Art. 6(1)(b) and Art.
+                6(1)(f) GDPR. We use Replit under its terms and data processing
+                terms applicable to our account.
+              </p>
+
+              <h4>e) Playlight:</h4>
+              <p>
+                We integrate the Playlight game discovery SDK in the browser.
+                When the SDK loads, Playlight may collect technical information
+                such as IP address, browser type/version, pages visited, and
+                access times, as described in Playlight&apos;s own privacy
+                policy. We do not send your account email address to Playlight.
+                The legal basis is Art. 6(1)(f) GDPR (legitimate interest in
+                offering optional game discovery features). Playlight acts as an
+                independent service with its own privacy practices for data it
+                collects through the SDK.
+              </p>
+
+              <h3>6. International Data Transfers</h3>
+              <p>
+                Your core account and cloud game save data are stored with
+                Supabase in the EU (Frankfurt region). Some providers process
+                data outside the European Economic Area (for example Resend in
+                the United States, and hosting infrastructure used by Replit).
+                Where a transfer to a third country requires safeguards under
+                Art. 46 GDPR, we rely on appropriate mechanisms such as
+                Standard Contractual Clauses in the provider&apos;s Data
+                Processing Addendum, and any additional frameworks those
+                providers lawfully rely on.
+              </p>
+
+              <h3>7. Data Retention</h3>
               <p>We store your data for the following periods:</p>
               <ul>
                 <li>
@@ -224,9 +276,15 @@ export default function Privacy() {
                   your account exists so we can honor opt-in/opt-out and
                   demonstrate consent; deleted when your account is deleted.
                 </li>
+                <li>
+                  <strong>Leaderboard entries:</strong> Kept while relevant to
+                  the leaderboard feature; removed when associated account data
+                  is deleted or as otherwise required for operating the
+                  leaderboard.
+                </li>
               </ul>
 
-              <h3>7. Data Security</h3>
+              <h3>8. Data Security</h3>
               <p>
                 We take appropriate technical and organizational measures to
                 protect your data from unauthorized access, loss, or alteration.
