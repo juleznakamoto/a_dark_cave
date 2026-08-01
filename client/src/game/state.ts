@@ -153,7 +153,6 @@ import {
   getConstructionBoostCost,
   getConstructionBoostReductionSeconds,
   canPurchaseQueueSlot,
-  getNextPurchasableQueueSlotIndex,
   getPurchasedQueueSlots,
   getNextQueueSlotUnlockCost,
   QUEUE_SLOT_UNLOCK_INSIGHT_KEY,
@@ -507,7 +506,7 @@ interface GameStore extends GameState {
   /** Set the active preset slot (1-based) that the save button writes to. */
   setActivePresetSlot: (slot: number) => void;
   /** Save the current villager job assignments into a preset slot (1-based). */
-  saveVillagerJobPreset: (slot: number) => void;
+  saveVillagerJobPreset: (slot: number) => boolean;
   /** Apply a saved preset (1-based slot); selects the slot and redistributes villagers if saved. */
   applyVillagerJobPreset: (slot: number) => void;
   /** Buy the next preset slot with Insight (one at a time). Returns true on success. */
@@ -2682,8 +2681,6 @@ export const useGameStore = create<GameStore>((set, get) => ({
       let statEffectsRevealed = state.statEffectsRevealed;
       let buildingDescriptionsRevealed = state.buildingDescriptionsRevealed;
       let craftDescriptionsRevealed = state.craftDescriptionsRevealed;
-      let presetUnlockUpdate: Partial<GameState> | null = null;
-      let queueUnlockUpdate: Partial<GameState> | null = null;
       for (const [actionId, endTime] of Object.entries(state.insightRevealing ?? {})) {
         if (now >= endTime) {
           if (actionId === STAT_INSIGHT_REVEAL_KEY) {
@@ -2692,32 +2689,12 @@ export const useGameStore = create<GameStore>((set, get) => ({
             buildingDescriptionsRevealed = true;
           } else if (actionId === CRAFT_DESCRIPTIONS_INSIGHT_KEY) {
             craftDescriptionsRevealed = true;
-          } else if (actionId === TIMED_EVENT_INSIGHT_PROLONG_KEY) {
-            // Timed-tab prolong: animation only (no revealedEffects entry).
-          } else if (actionId === PRESET_UNLOCK_INSIGHT_KEY) {
-            const slotIndex = getNextPurchasablePresetSlotIndex(state);
-            if (slotIndex !== null) {
-              const insightBefore = getInsightPurchasedPresetCount(state);
-              const currentIndex = state.activePresetSlot - 1;
-              const nextPurchased = insightBefore + 1;
-              presetUnlockUpdate = {
-                villagerPresetsPurchased: nextPurchased,
-              };
-              if (
-                !isPresetSlotUnlocked(state, currentIndex) ||
-                currentIndex >= nextPurchased
-              ) {
-                presetUnlockUpdate.activePresetSlot = slotIndex + 1;
-              }
-            }
-          } else if (actionId === QUEUE_SLOT_UNLOCK_INSIGHT_KEY) {
-            const slotIndex = getNextPurchasableQueueSlotIndex(state);
-            if (slotIndex !== null) {
-              queueUnlockUpdate = {
-                constructionQueueSlotsPurchased:
-                  getPurchasedQueueSlots(state) + 1,
-              };
-            }
+          } else if (
+            actionId === TIMED_EVENT_INSIGHT_PROLONG_KEY ||
+            actionId === PRESET_UNLOCK_INSIGHT_KEY ||
+            actionId === QUEUE_SLOT_UNLOCK_INSIGHT_KEY
+          ) {
+            // Animation-only keys: purchase/prolong already applied the effect.
           } else {
             const achievementId = parseAchievementTitleInsightKey(actionId);
             if (achievementId) {
@@ -2769,8 +2746,6 @@ export const useGameStore = create<GameStore>((set, get) => ({
             buildingDescriptionsRevealed,
             craftDescriptionsRevealed,
             revealedAchievementTitles,
-            ...(presetUnlockUpdate ?? {}),
-            ...(queueUnlockUpdate ?? {}),
           }
           : {}),
       };
@@ -3991,7 +3966,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
   saveVillagerJobPreset: (slot: number) => {
     const state = get();
     const slotIndex = slot - 1;
-    if (!isPresetSlotUnlocked(state, slotIndex)) return;
+    if (!isPresetSlotUnlocked(state, slotIndex)) return false;
 
     const presets = [...(state.villagerJobPresets ?? [])];
     while (presets.length < MAX_PRESET_SLOTS) {
@@ -4003,6 +3978,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
     };
 
     set({ villagerJobPresets: presets, activePresetSlot: slot });
+    return true;
   },
 
   applyVillagerJobPreset: (slot: number) => {
@@ -4026,18 +4002,32 @@ export const useGameStore = create<GameStore>((set, get) => ({
     const state = get();
     if (!canPurchasePresetSlot(state, state.insightRevealing)) return false;
 
+    const slotIndex = getNextPurchasablePresetSlotIndex(state);
     const cost = getNextPresetUnlockCost(state);
-    if (cost === null) return false;
+    if (slotIndex === null || cost === null) return false;
 
+    const insightBefore = getInsightPurchasedPresetCount(state);
+    const nextPurchased = insightBefore + 1;
+    const currentIndex = state.activePresetSlot - 1;
     const resourceUpdates = updateResource(state, "insight", -cost);
 
-    set({
+    // Grant immediately: insightRevealing is UI-only and would lose the unlock on reload.
+    const update: Partial<GameState> = {
       ...resourceUpdates,
+      villagerPresetsPurchased: nextPurchased,
       insightRevealing: {
         ...(state.insightRevealing ?? {}),
         [PRESET_UNLOCK_INSIGHT_KEY]: Date.now() + INSIGHT_REVEAL_DURATION_MS,
       },
-    });
+    };
+    if (
+      !isPresetSlotUnlocked(state, currentIndex) ||
+      currentIndex >= nextPurchased
+    ) {
+      update.activePresetSlot = slotIndex + 1;
+    }
+
+    set(update);
     return true;
   },
 
@@ -4050,8 +4040,10 @@ export const useGameStore = create<GameStore>((set, get) => ({
 
     const resourceUpdates = updateResource(state, "insight", -cost);
 
+    // Grant immediately: insightRevealing is UI-only and would lose the unlock on reload.
     set({
       ...resourceUpdates,
+      constructionQueueSlotsPurchased: getPurchasedQueueSlots(state) + 1,
       insightRevealing: {
         ...(state.insightRevealing ?? {}),
         [QUEUE_SLOT_UNLOCK_INSIGHT_KEY]: Date.now() + INSIGHT_REVEAL_DURATION_MS,

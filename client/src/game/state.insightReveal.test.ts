@@ -278,7 +278,7 @@ describe("purchaseVillagerPresetSlot", () => {
     useGameStore.getState().initialize();
   });
 
-  it("deducts insight and starts reveal animation before unlocking the slot", () => {
+  it("deducts insight, unlocks the slot immediately, and starts reveal animation", () => {
     useGameStore.setState({
       buildings: {
         ...useGameStore.getState().buildings,
@@ -297,19 +297,20 @@ describe("purchaseVillagerPresetSlot", () => {
 
     const after = useGameStore.getState();
     expect(after.resources.insight).toBe(0);
-    expect(after.villagerPresetsPurchased).toBe(0);
+    expect(after.villagerPresetsPurchased).toBe(1);
+    expect(after.activePresetSlot).toBe(1);
     expect(after.insightRevealing[PRESET_UNLOCK_INSIGHT_KEY]).toBeGreaterThan(
       Date.now(),
     );
   });
 
-  it("unlocks the preset slot after the reveal window", () => {
+  it("does not double-unlock when the reveal animation finishes", () => {
     useGameStore.setState({
       buildings: {
         ...useGameStore.getState().buildings,
         scribesOffice: 1,
       },
-      villagerPresetsPurchased: 0,
+      villagerPresetsPurchased: 1,
       insightRevealing: {
         [PRESET_UNLOCK_INSIGHT_KEY]: Date.now() - 1,
       },
@@ -319,7 +320,74 @@ describe("purchaseVillagerPresetSlot", () => {
 
     const after = useGameStore.getState();
     expect(after.villagerPresetsPurchased).toBe(1);
-    expect(after.activePresetSlot).toBe(1);
     expect(after.insightRevealing[PRESET_UNLOCK_INSIGHT_KEY]).toBeUndefined();
+  });
+
+  it("can unlock multiple slots and save/apply each independently", () => {
+    useGameStore.setState({
+      buildings: {
+        ...useGameStore.getState().buildings,
+        clerksHut: 1,
+        scribesOffice: 1,
+        recordsHall: 1,
+        grandArchive: 1,
+      },
+      resources: {
+        ...useGameStore.getState().resources,
+        insight: 50_000,
+      },
+      villagers: {
+        ...useGameStore.getState().villagers,
+        free: 10,
+        gatherer: 0,
+        hunter: 0,
+      },
+      villagerPresetsPurchased: 0,
+    });
+
+    expect(useGameStore.getState().purchaseVillagerPresetSlot()).toBe(true);
+    expect(useGameStore.getState().villagerPresetsPurchased).toBe(1);
+
+    // Clear reveal lock so the next purchase is allowed immediately in tests.
+    useGameStore.setState({ insightRevealing: {} });
+    expect(useGameStore.getState().purchaseVillagerPresetSlot()).toBe(true);
+    expect(useGameStore.getState().villagerPresetsPurchased).toBe(2);
+    useGameStore.setState({ insightRevealing: {} });
+    expect(useGameStore.getState().purchaseVillagerPresetSlot()).toBe(true);
+    expect(useGameStore.getState().villagerPresetsPurchased).toBe(3);
+    useGameStore.setState({ insightRevealing: {} });
+    expect(useGameStore.getState().purchaseVillagerPresetSlot()).toBe(true);
+    expect(useGameStore.getState().villagerPresetsPurchased).toBe(4);
+
+    useGameStore.setState({
+      villagers: {
+        ...useGameStore.getState().villagers,
+        free: 7,
+        gatherer: 3,
+        hunter: 0,
+      },
+    });
+    expect(useGameStore.getState().saveVillagerJobPreset(1)).toBe(true);
+
+    useGameStore.setState({
+      villagers: {
+        ...useGameStore.getState().villagers,
+        free: 6,
+        gatherer: 0,
+        hunter: 4,
+      },
+      activePresetSlot: 2,
+    });
+    expect(useGameStore.getState().saveVillagerJobPreset(2)).toBe(true);
+
+    useGameStore.getState().applyVillagerJobPreset(1);
+    expect(useGameStore.getState().villagers.gatherer).toBe(3);
+    expect(useGameStore.getState().activePresetSlot).toBe(1);
+
+    useGameStore.getState().applyVillagerJobPreset(2);
+    expect(useGameStore.getState().villagers.hunter).toBe(4);
+    expect(useGameStore.getState().activePresetSlot).toBe(2);
+
+    expect(useGameStore.getState().saveVillagerJobPreset(5)).toBe(false);
   });
 });

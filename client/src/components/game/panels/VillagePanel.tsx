@@ -152,7 +152,8 @@ const VILLAGE_INDICATOR_TOOLTIP_IDS = [
 /** Preset numbers, construction queue slots, and related header controls. */
 const HEADER_SLOT_SIZE_CLASS = GAME_PANEL_HEADER_INSIGHT_BADGE_CLASS;
 const HEADER_SLOT_INSIGHT_BUTTON_CLASS = HEADER_SLOT_SIZE_CLASS;
-const HEADER_SLOT_BUTTON_CLASS = `${HEADER_SLOT_SIZE_CLASS} p-0 pointer-events-none inline-flex items-center justify-center leading-none transition-colors appearance-none [-webkit-appearance:none]`;
+/** Interactive preset slot / save controls — must receive native clicks (no pointer-events-none). */
+const HEADER_SLOT_BUTTON_CLASS = `${HEADER_SLOT_SIZE_CLASS} p-0 inline-flex items-center justify-center leading-none transition-colors appearance-none [-webkit-appearance:none]`;
 
 /** − / count / + / cap columns — shared by summary, stat, and job rows. */
 const VILLAGER_COUNT_BUTTON_SIZE_CLASS = "villager-count-button";
@@ -236,7 +237,7 @@ export default function VillagePanel() {
   );
 
   const handlePresetSave = useCallback(() => {
-    saveVillagerJobPreset(activePresetSlot);
+    if (!saveVillagerJobPreset(activePresetSlot)) return;
     setPresetSaveConfirmed(true);
     if (presetSaveTimeoutRef.current) {
       clearTimeout(presetSaveTimeoutRef.current);
@@ -2188,8 +2189,6 @@ export default function VillagePanel() {
                               }
                               tooltipTriggerClassName="inline-flex items-center leading-none"
                               className="group flex items-center cursor-pointer"
-                              preferNativeClick={false}
-                              onClick={() => applyVillagerJobPreset(slot)}
                             >
                               <Button
                                 size="xs"
@@ -2206,6 +2205,7 @@ export default function VillagePanel() {
                                     }),
                                 )}
                                 style={{ touchAction: "manipulation" }}
+                                onClick={() => applyVillagerJobPreset(slot)}
                               >
                                 <span
                                   className={cn(!hasPreset && "opacity-70")}
@@ -2228,8 +2228,6 @@ export default function VillagePanel() {
                             }
                             tooltipTriggerClassName="inline-flex items-center leading-none"
                             className="group flex items-center cursor-pointer"
-                            preferNativeClick={false}
-                            onClick={handlePresetSave}
                           >
                             <Button
                               size="xs"
@@ -2243,6 +2241,7 @@ export default function VillagePanel() {
                                 }),
                               )}
                               style={{ touchAction: "manipulation" }}
+                              onClick={handlePresetSave}
                             >
                               <span
                                 className={
