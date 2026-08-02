@@ -208,10 +208,12 @@ function AchievementRowComponent({
   const progressLabel = `${Math.min(Math.floor(row.currentCount), row.maxCount)}/${row.maxCount}`;
   const mutedSuffix =
     row.maxCount > 1 ? progressLabel : row.detailLabel;
-  const description = isTitleVisible
-    ? tAchievements(`${row.chartPrefix}.${row.segmentId}.description`, {
-      defaultValue: row.description,
-    })
+  const description = tAchievements(
+    `${row.chartPrefix}.${row.segmentId}.description`,
+    { defaultValue: row.description },
+  );
+  const redactedDescription = description
+    ? "█".repeat(Math.min(28, Math.max(14, Math.round(description.length * 0.55))))
     : "";
 
   const handleClaim = () => {
@@ -257,9 +259,16 @@ function AchievementRowComponent({
               </>
             )}
           </div>
-          {description ? (
+          {isTitleVisible && description ? (
             <p className="text-xs leading-snug text-muted-foreground">
               {description}
+            </p>
+          ) : redactedDescription ? (
+            <p
+              className="text-xs leading-snug text-muted-foreground/50 select-none tracking-tight"
+              aria-hidden
+            >
+              {redactedDescription}
             </p>
           ) : null}
         </div>
