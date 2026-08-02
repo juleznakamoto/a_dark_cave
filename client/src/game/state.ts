@@ -2852,11 +2852,11 @@ export const useGameStore = create<GameStore>((set, get) => ({
       current_population: 0,
       total_population: 0,
 
-      // Mark as new game and allow overwriting cloud playTime once
+      // Mark as new game and allow overwriting cloud playTime until cloud accepts
       isNewGame: true,
       startTime: Date.now(),
       playTime: 0,
-      allowPlaytimeOverwrite: true,
+      allowPlayTimeOverwrite: true,
     };
 
     const socialTasksGold = computePersistedSocialTasksGold({
@@ -2891,18 +2891,26 @@ export const useGameStore = create<GameStore>((set, get) => ({
       lastResourceSnapshotTime: 0, // Reset snapshot time to start fresh
     });
 
-    // Immediately save the new game state to cloud to prevent OCC issues
+    // Immediately save the new game state to cloud to prevent OCC issues.
+    // saveGame clears isNewGame / allowPlayTimeOverwrite only after cloud accepts
+    // (or when cloud is intentionally skipped for guests / local-only).
     const { saveGame } = await import("@/game/save");
     try {
-      await saveGame(get(), false);
-      logger.log(
-        "[RESTART] ✅ New game state saved to cloud with analytics cleared",
-      );
-      // Clear the new game flag after successful save
-      set({ isNewGame: false });
+      const result = await saveGame(get(), false);
+      if (result.cloudSaved) {
+        logger.log(
+          "[RESTART] ✅ New game state saved to cloud with analytics cleared",
+        );
+      } else if (result.cloudSkipped) {
+        logger.log("[RESTART] ✅ New game state saved locally (no cloud)");
+      } else {
+        logger.error(
+          "[RESTART] ⚠️ Local new game saved, but cloud sync failed — overwrite flags kept for retry",
+        );
+      }
     } catch (error) {
       logger.error(
-        "[RESTART] ❌ Failed to save new game state to cloud:",
+        "[RESTART] ❌ Failed to save new game state:",
         error,
       );
     }

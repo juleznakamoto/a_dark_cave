@@ -26,6 +26,7 @@ import { isDemoEdition } from "@/lib/edition";
 import { isDemoLimitReachedFromState } from "@/game/demoLimit";
 import DemoTimeUpDialog from "@/components/game/DemoTimeUpDialog";
 import { FullscreenButton } from "@/components/game/FullscreenButton";
+import { clearStaleChunkReloadGuard } from "@/lib/hardReload";
 
 const START_INTRO_VAPORIZE_COLOR = "rgba(209, 213, 219, 0.9)";
 const START_INTRO_VAPORIZE_ANIMATION = {
@@ -84,6 +85,11 @@ export default function StartScreen() {
   // Steam Game / Playtest / Demo (build or DEV Game Mode) — no social/store links in footer.
   // Galaxy and Normal/web keep Steam / Reddit / Contact.
   const hideStartScreenSocialLinks = steamDesktopEditionActive;
+
+  // Real content mounted — allow a future deploy's one-shot chunk retry again.
+  useEffect(() => {
+    clearStaleChunkReloadGuard();
+  }, []);
 
   useEffect(() => {
     if (showParticles) return;

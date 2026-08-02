@@ -10,10 +10,15 @@ export const HARD_RELOAD_PENDING_KEY = "adc_hard_reload_pending";
 /** Guards the one automatic module-load retry in public/boot.js. */
 export const MODULE_LOAD_RETRY_KEY = "adc_module_load_retry";
 
+/**
+ * React.lazy() attaches its own rejection handler, so failed dynamic imports do
+ * NOT surface as unhandledrejection — they throw into the nearest error boundary.
+ * Match Chromium, Firefox, Safari, and Vite preload failures.
+ */
 const DYNAMIC_IMPORT_FAIL_RE =
-  /Failed to fetch dynamically imported module|Importing a module script failed/i;
+  /Failed to fetch dynamically imported module|error loading dynamically imported module|Importing a module script failed|Loading chunk [\d]+ failed|Unable to preload CSS/i;
 
-function canAutoReloadForStaleChunk(): boolean {
+export function canAutoReloadForStaleChunk(): boolean {
   try {
     return !sessionStorage.getItem(MODULE_LOAD_RETRY_KEY);
   } catch {
@@ -29,7 +34,10 @@ function markStaleChunkReloadAttempted(): void {
   }
 }
 
-/** Call after React mounts so a later deploy can auto-retry again. */
+/**
+ * Clear the one-shot retry guard after a real screen mounts (StartScreen / Game),
+ * not when the App shell mounts — the shell loads before lazy route chunks.
+ */
 export function clearStaleChunkReloadGuard(): void {
   try {
     sessionStorage.removeItem(MODULE_LOAD_RETRY_KEY);
@@ -38,23 +46,45 @@ export function clearStaleChunkReloadGuard(): void {
   }
 }
 
-function isStaleChunkLoadFailure(reason: unknown): boolean {
-  const message =
-    reason instanceof Error
-      ? reason.message
-      : typeof reason === "string"
-        ? reason
-        : "";
-  return DYNAMIC_IMPORT_FAIL_RE.test(message);
+function reasonMessage(reason: unknown): string {
+  if (reason instanceof Error) return reason.message;
+  if (typeof reason === "string") return reason;
+  return "";
 }
 
-function tryAutoReloadForStaleChunk(reason: unknown): boolean {
+/** True when the failure looks like a deleted/stale hashed chunk after deploy. */
+export function isStaleChunkLoadFailure(reason: unknown): boolean {
+  return DYNAMIC_IMPORT_FAIL_RE.test(reasonMessage(reason));
+}
+
+/**
+ * Retry once with a cache-busted navigation for stale-chunk failures.
+ * Returns true when handled (reload started, or fatal screen shown after a prior retry).
+ * React.lazy failures must call this from an error boundary — they are not unhandled.
+ */
+export function recoverFromStaleChunkLoad(reason: unknown): boolean {
   if (!isStaleChunkLoadFailure(reason)) return false;
   if (!canAutoReloadForStaleChunk()) {
     mountFatalErrorScreen(reason);
     return true;
   }
   markStaleChunkReloadAttempted();
+  logger.warn("[hardReload] Stale chunk load; hard-reloading once:", reasonMessage(reason));
+  void hardReload();
+  return true;
+}
+
+/**
+ * One automatic hard reload for stuck boots (e.g. Suspense spinner never resolving).
+ * Shares the same sessionStorage guard as stale-chunk recovery.
+ */
+export function tryOneModuleLoadRecovery(reason?: unknown): boolean {
+  if (!canAutoReloadForStaleChunk()) return false;
+  markStaleChunkReloadAttempted();
+  logger.warn(
+    "[hardReload] Module load stuck; hard-reloading once:",
+    reasonMessage(reason) || reason,
+  );
   void hardReload();
   return true;
 }
@@ -64,10 +94,13 @@ function tryAutoReloadForStaleChunk(reason: unknown): boolean {
  * then rejects with "Failed to fetch dynamically imported module" and Suspense
  * shows a permanent black screen. Retry once with a cache-busted reload; if that
  * already ran, show the dig-deeper error screen instead of hanging forever.
+ *
+ * Note: React.lazy failures are handled via AppErrorBoundary → recoverFromStaleChunkLoad.
+ * These window listeners cover entry script tags and non-React dynamic imports.
  */
 export function installStaleChunkAutoReload(): void {
   window.addEventListener("unhandledrejection", (event) => {
-    if (tryAutoReloadForStaleChunk(event.reason)) {
+    if (recoverFromStaleChunkLoad(event.reason)) {
       event.preventDefault();
     }
   });

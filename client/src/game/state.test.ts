@@ -18,7 +18,11 @@ const {
 } = vi.hoisted(() => ({
   mockLoadGame: vi.fn(),
   mockSetLastGameLoadTime: vi.fn(),
-  mockSaveGame: vi.fn().mockResolvedValue(undefined),
+  mockSaveGame: vi.fn().mockResolvedValue({
+    localSaved: true,
+    cloudSaved: true,
+    cloudSkipped: false,
+  }),
   mockFlushOverdueActionExecutions: vi.fn(),
 }));
 

@@ -65,9 +65,18 @@ function softUpgradeCopy(host: HTMLElement): void {
 /** Prefer hardReload when available; fall back to a plain cache-bust navigation. */
 export function triggerReload(): void {
   void import("@/lib/hardReload")
-    .then(({ hardReload }) => hardReload())
+    .then(({ hardReload, clearStaleChunkReloadGuard }) => {
+      // User-initiated reload gets another automatic chunk-retry chance.
+      clearStaleChunkReloadGuard();
+      return hardReload();
+    })
     .catch(() => {
       try {
+        try {
+          sessionStorage.removeItem("adc_module_load_retry");
+        } catch {
+          // ignore
+        }
         const url = new URL(window.location.href);
         url.searchParams.set("_cb", Date.now().toString());
         window.location.replace(url.toString());

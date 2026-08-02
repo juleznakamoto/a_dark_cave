@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { useCoinHoverParticles } from "@/components/ui/coin-hover-particles";
 import { FIRE_LOAD_PARTICLE_CONFIG } from "@/components/ui/bubbly-button.particles";
 import { mountFatalErrorScreen, FATAL_UI_TIMEOUT_MS } from "@/lib/fatalErrorScreen";
+import { tryOneModuleLoadRecovery } from "@/lib/hardReload";
 
 const SPINNER_DELAY_MS = 500;
 const BOOT_SPINNER_ID = "adc-boot-spinner";
@@ -78,9 +79,13 @@ export default function PageLoadSpinner({
   useEffect(() => {
     if (!escalateAfterMs || escalateAfterMs <= 0) return;
     const timer = setTimeout(() => {
-      mountFatalErrorScreen(
-        new Error(`Page load spinner still mounted after ${escalateAfterMs}ms`),
+      const stuck = new Error(
+        `Page load spinner still mounted after ${escalateAfterMs}ms`,
       );
+      // Hung Suspense (chunk never settles) after a deploy: try one hard reload
+      // before showing dig-deeper. Shares the stale-chunk sessionStorage guard.
+      if (tryOneModuleLoadRecovery(stuck)) return;
+      mountFatalErrorScreen(stuck);
     }, escalateAfterMs);
     return () => clearTimeout(timer);
   }, [escalateAfterMs]);

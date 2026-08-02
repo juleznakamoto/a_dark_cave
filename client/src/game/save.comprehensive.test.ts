@@ -386,6 +386,70 @@ describe('Save Game System - Comprehensive Tests', () => {
       const loaded = await loadGame();
       expect(loaded).toBeDefined();
     });
+
+    it('prefers a local restart over a longer finished cloud run', async () => {
+      const { encodeLocalSave } = await import('./saveCodec');
+      const auth = await import('./auth');
+      const state = await import('./state');
+
+      const localRestart = createMockGameState({
+        gameId: 'game-new-restart',
+        startTime: 2_000_000,
+        playTime: 60_000,
+        resources: { wood: 1, stone: 0, gold: 0, food: 0 },
+        isNewGame: true,
+        allowPlayTimeOverwrite: true,
+      });
+      const cloudFinished = createMockGameState({
+        gameId: 'game-old-finished',
+        startTime: 1_000_000,
+        playTime: 26_000_000,
+        resources: { wood: 999, stone: 50, gold: 200, food: 75 },
+      });
+
+      mockStores.saves.mainSave = encodeLocalSave({
+        gameState: localRestart,
+        timestamp: 2_000_100,
+        playTime: 60_000,
+      });
+
+      vi.mocked(auth.getCurrentUser).mockResolvedValue({ id: 'user-1', email: 'test@example.com' });
+      vi.mocked(auth.loadGameFromSupabase).mockResolvedValue({
+        gameState: cloudFinished,
+        timestamp: 1_500_000,
+        playTime: 26_000_000,
+      });
+      vi.mocked(state.useGameStore.getState).mockReturnValue({
+        inactivityDialogOpen: false,
+        isUserSignedIn: true,
+        getAndResetClickAnalytics: vi.fn().mockReturnValue(null),
+        getAndResetResourceAnalytics: vi.fn().mockReturnValue(null),
+      } as any);
+
+      const { getSupabaseClient } = await import('@/lib/supabase');
+      const mockInvoke = vi.fn().mockResolvedValue({ data: { success: true }, error: null });
+      vi.mocked(getSupabaseClient).mockResolvedValue({
+        auth: {
+          getSession: vi.fn().mockResolvedValue({
+            data: { session: { access_token: 'tok' } },
+          }),
+        },
+        functions: { invoke: mockInvoke },
+      } as any);
+
+      const loaded = await loadGame();
+
+      expect(loaded?.gameId).toBe('game-new-restart');
+      expect(loaded?.playTime).toBe(60_000);
+      expect(mockInvoke).toHaveBeenCalledWith(
+        'save-game',
+        expect.objectContaining({
+          body: expect.objectContaining({
+            allowPlaytimeOverwrite: true,
+          }),
+        }),
+      );
+    });
   });
 
   describe('3. Offline Progress Overwrite', () => {

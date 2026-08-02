@@ -7,7 +7,6 @@ import PageLoadSpinner, {
   dismissBootSpinner,
 } from "@/components/ui/page-load-spinner";
 import AppErrorBoundary from "@/components/AppErrorBoundary";
-import { clearStaleChunkReloadGuard } from "@/lib/hardReload";
 
 const steamBuild = import.meta.env.VITE_STEAM_BUILD === "1";
 
@@ -79,10 +78,6 @@ function Router() {
 }
 
 function App() {
-  useEffect(() => {
-    clearStaleChunkReloadGuard();
-  }, []);
-
   useEffect(() => {
     // Safety: drop the HTML boot spinner if a route never mounts PageLoadSpinner.
     dismissBootSpinner();

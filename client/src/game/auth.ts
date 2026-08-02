@@ -832,7 +832,8 @@ export async function saveGameToSupabase(
   const allowOverwrite =
     gameState.allowPlayTimeOverwrite === true ||
     (gameState as Partial<GameState> & { allowPlaytimeOverwrite?: boolean })
-      .allowPlaytimeOverwrite === true;
+      .allowPlaytimeOverwrite === true ||
+    gameState.isNewGame === true;
 
   // Debug: Log if this save includes cube completion events
   if (gameState.events) {

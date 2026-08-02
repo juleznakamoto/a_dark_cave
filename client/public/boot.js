@@ -16,7 +16,7 @@
         u.pathname + (u.search ? u.search : "") + (u.hash || ""),
       );
     }
-  } catch (e) {}
+  } catch (e) { }
 
   window.addEventListener(
     "error",
@@ -50,7 +50,7 @@
     if (document.getElementById("adc-fatal-error")) return;
     try {
       window.__ADC_FATAL_ERROR_SHOWN = true;
-    } catch (e) {}
+    } catch (e) { }
     var boot = document.getElementById("adc-boot-spinner");
     if (boot) boot.remove();
     if (window.__ADC_BOOT_SPINNER_TIMER !== undefined) {
@@ -71,6 +71,10 @@
     var btn = document.getElementById("adc-fatal-error-reload");
     if (btn) {
       btn.addEventListener("click", function () {
+        try {
+          // User-initiated reload gets another automatic chunk-retry chance.
+          sessionStorage.removeItem(RETRY_KEY);
+        } catch (e) { }
         try {
           var retryUrl = new URL(window.location.href);
           retryUrl.searchParams.set("_cb", String(Date.now()));

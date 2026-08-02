@@ -1258,16 +1258,19 @@ async function handleAutoSave() {
   const gameState: GameState = buildGameState(state);
 
   try {
-    // If this is a new game, save playTime as the current session time only
-    // Otherwise, save the accumulated playTime
-    const playTimeToSave = state.isNewGame ? 0 : state.playTime;
+    // New games must persist playTime 0 until the first successful cloud sync.
+    // (Previously this passed a number as saveGame's isAutosave boolean.)
+    if (state.isNewGame) {
+      gameState.playTime = 0;
+    }
 
-    await saveGame(gameState, playTimeToSave);
+    await saveGame(gameState, true);
     const timestamp = formatSaveTimestamp();
 
+    // isNewGame / allowPlayTimeOverwrite are cleared inside saveGame after cloud
+    // accepts (so a failed restart sync keeps overwrite for the next attempt).
     useGameStore.setState({
       lastSaved: timestamp,
-      isNewGame: false,
     });
   } catch (error) { }
 }
@@ -1433,12 +1436,12 @@ export async function manualSave() {
   const gameState: GameState = buildGameState(state);
 
   try {
-    // If this is a new game, save playTime as 0 to reset the counter
-    // Otherwise, save the accumulated playTime
-    const playTimeToSave = state.isNewGame ? 0 : state.playTime;
-    await saveGame(gameState, playTimeToSave);
+    if (state.isNewGame) {
+      gameState.playTime = 0;
+    }
+    await saveGame(gameState, false);
     const now = new Date().toLocaleTimeString();
-    useGameStore.setState({ lastSaved: now, isNewGame: false });
+    useGameStore.setState({ lastSaved: now });
   } catch (error) {
     throw error;
   }

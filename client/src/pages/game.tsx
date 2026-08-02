@@ -30,6 +30,7 @@ import {
 } from "@/game/boost";
 import PageLoadSpinner from "@/components/ui/page-load-spinner";
 import PageErrorScreen from "@/components/ui/page-error-screen";
+import { clearStaleChunkReloadGuard } from "@/lib/hardReload";
 
 export default function Game() {
   const initialize = useGameStore((state) => state.initialize);
@@ -38,6 +39,12 @@ export default function Game() {
   const [initError, setInitError] = useState(false);
   const [emailConfirmedDialogOpen, setEmailConfirmedDialogOpen] = useState(false);
   const steamEditionActive = useSteamEditionActive();
+
+  // Game chunk mounted — allow a future deploy's one-shot chunk retry again.
+  useEffect(() => {
+    clearStaleChunkReloadGuard();
+  }, []);
+
   useEffect(() => {
     logger.log("[GAME PAGE] Initializing game");
     // Session tracking is anonymous online analytics — web only.

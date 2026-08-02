@@ -223,9 +223,10 @@ function useProfileMenuState() {
   };
 
   const handleConfirmRestart = async () => {
-    setRestartGameDialogOpen(false);
-    await deleteSave(); // Ensure deleteSave is called before restartGame
-    restartGame();
+    // Keep the dialog open (sim paused) until restart + save finish, then
+    // restartGame clears restartGameDialogOpen itself.
+    await deleteSave(); // Local IndexedDB only; cloud is replaced by restart save
+    await restartGame();
   };
 
   const handleManualSave = async () => {
@@ -255,7 +256,6 @@ function useProfileMenuState() {
           }
           : {}),
         lastSaved: timestamp,
-        isNewGame: false,
       }));
 
       toast({

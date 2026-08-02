@@ -12,9 +12,9 @@ import { initTabVisibilityClass } from "./lib/tabVisibility";
 import { installSuppressReplitFragmentWarnings } from "./lib/suppressReplitFragmentWarnings";
 import {
   bootstrapAfterHardReload,
-  hardReload,
   installStaleChunkAutoReload,
-  MODULE_LOAD_RETRY_KEY,
+  isStaleChunkLoadFailure,
+  recoverFromStaleChunkLoad,
 } from "./lib/hardReload";
 import { logger } from "./lib/logger";
 import { BOOT_LOCALE_TIMEOUT_MS } from "./lib/fatalErrorScreen";
@@ -66,17 +66,13 @@ if (typeof Node === "function" && Node.prototype) {
 
 window.addEventListener("vite:preloadError", (event) => {
   event.preventDefault();
-  try {
-    if (sessionStorage.getItem(MODULE_LOAD_RETRY_KEY)) {
-      mountFatalErrorScreen(event);
-      return;
-    }
-    sessionStorage.setItem(MODULE_LOAD_RETRY_KEY, String(Date.now()));
-  } catch {
-    mountFatalErrorScreen(event);
-    return;
-  }
-  void hardReload();
+  // Vite preload failures are always missing/stale chunks after a deploy.
+  const payload = (event as Event & { payload?: unknown }).payload;
+  recoverFromStaleChunkLoad(
+    isStaleChunkLoadFailure(payload)
+      ? payload
+      : new Error("Failed to fetch dynamically imported module (vite preload)"),
+  );
 });
 
 function withTimeout<T>(promise: Promise<T>, ms: number, label: string): Promise<T> {

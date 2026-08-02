@@ -25,7 +25,51 @@ import {
   readSteamCloudSave,
   pickNewerSave,
 } from "./steamSaveAdapter";
+import {
+  needsPlaytimeOverwriteForSync,
+  pickPreferredSave,
+  shouldAllowPlaytimeOverwrite,
+} from "./saveConflict";
 const isDev = import.meta.env.DEV;
+
+export type SaveGameResult = {
+  localSaved: boolean;
+  cloudSaved: boolean;
+  /** Cloud intentionally skipped (guest / local-only / inactive dialog). */
+  cloudSkipped: boolean;
+};
+
+const SAVE_SKIPPED: SaveGameResult = {
+  localSaved: false,
+  cloudSaved: false,
+  cloudSkipped: true,
+};
+
+async function clearPlaytimeOverwriteFlags(): Promise<void> {
+  const { useGameStore } = await import("./state");
+  useGameStore.setState({
+    allowPlayTimeOverwrite: false,
+    // Legacy typo key some restarts persisted
+    allowPlaytimeOverwrite: false,
+    isNewGame: false,
+  } as never);
+}
+
+/** Normalize restart overwrite fields onto the schema key before persisting. */
+function normalizePlaytimeOverwriteFields<T extends Record<string, unknown>>(
+  state: T,
+): T {
+  const legacy = (state as { allowPlaytimeOverwrite?: boolean })
+    .allowPlaytimeOverwrite;
+  if (legacy === true || state.allowPlayTimeOverwrite === true || state.isNewGame === true) {
+    (state as { allowPlayTimeOverwrite?: boolean }).allowPlayTimeOverwrite =
+      state.isNewGame === true ||
+      state.allowPlayTimeOverwrite === true ||
+      legacy === true;
+  }
+  delete (state as { allowPlaytimeOverwrite?: boolean }).allowPlaytimeOverwrite;
+  return state;
+}
 
 /**
  * Cloud save full-document replace on the V1 path (`game_state`).
@@ -483,14 +527,14 @@ async function processUnclaimedReferralsImpl(
 export async function saveGame(
   gameState: GameState,
   isAutosave: boolean = true,
-): Promise<void> {
+): Promise<SaveGameResult> {
   try {
     // Check if game is inactive - if so, don't save
     const { useGameStore } = await import("./state");
     const currentState = useGameStore.getState();
     if (currentState.inactivityDialogOpen) {
       logger.log("[SAVE] ⚠️ Game is inactive - skipping save");
-      return;
+      return SAVE_SKIPPED;
     }
 
     const db = await getDB();
@@ -509,6 +553,8 @@ export async function saveGame(
       sanitizedState = { ...gameState };
     }
 
+    normalizePlaytimeOverwriteFields(sanitizedState);
+
     // Ensure cooldownDurations is always present
     if (!sanitizedState.cooldownDurations) {
       sanitizedState.cooldownDurations = {};
@@ -517,6 +563,11 @@ export async function saveGame(
     // Ensure startTime is always present for completion tracking
     if (!sanitizedState.startTime) {
       sanitizedState.startTime = Date.now();
+    }
+
+    // New-game saves must persist playTime 0 so load envelopes cannot keep a stale clock.
+    if (sanitizedState.isNewGame === true) {
+      sanitizedState.playTime = 0;
     }
 
     // Add timestamp to track save recency
@@ -528,188 +579,223 @@ export async function saveGame(
       typeof __BUILD_SHA__ !== "undefined" ? __BUILD_SHA__ : "dev";
     sanitizedState.clientBuildSha = runningBuildSha;
 
+    const playTimeForEnvelope =
+      typeof sanitizedState.playTime === "number"
+        ? sanitizedState.playTime
+        : gameState.playTime;
+
     const saveData: SaveData = {
       gameState: sanitizedState,
       timestamp: now,
-      playTime: gameState.playTime,
+      playTime: playTimeForEnvelope,
     };
 
     // Save locally first (most important)
     await putLocalSave(db, saveData);
 
-    // Guests: local IndexedDB only — no Supabase / edge-function / server calls.
-    if (!currentState.isUserSignedIn) {
-      return;
+    const allowOverwrite = shouldAllowPlaytimeOverwrite(sanitizedState);
+
+    // Local-only editions / guests: no cloud. Still clear restart flags so they
+    // do not stick forever in the store after a successful local write.
+    if (isLocalOnlyEdition()) {
+      if (allowOverwrite) {
+        await clearPlaytimeOverwriteFlags();
+      }
+      return { localSaved: true, cloudSaved: false, cloudSkipped: true };
+    }
+
+    // Prefer the store flag, but still attempt cloud when a restart overwrite is
+    // pending (covers brief isUserSignedIn desync after auth).
+    if (!currentState.isUserSignedIn && !allowOverwrite) {
+      return { localSaved: true, cloudSaved: false, cloudSkipped: true };
     }
 
     // Try to save to cloud if user is authenticated
     try {
       const user = await getCurrentUser();
-      if (user) {
-        const isNewGame = gameState.isNewGame || false;
+      if (!user) {
+        if (!currentState.isUserSignedIn) {
+          // Guest / signed-out: no cloud document to replace.
+          if (allowOverwrite) {
+            await clearPlaytimeOverwriteFlags();
+          }
+          return { localSaved: true, cloudSaved: false, cloudSkipped: true };
+        }
+        // Store says signed-in but session missing — keep overwrite for retry.
+        if (allowOverwrite) {
+          logger.warn(
+            "[SAVE] Restart overwrite pending but no authenticated session yet",
+          );
+        }
+        return { localSaved: true, cloudSaved: false, cloudSkipped: false };
+      }
 
-        // If gender not yet detected and not yet attempted, try once via internal service
-        if (!sanitizedState.g && !sanitizedState.g_fn_checked) {
-          sanitizedState.g_fn_checked = true;
-          try {
-            const supabaseClient = await getSupabaseClient();
-            const { data: { session } } = await supabaseClient.auth.getSession();
-            if (session?.access_token) {
-              const res = await fetch("/api/gender", {
-                method: "POST",
-                headers: { Authorization: `Bearer ${session.access_token}` },
-              });
-              if (res.ok) {
-                const { g, fn } = await res.json();
-                if (g === "m" || g === "f") {
-                  sanitizedState.g = g;
-                  if (fn) sanitizedState.fn = fn;
-                  const { useGameStore } = await import("./state");
-                  useGameStore.setState({ g, ...(fn && { fn }), g_fn_checked: true });
-                } else {
-                  const { useGameStore } = await import("./state");
-                  useGameStore.setState({ g_fn_checked: true });
-                }
+      const isNewGame = sanitizedState.isNewGame === true;
+
+      // If gender not yet detected and not yet attempted, try once via internal service
+      if (!sanitizedState.g && !sanitizedState.g_fn_checked) {
+        sanitizedState.g_fn_checked = true;
+        try {
+          const supabaseClient = await getSupabaseClient();
+          const { data: { session } } = await supabaseClient.auth.getSession();
+          if (session?.access_token) {
+            const res = await fetch("/api/gender", {
+              method: "POST",
+              headers: { Authorization: `Bearer ${session.access_token}` },
+            });
+            if (res.ok) {
+              const { g, fn } = await res.json();
+              if (g === "m" || g === "f") {
+                sanitizedState.g = g;
+                if (fn) sanitizedState.fn = fn;
+                useGameStore.setState({ g, ...(fn && { fn }), g_fn_checked: true });
               } else {
-                const errBody = await res.json().catch(() => ({}));
-                logger.warn("[SAVE] Gender detection failed:", res.status, errBody.error ?? errBody.hint ?? res.statusText);
-                const { useGameStore } = await import("./state");
                 useGameStore.setState({ g_fn_checked: true });
               }
+            } else {
+              const errBody = await res.json().catch(() => ({}));
+              logger.warn("[SAVE] Gender detection failed:", res.status, errBody.error ?? errBody.hint ?? res.statusText);
+              useGameStore.setState({ g_fn_checked: true });
             }
-          } catch (e) {
-            logger.warn("[SAVE] Gender detection skipped:", e);
           }
-        }
-
-        // Get and reset click analytics
-        const clickData = useGameStore.getState().getAndResetClickAnalytics();
-
-        // Get resource snapshot only during autosaves (when game loop is running)
-        // This ensures resources are tracked at consistent intervals with proper playTime
-        const resourceData = isAutosave
-          ? useGameStore.getState().getAndResetResourceAnalytics()
-          : null;
-
-        // Log snapshot to verify stats are included
-        if (resourceData) {
-          const hasStats = Object.keys(resourceData).some(key =>
-            ['luck', 'strength', 'knowledge', 'madness'].includes(key)
-          );
-          logger.log('[SAVE CLOUD] 📊 Resource snapshot includes stats:', {
-            hasStats,
-            statsKeys: Object.keys(resourceData).filter(key =>
-              ['luck', 'strength', 'knowledge', 'madness'].includes(key)
-            ),
-            snapshotKeys: Object.keys(resourceData),
-          });
-        }
-
-        const fullReplace = isSaveFullReplaceEnabled();
-        let stateDiff: Partial<GameState>;
-
-        if (fullReplace) {
-          // Full document — server stores as game_state when p_full_replace=true.
-          stateDiff = sanitizedState as Partial<GameState>;
-          if (stateDiff.playTime !== undefined) {
-            stateDiff.playTime = Math.floor(Number(stateDiff.playTime));
-          }
-        } else {
-          // Legacy path: diff + deep-merge (old clients / kill switch).
-          const lastCloudState = await getLastCloudState(db);
-          stateDiff = omitPlayTimeFromDiffIfUnchanged(
-            calculateStateDiff(lastCloudState || null, sanitizedState),
-            lastCloudState,
-            sanitizedState,
-          );
-
-          // Permanent / foundational slices: always send full objects. Incremental diffs
-          // omit unchanged keys; JSONB deep-merge into an empty/partial cloud row then
-          // permanently drops them. Seen in prod: wiped tools, missing unlock flags, and
-          // missing `buildings` (housing/cap reads as 0 while villagers remain).
-          for (const key of ALWAYS_FULL_CLOUD_SLICES) {
-            stateDiff[key] = sanitizedState[key] as never;
-          }
-
-          // Execution / expedition slices use delete semantics (completed actions remove
-          // keys). Cloud save uses JSONB deep-merge, so partial diffs cannot express
-          // deletions — always send full objects.
-          for (const key of ALWAYS_FULL_DELETE_SEMANTIC_CLOUD_SLICES) {
-            (stateDiff as Record<string, unknown>)[key] =
-              (sanitizedState as Record<string, unknown>)[key];
-          }
-
-          if (sanitizedState.startTime && !stateDiff.startTime) {
-            stateDiff.startTime = sanitizedState.startTime;
-          }
-          if (sanitizedState.gameId && !stateDiff.gameId) {
-            stateDiff.gameId = sanitizedState.gameId;
-          }
-
-          stateDiff.clientBuildSha = sanitizedState.clientBuildSha;
-
-          if (stateDiff.playTime !== undefined) {
-            stateDiff.playTime = Math.floor(stateDiff.playTime);
-          }
-        }
-
-        // Check if this is a new game that needs playtime overwrite
-        const allowOverwrite = sanitizedState.allowPlaytimeOverwrite === true || sanitizedState.isNewGame === true;
-
-        logger.log('[SAVE CLOUD] 🔍 Playtime overwrite check:', {
-          allowPlaytimeOverwrite: sanitizedState.allowPlaytimeOverwrite,
-          isNewGame: sanitizedState.isNewGame,
-          willAllowOverwrite: allowOverwrite,
-          currentPlayTime: stateDiff.playTime,
-          fullReplace,
-        });
-
-        // Save via Edge Function → save_game_with_analytics.
-        // fullReplace: full blob replace (migration 030); else deep-merge (024/025).
-        const supabaseClient = await getSupabaseClient();
-
-        // Verify we have an active session (Supabase client will automatically include the JWT)
-        const { data: { session } } = await supabaseClient.auth.getSession();
-        if (!session) {
-          throw new Error('No active session');
-        }
-
-        const { data, error } = await supabaseClient.functions.invoke('save-game', {
-          body: {
-            gameStateDiff: stateDiff,
-            clickAnalytics: clickData,
-            resourceAnalytics: resourceData,
-            clearAnalytics: isNewGame,
-            allowPlaytimeOverwrite: allowOverwrite,
-            fullReplace,
-          }
-        });
-
-        if (error) {
-          logger.error('[SAVE CLOUD] Edge Function error details:', {
-            error,
-            message: error.message,
-            context: error.context,
-          });
-          throw error;
-        }
-
-        logger.log('[SAVE CLOUD] Edge Function success:', data);
-
-        // Update lastCloudState only after successful cloud save
-        await putLastCloudState(db, sanitizedState);
-        logger.log("[SAVE] ✅ Updated lastCloudState after successful cloud save");
-
-        // Clear the allowPlayTimeOverwrite flag after successful save
-        if (gameState.allowPlaytimeOverwrite) {
-          const { useGameStore } = await import("./state");
-          useGameStore.setState({ allowPlaytimeOverwrite: false });
-          logger.log("[SAVE] 🔓 Cleared allowPlayTimeOverwrite flag after successful cloud save");
+        } catch (e) {
+          logger.warn("[SAVE] Gender detection skipped:", e);
         }
       }
+
+      // Get and reset click analytics
+      const clickData = useGameStore.getState().getAndResetClickAnalytics();
+
+      // Get resource snapshot only during autosaves (when game loop is running)
+      // This ensures resources are tracked at consistent intervals with proper playTime
+      const resourceData = isAutosave
+        ? useGameStore.getState().getAndResetResourceAnalytics()
+        : null;
+
+      // Log snapshot to verify stats are included
+      if (resourceData) {
+        const hasStats = Object.keys(resourceData).some(key =>
+          ['luck', 'strength', 'knowledge', 'madness'].includes(key)
+        );
+        logger.log('[SAVE CLOUD] 📊 Resource snapshot includes stats:', {
+          hasStats,
+          statsKeys: Object.keys(resourceData).filter(key =>
+            ['luck', 'strength', 'knowledge', 'madness'].includes(key)
+          ),
+          snapshotKeys: Object.keys(resourceData),
+        });
+      }
+
+      const fullReplace = isSaveFullReplaceEnabled();
+      let stateDiff: Partial<GameState>;
+
+      if (fullReplace) {
+        // Full document — server stores as game_state when p_full_replace=true.
+        stateDiff = sanitizedState as Partial<GameState>;
+        if (stateDiff.playTime !== undefined) {
+          stateDiff.playTime = Math.floor(Number(stateDiff.playTime));
+        }
+      } else {
+        // Legacy path: diff + deep-merge (old clients / kill switch).
+        const lastCloudState = await getLastCloudState(db);
+        stateDiff = omitPlayTimeFromDiffIfUnchanged(
+          calculateStateDiff(lastCloudState || null, sanitizedState),
+          lastCloudState,
+          sanitizedState,
+        );
+
+        // Permanent / foundational slices: always send full objects. Incremental diffs
+        // omit unchanged keys; JSONB deep-merge into an empty/partial cloud row then
+        // permanently drops them. Seen in prod: wiped tools, missing unlock flags, and
+        // missing `buildings` (housing/cap reads as 0 while villagers remain).
+        for (const key of ALWAYS_FULL_CLOUD_SLICES) {
+          stateDiff[key] = sanitizedState[key] as never;
+        }
+
+        // Execution / expedition slices use delete semantics (completed actions remove
+        // keys). Cloud save uses JSONB deep-merge, so partial diffs cannot express
+        // deletions — always send full objects.
+        for (const key of ALWAYS_FULL_DELETE_SEMANTIC_CLOUD_SLICES) {
+          (stateDiff as Record<string, unknown>)[key] =
+            (sanitizedState as Record<string, unknown>)[key];
+        }
+
+        if (sanitizedState.startTime && !stateDiff.startTime) {
+          stateDiff.startTime = sanitizedState.startTime;
+        }
+        if (sanitizedState.gameId && !stateDiff.gameId) {
+          stateDiff.gameId = sanitizedState.gameId;
+        }
+
+        stateDiff.clientBuildSha = sanitizedState.clientBuildSha;
+
+        if (stateDiff.playTime !== undefined) {
+          stateDiff.playTime = Math.floor(stateDiff.playTime);
+        }
+      }
+
+      // Persist the schema overwrite flag in the blob while the server flag is set.
+      if (allowOverwrite) {
+        stateDiff.allowPlayTimeOverwrite = true;
+      }
+
+      logger.log('[SAVE CLOUD] 🔍 Playtime overwrite check:', {
+        allowPlayTimeOverwrite: sanitizedState.allowPlayTimeOverwrite,
+        isNewGame: sanitizedState.isNewGame,
+        willAllowOverwrite: allowOverwrite,
+        currentPlayTime: stateDiff.playTime,
+        fullReplace,
+      });
+
+      // Save via Edge Function → save_game_with_analytics.
+      // fullReplace: full blob replace (migration 030); else deep-merge (024/025).
+      const supabaseClient = await getSupabaseClient();
+
+      // Verify we have an active session (Supabase client will automatically include the JWT)
+      const { data: { session } } = await supabaseClient.auth.getSession();
+      if (!session) {
+        throw new Error('No active session');
+      }
+
+      const { data, error } = await supabaseClient.functions.invoke('save-game', {
+        body: {
+          gameStateDiff: stateDiff,
+          clickAnalytics: clickData,
+          resourceAnalytics: resourceData,
+          clearAnalytics: isNewGame,
+          allowPlaytimeOverwrite: allowOverwrite,
+          fullReplace,
+        }
+      });
+
+      if (error) {
+        logger.error('[SAVE CLOUD] Edge Function error details:', {
+          error,
+          message: error.message,
+          context: error.context,
+        });
+        throw error;
+      }
+
+      logger.log('[SAVE CLOUD] Edge Function success:', data);
+
+      // Clear restart flags in the persisted blob + store only after cloud accepts.
+      if (allowOverwrite) {
+        sanitizedState.allowPlayTimeOverwrite = false;
+        sanitizedState.isNewGame = false;
+        await clearPlaytimeOverwriteFlags();
+        logger.log("[SAVE] 🔓 Cleared playtime overwrite flags after successful cloud save");
+      }
+
+      // Update lastCloudState only after successful cloud save
+      await putLastCloudState(db, sanitizedState);
+      logger.log("[SAVE] ✅ Updated lastCloudState after successful cloud save");
+
+      return { localSaved: true, cloudSaved: true, cloudSkipped: false };
     } catch (cloudError) {
       logger.error("[SAVE] Cloud save failed:", cloudError);
-      // Don't throw - local save succeeded
+      // Don't throw - local save succeeded. Keep overwrite flags for retry.
+      return { localSaved: true, cloudSaved: false, cloudSkipped: false };
     }
   } catch (error) {
     logger.error("[SAVE] ❌ Failed to save game locally:", error);
@@ -763,21 +849,24 @@ export async function loadGame(): Promise<GameState | null> {
         let loadedState: GameState; // Declare loadedState here
 
         if (cloudSave && localSave) {
-          // Both saves exist - use the most recent one
-          // Floor playTime values to avoid floating-point comparison issues
+          const preferred = pickPreferredSave(localSave, cloudSave);
           const cloudPlayTime = Math.floor(cloudSave.playTime || 0);
           const localPlayTime = Math.floor(localSave.playTime || 0);
 
           logger.log("[LOAD] 🔍 Comparing local and cloud saves:", {
+            preferred,
+            localGameId: localSave.gameState?.gameId,
+            cloudGameId: cloudSave.gameState?.gameId,
+            localStartTime: localSave.gameState?.startTime,
+            cloudStartTime: cloudSave.gameState?.startTime,
             cloudPlayTime,
             localPlayTime,
             cloudTimestamp: cloudSave.timestamp,
             localTimestamp: localSave.timestamp,
           });
 
-          // Use whichever has more playtime (most progress)
-          if (localPlayTime > cloudPlayTime) {
-            logger.log("[LOAD] 💾 Local save is newer - using local and syncing to cloud");
+          if (preferred === "local") {
+            logger.log("[LOAD] 💾 Preferring local save and syncing to cloud");
             loadedState = mergeCloudReferralsIntoState(
               localSave.gameState,
               cloudSave.gameState,
@@ -788,14 +877,37 @@ export async function loadGame(): Promise<GameState | null> {
               cooldownDurations: loadedState.cooldownDurations || {},
             };
             const processedState = await processUnclaimedReferrals(stateWithDefaults);
-            const reconciled = mergeSavePlayTimeIntoState(localSave, processedState);
+            let reconciled = mergeSavePlayTimeIntoState(localSave, processedState);
+
+            // Restart / different gameId must be allowed to replace a longer cloud run.
+            if (needsPlaytimeOverwriteForSync(localSave, cloudSave)) {
+              reconciled = {
+                ...reconciled,
+                allowPlayTimeOverwrite: true,
+              };
+            }
 
             // Sync local progress to cloud
             try {
               await db.delete("lastCloudState", LAST_CLOUD_STATE_KEY);
-              await saveGame(reconciled, false);
-              await putLastCloudState(db, reconciled);
-              logger.log("[LOAD] ✅ Local progress synced to cloud");
+              const syncResult = await saveGame(reconciled, false);
+              const cleared = {
+                ...reconciled,
+                allowPlayTimeOverwrite: false,
+                isNewGame: false,
+              };
+              await putLastCloudState(db, cleared);
+              if (syncResult.cloudSaved) {
+                logger.log("[LOAD] ✅ Local progress synced to cloud");
+              } else if (!syncResult.cloudSkipped) {
+                logger.warn(
+                  "[LOAD] ⚠️ Local preferred but cloud sync failed — overwrite may retry on next save",
+                );
+              }
+              // If cloud accepted (or skipped), do not hand overwrite flags back into the store.
+              return syncResult.cloudSaved || syncResult.cloudSkipped
+                ? cleared
+                : reconciled;
             } catch (syncError: any) {
               if (syncError.message?.includes("OCC violation")) {
                 logger.log("[LOAD] 📊 Cloud already has this save state - skipping sync");
@@ -807,8 +919,8 @@ export async function loadGame(): Promise<GameState | null> {
 
             return reconciled;
           } else {
-            // Cloud save is newer or equal - use cloud
-            logger.log("[LOAD] ☁️ Cloud save is newer - using cloud save");
+            // Cloud preferred (same-run higher playTime, or newer gameId/startTime)
+            logger.log("[LOAD] ☁️ Preferring cloud save");
             loadedState = cloudSave.gameState; // Assign to loadedState
 
             const { formatSaveTimestamp } = await import("@/lib/utils");
