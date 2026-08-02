@@ -8,13 +8,13 @@ import { TEXT_SCALE_CHANGE_EVENT } from "@/lib/textScale";
 
 /** Digit column height in px — derived from root rem × scale for scroll animation. */
 export function getAnimatedCounterHeightPx(): number {
-  if (typeof document === "undefined") return 18;
+  if (typeof document === "undefined") return 14; // ~0.8625rem at 16px root
   const root = document.documentElement;
   const rootPx = parseFloat(getComputedStyle(root).fontSize) || 16;
   const scale =
     parseFloat(getComputedStyle(root).getPropertyValue("--adc-text-scale")) || 1;
-  // Digit reel height: 1.15rem (matches `.adc-counter-text` height)
-  return rootPx * 1.15 * scale;
+  // Digit reel height: text-xs (0.75rem) × line-height 1.15
+  return rootPx * 0.8625 * scale;
 }
 
 export const ANIMATED_COUNTER_TEXT_CLASS = "adc-counter-text tabular-nums";
