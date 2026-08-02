@@ -707,7 +707,7 @@ export default function IdleModeDialog() {
       >
         <DialogHeader>
           <DialogTitle>{t("idleMode.sleeping")}</DialogTitle>
-          <DialogDescription className="py-1 space-y-2">
+          <DialogDescription className="py-1 space-y-2 text-xs">
             {isTimeUp ? (
               <span className="pt-2">{t("idleMode.awake")}</span>
             ) : (
@@ -775,7 +775,7 @@ export default function IdleModeDialog() {
                   gridTemplateColumns: "minmax(0,1fr) 4.5rem 4.5rem 4.5rem",
                 }}
               >
-                <div className="text-gray-400 truncate leading-none">
+                <div className="text-gray-400 truncate leading-tight">
                   {resourceLabel}
                 </div>
                 <div

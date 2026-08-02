@@ -219,7 +219,8 @@ function useSidePanelActiveTooltipHoverId(): string | null {
   }, []);
   return getSidePanelActiveTooltipHoverId();
 }
-const RESOURCE_ROW_TEXT_CLASS = "text-xs leading-none";
+/** leading-tight keeps rows compact but leaves room for descenders (e.g. Insight "g"). */
+const RESOURCE_ROW_TEXT_CLASS = "text-xs leading-tight";
 /** Third column: production rate and change popup share one right-aligned slot. */
 const RESOURCE_DELTA_SLOT_CLASS =
   "block w-full min-w-[3rem] text-right font-mono tabular-nums whitespace-nowrap";
