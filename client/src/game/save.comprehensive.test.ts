@@ -450,6 +450,65 @@ describe('Save Game System - Comprehensive Tests', () => {
         }),
       );
     });
+
+    it('keeps cloud progress when logging in on a fresh other-screen local start', async () => {
+      const { encodeLocalSave } = await import('./saveCodec');
+      const auth = await import('./auth');
+      const state = await import('./state');
+
+      // Other screen: lit fire / short guest run, then sign-in.
+      const localFresh = createMockGameState({
+        gameId: 'game-other-screen',
+        startTime: 3_000_000,
+        playTime: 8_000,
+        resources: { wood: 2, stone: 0, gold: 0, food: 0 },
+        isNewGame: true,
+      });
+      const cloudProgress = createMockGameState({
+        gameId: 'game-main-account',
+        startTime: 1_000_000,
+        playTime: 18_000_000,
+        resources: { wood: 500, stone: 200, gold: 50, food: 100 },
+      });
+
+      mockStores.saves.mainSave = encodeLocalSave({
+        gameState: localFresh,
+        timestamp: 3_000_100,
+        playTime: 8_000,
+      });
+
+      vi.mocked(auth.getCurrentUser).mockResolvedValue({ id: 'user-1', email: 'test@example.com' });
+      vi.mocked(auth.loadGameFromSupabase).mockResolvedValue({
+        gameState: cloudProgress,
+        timestamp: 2_500_000,
+        playTime: 18_000_000,
+      });
+      vi.mocked(state.useGameStore.getState).mockReturnValue({
+        inactivityDialogOpen: false,
+        isUserSignedIn: true,
+        getAndResetClickAnalytics: vi.fn().mockReturnValue(null),
+        getAndResetResourceAnalytics: vi.fn().mockReturnValue(null),
+      } as any);
+
+      const { getSupabaseClient } = await import('@/lib/supabase');
+      const mockInvoke = vi.fn().mockResolvedValue({ data: { success: true }, error: null });
+      vi.mocked(getSupabaseClient).mockResolvedValue({
+        auth: {
+          getSession: vi.fn().mockResolvedValue({
+            data: { session: { access_token: 'tok' } },
+          }),
+        },
+        functions: { invoke: mockInvoke },
+      } as any);
+
+      const loaded = await loadGame();
+
+      expect(loaded?.gameId).toBe('game-main-account');
+      expect(loaded?.playTime).toBe(18_000_000);
+      expect(loaded?.resources?.wood).toBe(500);
+      // Must not push the fresh local wipe to cloud.
+      expect(mockInvoke).not.toHaveBeenCalled();
+    });
   });
 
   describe('3. Offline Progress Overwrite', () => {

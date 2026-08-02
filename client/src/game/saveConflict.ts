@@ -7,7 +7,8 @@ export type PlaytimeOverwriteFields = Partial<GameState> & {
 
 /**
  * True when this save is allowed to replace a cloud document that has a higher
- * playTime (new game / explicit restart overwrite).
+ * playTime. Only explicit restart overwrite flags count — `isNewGame` alone must
+ * not wipe cloud progress (e.g. Light Fire on another device, then login).
  */
 export function shouldAllowPlaytimeOverwrite(
   state: PlaytimeOverwriteFields | null | undefined,
@@ -15,8 +16,7 @@ export function shouldAllowPlaytimeOverwrite(
   if (!state) return false;
   return (
     state.allowPlayTimeOverwrite === true ||
-    state.allowPlaytimeOverwrite === true ||
-    state.isNewGame === true
+    state.allowPlaytimeOverwrite === true
   );
 }
 
@@ -24,8 +24,12 @@ export function shouldAllowPlaytimeOverwrite(
  * Choose which save wins when both local and cloud exist.
  *
  * Same `gameId`: higher playTime wins (progress within one run).
- * Different `gameId`: newer `startTime` wins so a restart is not overwritten by
- * a longer finished run still sitting on cloud (or a stale local tab).
+ * Different `gameId`:
+ * - Local with explicit `allowPlayTimeOverwrite` wins (restart pending cloud sync).
+ * - Else if cloud `startTime` is newer, cloud wins (restart already synced elsewhere;
+ *   do not resurrect a stale longer local finished run).
+ * - Else keep local only when it has more playTime; otherwise keep cloud.
+ *   This blocks "fresh Light Fire on another screen → login" from zeroing cloud.
  */
 export function pickPreferredSave(
   local: SaveData,
@@ -33,18 +37,27 @@ export function pickPreferredSave(
 ): "local" | "cloud" {
   const localGameId = local.gameState?.gameId ?? "";
   const cloudGameId = cloud.gameState?.gameId ?? "";
-
-  if (localGameId && cloudGameId && localGameId !== cloudGameId) {
-    const localStart = Number(local.gameState?.startTime) || 0;
-    const cloudStart = Number(cloud.gameState?.startTime) || 0;
-    if (localStart !== cloudStart) {
-      return localStart > cloudStart ? "local" : "cloud";
-    }
-    return (local.timestamp || 0) >= (cloud.timestamp || 0) ? "local" : "cloud";
-  }
-
   const cloudPlayTime = Math.floor(cloud.playTime || 0);
   const localPlayTime = Math.floor(local.playTime || 0);
+
+  if (localGameId && cloudGameId && localGameId !== cloudGameId) {
+    if (shouldAllowPlaytimeOverwrite(local.gameState)) {
+      return "local";
+    }
+
+    const localStart = Number(local.gameState?.startTime) || 0;
+    const cloudStart = Number(cloud.gameState?.startTime) || 0;
+
+    // Cloud already advanced to a newer run (restart synced on another device).
+    if (cloudStart > localStart) {
+      return "cloud";
+    }
+
+    // Local is a newer run (other screen / guest start). Only keep it when it
+    // actually outranks cloud playTime; otherwise preserve account progress.
+    return localPlayTime > cloudPlayTime ? "local" : "cloud";
+  }
+
   return localPlayTime > cloudPlayTime ? "local" : "cloud";
 }
 
