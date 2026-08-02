@@ -265,6 +265,12 @@ export default function IdleModeDialog() {
     (sleepLengthConfig.hours + estateBonusHours) * 60 * 60 * 1000;
   const PRODUCTION_SPEED_MULTIPLIER =
     (sleepIntensityConfig.percentage + estateBonusIntensityPct) / 100;
+  // Refs so sleep timer/accumulation effects do not restart when these primitives
+  // are recomputed (they are stable across renders unless upgrades/buildings change).
+  const idleDurationMsRef = useRef(IDLE_DURATION_MS);
+  idleDurationMsRef.current = IDLE_DURATION_MS;
+  const productionSpeedMultiplierRef = useRef(PRODUCTION_SPEED_MULTIPLIER);
+  productionSpeedMultiplierRef.current = PRODUCTION_SPEED_MULTIPLIER;
 
   // Reset local state when game changes (new game started)
   useEffect(() => {
@@ -400,7 +406,7 @@ export default function IdleModeDialog() {
     const timerInterval = setInterval(() => {
       const now = Date.now();
       const elapsed = now - startTime;
-      const remaining = Math.max(0, IDLE_DURATION_MS - elapsed);
+      const remaining = Math.max(0, idleDurationMsRef.current - elapsed);
 
       setRemainingTime(remaining);
       setDisplayNow(now);
@@ -430,7 +436,7 @@ export default function IdleModeDialog() {
 
     const now = Date.now();
     const elapsed = now - startTime;
-    const remaining = Math.max(0, IDLE_DURATION_MS - elapsed);
+    const remaining = Math.max(0, idleDurationMsRef.current - elapsed);
 
     // Don't start accumulation if time is already up
     if (remaining <= 0) {
@@ -453,6 +459,7 @@ export default function IdleModeDialog() {
       }
 
       const currentState = useGameStore.getState();
+      const multiplier = productionSpeedMultiplierRef.current;
 
       // Accumulate resources using the same production functions as normal mode
       setAccumulatedResources((prev) => {
@@ -468,29 +475,17 @@ export default function IdleModeDialog() {
         });
 
         // Apply production functions to the simulated state
-        simulateGathererProduction(
-          currentState,
-          PRODUCTION_SPEED_MULTIPLIER,
-          simulatedResources,
-        );
-        simulateHunterProduction(
-          currentState,
-          PRODUCTION_SPEED_MULTIPLIER,
-          simulatedResources,
-        );
-        simulateMinerProduction(
-          currentState,
-          PRODUCTION_SPEED_MULTIPLIER,
-          simulatedResources,
-        );
+        simulateGathererProduction(currentState, multiplier, simulatedResources);
+        simulateHunterProduction(currentState, multiplier, simulatedResources);
+        simulateMinerProduction(currentState, multiplier, simulatedResources);
         simulatePassiveEffectProduction(
           currentState,
-          PRODUCTION_SPEED_MULTIPLIER,
+          multiplier,
           simulatedResources,
         );
         simulatePopulationConsumption(
           currentState,
-          PRODUCTION_SPEED_MULTIPLIER,
+          multiplier,
           simulatedResources,
         );
         clampSimulatedResourcesToStorage(
@@ -525,7 +520,7 @@ export default function IdleModeDialog() {
       resourceInterval = setInterval(() => {
         const now = Date.now();
         const elapsed = now - startTime;
-        const remaining = Math.max(0, IDLE_DURATION_MS - elapsed);
+        const remaining = Math.max(0, idleDurationMsRef.current - elapsed);
 
         if (remaining <= 0 || updateResources() === false) {
           if (resourceInterval) clearInterval(resourceInterval);
@@ -538,7 +533,7 @@ export default function IdleModeDialog() {
       clearTimeout(initialTimeout);
       if (resourceInterval) clearInterval(resourceInterval);
     };
-  }, [isActive, idleModeDialog.isOpen, startTime, PRODUCTION_SPEED_MULTIPLIER, IDLE_DURATION_MS]);
+  }, [isActive, idleModeDialog.isOpen, startTime]);
 
   const handleEndIdleMode = () => {
     const now = Date.now();

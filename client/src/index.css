@@ -182,12 +182,12 @@ body {
     line-height: calc(2.25rem * var(--adc-text-scale, 1));
   }
 
-  /* Match side-panel / sleep dialog resource numbers: mono + text-xs scale */
+  /* Mono + text-xs type; reel height = font-size × line-height 1.15 */
   .adc-counter-text {
     font-family: var(--font-mono), "Courier New", monospace;
     font-size: calc(0.75rem * var(--adc-text-scale, 1));
-    line-height: 1.25;
-    height: calc(0.9375rem * var(--adc-text-scale, 1));
+    line-height: 1.15;
+    height: calc(0.8625rem * var(--adc-text-scale, 1));
   }
 
   /*

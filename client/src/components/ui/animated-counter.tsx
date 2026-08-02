@@ -13,8 +13,8 @@ export function getAnimatedCounterHeightPx(): number {
   const rootPx = parseFloat(getComputedStyle(root).fontSize) || 16;
   const scale =
     parseFloat(getComputedStyle(root).getPropertyValue("--adc-text-scale")) || 1;
-  // Match `.adc-counter-text` height (0.75rem * 1.25 line-height)
-  return rootPx * 0.9375 * scale;
+  // Digit reel height: text-xs (0.75rem) × line-height 1.15
+  return rootPx * 0.8625 * scale;
 }
 
 export const ANIMATED_COUNTER_TEXT_CLASS = "adc-counter-text tabular-nums";
