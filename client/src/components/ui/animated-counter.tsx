@@ -13,7 +13,8 @@ export function getAnimatedCounterHeightPx(): number {
   const rootPx = parseFloat(getComputedStyle(root).fontSize) || 16;
   const scale =
     parseFloat(getComputedStyle(root).getPropertyValue("--adc-text-scale")) || 1;
-  return rootPx * 1.125 * scale;
+  // Match `.adc-counter-text` / Tailwind `text-xs` (0.75rem)
+  return rootPx * 0.75 * scale;
 }
 
 export const ANIMATED_COUNTER_TEXT_CLASS = "adc-counter-text tabular-nums";

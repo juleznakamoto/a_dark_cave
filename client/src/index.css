@@ -182,10 +182,12 @@ body {
     line-height: calc(2.25rem * var(--adc-text-scale, 1));
   }
 
+  /* Match side-panel / sleep dialog resource numbers: mono + text-xs scale */
   .adc-counter-text {
-    font-size: calc(0.875rem * var(--adc-text-scale, 1));
+    font-family: var(--font-mono), "Courier New", monospace;
+    font-size: calc(0.75rem * var(--adc-text-scale, 1));
     line-height: 1;
-    height: calc(1.125rem * var(--adc-text-scale, 1));
+    height: calc(0.75rem * var(--adc-text-scale, 1));
   }
 
   /*

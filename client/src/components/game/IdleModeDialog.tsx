@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import {
   Dialog,
   DialogContent,
@@ -20,12 +20,7 @@ import {
 } from "@/game/population";
 import { audioManager, SOUND_VOLUME } from "@/lib/audio";
 import { resetProductionCycle } from "@/game/loop";
-import {
-  BOMB_RESOURCES,
-  capResourceToLimit,
-  getResourceLimit,
-  isResourceLimited,
-} from "@/game/resourceLimits";
+import { BOMB_RESOURCES, capResourceToLimit } from "@/game/resourceLimits";
 import type { GameState } from "@shared/schema";
 import { useTranslation } from "react-i18next";
 import { getResourceName } from "@/i18n/resolveGameText";
@@ -38,6 +33,11 @@ import {
   buildSleepBonusTimerFreezePatch,
   type SleepBonusTimerState,
 } from "@/game/sleepBonusTimers";
+import {
+  capSleepGainDeltasToStorageRoom,
+  getSleepTotalGainDisplay,
+  isSleepResourceAtStorageMax,
+} from "@/game/sleepGainDisplay";
 
 /** Match live play: limited resources cannot exceed storage cap during sleep simulation. */
 function clampSimulatedResourcesToStorage(
@@ -49,15 +49,6 @@ function clampSimulatedResourcesToStorage(
     if (v === undefined || v === null || Number.isNaN(v)) continue;
     simulated[key] = capResourceToLimit(key, Math.max(0, v), gameState);
   }
-}
-
-function isSleepResourceAtStorageMax(
-  resource: string,
-  amount: number,
-  gameState: GameState,
-): boolean {
-  if (!isResourceLimited(resource, gameState)) return false;
-  return amount >= getResourceLimit(gameState);
 }
 
 // Simulate production during sleep - no temporary bonuses (feast, curse, etc.) are active
@@ -257,6 +248,8 @@ export default function IdleModeDialog() {
     Record<string, number>
   >({});
   const [displayNow, setDisplayNow] = useState<number>(Date.now());
+  const initialResourcesRef = useRef(initialResources);
+  initialResourcesRef.current = initialResources;
 
   const state = useGameStore.getState();
 
@@ -339,18 +332,25 @@ export default function IdleModeDialog() {
         }
 
         // Calculate the delta (change) from starting resources
+        const startingResources = { ...currentState.resources };
         const resourceDeltas: Record<string, number> = {};
         Object.keys(offlineResources).forEach((resource) => {
           resourceDeltas[resource] =
             offlineResources[resource] -
-            (currentState.resources[
-              resource as keyof typeof currentState.resources
+            (startingResources[
+              resource as keyof typeof startingResources
             ] || 0);
         });
 
-        setAccumulatedResources(resourceDeltas);
+        setAccumulatedResources(
+          capSleepGainDeltasToStorageRoom(
+            resourceDeltas,
+            startingResources,
+            currentState,
+          ),
+        );
         // Store the CURRENT resources as initial state (most recent before simulation started)
-        setInitialResources({ ...currentState.resources });
+        setInitialResources(startingResources);
         // Only set active if there's time remaining - otherwise just show results
         const stillActive = remaining > 0;
         setIsActive(stillActive);
@@ -456,14 +456,15 @@ export default function IdleModeDialog() {
 
       // Accumulate resources using the same production functions as normal mode
       setAccumulatedResources((prev) => {
+        const startingResources = initialResourcesRef.current;
         // Start with current tracked resources (delta from start)
         const currentTracked = { ...prev };
 
         // Create a simulated resource state (initial + accumulated changes)
         const simulatedResources: Record<string, number> = {};
-        Object.keys(initialResources).forEach((resource) => {
+        Object.keys(startingResources).forEach((resource) => {
           simulatedResources[resource] =
-            initialResources[resource] + (currentTracked[resource] || 0);
+            (startingResources[resource] || 0) + (currentTracked[resource] || 0);
         });
 
         // Apply production functions to the simulated state
@@ -492,16 +493,24 @@ export default function IdleModeDialog() {
           PRODUCTION_SPEED_MULTIPLIER,
           simulatedResources,
         );
-        clampSimulatedResourcesToStorage(simulatedResources, currentState);
+        clampSimulatedResourcesToStorage(
+          simulatedResources,
+          currentState as GameState,
+        );
 
         // Calculate new deltas from initial state
         const newDeltas: Record<string, number> = {};
         Object.keys(simulatedResources).forEach((resource) => {
           newDeltas[resource] =
-            simulatedResources[resource] - initialResources[resource];
+            (simulatedResources[resource] || 0) -
+            (startingResources[resource] || 0);
         });
 
-        return newDeltas;
+        return capSleepGainDeltasToStorageRoom(
+          newDeltas,
+          startingResources,
+          currentState,
+        );
       });
 
       return true; // Continue
@@ -529,7 +538,7 @@ export default function IdleModeDialog() {
       clearTimeout(initialTimeout);
       if (resourceInterval) clearInterval(resourceInterval);
     };
-  }, [isActive, idleModeDialog.isOpen, startTime]);
+  }, [isActive, idleModeDialog.isOpen, startTime, PRODUCTION_SPEED_MULTIPLIER, IDLE_DURATION_MS]);
 
   const handleEndIdleMode = () => {
     const now = Date.now();
@@ -659,7 +668,6 @@ export default function IdleModeDialog() {
 
   // Show resources that are being produced
   const displayElapsed = displayNow - startTime;
-  const displaySecondsElapsed = Math.floor(displayElapsed / 1000);
 
   // Calculate Focus points (1 per almost 1 hour slept, or 1 per 5 seconds in dev mode)
   const focusIntervalMs = devMode ? 5 * 1000 : 59.99 * 60 * 1000;
@@ -735,64 +743,88 @@ export default function IdleModeDialog() {
             const currentAmount = isFocus
               ? focusPoints
               : Math.floor(
-                (initialResources[resource] || 0) +
-                (accumulatedResources[resource] || 0),
+                capResourceToLimit(
+                  resource,
+                  (initialResources[resource] || 0) +
+                  (accumulatedResources[resource] || 0),
+                  state as GameState,
+                ),
               );
             const isAtStorageMax =
               !isFocus &&
-              isSleepResourceAtStorageMax(
-                resource,
-                currentAmount,
-                state as GameState,
-              );
+              isSleepResourceAtStorageMax(resource, currentAmount, state);
             // Show uncapped production; yellow amount + rate when storage is full
             const productionRate = isFocus
               ? null
               : (productionPerInterval[resource] ?? 0);
+            // Last column: stop counting once storage is full (no overflow gains)
             const totalSinceStart = isFocus
               ? focusPoints
-              : Math.floor(accumulatedResources[resource] || 0);
+              : getSleepTotalGainDisplay(
+                resource,
+                accumulatedResources[resource] || 0,
+                initialResources[resource] || 0,
+                state,
+              );
+            // Match side-panel resource numbers: mono + tabular + text-xs
+            const numberCellClass =
+              "text-right font-mono tabular-nums whitespace-nowrap leading-none flex items-center justify-end min-w-0";
             return (
               <div
                 key={resource}
-                className={cn("grid gap-x-4 items-center", isFocus && "mt-1.5")}
+                className={cn(
+                  "grid gap-x-3 items-center",
+                  isFocus && "mt-1.5",
+                )}
                 style={{
-                  gridTemplateColumns:
-                    "minmax(0,1fr) minmax(4rem,1fr) minmax(4rem,1fr) minmax(5rem,1.5fr)",
+                  gridTemplateColumns: "minmax(0,1fr) 4.5rem 4.5rem 4.5rem",
                 }}
               >
-                <div className="text-gray-400 truncate">{resourceLabel}</div>
-                <div
-                  className={cn(
-                    "text-right font-mono tabular-nums flex justify-end",
-                    isAtStorageMax ? "text-yellow-500" : "text-gray-300",
-                  )}
-                >
-                  {currentAmount < 0 && "-"}
-                  <AnimatedCounter value={Math.abs(currentAmount)} />
+                <div className="text-gray-400 truncate leading-none">
+                  {resourceLabel}
                 </div>
                 <div
                   className={cn(
-                    "text-right font-mono tabular-nums flex justify-end",
+                    numberCellClass,
+                    isAtStorageMax ? "text-yellow-500" : "text-gray-300",
+                  )}
+                >
+                  {currentAmount < 0 && (
+                    <span className="font-mono tabular-nums">-</span>
+                  )}
+                  <AnimatedCounter
+                    value={Math.abs(currentAmount)}
+                    align="end"
+                  />
+                </div>
+                <div
+                  className={cn(
+                    numberCellClass,
                     isAtStorageMax ? "text-yellow-500" : "text-gray-300",
                   )}
                 >
                   {!isFocus && (
-                    <>
+                    <span className="font-mono tabular-nums">
                       {(productionRate ?? 0) >= 0 ? "+" : ""}
                       {(productionRate ?? 0).toFixed(1)}
-                    </>
+                    </span>
                   )}
                 </div>
                 <div
                   className={cn(
-                    "text-right font-mono tabular-nums flex justify-end",
+                    numberCellClass,
                     totalSinceStart > 0 && "text-green-600",
                     totalSinceStart < 0 && "text-red-600",
+                    totalSinceStart === 0 && "text-gray-300",
                   )}
                 >
-                  {totalSinceStart >= 0 ? "+" : "-"}
-                  <AnimatedCounter value={Math.abs(totalSinceStart)} />
+                  <span className="font-mono tabular-nums">
+                    {totalSinceStart >= 0 ? "+" : "-"}
+                  </span>
+                  <AnimatedCounter
+                    value={Math.abs(totalSinceStart)}
+                    align="end"
+                  />
                 </div>
               </div>
             );
