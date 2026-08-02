@@ -3,6 +3,7 @@ import type { GameState } from "@shared/schema";
 import { clothingEffects } from "@/game/rules/effects";
 import { capitalizeWords } from "@/lib/utils";
 import { DEFAULT_LOCALE, normalizeLocale } from "./locales";
+import enAchievements from "@/i18n/locales/en/achievements.json";
 
 export type TranslateOptions = Record<
   string,
@@ -346,6 +347,25 @@ export function getAchievementDetailLabel(
   fallback: string,
 ): string {
   return tWithFallback("achievements", `${chartPrefix}.${segmentId}.detail`, fallback);
+}
+
+export function getAchievementDescription(
+  chartPrefix: string,
+  segmentId: string,
+  fallback = "",
+): string {
+  const enFallback =
+    (
+      enAchievements as Record<
+        string,
+        Record<string, { description?: string }>
+      >
+    )[chartPrefix]?.[segmentId]?.description ?? fallback;
+  return tWithFallback(
+    "achievements",
+    `${chartPrefix}.${segmentId}.description`,
+    enFallback,
+  );
 }
 
 export function getResourceName(resourceKey: string, fallback: string): string {

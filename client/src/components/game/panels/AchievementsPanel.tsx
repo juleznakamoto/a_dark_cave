@@ -38,6 +38,7 @@ import type { AchievementRow } from "@/achievements/achievementHelpers";
 import type { AchievementChartConfig } from "@/achievements";
 import { getAchievementSegmentWeight } from "@/achievements/achievementTypes";
 import AchievementMiniRingChart from "@/achievements/AchievementMiniRingChart";
+import { useTranslation } from "react-i18next";
 import { useUiTranslation } from "@/i18n/useUiTranslation";
 import type { GameState } from "@shared/schema";
 
@@ -195,6 +196,7 @@ function AchievementRowComponent({
   claimButtonClass: string;
 }) {
   const { t } = useUiTranslation();
+  const { t: tAchievements } = useTranslation("achievements");
   const gameState = useGameStore((s) => s as unknown as GameState);
   const canClaim = row.isFull && !row.isClaimed;
   const tooltipText = canClaim ? formatRewardsTooltip(row.rewards) : "";
@@ -206,6 +208,11 @@ function AchievementRowComponent({
   const progressLabel = `${Math.min(Math.floor(row.currentCount), row.maxCount)}/${row.maxCount}`;
   const mutedSuffix =
     row.maxCount > 1 ? progressLabel : row.detailLabel;
+  const description = isTitleVisible
+    ? tAchievements(`${row.chartPrefix}.${row.segmentId}.description`, {
+      defaultValue: row.description,
+    })
+    : "";
 
   const handleClaim = () => {
     if (canClaim) {
@@ -220,34 +227,41 @@ function AchievementRowComponent({
 
   return (
     <div className="space-y-2 py-2">
-      <div className="flex items-center justify-between gap-2 min-h-5">
-        <div className="flex items-center gap-1 min-w-0 flex-1">
-          {isTitleVisible ? (
-            <span className="text-xs font-medium text-foreground truncate">
-              {row.label}
-              {mutedSuffix && (
-                <>
-                  {" "}
-                  <span className="text-muted-foreground font-normal">
-                    {mutedSuffix}
-                  </span>
-                </>
-              )}
-            </span>
-          ) : (
-            <>
-              <span
-                className="text-xs font-medium text-foreground shrink-0 leading-none"
-                aria-hidden
-              >
-                ❔
+      <div className="flex items-start justify-between gap-2 min-h-5">
+        <div className="flex min-w-0 flex-1 flex-col gap-0.5">
+          <div className="flex items-center gap-1 min-w-0">
+            {isTitleVisible ? (
+              <span className="text-xs font-medium text-foreground truncate">
+                {row.label}
+                {mutedSuffix && (
+                  <>
+                    {" "}
+                    <span className="text-muted-foreground font-normal">
+                      {mutedSuffix}
+                    </span>
+                  </>
+                )}
               </span>
-              <AchievementTitleInsightBadge
-                achievementId={row.achievementId}
-                currentCount={row.currentCount}
-              />
-            </>
-          )}
+            ) : (
+              <>
+                <span
+                  className="text-xs font-medium text-foreground shrink-0 leading-none"
+                  aria-hidden
+                >
+                  ❔
+                </span>
+                <AchievementTitleInsightBadge
+                  achievementId={row.achievementId}
+                  currentCount={row.currentCount}
+                />
+              </>
+            )}
+          </div>
+          {description ? (
+            <p className="text-xs leading-snug text-muted-foreground">
+              {description}
+            </p>
+          ) : null}
         </div>
         {canClaim && (
           <div className="h-5 flex items-center shrink-0">

@@ -1,220 +1,317 @@
 {
   "action": {
     "0-chopWood": {
-      "label": "Bûcheron"
+      "label": "Bûcheron",
+      "description": "Améliorez Ramasser du bois au niveau 10."
     },
     "0-craftTorches": {
-      "label": "Fabricant de torches"
+      "label": "Fabricant de torches",
+      "description": "Améliorez Torches au niveau 10."
     },
     "0-exploreCave": {
-      "label": "Explorateur de grottes"
+      "label": "Explorateur de grottes",
+      "description": "Améliorez Explorer la grotte au niveau 10."
     },
     "0-gamblerWins": {
-      "label": "Joueur aguerri"
+      "label": "Joueur aguerri",
+      "description": "Battez le joueur 10 fois."
     },
     "0-hunt": {
-      "label": "Chasseur"
+      "label": "Chasseur",
+      "description": "Améliorez Chasser au niveau 10."
     },
     "1-mineAdamant": {
-      "label": "Mineur d'adamant"
+      "label": "Mineur d'adamant",
+      "description": "Améliorez Adamant au niveau 10."
     },
     "1-mineCoal": {
-      "label": "Mineur de charbon"
+      "label": "Mineur de charbon",
+      "description": "Améliorez Charbon au niveau 10."
     },
     "1-mineIron": {
-      "label": "Mineur de fer"
+      "label": "Mineur de fer",
+      "description": "Améliorez Fer au niveau 10."
     },
     "1-mineMoonstone": {
-      "label": "Mineur de pierre de lune"
+      "label": "Mineur de pierre de lune",
+      "description": "Améliorez Pierre de lune au niveau 10."
     },
     "1-mineObsidian": {
-      "label": "Mineur d'obsidienne"
+      "label": "Mineur d'obsidienne",
+      "description": "Améliorez Obsidienne au niveau 10."
     },
     "1-mineStone": {
-      "label": "Mineur de pierre" //x1.5
+      "label": "Mineur de pierre", //x1.5
+      "description": "Améliorez Pierre au niveau 10."
     },
     "1-mineSulfur": {
-      "label": "Mineur de soufre"
+      "label": "Mineur de soufre",
+      "description": "Améliorez Soufre au niveau 10."
     },
     "2-animals": {
-      "label": "Sacrificateur d'animaux"
+      "label": "Sacrificateur d'animaux",
+      "description": "Sacrifiez des animaux 10 fois."
     },
     "2-boneTotems": {
-      "label": "Sacrificateur d'os"
+      "label": "Sacrificateur d'os",
+      "description": "Sacrifiez des totems d'os 20 fois."
     },
     "2-craftBoneTotems": {
-      "label": "Artisan de totems d'os"
+      "label": "Artisan de totems d'os",
+      "description": "Améliorez Totems d'os au niveau 10."
     },
     "2-craftLeatherTotems": {
-      "label": "Artisan de totems de cuir"
+      "label": "Artisan de totems de cuir",
+      "description": "Améliorez Totems de cuir au niveau 10."
     },
     "2-leatherTotems": {
-      "label": "Sacrificateur de cuir"
+      "label": "Sacrificateur de cuir",
+      "description": "Sacrifiez des totems de cuir 20 fois."
     },
     "3-ashfireBombs": {
-      "label": "Artisan de bombes de feu cendré"
+      "label": "Artisan de bombes de feu cendré",
+      "description": "Fabriquez 20 bombes feu-cendre."
     },
     "3-emberBombs": {
-      "label": "Artisan de bombes de braise"
+      "label": "Artisan de bombes de braise",
+      "description": "Fabriquez 20 bombes de braise."
     },
     "3-veinfireElixir": {
-      "label": "Artisan d'élixir de feu-veine"
+      "label": "Artisan d'élixir de feu-veine",
+      "description": "Fabriquez 10 élixirs feu-veine."
     },
     "4-feedFire": {
-      "label": "Gardien du feu"
+      "label": "Gardien du feu",
+      "description": "Alimentez le feu 100 fois."
     },
     "4-investor": {
-      "label": "Investisseur"
+      "label": "Investisseur",
+      "description": "Investissez 2 500 d'or au total."
     },
     "4-mentalClarity": {
-      "label": "Clarté mentale"
+      "label": "Clarté mentale",
+      "description": "Utilisez 5 élixirs de clarté."
     },
     "4-merchantPurchases": {
-      "label": "Marchandeur"
+      "label": "Marchandeur",
+      "description": "Effectuez 100 achats chez le marchand."
     },
     "4-solsticeGatherings": {
-      "label": "Célébrant du solstice"
+      "label": "Célébrant du solstice",
+      "description": "Organisez 10 fêtes du solstice."
     },
     "4-wellRested": {
-      "label": "Gros dormeur"
+      "label": "Gros dormeur",
+      "description": "Reposez-vous 20 heures au total."
+    },
+    "3-burningVeins": {
+      "label": "Burning Veins",
+      "description": "Utilisez 10 élixirs feu-veine."
+    },
+    "4-insightful": {
+      "label": "Insightful",
+      "description": "Dépensez 10 000 de perspicacité au total."
+    },
+    "4-luckyInvestor": {
+      "label": "Lucky Investor",
+      "description": "Réussissez 10 investissements."
+    },
+    "4-pileOfDead": {
+      "label": "Pile of Dead",
+      "description": "Perdez 250 villageois sur toutes les parties."
     }
   },
   "basic": {
     "0-coalMiner": {
-      "label": "Récolter du charbon" //x1.7
+      "label": "Récolter du charbon", //x1.7
+      "description": "Récoltez 500 de charbon au total."
     },
     "0-hunter": {
-      "label": "Chasseur"
+      "label": "Chasseur",
+      "description": "Récoltez 500 de nourriture au total."
     },
     "0-ironMiner": {
-      "label": "Récolter du fer" //x1.4
+      "label": "Récolter du fer", //x1.4
+      "description": "Récoltez 500 de fer au total."
     },
     "0-steelForger": {
-      "label": "Forger de l'acier"
+      "label": "Forger de l'acier",
+      "description": "Forgez 250 d'acier au total."
     },
     "0-stoneMiner": {
-      "label": "Récolter de la pierre" //x1.8
+      "label": "Récolter de la pierre", //x1.8
+      "description": "Récoltez 500 de pierre au total."
     },
     "0-woodGatherer": {
-      "label": "Récolter du bois" //x1.5
+      "label": "Récolter du bois", //x1.5
+      "description": "Récoltez 500 de bois au total."
     },
     "1-builder": {
-      "label": "Construire des bâtiments" //x1.3
+      "label": "Construire des bâtiments", //x1.3
+      "description": "Possédez au moins 5 bâtiments."
     },
     "1-communityBuilder": {
-      "label": "Bâtir une communauté"
+      "label": "Bâtir une communauté",
+      "description": "Atteignez une population de 10."
     },
     "1-explorer": {
-      "label": "Explorer la grotte"
+      "label": "Explorer la grotte",
+      "description": "Explorez la grotte 20 fois."
     },
     "1-toolCrafter": {
-      "label": "Fabriquer des outils"
+      "label": "Fabriquer des outils",
+      "description": "Possédez 5 outils différents."
     },
     "1-torchCrafter": {
-      "label": "Fabriquer des torches"
+      "label": "Fabriquer des torches",
+      "description": "Fabriquez 50 torches au total."
+    },
+    "0-tanner": {
+      "label": "Tanner",
+      "description": "Récoltez 250 de cuir au total."
     }
   },
   "building": {
     "0-0": {
-      "label": "Abri simple"
+      "label": "Abri simple",
+      "description": "Construisez 10 huttes de bois."
     },
     "0-1": {
-      "label": "Abri solide"
+      "label": "Abri solide",
+      "description": "Construisez 10 huttes de pierre."
     },
     "0-2": {
-      "label": "Abri nordique"
+      "label": "Abri nordique",
+      "description": "Construisez 5 maisons longues."
     },
     "0-3": {
-      "label": "Abri nomade"
+      "label": "Abri nomade",
+      "description": "Construisez 5 tentes de fourrure."
     },
     "1-0": {
-      "label": "Chasseurs"
+      "label": "Chasseurs",
+      "description": "Construisez la cabane de chasse et toutes les améliorations."
     },
     "1-1": {
-      "label": "Forgerons"
+      "label": "Forgerons",
+      "description": "Construisez la forge et toutes les améliorations."
     },
     "1-2": {
-      "label": "Fondeurs"
+      "label": "Fondeurs",
+      "description": "Construisez la fonderie et toutes les améliorations."
     },
     "1-3": {
-      "label": "Tanneurs"
+      "label": "Tanneurs",
+      "description": "Construisez la tannerie et toutes les améliorations."
     },
     "2-0": {
-      "label": "Mineurs"
+      "label": "Mineurs",
+      "description": "Construisez la fosse peu profonde et toutes les améliorations."
     },
     "3-0": {
-      "label": "Marchands"
+      "label": "Marchands",
+      "description": "Construisez le comptoir commercial et toutes les améliorations."
     },
     "3-1": {
-      "label": "Pourvoyeurs"
+      "label": "Pourvoyeurs",
+      "description": "Construisez la hutte de ravitaillement et toutes les améliorations."
     },
     "3-2": {
-      "label": "Érudits"
+      "label": "Érudits",
+      "description": "Construisez la hutte des commis et toutes les améliorations."
     },
     "3-3": {
-      "label": "Prêtres"
+      "label": "Prêtres",
+      "description": "Construisez l'autel et toutes les améliorations."
     },
     "4-0": {
-      "label": "Murs du fort"
+      "label": "Murs du fort",
+      "description": "Construisez les palissades et toutes les améliorations."
     },
     "4-1": {
-      "label": "Poste de guet" //x1.9
+      "label": "Poste de guet", //x1.9
+      "description": "Construisez la tour de guet et toutes les améliorations."
     }
   },
   "item": {
     "0-axes": {
-      "label": "Haches"
+      "label": "Haches",
+      "description": "Fabriquez chaque hache de la pierre à l'adamant."
     },
     "0-lanterns": {
-      "label": "Lanternes"
+      "label": "Lanternes",
+      "description": "Fabriquez chaque lanterne du fer à l'adamant."
     },
     "0-pickaxes": {
-      "label": "Pioches"
+      "label": "Pioches",
+      "description": "Fabriquez chaque pioche de la pierre à l'adamant."
     },
     "1-bows": {
-      "label": "Arcs"
+      "label": "Arcs",
+      "description": "Fabriquez chaque arc du grossier au maître."
     },
     "1-swords": {
-      "label": "Épées"
+      "label": "Épées",
+      "description": "Fabriquez chaque épée du fer à l'adamant."
     },
     "2-explorer_pack": {
-      "label": "Travail du cuir" //x1.3
+      "label": "Travail du cuir", //x1.3
+      "description": "Fabriquez les sept ouvrages de cuir."
     },
     "2-schematic_weapons": {
-      "label": "Schémas"
+      "label": "Schémas",
+      "description": "Fabriquez trois armes de schéma."
     },
     "3-ancient_books": {
-      "label": "Sagesse ancienne"
+      "label": "Sagesse ancienne",
+      "description": "Collectionnez les quatre livres anciens."
     },
     "3-fellowship": {
-      "label": "Bonne compagnie"
+      "label": "Bonne compagnie",
+      "description": "Recrutez les quatre compagnons."
     },
     "4-blacksteel_equipment": {
-      "label": "Équipement de guerre sombre"
+      "label": "Équipement de guerre sombre",
+      "description": "Fabriquez les trois équipements de guerre en acier noir."
     },
     "4-blacksteel_tools": {
-      "label": "Outils sombres"
+      "label": "Outils sombres",
+      "description": "Fabriquez les trois outils en acier noir."
     }
   },
   "overall": {
     "0-endurant": {
-      "label": "Endurant"
+      "label": "Endurant",
+      "description": "Jouez 30 heures sur toutes les parties."
     },
     "0-speedrunner": {
       "label": "Speedrunner",
-      "detail": "<5 heures"
+      "detail": "<5 heures",
+      "description": "Gagnez une partie en moins de 5 heures."
     },
     "0-supporter": {
-      "label": "Supporter"
+      "label": "Supporter",
+      "description": "Terminez le parcours de récompenses de soutien."
     },
     "0-winCruel": {
-      "label": "Cruel Victory"
+      "label": "Cruel Victory",
+      "description": "Gagnez une partie en mode cruel."
     },
     "0-winNormal": {
-      "label": "Normal Victory"
+      "label": "Normal Victory",
+      "description": "Gagnez une partie en mode normal."
     },
     "0-caveVeteran": {
-      "label": "Cave Veteran"
+      "label": "Cave Veteran",
+      "description": "Gagnez 3 parties."
+    },
+    "0-achievementMaxer": {
+      "label": "Achievement Maxer",
+      "description": "Terminez chaque succès non épique."
+    },
+    "0-resourceMaxer": {
+      "label": "Resource Maxer",
+      "description": "Atteignez la capacité du Grand coffre avec chaque ressource limitée."
     }
   }
 }

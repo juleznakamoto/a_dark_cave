@@ -1,220 +1,317 @@
 {
   "action": {
     "0-chopWood": {
-      "label": "Holzfäller"
+      "label": "Holzfäller",
+      "description": "Verbessere Holz sammeln auf Stufe 10."
     },
     "0-craftTorches": {
-      "label": "Fackelmacher"
+      "label": "Fackelmacher",
+      "description": "Verbessere Fackeln auf Stufe 10."
     },
     "0-exploreCave": {
-      "label": "Höhlenforscher"
+      "label": "Höhlenforscher",
+      "description": "Verbessere Höhle erkunden auf Stufe 10."
     },
     "0-gamblerWins": {
-      "label": "Erfahrener Spieler"
+      "label": "Erfahrener Spieler",
+      "description": "Besiege den Spieler 10 Mal."
     },
     "0-hunt": {
-      "label": "Jäger"
+      "label": "Jäger",
+      "description": "Verbessere Jagen auf Stufe 10."
     },
     "1-mineAdamant": {
-      "label": "Adamantschürfer"
+      "label": "Adamantschürfer",
+      "description": "Verbessere Adamant auf Stufe 10."
     },
     "1-mineCoal": {
-      "label": "Kohleschürfer" //ok
+      "label": "Kohleschürfer",
+      "description": "Verbessere Kohle auf Stufe 10."
     },
     "1-mineIron": {
-      "label": "Eisenschürfer" //ok
+      "label": "Eisenschürfer",
+      "description": "Verbessere Eisen auf Stufe 10."
     },
     "1-mineMoonstone": {
-      "label": "Mondsteinschürfer"
+      "label": "Mondsteinschürfer",
+      "description": "Verbessere Mondstein auf Stufe 10."
     },
     "1-mineObsidian": {
-      "label": "Obsidianschürfer"
+      "label": "Obsidianschürfer",
+      "description": "Verbessere Obsidian auf Stufe 10."
     },
     "1-mineStone": {
-      "label": "Steinbrecher"
+      "label": "Steinbrecher",
+      "description": "Verbessere Stein auf Stufe 10."
     },
     "1-mineSulfur": {
-      "label": "Schwefelschürfer" //ok
+      "label": "Schwefelschürfer",
+      "description": "Verbessere Schwefel auf Stufe 10."
     },
     "2-animals": {
-      "label": "Tieropferer"
+      "label": "Tieropferer",
+      "description": "Opfere 10 Mal Tiere."
     },
     "2-boneTotems": {
-      "label": "Knochentotemopferer" //ok
+      "label": "Knochentotemopferer",
+      "description": "Opfere 20 Mal Knochentotems."
     },
     "2-craftBoneTotems": {
-      "label": "Knochentotemschnitzer" //ok
+      "label": "Knochentotemschnitzer",
+      "description": "Verbessere Knochentotems auf Stufe 10."
     },
     "2-craftLeatherTotems": {
-      "label": "Ledertotemmacher"
+      "label": "Ledertotemmacher",
+      "description": "Verbessere Ledertotems auf Stufe 10."
     },
     "2-leatherTotems": {
-      "label": "Ledertotemopferer"
+      "label": "Ledertotemopferer",
+      "description": "Opfere 20 Mal Ledertotems."
     },
     "3-ashfireBombs": {
-      "label": "Aschfeuerbombenmacher"
+      "label": "Aschfeuerbombenmacher",
+      "description": "Stelle 20 Aschfeuerbomben her."
     },
     "3-emberBombs": {
-      "label": "Glutbombenmacher"
+      "label": "Glutbombenmacher",
+      "description": "Stelle 20 Glutbomben her."
     },
     "3-veinfireElixir": {
-      "label": "Aderfeuer-Elixier-Brauer"
+      "label": "Aderfeuer-Elixier-Brauer",
+      "description": "Stelle 10 Aderfeuer-Elixiere her."
     },
     "4-feedFire": {
-      "label": "Feuerschürer"
+      "label": "Feuerschürer",
+      "description": "Schüre das Feuer 100 Mal."
     },
     "4-investor": {
-      "label": "Investor"
+      "label": "Investor",
+      "description": "Investiere insgesamt 2.500 Gold."
     },
     "4-mentalClarity": {
-      "label": "Geistige Klarheit"
+      "label": "Geistige Klarheit",
+      "description": "Benutze 5 Elixiere der Klarheit."
     },
     "4-merchantPurchases": {
-      "label": "Handelspartner" //ok
+      "label": "Handelspartner",
+      "description": "Tätige 100 Händlerkäufe."
     },
     "4-solsticeGatherings": {
-      "label": "Sonnenwendfeierer"
+      "label": "Sonnenwendfeierer",
+      "description": "Halte 10 Sonnenwend-Feste ab."
     },
     "4-wellRested": {
-      "label": "Tiefschläfer"
+      "label": "Tiefschläfer",
+      "description": "Raste insgesamt 20 Stunden."
+    },
+    "3-burningVeins": {
+      "label": "Burning Veins",
+      "description": "Benutze 10 Aderfeuer-Elixiere."
+    },
+    "4-insightful": {
+      "label": "Insightful",
+      "description": "Gib insgesamt 10.000 Einsicht aus."
+    },
+    "4-luckyInvestor": {
+      "label": "Lucky Investor",
+      "description": "Schließe 10 Investitionen erfolgreich ab."
+    },
+    "4-pileOfDead": {
+      "label": "Pile of Dead",
+      "description": "Verliere über alle Spiele hinweg 250 Dorfbewohner."
     }
   },
   "basic": {
     "0-coalMiner": {
-      "label": "Kohle sammeln"
+      "label": "Kohle sammeln",
+      "description": "Sammle insgesamt 500 Kohle."
     },
     "0-hunter": {
-      "label": "Jagen"
+      "label": "Jagen",
+      "description": "Sammle insgesamt 500 Nahrung."
     },
     "0-ironMiner": {
-      "label": "Eisen sammeln"
+      "label": "Eisen sammeln",
+      "description": "Sammle insgesamt 500 Eisen."
     },
     "0-steelForger": {
-      "label": "Stahl schmieden"
+      "label": "Stahl schmieden",
+      "description": "Schmiede insgesamt 250 Stahl."
     },
     "0-stoneMiner": {
-      "label": "Stein sammeln"
+      "label": "Stein sammeln",
+      "description": "Sammle insgesamt 500 Stein."
     },
     "0-woodGatherer": {
-      "label": "Holz sammeln"
+      "label": "Holz sammeln",
+      "description": "Sammle insgesamt 500 Holz."
     },
     "1-builder": {
-      "label": "Gebäude errichten"
+      "label": "Gebäude errichten",
+      "description": "Besitze mindestens 5 Gebäude."
     },
     "1-communityBuilder": {
-      "label": "Gemeinschaft aufbauen" //ok
+      "label": "Gemeinschaft aufbauen",
+      "description": "Erreiche eine Bevölkerung von 10."
     },
     "1-explorer": {
-      "label": "Höhle erkunden"
+      "label": "Höhle erkunden",
+      "description": "Erkunde die Höhle 20 Mal."
     },
     "1-toolCrafter": {
-      "label": "Werkzeuge herstellen" //ok
+      "label": "Werkzeuge herstellen",
+      "description": "Besitze 5 verschiedene Werkzeuge."
     },
     "1-torchCrafter": {
-      "label": "Fackeln herstellen" //ok
+      "label": "Fackeln herstellen",
+      "description": "Stelle insgesamt 50 Fackeln her."
+    },
+    "0-tanner": {
+      "label": "Tanner",
+      "description": "Sammle insgesamt 250 Leder."
     }
   },
   "building": {
     "0-0": {
-      "label": "Einfache Unterkunft" //ok
+      "label": "Einfache Unterkunft",
+      "description": "Baue 10 Holzhütten."
     },
     "0-1": {
-      "label": "Stabile Unterkunft" //ok
+      "label": "Stabile Unterkunft",
+      "description": "Baue 10 Steinhütten."
     },
     "0-2": {
-      "label": "Nordische Unterkunft" //ok
+      "label": "Nordische Unterkunft",
+      "description": "Baue 5 Langhäuser."
     },
     "0-3": {
-      "label": "Nomadenunterkunft"
+      "label": "Nomadenunterkunft",
+      "description": "Baue 5 Fellzelte."
     },
     "1-0": {
-      "label": "Jäger"
+      "label": "Jäger",
+      "description": "Baue die Jägerhütte und alle Ausbauten."
     },
     "1-1": {
-      "label": "Schmiede"
+      "label": "Schmiede",
+      "description": "Baue die Schmiede und alle Ausbauten."
     },
     "1-2": {
-      "label": "Schmelzer"
+      "label": "Schmelzer",
+      "description": "Baue die Gießerei und alle Ausbauten."
     },
     "1-3": {
-      "label": "Gerber"
+      "label": "Gerber",
+      "description": "Baue die Gerberei und alle Ausbauten."
     },
     "2-0": {
-      "label": "Bergleute"
+      "label": "Bergleute",
+      "description": "Baue die Flache Grube und alle Ausbauten."
     },
     "3-0": {
-      "label": "Händler"
+      "label": "Händler",
+      "description": "Baue den Handelsposten und alle Ausbauten."
     },
     "3-1": {
-      "label": "Versorger"
+      "label": "Versorger",
+      "description": "Baue die Vorratshütte und alle Ausbauten."
     },
     "3-2": {
-      "label": "Gelehrte"
+      "label": "Gelehrte",
+      "description": "Baue die Schreiberhütte und alle Ausbauten."
     },
     "3-3": {
-      "label": "Priester"
+      "label": "Priester",
+      "description": "Baue den Altar und alle Ausbauten."
     },
     "4-0": {
-      "label": "Burgmauern"
+      "label": "Burgmauern",
+      "description": "Baue die Palisaden und alle Ausbauten."
     },
     "4-1": {
-      "label": "Ausguck"
+      "label": "Ausguck",
+      "description": "Baue den Wachturm und alle Ausbauten."
     }
   },
   "item": {
     "0-axes": {
-      "label": "Äxte"
+      "label": "Äxte",
+      "description": "Stelle jede Axt von Stein bis Adamant her."
     },
     "0-lanterns": {
-      "label": "Laternen"
+      "label": "Laternen",
+      "description": "Stelle jede Laterne von Eisen bis Adamant her."
     },
     "0-pickaxes": {
-      "label": "Spitzhacken"
+      "label": "Spitzhacken",
+      "description": "Stelle jede Spitzhacke von Stein bis Adamant her."
     },
     "1-bows": {
-      "label": "Bögen"
+      "label": "Bögen",
+      "description": "Stelle jeden Bogen vom einfachen bis zum Meisterbogen her."
     },
     "1-swords": {
-      "label": "Schwerter"
+      "label": "Schwerter",
+      "description": "Stelle jedes Schwert von Eisen bis Adamant her."
     },
     "2-explorer_pack": {
-      "label": "Lederarbeiten"
+      "label": "Lederarbeiten",
+      "description": "Stelle alle sieben Lederarbeiten her."
     },
     "2-schematic_weapons": {
-      "label": "Baupläne"
+      "label": "Baupläne",
+      "description": "Stelle drei Bauplan-Waffen her."
     },
     "3-ancient_books": {
-      "label": "Altes Wissen"
+      "label": "Altes Wissen",
+      "description": "Sammle alle vier uralten Bücher."
     },
     "3-fellowship": {
-      "label": "Gute Gesellschaft" //ok
+      "label": "Gute Gesellschaft",
+      "description": "Rekrutiere alle vier Gefährten."
     },
     "4-blacksteel_equipment": {
-      "label": "Dunkle Kriegsausrüstung" //ok
+      "label": "Dunkle Kriegsausrüstung",
+      "description": "Stelle alle drei Schwarzstahl-Kriegsausrüstungen her."
     },
     "4-blacksteel_tools": {
-      "label": "Dunkle Werkzeuge" //ok
+      "label": "Dunkle Werkzeuge",
+      "description": "Stelle alle drei Schwarzstahl-Werkzeuge her."
     }
   },
   "overall": {
     "0-endurant": {
-      "label": "Endurant"
+      "label": "Endurant",
+      "description": "Spiele über alle Spiele hinweg 30 Stunden."
     },
     "0-speedrunner": {
       "label": "Speedrunner",
-      "detail": "<5 Stunden"
+      "detail": "<5 Stunden",
+      "description": "Gewinne ein Spiel in unter 5 Stunden."
     },
     "0-supporter": {
-      "label": "Supporter"
+      "label": "Supporter",
+      "description": "Schließe die Unterstützer-Belohnungsspur ab."
     },
     "0-winCruel": {
-      "label": "Cruel Victory"
+      "label": "Cruel Victory",
+      "description": "Gewinne ein Spiel im Grausamen Modus."
     },
     "0-winNormal": {
-      "label": "Normal Victory"
+      "label": "Normal Victory",
+      "description": "Gewinne ein Spiel im Normalen Modus."
     },
     "0-caveVeteran": {
-      "label": "Cave Veteran"
+      "label": "Cave Veteran",
+      "description": "Gewinne 3 Spiele."
+    },
+    "0-achievementMaxer": {
+      "label": "Achievement Maxer",
+      "description": "Schließe jeden nicht-epischen Erfolg ab."
+    },
+    "0-resourceMaxer": {
+      "label": "Resource Maxer",
+      "description": "Erreiche die Kapazität des Großen Tresors mit jeder begrenzten Ressource."
     }
   }
 }

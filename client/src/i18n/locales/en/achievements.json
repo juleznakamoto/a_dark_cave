@@ -1,220 +1,317 @@
 {
   "action": {
     "0-chopWood": {
-      "label": "Wood Chopper"
+      "label": "Wood Chopper",
+      "description": "Upgrade Chop Wood to level 10."
     },
     "0-craftTorches": {
-      "label": "Torch Crafter"
+      "label": "Torch Crafter",
+      "description": "Upgrade Craft Torches to level 10."
     },
     "0-exploreCave": {
-      "label": "Cave Explorer"
+      "label": "Cave Explorer",
+      "description": "Upgrade Explore Cave to level 10."
     },
     "0-gamblerWins": {
-      "label": "Experienced Gambler"
+      "label": "Experienced Gambler",
+      "description": "Win 10 times against the gambler."
     },
     "0-hunt": {
-      "label": "Hunter"
+      "label": "Hunter",
+      "description": "Upgrade Hunt to level 10."
     },
     "1-mineAdamant": {
-      "label": "Adamant Miner"
+      "label": "Adamant Miner",
+      "description": "Upgrade Mine Adamant to level 10."
     },
     "1-mineCoal": {
-      "label": "Coal Miner"
+      "label": "Coal Miner",
+      "description": "Upgrade Mine Coal to level 10."
     },
     "1-mineIron": {
-      "label": "Iron Miner"
+      "label": "Iron Miner",
+      "description": "Upgrade Mine Iron to level 10."
     },
     "1-mineMoonstone": {
-      "label": "Moonstone Miner"
+      "label": "Moonstone Miner",
+      "description": "Upgrade Mine Moonstone to level 10."
     },
     "1-mineObsidian": {
-      "label": "Obsidian Miner"
+      "label": "Obsidian Miner",
+      "description": "Upgrade Mine Obsidian to level 10."
     },
     "1-mineStone": {
-      "label": "Stone Miner"
+      "label": "Stone Miner",
+      "description": "Upgrade Mine Stone to level 10."
     },
     "1-mineSulfur": {
-      "label": "Sulfur Miner"
+      "label": "Sulfur Miner",
+      "description": "Upgrade Mine Sulfur to level 10."
     },
     "2-animals": {
-      "label": "Animal Sacrificer"
+      "label": "Animal Sacrificer",
+      "description": "Sacrifice animals 10 times."
     },
     "2-boneTotems": {
-      "label": "Bone Sacrificer"
+      "label": "Bone Sacrificer",
+      "description": "Sacrifice bone totems 20 times."
     },
     "2-craftBoneTotems": {
-      "label": "Bone Totem Crafter"
+      "label": "Bone Totem Crafter",
+      "description": "Upgrade Craft Bone Totems to level 10."
     },
     "2-craftLeatherTotems": {
-      "label": "Leather Totem Crafter"
+      "label": "Leather Totem Crafter",
+      "description": "Upgrade Craft Leather Totems to level 10."
     },
     "2-leatherTotems": {
-      "label": "Leather Sacrificer"
+      "label": "Leather Sacrificer",
+      "description": "Sacrifice leather totems 20 times."
     },
     "3-ashfireBombs": {
-      "label": "Ashfire Bombs Crafter"
+      "label": "Ashfire Bombs Crafter",
+      "description": "Craft 20 Ashfire Bombs."
+    },
+    "3-burningVeins": {
+      "label": "Burning Veins",
+      "description": "Use 10 Veinfire Elixirs."
     },
     "3-emberBombs": {
-      "label": "Ember Bombs Crafter"
+      "label": "Ember Bombs Crafter",
+      "description": "Craft 20 Ember Bombs."
     },
     "3-veinfireElixir": {
-      "label": "Veinfire Elixir Maker"
+      "label": "Veinfire Elixir Maker",
+      "description": "Craft 10 Veinfire Elixirs."
     },
     "4-feedFire": {
-      "label": "Fire Feeder"
+      "label": "Fire Feeder",
+      "description": "Feed the fire 100 times."
+    },
+    "4-insightful": {
+      "label": "Insightful",
+      "description": "Spend 10,000 Insight in total."
     },
     "4-investor": {
-      "label": "Investor"
+      "label": "Investor",
+      "description": "Invest 2,500 gold in total."
+    },
+    "4-luckyInvestor": {
+      "label": "Lucky Investor",
+      "description": "Succeed on 10 investments."
     },
     "4-mentalClarity": {
-      "label": "Mental Clarity"
+      "label": "Mental Clarity",
+      "description": "Use 5 Clarity Elixirs."
     },
     "4-merchantPurchases": {
-      "label": "Deal Maker"
+      "label": "Deal Maker",
+      "description": "Make 100 merchant purchases."
+    },
+    "4-pileOfDead": {
+      "label": "Pile of Dead",
+      "description": "Lose 250 villagers across all games."
     },
     "4-solsticeGatherings": {
-      "label": "Solstice Celebrant"
+      "label": "Solstice Celebrant",
+      "description": "Hold 10 Solstice gatherings."
     },
     "4-wellRested": {
-      "label": "Heavy Sleeper"
+      "label": "Heavy Sleeper",
+      "description": "Rest for 20 hours in total."
     }
   },
   "basic": {
     "0-coalMiner": {
-      "label": "Gather Coal"
+      "label": "Gather Coal",
+      "description": "Gather 500 coal in total."
     },
     "0-hunter": {
-      "label": "Hunter"
+      "label": "Hunter",
+      "description": "Gather 500 food in total."
     },
     "0-ironMiner": {
-      "label": "Gather Iron"
+      "label": "Gather Iron",
+      "description": "Gather 500 iron in total."
     },
     "0-steelForger": {
-      "label": "Forge Steel"
+      "label": "Forge Steel",
+      "description": "Forge 250 steel in total."
     },
     "0-stoneMiner": {
-      "label": "Gather Stone"
+      "label": "Gather Stone",
+      "description": "Gather 500 stone in total."
+    },
+    "0-tanner": {
+      "label": "Tanner",
+      "description": "Gather 250 leather in total."
     },
     "0-woodGatherer": {
-      "label": "Gather Wood"
+      "label": "Gather Wood",
+      "description": "Gather 500 wood in total."
     },
     "1-builder": {
-      "label": "Construct Buildings"
+      "label": "Construct Buildings",
+      "description": "Own at least 5 buildings."
     },
     "1-communityBuilder": {
-      "label": "Build Community"
+      "label": "Build Community",
+      "description": "Reach a population of 10."
     },
     "1-explorer": {
-      "label": "Explore Cave"
+      "label": "Explore Cave",
+      "description": "Explore the cave 20 times."
     },
     "1-toolCrafter": {
-      "label": "Craft Tools"
+      "label": "Craft Tools",
+      "description": "Own 5 different tools."
     },
     "1-torchCrafter": {
-      "label": "Craft Torches"
+      "label": "Craft Torches",
+      "description": "Craft 50 torches in total."
     }
   },
   "building": {
     "0-0": {
-      "label": "Basic Shelter"
+      "label": "Basic Shelter",
+      "description": "Build 10 Wooden Huts."
     },
     "0-1": {
-      "label": "Sturdy Shelter"
+      "label": "Sturdy Shelter",
+      "description": "Build 10 Stone Huts."
     },
     "0-2": {
-      "label": "Nordic Shelter"
+      "label": "Nordic Shelter",
+      "description": "Build 5 Longhouses."
     },
     "0-3": {
-      "label": "Nomadic Shelter"
+      "label": "Nomadic Shelter",
+      "description": "Build 5 Fur Tents."
     },
     "1-0": {
-      "label": "Huntsmen"
+      "label": "Huntsmen",
+      "description": "Build Hunter Cabin and all upgrades."
     },
     "1-1": {
-      "label": "Forgers"
+      "label": "Forgers",
+      "description": "Build Blacksmith and all upgrades."
     },
     "1-2": {
-      "label": "Smelters"
+      "label": "Smelters",
+      "description": "Build Foundry and all upgrades."
     },
     "1-3": {
-      "label": "Hideworkers"
+      "label": "Hideworkers",
+      "description": "Build Tannery and all upgrades."
     },
     "2-0": {
-      "label": "Miners"
+      "label": "Miners",
+      "description": "Build Shallow Pit and all upgrades."
     },
     "3-0": {
-      "label": "Traders"
+      "label": "Traders",
+      "description": "Build Trade Post and all upgrades."
     },
     "3-1": {
-      "label": "Provisioners"
+      "label": "Provisioners",
+      "description": "Build Supply Hut and all upgrades."
     },
     "3-2": {
-      "label": "Scholars"
+      "label": "Scholars",
+      "description": "Build Clerk's Hut and all upgrades."
     },
     "3-3": {
-      "label": "Priests"
+      "label": "Priests",
+      "description": "Build Altar and all upgrades."
     },
     "4-0": {
-      "label": "Keep Walls"
+      "label": "Keep Walls",
+      "description": "Build Palisades and all upgrades."
     },
     "4-1": {
-      "label": "Lookout"
+      "label": "Lookout",
+      "description": "Build Watchtower and all upgrades."
     }
   },
   "item": {
     "0-axes": {
-      "label": "Axes"
+      "label": "Axes",
+      "description": "Craft every axe from stone to adamant."
     },
     "0-lanterns": {
-      "label": "Lanterns"
+      "label": "Lanterns",
+      "description": "Craft every lantern from iron to adamant."
     },
     "0-pickaxes": {
-      "label": "Pickaxes"
+      "label": "Pickaxes",
+      "description": "Craft every pickaxe from stone to adamant."
     },
     "1-bows": {
-      "label": "Bows"
+      "label": "Bows",
+      "description": "Craft every bow from crude to master."
     },
     "1-swords": {
-      "label": "Swords"
+      "label": "Swords",
+      "description": "Craft every sword from iron to adamant."
     },
     "2-explorer_pack": {
-      "label": "Leatherworks"
+      "label": "Leatherworks",
+      "description": "Craft all seven leatherworks."
     },
     "2-schematic_weapons": {
-      "label": "Schematics"
+      "label": "Schematics",
+      "description": "Craft three schematic weapons."
     },
     "3-ancient_books": {
-      "label": "Ancient Wisdom"
+      "label": "Ancient Wisdom",
+      "description": "Collect all four ancient books."
     },
     "3-fellowship": {
-      "label": "Good Company"
+      "label": "Good Company",
+      "description": "Recruit all four fellowship companions."
     },
     "4-blacksteel_equipment": {
-      "label": "Dark War Equipment"
+      "label": "Dark War Equipment",
+      "description": "Craft all three blacksteel war items."
     },
     "4-blacksteel_tools": {
-      "label": "Dark Tools"
+      "label": "Dark Tools",
+      "description": "Craft all three blacksteel tools."
     }
   },
   "overall": {
+    "0-achievementMaxer": {
+      "label": "Achievement Maxer",
+      "description": "Complete every non-Epic achievement."
+    },
+    "0-caveVeteran": {
+      "label": "Cave Veteran",
+      "description": "Win 3 games."
+    },
     "0-endurant": {
-      "label": "Endurant"
+      "label": "Endurant",
+      "description": "Play for 30 hours across all games."
+    },
+    "0-resourceMaxer": {
+      "label": "Resource Maxer",
+      "description": "Hit Great Vault capacity with every capped resource."
     },
     "0-speedrunner": {
       "label": "Speedrunner",
-      "detail": "<5 hours"
+      "detail": "<5 hours",
+      "description": "Win a game in under 5 hours."
     },
     "0-supporter": {
-      "label": "Supporter"
+      "label": "Supporter",
+      "description": "Complete the supporter rewards track."
     },
     "0-winCruel": {
-      "label": "Cruel Victory"
-    },
-    "0-caveVeteran": {
-      "label": "Cave Veteran"
+      "label": "Cruel Victory",
+      "description": "Win a game on Cruel."
     },
     "0-winNormal": {
-      "label": "Normal Victory"
+      "label": "Normal Victory",
+      "description": "Win a game on Normal."
     }
   }
 }

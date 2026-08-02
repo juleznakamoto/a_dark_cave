@@ -2,6 +2,7 @@ import { useGameStore } from "@/game/state";
 import type { AchievementChartConfig } from "./achievementTypes";
 import { getAchievementConfigForEdition } from "./achievementEdition";
 import {
+  getAchievementDescription,
   getAchievementDetailLabel,
   getAchievementLabel,
   interpolateFallback,
@@ -10,9 +11,13 @@ import { formatTooltipResourceName } from "@/i18n/tooltipLabels";
 
 export interface AchievementRow {
   segmentId: string;
+  /** Chart category prefix (basic / building / item / action / overall). */
+  chartPrefix: AchievementChartConfig["idPrefix"];
   label: string;
   /** English config label — used as save fallback for log re-localization. */
   englishLabel: string;
+  /** Short how-to / criteria text from achievements locale. */
+  description: string;
   /** Optional muted suffix (e.g. speedrun time gate). */
   detailLabel?: string;
   currentCount: number;
@@ -84,12 +89,17 @@ export function getAchievementRows(
       const rewards = claimable ? computeAchievementRewards(seg, BTP) : {};
       rows.push({
         segmentId: seg.segmentId,
+        chartPrefix: editionConfig.idPrefix,
         label: getAchievementLabel(
           editionConfig.idPrefix,
           seg.segmentId,
           seg.label,
         ),
         englishLabel: seg.label,
+        description: getAchievementDescription(
+          editionConfig.idPrefix,
+          seg.segmentId,
+        ),
         detailLabel: seg.detailLabel
           ? getAchievementDetailLabel(
             editionConfig.idPrefix,

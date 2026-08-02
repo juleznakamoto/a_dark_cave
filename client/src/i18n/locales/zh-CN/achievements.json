@@ -1,220 +1,317 @@
 {
   "action": {
     "0-chopWood": {
-      "label": "伐木能手"
+      "label": "伐木能手",
+      "description": "将采集木材升级到10级。"
     },
     "0-craftTorches": {
-      "label": "火把工匠"
+      "label": "火把工匠",
+      "description": "将火把升级到10级。"
     },
     "0-exploreCave": {
-      "label": "洞穴探索者"
+      "label": "洞穴探索者",
+      "description": "将探索洞穴升级到10级。"
     },
     "0-gamblerWins": {
-      "label": "老练赌徒"
+      "label": "老练赌徒",
+      "description": "战胜赌徒10次。"
     },
     "0-hunt": {
-      "label": "猎人"
+      "label": "猎人",
+      "description": "将狩猎升级到10级。"
     },
     "1-mineAdamant": {
-      "label": "精金矿工"
+      "label": "精金矿工",
+      "description": "将精金升级到10级。"
     },
     "1-mineCoal": {
-      "label": "煤矿工"
+      "label": "煤矿工",
+      "description": "将煤炭升级到10级。"
     },
     "1-mineIron": {
-      "label": "铁矿工"
+      "label": "铁矿工",
+      "description": "将铁升级到10级。"
     },
     "1-mineMoonstone": {
-      "label": "月石矿工"
+      "label": "月石矿工",
+      "description": "将月石升级到10级。"
     },
     "1-mineObsidian": {
-      "label": "黑曜石矿工"
+      "label": "黑曜石矿工",
+      "description": "将黑曜石升级到10级。"
     },
     "1-mineStone": {
-      "label": "采石工"
+      "label": "采石工",
+      "description": "将石头升级到10级。"
     },
     "1-mineSulfur": {
-      "label": "硫磺矿工"
+      "label": "硫磺矿工",
+      "description": "将硫磺升级到10级。"
     },
     "2-animals": {
-      "label": "牲祭执行者"
+      "label": "牲祭执行者",
+      "description": "献祭动物10次。"
     },
     "2-boneTotems": {
-      "label": "骨祭执行者"
+      "label": "骨祭执行者",
+      "description": "献祭骨图腾20次。"
     },
     "2-craftBoneTotems": {
-      "label": "骨图腾工匠"
+      "label": "骨图腾工匠",
+      "description": "将骨图腾升级到10级。"
     },
     "2-craftLeatherTotems": {
-      "label": "皮革图腾工匠"
+      "label": "皮革图腾工匠",
+      "description": "将皮革图腾升级到10级。"
     },
     "2-leatherTotems": {
-      "label": "皮革献祭者"
+      "label": "皮革献祭者",
+      "description": "献祭皮图腾20次。"
     },
     "3-ashfireBombs": {
-      "label": "灰火炸弹工匠"
+      "label": "灰火炸弹工匠",
+      "description": "制作20个灰火炸弹。"
     },
     "3-emberBombs": {
-      "label": "余烬炸弹工匠"
+      "label": "余烬炸弹工匠",
+      "description": "制作20个余烬炸弹。"
     },
     "3-veinfireElixir": {
-      "label": "脉火灵药工匠"
+      "label": "脉火灵药工匠",
+      "description": "制作10瓶脉火灵药。"
     },
     "4-feedFire": {
-      "label": "添火者"
+      "label": "添火者",
+      "description": "添柴100次。"
     },
     "4-investor": {
-      "label": "投资者"
+      "label": "投资者",
+      "description": "累计投资2,500黄金。"
     },
     "4-mentalClarity": {
-      "label": "心智清明"
+      "label": "心智清明",
+      "description": "使用5瓶清晰灵药。"
     },
     "4-merchantPurchases": {
-      "label": "交易好手"
+      "label": "交易好手",
+      "description": "与商人交易100次。"
     },
     "4-solsticeGatherings": {
-      "label": "至日庆祝者"
+      "label": "至日庆祝者",
+      "description": "举行10次至日聚会。"
     },
     "4-wellRested": {
-      "label": "酣眠者"
+      "label": "酣眠者",
+      "description": "累计休息20小时。"
+    },
+    "3-burningVeins": {
+      "label": "Burning Veins",
+      "description": "使用10瓶脉火灵药。"
+    },
+    "4-insightful": {
+      "label": "Insightful",
+      "description": "累计花费10,000洞见。"
+    },
+    "4-luckyInvestor": {
+      "label": "Lucky Investor",
+      "description": "成功投资10次。"
+    },
+    "4-pileOfDead": {
+      "label": "Pile of Dead",
+      "description": "在所有游戏中累计失去250名村民。"
     }
   },
   "basic": {
     "0-coalMiner": {
-      "label": "采集煤炭"
+      "label": "采集煤炭",
+      "description": "累计采集500煤炭。"
     },
     "0-hunter": {
-      "label": "猎人"
+      "label": "猎人",
+      "description": "累计采集500食物。"
     },
     "0-ironMiner": {
-      "label": "采集铁矿"
+      "label": "采集铁矿",
+      "description": "累计采集500铁。"
     },
     "0-steelForger": {
-      "label": "锻造钢铁"
+      "label": "锻造钢铁",
+      "description": "累计锻造250钢。"
     },
     "0-stoneMiner": {
-      "label": "采集石料"
+      "label": "采集石料",
+      "description": "累计采集500石头。"
     },
     "0-woodGatherer": {
-      "label": "采集木材"
+      "label": "采集木材",
+      "description": "累计采集500木材。"
     },
     "1-builder": {
-      "label": "建造建筑"
+      "label": "建造建筑",
+      "description": "拥有至少5座建筑。"
     },
     "1-communityBuilder": {
-      "label": "建设社群"
+      "label": "建设社群",
+      "description": "人口达到10。"
     },
     "1-explorer": {
-      "label": "探索洞穴"
+      "label": "探索洞穴",
+      "description": "探索洞穴20次。"
     },
     "1-toolCrafter": {
-      "label": "制作工具"
+      "label": "制作工具",
+      "description": "拥有5种不同的工具。"
     },
     "1-torchCrafter": {
-      "label": "制作火把"
+      "label": "制作火把",
+      "description": "累计制作50个火把。"
+    },
+    "0-tanner": {
+      "label": "Tanner",
+      "description": "累计采集250皮革。"
     }
   },
   "building": {
     "0-0": {
-      "label": "简易庇护所"
+      "label": "简易庇护所",
+      "description": "建造10座木屋。"
     },
     "0-1": {
-      "label": "坚固庇护所"
+      "label": "坚固庇护所",
+      "description": "建造10座石屋。"
     },
     "0-2": {
-      "label": "北境庇护所"
+      "label": "北境庇护所",
+      "description": "建造5座长屋。"
     },
     "0-3": {
-      "label": "游牧庇护所"
+      "label": "游牧庇护所",
+      "description": "建造5顶毛皮帐篷。"
     },
     "1-0": {
-      "label": "猎户"
+      "label": "猎户",
+      "description": "建造猎人小屋及其全部升级。"
     },
     "1-1": {
-      "label": "锻造工"
+      "label": "锻造工",
+      "description": "建造铁匠铺及其全部升级。"
     },
     "1-2": {
-      "label": "冶炼工"
+      "label": "冶炼工",
+      "description": "建造铸造厂及其全部升级。"
     },
     "1-3": {
-      "label": "皮匠"
+      "label": "皮匠",
+      "description": "建造制革坊及其全部升级。"
     },
     "2-0": {
-      "label": "矿工"
+      "label": "矿工",
+      "description": "建造浅矿坑及其全部升级。"
     },
     "3-0": {
-      "label": "商贩"
+      "label": "商贩",
+      "description": "建造贸易站及其全部升级。"
     },
     "3-1": {
-      "label": "补给员"
+      "label": "补给员",
+      "description": "建造补给小屋及其全部升级。"
     },
     "3-2": {
-      "label": "学者"
+      "label": "学者",
+      "description": "建造书记员小屋及其全部升级。"
     },
     "3-3": {
-      "label": "祭司"
+      "label": "祭司",
+      "description": "建造祭坛及其全部升级。"
     },
     "4-0": {
-      "label": "主堡城墙"
+      "label": "主堡城墙",
+      "description": "建造木栅墙及其全部升级。"
     },
     "4-1": {
-      "label": "瞭望哨"
+      "label": "瞭望哨",
+      "description": "建造瞭望塔及其全部升级。"
     }
   },
   "item": {
     "0-axes": {
-      "label": "斧头"
+      "label": "斧头",
+      "description": "制作从石斧到精金斧的每把斧头。"
     },
     "0-lanterns": {
-      "label": "灯笼"
+      "label": "灯笼",
+      "description": "制作从铁灯到精金灯的每盏灯笼。"
     },
     "0-pickaxes": {
-      "label": "镐子"
+      "label": "镐子",
+      "description": "制作从石镐到精金镐的每把镐。"
     },
     "1-bows": {
-      "label": "弓"
+      "label": "弓",
+      "description": "制作从粗制弓到大师弓的每把弓。"
     },
     "1-swords": {
-      "label": "剑"
+      "label": "剑",
+      "description": "制作从铁剑到精金剑的每把剑。"
     },
     "2-explorer_pack": {
-      "label": "皮革工艺"
+      "label": "皮革工艺",
+      "description": "制作全部七件皮革制品。"
     },
     "2-schematic_weapons": {
-      "label": "图纸"
+      "label": "图纸",
+      "description": "制作三件图纸武器。"
     },
     "3-ancient_books": {
-      "label": "古老智慧"
+      "label": "古老智慧",
+      "description": "收集全部四本古书。"
     },
     "3-fellowship": {
-      "label": "可靠同伴"
+      "label": "可靠同伴",
+      "description": "招募全部四位同伴。"
     },
     "4-blacksteel_equipment": {
-      "label": "黑暗战具"
+      "label": "黑暗战具",
+      "description": "制作全部三件黑钢战争装备。"
     },
     "4-blacksteel_tools": {
-      "label": "黑暗工具"
+      "label": "黑暗工具",
+      "description": "制作全部三件黑钢工具。"
     }
   },
   "overall": {
     "0-endurant": {
-      "label": "Endurant"
+      "label": "Endurant",
+      "description": "在所有游戏中累计游玩30小时。"
     },
     "0-speedrunner": {
       "label": "Speedrunner",
-      "detail": "<5小时"
+      "detail": "<5小时",
+      "description": "在5小时内赢得一局游戏。"
     },
     "0-supporter": {
-      "label": "Supporter"
+      "label": "Supporter",
+      "description": "完成支持者奖励进度。"
     },
     "0-winCruel": {
-      "label": "Cruel Victory"
+      "label": "Cruel Victory",
+      "description": "在残酷模式下赢得一局。"
     },
     "0-winNormal": {
-      "label": "Normal Victory"
+      "label": "Normal Victory",
+      "description": "在普通模式下赢得一局。"
     },
     "0-caveVeteran": {
-      "label": "Cave Veteran"
+      "label": "Cave Veteran",
+      "description": "赢得3局游戏。"
+    },
+    "0-achievementMaxer": {
+      "label": "Achievement Maxer",
+      "description": "完成所有非史诗成就。"
+    },
+    "0-resourceMaxer": {
+      "label": "Resource Maxer",
+      "description": "使每种有上限的资源都达到大金库容量。"
     }
   }
 }
