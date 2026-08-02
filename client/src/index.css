@@ -182,12 +182,12 @@ body {
     line-height: calc(2.25rem * var(--adc-text-scale, 1));
   }
 
-  /* Mono + text-xs type; reel height = font-size × line-height 1.15 */
+  /* Mono + text-xs type; fixed reel height 1.15rem for digit scroll */
   .adc-counter-text {
     font-family: var(--font-mono), "Courier New", monospace;
     font-size: calc(0.75rem * var(--adc-text-scale, 1));
-    line-height: 1.15;
-    height: calc(0.8625rem * var(--adc-text-scale, 1));
+    line-height: 1.15rem;
+    height: calc(1.15rem * var(--adc-text-scale, 1));
   }
 
   /*

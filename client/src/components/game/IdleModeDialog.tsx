@@ -763,19 +763,19 @@ export default function IdleModeDialog() {
               );
             // Match side-panel resource numbers: mono + tabular + text-xs
             const numberCellClass =
-              "text-right font-mono tabular-nums whitespace-nowrap leading-snug flex items-center justify-end min-w-0";
+              "text-right font-mono tabular-nums whitespace-nowrap leading-[1.15] flex items-center justify-end min-w-0 min-h-[1.15rem]";
             return (
               <div
                 key={resource}
                 className={cn(
-                  "grid gap-x-3 items-center py-0.5",
+                  "grid gap-x-3 items-center py-1",
                   isFocus && "mt-1.5",
                 )}
                 style={{
                   gridTemplateColumns: "minmax(0,1fr) 4.5rem 4.5rem 4.5rem",
                 }}
               >
-                <div className="text-gray-400 truncate leading-snug">
+                <div className="text-gray-400 truncate leading-[1.15]">
                   {resourceLabel}
                 </div>
                 <div
