@@ -186,8 +186,8 @@ body {
   .adc-counter-text {
     font-family: var(--font-mono), "Courier New", monospace;
     font-size: calc(0.75rem * var(--adc-text-scale, 1));
-    line-height: 1;
-    height: calc(0.75rem * var(--adc-text-scale, 1));
+    line-height: 1.25;
+    height: calc(0.9375rem * var(--adc-text-scale, 1));
   }
 
   /*
