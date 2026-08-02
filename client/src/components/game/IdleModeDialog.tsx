@@ -790,6 +790,7 @@ export default function IdleModeDialog() {
                   <AnimatedCounter
                     value={Math.abs(currentAmount)}
                     align="end"
+                    className="font-mono"
                   />
                 </div>
                 <div
@@ -819,6 +820,7 @@ export default function IdleModeDialog() {
                   <AnimatedCounter
                     value={Math.abs(totalSinceStart)}
                     align="end"
+                    className="font-mono"
                   />
                 </div>
               </div>

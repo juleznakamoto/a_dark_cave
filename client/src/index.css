@@ -182,9 +182,10 @@ body {
     line-height: calc(2.25rem * var(--adc-text-scale, 1));
   }
 
-  /* Mono + text-xs type; tight reel (font-size × line-height 1.15) */
+  /* Shared counter metrics (Village + sleep). Do not set font-family here —
+   * Village villager counts reuse this class and should stay on the UI sans.
+   * Sleep dialog applies font-mono on its number cells only. */
   .adc-counter-text {
-    font-family: var(--font-mono), "Courier New", monospace;
     font-size: calc(0.75rem * var(--adc-text-scale, 1));
     line-height: 1.15;
     height: calc(0.8625rem * var(--adc-text-scale, 1));
