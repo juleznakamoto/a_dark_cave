@@ -79,7 +79,8 @@
     "sleep": "Dormir",
     "focus": "Concentration", //x2.6
     "sleepTooltipReady": "Laissez le monde avancer en votre absence",
-    "sleepTooltipBlocked": "Nécessite une production positive de bois et de nourriture", //x1.4
+    "sleepTooltipBlocked": "Nécessite une production positive de bois et de nourriture (bonus de production exclus)",
+    "sleepTooltipCurrentProduction": "Production actuelle :",
     "focusRewardTooltip_one": "Obtenez des récompenses x2 sur les actions pendant {{count}} minute", //x1.5
     "focusRewardTooltip_other": "Obtenez des récompenses x2 sur les actions pendant {{count}} minutes", //x1.4
     "focusPointTooltip": "Gagnez 1 point de concentration par heure de sommeil", //x1.4

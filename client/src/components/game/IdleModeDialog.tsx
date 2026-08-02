@@ -20,7 +20,12 @@ import {
 } from "@/game/population";
 import { audioManager, SOUND_VOLUME } from "@/lib/audio";
 import { resetProductionCycle } from "@/game/loop";
-import { BOMB_RESOURCES, capResourceToLimit } from "@/game/resourceLimits";
+import {
+  BOMB_RESOURCES,
+  capResourceToLimit,
+  getResourceLimit,
+  isResourceLimited,
+} from "@/game/resourceLimits";
 import type { GameState } from "@shared/schema";
 import { useTranslation } from "react-i18next";
 import { getResourceName } from "@/i18n/resolveGameText";
@@ -29,6 +34,10 @@ import {
   SLEEP_INTENSITY_UPGRADES,
 } from "@/game/rules/skillUpgrades";
 import { getPassiveInsightPerCycle } from "@/game/rules/effectsCalculation";
+import {
+  buildSleepBonusTimerFreezePatch,
+  type SleepBonusTimerState,
+} from "@/game/sleepBonusTimers";
 
 /** Match live play: limited resources cannot exceed storage cap during sleep simulation. */
 function clampSimulatedResourcesToStorage(
@@ -40,6 +49,15 @@ function clampSimulatedResourcesToStorage(
     if (v === undefined || v === null || Number.isNaN(v)) continue;
     simulated[key] = capResourceToLimit(key, Math.max(0, v), gameState);
   }
+}
+
+function isSleepResourceAtStorageMax(
+  resource: string,
+  amount: number,
+  gameState: GameState,
+): boolean {
+  if (!isResourceLimited(resource, gameState)) return false;
+  return amount >= getResourceLimit(gameState);
 }
 
 // Simulate production during sleep - no temporary bonuses (feast, curse, etc.) are active
@@ -177,7 +195,11 @@ function simulatePopulationConsumption(
   }
 }
 
-/** Compute production per 15-second interval for each resource during sleep */
+/**
+ * Uncapped production per 15-second interval during sleep.
+ * Storage clamp still applies to accumulated totals; display keeps the normal rate
+ * (and yellows it when the resource is already at max).
+ */
 function getProductionPerInterval(
   state: any,
   initialResources: Record<string, number>,
@@ -199,7 +221,6 @@ function getProductionPerInterval(
   simulateMinerProduction(state, multiplier, simulatedResources);
   simulatePassiveEffectProduction(state, multiplier, simulatedResources);
   simulatePopulationConsumption(state, multiplier, simulatedResources);
-  clampSimulatedResourcesToStorage(simulatedResources, state);
   const productionPerInterval: Record<string, number> = {};
   const allResources = new Set([
     ...Object.keys(before),
@@ -511,38 +532,54 @@ export default function IdleModeDialog() {
   }, [isActive, idleModeDialog.isOpen, startTime]);
 
   const handleEndIdleMode = () => {
-    // Apply accumulated resources to the game state
+    const now = Date.now();
+    const elapsed = startTime > 0 ? Math.max(0, now - startTime) : 0;
+
+    // Freeze wall-clock bonus/debuff timers for the whole sleep session (incl. results screen).
+    // Must run before the game loop resumes and clears expired endTimes.
     const currentGameState = useGameStore.getState();
+    const timerPatch = buildSleepBonusTimerFreezePatch(
+      currentGameState as SleepBonusTimerState,
+      elapsed,
+      startTime,
+    );
+    if (Object.keys(timerPatch).length > 0) {
+      useGameStore.setState(timerPatch as Partial<typeof currentGameState>);
+    }
+
+    // Apply accumulated resources to the game state
     Object.entries(accumulatedResources).forEach(([resource, amount]) => {
-      currentGameState.updateResource(
+      useGameStore.getState().updateResource(
         resource as keyof typeof state.resources,
         Math.floor(amount),
       );
     });
 
     // Calculate Focus points gained (1 per almost 1 hour slept, or 1 per 5 seconds in dev mode)
-    const now = Date.now();
-    const elapsed = now - startTime;
     const focusIntervalMs = devMode ? 5 * 1000 : 59.99 * 60 * 1000;
     const hoursSlept = Math.floor(elapsed / focusIntervalMs);
 
     let focusToAdd = 0;
     if (hoursSlept > 0) {
-      const currentFocus = currentGameState.focusState?.points || 0;
+      // Read after timer freeze so we keep shifted focus endTime/startTime.
+      const afterFreeze = useGameStore.getState();
+      const currentFocus = afterFreeze.focusState?.points || 0;
       const MAX_FOCUS = 30;
       focusToAdd = hoursSlept;
 
       // Double focus points if bell_blessing is active
-      if (currentGameState.blessings?.bell_blessing && focusToAdd > 0) {
+      if (afterFreeze.blessings?.bell_blessing && focusToAdd > 0) {
         focusToAdd = focusToAdd * 2;
       }
 
       const newFocusPoints = Math.min(currentFocus + focusToAdd, MAX_FOCUS);
 
       // Update focus points in focusState (capped at 30)
-      currentGameState.updateFocusState({
-        isActive: currentGameState.focusState?.isActive || false,
-        endTime: currentGameState.focusState?.endTime || 0,
+      afterFreeze.updateFocusState({
+        isActive: afterFreeze.focusState?.isActive || false,
+        endTime: afterFreeze.focusState?.endTime || 0,
+        startTime: afterFreeze.focusState?.startTime || 0,
+        duration: afterFreeze.focusState?.duration || 0,
         points: newFocusPoints,
       });
 
@@ -581,7 +618,7 @@ export default function IdleModeDialog() {
     }
 
     if (logMessages.length > 0) {
-      currentGameState.addLogEntry({
+      useGameStore.getState().addLogEntry({
         id: `idle-mode-end-${Date.now()}`,
         message: logMessages.join(" "),
         timestamp: Date.now(),
@@ -628,7 +665,7 @@ export default function IdleModeDialog() {
   const focusIntervalMs = devMode ? 5 * 1000 : 59.99 * 60 * 1000;
   const focusPoints = Math.floor(displayElapsed / focusIntervalMs);
 
-  // Get production per 15-second interval for each resource
+  // Uncapped rate keeps capped resources listed (and shows the normal production number)
   const productionPerInterval = getProductionPerInterval(
     state,
     initialResources,
@@ -636,7 +673,6 @@ export default function IdleModeDialog() {
     PRODUCTION_SPEED_MULTIPLIER,
   );
 
-  // Build list of resources that have production !== 0 (exclude bombs - they're not resources here)
   const resourceKeys = Object.keys(productionPerInterval).filter(
     (r) =>
       productionPerInterval[r] !== 0 &&
@@ -657,7 +693,7 @@ export default function IdleModeDialog() {
   return (
     <Dialog
       open={idleModeDialog.isOpen}
-      onOpenChange={() => {}}
+      onOpenChange={() => { }}
       modal={!shareDialogOpen}
     >
       <DialogContent
@@ -699,9 +735,17 @@ export default function IdleModeDialog() {
             const currentAmount = isFocus
               ? focusPoints
               : Math.floor(
-                  (initialResources[resource] || 0) +
-                    (accumulatedResources[resource] || 0),
-                );
+                (initialResources[resource] || 0) +
+                (accumulatedResources[resource] || 0),
+              );
+            const isAtStorageMax =
+              !isFocus &&
+              isSleepResourceAtStorageMax(
+                resource,
+                currentAmount,
+                state as GameState,
+              );
+            // Show uncapped production; yellow amount + rate when storage is full
             const productionRate = isFocus
               ? null
               : (productionPerInterval[resource] ?? 0);
@@ -718,11 +762,21 @@ export default function IdleModeDialog() {
                 }}
               >
                 <div className="text-gray-400 truncate">{resourceLabel}</div>
-                <div className="text-right font-mono text-gray-300 tabular-nums flex justify-end">
+                <div
+                  className={cn(
+                    "text-right font-mono tabular-nums flex justify-end",
+                    isAtStorageMax ? "text-yellow-500" : "text-gray-300",
+                  )}
+                >
                   {currentAmount < 0 && "-"}
                   <AnimatedCounter value={Math.abs(currentAmount)} />
                 </div>
-                <div className="text-right font-mono text-gray-300 tabular-nums flex justify-end">
+                <div
+                  className={cn(
+                    "text-right font-mono tabular-nums flex justify-end",
+                    isAtStorageMax ? "text-yellow-500" : "text-gray-300",
+                  )}
+                >
                   {!isFocus && (
                     <>
                       {(productionRate ?? 0) >= 0 ? "+" : ""}

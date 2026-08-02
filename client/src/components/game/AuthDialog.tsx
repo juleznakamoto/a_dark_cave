@@ -64,7 +64,10 @@ export default function AuthDialog({
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
-  const [loading, setLoading] = useState(false);
+  const [loadingAction, setLoadingAction] = useState<"email" | "google" | null>(
+    null,
+  );
+  const loading = loadingAction !== null;
   const [formError, setFormError] = useState<string | null>(null);
   const [marketingOptIn, setMarketingOptIn] = useState(false);
   const [signupSuccess, setSignupSuccess] = useState(false);
@@ -120,7 +123,7 @@ export default function AuthDialog({
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setFormError(null);
-    setLoading(true);
+    setLoadingAction("email");
 
     try {
       if (mode === "signin") {
@@ -156,13 +159,13 @@ export default function AuthDialog({
     } catch (error: unknown) {
       setFormError(authErrorMessage(error, t("auth.authFailed")));
     } finally {
-      setLoading(false);
+      setLoadingAction(null);
     }
   };
 
   const handleGoogleSignIn = async () => {
     setFormError(null);
-    setLoading(true);
+    setLoadingAction("google");
     try {
       if (mode === "signup") {
         await flushBeforeSignUp();
@@ -174,7 +177,7 @@ export default function AuthDialog({
       });
     } catch (error: unknown) {
       setFormError(authErrorMessage(error, t("auth.googleSignInFailed")));
-      setLoading(false);
+      setLoadingAction(null);
     }
   };
 
@@ -201,13 +204,17 @@ export default function AuthDialog({
         : t("auth.resetDesc")
     : "";
 
-  const submitLabel = loading
+  const emailLoading = loadingAction === "email";
+  const googleLoading = loadingAction === "google";
+  const submitLabel = emailLoading
     ? t("auth.loading")
     : mode === "signin"
       ? t("auth.signIn")
       : mode === "signup"
         ? t("auth.signUpButton")
         : t("auth.sendResetLink");
+  const googleLabel =
+    mode === "signup" ? t("auth.signUpWithGoogle") : t("auth.signInWithGoogle");
 
   return (
     <Dialog open={isOpen} onOpenChange={handleOpenChange}>
@@ -331,7 +338,11 @@ export default function AuthDialog({
                 className="font-medium text-sm"
                 disabled={loading}
               >
-                {loading ? <TextShimmer>{submitLabel}</TextShimmer> : submitLabel}
+                {emailLoading ? (
+                  <TextShimmer>{submitLabel}</TextShimmer>
+                ) : (
+                  submitLabel
+                )}
               </Button>
               {mode !== "reset" && (
                 <Button
@@ -359,16 +370,10 @@ export default function AuthDialog({
                       fill="#EA4335"
                     />
                   </svg>
-                  {loading ? (
-                    <TextShimmer tone="onSurface">
-                      {mode === "signup"
-                        ? t("auth.signUpWithGoogle")
-                        : t("auth.signInWithGoogle")}
-                    </TextShimmer>
-                  ) : mode === "signup" ? (
-                    t("auth.signUpWithGoogle")
+                  {googleLoading ? (
+                    <TextShimmer tone="onSurface">{googleLabel}</TextShimmer>
                   ) : (
-                    t("auth.signInWithGoogle")
+                    googleLabel
                   )}
                 </Button>
               )}

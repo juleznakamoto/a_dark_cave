@@ -33,11 +33,12 @@ import {
   GAME_PANEL_HEADER_INDICATOR_SIZE_PX,
   GAME_PANEL_HEADER_INDICATOR_TRIGGER_CLASS,
 } from "@/components/game/gameChrome";
-import { formatNumber } from "@/lib/utils";
+import { formatNumber, formatSignedNumber } from "@/lib/utils";
 import cn from "clsx";
 import { buildLocalizedEventLogEntry } from "@/i18n/buildEventLogEntry";
 import { useUiTranslation } from "@/i18n/useUiTranslation";
 import { formatTooltipCostLine } from "@/i18n/tooltipLabels";
+import { getResourceName } from "@/i18n/resolveGameText";
 import { useSteamEditionActive } from "@/hooks/useSteamEditionActive";
 
 
@@ -507,6 +508,16 @@ export default function EstatePanel() {
                 ) : (
                   <div>{t("estate.sleepTooltipBlocked")}</div>
                 )}
+                <div className="border-t border-border my-1" />
+                <div>{t("estate.sleepTooltipCurrentProduction")}</div>
+                <div>
+                  {getResourceName("wood", "Wood")}:{" "}
+                  {formatSignedNumber(Math.round(woodProduction))}
+                </div>
+                <div>
+                  {getResourceName("food", "Food")}:{" "}
+                  {formatSignedNumber(Math.round(foodProduction))}
+                </div>
               </div>
             }
             tooltipId="sleep-button"
