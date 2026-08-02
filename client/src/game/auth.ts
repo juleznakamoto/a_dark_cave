@@ -829,11 +829,11 @@ export async function saveGameToSupabase(
     throw new Error('Not authenticated');
   }
 
+  // Explicit restart flag only — `isNewGame` must not skip OCC / wipe cloud.
   const allowOverwrite =
     gameState.allowPlayTimeOverwrite === true ||
     (gameState as Partial<GameState> & { allowPlaytimeOverwrite?: boolean })
-      .allowPlaytimeOverwrite === true ||
-    gameState.isNewGame === true;
+      .allowPlaytimeOverwrite === true;
 
   // Debug: Log if this save includes cube completion events
   if (gameState.events) {

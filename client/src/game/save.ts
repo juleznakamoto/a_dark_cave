@@ -61,11 +61,11 @@ function normalizePlaytimeOverwriteFields<T extends Record<string, unknown>>(
 ): T {
   const legacy = (state as { allowPlaytimeOverwrite?: boolean })
     .allowPlaytimeOverwrite;
-  if (legacy === true || state.allowPlayTimeOverwrite === true || state.isNewGame === true) {
+  // Do not promote `isNewGame` → overwrite. A fresh Light Fire on another device
+  // is a new game, but must not be allowed to wipe a longer cloud save on login.
+  if (legacy === true || state.allowPlayTimeOverwrite === true) {
     (state as { allowPlayTimeOverwrite?: boolean }).allowPlayTimeOverwrite =
-      state.isNewGame === true ||
-      state.allowPlayTimeOverwrite === true ||
-      legacy === true;
+      state.allowPlayTimeOverwrite === true || legacy === true;
   }
   delete (state as { allowPlaytimeOverwrite?: boolean }).allowPlaytimeOverwrite;
   return state;
@@ -879,8 +879,16 @@ export async function loadGame(): Promise<GameState | null> {
             const processedState = await processUnclaimedReferrals(stateWithDefaults);
             let reconciled = mergeSavePlayTimeIntoState(localSave, processedState);
 
-            // Restart / different gameId must be allowed to replace a longer cloud run.
-            if (needsPlaytimeOverwriteForSync(localSave, cloudSave)) {
+            // Only keep/propagate overwrite when the preferred local save already
+            // carries an explicit restart flag. Never inject it just because gameIds
+            // differ — that let a fresh other-screen start wipe cloud on login.
+            const localAllowsOverwrite = shouldAllowPlaytimeOverwrite(
+              localSave.gameState,
+            );
+            if (
+              localAllowsOverwrite &&
+              needsPlaytimeOverwriteForSync(localSave, cloudSave)
+            ) {
               reconciled = {
                 ...reconciled,
                 allowPlayTimeOverwrite: true,
@@ -896,7 +904,9 @@ export async function loadGame(): Promise<GameState | null> {
                 allowPlayTimeOverwrite: false,
                 isNewGame: false,
               };
-              await putLastCloudState(db, cleared);
+              if (syncResult.cloudSaved || syncResult.cloudSkipped) {
+                await putLastCloudState(db, cleared);
+              }
               if (syncResult.cloudSaved) {
                 logger.log("[LOAD] ✅ Local progress synced to cloud");
               } else if (!syncResult.cloudSkipped) {

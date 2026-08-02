@@ -22,14 +22,14 @@ function save(
 }
 
 describe("shouldAllowPlaytimeOverwrite", () => {
-  it("accepts schema key, legacy typo, or isNewGame", () => {
+  it("accepts schema key or legacy typo, but not isNewGame alone", () => {
     expect(shouldAllowPlaytimeOverwrite({ allowPlayTimeOverwrite: true })).toBe(
       true,
     );
     expect(
       shouldAllowPlaytimeOverwrite({ allowPlaytimeOverwrite: true }),
     ).toBe(true);
-    expect(shouldAllowPlaytimeOverwrite({ isNewGame: true })).toBe(true);
+    expect(shouldAllowPlaytimeOverwrite({ isNewGame: true })).toBe(false);
     expect(shouldAllowPlaytimeOverwrite({ isNewGame: false })).toBe(false);
     expect(shouldAllowPlaytimeOverwrite(null)).toBe(false);
   });
@@ -51,12 +51,13 @@ describe("pickPreferredSave", () => {
     expect(pickPreferredSave(cloud, local)).toBe("local");
   });
 
-  it("prefers newer startTime when gameIds differ (restart vs finished run)", () => {
+  it("prefers a local restart with explicit overwrite over a longer finished cloud run", () => {
     const localRestart = save({
       gameId: "game-new",
       startTime: 2_000_000,
       playTime: 60_000,
       timestamp: 2_000_100,
+      allowPlayTimeOverwrite: true,
     });
     const cloudFinished = save({
       gameId: "game-old",
@@ -80,6 +81,37 @@ describe("pickPreferredSave", () => {
       playTime: 10_000,
     });
     expect(pickPreferredSave(localFinished, cloudRestart)).toBe("cloud");
+  });
+
+  it("does not let a fresh other-screen local start wipe longer cloud progress", () => {
+    // Different device: user lit fire (new gameId, newer startTime, tiny playTime)
+    // then signed into an account that already has real cloud progress.
+    const localFreshStart = save({
+      gameId: "game-phone-fresh",
+      startTime: 3_000_000,
+      playTime: 5_000,
+      isNewGame: true,
+    });
+    const cloudProgress = save({
+      gameId: "game-laptop",
+      startTime: 1_000_000,
+      playTime: 12_000_000,
+    });
+    expect(pickPreferredSave(localFreshStart, cloudProgress)).toBe("cloud");
+  });
+
+  it("keeps longer offline local progress when it outranks cloud on a different gameId", () => {
+    const localOffline = save({
+      gameId: "game-offline",
+      startTime: 2_000_000,
+      playTime: 9_000_000,
+    });
+    const cloudShort = save({
+      gameId: "game-cloud",
+      startTime: 1_000_000,
+      playTime: 1_000_000,
+    });
+    expect(pickPreferredSave(localOffline, cloudShort)).toBe("local");
   });
 });
 

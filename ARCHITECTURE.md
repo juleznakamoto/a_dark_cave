@@ -67,7 +67,7 @@ in the client; **Supabase** handles auth/cloud saves and **Stripe** handles paym
 | `client/src/game/rules/actionsRegistry.ts` | Central `gameActions` map; action modules register via `registerActions()`. |
 | `client/src/game/rules/executionTime.ts` | `getExecutionTime()` â€” action duration lookup without importing `rules/index` (avoids registration cycles). |
 | `client/src/game/save.ts` | Load/save orchestration: IndexedDB + Supabase cloud diff sync (`SaveGameResult`; restart overwrite cleared only after cloud accepts). |
-| `client/src/game/saveConflict.ts` | Pure local-vs-cloud preference (`pickPreferredSave` by `gameId`/`startTime` or playTime) + playtime-overwrite helpers. |
+| `client/src/game/saveConflict.ts` | Pure local-vs-cloud preference (`pickPreferredSave`: explicit restart overwrite, else newer cloud run, else playTime) + playtime-overwrite helpers (`isNewGame` alone does not grant overwrite). |
 | `client/src/game/stateHelpers.ts` | Pure state mutations + `buildGameState()` + `UI_ONLY_PROPERTIES` (keys excluded from saves). |
 | `shared/schema.ts` | Zod `gameStateSchema` / `SaveData` + shared shop constants. |
 | `client/src/components/game/GameContainer.tsx` | Main game UI shell: tabs, panel switching, mounts all dialogs, hotkeys. |
