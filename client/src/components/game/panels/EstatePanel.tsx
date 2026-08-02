@@ -502,21 +502,23 @@ export default function EstatePanel() {
           </div>
           <TooltipWrapper
             tooltip={
-              <div className="text-xs whitespace-nowrap">
+              <div className="text-xs">
                 {canActivateIdle ? (
                   <div>{t("estate.sleepTooltipReady")}</div>
                 ) : (
                   <div>{t("estate.sleepTooltipBlocked")}</div>
                 )}
                 <div className="border-t border-border my-1" />
-                <div>{t("estate.sleepTooltipCurrentProduction")}</div>
-                <div>
-                  {getResourceName("wood", "Wood")}:{" "}
-                  {formatSignedNumber(Math.round(woodProduction))}
-                </div>
-                <div>
-                  {getResourceName("food", "Food")}:{" "}
-                  {formatSignedNumber(Math.round(foodProduction))}
+                <div className="whitespace-nowrap">
+                  <div>{t("estate.sleepTooltipCurrentProduction")}</div>
+                  <div>
+                    {getResourceName("wood", "Wood")}:{" "}
+                    {formatSignedNumber(Math.round(woodProduction))}
+                  </div>
+                  <div>
+                    {getResourceName("food", "Food")}:{" "}
+                    {formatSignedNumber(Math.round(foodProduction))}
+                  </div>
                 </div>
               </div>
             }
