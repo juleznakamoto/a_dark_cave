@@ -212,9 +212,9 @@ function AchievementRowComponent({
     `${row.chartPrefix}.${row.segmentId}.description`,
     { defaultValue: row.description },
   );
-  const redactedDescription = description
-    ? "█".repeat(Math.min(28, Math.max(14, Math.round(description.length * 0.55))))
-    : "";
+  const redactedWidthCh = description
+    ? Math.min(28, Math.max(14, Math.round(description.length * 0.55)))
+    : 0;
 
   const handleClaim = () => {
     if (canClaim) {
@@ -263,12 +263,12 @@ function AchievementRowComponent({
             <p className="text-xs leading-snug text-muted-foreground">
               {description}
             </p>
-          ) : redactedDescription ? (
-            <p
-              className="text-xs leading-snug text-muted-foreground/50 select-none tracking-tight"
-              aria-hidden
-            >
-              {redactedDescription}
+          ) : redactedWidthCh > 0 ? (
+            <p className="flex h-4 items-center" aria-hidden>
+              <span
+                className="inline-block h-2.5 rounded-[2px] bg-muted-foreground"
+                style={{ width: `${redactedWidthCh}ch` }}
+              />
             </p>
           ) : null}
         </div>
