@@ -500,8 +500,8 @@ interface GameStore extends GameState {
     eventId: string,
     currentLogEntry?: LogEntry,
   ) => boolean;
-  assignVillager: (job: keyof GameState["villagers"]) => void;
-  unassignVillager: (job: keyof GameState["villagers"]) => void;
+  assignVillager: (job: keyof GameState["villagers"], count?: number) => void;
+  unassignVillager: (job: keyof GameState["villagers"], count?: number) => void;
   upgradeVillagerCap: (groupId: string) => boolean;
   /** Set the active preset slot (1-based) that the save button writes to. */
   setActivePresetSlot: (slot: number) => void;
@@ -3946,9 +3946,9 @@ export const useGameStore = create<GameStore>((set, get) => ({
     // Dev mode is controlled by NODE_ENV - no-op in production
   },
 
-  assignVillager: (job: keyof GameState["villagers"]) => {
+  assignVillager: (job: keyof GameState["villagers"], count: number = 1) => {
     set((state) => {
-      const updates = assignVillagerToJob(state, job);
+      const updates = assignVillagerToJob(state, job, count);
       if (Object.keys(updates).length > 0) {
         StateManager.schedulePopulationUpdate(get);
       }
@@ -3956,9 +3956,9 @@ export const useGameStore = create<GameStore>((set, get) => ({
     });
   },
 
-  unassignVillager: (job: keyof GameState["villagers"]) => {
+  unassignVillager: (job: keyof GameState["villagers"], count: number = 1) => {
     set((state) => {
-      const updates = unassignVillagerFromJob(state, job);
+      const updates = unassignVillagerFromJob(state, job, count);
       if (Object.keys(updates).length > 0) {
         StateManager.schedulePopulationUpdate(get);
       }

@@ -1107,12 +1107,20 @@ export default function VillagePanel() {
       <div key={jobId} className={VILLAGER_COUNT_ROW_CLASS}>
         <div className={VILLAGER_COUNT_CONTROL_GRID_CLASS}>
           <Button
-            onMouseDown={() =>
-              currentCount > 0 &&
-              startHold(() => unassignVillager(jobId), false)
-            }
+            onMouseDown={(e) => {
+              if (e.button !== 0) return;
+              if (currentCount > 0) {
+                startHold(() => unassignVillager(jobId), false);
+              }
+            }}
             onMouseUp={() => stopHold(false)}
             onMouseLeave={() => stopHold(false)}
+            onContextMenu={(e) => {
+              e.preventDefault();
+              if (currentCount > 0) {
+                unassignVillager(jobId, 10);
+              }
+            }}
             onTouchStart={(e) => {
               if (currentCount > 0) {
                 e.preventDefault(); // Prevent ghost click - synthetic mouse events cause unwanted assign on nearby +
@@ -1142,11 +1150,20 @@ export default function VillagePanel() {
           </Button>
           {renderVillagerCount(currentCount)}
           <Button
-            onMouseDown={() =>
-              canAssignMore && startHold(() => assignVillager(jobId), false)
-            }
+            onMouseDown={(e) => {
+              if (e.button !== 0) return;
+              if (canAssignMore) {
+                startHold(() => assignVillager(jobId), false);
+              }
+            }}
             onMouseUp={() => stopHold(false)}
             onMouseLeave={() => stopHold(false)}
+            onContextMenu={(e) => {
+              e.preventDefault();
+              if (canAssignMore) {
+                assignVillager(jobId, 10);
+              }
+            }}
             onTouchStart={(e) => {
               if (canAssignMore) {
                 e.preventDefault(); // Prevent ghost click - synthetic mouse events cause unwanted actions

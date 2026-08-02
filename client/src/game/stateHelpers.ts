@@ -408,25 +408,31 @@ export function clampVillagersToHousingCap(
 
 export function assignVillagerToJob(
   state: GameState,
-  job: keyof GameState['villagers']
+  job: keyof GameState['villagers'],
+  count: number = 1,
 ): Partial<GameState> {
-  if (state.villagers.free <= 0) return {};
+  const requested = Math.floor(count);
+  if (requested <= 0 || state.villagers.free <= 0) return {};
 
   // Initialize job count to 0 if undefined (for backwards compatibility with old saves)
   const currentJobCount = state.villagers[job] ?? 0;
-
-  if (currentJobCount >= getVillagerCapForJob(state, job)) return {};
+  const cap = getVillagerCapForJob(state, job);
+  const roomUnderCap = Number.isFinite(cap)
+    ? Math.max(0, cap - currentJobCount)
+    : Number.POSITIVE_INFINITY;
+  const assignCount = Math.min(requested, state.villagers.free, roomUnderCap);
+  if (assignCount <= 0) return {};
 
   const updates: Partial<GameState> = {
     villagers: {
       ...state.villagers,
-      free: state.villagers.free - 1,
-      [job]: currentJobCount + 1
-    }
+      free: state.villagers.free - assignCount,
+      [job]: currentJobCount + assignCount,
+    },
   };
 
   // Track when population types are first assigned
-  if (job === 'hunter' && state.villagers.hunter === 0) {
+  if (job === 'hunter' && currentJobCount === 0) {
     updates.story = {
       ...state.story,
       seen: {
@@ -434,7 +440,7 @@ export function assignVillagerToJob(
         hashunter: true
       }
     };
-  } else if (job === 'gatherer' && state.villagers.gatherer === 0) {
+  } else if (job === 'gatherer' && currentJobCount === 0) {
     updates.story = {
       ...state.story,
       seen: {
@@ -449,19 +455,23 @@ export function assignVillagerToJob(
 
 export function unassignVillagerFromJob(
   state: GameState,
-  job: keyof GameState['villagers']
+  job: keyof GameState['villagers'],
+  count: number = 1,
 ): Partial<GameState> {
+  const requested = Math.floor(count);
   // Initialize job count to 0 if undefined (for backwards compatibility with old saves)
   const currentJobCount = state.villagers[job] ?? 0;
 
-  if (job === 'free' || currentJobCount <= 0) return {};
+  if (job === 'free' || requested <= 0 || currentJobCount <= 0) return {};
+
+  const unassignCount = Math.min(requested, currentJobCount);
 
   return {
     villagers: {
       ...state.villagers,
-      free: state.villagers.free + 1,
-      [job]: currentJobCount - 1
-    }
+      free: state.villagers.free + unassignCount,
+      [job]: currentJobCount - unassignCount,
+    },
   };
 }
 

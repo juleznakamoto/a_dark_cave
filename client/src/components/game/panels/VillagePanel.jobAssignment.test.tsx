@@ -90,6 +90,63 @@ describe("Job assignment - touch/ghost-click fix", () => {
     expect(updates).toEqual({});
   });
 
+  it("assignVillagerToJob assigns up to count when free villagers and room under cap", () => {
+    const state = useGameStore.getState();
+    const updates = assignVillagerToJob(
+      {
+        ...state,
+        flags: { ...state.flags, villagerCapsEnabled: false },
+        villagers: { ...state.villagers, hunter: 0, free: 25 },
+      },
+      "hunter",
+      10,
+    );
+
+    expect(updates.villagers?.hunter).toBe(10);
+    expect(updates.villagers?.free).toBe(15);
+  });
+
+  it("assignVillagerToJob clamps count to free villagers and remaining cap room", () => {
+    const state = useGameStore.getState();
+    const updates = assignVillagerToJob(
+      {
+        ...state,
+        flags: { ...state.flags, villagerCapsEnabled: true },
+        villagers: { ...state.villagers, hunter: 7, free: 5 },
+      },
+      "hunter",
+      10,
+    );
+
+    // Default hunter cap is 10 when caps are enabled
+    expect(updates.villagers?.hunter).toBe(10);
+    expect(updates.villagers?.free).toBe(2);
+  });
+
+  it("unassignVillagerFromJob removes up to count", () => {
+    const state = useGameStore.getState();
+    const updates = unassignVillagerFromJob(
+      { ...state, villagers: { ...state.villagers, gatherer: 14, free: 0 } },
+      "gatherer",
+      10,
+    );
+
+    expect(updates.villagers?.gatherer).toBe(4);
+    expect(updates.villagers?.free).toBe(10);
+  });
+
+  it("unassignVillagerFromJob clamps count to current job count", () => {
+    const state = useGameStore.getState();
+    const updates = unassignVillagerFromJob(
+      { ...state, villagers: { ...state.villagers, gatherer: 3, free: 1 } },
+      "gatherer",
+      10,
+    );
+
+    expect(updates.villagers?.gatherer).toBe(0);
+    expect(updates.villagers?.free).toBe(4);
+  });
+
   it("touch handlers call preventDefault when condition met (prevents ghost click)", () => {
     // Verify the VillagePanel touch handler pattern: when we have a valid action,
     // we call e.preventDefault() to block synthetic mouse events.
