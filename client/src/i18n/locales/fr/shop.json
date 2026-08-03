@@ -1,13 +1,13 @@
 {
   "additional_preset_slots": {
-    "activationMessage": "Deux emplacements de préréglages de villageois supplémentaires ont été ajoutés.",  //x1.4
-    "description": "Deux emplacements de préréglages de travail des villageois supplémentaires",  //x2.2
-    "name": "2 emplacements de préréglages supplémentaires"  //x1.8
+    "activationMessage": "Deux emplacements de préréglages de villageois supplémentaires ont été ajoutés.", //x1.4
+    "description": "Deux emplacements de préréglages de travail des villageois supplémentaires", //x2.2
+    "name": "2 emplacements de préréglages supplémentaires" //x1.8
   },
   "additional_construction_queue_slot": {
     "activationMessage": "Deux emplacements de file de construction supplémentaires ont été ajoutés.",
-    "description": "Deux emplacements de construction parallèle supplémentaires",  //x1.6
-    "name": "2 emplacements de file de construction supplémentaires"  //x1.5
+    "description": "Deux emplacements de construction parallèle supplémentaires", //x1.6
+    "name": "2 emplacements de file de construction supplémentaires" //x1.5
   },
   "advanced_bundle": {
     "activationMessage": "Les éléments du pack du Roi pâle ont été ajoutés à vos achats !",
@@ -32,7 +32,7 @@
   },
   "cruel_mode": {
     "activationMessage": "Mode cruel activé ! Commencez une nouvelle partie pour affronter le défi ultime.",
-    "description": "Un monde plus cruel, une histoire étendue, plus d'objets et des ennemis plus mortels. Endurez, ou disparaissez.",  //x1.4
+    "description": "Rejouez dans un monde plus cruel, avec une histoire étendue, plus d'objets, des ennemis plus mortels et bien plus encore.",
     "name": "Mode cruel"
   },
   "full_game": {

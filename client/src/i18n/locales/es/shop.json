@@ -1,8 +1,8 @@
 {
   "additional_preset_slots": {
-    "activationMessage": "Se han añadido dos espacios de preajuste de trabajos de aldeanos adicionales.",  //x1.4
-    "description": "Dos espacios de preajuste de trabajos de aldeanos más",  //x1.6
-    "name": "2 espacios de preajuste adicionales"  //x1.4
+    "activationMessage": "Se han añadido dos espacios de preajuste de trabajos de aldeanos adicionales.", //x1.4
+    "description": "Dos espacios de preajuste de trabajos de aldeanos más", //x1.6
+    "name": "2 espacios de preajuste adicionales" //x1.4
   },
   "additional_construction_queue_slot": {
     "activationMessage": "Se han añadido dos espacios de cola de construcción adicionales.",
@@ -15,11 +15,11 @@
   },
   "artifact_bundle": {
     "activationMessage": "¡Los componentes del Lote de artefactos oscuros se han añadido a tus compras!",
-    "name": "Lote de artefactos oscuros"  //x1.2
+    "name": "Lote de artefactos oscuros" //x1.2
   },
   "ashen_throne_bundle": {
     "activationMessage": "¡Los componentes del Lote del Trono Ceniciento se han añadido a tus compras!",
-    "name": "Lote del Trono Ceniciento"  //x1.3
+    "name": "Lote del Trono Ceniciento" //x1.3
   },
   "basic_survival_bundle": {
     "activationMessage": "¡Los componentes del Lote del Errante Marchito se han añadido a tus compras!",
@@ -32,7 +32,7 @@
   },
   "cruel_mode": {
     "activationMessage": "¡Modo cruel activado! Empieza una partida nueva para vivir el desafío definitivo.",
-    "description": "Un mundo más cruel, historia ampliada, más objetos y enemigos más letales. Resiste o desaparece.",
+    "description": "Vuelve a jugar en un mundo más cruel, con historia ampliada, más objetos, enemigos más letales y mucho más.",
     "name": "Modo cruel"
   },
   "full_game": {
@@ -43,7 +43,7 @@
   "gold_1000": {
     "activationMessage": "Se han añadido 1000 de oro a tu inventario.",
     "description": "Una cantidad decente de oro",
-    "name": "1'000 de oro"  //x1.2
+    "name": "1'000 de oro" //x1.2
   },
   "gold_100_free": {
     "activationMessage": "¡Se han añadido 100 de oro a tu inventario como regalo!",
@@ -68,12 +68,12 @@
   "gold_2500": {
     "activationMessage": "Se han añadido 2500 de oro a tu inventario.",
     "description": "Un tesoro considerable",
-    "name": "2'500 de oro"  //x1.2
+    "name": "2'500 de oro" //x1.2
   },
   "gold_5000": {
     "activationMessage": "Se han añadido 5000 de oro a tu inventario.",
     "description": "Una fortuna en oro",
-    "name": "5'000 de oro"  //x1.2
+    "name": "5'000 de oro" //x1.2
   },
   "great_feast_1": {
     "activationMessage": "¡Ha comenzado un gran festín!",
@@ -83,7 +83,7 @@
   "great_feast_3": {
     "activationMessage": "¡Ha comenzado un gran festín!",
     "description": "Multiplica por 5 la producción de los aldeanos durante 30 minutos (3 veces).",
-    "name": "3 grandes festines"  //x1.3
+    "name": "3 grandes festines" //x1.3
   },
   "skull_lantern": {
     "activationMessage": "¡El farol de cráneo se ha añadido a tus herramientas! Su luz inquietante te guiará por las profundidades.",
