@@ -8,66 +8,12 @@ import PageErrorScreen from "@/components/ui/page-error-screen";
 import { HARD_RELOAD_CACHE_BUST_PARAM } from "@/lib/hardReload";
 import { logger } from "@/lib/logger";
 import {
-  isGalaxyEdition,
-  isSteamBuild,
-  type DevGameMode,
-} from "@/lib/edition";
-import {
-  readStartupSaveHeaderResult,
-  type StartupSaveHeader,
-} from "@/game/startupSaveHeader";
+  resolveStartupVisit,
+  type StartupResolution,
+} from "@/game/startupCoordinator";
 
 // Lazy load Game component - only loaded when needed
 const Game = lazy(() => import("@/pages/game"));
-
-const DEFAULT_START_SCREEN_PREFERENCES: StartScreenPreferences = {
-  cruelMode: false,
-  musicMuted: false,
-  sfxMuted: false,
-  musicVolume: 1,
-  sfxVolume: 1,
-};
-
-function hasPersistedAuthSession(): boolean {
-  try {
-    const raw = localStorage.getItem("a-dark-cave-auth");
-    if (!raw) return false;
-    const session = JSON.parse(raw) as {
-      access_token?: unknown;
-      user?: unknown;
-    } | null;
-    return (
-      typeof session?.access_token === "string" &&
-      session.access_token.length > 0 &&
-      session.user !== null &&
-      typeof session.user === "object"
-    );
-  } catch {
-    return false;
-  }
-}
-
-function preferencesFromHeader(
-  header: StartupSaveHeader | null,
-): StartScreenPreferences {
-  if (!header) return DEFAULT_START_SCREEN_PREFERENCES;
-  return {
-    cruelMode: header.cruelMode,
-    musicMuted: header.musicMuted,
-    sfxMuted: header.sfxMuted,
-    musicVolume: header.musicVolume,
-    sfxVolume: header.sfxVolume,
-  };
-}
-
-function getEditionFlags(devGameMode: DevGameMode) {
-  const devSteamMode =
-    import.meta.env.DEV && !isSteamBuild && devGameMode !== "normal";
-  return {
-    steamEditionActive: isSteamBuild || isGalaxyEdition() || devSteamMode,
-    steamDesktopEditionActive: isSteamBuild || devSteamMode,
-  };
-}
 
 /**
  * Standalone start screen page that doesn't load the heavy Game component.
@@ -77,10 +23,9 @@ export default function StartScreenPage() {
   const [shouldLoadGame, setShouldLoadGame] = useState(false);
   const [isChecking, setIsChecking] = useState(true);
   const [startupError, setStartupError] = useState<unknown>(null);
-  const [preferences, setPreferences] = useState(
-    DEFAULT_START_SCREEN_PREFERENCES,
-  );
-  const [devGameMode, setDevGameMode] = useState<DevGameMode>("normal");
+  const [startResolution, setStartResolution] = useState<
+    Extract<StartupResolution, { surface: "start" }> | null
+  >(null);
   const preparedGameRef = useRef<
     ReturnType<
       typeof import("@/game/startupGameLoader").prepareGameFromStartScreen
@@ -109,67 +54,12 @@ export default function StartScreenPage() {
           window.location.hash;
         window.history.replaceState({}, document.title, cleanUrl);
       }
-      // Stripe PayPal (etc.): return URL includes these; we must load Game to verify and update state
-      if (
-        searchParams.get("payment_intent") &&
-        searchParams.get("redirect_status")
-      ) {
-        setShouldLoadGame(true);
-        setIsChecking(false);
-        return;
-      }
-      const isGamePath = window.location.pathname === "/boost" ||
-        searchParams.get("game") === "true" ||
-        searchParams.get("email_confirmed") === "true";
-
-      // If it's a game path or email confirmation redirect, load Game immediately
-      if (isGamePath) {
-        setShouldLoadGame(true);
-        setIsChecking(false);
-        return;
-      }
-
       try {
-        const headerResult = await readStartupSaveHeaderResult();
-        if (headerResult.status === "error") {
-          setStartupError(headerResult.error);
-          return;
-        }
-        const header =
-          headerResult.status === "loaded" ? headerResult.header : null;
-        setPreferences(preferencesFromHeader(header));
-        setDevGameMode(header?.devGameMode ?? "normal");
-
-        if (header?.gameStarted) {
+        const resolution = await resolveStartupVisit(window.location);
+        if (resolution.surface === "game") {
           setShouldLoadGame(true);
-          return;
-        }
-
-        // A Steam Cloud save or a signed-in cloud-only save cannot be detected
-        // from local IndexedDB. Preserve the full reconciliation path for those
-        // users while keeping anonymous first visits on the lightweight path.
-        if (isSteamBuild || hasPersistedAuthSession()) {
-          const useGameStore = await Promise.race([
-            import("@/game/startupGameLoader").then(
-              ({ loadStoreForStartupCheck }) => loadStoreForStartupCheck(),
-            ),
-            new Promise<never>((_, reject) =>
-              setTimeout(() => reject(new Error("loadGame timeout")), 15000),
-            ),
-          ]);
-          const state = useGameStore.getState();
-          if (state.flags.gameStarted) {
-            setShouldLoadGame(true);
-            return;
-          }
-          setPreferences({
-            cruelMode: state.cruelMode,
-            musicMuted: state.musicMuted,
-            sfxMuted: state.sfxMuted,
-            musicVolume: state.musicVolume,
-            sfxVolume: state.sfxVolume,
-          });
-          setDevGameMode(state.devGameMode);
+        } else {
+          setStartResolution(resolution);
         }
       } catch (error) {
         logger.error("Failed to check saved game state:", error);
@@ -191,11 +81,9 @@ export default function StartScreenPage() {
 
   const handleLightFire = async (nextPreferences: StartScreenPreferences) => {
     try {
-      const { useGameStore, startGameLoop } =
-        await prepareGame(nextPreferences);
+      const { useGameStore } = await prepareGame(nextPreferences);
       useGameStore.setState(nextPreferences);
       useGameStore.getState().trackButtonClick("light-fire");
-      startGameLoop();
       useGameStore.getState().executeAction("lightFire");
       setShouldLoadGame(true);
     } catch (error) {
@@ -225,11 +113,17 @@ export default function StartScreenPage() {
   }
 
   // Show start screen - this doesn't load Game component
-  const editionFlags = getEditionFlags(devGameMode);
+  if (!startResolution) {
+    return <PageLoadSpinner />;
+  }
+
   return (
     <StartScreen
-      initialPreferences={preferences}
-      {...editionFlags}
+      initialPreferences={startResolution.preferences}
+      steamEditionActive={startResolution.steamEditionActive}
+      steamDesktopEditionActive={
+        startResolution.steamDesktopEditionActive
+      }
       onLightFireStart={handleLightFireStart}
       onLightFire={handleLightFire}
     />

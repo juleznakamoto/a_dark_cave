@@ -480,7 +480,8 @@ interface GameStore extends GameState {
   setScrollIndicatorSeen: (scrollAreaId: string) => void;
   initialize: (state: GameState) => void;
   restartGame: () => void;
-  loadGame: () => Promise<void>;
+  /** Hydrate the store once; returns true when a persisted save was loaded. */
+  loadGame: () => Promise<boolean>;
   toggleDevMode: () => void;
   getMaxPopulation: () => number;
   updatePopulation: () => void;
@@ -3347,6 +3348,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
     await applySignupWelcomeBonusAfterOAuthLoad();
 
     StateManager.scheduleEffectsUpdate(get);
+    return Boolean(savedState);
   },
 
   addLogEntry: (entry: LogEntry) => {

@@ -3,26 +3,19 @@ import { lazy } from "react";
 import GameContainer from "@/components/game/GameContainer";
 import { StateManager, useGameStore } from "@/game/state";
 import { startGameLoop, stopGameLoop } from "@/game/loop";
-import { loadGameResult, saveGame } from "@/game/save";
+import { saveGame } from "@/game/save";
 const EmailConfirmedDialog = lazy(() => import("@/components/game/EmailConfirmedDialog"));
 const PlaylightWelcomeDialog = lazy(() => import("@/components/game/PlaylightWelcomeDialog"));
 const FeedbackDialog = lazy(() => import("@/components/game/FeedbackDialog"));
 import { logger } from "@/lib/logger";
-import { getCurrentUser, flushPendingMarketingPreferences, applySignupWelcomeBonusAfterOAuthLoad } from "@/game/auth";
+import { getCurrentUser, flushPendingMarketingPreferences } from "@/game/auth";
 import { initSessionTracker } from "@/lib/sessionTracker";
-import { gamblerDiceResumeOnLoad } from "@/game/gamblerSession";
-import {
-  applyGameStateLoadMigrations,
-  getTransientDialogResetOnLoad,
-  hydrateLoadedGameState,
-} from "@/game/stateHelpers";
+import { getTransientDialogResetOnLoad } from "@/game/stateHelpers";
 import { syncSocialPromoExclusiveRewardPending } from "@/game/socialPromoExclusiveReward";
 import { processStripePaymentReturn } from "@/lib/stripePaymentReturn";
-import { isPlaylightReferralUrl } from "@/lib/playlight";
 import { isLocalOnlyEdition, isDemoEdition, isSteamBuild } from "@/lib/edition";
 import { useSteamEditionActive } from "@/hooks/useSteamEditionActive";
 import { mountNotoSansSymbols2FontFace } from "@/lib/notoSansSymbols2FontFace";
-import type { TimedEventTabState } from "@/game/types";
 import { isDemoLimitReachedFromState } from "@/game/demoLimit";
 import {
   applySaveBoost,
@@ -32,9 +25,10 @@ import PageLoadSpinner from "@/components/ui/page-load-spinner";
 import PageErrorScreen from "@/components/ui/page-error-screen";
 import { clearStaleChunkReloadGuard } from "@/lib/hardReload";
 import { ensureGameplayLocalesLoaded } from "@/i18n/loadLocaleResources";
+import { parseStartupIntent } from "@/game/startupIntent";
+import { consumePreparedGameHydration } from "@/game/startupGameLoader";
 
 export default function Game() {
-  const initialize = useGameStore((state) => state.initialize);
   const { setShopDialogOpen, setIsUserSignedIn } = useGameStore();
   const [isInitialized, setIsInitialized] = useState(false);
   const [initError, setInitError] = useState(false);
@@ -66,14 +60,10 @@ export default function Game() {
         await new Promise((resolve) => requestAnimationFrame(() => requestAnimationFrame(resolve)));
         await gameplayLocalesPromise;
 
-        // Handle OAuth callback - check for tokens in URL
-        const hashParams = new URLSearchParams(
-          window.location.hash.substring(1),
-        );
+        const intent = parseStartupIntent(window.location);
         const searchParams = new URLSearchParams(window.location.search);
-        const accessToken =
-          hashParams.get("access_token") || searchParams.get("access_token");
-        const isEmailConfirmed = searchParams.get("email_confirmed") === "true";
+        const accessToken = intent.accessToken;
+        const isEmailConfirmed = intent.emailConfirmed;
 
         if (accessToken) {
           logger.log(
@@ -105,22 +95,11 @@ export default function Game() {
           await flushPendingMarketingPreferences();
         }
 
-        // Parse URL query parameters
-        const urlParams = new URLSearchParams(window.location.search);
-
-        // Check if URL is /boost path or ?game=true param to skip start screen
-        const isBoostPath = window.location.pathname === "/boost";
-        const isGamePath =
-          isBoostPath ||
-          urlParams.get("game") === "true";
-
-        // Check for openShop query parameter only (not /boost path)
-        const openShop = urlParams.get("openShop") === "true";
-        const cruelShopHighlight =
-          openShop && urlParams.get("cruelHighlight") === "true";
-
-        // Check for Google Ads source parameter (c)
-        const googleAdsSource = urlParams.get("c");
+        const isBoostPath = intent.boost;
+        const isGamePath = intent.forceGame;
+        const openShop = intent.openShop;
+        const cruelShopHighlight = intent.cruelShopHighlight;
+        const googleAdsSource = intent.googleAdsSource;
 
         // Load Inter font immediately when game loads (not conditionally)
         const loadInterFont = () => {
@@ -169,115 +148,62 @@ export default function Game() {
         // Symbol fallback font (same-origin @font-face; avoids Playlight reading cross-origin CSS rules).
         mountNotoSansSymbols2FontFace();
 
-        // Snapshot in-memory store before await: executeAction("lightFire") may have applied
-        // Playlight bonuses, while loadGame() returns a stale disk/cloud envelope until the next save.
-        const preHydrationSnapshot = useGameStore.getState();
+        // The start page may already have hydrated the store while checking a
+        // cloud/Steam save or preparing Light Fire. Consume that handoff rather
+        // than reading and applying the same save a second time.
+        const preparedHydration = consumePreparedGameHydration();
+        const hadPersistedSave =
+          preparedHydration?.hadPersistedSave ??
+          (await useGameStore.getState().loadGame());
 
-        // Load saved game or initialize with defaults
-        const loadResult = await loadGameResult();
-        if (loadResult.status === "error") {
-          throw loadResult.error;
+        const hydratedState = useGameStore.getState();
+        const shouldTrackGoogleAds =
+          Boolean(googleAdsSource) && !hydratedState.googleAdsSource;
+
+        useGameStore.setState({
+          ...(shouldTrackGoogleAds
+            ? { googleAdsSource: googleAdsSource ?? undefined }
+            : {}),
+          isUserSignedIn: hydratedState.isUserSignedIn || !!user,
+          flags: {
+            ...hydratedState.flags,
+            ...(isGamePath
+              ? {
+                gameStarted: true,
+                hasLitFire: true,
+                villagerCapsEnabled: true,
+              }
+              : {}),
+          },
+          ...getTransientDialogResetOnLoad(),
+        });
+
+        if (shouldTrackGoogleAds) {
+          logger.log(`[GAME] Tracking Google Ads source: ${googleAdsSource}`);
+          setTimeout(async () => {
+            try {
+              await saveGame(useGameStore.getState(), false);
+              logger.log("[GAME] Successfully saved Google Ads source");
+            } catch (error) {
+              logger.error("[GAME] Failed to save Google Ads source:", error);
+            }
+          }, 500);
         }
-        const rawSavedState =
-          loadResult.status === "loaded" ? loadResult.state : null;
-        const savedState = rawSavedState
-          ? applyGameStateLoadMigrations(hydrateLoadedGameState(rawSavedState))
-          : null;
-        if (savedState) {
-          // Track Google Ads source if present in URL and not already saved
-          const stateUpdates: any = {};
-          if (googleAdsSource && !savedState.googleAdsSource) {
-            stateUpdates.googleAdsSource = googleAdsSource;
-            logger.log(`[GAME] Tracking Google Ads source: ${googleAdsSource}`);
-          }
 
-          const timedEventTab =
-            (savedState as { timedEventTab?: TimedEventTabState })
-              .timedEventTab ?? {
-              isActive: false,
-              event: null,
-              expiryTime: 0,
-            };
-          const resumeUi = gamblerDiceResumeOnLoad({
-            timedEventTab,
-            gamblerGame: savedState.gamblerGame,
-          });
-
-          // Gambler in-progress state is persisted in save data and resumed on load.
-          useGameStore.setState({
-            ...savedState,
-            timedEventTab,
-            ...stateUpdates,
-            ...resumeUi,
-            // Keep live session flag; do not restore a stale saved false.
-            isUserSignedIn: useGameStore.getState().isUserSignedIn || !!user,
-            flags: {
-              ...(savedState.flags ?? {}),
-              gameStarted: isGamePath ? true : savedState.flags?.gameStarted,
-              hasLitFire: isGamePath ? true : savedState.flags?.hasLitFire,
-              ...(isGamePath
-                ? {
-                  villagerCapsEnabled: true,
-                }
-                : {}),
-            },
-            // Never restore transient dialog UI from older saves that persisted these fields.
-            ...getTransientDialogResetOnLoad(),
-          });
-          const { flushOverdueActionExecutions } = await import("@/game/loop");
-          flushOverdueActionExecutions();
+        if (hadPersistedSave) {
           logger.log("[GAME] Game loaded from save");
-
-          const staleDiskPredatesPlaylightWarmWelcome =
-            isPlaylightReferralUrl() &&
-            preHydrationSnapshot.story?.seen?.fireLit &&
-            preHydrationSnapshot.story?.seen?.playlightMemberGoldGranted === true &&
-            !savedState.story?.seen?.fireLit;
-
-          if (staleDiskPredatesPlaylightWarmWelcome) {
-            useGameStore.setState({
-              resources: preHydrationSnapshot.resources,
-              flags: {
-                ...useGameStore.getState().flags,
-                ...preHydrationSnapshot.flags,
-              },
-              story: {
-                ...(savedState.story ?? useGameStore.getState().story),
-                seen: {
-                  ...(savedState.story?.seen ?? {}),
-                  ...(preHydrationSnapshot.story?.seen ?? {}),
-                },
-              },
-            });
-            StateManager.scheduleEffectsUpdate(useGameStore.getState);
-          }
-
           syncSocialPromoExclusiveRewardPending();
 
-          // Save Google Ads source if it was set
-          if (stateUpdates.googleAdsSource) {
-            setTimeout(async () => {
-              try {
-                const { saveGame } = await import("@/game/save");
-                await saveGame(useGameStore.getState(), false);
-                logger.log("[GAME] Successfully saved Google Ads source");
-              } catch (error) {
-                logger.error("[GAME] Failed to save Google Ads source:", error);
-              }
-            }, 500);
-          }
-
-          // If user is logged in and has claimed referrals, save to cloud
+          const currentState = useGameStore.getState();
           if (
             user &&
-            savedState.referrals &&
-            savedState.referrals.some((r) => r.claimed)
+            currentState.referrals &&
+            currentState.referrals.some((referral) => referral.claimed)
           ) {
             logger.log("[GAME] Detected claimed referrals - saving to cloud");
-            // Use setTimeout to ensure state is fully set before saving
             setTimeout(async () => {
               try {
-                await saveGame(savedState, false);
+                await saveGame(useGameStore.getState(), false);
                 logger.log(
                   "[GAME] Successfully saved claimed referrals to cloud",
                 );
@@ -287,54 +213,6 @@ export default function Game() {
             }, 1000);
           }
         } else {
-          // If no saved state, initialize with defaults
-          // Preserve flags/story already set by executeAction("lightFire") before Game mounted
-          const preInitFlags = useGameStore.getState().flags;
-          const preInitStory = useGameStore.getState().story;
-          initialize();
-          if (preInitFlags.gameStarted) {
-            useGameStore.setState({
-              flags: {
-                ...useGameStore.getState().flags,
-                gameStarted: true,
-                hasLitFire: preInitFlags.hasLitFire,
-                villagerCapsEnabled: true,
-              },
-              story: preInitStory,
-              resources: preHydrationSnapshot.resources,
-            });
-            StateManager.scheduleEffectsUpdate(useGameStore.getState);
-          }
-
-          // Track Google Ads source if present in URL
-          if (googleAdsSource) {
-            useGameStore.setState({ googleAdsSource });
-            logger.log(`[GAME] Tracking Google Ads source: ${googleAdsSource}`);
-
-            // Save immediately
-            setTimeout(async () => {
-              try {
-                const { saveGame } = await import("@/game/save");
-                await saveGame(useGameStore.getState(), false);
-                logger.log("[GAME] Successfully saved Google Ads source");
-              } catch (error) {
-                logger.error("[GAME] Failed to save Google Ads source:", error);
-              }
-            }, 500);
-          }
-
-          // If accessing /game directly, also set the game as started
-          if (isGamePath) {
-            useGameStore.setState({
-              flags: {
-                ...useGameStore.getState().flags,
-                gameStarted: true,
-                hasLitFire: true,
-                villagerCapsEnabled: true,
-              },
-            });
-          }
-
           logger.log("[GAME] Game initialized with defaults");
         }
 
@@ -349,8 +227,6 @@ export default function Game() {
         // Online entitlement/payment flows are web only. The Steam build grants
         // the full game locally (see createInitialState) and has no shop.
         if (!isLocalOnlyEdition()) {
-          await applySignupWelcomeBonusAfterOAuthLoad();
-
           const { rehydratePurchasesFromSupabase } = await import(
             "@/game/shopPurchases"
           );

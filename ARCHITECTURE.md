@@ -101,6 +101,10 @@ or when a saved `gameStarted` flag exists â€” keeps the initial bundle smal
 Data-flow mental model:
 
 ```
+startupIntent.ts + startupCoordinator.ts
+  â†’ resolve one visit surface (StartScreen or Game)
+startupGameLoader.ts
+  â†’ optional prepared-store handoff; state.loadGame() hydrates once
 UI (GameContainer, panels, dialogs)
   â†• useGameStore (Zustand)
 state.ts        â€” GameStore = persisted GameState + UI slice + store methods
@@ -116,7 +120,11 @@ shared/schema.tsâ€” Zod GameState schema (source of truth for persisted sha
 
 - **`state.ts`** â€” central Zustand store. Exports `useGameStore`, `createInitialState()`,
   `StateManager` (batched derived-stat recompute), `isModalDialogOpen()` (sim freeze gate),
-  `shouldBlockGameHotkeys()`, `detectRewards()`.
+  `shouldBlockGameHotkeys()`, `detectRewards()`. Its `loadGame()` method is the single startup
+  hydration path and reports whether persisted state was found.
+- **`startupIntent.ts` / `startupCoordinator.ts` / `startupGameLoader.ts`** â€” parse callback and
+  campaign intent once, resolve StartScreen vs Game outside React, and transfer any store prepared
+  during auth/Steam checks or Light Fire into `pages/game.tsx` without loading it again.
 - **`loop.ts`** â€” `TARGET_FPS = 4`. ~15s production cycle (`PRODUCTION_INTERVAL`), fixed tick
   (`TICK_INTERVAL` from `constants.ts`), pause gates (manual pause, idle, inactivity,
   `isModalDialogOpen`), autosave (15s guest / 60s signed-in cloud diff),
