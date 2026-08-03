@@ -90,6 +90,27 @@ describe("saveGameAnalysis", () => {
     ).toContain("iron_axe");
   });
 
+  it("does not flag blacksmithHammerChoice without hammer (leave is valid)", () => {
+    const result = analyzeSaveGameRow({
+      ...baseRow,
+      game_state: {
+        playTime: 120_000,
+        tools: { stone_axe: true, blacksmith_hammer: false },
+        flags: {
+          villageUnlocked: true,
+          forestUnlocked: true,
+          gameStarted: true,
+        },
+        story: {
+          seen: { hasStoneAxe: true, blacksmithHammerChoice: true },
+        },
+      },
+    });
+    expect(result.issues.some((i) => i.kind === "tool_craft_mismatch")).toBe(
+      false,
+    );
+  });
+
   it("detects wiped weapons from craft story flags", () => {
     const result = analyzeSaveGameRow({
       ...baseRow,

@@ -1,6 +1,6 @@
 /**
  * Rebuild permanent craftable tools from `story.seen` flags (migration 026 mapping).
- * Only sets tools to `true` from provable craft flags — never removes owned tools.
+ * Only sets tools to `true` from provable craft flags - never removes owned tools.
  */
 
 export const TOOL_REBUILD_FROM_STORY_SEEN = [
@@ -42,7 +42,8 @@ export const TOOL_REBUILD_FROM_STORY_SEEN = [
     toolKey: "blacksteel_lantern",
     seenKeys: ["hasBlacksteelLantern", "actionCraftBlacksteelLantern"],
   },
-  { toolKey: "blacksmith_hammer", seenKeys: ["blacksmithHammerChoice"] },
+  // blacksmith_hammer is intentionally omitted: story.seen.blacksmithHammerChoice
+  // is set for both take and leave, so it does not prove ownership.
 ] as const;
 
 function asSeenRecord(storySeen: unknown): Record<string, unknown> | null {

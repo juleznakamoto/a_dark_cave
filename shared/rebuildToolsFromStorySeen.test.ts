@@ -20,12 +20,13 @@ describe("overlayToolsFromStorySeen", () => {
     expect(result.stone_axe).toBe(true);
   });
 
-  it("sets blacksmith_hammer from blacksmithHammerChoice", () => {
+  it("does not treat blacksmithHammerChoice as ownership", () => {
     const tools = { blacksmith_hammer: false } as Record<string, boolean>;
     const result = overlayToolsFromStorySeen(tools, {
       blacksmithHammerChoice: true,
     });
 
-    expect(result.blacksmith_hammer).toBe(true);
+    // Flag is set on both take and leave; never infer the tool from it.
+    expect(result.blacksmith_hammer).toBe(false);
   });
 });

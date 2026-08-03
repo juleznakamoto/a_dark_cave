@@ -12,7 +12,7 @@ import {
 
 export const SAVE_GAME_ANALYSIS_DEFAULT_LIMIT = 100;
 
-/** Story flags that prove at least one craftable tool was owned (migration 026 set). */
+/** Story flags that prove at least one craftable tool was owned (craft-flag rebuild set). */
 export const CRAFT_TOOL_STORY_FLAG_KEYS = TOOL_REBUILD_FROM_STORY_SEEN.flatMap(
   (entry) => [...entry.seenKeys],
 );
