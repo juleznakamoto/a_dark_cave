@@ -4,6 +4,7 @@ import StartScreen, {
 } from "@/components/game/StartScreen";
 import AppErrorBoundary from "@/components/AppErrorBoundary";
 import PageLoadSpinner from "@/components/ui/page-load-spinner";
+import PageErrorScreen from "@/components/ui/page-error-screen";
 import { HARD_RELOAD_CACHE_BUST_PARAM } from "@/lib/hardReload";
 import { logger } from "@/lib/logger";
 import {
@@ -12,7 +13,7 @@ import {
   type DevGameMode,
 } from "@/lib/edition";
 import {
-  readStartupSaveHeader,
+  readStartupSaveHeaderResult,
   type StartupSaveHeader,
 } from "@/game/startupSaveHeader";
 
@@ -75,6 +76,7 @@ function getEditionFlags(devGameMode: DevGameMode) {
 export default function StartScreenPage() {
   const [shouldLoadGame, setShouldLoadGame] = useState(false);
   const [isChecking, setIsChecking] = useState(true);
+  const [startupError, setStartupError] = useState<unknown>(null);
   const [preferences, setPreferences] = useState(
     DEFAULT_START_SCREEN_PREFERENCES,
   );
@@ -128,7 +130,13 @@ export default function StartScreenPage() {
       }
 
       try {
-        const header = await readStartupSaveHeader();
+        const headerResult = await readStartupSaveHeaderResult();
+        if (headerResult.status === "error") {
+          setStartupError(headerResult.error);
+          return;
+        }
+        const header =
+          headerResult.status === "loaded" ? headerResult.header : null;
         setPreferences(preferencesFromHeader(header));
         setDevGameMode(header?.devGameMode ?? "normal");
 
@@ -165,6 +173,7 @@ export default function StartScreenPage() {
         }
       } catch (error) {
         logger.error("Failed to check saved game state:", error);
+        setStartupError(error);
       } finally {
         setIsChecking(false);
       }
@@ -198,6 +207,10 @@ export default function StartScreenPage() {
   // Show loading state while checking
   if (isChecking) {
     return <PageLoadSpinner />;
+  }
+
+  if (startupError) {
+    return <PageErrorScreen reason={startupError} />;
   }
 
   // Dynamically load Game component only when needed

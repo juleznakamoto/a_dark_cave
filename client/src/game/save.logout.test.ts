@@ -29,6 +29,7 @@ vi.mock('idb', () => ({
 // Mock auth module
 vi.mock('./auth', () => ({
   getCurrentUser: vi.fn(),
+  getCurrentUserForLoad: vi.fn(),
   saveGameToSupabase: vi.fn(),
   loadGameFromSupabase: vi.fn(),
   processReferralAfterConfirmation: vi.fn().mockResolvedValue(undefined),
@@ -138,6 +139,9 @@ describe('Logout/Login Save Behavior Tests', () => {
 
     const auth = await import('./auth');
     vi.mocked(auth.getCurrentUser).mockResolvedValue(null);
+    vi.mocked(auth.getCurrentUserForLoad).mockImplementation(() =>
+      auth.getCurrentUser(),
+    );
     vi.mocked(auth.saveGameToSupabase).mockResolvedValue(undefined);
     vi.mocked(auth.loadGameFromSupabase).mockResolvedValue(null);
     vi.mocked(auth.processReferralAfterConfirmation).mockResolvedValue(undefined);

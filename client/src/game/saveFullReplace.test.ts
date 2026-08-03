@@ -17,6 +17,7 @@ vi.mock("idb", () => ({
 
 vi.mock("./auth", () => ({
   getCurrentUser: vi.fn(),
+  getCurrentUserForLoad: vi.fn(),
   saveGameToSupabase: vi.fn(),
   loadGameFromSupabase: vi.fn(),
   processReferralAfterConfirmation: vi.fn().mockResolvedValue(undefined),

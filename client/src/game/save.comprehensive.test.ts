@@ -1,8 +1,8 @@
 
 import { describe, it, expect, beforeEach, vi } from 'vitest';
-import { saveGame, loadGame, deleteSave } from './save';
+import { saveGame, loadGame, loadGameResult, deleteSave } from './save';
 import { GameState, SaveData, REFERRAL_REWARD_GOLD } from '@shared/schema';
-import { decodeLocalSave, LOCAL_SAVE_PREFIX } from './saveCodec';
+import { decodeLocalSave, encodeLocalSave, LOCAL_SAVE_PREFIX } from './saveCodec';
 
 function readMainSave(
   stores: Record<string, Record<string, unknown>>,
@@ -32,6 +32,7 @@ vi.mock('idb', () => ({
 // Mock auth module
 vi.mock('./auth', () => ({
   getCurrentUser: vi.fn(),
+  getCurrentUserForLoad: vi.fn(),
   saveGameToSupabase: vi.fn(),
   loadGameFromSupabase: vi.fn(),
   processReferralAfterConfirmation: vi.fn().mockResolvedValue(undefined),
@@ -160,6 +161,9 @@ describe('Save Game System - Comprehensive Tests', () => {
     // Setup auth mocks - import and mock them
     const auth = await import('./auth');
     vi.mocked(auth.getCurrentUser).mockResolvedValue(null);
+    vi.mocked(auth.getCurrentUserForLoad).mockImplementation(() =>
+      auth.getCurrentUser(),
+    );
     vi.mocked(auth.saveGameToSupabase).mockResolvedValue(undefined);
     vi.mocked(auth.loadGameFromSupabase).mockResolvedValue(null);
     vi.mocked(auth.processReferralAfterConfirmation).mockResolvedValue(undefined);
@@ -175,6 +179,33 @@ describe('Save Game System - Comprehensive Tests', () => {
   });
 
   describe('1. Cloud Sync Failures', () => {
+    it('reports an error when a signed-in cloud-only load cannot be checked', async () => {
+      const auth = await import('./auth');
+      vi.mocked(auth.getCurrentUser).mockResolvedValue({ id: 'user-1', email: 'test@example.com' });
+      vi.mocked(auth.loadGameFromSupabase).mockRejectedValue(new Error('Cloud unavailable'));
+
+      await expect(loadGameResult()).resolves.toMatchObject({
+        status: 'error',
+        retryable: true,
+      });
+    });
+
+    it('loads the local fallback when the cloud cannot be checked', async () => {
+      const auth = await import('./auth');
+      vi.mocked(auth.getCurrentUser).mockResolvedValue({ id: 'user-1', email: 'test@example.com' });
+      vi.mocked(auth.loadGameFromSupabase).mockRejectedValue(new Error('Cloud unavailable'));
+      mockStores.saves.mainSave = encodeLocalSave({
+        gameState: createMockGameState({ playTime: 2000 }),
+        timestamp: Date.now(),
+        playTime: 2000,
+      });
+
+      await expect(loadGameResult()).resolves.toMatchObject({
+        status: 'loaded',
+        state: { playTime: 2000 },
+      });
+    });
+
     it('should save locally even when cloud save fails', async () => {
       const auth = await import('./auth');
       vi.mocked(auth.getCurrentUser).mockResolvedValue({ id: 'user-1', email: 'test@example.com' });
@@ -1404,6 +1435,25 @@ describe('Save Game System - Comprehensive Tests', () => {
       mockOpenDB.mockRejectedValue(new Error('Failed to open database'));
 
       await expect(saveGame(createMockGameState(), true)).rejects.toThrow('Failed to open database');
+    });
+
+    it('distinguishes a load failure from a missing save', async () => {
+      mockOpenDB.mockRejectedValue(new Error('Failed to open database'));
+
+      await expect(loadGameResult()).resolves.toMatchObject({
+        status: 'error',
+        retryable: true,
+      });
+      await expect(loadGame()).rejects.toThrow('Failed to open database');
+    });
+
+    it('reports an existing corrupt local save as a non-retryable error', async () => {
+      mockGet.mockResolvedValue('not-a-valid-save');
+
+      await expect(loadGameResult()).resolves.toMatchObject({
+        status: 'error',
+        retryable: false,
+      });
     });
 
     it('should handle concurrent load and save operations', async () => {

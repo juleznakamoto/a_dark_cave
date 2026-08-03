@@ -19,6 +19,11 @@ export interface StartupSaveHeader {
   devGameMode: DevGameMode;
 }
 
+export type StartupSaveHeaderResult =
+  | { status: "loaded"; header: StartupSaveHeader }
+  | { status: "not-found" }
+  | { status: "error"; error: unknown; retryable: boolean };
+
 type StartupStateFields = {
   flags?: {
     gameStarted?: boolean;
@@ -42,6 +47,13 @@ const DEV_GAME_MODES = new Set<DevGameMode>([
   "steamPlaytest",
   "steamDemo",
 ]);
+
+class InvalidStartupSaveError extends Error {
+  constructor() {
+    super("The local save exists but its startup metadata could not be decoded");
+    this.name = "InvalidStartupSaveError";
+  }
+}
 
 function clampVolume(value: unknown): number {
   return typeof value === "number" && Number.isFinite(value)
@@ -132,13 +144,28 @@ export async function readStartupSaveHeader(): Promise<StartupSaveHeader | null>
     }
 
     const save = decodeLocalSave(rawSave);
-    if (!save) return null;
+    if (!save) throw new InvalidStartupSaveError();
 
     const header = createStartupSaveHeader(save);
     writeStartupSaveHeader(save);
     return header;
   } catch (error) {
     logger.warn("[startup] Failed to read save header:", error);
-    return null;
+    throw error;
+  }
+}
+
+export async function readStartupSaveHeaderResult(): Promise<StartupSaveHeaderResult> {
+  try {
+    const header = await readStartupSaveHeader();
+    return header
+      ? { status: "loaded", header }
+      : { status: "not-found" };
+  } catch (error) {
+    return {
+      status: "error",
+      error,
+      retryable: !(error instanceof InvalidStartupSaveError),
+    };
   }
 }

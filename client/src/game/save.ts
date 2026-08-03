@@ -4,6 +4,7 @@ import {
   saveGameToSupabase,
   loadGameFromSupabase,
   getCurrentUser,
+  getCurrentUserForLoad,
   flushPendingReferralToUserMetadata,
   processReferralAfterConfirmation,
 } from "./auth";
@@ -46,6 +47,18 @@ export type SaveGameResult = {
   /** Cloud intentionally skipped (guest / local-only / inactive dialog). */
   cloudSkipped: boolean;
 };
+
+export type LoadGameResult =
+  | { status: "loaded"; state: GameState }
+  | { status: "not-found" }
+  | { status: "error"; error: unknown; retryable: boolean };
+
+class InvalidLocalSaveError extends Error {
+  constructor() {
+    super("The local save exists but could not be decoded");
+    this.name = "InvalidLocalSaveError";
+  }
+}
 
 const SAVE_SKIPPED: SaveGameResult = {
   localSaved: false,
@@ -279,7 +292,11 @@ async function getLocalSave(
   db: Awaited<ReturnType<typeof getGameSaveDatabase>>,
 ): Promise<SaveData | undefined> {
   const raw = await db.get("saves", getSaveKey());
-  const local = decodeLocalSave(raw) ?? undefined;
+  const decoded = decodeLocalSave(raw);
+  if (raw !== undefined && raw !== null && !decoded) {
+    throw new InvalidLocalSaveError();
+  }
+  const local = decoded ?? undefined;
   // Steam build: reconcile IndexedDB with the cloud-synced file (newer wins).
   if (isSteamBuild) {
     const cloud = await readSteamCloudSave();
@@ -757,8 +774,7 @@ export async function saveGame(
   }
 }
 
-export async function loadGame(): Promise<GameState | null> {
-  try {
+async function loadGameStateOrThrow(): Promise<GameState | null> {
     // Referral metadata sync is web only (Supabase-backed).
     if (!isLocalOnlyEdition()) {
       await flushPendingReferralToUserMetadata();
@@ -793,7 +809,18 @@ export async function loadGame(): Promise<GameState | null> {
     }
 
     // Check if user is authenticated (never on Steam — fully offline).
-    const user = isLocalOnlyEdition() ? null : await getCurrentUser();
+    let user = null;
+    if (!isLocalOnlyEdition()) {
+      try {
+        user = await getCurrentUserForLoad();
+      } catch (authError) {
+        if (!localSave) throw authError;
+        logger.warn(
+          "[LOAD] Auth could not be resolved; using the local save fallback",
+          authError,
+        );
+      }
+    }
 
     if (user) {
       // User is authenticated - compare local and cloud saves
@@ -987,6 +1014,7 @@ export async function loadGame(): Promise<GameState | null> {
           );
           return mergeSavePlayTimeIntoState(localSave, processedState);
         }
+        throw cloudError;
       }
     } else {
       // Not authenticated, use local save only
@@ -1011,10 +1039,30 @@ export async function loadGame(): Promise<GameState | null> {
 
     logger.log(`[LOAD] No save found, returning null`);
     return null;
+}
+
+export async function loadGameResult(): Promise<LoadGameResult> {
+  try {
+    const state = await loadGameStateOrThrow();
+    return state ? { status: "loaded", state } : { status: "not-found" };
   } catch (error) {
     logger.error("Failed to load game:", error);
-    return null;
+    return {
+      status: "error",
+      error,
+      retryable: !(error instanceof InvalidLocalSaveError),
+    };
   }
+}
+
+/**
+ * Compatibility API for existing callers. Errors are thrown so callers can
+ * never confuse an unavailable/corrupt save with a confirmed missing save.
+ */
+export async function loadGame(): Promise<GameState | null> {
+  const result = await loadGameResult();
+  if (result.status === "error") throw result.error;
+  return result.status === "loaded" ? result.state : null;
 }
 
 export async function deleteSave(): Promise<void> {

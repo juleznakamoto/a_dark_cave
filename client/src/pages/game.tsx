@@ -3,7 +3,7 @@ import { lazy } from "react";
 import GameContainer from "@/components/game/GameContainer";
 import { StateManager, useGameStore } from "@/game/state";
 import { startGameLoop, stopGameLoop } from "@/game/loop";
-import { loadGame, saveGame } from "@/game/save"; // Import saveGame
+import { loadGameResult, saveGame } from "@/game/save";
 const EmailConfirmedDialog = lazy(() => import("@/components/game/EmailConfirmedDialog"));
 const PlaylightWelcomeDialog = lazy(() => import("@/components/game/PlaylightWelcomeDialog"));
 const FeedbackDialog = lazy(() => import("@/components/game/FeedbackDialog"));
@@ -174,7 +174,12 @@ export default function Game() {
         const preHydrationSnapshot = useGameStore.getState();
 
         // Load saved game or initialize with defaults
-        const rawSavedState = await loadGame();
+        const loadResult = await loadGameResult();
+        if (loadResult.status === "error") {
+          throw loadResult.error;
+        }
+        const rawSavedState =
+          loadResult.status === "loaded" ? loadResult.state : null;
         const savedState = rawSavedState
           ? applyGameStateLoadMigrations(hydrateLoadedGameState(rawSavedState))
           : null;

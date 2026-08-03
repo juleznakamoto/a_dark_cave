@@ -794,6 +794,47 @@ export async function getCurrentUser(): Promise<AuthUser | null> {
   }
 }
 
+/**
+ * Resolve the confirmed user for save loading without hiding an uncertain
+ * persisted session as a signed-out user. A missing session is valid; a
+ * session/config read failure is thrown so startup cannot report "no save".
+ */
+export async function getCurrentUserForLoad(): Promise<AuthUser | null> {
+  const { getCachedAuthUser, isAuthStateReady } = await import('@/lib/supabase');
+
+  if (isAuthStateReady()) {
+    const user = getCachedAuthUser();
+    if (!user?.email_confirmed_at) return null;
+    return {
+      id: user.id,
+      email: user.email || '',
+    };
+  }
+
+  // Avoid backend initialization for a browser that has never had a session.
+  if (typeof window !== 'undefined') {
+    try {
+      if (!localStorage.getItem('a-dark-cave-auth')) return null;
+    } catch {
+      // Storage access itself is uncertain; let Supabase resolve it.
+    }
+  }
+
+  const supabase = await getSupabaseClient();
+  const {
+    data: { session },
+    error,
+  } = await supabase.auth.getSession();
+  if (error) throw error;
+
+  const user = session?.user;
+  if (!user?.email_confirmed_at) return null;
+  return {
+    id: user.id,
+    email: user.email || '',
+  };
+}
+
 export async function resetPassword(email: string) {
   const supabase = await getSupabaseClient();
   const { data, error } = await supabase.auth.resetPasswordForEmail(email, {

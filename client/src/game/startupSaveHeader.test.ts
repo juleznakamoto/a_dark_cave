@@ -4,6 +4,7 @@ import { encodeLocalSave } from "./saveCodec";
 import {
   createStartupSaveHeader,
   readStartupSaveHeader,
+  readStartupSaveHeaderResult,
   writeStartupSaveHeader,
 } from "./startupSaveHeader";
 
@@ -103,5 +104,26 @@ describe("startup save header", () => {
     });
     expect(mockOpenDB).toHaveBeenCalledOnce();
     expect(storage.size).toBe(1);
+  });
+
+  it("distinguishes an IndexedDB failure from a missing save", async () => {
+    mockGet.mockRejectedValue(new Error("IndexedDB unavailable"));
+
+    await expect(readStartupSaveHeaderResult()).resolves.toMatchObject({
+      status: "error",
+      retryable: true,
+    });
+    await expect(readStartupSaveHeader()).rejects.toThrow(
+      "IndexedDB unavailable",
+    );
+  });
+
+  it("reports a corrupt existing save instead of treating it as missing", async () => {
+    mockGet.mockResolvedValue("not-a-valid-save");
+
+    await expect(readStartupSaveHeaderResult()).resolves.toMatchObject({
+      status: "error",
+      retryable: false,
+    });
   });
 });

@@ -34,6 +34,11 @@ describe('anonymous guest checkout auth', () => {
       setItem: vi.fn(),
       removeItem: vi.fn(),
     });
+    vi.stubGlobal('localStorage', {
+      getItem: vi.fn(() => 'persisted-session'),
+      setItem: vi.fn(),
+      removeItem: vi.fn(),
+    });
     vi.stubGlobal('window', {
       location: { origin: 'http://localhost', href: 'http://localhost/' },
       history: { replaceState: vi.fn() },
@@ -73,6 +78,37 @@ describe('anonymous guest checkout auth', () => {
     const { getSessionUser, getCurrentUser } = await import('./auth');
     expect(await getSessionUser()).toEqual({ id: 'anon-abc', email: '' });
     expect(await getCurrentUser()).toBeNull();
+  });
+
+  it('getCurrentUserForLoad returns a confirmed persisted session', async () => {
+    mockGetSession.mockResolvedValue({
+      data: {
+        session: {
+          user: {
+            id: 'user-1',
+            email: 'test@example.com',
+            email_confirmed_at: '2026-08-03T00:00:00Z',
+          },
+        },
+      },
+      error: null,
+    });
+
+    const { getCurrentUserForLoad } = await import('./auth');
+    await expect(getCurrentUserForLoad()).resolves.toEqual({
+      id: 'user-1',
+      email: 'test@example.com',
+    });
+  });
+
+  it('getCurrentUserForLoad preserves session resolution errors', async () => {
+    mockGetSession.mockResolvedValue({
+      data: { session: null },
+      error: new Error('Session unavailable'),
+    });
+
+    const { getCurrentUserForLoad } = await import('./auth');
+    await expect(getCurrentUserForLoad()).rejects.toThrow('Session unavailable');
   });
 
   it('ensureAnonymousSession reuses existing session', async () => {
