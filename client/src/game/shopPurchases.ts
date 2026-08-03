@@ -149,3 +149,23 @@ export async function rehydratePurchasesFromSupabase(): Promise<string[]> {
     return [];
   }
 }
+
+let startupRehydratePromise: Promise<string[]> | null = null;
+
+/**
+ * Single-flight purchase rehydrate for gameplay startup.
+ * Stripe return handling owns its own post-payment refresh and should skip this.
+ */
+export async function rehydratePurchasesOnStartup(options: {
+  paymentReturn: boolean;
+  skipIfPaymentReturn?: boolean;
+}): Promise<string[]> {
+  if (options.skipIfPaymentReturn !== false && options.paymentReturn) {
+    return [];
+  }
+  if (startupRehydratePromise) return startupRehydratePromise;
+  startupRehydratePromise = rehydratePurchasesFromSupabase().finally(() => {
+    startupRehydratePromise = null;
+  });
+  return startupRehydratePromise;
+}

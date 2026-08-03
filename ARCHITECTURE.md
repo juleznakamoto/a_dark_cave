@@ -68,10 +68,12 @@ in the client; **Supabase** handles auth/cloud saves and **Stripe** handles paym
 | `client/src/game/rules/executionTime.ts` | `getExecutionTime()` â€” action duration lookup without importing `rules/index` (avoids registration cycles). |
 | `client/src/game/save.ts` | Load/save orchestration: IndexedDB + Supabase cloud diff sync (`LoadGameResult` distinguishes loaded / not-found / error; `SaveGameResult` reports local/cloud writes; restart overwrite cleared only after cloud accepts). |
 | `client/src/game/saveConflict.ts` | Pure local-vs-cloud preference (`pickPreferredSave`: explicit restart overwrite, else newer cloud run, else playTime) + playtime-overwrite helpers (`isNewGame` alone does not grant overwrite). |
-| `client/src/game/stateHelpers.ts` | Pure state mutations + `buildGameState()` + `UI_ONLY_PROPERTIES` (keys excluded from saves). |
+| `client/src/game/stateHelpers.ts` | Pure state mutations; `buildGameState()` / `UI_ONLY_PROPERTIES` / dialog reset-on-load delegate to `persistedStateBoundary.ts`. |
+| `client/src/game/dialogRegistry.ts` | SSOT for transient dialog store keys: blocking pause, save exclusion, reset-on-load. |
+| `client/src/game/persistedStateBoundary.ts` | Schema-driven allowlist for save blobs; strips runtime/dialog keys via `dialogRegistry.ts`. |
 | `shared/schema.ts` | Zod `gameStateSchema` / `SaveData` + shared shop constants. |
 | `client/src/components/game/GameContainer.tsx` | Main game UI shell: tabs, panel switching, mounts all dialogs, hotkeys. |
-| `client/src/pages/game.tsx` | Game page init: auth, loop start/stop, payment return handling. |
+| `client/src/pages/game.tsx` | Thin game route shell; init via `gameplayInitOrchestrator.ts`, loop stop on unmount. |
 | `client/src/i18n/index.ts` | i18next bootstrap (lazy locale shards via `loadLocaleResources.ts`). |
 | `server/index.ts` | Express API + static hosting entry point. |
 
@@ -83,7 +85,7 @@ in the client; **Supabase** handles auth/cloud saves and **Stripe** handles paym
 |-----------|------|-----------|
 | entry | React root â†’ router | `main.tsx` (bootstraps text scale from `lib/textScale.ts`, tab-hidden CSS flag from `lib/tabVisibility.ts`; `BOOT_LOCALE_TIMEOUT_MS` (20s) â†’ fatal error screen), `App.tsx`, `components/AppErrorBoundary.tsx` (root React error boundary; auto `hardReload` on stale lazy chunks, else dig-deeper screen), `components/DeferredAppChrome.tsx` (idle-loads Radix `TooltipProvider` + `Toaster` so start-screen HTML skips `vendor-radix` modulepreload), `index.html` (black boot shell + SEO fallback; deferred `/boot.js` for `#adc-boot-spinner` after 500ms + boot watchdog matching `FATAL_UI_TIMEOUT_MS` (45s) / exhausted script-retry â†’ fatal error markup), `public/boot.js` (cache-bust `_cb` strip, module-load retry, spinner/watchdog), `index.css` (`--adc-text-scale` text utilities + `--adc-control-scale` button size chrome) |
 | `pages/` | Route-level components (lazy-loaded) | `start-screen-page.tsx` (small save-header routing; dynamically imports the full store for started/cloud saves or Light Fire), `game.tsx`, `end-screen.tsx`, `reset-password.tsx`, `withdrawal.tsx`, `not-found.tsx`, `admin/dashboard.tsx`, `starship-shader-demo.tsx` (dev-only `/dev/starship-shader` preview), `animations-demo.tsx` (dev-only `/dev/animations` shell), `animations-demo/sections.tsx` (animation playground sections: estate bars, insight badges, click/hover particles, progress, tab unlock, focus/glow), `combat-dialog-demo.tsx` + `combat-dialog-demo/seedState.ts` (dev-only `/dev/combat-dialog` â€” full combat loadout sandbox) |
-| `game/` | **Game engine** (see below) | `state.ts`, `loop.ts`, `playTimeAutoPrompts.ts` (play-time rewards/feedback auto-open; one blocking modal per tick), `actions.ts`, `save.ts` (cloud full-replace by default; kill switch `VITE_SAVE_FULL_REPLACE=0`), `saveStorage.ts` (lightweight IndexedDB names + edition save key), `startupSaveHeader.ts` (small localStorage routing/preferences header with existing-save backfill), `startupGameLoader.ts` (isolated full-store/game-loop bridge dynamically imported by the start page), `saveConflict.ts` (local/cloud restart reconciliation), `saveCodec.ts`, `stateHelpers.ts`, `sleepBonusTimers.ts` (freeze feast/heartfire/etc. wall-clock timers across sleep; applied on wake in `IdleModeDialog`), `sleepGainDisplay.ts` (cap sleep total-gain column / deltas to storage room), `winAchievements.ts` (Normal/Cruel/Speedrunner/Cave Veteran Epic win flags + `lifetimeGamesWon` from cube endings), `resourceStorageMax.ts` (Great Vault cap-hit tracking for Overall Resource Maxer; `lifetimeStorageMaxHits` persists across restarts), `demoLimit.ts` (Galaxy + Steam demo wooden-hut cap + footer progress segments; `processDemoLimit()` from `loop.ts`), `boost.ts`, `villagerCapUpgrades.ts`, `villagerJobPresets.ts`, `constructionQueueSlots.ts`, `weaponEnchantments.ts`, `villageEffectThemes.ts` (symbol/border themes for village timed-effect outcome dialogs), `auth.ts`, `shopPurchases.ts`, `shopOpenSource.ts`, `socialTaskRewards.ts`, `socialTasksGold.ts`, `playlightExitIntent.ts`, `tabUnlockBlink.ts`, `achievementTabPulse.ts`, `bloodMoonOverlay.ts` (blood moon background/smoke overlay visibility + dev preview flag), `versionCheck.ts` (polls `/api/version` vs baked `__BUILD_SHA__`; triggers update toast in `GameContainer`), `constants.ts`, `rules/` |
+| `game/` | **Game engine** (see below) | `state.ts`, `loop.ts`, `playTimeAutoPrompts.ts` (play-time rewards/feedback auto-open; one blocking modal per tick), `actions.ts`, `save.ts` (cloud full-replace by default; kill switch `VITE_SAVE_FULL_REPLACE=0`), `saveStorage.ts` (lightweight IndexedDB names + edition save key), `startupSaveHeader.ts` (small localStorage routing/preferences header with existing-save backfill), `startupGameLoader.ts` (isolated full-store/game-loop bridge dynamically imported by the start page), `startupUrlCleanup.ts` (strip auth/campaign/stripe/boost/shop query params after consume), `gameplayInitOrchestrator.ts` (auth, hydrate, URL cleanup, Stripe return, loop start for `pages/game.tsx`), `dialogRegistry.ts` (transient dialog metadata SSOT), `persistedStateBoundary.ts` (save allowlist + runtime-key strip), `saveConflict.ts` (local/cloud restart reconciliation), `saveCodec.ts`, `stateHelpers.ts`, `sleepBonusTimers.ts` (freeze feast/heartfire/etc. wall-clock timers across sleep; applied on wake in `IdleModeDialog`), `sleepGainDisplay.ts` (cap sleep total-gain column / deltas to storage room), `winAchievements.ts` (Normal/Cruel/Speedrunner/Cave Veteran Epic win flags + `lifetimeGamesWon` from cube endings), `resourceStorageMax.ts` (Great Vault cap-hit tracking for Overall Resource Maxer; `lifetimeStorageMaxHits` persists across restarts), `demoLimit.ts` (Galaxy + Steam demo wooden-hut cap + footer progress segments; `processDemoLimit()` from `loop.ts`), `boost.ts`, `villagerCapUpgrades.ts`, `villagerJobPresets.ts`, `constructionQueueSlots.ts`, `weaponEnchantments.ts`, `villageEffectThemes.ts` (symbol/border themes for village timed-effect outcome dialogs), `auth.ts`, `referralCloudRefresh.ts` (merge referral-owned cloud fields into live state without full gameplay replace), `shopPurchases.ts`, `shopOpenSource.ts`, `socialTaskRewards.ts`, `socialTasksGold.ts`, `playlightExitIntent.ts`, `tabUnlockBlink.ts`, `achievementTabPulse.ts`, `bloodMoonOverlay.ts` (blood moon background/smoke overlay visibility + dev preview flag), `versionCheck.ts` (polls `/api/version` vs baked `__BUILD_SHA__`; triggers update toast in `GameContainer`), `constants.ts`, `rules/` |
 | `components/game/` | Game-specific UI | `GameContainer.tsx`, `GameActionButtonStack.tsx` (in-flow wrapper for action buttons + badges), `GameHeader.tsx` (title + profile/playlight/leaderboard shortcuts; footer-matched chrome), `FullscreenButton.tsx` (Steam shell full-screen toggle in header/start screen), `gameChrome.ts` (header/footer inset constant), `panelResize.ts` (`usePanelResize` â€” drag limits, refs/styles, persists `panelSizes` desktop/mobile), `PanelResizeHandle.tsx` (separator grab handle on side-panel/log dividers), `TraderTabButton.tsx` (shop tab â—¬ + lime hover particles; periodic 15m hover hint), `GameTabs.tsx`, `GameButton.tsx`, `GameUiIcon.tsx` (CSS-mask white SVG icons from `public/icons/` for profile/settings/footer/tab menus), `SidePanelSectionIcon.tsx` (CSS-mask section headers from `public/icons/side-panel/`), `panels/`, `*Dialog.tsx`, `DemoTimeUpDialog.tsx` (blocking Galaxy/Steam demo end modal â†’ Steam wishlist), `VillageEffectDialog.tsx` (themed feast/curse/frostfall/etc. announcement modal via `OutcomeDialog`), `BlessingOfferDialog.tsx` (Insight blessing 3-card picker from timed tab), `ConstructionBoostBadge.tsx` (â© Insight badge on in-progress builds â€” one-time 50% time skip via Builder's Lodge tier 2+), `ShareDialog.tsx` (1080Ã—1350 social share image: title + resource column + 2Ã—2 achievement rings + overall % via `html-to-image`; header Share button in `ProfileMenu`), `GameFooter.tsx` (pause/shop/donate + Steam demo centered green progress bar), `SettingsDialog.tsx` (Profileâ†’Settings: music/sfx volume sliders + mute, text size + language selectors, DEV Game Mode dropdown, and web-only email opt-in + delete-account; non-blocking, opened from `ProfileMenu`), `TextScaleSelector.tsx` (Normal/Large text size dropdown for Settings; persists via `lib/textScale.ts`), `EndScreen.tsx`, `StatEffectsTooltip.tsx` (per-stat luck/strength/knowledge/madness effect breakdown in side-panel tooltips, `BonusCompositionTooltip.tsx` (per-source bonus breakdown for side-panel Bonuses rows)), `StripePoweredBy.tsx` (checkout Stripe + payment-methods footer), `paymentMethodLogos.tsx` (Visa/MC/PayPal/Apple Pay/Google Pay SVG marks) |
 | `components/ui/` | shadcn/ui design system + game visuals | `button.tsx`, `card.tsx`, `dialog`, `toast.tsx`, `text-shimmer.tsx` (loading button label shimmer), `bubbly-button.components.tsx` (inline click particles in `CooldownButton`; `BubblyButtonGlobalPortal` for coin/hover bursts), `bubbly-button.particles.ts` (craft/mine/explore burst presets; `FIRE_LOAD_PARTICLE_CONFIG` for boot spinner; `CHECKOUT_SUCCESS_PARTICLE_CONFIG` for shop purchase close), `page-load-spinner.tsx` (black loading screen + fire spinner/particles; â‰¥500ms delay; hands off `#adc-boot-spinner` from `index.html`; escalates via `FATAL_UI_TIMEOUT_MS`), `page-error-screen.tsx` (thin React wrapper â†’ `mountFatalErrorScreen()`), `mist-background.tsx`, `cloud-shader.tsx`, `starship-shader.tsx` (WebGL2 fullscreen starship fragment shader), `smoke-shader.tsx` (WebGL1 Smoke flow shader; shop first-purchase Insight banner), `spooky-smoke-animation.tsx` (WebGL2 blood moon smoke overlay), `vapour-text-effect.tsx` (canvas particle text vaporize cycle; start-screen intro dissolve after Make Fire), `limelight-nav.tsx` |
 | `hooks/` | React hooks | `use-toast.ts`, `useCooldown.ts`, `use-mobile.tsx`, `useFullscreen.ts` (Steam `steamBridge` full-screen state + toggle), `useSteamEditionActive.ts` (reactive Steam / Galaxy / DEV Game Mode; also `useDemoEditionActive` / `useSteamDemoActive`), `useIOSChromeViewportShell.ts` (CriOS: pin `GameContainer` shell to `visualViewport`), `useNewItemPulseTooltip.ts` (first-time `new-item-pulse` on tooltip triggers until hover/open; persisted in `hoveredTooltips`; `VillagePanel` indicators) |
@@ -101,10 +103,10 @@ or when a saved `gameStarted` flag exists â€” keeps the initial bundle smal
 Data-flow mental model:
 
 ```
-startupIntent.ts + startupCoordinator.ts
-  â†’ resolve one visit surface (StartScreen or Game)
-startupGameLoader.ts
-  â†’ optional prepared-store handoff; state.loadGame() hydrates once
+startupIntent.ts + startupUrlCleanup.ts + startupCoordinator.ts
+  â†’ parse intent, consume OAuth before URL cleanup, resolve StartScreen or Game
+startupGameLoader.ts + gameplayInitOrchestrator.ts
+  â†’ prepared-store handoff; state.loadGame() hydrates once; ordered post-load tasks
 UI (GameContainer, panels, dialogs)
   â†• useGameStore (Zustand)
 state.ts        â€” GameStore = persisted GameState + UI slice + store methods
@@ -113,7 +115,9 @@ loop.ts         â€” rAF ~4 FPS: production cycle, events, autosave, timers,
   â†•
 rules/          â€” declarative actions + events (data-driven, not a runtime VM)
 actions.ts      â€” dispatch action ID â†’ handler, deduct costs, run effects
-stateHelpers.ts â€” pure mutations + buildGameState() / UI_ONLY_PROPERTIES
+dialogRegistry.ts + persistedStateBoundary.ts
+  â€” dialog pause/reset SSOT + schema-driven save allowlist
+stateHelpers.ts â€” pure mutations + buildGameState() wrapper
 save.ts         â€” IndexedDB + Supabase cloud sync
 shared/schema.tsâ€” Zod GameState schema (source of truth for persisted shape)
 ```
@@ -122,14 +126,17 @@ shared/schema.tsâ€” Zod GameState schema (source of truth for persisted sha
   `StateManager` (batched derived-stat recompute), `isModalDialogOpen()` (sim freeze gate),
   `shouldBlockGameHotkeys()`, `detectRewards()`. Its `loadGame()` method is the single startup
   hydration path and reports whether persisted state was found.
-- **`startupIntent.ts` / `startupCoordinator.ts` / `startupGameLoader.ts`** â€” parse callback and
-  campaign intent once, resolve StartScreen vs Game outside React, and transfer any store prepared
-  during auth/Steam checks or Light Fire into `pages/game.tsx` without loading it again.
+- **`startupIntent.ts` / `startupUrlCleanup.ts` / `startupCoordinator.ts` / `startupGameLoader.ts` /
+  `gameplayInitOrchestrator.ts`** â€” parse callback and campaign intent once, consume OAuth before
+  URL cleanup, resolve StartScreen vs Game outside React, transfer any store prepared during
+  auth/Steam checks or Light Fire, and run ordered gameplay init from `pages/game.tsx`.
+- **`dialogRegistry.ts` / `persistedStateBoundary.ts`** â€” single dialog metadata source for blocking
+  pause, reset-on-load, and runtime-only keys; schema-derived allowlist for `buildGameState()`.
 - **`loop.ts`** â€” `TARGET_FPS = 4`. ~15s production cycle (`PRODUCTION_INTERVAL`), fixed tick
   (`TICK_INTERVAL` from `constants.ts`), pause gates (manual pause, idle, inactivity,
   `isModalDialogOpen`), autosave (15s guest / 60s signed-in cloud diff),
-  attack-wave timer, play-time accumulation. Started/stopped from `pages/game.tsx` via
-  `startGameLoop()` / `stopGameLoop()`.
+  attack-wave timer, play-time accumulation. Started from `gameplayInitOrchestrator.ts`; stopped on `pages/game.tsx` unmount via
+  `stopGameLoop()`.
 - **`rules/`** â€” `actionsRegistry.ts` (central `gameActions`), per-area action modules
   (`caveLogFallbacks.ts`, `caveExploreActions.ts`, `villageBuildActions.ts`, `forestSacrificeActions.ts`,
   `forestResearchActions.ts`, `bastionActions.ts`, â€¦), `index.ts` (visibility/affordability + `allEvents`), effects
@@ -152,7 +159,7 @@ shared/schema.tsâ€” Zod GameState schema (source of truth for persisted sha
 - **`versionCheck.ts`** â€” polls `/api/version` against compile-time `__BUILD_SHA__` (focus/visibility + 5m interval); on mismatch saves game and shows a sticky update toast in `GameContainer` with a live `M:SS` countdown, then force `hardReload` after 5 minutes (or via toast action / tab-return after grace). Session-stamped per server SHA so a failed/stale reload does not loop.
 - **`boost.ts`** â€” one-time `/boost` URL resource bonus for started saves; gated by persisted
   `boostApplied` (`shared/schema.ts`, migrated from legacy `boostMode`); applied on load in
-  `pages/game.tsx` via `canApplySaveBoost` / `applySaveBoost`.
+  `gameplayInitOrchestrator.ts` via `canApplySaveBoost` / `applySaveBoost`.
 - **`tabUnlockBlink.ts`** â€” one-time tab unlock blink (`story.seen` `tabUnlockBlinkSeen_*`);
 - **`achievementTabPulse.ts`** â€” achievements tab pulse until opened (`story.seen` `achievementTabPulseSeen_*`);
 - **`villagerCapUpgrades.ts`** â€” per-profession villager caps via Insight upgrades (group/building mapping,
@@ -183,9 +190,9 @@ shared/schema.tsâ€” Zod GameState schema (source of truth for persisted sha
 
 ## State persistence
 
-- **`stateHelpers.ts`** â€” `UI_ONLY_PROPERTIES` lists store keys excluded from saves (dialog
-  flags, `activeTab`, transient timers). `buildGameState(state)` strips UI keys + functions and
-  forces `isPaused: false` on save.
+- **`stateHelpers.ts` / `persistedStateBoundary.ts`** â€” `buildGameState(state)` builds saves from a
+  schema-derived allowlist plus documented store extensions (execution timers, timed visits, audio
+  prefs). Dialog/runtime keys come from `dialogRegistry.ts`. Forces `isPaused: false` on save.
 - **`save.ts`** â€” IndexedDB (`ADarkCaveDB`); guest saves encode via `saveCodec.ts`
   (XOR+Base64, `ADC2:` prefix). Signed-in cloud save (V1 edge `save-game`):
   **full-document replace by default** (`fullReplace: true` â†’ SQL `p_full_replace`,
@@ -196,7 +203,8 @@ shared/schema.tsâ€” Zod GameState schema (source of truth for persisted sha
   that merge on load.
   Load applies migrations (e.g. `migrateTraderShopUnlockOnLoad`).
 - **`auth.ts`** â€” Supabase auth (incl. anonymous guest-checkout via `ensureAnonymousSession`),
-  `saveGameToSupabase`/`loadGameFromSupabase`, referral metadata.
+  `saveGameToSupabase`/`loadGameFromSupabase`, referral metadata; live referral sync via `referralCloudRefresh.ts`.
+- **`referralCloudRefresh.ts`** - `applyReferralCloudRefreshPatch()` merges referral-owned cloud fields (lists, codes, one-time gold) into the live store without replacing gameplay.
 - **`shopPurchases.ts`** â€” Supabase `purchases` fetch/rehydrate, feast-activation merge, purchase ID helpers (used by `ShopDialog`, payment return).
 - **`shopPostPurchaseState.ts`** â€” After paid checkout: discount consumption + first-purchase Insight bonus (`shared/firstPurchaseInsightBonus.ts`).
 - **`shopOpenSource.ts`** — Trader shop open entry sources → `shop-open-{source}` button_clicks IDs (tab/footer/gratitude/url); `traderDialogOpens` remains for events.
@@ -205,9 +213,9 @@ shared/schema.tsâ€” Zod GameState schema (source of truth for persisted sha
 - **`socialTaskRewards.ts`** â€” `isSocialRewardFulfilled()` / `isSocialRewardClaimed()`: shared helpers for rewards-dialog tasks where action completion (`fulfilled`) and gold grant (`claimed`) are separate (legacy saves treat `claimed` as fulfilled).
 - **`socialTasksGold.ts`** â€” `computePersistedSocialTasksGold()`: re-applies one-time rewards-task gold on `restartGame()` when claim flags persist (sign-up welcome, email, social follows, Playlight discover, claimed referrals).
 
-> **Modal-pause convention:** blocking dialogs must be added to `isNonRewardBlockingModalOpen`
-> in `state.ts`, and UI-only dialog flags must be listed in `UI_ONLY_PROPERTIES`
-> (`stateHelpers.ts`). See `.cursor/rules/modal-dialog-pause.mdc`.
+> **Modal-pause convention:** add blocking dialogs to `GAME_DIALOG_REGISTRY` in
+> `dialogRegistry.ts` (drives pause, reset-on-load, and save exclusion). See
+> `.cursor/rules/modal-dialog-pause.mdc`.
 
 ---
 
@@ -425,11 +433,11 @@ Support: `server/vite.ts` (dev/prod hosting + SPA fallback with route allowlist/
 ## Conventions
 
 1. **Single game store** â€” all gameplay reads/writes go through `useGameStore`; UI state is mixed
-   in but stripped on save via `UI_ONLY_PROPERTIES`.
+   in but stripped on save via `persistedStateBoundary.ts` (`UI_ONLY_PROPERTIES` alias).
 2. **Declarative actions/events** â€” actions are objects (`show_when`, `cost`, `effects`,
    optional `executionTime`); events are records merged into `allEvents`.
 3. **Handler dispatch table** â€” `actions.ts` maps action IDs to `handle*` functions in rule modules.
-4. **Modal-pause SSOT** â€” `isNonRewardBlockingModalOpen` / `isModalDialogOpen` in `state.ts`.
+4. **Modal-pause SSOT** â€” `dialogRegistry.ts` â†’ `isModalDialogOpen` in `state.ts`.
 5. **Log entries carry i18n keys** â€” `{ logKey, logVars }` resolved by `i18n/logDisplay.ts`.
 6. **Shared Zod schema** â€” `shared/schema.ts` is authoritative; defaults flow into `createInitialState()`.
 7. **Logging** â€” use `client/src/lib/logger.ts`, never `console.*`.

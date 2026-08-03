@@ -597,6 +597,7 @@ export async function saveGame(
       }
 
       // Heal store/auth desync so autosave interval + UI match the session.
+      // We already resolved a confirmed user above; write the flag directly.
       if (!currentState.isUserSignedIn) {
         useGameStore.setState({ isUserSignedIn: true });
       }
@@ -775,176 +776,143 @@ export async function saveGame(
 }
 
 async function loadGameStateOrThrow(): Promise<GameState | null> {
-    // Referral metadata sync is web only (Supabase-backed).
-    if (!isLocalOnlyEdition()) {
-      await flushPendingReferralToUserMetadata();
-      await processReferralAfterConfirmation();
+  // Referral metadata sync is web only (Supabase-backed).
+  if (!isLocalOnlyEdition()) {
+    await flushPendingReferralToUserMetadata();
+    await processReferralAfterConfirmation();
+  }
+
+  const db = await getGameSaveDatabase();
+  const localSave = await getLocalSave(db);
+
+  if (isDev) {
+    logger.log(`[LOAD] 💾 Local save retrieved:`, {
+      hasLocalSave: !!localSave,
+      timestamp: localSave?.timestamp
+        ? new Date(localSave.timestamp).toISOString()
+        : "none",
+      playTime: localSave?.playTime,
+      playTimeMinutes: localSave?.playTime
+        ? Math.round(localSave.playTime / 1000 / 60)
+        : 0,
+      hasCooldowns: !!localSave?.gameState?.cooldowns,
+      cooldowns: localSave?.gameState?.cooldowns,
+      hasCooldownDurations: !!localSave?.gameState?.cooldownDurations,
+      cooldownDurations: localSave?.gameState?.cooldownDurations,
+      cooldownDetails: Object.keys(localSave?.gameState?.cooldowns || {}).map(
+        (key) => ({
+          action: key,
+          remaining: localSave?.gameState?.cooldowns[key],
+          duration: localSave?.gameState?.cooldownDurations?.[key],
+        }),
+      ),
+    });
+  }
+
+  // Check if user is authenticated (never on Steam — fully offline).
+  let user = null;
+  if (!isLocalOnlyEdition()) {
+    try {
+      user = await getCurrentUserForLoad();
+    } catch (authError) {
+      if (!localSave) throw authError;
+      logger.warn(
+        "[LOAD] Auth could not be resolved; using the local save fallback",
+        authError,
+      );
     }
+  }
 
-    const db = await getGameSaveDatabase();
-    const localSave = await getLocalSave(db);
+  if (user) {
+    // User is authenticated - compare local and cloud saves
+    try {
+      const cloudSave = await loadGameFromSupabase();
 
-    if (isDev) {
-      logger.log(`[LOAD] 💾 Local save retrieved:`, {
-        hasLocalSave: !!localSave,
-        timestamp: localSave?.timestamp
-          ? new Date(localSave.timestamp).toISOString()
-          : "none",
-        playTime: localSave?.playTime,
-        playTimeMinutes: localSave?.playTime
-          ? Math.round(localSave.playTime / 1000 / 60)
-          : 0,
-        hasCooldowns: !!localSave?.gameState?.cooldowns,
-        cooldowns: localSave?.gameState?.cooldowns,
-        hasCooldownDurations: !!localSave?.gameState?.cooldownDurations,
-        cooldownDurations: localSave?.gameState?.cooldownDurations,
-        cooldownDetails: Object.keys(localSave?.gameState?.cooldowns || {}).map(
-          (key) => ({
-            action: key,
-            remaining: localSave?.gameState?.cooldowns[key],
-            duration: localSave?.gameState?.cooldownDurations?.[key],
-          }),
-        ),
-      });
-    }
+      let loadedState: GameState; // Declare loadedState here
 
-    // Check if user is authenticated (never on Steam — fully offline).
-    let user = null;
-    if (!isLocalOnlyEdition()) {
-      try {
-        user = await getCurrentUserForLoad();
-      } catch (authError) {
-        if (!localSave) throw authError;
-        logger.warn(
-          "[LOAD] Auth could not be resolved; using the local save fallback",
-          authError,
-        );
-      }
-    }
+      if (cloudSave && localSave) {
+        const preferred = pickPreferredSave(localSave, cloudSave);
+        const cloudPlayTime = Math.floor(cloudSave.playTime || 0);
+        const localPlayTime = Math.floor(localSave.playTime || 0);
 
-    if (user) {
-      // User is authenticated - compare local and cloud saves
-      try {
-        const cloudSave = await loadGameFromSupabase();
+        logger.log("[LOAD] 🔍 Comparing local and cloud saves:", {
+          preferred,
+          localGameId: localSave.gameState?.gameId,
+          cloudGameId: cloudSave.gameState?.gameId,
+          localStartTime: localSave.gameState?.startTime,
+          cloudStartTime: cloudSave.gameState?.startTime,
+          cloudPlayTime,
+          localPlayTime,
+          cloudTimestamp: cloudSave.timestamp,
+          localTimestamp: localSave.timestamp,
+        });
 
-        let loadedState: GameState; // Declare loadedState here
+        if (preferred === "local") {
+          logger.log("[LOAD] 💾 Preferring local save and syncing to cloud");
+          loadedState = mergeCloudReferralsIntoState(
+            localSave.gameState,
+            cloudSave.gameState,
+          );
 
-        if (cloudSave && localSave) {
-          const preferred = pickPreferredSave(localSave, cloudSave);
-          const cloudPlayTime = Math.floor(cloudSave.playTime || 0);
-          const localPlayTime = Math.floor(localSave.playTime || 0);
+          const stateWithDefaults = {
+            ...loadedState,
+            cooldownDurations: loadedState.cooldownDurations || {},
+          };
+          const processedState = await processUnclaimedReferrals(stateWithDefaults);
+          let reconciled = mergeSavePlayTimeIntoState(localSave, processedState);
 
-          logger.log("[LOAD] 🔍 Comparing local and cloud saves:", {
-            preferred,
-            localGameId: localSave.gameState?.gameId,
-            cloudGameId: cloudSave.gameState?.gameId,
-            localStartTime: localSave.gameState?.startTime,
-            cloudStartTime: cloudSave.gameState?.startTime,
-            cloudPlayTime,
-            localPlayTime,
-            cloudTimestamp: cloudSave.timestamp,
-            localTimestamp: localSave.timestamp,
-          });
-
-          if (preferred === "local") {
-            logger.log("[LOAD] 💾 Preferring local save and syncing to cloud");
-            loadedState = mergeCloudReferralsIntoState(
-              localSave.gameState,
-              cloudSave.gameState,
-            );
-
-            const stateWithDefaults = {
-              ...loadedState,
-              cooldownDurations: loadedState.cooldownDurations || {},
+          // Only keep/propagate overwrite when the preferred local save already
+          // carries an explicit restart flag. Never inject it just because gameIds
+          // differ — that let a fresh other-screen start wipe cloud on login.
+          const localAllowsOverwrite = shouldAllowPlaytimeOverwrite(
+            localSave.gameState,
+          );
+          if (
+            localAllowsOverwrite &&
+            needsPlaytimeOverwriteForSync(localSave, cloudSave)
+          ) {
+            reconciled = {
+              ...reconciled,
+              allowPlayTimeOverwrite: true,
             };
-            const processedState = await processUnclaimedReferrals(stateWithDefaults);
-            let reconciled = mergeSavePlayTimeIntoState(localSave, processedState);
-
-            // Only keep/propagate overwrite when the preferred local save already
-            // carries an explicit restart flag. Never inject it just because gameIds
-            // differ — that let a fresh other-screen start wipe cloud on login.
-            const localAllowsOverwrite = shouldAllowPlaytimeOverwrite(
-              localSave.gameState,
-            );
-            if (
-              localAllowsOverwrite &&
-              needsPlaytimeOverwriteForSync(localSave, cloudSave)
-            ) {
-              reconciled = {
-                ...reconciled,
-                allowPlayTimeOverwrite: true,
-              };
-            }
-
-            // Sync local progress to cloud
-            try {
-              await db.delete("lastCloudState", LAST_CLOUD_STATE_KEY);
-              const syncResult = await saveGame(reconciled, false);
-              const cleared = {
-                ...reconciled,
-                allowPlayTimeOverwrite: false,
-                isNewGame: false,
-              };
-              if (syncResult.cloudSaved || syncResult.cloudSkipped) {
-                await putLastCloudState(db, cleared);
-              }
-              if (syncResult.cloudSaved) {
-                logger.log("[LOAD] ✅ Local progress synced to cloud");
-              } else if (!syncResult.cloudSkipped) {
-                logger.warn(
-                  "[LOAD] ⚠️ Local preferred but cloud sync failed — overwrite may retry on next save",
-                );
-              }
-              // If cloud accepted (or skipped), do not hand overwrite flags back into the store.
-              return syncResult.cloudSaved || syncResult.cloudSkipped
-                ? cleared
-                : reconciled;
-            } catch (syncError: any) {
-              if (syncError.message?.includes("OCC violation")) {
-                logger.log("[LOAD] 📊 Cloud already has this save state - skipping sync");
-                await putLastCloudState(db, reconciled);
-              } else {
-                throw syncError;
-              }
-            }
-
-            return reconciled;
-          } else {
-            // Cloud preferred (same-run higher playTime, or newer gameId/startTime)
-            logger.log("[LOAD] ☁️ Preferring cloud save");
-            loadedState = cloudSave.gameState; // Assign to loadedState
-
-            const { formatSaveTimestamp } = await import("@/lib/utils");
-
-            const stateWithDefaults = {
-              ...loadedState,
-              cooldownDurations: loadedState.cooldownDurations || {},
-              // Format lastSaved if it's a timestamp
-              lastSaved: loadedState.lastSaved && typeof loadedState.lastSaved === 'number'
-                ? formatSaveTimestamp()
-                : loadedState.lastSaved,
-            };
-
-            const processedState = await processUnclaimedReferrals(
-              stateWithDefaults,
-            );
-
-            const stateToReturn = { ...processedState, playTime: cloudSave.playTime };
-
-            // Save to IndexedDB to keep it in sync
-            await putLocalSave(db, {
-              gameState: processedState,
-              timestamp: Date.now(),
-              playTime: cloudSave.playTime || 0,
-            });
-            await putLastCloudState(db, processedState);
-
-            logger.log("[LOAD] ✅ Cloud save loaded and synced locally");
-            return stateToReturn;
           }
-        } else if (cloudSave) {
-          // Only cloud save exists - use it
-          logger.log("[LOAD] ☁️ Using cloud save (no local save)");
+
+          // Sync local progress to cloud
+          try {
+            await db.delete("lastCloudState", LAST_CLOUD_STATE_KEY);
+            const syncResult = await saveGame(reconciled, false);
+            const cleared = {
+              ...reconciled,
+              allowPlayTimeOverwrite: false,
+              isNewGame: false,
+            };
+            if (syncResult.cloudSaved || syncResult.cloudSkipped) {
+              await putLastCloudState(db, cleared);
+            }
+            if (syncResult.cloudSaved) {
+              logger.log("[LOAD] ✅ Local progress synced to cloud");
+            } else if (!syncResult.cloudSkipped) {
+              logger.warn(
+                "[LOAD] ⚠️ Local preferred but cloud sync failed — overwrite may retry on next save",
+              );
+            }
+            // If cloud accepted (or skipped), do not hand overwrite flags back into the store.
+            return syncResult.cloudSaved || syncResult.cloudSkipped
+              ? cleared
+              : reconciled;
+          } catch (syncError: any) {
+            if (syncError.message?.includes("OCC violation")) {
+              logger.log("[LOAD] 📊 Cloud already has this save state - skipping sync");
+              await putLastCloudState(db, reconciled);
+            } else {
+              throw syncError;
+            }
+          }
+
+          return reconciled;
+        } else {
+          // Cloud preferred (same-run higher playTime, or newer gameId/startTime)
+          logger.log("[LOAD] ☁️ Preferring cloud save");
           loadedState = cloudSave.gameState; // Assign to loadedState
 
           const { formatSaveTimestamp } = await import("@/lib/utils");
@@ -964,6 +932,7 @@ async function loadGameStateOrThrow(): Promise<GameState | null> {
 
           const stateToReturn = { ...processedState, playTime: cloudSave.playTime };
 
+          // Save to IndexedDB to keep it in sync
           await putLocalSave(db, {
             gameState: processedState,
             timestamp: Date.now(),
@@ -973,72 +942,104 @@ async function loadGameStateOrThrow(): Promise<GameState | null> {
 
           logger.log("[LOAD] ✅ Cloud save loaded and synced locally");
           return stateToReturn;
-        } else if (localSave) {
-          // No cloud save but has local save - sync local to cloud
-          logger.log("[LOAD] 📤 No cloud save found, syncing local to cloud");
-          loadedState = localSave.gameState; // Assign to loadedState
-
-          const stateWithDefaults = {
-            ...loadedState,
-            cooldownDurations: loadedState.cooldownDurations || {},
-          };
-          const processedState = await processUnclaimedReferrals(stateWithDefaults);
-          const reconciled = mergeSavePlayTimeIntoState(localSave, processedState);
-
-          try {
-            // Force sync by clearing lastCloudState, then saveGame will handle it
-            await db.delete("lastCloudState", LAST_CLOUD_STATE_KEY);
-            // Do NOT use allowPlaytimeOverwrite here - this is not a new game
-            await saveGame(reconciled, false);
-            await putLastCloudState(db, reconciled);
-          } catch (syncError: any) {
-            // If OCC violates due to equal playTimes, that's fine - cloud already has this state
-            if (syncError.message?.includes("OCC violation")) {
-              if (isDev)
-                logger.log("[LOAD] 📊 Cloud already has this save state - skipping sync");
-              await putLastCloudState(db, reconciled);
-            } else {
-              throw syncError;
-            }
-          }
-
-          return reconciled;
         }
-      } catch (cloudError) {
-        logger.error("Failed to load from cloud:", cloudError);
-        // Fall back to local save if cloud fails
-        if (localSave) {
-          logger.warn("[LOAD] ⚠️ Using local save as fallback");
-          const processedState = await processUnclaimedReferrals(
-            localSave.gameState,
-          );
-          return mergeSavePlayTimeIntoState(localSave, processedState);
-        }
-        throw cloudError;
-      }
-    } else {
-      // Not authenticated, use local save only
-      if (localSave) {
+      } else if (cloudSave) {
+        // Only cloud save exists - use it
+        logger.log("[LOAD] ☁️ Using cloud save (no local save)");
+        loadedState = cloudSave.gameState; // Assign to loadedState
+
+        const { formatSaveTimestamp } = await import("@/lib/utils");
+
         const stateWithDefaults = {
-          ...localSave.gameState,
-          cooldownDurations: localSave.gameState.cooldownDurations || {},
+          ...loadedState,
+          cooldownDurations: loadedState.cooldownDurations || {},
+          // Format lastSaved if it's a timestamp
+          lastSaved: loadedState.lastSaved && typeof loadedState.lastSaved === 'number'
+            ? formatSaveTimestamp()
+            : loadedState.lastSaved,
         };
-        // Steam build has no referral system; skip the Supabase-backed processing.
-        const processedState = isLocalOnlyEdition()
-          ? stateWithDefaults
-          : await processUnclaimedReferrals(stateWithDefaults);
-        if (isDev) {
-          logger.log(`[LOAD] Returning local state (no auth):`, {
-            hasCooldownDurations: !!processedState.cooldownDurations,
-            cooldownDurations: processedState.cooldownDurations,
-          });
+
+        const processedState = await processUnclaimedReferrals(
+          stateWithDefaults,
+        );
+
+        const stateToReturn = { ...processedState, playTime: cloudSave.playTime };
+
+        await putLocalSave(db, {
+          gameState: processedState,
+          timestamp: Date.now(),
+          playTime: cloudSave.playTime || 0,
+        });
+        await putLastCloudState(db, processedState);
+
+        logger.log("[LOAD] ✅ Cloud save loaded and synced locally");
+        return stateToReturn;
+      } else if (localSave) {
+        // No cloud save but has local save - sync local to cloud
+        logger.log("[LOAD] 📤 No cloud save found, syncing local to cloud");
+        loadedState = localSave.gameState; // Assign to loadedState
+
+        const stateWithDefaults = {
+          ...loadedState,
+          cooldownDurations: loadedState.cooldownDurations || {},
+        };
+        const processedState = await processUnclaimedReferrals(stateWithDefaults);
+        const reconciled = mergeSavePlayTimeIntoState(localSave, processedState);
+
+        try {
+          // Force sync by clearing lastCloudState, then saveGame will handle it
+          await db.delete("lastCloudState", LAST_CLOUD_STATE_KEY);
+          // Do NOT use allowPlaytimeOverwrite here - this is not a new game
+          await saveGame(reconciled, false);
+          await putLastCloudState(db, reconciled);
+        } catch (syncError: any) {
+          // If OCC violates due to equal playTimes, that's fine - cloud already has this state
+          if (syncError.message?.includes("OCC violation")) {
+            if (isDev)
+              logger.log("[LOAD] 📊 Cloud already has this save state - skipping sync");
+            await putLastCloudState(db, reconciled);
+          } else {
+            throw syncError;
+          }
         }
+
+        return reconciled;
+      }
+    } catch (cloudError) {
+      logger.error("Failed to load from cloud:", cloudError);
+      // Fall back to local save if cloud fails
+      if (localSave) {
+        logger.warn("[LOAD] ⚠️ Using local save as fallback");
+        const processedState = await processUnclaimedReferrals(
+          localSave.gameState,
+        );
         return mergeSavePlayTimeIntoState(localSave, processedState);
       }
+      throw cloudError;
     }
+  } else {
+    // Not authenticated, use local save only
+    if (localSave) {
+      const stateWithDefaults = {
+        ...localSave.gameState,
+        cooldownDurations: localSave.gameState.cooldownDurations || {},
+      };
+      // Steam build has no referral system; skip the Supabase-backed processing.
+      const processedState = isLocalOnlyEdition()
+        ? stateWithDefaults
+        : await processUnclaimedReferrals(stateWithDefaults);
+      if (isDev) {
+        logger.log(`[LOAD] Returning local state (no auth):`, {
+          hasCooldownDurations: !!processedState.cooldownDurations,
+          cooldownDurations: processedState.cooldownDurations,
+        });
+      }
+      return mergeSavePlayTimeIntoState(localSave, processedState);
+    }
+  }
 
-    logger.log(`[LOAD] No save found, returning null`);
-    return null;
+  logger.log(`[LOAD] No save found, returning null`);
+  return null;
 }
 
 export async function loadGameResult(): Promise<LoadGameResult> {

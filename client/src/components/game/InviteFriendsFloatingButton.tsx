@@ -6,7 +6,6 @@ import { TooltipWrapper } from "@/components/game/TooltipWrapper";
 import { useToast } from "@/hooks/use-toast";
 import { logger } from "@/lib/logger";
 import { copyInviteLinkToClipboard } from "@/game/copyInviteLink";
-import { getCurrentUser } from "@/game/auth";
 import {
   SOCIAL_PROMPT_REFERRAL_CAP,
   REFERRAL_REWARD_GOLD,
@@ -28,25 +27,21 @@ export default function InviteFriendsFloatingButton() {
   const signupWelcomeGoldClaimed = useGameStore(
     (s) => s.signupWelcomeGoldClaimed === true,
   );
-  const setIsUserSignedIn = useGameStore((s) => s.setIsUserSignedIn);
   const [sessionSignedIn, setSessionSignedIn] = useState<boolean | null>(null);
   const [dismissed, setDismissed] = useState(false);
 
   useEffect(() => {
     let cancelled = false;
     void (async () => {
-      const user = await getCurrentUser();
+      const { syncStoreAuthFromSession } = await import("@/game/auth");
+      const signedIn = await syncStoreAuthFromSession();
       if (cancelled) return;
-      const signedIn = !!user;
       setSessionSignedIn(signedIn);
-      if (signedIn && !isUserSignedIn) {
-        setIsUserSignedIn(true);
-      }
     })();
     return () => {
       cancelled = true;
     };
-  }, [isUserSignedIn, setIsUserSignedIn]);
+  }, [isUserSignedIn]);
 
   const signedIn = isUserSignedIn === true || sessionSignedIn === true;
 

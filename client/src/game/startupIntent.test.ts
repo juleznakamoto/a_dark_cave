@@ -12,9 +12,24 @@ describe("parseStartupIntent", () => {
       }),
     ).toMatchObject({
       accessToken: "token-1",
+      oauthCallback: true,
       paymentReturn: true,
       emailConfirmed: true,
       forceGame: true,
+    });
+  });
+
+  it("recognizes OAuth without forcing Game", () => {
+    expect(
+      parseStartupIntent({
+        pathname: "/",
+        search: "",
+        hash: "#access_token=token-1",
+      }),
+    ).toMatchObject({
+      accessToken: "token-1",
+      oauthCallback: true,
+      forceGame: false,
     });
   });
 
@@ -38,11 +53,13 @@ describe("parseStartupIntent", () => {
     expect(
       parseStartupIntent({ pathname: "/", search: "", hash: "" }),
     ).toMatchObject({
+      oauthCallback: false,
       paymentReturn: false,
       emailConfirmed: false,
       boost: false,
       forceGame: false,
       openShop: false,
+      hardReloadCacheBust: false,
     });
   });
 });

@@ -1,6 +1,7 @@
 // Removed duplicate keys and ensured gameId is correctly handled.
 import { create } from "zustand";
 import { GameState, gameStateSchema, Referral } from "@shared/schema";
+import { isBlockingDialogOpenFromRegistry } from "./dialogRegistry";
 import {
   isFullGameUnlockedEdition,
   isLocalOnlyEdition,
@@ -1578,32 +1579,10 @@ export class StateManager {
  * `eventDialog.isOpen` already freezes sim for every normal timed/event choice shown in `EventDialog`
  * (including story beats such as `beyondGatePassagesClear`); only add a new OR-term here when introducing
  * a separate modal slice (new `*DialogOpen` flag), not for each `GameEvent` id.
+ * Add entries in dialogRegistry.ts instead of extending this OR-chain.
  */
 function isBlockingDialogOpen(state: GameStore): boolean {
-  return (
-    (state.eventDialog.isOpen && state.eventDialog.currentEvent != null) ||
-    state.combatDialog.isOpen ||
-    state.authDialogOpen ||
-    state.shopDialogOpen ||
-    state.gamblerDiceDialogOpen ||
-    state.blessingOfferDialogOpen ||
-    state.leaderboardDialogOpen ||
-    state.shareDialogOpen ||
-    state.galaxyTimeUpDialogOpen ||
-    state.idleModeDialog.isOpen ||
-    state.restartGameDialogOpen ||
-    state.deleteAccountDialogOpen ||
-    state.settingsDialogOpen ||
-    state.inactivityDialogOpen ||
-    state.investmentResultDialog.isOpen ||
-    state.madnessDialog.isOpen ||
-    state.insightPotionDialog.isOpen ||
-    state.villageEffectDialog.isOpen ||
-    state.socialPromptDialogOpen ||
-    state.playlightWelcomeDialogOpen ||
-    state.feedbackDialogOpen ||
-    state.investDialogOpen
-  );
+  return isBlockingDialogOpenFromRegistry(state as unknown as Record<string, unknown>);
 }
 
 /**
@@ -3336,9 +3315,8 @@ export const useGameStore = create<GameStore>((set, get) => ({
     // Re-sync from live session so a persisted false cannot stick after load.
     if (!isLocalOnlyEdition()) {
       try {
-        const { getCurrentUser } = await import("@/game/auth");
-        const user = await getCurrentUser();
-        set({ isUserSignedIn: !!user });
+        const { syncStoreAuthFromSession } = await import("@/game/auth");
+        await syncStoreAuthFromSession();
       } catch {
         /* keep prior store value */
       }

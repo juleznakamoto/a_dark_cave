@@ -47,8 +47,10 @@ type PresetSlot = NonNullable<GameState["villagerJobPresets"][number]>;
 type PresetAssignments = PresetSlot["assignments"];
 type VillagerJobKey = keyof GameState["villagers"];
 
-/** Stable list of job ids (everything in `villagers` except `free`). */
-const JOB_IDS = Object.keys(populationJobs) as VillagerJobKey[];
+/** Stable list of job ids (everything in `villagers` except `free`). Lazy to avoid import cycles. */
+function getJobIds(): VillagerJobKey[] {
+  return Object.keys(populationJobs) as VillagerJobKey[];
+}
 
 function getBuiltPresetTierCount(
   state: Pick<GameState, "buildings">,
@@ -316,7 +318,7 @@ export function snapshotAssignments(
   villagers: GameState["villagers"],
 ): PresetAssignments {
   const assignments: PresetAssignments = {};
-  for (const jobId of JOB_IDS) {
+  for (const jobId of getJobIds()) {
     const count = villagers[jobId] ?? 0;
     if (count > 0) {
       assignments[jobId] = count;
@@ -369,7 +371,7 @@ export function applyPresetAssignments(
 
   const desired: Partial<Record<VillagerJobKey, number>> = {};
   let presetSum = 0;
-  for (const jobId of JOB_IDS) {
+  for (const jobId of getJobIds()) {
     const raw = assignments[jobId];
     const value = typeof raw === "number" ? Math.max(0, Math.floor(raw)) : 0;
     if (value > 0) {
@@ -382,19 +384,19 @@ export function applyPresetAssignments(
     VillagerJobKey,
     number
   >;
-  for (const jobId of JOB_IDS) {
+  for (const jobId of getJobIds()) {
     next[jobId] = 0;
   }
 
   if (presetSum > 0 && workforce > 0) {
     if (workforce >= presetSum) {
-      for (const jobId of JOB_IDS) {
+      for (const jobId of getJobIds()) {
         next[jobId] = clampToCap(state, jobId, desired[jobId] ?? 0);
       }
     } else {
       const fractional: { jobId: VillagerJobKey; frac: number }[] = [];
       let assignedSoFar = 0;
-      for (const jobId of JOB_IDS) {
+      for (const jobId of getJobIds()) {
         const target = ((desired[jobId] ?? 0) * workforce) / presetSum;
         const floored = Math.floor(target);
         next[jobId] = floored;
@@ -409,7 +411,7 @@ export function applyPresetAssignments(
         next[jobId] += 1;
         leftover -= 1;
       }
-      for (const jobId of JOB_IDS) {
+      for (const jobId of getJobIds()) {
         next[jobId] = clampToCap(state, jobId, next[jobId]);
       }
     }
@@ -417,7 +419,7 @@ export function applyPresetAssignments(
 
   let assignedTotal = 0;
   const villagers: GameState["villagers"] = { ...state.villagers };
-  for (const jobId of JOB_IDS) {
+  for (const jobId of getJobIds()) {
     villagers[jobId] = next[jobId];
     assignedTotal += next[jobId];
   }

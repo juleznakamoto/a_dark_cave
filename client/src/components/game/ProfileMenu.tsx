@@ -172,9 +172,10 @@ function useProfileMenuState() {
   }, [gameAuthDialogOpen]);
 
   const checkAuth = async () => {
+    const { syncStoreAuthFromSession } = await import("@/game/auth");
     const user = await getCurrentUser();
     setCurrentUser(user);
-    setIsUserSignedIn(!!user);
+    await syncStoreAuthFromSession();
 
     // Reset manual save cooldown when user logs in
     if (user) {

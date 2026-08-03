@@ -219,7 +219,7 @@ function GameModeSelector({
  * language, email preferences, and account deletion. Blocking: while open, the
  * simulation is frozen and no new event/combat dialogs spawn over it — its
  * `settingsDialogOpen` store flag is part of `isNonRewardBlockingModalOpen` in
- * `state.ts` (and listed in `UI_ONLY_PROPERTIES` so it is never persisted).
+ * `state.ts` (and registered in `dialogRegistry.ts` so it is never persisted).
  */
 export default function SettingsDialog({
   isOpen,

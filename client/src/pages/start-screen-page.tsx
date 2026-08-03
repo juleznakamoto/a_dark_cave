@@ -5,12 +5,15 @@ import StartScreen, {
 import AppErrorBoundary from "@/components/AppErrorBoundary";
 import PageLoadSpinner from "@/components/ui/page-load-spinner";
 import PageErrorScreen from "@/components/ui/page-error-screen";
-import { HARD_RELOAD_CACHE_BUST_PARAM } from "@/lib/hardReload";
 import { logger } from "@/lib/logger";
 import {
   resolveStartupVisit,
   type StartupResolution,
 } from "@/game/startupCoordinator";
+import {
+  applyStartupUrlCleanup,
+  consumeStartupAuthCallback,
+} from "@/game/startupUrlCleanup";
 
 // Lazy load Game component - only loaded when needed
 const Game = lazy(() => import("@/pages/game"));
@@ -45,16 +48,11 @@ export default function StartScreenPage() {
   // Check if game has already started (from saved state or /boost path)
   useEffect(() => {
     const checkGameState = async () => {
-      const searchParams = new URLSearchParams(window.location.search);
-      if (searchParams.has(HARD_RELOAD_CACHE_BUST_PARAM)) {
-        searchParams.delete(HARD_RELOAD_CACHE_BUST_PARAM);
-        const cleanUrl =
-          window.location.pathname +
-          (searchParams.toString() ? `?${searchParams.toString()}` : "") +
-          window.location.hash;
-        window.history.replaceState({}, document.title, cleanUrl);
-      }
       try {
+        // Consume OAuth/PKCE before stripping auth params or routing.
+        await consumeStartupAuthCallback(window.location);
+        applyStartupUrlCleanup(window.location, ["hard-reload-bust"]);
+
         const resolution = await resolveStartupVisit(window.location);
         if (resolution.surface === "game") {
           setShouldLoadGame(true);

@@ -35,7 +35,6 @@ export async function prepareGameFromStartScreen(
   preferences: StartScreenPreferences,
 ) {
   await hydrateStoreOnce();
-  useGameStore.setState(preferences);
   return {
     useGameStore,
   };

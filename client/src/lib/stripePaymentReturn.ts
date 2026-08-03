@@ -13,6 +13,7 @@ import { INSIGHT_GLYPH } from "@/game/villagerCapUpgrades";
 import { formatNumber } from "@/lib/utils";
 import { logger } from "@/lib/logger";
 import i18n from "@/i18n";
+import { stripStripeReturnParamsFromUrl } from "@/game/startupUrlCleanup";
 
 /**
  * Return URL for Stripe `confirmPayment` (required for PayPal and other redirect methods).
@@ -24,22 +25,6 @@ export function getStripeReturnUrlForConfirm(): string {
   url.searchParams.delete("payment_intent_client_secret");
   url.searchParams.delete("redirect_status");
   return url.toString();
-}
-
-function stripStripeReturnParamsFromUrl(): void {
-  const url = new URL(window.location.href);
-  if (
-    !url.searchParams.get("redirect_status") &&
-    !url.searchParams.get("payment_intent")
-  ) {
-    return;
-  }
-  url.searchParams.delete("payment_intent");
-  url.searchParams.delete("payment_intent_client_secret");
-  url.searchParams.delete("redirect_status");
-  const qs = url.searchParams.toString();
-  const next = url.pathname + (qs ? `?${qs}` : "") + url.hash;
-  window.history.replaceState({}, document.title, next);
 }
 
 /**

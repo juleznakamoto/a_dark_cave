@@ -30,7 +30,9 @@ import BastionPanel from "./panels/BastionPanel";
 import AchievementsPanel from "./panels/AchievementsPanel";
 import TimedEventPanel from "./panels/TimedEventPanel";
 import LogPanel from "./panels/LogPanel";
-import StartScreen from "./StartScreen";
+import StartScreen, {
+  type StartScreenPreferences,
+} from "./StartScreen";
 import {
   useGameStore,
   isModalDialogOpen,
@@ -78,8 +80,11 @@ import {
 import { TraderTabButton } from "@/components/game/TraderTabButton";
 import {
   useDemoEditionActive,
+  useSteamDesktopEditionActive,
   useSteamEditionActive,
 } from "@/hooks/useSteamEditionActive";
+import { isDemoEdition } from "@/lib/edition";
+import { isDemoLimitReachedFromState } from "@/game/demoLimit";
 import DemoTimeUpDialog from "./DemoTimeUpDialog";
 import i18n from "@/i18n";
 import { useTranslation } from "react-i18next";
@@ -97,6 +102,7 @@ const WebOnlyDialogs = steamBuild
 export default function GameContainer() {
   const { t } = useTranslation();
   const steamEditionActive = useSteamEditionActive();
+  const steamDesktopEditionActive = useSteamDesktopEditionActive();
   const demoEditionActive = useDemoEditionActive();
   const {
     activeTab,
@@ -113,7 +119,32 @@ export default function GameContainer() {
     setCombatDialog,
     isPaused,
     inactivityDialogOpen,
+    cruelMode,
+    musicMuted,
+    sfxMuted,
+    musicVolume,
+    sfxVolume,
   } = useGameStore();
+
+  const handleStartScreenLightFire = useCallback(
+    async (preferences: StartScreenPreferences) => {
+      if (isDemoEdition()) {
+        const state = useGameStore.getState();
+        if (isDemoLimitReachedFromState(state)) {
+          useGameStore.setState({ galaxyTimeUpDialogOpen: true });
+          return;
+        }
+      }
+
+      useGameStore.setState(preferences);
+      // Sign-out stops the loop; restart it before lighting the fire in-place.
+      const { startGameLoop } = await import("@/game/loop");
+      startGameLoop();
+      useGameStore.getState().trackButtonClick("light-fire");
+      useGameStore.getState().executeAction("lightFire");
+    },
+    [],
+  );
 
   // State selectors for dialogs - must be at top before any conditional returns
   const shopDialogOpen = useGameStore((state) => state.shopDialogOpen);
@@ -1056,9 +1087,25 @@ export default function GameContainer() {
   const panelResize = usePanelResize();
   const iosChromeViewportStyle = useIOSChromeViewportShell();
 
-  // Show start screen if game hasn't started yet
+  // Show start screen if game hasn't started yet (e.g. after sign-out reset).
   if (!flags.gameStarted) {
-    return <StartScreen />;
+    return (
+      <>
+        <StartScreen
+          initialPreferences={{
+            cruelMode,
+            musicMuted,
+            sfxMuted,
+            musicVolume,
+            sfxVolume,
+          }}
+          steamEditionActive={steamEditionActive}
+          steamDesktopEditionActive={steamDesktopEditionActive}
+          onLightFire={handleStartScreenLightFire}
+        />
+        {demoEditionActive && <DemoTimeUpDialog />}
+      </>
+    );
   }
 
   // Check if blood moon event is active

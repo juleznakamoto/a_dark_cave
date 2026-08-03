@@ -5,6 +5,7 @@ import {
   purchaseIdToItemId,
   purchaseIdsFromRows,
   rehydratePurchasesFromSupabase,
+  rehydratePurchasesOnStartup,
 } from './shopPurchases';
 
 vi.mock('@/game/auth', () => ({
@@ -109,6 +110,46 @@ describe('shopPurchases', () => {
 
       const ids = await rehydratePurchasesFromSupabase();
       expect(ids).toEqual([]);
+    });
+  });
+
+  describe('rehydratePurchasesOnStartup', () => {
+    it('skips when payment return owns the refresh', async () => {
+      const ids = await rehydratePurchasesOnStartup({
+        paymentReturn: true,
+        skipIfPaymentReturn: true,
+      });
+      expect(ids).toEqual([]);
+    });
+
+    it('dedupes concurrent startup rehydrate calls', async () => {
+      const { getSessionUser } = await import('@/game/auth');
+      vi.mocked(getSessionUser).mockResolvedValue({
+        id: 'anon-1',
+        email: '',
+      });
+
+      let resolveEq: (value: unknown) => void = () => { };
+      const eqPromise = new Promise((resolve) => {
+        resolveEq = resolve;
+      });
+      const from = vi.fn(() => ({
+        select: vi.fn(() => ({
+          eq: vi.fn(() => eqPromise),
+        })),
+      }));
+      const { getSupabaseClient } = await import('@/lib/supabase');
+      vi.mocked(getSupabaseClient).mockResolvedValue({ from } as never);
+
+      const first = rehydratePurchasesOnStartup({ paymentReturn: false });
+      const second = rehydratePurchasesOnStartup({ paymentReturn: false });
+      resolveEq({ data: [{ id: 1, item_id: 'great_feast_1' }], error: null });
+
+      await expect(Promise.all([first, second])).resolves.toEqual([
+        ['purchase-great_feast_1-1'],
+        ['purchase-great_feast_1-1'],
+      ]);
+      expect(from).toHaveBeenCalledOnce();
     });
   });
 });

@@ -19,6 +19,11 @@ import { GAME_CONSTANTS } from "./constants";
 import { getGameActions } from "./rules/actionsRegistry";
 import { migrateVillagerPresetsPurchasedOnLoad } from "./villagerJobPresets";
 import { isSteamBuild } from "@/lib/edition";
+import {
+  buildPersistedGameState,
+  getRuntimeOnlyStoreKeys,
+  getTransientDialogResetOnLoad as getTransientDialogResetFromBoundary,
+} from "./persistedStateBoundary";
 
 type CombatResultPayload =
   | CombatResultSummary
@@ -566,113 +571,20 @@ export function killVillagers(state: GameState, deathCount: number): Partial<Gam
   return updates;
 }
 
-/**
- * List of UI-only properties that should not be persisted
- * These are transient state used only for UI rendering
- */
-const UI_ONLY_PROPERTIES = [
-  'activeTab',
-  'devMode',
-  'devGameMode',
-  'lastSaved',
-  // Session-derived; never trust/persist from saves (stale false skips cloud).
-  'isUserSignedIn',
-  'eventDialog',
-  'combatDialog',
-  'authDialogOpen',
-  'shopDialogOpen',
-  'shopFilter',
-  'investDialogOpen',
-  'investmentResultDialog',
-  'idleModeDialog',
-  'inactivityDialogOpen',
-  'inactivityReason',
-  'restartGameDialogOpen',
-  'deleteAccountDialogOpen',
-  'settingsDialogOpen',
-  'playlightWelcomeDialogOpen',
-  'feedbackDialogOpen',
-  'socialPromptDialogOpen',
-  'signUpPromptEligibleForGold',
-  'resourceChangeEvents',
-  'current_population',
-  'total_population',
-  'gamblerDiceDialogOpen',
-  'blessingOfferDialogOpen',
-  'rewardDialog',
-  'leaderboardDialogOpen',
-  'shareDialogOpen',
-  'galaxyTimeUpDialogOpen',
-  'shopCheckoutItemId',
-  'madnessDialog',
-  'insightPotionDialog',
-  'villageEffectDialog',
-  'insightRevealing',
-  '_completingExecution',
-] as const;
+/** @deprecated Prefer getRuntimeOnlyStoreKeys from persistedStateBoundary. */
+export const UI_ONLY_PROPERTIES = getRuntimeOnlyStoreKeys();
 
 /** Closed dialog slices applied on load so persisted UI flags never block hotkeys or freeze sim. */
 export function getTransientDialogResetOnLoad() {
-  return {
-    eventDialog: { isOpen: false, currentEvent: null },
-    combatDialog: {
-      isOpen: false,
-      enemy: null,
-      eventTitle: "",
-      eventMessage: "",
-      onVictory: null,
-      onDefeat: null,
-    },
-    authDialogOpen: false,
-    shopDialogOpen: false,
-    shopCruelModeHighlight: false,
-    shopFilter: null,
-    gamblerDiceDialogOpen: false,
-    blessingOfferDialogOpen: false,
-    investDialogOpen: false,
-    idleModeDialog: { isOpen: false },
-    inactivityDialogOpen: false,
-    restartGameDialogOpen: false,
-    deleteAccountDialogOpen: false,
-    settingsDialogOpen: false,
-    playlightWelcomeDialogOpen: false,
-    feedbackDialogOpen: false,
-    socialPromptDialogOpen: false,
-    rewardDialog: { isOpen: false, data: null },
-    leaderboardDialogOpen: false,
-    shareDialogOpen: false,
-    galaxyTimeUpDialogOpen: false,
-    shopCheckoutItemId: null,
-    madnessDialog: { isOpen: false, data: null },
-    insightPotionDialog: { isOpen: false, data: null },
-    villageEffectDialog: { isOpen: false, data: null },
-    investmentResultDialog: { isOpen: false, data: null },
-  };
+  return getTransientDialogResetFromBoundary();
 }
 
 /**
  * Builds a clean GameState object from the Zustand store state
- * Filters out UI-only properties and functions
+ * using the schema-driven allowlist in persistedStateBoundary.
  */
 export function buildGameState(state: any): GameState {
-  const cleaned: any = {};
-
-  // Copy all properties except UI-only ones
-  for (const key in state) {
-    // Skip functions
-    if (typeof state[key] === 'function') continue;
-
-    // Skip UI-only properties
-    if (UI_ONLY_PROPERTIES.includes(key as any)) continue;
-
-    // Copy everything else
-    cleaned[key] = state[key];
-  }
-
-  // Always reset pause state when saving (never save as paused)
-  cleaned.isPaused = false;
-
-  return cleaned as GameState;
+  return buildPersistedGameState(state);
 }
 
 const TRADER_SHOP_UNLOCK_V2_APPLIED_KEY = "traderShopUnlockV2Applied";

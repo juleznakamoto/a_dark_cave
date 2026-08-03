@@ -5,6 +5,9 @@ import { isLocalOnlyEdition } from '@/lib/edition';
 
 const isDev = import.meta.env.MODE === 'development';
 
+/** Must stay in sync with createClient auth.storageKey. */
+export const AUTH_STORAGE_KEY = 'a-dark-cave-auth';
+
 let supabaseClient: SupabaseClient | null = null;
 let initPromise: Promise<SupabaseClient> | null = null;
 let authStateListenerSetup = false;
@@ -30,7 +33,7 @@ async function initializeSupabase(): Promise<SupabaseClient> {
         persistSession: true,
         detectSessionInUrl: true,
         flowType: 'pkce',
-        storageKey: 'a-dark-cave-auth'
+        storageKey: AUTH_STORAGE_KEY
       }
     });
   } else {
@@ -93,7 +96,7 @@ async function initializeSupabase(): Promise<SupabaseClient> {
         persistSession: true,
         detectSessionInUrl: true,
         flowType: 'pkce',
-        storageKey: 'a-dark-cave-auth'
+        storageKey: AUTH_STORAGE_KEY
       }
     });
   }
@@ -126,9 +129,8 @@ export async function getSupabaseClient(): Promise<SupabaseClient> {
           cachedAuthUser = nextUser;
           authStateInitialized = true;
 
-          void import("@/game/state").then(({ useGameStore }) => {
-            const gameplaySignedIn = !!nextUser?.email_confirmed_at;
-            useGameStore.getState().setIsUserSignedIn(gameplaySignedIn);
+          void import("@/game/auth").then(({ syncStoreAuthFromSession }) => {
+            void syncStoreAuthFromSession();
           });
         });
 
@@ -136,10 +138,8 @@ export async function getSupabaseClient(): Promise<SupabaseClient> {
         client.auth.getSession().then(({ data: { session } }) => {
           cachedAuthUser = session?.user || null;
           authStateInitialized = true;
-          void import("@/game/state").then(({ useGameStore }) => {
-            useGameStore
-              .getState()
-              .setIsUserSignedIn(!!session?.user?.email_confirmed_at);
+          void import("@/game/auth").then(({ syncStoreAuthFromSession }) => {
+            void syncStoreAuthFromSession();
           });
         });
       }

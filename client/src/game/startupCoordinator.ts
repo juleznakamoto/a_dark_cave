@@ -4,6 +4,7 @@ import {
   isSteamBuild,
   type DevGameMode,
 } from "@/lib/edition";
+import { AUTH_STORAGE_KEY } from "@/lib/supabase";
 import {
   readStartupSaveHeaderResult,
   type StartupSaveHeader,
@@ -30,7 +31,7 @@ const DEFAULT_PREFERENCES: StartScreenPreferences = {
 
 function hasPersistedAuthSessionHint(): boolean {
   try {
-    const raw = localStorage.getItem("a-dark-cave-auth");
+    const raw = localStorage.getItem(AUTH_STORAGE_KEY);
     if (!raw) return false;
     const session = JSON.parse(raw) as {
       access_token?: unknown;
@@ -112,7 +113,14 @@ export async function resolveStartupVisit(
     return { surface: "game" };
   }
 
-  if (isSteamBuild || hasPersistedAuthSessionHint()) {
+  // A valid unstarted header already has start-screen preferences. Full
+  // reconciliation is only needed when no header exists and a cloud/Steam
+  // save may still be present.
+  const needsFullReconciliation =
+    (isSteamBuild || hasPersistedAuthSessionHint()) &&
+    (headerResult.status === "not-found" || header == null);
+
+  if (needsFullReconciliation) {
     const useGameStore = await withStartupTimeout(
       import("./startupGameLoader").then(({ loadStoreForStartupCheck }) =>
         loadStoreForStartupCheck(),

@@ -232,7 +232,7 @@ export async function isSignupWelcomeGoldClaimEligible(): Promise<boolean> {
   if (error || !user?.created_at || !user.email_confirmed_at) return false;
 
   if (!s.isUserSignedIn) {
-    useGameStore.getState().setIsUserSignedIn(true);
+    await syncStoreAuthFromSession();
   }
 
   return isAuthUserEligibleForSignupWelcomeClaim(
@@ -479,31 +479,29 @@ async function processReferralInBackground(): Promise<void> {
 
       // Stop retrying if already processed or successful
       if (result.success || result.reason === 'already_processed') {
-        // Load fresh state from Supabase and update game state directly
+        // Narrow-merge referral-owned fields only — never replace live gameplay.
         try {
-          const freshStateData = await loadGameFromSupabase(); // This now returns SaveData | null
+          const freshStateData = await loadGameFromSupabase();
           if (freshStateData) {
-            // Update the game state directly
             const { useGameStore } = await import('./state');
-            const currentState = useGameStore.getState();
-
-            // Merge the fresh state while preserving UI state
-            useGameStore.setState({
-              ...freshStateData.gameState, // Use the extracted gameState
-              // Preserve UI-only state
-              activeTab: currentState.activeTab,
-              hoveredTooltips: currentState.hoveredTooltips,
-              isGameLoopActive: currentState.isGameLoopActive,
-              isPaused: currentState.isPaused,
-              loopProgress: currentState.loopProgress,
-            });
-
+            const { applyReferralCloudRefreshPatch } = await import(
+              './referralCloudRefresh'
+            );
             const { syncLocalSaveFromCloud } = await import('./save');
-            await syncLocalSaveFromCloud({
-              gameState: freshStateData.gameState,
-              timestamp: freshStateData.timestamp,
-              playTime: freshStateData.playTime || 0,
-            });
+            const { buildGameState } = await import('./stateHelpers');
+            const currentState = useGameStore.getState();
+            const patch = applyReferralCloudRefreshPatch(
+              currentState,
+              freshStateData.gameState,
+            );
+            if (patch.changed) {
+              useGameStore.setState(patch.nextState);
+              await syncLocalSaveFromCloud({
+                gameState: buildGameState(patch.nextState),
+                timestamp: Date.now(),
+                playTime: patch.nextState.playTime || currentState.playTime || 0,
+              });
+            }
           }
         } catch (error) {
           logger.error('Failed to update game state:', error);
@@ -754,6 +752,24 @@ export async function ensureAnonymousSession(): Promise<AuthUser> {
   };
 }
 
+/**
+ * Single writer for the gameplay signed-in flag (confirmed email required).
+ * Anonymous checkout sessions do not flip the flag.
+ */
+export async function syncStoreAuthFromSession(): Promise<boolean> {
+  const { useGameStore } = await import("./state");
+  try {
+    const user = await getCurrentUser();
+    const signedIn = !!user;
+    if (useGameStore.getState().isUserSignedIn !== signedIn) {
+      useGameStore.getState().setIsUserSignedIn(signedIn);
+    }
+    return signedIn;
+  } catch {
+    return useGameStore.getState().isUserSignedIn === true;
+  }
+}
+
 export async function getCurrentUser(): Promise<AuthUser | null> {
   try {
     const { getCachedAuthUser, isAuthStateReady } = await import('@/lib/supabase');
@@ -814,7 +830,8 @@ export async function getCurrentUserForLoad(): Promise<AuthUser | null> {
   // Avoid backend initialization for a browser that has never had a session.
   if (typeof window !== 'undefined') {
     try {
-      if (!localStorage.getItem('a-dark-cave-auth')) return null;
+      const { AUTH_STORAGE_KEY } = await import('@/lib/supabase');
+      if (!localStorage.getItem(AUTH_STORAGE_KEY)) return null;
     } catch {
       // Storage access itself is uncertain; let Supabase resolve it.
     }
