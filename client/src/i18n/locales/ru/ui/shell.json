@@ -88,7 +88,8 @@
     "unsubscribedDesc": "Вы не будете получать от нас рекламные письма.",
     "preferenceUpdateFailed": "Не удалось обновить настройку",
     "enterFullscreen": "Full screen",
-    "exitFullscreen": "Exit full screen"
+    "exitFullscreen": "Exit full screen",
+    "cloudSaveFailed": "Сохранено на этом устройстве, но облачная синхронизация не удалась. Автосохранение повторит попытку."
   },
   "pauseHotkey": {
     "hintPrefix": "Используйте ", //x3.0

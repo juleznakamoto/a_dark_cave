@@ -88,7 +88,8 @@
     "enterFullscreen": "Full screen",
     "exitFullscreen": "Exit full screen",
     "autoSaveSteam": "Game auto-saves every 15 seconds",
-    "steamCloudSave": "Progress syncs to Steam Cloud when you save."
+    "steamCloudSave": "Progress syncs to Steam Cloud when you save.",
+    "cloudSaveFailed": "Salvato su questo dispositivo, ma la sync cloud non è riuscita. L'autosave riproverà."
   },
   "pauseHotkey": {
     "hintPrefix": "Usa ",

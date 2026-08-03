@@ -88,7 +88,8 @@
     "unsubscribedDesc": "No recibirás correos de marketing nuestros.",
     "preferenceUpdateFailed": "No se pudo actualizar la preferencia",
     "enterFullscreen": "Full screen",
-    "exitFullscreen": "Exit full screen"
+    "exitFullscreen": "Exit full screen",
+    "cloudSaveFailed": "Guardado en este dispositivo, pero falló la sync en la nube. El autoguardado lo reintentará."
   },
   "pauseHotkey": {
     "hintPrefix": "Usa ",

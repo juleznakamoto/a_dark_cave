@@ -80,6 +80,7 @@
     "signedOut": "Signed out successfully",
     "signOutError": "Error signing out",
     "gameSaved": "Game saved successfully",
+    "cloudSaveFailed": "Saved on this device, but cloud sync failed. Autosave will retry.",
     "saveFailed": "Failed to save game",
     "accountDeleted": "Your account was deleted",
     "accountDeletedDesc": "You've been signed out and this device's local save was cleared.",

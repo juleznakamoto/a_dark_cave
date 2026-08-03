@@ -242,11 +242,12 @@ function useProfileMenuState() {
     try {
       const currentState = useGameStore.getState();
       const gameState = buildGameState(currentState);
-      await saveGame(gameState, false);
+      const result = await saveGame(gameState, false);
 
       const timestamp = formatSaveTimestamp();
 
-      // Signed-in: 15s cooldown between manual saves. Guests can save anytime (local only).
+      // Signed-in: 15s cooldown between manual saves (also after cloud failure so
+      // a 503 is not hammered). Guests can save anytime (local only).
       useGameStore.setState((state) => ({
         ...(signedIn
           ? {
@@ -259,9 +260,17 @@ function useProfileMenuState() {
         lastSaved: timestamp,
       }));
 
-      toast({
-        title: t("profile.gameSaved"),
-      });
+      // Local write succeeded. Only treat attempted-but-failed cloud sync as a warning.
+      if (signedIn && !result.cloudSaved && !result.cloudSkipped) {
+        toast({
+          title: t("profile.cloudSaveFailed"),
+          variant: "destructive",
+        });
+      } else {
+        toast({
+          title: t("profile.gameSaved"),
+        });
+      }
     } catch (error) {
       logger.error("Failed to manually save game:", error);
       toast({

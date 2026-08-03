@@ -88,7 +88,8 @@
     "unsubscribedDesc": "Vous ne recevrez pas d'e-mails marketing de notre part.",
     "preferenceUpdateFailed": "Impossible de mettre à jour la préférence", //x1.5
     "enterFullscreen": "Full screen",
-    "exitFullscreen": "Exit full screen"
+    "exitFullscreen": "Exit full screen",
+    "cloudSaveFailed": "Sauvegardé sur cet appareil, mais la sync cloud a échoué. L'autosave réessaiera."
   },
   "pauseHotkey": {
     "hintPrefix": "Utilisez ",

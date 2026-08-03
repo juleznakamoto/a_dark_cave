@@ -88,7 +88,8 @@
     "unsubscribedDesc": "你将不会收到我们的营销邮件。",
     "preferenceUpdateFailed": "无法更新偏好设置",
     "enterFullscreen": "Full screen",
-    "exitFullscreen": "Exit full screen"
+    "exitFullscreen": "Exit full screen",
+    "cloudSaveFailed": "已保存在本设备，但云同步失败。自动保存将重试。"
   },
   "pauseHotkey": {
     "hintPrefix": "使用 ",
