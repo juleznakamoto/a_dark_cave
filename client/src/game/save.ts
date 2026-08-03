@@ -1,4 +1,3 @@
-import { openDB, DBSchema } from "idb";
 import { GameState, SaveData, REFERRAL_REWARD_GOLD } from "@shared/schema";
 import { mergeReferralLists } from "@shared/referralMerge";
 import {
@@ -19,7 +18,7 @@ import {
 import { tWithFallback } from "@/i18n/resolveGameText";
 import { syncSocialPromoExclusiveRewardPending } from "./socialPromoExclusiveReward";
 import { buildGameState } from "./stateHelpers";
-import { isGalaxyEdition, isLocalOnlyEdition, isSteamBuild, isSteamDemoBuild, isSteamPlaytestBuild } from "@/lib/edition";
+import { isLocalOnlyEdition, isSteamBuild } from "@/lib/edition";
 import {
   writeSteamCloudSave,
   readSteamCloudSave,
@@ -30,6 +29,15 @@ import {
   pickPreferredSave,
   shouldAllowPlaytimeOverwrite,
 } from "./saveConflict";
+import {
+  getGameSaveDatabase,
+  getSaveKey,
+  LAST_CLOUD_STATE_KEY,
+} from "./saveStorage";
+import {
+  clearStartupSaveHeader,
+  writeStartupSaveHeader,
+} from "./startupSaveHeader";
 const isDev = import.meta.env.DEV;
 
 export type SaveGameResult = {
@@ -79,25 +87,6 @@ function normalizePlaytimeOverwriteFields<T extends Record<string, unknown>>(
 export function isSaveFullReplaceEnabled(): boolean {
   return import.meta.env.VITE_SAVE_FULL_REPLACE !== "0";
 }
-
-interface GameDB extends DBSchema {
-  saves: {
-    key: string;
-    value: string | SaveData;
-  };
-  lastCloudState: {
-    key: string;
-    value: string | GameState;
-  };
-}
-
-const DB_NAME = "ADarkCaveDB";
-const DB_VERSION = 2;
-const SAVE_KEY_MAIN = "mainSave";
-const SAVE_KEY_GALAXY = "galaxySave";
-const SAVE_KEY_STEAM_DEMO = "steamDemoSave";
-const SAVE_KEY_STEAM_PLAYTEST = "steamPlaytestSave";
-const LAST_CLOUD_STATE_KEY = "lastCloudState";
 
 /**
  * Top-level slices always written in full on cloud save (not only when the diff
@@ -151,13 +140,6 @@ const ALWAYS_FULL_DELETE_SEMANTIC_CLOUD_SLICES = [
   "executionSpendSnapshots",
   "constructionBoostsUsed",
 ] as const;
-
-function getSaveKey(): string {
-  if (isSteamPlaytestBuild) return SAVE_KEY_STEAM_PLAYTEST;
-  if (isSteamDemoBuild) return SAVE_KEY_STEAM_DEMO;
-  if (isGalaxyEdition()) return SAVE_KEY_GALAXY;
-  return SAVE_KEY_MAIN;
-}
 
 /**
  * Order-independent deep equality with early exit on first difference.
@@ -281,11 +263,12 @@ function mergeSavePlayTimeIntoState(
 }
 
 async function putLocalSave(
-  db: Awaited<ReturnType<typeof getDB>>,
+  db: Awaited<ReturnType<typeof getGameSaveDatabase>>,
   data: SaveData,
 ): Promise<void> {
   const encoded = encodeLocalSave(data);
   await db.put("saves", encoded, getSaveKey());
+  writeStartupSaveHeader(data);
   // Steam build: also mirror to the Steam Cloud file (no-op on web).
   if (isSteamBuild) {
     await writeSteamCloudSave(encoded);
@@ -293,7 +276,7 @@ async function putLocalSave(
 }
 
 async function getLocalSave(
-  db: Awaited<ReturnType<typeof getDB>>,
+  db: Awaited<ReturnType<typeof getGameSaveDatabase>>,
 ): Promise<SaveData | undefined> {
   const raw = await db.get("saves", getSaveKey());
   const local = decodeLocalSave(raw) ?? undefined;
@@ -306,14 +289,14 @@ async function getLocalSave(
 }
 
 async function putLastCloudState(
-  db: Awaited<ReturnType<typeof getDB>>,
+  db: Awaited<ReturnType<typeof getGameSaveDatabase>>,
   state: GameState,
 ): Promise<void> {
   await db.put("lastCloudState", encodeLocalGameState(state), LAST_CLOUD_STATE_KEY);
 }
 
 async function getLastCloudState(
-  db: Awaited<ReturnType<typeof getDB>>,
+  db: Awaited<ReturnType<typeof getGameSaveDatabase>>,
 ): Promise<GameState | undefined> {
   const raw = await db.get("lastCloudState", LAST_CLOUD_STATE_KEY);
   return decodeLocalGameState(raw) ?? undefined;
@@ -321,36 +304,15 @@ async function getLastCloudState(
 
 /** Sync local IndexedDB after cloud referral refresh (avoids duplicating codec in auth). */
 export async function syncLocalSaveFromCloud(data: SaveData): Promise<void> {
-  const db = await getDB();
+  const db = await getGameSaveDatabase();
   await putLocalSave(db, data);
   await putLastCloudState(db, data.gameState);
 }
 
 /** Clear cloud diff baseline only (e.g. sign-out); local main save is kept. */
 export async function clearLastCloudState(): Promise<void> {
-  const db = await getDB();
+  const db = await getGameSaveDatabase();
   await db.delete("lastCloudState", LAST_CLOUD_STATE_KEY);
-}
-
-async function getDB() {
-  try {
-    const db = await openDB<GameDB>(DB_NAME, DB_VERSION, {
-      upgrade(db, oldVersion) {
-        if (oldVersion < 1) {
-          db.createObjectStore("saves");
-        }
-        if (oldVersion < 2) {
-          if (!db.objectStoreNames.contains("lastCloudState")) {
-            db.createObjectStore("lastCloudState");
-          }
-        }
-      },
-    });
-    return db;
-  } catch (error) {
-    logger.error("Failed to open database:", error);
-    throw error;
-  }
 }
 
 /**
@@ -537,7 +499,7 @@ export async function saveGame(
       return SAVE_SKIPPED;
     }
 
-    const db = await getDB();
+    const db = await getGameSaveDatabase();
 
     // Strip UI-only store fields (dialog open flags, etc.) even when callers pass get().
     const persistedState = buildGameState(gameState);
@@ -803,7 +765,7 @@ export async function loadGame(): Promise<GameState | null> {
       await processReferralAfterConfirmation();
     }
 
-    const db = await getDB();
+    const db = await getGameSaveDatabase();
     const localSave = await getLocalSave(db);
 
     if (isDev) {
@@ -1057,8 +1019,9 @@ export async function loadGame(): Promise<GameState | null> {
 
 export async function deleteSave(): Promise<void> {
   try {
-    const db = await getDB();
+    const db = await getGameSaveDatabase();
     await db.delete("saves", getSaveKey());
+    clearStartupSaveHeader();
   } catch (error) {
     logger.error("Failed to delete save:", error);
   }

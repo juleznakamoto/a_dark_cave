@@ -31,6 +31,7 @@ import {
 import PageLoadSpinner from "@/components/ui/page-load-spinner";
 import PageErrorScreen from "@/components/ui/page-error-screen";
 import { clearStaleChunkReloadGuard } from "@/lib/hardReload";
+import { ensureGameplayLocalesLoaded } from "@/i18n/loadLocaleResources";
 
 export default function Game() {
   const initialize = useGameStore((state) => state.initialize);
@@ -59,8 +60,11 @@ export default function Game() {
     }
     const initializeGame = async () => {
       try {
+        const gameplayLocalesPromise = ensureGameplayLocalesLoaded();
+
         // Wait for first paint
         await new Promise((resolve) => requestAnimationFrame(() => requestAnimationFrame(resolve)));
+        await gameplayLocalesPromise;
 
         // Handle OAuth callback - check for tokens in URL
         const hashParams = new URLSearchParams(

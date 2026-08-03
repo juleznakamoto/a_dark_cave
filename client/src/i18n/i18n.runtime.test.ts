@@ -1,5 +1,6 @@
-import { describe, it, expect, beforeEach } from "vitest";
+import { describe, it, expect, beforeAll, beforeEach } from "vitest";
 import i18n from "./index";
+import { ensureGameplayLocalesLoaded } from "./loadLocaleResources";
 import { getEnUiCatalogString } from "./enUiCatalog";
 import {
   getActionLabel,
@@ -14,6 +15,10 @@ import { gameStateSchema } from "@shared/schema";
 import { getActionCostBreakdown } from "@/game/rules/index";
 
 describe("i18n runtime", () => {
+  beforeAll(async () => {
+    await ensureGameplayLocalesLoaded();
+  });
+
   beforeEach(async () => {
     await i18n.changeLanguage("en");
   });

@@ -8,7 +8,7 @@ import {
   normalizeLocale,
   type SupportedLocale,
 } from "./locales";
-import { loadLocaleResources } from "./loadLocaleResources";
+import { loadResourcesForLanguageChange } from "./loadLocaleResources";
 
 void i18n.use(initReactI18next).init({
   resources: {},
@@ -33,7 +33,7 @@ async function changeLanguageWithLocaleLoad(
 ) {
   const normalized = normalizeLocale(lng);
   if (isSupportedLocale(normalized)) {
-    await loadLocaleResources(normalized);
+    await loadResourcesForLanguageChange(normalized);
   }
   return nativeChangeLanguage(lng, ...rest);
 }

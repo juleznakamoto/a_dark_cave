@@ -11,8 +11,20 @@ const localeModules = import.meta.glob<string>(
   { query: "?raw", import: "default" },
 );
 
-const loadedLocales = new Set<SupportedLocale>();
-const loadingLocales = new Map<SupportedLocale, Promise<void>>();
+const STARTUP_UI_SHARDS = new Set(["shell", "seo"]);
+const loadedModulePaths = new Set<string>();
+const loadingModulePaths = new Map<string, Promise<string>>();
+const fullyLoadedLocales = new Set<SupportedLocale>();
+const loadingFullLocales = new Map<SupportedLocale, Promise<void>>();
+let gameplayResourcesRequested = false;
+
+export function isStartupLocaleModulePath(
+  path: string,
+  locale: SupportedLocale,
+): boolean {
+  const match = path.match(/\.\/locales\/([^/]+)\/ui\/([^/]+)\.json$/);
+  return match?.[1] === locale && STARTUP_UI_SHARDS.has(match[2]);
+}
 
 function mergeLocalePath(
   resources: Record<string, Record<string, unknown>>,
@@ -36,54 +48,119 @@ function mergeLocalePath(
 
 async function fetchLocaleResources(
   locale: SupportedLocale,
+  pathFilter: (path: string) => boolean,
 ): Promise<Record<string, Record<string, unknown>>> {
   const resources: Record<string, Record<string, unknown>> = {};
   const prefix = `./locales/${locale}/`;
 
   await Promise.all(
     Object.entries(localeModules)
-      .filter(([path]) => path.startsWith(prefix))
+      .filter(
+        ([path]) =>
+          path.startsWith(prefix) &&
+          pathFilter(path) &&
+          !loadedModulePaths.has(path),
+      )
       .map(async ([path, loader]) => {
-        const raw = await loader();
-        mergeLocalePath(resources, path, raw);
+        let loadPromise = loadingModulePaths.get(path);
+        if (!loadPromise) {
+          loadPromise = loader();
+          loadingModulePaths.set(path, loadPromise);
+        }
+        try {
+          const raw = await loadPromise;
+          mergeLocalePath(resources, path, raw);
+          loadedModulePaths.add(path);
+        } finally {
+          loadingModulePaths.delete(path);
+        }
       }),
   );
 
   return resources;
 }
 
+function installLocaleResources(
+  locale: SupportedLocale,
+  resources: Record<string, Record<string, unknown>>,
+): void {
+  for (const [namespace, bundle] of Object.entries(resources)) {
+    i18n.addResourceBundle(locale, namespace, bundle, true, true);
+  }
+}
+
+export async function loadStartupLocaleResources(
+  locale: SupportedLocale,
+): Promise<void> {
+  const resources = await fetchLocaleResources(
+    locale,
+    (path) => isStartupLocaleModulePath(path, locale),
+  );
+  installLocaleResources(locale, resources);
+}
+
 export async function loadLocaleResources(
   locale: SupportedLocale,
 ): Promise<void> {
-  if (loadedLocales.has(locale)) return;
+  if (fullyLoadedLocales.has(locale)) return;
 
-  const inFlight = loadingLocales.get(locale);
+  const inFlight = loadingFullLocales.get(locale);
   if (inFlight) {
     await inFlight;
     return;
   }
 
   const loadPromise = (async () => {
-    const resources = await fetchLocaleResources(locale);
-    for (const [namespace, bundle] of Object.entries(resources)) {
-      i18n.addResourceBundle(locale, namespace, bundle, true, true);
-    }
-    loadedLocales.add(locale);
+    const resources = await fetchLocaleResources(locale, () => true);
+    installLocaleResources(locale, resources);
+    fullyLoadedLocales.add(locale);
   })();
 
-  loadingLocales.set(locale, loadPromise);
+  loadingFullLocales.set(locale, loadPromise);
   try {
     await loadPromise;
   } finally {
-    loadingLocales.delete(locale);
+    loadingFullLocales.delete(locale);
   }
 }
 
-/** Load English (fallback) plus the player's saved locale before first paint. */
+/** Load only the StartScreen shell + SEO strings before first React paint. */
 export async function ensureInitialLocalesLoaded(): Promise<void> {
-  const initial = getInitialLocale();
-  await loadLocaleResources(DEFAULT_LOCALE);
-  if (initial !== DEFAULT_LOCALE) {
-    await loadLocaleResources(initial);
+  const path =
+    typeof window === "undefined" ? "/" : window.location.pathname;
+  if (path !== "/" && path !== "/galaxy" && path !== "/boost") {
+    await ensureGameplayLocalesLoaded();
+    return;
   }
+
+  const initial = getInitialLocale();
+  await Promise.all([
+    loadStartupLocaleResources(DEFAULT_LOCALE),
+    initial === DEFAULT_LOCALE
+      ? Promise.resolve()
+      : loadStartupLocaleResources(initial),
+  ]);
+}
+
+/** Load complete catalogs before gameplay becomes visible. */
+export async function ensureGameplayLocalesLoaded(): Promise<void> {
+  gameplayResourcesRequested = true;
+  const initial = getInitialLocale();
+  await Promise.all([
+    loadLocaleResources(DEFAULT_LOCALE),
+    initial === DEFAULT_LOCALE
+      ? Promise.resolve()
+      : loadLocaleResources(initial),
+  ]);
+}
+
+/** StartScreen language changes stay small; gameplay changes load full catalogs. */
+export async function loadResourcesForLanguageChange(
+  locale: SupportedLocale,
+): Promise<void> {
+  if (gameplayResourcesRequested) {
+    await loadLocaleResources(locale);
+    return;
+  }
+  await loadStartupLocaleResources(locale);
 }

@@ -2,7 +2,6 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { Helmet } from "react-helmet-async";
 import { ParticleButton } from "@/components/ui/particle-button";
 import { Button } from "@/components/ui/button";
-import { useGameStore } from "@/game/state";
 import CloudShader from "@/components/ui/cloud-shader";
 import VaporizeTextCycle from "@/components/ui/vapour-text-effect";
 import { audioManager, SOUND_VOLUME } from "@/lib/audio";
@@ -14,17 +13,8 @@ import {
   GAME_FOOTER_RIGHT_ICON_ORDER,
 } from "@/lib/gameFooterSocialLinks";
 import { useTranslation } from "react-i18next";
-import { tWithFallback } from "@/i18n/resolveGameText";
 import { useLocale } from "@/i18n/useLocale";
 import { OG_LOCALE_TAGS, SUPPORTED_LOCALES } from "@/i18n/locales";
-import {
-  useSteamDesktopEditionActive,
-  useSteamEditionActive,
-  useDemoEditionActive,
-} from "@/hooks/useSteamEditionActive";
-import { isDemoEdition } from "@/lib/edition";
-import { isDemoLimitReachedFromState } from "@/game/demoLimit";
-import DemoTimeUpDialog from "@/components/game/DemoTimeUpDialog";
 import { FullscreenButton } from "@/components/game/FullscreenButton";
 import { clearStaleChunkReloadGuard } from "@/lib/hardReload";
 
@@ -53,20 +43,36 @@ const START_AUDIO_BTN =
 const START_AUDIO_ICON =
   "w-4 h-4 shrink-0 object-contain opacity-80 transition-[filter,opacity] group-hover:opacity-100 [filter:invert(1)] group-hover:[filter:invert(17%)_sepia(89%)_saturate(7458%)_hue-rotate(358deg)_brightness(97%)_contrast(118%)]";
 
-export default function StartScreen() {
-  const {
-    executeAction,
-    cruelMode,
-    musicMuted,
-    sfxMuted,
-    musicVolume,
-    sfxVolume,
-    setMusicMuted,
-    setSfxMuted,
-  } = useGameStore();
+export interface StartScreenPreferences {
+  cruelMode: boolean;
+  musicMuted: boolean;
+  sfxMuted: boolean;
+  musicVolume: number;
+  sfxVolume: number;
+}
+
+interface StartScreenProps {
+  initialPreferences: StartScreenPreferences;
+  steamEditionActive: boolean;
+  steamDesktopEditionActive: boolean;
+  onLightFireStart?: (preferences: StartScreenPreferences) => void;
+  onLightFire: (preferences: StartScreenPreferences) => void | Promise<void>;
+}
+
+export default function StartScreen({
+  initialPreferences,
+  steamEditionActive,
+  steamDesktopEditionActive,
+  onLightFireStart,
+  onLightFire,
+}: StartScreenProps) {
   const buttonRef = useRef<HTMLButtonElement>(null);
   const executedRef = useRef(false);
-  const isCruelMode = cruelMode;
+  const isCruelMode = initialPreferences.cruelMode;
+  const [musicMuted, setMusicMuted] = useState(initialPreferences.musicMuted);
+  const [sfxMuted, setSfxMuted] = useState(initialPreferences.sfxMuted);
+  const musicVolume = initialPreferences.musicVolume;
+  const sfxVolume = initialPreferences.sfxVolume;
   const [showParticles, setShowParticles] = useState(false);
   const [introFadeInDone, setIntroFadeInDone] = useState(false);
   const [introVaporFont, setIntroVaporFont] = useState<{
@@ -79,9 +85,6 @@ export default function StartScreen() {
   const introLineClipRefs = useRef<Array<HTMLElement | null>>([]);
   const { t } = useTranslation("ui");
   const { locale } = useLocale();
-  const steamEditionActive = useSteamEditionActive();
-  const steamDesktopEditionActive = useSteamDesktopEditionActive();
-  const demoEditionActive = useDemoEditionActive();
   // Steam Game / Playtest / Demo (build or DEV Game Mode) — no social/store links in footer.
   // Galaxy and Normal/web keep Steam / Reddit / Contact.
   const hideStartScreenSocialLinks = steamDesktopEditionActive;
@@ -172,14 +175,6 @@ export default function StartScreen() {
     if (executedRef.current) return;
     executedRef.current = true;
 
-    if (isDemoEdition()) {
-      const state = useGameStore.getState();
-      if (isDemoLimitReachedFromState(state)) {
-        useGameStore.setState({ galaxyTimeUpDialogOpen: true });
-        return;
-      }
-    }
-
     // Match canvas type to the live DOM line (includes --adc-text-scale).
     const sampleLine = introLineRefs.current.find(Boolean);
     if (sampleLine) {
@@ -229,18 +224,24 @@ export default function StartScreen() {
     audioManager.playSound("lightFire", SOUND_VOLUME.lightFire);
 
     audioManager.loadGameSounds().then(() => {
-      if (!useGameStore.getState().musicMuted) {
+      if (!musicMuted) {
         audioManager.startBackgroundMusic();
       }
     });
 
+    const preferences = {
+      cruelMode: isCruelMode,
+      musicMuted,
+      sfxMuted,
+      musicVolume,
+      sfxVolume,
+    };
+    onLightFireStart?.(preferences);
+
     // Show button effect for 3 seconds on both mobile and desktop
     setShowParticles(true);
-    setTimeout(async () => {
-      // Ensure game loop is running (may have been stopped by sign out)
-      const { startGameLoop } = await import("@/game/loop");
-      startGameLoop();
-      executeAction("lightFire");
+    setTimeout(() => {
+      void onLightFire(preferences);
     }, 3000);
   };
 
@@ -420,7 +421,6 @@ export default function StartScreen() {
             autoStart={showParticles}
             className={`bg-transparent border-none text-gray-300/90 hover:bg-transparent text-lg px-8 py-4 fire-hover z-[10000] ${showParticles ? "fire-active" : "animate-fade-in-button"}`}
             data-testid="button-light-fire"
-            button_id="light-fire"
           >
             {t("startScreen.makeFire")}
           </ParticleButton>
@@ -491,7 +491,7 @@ export default function StartScreen() {
               const { href, title } = GAME_FOOTER_RIGHT_ICON_LINKS[platform];
               const linkLabel =
                 platform === "contact"
-                  ? tWithFallback("ui", "footer.contact", title)
+                  ? t("footer.contact", { defaultValue: title })
                   : title;
               const linkContent = (
                 <>
@@ -548,7 +548,6 @@ export default function StartScreen() {
           )}
         </div>
       </nav>
-      {demoEditionActive && <DemoTimeUpDialog />}
     </div>
   );
 }
