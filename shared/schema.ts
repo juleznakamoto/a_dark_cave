@@ -699,7 +699,8 @@ export const gameStateSchema = z.object({
    * Set true once signed in + email reward + both social follows + Playlight discover task + ≥1 invite are satisfied; future event can grant exclusive item then clear or consume this flag.
    */
   socialPromoExclusiveRewardPending: z.boolean().default(false),
-  isUserSignedIn: z.boolean().default(false), // Track if user is currently signed in
+  /** Session-derived UI flag; stripped on save (UI_ONLY). Kept for legacy save reads. */
+  isUserSignedIn: z.boolean().default(false),
   /** One-time account-creation gold granted (persists across devices via cloud save). */
   signupWelcomeGoldClaimed: z.boolean().default(false),
   detectedCurrency: z.enum(["EUR", "USD"]).nullable().default(null), // Currency detection (persists across game restarts)

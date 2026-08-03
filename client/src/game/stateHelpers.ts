@@ -575,6 +575,8 @@ const UI_ONLY_PROPERTIES = [
   'devMode',
   'devGameMode',
   'lastSaved',
+  // Session-derived; never trust/persist from saves (stale false skips cloud).
+  'isUserSignedIn',
   'eventDialog',
   'combatDialog',
   'authDialogOpen',

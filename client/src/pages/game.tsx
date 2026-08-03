@@ -200,6 +200,8 @@ export default function Game() {
             timedEventTab,
             ...stateUpdates,
             ...resumeUi,
+            // Keep live session flag; do not restore a stale saved false.
+            isUserSignedIn: useGameStore.getState().isUserSignedIn || !!user,
             flags: {
               ...(savedState.flags ?? {}),
               gameStarted: isGamePath ? true : savedState.flags?.gameStarted,

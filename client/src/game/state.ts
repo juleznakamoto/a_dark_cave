@@ -3,6 +3,7 @@ import { create } from "zustand";
 import { GameState, gameStateSchema, Referral } from "@shared/schema";
 import {
   isFullGameUnlockedEdition,
+  isLocalOnlyEdition,
   isSteamBuild,
   isSteamEditionActive,
   setDevGameModeOverride,
@@ -3288,6 +3289,8 @@ export const useGameStore = create<GameStore>((set, get) => ({
         investmentHallState:
           savedState.investmentHallState ??
           defaultGameState.investmentHallState,
+        // Session flag is not authoritative from disk/cloud.
+        isUserSignedIn: get().isUserSignedIn,
         // Never restore transient dialog UI from older saves that persisted these fields.
         ...getTransientDialogResetOnLoad(),
       };
@@ -3311,6 +3314,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
         startTime: Date.now(), // Set start time for new game
         isNewGame: true, // Mark as new game to start tracking
         gameId: `game-${Date.now()}-${Math.random().toString(36).substring(2, 9)}`, // Generate gameId for new game
+        isUserSignedIn: get().isUserSignedIn,
         ...getTimedEventTabCleanupPatch(get().activeTab),
       };
 
@@ -3326,6 +3330,17 @@ export const useGameStore = create<GameStore>((set, get) => ({
         type: "system",
       };
       get().addLogEntry(initialLogEntry);
+    }
+
+    // Re-sync from live session so a persisted false cannot stick after load.
+    if (!isLocalOnlyEdition()) {
+      try {
+        const { getCurrentUser } = await import("@/game/auth");
+        const user = await getCurrentUser();
+        set({ isUserSignedIn: !!user });
+      } catch {
+        /* keep prior store value */
+      }
     }
 
     const { applySignupWelcomeBonusAfterOAuthLoad } = await import("@/game/auth");

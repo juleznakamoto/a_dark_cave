@@ -509,6 +509,54 @@ describe('Save Game System - Comprehensive Tests', () => {
       // Must not push the fresh local wipe to cloud.
       expect(mockInvoke).not.toHaveBeenCalled();
     });
+
+    it('cloud-saves when store isUserSignedIn is false but session exists', async () => {
+      const auth = await import('./auth');
+      const state = await import('./state');
+
+      vi.mocked(auth.getCurrentUser).mockResolvedValue({
+        id: 'user-1',
+        email: 'test@example.com',
+      });
+      // Stale hydrated guest flag — previously skipped cloud entirely.
+      vi.mocked(state.useGameStore.getState).mockReturnValue({
+        inactivityDialogOpen: false,
+        isUserSignedIn: false,
+        getAndResetClickAnalytics: vi.fn().mockReturnValue(null),
+        getAndResetResourceAnalytics: vi.fn().mockReturnValue(null),
+      } as any);
+
+      const { getSupabaseClient } = await import('@/lib/supabase');
+      const mockInvoke = vi.fn().mockResolvedValue({
+        data: { success: true },
+        error: null,
+      });
+      vi.mocked(getSupabaseClient).mockResolvedValue({
+        auth: {
+          getSession: vi.fn().mockResolvedValue({
+            data: { session: { access_token: 'tok' } },
+          }),
+        },
+        functions: { invoke: mockInvoke },
+      } as any);
+
+      const result = await saveGame(
+        createMockGameState({ playTime: 12_000, isUserSignedIn: false }),
+        true,
+      );
+
+      expect(result.cloudSaved).toBe(true);
+      expect(result.cloudSkipped).toBe(false);
+      expect(mockInvoke).toHaveBeenCalledWith(
+        'save-game',
+        expect.objectContaining({
+          body: expect.objectContaining({ fullReplace: true }),
+        }),
+      );
+      expect(state.useGameStore.setState).toHaveBeenCalledWith({
+        isUserSignedIn: true,
+      });
+    });
   });
 
   describe('3. Offline Progress Overwrite', () => {
@@ -1376,25 +1424,29 @@ describe('Save Game System - Comprehensive Tests', () => {
     it('should handle user logging in mid-session', async () => {
       const auth = await import('./auth');
       vi.mocked(auth.getCurrentUser).mockResolvedValue(null);
-      await saveGame(createMockGameState({ playTime: 2000 }), true);
+      const offline = await saveGame(createMockGameState({ playTime: 2000 }), true);
+      expect(offline.localSaved).toBe(true);
+      expect(offline.cloudSkipped).toBe(true);
 
       vi.mocked(auth.getCurrentUser).mockResolvedValue({ id: 'user-1', email: 'test@example.com' });
-      await saveGame(createMockGameState({ playTime: 3000 }), true);
-
-      // First save: 1 put to 'saves', second save: 1 put to 'saves' (saveGame doesn't write lastCloudState in test env)
-      expect(mockPut).toHaveBeenCalledTimes(2);
+      const online = await saveGame(createMockGameState({ playTime: 3000 }), true);
+      expect(online.localSaved).toBe(true);
+      // Session mock has no access token — cloud attempt fails, local still kept.
+      expect(online.cloudSkipped).toBe(false);
+      expect(readMainSave(mockStores)?.playTime).toBe(3000);
     });
 
     it('should handle user logging out mid-session', async () => {
       const auth = await import('./auth');
       vi.mocked(auth.getCurrentUser).mockResolvedValue({ id: 'user-1', email: 'test@example.com' });
-      await saveGame(createMockGameState({ playTime: 1000 }), true);
+      const online = await saveGame(createMockGameState({ playTime: 1000 }), true);
+      expect(online.localSaved).toBe(true);
 
       vi.mocked(auth.getCurrentUser).mockResolvedValue(null);
-      await saveGame(createMockGameState({ playTime: 2000 }), true);
-
-      // First save: 1 put to 'saves', second save: 1 put to 'saves' (saveGame doesn't write lastCloudState in test env)
-      expect(mockPut).toHaveBeenCalledTimes(2);
+      const offline = await saveGame(createMockGameState({ playTime: 2000 }), true);
+      expect(offline.localSaved).toBe(true);
+      expect(offline.cloudSkipped).toBe(true);
+      expect(readMainSave(mockStores)?.playTime).toBe(2000);
     });
   });
 

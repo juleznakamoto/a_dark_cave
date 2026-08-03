@@ -52,6 +52,7 @@ vi.mock("./steamSaveAdapter", () => ({
 import { saveGame, isSaveFullReplaceEnabled } from "./save";
 import * as auth from "./auth";
 import { useGameStore } from "./state";
+import { buildGameState } from "./stateHelpers";
 import type { GameState } from "@shared/schema";
 
 describe("save full replace (V1 flagged)", () => {
@@ -81,6 +82,17 @@ describe("save full replace (V1 flagged)", () => {
 
   it("enables full replace by default", () => {
     expect(isSaveFullReplaceEnabled()).toBe(true);
+  });
+
+  it("strips isUserSignedIn from persisted game state", () => {
+    const cleaned = buildGameState({
+      playTime: 5000,
+      isUserSignedIn: true,
+      isPaused: true,
+    } as GameState);
+    expect(cleaned.playTime).toBe(5000);
+    expect(cleaned.isPaused).toBe(false);
+    expect("isUserSignedIn" in cleaned).toBe(false);
   });
 
   it("sends full state + fullReplace:true on cloud save", async () => {

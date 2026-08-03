@@ -595,7 +595,7 @@ export async function saveGame(
 
     const allowOverwrite = shouldAllowPlaytimeOverwrite(sanitizedState);
 
-    // Local-only editions / guests: no cloud. Still clear restart flags so they
+    // Local-only editions: no cloud. Still clear restart flags so they
     // do not stick forever in the store after a successful local write.
     if (isLocalOnlyEdition()) {
       if (allowOverwrite) {
@@ -604,30 +604,22 @@ export async function saveGame(
       return { localSaved: true, cloudSaved: false, cloudSkipped: true };
     }
 
-    // Prefer the store flag, but still attempt cloud when a restart overwrite is
-    // pending (covers brief isUserSignedIn desync after auth).
-    if (!currentState.isUserSignedIn && !allowOverwrite) {
-      return { localSaved: true, cloudSaved: false, cloudSkipped: true };
-    }
-
-    // Try to save to cloud if user is authenticated
+    // Cloud gating must use the live session, not the persisted store flag.
+    // Guest saves often rehydrate `isUserSignedIn: false` and would otherwise
+    // skip cloud forever for confirmed accounts.
     try {
       const user = await getCurrentUser();
       if (!user) {
-        if (!currentState.isUserSignedIn) {
-          // Guest / signed-out: no cloud document to replace.
-          if (allowOverwrite) {
-            await clearPlaytimeOverwriteFlags();
-          }
-          return { localSaved: true, cloudSaved: false, cloudSkipped: true };
-        }
-        // Store says signed-in but session missing — keep overwrite for retry.
+        // Guest / signed-out: no cloud document to replace.
         if (allowOverwrite) {
-          logger.warn(
-            "[SAVE] Restart overwrite pending but no authenticated session yet",
-          );
+          await clearPlaytimeOverwriteFlags();
         }
-        return { localSaved: true, cloudSaved: false, cloudSkipped: false };
+        return { localSaved: true, cloudSaved: false, cloudSkipped: true };
+      }
+
+      // Heal store/auth desync so autosave interval + UI match the session.
+      if (!currentState.isUserSignedIn) {
+        useGameStore.setState({ isUserSignedIn: true });
       }
 
       const isNewGame = sanitizedState.isNewGame === true;
