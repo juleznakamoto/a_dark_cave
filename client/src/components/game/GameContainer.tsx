@@ -58,7 +58,11 @@ import { ProfileMenuProvider } from "./ProfileMenu";
 import { logger } from "@/lib/logger";
 import { Z_INDEX } from "@/lib/z-index";
 import { toast } from "@/hooks/use-toast";
-import { startVersionCheck, stopVersionCheck } from "@/game/versionCheck";
+import {
+  recordUpdateHardReloadAttempt,
+  startVersionCheck,
+  stopVersionCheck,
+} from "@/game/versionCheck";
 import { hardReload } from "@/lib/hardReload";
 import { formatMinutesSeconds } from "@/lib/utils";
 import MistBackground from "@/components/ui/mist-background";
@@ -369,13 +373,14 @@ export default function GameContainer() {
   ]);
 
   // Prompt for a hard refresh when a new build is deployed while the tab stays open.
-  // Sticky toast + live countdown + 5-minute forced hardReload (navigate-first;
-  // cache purge on next boot). versionCheck.ts stamps sessionStorage so a
-  // failed/stale reload does not loop.
+  // Sticky toast + optional 5-minute forced hardReload (navigate-first; cache purge
+  // on next boot). versionCheck counts real hardReload navigations (max 3 per
+  // server sha) so a failed/stale reload can retry without looping forever.
   useEffect(() => {
     const AUTO_RELOAD_MS = 5 * 60 * 1000;
     let updatePending = false;
     let reloadAtMs = 0;
+    let pendingServerSha: string | null = null;
     let autoReloadTimeout: ReturnType<typeof setTimeout> | null = null;
     let countdownInterval: ReturnType<typeof setInterval> | null = null;
     let reloading = false;
@@ -384,6 +389,13 @@ export default function GameContainer() {
       i18n.t("versionUpdate.description", {
         ns: "ui",
         time: formatMinutesSeconds(Math.ceil(remainingMs / 1000)),
+      });
+
+    const versionUpdateManualDescription = () =>
+      i18n.t("versionUpdate.descriptionManual", {
+        ns: "ui",
+        defaultValue:
+          "A new version of the game is available. Please update now. The game is automatically saved before updating.",
       });
 
     const saveAndHardReload = async () => {
@@ -398,6 +410,9 @@ export default function GameContainer() {
         await saveGame(useGameStore.getState(), false);
       } catch (error) {
         logger.error("[VERSION] Error saving before reload:", error);
+      }
+      if (pendingServerSha) {
+        recordUpdateHardReloadAttempt(pendingServerSha);
       }
       await hardReload();
     };
@@ -416,45 +431,70 @@ export default function GameContainer() {
     };
     document.addEventListener("visibilitychange", handleVisibilityReload);
 
-    startVersionCheck(async () => {
+    startVersionCheck(async ({ serverSha, autoReloadAllowed }) => {
       try {
         const { saveGame } = await import("@/game/save");
         const state = useGameStore.getState();
         await saveGame(state, false);
 
-        // Arm toast + timer before visibility catch-up can fire.
-        reloadAtMs = Date.now() + AUTO_RELOAD_MS;
+        pendingServerSha = serverSha;
         if (autoReloadTimeout) clearTimeout(autoReloadTimeout);
         if (countdownInterval) clearInterval(countdownInterval);
-        autoReloadTimeout = setTimeout(() => {
-          void saveAndHardReload();
-        }, AUTO_RELOAD_MS);
-        const updateToast = toast({
-          title: i18n.t("versionUpdate.title", { ns: "ui" }),
-          description: versionUpdateDescription(AUTO_RELOAD_MS),
-          variant: "default",
-          duration: Infinity,
-          dismissible: false,
-          action: {
-            label: i18n.t("versionUpdate.refresh", { ns: "ui" }),
-            onClick: () => {
-              void saveAndHardReload();
+        autoReloadTimeout = null;
+        countdownInterval = null;
+
+        if (autoReloadAllowed) {
+          // Arm toast + timer before visibility catch-up can fire.
+          reloadAtMs = Date.now() + AUTO_RELOAD_MS;
+          autoReloadTimeout = setTimeout(() => {
+            void saveAndHardReload();
+          }, AUTO_RELOAD_MS);
+          const updateToast = toast({
+            title: i18n.t("versionUpdate.title", { ns: "ui" }),
+            description: versionUpdateDescription(AUTO_RELOAD_MS),
+            variant: "default",
+            duration: Infinity,
+            dismissible: false,
+            action: {
+              label: i18n.t("versionUpdate.refresh", { ns: "ui" }),
+              onClick: () => {
+                void saveAndHardReload();
+              },
             },
-          },
-        });
-        countdownInterval = setInterval(() => {
-          const remainingMs = Math.max(0, reloadAtMs - Date.now());
-          updateToast.update({
-            description: versionUpdateDescription(remainingMs),
           });
-          if (remainingMs <= 0 && countdownInterval) {
-            clearInterval(countdownInterval);
-            countdownInterval = null;
-          }
-        }, 1000);
-        updatePending = true;
+          countdownInterval = setInterval(() => {
+            const remainingMs = Math.max(0, reloadAtMs - Date.now());
+            updateToast.update({
+              description: versionUpdateDescription(remainingMs),
+            });
+            if (remainingMs <= 0 && countdownInterval) {
+              clearInterval(countdownInterval);
+              countdownInterval = null;
+            }
+          }, 1000);
+          updatePending = true;
+        } else {
+          // Retries exhausted: keep a sticky manual refresh, no auto-reload loop.
+          reloadAtMs = 0;
+          updatePending = false;
+          toast({
+            title: i18n.t("versionUpdate.title", { ns: "ui" }),
+            description: versionUpdateManualDescription(),
+            variant: "default",
+            duration: Infinity,
+            dismissible: false,
+            action: {
+              label: i18n.t("versionUpdate.refresh", { ns: "ui" }),
+              onClick: () => {
+                void saveAndHardReload();
+              },
+            },
+          });
+        }
       } catch (error) {
         logger.error("[VERSION] Error showing update toast:", error);
+        // Rethrow so versionCheck clears its in-memory armed flag and can retry.
+        throw error;
       }
     });
 
