@@ -12,6 +12,7 @@ import {
 import { combatItemTooltips } from "@/game/rules/tooltips";
 import {
   calculateCriticalStrikeChance,
+  calculateEnemyCriticalChancePercent,
   getCombatAttackFailChancePercent,
 } from "@/game/rules/effectsStats";
 import {
@@ -142,6 +143,7 @@ export default function CombatDialog({
   const [enemyPoisonRounds, setEnemyPoisonRounds] = useState(0);
   const [enemyPoisonDamage, setEnemyPoisonDamage] = useState(0);
   const [wasCriticalStrike, setWasCriticalStrike] = useState(false);
+  const [wasEnemyCriticalStrike, setWasEnemyCriticalStrike] = useState(false);
   const [playerStrikeFailed, setPlayerStrikeFailed] = useState(false);
   const [crushingStrikeFailed, setCrushingStrikeFailed] = useState(false);
   const [combatSummary, setCombatSummary] =
@@ -158,7 +160,7 @@ export default function CombatDialog({
     typeof setTimeout
   > | null>(null);
 
-  const showIntegrityDamage = (amount: number) => {
+  const showIntegrityDamage = (amount: number, isCritical = false) => {
     if (integrityHealIndicatorTimeoutRef.current) {
       clearTimeout(integrityHealIndicatorTimeoutRef.current);
       integrityHealIndicatorTimeoutRef.current = null;
@@ -168,9 +170,11 @@ export default function CombatDialog({
       clearTimeout(integrityDamageIndicatorTimeoutRef.current);
       integrityDamageIndicatorTimeoutRef.current = null;
     }
+    setWasEnemyCriticalStrike(isCritical);
     setIntegrityDamageIndicator({ amount, visible: true });
     integrityDamageIndicatorTimeoutRef.current = setTimeout(() => {
       setIntegrityDamageIndicator({ amount: 0, visible: false });
+      setWasEnemyCriticalStrike(false);
       integrityDamageIndicatorTimeoutRef.current = null;
     }, 3000);
   };
@@ -285,6 +289,7 @@ export default function CombatDialog({
       setEnemyPoisonRounds(0);
       setEnemyPoisonDamage(0);
       setWasCriticalStrike(false);
+      setWasEnemyCriticalStrike(false);
       setPlayerStrikeFailed(false);
       setCrushingStrikeFailed(false);
       setCombatSummary(null);
@@ -657,20 +662,38 @@ export default function CombatDialog({
     if (enemyStunnedRounds > 0) {
       // Enemy is stunned, skip attack and decrement stun counter
       setEnemyStunnedRounds((prev) => Math.max(0, prev - 1));
-    } else if (currentEnemy.attack > bastionStats.defense) {
-      integrityDamage = currentEnemy.attack - bastionStats.defense;
-      const newIntegrityValue = Math.max(0, currentIntegrity - integrityDamage);
-      setCurrentIntegrity(newIntegrityValue);
+      setWasEnemyCriticalStrike(false);
+    } else {
+      const enemyCritChance =
+        calculateEnemyCriticalChancePercent(
+          currentEnemy.waveNumber ?? 1,
+          Boolean(gameState.cruelMode),
+        ) / 100;
+      const isEnemyCritical = Math.random() < enemyCritChance;
+      const enemyAttackPower = isEnemyCritical
+        ? Math.floor(currentEnemy.attack * 1.5)
+        : currentEnemy.attack;
 
-      // Show damage indicator on integrity bar
-      showIntegrityDamage(integrityDamage);
+      if (enemyAttackPower > bastionStats.defense) {
+        integrityDamage = enemyAttackPower - bastionStats.defense;
+        const newIntegrityValue = Math.max(
+          0,
+          currentIntegrity - integrityDamage,
+        );
+        setCurrentIntegrity(newIntegrityValue);
 
-      // Check if integrity is depleted
-      if (newIntegrityValue <= 0) {
-        setCombatEnded(true);
-        setCombatResult("defeat");
-        setIsProcessingRound(false);
-        return;
+        // Show damage indicator on integrity bar
+        showIntegrityDamage(integrityDamage, isEnemyCritical);
+
+        // Check if integrity is depleted
+        if (newIntegrityValue <= 0) {
+          setCombatEnded(true);
+          setCombatResult("defeat");
+          setIsProcessingRound(false);
+          return;
+        }
+      } else {
+        setWasEnemyCriticalStrike(false);
       }
     }
 
@@ -1108,6 +1131,8 @@ export default function CombatDialog({
                         {integrityDamageIndicator.visible && (
                           <div className="absolute -translate-y-5 inset-0 flex items-center justify-center text-green-900 font-bold text-sm pointer-events-none">
                             -{formatNumber(integrityDamageIndicator.amount)}
+                            {wasEnemyCriticalStrike &&
+                              ` (${t("ui:combat.critical")})`}
                           </div>
                         )}
                         {integrityHealIndicator.visible && (

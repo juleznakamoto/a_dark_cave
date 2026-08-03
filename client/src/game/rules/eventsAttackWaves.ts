@@ -494,9 +494,14 @@ export function applyAttackWaveDefeatMadness(
   };
 }
 
+function attackWaveNumberFromId(waveId: AttackWaveId): number {
+  return ATTACK_WAVE_IDS.indexOf(waveId) + 1;
+}
+
 function createAttackWaveEvent(waveId: AttackWaveId): GameEvent {
   const def = ATTACK_WAVE_DEFINITIONS[waveId];
   const rules = WAVE_RULES[waveId];
+  const waveNumber = attackWaveNumberFromId(waveId);
 
   return {
     id: waveId,
@@ -581,6 +586,7 @@ function createAttackWaveEvent(waveId: AttackWaveId): GameEvent {
           enemy: {
             name: ATTACK_WAVE_ENEMY_NAME,
             ...enemyStats,
+            waveNumber,
           },
           eventTitle: resolveEventTitle(waveId, state) ?? "",
           eventMessage: resolveEventMessage(waveId, undefined, state),
@@ -734,6 +740,7 @@ function createPostCompletionAttackWaveEvent(): GameEvent {
           enemy: {
             name: ATTACK_WAVE_ENEMY_NAME,
             ...enemyStats,
+            waveNumber,
           },
           eventTitle:
             resolveEventTitle(waveId, undefined, state, waveVars) ?? "",

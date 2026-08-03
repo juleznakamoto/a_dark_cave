@@ -62,6 +62,35 @@ export function calculateCriticalStrikeChance(luck: number): number {
   return 0;
 }
 
+/** Normal mode wave-1 enemy crit chance (%). */
+const ENEMY_CRIT_BASE_NORMAL = 0;
+/** Cruel mode wave-1 enemy crit chance (%). */
+const ENEMY_CRIT_BASE_CRUEL = 5;
+/** Per-wave enemy crit increase for waves 2–10 (%). */
+const ENEMY_CRIT_PER_WAVE_EARLY = 1;
+/** Per-wave enemy crit increase after wave 10 (%). */
+const ENEMY_CRIT_PER_WAVE_LATE = 0.25;
+const ENEMY_CRIT_EARLY_WAVE_CAP = 10;
+
+/**
+ * Enemy critical chance (%) from attack wave number and game mode.
+ * Wave 1 starts at 0% (5% in Cruel), +1% per wave through 10, then +0.25% per wave.
+ */
+export function calculateEnemyCriticalChancePercent(
+  waveNumber: number,
+  cruelMode: boolean,
+): number {
+  const wave = Math.max(1, Math.floor(waveNumber));
+  const base = cruelMode ? ENEMY_CRIT_BASE_CRUEL : ENEMY_CRIT_BASE_NORMAL;
+  const earlyWaves = Math.min(wave, ENEMY_CRIT_EARLY_WAVE_CAP) - 1;
+  const lateWaves = Math.max(0, wave - ENEMY_CRIT_EARLY_WAVE_CAP);
+  return (
+    base +
+    earlyWaves * ENEMY_CRIT_PER_WAVE_EARLY +
+    lateWaves * ENEMY_CRIT_PER_WAVE_LATE
+  );
+}
+
 /** Madness-based chance (0–15%) that a Fight-click bastion strike deals no damage. */
 export function getCombatAttackFailChancePercent(madness: number): number {
   if (madness >= 60) return 15;

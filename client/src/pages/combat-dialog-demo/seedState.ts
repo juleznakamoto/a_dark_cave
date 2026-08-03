@@ -29,12 +29,12 @@ export type EnemyPresetId = "training" | "wave3" | "wave7" | "boss";
 
 export const ENEMY_PRESETS: Record<
   EnemyPresetId,
-  { label: string; attack: number; maxHealth: number }
+  { label: string; attack: number; maxHealth: number; waveNumber: number }
 > = {
-  training: { label: "Training dummy", attack: 5, maxHealth: 120 },
-  wave3: { label: "Wave 3", attack: 25, maxHealth: 150 },
-  wave7: { label: "Wave 7", attack: 45, maxHealth: 250 },
-  boss: { label: "Boss", attack: 80, maxHealth: 500 },
+  training: { label: "Training dummy", attack: 5, maxHealth: 120, waveNumber: 1 },
+  wave3: { label: "Wave 3", attack: 25, maxHealth: 150, waveNumber: 3 },
+  wave7: { label: "Wave 7", attack: 45, maxHealth: 250, waveNumber: 7 },
+  boss: { label: "Boss", attack: 80, maxHealth: 500, waveNumber: 10 },
 };
 
 export function buildCombatDemoEnemy(presetId: EnemyPresetId) {
@@ -44,6 +44,7 @@ export function buildCombatDemoEnemy(presetId: EnemyPresetId) {
     attack: preset.attack,
     maxHealth: preset.maxHealth,
     currentHealth: preset.maxHealth,
+    waveNumber: preset.waveNumber,
   };
 }
 

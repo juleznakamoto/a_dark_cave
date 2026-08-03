@@ -15,6 +15,8 @@ export interface Enemy {
   attack: number;
   maxHealth: number;
   currentHealth: number;
+  /** Attack wave number (1–10 chart, 11+ post-completion). Used for enemy crit chance. */
+  waveNumber?: number;
 }
 
 export interface CombatItem {
