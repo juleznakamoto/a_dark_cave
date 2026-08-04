@@ -61,7 +61,7 @@
     "damaged": "(beschädigt)", //x1.3
     "level": "Stufe {{level}}",
     "improveForInsight": "Verbessern für {{cost}} Einsicht",
-    "unlockMoreJobsForInsight": "Weitere Jobs für {{cost}} Einsicht freischalten",
+    "unlockMoreJobsForInsight": "Limit erhöhen für {{cost}} Einsicht",
     "villagerCapJobs": "{{count}} Jobs",
     "enchantForInsight": "Verzaubern für {{cost}} Einsicht",
     "maxHeld": "Max.: {{value}}",

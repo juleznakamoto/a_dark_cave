@@ -121,7 +121,7 @@ export function VillagerCapUpgradeBadge({
   const isDisabled = !affordable || isPlaying;
   const upgradeTooltip = getUiTooltip(
     "unlockMoreJobsForInsight",
-    "Unlock more jobs for {{cost}} Insight",
+    "Increase limit for {{cost}} Insight",
     { cost },
   );
 

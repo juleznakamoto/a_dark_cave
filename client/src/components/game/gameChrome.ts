@@ -40,7 +40,7 @@ export const TAB_ICON_MASK_BOTTOM =
   "[mask-position:bottom] [-webkit-mask-position:bottom]";
 
 /** Optical align tab mask icons with capital labels in GAME_PANEL_HEADER_BAND. */
-export const TAB_ICON_ALIGN_CLASS = "-translate-y-[2px]";
+export const TAB_ICON_ALIGN_CLASS = "translate-y-[1px]";
 
 /** Default size for Cave/City/… tab mask icons (scales with `--adc-text-scale`). */
 export const TAB_ICON_SIZE_CLASS = "game-tab-icon";

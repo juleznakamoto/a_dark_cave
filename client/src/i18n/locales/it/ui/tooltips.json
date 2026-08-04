@@ -61,7 +61,7 @@
     "damaged": "(danneggiato)",
     "level": "Livello {{level}}",
     "improveForInsight": "Migliora per {{cost}} Intuizione",
-    "unlockMoreJobsForInsight": "Sblocca più lavori per {{cost}} Intuizione",
+    "unlockMoreJobsForInsight": "Aumenta il limite per {{cost}} Intuizione",
     "villagerCapJobs": "{{count}} lavori",
     "enchantForInsight": "Incanta per {{cost}} Intuizione",
     "maxHeld": "Max: {{value}}",
