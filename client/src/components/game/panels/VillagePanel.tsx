@@ -160,18 +160,17 @@ const HEADER_SLOT_BUTTON_CLASS = `${HEADER_SLOT_SIZE_CLASS} p-0 inline-flex item
 
 /** − / count / + columns — shared by summary, stat, and job rows. */
 const VILLAGER_COUNT_BUTTON_SIZE_CLASS = "villager-count-button";
-const VILLAGER_COUNT_ROW_CLASS = "flex min-w-0 items-center";
 /**
- * Villagers + available + on Mission share one grid so the /cap column width
- * from the summary row lines up those labels. Job rows stay on flex layout.
+ * All population rows (summary, available/on Mission, jobs) share one grid so
+ * /cap and optional upgrade-badge columns size to the widest row and labels line up.
  */
-const VILLAGER_SUMMARY_STACK_CLASS = "grid gap-y-1.5";
-const VILLAGER_SUMMARY_STACK_COLS_CLASS = "grid-cols-[auto_auto_1fr]";
-const VILLAGER_SUMMARY_STACK_COLS_WITH_BADGE_CLASS =
+const VILLAGER_COUNT_STACK_CLASS = "grid gap-y-1.5";
+const VILLAGER_COUNT_STACK_COLS_CLASS = "grid-cols-[auto_auto_1fr]";
+const VILLAGER_COUNT_STACK_COLS_WITH_BADGE_CLASS =
   "grid-cols-[auto_auto_auto_1fr]";
-const VILLAGER_SUMMARY_ROW_CLASS =
+const VILLAGER_COUNT_ROW_CLASS =
   "col-span-full grid min-w-0 grid-cols-subgrid items-center";
-/** − / count / + only; /cap + optional Insight badge sit as flex siblings after. */
+/** − / count / + only; /cap + optional Insight badge sit as grid siblings after. */
 const VILLAGER_COUNT_CONTROL_GRID_CLASS =
   "grid shrink-0 grid-cols-[auto_3.5ch_auto] items-center";
 /** Same size as timed-tab ActionInsightBadge (`h-5 w-5` + lg blob). */
@@ -197,10 +196,10 @@ const VILLAGER_COUNT_VALUE_CLASS = cn(
   ANIMATED_COUNTER_TEXT_CLASS,
 );
 const VILLAGER_COUNT_LABEL_CLASS =
-  "ml-1 min-w-0 flex-1 text-left text-sm leading-tight";
+  "ml-1 min-w-0 text-left text-sm leading-tight";
 /** Label margin comes from badge `mx-1` while the upgrade slot is reserved. */
 const VILLAGER_COUNT_LABEL_WITH_CAP_UPGRADE_CLASS =
-  "min-w-0 flex-1 text-left text-sm leading-tight";
+  "min-w-0 text-left text-sm leading-tight";
 /** Secondary resource rates/upkeep beside job labels — smaller with room when wrapped. */
 const VILLAGER_RESOURCE_HINT_CLASS =
   "text-xs leading-snug text-muted-foreground";
@@ -1066,11 +1065,11 @@ export default function VillagePanel() {
     </span>
   );
 
-  const villagerSummaryStackClass = cn(
-    VILLAGER_SUMMARY_STACK_CLASS,
+  const villagerCountStackClass = cn(
+    VILLAGER_COUNT_STACK_CLASS,
     reserveCapUpgradeSlot
-      ? VILLAGER_SUMMARY_STACK_COLS_WITH_BADGE_CLASS
-      : VILLAGER_SUMMARY_STACK_COLS_CLASS,
+      ? VILLAGER_COUNT_STACK_COLS_WITH_BADGE_CLASS
+      : VILLAGER_COUNT_STACK_COLS_CLASS,
   );
 
   const renderVillagerStatRow = (
@@ -1079,7 +1078,7 @@ export default function VillagePanel() {
     count: number,
     options?: { className?: string },
   ) => (
-    <div key={key} className={VILLAGER_SUMMARY_ROW_CLASS}>
+    <div key={key} className={VILLAGER_COUNT_ROW_CLASS}>
       <div className={VILLAGER_COUNT_CONTROL_GRID_CLASS}>
         <span
           className={cn(VILLAGER_COUNT_BUTTON_SIZE_CLASS, "inline-block")}
@@ -1091,7 +1090,7 @@ export default function VillagePanel() {
           aria-hidden
         />
       </div>
-      {/* Empty /cap cell; subgrid matches width to the Villagers summary /cap. */}
+      {/* Empty /cap cell; subgrid matches width to the widest /cap in the stack. */}
       <span translate="no" className={VILLAGER_COUNT_CAP_CLASS} aria-hidden />
       {renderCapUpgradeSlot()}
       <span className={villagerCountLabelClass}>
@@ -1104,7 +1103,7 @@ export default function VillagePanel() {
   );
 
   const renderVillagersSummaryRow = () => (
-    <div key="villagers-summary" className={VILLAGER_SUMMARY_ROW_CLASS}>
+    <div key="villagers-summary" className={VILLAGER_COUNT_ROW_CLASS}>
       <div className={VILLAGER_COUNT_CONTROL_GRID_CLASS}>
         <span
           className={cn(VILLAGER_COUNT_BUTTON_SIZE_CLASS, "inline-block")}
@@ -2341,20 +2340,18 @@ export default function VillagePanel() {
                     );
                   })()}
               </div>
-              <div className="space-y-1.5">
-                <div className={villagerSummaryStackClass}>
-                  {renderVillagersSummaryRow()}
-                  {renderVillagerStatRow(
-                    "villagers-available",
-                    t("village.villagersAvailable"),
-                    freeVillagers,
-                  )}
-                  {renderVillagerStatRow(
-                    "villagers-on-mission",
-                    t("village.villagersOnMission"),
-                    onMissionCount,
-                  )}
-                </div>
+              <div className={villagerCountStackClass}>
+                {renderVillagersSummaryRow()}
+                {renderVillagerStatRow(
+                  "villagers-available",
+                  t("village.villagersAvailable"),
+                  freeVillagers,
+                )}
+                {renderVillagerStatRow(
+                  "villagers-on-mission",
+                  t("village.villagersOnMission"),
+                  onMissionCount,
+                )}
                 {visiblePopulationJobs.map((job) =>
                   renderPopulationControl(
                     job.id,
