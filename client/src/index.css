@@ -1281,31 +1281,10 @@ html[data-tab-hidden] .exclusive-promo-shockwave-ring:not(.exclusive-promo-shock
   }
 }
 
-/* Pause: help line + [1]… tab badges (desktop md+) */
-@keyframes pause-hotkey-fade-in {
-  from {
-    opacity: 0;
-  }
-
-  to {
-    opacity: 1;
-  }
-}
-
+/* Pause: help line + [1]… tab badges (desktop md+) — fully opaque, no fade */
 .pause-hotkey-hint-animated,
 .pause-hotkey-badge-animated {
-  opacity: 0;
-  /* One-time fade-in only; footer pause control may still use .continue-pause-flash */
-  animation: pause-hotkey-fade-in 4s ease-out forwards;
-}
-
-@media (prefers-reduced-motion: reduce) {
-
-  .pause-hotkey-hint-animated,
-  .pause-hotkey-badge-animated {
-    opacity: 1;
-    animation: none;
-  }
+  opacity: 1;
 }
 
 @keyframes focus-glow {

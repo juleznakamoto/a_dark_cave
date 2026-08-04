@@ -1031,13 +1031,6 @@ export default function GameContainer() {
     if (next.length > 0) {
       let minLeft = Math.min(...next.map((b) => b.left - 20));
       let maxRight = Math.max(...next.map((b) => b.left + 20));
-      visibleHotkeyTabs.forEach((tab) => {
-        const el = queryTabButton(`tab-${tab}`);
-        if (!el) return;
-        const r = el.getBoundingClientRect();
-        minLeft = Math.min(minLeft, r.left);
-        maxRight = Math.max(maxRight, r.right);
-      });
       // Only the hint's horizontal extent is read back (width is offset-safe).
       const hintEl = document.querySelector<HTMLElement>(
         '[data-testid="tab-hotkey-hint"]',
@@ -1051,8 +1044,8 @@ export default function GameContainer() {
       const padY = 8;
       const boxLeft = minLeft - padX;
       const boxWidth = maxRight - minLeft + padX * 2;
-      // Include the tab row so the callout frames the whole dialog (tabs + badges + hint).
-      const boxTop = navRect.top - padY;
+      // Frame badges + hint only (tab labels stay above, outside the callout).
+      const boxTop = badgeRowTop - padY;
       const boxBottom = hintTop + HINT_LINE_H + padY;
       const boxHeight = Math.max(0, boxBottom - boxTop);
       setVillageHotkeyBoxLayout({
@@ -1231,7 +1224,7 @@ export default function GameContainer() {
             >
               {villageHotkeyBoxLayout != null && (
                 <div
-                  className={`absolute z-0 rounded border border-red-500 bg-transparent${showVillageHotkeyBox ? " pointer-events-auto" : " pointer-events-none"}`}
+                  className={`absolute z-0 rounded border border-red-500 bg-neutral-950${showVillageHotkeyBox ? " pointer-events-auto" : " pointer-events-none"}`}
                   style={{
                     top: villageHotkeyBoxLayout.top,
                     left: villageHotkeyBoxLayout.left,
