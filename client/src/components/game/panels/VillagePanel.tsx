@@ -161,6 +161,16 @@ const HEADER_SLOT_BUTTON_CLASS = `${HEADER_SLOT_SIZE_CLASS} p-0 inline-flex item
 /** − / count / + columns — shared by summary, stat, and job rows. */
 const VILLAGER_COUNT_BUTTON_SIZE_CLASS = "villager-count-button";
 const VILLAGER_COUNT_ROW_CLASS = "flex min-w-0 items-center";
+/**
+ * Villagers + available + on Mission share one grid so the /cap column width
+ * from the summary row lines up those labels. Job rows stay on flex layout.
+ */
+const VILLAGER_SUMMARY_STACK_CLASS = "grid gap-y-1.5";
+const VILLAGER_SUMMARY_STACK_COLS_CLASS = "grid-cols-[auto_auto_1fr]";
+const VILLAGER_SUMMARY_STACK_COLS_WITH_BADGE_CLASS =
+  "grid-cols-[auto_auto_auto_1fr]";
+const VILLAGER_SUMMARY_ROW_CLASS =
+  "col-span-full grid min-w-0 grid-cols-subgrid items-center";
 /** − / count / + only; /cap + optional Insight badge sit as flex siblings after. */
 const VILLAGER_COUNT_CONTROL_GRID_CLASS =
   "grid shrink-0 grid-cols-[auto_3.5ch_auto] items-center";
@@ -1056,13 +1066,20 @@ export default function VillagePanel() {
     </span>
   );
 
+  const villagerSummaryStackClass = cn(
+    VILLAGER_SUMMARY_STACK_CLASS,
+    reserveCapUpgradeSlot
+      ? VILLAGER_SUMMARY_STACK_COLS_WITH_BADGE_CLASS
+      : VILLAGER_SUMMARY_STACK_COLS_CLASS,
+  );
+
   const renderVillagerStatRow = (
     key: string,
     label: string,
     count: number,
     options?: { className?: string },
   ) => (
-    <div key={key} className={VILLAGER_COUNT_ROW_CLASS}>
+    <div key={key} className={VILLAGER_SUMMARY_ROW_CLASS}>
       <div className={VILLAGER_COUNT_CONTROL_GRID_CLASS}>
         <span
           className={cn(VILLAGER_COUNT_BUTTON_SIZE_CLASS, "inline-block")}
@@ -1074,14 +1091,8 @@ export default function VillagePanel() {
           aria-hidden
         />
       </div>
-      {/* Invisible /cap spacer so labels line up with the Villagers summary row. */}
-      <span
-        translate="no"
-        className={cn(VILLAGER_COUNT_CAP_CLASS, "invisible")}
-        aria-hidden
-      >
-        {maxPopulation > 0 ? `/${maxPopulation}` : ""}
-      </span>
+      {/* Empty /cap cell; subgrid matches width to the Villagers summary /cap. */}
+      <span translate="no" className={VILLAGER_COUNT_CAP_CLASS} aria-hidden />
       {renderCapUpgradeSlot()}
       <span className={villagerCountLabelClass}>
         <span translate="no" className="notranslate" aria-hidden>
@@ -1093,7 +1104,7 @@ export default function VillagePanel() {
   );
 
   const renderVillagersSummaryRow = () => (
-    <div key="villagers-summary" className={VILLAGER_COUNT_ROW_CLASS}>
+    <div key="villagers-summary" className={VILLAGER_SUMMARY_ROW_CLASS}>
       <div className={VILLAGER_COUNT_CONTROL_GRID_CLASS}>
         <span
           className={cn(VILLAGER_COUNT_BUTTON_SIZE_CLASS, "inline-block")}
@@ -2331,17 +2342,19 @@ export default function VillagePanel() {
                   })()}
               </div>
               <div className="space-y-1.5">
-                {renderVillagersSummaryRow()}
-                {renderVillagerStatRow(
-                  "villagers-available",
-                  t("village.villagersAvailable"),
-                  freeVillagers,
-                )}
-                {renderVillagerStatRow(
-                  "villagers-on-mission",
-                  t("village.villagersOnMission"),
-                  onMissionCount,
-                )}
+                <div className={villagerSummaryStackClass}>
+                  {renderVillagersSummaryRow()}
+                  {renderVillagerStatRow(
+                    "villagers-available",
+                    t("village.villagersAvailable"),
+                    freeVillagers,
+                  )}
+                  {renderVillagerStatRow(
+                    "villagers-on-mission",
+                    t("village.villagersOnMission"),
+                    onMissionCount,
+                  )}
+                </div>
                 {visiblePopulationJobs.map((job) =>
                   renderPopulationControl(
                     job.id,
