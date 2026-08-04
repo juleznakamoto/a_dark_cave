@@ -94,7 +94,7 @@ interface AudioControlRowProps {
   onVolumeChange: (volume: number) => void;
 }
 
-/** One [icon][label][slider] row: tapping the icon mutes/unmutes, the slider sets volume. */
+/** One [icon][label][slider] row: tapping the icon or label mutes/unmutes, the slider sets volume. */
 function AudioControlRow({
   iconOn,
   iconOff,
@@ -122,7 +122,15 @@ function AudioControlRow({
             }`}
         />
       </button>
-      <span className="w-24 shrink-0 whitespace-nowrap text-sm">{title}</span>
+      <button
+        type="button"
+        onClick={onToggleMute}
+        aria-label={label}
+        aria-pressed={!muted}
+        className={`w-24 shrink-0 whitespace-nowrap rounded-md px-1 py-1 text-left text-sm hover:bg-muted/40 transition-colors ${muted ? "opacity-40" : ""}`}
+      >
+        {title}
+      </button>
       <div className="flex flex-1 items-center">
         <input
           type="range"
