@@ -1223,7 +1223,7 @@ export default function GameContainer() {
             >
               {villageHotkeyBoxLayout != null && (
                 <div
-                  className={`absolute z-0 rounded bg-neutral-950${showVillageHotkeyBox ? " pointer-events-auto" : " pointer-events-none"}`}
+                  className={`absolute z-0 rounded border border-red-500 bg-neutral-950${showVillageHotkeyBox ? " pointer-events-auto" : " pointer-events-none"}`}
                   style={{
                     top: villageHotkeyBoxLayout.top,
                     left: villageHotkeyBoxLayout.left,
@@ -1268,7 +1268,7 @@ export default function GameContainer() {
               {pauseHotkeyHint != null && (
                 <div
                   data-testid="tab-hotkey-hint"
-                  className="pause-hotkey-hint-animated absolute z-[2] w-max max-w-[calc(100vw-1rem)] whitespace-nowrap border border-red-500 px-1 text-center text-xs leading-none text-foreground drop-shadow"
+                  className="pause-hotkey-hint-animated absolute z-[2] w-max max-w-[calc(100vw-1rem)] whitespace-nowrap px-1 text-center text-xs leading-none text-foreground drop-shadow"
                   style={{
                     top: pauseHotkeyHint.top,
                     left: pauseHotkeyHint.left,
