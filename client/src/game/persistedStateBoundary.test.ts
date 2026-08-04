@@ -17,6 +17,8 @@ describe("persistedStateBoundary", () => {
       resources: { wood: 1, gold: 2 },
       playTime: 10,
       villageHotkeyTutorialShown: true,
+      feedbackPromptShown: true,
+      lastFreeGoldClaim: 1_700_000_000_000,
       shopDialogOpen: true,
       shopCruelModeHighlight: true,
       compassGlowButton: "explore",
@@ -44,12 +46,30 @@ describe("persistedStateBoundary", () => {
     expect(persisted).not.toHaveProperty("current_population");
     expect(persisted.isPaused).toBe(false);
     expect(persisted.villageHotkeyTutorialShown).toBe(true);
+    expect(persisted.feedbackPromptShown).toBe(true);
+    expect(persisted.lastFreeGoldClaim).toBe(1_700_000_000_000);
     expect(persisted.executionStartTimes).toEqual({ buildHut: 123 });
     expect(persisted.timedEventTab).toEqual({
       isActive: true,
       event: { id: "merchant" },
       expiryTime: 99,
     });
+  });
+
+  it("persists one-shot prompt and claim flags through the save allowlist", () => {
+    // These live on the store and are hydrated on load; if missing from
+    // gameStateSchema they are silently stripped by buildPersistedGameState.
+    const persisted = buildPersistedGameState({
+      resources: { wood: 1 },
+      playTime: 10,
+      feedbackPromptShown: true,
+      villageHotkeyTutorialShown: true,
+      lastFreeGoldClaim: 42,
+    });
+
+    expect(persisted.feedbackPromptShown).toBe(true);
+    expect(persisted.villageHotkeyTutorialShown).toBe(true);
+    expect(persisted.lastFreeGoldClaim).toBe(42);
   });
 
   it("serializes only resumable timed-event fields", () => {

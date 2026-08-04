@@ -379,6 +379,12 @@ body {
   height: calc(20px * var(--adc-control-scale, 1));
 }
 
+/* VillagePanel job-row villager-cap Insight badge (between sm and lg). */
+.building-action-badge--villager-cap {
+  width: calc(18px * var(--adc-control-scale, 1));
+  height: calc(18px * var(--adc-control-scale, 1));
+}
+
 /* Action-button corner badges (level / prior / insight / boost hosts). */
 .button-level-badge {
   position: absolute;
@@ -429,6 +435,13 @@ body {
   width: calc(14px * var(--adc-control-scale, 1));
   height: calc(14px * var(--adc-control-scale, 1));
   font-size: calc(14px * var(--adc-control-scale, 1));
+}
+
+/* VillagePanel job-row villager-cap Insight hit target. */
+.insight-action-badge-trigger--villager-cap {
+  width: calc(18px * var(--adc-control-scale, 1));
+  height: calc(18px * var(--adc-control-scale, 1));
+  font-size: calc(18px * var(--adc-control-scale, 1));
 }
 
 /* Village header slots (construction queue, job presets, insight unlocks). */
@@ -506,13 +519,25 @@ html.adc-text-large .game-panel-header-indicator-row {
   height: calc(18px * var(--adc-control-scale, 1));
 }
 
-/* Reserved VillagePanel column after /cap for Insight villager-cap badges. */
+/*
+ * Reserved VillagePanel column after /cap for Insight villager-cap badges.
+ * Fixed track so empty rows (Coal Miner etc.) keep label alignment.
+ */
+.villager-count-control-grid--with-cap-upgrade {
+  display: grid;
+  flex-shrink: 0;
+  align-items: center;
+  /* badge 18px + ml 3px + mr 5px */
+  grid-template-columns:
+    auto 3.5ch auto 4.5ch calc((18px + 3px + 5px) * var(--adc-control-scale, 1));
+}
+
 .villager-cap-upgrade-slot {
-  width: calc(14px * var(--adc-control-scale, 1));
-  min-width: calc(14px * var(--adc-control-scale, 1));
-  height: calc(14px * var(--adc-control-scale, 1));
-  margin-left: calc(-2px * var(--adc-control-scale, 1));
-  margin-right: calc(4px * var(--adc-control-scale, 1));
+  box-sizing: border-box;
+  width: 100%;
+  height: calc(18px * var(--adc-control-scale, 1));
+  padding-left: calc(3px * var(--adc-control-scale, 1));
+  padding-right: calc(5px * var(--adc-control-scale, 1));
 }
 
 /* Shared dialog X: square hit target + icon grow slightly with Large text. */
@@ -575,6 +600,10 @@ html.adc-text-large .game-panel-header-indicator-row {
 
 .building-action-badge--sm .building-action-badge__glyph {
   font-size: calc(14px * var(--adc-control-scale, 1));
+}
+
+.building-action-badge--villager-cap .building-action-badge__glyph {
+  font-size: calc(15px * var(--adc-control-scale, 1));
 }
 
 .building-action-badge--lg .building-action-badge__glyph {

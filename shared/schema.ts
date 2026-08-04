@@ -714,8 +714,12 @@ export const gameStateSchema = z.object({
   lastResourceSnapshotTime: z.number().default(0).optional(),
   /** Resource keys that have appeared in the side panel (persisted once amount > 0). */
   seenResources: z.array(z.string()).default([]),
+  /** One-time feedback dialog at 105m play time has been shown or skipped. */
+  feedbackPromptShown: z.boolean().default(false),
   /** Village/Forest tab hotkey tutorial callout was dismissed or timed out. */
   villageHotkeyTutorialShown: z.boolean().default(false),
+  /** Timestamp (ms) of last free gold claim from the shop. */
+  lastFreeGoldClaim: z.number().default(0),
   /** Action IDs whose full effect rows were revealed via Insight (persisted). */
   revealedEffects: z.array(z.string()).default([]),
   /** All village build action descriptions unlocked via Insight (Builder's Lodge). */

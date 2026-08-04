@@ -14,6 +14,9 @@ export const INSIGHT_BADGE_TOOLTIP_TRIGGER_OVERLAY_CLASS =
  */
 export const INSIGHT_BADGE_SIDE_PANEL_SIZE_CLASS =
   "insight-action-badge-trigger--side-panel";
+/** VillagePanel job-row villager-cap Insight badges. */
+export const INSIGHT_BADGE_VILLAGER_CAP_SIZE_CLASS =
+  "insight-action-badge-trigger--villager-cap";
 
 /** Shared insight badge button: single-layer opacity (no nested badge opacity). */
 export function getInsightBadgeTriggerClassName({
@@ -47,10 +50,22 @@ type BuildingActionBadgeProps = {
   playing?: boolean;
   /** When true, badge fills its parent instead of self-anchoring with absolute CSS. */
   embedded?: boolean;
-  /** `sm` = side-panel building row; `lg` = action overlays and header badges. */
-  size?: "sm" | "lg";
+  /**
+   * `sm` = side-panel building row; `villagerCap` = VillagePanel job rows;
+   * `lg` = action overlays and header badges.
+   */
+  size?: "sm" | "villagerCap" | "lg";
   /** Idle glyph in font-noto-symbols-2 (defaults to Insight triangle). */
   glyph?: string;
+};
+
+const BUILDING_ACTION_BADGE_SIZE_CLASS: Record<
+  NonNullable<BuildingActionBadgeProps["size"]>,
+  string
+> = {
+  sm: "building-action-badge--sm",
+  villagerCap: "building-action-badge--villager-cap",
+  lg: "building-action-badge--lg",
 };
 
 export function BuildingActionBadge({
@@ -67,9 +82,7 @@ export function BuildingActionBadge({
     <span
       className={cn(
         "building-action-badge",
-        size === "sm"
-          ? "building-action-badge--sm"
-          : "building-action-badge--lg",
+        BUILDING_ACTION_BADGE_SIZE_CLASS[size],
         embedded && "building-action-badge--embedded",
         playing && "building-action-badge--playing",
       )}

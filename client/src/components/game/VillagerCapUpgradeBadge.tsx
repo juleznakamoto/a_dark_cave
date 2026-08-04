@@ -2,8 +2,8 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import {
   BuildingActionBadge,
   getInsightBadgeTriggerClassName,
-  INSIGHT_BADGE_SIDE_PANEL_SIZE_CLASS,
   INSIGHT_BADGE_TOOLTIP_TRIGGER_CLASS,
+  INSIGHT_BADGE_VILLAGER_CAP_SIZE_CLASS,
 } from "@/components/game/BuildingActionBadge";
 import { TooltipWrapper } from "@/components/game/TooltipWrapper";
 import { useGameStore } from "@/game/state";
@@ -57,8 +57,6 @@ function useInsightBadgeTooltipPulse(tooltipId: string) {
 
 type VillagerCapUpgradeBadgeProps = {
   groupId: VillagerCapGroupId;
-  /** Optional size override; village rows use `sm` next to −/+ controls. */
-  size?: "sm" | "lg";
 };
 
 /**
@@ -67,7 +65,6 @@ type VillagerCapUpgradeBadgeProps = {
  */
 export function VillagerCapUpgradeBadge({
   groupId,
-  size = "sm",
 }: VillagerCapUpgradeBadgeProps) {
   const tooltipId = `villager-cap-upgrade-${groupId}`;
   const {
@@ -138,7 +135,7 @@ export function VillagerCapUpgradeBadge({
         setSuppressHover(false);
         handleTooltipLeave(playing);
       }}
-      className="inline-flex shrink-0 items-center self-center"
+      className="inline-flex h-full w-full items-center justify-center"
     >
       <button
         type="button"
@@ -156,12 +153,12 @@ export function VillagerCapUpgradeBadge({
           suppressHover,
           className: cn(
             pulseClassName,
-            size === "sm" && INSIGHT_BADGE_SIDE_PANEL_SIZE_CLASS,
+            INSIGHT_BADGE_VILLAGER_CAP_SIZE_CLASS,
             "leading-none",
           ),
         })}
       >
-        <BuildingActionBadge embedded size={size} playing={playing} />
+        <BuildingActionBadge embedded size="villagerCap" playing={playing} />
       </button>
     </TooltipWrapper>
   );
