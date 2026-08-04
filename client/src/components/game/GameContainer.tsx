@@ -1065,7 +1065,8 @@ export default function GameContainer() {
       measureTabHotkeyOverlay();
       return;
     }
-    // Two passes: the first renders the hint so the second can measure its width for the box.
+    // Two passes: the first mounts the hint; the second measures it and sizes the callout.
+    // (Callout is not applied until the hint exists — see measureTabHotkeyOverlay.)
     const id1 = requestAnimationFrame(() => {
       measureTabHotkeyOverlay();
       const id2 = requestAnimationFrame(() => measureTabHotkeyOverlay());
