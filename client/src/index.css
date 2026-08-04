@@ -511,6 +511,8 @@ html.adc-text-large .game-panel-header-indicator-row {
   width: calc(14px * var(--adc-control-scale, 1));
   min-width: calc(14px * var(--adc-control-scale, 1));
   height: calc(14px * var(--adc-control-scale, 1));
+  margin-left: calc(-2px * var(--adc-control-scale, 1));
+  margin-right: calc(4px * var(--adc-control-scale, 1));
 }
 
 /* Shared dialog X: square hit target + icon grow slightly with Large text. */

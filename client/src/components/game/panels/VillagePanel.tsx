@@ -183,6 +183,11 @@ const VILLAGER_COUNT_CAP_CLASS = cn(
   "notranslate ml-1 inline-flex items-center self-center leading-tight",
   ANIMATED_COUNTER_TEXT_CLASS,
 );
+/** Pull /cap against the Insight badge column while that slot is reserved. */
+const VILLAGER_COUNT_CAP_WITH_UPGRADE_SLOT_CLASS = cn(
+  VILLAGER_COUNT_CAP_CLASS,
+  "justify-end",
+);
 const VILLAGER_COUNT_VALUE_CLASS = cn(
   "notranslate inline-flex w-full items-center justify-center self-center leading-tight",
   ANIMATED_COUNTER_TEXT_CLASS,
@@ -1033,6 +1038,9 @@ export default function VillagePanel() {
   const villagerCountControlGridClass = reserveCapUpgradeSlot
     ? VILLAGER_COUNT_CONTROL_GRID_WITH_CAP_UPGRADE_CLASS
     : VILLAGER_COUNT_CONTROL_GRID_CLASS;
+  const villagerCountCapClass = reserveCapUpgradeSlot
+    ? VILLAGER_COUNT_CAP_WITH_UPGRADE_SLOT_CLASS
+    : VILLAGER_COUNT_CAP_CLASS;
 
   const renderCapUpgradeSlot = (groupId?: VillagerCapGroupId) => {
     if (!reserveCapUpgradeSlot) return null;
@@ -1066,7 +1074,7 @@ export default function VillagePanel() {
           className={cn(VILLAGER_COUNT_BUTTON_SIZE_CLASS, "inline-block")}
           aria-hidden
         />
-        <span translate="no" className={VILLAGER_COUNT_CAP_CLASS} aria-hidden />
+        <span translate="no" className={villagerCountCapClass} aria-hidden />
         {renderCapUpgradeSlot()}
       </div>
       <span className={VILLAGER_COUNT_LABEL_CLASS}>
@@ -1092,7 +1100,7 @@ export default function VillagePanel() {
         />
         <span
           translate="no"
-          className={cn(VILLAGER_COUNT_CAP_CLASS, "text-muted-foreground")}
+          className={cn(villagerCountCapClass, "text-muted-foreground")}
         >
           {maxPopulation > 0 ? `/${maxPopulation}` : ""}
         </span>
@@ -1240,7 +1248,7 @@ export default function VillagePanel() {
           <span
             translate="no"
             className={cn(
-              VILLAGER_COUNT_CAP_CLASS,
+              villagerCountCapClass,
               !atCap && "text-muted-foreground",
             )}
           >
