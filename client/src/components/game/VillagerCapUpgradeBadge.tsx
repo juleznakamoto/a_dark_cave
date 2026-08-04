@@ -3,7 +3,6 @@ import {
   BuildingActionBadge,
   getInsightBadgeTriggerClassName,
   INSIGHT_BADGE_TOOLTIP_TRIGGER_CLASS,
-  INSIGHT_BADGE_VILLAGER_CAP_SIZE_CLASS,
 } from "@/components/game/BuildingActionBadge";
 import { TooltipWrapper } from "@/components/game/TooltipWrapper";
 import { useGameStore } from "@/game/state";
@@ -60,8 +59,9 @@ type VillagerCapUpgradeBadgeProps = {
 };
 
 /**
- * Villager-cap upgrade badge. Clicking plays the blob animation for
- * INSIGHT_REVEAL_DURATION_MS (3s); the upgrade applies when the animation resolves.
+ * Villager-cap upgrade badge (timed-tab Insight size: h-5 w-5 + lg blob).
+ * Clicking plays the blob animation for INSIGHT_REVEAL_DURATION_MS (3s);
+ * the upgrade applies when the animation resolves.
  */
 export function VillagerCapUpgradeBadge({
   groupId,
@@ -151,14 +151,10 @@ export function VillagerCapUpgradeBadge({
           canAfford: affordable,
           playing,
           suppressHover,
-          className: cn(
-            pulseClassName,
-            INSIGHT_BADGE_VILLAGER_CAP_SIZE_CLASS,
-            "leading-none",
-          ),
+          className: cn(pulseClassName, "h-5 w-5 leading-none"),
         })}
       >
-        <BuildingActionBadge embedded size="villagerCap" playing={playing} />
+        <BuildingActionBadge embedded size="lg" playing={playing} />
       </button>
     </TooltipWrapper>
   );

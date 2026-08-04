@@ -158,16 +158,15 @@ const HEADER_SLOT_INSIGHT_BUTTON_CLASS = HEADER_SLOT_SIZE_CLASS;
 /** Interactive preset slot / save controls — must receive native clicks (no pointer-events-none). */
 const HEADER_SLOT_BUTTON_CLASS = `${HEADER_SLOT_SIZE_CLASS} p-0 inline-flex items-center justify-center leading-none transition-colors appearance-none [-webkit-appearance:none]`;
 
-/** − / count / + / cap [/ optional insight-cap slot] — shared by summary, stat, and job rows. */
+/** − / count / + columns — shared by summary, stat, and job rows. */
 const VILLAGER_COUNT_BUTTON_SIZE_CLASS = "villager-count-button";
 const VILLAGER_COUNT_ROW_CLASS = "flex min-w-0 items-center";
+/** − / count / + only; /cap + optional Insight badge sit as flex siblings after. */
 const VILLAGER_COUNT_CONTROL_GRID_CLASS =
-  "grid shrink-0 grid-cols-[auto_3.5ch_auto_4.5ch] items-center";
-/** Extra fixed column after /cap while any villager-cap Insight upgrade remains. */
-const VILLAGER_COUNT_CONTROL_GRID_WITH_CAP_UPGRADE_CLASS =
-  "villager-count-control-grid--with-cap-upgrade";
+  "grid shrink-0 grid-cols-[auto_3.5ch_auto] items-center";
+/** Same size as timed-tab ActionInsightBadge (`h-5 w-5` + lg blob). */
 const VILLAGER_COUNT_CAP_UPGRADE_SLOT_CLASS =
-  "villager-cap-upgrade-slot inline-flex items-center justify-center self-center";
+  "mx-1 inline-flex h-5 w-5 shrink-0 items-center justify-center self-center";
 const VILLAGER_COUNT_BUTTON_CLASS = cn(
   VILLAGER_COUNT_BUTTON_SIZE_CLASS,
   "min-h-0 shrink-0 p-0 inline-flex items-center justify-center leading-none font-normal appearance-none [-webkit-appearance:none] disabled:opacity-100",
@@ -180,7 +179,7 @@ const villagerCountButtonClassName = (isDisabled: boolean) =>
     "opacity-100 disabled:opacity-100",
   );
 const VILLAGER_COUNT_CAP_CLASS = cn(
-  "notranslate ml-0.5 inline-flex items-center justify-start self-center leading-tight",
+  "notranslate ml-0.5 inline-flex shrink-0 items-center justify-start self-center leading-tight",
   ANIMATED_COUNTER_TEXT_CLASS,
 );
 const VILLAGER_COUNT_VALUE_CLASS = cn(
@@ -189,6 +188,9 @@ const VILLAGER_COUNT_VALUE_CLASS = cn(
 );
 const VILLAGER_COUNT_LABEL_CLASS =
   "ml-1 min-w-0 flex-1 text-left text-sm leading-tight";
+/** Label margin comes from badge `mx-1` while the upgrade slot is reserved. */
+const VILLAGER_COUNT_LABEL_WITH_CAP_UPGRADE_CLASS =
+  "min-w-0 flex-1 text-left text-sm leading-tight";
 /** Secondary resource rates/upkeep beside job labels — smaller with room when wrapped. */
 const VILLAGER_RESOURCE_HINT_CLASS =
   "text-xs leading-snug text-muted-foreground";
@@ -1028,16 +1030,19 @@ export default function VillagePanel() {
     return byJob;
   })();
 
-  // Keep a reserved column after /cap on every row until no upgrades remain.
+  // Keep a reserved badge slot after /cap on every row until no upgrades remain.
   const reserveCapUpgradeSlot = capUpgradeGroupByJobId.size > 0;
-  const villagerCountControlGridClass = reserveCapUpgradeSlot
-    ? VILLAGER_COUNT_CONTROL_GRID_WITH_CAP_UPGRADE_CLASS
-    : VILLAGER_COUNT_CONTROL_GRID_CLASS;
+  const villagerCountLabelClass = reserveCapUpgradeSlot
+    ? VILLAGER_COUNT_LABEL_WITH_CAP_UPGRADE_CLASS
+    : VILLAGER_COUNT_LABEL_CLASS;
 
   const renderCapUpgradeSlot = (groupId?: VillagerCapGroupId) => {
     if (!reserveCapUpgradeSlot) return null;
     return (
-      <span className={VILLAGER_COUNT_CAP_UPGRADE_SLOT_CLASS} aria-hidden={!groupId}>
+      <span
+        className={VILLAGER_COUNT_CAP_UPGRADE_SLOT_CLASS}
+        aria-hidden={!groupId}
+      >
         {groupId ? <VillagerCapUpgradeBadge groupId={groupId} /> : null}
       </span>
     );
@@ -1056,7 +1061,7 @@ export default function VillagePanel() {
     options?: { className?: string },
   ) => (
     <div key={key} className={VILLAGER_COUNT_ROW_CLASS}>
-      <div className={villagerCountControlGridClass}>
+      <div className={VILLAGER_COUNT_CONTROL_GRID_CLASS}>
         <span
           className={cn(VILLAGER_COUNT_BUTTON_SIZE_CLASS, "inline-block")}
           aria-hidden
@@ -1066,10 +1071,10 @@ export default function VillagePanel() {
           className={cn(VILLAGER_COUNT_BUTTON_SIZE_CLASS, "inline-block")}
           aria-hidden
         />
-        <span translate="no" className={VILLAGER_COUNT_CAP_CLASS} aria-hidden />
-        {renderCapUpgradeSlot()}
       </div>
-      <span className={VILLAGER_COUNT_LABEL_CLASS}>
+      <span translate="no" className={VILLAGER_COUNT_CAP_CLASS} aria-hidden />
+      {renderCapUpgradeSlot()}
+      <span className={villagerCountLabelClass}>
         <span translate="no" className="notranslate" aria-hidden>
           •{" "}
         </span>
@@ -1080,7 +1085,7 @@ export default function VillagePanel() {
 
   const renderVillagersSummaryRow = () => (
     <div key="villagers-summary" className={VILLAGER_COUNT_ROW_CLASS}>
-      <div className={villagerCountControlGridClass}>
+      <div className={VILLAGER_COUNT_CONTROL_GRID_CLASS}>
         <span
           className={cn(VILLAGER_COUNT_BUTTON_SIZE_CLASS, "inline-block")}
           aria-hidden
@@ -1090,15 +1095,15 @@ export default function VillagePanel() {
           className={cn(VILLAGER_COUNT_BUTTON_SIZE_CLASS, "inline-block")}
           aria-hidden
         />
-        <span
-          translate="no"
-          className={cn(VILLAGER_COUNT_CAP_CLASS, "text-muted-foreground")}
-        >
-          {maxPopulation > 0 ? `/${maxPopulation}` : ""}
-        </span>
-        {renderCapUpgradeSlot()}
       </div>
-      <span className={VILLAGER_COUNT_LABEL_CLASS}>
+      <span
+        translate="no"
+        className={cn(VILLAGER_COUNT_CAP_CLASS, "text-muted-foreground")}
+      >
+        {maxPopulation > 0 ? `/${maxPopulation}` : ""}
+      </span>
+      {renderCapUpgradeSlot()}
+      <span className={villagerCountLabelClass}>
         {t("village.villagers")}{" "}
         {totalPopulation > 0 &&
           (isVillagerFoodUpkeepActive(state) ||
@@ -1151,7 +1156,7 @@ export default function VillagePanel() {
 
     return (
       <div key={jobId} className={VILLAGER_COUNT_ROW_CLASS}>
-        <div className={villagerCountControlGridClass}>
+        <div className={VILLAGER_COUNT_CONTROL_GRID_CLASS}>
           <Button
             onMouseDown={(e) => {
               if (e.button !== 0) return;
@@ -1237,18 +1242,18 @@ export default function VillagePanel() {
               +
             </span>
           </Button>
-          <span
-            translate="no"
-            className={cn(
-              VILLAGER_COUNT_CAP_CLASS,
-              !atCap && "text-muted-foreground",
-            )}
-          >
-            {showCap ? `/${cap}` : ""}
-          </span>
-          {renderCapUpgradeSlot(capUpgradeGroupId)}
         </div>
-        <span className={VILLAGER_COUNT_LABEL_CLASS}>
+        <span
+          translate="no"
+          className={cn(
+            VILLAGER_COUNT_CAP_CLASS,
+            !atCap && "text-muted-foreground",
+          )}
+        >
+          {showCap ? `/${cap}` : ""}
+        </span>
+        {renderCapUpgradeSlot(capUpgradeGroupId)}
+        <span className={villagerCountLabelClass}>
           {label}{" "}
           <span key={productionKey} className={VILLAGER_RESOURCE_HINT_CLASS}>
             {productionEntries.map((prod, i) => (
