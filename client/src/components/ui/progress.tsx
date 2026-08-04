@@ -52,10 +52,10 @@ const GROW_SPARK_COLORS = [
 ];
 
 const BRIGHT_SPARK_COLORS = [
-  tailwindToHex("yellow-100"),
-  tailwindToHex("yellow-200"),
-  tailwindToHex("amber-100"),
-  tailwindToHex("amber-200"),
+  tailwindToHex("yellow-300"),
+  tailwindToHex("yellow-400"),
+  tailwindToHex("amber-300"),
+  tailwindToHex("amber-400"),
 ];
 
 interface SparkPalette {
