@@ -158,11 +158,16 @@ const HEADER_SLOT_INSIGHT_BUTTON_CLASS = HEADER_SLOT_SIZE_CLASS;
 /** Interactive preset slot / save controls — must receive native clicks (no pointer-events-none). */
 const HEADER_SLOT_BUTTON_CLASS = `${HEADER_SLOT_SIZE_CLASS} p-0 inline-flex items-center justify-center leading-none transition-colors appearance-none [-webkit-appearance:none]`;
 
-/** − / count / + / cap columns — shared by summary, stat, and job rows. */
+/** − / count / + / cap [/ optional insight-cap slot] — shared by summary, stat, and job rows. */
 const VILLAGER_COUNT_BUTTON_SIZE_CLASS = "villager-count-button";
 const VILLAGER_COUNT_ROW_CLASS = "flex min-w-0 items-center";
 const VILLAGER_COUNT_CONTROL_GRID_CLASS =
   "grid shrink-0 grid-cols-[auto_3.5ch_auto_4.5ch] items-center";
+/** Extra column after /cap while any villager-cap Insight upgrade remains. */
+const VILLAGER_COUNT_CONTROL_GRID_WITH_CAP_UPGRADE_CLASS =
+  "grid shrink-0 grid-cols-[auto_3.5ch_auto_4.5ch_auto] items-center";
+const VILLAGER_COUNT_CAP_UPGRADE_SLOT_CLASS =
+  "villager-cap-upgrade-slot inline-flex items-center justify-center self-center";
 const VILLAGER_COUNT_BUTTON_CLASS = cn(
   VILLAGER_COUNT_BUTTON_SIZE_CLASS,
   "min-h-0 shrink-0 p-0 inline-flex items-center justify-center leading-none font-normal appearance-none [-webkit-appearance:none] disabled:opacity-100",
@@ -1003,6 +1008,41 @@ export default function VillagePanel() {
   const onMissionCount = useGameStore((s) => getExpeditionVillagerCount(s));
   const freeVillagers = villagers.free ?? 0;
 
+  // Filter visible population jobs
+  const visiblePopulationJobs = populationJobs.filter((job) => {
+    if (job.alwaysShow) return true;
+    if (job.showWhen) return job.showWhen();
+    return false;
+  });
+
+  // One insight cap-upgrade badge per group, on the first visible job in that group.
+  const capUpgradeGroupByJobId = (() => {
+    const seenGroups = new Set<VillagerCapGroupId>();
+    const byJob = new Map<string, VillagerCapGroupId>();
+    for (const job of visiblePopulationJobs) {
+      const groupId = getVillagerCapUpgradeGroupForJob(state, job.id);
+      if (!groupId || seenGroups.has(groupId)) continue;
+      seenGroups.add(groupId);
+      byJob.set(job.id, groupId);
+    }
+    return byJob;
+  })();
+
+  // Keep a reserved column after /cap on every row until no upgrades remain.
+  const reserveCapUpgradeSlot = capUpgradeGroupByJobId.size > 0;
+  const villagerCountControlGridClass = reserveCapUpgradeSlot
+    ? VILLAGER_COUNT_CONTROL_GRID_WITH_CAP_UPGRADE_CLASS
+    : VILLAGER_COUNT_CONTROL_GRID_CLASS;
+
+  const renderCapUpgradeSlot = (groupId?: VillagerCapGroupId) => {
+    if (!reserveCapUpgradeSlot) return null;
+    return (
+      <span className={VILLAGER_COUNT_CAP_UPGRADE_SLOT_CLASS} aria-hidden={!groupId}>
+        {groupId ? <VillagerCapUpgradeBadge groupId={groupId} /> : null}
+      </span>
+    );
+  };
+
   const renderVillagerCount = (value: number, className?: string) => (
     <span translate="no" className={cn(VILLAGER_COUNT_VALUE_CLASS, className)}>
       {value}
@@ -1016,7 +1056,7 @@ export default function VillagePanel() {
     options?: { className?: string },
   ) => (
     <div key={key} className={VILLAGER_COUNT_ROW_CLASS}>
-      <div className={VILLAGER_COUNT_CONTROL_GRID_CLASS}>
+      <div className={villagerCountControlGridClass}>
         <span
           className={cn(VILLAGER_COUNT_BUTTON_SIZE_CLASS, "inline-block")}
           aria-hidden
@@ -1027,6 +1067,7 @@ export default function VillagePanel() {
           aria-hidden
         />
         <span translate="no" className={VILLAGER_COUNT_CAP_CLASS} aria-hidden />
+        {renderCapUpgradeSlot()}
       </div>
       <span className={VILLAGER_COUNT_LABEL_CLASS}>
         <span translate="no" className="notranslate" aria-hidden>
@@ -1039,7 +1080,7 @@ export default function VillagePanel() {
 
   const renderVillagersSummaryRow = () => (
     <div key="villagers-summary" className={VILLAGER_COUNT_ROW_CLASS}>
-      <div className={VILLAGER_COUNT_CONTROL_GRID_CLASS}>
+      <div className={villagerCountControlGridClass}>
         <span
           className={cn(VILLAGER_COUNT_BUTTON_SIZE_CLASS, "inline-block")}
           aria-hidden
@@ -1055,6 +1096,7 @@ export default function VillagePanel() {
         >
           {maxPopulation > 0 ? `/${maxPopulation}` : ""}
         </span>
+        {renderCapUpgradeSlot()}
       </div>
       <span className={VILLAGER_COUNT_LABEL_CLASS}>
         {t("village.villagers")}{" "}
@@ -1087,26 +1129,6 @@ export default function VillagePanel() {
     </div>
   );
 
-  // Filter visible population jobs
-  const visiblePopulationJobs = populationJobs.filter((job) => {
-    if (job.alwaysShow) return true;
-    if (job.showWhen) return job.showWhen();
-    return false;
-  });
-
-  // One insight cap-upgrade badge per group, on the first visible job in that group.
-  const capUpgradeGroupByJobId = (() => {
-    const seenGroups = new Set<VillagerCapGroupId>();
-    const byJob = new Map<string, VillagerCapGroupId>();
-    for (const job of visiblePopulationJobs) {
-      const groupId = getVillagerCapUpgradeGroupForJob(state, job.id);
-      if (!groupId || seenGroups.has(groupId)) continue;
-      seenGroups.add(groupId);
-      byJob.set(job.id, groupId);
-    }
-    return byJob;
-  })();
-
   const renderPopulationControl = (jobId: string, label: string) => {
     const currentCount = villagers[jobId as keyof typeof villagers] || 0;
     const jobKey = jobId as keyof typeof villagers;
@@ -1129,7 +1151,7 @@ export default function VillagePanel() {
 
     return (
       <div key={jobId} className={VILLAGER_COUNT_ROW_CLASS}>
-        <div className={VILLAGER_COUNT_CONTROL_GRID_CLASS}>
+        <div className={villagerCountControlGridClass}>
           <Button
             onMouseDown={(e) => {
               if (e.button !== 0) return;
@@ -1173,53 +1195,48 @@ export default function VillagePanel() {
             </span>
           </Button>
           {renderVillagerCount(currentCount)}
-          <span className="inline-flex items-center gap-0.5">
-            <Button
-              onMouseDown={(e) => {
-                if (e.button !== 0) return;
-                if (canAssignMore) {
-                  startHold(() => assignVillager(jobId), false);
-                }
-              }}
-              onMouseUp={() => stopHold(false)}
-              onMouseLeave={() => stopHold(false)}
-              onContextMenu={(e) => {
-                e.preventDefault();
-                if (canAssignMore) {
-                  assignVillager(jobId, 10);
-                }
-              }}
-              onTouchStart={(e) => {
-                if (canAssignMore) {
-                  e.preventDefault(); // Prevent ghost click - synthetic mouse events cause unwanted actions
-                  startHold(() => assignVillager(jobId), true);
-                }
-              }}
-              onTouchEnd={(e) => {
-                if (e.cancelable) e.preventDefault();
-                stopHold(true);
-              }}
-              onTouchCancel={() => stopHold(true)}
-              disabled={!canAssignMore}
-              variant="outline"
-              size="xs"
-              className={villagerCountButtonClassName(!canAssignMore)}
-              style={{ touchAction: "manipulation" }}
-              button_id={`assign-${jobId}`}
+          <Button
+            onMouseDown={(e) => {
+              if (e.button !== 0) return;
+              if (canAssignMore) {
+                startHold(() => assignVillager(jobId), false);
+              }
+            }}
+            onMouseUp={() => stopHold(false)}
+            onMouseLeave={() => stopHold(false)}
+            onContextMenu={(e) => {
+              e.preventDefault();
+              if (canAssignMore) {
+                assignVillager(jobId, 10);
+              }
+            }}
+            onTouchStart={(e) => {
+              if (canAssignMore) {
+                e.preventDefault(); // Prevent ghost click - synthetic mouse events cause unwanted actions
+                startHold(() => assignVillager(jobId), true);
+              }
+            }}
+            onTouchEnd={(e) => {
+              if (e.cancelable) e.preventDefault();
+              stopHold(true);
+            }}
+            onTouchCancel={() => stopHold(true)}
+            disabled={!canAssignMore}
+            variant="outline"
+            size="xs"
+            className={villagerCountButtonClassName(!canAssignMore)}
+            style={{ touchAction: "manipulation" }}
+            button_id={`assign-${jobId}`}
+          >
+            <span
+              className={cn(
+                "text-xs leading-none tabular-nums",
+                !canAssignMore && "opacity-60",
+              )}
             >
-              <span
-                className={cn(
-                  "text-xs leading-none tabular-nums",
-                  !canAssignMore && "opacity-60",
-                )}
-              >
-                +
-              </span>
-            </Button>
-            {capUpgradeGroupId ? (
-              <VillagerCapUpgradeBadge groupId={capUpgradeGroupId} />
-            ) : null}
-          </span>
+              +
+            </span>
+          </Button>
           <span
             translate="no"
             className={cn(
@@ -1229,6 +1246,7 @@ export default function VillagePanel() {
           >
             {showCap ? `/${cap}` : ""}
           </span>
+          {renderCapUpgradeSlot(capUpgradeGroupId)}
         </div>
         <span className={VILLAGER_COUNT_LABEL_CLASS}>
           {label}{" "}

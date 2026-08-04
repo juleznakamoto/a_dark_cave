@@ -506,6 +506,13 @@ html.adc-text-large .game-panel-header-indicator-row {
   height: calc(18px * var(--adc-control-scale, 1));
 }
 
+/* Reserved VillagePanel column after /cap for Insight villager-cap badges. */
+.villager-cap-upgrade-slot {
+  width: calc(14px * var(--adc-control-scale, 1));
+  min-width: calc(14px * var(--adc-control-scale, 1));
+  height: calc(14px * var(--adc-control-scale, 1));
+}
+
 /* Shared dialog X: square hit target + icon grow slightly with Large text. */
 .adc-dialog-close {
   width: calc(1.5rem * var(--adc-control-scale, 1));

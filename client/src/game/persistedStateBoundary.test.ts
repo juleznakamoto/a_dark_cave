@@ -16,6 +16,7 @@ describe("persistedStateBoundary", () => {
     const persisted = buildPersistedGameState({
       resources: { wood: 1, gold: 2 },
       playTime: 10,
+      villageHotkeyTutorialShown: true,
       shopDialogOpen: true,
       shopCruelModeHighlight: true,
       compassGlowButton: "explore",
@@ -42,6 +43,7 @@ describe("persistedStateBoundary", () => {
     expect(persisted).not.toHaveProperty("isUserSignedIn");
     expect(persisted).not.toHaveProperty("current_population");
     expect(persisted.isPaused).toBe(false);
+    expect(persisted.villageHotkeyTutorialShown).toBe(true);
     expect(persisted.executionStartTimes).toEqual({ buildHut: 123 });
     expect(persisted.timedEventTab).toEqual({
       isActive: true,
