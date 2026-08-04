@@ -207,6 +207,28 @@ describe("merchant post-last-wave clarity elixir", () => {
     ).toBe(false);
   });
 
+  it("does not treat cave finds as merchant purchases during the run", () => {
+    const state = gameStateSchema.parse({
+      buildings: { woodenHut: 10, stoneHut: 8, tradePost: 1 },
+      resources: { gold: 50_000 },
+      stats: { madnessFromEvents: 3 },
+      story: {
+        seen: {
+          clarityElixirsUsed: 5,
+          clarityElixirPurchases: 2,
+          clarityElixirFoundVentureDeeper: true,
+          clarityElixirFoundDescendFurther: true,
+          clarityElixirFoundExploreRuins: true,
+        },
+      },
+    });
+
+    expect(getClarityElixirsUsedCount(state)).toBe(5);
+    expect(
+      isMerchantTradeCurrentlyAvailable("trade_clarity_elixir", state),
+    ).toBe(true);
+  });
+
   it("is eligible after wave 10 when Mental Clarity is incomplete, even at 0 Madness", () => {
     const state = gameStateSchema.parse({
       buildings: { woodenHut: 10, stoneHut: 8, tradePost: 1 },
@@ -230,7 +252,7 @@ describe("merchant post-last-wave clarity elixir", () => {
     expect(sawElixir).toBe(true);
   });
 
-  it("is not eligible after Mental Clarity is complete", () => {
+  it("is not eligible after Mental Clarity is complete post-game", () => {
     const state = gameStateSchema.parse({
       buildings: { woodenHut: 10, stoneHut: 8, tradePost: 1 },
       resources: { gold: 50_000 },

@@ -925,12 +925,14 @@ const toolTrades = [
     give: "consumable",
     giveItem: "clarity_elixir",
     condition: (state: GameState) => {
-      // Stop once Mental Clarity is complete.
-      if (getClarityElixirsUsedCount(state) >= 5) return false;
-
       // Post-game: eligible until Mental Clarity is done (no Madness gate).
-      if (TIER_CONDITIONS.postLastWave(state)) return true;
+      // Uses total elixirs used (merchant + cave), not purchase count alone.
+      if (TIER_CONDITIONS.postLastWave(state)) {
+        return getClarityElixirsUsedCount(state) < 5;
+      }
 
+      // During the run, merchant offers are gated by purchases only (cave finds
+      // must not consume the 5 purchase slots).
       if (getTotalMadness(state) < 1) return false;
       const purchases =
         (state.story?.seen?.clarityElixirPurchases as number) ?? 0;
