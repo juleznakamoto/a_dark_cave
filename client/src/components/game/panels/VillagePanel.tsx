@@ -1017,15 +1017,12 @@ export default function VillagePanel() {
     return false;
   });
 
-  // One insight cap-upgrade badge per group, on the first visible job in that group.
+  // Badge on every job in an upgradeable group (shared groupId → same upgrade).
   const capUpgradeGroupByJobId = (() => {
-    const seenGroups = new Set<VillagerCapGroupId>();
     const byJob = new Map<string, VillagerCapGroupId>();
     for (const job of visiblePopulationJobs) {
       const groupId = getVillagerCapUpgradeGroupForJob(state, job.id);
-      if (!groupId || seenGroups.has(groupId)) continue;
-      seenGroups.add(groupId);
-      byJob.set(job.id, groupId);
+      if (groupId) byJob.set(job.id, groupId);
     }
     return byJob;
   })();
