@@ -1029,17 +1029,18 @@ export default function GameContainer() {
     });
 
     if (next.length > 0) {
-      let minLeft = Math.min(...next.map((b) => b.left - 20));
-      let maxRight = Math.max(...next.map((b) => b.left + 20));
-      // Only the hint's horizontal extent is read back (width is offset-safe).
+      // Hint must be mounted before sizing the callout. A badges-only pass paints a
+      // narrower box for a frame when pausing (two-pass measure), which looks like the
+      // red border jumps between containers.
       const hintEl = document.querySelector<HTMLElement>(
         '[data-testid="tab-hotkey-hint"]',
       );
-      if (hintEl) {
-        const hr = hintEl.getBoundingClientRect();
-        minLeft = Math.min(minLeft, hr.left);
-        maxRight = Math.max(maxRight, hr.right);
+      if (!hintEl) {
+        return;
       }
+      const hr = hintEl.getBoundingClientRect();
+      let minLeft = Math.min(hr.left, ...next.map((b) => b.left - 20));
+      let maxRight = Math.max(hr.right, ...next.map((b) => b.left + 20));
       const padX = 20;
       const padY = 8;
       const boxLeft = minLeft - padX;
