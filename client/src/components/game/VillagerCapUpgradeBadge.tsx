@@ -8,14 +8,12 @@ import { TooltipWrapper } from "@/components/game/TooltipWrapper";
 import { useGameStore } from "@/game/state";
 import { useNewItemPulseTooltips } from "@/hooks/useNewItemPulseTooltip";
 import { cn } from "@/lib/utils";
-import {
-  getInsightAmount,
-  INSIGHT_REVEAL_DURATION_MS,
-} from "@/game/rules/insightReveal";
+import { getInsightAmount } from "@/game/rules/insightReveal";
 import type { GameState } from "@shared/schema";
 import {
   getNextCapUpgradeCost,
   getVillagerCapLevel,
+  getVillagerCapUpgradeInsightKey,
   type VillagerCapGroupId,
 } from "@/game/villagerCapUpgrades";
 import { getUiTooltip } from "@/i18n/tooltipLabels";
@@ -56,17 +54,21 @@ function useInsightBadgeTooltipPulse(tooltipId: string) {
 
 type VillagerCapUpgradeBadgeProps = {
   groupId: VillagerCapGroupId;
+  /** Job row id — unique tooltip / test id when several jobs share a group. */
+  jobId: string;
 };
 
 /**
  * Villager-cap upgrade badge (timed-tab Insight size: h-5 w-5 + lg blob).
- * Clicking plays the blob animation for INSIGHT_REVEAL_DURATION_MS (3s);
- * the upgrade applies when the animation resolves.
+ * Playing state is shared per group via `insightRevealing` so every job in the
+ * group animates and stays locked together.
  */
 export function VillagerCapUpgradeBadge({
   groupId,
+  jobId,
 }: VillagerCapUpgradeBadgeProps) {
-  const tooltipId = `villager-cap-upgrade-${groupId}`;
+  const revealKey = getVillagerCapUpgradeInsightKey(groupId);
+  const tooltipId = `villager-cap-upgrade-${groupId}-${jobId}`;
   const {
     pulseClassName,
     dismissPulse,
@@ -74,33 +76,49 @@ export function VillagerCapUpgradeBadge({
     handleTooltipLeave,
   } = useInsightBadgeTooltipPulse(tooltipId);
   const gameState = useGameStore((s) => s as unknown as GameState);
+  const insightRevealEnd = useGameStore(
+    (s) => s.insightRevealing?.[revealKey],
+  );
+  const startVillagerCapUpgrade = useGameStore(
+    (s) => s.startVillagerCapUpgrade,
+  );
   const setHighlightedResources = useGameStore(
     (s) => s.setHighlightedResources,
   );
-  const [playingUntil, setPlayingUntil] = useState(0);
   const [suppressHover, setSuppressHover] = useState(false);
   const [, forceUpdate] = useState(0);
-  const upgradeTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const revealStartedRef = useRef(false);
 
-  const playing = playingUntil > 0 && playingUntil > Date.now();
+  // Subscribed end time so every badge in the group re-renders together.
+  const isPlaying =
+    typeof insightRevealEnd === "number" && insightRevealEnd > Date.now();
 
   useEffect(() => {
-    if (!playingUntil) return;
+    if (isPlaying) revealStartedRef.current = true;
+  }, [isPlaying]);
+
+  useEffect(() => {
+    if (!isPlaying) return;
     const interval = setInterval(() => forceUpdate((n) => n + 1), 100);
     return () => clearInterval(interval);
-  }, [playingUntil]);
+  }, [isPlaying, insightRevealEnd]);
 
-  useEffect(
-    () => () => {
-      if (upgradeTimerRef.current) clearTimeout(upgradeTimerRef.current);
-    },
-    [],
-  );
+  useEffect(() => {
+    if (!isPlaying) return;
+    setHighlightedResources(["insight"]);
+    return () => setHighlightedResources([]);
+  }, [isPlaying, setHighlightedResources]);
+
+  useEffect(() => {
+    if (revealStartedRef.current && !isPlaying) {
+      setSuppressHover(true);
+    }
+  }, [isPlaying]);
 
   const level = getVillagerCapLevel(gameState, groupId);
   const cost = getNextCapUpgradeCost(level);
   const affordable = getInsightAmount(gameState) >= cost;
-  const isDisabled = !affordable || playing;
+  const isDisabled = !affordable || isPlaying;
   const upgradeTooltip = getUiTooltip(
     "unlockMoreJobsForInsight",
     "Unlock more jobs for {{cost}} Insight",
@@ -111,15 +129,7 @@ export function VillagerCapUpgradeBadge({
     if (isDisabled) return;
     dismissPulse();
     setSuppressHover(false);
-    setPlayingUntil(Date.now() + INSIGHT_REVEAL_DURATION_MS);
-    setHighlightedResources(["insight"]);
-    if (upgradeTimerRef.current) clearTimeout(upgradeTimerRef.current);
-    upgradeTimerRef.current = setTimeout(() => {
-      useGameStore.getState().upgradeVillagerCap(groupId);
-      setHighlightedResources([]);
-      setPlayingUntil(0);
-      setSuppressHover(true);
-    }, INSIGHT_REVEAL_DURATION_MS);
+    startVillagerCapUpgrade(groupId);
   };
 
   return (
@@ -133,15 +143,15 @@ export function VillagerCapUpgradeBadge({
       onMouseEnter={handleTooltipEnter}
       onMouseLeave={() => {
         setSuppressHover(false);
-        handleTooltipLeave(playing);
+        handleTooltipLeave(isPlaying);
       }}
       className="inline-flex h-full w-full items-center justify-center"
     >
       <button
         type="button"
-        data-testid={`villager-cap-upgrade-${groupId}`}
+        data-testid={`villager-cap-upgrade-${groupId}-${jobId}`}
         aria-label={upgradeTooltip}
-        aria-busy={playing}
+        aria-busy={isPlaying}
         disabled={isDisabled}
         onClick={(e) => {
           e.stopPropagation();
@@ -149,12 +159,12 @@ export function VillagerCapUpgradeBadge({
         }}
         className={getInsightBadgeTriggerClassName({
           canAfford: affordable,
-          playing,
+          playing: isPlaying,
           suppressHover,
           className: cn(pulseClassName, "h-5 w-5 leading-none"),
         })}
       >
-        <BuildingActionBadge embedded size="lg" playing={playing} />
+        <BuildingActionBadge embedded size="lg" playing={isPlaying} />
       </button>
     </TooltipWrapper>
   );

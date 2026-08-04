@@ -1033,14 +1033,19 @@ export default function VillagePanel() {
     ? VILLAGER_COUNT_LABEL_WITH_CAP_UPGRADE_CLASS
     : VILLAGER_COUNT_LABEL_CLASS;
 
-  const renderCapUpgradeSlot = (groupId?: VillagerCapGroupId) => {
+  const renderCapUpgradeSlot = (
+    groupId?: VillagerCapGroupId,
+    jobId?: string,
+  ) => {
     if (!reserveCapUpgradeSlot) return null;
     return (
       <span
         className={VILLAGER_COUNT_CAP_UPGRADE_SLOT_CLASS}
         aria-hidden={!groupId}
       >
-        {groupId ? <VillagerCapUpgradeBadge groupId={groupId} /> : null}
+        {groupId && jobId ? (
+          <VillagerCapUpgradeBadge groupId={groupId} jobId={jobId} />
+        ) : null}
       </span>
     );
   };
@@ -1249,7 +1254,7 @@ export default function VillagePanel() {
         >
           {showCap ? `/${cap}` : ""}
         </span>
-        {renderCapUpgradeSlot(capUpgradeGroupId)}
+        {renderCapUpgradeSlot(capUpgradeGroupId, jobId)}
         <span className={villagerCountLabelClass}>
           {label}{" "}
           <span key={productionKey} className={VILLAGER_RESOURCE_HINT_CLASS}>

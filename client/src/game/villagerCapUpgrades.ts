@@ -198,6 +198,13 @@ export function canUpgradeVillagerCap(
   return getInsightAmount(state) >= cost;
 }
 
+/** `insightRevealing` key while a villager-cap group upgrade animation plays. */
+export function getVillagerCapUpgradeInsightKey(
+  groupId: VillagerCapGroupId,
+): string {
+  return `villager-cap-upgrade-${groupId}`;
+}
+
 /** Insight glyph used in resources panel and villager-cap UI. */
 export const INSIGHT_GLYPH = "🟖";
 

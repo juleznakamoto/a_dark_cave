@@ -87,6 +87,7 @@ import {
   TIMED_EVENT_INSIGHT_PROLONG_KEY,
   PRESET_UNLOCK_INSIGHT_KEY,
   canProlongTimedEventTab,
+  isInsightRevealInProgress,
 } from "@/game/rules/insightReveal";
 import {
   getInsightBlessingCost,
@@ -135,6 +136,7 @@ import {
   canUpgradeVillagerCap,
   getNextCapUpgradeCost,
   getVillagerCapLevel,
+  getVillagerCapUpgradeInsightKey,
   type VillagerCapGroupId,
 } from "@/game/villagerCapUpgrades";
 import {
@@ -505,7 +507,13 @@ interface GameStore extends GameState {
   ) => boolean;
   assignVillager: (job: keyof GameState["villagers"], count?: number) => void;
   unassignVillager: (job: keyof GameState["villagers"], count?: number) => void;
+  /** Apply a villager-cap upgrade immediately (spend Insight + increment level). */
   upgradeVillagerCap: (groupId: string) => boolean;
+  /**
+   * Start the shared group Insight animation, then apply the upgrade when it
+   * finishes. All badges for the group read `insightRevealing` and stay locked.
+   */
+  startVillagerCapUpgrade: (groupId: string) => boolean;
   /** Set the active preset slot (1-based) that the save button writes to. */
   setActivePresetSlot: (slot: number) => void;
   /** Save the current villager job assignments into a preset slot (1-based). */
@@ -1740,6 +1748,12 @@ export function getTimedEventTabCleanupPatch(
     ...(activeTab === "timedevent" ? { activeTab: "cave" as const } : {}),
   };
 }
+
+/** In-flight timers for delayed villager-cap Insight upgrades (one per group). */
+const villagerCapUpgradeTimers = new Map<
+  VillagerCapGroupId,
+  ReturnType<typeof setTimeout>
+>();
 
 // Main store
 export const useGameStore = create<GameStore>((set, get) => ({
@@ -4099,6 +4113,36 @@ export const useGameStore = create<GameStore>((set, get) => ({
         [capGroupId]: level + 1,
       },
     });
+    return true;
+  },
+
+  startVillagerCapUpgrade: (groupId: string) => {
+    const state = get();
+    const capGroupId = groupId as VillagerCapGroupId;
+    const revealKey = getVillagerCapUpgradeInsightKey(capGroupId);
+    if (!canUpgradeVillagerCap(state, capGroupId)) return false;
+    if (isInsightRevealInProgress(revealKey, state.insightRevealing)) {
+      return false;
+    }
+
+    set({
+      insightRevealing: {
+        ...(state.insightRevealing ?? {}),
+        [revealKey]: Date.now() + INSIGHT_REVEAL_DURATION_MS,
+      },
+    });
+
+    const existingTimer = villagerCapUpgradeTimers.get(capGroupId);
+    if (existingTimer) clearTimeout(existingTimer);
+
+    const timer = setTimeout(() => {
+      villagerCapUpgradeTimers.delete(capGroupId);
+      get().upgradeVillagerCap(capGroupId);
+      const next = { ...(get().insightRevealing ?? {}) };
+      delete next[revealKey];
+      set({ insightRevealing: next });
+    }, INSIGHT_REVEAL_DURATION_MS);
+    villagerCapUpgradeTimers.set(capGroupId, timer);
     return true;
   },
 
