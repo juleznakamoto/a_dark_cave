@@ -1074,7 +1074,14 @@ export default function VillagePanel() {
           aria-hidden
         />
       </div>
-      <span translate="no" className={VILLAGER_COUNT_CAP_CLASS} aria-hidden />
+      {/* Invisible /cap spacer so labels line up with the Villagers summary row. */}
+      <span
+        translate="no"
+        className={cn(VILLAGER_COUNT_CAP_CLASS, "invisible")}
+        aria-hidden
+      >
+        {maxPopulation > 0 ? `/${maxPopulation}` : ""}
+      </span>
       {renderCapUpgradeSlot()}
       <span className={villagerCountLabelClass}>
         <span translate="no" className="notranslate" aria-hidden>
