@@ -710,6 +710,18 @@ function getToolTradeLabelFallback(trade: {
 /** Madness removed when the player buys and drinks a Clarity Elixir from the merchant. */
 export const CLARITY_ELIXIR_MADNESS_REDUCTION = 2;
 
+/** Mental Clarity achievement progress (capped at 5). */
+export function getClarityElixirsUsedCount(state: GameState): number {
+  const seen = state.story?.seen;
+  const tracked = Number(seen?.clarityElixirsUsed) || 0;
+  const legacy =
+    (Number(seen?.clarityElixirPurchases) || 0) +
+    (seen?.clarityElixirFoundVentureDeeper ? 1 : 0) +
+    (seen?.clarityElixirFoundDescendFurther ? 1 : 0) +
+    (seen?.clarityElixirFoundExploreRuins ? 1 : 0);
+  return Math.min(Math.max(tracked, legacy), 5);
+}
+
 export function getMerchantTradeEffectTooltipLine(
   trade: Pick<MerchantTradeData, "buyItem">,
 ): string | null {
@@ -913,6 +925,12 @@ const toolTrades = [
     give: "consumable",
     giveItem: "clarity_elixir",
     condition: (state: GameState) => {
+      // Stop once Mental Clarity is complete.
+      if (getClarityElixirsUsedCount(state) >= 5) return false;
+
+      // Post-game: eligible until Mental Clarity is done (no Madness gate).
+      if (TIER_CONDITIONS.postLastWave(state)) return true;
+
       if (getTotalMadness(state) < 1) return false;
       const purchases =
         (state.story?.seen?.clarityElixirPurchases as number) ?? 0;

@@ -2,6 +2,7 @@ import { useGameStore } from "@/game/state";
 import type { AchievementChartConfig } from "../achievementTypes";
 import type { GameState } from "@shared/schema";
 import { getAnimalSacrificeAchievementCount } from "@/game/rules/forestSacrificeActions";
+import { getClarityElixirsUsedCount } from "@/game/rules/eventsMerchant";
 
 export const actionChartConfig: AchievementChartConfig = {
   idPrefix: "action",
@@ -247,16 +248,7 @@ export const actionChartConfig: AchievementChartConfig = {
         maxCount: 5,
         label: "Mental Clarity",
         reward: 250,
-        getCount: (state: GameState) => {
-          const seen = state.story?.seen;
-          const tracked = Number(seen?.clarityElixirsUsed) || 0;
-          const legacy =
-            (Number(seen?.clarityElixirPurchases) || 0) +
-            (seen?.clarityElixirFoundVentureDeeper ? 1 : 0) +
-            (seen?.clarityElixirFoundDescendFurther ? 1 : 0) +
-            (seen?.clarityElixirFoundExploreRuins ? 1 : 0);
-          return Math.min(Math.max(tracked, legacy), 5);
-        },
+        getCount: (state: GameState) => getClarityElixirsUsedCount(state),
       },
       {
         segmentId: "4-wellRested",

@@ -3,6 +3,7 @@ import { gameStateSchema } from "@shared/schema";
 import { EventManager } from "./events";
 import {
   generateMerchantChoices,
+  getClarityElixirsUsedCount,
   isMerchantTradeCurrentlyAvailable,
 } from "./eventsMerchant";
 
@@ -188,5 +189,58 @@ describe("merchant post-last-wave totem buys", () => {
     expect(result.merchantTrades?.purchasedIds).toContain(
       "buy_bone_totem_500_post_wave",
     );
+  });
+});
+
+describe("merchant post-last-wave clarity elixir", () => {
+  it("is not eligible before wave 10 victory at 0 Madness", () => {
+    const state = gameStateSchema.parse({
+      buildings: { woodenHut: 10, stoneHut: 8, tradePost: 1 },
+      resources: { gold: 50_000 },
+      stats: { madnessFromEvents: 0 },
+      story: { seen: { clarityElixirsUsed: 4 } },
+    });
+
+    expect(getClarityElixirsUsedCount(state)).toBe(4);
+    expect(
+      isMerchantTradeCurrentlyAvailable("trade_clarity_elixir", state),
+    ).toBe(false);
+  });
+
+  it("is eligible after wave 10 when Mental Clarity is incomplete, even at 0 Madness", () => {
+    const state = gameStateSchema.parse({
+      buildings: { woodenHut: 10, stoneHut: 8, tradePost: 1 },
+      resources: { gold: 50_000 },
+      stats: { madnessFromEvents: 0 },
+      story: { seen: { tenthWaveVictory: true, clarityElixirsUsed: 4 } },
+    });
+
+    expect(
+      isMerchantTradeCurrentlyAvailable("trade_clarity_elixir", state),
+    ).toBe(true);
+
+    let sawElixir = false;
+    for (let i = 0; i < 80; i++) {
+      const choices = generateMerchantChoices(state);
+      if (choices.some((c) => c.id === "trade_clarity_elixir")) {
+        sawElixir = true;
+        break;
+      }
+    }
+    expect(sawElixir).toBe(true);
+  });
+
+  it("is not eligible after Mental Clarity is complete", () => {
+    const state = gameStateSchema.parse({
+      buildings: { woodenHut: 10, stoneHut: 8, tradePost: 1 },
+      resources: { gold: 50_000 },
+      stats: { madnessFromEvents: 5 },
+      story: { seen: { tenthWaveVictory: true, clarityElixirsUsed: 5 } },
+    });
+
+    expect(getClarityElixirsUsedCount(state)).toBe(5);
+    expect(
+      isMerchantTradeCurrentlyAvailable("trade_clarity_elixir", state),
+    ).toBe(false);
   });
 });
