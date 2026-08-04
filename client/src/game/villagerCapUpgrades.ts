@@ -156,18 +156,33 @@ export function getPresetSlotUnlockCost(slotIndex: number): number {
   return PRESET_SLOT_INSIGHT_COSTS[slotIndex];
 }
 
+/** True when a cap group can still be upgraded (gate + Insight unlock + not maxed). */
+function canShowVillagerCapUpgrade(
+  state: GameState,
+  groupId: VillagerCapGroupId,
+): boolean {
+  if (!areVillagerCapsEnabled(state)) return false;
+  if (!isInsightUnlocked(state)) return false;
+  return getVillagerCapLevel(state, groupId) < MAX_VILLAGER_CAP_LEVEL;
+}
+
 /** Building shows villager-cap upgrade UI once Insight is unlocked and caps are not maxed. */
 export function getVillagerCapUpgradeGroupForBuilding(
   state: GameState,
   buildingKey: string,
 ): VillagerCapGroupId | null {
-  if (!areVillagerCapsEnabled(state)) return null;
   const groupId = getGroupForBuildingKey(buildingKey);
-  if (!groupId) return null;
-  if (!isInsightUnlocked(state)) return null;
-  if (getVillagerCapLevel(state, groupId) >= MAX_VILLAGER_CAP_LEVEL) {
-    return null;
-  }
+  if (!groupId || !canShowVillagerCapUpgrade(state, groupId)) return null;
+  return groupId;
+}
+
+/** Job shows villager-cap upgrade UI once Insight is unlocked and caps are not maxed. */
+export function getVillagerCapUpgradeGroupForJob(
+  state: GameState,
+  jobId: string,
+): VillagerCapGroupId | null {
+  const groupId = getGroupForJob(jobId);
+  if (!groupId || !canShowVillagerCapUpgrade(state, groupId)) return null;
   return groupId;
 }
 

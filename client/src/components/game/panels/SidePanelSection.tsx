@@ -38,11 +38,6 @@ import {
 } from "@/game/rules/insightReveal";
 import type { GameState } from "@shared/schema";
 import {
-  getNextCapUpgradeCost,
-  getVillagerCapLevel,
-  getVillagerCapUpgradeGroupForBuilding,
-} from "@/game/villagerCapUpgrades";
-import {
   getNextEnchantCost,
   isWeaponEnchantUnlocked,
 } from "@/game/weaponEnchantments";
@@ -312,120 +307,9 @@ function useInsightBadgeTooltipPulse(tooltipId: string) {
 }
 
 /**
- * Villager-cap upgrade badge shown next to a building name. Mirrors the insight
- * reveal badges: clicking plays the blob animation for INSIGHT_REVEAL_DURATION_MS
- * (3s) and the actual upgrade is applied when the animation resolves.
- */
-function BuildingCapUpgradeBadge({ buildingKey }: { buildingKey: string }) {
-  const tooltipId = `villager-cap-upgrade-${buildingKey}`;
-  const {
-    pulseClassName,
-    dismissPulse,
-    handleTooltipEnter,
-    handleTooltipLeave,
-  } = useInsightBadgeTooltipPulse(tooltipId);
-  const gameState = useGameStore((s) => s as unknown as GameState);
-  const setHighlightedResources = useGameStore(
-    (s) => s.setHighlightedResources,
-  );
-  const [playingUntil, setPlayingUntil] = useState(0);
-  const [suppressHover, setSuppressHover] = useState(false);
-  const [, forceUpdate] = useState(0);
-  const upgradeTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
-
-  const playing = playingUntil > 0 && playingUntil > Date.now();
-
-  useEffect(() => {
-    if (!playingUntil) return;
-    const interval = setInterval(() => forceUpdate((n) => n + 1), 100);
-    return () => clearInterval(interval);
-  }, [playingUntil]);
-
-  useEffect(
-    () => () => {
-      if (upgradeTimerRef.current) clearTimeout(upgradeTimerRef.current);
-    },
-    [],
-  );
-
-  const groupId = getVillagerCapUpgradeGroupForBuilding(gameState, buildingKey);
-  if (!groupId) return null;
-
-  const level = getVillagerCapLevel(gameState, groupId);
-
-  const cost = getNextCapUpgradeCost(level);
-  const affordable = getInsightAmount(gameState) >= cost;
-  const isDisabled = !affordable || playing;
-  const upgradeTooltip = getUiTooltip(
-    "unlockMoreJobsForInsight",
-    "Unlock more jobs for {{cost}} Insight",
-    { cost },
-  );
-
-  const handleClick = () => {
-    if (isDisabled) return;
-    dismissPulse();
-    setSuppressHover(false);
-    setPlayingUntil(Date.now() + INSIGHT_REVEAL_DURATION_MS);
-    setHighlightedResources(["insight"]);
-    if (upgradeTimerRef.current) clearTimeout(upgradeTimerRef.current);
-    upgradeTimerRef.current = setTimeout(() => {
-      useGameStore.getState().upgradeVillagerCap(groupId);
-      setHighlightedResources([]);
-      setPlayingUntil(0);
-      setSuppressHover(true);
-    }, INSIGHT_REVEAL_DURATION_MS);
-  };
-
-  return (
-    <TooltipWrapper
-      tooltip={
-        <div className="text-xs">
-          {upgradeTooltip}
-        </div>
-      }
-      tooltipId={tooltipId}
-      disabled={isDisabled}
-      tooltipContentClassName="max-w-xs"
-      tooltipTriggerAsChild
-      tooltipTriggerClassName={INSIGHT_BADGE_TOOLTIP_TRIGGER_CLASS}
-      onMouseEnter={handleTooltipEnter}
-      onMouseLeave={() => {
-        setSuppressHover(false);
-        handleTooltipLeave(playing);
-      }}
-      className="inline-flex shrink-0 items-center self-center"
-    >
-      <button
-        type="button"
-        aria-label={upgradeTooltip}
-        aria-busy={playing}
-        disabled={isDisabled}
-        onClick={(e) => {
-          e.stopPropagation();
-          handleClick();
-        }}
-        className={getInsightBadgeTriggerClassName({
-          canAfford: affordable,
-          playing,
-          suppressHover,
-          className: cn(
-            pulseClassName,
-            INSIGHT_BADGE_SIDE_PANEL_SIZE_CLASS,
-            "leading-none",
-          ),
-        })}
-      >
-        <BuildingActionBadge embedded size="sm" playing={playing} />
-      </button>
-    </TooltipWrapper>
-  );
-}
-
-/**
  * Enchant badge shown next to an owned weapon once the Tomewarden Academy is built.
- * Mirrors {@link BuildingCapUpgradeBadge}: clicking plays the blob animation for
- * INSIGHT_REVEAL_DURATION_MS and the enchantment is applied when the animation resolves.
+ * Clicking plays the blob animation for INSIGHT_REVEAL_DURATION_MS; the enchantment
+ * is applied when the animation resolves.
  */
 function WeaponEnchantBadge({ weaponId }: { weaponId: string }) {
   const tooltipId = `weapon-enchant-${weaponId}`;
@@ -885,10 +769,6 @@ export default function SidePanelSection({
     return formatNumber(value);
   };
 
-  const renderBuildingVillagerCapUpgradeButton = (buildingKey: string) => (
-    <BuildingCapUpgradeBadge buildingKey={buildingKey} />
-  );
-
   const renderItemWithTooltip = (item: SidePanelItem) => {
     const isAnimated = animatedItems.has(item.id);
     const isDecreaseAnimated = decreaseAnimatedItems.has(item.id);
@@ -1285,7 +1165,6 @@ export default function SidePanelSection({
 
     // If this item is a building (not fortification) with a tooltip, use renderItemTooltip
     if (item.tooltip && sectionId === "buildings") {
-      const capUpgradeButton = renderBuildingVillagerCapUpgradeButton(item.id);
       return (
         <div
           key={item.id}
@@ -1299,23 +1178,20 @@ export default function SidePanelSection({
                 : ""
             }`}
         >
-          <span className="inline-flex min-w-0 max-w-full items-center gap-0.5">
-            <TooltipWrapper
-              tooltip={renderItemTooltip(item.id, "building")}
-              tooltipId={item.id}
-              disabled
-              tooltipContentClassName="max-w-xs"
-              onMouseEnter={() => handleItemTooltipEnter(item.id)}
-              onMouseLeave={() => handleItemTooltipLeave(item.id)}
-              className={cn(
-                "inline-flex min-w-0 shrink-0",
-                globalTooltip.isMobile && "cursor-pointer",
-              )}
-            >
-              {labelContent}
-            </TooltipWrapper>
-            {capUpgradeButton}
-          </span>
+          <TooltipWrapper
+            tooltip={renderItemTooltip(item.id, "building")}
+            tooltipId={item.id}
+            disabled
+            tooltipContentClassName="max-w-xs"
+            onMouseEnter={() => handleItemTooltipEnter(item.id)}
+            onMouseLeave={() => handleItemTooltipLeave(item.id)}
+            className={cn(
+              sidePanelTooltipTriggerClass,
+              globalTooltip.isMobile && "cursor-pointer",
+            )}
+          >
+            {labelContent}
+          </TooltipWrapper>
         </div>
       );
     }

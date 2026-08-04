@@ -52,12 +52,15 @@ import {
 import {
   areVillagerCapsEnabled,
   getVillagerCapForJob,
+  getVillagerCapUpgradeGroupForJob,
+  type VillagerCapGroupId,
 } from "@/game/villagerCapUpgrades";
 import {
   BuildingActionBadge,
   getInsightBadgeTriggerClassName,
   INSIGHT_BADGE_TOOLTIP_TRIGGER_CLASS,
 } from "@/components/game/BuildingActionBadge";
+import { VillagerCapUpgradeBadge } from "@/components/game/VillagerCapUpgradeBadge";
 import { formatNumber } from "@/lib/utils";
 import {
   arePresetsVisible,
@@ -1084,6 +1087,26 @@ export default function VillagePanel() {
     </div>
   );
 
+  // Filter visible population jobs
+  const visiblePopulationJobs = populationJobs.filter((job) => {
+    if (job.alwaysShow) return true;
+    if (job.showWhen) return job.showWhen();
+    return false;
+  });
+
+  // One insight cap-upgrade badge per group, on the first visible job in that group.
+  const capUpgradeGroupByJobId = (() => {
+    const seenGroups = new Set<VillagerCapGroupId>();
+    const byJob = new Map<string, VillagerCapGroupId>();
+    for (const job of visiblePopulationJobs) {
+      const groupId = getVillagerCapUpgradeGroupForJob(state, job.id);
+      if (!groupId || seenGroups.has(groupId)) continue;
+      seenGroups.add(groupId);
+      byJob.set(job.id, groupId);
+    }
+    return byJob;
+  })();
+
   const renderPopulationControl = (jobId: string, label: string) => {
     const currentCount = villagers[jobId as keyof typeof villagers] || 0;
     const jobKey = jobId as keyof typeof villagers;
@@ -1094,6 +1117,7 @@ export default function VillagePanel() {
     const atCap = showCap && currentCount >= cap;
     const canAssignMore =
       villagers.free > 0 && (!showCap || currentCount < cap);
+    const capUpgradeGroupId = capUpgradeGroupByJobId.get(jobId);
 
     const productionEntries =
       currentCount > 0
@@ -1149,48 +1173,53 @@ export default function VillagePanel() {
             </span>
           </Button>
           {renderVillagerCount(currentCount)}
-          <Button
-            onMouseDown={(e) => {
-              if (e.button !== 0) return;
-              if (canAssignMore) {
-                startHold(() => assignVillager(jobId), false);
-              }
-            }}
-            onMouseUp={() => stopHold(false)}
-            onMouseLeave={() => stopHold(false)}
-            onContextMenu={(e) => {
-              e.preventDefault();
-              if (canAssignMore) {
-                assignVillager(jobId, 10);
-              }
-            }}
-            onTouchStart={(e) => {
-              if (canAssignMore) {
-                e.preventDefault(); // Prevent ghost click - synthetic mouse events cause unwanted actions
-                startHold(() => assignVillager(jobId), true);
-              }
-            }}
-            onTouchEnd={(e) => {
-              if (e.cancelable) e.preventDefault();
-              stopHold(true);
-            }}
-            onTouchCancel={() => stopHold(true)}
-            disabled={!canAssignMore}
-            variant="outline"
-            size="xs"
-            className={villagerCountButtonClassName(!canAssignMore)}
-            style={{ touchAction: "manipulation" }}
-            button_id={`assign-${jobId}`}
-          >
-            <span
-              className={cn(
-                "text-xs leading-none tabular-nums",
-                !canAssignMore && "opacity-60",
-              )}
+          <span className="inline-flex items-center gap-0.5">
+            <Button
+              onMouseDown={(e) => {
+                if (e.button !== 0) return;
+                if (canAssignMore) {
+                  startHold(() => assignVillager(jobId), false);
+                }
+              }}
+              onMouseUp={() => stopHold(false)}
+              onMouseLeave={() => stopHold(false)}
+              onContextMenu={(e) => {
+                e.preventDefault();
+                if (canAssignMore) {
+                  assignVillager(jobId, 10);
+                }
+              }}
+              onTouchStart={(e) => {
+                if (canAssignMore) {
+                  e.preventDefault(); // Prevent ghost click - synthetic mouse events cause unwanted actions
+                  startHold(() => assignVillager(jobId), true);
+                }
+              }}
+              onTouchEnd={(e) => {
+                if (e.cancelable) e.preventDefault();
+                stopHold(true);
+              }}
+              onTouchCancel={() => stopHold(true)}
+              disabled={!canAssignMore}
+              variant="outline"
+              size="xs"
+              className={villagerCountButtonClassName(!canAssignMore)}
+              style={{ touchAction: "manipulation" }}
+              button_id={`assign-${jobId}`}
             >
-              +
-            </span>
-          </Button>
+              <span
+                className={cn(
+                  "text-xs leading-none tabular-nums",
+                  !canAssignMore && "opacity-60",
+                )}
+              >
+                +
+              </span>
+            </Button>
+            {capUpgradeGroupId ? (
+              <VillagerCapUpgradeBadge groupId={capUpgradeGroupId} />
+            ) : null}
+          </span>
           <span
             translate="no"
             className={cn(
@@ -1219,13 +1248,6 @@ export default function VillagePanel() {
       </div>
     );
   };
-
-  // Filter visible population jobs
-  const visiblePopulationJobs = populationJobs.filter((job) => {
-    if (job.alwaysShow) return true;
-    if (job.showWhen) return job.showWhen();
-    return false;
-  });
 
   return (
     <>
