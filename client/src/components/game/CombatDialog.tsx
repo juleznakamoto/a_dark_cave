@@ -1035,12 +1035,12 @@ export default function CombatDialog({
                           <span
                             className={cn(
                               COMBAT_STAT_ICON_CLASS,
-                              "text-amber-500",
+                              COMBAT_SKILL_BUTTON_ICONS.feral_howl.className,
                             )}
                             role="img"
                             aria-label="howl-icon"
                           >
-                            ◎
+                            {COMBAT_SKILL_BUTTON_ICONS.feral_howl.glyph}
                           </span>
                         )}
                         {enemyBurnRounds > 0 && (
