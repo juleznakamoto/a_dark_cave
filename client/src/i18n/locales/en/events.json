@@ -1015,7 +1015,7 @@
       }
     },
     "log": {
-      "believeOutcome": "You believe him. He offers to lead a search for the woman, saying he knows where she hides, and that you should bring many men.",
+      "believeOutcome": "The man offers to lead a search for the woman, saying he knows where she hides, and that you should bring many men.",
       "sendAwayOutcome": "You send the starved man away. He does not argue. The villagers watch the treeline as he vanishes."
     },
     "message": "The starved man is brought before you. Barely able to speak clearly, he claims to be the last survivor of a mountain village. He says their well was poisoned by a red-haired herbalist.",

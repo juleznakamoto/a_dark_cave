@@ -368,6 +368,10 @@
     "restless_knight": {
       "description": "Veterano de combate que viu os remanescentes do velho mundo. Desbloqueia a habilidade de combate Golpe Esmagador.",
       "name": "Cavaleiro Inquieto"
+    },
+    "the_hound": {
+      "description": "Um sobrevivente musculoso e desfigurado de uma aldeia na montanha envenenada. Suas forças ainda não são conhecidas.",
+      "name": "O Cão"
     }
   },
   "tools": {
@@ -482,6 +486,10 @@
     "stone_pickaxe": {
       "description": "Picareta rudimentar para mineração",
       "name": "Picareta de Pedra"
+    },
+    "mountain_village_map": {
+      "description": "Mapa rude marcado com um caminho para os altos passos, rumo a uma aldeia na montanha.",
+      "name": "Mapa da aldeia da montanha"
     }
   },
   "weapons": {

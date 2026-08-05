@@ -2663,5 +2663,81 @@
     },
     "message": "A hooded figure appears at the estate, silent, then whispering in a low voice. They offer to give you a blessing.",
     "title": "A Quiet Offering"
+  },
+  "ladyFromTheMountains": {
+    "choices": {
+      "sendAway": {
+        "label": "Mandare via"
+      },
+      "welcome": {
+        "label": "Accogliere"
+      }
+    },
+    "log": {
+      "sendAwayOutcome": "La rifiuti. Sorride troppo serena. 'Tu e ogni anima di questo villaggio ve ne pentirete', dice, poi si allontana.",
+      "welcomeOutcome": "Accogli la donna dai capelli rossi. Ti ringrazia a bassa voce e parla di piante che curano e che nuociono. Offre di aiutare a costruire un giardino di erbe. Gli abitanti la osservano con attenzione."
+    },
+    "message": "Arriva una bella donna dai capelli rossi. Dice che il suo villaggio in montagna è morto di fame e chiede di restare. Afferma di conoscere bene le piante e i loro effetti.",
+    "title": "La Dama delle Montagne"
+  },
+  "liquidDeath": {
+    "choices": {
+      "digWell": {
+        "cost": "5000 cibo",
+        "label": "Scavare un altro pozzo"
+      },
+      "searchWoman": {
+        "label": "Cercare la donna"
+      }
+    },
+    "log": {
+      "digWellOutcome": "I vostri abitanti scavano un nuovo pozzo. L'acqua torna. Quella sera, un uomo affamato arriva dalla foresta.",
+      "searchOutcome": "Non c'è più nulla da bere. {{deaths}} abitanti anziani muoiono di sete. La donna non si trova, ma i cercatori trascinano dalla foresta un uomo affamato."
+    },
+    "message": {
+      "rejected": "Una mattina {{deaths}} abitanti vengono trovati morti nelle loro capanne. Le loro labbra sono blu come belladonna schiacciata. Un abitante sostiene di aver visto una donna dai capelli rossi vicino al pozzo il giorno prima.",
+      "welcomed": "Una mattina {{deaths}} abitanti vengono trovati morti nelle loro capanne. Le loro labbra sono blu come belladonna schiacciata. Un abitante sostiene di aver visto la donna dai capelli rossi del villaggio di montagna vicino al pozzo il giorno prima."
+    },
+    "title": "Morte liquida"
+  },
+  "manFromTheMountains": {
+    "choices": {
+      "believeAndHelp": {
+        "label": "Credergli e aiutare"
+      },
+      "sendAway": {
+        "label": "Mandare via"
+      }
+    },
+    "log": {
+      "believeOutcome": "L'uomo offre di guidare la ricerca della donna. Dice di sapere dove si nasconde e che dovresti portare molti uomini.",
+      "sendAwayOutcome": "Mandi via l'uomo affamato. Non discute. Gli abitanti guardano il limitare del bosco mentre scompare."
+    },
+    "message": "L'uomo affamato viene condotto davanti a te. A malapena riesce a parlare chiaramente e sostiene di essere l'ultimo sopravvissuto di un villaggio di montagna. Dice che il loro pozzo è stato avvelenato da un'erborista dai capelli rossi.",
+    "title": "L'Uomo delle Montagne"
+  },
+  "mountainPairNightAttack": {
+    "choices": {
+      "continue": {
+        "label": "Continua"
+      }
+    },
+    "log": {
+      "outcome": "Di notte l'uomo e la donna dai capelli rossi attaccano insieme. {{deaths}} abitanti muoiono prima che gli altri li sopraffacciano. Prima che tu possa intervenire, gli abitanti li impiccano entrambi. Erano complici fin dall'inizio. Sul corpo dell'uomo trovi una mappa per un villaggio di montagna."
+    },
+    "message": "Di notte l'uomo e la donna dai capelli rossi attaccano insieme il villaggio. {{deaths}} abitanti cadono prima che gli altri sopraffacciano la coppia. Prima che tu possa fare qualcosa, gli abitanti li impiccano. Sul corpo dell'uomo trovi una mappa per un villaggio di montagna.",
+    "title": "Attacco notturno"
+  },
+  "theHoundFound": {
+    "choices": {
+      "accept": {
+        "label": "Accettare"
+      }
+    },
+    "log": {
+      "outcome": "Lo accetti. Lo chiamavano il Segugio. Sfigurato dal veleno ma ancora vivo, si unisce alla tua compagnia."
+    },
+    "message": "La vostra spedizione trova un villaggio di montagna pieno di morti avvelenati. Tra i corpi giace un uomo quasi morto, molto muscoloso ma sfigurato, a malapena capace di parlare. Dice che lo chiamavano solo il Segugio. Sembra aver resistito al veleno, anche se a stento. Vuole unirsi a voi.",
+    "title": "Il Segugio"
   }
 }

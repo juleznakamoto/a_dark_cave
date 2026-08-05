@@ -367,6 +367,10 @@
     "restless_knight": {
       "description": "Kampferprobter Veteran, der die Überreste der alten Welt gesehen hat. Schaltet die Kampffähigkeit Schmetterschlag frei.",
       "name": "Rastloser Ritter"
+    },
+    "the_hound": {
+      "description": "Ein muskulöser, entstellter Überlebender eines vergifteten Bergdorfs. Seine Stärken sind noch unbekannt.",
+      "name": "Der Hund"
     }
   },
   "tools": {
@@ -481,6 +485,10 @@
     "stone_pickaxe": {
       "description": "Primitive Spitzhacke für den Bergbau",
       "name": "Steinspitzhacke"
+    },
+    "mountain_village_map": {
+      "description": "Grobe Karte mit einem Pfad in die hohen Pässe, hin zu einem Bergdorf.",
+      "name": "Bergdorfkarte"
     }
   },
   "weapons": {

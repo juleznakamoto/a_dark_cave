@@ -2663,5 +2663,81 @@
     },
     "message": "Una joven se acerca a ti con lágrimas corriendo por su rostro. 'Mis dos padres fueron sacrificados a ese monolito maldito', llora. '¡Este comportamiento bárbaro tiene que terminar!'",
     "title": "La súplica de la joven"
+  },
+  "ladyFromTheMountains": {
+    "choices": {
+      "sendAway": {
+        "label": "Despedir"
+      },
+      "welcome": {
+        "label": "Dar la bienvenida"
+      }
+    },
+    "log": {
+      "sendAwayOutcome": "La rechazas. Sonríe con demasiada calma. 'Tú y cada alma de esta aldea lo lamentaréis', dice, y luego se aleja.",
+      "welcomeOutcome": "Das la bienvenida a la mujer pelirroja. Te agradece en voz baja y habla de plantas que curan y que dañan. Ofrece ayudar a construir un jardín de hierbas. Los aldeanos la observan con cuidado."
+    },
+    "message": "Llega una hermosa mujer pelirroja. Dice que su aldea en las montañas murió de hambre y pide quedarse. Afirma saber mucho sobre las plantas y sus efectos.",
+    "title": "La Dama de las Montañas"
+  },
+  "liquidDeath": {
+    "choices": {
+      "digWell": {
+        "cost": "5000 comida",
+        "label": "Cavar otro pozo"
+      },
+      "searchWoman": {
+        "label": "Buscar a la mujer"
+      }
+    },
+    "log": {
+      "digWellOutcome": "Tus aldeanos cavan un nuevo pozo. El agua vuelve. Esa tarde, un hombre famélico llega del bosque.",
+      "searchOutcome": "No queda nada que beber. {{deaths}} aldeanos mayores mueren de sed. No encuentran a la mujer, pero los buscadores arrastran a un hombre famélico del bosque."
+    },
+    "message": {
+      "rejected": "Una mañana encuentran a {{deaths}} aldeanos muertos en sus cabañas. Sus labios están azules como belladona aplastada. Un aldeano afirma haber visto a una mujer pelirroja cerca del pozo el día anterior.",
+      "welcomed": "Una mañana encuentran a {{deaths}} aldeanos muertos en sus cabañas. Sus labios están azules como belladona aplastada. Un aldeano afirma haber visto a la mujer pelirroja de la aldea de montaña cerca del pozo el día anterior."
+    },
+    "title": "Muerte líquida"
+  },
+  "manFromTheMountains": {
+    "choices": {
+      "believeAndHelp": {
+        "label": "Creerle y ayudar"
+      },
+      "sendAway": {
+        "label": "Despedir"
+      }
+    },
+    "log": {
+      "believeOutcome": "El hombre ofrece dirigir la búsqueda de la mujer. Dice saber dónde se esconde y que deberías llevar a muchos hombres.",
+      "sendAwayOutcome": "Envías al hombre famélico. No discute. Los aldeanos miran el borde del bosque mientras desaparece."
+    },
+    "message": "Traen ante ti al hombre famélico. Apenas puede hablar con claridad y afirma ser el último superviviente de una aldea de montaña. Dice que su pozo fue envenenado por una herbolaria pelirroja.",
+    "title": "El Hombre de las Montañas"
+  },
+  "mountainPairNightAttack": {
+    "choices": {
+      "continue": {
+        "label": "Continuar"
+      }
+    },
+    "log": {
+      "outcome": "Por la noche, el hombre y la mujer pelirroja atacan juntos. {{deaths}} aldeanos mueren antes de que el resto los derrote. Antes de que puedas intervenir, los aldeanos los ahorcan a ambos. Eran cómplices desde el principio. En el cuerpo del hombre encuentras un mapa hacia una aldea de montaña."
+    },
+    "message": "Por la noche, el hombre y la mujer pelirroja atacan la aldea juntos. {{deaths}} aldeanos caen antes de que el resto derrote a la pareja. Antes de que puedas hacer nada, los aldeanos los ahorcan. En el cuerpo del hombre encuentras un mapa hacia una aldea de montaña.",
+    "title": "Ataque nocturno"
+  },
+  "theHoundFound": {
+    "choices": {
+      "accept": {
+        "label": "Aceptar"
+      }
+    },
+    "log": {
+      "outcome": "Lo aceptas. Lo llamaban el Sabueso. Deformado por el veneno pero aún con vida, se une a tu compañía."
+    },
+    "message": "Tu expedición encuentra una aldea de montaña llena de muertos envenenados. Entre los cuerpos yace un hombre casi muerto, muy musculoso pero desfigurado, apenas capaz de hablar. Dice que solo lo llamaban el Sabueso. Parece haber resistido el veneno, aunque por poco. Quiere unirse a vosotros.",
+    "title": "El Sabueso"
   }
 }

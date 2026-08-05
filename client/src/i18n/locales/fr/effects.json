@@ -367,6 +367,10 @@
     "restless_knight": {
       "description": "Vétéran du combat qui a vu les vestiges de l'ancien monde. Débloque la compétence de combat Frappe écrasante.",
       "name": "Chevalier tourmenté"
+    },
+    "the_hound": {
+      "description": "Un survivant musclé et défiguré d'un village de montagne empoisonné. Ses forces ne sont pas encore connues.",
+      "name": "Le Chien"
     }
   },
   "tools": {
@@ -481,6 +485,10 @@
     "stone_pickaxe": {
       "description": "Pioche rudimentaire pour miner",
       "name": "Pioche de pierre"
+    },
+    "mountain_village_map": {
+      "description": "Carte grossière indiquant un chemin vers les hauts cols, en direction d'un village de montagne.",
+      "name": "Carte du village de montagne"
     }
   },
   "weapons": {

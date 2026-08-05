@@ -740,5 +740,18 @@
       "mapFragment": "Sur le sol de la grotte, vous trouvez un fragment de carte déchiré.",
       "firstVisit": "L'air devient plus froid à mesure que vous descendez plus profondément dans la grotte. Les parois semblent anormalement lisses, comme façonnées par quelqu'un."
     }
+  },
+  "buildHerbGarden": {
+    "description": "Parcelles cultivées de plantes utiles, soigneusement entretenues pour leurs nombreux usages.",
+    "label": "Jardin d'herbes"
+  },
+  "exploreMountainVillage": {
+    "label": "Explorer le village de montagne"
+  },
+  "searchMountainLady": {
+    "label": "Chercher la dame des montagnes",
+    "log": {
+      "ambush": "L'homme vous mène au plus profond des bois. Vos villageois tombent dans des pièges. Soudain la femme aux cheveux roux apparaît, et ensemble ils fondent sur vos hommes. {{count}} villageois meurent avant que les survivants ne tuent les deux assaillants. Sur le corps de l'homme, ils trouvent une carte vers un village de montagne."
+    }
   }
 }

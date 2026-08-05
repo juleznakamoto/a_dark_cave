@@ -1,5 +1,5 @@
 import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
-import { EventManager, type EventRollState } from './events';
+import { EventManager, gameEvents, type EventRollState } from './events';
 import { GameState } from '@shared/schema';
 import { createInitialState, useGameStore } from '../state';
 import { GAME_CONSTANTS } from '../constants';
@@ -210,5 +210,92 @@ describe('Event System', () => {
     expect(changes._logMessageKey).toBeUndefined();
     expect(changes.schematics?.obsidian_orb_schematic).toBeUndefined();
     expect(changes.villagers).toBeUndefined();
+  });
+
+  it('does not mark non-repeatable choice events seen until a choice is applied', () => {
+    const state = {
+      ...createInitialState(),
+      buildings: {
+        ...createInitialState().buildings,
+        alchemistHall: 1,
+      },
+      story: {
+        ...createInitialState().story,
+        seen: {
+          ...createInitialState().story.seen,
+          firstWaveVictory: true,
+        },
+      },
+      triggeredEvents: {},
+    } as EventRollState;
+
+    if (gameEvents.veinrootIntroduction) {
+      gameEvents.veinrootIntroduction.triggered = false;
+    }
+
+    const { newLogEntries, stateChanges } = EventManager.checkEvents(state);
+    const veinrootEntry = newLogEntries.find((entry) =>
+      entry.id.startsWith('veinrootIntroduction'),
+    );
+
+    expect(veinrootEntry).toBeDefined();
+    expect(stateChanges.triggeredEvents?.veinrootIntroduction).toBeUndefined();
+
+    // Simulate a refresh after dialog open: seen was never persisted, so it can roll again.
+    if (gameEvents.veinrootIntroduction) {
+      gameEvents.veinrootIntroduction.triggered = false;
+    }
+    const secondRoll = EventManager.checkEvents({
+      ...state,
+      triggeredEvents: {},
+    } as EventRollState);
+    expect(
+      secondRoll.newLogEntries.some((entry) =>
+        entry.id.startsWith('veinrootIntroduction'),
+      ),
+    ).toBe(true);
+
+    const choiceChanges = EventManager.applyEventChoice(
+      state as GameState,
+      'continue',
+      'veinrootIntroduction',
+    );
+    expect(choiceChanges.triggeredEvents?.veinrootIntroduction).toBe(true);
+
+    // No-op / unknown choice must not mark the event seen.
+    if (gameEvents.veinrootIntroduction) {
+      gameEvents.veinrootIntroduction.triggered = false;
+    }
+    const rejected = EventManager.applyEventChoice(
+      state as GameState,
+      'not_a_real_choice',
+      'veinrootIntroduction',
+    );
+    expect(rejected).toEqual({});
+    expect(rejected.triggeredEvents).toBeUndefined();
+  });
+
+  it('marks non-repeatable no-choice events seen when they trigger', () => {
+    vi.spyOn(Math, 'random').mockReturnValue(0);
+    const state = {
+      ...createInitialState(),
+      buildings: {
+        ...createInitialState().buildings,
+        stoneHut: 5,
+      },
+      flags: {
+        ...createInitialState().flags,
+        hasCity: false,
+      },
+      triggeredEvents: {},
+    } as EventRollState;
+
+    if (gameEvents.villageBecomesCity) {
+      gameEvents.villageBecomesCity.triggered = false;
+    }
+
+    const { stateChanges } = EventManager.checkEvents(state);
+    expect(stateChanges.triggeredEvents?.villageBecomesCity).toBe(true);
+    expect(stateChanges.flags?.hasCity).toBe(true);
   });
 });

@@ -740,5 +740,18 @@
   "buildScribesOffice": {
     "description": "Uma sala tranquila onde os escribas mantêm um registro cuidadoso de cada mão a trabalhar, para que nenhum labor seja esquecido",
     "label": "Escritório do Escriba"
+  },
+  "buildHerbGarden": {
+    "description": "Canteiros cultivados de plantas úteis, cuidadosamente tratados por seus muitos usos.",
+    "label": "Jardim de ervas"
+  },
+  "exploreMountainVillage": {
+    "label": "Explorar aldeia da montanha"
+  },
+  "searchMountainLady": {
+    "label": "Procurar a dama das montanhas",
+    "log": {
+      "ambush": "O homem os leva fundo na floresta. Seus aldeões caem em armadilhas. De repente a mulher de cabelos ruivos aparece, e juntos atacam seus homens. {{count}} aldeões morrem antes que os sobreviventes matem os dois atacantes. No corpo do homem eles encontram um mapa para uma aldeia na montanha."
+    }
   }
 }

@@ -740,5 +740,18 @@
       "mapFragment": "En el suelo de la cueva encuentras un fragmento de mapa hecho jirones.",
       "firstVisit": "El aire se vuelve más frío a medida que desciendes más profundo en la cueva. Las paredes parecen antinaturalmente lisas, como si alguien las hubiera moldeado."
     }
+  },
+  "buildHerbGarden": {
+    "description": "Bancales cultivados de plantas útiles, cuidadosamente atendidos por sus muchos usos.",
+    "label": "Jardín de hierbas"
+  },
+  "exploreMountainVillage": {
+    "label": "Explorar aldea de montaña"
+  },
+  "searchMountainLady": {
+    "label": "Buscar a la dama de las montañas",
+    "log": {
+      "ambush": "El hombre os lleva a lo profundo del bosque. Vuestros aldeanos caen en trampas. De pronto aparece la mujer pelirroja y juntos se lanzan sobre vuestros hombres. {{count}} aldeanos mueren antes de que los supervivientes maten a ambos atacantes. En el cuerpo del hombre encuentran un mapa hacia una aldea de montaña."
+    }
   }
 }

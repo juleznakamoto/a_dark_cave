@@ -2663,5 +2663,81 @@
     },
     "message": "A hooded figure appears at the estate, silent, then whispering in a low voice. They offer to give you a blessing.",
     "title": "A Quiet Offering"
+  },
+  "ladyFromTheMountains": {
+    "choices": {
+      "sendAway": {
+        "label": "Mandar embora"
+      },
+      "welcome": {
+        "label": "Receber"
+      }
+    },
+    "log": {
+      "sendAwayOutcome": "Você a recusa. Ela sorri com calma demais. 'Você e cada alma desta aldeia vão se arrepender', diz ela, e então se afasta.",
+      "welcomeOutcome": "Você recebe a mulher de cabelos ruivos. Ela agradece em voz baixa e fala de plantas que curam e que fazem mal. Oferece ajudar a construir um jardim de ervas. Os aldeões a observam com atenção."
+    },
+    "message": "Uma bela mulher de cabelos ruivos chega. Diz que sua aldeia nas montanhas morreu de fome e pede para ficar. Afirma saber muito sobre plantas e seus efeitos.",
+    "title": "A Dama das Montanhas"
+  },
+  "liquidDeath": {
+    "choices": {
+      "digWell": {
+        "cost": "5000 comida",
+        "label": "Cavar outro poço"
+      },
+      "searchWoman": {
+        "label": "Procurar a mulher"
+      }
+    },
+    "log": {
+      "digWellOutcome": "Seus aldeões cavam um novo poço. A água volta. Naquela noite, um homem faminto chega da floresta.",
+      "searchOutcome": "Não há mais nada para beber. {{deaths}} aldeões mais velhos morrem de sede. A mulher não é encontrada, mas os buscadores arrastam um homem faminto da floresta."
+    },
+    "message": {
+      "rejected": "Certa manhã, {{deaths}} aldeões são encontrados mortos em suas cabanas. Seus lábios estão azuis como beladona esmagada. Um aldeão afirma ter visto uma mulher de cabelos ruivos perto do poço no dia anterior.",
+      "welcomed": "Certa manhã, {{deaths}} aldeões são encontrados mortos em suas cabanas. Seus lábios estão azuis como beladona esmagada. Um aldeão afirma ter visto a mulher de cabelos ruivos da aldeia da montanha perto do poço no dia anterior."
+    },
+    "title": "Morte líquida"
+  },
+  "manFromTheMountains": {
+    "choices": {
+      "believeAndHelp": {
+        "label": "Acreditar nele e ajudar"
+      },
+      "sendAway": {
+        "label": "Mandar embora"
+      }
+    },
+    "log": {
+      "believeOutcome": "O homem oferece liderar a busca pela mulher. Diz saber onde ela se esconde e que você deveria levar muitos homens.",
+      "sendAwayOutcome": "Você manda embora o homem faminto. Ele não discute. Os aldeões observam a beira da floresta enquanto ele some."
+    },
+    "message": "O homem faminto é trazido até você. Mal consegue falar com clareza e afirma ser o último sobrevivente de uma aldeia na montanha. Diz que o poço deles foi envenenado por uma herbalista de cabelos ruivos.",
+    "title": "O Homem das Montanhas"
+  },
+  "mountainPairNightAttack": {
+    "choices": {
+      "continue": {
+        "label": "Continuar"
+      }
+    },
+    "log": {
+      "outcome": "À noite, o homem e a mulher de cabelos ruivos atacam juntos. {{deaths}} aldeões morrem antes que o resto os derrote. Antes que você possa intervir, os aldeões enforcam os dois. Eles eram cúmplices o tempo todo. No corpo do homem você encontra um mapa para uma aldeia na montanha."
+    },
+    "message": "À noite, o homem e a mulher de cabelos ruivos atacam a aldeia juntos. {{deaths}} aldeões caem antes que o resto derrote o casal. Antes que você possa fazer qualquer coisa, os aldeões os enforcam. No corpo do homem você encontra um mapa para uma aldeia na montanha.",
+    "title": "Ataque noturno"
+  },
+  "theHoundFound": {
+    "choices": {
+      "accept": {
+        "label": "Aceitar"
+      }
+    },
+    "log": {
+      "outcome": "Você o aceita. Chamavam-no de O Cão. Marcado pelo veneno, mas ainda vivo, ele se junta à sua companhia."
+    },
+    "message": "Sua expedição encontra uma aldeia na montanha cheia de mortos envenenados. Entre os corpos jaz um homem quase morto, muito musculoso mas desfigurado, mal capaz de falar. Diz que só o chamavam de O Cão. Parece ter resistido ao veneno, ainda que por pouco. Ele quer se juntar a vocês.",
+    "title": "O Cão"
   }
 }

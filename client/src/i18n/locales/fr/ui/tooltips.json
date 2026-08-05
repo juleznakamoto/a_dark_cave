@@ -175,7 +175,8 @@
       "addsConstructionQueueSlot_other": "Ajoute {{count}} emplacements de file de construction", //x1.4
       "constructionBoost": "Boost de construction : dépenser de la Perspicacité pour sauter 50 % du temps de construction (une fois par construction)", //x1.6
       "craftingBoost": "Boost d'artisanat : dépenser de la Perspicacité pour sauter 50 % du temps d'artisanat (une fois par artisanat)", //x1.5
-      "weaponEnchantment": "Enchantement d'armes"
+      "weaponEnchantment": "Enchantement d'armes",
+      "gathererVeinroot": "Cueilleur : +{{amount}} racine de veine"
     }
   }
 }

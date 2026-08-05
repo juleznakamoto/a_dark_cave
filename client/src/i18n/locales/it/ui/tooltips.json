@@ -175,7 +175,8 @@
       "addsConstructionQueueSlot_other": "Aggiunge {{count}} slot coda di costruzione",
       "constructionBoost": "Boost costruzione: spendi Intuizione per saltare il 50 % del tempo di costruzione (una volta per costruzione)",
       "craftingBoost": "Boost fabbricazione: spendi Intuizione per saltare il 50 % del tempo di fabbricazione (una volta per fabbricazione)",
-      "weaponEnchantment": "Incantesimo delle armi"
+      "weaponEnchantment": "Incantesimo delle armi",
+      "gathererVeinroot": "Raccoglitore: +{{amount}} Radicevena"
     }
   }
 }

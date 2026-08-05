@@ -367,6 +367,10 @@
     "restless_knight": {
       "description": "久经战斗的老兵，见过旧世界的残骸。解锁战斗技能粉碎打击。",
       "name": "不眠骑士"
+    },
+    "the_hound": {
+      "description": "来自中毒山村的健壮却毁容的幸存者。其实力尚不为人知。",
+      "name": "猎犬"
     }
   },
   "tools": {
@@ -481,6 +485,10 @@
     "stone_pickaxe": {
       "description": "用于采矿的粗糙镐子",
       "name": "石镐"
+    },
+    "mountain_village_map": {
+      "description": "粗陋的地图，标出通往高山隘口、通向一座山村的路径。",
+      "name": "山村地图"
     }
   },
   "weapons": {

@@ -368,6 +368,10 @@
     "restless_knight": {
       "description": "Veterano del combattimento che ha visto i resti del vecchio mondo. Sblocca l'abilità di combattimento Colpo Devastante.",
       "name": "Cavaliere Inquieto"
+    },
+    "the_hound": {
+      "description": "Un sopravvissuto muscoloso e sfigurato di un villaggio di montagna avvelenato. I suoi punti di forza non sono ancora noti.",
+      "name": "Il Segugio"
     }
   },
   "tools": {
@@ -482,6 +486,10 @@
     "stone_pickaxe": {
       "description": "Piccone rudimentale per l'estrazione",
       "name": "Piccone di Pietra"
+    },
+    "mountain_village_map": {
+      "description": "Mappa grezza che segna un sentiero verso i valichi alti, verso un villaggio di montagna.",
+      "name": "Mappa del villaggio di montagna"
     }
   },
   "weapons": {

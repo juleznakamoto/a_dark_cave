@@ -367,6 +367,10 @@
     "restless_knight": {
       "description": "Veterano de combate que ha visto los restos del viejo mundo. Desbloquea la habilidad de combate Golpe aplastante.",
       "name": "Caballero inquieto"
+    },
+    "the_hound": {
+      "description": "Un superviviente musculoso y desfigurado de una aldea de montaña envenenada. Sus fortalezas aún no se conocen.",
+      "name": "El Sabueso"
     }
   },
   "tools": {
@@ -481,6 +485,10 @@
     "stone_pickaxe": {
       "description": "Pico rudimentario para minar",
       "name": "Pico de piedra"
+    },
+    "mountain_village_map": {
+      "description": "Mapa tosco que marca un camino hacia los altos pasos, hacia una aldea de montaña.",
+      "name": "Mapa de aldea de montaña"
     }
   },
   "weapons": {

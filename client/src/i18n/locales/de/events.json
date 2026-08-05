@@ -2663,5 +2663,81 @@
     },
     "message": "Eine junge Frau tritt an dich heran, Tränen strömen über ihr Gesicht. 'Meine beiden Eltern wurden diesem verfluchten Monolithen geopfert', ruft sie. 'Dieses barbarische Verhalten muss aufhören!'",
     "title": "Die Bitte der jungen Frau"
+  },
+  "ladyFromTheMountains": {
+    "choices": {
+      "sendAway": {
+        "label": "Wegschicken"
+      },
+      "welcome": {
+        "label": "Willkommen heißen"
+      }
+    },
+    "log": {
+      "sendAwayOutcome": "Du weist sie ab. Sie lächelt zu ruhig. 'Du und jede Seele in diesem Dorf werdet das bereuen', sagt sie, dann wendet sie sich ab.",
+      "welcomeOutcome": "Du heißt die rothaarige Frau willkommen. Sie dankt dir leise und spricht von Pflanzen, die heilen und schaden. Sie bietet an, beim Bau eines Kräutergartens zu helfen. Die Dorfbewohner beobachten sie aufmerksam."
+    },
+    "message": "Eine schöne rothaarige Frau trifft ein. Sie sagt, ihr Dorf in den Bergen sei verhungert, und bittet, bleiben zu dürfen. Sie behauptet, viel über Pflanzen und ihre Wirkungen zu wissen.",
+    "title": "Die Dame aus den Bergen"
+  },
+  "liquidDeath": {
+    "choices": {
+      "digWell": {
+        "cost": "5000 Nahrung",
+        "label": "Einen neuen Brunnen graben"
+      },
+      "searchWoman": {
+        "label": "Nach der Frau suchen"
+      }
+    },
+    "log": {
+      "digWellOutcome": "Eure Dorfbewohner graben einen neuen Brunnen. Das Wasser kehrt zurück. Am Abend trifft ein ausgehungerter Mann aus dem Wald ein.",
+      "searchOutcome": "Es gibt nichts mehr zu trinken. {{deaths}} ältere Dorfbewohner sterben vor Durst. Die Frau ist nicht zu finden, doch die Suchenden schleppen einen ausgehungerten Mann aus dem Wald."
+    },
+    "message": {
+      "rejected": "Eines Morgens werden {{deaths}} Dorfbewohner tot in ihren Hütten gefunden. Ihre Lippen sind blau wie zerquetschter Nachtschatten. Ein Dorfbewohner behauptet, am Vortag eine rothaarige Frau am Brunnen gesehen zu haben.",
+      "welcomed": "Eines Morgens werden {{deaths}} Dorfbewohner tot in ihren Hütten gefunden. Ihre Lippen sind blau wie zerquetschter Nachtschatten. Ein Dorfbewohner behauptet, am Vortag die rothaarige Frau aus dem Bergdorf am Brunnen gesehen zu haben."
+    },
+    "title": "Flüssiger Tod"
+  },
+  "manFromTheMountains": {
+    "choices": {
+      "believeAndHelp": {
+        "label": "Ihm glauben und helfen"
+      },
+      "sendAway": {
+        "label": "Wegschicken"
+      }
+    },
+    "log": {
+      "believeOutcome": "Der Mann bietet an, die Suche nach der Frau anzuführen. Er sagt, er wisse, wo sie sich versteckt, und dass du viele Männer mitbringen solltest.",
+      "sendAwayOutcome": "Du schickst den ausgehungerten Mann fort. Er widerspricht nicht. Die Dorfbewohner blicken auf den Waldrand, während er verschwindet."
+    },
+    "message": "Der ausgehungerte Mann wird vor dich gebracht. Kaum verständlich spricht er und behauptet, der letzte Überlebende eines Bergdorfs zu sein. Er sagt, ihr Brunnen sei von einer rothaarigen Kräuterkundigen vergiftet worden.",
+    "title": "Der Mann aus den Bergen"
+  },
+  "mountainPairNightAttack": {
+    "choices": {
+      "continue": {
+        "label": "Weiter"
+      }
+    },
+    "log": {
+      "outcome": "In der Nacht greifen der Mann und die rothaarige Frau gemeinsam an. {{deaths}} Dorfbewohner sterben, bevor die übrigen sie überwältigen. Bevor du eingreifen kannst, hängen die Dorfbewohner beide. Sie waren die ganze Zeit Verbündete. Am Körper des Mannes findest du eine Karte zu einem Bergdorf."
+    },
+    "message": "In der Nacht greifen der Mann und die rothaarige Frau gemeinsam das Dorf an. {{deaths}} Dorfbewohner fallen, bevor die übrigen das Paar überwältigen. Bevor du etwas tun kannst, hängen die Dorfbewohner sie. Am Körper des Mannes findest du eine Karte zu einem Bergdorf.",
+    "title": "Nachtangriff"
+  },
+  "theHoundFound": {
+    "choices": {
+      "accept": {
+        "label": "Annehmen"
+      }
+    },
+    "log": {
+      "outcome": "Du nimmst ihn auf. Sie nannten ihn den Hund. Vom Gift gezeichnet, doch noch atmend, schließt er sich deiner Gefolgschaft an."
+    },
+    "message": "Eure Expedition findet ein Bergdorf voll vergifteter Toter. Unter den Leichen liegt ein fast toter Mann, sehr muskulös, doch entstellt, kaum fähig zu sprechen. Er sagt, sie nannten ihn nur den Hund. Offenbar hat er dem Gift widerstanden, wenn auch kaum. Er will sich euch anschließen.",
+    "title": "Der Hund"
   }
 }

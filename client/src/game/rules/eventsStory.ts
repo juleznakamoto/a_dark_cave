@@ -394,9 +394,9 @@ export const storyEvents: Record<string, GameEvent> = {
    * Sets `beyondGateVentureUnlocked` on Continue (dialog bookkeeping only; the Cave action
    * gates on `tenthWaveVictory`).
    *
-   * Must stay repeatable while that flag is missing: non-repeatable + `triggeredEvents` is
-   * written when the dialog opens, but Continue is what sets the flag. A reload/update clears
-   * `eventDialog` and would otherwise permanently suppress this beat.
+   * Stays `repeatable: true` for legacy saves that already have `triggeredEvents` set from the
+   * old "mark seen on dialog open" bug without `beyondGateVentureUnlocked`. New choice events
+   * defer `triggeredEvents` until `applyEventChoice`, but this beat still keys off the story flag.
    */
   beyondGatePassagesClear: {
     id: "beyondGatePassagesClear",

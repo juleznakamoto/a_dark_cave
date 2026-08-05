@@ -175,7 +175,8 @@
       "addsConstructionQueueSlot_other": "Añade {{count}} espacios de cola de construcción",
       "constructionBoost": "Impulso de construcción: gasta Perspicacia para saltarte el 50 % del tiempo de construcción (una vez por construcción)", //x1.6
       "craftingBoost": "Impulso de artesanía: gasta Perspicacia para saltarte el 50 % del tiempo de artesanía (una vez por artesanía)", //x1.5
-      "weaponEnchantment": "Encantamiento de armas" //x1.2
+      "weaponEnchantment": "Encantamiento de armas", //x1.2
+      "gathererVeinroot": "Recolector: +{{amount}} Raíz de vena"
     }
   }
 }

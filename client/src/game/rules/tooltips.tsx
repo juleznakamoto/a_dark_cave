@@ -524,6 +524,19 @@ export const madnessProductionTooltip: TooltipConfig = {
   },
 };
 
+/** Minutes when >= 60s left; seconds for the final minute (e.g. "42 sec remaining"). */
+function formatEffectRemaining(remainingMs: number): string {
+  const remainingSecs = Math.ceil(Math.max(0, remainingMs) / 1000);
+  if (remainingSecs >= 60) {
+    return getUiTooltip("minRemaining", "{{count}} min remaining", {
+      count: Math.ceil(remainingSecs / 60),
+    });
+  }
+  return getUiTooltip("secRemaining", "{{count}} sec remaining", {
+    count: remainingSecs,
+  });
+}
+
 // Feast and Curse Tooltips
 export const feastTooltip: TooltipConfig = {
   getContent: (state: GameState) => {
@@ -535,7 +548,6 @@ export const feastTooltip: TooltipConfig = {
 
     if (isGreatFeast) {
       const remainingMs = greatFeastState.endTime - Date.now();
-      const remainingMinutes = Math.ceil(remainingMs / 60000);
       return (
         <>
           <div className="font-bold">
@@ -546,18 +558,13 @@ export const feastTooltip: TooltipConfig = {
               value: "400%",
             })}
           </div>
-          <div>
-            {getUiTooltip("minRemaining", "{{count}} min remaining", {
-              count: remainingMinutes,
-            })}
-          </div>
+          <div>{formatEffectRemaining(remainingMs)}</div>
         </>
       );
     }
 
     if (isFeast) {
       const remainingMs = feastState.endTime - Date.now();
-      const remainingMinutes = Math.ceil(remainingMs / 60000);
       return (
         <>
           <div className="font-bold">
@@ -568,11 +575,7 @@ export const feastTooltip: TooltipConfig = {
               value: "100%",
             })}
           </div>
-          <div>
-            {getUiTooltip("minRemaining", "{{count}} min remaining", {
-              count: remainingMinutes,
-            })}
-          </div>
+          <div>{formatEffectRemaining(remainingMs)}</div>
         </>
       );
     }
@@ -589,7 +592,6 @@ export const solsticeTooltip: TooltipConfig = {
 
     if (isSolstice) {
       const remainingMs = solsticeState.endTime - Date.now();
-      const remainingMinutes = Math.ceil(remainingMs / 60000);
       return (
         <>
           <div className="font-bold">
@@ -607,11 +609,7 @@ export const solsticeTooltip: TooltipConfig = {
               { percent: 50 },
             )}
           </div>
-          <div>
-            {getUiTooltip("minRemaining", "{{count}} min remaining", {
-              count: remainingMinutes,
-            })}
-          </div>
+          <div>{formatEffectRemaining(remainingMs)}</div>
         </>
       );
     }
@@ -627,7 +625,6 @@ export const curseTooltip: TooltipConfig = {
 
     if (isCursed) {
       const remainingMs = curseState.endTime - Date.now();
-      const remainingMinutes = Math.ceil(remainingMs / 60000);
       return (
         <>
           <div className="font-bold">
@@ -638,11 +635,7 @@ export const curseTooltip: TooltipConfig = {
               value: "-50%",
             })}
           </div>
-          <div>
-            {getUiTooltip("minRemaining", "{{count}} min remaining", {
-              count: remainingMinutes,
-            })}
-          </div>
+          <div>{formatEffectRemaining(remainingMs)}</div>
         </>
       );
     }
@@ -659,7 +652,6 @@ export const disgustTooltip: TooltipConfig = {
 
     if (isDisgusted) {
       const remainingMs = disgustState.endTime - Date.now();
-      const remainingMinutes = Math.ceil(remainingMs / 60000);
       return (
         <>
           <div className="font-bold">
@@ -670,11 +662,7 @@ export const disgustTooltip: TooltipConfig = {
               value: "-25%",
             })}
           </div>
-          <div>
-            {getUiTooltip("minRemaining", "{{count}} min remaining", {
-              count: remainingMinutes,
-            })}
-          </div>
+          <div>{formatEffectRemaining(remainingMs)}</div>
         </>
       );
     }
@@ -691,7 +679,6 @@ export const miningBoostTooltip: TooltipConfig = {
 
     if (isBoosted) {
       const remainingMs = miningBoostState.endTime - Date.now();
-      const remainingMinutes = Math.ceil(remainingMs / 60000);
       return (
         <>
           <div className="font-bold">
@@ -702,11 +689,7 @@ export const miningBoostTooltip: TooltipConfig = {
               percent: 100,
             })}
           </div>
-          <div>
-            {getUiTooltip("minRemaining", "{{count}} min remaining", {
-              count: remainingMinutes,
-            })}
-          </div>
+          <div>{formatEffectRemaining(remainingMs)}</div>
         </>
       );
     }
@@ -724,15 +707,6 @@ export const heartfireTooltip: TooltipConfig = {
     const lastDecrease = heartfireState.lastLevelDecrease || 0;
     const levelDuration = 90000; // 1.5 minutes per level
     const remainingMs = Math.max(0, levelDuration - (now - lastDecrease));
-    const remainingSecs = Math.ceil(remainingMs / 1000);
-    const timeLabel =
-      remainingSecs >= 60
-        ? getUiTooltip("minRemaining", "{{count}} min remaining", {
-          count: Math.ceil(remainingSecs / 60),
-        })
-        : getUiTooltip("secRemaining", "{{count}} sec remaining", {
-          count: remainingSecs,
-        });
 
     const villagerBonus = [0, 1, 2.5, 5, 7.5, 10][heartfireState.level] ?? 0;
     const prodPctPerLevel = state.blessings?.ebon_grace ? 10 : 5;
@@ -751,7 +725,7 @@ export const heartfireTooltip: TooltipConfig = {
         </div>
         <div>
           {getUiTooltip("minUntilDecrease", "{{time}} until level decrease", {
-            time: timeLabel,
+            time: formatEffectRemaining(remainingMs),
           })}
         </div>
       </>
@@ -767,7 +741,6 @@ export const frostfallTooltip: TooltipConfig = {
 
     if (isFrostfall) {
       const remainingMs = frostfallState.endTime - Date.now();
-      const remainingMinutes = Math.ceil(remainingMs / 60000);
       return (
         <>
           <div className="font-bold">{getUiTooltip("frostfall", "Frostfall")}</div>
@@ -776,11 +749,7 @@ export const frostfallTooltip: TooltipConfig = {
               value: "-25%",
             })}
           </div>
-          <div>
-            {getUiTooltip("minRemaining", "{{count}} min remaining", {
-              count: remainingMinutes,
-            })}
-          </div>
+          <div>{formatEffectRemaining(remainingMs)}</div>
         </>
       );
     }
@@ -796,7 +765,6 @@ export const fogTooltip: TooltipConfig = {
 
     if (isFog) {
       const remainingMs = fogState.endTime - Date.now();
-      const remainingMinutes = Math.ceil(remainingMs / 60000);
       return (
         <>
           <div className="font-bold">
@@ -807,11 +775,7 @@ export const fogTooltip: TooltipConfig = {
               value: "-50%",
             })}
           </div>
-          <div>
-            {getUiTooltip("minRemaining", "{{count}} min remaining", {
-              count: remainingMinutes,
-            })}
-          </div>
+          <div>{formatEffectRemaining(remainingMs)}</div>
         </>
       );
     }
@@ -828,7 +792,6 @@ export const focusTooltip: TooltipConfig = {
 
     if (isFocusActive) {
       const remainingMs = focusState.endTime - Date.now();
-      const remainingMinutes = Math.ceil(remainingMs / 60000);
       return (
         <>
           <div className="font-bold">{getUiTooltip("focus", "Focus")}</div>
@@ -837,11 +800,7 @@ export const focusTooltip: TooltipConfig = {
               multiplier: 2,
             })}
           </div>
-          <div>
-            {getUiTooltip("minRemaining", "{{count}} min remaining", {
-              count: remainingMinutes,
-            })}
-          </div>
+          <div>{formatEffectRemaining(remainingMs)}</div>
         </>
       );
     }

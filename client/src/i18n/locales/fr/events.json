@@ -2663,5 +2663,81 @@
     },
     "message": "Une jeune femme s'approche de vous, les larmes ruisselant sur son visage. 'Mes deux parents ont été sacrifiés à ce monolithe maudit,' crie-t-elle. 'Ce comportement barbare doit cesser !'",
     "title": "La Supplication de la jeune femme" //x1.5
+  },
+  "ladyFromTheMountains": {
+    "choices": {
+      "sendAway": {
+        "label": "Renvoyer"
+      },
+      "welcome": {
+        "label": "Accueillir"
+      }
+    },
+    "log": {
+      "sendAwayOutcome": "Tu la refuses. Elle sourit trop calmement. 'Toi et chaque âme de ce village le regretterez,' dit-elle, puis elle s'éloigne.",
+      "welcomeOutcome": "Tu accueilles la femme aux cheveux roux. Elle te remercie doucement et parle de plantes qui guérissent et qui nuisent. Elle propose d'aider à construire un jardin d'herbes. Les villageois l'observent avec attention."
+    },
+    "message": "Une belle femme aux cheveux roux arrive. Elle dit que son village dans les montagnes est mort de famine, et demande à rester. Elle affirme bien connaître les plantes et leurs effets.",
+    "title": "La Dame des Montagnes"
+  },
+  "liquidDeath": {
+    "choices": {
+      "digWell": {
+        "cost": "5000 nourriture",
+        "label": "Creuser un autre puits"
+      },
+      "searchWoman": {
+        "label": "Chercher la femme"
+      }
+    },
+    "log": {
+      "digWellOutcome": "Vos villageois creusent un nouveau puits. L'eau revient. Ce soir-là, un homme affamé arrive de la forêt.",
+      "searchOutcome": "Il n'y a plus rien à boire. {{deaths}} villageois âgés meurent de soif. La femme est introuvable, mais les chercheurs ramènent un homme affamé de la forêt."
+    },
+    "message": {
+      "rejected": "Un matin, {{deaths}} villageois sont trouvés morts dans leurs huttes. Leurs lèvres sont bleues comme de la morelle écrasée. Un villageois affirme avoir vu une femme aux cheveux roux près du puits la veille.",
+      "welcomed": "Un matin, {{deaths}} villageois sont trouvés morts dans leurs huttes. Leurs lèvres sont bleues comme de la morelle écrasée. Un villageois affirme avoir vu la femme aux cheveux roux du village de montagne près du puits la veille."
+    },
+    "title": "Mort liquide"
+  },
+  "manFromTheMountains": {
+    "choices": {
+      "believeAndHelp": {
+        "label": "Le croire et l'aider"
+      },
+      "sendAway": {
+        "label": "Renvoyer"
+      }
+    },
+    "log": {
+      "believeOutcome": "L'homme propose de mener la recherche de la femme. Il dit savoir où elle se cache, et que tu devrais amener beaucoup d'hommes.",
+      "sendAwayOutcome": "Tu renvoies l'homme affamé. Il ne discute pas. Les villageois regardent la lisière tandis qu'il disparaît."
+    },
+    "message": "L'homme affamé est amené devant toi. À peine capable de parler clairement, il affirme être le dernier survivant d'un village de montagne. Il dit que leur puits a été empoisonné par une herboriste aux cheveux roux.",
+    "title": "L'Homme des Montagnes"
+  },
+  "mountainPairNightAttack": {
+    "choices": {
+      "continue": {
+        "label": "Continuer"
+      }
+    },
+    "log": {
+      "outcome": "La nuit, l'homme et la femme aux cheveux roux attaquent ensemble. {{deaths}} villageois meurent avant que les autres ne les submergent. Avant que tu puisses intervenir, les villageois les pendent tous les deux. Ils étaient complices depuis le début. Sur le corps de l'homme, tu trouves une carte vers un village de montagne."
+    },
+    "message": "La nuit, l'homme et la femme aux cheveux roux attaquent le village ensemble. {{deaths}} villageois tombent avant que les autres ne submergent le couple. Avant que tu puisses rien faire, les villageois les pendent. Sur le corps de l'homme, tu trouves une carte vers un village de montagne.",
+    "title": "Attaque nocturne"
+  },
+  "theHoundFound": {
+    "choices": {
+      "accept": {
+        "label": "Accepter"
+      }
+    },
+    "log": {
+      "outcome": "Tu l'acceptes. Ils l'appelaient le Chien. Déformé par le poison mais encore vivant, il rejoint ta compagnie."
+    },
+    "message": "Votre expédition trouve un village de montagne rempli de morts empoisonnés. Parmi les corps gît un homme presque mort, très musclé mais défiguré, à peine capable de parler. Il dit qu'on l'appelait juste le Chien. Il semble avoir résisté au poison, même de justesse. Il veut se joindre à vous.",
+    "title": "Le Chien"
   }
 }

@@ -740,5 +740,18 @@
       "mapFragment": "在洞穴地上，你发现一块残破的地图片段。",
       "firstVisit": "越往洞穴深处，空气越发寒冷。洞壁光滑得不自然，仿佛曾被人塑造。"
     }
+  },
+  "buildHerbGarden": {
+    "description": "精心照料的有用植物苗床，用途广泛。",
+    "label": "药草园"
+  },
+  "exploreMountainVillage": {
+    "label": "探索山村"
+  },
+  "searchMountainLady": {
+    "label": "搜寻山中女子",
+    "log": {
+      "ambush": "那人把你们引向密林深处。村民们踩进陷阱。红发女子忽然现身，两人一同扑向你们的人。{{count}} 名村民倒下后，幸存者才杀死两名袭击者。他们在男子身上发现一张通往山村的地图。"
+    }
   }
 }

@@ -424,14 +424,21 @@ export class EventManager {
           stateChanges = { ...stateChanges, ...effectResult };
         }
 
-        // Mark as triggered
-        event.triggered = true;
-        // For non-repeatable events, record in state
-        if (!event.repeatable) {
-          stateChanges.triggeredEvents = {
-            ...(state.triggeredEvents || {}),
-            [event.id]: true,
-          };
+        const hasPlayerChoices =
+          Array.isArray(eventChoices) && eventChoices.length > 0;
+
+        // Non-repeatable events with choices must NOT write `triggeredEvents` here.
+        // `eventDialog` is runtime-only (cleared on load); marking seen on open would
+        // permanently suppress the beat if the player refreshes before choosing.
+        // No-choice events apply their effect immediately, so mark them at trigger.
+        if (!hasPlayerChoices) {
+          event.triggered = true;
+          if (!event.repeatable) {
+            stateChanges.triggeredEvents = {
+              ...(state.triggeredEvents || {}),
+              [event.id]: true,
+            };
+          }
         }
 
         // Record trigger time for cooldown tracking
@@ -447,7 +454,47 @@ export class EventManager {
     return { newLogEntries, stateChanges };
   }
 
+  /**
+   * Persist non-repeatable completion only after a real choice result.
+   * Skips no-ops (`{}`) and affordance rejects so a failed click cannot eat the event.
+   */
+  private static withNonRepeatableSeen(
+    state: GameState,
+    eventId: string,
+    result: EventChoiceEffectResult,
+  ): EventChoiceEffectResult {
+    if (result._choiceRejected) return result;
+    if (Object.keys(result).length === 0) return result;
+
+    const eventDefinition = this.allEvents[eventId];
+    if (!eventDefinition || eventDefinition.repeatable) return result;
+
+    eventDefinition.triggered = true;
+    return {
+      ...result,
+      triggeredEvents: {
+        ...(state.triggeredEvents || {}),
+        ...((result.triggeredEvents as Record<string, boolean> | undefined) ||
+          {}),
+        [eventId]: true,
+      },
+    };
+  }
+
   static applyEventChoice(
+    state: GameState,
+    choiceId: string,
+    eventId: string,
+    currentLogEntry?: LogEntry,
+  ): EventChoiceEffectResult {
+    return this.withNonRepeatableSeen(
+      state,
+      eventId,
+      this.resolveEventChoice(state, choiceId, eventId, currentLogEntry),
+    );
+  }
+
+  private static resolveEventChoice(
     state: GameState,
     choiceId: string,
     eventId: string,
