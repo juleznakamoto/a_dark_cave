@@ -353,7 +353,7 @@
       "name": "Cacciatrice Spettro di Cenere"
     },
     "disgraced_prior": {
-      "description": "Ex priore espulso dal suo ordine. Si redime attraverso un lavoro senza fine. Può essere assegnato per ripetere automaticamente le azioni.",
+      "description": "Ex priore espulso dal suo ordine. Si redime attraverso un lavoro senza fine. Sblocca l'abilità Lavoratore instancabile.",
       "name": "Priore Caduto in Disgrazia"
     },
     "elder_wizard": {

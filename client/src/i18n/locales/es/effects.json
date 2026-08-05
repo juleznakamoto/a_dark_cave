@@ -353,7 +353,7 @@
       "name": "Cazadora espectroceniza" //x1.3
     },
     "disgraced_prior": {
-      "description": "Antiguo prior expulsado de su orden. Se redime mediante un trabajo interminable. Puede asignarse para repetir acciones automáticamente.",
+      "description": "Antiguo prior expulsado de su orden. Se redime mediante un trabajo interminable. Desbloquea la habilidad Trabajador incansable.",
       "name": "Prior deshonrado"
     },
     "elder_wizard": {

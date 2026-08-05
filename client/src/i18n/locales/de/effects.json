@@ -353,7 +353,7 @@
       "name": "Aschengeist-Jägerin"
     },
     "disgraced_prior": {
-      "description": "Ehemaliger Prior, aus seinem Orden verstoßen. Sühnt durch endlose Arbeit. Kann zugewiesen werden, um Aktionen automatisch zu wiederholen.",
+      "description": "Ehemaliger Prior, aus seinem Orden verstoßen. Sühnt durch endlose Arbeit. Schaltet die Fähigkeit Unermüdlicher Arbeiter frei.",
       "name": "Gefallener Prior"
     },
     "elder_wizard": {

@@ -842,7 +842,7 @@ export default function EstatePanel() {
                 );
               })()}
 
-              {/* Disgraced Prior */}
+              {/* Tireless Worker (Disgraced Prior) */}
               {fellowship.disgraced_prior && (() => {
                 const lvl = disgracedPriorSkills?.level ?? 0;
                 const cur = DISGRACED_PRIOR_UPGRADES[lvl];
@@ -871,7 +871,7 @@ export default function EstatePanel() {
                     });
                 return (
                   <SkillUpgradeRow
-                    title={t("estate.disgracedPrior")}
+                    title={t("estate.tirelessWorker")}
                     level={lvl}
                     upgradeCost={nxt?.cost ?? 0}
                     canAfford={resources.gold >= (nxt?.cost ?? Infinity)}

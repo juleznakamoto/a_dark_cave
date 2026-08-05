@@ -1774,7 +1774,7 @@ export const fellowshipEffects: Record<string, EffectDefinition> = {
     id: "disgraced_prior",
     name: "Disgraced Prior",
     description:
-      "Former prior cast out of his order. Redeems himself through endless labor. Can be assigned to automatically repeat actions.",
+      "Former prior cast out of his order. Redeems himself through endless labor. Unlocks Tireless Worker skill.",
     bonuses: {
       generalBonuses: {},
     },

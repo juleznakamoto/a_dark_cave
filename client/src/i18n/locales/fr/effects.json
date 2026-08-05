@@ -353,7 +353,7 @@
       "name": "Chasseresse spectre-cendre" //x1.4
     },
     "disgraced_prior": {
-      "description": "Ancien prieur rejeté par son ordre. Il se rachète par un labeur sans fin. Peut être assigné à répéter automatiquement des actions.",
+      "description": "Ancien prieur rejeté par son ordre. Il se rachète par un labeur sans fin. Débloque la compétence Travailleur infatigable.",
       "name": "Prieur déchu"
     },
     "elder_wizard": {
