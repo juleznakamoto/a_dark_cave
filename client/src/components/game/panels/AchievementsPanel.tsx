@@ -266,7 +266,7 @@ function AchievementRowComponent({
           ) : redactedWidthCh > 0 ? (
             <p className="flex h-4 items-center" aria-hidden>
               <span
-                className="inline-block h-2.5 rounded-[2px] bg-muted-foreground"
+                className="inline-block h-2.5 rounded-[2px] bg-foreground/55"
                 style={{ width: `${redactedWidthCh}ch` }}
               />
             </p>
