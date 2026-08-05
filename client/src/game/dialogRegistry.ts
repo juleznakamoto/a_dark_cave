@@ -17,7 +17,7 @@ export type DialogRegistryEntry = {
   resetOnLoad: unknown;
 };
 
-const CLOSED_EVENT_DIALOG = { isOpen: false, currentEvent: null };
+const CLOSED_EVENT_DIALOG = { isOpen: false, currentEvent: null, lastEndedAt: 0 };
 const CLOSED_COMBAT_DIALOG = {
   isOpen: false,
   enemy: null,

@@ -22,7 +22,6 @@
     "crushingStrike": "粉碎打击",
     "bloodflameSphere": "血焰法球",
     "poisonArrows": "毒箭",
-    "attackDetailsAria": "战斗攻击详情",
     "critChance": "{{percent}}% 暴击几率",
     "critFromLuck": "{{percent}}% 来自{{stat}}{{maxSuffix}}",
     "critFromLuckMaxSuffix": "（上限）",

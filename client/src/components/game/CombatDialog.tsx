@@ -823,6 +823,60 @@ export default function CombatDialog({
     0.4 +
     0.5;
 
+  const luckCrit = calculateCriticalStrikeChance(getTotalLuck(gameState));
+  const itemCrit = getTotalCriticalChance(gameState);
+  const totalCrit = luckCrit + itemCrit;
+  const failPct = getCombatAttackFailChancePercent(
+    getTotalMadness(gameState),
+  );
+  const fightTooltip =
+    totalCrit > 0 || failPct > 0 ? (
+      <div className="text-xs space-y-2 max-w-[220px]">
+        {totalCrit > 0 && (
+          <div className="space-y-1">
+            <div>
+              {t("ui:combat.critChance", {
+                percent: totalCrit,
+              })}
+            </div>
+            {luckCrit > 0 && (
+              <div className="text-gray-400/70">
+                {t("ui:combat.critFromLuck", {
+                  percent: luckCrit,
+                  stat: getStatName("luck", "Luck"),
+                  maxSuffix:
+                    getTotalLuck(gameState) >= 50
+                      ? t("ui:combat.critFromLuckMaxSuffix")
+                      : "",
+                })}
+              </div>
+            )}
+            {itemCrit > 0 && (
+              <div className="text-gray-400/70">
+                {t("ui:combat.critFromItems", {
+                  percent: itemCrit,
+                })}
+              </div>
+            )}
+          </div>
+        )}
+        {failPct > 0 && (
+          <div
+            className={
+              totalCrit > 0 ? "pt-1 border-t border-gray-600/50" : ""
+            }
+          >
+            <div className="text-gray-300">
+              {t("ui:combat.missChance", {
+                percent: failPct,
+                stat: getStatName("madness", "Madness"),
+              })}
+            </div>
+          </div>
+        )}
+      </div>
+    ) : undefined;
+
   return (
     <>
       <Dialog open={isOpen} onOpenChange={() => { }}>
@@ -864,85 +918,9 @@ export default function CombatDialog({
             <>
               <div className="relative -m-6 p-6 min-h-full">
                 <DialogHeader>
-                  <div className="flex items-start justify-between">
-                    <DialogTitle className="pr-0 text-lg font-semibold">
-                      {t("ui:combat.roundTitle", { round })}
-                    </DialogTitle>
-                    {(() => {
-                      const luckCrit = calculateCriticalStrikeChance(
-                        getTotalLuck(gameState),
-                      );
-                      const itemCrit = getTotalCriticalChance(gameState);
-                      const totalCrit = luckCrit + itemCrit;
-                      const failPct = getCombatAttackFailChancePercent(
-                        getTotalMadness(gameState),
-                      );
-                      if (totalCrit <= 0 && failPct <= 0) return null;
-                      return (
-                        <TooltipWrapper
-                          tooltip={
-                            <div className="text-xs space-y-2 max-w-[220px]">
-                              {totalCrit > 0 && (
-                                <div className="space-y-1">
-                                  <div>
-                                    {t("ui:combat.critChance", {
-                                      percent: totalCrit,
-                                    })}
-                                  </div>
-                                  {luckCrit > 0 && (
-                                    <div className="text-gray-400/70">
-                                      {t("ui:combat.critFromLuck", {
-                                        percent: luckCrit,
-                                        stat: getStatName("luck", "Luck"),
-                                        maxSuffix:
-                                          getTotalLuck(gameState) >= 50
-                                            ? t("ui:combat.critFromLuckMaxSuffix")
-                                            : "",
-                                      })}
-                                    </div>
-                                  )}
-                                  {itemCrit > 0 && (
-                                    <div className="text-gray-400/70">
-                                      {t("ui:combat.critFromItems", {
-                                        percent: itemCrit,
-                                      })}
-                                    </div>
-                                  )}
-                                </div>
-                              )}
-                              {failPct > 0 && (
-                                <div
-                                  className={
-                                    totalCrit > 0
-                                      ? "pt-1 border-t border-gray-600/50"
-                                      : ""
-                                  }
-                                >
-                                  <div className="text-gray-300">
-                                    {t("ui:combat.missChance", {
-                                      percent: failPct,
-                                      stat: getStatName("madness", "Madness"),
-                                    })}
-                                  </div>
-                                </div>
-                              )}
-                            </div>
-                          }
-                          tooltipId="combat-luck-madness"
-                          tooltipContentClassName="max-w-xs"
-                          disabled
-                          className="inline-flex items-center justify-center w-4 h-4 shrink-0 rounded-full text-muted-foreground hover:text-foreground cursor-pointer"
-                        >
-                          <span
-                            className="font-noto-symbols-2 inline-flex shrink-0 items-center justify-center text-sm font-normal leading-none"
-                            aria-label={t("ui:combat.attackDetailsAria")}
-                          >
-                            🛈
-                          </span>
-                        </TooltipWrapper>
-                      );
-                    })()}
-                  </div>
+                  <DialogTitle className="pr-0 text-lg font-semibold">
+                    {t("ui:combat.roundTitle", { round })}
+                  </DialogTitle>
                 </DialogHeader>
 
                 {/* Enemy Stats */}
@@ -1449,26 +1427,37 @@ export default function CombatDialog({
                 {/* Fight Button — overlays replace this once combat ends */}
                 <div className="pt-3">
                   {!combatEnded ? (
-                    <Button
-                      onClick={handleFight}
+                    <TooltipWrapper
+                      tooltip={fightTooltip}
+                      tooltipId="combat-fight"
+                      tooltipContentClassName="max-w-xs"
                       disabled={
                         isProcessingRound ||
                         (currentEnemy?.currentHealth || 0) <= 0
                       }
-                      className={cn(
-                        "w-full",
-                        gameActionOutlineButtonClassName(
-                          isProcessingRound ||
-                          (currentEnemy?.currentHealth || 0) <= 0,
-                        ),
-                      )}
-                      variant="outline"
-                      button_id="combat-fight"
+                      className="w-full"
                     >
-                      {isProcessingRound
-                        ? t("ui:combat.fighting")
-                        : t("ui:combat.fight")}
-                    </Button>
+                      <Button
+                        onClick={handleFight}
+                        disabled={
+                          isProcessingRound ||
+                          (currentEnemy?.currentHealth || 0) <= 0
+                        }
+                        className={cn(
+                          "w-full",
+                          gameActionOutlineButtonClassName(
+                            isProcessingRound ||
+                            (currentEnemy?.currentHealth || 0) <= 0,
+                          ),
+                        )}
+                        variant="outline"
+                        button_id="combat-fight"
+                      >
+                        {isProcessingRound
+                          ? t("ui:combat.fighting")
+                          : t("ui:combat.fight")}
+                      </Button>
+                    </TooltipWrapper>
                   ) : null}
                 </div>
 

@@ -232,6 +232,12 @@ interface GameStore extends GameState {
   eventDialog: {
     isOpen: boolean;
     currentEvent: LogEntry | null;
+    /**
+     * Wall-clock ms when the last EventDialog closed. Used to enforce
+     * `EVENT_DIALOG_MIN_GAP_MS` before the next random dialog event.
+     * Not persisted; cleared on new game / restart / load reset.
+     */
+    lastEndedAt?: number;
   };
   combatDialog: {
     isOpen: boolean;
@@ -1675,6 +1681,7 @@ function openEventDialogNow(
     eventDialog: {
       isOpen: true,
       currentEvent,
+      lastEndedAt: state.eventDialog?.lastEndedAt ?? 0,
     },
   }));
 
@@ -1775,6 +1782,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
   eventDialog: {
     isOpen: false,
     currentEvent: null,
+    lastEndedAt: 0,
   },
   combatDialog: {
     isOpen: false,
@@ -4211,6 +4219,11 @@ export const useGameStore = create<GameStore>((set, get) => ({
       eventDialog: {
         isOpen,
         currentEvent: currentEvent || null,
+        // Closing starts EVENT_DIALOG_MIN_GAP_MS before the next random dialog event.
+        lastEndedAt:
+          !isOpen && state.eventDialog.isOpen
+            ? Date.now()
+            : (state.eventDialog.lastEndedAt ?? 0),
       },
     }));
   },

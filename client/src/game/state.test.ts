@@ -873,13 +873,6 @@ describe("deferred dialog scheduling", () => {
   });
 
   it("keeps a deferred event queued until every blocking modal has cleared", () => {
-    const blockingEvent = {
-      id: "disgracedPriorOffer-test",
-      message: "Blocking",
-      timestamp: Date.now(),
-      type: "event" as const,
-      choices: [{ id: "offerShelter", label: "Shelter", effect: () => ({}) }],
-    };
     const deferredEvent = {
       id: "forestTribeHelpRequest-test",
       message: "Deferred",
@@ -888,21 +881,17 @@ describe("deferred dialog scheduling", () => {
       choices: [{ id: "accept_help", label: "Offer help", effect: () => ({}) }],
     };
 
+    // Another blocking modal is open and the event dialog is closed: the new
+    // event must wait (in-place replace only applies when eventDialog is already open).
     useGameStore.setState({
       rewardDialog: { isOpen: true, data: { rewards: {}, variant: "success" } },
-      eventDialog: { isOpen: true, currentEvent: blockingEvent },
+      eventDialog: { isOpen: false, currentEvent: null, lastEndedAt: 0 },
     });
 
     useGameStore.getState().setEventDialog(true, deferredEvent);
+    expect(useGameStore.getState().eventDialog.isOpen).toBe(false);
+
     useGameStore.getState().setRewardDialog(false);
-
-    vi.advanceTimersByTime(10_000);
-
-    expect(useGameStore.getState().eventDialog.currentEvent?.id).toBe(
-      blockingEvent.id,
-    );
-
-    useGameStore.getState().setEventDialog(false);
     vi.advanceTimersByTime(3000 + 200 + 50);
 
     expect(useGameStore.getState().eventDialog.isOpen).toBe(true);

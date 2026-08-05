@@ -22,7 +22,6 @@
     "crushingStrike": "Colpo Devastante",
     "bloodflameSphere": "Sfera di Fiammasangue",
     "poisonArrows": "Frecce Avvelenate",
-    "attackDetailsAria": "Dettagli attacco di combattimento",
     "critChance": "{{percent}}% di probabilità di colpo critico",
     "critFromLuck": "{{percent}}% da {{stat}}{{maxSuffix}}",
     "critFromLuckMaxSuffix": " (max)",

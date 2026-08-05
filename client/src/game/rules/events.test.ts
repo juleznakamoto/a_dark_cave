@@ -114,6 +114,107 @@ describe('Event System', () => {
     expect(endedAt).toBeLessThanOrEqual(Date.now());
   });
 
+  function veinrootReadyState(
+    eventDialog?: EventRollState['eventDialog'],
+  ): EventRollState {
+    const base = createInitialState();
+    return {
+      ...base,
+      buildings: {
+        ...base.buildings,
+        alchemistHall: 1,
+      },
+      story: {
+        ...base.story,
+        seen: {
+          ...base.story.seen,
+          firstWaveVictory: true,
+        },
+      },
+      triggeredEvents: {},
+      ...(eventDialog ? { eventDialog } : {}),
+    } as EventRollState;
+  }
+
+  it('does not spawn a dialog event within EVENT_DIALOG_MIN_GAP_MS of the last close', () => {
+    const now = Date.now();
+    if (gameEvents.veinrootIntroduction) {
+      gameEvents.veinrootIntroduction.triggered = false;
+    }
+
+    const { newLogEntries } = EventManager.checkEvents(
+      veinrootReadyState({
+        isOpen: false,
+        lastEndedAt: now - GAME_CONSTANTS.EVENT_DIALOG_MIN_GAP_MS + 1_000,
+      }),
+    );
+
+    expect(
+      newLogEntries.some((entry) => entry.id.startsWith('veinrootIntroduction')),
+    ).toBe(false);
+  });
+
+  it('allows a dialog event after EVENT_DIALOG_MIN_GAP_MS has elapsed', () => {
+    const now = Date.now();
+    if (gameEvents.veinrootIntroduction) {
+      gameEvents.veinrootIntroduction.triggered = false;
+    }
+
+    const { newLogEntries } = EventManager.checkEvents(
+      veinrootReadyState({
+        isOpen: false,
+        lastEndedAt: now - GAME_CONSTANTS.EVENT_DIALOG_MIN_GAP_MS - 1,
+      }),
+    );
+
+    expect(
+      newLogEntries.some((entry) => entry.id.startsWith('veinrootIntroduction')),
+    ).toBe(true);
+  });
+
+  it('still allows timed-tab spawns during EVENT_DIALOG_MIN_GAP_MS', () => {
+    vi.spyOn(Math, 'random').mockReturnValue(0);
+    const now = Date.now();
+    const state = {
+      ...createInitialState(),
+      buildings: { ...createInitialState().buildings, woodenHut: 3 },
+      eventDialog: {
+        isOpen: false,
+        lastEndedAt: now - 1_000,
+      },
+      timedEventTab: {
+        isActive: false,
+        event: null,
+        expiryTime: 0,
+        lastEndedAt: now - GAME_CONSTANTS.TIMED_TAB_MIN_GAP_MS - 1,
+      },
+    } as EventRollState;
+
+    const { stateChanges } = EventManager.checkEvents(state);
+    expect(stateChanges._timedTabEvent).toBeDefined();
+  });
+
+  it('records lastEndedAt when an event dialog is closed', () => {
+    const before = Date.now();
+    useGameStore.setState({
+      eventDialog: {
+        isOpen: true,
+        currentEvent: {
+          id: 'veinrootIntroduction-test',
+          message: 'Test',
+          timestamp: before,
+          type: 'event',
+        },
+        lastEndedAt: 0,
+      },
+    });
+
+    useGameStore.getState().setEventDialog(false);
+    const endedAt = useGameStore.getState().eventDialog.lastEndedAt ?? 0;
+    expect(endedAt).toBeGreaterThanOrEqual(before);
+    expect(endedAt).toBeLessThanOrEqual(Date.now());
+  });
+
   it('should not trigger events with unmet conditions', () => {
     mockState.buildings!.woodenHut = 0; // No huts
 

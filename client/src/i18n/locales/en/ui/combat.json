@@ -22,7 +22,6 @@
     "crushingStrike": "Crushing Strike",
     "bloodflameSphere": "Bloodflame Sphere",
     "poisonArrows": "Poison Arrows",
-    "attackDetailsAria": "Combat attack details",
     "critChance": "{{percent}}% critical strike chance",
     "critFromLuck": "{{percent}}% from {{stat}}{{maxSuffix}}",
     "critFromLuckMaxSuffix": " (max)",

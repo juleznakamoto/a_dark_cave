@@ -20,6 +20,12 @@ export const GAME_CONSTANTS = {
   CALL_MERCHANT_VISIT_DURATION_MS: 4 * 60 * 1000,
   /** Minimum wall-clock gap between one timed-tab visit ending and the next random spawn. */
   TIMED_TAB_MIN_GAP_MS: 15_000,
+  /**
+   * Minimum wall-clock gap after an EventDialog closes before the next random (non-timed-tab)
+   * event can spawn. Intentional follow-ups (choice outcomes, combat, rewards) open via
+   * `setEventDialog` / schedulers and are not blocked by this gap.
+   */
+  EVENT_DIALOG_MIN_GAP_MS: 15_000,
   /** First call costs this much gold; each subsequent call adds `CALL_MERCHANT_GOLD_PER_CALL`. */
   CALL_MERCHANT_BASE_GOLD: 50,
   CALL_MERCHANT_GOLD_PER_CALL: 25,

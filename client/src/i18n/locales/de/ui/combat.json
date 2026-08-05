@@ -22,7 +22,6 @@
     "crushingStrike": "Schmetterschlag",
     "bloodflameSphere": "Blutflammensphäre",
     "poisonArrows": "Giftpfeile",
-    "attackDetailsAria": "Details zum Kampfangriff",
     "critChance": "{{percent}} % kritische Trefferchance",
     "critFromLuck": "{{percent}} % durch {{stat}}{{maxSuffix}}",
     "critFromLuckMaxSuffix": " (max.)",

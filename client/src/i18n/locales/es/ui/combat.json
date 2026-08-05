@@ -22,7 +22,6 @@
     "crushingStrike": "Golpe aplastante",
     "bloodflameSphere": "Esfera de llama sangrienta", //ok
     "poisonArrows": "Flechas envenenadas", //ok
-    "attackDetailsAria": "Detalles del ataque en combate", //ok
     "critChance": "{{percent}} % de probabilidad de golpe crítico",
     "critFromLuck": "{{percent}} % por {{stat}}{{maxSuffix}}",
     "critFromLuckMaxSuffix": " (máx.)",

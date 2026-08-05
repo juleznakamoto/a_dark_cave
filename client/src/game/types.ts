@@ -119,6 +119,12 @@ export type GameTab =
 export interface EventDialogState {
   isOpen: boolean;
   currentEvent: LogEntry | null;
+  /**
+   * Wall-clock ms when the last EventDialog closed. Used to enforce
+   * `EVENT_DIALOG_MIN_GAP_MS` before the next random dialog event.
+   * Not persisted; cleared on new game / restart / load reset.
+   */
+  lastEndedAt?: number;
 }
 
 /**

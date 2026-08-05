@@ -223,9 +223,10 @@ const sortedEventsByPriority = Object.values(gameEvents).sort(
   (a, b) => (b.priority || 0) - (a.priority || 0),
 );
 
-/** Game state plus UI-only timed-tab flag (from GameStore, not on persisted GameState). */
+/** Game state plus UI-only flags (from GameStore, not on persisted GameState). */
 export type EventRollState = GameState & {
   timedEventTab?: { isActive: boolean; lastEndedAt?: number };
+  eventDialog?: { isOpen?: boolean; lastEndedAt?: number };
 };
 
 export function getEventCatalogIdByEventId(eventId: string): string {
@@ -266,6 +267,11 @@ export class EventManager {
       lastTimedTabEndedAt > 0 &&
       currentTime - lastTimedTabEndedAt < GAME_CONSTANTS.TIMED_TAB_MIN_GAP_MS;
 
+    const lastEventDialogEndedAt = state.eventDialog?.lastEndedAt ?? 0;
+    const isEventDialogGapActive =
+      lastEventDialogEndedAt > 0 &&
+      currentTime - lastEventDialogEndedAt < GAME_CONSTANTS.EVENT_DIALOG_MIN_GAP_MS;
+
     for (const event of sortedEventsByPriority) {
       // Skip if already triggered and not repeatable
       if (event.triggered && !event.repeatable) continue;
@@ -275,6 +281,10 @@ export class EventManager {
 
       // Active visit or recent close: only block another timed-tab spawn, not random/log events.
       if (event.showAsTimedTab && (isTimedTabActive || isTimedTabGapActive)) continue;
+
+      // Recent EventDialog close: only block another modal/log event, not timed tabs.
+      // Intentional follow-ups bypass this by calling setEventDialog directly.
+      if (!event.showAsTimedTab && isEventDialogGapActive) continue;
 
       // Check if event is on cooldown (cooldownPercent of its time probability must pass)
       if (event.timeProbability && eventCooldowns[event.id]) {

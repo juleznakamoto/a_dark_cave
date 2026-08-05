@@ -22,7 +22,6 @@
     "crushingStrike": "Frappe écrasante",
     "bloodflameSphere": "Sphère de flamme sanglante",
     "poisonArrows": "Flèches empoisonnées",
-    "attackDetailsAria": "Détails de l'attaque au combat",
     "critChance": "{{percent}} % de chance de coup critique",
     "critFromLuck": "{{percent}} % grâce à {{stat}}{{maxSuffix}}",
     "critFromLuckMaxSuffix": " (max.)",

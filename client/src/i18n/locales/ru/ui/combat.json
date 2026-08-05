@@ -22,7 +22,6 @@
     "crushingStrike": "Сокрушающий удар",
     "bloodflameSphere": "Сфера кровавого пламени",
     "poisonArrows": "Отравленные стрелы",
-    "attackDetailsAria": "Подробности боевой атаки",
     "critChance": "{{percent}} % шанс критического удара",
     "critFromLuck": "{{percent}} % от {{stat}}{{maxSuffix}}",
     "critFromLuckMaxSuffix": " (макс.)",
