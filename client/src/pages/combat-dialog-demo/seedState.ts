@@ -3,11 +3,13 @@ import { createInitialState } from "@/game/state";
 import {
   BLOODFLAME_SPHERE_UPGRADES,
   CRUSHING_STRIKE_UPGRADES,
+  FERAL_HOWL_UPGRADES,
 } from "@/game/rules/skillUpgrades";
 
 export type CombatDemoConfig = {
   crushingStrikeLevel: number;
   bloodflameSphereLevel: number;
+  feralHowlLevel: number;
   restlessKnightWounded: boolean;
   elderWizardWounded: boolean;
   hasFortress: boolean;
@@ -18,6 +20,7 @@ export type CombatDemoConfig = {
 export const COMBAT_DEMO_DEFAULT_CONFIG: CombatDemoConfig = {
   crushingStrikeLevel: CRUSHING_STRIKE_UPGRADES.length - 1,
   bloodflameSphereLevel: BLOODFLAME_SPHERE_UPGRADES.length - 1,
+  feralHowlLevel: FERAL_HOWL_UPGRADES.length - 1,
   restlessKnightWounded: false,
   elderWizardWounded: false,
   hasFortress: true,
@@ -132,11 +135,12 @@ export function buildCombatDemoGameState(
       ashwraith_huntress: true,
       one_eyed_crow: true,
       disgraced_prior: true,
-      the_hound: false,
+      the_hound: true,
     },
     combatSkills: {
       crushingStrikeLevel: config.crushingStrikeLevel,
       bloodflameSphereLevel: config.bloodflameSphereLevel,
+      feralHowlLevel: config.feralHowlLevel,
     },
     villagers: {
       ...base.villagers,

@@ -9,6 +9,7 @@ import { mountNotoSansSymbols2FontFace } from "@/lib/notoSansSymbols2FontFace";
 import {
   BLOODFLAME_SPHERE_UPGRADES,
   CRUSHING_STRIKE_UPGRADES,
+  FERAL_HOWL_UPGRADES,
 } from "@/game/rules/skillUpgrades";
 import {
   buildCombatDemoEnemy,
@@ -22,6 +23,7 @@ import {
 
 const MAX_CRUSHING_LEVEL = CRUSHING_STRIKE_UPGRADES.length - 1;
 const MAX_BLOODFLAME_LEVEL = BLOODFLAME_SPHERE_UPGRADES.length - 1;
+const MAX_FERAL_HOWL_LEVEL = FERAL_HOWL_UPGRADES.length - 1;
 
 const MOCK_VICTORY_SUMMARY: CombatResultSummary = {
   silverReward: 75,
@@ -61,6 +63,11 @@ function patchDemoConfigOnStore(config: CombatDemoConfig) {
     combatSkills: {
       crushingStrikeLevel: config.crushingStrikeLevel,
       bloodflameSphereLevel: config.bloodflameSphereLevel,
+      feralHowlLevel: config.feralHowlLevel,
+    },
+    fellowship: {
+      ...state.fellowship,
+      the_hound: true,
     },
     story: {
       ...state.story,
@@ -194,6 +201,22 @@ export default function CombatDialogDemo() {
                 className="w-full"
               />
             </label>
+            <label className="space-y-2 text-sm">
+              <span>Feral Howl level ({config.feralHowlLevel})</span>
+              <input
+                type="range"
+                min={0}
+                max={MAX_FERAL_HOWL_LEVEL}
+                value={config.feralHowlLevel}
+                onChange={(e) =>
+                  setConfig((prev) => ({
+                    ...prev,
+                    feralHowlLevel: Number(e.target.value),
+                  }))
+                }
+                className="w-full"
+              />
+            </label>
           </div>
           <div className="flex flex-wrap gap-4 text-sm">
             <label className="flex items-center gap-2">
@@ -295,7 +318,7 @@ export default function CombatDialogDemo() {
         onClose={() => setDialogOpen(false)}
         enemy={enemy}
         eventTitle="Pale Creatures approach"
-        eventMessage="A dev-only combat encounter. Use bombs, Veinfire Elixir, Poison Arrows, Crushing Strike, and Bloodflame Sphere."
+        eventMessage="A dev-only combat encounter. Use bombs, Veinfire Elixir, Poison Arrows, Crushing Strike, Bloodflame Sphere, and Feral Howl."
         onVictory={() => MOCK_VICTORY_SUMMARY}
         onDefeat={() => MOCK_DEFEAT_SUMMARY}
       />
