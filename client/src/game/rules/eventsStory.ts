@@ -389,7 +389,14 @@ export const storyEvents: Record<string, GameEvent> = {
     }),
   },
 
-  /** After the final siege wave: announces safe passage beyond the blasted gate and unlocks the cave action `encounterBeyondPortal`. */
+  /**
+   * After the final siege wave: announces safe passage beyond the blasted gate and unlocks
+   * the cave action `encounterBeyondPortal` via `beyondGateVentureUnlocked`.
+   *
+   * Must stay repeatable while the unlock flag is missing: non-repeatable + `triggeredEvents`
+   * is written when the dialog opens, but the unlock only applies on Continue. A reload/update
+   * clears `eventDialog` and would soft-lock the ending path otherwise.
+   */
   beyondGatePassagesClear: {
     id: "beyondGatePassagesClear",
     condition: (state: GameState) =>
@@ -400,7 +407,7 @@ export const storyEvents: Record<string, GameEvent> = {
       ),
     timeProbability: 0.01,
     priority: 5,
-    repeatable: false,
+    repeatable: true,
     choices: [
       {
         id: "continue",

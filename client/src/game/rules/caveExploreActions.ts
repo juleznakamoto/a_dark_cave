@@ -801,9 +801,12 @@ export const caveExploreActions: Record<string, Action> = {
     id: "encounterBeyondPortal",
     label: "Venture beyond Gate",
     expeditionVillagersRequired: () => 6,
+    // Gate on wave-10 victory (not only beyondGateVentureUnlocked): that story flag is set by
+    // Continue on beyondGatePassagesClear, which can be lost if a reload clears the dialog after
+    // triggeredEvents was already written. Wave victory is the durable progression signal.
     show_when: {
       "story.seen.portalBlasted": true,
-      "story.seen.beyondGateVentureUnlocked": true,
+      "story.seen.tenthWaveVictory": true,
       "story.seen.encounteredBeyondPortal": false,
     },
     cost: {
