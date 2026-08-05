@@ -1237,6 +1237,9 @@ export default function CombatDialog({
                         hideBorder
                         flashOnDecrease
                         growAnimationMs={COMBAT_BAR_CHANGE_MS}
+                        emitSparksOnGrow
+                        growSparkIntensity="subtle"
+                        growSparkTipGlow={false}
                         emitCirclesOnDecrease
                         indicatorClassName="bg-red-900"
                         className="h-2 mt-2"
