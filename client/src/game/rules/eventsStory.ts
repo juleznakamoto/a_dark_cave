@@ -390,12 +390,13 @@ export const storyEvents: Record<string, GameEvent> = {
   },
 
   /**
-   * After the final siege wave: announces safe passage beyond the blasted gate and unlocks
-   * the cave action `encounterBeyondPortal` via `beyondGateVentureUnlocked`.
+   * After the final siege wave: announces safe passage beyond the blasted gate.
+   * Sets `beyondGateVentureUnlocked` on Continue (dialog bookkeeping only; the Cave action
+   * gates on `tenthWaveVictory`).
    *
-   * Must stay repeatable while the unlock flag is missing: non-repeatable + `triggeredEvents`
-   * is written when the dialog opens, but the unlock only applies on Continue. A reload/update
-   * clears `eventDialog` and would soft-lock the ending path otherwise.
+   * Must stay repeatable while that flag is missing: non-repeatable + `triggeredEvents` is
+   * written when the dialog opens, but Continue is what sets the flag. A reload/update clears
+   * `eventDialog` and would otherwise permanently suppress this beat.
    */
   beyondGatePassagesClear: {
     id: "beyondGatePassagesClear",
