@@ -5,8 +5,13 @@ import { execSync } from "node:child_process";
 import runtimeErrorOverlay from "@replit/vite-plugin-runtime-error-modal";
 import { compression } from "vite-plugin-compression2";
 
-/** Baked into the client bundle; compared against `/api/version` at runtime. */
-function resolveBuildSha(): string {
+/**
+ * Baked into the client bundle; compared against `/api/version` at runtime.
+ * Dev/serve always uses `"dev"` so versionCheck skips (avoids loops against a
+ * stale `dist/build-meta.json` from a previous production build).
+ */
+function resolveBuildSha(mode: string): string {
+  if (mode !== "production") return "dev";
   const envSha =
     process.env.GIT_COMMIT_SHA ||
     process.env.GITHUB_SHA ||
@@ -23,7 +28,7 @@ function resolveBuildSha(): string {
 const isSteamBuild = process.env.VITE_STEAM_BUILD === "1";
 const clientRoot = path.resolve(import.meta.dirname, "client");
 
-export default defineConfig({
+export default defineConfig(async ({ mode }) => ({
   plugins: [
     react(),
     compression(),
@@ -39,7 +44,7 @@ export default defineConfig({
   ],
   define: {
     __BUILD_TIME__: JSON.stringify(new Date().toISOString()),
-    __BUILD_SHA__: JSON.stringify(resolveBuildSha()),
+    __BUILD_SHA__: JSON.stringify(resolveBuildSha(mode)),
   },
   resolve: {
     alias: {
@@ -124,4 +129,4 @@ export default defineConfig({
       deny: [".env", ".env.*", "**/.git/**"],
     },
   },
-});
+}));

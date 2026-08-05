@@ -5,6 +5,9 @@ import { logger } from "@/lib/logger";
  * `__BUILD_SHA__` define in `vite.config.ts`). Comparing this compile-time constant
  * against the server's current sha means a stale cached bundle is detected on the very
  * first check, even right after a cold start of an installed PWA.
+ *
+ * Vite non-production modes bake `"dev"` so local serve never fights a leftover
+ * `dist/build-meta.json` from a previous production build.
  */
 function getRunningBuildSha(): string {
   if (runningBuildShaForTests !== null) return runningBuildShaForTests;

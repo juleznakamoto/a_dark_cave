@@ -114,8 +114,10 @@ const SECTION_HEADING_FONT_SIZE = 36;
 const SECTION_HEADING_CLASS =
   "font-medium tracking-wide text-gray-300 leading-none";
 const SECTION_PROGRESS_BAR_HEIGHT = 8;
+const SECTION_PROGRESS_BAR_WIDTH = RING_CHART_SIZE * 2 + RING_GRID_GAP;
 const SECTION_PROGRESS_GAP = 12;
 const SECTION_BLOCK_MARGIN_BOTTOM = 24;
+const CTA_FONT_SIZE = 42;
 
 /** Vertical space for the resource list after header + section title (px). */
 const RESOURCE_LIST_MAX_HEIGHT =
@@ -194,7 +196,7 @@ function ShareSectionHeading({
       >
         {label}
       </div>
-      <div style={{ width: align === "right" ? RING_CHART_SIZE * 2 + RING_GRID_GAP : "100%" }}>
+      <div style={{ width: SECTION_PROGRESS_BAR_WIDTH }}>
         <ShareProgressBar percent={percent} />
       </div>
     </div>
@@ -402,10 +404,11 @@ function ShareCard({
       </div>
 
       <div
-        className="absolute bottom-16 left-16 font-medium leading-none text-neutral-100"
-        style={{ fontSize: 36 }}
+        className="absolute bottom-16 left-16 flex flex-col font-medium text-neutral-100"
+        style={{ fontSize: CTA_FONT_SIZE, gap: 10, lineHeight: 1 }}
       >
-        Play for free at {SHARE_URL_IMAGE}
+        <div>Play for free at</div>
+        <div>{SHARE_URL_IMAGE}</div>
       </div>
       <div
         className="absolute bottom-16 right-16 flex flex-col gap-3 text-right leading-none"

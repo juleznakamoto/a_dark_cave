@@ -109,10 +109,18 @@ function readDeployBuiltAtFromEnv(): string | null {
   return null;
 }
 
+/**
+ * In local `npm run dev`, ignore a leftover `dist/build-meta.json` from an older
+ * production build. That stale sha mismatches Vite's client bundle and loops the
+ * "New Version Available" toast. Env overrides still win when set.
+ */
+const IS_PRODUCTION_RUNTIME = process.env.NODE_ENV === "production";
 const DEPLOY_GIT_SHA =
-  readDeployGitShaFromEnv() ?? BUILD_META_FILE.sha;
+  readDeployGitShaFromEnv() ??
+  (IS_PRODUCTION_RUNTIME ? BUILD_META_FILE.sha : null);
 const DEPLOY_BUILT_AT =
-  readDeployBuiltAtFromEnv() ?? BUILD_META_FILE.builtAt;
+  readDeployBuiltAtFromEnv() ??
+  (IS_PRODUCTION_RUNTIME ? BUILD_META_FILE.builtAt : null);
 
 const app = express();
 
