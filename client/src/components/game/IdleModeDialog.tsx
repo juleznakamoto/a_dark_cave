@@ -612,10 +612,10 @@ export default function IdleModeDialog() {
             const isAtStorageMax =
               !isFocus &&
               isSleepResourceAtStorageMax(resource, currentAmount, state);
-            // Show uncapped production; yellow amount + rate when storage is full
+            // Whole numbers only (same as village panel); intensity can yield fractions internally
             const productionRate = isFocus
               ? null
-              : (productionPerInterval[resource] ?? 0);
+              : Math.round(productionPerInterval[resource] ?? 0);
             // Last column: stop counting once storage is full (no overflow gains)
             const totalSinceStart = isFocus
               ? focusPoints
@@ -674,7 +674,7 @@ export default function IdleModeDialog() {
                   {!isFocus && (
                     <span className="font-mono tabular-nums">
                       {(productionRate ?? 0) > 0 ? "+" : ""}
-                      {(productionRate ?? 0).toFixed(1)}
+                      {productionRate}
                     </span>
                   )}
                 </div>
