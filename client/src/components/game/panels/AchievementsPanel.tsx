@@ -152,7 +152,10 @@ function AchievementTitleInsightBadge({
     <TooltipWrapper
       tooltip={<div className="text-xs">{unlockLabel}</div>}
       tooltipId={`achievement-unlock-title-${achievementId}`}
-      disabled
+      // Match ActionInsightBadge: only treat as disabled when the button
+      // cannot run. A hard-coded `disabled` forced cursor-default and blocked
+      // short-tap unlock on mobile (tooltip stole the gesture).
+      disabled={isDisabled}
       tooltipContentClassName="max-w-xs"
       tooltipTriggerClassName={INSIGHT_BADGE_TOOLTIP_TRIGGER_CLASS}
       onMouseEnter={() => setHighlightedResources(["insight"])}
@@ -294,11 +297,19 @@ function AchievementRowComponent({
         className="w-full"
       >
         <Progress
-          value={(Math.floor(row.currentCount) / row.maxCount) * 100}
+          // Clamp: gathering totals (e.g. leather) keep rising past maxCount.
+          // Unclamped values >100 retrigger the glow on every production tick.
+          value={Math.min(
+            100,
+            row.maxCount > 0
+              ? (Math.floor(row.currentCount) / row.maxCount) * 100
+              : 0,
+          )}
           className={`h-2 ${PROGRESS_BAR_BG_CLASS}`}
           segments={getAchievementSegmentWeight(row)}
           indicatorClassName={row.isFull ? indicatorClassComplete : indicatorClassIncomplete}
           hideBorder
+          disableGlow
         />
       </TooltipWrapper>
     </div>

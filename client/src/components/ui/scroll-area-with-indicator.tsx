@@ -52,13 +52,14 @@ const ScrollAreaWithIndicator = React.forwardRef<
       const content = el.firstElementChild as HTMLElement | null;
       const contentHeight = content?.scrollHeight ?? el.scrollHeight;
       const canScroll = contentHeight > el.clientHeight + OVERFLOW_THRESHOLD_PX;
-      setIsScrollable(canScroll);
+      // Avoid re-renders when nothing changed (ResizeObserver can fire often).
+      setIsScrollable((prev) => (prev === canScroll ? prev : canScroll));
 
       if (el.scrollTop > 8) {
         if (scrollAreaId) {
           setScrollIndicatorSeen(scrollAreaId);
         } else if (!persistIndicator) {
-          setShowIndicator(false);
+          setShowIndicator((prev) => (prev ? false : prev));
         }
       }
     }, [persistIndicator, scrollAreaId, setScrollIndicatorSeen]);
@@ -78,6 +79,8 @@ const ScrollAreaWithIndicator = React.forwardRef<
       }
 
       // Content swaps (new log lines, tab changes) without a viewport resize.
+      // Do NOT put `children` in effect deps: parent re-renders pass a new element
+      // every time and would tear down/recreate observers continuously.
       const mo = new MutationObserver(checkScroll);
       mo.observe(el, { childList: true, subtree: true, characterData: true });
 
@@ -86,7 +89,7 @@ const ScrollAreaWithIndicator = React.forwardRef<
         ro.disconnect();
         mo.disconnect();
       };
-    }, [checkScroll, children]);
+    }, [checkScroll]);
 
     const hasBeenSeen = scrollAreaId ? scrollIndicatorSeen : !showIndicator;
     const shouldShow = !hasBeenSeen && isScrollable;
@@ -96,6 +99,12 @@ const ScrollAreaWithIndicator = React.forwardRef<
         ref={ref}
         className={cn("relative overflow-hidden", className)}
         {...props}
+        // Default Radix type is "hover", which mounts/unmounts the scrollbar on
+        // pointer enter and toggles viewport overflow. Inside achievement/log
+        // panels that re-render often, that ref + setState churn hits
+        // "Maximum update depth exceeded". Our ScrollBar is opacity-0 anyway.
+        // Force after `{...props}` so callers cannot opt back into hover.
+        type="always"
       >
         <ScrollAreaPrimitive.Viewport
           ref={viewportRef}

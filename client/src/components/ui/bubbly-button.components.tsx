@@ -279,42 +279,48 @@ function BubblyButtonGlobalPortalContent({
       <AnimatePresence>
         {bubbles.map((bubble) => (
           <div key={bubble.id}>
-            {bubble.particles.map((particle, i) => (
-              <motion.div
-                key={`${bubble.id}-${i}`}
-                className={cn(
-                  "fixed",
-                  !particle.clipPath && "rounded-full",
-                )}
-                style={{
-                  width: `${particle.size}px`,
-                  height: `${particle.size}px`,
-                  backgroundColor: particle.color,
-                  left: bubble.x - particle.size / 2,
-                  top: bubble.y - particle.size / 2,
-                  clipPath: particle.clipPath,
-                  willChange: "transform",
-                  transform: "translateZ(0)",
-                }}
-                initial={{
-                  opacity: 1,
-                  scale: 1,
-                  x: particle.startX,
-                  y: particle.startY,
-                }}
-                animate={{
-                  opacity: 1,
-                  scale: 0.0,
-                  x: particle.endX,
-                  y: particle.endY,
-                }}
-                exit={{ opacity: 0.8 }}
-                transition={{
-                  duration: particle.duration,
-                  ease: [0, 0, 0.5, 1],
-                }}
-              />
-            ))}
+            {bubble.particles.map((particle, i) => {
+              const rotate = particle.rotateDeg ?? 0;
+              // clip-path + scale forces per-frame re-raster; fade polygons instead
+              const isPolygon = Boolean(particle.clipPath);
+              return (
+                <motion.div
+                  key={`${bubble.id}-${i}`}
+                  className={cn(
+                    "fixed",
+                    !isPolygon && "rounded-full",
+                  )}
+                  style={{
+                    width: `${particle.size}px`,
+                    height: `${particle.size}px`,
+                    backgroundColor: particle.color,
+                    left: bubble.x - particle.size / 2,
+                    top: bubble.y - particle.size / 2,
+                    ...(isPolygon ? { clipPath: particle.clipPath } : null),
+                    willChange: isPolygon ? "transform, opacity" : "transform",
+                  }}
+                  initial={{
+                    opacity: 1,
+                    scale: 1,
+                    x: particle.startX,
+                    y: particle.startY,
+                    rotate,
+                  }}
+                  animate={{
+                    opacity: isPolygon ? 0 : 1,
+                    scale: isPolygon ? 1 : 0,
+                    x: particle.endX,
+                    y: particle.endY,
+                    rotate,
+                  }}
+                  exit={{ opacity: 0 }}
+                  transition={{
+                    duration: particle.duration,
+                    ease: [0, 0, 0.5, 1],
+                  }}
+                />
+              );
+            })}
           </div>
         ))}
       </AnimatePresence>

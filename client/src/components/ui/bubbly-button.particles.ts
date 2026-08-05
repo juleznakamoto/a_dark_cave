@@ -143,6 +143,14 @@ function getParticleCountForLevel(level: number): number {
 /** Pent / hex / heptagon chips for all mine click bursts. */
 const MINE_POLYGON_SIDES = [5, 6, 7];
 
+/**
+ * Mine bursts use clip-path polygons (heavier than circles). Cap count a bit
+ * lower so click spam stays smooth; tiny dots stay circles at generate time.
+ */
+function getMineParticleCountForLevel(level: number): number {
+  return Math.min(40 + level * 8, 96);
+}
+
 /** Get mine particle config for a specific mine action (stone, iron, coal, etc.) */
 export function getMineParticleConfig(
   actionId: string,
@@ -153,7 +161,7 @@ export function getMineParticleConfig(
     colors: MINE_TONES,
     smallParticleOnlyColors: highlightColors,
     smallParticleMaxSize: 5,
-    count: getParticleCountForLevel(level),
+    count: getMineParticleCountForLevel(level),
     durationMin: 0.6,
     durationMax: 1.2,
     distanceMin: 40,
@@ -164,21 +172,26 @@ export function getMineParticleConfig(
   };
 }
 
-/** CSS `clip-path` for a regular n-gon, randomly rotated (percent coords). */
-export function regularPolygonClipPath(
-  sides: number,
-  rotationDeg = Math.random() * 360,
-): string {
+/** Below this size, polygons read as noise and clip-path is wasted work. */
+const POLYGON_MIN_SIZE_PX = 4;
+
+/** Shared clip-paths (fixed orientation). Rotate via transform at render time. */
+const SHARED_POLYGON_CLIP_PATHS = new Map<number, string>();
+
+function polygonClipPath(sides: number): string {
   const n = Math.max(3, Math.floor(sides));
-  const rot = (rotationDeg * Math.PI) / 180;
+  const cached = SHARED_POLYGON_CLIP_PATHS.get(n);
+  if (cached) return cached;
   const points: string[] = [];
   for (let i = 0; i < n; i++) {
-    const angle = rot + (i * 2 * Math.PI) / n - Math.PI / 2;
+    const angle = (i * 2 * Math.PI) / n - Math.PI / 2;
     const x = 50 + 50 * Math.cos(angle);
     const y = 50 + 50 * Math.sin(angle);
     points.push(`${x.toFixed(2)}% ${y.toFixed(2)}%`);
   }
-  return `polygon(${points.join(", ")})`;
+  const path = `polygon(${points.join(", ")})`;
+  SHARED_POLYGON_CLIP_PATHS.set(n, path);
+  return path;
 }
 
 // Cave explore tones - darker/more mysterious as depth increases
@@ -551,8 +564,10 @@ export type ParticleBurstDatum = {
   startY: number;
   endX: number;
   endY: number;
-  /** When set, renderer uses `clip-path` instead of `rounded-full`. */
+  /** Shared n-gon clip-path; pair with `rotateDeg` (not a unique path per particle). */
   clipPath?: string;
+  /** Static spin applied via Framer `rotate` (cheap vs unique clip-paths). */
+  rotateDeg?: number;
 };
 
 // Helper to generate particle data for global layer (accepts full config or colors array for legacy)
@@ -605,13 +620,25 @@ export function generateParticleData(
     const endX = startX + Math.cos(moveAngle) * distance;
     const endY = startY + Math.sin(moveAngle) * distance;
     const sidesPool = config.polygonSides;
-    const clipPath =
-      sidesPool.length > 0
-        ? regularPolygonClipPath(
-          sidesPool[Math.floor(Math.random() * sidesPool.length)]!,
-        )
-        : undefined;
-    return { size, color, duration, startX, startY, endX, endY, clipPath };
+    const usePolygon =
+      sidesPool.length > 0 && size >= POLYGON_MIN_SIZE_PX;
+    const clipPath = usePolygon
+      ? polygonClipPath(
+        sidesPool[Math.floor(Math.random() * sidesPool.length)]!,
+      )
+      : undefined;
+    const rotateDeg = usePolygon ? Math.random() * 360 : undefined;
+    return {
+      size,
+      color,
+      duration,
+      startX,
+      startY,
+      endX,
+      endY,
+      clipPath,
+      rotateDeg,
+    };
   });
 }
 
