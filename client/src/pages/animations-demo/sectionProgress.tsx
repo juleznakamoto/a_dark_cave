@@ -4,19 +4,23 @@ import { Button } from "@/components/ui/button";
 import { CircularProgress } from "@/components/ui/circular-progress";
 import { DemoRow, DemoSection } from "@/pages/animations-demo/DemoSection";
 
+/** Same duration CombatDialog uses for health / integrity bars. */
+const COMBAT_BAR_CHANGE_MS = 500;
+
 export function ProgressBarsSection() {
   const [growValue, setGrowValue] = useState(40);
-  const [healthValue, setHealthValue] = useState(80);
+  const [enemyHealth, setEnemyHealth] = useState(80);
+  const [integrity, setIntegrity] = useState(70);
   const [focusProgress, setFocusProgress] = useState(65);
 
   return (
     <DemoSection
       id="progress-bars"
       title="Progress bars"
-      description="Real Progress (grow glow, combat flash) and CircularProgress (focus ring)."
+      description="Real Progress with the same props as EstatePanel / CombatDialog."
     >
       <div className="max-w-md space-y-2">
-        <p className="text-xs text-muted-foreground">Grow + glow</p>
+        <p className="text-xs text-muted-foreground">Estate grow + glow</p>
         <Progress value={growValue} className="h-2" growAnimationMs={400} />
         <div className="flex gap-2">
           <Button
@@ -33,27 +37,76 @@ export function ProgressBarsSection() {
       </div>
 
       <div className="max-w-md space-y-2">
-        <p className="text-xs text-muted-foreground">Combat flash on decrease</p>
+        <p className="text-xs text-muted-foreground">
+          Enemy health (CombatDialog props, including decrease bubbles)
+        </p>
         <Progress
-          value={healthValue}
-          className="h-2"
+          value={enemyHealth}
+          hideBorder
           flashOnDecrease
-          indicatorClassName="bg-red-700"
+          growAnimationMs={COMBAT_BAR_CHANGE_MS}
+          emitCirclesOnDecrease
+          indicatorClassName="bg-red-900"
+          className="h-2"
         />
         <div className="flex gap-2">
           <Button
             size="xs"
             variant="outline"
-            onClick={() => setHealthValue((v) => Math.max(0, v - 25))}
+            onClick={() => setEnemyHealth((v) => Math.max(0, v - 25))}
           >
             -25 HP
           </Button>
           <Button
             size="xs"
             variant="outline"
-            onClick={() => setHealthValue(100)}
+            onClick={() => setEnemyHealth((v) => Math.min(100, v + 25))}
           >
-            Heal
+            +25 HP
+          </Button>
+          <Button
+            size="xs"
+            variant="outline"
+            onClick={() => setEnemyHealth(100)}
+          >
+            Full
+          </Button>
+        </div>
+      </div>
+
+      <div className="max-w-md space-y-2">
+        <p className="text-xs text-muted-foreground">
+          Bastion integrity (CombatDialog props: heal sparks + decrease bubbles)
+        </p>
+        <Progress
+          value={integrity}
+          hideBorder
+          flashOnDecrease
+          growAnimationMs={COMBAT_BAR_CHANGE_MS}
+          emitSparksOnGrow
+          growSparkIntensity="subtle"
+          growSparkTipGlow={false}
+          emitCirclesOnDecrease
+          indicatorClassName="bg-green-900"
+          className="h-2"
+        />
+        <div className="flex gap-2">
+          <Button
+            size="xs"
+            variant="outline"
+            onClick={() => setIntegrity((v) => Math.max(0, v - 25))}
+          >
+            -25
+          </Button>
+          <Button
+            size="xs"
+            variant="outline"
+            onClick={() => setIntegrity((v) => Math.min(100, v + 25))}
+          >
+            +25 heal
+          </Button>
+          <Button size="xs" variant="outline" onClick={() => setIntegrity(100)}>
+            Full
           </Button>
         </div>
       </div>
