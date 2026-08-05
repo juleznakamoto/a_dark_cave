@@ -15,6 +15,7 @@ import { capitalizeWords, cn } from "@/lib/utils";
 import {
   getCurrentPopulation,
   getPopulationProduction,
+  getTotalPopulationEffects,
   isVillagerFoodUpkeepActive,
   isVillagerWoodUpkeepActive,
 } from "@/game/population";
@@ -187,42 +188,35 @@ function simulatePopulationConsumption(
 }
 
 /**
- * Uncapped production per 15-second interval during sleep.
- * Storage clamp still applies to accumulated totals; display keeps the normal rate
- * (and yellows it when the resource is already at max).
+ * Sleep production rate per 15s cycle for the dialog column.
+ * Uses the same net math as the village side panel (includes consumption), with
+ * temporary bonuses excluded and sleep intensity applied — not the affordability-
+ * gated tick sim, which can hide negative nets when stockpiles are empty/unready.
  */
 function getProductionPerInterval(
   state: any,
-  initialResources: Record<string, number>,
-  accumulatedResources: Record<string, number>,
   multiplier: number,
 ): Record<string, number> {
-  const allKeys = new Set([
-    ...Object.keys(initialResources),
-    ...Object.keys(accumulatedResources),
-  ]);
-  const simulatedResources: Record<string, number> = {};
-  allKeys.forEach((resource) => {
-    simulatedResources[resource] =
-      (initialResources[resource] || 0) + (accumulatedResources[resource] || 0);
-  });
-  const before = { ...simulatedResources };
-  simulateGathererProduction(state, multiplier, simulatedResources);
-  simulateHunterProduction(state, multiplier, simulatedResources);
-  simulateMinerProduction(state, multiplier, simulatedResources);
-  simulatePassiveEffectProduction(state, multiplier, simulatedResources);
-  simulatePopulationConsumption(state, multiplier, simulatedResources);
+  const jobIds = Object.keys(state.villagers ?? {}).filter(
+    (id) => (state.villagers[id] ?? 0) > 0,
+  );
+  const effects = getTotalPopulationEffects(
+    state,
+    jobIds,
+    SLEEP_PRODUCTION_OPTIONS,
+  );
   const productionPerInterval: Record<string, number> = {};
-  const allResources = new Set([
-    ...Object.keys(before),
-    ...Object.keys(simulatedResources),
-  ]);
-  allResources.forEach((resource) => {
-    const delta = (simulatedResources[resource] || 0) - (before[resource] || 0);
-    if (delta !== 0) {
-      productionPerInterval[resource] = delta;
+  for (const [resource, amount] of Object.entries(effects)) {
+    const scaled = amount * multiplier;
+    if (scaled !== 0) {
+      productionPerInterval[resource] = scaled;
     }
-  });
+  }
+  const insight = getPassiveInsightPerCycle(state);
+  if (insight > 0) {
+    productionPerInterval.insight =
+      (productionPerInterval.insight || 0) + insight * multiplier;
+  }
   return productionPerInterval;
 }
 
@@ -668,11 +662,9 @@ export default function IdleModeDialog() {
   const focusIntervalMs = devMode ? 5 * 1000 : 59.99 * 60 * 1000;
   const focusPoints = Math.floor(displayElapsed / focusIntervalMs);
 
-  // Uncapped rate keeps capped resources listed (and shows the normal production number)
+  // Theoretical sleep net rate (pos + neg); yellow amount when storage is full
   const productionPerInterval = getProductionPerInterval(
     state,
-    initialResources,
-    accumulatedResources,
     PRODUCTION_SPEED_MULTIPLIER,
   );
 
@@ -691,8 +683,12 @@ export default function IdleModeDialog() {
     const total = Math.floor(accumulatedResources[r] || 0);
     return rate !== 0 || total !== 0;
   });
-  const displayResources = [...resourceKeys].sort((a, b) => a.localeCompare(b));
-  if (focusPoints > 0) displayResources.push("Focus");
+  const displayResources = [
+    ...resourceKeys
+      .filter((r) => r !== "Focus")
+      .sort((a, b) => a.localeCompare(b)),
+    "Focus",
+  ];
 
   const isTimeUp = remainingTime <= 0;
   const villageProductionPercent =
