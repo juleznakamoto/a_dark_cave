@@ -1,7 +1,8 @@
-import { describe, it, expect, beforeEach } from 'vitest';
+import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
 import { EventManager, type EventRollState } from './events';
 import { GameState } from '@shared/schema';
-import { createInitialState } from '../state';
+import { createInitialState, useGameStore } from '../state';
+import { GAME_CONSTANTS } from '../constants';
 
 describe('Event System', () => {
   let mockState: Partial<GameState>;
@@ -29,6 +30,10 @@ describe('Event System', () => {
     };
   });
 
+  afterEach(() => {
+    vi.restoreAllMocks();
+  });
+
   it('should trigger events based on conditions', () => {
     const { newLogEntries, stateChanges } = EventManager.checkEvents(mockState as GameState);
 
@@ -49,6 +54,64 @@ describe('Event System', () => {
     );
 
     expect(stateChanges._timedTabEvent).toBeUndefined();
+  });
+
+  it('does not spawn a timed-tab event within TIMED_TAB_MIN_GAP_MS of the last close', () => {
+    vi.spyOn(Math, 'random').mockReturnValue(0);
+    const now = Date.now();
+    const state = {
+      ...createInitialState(),
+      buildings: { ...createInitialState().buildings, woodenHut: 3 },
+      timedEventTab: {
+        isActive: false,
+        event: null,
+        expiryTime: 0,
+        lastEndedAt: now - GAME_CONSTANTS.TIMED_TAB_MIN_GAP_MS + 1_000,
+      },
+    } as EventRollState;
+
+    const { stateChanges } = EventManager.checkEvents(state);
+    expect(stateChanges._timedTabEvent).toBeUndefined();
+  });
+
+  it('allows a timed-tab spawn after TIMED_TAB_MIN_GAP_MS has elapsed', () => {
+    vi.spyOn(Math, 'random').mockReturnValue(0);
+    const now = Date.now();
+    const state = {
+      ...createInitialState(),
+      buildings: { ...createInitialState().buildings, woodenHut: 3 },
+      timedEventTab: {
+        isActive: false,
+        event: null,
+        expiryTime: 0,
+        lastEndedAt: now - GAME_CONSTANTS.TIMED_TAB_MIN_GAP_MS - 1,
+      },
+    } as EventRollState;
+
+    const { stateChanges } = EventManager.checkEvents(state);
+    expect(stateChanges._timedTabEvent).toBeDefined();
+  });
+
+  it('records lastEndedAt when a timed tab is deactivated', async () => {
+    const before = Date.now();
+    useGameStore.setState({
+      timedEventTab: {
+        isActive: true,
+        event: {
+          id: 'merchant-test',
+          message: 'Test',
+          timestamp: before,
+          type: 'event',
+        },
+        expiryTime: before + 60_000,
+        startTime: before,
+      },
+    });
+
+    await useGameStore.getState().setTimedEventTab(false);
+    const endedAt = useGameStore.getState().timedEventTab.lastEndedAt ?? 0;
+    expect(endedAt).toBeGreaterThanOrEqual(before);
+    expect(endedAt).toBeLessThanOrEqual(Date.now());
   });
 
   it('should not trigger events with unmet conditions', () => {

@@ -225,7 +225,7 @@ const sortedEventsByPriority = Object.values(gameEvents).sort(
 
 /** Game state plus UI-only timed-tab flag (from GameStore, not on persisted GameState). */
 export type EventRollState = GameState & {
-  timedEventTab?: { isActive: boolean };
+  timedEventTab?: { isActive: boolean; lastEndedAt?: number };
 };
 
 export function getEventCatalogIdByEventId(eventId: string): string {
@@ -261,6 +261,10 @@ export class EventManager {
     const currentTime = Date.now();
 
     const isTimedTabActive = state.timedEventTab?.isActive || false;
+    const lastTimedTabEndedAt = state.timedEventTab?.lastEndedAt ?? 0;
+    const isTimedTabGapActive =
+      lastTimedTabEndedAt > 0 &&
+      currentTime - lastTimedTabEndedAt < GAME_CONSTANTS.TIMED_TAB_MIN_GAP_MS;
 
     for (const event of sortedEventsByPriority) {
       // Skip if already triggered and not repeatable
@@ -269,8 +273,8 @@ export class EventManager {
       // Skip if event was already triggered this session (for non-repeatable events)
       if (state.triggeredEvents?.[event.id] && !event.repeatable) continue;
 
-      // Active forest visit: only block another timed-tab spawn, not random/log events.
-      if (event.showAsTimedTab && isTimedTabActive) continue;
+      // Active visit or recent close: only block another timed-tab spawn, not random/log events.
+      if (event.showAsTimedTab && (isTimedTabActive || isTimedTabGapActive)) continue;
 
       // Check if event is on cooldown (cooldownPercent of its time probability must pass)
       if (event.timeProbability && eventCooldowns[event.id]) {

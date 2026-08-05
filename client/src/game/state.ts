@@ -354,6 +354,12 @@ interface GameStore extends GameState {
     event: LogEntry | null;
     expiryTime: number;
     startTime?: number;
+    /**
+     * Wall-clock ms when the last timed-tab visit ended. Used to enforce
+     * `TIMED_TAB_MIN_GAP_MS` before the next random timed-tab spawn.
+     * Not persisted; cleared on new game / restart.
+     */
+    lastEndedAt?: number;
     /** Gambler only: plays left this visit; set when tab opens, decremented on resolved dismiss. Stops Accept from re-granting bone-dice quota after gamblerGame is cleared. */
     gamblerRoundsRemaining?: number;
     /**
@@ -1726,6 +1732,7 @@ export const INACTIVE_TIMED_EVENT_TAB: GameStore["timedEventTab"] = {
   event: null,
   expiryTime: 0,
   startTime: undefined,
+  lastEndedAt: 0,
   pauseAccumMs: 0,
   pauseStartedAt: 0,
   insightProlongUsed: false,
@@ -4246,12 +4253,13 @@ export const useGameStore = create<GameStore>((set, get) => ({
         expiryTime: duration ? Date.now() + duration : 0,
       });
 
-      set({
+      set((state) => ({
         timedEventTab: {
           isActive,
           event: event || null, // Don't store choices in event
           expiryTime: duration ? Date.now() + duration : 0,
           startTime: Date.now(),
+          lastEndedAt: state.timedEventTab?.lastEndedAt ?? 0,
           pauseAccumMs: 0,
           pauseStartedAt: 0,
           insightProlongUsed: false,
@@ -4260,7 +4268,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
           choices, // SSOT: Use the choices that were already generated
           purchasedIds: [],
         },
-      });
+      }));
     } else if (!isActive) {
       // If deactivating, clear merchant trades and record when merchant ended (for Call Merchant button)
       logger.log('[MERCHANT TRADES] Clearing merchant trades (deactivating timed tab)');
@@ -4268,6 +4276,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
       set((state) => {
         const currentEvent = state.timedEventTab?.event;
         const wasMerchant = currentEvent?.id?.includes?.("merchant");
+        const wasActive = state.timedEventTab?.isActive;
         return {
           ...state,
           timedEventTab: {
@@ -4275,6 +4284,8 @@ export const useGameStore = create<GameStore>((set, get) => ({
             event: null,
             expiryTime: 0,
             startTime: undefined,
+            // Enforce TIMED_TAB_MIN_GAP_MS before the next random timed-tab spawn.
+            lastEndedAt: wasActive ? Date.now() : (state.timedEventTab?.lastEndedAt ?? 0),
             pauseAccumMs: 0,
             pauseStartedAt: 0,
             insightProlongUsed: false,
@@ -4334,6 +4345,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
             event: event || null,
             expiryTime: isActive && duration ? Date.now() + duration : 0,
             startTime: isActive ? Date.now() : undefined,
+            lastEndedAt: state.timedEventTab?.lastEndedAt ?? 0,
             pauseAccumMs: 0,
             pauseStartedAt: 0,
             insightProlongUsed: false,
