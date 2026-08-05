@@ -539,7 +539,8 @@ const Progress = React.forwardRef<
         {/* Progress indicator */}
         <ProgressPrimitive.Indicator
           className={cn(
-            "h-full w-full flex-1 bg-red-950 relative z-10 overflow-hidden",
+            // rounded-full rounds the fill tip (right edge after translateX) to match the track
+            "h-full w-full flex-1 bg-red-950 relative z-10 overflow-hidden rounded-full",
             indicatorClassName,
           )}
           style={{

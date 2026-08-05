@@ -282,13 +282,17 @@ function BubblyButtonGlobalPortalContent({
             {bubble.particles.map((particle, i) => (
               <motion.div
                 key={`${bubble.id}-${i}`}
-                className="fixed rounded-full"
+                className={cn(
+                  "fixed",
+                  !particle.clipPath && "rounded-full",
+                )}
                 style={{
                   width: `${particle.size}px`,
                   height: `${particle.size}px`,
                   backgroundColor: particle.color,
                   left: bubble.x - particle.size / 2,
                   top: bubble.y - particle.size / 2,
+                  clipPath: particle.clipPath,
                   willChange: "transform",
                   transform: "translateZ(0)",
                 }}

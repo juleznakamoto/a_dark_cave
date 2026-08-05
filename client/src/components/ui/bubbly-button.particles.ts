@@ -25,6 +25,11 @@ export interface ParticleConfig {
    * angle — useful for “burst from behind a dialog edge” effects.
    */
   radialOutward?: boolean;
+  /**
+   * Regular-polygon side counts to pick from (e.g. `[5, 6, 7]` for mine chips).
+   * Empty/omitted = circles (`rounded-full`).
+   */
+  polygonSides?: number[];
   /** Cubic bezier for framer-motion, e.g. [0, 0, 0.5, 1] */
   ease?: number[];
 }
@@ -63,6 +68,7 @@ const DEFAULT_PARTICLE_CONFIG: Required<ParticleConfig> = {
   spawnRadiusMin: 0,
   spawnRadiusMax: 0,
   radialOutward: false,
+  polygonSides: [],
   ease: [0, 0, 0.5, 1],
 };
 
@@ -134,6 +140,9 @@ function getParticleCountForLevel(level: number): number {
   return Math.min(50 + level * 10, 150);
 }
 
+/** Pent / hex / heptagon chips for all mine click bursts. */
+const MINE_POLYGON_SIDES = [5, 6, 7];
+
 /** Get mine particle config for a specific mine action (stone, iron, coal, etc.) */
 export function getMineParticleConfig(
   actionId: string,
@@ -151,7 +160,25 @@ export function getMineParticleConfig(
     distanceMax: 70,
     sizeMin: 1,
     sizeMax: 12,
+    polygonSides: MINE_POLYGON_SIDES,
   };
+}
+
+/** CSS `clip-path` for a regular n-gon, randomly rotated (percent coords). */
+export function regularPolygonClipPath(
+  sides: number,
+  rotationDeg = Math.random() * 360,
+): string {
+  const n = Math.max(3, Math.floor(sides));
+  const rot = (rotationDeg * Math.PI) / 180;
+  const points: string[] = [];
+  for (let i = 0; i < n; i++) {
+    const angle = rot + (i * 2 * Math.PI) / n - Math.PI / 2;
+    const x = 50 + 50 * Math.cos(angle);
+    const y = 50 + 50 * Math.sin(angle);
+    points.push(`${x.toFixed(2)}% ${y.toFixed(2)}%`);
+  }
+  return `polygon(${points.join(", ")})`;
 }
 
 // Cave explore tones - darker/more mysterious as depth increases
@@ -516,10 +543,7 @@ export function getBubbleRemoveDelayMs(
   return mergeParticleConfig(config).bubbleRemoveDelay;
 }
 
-// Helper to generate particle data for global layer (accepts full config or colors array for legacy)
-export function generateParticleData(
-  configOrColors?: Partial<ParticleConfig> | string[],
-): Array<{
+export type ParticleBurstDatum = {
   size: number;
   color: string;
   duration: number;
@@ -527,7 +551,14 @@ export function generateParticleData(
   startY: number;
   endX: number;
   endY: number;
-}> {
+  /** When set, renderer uses `clip-path` instead of `rounded-full`. */
+  clipPath?: string;
+};
+
+// Helper to generate particle data for global layer (accepts full config or colors array for legacy)
+export function generateParticleData(
+  configOrColors?: Partial<ParticleConfig> | string[],
+): ParticleBurstDatum[] {
   const config = mergeParticleConfig(
     Array.isArray(configOrColors)
       ? { colors: configOrColors }
@@ -573,7 +604,14 @@ export function generateParticleData(
         : Math.random() * Math.PI * 2;
     const endX = startX + Math.cos(moveAngle) * distance;
     const endY = startY + Math.sin(moveAngle) * distance;
-    return { size, color, duration, startX, startY, endX, endY };
+    const sidesPool = config.polygonSides;
+    const clipPath =
+      sidesPool.length > 0
+        ? regularPolygonClipPath(
+          sidesPool[Math.floor(Math.random() * sidesPool.length)]!,
+        )
+        : undefined;
+    return { size, color, duration, startX, startY, endX, endY, clipPath };
   });
 }
 
