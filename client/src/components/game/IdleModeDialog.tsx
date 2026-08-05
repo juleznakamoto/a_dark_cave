@@ -12,13 +12,7 @@ import { useGameStore } from "@/game/state";
 import { AnimatedCounter } from "@/components/ui/animated-counter";
 import { gameActionOutlineButtonClassName } from "@/components/CooldownButton";
 import { capitalizeWords, cn } from "@/lib/utils";
-import {
-  getCurrentPopulation,
-  getPopulationProduction,
-  getTotalPopulationEffects,
-  isVillagerFoodUpkeepActive,
-  isVillagerWoodUpkeepActive,
-} from "@/game/population";
+import { getTotalPopulationEffects } from "@/game/population";
 import { audioManager, SOUND_VOLUME } from "@/lib/audio";
 import { resetProductionCycle } from "@/game/loop";
 import { BOMB_RESOURCES, capResourceToLimit } from "@/game/resourceLimits";
@@ -68,146 +62,13 @@ function clampSimulatedResourcesToStorage(
   }
 }
 
-// Simulate production during sleep - no temporary bonuses (feast, curse, etc.) are active
+// Sleep production: no temporary bonuses (feast, heartfire, curse, etc.)
 const SLEEP_PRODUCTION_OPTIONS = { excludeTemporaryBonuses: true };
 
-// Simulate production functions from loop.ts
-function simulateGathererProduction(
-  state: any,
-  multiplier: number,
-  accumulatedResources: Record<string, number>,
-) {
-  const gatherer = state.villagers.gatherer;
-  if (gatherer > 0) {
-    const production = getPopulationProduction(
-      "gatherer",
-      gatherer,
-      state,
-      SLEEP_PRODUCTION_OPTIONS,
-    );
-    production.forEach((prod) => {
-      const amount = prod.totalAmount * multiplier;
-      accumulatedResources[prod.resource] =
-        (accumulatedResources[prod.resource] || 0) + amount;
-    });
-  }
-}
-
-function simulateHunterProduction(
-  state: any,
-  multiplier: number,
-  accumulatedResources: Record<string, number>,
-) {
-  const hunter = state.villagers.hunter;
-  if (hunter > 0) {
-    const production = getPopulationProduction(
-      "hunter",
-      hunter,
-      state,
-      SLEEP_PRODUCTION_OPTIONS,
-    );
-    production.forEach((prod) => {
-      const amount = prod.totalAmount * multiplier;
-      accumulatedResources[prod.resource] =
-        (accumulatedResources[prod.resource] || 0) + amount;
-    });
-  }
-}
-
-function simulateMinerProduction(
-  state: any,
-  multiplier: number,
-  accumulatedResources: Record<string, number>,
-) {
-  // Collect all production data
-  const allProduction: { job: string; production: any[] }[] = [];
-  Object.entries(state.villagers).forEach(([job, count]) => {
-    if (
-      count > 0 &&
-      (job.endsWith("miner") ||
-        job === "steel_forger" ||
-        job === "blacksteel_forger" ||
-        job === "tanner" ||
-        job === "powder_maker" ||
-        job === "ashfire_dust_maker")
-    ) {
-      const production = getPopulationProduction(
-        job,
-        count as number,
-        state,
-        SLEEP_PRODUCTION_OPTIONS,
-      );
-      allProduction.push({ job, production });
-    }
-  });
-
-  // Track available resources after each job's production/consumption
-  const availableResources = { ...accumulatedResources };
-
-  // Process each job sequentially
-  allProduction.forEach(({ job, production }) => {
-    // Check if this job can produce based on currently available resources
-    const canProduce = production.every((prod) => {
-      if (prod.totalAmount < 0) {
-        // Consumption - check if we have enough available
-        const available = availableResources[prod.resource] || 0;
-        const needed = Math.abs(prod.totalAmount * multiplier);
-        return available >= needed;
-      }
-      return true; // Production is always allowed
-    });
-
-    // Only apply production if all resources are available
-    if (canProduce) {
-      production.forEach((prod) => {
-        const amount = prod.totalAmount * multiplier;
-        // Update both the tracked available resources and accumulated resources
-        availableResources[prod.resource] =
-          (availableResources[prod.resource] || 0) + amount;
-        accumulatedResources[prod.resource] =
-          (accumulatedResources[prod.resource] || 0) + amount;
-      });
-    }
-  });
-}
-
-function simulatePassiveEffectProduction(
-  state: any,
-  multiplier: number,
-  accumulatedResources: Record<string, number>,
-) {
-  const insight = getPassiveInsightPerCycle(state);
-  if (insight <= 0) return;
-  accumulatedResources["insight"] =
-    (accumulatedResources["insight"] || 0) + insight * multiplier;
-}
-
-function simulatePopulationConsumption(
-  state: any,
-  multiplier: number,
-  accumulatedResources: Record<string, number>,
-) {
-  const totalPopulation = getCurrentPopulation(state);
-
-  if (totalPopulation > 0) {
-    if (isVillagerFoodUpkeepActive(state)) {
-      const foodConsumption = totalPopulation * multiplier;
-      accumulatedResources["food"] =
-        (accumulatedResources["food"] || 0) - foodConsumption;
-    }
-    if (isVillagerWoodUpkeepActive(state)) {
-      const woodConsumption = totalPopulation * multiplier;
-      accumulatedResources["wood"] =
-        (accumulatedResources["wood"] || 0) - woodConsumption;
-    }
-  }
-}
-
 /**
- * Sleep production rate per 15s cycle for the dialog column.
- * Uses the same net math as the village side panel (includes consumption), with
- * temporary bonuses excluded and sleep intensity applied — not the affordability-
- * gated tick sim, which can hide negative nets when stockpiles are empty/unready.
+ * Sleep production rate per 15s cycle (dialog rate column + tick accumulation).
+ * Same net math as the village side panel, with temp bonuses excluded and sleep
+ * intensity applied — includes negative consumption.
  */
 function getProductionPerInterval(
   state: any,
@@ -234,6 +95,18 @@ function getProductionPerInterval(
       (productionPerInterval.insight || 0) + insight * multiplier;
   }
   return productionPerInterval;
+}
+
+/** Apply one sleep production interval onto absolute resource amounts. */
+function applySleepProductionInterval(
+  state: any,
+  multiplier: number,
+  resources: Record<string, number>,
+): void {
+  const rates = getProductionPerInterval(state, multiplier);
+  for (const [resource, rate] of Object.entries(rates)) {
+    resources[resource] = (resources[resource] || 0) + rate;
+  }
 }
 
 export default function IdleModeDialog() {
@@ -319,27 +192,7 @@ export default function IdleModeDialog() {
 
         // Simulate each 15-second interval
         for (let i = 0; i < intervals; i++) {
-          simulateGathererProduction(
-            currentState,
-            PRODUCTION_SPEED_MULTIPLIER,
-            offlineResources,
-          );
-          simulateHunterProduction(
-            currentState,
-            PRODUCTION_SPEED_MULTIPLIER,
-            offlineResources,
-          );
-          simulateMinerProduction(
-            currentState,
-            PRODUCTION_SPEED_MULTIPLIER,
-            offlineResources,
-          );
-          simulatePassiveEffectProduction(
-            currentState,
-            PRODUCTION_SPEED_MULTIPLIER,
-            offlineResources,
-          );
-          simulatePopulationConsumption(
+          applySleepProductionInterval(
             currentState,
             PRODUCTION_SPEED_MULTIPLIER,
             offlineResources,
@@ -484,16 +337,7 @@ export default function IdleModeDialog() {
             (startingResources[resource] || 0) + (currentTracked[resource] || 0);
         });
 
-        // Apply production functions to the simulated state
-        simulateGathererProduction(currentState, multiplier, simulatedResources);
-        simulateHunterProduction(currentState, multiplier, simulatedResources);
-        simulateMinerProduction(currentState, multiplier, simulatedResources);
-        simulatePassiveEffectProduction(
-          currentState,
-          multiplier,
-          simulatedResources,
-        );
-        simulatePopulationConsumption(
+        applySleepProductionInterval(
           currentState,
           multiplier,
           simulatedResources,
