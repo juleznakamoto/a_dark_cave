@@ -2,7 +2,12 @@ import express, { type Express } from "express";
 import expressStaticGzip from "express-static-gzip";
 import fs from "fs";
 import path from "path";
-import { createServer as createViteServer, createLogger } from "vite";
+import {
+  createServer as createViteServer,
+  createLogger,
+  type ConfigEnv,
+  type InlineConfig,
+} from "vite";
 import { type Server } from "http";
 import viteConfig from "../vite.config";
 import { nanoid } from "nanoid";
@@ -11,6 +16,21 @@ import { sendSpaIndexHtml } from "./spaHtml";
 
 const viteLogger = createLogger();
 const logger = console;
+
+/**
+ * `vite.config.ts` exports a defineConfig callback (async for Replit plugins /
+ * mode-based defines). Spreading that function would drop `root: client/`, so
+ * Vite would look for `/src/main.tsx` at the repo root and fail.
+ */
+async function resolveViteConfig(): Promise<InlineConfig> {
+  const env: ConfigEnv = {
+    command: "serve",
+    mode: process.env.NODE_ENV === "production" ? "production" : "development",
+  };
+  const resolved =
+    typeof viteConfig === "function" ? await viteConfig(env) : await viteConfig;
+  return resolved as InlineConfig;
+}
 
 export type LogLevel = "error" | "warn" | "info";
 
@@ -87,8 +107,9 @@ export async function setupVite(app: Express, server: Server) {
     allowedHosts: true as const,
   };
 
+  const resolvedConfig = await resolveViteConfig();
   const vite = await createViteServer({
-    ...viteConfig,
+    ...resolvedConfig,
     configFile: false,
     customLogger: {
       ...viteLogger,
@@ -97,7 +118,11 @@ export async function setupVite(app: Express, server: Server) {
         process.exit(1);
       },
     },
-    server: serverOptions,
+    // Keep vite.config `server.fs` (etc.) and overlay middleware/HMR options.
+    server: {
+      ...resolvedConfig.server,
+      ...serverOptions,
+    },
     appType: "custom",
   });
 
