@@ -2728,6 +2728,18 @@
     "message": "La nuit, l'homme et la femme aux cheveux roux attaquent le village ensemble. {{deaths}} villageois tombent avant que les autres ne submergent le couple. Avant que tu puisses rien faire, les villageois les pendent. Sur le corps de l'homme, tu trouves une carte vers un village de montagne.",
     "title": "Attaque nocturne"
   },
+  "searchMountainLadyAmbush": {
+    "choices": {
+      "continue": {
+        "label": "Continuer"
+      }
+    },
+    "log": {
+      "outcome": "L'homme vous mène au plus profond des bois. Vos villageois tombent dans des pièges. Soudain la femme aux cheveux roux apparaît, et ensemble ils fondent sur vos hommes. {{deaths}} villageois meurent avant que les survivants ne tuent les deux assaillants. Sur le corps de l'homme, ils trouvent une carte vers un village de montagne."
+    },
+    "message": "L'homme vous mène au plus profond des bois. Vos villageois tombent dans des pièges. Soudain la femme aux cheveux roux apparaît, et ensemble ils fondent sur vos hommes. {{deaths}} villageois meurent avant que les survivants ne tuent les deux assaillants. Sur le corps de l'homme, ils trouvent une carte vers un village de montagne.",
+    "title": "L'embuscade"
+  },
   "theHoundFound": {
     "choices": {
       "accept": {

@@ -749,9 +749,6 @@
     "label": "Esplora villaggio di montagna"
   },
   "searchMountainLady": {
-    "label": "Cerca la dama delle montagne",
-    "log": {
-      "ambush": "L'uomo vi guida in profondità nel bosco. I vostri abitanti cadono in trappole. All'improvviso compare la donna dai capelli rossi e insieme si avventano sui vostri uomini. {{count}} abitanti muoiono prima che i sopravvissuti uccidano entrambi gli assalitori. Sul corpo dell'uomo trovano una mappa per un villaggio di montagna."
-    }
+    "label": "Cerca la dama delle montagne"
   }
 }

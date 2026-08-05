@@ -26,6 +26,8 @@
     "madnessLevel": "Follia: {{value}}",
     "deathByMadnessChanceEachCycle": "Probabilità di morte per follia per ciclo: {{value}}%",
     "minRemaining": "{{count}} min rimanenti",
+    "timeRemaining": "{{duration}} rimanenti",
+    "executionRemaining": "{{duration}} rimanenti fino al completamento",
     "minUntilDecrease": "{{time}} alla riduzione del livello",
     "greatVillageFeast": "Grande Banchetto del Villaggio",
     "villageFeast": "Banchetto del Villaggio",

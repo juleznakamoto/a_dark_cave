@@ -1220,6 +1220,18 @@
     "message": "At night the man and the red-haired woman attack the village together. {{deaths}} villagers fall before the rest overwhelm the pair. Before you can do anything, the villagers hang them. On the man's body you find a map to a mountain village.",
     "title": "Night Attack"
   },
+  "searchMountainLadyAmbush": {
+    "choices": {
+      "continue": {
+        "label": "Continue"
+      }
+    },
+    "log": {
+      "outcome": "The man leads you deep into the woods. Your villagers stumble into traps. Suddenly the red-haired woman appears, and together they fall upon your men. {{deaths}} villagers die before the survivors kill both attackers. On the man's body they find a map to a mountain village."
+    },
+    "message": "The man leads you deep into the woods. Your villagers stumble into traps. Suddenly the red-haired woman appears, and together they fall upon your men. {{deaths}} villagers die before the survivors kill both attackers. On the man's body they find a map to a mountain village.",
+    "title": "The Ambush"
+  },
   "monasteryMonk": {
     "choices": {
       "offerGold": {

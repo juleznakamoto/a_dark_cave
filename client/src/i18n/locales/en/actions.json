@@ -676,10 +676,7 @@
     "label": "Sell Steel"
   },
   "searchMountainLady": {
-    "label": "Search Mountain Lady",
-    "log": {
-      "ambush": "The man leads you deep into the woods. Your villagers stumble into traps. Suddenly the red-haired woman appears, and together they fall upon your men. {{count}} villagers die before the survivors kill both attackers. On the man's body they find a map to a mountain village."
-    }
+    "label": "Search Mountain Lady"
   },
   "steelDelivery": {
     "label": "Steel Delivery",

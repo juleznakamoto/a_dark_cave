@@ -2728,6 +2728,18 @@
     "message": "Por la noche, el hombre y la mujer pelirroja atacan la aldea juntos. {{deaths}} aldeanos caen antes de que el resto derrote a la pareja. Antes de que puedas hacer nada, los aldeanos los ahorcan. En el cuerpo del hombre encuentras un mapa hacia una aldea de montaña.",
     "title": "Ataque nocturno"
   },
+  "searchMountainLadyAmbush": {
+    "choices": {
+      "continue": {
+        "label": "Continuar"
+      }
+    },
+    "log": {
+      "outcome": "El hombre os lleva a lo profundo del bosque. Vuestros aldeanos caen en trampas. De pronto aparece la mujer pelirroja y juntos se lanzan sobre vuestros hombres. {{deaths}} aldeanos mueren antes de que los supervivientes maten a ambos atacantes. En el cuerpo del hombre encuentran un mapa hacia una aldea de montaña."
+    },
+    "message": "El hombre os lleva a lo profundo del bosque. Vuestros aldeanos caen en trampas. De pronto aparece la mujer pelirroja y juntos se lanzan sobre vuestros hombres. {{deaths}} aldeanos mueren antes de que los supervivientes maten a ambos atacantes. En el cuerpo del hombre encuentran un mapa hacia una aldea de montaña.",
+    "title": "La emboscada"
+  },
   "theHoundFound": {
     "choices": {
       "accept": {

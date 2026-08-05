@@ -26,6 +26,8 @@
     "madnessLevel": "Wahnsinn: {{value}}",
     "deathByMadnessChanceEachCycle": "Wahnsinnstod-Chance pro Zyklus: {{value}}%",
     "minRemaining": "Noch {{count}} Min.",
+    "timeRemaining": "{{duration}} verbleibend",
+    "executionRemaining": "{{duration}} bis fertig",
     "minUntilDecrease": "{{time}} bis Stufenabfall",
     "greatVillageFeast": "Großes Dorffest",
     "villageFeast": "Dorffest",

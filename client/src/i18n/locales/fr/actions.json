@@ -142,7 +142,7 @@
   },
   "buildGrandHunterLodge": {
     "description": "Pavillon de chasse suprême pour maîtres chasseurs",
-    "label": "Grand pavillon de chasse"  //x1.3
+    "label": "Grand pavillon de chasse" //x1.3
   },
   "buildGrandRepository": {
     "description": "Immense dépôt à la capacité de stockage exceptionnelle",
@@ -150,7 +150,7 @@
   },
   "buildGreatCabin": {
     "description": "Pavillon de chasse agrandi augmentant la production des chasseurs", //x1.4
-    "label": "Grande cabane de chasse"  //x1.3
+    "label": "Grande cabane de chasse" //x1.3
   },
   "buildGreatVault": {
     "description": "Coffre suprême capable de stocker d'immenses ressources",
@@ -170,7 +170,7 @@
   },
   "buildInkwardenAcademy": {
     "description": "Grande académie où des maîtres érudits distillent un savoir profond",
-    "label": "Académie des gardiens des écrits"  //x1.8
+    "label": "Académie des gardiens des écrits" //x1.8
   },
   "buildLonghouse": {
     "description": "Immense halle commune nordique abritant de nombreux villageois",
@@ -242,7 +242,7 @@
   },
   "buildSupplyHut": {
     "description": "Petite hutte pour stocker les ressources",
-    "label": "Hutte de ravitaillement"  //x2.3
+    "label": "Hutte de ravitaillement" //x2.3
   },
   "buildTannery": {
     "description": "Atelier où les fourrures sont transformées en cuir",
@@ -330,7 +330,7 @@
     "label": "Arbalète"
   },
   "craftAshenGreatshield": {
-    "label": "Grand bouclier cendreux"  //x1.4
+    "label": "Grand bouclier cendreux" //x1.4
   },
   "craftAshfireBomb": {
     "label": "Bombe feu-cendre"
@@ -354,7 +354,7 @@
     "label": "Épée d'acier noir"
   },
   "craftBloodstoneStaff": {
-    "label": "Bâton de pierre de sang"  //x1.4
+    "label": "Bâton de pierre de sang" //x1.4
   },
   "craftBoneTotems": {
     "label": "Totems d'os"
@@ -453,7 +453,7 @@
     "label": "Pioche de pierre"
   },
   "craftStormglassHalberd": {
-    "label": "Hallebarde de verre-tempête"  //x1.5
+    "label": "Hallebarde de verre-tempête" //x1.5
   },
   "craftTorches": {
     "label": "Torchees"
@@ -470,11 +470,11 @@
   "descendFurther": {
     "label": "Descendre davantage",
     "log": {
-      "firstVisit": "La lanterne projette une lueur stable tandis que vous descendez encore plus bas. Soudain, vos pieds touchent des marches de pierre taillées par la main de l'homme, usées par le temps."  //x1.5
+      "firstVisit": "La lanterne projette une lueur stable tandis que vous descendez encore plus bas. Soudain, vos pieds touchent des marches de pierre taillées par la main de l'homme, usées par le temps." //x1.5
     }
   },
   "encounterBeyondPortal": {
-    "label": "S'aventurer au-delà de la porte"  //x1.6
+    "label": "S'aventurer au-delà de la porte" //x1.6
   },
   "exploreCave": {
     "label": "Explorer la grotte",
@@ -529,7 +529,7 @@
     "label": "Soigner le vieux mage"
   },
   "healRestlessKnight": {
-    "label": "Soigner le chevalier tourmenté"  //x1.5
+    "label": "Soigner le chevalier tourmenté" //x1.5
   },
   "hiddenLibrary": {
     "label": "Bibliothèque cachée",
@@ -638,7 +638,7 @@
     }
   },
   "provokeAttackWave": {
-    "label": "Provoquer une vague d'attaque"  //x1.5
+    "label": "Provoquer une vague d'attaque" //x1.5
   },
   "repairBastion": {
     "label": "Réparer le bastion"
@@ -647,7 +647,7 @@
     "label": "Réparer les palissades"
   },
   "repairWatchtower": {
-    "label": "Réparer la tour de guet"  //x1.4
+    "label": "Réparer la tour de guet" //x1.4
   },
   "risingSmoke": {
     "label": "Fumée montante",
@@ -688,16 +688,16 @@
     "label": "Acheter de l'adamant"
   },
   "tradeGoldForAshfireBomb": {
-    "label": "Acheter une bombe feu-cendre"  //x1.8
+    "label": "Acheter une bombe feu-cendre" //x1.8
   },
   "tradeGoldForBlacksteel": {
-    "label": "Acheter de l'acier noir"  //x1.6
+    "label": "Acheter de l'acier noir" //x1.6
   },
   "tradeGoldForEmberBomb": {
-    "label": "Acheter une bombe de braise"  //x1.9
+    "label": "Acheter une bombe de braise" //x1.9
   },
   "tradeGoldForFood": {
-    "label": "Acheter de la nourriture"  //x3.0
+    "label": "Acheter de la nourriture" //x3.0
   },
   "tradeGoldForIron": {
     "label": "Acheter du fer"
@@ -706,7 +706,7 @@
     "label": "Acheter du cuir"
   },
   "tradeGoldForObsidian": {
-    "label": "Acheter de l'obsidienne"  //x1.9
+    "label": "Acheter de l'obsidienne" //x1.9
   },
   "tradeGoldForSteel": {
     "label": "Acheter de l'acier"
@@ -718,13 +718,13 @@
     "label": "Acheter une torche"
   },
   "tradeGoldForVoidBomb": {
-    "label": "Acheter une bombe du Vide"  //x1.9
+    "label": "Acheter une bombe du Vide" //x1.9
   },
   "tradeGoldForInsightPotion": {
     "label": "Élixir de perspicacité"
   },
   "tradeGoldForVeinfireElixir": {
-    "label": "Acheter un élixir feu-veine"  //x1.4
+    "label": "Acheter un élixir feu-veine" //x1.4
   },
   "tradeGoldForWood": {
     "label": "Acheter du bois"
@@ -749,9 +749,6 @@
     "label": "Explorer le village de montagne"
   },
   "searchMountainLady": {
-    "label": "Chercher la dame des montagnes",
-    "log": {
-      "ambush": "L'homme vous mène au plus profond des bois. Vos villageois tombent dans des pièges. Soudain la femme aux cheveux roux apparaît, et ensemble ils fondent sur vos hommes. {{count}} villageois meurent avant que les survivants ne tuent les deux assaillants. Sur le corps de l'homme, ils trouvent une carte vers un village de montagne."
-    }
+    "label": "Chercher la dame des montagnes"
   }
 }

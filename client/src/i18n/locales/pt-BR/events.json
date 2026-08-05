@@ -2728,6 +2728,18 @@
     "message": "À noite, o homem e a mulher de cabelos ruivos atacam a aldeia juntos. {{deaths}} aldeões caem antes que o resto derrote o casal. Antes que você possa fazer qualquer coisa, os aldeões os enforcam. No corpo do homem você encontra um mapa para uma aldeia na montanha.",
     "title": "Ataque noturno"
   },
+  "searchMountainLadyAmbush": {
+    "choices": {
+      "continue": {
+        "label": "Continuar"
+      }
+    },
+    "log": {
+      "outcome": "O homem os leva fundo na floresta. Seus aldeões caem em armadilhas. De repente a mulher de cabelos ruivos aparece, e juntos atacam seus homens. {{deaths}} aldeões morrem antes que os sobreviventes matem os dois atacantes. No corpo do homem eles encontram um mapa para uma aldeia na montanha."
+    },
+    "message": "O homem os leva fundo na floresta. Seus aldeões caem em armadilhas. De repente a mulher de cabelos ruivos aparece, e juntos atacam seus homens. {{deaths}} aldeões morrem antes que os sobreviventes matem os dois atacantes. No corpo do homem eles encontram um mapa para uma aldeia na montanha.",
+    "title": "A emboscada"
+  },
   "theHoundFound": {
     "choices": {
       "accept": {

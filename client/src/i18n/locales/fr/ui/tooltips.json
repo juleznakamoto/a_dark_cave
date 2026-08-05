@@ -26,6 +26,8 @@
     "madnessLevel": "Folie : {{value}}",
     "deathByMadnessChanceEachCycle": "Chance de mort par folie par cycle : {{value}} %",
     "minRemaining": "{{count}} min restantes",
+    "timeRemaining": "{{duration}} restantes",
+    "executionRemaining": "{{duration}} restantes avant la fin",
     "minUntilDecrease": "{{time}} avant la baisse de niveau",
     "greatVillageFeast": "Grand festin du village", //x1.2
     "villageFeast": "Festin du village", //x1.3

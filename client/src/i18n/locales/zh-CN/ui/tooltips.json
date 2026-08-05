@@ -26,6 +26,8 @@
     "madnessLevel": "疯狂：{{value}}",
     "deathByMadnessChanceEachCycle": "每周期疯狂死亡几率：{{value}}%",
     "minRemaining": "剩余 {{count}} 分钟",
+    "timeRemaining": "剩余 {{duration}}",
+    "executionRemaining": "剩余 {{duration}} 直至完成",
     "minUntilDecrease": "{{time}} 后等级下降",
     "greatVillageFeast": "村庄大宴",
     "villageFeast": "村庄宴会",

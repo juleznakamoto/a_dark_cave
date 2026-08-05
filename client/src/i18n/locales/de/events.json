@@ -2728,6 +2728,18 @@
     "message": "In der Nacht greifen der Mann und die rothaarige Frau gemeinsam das Dorf an. {{deaths}} Dorfbewohner fallen, bevor die übrigen das Paar überwältigen. Bevor du etwas tun kannst, hängen die Dorfbewohner sie. Am Körper des Mannes findest du eine Karte zu einem Bergdorf.",
     "title": "Nachtangriff"
   },
+  "searchMountainLadyAmbush": {
+    "choices": {
+      "continue": {
+        "label": "Weiter"
+      }
+    },
+    "log": {
+      "outcome": "Der Mann führt euch tief in den Wald. Eure Dorfbewohner stolpern in Fallen. Plötzlich erscheint die rothaarige Frau, und gemeinsam fallen sie über eure Männer her. {{deaths}} Dorfbewohner sterben, bevor die Überlebenden beide Angreifer töten. Am Körper des Mannes finden sie eine Karte zu einem Bergdorf."
+    },
+    "message": "Der Mann führt euch tief in den Wald. Eure Dorfbewohner stolpern in Fallen. Plötzlich erscheint die rothaarige Frau, und gemeinsam fallen sie über eure Männer her. {{deaths}} Dorfbewohner sterben, bevor die Überlebenden beide Angreifer töten. Am Körper des Mannes finden sie eine Karte zu einem Bergdorf.",
+    "title": "Der Hinterhalt"
+  },
   "theHoundFound": {
     "choices": {
       "accept": {

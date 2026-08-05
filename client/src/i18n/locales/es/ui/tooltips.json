@@ -26,6 +26,8 @@
     "madnessLevel": "Locura: {{value}}",
     "deathByMadnessChanceEachCycle": "Probabilidad de muerte por locura por ciclo: {{value}} %",
     "minRemaining": "{{count}} min restantes",
+    "timeRemaining": "{{duration}} restantes",
+    "executionRemaining": "{{duration}} restantes hasta terminar",
     "minUntilDecrease": "{{time}} hasta bajar de nivel",
     "greatVillageFeast": "Gran festín del pueblo",
     "villageFeast": "Festín del pueblo", //x1.3

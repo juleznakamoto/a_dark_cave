@@ -26,6 +26,8 @@
     "madnessLevel": "Madness: {{value}}",
     "deathByMadnessChanceEachCycle": "Madness Death Chance per Cycle: {{value}}%",
     "minRemaining": "{{count}} min remaining",
+    "timeRemaining": "{{duration}} remaining",
+    "executionRemaining": "{{duration}} left until finished",
     "minUntilDecrease": "{{time}} until level decrease",
     "greatVillageFeast": "Great Village Feast",
     "villageFeast": "Village Feast",

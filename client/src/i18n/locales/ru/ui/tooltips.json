@@ -26,6 +26,8 @@
     "madnessLevel": "Безумие: {{value}}",
     "deathByMadnessChanceEachCycle": "Шанс смерти от безумия за цикл: {{value}}%",
     "minRemaining": "Осталось {{count}} мин",
+    "timeRemaining": "Осталось {{duration}}",
+    "executionRemaining": "{{duration}} до завершения",
     "minUntilDecrease": "{{time}} до снижения уровня",
     "greatVillageFeast": "Большой праздник деревни", //x1.3
     "villageFeast": "Праздник деревни", //x1.2

@@ -2728,6 +2728,18 @@
     "message": "Di notte l'uomo e la donna dai capelli rossi attaccano insieme il villaggio. {{deaths}} abitanti cadono prima che gli altri sopraffacciano la coppia. Prima che tu possa fare qualcosa, gli abitanti li impiccano. Sul corpo dell'uomo trovi una mappa per un villaggio di montagna.",
     "title": "Attacco notturno"
   },
+  "searchMountainLadyAmbush": {
+    "choices": {
+      "continue": {
+        "label": "Continua"
+      }
+    },
+    "log": {
+      "outcome": "L'uomo vi guida in profondità nel bosco. I vostri abitanti cadono in trappole. All'improvviso compare la donna dai capelli rossi e insieme si avventano sui vostri uomini. {{deaths}} abitanti muoiono prima che i sopravvissuti uccidano entrambi gli assalitori. Sul corpo dell'uomo trovano una mappa per un villaggio di montagna."
+    },
+    "message": "L'uomo vi guida in profondità nel bosco. I vostri abitanti cadono in trappole. All'improvviso compare la donna dai capelli rossi e insieme si avventano sui vostri uomini. {{deaths}} abitanti muoiono prima che i sopravvissuti uccidano entrambi gli assalitori. Sul corpo dell'uomo trovano una mappa per un villaggio di montagna.",
+    "title": "L'imboscata"
+  },
   "theHoundFound": {
     "choices": {
       "accept": {
