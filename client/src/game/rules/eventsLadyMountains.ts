@@ -175,7 +175,7 @@ export const ladyMountainsEvents: Record<string, GameEvent> = {
       isDev &&
       Boolean(state.story?.seen?.manFromTheMountainsPending) &&
       !state.story?.seen?.manFromTheMountains,
-    timeProbability: 10,
+    timeProbability: 0.5,
     priority: 6,
     repeatable: false,
     choices: [
