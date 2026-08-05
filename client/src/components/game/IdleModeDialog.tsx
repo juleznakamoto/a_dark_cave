@@ -22,7 +22,23 @@ import {
 import { audioManager, SOUND_VOLUME } from "@/lib/audio";
 import { resetProductionCycle } from "@/game/loop";
 import { BOMB_RESOURCES, capResourceToLimit } from "@/game/resourceLimits";
-import type { GameState } from "@shared/schema";
+import { gameStateSchema, type GameState } from "@shared/schema";
+
+/** Same order as the side-panel Resources list (schema key order + precious first). */
+const RESOURCE_PANEL_ORDER = Object.keys(gameStateSchema.parse({}).resources);
+const PRECIOUS_RESOURCE_ORDER = ["silver", "gold", "insight"] as const;
+
+function sortResourcesLikeSidePanel(keys: string[]): string[] {
+  const keySet = new Set(keys.filter((k) => k !== "Focus"));
+  const precious = PRECIOUS_RESOURCE_ORDER.filter((k) => keySet.has(k));
+  const preciousSet = new Set<string>(PRECIOUS_RESOURCE_ORDER);
+  const others = RESOURCE_PANEL_ORDER.filter(
+    (k) => keySet.has(k) && !preciousSet.has(k),
+  );
+  const ordered = new Set<string>([...precious, ...others]);
+  const rest = [...keySet].filter((k) => !ordered.has(k));
+  return [...precious, ...others, ...rest];
+}
 import { useTranslation } from "react-i18next";
 import { getResourceName } from "@/i18n/resolveGameText";
 import {
@@ -684,9 +700,7 @@ export default function IdleModeDialog() {
     return rate !== 0 || total !== 0;
   });
   const displayResources = [
-    ...resourceKeys
-      .filter((r) => r !== "Focus")
-      .sort((a, b) => a.localeCompare(b)),
+    ...sortResourcesLikeSidePanel(resourceKeys),
     "Focus",
   ];
 
