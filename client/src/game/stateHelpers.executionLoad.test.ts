@@ -108,6 +108,8 @@ describe("reconcileInFlightExecutionsOnLoad", () => {
       villagers: { free: 10, gatherer: 0 },
       story: {
         seen: {
+          // Sanctuary completion is the dialog choice, not expedition return.
+          swampSanctuaryChoiceMade: true,
           swampSanctuaryExplored: true,
           occultistChamberExplored: true,
         },

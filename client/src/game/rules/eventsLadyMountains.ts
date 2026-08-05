@@ -296,11 +296,16 @@ export const ladyMountainsEvents: Record<string, GameEvent> = {
             ...state.fellowship,
             the_hound: true,
           },
+          tools: {
+            ...state.tools,
+            mountain_village_map: false,
+          },
           story: {
             ...state.story,
             seen: {
               ...state.story.seen,
               theHoundJoined: true,
+              mountainVillageExplored: true,
             },
           },
           _logMessageKey: "outcome",

@@ -269,7 +269,8 @@ export const forestScoutActions: Record<string, Action> = {
       CRUEL_MODE.forestExpedition.swampSanctuary.whenCruel,
     show_when: {
       "story.seen.swampMapAssembled": true,
-      "!story.seen.swampSanctuaryExplored": true,
+      // Stay available until a sanctuary dialog choice is made (not on expedition return).
+      "!story.seen.swampSanctuaryChoiceMade": true,
     },
     cost: {
       "resources.food": 5000,
@@ -464,7 +465,9 @@ export const forestScoutActions: Record<string, Action> = {
     show_when: {
       "flags.forestUnlocked": true,
       "tools.mountain_village_map": true,
-      "!story.seen.mountainVillageExplored": true,
+      // Stay available until Accept on theHoundFound (not merely until the expedition returns).
+      "!fellowship.the_hound": true,
+      "!story.seen.theHoundJoined": true,
     },
     cost: {
       "resources.food": 10000,
@@ -918,15 +921,8 @@ export function handleSwampSanctuary(
   const effectUpdates = applyActionEffects("swampSanctuary", state);
   Object.assign(result.stateUpdates, effectUpdates);
 
-  result.stateUpdates.story = {
-    ...state.story,
-    seen: {
-      ...state.story.seen,
-      ...result.stateUpdates.story?.seen,
-      swampSanctuaryExplored: true,
-    },
-  };
-
+  // Do not mark explored here — that happens in swampSanctuaryChoice so a missed
+  // dialog can be retried without permanently soft-locking the sanctuary rewards.
   const eventDef = gameEvents.swampSanctuaryChoice;
   // id prefix must match `gameEvents` key so EventDialog's `event.id.split("-")[0]` resolves
   // the correct definition (e.g. "swamp-sanctuary-…" would wrongly yield eventId "swamp").
@@ -1432,19 +1428,8 @@ export function handleExploreMountainVillage(
     return result;
   }
 
-  result.stateUpdates.tools = {
-    ...state.tools,
-    mountain_village_map: false,
-  };
-
-  result.stateUpdates.story = {
-    ...state.story,
-    seen: {
-      ...state.story.seen,
-      mountainVillageExplored: true,
-    },
-  };
-
+  // Keep the map and do not mark explored until Accept on theHoundFound.
+  // Otherwise a missed/deferred dialog permanently soft-locks The Hound.
   const houndEvent = gameEvents.theHoundFound;
   if (houndEvent) {
     result.logEntries!.push(

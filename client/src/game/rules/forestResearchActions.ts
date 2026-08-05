@@ -88,6 +88,8 @@ export function handleFinanceExpedition(
   const tier = getFinanceExpeditionTier(state);
   const isMaxTier =
     getFinanceExpeditionTierIndex(state) === FINANCE_EXPEDITION_TIERS.length - 1;
+  // leatherboundBookFound is only set on Accept — a missed dialog re-offers on the
+  // next max-tier expedition instead of soft-locking the book forever.
   const shouldOfferBook =
     isMaxTier && !state.story.seen.leatherboundBookFound;
 

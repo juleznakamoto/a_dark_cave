@@ -895,6 +895,45 @@ export function hydrateLoadedGameState<T extends Partial<GameState>>(
   return repairUnlockFlags(withItems, defaults.flags);
 }
 
+/**
+ * Unstick one-shot expeditions that marked "explored" before a reward dialog was
+ * accepted (missed/deferred EventDialog soft-lock).
+ */
+export function migrateDialogGatedExpeditionSoftLocks(
+  state: GameState,
+): Partial<GameState> | null {
+  const seen = state.story?.seen ?? {};
+  let nextSeen = { ...seen };
+  let nextTools = state.tools;
+  let changed = false;
+
+  const houndJoined =
+    Boolean(seen.theHoundJoined) || Boolean(state.fellowship?.the_hound);
+  if (Boolean(seen.mountainVillageExplored) && !houndJoined) {
+    nextSeen = { ...nextSeen, mountainVillageExplored: false };
+    nextTools = { ...state.tools, mountain_village_map: true };
+    changed = true;
+  }
+
+  if (
+    Boolean(seen.swampSanctuaryExplored) &&
+    !Boolean(seen.swampSanctuaryChoiceMade)
+  ) {
+    nextSeen = { ...nextSeen, swampSanctuaryExplored: false };
+    changed = true;
+  }
+
+  if (!changed) return null;
+
+  return {
+    tools: nextTools,
+    story: {
+      ...state.story,
+      seen: nextSeen,
+    },
+  };
+}
+
 /** Run one-time load migrations on loaded saves (trader shop unlock gate). */
 export function applyGameStateLoadMigrations(state: GameState): GameState {
   let migrated = reconcileInFlightExecutionsOnLoad(state);
@@ -919,6 +958,10 @@ export function applyGameStateLoadMigrations(state: GameState): GameState {
   const steamShopSlots = migrateSteamShopSlotsOnLoad(migrated);
   if (steamShopSlots) {
     migrated = { ...migrated, ...steamShopSlots };
+  }
+  const dialogSoftLocks = migrateDialogGatedExpeditionSoftLocks(migrated);
+  if (dialogSoftLocks) {
+    migrated = { ...migrated, ...dialogSoftLocks };
   }
   // After expedition reconcile (and any other load repairs), enforce housing cap
   // so legacy/corrupt over-population cannot persist into the live session.

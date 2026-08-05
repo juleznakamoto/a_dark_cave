@@ -2163,6 +2163,7 @@ export const choiceEvents: Record<string, GameEvent> = {
             seen: {
               ...state.story.seen,
               swampSanctuaryChoiceMade: true,
+              swampSanctuaryExplored: true,
             },
           },
           _logMessageKey: "outcome0",
@@ -2185,6 +2186,7 @@ export const choiceEvents: Record<string, GameEvent> = {
             seen: {
               ...state.story.seen,
               swampSanctuaryChoiceMade: true,
+              swampSanctuaryExplored: true,
             },
           },
           _logMessageKey: "outcome2",
