@@ -676,11 +676,21 @@ export default function IdleModeDialog() {
     PRODUCTION_SPEED_MULTIPLIER,
   );
 
-  const resourceKeys = Object.keys(productionPerInterval).filter(
-    (r) =>
-      productionPerInterval[r] !== 0 &&
-      !BOMB_RESOURCES.includes(r as (typeof BOMB_RESOURCES)[number]),
-  );
+  // Include net-negative rates and resources that only appear via accumulated drain
+  // (rate can drop to 0 mid-sleep when crafting jobs stall for lack of inputs).
+  const resourceKeys = Array.from(
+    new Set([
+      ...Object.keys(productionPerInterval),
+      ...Object.keys(accumulatedResources),
+    ]),
+  ).filter((r) => {
+    if (BOMB_RESOURCES.includes(r as (typeof BOMB_RESOURCES)[number])) {
+      return false;
+    }
+    const rate = productionPerInterval[r] ?? 0;
+    const total = Math.floor(accumulatedResources[r] || 0);
+    return rate !== 0 || total !== 0;
+  });
   const displayResources = [...resourceKeys].sort((a, b) => a.localeCompare(b));
   if (focusPoints > 0) displayResources.push("Focus");
 
@@ -796,12 +806,20 @@ export default function IdleModeDialog() {
                 <div
                   className={cn(
                     numberCellClass,
-                    isAtStorageMax ? "text-yellow-500" : "text-gray-300",
+                    !isFocus &&
+                    (productionRate ?? 0) > 0 &&
+                    (isAtStorageMax ? "text-yellow-500" : "text-green-600"),
+                    !isFocus &&
+                    (productionRate ?? 0) < 0 &&
+                    "text-red-600",
+                    !isFocus &&
+                    (productionRate ?? 0) === 0 &&
+                    "text-gray-300",
                   )}
                 >
                   {!isFocus && (
                     <span className="font-mono tabular-nums">
-                      {(productionRate ?? 0) >= 0 ? "+" : ""}
+                      {(productionRate ?? 0) > 0 ? "+" : ""}
                       {(productionRate ?? 0).toFixed(1)}
                     </span>
                   )}
