@@ -2759,5 +2759,14 @@
   "secondBossWave": {
     "message": "Un esercito di bestie pallide si raduna davanti alle mura, pronto a un assalto finale sulla città.",
     "title": "L'Ondata Finale del Boss"
+  },
+  "portalBlasted": {
+    "choices": {
+      "continue": {
+        "label": "Continua"
+      }
+    },
+    "message": "Le bombe di brace detonano in un lampo brillante di fuoco e luce. L'antico cancello si incrina e crolla. Qualunque cosa potesse essere sigillata al suo interno è stata liberata. La città dovrebbe prepararsi a ciò che ne uscirà.",
+    "title": "Il Cancello cade"
   }
 }

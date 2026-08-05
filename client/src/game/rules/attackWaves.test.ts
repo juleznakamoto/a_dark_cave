@@ -18,6 +18,7 @@ import {
 } from "./attackWaveOrder";
 import {
   attackWaveEvents,
+  getAttackWaveGoldReward,
   getPostCompletionWaveParams,
   isPostCompletionAttackWavesActive,
 } from "./eventsAttackWaves";
@@ -75,6 +76,13 @@ describe("attack waves expansion", () => {
     } as GameState;
     expect(sixth.condition!(noBoss)).toBe(false);
     expect(sixth.condition!(withBoss)).toBe(true);
+  });
+
+  it("exposes claimable gold rewards for each chart wave", () => {
+    expect(getAttackWaveGoldReward("firstWave")).toBe(50);
+    expect(getAttackWaveGoldReward("firstBossWave")).toBe(300);
+    expect(getAttackWaveGoldReward("tenthWave")).toBe(500);
+    expect(getAttackWaveGoldReward("secondBossWave")).toBe(500);
   });
 
   it("scales post-completion waves from second boss +50 health, +10 attack, +50 gold", () => {

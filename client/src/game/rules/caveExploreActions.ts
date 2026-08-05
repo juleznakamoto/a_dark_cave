@@ -1157,7 +1157,12 @@ export function handleBlastPortal(
 ): ActionResult {
   const effectUpdates = applyActionEffects("blastPortal", state);
 
-  pushCaveExploreLog(result, "blastPortal", "portal-blasted");
+  const blastEvent = gameEvents.portalBlasted;
+  if (blastEvent) {
+    result.logEntries!.push(
+      buildLocalizedEventLogEntry("portalBlasted", blastEvent, state),
+    );
+  }
 
   Object.assign(result.stateUpdates, effectUpdates);
   return result;

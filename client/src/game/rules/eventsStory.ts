@@ -27,6 +27,21 @@ export const storyEvents: Record<string, GameEvent> = {
     }),
   },
 
+  /**
+   * Aftermath of Blast Gate. Action-triggered only; story.seen.portalBlasted is set by the action.
+   */
+  portalBlasted: {
+    id: "portalBlasted",
+    condition: () => false,
+    repeatable: false,
+    choices: [
+      {
+        id: "continue",
+        effect: () => ({}),
+      },
+    ],
+  },
+
   alchemistArrives: {
     id: "alchemistArrives",
     condition: (state: GameState) =>

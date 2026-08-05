@@ -2759,5 +2759,14 @@
   "secondBossWave": {
     "message": "Um exército de bestas pálidas se reúne diante dos muros da cidade, reunindo-se para um assalto final.",
     "title": "A Onda Final do Chefe"
+  },
+  "portalBlasted": {
+    "choices": {
+      "continue": {
+        "label": "Continuar"
+      }
+    },
+    "message": "As bombas de brasa detonam num clarão brilhante de fogo e luz. O portão antigo racha e desmorona. O que quer que estivesse selado ali dentro foi libertado. A cidade deveria se preparar para o que sair daí.",
+    "title": "O Portão Cai"
   }
 }

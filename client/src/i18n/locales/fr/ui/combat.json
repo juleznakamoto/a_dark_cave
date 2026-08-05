@@ -75,7 +75,8 @@
       "tenthWave": "Dixième vague",
       "firstBossWave": "Vague boss",
       "secondBossWave": "Vague boss finale"
-    }
+    },
+    "goldReward": "+{{amount}} or"
   },
   "fortifications": {
     "bastion": "Bastion",

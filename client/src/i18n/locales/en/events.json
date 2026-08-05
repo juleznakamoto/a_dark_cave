@@ -1476,6 +1476,15 @@
     "message": "At dawn, villagers glimpse a tall, pale, slender figure at the woods’ edge. What do you do?",
     "title": "The Pale Figure"
   },
+  "portalBlasted": {
+    "choices": {
+      "continue": {
+        "label": "Continue"
+      }
+    },
+    "message": "The ember bombs detonate in a bright flash of fire and light. The ancient gate cracks and crumbles. Whatever could have been sealed within has been released. The city should get ready for whatever comes out of there.",
+    "title": "The Gate Falls"
+  },
   "portalDiscovered": {
     "message": "In the citadel's lowest chambers you find a colossal gate forged from an unknown, unyielding metal. Perhaps the alchemist creations will be able to open it."
   },

@@ -75,7 +75,8 @@
       "tenthWave": "Décima oleada",
       "firstBossWave": "Oleada del jefe",
       "secondBossWave": "Oleada final del jefe"
-    }
+    },
+    "goldReward": "+{{amount}} de oro"
   },
   "fortifications": {
     "bastion": "Bastión",

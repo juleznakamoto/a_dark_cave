@@ -2759,5 +2759,14 @@
   "secondBossWave": {
     "message": "Eine Armee bleicher Bestien versammelt sich vor den Stadtmauern und sammelt sich für einen letzten Sturmangriff auf die Stadt.",
     "title": "Die letzte Bosswelle"
+  },
+  "portalBlasted": {
+    "choices": {
+      "continue": {
+        "label": "Weiter"
+      }
+    },
+    "message": "Die Glutbomben detonieren in einem hellen Feuerblitz. Das alte Tor bricht und bröckelt. Was auch immer darin eingeschlossen war, ist frei. Die Stadt sollte sich auf das vorbereiten, was hervorkommt.",
+    "title": "Das Tor fällt"
   }
 }

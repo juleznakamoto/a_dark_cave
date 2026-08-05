@@ -2759,5 +2759,14 @@
   "secondBossWave": {
     "message": "Une armée de bêtes pâles se rassemble devant les remparts, massée pour un dernier assaut sur la cité.",
     "title": "La vague boss finale"
+  },
+  "portalBlasted": {
+    "choices": {
+      "continue": {
+        "label": "Continuer"
+      }
+    },
+    "message": "Les bombes braise explosent dans un éclat de feu et de lumière. L'ancienne porte se fissure et s'effondre. Quoi qu'il y avait là-dedans a été libéré. La cité devrait se préparer à ce qui en sortira.",
+    "title": "La Porte tombe"
   }
 }

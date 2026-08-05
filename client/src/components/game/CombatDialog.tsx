@@ -1246,8 +1246,8 @@ export default function CombatDialog({
                           {playerStunned && enemyDamageIndicator.amount === 0
                             ? t("ui:combat.stunned")
                             : playerStrikeFailed ||
-                                crushingStrikeFailed ||
-                                feralHowlFailed ? (
+                              crushingStrikeFailed ||
+                              feralHowlFailed ? (
                               enemyDamageIndicator.amount > 0 ? (
                                 <>
                                   -{formatNumber(enemyDamageIndicator.amount)} (
@@ -1856,8 +1856,11 @@ export default function CombatDialog({
 
                       <motion.div
                         className="absolute bottom-6 left-6 right-6"
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
+                        initial={{ opacity: 0, pointerEvents: "none" }}
+                        animate={{
+                          opacity: 1,
+                          transitionEnd: { pointerEvents: "auto" },
+                        }}
                         transition={{
                           duration: 0.5,
                           delay: defeatButtonDelay,
@@ -1920,8 +1923,11 @@ export default function CombatDialog({
 
                       <motion.div
                         className="absolute bottom-6 left-6 right-6"
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
+                        initial={{ opacity: 0, pointerEvents: "none" }}
+                        animate={{
+                          opacity: 1,
+                          transitionEnd: { pointerEvents: "auto" },
+                        }}
                         transition={{
                           duration: 0.5,
                           delay: victoryButtonDelay,

@@ -75,7 +75,8 @@
       "tenthWave": "Décima Onda",
       "firstBossWave": "Onda do Chefe",
       "secondBossWave": "Onda Final do Chefe"
-    }
+    },
+    "goldReward": "+{{amount}} Ouro"
   },
   "fortifications": {
     "bastion": "Bastião",

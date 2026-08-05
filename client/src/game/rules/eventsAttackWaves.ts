@@ -898,11 +898,17 @@ export const ATTACK_WAVE_DISPLAY_NAMES: Record<AttackWaveId, string> = {
   secondBossWave: "Final Boss Wave",
 };
 
+/** Gold granted on victory for a canonical chart wave. */
+export function getAttackWaveGoldReward(waveId: AttackWaveId): number {
+  return ATTACK_WAVE_DEFINITIONS[waveId].goldReward;
+}
+
 export function getAttackWavesChartRows(state: AttackWaveChartState): {
   id: AttackWaveId;
   name: string;
   completed: boolean;
   conditionMet: boolean;
+  goldReward: number;
 }[] {
   const seen = state.story?.seen || {};
   return ATTACK_WAVE_IDS.map((id) => {
@@ -912,6 +918,7 @@ export function getAttackWavesChartRows(state: AttackWaveChartState): {
       name: ATTACK_WAVE_DISPLAY_NAMES[id],
       completed: Boolean(seen[rules.victoryFlag]),
       conditionMet: rules.prerequisiteMet(state),
+      goldReward: getAttackWaveGoldReward(id),
     };
   });
 }
