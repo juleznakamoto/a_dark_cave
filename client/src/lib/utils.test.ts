@@ -1,6 +1,8 @@
 import { describe, it, expect } from "vitest";
 import {
   abbreviateNumber,
+  formatCompactDuration,
+  formatExecutionDuration,
   formatNumber,
   formatPrice,
   formatSignedNumber,
@@ -59,5 +61,29 @@ describe("formatThousandsInLogText", () => {
 describe("formatPrice", () => {
   it("uses apostrophe for large amounts", () => {
     expect(formatPrice(12345678, "EUR")).toBe("123'456.78 €");
+  });
+});
+
+describe("formatCompactDuration", () => {
+  it("formats as Xm Ys, or Xs when under one minute", () => {
+    expect(formatCompactDuration(90)).toBe("1m 30s");
+    expect(formatCompactDuration(45)).toBe("45s");
+    expect(formatCompactDuration(5)).toBe("5s");
+    expect(formatCompactDuration(0)).toBe("0s");
+  });
+
+  it("ceils by default and can round", () => {
+    expect(formatCompactDuration(61.1)).toBe("1m 2s");
+    expect(formatCompactDuration(61.1, "round")).toBe("1m 1s");
+  });
+});
+
+describe("formatExecutionDuration", () => {
+  it("rounds to compact Xm Ys / Xs", () => {
+    expect(formatExecutionDuration(90)).toBe("1m 30s");
+    expect(formatExecutionDuration(45)).toBe("45s");
+    expect(formatExecutionDuration(5)).toBe("5s");
+    expect(formatExecutionDuration(3.75)).toBe("4s");
+    expect(formatExecutionDuration(0.5)).toBe("1s");
   });
 });

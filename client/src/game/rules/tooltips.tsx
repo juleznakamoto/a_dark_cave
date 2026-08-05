@@ -30,7 +30,14 @@ import {
   getPoisonArrowsDamagePerTick,
   getPoisonArrowsDotFightRounds,
 } from "@/game/weaponEnchantments";
-import { formatNumber, formatSignedNumber } from "@/lib/utils";
+import {
+  formatCompactDuration,
+  formatExecutionDuration,
+  formatNumber,
+  formatSignedNumber,
+} from "@/lib/utils";
+
+export { formatExecutionDuration };
 import type { TooltipConfig } from "@/game/types";
 import {
   formatTooltipResourceName,
@@ -48,23 +55,6 @@ import {
   isVeinfireElixirAtLimit,
 } from "@/game/resourceLimits";
 import { getExecutionTime } from "./executionTime";
-
-/**
- * Format an action's execution time for tooltips:
- * - `M:SS` when >= 1 minute (e.g. 90s -> "1:30")
- * - `SS s` when < 1 minute (fractions rounded to 2 decimals, trailing zeros
- *   trimmed, e.g. "45 s", "3.75 s", "3.8 s")
- * - `S.SS s` when < 1 second (fractions, trailing zeros trimmed, e.g. "0.5 s")
- */
-export function formatExecutionDuration(seconds: number): string {
-  if (seconds >= 60) {
-    const totalSeconds = Math.round(seconds);
-    const minutes = Math.floor(totalSeconds / 60);
-    const remSeconds = totalSeconds % 60;
-    return `${minutes}:${String(remSeconds).padStart(2, "0")}`;
-  }
-  return `${parseFloat(seconds.toFixed(2))} s`;
-}
 
 /**
  * Tooltip line showing an action's execution duration. Rendered as the last
@@ -524,16 +514,10 @@ export const madnessProductionTooltip: TooltipConfig = {
   },
 };
 
-/** Minutes when >= 60s left; seconds for the final minute (e.g. "42 sec remaining"). */
+/** Remaining effect time as "Xm YYs remaining". */
 function formatEffectRemaining(remainingMs: number): string {
-  const remainingSecs = Math.ceil(Math.max(0, remainingMs) / 1000);
-  if (remainingSecs >= 60) {
-    return getUiTooltip("minRemaining", "{{count}} min remaining", {
-      count: Math.ceil(remainingSecs / 60),
-    });
-  }
-  return getUiTooltip("secRemaining", "{{count}} sec remaining", {
-    count: remainingSecs,
+  return getUiTooltip("timeRemaining", "{{duration}} remaining", {
+    duration: formatCompactDuration(Math.max(0, remainingMs) / 1000),
   });
 }
 
@@ -725,7 +709,7 @@ export const heartfireTooltip: TooltipConfig = {
         </div>
         <div>
           {getUiTooltip("minUntilDecrease", "{{time}} until level decrease", {
-            time: formatEffectRemaining(remainingMs),
+            time: formatCompactDuration(remainingMs / 1000),
           })}
         </div>
       </>

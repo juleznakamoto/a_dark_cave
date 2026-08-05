@@ -64,7 +64,7 @@ import {
   stopVersionCheck,
 } from "@/game/versionCheck";
 import { hardReload } from "@/lib/hardReload";
-import { formatMinutesSeconds } from "@/lib/utils";
+import { formatCompactDuration } from "@/lib/utils";
 import MistBackground from "@/components/ui/mist-background";
 import { SmokeBackground } from "@/components/ui/spooky-smoke-animation";
 import { isBloodMoonOverlayVisible, BLOOD_MOON_OVERLAY_FADE_MS } from "@/game/bloodMoonOverlay";
@@ -388,7 +388,7 @@ export default function GameContainer() {
     const versionUpdateDescription = (remainingMs: number) =>
       i18n.t("versionUpdate.description", {
         ns: "ui",
-        time: formatMinutesSeconds(Math.ceil(remainingMs / 1000)),
+        time: formatCompactDuration(remainingMs / 1000),
       });
 
     const versionUpdateManualDescription = () =>

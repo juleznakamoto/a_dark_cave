@@ -1,5 +1,6 @@
 import type { GameState } from "@shared/schema";
 import type { FocusState } from "@/game/types";
+import { formatCompactDuration } from "@/lib/utils";
 
 export const OBSIDIAN_ORB_FOCUS_INTERVAL_MS = 15 * 60 * 1000;
 export const MAX_FOCUS_POINTS = 30;
@@ -87,8 +88,5 @@ export function tickObsidianOrbFocus(
 }
 
 export function formatObsidianOrbFocusCountdown(remainingMs: number): string {
-  const totalSeconds = Math.max(0, Math.ceil(remainingMs / 1000));
-  const minutes = Math.floor(totalSeconds / 60);
-  const seconds = totalSeconds % 60;
-  return `${minutes}:${seconds.toString().padStart(2, "0")}`;
+  return formatCompactDuration(Math.max(0, remainingMs) / 1000);
 }

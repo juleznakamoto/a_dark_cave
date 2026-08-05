@@ -17,7 +17,7 @@ import {
 } from "@/game/constructionQueueSlots";
 import { useGameStore } from "@/game/state";
 import { formatTooltipResourceName } from "@/i18n/tooltipLabels";
-import { cn, formatMinutesSeconds } from "@/lib/utils";
+import { cn, formatCompactDuration } from "@/lib/utils";
 import type { GameState } from "@shared/schema";
 
 const BOOST_GLYPH = "\u23E9";
@@ -83,7 +83,7 @@ export function ConstructionBoostBadge({ actionId }: ConstructionBoostBadgeProps
     liveState,
     actionId,
   );
-  const savedTime = formatMinutesSeconds(reductionSeconds);
+  const savedTime = formatCompactDuration(reductionSeconds, "round");
   const insightResource = formatTooltipResourceName("insight");
   const finishesBuild = constructionBoostWillFinishBuild(
     liveState,

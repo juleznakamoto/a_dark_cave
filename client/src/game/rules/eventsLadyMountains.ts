@@ -28,6 +28,13 @@ function nightAttackDeaths(state: GameState): number {
   );
 }
 
+function ambushDeaths(state: GameState): number {
+  return (
+    CRUEL_MODE.ladyMountains.ambushDeaths.base +
+    cruelModeScale(state) * CRUEL_MODE.ladyMountains.ambushDeaths.whenCruel
+  );
+}
+
 const liquidDeathSearchChoice: EventChoice = {
   id: "searchWoman",
   effect: (state: GameState) => {
@@ -250,6 +257,28 @@ export const ladyMountainsEvents: Record<string, GameEvent> = {
             },
           };
         },
+      },
+    ],
+  },
+
+  /** Opened by Search Mountain Lady after the ambush resolves. */
+  searchMountainLadyAmbush: {
+    id: "searchMountainLadyAmbush",
+    /** Action-triggered only; never rolled by EventManager. */
+    condition: () => false,
+    repeatable: false,
+    i18nVars: (state: GameState) => ({
+      deaths: ambushDeaths(state),
+    }),
+    choices: [
+      {
+        id: "continue",
+        effect: (state: GameState) => ({
+          _logMessageKey: "outcome",
+          _logMessageVars: {
+            deaths: ambushDeaths(state),
+          },
+        }),
       },
     ],
   },

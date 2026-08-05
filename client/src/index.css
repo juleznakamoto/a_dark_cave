@@ -527,8 +527,9 @@ html.adc-text-large .game-panel-header-indicator-row {
   height: auto;
 }
 
-/* Idle glyph sits high/left in the font em-box; nudge to match centered animation blob.
-   Always applied (including hover) so the glyph doesn't jump when idle fades out. */
+/* Idle glyph sits high/left in the font em-box. Share the X nudge on the badge so
+   the hover/reveal SVG blob stays on the same center as the idle glyph (otherwise
+   the blob reads ~1px left of the triangle). Y stays glyph-only (font metrics). */
 .insight-action-badge-trigger:not(:disabled) {
   cursor: pointer;
 }
@@ -537,8 +538,12 @@ html.adc-text-large .game-panel-header-indicator-row {
   cursor: default !important;
 }
 
+.insight-action-badge-trigger .building-action-badge {
+  transform: translateX(0.06em);
+}
+
 .insight-action-badge-trigger .building-action-badge__glyph {
-  transform: translate(0.06em, 0.18em);
+  transform: translateY(0.18em);
 }
 
 .building-action-badge__idle,

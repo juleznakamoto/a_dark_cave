@@ -6,9 +6,10 @@ import { X } from "lucide-react";
 import { GAME_CONSTANTS } from "@/game/constants";
 import { INSIGHT_REVEAL_DURATION_MS } from "@/game/rules/insightReveal";
 import { tWithFallback } from "@/i18n/resolveGameText";
-import { cn } from "@/lib/utils";
+import { cn, formatCompactDuration } from "@/lib/utils";
 import { useInlineButtonParticles } from "@/components/ui/bubbly-button";
 import type { ParticleConfig } from "@/components/ui/bubbly-button.particles";
+import { ActionTooltipSeparator } from "@/game/rules/actionTooltipLayout";
 
 /** Relative wrapper for action buttons and badges. */
 export const GAME_ACTION_BUTTON_STACK_CLASS = "relative inline-block";
@@ -316,10 +317,10 @@ const CooldownButton = forwardRef<HTMLButtonElement, CooldownButtonProps>(
         <span
           className={gameActionDisabledLabelClassName(
             isCoolingDown ||
-              isExecuting ||
-              isInsightRevealing ||
-              isPlayTimeOverlayActive ||
-              disabled,
+            isExecuting ||
+            isInsightRevealing ||
+            isPlayTimeOverlayActive ||
+            disabled,
           )}
         >
           {children}
@@ -379,11 +380,32 @@ const CooldownButton = forwardRef<HTMLButtonElement, CooldownButtonProps>(
         { amount: GAME_CONSTANTS.ACTION_ABORT_GOLD_COST },
       );
 
+    const executionRemainingSec = isExecuting
+      ? Math.max(0, executionDurationSec - executionElapsed)
+      : 0;
+    const hasBaseTooltip = tooltip != null && tooltip !== false && tooltip !== "";
+    const resolvedTooltip = isExecuting
+      ? (
+        <div className="text-xs">
+          {hasBaseTooltip ? tooltip : null}
+          {hasBaseTooltip ? <ActionTooltipSeparator /> : null}
+          <div className="text-muted-foreground">
+            {tWithFallback(
+              "ui",
+              "tooltips.executionRemaining",
+              "{{duration}} left until finished",
+              { duration: formatCompactDuration(executionRemainingSec) },
+            )}
+          </div>
+        </div>
+      )
+      : tooltip;
+
     return (
       <div className={GAME_ACTION_BUTTON_STACK_CLASS}>
         {particleConfig && portal}
         <TooltipWrapper
-          tooltip={tooltip}
+          tooltip={resolvedTooltip}
           tooltipId={buttonId}
           disabled={isButtonDisabled}
           onMouseEnter={onMouseEnter}

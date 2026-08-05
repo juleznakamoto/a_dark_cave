@@ -61,7 +61,7 @@ import {
   INSIGHT_BADGE_TOOLTIP_TRIGGER_CLASS,
 } from "@/components/game/BuildingActionBadge";
 import { VillagerCapUpgradeBadge } from "@/components/game/VillagerCapUpgradeBadge";
-import { formatNumber } from "@/lib/utils";
+import { formatCompactDuration, formatNumber } from "@/lib/utils";
 import {
   arePresetsVisible,
   canPurchasePresetSlot,
@@ -630,12 +630,8 @@ export default function VillagePanel() {
       const active = ih?.active;
       const nextWave = ih?.nextWavePlayTime ?? 0;
       const currentPlayTime = playTime ?? 0;
-      const formatRemaining = (ms: number) => {
-        const totalSeconds = Math.ceil(ms / 1000);
-        const minutes = Math.floor(totalSeconds / 60);
-        const seconds = totalSeconds % 60;
-        return `${minutes}:${seconds.toString().padStart(2, "0")}`;
-      };
+      const formatRemaining = (ms: number) =>
+        formatCompactDuration(Math.max(0, ms) / 1000);
       const investReady = isInvestmentWaveReadyForUi({
         playTime: currentPlayTime,
         investmentHallState: ih,
@@ -734,12 +730,8 @@ export default function VillagePanel() {
         isOnCooldown ||
         (!isCallingMerchant && !canAfford);
 
-      const formatRemaining = (ms: number) => {
-        const totalSeconds = Math.ceil(ms / 1000);
-        const minutes = Math.floor(totalSeconds / 60);
-        const seconds = totalSeconds % 60;
-        return `${minutes}:${seconds.toString().padStart(2, "0")}`;
-      };
+      const formatRemaining = (ms: number) =>
+        formatCompactDuration(Math.max(0, ms) / 1000);
 
       const tooltipContent = isOtherEventActive ? (
         <div className="text-xs">{t("village.merchantBlocked")}</div>

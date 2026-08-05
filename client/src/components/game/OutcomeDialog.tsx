@@ -139,8 +139,9 @@ export default function OutcomeDialog({
                 : undefined
             }
           />
-          {/* space-y-0 kills DialogHeader's space-y-1.5; use pt-* (not mt-*) — space-y overrides child margins */}
-          <DialogHeader className="space-y-0">
+          {/* space-y-0 kills DialogHeader's space-y-1.5; use pt-* (not mt-*) — space-y overrides child margins.
+              pr-0: DialogHeader defaults to pr-8 for the close control; this dialog hides it ([&>button]:hidden). */}
+          <DialogHeader className="space-y-0 pr-0">
             <div className="relative z-[1] flex w-full justify-center">
               <div
                 className={cn(

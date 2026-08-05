@@ -1413,18 +1413,13 @@ export function handleSearchMountainLady(
     },
   };
 
-  const actualDeaths = deathResult.villagersKilled ?? deaths;
-  result.logEntries!.push({
-    id: `search-mountain-lady-${Date.now()}`,
-    message: getActionLogMessage(
-      "searchMountainLady",
-      "ambush",
-      "The man leads you deep into the woods. Your villagers stumble into traps. Suddenly the red-haired woman appears, and together they fall upon your men. {{count}} villagers die before the survivors kill both attackers. On the man's body you find a map to a mountain village.",
-      { count: actualDeaths },
-    ),
-    timestamp: Date.now(),
-    type: "system",
-  });
+  const ambushEvent = gameEvents.searchMountainLadyAmbush;
+  if (ambushEvent) {
+    // id must match `gameEvents` key so EventDialog resolves the definition.
+    result.logEntries!.push(
+      buildLocalizedEventLogEntry("searchMountainLadyAmbush", ambushEvent, state),
+    );
+  }
 
   return result;
 }

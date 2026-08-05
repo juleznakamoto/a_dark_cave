@@ -104,12 +104,28 @@ export function formatPrice(cents: number, currency: "EUR" | "USD"): string {
   return currency === "EUR" ? `${numeric} €` : `$${numeric}`;
 }
 
-/** Format seconds as M:SS (e.g. 180 -> "3:00"). */
-export function formatMinutesSeconds(seconds: number): string {
-  const totalSeconds = Math.max(0, Math.round(seconds));
+/**
+ * Format seconds as compact duration (e.g. 90 -> "1m 30s", 5 -> "5s").
+ * Omit the minutes segment when under one minute. Use for remaining-time /
+ * countdown copy in tooltips and UI.
+ */
+export function formatCompactDuration(
+  seconds: number,
+  rounding: "ceil" | "round" = "ceil",
+): string {
+  const totalSeconds = Math.max(
+    0,
+    rounding === "round" ? Math.round(seconds) : Math.ceil(seconds),
+  );
   const minutes = Math.floor(totalSeconds / 60);
   const secs = totalSeconds % 60;
-  return `${minutes}:${String(secs).padStart(2, "0")}`;
+  if (minutes === 0) return `${secs}s`;
+  return `${minutes}m ${secs}s`;
+}
+
+/** Action execution duration for tooltips: same compact `Xm Ys` / `Xs` form. */
+export function formatExecutionDuration(seconds: number): string {
+  return formatCompactDuration(seconds, "round");
 }
 
 /** Format duration in milliseconds as HH:MM:SS */
