@@ -837,7 +837,7 @@ export default function CombatDialog({
             // Initial event screen
             <>
               <DialogHeader>
-                <DialogTitle className="text-lg font-semibold">
+                <DialogTitle className="pr-0 text-lg font-semibold">
                   {eventTitle}
                 </DialogTitle>
                 <DialogDescription className="text-sm text-gray-400 mt-2">
@@ -865,7 +865,7 @@ export default function CombatDialog({
               <div className="relative -m-6 p-6 min-h-full">
                 <DialogHeader>
                   <div className="flex items-start justify-between">
-                    <DialogTitle className="text-lg font-semibold">
+                    <DialogTitle className="pr-0 text-lg font-semibold">
                       {t("ui:combat.roundTitle", { round })}
                     </DialogTitle>
                     {(() => {

@@ -131,7 +131,7 @@ export default function CubeDialog({
       <DialogContent className="[&>button]:hidden border-2 border-gray-400 shadow-2xl p-6 [--adc-dialog-max-w:22rem] h-[21rem] max-h-[21rem] flex flex-col overflow-visible z-[100]">
         <div className="absolute inset-0 -z-10 cube-dialog-glow pointer-events-none"></div>
         <DialogHeader className="flex-shrink-0">
-          <DialogTitle className="text-lg font-semibold">
+          <DialogTitle className="pr-0 text-lg font-semibold">
             {resolvedTitle}
           </DialogTitle>
           <DialogDescription className="text-sm text-muted-foreground mt-2 leading-relaxed">

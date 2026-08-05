@@ -40,7 +40,7 @@ describe("dialog-gated expeditions", () => {
       expect(accept.story?.seen?.theHoundJoined).toBe(true);
     });
 
-    it("stays visible while the map is held and The Hound is not joined", () => {
+    it("stays visible while the map is held and Brute Hound is not joined", () => {
       const available = baseState({
         tools: { mountain_village_map: true },
         fellowship: { the_hound: false },
@@ -87,7 +87,7 @@ describe("dialog-gated expeditions", () => {
   });
 
   describe("migrateDialogGatedExpeditionSoftLocks", () => {
-    it("restores mountain village when explored without The Hound", () => {
+    it("restores mountain village when explored without Brute Hound", () => {
       const state = baseState({
         tools: { mountain_village_map: false },
         fellowship: { the_hound: false },

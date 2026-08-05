@@ -706,7 +706,7 @@ export default function IdleModeDialog() {
         hideOverlay={true}
       >
         <DialogHeader>
-          <DialogTitle>{t("idleMode.sleeping")}</DialogTitle>
+          <DialogTitle className="pr-0">{t("idleMode.sleeping")}</DialogTitle>
           <DialogDescription className="py-1 space-y-2 text-xs">
             {isTimeUp ? (
               <span className="pt-2">{t("idleMode.awake")}</span>

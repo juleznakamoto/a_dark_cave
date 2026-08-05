@@ -2747,9 +2747,9 @@
       }
     },
     "log": {
-      "outcome": "Lo accetti. Lo chiamavano il Segugio. Sfigurato dal veleno ma ancora vivo, si unisce alla tua compagnia."
+      "outcome": "Accetti. Indebolito dal veleno ma ancora in vita, il Segugio Bruto si unisce alla tua compagnia."
     },
-    "message": "La vostra spedizione trova un villaggio di montagna pieno di morti avvelenati. Tra i corpi giace un uomo quasi morto, molto muscoloso ma sfigurato, a malapena capace di parlare. Dice che lo chiamavano solo il Segugio. Sembra aver resistito al veleno, anche se a stento. Vuole unirsi a voi.",
-    "title": "Il Segugio"
+    "message": "La vostra spedizione trova un villaggio di montagna pieno di morti avvelenati. Tra i corpi giace un uomo quasi morto, molto muscoloso ma sfigurato, a malapena capace di parlare. Dice che lo chiamavano solo il Segugio Bruto. Sembra aver resistito al veleno, anche se a stento. Vuole unirsi a voi.",
+    "title": "Segugio Bruto"
   }
 }

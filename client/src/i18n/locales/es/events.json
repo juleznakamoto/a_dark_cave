@@ -2747,9 +2747,9 @@
       }
     },
     "log": {
-      "outcome": "Lo aceptas. Lo llamaban el Sabueso. Deformado por el veneno pero aún con vida, se une a tu compañía."
+      "outcome": "Aceptas. Debilitado por el veneno pero aún respirando, el Sabueso Bruto se une a tu compañía."
     },
-    "message": "Tu expedición encuentra una aldea de montaña llena de muertos envenenados. Entre los cuerpos yace un hombre casi muerto, muy musculoso pero desfigurado, apenas capaz de hablar. Dice que solo lo llamaban el Sabueso. Parece haber resistido el veneno, aunque por poco. Quiere unirse a vosotros.",
-    "title": "El Sabueso"
+    "message": "Tu expedición encuentra una aldea de montaña llena de muertos envenenados. Entre los cuerpos yace un hombre casi muerto, muy musculoso pero desfigurado, apenas capaz de hablar. Dice que solo lo llamaban el Sabueso Bruto. Parece haber resistido el veneno, aunque por poco. Quiere unirse a vosotros.",
+    "title": "Sabueso Bruto"
   }
 }

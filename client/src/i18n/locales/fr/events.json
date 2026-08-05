@@ -2747,9 +2747,9 @@
       }
     },
     "log": {
-      "outcome": "Tu l'acceptes. Ils l'appelaient le Chien. Déformé par le poison mais encore vivant, il rejoint ta compagnie."
+      "outcome": "Tu acceptes. Affaibli par le poison mais respirant encore, le Chien Brutal rejoint ta compagnie."
     },
-    "message": "Votre expédition trouve un village de montagne rempli de morts empoisonnés. Parmi les corps gît un homme presque mort, très musclé mais défiguré, à peine capable de parler. Il dit qu'on l'appelait juste le Chien. Il semble avoir résisté au poison, même de justesse. Il veut se joindre à vous.",
-    "title": "Le Chien"
+    "message": "Votre expédition trouve un village de montagne rempli de morts empoisonnés. Parmi les corps gît un homme presque mort, très musclé mais défiguré, à peine capable de parler. Il dit qu'on l'appelait juste le Chien Brutal. Il semble avoir résisté au poison, même de justesse. Il veut se joindre à vous.",
+    "title": "Chien Brutal"
   }
 }

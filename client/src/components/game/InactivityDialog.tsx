@@ -40,7 +40,7 @@ export default function InactivityDialog() {
         }
       >
         <DialogHeader>
-          <DialogTitle className="leading-6">
+          <DialogTitle className="pr-0 leading-6">
             {isMultiTab && t("inactivity.multiTab")}
             {isTimeout && t("inactivity.timeout")}
           </DialogTitle>

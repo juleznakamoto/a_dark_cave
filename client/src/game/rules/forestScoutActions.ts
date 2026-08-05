@@ -1429,7 +1429,7 @@ export function handleExploreMountainVillage(
   }
 
   // Keep the map and do not mark explored until Accept on theHoundFound.
-  // Otherwise a missed/deferred dialog permanently soft-locks The Hound.
+  // Otherwise a missed/deferred dialog permanently soft-locks Brute Hound.
   const houndEvent = gameEvents.theHoundFound;
   if (houndEvent) {
     result.logEntries!.push(

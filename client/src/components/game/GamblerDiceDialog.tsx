@@ -562,7 +562,7 @@ export default function GamblerDiceDialog({
         onEscapeKeyDown={(e) => e.preventDefault()}
       >
         <DialogHeader className="shrink-0 space-y-2 pb-3.5 mb-0.5">
-          <DialogTitle className="text-sm flex items-center gap-2 leading-snug">
+          <DialogTitle className="pr-0 text-sm flex items-center gap-2 leading-snug">
             {t("ui:gambler.title")}
             <RulesInfoButton />
           </DialogTitle>

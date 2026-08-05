@@ -2747,9 +2747,9 @@
       }
     },
     "log": {
-      "outcome": "Você o aceita. Chamavam-no de O Cão. Marcado pelo veneno, mas ainda vivo, ele se junta à sua companhia."
+      "outcome": "Você aceita. Enfraquecido pelo veneno, mas ainda respirando, Cão Bruto se junta à sua companhia."
     },
-    "message": "Sua expedição encontra uma aldeia na montanha cheia de mortos envenenados. Entre os corpos jaz um homem quase morto, muito musculoso mas desfigurado, mal capaz de falar. Diz que só o chamavam de O Cão. Parece ter resistido ao veneno, ainda que por pouco. Ele quer se juntar a vocês.",
-    "title": "O Cão"
+    "message": "Sua expedição encontra uma aldeia na montanha cheia de mortos envenenados. Entre os corpos jaz um homem quase morto, muito musculoso mas desfigurado, mal capaz de falar. Diz que só o chamavam de Cão Bruto. Parece ter resistido ao veneno, ainda que por pouco. Ele quer se juntar a vocês.",
+    "title": "Cão Bruto"
   }
 }

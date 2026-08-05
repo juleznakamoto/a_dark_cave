@@ -33,7 +33,7 @@ export default function DemoTimeUpDialog() {
         onEscapeKeyDown={(e) => e.preventDefault()}
       >
         <DialogHeader>
-          <DialogTitle>{t("galaxy.title")}</DialogTitle>
+          <DialogTitle className="pr-0">{t("galaxy.title")}</DialogTitle>
           <DialogDescription>{t("galaxy.description")}</DialogDescription>
         </DialogHeader>
         <div className="flex flex-col gap-3 pt-2">

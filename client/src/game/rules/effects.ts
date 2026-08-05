@@ -1781,7 +1781,7 @@ export const fellowshipEffects: Record<string, EffectDefinition> = {
   },
   the_hound: {
     id: "the_hound",
-    name: "The Hound",
+    name: "Brute Hound",
     description:
       "A muscular, disfigured survivor from a poisoned mountain village. His strengths are not yet known.",
     bonuses: {

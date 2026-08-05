@@ -100,11 +100,7 @@ const DialogHeader = ({
   ...props
 }: React.HTMLAttributes<HTMLDivElement>) => (
   <div
-    className={cn(
-      // pr-8: keep titles clear of the absolute close control
-      "flex flex-col space-y-1.5 pr-8 text-left",
-      className
-    )}
+    className={cn("flex flex-col space-y-1.5 text-left", className)}
     {...props}
   />
 )
@@ -131,7 +127,9 @@ const DialogTitle = React.forwardRef<
   <DialogPrimitive.Title
     ref={ref}
     className={cn(
-      "text-lg font-semibold leading-none tracking-tight",
+      // Reserve space for the absolute close control on the title only. Padding the whole
+      // DialogHeader made descriptions look right-heavy, especially when close is hidden.
+      "pr-8 text-lg font-semibold leading-none tracking-tight",
       className
     )}
     {...props}

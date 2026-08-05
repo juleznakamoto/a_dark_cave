@@ -346,7 +346,6 @@
       "description": "Your hunters bring back more food",
       "name": "Trail Sense"
     }
-
   },
   "fellowship": {
     "ashwraith_huntress": {
@@ -371,7 +370,7 @@
     },
     "the_hound": {
       "description": "Um sobrevivente musculoso e desfigurado de uma aldeia na montanha envenenada. Suas forças ainda não são conhecidas.",
-      "name": "O Cão"
+      "name": "Cão Bruto"
     }
   },
   "tools": {

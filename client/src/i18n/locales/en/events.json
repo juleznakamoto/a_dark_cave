@@ -2096,10 +2096,10 @@
       }
     },
     "log": {
-      "outcome": "You accept him. They called him The Hound. Twisted by poison but still breathing, he joins your fellowship."
+      "outcome": "You accept. Weakend by poison but still breathing, Brute Hound joins your fellowship."
     },
-    "message": "Your expedition finds a mountain village full of poisoned dead. Among the bodies lies an almost-dead man, very muscular but disfigured, barely able to talk. He says they just called him The Hound. It seems he withstood the poison, even if barely. He wants to join you.",
-    "title": "The Hound"
+    "message": "Your expedition finds a mountain village full of poisoned dead. Among the bodies lies an almost-dead man, very muscular but disfigured, barely able to talk. He says they just called him Brute Hound. It seems he withstood the poison, even if barely. He wants to join you.",
+    "title": "Brute Hound"
   },
   "theDamned": {
     "choices": {

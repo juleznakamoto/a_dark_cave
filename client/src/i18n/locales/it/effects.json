@@ -346,7 +346,6 @@
       "description": "Your hunters bring back more food",
       "name": "Trail Sense"
     }
-
   },
   "fellowship": {
     "ashwraith_huntress": {
@@ -371,7 +370,7 @@
     },
     "the_hound": {
       "description": "Un sopravvissuto muscoloso e sfigurato di un villaggio di montagna avvelenato. I suoi punti di forza non sono ancora noti.",
-      "name": "Il Segugio"
+      "name": "Segugio Bruto"
     }
   },
   "tools": {

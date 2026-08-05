@@ -1704,7 +1704,7 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
             onInteractOutside={(e) => e.preventDefault()}
           >
             <DialogHeader className="space-y-1 pb-0">
-              <DialogTitle>
+              <DialogTitle className="pr-0">
                 {shopCheckoutItemId && SHOP_ITEMS[shopCheckoutItemId] ? (
                   <ShopCheckoutItemTitle
                     item={SHOP_ITEMS[shopCheckoutItemId]}
@@ -2655,7 +2655,7 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
             onInteractOutside={(e) => e.preventDefault()}
           >
             <DialogHeader className="shrink-0 space-y-1 pb-0">
-              <DialogTitle className="flex items-center justify-between gap-3">
+              <DialogTitle className="pr-0 flex items-center justify-between gap-3">
                 <span className="min-w-0">
                   {SHOP_ITEMS[selectedItem] ? (
                     <ShopCheckoutItemTitle item={SHOP_ITEMS[selectedItem]} />

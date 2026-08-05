@@ -2747,9 +2747,9 @@
       }
     },
     "log": {
-      "outcome": "Du nimmst ihn auf. Sie nannten ihn den Hund. Vom Gift gezeichnet, doch noch atmend, schließt er sich deiner Gefolgschaft an."
+      "outcome": "Du nimmst an. Vom Gift geschwächt, doch noch atmend, schließt sich der Brutale Hund deiner Gefolgschaft an."
     },
-    "message": "Eure Expedition findet ein Bergdorf voll vergifteter Toter. Unter den Leichen liegt ein fast toter Mann, sehr muskulös, doch entstellt, kaum fähig zu sprechen. Er sagt, sie nannten ihn nur den Hund. Offenbar hat er dem Gift widerstanden, wenn auch kaum. Er will sich euch anschließen.",
-    "title": "Der Hund"
+    "message": "Eure Expedition findet ein Bergdorf voll vergifteter Toter. Unter den Leichen liegt ein fast toter Mann, sehr muskulös, doch entstellt, kaum fähig zu sprechen. Er sagt, sie nannten ihn nur den Brutalen Hund. Offenbar hat er dem Gift widerstanden, wenn auch kaum. Er will sich euch anschließen.",
+    "title": "Brutaler Hund"
   }
 }
