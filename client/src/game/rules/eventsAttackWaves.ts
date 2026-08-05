@@ -228,7 +228,7 @@ const ATTACK_WAVE_DEFINITIONS: Record<AttackWaveId, AttackWaveDefinition> = {
     health: { base: 1500, cruelBonus: 250 },
     isBoss: true,
     healChancePercent: 20,
-    healAmount: 150,
+    healAmount: 100,
     stunChancePercent: 15,
   },
 };

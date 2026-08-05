@@ -2096,11 +2096,11 @@
   },
   "firstBossWave": {
     "message": "A large pack of pale beasts leads the siege towards the city. Their blood thirst can be seen in every step they take.",
-    "title": "The Boss Wave"
+    "title": "Boss Wave"
   },
   "secondBossWave": {
     "message": "An army of pale beasts gathers before the city walls, massing for one final assault on the city.",
-    "title": "The Final Boss Wave"
+    "title": "Final Boss Wave"
   },
   "postCompletionWave": {
     "message": "From the hidden depths of the cave, mindless pale creatures continue to emerge, assaulting the city without end.",

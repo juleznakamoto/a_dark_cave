@@ -860,7 +860,7 @@ export default function CombatDialog({
         prev ? { ...prev, currentHealth: newHealth } : null,
       );
       setPlayerStunned(true);
-      setPlayerStrikeFailed(true);
+      setPlayerStrikeFailed(false);
 
       if (newHealth <= 0) {
         setCombatEnded(true);
@@ -1243,39 +1243,33 @@ export default function CombatDialog({
                       />
                       {enemyDamageIndicator.visible && (
                         <div className="absolute -translate-y-5 inset-0 flex items-center justify-center text-red-900 font-bold text-sm pointer-events-none">
-                          {playerStunned && enemyDamageIndicator.amount === 0
-                            ? t("ui:combat.stunned")
-                            : playerStrikeFailed ||
-                              crushingStrikeFailed ||
-                              feralHowlFailed ? (
-                              enemyDamageIndicator.amount > 0 ? (
-                                <>
-                                  -{formatNumber(enemyDamageIndicator.amount)} (
-                                  {playerStunned
-                                    ? t("ui:combat.stunned")
-                                    : playerStrikeFailed
-                                      ? t("ui:combat.attackFailed")
-                                      : crushingStrikeFailed
-                                        ? t("ui:combat.crushingStrikeFailed")
-                                        : t("ui:combat.feralHowlFailed")}
-                                  )
-                                </>
-                              ) : playerStunned ? (
-                                t("ui:combat.stunned")
-                              ) : playerStrikeFailed ? (
-                                t("ui:combat.attackFailed")
-                              ) : crushingStrikeFailed ? (
-                                t("ui:combat.crushingStrikeFailed")
-                              ) : (
-                                t("ui:combat.feralHowlFailed")
-                              )
-                            ) : (
+                          {playerStrikeFailed ||
+                          crushingStrikeFailed ||
+                          feralHowlFailed ? (
+                            enemyDamageIndicator.amount > 0 ? (
                               <>
-                                -{formatNumber(enemyDamageIndicator.amount)}
-                                {wasCriticalStrike &&
-                                  ` (${t("ui:combat.critical")})`}
+                                -{formatNumber(enemyDamageIndicator.amount)} (
+                                {playerStrikeFailed
+                                  ? t("ui:combat.attackFailed")
+                                  : crushingStrikeFailed
+                                    ? t("ui:combat.crushingStrikeFailed")
+                                    : t("ui:combat.feralHowlFailed")}
+                                )
                               </>
-                            )}
+                            ) : playerStrikeFailed ? (
+                              t("ui:combat.attackFailed")
+                            ) : crushingStrikeFailed ? (
+                              t("ui:combat.crushingStrikeFailed")
+                            ) : (
+                              t("ui:combat.feralHowlFailed")
+                            )
+                          ) : (
+                            <>
+                              -{formatNumber(enemyDamageIndicator.amount)}
+                              {wasCriticalStrike &&
+                                ` (${t("ui:combat.critical")})`}
+                            </>
+                          )}
                         </div>
                       )}
                       {enemyHealIndicator.visible && (
@@ -1283,13 +1277,6 @@ export default function CombatDialog({
                           +{formatNumber(enemyHealIndicator.amount)}
                         </div>
                       )}
-                      {playerStunned &&
-                        !enemyDamageIndicator.visible &&
-                        !enemyHealIndicator.visible && (
-                          <div className="absolute -translate-y-5 inset-0 flex items-center justify-center text-yellow-500 font-bold text-sm pointer-events-none">
-                            {t("ui:combat.stunned")}
-                          </div>
-                        )}
                     </div>
                     <div className={cn(COMBAT_STAT_ROW_CLASS, "mt-2 gap-3")}>
                       <TooltipWrapper
@@ -1426,6 +1413,13 @@ export default function CombatDialog({
                             +{formatNumber(integrityHealIndicator.amount)}
                           </div>
                         )}
+                        {playerStunned &&
+                          !integrityDamageIndicator.visible &&
+                          !integrityHealIndicator.visible && (
+                            <div className="absolute -translate-y-5 inset-0 flex items-center justify-center text-yellow-500 font-bold text-sm pointer-events-none">
+                              {t("ui:combat.stunned")}
+                            </div>
+                          )}
                       </div>
                     </div>
 
