@@ -13,6 +13,7 @@ import { combatItemTooltips } from "@/game/rules/tooltips";
 import {
   calculateCriticalStrikeChance,
   calculateEnemyCriticalChancePercent,
+  CRITICAL_STRIKE_DAMAGE_MULTIPLIER,
   getCombatAttackFailChancePercent,
 } from "@/game/rules/effectsStats";
 import {
@@ -625,7 +626,9 @@ export default function CombatDialog({
     const isCritical = Math.random() < critChance;
 
     if (isCritical) {
-      playerDamage = Math.floor(playerDamage * 1.5); // 50% extra damage
+      playerDamage = Math.floor(
+        playerDamage * CRITICAL_STRIKE_DAMAGE_MULTIPLIER,
+      );
       setWasCriticalStrike(true);
     } else {
       setWasCriticalStrike(false);
@@ -671,7 +674,9 @@ export default function CombatDialog({
         ) / 100;
       const isEnemyCritical = Math.random() < enemyCritChance;
       const enemyAttackPower = isEnemyCritical
-        ? Math.floor(currentEnemy.attack * 1.5)
+        ? Math.floor(
+          currentEnemy.attack * CRITICAL_STRIKE_DAMAGE_MULTIPLIER,
+        )
         : currentEnemy.attack;
 
       if (enemyAttackPower > bastionStats.defense) {
@@ -834,6 +839,13 @@ export default function CombatDialog({
       <div className="text-xs space-y-2 max-w-[220px]">
         {totalCrit > 0 && (
           <div className="space-y-1">
+            <div>
+              {t("ui:combat.critDamage", {
+                percent: Math.round(
+                  (CRITICAL_STRIKE_DAMAGE_MULTIPLIER - 1) * 100,
+                ),
+              })}
+            </div>
             <div>
               {t("ui:combat.critChance", {
                 percent: totalCrit,

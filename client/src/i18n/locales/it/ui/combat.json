@@ -26,6 +26,7 @@
     "critFromLuck": "{{percent}}% da {{stat}}{{maxSuffix}}",
     "critFromLuckMaxSuffix": " (max)",
     "critFromItems": "{{percent}}% dagli Oggetti",
+    "critDamage": "+{{percent}}% di danno da colpo critico",
     "missChance": "{{percent}}% di probabilità di mancare (basata su {{stat}})",
     "enemies": {
       "paleCreatures": "Creature Pallide"

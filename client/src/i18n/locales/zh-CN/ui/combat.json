@@ -26,6 +26,7 @@
     "critFromLuck": "{{percent}}% 来自{{stat}}{{maxSuffix}}",
     "critFromLuckMaxSuffix": "（上限）",
     "critFromItems": "{{percent}}% 来自物品",
+    "critDamage": "+{{percent}}% 暴击伤害",
     "missChance": "{{percent}}% 未命中几率（基于{{stat}}）",
     "enemies": {
       "paleCreatures": "苍白生物"

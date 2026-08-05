@@ -26,6 +26,7 @@
     "critFromLuck": "{{percent}} % от {{stat}}{{maxSuffix}}",
     "critFromLuckMaxSuffix": " (макс.)",
     "critFromItems": "{{percent}} % от предметов",
+    "critDamage": "+{{percent}} % урона критического удара",
     "missChance": "{{percent}} % шанс промаха (из‑за {{stat}})",
     "enemies": {
       "paleCreatures": "Бледные твари"

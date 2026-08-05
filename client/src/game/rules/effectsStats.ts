@@ -49,6 +49,9 @@ export function isKnowledgeBonusMaxed(knowledge: number): boolean {
   return knowledge >= 50;
 }
 
+/** Player and enemy critical hits multiply attack by this factor. */
+export const CRITICAL_STRIKE_DAMAGE_MULTIPLIER = 1.5;
+
 /**
  * Calculate critical strike chance based on luck
  * Returns critical chance percentage (5-25%)
