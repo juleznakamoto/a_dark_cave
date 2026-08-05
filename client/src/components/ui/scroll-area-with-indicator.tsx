@@ -7,10 +7,11 @@ import { ChevronDown } from "lucide-react";
 import { ScrollBar } from "./scroll-area";
 import { useGameStore } from "@/game/state";
 
+/** Ignore sub-pixel / scrollbar rounding so we only show when scrolling is real. */
+const OVERFLOW_THRESHOLD_PX = 2;
+
 interface ScrollAreaWithIndicatorProps
   extends React.ComponentPropsWithoutRef<typeof ScrollAreaPrimitive.Root> {
-  /** Scroll indicator only shows when true (e.g. entry count >= 8 for event log) */
-  showIndicatorWhen?: boolean;
   /** If true, indicator stays visible when scrolling (for testing) */
   persistIndicator?: boolean;
   /** Unique ID for this scroll area - when provided, indicator is hidden permanently after first scroll (persisted) */
@@ -27,7 +28,6 @@ const ScrollAreaWithIndicator = React.forwardRef<
     {
       className,
       children,
-      showIndicatorWhen = true,
       persistIndicator = false,
       scrollAreaId,
       viewportClassName,
@@ -47,8 +47,13 @@ const ScrollAreaWithIndicator = React.forwardRef<
     const checkScroll = React.useCallback(() => {
       const el = viewportRef.current;
       if (!el) return;
-      const canScroll = el.scrollHeight > el.clientHeight;
+
+      // Radix wraps children in a display:table node; prefer that for content height.
+      const content = el.firstElementChild as HTMLElement | null;
+      const contentHeight = content?.scrollHeight ?? el.scrollHeight;
+      const canScroll = contentHeight > el.clientHeight + OVERFLOW_THRESHOLD_PX;
       setIsScrollable(canScroll);
+
       if (el.scrollTop > 8) {
         if (scrollAreaId) {
           setScrollIndicatorSeen(scrollAreaId);
@@ -58,22 +63,33 @@ const ScrollAreaWithIndicator = React.forwardRef<
       }
     }, [persistIndicator, scrollAreaId, setScrollIndicatorSeen]);
 
-    React.useEffect(() => {
+    React.useLayoutEffect(() => {
       const el = viewportRef.current;
       if (!el) return;
+
       checkScroll();
       el.addEventListener("scroll", checkScroll);
+
       const ro = new ResizeObserver(checkScroll);
       ro.observe(el);
+      const content = el.firstElementChild;
+      if (content) {
+        ro.observe(content);
+      }
+
+      // Content swaps (new log lines, tab changes) without a viewport resize.
+      const mo = new MutationObserver(checkScroll);
+      mo.observe(el, { childList: true, subtree: true, characterData: true });
+
       return () => {
         el.removeEventListener("scroll", checkScroll);
         ro.disconnect();
+        mo.disconnect();
       };
-    }, [checkScroll]);
+    }, [checkScroll, children]);
 
     const hasBeenSeen = scrollAreaId ? scrollIndicatorSeen : !showIndicator;
-    const shouldShow =
-      showIndicatorWhen && !hasBeenSeen && isScrollable;
+    const shouldShow = !hasBeenSeen && isScrollable;
 
     return (
       <ScrollAreaPrimitive.Root
