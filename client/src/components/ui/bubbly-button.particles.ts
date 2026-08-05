@@ -105,6 +105,19 @@ const MINE_TONES = [
   tailwindToHex("stone-900"),
 ];
 
+/** Mine action ids that have dedicated particle highlight palettes (SSOT). */
+export const MINE_PARTICLE_ACTION_IDS = [
+  "mineStone",
+  "mineIron",
+  "mineCoal",
+  "mineSulfur",
+  "mineObsidian",
+  "mineAdamant",
+  "mineMoonstone",
+] as const;
+
+export type MineParticleActionId = (typeof MINE_PARTICLE_ACTION_IDS)[number];
+
 // Per-resource highlight colors for small particles (size 1-2)
 const MINE_HIGHLIGHT_COLORS: Record<string, string[]> = {
   mineStone: [tailwindToHex("stone-400"), tailwindToHex("gray-400")],
@@ -158,13 +171,16 @@ const EXPLORE_TONES = [
 // Per-level highlight colors for small particles - based on resources found at each level.
 // Colors accumulate: each level keeps colors from the previous level for resources that still exist,
 // and adds new colors only for newly introduced resources.
-const EXPLORE_LEVEL_ORDER = [
+/** Explore action ids in depth order (highlight accumulation SSOT). */
+export const EXPLORE_PARTICLE_LEVEL_IDS = [
   "exploreCave",
   "ventureDeeper",
   "descendFurther",
   "exploreRuins",
   "exploreTemple",
 ] as const;
+
+const EXPLORE_LEVEL_ORDER = EXPLORE_PARTICLE_LEVEL_IDS;
 
 const EXPLORE_RESOURCES_BY_LEVEL: Record<string, string[]> = {
   exploreCave: ["wood", "stone", "coal", "iron"],
@@ -219,17 +235,22 @@ const EXPLORE_HIGHLIGHT_COLORS: Record<string, string[]> = {
   ],
 };
 
-const EXPLORE_LEVEL_ORDER_FOR_COUNT = [
-  ...EXPLORE_LEVEL_ORDER,
+/** All explore actions with particle configs, including the final citadel stage. */
+export const EXPLORE_PARTICLE_ACTION_IDS = [
+  ...EXPLORE_PARTICLE_LEVEL_IDS,
   "exploreCitadel",
-];
+] as const;
+
+const EXPLORE_LEVEL_ORDER_FOR_COUNT = EXPLORE_PARTICLE_ACTION_IDS;
 
 /** Get cave explore particle config by action id (shared base + per-level highlights) */
 export function getExploreParticleConfig(
   actionId: string,
 ): Partial<ParticleConfig> {
   const highlightColors = EXPLORE_HIGHLIGHT_COLORS[actionId] ?? [];
-  const levelIndex = EXPLORE_LEVEL_ORDER_FOR_COUNT.indexOf(actionId);
+  const levelIndex = (EXPLORE_LEVEL_ORDER_FOR_COUNT as readonly string[]).indexOf(
+    actionId,
+  );
   const count =
     actionId === "exploreCitadel"
       ? 150
@@ -562,3 +583,130 @@ export interface BubbleWithParticles {
   y: number;
   particles: ReturnType<typeof generateParticleData>;
 }
+
+/** Mid-upgrade level used by the /dev/animations click-burst gallery. */
+const PARTICLE_DEMO_LEVEL = 5;
+
+export type ParticleDemoPreset = {
+  id: string;
+  label: string;
+  /** Resolve at click time so config edits apply without rebuilding the catalog shape. */
+  getConfig: () => Partial<ParticleConfig>;
+};
+
+const MINE_PARTICLE_DEMO_LABELS: Record<MineParticleActionId, string> = {
+  mineStone: "Mine stone",
+  mineIron: "Mine iron",
+  mineCoal: "Mine coal",
+  mineSulfur: "Mine sulfur",
+  mineObsidian: "Mine obsidian",
+  mineAdamant: "Mine adamant",
+  mineMoonstone: "Mine moonstone",
+};
+
+const EXPLORE_PARTICLE_DEMO_LABELS: Record<
+  (typeof EXPLORE_PARTICLE_ACTION_IDS)[number],
+  string
+> = {
+  exploreCave: "Explore cave",
+  ventureDeeper: "Venture deeper",
+  descendFurther: "Descend further",
+  exploreRuins: "Explore ruins",
+  exploreTemple: "Explore temple",
+  exploreCitadel: "Explore citadel",
+};
+
+/**
+ * SSOT catalog of click-burst particle presets for `/dev/animations`.
+ * Add new game click presets here (same file as the config) so the playground stays in sync.
+ */
+export const CLICK_PARTICLE_DEMO_PRESETS: ParticleDemoPreset[] = [
+  {
+    id: "build",
+    label: "Build",
+    getConfig: () => BUILD_PARTICLE_CONFIG,
+  },
+  {
+    id: "craft",
+    label: "Craft",
+    getConfig: () => CRAFT_PARTICLE_CONFIG,
+  },
+  ...MINE_PARTICLE_ACTION_IDS.map((actionId) => ({
+    id: actionId,
+    label: MINE_PARTICLE_DEMO_LABELS[actionId],
+    getConfig: () => getMineParticleConfig(actionId, PARTICLE_DEMO_LEVEL),
+  })),
+  ...EXPLORE_PARTICLE_ACTION_IDS.map((actionId) => ({
+    id: actionId,
+    label: EXPLORE_PARTICLE_DEMO_LABELS[actionId],
+    getConfig: () => getExploreParticleConfig(actionId),
+  })),
+  {
+    id: "chopWood",
+    label: "Chop wood",
+    getConfig: () => getChopWoodParticleConfig(PARTICLE_DEMO_LEVEL),
+  },
+  {
+    id: "hunt",
+    label: "Hunt",
+    getConfig: () => getHuntParticleConfig(PARTICLE_DEMO_LEVEL),
+  },
+  {
+    id: "checkoutSuccess",
+    label: "Checkout success",
+    getConfig: () => ({
+      ...CHECKOUT_SUCCESS_PARTICLE_CONFIG,
+      // ShopDialog sizes the spawn ring from the dialog; use a fixed ring for the gallery.
+      spawnRadiusMin: 48,
+      spawnRadiusMax: 64,
+    }),
+  },
+];
+
+export type HoverParticleDemoPreset = {
+  id: string;
+  label: string;
+  getConfig: () => Partial<ParticleConfig>;
+};
+
+/**
+ * SSOT catalog of hover-emission particle presets for `/dev/animations`.
+ * Gold/silver/insight icons also use these configs via ResourceCoinIcon / ResourceInsightIcon.
+ */
+export const HOVER_PARTICLE_DEMO_PRESETS: HoverParticleDemoPreset[] = [
+  {
+    id: "gold",
+    label: "Gold coin",
+    getConfig: () => GOLD_COIN_PARTICLE_CONFIG,
+  },
+  {
+    id: "silver",
+    label: "Silver coin",
+    getConfig: () => SILVER_COIN_PARTICLE_CONFIG,
+  },
+  {
+    id: "insight",
+    label: "Insight",
+    getConfig: () => INSIGHT_PARTICLE_CONFIG,
+  },
+  {
+    id: "traderTab",
+    label: "Trader tab",
+    getConfig: () => TRADER_TAB_PARTICLE_CONFIG,
+  },
+  {
+    id: "rewardsTasks",
+    label: "Rewards tasks",
+    getConfig: () => REWARDS_TASKS_PARTICLE_CONFIG,
+  },
+  {
+    id: "fireLoad",
+    label: "Fire load",
+    getConfig: () => FIRE_LOAD_PARTICLE_CONFIG,
+  },
+  {
+    id: "shopGlyph",
+    label: "Shop glyph",
+    getConfig: () => getShopGlyphHoverParticleConfig("text-emerald-600"),
+  },
+];

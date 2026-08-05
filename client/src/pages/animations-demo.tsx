@@ -1,26 +1,6 @@
 import { Redirect } from "wouter";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
-import {
-  ButtonParticlesSection,
-  EstateBarsSection,
-  HoverParticlesSection,
-  ImproveButtonSection,
-  InsightBadgeSection,
-  MiscAnimationsSection,
-  ProgressBarsSection,
-  TabAnimationsSection,
-} from "@/pages/animations-demo/sections";
-
-const NAV_ITEMS = [
-  { id: "estate-bars", label: "Estate bars" },
-  { id: "improve-button", label: "Improve button" },
-  { id: "insight-badge", label: "Insight badge" },
-  { id: "button-particles", label: "Click particles" },
-  { id: "hover-particles", label: "Hover particles" },
-  { id: "progress-bars", label: "Progress bars" },
-  { id: "tab-animations", label: "Tab unlock" },
-  { id: "misc", label: "Focus & glow" },
-] as const;
+import { ANIMATION_DEMO_SECTIONS } from "@/pages/animations-demo/catalog";
 
 export default function AnimationsDemo() {
   if (!import.meta.env.DEV) {
@@ -34,11 +14,12 @@ export default function AnimationsDemo() {
           <div>
             <h1 className="text-lg font-semibold">Animation playground</h1>
             <p className="mt-1 text-sm text-muted-foreground">
-              Dev-only sandbox for UI animations used across the game.
+              Dev-only sandbox. Sections and particle presets are driven by
+              shared catalogs so game source changes show up here.
             </p>
           </div>
           <nav className="flex flex-wrap gap-1 lg:flex-col">
-            {NAV_ITEMS.map((item) => (
+            {ANIMATION_DEMO_SECTIONS.map((item) => (
               <a
                 key={item.id}
                 href={`#${item.id}`}
@@ -51,14 +32,9 @@ export default function AnimationsDemo() {
         </header>
 
         <main className="flex min-w-0 flex-1 flex-col gap-4">
-          <EstateBarsSection />
-          <ImproveButtonSection />
-          <InsightBadgeSection />
-          <ButtonParticlesSection />
-          <HoverParticlesSection />
-          <ProgressBarsSection />
-          <TabAnimationsSection />
-          <MiscAnimationsSection />
+          {ANIMATION_DEMO_SECTIONS.map(({ id, Section }) => (
+            <Section key={id} />
+          ))}
         </main>
       </div>
       <ScrollBar orientation="vertical" />
