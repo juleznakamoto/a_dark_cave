@@ -21,7 +21,9 @@ import {
   BOMB_BASE_DAMAGE_BY_ID,
   bombKnowledgeDamageBonus,
   CRUSHING_STRIKE_UPGRADES,
+  FERAL_HOWL_UPGRADES,
   bloodflameSphereFightBurnTicksAfterCast,
+  getFeralHowlCritDamageBonusPercent,
 } from "@/game/rules/skillUpgrades";
 import {
   getPoisonArrowsBaseDamage,
@@ -71,6 +73,7 @@ const COMBAT_ITEM_BUTTON_ICONS = {
 const COMBAT_SKILL_BUTTON_ICONS = {
   crushing_strike: { glyph: "◈", className: "text-yellow-600" },
   bloodflame_sphere: { glyph: "✵", className: "text-orange-600" },
+  feral_howl: { glyph: "◎", className: "text-amber-500" },
 } as const;
 
 const COMBAT_BUTTON_ICON_CLASS =
@@ -102,6 +105,9 @@ export default function CombatDialog({
   );
   const bloodflameSphereLevel = useGameStore(
     (state) => state.combatSkills.bloodflameSphereLevel,
+  );
+  const feralHowlLevel = useGameStore(
+    (state) => state.combatSkills.feralHowlLevel,
   );
   const hasFortress = useGameStore((state) => state.flags.hasFortress);
   const combatResources = useGameStore((state) => state.resources);
@@ -138,7 +144,10 @@ export default function CombatDialog({
   }>({ amount: 0, visible: false });
   const [usedCrushingStrike, setUsedCrushingStrike] = useState(false);
   const [usedBloodflameSphere, setUsedBloodflameSphere] = useState(false);
+  const [usedFeralHowl, setUsedFeralHowl] = useState(false);
   const [enemyStunnedRounds, setEnemyStunnedRounds] = useState(0);
+  const [enemyHowlRounds, setEnemyHowlRounds] = useState(0);
+  const [enemyHowlDamageReduction, setEnemyHowlDamageReduction] = useState(0);
   const [enemyBurnRounds, setEnemyBurnRounds] = useState(0);
   const [enemyBurnDamage, setEnemyBurnDamage] = useState(0);
   const [enemyPoisonRounds, setEnemyPoisonRounds] = useState(0);
@@ -147,6 +156,7 @@ export default function CombatDialog({
   const [wasEnemyCriticalStrike, setWasEnemyCriticalStrike] = useState(false);
   const [playerStrikeFailed, setPlayerStrikeFailed] = useState(false);
   const [crushingStrikeFailed, setCrushingStrikeFailed] = useState(false);
+  const [feralHowlFailed, setFeralHowlFailed] = useState(false);
   const [combatSummary, setCombatSummary] =
     useState<CombatResultSummary | null>(null);
   const consequencesAppliedRef = useRef(false);
@@ -208,12 +218,14 @@ export default function CombatDialog({
       setWasCriticalStrike(false);
       setPlayerStrikeFailed(false);
       setCrushingStrikeFailed(false);
+      setFeralHowlFailed(false);
       enemyDamageIndicatorTimeoutRef.current = null;
     }, 3000);
   };
 
   const HAS_RESTLESS_KNIGHT = gameState.fellowship.restless_knight || false;
   const HAS_ELDER_WIZARD = gameState.fellowship.elder_wizard || false;
+  const HAS_BRUTE_HOUND = gameState.fellowship.the_hound || false;
   const isRestlessKnightWounded = Boolean(
     gameState.story?.seen?.restlessKnightWounded,
   );
@@ -284,7 +296,10 @@ export default function CombatDialog({
       setIntegrityHealIndicator({ amount: 0, visible: false });
       setUsedCrushingStrike(false);
       setUsedBloodflameSphere(false);
+      setUsedFeralHowl(false);
       setEnemyStunnedRounds(0);
+      setEnemyHowlRounds(0);
+      setEnemyHowlDamageReduction(0);
       setEnemyBurnRounds(0);
       setEnemyBurnDamage(0);
       setEnemyPoisonRounds(0);
@@ -293,6 +308,7 @@ export default function CombatDialog({
       setWasEnemyCriticalStrike(false);
       setPlayerStrikeFailed(false);
       setCrushingStrikeFailed(false);
+      setFeralHowlFailed(false);
       setCombatSummary(null);
       consequencesAppliedRef.current = false;
       const maxIntegrity = bastionStats.integrity;
@@ -413,12 +429,14 @@ export default function CombatDialog({
     if (!hit) {
       setPlayerStrikeFailed(false);
       setWasCriticalStrike(false);
+      setFeralHowlFailed(false);
       setCrushingStrikeFailed(true);
       showEnemyDamage(0);
       return;
     }
 
     setCrushingStrikeFailed(false);
+    setFeralHowlFailed(false);
 
     // Deal damage immediately
     const newEnemyHealth = Math.max(
@@ -484,6 +502,7 @@ export default function CombatDialog({
     // Show damage indicator on enemy health bar
     setPlayerStrikeFailed(false);
     setCrushingStrikeFailed(false);
+    setFeralHowlFailed(false);
     setWasCriticalStrike(false);
     showEnemyDamage(config.burnDamage);
 
@@ -492,6 +511,31 @@ export default function CombatDialog({
       setCombatEnded(true);
       setCombatResult("victory");
     }
+  };
+
+  const handleUseFeralHowl = () => {
+    if (usedFeralHowl || isProcessingRound) return;
+
+    const level = feralHowlLevel || 0;
+    const config = FERAL_HOWL_UPGRADES[level];
+    setUsedFeralHowl(true);
+
+    const hit = Math.random() < config.successChance / 100;
+    if (!hit) {
+      setPlayerStrikeFailed(false);
+      setWasCriticalStrike(false);
+      setCrushingStrikeFailed(false);
+      setFeralHowlFailed(true);
+      showEnemyDamage(0);
+      return;
+    }
+
+    setFeralHowlFailed(false);
+    setEnemyHowlRounds(config.debuffRounds);
+    setEnemyHowlDamageReduction(config.enemyDamageReduction);
+    setPlayerStrikeFailed(false);
+    setCrushingStrikeFailed(false);
+    setWasCriticalStrike(false);
   };
 
   const handleUseItem = (item: CombatItem) => {
@@ -626,8 +670,11 @@ export default function CombatDialog({
     const isCritical = Math.random() < critChance;
 
     if (isCritical) {
+      const houndCritBonus =
+        getFeralHowlCritDamageBonusPercent(gameState) / 100;
       playerDamage = Math.floor(
-        playerDamage * CRITICAL_STRIKE_DAMAGE_MULTIPLIER,
+        playerDamage *
+        (CRITICAL_STRIKE_DAMAGE_MULTIPLIER + houndCritBonus),
       );
       setWasCriticalStrike(true);
     } else {
@@ -643,10 +690,12 @@ export default function CombatDialog({
       playerDamage = 0;
       setWasCriticalStrike(false);
       setCrushingStrikeFailed(false);
+      setFeralHowlFailed(false);
       setPlayerStrikeFailed(true);
     } else {
       setPlayerStrikeFailed(false);
       setCrushingStrikeFailed(false);
+      setFeralHowlFailed(false);
     }
 
     // Apply poison damage if active (same tick pattern as burn)
@@ -662,6 +711,12 @@ export default function CombatDialog({
     }
 
     // Enemy attacks first (only if not stunned)
+    const howlActive = enemyHowlRounds > 0;
+    const howlReduction = howlActive ? enemyHowlDamageReduction : 0;
+    if (howlActive) {
+      setEnemyHowlRounds((prev) => Math.max(0, prev - 1));
+    }
+
     if (enemyStunnedRounds > 0) {
       // Enemy is stunned, skip attack and decrement stun counter
       setEnemyStunnedRounds((prev) => Math.max(0, prev - 1));
@@ -673,11 +728,16 @@ export default function CombatDialog({
           Boolean(gameState.cruelMode),
         ) / 100;
       const isEnemyCritical = Math.random() < enemyCritChance;
-      const enemyAttackPower = isEnemyCritical
+      let enemyAttackPower = isEnemyCritical
         ? Math.floor(
           currentEnemy.attack * CRITICAL_STRIKE_DAMAGE_MULTIPLIER,
         )
         : currentEnemy.attack;
+      if (howlReduction > 0) {
+        enemyAttackPower = Math.floor(
+          enemyAttackPower * (1 - howlReduction / 100),
+        );
+      }
 
       if (enemyAttackPower > bastionStats.defense) {
         integrityDamage = enemyAttackPower - bastionStats.defense;
@@ -831,6 +891,9 @@ export default function CombatDialog({
   const luckCrit = calculateCriticalStrikeChance(getTotalLuck(gameState));
   const itemCrit = getTotalCriticalChance(gameState);
   const totalCrit = luckCrit + itemCrit;
+  const houndCritBonus = getFeralHowlCritDamageBonusPercent(gameState);
+  const critDamagePercent =
+    Math.round((CRITICAL_STRIKE_DAMAGE_MULTIPLIER - 1) * 100) + houndCritBonus;
   const failPct = getCombatAttackFailChancePercent(
     getTotalMadness(gameState),
   );
@@ -841,9 +904,7 @@ export default function CombatDialog({
           <div className="space-y-1">
             <div>
               {t("ui:combat.critDamage", {
-                percent: Math.round(
-                  (CRITICAL_STRIKE_DAMAGE_MULTIPLIER - 1) * 100,
-                ),
+                percent: critDamagePercent,
               })}
             </div>
             <div>
@@ -970,6 +1031,18 @@ export default function CombatDialog({
                             ◈
                           </span>
                         )}
+                        {enemyHowlRounds > 0 && (
+                          <span
+                            className={cn(
+                              COMBAT_STAT_ICON_CLASS,
+                              "text-amber-500",
+                            )}
+                            role="img"
+                            aria-label="howl-icon"
+                          >
+                            ◎
+                          </span>
+                        )}
                         {enemyBurnRounds > 0 && (
                           <span
                             className={cn(
@@ -1021,19 +1094,25 @@ export default function CombatDialog({
                       />
                       {enemyDamageIndicator.visible && (
                         <div className="absolute -translate-y-5 inset-0 flex items-center justify-center text-red-900 font-bold text-sm pointer-events-none">
-                          {playerStrikeFailed || crushingStrikeFailed ? (
+                          {playerStrikeFailed ||
+                            crushingStrikeFailed ||
+                            feralHowlFailed ? (
                             enemyDamageIndicator.amount > 0 ? (
                               <>
                                 -{formatNumber(enemyDamageIndicator.amount)} (
                                 {playerStrikeFailed
                                   ? t("ui:combat.attackFailed")
-                                  : t("ui:combat.crushingStrikeFailed")}
+                                  : crushingStrikeFailed
+                                    ? t("ui:combat.crushingStrikeFailed")
+                                    : t("ui:combat.feralHowlFailed")}
                                 )
                               </>
                             ) : playerStrikeFailed ? (
                               t("ui:combat.attackFailed")
-                            ) : (
+                            ) : crushingStrikeFailed ? (
                               t("ui:combat.crushingStrikeFailed")
+                            ) : (
+                              t("ui:combat.feralHowlFailed")
                             )
                           ) : (
                             <>
@@ -1298,7 +1377,7 @@ export default function CombatDialog({
                     )}
 
                   {/* Combat Skills Section - only show if any fellowship member is unlocked */}
-                  {(HAS_RESTLESS_KNIGHT || HAS_ELDER_WIZARD) && (
+                  {(HAS_RESTLESS_KNIGHT || HAS_ELDER_WIZARD || HAS_BRUTE_HOUND) && (
                     <div className="pt-3">
                       <div className="text-sm font-medium mb-2">
                         {t("ui:combat.skillsTitle")}
@@ -1427,6 +1506,50 @@ export default function CombatDialog({
                                   }
                                 </span>
                                 {t("ui:combat.bloodflameSphere")}
+                              </Button>
+                            </div>
+                          </TooltipWrapper>
+                        )}
+                        {HAS_BRUTE_HOUND && (
+                          <TooltipWrapper
+                            tooltip={
+                              <div className="text-xs whitespace-pre-line">
+                                {`${combatItemTooltips.feral_howl.getContent(gameState)}\n${t("ui:combat.available", {
+                                  current: usedFeralHowl ? 0 : 1,
+                                  max: 1,
+                                })}`}
+                              </div>
+                            }
+                            tooltipId="combat-feral-howl"
+                            disabled={usedFeralHowl || isProcessingRound}
+                            onClick={handleUseFeralHowl}
+                          >
+                            <div className="w-full">
+                              <Button
+                                onClick={handleUseFeralHowl}
+                                disabled={usedFeralHowl || isProcessingRound}
+                                variant="outline"
+                                size="sm"
+                                className={cn(
+                                  "text-xs w-full inline-flex items-center justify-center gap-1",
+                                  gameActionOutlineButtonClassName(
+                                    usedFeralHowl || isProcessingRound,
+                                  ),
+                                )}
+                                button_id="combat-use-feral-howl"
+                              >
+                                <span
+                                  className={cn(
+                                    COMBAT_BUTTON_ICON_CLASS,
+                                    COMBAT_SKILL_BUTTON_ICONS.feral_howl
+                                      .className,
+                                  )}
+                                  role="img"
+                                  aria-label="howl-icon"
+                                >
+                                  {COMBAT_SKILL_BUTTON_ICONS.feral_howl.glyph}
+                                </span>
+                                {t("ui:combat.feralHowl")}
                               </Button>
                             </div>
                           </TooltipWrapper>

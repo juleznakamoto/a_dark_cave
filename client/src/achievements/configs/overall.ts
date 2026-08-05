@@ -5,6 +5,10 @@ import {
   getStorageMaxerResourceTotal,
 } from "@/game/resourceStorageMax";
 import {
+  getEstateUpgradeMaxerTotal,
+  getEstateUpgradesAtMaxCount,
+} from "@/game/estateUpgradeMax";
+import {
   SOCIAL_PROMO_EXCLUSIVE_STEP_TOTAL,
   isSocialPromoExclusiveRewardComplete,
   socialPromoExclusiveStepsCompleted,
@@ -117,6 +121,18 @@ export const overallChartConfig: AchievementChartConfig = {
           Math.min(
             getResourcesReachedStorageMaxCount(state),
             getStorageMaxerResourceTotal(),
+          ),
+      },
+      {
+        segmentId: "0-upgradeMaxer",
+        maxCount: getEstateUpgradeMaxerTotal(),
+        label: "Upgrade Maxer",
+        // Keep ring ticks aligned with estate upgrade tracks (currently 9).
+        segments: getEstateUpgradeMaxerTotal(),
+        getCount: (state: GameState) =>
+          Math.min(
+            getEstateUpgradesAtMaxCount(state),
+            getEstateUpgradeMaxerTotal(),
           ),
       },
       {

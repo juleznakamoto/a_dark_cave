@@ -558,10 +558,12 @@ export const gameStateSchema = z.object({
     .object({
       crushingStrikeLevel: z.number().default(0),
       bloodflameSphereLevel: z.number().default(0),
+      feralHowlLevel: z.number().default(0),
     })
     .default({
       crushingStrikeLevel: 0,
       bloodflameSphereLevel: 0,
+      feralHowlLevel: 0,
     }),
 
   activatedPurchases: z.record(z.boolean()).default({}),
@@ -587,6 +589,11 @@ export const gameStateSchema = z.object({
    * Persists across restarts; union-merged on save/load.
    */
   lifetimeStorageMaxHits: z.array(z.string()).default([]),
+  /**
+   * Meta: estate-tab upgrade tracks that have reached max level (Upgrade Maxer).
+   * Persists across restarts; union-merged on save/load.
+   */
+  lifetimeEstateUpgradeMaxHits: z.array(z.string()).default([]),
   /** Meta: completed every non-overall achievement at least once. Persists across restarts. */
   hasAchievementMaxer: z.boolean().default(false),
   BTP: z.number().default(0), // Buy To Play mode (0 = normal, 1 = BTP active)

@@ -17,6 +17,7 @@ import {
   chainmasterUpgradeDisgustMs,
   CRUSHING_STRIKE_UPGRADES,
   BLOODFLAME_SPHERE_UPGRADES,
+  FERAL_HOWL_UPGRADES,
   HUNTING_SKILL_UPGRADES,
   SLEEP_LENGTH_UPGRADES,
   SLEEP_INTENSITY_UPGRADES,
@@ -437,6 +438,13 @@ export default function EstatePanel() {
       (s, level) => ({ combatSkills: { ...s.combatSkills, bloodflameSphereLevel: level } }),
     );
 
+  const handleFeralHowlUpgrade = () =>
+    handleSkillUpgrade(
+      FERAL_HOWL_UPGRADES,
+      (s) => s.combatSkills.feralHowlLevel,
+      (s, level) => ({ combatSkills: { ...s.combatSkills, feralHowlLevel: level } }),
+    );
+
   const blackEstateBonusHours = (state.buildings.blackEstate || 0) * 3;
   const blackEstateBonusIntensity = (state.buildings.blackEstate || 0) * 5;
 
@@ -719,6 +727,7 @@ export default function EstatePanel() {
         {(fellowship.ashwraith_huntress ||
           fellowship.restless_knight ||
           fellowship.elder_wizard ||
+          fellowship.the_hound ||
           fellowship.one_eyed_crow ||
           fellowship.disgraced_prior ||
           books.book_of_chainmaster) && (
@@ -818,6 +827,63 @@ export default function EstatePanel() {
                       rounds: cur.burnRounds,
                       health: cur.healthCost,
                     })}
+                  />
+                );
+              })()}
+
+              {/* Feral Howl */}
+              {fellowship.the_hound && (() => {
+                const lvl = combatSkills.feralHowlLevel ?? 0;
+                const cur = FERAL_HOWL_UPGRADES[lvl];
+                const nxt = FERAL_HOWL_UPGRADES[lvl + 1];
+                const buildPct = (cur.constructionTimeReduction * 100).toFixed(
+                  cur.constructionTimeReduction * 100 % 1 === 0 ? 0 : 1,
+                );
+                return (
+                  <SkillUpgradeRow
+                    title={t("estate.feralHowl")}
+                    level={lvl}
+                    upgradeCost={nxt?.cost ?? 0}
+                    canAfford={resources.gold >= (nxt?.cost ?? Infinity)}
+                    tooltipId="upgrade-feral-howl-button"
+                    buttonId="upgrade-feral-howl"
+                    onUpgrade={handleFeralHowlUpgrade}
+                    tooltipContent={<>
+                      {nxt && nxt.successChance > cur.successChance && (
+                        <div>{t("estate.skillSuccessChanceBonus", { amount: nxt.successChance - cur.successChance })}</div>
+                      )}
+                      {nxt && nxt.enemyDamageReduction > cur.enemyDamageReduction && (
+                        <div>{t("estate.skillEnemyDamageReduction", { amount: nxt.enemyDamageReduction - cur.enemyDamageReduction })}</div>
+                      )}
+                      {nxt && nxt.debuffRounds > cur.debuffRounds && (() => {
+                        const d = nxt.debuffRounds - cur.debuffRounds;
+                        return (
+                          <div>{t("estate.skillDebuffRound", { count: d, amount: d })}</div>
+                        );
+                      })()}
+                      {nxt && nxt.critDamageBonus > cur.critDamageBonus && (
+                        <div>{t("estate.skillCritDamageBonus", { amount: nxt.critDamageBonus - cur.critDamageBonus })}</div>
+                      )}
+                      {nxt && nxt.constructionTimeReduction > cur.constructionTimeReduction && (
+                        <div>{t("estate.skillBuildTimeReduction", {
+                          amount: Number(
+                            ((nxt.constructionTimeReduction - cur.constructionTimeReduction) * 100).toFixed(1),
+                          ),
+                        })}</div>
+                      )}
+                    </>}
+                    description={t(
+                      cur.debuffRounds === 1
+                        ? "estate.feralHowlSummary_one"
+                        : "estate.feralHowlSummary",
+                      {
+                        success: cur.successChance,
+                        reduction: cur.enemyDamageReduction,
+                        rounds: cur.debuffRounds,
+                        crit: cur.critDamageBonus,
+                        build: buildPct,
+                      },
+                    )}
                   />
                 );
               })()}

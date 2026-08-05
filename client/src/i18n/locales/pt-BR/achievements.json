@@ -268,7 +268,7 @@
     },
     "3-fellowship": {
       "label": "Boa Companhia",
-      "description": "Recrute todos os quatro companheiros."
+      "description": "Recrute todos os cinco companheiros."
     },
     "4-blacksteel_equipment": {
       "label": "Equipamento de Guerra Sombrio",
@@ -312,6 +312,10 @@
     "0-resourceMaxer": {
       "label": "Resource Maxer",
       "description": "Atinja a capacidade do Grande Cofre com cada recurso limitado."
+    },
+    "0-upgradeMaxer": {
+      "label": "Upgrade Maxer",
+      "description": "Maximize cada melhoria da aba Propriedade."
     }
   }
 }

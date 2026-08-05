@@ -268,7 +268,7 @@
     },
     "3-fellowship": {
       "label": "Good Company",
-      "description": "Recruit all four fellowship companions."
+      "description": "Recruit all five fellowship companions."
     },
     "4-blacksteel_equipment": {
       "label": "Dark War Equipment",
@@ -295,6 +295,10 @@
     "0-resourceMaxer": {
       "label": "Resource Maxer",
       "description": "Hit Great Vault capacity with every capped resource."
+    },
+    "0-upgradeMaxer": {
+      "label": "Upgrade Maxer",
+      "description": "Max every upgrade in the Estate tab."
     },
     "0-speedrunner": {
       "label": "Speedrunner",

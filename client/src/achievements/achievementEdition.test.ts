@@ -25,6 +25,7 @@ describe("web-only achievements (Steam)", () => {
     expect(ids).toContain("0-winNormal");
     expect(ids).toContain("0-caveVeteran");
     expect(ids).toContain("0-resourceMaxer");
+    expect(ids).toContain("0-upgradeMaxer");
   });
 
   it("keeps webOnly segments when not excluding", () => {

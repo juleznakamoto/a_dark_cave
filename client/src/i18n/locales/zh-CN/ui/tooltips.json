@@ -56,6 +56,8 @@
     "stunDuration_one": "眩晕：{{rounds}} 回合",
     "stunDuration_other": "眩晕：{{rounds}} 回合",
     "successChance": "成功率：{{percent}}%",
+    "enemyDamageReduction_one": "敌人伤害：-{{percent}}%，持续 {{rounds}} 回合",
+    "enemyDamageReduction_other": "敌人伤害：-{{percent}}%，持续 {{rounds}} 回合",
     "burnDamage_one": "{{damage}} 伤害，持续 {{rounds}} 回合",
     "burnDamage_other": "{{damage}} 伤害，持续 {{rounds}} 回合",
     "healthCost": "生命代价：{{value}}",

@@ -16,11 +16,13 @@
     "defense": "Defensa",
     "attackFailed": "Ataque fallido",
     "crushingStrikeFailed": "Golpe aplastante fallido",
+    "feralHowlFailed": "Aullido salvaje fallido",
     "critical": "crítico",
     "criticalParen": "({{label}})",
     "available": "Disponible: {{current}}/{{max}}",
     "crushingStrike": "Golpe aplastante",
     "bloodflameSphere": "Esfera de llama sangrienta", //ok
+    "feralHowl": "Aullido salvaje",
     "poisonArrows": "Flechas envenenadas", //ok
     "critChance": "{{percent}} % de probabilidad de golpe crítico",
     "critFromLuck": "{{percent}} % por {{stat}}{{maxSuffix}}",

@@ -444,6 +444,7 @@ interface GameStore extends GameState {
   lifetimeGamesWon: number;
   lifetimePlayTimeMs: number;
   lifetimeStorageMaxHits: string[];
+  lifetimeEstateUpgradeMaxHits: string[];
   hasAchievementMaxer: boolean;
 
   // Reward dialog
@@ -1305,6 +1306,14 @@ const mergeStateUpdates = (
       ]);
       return Array.from(merged);
     })(),
+    // Union lifetime Upgrade Maxer hits (partial updates must not wipe prior keys)
+    lifetimeEstateUpgradeMaxHits: (() => {
+      const merged = new Set<string>([
+        ...(prevState.lifetimeEstateUpgradeMaxHits ?? []),
+        ...(stateUpdates.lifetimeEstateUpgradeMaxHits ?? []),
+      ]);
+      return Array.from(merged);
+    })(),
     hasAchievementMaxer: Boolean(
       stateUpdates.hasAchievementMaxer || prevState.hasAchievementMaxer,
     ),
@@ -1442,6 +1451,7 @@ export const createInitialState = (): GameState => ({
   combatSkills: {
     crushingStrikeLevel: 0,
     bloodflameSphereLevel: 0,
+    feralHowlLevel: 0,
   },
   // Steam/Galaxy: one-time purchase editions run in BTP mode (merchant sells dark
   // artifacts + rebalanced economy). `full_game` on activatedPurchases is an
@@ -2824,6 +2834,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
       lifetimeGamesWon: state.lifetimeGamesWon || 0,
       lifetimePlayTimeMs: state.lifetimePlayTimeMs || 0,
       lifetimeStorageMaxHits: state.lifetimeStorageMaxHits || [],
+      lifetimeEstateUpgradeMaxHits: state.lifetimeEstateUpgradeMaxHits || [],
       hasAchievementMaxer: state.hasAchievementMaxer || false,
 
       // Preserve detected currency across restarts (persists forever)
@@ -3280,6 +3291,17 @@ export const useGameStore = create<GameStore>((set, get) => ({
             ...new Set(
               (savedState as { lifetimeStorageMaxHits: string[] })
                 .lifetimeStorageMaxHits,
+            ),
+          ]
+          : [],
+        lifetimeEstateUpgradeMaxHits: Array.isArray(
+          (savedState as { lifetimeEstateUpgradeMaxHits?: string[] })
+            .lifetimeEstateUpgradeMaxHits,
+        )
+          ? [
+            ...new Set(
+              (savedState as { lifetimeEstateUpgradeMaxHits: string[] })
+                .lifetimeEstateUpgradeMaxHits,
             ),
           ]
           : [],

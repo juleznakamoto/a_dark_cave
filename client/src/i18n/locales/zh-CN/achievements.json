@@ -268,7 +268,7 @@
     },
     "3-fellowship": {
       "label": "可靠同伴",
-      "description": "招募全部四位同伴。"
+      "description": "招募全部五位同伴。"
     },
     "4-blacksteel_equipment": {
       "label": "黑暗战具",
@@ -312,6 +312,10 @@
     "0-resourceMaxer": {
       "label": "Resource Maxer",
       "description": "使每种有上限的资源都达到大金库容量。"
+    },
+    "0-upgradeMaxer": {
+      "label": "Upgrade Maxer",
+      "description": "将庄园页签中的每一项升级升至满级。"
     }
   }
 }

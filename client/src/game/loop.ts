@@ -1075,6 +1075,20 @@ function runProductionCycle(): void {
     ({ persistAchievementMaxerIfComplete }) =>
       persistAchievementMaxerIfComplete(),
   );
+
+  void import("@/game/estateUpgradeMax").then(
+    ({ collectEstateUpgradeMaxHitUpdates }) => {
+      const state = useGameStore.getState();
+      const updates = collectEstateUpgradeMaxHitUpdates(
+        state as unknown as GameState,
+      );
+      if (updates.lifetimeEstateUpgradeMaxHits) {
+        useGameStore.setState({
+          lifetimeEstateUpgradeMaxHits: updates.lifetimeEstateUpgradeMaxHits,
+        });
+      }
+    },
+  );
 }
 
 function handleStarvationCheck() {

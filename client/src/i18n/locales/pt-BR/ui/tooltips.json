@@ -56,6 +56,8 @@
     "stunDuration_one": "Duração do Atordoamento: {{rounds}} rodada",
     "stunDuration_other": "Duração do Atordoamento: {{rounds}} rodadas",
     "successChance": "Chance de sucesso: {{percent}}%",
+    "enemyDamageReduction_one": "Dano inimigo: -{{percent}}% por {{rounds}} rodada",
+    "enemyDamageReduction_other": "Dano inimigo: -{{percent}}% por {{rounds}} rodadas",
     "burnDamage_one": "{{damage}} de dano por {{rounds}} rodada",
     "burnDamage_other": "{{damage}} de dano por {{rounds}} rodadas",
     "healthCost": "Custo de Vida: {{value}}",

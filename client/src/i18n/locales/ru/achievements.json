@@ -268,7 +268,7 @@
     },
     "3-fellowship": {
       "label": "Добрая компания",
-      "description": "Наберите всех четырех спутников."
+      "description": "Наберите всех пяти спутников."
     },
     "4-blacksteel_equipment": {
       "label": "Темное боевое снаряжение",
@@ -312,6 +312,10 @@
     "0-resourceMaxer": {
       "label": "Resource Maxer",
       "description": "Достигните вместимости Великого свода каждым ограниченным ресурсом."
+    },
+    "0-upgradeMaxer": {
+      "label": "Upgrade Maxer",
+      "description": "Прокачайте каждое улучшение во вкладке Поместье до максимума."
     }
   }
 }

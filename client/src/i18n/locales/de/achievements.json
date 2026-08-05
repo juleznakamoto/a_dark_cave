@@ -268,7 +268,7 @@
     },
     "3-fellowship": {
       "label": "Gute Gesellschaft",
-      "description": "Rekrutiere alle vier Gefährten."
+      "description": "Rekrutiere alle fünf Gefährten."
     },
     "4-blacksteel_equipment": {
       "label": "Dunkle Kriegsausrüstung",
@@ -312,6 +312,10 @@
     "0-resourceMaxer": {
       "label": "Resource Maxer",
       "description": "Erreiche die Kapazität des Großen Tresors mit jeder begrenzten Ressource."
+    },
+    "0-upgradeMaxer": {
+      "label": "Upgrade Maxer",
+      "description": "Bringe jedes Upgrade im Anwesen-Tab auf die Maximalstufe."
     }
   }
 }

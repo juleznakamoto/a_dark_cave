@@ -155,7 +155,7 @@ export const itemChartConfig: AchievementChartConfig = {
       },
       {
         segmentId: "3-fellowship",
-        maxCount: 4,
+        maxCount: 5,
         label: "Good Company",
         reward: 250,
         getCount: (_state: GameState) =>
@@ -164,6 +164,7 @@ export const itemChartConfig: AchievementChartConfig = {
             "restless_knight",
             "ashwraith_huntress",
             "disgraced_prior",
+            "the_hound",
           ]),
       },
     ],

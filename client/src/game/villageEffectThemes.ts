@@ -48,7 +48,7 @@ export const VILLAGE_EFFECT_THEMES: Record<
     iconRing: "border-purple-500/45 bg-purple-950/35",
     glowRgb: "147, 51, 234",
     iconClassName:
-      "font-noto-symbols-2 inline-flex items-center justify-center text-4xl text-purple-600 leading-none",
+      "font-noto-symbols-2 inline-flex items-center justify-center text-4xl text-purple-600 leading-none translate-y-1",
   },
   disgust: {
     id: "disgust",

@@ -267,6 +267,9 @@ export default function GameContainer() {
   const lifetimeGamesWon = useGameStore((s) => s.lifetimeGamesWon);
   const lifetimePlayTimeMs = useGameStore((s) => s.lifetimePlayTimeMs);
   const lifetimeStorageMaxHits = useGameStore((s) => s.lifetimeStorageMaxHits);
+  const lifetimeEstateUpgradeMaxHits = useGameStore(
+    (s) => s.lifetimeEstateUpgradeMaxHits,
+  );
   const hasAchievementMaxer = useGameStore((s) => s.hasAchievementMaxer);
   // Full store required: unlock checks overall "Achievement Maxer",
   // which tallies building getCount(state.buildings.*). A partial
@@ -282,6 +285,7 @@ export default function GameContainer() {
       lifetimeGamesWon,
       lifetimePlayTimeMs,
       lifetimeStorageMaxHits,
+      lifetimeEstateUpgradeMaxHits,
       hasAchievementMaxer,
     ],
   );
@@ -304,6 +308,7 @@ export default function GameContainer() {
         lifetimeGamesWon,
         lifetimePlayTimeMs,
         lifetimeStorageMaxHits,
+        lifetimeEstateUpgradeMaxHits,
         hasAchievementMaxer,
       }),
     [
@@ -321,6 +326,7 @@ export default function GameContainer() {
       lifetimeGamesWon,
       lifetimePlayTimeMs,
       lifetimeStorageMaxHits,
+      lifetimeEstateUpgradeMaxHits,
       hasAchievementMaxer,
     ],
   );

@@ -24,6 +24,7 @@ import {
   BOMB_BASE_DAMAGE_BY_ID,
   bombKnowledgeDamageBonus,
   CRUSHING_STRIKE_UPGRADES,
+  FERAL_HOWL_UPGRADES,
 } from "./skillUpgrades";
 import {
   getPoisonArrowsBaseDamage,
@@ -901,6 +902,27 @@ export const combatItemTooltips: Record<string, TooltipConfig> = {
         getUiTooltip("healthCost", "Health Cost: {{value}}", {
           value: config.healthCost,
         }),
+      ].join("\n");
+    },
+  },
+  feral_howl: {
+    getContent: (state) => {
+      const level = state.combatSkills.feralHowlLevel ?? 0;
+      const config = FERAL_HOWL_UPGRADES[level];
+      const n = config.debuffRounds;
+      const roundKey =
+        n === 1 ? "enemyDamageReduction_one" : "enemyDamageReduction_other";
+      return [
+        getUiTooltip("successChance", "Success chance: {{percent}}%", {
+          percent: config.successChance,
+        }),
+        getUiTooltip(
+          roundKey,
+          n === 1
+            ? "Enemy damage: -{{percent}}% for {{rounds}} round"
+            : "Enemy damage: -{{percent}}% for {{rounds}} rounds",
+          { percent: config.enemyDamageReduction, rounds: n },
+        ),
       ].join("\n");
     },
   },

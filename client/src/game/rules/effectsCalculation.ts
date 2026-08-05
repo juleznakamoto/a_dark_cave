@@ -10,7 +10,12 @@ import {
 import { villageBuildActions } from "./villageBuildActions";
 import { getCurrentPopulation, getMaxPopulation } from "../population";
 import { ACTION_TO_UPGRADE_KEY, getUpgradeBonus } from "../buttonUpgrades";
-import { HUNT_BONUSES, DISGRACED_PRIOR_UPGRADES, CROWS_EYE_UPGRADES } from "./skillUpgrades";
+import {
+  HUNT_BONUSES,
+  DISGRACED_PRIOR_UPGRADES,
+  CROWS_EYE_UPGRADES,
+  getFeralHowlConstructionTimeReduction,
+} from "./skillUpgrades";
 import { CRUEL_MODE } from "../cruelMode";
 import { getBoneyardBurialMadnessReduction } from "./boneyardMadness";
 import { BUILDING_HIERARCHIES } from "@/game/buildingHierarchy";
@@ -911,9 +916,12 @@ export const getTotalBuildingCostReduction = (state: GameState): number => {
   return reduction;
 };
 
-/** Builder-chain build time reduction (percentage, 0–0.20). */
+/** Combined build time reduction from builder buildings + Feral Howl (fraction). */
 export const getTotalBuildingTimeReduction = (state: GameState): number => {
-  return getBuilderBuildTimeReduction(getBuilderLevel(state));
+  return (
+    getBuilderBuildTimeReduction(getBuilderLevel(state)) +
+    getFeralHowlConstructionTimeReduction(state)
+  );
 };
 
 // Helper function to calculate all effects for the current state

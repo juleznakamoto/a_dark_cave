@@ -93,6 +93,7 @@
     "huntressTraining": "Entrenamiento de cazadora", //ok
     "crushingStrike": "Golpe aplastante",
     "bloodflameSphere": "Esfera de llama sangrienta", //ok
+    "feralHowl": "Aullido salvaje",
     "tirelessWorker": "Trabajador incansable",
     "crowsEye": "Ojo del cuervo", //ok
     "maxLevel": "Nivel máx.",
@@ -116,6 +117,13 @@
     "skillHealthCost": "+{{amount}} coste de salud",
     "bloodflameSummary": "{{damage}} de daño durante {{rounds}} rondas, {{health}} coste de salud",
     "bloodflameSummary_one": "{{damage}} de daño durante {{rounds}} ronda, {{health}} coste de salud",
+    "skillEnemyDamageReduction": "-{{amount}}% daño enemigo",
+    "skillDebuffRound_one": "+{{amount}} ronda de debilitamiento",
+    "skillDebuffRound_other": "+{{amount}} rondas de debilitamiento",
+    "skillCritDamageBonus": "+{{amount}}% daño crítico",
+    "skillBuildTimeReduction": "-{{amount}}% tiempo de construcción",
+    "feralHowlSummary": "{{success}}% éxito, -{{reduction}}% daño enemigo durante {{rounds}} rondas, +{{crit}}% daño crítico, -{{build}}% tiempo de construcción",
+    "feralHowlSummary_one": "{{success}}% éxito, -{{reduction}}% daño enemigo durante {{rounds}} ronda, +{{crit}}% daño crítico, -{{build}}% tiempo de construcción",
     "skillDoubleGain": "+{{amount}} % de probabilidad de ganancia doble", //ok
     "crowsEyeSummary": "{{percent}} % de probabilidad de duplicar las ganancias de acciones", //ok
     "priorConcurrentAction_one": "+{{count}} acción simultánea",

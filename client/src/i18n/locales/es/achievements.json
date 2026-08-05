@@ -268,7 +268,7 @@
     },
     "3-fellowship": {
       "label": "Buena compañía",
-      "description": "Recluta a los cuatro compañeros."
+      "description": "Recluta a los cinco compañeros."
     },
     "4-blacksteel_equipment": {
       "label": "Equipo bélico oscuro",
@@ -312,6 +312,10 @@
     "0-resourceMaxer": {
       "label": "Resource Maxer",
       "description": "Alcanza la capacidad de la Gran bóveda con cada recurso limitado."
+    },
+    "0-upgradeMaxer": {
+      "label": "Upgrade Maxer",
+      "description": "Maximiza cada mejora de la pestaña Hacienda."
     }
   }
 }

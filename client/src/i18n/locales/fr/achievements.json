@@ -268,7 +268,7 @@
     },
     "3-fellowship": {
       "label": "Bonne compagnie",
-      "description": "Recrutez les quatre compagnons."
+      "description": "Recrutez les cinq compagnons."
     },
     "4-blacksteel_equipment": {
       "label": "Équipement de guerre sombre",
@@ -312,6 +312,10 @@
     "0-resourceMaxer": {
       "label": "Resource Maxer",
       "description": "Atteignez la capacité du Grand coffre avec chaque ressource limitée."
+    },
+    "0-upgradeMaxer": {
+      "label": "Upgrade Maxer",
+      "description": "Maximisez chaque amélioration de l'onglet Domaine."
     }
   }
 }

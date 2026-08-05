@@ -268,7 +268,7 @@
     },
     "3-fellowship": {
       "label": "Buona Compagnia",
-      "description": "Recluta tutti e quattro i compagni."
+      "description": "Recluta tutti e cinque i compagni."
     },
     "4-blacksteel_equipment": {
       "label": "Equipaggiamento da Guerra Oscuro",
@@ -312,6 +312,10 @@
     "0-resourceMaxer": {
       "label": "Resource Maxer",
       "description": "Raggiungi la capacità del Grande Caveau con ogni risorsa limitata."
+    },
+    "0-upgradeMaxer": {
+      "label": "Upgrade Maxer",
+      "description": "Porta al massimo ogni miglioramento della scheda Tenuta."
     }
   }
 }

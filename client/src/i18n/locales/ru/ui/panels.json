@@ -93,6 +93,7 @@
     "huntressTraining": "Обучение охотницы",
     "crushingStrike": "Сокрушающий удар",
     "bloodflameSphere": "Сфера кровавого пламени", //x1.4
+    "feralHowl": "Дикий вой",
     "tirelessWorker": "Неутомимый труженик",
     "crowsEye": "Глаз ворона",
     "maxLevel": "Макс. уровень", //x1.4
@@ -116,6 +117,13 @@
     "skillHealthCost": "+{{amount}} стоимости здоровья", //x1.3
     "bloodflameSummary": "{{damage}} урона за {{rounds}} раундов, {{health}} стоимости здоровья",
     "bloodflameSummary_one": "{{damage}} урона за {{rounds}} раунд, {{health}} стоимости здоровья",
+    "skillEnemyDamageReduction": "-{{amount}}% урона врага",
+    "skillDebuffRound_one": "+{{amount}} раунд ослабления",
+    "skillDebuffRound_other": "+{{amount}} раунда ослабления",
+    "skillCritDamageBonus": "+{{amount}}% критического урона",
+    "skillBuildTimeReduction": "-{{amount}}% времени строительства",
+    "feralHowlSummary": "{{success}}% успеха, -{{reduction}}% урона врага на {{rounds}} раунда, +{{crit}}% крит. урона, -{{build}}% времени строительства",
+    "feralHowlSummary_one": "{{success}}% успеха, -{{reduction}}% урона врага на {{rounds}} раунд, +{{crit}}% крит. урона, -{{build}}% времени строительства",
     "skillDoubleGain": "+{{amount}}% шанс двойного урожая",
     "crowsEyeSummary": "{{percent}}% шанс удвоить награды за действия",
     "priorConcurrentAction_one": "+{{count}} одновременное действие",

@@ -1783,7 +1783,7 @@ export const fellowshipEffects: Record<string, EffectDefinition> = {
     id: "the_hound",
     name: "Brute Hound",
     description:
-      "A muscular, disfigured survivor from a poisoned mountain village. His strengths are not yet known.",
+      "Muscular, disfigured survivor from a poisoned mountain village. Unlocks combat skill Feral Howl.",
     bonuses: {
       generalBonuses: {},
     },

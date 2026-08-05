@@ -34,6 +34,7 @@ import {
   CROWS_EYE_UPGRADES,
   HUNT_BONUSES,
   getChainmasterProductionBonus,
+  getFeralHowlConstructionTimeReduction,
 } from "./skillUpgrades";
 import { villageBuildActions } from "./villageBuildActions";
 
@@ -287,21 +288,32 @@ function getBuildingCostReductionComposition(
 function getBuildingTimeReductionComposition(
   state: GameState,
 ): BonusCompositionLine[] {
+  const lines: BonusCompositionLine[] = [];
   const builderLevel = getBuilderLevel(state);
-  const reduction = getBuilderBuildTimeReduction(builderLevel);
-  if (reduction <= 0) return [];
-
-  const buildingKey = BUILDER_BUILDING_BY_LEVEL[builderLevel];
-  return [
-    {
+  const builderReduction = getBuilderBuildTimeReduction(builderLevel);
+  if (builderReduction > 0) {
+    const buildingKey = BUILDER_BUILDING_BY_LEVEL[builderLevel];
+    lines.push({
       sourceId: buildingKey ?? "builder",
       sourceLabel: buildingKey
         ? getBuildingSourceLabel(buildingKey)
         : tWithFallback("ui", "sidePanel.constructionTime", "Construction Time"),
-      percent: formatPercentPoints(reduction * 100),
+      percent: formatPercentPoints(builderReduction * 100),
       isReduction: true,
-    },
-  ];
+    });
+  }
+
+  const houndReduction = getFeralHowlConstructionTimeReduction(state);
+  if (houndReduction > 0) {
+    lines.push({
+      sourceId: "feral_howl",
+      sourceLabel: tWithFallback("ui", "estate.feralHowl", "Feral Howl"),
+      percent: formatPercentPoints(houndReduction * 100),
+      isReduction: true,
+    });
+  }
+
+  return lines;
 }
 
 function getVillagerProductionComposition(

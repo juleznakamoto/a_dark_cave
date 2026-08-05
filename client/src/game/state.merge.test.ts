@@ -164,7 +164,11 @@ const createMockGameState = (): GameState => ({
   curseState: { isActive: false, endTime: 0 },
   frostfallState: { isActive: false, endTime: 0 },
   sleepUpgrades: { lengthLevel: 0, intensityLevel: 0 },
-  combatSkills: { crushingStrikeLevel: 0, bloodflameSphereLevel: 0 },
+  combatSkills: {
+    crushingStrikeLevel: 0,
+    bloodflameSphereLevel: 0,
+    feralHowlLevel: 0,
+  },
   clickAnalytics: {},
   traderDialogOpens: 0,
   completePurchaseDialogOpens: 0,

@@ -56,6 +56,8 @@
     "stunDuration_one": "Aturdimiento: {{rounds}} ronda",
     "stunDuration_other": "Aturdimiento: {{rounds}} rondas",
     "successChance": "Probabilidad de éxito: {{percent}} %",
+    "enemyDamageReduction_one": "Daño enemigo: -{{percent}}% durante {{rounds}} ronda",
+    "enemyDamageReduction_other": "Daño enemigo: -{{percent}}% durante {{rounds}} rondas",
     "burnDamage_one": "{{damage}} de daño durante {{rounds}} ronda",
     "burnDamage_other": "{{damage}} de daño durante {{rounds}} rondas",
     "healthCost": "Coste de vida: {{value}}",

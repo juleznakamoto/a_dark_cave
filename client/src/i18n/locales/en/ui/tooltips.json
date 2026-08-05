@@ -56,6 +56,8 @@
     "stunDuration_one": "Stun Duration: {{rounds}} round",
     "stunDuration_other": "Stun Duration: {{rounds}} rounds",
     "successChance": "Success chance: {{percent}}%",
+    "enemyDamageReduction_one": "Enemy damage: -{{percent}}% for {{rounds}} round",
+    "enemyDamageReduction_other": "Enemy damage: -{{percent}}% for {{rounds}} rounds",
     "burnDamage_one": "{{damage}} damage for {{rounds}} round",
     "burnDamage_other": "{{damage}} damage for {{rounds}} rounds",
     "healthCost": "Health Cost: {{value}}",

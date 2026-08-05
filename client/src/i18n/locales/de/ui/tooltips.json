@@ -56,6 +56,8 @@
     "stunDuration_one": "Betäubungsdauer: {{rounds}} Runde",
     "stunDuration_other": "Betäubungsdauer: {{rounds}} Runden",
     "successChance": "Erfolgschance: {{percent}} %",
+    "enemyDamageReduction_one": "Feindschaden: -{{percent}} % für {{rounds}} Runde",
+    "enemyDamageReduction_other": "Feindschaden: -{{percent}} % für {{rounds}} Runden",
     "burnDamage_one": "{{damage}} Schaden für {{rounds}} Runde",
     "burnDamage_other": "{{damage}} Schaden für {{rounds}} Runden",
     "healthCost": "Lebenskosten: {{value}}",

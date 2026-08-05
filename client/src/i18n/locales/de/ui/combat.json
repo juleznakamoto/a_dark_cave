@@ -16,11 +16,13 @@
     "defense": "Verteidigung", //ok
     "attackFailed": "Angriff gescheitert", //ok
     "crushingStrikeFailed": "Fähigkeit gescheitert",
+    "feralHowlFailed": "Wildes Heulen fehlgeschlagen",
     "critical": "kritisch",
     "criticalParen": "({{label}})",
     "available": "Verfügbar: {{current}}/{{max}}",
     "crushingStrike": "Schmetterschlag",
     "bloodflameSphere": "Blutflammensphäre",
+    "feralHowl": "Wildes Heulen",
     "poisonArrows": "Giftpfeile",
     "critChance": "{{percent}} % kritische Trefferchance",
     "critFromLuck": "{{percent}} % durch {{stat}}{{maxSuffix}}",

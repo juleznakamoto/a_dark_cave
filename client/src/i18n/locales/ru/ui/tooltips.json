@@ -56,6 +56,8 @@
     "stunDuration_one": "Оглушение: {{rounds}} раунд",
     "stunDuration_other": "Оглушение: {{rounds}} раундов",
     "successChance": "Шанс успеха: {{percent}} %",
+    "enemyDamageReduction_one": "Урон врага: -{{percent}}% на {{rounds}} раунд",
+    "enemyDamageReduction_other": "Урон врага: -{{percent}}% на {{rounds}} раунда",
     "burnDamage_one": "{{damage}} урона в течение {{rounds}} раунда",
     "burnDamage_other": "{{damage}} урона в течение {{rounds}} раундов",
     "healthCost": "Стоимость здоровья: {{value}}", //x1.3

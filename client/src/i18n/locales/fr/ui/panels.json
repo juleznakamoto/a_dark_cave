@@ -93,6 +93,7 @@
     "huntressTraining": "Entraînement de chasseresse", //x1.6
     "crushingStrike": "Frappe écrasante",
     "bloodflameSphere": "Sphère de flamme sanglante", //x1.5
+    "feralHowl": "Hurlement sauvage",
     "tirelessWorker": "Travailleur infatigable",
     "crowsEye": "Œil du corbeau", //x1.4
     "maxLevel": "Niveau max.", //x1.2
@@ -116,6 +117,13 @@
     "skillHealthCost": "+{{amount}} coût en santé",
     "bloodflameSummary": "{{damage}} dégâts pendant {{rounds}} tours, {{health}} coût en santé",
     "bloodflameSummary_one": "{{damage}} dégâts pendant {{rounds}} tour, {{health}} coût en santé",
+    "skillEnemyDamageReduction": "-{{amount}} % dégâts ennemis",
+    "skillDebuffRound_one": "+{{amount}} tour d'affaiblissement",
+    "skillDebuffRound_other": "+{{amount}} tours d'affaiblissement",
+    "skillCritDamageBonus": "+{{amount}} % dégâts critiques",
+    "skillBuildTimeReduction": "-{{amount}} % temps de construction",
+    "feralHowlSummary": "{{success}} % de succès, -{{reduction}} % dégâts ennemis pendant {{rounds}} tours, +{{crit}} % dégâts critiques, -{{build}} % temps de construction",
+    "feralHowlSummary_one": "{{success}} % de succès, -{{reduction}} % dégâts ennemis pendant {{rounds}} tour, +{{crit}} % dégâts critiques, -{{build}} % temps de construction",
     "skillDoubleGain": "+{{amount}} % de chance de gain double",
     "crowsEyeSummary": "{{percent}} % de chance de doubler les gains d'actions",
     "priorConcurrentAction_one": "+{{count}} action simultanée",

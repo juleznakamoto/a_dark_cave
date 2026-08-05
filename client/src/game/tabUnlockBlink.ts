@@ -44,6 +44,7 @@ export function buildTabUnlockSnapshot(state: {
   lifetimeGamesWon?: number;
   lifetimePlayTimeMs?: number;
   lifetimeStorageMaxHits?: GameState["lifetimeStorageMaxHits"];
+  lifetimeEstateUpgradeMaxHits?: GameState["lifetimeEstateUpgradeMaxHits"];
   hasAchievementMaxer?: boolean;
   social_media_rewards?: GameState["social_media_rewards"];
   referralCount?: number;

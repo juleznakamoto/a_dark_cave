@@ -56,6 +56,8 @@
     "stunDuration_one": "Étourdissement : {{rounds}} tour",
     "stunDuration_other": "Étourdissement : {{rounds}} tours",
     "successChance": "Chance de succès : {{percent}} %",
+    "enemyDamageReduction_one": "Dégâts ennemis : -{{percent}} % pendant {{rounds}} tour",
+    "enemyDamageReduction_other": "Dégâts ennemis : -{{percent}} % pendant {{rounds}} tours",
     "burnDamage_one": "{{damage}} dégâts pendant {{rounds}} tour",
     "burnDamage_other": "{{damage}} dégâts pendant {{rounds}} tours",
     "healthCost": "Coût en vie : {{value}}",
