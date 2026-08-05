@@ -143,14 +143,6 @@ function getParticleCountForLevel(level: number): number {
 /** Pent / hex / heptagon chips for all mine click bursts. */
 const MINE_POLYGON_SIDES = [5, 6, 7];
 
-/**
- * Mine bursts use clip-path polygons (heavier than circles). Cap count a bit
- * lower so click spam stays smooth; tiny dots stay circles at generate time.
- */
-function getMineParticleCountForLevel(level: number): number {
-  return Math.min(40 + level * 8, 96);
-}
-
 /** Get mine particle config for a specific mine action (stone, iron, coal, etc.) */
 export function getMineParticleConfig(
   actionId: string,
@@ -161,7 +153,7 @@ export function getMineParticleConfig(
     colors: MINE_TONES,
     smallParticleOnlyColors: highlightColors,
     smallParticleMaxSize: 5,
-    count: getMineParticleCountForLevel(level),
+    count: getParticleCountForLevel(level),
     durationMin: 0.6,
     durationMax: 1.2,
     distanceMin: 40,
@@ -171,9 +163,6 @@ export function getMineParticleConfig(
     polygonSides: MINE_POLYGON_SIDES,
   };
 }
-
-/** Below this size, polygons read as noise and clip-path is wasted work. */
-const POLYGON_MIN_SIZE_PX = 4;
 
 /** Shared clip-paths (fixed orientation). Rotate via transform at render time. */
 const SHARED_POLYGON_CLIP_PATHS = new Map<number, string>();
@@ -620,8 +609,7 @@ export function generateParticleData(
     const endX = startX + Math.cos(moveAngle) * distance;
     const endY = startY + Math.sin(moveAngle) * distance;
     const sidesPool = config.polygonSides;
-    const usePolygon =
-      sidesPool.length > 0 && size >= POLYGON_MIN_SIZE_PX;
+    const usePolygon = sidesPool.length > 0;
     const clipPath = usePolygon
       ? polygonClipPath(
         sidesPool[Math.floor(Math.random() * sidesPool.length)]!,

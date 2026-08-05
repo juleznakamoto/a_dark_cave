@@ -281,14 +281,12 @@ function BubblyButtonGlobalPortalContent({
           <div key={bubble.id}>
             {bubble.particles.map((particle, i) => {
               const rotate = particle.rotateDeg ?? 0;
-              // clip-path + scale forces per-frame re-raster; fade polygons instead
-              const isPolygon = Boolean(particle.clipPath);
               return (
                 <motion.div
                   key={`${bubble.id}-${i}`}
                   className={cn(
                     "fixed",
-                    !isPolygon && "rounded-full",
+                    !particle.clipPath && "rounded-full",
                   )}
                   style={{
                     width: `${particle.size}px`,
@@ -296,8 +294,10 @@ function BubblyButtonGlobalPortalContent({
                     backgroundColor: particle.color,
                     left: bubble.x - particle.size / 2,
                     top: bubble.y - particle.size / 2,
-                    ...(isPolygon ? { clipPath: particle.clipPath } : null),
-                    willChange: isPolygon ? "transform, opacity" : "transform",
+                    ...(particle.clipPath
+                      ? { clipPath: particle.clipPath }
+                      : null),
+                    willChange: "transform",
                   }}
                   initial={{
                     opacity: 1,
@@ -307,13 +307,13 @@ function BubblyButtonGlobalPortalContent({
                     rotate,
                   }}
                   animate={{
-                    opacity: isPolygon ? 0 : 1,
-                    scale: isPolygon ? 1 : 0,
+                    opacity: 1,
+                    scale: 0,
                     x: particle.endX,
                     y: particle.endY,
                     rotate,
                   }}
-                  exit={{ opacity: 0 }}
+                  exit={{ opacity: 0.8 }}
                   transition={{
                     duration: particle.duration,
                     ease: [0, 0, 0.5, 1],
