@@ -31,7 +31,8 @@
     "critDamage": "+{{percent}} % kritischer Trefferschaden",
     "missChance": "{{percent}} % Fehlschlag-Chance (basierend auf {{stat}})",
     "enemies": {
-      "paleCreatures": "Bleiche Kreaturen" //ok
+      "paleCreatures": "Bleiche Kreaturen", //ok
+      "paleBeasts": "Bleiche Bestien"
     },
     "restlessKnightWounded": "Der Ruhelose Ritter ist verwundet und kann nicht kämpfen", //ok
     "elderWizardWounded": "Der Erzmagier ist verwundet und kann keine Zauber wirken", //ok
@@ -41,7 +42,13 @@
     "fellowInjured": "{{name}} wurde verletzt.",
     "buildingDamaged": "{{name}} wurde beschädigt.", //ok
     "silverClaimed": "{{amount}} Silber erhalten.",
-    "goldClaimed": "{{amount}} Gold erhalten."
+    "goldClaimed": "{{amount}} Gold erhalten.",
+    "bossRoundTitle": "Bosskampf – Runde {{round}}",
+    "bossTitle": "Bosskampf",
+    "healChance": "Heilchance",
+    "stunChance": "Betäubungschance",
+    "stunned": "Betäubt",
+    "enemyHealed": "Geheilt"
   },
   "bastion": {
     "heal": "Heilen",
@@ -65,7 +72,9 @@
       "seventhWave": "Siebte Welle",
       "eighthWave": "Achte Welle",
       "ninthWave": "Neunte Welle", //ok
-      "tenthWave": "Zehnte Welle" //ok
+      "tenthWave": "Zehnte Welle", //ok
+      "firstBossWave": "Bosswelle",
+      "secondBossWave": "Letzte Bosswelle"
     }
   },
   "fortifications": {

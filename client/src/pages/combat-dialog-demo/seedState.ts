@@ -30,24 +30,51 @@ export const COMBAT_DEMO_DEFAULT_CONFIG: CombatDemoConfig = {
 
 export type EnemyPresetId = "training" | "wave3" | "wave7" | "boss";
 
-export const ENEMY_PRESETS: Record<
-  EnemyPresetId,
-  { label: string; attack: number; maxHealth: number; waveNumber: number }
-> = {
+type EnemyPreset = {
+  label: string;
+  attack: number;
+  maxHealth: number;
+  waveNumber: number;
+  name?: string;
+  isBoss?: boolean;
+  healChancePercent?: number;
+  healAmount?: number;
+  stunChancePercent?: number;
+};
+
+export const ENEMY_PRESETS: Record<EnemyPresetId, EnemyPreset> = {
   training: { label: "Training dummy", attack: 5, maxHealth: 120, waveNumber: 1 },
   wave3: { label: "Wave 3", attack: 25, maxHealth: 150, waveNumber: 3 },
   wave7: { label: "Wave 7", attack: 45, maxHealth: 250, waveNumber: 7 },
-  boss: { label: "Boss", attack: 80, maxHealth: 500, waveNumber: 10 },
+  boss: {
+    label: "Boss",
+    name: "Pale Beasts",
+    attack: 55,
+    maxHealth: 850,
+    waveNumber: 6,
+    isBoss: true,
+    healChancePercent: 15,
+    healAmount: 100,
+    stunChancePercent: 10,
+  },
 };
 
 export function buildCombatDemoEnemy(presetId: EnemyPresetId) {
   const preset = ENEMY_PRESETS[presetId];
   return {
-    name: "Pale Creatures",
+    name: preset.name ?? "Pale Creatures",
     attack: preset.attack,
     maxHealth: preset.maxHealth,
     currentHealth: preset.maxHealth,
     waveNumber: preset.waveNumber,
+    ...(preset.isBoss
+      ? {
+          isBoss: true as const,
+          healChancePercent: preset.healChancePercent,
+          healAmount: preset.healAmount,
+          stunChancePercent: preset.stunChancePercent,
+        }
+      : {}),
   };
 }
 

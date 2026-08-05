@@ -31,7 +31,8 @@
     "critDamage": "+{{percent}}% 暴击伤害",
     "missChance": "{{percent}}% 未命中几率（基于{{stat}}）",
     "enemies": {
-      "paleCreatures": "苍白生物"
+      "paleCreatures": "苍白生物",
+      "paleBeasts": "苍白野兽"
     },
     "restlessKnightWounded": "不安骑士受伤，无法战斗",
     "elderWizardWounded": "长老法师受伤，无法施法",
@@ -41,7 +42,13 @@
     "fellowInjured": "{{name}} 受伤了。",
     "buildingDamaged": "{{name}} 受损了。",
     "silverClaimed": "获得 {{amount}} 白银。",
-    "goldClaimed": "获得 {{amount}} 金币。"
+    "goldClaimed": "获得 {{amount}} 金币。",
+    "bossRoundTitle": "首领战 – 第{{round}}回合",
+    "bossTitle": "首领战",
+    "healChance": "治疗几率",
+    "stunChance": "眩晕几率",
+    "stunned": "眩晕",
+    "enemyHealed": "已治疗"
   },
   "bastion": {
     "heal": "治疗",
@@ -65,7 +72,9 @@
       "seventhWave": "第七波",
       "eighthWave": "第八波",
       "ninthWave": "第九波",
-      "tenthWave": "第十波"
+      "tenthWave": "第十波",
+      "firstBossWave": "首领波",
+      "secondBossWave": "最终首领波"
     }
   },
   "fortifications": {

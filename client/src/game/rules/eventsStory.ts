@@ -392,7 +392,7 @@ export const storyEvents: Record<string, GameEvent> = {
   /**
    * After the final siege wave: announces safe passage beyond the blasted gate.
    * Sets `beyondGateVentureUnlocked` on Continue (dialog bookkeeping only; the Cave action
-   * gates on `tenthWaveVictory`).
+   * gates on `secondBossWaveVictory`).
    *
    * Stays `repeatable: true` for legacy saves that already have `triggeredEvents` set from the
    * old "mark seen on dialog open" bug without `beyondGateVentureUnlocked`. New choice events
@@ -402,7 +402,7 @@ export const storyEvents: Record<string, GameEvent> = {
     id: "beyondGatePassagesClear",
     condition: (state: GameState) =>
       Boolean(
-        state.story.seen.tenthWaveVictory &&
+        state.story.seen.secondBossWaveVictory &&
         state.story.seen.portalBlasted &&
         !state.story.seen.beyondGateVentureUnlocked,
       ),

@@ -1,5 +1,4 @@
 import React from "react";
-import { cn } from "@/lib/utils";
 
 export function ActionTooltipSeparator() {
   return <div className="my-1 border-t border-neutral-800" />;
@@ -18,7 +17,7 @@ export type ActionTooltipParts = {
   style?: React.CSSProperties;
 };
 
-/** Standard action tooltip order: header → description → divider → effects. */
+/** Standard action tooltip order: header → divider → description → divider → effects. */
 /** Matches building upgrade tooltips: trailing icon sits in the header row only. */
 export function wrapTooltipHeaderWithTrailing(
   header: React.ReactNode,
@@ -56,14 +55,12 @@ export function composeActionTooltip({
     <div className={className} style={style}>
       {hasHeader ? wrapTooltipHeaderWithTrailing(header, headerTrailing) : null}
       {hasDescription ? (
-        <div
-          className={cn(
-            "whitespace-normal text-muted-foreground",
-            hasHeader && "mt-1",
-          )}
-        >
-          {description}
-        </div>
+        <>
+          {hasHeader ? <ActionTooltipSeparator /> : null}
+          <div className="whitespace-normal text-muted-foreground">
+            {description}
+          </div>
+        </>
       ) : null}
       {hasEffects ? (
         <>

@@ -5,7 +5,7 @@ import { render, screen } from "@testing-library/react";
 import { composeActionTooltip } from "./actionTooltipLayout";
 
 describe("composeActionTooltip", () => {
-  it("orders cost, description, and effects with a divider before effects", () => {
+  it("orders cost, description, and effects with dividers between sections", () => {
     const node = composeActionTooltip({
       header: <span data-testid="cost">-10 Wood</span>,
       description: "A fine bow.",
@@ -16,8 +16,17 @@ describe("composeActionTooltip", () => {
     expect(screen.getByTestId("cost")).toBeTruthy();
     expect(screen.getByText("A fine bow.")).toBeTruthy();
     expect(screen.getByTestId("effects")).toBeTruthy();
+    expect(document.querySelectorAll(".border-t").length).toBe(2);
+  });
+
+  it("puts a divider above description when header is present", () => {
+    const node = composeActionTooltip({
+      header: <span data-testid="cost">-10 Wood</span>,
+      description: "A fine bow.",
+    });
+    render(<>{node}</>);
+
     expect(document.querySelectorAll(".border-t").length).toBe(1);
-    expect(screen.getByText("A fine bow.").className).toContain("mt-1");
   });
 
   it("omits title from description section", () => {

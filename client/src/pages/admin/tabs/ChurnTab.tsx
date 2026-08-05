@@ -551,7 +551,7 @@ export default function ChurnTab(props: ChurnTabProps) {
               {hutLadderFunnel.excludedReferredCount > 0
                 ? `; excluded ${hutLadderFunnel.excludedReferredCount} referred`
                 : ""}
-              ). First stone hut unlocks at wooden hut ≥10; attack waves A1–A10
+              ). Normal mode only. First stone hut unlocks at wooden hut ≥10; attack waves A1–A12
               follow stone hut ≥10. Cruel only raises hut caps 10→12.
             </CardDescription>
           </div>
@@ -623,7 +623,7 @@ export default function ChurnTab(props: ChurnTabProps) {
               Total players: {hutLadderFunnel.startedCount}
             </p>
             <h3 className="text-sm font-medium mb-2">
-              % of starters reaching ≥N (W0–W10, S1–S10, then A1–A10)
+              % of starters reaching ≥N (W0–W10, S1–S10, then A1–A12; normal mode)
             </h3>
             <ChartContainer
               config={{
@@ -705,7 +705,7 @@ export default function ChurnTab(props: ChurnTabProps) {
 
           <div>
             <h3 className="text-sm font-medium mb-2">
-              Step drop-off (%) (W0–W10, S1–S10, then A1–A10)
+              Step drop-off (%) (W0–W10, S1–S10, then A1–A12; normal mode)
             </h3>
             <ChartContainer
               config={{
@@ -765,7 +765,7 @@ export default function ChurnTab(props: ChurnTabProps) {
 
           <div>
             <h3 className="text-sm font-medium mb-2">
-              Drop vs starters (%) (W0–W10, S1–S10, then A1–A10)
+              Drop vs starters (%) (W0–W10, S1–S10, then A1–A12; normal mode)
             </h3>
             <ChartContainer
               config={{

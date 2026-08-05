@@ -2007,7 +2007,7 @@
   },
   "tenthWave": {
     "message": "Desde los confines más profundos de la cueva estalla una masa inimaginable de criaturas pálidas. Inundan la tierra como una marea viva, mientras la ciudad se prepara para la aniquilación.",
-    "title": "La oleada final"
+    "title": "La décima oleada"
   },
   "postCompletionWave": {
     "message": "Desde las profundidades ocultas de la cueva, criaturas pálidas sin mente siguen emergiendo, asaltando la ciudad sin cesar.",
@@ -2751,5 +2751,13 @@
     },
     "message": "Tu expedición encuentra una aldea de montaña llena de muertos envenenados. Entre los cuerpos yace un hombre casi muerto, muy musculoso pero desfigurado, apenas capaz de hablar. Dice que solo lo llamaban el Sabueso Bruto. Parece haber resistido el veneno, aunque por poco. Quiere unirse a vosotros.",
     "title": "Sabueso Bruto"
+  },
+  "firstBossWave": {
+    "message": "Una gran manada de bestias pálidas lidera el asedio hacia la ciudad. Su sed de sangre se ve en cada paso que dan.",
+    "title": "La oleada del jefe"
+  },
+  "secondBossWave": {
+    "message": "Un ejército de bestias pálidas se reúne ante los muros de la ciudad, acumulándose para un asalto final.",
+    "title": "La oleada final del jefe"
   }
 }

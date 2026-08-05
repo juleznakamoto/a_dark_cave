@@ -64,11 +64,13 @@ type VictoryFlagName =
   | "thirdWaveVictory"
   | "fourthWaveVictory"
   | "fifthWaveVictory"
+  | "firstBossWaveVictory"
   | "sixthWaveVictory"
   | "seventhWaveVictory"
   | "eighthWaveVictory"
   | "ninthWaveVictory"
-  | "tenthWaveVictory";
+  | "tenthWaveVictory"
+  | "secondBossWaveVictory";
 
 /** Chart rows only need story / buildings / weapons (avoids GameStore vs GameState mismatch). */
 export type AttackWaveChartState = Pick<
@@ -85,10 +87,17 @@ type WaveRules = {
   victoryFlag: VictoryFlagName;
 };
 
-type AttackWaveDefinition = WaveParams;
+type AttackWaveDefinition = WaveParams & {
+  isBoss?: boolean;
+  healChancePercent?: number;
+  healAmount?: number;
+  stunChancePercent?: number;
+};
 
-/** Combat UI label for every attack wave (shared across all waves). */
+/** Combat UI label for regular attack waves. */
 const ATTACK_WAVE_ENEMY_NAME = "Pale Creatures";
+/** Combat UI label for boss waves. */
+const ATTACK_WAVE_BOSS_ENEMY_NAME = "Pale Beasts";
 
 /** Shared countdown timers for every attack wave (ms). */
 const ATTACK_WAVE_TIMER_DEFAULTS = {
@@ -96,29 +105,30 @@ const ATTACK_WAVE_TIMER_DEFAULTS = {
   defeatDuration: 20 * 60 * 1000,
 } as const;
 
-const CANONICAL_ATTACK_WAVE_COUNT = 10;
+const CANONICAL_ATTACK_WAVE_COUNT = 12;
 const POST_WAVE_HEALTH_INCREMENT = 50;
 const POST_WAVE_ATTACK_INCREMENT = 10;
 const POST_WAVE_GOLD_INCREMENT = 50;
+const BOSS_VICTORY_MADNESS_REDUCTION = 2;
 
 /** True after the final cube choice (cube15a/b). */
 export function isGameStoryCompleted(state: GameState): boolean {
   return Boolean(state.events?.cube15a || state.events?.cube15b);
 }
 
-/** All ten chart waves have been won. */
+/** All twelve chart waves have been won. */
 export function areAllCanonicalAttackWavesCompleted(state: GameState): boolean {
-  return Boolean(state.story?.seen?.tenthWaveVictory);
+  return Boolean(state.story?.seen?.secondBossWaveVictory);
 }
 
-/** Endless waves after story complete and all 10 chart waves won. */
+/** Endless waves after story complete and all chart waves won. */
 export function isPostCompletionAttackWavesActive(state: GameState): boolean {
   return (
     isGameStoryCompleted(state) && areAllCanonicalAttackWavesCompleted(state)
   );
 }
 
-/** Next post-completion wave number (11, 12, …). */
+/** Next post-completion wave number (13, 14, …). */
 export function getPostCompletionWaveNumber(state: GameState): number {
   return CANONICAL_ATTACK_WAVE_COUNT + 1 + (state.postCompletionAttackWaveCount ?? 0);
 }
@@ -171,56 +181,79 @@ const ATTACK_WAVE_DEFINITIONS: Record<AttackWaveId, AttackWaveDefinition> = {
     attack: { options: [50], cruelBonus: 15 },
     health: { base: 800, cruelBonus: 150 },
   },
-  sixthWave: {
+  firstBossWave: {
     ...ATTACK_WAVE_TIMER_DEFAULTS,
     ...attackWaveScaledParams(6),
     attack: { options: [60], cruelBonus: 15 },
     health: { base: 900, cruelBonus: 150 },
+    isBoss: true,
+    healChancePercent: 15,
+    healAmount: 100,
+    stunChancePercent: 10,
   },
-  seventhWave: {
+  sixthWave: {
     ...ATTACK_WAVE_TIMER_DEFAULTS,
     ...attackWaveScaledParams(7),
     attack: { options: [70], cruelBonus: 20 },
     health: { base: 1000, cruelBonus: 200 },
   },
-  eighthWave: {
+  seventhWave: {
     ...ATTACK_WAVE_TIMER_DEFAULTS,
     ...attackWaveScaledParams(8),
     attack: { options: [80], cruelBonus: 20 },
     health: { base: 1100, cruelBonus: 200 },
   },
-  ninthWave: {
+  eighthWave: {
     ...ATTACK_WAVE_TIMER_DEFAULTS,
     ...attackWaveScaledParams(9),
     attack: { options: [90], cruelBonus: 30 },
     health: { base: 1200, cruelBonus: 250 },
   },
+  ninthWave: {
+    ...ATTACK_WAVE_TIMER_DEFAULTS,
+    ...attackWaveScaledParams(10),
+    attack: { options: [100], cruelBonus: 40 },
+    health: { base: 1300, cruelBonus: 250 },
+  },
   tenthWave: {
     ...ATTACK_WAVE_TIMER_DEFAULTS,
     ...attackWaveScaledParams(10),
-    attack: { options: [100], cruelBonus: 50 },
+    attack: { options: [110], cruelBonus: 50 },
     health: { base: 1400, cruelBonus: 250 },
+  },
+  secondBossWave: {
+    ...ATTACK_WAVE_TIMER_DEFAULTS,
+    ...attackWaveScaledParams(10),
+    attack: { options: [120], cruelBonus: 50 },
+    health: { base: 1500, cruelBonus: 250 },
+    isBoss: true,
+    healChancePercent: 20,
+    healAmount: 150,
+    stunChancePercent: 15,
   },
 };
 
-/** Post-completion wave stats: +50 integrity, +10 attack, +50 gold per wave beyond the tenth. */
+/** Post-completion wave stats: +50 integrity, +10 attack, +50 gold per wave beyond the chart. */
 export function getPostCompletionWaveParams(waveNumber: number): WaveParams {
-  const stepsBeyondTenth = waveNumber - CANONICAL_ATTACK_WAVE_COUNT;
-  const tenthDef = ATTACK_WAVE_DEFINITIONS.tenthWave;
+  const stepsBeyondChart = waveNumber - CANONICAL_ATTACK_WAVE_COUNT;
+  const finalBossDef = ATTACK_WAVE_DEFINITIONS.secondBossWave;
   return {
     ...ATTACK_WAVE_TIMER_DEFAULTS,
     ...attackWaveScaledParams(waveNumber),
     goldReward:
-      tenthDef.goldReward + stepsBeyondTenth * POST_WAVE_GOLD_INCREMENT,
+      finalBossDef.goldReward + stepsBeyondChart * POST_WAVE_GOLD_INCREMENT,
     attack: {
       options: [
-        tenthDef.attack.options[0] + stepsBeyondTenth * POST_WAVE_ATTACK_INCREMENT,
+        finalBossDef.attack.options[0] +
+        stepsBeyondChart * POST_WAVE_ATTACK_INCREMENT,
       ],
-      cruelBonus: tenthDef.attack.cruelBonus,
+      cruelBonus: finalBossDef.attack.cruelBonus,
     },
     health: {
-      base: tenthDef.health.base + stepsBeyondTenth * POST_WAVE_HEALTH_INCREMENT,
-      cruelBonus: tenthDef.health.cruelBonus,
+      base:
+        finalBossDef.health.base +
+        stepsBeyondChart * POST_WAVE_HEALTH_INCREMENT,
+      cruelBonus: finalBossDef.health.cruelBonus,
     },
   };
 }
@@ -289,12 +322,23 @@ const WAVE_RULES: Record<AttackWaveId, WaveRules> = {
     triggeredFlag: null,
     victoryFlag: "fifthWaveVictory",
   },
-  sixthWave: {
+  firstBossWave: {
     prerequisiteMet: (state: AttackWaveChartState) =>
       Boolean(state.story.seen.fifthWaveVictory),
     condition: (state: GameState) =>
       Boolean(
         state.story.seen.fifthWaveVictory &&
+        !state.story.seen.firstBossWaveVictory,
+      ),
+    triggeredFlag: null,
+    victoryFlag: "firstBossWaveVictory",
+  },
+  sixthWave: {
+    prerequisiteMet: (state: AttackWaveChartState) =>
+      Boolean(state.story.seen.firstBossWaveVictory),
+    condition: (state: GameState) =>
+      Boolean(
+        state.story.seen.firstBossWaveVictory &&
         !state.story.seen.sixthWaveVictory,
       ),
     triggeredFlag: null,
@@ -346,6 +390,17 @@ const WAVE_RULES: Record<AttackWaveId, WaveRules> = {
       ),
     triggeredFlag: null,
     victoryFlag: "tenthWaveVictory",
+  },
+  secondBossWave: {
+    prerequisiteMet: (state: AttackWaveChartState) =>
+      Boolean(state.story.seen.tenthWaveVictory),
+    condition: (state: GameState) =>
+      Boolean(
+        state.story.seen.tenthWaveVictory &&
+        !state.story.seen.secondBossWaveVictory,
+      ),
+    triggeredFlag: null,
+    victoryFlag: "secondBossWaveVictory",
   },
 };
 
@@ -447,14 +502,14 @@ function handleDefeat(
   };
 }
 
-/** Canonical waves 1–10 only; endless post-completion waves never grant defeat madness. */
+/** Canonical chart waves only; endless post-completion waves never grant defeat madness. */
 export function isAttackWaveDefeatMadnessEligible(
   waveId: string,
 ): waveId is AttackWaveId {
   return (ATTACK_WAVE_IDS as readonly string[]).includes(waveId);
 }
 
-/** First defeat per wave grants +1 madness (up to +10 across all waves). */
+/** First defeat per wave grants +1 madness (up to +12 across all chart waves). */
 export function applyAttackWaveDefeatMadness(
   state: GameState,
   waveId: string,
@@ -567,6 +622,7 @@ function createAttackWaveEvent(waveId: AttackWaveId): GameEvent {
     repeatable: true,
     effect: (state: GameState) => {
       const enemyStats = calculateEnemyStats(def, state);
+      const isBoss = Boolean(def.isBoss);
 
       const storyUpdate = rules.triggeredFlag
         ? {
@@ -584,34 +640,55 @@ function createAttackWaveEvent(waveId: AttackWaveId): GameEvent {
         ...storyUpdate,
         _combatData: {
           enemy: {
-            name: ATTACK_WAVE_ENEMY_NAME,
+            name: isBoss ? ATTACK_WAVE_BOSS_ENEMY_NAME : ATTACK_WAVE_ENEMY_NAME,
             ...enemyStats,
             waveNumber,
+            ...(isBoss
+              ? {
+                isBoss: true,
+                healChancePercent: def.healChancePercent,
+                healAmount: def.healAmount,
+                stunChancePercent: def.stunChancePercent,
+              }
+              : {}),
           },
           eventTitle: resolveEventTitle(waveId, state) ?? "",
           eventMessage: resolveEventMessage(waveId, undefined, state),
-          onVictory: () => ({
-            resources: {
-              gold: def.goldReward,
-            },
-            story: {
-              ...state.story,
-              seen: {
-                ...state.story.seen,
-                [rules.victoryFlag]: true,
+          onVictory: () => {
+            const madnessGain = isBoss ? -BOSS_VICTORY_MADNESS_REDUCTION : undefined;
+            return {
+              resources: {
+                gold: def.goldReward,
               },
-            },
-            attackWaveTimers: {
-              ...state.attackWaveTimers,
-              [waveId]: {
-                ...state.attackWaveTimers[waveId],
-                defeated: true,
+              story: {
+                ...state.story,
+                seen: {
+                  ...state.story.seen,
+                  [rules.victoryFlag]: true,
+                },
               },
-            },
-            _combatSummary: {
-              goldReward: def.goldReward,
-            },
-          }),
+              ...(madnessGain !== undefined
+                ? {
+                  stats: {
+                    ...state.stats,
+                    madnessFromEvents:
+                      (state.stats?.madnessFromEvents || 0) + madnessGain,
+                  },
+                }
+                : {}),
+              attackWaveTimers: {
+                ...state.attackWaveTimers,
+                [waveId]: {
+                  ...state.attackWaveTimers[waveId],
+                  defeated: true,
+                },
+              },
+              _combatSummary: {
+                goldReward: def.goldReward,
+                ...(madnessGain !== undefined ? { madnessGain } : {}),
+              },
+            };
+          },
           onDefeat: () => {
             const defeatResult = applyAttackWaveDefeatMadness(
               state,
@@ -812,11 +889,13 @@ export const ATTACK_WAVE_DISPLAY_NAMES: Record<AttackWaveId, string> = {
   thirdWave: "Third Wave",
   fourthWave: "Fourth Wave",
   fifthWave: "Fifth Wave",
+  firstBossWave: "Boss Wave",
   sixthWave: "Sixth Wave",
   seventhWave: "Seventh Wave",
   eighthWave: "Eighth Wave",
   ninthWave: "Ninth Wave",
   tenthWave: "Tenth Wave",
+  secondBossWave: "Final Boss Wave",
 };
 
 export function getAttackWavesChartRows(state: AttackWaveChartState): {

@@ -31,7 +31,8 @@
     "critDamage": "+{{percent}} % de daño de golpe crítico",
     "missChance": "{{percent}} % de probabilidad de fallo (según {{stat}})",
     "enemies": {
-      "paleCreatures": "Criaturas pálidas"
+      "paleCreatures": "Criaturas pálidas",
+      "paleBeasts": "Bestias pálidas"
     },
     "restlessKnightWounded": "El Caballero inquieto está herido y no puede luchar",
     "elderWizardWounded": "El mago anciano está herido y no puede lanzar hechizos",
@@ -41,7 +42,13 @@
     "fellowInjured": "{{name}} resultó herido.",
     "buildingDamaged": "{{name}} resultó dañado.",
     "silverClaimed": "{{amount}} plata recibida.",
-    "goldClaimed": "{{amount}} oro recibido."
+    "goldClaimed": "{{amount}} oro recibido.",
+    "bossRoundTitle": "Combate de jefe – Ronda {{round}}",
+    "bossTitle": "Combate de jefe",
+    "healChance": "Probabilidad de curación",
+    "stunChance": "Probabilidad de aturdimiento",
+    "stunned": "Aturdido",
+    "enemyHealed": "Curado"
   },
   "bastion": {
     "heal": "Curar",
@@ -65,7 +72,9 @@
       "seventhWave": "Séptima oleada",
       "eighthWave": "Octava oleada",
       "ninthWave": "Novena oleada",
-      "tenthWave": "Décima oleada"
+      "tenthWave": "Décima oleada",
+      "firstBossWave": "Oleada del jefe",
+      "secondBossWave": "Oleada final del jefe"
     }
   },
   "fortifications": {

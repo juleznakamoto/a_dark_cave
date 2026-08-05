@@ -9,6 +9,7 @@ import {
 /** Canonical English combat enemy names → ui.combat.enemies.* catalog keys. */
 const COMBAT_ENEMY_I18N_KEYS: Record<string, string> = {
   "Pale Creatures": "paleCreatures",
+  "Pale Beasts": "paleBeasts",
 };
 
 /** Resolve a combat enemy label at render time (stored combat data uses English). */

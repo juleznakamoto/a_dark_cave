@@ -6,6 +6,8 @@
     "fighting": "Fighting...",
     "startFight": "Start Fight",
     "roundTitle": "Combat - Round {{round}}",
+    "bossRoundTitle": "Boss Fight - Round {{round}}",
+    "bossTitle": "Boss Fight",
     "youLost": "You lost",
     "youWin": "You win",
     "bastion": "Bastion",
@@ -14,6 +16,10 @@
     "integrity": "Integrity",
     "attack": "Attack",
     "defense": "Defense",
+    "healChance": "Heal Chance",
+    "stunChance": "Stun Chance",
+    "stunned": "Stunned",
+    "enemyHealed": "Healed",
     "attackFailed": "Attack failed",
     "crushingStrikeFailed": "Crushing Strike failed",
     "feralHowlFailed": "Feral Howl failed",
@@ -31,7 +37,8 @@
     "critDamage": "+{{percent}}% critical strike damage",
     "missChance": "{{percent}}% miss chance (based on {{stat}})",
     "enemies": {
-      "paleCreatures": "Pale Creatures"
+      "paleCreatures": "Pale Creatures",
+      "paleBeasts": "Pale Beasts"
     },
     "restlessKnightWounded": "Restless Knight is wounded and cannot fight",
     "elderWizardWounded": "Elder Wizard is wounded and cannot cast spells",
@@ -61,11 +68,13 @@
       "thirdWave": "Third Wave",
       "fourthWave": "Fourth Wave",
       "fifthWave": "Fifth Wave",
+      "firstBossWave": "Boss Wave",
       "sixthWave": "Sixth Wave",
       "seventhWave": "Seventh Wave",
       "eighthWave": "Eighth Wave",
       "ninthWave": "Ninth Wave",
-      "tenthWave": "Tenth Wave"
+      "tenthWave": "Tenth Wave",
+      "secondBossWave": "Final Boss Wave"
     }
   },
   "fortifications": {

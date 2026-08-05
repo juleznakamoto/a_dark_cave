@@ -315,7 +315,7 @@ export const cubeEvents: Record<string, GameEvent> = {
     id: "cube12",
     condition: (state: GameState) =>
       Boolean(
-        state.story.seen.tenthWaveVictory &&
+        state.story.seen.secondBossWaveVictory &&
         state.events.cube11 &&
         !state.events.cube12,
       ),

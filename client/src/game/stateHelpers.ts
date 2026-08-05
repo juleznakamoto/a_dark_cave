@@ -1,6 +1,10 @@
 import { GameState, gameStateSchema } from "@shared/schema";
 import { overlayToolsFromStorySeen } from "@shared/rebuildToolsFromStorySeen";
 import { repairUnlockFlags } from "@shared/repairUnlockFlags";
+import {
+  migrateBossWaveTimers,
+  migrateBossWaveVictoriesInSeen,
+} from "@shared/bossWaveMigration";
 import type { CombatResultSummary } from "./types";
 import { getCurrentPopulation, getMaxPopulation, getVillagersInVillage } from "./population";
 import {
@@ -820,6 +824,33 @@ export function migratePostCompletionAttackWavesOnLoad(
   return { postCompletionAttackWaveCount: 0 };
 }
 
+/**
+ * Grant legacy boss victory flags and clear orphaned attack-wave timers after
+ * boss waves were inserted into the chart (after 5 and after 10).
+ */
+export function migrateBossWavesOnLoad(
+  state: GameState,
+): Partial<GameState> | null {
+  const seen = state.story?.seen ?? {};
+  const nextSeen = migrateBossWaveVictoriesInSeen(seen);
+  const effectiveSeen = nextSeen ?? seen;
+  const nextTimers = migrateBossWaveTimers(state.attackWaveTimers, effectiveSeen);
+
+  if (!nextSeen && !nextTimers) return null;
+
+  const patch: Partial<GameState> = {};
+  if (nextSeen) {
+    patch.story = {
+      ...state.story,
+      seen: nextSeen,
+    };
+  }
+  if (nextTimers) {
+    patch.attackWaveTimers = nextTimers;
+  }
+  return patch;
+}
+
 /** Steam has no paid shop slots; strip any persisted shop slot counts on load. */
 function migrateSteamShopSlotsOnLoad(state: GameState): Partial<GameState> | null {
   if (!isSteamBuild) return null;
@@ -950,6 +981,14 @@ export function applyGameStateLoadMigrations(state: GameState): GameState {
   const postCompletion = migratePostCompletionAttackWavesOnLoad(migrated);
   if (postCompletion) {
     migrated = { ...migrated, ...postCompletion };
+  }
+  const bossWaves = migrateBossWavesOnLoad(migrated);
+  if (bossWaves) {
+    migrated = {
+      ...migrated,
+      ...bossWaves,
+      ...(bossWaves.story ? { story: bossWaves.story } : {}),
+    };
   }
   const presetPurchases = migrateVillagerPresetsPurchasedOnLoad(migrated);
   if (presetPurchases) {

@@ -31,7 +31,8 @@
     "critDamage": "+{{percent}} % de dégâts de coup critique",
     "missChance": "{{percent}} % de chance d'échec (selon {{stat}})",
     "enemies": {
-      "paleCreatures": "Créatures pâles"
+      "paleCreatures": "Créatures pâles",
+      "paleBeasts": "Bêtes pâles"
     },
     "restlessKnightWounded": "Le Chevalier sans repos est blessé et ne peut pas combattre",
     "elderWizardWounded": "Le mage ancien est blessé et ne peut pas lancer de sorts",
@@ -41,7 +42,13 @@
     "fellowInjured": "{{name}} a été blessé.",
     "buildingDamaged": "{{name}} a été endommagé.",
     "silverClaimed": "{{amount}} argent reçu.",
-    "goldClaimed": "{{amount}} or reçu."
+    "goldClaimed": "{{amount}} or reçu.",
+    "bossRoundTitle": "Combat de boss – Manche {{round}}",
+    "bossTitle": "Combat de boss",
+    "healChance": "Chance de soin",
+    "stunChance": "Chance d'étourdissement",
+    "stunned": "Étourdi",
+    "enemyHealed": "Soigné"
   },
   "bastion": {
     "heal": "Soigner",
@@ -65,7 +72,9 @@
       "seventhWave": "Septième vague",
       "eighthWave": "Huitième vague", //x1.3
       "ninthWave": "Neuvième vague",
-      "tenthWave": "Dixième vague"
+      "tenthWave": "Dixième vague",
+      "firstBossWave": "Vague boss",
+      "secondBossWave": "Vague boss finale"
     }
   },
   "fortifications": {

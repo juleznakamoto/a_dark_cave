@@ -9,7 +9,7 @@ import { ATTACK_WAVE_VICTORY_FLAGS } from "@shared/hutLadderAdminStats";
 export const ADMIN_DATA_PAGE_SIZE = 1000;
 export const ADMIN_SAVE_ANALYSIS_LIMIT = 100;
 /** Bump when slimGameStateForAdmin shape changes so clients can bust cache. */
-export const ADMIN_SAVES_SLIM_VERSION = 5;
+export const ADMIN_SAVES_SLIM_VERSION = 6;
 export const PURCHASES_LIST_COLUMNS =
   "user_id,item_id,item_name,price_paid,purchased_at,bundle_id,country,cruel_mode,currency,stripe_payment_intent_id,stripe_fx_quote_id,reporting_eur_cents,reporting_usd_cents,payment_type";
 
@@ -74,6 +74,7 @@ export function slimGameStateForAdmin(
   const slim: Record<string, unknown> = {
     playTime: gs.playTime,
     gameComplete: gs.gameComplete,
+    cruelMode: gs.cruelMode === true,
     events: slimEvents,
     sleepUpgrades: gs.sleepUpgrades,
     buttonUpgrades: gs.buttonUpgrades,
@@ -100,7 +101,7 @@ export function slimGameStateForAdmin(
     slim.clothing = slimClothing;
   }
 
-  // Attack-wave victories for hut-ladder A1–A10 funnel (after stone ≥10).
+  // Attack-wave victories for hut-ladder A1–A12 funnel (after stone ≥10).
   const story = gs.story;
   if (story && typeof story === "object") {
     const seen = (story as Record<string, unknown>).seen;

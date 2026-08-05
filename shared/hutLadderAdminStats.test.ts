@@ -11,13 +11,16 @@ import {
 function save(opts: {
   created_at: string;
   gameStarted?: boolean;
+  cruelMode?: boolean;
   woodenHut?: number;
   stoneHut?: number;
   referralProcessed?: boolean;
   gameComplete?: boolean;
   wavesWon?: number;
+  /** Legacy flags without boss victories (for imply tests). */
+  legacySeen?: Record<string, true>;
 }) {
-  const seen: Record<string, true> = {};
+  const seen: Record<string, true> = { ...(opts.legacySeen ?? {}) };
   const wavesWon = opts.wavesWon ?? 0;
   const flags = [
     "firstWaveVictory",
@@ -25,11 +28,13 @@ function save(opts: {
     "thirdWaveVictory",
     "fourthWaveVictory",
     "fifthWaveVictory",
+    "firstBossWaveVictory",
     "sixthWaveVictory",
     "seventhWaveVictory",
     "eighthWaveVictory",
     "ninthWaveVictory",
     "tenthWaveVictory",
+    "secondBossWaveVictory",
   ] as const;
   for (let i = 0; i < wavesWon; i++) {
     seen[flags[i]!] = true;
@@ -39,6 +44,7 @@ function save(opts: {
     created_at: opts.created_at,
     game_state: {
       flags: { gameStarted: opts.gameStarted ?? true },
+      cruelMode: opts.cruelMode,
       referralProcessed: opts.referralProcessed,
       gameComplete: opts.gameComplete,
       buildings: {
@@ -113,6 +119,7 @@ describe("hutLadderAdminStats", () => {
     expect(funnel.waves[0]?.players).toBe(2);
     expect(funnel.waves[2]?.players).toBe(1); // ≥3
     expect(funnel.waves[9]?.players).toBe(0);
+    expect(funnel.waves).toHaveLength(12);
 
     // 4 → 3 at first wooden: drop 25%
     expect(funnel.wooden[1]?.stepDropPct).toBe(25);
@@ -127,8 +134,8 @@ describe("hutLadderAdminStats", () => {
     expect(funnel.waves[0]?.stepDropPct).toBe(0);
 
     const reach = hutLadderReachChartData(funnel);
-    // Wooden W0..W10 + stone S1..S10 + waves A1..A10 (31 points)
-    expect(reach).toHaveLength(31);
+    // Wooden W0..W10 + stone S1..S10 + waves A1..A12 (33 points)
+    expect(reach).toHaveLength(33);
     expect(reach[0]).toEqual({
       step: "W0",
       level: 0,
@@ -171,9 +178,16 @@ describe("hutLadderAdminStats", () => {
       players: 0,
       pctOfStarted: 0,
     });
+    expect(reach[32]).toEqual({
+      step: "A12",
+      level: 12,
+      kind: "wave",
+      players: 0,
+      pctOfStarted: 0,
+    });
 
     const drops = hutLadderStepDropChartData(funnel);
-    expect(drops).toHaveLength(31);
+    expect(drops).toHaveLength(33);
     expect(drops[0]?.drop).toBe(0);
     expect(drops[1]?.drop).toBe(25);
     expect(drops[11]?.drop).toBe(0); // S1 vs wooden ≥10
@@ -182,7 +196,7 @@ describe("hutLadderAdminStats", () => {
     // Absolute drop vs starters: 4→3 at W1 = 25% of cohort (same as step %
     // here only because prev was also the full cohort).
     const dropsVsStart = hutLadderDropVsStartedChartData(funnel);
-    expect(dropsVsStart).toHaveLength(31);
+    expect(dropsVsStart).toHaveLength(33);
     expect(dropsVsStart[0]?.drop).toBe(0);
     expect(dropsVsStart[1]?.drop).toBe(25); // 1 of 4
     expect(dropsVsStart[6]?.drop).toBe(25); // W6: 3→2 = 1 of 4
@@ -190,6 +204,45 @@ describe("hutLadderAdminStats", () => {
     expect(dropsVsStart[11]?.drop).toBe(0); // S1: wooden10 2→2
     expect(dropsVsStart[22]?.drop).toBe(25); // A2: 2→1 = 1 of 4
     expect(dropsVsStart[30]?.drop).toBe(0); // A10: already 0 at A4+
+  });
+
+  it("excludes cruel mode saves from hut-ladder cohort", () => {
+    const saves = [
+      save({ created_at: "2026-07-20T00:00:00.000Z", woodenHut: 3 }),
+      save({
+        created_at: "2026-07-20T00:00:00.000Z",
+        woodenHut: 10,
+        cruelMode: true,
+      }),
+    ];
+    const cohort = filterHutLadderCohort(saves, 7, now);
+    expect(cohort).toHaveLength(1);
+    expect(cohort[0]?.game_state?.cruelMode).toBeFalsy();
+  });
+
+  it("implies legacy boss victories when counting wave reach", () => {
+    const saves = [
+      save({
+        created_at: "2026-07-15T00:00:00.000Z",
+        woodenHut: 10,
+        stoneHut: 10,
+        legacySeen: {
+          firstWaveVictory: true,
+          secondWaveVictory: true,
+          thirdWaveVictory: true,
+          fourthWaveVictory: true,
+          fifthWaveVictory: true,
+          sixthWaveVictory: true,
+          seventhWaveVictory: true,
+          eighthWaveVictory: true,
+          ninthWaveVictory: true,
+          tenthWaveVictory: true,
+        },
+      }),
+    ];
+    const funnel = computeHutLadderFunnel(saves, 30, now);
+    expect(funnel.waves[5]?.players).toBe(1); // ≥6 first boss implied
+    expect(funnel.waves[11]?.players).toBe(1); // ≥12 second boss implied
   });
 
   it("stone ≥1 step drop is vs wooden ≥10 unlock cohort", () => {

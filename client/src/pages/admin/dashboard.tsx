@@ -563,7 +563,7 @@ export default function AdminDashboard() {
   ]);
 
   // One-shot refetch when saves were cached before slim v5 (attack-wave
-  // victory flags for hut-ladder A1–A10 after stone ≥10).
+  // victory flags for hut-ladder A1–A12 after stone ≥10; normal mode only).
   useEffect(() => {
     if (!isAuthorized || loading || hutLadderSavesRefetchRef.current) return;
     if (!loadedSections.has("saves")) return;

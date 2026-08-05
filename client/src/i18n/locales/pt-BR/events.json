@@ -1989,7 +1989,7 @@
   },
   "tenthWave": {
     "message": "Dos recantos mais profundos da caverna, uma massa inimaginável de criaturas pálidas irrompe. Elas inundam a terra como uma maré viva, enquanto a cidade se prepara para o aniquilamento.",
-    "title": "A Onda Final"
+    "title": "A Décima Onda"
   },
   "postCompletionWave": {
     "message": "Das profundezas ocultas da caverna, criaturas pálidas sem mente continuam a emergir, assaltando a cidade sem fim.",
@@ -2751,5 +2751,13 @@
     },
     "message": "Sua expedição encontra uma aldeia na montanha cheia de mortos envenenados. Entre os corpos jaz um homem quase morto, muito musculoso mas desfigurado, mal capaz de falar. Diz que só o chamavam de Cão Bruto. Parece ter resistido ao veneno, ainda que por pouco. Ele quer se juntar a vocês.",
     "title": "Cão Bruto"
+  },
+  "firstBossWave": {
+    "message": "Um grande bando de bestas pálidas lidera o cerco rumo à cidade. Sua sede de sangue se vê em cada passo que dão.",
+    "title": "A Onda do Chefe"
+  },
+  "secondBossWave": {
+    "message": "Um exército de bestas pálidas se reúne diante dos muros da cidade, reunindo-se para um assalto final.",
+    "title": "A Onda Final do Chefe"
   }
 }

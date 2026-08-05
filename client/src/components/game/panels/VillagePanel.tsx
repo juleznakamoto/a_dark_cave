@@ -188,7 +188,7 @@ const villagerCountButtonClassName = (isDisabled: boolean) =>
     "opacity-100 disabled:opacity-100",
   );
 const VILLAGER_COUNT_CAP_CLASS = cn(
-  "notranslate ml-0.5 inline-flex shrink-0 items-center justify-start self-center leading-tight",
+  "notranslate ml-1.5 inline-flex shrink-0 items-center justify-start self-center leading-tight",
   ANIMATED_COUNTER_TEXT_CLASS,
 );
 const VILLAGER_COUNT_VALUE_CLASS = cn(

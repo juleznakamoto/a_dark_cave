@@ -801,11 +801,11 @@ export const caveExploreActions: Record<string, Action> = {
     id: "encounterBeyondPortal",
     label: "Venture beyond Gate",
     expeditionVillagersRequired: () => 6,
-    // Use tenthWaveVictory (not beyondGateVentureUnlocked): the latter only applies on Continue
+    // Use secondBossWaveVictory (not beyondGateVentureUnlocked): the latter only applies on Continue
     // and can be lost if a reload clears the dialog after triggeredEvents was written.
     show_when: {
       "story.seen.portalBlasted": true,
-      "story.seen.tenthWaveVictory": true,
+      "story.seen.secondBossWaveVictory": true,
       "story.seen.encounteredBeyondPortal": false,
     },
     cost: {

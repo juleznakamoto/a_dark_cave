@@ -1,31 +1,37 @@
 /**
  * Admin hut-ladder funnel: reach ≥N wooden/stone huts among gameStarted saves,
- * then attack-wave victories A1–A10 (after stone ≥10).
- * First stone hut unlocks at woodenHut ≥ 10 (normal and cruel).
+ * then attack-wave victories A1–A12 (after stone ≥10).
+ * First stone hut unlocks at woodenHut ≥ 10.
+ * Cohort is normal mode only (`cruelMode !== true`).
  *
  * Referred players (`referralProcessed`) are excluded — many only Make Fire to
  * grant the referrer bonus, which inflates early wooden-hut drop-off.
  */
 
+import { implyBossWaveVictoriesInSeen } from "./bossWaveMigration";
 import { hasReachedGameEnding } from "./gameCompletionAdminStats";
 
 export const HUT_LADDER_MAX_LEVEL = 10;
 
-/** story.seen victory flags for the 10 canonical attack waves (order = A1..A10). */
+/** story.seen victory flags for the 12 canonical attack waves (order = A1..A12). */
 export const ATTACK_WAVE_VICTORY_FLAGS = [
   "firstWaveVictory",
   "secondWaveVictory",
   "thirdWaveVictory",
   "fourthWaveVictory",
   "fifthWaveVictory",
+  "firstBossWaveVictory",
   "sixthWaveVictory",
   "seventhWaveVictory",
   "eighthWaveVictory",
   "ninthWaveVictory",
   "tenthWaveVictory",
+  "secondBossWaveVictory",
 ] as const;
 
 export type AttackWaveVictoryFlag = (typeof ATTACK_WAVE_VICTORY_FLAGS)[number];
+
+export const ATTACK_WAVE_LADDER_MAX = ATTACK_WAVE_VICTORY_FLAGS.length;
 
 export type HutLadderCohortDays = 3 | 7 | 30 | 60 | 90;
 
@@ -37,6 +43,8 @@ export type HutLadderSaveRow = {
   created_at?: string | null;
   game_state?: {
     flags?: { gameStarted?: boolean };
+    /** Cruel mode saves are excluded from hut-ladder funnels. */
+    cruelMode?: boolean;
     /** Set when this account was created via a referral link. */
     referralProcessed?: boolean;
     gameComplete?: boolean;
@@ -46,7 +54,7 @@ export type HutLadderSaveRow = {
       stoneHut?: number;
     };
     story?: {
-      seen?: Partial<Record<AttackWaveVictoryFlag, boolean>>;
+      seen?: Partial<Record<string, boolean>>;
     };
   } | null;
 };
@@ -69,7 +77,7 @@ export type HutLadderFunnel = {
   excludedReferredCount: number;
   wooden: HutLadderReachPoint[];
   stone: HutLadderReachPoint[];
-  /** Attack-wave victories ≥1..≥10 (A1 after stone ≥10). */
+  /** Attack-wave victories ≥1..≥12 (A1 after stone ≥10). */
   waves: HutLadderReachPoint[];
   /** Players with woodenHut ≥ 10 who also have stoneHut ≥ 1. */
   wooden10WithStone: number;
@@ -95,15 +103,15 @@ function buildingCount(
   return Number.isFinite(n) && n > 0 ? Math.floor(n) : 0;
 }
 
-/** Highest attack-wave victory index 0..10 (0 = none won). */
+/** Highest attack-wave victory index 0..12 (0 = none won). Implies legacy boss flags. */
 export function highestAttackWaveWon(
-  seen: Partial<Record<AttackWaveVictoryFlag, boolean>> | undefined,
+  seen: Partial<Record<string, boolean>> | undefined,
 ): number {
-  if (!seen) return 0;
+  const effective = implyBossWaveVictoriesInSeen(seen);
   let highest = 0;
   for (let i = 0; i < ATTACK_WAVE_VICTORY_FLAGS.length; i++) {
     const flag = ATTACK_WAVE_VICTORY_FLAGS[i]!;
-    if (seen[flag] === true) {
+    if (effective[flag] === true) {
       highest = i + 1;
     }
   }
@@ -118,6 +126,11 @@ export function isReferredSave(save: HutLadderSaveRow): boolean {
   return save.game_state?.referralProcessed === true;
 }
 
+/** Hut-ladder stats use normal mode only. */
+export function isNormalModeSave(save: HutLadderSaveRow): boolean {
+  return save.game_state?.cruelMode !== true;
+}
+
 export function filterHutLadderCohort(
   saves: HutLadderSaveRow[],
   cohortDays: HutLadderCohortDays,
@@ -126,6 +139,7 @@ export function filterHutLadderCohort(
   const cutoffMs = now.getTime() - cohortDays * 24 * 60 * 60 * 1000;
   return saves.filter((save) => {
     if (!isGameStartedSave(save)) return false;
+    if (!isNormalModeSave(save)) return false;
     if (isReferredSave(save)) return false;
     if (!save.created_at) return false;
     const created = Date.parse(save.created_at);
@@ -144,7 +158,9 @@ export function countHutLadderWindowStarted(
   let startedIncludingReferred = 0;
   let referred = 0;
   for (const save of saves) {
-    if (!isGameStartedSave(save) || !save.created_at) continue;
+    if (!isGameStartedSave(save) || !isNormalModeSave(save) || !save.created_at) {
+      continue;
+    }
     const created = Date.parse(save.created_at);
     if (!Number.isFinite(created) || created < cutoffMs) continue;
     startedIncludingReferred++;
@@ -192,9 +208,18 @@ function buildReachSeries(
   return points;
 }
 
+function waveStepLabel(level: number): string {
+  if (level === 1) return "≥1 (needs 10 stone)";
+  if (level === 6) return "≥6 boss wave";
+  if (level === ATTACK_WAVE_LADDER_MAX) {
+    return `≥${ATTACK_WAVE_LADDER_MAX} final boss`;
+  }
+  return `≥${level}`;
+}
+
 /**
  * Reach funnel: for each N in 0..10, how many cohort members have hut count ≥ N;
- * then attack-wave victories ≥1..≥10.
+ * then attack-wave victories ≥1..≥12. Normal mode only.
  */
 export function computeHutLadderFunnel(
   saves: HutLadderSaveRow[],
@@ -211,7 +236,10 @@ export function computeHutLadderFunnel(
 
   const woodenCounts = Array.from({ length: HUT_LADDER_MAX_LEVEL + 1 }, () => 0);
   const stoneCounts = Array.from({ length: HUT_LADDER_MAX_LEVEL + 1 }, () => 0);
-  const waveCounts = Array.from({ length: HUT_LADDER_MAX_LEVEL + 1 }, () => 0);
+  const waveCounts = Array.from(
+    { length: ATTACK_WAVE_LADDER_MAX + 1 },
+    () => 0,
+  );
   let wooden10Count = 0;
   let wooden10WithStone = 0;
   let stone10Count = 0;
@@ -223,6 +251,8 @@ export function computeHutLadderFunnel(
     for (let level = 0; level <= HUT_LADDER_MAX_LEVEL; level++) {
       if (wooden >= level) woodenCounts[level]!++;
       if (stone >= level) stoneCounts[level]!++;
+    }
+    for (let level = 0; level <= ATTACK_WAVE_LADDER_MAX; level++) {
       if (wavesWon >= level) waveCounts[level]!++;
     }
     if (wooden >= 10) {
@@ -265,15 +295,10 @@ export function computeHutLadderFunnel(
     waves: buildReachSeries(
       waveCounts,
       startedCount,
-      (level) =>
-        level === 1
-          ? "≥1 (needs 10 stone)"
-          : level === 10
-            ? "≥10 final wave"
-            : `≥${level}`,
+      waveStepLabel,
       (level, defaultPrev) =>
         level === 1 ? stone10Count : defaultPrev,
-      { minLevel: 1, maxLevel: HUT_LADDER_MAX_LEVEL },
+      { minLevel: 1, maxLevel: ATTACK_WAVE_LADDER_MAX },
     ),
     wooden10Count,
     wooden10WithStone,
@@ -328,7 +353,7 @@ export type HutLadderStepDropChartPoint = {
 
 /**
  * Chart rows as one progression: wooden ≥0..≥10, stone ≥1..≥10, then
- * attack waves ≥1..≥10 (stone ≥0 / wave ≥0 omitted — same baseline as starters).
+ * attack waves ≥1..≥12 (stone ≥0 / wave ≥0 omitted — same baseline as starters).
  */
 export function hutLadderReachChartData(
   funnel: HutLadderFunnel,

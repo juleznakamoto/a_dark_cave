@@ -2007,7 +2007,7 @@
   },
   "tenthWave": {
     "message": "Aus den tiefsten Tiefen der Höhle bricht eine unvorstellbare Masse bleicher Kreaturen hervor. Sie fluten das Land wie eine lebende Flut, während die Stadt sich auf die Vernichtung vorbereitet.",
-    "title": "Die letzte Welle"
+    "title": "Die zehnte Welle"
   },
   "postCompletionWave": {
     "message": "Aus den verborgenen Tiefen der Höhle tauchen immer wieder gedankenlose bleiche Kreaturen auf und stürmen sich ohne Ende auf die Stadt.",
@@ -2751,5 +2751,13 @@
     },
     "message": "Eure Expedition findet ein Bergdorf voll vergifteter Toter. Unter den Leichen liegt ein fast toter Mann, sehr muskulös, doch entstellt, kaum fähig zu sprechen. Er sagt, sie nannten ihn nur den Brutalen Hund. Offenbar hat er dem Gift widerstanden, wenn auch kaum. Er will sich euch anschließen.",
     "title": "Brutaler Hund"
+  },
+  "firstBossWave": {
+    "message": "Eine große Horde bleicher Bestien führt die Belagerung auf die Stadt zu. Ihr Blutdurst ist in jedem ihrer Schritte zu erkennen.",
+    "title": "Die Bosswelle"
+  },
+  "secondBossWave": {
+    "message": "Eine Armee bleicher Bestien versammelt sich vor den Stadtmauern und sammelt sich für einen letzten Sturmangriff auf die Stadt.",
+    "title": "Die letzte Bosswelle"
   }
 }

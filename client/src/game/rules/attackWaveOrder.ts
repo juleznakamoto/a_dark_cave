@@ -8,23 +8,25 @@ export const ATTACK_WAVE_IDS = [
   "thirdWave",
   "fourthWave",
   "fifthWave",
+  "firstBossWave",
   "sixthWave",
   "seventhWave",
   "eighthWave",
   "ninthWave",
   "tenthWave",
+  "secondBossWave",
 ] as const;
 
 export type AttackWaveId = (typeof ATTACK_WAVE_IDS)[number];
 
 export const TOTAL_ATTACK_WAVES = ATTACK_WAVE_IDS.length;
 
-/** Last wave: old sixth-wave combat difficulty lives here; siege-complete unlocks use this victory flag. */
-export const FINAL_ATTACK_WAVE_ID: AttackWaveId = "tenthWave";
+/** Last chart wave; siege-complete unlocks use this victory flag. */
+export const FINAL_ATTACK_WAVE_ID: AttackWaveId = "secondBossWave";
 
 export function isFinalAttackWave(waveId: AttackWaveId): boolean {
   return waveId === FINAL_ATTACK_WAVE_ID;
 }
 
-/** Endless attack waves after game completion (not part of the 10/10 chart). */
+/** Endless attack waves after game completion (not part of the 12/12 chart). */
 export const POST_COMPLETION_ATTACK_WAVE_ID = "postCompletionWave" as const;

@@ -2082,8 +2082,16 @@
     "title": "The Blind Druid returns"
   },
   "tenthWave": {
-    "message": "From the deepest reaches of the cave, an unimaginable mass of pale creatures erupts. They flood over the land like a living tide, as the city braces for annihilation.",
-    "title": "The Final Wave"
+    "message": "From the deepest reaches of the cave, an unimaginable mass of pale creatures erupts. They flood over the land like a living tide, as the city braces for the next assault.",
+    "title": "The Tenth Wave"
+  },
+  "firstBossWave": {
+    "message": "A large pack of pale beasts leads the siege towards the city. Their blood thirst can be seen in every step they take.",
+    "title": "The Boss Wave"
+  },
+  "secondBossWave": {
+    "message": "An army of pale beasts gathers before the city walls, massing for one final assault on the city.",
+    "title": "The Final Boss Wave"
   },
   "postCompletionWave": {
     "message": "From the hidden depths of the cave, mindless pale creatures continue to emerge, assaulting the city without end.",

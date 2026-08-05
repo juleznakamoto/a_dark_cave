@@ -130,6 +130,10 @@ export default function CombatDialog({
     amount: number;
     visible: boolean;
   }>({ amount: 0, visible: false });
+  const [enemyHealIndicator, setEnemyHealIndicator] = useState<{
+    amount: number;
+    visible: boolean;
+  }>({ amount: 0, visible: false });
   const [playerDamageIndicator, setPlayerDamageIndicator] = useState<{
     amount: number;
     visible: boolean;
@@ -146,6 +150,7 @@ export default function CombatDialog({
   const [usedBloodflameSphere, setUsedBloodflameSphere] = useState(false);
   const [usedFeralHowl, setUsedFeralHowl] = useState(false);
   const [enemyStunnedRounds, setEnemyStunnedRounds] = useState(0);
+  const [playerStunned, setPlayerStunned] = useState(false);
   const [enemyHowlRounds, setEnemyHowlRounds] = useState(0);
   const [enemyHowlDamageReduction, setEnemyHowlDamageReduction] = useState(0);
   const [enemyBurnRounds, setEnemyBurnRounds] = useState(0);
@@ -166,10 +171,18 @@ export default function CombatDialog({
   const enemyDamageIndicatorTimeoutRef = useRef<ReturnType<
     typeof setTimeout
   > | null>(null);
+  const enemyHealIndicatorTimeoutRef = useRef<ReturnType<
+    typeof setTimeout
+  > | null>(null);
+  const playerStunTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(
+    null,
+  );
 
   const integrityHealIndicatorTimeoutRef = useRef<ReturnType<
     typeof setTimeout
   > | null>(null);
+
+  const BOSS_STUN_DELAY_MS = 2000;
 
   const showIntegrityDamage = (amount: number, isCritical = false) => {
     if (integrityHealIndicatorTimeoutRef.current) {
@@ -208,6 +221,11 @@ export default function CombatDialog({
   };
 
   const showEnemyDamage = (amount: number) => {
+    if (enemyHealIndicatorTimeoutRef.current) {
+      clearTimeout(enemyHealIndicatorTimeoutRef.current);
+      enemyHealIndicatorTimeoutRef.current = null;
+    }
+    setEnemyHealIndicator({ amount: 0, visible: false });
     if (enemyDamageIndicatorTimeoutRef.current) {
       clearTimeout(enemyDamageIndicatorTimeoutRef.current);
       enemyDamageIndicatorTimeoutRef.current = null;
@@ -220,6 +238,23 @@ export default function CombatDialog({
       setCrushingStrikeFailed(false);
       setFeralHowlFailed(false);
       enemyDamageIndicatorTimeoutRef.current = null;
+    }, 3000);
+  };
+
+  const showEnemyHeal = (amount: number) => {
+    if (enemyDamageIndicatorTimeoutRef.current) {
+      clearTimeout(enemyDamageIndicatorTimeoutRef.current);
+      enemyDamageIndicatorTimeoutRef.current = null;
+    }
+    setEnemyDamageIndicator({ amount: 0, visible: false });
+    if (enemyHealIndicatorTimeoutRef.current) {
+      clearTimeout(enemyHealIndicatorTimeoutRef.current);
+      enemyHealIndicatorTimeoutRef.current = null;
+    }
+    setEnemyHealIndicator({ amount, visible: true });
+    enemyHealIndicatorTimeoutRef.current = setTimeout(() => {
+      setEnemyHealIndicator({ amount: 0, visible: false });
+      enemyHealIndicatorTimeoutRef.current = null;
     }, 3000);
   };
 
@@ -264,6 +299,14 @@ export default function CombatDialog({
         clearTimeout(enemyDamageIndicatorTimeoutRef.current);
         enemyDamageIndicatorTimeoutRef.current = null;
       }
+      if (enemyHealIndicatorTimeoutRef.current) {
+        clearTimeout(enemyHealIndicatorTimeoutRef.current);
+        enemyHealIndicatorTimeoutRef.current = null;
+      }
+      if (playerStunTimeoutRef.current) {
+        clearTimeout(playerStunTimeoutRef.current);
+        playerStunTimeoutRef.current = null;
+      }
     };
   }, []);
 
@@ -282,6 +325,14 @@ export default function CombatDialog({
         clearTimeout(enemyDamageIndicatorTimeoutRef.current);
         enemyDamageIndicatorTimeoutRef.current = null;
       }
+      if (enemyHealIndicatorTimeoutRef.current) {
+        clearTimeout(enemyHealIndicatorTimeoutRef.current);
+        enemyHealIndicatorTimeoutRef.current = null;
+      }
+      if (playerStunTimeoutRef.current) {
+        clearTimeout(playerStunTimeoutRef.current);
+        playerStunTimeoutRef.current = null;
+      }
       setCombatStarted(false);
       setCurrentEnemy({ ...enemy });
       setRound(1);
@@ -291,6 +342,7 @@ export default function CombatDialog({
       setCombatEnded(false);
       setCombatResult(null);
       setEnemyDamageIndicator({ amount: 0, visible: false });
+      setEnemyHealIndicator({ amount: 0, visible: false });
       setPlayerDamageIndicator({ amount: 0, visible: false });
       setIntegrityDamageIndicator({ amount: 0, visible: false });
       setIntegrityHealIndicator({ amount: 0, visible: false });
@@ -298,6 +350,7 @@ export default function CombatDialog({
       setUsedBloodflameSphere(false);
       setUsedFeralHowl(false);
       setEnemyStunnedRounds(0);
+      setPlayerStunned(false);
       setEnemyHowlRounds(0);
       setEnemyHowlDamageReduction(0);
       setEnemyBurnRounds(0);
@@ -419,7 +472,7 @@ export default function CombatDialog({
   };
 
   const handleUseCrushingStrike = () => {
-    if (usedCrushingStrike || isProcessingRound) return;
+    if (usedCrushingStrike || isProcessingRound || playerStunned) return;
 
     const level = crushingStrikeLevel || 0;
     const config = CRUSHING_STRIKE_UPGRADES[level];
@@ -465,7 +518,7 @@ export default function CombatDialog({
   };
 
   const handleUseBloodflameSphere = () => {
-    if (usedBloodflameSphere || isProcessingRound) return;
+    if (usedBloodflameSphere || isProcessingRound || playerStunned) return;
 
     const level = bloodflameSphereLevel || 0;
     const config = BLOODFLAME_SPHERE_UPGRADES[level];
@@ -514,7 +567,7 @@ export default function CombatDialog({
   };
 
   const handleUseFeralHowl = () => {
-    if (usedFeralHowl || isProcessingRound) return;
+    if (usedFeralHowl || isProcessingRound || playerStunned) return;
 
     const level = feralHowlLevel || 0;
     const config = FERAL_HOWL_UPGRADES[level];
@@ -651,13 +704,52 @@ export default function CombatDialog({
     onClose();
   };
 
+  /** Apply one enemy attack against bastion integrity. Returns false if defeat. */
+  const resolveEnemyAttack = (
+    enemyForAttack: Enemy,
+    integrityNow: number,
+    howlReduction: number,
+  ): { integrity: number; defeated: boolean } => {
+    const enemyCritChance =
+      calculateEnemyCriticalChancePercent(
+        enemyForAttack.waveNumber ?? 1,
+        Boolean(gameState.cruelMode),
+      ) / 100;
+    const isEnemyCritical = Math.random() < enemyCritChance;
+    let enemyAttackPower = isEnemyCritical
+      ? Math.floor(enemyForAttack.attack * CRITICAL_STRIKE_DAMAGE_MULTIPLIER)
+      : enemyForAttack.attack;
+    if (howlReduction > 0) {
+      enemyAttackPower = Math.floor(
+        enemyAttackPower * (1 - howlReduction / 100),
+      );
+    }
+
+    if (enemyAttackPower > bastionStats.defense) {
+      const integrityDamage = enemyAttackPower - bastionStats.defense;
+      const newIntegrityValue = Math.max(0, integrityNow - integrityDamage);
+      setCurrentIntegrity(newIntegrityValue);
+      showIntegrityDamage(integrityDamage, isEnemyCritical);
+      if (newIntegrityValue <= 0) {
+        setCombatEnded(true);
+        setCombatResult("defeat");
+        setPlayerStunned(false);
+        setIsProcessingRound(false);
+        return { integrity: newIntegrityValue, defeated: true };
+      }
+      return { integrity: newIntegrityValue, defeated: false };
+    }
+
+    setWasEnemyCriticalStrike(false);
+    return { integrity: integrityNow, defeated: false };
+  };
+
   const handleFight = () => {
-    if (!currentEnemy || isProcessingRound) return;
+    if (!currentEnemy || isProcessingRound || playerStunned) return;
 
     setIsProcessingRound(true);
 
     let currentEnemyHealth = currentEnemy.currentHealth;
-    let integrityDamage = 0;
     let playerDamage = bastionStats.attack;
     let poisonDamageDealt = 0;
     let burnDamageDealt = 0;
@@ -717,49 +809,91 @@ export default function CombatDialog({
       setEnemyHowlRounds((prev) => Math.max(0, prev - 1));
     }
 
+    let integrityAfterEnemy = currentIntegrity;
     if (enemyStunnedRounds > 0) {
       // Enemy is stunned, skip attack and decrement stun counter
       setEnemyStunnedRounds((prev) => Math.max(0, prev - 1));
       setWasEnemyCriticalStrike(false);
     } else {
-      const enemyCritChance =
-        calculateEnemyCriticalChancePercent(
-          currentEnemy.waveNumber ?? 1,
-          Boolean(gameState.cruelMode),
-        ) / 100;
-      const isEnemyCritical = Math.random() < enemyCritChance;
-      let enemyAttackPower = isEnemyCritical
-        ? Math.floor(
-          currentEnemy.attack * CRITICAL_STRIKE_DAMAGE_MULTIPLIER,
-        )
-        : currentEnemy.attack;
-      if (howlReduction > 0) {
-        enemyAttackPower = Math.floor(
-          enemyAttackPower * (1 - howlReduction / 100),
+      const attackResult = resolveEnemyAttack(
+        currentEnemy,
+        integrityAfterEnemy,
+        howlReduction,
+      );
+      if (attackResult.defeated) return;
+      integrityAfterEnemy = attackResult.integrity;
+    }
+
+    // Boss heal roll (after enemy attack, before player attack)
+    if (
+      (currentEnemy.healChancePercent ?? 0) > 0 &&
+      (currentEnemy.healAmount ?? 0) > 0 &&
+      Math.random() < (currentEnemy.healChancePercent ?? 0) / 100
+    ) {
+      const healed = Math.min(
+        currentEnemy.maxHealth,
+        currentEnemyHealth + (currentEnemy.healAmount ?? 0),
+      );
+      const healAmount = healed - currentEnemyHealth;
+      if (healAmount > 0) {
+        currentEnemyHealth = healed;
+        showEnemyHeal(healAmount);
+        setCurrentEnemy((prev) =>
+          prev ? { ...prev, currentHealth: healed } : null,
         );
       }
+    }
 
-      if (enemyAttackPower > bastionStats.defense) {
-        integrityDamage = enemyAttackPower - bastionStats.defense;
-        const newIntegrityValue = Math.max(
-          0,
-          currentIntegrity - integrityDamage,
-        );
-        setCurrentIntegrity(newIntegrityValue);
+    // Boss stun roll: skip player attack, lock actions, delay next enemy attack
+    const stunLanded =
+      (currentEnemy.stunChancePercent ?? 0) > 0 &&
+      Math.random() < (currentEnemy.stunChancePercent ?? 0) / 100;
 
-        // Show damage indicator on integrity bar
-        showIntegrityDamage(integrityDamage, isEnemyCritical);
+    if (stunLanded) {
+      const dotOnly = poisonDamageDealt + burnDamageDealt;
+      const newHealth = Math.max(0, currentEnemyHealth - dotOnly);
+      currentEnemyHealth = newHealth;
+      if (dotOnly > 0) {
+        showEnemyDamage(dotOnly);
+      }
+      setCurrentEnemy((prev) =>
+        prev ? { ...prev, currentHealth: newHealth } : null,
+      );
+      setPlayerStunned(true);
+      setPlayerStrikeFailed(true);
 
-        // Check if integrity is depleted
-        if (newIntegrityValue <= 0) {
-          setCombatEnded(true);
-          setCombatResult("defeat");
+      if (newHealth <= 0) {
+        setCombatEnded(true);
+        setCombatResult("victory");
+        setPlayerStunned(false);
+        setIsProcessingRound(false);
+        return;
+      }
+
+      if (playerStunTimeoutRef.current) {
+        clearTimeout(playerStunTimeoutRef.current);
+      }
+      const stunnedEnemySnapshot = { ...currentEnemy, currentHealth: newHealth };
+      playerStunTimeoutRef.current = setTimeout(() => {
+        playerStunTimeoutRef.current = null;
+        setCurrentIntegrity((integrityNow) => {
+          const delayed = resolveEnemyAttack(
+            stunnedEnemySnapshot,
+            integrityNow,
+            0,
+          );
+          if (delayed.defeated) {
+            return delayed.integrity;
+          }
+          setRound((r) => r + 1);
+          setUsedItemsInRound(new Set());
+          setPlayerStunned(false);
+          setPlayerStrikeFailed(false);
           setIsProcessingRound(false);
-          return;
-        }
-      } else {
-        setWasEnemyCriticalStrike(false);
-      }
+          return delayed.integrity;
+        });
+      }, BOSS_STUN_DELAY_MS);
+      return;
     }
 
     // Player attacks
@@ -880,6 +1014,19 @@ export default function CombatDialog({
             },
           ]
           : []),
+        ...(combatSummary.madnessGain !== undefined &&
+          combatSummary.madnessGain !== 0
+          ? [
+            {
+              key: "madness",
+              text: t("ui:madness.change", {
+                sign: combatSummary.madnessGain > 0 ? "+" : "-",
+                amount: formatNumber(Math.abs(combatSummary.madnessGain)),
+              }),
+              className: "text-violet-300 text-sm",
+            },
+          ]
+          : []),
       ]
       : [];
   const victoryButtonDelay =
@@ -992,7 +1139,9 @@ export default function CombatDialog({
               <div className="relative -m-6 p-6 min-h-full">
                 <DialogHeader>
                   <DialogTitle className="pr-0 text-lg font-semibold">
-                    {t("ui:combat.roundTitle", { round })}
+                    {currentEnemy?.isBoss
+                      ? t("ui:combat.bossRoundTitle", { round })
+                      : t("ui:combat.roundTitle", { round })}
                   </DialogTitle>
                 </DialogHeader>
 
@@ -1094,58 +1243,126 @@ export default function CombatDialog({
                       />
                       {enemyDamageIndicator.visible && (
                         <div className="absolute -translate-y-5 inset-0 flex items-center justify-center text-red-900 font-bold text-sm pointer-events-none">
-                          {playerStrikeFailed ||
-                            crushingStrikeFailed ||
-                            feralHowlFailed ? (
-                            enemyDamageIndicator.amount > 0 ? (
-                              <>
-                                -{formatNumber(enemyDamageIndicator.amount)} (
-                                {playerStrikeFailed
-                                  ? t("ui:combat.attackFailed")
-                                  : crushingStrikeFailed
-                                    ? t("ui:combat.crushingStrikeFailed")
-                                    : t("ui:combat.feralHowlFailed")}
-                                )
-                              </>
-                            ) : playerStrikeFailed ? (
-                              t("ui:combat.attackFailed")
-                            ) : crushingStrikeFailed ? (
-                              t("ui:combat.crushingStrikeFailed")
+                          {playerStunned && enemyDamageIndicator.amount === 0
+                            ? t("ui:combat.stunned")
+                            : playerStrikeFailed ||
+                                crushingStrikeFailed ||
+                                feralHowlFailed ? (
+                              enemyDamageIndicator.amount > 0 ? (
+                                <>
+                                  -{formatNumber(enemyDamageIndicator.amount)} (
+                                  {playerStunned
+                                    ? t("ui:combat.stunned")
+                                    : playerStrikeFailed
+                                      ? t("ui:combat.attackFailed")
+                                      : crushingStrikeFailed
+                                        ? t("ui:combat.crushingStrikeFailed")
+                                        : t("ui:combat.feralHowlFailed")}
+                                  )
+                                </>
+                              ) : playerStunned ? (
+                                t("ui:combat.stunned")
+                              ) : playerStrikeFailed ? (
+                                t("ui:combat.attackFailed")
+                              ) : crushingStrikeFailed ? (
+                                t("ui:combat.crushingStrikeFailed")
+                              ) : (
+                                t("ui:combat.feralHowlFailed")
+                              )
                             ) : (
-                              t("ui:combat.feralHowlFailed")
-                            )
-                          ) : (
-                            <>
-                              -{formatNumber(enemyDamageIndicator.amount)}
-                              {wasCriticalStrike &&
-                                ` (${t("ui:combat.critical")})`}
-                            </>
-                          )}
+                              <>
+                                -{formatNumber(enemyDamageIndicator.amount)}
+                                {wasCriticalStrike &&
+                                  ` (${t("ui:combat.critical")})`}
+                              </>
+                            )}
                         </div>
                       )}
+                      {enemyHealIndicator.visible && (
+                        <div className="absolute -translate-y-5 inset-0 flex items-center justify-center text-green-400 font-bold text-sm pointer-events-none">
+                          +{formatNumber(enemyHealIndicator.amount)}
+                        </div>
+                      )}
+                      {playerStunned &&
+                        !enemyDamageIndicator.visible &&
+                        !enemyHealIndicator.visible && (
+                          <div className="absolute -translate-y-5 inset-0 flex items-center justify-center text-yellow-500 font-bold text-sm pointer-events-none">
+                            {t("ui:combat.stunned")}
+                          </div>
+                        )}
                     </div>
-                    <TooltipWrapper
-                      tooltip={
-                        <span className="text-gray-400">
-                          {t("ui:combat.attack")}
-                        </span>
-                      }
-                      tooltipId="combat-enemy-attack-symbol"
-                      disabled
-                      className="inline-block"
-                    >
-                      <div className={cn(COMBAT_STAT_ROW_CLASS, "mt-2")}>
-                        <span
-                          className={cn(
-                            COMBAT_STAT_ICON_CLASS,
-                            "text-red-400/60",
-                          )}
+                    <div className={cn(COMBAT_STAT_ROW_CLASS, "mt-2 gap-3")}>
+                      <TooltipWrapper
+                        tooltip={
+                          <span className="text-gray-400">
+                            {t("ui:combat.attack")}
+                          </span>
+                        }
+                        tooltipId="combat-enemy-attack-symbol"
+                        disabled
+                        className="inline-block"
+                      >
+                        <div className={COMBAT_STAT_ROW_CLASS}>
+                          <span
+                            className={cn(
+                              COMBAT_STAT_ICON_CLASS,
+                              "text-red-400/60",
+                            )}
+                          >
+                            ⟐
+                          </span>
+                          <span>{formatNumber(currentEnemy?.attack ?? 0)}</span>
+                        </div>
+                      </TooltipWrapper>
+                      {(currentEnemy?.healChancePercent ?? 0) > 0 && (
+                        <TooltipWrapper
+                          tooltip={
+                            <span className="text-gray-400">
+                              {t("ui:combat.healChance")}
+                            </span>
+                          }
+                          tooltipId="combat-enemy-heal-chance"
+                          disabled
+                          className="inline-block"
                         >
-                          ⟐
-                        </span>
-                        <span>{formatNumber(currentEnemy?.attack ?? 0)}</span>
-                      </div>
-                    </TooltipWrapper>
+                          <div className={COMBAT_STAT_ROW_CLASS}>
+                            <span
+                              className={cn(
+                                COMBAT_STAT_ICON_CLASS,
+                                "text-green-400",
+                              )}
+                            >
+                              🟂
+                            </span>
+                            <span>{currentEnemy?.healChancePercent}%</span>
+                          </div>
+                        </TooltipWrapper>
+                      )}
+                      {(currentEnemy?.stunChancePercent ?? 0) > 0 && (
+                        <TooltipWrapper
+                          tooltip={
+                            <span className="text-gray-400">
+                              {t("ui:combat.stunChance")}
+                            </span>
+                          }
+                          tooltipId="combat-enemy-stun-chance"
+                          disabled
+                          className="inline-block"
+                        >
+                          <div className={COMBAT_STAT_ROW_CLASS}>
+                            <span
+                              className={cn(
+                                COMBAT_STAT_ICON_CLASS,
+                                "text-yellow-400",
+                              )}
+                            >
+                              🟄
+                            </span>
+                            <span>{currentEnemy?.stunChancePercent}%</span>
+                          </div>
+                        </TooltipWrapper>
+                      )}
+                    </div>
                   </div>
 
                   {/* Player Stats */}

@@ -15,8 +15,15 @@ export interface Enemy {
   attack: number;
   maxHealth: number;
   currentHealth: number;
-  /** Attack wave number (1–10 chart, 11+ post-completion). Used for enemy crit chance. */
+  /** Attack wave number (1–12 chart, 13+ post-completion). Used for enemy crit chance. */
   waveNumber?: number;
+  /** Boss waves: chance to heal each Fight round. */
+  healChancePercent?: number;
+  healAmount?: number;
+  /** Boss waves: chance to stun the player (locks actions + delayed next attack). */
+  stunChancePercent?: number;
+  /** When true, combat UI uses Boss Fight / Pale Beasts labels. */
+  isBoss?: boolean;
 }
 
 export interface CombatItem {

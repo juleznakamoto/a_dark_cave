@@ -112,7 +112,7 @@ describe("merchant post-last-wave totem buys", () => {
     const state = gameStateSchema.parse({
       buildings: { woodenHut: 10, stoneHut: 8, tradePost: 1 },
       resources: { gold: 50_000 },
-      story: { seen: { tenthWaveVictory: true } },
+      story: { seen: { secondBossWaveVictory: true } },
     });
 
     expect(
@@ -161,7 +161,7 @@ describe("merchant post-last-wave totem buys", () => {
     const state = gameStateSchema.parse({
       buildings: { woodenHut: 10, stoneHut: 8, tradePost: 1 },
       resources: { gold: 50_000, bone_totem: 0 },
-      story: { seen: { tenthWaveVictory: true } },
+      story: { seen: { secondBossWaveVictory: true } },
     });
 
     const trade = {
@@ -234,7 +234,7 @@ describe("merchant post-last-wave clarity elixir", () => {
       buildings: { woodenHut: 10, stoneHut: 8, tradePost: 1 },
       resources: { gold: 50_000 },
       stats: { madnessFromEvents: 0 },
-      story: { seen: { tenthWaveVictory: true, clarityElixirsUsed: 4 } },
+      story: { seen: { secondBossWaveVictory: true, clarityElixirsUsed: 4 } },
     });
 
     expect(
@@ -257,7 +257,7 @@ describe("merchant post-last-wave clarity elixir", () => {
       buildings: { woodenHut: 10, stoneHut: 8, tradePost: 1 },
       resources: { gold: 50_000 },
       stats: { madnessFromEvents: 5 },
-      story: { seen: { tenthWaveVictory: true, clarityElixirsUsed: 5 } },
+      story: { seen: { secondBossWaveVictory: true, clarityElixirsUsed: 5 } },
     });
 
     expect(getClarityElixirsUsedCount(state)).toBe(5);

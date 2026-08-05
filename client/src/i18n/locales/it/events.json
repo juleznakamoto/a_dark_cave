@@ -1989,7 +1989,7 @@
   },
   "tenthWave": {
     "message": "Dalle profondità più recondite della caverna, erompe una massa inimmaginabile di creature pallide. Si riversano sulla terra come una marea vivente, mentre la città si prepara all'annientamento.",
-    "title": "L'Ondata Finale"
+    "title": "La Decima Ondata"
   },
   "postCompletionWave": {
     "message": "Dalle profondità nascoste della caverna, creature pallide senza mente continuano a emergere, assaltando la città senza fine.",
@@ -2751,5 +2751,13 @@
     },
     "message": "La vostra spedizione trova un villaggio di montagna pieno di morti avvelenati. Tra i corpi giace un uomo quasi morto, molto muscoloso ma sfigurato, a malapena capace di parlare. Dice che lo chiamavano solo il Segugio Bruto. Sembra aver resistito al veleno, anche se a stento. Vuole unirsi a voi.",
     "title": "Segugio Bruto"
+  },
+  "firstBossWave": {
+    "message": "Un grande branco di bestie pallide guida l'assedio verso la città. La loro sete di sangue si vede in ogni passo.",
+    "title": "L'Ondata del Boss"
+  },
+  "secondBossWave": {
+    "message": "Un esercito di bestie pallide si raduna davanti alle mura, pronto a un assalto finale sulla città.",
+    "title": "L'Ondata Finale del Boss"
   }
 }

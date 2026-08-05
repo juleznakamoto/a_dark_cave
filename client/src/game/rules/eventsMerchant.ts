@@ -140,7 +140,7 @@ const TIER_CONDITIONS = {
   end: (state: GameState) => state.buildings.stoneHut >= 7,
   /** After the final chart attack wave (wave 10) is won. */
   postLastWave: (state: GameState) =>
-    Boolean(state.story?.seen?.tenthWaveVictory),
+    Boolean(state.story?.seen?.secondBossWaveVictory),
 };
 
 const POST_LAST_WAVE_BUY_TRADE_IDS = new Set([

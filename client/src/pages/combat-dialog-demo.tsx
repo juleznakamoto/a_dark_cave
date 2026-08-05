@@ -85,7 +85,13 @@ export default function CombatDialogDemo() {
   const [config, setConfig] = useState<CombatDemoConfig>(
     COMBAT_DEMO_DEFAULT_CONFIG,
   );
-  const [enemyPreset, setEnemyPreset] = useState<EnemyPresetId>("training");
+  const [enemyPreset, setEnemyPreset] = useState<EnemyPresetId>(() => {
+    if (typeof window === "undefined") return "training";
+    const param = new URLSearchParams(window.location.search).get("enemy");
+    return param && param in ENEMY_PRESETS
+      ? (param as EnemyPresetId)
+      : "training";
+  });
   const [dialogOpen, setDialogOpen] = useState(false);
   const [dialogKey, setDialogKey] = useState(0);
 
@@ -94,6 +100,17 @@ export default function CombatDialogDemo() {
     mountNotoSansSymbols2FontFace();
     applyDemoConfigToStore(COMBAT_DEMO_DEFAULT_CONFIG);
   }, []);
+
+  useEffect(() => {
+    if (!import.meta.env.DEV) return;
+    const url = new URL(window.location.href);
+    if (enemyPreset === "training") {
+      url.searchParams.delete("enemy");
+    } else {
+      url.searchParams.set("enemy", enemyPreset);
+    }
+    window.history.replaceState(null, "", url.toString());
+  }, [enemyPreset]);
 
   const openCombatDialog = useCallback(() => {
     patchDemoConfigOnStore(config);

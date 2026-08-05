@@ -2007,7 +2007,7 @@
   },
   "tenthWave": {
     "message": "Des profondeurs les plus reculées de la grotte, une masse inimaginable de créatures pâles jaillit. Elles inondent la terre comme une marée vivante, tandis que la cité se prépare à l'anéantissement.",
-    "title": "La dernière vague"
+    "title": "La dixième vague"
   },
   "postCompletionWave": {
     "message": "Des profondeurs cachées de la grotte, des créatures pâles sans esprit continuent d'émerger, assaillant la cité sans fin.",
@@ -2751,5 +2751,13 @@
     },
     "message": "Votre expédition trouve un village de montagne rempli de morts empoisonnés. Parmi les corps gît un homme presque mort, très musclé mais défiguré, à peine capable de parler. Il dit qu'on l'appelait juste le Chien Brutal. Il semble avoir résisté au poison, même de justesse. Il veut se joindre à vous.",
     "title": "Chien Brutal"
+  },
+  "firstBossWave": {
+    "message": "Une grande meute de bêtes pâles mène le siège vers la cité. Leur soif de sang se lit dans chacun de leurs pas.",
+    "title": "La vague boss"
+  },
+  "secondBossWave": {
+    "message": "Une armée de bêtes pâles se rassemble devant les remparts, massée pour un dernier assaut sur la cité.",
+    "title": "La vague boss finale"
   }
 }

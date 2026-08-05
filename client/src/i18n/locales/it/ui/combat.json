@@ -31,7 +31,8 @@
     "critDamage": "+{{percent}}% di danno da colpo critico",
     "missChance": "{{percent}}% di probabilità di mancare (basata su {{stat}})",
     "enemies": {
-      "paleCreatures": "Creature Pallide"
+      "paleCreatures": "Creature Pallide",
+      "paleBeasts": "Bestie pallide"
     },
     "restlessKnightWounded": "Il Cavaliere Inquieto è ferito e non può combattere",
     "elderWizardWounded": "Il Vecchio Mago è ferito e non può lanciare incantesimi",
@@ -41,7 +42,13 @@
     "fellowInjured": "{{name}} è rimasto ferito.",
     "buildingDamaged": "{{name}} è stato danneggiato.",
     "silverClaimed": "{{amount}} Argento ottenuto.",
-    "goldClaimed": "{{amount}} Oro ottenuto."
+    "goldClaimed": "{{amount}} Oro ottenuto.",
+    "bossRoundTitle": "Scontro col Boss – Round {{round}}",
+    "bossTitle": "Scontro col Boss",
+    "healChance": "Probabilità di cura",
+    "stunChance": "Probabilità di stordimento",
+    "stunned": "Stordito",
+    "enemyHealed": "Curato"
   },
   "bastion": {
     "heal": "Cura",
@@ -65,7 +72,9 @@
       "seventhWave": "Settima Ondata",
       "eighthWave": "Ottava Ondata",
       "ninthWave": "Nona Ondata",
-      "tenthWave": "Decima Ondata"
+      "tenthWave": "Decima Ondata",
+      "firstBossWave": "Ondata del Boss",
+      "secondBossWave": "Ondata Finale del Boss"
     }
   },
   "fortifications": {

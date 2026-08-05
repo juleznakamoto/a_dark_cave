@@ -31,7 +31,8 @@
     "critDamage": "+{{percent}} % урона критического удара",
     "missChance": "{{percent}} % шанс промаха (из‑за {{stat}})",
     "enemies": {
-      "paleCreatures": "Бледные твари"
+      "paleCreatures": "Бледные твари",
+      "paleBeasts": "Бледные звери"
     },
     "restlessKnightWounded": "Беспокойный рыцарь ранен и не может сражаться",
     "elderWizardWounded": "Старший маг ранен и не может колдовать",
@@ -41,7 +42,13 @@
     "fellowInjured": "{{name}} получил ранение.",
     "buildingDamaged": "{{name}} повреждено.",
     "silverClaimed": "Получено серебра: {{amount}}.",
-    "goldClaimed": "Получено золота: {{amount}}."
+    "goldClaimed": "Получено золота: {{amount}}.",
+    "bossRoundTitle": "Бой с боссом – Раунд {{round}}",
+    "bossTitle": "Бой с боссом",
+    "healChance": "Шанс лечения",
+    "stunChance": "Шанс оглушения",
+    "stunned": "Оглушён",
+    "enemyHealed": "Исцелён"
   },
   "bastion": {
     "heal": "Лечение",
@@ -65,7 +72,9 @@
       "seventhWave": "Седьмая волна",
       "eighthWave": "Восьмая волна",
       "ninthWave": "Девятая волна",
-      "tenthWave": "Десятая волна"
+      "tenthWave": "Десятая волна",
+      "firstBossWave": "Волна босса",
+      "secondBossWave": "Финальная волна босса"
     }
   },
   "fortifications": {
