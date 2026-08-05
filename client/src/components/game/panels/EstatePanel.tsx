@@ -499,7 +499,7 @@ export default function EstatePanel() {
                       className="text-teal-400"
                     />
                     <span
-                      className={`${GAME_PANEL_HEADER_INDICATOR_GLYPH_CLASS} game-panel-header-indicator-glyph--sm text-teal-400`}
+                      className={`${GAME_PANEL_HEADER_INDICATOR_GLYPH_CLASS} game-panel-header-indicator-glyph--sm mt-[1px] text-teal-400`}
                     >
                       ☩
                     </span>
