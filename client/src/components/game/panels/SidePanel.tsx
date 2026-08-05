@@ -285,6 +285,14 @@ export default function SidePanel() {
         return false;
       }
 
+      // Filter out mountain village map after the expedition
+      if (
+        key === "mountain_village_map" &&
+        gameState.story?.seen?.mountainVillageExplored
+      ) {
+        return false;
+      }
+
       return true;
     })
     .map(([key, value]) => ({

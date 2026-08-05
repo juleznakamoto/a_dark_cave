@@ -1199,6 +1199,40 @@ export const villageBuildActions: Record<string, Action> = {
     cooldown: 0,
   },
 
+  buildHerbGarden: {
+    id: "buildHerbGarden",
+    label: "Herb Garden",
+    description:
+      "Cultivated beds of useful plants, carefully tended for their many uses.",
+    tooltipEffects: [
+      bt("gathererVeinroot", "Gatherer: +{{amount}} Veinroot", { amount: 2 }),
+    ],
+    building: true,
+    show_when: {
+      1: {
+        "story.seen.herbGardenUnlocked": true,
+        "buildings.herbGarden": 0,
+      },
+    },
+    cost: {
+      1: {
+        "resources.wood": 10000,
+      },
+    },
+    effects: {
+      1: {
+        "buildings.herbGarden": 1,
+      },
+    },
+    productionEffects: {
+      gatherer: {
+        veinroot: 2,
+      },
+    },
+    executionTime: 120,
+    cooldown: 0,
+  },
+
   buildBoneTemple: {
     id: "buildBoneTemple",
     label: "Bone Temple",

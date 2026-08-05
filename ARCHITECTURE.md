@@ -141,7 +141,7 @@ shared/schema.tsâ€” Zod GameState schema (source of truth for persisted sha
   (`caveLogFallbacks.ts`, `caveExploreActions.ts`, `villageBuildActions.ts`, `forestSacrificeActions.ts`,
   `forestResearchActions.ts`, `bastionActions.ts`, â€¦), `index.ts` (visibility/affordability + `allEvents`), effects
   (`actionEffects.ts`, `effectsCalculation.ts`, `bonusComposition.ts` (side-panel bonus source breakdown), `costCalculation.ts`), events (`events.ts`
-  â†’ `EventManager`, `LogEntry`, plus topic files `events*.ts` incl. `eventsWanderingCollector.ts` / `collectorRejectedItems.ts` â€” wandering collector buy/sell timed tab + rejected-item tracking; `eventsChainmaster.ts` â€” Leatherbound Book discovery + collector timed tab; `eventsInsightBlessings.ts` / `insightBlessings.ts` â€” Insight-paid blessing timed tab + 3-card offer), `insightReveal.ts` /
+  â†’ `EventManager`, `LogEntry`, plus topic files `events*.ts` incl. `eventsLadyMountains.ts` â€” DEV-only Lady/Liquid Death/Man/night attack + The Hound fellowship; `eventsWanderingCollector.ts` / `collectorRejectedItems.ts` â€” wandering collector buy/sell timed tab + rejected-item tracking; `eventsChainmaster.ts` â€” Leatherbound Book discovery + collector timed tab; `eventsInsightBlessings.ts` / `insightBlessings.ts` â€” Insight-paid blessing timed tab + 3-card offer), `insightReveal.ts` /
   `insightRevealTooltip.tsx` (bulk building/craft description unlock via header insight badges;
   per-action reveal removed), `actionTooltipLayout.tsx` (`composeActionTooltip` â€” cost,
   description, revealed effects), `focusTooltipIndicator.tsx` (focus `â˜©` icon on eligible action

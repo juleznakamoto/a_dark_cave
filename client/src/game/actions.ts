@@ -147,6 +147,7 @@ import {
   handleBuildBlackEstate,
   handleBuildPillarOfClarity,
   handleBuildBoneyard,
+  handleBuildHerbGarden,
   handleBuildBoneTemple,
   handleBuildPaleCross,
   handleBuildStorageRoom,
@@ -178,6 +179,8 @@ import {
   handleRisingSmoke,
   handleBanditLair,
   handleCanyonBridge,
+  handleSearchMountainLady,
+  handleExploreMountainVillage,
 } from "@/game/rules/forestScoutActions";
 
 import {
@@ -634,6 +637,8 @@ export function executeGameAction(
       return handleBuildPillarOfClarity(state, result);
     case "buildBoneyard":
       return handleBuildBoneyard(state, result);
+    case "buildHerbGarden":
+      return handleBuildHerbGarden(state, result);
     case "buildBoneTemple":
       return handleBuildBoneTemple(state, result);
     case "buildPaleCross":
@@ -694,6 +699,10 @@ export function executeGameAction(
       return handleBanditLair(state, result);
     case "canyonBridge":
       return handleCanyonBridge(state, result);
+    case "searchMountainLady":
+      return handleSearchMountainLady(state, result);
+    case "exploreMountainVillage":
+      return handleExploreMountainVillage(state, result);
 
     // Forest Sacrifice Actions
     case "boneTotems":

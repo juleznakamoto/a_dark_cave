@@ -1239,6 +1239,18 @@ export function handleBuildBoneyard(
   );
 }
 
+export function handleBuildHerbGarden(
+  state: GameState,
+  result: ActionResult,
+): ActionResult {
+  return handleBuildingConstruction(
+    state,
+    result,
+    "buildHerbGarden",
+    "herbGarden",
+  );
+}
+
 export function handleBuildBoneTemple(
   state: GameState,
   result: ActionResult,

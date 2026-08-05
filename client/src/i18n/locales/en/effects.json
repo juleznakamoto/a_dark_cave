@@ -367,6 +367,10 @@
     "restless_knight": {
       "description": "Veteran of combat who has seen the remnants of the old world. Unlocks combat skill Crushing Strike.",
       "name": "Restless Knight"
+    },
+    "the_hound": {
+      "description": "A muscular, disfigured survivor from a poisoned mountain village. His strengths are not yet known.",
+      "name": "The Hound"
     }
   },
   "tools": {
@@ -449,6 +453,10 @@
     "occultist_map": {
       "description": "Time-worn map revealing the chamber of an occultist in the cave",
       "name": "Occultist Map"
+    },
+    "mountain_village_map": {
+      "description": "Crude map marked with a path into the high passes, toward a mountain village.",
+      "name": "Mountain Village Map"
     },
     "reinforced_rope": {
       "description": "Strong rope that enables access to deeper cave chambers",

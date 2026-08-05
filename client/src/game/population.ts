@@ -201,6 +201,17 @@ export const getPopulationProduction = (
     totalAmount: prod.amount * count,
   }));
 
+  // Unlock-gated job resources must exist before building productionEffects apply
+  if (state && jobId === "gatherer" && state.story?.seen?.veinrootDiscovered) {
+    baseProduction.push({
+      resource: "veinroot",
+      amount: 1,
+      interval: 15000,
+      baseAmount: 1,
+      totalAmount: 1 * count,
+    });
+  }
+
   // Apply building production bonuses
   if (state?.buildings) {
     baseProduction.forEach((prod) => {
@@ -325,7 +336,7 @@ export const getPopulationProduction = (
     });
   }
 
-  // Hunter job bonuses (skills, tools, veinroot unlock)
+  // Hunter job bonuses (skills, tools)
   if (state && jobId === "hunter") {
     const huntingSkillLevel = state.huntingSkills?.level || 0;
     const skillBonus = HUNTING_SKILL_BONUSES[huntingSkillLevel];
@@ -354,16 +365,6 @@ export const getPopulationProduction = (
         if (prod.resource === "fur" || prod.resource === "bones") {
           prod.totalAmount += 1 * count; // +1 fur and +1 bones per hunter
         }
-      });
-    }
-
-    if (state.story?.seen?.veinrootDiscovered) {
-      baseProduction.push({
-        resource: "veinroot",
-        amount: 1,
-        interval: 15000,
-        baseAmount: 1,
-        totalAmount: count,
       });
     }
   }

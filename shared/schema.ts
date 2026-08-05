@@ -26,6 +26,7 @@ const fellowshipShape = {
   elder_wizard: z.boolean().default(false),
   one_eyed_crow: z.boolean().default(false),
   disgraced_prior: z.boolean().default(false),
+  the_hound: z.boolean().default(false),
 };
 
 /** Canonical order of fellowship members for UI display. */
@@ -139,6 +140,7 @@ export const gameStateSchema = z.object({
       giant_trap: z.boolean().default(false),
       occultist_map: z.boolean().default(false),
       hidden_library_map: z.boolean().default(false),
+      mountain_village_map: z.boolean().default(false),
       mastermason_chisel: z.boolean().default(false),
       skeleton_key: z.boolean().default(false),
       crow_harness: z.boolean().default(false),
@@ -322,6 +324,7 @@ export const gameStateSchema = z.object({
       blackMonolith: z.number().default(0),
       boneTemple: z.number().default(0),
       boneyard: z.number().default(0),
+      herbGarden: z.number().default(0),
       paleCross: z.number().default(0),
       consecratedPaleCross: z.number().default(0),
       pillarOfClarity: z.number().default(0),

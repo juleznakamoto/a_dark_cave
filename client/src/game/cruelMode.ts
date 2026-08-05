@@ -208,6 +208,14 @@ export const CRUEL_MODE = {
     failureCasualties: { randMax: 5, base: 1, whenCruel: 3 },
   },
 
+  /** Lady from the Mountains event chain (DEV-only content). */
+  ladyMountains: {
+    liquidDeathFloor: { base: 34, whenCruel: 12 },
+    thirstDeaths: { base: 8, whenCruel: 6 },
+    nightAttackDeaths: { base: 18, whenCruel: 8 },
+    ambushDeaths: { base: 14, whenCruel: 8 },
+  },
+
   slaveTrader: {
     freeSlavesSuccess: { base: 0.5, perStrength: 0.01, whenCruel: 0.1 },
     failDeaths: { randMax: 2, base: 1, whenCruel: 1 },

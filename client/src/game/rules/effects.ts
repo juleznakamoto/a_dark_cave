@@ -348,6 +348,16 @@ export const toolEffects: Record<string, EffectDefinition> = {
     },
   },
 
+  mountain_village_map: {
+    id: "mountain_village_map",
+    name: "Mountain Village Map",
+    description:
+      "Crude map marked with a path into the high passes, toward a mountain village.",
+    bonuses: {
+      actionBonuses: {},
+    },
+  },
+
   giant_trap: {
     id: "giant_trap",
     name: "Giant Trap",
@@ -1765,6 +1775,15 @@ export const fellowshipEffects: Record<string, EffectDefinition> = {
     name: "Disgraced Prior",
     description:
       "Former prior cast out of his order. Redeems himself through endless labor. Can be assigned to automatically repeat actions.",
+    bonuses: {
+      generalBonuses: {},
+    },
+  },
+  the_hound: {
+    id: "the_hound",
+    name: "The Hound",
+    description:
+      "A muscular, disfigured survivor from a poisoned mountain village. His strengths are not yet known.",
     bonuses: {
       generalBonuses: {},
     },

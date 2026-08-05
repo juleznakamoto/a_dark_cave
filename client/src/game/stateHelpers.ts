@@ -835,14 +835,26 @@ function migrateSteamShopSlotsOnLoad(state: GameState): Partial<GameState> | nul
 }
 
 /**
- * Backfill permanent item slices from schema defaults when a loaded save omits them.
- * Rebuilds owned craft tools from `story.seen` when flags exist but the tools slice
- * is missing or empty (cloud corruption loop).
+ * Backfill permanent item / unlock slices from schema defaults when a loaded save
+ * omits keys. Rebuilds owned craft tools from `story.seen` when flags exist but
+ * the tools slice is missing or empty (cloud corruption loop).
  * Also merges/repairs tab-unlock flags from progression evidence (village/forest/bastion).
  */
 export function hydrateLoadedGameState<T extends Partial<GameState>>(
   savedState: T,
-): T & Pick<GameState, "tools" | "weapons" | "books" | "flags"> {
+): T &
+  Pick<
+    GameState,
+    | "tools"
+    | "weapons"
+    | "books"
+    | "fellowship"
+    | "blessings"
+    | "schematics"
+    | "clothing"
+    | "relics"
+    | "flags"
+  > {
   const defaults = gameStateSchema.parse({});
   const mergedTools = {
     ...defaults.tools,
@@ -858,6 +870,26 @@ export function hydrateLoadedGameState<T extends Partial<GameState>>(
     books: {
       ...defaults.books,
       ...savedState.books,
+    },
+    fellowship: {
+      ...defaults.fellowship,
+      ...savedState.fellowship,
+    },
+    blessings: {
+      ...defaults.blessings,
+      ...savedState.blessings,
+    },
+    schematics: {
+      ...defaults.schematics,
+      ...savedState.schematics,
+    },
+    clothing: {
+      ...defaults.clothing,
+      ...savedState.clothing,
+    },
+    relics: {
+      ...defaults.relics,
+      ...savedState.relics,
     },
   };
   return repairUnlockFlags(withItems, defaults.flags);

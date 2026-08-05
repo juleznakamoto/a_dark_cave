@@ -99,6 +99,7 @@ export function buildCombatDemoGameState(
       ashwraith_huntress: true,
       one_eyed_crow: true,
       disgraced_prior: true,
+      the_hound: false,
     },
     combatSkills: {
       crushingStrikeLevel: config.crushingStrikeLevel,

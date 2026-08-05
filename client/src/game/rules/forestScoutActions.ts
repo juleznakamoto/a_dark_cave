@@ -437,6 +437,42 @@ export const forestScoutActions: Record<string, Action> = {
     expeditionVillagersRequired: () => 30,
     cooldown: 0,
   },
+
+  searchMountainLady: {
+    id: "searchMountainLady",
+    label: "Search Mountain Lady",
+    minVillagers: 30,
+    expeditionVillagersRequired: () => 30,
+    show_when: {
+      "flags.forestUnlocked": true,
+      "story.seen.searchMountainLadyUnlocked": true,
+      "!story.seen.searchMountainLadyDone": true,
+    },
+    cost: {
+      "resources.food": 5000,
+    },
+    effects: {},
+    executionTime: 300,
+    cooldown: 0,
+  },
+
+  exploreMountainVillage: {
+    id: "exploreMountainVillage",
+    label: "Explore Mountain Village",
+    minVillagers: 24,
+    expeditionVillagersRequired: () => 24,
+    show_when: {
+      "flags.forestUnlocked": true,
+      "tools.mountain_village_map": true,
+      "!story.seen.mountainVillageExplored": true,
+    },
+    cost: {
+      "resources.food": 10000,
+    },
+    effects: {},
+    executionTime: 600,
+    cooldown: 0,
+  },
 };
 
 // Action handlers
@@ -1341,6 +1377,85 @@ export function handleCanyonBridge(
     timestamp: Date.now(),
     type: "system",
   });
+
+  return result;
+}
+
+export function handleSearchMountainLady(
+  state: GameState,
+  result: ActionResult,
+): ActionResult {
+  if (!import.meta.env.DEV) {
+    return result;
+  }
+
+  const deaths =
+    CRUEL_MODE.ladyMountains.ambushDeaths.base +
+    cruelModeScale(state) * CRUEL_MODE.ladyMountains.ambushDeaths.whenCruel;
+  const deathResult = killVillagers(state, deaths);
+  Object.assign(result.stateUpdates, deathResult);
+
+  result.stateUpdates.tools = {
+    ...state.tools,
+    ...(result.stateUpdates.tools ?? {}),
+    mountain_village_map: true,
+  };
+
+  result.stateUpdates.story = {
+    ...state.story,
+    ...(deathResult.story ?? {}),
+    ...(result.stateUpdates.story ?? {}),
+    seen: {
+      ...state.story.seen,
+      ...(deathResult.story?.seen ?? {}),
+      ...(result.stateUpdates.story?.seen ?? {}),
+      searchMountainLadyDone: true,
+    },
+  };
+
+  const actualDeaths = deathResult.villagersKilled ?? deaths;
+  result.logEntries!.push({
+    id: `search-mountain-lady-${Date.now()}`,
+    message: getActionLogMessage(
+      "searchMountainLady",
+      "ambush",
+      "The man leads you deep into the woods. Your villagers stumble into traps. Suddenly the red-haired woman appears, and together they fall upon your men. {{count}} villagers die before the survivors kill both attackers. On the man's body you find a map to a mountain village.",
+      { count: actualDeaths },
+    ),
+    timestamp: Date.now(),
+    type: "system",
+  });
+
+  return result;
+}
+
+export function handleExploreMountainVillage(
+  state: GameState,
+  result: ActionResult,
+): ActionResult {
+  if (!import.meta.env.DEV) {
+    return result;
+  }
+
+  result.stateUpdates.tools = {
+    ...state.tools,
+    mountain_village_map: false,
+  };
+
+  result.stateUpdates.story = {
+    ...state.story,
+    seen: {
+      ...state.story.seen,
+      mountainVillageExplored: true,
+    },
+  };
+
+  const houndEvent = gameEvents.theHoundFound;
+  if (houndEvent) {
+    result.logEntries!.push(
+      buildLocalizedEventLogEntry("theHoundFound", houndEvent, state),
+    );
+  }
 
   return result;
 }

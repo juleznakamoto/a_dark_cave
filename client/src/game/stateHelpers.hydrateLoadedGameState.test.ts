@@ -3,7 +3,7 @@ import { gameStateSchema } from "@shared/schema";
 import { hydrateLoadedGameState } from "./stateHelpers";
 
 describe("hydrateLoadedGameState", () => {
-  it("backfills missing tools/weapons/books and rebuilds tools from story flags", () => {
+  it("backfills missing permanent slices and rebuilds tools from story flags", () => {
     const defaults = gameStateSchema.parse({});
     const hydrated = hydrateLoadedGameState({
       playTime: 1000,
@@ -14,6 +14,11 @@ describe("hydrateLoadedGameState", () => {
     expect(hydrated.tools.stone_pickaxe).toBe(false);
     expect(hydrated.weapons).toEqual(defaults.weapons);
     expect(hydrated.books).toEqual(defaults.books);
+    expect(hydrated.fellowship).toEqual(defaults.fellowship);
+    expect(hydrated.blessings).toEqual(defaults.blessings);
+    expect(hydrated.schematics).toEqual(defaults.schematics);
+    expect(hydrated.clothing).toEqual(defaults.clothing);
+    expect(hydrated.relics).toEqual(defaults.relics);
     expect(Object.keys(hydrated.tools).length).toBeGreaterThan(0);
     expect(hydrated.flags.villageUnlocked).toBe(true);
   });

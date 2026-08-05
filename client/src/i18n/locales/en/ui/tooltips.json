@@ -120,6 +120,7 @@
       "buildDiscount": "{{percent}}% Build Discount",
       "gathererWood": "Gatherer: +{{amount}} Wood",
       "gathererStone": "Gatherer: +{{amount}} Stone",
+      "gathererVeinroot": "Gatherer: +{{amount}} Veinroot",
       "hunterFood": "Hunter: +{{amount}} Food",
       "hunterFur": "Hunter: +{{amount}} Fur",
       "hunterBones": "Hunter: +{{amount}} Bones",

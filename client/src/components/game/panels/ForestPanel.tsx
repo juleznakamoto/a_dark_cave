@@ -154,6 +154,8 @@ export default function ForestPanel() {
         { id: "steelDelivery", label: "Steel Delivery" },
         { id: "risingSmoke", label: "Rising smoke" },
         { id: "canyonBridge", label: "Canyon Bridge" },
+        { id: "searchMountainLady", label: "Search Mountain Lady" },
+        { id: "exploreMountainVillage", label: "Explore Mountain Village" },
         { id: "financeExpedition", label: "Finance Expedition" },
       ],
     },

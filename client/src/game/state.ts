@@ -1372,12 +1372,8 @@ export const createInitialState = (): GameState => ({
   },
   hoveredTooltips: {},
   triggeredEvents: {},
-  books: {
-    book_of_ascension: false,
-    book_of_war: false,
-    book_of_trials: false,
-  },
-  fellowship: {},
+  // books / fellowship / blessings / tools / etc. come from generateDefaultGameState()
+  // (schema SSOT) — do not override with partial objects or new keys will be missing.
   feastState: {
     isActive: false,
     endTime: 0,

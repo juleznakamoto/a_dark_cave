@@ -915,6 +915,22 @@
     "message": "The massive creature writhes in the trap, its tentacles thrashing against the steel bars. Its ancient eyes regard you with what might be intelligence. What will you do?",
     "title": "The Creature's Fate"
   },
+  "ladyFromTheMountains": {
+    "choices": {
+      "sendAway": {
+        "label": "Send away"
+      },
+      "welcome": {
+        "label": "Welcome"
+      }
+    },
+    "log": {
+      "sendAwayOutcome": "You refuse her. She smiles too calmly. 'You and every soul in this village will regret this,' she says, then turns away.",
+      "welcomeOutcome": "You welcome the red-haired woman. She thanks you softly and speaks of plants that heal and harm. The villagers watch her carefully."
+    },
+    "message": "A beautiful red-haired woman arrives. She says her village in the mountains died of famine, and asks if she may stay. She claims to know much about plants and their effects.",
+    "title": "The Lady from the Mountains"
+  },
   "lastSurvivor": {
     "choices": {
       "letHimStay": {
@@ -930,6 +946,26 @@
     },
     "message": "A stranger arrives at the village, barely clinging to life. He speaks of his settlement to the north, where food shortages drove villagers to kill each other in desperation. He asks to stay for a few nights to recover.",
     "title": "The Last Survivor"
+  },
+  "liquidDeath": {
+    "choices": {
+      "digWell": {
+        "cost": "5000 food",
+        "label": "Dig another well"
+      },
+      "searchWoman": {
+        "label": "Search for the woman"
+      }
+    },
+    "log": {
+      "digWellOutcome": "Your villagers dig a new well. Water returns. That evening, an starved man arrives from the forest.",
+      "searchOutcome": "There is nothing left to drink. {{deaths}} older villagers die of thirst. The woman cannot be found, but the searchers drag a starved man from the forest."
+    },
+    "message": {
+      "rejected": "One morning {{deaths}} villagers are found dead in their huts. Their lips are blue like crushed nightshade. One villager claims to have seen a red-haired woman near the well the day before.",
+      "welcomed": "One morning {{deaths}} villagers are found dead in their huts. Their lips are blue like crushed nightshade. One villager claims to have seen the red-haired woman from the mountain village near the well the day before."
+    },
+    "title": "Liquid Death"
   },
   "leatherboundBookFound": {
     "choices": {
@@ -968,6 +1004,22 @@
     },
     "message": "A woman from the village approaches you, her cheeks faintly flushed. She hesitates before speaking, eyes cast down: 'I was wondering if you might spare some leather. I'd like to craft something... for my partner. A harness. To surprise him with.'",
     "title": "A Village Woman"
+  },
+  "manFromTheMountains": {
+    "choices": {
+      "believeAndHelp": {
+        "label": "Believe man and help"
+      },
+      "sendAway": {
+        "label": "Send away"
+      }
+    },
+    "log": {
+      "believeOutcome": "You believe him. He offers to lead a search for the woman, saying he knows where she hides, and that you should bring many men.",
+      "sendAwayOutcome": "You send the starved man away. He does not argue. The villagers watch the treeline as he vanishes."
+    },
+    "message": "The starved man is brought before you. Barely able to speak clearly, he claims to be the last survivor of a mountain village. He says their well was poisoned by a red-haired herbalist.",
+    "title": "The Man from the Mountains"
   },
   "madBeduine": {
     "choices": {
@@ -1155,6 +1207,18 @@
     },
     "tradeCost": "{{amount}} {{resource}}",
     "tradeLabel": "{{amount}} {{resource}}"
+  },
+  "mountainPairNightAttack": {
+    "choices": {
+      "continue": {
+        "label": "Continue"
+      }
+    },
+    "log": {
+      "outcome": "At night the man and the red-haired woman attack together. {{deaths}} villagers die before the rest overwhelm them. Before you can intervene, the villagers hang them both. They were partners all along. On the man's body you find a map to a mountain village."
+    },
+    "message": "At night the man and the red-haired woman attack the village together. {{deaths}} villagers fall before the rest overwhelm the pair. Before you can do anything, the villagers hang them. On the man's body you find a map to a mountain village.",
+    "title": "Night Attack"
   },
   "monasteryMonk": {
     "choices": {
@@ -2012,6 +2076,18 @@
   "postCompletionWave": {
     "message": "From the hidden depths of the cave, mindless pale creatures continue to emerge, assaulting the city without end.",
     "title": "Wave {{waveNumber}}"
+  },
+  "theHoundFound": {
+    "choices": {
+      "accept": {
+        "label": "Accept"
+      }
+    },
+    "log": {
+      "outcome": "You accept him. They called him The Hound. Twisted by poison but still breathing, he joins your fellowship."
+    },
+    "message": "Your expedition finds a mountain village full of poisoned dead. Among the bodies lies an almost-dead man, very muscular but disfigured, barely able to talk. He says they just called him The Hound. It seems he withstood the poison, even if barely. He wants to join you.",
+    "title": "The Hound"
   },
   "theDamned": {
     "choices": {
