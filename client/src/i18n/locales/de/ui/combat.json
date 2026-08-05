@@ -75,8 +75,7 @@
       "tenthWave": "Zehnte Welle", //ok
       "firstBossWave": "Bosswelle",
       "secondBossWave": "Letzte Bosswelle"
-    },
-    "goldReward": "+{{amount}} Gold"
+    }
   },
   "fortifications": {
     "bastion": "Bastion",

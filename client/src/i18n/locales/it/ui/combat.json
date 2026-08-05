@@ -75,8 +75,7 @@
       "tenthWave": "Decima Ondata",
       "firstBossWave": "Ondata del Boss",
       "secondBossWave": "Ondata Finale del Boss"
-    },
-    "goldReward": "+{{amount}} Oro"
+    }
   },
   "fortifications": {
     "bastion": "Bastione",

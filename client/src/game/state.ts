@@ -3554,7 +3554,9 @@ export const useGameStore = create<GameStore>((set, get) => ({
           } else if (hasLogEntryText(entry)) {
             // Only add to log if it's not a choice event
             set((prevState) => ({
-              log: [...prevState.log, entry].slice(-10),
+              log: [...prevState.log, entry].slice(
+                -GAME_CONSTANTS.LOG_MAX_ENTRIES,
+              ),
             }));
           }
         });

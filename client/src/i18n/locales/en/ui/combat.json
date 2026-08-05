@@ -61,7 +61,6 @@
     "provoke": "Provoke",
     "pause": "Pause",
     "unpause": "Unpause",
-    "goldReward": "+{{amount}} Gold",
     "postCompletion": "Wave {{waveNumber}}",
     "waves": {
       "firstWave": "First Wave",

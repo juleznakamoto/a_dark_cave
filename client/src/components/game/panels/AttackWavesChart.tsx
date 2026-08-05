@@ -5,7 +5,6 @@ import { useEffect, useState } from "react";
 import {
   getAttackWavesChartRows,
   getPostCompletionWaveNumber,
-  getPostCompletionWaveParams,
   isPostCompletionAttackWavesActive,
 } from "@/game/rules/eventsAttackWaves";
 import {
@@ -23,7 +22,6 @@ import {
   getAttackWaveDisplayName,
   getPostCompletionAttackWaveDisplayName,
 } from "@/i18n/attackWaveLabels";
-import { formatNumber } from "@/lib/utils";
 
 const PROVOKE_ACTION_ID = "provokeAttackWave" as const;
 
@@ -72,21 +70,11 @@ export default function AttackWavesChart() {
     return formatTime(getTimeRemaining(POST_COMPLETION_ATTACK_WAVE_ID));
   };
 
-  const formatGoldReward = (amount: number): string =>
-    t("attackWaves.goldReward", {
-      amount: formatNumber(amount),
-      defaultValue: "+{{amount}} Gold",
-    });
-
   const activeWave = waves.find((wave) => !wave.completed && wave.conditionMet);
   const postCompletionActive = isPostCompletionAttackWavesActive(state);
   const postCompletionWaveNumber = postCompletionActive
     ? getPostCompletionWaveNumber(state)
     : null;
-  const postCompletionGoldReward =
-    postCompletionWaveNumber != null
-      ? getPostCompletionWaveParams(postCompletionWaveNumber).goldReward
-      : null;
 
   const shouldShowChart = buildings.bastion || false;
 
@@ -130,9 +118,6 @@ export default function AttackWavesChart() {
               {attackWaveTimers?.[activeWave.id]
                 ? formatTime(getTimeRemaining(activeWave.id))
                 : t("attackWaves.calm")}
-            </span>
-            <span className="text-xs text-muted-foreground">
-              {formatGoldReward(activeWave.goldReward)}
             </span>
           </div>
           {attackWaveTimers?.[activeWave.id] && (
@@ -179,9 +164,7 @@ export default function AttackWavesChart() {
             </CooldownButton>
           )}
         </div>
-      ) : postCompletionActive &&
-        postCompletionWaveNumber &&
-        postCompletionGoldReward != null ? (
+      ) : postCompletionActive && postCompletionWaveNumber ? (
         <div className="space-y-2 pt-2">
           <div className="flex items-center gap-2 flex-wrap">
             <span className="text-xs font-medium text-foreground">
@@ -189,9 +172,6 @@ export default function AttackWavesChart() {
             </span>
             <span className="text-xs text-muted-foreground">
               {getPostCompletionTimerLabel()}
-            </span>
-            <span className="text-xs text-muted-foreground">
-              {formatGoldReward(postCompletionGoldReward)}
             </span>
           </div>
           {attackWaveTimers?.[POST_COMPLETION_ATTACK_WAVE_ID] && (

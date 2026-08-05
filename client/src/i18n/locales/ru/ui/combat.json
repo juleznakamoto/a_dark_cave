@@ -75,8 +75,7 @@
       "tenthWave": "Десятая волна",
       "firstBossWave": "Волна босса",
       "secondBossWave": "Финальная волна босса"
-    },
-    "goldReward": "+{{amount}} золота"
+    }
   },
   "fortifications": {
     "bastion": "Бастион",
