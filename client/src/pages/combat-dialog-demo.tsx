@@ -36,8 +36,13 @@ const MOCK_DEFEAT_SUMMARY: CombatResultSummary = {
 };
 
 function applyDemoConfigToStore(config: CombatDemoConfig) {
-  const { initialize, updateBastionStats } = useGameStore.getState();
+  const { initialize, updateEffects, updateStats, updateBastionStats } =
+    useGameStore.getState();
   initialize(buildCombatDemoGameState(config) as GameState);
+  // Recalculate from owned gear/blessings so CombatDialog luck/crit/madness match
+  // a real late-game fight (hardcoded stats.luck is ignored by getTotalLuck).
+  updateEffects();
+  updateStats();
   updateBastionStats();
 }
 
@@ -126,8 +131,8 @@ export default function CombatDialogDemo() {
           <p className="text-sm text-muted-foreground">
             Dev-only sandbox at{" "}
             <code className="text-xs text-foreground/80">/dev/combat-dialog</code>
-            . Seeds max combat items, Nightshade Bow poison arrows, Grenadier&apos;s
-            Bag / Flask Harness capacity, and fellowship combat skills.
+            . Seeds a late-game loadout (luck/crit/madness gear, Nightshade Bow,
+            bombs, fellowship skills) so the dialog matches a real fight 1:1.
           </p>
         </header>
 

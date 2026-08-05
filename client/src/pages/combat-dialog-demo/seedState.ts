@@ -61,6 +61,11 @@ export function combatDemoResourceStock(): Pick<
   };
 }
 
+/**
+ * Late-game combat loadout so CombatDialog matches a real fight:
+ * luck / madness / crit / knowledge / strength come from owned effects
+ * (getTotalLuck etc.), not hardcoded stats.
+ */
 export function buildCombatDemoGameState(
   config: CombatDemoConfig,
 ): Partial<GameState> {
@@ -87,11 +92,39 @@ export function buildCombatDemoGameState(
       blacksteel_sword: true,
       nightshade_bow: true,
       blacksteel_bow: true,
+      ashen_dagger: true,
     },
+    // blacksteel_armor is crafted into clothing but omitted from the Zod clothing
+    // shape; cast so the demo can still activate its 5% crit effect.
     clothing: {
       ...base.clothing,
       grenadier_bag: config.grenadierBag,
       flask_harness: config.flaskHarness,
+      blacksteel_armor: true,
+      cracked_crown: true,
+      tarnished_amulet: true,
+      ravenfeather_mantle: true,
+      moon_bracelet: true,
+      bone_necklace: true,
+      ebony_ring: true,
+      muttering_amulet: true,
+      bloodstained_belt: true,
+      alphas_hide: true,
+    } as GameState["clothing"],
+    relics: {
+      ...base.relics,
+      bone_dice: true,
+      wooden_figure: true,
+      elder_scroll: true,
+      ravens_orb: true,
+      tarnished_compass: true,
+    },
+    blessings: {
+      ...base.blessings,
+      blood_baptized: true,
+      knights_burden: true,
+      bell_blessing: true,
+      survivors_last_words: true,
     },
     fellowship: {
       restless_knight: true,
@@ -104,13 +137,6 @@ export function buildCombatDemoGameState(
     combatSkills: {
       crushingStrikeLevel: config.crushingStrikeLevel,
       bloodflameSphereLevel: config.bloodflameSphereLevel,
-    },
-    stats: {
-      ...base.stats,
-      strength: 40,
-      knowledge: 50,
-      luck: 50,
-      madness: 15,
     },
     villagers: {
       ...base.villagers,
