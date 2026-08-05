@@ -53,7 +53,7 @@ const SHARE_RESOURCE_MILESTONE = 50_000;
 
 const RING_CHART_SIZE = 208;
 const RING_GRID_GAP = 40;
-const RING_LABEL_FONT_SIZE = 22;
+const RING_LABEL_FONT_SIZE = 26;
 const RING_LABEL_GAP = 10;
 /** Matches `pt-1` on the 58px tab icon, scaled to the share ring size. */
 const RING_SYMBOL_NUDGE_PX = 4 * (RING_CHART_SIZE / 58);
@@ -114,8 +114,10 @@ const SECTION_HEADING_FONT_SIZE = 36;
 const SECTION_HEADING_CLASS =
   "font-medium tracking-wide text-gray-300 leading-none";
 const SECTION_PROGRESS_BAR_HEIGHT = 8;
-const SECTION_PROGRESS_BAR_WIDTH = RING_CHART_SIZE * 2 + RING_GRID_GAP;
-const SECTION_PROGRESS_GAP = 12;
+const SECTION_PROGRESS_BAR_WIDTH = Math.round(
+  (RING_CHART_SIZE * 2 + RING_GRID_GAP) * 0.8,
+);
+const SECTION_PROGRESS_GAP = 18;
 const SECTION_BLOCK_MARGIN_BOTTOM = 24;
 const CTA_FONT_SIZE = 42;
 
