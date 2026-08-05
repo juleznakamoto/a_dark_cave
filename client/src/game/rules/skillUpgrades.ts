@@ -112,7 +112,6 @@ export function bloodflameSphereFightBurnTicksAfterCast(burnRounds: number): num
 
 // Feral Howl upgrade configurations (Combat skill from Brute Hound).
 // `critDamageBonus`: extra critical strike damage % on top of base crit multiplier.
-// `constructionTimeReduction`: fraction off build* execution time (0.025 = 2.5%).
 export const FERAL_HOWL_UPGRADES = [
   {
     level: 0,
@@ -120,7 +119,6 @@ export const FERAL_HOWL_UPGRADES = [
     enemyDamageReduction: 20,
     debuffRounds: 1,
     critDamageBonus: 25,
-    constructionTimeReduction: 0.025,
     cost: 0,
     currency: null,
   },
@@ -130,7 +128,6 @@ export const FERAL_HOWL_UPGRADES = [
     enemyDamageReduction: 25,
     debuffRounds: 1,
     critDamageBonus: 25,
-    constructionTimeReduction: 0.05,
     cost: 250,
     currency: "gold",
   },
@@ -140,7 +137,6 @@ export const FERAL_HOWL_UPGRADES = [
     enemyDamageReduction: 25,
     debuffRounds: 2,
     critDamageBonus: 50,
-    constructionTimeReduction: 0.075,
     cost: 500,
     currency: "gold",
   },
@@ -150,7 +146,6 @@ export const FERAL_HOWL_UPGRADES = [
     enemyDamageReduction: 30,
     debuffRounds: 2,
     critDamageBonus: 50,
-    constructionTimeReduction: 0.1,
     cost: 750,
     currency: "gold",
   },
@@ -160,7 +155,6 @@ export const FERAL_HOWL_UPGRADES = [
     enemyDamageReduction: 35,
     debuffRounds: 2,
     critDamageBonus: 75,
-    constructionTimeReduction: 0.125,
     cost: 1000,
     currency: "gold",
   },
@@ -170,7 +164,6 @@ export const FERAL_HOWL_UPGRADES = [
     enemyDamageReduction: 35,
     debuffRounds: 3,
     critDamageBonus: 100,
-    constructionTimeReduction: 0.15,
     cost: 1500,
     currency: "gold",
   },
@@ -184,16 +177,6 @@ export function getFeralHowlCritDamageBonusPercent(state: {
   if (!state.fellowship?.the_hound) return 0;
   const level = state.combatSkills?.feralHowlLevel ?? 0;
   return FERAL_HOWL_UPGRADES[level]?.critDamageBonus ?? 0;
-}
-
-/** Build-time reduction fraction from Feral Howl when Brute Hound is in the fellowship. */
-export function getFeralHowlConstructionTimeReduction(state: {
-  fellowship?: { the_hound?: boolean };
-  combatSkills?: { feralHowlLevel?: number };
-}): number {
-  if (!state.fellowship?.the_hound) return 0;
-  const level = state.combatSkills?.feralHowlLevel ?? 0;
-  return FERAL_HOWL_UPGRADES[level]?.constructionTimeReduction ?? 0;
 }
 
 // Poison Arrows (Nightshade Bow combat item — DoT ticks on Fight like Bloodflame)

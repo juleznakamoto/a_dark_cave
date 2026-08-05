@@ -4,7 +4,6 @@ import {
   getBuilderBuildTimeReduction,
   getBuilderLevel,
 } from "@/game/constructionQueueSlots";
-import { getFeralHowlConstructionTimeReduction } from "./skillUpgrades";
 import { getActionBonuses } from "./effectsCalculation";
 import { getGameActions } from "./actionsRegistry";
 import { getNextBuildingLevel } from "./villageBuildActions";
@@ -74,8 +73,7 @@ export function getExecutionTime(actionId: string, state: GameState): number {
 
   if (actionId.startsWith("build")) {
     const builderReduction = getBuilderBuildTimeReduction(getBuilderLevel(state));
-    const houndReduction = getFeralHowlConstructionTimeReduction(state);
-    const timeFactor = Math.max(0, 1 - builderReduction - houndReduction);
+    const timeFactor = Math.max(0, 1 - builderReduction);
     adjustedTime = baseTime * timeFactor - executionTimeReduction;
   }
 

@@ -34,7 +34,6 @@ import {
   CROWS_EYE_UPGRADES,
   HUNT_BONUSES,
   getChainmasterProductionBonus,
-  getFeralHowlConstructionTimeReduction,
 } from "./skillUpgrades";
 import { villageBuildActions } from "./villageBuildActions";
 
@@ -299,16 +298,6 @@ function getBuildingTimeReductionComposition(
         ? getBuildingSourceLabel(buildingKey)
         : tWithFallback("ui", "sidePanel.constructionTime", "Construction Time"),
       percent: formatPercentPoints(builderReduction * 100),
-      isReduction: true,
-    });
-  }
-
-  const houndReduction = getFeralHowlConstructionTimeReduction(state);
-  if (houndReduction > 0) {
-    lines.push({
-      sourceId: "feral_howl",
-      sourceLabel: tWithFallback("ui", "estate.feralHowl", "Feral Howl"),
-      percent: formatPercentPoints(houndReduction * 100),
       isReduction: true,
     });
   }

@@ -121,9 +121,8 @@
     "skillDebuffRound_one": "+{{amount}} ronda de debilitamiento",
     "skillDebuffRound_other": "+{{amount}} rondas de debilitamiento",
     "skillCritDamageBonus": "+{{amount}}% daño crítico",
-    "skillBuildTimeReduction": "-{{amount}}% tiempo de construcción",
-    "feralHowlSummary": "{{success}}% éxito, -{{reduction}}% daño enemigo durante {{rounds}} rondas, +{{crit}}% daño crítico, -{{build}}% tiempo de construcción",
-    "feralHowlSummary_one": "{{success}}% éxito, -{{reduction}}% daño enemigo durante {{rounds}} ronda, +{{crit}}% daño crítico, -{{build}}% tiempo de construcción",
+    "feralHowlSummary": "{{success}}% éxito, -{{reduction}}% daño enemigo durante {{rounds}} rondas, +{{crit}}% daño crítico",
+    "feralHowlSummary_one": "{{success}}% éxito, -{{reduction}}% daño enemigo durante {{rounds}} ronda, +{{crit}}% daño crítico",
     "skillDoubleGain": "+{{amount}} % de probabilidad de ganancia doble", //ok
     "crowsEyeSummary": "{{percent}} % de probabilidad de duplicar las ganancias de acciones", //ok
     "priorConcurrentAction_one": "+{{count}} acción simultánea",

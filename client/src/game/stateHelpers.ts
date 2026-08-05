@@ -853,6 +853,7 @@ export function hydrateLoadedGameState<T extends Partial<GameState>>(
     | "schematics"
     | "clothing"
     | "relics"
+    | "combatSkills"
     | "flags"
   > {
   const defaults = gameStateSchema.parse({});
@@ -890,6 +891,11 @@ export function hydrateLoadedGameState<T extends Partial<GameState>>(
     relics: {
       ...defaults.relics,
       ...savedState.relics,
+    },
+    // Merge so new skill keys (e.g. feralHowlLevel) exist on older saves.
+    combatSkills: {
+      ...defaults.combatSkills,
+      ...savedState.combatSkills,
     },
   };
   return repairUnlockFlags(withItems, defaults.flags);

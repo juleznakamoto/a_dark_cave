@@ -427,21 +427,21 @@ export default function EstatePanel() {
   const handleCrushingStrikeUpgrade = () =>
     handleSkillUpgrade(
       CRUSHING_STRIKE_UPGRADES,
-      (s) => s.combatSkills.crushingStrikeLevel,
+      (s) => s.combatSkills.crushingStrikeLevel ?? 0,
       (s, level) => ({ combatSkills: { ...s.combatSkills, crushingStrikeLevel: level } }),
     );
 
   const handleBloodflameSphereUpgrade = () =>
     handleSkillUpgrade(
       BLOODFLAME_SPHERE_UPGRADES,
-      (s) => s.combatSkills.bloodflameSphereLevel,
+      (s) => s.combatSkills.bloodflameSphereLevel ?? 0,
       (s, level) => ({ combatSkills: { ...s.combatSkills, bloodflameSphereLevel: level } }),
     );
 
   const handleFeralHowlUpgrade = () =>
     handleSkillUpgrade(
       FERAL_HOWL_UPGRADES,
-      (s) => s.combatSkills.feralHowlLevel,
+      (s) => s.combatSkills.feralHowlLevel ?? 0,
       (s, level) => ({ combatSkills: { ...s.combatSkills, feralHowlLevel: level } }),
     );
 
@@ -836,9 +836,6 @@ export default function EstatePanel() {
                 const lvl = combatSkills.feralHowlLevel ?? 0;
                 const cur = FERAL_HOWL_UPGRADES[lvl];
                 const nxt = FERAL_HOWL_UPGRADES[lvl + 1];
-                const buildPct = (cur.constructionTimeReduction * 100).toFixed(
-                  cur.constructionTimeReduction * 100 % 1 === 0 ? 0 : 1,
-                );
                 return (
                   <SkillUpgradeRow
                     title={t("estate.feralHowl")}
@@ -864,13 +861,6 @@ export default function EstatePanel() {
                       {nxt && nxt.critDamageBonus > cur.critDamageBonus && (
                         <div>{t("estate.skillCritDamageBonus", { amount: nxt.critDamageBonus - cur.critDamageBonus })}</div>
                       )}
-                      {nxt && nxt.constructionTimeReduction > cur.constructionTimeReduction && (
-                        <div>{t("estate.skillBuildTimeReduction", {
-                          amount: Number(
-                            ((nxt.constructionTimeReduction - cur.constructionTimeReduction) * 100).toFixed(1),
-                          ),
-                        })}</div>
-                      )}
                     </>}
                     description={t(
                       cur.debuffRounds === 1
@@ -881,7 +871,6 @@ export default function EstatePanel() {
                         reduction: cur.enemyDamageReduction,
                         rounds: cur.debuffRounds,
                         crit: cur.critDamageBonus,
-                        build: buildPct,
                       },
                     )}
                   />

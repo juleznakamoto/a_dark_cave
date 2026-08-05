@@ -14,7 +14,6 @@ import {
   HUNT_BONUSES,
   DISGRACED_PRIOR_UPGRADES,
   CROWS_EYE_UPGRADES,
-  getFeralHowlConstructionTimeReduction,
 } from "./skillUpgrades";
 import { CRUEL_MODE } from "../cruelMode";
 import { getBoneyardBurialMadnessReduction } from "./boneyardMadness";
@@ -916,12 +915,9 @@ export const getTotalBuildingCostReduction = (state: GameState): number => {
   return reduction;
 };
 
-/** Combined build time reduction from builder buildings + Feral Howl (fraction). */
+/** Build time reduction from builder buildings (fraction). */
 export const getTotalBuildingTimeReduction = (state: GameState): number => {
-  return (
-    getBuilderBuildTimeReduction(getBuilderLevel(state)) +
-    getFeralHowlConstructionTimeReduction(state)
-  );
+  return getBuilderBuildTimeReduction(getBuilderLevel(state));
 };
 
 // Helper function to calculate all effects for the current state
