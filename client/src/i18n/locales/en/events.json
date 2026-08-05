@@ -926,7 +926,7 @@
     },
     "log": {
       "sendAwayOutcome": "You refuse her. She smiles too calmly. 'You and every soul in this village will regret this,' she says, then turns away.",
-      "welcomeOutcome": "You welcome the red-haired woman. She thanks you softly and speaks of plants that heal and harm. The villagers watch her carefully."
+      "welcomeOutcome": "You welcome the red-haired woman. She thanks you softly and speaks of plants that heal and harm. She offers to help build a herb garden. The villagers watch her carefully."
     },
     "message": "A beautiful red-haired woman arrives. She says her village in the mountains died of famine, and asks if she may stay. She claims to know much about plants and their effects.",
     "title": "The Lady from the Mountains"
