@@ -73,7 +73,7 @@ const COMBAT_ITEM_BUTTON_ICONS = {
 const COMBAT_SKILL_BUTTON_ICONS = {
   crushing_strike: { glyph: "◈", className: "text-yellow-600" },
   bloodflame_sphere: { glyph: "✵", className: "text-orange-600" },
-  feral_howl: { glyph: "◎", className: "text-amber-500" },
+  feral_howl: { glyph: "⚟", className: "text-sky-500" },
 } as const;
 
 const COMBAT_BUTTON_ICON_CLASS =
