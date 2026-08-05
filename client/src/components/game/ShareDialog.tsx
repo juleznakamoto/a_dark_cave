@@ -39,6 +39,7 @@ import { gameStateSchema, type GameState } from "@shared/schema";
 
 const SHARE_IMAGE_WIDTH = 1080;
 const SHARE_IMAGE_HEIGHT = 1350;
+const PREVIEW_MAX_WIDTH = 360;
 const CARD_BG = "#0b0b0e";
 const SHARE_URL = "https://a-dark-cave.com";
 const SHARE_URL_IMAGE = "a-dark-cave.com";
@@ -52,8 +53,32 @@ const SHARE_RESOURCE_MILESTONE = 50_000;
 
 const RING_CHART_SIZE = 208;
 const RING_GRID_GAP = 40;
+const RING_LABEL_FONT_SIZE = 22;
+const RING_LABEL_GAP = 10;
 /** Matches `pt-1` on the 58px tab icon, scaled to the share ring size. */
 const RING_SYMBOL_NUDGE_PX = 4 * (RING_CHART_SIZE / 58);
+
+const CATEGORY_HEADER_KEYS: Record<
+  AchievementChartConfig["idPrefix"],
+  string
+> = {
+  basic: "achievements.categories.basic",
+  building: "achievements.categories.building",
+  item: "achievements.categories.item",
+  action: "achievements.categories.action",
+  overall: "achievements.categories.overall",
+};
+
+const CATEGORY_HEADER_DEFAULTS: Record<
+  AchievementChartConfig["idPrefix"],
+  string
+> = {
+  basic: "Basics",
+  building: "Buildings",
+  item: "Items",
+  action: "Actions",
+  overall: "Epic",
+};
 
 type ShareRingEntry = {
   config: AchievementChartConfig;
@@ -87,14 +112,20 @@ const RING_ENTRIES: ShareRingEntry[] = [
 /** Shared size for the "Resources" and "Achievements: X %" headings. */
 const SECTION_HEADING_FONT_SIZE = 36;
 const SECTION_HEADING_CLASS =
-  "mb-6 font-medium tracking-wide text-gray-300 leading-none";
+  "font-medium tracking-wide text-gray-300 leading-none";
+const SECTION_PROGRESS_BAR_HEIGHT = 8;
+const SECTION_PROGRESS_GAP = 12;
+const SECTION_BLOCK_MARGIN_BOTTOM = 24;
 
 /** Vertical space for the resource list after header + section title (px). */
 const RESOURCE_LIST_MAX_HEIGHT =
   SHARE_IMAGE_HEIGHT -
   64 * 2 - // p-16 top + bottom
   (80 + 48) - // title + mb-12
-  (SECTION_HEADING_FONT_SIZE + 24); // section heading + mb-6
+  (SECTION_HEADING_FONT_SIZE +
+    SECTION_PROGRESS_GAP +
+    SECTION_PROGRESS_BAR_HEIGHT +
+    SECTION_BLOCK_MARGIN_BOTTOM);
 
 function getResourceListMetrics(
   rowCount: number,
@@ -111,12 +142,63 @@ function getResourceListMetrics(
   return { fontSize, rowGap };
 }
 
-/** HH:MM play time — same rounding as the leaderboard. */
+/** Play time as e.g. 639h 15m (minute precision, same as leaderboard). */
 function formatSharePlayTime(ms: number): string {
   const totalMinutes = Math.floor(ms / 1000 / 60);
   const hours = Math.floor(totalMinutes / 60);
   const minutes = totalMinutes % 60;
-  return `${hours.toString().padStart(2, "0")}:${minutes.toString().padStart(2, "0")}`;
+  return `${hours}h ${minutes}m`;
+}
+
+function ShareProgressBar({ percent }: { percent: number }) {
+  const clamped = Math.max(0, Math.min(100, percent));
+  return (
+    <div
+      className="w-full overflow-hidden rounded-full bg-neutral-800"
+      style={{ height: SECTION_PROGRESS_BAR_HEIGHT }}
+    >
+      <div
+        className="h-full rounded-full bg-neutral-100"
+        style={{ width: `${clamped}%` }}
+      />
+    </div>
+  );
+}
+
+function ShareSectionHeading({
+  label,
+  percent,
+  align = "left",
+}: {
+  label: string;
+  percent: number;
+  align?: "left" | "right";
+}) {
+  return (
+    <div
+      className={cn(
+        "flex flex-col",
+        align === "right" ? "items-end" : "items-stretch",
+      )}
+      style={{
+        gap: SECTION_PROGRESS_GAP,
+        marginBottom: SECTION_BLOCK_MARGIN_BOTTOM,
+      }}
+    >
+      <div
+        className={cn(
+          SECTION_HEADING_CLASS,
+          align === "right" && "text-right",
+        )}
+        style={{ fontSize: SECTION_HEADING_FONT_SIZE }}
+      >
+        {label}
+      </div>
+      <div style={{ width: align === "right" ? RING_CHART_SIZE * 2 + RING_GRID_GAP : "100%" }}>
+        <ShareProgressBar percent={percent} />
+      </div>
+    </div>
+  );
 }
 
 function getVisibleResourceKeys(
@@ -210,9 +292,11 @@ function ShareCard({
   cardRef,
   resources,
   seenResources,
-  percent,
+  resourcePercent,
+  achievementPercent,
   resourcesLabel,
   achievementsLabel,
+  ringLabels,
   cruelModeLabel,
   cruelModeValueLabel,
   playTimeLabel,
@@ -221,9 +305,11 @@ function ShareCard({
   cardRef: React.RefObject<HTMLDivElement>;
   resources: Record<string, number>;
   seenResources: string[];
-  percent: number;
+  resourcePercent: number;
+  achievementPercent: number;
   resourcesLabel: string;
   achievementsLabel: string;
+  ringLabels: Record<AchievementChartConfig["idPrefix"], string>;
   cruelModeLabel: string;
   cruelModeValueLabel: string;
   playTimeLabel: string;
@@ -257,12 +343,10 @@ function ShareCard({
 
         <div className="flex min-h-0 flex-1 justify-between gap-10">
           <div className="flex min-w-0 flex-col">
-            <div
-              className={SECTION_HEADING_CLASS}
-              style={{ fontSize: SECTION_HEADING_FONT_SIZE }}
-            >
-              {resourcesLabel}
-            </div>
+            <ShareSectionHeading
+              label={resourcesLabel}
+              percent={resourcePercent}
+            />
             <div
               className="flex flex-col leading-none"
               style={{ fontSize: resourceFontSize, rowGap: resourceRowGap }}
@@ -286,18 +370,24 @@ function ShareCard({
           </div>
 
           <div className="flex shrink-0 flex-col items-end">
-            <div
-              className={cn(SECTION_HEADING_CLASS, "text-right")}
-              style={{ fontSize: SECTION_HEADING_FONT_SIZE }}
-            >
-              {achievementsLabel}
-            </div>
+            <ShareSectionHeading
+              label={achievementsLabel}
+              percent={achievementPercent}
+              align="right"
+            />
             <div className="grid grid-cols-2" style={{ gap: RING_GRID_GAP }}>
               {RING_ENTRIES.map(({ config, centerSymbolStyle }) => (
                 <div
                   key={config.idPrefix}
-                  className="flex items-center justify-center"
+                  className="flex flex-col items-center"
+                  style={{ gap: RING_LABEL_GAP }}
                 >
+                  <div
+                    className="font-medium leading-none tracking-wide text-gray-400"
+                    style={{ fontSize: RING_LABEL_FONT_SIZE }}
+                  >
+                    {ringLabels[config.idPrefix]}
+                  </div>
                   <AchievementMiniRingChart
                     config={config}
                     isActive
@@ -312,7 +402,7 @@ function ShareCard({
       </div>
 
       <div
-        className="absolute bottom-16 left-16 font-medium leading-none text-gray-400"
+        className="absolute bottom-16 left-16 font-medium leading-none text-neutral-100"
         style={{ fontSize: 36 }}
       >
         Play for free at {SHARE_URL_IMAGE}
@@ -364,14 +454,19 @@ export default function ShareDialog() {
   useLayoutEffect(() => {
     if (!open) return;
     const el = previewWrapRef.current;
-    if (!el) return;
+    const parent = el?.parentElement;
+    if (!el || !parent) return;
     const update = () => {
-      const width = el.getBoundingClientRect().width;
-      setPreviewScale(width / SHARE_IMAGE_WIDTH || 0.3);
+      // Size from the parent so the wrap can be exactly the scaled card
+      // (w-full on the wrap used to leave letterbox space on the right when
+      // scale lagged, or when border-box width did not match content width).
+      const available = parent.getBoundingClientRect().width;
+      const targetWidth = Math.min(PREVIEW_MAX_WIDTH, available);
+      setPreviewScale(targetWidth / SHARE_IMAGE_WIDTH || 0.3);
     };
     update();
     const observer = new ResizeObserver(update);
-    observer.observe(el);
+    observer.observe(parent);
     return () => observer.disconnect();
   }, [open]);
 
@@ -504,10 +599,11 @@ export default function ShareDialog() {
         <div className="flex min-h-0 flex-1 justify-center overflow-auto py-2">
           <div
             ref={previewWrapRef}
-            className="relative w-full max-w-[360px] shrink-0 self-center overflow-hidden rounded-md border border-border"
+            className="relative box-content shrink-0 self-center overflow-hidden rounded-md border border-border"
             style={{
-              // Height must match the transform-scaled card; flex parents otherwise stretch
-              // this box taller than the scaled content and leave empty space below the footer.
+              // Exact scaled card size (border draws outside via box-content) so the
+              // preview never letterboxes empty space that the exported PNG lacks.
+              width: SHARE_IMAGE_WIDTH * previewScale,
               height: SHARE_IMAGE_HEIGHT * previewScale,
               backgroundColor: CARD_BG,
             }}
@@ -527,7 +623,8 @@ export default function ShareDialog() {
                 cardRef={cardRef}
                 resources={resources}
                 seenResources={seenResources}
-                percent={percent}
+                resourcePercent={resourcePercent}
+                achievementPercent={percent}
                 resourcesLabel={t("share.resources", {
                   percent: resourcePercent,
                   defaultValue: "Resources: {{percent}} %",
@@ -536,6 +633,23 @@ export default function ShareDialog() {
                   percent,
                   defaultValue: "Achievements: {{percent}} %",
                 })}
+                ringLabels={{
+                  basic: t(CATEGORY_HEADER_KEYS.basic, {
+                    defaultValue: CATEGORY_HEADER_DEFAULTS.basic,
+                  }),
+                  building: t(CATEGORY_HEADER_KEYS.building, {
+                    defaultValue: CATEGORY_HEADER_DEFAULTS.building,
+                  }),
+                  item: t(CATEGORY_HEADER_KEYS.item, {
+                    defaultValue: CATEGORY_HEADER_DEFAULTS.item,
+                  }),
+                  action: t(CATEGORY_HEADER_KEYS.action, {
+                    defaultValue: CATEGORY_HEADER_DEFAULTS.action,
+                  }),
+                  overall: t(CATEGORY_HEADER_KEYS.overall, {
+                    defaultValue: CATEGORY_HEADER_DEFAULTS.overall,
+                  }),
+                }}
                 cruelModeLabel={t("share.cruelMode", {
                   defaultValue: "Cruel Mode",
                 })}
