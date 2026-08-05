@@ -1244,8 +1244,8 @@ export default function CombatDialog({
                       {enemyDamageIndicator.visible && (
                         <div className="absolute -translate-y-5 inset-0 flex items-center justify-center text-red-900 font-bold text-sm pointer-events-none">
                           {playerStrikeFailed ||
-                          crushingStrikeFailed ||
-                          feralHowlFailed ? (
+                            crushingStrikeFailed ||
+                            feralHowlFailed ? (
                             enemyDamageIndicator.amount > 0 ? (
                               <>
                                 -{formatNumber(enemyDamageIndicator.amount)} (
@@ -1401,25 +1401,34 @@ export default function CombatDialog({
                           indicatorClassName="bg-green-900"
                           className="h-2 mt-2"
                         />
-                        {integrityDamageIndicator.visible && (
-                          <div className="absolute -translate-y-5 inset-0 flex items-center justify-center text-green-900 font-bold text-sm pointer-events-none">
-                            -{formatNumber(integrityDamageIndicator.amount)}
-                            {wasEnemyCriticalStrike &&
-                              ` (${t("ui:combat.critical")})`}
+                        {playerStunned ? (
+                          <div className="absolute -translate-y-5 inset-0 flex items-center justify-center text-yellow-500 font-bold text-sm pointer-events-none">
+                            {integrityDamageIndicator.visible &&
+                              integrityDamageIndicator.amount > 0 ? (
+                              <>
+                                -{formatNumber(integrityDamageIndicator.amount)}{" "}
+                                ({t("ui:combat.stunned")})
+                              </>
+                            ) : (
+                              t("ui:combat.stunned")
+                            )}
                           </div>
+                        ) : (
+                          <>
+                            {integrityDamageIndicator.visible && (
+                              <div className="absolute -translate-y-5 inset-0 flex items-center justify-center text-green-900 font-bold text-sm pointer-events-none">
+                                -{formatNumber(integrityDamageIndicator.amount)}
+                                {wasEnemyCriticalStrike &&
+                                  ` (${t("ui:combat.critical")})`}
+                              </div>
+                            )}
+                            {integrityHealIndicator.visible && (
+                              <div className="absolute -translate-y-5 inset-0 flex items-center justify-center text-green-400 font-bold text-sm pointer-events-none">
+                                +{formatNumber(integrityHealIndicator.amount)}
+                              </div>
+                            )}
+                          </>
                         )}
-                        {integrityHealIndicator.visible && (
-                          <div className="absolute -translate-y-5 inset-0 flex items-center justify-center text-green-400 font-bold text-sm pointer-events-none">
-                            +{formatNumber(integrityHealIndicator.amount)}
-                          </div>
-                        )}
-                        {playerStunned &&
-                          !integrityDamageIndicator.visible &&
-                          !integrityHealIndicator.visible && (
-                            <div className="absolute -translate-y-5 inset-0 flex items-center justify-center text-yellow-500 font-bold text-sm pointer-events-none">
-                              {t("ui:combat.stunned")}
-                            </div>
-                          )}
                       </div>
                     </div>
 
