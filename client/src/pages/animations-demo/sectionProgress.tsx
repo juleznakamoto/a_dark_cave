@@ -38,13 +38,16 @@ export function ProgressBarsSection() {
 
       <div className="max-w-md space-y-2">
         <p className="text-xs text-muted-foreground">
-          Enemy health (CombatDialog props, including decrease bubbles)
+          Enemy health (CombatDialog props: red heal sparks + decrease bubbles)
         </p>
         <Progress
           value={enemyHealth}
           hideBorder
           flashOnDecrease
           growAnimationMs={COMBAT_BAR_CHANGE_MS}
+          emitSparksOnGrow
+          growSparkIntensity="subtle"
+          growSparkTipGlow={false}
           emitCirclesOnDecrease
           indicatorClassName="bg-red-900"
           className="h-2"
