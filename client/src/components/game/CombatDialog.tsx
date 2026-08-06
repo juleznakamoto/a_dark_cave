@@ -1582,13 +1582,14 @@ export default function CombatDialog({
                     </div>
                   </div>
 
-                  {/* Combat Items */}
+                  {/* Combat Items — keep depleted buttons visible (disabled), like combat skills */}
                   {combatItems.some((item) =>
                     item.id === "poison_arrows"
                       ? NIGHTSHADE_BOW_OWNED
                       : (combatResources[
                         item.id as keyof typeof combatResources
-                      ] ?? 0) > 0,
+                      ] ?? 0) > 0 ||
+                      usedItemsInCombat.includes(item.id),
                   ) && (
                       <div className="pt-3">
                         <div className="text-sm font-medium mb-2">
@@ -1601,7 +1602,8 @@ export default function CombatDialog({
                                 ? NIGHTSHADE_BOW_OWNED
                                 : (combatResources[
                                   item.id as keyof typeof combatResources
-                                ] ?? 0) > 0,
+                                ] ?? 0) > 0 ||
+                                usedItemsInCombat.includes(item.id),
                             )
                             .map((item) => {
                               const tooltipConfig = combatItemTooltips[item.id];
