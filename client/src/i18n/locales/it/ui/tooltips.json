@@ -181,6 +181,9 @@
       "craftingBoost": "Boost fabbricazione: spendi Intuizione per saltare il 50 % del tempo di fabbricazione (una volta per fabbricazione)",
       "weaponEnchantment": "Incantesimo delle armi",
       "gathererVeinroot": "Raccoglitore: +{{amount}} Radicevena"
-    }
+    },
+    "enemyDamageReductionActive": "Danno nemico: -{{percent}}%",
+    "roundsRemaining_one": "{{count}} round rimanente",
+    "roundsRemaining_other": "{{count}} round rimanenti"
   }
 }

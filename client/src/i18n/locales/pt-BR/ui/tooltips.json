@@ -181,6 +181,9 @@
       "craftingBoost": "Impulso de fabricação: gaste Perspicácia para pular 50% do tempo de fabricação (uma vez por fabricação)",
       "weaponEnchantment": "Encantamento de armas",
       "gathererVeinroot": "Coletor: +{{amount}} Raiz Venosa"
-    }
+    },
+    "enemyDamageReductionActive": "Dano inimigo: -{{percent}}%",
+    "roundsRemaining_one": "{{count}} rodada restante",
+    "roundsRemaining_other": "{{count}} rodadas restantes"
   }
 }

@@ -181,6 +181,9 @@
       "craftingBoost": "Herstellungs-Boost: Einsicht ausgeben, um 50 % der Herstellungszeit zu überspringen (einmal pro Herstellung)", //x1.5
       "weaponEnchantment": "Waffenverzauberung",
       "gathererVeinroot": "Sammler: +{{amount}} Aderwurzel"
-    }
+    },
+    "enemyDamageReductionActive": "Feindschaden: -{{percent}} %",
+    "roundsRemaining_one": "Noch {{count}} Runde",
+    "roundsRemaining_other": "Noch {{count}} Runden"
   }
 }

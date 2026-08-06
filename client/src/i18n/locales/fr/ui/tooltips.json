@@ -181,6 +181,9 @@
       "craftingBoost": "Boost d'artisanat : dépenser de la Perspicacité pour sauter 50 % du temps d'artisanat (une fois par artisanat)", //x1.5
       "weaponEnchantment": "Enchantement d'armes",
       "gathererVeinroot": "Cueilleur : +{{amount}} racine de veine"
-    }
+    },
+    "enemyDamageReductionActive": "Dégâts ennemis : -{{percent}} %",
+    "roundsRemaining_one": "{{count}} tour restant",
+    "roundsRemaining_other": "{{count}} tours restants"
   }
 }

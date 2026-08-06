@@ -51,6 +51,7 @@ import {
   getDamagedBuildingDisplayName,
   getFellowshipDisplayName,
 } from "@/i18n/combatLabels";
+import { getUiTooltip } from "@/i18n/tooltipLabels";
 import { useTranslation } from "react-i18next";
 
 const COMBAT_BAR_CHANGE_MS = 500;
@@ -78,6 +79,16 @@ const COMBAT_SKILL_BUTTON_ICONS = {
 
 const COMBAT_BUTTON_ICON_CLASS =
   "font-noto-symbols-2 inline-flex translate-y-0.5 leading-none";
+
+function formatCombatStatusRoundsRemaining(rounds: number): string {
+  return getUiTooltip(
+    rounds === 1 ? "roundsRemaining_one" : "roundsRemaining_other",
+    rounds === 1
+      ? "{{count}} round remaining"
+      : "{{count}} rounds remaining",
+    { count: rounds },
+  );
+}
 
 interface CombatDialogProps {
   isOpen: boolean;
@@ -1155,54 +1166,142 @@ export default function CombatDialog({
                             ? getCombatEnemyDisplayName(currentEnemy.name)
                             : null}
                         </span>
-                        {NIGHTSHADE_BOW_OWNED &&
-                          usedItemsInCombat.includes("poison_arrows") && (
+                        {enemyPoisonRounds > 0 && (
+                          <TooltipWrapper
+                            tooltip={
+                              <div className="text-xs whitespace-pre-line">
+                                {[
+                                  t("ui:combat.poisonArrows"),
+                                  getUiTooltip("damage", "Damage: {{value}}", {
+                                    value: enemyPoisonDamage,
+                                  }),
+                                  formatCombatStatusRoundsRemaining(
+                                    enemyPoisonRounds,
+                                  ),
+                                ].join("\n")}
+                              </div>
+                            }
+                            tooltipId="combat-enemy-poison-status"
+                            disabled
+                            className="inline-block"
+                            tooltipTriggerClassName="inline-flex"
+                          >
                             <span
                               className={cn(
                                 COMBAT_STAT_ICON_CLASS,
-                                "text-green-500",
+                                COMBAT_ITEM_BUTTON_ICONS.poison_arrows
+                                  .className,
                               )}
                               role="img"
                               aria-label="poison-icon"
                             >
-                              ▲
+                              {COMBAT_ITEM_BUTTON_ICONS.poison_arrows.glyph}
                             </span>
-                          )}
+                          </TooltipWrapper>
+                        )}
                         {enemyStunnedRounds > 0 && (
-                          <span
-                            className={cn(
-                              COMBAT_STAT_ICON_CLASS,
-                              "text-yellow-600",
-                            )}
-                            role="img"
-                            aria-label="stun-icon"
+                          <TooltipWrapper
+                            tooltip={
+                              <div className="text-xs whitespace-pre-line">
+                                {[
+                                  t("ui:combat.crushingStrike"),
+                                  t("ui:combat.stunned"),
+                                  formatCombatStatusRoundsRemaining(
+                                    enemyStunnedRounds,
+                                  ),
+                                ].join("\n")}
+                              </div>
+                            }
+                            tooltipId="combat-enemy-stun-status"
+                            disabled
+                            className="inline-block"
+                            tooltipTriggerClassName="inline-flex"
                           >
-                            ◈
-                          </span>
+                            <span
+                              className={cn(
+                                COMBAT_STAT_ICON_CLASS,
+                                COMBAT_SKILL_BUTTON_ICONS.crushing_strike
+                                  .className,
+                              )}
+                              role="img"
+                              aria-label="stun-icon"
+                            >
+                              {
+                                COMBAT_SKILL_BUTTON_ICONS.crushing_strike
+                                  .glyph
+                              }
+                            </span>
+                          </TooltipWrapper>
                         )}
                         {enemyHowlRounds > 0 && (
-                          <span
-                            className={cn(
-                              COMBAT_STAT_ICON_CLASS,
-                              COMBAT_SKILL_BUTTON_ICONS.feral_howl.className,
-                            )}
-                            role="img"
-                            aria-label="howl-icon"
+                          <TooltipWrapper
+                            tooltip={
+                              <div className="text-xs whitespace-pre-line">
+                                {[
+                                  t("ui:combat.feralHowl"),
+                                  getUiTooltip(
+                                    "enemyDamageReductionActive",
+                                    "Enemy damage: -{{percent}}%",
+                                    { percent: enemyHowlDamageReduction },
+                                  ),
+                                  formatCombatStatusRoundsRemaining(
+                                    enemyHowlRounds,
+                                  ),
+                                ].join("\n")}
+                              </div>
+                            }
+                            tooltipId="combat-enemy-howl-status"
+                            disabled
+                            className="inline-block"
+                            tooltipTriggerClassName="inline-flex"
                           >
-                            {COMBAT_SKILL_BUTTON_ICONS.feral_howl.glyph}
-                          </span>
+                            <span
+                              className={cn(
+                                COMBAT_STAT_ICON_CLASS,
+                                COMBAT_SKILL_BUTTON_ICONS.feral_howl.className,
+                              )}
+                              role="img"
+                              aria-label="howl-icon"
+                            >
+                              {COMBAT_SKILL_BUTTON_ICONS.feral_howl.glyph}
+                            </span>
+                          </TooltipWrapper>
                         )}
                         {enemyBurnRounds > 0 && (
-                          <span
-                            className={cn(
-                              COMBAT_STAT_ICON_CLASS,
-                              "text-orange-600",
-                            )}
-                            role="img"
-                            aria-label="burn-icon"
+                          <TooltipWrapper
+                            tooltip={
+                              <div className="text-xs whitespace-pre-line">
+                                {[
+                                  t("ui:combat.bloodflameSphere"),
+                                  getUiTooltip("damage", "Damage: {{value}}", {
+                                    value: enemyBurnDamage,
+                                  }),
+                                  formatCombatStatusRoundsRemaining(
+                                    enemyBurnRounds,
+                                  ),
+                                ].join("\n")}
+                              </div>
+                            }
+                            tooltipId="combat-enemy-burn-status"
+                            disabled
+                            className="inline-block"
+                            tooltipTriggerClassName="inline-flex"
                           >
-                            ✵
-                          </span>
+                            <span
+                              className={cn(
+                                COMBAT_STAT_ICON_CLASS,
+                                COMBAT_SKILL_BUTTON_ICONS.bloodflame_sphere
+                                  .className,
+                              )}
+                              role="img"
+                              aria-label="burn-icon"
+                            >
+                              {
+                                COMBAT_SKILL_BUTTON_ICONS.bloodflame_sphere
+                                  .glyph
+                              }
+                            </span>
+                          </TooltipWrapper>
                         )}
                       </div>
                       <TooltipWrapper

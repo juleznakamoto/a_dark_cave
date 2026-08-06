@@ -181,6 +181,9 @@
       "craftingBoost": "Ускорение создания: потратьте прозрение, чтобы пропустить 50% времени создания (один раз за создание)", //x1.4
       "weaponEnchantment": "Зачарование оружия",
       "gathererVeinroot": "Собиратель: +{{amount}} Жилокорень"
-    }
+    },
+    "enemyDamageReductionActive": "Урон врага: -{{percent}}%",
+    "roundsRemaining_one": "Остался {{count}} раунд",
+    "roundsRemaining_other": "Осталось {{count}} раунда"
   }
 }

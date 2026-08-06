@@ -181,6 +181,9 @@
       "craftingBoost": "Impulso de artesanía: gasta Perspicacia para saltarte el 50 % del tiempo de artesanía (una vez por artesanía)", //x1.5
       "weaponEnchantment": "Encantamiento de armas", //x1.2
       "gathererVeinroot": "Recolector: +{{amount}} Raíz de vena"
-    }
+    },
+    "enemyDamageReductionActive": "Daño enemigo: -{{percent}}%",
+    "roundsRemaining_one": "{{count}} ronda restante",
+    "roundsRemaining_other": "{{count}} rondas restantes"
   }
 }

@@ -181,6 +181,9 @@
       "craftingBoost": "制作加速：消耗洞见跳过 50% 制作时间（每次制作限用一次）",
       "weaponEnchantment": "武器附魔",
       "gathererVeinroot": "采集者：+{{amount}} 脉络根"
-    }
+    },
+    "enemyDamageReductionActive": "敌人伤害：-{{percent}}%",
+    "roundsRemaining_one": "剩余 {{count}} 回合",
+    "roundsRemaining_other": "剩余 {{count}} 回合"
   }
 }
