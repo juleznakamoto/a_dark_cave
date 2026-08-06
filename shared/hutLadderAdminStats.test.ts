@@ -2,10 +2,13 @@ import { describe, expect, it } from "vitest";
 import {
   computeFinisherRatesByCohort,
   computeHutLadderFunnel,
+  computeHutLadderStepDropTimeSeries,
   filterHutLadderCohort,
   hutLadderReachChartData,
   hutLadderStepDropChartData,
   hutLadderDropVsStartedChartData,
+  utcWeekStartMs,
+  HUT_LADDER_TIMESERIES_MIN_STARTED,
 } from "./hutLadderAdminStats";
 
 function save(opts: {
@@ -328,5 +331,87 @@ describe("hutLadderAdminStats", () => {
     expect(r90.startedCount).toBe(3);
     expect(r90.finishedCount).toBe(2);
     expect(r90.ratePct).toBe(66.7);
+  });
+
+  it("utcWeekStartMs lands on Monday UTC", () => {
+    // Tuesday 2026-07-21 → Monday 2026-07-20
+    expect(utcWeekStartMs(Date.parse("2026-07-21T12:00:00.000Z"))).toBe(
+      Date.parse("2026-07-20T00:00:00.000Z"),
+    );
+    // Sunday → previous Monday
+    expect(utcWeekStartMs(Date.parse("2026-07-19T23:00:00.000Z"))).toBe(
+      Date.parse("2026-07-13T00:00:00.000Z"),
+    );
+  });
+
+  it("computes weekly step-drop time series and omits in-progress week", () => {
+    // now = Tue 2026-07-21 → current week Mon 2026-07-20 (omitted);
+    // last complete weeks: Mon 2026-07-06 and Mon 2026-07-13.
+    const weekA: ReturnType<typeof save>[] = [];
+    // 20 starters: 15 reach W1 → W1 drop 25%
+    for (let i = 0; i < 15; i++) {
+      weekA.push(
+        save({ created_at: "2026-07-07T12:00:00.000Z", woodenHut: 1 }),
+      );
+    }
+    for (let i = 0; i < 5; i++) {
+      weekA.push(
+        save({ created_at: "2026-07-08T12:00:00.000Z", woodenHut: 0 }),
+      );
+    }
+
+    const weekB: ReturnType<typeof save>[] = [];
+    // 20 starters: 10 reach W1 → W1 drop 50%
+    for (let i = 0; i < 10; i++) {
+      weekB.push(
+        save({ created_at: "2026-07-14T12:00:00.000Z", woodenHut: 1 }),
+      );
+    }
+    for (let i = 0; i < 10; i++) {
+      weekB.push(
+        save({ created_at: "2026-07-15T12:00:00.000Z", woodenHut: 0 }),
+      );
+    }
+
+    // In-progress week (should not appear)
+    const currentWeek = [
+      save({ created_at: "2026-07-20T12:00:00.000Z", woodenHut: 0 }),
+      save({ created_at: "2026-07-21T08:00:00.000Z", woodenHut: 5 }),
+    ];
+
+    // Tiny prior week (< min) → axis point with null stage values
+    const tinyWeek = [
+      save({ created_at: "2026-06-30T12:00:00.000Z", woodenHut: 0 }),
+      save({ created_at: "2026-07-01T12:00:00.000Z", woodenHut: 1 }),
+    ];
+
+    const series = computeHutLadderStepDropTimeSeries(
+      [...tinyWeek, ...weekA, ...weekB, ...currentWeek],
+      30,
+      now,
+    );
+
+    expect(series.some((p) => p.week === "2026-07-20")).toBe(false);
+
+    const tiny = series.find((p) => p.week === "2026-06-29"); // Mon of that week
+    expect(tiny).toBeDefined();
+    expect(tiny!.startedCount).toBe(2);
+    expect(tiny!.startedCount).toBeLessThan(HUT_LADDER_TIMESERIES_MIN_STARTED);
+    expect(tiny!.W1).toBeNull();
+
+    const a = series.find((p) => p.week === "2026-07-06");
+    expect(a).toBeDefined();
+    expect(a!.startedCount).toBe(20);
+    expect(a!.W1).toBe(25);
+
+    const b = series.find((p) => p.week === "2026-07-13");
+    expect(b).toBeDefined();
+    expect(b!.startedCount).toBe(20);
+    expect(b!.W1).toBe(50);
+
+    // Contiguous axis includes the empty gap week between tiny and A if any
+    const idxTiny = series.findIndex((p) => p.week === "2026-06-29");
+    const idxA = series.findIndex((p) => p.week === "2026-07-06");
+    expect(idxA).toBe(idxTiny + 1);
   });
 });

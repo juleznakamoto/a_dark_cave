@@ -218,22 +218,17 @@ function waveStepLabel(level: number): string {
 }
 
 /**
- * Reach funnel: for each N in 0..10, how many cohort members have hut count ≥ N;
- * then attack-wave victories ≥1..≥12. Normal mode only.
+ * Reach funnel for a pre-filtered cohort (already gameStarted / normal /
+ * non-referred as needed). Used by windowed funnel + weekly time series.
  */
-export function computeHutLadderFunnel(
-  saves: HutLadderSaveRow[],
-  cohortDays: HutLadderCohortDays,
-  now: Date = new Date(),
+export function computeHutLadderFunnelFromCohort(
+  cohort: HutLadderSaveRow[],
+  meta: {
+    cohortDays: HutLadderCohortDays;
+    excludedReferredCount?: number;
+  },
 ): HutLadderFunnel {
-  const { referred: excludedReferredCount } = countHutLadderWindowStarted(
-    saves,
-    cohortDays,
-    now,
-  );
-  const cohort = filterHutLadderCohort(saves, cohortDays, now);
   const startedCount = cohort.length;
-
   const woodenCounts = Array.from({ length: HUT_LADDER_MAX_LEVEL + 1 }, () => 0);
   const stoneCounts = Array.from({ length: HUT_LADDER_MAX_LEVEL + 1 }, () => 0);
   const waveCounts = Array.from(
@@ -263,9 +258,9 @@ export function computeHutLadderFunnel(
   }
 
   return {
-    cohortDays,
+    cohortDays: meta.cohortDays,
     startedCount,
-    excludedReferredCount,
+    excludedReferredCount: meta.excludedReferredCount ?? 0,
     wooden: buildReachSeries(woodenCounts, startedCount, (level) =>
       level === 0
         ? "≥0 started"
@@ -304,6 +299,174 @@ export function computeHutLadderFunnel(
     wooden10WithStone,
     stone10Count,
   };
+}
+
+/**
+ * Reach funnel: for each N in 0..10, how many cohort members have hut count ≥ N;
+ * then attack-wave victories ≥1..≥12. Normal mode only.
+ */
+export function computeHutLadderFunnel(
+  saves: HutLadderSaveRow[],
+  cohortDays: HutLadderCohortDays,
+  now: Date = new Date(),
+): HutLadderFunnel {
+  const { referred: excludedReferredCount } = countHutLadderWindowStarted(
+    saves,
+    cohortDays,
+    now,
+  );
+  const cohort = filterHutLadderCohort(saves, cohortDays, now);
+  return computeHutLadderFunnelFromCohort(cohort, {
+    cohortDays,
+    excludedReferredCount,
+  });
+}
+
+/** Min weekly cohort size before stage drop % is plotted (smaller weeks gap). */
+export const HUT_LADDER_TIMESERIES_MIN_STARTED = 15;
+
+/** Wooden step keys W1–W10 (W0 baseline omitted). */
+export const HUT_LADDER_WOODEN_SERIES_KEYS = Array.from(
+  { length: HUT_LADDER_MAX_LEVEL },
+  (_, i) => `W${i + 1}` as const,
+);
+
+/** Stone step keys S1–S10. */
+export const HUT_LADDER_STONE_SERIES_KEYS = Array.from(
+  { length: HUT_LADDER_MAX_LEVEL },
+  (_, i) => `S${i + 1}` as const,
+);
+
+/** Attack-wave step keys A1–A12. */
+export const HUT_LADDER_WAVE_SERIES_KEYS = Array.from(
+  { length: ATTACK_WAVE_LADDER_MAX },
+  (_, i) => `A${i + 1}` as const,
+);
+
+export const HUT_LADDER_STEP_DROP_SERIES_KEYS = [
+  ...HUT_LADDER_WOODEN_SERIES_KEYS,
+  ...HUT_LADDER_STONE_SERIES_KEYS,
+  ...HUT_LADDER_WAVE_SERIES_KEYS,
+] as const;
+
+export type HutLadderStepDropSeriesKey =
+  (typeof HUT_LADDER_STEP_DROP_SERIES_KEYS)[number];
+
+export type HutLadderStepDropTimePoint = {
+  /** UTC Monday date `YYYY-MM-DD`. */
+  week: string;
+  /** Short axis label, e.g. `Jul 28`. */
+  weekLabel: string;
+  startedCount: number;
+} & Partial<Record<HutLadderStepDropSeriesKey, number | null>>;
+
+const MS_PER_DAY = 24 * 60 * 60 * 1000;
+
+/** UTC Monday 00:00 for the week containing `ms`. */
+export function utcWeekStartMs(ms: number): number {
+  const d = new Date(ms);
+  const day = d.getUTCDay(); // 0=Sun … 6=Sat
+  const daysFromMonday = day === 0 ? 6 : day - 1;
+  return Date.UTC(
+    d.getUTCFullYear(),
+    d.getUTCMonth(),
+    d.getUTCDate() - daysFromMonday,
+  );
+}
+
+function formatUtcWeekKey(weekStartMs: number): string {
+  const d = new Date(weekStartMs);
+  const y = d.getUTCFullYear();
+  const m = String(d.getUTCMonth() + 1).padStart(2, "0");
+  const day = String(d.getUTCDate()).padStart(2, "0");
+  return `${y}-${m}-${day}`;
+}
+
+function formatUtcWeekLabel(weekStartMs: number): string {
+  const d = new Date(weekStartMs);
+  return d.toLocaleDateString("en-US", {
+    month: "short",
+    day: "numeric",
+    timeZone: "UTC",
+  });
+}
+
+function stepDropSeriesFromFunnel(
+  funnel: HutLadderFunnel,
+  includeValues: boolean,
+): Partial<Record<HutLadderStepDropSeriesKey, number | null>> {
+  const out: Partial<Record<HutLadderStepDropSeriesKey, number | null>> = {};
+  for (const point of funnel.wooden) {
+    if (point.level < 1) continue;
+    const key = `W${point.level}` as HutLadderStepDropSeriesKey;
+    out[key] = includeValues ? (point.stepDropPct ?? null) : null;
+  }
+  for (const point of funnel.stone) {
+    if (point.level < 1) continue;
+    const key = `S${point.level}` as HutLadderStepDropSeriesKey;
+    out[key] = includeValues ? (point.stepDropPct ?? null) : null;
+  }
+  for (const point of funnel.waves) {
+    const key = `A${point.level}` as HutLadderStepDropSeriesKey;
+    out[key] = includeValues ? (point.stepDropPct ?? null) : null;
+  }
+  return out;
+}
+
+/**
+ * Weekly step drop-off % over time for hut/wave stages.
+ * Buckets non-referred normal gameStarted saves by UTC week of `created_at`,
+ * omits the in-progress current week, and nulls stage values when
+ * `startedCount < {@link HUT_LADDER_TIMESERIES_MIN_STARTED}`.
+ */
+export function computeHutLadderStepDropTimeSeries(
+  saves: HutLadderSaveRow[],
+  cohortDays: HutLadderCohortDays,
+  now: Date = new Date(),
+): HutLadderStepDropTimePoint[] {
+  const cohort = filterHutLadderCohort(saves, cohortDays, now);
+  const currentWeekStart = utcWeekStartMs(now.getTime());
+  const byWeek = new Map<number, HutLadderSaveRow[]>();
+
+  for (const save of cohort) {
+    const created = Date.parse(save.created_at!);
+    if (!Number.isFinite(created)) continue;
+    const weekStart = utcWeekStartMs(created);
+    if (weekStart >= currentWeekStart) continue; // omit in-progress week
+    const list = byWeek.get(weekStart);
+    if (list) list.push(save);
+    else byWeek.set(weekStart, [save]);
+  }
+
+  const weekStarts = Array.from(byWeek.keys()).sort((a, b) => a - b);
+  const lastCompleteWeek = currentWeekStart - 7 * MS_PER_DAY;
+  if (lastCompleteWeek < 0) return [];
+
+  // Contiguous complete weeks from the earliest bucket (or window start) through
+  // the last finished UTC week — empty / tiny weeks still appear on the axis.
+  const cutoffMs = now.getTime() - cohortDays * MS_PER_DAY;
+  const firstWeek = weekStarts.length > 0
+    ? weekStarts[0]!
+    : utcWeekStartMs(cutoffMs);
+  const axisWeeks: number[] = [];
+  for (let w = firstWeek; w <= lastCompleteWeek; w += 7 * MS_PER_DAY) {
+    axisWeeks.push(w);
+  }
+
+  return axisWeeks.map((weekStart) => {
+    const weekCohort = byWeek.get(weekStart) ?? [];
+    const funnel = computeHutLadderFunnelFromCohort(weekCohort, {
+      cohortDays,
+    });
+    const includeValues =
+      funnel.startedCount >= HUT_LADDER_TIMESERIES_MIN_STARTED;
+    return {
+      week: formatUtcWeekKey(weekStart),
+      weekLabel: formatUtcWeekLabel(weekStart),
+      startedCount: funnel.startedCount,
+      ...stepDropSeriesFromFunnel(funnel, includeValues),
+    };
+  });
 }
 
 /**

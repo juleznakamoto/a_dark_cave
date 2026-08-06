@@ -7,9 +7,13 @@ import { differenceInDays, subDays } from "date-fns";
 import {
   computeFinisherRatesByCohort,
   computeHutLadderFunnel,
+  computeHutLadderStepDropTimeSeries,
   hutLadderReachChartData,
   hutLadderStepDropChartData,
   hutLadderDropVsStartedChartData,
+  HUT_LADDER_WOODEN_SERIES_KEYS,
+  HUT_LADDER_STONE_SERIES_KEYS,
+  HUT_LADDER_WAVE_SERIES_KEYS,
   type HutLadderCohortDays,
 } from "@shared/hutLadderAdminStats";
 import {
@@ -58,6 +62,10 @@ export default function ChurnTab(props: ChurnTabProps) {
   const hutDropVsStartedChart = useMemo(
     () => hutLadderDropVsStartedChartData(hutLadderFunnel),
     [hutLadderFunnel],
+  );
+  const hutStepDropTimeSeries = useMemo(
+    () => computeHutLadderStepDropTimeSeries(gameSaves, hutLadderDays),
+    [gameSaves, hutLadderDays],
   );
   const finisherRates = useMemo(
     () => computeFinisherRatesByCohort(gameSaves),
@@ -761,6 +769,117 @@ export default function ChurnTab(props: ChurnTabProps) {
               W0 is the baseline (0% drop). S1 step drop is vs wooden ≥10; A1
               step drop is vs stone ≥10 (unlock gates), not vs all starters.
             </p>
+          </div>
+
+          <div className="space-y-4">
+            <div>
+              <h3 className="text-sm font-medium mb-1">
+                Stage drop-off over time (weekly cohorts)
+              </h3>
+              <p className="text-xs text-muted-foreground mb-3">
+                Same step-drop % as above, bucketed by UTC week of save created_at
+                (current incomplete week omitted). Weeks with fewer than 15
+                starters show gaps. Older weeks have had more time to climb;
+                recent complete weeks can look worse on late stages.
+              </p>
+            </div>
+            {hutStepDropTimeSeries.length === 0 ? (
+              <p className="text-sm text-muted-foreground">
+                No complete UTC weeks in this window yet.
+              </p>
+            ) : (
+              [
+                {
+                  title: "Wooden hut step drop % over time",
+                  keys: HUT_LADDER_WOODEN_SERIES_KEYS,
+                },
+                {
+                  title: "Stone hut step drop % over time",
+                  keys: HUT_LADDER_STONE_SERIES_KEYS,
+                },
+                {
+                  title: "Attack wave step drop % over time",
+                  keys: HUT_LADDER_WAVE_SERIES_KEYS,
+                },
+              ].map((chart) => (
+                <div key={chart.title}>
+                  <h4 className="text-sm font-medium mb-2">{chart.title}</h4>
+                  <ChartContainer
+                    config={Object.fromEntries(
+                      chart.keys.map((key, i) => [
+                        key,
+                        {
+                          label: key,
+                          color: COLORS[i % COLORS.length],
+                        },
+                      ]),
+                    )}
+                    className="h-[280px] w-full"
+                  >
+                    <LineChart data={hutStepDropTimeSeries}>
+                      <CartesianGrid strokeDasharray="3 3" />
+                      <XAxis
+                        dataKey="weekLabel"
+                        tick={{ fontSize: 10 }}
+                        label={{
+                          value: "Cohort week (UTC Mon)",
+                          position: "insideBottom",
+                          offset: -2,
+                        }}
+                      />
+                      <YAxis
+                        unit="%"
+                        domain={[0, 100]}
+                        label={{
+                          value: "Step drop %",
+                          angle: -90,
+                          position: "insideLeft",
+                        }}
+                      />
+                      <ChartTooltip
+                        content={
+                          <ChartTooltipContent
+                            labelFormatter={(_, payload) => {
+                              const row = payload?.[0]?.payload as
+                                | { week?: string; startedCount?: number }
+                                | undefined;
+                              if (!row?.week) return "";
+                              return `${row.week} · n=${row.startedCount ?? 0}`;
+                            }}
+                            formatter={(value, name) => (
+                              <>
+                                <span className="text-muted-foreground">
+                                  {name}
+                                </span>
+                                <span className="font-mono font-medium tabular-nums text-foreground">
+                                  {typeof value === "number"
+                                    ? `${value.toFixed(1)}%`
+                                    : "—"}
+                                </span>
+                              </>
+                            )}
+                          />
+                        }
+                      />
+                      <Legend wrapperStyle={{ fontSize: 11 }} />
+                      {chart.keys.map((key, i) => (
+                        <Line
+                          key={key}
+                          type="monotone"
+                          dataKey={key}
+                          name={key}
+                          stroke={COLORS[i % COLORS.length]}
+                          strokeWidth={1.5}
+                          dot={false}
+                          connectNulls={false}
+                          isAnimationActive={false}
+                        />
+                      ))}
+                    </LineChart>
+                  </ChartContainer>
+                </div>
+              ))
+            )}
           </div>
 
           <div>
