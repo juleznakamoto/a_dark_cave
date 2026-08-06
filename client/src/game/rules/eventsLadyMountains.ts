@@ -4,8 +4,6 @@ import { killVillagers } from "@/game/stateHelpers";
 import { getVillagersInVillage } from "@/game/population";
 import { CRUEL_MODE, cruelModeScale } from "../cruelMode";
 
-const isDev = import.meta.env.DEV;
-
 function liquidDeathCasualties(state: GameState): number {
   const pop = getVillagersInVillage(state);
   const floor =
@@ -92,7 +90,6 @@ export const ladyMountainsEvents: Record<string, GameEvent> = {
   ladyFromTheMountains: {
     id: "ladyFromTheMountains",
     condition: (state: GameState) =>
-      isDev &&
       Boolean(state.story?.seen?.sixthWaveVictory) &&
       Boolean(state.story?.seen?.veinrootDiscovered) &&
       !state.story?.seen?.ladyFromTheMountains,
@@ -135,7 +132,7 @@ export const ladyMountainsEvents: Record<string, GameEvent> = {
   liquidDeath: {
     id: "liquidDeath",
     condition: (state: GameState) => {
-      if (!isDev || state.story?.seen?.liquidDeathResolved) return false;
+      if (state.story?.seen?.liquidDeathResolved) return false;
       const rejectArmed = Boolean(state.story?.seen?.ladyMountainsPoisonPending);
       const welcomeArmed =
         Boolean(state.story?.seen?.ladyMountainsWelcomed) &&
@@ -179,7 +176,6 @@ export const ladyMountainsEvents: Record<string, GameEvent> = {
   manFromTheMountains: {
     id: "manFromTheMountains",
     condition: (state: GameState) =>
-      isDev &&
       Boolean(state.story?.seen?.manFromTheMountainsPending) &&
       !state.story?.seen?.manFromTheMountains,
     timeProbability: 0.5,
@@ -220,7 +216,6 @@ export const ladyMountainsEvents: Record<string, GameEvent> = {
   mountainPairNightAttack: {
     id: "mountainPairNightAttack",
     condition: (state: GameState) =>
-      isDev &&
       Boolean(state.story?.seen?.mountainPairNightAttackPending) &&
       !state.story?.seen?.mountainPairNightAttackDone,
     timeProbability: 10,

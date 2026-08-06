@@ -1381,10 +1381,6 @@ export function handleSearchMountainLady(
   state: GameState,
   result: ActionResult,
 ): ActionResult {
-  if (!import.meta.env.DEV) {
-    return result;
-  }
-
   const deaths =
     CRUEL_MODE.ladyMountains.ambushDeaths.base +
     cruelModeScale(state) * CRUEL_MODE.ladyMountains.ambushDeaths.whenCruel;
@@ -1424,10 +1420,6 @@ export function handleExploreMountainVillage(
   state: GameState,
   result: ActionResult,
 ): ActionResult {
-  if (!import.meta.env.DEV) {
-    return result;
-  }
-
   // Keep the map and do not mark explored until Accept on theHoundFound.
   // Otherwise a missed/deferred dialog permanently soft-locks Brute Hound.
   const houndEvent = gameEvents.theHoundFound;
