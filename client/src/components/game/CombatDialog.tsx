@@ -69,14 +69,18 @@ function CombatLabeledStat({
   iconClassName,
   label,
   value,
+  muted = false,
 }: {
   icon: string;
   iconClassName: string;
   label: string;
   value: React.ReactNode;
+  muted?: boolean;
 }) {
   return (
-    <span className={COMBAT_STAT_ROW_CLASS}>
+    <span
+      className={cn(COMBAT_STAT_ROW_CLASS, muted && "text-muted-foreground")}
+    >
       <span className={cn(COMBAT_STAT_ICON_CLASS, iconClassName)}>{icon}</span>
       <span>
         {label}: {value}
@@ -1394,13 +1398,16 @@ export default function CombatDialog({
                         iconClassName="text-red-400/60"
                         label={t("ui:combat.attack")}
                         value={formatNumber(currentEnemy?.attack ?? 0)}
+                        muted
                       />
                       {(currentEnemy?.healChancePercent ?? 0) > 0 && (
                         <CombatLabeledStat
                           icon="🟂"
-                          iconClassName="text-green-400"
+                          // 🟂 sits high in Noto; nudge past the shared 0.12em optical offset.
+                          iconClassName="text-green-400 translate-y-[0.22em]"
                           label={t("ui:combat.healChance")}
                           value={`${currentEnemy?.healChancePercent}%`}
+                          muted
                         />
                       )}
                       {(currentEnemy?.stunChancePercent ?? 0) > 0 && (
@@ -1409,6 +1416,7 @@ export default function CombatDialog({
                           iconClassName="text-yellow-400"
                           label={t("ui:combat.stunChance")}
                           value={`${currentEnemy?.stunChancePercent}%`}
+                          muted
                         />
                       )}
                     </div>
@@ -1486,12 +1494,14 @@ export default function CombatDialog({
                         iconClassName="text-red-400/60"
                         label={t("ui:combat.attack")}
                         value={formatNumber(bastionStats.attack)}
+                        muted
                       />
                       <CombatLabeledStat
                         icon="⧈"
                         iconClassName="text-blue-400/60"
                         label={t("ui:combat.defense")}
                         value={formatNumber(bastionStats.defense)}
+                        muted
                       />
                     </div>
                   </div>
