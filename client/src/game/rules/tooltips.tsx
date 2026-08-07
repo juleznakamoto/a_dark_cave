@@ -57,6 +57,9 @@ import {
 } from "@/game/resourceLimits";
 import { getExecutionTime } from "./executionTime";
 
+/** Noto Sans Symbols 2 — white circle with upper-right quadrant for time costs. */
+const DURATION_COST_GLYPH = "\u25F7";
+
 /**
  * Tooltip line showing an action's execution duration. Rendered as the last
  * line of the cost section. Returns null for instant (no execution time) actions.
@@ -68,7 +71,10 @@ export const getActionDurationLine = (
   const seconds = getExecutionTime(actionId, state);
   if (seconds <= 0) return null;
   return (
-    <div className="text-muted-foreground">
+    <div>
+      <span className="font-noto-symbols-2" aria-hidden>
+        {DURATION_COST_GLYPH}
+      </span>{" "}
       {getUiTooltip("duration", "{{duration}}", {
         duration: formatExecutionDuration(seconds),
       })}
