@@ -469,7 +469,7 @@ function renderBuildingItemTooltip(
   return (
     <div className="text-xs">
       {hasMetaRow && (
-        <div className="flex w-full flex-wrap items-center justify-between gap-x-2 gap-y-0 leading-none">
+        <div className="flex w-full flex-wrap items-baseline justify-between gap-x-2 gap-y-0">
           <span>
             {showTitle && <span className="font-bold">{titleLabel}</span>}
             {hierarchyLevel != null && (
@@ -494,12 +494,12 @@ function renderBuildingItemTooltip(
             )}
           </span>
           {capUpgradeGroupId && (
-            <span className="ml-auto inline-flex items-center gap-1 tabular-nums leading-none">
+            <span className="ml-auto inline-flex items-baseline gap-1 tabular-nums">
               <span
-                className={`inline-flex items-center gap-0 font-noto-symbols-2 text-xs tabular-nums ${INSIGHT_TEXT_CLASS}`}
+                className={`relative top-px !text-sm inline-flex items-center gap-0 leading-none font-noto-symbols-2 tabular-nums ${INSIGHT_TEXT_CLASS}`}
               >
                 <span aria-hidden>{INSIGHT_GLYPH}</span>
-                <span className="font-light">{insightCapLevel}</span>
+                <span className="font-light text-base">{insightCapLevel}</span>
               </span>
               <span className="text-xs font-normal text-muted-foreground">
                 {getUiTooltip("villagerCapJobs", "{{count}} jobs", {
