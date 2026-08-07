@@ -530,10 +530,6 @@ export default function TimedEventPanel() {
       !!(choice.relevant_stats && choice.relevant_stats.length > 0) ||
       isPurchased;
 
-    const goldShopTooltip = t("ui:timedEvent.buyGold", {
-      defaultValue: "Buy Gold",
-    });
-
     const buttonContent = (
       <Button
         onClick={(e) => {
@@ -655,26 +651,22 @@ export default function TimedEventPanel() {
 
     const goldShopBadge = showGoldShopBadge ? (
       <div className="absolute bottom-[-10px] right-[-7px] z-[30] pointer-events-auto">
-        <TooltipWrapper
-          tooltip={goldShopTooltip}
-          tooltipId={`timedevent-${choice.id}-buy-gold`}
-          className="inline-flex"
+        <button
+          type="button"
+          className="flex h-4 w-4 items-center justify-center rounded-full bg-yellow-700 text-white shadow-sm border border-yellow-500/60 hover:bg-yellow-600 transition-colors cursor-pointer"
+          data-testid={`timedevent-${choice.id}-buy-gold`}
+          aria-label={t("ui:timedEvent.buyGold", {
+            defaultValue: "Buy Gold",
+          })}
+          onPointerDown={(e) => e.stopPropagation()}
+          onClick={(e) => {
+            e.stopPropagation();
+            e.preventDefault();
+            openGoldShop();
+          }}
         >
-          <button
-            type="button"
-            className="flex h-4 w-4 items-center justify-center rounded-full bg-yellow-700 text-white shadow-sm border border-yellow-500/60 hover:bg-yellow-600 transition-colors cursor-pointer"
-            data-testid={`timedevent-${choice.id}-buy-gold`}
-            aria-label={goldShopTooltip}
-            onPointerDown={(e) => e.stopPropagation()}
-            onClick={(e) => {
-              e.stopPropagation();
-              e.preventDefault();
-              openGoldShop();
-            }}
-          >
-            <Plus className="h-2.5 w-2.5 stroke-[3]" />
-          </button>
-        </TooltipWrapper>
+          <Plus className="h-2.5 w-2.5 stroke-[3]" />
+        </button>
       </div>
     ) : null;
 

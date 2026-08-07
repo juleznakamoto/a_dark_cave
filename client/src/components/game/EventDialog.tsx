@@ -479,7 +479,14 @@ export default function EventDialog({
               <div className="mt-1 mb-2 space-y-1">
                 <div className="flex justify-between text-sm text-muted-foreground">
                 </div>
-                <Progress value={progress} className="h-2 timer-progress" disableGlow />
+                <Progress
+                  value={progress}
+                  className="h-2 timer-progress"
+                  disableGlow
+                  indicatorClassName={
+                    isMadnessEvent ? "bg-violet-700" : undefined
+                  }
+                />
               </div>
             )}
           </DialogContent>

@@ -290,28 +290,21 @@ function AchievementRowComponent({
           </div>
         )}
       </div>
-      <TooltipWrapper
-        tooltip={progressLabel}
-        tooltipId={`achievement-progress-${row.achievementId}`}
-        disabled
-        className="w-full"
-      >
-        <Progress
-          // Clamp: gathering totals (e.g. leather) keep rising past maxCount.
-          // Unclamped values >100 retrigger the glow on every production tick.
-          value={Math.min(
-            100,
-            row.maxCount > 0
-              ? (Math.floor(row.currentCount) / row.maxCount) * 100
-              : 0,
-          )}
-          className={`h-2 ${PROGRESS_BAR_BG_CLASS}`}
-          segments={getAchievementSegmentWeight(row)}
-          indicatorClassName={row.isFull ? indicatorClassComplete : indicatorClassIncomplete}
-          hideBorder
-          disableGlow
-        />
-      </TooltipWrapper>
+      <Progress
+        // Clamp: gathering totals (e.g. leather) keep rising past maxCount.
+        // Unclamped values >100 retrigger the glow on every production tick.
+        value={Math.min(
+          100,
+          row.maxCount > 0
+            ? (Math.floor(row.currentCount) / row.maxCount) * 100
+            : 0,
+        )}
+        className={`h-2 ${PROGRESS_BAR_BG_CLASS}`}
+        segments={getAchievementSegmentWeight(row)}
+        indicatorClassName={row.isFull ? indicatorClassComplete : indicatorClassIncomplete}
+        hideBorder
+        disableGlow
+      />
     </div>
   );
 }
