@@ -726,7 +726,7 @@ export default function SidePanel() {
 
         if (key === "defense") {
           tooltip = (
-            <span className="text-muted-foreground">
+            <span className="text-foreground">
               {t("sidePanel.bastionDefenseTooltip")}
             </span>
           );
@@ -734,7 +734,7 @@ export default function SidePanel() {
 
         if (key === "integrity") {
           tooltip = (
-            <span className="text-muted-foreground">
+            <span className="text-foreground">
               {t("sidePanel.bastionIntegrityTooltip")}
             </span>
           );

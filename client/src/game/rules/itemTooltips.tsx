@@ -483,7 +483,9 @@ function renderBuildingItemTooltip(
         <>
           {(hasMetaRow || effectsBlock) && <ActionTooltipSeparator />}
           <div
-            className="text-muted-foreground"
+            className={itemTooltipDescriptionToneClass(
+              Boolean(hasMetaRow || effectsBlock),
+            )}
           >
             {buildDescription}
           </div>
@@ -571,7 +573,9 @@ export function renderFortificationTooltip(
         <>
           {(hasMetaRow || effectsBlock) && <ActionTooltipSeparator />}
           <div
-            className="text-muted-foreground"
+            className={itemTooltipDescriptionToneClass(
+              Boolean(hasMetaRow || effectsBlock),
+            )}
           >
             {buildDescription}
           </div>
@@ -591,6 +595,11 @@ export type ItemTooltipDisplay = {
 export const SIDE_PANEL_ITEM_TOOLTIP_DISPLAY: ItemTooltipDisplay = {
   showTitle: false,
 };
+
+/** Description-only tooltips stay normal; mute when effects/title sit above. */
+function itemTooltipDescriptionToneClass(hasContentAbove: boolean): string {
+  return hasContentAbove ? "text-muted-foreground" : "text-foreground";
+}
 
 export function renderItemTooltip(
   itemId: string,
@@ -644,7 +653,9 @@ export function renderItemTooltip(
             <>
               {(showTitle || showEffects) && <ActionTooltipSeparator />}
               <div
-                className="text-muted-foreground"
+                className={itemTooltipDescriptionToneClass(
+                  Boolean(showTitle || showEffects),
+                )}
               >
                 {getEffectDescription("weapons", itemId, effect.description)}
               </div>
@@ -692,7 +703,9 @@ export function renderItemTooltip(
         {showDescription && effect.description && (
           <>
             {hasFellowshipTitle && <ActionTooltipSeparator />}
-            <div className="text-muted-foreground">
+            <div
+              className={itemTooltipDescriptionToneClass(hasFellowshipTitle)}
+            >
               {getEffectDescription(effectCategory, itemId, effect.description)}
             </div>
           </>
@@ -1164,7 +1177,14 @@ export function renderItemTooltip(
               (itemId === "map_fragment" || enchantLevel > 0))) && (
               <ActionTooltipSeparator />
             )}
-          <div className="text-muted-foreground">
+          <div
+            className={itemTooltipDescriptionToneClass(
+              hasTitle ||
+              hasAnyEffects ||
+              (!showTitle &&
+                (itemId === "map_fragment" || enchantLevel > 0)),
+            )}
+          >
             {getEffectDescription(
               effectCategory,
               itemId,
