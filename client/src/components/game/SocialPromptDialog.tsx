@@ -79,6 +79,8 @@ const SOCIAL_TASK_ROW_GAP = "gap-2 sm:gap-3";
 const SOCIAL_TASK_PLATFORM_ICON_SIZE = "w-4 h-4 sm:w-5 sm:h-5";
 const SOCIAL_TASK_ROW_LABEL_CLASS = "font-medium text-xs sm:text-sm";
 const SOCIAL_EXCLUSIVE_REWARD_ICON_SIZE = "w-5 h-5 sm:w-6 sm:h-6";
+/** Shared claimed / fulfilled / exclusive-track box chrome. */
+const SOCIAL_TASK_HIGHLIGHT_BOX = "border-green-500/40 bg-green-500/5";
 
 function ExclusivePromoItemInfoIcon({ tooltipId }: { tooltipId: string }) {
   return (
@@ -513,10 +515,7 @@ export default function SocialPromptDialog({
                 className={cn(
                   "rounded-md border border-border p-3 flex items-center",
                   SOCIAL_TASK_ROW_GAP,
-                  claimed && "border-green-500/40 bg-green-500/5",
-                  !claimed &&
-                  fulfilled &&
-                  "border-lime-500/30 bg-lime-500/[0.04]",
+                  (claimed || fulfilled) && SOCIAL_TASK_HIGHLIGHT_BOX,
                 )}
               >
                 <TaskRowStatusIcon
@@ -571,11 +570,9 @@ export default function SocialPromptDialog({
             className={cn(
               "rounded-md border border-border p-3 flex items-center",
               SOCIAL_TASK_ROW_GAP,
-              playlightDiscoverRewardClaimed &&
-              "border-green-500/40 bg-green-500/5",
-              !playlightDiscoverRewardClaimed &&
-              playlightDiscoverRewardFulfilled &&
-              "border-lime-500/30 bg-lime-500/[0.04]",
+              (playlightDiscoverRewardClaimed ||
+                playlightDiscoverRewardFulfilled) &&
+              SOCIAL_TASK_HIGHLIGHT_BOX,
             )}
           >
             <TaskRowStatusIcon
@@ -633,10 +630,7 @@ export default function SocialPromptDialog({
             className={cn(
               "rounded-md border border-border p-3 flex items-center",
               SOCIAL_TASK_ROW_GAP,
-              signUpClaimed && "border-green-500/40 bg-green-500/5",
-              !signUpClaimed &&
-              signUpFulfilled &&
-              "border-lime-500/30 bg-lime-500/[0.04]",
+              (signUpClaimed || signUpFulfilled) && SOCIAL_TASK_HIGHLIGHT_BOX,
             )}
           >
             <TaskRowStatusIcon
@@ -693,10 +687,8 @@ export default function SocialPromptDialog({
             className={cn(
               "rounded-md border border-border p-3 flex items-center",
               SOCIAL_TASK_ROW_GAP,
-              emailRewardClaimed && "border-green-500/40 bg-green-500/5",
-              !emailRewardClaimed &&
-              emailRewardFulfilled &&
-              "border-lime-500/30 bg-lime-500/[0.04]",
+              (emailRewardClaimed || emailRewardFulfilled) &&
+              SOCIAL_TASK_HIGHLIGHT_BOX,
             )}
           >
             <TaskRowStatusIcon
@@ -752,10 +744,8 @@ export default function SocialPromptDialog({
             className={cn(
               "rounded-md border border-border p-3 flex items-center",
               SOCIAL_TASK_ROW_GAP,
-              referralsComplete && "border-green-500/40 bg-green-500/5",
-              !referralsComplete &&
-              exclusiveInviteDone &&
-              "border-lime-500/30 bg-lime-500/[0.04]",
+              (referralsComplete || exclusiveInviteDone) &&
+              SOCIAL_TASK_HIGHLIGHT_BOX,
             )}
           >
             <TaskRowStatusIcon
@@ -805,9 +795,7 @@ export default function SocialPromptDialog({
         <div
           className={cn(
             "mt-1 space-y-3 rounded-md border px-3 py-3",
-            exclusiveRewardComplete
-              ? "border-green-500/40 bg-green-500/5"
-              : "border-lime-500/40 bg-lime-500/[0.07]",
+            SOCIAL_TASK_HIGHLIGHT_BOX,
           )}
         >
           <div className="space-y-3">
