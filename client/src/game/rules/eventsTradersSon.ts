@@ -64,7 +64,7 @@ export const tradersSonEvents: Record<string, GameEvent> = {
     priority: 3,
     repeatable: false,
     showAsTimedTab: true,
-    timedTabDuration: 10 * 60 * 1000, // 10 minutes
+    timedTabDuration: 8 * 60 * 1000,
     choices: [
       {
         id: "accept_traders_son_gratitude",

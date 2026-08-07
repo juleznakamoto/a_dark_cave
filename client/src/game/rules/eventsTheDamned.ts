@@ -23,7 +23,7 @@ export const theDamnedEvents: Record<string, GameEvent> = {
     priority: 4,
     repeatable: false,
     showAsTimedTab: true,
-    timedTabDuration: 3 * 60 * 1000,
+    timedTabDuration: 4 * 60 * 1000,
     choices: [
       {
         id: "welcomeThem",

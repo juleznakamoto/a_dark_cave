@@ -114,7 +114,7 @@ export const crowEvents: Record<string, GameEvent> = {
 
     priority: 5,
     showAsTimedTab: true,
-    timedTabDuration: 5 * 60 * 1000,
+    timedTabDuration: 4 * 60 * 1000,
     skipEventLog: true,
     fallbackChoice: {
       id: "decline",
@@ -226,7 +226,7 @@ export const crowEvents: Record<string, GameEvent> = {
 
     priority: 5,
     showAsTimedTab: true,
-    timedTabDuration: 5 * 60 * 1000,
+    timedTabDuration: 4 * 60 * 1000,
     skipEventLog: true,
     fallbackChoice: {
       id: "decline",

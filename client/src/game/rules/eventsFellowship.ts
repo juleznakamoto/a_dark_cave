@@ -14,7 +14,7 @@ export const fellowshipEvents: Record<string, GameEvent> = {
     priority: 3,
     repeatable: true,
     showAsTimedTab: true,
-    timedTabDuration: 3 * 60 * 1000, // 3 minutes
+    timedTabDuration: 4 * 60 * 1000,
     skipEventLog: true,
     fallbackChoice: {
       id: "refuse",

@@ -50,7 +50,7 @@ export function getAchievementTitleInsightCost(achievementId: string): number {
 }
 /** Spend Insight to extend an active timed-event tab countdown. */
 export const TIMED_EVENT_TAB_PROLONG_INSIGHT_COST = 500;
-export const TIMED_EVENT_TAB_PROLONG_MS = 3 * 60 * 1000;
+export const TIMED_EVENT_TAB_PROLONG_MS = 2 * 60 * 1000;
 
 export function isInsightUnlocked(state: GameState): boolean {
   return (state.buildings.clerksHut ?? 0) >= 1;

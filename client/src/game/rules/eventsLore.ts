@@ -494,7 +494,7 @@ export const loreEvents: Record<string, GameEvent> = {
     repeatable: false,
     priority: 3,
     showAsTimedTab: true,
-    timedTabDuration: 5 * 60 * 1000,
+    timedTabDuration: 4 * 60 * 1000,
     fallbackChoice: {
       id: "decline",
       effect: (state: GameState) => ({

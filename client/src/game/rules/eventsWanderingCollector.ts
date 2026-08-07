@@ -197,7 +197,7 @@ export const wanderingCollectorEvents: Record<string, GameEvent> = {
     timeProbability: 15,
     repeatable: true,
     showAsTimedTab: true,
-    timedTabDuration: 3 * 60 * 1000, // 3 minutes
+    timedTabDuration: 4 * 60 * 1000,
     choices: (state: GameState): EventChoice[] => {
       const visitCount = getCollectorVisitCount(state);
       const reward = getCollectorBuyReward(visitCount);

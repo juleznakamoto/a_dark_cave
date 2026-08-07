@@ -17,7 +17,7 @@ export const insightBlessingEvents: Record<string, GameEvent> = {
     priority: 4,
     repeatable: true,
     showAsTimedTab: true,
-    timedTabDuration: 5 * 60 * 1000,
+    timedTabDuration: 4 * 60 * 1000,
     skipEventLog: true,
     i18nVars: (state: GameState) => ({
       insightCost: formatNumber(getInsightBlessingCost(state)),

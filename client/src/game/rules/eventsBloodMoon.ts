@@ -23,7 +23,7 @@ export const bloodMoonEvents: Record<string, GameEvent> = {
     priority: 5,
     repeatable: true,
     showAsTimedTab: true,
-    timedTabDuration: 6 * 60 * 1000, // 6 minutes
+    timedTabDuration: 4 * 60 * 1000,
     skipEventLog: true,
     choices: [
       {

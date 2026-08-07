@@ -114,7 +114,7 @@ function createWoodcutterEvent(config: WoodcutterConfig): GameEvent {
       return {
         woodcutterState: {
           isActive: true,
-          endTime: Date.now() + 3 * 60 * 1000,
+          endTime: Date.now() + 4 * 60 * 1000,
         },
       };
     },
@@ -122,7 +122,7 @@ function createWoodcutterEvent(config: WoodcutterConfig): GameEvent {
     priority: 3,
     repeatable: true,
     showAsTimedTab: true,
-    timedTabDuration: 3 * 60 * 1000, // 3 minutes
+    timedTabDuration: 4 * 60 * 1000,
     skipEventLog: true, // Don't add to event log, only show in timed tab
     choices: [
       {

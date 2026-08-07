@@ -42,7 +42,7 @@ export const solsticeGatheringEvent: GameEvent = {
   priority: 3,
   repeatable: true,
   showAsTimedTab: true,
-  timedTabDuration: 3 * 60 * 1000,
+  timedTabDuration: 4 * 60 * 1000,
   choices: [
     {
       id: "hostSolstice",

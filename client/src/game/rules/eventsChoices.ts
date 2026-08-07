@@ -184,7 +184,7 @@ export const choiceEvents: Record<string, GameEvent> = {
     priority: 3,
     repeatable: false,
     showAsTimedTab: true,
-    timedTabDuration: 180000, // 3 minutes
+    timedTabDuration: 4 * 60 * 1000,
     choices: [
       {
         id: "buyMirror",
@@ -676,7 +676,7 @@ export const choiceEvents: Record<string, GameEvent> = {
     priority: 4,
     repeatable: true,
     showAsTimedTab: true,
-    timedTabDuration: 3 * 60 * 1000,
+    timedTabDuration: 4 * 60 * 1000,
     skipEventLog: true,
     fallbackChoice: {
       id: "sendAway",
@@ -776,7 +776,7 @@ export const choiceEvents: Record<string, GameEvent> = {
     priority: 5,
     repeatable: true,
     showAsTimedTab: true,
-    timedTabDuration: 3 * 60 * 1000,
+    timedTabDuration: 4 * 60 * 1000,
     skipEventLog: true,
     fallbackChoice: {
       id: "decline",
@@ -1038,7 +1038,7 @@ export const choiceEvents: Record<string, GameEvent> = {
     priority: 5,
     repeatable: false,
     showAsTimedTab: true,
-    timedTabDuration: 5 * 60 * 1000, // 5 minutes
+    timedTabDuration: 4 * 60 * 1000,
     fallbackChoice: {
       id: "doNothing",
       effect: (state: GameState) => {
@@ -1408,7 +1408,7 @@ export const choiceEvents: Record<string, GameEvent> = {
     priority: 3,
     repeatable: true,
     showAsTimedTab: true,
-    timedTabDuration: 3 * 60 * 1000, // 3 minutes
+    timedTabDuration: 4 * 60 * 1000,
     fallbackChoice: {
       id: "doNothing",
       effect: (state: GameState) => ({
@@ -1582,7 +1582,7 @@ export const choiceEvents: Record<string, GameEvent> = {
     priority: 3,
     repeatable: true,
     showAsTimedTab: true,
-    timedTabDuration: 3 * 60 * 1000, // 3 minutes
+    timedTabDuration: 4 * 60 * 1000,
     skipEventLog: true,
     fallbackChoice: {
       id: "sendAway",
@@ -1658,7 +1658,7 @@ export const choiceEvents: Record<string, GameEvent> = {
     priority: 4,
     repeatable: true,
     showAsTimedTab: true,
-    timedTabDuration: 3 * 60 * 1000,
+    timedTabDuration: 4 * 60 * 1000,
     skipEventLog: true,
     fallbackChoice: {
       id: "sendAway",
@@ -1911,7 +1911,7 @@ export const choiceEvents: Record<string, GameEvent> = {
     priority: 4,
     repeatable: true,
     showAsTimedTab: true,
-    timedTabDuration: 3 * 60 * 1000, // 3 minutes
+    timedTabDuration: 4 * 60 * 1000,
     fallbackChoice: {
       id: "doNothing",
       effect: (state: GameState) => {

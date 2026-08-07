@@ -50,7 +50,7 @@ export const shopItemEvents: Record<string, GameEvent> = {
     priority: 4,
     repeatable: true,
     showAsTimedTab: true,
-    timedTabDuration: 5 * 60 * 1000, // 5 minutes
+    timedTabDuration: 4 * 60 * 1000,
     fallbackChoice: {
       id: "sendAway",
       effect: (state: GameState) => {

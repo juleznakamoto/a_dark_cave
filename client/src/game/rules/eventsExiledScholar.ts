@@ -17,7 +17,7 @@ export const exiledScholarEvents: Record<string, GameEvent> = {
     priority: 10,
     repeatable: true,
     showAsTimedTab: true,
-    timedTabDuration: 5 * 60 * 1000, // 5 minutes
+    timedTabDuration: 4 * 60 * 1000,
     skipEventLog: true,
     choices: [
       {
