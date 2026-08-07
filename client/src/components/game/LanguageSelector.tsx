@@ -19,6 +19,7 @@ export default function LanguageSelector({
   iconClassName = "w-4 h-4 text-neutral-300 opacity-80 transition-[opacity,color] group-hover:opacity-100 group-hover:!text-red-600",
   menuAlign = "end",
   showTooltip = true,
+  tooltipArrowAlign = "center",
   showIcon = true,
   /** Start screen uses the legacy Lucide globe; elsewhere uses the masked SVG icon. */
   iconVariant = "game-ui",
@@ -35,6 +36,7 @@ export default function LanguageSelector({
   iconClassName?: string;
   menuAlign?: "start" | "end";
   showTooltip?: boolean;
+  tooltipArrowAlign?: "start" | "center" | "end";
   showIcon?: boolean;
   iconVariant?: "globe" | "game-ui";
   showInlineLabel?: boolean;
@@ -107,7 +109,11 @@ export default function LanguageSelector({
       modal={!inDialog}
     >
       {showTooltip ? (
-        <HoverCalloutTooltip label={t("languageSelector.ariaLabel")} side="top">
+        <HoverCalloutTooltip
+          label={t("languageSelector.ariaLabel")}
+          side="top"
+          arrowAlign={tooltipArrowAlign}
+        >
           {trigger}
         </HoverCalloutTooltip>
       ) : (

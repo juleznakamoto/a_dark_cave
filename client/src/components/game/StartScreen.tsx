@@ -36,12 +36,10 @@ const START_FOOTER_SOCIAL_LINK =
   `${START_FOOTER_LINK_BASE} opacity-70 hover:opacity-100`;
 const START_FOOTER_LEGAL_LINK =
   `${START_FOOTER_LINK_BASE} opacity-40 hover:opacity-100 text-3xs sm:text-2xs`;
-const START_FOOTER_LANGUAGE_BTN =
-  "inline-flex items-center gap-0 sm:gap-1 bg-transparent hover:bg-transparent hover:text-foreground transition-opacity opacity-70 hover:opacity-100 p-0 h-auto min-h-0 shadow-none";
 const START_AUDIO_BTN =
-  "group shrink-0 p-0 w-7 h-7 flex items-center justify-center opacity-70 hover:opacity-100 transition-opacity";
+  "shrink-0 p-0 w-7 h-7 flex items-center justify-center opacity-70 hover:opacity-100 transition-opacity hover:text-foreground";
 const START_AUDIO_ICON =
-  "w-4 h-4 shrink-0 object-contain opacity-80 transition-[filter,opacity] group-hover:opacity-100 [filter:invert(1)] group-hover:[filter:invert(17%)_sepia(89%)_saturate(7458%)_hue-rotate(358deg)_brightness(97%)_contrast(118%)]";
+  "w-4 h-4 shrink-0 object-contain [filter:invert(1)]";
 
 export interface StartScreenPreferences {
   cruelMode: boolean;
@@ -433,12 +431,11 @@ export default function StartScreen({
       >
         <div className="flex flex-wrap items-center gap-x-2 gap-y-1.5">
           <LanguageSelector
-            buttonClassName={START_FOOTER_LANGUAGE_BTN}
-            iconClassName="w-3.5 h-3.5 shrink-0"
+            buttonClassName={START_AUDIO_BTN}
+            iconClassName="w-4 h-4 shrink-0"
             iconVariant="globe"
             menuAlign="start"
-            showTooltip={false}
-            showInlineLabel
+            tooltipArrowAlign="start"
           />
           <HoverCalloutTooltip
             label={musicMuted ? t("footer.unmuteMusic") : t("footer.muteMusic")}
