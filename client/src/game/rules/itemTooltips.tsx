@@ -499,7 +499,13 @@ function renderBuildingItemTooltip(
           <span>
             {showTitle && <span className="font-bold">{titleLabel}</span>}
             {hierarchyLevel != null && (
-              <span className="font-normal text-gray-400">
+              <span
+                className={
+                  showTitle
+                    ? "font-normal text-gray-400"
+                    : "font-normal text-foreground"
+                }
+              >
                 {showTitle ? " " : ""}
                 {getUiTooltip("level", "Level {{level}}", {
                   level: hierarchyLevel,
@@ -586,7 +592,13 @@ export function renderFortificationTooltip(
           <span>
             {showTitle && <span className="font-bold">{titleLabel}</span>}
             {upgradeLevel != null && (
-              <span className="font-normal text-gray-400">
+              <span
+                className={
+                  showTitle
+                    ? "font-normal text-gray-400"
+                    : "font-normal text-foreground"
+                }
+              >
                 {showTitle ? " " : ""}
                 {getUiTooltip("level", "Level {{level}}", {
                   level: upgradeLevel,
@@ -632,8 +644,10 @@ export const SIDE_PANEL_ITEM_TOOLTIP_DISPLAY: ItemTooltipDisplay = {
 };
 
 function itemTooltipDescriptionClassName(showTitle: boolean): string {
-  // No title (side panel): description uses normal foreground; keep mt-1 for meta rows above.
-  return showTitle ? "mt-1 text-gray-400" : "mt-1 text-foreground";
+  // With title: muted + spaced. Without: foreground; mt-1 only if something (meta) is above.
+  return showTitle
+    ? "mt-1 text-gray-400"
+    : "text-foreground [&:not(:first-child)]:mt-1";
 }
 
 export function renderItemTooltip(
