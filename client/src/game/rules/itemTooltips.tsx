@@ -512,12 +512,9 @@ function renderBuildingItemTooltip(
       )}
       {effectsBlock &&
         (hasMetaRow ? (
-          <>
-            <ActionTooltipSeparator />
-            {effectsBlock}
-          </>
-        ) : (
           <div className="mt-1">{effectsBlock}</div>
+        ) : (
+          effectsBlock
         ))}
       {buildDescription && (
         <>
@@ -608,12 +605,9 @@ export function renderFortificationTooltip(
       )}
       {effectsBlock &&
         (hasMetaRow ? (
-          <>
-            <ActionTooltipSeparator />
-            {effectsBlock}
-          </>
-        ) : (
           <div className="mt-1">{effectsBlock}</div>
+        ) : (
+          effectsBlock
         ))}
       {buildDescription && (
         <>
@@ -639,13 +633,6 @@ export type ItemTooltipDisplay = {
 export const SIDE_PANEL_ITEM_TOOLTIP_DISPLAY: ItemTooltipDisplay = {
   showTitle: false,
 };
-
-function itemTooltipDescriptionClassName(showTitle: boolean): string {
-  // With title: muted + spaced. Without: foreground; mt-1 only if something (meta) is above.
-  return showTitle
-    ? "mt-1 text-gray-400"
-    : "text-foreground [&:not(:first-child)]:mt-1";
-}
 
 export function renderItemTooltip(
   itemId: string,
@@ -684,21 +671,24 @@ export function renderItemTooltip(
               {getEffectName("weapons", itemId, effect?.name ?? itemId)}
             </div>
           )}
-          {showDescription && effect?.description && (
-            <div className={itemTooltipDescriptionClassName(showTitle)}>
-              {getEffectDescription("weapons", itemId, effect.description)}
-            </div>
-          )}
           {showEffects && (
             <>
-              {(showTitle || (showDescription && effect?.description)) && (
-                <ActionTooltipSeparator />
-              )}
+              {showTitle && <ActionTooltipSeparator />}
               <pre className="whitespace-pre-wrap font-sans text-xs text-foreground">
                 {content}
               </pre>
               <div className="mt-1 text-gray-400">
                 {getUiTooltip("maxHeld", "Max: {{value}}", { value: maxHeld })}
+              </div>
+            </>
+          )}
+          {showDescription && effect?.description && (
+            <>
+              {(showTitle || showEffects) && <ActionTooltipSeparator />}
+              <div
+                className={showTitle ? "text-gray-400" : "text-foreground"}
+              >
+                {getEffectDescription("weapons", itemId, effect.description)}
               </div>
             </>
           )}
@@ -733,21 +723,25 @@ export function renderItemTooltip(
 
   // For fellowship items, return simple name and description
   if (itemType === "fellowship") {
+    const hasFellowshipTitle = Boolean(showTitle && effect.name);
     return (
       <div className="text-xs">
-        {showTitle && effect.name && (
+        {hasFellowshipTitle && (
           <div className="font-bold">
             {getEffectName(effectCategory, itemId, effect.name)}
           </div>
         )}
         {showDescription && effect.description && (
-          <div
-            className={itemTooltipDescriptionClassName(
-              Boolean(showTitle && effect.name),
-            )}
-          >
-            {getEffectDescription(effectCategory, itemId, effect.description)}
-          </div>
+          <>
+            {hasFellowshipTitle && <ActionTooltipSeparator />}
+            <div
+              className={
+                hasFellowshipTitle ? "text-gray-400" : "text-foreground"
+              }
+            >
+              {getEffectDescription(effectCategory, itemId, effect.description)}
+            </div>
+          </>
         )}
       </div>
     );
@@ -880,14 +874,12 @@ export function renderItemTooltip(
           )}
         </div>
       )}
-      {showDescription && effect.description && (
-        <div className={itemTooltipDescriptionClassName(hasTitle)}>
-          {getEffectDescription(effectCategory, itemId, effect.description)}
-        </div>
-      )}
-      {hasAnyEffects && (hasTitle || hasDescription) && (
-        <ActionTooltipSeparator />
-      )}
+      {hasAnyEffects &&
+        (hasTitle ||
+          (!showTitle &&
+            (itemId === "map_fragment" || enchantLevel > 0))) && (
+          <ActionTooltipSeparator />
+        )}
       {showEffects && hasGeneralBonusEffects && effect.bonuses?.generalBonuses && (
         <div>
           {effect.bonuses.generalBonuses.actionBonusChance != null &&
@@ -1210,6 +1202,23 @@ export function renderItemTooltip(
         renderNightshadePoisonTooltip(
           useGameStore.getState() as unknown as GameState,
         )}
+      {hasDescription && (
+        <>
+          {(hasTitle ||
+            hasAnyEffects ||
+            (!showTitle &&
+              (itemId === "map_fragment" || enchantLevel > 0))) && (
+              <ActionTooltipSeparator />
+            )}
+          <div className={showTitle ? "text-gray-400" : "text-foreground"}>
+            {getEffectDescription(
+              effectCategory,
+              itemId,
+              effect.description!,
+            )}
+          </div>
+        </>
+      )}
     </div>
   );
 }
