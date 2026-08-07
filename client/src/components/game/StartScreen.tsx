@@ -35,11 +35,13 @@ const START_FOOTER_SOCIAL_LINK =
   `${START_FOOTER_LINK_BASE} opacity-70 hover:opacity-100`;
 const START_FOOTER_LEGAL_LINK =
   `${START_FOOTER_LINK_BASE} opacity-40 hover:opacity-100 text-3xs sm:text-2xs`;
-/** Icon controls (language / music / sfx): same opacity hover as social links; kill ghost Button accent hover. */
+/** Icon controls (language / music / sfx): same color/opacity as social text links; kill ghost Button accent hover. */
 const START_FOOTER_ICON_BTN =
-  `${START_FOOTER_LINK_BASE} shrink-0 p-0 w-7 h-7 justify-center bg-transparent hover:bg-transparent text-muted-foreground opacity-70 hover:opacity-100 shadow-none`;
-const START_AUDIO_ICON =
-  "w-4 h-4 shrink-0 object-contain [filter:invert(1)]";
+  `${START_FOOTER_SOCIAL_LINK} shrink-0 p-0 w-7 h-7 justify-center bg-transparent hover:bg-transparent shadow-none`;
+const START_FOOTER_ICON = "size-4 shrink-0";
+/** Paint original PNG glyphs with currentColor (matches language + social text). */
+const START_AUDIO_ICON_MASK =
+  `${START_FOOTER_ICON} bg-current [mask-size:contain] [mask-repeat:no-repeat] [mask-position:center] [mask-mode:alpha] [-webkit-mask-size:contain] [-webkit-mask-repeat:no-repeat] [-webkit-mask-position:center]`;
 
 export interface StartScreenPreferences {
   cruelMode: boolean;
@@ -432,7 +434,7 @@ export default function StartScreen({
         <div className="flex flex-wrap items-center gap-x-2 gap-y-1.5">
           <LanguageSelector
             buttonClassName={START_FOOTER_ICON_BTN}
-            iconClassName="w-4 h-4 shrink-0"
+            iconClassName={START_FOOTER_ICON}
             iconVariant="globe"
             menuAlign="start"
             showTooltip={false}
@@ -447,10 +449,13 @@ export default function StartScreen({
               musicMuted ? t("footer.unmuteMusic") : t("footer.muteMusic")
             }
           >
-            <img
-              src={musicMuted ? "/music_off.png" : "/music_on.png"}
-              alt=""
-              className={START_AUDIO_ICON}
+            <span
+              aria-hidden
+              className={START_AUDIO_ICON_MASK}
+              style={{
+                maskImage: `url(${musicMuted ? "/music_off.png" : "/music_on.png"})`,
+                WebkitMaskImage: `url(${musicMuted ? "/music_off.png" : "/music_on.png"})`,
+              }}
             />
           </Button>
           <Button
@@ -463,10 +468,13 @@ export default function StartScreen({
               sfxMuted ? t("footer.unmuteSfx") : t("footer.muteSfx")
             }
           >
-            <img
-              src={sfxMuted ? "/sound_off.png" : "/sound_on.png"}
-              alt=""
-              className={START_AUDIO_ICON}
+            <span
+              aria-hidden
+              className={START_AUDIO_ICON_MASK}
+              style={{
+                maskImage: `url(${sfxMuted ? "/sound_off.png" : "/sound_on.png"})`,
+                WebkitMaskImage: `url(${sfxMuted ? "/sound_off.png" : "/sound_on.png"})`,
+              }}
             />
           </Button>
         </div>
