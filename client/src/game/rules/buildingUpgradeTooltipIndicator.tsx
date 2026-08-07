@@ -1,8 +1,8 @@
 import React from "react";
 import { cn } from "@/lib/utils";
 
-/** Noto Sans Symbols 2 — north-east sans-serif arrow for building upgrade tooltips. */
-export const BUILDING_UPGRADE_GLYPH = "\u{1F815}";
+/** Noto Sans Symbols 2 — upwards triangle-headed arrow with heavy shaft for building upgrade tooltips. */
+export const BUILDING_UPGRADE_GLYPH = "\u{1F829}";
 
 export function BuildingUpgradeTooltipIcon({ className }: { className?: string }) {
   return (
