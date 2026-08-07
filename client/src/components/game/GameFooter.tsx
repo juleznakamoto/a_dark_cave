@@ -1,6 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { useGameStore } from "@/game/state";
 import { FooterSocialIcon } from "@/components/game/FooterSocialIcon";
+import { HoverCalloutTooltip } from "@/components/game/HoverCalloutTooltip";
 import {
   GAME_FOOTER_RIGHT_ICON_LINKS,
   GAME_FOOTER_RIGHT_ICON_ORDER,
@@ -231,6 +232,31 @@ export default function GameFooter() {
                   <span className={platformLabelClass}>{linkLabel}</span>
                 </a>
               );
+
+              if (platform === "steam") {
+                const showWishlistCallout =
+                  isPaused || idleModeDialog.isOpen;
+                return (
+                  <HoverCalloutTooltip
+                    key={platform}
+                    label={t("footer.wishlistOnSteam")}
+                    side="top"
+                    forceVisible={showWishlistCallout}
+                    onCalloutClick={
+                      showWishlistCallout
+                        ? () =>
+                          window.open(
+                            href,
+                            "_blank",
+                            "noopener,noreferrer",
+                          )
+                        : undefined
+                    }
+                  >
+                    {socialLink}
+                  </HoverCalloutTooltip>
+                );
+              }
 
               return cloneElement(socialLink, { key: platform });
             })}
