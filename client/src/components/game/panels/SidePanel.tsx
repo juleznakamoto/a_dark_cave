@@ -6,6 +6,7 @@ import SidePanelSection, {
 } from "./SidePanelSection";
 import StatEffectsTooltip from "@/components/game/StatEffectsTooltip";
 import BonusCompositionTooltip from "@/components/game/BonusCompositionTooltip";
+import { ActionTooltipSeparator } from "@/game/rules/actionTooltipLayout";
 import { hasBonusComposition } from "@/game/rules/bonusComposition";
 import { ResourceCoinIcon } from "@/components/ui/resource-coin-icon";
 import { ResourceInsightIcon } from "@/components/ui/resource-insight-icon";
@@ -584,8 +585,11 @@ export default function SidePanel() {
     iconColor: "text-green-300/80",
     tooltip: (
       <>
-        <span className="text-gray-400">{t("sidePanel.statLuckTooltip")}</span>
         <StatEffectsTooltip statKey="luck" />
+        <ActionTooltipSeparator />
+        <span className="text-muted-foreground">
+          {t("sidePanel.statLuckTooltip")}
+        </span>
       </>
     ),
   });
@@ -600,10 +604,11 @@ export default function SidePanel() {
     iconColor: "text-red-300/80",
     tooltip: (
       <>
-        <span className="text-gray-400">
+        <StatEffectsTooltip statKey="strength" />
+        <ActionTooltipSeparator />
+        <span className="text-muted-foreground">
           {t("sidePanel.statStrengthTooltip")}
         </span>
-        <StatEffectsTooltip statKey="strength" />
       </>
     ),
   });
@@ -618,10 +623,11 @@ export default function SidePanel() {
     iconColor: "text-blue-300/80",
     tooltip: (
       <>
-        <span className="text-gray-400">
+        <StatEffectsTooltip statKey="knowledge" />
+        <ActionTooltipSeparator />
+        <span className="text-muted-foreground">
           {t("sidePanel.statKnowledgeTooltip")}
         </span>
-        <StatEffectsTooltip statKey="knowledge" />
       </>
     ),
   });
@@ -632,7 +638,6 @@ export default function SidePanel() {
     fromItems !== 0 || fromBuildings !== 0 || fromEvents !== 0;
   const madnessTooltipContent = (
     <>
-      <div className="text-gray-400">{t("sidePanel.statMadnessTooltip")}</div>
       {showMadnessBreakdown && (
         <div>
           <div>
@@ -653,6 +658,10 @@ export default function SidePanel() {
         </div>
       )}
       <StatEffectsTooltip statKey="madness" />
+      <ActionTooltipSeparator />
+      <div className="text-muted-foreground">
+        {t("sidePanel.statMadnessTooltip")}
+      </div>
     </>
   );
 
@@ -717,7 +726,7 @@ export default function SidePanel() {
 
         if (key === "defense") {
           tooltip = (
-            <span className="text-gray-400">
+            <span className="text-muted-foreground">
               {t("sidePanel.bastionDefenseTooltip")}
             </span>
           );
@@ -725,7 +734,7 @@ export default function SidePanel() {
 
         if (key === "integrity") {
           tooltip = (
-            <span className="text-gray-400">
+            <span className="text-muted-foreground">
               {t("sidePanel.bastionIntegrityTooltip")}
             </span>
           );
@@ -736,9 +745,6 @@ export default function SidePanel() {
           const strengthAttack = bastion_stats.attackFromStrength || 0;
           tooltip = (
             <div>
-              <div className="mb-1 text-gray-400">
-                {t("sidePanel.bastionAttackTooltip")}
-              </div>
               <div>
                 {t("sidePanel.bastionAttackFromFortifications", {
                   value: fortAttack,
@@ -748,6 +754,10 @@ export default function SidePanel() {
                 {t("sidePanel.bastionAttackFromStrength", {
                   value: strengthAttack,
                 })}
+              </div>
+              <ActionTooltipSeparator />
+              <div className="text-muted-foreground">
+                {t("sidePanel.bastionAttackTooltip")}
               </div>
             </div>
           );

@@ -315,8 +315,8 @@ export function getStatEffectLinesSignature(
 }
 
 /**
- * Divider + per-stat effect breakdown appended below the short stat flavor text in
- * the side-panel stat tooltips. Shows the current bonus and (where stepped) the cap.
+ * Per-stat effect breakdown for side-panel stat tooltips (flavor description
+ * is rendered separately below by the caller).
  */
 export default function StatEffectsTooltip({
   statKey,
@@ -328,7 +328,7 @@ export default function StatEffectsTooltip({
   const rows = getStatEffectRows(statKey, state, t);
   if (rows.length === 0) return null;
   return (
-    <div className="mt-1 border-t border-border pt-1">
+    <div>
       {rows.map((row) => (
         <div
           key={row.key}
