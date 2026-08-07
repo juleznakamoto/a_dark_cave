@@ -2768,5 +2768,16 @@
     },
     "message": "Die Glutbomben detonieren in einem hellen Feuerblitz. Das alte Tor bricht und bröckelt. Was auch immer darin eingeschlossen war, ist frei. Die Stadt sollte sich auf das vorbereiten, was hervorkommt.",
     "title": "Das Tor fällt"
+  },
+  "caveWallMarkings": {
+    "choices": {
+      "continue": {
+        "label": "Weiter"
+      }
+    },
+    "log": {
+      "outcome0": "Dorfbewohner finden verblichene Zeichen an den Höhlenwänden. Die Gelehrten studieren die Symbole und enthüllen Wissen über die Vergangenheit."
+    },
+    "title": "Uralte Zeichen"
   }
 }

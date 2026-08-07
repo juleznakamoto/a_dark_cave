@@ -2768,5 +2768,16 @@
     },
     "message": "Les bombes braise explosent dans un éclat de feu et de lumière. L'ancienne porte se fissure et s'effondre. Quoi qu'il y avait là-dedans a été libéré. La cité devrait se préparer à ce qui en sortira.",
     "title": "La Porte tombe"
+  },
+  "caveWallMarkings": {
+    "choices": {
+      "continue": {
+        "label": "Continuer"
+      }
+    },
+    "log": {
+      "outcome0": "Des villageois découvrent des marques effacées sur les parois de la grotte. Les érudits étudient les symboles et mettent au jour des connaissances du passé."
+    },
+    "title": "Marques anciennes"
   }
 }

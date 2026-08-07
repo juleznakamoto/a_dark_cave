@@ -2768,5 +2768,16 @@
     },
     "message": "Las bombas de brasa detonan en un brillante destello de fuego y luz. La antigua puerta se resquebraja y se desmorona. Lo que fuera que estuviera sellado en su interior ha sido liberado. La ciudad debería prepararse para lo que salga de allí.",
     "title": "La puerta cae"
+  },
+  "caveWallMarkings": {
+    "choices": {
+      "continue": {
+        "label": "Continuar"
+      }
+    },
+    "log": {
+      "outcome0": "Los aldeanos encuentran marcas desvanecidas en las paredes de la cueva. Los eruditos estudian los símbolos y descubren conocimiento del pasado."
+    },
+    "title": "Marcas antiguas"
   }
 }

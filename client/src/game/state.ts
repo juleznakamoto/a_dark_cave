@@ -204,6 +204,11 @@ function getClarityElixirCaveEventId(entry: LogEntry): string | null {
   return eventId.startsWith("clarityElixirCaveFound") ? eventId : null;
 }
 
+function getCaveWallMarkingsEventId(entry: LogEntry): string | null {
+  const eventId = entry.eventId || entry.id.split("-")[0];
+  return eventId.startsWith("caveWallMarkings") ? eventId : null;
+}
+
 // Types
 type ResourceChangeEvent = {
   id: string;
@@ -2301,6 +2306,15 @@ export const useGameStore = create<GameStore>((set, get) => ({
           // Same outcome UI as merchant clarity elixir — MadnessDialog, not EventDialog.
           setTimeout(() => {
             get().applyEventChoice("drinkElixir", clarityElixirEventId, entry);
+          }, 100);
+          return;
+        }
+
+        const caveWallMarkingsEventId = getCaveWallMarkingsEventId(entry);
+        if (caveWallMarkingsEventId) {
+          // Auto-apply like cave Clarity Elixir — RewardDialog shows Insight + narrative.
+          setTimeout(() => {
+            get().applyEventChoice("continue", caveWallMarkingsEventId, entry);
           }, 100);
           return;
         }

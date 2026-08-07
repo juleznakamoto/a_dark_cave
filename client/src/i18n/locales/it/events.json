@@ -2768,5 +2768,16 @@
     },
     "message": "Le bombe di brace detonano in un lampo brillante di fuoco e luce. L'antico cancello si incrina e crolla. Qualunque cosa potesse essere sigillata al suo interno è stata liberata. La città dovrebbe prepararsi a ciò che ne uscirà.",
     "title": "Il Cancello cade"
+  },
+  "caveWallMarkings": {
+    "choices": {
+      "continue": {
+        "label": "Continua"
+      }
+    },
+    "log": {
+      "outcome0": "Gli abitanti trovano incisioni sbiadite sulle pareti della caverna. Gli studiosi esaminano i simboli e rivelano conoscenze del passato."
+    },
+    "title": "Antiche incisioni"
   }
 }

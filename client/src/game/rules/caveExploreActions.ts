@@ -166,6 +166,28 @@ function processTriggeredEvents(
   }
 }
 
+/** Once-per-stage cave wall markings find (requires Clerk's Hut). */
+function caveWallMarkingsItem(
+  stageId:
+    | "exploreCave"
+    | "ventureDeeper"
+    | "descendFurther"
+    | "exploreRuins"
+    | "exploreTemple"
+    | "exploreCitadel",
+) {
+  const stageSuffix = stageId.charAt(0).toUpperCase() + stageId.slice(1);
+  return {
+    key: "cave_wall_markings",
+    probability: 0.025,
+    category: "consumable" as const,
+    isChoice: true as const,
+    eventId: `caveWallMarkings${stageSuffix}`,
+    seenKey: `caveWallMarkingsFound${stageSuffix}`,
+    requireBuilding: "clerksHut" as const,
+  };
+}
+
 // Base items for each cave exploration stage
 const caveItems = {
   exploreCave: [
@@ -186,6 +208,7 @@ const caveItems = {
       condition: "!story.seen.torchBagFound",
       alsoSet: { "story.seen.torchBagFound": true },
     },
+    caveWallMarkingsItem("exploreCave"),
   ],
   ventureDeeper: [
     {
@@ -228,6 +251,7 @@ const caveItems = {
       seenKey: "clarityElixirFoundVentureDeeper",
       minMadness: 2,
     },
+    caveWallMarkingsItem("ventureDeeper"),
   ],
   descendFurther: [
     {
@@ -246,6 +270,7 @@ const caveItems = {
       seenKey: "clarityElixirFoundDescendFurther",
       minMadness: 2,
     },
+    caveWallMarkingsItem("descendFurther"),
   ],
   exploreRuins: [
     {
@@ -264,6 +289,7 @@ const caveItems = {
       seenKey: "clarityElixirFoundExploreRuins",
       minMadness: 2,
     },
+    caveWallMarkingsItem("exploreRuins"),
   ],
   exploreTemple: [
     {
@@ -273,6 +299,7 @@ const caveItems = {
       eventId: "shadowFluteChoice",
       category: "relics",
     },
+    caveWallMarkingsItem("exploreTemple"),
   ],
   exploreCitadel: [
     {
@@ -282,6 +309,7 @@ const caveItems = {
       eventId: "hollowKingScepterChoice",
       category: "relics",
     },
+    caveWallMarkingsItem("exploreCitadel"),
   ],
 };
 
@@ -373,6 +401,8 @@ function getInheritedItems(actionId: string) {
       } else if (category === "consumable") {
         const seenKey = (item as { seenKey?: string }).seenKey;
         const minMadness = (item as { minMadness?: number }).minMadness ?? 0;
+        const requireBuilding = (item as { requireBuilding?: string })
+          .requireBuilding;
         const isChoiceItem = "isChoice" in item && item.isChoice;
         inheritedItems[`_consumable_${item.key}_${stageId}`] = {
           probability: Math.min(adjustedProbability, 1.0),
@@ -380,6 +410,13 @@ function getInheritedItems(actionId: string) {
           condition: (s: GameState) => {
             if (minMadness > 0 && getTotalMadness(s) < minMadness) return false;
             if (seenKey && s.story?.seen?.[seenKey]) return false;
+            if (
+              requireBuilding &&
+              (s.buildings?.[requireBuilding as keyof typeof s.buildings] ??
+                0) < 1
+            ) {
+              return false;
+            }
             return true;
           },
           ...(isChoiceItem && {

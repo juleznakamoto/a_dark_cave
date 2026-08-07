@@ -2,6 +2,7 @@ import { GameEvent } from "./events";
 import { GameState } from "@shared/schema";
 import { killVillagers } from "@/game/stateHelpers";
 import { markCollectorItemRejectedInSeen } from "./collectorRejectedItems";
+import { isSteamEditionActive } from "@/lib/edition";
 
 function createClarityElixirCaveFoundEvent(
   id: string,
@@ -32,6 +33,65 @@ function createClarityElixirCaveFoundEvent(
           },
           _logMessageKey: "outcome0",
         }),
+      },
+    ],
+  };
+}
+
+/** Web Insight granted by cave wall markings, by exploration stage depth. */
+export const CAVE_WALL_MARKINGS_INSIGHT: Record<string, number> = {
+  caveWallMarkingsExploreCave: 100,
+  caveWallMarkingsVentureDeeper: 200,
+  caveWallMarkingsDescendFurther: 300,
+  caveWallMarkingsExploreRuins: 500,
+  caveWallMarkingsExploreTemple: 750,
+  caveWallMarkingsExploreCitadel: 1000,
+};
+
+/** Steam Insight table (higher than web). */
+export const CAVE_WALL_MARKINGS_INSIGHT_STEAM: Record<string, number> = {
+  caveWallMarkingsExploreCave: 250,
+  caveWallMarkingsVentureDeeper: 500,
+  caveWallMarkingsDescendFurther: 750,
+  caveWallMarkingsExploreRuins: 1000,
+  caveWallMarkingsExploreTemple: 1250,
+  caveWallMarkingsExploreCitadel: 1500,
+};
+
+export function getCaveWallMarkingsInsight(eventId: string): number {
+  const table = isSteamEditionActive()
+    ? CAVE_WALL_MARKINGS_INSIGHT_STEAM
+    : CAVE_WALL_MARKINGS_INSIGHT;
+  return table[eventId] ?? 0;
+}
+
+function createCaveWallMarkingsEvent(id: string, seenKey: string): GameEvent {
+  return {
+    id,
+    i18nKey: "caveWallMarkings",
+    condition: () => false, // Only triggered by cave exploration
+    priority: 5,
+    repeatable: false,
+    choices: [
+      {
+        id: "continue",
+        effect: (state: GameState) => {
+          const insightAmount = getCaveWallMarkingsInsight(id);
+          return {
+            resources: {
+              ...state.resources,
+              insight: (state.resources.insight || 0) + insightAmount,
+            },
+            story: {
+              ...state.story,
+              seen: {
+                ...state.story.seen,
+                [seenKey]: true,
+              },
+            },
+            _logMessageKey: "outcome0",
+          };
+        },
       },
     ],
   };
@@ -403,5 +463,35 @@ export const caveEvents: Record<string, GameEvent> = {
   clarityElixirCaveFoundExploreRuins: createClarityElixirCaveFoundEvent(
     "clarityElixirCaveFoundExploreRuins",
     "clarityElixirFoundExploreRuins",
+  ),
+
+  caveWallMarkingsExploreCave: createCaveWallMarkingsEvent(
+    "caveWallMarkingsExploreCave",
+    "caveWallMarkingsFoundExploreCave",
+  ),
+
+  caveWallMarkingsVentureDeeper: createCaveWallMarkingsEvent(
+    "caveWallMarkingsVentureDeeper",
+    "caveWallMarkingsFoundVentureDeeper",
+  ),
+
+  caveWallMarkingsDescendFurther: createCaveWallMarkingsEvent(
+    "caveWallMarkingsDescendFurther",
+    "caveWallMarkingsFoundDescendFurther",
+  ),
+
+  caveWallMarkingsExploreRuins: createCaveWallMarkingsEvent(
+    "caveWallMarkingsExploreRuins",
+    "caveWallMarkingsFoundExploreRuins",
+  ),
+
+  caveWallMarkingsExploreTemple: createCaveWallMarkingsEvent(
+    "caveWallMarkingsExploreTemple",
+    "caveWallMarkingsFoundExploreTemple",
+  ),
+
+  caveWallMarkingsExploreCitadel: createCaveWallMarkingsEvent(
+    "caveWallMarkingsExploreCitadel",
+    "caveWallMarkingsFoundExploreCitadel",
   ),
 };
