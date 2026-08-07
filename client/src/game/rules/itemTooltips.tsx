@@ -404,7 +404,10 @@ function getFortificationTooltipEffectLines(
 function renderBuildingItemTooltip(
   itemId: string,
   displayLabel?: string,
+  display: ItemTooltipDisplay = {},
 ): React.ReactNode | null {
+  const showTitle = display.showTitle ?? true;
+  const showDescription = display.showDescription ?? true;
   const gameState = useGameStore.getState();
   const story = gameState.story;
 
@@ -420,13 +423,15 @@ function renderBuildingItemTooltip(
 
   const tooltipParts: React.ReactNode[] = [];
 
-  const buildDescription = getActionDescription(
-    actionId,
-    buildAction.description,
-  );
+  const buildDescription = showDescription
+    ? getActionDescription(actionId, buildAction.description)
+    : null;
   if (buildDescription) {
     tooltipParts.push(
-      <div key="description" className="mt-1 text-gray-400">
+      <div
+        key="description"
+        className={itemTooltipDescriptionClassName(showTitle)}
+      >
         {buildDescription}
       </div>,
     );
@@ -481,42 +486,50 @@ function renderBuildingItemTooltip(
     ? getVillagerCapForGroup(gameState, capUpgradeGroupId)
     : 0;
 
+  const hasMetaRow =
+    showTitle ||
+    hierarchyLevel != null ||
+    isDamaged ||
+    Boolean(capUpgradeGroupId);
+
   return (
     <div className="text-xs">
-      <div className="flex w-full flex-wrap items-baseline justify-between gap-x-2 gap-y-0">
-        <span>
-          <span className="font-bold">{titleLabel}</span>
-          {hierarchyLevel != null && (
-            <span className="font-normal text-gray-400">
-              {" "}
-              {getUiTooltip("level", "Level {{level}}", {
-                level: hierarchyLevel,
-              })}
-            </span>
-          )}
-          {isDamaged && (
-            <span className="font-normal text-muted-foreground">
-              {" "}
-              {getUiTooltip("damaged", "(damaged)")}
-            </span>
-          )}
-        </span>
-        {capUpgradeGroupId && (
-          <span className="ml-auto inline-flex items-baseline gap-1 tabular-nums">
-            <span
-              className={`relative top-px !text-sm inline-flex items-center gap-0 leading-none font-noto-symbols-2 tabular-nums ${INSIGHT_TEXT_CLASS}`}
-            >
-              <span aria-hidden>{INSIGHT_GLYPH}</span>
-              <span className="font-light text-base">{insightCapLevel}</span>
-            </span>
-            <span className="text-xs font-normal text-gray-400">
-              {getUiTooltip("villagerCapJobs", "{{count}} jobs", {
-                count: villagerJobCap,
-              })}
-            </span>
+      {hasMetaRow && (
+        <div className="flex w-full flex-wrap items-baseline justify-between gap-x-2 gap-y-0">
+          <span>
+            {showTitle && <span className="font-bold">{titleLabel}</span>}
+            {hierarchyLevel != null && (
+              <span className="font-normal text-gray-400">
+                {showTitle ? " " : ""}
+                {getUiTooltip("level", "Level {{level}}", {
+                  level: hierarchyLevel,
+                })}
+              </span>
+            )}
+            {isDamaged && (
+              <span className="font-normal text-muted-foreground">
+                {" "}
+                {getUiTooltip("damaged", "(damaged)")}
+              </span>
+            )}
           </span>
-        )}
-      </div>
+          {capUpgradeGroupId && (
+            <span className="ml-auto inline-flex items-baseline gap-1 tabular-nums">
+              <span
+                className={`relative top-px !text-sm inline-flex items-center gap-0 leading-none font-noto-symbols-2 tabular-nums ${INSIGHT_TEXT_CLASS}`}
+              >
+                <span aria-hidden>{INSIGHT_GLYPH}</span>
+                <span className="font-light text-base">{insightCapLevel}</span>
+              </span>
+              <span className="text-xs font-normal text-gray-400">
+                {getUiTooltip("villagerCapJobs", "{{count}} jobs", {
+                  count: villagerJobCap,
+                })}
+              </span>
+            </span>
+          )}
+        </div>
+      )}
       {tooltipParts}
     </div>
   );
@@ -525,7 +538,10 @@ function renderBuildingItemTooltip(
 export function renderFortificationTooltip(
   itemId: string,
   displayLabel?: string,
+  display: ItemTooltipDisplay = {},
 ): React.ReactNode | null {
+  const showTitle = display.showTitle ?? true;
+  const showDescription = display.showDescription ?? true;
   const gameState = useGameStore.getState();
   const story = gameState.story;
   const fortKey = itemId as FortificationBuildingKey;
@@ -544,10 +560,9 @@ export function renderFortificationTooltip(
   const titleLabel =
     displayLabel ?? getActionLabel(actionId, buildAction.label);
 
-  const buildDescription = getActionDescription(
-    actionId,
-    buildAction.description,
-  );
+  const buildDescription = showDescription
+    ? getActionDescription(actionId, buildAction.description)
+    : null;
   const currentEffects = getFortificationTooltipEffectLines(
     fortKey,
     gameState,
@@ -562,32 +577,38 @@ export function renderFortificationTooltip(
     levelSections,
   );
 
+  const hasMetaRow = showTitle || upgradeLevel != null || isDamaged;
+
   return (
     <div className="text-xs">
-      <div className="flex flex-wrap items-baseline gap-x-2 gap-y-0">
-        <span>
-          <span className="font-bold">{titleLabel}</span>
-          {upgradeLevel != null && (
-            <span className="font-normal text-gray-400">
-              {" "}
-              {getUiTooltip("level", "Level {{level}}", {
-                level: upgradeLevel,
-              })}
-            </span>
-          )}
-          {isDamaged && (
-            <span className="font-normal text-muted-foreground">
-              {" "}
-              {getUiTooltip("damaged", "(damaged)")}
-            </span>
-          )}
-        </span>
-      </div>
+      {hasMetaRow && (
+        <div className="flex flex-wrap items-baseline gap-x-2 gap-y-0">
+          <span>
+            {showTitle && <span className="font-bold">{titleLabel}</span>}
+            {upgradeLevel != null && (
+              <span className="font-normal text-gray-400">
+                {showTitle ? " " : ""}
+                {getUiTooltip("level", "Level {{level}}", {
+                  level: upgradeLevel,
+                })}
+              </span>
+            )}
+            {isDamaged && (
+              <span className="font-normal text-muted-foreground">
+                {" "}
+                {getUiTooltip("damaged", "(damaged)")}
+              </span>
+            )}
+          </span>
+        </div>
+      )}
       {buildDescription && (
-        <div className="mt-1 text-gray-400">{buildDescription}</div>
+        <div className={itemTooltipDescriptionClassName(showTitle)}>
+          {buildDescription}
+        </div>
       )}
       {effectsBlock &&
-        (buildDescription ? (
+        (buildDescription || hasMetaRow ? (
           <>
             <ActionTooltipSeparator />
             {effectsBlock}
@@ -605,6 +626,16 @@ export type ItemTooltipDisplay = {
   showEffects?: boolean;
 };
 
+/** Side panel rows already show the item name; tooltip starts at description/effects. */
+export const SIDE_PANEL_ITEM_TOOLTIP_DISPLAY: ItemTooltipDisplay = {
+  showTitle: false,
+};
+
+function itemTooltipDescriptionClassName(showTitle: boolean): string {
+  // No title (side panel): description uses normal foreground; keep mt-1 for meta rows above.
+  return showTitle ? "mt-1 text-gray-400" : "mt-1 text-foreground";
+}
+
 export function renderItemTooltip(
   itemId: string,
   itemType: "weapon" | "tool" | "blessing" | "book" | "building" | "fellowship",
@@ -616,7 +647,7 @@ export function renderItemTooltip(
   const showEffects = display.showEffects ?? true;
   // For buildings, generate the tooltip from villageBuildActions
   if (itemType === "building") {
-    return renderBuildingItemTooltip(itemId);
+    return renderBuildingItemTooltip(itemId, undefined, display);
   }
 
   // Side panel Combat Items (+ combat dialog): bombs, Veinfire Elixir — merged combat line + weapon effect name/description
@@ -643,7 +674,7 @@ export function renderItemTooltip(
             </div>
           )}
           {showDescription && effect?.description && (
-            <div className={showTitle ? "mt-1 text-gray-400" : "text-gray-400"}>
+            <div className={itemTooltipDescriptionClassName(showTitle)}>
               {getEffectDescription("weapons", itemId, effect.description)}
             </div>
           )}
@@ -700,11 +731,9 @@ export function renderItemTooltip(
         )}
         {showDescription && effect.description && (
           <div
-            className={
-              showTitle && effect.name
-                ? "mt-1 text-gray-400"
-                : "text-gray-400"
-            }
+            className={itemTooltipDescriptionClassName(
+              Boolean(showTitle && effect.name),
+            )}
           >
             {getEffectDescription(effectCategory, itemId, effect.description)}
           </div>
@@ -817,8 +846,31 @@ export function renderItemTooltip(
             {getEffectName(effectCategory, itemId, effect.name)}
           </div>
         ))}
+      {!showTitle && itemId === "map_fragment" && mapFragmentMoonGlyph && (
+        <div
+          className={`font-noto-symbols-2 font-normal tabular-nums tracking-wide select-none ${mapFragmentCount > 0 ? "text-foreground" : "text-gray-500"
+            }`}
+          aria-label={getUiTooltip(
+            "mapFragmentProgress",
+            `${mapFragmentCount} of ${MAP_FRAGMENT_TOTAL} map fragments`,
+            { count: mapFragmentCount, total: MAP_FRAGMENT_TOTAL },
+          )}
+        >
+          {mapFragmentMoonGlyph}
+        </div>
+      )}
+      {!showTitle && enchantLevel > 0 && (
+        <div
+          className={`!text-sm inline-flex items-center gap-0 font-noto-symbols-2 tabular-nums ${INSIGHT_TEXT_CLASS}`}
+        >
+          <span aria-hidden>{INSIGHT_GLYPH}</span>
+          {showEnchantNumber && (
+            <span className="font-light text-base">{enchantLevel}</span>
+          )}
+        </div>
+      )}
       {showDescription && effect.description && (
-        <div className={hasTitle ? "mt-1 text-gray-400" : "text-gray-400"}>
+        <div className={itemTooltipDescriptionClassName(hasTitle)}>
           {getEffectDescription(effectCategory, itemId, effect.description)}
         </div>
       )}

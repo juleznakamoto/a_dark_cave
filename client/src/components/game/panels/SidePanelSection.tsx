@@ -8,6 +8,7 @@ import { madnessTooltip } from "@/game/rules/tooltips";
 import {
   renderFortificationTooltip,
   renderItemTooltip,
+  SIDE_PANEL_ITEM_TOOLTIP_DISPLAY,
 } from "@/game/rules/itemTooltips";
 import {
   BuildingActionBadge,
@@ -1078,6 +1079,8 @@ export default function SidePanelSection({
                     sectionId === "schematics"
                     ? "blessing"
                     : "tool",
+                undefined,
+                SIDE_PANEL_ITEM_TOOLTIP_DISPLAY,
               )}
               tooltipId={item.id}
               disabled
@@ -1114,7 +1117,12 @@ export default function SidePanelSection({
             }`}
         >
           <TooltipWrapper
-            tooltip={renderItemTooltip(item.id, itemType)}
+            tooltip={renderItemTooltip(
+              item.id,
+              itemType,
+              undefined,
+              SIDE_PANEL_ITEM_TOOLTIP_DISPLAY,
+            )}
             tooltipId={item.id}
             disabled
             tooltipContentClassName="max-w-xs"
@@ -1149,6 +1157,7 @@ export default function SidePanelSection({
               typeof item.label === "string"
                 ? item.label.replace(/ ↓$/, "")
                 : undefined,
+              SIDE_PANEL_ITEM_TOOLTIP_DISPLAY,
             )}
             tooltipId={item.id}
             disabled
@@ -1179,7 +1188,12 @@ export default function SidePanelSection({
             }`}
         >
           <TooltipWrapper
-            tooltip={renderItemTooltip(item.id, "building")}
+            tooltip={renderItemTooltip(
+              item.id,
+              "building",
+              undefined,
+              SIDE_PANEL_ITEM_TOOLTIP_DISPLAY,
+            )}
             tooltipId={item.id}
             disabled
             tooltipContentClassName="max-w-xs"
@@ -1198,7 +1212,12 @@ export default function SidePanelSection({
 
     // Combat Items: bombs + Veinfire Elixir — merged combat tooltip like weapon bombs in itemTooltips
     if (sectionId === "combatItems") {
-      const combatItemTooltip = renderItemTooltip(item.id, "weapon");
+      const combatItemTooltip = renderItemTooltip(
+        item.id,
+        "weapon",
+        undefined,
+        SIDE_PANEL_ITEM_TOOLTIP_DISPLAY,
+      );
       if (combatItemTooltip) {
         return (
           <div key={item.id}>{renderLabelValueRow(combatItemTooltip)}</div>
@@ -1213,7 +1232,12 @@ export default function SidePanelSection({
           ? (() => {
             const itemType = getSidePanelItemTooltipType(sectionId);
             return itemType
-              ? renderItemTooltip(item.id, itemType)
+              ? renderItemTooltip(
+                item.id,
+                itemType,
+                undefined,
+                SIDE_PANEL_ITEM_TOOLTIP_DISPLAY,
+              )
               : null;
           })()
           : typeof item.tooltip === "string" ? (
