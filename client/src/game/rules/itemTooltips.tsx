@@ -132,7 +132,7 @@ function renderNightshadePoisonTooltip(gameState: GameState) {
           </span>
         )}
       </div>
-      <div className="mt-1 text-gray-400">
+      <div className="mt-1 text-muted-foreground">
         {getUiTooltip("poisonArrowsAvailable", "Available: 1/1 per combat")}
       </div>
     </div>
@@ -295,7 +295,7 @@ function renderLeveledEffectsBlock(
           <div key={`current-${idx}`}>{effect}</div>
         ))}
       {visibleSections.map((section, idx) => (
-        <div key={`level-${section.level}`} className="text-gray-400">
+        <div key={`level-${section.level}`} className="text-muted-foreground">
           {(hasCurrent || idx > 0) && (
             <ActionTooltipSeparator />
           )}
@@ -469,14 +469,14 @@ function renderBuildingItemTooltip(
   return (
     <div className="text-xs">
       {hasMetaRow && (
-        <div className="flex w-full flex-wrap items-baseline justify-between gap-x-2 gap-y-0">
+        <div className="flex w-full flex-wrap items-center justify-between gap-x-2 gap-y-0 leading-none">
           <span>
             {showTitle && <span className="font-bold">{titleLabel}</span>}
             {hierarchyLevel != null && (
               <span
                 className={
                   showTitle
-                    ? "font-normal text-gray-400"
+                    ? "font-normal text-muted-foreground"
                     : "font-normal text-foreground"
                 }
               >
@@ -494,14 +494,14 @@ function renderBuildingItemTooltip(
             )}
           </span>
           {capUpgradeGroupId && (
-            <span className="ml-auto inline-flex items-baseline gap-1 tabular-nums">
+            <span className="ml-auto inline-flex items-center gap-1 tabular-nums leading-none">
               <span
-                className={`relative top-px !text-sm inline-flex items-center gap-0 leading-none font-noto-symbols-2 tabular-nums ${INSIGHT_TEXT_CLASS}`}
+                className={`inline-flex items-center gap-0 font-noto-symbols-2 text-xs tabular-nums ${INSIGHT_TEXT_CLASS}`}
               >
                 <span aria-hidden>{INSIGHT_GLYPH}</span>
-                <span className="font-light text-base">{insightCapLevel}</span>
+                <span className="font-light">{insightCapLevel}</span>
               </span>
-              <span className="text-xs font-normal text-gray-400">
+              <span className="text-xs font-normal text-muted-foreground">
                 {getUiTooltip("villagerCapJobs", "{{count}} jobs", {
                   count: villagerJobCap,
                 })}
@@ -510,17 +510,12 @@ function renderBuildingItemTooltip(
           )}
         </div>
       )}
-      {effectsBlock &&
-        (hasMetaRow ? (
-          <div className="mt-1">{effectsBlock}</div>
-        ) : (
-          effectsBlock
-        ))}
+      {effectsBlock}
       {buildDescription && (
         <>
           {(hasMetaRow || effectsBlock) && <ActionTooltipSeparator />}
           <div
-            className={showTitle ? "text-gray-400" : "text-foreground"}
+            className={showTitle ? "text-muted-foreground" : "text-foreground"}
           >
             {buildDescription}
           </div>
@@ -577,14 +572,14 @@ export function renderFortificationTooltip(
   return (
     <div className="text-xs">
       {hasMetaRow && (
-        <div className="flex flex-wrap items-baseline gap-x-2 gap-y-0">
+        <div className="flex flex-wrap items-center gap-x-2 gap-y-0 leading-none">
           <span>
             {showTitle && <span className="font-bold">{titleLabel}</span>}
             {upgradeLevel != null && (
               <span
                 className={
                   showTitle
-                    ? "font-normal text-gray-400"
+                    ? "font-normal text-muted-foreground"
                     : "font-normal text-foreground"
                 }
               >
@@ -603,17 +598,12 @@ export function renderFortificationTooltip(
           </span>
         </div>
       )}
-      {effectsBlock &&
-        (hasMetaRow ? (
-          <div className="mt-1">{effectsBlock}</div>
-        ) : (
-          effectsBlock
-        ))}
+      {effectsBlock}
       {buildDescription && (
         <>
           {(hasMetaRow || effectsBlock) && <ActionTooltipSeparator />}
           <div
-            className={showTitle ? "text-gray-400" : "text-foreground"}
+            className={showTitle ? "text-muted-foreground" : "text-foreground"}
           >
             {buildDescription}
           </div>
@@ -677,7 +667,7 @@ export function renderItemTooltip(
               <pre className="whitespace-pre-wrap font-sans text-xs text-foreground">
                 {content}
               </pre>
-              <div className="mt-1 text-gray-400">
+              <div className="mt-1 text-muted-foreground">
                 {getUiTooltip("maxHeld", "Max: {{value}}", { value: maxHeld })}
               </div>
             </>
@@ -686,7 +676,7 @@ export function renderItemTooltip(
             <>
               {(showTitle || showEffects) && <ActionTooltipSeparator />}
               <div
-                className={showTitle ? "text-gray-400" : "text-foreground"}
+                className={showTitle ? "text-muted-foreground" : "text-foreground"}
               >
                 {getEffectDescription("weapons", itemId, effect.description)}
               </div>
@@ -736,7 +726,7 @@ export function renderItemTooltip(
             {hasFellowshipTitle && <ActionTooltipSeparator />}
             <div
               className={
-                hasFellowshipTitle ? "text-gray-400" : "text-foreground"
+                hasFellowshipTitle ? "text-muted-foreground" : "text-foreground"
               }
             >
               {getEffectDescription(effectCategory, itemId, effect.description)}
@@ -1210,7 +1200,7 @@ export function renderItemTooltip(
               (itemId === "map_fragment" || enchantLevel > 0))) && (
               <ActionTooltipSeparator />
             )}
-          <div className={showTitle ? "text-gray-400" : "text-foreground"}>
+          <div className={showTitle ? "text-muted-foreground" : "text-foreground"}>
             {getEffectDescription(
               effectCategory,
               itemId,
