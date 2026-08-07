@@ -5,7 +5,6 @@ import { Button } from "@/components/ui/button";
 import CloudShader from "@/components/ui/cloud-shader";
 import VaporizeTextCycle from "@/components/ui/vapour-text-effect";
 import { audioManager, SOUND_VOLUME } from "@/lib/audio";
-import { HoverCalloutTooltip } from "@/components/game/HoverCalloutTooltip";
 import { FooterSocialIcon } from "@/components/game/FooterSocialIcon";
 import LanguageSelector from "@/components/game/LanguageSelector";
 import {
@@ -436,52 +435,40 @@ export default function StartScreen({
             iconClassName="w-4 h-4 shrink-0"
             iconVariant="globe"
             menuAlign="start"
-            tooltipArrowAlign="start"
+            showTooltip={false}
           />
-          <HoverCalloutTooltip
-            label={musicMuted ? t("footer.unmuteMusic") : t("footer.muteMusic")}
-            side="top"
-            arrowAlign="start"
+          <Button
+            variant="ghost"
+            size="xs"
+            onClick={toggleMusic}
+            data-testid="button-start-toggle-music"
+            className={START_FOOTER_ICON_BTN}
+            aria-label={
+              musicMuted ? t("footer.unmuteMusic") : t("footer.muteMusic")
+            }
           >
-            <Button
-              variant="ghost"
-              size="xs"
-              onClick={toggleMusic}
-              data-testid="button-start-toggle-music"
-              className={START_FOOTER_ICON_BTN}
-              aria-label={
-                musicMuted ? t("footer.unmuteMusic") : t("footer.muteMusic")
-              }
-            >
-              <img
-                src={musicMuted ? "/music_off.png" : "/music_on.png"}
-                alt=""
-                className={START_AUDIO_ICON}
-              />
-            </Button>
-          </HoverCalloutTooltip>
-          <HoverCalloutTooltip
-            label={sfxMuted ? t("footer.unmuteSfx") : t("footer.muteSfx")}
-            side="top"
-            arrowAlign="start"
+            <img
+              src={musicMuted ? "/music_off.png" : "/music_on.png"}
+              alt=""
+              className={START_AUDIO_ICON}
+            />
+          </Button>
+          <Button
+            variant="ghost"
+            size="xs"
+            onClick={toggleSfx}
+            data-testid="button-start-toggle-sfx"
+            className={START_FOOTER_ICON_BTN}
+            aria-label={
+              sfxMuted ? t("footer.unmuteSfx") : t("footer.muteSfx")
+            }
           >
-            <Button
-              variant="ghost"
-              size="xs"
-              onClick={toggleSfx}
-              data-testid="button-start-toggle-sfx"
-              className={START_FOOTER_ICON_BTN}
-              aria-label={
-                sfxMuted ? t("footer.unmuteSfx") : t("footer.muteSfx")
-              }
-            >
-              <img
-                src={sfxMuted ? "/sound_off.png" : "/sound_on.png"}
-                alt=""
-                className={START_AUDIO_ICON}
-              />
-            </Button>
-          </HoverCalloutTooltip>
+            <img
+              src={sfxMuted ? "/sound_off.png" : "/sound_on.png"}
+              alt=""
+              className={START_AUDIO_ICON}
+            />
+          </Button>
         </div>
         <div className="flex flex-wrap justify-end items-center gap-x-3 gap-y-1.5">
           {!hideStartScreenSocialLinks &&
