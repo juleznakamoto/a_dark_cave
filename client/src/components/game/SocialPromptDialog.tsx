@@ -89,7 +89,7 @@ function ExclusivePromoItemInfoIcon({ tooltipId }: { tooltipId: string }) {
       tooltipId={tooltipId}
       disabled
       tooltipContentClassName="max-w-xs border border-amber-600"
-      className="inline-flex shrink-0 items-center justify-center w-6 h-6 rounded-full text-lime-300 hover:text-lime-200 cursor-pointer motion-safe:animate-shop-info-pulse align-text-bottom translate-y-[0.06em]"
+      className="inline-flex shrink-0 items-center justify-center w-6 h-6 rounded-full text-green-400 hover:text-green-300 cursor-pointer motion-safe:animate-shop-info-pulse align-text-bottom translate-y-[0.06em]"
     >
       <span
         className="inline-flex shrink-0 items-center justify-center font-noto-symbols-2 text-base font-normal leading-none"
@@ -504,7 +504,7 @@ export default function SocialPromptDialog({
           </DialogDescription>
         </DialogHeader>
 
-        <div className="flex flex-col gap-3">
+        <div className="mt-2 flex flex-col gap-3">
           {SOCIAL_PLATFORMS.map((platform) => {
             const entry = social_media_rewards[platform.id];
             const claimed = isSocialRewardClaimed(entry);
@@ -816,7 +816,7 @@ export default function SocialPromptDialog({
               <span
                 className={cn(
                   "shrink-0 tabular-nums",
-                  exclusiveRewardComplete ? "text-green-500" : "text-lime-400",
+                  exclusiveRewardComplete ? "text-green-500" : "text-green-400",
                 )}
               >
                 {!exclusiveRewardComplete &&
@@ -840,7 +840,7 @@ export default function SocialPromptDialog({
                     "h-full rounded-full transition-all duration-300 ease-out",
                     exclusiveRewardComplete
                       ? "bg-green-500"
-                      : "bg-gradient-to-r from-lime-600 to-lime-400",
+                      : "bg-gradient-to-r from-green-600 to-green-400",
                   )}
                   style={{ width: `${exclusiveProgress.percent}%` }}
                 />
@@ -863,7 +863,7 @@ export default function SocialPromptDialog({
                 sizeClassName={SOCIAL_EXCLUSIVE_REWARD_ICON_SIZE}
                 className={cn(
                   "shrink-0",
-                  exclusiveRewardComplete ? "text-green-500" : "text-lime-400",
+                  exclusiveRewardComplete ? "text-green-500" : "text-green-400",
                 )}
               />
             </div>
