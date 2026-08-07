@@ -63,6 +63,28 @@ const COMBAT_STAT_ROW_CLASS =
 const COMBAT_STAT_ICON_CLASS =
   "font-noto-symbols-2 inline-flex w-[1em] shrink-0 items-center justify-center leading-none translate-y-[0.12em]";
 
+/** Inline combat stat: [icon] [name]: [value] (no hover tooltip). */
+function CombatLabeledStat({
+  icon,
+  iconClassName,
+  label,
+  value,
+}: {
+  icon: string;
+  iconClassName: string;
+  label: string;
+  value: React.ReactNode;
+}) {
+  return (
+    <span className={COMBAT_STAT_ROW_CLASS}>
+      <span className={cn(COMBAT_STAT_ICON_CLASS, iconClassName)}>{icon}</span>
+      <span>
+        {label}: {value}
+      </span>
+    </span>
+  );
+}
+
 const COMBAT_ITEM_BUTTON_ICONS = {
   ember_bomb: { glyph: "🞅", className: "text-red-500" },
   ashfire_bomb: { glyph: "🞊", className: "text-yellow-300" },
@@ -1304,31 +1326,17 @@ export default function CombatDialog({
                           </TooltipWrapper>
                         )}
                       </div>
-                      <TooltipWrapper
-                        tooltip={
-                          <span className="text-gray-400">
-                            {t("ui:combat.integrity")}
-                          </span>
-                        }
-                        tooltipId="combat-enemy-integrity-symbol"
-                        disabled
-                        className="inline-block"
-                      >
-                        <span className={COMBAT_STAT_ROW_CLASS}>
-                          <span
-                            className={cn(
-                              COMBAT_STAT_ICON_CLASS,
-                              "text-green-400/60",
-                            )}
-                          >
-                            ✚
-                          </span>
-                          <span>
+                      <CombatLabeledStat
+                        icon="✚"
+                        iconClassName="text-green-400/60"
+                        label={t("ui:combat.integrity")}
+                        value={
+                          <>
                             {formatNumber(currentEnemy?.currentHealth ?? 0)}/
                             {formatNumber(currentEnemy?.maxHealth ?? 0)}
-                          </span>
-                        </span>
-                      </TooltipWrapper>
+                          </>
+                        }
+                      />
                     </div>
                     <div className="relative">
                       <Progress
@@ -1381,75 +1389,27 @@ export default function CombatDialog({
                       )}
                     </div>
                     <div className={cn(COMBAT_STAT_ROW_CLASS, "mt-2 gap-3")}>
-                      <TooltipWrapper
-                        tooltip={
-                          <span className="text-gray-400">
-                            {t("ui:combat.attack")}
-                          </span>
-                        }
-                        tooltipId="combat-enemy-attack-symbol"
-                        disabled
-                        className="inline-block"
-                      >
-                        <div className={COMBAT_STAT_ROW_CLASS}>
-                          <span
-                            className={cn(
-                              COMBAT_STAT_ICON_CLASS,
-                              "text-red-400/60",
-                            )}
-                          >
-                            ⟐
-                          </span>
-                          <span>{formatNumber(currentEnemy?.attack ?? 0)}</span>
-                        </div>
-                      </TooltipWrapper>
+                      <CombatLabeledStat
+                        icon="⟐"
+                        iconClassName="text-red-400/60"
+                        label={t("ui:combat.attack")}
+                        value={formatNumber(currentEnemy?.attack ?? 0)}
+                      />
                       {(currentEnemy?.healChancePercent ?? 0) > 0 && (
-                        <TooltipWrapper
-                          tooltip={
-                            <span className="text-gray-400">
-                              {t("ui:combat.healChance")}
-                            </span>
-                          }
-                          tooltipId="combat-enemy-heal-chance"
-                          disabled
-                          className="inline-block"
-                        >
-                          <div className={COMBAT_STAT_ROW_CLASS}>
-                            <span
-                              className={cn(
-                                COMBAT_STAT_ICON_CLASS,
-                                "text-green-400",
-                              )}
-                            >
-                              🟂
-                            </span>
-                            <span>{currentEnemy?.healChancePercent}%</span>
-                          </div>
-                        </TooltipWrapper>
+                        <CombatLabeledStat
+                          icon="🟂"
+                          iconClassName="text-green-400"
+                          label={t("ui:combat.healChance")}
+                          value={`${currentEnemy?.healChancePercent}%`}
+                        />
                       )}
                       {(currentEnemy?.stunChancePercent ?? 0) > 0 && (
-                        <TooltipWrapper
-                          tooltip={
-                            <span className="text-gray-400">
-                              {t("ui:combat.stunChance")}
-                            </span>
-                          }
-                          tooltipId="combat-enemy-stun-chance"
-                          disabled
-                          className="inline-block"
-                        >
-                          <div className={COMBAT_STAT_ROW_CLASS}>
-                            <span
-                              className={cn(
-                                COMBAT_STAT_ICON_CLASS,
-                                "text-yellow-400",
-                              )}
-                            >
-                              🟄
-                            </span>
-                            <span>{currentEnemy?.stunChancePercent}%</span>
-                          </div>
-                        </TooltipWrapper>
+                        <CombatLabeledStat
+                          icon="🟄"
+                          iconClassName="text-yellow-400"
+                          label={t("ui:combat.stunChance")}
+                          value={`${currentEnemy?.stunChancePercent}%`}
+                        />
                       )}
                     </div>
                   </div>
@@ -1464,31 +1424,17 @@ export default function CombatDialog({
                             ? t("ui:combat.fortress")
                             : t("ui:combat.bastion")}
                         </span>
-                        <TooltipWrapper
-                          tooltip={
-                            <span className="text-gray-400">
-                              {t("ui:combat.integrity")}
-                            </span>
-                          }
-                          tooltipId="combat-player-integrity-symbol"
-                          disabled
-                          className="inline-block"
-                        >
-                          <span className={COMBAT_STAT_ROW_CLASS}>
-                            <span
-                              className={cn(
-                                COMBAT_STAT_ICON_CLASS,
-                                "text-green-400/60",
-                              )}
-                            >
-                              ✚
-                            </span>
-                            <span>
+                        <CombatLabeledStat
+                          icon="✚"
+                          iconClassName="text-green-400/60"
+                          label={t("ui:combat.integrity")}
+                          value={
+                            <>
                               {formatNumber(currentIntegrity)}/
                               {formatNumber(maxIntegrityForCombat)}
-                            </span>
-                          </span>
-                        </TooltipWrapper>
+                            </>
+                          }
+                        />
                       </div>
                       <div className="relative">
                         <Progress
@@ -1535,50 +1481,18 @@ export default function CombatDialog({
                     </div>
 
                     <div className={cn(COMBAT_STAT_ROW_CLASS, "mt-2 gap-3")}>
-                      <TooltipWrapper
-                        tooltip={
-                          <span className="text-gray-400">
-                            {t("ui:combat.attack")}
-                          </span>
-                        }
-                        tooltipId="combat-player-attack-symbol"
-                        disabled
-                        className="inline-block"
-                      >
-                        <div className={COMBAT_STAT_ROW_CLASS}>
-                          <span
-                            className={cn(
-                              COMBAT_STAT_ICON_CLASS,
-                              "text-red-400/60",
-                            )}
-                          >
-                            ⟐
-                          </span>
-                          <span>{formatNumber(bastionStats.attack)}</span>
-                        </div>
-                      </TooltipWrapper>
-                      <TooltipWrapper
-                        tooltip={
-                          <span className="text-gray-400">
-                            {t("ui:combat.defense")}
-                          </span>
-                        }
-                        tooltipId="combat-player-defense-symbol"
-                        disabled
-                        className="inline-block"
-                      >
-                        <div className={COMBAT_STAT_ROW_CLASS}>
-                          <span
-                            className={cn(
-                              COMBAT_STAT_ICON_CLASS,
-                              "text-blue-400/60",
-                            )}
-                          >
-                            ⧈
-                          </span>
-                          <span>{formatNumber(bastionStats.defense)}</span>
-                        </div>
-                      </TooltipWrapper>
+                      <CombatLabeledStat
+                        icon="⟐"
+                        iconClassName="text-red-400/60"
+                        label={t("ui:combat.attack")}
+                        value={formatNumber(bastionStats.attack)}
+                      />
+                      <CombatLabeledStat
+                        icon="⧈"
+                        iconClassName="text-blue-400/60"
+                        label={t("ui:combat.defense")}
+                        value={formatNumber(bastionStats.defense)}
+                      />
                     </div>
                   </div>
 
