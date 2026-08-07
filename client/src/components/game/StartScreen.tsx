@@ -36,8 +36,9 @@ const START_FOOTER_SOCIAL_LINK =
   `${START_FOOTER_LINK_BASE} opacity-70 hover:opacity-100`;
 const START_FOOTER_LEGAL_LINK =
   `${START_FOOTER_LINK_BASE} opacity-40 hover:opacity-100 text-3xs sm:text-2xs`;
-const START_AUDIO_BTN =
-  "shrink-0 p-0 w-7 h-7 flex items-center justify-center opacity-70 hover:opacity-100 transition-opacity hover:text-foreground";
+/** Icon controls (language / music / sfx): same opacity hover as social links; kill ghost Button accent hover. */
+const START_FOOTER_ICON_BTN =
+  `${START_FOOTER_LINK_BASE} shrink-0 p-0 w-7 h-7 justify-center bg-transparent hover:bg-transparent text-muted-foreground opacity-70 hover:opacity-100 shadow-none`;
 const START_AUDIO_ICON =
   "w-4 h-4 shrink-0 object-contain [filter:invert(1)]";
 
@@ -431,7 +432,7 @@ export default function StartScreen({
       >
         <div className="flex flex-wrap items-center gap-x-2 gap-y-1.5">
           <LanguageSelector
-            buttonClassName={START_AUDIO_BTN}
+            buttonClassName={START_FOOTER_ICON_BTN}
             iconClassName="w-4 h-4 shrink-0"
             iconVariant="globe"
             menuAlign="start"
@@ -447,7 +448,7 @@ export default function StartScreen({
               size="xs"
               onClick={toggleMusic}
               data-testid="button-start-toggle-music"
-              className={START_AUDIO_BTN}
+              className={START_FOOTER_ICON_BTN}
               aria-label={
                 musicMuted ? t("footer.unmuteMusic") : t("footer.muteMusic")
               }
@@ -469,7 +470,7 @@ export default function StartScreen({
               size="xs"
               onClick={toggleSfx}
               data-testid="button-start-toggle-sfx"
-              className={START_AUDIO_BTN}
+              className={START_FOOTER_ICON_BTN}
               aria-label={
                 sfxMuted ? t("footer.unmuteSfx") : t("footer.muteSfx")
               }
