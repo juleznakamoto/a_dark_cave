@@ -86,7 +86,8 @@
     },
     "sacrifice": {
       "ringOfClarity": "Среди жертвенных приношений вы находите кристально чистое кольцо.",
-      "moonBracelet": "Среди жертвенных приношений вы находите браслет из белого камня."
+      "moonBracelet": "Среди жертвенных приношений вы находите браслет из белого камня.",
+      "animalsMaxed": "The blind druid from the woods appears: 'The Black Monolith has taken all the blood it will accept. Animal sacrifice can go no further.'"
     },
     "gambler": {
       "win": "Вы выиграли {{amount}} золота у одержимого игрока.",

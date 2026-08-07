@@ -300,6 +300,27 @@ describe("Forest Sacrifice Actions - Madness", () => {
       const result = executeGameAction("animals", state);
       expect(result.stateUpdates?.story?.seen?.animalsSacrificeLevel).toBe(4);
     });
+
+    it("logs the blind druid message and maxes animals on the 10th sacrifice", () => {
+      const state = createBaseState({
+        buildings: { ...createBaseState().buildings, blackMonolith: 1 },
+        resources: { ...createBaseState().resources, food: 10000 },
+        story: { seen: { animalsSacrificeLevel: 9 } },
+      });
+
+      const result = executeGameAction("animals", state);
+
+      expect(result.stateUpdates?.story?.seen?.animalsSacrificeLevel).toBe(10);
+      expect(result.stateUpdates?.story?.seen?.animalsSacrificeMaxed).toBe(true);
+      expect(result.logEntries).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({
+            logKey: "sacrifice.animalsMaxed",
+            type: "system",
+          }),
+        ]),
+      );
+    });
   });
 
   describe("Human sacrifice (reduces madness)", () => {

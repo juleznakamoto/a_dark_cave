@@ -86,7 +86,8 @@
     },
     "sacrifice": {
       "ringOfClarity": "Among the sacrifice offerings, you discover a crystal-clear ring.",
-      "moonBracelet": "Among the sacrifice offerings, you discover a white stone bracelet."
+      "moonBracelet": "Among the sacrifice offerings, you discover a white stone bracelet.",
+      "animalsMaxed": "The blind druid from the woods appears: 'The Black Monolith has taken all the blood it will accept. Animal sacrifice can go no further.'"
     },
     "gambler": {
       "win": "You won {{amount}} Gold from the obsessed gambler.",

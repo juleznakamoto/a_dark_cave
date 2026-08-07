@@ -86,7 +86,8 @@
     },
     "sacrifice": {
       "ringOfClarity": "Unter den Opfergaben entdeckst du einen kristallklaren Ring.",
-      "moonBracelet": "Unter den Opfergaben entdeckst du ein weißes Steinarmband."
+      "moonBracelet": "Unter den Opfergaben entdeckst du ein weißes Steinarmband.",
+      "animalsMaxed": "The blind druid from the woods appears: 'The Black Monolith has taken all the blood it will accept. Animal sacrifice can go no further.'"
     },
     "gambler": {
       "win": "Du hast {{amount}} Gold vom besessenen Spieler gewonnen.",

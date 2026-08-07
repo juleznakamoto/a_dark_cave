@@ -86,7 +86,8 @@
     },
     "sacrifice": {
       "ringOfClarity": "Tra le offerte sacrificali, scopri un anello cristallino.",
-      "moonBracelet": "Tra le offerte sacrificali, scopri un bracciale di pietra bianca."
+      "moonBracelet": "Tra le offerte sacrificali, scopri un bracciale di pietra bianca.",
+      "animalsMaxed": "The blind druid from the woods appears: 'The Black Monolith has taken all the blood it will accept. Animal sacrifice can go no further.'"
     },
     "gambler": {
       "win": "Hai vinto {{amount}} oro dal giocatore ossessionato.",

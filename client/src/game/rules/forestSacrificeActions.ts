@@ -369,6 +369,12 @@ export function handleAnimals(
   // Set flag when max uses reached
   if (usageCount + 1 >= maxLevels) {
     effectUpdates.story.seen.animalsSacrificeMaxed = true;
+    pushSystemLog(
+      result,
+      "animals-sacrifice-maxed",
+      "sacrifice.animalsMaxed",
+      "The blind druid from the woods appears: 'The Black Monolith has taken all the blood it will accept. Animal sacrifice can go no further.'",
+    );
   }
 
   Object.assign(result.stateUpdates, effectUpdates);
