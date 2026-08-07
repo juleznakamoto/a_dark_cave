@@ -1196,10 +1196,13 @@ export default function GameContainer() {
           ...iosChromeViewportStyle,
         }}
       >
+        {/* Blood moon smoke — between header/footer only (same insets as pause/sleep). */}
         {showBloodMoonOverlay && (
           <div
-            className="pointer-events-none absolute inset-0 z-0 blood-moon-smoke-fade-in"
+            className="pointer-events-none absolute inset-x-0 z-0 blood-moon-smoke-fade-in"
             style={{
+              top: GAME_HEADER_INSET,
+              bottom: GAME_FOOTER_INSET,
               animationDuration: `${BLOOD_MOON_OVERLAY_FADE_MS}ms`,
             }}
             aria-hidden

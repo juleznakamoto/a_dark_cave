@@ -48,7 +48,10 @@ import { useTranslation } from "react-i18next";
 import { FullscreenButton } from "./FullscreenButton";
 import { useCoinHoverParticles } from "@/components/ui/coin-hover-particles";
 import { REWARDS_TASKS_PARTICLE_CONFIG } from "@/components/ui/bubbly-button.particles";
-import { LIME_ACCENT_MASK_ICON_CLASS } from "./gameChrome";
+import {
+  GAME_CHROME_NO_BG_HOVER,
+  LIME_ACCENT_MASK_ICON_CLASS,
+} from "./gameChrome";
 
 const REWARDS_TASKS_ICON_PING_START_MS = 20 * 60 * 1000;
 const REWARDS_TASKS_ICON_PING_INTERVAL_MS = 5 * 60 * 1000;
@@ -66,11 +69,13 @@ function pingRewardsTasksRing(ring: HTMLSpanElement | null): void {
 }
 
 const HEADER_ICON_BTN =
-  "group shrink-0 p-0 w-7 h-7 flex items-center justify-center";
+  `group shrink-0 p-0 w-7 h-7 flex items-center justify-center ${GAME_CHROME_NO_BG_HOVER}`;
 /** Slightly larger mask icons for header actions (button stays w-7 h-7). */
 const HEADER_ACCENT_ICON_SIZE = "game-header-accent-icon";
 const HEADER_ICON_SYMBOL_HOVER =
   "text-neutral-300 opacity-80 transition-[opacity,color] group-hover:opacity-100 group-hover:!text-red-600";
+const HEADER_TEXT_BTN =
+  `group shrink-0 px-2 py-1 text-xs text-neutral-300 hover hover:!text-red-600 ${GAME_CHROME_NO_BG_HOVER}`;
 
 type ProfileMenuContextValue = ReturnType<typeof useProfileMenuState>;
 
@@ -565,7 +570,7 @@ export function GameHeaderControls() {
             aria-label={t("profile.rewardsTasks")}
             onClick={() => setSocialPromptDialogOpen(true)}
             {...rewardsTasksHoverHandlers}
-            className={`${HEADER_ICON_BTN} relative overflow-visible hover:bg-muted/30 transition-colors`}
+            className={`${HEADER_ICON_BTN} relative overflow-visible`}
           >
             <span
               ref={rewardsTasksRingRef}
@@ -637,7 +642,7 @@ export function GameHeaderControls() {
           <Button
             variant="ghost"
             size="xs"
-            className={`group shrink-0 px-2 py-1 text-xs text-neutral-300 hover hover:!text-red-600`}
+            className={HEADER_TEXT_BTN}
           >
             <span className={HEADER_ICON_SYMBOL_HOVER}>
               {t("profile.title")}

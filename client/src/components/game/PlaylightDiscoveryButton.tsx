@@ -4,6 +4,7 @@ import { HoverCalloutTooltip } from "@/components/game/HoverCalloutTooltip";
 import { useGameStore } from "@/game/state";
 import { cn } from "@/lib/utils";
 import { useTranslation } from "react-i18next";
+import { GAME_CHROME_NO_BG_HOVER } from "./gameChrome";
 
 const SHOW_MS = 20 * 1000;
 const FIRST_SHOW_PLAY_MS = 75 * 60 * 1000;
@@ -91,6 +92,7 @@ export default function PlaylightDiscoveryButton({
         aria-label={t("playlight.discoveryAria")}
         className={cn(
           "playlight-discovery-btn group relative shrink-0 overflow-visible p-0 h-7 w-7 flex items-center justify-center",
+          GAME_CHROME_NO_BG_HOVER,
           className,
         )}
       >

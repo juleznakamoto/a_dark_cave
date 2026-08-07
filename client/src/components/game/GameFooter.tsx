@@ -25,9 +25,10 @@ import {
   getDemoProgressPercent,
   getDemoProgressSegmentCount,
 } from "@/game/demoLimit";
+import { GAME_CHROME_NO_BG_HOVER } from "./gameChrome";
 
 const FOOTER_CONTROL_BTN =
-  "group shrink-0 px-1 py-1 text-xs text-neutral-300 hover hover:!text-red-600";
+  `group shrink-0 px-1 py-1 text-xs text-neutral-300 hover hover:!text-red-600 ${GAME_CHROME_NO_BG_HOVER}`;
 const FOOTER_CONTROL_BTN_FADE =
   "opacity-80 transition-[opacity,color] group-hover:opacity-100";
 const FOOTER_CONTROL_SVG_ICON_HOVER =
