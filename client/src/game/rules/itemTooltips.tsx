@@ -56,9 +56,6 @@ import {
 } from "@/game/obsidianOrb";
 import type { GameState } from "@shared/schema";
 import {
-  getVillagerCapForGroup,
-  getVillagerCapLevel,
-  getVillagerCapUpgradeGroupForBuilding,
   INSIGHT_GLYPH,
   INSIGHT_TEXT_CLASS,
 } from "@/game/villagerCapUpgrades";
@@ -449,27 +446,13 @@ function renderBuildingItemTooltip(
   const titleLabel =
     displayLabel ?? getActionLabel(actionId, buildAction.label);
 
-  const capUpgradeGroupId = getVillagerCapUpgradeGroupForBuilding(
-    gameState,
-    itemId,
-  );
-  const insightCapLevel = capUpgradeGroupId
-    ? getVillagerCapLevel(gameState, capUpgradeGroupId)
-    : 0;
-  const villagerJobCap = capUpgradeGroupId
-    ? getVillagerCapForGroup(gameState, capUpgradeGroupId)
-    : 0;
-
   const hasMetaRow =
-    showTitle ||
-    hierarchyLevel != null ||
-    isDamaged ||
-    Boolean(capUpgradeGroupId);
+    showTitle || hierarchyLevel != null || isDamaged;
 
   return (
     <div className="text-xs">
       {hasMetaRow && (
-        <div className="flex w-full flex-wrap items-baseline justify-between gap-x-2 gap-y-0">
+        <div className="flex flex-wrap items-baseline gap-x-2 gap-y-0">
           <span>
             {showTitle && <span className="font-bold">{titleLabel}</span>}
             {hierarchyLevel != null && (
@@ -493,21 +476,6 @@ function renderBuildingItemTooltip(
               </span>
             )}
           </span>
-          {capUpgradeGroupId && (
-            <span className="ml-auto inline-flex items-baseline gap-1 tabular-nums">
-              <span
-                className={`relative top-px !text-sm inline-flex items-center gap-0 leading-none font-noto-symbols-2 tabular-nums ${INSIGHT_TEXT_CLASS}`}
-              >
-                <span aria-hidden>{INSIGHT_GLYPH}</span>
-                <span className="font-light text-base">{insightCapLevel}</span>
-              </span>
-              <span className="text-xs font-normal text-muted-foreground">
-                {getUiTooltip("villagerCapJobs", "{{count}} jobs", {
-                  count: villagerJobCap,
-                })}
-              </span>
-            </span>
-          )}
         </div>
       )}
       {effectsBlock}
@@ -515,7 +483,7 @@ function renderBuildingItemTooltip(
         <>
           {(hasMetaRow || effectsBlock) && <ActionTooltipSeparator />}
           <div
-            className={showTitle ? "text-muted-foreground" : "text-foreground"}
+            className="text-muted-foreground"
           >
             {buildDescription}
           </div>
@@ -603,7 +571,7 @@ export function renderFortificationTooltip(
         <>
           {(hasMetaRow || effectsBlock) && <ActionTooltipSeparator />}
           <div
-            className={showTitle ? "text-muted-foreground" : "text-foreground"}
+            className="text-muted-foreground"
           >
             {buildDescription}
           </div>
@@ -676,7 +644,7 @@ export function renderItemTooltip(
             <>
               {(showTitle || showEffects) && <ActionTooltipSeparator />}
               <div
-                className={showTitle ? "text-muted-foreground" : "text-foreground"}
+                className="text-muted-foreground"
               >
                 {getEffectDescription("weapons", itemId, effect.description)}
               </div>
@@ -724,11 +692,7 @@ export function renderItemTooltip(
         {showDescription && effect.description && (
           <>
             {hasFellowshipTitle && <ActionTooltipSeparator />}
-            <div
-              className={
-                hasFellowshipTitle ? "text-muted-foreground" : "text-foreground"
-              }
-            >
+            <div className="text-muted-foreground">
               {getEffectDescription(effectCategory, itemId, effect.description)}
             </div>
           </>
@@ -1200,7 +1164,7 @@ export function renderItemTooltip(
               (itemId === "map_fragment" || enchantLevel > 0))) && (
               <ActionTooltipSeparator />
             )}
-          <div className={showTitle ? "text-muted-foreground" : "text-foreground"}>
+          <div className="text-muted-foreground">
             {getEffectDescription(
               effectCategory,
               itemId,
