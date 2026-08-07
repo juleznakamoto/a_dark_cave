@@ -72,7 +72,7 @@ export const getActionDurationLine = (
   if (seconds <= 0) return null;
   return (
     <div>
-      <span className="font-noto-symbols-2" aria-hidden>
+      <span className="font-noto-symbols-2 text-[1.2em] leading-none" aria-hidden>
         {DURATION_COST_GLYPH}
       </span>{" "}
       {getUiTooltip("duration", "{{duration}}", {
