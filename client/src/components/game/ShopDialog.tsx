@@ -84,6 +84,12 @@ import {
   SMOKE_SHADER_BANNER_SCALE,
 } from "@/components/ui/smoke-shader";
 
+/** Shop 🛈 glyph: former text-sm (0.875rem) + 20%. */
+const SHOP_INFO_GLYPH_CLASS =
+  "inline-flex shrink-0 items-center justify-center font-noto-symbols-2 text-[1.05rem] font-normal leading-none";
+/** Hit target around shop 🛈 (grew with the glyph). */
+const SHOP_INFO_HIT_SIZE_CLASS = "w-5 h-5";
+
 const stripePublishableKey = import.meta.env.PROD
   ? import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY_PROD
   : import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY_DEV;
@@ -260,14 +266,11 @@ function ArtifactShopTooltipIcon({
   const { t } = useTranslation("ui");
   const triggerClass =
     variant === "cardTitle"
-      ? "pl-2 inline-flex items-center justify-center w-4 h-4 rounded-full text-white-500 cursor-pointer motion-safe:animate-shop-info-pulse"
-      : "ml-0.5 inline-flex items-center justify-center w-4 h-4 rounded-full text-white-500 cursor-pointer motion-safe:animate-shop-info-pulse align-text-bottom translate-y-[0.08em]";
+      ? `pl-2 inline-flex items-center justify-center ${SHOP_INFO_HIT_SIZE_CLASS} rounded-full text-white-500 cursor-pointer motion-safe:animate-shop-info-pulse`
+      : `ml-0.5 inline-flex items-center justify-center ${SHOP_INFO_HIT_SIZE_CLASS} rounded-full text-white-500 cursor-pointer motion-safe:animate-shop-info-pulse align-text-bottom translate-y-[0.08em]`;
 
   const icon = (
-    <span
-      className="inline-flex shrink-0 items-center justify-center font-noto-symbols-2 text-sm font-normal leading-none"
-      aria-hidden
-    >
+    <span className={SHOP_INFO_GLYPH_CLASS} aria-hidden>
       🛈
     </span>
   );
@@ -1835,11 +1838,10 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
                   </TabsList>
                   {activeTab === "shop" && (
                     <div className="mt-3 flex items-start gap-1.5 text-xs font-normal text-foreground">
-                      <span className="mt-0.5 inline-flex h-4 w-4 shrink-0 items-center justify-center text-muted-foreground">
-                        <span
-                          className="inline-flex shrink-0 items-center justify-center font-noto-symbols-2 text-sm font-normal leading-none"
-                          aria-hidden
-                        >
+                      <span
+                        className={`mt-0.5 inline-flex ${SHOP_INFO_HIT_SIZE_CLASS} shrink-0 items-center justify-center text-muted-foreground`}
+                      >
+                        <span className={SHOP_INFO_GLYPH_CLASS} aria-hidden>
                           🛈
                         </span>
                       </span>
@@ -2130,10 +2132,10 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
                                           tooltipId="cruel-mode-info"
                                           disabled
                                           tooltipContentClassName="max-w-xs border border-amber-600"
-                                          className="pl-2 inline-flex items-center justify-center w-4 h-4 rounded-full text-white-500 cursor-pointer motion-safe:animate-shop-info-pulse"
+                                          className={`pl-2 inline-flex items-center justify-center ${SHOP_INFO_HIT_SIZE_CLASS} rounded-full text-white-500 cursor-pointer motion-safe:animate-shop-info-pulse`}
                                         >
                                           <span
-                                            className="inline-flex shrink-0 items-center justify-center font-noto-symbols-2 text-sm font-normal leading-none"
+                                            className={SHOP_INFO_GLYPH_CLASS}
                                             aria-hidden
                                           >
                                             🛈
@@ -2282,10 +2284,10 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
                                                 tooltipId={`traders-gratitude-${item.id}`}
                                                 disabled
                                                 tooltipContentClassName="max-w-xs border border-amber-600"
-                                                className="inline-flex items-center justify-center w-4 h-4 rounded-full text-muted-foreground hover:text-foreground cursor-pointer motion-safe:animate-shop-info-pulse"
+                                                className={`inline-flex items-center justify-center ${SHOP_INFO_HIT_SIZE_CLASS} rounded-full text-muted-foreground hover:text-foreground cursor-pointer motion-safe:animate-shop-info-pulse`}
                                               >
                                                 <span
-                                                  className="inline-flex shrink-0 items-center justify-center font-noto-symbols-2 text-sm font-normal leading-none"
+                                                  className={SHOP_INFO_GLYPH_CLASS}
                                                   aria-hidden
                                                 >
                                                   🛈
@@ -2308,10 +2310,10 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
                                                 tooltipId={`traders-son-gratitude-${item.id}`}
                                                 disabled
                                                 tooltipContentClassName="max-w-xs border border-amber-600"
-                                                className="inline-flex items-center justify-center w-4 h-4 rounded-full text-muted-foreground hover:text-foreground cursor-pointer motion-safe:animate-shop-info-pulse"
+                                                className={`inline-flex items-center justify-center ${SHOP_INFO_HIT_SIZE_CLASS} rounded-full text-muted-foreground hover:text-foreground cursor-pointer motion-safe:animate-shop-info-pulse`}
                                               >
                                                 <span
-                                                  className="inline-flex shrink-0 items-center justify-center font-noto-symbols-2 text-sm font-normal leading-none"
+                                                  className={SHOP_INFO_GLYPH_CLASS}
                                                   aria-hidden
                                                 >
                                                   🛈
@@ -2334,10 +2336,10 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
                                                 tooltipId={`playlight-discount-${item.id}`}
                                                 disabled
                                                 tooltipContentClassName="max-w-xs border border-amber-600"
-                                                className="inline-flex items-center justify-center w-4 h-4 rounded-full text-muted-foreground hover:text-foreground cursor-pointer motion-safe:animate-shop-info-pulse"
+                                                className={`inline-flex items-center justify-center ${SHOP_INFO_HIT_SIZE_CLASS} rounded-full text-muted-foreground hover:text-foreground cursor-pointer motion-safe:animate-shop-info-pulse`}
                                               >
                                                 <span
-                                                  className="inline-flex shrink-0 items-center justify-center font-noto-symbols-2 text-sm font-normal leading-none"
+                                                  className={SHOP_INFO_GLYPH_CLASS}
                                                   aria-hidden
                                                 >
                                                   🛈
@@ -2356,10 +2358,10 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
                                                 tooltipId={`journey-complete-cruel-${item.id}`}
                                                 disabled
                                                 tooltipContentClassName="max-w-xs border border-amber-600"
-                                                className="inline-flex items-center justify-center w-4 h-4 rounded-full text-muted-foreground hover:text-foreground cursor-pointer motion-safe:animate-shop-info-pulse"
+                                                className={`inline-flex items-center justify-center ${SHOP_INFO_HIT_SIZE_CLASS} rounded-full text-muted-foreground hover:text-foreground cursor-pointer motion-safe:animate-shop-info-pulse`}
                                               >
                                                 <span
-                                                  className="inline-flex shrink-0 items-center justify-center font-noto-symbols-2 text-sm font-normal leading-none"
+                                                  className={SHOP_INFO_GLYPH_CLASS}
                                                   aria-hidden
                                                 >
                                                   🛈
