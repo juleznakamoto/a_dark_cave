@@ -229,6 +229,7 @@ describe("building tooltip audit at max tier", () => {
   });
 
   it("documents expected max-tier snapshots for key chains", () => {
+    // Level sections omit the current tier (shown in `current`) and list high → low.
     expect(
       getBuildingTooltipSnapshot(
         "sanctum",
@@ -236,10 +237,9 @@ describe("building tooltip audit at max tier", () => {
         gameState,
       ).levelSections.map((s) => s.effects),
     ).toEqual([
-      ["-2 Madness"],
-      ["-5 Madness"],
       ["-8 Madness"],
-      ["-12 Madness"],
+      ["-5 Madness"],
+      ["-2 Madness"],
     ]);
 
     expect(
@@ -249,9 +249,8 @@ describe("building tooltip audit at max tier", () => {
         gameState,
       ).levelSections.map((s) => s.effects),
     ).toEqual([
-      ["Unlocks Investments"],
       ["Invest up to 500 Gold", "+1% Lucky Chance"],
-      ["Invest up to 1000 Gold", "+2% Lucky Chance"],
+      ["Unlocks Investments"],
     ]);
 
     expect(
@@ -261,12 +260,11 @@ describe("building tooltip audit at max tier", () => {
         gameState,
       ).levelSections.map((s) => s.effects),
     ).toEqual([
-      ["Resource Limit: 1'000"],
-      ["Resource Limit: 2'500"],
-      ["Resource Limit: 5'000", "2.5% Craft Discount"],
-      ["Resource Limit: 10'000", "2.5% Build Discount"],
       ["Resource Limit: 25'000", "5% Craft Discount"],
-      ["Resource Limit: 50'000", "5% Build Discount"],
+      ["Resource Limit: 10'000", "2.5% Build Discount"],
+      ["Resource Limit: 5'000", "2.5% Craft Discount"],
+      ["Resource Limit: 2'500"],
+      ["Resource Limit: 1'000"],
     ]);
 
     const merchantsGuild = getBuildingTooltipSnapshot(
@@ -275,19 +273,18 @@ describe("building tooltip audit at max tier", () => {
       gameState,
     );
     expect(merchantsGuild.current).toContain("Unlocks Call Merchant");
-    expect(
-      merchantsGuild.levelSections.slice(1).flatMap((s) => s.effects),
-    ).not.toContain("Unlocks Call Merchant");
+    expect(merchantsGuild.current).toContain(
+      "+3 Trades at Travelling Merchant",
+    );
     expect(
       merchantsGuild.levelSections.map((s) => s.effects),
     ).toEqual([
+      ["Higher Trade Amounts", "+2 Trades at Travelling Merchant"],
       [
         "Higher Trade Amounts",
         "+1 Trade at Travelling Merchant",
         "Unlocks Call Merchant",
       ],
-      ["Higher Trade Amounts", "+2 Trades at Travelling Merchant"],
-      ["Higher Trade Amounts", "+3 Trades at Travelling Merchant"],
     ]);
 
     const grandBlacksmith = getBuildingTooltipSnapshot(
@@ -296,9 +293,11 @@ describe("building tooltip audit at max tier", () => {
       gameState,
     );
     expect(grandBlacksmith.current).toContain("Unlocks Crafting");
+    // Historical sections are prior tiers only, highest → lowest.
+    expect(grandBlacksmith.levelSections.map((s) => s.level)).toEqual([2, 1]);
     expect(
-      grandBlacksmith.levelSections.slice(1).flatMap((s) => s.effects),
-    ).not.toContain("Unlocks Crafting");
+      grandBlacksmith.levelSections.flatMap((s) => s.effects),
+    ).not.toEqual(expect.arrayContaining(grandBlacksmith.current));
   });
 });
 

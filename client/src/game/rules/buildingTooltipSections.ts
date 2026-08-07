@@ -235,23 +235,20 @@ export function getUpgradeChainLevelEffectSections(
   isDamaged: boolean,
 ): LeveledEffectSection[] {
   const currentIndex = chain.indexOf(itemId);
-  if (currentIndex < 0) return [];
+  // Current tier effects are shown above; only prior tiers belong in level sections.
+  if (currentIndex <= 0) return [];
 
   const sections: LeveledEffectSection[] = [];
   let prevEntries: TooltipEffectEntry[] | null = null;
 
-  for (let index = 0; index <= currentIndex; index++) {
+  for (let index = 0; index < currentIndex; index++) {
     const buildingKey = chain[index];
     const buildAction = villageBuildActions[buildingKeyToActionId(buildingKey)];
     if (!buildAction) continue;
 
-    const tierDamaged = isDamaged && buildingKey === itemId;
+    // Prior tiers are never the damaged building in this tooltip.
     const entries = getBuildingTooltipEffectEntries(buildAction, gameState);
-    const effects = getLevelSectionEffectLines(
-      prevEntries,
-      entries,
-      tierDamaged,
-    );
+    const effects = getLevelSectionEffectLines(prevEntries, entries, false);
     prevEntries = entries;
 
     if (effects.length > 0) {
@@ -259,9 +256,8 @@ export function getUpgradeChainLevelEffectSections(
     }
   }
 
-  if (sections.length <= 1) return [];
-
-  return sections;
+  // Highest historical level first (current tier is already at the top).
+  return sections.reverse();
 }
 
 export function getUpgradeChainCurrentEffectLines(

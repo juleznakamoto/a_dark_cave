@@ -267,8 +267,9 @@ function getFortificationLevelEffectSections(
     return [];
   }
 
+  // Current level is shown above; list prior levels highest → lowest.
   const sections: FortificationLeveledEffectSection[] = [];
-  for (let level = 1; level <= currentLevel; level++) {
+  for (let level = currentLevel - 1; level >= 1; level--) {
     const effects = getFortificationLevelEffectLines(itemId, level);
     if (effects.length > 0) {
       sections.push({ level, effects });
@@ -421,21 +422,9 @@ function renderBuildingItemTooltip(
     (itemId === "watchtower" && story?.seen?.watchtowerDamaged) ||
     (itemId === "palisades" && story?.seen?.palisadesDamaged);
 
-  const tooltipParts: React.ReactNode[] = [];
-
   const buildDescription = showDescription
     ? getActionDescription(actionId, buildAction.description)
     : null;
-  if (buildDescription) {
-    tooltipParts.push(
-      <div
-        key="description"
-        className={itemTooltipDescriptionClassName(showTitle)}
-      >
-        {buildDescription}
-      </div>,
-    );
-  }
 
   const hierarchyChain = getBuildingHierarchyChain(itemId);
   let effectsBlock: React.ReactNode | null = null;
@@ -454,21 +443,6 @@ function renderBuildingItemTooltip(
       isDamaged,
     );
     effectsBlock = renderLeveledEffectsBlock(effectsList, []);
-  }
-
-  if (effectsBlock) {
-    if (buildDescription) {
-      tooltipParts.push(<ActionTooltipSeparator key="effects-sep" />);
-    }
-    tooltipParts.push(
-      buildDescription ? (
-        effectsBlock
-      ) : (
-        <div key="effects-wrap" className="mt-1">
-          {effectsBlock}
-        </div>
-      ),
-    );
   }
 
   const hierarchyLevel = getBuildingHierarchyTooltipLevel(itemId);
@@ -536,7 +510,25 @@ function renderBuildingItemTooltip(
           )}
         </div>
       )}
-      {tooltipParts}
+      {effectsBlock &&
+        (hasMetaRow ? (
+          <>
+            <ActionTooltipSeparator />
+            {effectsBlock}
+          </>
+        ) : (
+          <div className="mt-1">{effectsBlock}</div>
+        ))}
+      {buildDescription && (
+        <>
+          {(hasMetaRow || effectsBlock) && <ActionTooltipSeparator />}
+          <div
+            className={showTitle ? "text-gray-400" : "text-foreground"}
+          >
+            {buildDescription}
+          </div>
+        </>
+      )}
     </div>
   );
 }
@@ -614,13 +606,8 @@ export function renderFortificationTooltip(
           </span>
         </div>
       )}
-      {buildDescription && (
-        <div className={itemTooltipDescriptionClassName(showTitle)}>
-          {buildDescription}
-        </div>
-      )}
       {effectsBlock &&
-        (buildDescription || hasMetaRow ? (
+        (hasMetaRow ? (
           <>
             <ActionTooltipSeparator />
             {effectsBlock}
@@ -628,6 +615,16 @@ export function renderFortificationTooltip(
         ) : (
           <div className="mt-1">{effectsBlock}</div>
         ))}
+      {buildDescription && (
+        <>
+          {(hasMetaRow || effectsBlock) && <ActionTooltipSeparator />}
+          <div
+            className={showTitle ? "text-gray-400" : "text-foreground"}
+          >
+            {buildDescription}
+          </div>
+        </>
+      )}
     </div>
   );
 }
