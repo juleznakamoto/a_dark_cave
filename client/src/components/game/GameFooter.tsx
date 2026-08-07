@@ -1,7 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { useGameStore } from "@/game/state";
 import { FooterSocialIcon } from "@/components/game/FooterSocialIcon";
-import { HoverCalloutTooltip } from "@/components/game/HoverCalloutTooltip";
 import {
   GAME_FOOTER_RIGHT_ICON_LINKS,
   GAME_FOOTER_RIGHT_ICON_ORDER,
@@ -126,87 +125,68 @@ export default function GameFooter() {
         {steamDemoActive && <SteamDemoProgressBar />}
         <div className="relative z-0 flex w-full items-center justify-between">
           <div className="flex items-center gap-0.5 shrink-0">
-            <HoverCalloutTooltip
-              label={
+            <Button
+              variant="ghost"
+              size="xs"
+              onClick={togglePause}
+              data-testid="button-pause-game"
+              disabled={idleModeDialog.isOpen}
+              aria-label={
                 isPaused ? t("footer.resumeGame") : t("footer.pauseGame")
               }
-              side="top"
-              arrowAlign="start"
+              className={`${FOOTER_CONTROL_BTN} ${idleModeDialog.isOpen ? "opacity-30 cursor-not-allowed" : ""} ${isPaused ? "!text-red-600 !opacity-100" : ""} ${isPaused && !idleModeDialog.isOpen ? "continue-pause-flash" : ""}`}
             >
-              <Button
-                variant="ghost"
-                size="xs"
-                onClick={togglePause}
-                data-testid="button-pause-game"
-                disabled={idleModeDialog.isOpen}
-                aria-label={
-                  isPaused ? t("footer.resumeGame") : t("footer.pauseGame")
+              <GameUiIcon
+                name={isPaused ? "unpause" : "pause"}
+                sizeClassName="game-tab-icon"
+                className={
+                  isPaused
+                    ? undefined
+                    : `${FOOTER_CONTROL_TEXT} group-hover:!text-red-600`
                 }
-                className={`${FOOTER_CONTROL_BTN} ${idleModeDialog.isOpen ? "opacity-30 cursor-not-allowed" : ""} ${isPaused ? "!text-red-600 !opacity-100" : ""} ${isPaused && !idleModeDialog.isOpen ? "continue-pause-flash" : ""}`}
-              >
-                <GameUiIcon
-                  name={isPaused ? "unpause" : "pause"}
-                  sizeClassName="game-tab-icon"
-                  className={
-                    isPaused
-                      ? undefined
-                      : `${FOOTER_CONTROL_TEXT} group-hover:!text-red-600`
-                  }
-                />
-              </Button>
-            </HoverCalloutTooltip>
+              />
+            </Button>
 
             {/* Shop is web-only (Stripe). Donate is web + Galaxy (external tip jar). */}
             {!steamEditionActive && (
-              <HoverCalloutTooltip
-                label={t("footer.openShop")}
-                side="top"
+              <Button
+                variant="ghost"
+                size="xs"
+                onClick={() => setShopDialogOpen(true, "footer")}
+                aria-label={t("footer.openShop")}
+                className={FOOTER_CONTROL_BTN}
               >
-                <Button
-                  variant="ghost"
-                  size="xs"
-                  onClick={() => setShopDialogOpen(true, "footer")}
-                  aria-label={t("footer.openShop")}
-                  className={FOOTER_CONTROL_BTN}
-                >
-                  <span className={FOOTER_CONTROL_TEXT}>
-                    {t("footer.trader")}
-                  </span>
-                </Button>
-              </HoverCalloutTooltip>
+                <span className={FOOTER_CONTROL_TEXT}>
+                  {t("footer.trader")}
+                </span>
+              </Button>
             )}
             {showFooterDonate && (
-              <HoverCalloutTooltip
-                label={t("footer.supportGame")}
-                side="top"
-                onHoverStart={triggerDonateHeartPump}
+              <Button
+                variant="ghost"
+                size="xs"
+                onClick={handleOfferTribute}
+                onMouseEnter={triggerDonateHeartPump}
+                aria-label={t("footer.supportGame")}
+                className={`${FOOTER_CONTROL_BTN} flex items-center gap-1`}
               >
-                <Button
-                  variant="ghost"
-                  size="xs"
-                  onClick={handleOfferTribute}
-                  onMouseEnter={triggerDonateHeartPump}
-                  aria-label={t("footer.supportGame")}
-                  className={`${FOOTER_CONTROL_BTN} flex items-center gap-1`}
+                <span
+                  ref={donateHeartRef}
+                  aria-hidden
+                  className={DONATE_HEART}
+                  onAnimationEnd={(e) =>
+                    handleDonateHeartAnimationEnd(
+                      e.currentTarget,
+                      e.animationName,
+                    )
+                  }
                 >
-                  <span
-                    ref={donateHeartRef}
-                    aria-hidden
-                    className={DONATE_HEART}
-                    onAnimationEnd={(e) =>
-                      handleDonateHeartAnimationEnd(
-                        e.currentTarget,
-                        e.animationName,
-                      )
-                    }
-                  >
-                    ❤︎⁠
-                  </span>
-                  <span className={FOOTER_CONTROL_TEXT}>
-                    {t("footer.donate")}
-                  </span>
-                </Button>
-              </HoverCalloutTooltip>
+                  ❤︎⁠
+                </span>
+                <span className={FOOTER_CONTROL_TEXT}>
+                  {t("footer.donate")}
+                </span>
+              </Button>
             )}
           </div>
           <div className="flex-1 flex justify-end gap-1 items-center">
@@ -250,31 +230,6 @@ export default function GameFooter() {
                   <span className={platformLabelClass}>{linkLabel}</span>
                 </a>
               );
-
-              if (platform === "steam") {
-                const showWishlistCallout =
-                  isPaused || idleModeDialog.isOpen;
-                return (
-                  <HoverCalloutTooltip
-                    key={platform}
-                    label={t("footer.wishlistOnSteam")}
-                    side="top"
-                    forceVisible={showWishlistCallout}
-                    onCalloutClick={
-                      showWishlistCallout
-                        ? () =>
-                          window.open(
-                            href,
-                            "_blank",
-                            "noopener,noreferrer",
-                          )
-                        : undefined
-                    }
-                  >
-                    {socialLink}
-                  </HoverCalloutTooltip>
-                );
-              }
 
               return cloneElement(socialLink, { key: platform });
             })}
