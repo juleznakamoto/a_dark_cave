@@ -298,7 +298,7 @@
     },
     "0-upgradeMaxer": {
       "label": "Upgrade Maxer",
-      "description": "Max every upgrade in the Estate tab."
+      "description": "Max every non-premium upgrade in the Estate tab."
     },
     "0-speedrunner": {
       "label": "Speedrunner",
