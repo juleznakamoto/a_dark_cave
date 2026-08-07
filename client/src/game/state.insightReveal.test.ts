@@ -1,9 +1,11 @@
 import { describe, it, expect, beforeEach } from "vitest";
 import {
+  ACHIEVEMENT_TITLE_INSIGHT_COST_TIER_0,
   BUILDING_DESCRIPTIONS_INSIGHT_KEY,
   CRAFT_DESCRIPTIONS_INSIGHT_KEY,
   BUILDING_DESCRIPTIONS_INSIGHT_COST,
   CRAFT_DESCRIPTIONS_INSIGHT_COST,
+  getAchievementTitleInsightKey,
   PRESET_UNLOCK_INSIGHT_KEY,
   TIMED_EVENT_INSIGHT_PROLONG_KEY,
   TIMED_EVENT_TAB_PROLONG_INSIGHT_COST,
@@ -389,5 +391,56 @@ describe("purchaseVillagerPresetSlot", () => {
     expect(useGameStore.getState().activePresetSlot).toBe(2);
 
     expect(useGameStore.getState().saveVillagerJobPreset(5)).toBe(false);
+  });
+});
+
+describe("revealAchievementTitle", () => {
+  const achievementId = "item-0-leather";
+
+  beforeEach(() => {
+    useGameStore.getState().initialize();
+  });
+
+  it("deducts insight, reveals the title immediately, and starts reveal animation", () => {
+    useGameStore.setState({
+      buildings: {
+        ...useGameStore.getState().buildings,
+        clerksHut: 1,
+      },
+      resources: {
+        ...useGameStore.getState().resources,
+        insight: ACHIEVEMENT_TITLE_INSIGHT_COST_TIER_0,
+      },
+      revealedAchievementTitles: [],
+    });
+
+    const ok = useGameStore
+      .getState()
+      .revealAchievementTitle(achievementId, 0);
+    expect(ok).toBe(true);
+
+    const after = useGameStore.getState();
+    expect(after.resources.insight).toBe(0);
+    expect(after.revealedAchievementTitles).toContain(achievementId);
+    expect(
+      after.insightRevealing[getAchievementTitleInsightKey(achievementId)],
+    ).toBeGreaterThan(Date.now());
+  });
+
+  it("does not re-add the title when the reveal animation finishes", () => {
+    useGameStore.setState({
+      revealedAchievementTitles: [achievementId],
+      insightRevealing: {
+        [getAchievementTitleInsightKey(achievementId)]: Date.now() - 1,
+      },
+    });
+
+    useGameStore.getState().tickCooldowns();
+
+    const after = useGameStore.getState();
+    expect(after.revealedAchievementTitles).toEqual([achievementId]);
+    expect(
+      after.insightRevealing[getAchievementTitleInsightKey(achievementId)],
+    ).toBeUndefined();
   });
 });

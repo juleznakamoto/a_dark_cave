@@ -1,4 +1,4 @@
-import { Component, type ReactNode, useEffect, useRef, useState } from "react";
+import { Component, type ReactNode, useState } from "react";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { TooltipWrapper } from "@/components/game/TooltipWrapper";
 import { ScrollAreaWithIndicator } from "@/components/ui/scroll-area-with-indicator";
@@ -101,22 +101,13 @@ function AchievementTitleInsightBadge({
   const revealAchievementTitle = useGameStore((s) => s.revealAchievementTitle);
   const setHighlightedResources = useGameStore((s) => s.setHighlightedResources);
   const insightKey = getAchievementTitleInsightKey(achievementId);
-  const insightRevealEnd = useGameStore((s) => s.insightRevealing?.[insightKey]);
-  const [, forceUpdate] = useState(0);
+  const insightRevealing = useGameStore((s) => s.insightRevealing);
+  const insightRevealEnd = insightRevealing?.[insightKey];
 
-  const isRevealing =
-    typeof insightRevealEnd === "number" && insightRevealEnd > Date.now();
-
-  const revealStartedRef = useRef(false);
-  useEffect(() => {
-    if (isRevealing) revealStartedRef.current = true;
-  }, [isRevealing]);
-
-  useEffect(() => {
-    if (!isRevealing) return;
-    const id = setInterval(() => forceUpdate((n) => n + 1), 100);
-    return () => clearInterval(id);
-  }, [isRevealing, insightRevealEnd]);
+  // Stay mounted while the reveal key exists (not Date.now). Cleared by the
+  // game loop together with the row flipping to the unveiled layout, so we
+  // never briefly show a gap where the badge is gone but the title is still redacted.
+  const isRevealing = typeof insightRevealEnd === "number";
 
   if (!isInsightUnlocked(gameState)) return null;
   if (
@@ -125,13 +116,12 @@ function AchievementTitleInsightBadge({
   ) {
     return null;
   }
-  if (revealStartedRef.current && !isRevealing) return null;
 
   const canUnlock = canRevealAchievementTitle(
     gameState,
     achievementId,
     currentCount,
-    gameState.insightRevealing,
+    insightRevealing,
   );
   const insightCost = getAchievementTitleInsightCost(achievementId);
   const affordable = getInsightAmount(gameState) >= insightCost;
@@ -201,13 +191,21 @@ function AchievementRowComponent({
   const { t } = useUiTranslation();
   const { t: tAchievements } = useTranslation("achievements");
   const gameState = useGameStore((s) => s as unknown as GameState);
+  const insightKey = getAchievementTitleInsightKey(row.achievementId);
+  // Key presence (not Date.now): stays redacted until the loop clears the key
+  // in the same store update that unmounts the badge.
+  const insightRevealEnd = useGameStore(
+    (s) => s.insightRevealing?.[insightKey],
+  );
+  const isRevealAnimating = typeof insightRevealEnd === "number";
   const canClaim = row.isFull && !row.isClaimed;
   const tooltipText = canClaim ? formatRewardsTooltip(row.rewards) : "";
-  const isTitleVisible = isAchievementTitleVisible(
-    gameState,
-    row.achievementId,
-    row.currentCount,
-  );
+  const isTitleVisible =
+    isAchievementTitleVisible(
+      gameState,
+      row.achievementId,
+      row.currentCount,
+    ) && !isRevealAnimating;
   const progressLabel = `${Math.min(Math.floor(row.currentCount), row.maxCount)}/${row.maxCount}`;
   const mutedSuffix =
     row.maxCount > 1 ? progressLabel : row.detailLabel;

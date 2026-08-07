@@ -310,8 +310,8 @@ export default function SessionsTab({ environment }: SessionsTabProps) {
                 {ADMIN_SESSION_INTRADAY_RANGES[intradayRange].titleSuffix})
               </CardTitle>
               <CardDescription>
-                Estimated session starts (last ping − duration). Times in your
-                local timezone.
+                Estimated session starts (last ping − duration). Excludes
+                sessions at the 24h duration cap. Times in your local timezone.
               </CardDescription>
             </div>
             <ChartTimeRangeSelectSessionIntraday

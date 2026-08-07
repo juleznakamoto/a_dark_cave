@@ -1907,8 +1907,16 @@ export const useGameStore = create<GameStore>((set, get) => ({
       "insight",
       -getAchievementTitleInsightCost(achievementId),
     );
+    const alreadyRevealed = (state.revealedAchievementTitles ?? []).includes(
+      achievementId,
+    );
+    // Grant immediately: insightRevealing is UI-only and would lose the unlock on reload.
+    // The panel keeps the redacted layout until the reveal key clears.
     set({
       ...resourceUpdates,
+      revealedAchievementTitles: alreadyRevealed
+        ? state.revealedAchievementTitles
+        : [...(state.revealedAchievementTitles ?? []), achievementId],
       insightRevealing: {
         ...(state.insightRevealing ?? {}),
         [getAchievementTitleInsightKey(achievementId)]:
@@ -2728,6 +2736,8 @@ export const useGameStore = create<GameStore>((set, get) => ({
           } else {
             const achievementId = parseAchievementTitleInsightKey(actionId);
             if (achievementId) {
+              // Prefer grant-on-purchase; keep this as a fallback for mid-animation
+              // saves from before titles were written immediately.
               if (!revealedAchievementTitles.includes(achievementId)) {
                 revealedAchievementTitles.push(achievementId);
               }
