@@ -34,6 +34,7 @@ export default function DemoTimeUpDialog({
       <DialogContent
         className="max-w-md"
         hideClose
+        layerZIndex={preview ? 70 : undefined}
         onPointerDownOutside={(e) => e.preventDefault()}
         onEscapeKeyDown={(e) => e.preventDefault()}
       >
