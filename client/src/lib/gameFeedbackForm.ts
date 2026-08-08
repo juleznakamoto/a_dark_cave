@@ -1,14 +1,13 @@
 /**
- * Hosted Google Form for player feedback (end screen opens it directly; footer /
- * mid-game prompt go through FeedbackDialog). Replace
- * {@link GAME_FEEDBACK_FORM_BASE_URL} with your real form `/viewform` link.
+ * Hosted Google Form for player feedback (end screen / demo end open it directly;
+ * footer and mid-game prompt go through FeedbackDialog).
  */
 
 import { useGameStore } from "@/game/state";
 
-/** Placeholder until the live Google Form URL is set. */
+/** Hosted Google Form (`/viewform` public link). */
 export const GAME_FEEDBACK_FORM_BASE_URL =
-  "https://docs.google.com/forms/d/e/PLACEHOLDER_REPLACE_ME/viewform" as const;
+  "https://docs.google.com/forms/d/e/1FAIpQLSfQzag01E3Vne2ieXdB_s1gL5vZxtmRDX-O0Fsxhrojt9BVAQ/viewform" as const;
 
 export type GameFeedbackFormSource = "footer" | "end" | "dialog" | "demoEnd";
 

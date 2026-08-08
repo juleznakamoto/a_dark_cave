@@ -71,9 +71,6 @@ export default function DemoTimeUpDialog({
           <Button variant="outline" onClick={handleStartNewGame}>
             {t("galaxy.startNewGameButton")}
           </Button>
-          <p className="text-center text-xs text-muted-foreground">
-            {t("galaxy.releaseNote")}
-          </p>
         </div>
       </DialogContent>
     </Dialog>
