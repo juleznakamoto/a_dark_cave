@@ -46,6 +46,7 @@ const Unsubscribe = lazy(() =>
 const StarshipShaderDemo = lazy(() => import("@/pages/starship-shader-demo"));
 const AnimationsDemo = lazy(() => import("@/pages/animations-demo"));
 const CombatDialogDemo = lazy(() => import("@/pages/combat-dialog-demo"));
+const DemoEndScreenDemo = lazy(() => import("@/pages/demo-end-screen-demo"));
 
 function Router() {
   return (
@@ -66,6 +67,7 @@ function Router() {
         <Route path="/dev/starship-shader" component={StarshipShaderDemo} />
         <Route path="/dev/animations" component={AnimationsDemo} />
         <Route path="/dev/combat-dialog" component={CombatDialogDemo} />
+        <Route path="/dev/demo-end" component={DemoEndScreenDemo} />
         <Route path="/dev/estate-bar-upgrade">
           {() => <Redirect to="/dev/animations#estate-bars" />}
         </Route>

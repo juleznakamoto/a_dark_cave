@@ -14,18 +14,23 @@ const STEAM_STORE_URL =
   "https://store.steampowered.com/app/4882240/A_Dark_Cave/";
 
 /** Blocking end-of-demo modal for Galaxy web demo and Steam desktop demo. */
-export default function DemoTimeUpDialog() {
+export default function DemoTimeUpDialog({
+  /** Dev `/dev/demo-end`: force open and no-op Start New Game. */
+  preview = false,
+}: {
+  preview?: boolean;
+} = {}) {
   const { t } = useTranslation("ui");
-  const demoTimeUpDialogOpen = useGameStore(
-    (state) => state.galaxyTimeUpDialogOpen,
-  );
+  const storeOpen = useGameStore((state) => state.galaxyTimeUpDialogOpen);
+  const open = preview || storeOpen;
 
   const handleStartNewGame = () => {
+    if (preview) return;
     void startNewDemoGame();
   };
 
   return (
-    <Dialog open={demoTimeUpDialogOpen} onOpenChange={() => { }}>
+    <Dialog open={open} onOpenChange={() => { }}>
       <DialogContent
         className="max-w-md"
         hideClose
