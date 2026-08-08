@@ -19,6 +19,7 @@ export const bloodMoonEvents: Record<string, GameEvent> = {
       state.buildings.woodenHut >= 8 && !state.bloodMoonState.hasWon,
     timeProbability: (state: GameState) =>
       (state.bloodMoonState?.occurrenceCount ?? 0) === 0 ? 45 : 75,
+    cooldownPercent: 0.6,
     i18nVars: bloodMoonI18nVars,
     priority: 5,
     repeatable: true,

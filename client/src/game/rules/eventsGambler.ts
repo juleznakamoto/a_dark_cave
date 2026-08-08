@@ -31,7 +31,7 @@ export const gamblerEvents: Record<string, GameEvent> = {
       state.cruelMode
         ? CRUEL_MODE.gambler.timeProbabilityMinutes.cruel
         : CRUEL_MODE.gambler.timeProbabilityMinutes.normal,
-    cooldownPercent: 0.5,
+    cooldownPercent: 0.45,
 
     priority: 2,
     repeatable: true,
