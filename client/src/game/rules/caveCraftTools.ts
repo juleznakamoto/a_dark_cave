@@ -75,7 +75,7 @@ export const caveCraftTools: Record<string, Action> = {
     },
     cost: {
       "resources.wood": 50,
-      "resources.stone": 100,
+      "resources.stone": 50,
     },
     effects: {
       "tools.stone_pickaxe": true,
