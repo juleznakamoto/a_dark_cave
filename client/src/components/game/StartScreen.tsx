@@ -6,11 +6,13 @@ import CloudShader from "@/components/ui/cloud-shader";
 import VaporizeTextCycle from "@/components/ui/vapour-text-effect";
 import { audioManager, SOUND_VOLUME } from "@/lib/audio";
 import { FooterSocialIcon } from "@/components/game/FooterSocialIcon";
+import { GameUiIcon } from "@/components/game/GameUiIcon";
 import LanguageSelector from "@/components/game/LanguageSelector";
 import {
   GAME_FOOTER_RIGHT_ICON_LINKS,
   GAME_FOOTER_RIGHT_ICON_ORDER,
 } from "@/lib/gameFooterSocialLinks";
+import { openGameFeedbackForm } from "@/lib/gameFeedbackForm";
 import { useTranslation } from "react-i18next";
 import { useLocale } from "@/i18n/useLocale";
 import { OG_LOCALE_TAGS, SUPPORTED_LOCALES } from "@/i18n/locales";
@@ -479,6 +481,26 @@ export default function StartScreen({
           </Button>
         </div>
         <div className="flex flex-wrap justify-end items-center gap-x-3 gap-y-1.5">
+          {steamDesktopEditionActive && (
+            <button
+              type="button"
+              onClick={() => openGameFeedbackForm("footer")}
+              data-testid="button-start-footer-feedback"
+              className={START_FOOTER_SOCIAL_LINK}
+              aria-label={t("footer.openFeedback", {
+                defaultValue: "Open feedback form",
+              })}
+            >
+              <GameUiIcon
+                name="feedback"
+                sizeClassName="w-3.5 h-3.5"
+                className="shrink-0 opacity-100"
+              />
+              <span className="sr-only sm:not-sr-only sm:inline">
+                {t("footer.feedback", { defaultValue: "Feedback" })}
+              </span>
+            </button>
+          )}
           {!hideStartScreenSocialLinks &&
             GAME_FOOTER_RIGHT_ICON_ORDER.map((platform) => {
               const { href, title } = GAME_FOOTER_RIGHT_ICON_LINKS[platform];

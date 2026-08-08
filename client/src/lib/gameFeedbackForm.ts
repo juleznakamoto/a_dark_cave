@@ -1,6 +1,6 @@
 /**
- * Hosted Google Form for player feedback (end screen / demo end open it directly;
- * footer and mid-game prompt go through FeedbackDialog).
+ * Hosted Google Form for player feedback (footer / end screen / demo end open it
+ * directly; mid-game prompt goes through FeedbackDialog).
  */
 
 import { useGameStore } from "@/game/state";
