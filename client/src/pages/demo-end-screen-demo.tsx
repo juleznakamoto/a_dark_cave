@@ -25,7 +25,7 @@ export default function DemoEndScreenDemo() {
   return (
     // Keep page chrome below Radix Dialog (z-50); a high z-index shell hid the modal.
     <div className="min-h-[100dvh] bg-black">
-      <div className="absolute left-3 top-3 z-10 rounded bg-neutral-900/90 px-2 py-1 text-2xs text-neutral-400">
+      <div className="absolute left-3 top-3 z-[80] rounded bg-neutral-900/90 px-2 py-1 text-2xs text-neutral-400">
         /dev/demo-end | Steam / Galaxy demo end dialog
       </div>
       <DemoTimeUpDialog preview />

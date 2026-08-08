@@ -822,4 +822,21 @@ void main(void) {
 	O=vec4(col,1);
 }`;
 
+/** Full-viewport flame shader from the journey-complete end screen (e.g. demo end dialog). */
+export function EndScreenShaderBackground({
+  className = "fixed inset-0 z-[45] h-full w-full object-cover touch-none pointer-events-none",
+}: {
+  className?: string;
+}) {
+  const canvasRef = useShaderBackground(true);
+  return (
+    <canvas
+      ref={canvasRef}
+      className={className}
+      style={{ background: "black" }}
+      aria-hidden
+    />
+  );
+}
+
 export default Hero;

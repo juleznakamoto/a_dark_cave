@@ -8,6 +8,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { FooterSocialIcon } from "@/components/game/FooterSocialIcon";
 import { GameUiIcon } from "@/components/game/GameUiIcon";
+import { EndScreenShaderBackground } from "@/components/ui/animated-shader-hero";
 import { useGameStore } from "@/game/state";
 import { startNewDemoGame } from "@/game/demoLimit";
 import { openGameFeedbackForm } from "@/lib/gameFeedbackForm";
@@ -37,7 +38,19 @@ export default function DemoTimeUpDialog({
       <DialogContent
         className="max-w-md"
         hideClose
-        layerZIndex={preview ? 70 : undefined}
+        hideOverlay
+        layerZIndex={preview ? 70 : 50}
+        customBackground={
+          open ? (
+            <EndScreenShaderBackground
+              className={
+                preview
+                  ? "fixed inset-0 z-[69] h-full w-full object-cover touch-none pointer-events-none"
+                  : "fixed inset-0 z-[45] h-full w-full object-cover touch-none pointer-events-none"
+              }
+            />
+          ) : null
+        }
         onPointerDownOutside={(e) => e.preventDefault()}
         onEscapeKeyDown={(e) => e.preventDefault()}
       >
