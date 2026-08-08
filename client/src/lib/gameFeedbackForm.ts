@@ -10,7 +10,7 @@ import { useGameStore } from "@/game/state";
 export const GAME_FEEDBACK_FORM_BASE_URL =
   "https://docs.google.com/forms/d/e/PLACEHOLDER_REPLACE_ME/viewform" as const;
 
-export type GameFeedbackFormSource = "footer" | "end" | "dialog";
+export type GameFeedbackFormSource = "footer" | "end" | "dialog" | "demoEnd";
 
 let pendingFeedbackFormSource: GameFeedbackFormSource = "dialog";
 

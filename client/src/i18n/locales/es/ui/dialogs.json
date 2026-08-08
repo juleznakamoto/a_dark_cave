@@ -243,6 +243,7 @@
     "description": "Añade el juego completo a tu lista de deseados de Steam para continuar el viaje cuando se publique.",
     "wishlistButton": "Añadir a la lista de deseados en Steam", //x2.2
     "startNewGameButton": "Empezar partida nueva", //x1.5
-    "releaseNote": "Lanzamiento previsto: Q4 2026" //x1.2
+    "releaseNote": "Lanzamiento previsto: Q4 2026", //x1.2
+    "feedbackButton": "Feedback"
   }
 }

@@ -6,8 +6,10 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
+import { GameUiIcon } from "@/components/game/GameUiIcon";
 import { useGameStore } from "@/game/state";
 import { startNewDemoGame } from "@/game/demoLimit";
+import { openGameFeedbackForm } from "@/lib/gameFeedbackForm";
 import { useTranslation } from "react-i18next";
 
 const STEAM_STORE_URL =
@@ -51,6 +53,20 @@ export default function DemoTimeUpDialog({
             >
               {t("galaxy.wishlistButton")}
             </a>
+          </Button>
+          <Button
+            variant="outline"
+            type="button"
+            onClick={() => openGameFeedbackForm("demoEnd")}
+            data-testid="button-demo-end-feedback"
+            className="inline-flex items-center gap-1.5"
+          >
+            <GameUiIcon
+              name="feedback"
+              sizeClassName="w-4 h-4"
+              className="opacity-100"
+            />
+            {t("galaxy.feedbackButton", { defaultValue: "Feedback" })}
           </Button>
           <Button variant="outline" onClick={handleStartNewGame}>
             {t("galaxy.startNewGameButton")}

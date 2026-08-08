@@ -243,6 +243,7 @@
     "description": "Ajoutez le jeu complet à votre liste de souhaits Steam pour poursuivre l'aventure à sa sortie.",
     "wishlistButton": "Ajouter à la liste de souhaits Steam", //x2.1
     "startNewGameButton": "Nouvelle partie",
-    "releaseNote": "Sortie prévue : T4 2026"
+    "releaseNote": "Sortie prévue : T4 2026",
+    "feedbackButton": "Feedback"
   }
 }

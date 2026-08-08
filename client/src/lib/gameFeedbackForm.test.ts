@@ -22,13 +22,16 @@ describe("getGameFeedbackFormUrl", () => {
     expect(new URL(href).searchParams.get("adc_source")).toBe("footer");
   });
 
-  it("supports end and dialog sources", () => {
+  it("supports end, dialog, and demoEnd sources", () => {
     expect(new URL(getGameFeedbackFormUrl("end")).searchParams.get("adc_source")).toBe(
       "end",
     );
     expect(
       new URL(getGameFeedbackFormUrl("dialog")).searchParams.get("adc_source"),
     ).toBe("dialog");
+    expect(
+      new URL(getGameFeedbackFormUrl("demoEnd")).searchParams.get("adc_source"),
+    ).toBe("demoEnd");
   });
 });
 

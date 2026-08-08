@@ -243,6 +243,7 @@
     "description": "Setze das vollständige Spiel auf deine Steam-Wunschliste, um die Reise nach der Veröffentlichung fortzusetzen.", //x1.5
     "wishlistButton": "Auf Steam wünschen",
     "startNewGameButton": "Neues Spiel starten", //x1.4
-    "releaseNote": "Geplante Veröffentlichung: Q4 2026" //x1.4
+    "releaseNote": "Geplante Veröffentlichung: Q4 2026", //x1.4
+    "feedbackButton": "Feedback"
   }
 }

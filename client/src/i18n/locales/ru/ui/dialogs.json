@@ -243,6 +243,7 @@
     "description": "Добавьте полную игру в список желаемого Steam, чтобы продолжить путешествие после выхода.",
     "wishlistButton": "Добавить в список желаемого Steam", //x1.9
     "startNewGameButton": "Начать новую игру", //x1.2
-    "releaseNote": "Планируемый релиз: Q4 2026"
+    "releaseNote": "Планируемый релиз: Q4 2026",
+    "feedbackButton": "Feedback"
   }
 }
