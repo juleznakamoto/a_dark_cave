@@ -9,24 +9,33 @@ import { Button } from "@/components/ui/button";
 import { useGameStore } from "@/game/state";
 import { FooterSocialIcon } from "@/components/game/FooterSocialIcon";
 import { GameUiIcon } from "@/components/game/GameUiIcon";
+import { SocialPlatformGlyph } from "@/components/game/SocialPlatformGlyph";
 import {
   GAME_FOOTER_RIGHT_ICON_LINKS,
-  GAME_FOOTER_RIGHT_ICON_ORDER,
-  type FooterSocialPlatformId,
+  OFFICIAL_INSTAGRAM_URL,
+  OFFICIAL_REDDIT_URL,
 } from "@/lib/gameFooterSocialLinks";
 import { openGameFeedbackFormFromDialog } from "@/lib/gameFeedbackForm";
 import { useTranslation } from "react-i18next";
 
-const FEEDBACK_CONTACT_ORDER: readonly FooterSocialPlatformId[] =
-  GAME_FOOTER_RIGHT_ICON_ORDER;
+type FeedbackContactId = "reddit" | "instagram" | "contact";
+
+const FEEDBACK_CONTACTS: readonly {
+  id: FeedbackContactId;
+  href: string;
+}[] = [
+    { id: "reddit", href: OFFICIAL_REDDIT_URL },
+    { id: "instagram", href: OFFICIAL_INSTAGRAM_URL },
+    { id: "contact", href: GAME_FOOTER_RIGHT_ICON_LINKS.contact.href },
+  ];
 
 export default function FeedbackDialog() {
   const { t } = useTranslation("ui");
   const open = useGameStore((s) => s.feedbackDialogOpen);
 
-  const contactLabel = (platform: FooterSocialPlatformId) => {
-    if (platform === "reddit") return t("feedback.reddit");
-    if (platform === "steam") return t("feedback.steam");
+  const contactLabel = (id: FeedbackContactId) => {
+    if (id === "reddit") return t("feedback.reddit");
+    if (id === "instagram") return t("feedback.instagram");
     return t("feedback.email");
   };
 
@@ -62,12 +71,11 @@ export default function FeedbackDialog() {
               </div>
               <p>{t("feedback.contactVia")}</p>
               <div className="flex flex-wrap justify-center gap-4">
-                {FEEDBACK_CONTACT_ORDER.map((platform) => {
-                  const { href } = GAME_FOOTER_RIGHT_ICON_LINKS[platform];
-                  const label = contactLabel(platform);
+                {FEEDBACK_CONTACTS.map(({ id, href }) => {
+                  const label = contactLabel(id);
                   return (
                     <a
-                      key={platform}
+                      key={id}
                       href={href}
                       {...(href.startsWith("http")
                         ? {
@@ -78,11 +86,18 @@ export default function FeedbackDialog() {
                       className="flex min-w-[4.5rem] flex-col items-center gap-1.5 rounded-md px-2 py-1.5 text-white opacity-80 transition-opacity hover:opacity-100"
                       aria-label={label}
                     >
-                      <FooterSocialIcon
-                        platform={platform}
-                        variant="brand"
-                        className="h-6 w-6"
-                      />
+                      {id === "instagram" ? (
+                        <SocialPlatformGlyph
+                          platformId="instagram"
+                          sizeClassName="h-6 w-6 text-[#E4405F]"
+                        />
+                      ) : (
+                        <FooterSocialIcon
+                          platform={id}
+                          variant="brand"
+                          className="h-6 w-6"
+                        />
+                      )}
                       <span className="text-xs font-medium">{label}</span>
                     </a>
                   );
