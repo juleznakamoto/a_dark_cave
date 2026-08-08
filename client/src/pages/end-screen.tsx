@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { lazy, Suspense, useEffect, useState } from "react";
 import { Helmet } from "react-helmet-async";
 import Hero from "@/components/ui/animated-shader-hero";
 import { initPlaylight, markPlaylightDiscoveryUserInitiated } from "@/lib/playlight";
@@ -11,6 +11,9 @@ import {
   useSteamEditionActive,
 } from "@/hooks/useSteamEditionActive";
 import { logger } from "@/lib/logger";
+import { openFeedbackDialog } from "@/lib/gameFeedbackForm";
+
+const FeedbackDialog = lazy(() => import("@/components/game/FeedbackDialog"));
 
 export default function EndScreenPage() {
   const { t } = useTranslation("ui");
@@ -62,7 +65,7 @@ export default function EndScreenPage() {
   };
 
   const handleFeedback = () => {
-    window.location.href = "mailto:support@a-dark-cave.com";
+    openFeedbackDialog("end");
   };
 
   const handleMoreGames = async () => {
@@ -137,6 +140,9 @@ export default function EndScreenPage() {
             }),
         }}
       />
+      <Suspense fallback={null}>
+        <FeedbackDialog />
+      </Suspense>
     </div>
   );
 }

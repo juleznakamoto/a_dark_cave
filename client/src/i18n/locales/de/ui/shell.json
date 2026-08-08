@@ -47,7 +47,9 @@
     "unmuteSfx": "Soundeffekte einschalten", //x1.3
     "cruelModeActive": "Grausamer Modus aktiviert", //x1.3
     "wishlistOnSteam": "Auf Steam wünschen",
-    "demoProgress": "Demo-Fortschritt" //x1.2
+    "demoProgress": "Demo-Fortschritt", //x1.2
+    "feedback": "Feedback",
+    "openFeedback": "Open feedback form"
   },
   "profile": {
     "title": "Menü",

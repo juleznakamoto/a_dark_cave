@@ -47,7 +47,9 @@
     "unmuteSfx": "Couper les effets sonores", //x1.4
     "cruelModeActive": "Mode cruel activé",
     "wishlistOnSteam": "Ajouter à la liste de souhaits Steam", //x2.1
-    "demoProgress": "Demo Progress"
+    "demoProgress": "Demo Progress",
+    "feedback": "Feedback",
+    "openFeedback": "Open feedback form"
   },
   "profile": {
     "title": "Menu",

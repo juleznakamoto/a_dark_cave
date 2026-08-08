@@ -5,6 +5,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
+import { Button } from "@/components/ui/button";
 import { useGameStore } from "@/game/state";
 import { FooterSocialIcon } from "@/components/game/FooterSocialIcon";
 import {
@@ -12,6 +13,7 @@ import {
   GAME_FOOTER_RIGHT_ICON_ORDER,
   type FooterSocialPlatformId,
 } from "@/lib/gameFooterSocialLinks";
+import { openGameFeedbackFormFromDialog } from "@/lib/gameFeedbackForm";
 import { useTranslation } from "react-i18next";
 
 const FEEDBACK_CONTACT_ORDER: readonly FooterSocialPlatformId[] =
@@ -42,6 +44,15 @@ export default function FeedbackDialog() {
           <DialogDescription asChild className="!text-white">
             <div className="space-y-3 py-2 text-sm">
               <p>{t("feedback.message")}</p>
+              <div className="flex justify-center pt-1">
+                <Button
+                  type="button"
+                  onClick={() => openGameFeedbackFormFromDialog()}
+                  data-testid="button-feedback-open-form"
+                >
+                  {t("feedback.openForm")}
+                </Button>
+              </div>
               <p>{t("feedback.contactVia")}</p>
               <div className="flex flex-wrap justify-center gap-4 pt-1">
                 {FEEDBACK_CONTACT_ORDER.map((platform) => {

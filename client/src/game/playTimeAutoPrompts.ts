@@ -9,6 +9,7 @@ import {
   socialPromoExclusiveStepsCompleted,
 } from "@/game/socialPromoExclusiveReward";
 import { isSteamEditionActive } from "@/lib/edition";
+import { openFeedbackDialog } from "@/lib/gameFeedbackForm";
 
 /**
  * After one play-time auto prompt closes, wait this long (wall clock) before
@@ -111,9 +112,7 @@ function tryOpenFeedbackPrompt(
     return false;
   }
 
-  useGameStore.setState({
-    feedbackDialogOpen: true,
-    feedbackPromptShown: true,
-  });
+  useGameStore.setState({ feedbackPromptShown: true });
+  openFeedbackDialog("dialog");
   return true;
 }

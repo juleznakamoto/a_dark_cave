@@ -47,7 +47,9 @@
     "unmuteSfx": "取消音效静音",
     "cruelModeActive": "残酷模式已启用",
     "wishlistOnSteam": "加入 Steam 愿望单",
-    "demoProgress": "Demo Progress"
+    "demoProgress": "Demo Progress",
+    "feedback": "Feedback",
+    "openFeedback": "Open feedback form"
   },
   "profile": {
     "title": "菜单",

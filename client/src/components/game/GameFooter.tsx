@@ -26,6 +26,7 @@ import {
   getDemoProgressPercent,
   getDemoProgressSegmentCount,
 } from "@/game/demoLimit";
+import { openFeedbackDialog } from "@/lib/gameFeedbackForm";
 import { GAME_CHROME_NO_BG_HOVER } from "./gameChrome";
 
 const FOOTER_CONTROL_BTN =
@@ -190,6 +191,27 @@ export default function GameFooter() {
                 </span>
               </Button>
             )}
+            <Button
+              variant="ghost"
+              size="xs"
+              onClick={() => openFeedbackDialog("footer")}
+              data-testid="button-footer-feedback"
+              aria-label={tWithFallback(
+                "ui",
+                "footer.openFeedback",
+                "Open feedback form",
+              )}
+              className={`${FOOTER_CONTROL_BTN} flex items-center gap-1`}
+            >
+              <GameUiIcon
+                name="feedback"
+                sizeClassName="game-tab-icon"
+                className={`${FOOTER_CONTROL_TEXT} group-hover:!text-red-600`}
+              />
+              <span className={FOOTER_CONTROL_TEXT}>
+                {tWithFallback("ui", "footer.feedback", "Feedback")}
+              </span>
+            </Button>
           </div>
           <div className="flex-1 flex justify-end gap-1 items-center">
             {GAME_FOOTER_RIGHT_ICON_ORDER.map((platform) => {
