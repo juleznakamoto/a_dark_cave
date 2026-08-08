@@ -678,110 +678,52 @@ const Hero: React.FC<HeroProps> = ({
             </button>
           </div>
 
-          {/* Continue Playing and Social Links */}
+          {/* Feedback + Continue Playing (+ More Games on web) */}
           {(buttons?.feedback ||
             buttons?.secondary ||
             buttons?.secondaryTrailing) && (
               <div className="flex flex-col items-center gap-4 animate-fade-in-up animation-delay-4500 px-2">
-                {buttons?.secondary && (
-                  <div className="w-full flex justify-center">
-                    <div className="flex flex-wrap justify-center gap-3 sm:gap-4 items-center">
-                      {buttons.secondaryTrailing && (
-                        <button
-                          type="button"
-                          onClick={buttons.secondaryTrailing.onClick}
-                          button_id={buttons.secondaryTrailing.buttonId}
-                          className={END_SCREEN_LINK_BUTTON_CLASS}
-                        >
-                          {renderEmojiLabelButtonContent("🎮", buttons.secondaryTrailing.text)}
-                        </button>
-                      )}
+                <div className="w-full flex justify-center">
+                  <div className="flex flex-wrap justify-center gap-3 sm:gap-4 items-center">
+                    {buttons?.feedback && (
                       <button
+                        type="button"
+                        onClick={buttons.feedback.onClick}
+                        button_id={buttons.feedback.buttonId}
+                        className={END_SCREEN_LINK_BUTTON_CLASS}
+                      >
+                        <svg
+                          className="w-3.5 h-3.5 shrink-0"
+                          viewBox="0 0 24 24"
+                          fill="currentColor"
+                          aria-hidden
+                        >
+                          <path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z" />
+                        </svg>
+                        <span>{buttons.feedback.text}</span>
+                      </button>
+                    )}
+                    {buttons?.secondaryTrailing && (
+                      <button
+                        type="button"
+                        onClick={buttons.secondaryTrailing.onClick}
+                        button_id={buttons.secondaryTrailing.buttonId}
+                        className={END_SCREEN_LINK_BUTTON_CLASS}
+                      >
+                        {renderEmojiLabelButtonContent("🎮", buttons.secondaryTrailing.text)}
+                      </button>
+                    )}
+                    {buttons?.secondary && (
+                      <button
+                        type="button"
                         onClick={buttons.secondary.onClick}
                         button_id={buttons.secondary.buttonId}
                         className={END_SCREEN_LINK_BUTTON_CLASS}
                       >
                         {renderEmojiLabelButtonContent("▶", buttons.secondary.text)}
                       </button>
-                    </div>
+                    )}
                   </div>
-                )}
-                <div className="flex flex-wrap justify-center gap-2 sm:gap-4 px-2">
-                  <button
-                    type="button"
-                    onClick={() =>
-                      window.open(
-                        "https://a-dark-cave.itch.io/a-dark-cave",
-                        "_blank",
-                        "noopener,noreferrer",
-                      )
-                    }
-                    className={END_SCREEN_LINK_BUTTON_CLASS}
-                  >
-                    <svg
-                      className="w-3.5 h-3.5 shrink-0"
-                      viewBox="0 0 210 210"
-                      fill="currentColor"
-                      aria-hidden
-                    >
-                      <path
-                        fillRule="evenodd"
-                        d="M38 26.25l-23 27v7.687c0 9.747 8.96 18.313 17.094 18.313 9.767 0 17.905-8.233 17.906-18 0 9.767 7.857 18 17.625 18S85 71.017 85 61.25c0 9.767 8.357 18 18.125 18 9.766 0 17.875-8.233 17.875-18 0 9.767 7.89 18 17.656 18 9.768 0 17.344-8.233 17.344-18 0 9.767 8.39 18 18.156 18 9.768 0 17.844-8.233 17.844-18v-8l-25-27c-43.646-.116-129 0-129 0z"
-                      />
-                      <path d="M50.006 74.75c-.93 1.66-2.224 3.08-3.563 4.412C42.757 82.828 37.672 85.1 32.1 85.1c-1.434 0-5.094-.845-5.094-.845v100h154V83.693c-2.3.904-4.234 1.406-6.844 1.406-5.577 0-10.656-2.27-14.344-5.938-1.336-1.332-2.477-2.843-3.406-4.5-.93 1.66-2.1 3.166-3.437 4.5-3.688 3.663-8.74 5.937-14.313 5.937-5.575 0-10.657-2.27-14.344-5.938-1.336-1.332-2.508-2.844-3.437-4.5-.93 1.66-2.065 3.166-3.405 4.5-3.688 3.663-8.77 5.937-14.344 5.937s-10.656-2.27-14.343-5.938c-1.337-1.33-2.477-2.844-3.406-4.5-.93 1.66-2.095 3.167-3.436 4.5C78.257 82.828 73.2 85.1 67.63 85.1c-5.574 0-10.656-2.27-14.343-5.938-1.336-1.33-2.35-2.756-3.28-4.412zm22.15 18.475c6.717 0 11.495 4.35 13.188 10.906h37.125c1.69-6.556 6.437-10.905 13.155-10.905 10.67 0 22.4 10.956 26.062 24.344l8.75 31.968c3.663 13.387-2.08 24.343-12.75 24.343-9.367 0-19.55-8.44-24.375-19.56H74.468c-4.824 11.12-15.006 19.56-24.374 19.56-10.672 0-16.413-10.955-12.75-24.343l8.75-31.968c3.662-13.39 15.39-24.345 26.062-24.345z" />
-                      <path d="M90.743 121.55L78.205 135h12.352v13.866h24.625V135h13.174l-12.54-13.45-12.536-13.45z" />
-                    </svg>
-                    <span>itch.io</span>
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() =>
-                      window.open(
-                        "https://www.incrementaldb.com/game/a-dark-cave",
-                        "_blank",
-                        "noopener,noreferrer",
-                      )
-                    }
-                    className={END_SCREEN_LINK_BUTTON_CLASS}
-                  >
-                    <svg
-                      className="w-3.5 h-3.5 shrink-0"
-                      viewBox="0 0 26.488 29.926"
-                      fill="none"
-                      stroke="currentColor"
-                      strokeLinecap="round"
-                      strokeWidth="1.4"
-                      aria-hidden
-                    >
-                      <g>
-                        <path
-                          d="m10.613 2.168 1.11-.865a2.286 2.286 0 0 1 2.871 0l1.145.975M17.804 25.986l-2.946 2.531a2.7 2.7 0 0 1-3.4 0l-2.515-2.156M13.148 15.155v13.587M15.853 27.656l9.532-8.166M10.764 27.917.987 19.66M.987 19.66V7.194M25.385 19.66V7.775M3.625 9.196.987 7.194M22.87 9.603l2.638-1.998"
-                          strokeLinejoin="round"
-                        />
-                        <path
-                          strokeMiterlimit="10"
-                          d="m13.291 6.353 5.204 4.501M13.255 6.389l-5.034 4.213"
-                        />
-                      </g>
-                    </svg>
-                    <span>Incremental DB</span>
-                  </button>
-                  {buttons?.feedback && (
-                    <button
-                      onClick={buttons.feedback.onClick}
-                      button_id={buttons.feedback.buttonId}
-                      className={END_SCREEN_LINK_BUTTON_CLASS}
-                    >
-                      <svg
-                        className="w-3.5 h-3.5 shrink-0"
-                        viewBox="0 0 24 24"
-                        fill="currentColor"
-                      >
-                        <path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z" />
-                      </svg>
-                      <span>{buttons.feedback.text}</span>
-                    </button>
-                  )}
                 </div>
               </div>
             )}

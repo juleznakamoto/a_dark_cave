@@ -6,6 +6,7 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
+import { FooterSocialIcon } from "@/components/game/FooterSocialIcon";
 import { GameUiIcon } from "@/components/game/GameUiIcon";
 import { useGameStore } from "@/game/state";
 import { startNewDemoGame } from "@/game/demoLimit";
@@ -50,7 +51,12 @@ export default function DemoTimeUpDialog({
               href={STEAM_STORE_URL}
               target="_blank"
               rel="noopener noreferrer"
+              className="inline-flex items-center gap-1.5"
             >
+              <FooterSocialIcon
+                platform="steam"
+                className="h-4 w-4 shrink-0"
+              />
               {t("galaxy.wishlistButton")}
             </a>
           </Button>
@@ -68,7 +74,17 @@ export default function DemoTimeUpDialog({
             />
             {t("galaxy.feedbackButton", { defaultValue: "Feedback" })}
           </Button>
-          <Button variant="outline" onClick={handleStartNewGame}>
+          <Button
+            variant="outline"
+            type="button"
+            onClick={handleStartNewGame}
+            className="inline-flex items-center gap-1.5"
+          >
+            <GameUiIcon
+              name="newGame"
+              sizeClassName="w-4 h-4"
+              className="opacity-100"
+            />
             {t("galaxy.startNewGameButton")}
           </Button>
         </div>
