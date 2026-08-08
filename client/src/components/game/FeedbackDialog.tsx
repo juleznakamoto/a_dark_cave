@@ -8,6 +8,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { useGameStore } from "@/game/state";
 import { FooterSocialIcon } from "@/components/game/FooterSocialIcon";
+import { GameUiIcon } from "@/components/game/GameUiIcon";
 import {
   GAME_FOOTER_RIGHT_ICON_LINKS,
   GAME_FOOTER_RIGHT_ICON_ORDER,
@@ -38,23 +39,29 @@ export default function FeedbackDialog() {
         }
       }}
     >
-      <DialogContent className="[--adc-dialog-max-w:28rem] z-[70]">
+      <DialogContent className="[--adc-dialog-max-w:28rem] z-[70] !pb-4">
         <DialogHeader>
           <DialogTitle className="leading-6">{t("feedback.title")}</DialogTitle>
           <DialogDescription asChild className="!text-white">
-            <div className="space-y-3 py-2 text-sm">
+            <div className="space-y-3 pt-2 pb-0 text-sm">
               <p>{t("feedback.message")}</p>
-              <div className="flex justify-center pt-1">
+              <div className="flex justify-center pt-1 pb-2">
                 <Button
                   type="button"
                   onClick={() => openGameFeedbackFormFromDialog()}
                   data-testid="button-feedback-open-form"
+                  className="inline-flex items-center gap-1.5"
                 >
+                  <GameUiIcon
+                    name="feedback"
+                    sizeClassName="w-4 h-4"
+                    className="opacity-100"
+                  />
                   {t("feedback.openForm")}
                 </Button>
               </div>
               <p>{t("feedback.contactVia")}</p>
-              <div className="flex flex-wrap justify-center gap-4 pt-1">
+              <div className="flex flex-wrap justify-center gap-4">
                 {FEEDBACK_CONTACT_ORDER.map((platform) => {
                   const { href } = GAME_FOOTER_RIGHT_ICON_LINKS[platform];
                   const label = contactLabel(platform);
