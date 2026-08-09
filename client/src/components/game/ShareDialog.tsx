@@ -407,10 +407,16 @@ function ShareCard({
 
       <div
         className="absolute bottom-16 left-16 flex flex-col font-medium text-neutral-100"
-        style={{ fontSize: CTA_FONT_SIZE, gap: 10, lineHeight: 1 }}
+        style={{
+          fontSize: CTA_FONT_SIZE,
+          gap: 10,
+          lineHeight: 1,
+          width: "max-content",
+          maxWidth: "calc(100% - 8rem)",
+        }}
       >
-        <div>Play for free at</div>
-        <div>{SHARE_URL_IMAGE}</div>
+        <div style={{ whiteSpace: "nowrap" }}>Play for free at</div>
+        <div style={{ whiteSpace: "nowrap" }}>{SHARE_URL_IMAGE}</div>
       </div>
       <div
         className="absolute bottom-16 right-16 flex flex-col gap-3 text-right leading-none"
