@@ -1,0 +1,352 @@
+/* GlowingShadow: registered custom properties for animated CSS vars */
+@property --adc-gs-hue {
+  syntax: "<number>";
+  inherits: true;
+  initial-value: 0;
+}
+
+@property --adc-gs-rotate {
+  syntax: "<number>";
+  inherits: true;
+  initial-value: 0;
+}
+
+@property --adc-gs-bg-y {
+  syntax: "<number>";
+  inherits: true;
+  initial-value: 0;
+}
+
+@property --adc-gs-bg-x {
+  syntax: "<number>";
+  inherits: true;
+  initial-value: 0;
+}
+
+@property --adc-gs-glow-translate-y {
+  syntax: "<number>";
+  inherits: true;
+  initial-value: 0;
+}
+
+@property --adc-gs-bg-size {
+  syntax: "<number>";
+  inherits: true;
+  initial-value: 0;
+}
+
+@property --adc-gs-glow-opacity {
+  syntax: "<number>";
+  inherits: true;
+  initial-value: 0;
+}
+
+@property --adc-gs-glow-blur {
+  syntax: "<number>";
+  inherits: true;
+  initial-value: 0;
+}
+
+@property --adc-gs-glow-scale {
+  syntax: "<number>";
+  inherits: true;
+  initial-value: 2;
+}
+
+@property --adc-gs-glow-radius {
+  syntax: "<number>";
+  inherits: true;
+  initial-value: 2;
+}
+
+@property --adc-gs-white-shadow {
+  syntax: "<number>";
+  inherits: true;
+  initial-value: 0;
+}
+
+.adc-gs {
+  --adc-gs-card-color: hsl(260deg 100% 3%);
+  --adc-gs-card-radius: 3.6vw;
+  --adc-gs-card-width: 35vw;
+  --adc-gs-border-width: 3px;
+  --adc-gs-bg-size: 1;
+  --adc-gs-hue: 0;
+  --adc-gs-hue-speed: 1;
+  --adc-gs-rotate: 0;
+  --adc-gs-animation-speed: 4s;
+  --adc-gs-interaction-speed: 0.55s;
+  --adc-gs-glow-scale: 1.5;
+  --adc-gs-scale-factor: 1;
+  --adc-gs-glow-blur: 6;
+  --adc-gs-glow-opacity: 1;
+  --adc-gs-glow-radius: 100;
+  --adc-gs-glow-rotate-unit: 1deg;
+  /* Glow chroma: full rainbow by default */
+  --adc-gs-sat: 100%;
+  --adc-gs-light-hi: 90%;
+  --adc-gs-light-mid: 80%;
+  --adc-gs-light-lo: 60%;
+  --adc-gs-glow-light: 60%;
+
+  width: min(480px, var(--adc-gs-card-width));
+  aspect-ratio: 1.5 / 1;
+  color: white;
+  margin: auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  z-index: 2;
+  border-radius: var(--adc-gs-card-radius);
+}
+
+.adc-gs--interactive {
+  cursor: pointer;
+}
+
+.adc-gs--compact {
+  width: auto;
+  aspect-ratio: auto;
+  margin: 0;
+  --adc-gs-card-width: 280px;
+  --adc-gs-card-radius: 28px;
+  --adc-gs-border-width: 2px;
+}
+
+/* Silver / white: cool low-chroma glow instead of rainbow */
+.adc-gs--silver {
+  --adc-gs-card-color: #0b0b0e;
+  --adc-gs-hue: 210;
+  --adc-gs-hue-speed: 0;
+  --adc-gs-sat: 8%;
+  --adc-gs-light-hi: 98%;
+  --adc-gs-light-mid: 88%;
+  --adc-gs-light-lo: 72%;
+  --adc-gs-glow-light: 85%;
+  --adc-gs-glow-blur: 4;
+  --adc-gs-glow-opacity: 0.85;
+  --adc-gs-glow-scale: 1.35;
+}
+
+.adc-gs:before,
+.adc-gs:after {
+  content: "";
+  display: block;
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  border-radius: var(--adc-gs-card-radius);
+}
+
+.adc-gs__content {
+  position: relative;
+  z-index: 1;
+  background: var(--adc-gs-card-color);
+  border-radius: calc(var(--adc-gs-card-radius) * 0.9);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  padding: calc(var(--adc-gs-card-width) / 8);
+  box-sizing: border-box;
+}
+
+.adc-gs--compact .adc-gs__content {
+  width: auto;
+  height: auto;
+  padding: 20px 28px;
+}
+
+.adc-gs__content:before {
+  content: "";
+  display: block;
+  position: absolute;
+  inset: calc(var(--adc-gs-border-width) * -0.5);
+  border-radius: calc(var(--adc-gs-card-radius) * 0.9);
+  box-shadow: 0 0 20px black;
+  mix-blend-mode: color-burn;
+  z-index: -1;
+  pointer-events: none;
+  background: hsl(0deg 0% 16%) radial-gradient(30% 30% at calc(var(--adc-gs-bg-x) * 1%) calc(var(--adc-gs-bg-y) * 1%),
+      hsl(calc(var(--adc-gs-hue) * var(--adc-gs-hue-speed) * 1deg) var(--adc-gs-sat) var(--adc-gs-light-hi)) calc(0% * var(--adc-gs-bg-size)),
+      hsl(calc(var(--adc-gs-hue) * var(--adc-gs-hue-speed) * 1deg) var(--adc-gs-sat) var(--adc-gs-light-mid)) calc(20% * var(--adc-gs-bg-size)),
+      hsl(calc(var(--adc-gs-hue) * var(--adc-gs-hue-speed) * 1deg) var(--adc-gs-sat) var(--adc-gs-light-lo)) calc(40% * var(--adc-gs-bg-size)),
+      transparent 100%);
+  animation:
+    adc-gs-hue var(--adc-gs-animation-speed) linear infinite,
+    adc-gs-rotate-bg var(--adc-gs-animation-speed) linear infinite;
+  transition: --adc-gs-bg-size var(--adc-gs-interaction-speed) ease;
+}
+
+.adc-gs--silver .adc-gs__content:before {
+  mix-blend-mode: screen;
+  box-shadow: 0 0 18px rgb(0 0 0 / 80%);
+  background: hsl(220deg 6% 12%) radial-gradient(35% 35% at calc(var(--adc-gs-bg-x) * 1%) calc(var(--adc-gs-bg-y) * 1%),
+      hsl(210deg var(--adc-gs-sat) var(--adc-gs-light-hi)) calc(0% * var(--adc-gs-bg-size)),
+      hsl(210deg var(--adc-gs-sat) var(--adc-gs-light-mid)) calc(22% * var(--adc-gs-bg-size)),
+      hsl(210deg 4% var(--adc-gs-light-lo)) calc(42% * var(--adc-gs-bg-size)),
+      transparent 100%);
+  animation: adc-gs-rotate-bg var(--adc-gs-animation-speed) linear infinite;
+}
+
+.adc-gs__glow {
+  --adc-gs-glow-translate-y: 0;
+  display: block;
+  position: absolute;
+  width: calc(var(--adc-gs-card-width) / 5);
+  height: calc(var(--adc-gs-card-width) / 5);
+  animation: adc-gs-rotate var(--adc-gs-animation-speed) linear infinite;
+  transform: rotateZ(calc(var(--adc-gs-rotate) * var(--adc-gs-glow-rotate-unit)));
+  transform-origin: center;
+  border-radius: calc(var(--adc-gs-glow-radius) * 10vw);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.adc-gs__glow:after {
+  content: "";
+  display: block;
+  z-index: -2;
+  filter: blur(calc(var(--adc-gs-glow-blur) * 10px));
+  width: 130%;
+  height: 130%;
+  left: -15%;
+  top: -15%;
+  background: hsl(calc(var(--adc-gs-hue) * var(--adc-gs-hue-speed) * 1deg) var(--adc-gs-sat) var(--adc-gs-glow-light));
+  position: relative;
+  border-radius: calc(var(--adc-gs-glow-radius) * 10vw);
+  animation: adc-gs-hue var(--adc-gs-animation-speed) linear infinite;
+  transform: scaleY(calc(var(--adc-gs-glow-scale) * var(--adc-gs-scale-factor) / 1.1)) scaleX(calc(var(--adc-gs-glow-scale) * var(--adc-gs-scale-factor) * 1.2)) translateY(calc(var(--adc-gs-glow-translate-y) * 1%));
+  opacity: var(--adc-gs-glow-opacity);
+}
+
+.adc-gs--silver .adc-gs__glow:after {
+  background: radial-gradient(circle,
+      hsl(0deg 0% 100% / 0.95) 0%,
+      hsl(210deg 10% 82% / 0.75) 45%,
+      hsl(210deg 8% 70% / 0.35) 100%);
+  animation: none;
+}
+
+.adc-gs--interactive:hover .adc-gs__content {
+  mix-blend-mode: darken;
+  box-shadow: 0 0 calc(var(--adc-gs-white-shadow) * 1vw) calc(var(--adc-gs-white-shadow) * 0.15vw) rgb(255 255 255 / 20%);
+  animation: adc-gs-shadow-pulse calc(var(--adc-gs-animation-speed) * 2) linear infinite;
+}
+
+.adc-gs--interactive.adc-gs--silver:hover .adc-gs__content {
+  mix-blend-mode: normal;
+  box-shadow: 0 0 calc(var(--adc-gs-white-shadow) * 0.8vw) calc(var(--adc-gs-white-shadow) * 0.12vw) rgb(255 255 255 / 35%);
+}
+
+.adc-gs--interactive:hover .adc-gs__content:before {
+  --adc-gs-bg-size: 15;
+  animation-play-state: paused;
+  transition: --adc-gs-bg-size var(--adc-gs-interaction-speed) ease;
+}
+
+.adc-gs--interactive:hover .adc-gs__glow {
+  --adc-gs-glow-blur: 1.5;
+  --adc-gs-glow-opacity: 0.6;
+  --adc-gs-glow-scale: 2.5;
+  --adc-gs-glow-radius: 0;
+  --adc-gs-rotate: 900;
+  --adc-gs-glow-rotate-unit: 0;
+  --adc-gs-scale-factor: 1.25;
+  animation-play-state: paused;
+}
+
+.adc-gs--interactive:hover .adc-gs__glow:after {
+  --adc-gs-glow-translate-y: 0;
+  animation-play-state: paused;
+  transition:
+    --adc-gs-glow-translate-y 0s ease,
+    --adc-gs-glow-blur 0.05s ease,
+    --adc-gs-glow-opacity 0.05s ease,
+    --adc-gs-glow-scale 0.05s ease,
+    --adc-gs-glow-radius 0.05s ease;
+}
+
+@keyframes adc-gs-shadow-pulse {
+
+  0%,
+  24%,
+  46%,
+  73%,
+  96% {
+    --adc-gs-white-shadow: 0.5;
+  }
+
+  12%,
+  28%,
+  41%,
+  63%,
+  75%,
+  82%,
+  98% {
+    --adc-gs-white-shadow: 2.5;
+  }
+
+  6%,
+  32%,
+  57% {
+    --adc-gs-white-shadow: 1.3;
+  }
+
+  18%,
+  52%,
+  88% {
+    --adc-gs-white-shadow: 3.5;
+  }
+}
+
+@keyframes adc-gs-rotate-bg {
+  0% {
+    --adc-gs-bg-x: 0;
+    --adc-gs-bg-y: 0;
+  }
+
+  25% {
+    --adc-gs-bg-x: 100;
+    --adc-gs-bg-y: 0;
+  }
+
+  50% {
+    --adc-gs-bg-x: 100;
+    --adc-gs-bg-y: 100;
+  }
+
+  75% {
+    --adc-gs-bg-x: 0;
+    --adc-gs-bg-y: 100;
+  }
+
+  100% {
+    --adc-gs-bg-x: 0;
+    --adc-gs-bg-y: 0;
+  }
+}
+
+@keyframes adc-gs-rotate {
+  from {
+    --adc-gs-rotate: -70;
+    --adc-gs-glow-translate-y: -65;
+  }
+
+  to {
+    --adc-gs-rotate: calc(360 - 70);
+    --adc-gs-glow-translate-y: -65;
+  }
+}
+
+@keyframes adc-gs-hue {
+  0% {
+    --adc-gs-hue: 0;
+  }
+
+  100% {
+    --adc-gs-hue: 360;
+  }
+}
