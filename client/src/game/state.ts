@@ -2795,6 +2795,16 @@ export const useGameStore = create<GameStore>((set, get) => ({
   restartGame: async () => {
     const state = get();
 
+    // In-place restart returns to StartScreen (gameStarted false) without a full
+    // page reload — stop gameplay audio/loop so BGM / combat / fire SFX cannot leak.
+    audioManager.stopAllSounds();
+    try {
+      const { stopGameLoop } = await import("@/game/loop");
+      stopGameLoop();
+    } catch (error) {
+      logger.warn("[RESTART] Failed to stop game loop:", error);
+    }
+
     // Check if cruel mode is activated (support both old and new purchase ID formats)
     const isCruelModeActive =
       Object.keys(state.activatedPurchases || {}).some(

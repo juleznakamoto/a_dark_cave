@@ -19,6 +19,7 @@ import { OG_LOCALE_TAGS, SUPPORTED_LOCALES } from "@/i18n/locales";
 import { FullscreenButton } from "@/components/game/FullscreenButton";
 import { clearStaleChunkReloadGuard } from "@/lib/hardReload";
 import { mountFiraSansFontFace } from "@/lib/firaSansFontFace";
+import { logger } from "@/lib/logger";
 
 const START_INTRO_VAPORIZE_COLOR = "rgba(209, 213, 219, 0.9)";
 const START_INTRO_VAPORIZE_ANIMATION = {
@@ -108,6 +109,7 @@ export default function StartScreen({
   const eyesEasterEggInsideHotZoneRef = useRef(false);
   const eyesEasterEggConsumedRef = useRef(false);
   const eyesEasterEggAssetsReadyRef = useRef(false);
+  const eyesEasterEggAssetsLoadingRef = useRef(false);
   const eyesEasterEggHideTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(
     null,
   );
@@ -135,6 +137,12 @@ export default function StartScreen({
   // (e.g. EN ≈ latin-400 ~24KB). Full game weights mount later in gameplay init.
   useEffect(() => {
     mountFiraSansFontFace({ stage: "start", applyFontLoadedClass: true });
+  }, []);
+
+  // New Game / sign-out can show this screen in-place without a reload. Clear any
+  // leftover gameplay audio so only wind (started on first gesture) is heard.
+  useEffect(() => {
+    audioManager.stopAllSounds();
   }, []);
 
   useEffect(() => {
@@ -194,15 +202,49 @@ export default function StartScreen({
 
     const stillOnStartScreen = () => !cancelled && !executedRef.current;
 
-    const loadEyesAssets = () => {
-      if (!stillOnStartScreen() || eyesEasterEggAssetsReadyRef.current) return;
-
-      // Prefetch off the critical path; Lighthouse / bots never wait this long.
-      void audioManager.loadSound("monsterStart", EYES_EASTER_EGG_SOUND);
+    const preloadEyesImage = (src: string): Promise<void> => {
       const preloadImg = new window.Image();
       preloadImg.decoding = "async";
-      preloadImg.src = EYES_EASTER_EGG_SRC;
-      eyesEasterEggAssetsReadyRef.current = true;
+      preloadImg.src = src;
+      // decode() is preferred; fall back to load events when decode rejects
+      // (already-complete / unsupported cases).
+      return preloadImg.decode().catch(
+        () =>
+          new Promise<void>((resolve, reject) => {
+            if (preloadImg.complete && preloadImg.naturalWidth > 0) {
+              resolve();
+              return;
+            }
+            preloadImg.onload = () => resolve();
+            preloadImg.onerror = () =>
+              reject(new Error(`Failed to load eyes image: ${src}`));
+          }),
+      );
+    };
+
+    const loadEyesAssets = async () => {
+      if (
+        !stillOnStartScreen() ||
+        eyesEasterEggAssetsReadyRef.current ||
+        eyesEasterEggAssetsLoadingRef.current
+      ) {
+        return;
+      }
+      eyesEasterEggAssetsLoadingRef.current = true;
+
+      try {
+        // Prefetch off the critical path; wait until both assets are actually ready.
+        await Promise.all([
+          audioManager.loadSound("monsterStart", EYES_EASTER_EGG_SOUND),
+          preloadEyesImage(EYES_EASTER_EGG_SRC),
+        ]);
+        if (stillOnStartScreen()) {
+          eyesEasterEggAssetsReadyRef.current = true;
+        }
+      } catch (error) {
+        eyesEasterEggAssetsLoadingRef.current = false;
+        logger.warn("Eyes easter egg assets failed to load:", error);
+      }
     };
 
     const scheduleAssetLoad = () => {
@@ -212,12 +254,12 @@ export default function StartScreen({
         idleCallbackId = ric(
           () => {
             idleCallbackId = null;
-            loadEyesAssets();
+            void loadEyesAssets();
           },
           { timeout: 5_000 },
         );
       } else {
-        loadEyesAssets();
+        void loadEyesAssets();
       }
     };
 
@@ -236,20 +278,23 @@ export default function StartScreen({
     };
 
     const handlePointerMove = (event: MouseEvent) => {
-      if (
-        executedRef.current ||
-        eyesEasterEggConsumedRef.current ||
-        !eyesEasterEggAssetsReadyRef.current
-      ) {
-        return;
-      }
-
       const inHotZone = isInUpperLeftQuadrantHotZone(
         event.clientX,
         event.clientY,
         window.innerWidth,
         window.innerHeight,
       );
+
+      // Always track hot-zone occupancy so a later "assets ready" state does not
+      // look like a fresh enter while the pointer was already inside.
+      if (
+        executedRef.current ||
+        eyesEasterEggConsumedRef.current ||
+        !eyesEasterEggAssetsReadyRef.current
+      ) {
+        eyesEasterEggInsideHotZoneRef.current = inHotZone;
+        return;
+      }
 
       if (inHotZone && !eyesEasterEggInsideHotZoneRef.current) {
         triggerEyesFlash();

@@ -83,9 +83,33 @@ export class AudioManager {
     }
   }
 
+  /** Resolves when Howl has finished loading (or failed); does not hang forever. */
+  private waitForHowlLoad(sound: Howl, name: string): Promise<void> {
+    if (sound.state() === 'loaded') return Promise.resolve();
+
+    return new Promise((resolve) => {
+      const onLoad = () => {
+        sound.off('loaderror', onError);
+        resolve();
+      };
+      const onError = (_id: number, error: unknown) => {
+        sound.off('load', onLoad);
+        logger.warn(`Failed to load sound ${name}:`, error);
+        resolve();
+      };
+      sound.once('load', onLoad);
+      sound.once('loaderror', onError);
+    });
+  }
+
   async loadSound(name: string, url: string): Promise<void> {
     this.soundUrls.set(name, url);
-    if (this.sounds.has(name)) return;
+
+    const existing = this.sounds.get(name);
+    if (existing) {
+      await this.waitForHowlLoad(existing, name);
+      return;
+    }
 
     try {
       const config: Record<string, unknown> = {
@@ -120,6 +144,7 @@ export class AudioManager {
 
       const sound = new Howl(config as Parameters<typeof Howl>[0]);
       this.sounds.set(name, sound);
+      await this.waitForHowlLoad(sound, name);
     } catch (error) {
       logger.warn(`Error initializing sound ${name}:`, error);
     }
