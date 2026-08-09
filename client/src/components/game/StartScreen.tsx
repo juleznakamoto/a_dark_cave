@@ -32,6 +32,28 @@ const START_INTRO_VAPORIZE_FONT_FALLBACK = {
   fontWeight: 400,
 } as const;
 
+/** Easter egg: flash eyes at center of the upper-left screen quadrant. */
+const EYES_EASTER_EGG_SRC = "/images/eyes-easter-egg.png";
+const EYES_EASTER_EGG_DURATION_MS = 500;
+/** Hit radius as a fraction of min(viewport w, h) around the quadrant center. */
+const EYES_EASTER_EGG_HOT_ZONE_RATIO = 0.08;
+
+function isInUpperLeftQuadrantHotZone(
+  clientX: number,
+  clientY: number,
+  viewportWidth: number,
+  viewportHeight: number,
+): boolean {
+  // Four equal rectangles; hot spot is the middle of the upper-left one.
+  const centerX = viewportWidth * 0.25;
+  const centerY = viewportHeight * 0.25;
+  const radius =
+    Math.min(viewportWidth, viewportHeight) * EYES_EASTER_EGG_HOT_ZONE_RATIO;
+  const dx = clientX - centerX;
+  const dy = clientY - centerY;
+  return dx * dx + dy * dy <= radius * radius;
+}
+
 const START_FOOTER_LINK_BASE =
   "inline-flex items-center gap-0 sm:gap-1 hover:text-foreground transition-opacity";
 const START_FOOTER_SOCIAL_LINK =
@@ -77,6 +99,11 @@ export default function StartScreen({
   const musicVolume = initialPreferences.musicVolume;
   const sfxVolume = initialPreferences.sfxVolume;
   const [showParticles, setShowParticles] = useState(false);
+  const [showEyesEasterEgg, setShowEyesEasterEgg] = useState(false);
+  const eyesEasterEggInsideHotZoneRef = useRef(false);
+  const eyesEasterEggHideTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(
+    null,
+  );
   const [introFadeInDone, setIntroFadeInDone] = useState(false);
   const [introVaporFont, setIntroVaporFont] = useState<{
     fontFamily: string;
@@ -147,6 +174,46 @@ export default function StartScreen({
       audioManager.stopLoopingSound("wind", 2);
       document.removeEventListener("mousemove", handleInitialGesture);
       document.removeEventListener("touchstart", handleInitialGesture);
+    };
+  }, []);
+
+  // Eyes easter egg: brief flash when the pointer enters the center of the
+  // upper-left quadrant (screen split into four equal rectangles).
+  useEffect(() => {
+    const triggerEyesFlash = () => {
+      setShowEyesEasterEgg(true);
+      if (eyesEasterEggHideTimeoutRef.current) {
+        clearTimeout(eyesEasterEggHideTimeoutRef.current);
+      }
+      eyesEasterEggHideTimeoutRef.current = setTimeout(() => {
+        setShowEyesEasterEgg(false);
+        eyesEasterEggHideTimeoutRef.current = null;
+      }, EYES_EASTER_EGG_DURATION_MS);
+    };
+
+    const handlePointerMove = (event: MouseEvent) => {
+      if (executedRef.current) return;
+
+      const inHotZone = isInUpperLeftQuadrantHotZone(
+        event.clientX,
+        event.clientY,
+        window.innerWidth,
+        window.innerHeight,
+      );
+
+      if (inHotZone && !eyesEasterEggInsideHotZoneRef.current) {
+        triggerEyesFlash();
+      }
+      eyesEasterEggInsideHotZoneRef.current = inHotZone;
+    };
+
+    window.addEventListener("mousemove", handlePointerMove);
+    return () => {
+      window.removeEventListener("mousemove", handlePointerMove);
+      if (eyesEasterEggHideTimeoutRef.current) {
+        clearTimeout(eyesEasterEggHideTimeoutRef.current);
+        eyesEasterEggHideTimeoutRef.current = null;
+      }
     };
   }, []);
 
@@ -323,6 +390,21 @@ export default function StartScreen({
       `}</style>
 
       <CloudShader />
+
+      {showEyesEasterEgg && (
+        <img
+          src={EYES_EASTER_EGG_SRC}
+          alt=""
+          aria-hidden
+          draggable={false}
+          className="pointer-events-none absolute z-30 w-[min(28vw,220px)] h-auto select-none"
+          style={{
+            left: "25%",
+            top: "25%",
+            transform: "translate(-50%, -50%)",
+          }}
+        />
+      )}
 
       {steamEditionActive && (
         <div className="absolute top-2 right-2 z-20">
