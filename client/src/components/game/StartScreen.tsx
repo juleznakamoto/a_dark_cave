@@ -162,7 +162,9 @@ export default function StartScreen({
   useEffect(() => {
     audioManager.setMusicVolume(musicVolume ?? 1);
     audioManager.setSfxVolume(sfxVolume ?? 1);
-    audioManager.musicMute(musicMuted);
+    // Never resume BGM here — start screen is wind-only until Light Fire.
+    // (musicMute(false) would otherwise restart gameplay music after New Game.)
+    audioManager.musicMute(musicMuted, { resume: false });
     audioManager.sfxMute(sfxMuted);
   }, [musicMuted, sfxMuted, musicVolume, sfxVolume]);
 
@@ -385,10 +387,9 @@ export default function StartScreen({
       });
     }
 
-    // Cut wind immediately so it does not bury / delay the fire one-shot.
-    audioManager.stopLoopingSound("wind", 0);
-
+    // Fire one-shot first so it is not delayed by the wind fade setup.
     audioManager.playSound("lightFire", SOUND_VOLUME.lightFire);
+    audioManager.stopLoopingSound("wind", 1);
 
     // Defer the game pack (incl. large BGM) so Light Fire is not competing for
     // network/decode on the same tick — most noticeable in Vite/dev.
@@ -419,7 +420,8 @@ export default function StartScreen({
   const toggleMusic = () => {
     const next = !musicMuted;
     setMusicMuted(next);
-    audioManager.musicMute(next);
+    // Start screen must not start BGM on unmute; Light Fire starts it explicitly.
+    audioManager.musicMute(next, { resume: false });
   };
 
   const toggleSfx = () => {

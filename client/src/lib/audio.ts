@@ -351,9 +351,8 @@ export class AudioManager {
   }
 
   stopAllSounds(): void {
-    // Track if background music was playing before stopping
-    const bgMusic = this.sounds.get('backgroundMusic');
-    this.wasBackgroundMusicPlaying = (bgMusic && typeof bgMusic.playing === 'function') ? bgMusic.playing() : false;
+    // Full stop (restart / start screen): do not leave resume intent for BGM.
+    this.wasBackgroundMusicPlaying = false;
     this.activeEventAmbience = null;
 
     this.sounds.forEach(sound => {
@@ -487,17 +486,28 @@ export class AudioManager {
     }
   }
 
-  musicMute(mute: boolean): void {
+  /**
+   * @param resume When unmuting, start BGM again (default true). Pass false on the
+   * start screen so New Game / remount does not pull gameplay music back in.
+   */
+  musicMute(mute: boolean, options?: { resume?: boolean }): void {
     this.isMusicMuted = mute;
     if (mute) {
       this.wasBackgroundMusicPlaying = false; // Prevent resumeSounds() from restarting
       this.stopLoopingSound('backgroundMusic', 1);
-    } else {
-      this.wasBackgroundMusicPlaying = true; // Track that music should be playing
-      // Don't restart BGM under an active event bed
-      if (!this.activeEventAmbience) {
-        this.playLoopingSound('backgroundMusic', this.backgroundMusicVolume, false, 1);
-      }
+      return;
+    }
+
+    const shouldResume = options?.resume !== false;
+    if (!shouldResume) {
+      this.wasBackgroundMusicPlaying = false;
+      return;
+    }
+
+    this.wasBackgroundMusicPlaying = true;
+    // Don't restart BGM under an active event bed
+    if (!this.activeEventAmbience) {
+      this.playLoopingSound('backgroundMusic', this.backgroundMusicVolume, false, 1);
     }
   }
 
