@@ -7,7 +7,7 @@ import { TooltipWrapper } from "@/components/game/TooltipWrapper";
 import { Button } from "@/components/ui/button";
 import { ImproveButton } from "@/components/ui/improve-button";
 import { getTotalPopulationEffects } from "@/game/population";
-import { Progress } from "@/components/ui/progress";
+import { SegmentedProgress } from "@/components/ui/progress-bar";
 import { CircularProgress } from "@/components/ui/circular-progress";
 import CooldownButton, {
   gameActionOutlineButtonClassName,
@@ -44,6 +44,28 @@ import { useSteamEditionActive } from "@/hooks/useSteamEditionActive";
 
 
 const ESTATE_BAR_GROW_ANIMATION_MS = 500;
+
+function EstateUpgradeProgress({
+  value,
+  segments,
+}: {
+  value: number;
+  segments: number;
+}) {
+  return (
+    <SegmentedProgress
+      value={value}
+      segments={segments}
+      showPercentage={false}
+      compact
+      growAnimationMs={ESTATE_BAR_GROW_ANIMATION_MS}
+      emitSparksOnGrow
+      filledClassName="bg-red-950"
+      emptyClassName="bg-neutral-800"
+      segmentClassName="h-2"
+    />
+  );
+}
 
 /** Open Trader gold filter when an Improve costs more gold than the player has. */
 function useEstateGoldShopClick(canAfford: boolean) {
@@ -143,12 +165,9 @@ function SkillUpgradeRow({
           ) : null
         }
       />
-      <Progress
+      <EstateUpgradeProgress
         value={(level / maxLevel) * 100}
-        className="h-2"
         segments={maxLevel}
-        growAnimationMs={ESTATE_BAR_GROW_ANIMATION_MS}
-        emitSparksOnGrow
       />
       <div className="flex justify-between text-xs text-muted-foreground">
         <span>{description}</span>
@@ -164,6 +183,7 @@ export default function EstatePanel() {
   const { t } = useUiTranslation();
   const {
     events,
+    relics,
     setEventDialog,
     setIdleModeDialog,
     sleepUpgrades,
@@ -235,9 +255,13 @@ export default function EstatePanel() {
   };
 
 
-  // Get all cube events that have been triggered
+  // Get all cube events that have been triggered.
+  // cubeDiscovery grants relics.whispering_cube and never sets events.cubeDiscovery.
   const completedCubeEvents = Object.entries(cubeEvents)
     .filter(([eventId]) => {
+      if (eventId === "cubeDiscovery") {
+        return relics.whispering_cube === true;
+      }
       // Check if this cube event has been triggered
       const baseEventId = eventId.replace(/[a-z]$/, ""); // Remove trailing letter (e.g., cube14a -> cube14)
       return events[eventId] === true || events[baseEventId] === true;
@@ -641,12 +665,9 @@ export default function EstatePanel() {
                 ) : null
               }
             />
-            <Progress
+            <EstateUpgradeProgress
               value={(sleepUpgrades.lengthLevel / MAX_SLEEP_LENGTH_LEVEL) * 100}
-              className="h-2"
               segments={MAX_SLEEP_LENGTH_LEVEL}
-              growAnimationMs={ESTATE_BAR_GROW_ANIMATION_MS}
-              emitSparksOnGrow
             />
             <div className="flex justify-between text-xs text-muted-foreground">
               <span>
@@ -704,12 +725,11 @@ export default function EstatePanel() {
                 ) : null
               }
             />
-            <Progress
-              value={(sleepUpgrades.intensityLevel / MAX_SLEEP_INTENSITY_LEVEL) * 100}
-              className="h-2"
+            <EstateUpgradeProgress
+              value={
+                (sleepUpgrades.intensityLevel / MAX_SLEEP_INTENSITY_LEVEL) * 100
+              }
               segments={MAX_SLEEP_INTENSITY_LEVEL}
-              growAnimationMs={ESTATE_BAR_GROW_ANIMATION_MS}
-              emitSparksOnGrow
             />
             <div className="flex justify-between text-xs text-muted-foreground">
               <span>

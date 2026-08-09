@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Progress } from "@/components/ui/progress";
+import { SegmentedProgress } from "@/components/ui/progress-bar";
 import { ImproveButton } from "@/components/ui/improve-button";
 import { Button } from "@/components/ui/button";
 import {
@@ -19,7 +19,7 @@ export function EstateBarsSection() {
     <DemoSection
       id="estate-bars"
       title="Estate upgrade bars"
-      description="Real Progress + ImproveButton (EstatePanel skill/sleep upgrades)."
+      description="Real SegmentedProgress + ImproveButton (EstatePanel skill/sleep upgrades)."
     >
       <div className="w-full max-w-md space-y-1">
         <div className="flex h-6 items-center justify-between">
@@ -34,12 +34,16 @@ export function EstateBarsSection() {
             ) : null}
           </div>
         </div>
-        <Progress
+        <SegmentedProgress
           value={(level / maxLevel) * 100}
-          className="h-2"
           segments={maxLevel}
+          showPercentage={false}
+          compact
           growAnimationMs={ESTATE_BAR_GROW_ANIMATION_MS}
           emitSparksOnGrow
+          filledClassName="bg-red-950"
+          emptyClassName="bg-neutral-800"
+          segmentClassName="h-2"
         />
         <p className="text-xs text-muted-foreground">
           Level {level}/{maxLevel}
