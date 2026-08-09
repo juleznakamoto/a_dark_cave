@@ -302,7 +302,8 @@ export function SegmentedProgress({
                       changeOnlyGrow
                         ? "duration-0"
                         : "duration-500",
-                      !renderFill && filledClassName,
+                      // Keep solid fill under optional renderFill (shader paints on top).
+                      filledClassName,
                     )}
                     style={{
                       width: `${fill * 100}%`,

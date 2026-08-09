@@ -396,15 +396,19 @@ export function SharedProgressShaderHost({
   return (
     <SharedProgressShaderContext.Provider value={api}>
       <div ref={hostRef} className={cn("relative", className)}>
-        {/* Behind fills so glow/sparks stay on top; segments are transparent windows. */}
+        {children}
+        {/*
+          Canvas sits above bar chrome and paints only into registered segment
+          scissor rects. (Transparent "holes" cannot punch through opaque
+          track backgrounds, so the shader must be drawn on top.)
+        */}
         {useShader ? (
           <canvas
             ref={canvasRef}
             aria-hidden
-            className="pointer-events-none absolute inset-0 z-0 h-full w-full"
+            className="pointer-events-none absolute inset-0 z-10 h-full w-full"
           />
         ) : null}
-        <div className="relative z-[1]">{children}</div>
       </div>
     </SharedProgressShaderContext.Provider>
   );
