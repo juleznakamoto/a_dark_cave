@@ -180,13 +180,6 @@ export function SegmentedProgress({
   ]);
 
   useEffect(() => {
-    // Estate grow: snap to target; CSS transform on the fill matches Progress.
-    if (changeOnlyGrow) {
-      setDisplayValue(value);
-      setIsInitialized(true);
-      return;
-    }
-
     if (!animate) {
       setDisplayValue(value);
       setIsInitialized(true);
@@ -224,7 +217,7 @@ export function SegmentedProgress({
     };
     // displayValue is captured at effect start via startValueRef; omit from deps
     // eslint-disable-next-line react-hooks/exhaustive-deps -- intentional
-  }, [value, isInitialized, animate, tweenDurationMs, changeOnlyGrow]);
+  }, [value, isInitialized, animate, tweenDurationMs]);
 
   return (
     <>
@@ -275,17 +268,11 @@ export function SegmentedProgress({
             data-testid={dataTestId}
           >
             {Array.from({ length: segments }).map((_, index) => {
-              // Estate: drive fill from target `value` + CSS ease (same as Progress)
-              // so the blink starts on an already-sizing fill, not a 0-width rAF lag.
-              const fill = getSegmentFill(
-                changeOnlyGrow ? value : displayValue,
-                segments,
-                index,
-              );
+              const fill = getSegmentFill(displayValue, segments, index);
               const delay =
                 isInitialized && !changeOnlyGrow ? index * 20 : 0;
               const showSegmentGlow =
-                glowKey > 0 && index === glowSegmentIndex;
+                glowKey > 0 && index === glowSegmentIndex && fill > 0;
 
               return (
                 <div
@@ -296,44 +283,37 @@ export function SegmentedProgress({
                     segmentClassName,
                   )}
                 >
-                  {changeOnlyGrow ? (
-                    <div
-                      className={cn(
-                        "absolute inset-0 overflow-hidden",
-                        filledClassName,
-                      )}
-                      style={{
-                        transform: `translateX(-${100 - fill * 100}%)`,
-                        transition: showGrowTransition
-                          ? `transform ${tweenDurationMs}ms ease-out`
-                          : undefined,
-                      }}
-                    >
-                      {showSegmentGlow && (
-                        <motion.div
-                          key={glowKey}
-                          className={cn(
-                            "pointer-events-none absolute inset-0 bg-gradient-to-r from-transparent to-transparent",
-                            resolveGrowGlowViaClass(sparkClassName),
-                          )}
-                          initial={{ x: "-100%", opacity: 1 }}
-                          animate={{ x: "100%", opacity: 0 }}
-                          transition={{ duration: 0.7, ease: "easeOut" }}
-                        />
-                      )}
-                    </div>
-                  ) : (
-                    <div
-                      className={cn(
-                        "absolute inset-y-0 left-0 transition-[width] duration-500 ease-out",
-                        filledClassName,
-                      )}
-                      style={{
-                        width: `${fill * 100}%`,
-                        transitionDelay: `${delay}ms`,
-                      }}
-                    />
-                  )}
+                  <div
+                    className={cn(
+                      "absolute inset-y-0 left-0 overflow-hidden transition-[width] ease-out",
+                      changeOnlyGrow
+                        ? "duration-0"
+                        : "duration-500",
+                      filledClassName,
+                    )}
+                    style={{
+                      width: `${fill * 100}%`,
+                      transitionDelay: `${delay}ms`,
+                    }}
+                  >
+                    {showSegmentGlow && (
+                      <motion.div
+                        key={glowKey}
+                        className={cn(
+                          "pointer-events-none absolute inset-0 bg-gradient-to-r from-transparent to-transparent",
+                          sparkClassName
+                            ? resolveGrowGlowViaClass(sparkClassName)
+                            : "via-orange-300/90",
+                        )}
+                        initial={{ x: "-100%", opacity: 1 }}
+                        animate={{ x: "100%", opacity: 0 }}
+                        transition={{
+                          duration: Math.min(0.9, tweenDurationMs / 1000),
+                          ease: "easeOut",
+                        }}
+                      />
+                    )}
+                  </div>
                 </div>
               );
             })}
@@ -344,12 +324,7 @@ export function SegmentedProgress({
               <div
                 ref={tipMarkerRef}
                 className="pointer-events-none absolute top-1/2 z-20 w-0 -translate-y-1/2"
-                style={{
-                  left: `${Math.min(100, Math.max(0, changeOnlyGrow ? value : displayValue))}%`,
-                  transition: showGrowTransition
-                    ? `left ${tweenDurationMs}ms ease-out`
-                    : undefined,
-                }}
+                style={{ left: `${Math.min(100, Math.max(0, displayValue))}%` }}
                 aria-hidden
               >
                 {growSparkTipGlow && showGrowTransition && (
