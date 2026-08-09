@@ -125,6 +125,19 @@
   --adc-gs-rim-width: 5px;
 }
 
+/* PNG export: hide rim glow and fill the card edge-to-edge */
+.adc-gs--export {
+  --adc-gs-content-inset: 0px;
+}
+
+.adc-gs--export .adc-gs__rim {
+  display: none !important;
+}
+
+.adc-gs--export .adc-gs__content {
+  border-radius: inherit;
+}
+
 /* Silver / white (share image) */
 .adc-gs--silver {
   --adc-gs-card-color: #0b0b0e;

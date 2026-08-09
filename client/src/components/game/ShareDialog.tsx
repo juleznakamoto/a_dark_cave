@@ -1,4 +1,10 @@
-import { useLayoutEffect, useRef, useState, type CSSProperties } from "react";
+import {
+  useEffect,
+  useLayoutEffect,
+  useRef,
+  useState,
+  type CSSProperties,
+} from "react";
 import type { AchievementChartConfig } from "@/achievements/achievementTypes";
 import { useTranslation } from "react-i18next";
 import {
@@ -464,6 +470,8 @@ export default function ShareDialog() {
 
   const cardRef = useRef<HTMLDivElement>(null);
   const previewWrapRef = useRef<HTMLDivElement>(null);
+  const cachedBlobRef = useRef<Blob | null>(null);
+  const prefetchPromiseRef = useRef<Promise<Blob | null> | null>(null);
   const [previewScale, setPreviewScale] = useState(0.3);
   const [busy, setBusy] = useState(false);
 
@@ -493,25 +501,95 @@ export default function ShareDialog() {
     return () => window.removeEventListener("resize", update);
   }, [open]);
 
-  const generateBlob = async (): Promise<Blob | null> => {
+  const renderShareBlob = async (): Promise<Blob | null> => {
     const node = cardRef.current;
     if (!node) return null;
-    // Ensure the real fonts are active in the live DOM, and inline them so the
-    // off-screen SVG rasterization renders the resource icons in the correct font.
-    const [fontEmbedCSS] = await Promise.all([
-      getShareFontEmbedCss(),
-      document.fonts?.ready?.catch(() => undefined),
-    ]);
-    const { toBlob } = await import("html-to-image");
-    return toBlob(node, {
-      width: SHARE_IMAGE_WIDTH,
-      height: SHARE_IMAGE_HEIGHT,
-      pixelRatio: 1,
-      cacheBust: true,
-      backgroundColor: CARD_BG,
-      fontEmbedCSS,
-    });
+
+    // Clone off-screen so preview keeps the glow while export omits border effects.
+    const host = document.createElement("div");
+    host.setAttribute("aria-hidden", "true");
+    host.style.cssText =
+      "position:fixed;left:-10000px;top:0;pointer-events:none;opacity:0;";
+    const clone = node.cloneNode(true) as HTMLElement;
+    clone.querySelector(".adc-gs")?.classList.add("adc-gs--export");
+    host.appendChild(clone);
+    document.body.appendChild(host);
+
+    try {
+      // Ensure the real fonts are active in the live DOM, and inline them so the
+      // off-screen SVG rasterization renders the resource icons in the correct font.
+      const [fontEmbedCSS] = await Promise.all([
+        getShareFontEmbedCss(),
+        document.fonts?.ready?.catch(() => undefined),
+      ]);
+      const { toBlob } = await import("html-to-image");
+      return await toBlob(clone, {
+        width: SHARE_IMAGE_WIDTH,
+        height: SHARE_IMAGE_HEIGHT,
+        pixelRatio: 1,
+        cacheBust: true,
+        backgroundColor: CARD_BG,
+        fontEmbedCSS,
+      });
+    } finally {
+      host.remove();
+    }
   };
+
+  /** Prefetched blob when ready; otherwise awaits in-flight prefetch / renders once. */
+  const getShareBlob = async (): Promise<Blob | null> => {
+    if (cachedBlobRef.current) return cachedBlobRef.current;
+    if (prefetchPromiseRef.current) {
+      const prefetched = await prefetchPromiseRef.current;
+      if (prefetched) return prefetched;
+    }
+    const blob = await renderShareBlob();
+    if (blob) cachedBlobRef.current = blob;
+    return blob;
+  };
+
+  // Non-blocking: bake the PNG as soon as the dialog opens so actions are instant.
+  useEffect(() => {
+    if (!open) {
+      cachedBlobRef.current = null;
+      prefetchPromiseRef.current = null;
+      return;
+    }
+
+    let cancelled = false;
+    const startPrefetch = async () => {
+      // Two frames: ensure ShareCard has committed and painted before capture.
+      await new Promise<void>((resolve) => {
+        requestAnimationFrame(() => {
+          requestAnimationFrame(() => resolve());
+        });
+      });
+      if (cancelled || !cardRef.current) return;
+
+      const promise = renderShareBlob()
+        .then((blob) => {
+          if (!cancelled && blob) cachedBlobRef.current = blob;
+          return blob;
+        })
+        .catch((error) => {
+          logger.error("Failed to prefetch share image", error);
+          return null;
+        })
+        .finally(() => {
+          if (prefetchPromiseRef.current === promise) {
+            prefetchPromiseRef.current = null;
+          }
+        });
+      prefetchPromiseRef.current = promise;
+    };
+
+    void startPrefetch();
+    return () => {
+      cancelled = true;
+    };
+    // Snapshot at open only; do not rebuild on live resource ticks.
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- intentional open-only prefetch
+  }, [open]);
 
   const downloadBlob = (blob: Blob) => {
     const url = URL.createObjectURL(blob);
@@ -528,7 +606,7 @@ export default function ShareDialog() {
     if (busy) return;
     setBusy(true);
     try {
-      const blob = await generateBlob();
+      const blob = await getShareBlob();
       if (!blob) throw new Error("Failed to render share image");
       const file = new File([blob], SHARE_FILE_NAME, { type: "image/png" });
       const shareData: ShareData = {
@@ -590,7 +668,7 @@ export default function ShareDialog() {
     if (busy) return;
     setBusy(true);
     try {
-      const blob = await generateBlob();
+      const blob = await getShareBlob();
       if (!blob) throw new Error("Failed to render share image");
       downloadBlob(blob);
     } catch (error) {
@@ -613,7 +691,7 @@ export default function ShareDialog() {
     if (busy) return;
     setBusy(true);
     try {
-      const blob = await generateBlob();
+      const blob = await getShareBlob();
       if (!blob) throw new Error("Failed to render share image");
       if (!navigator.clipboard?.write || typeof ClipboardItem === "undefined") {
         throw new Error("Clipboard image copy not supported");
