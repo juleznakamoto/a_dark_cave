@@ -24,28 +24,28 @@ const ACHIEVEMENT_COLORS: Record<
   { incomplete: string; complete: string; completeIcon: string }
 > = {
   building: {
-    incomplete: "bg-blue-800/50",
-    complete: "bg-blue-800",
+    incomplete: "bg-blue-900",
+    complete: "bg-blue-900/50",
     completeIcon: "bg-blue-600",
   },
   item: {
-    incomplete: "bg-red-800/50",
-    complete: "bg-red-800",
+    incomplete: "bg-red-900",
+    complete: "bg-red-900/50",
     completeIcon: "bg-red-600",
   },
   action: {
-    incomplete: "bg-green-800/50",
-    complete: "bg-green-800",
+    incomplete: "bg-green-900",
+    complete: "bg-green-900/50",
     completeIcon: "bg-green-600",
   },
   basic: {
-    incomplete: "bg-amber-600/50",
-    complete: "bg-amber-600",
+    incomplete: "bg-amber-900",
+    complete: "bg-amber-900/50",
     completeIcon: "bg-amber-500",
   },
   overall: {
-    incomplete: "bg-violet-800/50",
-    complete: "bg-violet-800",
+    incomplete: "bg-violet-900",
+    complete: "bg-violet-900/50",
     completeIcon: "bg-violet-600",
   },
 };
