@@ -114,6 +114,8 @@ export function SegmentedProgress({
     !animate || changeOnlyGrow,
   );
   const [glowKey, setGlowKey] = useState(0);
+  /** Segment index locked when a grow glow starts (target bucket, not live tip). */
+  const [glowSegmentIndex, setGlowSegmentIndex] = useState(-1);
   const [growSparkSession, setGrowSparkSession] = useState(0);
   const [growTransitionActive, setGrowTransitionActive] = useState(false);
   const animationRef = useRef<number | null>(null);
@@ -148,6 +150,7 @@ export function SegmentedProgress({
     if (value > prev) {
       if (!disableGlow) {
         setGlowKey((k) => k + 1);
+        setGlowSegmentIndex(getActiveSegmentIndex(value, segments));
       }
       setGrowTransitionActive(true);
       if (growTimerRef.current) clearTimeout(growTimerRef.current);
@@ -169,6 +172,7 @@ export function SegmentedProgress({
     };
   }, [
     value,
+    segments,
     changeOnlyGrow,
     disableGlow,
     emitSparksOnGrow,
@@ -268,8 +272,7 @@ export function SegmentedProgress({
               const delay =
                 isInitialized && !changeOnlyGrow ? index * 20 : 0;
               const showSegmentGlow =
-                glowKey > 0 &&
-                index === getActiveSegmentIndex(displayValue, segments);
+                glowKey > 0 && index === glowSegmentIndex;
 
               return (
                 <div
@@ -282,7 +285,7 @@ export function SegmentedProgress({
                 >
                   <div
                     className={cn(
-                      "absolute inset-y-0 left-0 overflow-hidden transition-[width] ease-out",
+                      "absolute inset-y-0 left-0 transition-[width] ease-out",
                       changeOnlyGrow
                         ? "duration-0"
                         : "duration-500",
@@ -292,20 +295,20 @@ export function SegmentedProgress({
                       width: `${fill * 100}%`,
                       transitionDelay: `${delay}ms`,
                     }}
-                  >
-                    {showSegmentGlow && (
-                      <motion.div
-                        key={glowKey}
-                        className={cn(
-                          "pointer-events-none absolute inset-0 bg-gradient-to-r from-transparent to-transparent",
-                          resolveGrowGlowViaClass(sparkClassName),
-                        )}
-                        initial={{ x: "-100%", opacity: 1 }}
-                        animate={{ x: "100%", opacity: 0 }}
-                        transition={{ duration: 0.7, ease: "easeOut" }}
-                      />
-                    )}
-                  </div>
+                  />
+                  {/* Full segment width so the sweep stays visible while fill grows. */}
+                  {showSegmentGlow && (
+                    <motion.div
+                      key={glowKey}
+                      className={cn(
+                        "pointer-events-none absolute inset-0 z-10 bg-gradient-to-r from-transparent to-transparent",
+                        resolveGrowGlowViaClass(sparkClassName),
+                      )}
+                      initial={{ x: "-100%", opacity: 1 }}
+                      animate={{ x: "100%", opacity: 0 }}
+                      transition={{ duration: 0.7, ease: "easeOut" }}
+                    />
+                  )}
                 </div>
               );
             })}
