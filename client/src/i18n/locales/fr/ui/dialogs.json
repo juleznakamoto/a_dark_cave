@@ -68,6 +68,7 @@
   },
   "invite": {
     "button": "Inviter",
+    "copyInviteCode": "Copier le code d'invitation",
     "goldBonus": "+{{amount}} or",
     "linkCopied": "Lien d'invitation copié !", //x1.3
     "linkCopiedDesc": "Partagez-le avec des amis pour gagner {{amount}} or chacun.",
@@ -223,7 +224,7 @@
     "on": "Activé",
     "off": "Désactivé",
     "playTime": "Temps de jeu", //x1.3
-    "download": "Télécharger",
+    "save": "Enregistrer",
     "copy": "Copier",
     "copiedTitle": "Copié dans le presse-papiers",
     "copyErrorTitle": "Impossible de copier l'image",

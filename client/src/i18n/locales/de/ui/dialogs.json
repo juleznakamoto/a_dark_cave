@@ -68,6 +68,7 @@
   },
   "invite": {
     "button": "Einladen",
+    "copyInviteCode": "Einladungscode kopieren",
     "goldBonus": "+{{amount}} Gold",
     "linkCopied": "Einladungslink kopiert!", //x1.2
     "linkCopiedDesc": "Teile ihn mit Freunden, um beide {{amount}} Gold zu verdienen.",
@@ -223,7 +224,7 @@
     "on": "An",
     "off": "Aus",
     "playTime": "Spielzeit",
-    "download": "Herunterladen", //x1.6
+    "save": "Speichern",
     "copy": "Kopieren",
     "copiedTitle": "In Zwischenablage kopiert",
     "copyErrorTitle": "Bild konnte nicht kopiert werden",

@@ -68,6 +68,7 @@
   },
   "invite": {
     "button": "Invite",
+    "copyInviteCode": "Copy Invite Code",
     "goldBonus": "+{{amount}} Gold",
     "linkCopied": "Invite link copied!",
     "linkCopiedDesc": "Share it with friends to earn {{amount}} Gold each.",
@@ -223,7 +224,7 @@
     "on": "On",
     "off": "Off",
     "playTime": "Play time",
-    "download": "Download",
+    "save": "Save",
     "copy": "Copy",
     "copiedTitle": "Copied to clipboard",
     "copyErrorTitle": "Could not copy image",

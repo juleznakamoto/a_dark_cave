@@ -68,6 +68,7 @@
   },
   "invite": {
     "button": "邀请",
+    "copyInviteCode": "复制邀请码",
     "goldBonus": "+{{amount}} 黄金",
     "linkCopied": "邀请链接已复制！",
     "linkCopiedDesc": "分享给好友，每人可获得 {{amount}} 黄金。",
@@ -223,7 +224,7 @@
     "on": "开",
     "off": "关",
     "playTime": "游戏时长",
-    "download": "下载",
+    "save": "保存",
     "copy": "复制",
     "copiedTitle": "已复制到剪贴板",
     "copyErrorTitle": "无法复制图片",

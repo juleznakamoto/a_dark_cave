@@ -827,7 +827,9 @@ export default function ShareDialog() {
                 void handleCopyInviteLink();
               }}
             >
-              {t("invite.button")}
+              {t("invite.copyInviteCode", {
+                defaultValue: "Copy Invite Code",
+              })}
             </Button>
           </TooltipWrapper>
           <Button
@@ -837,7 +839,7 @@ export default function ShareDialog() {
             onClick={handleDownload}
             disabled={busy}
           >
-            {t("share.download", { defaultValue: "Download" })}
+            {t("share.save", { defaultValue: "Save" })}
           </Button>
           <Button
             variant="outline"
