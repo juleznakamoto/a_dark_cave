@@ -62,17 +62,13 @@ function isInUpperLeftQuadrantHotZone(
 
 const START_FOOTER_LINK_BASE =
   "inline-flex items-center gap-0 sm:gap-1 hover:text-foreground transition-opacity";
-const START_FOOTER_SOCIAL_LINK =
-  `${START_FOOTER_LINK_BASE} opacity-70 hover:opacity-100`;
-const START_FOOTER_LEGAL_LINK =
-  `${START_FOOTER_LINK_BASE} opacity-40 hover:opacity-100 text-3xs sm:text-2xs`;
+const START_FOOTER_SOCIAL_LINK = `${START_FOOTER_LINK_BASE} opacity-70 hover:opacity-100`;
+const START_FOOTER_LEGAL_LINK = `${START_FOOTER_LINK_BASE} opacity-40 hover:opacity-100 text-3xs sm:text-2xs`;
 /** Icon controls (language / music / sfx): same color/opacity as social text links; kill ghost Button accent hover. */
-const START_FOOTER_ICON_BTN =
-  `${START_FOOTER_SOCIAL_LINK} shrink-0 p-0 w-7 h-7 justify-center bg-transparent hover:bg-transparent shadow-none`;
+const START_FOOTER_ICON_BTN = `${START_FOOTER_SOCIAL_LINK} shrink-0 p-0 w-7 h-7 justify-center bg-transparent hover:bg-transparent shadow-none`;
 const START_FOOTER_ICON = "size-4 shrink-0";
 /** Paint original PNG glyphs with currentColor (matches language + social text). */
-const START_AUDIO_ICON_MASK =
-  `${START_FOOTER_ICON} bg-current [mask-size:contain] [mask-repeat:no-repeat] [mask-position:center] [mask-mode:alpha] [-webkit-mask-size:contain] [-webkit-mask-repeat:no-repeat] [-webkit-mask-position:center]`;
+const START_AUDIO_ICON_MASK = `${START_FOOTER_ICON} bg-current [mask-size:contain] [mask-repeat:no-repeat] [mask-position:center] [mask-mode:alpha] [-webkit-mask-size:contain] [-webkit-mask-repeat:no-repeat] [-webkit-mask-position:center]`;
 
 export interface StartScreenPreferences {
   cruelMode: boolean;
@@ -110,9 +106,9 @@ export default function StartScreen({
   const eyesEasterEggConsumedRef = useRef(false);
   const eyesEasterEggAssetsReadyRef = useRef(false);
   const eyesEasterEggAssetsLoadingRef = useRef(false);
-  const eyesEasterEggHideTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(
-    null,
-  );
+  const eyesEasterEggHideTimeoutRef = useRef<ReturnType<
+    typeof setTimeout
+  > | null>(null);
   const [introFadeInDone, setIntroFadeInDone] = useState(false);
   const [introVaporFont, setIntroVaporFont] = useState<{
     fontFamily: string;
@@ -154,11 +150,14 @@ export default function StartScreen({
   }, [showParticles]);
 
   // Imperative clip updates avoid per-frame React re-renders (mobile layout jitter).
-  const handleIntroVaporProgress = useCallback((index: number, progress: number) => {
-    const el = introLineClipRefs.current[index];
-    if (!el) return;
-    el.style.clipPath = `inset(0 0 0 ${progress}%)`;
-  }, []);
+  const handleIntroVaporProgress = useCallback(
+    (index: number, progress: number) => {
+      const el = introLineClipRefs.current[index];
+      if (!el) return;
+      el.style.clipPath = `inset(0 0 0 ${progress}%)`;
+    },
+    [],
+  );
 
   useEffect(() => {
     audioManager.setMusicVolume(musicVolume ?? 1);
@@ -182,8 +181,12 @@ export default function StartScreen({
       document.removeEventListener("mousemove", handleInitialGesture);
       document.removeEventListener("touchstart", handleInitialGesture);
     };
-    document.addEventListener("mousemove", handleInitialGesture, { once: true });
-    document.addEventListener("touchstart", handleInitialGesture, { once: true });
+    document.addEventListener("mousemove", handleInitialGesture, {
+      once: true,
+    });
+    document.addEventListener("touchstart", handleInitialGesture, {
+      once: true,
+    });
 
     return () => {
       audioManager.stopLoopingSound("wind", 2);
@@ -307,14 +310,20 @@ export default function StartScreen({
       window.addEventListener("mousemove", handlePointerMove);
     };
 
-    assetLoadTimer = setTimeout(scheduleAssetLoad, EYES_EASTER_EGG_ASSET_LOAD_MS);
+    assetLoadTimer = setTimeout(
+      scheduleAssetLoad,
+      EYES_EASTER_EGG_ASSET_LOAD_MS,
+    );
     armTimer = setTimeout(armHotZone, EYES_EASTER_EGG_ARM_MS);
 
     return () => {
       cancelled = true;
       if (assetLoadTimer) clearTimeout(assetLoadTimer);
       if (armTimer) clearTimeout(armTimer);
-      if (idleCallbackId !== null && typeof window.cancelIdleCallback === "function") {
+      if (
+        idleCallbackId !== null &&
+        typeof window.cancelIdleCallback === "function"
+      ) {
         window.cancelIdleCallback(idleCallbackId);
       }
       window.removeEventListener("mousemove", handlePointerMove);
@@ -430,7 +439,9 @@ export default function StartScreen({
       {!steamEditionActive && (
         <div className="absolute bottom-12 right-4 z-20 animate-fade-in-featured">
           <div className="bg-white/25 backdrop-blur-sm rounded-lg px-2 pt-2 pb-2.5 border border-white/25 flex flex-col items-end">
-            <p className="text-xs text-gray-300/80 font-medium">{t("startScreen.recommendedBy")}</p>
+            <p className="text-xs text-gray-300/80 font-medium">
+              {t("startScreen.recommendedBy")}
+            </p>
             <img
               src="/the_hustle_logo.svg"
               alt="The Hustle"
@@ -507,7 +518,7 @@ export default function StartScreen({
           draggable={false}
           decoding="async"
           fetchPriority="low"
-          className="pointer-events-none absolute z-30 w-[min(14vw,110px)] h-auto select-none opacity-80"
+          className="pointer-events-none absolute z-30 w-[min(14vw,110px)] h-auto select-none opacity-50"
           style={{
             left: "25%",
             top: "25%",
@@ -526,15 +537,15 @@ export default function StartScreen({
         <div className="text-center mb-4 w-full max-w-xl px-4">
           {(isCruelMode
             ? [
-              t("startScreen.titleCruel"),
-              t("startScreen.airCruel"),
-              t("startScreen.seeCruel"),
-            ]
+                t("startScreen.titleCruel"),
+                t("startScreen.airCruel"),
+                t("startScreen.seeCruel"),
+              ]
             : [
-              t("startScreen.titleNormal"),
-              t("startScreen.airNormal"),
-              t("startScreen.seeNormal"),
-            ]
+                t("startScreen.titleNormal"),
+                t("startScreen.airNormal"),
+                t("startScreen.seeNormal"),
+              ]
           ).map((line, index) => {
             const LineTag = index === 0 ? "h1" : "p";
             return (
@@ -565,11 +576,14 @@ export default function StartScreen({
                   </div>
                 )}
                 <LineTag
-                  ref={(el: HTMLHeadingElement | HTMLParagraphElement | null) => {
+                  ref={(
+                    el: HTMLHeadingElement | HTMLParagraphElement | null,
+                  ) => {
                     introLineClipRefs.current[index] = el;
                   }}
-                  className={`relative z-0 m-0 text-lg leading-relaxed font-normal ${introFadeInDone ? "" : "animate-fade-in-text"
-                    }`}
+                  className={`relative z-0 m-0 text-lg leading-relaxed font-normal ${
+                    introFadeInDone ? "" : "animate-fade-in-text"
+                  }`}
                 >
                   <span
                     ref={(el) => {
@@ -634,9 +648,7 @@ export default function StartScreen({
             onClick={toggleSfx}
             data-testid="button-start-toggle-sfx"
             className={START_FOOTER_ICON_BTN}
-            aria-label={
-              sfxMuted ? t("footer.unmuteSfx") : t("footer.muteSfx")
-            }
+            aria-label={sfxMuted ? t("footer.unmuteSfx") : t("footer.muteSfx")}
           >
             <span
               aria-hidden
