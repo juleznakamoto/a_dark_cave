@@ -391,8 +391,8 @@ export default function StartScreen({
     audioManager.playSound("lightFire", SOUND_VOLUME.lightFire);
     audioManager.stopLoopingSound("wind", 1);
 
-    // Defer the game pack (incl. large BGM) so Light Fire is not competing for
-    // network/decode on the same tick — most noticeable in Vite/dev.
+    // After Light Fire one-shot: load core pack (BGM + early cave), start music,
+    // then deferred sounds continue in the background.
     window.setTimeout(() => {
       void audioManager.loadGameSounds().then(() => {
         if (!musicMuted) {
