@@ -67,6 +67,7 @@
     "linkCopied": "Link de convite copiado!",
     "linkCopiedDesc": "Compartilhe com amigos para ganhar {{amount}} de Ouro cada.",
     "copyFailed": "Não foi possível copiar o link de convite",
+    "copyFailedNotSignedIn": "Entre na conta para copiar seu link de convite",
     "tooltip": "Convide seus amigos e vocês dois receberão {{amount}} de Ouro. Você pode convidar até {{cap}} amigos. ({{count}}/{{cap}} convidados)."
   },
   "invest": {

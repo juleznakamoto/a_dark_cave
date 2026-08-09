@@ -5,7 +5,10 @@ import { useGameStore } from "@/game/state";
 import { TooltipWrapper } from "@/components/game/TooltipWrapper";
 import { useToast } from "@/hooks/use-toast";
 import { logger } from "@/lib/logger";
-import { copyInviteLinkToClipboard } from "@/game/copyInviteLink";
+import {
+  copyInviteLinkToClipboard,
+  isInviteNotSignedInError,
+} from "@/game/copyInviteLink";
 import {
   SOCIAL_PROMPT_REFERRAL_CAP,
   REFERRAL_REWARD_GOLD,
@@ -65,9 +68,16 @@ export default function InviteFriendsFloatingButton() {
         description: t("invite.linkCopiedDesc", { amount: REFERRAL_REWARD_GOLD }),
       });
     } catch (error) {
-      logger.error("Failed to copy invite link:", error);
+      const notSignedIn = isInviteNotSignedInError(error);
+      if (!notSignedIn) {
+        logger.error("Failed to copy invite link:", error);
+      }
       toast({
-        title: t("invite.copyFailed"),
+        title: notSignedIn
+          ? t("invite.copyFailedNotSignedIn", {
+            defaultValue: "Sign in to copy your invite link",
+          })
+          : t("invite.copyFailed"),
         variant: "destructive",
       });
     }

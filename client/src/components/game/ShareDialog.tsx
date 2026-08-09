@@ -11,7 +11,10 @@ import { TextShimmer } from "@/components/ui/text-shimmer";
 import { GlowingShadow } from "@/components/ui/glowing-shadow";
 import { TooltipWrapper } from "@/components/game/TooltipWrapper";
 import { useGameStore } from "@/game/state";
-import { copyInviteLinkToClipboard } from "@/game/copyInviteLink";
+import {
+  copyInviteLinkToClipboard,
+  isInviteNotSignedInError,
+} from "@/game/copyInviteLink";
 import {
   REFERRAL_REWARD_GOLD,
   SOCIAL_PROMPT_REFERRAL_CAP,
@@ -568,9 +571,16 @@ export default function ShareDialog() {
         }),
       });
     } catch (error) {
-      logger.error("Failed to copy invite link:", error);
+      const notSignedIn = isInviteNotSignedInError(error);
+      if (!notSignedIn) {
+        logger.error("Failed to copy invite link:", error);
+      }
       toast({
-        title: t("invite.copyFailed"),
+        title: notSignedIn
+          ? t("invite.copyFailedNotSignedIn", {
+            defaultValue: "Sign in to copy your invite link",
+          })
+          : t("invite.copyFailed"),
         variant: "destructive",
       });
     }

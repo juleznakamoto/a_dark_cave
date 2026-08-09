@@ -67,6 +67,7 @@
     "linkCopied": "Link di invito copiato!",
     "linkCopiedDesc": "Condividilo con gli amici per guadagnare {{amount}} Oro ciascuno.",
     "copyFailed": "Impossibile copiare il link di invito",
+    "copyFailedNotSignedIn": "Accedi per copiare il tuo link di invito",
     "tooltip": "Invita i tuoi amici ed entrambi riceverete {{amount}} Oro. Puoi invitare fino a {{cap}} amici. ({{count}}/{{cap}} invitati)."
   },
   "invest": {

@@ -72,6 +72,7 @@
     "linkCopied": "Einladungslink kopiert!", //x1.2
     "linkCopiedDesc": "Teile ihn mit Freunden, um beide {{amount}} Gold zu verdienen.",
     "copyFailed": "Einladungslink konnte nicht kopiert werden", //x1.6
+    "copyFailedNotSignedIn": "Melde dich an, um deinen Einladungslink zu kopieren",
     "tooltip": "Lade deine Freunde ein – ihr beide erhaltet {{amount}} Gold. Du kannst bis zu {{cap}} Freunde einladen. ({{count}}/{{cap}} eingeladen)."
   },
   "invest": {

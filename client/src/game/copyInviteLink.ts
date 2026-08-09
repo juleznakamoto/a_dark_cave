@@ -1,13 +1,19 @@
 import { getSupabaseClient } from "@/lib/supabase";
 import { apiUrl } from "@/lib/apiUrl";
 
+export const INVITE_NOT_SIGNED_IN_ERROR = "Not signed in";
+
+export function isInviteNotSignedInError(error: unknown): boolean {
+  return error instanceof Error && error.message === INVITE_NOT_SIGNED_IN_ERROR;
+}
+
 export async function copyInviteLinkToClipboard(): Promise<string> {
   const supabase = await getSupabaseClient();
   const {
     data: { session },
   } = await supabase.auth.getSession();
   if (!session?.access_token) {
-    throw new Error("Not signed in");
+    throw new Error(INVITE_NOT_SIGNED_IN_ERROR);
   }
 
   const res = await fetch(apiUrl("/api/referral/code"), {

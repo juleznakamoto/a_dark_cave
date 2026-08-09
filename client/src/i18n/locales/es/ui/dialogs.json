@@ -72,6 +72,7 @@
     "linkCopied": "¡Enlace de invitación copiado!", //x1.6
     "linkCopiedDesc": "Compártelo con amigos para ganar {{amount}} de oro cada uno.",
     "copyFailed": "No se pudo copiar el enlace de invitación", //x1.6
+    "copyFailedNotSignedIn": "Inicia sesión para copiar tu enlace de invitación",
     "tooltip": "Invita a tus amigos - ambos recibiréis {{amount}} de oro. Puedes invitar hasta {{cap}} amigos. ({{count}}/{{cap}} invitados)."
   },
   "invest": {

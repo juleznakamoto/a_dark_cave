@@ -72,6 +72,7 @@
     "linkCopied": "邀请链接已复制！",
     "linkCopiedDesc": "分享给好友，每人可获得 {{amount}} 黄金。",
     "copyFailed": "无法复制邀请链接",
+    "copyFailedNotSignedIn": "请登录后再复制邀请链接",
     "tooltip": "邀请好友，双方各得 {{amount}} 黄金。最多邀请 {{cap}} 位。({{count}}/{{cap}} 已邀请)"
   },
   "invest": {
