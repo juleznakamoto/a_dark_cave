@@ -335,7 +335,7 @@ function AchievementTabContent({
     <div className="flex-1 min-h-0 overflow-hidden flex flex-col w-full">
       <ScrollAreaWithIndicator className="h-full w-full" scrollAreaId={`achievements-${tabId}`}>
         <div className="pb-6 space-y-1">
-          <h3 className="pt-1 pb-1 text-xs font-medium text-foreground">
+          <h3 className="pt-1 pb-1 text-sm font-medium text-foreground">
             {categoryHeader}
           </h3>
           {rows.map((row) => (
