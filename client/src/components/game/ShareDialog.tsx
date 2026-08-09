@@ -121,8 +121,15 @@ const SECTION_HEADING_FONT_SIZE = 36;
 const SECTION_HEADING_CLASS =
   "font-medium tracking-wide text-gray-300 leading-none";
 const SECTION_PROGRESS_BAR_HEIGHT = 8;
-/** Matches the 2×2 achievement ring grid so bar and content share edges. */
-const SECTION_COLUMN_WIDTH = RING_CHART_SIZE * 2 + RING_GRID_GAP;
+/** Column / progress-bar width (5% under the raw 2×2 ring span). */
+const SECTION_COLUMN_WIDTH = Math.round(
+  (RING_CHART_SIZE * 2 + RING_GRID_GAP) * 0.95,
+);
+/** Gap so the two ring columns still fit inside SECTION_COLUMN_WIDTH. */
+const SECTION_RING_GRID_GAP = Math.max(
+  16,
+  SECTION_COLUMN_WIDTH - RING_CHART_SIZE * 2,
+);
 const SECTION_PROGRESS_GAP = 24;
 const SECTION_BLOCK_MARGIN_BOTTOM = 24;
 const CTA_FONT_SIZE = 42;
@@ -270,21 +277,23 @@ function ShareResourceRow({
     ) : null;
 
   return (
-    <div className="grid grid-cols-[minmax(0,1fr)_auto] items-baseline gap-x-10 leading-none">
-      <span className="inline-flex items-center gap-2 text-gray-400">
+    <div className="flex w-full items-baseline justify-between gap-x-10 leading-none">
+      <span className="inline-flex min-w-0 items-center gap-2 text-gray-400">
         {icon}
-        <span>
+        <span className="truncate">
           {getResourceName(resourceKey, capitalizeWords(resourceKey))}
         </span>
       </span>
-      <div className="grid grid-cols-[auto_1.25em] items-baseline gap-x-2">
+      <span className="inline-flex shrink-0 items-baseline gap-x-2">
+        {meetsMilestone ? (
+          <span className="text-green-500 leading-none" aria-hidden>
+            ✓
+          </span>
+        ) : null}
         <span className="text-right font-mono tabular-nums text-gray-300">
           {formatNumber(value)}
         </span>
-        <span className="text-right text-green-500 leading-none" aria-hidden>
-          {meetsMilestone ? "✓" : null}
-        </span>
-      </div>
+      </span>
     </div>
   );
 }
@@ -395,7 +404,7 @@ function ShareCard({
               />
               <div
                 className="grid w-full grid-cols-2"
-                style={{ gap: RING_GRID_GAP }}
+                style={{ gap: SECTION_RING_GRID_GAP }}
               >
                 {RING_ENTRIES.map(({ config, centerSymbolStyle }) => (
                   <div
