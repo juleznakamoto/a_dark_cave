@@ -1277,9 +1277,20 @@ html[data-tab-hidden] .exclusive-promo-shockwave-ring:not(.exclusive-promo-shock
   }
 }
 
+/* Tiny Inter subset (U+2764) so the donate glyph keeps the pre–Fira Sans shape. */
+@font-face {
+  font-family: "Inter Heart";
+  src: url("/fonts/inter-heart.woff2") format("woff2");
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+  unicode-range: U+2764, U+FE0E;
+}
+
 .donate-heart {
   display: inline-block;
   transform-origin: center;
+  font-family: "Inter Heart", "Fira Sans", sans-serif;
 }
 
 .donate-heart-pump-once {
