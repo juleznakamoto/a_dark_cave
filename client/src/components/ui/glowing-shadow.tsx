@@ -8,15 +8,15 @@ export type GlowingShadowProps = {
   contentClassName?: string;
   /** Rainbow (default) or cool silver/white. */
   variant?: "default" | "silver";
-  /** Large demo card vs content-sized shell (share CTA, etc.). */
-  size?: "card" | "compact";
+  /** Demo card, content-sized shell, or full-bleed image frame. */
+  size?: "card" | "compact" | "frame";
   /** Hover intensify + pointer cursor. Off for static share imagery. */
   interactive?: boolean;
 };
 
 /**
  * Animated glowing border shell (CSS @property + keyframes).
- * Use `variant="silver"` + `size="compact"` for the share-image CTA.
+ * Use `variant="silver"` + `size="frame"` for the share-image border.
  */
 export function GlowingShadow({
   children,
@@ -32,6 +32,7 @@ export function GlowingShadow({
         "adc-gs",
         variant === "silver" && "adc-gs--silver",
         size === "compact" && "adc-gs--compact",
+        size === "frame" && "adc-gs--frame",
         interactive && "adc-gs--interactive",
         className,
       )}

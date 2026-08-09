@@ -328,114 +328,122 @@ function ShareCard({
   return (
     <div
       ref={cardRef}
-      className="relative flex flex-col font-sans text-foreground"
+      className="relative font-sans text-foreground"
       style={{
         width: SHARE_IMAGE_WIDTH,
         height: SHARE_IMAGE_HEIGHT,
         backgroundColor: CARD_BG,
       }}
     >
-      <div className="flex h-full flex-col p-16">
-        <div className="mb-12">
-          <div
-            className="font-bold leading-none tracking-tight text-neutral-100"
-            style={{ fontSize: 80 }}
-          >
-            A Dark Cave
-          </div>
-        </div>
-
-        <div className="flex min-h-0 flex-1 justify-between gap-10">
-          <div className="flex min-w-0 flex-col">
-            <ShareSectionHeading
-              label={resourcesLabel}
-              percent={resourcePercent}
-            />
-            <div
-              className="flex flex-col leading-none"
-              style={{ fontSize: resourceFontSize, rowGap: resourceRowGap }}
-            >
-              {precious.map((key) => (
-                <ShareResourceRow
-                  key={key}
-                  resourceKey={key}
-                  value={resources[key] ?? 0}
-                />
-              ))}
-              {hasPreciousSpacer && <div style={{ height: 12 }} />}
-              {others.map((key) => (
-                <ShareResourceRow
-                  key={key}
-                  resourceKey={key}
-                  value={resources[key] ?? 0}
-                />
-              ))}
-            </div>
-          </div>
-
-          <div className="flex shrink-0 flex-col items-end">
-            <ShareSectionHeading
-              label={achievementsLabel}
-              percent={achievementPercent}
-              align="right"
-            />
-            <div className="grid grid-cols-2" style={{ gap: RING_GRID_GAP }}>
-              {RING_ENTRIES.map(({ config, centerSymbolStyle }) => (
-                <div
-                  key={config.idPrefix}
-                  className="flex flex-col items-center"
-                  style={{ gap: RING_LABEL_GAP }}
-                >
-                  <div
-                    className="font-medium leading-none tracking-wide text-gray-400"
-                    style={{ fontSize: RING_LABEL_FONT_SIZE }}
-                  >
-                    {ringLabels[config.idPrefix]}
-                  </div>
-                  <AchievementMiniRingChart
-                    config={config}
-                    isActive
-                    size={RING_CHART_SIZE}
-                    centerSymbolStyle={centerSymbolStyle}
-                  />
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div className="absolute bottom-16 left-16 max-w-[calc(100%-8rem)]">
-        <GlowingShadow
-          variant="silver"
-          size="compact"
-          interactive={false}
-          contentClassName="flex flex-col font-medium text-neutral-100"
-        >
-          <div
-            className="flex flex-col"
-            style={{ fontSize: CTA_FONT_SIZE, gap: 10, lineHeight: 1 }}
-          >
-            <div style={{ whiteSpace: "nowrap" }}>Play for free at</div>
-            <div style={{ whiteSpace: "nowrap" }}>{SHARE_URL_IMAGE}</div>
-          </div>
-        </GlowingShadow>
-      </div>
-      <div
-        className="absolute bottom-16 right-16 flex flex-col gap-3 text-right leading-none"
-        style={{ fontSize: 32, width: "max-content", maxWidth: "calc(100% - 8rem)" }}
+      <GlowingShadow
+        variant="silver"
+        size="frame"
+        interactive={false}
+        contentClassName="relative flex flex-col overflow-hidden"
       >
-        <div style={{ whiteSpace: "nowrap" }}>
-          <span className="text-gray-400">{cruelModeLabel}</span>{" "}
-          <span className="text-gray-300">{cruelModeValueLabel}</span>
+        <div className="flex h-full flex-col p-16">
+          <div className="mb-12">
+            <div
+              className="font-bold leading-none tracking-tight text-neutral-100"
+              style={{ fontSize: 80 }}
+            >
+              A Dark Cave
+            </div>
+          </div>
+
+          <div className="flex min-h-0 flex-1 justify-between gap-10">
+            <div className="flex min-w-0 flex-col">
+              <ShareSectionHeading
+                label={resourcesLabel}
+                percent={resourcePercent}
+              />
+              <div
+                className="flex flex-col leading-none"
+                style={{ fontSize: resourceFontSize, rowGap: resourceRowGap }}
+              >
+                {precious.map((key) => (
+                  <ShareResourceRow
+                    key={key}
+                    resourceKey={key}
+                    value={resources[key] ?? 0}
+                  />
+                ))}
+                {hasPreciousSpacer && <div style={{ height: 12 }} />}
+                {others.map((key) => (
+                  <ShareResourceRow
+                    key={key}
+                    resourceKey={key}
+                    value={resources[key] ?? 0}
+                  />
+                ))}
+              </div>
+            </div>
+
+            <div className="flex shrink-0 flex-col items-end">
+              <ShareSectionHeading
+                label={achievementsLabel}
+                percent={achievementPercent}
+                align="right"
+              />
+              <div className="grid grid-cols-2" style={{ gap: RING_GRID_GAP }}>
+                {RING_ENTRIES.map(({ config, centerSymbolStyle }) => (
+                  <div
+                    key={config.idPrefix}
+                    className="flex flex-col items-center"
+                    style={{ gap: RING_LABEL_GAP }}
+                  >
+                    <div
+                      className="font-medium leading-none tracking-wide text-gray-400"
+                      style={{ fontSize: RING_LABEL_FONT_SIZE }}
+                    >
+                      {ringLabels[config.idPrefix]}
+                    </div>
+                    <AchievementMiniRingChart
+                      config={config}
+                      isActive
+                      size={RING_CHART_SIZE}
+                      centerSymbolStyle={centerSymbolStyle}
+                    />
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
         </div>
-        <div style={{ whiteSpace: "nowrap" }}>
-          <span className="text-gray-400">{playTimeLabel}</span>{" "}
-          <span className="text-gray-300">
-            {formatSharePlayTime(playTimeMs)}
-          </span>
+
+        <div
+          className="absolute bottom-16 left-16 flex flex-col font-medium text-neutral-100"
+          style={{
+            fontSize: CTA_FONT_SIZE,
+            gap: 10,
+            lineHeight: 1,
+            width: "max-content",
+            maxWidth: "calc(100% - 8rem)",
+          }}
+        >
+          <div style={{ whiteSpace: "nowrap" }}>Play for free at</div>
+          <div style={{ whiteSpace: "nowrap" }}>{SHARE_URL_IMAGE}</div>
         </div>
-      </div>
+        <div
+          className="absolute bottom-16 right-16 flex flex-col gap-3 text-right leading-none"
+          style={{
+            fontSize: 32,
+            width: "max-content",
+            maxWidth: "calc(100% - 8rem)",
+          }}
+        >
+          <div style={{ whiteSpace: "nowrap" }}>
+            <span className="text-gray-400">{cruelModeLabel}</span>{" "}
+            <span className="text-gray-300">{cruelModeValueLabel}</span>
+          </div>
+          <div style={{ whiteSpace: "nowrap" }}>
+            <span className="text-gray-400">{playTimeLabel}</span>{" "}
+            <span className="text-gray-300">
+              {formatSharePlayTime(playTimeMs)}
+            </span>
+          </div>
+        </div>
+      </GlowingShadow>
     </div>
   );
 }
