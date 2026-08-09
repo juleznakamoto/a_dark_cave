@@ -295,16 +295,18 @@ export function SegmentedProgress({
             })}
 
             {emitSparksOnGrow && (
+              // Zero-size tip anchor (same as Progress): glow radius uses
+              // Math.max(17, height*5); h-full here inflated the orb.
               <div
                 ref={tipMarkerRef}
-                className="pointer-events-none absolute top-1/2 z-20 h-full min-h-[8px] w-0 -translate-x-full -translate-y-1/2"
+                className="pointer-events-none absolute top-1/2 z-20 w-0 -translate-y-1/2"
                 style={{ left: `${Math.min(100, Math.max(0, displayValue))}%` }}
                 aria-hidden
               >
                 {growSparkTipGlow && showGrowTransition && (
                   <div
                     className={cn(
-                      "absolute right-0 top-1/2 h-full min-h-[8px] w-0.5 -translate-y-1/2",
+                      "absolute right-0 top-1/2 h-2 min-h-[8px] w-0.5 -translate-y-1/2",
                       sparkPalette.tipMarkerClassName,
                     )}
                   />
