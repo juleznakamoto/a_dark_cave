@@ -35,15 +35,10 @@ const FOOTER_CONTROL_BTN_FADE =
   "opacity-80 transition-[opacity,color] group-hover:opacity-100";
 const FOOTER_CONTROL_SVG_ICON_HOVER =
   "w-4 h-4 text-neutral-300 opacity-80 transition-[opacity,color] group-hover:opacity-100 group-hover:!text-red-600";
-/** Steam editions: Reddit/Contact sit quieter at rest, full opacity on hover. */
-const FOOTER_CONTROL_SVG_ICON_HOVER_STEAM_MUTED =
-  "w-4 h-4 text-neutral-300 opacity-40 transition-[opacity,color] group-hover:opacity-100 group-hover:!text-red-600";
 const FOOTER_CONTROL_TEXT =
   `${FOOTER_CONTROL_BTN_FADE} group-hover:!text-red-600`;
 const FOOTER_SOCIAL_LABEL =
   `${FOOTER_CONTROL_TEXT} hidden sm:inline`;
-const FOOTER_SOCIAL_LABEL_STEAM_MUTED =
-  "opacity-60 transition-[opacity,color] group-hover:opacity-100 group-hover:!text-red-600 hidden sm:inline";
 const FOOTER_LEGAL_LINK =
   "text-2xs text-neutral-300 opacity-40 hover:opacity-100 transition-opacity";
 /** Heart stays red; opacity-only transition so scale pump is not overridden. */
@@ -231,16 +226,6 @@ export default function GameFooter() {
                 platform === "contact"
                   ? tWithFallback("ui", "footer.contact", title)
                   : title;
-              // Steam Game / Playtest / Demo: mute Reddit + Contact until hover.
-              const steamMutedSocial =
-                steamDesktopEditionActive &&
-                (platform === "reddit" || platform === "contact");
-              const platformIconClass = steamMutedSocial
-                ? `${FOOTER_CONTROL_SVG_ICON_HOVER_STEAM_MUTED}${isPaused ? " !opacity-100" : ""}`
-                : socialIconClass;
-              const platformLabelClass = steamMutedSocial
-                ? FOOTER_SOCIAL_LABEL_STEAM_MUTED
-                : FOOTER_SOCIAL_LABEL;
               const socialLink = (
                 <a
                   href={href}
@@ -255,9 +240,9 @@ export default function GameFooter() {
                 >
                   <FooterSocialIcon
                     platform={platform}
-                    className={platformIconClass}
+                    className={socialIconClass}
                   />
-                  <span className={platformLabelClass}>{linkLabel}</span>
+                  <span className={FOOTER_SOCIAL_LABEL}>{linkLabel}</span>
                 </a>
               );
 
