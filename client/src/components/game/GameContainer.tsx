@@ -68,6 +68,7 @@ import { formatCompactDuration } from "@/lib/utils";
 import MistBackground from "@/components/ui/mist-background";
 import { SmokeBackground } from "@/components/ui/spooky-smoke-animation";
 import { isBloodMoonOverlayVisible, BLOOD_MOON_OVERLAY_FADE_MS } from "@/game/bloodMoonOverlay";
+import { audioManager, SOUND_VOLUME } from "@/lib/audio";
 import { getUnclaimedAchievementIds, isAchievementsGameTabUnlocked } from "@/achievements";
 import { getVisibleHotkeyTabs, isEditableKeyboardTarget } from "./tabHotkeys";
 import { isTraderShopUnlocked } from "@/game/stateHelpers";
@@ -1136,6 +1137,19 @@ export default function GameContainer() {
   const panelResize = usePanelResize();
   const iosChromeViewportStyle = useIOSChromeViewportShell();
 
+  // Blood moon timed tab: same event-ambience takeover as the Whispering Cube.
+  const showBloodMoonOverlay = isBloodMoonOverlayVisible(timedEventTab);
+  useEffect(() => {
+    if (!flags.gameStarted || !showBloodMoonOverlay) {
+      audioManager.stopEventAmbience("bloodMoon");
+      return;
+    }
+    audioManager.startEventAmbience("bloodMoon", SOUND_VOLUME.bloodMoon);
+    return () => {
+      audioManager.stopEventAmbience("bloodMoon");
+    };
+  }, [flags.gameStarted, showBloodMoonOverlay]);
+
   // Show start screen if game hasn't started yet (e.g. after sign-out reset).
   if (!flags.gameStarted) {
     return (
@@ -1156,9 +1170,6 @@ export default function GameContainer() {
       </>
     );
   }
-
-  // Check if blood moon event is active
-  const showBloodMoonOverlay = isBloodMoonOverlayVisible(timedEventTab);
 
   /** Muted tab labels use ~60% opacity; while paused, distinguish inactive via color (consistent font weight avoids layout shift). */
   const tabInactiveTextClass = isPaused

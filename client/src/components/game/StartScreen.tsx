@@ -35,7 +35,7 @@ const START_INTRO_VAPORIZE_FONT_FALLBACK = {
 
 /** Easter egg: flash eyes at center of the upper-left screen quadrant. */
 const EYES_EASTER_EGG_SRC = "/images/eyes-easter-egg.png";
-const EYES_EASTER_EGG_SOUND = "/sounds/monster_start.wav";
+const EYES_EASTER_EGG_SOUND = "/sounds/monster_start.mp3";
 const EYES_EASTER_EGG_DURATION_MS = 250;
 /** Defer asset fetch until well after LCP / lab SEO windows. */
 const EYES_EASTER_EGG_ASSET_LOAD_MS = 90_000;
@@ -170,7 +170,7 @@ export default function StartScreen({
 
   // Ensure Light Fire is decoded before the click (module preload can still be in flight).
   useEffect(() => {
-    void audioManager.loadSound("lightFire", "/sounds/light_fire.wav");
+    void audioManager.loadSound("lightFire", "/sounds/light_fire.mp3");
   }, []);
 
   useEffect(() => {

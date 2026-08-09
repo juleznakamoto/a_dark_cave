@@ -375,7 +375,7 @@ export class AudioManager {
     logger.log('Preloading start-screen sounds...');
     const initialSounds = {
       wind: '/sounds/wind.mp3',
-      lightFire: '/sounds/light_fire.wav',
+      lightFire: '/sounds/light_fire.mp3',
     };
 
     await Promise.all(
@@ -387,22 +387,23 @@ export class AudioManager {
   async loadGameSounds(): Promise<void> {
     logger.log('Loading remaining game sounds...');
     const gameSounds = {
-      'newVillager': '/sounds/new_villager.wav',
-      'event': '/sounds/event.wav',
-      'eventMadness': '/sounds/event_madness.wav',
-      'merchant': '/sounds/merchant.wav',
-      'whisperingCube': '/sounds/whispering_cube.wav',
-      'backgroundMusic': '/sounds/background_music.wav',
-      'explosion': '/sounds/explosion.wav',
-      'combat': '/sounds/combat.wav',
-      'feedFire': '/sounds/feed_fire.wav',
-      'sleep': '/sounds/sleep.wav',
-      'buildingComplete': '/sounds/building_complete.wav',
-      'craft': '/sounds/craft.wav',
-      'mining': '/sounds/mining.wav',
-      'chopWood': '/sounds/chop_wood.wav',
-      'gatherWood': '/sounds/gather_wood.wav',
-      'hunt': '/sounds/hunt.wav'
+      newVillager: '/sounds/new_villager.mp3',
+      event: '/sounds/event.mp3',
+      eventMadness: '/sounds/event_madness.mp3',
+      merchant: '/sounds/merchant.mp3',
+      whisperingCube: '/sounds/whispering_cube.mp3',
+      bloodMoon: '/sounds/blood_moon.mp3',
+      backgroundMusic: '/sounds/background_music.mp3',
+      explosion: '/sounds/explosion.mp3',
+      combat: '/sounds/combat.mp3',
+      feedFire: '/sounds/feed_fire.mp3',
+      sleep: '/sounds/sleep.mp3',
+      buildingComplete: '/sounds/building_complete.mp3',
+      craft: '/sounds/craft.mp3',
+      mining: '/sounds/mining.mp3',
+      chopWood: '/sounds/chop_wood.mp3',
+      gatherWood: '/sounds/gather_wood.mp3',
+      hunt: '/sounds/hunt.mp3',
     };
 
     await Promise.all(

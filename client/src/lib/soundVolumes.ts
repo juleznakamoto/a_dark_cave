@@ -12,6 +12,8 @@ export const SOUND_VOLUME = {
   monsterStart: 0.45,
   backgroundMusic: 0.3,
   whisperingCube: 0.5,
+  /** Blood moon timed-tab event bed (crossfades BGM) */
+  bloodMoon: 0.45,
   feedFire: {
     base: 0.3,
     perHeartfireLevel: 0.05,
