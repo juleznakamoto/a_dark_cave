@@ -265,7 +265,7 @@ export function SegmentedProgress({
                 >
                   <div
                     className={cn(
-                      "absolute inset-y-0 left-0 transition-[width] ease-out",
+                      "absolute inset-y-0 left-0 overflow-hidden transition-[width] ease-out",
                       changeOnlyGrow
                         ? "duration-0"
                         : "duration-500",
@@ -275,23 +275,24 @@ export function SegmentedProgress({
                       width: `${fill * 100}%`,
                       transitionDelay: `${delay}ms`,
                     }}
-                  />
+                  >
+                    {/* Glow clipped to filled segment only (matches Progress indicator). */}
+                    {glowKey > 0 && fill > 0 && (
+                      <motion.div
+                        key={glowKey}
+                        className={cn(
+                          "pointer-events-none absolute inset-0 bg-gradient-to-r from-transparent to-transparent",
+                          resolveGrowGlowViaClass(sparkClassName),
+                        )}
+                        initial={{ x: "-100%", opacity: 1 }}
+                        animate={{ x: "100%", opacity: 0 }}
+                        transition={{ duration: 0.7, ease: "easeOut" }}
+                      />
+                    )}
+                  </div>
                 </div>
               );
             })}
-
-            {glowKey > 0 && (
-              <motion.div
-                key={glowKey}
-                className={cn(
-                  "pointer-events-none absolute inset-0 z-10 overflow-hidden rounded-[4px] bg-gradient-to-r from-transparent to-transparent",
-                  resolveGrowGlowViaClass(sparkClassName),
-                )}
-                initial={{ x: "-100%", opacity: 1 }}
-                animate={{ x: "100%", opacity: 0 }}
-                transition={{ duration: 0.7, ease: "easeOut" }}
-              />
-            )}
 
             {emitSparksOnGrow && (
               <div

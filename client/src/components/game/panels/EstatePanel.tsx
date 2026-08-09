@@ -1003,29 +1003,31 @@ export default function EstatePanel() {
             </div>
           )}
 
-        {/* Cube Section */}
-        <div className="w-full space-y-2 pt-1 pb-4">
-          <h3 className="text-xs font-medium text-foreground">{t("estate.cubeWhispers")}</h3>
+        {/* Cube Section — only when at least one whisper is unlocked */}
+        {completedCubeEvents.length > 0 && (
+          <div className="w-full space-y-2 pt-1 pb-4">
+            <h3 className="text-xs font-medium text-foreground">{t("estate.cubeWhispers")}</h3>
 
-          <div
-            className={cn(
-              "w-full",
-              useTwoCubeColumns ? "flex gap-3" : "flex flex-col gap-2",
-            )}
-          >
-            <div className="flex flex-col gap-2 min-w-0 flex-1">
-              {firstColumnCubeEvents.map(renderCubeEventRow)}
+            <div
+              className={cn(
+                "w-full",
+                useTwoCubeColumns ? "flex gap-3" : "flex flex-col gap-2",
+              )}
+            >
+              <div className="flex flex-col gap-2 min-w-0 flex-1">
+                {firstColumnCubeEvents.map(renderCubeEventRow)}
+              </div>
+              {useTwoCubeColumns && (
+                <>
+                  <div className="w-px shrink-0 bg-border self-stretch" />
+                  <div className="flex flex-col gap-2 min-w-0 flex-1">
+                    {secondColumnCubeEvents.map(renderCubeEventRow)}
+                  </div>
+                </>
+              )}
             </div>
-            {useTwoCubeColumns && (
-              <>
-                <div className="w-px shrink-0 bg-border self-stretch" />
-                <div className="flex flex-col gap-2 min-w-0 flex-1">
-                  {secondColumnCubeEvents.map(renderCubeEventRow)}
-                </div>
-              </>
-            )}
           </div>
-        </div>
+        )}
       </div>
       <ScrollBar orientation="vertical" />
     </ScrollArea>
