@@ -105,10 +105,7 @@ import {
 import { calculateBastionStats } from "@/game/bastionStats";
 import { getCurrentPopulation, getMaxPopulation } from "@/game/population";
 import { audioManager, SOUND_VOLUME } from "@/lib/audio";
-import {
-  BLOOD_MOON_EVENT_ID,
-  isBloodMoonTimedEvent,
-} from "@/game/bloodMoonOverlay";
+import { BLOOD_MOON_EVENT_ID } from "@/game/bloodMoonOverlay";
 import { GAME_CONSTANTS, getCallMerchantGoldCost } from "@/game/constants";
 import {
   isPlaylightDiscoverSocialTaskFulfilled,
@@ -4322,11 +4319,8 @@ export const useGameStore = create<GameStore>((set, get) => ({
     // Play sound if activating
     if (isActive && event) {
       if (isBloodMoonEvent) {
-        // Event bed (not the generic UI bell); BGM crossfades out.
-        audioManager.startEventAmbience(
-          "bloodMoon",
-          SOUND_VOLUME.bloodMoon,
-        );
+        // One-shot sting when the timed tab appears (not a looping bed).
+        audioManager.playSound("bloodMoon", SOUND_VOLUME.bloodMoon);
       } else {
         const madnessEventIds = Object.keys(madnessEvents);
         const isMadnessEvent = madnessEventIds.includes(catalogId!);
@@ -4334,13 +4328,6 @@ export const useGameStore = create<GameStore>((set, get) => ({
           isMadnessEvent ? "eventMadness" : "event",
           SOUND_VOLUME.eventUi,
         );
-      }
-    } else if (!isActive) {
-      const wasBloodMoon = isBloodMoonTimedEvent(
-        get().timedEventTab?.event,
-      );
-      if (wasBloodMoon) {
-        audioManager.stopEventAmbience("bloodMoon");
       }
     }
 

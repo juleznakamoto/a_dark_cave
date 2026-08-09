@@ -1140,18 +1140,7 @@ export default function GameContainer() {
   const panelResize = usePanelResize();
   const iosChromeViewportStyle = useIOSChromeViewportShell();
 
-  // Blood moon timed tab: same event-ambience takeover as the Whispering Cube.
   const showBloodMoonOverlay = isBloodMoonOverlayVisible(timedEventTab);
-  useEffect(() => {
-    if (!flags.gameStarted || !showBloodMoonOverlay) {
-      audioManager.stopEventAmbience("bloodMoon");
-      return;
-    }
-    audioManager.startEventAmbience("bloodMoon", SOUND_VOLUME.bloodMoon);
-    return () => {
-      audioManager.stopEventAmbience("bloodMoon");
-    };
-  }, [flags.gameStarted, showBloodMoonOverlay]);
 
   // Show start screen if game hasn't started yet (e.g. after sign-out reset).
   if (!flags.gameStarted) {

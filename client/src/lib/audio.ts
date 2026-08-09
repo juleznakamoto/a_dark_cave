@@ -384,33 +384,64 @@ export class AudioManager {
     logger.log('Start-screen sound preload complete');
   }
 
-  async loadGameSounds(): Promise<void> {
-    logger.log('Loading remaining game sounds...');
-    const gameSounds = {
-      newVillager: '/sounds/new_villager.mp3',
-      event: '/sounds/event.mp3',
-      eventMadness: '/sounds/event_madness.mp3',
-      merchant: '/sounds/merchant.mp3',
-      whisperingCube: '/sounds/whispering_cube.mp3',
-      bloodMoon: '/sounds/blood_moon.mp3',
-      backgroundMusic: '/sounds/background_music.mp3',
-      explosion: '/sounds/explosion.mp3',
-      combat: '/sounds/combat.mp3',
-      feedFire: '/sounds/feed_fire.mp3',
-      sleep: '/sounds/sleep.mp3',
-      buildingComplete: '/sounds/building_complete.mp3',
-      craft: '/sounds/craft.mp3',
-      mining: '/sounds/mining.mp3',
-      chopWood: '/sounds/chop_wood.mp3',
-      gatherWood: '/sounds/gather_wood.mp3',
-      hunt: '/sounds/hunt.mp3',
-      tabFadeIn: '/sounds/tab_fade_in.mp3',
-    };
+  /**
+   * Sounds needed in the first minutes after Light Fire (BGM + early cave loop).
+   * Awaited before starting background music.
+   */
+  private static readonly CORE_GAME_SOUNDS: Record<string, string> = {
+    backgroundMusic: '/sounds/background_music.mp3',
+    feedFire: '/sounds/feed_fire.mp3',
+    gatherWood: '/sounds/gather_wood.mp3',
+    buildingComplete: '/sounds/building_complete.mp3',
+    craft: '/sounds/craft.mp3',
+    event: '/sounds/event.mp3',
+    newVillager: '/sounds/new_villager.mp3',
+    tabFadeIn: '/sounds/tab_fade_in.mp3',
+  };
 
+  /**
+   * Mid/late or rare cues. Registered immediately so playSound can fetch on demand,
+   * then decoded in the background after the core pack.
+   */
+  private static readonly DEFERRED_GAME_SOUNDS: Record<string, string> = {
+    eventMadness: '/sounds/event_madness.mp3',
+    merchant: '/sounds/merchant.mp3',
+    whisperingCube: '/sounds/whispering_cube.mp3',
+    bloodMoon: '/sounds/blood_moon.mp3',
+    explosion: '/sounds/explosion.mp3',
+    combat: '/sounds/combat.mp3',
+    sleep: '/sounds/sleep.mp3',
+    mining: '/sounds/mining.mp3',
+    chopWood: '/sounds/chop_wood.mp3',
+    hunt: '/sounds/hunt.mp3',
+  };
+
+  private registerSoundUrls(sounds: Record<string, string>): void {
+    for (const [name, url] of Object.entries(sounds)) {
+      this.soundUrls.set(name, url);
+    }
+  }
+
+  private async loadSoundMap(sounds: Record<string, string>): Promise<void> {
     await Promise.all(
-      Object.entries(gameSounds).map(([name, url]) => this.loadSound(name, url))
+      Object.entries(sounds).map(([name, url]) => this.loadSound(name, url)),
     );
-    logger.log('Game sounds registration complete');
+  }
+
+  /** Decode core gameplay sounds; kick off the rest without blocking BGM. */
+  async loadGameSounds(): Promise<void> {
+    this.registerSoundUrls(AudioManager.CORE_GAME_SOUNDS);
+    this.registerSoundUrls(AudioManager.DEFERRED_GAME_SOUNDS);
+
+    logger.log('Loading core game sounds...');
+    await this.loadSoundMap(AudioManager.CORE_GAME_SOUNDS);
+    logger.log('Core game sounds ready');
+
+    void this.loadSoundMap(AudioManager.DEFERRED_GAME_SOUNDS)
+      .then(() => logger.log('Deferred game sounds ready'))
+      .catch((error) =>
+        logger.warn('Deferred game sounds failed to load:', error),
+      );
   }
 
   async startBackgroundMusic(volume: number = SOUND_VOLUME.backgroundMusic): Promise<void> {
