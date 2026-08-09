@@ -1,6 +1,13 @@
 "use client";
 
-import { useState, useEffect, useLayoutEffect, useRef, useMemo } from "react";
+import {
+  useState,
+  useEffect,
+  useLayoutEffect,
+  useRef,
+  useMemo,
+  type ReactNode,
+} from "react";
 import { motion } from "framer-motion";
 import { cn } from "@/lib/utils";
 import {
@@ -70,6 +77,11 @@ interface SegmentedProgressProps {
   sparkClassName?: string;
   /** Skip the increase glow sweep. */
   disableGlow?: boolean;
+  /**
+   * Optional fill layer (e.g. SharedProgressShaderSegment). When set, skips
+   * solid `filledClassName` so the custom fill can show through.
+   */
+  renderFill?: () => ReactNode;
   "aria-label"?: string;
   "aria-valuenow"?: number;
   "aria-valuemin"?: number;
@@ -94,6 +106,7 @@ export function SegmentedProgress({
   growSparkTipGlow = true,
   sparkClassName,
   disableGlow = false,
+  renderFill,
   "aria-label": ariaLabel,
   "aria-valuenow": ariaValueNow,
   "aria-valuemin": ariaValueMin = 0,
@@ -289,18 +302,19 @@ export function SegmentedProgress({
                       changeOnlyGrow
                         ? "duration-0"
                         : "duration-500",
-                      filledClassName,
+                      !renderFill && filledClassName,
                     )}
                     style={{
                       width: `${fill * 100}%`,
                       transitionDelay: `${delay}ms`,
                     }}
                   >
+                    {renderFill ? renderFill() : null}
                     {showSegmentGlow && (
                       <motion.div
                         key={glowKey}
                         className={cn(
-                          "pointer-events-none absolute inset-0 bg-gradient-to-r from-transparent to-transparent",
+                          "pointer-events-none absolute inset-0 z-[1] bg-gradient-to-r from-transparent to-transparent",
                           sparkClassName
                             ? resolveGrowGlowViaClass(sparkClassName)
                             : "via-orange-300/90",

@@ -396,14 +396,15 @@ export function SharedProgressShaderHost({
   return (
     <SharedProgressShaderContext.Provider value={api}>
       <div ref={hostRef} className={cn("relative", className)}>
-        {children}
+        {/* Behind fills so glow/sparks stay on top; segments are transparent windows. */}
         {useShader ? (
           <canvas
             ref={canvasRef}
             aria-hidden
-            className="pointer-events-none absolute inset-0 z-10 h-full w-full"
+            className="pointer-events-none absolute inset-0 z-0 h-full w-full"
           />
         ) : null}
+        <div className="relative z-[1]">{children}</div>
       </div>
     </SharedProgressShaderContext.Provider>
   );
