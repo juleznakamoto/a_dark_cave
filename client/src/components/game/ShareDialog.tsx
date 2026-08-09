@@ -13,7 +13,6 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
-import { TextShimmer } from "@/components/ui/text-shimmer";
 import { GlowingShadow } from "@/components/ui/glowing-shadow";
 import { TooltipWrapper } from "@/components/game/TooltipWrapper";
 import { useGameStore } from "@/game/state";
@@ -472,8 +471,8 @@ export default function ShareDialog() {
   const previewWrapRef = useRef<HTMLDivElement>(null);
   const cachedBlobRef = useRef<Blob | null>(null);
   const prefetchPromiseRef = useRef<Promise<Blob | null> | null>(null);
+  const actionLockRef = useRef(false);
   const [previewScale, setPreviewScale] = useState(0.3);
-  const [busy, setBusy] = useState(false);
 
   const percent = open
     ? getOverallAchievementPercent(
@@ -603,8 +602,8 @@ export default function ShareDialog() {
   };
 
   const handleShare = async () => {
-    if (busy) return;
-    setBusy(true);
+    if (actionLockRef.current) return;
+    actionLockRef.current = true;
     try {
       const blob = await getShareBlob();
       if (!blob) throw new Error("Failed to render share image");
@@ -635,7 +634,7 @@ export default function ShareDialog() {
         variant: "destructive",
       });
     } finally {
-      setBusy(false);
+      actionLockRef.current = false;
     }
   };
 
@@ -665,8 +664,8 @@ export default function ShareDialog() {
   };
 
   const handleDownload = async () => {
-    if (busy) return;
-    setBusy(true);
+    if (actionLockRef.current) return;
+    actionLockRef.current = true;
     try {
       const blob = await getShareBlob();
       if (!blob) throw new Error("Failed to render share image");
@@ -683,13 +682,13 @@ export default function ShareDialog() {
         variant: "destructive",
       });
     } finally {
-      setBusy(false);
+      actionLockRef.current = false;
     }
   };
 
   const handleCopyImage = async () => {
-    if (busy) return;
-    setBusy(true);
+    if (actionLockRef.current) return;
+    actionLockRef.current = true;
     try {
       const blob = await getShareBlob();
       if (!blob) throw new Error("Failed to render share image");
@@ -720,7 +719,7 @@ export default function ShareDialog() {
         variant: "destructive",
       });
     } finally {
-      setBusy(false);
+      actionLockRef.current = false;
     }
   };
 
@@ -822,7 +821,6 @@ export default function ShareDialog() {
               variant="outline"
               size="xs"
               className="shrink-0 font-medium px-3"
-              disabled={busy}
               onClick={() => {
                 void handleCopyInviteLink();
               }}
@@ -836,8 +834,9 @@ export default function ShareDialog() {
             variant="outline"
             size="xs"
             className="shrink-0 font-medium px-3"
-            onClick={handleDownload}
-            disabled={busy}
+            onClick={() => {
+              void handleDownload();
+            }}
           >
             {t("share.save", { defaultValue: "Save" })}
           </Button>
@@ -848,23 +847,17 @@ export default function ShareDialog() {
             onClick={() => {
               void handleCopyImage();
             }}
-            disabled={busy}
           >
             {t("share.copy", { defaultValue: "Copy" })}
           </Button>
           <Button
             size="xs"
             className="shrink-0 font-medium px-3"
-            onClick={handleShare}
-            disabled={busy}
+            onClick={() => {
+              void handleShare();
+            }}
           >
-            {busy ? (
-              <TextShimmer>
-                {t("share.generating", { defaultValue: "Generating…" })}
-              </TextShimmer>
-            ) : (
-              t("share.share", { defaultValue: "Share" })
-            )}
+            {t("share.share", { defaultValue: "Share" })}
           </Button>
         </div>
       </DialogContent>
