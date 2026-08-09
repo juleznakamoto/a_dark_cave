@@ -420,6 +420,7 @@ export class AudioManager {
     mining: '/sounds/mining.mp3',
     chopWood: '/sounds/chop_wood.mp3',
     hunt: '/sounds/hunt.mp3',
+    achievement: '/sounds/achievement.mp3',
   };
 
   private registerSoundUrls(sounds: Record<string, string>): void {

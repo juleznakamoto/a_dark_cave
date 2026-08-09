@@ -260,6 +260,22 @@ export default function GameContainer() {
     [story, unclaimedAchievementIds],
   );
 
+  // One-shot when an achievement newly becomes claimable (skip initial hydrate).
+  const prevUnclaimedAchievementIdsRef = useRef<Set<string> | null>(null);
+  useEffect(() => {
+    const next = new Set(unclaimedAchievementIds);
+    const prev = prevUnclaimedAchievementIdsRef.current;
+    prevUnclaimedAchievementIdsRef.current = next;
+    if (!prev) return;
+
+    for (const id of next) {
+      if (!prev.has(id)) {
+        audioManager.playSound("achievement", SOUND_VOLUME.achievement);
+        break;
+      }
+    }
+  }, [unclaimedAchievementIds]);
+
   // Track unlocked tabs to trigger one-time blink until clicked (persisted in story.seen)
   const traderUnlocked = isTraderShopUnlocked({ story, traderDialogOpens });
   const hasWonNormalGame = useGameStore((s) => s.hasWonNormalGame);

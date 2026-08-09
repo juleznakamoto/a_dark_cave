@@ -41,6 +41,8 @@ export const SOUND_VOLUME = {
   combat: 0.3,
   /** New game-tab unlock fade-in (3s visual) */
   tabFadeIn: 0.35,
+  /** Achievement becomes claimable (fulfilled, not yet claimed) */
+  achievement: 0.4,
 } as const;
 
 export function feedFireVolume(heartfireLevel: number): number {
