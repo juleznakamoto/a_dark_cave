@@ -5,6 +5,9 @@
 /** Crossfade length when event ambience takes over from (or returns to) BGM. */
 export const EVENT_AMBIENCE_FADE_SECONDS = 2;
 
+/** EventDialog bed (normal + madness) after the open sting. */
+export const EVENT_DIALOG_AMBIENCE_FADE_SECONDS = 1;
+
 export const SOUND_VOLUME = {
   wind: 0.2,
   lightFire: 0.8,
@@ -12,6 +15,8 @@ export const SOUND_VOLUME = {
   monsterStart: 0.45,
   backgroundMusic: 0.3,
   whisperingCube: 0.5,
+  /** Loop under EventDialog (normal + madness; not cube) */
+  eventDialog: 0.35,
   /** Blood moon timed-tab one-shot when the event starts */
   bloodMoon: 0.45,
   feedFire: {

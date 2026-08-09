@@ -24,6 +24,7 @@ import { EVENT_AMBIENCE_FADE_SECONDS, SOUND_VOLUME } from './soundVolumes';
 
 export {
   EVENT_AMBIENCE_FADE_SECONDS,
+  EVENT_DIALOG_AMBIENCE_FADE_SECONDS,
   SOUND_VOLUME,
   caveExploreVolume,
   feedFireVolume,
@@ -411,6 +412,7 @@ export class AudioManager {
    */
   private static readonly DEFERRED_GAME_SOUNDS: Record<string, string> = {
     eventMadness: '/sounds/event_madness.mp3',
+    eventDialog: '/sounds/event_dialog.mp3',
     merchant: '/sounds/merchant.mp3',
     whisperingCube: '/sounds/whispering_cube.mp3',
     bloodMoon: '/sounds/blood_moon.mp3',
@@ -455,7 +457,7 @@ export class AudioManager {
   async startBackgroundMusic(volume: number = SOUND_VOLUME.backgroundMusic): Promise<void> {
     this.backgroundMusicVolume = volume;
     this.wasBackgroundMusicPlaying = true;
-    this.playLoopingSound('backgroundMusic', volume);
+    this.playLoopingSound('backgroundMusic', volume, false, 1);
   }
 
   pauseAllSounds(): void {
@@ -535,7 +537,8 @@ export class AudioManager {
     this.isMusicMuted = mute;
     if (mute) {
       this.wasBackgroundMusicPlaying = false; // Prevent resumeSounds() from restarting
-      this.stopLoopingSound('backgroundMusic', 1);
+      // Mute cuts immediately; unmute fades back in below.
+      this.stopLoopingSound('backgroundMusic');
       return;
     }
 

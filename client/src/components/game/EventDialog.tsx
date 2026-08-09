@@ -43,6 +43,11 @@ import {
   RelevantStatIcon,
 } from "@/components/game/EventChoiceSuccessTooltip";
 import { madnessEvents } from "@/game/rules/eventsMadness";
+import {
+  audioManager,
+  EVENT_DIALOG_AMBIENCE_FADE_SECONDS,
+  SOUND_VOLUME,
+} from "@/lib/audio";
 
 interface EventDialogProps {
   isOpen: boolean;
@@ -65,6 +70,31 @@ export default function EventDialog({
   const fallbackExecutedRef = useRef(false);
   const pauseStartRef = useRef<number>(0);
   const totalPausedMsRef = useRef<number>(0);
+
+  // Loop under normal + madness EventDialog after the open sting (cube has its own bed).
+  useEffect(() => {
+    const isCube = !!event?.id?.startsWith("cube");
+    if (!isOpen || !event || isCube) {
+      audioManager.stopEventAmbience(
+        "eventDialog",
+        EVENT_DIALOG_AMBIENCE_FADE_SECONDS,
+      );
+      return;
+    }
+
+    audioManager.startEventAmbience(
+      "eventDialog",
+      SOUND_VOLUME.eventDialog,
+      EVENT_DIALOG_AMBIENCE_FADE_SECONDS,
+    );
+
+    return () => {
+      audioManager.stopEventAmbience(
+        "eventDialog",
+        EVENT_DIALOG_AMBIENCE_FADE_SECONDS,
+      );
+    };
+  }, [isOpen, event?.id]);
 
   const ruleEventId =
     event?.eventId || (event?.id ? getEventRulesCatalogId(event.id) : "");
