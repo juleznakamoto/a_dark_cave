@@ -339,7 +339,14 @@ export async function clearLastCloudState(): Promise<void> {
  */
 export function mergeCloudReferralsIntoState(
   localState: GameState,
-  cloudState: Pick<GameState, "referrals" | "referralCount" | "referredUsers">,
+  cloudState: Pick<
+    GameState,
+    | "referrals"
+    | "referralCount"
+    | "referredUsers"
+    | "referralProcessed"
+    | "referralCode"
+  >,
 ): GameState {
   const localRefs = Array.isArray(localState.referrals) ? localState.referrals : [];
   const cloudRefs = Array.isArray(cloudState.referrals) ? cloudState.referrals : [];
@@ -353,7 +360,20 @@ export function mergeCloudReferralsIntoState(
     },
   );
 
-  const unchanged =
+  const referralProcessed =
+    localState.referralProcessed === true ||
+    cloudState.referralProcessed === true;
+  const localCode =
+    typeof localState.referralCode === "string"
+      ? localState.referralCode.trim()
+      : "";
+  const cloudCode =
+    typeof cloudState.referralCode === "string"
+      ? cloudState.referralCode.trim()
+      : "";
+  const referralCode = localCode || cloudCode || localState.referralCode;
+
+  const listUnchanged =
     referrals.length === localRefs.length &&
     (localState.referralCount ?? 0) === referralCount &&
     localRefs.every(
@@ -362,14 +382,19 @@ export function mergeCloudReferralsIntoState(
         entry.claimed === referrals[index]?.claimed &&
         entry.timestamp === referrals[index]?.timestamp,
     );
+  const inviteeUnchanged =
+    (localState.referralProcessed === true) === referralProcessed &&
+    (localState.referralCode ?? "") === (referralCode ?? "");
 
-  if (unchanged) return localState;
+  if (listUnchanged && inviteeUnchanged) return localState;
 
   return {
     ...localState,
     referrals,
     referralCount,
     referredUsers,
+    referralProcessed,
+    ...(referralCode ? { referralCode } : {}),
   };
 }
 

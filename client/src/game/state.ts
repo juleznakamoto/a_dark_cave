@@ -2894,6 +2894,8 @@ export const useGameStore = create<GameStore>((set, get) => ({
       referrals: state.referrals || [],
       referralCount: state.referralCount || 0,
       referredUsers: state.referredUsers || [],
+      referralProcessed: state.referralProcessed === true,
+      referralCode: state.referralCode,
       signupWelcomeGoldClaimed: state.signupWelcomeGoldClaimed === true,
 
       // Social media rewards (persist forever)
@@ -3302,6 +3304,11 @@ export const useGameStore = create<GameStore>((set, get) => ({
             : 0,
           Array.isArray(savedState.referrals) ? savedState.referrals.length : 0,
         ),
+        referralProcessed: savedState.referralProcessed === true,
+        referralCode:
+          typeof savedState.referralCode === "string"
+            ? savedState.referralCode
+            : defaultGameState.referralCode,
         social_media_rewards:
           savedState.social_media_rewards ||
           defaultGameState.social_media_rewards, // Load social_media_rewards

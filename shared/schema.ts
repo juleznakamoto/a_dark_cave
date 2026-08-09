@@ -743,6 +743,8 @@ export const gameStateSchema = z.object({
   allowPlayTimeOverwrite: z.boolean().default(false), // Allow overwriting higher playTime on next save (used for game restarts)
   hasMadeNonFreePurchase: z.boolean().default(false), // Track if player has made any non-free shop purchase
   referralCode: z.string().optional(), // Store the referral code used during signup
+  /** Invitee already received signup referral gold (must persist; server + admin stats key off this). */
+  referralProcessed: z.boolean().default(false),
   referrals: z
     .array(
       z.object({

@@ -65,11 +65,15 @@ describe("persistedStateBoundary", () => {
       feedbackPromptShown: true,
       villageHotkeyTutorialShown: true,
       lastFreeGoldClaim: 42,
+      referralProcessed: true,
+      referralCode: "AB3K9M",
     });
 
     expect(persisted.feedbackPromptShown).toBe(true);
     expect(persisted.villageHotkeyTutorialShown).toBe(true);
     expect(persisted.lastFreeGoldClaim).toBe(42);
+    expect(persisted.referralProcessed).toBe(true);
+    expect(persisted.referralCode).toBe("AB3K9M");
   });
 
   it("serializes only resumable timed-event fields", () => {
