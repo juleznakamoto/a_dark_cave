@@ -370,13 +370,13 @@ body {
 }
 
 .building-action-badge--sm {
-  width: calc(16px * var(--adc-control-scale, 1));
-  height: calc(16px * var(--adc-control-scale, 1));
+  width: calc(24px * var(--adc-control-scale, 1));
+  height: calc(24px * var(--adc-control-scale, 1));
 }
 
 .building-action-badge--lg {
-  width: calc(20px * var(--adc-control-scale, 1));
-  height: calc(20px * var(--adc-control-scale, 1));
+  width: calc(28px * var(--adc-control-scale, 1));
+  height: calc(28px * var(--adc-control-scale, 1));
 }
 
 /* Action-button corner badges (level / prior / insight / boost hosts). */
@@ -508,7 +508,7 @@ html.adc-text-large .game-panel-header-indicator-row {
 }
 
 .villager-count-button>span {
-  font-size: calc(0.875rem * var(--adc-text-scale, 1));
+  font-size: calc(1rem * var(--adc-text-scale, 1));
   /* 14px @ Normal (was text-xs 12px) */
 }
 
