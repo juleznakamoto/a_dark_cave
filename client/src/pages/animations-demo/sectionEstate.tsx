@@ -8,7 +8,7 @@ import {
 } from "@/components/game/BuildingActionBadge";
 import { DemoRow, DemoSection } from "@/pages/animations-demo/DemoSection";
 
-const ESTATE_BAR_GROW_ANIMATION_MS = 500;
+const ESTATE_BAR_GROW_ANIMATION_MS = 1000;
 const BOOST_GLYPH = "\u23E9";
 
 export function EstateBarsSection() {

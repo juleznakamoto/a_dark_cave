@@ -43,7 +43,7 @@ import { getResourceName } from "@/i18n/resolveGameText";
 import { useSteamEditionActive } from "@/hooks/useSteamEditionActive";
 
 
-const ESTATE_BAR_GROW_ANIMATION_MS = 500;
+const ESTATE_BAR_GROW_ANIMATION_MS = 1000;
 
 function EstateUpgradeProgress({
   value,
