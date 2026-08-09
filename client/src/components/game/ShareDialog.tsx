@@ -61,7 +61,7 @@ const SHARE_RESOURCE_MILESTONE = 50_000;
 const RING_CHART_SIZE = 208;
 const RING_GRID_GAP = 40;
 const RING_LABEL_FONT_SIZE = 30;
-const RING_LABEL_GAP = 10;
+const RING_LABEL_GAP = 8;
 /** Matches `pt-1` on the 58px tab icon, scaled to the share ring size. */
 const RING_SYMBOL_NUDGE_PX = 4 * (RING_CHART_SIZE / 58);
 
