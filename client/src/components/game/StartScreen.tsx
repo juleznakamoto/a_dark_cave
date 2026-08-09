@@ -182,6 +182,7 @@ export default function StartScreen({
   useEffect(() => {
     const triggerEyesFlash = () => {
       setShowEyesEasterEgg(true);
+      audioManager.playSound("monsterStart", SOUND_VOLUME.monsterStart);
       if (eyesEasterEggHideTimeoutRef.current) {
         clearTimeout(eyesEasterEggHideTimeoutRef.current);
       }
