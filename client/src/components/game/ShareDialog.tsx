@@ -277,22 +277,18 @@ function ShareResourceRow({
     ) : null;
 
   return (
-    <div className="flex w-full items-baseline justify-between gap-x-10 leading-none">
+    <div className="grid w-full grid-cols-[minmax(0,1fr)_auto_1.25em] items-baseline gap-x-2 leading-none">
       <span className="inline-flex min-w-0 items-center gap-2 text-gray-400">
         {icon}
         <span className="truncate">
           {getResourceName(resourceKey, capitalizeWords(resourceKey))}
         </span>
       </span>
-      <span className="inline-flex shrink-0 items-baseline gap-x-2">
-        {meetsMilestone ? (
-          <span className="text-green-500 leading-none" aria-hidden>
-            ✓
-          </span>
-        ) : null}
-        <span className="text-right font-mono tabular-nums text-gray-300">
-          {formatNumber(value)}
-        </span>
+      <span className="text-right font-mono tabular-nums text-gray-300">
+        {formatNumber(value)}
+      </span>
+      <span className="text-right text-green-500 leading-none" aria-hidden>
+        {meetsMilestone ? "✓" : null}
       </span>
     </div>
   );
