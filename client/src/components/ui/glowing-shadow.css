@@ -169,11 +169,10 @@
   translate: -50% -50%;
   background: conic-gradient(from 0deg,
       #0b0b0e 0deg,
-      #0b0b0e 240deg,
-      hsl(210deg 8% 55%) 290deg,
-      hsl(210deg 10% 82%) 318deg,
-      hsl(0deg 0% 100%) 340deg,
-      hsl(210deg 8% 70%) 352deg,
+      #0b0b0e 328deg,
+      hsl(210deg 8% 60%) 338deg,
+      hsl(0deg 0% 100%) 344deg,
+      hsl(210deg 8% 60%) 350deg,
       #0b0b0e 360deg);
   animation: adc-gs-rim-spin var(--adc-gs-animation-speed) linear infinite;
 }
