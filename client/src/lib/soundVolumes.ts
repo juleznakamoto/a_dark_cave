@@ -39,6 +39,8 @@ export const SOUND_VOLUME = {
   explosion: 0.5,
   sleep: 0.3,
   combat: 0.3,
+  /** CombatDialog intro screen (before Start Fight) */
+  combatWaveIntro: 0.45,
   /** New game-tab unlock fade-in (3s visual) */
   tabFadeIn: 0.35,
   /** Achievement becomes claimable (fulfilled, not yet claimed) */

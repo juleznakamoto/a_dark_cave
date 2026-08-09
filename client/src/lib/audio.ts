@@ -416,6 +416,7 @@ export class AudioManager {
     bloodMoon: '/sounds/blood_moon.mp3',
     explosion: '/sounds/explosion.mp3',
     combat: '/sounds/combat.mp3',
+    combatWaveIntro: '/sounds/combat_wave_intro.mp3',
     sleep: '/sounds/sleep.mp3',
     mining: '/sounds/mining.mp3',
     chopWood: '/sounds/chop_wood.mp3',

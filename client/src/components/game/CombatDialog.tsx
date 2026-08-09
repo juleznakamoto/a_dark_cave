@@ -2,6 +2,7 @@ import React, { useState, useEffect, useLayoutEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useGameStore } from "@/game/state";
 import { audioManager } from "@/lib/audio";
+import { SOUND_VOLUME } from "@/lib/soundVolumes";
 import { calculateBastionStats } from "@/game/bastionStats";
 import {
   getTotalKnowledge,
@@ -307,16 +308,28 @@ export default function CombatDialog({
 
   const bastionStats = calculateBastionStats(gameState);
 
-  // Combat audio loop - play looping combat sound when combat starts (user clicks "Start Fight")
-  // Starting on user click satisfies browser autoplay policy
+  // Intro sting on the pre-fight screen; combat bed after "Start Fight".
+  // Start Fight is a user gesture, so the looping bed satisfies autoplay policy.
   useEffect(() => {
-    if (isOpen && combatStarted) {
-      audioManager.playLoopingSound("combat", 0.3);
-    } else {
+    if (!isOpen) {
+      audioManager.stopLoopingSound("combatWaveIntro");
       audioManager.stopLoopingSound("combat");
+      return;
     }
 
-    // Cleanup on unmount
+    if (!combatStarted) {
+      audioManager.stopLoopingSound("combat");
+      audioManager.playSound(
+        "combatWaveIntro",
+        SOUND_VOLUME.combatWaveIntro,
+      );
+      return () => {
+        audioManager.stopLoopingSound("combatWaveIntro");
+      };
+    }
+
+    audioManager.stopLoopingSound("combatWaveIntro");
+    audioManager.playLoopingSound("combat", SOUND_VOLUME.combat);
     return () => {
       audioManager.stopLoopingSound("combat");
     };
