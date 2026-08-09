@@ -2,7 +2,7 @@ import { Component, type ReactNode, useState } from "react";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { TooltipWrapper } from "@/components/game/TooltipWrapper";
 import { ScrollAreaWithIndicator } from "@/components/ui/scroll-area-with-indicator";
-import { Progress } from "@/components/ui/progress";
+import { SegmentedProgress } from "@/components/ui/progress-bar";
 import GameButton from "@/components/game/GameButton";
 import {
   BuildingActionBadge,
@@ -288,20 +288,24 @@ function AchievementRowComponent({
           </div>
         )}
       </div>
-      <Progress
+      <SegmentedProgress
         // Clamp: gathering totals (e.g. leather) keep rising past maxCount.
-        // Unclamped values >100 retrigger the glow on every production tick.
         value={Math.min(
           100,
           row.maxCount > 0
             ? (Math.floor(row.currentCount) / row.maxCount) * 100
             : 0,
         )}
-        className={`h-2 ${PROGRESS_BAR_BG_CLASS}`}
         segments={getAchievementSegmentWeight(row)}
-        indicatorClassName={row.isFull ? indicatorClassComplete : indicatorClassIncomplete}
-        hideBorder
-        disableGlow
+        showPercentage={false}
+        compact
+        animate={false}
+        filledClassName={
+          row.isFull ? indicatorClassComplete : indicatorClassIncomplete
+        }
+        emptyClassName={PROGRESS_BAR_BG_CLASS}
+        filledGlowClassName=""
+        segmentClassName="h-1.5"
       />
     </div>
   );

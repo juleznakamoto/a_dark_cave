@@ -20,6 +20,8 @@ interface SegmentedProgressProps {
   filledGlowClassName?: string;
   /** Compact spacing for tight chrome (e.g. footer). */
   compact?: boolean;
+  /** When false, snap to value (use for frequently updating lists). */
+  animate?: boolean;
   "aria-label"?: string;
   "aria-valuenow"?: number;
   "aria-valuemin"?: number;
@@ -39,6 +41,7 @@ export function SegmentedProgress({
   segmentClassName,
   filledGlowClassName = "shadow-[0_0_16px_hsl(var(--primary)/0.5)]",
   compact = false,
+  animate = true,
   "aria-label": ariaLabel,
   "aria-valuenow": ariaValueNow,
   "aria-valuemin": ariaValueMin = 0,
@@ -48,9 +51,9 @@ export function SegmentedProgress({
   const [progress, setProgress] = useState(initialValue);
   const value = showDemo ? progress : initialValue;
 
-  const [displayValue, setDisplayValue] = useState(0);
+  const [displayValue, setDisplayValue] = useState(animate ? 0 : initialValue);
   const [hoveredSegment, setHoveredSegment] = useState<number | null>(null);
-  const [isInitialized, setIsInitialized] = useState(false);
+  const [isInitialized, setIsInitialized] = useState(!animate);
   const animationRef = useRef<number | null>(null);
   const startValueRef = useRef(0);
   const startTimeRef = useRef(0);
@@ -64,6 +67,12 @@ export function SegmentedProgress({
   }, [initialValue, showDemo]);
 
   useEffect(() => {
+    if (!animate) {
+      setDisplayValue(value);
+      setIsInitialized(true);
+      return;
+    }
+
     if (!isInitialized) {
       const initTimeout = setTimeout(() => setIsInitialized(true), 50);
       return () => clearTimeout(initTimeout);
@@ -73,7 +82,7 @@ export function SegmentedProgress({
     startValueRef.current = displayValue;
     startTimeRef.current = performance.now();
 
-    const animate = (currentTime: number) => {
+    const tick = (currentTime: number) => {
       const elapsed = currentTime - startTimeRef.current;
       const t = Math.min(elapsed / duration, 1);
       const eased = 1 - Math.pow(1 - t, 3);
@@ -82,11 +91,11 @@ export function SegmentedProgress({
       setDisplayValue(newValue);
 
       if (t < 1) {
-        animationRef.current = requestAnimationFrame(animate);
+        animationRef.current = requestAnimationFrame(tick);
       }
     };
 
-    animationRef.current = requestAnimationFrame(animate);
+    animationRef.current = requestAnimationFrame(tick);
 
     return () => {
       if (animationRef.current) {
@@ -95,7 +104,7 @@ export function SegmentedProgress({
     };
     // displayValue is captured at effect start via startValueRef; omit from deps
     // eslint-disable-next-line react-hooks/exhaustive-deps -- intentional
-  }, [value, isInitialized]);
+  }, [value, isInitialized, animate]);
 
   const getSegmentStyle = (index: number) => {
     let scale = 1;
