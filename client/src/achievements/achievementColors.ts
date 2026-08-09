@@ -13,8 +13,8 @@ const BACKGROUND_TAILWIND = "neutral-800";
 export const BACKGROUND_COLOR_HEX = tailwindToHex(BACKGROUND_TAILWIND);
 /** Brighter background for selected/active chart tab. */
 export const BACKGROUND_SELECTED_COLOR_HEX = tailwindToHex("neutral-700");
-/** Empty-segment track for SegmentedProgress achievement bars (slightly brighter than chrome). */
-export const PROGRESS_BAR_BG_CLASS = "bg-neutral-700";
+/** Empty-segment track for SegmentedProgress achievement bars. */
+export const PROGRESS_BAR_BG_CLASS = "bg-neutral-800";
 
 /**
  * Single source of truth for achievement category colors.

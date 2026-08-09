@@ -149,7 +149,7 @@ export function ProgressBarsSection() {
             showDemo
             compact
             filledClassName="bg-green-700"
-            emptyClassName="bg-neutral-700"
+            emptyClassName="bg-neutral-800"
             segmentClassName="h-1.5"
           />
         </div>

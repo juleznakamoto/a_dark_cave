@@ -49,7 +49,7 @@ export function SegmentedProgress({
   showDemo = false,
   className,
   filledClassName = "bg-primary",
-  emptyClassName = "bg-muted/60",
+  emptyClassName = "bg-neutral-800",
   segmentClassName,
   compact = false,
   animate = true,
