@@ -4,7 +4,6 @@ import { useTranslation } from "react-i18next";
 import {
   Dialog,
   DialogContent,
-  DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
@@ -328,122 +327,123 @@ function ShareCard({
   return (
     <div
       ref={cardRef}
-      className="relative flex flex-col font-sans text-foreground"
+      className="font-sans text-foreground overflow-hidden"
       style={{
         width: SHARE_IMAGE_WIDTH,
         height: SHARE_IMAGE_HEIGHT,
         backgroundColor: CARD_BG,
+        borderRadius: 36,
       }}
     >
-      <div className="flex h-full flex-col p-16">
-        <div className="mb-12">
-          <div
-            className="font-bold leading-none tracking-tight text-neutral-100"
-            style={{ fontSize: 80 }}
-          >
-            A Dark Cave
-          </div>
-        </div>
-
-        <div className="flex min-h-0 flex-1 justify-between gap-10">
-          <div className="flex min-w-0 flex-col">
-            <ShareSectionHeading
-              label={resourcesLabel}
-              percent={resourcePercent}
-            />
-            <div
-              className="flex flex-col leading-none"
-              style={{ fontSize: resourceFontSize, rowGap: resourceRowGap }}
-            >
-              {precious.map((key) => (
-                <ShareResourceRow
-                  key={key}
-                  resourceKey={key}
-                  value={resources[key] ?? 0}
-                />
-              ))}
-              {hasPreciousSpacer && <div style={{ height: 12 }} />}
-              {others.map((key) => (
-                <ShareResourceRow
-                  key={key}
-                  resourceKey={key}
-                  value={resources[key] ?? 0}
-                />
-              ))}
-            </div>
-          </div>
-
-          <div className="flex shrink-0 flex-col items-end">
-            <ShareSectionHeading
-              label={achievementsLabel}
-              percent={achievementPercent}
-              align="right"
-            />
-            <div className="grid grid-cols-2" style={{ gap: RING_GRID_GAP }}>
-              {RING_ENTRIES.map(({ config, centerSymbolStyle }) => (
-                <div
-                  key={config.idPrefix}
-                  className="flex flex-col items-center"
-                  style={{ gap: RING_LABEL_GAP }}
-                >
-                  <div
-                    className="font-medium leading-none tracking-wide text-gray-400"
-                    style={{ fontSize: RING_LABEL_FONT_SIZE }}
-                  >
-                    {ringLabels[config.idPrefix]}
-                  </div>
-                  <AchievementMiniRingChart
-                    config={config}
-                    isActive
-                    size={RING_CHART_SIZE}
-                    centerSymbolStyle={centerSymbolStyle}
-                  />
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div
-        className="absolute bottom-16 left-16 flex flex-col font-medium text-neutral-100"
-        style={{
-          fontSize: CTA_FONT_SIZE,
-          gap: 10,
-          lineHeight: 1,
-          width: "max-content",
-          maxWidth: "calc(100% - 8rem)",
-        }}
-      >
-        <div style={{ whiteSpace: "nowrap" }}>Play for free at</div>
-        <div style={{ whiteSpace: "nowrap" }}>{SHARE_URL_IMAGE}</div>
-      </div>
-      <div
-        className="absolute bottom-16 right-16 flex flex-col gap-3 text-right leading-none"
-        style={{
-          fontSize: 32,
-          width: "max-content",
-          maxWidth: "calc(100% - 8rem)",
-        }}
-      >
-        <div style={{ whiteSpace: "nowrap" }}>
-          <span className="text-gray-400">{cruelModeLabel}</span>{" "}
-          <span className="text-gray-300">{cruelModeValueLabel}</span>
-        </div>
-        <div style={{ whiteSpace: "nowrap" }}>
-          <span className="text-gray-400">{playTimeLabel}</span>{" "}
-          <span className="text-gray-300">
-            {formatSharePlayTime(playTimeMs)}
-          </span>
-        </div>
-      </div>
-
       <GlowingShadow
         variant="silver"
         size="frame"
-        borderOnly
         interactive={false}
-      />
+        contentClassName="relative flex flex-col"
+      >
+        <div className="flex h-full flex-col p-16">
+          <div className="mb-12">
+            <div
+              className="font-bold leading-none tracking-tight text-neutral-100"
+              style={{ fontSize: 80 }}
+            >
+              A Dark Cave
+            </div>
+          </div>
+
+          <div className="flex min-h-0 flex-1 justify-between gap-10">
+            <div className="flex min-w-0 flex-col">
+              <ShareSectionHeading
+                label={resourcesLabel}
+                percent={resourcePercent}
+              />
+              <div
+                className="flex flex-col leading-none"
+                style={{ fontSize: resourceFontSize, rowGap: resourceRowGap }}
+              >
+                {precious.map((key) => (
+                  <ShareResourceRow
+                    key={key}
+                    resourceKey={key}
+                    value={resources[key] ?? 0}
+                  />
+                ))}
+                {hasPreciousSpacer && <div style={{ height: 12 }} />}
+                {others.map((key) => (
+                  <ShareResourceRow
+                    key={key}
+                    resourceKey={key}
+                    value={resources[key] ?? 0}
+                  />
+                ))}
+              </div>
+            </div>
+
+            <div className="flex shrink-0 flex-col items-end">
+              <ShareSectionHeading
+                label={achievementsLabel}
+                percent={achievementPercent}
+                align="right"
+              />
+              <div className="grid grid-cols-2" style={{ gap: RING_GRID_GAP }}>
+                {RING_ENTRIES.map(({ config, centerSymbolStyle }) => (
+                  <div
+                    key={config.idPrefix}
+                    className="flex flex-col items-center"
+                    style={{ gap: RING_LABEL_GAP }}
+                  >
+                    <div
+                      className="font-medium leading-none tracking-wide text-gray-400"
+                      style={{ fontSize: RING_LABEL_FONT_SIZE }}
+                    >
+                      {ringLabels[config.idPrefix]}
+                    </div>
+                    <AchievementMiniRingChart
+                      config={config}
+                      isActive
+                      size={RING_CHART_SIZE}
+                      centerSymbolStyle={centerSymbolStyle}
+                    />
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div
+          className="absolute bottom-16 left-16 flex flex-col font-medium text-neutral-100"
+          style={{
+            fontSize: CTA_FONT_SIZE,
+            gap: 10,
+            lineHeight: 1,
+            width: "max-content",
+            maxWidth: "calc(100% - 8rem)",
+          }}
+        >
+          <div style={{ whiteSpace: "nowrap" }}>Play for free at</div>
+          <div style={{ whiteSpace: "nowrap" }}>{SHARE_URL_IMAGE}</div>
+        </div>
+        <div
+          className="absolute bottom-16 right-16 flex flex-col gap-3 text-right leading-none"
+          style={{
+            fontSize: 32,
+            width: "max-content",
+            maxWidth: "calc(100% - 8rem)",
+          }}
+        >
+          <div style={{ whiteSpace: "nowrap" }}>
+            <span className="text-gray-400">{cruelModeLabel}</span>{" "}
+            <span className="text-gray-300">{cruelModeValueLabel}</span>
+          </div>
+          <div style={{ whiteSpace: "nowrap" }}>
+            <span className="text-gray-400">{playTimeLabel}</span>{" "}
+            <span className="text-gray-300">
+              {formatSharePlayTime(playTimeMs)}
+            </span>
+          </div>
+        </div>
+      </GlowingShadow>
     </div>
   );
 }
@@ -475,21 +475,19 @@ export default function ShareDialog() {
 
   useLayoutEffect(() => {
     if (!open) return;
-    const el = previewWrapRef.current;
-    const parent = el?.parentElement;
-    if (!el || !parent) return;
     const update = () => {
-      // Size from the parent so the wrap can be exactly the scaled card
-      // (w-full on the wrap used to leave letterbox space on the right when
-      // scale lagged, or when border-box width did not match content width).
-      const available = parent.getBoundingClientRect().width;
-      const targetWidth = Math.min(PREVIEW_MAX_WIDTH, available);
-      setPreviewScale(targetWidth / SHARE_IMAGE_WIDTH || 0.3);
+      // Chrome-less dialog is w-max, so size from the viewport (card + button row).
+      const maxW = Math.min(PREVIEW_MAX_WIDTH, window.innerWidth - 32);
+      const maxH = window.innerHeight * 0.95 - 72;
+      const scale = Math.min(
+        maxW / SHARE_IMAGE_WIDTH,
+        maxH / SHARE_IMAGE_HEIGHT,
+      );
+      setPreviewScale(scale > 0 ? scale : 0.3);
     };
     update();
-    const observer = new ResizeObserver(update);
-    observer.observe(parent);
-    return () => observer.disconnect();
+    window.addEventListener("resize", update);
+    return () => window.removeEventListener("resize", update);
   }, [open]);
 
   const generateBlob = async (): Promise<Blob | null> => {
@@ -641,87 +639,81 @@ export default function ShareDialog() {
   return (
     <Dialog open={open} onOpenChange={(next) => !next && setOpen(false)}>
       <DialogContent
-        className="[--adc-dialog-max-w:30rem] max-h-[90vh] flex flex-col overflow-hidden"
+        skipViewportWidthClamp
         layerZIndex={70}
+        className="flex w-max max-w-[min(95vw,28rem)] max-h-[95vh] flex-col items-center gap-4 overflow-visible border-0 bg-transparent p-0 shadow-none sm:rounded-none"
       >
-        <DialogHeader>
-          <DialogTitle>
-            {t("share.title", { defaultValue: "Share your progress" })}
-          </DialogTitle>
-        </DialogHeader>
+        <DialogTitle className="sr-only">
+          {t("share.title", { defaultValue: "Share your progress" })}
+        </DialogTitle>
 
-        <div className="flex min-h-0 flex-1 justify-center overflow-auto py-2">
+        <div
+          ref={previewWrapRef}
+          className="relative shrink-0 overflow-visible"
+          style={{
+            width: SHARE_IMAGE_WIDTH * previewScale,
+            height: SHARE_IMAGE_HEIGHT * previewScale,
+          }}
+        >
           <div
-            ref={previewWrapRef}
-            className="relative box-content shrink-0 self-center overflow-hidden rounded-md border border-border"
             style={{
-              // Exact scaled card size (border draws outside via box-content) so the
-              // preview never letterboxes empty space that the exported PNG lacks.
-              width: SHARE_IMAGE_WIDTH * previewScale,
-              height: SHARE_IMAGE_HEIGHT * previewScale,
-              backgroundColor: CARD_BG,
+              position: "absolute",
+              top: 0,
+              left: 0,
+              width: SHARE_IMAGE_WIDTH,
+              height: SHARE_IMAGE_HEIGHT,
+              transform: `scale(${previewScale})`,
+              transformOrigin: "top left",
             }}
           >
-            <div
-              style={{
-                position: "absolute",
-                top: 0,
-                left: 0,
-                width: SHARE_IMAGE_WIDTH,
-                height: SHARE_IMAGE_HEIGHT,
-                transform: `scale(${previewScale})`,
-                transformOrigin: "top left",
+            <ShareCard
+              cardRef={cardRef}
+              resources={resources}
+              seenResources={seenResources}
+              resourcePercent={resourcePercent}
+              achievementPercent={percent}
+              resourcesLabel={t("share.resources", {
+                percent: resourcePercent,
+                defaultValue: "Resources: {{percent}} %",
+              })}
+              achievementsLabel={t("share.achievements", {
+                percent,
+                defaultValue: "Achievements: {{percent}} %",
+              })}
+              ringLabels={{
+                basic: t(CATEGORY_HEADER_KEYS.basic, {
+                  defaultValue: CATEGORY_HEADER_DEFAULTS.basic,
+                }),
+                building: t(CATEGORY_HEADER_KEYS.building, {
+                  defaultValue: CATEGORY_HEADER_DEFAULTS.building,
+                }),
+                item: t(CATEGORY_HEADER_KEYS.item, {
+                  defaultValue: CATEGORY_HEADER_DEFAULTS.item,
+                }),
+                action: t(CATEGORY_HEADER_KEYS.action, {
+                  defaultValue: CATEGORY_HEADER_DEFAULTS.action,
+                }),
+                overall: t(CATEGORY_HEADER_KEYS.overall, {
+                  defaultValue: CATEGORY_HEADER_DEFAULTS.overall,
+                }),
               }}
-            >
-              <ShareCard
-                cardRef={cardRef}
-                resources={resources}
-                seenResources={seenResources}
-                resourcePercent={resourcePercent}
-                achievementPercent={percent}
-                resourcesLabel={t("share.resources", {
-                  percent: resourcePercent,
-                  defaultValue: "Resources: {{percent}} %",
-                })}
-                achievementsLabel={t("share.achievements", {
-                  percent,
-                  defaultValue: "Achievements: {{percent}} %",
-                })}
-                ringLabels={{
-                  basic: t(CATEGORY_HEADER_KEYS.basic, {
-                    defaultValue: CATEGORY_HEADER_DEFAULTS.basic,
-                  }),
-                  building: t(CATEGORY_HEADER_KEYS.building, {
-                    defaultValue: CATEGORY_HEADER_DEFAULTS.building,
-                  }),
-                  item: t(CATEGORY_HEADER_KEYS.item, {
-                    defaultValue: CATEGORY_HEADER_DEFAULTS.item,
-                  }),
-                  action: t(CATEGORY_HEADER_KEYS.action, {
-                    defaultValue: CATEGORY_HEADER_DEFAULTS.action,
-                  }),
-                  overall: t(CATEGORY_HEADER_KEYS.overall, {
-                    defaultValue: CATEGORY_HEADER_DEFAULTS.overall,
-                  }),
-                }}
-                cruelModeLabel={t("share.cruelMode", {
-                  defaultValue: "Cruel Mode",
-                })}
-                cruelModeValueLabel={
-                  cruelMode
-                    ? t("share.on", { defaultValue: "On" })
-                    : t("share.off", { defaultValue: "Off" })
-                }
-                playTimeLabel={t("share.playTime", {
-                  defaultValue: "Play time",
-                })}
-                playTimeMs={playTimeMs}
-              />
-            </div>
+              cruelModeLabel={t("share.cruelMode", {
+                defaultValue: "Cruel Mode",
+              })}
+              cruelModeValueLabel={
+                cruelMode
+                  ? t("share.on", { defaultValue: "On" })
+                  : t("share.off", { defaultValue: "Off" })
+              }
+              playTimeLabel={t("share.playTime", {
+                defaultValue: "Play time",
+              })}
+              playTimeMs={playTimeMs}
+            />
           </div>
         </div>
 
-        <div className="flex shrink-0 justify-end gap-2">
+        <div className="flex shrink-0 flex-wrap justify-center gap-2">
           <TooltipWrapper
             tooltip={
               <p className="text-xs">

@@ -82,13 +82,8 @@
   --adc-gs-glow-opacity: 1;
   --adc-gs-glow-radius: 100;
   --adc-gs-glow-rotate-unit: 1deg;
-  /* Glow chroma: full rainbow by default */
-  --adc-gs-sat: 100%;
-  --adc-gs-light-hi: 90%;
-  --adc-gs-light-mid: 80%;
-  --adc-gs-light-lo: 60%;
-  --adc-gs-glow-light: 60%;
 
+  width: var(--adc-gs-card-width);
   width: min(480px, var(--adc-gs-card-width));
   aspect-ratio: 1.5 / 1;
   color: white;
@@ -114,92 +109,27 @@
   --adc-gs-border-width: 2px;
 }
 
-/* Full-bleed frame for share imagery (fills parent box). */
+/* Share-image frame: fills fixed 1080×1350 parent */
 .adc-gs--frame {
   width: 100%;
   height: 100%;
   aspect-ratio: auto;
   margin: 0;
   --adc-gs-card-width: 1080px;
-  --adc-gs-card-radius: 0px;
-  --adc-gs-border-width: 4px;
-  --adc-gs-glow-blur: 2.5;
-  --adc-gs-glow-opacity: 0.9;
-  --adc-gs-glow-scale: 1.15;
-  overflow: hidden;
+  --adc-gs-card-radius: 36px;
+  --adc-gs-border-width: 3px;
 }
 
-/*
- * Border-only overlay: punch out the interior so the glow/gradient
- * only paint a ring around the edge. Content underneath is untouched.
- */
-.adc-gs--border-only {
-  position: absolute;
-  inset: 0;
-  width: auto;
-  height: auto;
-  margin: 0;
-  aspect-ratio: auto;
-  z-index: 5;
-  pointer-events: none;
-  overflow: hidden;
-  box-sizing: border-box;
-  /* Ring thickness where the effect is visible */
-  padding: 10px;
-  -webkit-mask:
-    linear-gradient(#000 0 0) content-box,
-    linear-gradient(#000 0 0);
-  -webkit-mask-composite: xor;
-  mask:
-    linear-gradient(#000 0 0) content-box,
-    linear-gradient(#000 0 0);
-  mask-composite: exclude;
-}
-
-.adc-gs--border-only.adc-gs--frame {
-  --adc-gs-glow-blur: 2;
-  --adc-gs-glow-opacity: 1;
-  --adc-gs-bg-size: 8;
-  padding: 12px;
-}
-
-.adc-gs--border-only .adc-gs__content {
-  position: absolute;
-  inset: 0;
-  width: auto;
-  height: auto;
-  padding: 0;
-  background: transparent;
-  border-radius: inherit;
-}
-
-.adc-gs--border-only .adc-gs__content:before {
-  inset: 0;
-  border-radius: inherit;
-  box-shadow: none;
-  mix-blend-mode: screen;
-}
-
-.adc-gs--border-only .adc-gs__glow {
-  inset: 0;
-  margin: auto;
-  width: calc(var(--adc-gs-card-width) / 4);
-  height: calc(var(--adc-gs-card-width) / 4);
-}
-
-/* Silver / white: cool low-chroma glow instead of rainbow */
+/* Silver / white (share image) */
 .adc-gs--silver {
   --adc-gs-card-color: #0b0b0e;
   --adc-gs-hue: 210;
   --adc-gs-hue-speed: 0;
-  --adc-gs-sat: 8%;
-  --adc-gs-light-hi: 98%;
-  --adc-gs-light-mid: 88%;
-  --adc-gs-light-lo: 72%;
-  --adc-gs-glow-light: 85%;
-  --adc-gs-glow-blur: 4;
-  --adc-gs-glow-opacity: 0.85;
-  --adc-gs-glow-scale: 1.35;
+  --adc-gs-sat: 10%;
+  --adc-gs-light-hi: 100%;
+  --adc-gs-light-mid: 90%;
+  --adc-gs-light-lo: 70%;
+  --adc-gs-glow-light: 88%;
 }
 
 .adc-gs:before,
@@ -213,39 +143,51 @@
 }
 
 .adc-gs__content {
-  position: relative;
-  z-index: 1;
+  position: absolute;
+  inset: 0;
   background: var(--adc-gs-card-color);
   border-radius: calc(var(--adc-gs-card-radius) * 0.9);
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 100%;
-  height: 100%;
   padding: calc(var(--adc-gs-card-width) / 8);
   box-sizing: border-box;
+  overflow: hidden;
+  z-index: 1;
 }
 
 .adc-gs--compact .adc-gs__content {
+  position: relative;
+  inset: auto;
   width: auto;
   height: auto;
   padding: 20px 28px;
+}
+
+.adc-gs--frame .adc-gs__content {
+  padding: 0;
+  align-items: stretch;
+  justify-content: flex-start;
 }
 
 .adc-gs__content:before {
   content: "";
   display: block;
   position: absolute;
-  inset: calc(var(--adc-gs-border-width) * -0.5);
+  width: calc(100% + var(--adc-gs-border-width));
+  height: calc(100% + var(--adc-gs-border-width));
+  top: 50%;
+  left: 50%;
+  translate: -50% -50%;
   border-radius: calc(var(--adc-gs-card-radius) * 0.9);
   box-shadow: 0 0 20px black;
   mix-blend-mode: color-burn;
   z-index: -1;
   pointer-events: none;
   background: hsl(0deg 0% 16%) radial-gradient(30% 30% at calc(var(--adc-gs-bg-x) * 1%) calc(var(--adc-gs-bg-y) * 1%),
-      hsl(calc(var(--adc-gs-hue) * var(--adc-gs-hue-speed) * 1deg) var(--adc-gs-sat) var(--adc-gs-light-hi)) calc(0% * var(--adc-gs-bg-size)),
-      hsl(calc(var(--adc-gs-hue) * var(--adc-gs-hue-speed) * 1deg) var(--adc-gs-sat) var(--adc-gs-light-mid)) calc(20% * var(--adc-gs-bg-size)),
-      hsl(calc(var(--adc-gs-hue) * var(--adc-gs-hue-speed) * 1deg) var(--adc-gs-sat) var(--adc-gs-light-lo)) calc(40% * var(--adc-gs-bg-size)),
+      hsl(calc(var(--adc-gs-hue) * var(--adc-gs-hue-speed) * 1deg) 100% 90%) calc(0% * var(--adc-gs-bg-size)),
+      hsl(calc(var(--adc-gs-hue) * var(--adc-gs-hue-speed) * 1deg) 100% 80%) calc(20% * var(--adc-gs-bg-size)),
+      hsl(calc(var(--adc-gs-hue) * var(--adc-gs-hue-speed) * 1deg) 100% 60%) calc(40% * var(--adc-gs-bg-size)),
       transparent 100%);
   animation:
     adc-gs-hue var(--adc-gs-animation-speed) linear infinite,
@@ -255,11 +197,11 @@
 
 .adc-gs--silver .adc-gs__content:before {
   mix-blend-mode: screen;
-  box-shadow: 0 0 18px rgb(0 0 0 / 80%);
-  background: hsl(220deg 6% 12%) radial-gradient(35% 35% at calc(var(--adc-gs-bg-x) * 1%) calc(var(--adc-gs-bg-y) * 1%),
-      hsl(210deg var(--adc-gs-sat) var(--adc-gs-light-hi)) calc(0% * var(--adc-gs-bg-size)),
-      hsl(210deg var(--adc-gs-sat) var(--adc-gs-light-mid)) calc(22% * var(--adc-gs-bg-size)),
-      hsl(210deg 4% var(--adc-gs-light-lo)) calc(42% * var(--adc-gs-bg-size)),
+  box-shadow: 0 0 24px rgb(0 0 0 / 85%);
+  background: hsl(220deg 8% 14%) radial-gradient(32% 32% at calc(var(--adc-gs-bg-x) * 1%) calc(var(--adc-gs-bg-y) * 1%),
+      hsl(0deg 0% var(--adc-gs-light-hi)) calc(0% * var(--adc-gs-bg-size)),
+      hsl(210deg var(--adc-gs-sat) var(--adc-gs-light-mid)) calc(20% * var(--adc-gs-bg-size)),
+      hsl(210deg 6% var(--adc-gs-light-lo)) calc(40% * var(--adc-gs-bg-size)),
       transparent 100%);
   animation: adc-gs-rotate-bg var(--adc-gs-animation-speed) linear infinite;
 }
@@ -287,7 +229,7 @@
   height: 130%;
   left: -15%;
   top: -15%;
-  background: hsl(calc(var(--adc-gs-hue) * var(--adc-gs-hue-speed) * 1deg) var(--adc-gs-sat) var(--adc-gs-glow-light));
+  background: hsl(calc(var(--adc-gs-hue) * var(--adc-gs-hue-speed) * 1deg) 100% 60%);
   position: relative;
   border-radius: calc(var(--adc-gs-glow-radius) * 10vw);
   animation: adc-gs-hue var(--adc-gs-animation-speed) linear infinite;
@@ -297,9 +239,9 @@
 
 .adc-gs--silver .adc-gs__glow:after {
   background: radial-gradient(circle,
-      hsl(0deg 0% 100% / 0.95) 0%,
-      hsl(210deg 10% 82% / 0.75) 45%,
-      hsl(210deg 8% 70% / 0.35) 100%);
+      hsl(0deg 0% 100%) 0%,
+      hsl(210deg 12% 85%) 40%,
+      hsl(210deg 8% 65% / 0.55) 100%);
   animation: none;
 }
 
