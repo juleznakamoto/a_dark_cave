@@ -105,6 +105,10 @@ import {
 import { calculateBastionStats } from "@/game/bastionStats";
 import { getCurrentPopulation, getMaxPopulation } from "@/game/population";
 import { audioManager, SOUND_VOLUME } from "@/lib/audio";
+import {
+  BLOOD_MOON_EVENT_ID,
+  isBloodMoonTimedEvent,
+} from "@/game/bloodMoonOverlay";
 import { GAME_CONSTANTS, getCallMerchantGoldCost } from "@/game/constants";
 import {
   isPlaylightDiscoverSocialTaskFulfilled,
@@ -3471,15 +3475,19 @@ export const useGameStore = create<GameStore>((set, get) => ({
 
     // Handle timed tab event if present (never stack a second timed tab)
     if (timedTabEntry && !state.timedEventTab.isActive) {
-      // Play event sound for timed tab events
+      // Play event sound for timed tab events (blood moon bed starts in setTimedEventTab)
       if (timedTabEntry._playSound) {
-        // Use merchant sound for merchant events, otherwise use generic event sound
+        const catalogId =
+          timedTabEntry.eventId || timedTabEntry.id?.split("-")[0];
+        const isBloodMoonEvent = catalogId === BLOOD_MOON_EVENT_ID;
         const isMerchantEvent = timedTabEntry.id?.startsWith("merchant");
-        const soundName = isMerchantEvent ? "merchant" : "event";
-        const soundVolume = isMerchantEvent
-          ? SOUND_VOLUME.merchant
-          : SOUND_VOLUME.eventUi;
-        audioManager.playSound(soundName, soundVolume);
+        if (!isBloodMoonEvent) {
+          const soundName = isMerchantEvent ? "merchant" : "event";
+          const soundVolume = isMerchantEvent
+            ? SOUND_VOLUME.merchant
+            : SOUND_VOLUME.eventUi;
+          audioManager.playSound(soundName, soundVolume);
+        }
       }
 
       get().setTimedEventTab(true, timedTabEntry, timedTabEntry.timedTabDuration);
@@ -4306,15 +4314,34 @@ export const useGameStore = create<GameStore>((set, get) => ({
   },
 
   setTimedEventTab: async (isActive: boolean, event?: LogEntry | null, duration?: number) => {
+    const catalogId = event
+      ? event.eventId || event.id.split("-")[0]
+      : null;
+    const isBloodMoonEvent = catalogId === BLOOD_MOON_EVENT_ID;
+
     // Play sound if activating
     if (isActive && event) {
-      const eventId = event.id.split("-")[0];
-      const madnessEventIds = Object.keys(madnessEvents);
-      const isMadnessEvent = madnessEventIds.includes(eventId);
-      audioManager.playSound(
-        isMadnessEvent ? "eventMadness" : "event",
-        SOUND_VOLUME.eventUi,
+      if (isBloodMoonEvent) {
+        // Event bed (not the generic UI bell); BGM crossfades out.
+        audioManager.startEventAmbience(
+          "bloodMoon",
+          SOUND_VOLUME.bloodMoon,
+        );
+      } else {
+        const madnessEventIds = Object.keys(madnessEvents);
+        const isMadnessEvent = madnessEventIds.includes(catalogId!);
+        audioManager.playSound(
+          isMadnessEvent ? "eventMadness" : "event",
+          SOUND_VOLUME.eventUi,
+        );
+      }
+    } else if (!isActive) {
+      const wasBloodMoon = isBloodMoonTimedEvent(
+        get().timedEventTab?.event,
       );
+      if (wasBloodMoon) {
+        audioManager.stopEventAmbience("bloodMoon");
+      }
     }
 
     // If activating merchant event, use the choices already generated and passed in the event
