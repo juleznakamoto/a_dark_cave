@@ -59,7 +59,7 @@ function SteamDemoProgressBar() {
       className="pointer-events-none absolute inset-0 z-[1] flex items-center justify-center px-16 sm:px-24"
       aria-hidden={false}
     >
-      <div className="pointer-events-auto w-full max-w-[min(18rem,50vw)] min-w-[8rem] opacity-80 transition-opacity hover:opacity-100 sm:max-w-[20rem]">
+      <div className="pointer-events-auto w-full max-w-[min(9rem,25vw)] min-w-[4rem] opacity-80 transition-opacity hover:opacity-100 sm:max-w-[10rem]">
         <SegmentedProgress
           value={percent}
           segments={segments}
@@ -70,7 +70,7 @@ function SteamDemoProgressBar() {
           filledClassName="bg-green-700"
           emptyClassName="bg-neutral-700"
           filledGlowClassName="shadow-[0_0_12px_rgba(21,128,61,0.45)]"
-          segmentClassName="h-[3px]"
+          segmentClassName="h-1.5"
           aria-label={label}
           aria-valuenow={completed}
           aria-valuemin={0}

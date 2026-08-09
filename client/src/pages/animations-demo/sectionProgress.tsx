@@ -140,18 +140,20 @@ export function ProgressBarsSection() {
         <p className="text-xs text-muted-foreground">
           Segmented progress (Steam demo footer style)
         </p>
-        <SegmentedProgress
-          value={growValue}
-          segments={8}
-          label="Demo Progress"
-          showPercentage
-          showDemo
-          compact
-          filledClassName="bg-green-700"
-          emptyClassName="bg-neutral-700"
-          filledGlowClassName="shadow-[0_0_12px_rgba(21,128,61,0.45)]"
-          segmentClassName="h-[3px]"
-        />
+        <div className="max-w-[10rem]">
+          <SegmentedProgress
+            value={growValue}
+            segments={8}
+            label="Demo Progress"
+            showPercentage
+            showDemo
+            compact
+            filledClassName="bg-green-700"
+            emptyClassName="bg-neutral-700"
+            filledGlowClassName="shadow-[0_0_12px_rgba(21,128,61,0.45)]"
+            segmentClassName="h-1.5"
+          />
+        </div>
       </div>
     </DemoSection>
   );

@@ -169,7 +169,7 @@ export function SegmentedProgress({
         )}
 
         <div
-          className="flex gap-[1.5px] py-0.5"
+          className="flex gap-[3px] py-0.5"
           role="progressbar"
           aria-label={ariaLabel ?? label}
           aria-valuenow={ariaValueNow ?? value}
@@ -187,7 +187,7 @@ export function SegmentedProgress({
                 onMouseEnter={() => setHoveredSegment(index)}
                 onMouseLeave={() => setHoveredSegment(null)}
                 className={cn(
-                  "h-1.5 flex-1 rounded-[2px] cursor-pointer origin-center",
+                  "h-3 flex-1 rounded-[4px] cursor-pointer origin-center",
                   "transition-all duration-500 ease-[cubic-bezier(0.34,1.56,0.64,1)]",
                   isFilled ? filledClassName : emptyClassName,
                   isHovered && isFilled && cn("brightness-110", filledGlowClassName),
