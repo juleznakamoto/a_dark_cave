@@ -219,6 +219,8 @@ export function ProgressGrowSparksCanvas({
   showBrightSparks = true,
   sparkPalette = ESTATE_SPARK_PALETTE,
   sparkIntensity = "full",
+  /** Multiplier for particles per emit (e.g. 0.7 = 30% fewer). */
+  countScale = 1,
 }: {
   tipMarkerRef: React.RefObject<HTMLDivElement | null>;
   durationMs: number;
@@ -227,6 +229,7 @@ export function ProgressGrowSparksCanvas({
   showBrightSparks?: boolean;
   sparkPalette?: SparkPalette;
   sparkIntensity?: "full" | "subtle";
+  countScale?: number;
 }) {
   const canvasRef = React.useRef<HTMLCanvasElement>(null);
   const particlesRef = React.useRef<GrowSparkParticle[]>([]);
@@ -256,42 +259,68 @@ export function ProgressGrowSparksCanvas({
     const start = performance.now();
     let lastEmit = -GROW_SPARK_EMIT_INTERVAL_MS;
     lastFrameRef.current = start;
+    let lastTipX: number | null = null;
+    let tipEverMoved = false;
+    let tipMotionlessMs = 0;
+    let tipSettled = false;
 
-    const warmPerEmit =
-      sparkIntensity === "subtle"
-        ? Math.max(2, Math.floor(GROW_SPARKS_PER_EMIT * 0.35))
-        : GROW_SPARKS_PER_EMIT;
-    const brightPerEmit =
-      sparkIntensity === "subtle"
-        ? Math.max(1, Math.floor(BRIGHT_SPARKS_PER_EMIT * 0.35))
-        : BRIGHT_SPARKS_PER_EMIT;
+    const intensityScale = sparkIntensity === "subtle" ? 0.35 : 1;
+    const scale = Math.max(0, intensityScale * countScale);
+    const warmPerEmit = Math.max(1, Math.floor(GROW_SPARKS_PER_EMIT * scale));
+    const brightPerEmit = Math.max(
+      1,
+      Math.floor(BRIGHT_SPARKS_PER_EMIT * scale),
+    );
 
     const loop = (now: number) => {
       const elapsed = now - start;
       const dt = Math.min(0.05, (now - lastFrameRef.current) / 1000);
       lastFrameRef.current = now;
 
+      const marker = tipMarkerRef.current;
+      let tipX = 0;
+      let tipY = 0;
+      let tipHeight = 0;
+      if (marker) {
+        const rect = marker.getBoundingClientRect();
+        tipX = rect.right;
+        tipY = rect.top + rect.height / 2;
+        tipHeight = rect.height;
+        if (lastTipX != null) {
+          const dx = Math.abs(tipX - lastTipX);
+          if (dx > 0.4) {
+            tipEverMoved = true;
+            tipMotionlessMs = 0;
+            tipSettled = false;
+          } else {
+            tipMotionlessMs += dt * 1000;
+            // Ease-out tip crawls then stops; cut emit/glow once it settles.
+            if (tipEverMoved && tipMotionlessMs > 48) {
+              tipSettled = true;
+            }
+          }
+        }
+        lastTipX = tipX;
+      }
+
+      const tipActive = elapsed <= durationMs && !tipSettled;
+
       if (
+        tipActive &&
         elapsed - lastEmit >= GROW_SPARK_EMIT_INTERVAL_MS &&
-        elapsed <= durationMs
+        marker
       ) {
         lastEmit = elapsed;
-        const marker = tipMarkerRef.current;
-        if (marker) {
-          const rect = marker.getBoundingClientRect();
-          const x = rect.right;
-          const y = rect.top + rect.height / 2;
-          for (let i = 0; i < warmPerEmit; i++) {
+        for (let i = 0; i < warmPerEmit; i++) {
+          particlesRef.current.push(
+            createGrowSparkParticle(tipX, tipY, "warm", sparkPalette),
+          );
+        }
+        if (showBrightSparks) {
+          for (let i = 0; i < brightPerEmit; i++) {
             particlesRef.current.push(
-              createGrowSparkParticle(x, y, "warm", sparkPalette),
+              createGrowSparkParticle(tipX, tipY, "bright", sparkPalette),
             );
-          }
-          if (showBrightSparks) {
-            for (let i = 0; i < brightPerEmit; i++) {
-              particlesRef.current.push(
-                createGrowSparkParticle(x, y, "bright", sparkPalette),
-              );
-            }
           }
         }
       }
@@ -307,18 +336,8 @@ export function ProgressGrowSparksCanvas({
 
       ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-      if (showTipGlow && elapsed <= durationMs) {
-        const marker = tipMarkerRef.current;
-        if (marker) {
-          const rect = marker.getBoundingClientRect();
-          drawTipGlow(
-            ctx,
-            rect.right,
-            rect.top + rect.height / 2,
-            rect.height,
-            sparkPalette,
-          );
-        }
+      if (showTipGlow && tipActive && marker) {
+        drawTipGlow(ctx, tipX, tipY, tipHeight, sparkPalette);
       }
 
       for (const particle of particlesRef.current) {
@@ -326,7 +345,7 @@ export function ProgressGrowSparksCanvas({
       }
       ctx.globalAlpha = 1;
 
-      if (elapsed < durationMs || particlesRef.current.length > 0) {
+      if (tipActive || particlesRef.current.length > 0) {
         rafRef.current = requestAnimationFrame(loop);
       }
     };
@@ -347,6 +366,7 @@ export function ProgressGrowSparksCanvas({
     showBrightSparks,
     sparkPalette,
     sparkIntensity,
+    countScale,
   ]);
 
   return createPortal(

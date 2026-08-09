@@ -362,6 +362,7 @@ export function SegmentedProgress({
           showBrightSparks
           sparkPalette={sparkPalette}
           sparkIntensity="full"
+          countScale={0.7}
         />
       )}
     </>
