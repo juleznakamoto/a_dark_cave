@@ -23,6 +23,20 @@ function getSegmentFill(
   return Math.min(1, Math.max(0, units - index));
 }
 
+/** Segment currently filling (or just completed at a bucket boundary). */
+function getActiveSegmentIndex(displayValue: number, segments: number): number {
+  if (segments <= 0) return -1;
+  const units = Math.min(
+    segments,
+    Math.max(0, (displayValue / 100) * segments),
+  );
+  if (units <= 0) return -1;
+  const floored = Math.floor(units);
+  // Exact boundary: tip sits at the end of the segment that just filled.
+  if (units === floored) return Math.max(0, floored - 1);
+  return Math.min(segments - 1, floored);
+}
+
 interface SegmentedProgressProps {
   value?: number;
   segments?: number;
@@ -253,6 +267,9 @@ export function SegmentedProgress({
               const fill = getSegmentFill(displayValue, segments, index);
               const delay =
                 isInitialized && !changeOnlyGrow ? index * 20 : 0;
+              const showSegmentGlow =
+                glowKey > 0 &&
+                index === getActiveSegmentIndex(displayValue, segments);
 
               return (
                 <div
@@ -276,8 +293,7 @@ export function SegmentedProgress({
                       transitionDelay: `${delay}ms`,
                     }}
                   >
-                    {/* Glow clipped to filled segment only (matches Progress indicator). */}
-                    {glowKey > 0 && fill > 0 && (
+                    {showSegmentGlow && (
                       <motion.div
                         key={glowKey}
                         className={cn(
