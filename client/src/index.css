@@ -502,8 +502,10 @@ html.adc-text-large .game-panel-header-indicator-row {
 
 /* Village − / + assignment hit targets. */
 .villager-count-button {
-  width: calc(18px * var(--adc-control-scale, 1));
-  height: calc(18px * var(--adc-control-scale, 1));
+  width: calc(20px * var(--adc-control-scale, 1));
+  height: calc(20px * var(--adc-control-scale, 1));
+  font-size: calc(0.8125rem * var(--adc-text-scale, 1));
+  /* 13px @ Normal */
 }
 
 /* Shared dialog X: square hit target + icon grow slightly with Large text. */

@@ -1204,7 +1204,7 @@ export default function VillagePanel() {
           >
             <span
               className={cn(
-                "text-xs leading-none tabular-nums",
+                "leading-none tabular-nums",
                 currentCount === 0 && "opacity-60",
               )}
             >
@@ -1247,7 +1247,7 @@ export default function VillagePanel() {
           >
             <span
               className={cn(
-                "text-xs leading-none tabular-nums",
+                "leading-none tabular-nums",
                 !canAssignMore && "opacity-60",
               )}
             >
