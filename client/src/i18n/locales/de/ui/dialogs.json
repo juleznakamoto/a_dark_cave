@@ -223,6 +223,10 @@
     "off": "Aus",
     "playTime": "Spielzeit",
     "download": "Herunterladen", //x1.6
+    "copy": "Kopieren",
+    "copiedTitle": "In Zwischenablage kopiert",
+    "copyErrorTitle": "Bild konnte nicht kopiert werden",
+    "copyErrorDesc": "Beim Kopieren in die Zwischenablage ist etwas schiefgelaufen.",
     "generating": "Wird erstellt…", //x1.3
     "share": "Teilen",
     "errorTitle": "Bild konnte nicht erstellt werden", //x1.5

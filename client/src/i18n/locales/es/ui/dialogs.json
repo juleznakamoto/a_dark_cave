@@ -223,6 +223,10 @@
     "off": "Desactivado", //x3.7
     "playTime": "Tiempo de juego", //x1.7
     "download": "Descargar",
+    "copy": "Copiar",
+    "copiedTitle": "Copiado al portapapeles",
+    "copyErrorTitle": "No se pudo copiar la imagen",
+    "copyErrorDesc": "Algo salió mal al copiar al portapapeles.",
     "generating": "Generando…",
     "share": "Compartir",
     "errorTitle": "No se pudo crear la imagen",

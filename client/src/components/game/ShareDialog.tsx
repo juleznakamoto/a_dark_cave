@@ -4,7 +4,6 @@ import { useTranslation } from "react-i18next";
 import {
   Dialog,
   DialogContent,
-  DialogDescription,
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
@@ -594,6 +593,43 @@ export default function ShareDialog() {
     }
   };
 
+  const handleCopyImage = async () => {
+    if (busy) return;
+    setBusy(true);
+    try {
+      const blob = await generateBlob();
+      if (!blob) throw new Error("Failed to render share image");
+      if (!navigator.clipboard?.write || typeof ClipboardItem === "undefined") {
+        throw new Error("Clipboard image copy not supported");
+      }
+      const type = blob.type || "image/png";
+      await navigator.clipboard.write([
+        new ClipboardItem({
+          // Safari requires a Promise-valued ClipboardItem in some versions.
+          [type]: Promise.resolve(blob),
+        }),
+      ]);
+      toast({
+        title: t("share.copiedTitle", {
+          defaultValue: "Copied to clipboard",
+        }),
+      });
+    } catch (error) {
+      logger.error("Failed to copy progress image", error);
+      toast({
+        title: t("share.copyErrorTitle", {
+          defaultValue: "Could not copy image",
+        }),
+        description: t("share.copyErrorDesc", {
+          defaultValue: "Something went wrong while copying to the clipboard.",
+        }),
+        variant: "destructive",
+      });
+    } finally {
+      setBusy(false);
+    }
+  };
+
   return (
     <Dialog open={open} onOpenChange={(next) => !next && setOpen(false)}>
       <DialogContent
@@ -604,11 +640,6 @@ export default function ShareDialog() {
           <DialogTitle>
             {t("share.title", { defaultValue: "Share your progress" })}
           </DialogTitle>
-          <DialogDescription>
-            {t("share.description", {
-              defaultValue: "Save or share an image of your game progress.",
-            })}
-          </DialogDescription>
         </DialogHeader>
 
         <div className="flex min-h-0 flex-1 justify-center overflow-auto py-2">
@@ -719,6 +750,17 @@ export default function ShareDialog() {
             disabled={busy}
           >
             {t("share.download", { defaultValue: "Download" })}
+          </Button>
+          <Button
+            variant="outline"
+            size="xs"
+            className="shrink-0 font-medium px-3"
+            onClick={() => {
+              void handleCopyImage();
+            }}
+            disabled={busy}
+          >
+            {t("share.copy", { defaultValue: "Copy" })}
           </Button>
           <Button
             size="xs"

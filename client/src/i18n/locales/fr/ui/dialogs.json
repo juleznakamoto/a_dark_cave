@@ -223,6 +223,10 @@
     "off": "Désactivé",
     "playTime": "Temps de jeu", //x1.3
     "download": "Télécharger",
+    "copy": "Copier",
+    "copiedTitle": "Copié dans le presse-papiers",
+    "copyErrorTitle": "Impossible de copier l'image",
+    "copyErrorDesc": "Une erreur s'est produite lors de la copie dans le presse-papiers.",
     "generating": "Génération…",
     "share": "Partager",
     "errorTitle": "Impossible de créer l'image", //x1.2
