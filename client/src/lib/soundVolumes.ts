@@ -21,6 +21,8 @@ export const SOUND_VOLUME = {
   craft: 0.25,
   mining: 0.5,
   chopWood: 0.8,
+  /** Cave Gather Wood (chopWood before forest unlock) */
+  gatherWood: 0.55,
   hunt: 0.2,
   /** Log line, dialog open, timed tab, and timed-tab check (non-merchant) */
   eventUi: 0.1,

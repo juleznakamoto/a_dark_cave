@@ -2247,10 +2247,15 @@ export const useGameStore = create<GameStore>((set, get) => ({
       });
     }
 
-    // Play chop wood sound for Chop Wood button (Forest panel), not for Gather Wood (Cave panel)
-    if (actionId === "chopWood" && get().flags?.forestUnlocked) {
+    // chopWood is Gather Wood in the cave, Chop Wood once the forest is unlocked
+    if (actionId === "chopWood") {
+      const forestUnlocked = Boolean(get().flags?.forestUnlocked);
       import("@/lib/audio").then(({ audioManager }) => {
-        audioManager.playSound("chopWood", SOUND_VOLUME.chopWood);
+        if (forestUnlocked) {
+          audioManager.playSound("chopWood", SOUND_VOLUME.chopWood);
+        } else {
+          audioManager.playSound("gatherWood", SOUND_VOLUME.gatherWood);
+        }
       });
     }
 

@@ -401,6 +401,7 @@ export class AudioManager {
       'craft': '/sounds/craft.wav',
       'mining': '/sounds/mining.wav',
       'chopWood': '/sounds/chop_wood.wav',
+      'gatherWood': '/sounds/gather_wood.wav',
       'hunt': '/sounds/hunt.wav'
     };
 
