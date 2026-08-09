@@ -313,7 +313,8 @@ export default function CombatDialog({
   useEffect(() => {
     if (!isOpen) {
       audioManager.stopLoopingSound("combatWaveIntro");
-      audioManager.stopLoopingSound("combat");
+      // 1s fade-out when the dialog closes (result overlay or abandon).
+      audioManager.stopLoopingSound("combat", 1);
       return;
     }
 
@@ -331,7 +332,7 @@ export default function CombatDialog({
     audioManager.stopLoopingSound("combatWaveIntro");
     audioManager.playLoopingSound("combat", SOUND_VOLUME.combat);
     return () => {
-      audioManager.stopLoopingSound("combat");
+      audioManager.stopLoopingSound("combat", 1);
     };
   }, [isOpen, combatStarted]);
 
