@@ -368,20 +368,21 @@ export class AudioManager {
     });
   }
 
+  /**
+   * Decode start-screen cues early so Light Fire is not waiting on first-click
+   * fetch/decode (especially slow on Vite/dev). Autoplay only blocks play(), not load.
+   */
   async preloadSounds(): Promise<void> {
-    logger.log('Registering initial sounds for Howler...');
-    // We only register the URL but don't force preload/load here to avoid blocking
-    // critical path if the AudioManager is initialized early.
-    // The sound will be loaded on first play or when loadGameSounds is called.
+    logger.log('Preloading start-screen sounds...');
     const initialSounds = {
-      'wind': '/sounds/wind.mp3',
-      'lightFire': '/sounds/light_fire.wav',
+      wind: '/sounds/wind.mp3',
+      lightFire: '/sounds/light_fire.wav',
     };
 
-    for (const [name, url] of Object.entries(initialSounds)) {
-      this.soundUrls.set(name, url);
-    }
-    logger.log('Initial sound registration complete (deferred loading)');
+    await Promise.all(
+      Object.entries(initialSounds).map(([name, url]) => this.loadSound(name, url)),
+    );
+    logger.log('Start-screen sound preload complete');
   }
 
   async loadGameSounds(): Promise<void> {

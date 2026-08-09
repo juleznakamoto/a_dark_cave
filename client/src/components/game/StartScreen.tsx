@@ -166,6 +166,11 @@ export default function StartScreen({
     audioManager.sfxMute(sfxMuted);
   }, [musicMuted, sfxMuted, musicVolume, sfxVolume]);
 
+  // Ensure Light Fire is decoded before the click (module preload can still be in flight).
+  useEffect(() => {
+    void audioManager.loadSound("lightFire", "/sounds/light_fire.wav");
+  }, []);
+
   useEffect(() => {
     // Wind plays as soon as the user shows intent (mousemove on desktop, touchstart on mobile).
     // Both events fire before the click event, so executedRef.current is still false
@@ -380,16 +385,20 @@ export default function StartScreen({
       });
     }
 
-    // Immediately stop wind with no fade to prevent overlap
-    audioManager.stopLoopingSound("wind", 2);
+    // Cut wind immediately so it does not bury / delay the fire one-shot.
+    audioManager.stopLoopingSound("wind", 0);
 
     audioManager.playSound("lightFire", SOUND_VOLUME.lightFire);
 
-    audioManager.loadGameSounds().then(() => {
-      if (!musicMuted) {
-        audioManager.startBackgroundMusic();
-      }
-    });
+    // Defer the game pack (incl. large BGM) so Light Fire is not competing for
+    // network/decode on the same tick — most noticeable in Vite/dev.
+    window.setTimeout(() => {
+      void audioManager.loadGameSounds().then(() => {
+        if (!musicMuted) {
+          void audioManager.startBackgroundMusic();
+        }
+      });
+    }, 200);
 
     const preferences = {
       cruelMode: isCruelMode,
@@ -537,15 +546,15 @@ export default function StartScreen({
         <div className="text-center mb-4 w-full max-w-xl px-4">
           {(isCruelMode
             ? [
-                t("startScreen.titleCruel"),
-                t("startScreen.airCruel"),
-                t("startScreen.seeCruel"),
-              ]
+              t("startScreen.titleCruel"),
+              t("startScreen.airCruel"),
+              t("startScreen.seeCruel"),
+            ]
             : [
-                t("startScreen.titleNormal"),
-                t("startScreen.airNormal"),
-                t("startScreen.seeNormal"),
-              ]
+              t("startScreen.titleNormal"),
+              t("startScreen.airNormal"),
+              t("startScreen.seeNormal"),
+            ]
           ).map((line, index) => {
             const LineTag = index === 0 ? "h1" : "p";
             return (
@@ -581,9 +590,8 @@ export default function StartScreen({
                   ) => {
                     introLineClipRefs.current[index] = el;
                   }}
-                  className={`relative z-0 m-0 text-lg leading-relaxed font-normal ${
-                    introFadeInDone ? "" : "animate-fade-in-text"
-                  }`}
+                  className={`relative z-0 m-0 text-lg leading-relaxed font-normal ${introFadeInDone ? "" : "animate-fade-in-text"
+                    }`}
                 >
                   <span
                     ref={(el) => {
