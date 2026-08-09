@@ -2245,8 +2245,15 @@ export const useGameStore = create<GameStore>((set, get) => ({
     // Action SFX only for manual clicks — Prior automation stays silent.
     const playActionSfx = meta?.executionSource !== "prior";
     if (playActionSfx) {
-      // Play building completion sound for successful build actions
-      if (actionId.startsWith("build") && result.stateUpdates.buildings) {
+      // Village build + bastion repair share the same completion cue
+      const isBastionRepair =
+        actionId === "repairBastion" ||
+        actionId === "repairWatchtower" ||
+        actionId === "repairPalisades";
+      if (
+        (actionId.startsWith("build") && result.stateUpdates.buildings) ||
+        isBastionRepair
+      ) {
         // Import audioManager here to avoid circular dependency
         import("@/lib/audio").then(({ audioManager }) => {
           audioManager.playSound(
