@@ -34,7 +34,12 @@ const START_INTRO_VAPORIZE_FONT_FALLBACK = {
 
 /** Easter egg: flash eyes at center of the upper-left screen quadrant. */
 const EYES_EASTER_EGG_SRC = "/images/eyes-easter-egg.png";
+const EYES_EASTER_EGG_SOUND = "/sounds/monster_start.wav";
 const EYES_EASTER_EGG_DURATION_MS = 250;
+/** Defer asset fetch until well after LCP / lab SEO windows. */
+const EYES_EASTER_EGG_ASSET_LOAD_MS = 90_000;
+/** Hot-zone is armed only after this idle time on the start screen. */
+const EYES_EASTER_EGG_ARM_MS = 120_000;
 /** Hit radius as a fraction of min(viewport w, h) around the quadrant center. */
 const EYES_EASTER_EGG_HOT_ZONE_RATIO = 0.08;
 
@@ -101,6 +106,8 @@ export default function StartScreen({
   const [showParticles, setShowParticles] = useState(false);
   const [showEyesEasterEgg, setShowEyesEasterEgg] = useState(false);
   const eyesEasterEggInsideHotZoneRef = useRef(false);
+  const eyesEasterEggConsumedRef = useRef(false);
+  const eyesEasterEggAssetsReadyRef = useRef(false);
   const eyesEasterEggHideTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(
     null,
   );
@@ -177,10 +184,46 @@ export default function StartScreen({
     };
   }, []);
 
-  // Eyes easter egg: brief flash when the pointer enters the center of the
-  // upper-left quadrant (screen split into four equal rectangles).
+  // Eyes easter egg (SEO-safe): no early network, listeners, or DOM until idle.
+  // Assets load at 90s; hot-zone arms at 2 min; once per page load.
   useEffect(() => {
+    let cancelled = false;
+    let assetLoadTimer: ReturnType<typeof setTimeout> | null = null;
+    let armTimer: ReturnType<typeof setTimeout> | null = null;
+    let idleCallbackId: number | null = null;
+
+    const stillOnStartScreen = () => !cancelled && !executedRef.current;
+
+    const loadEyesAssets = () => {
+      if (!stillOnStartScreen() || eyesEasterEggAssetsReadyRef.current) return;
+
+      // Prefetch off the critical path; Lighthouse / bots never wait this long.
+      void audioManager.loadSound("monsterStart", EYES_EASTER_EGG_SOUND);
+      const preloadImg = new window.Image();
+      preloadImg.decoding = "async";
+      preloadImg.src = EYES_EASTER_EGG_SRC;
+      eyesEasterEggAssetsReadyRef.current = true;
+    };
+
+    const scheduleAssetLoad = () => {
+      if (!stillOnStartScreen()) return;
+      const ric = window.requestIdleCallback;
+      if (typeof ric === "function") {
+        idleCallbackId = ric(
+          () => {
+            idleCallbackId = null;
+            loadEyesAssets();
+          },
+          { timeout: 5_000 },
+        );
+      } else {
+        loadEyesAssets();
+      }
+    };
+
     const triggerEyesFlash = () => {
+      eyesEasterEggConsumedRef.current = true;
+      window.removeEventListener("mousemove", handlePointerMove);
       setShowEyesEasterEgg(true);
       audioManager.playSound("monsterStart", SOUND_VOLUME.monsterStart);
       if (eyesEasterEggHideTimeoutRef.current) {
@@ -193,7 +236,13 @@ export default function StartScreen({
     };
 
     const handlePointerMove = (event: MouseEvent) => {
-      if (executedRef.current) return;
+      if (
+        executedRef.current ||
+        eyesEasterEggConsumedRef.current ||
+        !eyesEasterEggAssetsReadyRef.current
+      ) {
+        return;
+      }
 
       const inHotZone = isInUpperLeftQuadrantHotZone(
         event.clientX,
@@ -208,8 +257,21 @@ export default function StartScreen({
       eyesEasterEggInsideHotZoneRef.current = inHotZone;
     };
 
-    window.addEventListener("mousemove", handlePointerMove);
+    const armHotZone = () => {
+      if (!stillOnStartScreen() || eyesEasterEggConsumedRef.current) return;
+      window.addEventListener("mousemove", handlePointerMove);
+    };
+
+    assetLoadTimer = setTimeout(scheduleAssetLoad, EYES_EASTER_EGG_ASSET_LOAD_MS);
+    armTimer = setTimeout(armHotZone, EYES_EASTER_EGG_ARM_MS);
+
     return () => {
+      cancelled = true;
+      if (assetLoadTimer) clearTimeout(assetLoadTimer);
+      if (armTimer) clearTimeout(armTimer);
+      if (idleCallbackId !== null && typeof window.cancelIdleCallback === "function") {
+        window.cancelIdleCallback(idleCallbackId);
+      }
       window.removeEventListener("mousemove", handlePointerMove);
       if (eyesEasterEggHideTimeoutRef.current) {
         clearTimeout(eyesEasterEggHideTimeoutRef.current);
@@ -398,6 +460,8 @@ export default function StartScreen({
           alt=""
           aria-hidden
           draggable={false}
+          decoding="async"
+          fetchPriority="low"
           className="pointer-events-none absolute z-30 w-[min(14vw,110px)] h-auto select-none opacity-80"
           style={{
             left: "25%",

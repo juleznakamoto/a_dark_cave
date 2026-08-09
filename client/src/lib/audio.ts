@@ -351,7 +351,6 @@ export class AudioManager {
     const initialSounds = {
       'wind': '/sounds/wind.mp3',
       'lightFire': '/sounds/light_fire.wav',
-      'monsterStart': '/sounds/monster_start.wav',
     };
 
     for (const [name, url] of Object.entries(initialSounds)) {
