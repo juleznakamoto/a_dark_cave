@@ -22,7 +22,12 @@ import { Howl, Howler } from 'howler';
 import { logger } from './logger';
 import { EVENT_AMBIENCE_FADE_SECONDS, SOUND_VOLUME } from './soundVolumes';
 
-export { EVENT_AMBIENCE_FADE_SECONDS, SOUND_VOLUME, feedFireVolume } from './soundVolumes';
+export {
+  EVENT_AMBIENCE_FADE_SECONDS,
+  SOUND_VOLUME,
+  caveExploreVolume,
+  feedFireVolume,
+} from './soundVolumes';
 
 export class AudioManager {
   private static instance: AudioManager;

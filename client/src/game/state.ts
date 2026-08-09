@@ -2291,8 +2291,12 @@ export const useGameStore = create<GameStore>((set, get) => ({
 
       // Shared cue for the cave explore / delve chain
       if (CAVE_EXPLORE_SOUND_ACTIONS.has(actionId)) {
-        import("@/lib/audio").then(({ audioManager }) => {
-          audioManager.playSound("caveExplore", SOUND_VOLUME.caveExplore);
+        const exploreLevel = get().buttonUpgrades?.caveExplore?.level ?? 0;
+        import("@/lib/audio").then(({ audioManager, caveExploreVolume }) => {
+          audioManager.playSound(
+            "caveExplore",
+            caveExploreVolume(exploreLevel),
+          );
         });
       }
     }
