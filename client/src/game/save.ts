@@ -363,6 +363,8 @@ export function mergeCloudReferralsIntoState(
   const referralProcessed =
     localState.referralProcessed === true ||
     cloudState.referralProcessed === true;
+  // Match SQL merge_game_state_referrals: btrim + treat empty as absent.
+  // Never fall back to the untrimmed original (whitespace-only must be discarded).
   const localCode =
     typeof localState.referralCode === "string"
       ? localState.referralCode.trim()
@@ -371,7 +373,7 @@ export function mergeCloudReferralsIntoState(
     typeof cloudState.referralCode === "string"
       ? cloudState.referralCode.trim()
       : "";
-  const referralCode = localCode || cloudCode || localState.referralCode;
+  const referralCode = localCode || cloudCode || undefined;
 
   const listUnchanged =
     referrals.length === localRefs.length &&
@@ -394,7 +396,7 @@ export function mergeCloudReferralsIntoState(
     referralCount,
     referredUsers,
     referralProcessed,
-    ...(referralCode ? { referralCode } : {}),
+    referralCode,
   };
 }
 
