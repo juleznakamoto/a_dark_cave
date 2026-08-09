@@ -296,17 +296,22 @@ export function SegmentedProgress({
                       transitionDelay: `${delay}ms`,
                     }}
                   >
-                    {/* Clipped to the red fill only (not the empty segment track). */}
+                    {/* Clipped to fill; brighter via so it reads on bg-red-950. */}
                     {showSegmentGlow && (
                       <motion.div
                         key={glowKey}
                         className={cn(
                           "pointer-events-none absolute inset-0 bg-gradient-to-r from-transparent to-transparent",
-                          resolveGrowGlowViaClass(sparkClassName),
+                          sparkClassName
+                            ? resolveGrowGlowViaClass(sparkClassName)
+                            : "via-orange-300/90",
                         )}
                         initial={{ x: "-100%", opacity: 1 }}
                         animate={{ x: "100%", opacity: 0 }}
-                        transition={{ duration: 0.7, ease: "easeOut" }}
+                        transition={{
+                          duration: Math.min(0.9, tweenDurationMs / 1000),
+                          ease: "easeOut",
+                        }}
                       />
                     )}
                   </div>
