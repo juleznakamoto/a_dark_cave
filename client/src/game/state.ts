@@ -1089,6 +1089,22 @@ export const rewardDialogVillageAttackEvents = new Set([
   "hiddenLake",
 ]);
 
+/** Cave explore / delve actions that share the caveExplore SFX. */
+const CAVE_EXPLORE_SOUND_ACTIONS = new Set([
+  "exploreCave",
+  "ventureDeeper",
+  "descendFurther",
+  "exploreRuins",
+  "exploreTemple",
+  "exploreCitadel",
+  "lowChamber",
+  "occultistChamber",
+  "hiddenLibrary",
+  "exploreUndergroundLake",
+  "blastPortal",
+  "encounterBeyondPortal",
+]);
+
 // Helper functions
 const mergeStateUpdates = (
   prevState: GameState,
@@ -2226,45 +2242,59 @@ export const useGameStore = create<GameStore>((set, get) => ({
       };
     });
 
-    // Play building completion sound for successful build actions
-    if (actionId.startsWith("build") && result.stateUpdates.buildings) {
-      // Import audioManager here to avoid circular dependency
-      import("@/lib/audio").then(({ audioManager }) => {
-        audioManager.playSound("buildingComplete", SOUND_VOLUME.buildingComplete);
-      });
-    }
+    // Action SFX only for manual clicks — Prior automation stays silent.
+    const playActionSfx = meta?.executionSource !== "prior";
+    if (playActionSfx) {
+      // Play building completion sound for successful build actions
+      if (actionId.startsWith("build") && result.stateUpdates.buildings) {
+        // Import audioManager here to avoid circular dependency
+        import("@/lib/audio").then(({ audioManager }) => {
+          audioManager.playSound(
+            "buildingComplete",
+            SOUND_VOLUME.buildingComplete,
+          );
+        });
+      }
 
-    // Play craft sound for successful crafting actions
-    if (actionId.startsWith("craft")) {
-      import("@/lib/audio").then(({ audioManager }) => {
-        audioManager.playSound("craft", SOUND_VOLUME.craft);
-      });
-    }
+      // Play craft sound for successful crafting actions
+      if (actionId.startsWith("craft")) {
+        import("@/lib/audio").then(({ audioManager }) => {
+          audioManager.playSound("craft", SOUND_VOLUME.craft);
+        });
+      }
 
-    // Play mining sound for successful mine actions
-    if (actionId.startsWith("mine")) {
-      import("@/lib/audio").then(({ audioManager }) => {
-        audioManager.playSound("mining", SOUND_VOLUME.mining);
-      });
-    }
+      // Play mining sound for successful mine actions
+      if (actionId.startsWith("mine")) {
+        import("@/lib/audio").then(({ audioManager }) => {
+          audioManager.playSound("mining", SOUND_VOLUME.mining);
+        });
+      }
 
-    // chopWood is Gather Wood in the cave, Chop Wood once the forest is unlocked
-    if (actionId === "chopWood") {
-      const forestUnlocked = Boolean(get().flags?.forestUnlocked);
-      import("@/lib/audio").then(({ audioManager }) => {
-        if (forestUnlocked) {
-          audioManager.playSound("chopWood", SOUND_VOLUME.chopWood);
-        } else {
-          audioManager.playSound("gatherWood", SOUND_VOLUME.gatherWood);
-        }
-      });
-    }
+      // chopWood is Gather Wood in the cave, Chop Wood once the forest is unlocked
+      if (actionId === "chopWood") {
+        const forestUnlocked = Boolean(get().flags?.forestUnlocked);
+        import("@/lib/audio").then(({ audioManager }) => {
+          if (forestUnlocked) {
+            audioManager.playSound("chopWood", SOUND_VOLUME.chopWood);
+          } else {
+            audioManager.playSound("gatherWood", SOUND_VOLUME.gatherWood);
+          }
+        });
+      }
 
-    // Play hunt sound for hunt action
-    if (actionId === "hunt") {
-      import("@/lib/audio").then(({ audioManager }) => {
-        audioManager.playSound("hunt", SOUND_VOLUME.hunt);
-      });
+      // Play hunt sound for hunt action
+      if (actionId === "hunt") {
+        import("@/lib/audio").then(({ audioManager }) => {
+          audioManager.playSound("hunt", SOUND_VOLUME.hunt);
+        });
+      }
+
+      // Shared cue for the cave explore / delve chain
+      if (CAVE_EXPLORE_SOUND_ACTIONS.has(actionId)) {
+        import("@/lib/audio").then(({ audioManager }) => {
+          audioManager.playSound("caveExplore", SOUND_VOLUME.caveExplore);
+        });
+      }
     }
 
     // Schedule updates (buildings affect derived effects/stats, e.g. madness from shrines)
@@ -2447,6 +2477,10 @@ export const useGameStore = create<GameStore>((set, get) => ({
     const { executionStartTimes, executionDurations } = state;
     if (!executionStartTimes[actionId] || !executionDurations[actionId]) return;
 
+    // Prior starts set abortEligible to false; preserve source for completion SFX.
+    const executionSource =
+      state.executionAbortEligible?.[actionId] === false ? "prior" : "player";
+
     const newStartTimes = { ...executionStartTimes };
     const newDurations = { ...executionDurations };
     delete newStartTimes[actionId];
@@ -2497,7 +2531,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
     }
 
     // Execute the actual action (bypasses execution-time check via _completingExecution)
-    get().executeAction(actionId);
+    get().executeAction(actionId, { executionSource });
     set({ _completingExecution: undefined });
   },
 

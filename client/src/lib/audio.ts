@@ -392,6 +392,7 @@ export class AudioManager {
     backgroundMusic: '/sounds/background_music.mp3',
     feedFire: '/sounds/feed_fire.mp3',
     gatherWood: '/sounds/gather_wood.mp3',
+    caveExplore: '/sounds/cave_explore.mp3',
     buildingComplete: '/sounds/building_complete.mp3',
     craft: '/sounds/craft.mp3',
     event: '/sounds/event.mp3',
