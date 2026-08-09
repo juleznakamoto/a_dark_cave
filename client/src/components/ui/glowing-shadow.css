@@ -65,12 +65,6 @@
   initial-value: 0;
 }
 
-@property --adc-gs-angle {
-  syntax: "<angle>";
-  inherits: true;
-  initial-value: 0deg;
-}
-
 .adc-gs {
   --adc-gs-card-color: hsl(260deg 100% 3%);
   --adc-gs-card-radius: 3.6vw;
@@ -89,7 +83,7 @@
   --adc-gs-glow-radius: 100;
   --adc-gs-glow-rotate-unit: 1deg;
   --adc-gs-content-inset: 0px;
-  --adc-gs-ring-width: 5px;
+  --adc-gs-rim-width: 5px;
 
   width: var(--adc-gs-card-width);
   width: min(480px, var(--adc-gs-card-width));
@@ -126,9 +120,9 @@
   --adc-gs-card-width: 1080px;
   --adc-gs-card-radius: 36px;
   --adc-gs-border-width: 3px;
-  --adc-gs-content-inset: 0px;
-  --adc-gs-ring-width: 5px;
-  --adc-gs-angle: 0deg;
+  /* Opaque content sits inset so the spinning rim shows as a border */
+  --adc-gs-content-inset: 5px;
+  --adc-gs-rim-width: 5px;
 }
 
 /* Silver / white (share image) */
@@ -151,6 +145,37 @@
   width: 100%;
   height: 100%;
   border-radius: var(--adc-gs-card-radius);
+}
+
+/*
+ * Frame rim: spinning conic behind inset content.
+ * No CSS mask needed - the opaque content plate covers the center.
+ */
+.adc-gs__rim {
+  position: absolute;
+  inset: 0;
+  border-radius: var(--adc-gs-card-radius);
+  overflow: hidden;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.adc-gs__rim-spin {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 150%;
+  height: 150%;
+  translate: -50% -50%;
+  background: conic-gradient(from 0deg,
+      #0b0b0e 0deg,
+      #0b0b0e 240deg,
+      hsl(210deg 8% 55%) 290deg,
+      hsl(210deg 10% 82%) 318deg,
+      hsl(0deg 0% 100%) 340deg,
+      hsl(210deg 8% 70%) 352deg,
+      #0b0b0e 360deg);
+  animation: adc-gs-rim-spin var(--adc-gs-animation-speed) linear infinite;
 }
 
 .adc-gs__content {
@@ -179,12 +204,10 @@
   padding: 0;
   align-items: stretch;
   justify-content: flex-start;
+  /* Match outer radius so the rim gap is even */
+  border-radius: calc(var(--adc-gs-card-radius) - 2px);
 }
 
-/*
- * Border highlight layer. Default card: original color-burn wash behind content.
- * Frame/silver: masked ring + conic sweep (stays on the perimeter).
- */
 .adc-gs__content:before {
   content: "";
   display: block;
@@ -210,36 +233,9 @@
   transition: --adc-gs-bg-size var(--adc-gs-interaction-speed) ease;
 }
 
-.adc-gs--frame.adc-gs--silver .adc-gs__content:before {
-  inset: 0;
-  width: auto;
-  height: auto;
-  top: auto;
-  left: auto;
-  translate: none;
-  z-index: 3;
-  box-shadow: none;
-  mix-blend-mode: normal;
-  padding: var(--adc-gs-ring-width);
-  box-sizing: border-box;
-  border-radius: inherit;
-  background: conic-gradient(from var(--adc-gs-angle),
-      transparent 0deg,
-      transparent 250deg,
-      hsl(210deg 10% 70% / 0.15) 290deg,
-      hsl(210deg 8% 88% / 0.55) 318deg,
-      hsl(0deg 0% 100% / 0.95) 338deg,
-      hsl(210deg 8% 88% / 0.45) 350deg,
-      transparent 360deg);
-  -webkit-mask:
-    linear-gradient(#000 0 0) content-box,
-    linear-gradient(#000 0 0);
-  -webkit-mask-composite: xor;
-  mask:
-    linear-gradient(#000 0 0) content-box,
-    linear-gradient(#000 0 0);
-  mask-composite: exclude;
-  animation: adc-gs-angle-spin var(--adc-gs-animation-speed) linear infinite;
+/* Rim handles the share-frame border; keep the old wash off the artwork. */
+.adc-gs--frame .adc-gs__content:before {
+  display: none;
 }
 
 .adc-gs__glow {
@@ -256,11 +252,6 @@
   border-radius: calc(var(--adc-gs-glow-radius) * 10vw);
   pointer-events: none;
   z-index: 0;
-}
-
-/* Frame uses the conic border sweep; hide the circular orbit blob. */
-.adc-gs--frame .adc-gs__glow {
-  display: none;
 }
 
 .adc-gs__glow:after {
@@ -296,8 +287,8 @@
 
 .adc-gs--interactive.adc-gs--frame.adc-gs--silver:hover .adc-gs__content {
   mix-blend-mode: normal;
-  box-shadow: 0 0 28px rgb(255 255 255 / 28%), 0 0 8px rgb(255 255 255 / 18%);
-  animation: adc-gs-shadow-pulse calc(var(--adc-gs-animation-speed) * 2) linear infinite;
+  box-shadow: none;
+  animation: none;
 }
 
 .adc-gs--interactive:hover .adc-gs__content:before {
@@ -306,19 +297,18 @@
   transition: --adc-gs-bg-size var(--adc-gs-interaction-speed) ease;
 }
 
-/* Hover: full perimeter glow instead of a paused traveling highlight */
-.adc-gs--interactive.adc-gs--frame.adc-gs--silver:hover .adc-gs__content:before {
-  --adc-gs-ring-width: 8px;
-  padding: 8px;
+/* Hover: whole rim lights up silver/white */
+.adc-gs--interactive.adc-gs--frame.adc-gs--silver:hover .adc-gs__rim-spin {
   animation: none;
   background: linear-gradient(135deg,
-      hsl(0deg 0% 100% / 0.95) 0%,
-      hsl(210deg 10% 88% / 0.75) 35%,
-      hsl(0deg 0% 100% / 0.9) 65%,
-      hsl(210deg 8% 80% / 0.7) 100%);
-  box-shadow:
-    0 0 10px rgb(255 255 255 / 35%),
-    inset 0 0 6px rgb(255 255 255 / 25%);
+      hsl(0deg 0% 100%) 0%,
+      hsl(210deg 12% 88%) 40%,
+      hsl(0deg 0% 96%) 70%,
+      hsl(210deg 10% 78%) 100%);
+}
+
+.adc-gs--interactive.adc-gs--frame.adc-gs--silver:hover .adc-gs__rim {
+  box-shadow: 0 0 18px rgb(255 255 255 / 40%);
 }
 
 .adc-gs--interactive:hover .adc-gs__glow {
@@ -341,6 +331,12 @@
     --adc-gs-glow-opacity 0.05s ease,
     --adc-gs-glow-scale 0.05s ease,
     --adc-gs-glow-radius 0.05s ease;
+}
+
+@keyframes adc-gs-rim-spin {
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 @keyframes adc-gs-shadow-pulse {
@@ -412,12 +408,6 @@
   to {
     --adc-gs-rotate: calc(360 - 70);
     --adc-gs-glow-translate-y: -65;
-  }
-}
-
-@keyframes adc-gs-angle-spin {
-  to {
-    --adc-gs-angle: 360deg;
   }
 }
 

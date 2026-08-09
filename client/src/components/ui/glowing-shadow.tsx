@@ -15,7 +15,7 @@ export type GlowingShadowProps = {
 };
 
 /**
- * Animated glowing border shell around children (original glow-container pattern).
+ * Animated glowing border shell around children.
  * Share image: wrap the card with `variant="silver"` + `size="frame"`.
  */
 export function GlowingShadow({
@@ -26,20 +26,28 @@ export function GlowingShadow({
   size = "card",
   interactive = true,
 }: GlowingShadowProps) {
+  const isFrame = size === "frame";
+
   return (
     <div
       className={cn(
         "adc-gs",
         variant === "silver" && "adc-gs--silver",
         size === "compact" && "adc-gs--compact",
-        size === "frame" && "adc-gs--frame",
+        isFrame && "adc-gs--frame",
         interactive && "adc-gs--interactive",
         className,
       )}
       role={interactive ? "button" : undefined}
       tabIndex={interactive ? 0 : undefined}
     >
-      <span className="adc-gs__glow" aria-hidden />
+      {isFrame ? (
+        <div className="adc-gs__rim" aria-hidden>
+          <div className="adc-gs__rim-spin" />
+        </div>
+      ) : (
+        <span className="adc-gs__glow" aria-hidden />
+      )}
       <div className={cn("adc-gs__content", contentClassName)}>{children}</div>
     </div>
   );
