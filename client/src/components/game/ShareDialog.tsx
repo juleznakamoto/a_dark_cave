@@ -338,7 +338,7 @@ function ShareCard({
       <GlowingShadow
         variant="silver"
         size="frame"
-        interactive={false}
+        interactive
         contentClassName="relative flex flex-col"
       >
         <div className="flex h-full flex-col p-16">
