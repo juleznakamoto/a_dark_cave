@@ -129,6 +129,64 @@
   overflow: hidden;
 }
 
+/*
+ * Border-only overlay: punch out the interior so the glow/gradient
+ * only paint a ring around the edge. Content underneath is untouched.
+ */
+.adc-gs--border-only {
+  position: absolute;
+  inset: 0;
+  width: auto;
+  height: auto;
+  margin: 0;
+  aspect-ratio: auto;
+  z-index: 5;
+  pointer-events: none;
+  overflow: hidden;
+  box-sizing: border-box;
+  /* Ring thickness where the effect is visible */
+  padding: 10px;
+  -webkit-mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  mask-composite: exclude;
+}
+
+.adc-gs--border-only.adc-gs--frame {
+  --adc-gs-glow-blur: 2;
+  --adc-gs-glow-opacity: 1;
+  --adc-gs-bg-size: 8;
+  padding: 12px;
+}
+
+.adc-gs--border-only .adc-gs__content {
+  position: absolute;
+  inset: 0;
+  width: auto;
+  height: auto;
+  padding: 0;
+  background: transparent;
+  border-radius: inherit;
+}
+
+.adc-gs--border-only .adc-gs__content:before {
+  inset: 0;
+  border-radius: inherit;
+  box-shadow: none;
+  mix-blend-mode: screen;
+}
+
+.adc-gs--border-only .adc-gs__glow {
+  inset: 0;
+  margin: auto;
+  width: calc(var(--adc-gs-card-width) / 4);
+  height: calc(var(--adc-gs-card-width) / 4);
+}
+
 /* Silver / white: cool low-chroma glow instead of rainbow */
 .adc-gs--silver {
   --adc-gs-card-color: #0b0b0e;
@@ -172,29 +230,6 @@
   width: auto;
   height: auto;
   padding: 20px 28px;
-}
-
-.adc-gs--frame .adc-gs__content {
-  position: absolute;
-  inset: 0;
-  width: auto;
-  height: auto;
-  padding: 0;
-  align-items: stretch;
-  justify-content: flex-start;
-  border-radius: 0;
-}
-
-.adc-gs--frame .adc-gs__content:before {
-  border-radius: 0;
-}
-
-.adc-gs--frame .adc-gs__glow {
-  /* Keep the orbiting blob near the image edge inside the export bounds. */
-  inset: 0;
-  margin: auto;
-  width: calc(var(--adc-gs-card-width) / 4.5);
-  height: calc(var(--adc-gs-card-width) / 4.5);
 }
 
 .adc-gs__content:before {

@@ -3,20 +3,25 @@ import { cn } from "@/lib/utils";
 import "./glowing-shadow.css";
 
 export type GlowingShadowProps = {
-  children: ReactNode;
+  children?: ReactNode;
   className?: string;
   contentClassName?: string;
   /** Rainbow (default) or cool silver/white. */
   variant?: "default" | "silver";
   /** Demo card, content-sized shell, or full-bleed image frame. */
   size?: "card" | "compact" | "frame";
+  /**
+   * Decorative border overlay only (no content shell).
+   * Use as an absolutely positioned sibling over the share image.
+   */
+  borderOnly?: boolean;
   /** Hover intensify + pointer cursor. Off for static share imagery. */
   interactive?: boolean;
 };
 
 /**
  * Animated glowing border shell (CSS @property + keyframes).
- * Use `variant="silver"` + `size="frame"` for the share-image border.
+ * Share image: `variant="silver"` + `size="frame"` + `borderOnly`.
  */
 export function GlowingShadow({
   children,
@@ -24,8 +29,11 @@ export function GlowingShadow({
   contentClassName,
   variant = "default",
   size = "card",
+  borderOnly = false,
   interactive = true,
 }: GlowingShadowProps) {
+  const canInteract = interactive && !borderOnly;
+
   return (
     <div
       className={cn(
@@ -33,14 +41,18 @@ export function GlowingShadow({
         variant === "silver" && "adc-gs--silver",
         size === "compact" && "adc-gs--compact",
         size === "frame" && "adc-gs--frame",
-        interactive && "adc-gs--interactive",
+        borderOnly && "adc-gs--border-only",
+        canInteract && "adc-gs--interactive",
         className,
       )}
-      role={interactive ? "button" : undefined}
-      tabIndex={interactive ? 0 : undefined}
+      role={canInteract ? "button" : undefined}
+      tabIndex={canInteract ? 0 : undefined}
+      aria-hidden={borderOnly || undefined}
     >
       <span className="adc-gs__glow" aria-hidden />
-      <div className={cn("adc-gs__content", contentClassName)}>{children}</div>
+      <div className={cn("adc-gs__content", contentClassName)}>
+        {borderOnly ? null : children}
+      </div>
     </div>
   );
 }
