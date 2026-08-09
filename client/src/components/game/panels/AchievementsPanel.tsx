@@ -304,7 +304,6 @@ function AchievementRowComponent({
           row.isFull ? indicatorClassComplete : indicatorClassIncomplete
         }
         emptyClassName={PROGRESS_BAR_BG_CLASS}
-        filledGlowClassName=""
         segmentClassName="h-1.5"
       />
     </div>

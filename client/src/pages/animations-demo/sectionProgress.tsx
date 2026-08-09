@@ -150,7 +150,6 @@ export function ProgressBarsSection() {
             compact
             filledClassName="bg-green-700"
             emptyClassName="bg-neutral-700"
-            filledGlowClassName="shadow-[0_0_12px_rgba(21,128,61,0.45)]"
             segmentClassName="h-1.5"
           />
         </div>

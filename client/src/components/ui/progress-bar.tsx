@@ -3,6 +3,20 @@
 import { useState, useEffect, useRef } from "react";
 import { cn } from "@/lib/utils";
 
+/** 0–1 fill for segment `index` from a 0–100 value across `segments` buckets. */
+function getSegmentFill(
+  displayValue: number,
+  segments: number,
+  index: number,
+): number {
+  if (segments <= 0) return 0;
+  const units = Math.min(
+    segments,
+    Math.max(0, (displayValue / 100) * segments),
+  );
+  return Math.min(1, Math.max(0, units - index));
+}
+
 interface SegmentedProgressProps {
   value?: number;
   segments?: number;
@@ -16,8 +30,6 @@ interface SegmentedProgressProps {
   emptyClassName?: string;
   /** Extra classes on each segment (e.g. height). */
   segmentClassName?: string;
-  /** Hover glow on a filled segment (default: primary glow). */
-  filledGlowClassName?: string;
   /** Compact spacing for tight chrome (e.g. footer). */
   compact?: boolean;
   /** When false, snap to value (use for frequently updating lists). */
@@ -39,7 +51,6 @@ export function SegmentedProgress({
   filledClassName = "bg-primary",
   emptyClassName = "bg-muted/60",
   segmentClassName,
-  filledGlowClassName = "shadow-[0_0_16px_hsl(var(--primary)/0.5)]",
   compact = false,
   animate = true,
   "aria-label": ariaLabel,
@@ -52,13 +63,10 @@ export function SegmentedProgress({
   const value = showDemo ? progress : initialValue;
 
   const [displayValue, setDisplayValue] = useState(animate ? 0 : initialValue);
-  const [hoveredSegment, setHoveredSegment] = useState<number | null>(null);
   const [isInitialized, setIsInitialized] = useState(!animate);
   const animationRef = useRef<number | null>(null);
   const startValueRef = useRef(0);
   const startTimeRef = useRef(0);
-
-  const filledSegments = Math.round((displayValue / 100) * segments);
 
   useEffect(() => {
     if (!showDemo) {
@@ -106,31 +114,6 @@ export function SegmentedProgress({
     // eslint-disable-next-line react-hooks/exhaustive-deps -- intentional
   }, [value, isInitialized, animate]);
 
-  const getSegmentStyle = (index: number) => {
-    let scale = 1;
-    let translateY = 0;
-
-    if (hoveredSegment !== null) {
-      const distance = Math.abs(hoveredSegment - index);
-      if (distance === 0) {
-        scale = 1.3;
-        translateY = -1;
-      } else if (distance <= 3) {
-        const falloff = Math.cos((distance / 3) * (Math.PI / 2));
-        scale = 1 + 0.2 * falloff;
-        translateY = -0.5 * falloff;
-      }
-    }
-
-    const delay = isInitialized ? index * 20 : 0;
-
-    return {
-      transform: `scaleY(${scale}) translateY(${translateY}px)`,
-      transitionDelay: `${delay}ms`,
-      opacity: 1,
-    };
-  };
-
   return (
     <div
       className={cn(
@@ -162,15 +145,7 @@ export function SegmentedProgress({
               </span>
             )}
             {showPercentage && (
-              <span
-                className="text-sm font-semibold text-foreground tabular-nums tracking-tight transition-all duration-300"
-                style={{
-                  filter:
-                    hoveredSegment !== null
-                      ? "brightness(1.2)"
-                      : "brightness(1)",
-                }}
-              >
+              <span className="text-sm font-semibold text-foreground tabular-nums tracking-tight">
                 {Math.round(displayValue)}%
               </span>
             )}
@@ -187,28 +162,29 @@ export function SegmentedProgress({
           data-testid={dataTestId}
         >
           {Array.from({ length: segments }).map((_, index) => {
-            const isFilled = index < filledSegments;
-            const isHovered = hoveredSegment === index;
+            const fill = getSegmentFill(displayValue, segments, index);
+            const delay = isInitialized ? index * 20 : 0;
 
             return (
               <div
                 key={index}
-                onMouseEnter={() => setHoveredSegment(index)}
-                onMouseLeave={() => setHoveredSegment(null)}
                 className={cn(
-                  "h-3 flex-1 rounded-[4px] cursor-pointer origin-center",
-                  "transition-all duration-500 ease-[cubic-bezier(0.34,1.56,0.64,1)]",
-                  isFilled ? filledClassName : emptyClassName,
-                  isHovered && isFilled && cn("brightness-110", filledGlowClassName),
-                  isHovered && !isFilled && "brightness-125",
-                  hoveredSegment !== null &&
-                  !isFilled &&
-                  !isHovered &&
-                  "opacity-70",
+                  "relative h-3 flex-1 overflow-hidden rounded-[4px]",
+                  emptyClassName,
                   segmentClassName,
                 )}
-                style={getSegmentStyle(index)}
-              />
+              >
+                <div
+                  className={cn(
+                    "absolute inset-y-0 left-0 transition-[width] duration-500 ease-out",
+                    filledClassName,
+                  )}
+                  style={{
+                    width: `${fill * 100}%`,
+                    transitionDelay: `${delay}ms`,
+                  }}
+                />
+              </div>
             );
           })}
         </div>
