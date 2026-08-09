@@ -398,7 +398,7 @@ export default function StartScreen({
           alt=""
           aria-hidden
           draggable={false}
-          className="pointer-events-none absolute z-30 w-[min(14vw,110px)] h-auto select-none"
+          className="pointer-events-none absolute z-30 w-[min(14vw,110px)] h-auto select-none opacity-80"
           style={{
             left: "25%",
             top: "25%",
