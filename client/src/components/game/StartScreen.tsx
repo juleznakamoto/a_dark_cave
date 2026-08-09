@@ -18,6 +18,7 @@ import { useLocale } from "@/i18n/useLocale";
 import { OG_LOCALE_TAGS, SUPPORTED_LOCALES } from "@/i18n/locales";
 import { FullscreenButton } from "@/components/game/FullscreenButton";
 import { clearStaleChunkReloadGuard } from "@/lib/hardReload";
+import { mountFiraSansFontFace } from "@/lib/firaSansFontFace";
 
 const START_INTRO_VAPORIZE_COLOR = "rgba(209, 213, 219, 0.9)";
 const START_INTRO_VAPORIZE_ANIMATION = {
@@ -94,6 +95,12 @@ export default function StartScreen({
   // Real content mounted — allow a future deploy's one-shot chunk retry again.
   useEffect(() => {
     clearStaleChunkReloadGuard();
+  }, []);
+
+  // Start screen only needs 400/500; unicode-range fetches just the scripts on screen
+  // (e.g. EN ≈ latin-400 ~24KB). Full game weights mount later in gameplay init.
+  useEffect(() => {
+    mountFiraSansFontFace({ stage: "start", applyFontLoadedClass: true });
   }, []);
 
   useEffect(() => {
@@ -187,37 +194,6 @@ export default function StartScreen({
         fontWeight: parseInt(style.fontWeight, 10) || 400,
         letterSpacing: style.letterSpacing,
       });
-    }
-
-    // Preload font dynamically (lazy-loaded for better Lighthouse scores)
-    // Don't apply font-loaded class here - the Game component will apply it
-    // when it mounts, avoiding a jarring font swap on the start screen.
-    if (!document.getElementById('inter-font-face')) {
-      const style = document.createElement('style');
-      style.id = 'inter-font-face';
-      style.textContent = `
-        @font-face {
-          font-family: 'Inter';
-          src: url('/fonts/inter.woff2') format('woff2');
-          font-weight: 100 900;
-          font-style: normal;
-          font-display: swap;
-        }
-      `;
-      document.head.appendChild(style);
-    }
-
-    // Preload the font so it's cached and ready when the Game component applies it
-    if ('fonts' in document) {
-      const interFont = new FontFace('Inter', 'url(/fonts/inter.woff2)', {
-        weight: '100 900',
-        style: 'normal',
-        display: 'swap',
-      });
-
-      interFont.load().then(() => {
-        document.fonts.add(interFont);
-      }).catch(() => { });
     }
 
     // Immediately stop wind with no fade to prevent overlap

@@ -56,9 +56,9 @@
   <!-- Web App Manifest -->
   <link rel="manifest" href="/manifest.json" />
 
-  <!-- Inter (~344KB) is NOT preloaded here: start screen uses system fonts.
-       Game loads Inter after Light Fire (see pages/game.tsx). Preloading it on
-       the landing path steals bandwidth from LCP even though Inter isn't used yet. -->
+  <!-- Fira Sans is mounted from StartScreen (weights 400/500 only). unicode-range
+       limits the download to scripts on screen (see firaSansFontFace.ts). Full
+       game weights are added after Light Fire in gameplayInitOrchestrator. -->
 
   <!-- Application Tags -->
   <meta name="application-name" content="A Dark Cave" />

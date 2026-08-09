@@ -1,0 +1,111 @@
+/**
+ * Self-hosted Fira Sans (SIL OFL) under `/fonts/`.
+ * Latin + latin-ext + cyrillic subsets for UI weights used in the game.
+ * unicode-range lets the browser fetch only scripts that appear on screen.
+ */
+
+const FIRA_BASE = "/fonts";
+
+/** Weights used on the start screen (body + "Recommended by"). */
+const FIRA_START_WEIGHTS = [400, 500] as const;
+
+/** Full in-game UI weights (includes start weights). */
+const FIRA_GAME_WEIGHTS = [300, 400, 500, 600, 700, 800] as const;
+
+/** Google Fonts / fontsource unicode-range slices for each script file. */
+const FIRA_SCRIPT_RANGES: ReadonlyArray<{ script: string; unicodeRange: string }> = [
+  {
+    script: "cyrillic",
+    unicodeRange: "U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116",
+  },
+  {
+    script: "latin-ext",
+    unicodeRange:
+      "U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF",
+  },
+  {
+    script: "latin",
+    unicodeRange:
+      "U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD",
+  },
+];
+
+function buildFiraSansFontFaceCss(
+  weights: readonly number[],
+): string {
+  const blocks: string[] = [];
+  for (const weight of weights) {
+    for (const { script, unicodeRange } of FIRA_SCRIPT_RANGES) {
+      blocks.push(`@font-face {
+  font-family: 'Fira Sans';
+  font-style: normal;
+  font-weight: ${weight};
+  font-display: swap;
+  src: url(${FIRA_BASE}/fira-sans-${script}-${weight}-normal.woff2) format('woff2');
+  unicode-range: ${unicodeRange};
+}`);
+    }
+  }
+  return blocks.join("\n");
+}
+
+/** Full face list for share-image inlining (all game weights × scripts). */
+export const FIRA_SANS_FONT_FACE_CSS = buildFiraSansFontFaceCss(FIRA_GAME_WEIGHTS);
+
+const FIRA_STYLE_ID = "fira-sans-font-face";
+
+type FiraMountStage = "start" | "game";
+
+let mountedStage: FiraMountStage | null = null;
+
+/**
+ * Mount Fira Sans @font-face CSS.
+ * - `start`: only 400/500 (start screen). Browser still downloads only the
+ *   script slices needed for on-screen text via unicode-range (~24KB latin-400
+ *   for English).
+ * - `game`: full weight set for in-game UI (upgrades the start mount).
+ */
+export function mountFiraSansFontFace(options?: {
+  stage?: FiraMountStage;
+  applyFontLoadedClass?: boolean;
+}): void {
+  if (typeof document === "undefined") return;
+
+  const stage = options?.stage ?? "game";
+  const applyClass = options?.applyFontLoadedClass ?? false;
+
+  const style = document.getElementById(FIRA_STYLE_ID) as HTMLStyleElement | null;
+  if (!style) {
+    const el = document.createElement("style");
+    el.id = FIRA_STYLE_ID;
+    el.textContent =
+      stage === "start"
+        ? buildFiraSansFontFaceCss(FIRA_START_WEIGHTS)
+        : FIRA_SANS_FONT_FACE_CSS;
+    document.head.appendChild(el);
+    mountedStage = stage;
+  } else if (mountedStage === "start" && stage === "game") {
+    style.textContent = FIRA_SANS_FONT_FACE_CSS;
+    mountedStage = "game";
+  }
+
+  const markLoaded = () => {
+    if (applyClass) {
+      document.documentElement.classList.add("font-loaded");
+    }
+  };
+
+  if (!("fonts" in document)) {
+    markLoaded();
+    return;
+  }
+
+  // Kick the fetch for the primary face used on start / body copy.
+  void document.fonts
+    .load("400 16px 'Fira Sans'")
+    .then(markLoaded, () => {
+      if (applyClass) {
+        setTimeout(markLoaded, 100);
+      }
+    });
+}

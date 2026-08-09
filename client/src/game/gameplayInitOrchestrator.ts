@@ -22,51 +22,13 @@ import {
 } from "@/game/startupUrlCleanup";
 import { consumePreparedGameHydration } from "@/game/startupGameLoader";
 import { rehydratePurchasesOnStartup } from "@/game/shopPurchases";
+import { mountFiraSansFontFace } from "@/lib/firaSansFontFace";
 
 export interface GameplayInitResult {
   hadPersistedSave: boolean;
   showEmailConfirmedDialog: boolean;
   openShop: boolean;
   cruelShopHighlight: boolean;
-}
-
-function loadInterFont(): void {
-  if (typeof document === "undefined") return;
-  if (!document.getElementById("inter-font-face")) {
-    const style = document.createElement("style");
-    style.id = "inter-font-face";
-    style.textContent = `
-      @font-face {
-        font-family: 'Inter';
-        src: url('/fonts/inter.woff2') format('woff2');
-        font-weight: 100 900;
-        font-style: normal;
-        font-display: swap;
-      }
-    `;
-    document.head.appendChild(style);
-  }
-
-  if ("fonts" in document) {
-    const interFont = new FontFace("Inter", "url(/fonts/inter.woff2)", {
-      weight: "100 900",
-      style: "normal",
-      display: "swap",
-    });
-    interFont
-      .load()
-      .then(() => {
-        document.fonts.add(interFont);
-        document.documentElement.classList.add("font-loaded");
-      })
-      .catch(() => {
-        setTimeout(() => {
-          document.documentElement.classList.add("font-loaded");
-        }, 100);
-      });
-  } else {
-    document.documentElement.classList.add("font-loaded");
-  }
 }
 
 /**
@@ -100,7 +62,8 @@ export async function runGameplayInitialization(
     await flushPendingMarketingPreferences();
   }
 
-  loadInterFont();
+  // Upgrade start-screen 400/500 mount to the full in-game weight set.
+  mountFiraSansFontFace({ stage: "game", applyFontLoadedClass: true });
   mountNotoSansSymbols2FontFace();
 
   const preparedHydration = consumePreparedGameHydration();
