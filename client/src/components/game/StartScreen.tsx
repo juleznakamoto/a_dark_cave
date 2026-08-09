@@ -34,7 +34,7 @@ const START_INTRO_VAPORIZE_FONT_FALLBACK = {
 
 /** Easter egg: flash eyes at center of the upper-left screen quadrant. */
 const EYES_EASTER_EGG_SRC = "/images/eyes-easter-egg.png";
-const EYES_EASTER_EGG_DURATION_MS = 500;
+const EYES_EASTER_EGG_DURATION_MS = 250;
 /** Hit radius as a fraction of min(viewport w, h) around the quadrant center. */
 const EYES_EASTER_EGG_HOT_ZONE_RATIO = 0.08;
 
@@ -397,7 +397,7 @@ export default function StartScreen({
           alt=""
           aria-hidden
           draggable={false}
-          className="pointer-events-none absolute z-30 w-[min(28vw,220px)] h-auto select-none"
+          className="pointer-events-none absolute z-30 w-[min(14vw,110px)] h-auto select-none"
           style={{
             left: "25%",
             top: "25%",
