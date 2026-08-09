@@ -12,6 +12,11 @@ export type GlowingShadowProps = {
   size?: "card" | "compact" | "frame";
   /** Hover intensify + pointer cursor. Off for static share imagery. */
   interactive?: boolean;
+  /**
+   * When false, keep hover styles from `interactive` but do not set role=button
+   * (e.g. share preview click is handled by a parent).
+   */
+  buttonRole?: boolean;
 };
 
 /**
@@ -25,8 +30,10 @@ export function GlowingShadow({
   variant = "default",
   size = "card",
   interactive = true,
+  buttonRole = true,
 }: GlowingShadowProps) {
   const isFrame = size === "frame";
+  const asButton = interactive && buttonRole;
 
   return (
     <div
@@ -38,8 +45,8 @@ export function GlowingShadow({
         interactive && "adc-gs--interactive",
         className,
       )}
-      role={interactive ? "button" : undefined}
-      tabIndex={interactive ? 0 : undefined}
+      role={asButton ? "button" : undefined}
+      tabIndex={asButton ? 0 : undefined}
     >
       {isFrame ? (
         <div className="adc-gs__rim" aria-hidden>

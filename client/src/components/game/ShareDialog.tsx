@@ -130,6 +130,8 @@ const SECTION_RING_GRID_GAP = Math.max(
   16,
   SECTION_COLUMN_WIDTH - RING_CHART_SIZE * 2,
 );
+/** Extra vertical space between ring rows (below each circular bar). */
+const SECTION_RING_ROW_GAP = SECTION_RING_GRID_GAP + 20;
 const SECTION_PROGRESS_GAP = 24;
 const SECTION_BLOCK_MARGIN_BOTTOM = 24;
 const CTA_FONT_SIZE = 42;
@@ -346,6 +348,7 @@ function ShareCard({
         variant="silver"
         size="frame"
         interactive
+        buttonRole={false}
         contentClassName="relative flex flex-col"
       >
         <div className="flex h-full flex-col p-16">
@@ -400,7 +403,10 @@ function ShareCard({
               />
               <div
                 className="grid w-full grid-cols-2"
-                style={{ gap: SECTION_RING_GRID_GAP }}
+                style={{
+                  columnGap: SECTION_RING_GRID_GAP,
+                  rowGap: SECTION_RING_ROW_GAP,
+                }}
               >
                 {RING_ENTRIES.map(({ config, centerSymbolStyle }) => (
                   <div
@@ -744,10 +750,22 @@ export default function ShareDialog() {
 
         <div
           ref={previewWrapRef}
-          className="relative shrink-0 overflow-visible"
+          className="relative shrink-0 cursor-pointer overflow-visible"
           style={{
             width: SHARE_IMAGE_WIDTH * previewScale,
             height: SHARE_IMAGE_HEIGHT * previewScale,
+          }}
+          role="button"
+          tabIndex={0}
+          aria-label={t("share.copy", { defaultValue: "Copy" })}
+          onClick={() => {
+            void handleCopyImage();
+          }}
+          onKeyDown={(event) => {
+            if (event.key === "Enter" || event.key === " ") {
+              event.preventDefault();
+              void handleCopyImage();
+            }
           }}
         >
           <div
