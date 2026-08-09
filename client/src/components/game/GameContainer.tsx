@@ -760,6 +760,9 @@ export default function GameContainer() {
         new Set([...Array.from(prevFade), ...Array.from(newAnimations)]),
     );
 
+    // One cue per unlock batch (matches the shared 3s tab-fade-in animation).
+    audioManager.playSound("tabFadeIn", SOUND_VOLUME.tabFadeIn);
+
     scheduleTabUnlockFadeEndForTabs(newlyUnlocked);
     // Do not advance prevTabUnlockRef here — wait until fade completes (or tab click via clearTabAnimation).
   }, [

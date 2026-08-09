@@ -404,6 +404,7 @@ export class AudioManager {
       chopWood: '/sounds/chop_wood.mp3',
       gatherWood: '/sounds/gather_wood.mp3',
       hunt: '/sounds/hunt.mp3',
+      tabFadeIn: '/sounds/tab_fade_in.mp3',
     };
 
     await Promise.all(

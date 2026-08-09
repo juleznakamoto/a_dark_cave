@@ -34,6 +34,8 @@ export const SOUND_VOLUME = {
   explosion: 0.5,
   sleep: 0.3,
   combat: 0.3,
+  /** New game-tab unlock fade-in (3s visual) */
+  tabFadeIn: 0.35,
 } as const;
 
 export function feedFireVolume(heartfireLevel: number): number {
