@@ -9,6 +9,7 @@ import {
   HoverParticlesSection,
 } from "@/pages/animations-demo/sectionParticles";
 import { ProgressBarsSection } from "@/pages/animations-demo/sectionProgress";
+import { SharedProgressShaderSection } from "@/pages/animations-demo/sectionSharedProgressShader";
 import { CssEffectsSection } from "@/pages/animations-demo/sectionCssEffects";
 import {
   ExplosionSection,
@@ -43,6 +44,11 @@ export const ANIMATION_DEMO_SECTIONS: AnimationDemoSection[] = [
     Section: HoverParticlesSection,
   },
   { id: "progress-bars", label: "Progress bars", Section: ProgressBarsSection },
+  {
+    id: "shared-progress-shader",
+    label: "Shared progress shader",
+    Section: SharedProgressShaderSection,
+  },
   { id: "text-motion", label: "Text motion", Section: TextMotionSection },
   {
     id: "start-screen-fx",

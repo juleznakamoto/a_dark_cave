@@ -320,6 +320,12 @@ void main() {
 }
 `;
 
+/** Shared by `shared-progress-shader` (one context, many scissor windows). */
+export {
+  FRAGMENT_SHADER as SMOKE_FLOW_FRAGMENT_SHADER,
+  VERTEX_SHADER as SMOKE_FLOW_VERTEX_SHADER,
+};
+
 /**
  * Smoke palette as Tailwind colour tokens (low → high).
  * Edit these — they feed `u_colors` via `tailwindToHex` (see `@/lib/tailwindColors`).
