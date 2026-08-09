@@ -500,12 +500,16 @@ html.adc-text-large .game-panel-header-indicator-row {
   height: calc(0.875rem * var(--adc-text-scale, 1));
 }
 
-/* Village − / + assignment hit targets. */
+/* Village − / + assignment hit targets.
+   Glyph size is on the inner span — Button’s `text-xs` would override font-size on the button itself. */
 .villager-count-button {
   width: calc(20px * var(--adc-control-scale, 1));
   height: calc(20px * var(--adc-control-scale, 1));
-  font-size: calc(0.8125rem * var(--adc-text-scale, 1));
-  /* 13px @ Normal */
+}
+
+.villager-count-button>span {
+  font-size: calc(0.875rem * var(--adc-text-scale, 1));
+  /* 14px @ Normal (was text-xs 12px) */
 }
 
 /* Shared dialog X: square hit target + icon grow slightly with Large text. */
