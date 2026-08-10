@@ -264,21 +264,21 @@ function ArtifactEffectsList({
   const lines =
     artifact === "skull_lantern"
       ? [
-        t("shop.artifactSkullLantern.unlocksStoryline"),
         t("shop.artifactSkullLantern.caveExploreBonus"),
         t("shop.artifactSkullLantern.caveExploreCooldown"),
         t("shop.artifactSkullLantern.miningBonus"),
         t("shop.artifactSkullLantern.miningCooldown"),
+        t("shop.artifactSkullLantern.unlocksStoryline"),
       ]
       : artifact === "tarnished_compass"
         ? [
-          t("shop.artifactTarnishedCompass.unlocksStoryline"),
           t("shop.artifactTarnishedCompass.doubleGain"),
           t("shop.artifactTarnishedCompass.luck"),
+          t("shop.artifactTarnishedCompass.unlocksStoryline"),
         ]
         : [
-          t("shop.artifactCrowHarness.unlocksStoryline"),
           t("shop.artifactCrowHarness.doubleGain"),
+          t("shop.artifactCrowHarness.unlocksStoryline"),
         ];
 
   return (
