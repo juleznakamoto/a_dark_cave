@@ -206,10 +206,13 @@ class SharedProgressShaderRenderer {
    * Clear transparent, then draw the smoke field into each segment scissor.
    * `gl_FragCoord` stays in full-canvas space, so segments sample different
    * parts of one continuous field.
+   *
+   * `canvasRect` must be the canvas element's on-screen box (not the host
+   * border box) so scissor lines up with `position:absolute; inset:0`.
    */
   render(
     segments: SegmentRegistration[],
-    hostRect: DOMRectReadOnly,
+    canvasRect: DOMRectReadOnly,
     dpr: number,
   ) {
     const gl = this.gl;
@@ -229,18 +232,32 @@ class SharedProgressShaderRenderer {
     );
     gl.uniform4f(this.uniforms.shape, this.scale, 0.6, 0.5, 0.0);
 
+    const canvasW = this.canvas.width;
     const canvasH = this.canvas.height;
     for (const { element } of segments) {
       const rect = element.getBoundingClientRect();
       if (rect.width < 0.5 || rect.height < 0.5) continue;
-      const x = Math.round((rect.left - hostRect.left) * dpr);
-      const w = Math.max(1, Math.round(rect.width * dpr));
-      const h = Math.max(1, Math.round(rect.height * dpr));
+
+      // Map viewport → canvas backing-store pixels using the canvas box.
+      let x = Math.round((rect.left - canvasRect.left) * dpr);
+      let w = Math.round(rect.width * dpr);
+      let h = Math.round(rect.height * dpr);
       // WebGL scissor origin is bottom-left.
-      const y = Math.round(
-        canvasH - (rect.bottom - hostRect.top) * dpr,
-      );
+      let y = Math.round((canvasRect.bottom - rect.bottom) * dpr);
+
+      // Clamp to canvas so a host/canvas box mismatch cannot paint a stray strip.
+      if (x < 0) {
+        w += x;
+        x = 0;
+      }
+      if (y < 0) {
+        h += y;
+        y = 0;
+      }
+      if (x + w > canvasW) w = canvasW - x;
+      if (y + h > canvasH) h = canvasH - y;
       if (w <= 0 || h <= 0) continue;
+
       gl.scissor(x, y, w, h);
       gl.drawArrays(gl.TRIANGLES, 0, 3);
     }
@@ -325,12 +342,13 @@ export function SharedProgressShaderHost({
 
     const syncSize = () => {
       const renderer = rendererRef.current;
-      if (!renderer || !host) return;
-      const rect = host.getBoundingClientRect();
+      if (!renderer) return;
+      // Prefer the canvas layout box (inset:0 padding box), not the host
+      // border box — mismatch was painting a second strip under each bar.
+      const rect = canvas.getBoundingClientRect();
+      if (rect.width < 1 || rect.height < 1) return;
       const dpr = Math.min(window.devicePixelRatio || 1, 2);
       renderer.resizeToDisplay(rect.width, rect.height, dpr);
-      canvas.style.width = `${rect.width}px`;
-      canvas.style.height = `${rect.height}px`;
     };
 
     const loop = () => {
@@ -339,17 +357,16 @@ export function SharedProgressShaderHost({
       }
       // ~30fps — same budget as shop SmokeShader.
       if (frameCount % 2 === 0) {
-        const hostEl = hostRef.current;
         const renderer = rendererRef.current;
-        if (hostEl && renderer) {
-          const rect = hostEl.getBoundingClientRect();
+        if (renderer) {
+          const canvasRect = canvas.getBoundingClientRect();
           const dpr = Math.min(window.devicePixelRatio || 1, 2);
-          renderer.resizeToDisplay(rect.width, rect.height, dpr);
+          renderer.resizeToDisplay(canvasRect.width, canvasRect.height, dpr);
           const list: SegmentRegistration[] = [];
           segmentsRef.current.forEach((element, id) => {
             list.push({ id, element });
           });
-          renderer.render(list, rect, dpr);
+          renderer.render(list, canvasRect, dpr);
         }
       }
       frameCount++;
@@ -395,7 +412,7 @@ export function SharedProgressShaderHost({
 
   return (
     <SharedProgressShaderContext.Provider value={api}>
-      <div ref={hostRef} className={cn("relative", className)}>
+      <div ref={hostRef} className={cn("relative overflow-hidden", className)}>
         {children}
         {/*
           Canvas sits above bar chrome and paints only into registered segment
