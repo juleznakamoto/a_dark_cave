@@ -59,21 +59,24 @@ uniform vec4 u_clipRect; // xy bottom-left, zw size (gl_FragCoord / scissor spac
       gl_FragCoord.xy + vec2(u_seed * 17.0, u_seed * 31.0)) - 0.5) * u_grain;
   gl_FragColor = vec4(clamp(col, 0.0, 1.0), 1.0);
 }`,
-    `  // Clip to segment rounded-[4px] (scissor alone is square).
-  float cornerR = u_finish.w;
-  if (cornerR > 0.001 && u_clipRect.z > 0.5 && u_clipRect.w > 0.5) {
+    `  // Clip to segment rounded-[4px] (scissor alone is square). Coverage is
+  // smoothed over one device pixel so corners are antialiased, and the result
+  // is premultiplied to match the context's premultipliedAlpha.
+  float coverage = 1.0;
+  if (u_clipRect.z > 0.5 && u_clipRect.w > 0.5) {
     vec2 halfSize = u_clipRect.zw * 0.5;
     vec2 center = u_clipRect.xy + halfSize;
     vec2 p = gl_FragCoord.xy - center;
-    float r = min(cornerR, min(halfSize.x, halfSize.y));
+    float r = clamp(u_finish.w, 0.0, min(halfSize.x, halfSize.y));
     vec2 d = abs(p) - halfSize + vec2(r);
     float dist = length(max(d, 0.0)) + min(max(d.x, d.y), 0.0) - r;
-    if (dist > 0.0) discard;
+    coverage = 1.0 - smoothstep(-0.5, 0.5, dist);
+    if (coverage <= 0.002) discard;
   }
-  gl_FragColor = vec4(clamp(col, 0.0, 1.0), 1.0);
+  gl_FragColor = vec4(clamp(col, 0.0, 1.0) * coverage, coverage);
 }`,
   );
-  if (!patched.includes("u_clipRect") || !patched.includes("discard")) {
+  if (!patched.includes("u_clipRect") || !patched.includes("coverage")) {
     throw new Error(
       "Shared progress fragment splice failed — smoke shader source changed?",
     );
@@ -108,7 +111,7 @@ function syncSegmentRims(host: HTMLElement, rimLayer: HTMLElement) {
   // Rims are positioned inside rimLayer — use its box, not the host border box.
   const layerRect = rimLayer.getBoundingClientRect();
   let i = 0;
-  for (const cell of cells) {
+  for (const cell of Array.from(cells)) {
     let rim = rimLayer.children[i] as HTMLElement | undefined;
     const created = !rim;
     if (!rim) {
@@ -127,7 +130,7 @@ function syncSegmentRims(host: HTMLElement, rimLayer: HTMLElement) {
       // Start transparent, then flip so transition-colors can fade in.
       void rim.offsetWidth;
     }
-    rim.classList.toggle("border-neutral-500", filled);
+    rim.classList.toggle("border-neutral-700", filled);
     rim.classList.toggle("border-transparent", !filled);
     i++;
   }
@@ -286,6 +289,9 @@ class SharedProgressShaderRenderer {
     gl.uniform4f(this.uniforms.cursor, 0.0, 2.0, 0.65, 0.46);
     gl.uniform4f(this.uniforms.clipRect, 0.0, 0.0, 0.0, 0.0);
     gl.enable(gl.SCISSOR_TEST);
+    // Premultiplied source: needed so antialiased corner pixels blend out.
+    gl.enable(gl.BLEND);
+    gl.blendFunc(gl.ONE, gl.ONE_MINUS_SRC_ALPHA);
   }
 
   private compile(type: number, source: string, label: string): WebGLShader {
@@ -305,6 +311,10 @@ class SharedProgressShaderRenderer {
   resizeToDisplay(displayWidth: number, displayHeight: number, dpr: number) {
     const width = Math.max(1, Math.round(displayWidth * dpr));
     const height = Math.max(1, Math.round(displayHeight * dpr));
+    // Pin the CSS box to whole device pixels. Letting `w-full` stretch the
+    // backing store by a fraction of a pixel resamples the fill and softens it.
+    this.canvas.style.width = `${width / dpr}px`;
+    this.canvas.style.height = `${height / dpr}px`;
     if (this.canvas.width === width && this.canvas.height === height) return;
     this.canvas.width = width;
     this.canvas.height = height;
@@ -349,29 +359,36 @@ class SharedProgressShaderRenderer {
       const rect = element.getBoundingClientRect();
       if (rect.width < 0.5 || rect.height < 0.5) continue;
 
-      // Map viewport → canvas backing-store pixels using the canvas box.
-      let x = Math.round((rect.left - canvasRect.left) * dpr);
-      let w = Math.round(rect.width * dpr);
-      let h = Math.round(rect.height * dpr);
-      // WebGL scissor origin is bottom-left.
-      let y = Math.round((canvasRect.bottom - rect.bottom) * dpr);
+      // Round against the whole cell, not the fill: a partially filled cell must
+      // keep a straight cut at the fill edge and curve only at the cell's corners.
+      const cell = element.closest<HTMLElement>(
+        "[data-segmented-progress-cell]",
+      );
+      const shapeRect = cell ? cell.getBoundingClientRect() : rect;
 
-      // Clamp to canvas so a host/canvas box mismatch cannot paint a stray strip.
-      if (x < 0) {
-        w += x;
-        x = 0;
-      }
-      if (y < 0) {
-        h += y;
-        y = 0;
-      }
-      if (x + w > canvasW) w = canvasW - x;
-      if (y + h > canvasH) h = canvasH - y;
-      if (w <= 0 || h <= 0) continue;
+      // Sub-pixel exact rect in backing-store pixels: rounding here (instead of
+      // letting the SDF clip do it) is what made fills drift off the CSS border.
+      // WebGL's origin is bottom-left, hence the flip against canvas height.
+      const left = (shapeRect.left - canvasRect.left) * dpr;
+      const bottom = canvasH - (shapeRect.bottom - canvasRect.top) * dpr;
+      const width = shapeRect.width * dpr;
+      const height = shapeRect.height * dpr;
 
-      gl.uniform4f(this.uniforms.clipRect, x, y, w, h);
+      // Scissor to the fill box (hard cut at the fill edge), widened a pixel so
+      // the shader's smooth coverage can draw the antialiased rounded corners.
+      const fillLeft = (rect.left - canvasRect.left) * dpr;
+      const fillBottom = canvasH - (rect.bottom - canvasRect.top) * dpr;
+      const sx = Math.max(0, Math.floor(fillLeft) - 1);
+      const sy = Math.max(0, Math.floor(fillBottom) - 1);
+      const sw =
+        Math.min(canvasW, Math.ceil(fillLeft + rect.width * dpr) + 1) - sx;
+      const sh =
+        Math.min(canvasH, Math.ceil(fillBottom + rect.height * dpr) + 1) - sy;
+      if (sw <= 0 || sh <= 0) continue;
+
+      gl.uniform4f(this.uniforms.clipRect, left, bottom, width, height);
       gl.uniform4f(this.uniforms.finish, 0.0, 0.0, 0.0, cornerRadiusPx);
-      gl.scissor(x, y, w, h);
+      gl.scissor(sx, sy, sw, sh);
       gl.drawArrays(gl.TRIANGLES, 0, 3);
     }
   }
