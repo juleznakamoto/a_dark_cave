@@ -79,27 +79,29 @@ export function SharedProgressShaderSection() {
       title="Shared progress shader"
       description="Estate-style SegmentedProgress (Improve, 1s grow, sparks) with one shared red Smoke-flow shader. Each segment is a scissor window into the same field."
     >
-      <SharedProgressShaderHost className="w-full max-w-md space-y-4 rounded-md border border-border/50 bg-neutral-950/80 p-4">
-        {DEMO_BARS.map((bar, index) => (
-          <EstateStyleShaderBar
-            key={bar.label}
-            label={bar.label}
-            segments={bar.segments}
-            level={levels[index] ?? 0}
-            onImprove={() =>
-              setLevels((prev) =>
-                prev.map((level, i) =>
-                  i === index ? Math.min(bar.segments, level + 1) : level,
-                ),
-              )
-            }
-            onReset={() =>
-              setLevels((prev) =>
-                prev.map((level, i) => (i === index ? 0 : level)),
-              )
-            }
-          />
-        ))}
+      <SharedProgressShaderHost className="w-full max-w-md rounded-md border border-border/50 bg-neutral-950/80 p-4">
+        <div className="space-y-4">
+          {DEMO_BARS.map((bar, index) => (
+            <EstateStyleShaderBar
+              key={bar.label}
+              label={bar.label}
+              segments={bar.segments}
+              level={levels[index] ?? 0}
+              onImprove={() =>
+                setLevels((prev) =>
+                  prev.map((level, i) =>
+                    i === index ? Math.min(bar.segments, level + 1) : level,
+                  ),
+                )
+              }
+              onReset={() =>
+                setLevels((prev) =>
+                  prev.map((level, i) => (i === index ? 0 : level)),
+                )
+              }
+            />
+          ))}
+        </div>
       </SharedProgressShaderHost>
 
       <p className="max-w-md text-2xs text-muted-foreground">

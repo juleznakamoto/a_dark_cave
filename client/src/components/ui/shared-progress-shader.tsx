@@ -105,7 +105,8 @@ function syncSegmentRims(host: HTMLElement, rimLayer: HTMLElement) {
   const cells = host.querySelectorAll<HTMLElement>(
     "[data-segmented-progress-cell]",
   );
-  const hostRect = host.getBoundingClientRect();
+  // Rims are positioned inside rimLayer — use its box, not the host border box.
+  const layerRect = rimLayer.getBoundingClientRect();
   let i = 0;
   for (const cell of cells) {
     let rim = rimLayer.children[i] as HTMLElement | undefined;
@@ -117,8 +118,8 @@ function syncSegmentRims(host: HTMLElement, rimLayer: HTMLElement) {
       rimLayer.appendChild(rim);
     }
     const r = cell.getBoundingClientRect();
-    rim.style.left = `${r.left - hostRect.left}px`;
-    rim.style.top = `${r.top - hostRect.top}px`;
+    rim.style.left = `${r.left - layerRect.left}px`;
+    rim.style.top = `${r.top - layerRect.top}px`;
     rim.style.width = `${r.width}px`;
     rim.style.height = `${r.height}px`;
     const filled = cell.hasAttribute("data-filled");
@@ -530,7 +531,11 @@ export function SharedProgressShaderHost({
   return (
     <SharedProgressShaderContext.Provider value={api}>
       <div ref={hostRef} className={cn("relative overflow-hidden", className)}>
-        {children}
+        {/*
+          Content wrapper: host className often includes space-y-*, which would
+          otherwise margin-shift the absolute canvas / rim layer down the page.
+        */}
+        <div className="relative">{children}</div>
         {/*
           Canvas sits above bar chrome and paints only into registered segment
           scissor rects. (Transparent "holes" cannot punch through opaque
@@ -541,13 +546,13 @@ export function SharedProgressShaderHost({
             <canvas
               ref={canvasRef}
               aria-hidden
-              className="pointer-events-none absolute inset-0 z-10 h-full w-full"
+              className="pointer-events-none absolute inset-0 z-10 !m-0 h-full w-full"
             />
             {/* Cell rims above smoke so the grey border is not covered by WebGL. */}
             <div
               ref={rimLayerRef}
               aria-hidden
-              className="pointer-events-none absolute inset-0 z-20"
+              className="pointer-events-none absolute inset-0 z-20 !m-0"
             />
           </>
         ) : null}
