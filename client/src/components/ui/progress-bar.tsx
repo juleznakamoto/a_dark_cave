@@ -337,11 +337,14 @@ export function SegmentedProgress({
                   */}
                   <div
                     aria-hidden
+                    data-segmented-progress-rim=""
                     className={cn(
                       // One border-color class only — transparent + neutral together
                       // can leave the rim invisible (Tailwind source order).
+                      // With SharedProgressShaderHost, the visible rim is mirrored
+                      // above the canvas and copies this element's border-color.
                       "pointer-events-none absolute inset-0 z-[2] rounded-[4px] border transition-colors duration-300",
-                      fill > 0 ? "border-neutral-700" : "border-transparent",
+                      fill > 0 ? "border-neutral-900" : "border-transparent",
                     )}
                   />
                 </div>

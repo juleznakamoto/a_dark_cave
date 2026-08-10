@@ -97,14 +97,14 @@ type SegmentRegistration = {
 
 /** Matches SegmentedProgress cell rim — painted above the WebGL canvas. */
 const SEGMENT_RIM_BASE_CLASS =
-  "absolute box-border rounded-[4px] border transition-colors duration-300";
+  "absolute box-border rounded-[4px] border border-solid transition-colors duration-300";
 
 /**
  * Position rim divs over each SegmentedProgress cell so grey borders sit above
  * the shared smoke canvas (the in-cell rim alone would be covered by z-10 WebGL).
  *
- * Only one border-color class at a time — if transparent + neutral-500 are both
- * present, Tailwind source order can leave the rim invisible.
+ * Border color is copied from `[data-segmented-progress-rim]` so editing the
+ * Tailwind class on SegmentedProgress is what actually changes the visible rim.
  */
 function syncSegmentRims(host: HTMLElement, rimLayer: HTMLElement) {
   const cells = host.querySelectorAll<HTMLElement>(
@@ -118,7 +118,8 @@ function syncSegmentRims(host: HTMLElement, rimLayer: HTMLElement) {
     const created = !rim;
     if (!rim) {
       rim = document.createElement("div");
-      rim.className = `${SEGMENT_RIM_BASE_CLASS} border-transparent`;
+      rim.className = SEGMENT_RIM_BASE_CLASS;
+      rim.style.borderColor = "transparent";
       rim.setAttribute("aria-hidden", "true");
       rimLayer.appendChild(rim);
     }
@@ -127,13 +128,18 @@ function syncSegmentRims(host: HTMLElement, rimLayer: HTMLElement) {
     rim.style.top = `${r.top - layerRect.top}px`;
     rim.style.width = `${r.width}px`;
     rim.style.height = `${r.height}px`;
-    const filled = cell.hasAttribute("data-filled");
-    if (created && filled) {
+
+    const sourceRim = cell.querySelector<HTMLElement>(
+      "[data-segmented-progress-rim]",
+    );
+    const nextColor = sourceRim
+      ? getComputedStyle(sourceRim).borderColor
+      : "transparent";
+    if (created && nextColor !== "transparent" && nextColor !== "rgba(0, 0, 0, 0)") {
       // Start transparent, then flip so transition-colors can fade in.
       void rim.offsetWidth;
     }
-    rim.classList.toggle("border-neutral-700", filled);
-    rim.classList.toggle("border-transparent", !filled);
+    rim.style.borderColor = nextColor;
     i++;
   }
   while (rimLayer.children.length > i) {
