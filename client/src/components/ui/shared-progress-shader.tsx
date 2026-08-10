@@ -27,10 +27,10 @@ import {
  * Wide luminance span (like shop Insight blue-950→blue-100) so swirls read clearly.
  */
 export const SHARED_PROGRESS_SHADER_COLOR_TOKENS = [
-  "red-950",
   "red-900",
+  "red-800",
+  "red-600",
   "red-500",
-  "red-300",
 ] as const;
 
 export const SHARED_PROGRESS_SHADER_FALLBACK_CLASS = "bg-red-950";
@@ -343,7 +343,7 @@ class SharedProgressShaderRenderer {
     dpr: number,
   ) {
     const gl = this.gl;
-    const seconds = ((performance.now() - this.startMs) / 1000) * 0.4;
+    const seconds = ((performance.now() - this.startMs) / 1000) * 0.15;
     gl.disable(gl.SCISSOR_TEST);
     gl.clearColor(0, 0, 0, 0);
     gl.clear(gl.COLOR_BUFFER_BIT);
