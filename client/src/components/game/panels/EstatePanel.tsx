@@ -64,7 +64,7 @@ function EstateUpgradeProgress({
       compact
       growAnimationMs={ESTATE_BAR_GROW_ANIMATION_MS}
       emitSparksOnGrow
-      filledClassName="bg-red-950"
+      filledClassName="bg-red-950/90"
       emptyClassName="bg-neutral-800"
       segmentClassName="h-2"
       renderFill={() => (
