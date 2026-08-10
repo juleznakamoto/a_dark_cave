@@ -261,29 +261,28 @@ function ArtifactEffectsList({
 }) {
   const { t } = useTranslation("ui");
 
-  if (artifact === "skull_lantern") {
-    return (
-      <div className="space-y-0.5">
-        <div>{t("shop.artifactSkullLantern.caveExploreBonus")}</div>
-        <div>{t("shop.artifactSkullLantern.caveExploreCooldown")}</div>
-        <div>{t("shop.artifactSkullLantern.miningBonus")}</div>
-        <div>{t("shop.artifactSkullLantern.miningCooldown")}</div>
-      </div>
-    );
-  }
-
-  if (artifact === "tarnished_compass") {
-    return (
-      <div className="space-y-0.5">
-        <div>{t("shop.artifactTarnishedCompass.doubleGain")}</div>
-        <div>{t("shop.artifactTarnishedCompass.luck")}</div>
-      </div>
-    );
-  }
+  const lines =
+    artifact === "skull_lantern"
+      ? [
+        t("shop.artifactSkullLantern.caveExploreBonus"),
+        t("shop.artifactSkullLantern.caveExploreCooldown"),
+        t("shop.artifactSkullLantern.miningBonus"),
+        t("shop.artifactSkullLantern.miningCooldown"),
+      ]
+      : artifact === "tarnished_compass"
+        ? [
+          t("shop.artifactTarnishedCompass.doubleGain"),
+          t("shop.artifactTarnishedCompass.luck"),
+        ]
+        : [t("shop.artifactCrowHarness.doubleGain")];
 
   return (
     <div className="space-y-0.5">
-      <div>{t("shop.artifactCrowHarness.doubleGain")}</div>
+      {lines.map((line) => (
+        <div key={line}>
+          • {line}
+        </div>
+      ))}
     </div>
   );
 }
@@ -299,7 +298,7 @@ function ArtifactShopTooltipIcon({
 }) {
   const triggerClass =
     variant === "cardTitle"
-      ? `pl-2 inline-flex items-center justify-center ${SHOP_INFO_HIT_SIZE_CLASS} rounded-full text-white-500 cursor-pointer motion-safe:animate-shop-info-pulse`
+      ? `inline-flex shrink-0 items-center justify-center ${SHOP_INFO_HIT_SIZE_CLASS} rounded-full text-white-500 cursor-pointer motion-safe:animate-shop-info-pulse`
       : `ml-0.5 inline-flex items-center justify-center ${SHOP_INFO_HIT_SIZE_CLASS} rounded-full text-white-500 cursor-pointer motion-safe:animate-shop-info-pulse align-text-bottom translate-y-[0.08em]`;
 
   const shopItem = SHOP_ITEMS[artifact];
@@ -2034,105 +2033,107 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
                                     }`}
                                 >
                                   <CardHeader className="leading-snug p-4 pb-1 relative text-lg ">
-                                    {item.symbol && (
-                                      <ShopCardCornerGlyph
-                                        item={item}
-                                        glyphOriginRef={glyphOriginRef}
-                                        glyphWrapperClassName={`leading-[0.9] text-right absolute top-4 right-4 inline-flex items-center justify-center${isShopPaidGoldPackItem(item.id)
-                                          ? " cursor-default"
-                                          : ""
-                                          }`}
-                                        glyphWrapperStyle={{
-                                          color: tailwindToHex(
-                                            (item.symbolColor || "").replace(
-                                              "text-",
-                                              "",
-                                            ),
-                                          ),
-                                          maxWidth: "2.55em",
-                                          wordBreak: "break-all",
-                                          overflowWrap: "anywhere",
-                                        }}
-                                      />
-                                    )}
-                                    <CardTitle className="!m-0 text-md items-center gap-1 pr-6">
-                                      {resolveShopItemName(item)}
-                                      {item.id === "skull_lantern" && (
-                                        <ArtifactShopTooltipIcon
-                                          artifact="skull_lantern"
-                                          tooltipId="skull-lantern-info"
-                                          variant="cardTitle"
-                                        />
-                                      )}
-                                      {item.id === "tarnished_compass" && (
-                                        <ArtifactShopTooltipIcon
-                                          artifact="tarnished_compass"
-                                          tooltipId="tarnished-compass-info"
-                                          variant="cardTitle"
-                                        />
-                                      )}
-                                      {item.id === "crow_harness" && (
-                                        <ArtifactShopTooltipIcon
-                                          artifact="crow_harness"
-                                          tooltipId="crow-harness-info"
-                                          variant="cardTitle"
-                                        />
-                                      )}
-                                      {item.id === "cruel_mode" && (
-                                        <TooltipWrapper
-                                          tooltip={
-                                            <div className="text-xs">
-                                              <div className="font-bold mb-1">
-                                                {t("ui:shop.cruelMode.title")}
-                                              </div>
-                                              <div className="mt-1 space-y-0.5">
-                                                <div>
-                                                  •{" "}
-                                                  {t(
-                                                    "ui:shop.cruelMode.moreEvents",
-                                                  )}
+                                    <div className="flex items-center gap-2">
+                                      <CardTitle className="!m-0 text-md flex min-w-0 flex-1 items-center gap-1">
+                                        {resolveShopItemName(item)}
+                                        {item.id === "skull_lantern" && (
+                                          <ArtifactShopTooltipIcon
+                                            artifact="skull_lantern"
+                                            tooltipId="skull-lantern-info"
+                                            variant="cardTitle"
+                                          />
+                                        )}
+                                        {item.id === "tarnished_compass" && (
+                                          <ArtifactShopTooltipIcon
+                                            artifact="tarnished_compass"
+                                            tooltipId="tarnished-compass-info"
+                                            variant="cardTitle"
+                                          />
+                                        )}
+                                        {item.id === "crow_harness" && (
+                                          <ArtifactShopTooltipIcon
+                                            artifact="crow_harness"
+                                            tooltipId="crow-harness-info"
+                                            variant="cardTitle"
+                                          />
+                                        )}
+                                        {item.id === "cruel_mode" && (
+                                          <TooltipWrapper
+                                            tooltip={
+                                              <div className="text-xs">
+                                                <div className="font-bold mb-1">
+                                                  {t("ui:shop.cruelMode.title")}
                                                 </div>
-                                                <div>
-                                                  •{" "}
-                                                  {t(
-                                                    "ui:shop.cruelMode.moreItems",
-                                                  )}
-                                                </div>
-                                                <div>
-                                                  •{" "}
-                                                  {t(
-                                                    "ui:shop.cruelMode.strongerEnemies",
-                                                  )}
-                                                </div>
-                                                <div>
-                                                  •{" "}
-                                                  {t(
-                                                    "ui:shop.cruelMode.harderChallenges",
-                                                  )}
-                                                </div>
-                                                <div>
-                                                  •{" "}
-                                                  {t(
-                                                    "ui:shop.cruelMode.reusePurchases",
-                                                  )}
+                                                <div className="mt-1 space-y-0.5">
+                                                  <div>
+                                                    •{" "}
+                                                    {t(
+                                                      "ui:shop.cruelMode.moreEvents",
+                                                    )}
+                                                  </div>
+                                                  <div>
+                                                    •{" "}
+                                                    {t(
+                                                      "ui:shop.cruelMode.moreItems",
+                                                    )}
+                                                  </div>
+                                                  <div>
+                                                    •{" "}
+                                                    {t(
+                                                      "ui:shop.cruelMode.strongerEnemies",
+                                                    )}
+                                                  </div>
+                                                  <div>
+                                                    •{" "}
+                                                    {t(
+                                                      "ui:shop.cruelMode.harderChallenges",
+                                                    )}
+                                                  </div>
+                                                  <div>
+                                                    •{" "}
+                                                    {t(
+                                                      "ui:shop.cruelMode.reusePurchases",
+                                                    )}
+                                                  </div>
                                                 </div>
                                               </div>
-                                            </div>
-                                          }
-                                          tooltipId="cruel-mode-info"
-                                          disabled
-                                          tooltipContentClassName="max-w-xs border border-amber-600"
-                                          className={`pl-2 inline-flex items-center justify-center ${SHOP_INFO_HIT_SIZE_CLASS} rounded-full text-white-500 cursor-pointer motion-safe:animate-shop-info-pulse`}
-                                        >
-                                          <span
-                                            className={SHOP_INFO_GLYPH_CLASS}
-                                            aria-hidden
+                                            }
+                                            tooltipId="cruel-mode-info"
+                                            disabled
+                                            tooltipContentClassName="max-w-xs border border-amber-600"
+                                            className={`inline-flex items-center justify-center ${SHOP_INFO_HIT_SIZE_CLASS} rounded-full text-white-500 cursor-pointer motion-safe:animate-shop-info-pulse`}
                                           >
-                                            🛈
-                                          </span>
-                                        </TooltipWrapper>
+                                            <span
+                                              className={SHOP_INFO_GLYPH_CLASS}
+                                              aria-hidden
+                                            >
+                                              🛈
+                                            </span>
+                                          </TooltipWrapper>
+                                        )}
+                                      </CardTitle>
+                                      {item.symbol && (
+                                        <ShopCardCornerGlyph
+                                          item={item}
+                                          glyphOriginRef={glyphOriginRef}
+                                          glyphWrapperClassName={`leading-[0.9] shrink-0 inline-flex items-center justify-center${isShopPaidGoldPackItem(item.id)
+                                            ? " cursor-default"
+                                            : ""
+                                            }`}
+                                          glyphWrapperStyle={{
+                                            color: tailwindToHex(
+                                              (item.symbolColor || "").replace(
+                                                "text-",
+                                                "",
+                                              ),
+                                            ),
+                                            maxWidth: "2.55em",
+                                            wordBreak: "break-all",
+                                            overflowWrap: "anywhere",
+                                          }}
+                                        />
                                       )}
-                                    </CardTitle>
+                                    </div>
                                     <CardDescription className="!m-0 text-bold flex flex-wrap items-center gap-1">
                                       {(() => {
                                         const cruelJourneyDiscountActive =
