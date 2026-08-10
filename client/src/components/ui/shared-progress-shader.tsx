@@ -28,9 +28,9 @@ import {
  */
 export const SHARED_PROGRESS_SHADER_COLOR_TOKENS = [
   "red-950",
-  "red-800",
+  "red-900",
   "red-500",
-  "orange-100",
+  "red-300",
 ] as const;
 
 export const SHARED_PROGRESS_SHADER_FALLBACK_CLASS = "bg-red-950";
@@ -168,7 +168,11 @@ class SharedProgressShaderRenderer {
     if (!gl) throw new Error("WebGL1 context not available");
     this.gl = gl;
 
-    const vs = this.compile(gl.VERTEX_SHADER, SMOKE_FLOW_VERTEX_SHADER, "vertex");
+    const vs = this.compile(
+      gl.VERTEX_SHADER,
+      SMOKE_FLOW_VERTEX_SHADER,
+      "vertex",
+    );
     const fs = this.compile(
       gl.FRAGMENT_SHADER,
       SHARED_PROGRESS_FRAGMENT_SHADER,
@@ -275,7 +279,7 @@ class SharedProgressShaderRenderer {
     dpr: number,
   ) {
     const gl = this.gl;
-    const seconds = ((performance.now() - this.startMs) / 1000) * 0.97;
+    const seconds = ((performance.now() - this.startMs) / 1000) * 0.4;
     gl.disable(gl.SCISSOR_TEST);
     gl.clearColor(0, 0, 0, 0);
     gl.clear(gl.COLOR_BUFFER_BIT);
@@ -339,7 +343,7 @@ export function SharedProgressShaderHost({
   className,
   // Higher than shop smoke: thin progress segments need smaller features or
   // each scissor window is one flat mid-palette color.
-  scale = 6.5,
+  scale = 3,
 }: {
   children: ReactNode;
   className?: string;
