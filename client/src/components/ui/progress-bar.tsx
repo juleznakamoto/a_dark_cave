@@ -293,58 +293,64 @@ export function SegmentedProgress({
                   data-segmented-progress-cell=""
                   {...(fill > 0 ? { "data-filled": "" } : {})}
                   className={cn(
-                    "relative h-3 flex-1 overflow-hidden rounded-[4px]",
-                    emptyClassName,
+                    // No overflow-hidden here: the outside rim would be clipped.
+                    "relative h-3 flex-1",
                     segmentClassName,
                   )}
                 >
                   <div
                     className={cn(
-                      "absolute inset-y-0 left-0 overflow-hidden transition-[width] ease-out",
-                      changeOnlyGrow
-                        ? "duration-0"
-                        : "duration-500",
-                      // Keep solid fill under optional renderFill (shader paints on top).
-                      filledClassName,
+                      "absolute inset-0 overflow-hidden rounded-[4px]",
+                      emptyClassName,
                     )}
-                    style={{
-                      width: `${fill * 100}%`,
-                      transitionDelay: `${delay}ms`,
-                    }}
                   >
-                    {renderFill ? renderFill() : null}
-                    {showSegmentGlow && (
-                      <motion.div
-                        key={glowKey}
-                        className={cn(
-                          "pointer-events-none absolute inset-0 z-[1] bg-gradient-to-r from-transparent to-transparent",
-                          sparkClassName
-                            ? resolveGrowGlowViaClass(sparkClassName)
-                            : "via-orange-300/90",
-                        )}
-                        initial={{ x: "-100%", opacity: 1 }}
-                        animate={{ x: "100%", opacity: 0 }}
-                        transition={{
-                          duration: Math.min(0.9, tweenDurationMs / 1000),
-                          ease: "easeOut",
-                        }}
-                      />
-                    )}
+                    <div
+                      className={cn(
+                        "absolute inset-y-0 left-0 overflow-hidden transition-[width] ease-out",
+                        changeOnlyGrow
+                          ? "duration-0"
+                          : "duration-500",
+                        // Keep solid fill under optional renderFill (shader paints on top).
+                        filledClassName,
+                      )}
+                      style={{
+                        width: `${fill * 100}%`,
+                        transitionDelay: `${delay}ms`,
+                      }}
+                    >
+                      {renderFill ? renderFill() : null}
+                      {showSegmentGlow && (
+                        <motion.div
+                          key={glowKey}
+                          className={cn(
+                            "pointer-events-none absolute inset-0 z-[1] bg-gradient-to-r from-transparent to-transparent",
+                            sparkClassName
+                              ? resolveGrowGlowViaClass(sparkClassName)
+                              : "via-orange-300/90",
+                          )}
+                          initial={{ x: "-100%", opacity: 1 }}
+                          animate={{ x: "100%", opacity: 0 }}
+                          transition={{
+                            duration: Math.min(0.9, tweenDurationMs / 1000),
+                            ease: "easeOut",
+                          }}
+                        />
+                      )}
+                    </div>
                   </div>
                   {/*
-                    Rim above the CSS fill. SharedProgressShaderHost mirrors these
-                    in a layer above the WebGL canvas (canvas would cover this).
+                    1px ring outside the bg (box-shadow, not border). With the
+                    shared shader, SharedProgressShaderHost mirrors this above
+                    the canvas and copies the computed box-shadow.
                   */}
                   <div
                     aria-hidden
                     data-segmented-progress-rim=""
                     className={cn(
-                      // One border-color class only — transparent + neutral together
-                      // can leave the rim invisible (Tailwind source order).
-                      // With SharedProgressShaderHost, the visible rim is mirrored
-                      // above the canvas and copies this element's border-color.
-                      "pointer-events-none absolute inset-0 z-[2] rounded-[4px] border transition-colors duration-300",
-                      fill > 0 ? "border-neutral-900" : "border-transparent",
+                      "pointer-events-none absolute inset-0 z-[2] rounded-[4px] transition-[box-shadow] duration-300",
+                      fill > 0
+                        ? "shadow-[0_0_0_1px_theme(colors.neutral.900)]"
+                        : "shadow-[0_0_0_1px_transparent]",
                     )}
                   />
                 </div>

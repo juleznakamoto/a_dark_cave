@@ -95,14 +95,14 @@ type SegmentRegistration = {
 
 /** Matches SegmentedProgress cell rim — painted above the WebGL canvas. */
 const SEGMENT_RIM_BASE_CLASS =
-  "absolute box-border rounded-[4px] border border-solid transition-colors duration-300";
+  "absolute rounded-[4px] transition-[box-shadow] duration-300";
 
 /**
- * Position rim divs over each SegmentedProgress cell so grey borders sit above
- * the shared smoke canvas (the in-cell rim alone would be covered by z-10 WebGL).
+ * Position rim divs over each SegmentedProgress cell so the outside ring sits
+ * above the shared smoke canvas (the in-cell rim alone would be covered).
  *
- * Border color is copied from `[data-segmented-progress-rim]` so editing the
- * Tailwind class on SegmentedProgress is what actually changes the visible rim.
+ * Uses box-shadow copied from `[data-segmented-progress-rim]` so the ring stays
+ * outside the bg and color edits on SegmentedProgress still apply.
  */
 function syncSegmentRims(host: HTMLElement, rimLayer: HTMLElement) {
   const cells = host.querySelectorAll<HTMLElement>(
@@ -117,7 +117,7 @@ function syncSegmentRims(host: HTMLElement, rimLayer: HTMLElement) {
     if (!rim) {
       rim = document.createElement("div");
       rim.className = SEGMENT_RIM_BASE_CLASS;
-      rim.style.borderColor = "transparent";
+      rim.style.boxShadow = "0 0 0 1px transparent";
       rim.setAttribute("aria-hidden", "true");
       rimLayer.appendChild(rim);
     }
@@ -130,14 +130,14 @@ function syncSegmentRims(host: HTMLElement, rimLayer: HTMLElement) {
     const sourceRim = cell.querySelector<HTMLElement>(
       "[data-segmented-progress-rim]",
     );
-    const nextColor = sourceRim
-      ? getComputedStyle(sourceRim).borderColor
-      : "transparent";
-    if (created && nextColor !== "transparent" && nextColor !== "rgba(0, 0, 0, 0)") {
-      // Start transparent, then flip so transition-colors can fade in.
+    const nextShadow = sourceRim
+      ? getComputedStyle(sourceRim).boxShadow
+      : "none";
+    if (created && nextShadow !== "none") {
+      // Start transparent, then flip so the shadow can fade in.
       void rim.offsetWidth;
     }
-    rim.style.borderColor = nextColor;
+    rim.style.boxShadow = nextShadow;
     i++;
   }
   while (rimLayer.children.length > i) {
@@ -560,7 +560,8 @@ export function SharedProgressShaderHost({
 
   return (
     <SharedProgressShaderContext.Provider value={api}>
-      <div ref={hostRef} className={cn("relative overflow-hidden", className)}>
+      {/* overflow-visible: segment rims sit 1px outside the bg via box-shadow */}
+      <div ref={hostRef} className={cn("relative overflow-visible", className)}>
         {/*
           Content wrapper: host className often includes space-y-*, which would
           otherwise margin-shift the absolute canvas / rim layer down the page.
