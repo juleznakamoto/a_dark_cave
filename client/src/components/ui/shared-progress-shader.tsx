@@ -52,15 +52,8 @@ function buildSharedProgressFragmentShader(source: string): string {
 uniform vec4 u_clipRect; // xy bottom-left, zw size (gl_FragCoord / scissor space)
 `,
   );
-  // fbm clusters mid-range (~0.25–0.75), so palette[0] / palette[last] almost
-  // never appear. Stretch the sample so low/high stops actually show in swirls.
-  const withPaletteStretch = withClipUniform.replace(
-    "  return palette(fbm(p + 3.0 * r + u_seed));",
-    `  float t = fbm(p + 3.0 * r + u_seed);
-  return palette(smoothstep(0.18, 0.82, t));`,
-  );
   // u_finish.w is corner radius here — disable the stock grain path that shares it.
-  const patched = withPaletteStretch.replace(
+  const patched = withClipUniform.replace(
     `  if (u_grain > 0.0001)
     col += (grainHash(
       gl_FragCoord.xy + vec2(u_seed * 17.0, u_seed * 31.0)) - 0.5) * u_grain;
@@ -80,11 +73,7 @@ uniform vec4 u_clipRect; // xy bottom-left, zw size (gl_FragCoord / scissor spac
   gl_FragColor = vec4(clamp(col, 0.0, 1.0), 1.0);
 }`,
   );
-  if (
-    !patched.includes("u_clipRect") ||
-    !patched.includes("discard") ||
-    !patched.includes("smoothstep(0.18, 0.82, t)")
-  ) {
+  if (!patched.includes("u_clipRect") || !patched.includes("discard")) {
     throw new Error(
       "Shared progress fragment splice failed — smoke shader source changed?",
     );
@@ -236,12 +225,13 @@ class SharedProgressShaderRenderer {
 
     gl.useProgram(program);
     gl.uniform3fv(this.uniforms.colors, this.colors);
-    // Slightly higher intensity/contrast than shop smoke so red swirls separate.
-    gl.uniform4f(this.uniforms.shape, this.scale, 0.75, 0.5, 0.0);
-    gl.uniform4f(this.uniforms.surface, 2.4, 1.45, 0.0, 1.1);
+    // High scale: bars are ~h-2; shop's ~1.7 zoom reads as a flat color there.
+    // Warp + intensity keep swirls moving inside each scissor window.
+    gl.uniform4f(this.uniforms.shape, this.scale, 0.85, 0.5, 0.35);
+    gl.uniform4f(this.uniforms.surface, 2.8, 1.35, 0.0, 1.15);
     // finish.w = corner radius in px (see SHARED_PROGRESS_FRAGMENT_SHADER).
     gl.uniform4f(this.uniforms.finish, 0.0, 0.0, 0.0, 0.0);
-    gl.uniform4f(this.uniforms.transform, 635.0, 0.0, 0.0, 0.0);
+    gl.uniform4f(this.uniforms.transform, 635.0, 0.0, 0.12, 1.0);
     gl.uniform4f(this.uniforms.space, 0.0, 0.0, 0.0, 0.0);
     gl.uniform4f(this.uniforms.cursor, 0.0, 2.0, 0.65, 0.46);
     gl.uniform4f(this.uniforms.clipRect, 0.0, 0.0, 0.0, 0.0);
@@ -299,7 +289,7 @@ class SharedProgressShaderRenderer {
       seconds,
       this.colorCount,
     );
-    gl.uniform4f(this.uniforms.shape, this.scale, 0.75, 0.5, 0.0);
+    gl.uniform4f(this.uniforms.shape, this.scale, 0.85, 0.5, 0.35);
 
     const canvasW = this.canvas.width;
     const canvasH = this.canvas.height;
@@ -347,7 +337,9 @@ class SharedProgressShaderRenderer {
 export function SharedProgressShaderHost({
   children,
   className,
-  scale = 1.1,
+  // Higher than shop smoke: thin progress segments need smaller features or
+  // each scissor window is one flat mid-palette color.
+  scale = 6.5,
 }: {
   children: ReactNode;
   className?: string;
