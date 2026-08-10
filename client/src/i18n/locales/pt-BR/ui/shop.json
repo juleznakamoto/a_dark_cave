@@ -68,16 +68,19 @@
       "caveExploreBonus": "Explorar Caverna: +200% de Bônus",
       "caveExploreCooldown": "Explorar Caverna: -5s de Recarga",
       "miningBonus": "Mineração: +200% de Bônus",
-      "miningCooldown": "Mineração: -5s de Recarga"
+      "miningCooldown": "Mineração: -5s de Recarga",
+      "unlocksStoryline": "Desbloqueia a trama da Lanterna de Caveira"
     },
     "artifactTarnishedCompass": {
       "title": "Bússola Manchada",
       "doubleGain": "10% de chance de dobrar os ganhos das ações",
-      "luck": "+5 de Sorte"
+      "luck": "+5 de Sorte",
+      "unlocksStoryline": "Desbloqueia a trama da Bússola"
     },
     "artifactCrowHarness": {
       "title": "Corvo Caolho",
-      "doubleGain": "até 15% de chance de dobrar os ganhos das ações"
+      "doubleGain": "até 15% de chance de dobrar os ganhos das ações",
+      "unlocksStoryline": "Desbloqueia a trama do Corvo"
     },
     "cruelMode": {
       "title": "Modo Cruel",

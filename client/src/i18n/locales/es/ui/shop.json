@@ -73,16 +73,19 @@
       "caveExploreBonus": "Exploración de cueva: +200 % de bonificación", //x1.8
       "caveExploreCooldown": "Exploración de cueva: -5 s de recarga", //x1.4
       "miningBonus": "Extracción: +200 % de bonificación", //x1.8
-      "miningCooldown": "Extracción: -5 s de recarga" //x1.4
+      "miningCooldown": "Extracción: -5 s de recarga", //x1.4
+      "unlocksStoryline": "Desbloquea la historia del farol de cráneo"
     },
     "artifactTarnishedCompass": {
       "title": "Brújula deslustrada",
       "doubleGain": "10 % de probabilidad de duplicar las ganancias de acciones", //x1.7
-      "luck": "+5 Suerte"
+      "luck": "+5 Suerte",
+      "unlocksStoryline": "Desbloquea la historia de la brújula"
     },
     "artifactCrowHarness": {
       "title": "Cuervo tuerto",
-      "doubleGain": "Hasta un 15 % de probabilidad de duplicar las ganancias de acciones" //x1.7
+      "doubleGain": "Hasta un 15 % de probabilidad de duplicar las ganancias de acciones", //x1.7
+      "unlocksStoryline": "Desbloquea la historia del cuervo"
     },
     "cruelMode": {
       "title": "Modo cruel",

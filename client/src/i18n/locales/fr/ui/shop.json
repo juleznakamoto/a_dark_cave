@@ -73,16 +73,19 @@
       "caveExploreBonus": "Exploration de grotte : +200 % de bonus", //x1.6
       "caveExploreCooldown": "Exploration de grotte : -5 s de recharge", //x1.5
       "miningBonus": "Extraction : +200 % de bonus", //x1.5
-      "miningCooldown": "Extraction : -5 s de recharge" //x1.5
+      "miningCooldown": "Extraction : -5 s de recharge", //x1.5
+      "unlocksStoryline": "Débloque l'histoire de la lanterne-crâne"
     },
     "artifactTarnishedCompass": {
       "title": "Boussole ternie",
       "doubleGain": "10 % de chance de doubler les gains d'actions",
-      "luck": "+5 Chance"
+      "luck": "+5 Chance",
+      "unlocksStoryline": "Débloque l'histoire de la boussole"
     },
     "artifactCrowHarness": {
       "title": "Corbeau borgne",
-      "doubleGain": "Jusqu'à 15 % de chance de doubler les gains d'actions" //x1.4
+      "doubleGain": "Jusqu'à 15 % de chance de doubler les gains d'actions", //x1.4
+      "unlocksStoryline": "Débloque l'histoire du corbeau"
     },
     "cruelMode": {
       "title": "Mode cruel",

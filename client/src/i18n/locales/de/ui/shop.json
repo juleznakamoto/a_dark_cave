@@ -73,16 +73,19 @@
       "caveExploreBonus": "Höhlenerkundung: +200 % Bonus",
       "caveExploreCooldown": "Höhlenerkundung: -5 s Abklingzeit", //x1.3
       "miningBonus": "Abbau: +200 % Bonus",
-      "miningCooldown": "Abbau: -5s Abklingzeit"
+      "miningCooldown": "Abbau: -5s Abklingzeit",
+      "unlocksStoryline": "Schaltet die Schädellaternenhandlung frei"
     },
     "artifactTarnishedCompass": {
       "title": "Angelaufener Kompass",
       "doubleGain": "10 % Chance, Aktionsgewinne zu verdoppeln",
-      "luck": "+5 Glück"
+      "luck": "+5 Glück",
+      "unlocksStoryline": "Schaltet die Kompasshandlung frei"
     },
     "artifactCrowHarness": {
       "title": "Einäugige Krähe",
-      "doubleGain": "bis zu 15 % Chance, Aktionsgewinne zu verdoppeln"
+      "doubleGain": "bis zu 15 % Chance, Aktionsgewinne zu verdoppeln",
+      "unlocksStoryline": "Schaltet die Krähenhandlung frei"
     },
     "cruelMode": {
       "title": "Grausamer Modus", //x1.5

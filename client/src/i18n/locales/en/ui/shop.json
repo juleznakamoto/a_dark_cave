@@ -70,6 +70,7 @@
     "journeyCompleteDiscount": "Special discount for finishing the game",
     "artifactSkullLantern": {
       "title": "Skull Lantern",
+      "unlocksStoryline": "Unlocks Skull Lantern storyline",
       "caveExploreBonus": "Cave Explore: +200% Bonus",
       "caveExploreCooldown": "Cave Explore: -5s Cooldown",
       "miningBonus": "Mining: +200% Bonus",
@@ -77,11 +78,13 @@
     },
     "artifactTarnishedCompass": {
       "title": "Tarnished Compass",
+      "unlocksStoryline": "Unlocks Compass storyline",
       "doubleGain": "10% chance to double actions gains",
       "luck": "+5 Luck"
     },
     "artifactCrowHarness": {
       "title": "One-eyed Crow",
+      "unlocksStoryline": "Unlocks Crow storyline",
       "doubleGain": "up to 15% chance to double action gains"
     },
     "cruelMode": {

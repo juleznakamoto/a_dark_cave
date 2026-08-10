@@ -73,16 +73,19 @@
       "caveExploreBonus": "探索洞穴：+200% 加成",
       "caveExploreCooldown": "探索洞穴：-5 秒冷却",
       "miningBonus": "采矿：+200% 加成",
-      "miningCooldown": "采矿：-5 秒冷却"
+      "miningCooldown": "采矿：-5 秒冷却",
+      "unlocksStoryline": "解锁骷髅灯笼剧情线"
     },
     "artifactTarnishedCompass": {
       "title": "黯淡指南针",
       "doubleGain": "10% 几率双倍行动收益",
-      "luck": "+5 幸运"
+      "luck": "+5 幸运",
+      "unlocksStoryline": "解锁罗盘剧情线"
     },
     "artifactCrowHarness": {
       "title": "独眼乌鸦",
-      "doubleGain": "最高 15% 几率双倍行动收益"
+      "doubleGain": "最高 15% 几率双倍行动收益",
+      "unlocksStoryline": "解锁乌鸦剧情线"
     },
     "cruelMode": {
       "title": "残酷模式",

@@ -68,16 +68,19 @@
       "caveExploreBonus": "Esplora Caverna: +200% Bonus",
       "caveExploreCooldown": "Esplora Caverna: -5s Recupero",
       "miningBonus": "Estrazione: +200% Bonus",
-      "miningCooldown": "Estrazione: -5s Recupero"
+      "miningCooldown": "Estrazione: -5s Recupero",
+      "unlocksStoryline": "Sblocca la trama della Lanterna di Teschio"
     },
     "artifactTarnishedCompass": {
       "title": "Bussola Annerita",
       "doubleGain": "10% di probabilità di raddoppiare i guadagni delle azioni",
-      "luck": "+5 Fortuna"
+      "luck": "+5 Fortuna",
+      "unlocksStoryline": "Sblocca la trama della Bussola"
     },
     "artifactCrowHarness": {
       "title": "Corvo Guercio",
-      "doubleGain": "fino al 15% di probabilità di raddoppiare i guadagni delle azioni"
+      "doubleGain": "fino al 15% di probabilità di raddoppiare i guadagni delle azioni",
+      "unlocksStoryline": "Sblocca la trama del Corvo"
     },
     "cruelMode": {
       "title": "Modalità Crudele",
