@@ -1,5 +1,5 @@
 import { GameState } from "@shared/schema";
-import { isFinanceExpeditionPriorUnlocked } from "@/game/rules/forestResearchActions";
+import { isFinanceExpeditionPriorUnlocked } from "@/game/rules/financeExpedition";
 
 export type UpgradeKey =
   | "exploreCave"

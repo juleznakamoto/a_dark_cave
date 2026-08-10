@@ -1,55 +1,28 @@
 import type { Action, GameState } from "@shared/schema";
-import type { ActionResult } from "@/game/actions";
+import type { ActionResult } from "@/game/types";
 import { getActionLogMessage } from "@/i18n/resolveGameText";
 import { bt } from "./buildingTooltipEffects";
 import { buildLocalizedEventLogEntry } from "@/i18n/buildEventLogEntry";
 import { gameEvents } from "./events";
+import {
+  FINANCE_EXPEDITION_TIERS,
+  getFinanceExpeditionFoodCost,
+  getFinanceExpeditionGoldCost,
+  getFinanceExpeditionTier,
+  getFinanceExpeditionTierIndex,
+  getFinanceExpeditionUsageCount,
+} from "./financeExpedition";
 
-export const FINANCE_EXPEDITION_TIERS = [
-  { gold: 10, food: 250, villagers: 4, executionTime: 30, insight: 250 },
-  { gold: 20, food: 500, villagers: 6, executionTime: 45, insight: 500 },
-  { gold: 30, food: 750, villagers: 8, executionTime: 60, insight: 750 },
-  { gold: 40, food: 1000, villagers: 10, executionTime: 75, insight: 1000 },
-  { gold: 50, food: 1500, villagers: 12, executionTime: 90, insight: 1500 },
-] as const;
-
-export function getFinanceExpeditionUsageCount(
-  state: Pick<GameState, "story">,
-): number {
-  return Number(state.story?.seen?.financeExpeditionUsageCount) || 0;
-}
-
-export function getFinanceExpeditionTierIndex(
-  state: Pick<GameState, "story">,
-): number {
-  const usageCount = getFinanceExpeditionUsageCount(state);
-  return Math.min(usageCount, FINANCE_EXPEDITION_TIERS.length - 1);
-}
-
-export function getFinanceExpeditionTier(
-  state: Pick<GameState, "story">,
-): (typeof FINANCE_EXPEDITION_TIERS)[number] {
-  return FINANCE_EXPEDITION_TIERS[getFinanceExpeditionTierIndex(state)];
-}
-
-export function getFinanceExpeditionGoldCost(state: GameState): number {
-  return getFinanceExpeditionTier(state).gold;
-}
-
-export function getFinanceExpeditionFoodCost(state: GameState): number {
-  return getFinanceExpeditionTier(state).food;
-}
-
-export function getFinanceExpeditionInsightReward(state: GameState): number {
-  return getFinanceExpeditionTier(state).insight;
-}
-
-/** Prior may automate Finance Expedition only after the max tier has been completed once. */
-export function isFinanceExpeditionPriorUnlocked(
-  state: Pick<GameState, "story">,
-): boolean {
-  return getFinanceExpeditionUsageCount(state) >= FINANCE_EXPEDITION_TIERS.length;
-}
+export {
+  FINANCE_EXPEDITION_TIERS,
+  getFinanceExpeditionUsageCount,
+  getFinanceExpeditionTierIndex,
+  getFinanceExpeditionTier,
+  getFinanceExpeditionGoldCost,
+  getFinanceExpeditionFoodCost,
+  getFinanceExpeditionInsightReward,
+  isFinanceExpeditionPriorUnlocked,
+} from "./financeExpedition";
 
 export const forestResearchActions: Record<string, Action> = {
   financeExpedition: {
@@ -88,7 +61,7 @@ export function handleFinanceExpedition(
   const tier = getFinanceExpeditionTier(state);
   const isMaxTier =
     getFinanceExpeditionTierIndex(state) === FINANCE_EXPEDITION_TIERS.length - 1;
-  // leatherboundBookFound is only set on Accept — a missed dialog re-offers on the
+  // leatherboundBookFound is only set on Accept - a missed dialog re-offers on the
   // next max-tier expedition instead of soft-locking the book forever.
   const shouldOfferBook =
     isMaxTier && !state.story.seen.leatherboundBookFound;
