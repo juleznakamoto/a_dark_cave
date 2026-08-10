@@ -291,11 +291,11 @@ export function SegmentedProgress({
                 <div
                   key={index}
                   className={cn(
-                    "relative h-3 flex-1 overflow-hidden rounded-[4px]",
+                    // Transparent border always so the rim can fade without a layout jump.
+                    "relative h-3 flex-1 overflow-hidden rounded-[4px] border border-transparent transition-colors duration-300",
                     emptyClassName,
                     segmentClassName,
-                    // Active (full or partial) cells get a thin grey rim.
-                    fill > 0 && "border border-neutral-500",
+                    fill > 0 && "border-neutral-500",
                   )}
                 >
                   <div
