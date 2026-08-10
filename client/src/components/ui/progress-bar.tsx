@@ -290,12 +290,12 @@ export function SegmentedProgress({
               return (
                 <div
                   key={index}
+                  data-segmented-progress-cell=""
+                  {...(fill > 0 ? { "data-filled": "" } : {})}
                   className={cn(
-                    // Transparent border always so the rim can fade without a layout jump.
-                    "relative h-3 flex-1 overflow-hidden rounded-[4px] border border-transparent transition-colors duration-300",
+                    "relative h-3 flex-1 overflow-hidden rounded-[4px]",
                     emptyClassName,
                     segmentClassName,
-                    fill > 0 && "border-neutral-500",
                   )}
                 >
                   <div
@@ -331,6 +331,17 @@ export function SegmentedProgress({
                       />
                     )}
                   </div>
+                  {/*
+                    Rim above the CSS fill. SharedProgressShaderHost mirrors these
+                    in a layer above the WebGL canvas (canvas would cover this).
+                  */}
+                  <div
+                    aria-hidden
+                    className={cn(
+                      "pointer-events-none absolute inset-0 z-[2] rounded-[4px] border border-transparent transition-colors duration-300",
+                      fill > 0 && "border-neutral-500",
+                    )}
+                  />
                 </div>
               );
             })}

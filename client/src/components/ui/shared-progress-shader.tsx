@@ -90,6 +90,47 @@ type SegmentRegistration = {
   element: HTMLElement;
 };
 
+/** Matches SegmentedProgress cell rim — painted above the WebGL canvas. */
+const SEGMENT_RIM_CLASS =
+  "absolute box-border rounded-[4px] border border-transparent transition-colors duration-300";
+
+/**
+ * Position rim divs over each SegmentedProgress cell so grey borders sit above
+ * the shared smoke canvas (the in-cell rim alone would be covered by z-10 WebGL).
+ */
+function syncSegmentRims(host: HTMLElement, rimLayer: HTMLElement) {
+  const cells = host.querySelectorAll<HTMLElement>(
+    "[data-segmented-progress-cell]",
+  );
+  const hostRect = host.getBoundingClientRect();
+  let i = 0;
+  for (const cell of cells) {
+    let rim = rimLayer.children[i] as HTMLElement | undefined;
+    const created = !rim;
+    if (!rim) {
+      rim = document.createElement("div");
+      rim.className = SEGMENT_RIM_CLASS;
+      rim.setAttribute("aria-hidden", "true");
+      rimLayer.appendChild(rim);
+    }
+    const r = cell.getBoundingClientRect();
+    rim.style.left = `${r.left - hostRect.left}px`;
+    rim.style.top = `${r.top - hostRect.top}px`;
+    rim.style.width = `${r.width}px`;
+    rim.style.height = `${r.height}px`;
+    const filled = cell.hasAttribute("data-filled");
+    if (created && filled) {
+      // Start transparent, then flip so transition-colors can fade in.
+      void rim.offsetWidth;
+    }
+    rim.classList.toggle("border-neutral-500", filled);
+    i++;
+  }
+  while (rimLayer.children.length > i) {
+    rimLayer.lastChild?.remove();
+  }
+}
+
 type SharedProgressShaderApi = {
   registerSegment: (id: string, element: HTMLElement | null) => void;
   useShader: boolean;
@@ -352,6 +393,7 @@ export function SharedProgressShaderHost({
 }) {
   const hostRef = useRef<HTMLDivElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
+  const rimLayerRef = useRef<HTMLDivElement>(null);
   const rendererRef = useRef<SharedProgressShaderRenderer | null>(null);
   const segmentsRef = useRef<Map<string, HTMLElement>>(new Map());
   const rafRef = useRef(0);
@@ -437,6 +479,8 @@ export function SharedProgressShaderHost({
           });
           renderer.render(list, canvasRect, dpr);
         }
+        const rimLayer = rimLayerRef.current;
+        if (rimLayer) syncSegmentRims(host, rimLayer);
       }
       frameCount++;
       rafRef.current = requestAnimationFrame(loop);
@@ -489,11 +533,19 @@ export function SharedProgressShaderHost({
           track backgrounds, so the shader must be drawn on top.)
         */}
         {useShader ? (
-          <canvas
-            ref={canvasRef}
-            aria-hidden
-            className="pointer-events-none absolute inset-0 z-10 h-full w-full"
-          />
+          <>
+            <canvas
+              ref={canvasRef}
+              aria-hidden
+              className="pointer-events-none absolute inset-0 z-10 h-full w-full"
+            />
+            {/* Cell rims above smoke so the grey border is not covered by WebGL. */}
+            <div
+              ref={rimLayerRef}
+              aria-hidden
+              className="pointer-events-none absolute inset-0 z-20"
+            />
+          </>
         ) : null}
       </div>
     </SharedProgressShaderContext.Provider>
