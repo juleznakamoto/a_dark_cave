@@ -350,7 +350,7 @@ function ShareCard({
   return (
     <div
       ref={cardRef}
-      className="font-sans text-foreground overflow-hidden"
+      className="font-sans text-foreground overflow-visible"
       style={{
         width: SHARE_IMAGE_WIDTH,
         height: SHARE_IMAGE_HEIGHT,

@@ -150,15 +150,18 @@
   --adc-gs-glow-light: 88%;
 }
 
-/* Resting rim: light grey border always visible; bright arc still travels */
-.adc-gs--frame.adc-gs--silver .adc-gs__rim-spin {
-  background: conic-gradient(from 0deg,
-      hsl(0deg 0% 55%) 0deg,
-      hsl(0deg 0% 55%) 323deg,
-      hsl(210deg 8% 78%) 334deg,
-      hsl(0deg 0% 100%) 341deg,
-      hsl(210deg 8% 78%) 348deg,
-      hsl(0deg 0% 55%) 360deg);
+/* Soft outer glow at rest; slightly stronger on hover (export clears it). */
+.adc-gs--frame.adc-gs--silver {
+  box-shadow: 0 0 28px rgb(255 255 255 / 10%);
+  transition: box-shadow 400ms ease;
+}
+
+.adc-gs--interactive.adc-gs--frame.adc-gs--silver:hover {
+  box-shadow: 0 0 42px rgb(255 255 255 / 22%);
+}
+
+.adc-gs--export.adc-gs--frame.adc-gs--silver {
+  box-shadow: none;
 }
 
 .adc-gs:before,
@@ -337,13 +340,13 @@
   transition: --adc-gs-bg-size var(--adc-gs-interaction-speed) ease;
 }
 
-/* Hover: whole rim lights up silver/white (400ms fade in/out) */
+/* Share frame: hover is outer soft shadow only (no full-rim border fill). */
 .adc-gs--interactive.adc-gs--frame.adc-gs--silver:hover .adc-gs__rim::after {
-  opacity: 1;
+  opacity: 0;
 }
 
 .adc-gs--interactive.adc-gs--frame.adc-gs--silver:hover .adc-gs__rim {
-  box-shadow: 0 0 18px rgb(255 255 255 / 40%);
+  box-shadow: none;
 }
 
 .adc-gs--interactive:hover .adc-gs__glow {
