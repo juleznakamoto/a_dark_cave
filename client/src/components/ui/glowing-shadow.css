@@ -150,18 +150,17 @@
   --adc-gs-glow-light: 88%;
 }
 
-/* Soft outer glow at rest; slightly stronger on hover (export clears it). */
-.adc-gs--frame.adc-gs--silver {
-  box-shadow: 0 0 28px rgb(255 255 255 / 10%);
-  transition: box-shadow 400ms ease;
+/*
+ * Share dialog preview wrapper (outside the export capture).
+ * drop-shadow is used so the glow is not clipped by the scaled card.
+ */
+.adc-share-preview {
+  filter: drop-shadow(0 0 18px rgb(255 255 255 / 35%));
+  transition: filter 400ms ease;
 }
 
-.adc-gs--interactive.adc-gs--frame.adc-gs--silver:hover {
-  box-shadow: 0 0 42px rgb(255 255 255 / 22%);
-}
-
-.adc-gs--export.adc-gs--frame.adc-gs--silver {
-  box-shadow: none;
+.adc-share-preview:hover {
+  filter: drop-shadow(0 0 30px rgb(255 255 255 / 55%));
 }
 
 .adc-gs:before,
@@ -340,13 +339,13 @@
   transition: --adc-gs-bg-size var(--adc-gs-interaction-speed) ease;
 }
 
-/* Share frame: hover is outer soft shadow only (no full-rim border fill). */
+/* Hover: whole rim lights up silver/white (400ms fade in/out) */
 .adc-gs--interactive.adc-gs--frame.adc-gs--silver:hover .adc-gs__rim::after {
-  opacity: 0;
+  opacity: 1;
 }
 
 .adc-gs--interactive.adc-gs--frame.adc-gs--silver:hover .adc-gs__rim {
-  box-shadow: none;
+  box-shadow: 0 0 18px rgb(255 255 255 / 40%);
 }
 
 .adc-gs--interactive:hover .adc-gs__glow {

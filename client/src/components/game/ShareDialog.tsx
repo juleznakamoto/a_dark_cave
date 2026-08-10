@@ -350,7 +350,7 @@ function ShareCard({
   return (
     <div
       ref={cardRef}
-      className="font-sans text-foreground overflow-visible"
+      className="font-sans text-foreground overflow-hidden"
       style={{
         width: SHARE_IMAGE_WIDTH,
         height: SHARE_IMAGE_HEIGHT,
@@ -783,7 +783,7 @@ export default function ShareDialog() {
 
         <div
           ref={previewWrapRef}
-          className="relative shrink-0 overflow-visible"
+          className="adc-share-preview relative shrink-0 overflow-visible"
           style={{
             width: SHARE_IMAGE_WIDTH * previewScale,
             height: SHARE_IMAGE_HEIGHT * previewScale,
