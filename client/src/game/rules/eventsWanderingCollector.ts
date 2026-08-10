@@ -1,4 +1,4 @@
-import type { GameEvent, EventChoice } from "./events";
+import type { GameEvent, EventChoice } from "./eventTypes";
 import type { GameState } from "@shared/schema";
 import { getClothingOrRelicEffectName } from "@/i18n/resolveGameText";
 import {

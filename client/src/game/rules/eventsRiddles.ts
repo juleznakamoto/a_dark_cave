@@ -1,5 +1,5 @@
 
-import { GameEvent } from "./events";
+import type { GameEvent } from "./eventTypes";
 import { GameState } from "@shared/schema";
 import { riddleFogDurationMs, cruelModeScale } from "../cruelMode";
 import { stackTimedDebuff } from "@/game/stateHelpers";

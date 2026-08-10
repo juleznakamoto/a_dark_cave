@@ -1,4 +1,4 @@
-import { EventChoice, GameEvent } from "./events";
+import type { EventChoice, GameEvent } from "./eventTypes";
 import { GameState } from "@shared/schema";
 import { killVillagers } from "@/game/stateHelpers";
 import { getVillagersInVillage } from "@/game/population";

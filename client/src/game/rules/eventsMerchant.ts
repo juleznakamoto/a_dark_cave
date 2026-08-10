@@ -5,7 +5,7 @@ import {
 } from "@/i18n/resolveGameText";
 import { getUiTooltip } from "@/i18n/tooltipLabels";
 import { bookEffects, clothingEffects } from "./effects";
-import { GameEvent } from "./events";
+import type { GameEvent } from "./eventTypes";
 import { GameState } from "@shared/schema";
 import { getTotalKnowledge, getTotalMadness } from "./effectsCalculation";
 import { getTotalMerchantDiscount } from "./effectsStats";

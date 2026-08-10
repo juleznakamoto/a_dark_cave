@@ -1,5 +1,5 @@
 import i18n from "i18next";
-import type { GameEvent, EventChoice } from "@/game/rules/events";
+import type { GameEvent, EventChoice } from "@/game/rules/eventTypes";
 import type { GameState } from "@shared/schema";
 
 type TranslateOptions = Record<string, string | number | boolean | undefined>;

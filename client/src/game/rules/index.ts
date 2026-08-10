@@ -1,6 +1,6 @@
 import { Action } from "@shared/schema";
 import { GameState } from "@shared/schema";
-import { GameEvent } from "./events";
+import type { GameEvent } from "./eventTypes";
 import { registerActions, getGameActions } from "./actionsRegistry";
 import { getNextBuildingLevel } from "./villageBuildActions";
 import { getMaxHutLevelForBuildAction } from "@/game/cruelMode";

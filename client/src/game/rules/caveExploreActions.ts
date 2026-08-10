@@ -1,7 +1,8 @@
 import { Action, GameState } from "@shared/schema";
 import { ActionResult } from "@/game/actions";
 import { applyActionEffects } from "./actionEffects";
-import { gameEvents, LogEntry } from "./events";
+import type { LogEntry } from "./eventTypes";
+import { gameEvents } from "./events";
 import { logger } from "../../lib/logger";
 import { isPlaylightReferralUrl } from "@/lib/playlight";
 import { isSteamEditionActive } from "@/lib/edition";

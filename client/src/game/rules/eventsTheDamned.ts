@@ -1,4 +1,4 @@
-import { GameEvent } from "./events";
+import type { GameEvent } from "./eventTypes";
 import { GameState } from "@shared/schema";
 import { addFreeVillagersWithinCap, stackTimedDebuff } from "@/game/stateHelpers";
 import { getCurrentPopulation } from "@/game/population";

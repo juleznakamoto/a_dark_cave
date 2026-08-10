@@ -1,4 +1,5 @@
-import { GameEvent, calculateSuccessChance } from "./events";
+import type { GameEvent } from "./eventTypes";
+import { calculateSuccessChance } from "./eventSuccessChance";
 import { GameState } from "@shared/schema";
 import { addFreeVillagersWithinCap, killVillagers, stackTimedDebuff } from "@/game/stateHelpers";
 import { getTotalStrength } from "./effectsCalculation";

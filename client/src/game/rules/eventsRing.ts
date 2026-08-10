@@ -1,6 +1,7 @@
 // estate 1, stone hut 4, 5
 
-import { EventChoice, GameEvent, calculateSuccessChance } from "./events";
+import type { EventChoice, GameEvent } from "./eventTypes";
+import { calculateSuccessChance } from "./eventSuccessChance";
 import { GameState } from "@shared/schema";
 import { killVillagers } from "@/game/stateHelpers";
 import { cruelModeScale } from "../cruelMode";

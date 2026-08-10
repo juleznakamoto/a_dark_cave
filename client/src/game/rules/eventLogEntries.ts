@@ -1,6 +1,6 @@
 import { GameState } from "@shared/schema";
 import { getCurrentPopulation } from "../population";
-import { LogEntry } from "./events";
+import type { LogEntry } from "./eventTypes";
 import { GAME_CONSTANTS } from "../constants";
 
 /**

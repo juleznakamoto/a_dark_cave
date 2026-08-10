@@ -1,4 +1,4 @@
-import type { GameEvent } from "./events";
+import type { GameEvent } from "./eventTypes";
 import type { GameState } from "@shared/schema";
 
 /** Exclusive-item track: after tasks complete, `socialPromoExclusiveRewardPending` is set; same choice-event flow as other narrative events. */

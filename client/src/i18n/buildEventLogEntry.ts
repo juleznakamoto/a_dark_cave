@@ -1,4 +1,4 @@
-import type { GameEvent, EventChoice, LogEntry } from "@/game/rules/events";
+import type { GameEvent, EventChoice, LogEntry } from "@/game/rules/eventTypes";
 import type { GameState } from "@shared/schema";
 import {
   getEventCatalogId,

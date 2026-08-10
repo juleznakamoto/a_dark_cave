@@ -1,5 +1,5 @@
 import { GameState } from "@shared/schema";
-import { GameEvent } from "./events";
+import type { GameEvent } from "./eventTypes";
 
 export const exiledScholarEvents: Record<string, GameEvent> = {
   exiledScholarVisit: {

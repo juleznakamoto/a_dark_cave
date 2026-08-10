@@ -1,6 +1,7 @@
 import { GameState } from "@shared/schema";
 import { killVillagers } from "@/game/stateHelpers";
-import { calculateSuccessChance, GameEvent } from "./events";
+import type { GameEvent } from "./eventTypes";
+import { calculateSuccessChance } from "./eventSuccessChance";
 import { bloodMoonSacrificeAmount } from "../cruelMode";
 
 function bloodMoonI18nVars(state: GameState) {

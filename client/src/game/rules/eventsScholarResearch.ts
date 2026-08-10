@@ -1,5 +1,5 @@
 import type { GameState } from "@shared/schema";
-import type { GameEvent } from "./events";
+import type { GameEvent } from "./eventTypes";
 
 export const scholarResearchEvents: Record<string, GameEvent> = {
   scholarResearchProposal: {

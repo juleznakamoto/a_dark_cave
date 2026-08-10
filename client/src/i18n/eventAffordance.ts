@@ -1,6 +1,6 @@
 import i18n from "i18next";
 import type { GameState } from "@shared/schema";
-import type { EventChoice } from "@/game/rules/events";
+import type { EventChoice } from "@/game/rules/eventTypes";
 import { getVillagersInVillage } from "@/game/population";
 import { getResourceName } from "@/i18n/resolveGameText";
 import { resolveEventChoiceCost } from "@/i18n/eventText";

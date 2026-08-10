@@ -1,5 +1,5 @@
 import { GameState } from "@shared/schema";
-import { GameEvent } from "./events";
+import type { GameEvent } from "./eventTypes";
 import { spendFreeVillagers, stackTimedDebuff } from "@/game/stateHelpers";
 import { getCurrentPopulation } from "@/game/population";
 

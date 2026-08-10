@@ -1,4 +1,4 @@
-import { GameEvent } from "./events";
+import type { GameEvent } from "./eventTypes";
 import { GameState } from "@shared/schema";
 
 export const CHAINMASTER_SELL_GOLD = 100;

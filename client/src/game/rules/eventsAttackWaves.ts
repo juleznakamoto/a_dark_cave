@@ -1,4 +1,4 @@
-import type { EventChoiceEffectResult, GameEvent } from "./events";
+import type { EventChoiceEffectResult, GameEvent } from "./eventTypes";
 import { GameState } from "@shared/schema";
 import { killVillagers } from "@/game/stateHelpers";
 import { useGameStore, isModalDialogOpen } from "@/game/state";
