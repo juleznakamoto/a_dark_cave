@@ -22,15 +22,68 @@ import {
   SMOKE_FLOW_VERTEX_SHADER,
 } from "@/components/ui/smoke-shader";
 
-/** Red smoke palette (low → high) for progress-bar fills. */
+/**
+ * Red smoke palette (low → high) for progress-bar fills.
+ * Wide luminance span (like shop Insight blue-950→blue-100) so swirls read clearly.
+ */
 export const SHARED_PROGRESS_SHADER_COLOR_TOKENS = [
   "red-950",
-  "red-900",
-  "red-700",
-  "orange-200",
+  "red-800",
+  "red-500",
+  "orange-100",
 ] as const;
 
 export const SHARED_PROGRESS_SHADER_FALLBACK_CLASS = "bg-red-950";
+
+/** Matches Tailwind `rounded-[4px]` on SegmentedProgress segments. */
+const SEGMENT_CORNER_RADIUS_CSS_PX = 4;
+
+/**
+ * Smoke flow + per-draw rounded-rect clip. Packs corner radius into `u_finish.w`
+ * (grain unused here) and adds one `u_clipRect` so we stay within WebGL1's
+ * 16 fragment uniform-vector minimum.
+ */
+function buildSharedProgressFragmentShader(source: string): string {
+  // smoke-shader.tsx is CRLF on Windows — normalize before splicing.
+  const lf = source.replace(/\r\n/g, "\n");
+  const withClipUniform = lf.replace(
+    "uniform vec4 u_cursor;",
+    `uniform vec4 u_cursor;
+uniform vec4 u_clipRect; // xy bottom-left, zw size (gl_FragCoord / scissor space)
+`,
+  );
+  // u_finish.w is corner radius here — disable the stock grain path that shares it.
+  const patched = withClipUniform.replace(
+    `  if (u_grain > 0.0001)
+    col += (grainHash(
+      gl_FragCoord.xy + vec2(u_seed * 17.0, u_seed * 31.0)) - 0.5) * u_grain;
+  gl_FragColor = vec4(clamp(col, 0.0, 1.0), 1.0);
+}`,
+    `  // Clip to segment rounded-[4px] (scissor alone is square).
+  float cornerR = u_finish.w;
+  if (cornerR > 0.001 && u_clipRect.z > 0.5 && u_clipRect.w > 0.5) {
+    vec2 halfSize = u_clipRect.zw * 0.5;
+    vec2 center = u_clipRect.xy + halfSize;
+    vec2 p = gl_FragCoord.xy - center;
+    float r = min(cornerR, min(halfSize.x, halfSize.y));
+    vec2 d = abs(p) - halfSize + vec2(r);
+    float dist = length(max(d, 0.0)) + min(max(d.x, d.y), 0.0) - r;
+    if (dist > 0.0) discard;
+  }
+  gl_FragColor = vec4(clamp(col, 0.0, 1.0), 1.0);
+}`,
+  );
+  if (!patched.includes("u_clipRect") || !patched.includes("discard")) {
+    throw new Error(
+      "Shared progress fragment splice failed — smoke shader source changed?",
+    );
+  }
+  return patched;
+}
+
+const SHARED_PROGRESS_FRAGMENT_SHADER = buildSharedProgressFragmentShader(
+  SMOKE_FLOW_FRAGMENT_SHADER,
+);
 
 type SegmentRegistration = {
   id: string;
@@ -77,6 +130,7 @@ type SmokeUniforms = {
   transform: WebGLUniformLocation;
   space: WebGLUniformLocation;
   cursor: WebGLUniformLocation;
+  clipRect: WebGLUniformLocation;
 };
 
 /**
@@ -117,7 +171,7 @@ class SharedProgressShaderRenderer {
     const vs = this.compile(gl.VERTEX_SHADER, SMOKE_FLOW_VERTEX_SHADER, "vertex");
     const fs = this.compile(
       gl.FRAGMENT_SHADER,
-      SMOKE_FLOW_FRAGMENT_SHADER,
+      SHARED_PROGRESS_FRAGMENT_SHADER,
       "fragment",
     );
     const program = gl.createProgram();
@@ -166,16 +220,20 @@ class SharedProgressShaderRenderer {
       transform: requireUniform("u_transform"),
       space: requireUniform("u_space"),
       cursor: requireUniform("u_cursor"),
+      clipRect: requireUniform("u_clipRect"),
     };
 
     gl.useProgram(program);
     gl.uniform3fv(this.uniforms.colors, this.colors);
-    gl.uniform4f(this.uniforms.shape, this.scale, 0.6, 0.5, 0.0);
-    gl.uniform4f(this.uniforms.surface, 2.4, 1.22, 0.0, 1.0);
+    // Slightly higher intensity/contrast than shop smoke so red swirls separate.
+    gl.uniform4f(this.uniforms.shape, this.scale, 0.75, 0.5, 0.0);
+    gl.uniform4f(this.uniforms.surface, 2.4, 1.45, 0.0, 1.1);
+    // finish.w = corner radius in px (see SHARED_PROGRESS_FRAGMENT_SHADER).
     gl.uniform4f(this.uniforms.finish, 0.0, 0.0, 0.0, 0.0);
     gl.uniform4f(this.uniforms.transform, 635.0, 0.0, 0.0, 0.0);
     gl.uniform4f(this.uniforms.space, 0.0, 0.0, 0.0, 0.0);
     gl.uniform4f(this.uniforms.cursor, 0.0, 2.0, 0.65, 0.46);
+    gl.uniform4f(this.uniforms.clipRect, 0.0, 0.0, 0.0, 0.0);
     gl.enable(gl.SCISSOR_TEST);
   }
 
@@ -230,10 +288,12 @@ class SharedProgressShaderRenderer {
       seconds,
       this.colorCount,
     );
-    gl.uniform4f(this.uniforms.shape, this.scale, 0.6, 0.5, 0.0);
+    gl.uniform4f(this.uniforms.shape, this.scale, 0.75, 0.5, 0.0);
 
     const canvasW = this.canvas.width;
     const canvasH = this.canvas.height;
+    const cornerRadiusPx = SEGMENT_CORNER_RADIUS_CSS_PX * dpr;
+
     for (const { element } of segments) {
       const rect = element.getBoundingClientRect();
       if (rect.width < 0.5 || rect.height < 0.5) continue;
@@ -258,6 +318,8 @@ class SharedProgressShaderRenderer {
       if (y + h > canvasH) h = canvasH - y;
       if (w <= 0 || h <= 0) continue;
 
+      gl.uniform4f(this.uniforms.clipRect, x, y, w, h);
+      gl.uniform4f(this.uniforms.finish, 0.0, 0.0, 0.0, cornerRadiusPx);
       gl.scissor(x, y, w, h);
       gl.drawArrays(gl.TRIANGLES, 0, 3);
     }
