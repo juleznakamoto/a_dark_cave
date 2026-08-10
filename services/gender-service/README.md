@@ -38,12 +38,16 @@ GENDER_SERVICE_TOKEN=your-secret-token
 
 **Manual:** Run `python app.py` in a separate terminal. Runs on `http://127.0.0.1:5001`.
 
+## Input
+
+The Node `/api/gender` route only calls this service with a **Google account display name**
+(`user_metadata.full_name` / `name`). Email local-parts are never used (too many false positives).
+
 ## Rank limits
 
 Matches are rejected when popularity rank exceeds the cap (lower rank = more common):
 
 - **Google / full name** (`GENDER_NAME_MAX_RANK`, default `10000`)
-- **Email extraction** (`GENDER_EMAIL_MAX_RANK`, default `5000`)
 
 Override via environment when starting the service (the Node server passes through `process.env`).
 

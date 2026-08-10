@@ -7,17 +7,14 @@
 const url = process.env.GENDER_SERVICE_URL || "http://127.0.0.1:5001";
 const token = process.env.GENDER_SERVICE_TOKEN || "your-secret-token-here";
 
-async function testPredict(name, email) {
-  const body = {};
-  if (name) body.name = name;
-  if (email) body.email = email;
+async function testPredict(name) {
   const res = await fetch(`${url.replace(/\/$/, "")}/predict`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
       "X-Gender-Service-Token": token,
     },
-    body: JSON.stringify(body),
+    body: JSON.stringify({ name }),
   });
   const data = await res.json().catch(() => ({}));
   return { status: res.status, data };
@@ -48,20 +45,18 @@ async function main() {
     }
     console.log("");
 
-    // 2. Predict with known names
+    // 2. Predict with Google-style display names only
     const tests = [
-      { name: "John", email: null },
-      { name: "Maria", email: null },
-      { name: "Robert Markowitch", email: null },
-      { name: null, email: "john.smith@example.com" },
-      { name: null, email: "maria_garcia@test.com" },
-      { name: "UnknownXyz123", email: null },
+      "John",
+      "Maria",
+      "Robert Markowitch",
+      "UnknownXyz123",
     ];
 
     for (let i = 0; i < tests.length; i++) {
-      const t = tests[i];
-      console.log(`${i + 2}. Predict: name=${JSON.stringify(t.name)}, email=${JSON.stringify(t.email)}`);
-      const result = await testPredict(t.name, t.email);
+      const name = tests[i];
+      console.log(`${i + 2}. Predict: name=${JSON.stringify(name)}`);
+      const result = await testPredict(name);
       console.log("   Status:", result.status);
       console.log("   Response:", JSON.stringify(result.data, null, 2));
       console.log("   g:", result.data.g ?? "(empty)");

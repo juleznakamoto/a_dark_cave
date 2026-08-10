@@ -504,10 +504,19 @@ app.post("/api/gender", async (req, res) => {
       return res.status(401).json({ error: "Invalid or unconfirmed session" });
     }
 
-    const name = user.user_metadata?.full_name ?? user.user_metadata?.name ?? null;
-    const email = user.email ?? null;
-    if (!name && !email) {
-      return res.status(400).json({ error: "No name or email available" });
+    // Name/gender only from Google account display name — never from email local-part
+    // (email guessing caused most false positives: surnames, word fragments, etc.).
+    const provider = user.app_metadata?.provider;
+    const providers = user.app_metadata?.providers;
+    const isGoogle =
+      provider === "google" ||
+      (Array.isArray(providers) && providers.includes("google"));
+    const name =
+      (typeof user.user_metadata?.full_name === "string" && user.user_metadata.full_name.trim()) ||
+      (typeof user.user_metadata?.name === "string" && user.user_metadata.name.trim()) ||
+      null;
+    if (!isGoogle || !name) {
+      return res.json({ g: null, fn: null });
     }
 
     const response = await fetch(`${serviceUrl.replace(/\/$/, "")}/predict`, {
@@ -516,7 +525,7 @@ app.post("/api/gender", async (req, res) => {
         "Content-Type": "application/json",
         "X-Gender-Service-Token": serviceToken,
       },
-      body: JSON.stringify({ name: name || undefined, email: email || undefined }),
+      body: JSON.stringify({ name }),
     });
 
     if (response.status === 401) {

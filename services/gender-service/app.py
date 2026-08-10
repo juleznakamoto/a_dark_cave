@@ -3,6 +3,8 @@ Internal gender detection service.
 Uses SQLite DB (name, gender, rank) created by create_db.py - ~10-50 MB RAM.
 Binds to 127.0.0.1 only - NOT exposed to the internet.
 Requires X-Gender-Service-Token header - only the Node server knows this secret.
+
+Name source: Google account display name only (passed by Node). Email is not used.
 """
 import logging
 import os
@@ -22,60 +24,33 @@ def get_db_path() -> Path | None:
     return Path(__file__).parent / "first_names.db"
 
 
-def _email_max_rank() -> float:
-    return float(os.environ.get("GENDER_EMAIL_MAX_RANK", "5000"))
-
-
 def _name_max_rank() -> float:
     return float(os.environ.get("GENDER_NAME_MAX_RANK", "10000"))
 
 
 def _extract_first_name(full_name: str | None) -> str | None:
-    """Extract first name from full name (e.g. 'Robert Markowitch' -> 'Robert')."""
+    """Extract first whitespace token (e.g. 'Robert Markowitch' -> 'Robert')."""
     if not full_name or not full_name.strip():
         return None
     first = full_name.strip().split()[0]
     return first if first else None
 
 
-def _extract_first_name_from_email(
-    email: str | None, db_path: Path | None = None
-) -> str | None:
-    """Extract first name from email. Most emails are firstname_lastname@... or firstname.lastname@...;
-    assume the first part is the first name. Numbers are ignored (e.g. john123 -> john).
-    When no separator (e.g. justinchang@...), try progressively longer prefixes/suffixes and use the
-    first DB match by rank (rank 1 = most popular, then 2, 3, 4, etc.)."""
-    if not email or "@" not in email:
-        return None
-    prefix = email.split("@")[0]
-    for sep in ".", "_", "-":
-        if sep in prefix:
-            parts = ["".join(c for c in p if c.isalpha()) for p in prefix.split(sep)]
-            for p in parts:
-                if len(p) >= 3:
-                    return p
-            return None
-    cleaned = "".join(c for c in prefix if c.isalpha())
-    if len(cleaned) < 3:
-        return None
-    # No separator: try prefixes (justinchang -> Justin), then suffixes (awadgeorge -> George).
-    # Among DB matches within GENDER_EMAIL_MAX_RANK, pick the best rank (lowest = most popular).
-    email_max = _email_max_rank()
-    if db_path and db_path.exists():
-        best: tuple[str, float] | None = None
-        for i in range(4, len(cleaned) + 1):
-            candidate = cleaned[:i].title()
-            rank = _lookup_rank(db_path, candidate)
-            if rank is not None and rank <= email_max and (best is None or rank < best[1]):
-                best = (candidate, rank)
-        for i in range(4, len(cleaned)):
-            candidate = cleaned[-i:].title()
-            rank = _lookup_rank(db_path, candidate)
-            if rank is not None and rank <= email_max and (best is None or rank < best[1]):
-                best = (candidate, rank)
-        if best is not None:
-            return best[0]
-    return cleaned if len(cleaned) >= 4 else None
+def _first_name_candidates(full_name: str | None) -> list[str]:
+    """Ordered lookup candidates for a display name's given name.
+
+    Prefer the full first token (including hyphens), then fall back to the
+    segment before the first hyphen: 'Jian-Fong Yu' -> ['Jian-Fong', 'Jian'].
+    """
+    first = _extract_first_name(full_name)
+    if not first:
+        return []
+    candidates = [first]
+    if "-" in first:
+        head = first.split("-", 1)[0].strip()
+        if head and head.lower() != first.lower():
+            candidates.append(head)
+    return candidates
 
 
 def _lookup_rank(db_path: Path, first_name: str) -> float | None:
@@ -132,9 +107,9 @@ def _accept_match(
     return (g, first_name.strip().title())
 
 
-def predict_gender(name: str | None = None, email: str | None = None) -> tuple[str | None, str | None]:
+def predict_gender(name: str | None = None) -> tuple[str | None, str | None]:
     """Returns (g, first_name) or (None, None). g is 'm' or 'f'.
-    Tries name first; if no result and email exists, falls back to email."""
+    Expects a Google account display name (or any explicit full/given name)."""
     db_path = get_db_path()
     if not db_path:
         raise ValueError("GENDER_DB_PATH not set and default path unavailable")
@@ -143,18 +118,11 @@ def predict_gender(name: str | None = None, email: str | None = None) -> tuple[s
             f"Gender DB not found at {db_path}. Run: cd services/gender-service && python create_db.py"
         )
 
-    first_name = _extract_first_name(name) if name else None
-    if first_name:
-        result = _accept_match(db_path, first_name, _name_max_rank())
+    max_rank = _name_max_rank()
+    for candidate in _first_name_candidates(name):
+        result = _accept_match(db_path, candidate, max_rank)
         if result[0]:
             return result
-
-    if email:
-        first_name = _extract_first_name_from_email(email, db_path)
-        if first_name:
-            result = _accept_match(db_path, first_name, _email_max_rank())
-            if result[0]:
-                return result
 
     return (None, None)
 
@@ -179,18 +147,14 @@ def require_token():
 def predict():
     data = request.get_json(silent=True) or {}
     name = data.get("name")
-    email = data.get("email")
-    if (not name or not str(name).strip()) and (not email or not str(email).strip()):
+    if not name or not str(name).strip():
         return jsonify({
-            "error": "name or email required",
-            "hint": "Provide at least one of {name, email} in JSON body",
+            "error": "name required",
+            "hint": "Provide {name} from Google account display name",
         }), 400
 
     try:
-        g, first_name = predict_gender(
-            name=str(name).strip() if name else None,
-            email=str(email).strip() if email else None,
-        )
+        g, first_name = predict_gender(name=str(name).strip())
     except FileNotFoundError as e:
         logger.error("%s", e)
         return jsonify({
@@ -206,7 +170,6 @@ def predict():
             "hint": "Regenerate DB: cd services/gender-service && python create_db.py",
         }), 500
     except Exception as e:
-        import traceback
         logger.exception("Prediction failed: %s", e)
         return jsonify({
             "error": "Prediction failed",
@@ -217,7 +180,7 @@ def predict():
     if g is None:
         return jsonify({
             "error": "Could not predict gender",
-            "hint": "Name not in database (try different name/email or add to create_db)",
+            "hint": "Name not in database (try different name or add to create_db)",
         }), 200
     return jsonify({"g": g, "fn": first_name})
 
