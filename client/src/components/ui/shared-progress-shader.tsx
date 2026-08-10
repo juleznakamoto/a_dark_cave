@@ -52,8 +52,15 @@ function buildSharedProgressFragmentShader(source: string): string {
 uniform vec4 u_clipRect; // xy bottom-left, zw size (gl_FragCoord / scissor space)
 `,
   );
+  // fbm clusters mid-range (~0.25–0.75), so palette[0] / palette[last] almost
+  // never appear. Stretch the sample so low/high stops actually show in swirls.
+  const withPaletteStretch = withClipUniform.replace(
+    "  return palette(fbm(p + 3.0 * r + u_seed));",
+    `  float t = fbm(p + 3.0 * r + u_seed);
+  return palette(smoothstep(0.18, 0.82, t));`,
+  );
   // u_finish.w is corner radius here — disable the stock grain path that shares it.
-  const patched = withClipUniform.replace(
+  const patched = withPaletteStretch.replace(
     `  if (u_grain > 0.0001)
     col += (grainHash(
       gl_FragCoord.xy + vec2(u_seed * 17.0, u_seed * 31.0)) - 0.5) * u_grain;
@@ -73,7 +80,11 @@ uniform vec4 u_clipRect; // xy bottom-left, zw size (gl_FragCoord / scissor spac
   gl_FragColor = vec4(clamp(col, 0.0, 1.0), 1.0);
 }`,
   );
-  if (!patched.includes("u_clipRect") || !patched.includes("discard")) {
+  if (
+    !patched.includes("u_clipRect") ||
+    !patched.includes("discard") ||
+    !patched.includes("smoothstep(0.18, 0.82, t)")
+  ) {
     throw new Error(
       "Shared progress fragment splice failed — smoke shader source changed?",
     );
