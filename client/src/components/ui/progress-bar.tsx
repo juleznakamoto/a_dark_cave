@@ -272,7 +272,7 @@ export function SegmentedProgress({
           )}
 
           <div
-            className="relative flex gap-[3px] py-0.5"
+            className="relative flex gap-1 py-0.5"
             role="progressbar"
             aria-label={ariaLabel ?? label}
             aria-valuenow={ariaValueNow ?? value}
