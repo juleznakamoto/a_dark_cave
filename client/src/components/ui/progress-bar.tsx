@@ -338,8 +338,10 @@ export function SegmentedProgress({
                   <div
                     aria-hidden
                     className={cn(
-                      "pointer-events-none absolute inset-0 z-[2] rounded-[4px] border border-transparent transition-colors duration-300",
-                      fill > 0 && "border-neutral-500",
+                      // One border-color class only — transparent + neutral together
+                      // can leave the rim invisible (Tailwind source order).
+                      "pointer-events-none absolute inset-0 z-[2] rounded-[4px] border transition-colors duration-300",
+                      fill > 0 ? "border-neutral-500" : "border-transparent",
                     )}
                   />
                 </div>

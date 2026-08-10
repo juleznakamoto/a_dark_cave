@@ -91,12 +91,15 @@ type SegmentRegistration = {
 };
 
 /** Matches SegmentedProgress cell rim — painted above the WebGL canvas. */
-const SEGMENT_RIM_CLASS =
-  "absolute box-border rounded-[4px] border border-transparent transition-colors duration-300";
+const SEGMENT_RIM_BASE_CLASS =
+  "absolute box-border rounded-[4px] border transition-colors duration-300";
 
 /**
  * Position rim divs over each SegmentedProgress cell so grey borders sit above
  * the shared smoke canvas (the in-cell rim alone would be covered by z-10 WebGL).
+ *
+ * Only one border-color class at a time — if transparent + neutral-500 are both
+ * present, Tailwind source order can leave the rim invisible.
  */
 function syncSegmentRims(host: HTMLElement, rimLayer: HTMLElement) {
   const cells = host.querySelectorAll<HTMLElement>(
@@ -109,7 +112,7 @@ function syncSegmentRims(host: HTMLElement, rimLayer: HTMLElement) {
     const created = !rim;
     if (!rim) {
       rim = document.createElement("div");
-      rim.className = SEGMENT_RIM_CLASS;
+      rim.className = `${SEGMENT_RIM_BASE_CLASS} border-transparent`;
       rim.setAttribute("aria-hidden", "true");
       rimLayer.appendChild(rim);
     }
@@ -124,6 +127,7 @@ function syncSegmentRims(host: HTMLElement, rimLayer: HTMLElement) {
       void rim.offsetWidth;
     }
     rim.classList.toggle("border-neutral-500", filled);
+    rim.classList.toggle("border-transparent", !filled);
     i++;
   }
   while (rimLayer.children.length > i) {
