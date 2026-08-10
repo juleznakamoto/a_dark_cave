@@ -235,11 +235,7 @@ export function SegmentedProgress({
   return (
     <>
       <div
-        className={cn(
-          "flex flex-col",
-          compact ? "gap-1" : "gap-8",
-          className,
-        )}
+        className={cn("flex flex-col", compact ? "gap-1" : "gap-8", className)}
       >
         <div className={cn("flex flex-col", compact ? "gap-1" : "gap-3")}>
           {(label || showPercentage) && (
@@ -272,7 +268,7 @@ export function SegmentedProgress({
           )}
 
           <div
-            className="relative flex gap-1 py-0.5"
+            className="relative flex gap-1.5 py-0.5"
             role="progressbar"
             aria-label={ariaLabel ?? label}
             aria-valuenow={ariaValueNow ?? value}
@@ -282,8 +278,7 @@ export function SegmentedProgress({
           >
             {Array.from({ length: segments }).map((_, index) => {
               const fill = getSegmentFill(displayValue, segments, index);
-              const delay =
-                isInitialized && !changeOnlyGrow ? index * 20 : 0;
+              const delay = isInitialized && !changeOnlyGrow ? index * 20 : 0;
               const showSegmentGlow =
                 glowKey > 0 && index === glowSegmentIndex && fill > 0;
 
@@ -307,9 +302,7 @@ export function SegmentedProgress({
                     <div
                       className={cn(
                         "absolute inset-y-0 left-0 overflow-hidden transition-[width] ease-out",
-                        changeOnlyGrow
-                          ? "duration-0"
-                          : "duration-500",
+                        changeOnlyGrow ? "duration-0" : "duration-500",
                         // Keep solid fill under optional renderFill (shader paints on top).
                         filledClassName,
                       )}
@@ -347,9 +340,9 @@ export function SegmentedProgress({
                     aria-hidden
                     data-segmented-progress-rim=""
                     className={cn(
-                      "pointer-events-none absolute inset-0 z-[2] rounded-[4px] transition-[box-shadow] duration-300",
+                      "pointer-events-none absolute inset-0 z-[2] rounded-[4px] transition-[box-shadow] duration-500",
                       fill > 0
-                        ? "shadow-[0_0_0_1px_theme(colors.neutral.900)]"
+                        ? "shadow-[0_0_0_1px_theme(colors.orange.600)]"
                         : "shadow-[0_0_0_1px_transparent]",
                     )}
                   />
