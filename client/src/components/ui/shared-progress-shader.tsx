@@ -70,7 +70,9 @@ uniform vec4 u_clipRect; // xy bottom-left, zw size (gl_FragCoord / scissor spac
     float r = clamp(u_finish.w, 0.0, min(halfSize.x, halfSize.y));
     vec2 d = abs(p) - halfSize + vec2(r);
     float dist = length(max(d, 0.0)) + min(max(d.x, d.y), 0.0) - r;
-    coverage = 1.0 - smoothstep(-0.5, 0.5, dist);
+    // Fade only outside the shape. Centering AA on the edge ([-0.5,0.5]) left
+    // the perimeter half-transparent and showed a dark hairline under the rim.
+    coverage = 1.0 - smoothstep(0.0, 1.0, dist);
     if (coverage <= 0.002) discard;
   }
   gl_FragColor = vec4(clamp(col, 0.0, 1.0) * coverage, coverage);
@@ -379,8 +381,8 @@ class SharedProgressShaderRenderer {
       const height = shapeRect.height * dpr;
       if (width < 0.5 || height < 0.5) continue;
 
-      // Scissor to the fill box (hard cut at the fill tip). Integer scissor only;
-      // pad 1px for AA, but never past the outer cell edge.
+      // Scissor to the fill tip, with 1px pad outside the cell so the outside-only
+      // AA fringe can sit under the CSS rim (box-shadow) instead of getting cut.
       const fillLeft = (rect.left - canvasRect.left) * dpr;
       const fillRight = fillLeft + rect.width * dpr;
       const fillBottom = canvasH - (rect.bottom - canvasRect.top) * dpr;
@@ -388,13 +390,16 @@ class SharedProgressShaderRenderer {
       const outerRight = left + width;
       const outerTop = bottom + height;
 
-      const sx = Math.max(0, Math.floor(Math.max(fillLeft, left)));
-      const sy = Math.max(0, Math.floor(Math.max(fillBottom, bottom)));
+      const sx = Math.max(0, Math.floor(Math.max(fillLeft, left) - 1));
+      const sy = Math.max(0, Math.floor(Math.max(fillBottom, bottom) - 1));
       const sRight = Math.min(
         canvasW,
-        Math.ceil(Math.min(fillRight, outerRight)),
+        Math.ceil(Math.min(fillRight, outerRight) + 1),
       );
-      const sTop = Math.min(canvasH, Math.ceil(Math.min(fillTop, outerTop)));
+      const sTop = Math.min(
+        canvasH,
+        Math.ceil(Math.min(fillTop, outerTop) + 1),
+      );
       const sw = sRight - sx;
       const sh = sTop - sy;
       if (sw <= 0 || sh <= 0) continue;

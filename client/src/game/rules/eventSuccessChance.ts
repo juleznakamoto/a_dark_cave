@@ -49,6 +49,6 @@ export function calculateSuccessChance(
   // Apply cruel mode modifier
   chance += cruelModeScale(state) * cmMultiplier;
 
-  // Cap at 100% (1.0)
-  return Math.min(chance, 1.0);
+  // Clamp to valid probability range [0, 1]
+  return Math.max(0, Math.min(chance, 1.0));
 }
