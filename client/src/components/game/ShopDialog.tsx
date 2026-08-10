@@ -2032,10 +2032,12 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
                                       : "outline-neutral-400"
                                     }`}
                                 >
-                                  <CardHeader className="leading-snug p-4 pb-1 relative text-lg ">
+                                  <CardHeader className="relative space-y-1 px-4 pb-1 pt-3 leading-snug">
                                     <div className="flex items-center gap-2">
-                                      <CardTitle className="!m-0 text-md flex min-w-0 flex-1 items-center gap-1">
-                                        {resolveShopItemName(item)}
+                                      <CardTitle className="!m-0 flex min-w-0 flex-1 items-center gap-1 text-md leading-none">
+                                        <span className="min-w-0">
+                                          {resolveShopItemName(item)}
+                                        </span>
                                         {item.id === "skull_lantern" && (
                                           <ArtifactShopTooltipIcon
                                             artifact="skull_lantern"
@@ -2060,41 +2062,36 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
                                         {item.id === "cruel_mode" && (
                                           <TooltipWrapper
                                             tooltip={
-                                              <div className="text-xs">
-                                                <div className="font-bold mb-1">
-                                                  {t("ui:shop.cruelMode.title")}
+                                              <div className="space-y-0.5 text-xs">
+                                                <div>
+                                                  •{" "}
+                                                  {t(
+                                                    "ui:shop.cruelMode.moreEvents",
+                                                  )}
                                                 </div>
-                                                <div className="mt-1 space-y-0.5">
-                                                  <div>
-                                                    •{" "}
-                                                    {t(
-                                                      "ui:shop.cruelMode.moreEvents",
-                                                    )}
-                                                  </div>
-                                                  <div>
-                                                    •{" "}
-                                                    {t(
-                                                      "ui:shop.cruelMode.moreItems",
-                                                    )}
-                                                  </div>
-                                                  <div>
-                                                    •{" "}
-                                                    {t(
-                                                      "ui:shop.cruelMode.strongerEnemies",
-                                                    )}
-                                                  </div>
-                                                  <div>
-                                                    •{" "}
-                                                    {t(
-                                                      "ui:shop.cruelMode.harderChallenges",
-                                                    )}
-                                                  </div>
-                                                  <div>
-                                                    •{" "}
-                                                    {t(
-                                                      "ui:shop.cruelMode.reusePurchases",
-                                                    )}
-                                                  </div>
+                                                <div>
+                                                  •{" "}
+                                                  {t(
+                                                    "ui:shop.cruelMode.moreItems",
+                                                  )}
+                                                </div>
+                                                <div>
+                                                  •{" "}
+                                                  {t(
+                                                    "ui:shop.cruelMode.strongerEnemies",
+                                                  )}
+                                                </div>
+                                                <div>
+                                                  •{" "}
+                                                  {t(
+                                                    "ui:shop.cruelMode.harderChallenges",
+                                                  )}
+                                                </div>
+                                                <div>
+                                                  •{" "}
+                                                  {t(
+                                                    "ui:shop.cruelMode.reusePurchases",
+                                                  )}
                                                 </div>
                                               </div>
                                             }
@@ -2116,7 +2113,7 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
                                         <ShopCardCornerGlyph
                                           item={item}
                                           glyphOriginRef={glyphOriginRef}
-                                          glyphWrapperClassName={`leading-[0.9] shrink-0 inline-flex items-center justify-center${isShopPaidGoldPackItem(item.id)
+                                          glyphWrapperClassName={`text-base leading-none shrink-0 inline-flex items-center justify-center self-center${isShopPaidGoldPackItem(item.id)
                                             ? " cursor-default"
                                             : ""
                                             }`}
