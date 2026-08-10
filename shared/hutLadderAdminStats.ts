@@ -118,6 +118,38 @@ export function highestAttackWaveWon(
   return highest;
 }
 
+/**
+ * Total attack-wave victories in the current run (chart flags + post-completion wins).
+ * Each victory is one creature fight ("Pale Creatures" / "Pale Beasts").
+ */
+export function totalAttackWavesWon(
+  seen: Partial<Record<string, boolean>> | undefined,
+  postCompletionAttackWaveCount = 0,
+): number {
+  const effective = implyBossWaveVictoriesInSeen(seen);
+  let count = 0;
+  for (const flag of ATTACK_WAVE_VICTORY_FLAGS) {
+    if (effective[flag] === true) count += 1;
+  }
+  const post = Number(postCompletionAttackWaveCount);
+  return count + (Number.isFinite(post) && post > 0 ? Math.floor(post) : 0);
+}
+
+/**
+ * Highest attack wave number won in the current run.
+ * Chart waves are 1..12; post-completion continues at 13+.
+ */
+export function highestAttackWaveNumber(
+  seen: Partial<Record<string, boolean>> | undefined,
+  postCompletionAttackWaveCount = 0,
+): number {
+  const post = Number(postCompletionAttackWaveCount);
+  const postWon =
+    Number.isFinite(post) && post > 0 ? Math.floor(post) : 0;
+  if (postWon > 0) return ATTACK_WAVE_LADDER_MAX + postWon;
+  return highestAttackWaveWon(seen);
+}
+
 export function isGameStartedSave(save: HutLadderSaveRow): boolean {
   return save.game_state?.flags?.gameStarted === true;
 }

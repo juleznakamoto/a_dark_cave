@@ -220,6 +220,8 @@
     "description": "Сохраните или отправьте изображение вашего игрового прогресса.", //x1.4
     "resources": "Ресурсы: {{percent}} %",
     "achievements": "Достижения: {{percent}} %",
+    "killedCreatures": "Убито существ",
+    "highestAttackWave": "Высшая волна атаки",
     "cruelMode": "Жестокий режим", //x1.4
     "on": "Вкл",
     "off": "Выкл",

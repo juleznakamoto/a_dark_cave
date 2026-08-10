@@ -4,9 +4,11 @@ import {
   computeHutLadderFunnel,
   computeHutLadderStepDropTimeSeries,
   filterHutLadderCohort,
+  highestAttackWaveNumber,
   hutLadderReachChartData,
   hutLadderStepDropChartData,
   hutLadderDropVsStartedChartData,
+  totalAttackWavesWon,
   utcWeekStartMs,
   HUT_LADDER_TIMESERIES_MIN_STARTED,
 } from "./hutLadderAdminStats";
@@ -413,5 +415,37 @@ describe("hutLadderAdminStats", () => {
     const idxTiny = series.findIndex((p) => p.week === "2026-06-29");
     const idxA = series.findIndex((p) => p.week === "2026-07-06");
     expect(idxA).toBe(idxTiny + 1);
+  });
+
+  it("counts attack-wave victories and highest wave including post-completion", () => {
+    expect(totalAttackWavesWon(undefined, 0)).toBe(0);
+    expect(highestAttackWaveNumber(undefined, 0)).toBe(0);
+
+    const seen = {
+      firstWaveVictory: true,
+      secondWaveVictory: true,
+      thirdWaveVictory: true,
+    };
+    expect(totalAttackWavesWon(seen, 0)).toBe(3);
+    expect(highestAttackWaveNumber(seen, 0)).toBe(3);
+
+    const allChart = Object.fromEntries(
+      [
+        "firstWaveVictory",
+        "secondWaveVictory",
+        "thirdWaveVictory",
+        "fourthWaveVictory",
+        "fifthWaveVictory",
+        "firstBossWaveVictory",
+        "sixthWaveVictory",
+        "seventhWaveVictory",
+        "eighthWaveVictory",
+        "ninthWaveVictory",
+        "tenthWaveVictory",
+        "secondBossWaveVictory",
+      ].map((flag) => [flag, true as const]),
+    );
+    expect(totalAttackWavesWon(allChart, 2)).toBe(14);
+    expect(highestAttackWaveNumber(allChart, 2)).toBe(14);
   });
 });

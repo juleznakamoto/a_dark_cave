@@ -220,6 +220,8 @@
     "description": "Speichere oder teile ein Bild deines Spielfortschritts.",
     "resources": "Ressourcen: {{percent}} %",
     "achievements": "Erfolge: {{percent}} %",
+    "killedCreatures": "Getötete Kreaturen",
+    "highestAttackWave": "Höchste Angriffswelle",
     "cruelMode": "Grausamer Modus", //x1.5
     "on": "An",
     "off": "Aus",

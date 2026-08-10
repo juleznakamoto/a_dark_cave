@@ -215,6 +215,8 @@
     "description": "Salve ou compartilhe uma imagem do seu progresso no jogo.",
     "resources": "Recursos: {{percent}} %",
     "achievements": "Conquistas: {{percent}} %",
+    "killedCreatures": "Criaturas mortas",
+    "highestAttackWave": "Maior onda de ataque",
     "cruelMode": "Modo Cruel",
     "on": "Ativado",
     "off": "Desativado",

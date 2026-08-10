@@ -9,10 +9,12 @@ import type { AchievementChartConfig } from "@/achievements/achievementTypes";
 import { useTranslation } from "react-i18next";
 import {
   Dialog,
+  DialogClose,
   DialogContent,
   DialogTitle,
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
+import { X } from "lucide-react";
 import { GlowingShadow } from "@/components/ui/glowing-shadow";
 import { TooltipWrapper } from "@/components/game/TooltipWrapper";
 import { useGameStore } from "@/game/state";
@@ -43,6 +45,10 @@ import { logger } from "@/lib/logger";
 import { getShareFontEmbedCss } from "@/lib/shareImageFonts";
 import { useToast } from "@/hooks/use-toast";
 import { gameStateSchema, type GameState } from "@shared/schema";
+import {
+  highestAttackWaveNumber,
+  totalAttackWavesWon,
+} from "@shared/hutLadderAdminStats";
 
 const SHARE_IMAGE_WIDTH = 1080;
 const SHARE_IMAGE_HEIGHT = 1350;
@@ -309,6 +315,10 @@ function ShareCard({
   resourcesLabel,
   achievementsLabel,
   ringLabels,
+  killedCreaturesLabel,
+  killedCreaturesValue,
+  highestAttackWaveLabel,
+  highestAttackWaveValue,
   cruelModeLabel,
   cruelModeValueLabel,
   playTimeLabel,
@@ -322,6 +332,10 @@ function ShareCard({
   resourcesLabel: string;
   achievementsLabel: string;
   ringLabels: Record<AchievementChartConfig["idPrefix"], string>;
+  killedCreaturesLabel: string;
+  killedCreaturesValue: number;
+  highestAttackWaveLabel: string;
+  highestAttackWaveValue: number;
   cruelModeLabel: string;
   cruelModeValueLabel: string;
   playTimeLabel: string;
@@ -455,6 +469,14 @@ function ShareCard({
           }}
         >
           <div style={{ whiteSpace: "nowrap" }}>
+            <span className="text-gray-400">{killedCreaturesLabel}</span>{" "}
+            <span className="text-gray-300">{killedCreaturesValue}</span>
+          </div>
+          <div style={{ whiteSpace: "nowrap" }}>
+            <span className="text-gray-400">{highestAttackWaveLabel}</span>{" "}
+            <span className="text-gray-300">{highestAttackWaveValue}</span>
+          </div>
+          <div style={{ whiteSpace: "nowrap" }}>
             <span className="text-gray-400">{cruelModeLabel}</span>{" "}
             <span className="text-gray-300">{cruelModeValueLabel}</span>
           </div>
@@ -480,6 +502,10 @@ export default function ShareDialog() {
   const playTimeMs = useGameStore((s) => s.playTime);
   const cruelMode = useGameStore((s) => s.cruelMode);
   const referralCount = useGameStore((s) => s.referralCount ?? 0);
+  const storySeen = useGameStore((s) => s.story?.seen);
+  const postCompletionAttackWaveCount = useGameStore(
+    (s) => s.postCompletionAttackWaveCount ?? 0,
+  );
 
   const cardRef = useRef<HTMLDivElement>(null);
   const previewWrapRef = useRef<HTMLDivElement>(null);
@@ -495,6 +521,12 @@ export default function ShareDialog() {
     : 0;
   const resourcePercent = open
     ? getResourceMilestonePercent(resources, seenResources)
+    : 0;
+  const killedCreatures = open
+    ? totalAttackWavesWon(storySeen, postCompletionAttackWaveCount)
+    : 0;
+  const highestAttackWave = open
+    ? highestAttackWaveNumber(storySeen, postCompletionAttackWaveCount)
     : 0;
 
   useLayoutEffect(() => {
@@ -740,6 +772,7 @@ export default function ShareDialog() {
   return (
     <Dialog open={open} onOpenChange={(next) => !next && setOpen(false)}>
       <DialogContent
+        hideClose
         skipViewportWidthClamp
         layerZIndex={70}
         className="flex w-max max-w-[min(95vw,28rem)] max-h-[95vh] flex-col items-center gap-4 overflow-visible border-0 bg-transparent p-0 shadow-none sm:rounded-none"
@@ -750,80 +783,97 @@ export default function ShareDialog() {
 
         <div
           ref={previewWrapRef}
-          className="relative shrink-0 cursor-pointer overflow-visible"
+          className="relative shrink-0 overflow-visible"
           style={{
             width: SHARE_IMAGE_WIDTH * previewScale,
             height: SHARE_IMAGE_HEIGHT * previewScale,
           }}
-          role="button"
-          tabIndex={0}
-          aria-label={t("share.copy", { defaultValue: "Copy" })}
-          onClick={() => {
-            void handleCopyImage();
-          }}
-          onKeyDown={(event) => {
-            if (event.key === "Enter" || event.key === " ") {
-              event.preventDefault();
-              void handleCopyImage();
-            }
-          }}
         >
           <div
-            style={{
-              position: "absolute",
-              top: 0,
-              left: 0,
-              width: SHARE_IMAGE_WIDTH,
-              height: SHARE_IMAGE_HEIGHT,
-              transform: `scale(${previewScale})`,
-              transformOrigin: "top left",
+            className="absolute inset-0 cursor-pointer"
+            role="button"
+            tabIndex={0}
+            aria-label={t("share.copy", { defaultValue: "Copy" })}
+            onClick={() => {
+              void handleCopyImage();
+            }}
+            onKeyDown={(event) => {
+              if (event.key === "Enter" || event.key === " ") {
+                event.preventDefault();
+                void handleCopyImage();
+              }
             }}
           >
-            <ShareCard
-              cardRef={cardRef}
-              resources={resources}
-              seenResources={seenResources}
-              resourcePercent={resourcePercent}
-              achievementPercent={percent}
-              resourcesLabel={t("share.resources", {
-                percent: resourcePercent,
-                defaultValue: "Resources: {{percent}} %",
-              })}
-              achievementsLabel={t("share.achievements", {
-                percent,
-                defaultValue: "Achievements: {{percent}} %",
-              })}
-              ringLabels={{
-                basic: t(CATEGORY_HEADER_KEYS.basic, {
-                  defaultValue: CATEGORY_HEADER_DEFAULTS.basic,
-                }),
-                building: t(CATEGORY_HEADER_KEYS.building, {
-                  defaultValue: CATEGORY_HEADER_DEFAULTS.building,
-                }),
-                item: t(CATEGORY_HEADER_KEYS.item, {
-                  defaultValue: CATEGORY_HEADER_DEFAULTS.item,
-                }),
-                action: t(CATEGORY_HEADER_KEYS.action, {
-                  defaultValue: CATEGORY_HEADER_DEFAULTS.action,
-                }),
-                overall: t(CATEGORY_HEADER_KEYS.overall, {
-                  defaultValue: CATEGORY_HEADER_DEFAULTS.overall,
-                }),
+            <div
+              style={{
+                position: "absolute",
+                top: 0,
+                left: 0,
+                width: SHARE_IMAGE_WIDTH,
+                height: SHARE_IMAGE_HEIGHT,
+                transform: `scale(${previewScale})`,
+                transformOrigin: "top left",
               }}
-              cruelModeLabel={t("share.cruelMode", {
-                defaultValue: "Cruel Mode",
-              })}
-              cruelModeValueLabel={
-                cruelMode
-                  ? t("share.on", { defaultValue: "On" })
-                  : t("share.off", { defaultValue: "Off" })
-              }
-              playTimeLabel={t("share.playTime", {
-                defaultValue: "Play time",
-              })}
-              playTimeMs={playTimeMs}
-            />
+            >
+              <ShareCard
+                cardRef={cardRef}
+                resources={resources}
+                seenResources={seenResources}
+                resourcePercent={resourcePercent}
+                achievementPercent={percent}
+                resourcesLabel={t("share.resources", {
+                  percent: resourcePercent,
+                  defaultValue: "Resources: {{percent}} %",
+                })}
+                achievementsLabel={t("share.achievements", {
+                  percent,
+                  defaultValue: "Achievements: {{percent}} %",
+                })}
+                ringLabels={{
+                  basic: t(CATEGORY_HEADER_KEYS.basic, {
+                    defaultValue: CATEGORY_HEADER_DEFAULTS.basic,
+                  }),
+                  building: t(CATEGORY_HEADER_KEYS.building, {
+                    defaultValue: CATEGORY_HEADER_DEFAULTS.building,
+                  }),
+                  item: t(CATEGORY_HEADER_KEYS.item, {
+                    defaultValue: CATEGORY_HEADER_DEFAULTS.item,
+                  }),
+                  action: t(CATEGORY_HEADER_KEYS.action, {
+                    defaultValue: CATEGORY_HEADER_DEFAULTS.action,
+                  }),
+                  overall: t(CATEGORY_HEADER_KEYS.overall, {
+                    defaultValue: CATEGORY_HEADER_DEFAULTS.overall,
+                  }),
+                }}
+                killedCreaturesLabel={t("share.killedCreatures", {
+                  defaultValue: "Killed Creatures",
+                })}
+                killedCreaturesValue={killedCreatures}
+                highestAttackWaveLabel={t("share.highestAttackWave", {
+                  defaultValue: "Highest Attack Wave",
+                })}
+                highestAttackWaveValue={highestAttackWave}
+                cruelModeLabel={t("share.cruelMode", {
+                  defaultValue: "Cruel Mode",
+                })}
+                cruelModeValueLabel={
+                  cruelMode
+                    ? t("share.on", { defaultValue: "On" })
+                    : t("share.off", { defaultValue: "Off" })
+                }
+                playTimeLabel={t("share.playTime", {
+                  defaultValue: "Play time",
+                })}
+                playTimeMs={playTimeMs}
+              />
+            </div>
           </div>
+          {/* Anchored to the card (not the wider button row) so inset clears the rounded corner. */}
+          <DialogClose className="adc-dialog-close absolute right-4 top-4 z-10 flex items-center justify-center rounded-sm p-0 opacity-70 ring-offset-background transition-opacity hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2">
+            <X className="adc-dialog-close-icon" aria-hidden="true" />
+            <span className="sr-only">Close</span>
+          </DialogClose>
         </div>
 
         <div className="flex shrink-0 flex-wrap justify-center gap-2">

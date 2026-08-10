@@ -220,6 +220,8 @@
     "description": "Save or share an image of your game progress.",
     "resources": "Resources: {{percent}} %",
     "achievements": "Achievements: {{percent}} %",
+    "killedCreatures": "Killed Creatures",
+    "highestAttackWave": "Highest Attack Wave",
     "cruelMode": "Cruel Mode",
     "on": "On",
     "off": "Off",

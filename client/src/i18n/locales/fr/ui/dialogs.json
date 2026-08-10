@@ -220,6 +220,8 @@
     "description": "Enregistrez ou partagez une image de votre progression dans le jeu.", //x1.5
     "resources": "Ressources : {{percent}} %",
     "achievements": "Succès : {{percent}} %",
+    "killedCreatures": "Créatures tuées",
+    "highestAttackWave": "Plus haute vague d'attaque",
     "cruelMode": "Mode cruel",
     "on": "Activé",
     "off": "Désactivé",

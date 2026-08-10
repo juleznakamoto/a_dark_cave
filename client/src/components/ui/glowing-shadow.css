@@ -150,6 +150,17 @@
   --adc-gs-glow-light: 88%;
 }
 
+/* Resting rim: light grey border always visible; bright arc still travels */
+.adc-gs--frame.adc-gs--silver .adc-gs__rim-spin {
+  background: conic-gradient(from 0deg,
+      hsl(0deg 0% 55%) 0deg,
+      hsl(0deg 0% 55%) 323deg,
+      hsl(210deg 8% 78%) 334deg,
+      hsl(0deg 0% 100%) 341deg,
+      hsl(210deg 8% 78%) 348deg,
+      hsl(0deg 0% 55%) 360deg);
+}
+
 .adc-gs:before,
 .adc-gs:after {
   content: "";
