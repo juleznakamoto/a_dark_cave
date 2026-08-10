@@ -11,6 +11,8 @@ import LanguageSelector from "@/components/game/LanguageSelector";
 import {
   GAME_FOOTER_RIGHT_ICON_LINKS,
   GAME_FOOTER_RIGHT_ICON_ORDER,
+  STEAM_STORE_UTM_CONTENT,
+  steamStoreUrl,
 } from "@/lib/gameFooterSocialLinks";
 import { openGameFeedbackForm } from "@/lib/gameFeedbackForm";
 import { useTranslation } from "react-i18next";
@@ -693,7 +695,12 @@ export default function StartScreen({
           )}
           {!hideStartScreenSocialLinks &&
             GAME_FOOTER_RIGHT_ICON_ORDER.map((platform) => {
-              const { href, title } = GAME_FOOTER_RIGHT_ICON_LINKS[platform];
+              const { href: defaultHref, title } =
+                GAME_FOOTER_RIGHT_ICON_LINKS[platform];
+              const href =
+                platform === "steam"
+                  ? steamStoreUrl(STEAM_STORE_UTM_CONTENT.startScreenFooter)
+                  : defaultHref;
               const linkLabel =
                 platform === "contact"
                   ? t("footer.contact", { defaultValue: title })

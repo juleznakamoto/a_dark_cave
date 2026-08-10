@@ -5,6 +5,8 @@ import { HoverCalloutTooltip } from "@/components/game/HoverCalloutTooltip";
 import {
   GAME_FOOTER_RIGHT_ICON_LINKS,
   GAME_FOOTER_RIGHT_ICON_ORDER,
+  STEAM_STORE_UTM_CONTENT,
+  steamStoreUrl,
 } from "@/lib/gameFooterSocialLinks";
 import { useState, useEffect, useRef, useCallback, cloneElement } from "react";
 import { useTranslation } from "react-i18next";
@@ -219,8 +221,12 @@ export default function GameFooter() {
                 return null;
               }
 
-              const { href, title } =
+              const { href: defaultHref, title } =
                 GAME_FOOTER_RIGHT_ICON_LINKS[platform];
+              const href =
+                platform === "steam"
+                  ? steamStoreUrl(STEAM_STORE_UTM_CONTENT.gameFooter)
+                  : defaultHref;
               const linkLabel =
                 platform === "contact"
                   ? tWithFallback("ui", "footer.contact", title)

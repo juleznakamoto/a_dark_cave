@@ -2,7 +2,10 @@ import React, { useRef, useEffect } from "react";
 import { logger } from "@/lib/logger";
 import { StarshipShader } from "@/components/ui/starship-shader";
 import { FooterSocialIcon } from "@/components/game/FooterSocialIcon";
-import { OFFICIAL_STEAM_URL } from "@/lib/gameFooterSocialLinks";
+import {
+  STEAM_STORE_UTM_CONTENT,
+  steamStoreUrl,
+} from "@/lib/gameFooterSocialLinks";
 
 export type EndScreenBackgroundVariant = "default" | "starship";
 
@@ -638,7 +641,11 @@ const Hero: React.FC<HeroProps> = ({
               <div className="flex gap-2 sm:gap-3 flex-wrap justify-center px-2">
                 <button
                   onClick={() =>
-                    window.open(OFFICIAL_STEAM_URL, "_blank", "noopener,noreferrer")
+                    window.open(
+                      steamStoreUrl(STEAM_STORE_UTM_CONTENT.endScreenWishlist),
+                      "_blank",
+                      "noopener,noreferrer",
+                    )
                   }
                   className={END_SCREEN_CTA_BUTTON_CLASS}
                 >
