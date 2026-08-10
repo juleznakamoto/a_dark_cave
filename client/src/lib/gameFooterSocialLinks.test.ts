@@ -1,8 +1,11 @@
 import { describe, expect, it } from "vitest";
+import { SITE_ORIGIN } from "@shared/publicSeo";
 import {
   OFFICIAL_STEAM_URL,
   STEAM_STORE_UTM_CONTENT,
+  X_GAME_UTM_CONTENT,
   steamStoreUrl,
+  xGameLandingUrl,
 } from "./gameFooterSocialLinks";
 
 describe("steamStoreUrl", () => {
@@ -22,5 +25,19 @@ describe("steamStoreUrl", () => {
       (content) => new URL(steamStoreUrl(content)).searchParams.get("utm_content"),
     );
     expect(new Set(contents).size).toBe(contents.length);
+  });
+});
+
+describe("xGameLandingUrl", () => {
+  it("builds a game landing URL with X UTM params", () => {
+    const href = xGameLandingUrl();
+    const url = new URL(href);
+
+    expect(url.origin).toBe(SITE_ORIGIN);
+    expect(url.pathname).toBe("/");
+    expect(url.searchParams.get("utm_source")).toBe("x");
+    expect(url.searchParams.get("utm_medium")).toBe("social");
+    expect(url.searchParams.get("utm_campaign")).toBe("game");
+    expect(url.searchParams.get("utm_content")).toBe(X_GAME_UTM_CONTENT.post);
   });
 });

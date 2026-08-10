@@ -112,9 +112,11 @@ export default function Privacy() {
                 devices. This may include progress, settings, play statistics,
                 and related gameplay data. We may also store limited internal
                 product analytics linked to your account (for example aggregated
-                in-game button-click counts). The legal basis is Art. 6(1)(b)
-                GDPR (performance of a contract) and, for limited analytics,
-                Art. 6(1)(f) GDPR (legitimate interest in improving the game).
+                in-game button-click counts, and first-touch campaign or UTM
+                parameters from the link you used to arrive, if any). The legal
+                basis is Art. 6(1)(b) GDPR (performance of a contract) and, for
+                limited analytics, Art. 6(1)(f) GDPR (legitimate interest in
+                improving the game and measuring marketing effectiveness).
               </p>
 
               <h4>d) Leaderboard:</h4>
@@ -159,11 +161,27 @@ export default function Privacy() {
                 token until it is used or expires).
               </p>
 
+              <h4>g) Anonymous session and campaign metrics:</h4>
+              <p>
+                Independently of whether you create an account, we may store
+                anonymous first-party product metrics: a random session
+                identifier with approximate session duration, and (when you
+                arrive via a campaign link) UTM or similar campaign parameters
+                (for example source, medium, campaign). These records are not
+                linked to your email or account. We retain them for about one
+                year. The legal basis is Art. 6(1)(f) GDPR (legitimate interest
+                in understanding how the game is used and which campaigns bring
+                visitors).
+              </p>
+
               <h3>4. Cookies and Local Storage</h3>
               <p>
                 We use session storage on your device to maintain your
-                authentication state. This is a technically necessary function.
-                The legal basis is § 25(2) No. 2 TDDDG.
+                authentication state and for short-lived first-party session /
+                campaign identifiers used for the anonymous metrics described in
+                section 3g. This is a technically necessary function for
+                operating and measuring the service. The legal basis is § 25(2)
+                No. 2 TDDDG.
               </p>
               <p>
                 For users playing without an account, we use IndexedDB in your
@@ -172,10 +190,11 @@ export default function Privacy() {
                 TDDDG.
               </p>
               <p>
-                We do not use tracking, analytics, or marketing{" "}
-                <em>cookies</em> for advertising. Optional marketing{" "}
-                <em>emails</em> are only sent with your separate consent (see
-                section 3f).
+                We do not use advertising or third-party tracking{" "}
+                <em>cookies</em>. We do use limited first-party product
+                analytics as described above (session duration and campaign /
+                UTM landing metrics). Optional marketing <em>emails</em> are
+                only sent with your separate consent (see section 3f).
               </p>
 
               <h3>5. Third-Party Services</h3>

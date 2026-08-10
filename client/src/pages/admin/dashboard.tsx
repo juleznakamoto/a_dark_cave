@@ -44,6 +44,7 @@ import EngagementTab from "./tabs/EngagementTab";
 import ClicksTab from "./tabs/ClicksTab";
 import PurchasesTab from "./tabs/PurchasesTab";
 import ReferralsTab from "./tabs/ReferralsTab";
+import TrafficTab from "./tabs/TrafficTab";
 import ChurnTab from "./tabs/ChurnTab";
 import SleepTab from "./tabs/SleepTab";
 import ResourcesTab from "./tabs/ResourcesTab";
@@ -1254,6 +1255,7 @@ export default function AdminDashboard() {
                   <TabsTrigger value="clicks">Clicks</TabsTrigger>
                   <TabsTrigger value="purchases">Purchases</TabsTrigger>
                   <TabsTrigger value="referrals">Referrals</TabsTrigger>
+                  <TabsTrigger value="traffic">Traffic</TabsTrigger>
                   <TabsTrigger value="socialPrompt">Social prompt</TabsTrigger>
                   <TabsTrigger value="churn">Churn</TabsTrigger>
                   <TabsTrigger value="sleep">Sleep</TabsTrigger>
@@ -1598,6 +1600,10 @@ export default function AdminDashboard() {
                     setReferralsChartTimeRange={setReferralsChartTimeRange}
                   />,
                 )}
+              </TabsContent>
+
+              <TabsContent value="traffic">
+                <TrafficTab environment={environment} />
               </TabsContent>
 
               <TabsContent value="socialPrompt">

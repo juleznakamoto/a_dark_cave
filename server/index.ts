@@ -569,8 +569,10 @@ import {
   fetchAdminPurchases,
   fetchAdminSaveAnalysisInputs,
   fetchAdminSavesSlim,
+  fetchAdminUtmDashboard,
   type AdminEnv,
 } from "./adminDashboardData";
+import { sanitizeUtmField, UTM_FIELD_MAX_LENGTH } from "@shared/utmAttribution";
 import { analyzeSaveGames } from "@shared/saveGameAnalysis";
 import { resolveCurrentBuildShaForAdmin } from "./publishedBuildSha";
 
@@ -730,8 +732,8 @@ app.use((req, res, next) => {
   res.on("finish", () => {
     const duration = Date.now() - start;
     if (path.startsWith("/api")) {
-      // Session ping is high-frequency keepalive noise in logs.
-      if (path === "/api/session/ping") {
+      // Session ping / UTM landing are high-frequency keepalive noise in logs.
+      if (path === "/api/session/ping" || path === "/api/utm/landing") {
         return;
       }
 
@@ -1312,6 +1314,57 @@ app.post("/api/leaderboard/update-username", leaderboardUpdateLimiter, async (re
       res.status(204).end();
     } catch {
       res.status(500).end();
+    }
+  });
+
+  // Anonymous UTM landing beacon (no auth, no personal data)
+  app.post("/api/utm/landing", sessionPingLimiter, async (req, res) => {
+    try {
+      const body = req.body || {};
+      const sid = typeof body.sid === "string" ? body.sid.trim() : "";
+      if (!sid || sid.length > 64) {
+        return res.status(400).json({ error: "Invalid session" });
+      }
+
+      const source = sanitizeUtmField(body.source, UTM_FIELD_MAX_LENGTH);
+      const medium = sanitizeUtmField(body.medium, UTM_FIELD_MAX_LENGTH);
+      const campaign = sanitizeUtmField(body.campaign, UTM_FIELD_MAX_LENGTH);
+      const content = sanitizeUtmField(body.content, UTM_FIELD_MAX_LENGTH);
+      const term = sanitizeUtmField(body.term, UTM_FIELD_MAX_LENGTH);
+
+      if (!source && !medium && !campaign && !content && !term) {
+        return res.status(400).json({ error: "Missing UTM fields" });
+      }
+
+      const env = process.env.NODE_ENV === "production" ? "prod" : "dev";
+      const adminClient = getAdminClient(env);
+
+      await adminClient.rpc("upsert_utm_landing", {
+        p_session_id: sid,
+        p_utm_source: source,
+        p_utm_medium: medium,
+        p_utm_campaign: campaign,
+        p_utm_content: content,
+        p_utm_term: term,
+      });
+
+      res.status(204).end();
+    } catch {
+      res.status(500).end();
+    }
+  });
+
+  app.get("/api/admin/utm", async (req, res) => {
+    try {
+      adminDashboardCache(res);
+      const env = parseAdminEnv(req);
+      const days = Number(req.query.days) || 90;
+      const adminClient = getAdminClient(env);
+      const dashboard = await fetchAdminUtmDashboard(adminClient, days, log);
+      res.json(dashboard);
+    } catch (error: any) {
+      log("❌ /api/admin/utm failed:", error);
+      res.status(500).json({ error: error.message });
     }
   });
 

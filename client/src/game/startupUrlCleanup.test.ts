@@ -81,6 +81,19 @@ describe("startupUrlCleanup", () => {
     expect(window.location.search).toBe("?keep=1");
   });
 
+  it("strips UTM params under campaign scope", () => {
+    window.history.replaceState(
+      {},
+      "",
+      "/?utm_source=playlight&utm_medium=discovery&utm_campaign=exit&utm_content=x&utm_term=y&keep=1",
+    );
+    expect(
+      planStartupUrlCleanup(window.location).scopes,
+    ).toContain("campaign");
+    applyStartupUrlCleanup(window.location, ["campaign"]);
+    expect(window.location.search).toBe("?keep=1");
+  });
+
   it("strips hard-reload cache bust param", () => {
     window.history.replaceState({}, "", "/?_cb=123&game=true");
     applyStartupUrlCleanup(window.location, ["hard-reload-bust"]);

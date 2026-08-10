@@ -9,7 +9,7 @@ import { ATTACK_WAVE_VICTORY_FLAGS } from "@shared/hutLadderAdminStats";
 export const ADMIN_DATA_PAGE_SIZE = 1000;
 export const ADMIN_SAVE_ANALYSIS_LIMIT = 100;
 /** Bump when slimGameStateForAdmin shape changes so clients can bust cache. */
-export const ADMIN_SAVES_SLIM_VERSION = 6;
+export const ADMIN_SAVES_SLIM_VERSION = 7;
 export const PURCHASES_LIST_COLUMNS =
   "user_id,item_id,item_name,price_paid,purchased_at,bundle_id,country,cruel_mode,currency,stripe_payment_intent_id,stripe_fx_quote_id,reporting_eur_cents,reporting_usd_cents,payment_type";
 
@@ -85,6 +85,23 @@ export function slimGameStateForAdmin(
     social_media_rewards: gs.social_media_rewards,
     socialPromoExclusiveRewardPending: gs.socialPromoExclusiveRewardPending,
   };
+
+  if (typeof gs.googleAdsSource === "string" && gs.googleAdsSource) {
+    slim.googleAdsSource = gs.googleAdsSource;
+  }
+
+  const utm = gs.utmAttribution;
+  if (utm && typeof utm === "object") {
+    const u = utm as Record<string, unknown>;
+    const slimUtm: Record<string, unknown> = {};
+    for (const key of ["source", "medium", "campaign", "content", "term"] as const) {
+      if (typeof u[key] === "string" && u[key]) slimUtm[key] = u[key];
+    }
+    if (typeof u.capturedAt === "number") slimUtm.capturedAt = u.capturedAt;
+    if (Object.keys(slimUtm).length > 0) {
+      slim.utmAttribution = slimUtm;
+    }
+  }
 
   // Hut-ladder cohort excludes referred accounts (bonus-farm / self-refer stubs).
   if (gs.referralProcessed === true) {
@@ -395,5 +412,116 @@ export async function fetchAdminMetrics(
     accountsDeletedAnonymized,
     purchaseMetrics,
     referralMetrics,
+  };
+}
+
+export type AdminUtmDashboardPayload = {
+  days_back: number;
+  total_landings: number;
+  distinct_sources: number;
+  distinct_campaigns: number;
+  top_source: string | null;
+  attributed_players: number;
+  attributed_players_in_range: number;
+  attributed_buyers: number;
+  attributed_revenue_eur_cents: number;
+  daily_landings: Array<{ day: string; landings: number }>;
+  daily_attributed_saves: Array<{ day: string; players: number }>;
+  by_source: Array<{ label: string; landings: number }>;
+  by_medium: Array<{ label: string; landings: number }>;
+  by_campaign: Array<{
+    label: string;
+    landings: number;
+    attributed_players: number;
+    buyers: number;
+  }>;
+};
+
+function emptyUtmDashboard(daysBack: number): AdminUtmDashboardPayload {
+  return {
+    days_back: daysBack,
+    total_landings: 0,
+    distinct_sources: 0,
+    distinct_campaigns: 0,
+    top_source: null,
+    attributed_players: 0,
+    attributed_players_in_range: 0,
+    attributed_buyers: 0,
+    attributed_revenue_eur_cents: 0,
+    daily_landings: [],
+    daily_attributed_saves: [],
+    by_source: [],
+    by_medium: [],
+    by_campaign: [],
+  };
+}
+
+export async function fetchAdminUtmDashboard(
+  adminClient: ReturnType<
+    typeof import("./supabaseServerClient").createServerSupabaseClient
+  >,
+  daysBack: number,
+  log: (message: string, ...args: unknown[]) => void,
+): Promise<AdminUtmDashboardPayload> {
+  const days = Math.max(1, Math.min(800, Math.floor(daysBack) || 90));
+  const { data, error } = await adminClient.rpc("admin_utm_dashboard", {
+    days_back: days,
+  });
+
+  if (error) {
+    log("⚠️ admin_utm_dashboard skipped:", error.message ?? error);
+    return emptyUtmDashboard(days);
+  }
+
+  const payload = data as Partial<AdminUtmDashboardPayload> | null;
+  if (!payload || typeof payload !== "object") {
+    return emptyUtmDashboard(days);
+  }
+
+  return {
+    days_back: Number(payload.days_back) || days,
+    total_landings: Number(payload.total_landings) || 0,
+    distinct_sources: Number(payload.distinct_sources) || 0,
+    distinct_campaigns: Number(payload.distinct_campaigns) || 0,
+    top_source:
+      typeof payload.top_source === "string" ? payload.top_source : null,
+    attributed_players: Number(payload.attributed_players) || 0,
+    attributed_players_in_range:
+      Number(payload.attributed_players_in_range) || 0,
+    attributed_buyers: Number(payload.attributed_buyers) || 0,
+    attributed_revenue_eur_cents:
+      Number(payload.attributed_revenue_eur_cents) || 0,
+    daily_landings: Array.isArray(payload.daily_landings)
+      ? payload.daily_landings.map((row) => ({
+          day: String(row.day),
+          landings: Number(row.landings) || 0,
+        }))
+      : [],
+    daily_attributed_saves: Array.isArray(payload.daily_attributed_saves)
+      ? payload.daily_attributed_saves.map((row) => ({
+          day: String(row.day),
+          players: Number(row.players) || 0,
+        }))
+      : [],
+    by_source: Array.isArray(payload.by_source)
+      ? payload.by_source.map((row) => ({
+          label: String(row.label),
+          landings: Number(row.landings) || 0,
+        }))
+      : [],
+    by_medium: Array.isArray(payload.by_medium)
+      ? payload.by_medium.map((row) => ({
+          label: String(row.label),
+          landings: Number(row.landings) || 0,
+        }))
+      : [],
+    by_campaign: Array.isArray(payload.by_campaign)
+      ? payload.by_campaign.map((row) => ({
+          label: String(row.label),
+          landings: Number(row.landings) || 0,
+          attributed_players: Number(row.attributed_players) || 0,
+          buyers: Number(row.buyers) || 0,
+        }))
+      : [],
   };
 }

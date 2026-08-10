@@ -2,6 +2,7 @@ import { HARD_RELOAD_CACHE_BUST_PARAM } from "@/lib/hardReload";
 import { isLocalOnlyEdition } from "@/lib/edition";
 import { logger } from "@/lib/logger";
 import {
+  intentHasCampaignParams,
   parseStartupIntent,
   type StartupIntent,
   type StartupLocation,
@@ -29,7 +30,10 @@ export function planStartupUrlCleanup(
   const scopes: StartupUrlCleanupScope[] = [];
   if (intent.oauthCallback) scopes.push("auth-callback");
   if (intent.emailConfirmed) scopes.push("email-confirmed");
-  if (intent.googleAdsSource || new URLSearchParams(location.search).has("src")) {
+  if (
+    intentHasCampaignParams(intent) ||
+    new URLSearchParams(location.search).has("src")
+  ) {
     scopes.push("campaign");
   }
   if (intent.openShop || intent.cruelShopHighlight) scopes.push("shop");
@@ -111,6 +115,11 @@ function stripSearchParams(
   if (scopes.includes("campaign")) {
     search.delete("c");
     search.delete("src");
+    search.delete("utm_source");
+    search.delete("utm_medium");
+    search.delete("utm_campaign");
+    search.delete("utm_content");
+    search.delete("utm_term");
   }
   if (scopes.includes("shop")) {
     search.delete("openShop");

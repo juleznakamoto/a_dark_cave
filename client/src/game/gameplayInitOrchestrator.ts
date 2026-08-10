@@ -23,6 +23,8 @@ import {
 import { consumePreparedGameHydration } from "@/game/startupGameLoader";
 import { rehydratePurchasesOnStartup } from "@/game/shopPurchases";
 import { mountFiraSansFontFace } from "@/lib/firaSansFontFace";
+import { reportUtmLanding } from "@/lib/utmLanding";
+import { hasUtmAttribution } from "@shared/utmAttribution";
 
 export interface GameplayInitResult {
   hadPersistedSave: boolean;
@@ -52,6 +54,9 @@ export async function runGameplayInitialization(
     logger.log("[GAME] Email confirmation callback detected");
   }
 
+  // Before any campaign URL strip: anonymous landing beacon (once per tab).
+  reportUtmLanding(location, intent.utmAttribution);
+
   await consumeStartupAuthCallback(location);
   applyStartupUrlCleanup(location, ["auth-callback", "email-confirmed"]);
 
@@ -79,10 +84,16 @@ export async function runGameplayInitialization(
   const hydratedState = useGameStore.getState();
   const shouldTrackGoogleAds =
     Boolean(intent.googleAdsSource) && !hydratedState.googleAdsSource;
+  const shouldTrackUtm =
+    hasUtmAttribution(intent.utmAttribution) &&
+    !hasUtmAttribution(hydratedState.utmAttribution);
 
   useGameStore.setState({
     ...(shouldTrackGoogleAds
       ? { googleAdsSource: intent.googleAdsSource ?? undefined }
+      : {}),
+    ...(shouldTrackUtm
+      ? { utmAttribution: intent.utmAttribution ?? undefined }
       : {}),
     flags: {
       ...hydratedState.flags,
@@ -97,13 +108,20 @@ export async function runGameplayInitialization(
     ...getTransientDialogResetOnLoad(),
   });
 
-  if (shouldTrackGoogleAds) {
-    logger.log(`[GAME] Tracking Google Ads source: ${intent.googleAdsSource}`);
+  if (shouldTrackGoogleAds || shouldTrackUtm) {
+    if (shouldTrackGoogleAds) {
+      logger.log(`[GAME] Tracking Google Ads source: ${intent.googleAdsSource}`);
+    }
+    if (shouldTrackUtm) {
+      logger.log(
+        `[GAME] Tracking UTM attribution: ${intent.utmAttribution?.source ?? ""}/${intent.utmAttribution?.campaign ?? ""}`,
+      );
+    }
     try {
       await saveGame(useGameStore.getState(), false);
-      logger.log("[GAME] Successfully saved Google Ads source");
+      logger.log("[GAME] Successfully saved campaign attribution");
     } catch (error) {
-      logger.error("[GAME] Failed to save Google Ads source:", error);
+      logger.error("[GAME] Failed to save campaign attribution:", error);
     }
   }
 

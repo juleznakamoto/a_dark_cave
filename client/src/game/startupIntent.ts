@@ -1,3 +1,9 @@
+import {
+  hasUtmAttribution,
+  utmAttributionFromSearchParams,
+  type UtmAttribution,
+} from "@shared/utmAttribution";
+
 export interface StartupLocation {
   pathname: string;
   search: string;
@@ -19,6 +25,8 @@ export interface StartupIntent {
   openShop: boolean;
   cruelShopHighlight: boolean;
   googleAdsSource: string | null;
+  /** First-touch campaign params from the landing URL (UTM + legacy `c`). */
+  utmAttribution: UtmAttribution | null;
   hardReloadCacheBust: boolean;
 }
 
@@ -44,6 +52,7 @@ export function parseStartupIntent(location: StartupLocation): StartupIntent {
   const openShop = search.get("openShop") === "true";
   const accessToken = hash.get("access_token") || search.get("access_token");
   const oauthCallback = hasOauthCallbackMaterial(search, hash);
+  const utmAttribution = utmAttributionFromSearchParams(search);
 
   return {
     accessToken,
@@ -60,6 +69,11 @@ export function parseStartupIntent(location: StartupLocation): StartupIntent {
     cruelShopHighlight:
       openShop && search.get("cruelHighlight") === "true",
     googleAdsSource: search.get("c"),
+    utmAttribution,
     hardReloadCacheBust: search.has("_cb"),
   };
+}
+
+export function intentHasCampaignParams(intent: StartupIntent): boolean {
+  return Boolean(intent.googleAdsSource) || hasUtmAttribution(intent.utmAttribution);
 }

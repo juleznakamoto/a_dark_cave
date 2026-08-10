@@ -7,6 +7,7 @@ export type AdminTabId =
   | "clicks"
   | "purchases"
   | "referrals"
+  | "traffic"
   | "socialPrompt"
   | "churn"
   | "sleep"
@@ -17,13 +18,14 @@ export type AdminTabId =
   | "lookup"
   | "saveAnalysis";
 
-/** Sections each tab needs. Sessions/logs/lookup fetch their own endpoints. */
+/** Sections each tab needs. Sessions/logs/lookup/traffic fetch their own endpoints. */
 export const ADMIN_TAB_SECTIONS: Record<AdminTabId, AdminDataSection[]> = {
   overview: ["metrics", "dau", "saves", "purchases"],
   engagement: ["saves"],
   clicks: ["clicks", "saves"],
   purchases: ["purchases", "saves"],
   referrals: ["metrics"],
+  traffic: [],
   socialPrompt: ["saves"],
   churn: ["clicks", "saves"],
   sleep: ["saves"],

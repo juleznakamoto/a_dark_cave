@@ -14,6 +14,7 @@ import {
   applyStartupUrlCleanup,
   consumeStartupAuthCallback,
 } from "@/game/startupUrlCleanup";
+import { reportUtmLanding } from "@/lib/utmLanding";
 
 // Lazy load Game component - only loaded when needed
 const Game = lazy(() => import("@/pages/game"));
@@ -49,6 +50,8 @@ export default function StartScreenPage() {
   useEffect(() => {
     const checkGameState = async () => {
       try {
+        // UTM landing beacon before any campaign URL strip.
+        reportUtmLanding(window.location);
         // Consume OAuth/PKCE before stripping auth params or routing.
         await consumeStartupAuthCallback(window.location);
         applyStartupUrlCleanup(window.location, ["hard-reload-bust"]);

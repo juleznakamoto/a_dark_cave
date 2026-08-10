@@ -46,6 +46,29 @@ describe("parseStartupIntent", () => {
       openShop: true,
       cruelShopHighlight: true,
       googleAdsSource: "campaign-1",
+      utmAttribution: {
+        source: "google_ads",
+        campaign: "campaign-1",
+      },
+    });
+  });
+
+  it("parses standard UTM params into utmAttribution", () => {
+    expect(
+      parseStartupIntent({
+        pathname: "/",
+        search:
+          "?utm_source=playlight&utm_medium=discovery&utm_campaign=exit&utm_content=banner",
+        hash: "",
+      }),
+    ).toMatchObject({
+      googleAdsSource: null,
+      utmAttribution: {
+        source: "playlight",
+        medium: "discovery",
+        campaign: "exit",
+        content: "banner",
+      },
     });
   });
 
@@ -60,6 +83,7 @@ describe("parseStartupIntent", () => {
       forceGame: false,
       openShop: false,
       hardReloadCacheBust: false,
+      utmAttribution: null,
     });
   });
 });

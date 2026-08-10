@@ -1,6 +1,7 @@
 // Removed duplicate keys and ensured gameId is correctly handled.
 import { create } from "zustand";
 import { GameState, gameStateSchema, Referral } from "@shared/schema";
+import type { UtmAttribution } from "@shared/utmAttribution";
 import { isBlockingDialogOpenFromRegistry } from "./dialogRegistry";
 import {
   isFullGameUnlockedEdition,
@@ -343,6 +344,8 @@ interface GameStore extends GameState {
 
   // Google Ads source tracking (persists across game restarts)
   googleAdsSource: string | null;
+  /** First-touch UTM / legacy `?c=` attribution (persists across restarts). */
+  utmAttribution: UtmAttribution | null;
 
   // Cooldown management
   cooldowns: Record<string, number>;
@@ -1516,6 +1519,7 @@ export const createInitialState = (): GameState => ({
 
   // Initialize Google Ads source tracking
   googleAdsSource: null,
+  utmAttribution: null,
 
   // Initialize cooldown management
   cooldowns: {},
@@ -2929,6 +2933,8 @@ export const useGameStore = create<GameStore>((set, get) => ({
 
       // Preserve Google Ads source across restarts (persists forever)
       googleAdsSource: state.googleAdsSource || null,
+      // Preserve first-touch UTM attribution across restarts
+      utmAttribution: state.utmAttribution || null,
     };
 
     // Reset everything else to default

@@ -75,6 +75,12 @@ vi.mock("@/lib/edition", () => ({
   isDemoEdition: () => false,
   isSteamBuild: false,
 }));
+vi.mock("@/lib/utmLanding", () => ({
+  reportUtmLanding: vi.fn(),
+}));
+vi.mock("@/lib/firaSansFontFace", () => ({
+  mountFiraSansFontFace: vi.fn(),
+}));
 vi.mock("@/lib/audio", () => ({
   audioManager: {
     setMusicVolume: vi.fn(),
@@ -105,6 +111,7 @@ describe("runGameplayInitialization", () => {
     mocks.getState.mockReturnValue({
       loadGame: mocks.loadGame,
       googleAdsSource: null,
+      utmAttribution: null,
       flags: { gameStarted: false },
       musicVolume: 1,
       sfxVolume: 1,

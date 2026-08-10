@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { utmAttributionSchema } from "./utmAttribution";
 
 // Define LogEntry schema first since it's used in gameStateSchema
 export const logEntrySchema = z.object({
@@ -715,6 +716,8 @@ export const gameStateSchema = z.object({
   signupWelcomeGoldClaimed: z.boolean().default(false),
   detectedCurrency: z.enum(["EUR", "USD"]).nullable().default(null), // Currency detection (persists across game restarts)
   googleAdsSource: z.string().nullable().default(null), // Google Ads source tracking (persists across game restarts)
+  /** First-touch UTM / legacy `?c=` attribution (persists across restarts). */
+  utmAttribution: utmAttributionSchema,
   /**
    * Git SHA of the client bundle that last wrote this save (`__BUILD_SHA__`).
    * Empty for saves from before version tracking; stamped on every save.

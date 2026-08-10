@@ -3,6 +3,8 @@
  * Order matches the footer; keep crawlable anchors in sync elsewhere (e.g. start screen, SEO fallback).
  */
 
+import { SITE_ORIGIN } from "@shared/publicSeo";
+
 export type FooterSocialPlatformId =
   | "reddit"
   | "steam"
@@ -50,6 +52,33 @@ export function steamStoreUrl(utmContent: SteamStoreUtmContent): string {
   url.searchParams.set("utm_source", "a_dark_cave");
   url.searchParams.set("utm_medium", "web_game");
   url.searchParams.set("utm_campaign", "steam_store");
+  url.searchParams.set("utm_content", utmContent);
+  return url.toString();
+}
+
+/**
+ * Readable `utm_content` for X (Twitter) posts that link to the game.
+ */
+export const X_GAME_UTM_CONTENT = {
+  /** Default organic / promo post linking to the game. */
+  post: "post",
+} as const;
+
+export type XGameUtmContent =
+  (typeof X_GAME_UTM_CONTENT)[keyof typeof X_GAME_UTM_CONTENT];
+
+/**
+ * Game landing URL for X posts:
+ * `utm_source=x`, `utm_medium=social`, `utm_campaign=game`,
+ * `utm_content=<post id>`.
+ */
+export function xGameLandingUrl(
+  utmContent: XGameUtmContent = X_GAME_UTM_CONTENT.post,
+): string {
+  const url = new URL(SITE_ORIGIN + "/");
+  url.searchParams.set("utm_source", "x");
+  url.searchParams.set("utm_medium", "social");
+  url.searchParams.set("utm_campaign", "game");
   url.searchParams.set("utm_content", utmContent);
   return url.toString();
 }
