@@ -294,6 +294,8 @@ export function SegmentedProgress({
                     "relative h-3 flex-1 overflow-hidden rounded-[4px]",
                     emptyClassName,
                     segmentClassName,
+                    // Active (full or partial) cells get a thin grey rim.
+                    fill > 0 && "border border-neutral-500",
                   )}
                 >
                   <div
