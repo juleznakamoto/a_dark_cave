@@ -254,6 +254,40 @@ function shopArtifactIdFromShopItemId(
   return null;
 }
 
+function ArtifactEffectsList({
+  artifact,
+}: {
+  artifact: ShopArtifactIdForTooltip;
+}) {
+  const { t } = useTranslation("ui");
+
+  if (artifact === "skull_lantern") {
+    return (
+      <div className="space-y-0.5">
+        <div>{t("shop.artifactSkullLantern.caveExploreBonus")}</div>
+        <div>{t("shop.artifactSkullLantern.caveExploreCooldown")}</div>
+        <div>{t("shop.artifactSkullLantern.miningBonus")}</div>
+        <div>{t("shop.artifactSkullLantern.miningCooldown")}</div>
+      </div>
+    );
+  }
+
+  if (artifact === "tarnished_compass") {
+    return (
+      <div className="space-y-0.5">
+        <div>{t("shop.artifactTarnishedCompass.doubleGain")}</div>
+        <div>{t("shop.artifactTarnishedCompass.luck")}</div>
+      </div>
+    );
+  }
+
+  return (
+    <div className="space-y-0.5">
+      <div>{t("shop.artifactCrowHarness.doubleGain")}</div>
+    </div>
+  );
+}
+
 function ArtifactShopTooltipIcon({
   artifact,
   tooltipId,
@@ -263,86 +297,37 @@ function ArtifactShopTooltipIcon({
   tooltipId: string;
   variant: "cardTitle" | "description";
 }) {
-  const { t } = useTranslation("ui");
   const triggerClass =
     variant === "cardTitle"
       ? `pl-2 inline-flex items-center justify-center ${SHOP_INFO_HIT_SIZE_CLASS} rounded-full text-white-500 cursor-pointer motion-safe:animate-shop-info-pulse`
       : `ml-0.5 inline-flex items-center justify-center ${SHOP_INFO_HIT_SIZE_CLASS} rounded-full text-white-500 cursor-pointer motion-safe:animate-shop-info-pulse align-text-bottom translate-y-[0.08em]`;
 
-  const icon = (
-    <span className={SHOP_INFO_GLYPH_CLASS} aria-hidden>
-      🛈
-    </span>
-  );
-
-  if (artifact === "skull_lantern") {
-    return (
-      <TooltipWrapper
-        tooltip={
-          <div className="text-xs">
-            <div className="font-bold mb-1">
-              {t("shop.artifactSkullLantern.title")}
-            </div>
-            <div className="mt-1 space-y-0.5">
-              <div>{t("shop.artifactSkullLantern.caveExploreBonus")}</div>
-              <div>{t("shop.artifactSkullLantern.caveExploreCooldown")}</div>
-              <div>{t("shop.artifactSkullLantern.miningBonus")}</div>
-              <div>{t("shop.artifactSkullLantern.miningCooldown")}</div>
-            </div>
-          </div>
-        }
-        tooltipId={tooltipId}
-        disabled
-        tooltipContentClassName="max-w-xs border border-amber-600"
-        className={triggerClass}
-      >
-        {icon}
-      </TooltipWrapper>
+  const shopItem = SHOP_ITEMS[artifact];
+  // Card info: flavor description. Bundle row info: effects only (name is already on the row).
+  const tooltip =
+    variant === "cardTitle" && shopItem ? (
+      <div className="text-xs">{resolveShopItemDescription(shopItem)}</div>
+    ) : (
+      <div className="text-xs">
+        <ArtifactEffectsList artifact={artifact} />
+      </div>
     );
-  }
-
-  if (artifact === "tarnished_compass") {
-    return (
-      <TooltipWrapper
-        tooltip={
-          <div className="text-xs">
-            <div className="font-bold mb-1">
-              {t("shop.artifactTarnishedCompass.title")}
-            </div>
-            <div className="mt-1 space-y-0.5">
-              <div>{t("shop.artifactTarnishedCompass.doubleGain")}</div>
-              <div>{t("shop.artifactTarnishedCompass.luck")}</div>
-            </div>
-          </div>
-        }
-        tooltipId={tooltipId}
-        disabled
-        tooltipContentClassName="max-w-[14rem] border border-amber-600"
-        className={triggerClass}
-      >
-        {icon}
-      </TooltipWrapper>
-    );
-  }
 
   return (
     <TooltipWrapper
-      tooltip={
-        <div className="text-xs">
-          <div className="font-bold mb-1">
-            {t("shop.artifactCrowHarness.title")}
-          </div>
-          <div className="mt-1 space-y-0.5">
-            <div>{t("shop.artifactCrowHarness.doubleGain")}</div>
-          </div>
-        </div>
-      }
+      tooltip={tooltip}
       tooltipId={tooltipId}
       disabled
-      tooltipContentClassName="max-w-xs border border-amber-600"
+      tooltipContentClassName={
+        artifact === "tarnished_compass" && variant === "description"
+          ? "max-w-[14rem] border border-amber-600"
+          : "max-w-xs border border-amber-600"
+      }
       className={triggerClass}
     >
-      {icon}
+      <span className={SHOP_INFO_GLYPH_CLASS} aria-hidden>
+        🛈
+      </span>
     </TooltipWrapper>
   );
 }
@@ -535,6 +520,11 @@ function ShopItemDescriptionParagraph({ item }: { item: ShopItem }) {
         })}
       </div>
     );
+  }
+
+  const artifact = shopArtifactIdFromShopItemId(item.id);
+  if (artifact) {
+    return <ArtifactEffectsList artifact={artifact} />;
   }
 
   return resolveShopItemDescription(item);
