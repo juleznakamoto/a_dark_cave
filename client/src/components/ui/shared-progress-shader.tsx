@@ -37,8 +37,6 @@ export const SHARED_PROGRESS_SHADER_FALLBACK_CLASS = "bg-red-950";
 
 /** Matches Tailwind `rounded-[4px]` on SegmentedProgress segments. */
 const SEGMENT_CORNER_RADIUS_CSS_PX = 4;
-/** Matches the 1px cell rim so the fill stays under the border, not outside it. */
-const SEGMENT_BORDER_CSS_PX = 1;
 
 /**
  * Smoke flow + per-draw rounded-rect clip. Packs corner radius into `u_finish.w`
@@ -361,12 +359,8 @@ class SharedProgressShaderRenderer {
 
     const canvasW = this.canvas.width;
     const canvasH = this.canvas.height;
-    const borderPx = SEGMENT_BORDER_CSS_PX * dpr;
-    // Inner radius = outer rounded-[4px] minus the 1px rim the fill sits under.
-    const cornerRadiusPx = Math.max(
-      0,
-      (SEGMENT_CORNER_RADIUS_CSS_PX - SEGMENT_BORDER_CSS_PX) * dpr,
-    );
+    // Fill the whole cell bg; the CSS rim sits on top of this edge.
+    const cornerRadiusPx = SEGMENT_CORNER_RADIUS_CSS_PX * dpr;
 
     for (const { element } of segments) {
       const rect = element.getBoundingClientRect();
@@ -379,46 +373,28 @@ class SharedProgressShaderRenderer {
       );
       const shapeRect = cell ? cell.getBoundingClientRect() : rect;
 
-      // Inset by the CSS border so the antialiased fringe stays under the rim
-      // instead of peeking outside it.
-      const left = (shapeRect.left - canvasRect.left) * dpr + borderPx;
-      const bottom =
-        canvasH - (shapeRect.bottom - canvasRect.top) * dpr + borderPx;
-      const width = shapeRect.width * dpr - borderPx * 2;
-      const height = shapeRect.height * dpr - borderPx * 2;
+      const left = (shapeRect.left - canvasRect.left) * dpr;
+      const bottom = canvasH - (shapeRect.bottom - canvasRect.top) * dpr;
+      const width = shapeRect.width * dpr;
+      const height = shapeRect.height * dpr;
       if (width < 0.5 || height < 0.5) continue;
 
-      // Scissor to fill ∩ inset cell. Integer scissor only; keep a 1px pad so
-      // AA coverage isn't clipped, but never pad past the outer cell edge.
+      // Scissor to the fill box (hard cut at the fill tip). Integer scissor only;
+      // pad 1px for AA, but never past the outer cell edge.
       const fillLeft = (rect.left - canvasRect.left) * dpr;
       const fillRight = fillLeft + rect.width * dpr;
       const fillBottom = canvasH - (rect.bottom - canvasRect.top) * dpr;
       const fillTop = fillBottom + rect.height * dpr;
-      const outerLeft = (shapeRect.left - canvasRect.left) * dpr;
-      const outerRight = outerLeft + shapeRect.width * dpr;
-      const outerBottom = canvasH - (shapeRect.bottom - canvasRect.top) * dpr;
-      const outerTop = outerBottom + shapeRect.height * dpr;
+      const outerRight = left + width;
+      const outerTop = bottom + height;
 
-      const sx = Math.max(
-        0,
-        Math.floor(Math.max(fillLeft, left) - 1),
-        Math.floor(outerLeft),
-      );
-      const sy = Math.max(
-        0,
-        Math.floor(Math.max(fillBottom, bottom) - 1),
-        Math.floor(outerBottom),
-      );
+      const sx = Math.max(0, Math.floor(Math.max(fillLeft, left)));
+      const sy = Math.max(0, Math.floor(Math.max(fillBottom, bottom)));
       const sRight = Math.min(
         canvasW,
-        Math.ceil(Math.min(fillRight, left + width) + 1),
-        Math.ceil(outerRight),
+        Math.ceil(Math.min(fillRight, outerRight)),
       );
-      const sTop = Math.min(
-        canvasH,
-        Math.ceil(Math.min(fillTop, bottom + height) + 1),
-        Math.ceil(outerTop),
-      );
+      const sTop = Math.min(canvasH, Math.ceil(Math.min(fillTop, outerTop)));
       const sw = sRight - sx;
       const sh = sTop - sy;
       if (sw <= 0 || sh <= 0) continue;
