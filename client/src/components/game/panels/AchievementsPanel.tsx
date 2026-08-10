@@ -300,6 +300,7 @@ function AchievementRowComponent({
         showPercentage={false}
         compact
         animate={false}
+        showRim={false}
         filledClassName={
           row.isFull ? indicatorClassComplete : indicatorClassIncomplete
         }

@@ -78,6 +78,11 @@ interface SegmentedProgressProps {
   /** Skip the increase glow sweep. */
   disableGlow?: boolean;
   /**
+   * 1px outside ring on filled segments (box-shadow). Estate/shader bars keep
+   * this; compact list bars (achievements) usually turn it off.
+   */
+  showRim?: boolean;
+  /**
    * Optional fill layer (e.g. SharedProgressShaderSegment). When set, skips
    * solid `filledClassName` so the custom fill can show through.
    */
@@ -106,6 +111,7 @@ export function SegmentedProgress({
   growSparkTipGlow = true,
   sparkClassName,
   disableGlow = false,
+  showRim = true,
   renderFill,
   "aria-label": ariaLabel,
   "aria-valuenow": ariaValueNow,
@@ -336,16 +342,18 @@ export function SegmentedProgress({
                     shared shader, SharedProgressShaderHost mirrors this above
                     the canvas and copies the computed box-shadow.
                   */}
-                  <div
-                    aria-hidden
-                    data-segmented-progress-rim=""
-                    className={cn(
-                      "pointer-events-none absolute inset-0 z-[2] rounded-[4px] transition-[box-shadow] duration-500",
-                      fill > 0
-                        ? "shadow-[0_0_0_1px_theme(colors.orange.600)]"
-                        : "shadow-[0_0_0_1px_transparent]",
-                    )}
-                  />
+                  {showRim ? (
+                    <div
+                      aria-hidden
+                      data-segmented-progress-rim=""
+                      className={cn(
+                        "pointer-events-none absolute inset-0 z-[2] rounded-[4px] transition-[box-shadow] duration-500",
+                        fill > 0
+                          ? "shadow-[0_0_0_1px_theme(colors.orange.600)]"
+                          : "shadow-[0_0_0_1px_transparent]",
+                      )}
+                    />
+                  ) : null}
                 </div>
               );
             })}
