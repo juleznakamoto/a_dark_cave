@@ -32,7 +32,7 @@
     "cruelModeSteamDemoBannerBefore": "O Modo Cruel está gratuito no momento para celebrar o lançamento da demo na",
     "cruelModeSteamDemoBannerSteam": "Steam",
     "cruelModeSteamDemoBannerAfter": ".",
-    "loadingPayment": "Loading payment system...",
+    "loadingPayment": "Carregando o sistema de pagamento...",
     "paymentSrDescription": "Conclua o pagamento de {{name}}",
     "originalPrice": "Preço original",
     "saleDiscount": "Desconto promocional",
@@ -46,7 +46,8 @@
     "rightOfWithdrawal": "Arrependimento",
     "completePurchaseFor": "Concluir Compra por {{price}}",
     "paymentFailed": "Pagamento falhou",
-    "tooManyPaymentRequests": "Too many payment requests, please try again later.",
+    "tooManyPaymentRequests": "Muitas solicitações de pagamento. Tente novamente mais tarde.",
+    "cruelModeDeactivatedLog": "Modo Cruel desativado. Novos jogos usarão a dificuldade normal.",
     "notAuthenticated": "Usuário não autenticado",
     "verificationFailed": "A verificação do pagamento falhou. Entre em contato com o suporte.",
     "unexpectedError": "Ocorreu um erro inesperado",
@@ -100,10 +101,10 @@
     "securePurchaseBody": "Sua compra fica salva apenas neste navegador. Crie uma conta para manter compras e progresso se trocar de dispositivo ou limpar os dados do navegador.",
     "securePurchaseSignUp": "Cadastrar-se",
     "securePurchaseLater": "Talvez depois",
-    "firstPurchaseInsightBannerBefore": "Get",
-    "firstPurchaseInsightBannerInsight": "Insight",
-    "firstPurchaseInsightBannerAfter": "free with your first purchase",
-    "firstPurchaseInsightGranted": "First purchase gift: +{{amount}} {{glyph}} Insight",
-    "firstPurchaseInsightCheckoutFree": "for free"
+    "firstPurchaseInsightBannerBefore": "Ganhe",
+    "firstPurchaseInsightBannerInsight": "Perspicácia",
+    "firstPurchaseInsightBannerAfter": "de graça com a sua primeira compra",
+    "firstPurchaseInsightGranted": "Presente da primeira compra: +{{amount}} {{glyph}} Perspicácia",
+    "firstPurchaseInsightCheckoutFree": "de graça"
   }
 }

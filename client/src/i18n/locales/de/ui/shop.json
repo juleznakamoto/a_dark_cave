@@ -29,15 +29,15 @@
     "continueCheckout": "Weiter",
     "feastAvailable": "{{name}} ({{remaining}}/{{total}} verfügbar)",
     "cruelModeActivateHint": "(zum Spielen aktivieren und neues Spiel starten)",
-    "firstPurchaseInsightBannerBefore": "Get",
-    "firstPurchaseInsightBannerInsight": "Insight",
-    "firstPurchaseInsightBannerAfter": "free with your first purchase",
-    "firstPurchaseInsightGranted": "First purchase gift: +{{amount}} {{glyph}} Insight",
-    "firstPurchaseInsightCheckoutFree": "for free",
+    "firstPurchaseInsightBannerBefore": "Erhalte",
+    "firstPurchaseInsightBannerInsight": "Einsicht",
+    "firstPurchaseInsightBannerAfter": "gratis mit deinem ersten Kauf",
+    "firstPurchaseInsightGranted": "Erstkauf-Geschenk: +{{amount}} {{glyph}} Einsicht",
+    "firstPurchaseInsightCheckoutFree": "gratis",
     "cruelModeSteamDemoBannerBefore": "Grausamer Modus ist derzeit kostenlos, um den Demo-Launch auf",
     "cruelModeSteamDemoBannerSteam": "Steam",
     "cruelModeSteamDemoBannerAfter": " zu feiern.", //x11.0
-    "loadingPayment": "Wird geladen payment system...", //x1.2
+    "loadingPayment": "Zahlungssystem wird geladen...",
     "paymentSrDescription": "Schließe deine Zahlung für {{name}} ab",
     "originalPrice": "Originalpreis",
     "saleDiscount": "Sale-Rabatt",
@@ -51,7 +51,8 @@
     "rightOfWithdrawal": "Widerruf",
     "completePurchaseFor": "Kauf abschließen für {{price}}",
     "paymentFailed": "Zahlung fehlgeschlagen", //x1.6
-    "tooManyPaymentRequests": "Too many payment requests, please try again later.",
+    "tooManyPaymentRequests": "Zu viele Zahlungsanfragen. Bitte versuche es später erneut.",
+    "cruelModeDeactivatedLog": "Grausamer Modus deaktiviert. Neue Spiele verwenden den normalen Schwierigkeitsgrad.",
     "notAuthenticated": "Benutzer nicht authentifiziert", //x1.4
     "verificationFailed": "Zahlungsüberprüfung fehlgeschlagen. Bitte kontaktiere den Support.",
     "unexpectedError": "Ein unerwarteter Fehler ist aufgetreten", //x1.4
@@ -59,7 +60,7 @@
     "purchaseSuccess": "Kauf erfolgreich",
     "purchaseAddedSingle": "{{name}} wurde deinen Käufen hinzugefügt. Prüfe den Tab „Käufe“, um es zu aktivieren.",
     "purchaseAddedBundle": "Die Bestandteile von {{name}} wurden deinen Käufen hinzugefügt. Prüfe den Tab „Käufe“, um sie zu aktivieren.",
-    "freeGoldAdded": "100 Gold wurden deinen Ressourcen hinzugefügt!",
+    "freeGoldAdded": "{{amount}} Gold wurden deinen Ressourcen hinzugefügt!",
     "freeGoldClaimedLog": "Du hast {{amount}} Gold abgeholt. Komm morgen wieder, wenn du die Nacht überstehst.",
     "freeGoldCooldownLog_one": "Du kannst in {{hours}} Stunde wieder kostenloses Gold abholen.",
     "freeGoldCooldownLog_other": "Du kannst in {{hours}} Stunden wieder kostenloses Gold abholen.",

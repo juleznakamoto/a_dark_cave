@@ -1472,9 +1472,15 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
       gameState.addLogEntry({
         id: `toggle-cruel-mode-${Date.now()}`,
         message: isCurrentlyActivated
-          ? "Cruel Mode deactivated. New games will use normal difficulty."
-          : item.activationMessage ||
-          "Cruel Mode activated! Start a new game to experience the ultimate challenge.",
+          ? t("ui:shop.cruelModeDeactivatedLog", {
+            defaultValue:
+              "Cruel Mode deactivated. New games will use normal difficulty.",
+          })
+          : resolveShopActivationMessage(item) ||
+          t("shop:cruel_mode.activationMessage", {
+            defaultValue:
+              "Cruel Mode activated! Start a new game to experience the ultimate challenge.",
+          }),
         timestamp: Date.now(),
         type: "system",
       });
