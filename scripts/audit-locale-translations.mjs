@@ -21,7 +21,29 @@ const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 
 const EN_DIR = path.join(ROOT, "client/src/i18n/locales/en");
 
-const LOCALE = process.argv[2] || "fr";
+const SUPPORTED_LOCALES = ["de", "fr", "es", "it", "pt-BR", "zh-CN", "ru"];
+
+const localeArg = process.argv[2];
+
+if (
+  localeArg === "--help" ||
+  localeArg === "-h" ||
+  (localeArg != null && localeArg.startsWith("-"))
+) {
+  console.log(
+    `Usage: node scripts/audit-locale-translations.mjs [${SUPPORTED_LOCALES.join("|")}]`,
+  );
+  process.exit(0);
+}
+
+const LOCALE = localeArg || "fr";
+
+if (!SUPPORTED_LOCALES.includes(LOCALE)) {
+  console.error(
+    `Unknown locale "${LOCALE}". Expected one of: ${SUPPORTED_LOCALES.join(", ")}`,
+  );
+  process.exit(1);
+}
 
 const LOC_DIR = path.join(ROOT, "client/src/i18n/locales", LOCALE);
 

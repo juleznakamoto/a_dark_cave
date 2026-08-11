@@ -57,3 +57,7 @@ client/public/email/*
 
 # Cursor IDE — local only (MCP keys, rules, hooks, settings)
 .cursor/
+
+# Locale translation audit dumps (scripts/audit-locale-translations.mjs)
+scripts/*-audit-identical.json
+scripts/*-audit-contamination.json

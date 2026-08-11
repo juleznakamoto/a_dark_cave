@@ -61,7 +61,7 @@ const SHARE_FILE_NAME = "a-dark-cave.png";
 /** Keep in sync with `.adc-share-card-enter` / `.adc-share-actions-enter` in index.css. */
 const SHARE_CARD_ENTRANCE_DURATION_MS = 500;
 /** Extra pause after the card lands before action buttons appear. */
-const SHARE_ACTIONS_DELAY_MS = SHARE_CARD_ENTRANCE_DURATION_MS + 500;
+const SHARE_ACTIONS_DELAY_MS = SHARE_CARD_ENTRANCE_DURATION_MS + 300;
 
 function computeSharePreviewScale(): number {
   if (typeof window === "undefined") return 0.3;
