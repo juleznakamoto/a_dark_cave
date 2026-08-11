@@ -264,6 +264,8 @@ export default function GameFooter() {
                 platform === "contact"
                   ? tWithFallback("ui", "footer.contact", title)
                   : title;
+              /** Reddit / Instagram / Mail stay icon-only; Steam keeps a desktop label. */
+              const showSocialLabel = platform === "steam";
               const socialLink = (
                 <a
                   href={href}
@@ -280,7 +282,9 @@ export default function GameFooter() {
                     platform={platform}
                     className={socialIconClass}
                   />
-                  <span className={FOOTER_SOCIAL_LABEL}>{linkLabel}</span>
+                  {showSocialLabel && (
+                    <span className={FOOTER_SOCIAL_LABEL}>{linkLabel}</span>
+                  )}
                 </a>
               );
 

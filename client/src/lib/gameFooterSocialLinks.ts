@@ -7,6 +7,7 @@ import { SITE_ORIGIN } from "@shared/publicSeo";
 
 export type FooterSocialPlatformId =
   | "reddit"
+  | "instagram"
   | "steam"
   | "contact";
 
@@ -14,7 +15,7 @@ export type FooterSocialPlatformId =
 export const OFFICIAL_REDDIT_URL =
   "https://www.reddit.com/r/aDarkCave/" as const;
 
-/** Instagram URL (social rewards / legacy links — not in game footer). */
+/** Official Instagram URL (footer, start screen, social rewards). */
 export const OFFICIAL_INSTAGRAM_URL =
   "https://www.instagram.com/a_dark_cave/" as const;
 
@@ -93,6 +94,10 @@ export const GAME_FOOTER_RIGHT_ICON_LINKS: Readonly<
     href: OFFICIAL_REDDIT_URL,
     title: "Reddit",
   },
+  instagram: {
+    href: OFFICIAL_INSTAGRAM_URL,
+    title: "Instagram",
+  },
   steam: {
     // Bare canonical URL; click sites must use steamStoreUrl(...) for tracking.
     href: OFFICIAL_STEAM_URL,
@@ -108,5 +113,6 @@ export const GAME_FOOTER_RIGHT_ICON_LINKS: Readonly<
 export const GAME_FOOTER_RIGHT_ICON_ORDER: readonly FooterSocialPlatformId[] = [
   "steam",
   "reddit",
+  "instagram",
   "contact",
 ] as const;

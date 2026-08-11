@@ -9,7 +9,6 @@ import { Button } from "@/components/ui/button";
 import { useGameStore } from "@/game/state";
 import { FooterSocialIcon } from "@/components/game/FooterSocialIcon";
 import { GameUiIcon } from "@/components/game/GameUiIcon";
-import { SocialPlatformGlyph } from "@/components/game/SocialPlatformGlyph";
 import {
   GAME_FOOTER_RIGHT_ICON_LINKS,
   OFFICIAL_INSTAGRAM_URL,
@@ -86,18 +85,11 @@ export default function FeedbackDialog() {
                       className="flex min-w-[4.5rem] flex-col items-center gap-1.5 rounded-md px-2 py-1.5 text-white opacity-80 transition-opacity hover:opacity-100"
                       aria-label={label}
                     >
-                      {id === "instagram" ? (
-                        <SocialPlatformGlyph
-                          platformId="instagram"
-                          sizeClassName="h-6 w-6 text-[#E4405F]"
-                        />
-                      ) : (
-                        <FooterSocialIcon
-                          platform={id}
-                          variant="brand"
-                          className="h-6 w-6"
-                        />
-                      )}
+                      <FooterSocialIcon
+                        platform={id}
+                        variant="brand"
+                        className="h-6 w-6"
+                      />
                       <span className="text-xs font-medium">{label}</span>
                     </a>
                   );

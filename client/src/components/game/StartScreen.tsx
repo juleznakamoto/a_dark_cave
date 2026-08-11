@@ -705,15 +705,21 @@ export default function StartScreen({
                 platform === "contact"
                   ? t("footer.contact", { defaultValue: title })
                   : title;
+              /** Match game footer: Reddit / Instagram / Mail are icon-only. */
+              const showSocialLabel = platform === "steam";
               const linkContent = (
                 <>
                   <FooterSocialIcon
                     platform={platform}
                     className="w-3.5 h-3.5 shrink-0"
                   />
-                  <span className="sr-only sm:not-sr-only sm:inline">
-                    {linkLabel}
-                  </span>
+                  {showSocialLabel ? (
+                    <span className="sr-only sm:not-sr-only sm:inline">
+                      {linkLabel}
+                    </span>
+                  ) : (
+                    <span className="sr-only">{linkLabel}</span>
+                  )}
                 </>
               );
               return href.startsWith("http") ? (
