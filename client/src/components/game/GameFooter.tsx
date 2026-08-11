@@ -29,6 +29,11 @@ import {
   getDemoProgressSegmentCount,
 } from "@/game/demoLimit";
 import { openGameFeedbackForm } from "@/lib/gameFeedbackForm";
+import {
+  initPlaylight,
+  markPlaylightDiscoveryUserInitiated,
+} from "@/lib/playlight";
+import PlaylightDiscoveryButton from "./PlaylightDiscoveryButton";
 import { GAME_CHROME_NO_BG_HOVER } from "./gameChrome";
 
 const FOOTER_CONTROL_BTN =
@@ -116,6 +121,24 @@ export default function GameFooter() {
     window.open("https://www.buymeacoffee.com/julez.b", "_blank");
   };
 
+  const handlePlaylightDiscovery = async () => {
+    // @ts-ignore
+    let playlightSDK = window.playlightSDK;
+    if (!playlightSDK) {
+      try {
+        await initPlaylight();
+        // @ts-ignore
+        playlightSDK = window.playlightSDK;
+      } catch {
+        return;
+      }
+    }
+    if (playlightSDK && typeof playlightSDK.setDiscovery === "function") {
+      markPlaylightDiscoveryUserInitiated();
+      playlightSDK.setDiscovery();
+    }
+  };
+
   const socialLinkClass = `group ${FOOTER_CONTROL_BTN} flex items-center justify-center gap-1`;
   const socialIconClass = `${FOOTER_CONTROL_SVG_ICON_HOVER}${isPaused ? " !opacity-100" : ""}`;
   const showPauseSleepCallout = isPaused || idleModeDialog.isOpen;
@@ -152,6 +175,19 @@ export default function GameFooter() {
         </span>
       </Button>
     </HoverCalloutTooltip>
+  );
+  const playlightButton = !steamEditionActive ? (
+    <PlaylightDiscoveryButton
+      onClick={handlePlaylightDiscovery}
+      forceShowTooltip={showPauseSleepCallout}
+      tooltipSide="top"
+    />
+  ) : null;
+  const feedbackAndPlaylight = (
+    <>
+      {feedbackButton}
+      {playlightButton}
+    </>
   );
 
   return (
@@ -224,10 +260,10 @@ export default function GameFooter() {
               </Button>
             )}
             {/* Full / playtest / web: left. Steam demo: right (clear of progress bar). */}
-            {!steamDemoActive && feedbackButton}
+            {!steamDemoActive && feedbackAndPlaylight}
           </div>
           <div className="flex-1 flex justify-end gap-1 items-center">
-            {steamDemoActive && feedbackButton}
+            {steamDemoActive && feedbackAndPlaylight}
             {GAME_FOOTER_RIGHT_ICON_ORDER.map((platform) => {
               if (platform === "steam" && hideSteamStoreLink) {
                 return null;

@@ -34,7 +34,6 @@ import { RestartGameDialog } from "./RestartGameDialog";
 import { DeleteAccountDialog } from "./DeleteAccountDialog";
 import SettingsDialog from "./SettingsDialog";
 import SocialPromptDialog from "./SocialPromptDialog";
-import { initPlaylight, markPlaylightDiscoveryUserInitiated } from "@/lib/playlight";
 import { GameUiIcon } from "@/components/game/GameUiIcon";
 import {
   MARKETING_EMAIL_REWARD_KEY,
@@ -43,7 +42,6 @@ import {
   postMarketingPreference,
 } from "@/game/marketingEmailReward";
 import { isRewardsTasksShortcutVisible } from "@/game/socialPromoExclusiveReward";
-import PlaylightDiscoveryButton from "./PlaylightDiscoveryButton";
 import { useTranslation } from "react-i18next";
 import { FullscreenButton } from "./FullscreenButton";
 import { useCoinHoverParticles } from "@/components/ui/coin-hover-particles";
@@ -103,8 +101,6 @@ function useProfileMenuState() {
     social_media_rewards,
     leaderboardDialogOpen,
     setLeaderboardDialogOpen,
-    idleModeDialog,
-    isPaused,
     hasWonAnyGame,
     restartGameDialogOpen, // Added from store
     setRestartGameDialogOpen, // Added from store
@@ -143,8 +139,6 @@ function useProfileMenuState() {
     signupWelcomeGoldClaimed: signupWelcomeGoldClaimedBool,
     clothing,
   });
-
-  const sleepDialogOpen = idleModeDialog?.isOpen === true;
 
   useEffect(() => {
     if (isLocalOnlyEdition()) return;
@@ -290,24 +284,6 @@ function useProfileMenuState() {
     await checkAuth();
   };
 
-  const handleDiscovery = async () => {
-    // @ts-ignore
-    let playlightSDK = window.playlightSDK;
-    if (!playlightSDK) {
-      try {
-        await initPlaylight();
-        // @ts-ignore
-        playlightSDK = window.playlightSDK;
-      } catch {
-        return;
-      }
-    }
-    if (playlightSDK && typeof playlightSDK.setDiscovery === "function") {
-      markPlaylightDiscoveryUserInitiated();
-      playlightSDK.setDiscovery();
-    }
-  };
-
   const handleConfirmDeleteAccount = async () => {
     if (deleteAccountInProgress) return;
     setDeleteAccountInProgress(true);
@@ -409,9 +385,6 @@ function useProfileMenuState() {
     hasWonAnyGame,
     devMode,
     setLeaderboardDialogOpen,
-    handleDiscovery,
-    isPaused,
-    sleepDialogOpen,
     leaderboardDialogOpen,
     settingsDialogOpen,
     setSettingsDialogOpen,
@@ -530,9 +503,6 @@ export function GameHeaderControls() {
     hasWonAnyGame,
     devMode,
     setLeaderboardDialogOpen,
-    handleDiscovery,
-    isPaused,
-    sleepDialogOpen,
     setSettingsDialogOpen,
   } = useProfileMenuContext();
 
@@ -603,35 +573,27 @@ export function GameHeaderControls() {
           </span>
         </HoverCalloutTooltip>
       )}
-      {/* Playlight discovery + social share are web-only features. */}
+      {/* Social share is web-only. */}
       {!steamEditionActive && (
-        <>
-          <PlaylightDiscoveryButton
-            onClick={handleDiscovery}
-            forceShowTooltip={isPaused || sleepDialogOpen}
-            tooltipSide="bottom"
-            className={HEADER_ICON_BTN}
-          />
-          <HoverCalloutTooltip
-            label={t("share.title", { defaultValue: "Share your progress" })}
-            side="bottom"
+        <HoverCalloutTooltip
+          label={t("share.title", { defaultValue: "Share your progress" })}
+          side="bottom"
+        >
+          <Button
+            type="button"
+            variant="ghost"
+            size="xs"
+            onClick={() => setShareDialogOpen(true)}
+            aria-label={t("share.title", { defaultValue: "Share your progress" })}
+            className={`${HEADER_ICON_BTN} group touch-manipulation`}
           >
-            <Button
-              type="button"
-              variant="ghost"
-              size="xs"
-              onClick={() => setShareDialogOpen(true)}
-              aria-label={t("share.title", { defaultValue: "Share your progress" })}
-              className={`${HEADER_ICON_BTN} group touch-manipulation`}
-            >
-              <GameUiIcon
-                name="share"
-                sizeClassName={HEADER_ACCENT_ICON_SIZE}
-                className={HEADER_ICON_SYMBOL_HOVER}
-              />
-            </Button>
-          </HoverCalloutTooltip>
-        </>
+            <GameUiIcon
+              name="share"
+              sizeClassName={HEADER_ACCENT_ICON_SIZE}
+              className={HEADER_ICON_SYMBOL_HOVER}
+            />
+          </Button>
+        </HoverCalloutTooltip>
       )}
       <DropdownMenu
         open={accountDropdownOpen}

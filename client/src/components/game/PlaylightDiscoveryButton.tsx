@@ -41,7 +41,7 @@ export default function PlaylightDiscoveryButton({
   onClick,
   showNotificationDot = false,
   forceShowTooltip = false,
-  tooltipSide = "left",
+  tooltipSide = "top",
   className,
 }: PlaylightDiscoveryButtonProps) {
   const { t } = useTranslation("ui");
@@ -77,9 +77,14 @@ export default function PlaylightDiscoveryButton({
     };
   }, []);
 
+  const label = t("playlight.moreGames", { defaultValue: "More Games" });
+  const tooltipLabel = t("playlight.tryMoreGames", {
+    defaultValue: "Try more Games",
+  });
+
   return (
     <HoverCalloutTooltip
-      label={t("playlight.moreGames")}
+      label={tooltipLabel}
       side={tooltipSide}
       forceVisible={forceShowTooltip || showDiscoveryTooltip}
       onCalloutClick={onClick}
@@ -89,15 +94,16 @@ export default function PlaylightDiscoveryButton({
         size="xs"
         type="button"
         onClick={onClick}
-        aria-label={t("playlight.discoveryAria")}
+        data-testid="button-footer-playlight"
+        aria-label={tooltipLabel}
         className={cn(
-          "playlight-discovery-btn group relative shrink-0 overflow-visible p-0 h-7 w-7 flex items-center justify-center",
+          "playlight-discovery-btn group relative shrink-0 overflow-visible px-1 py-1 text-xs text-neutral-300 hover hover:!text-red-600 flex items-center gap-1",
           GAME_CHROME_NO_BG_HOVER,
           className,
         )}
       >
         <span
-          className="flex h-full w-full items-end justify-center opacity-80 transition-opacity duration-300 group-hover:opacity-100"
+          className="relative flex h-4 w-4 shrink-0 items-end justify-center opacity-80 transition-opacity duration-300 group-hover:opacity-100"
           aria-hidden
         >
           <img
@@ -105,13 +111,16 @@ export default function PlaylightDiscoveryButton({
             alt=""
             className="h-full w-full scale-90 rounded-md object-contain object-bottom transition-[filter] duration-300 [filter:invert(1)] group-hover:[filter:invert(17%)_sepia(89%)_saturate(7458%)_hue-rotate(358deg)_brightness(97%)_contrast(118%)]"
           />
+          {showNotificationDot && (
+            <span
+              className="notification-pulse absolute -right-[4px] -top-[4px] z-[2] h-2 w-2 rounded-full bg-red-600"
+              aria-hidden
+            />
+          )}
         </span>
-        {showNotificationDot && (
-          <span
-            className="notification-pulse absolute -right-[4px] -top-[4px] z-[2] h-2 w-2 rounded-full bg-red-600"
-            aria-hidden
-          />
-        )}
+        <span className="hidden sm:inline opacity-80 transition-[opacity,color] group-hover:opacity-100 group-hover:!text-red-600">
+          {label}
+        </span>
       </Button>
     </HoverCalloutTooltip>
   );
