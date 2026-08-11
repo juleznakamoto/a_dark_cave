@@ -208,8 +208,13 @@ export default function GameFooter() {
                 size="xs"
                 onClick={() => setShopDialogOpen(true, "footer")}
                 aria-label={t("footer.openShop")}
-                className={FOOTER_CONTROL_BTN}
+                className={`${FOOTER_CONTROL_BTN} flex items-center gap-1`}
               >
+                <GameUiIcon
+                  name="trader"
+                  sizeClassName="game-tab-icon"
+                  className={`${FOOTER_CONTROL_TEXT} group-hover:!text-red-600`}
+                />
                 <span className={FOOTER_CONTROL_TEXT}>
                   {t("footer.trader")}
                 </span>

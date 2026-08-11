@@ -18,10 +18,11 @@ export const GAME_UI_ICON_SRC = {
   feedback: "/icons/speech_bubble.svg",
   share: "/icons/progress_arrows.svg",
   inviteUser: "/icons/add_user.svg",
-  discover: "/game_controller.png",
+  discover: "/icons/game_controller.svg",
   signUp: "/icons/up_button.svg",
   socialReward: "/icons/cut_diamond.svg",
   exclusiveReward: "/icons/diamond_ring.svg",
+  trader: "/icons/balance_scale.svg",
 } as const;
 
 export type GameUiIconName = keyof typeof GAME_UI_ICON_SRC;

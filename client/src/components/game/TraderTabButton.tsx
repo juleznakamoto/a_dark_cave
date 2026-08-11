@@ -6,10 +6,11 @@ import cn from "clsx";
 import { useCoinHoverParticles } from "@/components/ui/coin-hover-particles";
 import { TRADER_TAB_PARTICLE_CONFIG } from "@/components/ui/bubbly-button.particles";
 import { useGameStore } from "@/game/state";
+import { GameUiIcon } from "@/components/game/GameUiIcon";
 import {
-  LIME_ACCENT_GLOW_TEXT_SHADOW_ACTIVE,
-  LIME_ACCENT_GLOW_TEXT_SHADOW_HOVER,
-  LIME_ACCENT_ICON_IDLE,
+  LIME_ACCENT_MASK_ICON_CLASS,
+  TAB_ICON_ALIGN_CLASS,
+  TAB_ICON_SIZE_CLASS,
 } from "./gameChrome";
 
 const TRADER_TAB_HINT_INTERVAL_MS = 15 * 60 * 1000;
@@ -87,18 +88,17 @@ export function TraderTabButton({
         onClick={onClick}
         data-testid="tab-trader"
       >
-        <span
-          ref={iconRef}
-          className={cn(
-            "font-noto-symbols-2 text-[19px] leading-none text-lime-500 translate-y-[4px]",
-            LIME_ACCENT_ICON_IDLE,
-            showActiveGlow
-              ? cn("opacity-100", LIME_ACCENT_GLOW_TEXT_SHADOW_ACTIVE)
-              : cn(LIME_ACCENT_GLOW_TEXT_SHADOW_HOVER),
-          )}
-          aria-hidden
-        >
-          ◬
+        <span ref={iconRef} className="inline-flex" aria-hidden>
+          <GameUiIcon
+            name="trader"
+            sizeClassName={TAB_ICON_SIZE_CLASS}
+            className={cn(
+              "text-lime-500",
+              TAB_ICON_ALIGN_CLASS,
+              LIME_ACCENT_MASK_ICON_CLASS,
+              showActiveGlow && "lime-accent-mask-icon-active",
+            )}
+          />
         </span>
         <span className="inline-grid">
           <span

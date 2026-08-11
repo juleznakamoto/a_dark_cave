@@ -420,7 +420,7 @@ export const INSIGHT_PARTICLE_CONFIG: Partial<ParticleConfig> = {
   sizeMax: 7,
 };
 
-/** Trader tab ◬ glyph — lime burst on hover (same cadence as gold/silver coins). */
+/** Trader tab balance-scale icon — lime burst on hover (same cadence as gold/silver coins). */
 export const TRADER_TAB_PARTICLE_CONFIG: Partial<ParticleConfig> = {
   colors: [
     tailwindToHex("lime-400"),

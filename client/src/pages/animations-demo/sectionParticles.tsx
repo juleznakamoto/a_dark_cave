@@ -10,27 +10,25 @@ import {
   HOVER_PARTICLE_DEMO_PRESETS,
   type HoverParticleDemoPreset,
 } from "@/components/ui/bubbly-button.particles";
+import { GameUiIcon } from "@/components/game/GameUiIcon";
 import {
-  LIME_ACCENT_GLOW_TEXT_SHADOW_HOVER,
-  LIME_ACCENT_ICON_IDLE,
+  LIME_ACCENT_MASK_ICON_CLASS,
+  TAB_ICON_SIZE_CLASS,
 } from "@/components/game/gameChrome";
 import { DemoRow, DemoSection } from "@/pages/animations-demo/DemoSection";
 
-const TRADER_GLYPH = "\u25EC";
 const REWARDS_GLYPH = "\u2B26";
 
 function hoverGlyphForPreset(preset: HoverParticleDemoPreset): React.ReactNode {
   switch (preset.id) {
     case "traderTab":
       return (
-        <span
-          className={cn(
-            "font-noto-symbols-2 cursor-default text-[19px] leading-none text-lime-500",
-            LIME_ACCENT_ICON_IDLE,
-            LIME_ACCENT_GLOW_TEXT_SHADOW_HOVER,
-          )}
-        >
-          {TRADER_GLYPH}
+        <span className="group inline-flex cursor-default">
+          <GameUiIcon
+            name="trader"
+            sizeClassName={TAB_ICON_SIZE_CLASS}
+            className={cn("text-lime-500", LIME_ACCENT_MASK_ICON_CLASS)}
+          />
         </span>
       );
     case "rewardsTasks":

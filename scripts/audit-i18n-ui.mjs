@@ -30,7 +30,7 @@ const FORBIDDEN = {
     />\s*Provoke\s*</,
   ],
   "PlaylightWelcomeDialog.tsx": [/Welcome, Playlight player/],
-  "PlaylightDiscoveryButton.tsx": [/More Games/],
+  "PlaylightDiscoveryButton.tsx": [/More Games/, /Try more Games/],
   "ButtonPriorBadge.tsx": [/Click to assign Disgraced Prior/],
   "panels/ForestPanel.tsx": [
     />\s*Sacrifice\s*</,

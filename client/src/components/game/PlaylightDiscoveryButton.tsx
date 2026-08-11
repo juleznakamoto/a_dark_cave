@@ -3,7 +3,8 @@ import { Button } from "@/components/ui/button";
 import { HoverCalloutTooltip } from "@/components/game/HoverCalloutTooltip";
 import { useGameStore } from "@/game/state";
 import { cn } from "@/lib/utils";
-import { useTranslation } from "react-i18next";
+import { GameUiIcon } from "@/components/game/GameUiIcon";
+import { useUiTranslation } from "@/i18n/useUiTranslation";
 import { GAME_CHROME_NO_BG_HOVER } from "./gameChrome";
 
 const SHOW_MS = 20 * 1000;
@@ -44,7 +45,7 @@ export default function PlaylightDiscoveryButton({
   tooltipSide = "top",
   className,
 }: PlaylightDiscoveryButtonProps) {
-  const { t } = useTranslation("ui");
+  const { t } = useUiTranslation();
   const playTime = useGameStore((state) => state.playTime ?? 0);
   const [showDiscoveryTooltip, setShowDiscoveryTooltip] = useState(false);
   const lastShownMilestoneRef = useRef(
@@ -77,10 +78,8 @@ export default function PlaylightDiscoveryButton({
     };
   }, []);
 
-  const label = t("playlight.moreGames", { defaultValue: "More Games" });
-  const tooltipLabel = t("playlight.tryMoreGames", {
-    defaultValue: "Try more Games",
-  });
+  const label = t("playlight.moreGames");
+  const tooltipLabel = t("playlight.tryMoreGames");
 
   return (
     <HoverCalloutTooltip
@@ -103,13 +102,13 @@ export default function PlaylightDiscoveryButton({
         )}
       >
         <span
-          className="relative flex h-[1.125rem] w-[1.125rem] shrink-0 items-center justify-center opacity-80 transition-opacity duration-300 group-hover:opacity-100"
+          className="relative flex h-[1.125rem] w-[1.125rem] shrink-0 items-center justify-center"
           aria-hidden
         >
-          <img
-            src="/game_controller.png"
-            alt=""
-            className="h-full w-full object-contain object-center transition-[filter] duration-300 [filter:invert(1)] group-hover:[filter:invert(17%)_sepia(89%)_saturate(7458%)_hue-rotate(358deg)_brightness(97%)_contrast(118%)]"
+          <GameUiIcon
+            name="discover"
+            sizeClassName="h-full w-full"
+            className="text-neutral-300 opacity-80 transition-[opacity,color] duration-300 group-hover:opacity-100 group-hover:!text-red-600"
           />
           {showNotificationDot && (
             <span

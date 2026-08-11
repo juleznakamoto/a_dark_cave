@@ -36,6 +36,17 @@ describe("i18n runtime", () => {
     expect(getCatalogString("en", "ui", "village.villagers")).toBe("Villagers");
   });
 
+  it("resolves Playlight footer discovery tooltip in German", async () => {
+    await i18n.changeLanguage("de");
+    expect(i18n.t("playlight.moreGames", { ns: "ui" })).toBe("Mehr Spiele");
+    expect(i18n.t("playlight.tryMoreGames", { ns: "ui" })).toBe(
+      "Mehr Spiele ausprobieren",
+    );
+    expect(
+      tWithFallback("ui", "playlight.tryMoreGames", "Try more Games"),
+    ).toBe("Mehr Spiele ausprobieren");
+  });
+
   it("loads English UI strings", () => {
     expect(getEnUiCatalogString("village.presetSlotsPurchase")).toBe(
       "Add 2 more preset slots",

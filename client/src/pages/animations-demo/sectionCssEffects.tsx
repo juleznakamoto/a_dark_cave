@@ -1,9 +1,10 @@
 import { useRef, useState } from "react";
 import cn from "clsx";
 import { Button } from "@/components/ui/button";
+import { GameUiIcon } from "@/components/game/GameUiIcon";
 import {
-  LIME_ACCENT_GLOW_TEXT_SHADOW_ACTIVE,
-  LIME_ACCENT_ICON_IDLE,
+  LIME_ACCENT_MASK_ICON_CLASS,
+  TAB_ICON_SIZE_CLASS,
 } from "@/components/game/gameChrome";
 import {
   handleDonateHeartAnimationEnd,
@@ -147,17 +148,19 @@ export function CssEffectsSection() {
       </DemoRow>
 
       <DemoRow label="Trader active glow">
-        <span
-          className={cn(
-            "font-noto-symbols-2 text-[19px] leading-none text-lime-500",
-            LIME_ACCENT_ICON_IDLE,
-            LIME_ACCENT_GLOW_TEXT_SHADOW_ACTIVE,
-          )}
-        >
-          {"\u25EC"}
+        <span className="group inline-flex">
+          <GameUiIcon
+            name="trader"
+            sizeClassName={TAB_ICON_SIZE_CLASS}
+            className={cn(
+              "text-lime-500",
+              LIME_ACCENT_MASK_ICON_CLASS,
+              "lime-accent-mask-icon-active",
+            )}
+          />
         </span>
         <span className="text-xs text-muted-foreground">
-          gameChrome lime accent constants
+          balance scale + lime-accent-mask-icon-active
         </span>
       </DemoRow>
     </DemoSection>

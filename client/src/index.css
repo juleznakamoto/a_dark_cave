@@ -1149,14 +1149,15 @@ html.adc-text-large .game-panel-header-indicator-row {
   animation: explore-fun-games-cue-pulse 1.4s ease-in-out infinite;
 }
 
-/* Lime accent mask icons (rewards tasks diamond) — matches trader tab hover glow. */
+/* Lime accent mask icons (rewards diamond, trader scale) — matches trader tab hover glow. */
 .group .lime-accent-mask-icon {
   opacity: 0.8;
   transition: opacity 150ms ease, filter 150ms ease;
 }
 
 .group:hover .lime-accent-mask-icon,
-.group:focus-visible .lime-accent-mask-icon {
+.group:focus-visible .lime-accent-mask-icon,
+.group .lime-accent-mask-icon.lime-accent-mask-icon-active {
   opacity: 1;
   filter:
     drop-shadow(0 0 6px rgba(132, 204, 22, 1)) drop-shadow(0 0 12px rgba(132, 204, 22, 1)) drop-shadow(0 0 22px rgba(132, 204, 22, 1)) drop-shadow(0 0 36px rgba(132, 204, 22, 1)) drop-shadow(0 0 48px rgba(132, 204, 22, 0.9));
