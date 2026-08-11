@@ -3,7 +3,7 @@ import cn from "clsx";
 import { Button } from "@/components/ui/button";
 import { GameUiIcon } from "@/components/game/GameUiIcon";
 import {
-  LIME_ACCENT_MASK_ICON_CLASS,
+  GOLD_ACCENT_MASK_ICON_CLASS,
   TAB_ICON_SIZE_CLASS,
 } from "@/components/game/gameChrome";
 import {
@@ -153,14 +153,14 @@ export function CssEffectsSection() {
             name="trader"
             sizeClassName={TAB_ICON_SIZE_CLASS}
             className={cn(
-              "text-lime-500",
-              LIME_ACCENT_MASK_ICON_CLASS,
-              "lime-accent-mask-icon-active",
+              "text-yellow-500",
+              GOLD_ACCENT_MASK_ICON_CLASS,
+              "gold-accent-mask-icon-active",
             )}
           />
         </span>
         <span className="text-xs text-muted-foreground">
-          balance scale + lime-accent-mask-icon-active
+          coin stack + gold-accent-mask-icon-active
         </span>
       </DemoRow>
     </DemoSection>

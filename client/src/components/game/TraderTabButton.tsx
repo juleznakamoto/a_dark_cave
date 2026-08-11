@@ -8,7 +8,7 @@ import { TRADER_TAB_PARTICLE_CONFIG } from "@/components/ui/bubbly-button.partic
 import { useGameStore } from "@/game/state";
 import { GameUiIcon } from "@/components/game/GameUiIcon";
 import {
-  LIME_ACCENT_MASK_ICON_CLASS,
+  GOLD_ACCENT_MASK_ICON_CLASS,
   TAB_ICON_ALIGN_CLASS,
   TAB_ICON_SIZE_CLASS,
 } from "./gameChrome";
@@ -93,10 +93,10 @@ export function TraderTabButton({
             name="trader"
             sizeClassName={TAB_ICON_SIZE_CLASS}
             className={cn(
-              "text-lime-500",
+              "text-yellow-500",
               TAB_ICON_ALIGN_CLASS,
-              LIME_ACCENT_MASK_ICON_CLASS,
-              showActiveGlow && "lime-accent-mask-icon-active",
+              GOLD_ACCENT_MASK_ICON_CLASS,
+              showActiveGlow && "gold-accent-mask-icon-active",
             )}
           />
         </span>

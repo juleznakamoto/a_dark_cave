@@ -420,13 +420,13 @@ export const INSIGHT_PARTICLE_CONFIG: Partial<ParticleConfig> = {
   sizeMax: 7,
 };
 
-/** Trader tab balance-scale icon — lime burst on hover (same cadence as gold/silver coins). */
+/** Trader tab coin-stack icon — gold burst on hover (same cadence as gold/silver coins). */
 export const TRADER_TAB_PARTICLE_CONFIG: Partial<ParticleConfig> = {
   colors: [
-    tailwindToHex("lime-400"),
-    tailwindToHex("lime-500"),
-    tailwindToHex("green-400"),
-    tailwindToHex("green-500"),
+    tailwindToHex("yellow-400"),
+    tailwindToHex("yellow-500"),
+    tailwindToHex("amber-400"),
+    tailwindToHex("amber-500"),
   ],
   count: 2,
   durationMin: 0.5,
@@ -439,8 +439,15 @@ export const TRADER_TAB_PARTICLE_CONFIG: Partial<ParticleConfig> = {
 
 /** Rewards tasks header diamond — slightly larger lime burst than trader tab. */
 export const REWARDS_TASKS_PARTICLE_CONFIG: Partial<ParticleConfig> = {
-  ...TRADER_TAB_PARTICLE_CONFIG,
+  colors: [
+    tailwindToHex("lime-400"),
+    tailwindToHex("lime-500"),
+    tailwindToHex("green-400"),
+    tailwindToHex("green-500"),
+  ],
   count: 3,
+  durationMin: 0.5,
+  durationMax: 1.5,
   distanceMin: 22,
   distanceMax: 34,
   sizeMin: 2,

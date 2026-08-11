@@ -54,5 +54,8 @@ export const TAB_ICON_SIZE_CLASS = "game-tab-icon";
 /** Timed-event hourglass tab icon alignment (tweak translate if needed). */
 export const TAB_TIMED_EVENT_ICON_CLASS = `${TAB_ICON_MASK_BOTTOM} ${TAB_ICON_ALIGN_CLASS}`;
 
-/** Mask icons (rewards diamond, trader scale) — glow via `.lime-accent-mask-icon` in index.css. */
+/** Mask icons (rewards diamond) — glow via `.lime-accent-mask-icon` in index.css. */
 export const LIME_ACCENT_MASK_ICON_CLASS = "lime-accent-mask-icon";
+
+/** Mask icons (trader coin stack) — glow via `.gold-accent-mask-icon` in index.css. */
+export const GOLD_ACCENT_MASK_ICON_CLASS = "gold-accent-mask-icon";

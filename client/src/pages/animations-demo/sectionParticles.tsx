@@ -12,7 +12,7 @@ import {
 } from "@/components/ui/bubbly-button.particles";
 import { GameUiIcon } from "@/components/game/GameUiIcon";
 import {
-  LIME_ACCENT_MASK_ICON_CLASS,
+  GOLD_ACCENT_MASK_ICON_CLASS,
   TAB_ICON_SIZE_CLASS,
 } from "@/components/game/gameChrome";
 import { DemoRow, DemoSection } from "@/pages/animations-demo/DemoSection";
@@ -27,7 +27,7 @@ function hoverGlyphForPreset(preset: HoverParticleDemoPreset): React.ReactNode {
           <GameUiIcon
             name="trader"
             sizeClassName={TAB_ICON_SIZE_CLASS}
-            className={cn("text-lime-500", LIME_ACCENT_MASK_ICON_CLASS)}
+            className={cn("text-yellow-500", GOLD_ACCENT_MASK_ICON_CLASS)}
           />
         </span>
       );
