@@ -103,13 +103,13 @@ export default function PlaylightDiscoveryButton({
         )}
       >
         <span
-          className="relative flex h-4 w-4 shrink-0 items-end justify-center opacity-80 transition-opacity duration-300 group-hover:opacity-100"
+          className="relative flex h-[1.125rem] w-[1.125rem] shrink-0 items-center justify-center opacity-80 transition-opacity duration-300 group-hover:opacity-100"
           aria-hidden
         >
           <img
             src="/game_controller.png"
             alt=""
-            className="h-full w-full scale-90 object-contain object-center transition-[filter] duration-300 [filter:invert(1)] group-hover:[filter:invert(17%)_sepia(89%)_saturate(7458%)_hue-rotate(358deg)_brightness(97%)_contrast(118%)]"
+            className="h-full w-full object-contain object-center transition-[filter] duration-300 [filter:invert(1)] group-hover:[filter:invert(17%)_sepia(89%)_saturate(7458%)_hue-rotate(358deg)_brightness(97%)_contrast(118%)]"
           />
           {showNotificationDot && (
             <span

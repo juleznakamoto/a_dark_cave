@@ -50,7 +50,7 @@ const FOOTER_LEGAL_LINK =
   "text-2xs text-neutral-300 opacity-40 hover:opacity-100 transition-opacity";
 /** Heart stays red; opacity-only transition so scale pump is not overridden. */
 const DONATE_HEART =
-  "donate-heart text-red-600 opacity-80 group-hover:opacity-100 transition-opacity";
+  "donate-heart text-base leading-none text-red-600 opacity-80 group-hover:opacity-100 transition-opacity";
 
 function SteamDemoProgressBar() {
   const { t } = useTranslation("ui");
@@ -143,38 +143,27 @@ export default function GameFooter() {
   const socialIconClass = `${FOOTER_CONTROL_SVG_ICON_HOVER}${isPaused ? " !opacity-100" : ""}`;
   const showPauseSleepCallout = isPaused || idleModeDialog.isOpen;
   const feedbackButton = (
-    <HoverCalloutTooltip
-      label={t("feedback.openForm", { defaultValue: "Give Feedback" })}
-      side="top"
-      forceVisible={showPauseSleepCallout}
-      onCalloutClick={
-        showPauseSleepCallout
-          ? () => openGameFeedbackForm("footer")
-          : undefined
-      }
+    <Button
+      variant="ghost"
+      size="xs"
+      onClick={() => openGameFeedbackForm("footer")}
+      data-testid="button-footer-feedback"
+      aria-label={tWithFallback(
+        "ui",
+        "footer.openFeedback",
+        "Open feedback form",
+      )}
+      className={`${FOOTER_CONTROL_BTN} flex items-center gap-1`}
     >
-      <Button
-        variant="ghost"
-        size="xs"
-        onClick={() => openGameFeedbackForm("footer")}
-        data-testid="button-footer-feedback"
-        aria-label={tWithFallback(
-          "ui",
-          "footer.openFeedback",
-          "Open feedback form",
-        )}
-        className={`${FOOTER_CONTROL_BTN} flex items-center gap-1`}
-      >
-        <GameUiIcon
-          name="feedback"
-          sizeClassName="game-tab-icon"
-          className={`${FOOTER_CONTROL_TEXT} group-hover:!text-red-600`}
-        />
-        <span className={FOOTER_SOCIAL_LABEL}>
-          {tWithFallback("ui", "footer.feedback", "Feedback")}
-        </span>
-      </Button>
-    </HoverCalloutTooltip>
+      <GameUiIcon
+        name="feedback"
+        sizeClassName="game-tab-icon"
+        className={`${FOOTER_CONTROL_TEXT} group-hover:!text-red-600`}
+      />
+      <span className={FOOTER_SOCIAL_LABEL}>
+        {tWithFallback("ui", "footer.feedback", "Feedback")}
+      </span>
+    </Button>
   );
   const playlightButton = !steamEditionActive ? (
     <PlaylightDiscoveryButton
