@@ -1149,6 +1149,34 @@ html.adc-text-large .game-panel-header-indicator-row {
   animation: explore-fun-games-cue-pulse 1.4s ease-in-out infinite;
 }
 
+/* Footer More Games d-pad: slight left → right tilt on hover. */
+@keyframes playlight-discover-tilt {
+  0%,
+  100% {
+    transform: rotate(0deg);
+  }
+
+  30% {
+    transform: rotate(-14deg);
+  }
+
+  60% {
+    transform: rotate(14deg);
+  }
+}
+
+.playlight-discovery-btn:hover .playlight-discover-icon,
+.playlight-discovery-btn:focus-visible .playlight-discover-icon {
+  animation: playlight-discover-tilt 0.5s ease-in-out;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .playlight-discovery-btn:hover .playlight-discover-icon,
+  .playlight-discovery-btn:focus-visible .playlight-discover-icon {
+    animation: none;
+  }
+}
+
 /* Lime accent mask icons (rewards diamond) — matches rewards hover glow. */
 .group .lime-accent-mask-icon {
   opacity: 0.8;

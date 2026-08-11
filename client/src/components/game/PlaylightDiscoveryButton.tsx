@@ -102,13 +102,13 @@ export default function PlaylightDiscoveryButton({
         )}
       >
         <span
-          className="relative flex h-[1.125rem] w-[1.125rem] shrink-0 items-center justify-center"
+          className="relative flex h-[calc(1.125rem*0.9)] w-[calc(1.125rem*0.9)] shrink-0 items-center justify-center"
           aria-hidden
         >
           <GameUiIcon
             name="discover"
             sizeClassName="h-full w-full"
-            className="text-neutral-300 opacity-80 transition-[opacity,color] duration-300 group-hover:opacity-100 group-hover:!text-red-600"
+            className="playlight-discover-icon text-blue-400 opacity-80 transition-[opacity,color] duration-300 group-hover:opacity-100 group-hover:!text-red-600"
           />
           {showNotificationDot && (
             <span

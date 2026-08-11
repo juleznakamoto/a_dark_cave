@@ -47,9 +47,10 @@ export const TAB_ICON_MASK_BOTTOM =
 
 /**
  * Align tab mask icons with capital labels in GAME_PANEL_HEADER_BAND.
- * Mask-bottom keeps wide art (coin stack, quest book) on the text baseline.
+ * Mask-bottom keeps wide art on the icon-box floor; negative translate offsets
+ * the font descent space that `items-end` otherwise shares with the icons.
  */
-export const TAB_ICON_ALIGN_CLASS = `${TAB_ICON_MASK_BOTTOM} translate-y-[1px]`;
+export const TAB_ICON_ALIGN_CLASS = `${TAB_ICON_MASK_BOTTOM} -translate-y-[3px]`;
 
 /** Default size for Cave/City/… tab mask icons (scales with `--adc-text-scale`). */
 export const TAB_ICON_SIZE_CLASS = "game-tab-icon";

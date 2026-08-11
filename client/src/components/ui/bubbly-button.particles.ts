@@ -338,6 +338,14 @@ export const GOLD_COIN_PARTICLE_CONFIG: Partial<ParticleConfig> = {
   sizeMax: 3,
 };
 
+/** Footer shop coin icon — one burst of 10 gold sparks per hover enter. */
+export const FOOTER_TRADER_PARTICLE_CONFIG: Partial<ParticleConfig> = {
+  ...GOLD_COIN_PARTICLE_CONFIG,
+  count: 10,
+  distanceMin: 12,
+  distanceMax: 28,
+};
+
 /** Page-load spinner — bursts from ring center in random directions (fire tones). */
 export const FIRE_LOAD_PARTICLE_CONFIG: Partial<ParticleConfig> = {
   colors: [

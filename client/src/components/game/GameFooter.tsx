@@ -35,6 +35,8 @@ import {
 } from "@/lib/playlight";
 import PlaylightDiscoveryButton from "./PlaylightDiscoveryButton";
 import { GAME_CHROME_NO_BG_HOVER } from "./gameChrome";
+import { useCoinHoverParticles } from "@/components/ui/coin-hover-particles";
+import { FOOTER_TRADER_PARTICLE_CONFIG } from "@/components/ui/bubbly-button.particles";
 
 const FOOTER_CONTROL_BTN =
   `group shrink-0 px-1 py-1 text-xs text-neutral-300 hover hover:!text-red-600 ${GAME_CHROME_NO_BG_HOVER}`;
@@ -109,6 +111,18 @@ export default function GameFooter() {
   const triggerDonateHeartPump = useCallback(() => {
     pumpDonateHeart(donateHeartRef.current);
   }, []);
+
+  const footerTraderIconRef = useRef<HTMLSpanElement>(null);
+  const {
+    hoverHandlers: footerTraderHoverHandlers,
+    portal: footerTraderParticlesPortal,
+  } = useCoinHoverParticles("gold", {
+    particleOriginRef: footerTraderIconRef,
+    particleConfig: FOOTER_TRADER_PARTICLE_CONFIG,
+    /** Large interval so hover enter fires one burst of 10 until leave/re-enter. */
+    emitIntervalMs: 60_000,
+    zIndex: 50,
+  });
 
   // Trigger glow animation when pause state changes
   useEffect(() => {
@@ -209,17 +223,23 @@ export default function GameFooter() {
                 onClick={() => setShopDialogOpen(true, "footer")}
                 aria-label={t("footer.openShop")}
                 className={`${FOOTER_CONTROL_BTN} flex items-center gap-1`}
+                {...footerTraderHoverHandlers}
               >
-                <GameUiIcon
-                  name="trader"
-                  sizeClassName="game-tab-icon"
-                  className={`${FOOTER_CONTROL_TEXT} group-hover:!text-red-600`}
-                />
+                <span ref={footerTraderIconRef} className="inline-flex" aria-hidden>
+                  <GameUiIcon
+                    name="trader"
+                    sizeClassName="game-tab-icon"
+                    className="text-yellow-500 opacity-80 transition-[opacity,color] group-hover:opacity-100 group-hover:!text-red-600"
+                  />
+                </span>
                 <span className={FOOTER_CONTROL_TEXT}>
                   {t("footer.trader")}
                 </span>
               </Button>
             )}
+            {footerTraderParticlesPortal}
+            {/* Full / playtest / web: left. Steam demo: right (clear of progress bar). */}
+            {!steamDemoActive && playlightButton}
             {showFooterDonate && (
               <Button
                 variant="ghost"
@@ -247,8 +267,6 @@ export default function GameFooter() {
                 </span>
               </Button>
             )}
-            {/* Full / playtest / web: left. Steam demo: right (clear of progress bar). */}
-            {!steamDemoActive && playlightButton}
           </div>
           <div className="flex-1 flex justify-end gap-1 items-center">
             {steamDemoActive && playlightButton}
