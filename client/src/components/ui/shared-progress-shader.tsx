@@ -582,7 +582,7 @@ export function SharedProgressShaderHost({
             <canvas
               ref={canvasRef}
               aria-hidden
-              className="pointer-events-none absolute inset-0 z-10 !m-0 h-full w-full"
+              className="pointer-events-none absolute inset-0 z-10 !m-0 h-full w-full opacity-90"
             />
             {/* Cell rims above smoke so the grey border is not covered by WebGL. */}
             <div

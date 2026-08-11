@@ -349,7 +349,7 @@ export function SegmentedProgress({
                       className={cn(
                         "pointer-events-none absolute inset-0 z-[2] rounded-[4px] transition-[box-shadow] duration-500",
                         fill > 0
-                          ? "shadow-[0_0_0_1px_theme(colors.orange.600/0.9)]"
+                          ? "shadow-[0_0_0_1px_theme(colors.orange.600/0.8)]"
                           : "shadow-[0_0_0_1px_transparent]",
                       )}
                     />

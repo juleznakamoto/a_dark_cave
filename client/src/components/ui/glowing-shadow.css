@@ -155,12 +155,12 @@
  * drop-shadow is used so the glow is not clipped by the scaled card.
  */
 .adc-share-preview {
-  filter: drop-shadow(0 0 18px rgb(255 255 255 / 35%));
+  filter: drop-shadow(0 0 12px rgb(255 255 255 / 23%));
   transition: filter 400ms ease;
 }
 
 .adc-share-preview:hover {
-  filter: drop-shadow(0 0 30px rgb(255 255 255 / 55%));
+  filter: drop-shadow(0 0 20px rgb(255 255 255 / 36%));
 }
 
 .adc-gs:before,
