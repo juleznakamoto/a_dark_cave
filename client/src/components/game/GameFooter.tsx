@@ -170,7 +170,7 @@ export default function GameFooter() {
           sizeClassName="game-tab-icon"
           className={`${FOOTER_CONTROL_TEXT} group-hover:!text-red-600`}
         />
-        <span className={FOOTER_CONTROL_TEXT}>
+        <span className={FOOTER_SOCIAL_LABEL}>
           {tWithFallback("ui", "footer.feedback", "Feedback")}
         </span>
       </Button>
@@ -183,12 +183,6 @@ export default function GameFooter() {
       tooltipSide="top"
     />
   ) : null;
-  const feedbackAndPlaylight = (
-    <>
-      {feedbackButton}
-      {playlightButton}
-    </>
-  );
 
   return (
     <>
@@ -260,10 +254,12 @@ export default function GameFooter() {
               </Button>
             )}
             {/* Full / playtest / web: left. Steam demo: right (clear of progress bar). */}
-            {!steamDemoActive && feedbackAndPlaylight}
+            {!steamDemoActive && playlightButton}
           </div>
           <div className="flex-1 flex justify-end gap-1 items-center">
-            {steamDemoActive && feedbackAndPlaylight}
+            {steamDemoActive && playlightButton}
+            {/* Steam edition hides the store link — keep Feedback in the right cluster. */}
+            {hideSteamStoreLink && feedbackButton}
             {GAME_FOOTER_RIGHT_ICON_ORDER.map((platform) => {
               if (platform === "steam" && hideSteamStoreLink) {
                 return null;
@@ -301,24 +297,26 @@ export default function GameFooter() {
 
               if (platform === "steam") {
                 return (
-                  <HoverCalloutTooltip
-                    key={platform}
-                    label={t("footer.wishlistOnSteam")}
-                    side="top"
-                    forceVisible={showPauseSleepCallout}
-                    onCalloutClick={
-                      showPauseSleepCallout
-                        ? () =>
-                          window.open(
-                            href,
-                            "_blank",
-                            "noopener,noreferrer",
-                          )
-                        : undefined
-                    }
-                  >
-                    {socialLink}
-                  </HoverCalloutTooltip>
+                  <div key={platform} className="contents">
+                    <HoverCalloutTooltip
+                      label={t("footer.wishlistOnSteam")}
+                      side="top"
+                      forceVisible={showPauseSleepCallout}
+                      onCalloutClick={
+                        showPauseSleepCallout
+                          ? () =>
+                            window.open(
+                              href,
+                              "_blank",
+                              "noopener,noreferrer",
+                            )
+                          : undefined
+                      }
+                    >
+                      {socialLink}
+                    </HoverCalloutTooltip>
+                    {feedbackButton}
+                  </div>
                 );
               }
 

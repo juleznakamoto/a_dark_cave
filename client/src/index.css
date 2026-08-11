@@ -1132,7 +1132,7 @@ html.adc-text-large .game-panel-header-indicator-row {
   pointer-events: none !important;
 }
 
-/* Playlight discovery: cue next to flashlight when paused / after sleep dialog delay */
+/* Playlight discovery: cue next to controller button when paused / after sleep dialog delay */
 @keyframes explore-fun-games-cue-pulse {
 
   0%,

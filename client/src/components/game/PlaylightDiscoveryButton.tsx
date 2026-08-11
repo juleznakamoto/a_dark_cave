@@ -107,9 +107,9 @@ export default function PlaylightDiscoveryButton({
           aria-hidden
         >
           <img
-            src="/flashlight.png"
+            src="/game_controller.png"
             alt=""
-            className="h-full w-full scale-90 rounded-md object-contain object-bottom transition-[filter] duration-300 [filter:invert(1)] group-hover:[filter:invert(17%)_sepia(89%)_saturate(7458%)_hue-rotate(358deg)_brightness(97%)_contrast(118%)]"
+            className="h-full w-full scale-90 object-contain object-center transition-[filter] duration-300 [filter:invert(1)] group-hover:[filter:invert(17%)_sepia(89%)_saturate(7458%)_hue-rotate(358deg)_brightness(97%)_contrast(118%)]"
           />
           {showNotificationDot && (
             <span
