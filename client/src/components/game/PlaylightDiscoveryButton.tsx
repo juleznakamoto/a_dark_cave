@@ -78,14 +78,17 @@ export default function PlaylightDiscoveryButton({
     };
   }, []);
 
-  const label = t("playlight.moreGames");
-  const tooltipLabel = t("playlight.tryMoreGames");
+  const label = t("playlight.moreGames", { defaultValue: "More Games" });
+  const tooltipLabel = t("playlight.tryMoreGames", {
+    defaultValue: "Try more Games",
+  });
 
   return (
     <HoverCalloutTooltip
       label={tooltipLabel}
       side={tooltipSide}
       forceVisible={forceShowTooltip || showDiscoveryTooltip}
+      hoverEnabled={false}
       onCalloutClick={onClick}
     >
       <Button

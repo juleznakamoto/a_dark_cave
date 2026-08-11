@@ -84,6 +84,8 @@ export interface HoverCalloutTooltipProps {
   children: ReactNode;
   className?: string;
   forceVisible?: boolean;
+  /** When false, only `forceVisible` shows the callout (no hover). Default true. */
+  hoverEnabled?: boolean;
   /** When set, the callout is clickable while visible (Playlight discovery). */
   onCalloutClick?: () => void;
   /** Fires once when a fine pointer (mouse/pen) enters the trigger wrapper. */
@@ -98,11 +100,12 @@ export function HoverCalloutTooltip({
   children,
   className,
   forceVisible = false,
+  hoverEnabled = true,
   onCalloutClick,
   onHoverStart,
 }: HoverCalloutTooltipProps) {
   const [isHovered, setIsHovered] = useState(false);
-  const visible = forceVisible || isHovered;
+  const visible = forceVisible || (hoverEnabled && isHovered);
   const layout = SIDE_LAYOUT[side][arrowAlign];
   const calloutClickable = !!onCalloutClick;
 
@@ -120,6 +123,7 @@ export function HoverCalloutTooltip({
   );
 
   const showHoverTooltip = (e: React.PointerEvent) => {
+    if (!hoverEnabled) return;
     if (isHoverCapablePointer(e.pointerType)) {
       setIsHovered(true);
       onHoverStart?.();
@@ -127,6 +131,7 @@ export function HoverCalloutTooltip({
   };
 
   const hideHoverTooltip = (e: React.PointerEvent) => {
+    if (!hoverEnabled) return;
     if (isHoverCapablePointer(e.pointerType)) {
       setIsHovered(false);
     }
