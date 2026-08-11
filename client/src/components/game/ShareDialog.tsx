@@ -5,7 +5,6 @@ import {
   useState,
   type CSSProperties,
 } from "react";
-import { motion } from "framer-motion";
 import type { AchievementChartConfig } from "@/achievements/achievementTypes";
 import { useTranslation } from "react-i18next";
 import {
@@ -59,9 +58,19 @@ const SHARE_URL = "https://a-dark-cave.com";
 const SHARE_URL_IMAGE = "a-dark-cave.com";
 
 const SHARE_FILE_NAME = "a-dark-cave.png";
-/** Card fades up into place; action buttons appear after this. */
-const SHARE_CARD_ENTRANCE_DURATION_S = 0.5;
-const SHARE_CARD_ENTRANCE_Y_PX = 20;
+/** Keep in sync with `.adc-share-card-enter` / `.adc-share-actions-enter` in index.css. */
+const SHARE_CARD_ENTRANCE_DURATION_MS = 500;
+
+function computeSharePreviewScale(): number {
+  if (typeof window === "undefined") return 0.3;
+  const maxW = Math.min(PREVIEW_MAX_WIDTH, window.innerWidth - 32);
+  const maxH = window.innerHeight * 0.95 - 72;
+  const scale = Math.min(
+    maxW / SHARE_IMAGE_WIDTH,
+    maxH / SHARE_IMAGE_HEIGHT,
+  );
+  return scale > 0 ? scale : 0.3;
+}
 
 const RESOURCE_ORDER = Object.keys(gameStateSchema.parse({}).resources);
 const PRECIOUS_RESOURCE_ORDER = ["gold", "silver", "insight"] as const;
@@ -514,12 +523,13 @@ export default function ShareDialog() {
   );
 
   const cardRef = useRef<HTMLDivElement>(null);
-  const previewWrapRef = useRef<HTMLDivElement>(null);
   const cachedBlobRef = useRef<Blob | null>(null);
   const prefetchPromiseRef = useRef<Promise<Blob | null> | null>(null);
   const actionLockRef = useRef(false);
-  const [previewScale, setPreviewScale] = useState(0.3);
+  const [previewScale, setPreviewScale] = useState(computeSharePreviewScale);
   const [actionsReady, setActionsReady] = useState(false);
+  /** Remount entrance classes each time the dialog opens. */
+  const [entranceKey, setEntranceKey] = useState(0);
 
   const percent = open
     ? getOverallAchievementPercent(
@@ -538,17 +548,11 @@ export default function ShareDialog() {
 
   useLayoutEffect(() => {
     if (!open) return;
-    const update = () => {
-      // Chrome-less dialog is w-max, so size from the viewport (card + button row).
-      const maxW = Math.min(PREVIEW_MAX_WIDTH, window.innerWidth - 32);
-      const maxH = window.innerHeight * 0.95 - 72;
-      const scale = Math.min(
-        maxW / SHARE_IMAGE_WIDTH,
-        maxH / SHARE_IMAGE_HEIGHT,
-      );
-      setPreviewScale(scale > 0 ? scale : 0.3);
-    };
-    update();
+    // Size the layout box before paint so dialog centering does not jump.
+    setPreviewScale(computeSharePreviewScale());
+    setEntranceKey((key) => key + 1);
+    setActionsReady(false);
+    const update = () => setPreviewScale(computeSharePreviewScale());
     window.addEventListener("resize", update);
     return () => window.removeEventListener("resize", update);
   }, [open]);
@@ -560,9 +564,9 @@ export default function ShareDialog() {
     }
     const timeoutId = window.setTimeout(() => {
       setActionsReady(true);
-    }, SHARE_CARD_ENTRANCE_DURATION_S * 1000);
+    }, SHARE_CARD_ENTRANCE_DURATION_MS);
     return () => window.clearTimeout(timeoutId);
-  }, [open]);
+  }, [open, entranceKey]);
 
   const renderShareBlob = async (): Promise<Blob | null> => {
     const node = cardRef.current;
@@ -793,122 +797,122 @@ export default function ShareDialog() {
         hideClose
         skipViewportWidthClamp
         layerZIndex={70}
-        className="flex w-max max-w-[min(95vw,28rem)] max-h-[95vh] flex-col items-center gap-4 overflow-visible border-0 bg-transparent p-0 shadow-none duration-0 data-[state=open]:animate-none data-[state=closed]:animate-none sm:rounded-none"
+        style={{ animation: "none" }}
+        className="flex w-max max-w-[min(95vw,28rem)] max-h-[95vh] flex-col items-center gap-4 overflow-visible border-0 bg-transparent p-0 shadow-none duration-0 data-[state=open]:!animate-none data-[state=closed]:!animate-none sm:rounded-none"
       >
         <DialogTitle className="sr-only">
           {t("share.title", { defaultValue: "Share your progress" })}
         </DialogTitle>
 
-        <motion.div
-          ref={previewWrapRef}
+        {/* Outer box stays at final size so dialog centering never jumps. */}
+        <div
           className="adc-share-preview relative shrink-0 overflow-visible"
           style={{
             width: SHARE_IMAGE_WIDTH * previewScale,
             height: SHARE_IMAGE_HEIGHT * previewScale,
           }}
-          initial={{ opacity: 0, y: SHARE_CARD_ENTRANCE_Y_PX }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{
-            duration: SHARE_CARD_ENTRANCE_DURATION_S,
-            ease: "easeOut",
-          }}
         >
           <div
-            className="absolute inset-0 cursor-pointer"
-            role="button"
-            tabIndex={0}
-            aria-label={t("share.copy", { defaultValue: "Copy" })}
-            onClick={() => {
-              void handleCopyImage();
-            }}
-            onKeyDown={(event) => {
-              if (event.key === "Enter" || event.key === " ") {
-                event.preventDefault();
-                void handleCopyImage();
-              }
-            }}
+            key={entranceKey}
+            className="adc-share-card-enter absolute inset-0"
           >
             <div
-              style={{
-                position: "absolute",
-                top: 0,
-                left: 0,
-                width: SHARE_IMAGE_WIDTH,
-                height: SHARE_IMAGE_HEIGHT,
-                transform: `scale(${previewScale})`,
-                transformOrigin: "top left",
+              className="absolute inset-0 cursor-pointer"
+              role="button"
+              tabIndex={0}
+              aria-label={t("share.copy", { defaultValue: "Copy" })}
+              onClick={() => {
+                void handleCopyImage();
+              }}
+              onKeyDown={(event) => {
+                if (event.key === "Enter" || event.key === " ") {
+                  event.preventDefault();
+                  void handleCopyImage();
+                }
               }}
             >
-              <ShareCard
-                cardRef={cardRef}
-                resources={resources}
-                seenResources={seenResources}
-                resourcePercent={resourcePercent}
-                achievementPercent={percent}
-                resourcesLabel={t("share.resources", {
-                  percent: resourcePercent,
-                  defaultValue: "Resources: {{percent}} %",
-                })}
-                achievementsLabel={t("share.achievements", {
-                  percent,
-                  defaultValue: "Achievements: {{percent}} %",
-                })}
-                ringLabels={{
-                  basic: t(CATEGORY_HEADER_KEYS.basic, {
-                    defaultValue: CATEGORY_HEADER_DEFAULTS.basic,
-                  }),
-                  building: t(CATEGORY_HEADER_KEYS.building, {
-                    defaultValue: CATEGORY_HEADER_DEFAULTS.building,
-                  }),
-                  item: t(CATEGORY_HEADER_KEYS.item, {
-                    defaultValue: CATEGORY_HEADER_DEFAULTS.item,
-                  }),
-                  action: t(CATEGORY_HEADER_KEYS.action, {
-                    defaultValue: CATEGORY_HEADER_DEFAULTS.action,
-                  }),
-                  overall: t(CATEGORY_HEADER_KEYS.overall, {
-                    defaultValue: CATEGORY_HEADER_DEFAULTS.overall,
-                  }),
+              <div
+                style={{
+                  position: "absolute",
+                  top: 0,
+                  left: 0,
+                  width: SHARE_IMAGE_WIDTH,
+                  height: SHARE_IMAGE_HEIGHT,
+                  transform: `scale(${previewScale})`,
+                  transformOrigin: "top left",
                 }}
-                killedCreaturesLabel={t("share.killedCreatures", {
-                  defaultValue: "Killed Creatures",
-                })}
-                killedCreaturesValue={killedCreatures}
-                highestAttackWaveLabel={t("share.highestAttackWave", {
-                  defaultValue: "Highest Attack Wave",
-                })}
-                highestAttackWaveValue={highestAttackWave}
-                cruelModeLabel={t("share.cruelMode", {
-                  defaultValue: "Cruel Mode",
-                })}
-                cruelModeValueLabel={
-                  cruelMode
-                    ? t("share.on", { defaultValue: "On" })
-                    : t("share.off", { defaultValue: "Off" })
-                }
-                playTimeLabel={t("share.playTime", {
-                  defaultValue: "Play time",
-                })}
-                playTimeMs={playTimeMs}
-                playForFreeAtLabel={t("share.playForFreeAt", {
-                  defaultValue: "Play for free at",
-                })}
-              />
+              >
+                <ShareCard
+                  cardRef={cardRef}
+                  resources={resources}
+                  seenResources={seenResources}
+                  resourcePercent={resourcePercent}
+                  achievementPercent={percent}
+                  resourcesLabel={t("share.resources", {
+                    percent: resourcePercent,
+                    defaultValue: "Resources: {{percent}} %",
+                  })}
+                  achievementsLabel={t("share.achievements", {
+                    percent,
+                    defaultValue: "Achievements: {{percent}} %",
+                  })}
+                  ringLabels={{
+                    basic: t(CATEGORY_HEADER_KEYS.basic, {
+                      defaultValue: CATEGORY_HEADER_DEFAULTS.basic,
+                    }),
+                    building: t(CATEGORY_HEADER_KEYS.building, {
+                      defaultValue: CATEGORY_HEADER_DEFAULTS.building,
+                    }),
+                    item: t(CATEGORY_HEADER_KEYS.item, {
+                      defaultValue: CATEGORY_HEADER_DEFAULTS.item,
+                    }),
+                    action: t(CATEGORY_HEADER_KEYS.action, {
+                      defaultValue: CATEGORY_HEADER_DEFAULTS.action,
+                    }),
+                    overall: t(CATEGORY_HEADER_KEYS.overall, {
+                      defaultValue: CATEGORY_HEADER_DEFAULTS.overall,
+                    }),
+                  }}
+                  killedCreaturesLabel={t("share.killedCreatures", {
+                    defaultValue: "Killed Creatures",
+                  })}
+                  killedCreaturesValue={killedCreatures}
+                  highestAttackWaveLabel={t("share.highestAttackWave", {
+                    defaultValue: "Highest Attack Wave",
+                  })}
+                  highestAttackWaveValue={highestAttackWave}
+                  cruelModeLabel={t("share.cruelMode", {
+                    defaultValue: "Cruel Mode",
+                  })}
+                  cruelModeValueLabel={
+                    cruelMode
+                      ? t("share.on", { defaultValue: "On" })
+                      : t("share.off", { defaultValue: "Off" })
+                  }
+                  playTimeLabel={t("share.playTime", {
+                    defaultValue: "Play time",
+                  })}
+                  playTimeMs={playTimeMs}
+                  playForFreeAtLabel={t("share.playForFreeAt", {
+                    defaultValue: "Play for free at",
+                  })}
+                />
+              </div>
             </div>
+            {/* Anchored to the card (not the wider button row) so inset clears the rounded corner. */}
+            <DialogClose className="adc-dialog-close absolute right-4 top-4 z-10 flex items-center justify-center rounded-sm p-0 opacity-70 ring-offset-background transition-opacity hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2">
+              <X className="adc-dialog-close-icon" aria-hidden="true" />
+              <span className="sr-only">Close</span>
+            </DialogClose>
           </div>
-          {/* Anchored to the card (not the wider button row) so inset clears the rounded corner. */}
-          <DialogClose className="adc-dialog-close absolute right-4 top-4 z-10 flex items-center justify-center rounded-sm p-0 opacity-70 ring-offset-background transition-opacity hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2">
-            <X className="adc-dialog-close-icon" aria-hidden="true" />
-            <span className="sr-only">Close</span>
-          </DialogClose>
-        </motion.div>
+        </div>
 
-        <motion.div
-          className="flex shrink-0 flex-wrap justify-center gap-2"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: actionsReady ? 1 : 0 }}
-          transition={{ duration: 0.2, ease: "easeOut" }}
-          style={{ pointerEvents: actionsReady ? "auto" : "none" }}
+        <div
+          key={`actions-${entranceKey}`}
+          className={cn(
+            "adc-share-actions-enter flex shrink-0 flex-wrap justify-center gap-2",
+            actionsReady && "is-ready",
+          )}
         >
           <TooltipWrapper
             tooltip={
@@ -968,7 +972,7 @@ export default function ShareDialog() {
           >
             {t("share.share", { defaultValue: "Share" })}
           </Button>
-        </motion.div>
+        </div>
       </DialogContent>
     </Dialog>
   );

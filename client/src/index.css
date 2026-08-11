@@ -298,6 +298,44 @@ body {
   animation: fade-in 8s ease-in-out forwards;
 }
 
+/* Share dialog: card fades up in place; actions follow after. */
+@keyframes share-card-enter {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.adc-share-card-enter {
+  opacity: 0;
+  animation: share-card-enter 500ms ease-out forwards;
+}
+
+@keyframes share-actions-enter {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+.adc-share-actions-enter {
+  opacity: 0;
+  pointer-events: none;
+  animation: share-actions-enter 200ms ease-out 500ms forwards;
+}
+
+.adc-share-actions-enter.is-ready {
+  pointer-events: auto;
+}
+
 @keyframes social-task-check-pop {
   0% {
     transform: scale(0.35);
