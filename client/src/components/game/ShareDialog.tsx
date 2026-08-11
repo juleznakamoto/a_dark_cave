@@ -5,6 +5,7 @@ import {
   useState,
   type CSSProperties,
 } from "react";
+import { motion } from "framer-motion";
 import type { AchievementChartConfig } from "@/achievements/achievementTypes";
 import { useTranslation } from "react-i18next";
 import {
@@ -58,6 +59,9 @@ const SHARE_URL = "https://a-dark-cave.com";
 const SHARE_URL_IMAGE = "a-dark-cave.com";
 
 const SHARE_FILE_NAME = "a-dark-cave.png";
+/** Card fades up into place; action buttons appear after this. */
+const SHARE_CARD_ENTRANCE_DURATION_S = 0.5;
+const SHARE_CARD_ENTRANCE_Y_PX = 20;
 
 const RESOURCE_ORDER = Object.keys(gameStateSchema.parse({}).resources);
 const PRECIOUS_RESOURCE_ORDER = ["gold", "silver", "insight"] as const;
@@ -515,6 +519,7 @@ export default function ShareDialog() {
   const prefetchPromiseRef = useRef<Promise<Blob | null> | null>(null);
   const actionLockRef = useRef(false);
   const [previewScale, setPreviewScale] = useState(0.3);
+  const [actionsReady, setActionsReady] = useState(false);
 
   const percent = open
     ? getOverallAchievementPercent(
@@ -546,6 +551,17 @@ export default function ShareDialog() {
     update();
     window.addEventListener("resize", update);
     return () => window.removeEventListener("resize", update);
+  }, [open]);
+
+  useEffect(() => {
+    if (!open) {
+      setActionsReady(false);
+      return;
+    }
+    const timeoutId = window.setTimeout(() => {
+      setActionsReady(true);
+    }, SHARE_CARD_ENTRANCE_DURATION_S * 1000);
+    return () => window.clearTimeout(timeoutId);
   }, [open]);
 
   const renderShareBlob = async (): Promise<Blob | null> => {
@@ -783,12 +799,18 @@ export default function ShareDialog() {
           {t("share.title", { defaultValue: "Share your progress" })}
         </DialogTitle>
 
-        <div
+        <motion.div
           ref={previewWrapRef}
           className="adc-share-preview relative shrink-0 overflow-visible"
           style={{
             width: SHARE_IMAGE_WIDTH * previewScale,
             height: SHARE_IMAGE_HEIGHT * previewScale,
+          }}
+          initial={{ opacity: 0, y: SHARE_CARD_ENTRANCE_Y_PX }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{
+            duration: SHARE_CARD_ENTRANCE_DURATION_S,
+            ease: "easeOut",
           }}
         >
           <div
@@ -879,9 +901,15 @@ export default function ShareDialog() {
             <X className="adc-dialog-close-icon" aria-hidden="true" />
             <span className="sr-only">Close</span>
           </DialogClose>
-        </div>
+        </motion.div>
 
-        <div className="flex shrink-0 flex-wrap justify-center gap-2">
+        <motion.div
+          className="flex shrink-0 flex-wrap justify-center gap-2"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: actionsReady ? 1 : 0 }}
+          transition={{ duration: 0.2, ease: "easeOut" }}
+          style={{ pointerEvents: actionsReady ? "auto" : "none" }}
+        >
           <TooltipWrapper
             tooltip={
               <p className="text-xs">
@@ -940,7 +968,7 @@ export default function ShareDialog() {
           >
             {t("share.share", { defaultValue: "Share" })}
           </Button>
-        </div>
+        </motion.div>
       </DialogContent>
     </Dialog>
   );
