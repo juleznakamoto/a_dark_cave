@@ -234,7 +234,8 @@
     "generating": "生成中…",
     "share": "分享",
     "errorTitle": "无法创建图片",
-    "errorDesc": "生成图片时出现问题。"
+    "errorDesc": "生成图片时出现问题。",
+    "playForFreeAt": "免费畅玩："
   },
   "feedback": {
     "title": "反馈",

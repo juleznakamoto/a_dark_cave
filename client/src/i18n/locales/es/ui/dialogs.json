@@ -234,7 +234,8 @@
     "generating": "Generando…",
     "share": "Compartir",
     "errorTitle": "No se pudo crear la imagen",
-    "errorDesc": "Algo salió mal al generar la imagen."
+    "errorDesc": "Algo salió mal al generar la imagen.",
+    "playForFreeAt": "Juega gratis en"
   },
   "feedback": {
     "title": "Comentarios",

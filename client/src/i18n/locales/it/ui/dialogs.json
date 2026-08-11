@@ -229,7 +229,8 @@
     "generating": "Generazione…",
     "share": "Condividi",
     "errorTitle": "Impossibile creare l'immagine",
-    "errorDesc": "Si è verificato un errore durante la generazione dell'immagine."
+    "errorDesc": "Si è verificato un errore durante la generazione dell'immagine.",
+    "playForFreeAt": "Gioca gratis su"
   },
   "feedback": {
     "title": "Feedback",

@@ -234,7 +234,8 @@
     "generating": "Génération…",
     "share": "Partager",
     "errorTitle": "Impossible de créer l'image", //x1.2
-    "errorDesc": "Une erreur s'est produite lors de la génération de l'image."
+    "errorDesc": "Une erreur s'est produite lors de la génération de l'image.",
+    "playForFreeAt": "Jouez gratuitement sur"
   },
   "feedback": {
     "title": "Retour",

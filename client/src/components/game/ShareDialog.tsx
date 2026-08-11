@@ -323,6 +323,7 @@ function ShareCard({
   cruelModeValueLabel,
   playTimeLabel,
   playTimeMs,
+  playForFreeAtLabel,
 }: {
   cardRef: React.RefObject<HTMLDivElement>;
   resources: Record<string, number>;
@@ -340,6 +341,7 @@ function ShareCard({
   cruelModeValueLabel: string;
   playTimeLabel: string;
   playTimeMs: number;
+  playForFreeAtLabel: string;
 }) {
   const { precious, others } = getVisibleResourceKeys(resources, seenResources);
   const hasPreciousSpacer = precious.length > 0 && others.length > 0;
@@ -457,7 +459,7 @@ function ShareCard({
             maxWidth: "calc(100% - 8rem)",
           }}
         >
-          <div style={{ whiteSpace: "nowrap" }}>Play for free at</div>
+          <div style={{ whiteSpace: "nowrap" }}>{playForFreeAtLabel}</div>
           <div style={{ whiteSpace: "nowrap" }}>{SHARE_URL_IMAGE}</div>
         </div>
         <div
@@ -866,6 +868,9 @@ export default function ShareDialog() {
                   defaultValue: "Play time",
                 })}
                 playTimeMs={playTimeMs}
+                playForFreeAtLabel={t("share.playForFreeAt", {
+                  defaultValue: "Play for free at",
+                })}
               />
             </div>
           </div>

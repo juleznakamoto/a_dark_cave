@@ -229,7 +229,8 @@
     "generating": "Gerando…",
     "share": "Compartilhar",
     "errorTitle": "Não foi possível criar a imagem",
-    "errorDesc": "Algo deu errado ao gerar a imagem."
+    "errorDesc": "Algo deu errado ao gerar a imagem.",
+    "playForFreeAt": "Jogue de graça em"
   },
   "feedback": {
     "title": "Feedback",

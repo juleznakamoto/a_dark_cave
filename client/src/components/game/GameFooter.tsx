@@ -42,8 +42,11 @@ const FOOTER_CONTROL_BTN =
   `group shrink-0 px-1 py-1 text-xs text-neutral-300 hover hover:!text-red-600 ${GAME_CHROME_NO_BG_HOVER}`;
 const FOOTER_CONTROL_BTN_FADE =
   "opacity-80 transition-[opacity,color] group-hover:opacity-100";
+/** Icons keep their color on hover; labels still go red via FOOTER_CONTROL_TEXT. */
+const FOOTER_CONTROL_ICON =
+  `${FOOTER_CONTROL_BTN_FADE} text-neutral-300 group-hover:!text-neutral-300`;
 const FOOTER_CONTROL_SVG_ICON_HOVER =
-  "w-4 h-4 text-neutral-300 opacity-80 transition-[opacity,color] group-hover:opacity-100 group-hover:!text-red-600";
+  `w-4 h-4 ${FOOTER_CONTROL_ICON}`;
 const FOOTER_CONTROL_TEXT =
   `${FOOTER_CONTROL_BTN_FADE} group-hover:!text-red-600`;
 const FOOTER_SOCIAL_LABEL =
@@ -172,7 +175,7 @@ export default function GameFooter() {
       <GameUiIcon
         name="feedback"
         sizeClassName="game-tab-icon"
-        className={`${FOOTER_CONTROL_TEXT} group-hover:!text-red-600`}
+        className={FOOTER_CONTROL_ICON}
       />
       <span className={FOOTER_SOCIAL_LABEL}>
         {tWithFallback("ui", "footer.feedback", "Feedback")}
@@ -207,11 +210,7 @@ export default function GameFooter() {
               <GameUiIcon
                 name={isPaused ? "unpause" : "pause"}
                 sizeClassName="game-tab-icon"
-                className={
-                  isPaused
-                    ? undefined
-                    : `${FOOTER_CONTROL_TEXT} group-hover:!text-red-600`
-                }
+                className={isPaused ? undefined : FOOTER_CONTROL_ICON}
               />
             </Button>
 
@@ -229,7 +228,7 @@ export default function GameFooter() {
                   <GameUiIcon
                     name="trader"
                     sizeClassName="game-tab-icon"
-                    className="text-yellow-500 opacity-80 transition-[opacity,color] group-hover:opacity-100 group-hover:!text-red-600"
+                    className="text-yellow-500 opacity-80 transition-[opacity,color] group-hover:opacity-100 group-hover:!text-yellow-500"
                   />
                 </span>
                 <span className={FOOTER_CONTROL_TEXT}>
