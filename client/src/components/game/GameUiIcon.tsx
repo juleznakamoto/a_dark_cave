@@ -18,7 +18,7 @@ export const GAME_UI_ICON_SRC = {
   feedback: "/icons/speech_bubble.svg",
   share: "/icons/progress_arrows.svg",
   inviteUser: "/icons/add_user.svg",
-  discover: "/icons/light_bulb.svg",
+  discover: "/game_controller.png",
   signUp: "/icons/up_button.svg",
   socialReward: "/icons/cut_diamond.svg",
   exclusiveReward: "/icons/diamond_ring.svg",
