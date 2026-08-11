@@ -1375,12 +1375,12 @@
     "log": {
       "outcome0": "Mentre gli abitanti si avvicinano, la figura svanisce. Al suo posto giace un mantello di piuma di corvo, scintillante di potere ultraterreno.",
       "outcome1": "L'indagine va male. Uno degli abitanti urla nella nebbia e non viene mai più rivisto. Gli altri fuggono terrorizzati.",
-      "outcome2": "La figura pallida si muove con velocità inumana. {{actualDeaths}} abitanti svaniscono nella nebbia, le loro urla che echeggiano tra gli alberi.",
+      "outcome2": "La figura snella si muove con velocità inumana. {{actualDeaths}} abitanti svaniscono nella nebbia, le loro urla che echeggiano tra gli alberi.",
       "outcome3": "Gli abitanti restano vicini al villaggio. Verso sera, la figura è sparita.",
       "outcome4": "All'alba, uno degli abitanti che diceva di aver visto la figura viene trovato morto nel suo letto, il volto congelato dal terrore."
     },
     "message": "All'alba, gli abitanti intravedono una figura alta, pallida e snella ai margini dei boschi. Cosa fai?",
-    "title": "La Figura Pallida"
+    "title": "La Figura Snella"
   },
   "portalDiscovered": {
     "message": "Nelle camere più basse della cittadella trovi un colossale cancello forgiato in un metallo sconosciuto e inflessibile. Forse le creazioni dell'alchimista riusciranno ad aprirlo."

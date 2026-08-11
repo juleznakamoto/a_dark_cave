@@ -66,7 +66,7 @@ export default function FeedbackDialog() {
                     sizeClassName="w-4 h-4"
                     className="opacity-100"
                   />
-                  {t("feedback.openForm")}
+                  {t("feedback.openForm", { defaultValue: "Give Feedback" })}
                 </Button>
               </div>
               <p>{t("feedback.contactVia")}</p>

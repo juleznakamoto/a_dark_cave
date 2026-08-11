@@ -417,6 +417,9 @@ export async function fetchAdminMetrics(
 
 export type AdminUtmDashboardPayload = {
   days_back: number;
+  total_sessions: number;
+  sessions_with_utm: number;
+  sessions_without_utm: number;
   total_landings: number;
   distinct_sources: number;
   distinct_campaigns: number;
@@ -425,6 +428,12 @@ export type AdminUtmDashboardPayload = {
   attributed_players_in_range: number;
   attributed_buyers: number;
   attributed_revenue_eur_cents: number;
+  daily_traffic: Array<{
+    day: string;
+    sessions: number;
+    landings: number;
+    without_utm: number;
+  }>;
   daily_landings: Array<{ day: string; landings: number }>;
   daily_attributed_saves: Array<{ day: string; players: number }>;
   by_source: Array<{ label: string; landings: number }>;
@@ -435,11 +444,18 @@ export type AdminUtmDashboardPayload = {
     attributed_players: number;
     buyers: number;
   }>;
+  error?: string;
 };
 
-function emptyUtmDashboard(daysBack: number): AdminUtmDashboardPayload {
+function emptyUtmDashboard(
+  daysBack: number,
+  error?: string,
+): AdminUtmDashboardPayload {
   return {
     days_back: daysBack,
+    total_sessions: 0,
+    sessions_with_utm: 0,
+    sessions_without_utm: 0,
     total_landings: 0,
     distinct_sources: 0,
     distinct_campaigns: 0,
@@ -448,11 +464,13 @@ function emptyUtmDashboard(daysBack: number): AdminUtmDashboardPayload {
     attributed_players_in_range: 0,
     attributed_buyers: 0,
     attributed_revenue_eur_cents: 0,
+    daily_traffic: [],
     daily_landings: [],
     daily_attributed_saves: [],
     by_source: [],
     by_medium: [],
     by_campaign: [],
+    ...(error ? { error } : {}),
   };
 }
 
@@ -469,17 +487,22 @@ export async function fetchAdminUtmDashboard(
   });
 
   if (error) {
-    log("⚠️ admin_utm_dashboard skipped:", error.message ?? error);
-    return emptyUtmDashboard(days);
+    const message =
+      typeof error.message === "string" ? error.message : String(error);
+    log("⚠️ admin_utm_dashboard skipped:", message);
+    return emptyUtmDashboard(days, message);
   }
 
   const payload = data as Partial<AdminUtmDashboardPayload> | null;
   if (!payload || typeof payload !== "object") {
-    return emptyUtmDashboard(days);
+    return emptyUtmDashboard(days, "Empty UTM dashboard response");
   }
 
   return {
     days_back: Number(payload.days_back) || days,
+    total_sessions: Number(payload.total_sessions) || 0,
+    sessions_with_utm: Number(payload.sessions_with_utm) || 0,
+    sessions_without_utm: Number(payload.sessions_without_utm) || 0,
     total_landings: Number(payload.total_landings) || 0,
     distinct_sources: Number(payload.distinct_sources) || 0,
     distinct_campaigns: Number(payload.distinct_campaigns) || 0,
@@ -491,37 +514,45 @@ export async function fetchAdminUtmDashboard(
     attributed_buyers: Number(payload.attributed_buyers) || 0,
     attributed_revenue_eur_cents:
       Number(payload.attributed_revenue_eur_cents) || 0,
+    daily_traffic: Array.isArray(payload.daily_traffic)
+      ? payload.daily_traffic.map((row) => ({
+        day: String(row.day),
+        sessions: Number(row.sessions) || 0,
+        landings: Number(row.landings) || 0,
+        without_utm: Number(row.without_utm) || 0,
+      }))
+      : [],
     daily_landings: Array.isArray(payload.daily_landings)
       ? payload.daily_landings.map((row) => ({
-          day: String(row.day),
-          landings: Number(row.landings) || 0,
-        }))
+        day: String(row.day),
+        landings: Number(row.landings) || 0,
+      }))
       : [],
     daily_attributed_saves: Array.isArray(payload.daily_attributed_saves)
       ? payload.daily_attributed_saves.map((row) => ({
-          day: String(row.day),
-          players: Number(row.players) || 0,
-        }))
+        day: String(row.day),
+        players: Number(row.players) || 0,
+      }))
       : [],
     by_source: Array.isArray(payload.by_source)
       ? payload.by_source.map((row) => ({
-          label: String(row.label),
-          landings: Number(row.landings) || 0,
-        }))
+        label: String(row.label),
+        landings: Number(row.landings) || 0,
+      }))
       : [],
     by_medium: Array.isArray(payload.by_medium)
       ? payload.by_medium.map((row) => ({
-          label: String(row.label),
-          landings: Number(row.landings) || 0,
-        }))
+        label: String(row.label),
+        landings: Number(row.landings) || 0,
+      }))
       : [],
     by_campaign: Array.isArray(payload.by_campaign)
       ? payload.by_campaign.map((row) => ({
-          label: String(row.label),
-          landings: Number(row.landings) || 0,
-          attributed_players: Number(row.attributed_players) || 0,
-          buyers: Number(row.buyers) || 0,
-        }))
+        label: String(row.label),
+        landings: Number(row.landings) || 0,
+        attributed_players: Number(row.attributed_players) || 0,
+        buyers: Number(row.buyers) || 0,
+      }))
       : [],
   };
 }

@@ -34,6 +34,9 @@ import {
 
 interface UtmDashboard {
   days_back: number;
+  total_sessions: number;
+  sessions_with_utm: number;
+  sessions_without_utm: number;
   total_landings: number;
   distinct_sources: number;
   distinct_campaigns: number;
@@ -42,6 +45,12 @@ interface UtmDashboard {
   attributed_players_in_range: number;
   attributed_buyers: number;
   attributed_revenue_eur_cents: number;
+  daily_traffic: Array<{
+    day: string;
+    sessions: number;
+    landings: number;
+    without_utm: number;
+  }>;
   daily_landings: Array<{ day: string; landings: number }>;
   daily_attributed_saves: Array<{ day: string; players: number }>;
   by_source: Array<{ label: string; landings: number }>;
@@ -52,6 +61,7 @@ interface UtmDashboard {
     attributed_players: number;
     buyers: number;
   }>;
+  error?: string;
 }
 
 interface TrafficTabProps {
@@ -74,6 +84,9 @@ const PIE_COLORS = [
 function emptyDashboard(days: number): UtmDashboard {
   return {
     days_back: days,
+    total_sessions: 0,
+    sessions_with_utm: 0,
+    sessions_without_utm: 0,
     total_landings: 0,
     distinct_sources: 0,
     distinct_campaigns: 0,
@@ -82,12 +95,18 @@ function emptyDashboard(days: number): UtmDashboard {
     attributed_players_in_range: 0,
     attributed_buyers: 0,
     attributed_revenue_eur_cents: 0,
+    daily_traffic: [],
     daily_landings: [],
     daily_attributed_saves: [],
     by_source: [],
     by_medium: [],
     by_campaign: [],
   };
+}
+
+function formatPct(part: number, whole: number): string {
+  if (!whole) return "0%";
+  return `${((part / whole) * 100).toFixed(1)}%`;
 }
 
 export default function TrafficTab({ environment }: TrafficTabProps) {
@@ -105,34 +124,80 @@ export default function TrafficTab({ environment }: TrafficTabProps) {
       .then((payload) => {
         if (payload && typeof payload === "object" && !payload.error) {
           setData(payload as UtmDashboard);
+        } else if (payload && typeof payload === "object") {
+          setData({
+            ...emptyDashboard(chartDays),
+            ...(payload as Partial<UtmDashboard>),
+            error:
+              typeof payload.error === "string"
+                ? payload.error
+                : "Failed to load traffic data",
+          });
         } else {
-          setData(emptyDashboard(chartDays));
+          setData({
+            ...emptyDashboard(chartDays),
+            error: "Failed to load traffic data",
+          });
         }
       })
-      .catch(() => setData(emptyDashboard(chartDays)))
+      .catch(() =>
+        setData({
+          ...emptyDashboard(chartDays),
+          error: "Failed to load traffic data",
+        }),
+      )
       .finally(() => setLoading(false));
   }, [environment, chartDays]);
 
   const dailyChartData = useMemo(() => {
-    const landings = data?.daily_landings ?? [];
+    const traffic = data?.daily_traffic ?? [];
     const attributed = data?.daily_attributed_saves ?? [];
-    const byDay = new Map<string, { day: string; landings: number; players: number }>();
-    for (const row of landings) {
+    const byDay = new Map<
+      string,
+      {
+        day: string;
+        sessions: number;
+        landings: number;
+        without_utm: number;
+        players: number;
+      }
+    >();
+
+    for (const row of traffic) {
       byDay.set(row.day, {
         day: row.day,
+        sessions: Number(row.sessions) || 0,
         landings: Number(row.landings) || 0,
+        without_utm: Number(row.without_utm) || 0,
         players: 0,
       });
     }
+
+    // Fallback if older RPC shape without daily_traffic.
+    if (traffic.length === 0) {
+      for (const row of data?.daily_landings ?? []) {
+        byDay.set(row.day, {
+          day: row.day,
+          sessions: 0,
+          landings: Number(row.landings) || 0,
+          without_utm: 0,
+          players: 0,
+        });
+      }
+    }
+
     for (const row of attributed) {
       const existing = byDay.get(row.day) ?? {
         day: row.day,
+        sessions: 0,
         landings: 0,
+        without_utm: 0,
         players: 0,
       };
       existing.players = Number(row.players) || 0;
       byDay.set(row.day, existing);
     }
+
     return Array.from(byDay.values())
       .sort((a, b) => a.day.localeCompare(b.day))
       .map((row) => ({
@@ -158,17 +223,21 @@ export default function TrafficTab({ environment }: TrafficTabProps) {
 
   const dashboard = data ?? emptyDashboard(chartDays);
   const revenueEur = (dashboard.attributed_revenue_eur_cents / 100).toFixed(2);
+  const utmShare = formatPct(
+    dashboard.total_landings,
+    dashboard.total_sessions,
+  );
 
   return (
     <div className="space-y-4">
       <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
         <div>
-          <h2 className="text-lg font-semibold">UTM traffic</h2>
+          <h2 className="text-lg font-semibold">Traffic</h2>
           <p className="text-sm text-muted-foreground">
-            Anonymous landings with UTM params, plus first-touch attribution on
-            saves. Landing history starts when the beacon shipped; legacy{" "}
-            <code className="text-xs">?c=</code> still counts in attributed
-            players.
+            All anonymous sessions vs UTM landings, plus first-touch attribution
+            on saves. Daily “without UTM” is sessions minus UTM landings that
+            day. Exact session↔UTM overlap needs the shared session id (rolling
+            out with the client).
           </p>
         </div>
         <ChartTimeRangeSelectOverview
@@ -177,15 +246,50 @@ export default function TrafficTab({ environment }: TrafficTabProps) {
         />
       </div>
 
+      {dashboard.error ? (
+        <Card className="border-destructive/40">
+          <CardContent className="pt-4 text-sm text-destructive">
+            Traffic query failed: {dashboard.error}
+          </CardContent>
+        </Card>
+      ) : null}
+
       <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-6 gap-4">
         <Card>
           <CardHeader className="pb-2">
             <CardDescription>
-              Landings ({adminOverviewChartTitleSuffix(chartTimeRange)})
+              Sessions ({adminOverviewChartTitleSuffix(chartTimeRange)})
             </CardDescription>
           </CardHeader>
           <CardContent>
+            <p className="text-3xl font-bold">{dashboard.total_sessions}</p>
+          </CardContent>
+        </Card>
+        <Card>
+          <CardHeader className="pb-2">
+            <CardDescription>UTM landings</CardDescription>
+          </CardHeader>
+          <CardContent>
             <p className="text-3xl font-bold">{dashboard.total_landings}</p>
+            <p className="text-xs text-muted-foreground mt-1">
+              {utmShare} of sessions
+            </p>
+          </CardContent>
+        </Card>
+        <Card>
+          <CardHeader className="pb-2">
+            <CardDescription>Without UTM (estimate)</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <p className="text-3xl font-bold">
+              {Math.max(
+                dashboard.total_sessions - dashboard.total_landings,
+                0,
+              )}
+            </p>
+            <p className="text-xs text-muted-foreground mt-1">
+              sessions − landings
+            </p>
           </CardContent>
         </Card>
         <Card>
@@ -200,14 +304,6 @@ export default function TrafficTab({ environment }: TrafficTabProps) {
         </Card>
         <Card>
           <CardHeader className="pb-2">
-            <CardDescription>Distinct sources</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <p className="text-3xl font-bold">{dashboard.distinct_sources}</p>
-          </CardContent>
-        </Card>
-        <Card>
-          <CardHeader className="pb-2">
             <CardDescription>Attributed players (all time)</CardDescription>
           </CardHeader>
           <CardContent>
@@ -218,27 +314,22 @@ export default function TrafficTab({ environment }: TrafficTabProps) {
         </Card>
         <Card>
           <CardHeader className="pb-2">
-            <CardDescription>Attributed buyers</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <p className="text-3xl font-bold">{dashboard.attributed_buyers}</p>
-          </CardContent>
-        </Card>
-        <Card>
-          <CardHeader className="pb-2">
             <CardDescription>Attributed revenue (EUR)</CardDescription>
           </CardHeader>
           <CardContent>
             <p className="text-3xl font-bold">€{revenueEur}</p>
+            <p className="text-xs text-muted-foreground mt-1">
+              {dashboard.attributed_buyers} buyers
+            </p>
           </CardContent>
         </Card>
       </div>
 
       <Card>
         <CardHeader>
-          <CardTitle>Daily UTM landings</CardTitle>
+          <CardTitle>Daily traffic</CardTitle>
           <CardDescription>
-            Landings and new attributed saves ·{" "}
+            All sessions, UTM landings, and non-UTM remainder ·{" "}
             {adminOverviewChartTitleSuffix(chartTimeRange)}
           </CardDescription>
         </CardHeader>
@@ -255,8 +346,24 @@ export default function TrafficTab({ environment }: TrafficTabProps) {
               <ChartTooltip content={<ChartTooltipContent />} />
               <Area
                 type="monotone"
+                dataKey="sessions"
+                name="Sessions"
+                stroke="#94a3b8"
+                fill="#94a3b8"
+                fillOpacity={0.2}
+              />
+              <Area
+                type="monotone"
+                dataKey="without_utm"
+                name="Without UTM"
+                stroke="#f59e0b"
+                fill="#f59e0b"
+                fillOpacity={0.25}
+              />
+              <Area
+                type="monotone"
                 dataKey="landings"
-                name="Landings"
+                name="UTM landings"
                 stroke="#8884d8"
                 fill="#8884d8"
                 fillOpacity={0.35}
@@ -278,11 +385,15 @@ export default function TrafficTab({ environment }: TrafficTabProps) {
         <Card>
           <CardHeader>
             <CardTitle>By source</CardTitle>
-            <CardDescription>Landing counts in range</CardDescription>
+            <CardDescription>UTM landing counts in range</CardDescription>
           </CardHeader>
           <CardContent>
             <ChartContainer config={{}} className="h-[300px] w-full">
-              <BarChart data={dashboard.by_source} layout="vertical" margin={{ left: 24 }}>
+              <BarChart
+                data={dashboard.by_source}
+                layout="vertical"
+                margin={{ left: 24 }}
+              >
                 <CartesianGrid strokeDasharray="3 3" />
                 <XAxis type="number" allowDecimals={false} />
                 <YAxis
@@ -301,11 +412,15 @@ export default function TrafficTab({ environment }: TrafficTabProps) {
         <Card>
           <CardHeader>
             <CardTitle>By medium</CardTitle>
-            <CardDescription>Landing counts in range</CardDescription>
+            <CardDescription>UTM landing counts in range</CardDescription>
           </CardHeader>
           <CardContent>
             <ChartContainer config={{}} className="h-[300px] w-full">
-              <BarChart data={dashboard.by_medium} layout="vertical" margin={{ left: 24 }}>
+              <BarChart
+                data={dashboard.by_medium}
+                layout="vertical"
+                margin={{ left: 24 }}
+              >
                 <CartesianGrid strokeDasharray="3 3" />
                 <XAxis type="number" allowDecimals={false} />
                 <YAxis

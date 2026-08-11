@@ -239,12 +239,12 @@
   "feedback": {
     "title": "Retour",
     "message": "Si vous rencontrez des bugs, des problèmes de traduction ou si vous avez des idées ou des retours, j'aimerais beaucoup vous lire.",
-    "contactVia": "Vous pouvez me contacter via :",
+    "contactVia": "Vous pouvez aussi me contacter via :",
     "reddit": "Reddit",
     "instagram": "Instagram",
     "steam": "Steam",
     "email": "E-Mail",
-    "openForm": "Open feedback form"
+    "openForm": "Donner un avis"
   },
   "galaxy": {
     "title": "La démo s'arrête ici", //x1.4

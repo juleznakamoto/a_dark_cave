@@ -1393,12 +1393,12 @@
     "log": {
       "outcome0": "Cuando los aldeanos se acercan, la figura desaparece. En su lugar yace un manto de plumas de cuervo, reluciente con poder de otro mundo.",
       "outcome1": "La investigación sale mal. Uno de los aldeanos grita en la niebla y nunca vuelve a ser visto. Los demás huyen aterrados.",
-      "outcome2": "La figura pálida se mueve con velocidad inhumana. {{actualDeaths}} aldeanos desaparecen en la niebla, sus gritos resonando entre los árboles.",
+      "outcome2": "La figura esbelta se mueve con velocidad inhumana. {{actualDeaths}} aldeanos desaparecen en la niebla, sus gritos resonando entre los árboles.",
       "outcome3": "Los aldeanos permanecen cerca de la aldea. Al caer la tarde, la figura se ha ido.",
       "outcome4": "Al amanecer, uno de los aldeanos que dijo haber visto la figura aparece muerto en su cama, con el rostro congelado de terror."
     },
     "message": "Al amanecer, los aldeanos vislumbran una figura alta, pálida y esbelta en el borde del bosque. ¿Qué haces?",
-    "title": "La figura pálida"
+    "title": "La figura esbelta"
   },
   "portalDiscovered": {
     "message": "En las cámaras más bajas de la ciudadela encuentras una puerta colosal forjada con un metal desconocido e inflexible. Quizá las creaciones del alquimista puedan abrirla."

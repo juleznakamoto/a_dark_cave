@@ -1,5 +1,6 @@
 import { isLocalOnlyEdition } from "@/lib/edition";
 import { logger } from "@/lib/logger";
+import { getOrCreateAnalyticsSessionId } from "@/lib/sessionTracker";
 import {
   intentHasCampaignParams,
   parseStartupIntent,
@@ -7,31 +8,10 @@ import {
 } from "@/game/startupIntent";
 import { hasUtmAttribution, type UtmAttribution } from "@shared/utmAttribution";
 
-const SID_KEY = "utm_sid";
 const SENT_KEY = "utm_landing_sent";
 
 /** In-memory guard so remounts cannot double-fire while a send is in flight. */
 let inFlight = false;
-
-function generateId(): string {
-  return (
-    crypto.randomUUID?.() ??
-    Math.random().toString(36).slice(2) + Date.now().toString(36)
-  );
-}
-
-function getOrCreateLandingSessionId(): string {
-  try {
-    let sid = sessionStorage.getItem(SID_KEY);
-    if (!sid) {
-      sid = generateId();
-      sessionStorage.setItem(SID_KEY, sid);
-    }
-    return sid;
-  } catch {
-    return generateId();
-  }
-}
 
 function alreadySent(): boolean {
   try {
@@ -74,7 +54,7 @@ export function reportUtmLanding(
     return;
   }
 
-  const sid = getOrCreateLandingSessionId();
+  const sid = getOrCreateAnalyticsSessionId();
   const payload = JSON.stringify({
     sid,
     source: attr.source,

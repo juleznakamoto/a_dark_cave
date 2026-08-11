@@ -1393,12 +1393,12 @@
     "log": {
       "outcome0": "Alors que les villageois approchent, la silhouette disparaît. À sa place repose un manteau de plumes de corbeau, miroitant d'une puissance surnaturelle.",
       "outcome1": "L'enquête tourne mal. L'un des villageois hurle dans la brume et on ne le revoit jamais. Les autres fuient, terrorisés.",
-      "outcome2": "La silhouette pâle se déplace avec une vitesse inhumaine. {{actualDeaths}} villageois disparaissent dans la brume, leurs cris résonnant entre les arbres.",
+      "outcome2": "La silhouette mince se déplace avec une vitesse inhumaine. {{actualDeaths}} villageois disparaissent dans la brume, leurs cris résonnant entre les arbres.",
       "outcome3": "Les villageois restent près du village. Au soir, la silhouette a disparu.",
       "outcome4": "À l'aube, l'un des villageois qui prétendaient avoir vu la silhouette est retrouvé mort dans son lit, le visage figé par la terreur."
     },
     "message": "À l'aube, des villageois aperçoivent une grande silhouette pâle et mince à la lisière des bois. Que faites-vous ?",
-    "title": "La Silhouette pâle"
+    "title": "La Silhouette mince"
   },
   "portalDiscovered": {
     "message": "Dans les chambres les plus basses de la citadelle, vous trouvez une porte colossale forgée dans un métal inconnu et inflexible. Peut-être les créations de l'alchimiste sauront-elles l'ouvrir."

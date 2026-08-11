@@ -1375,12 +1375,12 @@
     "log": {
       "outcome0": "Quando os aldeões se aproximam, a figura desaparece. Em seu lugar jaz um manto de pena de corvo, cintilando com poder de outro mundo.",
       "outcome1": "A investigação dá errado. Um dos aldeões grita na névoa e nunca mais é visto. Os outros fogem aterrorizados.",
-      "outcome2": "A figura pálida se move com velocidade desumana. {{actualDeaths}} aldeões desaparecem na névoa, seus gritos ecoando por entre as árvores.",
+      "outcome2": "A figura esguia se move com velocidade desumana. {{actualDeaths}} aldeões desaparecem na névoa, seus gritos ecoando por entre as árvores.",
       "outcome3": "Os aldeões permanecem perto da aldeia. Ao entardecer, a figura se foi.",
       "outcome4": "Ao amanhecer, um dos aldeões que alegou ter visto a figura é encontrado morto em sua cama, o rosto congelado de terror."
     },
     "message": "Ao amanhecer, os aldeões vislumbram uma figura alta, pálida e esguia na orla da mata. O que você faz?",
-    "title": "A Figura Pálida"
+    "title": "A Figura Esguia"
   },
   "portalDiscovered": {
     "message": "Nas câmaras mais baixas da cidadela você encontra um portão colossal forjado de um metal desconhecido e inflexível. Talvez as criações do alquimista consigam abri-lo."

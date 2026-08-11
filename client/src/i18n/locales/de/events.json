@@ -1393,12 +1393,12 @@
     "log": {
       "outcome0": "Als die Dorfbewohner näherkommen, verschwindet die Gestalt. An ihrer Stelle liegt ein Rabenfedermantel, schimmernd vor jenseitiger Macht.",
       "outcome1": "Die Untersuchung geht schief. Einer der Dorfbewohner schreit im Nebel und wird nie wieder gesehen. Die anderen fliehen voller Entsetzen.",
-      "outcome2": "Die bleiche Gestalt bewegt sich mit unmenschlicher Geschwindigkeit. {{actualDeaths}} Dorfbewohner verschwinden im Nebel, ihre Schreie hallen durch die Bäume.",
+      "outcome2": "Die schlanke Gestalt bewegt sich mit unmenschlicher Geschwindigkeit. {{actualDeaths}} Dorfbewohner verschwinden im Nebel, ihre Schreie hallen durch die Bäume.",
       "outcome3": "Die Dorfbewohner bleiben nahe beim Dorf. Bis zum Abend ist die Gestalt verschwunden.",
       "outcome4": "Im Morgengrauen wird einer der Dorfbewohner, die behaupteten, die Gestalt gesehen zu haben, tot in seinem Bett gefunden, sein Gesicht vor Entsetzen erstarrt."
     },
     "message": "Im Morgengrauen erblicken Dorfbewohner am Waldrand eine hohe, bleiche, schlanke Gestalt. Was tust du?",
-    "title": "Die bleiche Gestalt"
+    "title": "Die schlanke Gestalt"
   },
   "portalDiscovered": {
     "message": "In den tiefsten Kammern der Zitadelle findest du ein kolossales Tor, geschmiedet aus einem unbekannten, unnachgiebigen Metall. Vielleicht können die Schöpfungen des Alchemisten es öffnen."

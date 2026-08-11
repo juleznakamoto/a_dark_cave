@@ -14,6 +14,7 @@ import {
   applyStartupUrlCleanup,
   consumeStartupAuthCallback,
 } from "@/game/startupUrlCleanup";
+import { initSessionTracker } from "@/lib/sessionTracker";
 import { reportUtmLanding } from "@/lib/utmLanding";
 
 // Lazy load Game component - only loaded when needed
@@ -50,7 +51,8 @@ export default function StartScreenPage() {
   useEffect(() => {
     const checkGameState = async () => {
       try {
-        // UTM landing beacon before any campaign URL strip.
+        // Anonymous session + UTM landing before any campaign URL strip.
+        initSessionTracker();
         reportUtmLanding(window.location);
         // Consume OAuth/PKCE before stripping auth params or routing.
         await consumeStartupAuthCallback(window.location);

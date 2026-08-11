@@ -1480,12 +1480,12 @@
     "log": {
       "outcome0": "As the villagers near, the figure vanishes. In its place lies a raven-feather mantle, shimmering with otherworldly power.",
       "outcome1": "The investigation goes wrong. One of the villagers screams in the mist and is never seen again. The others flee in terror.",
-      "outcome2": "The pale figure moves with inhuman speed. {{actualDeaths}} villagers vanish into the mist, their screams echoing through the trees.",
+      "outcome2": "The slender figure moves with inhuman speed. {{actualDeaths}} villagers vanish into the mist, their screams echoing through the trees.",
       "outcome3": "The villagers stay close to the village. By evening, the figure is gone.",
       "outcome4": "At dawn, one of the villagers who claimed to have seen the figure is found dead in his bed, his face frozen in terror."
     },
     "message": "At dawn, villagers glimpse a tall, pale, slender figure at the woods’ edge. What do you do?",
-    "title": "The Pale Figure"
+    "title": "The Slender Figure"
   },
   "portalBlasted": {
     "choices": {
