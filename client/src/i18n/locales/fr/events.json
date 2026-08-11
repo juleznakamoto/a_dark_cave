@@ -1921,11 +1921,11 @@
     },
     "log": {
       "outcome0": "Vous livrez deux des villageois. Le trafiquant vous lance un sac d'acier et repart avec ses nouveaux captifs. Quand les villageois restants voient ce que vous avez fait, ils abandonnent le village avec dégoût.",
-      "outcome1": "Vos hommes attaquent l'esclavagiste ! Le combat est brutal, mais victorieux. Vous libérez les captifs et revendiquez l'acier du trafiquant. Les âmes libérées rejoignent votre village.",
+      "outcome1": "Vos hommes attaquent l'esclavagiste ! Le combat est brutal, mais victorieux. Vous libérez les captifs et revendiquez l'acier du trafiquant. Les esclaves libérés rejoignent votre village.",
       "outcome2": "Vos hommes attaquent le trafiquant d'esclaves, mais il est prêt ! Il riposte avec férocité. {{actualDeaths}} villageois tombent dans la lutte. Le marchand s'échappe avec ses captifs, ne laissant que la mort derrière lui.",
       "outcome3": "Vous refusez l'offre vile de l'esclavagiste. Il crache par terre avec dégoût et repart avec ses captifs."
     },
-    "message": "Un homme sur une charrette tirée par deux chevaux approche du village. Une cage de fer sur la charrette retient deux âmes misérables. Le trafiquant sourit avec cruauté : 'Je vous paierai 100 unités d'acier pour deux de vos villageois. Qu'en dites-vous ?'",
+    "message": "Un homme sur une charrette tirée par deux chevaux approche du village. Une cage de fer sur la charrette retient trois esclaves misérables. Le trafiquant sourit avec cruauté : 'Je vous paierai 100 unités d'acier pour deux de vos villageois. Qu'en dites-vous ?'",
     "title": "Le Trafiquant d'esclaves"
   },
   "solsticeGathering": {

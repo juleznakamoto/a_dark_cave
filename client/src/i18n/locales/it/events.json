@@ -1903,11 +1903,11 @@
     },
     "log": {
       "outcome0": "Consegni due degli abitanti. Il mercante ti lancia una borsa d'acciaio e se ne va a cavallo con i suoi nuovi prigionieri. Quando gli abitanti rimasti vedono ciò che hai fatto, abbandonano il villaggio disgustati.",
-      "outcome1": "I tuoi uomini attaccano lo schiavista! Lo scontro è brutale ma vittorioso. Liberi i prigionieri e reclami l'acciaio del mercante. Le anime liberate si uniscono al tuo villaggio.",
+      "outcome1": "I tuoi uomini attaccano lo schiavista! Lo scontro è brutale ma vittorioso. Liberi i prigionieri e reclami l'acciaio del mercante. Gli schiavi liberati si uniscono al tuo villaggio.",
       "outcome2": "I tuoi uomini attaccano lo schiavista, ma lui è preparato! Reagisce ferocemente. {{actualDeaths}} abitanti cadono nella lotta. Il mercante fugge con i suoi prigionieri, lasciandosi dietro solo morte.",
       "outcome3": "Rifiuti la vile offerta dello schiavista. Sputa a terra disgustato e se ne va a cavallo con i suoi prigionieri."
     },
-    "message": "Un uomo su un carro trainato da due cavalli si avvicina al villaggio. Una gabbia di ferro sul carro tiene due anime miserabili. Il mercante ghigna malvagio: 'Ti pago 100 Acciaio per due dei tuoi abitanti. Che ne dici?'",
+    "message": "Un uomo su un carro trainato da due cavalli si avvicina al villaggio. Una gabbia di ferro sul carro tiene tre schiavi miserabili. Il mercante ghigna malvagio: 'Ti pago 100 Acciaio per due dei tuoi abitanti. Che ne dici?'",
     "title": "Il Mercante di Schiavi"
   },
   "solsticeGathering": {

@@ -1903,11 +1903,11 @@
     },
     "log": {
       "outcome0": "Você entrega dois dos aldeões. O mercador lhe joga um saco de aço e parte a cavalo com seus novos cativos. Quando os aldeões restantes veem o que você fez, abandonam a aldeia enojados.",
-      "outcome1": "Seus homens atacam o escravagista! A luta é brutal, mas vitoriosa. Você liberta os cativos e reivindica o aço do mercador. As almas libertas juntam-se à sua aldeia.",
+      "outcome1": "Seus homens atacam o escravagista! A luta é brutal, mas vitoriosa. Você liberta os cativos e reivindica o aço do mercador. Os escravos libertos juntam-se à sua aldeia.",
       "outcome2": "Seus homens atacam o escravagista, mas ele está preparado! Ele revida ferozmente. {{actualDeaths}} aldeões caem na luta. O mercador escapa com seus cativos, deixando apenas morte para trás.",
       "outcome3": "Você recusa a vil oferta do escravagista. Ele cospe no chão enojado e parte a cavalo com seus cativos."
     },
-    "message": "Um homem numa carroça puxada por dois cavalos se aproxima da aldeia. Uma jaula de ferro na carroça contém duas almas miseráveis. O mercador sorri maldosamente: 'Pagarei 100 Aço por dois dos seus aldeões. O que me diz?'",
+    "message": "Um homem numa carroça puxada por dois cavalos se aproxima da aldeia. Uma jaula de ferro na carroça contém três escravos miseráveis. O mercador sorri maldosamente: 'Pagarei 100 Aço por dois dos seus aldeões. O que me diz?'",
     "title": "O Mercador de Escravos"
   },
   "solsticeGathering": {

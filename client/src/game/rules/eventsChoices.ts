@@ -1132,12 +1132,12 @@ export const choiceEvents: Record<string, GameEvent> = {
     condition: (state: GameState) => {
       const currentPopulation = getCurrentPopulation(state);
       const maxPopulation = getMaxPopulation(state);
-      const hasRoomForTwo = maxPopulation - currentPopulation >= 2;
+      const hasRoomForThree = maxPopulation - currentPopulation >= 3;
 
       return (
         state.buildings.woodenHut >= 3 &&
         currentPopulation > 2 &&
-        hasRoomForTwo &&
+        hasRoomForThree &&
         !state.story.seen.slaveTraderEvent
       );
     },
@@ -1189,7 +1189,7 @@ export const choiceEvents: Record<string, GameEvent> = {
         relevant_stats: ["strength"],
         success_chance: () => 1,
         effect: (state: GameState) => {
-          const { patch } = addFreeVillagersWithinCap(state, 2);
+          const { patch } = addFreeVillagersWithinCap(state, 3);
 
           return {
             ...patch,

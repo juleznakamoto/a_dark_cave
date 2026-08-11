@@ -39,7 +39,7 @@ describe("slaveTrader freeSlaves", () => {
 
     expect(result._logMessageKey).toBe("outcome1");
     expect(result.resources?.steel).toBe(100);
-    expect(result.villagers?.free).toBe(7);
+    expect(result.villagers?.free).toBe(8);
     expect(result.stats?.madnessFromEvents).toBe(1);
     expect(result.story?.seen?.slaveTraderEvent).toBe(true);
   });
@@ -54,7 +54,7 @@ describe("slaveTrader freeSlaves", () => {
 
     expect(result._logMessageKey).toBe("outcome1");
     expect(result.resources?.steel).toBe(100);
-    expect(result.villagers?.free).toBe(7);
+    expect(result.villagers?.free).toBe(8);
     expect(result.stats?.madnessFromEvents).toBe(1);
     expect(result.story?.seen?.slaveTraderEvent).toBe(true);
   });

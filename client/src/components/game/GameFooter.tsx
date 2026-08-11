@@ -118,28 +118,40 @@ export default function GameFooter() {
 
   const socialLinkClass = `group ${FOOTER_CONTROL_BTN} flex items-center justify-center gap-1`;
   const socialIconClass = `${FOOTER_CONTROL_SVG_ICON_HOVER}${isPaused ? " !opacity-100" : ""}`;
+  const showPauseSleepCallout = isPaused || idleModeDialog.isOpen;
   const feedbackButton = (
-    <Button
-      variant="ghost"
-      size="xs"
-      onClick={() => openGameFeedbackForm("footer")}
-      data-testid="button-footer-feedback"
-      aria-label={tWithFallback(
-        "ui",
-        "footer.openFeedback",
-        "Open feedback form",
-      )}
-      className={`${FOOTER_CONTROL_BTN} flex items-center gap-1`}
+    <HoverCalloutTooltip
+      label={t("feedback.openForm", { defaultValue: "Give Feedback" })}
+      side="top"
+      forceVisible={showPauseSleepCallout}
+      onCalloutClick={
+        showPauseSleepCallout
+          ? () => openGameFeedbackForm("footer")
+          : undefined
+      }
     >
-      <GameUiIcon
-        name="feedback"
-        sizeClassName="game-tab-icon"
-        className={`${FOOTER_CONTROL_TEXT} group-hover:!text-red-600`}
-      />
-      <span className={FOOTER_CONTROL_TEXT}>
-        {tWithFallback("ui", "footer.feedback", "Feedback")}
-      </span>
-    </Button>
+      <Button
+        variant="ghost"
+        size="xs"
+        onClick={() => openGameFeedbackForm("footer")}
+        data-testid="button-footer-feedback"
+        aria-label={tWithFallback(
+          "ui",
+          "footer.openFeedback",
+          "Open feedback form",
+        )}
+        className={`${FOOTER_CONTROL_BTN} flex items-center gap-1`}
+      >
+        <GameUiIcon
+          name="feedback"
+          sizeClassName="game-tab-icon"
+          className={`${FOOTER_CONTROL_TEXT} group-hover:!text-red-600`}
+        />
+        <span className={FOOTER_CONTROL_TEXT}>
+          {tWithFallback("ui", "footer.feedback", "Feedback")}
+        </span>
+      </Button>
+    </HoverCalloutTooltip>
   );
 
   return (
@@ -252,16 +264,14 @@ export default function GameFooter() {
               );
 
               if (platform === "steam") {
-                const showWishlistCallout =
-                  isPaused || idleModeDialog.isOpen;
                 return (
                   <HoverCalloutTooltip
                     key={platform}
                     label={t("footer.wishlistOnSteam")}
                     side="top"
-                    forceVisible={showWishlistCallout}
+                    forceVisible={showPauseSleepCallout}
                     onCalloutClick={
-                      showWishlistCallout
+                      showPauseSleepCallout
                         ? () =>
                           window.open(
                             href,

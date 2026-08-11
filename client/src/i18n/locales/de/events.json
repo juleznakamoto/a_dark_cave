@@ -1921,11 +1921,11 @@
     },
     "log": {
       "outcome0": "Du übergibst zwei der Dorfbewohner. Der Händler wirft dir einen Sack Stahl zu und reitet mit seinen neuen Gefangenen davon. Als die übrigen Dorfbewohner sehen, was du getan hast, verlassen sie angewidert das Dorf.",
-      "outcome1": "Deine Männer greifen den Sklavenhändler an! Der Kampf ist brutal, aber siegreich. Du befreist die Gefangenen und beanspruchst den Stahl des Händlers. Die befreiten Seelen schließen sich deinem Dorf an.",
+      "outcome1": "Deine Männer greifen den Sklavenhändler an! Der Kampf ist brutal, aber siegreich. Du befreist die Gefangenen und beanspruchst den Stahl des Händlers. Die befreiten Sklaven schließen sich deinem Dorf an.",
       "outcome2": "Deine Männer greifen den Sklavenhändler an, doch er ist vorbereitet! Er wehrt sich erbittert. {{actualDeaths}} Dorfbewohner fallen im Kampf. Der Händler entkommt mit seinen Gefangenen und hinterlässt nur den Tod.",
       "outcome3": "Du lehnst das widerwärtige Angebot des Sklavenhändlers ab. Er spuckt angewidert auf den Boden und reitet mit seinen Gefangenen davon."
     },
-    "message": "Ein Mann auf einem von zwei Pferden gezogenen Karren nähert sich dem Dorf. Auf dem Karren steht ein Eisenkäfig mit zwei elenden Seelen. Der Händler grinst böse: 'Ich zahle dir 100 Stahl für zwei deiner Dorfbewohner. Was sagst du?'",
+    "message": "Ein Mann auf einem von zwei Pferden gezogenen Karren nähert sich dem Dorf. Auf dem Karren steht ein Eisenkäfig mit drei elenden Sklaven. Der Händler grinst böse: 'Ich zahle dir 100 Stahl für zwei deiner Dorfbewohner. Was sagst du?'",
     "title": "Der Sklavenhändler"
   },
   "solsticeGathering": {
