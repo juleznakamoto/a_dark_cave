@@ -96,7 +96,7 @@ export default function PlaylightDiscoveryButton({
         data-testid="button-footer-playlight"
         aria-label={tooltipLabel}
         className={cn(
-          "playlight-discovery-btn group relative shrink-0 overflow-visible px-1 py-1 text-xs text-neutral-300 hover hover:!text-red-600 flex items-center gap-1",
+          "playlight-discovery-btn group relative shrink-0 overflow-visible px-1 py-1 text-xs text-neutral-300 hover hover:!text-blue-400 flex items-center gap-1",
           GAME_CHROME_NO_BG_HOVER,
           className,
         )}
@@ -117,7 +117,7 @@ export default function PlaylightDiscoveryButton({
             />
           )}
         </span>
-        <span className="hidden sm:inline opacity-80 transition-[opacity,color] group-hover:opacity-100 group-hover:!text-red-600">
+        <span className="hidden sm:inline opacity-80 transition-[opacity,color] group-hover:opacity-100 group-hover:!text-blue-400">
           {label}
         </span>
       </Button>

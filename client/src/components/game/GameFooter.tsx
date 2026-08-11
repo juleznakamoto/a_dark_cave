@@ -38,11 +38,13 @@ import { GAME_CHROME_NO_BG_HOVER } from "./gameChrome";
 import { useCoinHoverParticles } from "@/components/ui/coin-hover-particles";
 import { FOOTER_TRADER_PARTICLE_CONFIG } from "@/components/ui/bubbly-button.particles";
 
+const FOOTER_CONTROL_BTN_BASE =
+  `group shrink-0 px-1 py-1 text-xs text-neutral-300 hover ${GAME_CHROME_NO_BG_HOVER}`;
 const FOOTER_CONTROL_BTN =
-  `group shrink-0 px-1 py-1 text-xs text-neutral-300 hover hover:!text-red-600 ${GAME_CHROME_NO_BG_HOVER}`;
+  `${FOOTER_CONTROL_BTN_BASE} hover:!text-red-600`;
 const FOOTER_CONTROL_BTN_FADE =
   "opacity-80 transition-[opacity,color] group-hover:opacity-100";
-/** Icons keep their color on hover; labels still go red via FOOTER_CONTROL_TEXT. */
+/** Icons keep their color on hover; labels match via FOOTER_CONTROL_TEXT / accent spans. */
 const FOOTER_CONTROL_ICON =
   `${FOOTER_CONTROL_BTN_FADE} text-neutral-300 group-hover:!text-neutral-300`;
 const FOOTER_CONTROL_SVG_ICON_HOVER =
@@ -56,6 +58,8 @@ const FOOTER_LEGAL_LINK =
 /** Heart stays red; opacity-only transition so scale pump is not overridden. */
 const DONATE_HEART =
   "donate-heart text-base leading-none text-red-600 opacity-80 group-hover:opacity-100 transition-opacity";
+const FOOTER_TRADER_TEXT =
+  `${FOOTER_CONTROL_BTN_FADE} group-hover:!text-yellow-500`;
 
 function SteamDemoProgressBar() {
   const { t } = useTranslation("ui");
@@ -221,7 +225,7 @@ export default function GameFooter() {
                 size="xs"
                 onClick={() => setShopDialogOpen(true, "footer")}
                 aria-label={t("footer.openShop")}
-                className={`${FOOTER_CONTROL_BTN} flex items-center gap-1`}
+                className={`${FOOTER_CONTROL_BTN_BASE} hover:!text-yellow-500 flex items-center gap-1`}
                 {...footerTraderHoverHandlers}
               >
                 <span ref={footerTraderIconRef} className="inline-flex" aria-hidden>
@@ -231,7 +235,7 @@ export default function GameFooter() {
                     className="text-yellow-500 opacity-80 transition-[opacity,color] group-hover:opacity-100 group-hover:!text-yellow-500"
                   />
                 </span>
-                <span className={FOOTER_CONTROL_TEXT}>
+                <span className={FOOTER_TRADER_TEXT}>
                   {t("footer.trader")}
                 </span>
               </Button>
