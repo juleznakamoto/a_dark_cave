@@ -329,7 +329,8 @@ body {
 .adc-share-actions-enter {
   opacity: 0;
   pointer-events: none;
-  animation: share-actions-enter 200ms ease-out 500ms forwards;
+  /* Card 500ms + 500ms pause; keep in sync with SHARE_ACTIONS_DELAY_MS. */
+  animation: share-actions-enter 200ms ease-out 1000ms forwards;
 }
 
 .adc-share-actions-enter.is-ready {
