@@ -291,6 +291,7 @@ export default function GameFooter() {
               if (platform === "steam") {
                 return (
                   <div key={platform} className="contents">
+                    {feedbackButton}
                     <HoverCalloutTooltip
                       label={t("footer.wishlistOnSteam")}
                       side="top"
@@ -308,7 +309,6 @@ export default function GameFooter() {
                     >
                       {socialLink}
                     </HoverCalloutTooltip>
-                    {feedbackButton}
                   </div>
                 );
               }
