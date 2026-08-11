@@ -88,7 +88,7 @@ export function TraderTabButton({
         onClick={onClick}
         data-testid="tab-trader"
       >
-        <span ref={iconRef} className="inline-flex" aria-hidden>
+        <span ref={iconRef} className="inline-flex items-end" aria-hidden>
           <GameUiIcon
             name="trader"
             sizeClassName={TAB_ICON_SIZE_CLASS}

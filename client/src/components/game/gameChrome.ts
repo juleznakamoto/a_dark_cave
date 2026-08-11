@@ -41,18 +41,21 @@ export const GAME_PANEL_HEADER_INDICATOR_GLYPH_CLASS =
 export const GAME_PANEL_HEADER_INDICATOR_INNER_CLASS =
   "relative inline-flex h-full w-full items-center justify-center";
 
-/** Anchor tall tab SVG masks (e.g. hourglass) to the icon box bottom. */
+/** Anchor tab SVG masks to the icon box bottom (wide icons are otherwise vertically centered). */
 export const TAB_ICON_MASK_BOTTOM =
   "[mask-position:bottom] [-webkit-mask-position:bottom]";
 
-/** Optical align tab mask icons with capital labels in GAME_PANEL_HEADER_BAND. */
-export const TAB_ICON_ALIGN_CLASS = "translate-y-[1px]";
+/**
+ * Align tab mask icons with capital labels in GAME_PANEL_HEADER_BAND.
+ * Mask-bottom keeps wide art (coin stack, quest book) on the text baseline.
+ */
+export const TAB_ICON_ALIGN_CLASS = `${TAB_ICON_MASK_BOTTOM} translate-y-[1px]`;
 
 /** Default size for Cave/City/… tab mask icons (scales with `--adc-text-scale`). */
 export const TAB_ICON_SIZE_CLASS = "game-tab-icon";
 
-/** Timed-event hourglass tab icon alignment (tweak translate if needed). */
-export const TAB_TIMED_EVENT_ICON_CLASS = `${TAB_ICON_MASK_BOTTOM} ${TAB_ICON_ALIGN_CLASS}`;
+/** Timed-event hourglass tab icon alignment (same baseline as other tab icons). */
+export const TAB_TIMED_EVENT_ICON_CLASS = TAB_ICON_ALIGN_CLASS;
 
 /** Mask icons (rewards diamond) — glow via `.lime-accent-mask-icon` in index.css. */
 export const LIME_ACCENT_MASK_ICON_CLASS = "lime-accent-mask-icon";
