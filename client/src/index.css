@@ -61,6 +61,13 @@ body {
     color-scheme: dark;
   }
 
+  /* Steam widget iframe: must stay `normal` to match Steam’s document scheme.
+     Otherwise the browser paints an opaque white canvas over our shader. */
+  iframe.steam-store-widget-frame {
+    color-scheme: normal !important;
+    background-color: transparent !important;
+  }
+
   html {
     @apply dark;
   }

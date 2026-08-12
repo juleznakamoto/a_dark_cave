@@ -12,16 +12,17 @@ export type EndScreenBackgroundVariant = "default" | "starship";
 
 /**
  * Official Steam store widget (Steamworks Embed / CreateWidget output).
- * Exact markup Steam generates:
- * `<iframe src="…/widget/{appid}/" frameborder="0" width="646" height="190"></iframe>`
- * Optional `?t=` description is supported by Steam’s CreateWidget.
+ * Exact base size Steam’s CreateWidget uses is 646×190. Under 500px wide, Steam’s
+ * own widget CSS switches to the compact capsule layout — we embed at 460×190.
  *
- * Our app uses `color-scheme: dark` on `:root`. Steam’s widget document does not,
- * so browsers paint an opaque iframe canvas unless schemes are aligned.
+ * Transparency: `index.css` sets `color-scheme: dark` on `*`, but Steam’s widget
+ * document uses the default (`normal`) with a transparent body. Mismatched schemes
+ * make the browser paint an opaque white iframe canvas. Force `normal` on this
+ * iframe so schemes match and the end-screen shader shows through.
  * @see https://partner.steamgames.com/doc/marketing/widget
  * @see https://fvsch.com/transparent-iframes
  */
-const STEAM_WIDGET_WIDTH = 646;
+const STEAM_WIDGET_WIDTH = 460;
 const STEAM_WIDGET_HEIGHT = 190;
 
 function SteamStoreWidget() {
@@ -43,7 +44,7 @@ function SteamStoreWidget() {
   }, []);
 
   return (
-    <div ref={wrapRef} className="mx-auto w-full max-w-[646px] px-2">
+    <div ref={wrapRef} className="mx-auto w-full max-w-[460px] px-2">
       <div
         className="relative overflow-hidden bg-transparent"
         style={{
@@ -60,12 +61,10 @@ function SteamStoreWidget() {
           height={STEAM_WIDGET_HEIGHT}
           loading="lazy"
           allowTransparency
-          className="absolute left-0 top-0 border-0 bg-transparent"
+          className="steam-store-widget-frame absolute left-0 top-0 border-0"
           style={{
             transform: `scale(${scale})`,
             transformOrigin: "top left",
-            backgroundColor: "transparent",
-            colorScheme: "light dark",
           }}
         />
       </div>
