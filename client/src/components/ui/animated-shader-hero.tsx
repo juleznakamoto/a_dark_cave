@@ -682,10 +682,10 @@ const Hero: React.FC<HeroProps> = ({
                     className={END_SCREEN_LINK_BUTTON_CLASS}
                   >
                     <span
-                      className="inline-flex h-3.5 w-3.5 shrink-0 items-center justify-center text-sm leading-none"
+                      className="donate-heart inline-flex h-3.5 w-3.5 shrink-0 items-center justify-center text-sm leading-none text-red-600"
                       aria-hidden
                     >
-                      ❤️
+                      ❤︎⁠
                     </span>
                     <span>
                       {t("endScreen.buyMeACoffee", {
