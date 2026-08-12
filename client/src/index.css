@@ -1021,7 +1021,7 @@ html.adc-text-large .game-panel-header-indicator-row {
   animation: madness-pulse 1s ease-in-out infinite;
 }
 
-/* Shadow-only lub-dub at 1 beat/sec (dialog stays still). */
+/* Shadow-only lub-dub at 0.5 beat/sec (dialog stays still). */
 @keyframes cube-glow-pulse {
   0%,
   100% {
@@ -1046,7 +1046,7 @@ html.adc-text-large .game-panel-header-indicator-row {
 }
 
 .cube-dialog-glow {
-  animation: cube-glow-pulse 1s ease-in-out infinite;
+  animation: cube-glow-pulse 2s ease-in-out infinite;
 }
 
 @keyframes madness-glow-pulse {
