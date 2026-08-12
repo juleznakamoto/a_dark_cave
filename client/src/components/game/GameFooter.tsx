@@ -351,6 +351,7 @@ export default function GameFooter() {
                     <HoverCalloutTooltip
                       label={t("footer.wishlistOnSteam")}
                       side="top"
+                      portal
                       forceVisible={showPauseSleepCallout}
                       fadeDurationMs={showPauseSleepCallout ? 1_000 : undefined}
                       onCalloutClick={
