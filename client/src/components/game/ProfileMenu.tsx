@@ -525,12 +525,12 @@ export function GameHeaderRewardsShortcut() {
         {...rewardsTasksHoverHandlers}
         className={`group relative flex h-7 shrink-0 items-center gap-1 overflow-visible px-1 ${GAME_CHROME_NO_BG_HOVER}`}
       >
-        <span
-          ref={rewardsTasksRingRef}
-          className="exclusive-promo-shockwave-ring"
-          aria-hidden
-        />
-        <span ref={rewardsTasksIconRef} className="relative z-[1] inline-flex">
+        <span ref={rewardsTasksIconRef} className="relative z-[1] inline-flex overflow-visible">
+          <span
+            ref={rewardsTasksRingRef}
+            className="exclusive-promo-shockwave-ring"
+            aria-hidden
+          />
           <GameUiIcon
             name="socialReward"
             sizeClassName={TAB_ICON_SIZE_CLASS}
