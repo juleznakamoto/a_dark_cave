@@ -381,8 +381,10 @@ class SharedProgressShaderRenderer {
       const height = shapeRect.height * dpr;
       if (width < 0.5 || height < 0.5) continue;
 
-      // Scissor to the fill tip, with 1px pad outside the cell so the outside-only
-      // AA fringe can sit under the CSS rim (box-shadow) instead of getting cut.
+      // Scissor to the fill tip. Pad top/bottom/right 1px so outside-only AA can
+      // sit under the CSS rim (box-shadow). Do not pad left: that bled into the
+      // gap before each segment and made the grow look like it started left of
+      // the section.
       const fillLeft = (rect.left - canvasRect.left) * dpr;
       const fillRight = fillLeft + rect.width * dpr;
       const fillBottom = canvasH - (rect.bottom - canvasRect.top) * dpr;
@@ -390,7 +392,7 @@ class SharedProgressShaderRenderer {
       const outerRight = left + width;
       const outerTop = bottom + height;
 
-      const sx = Math.max(0, Math.floor(Math.max(fillLeft, left) - 1));
+      const sx = Math.max(0, Math.floor(Math.max(fillLeft, left)));
       const sy = Math.max(0, Math.floor(Math.max(fillBottom, bottom) - 1));
       const sRight = Math.min(
         canvasW,

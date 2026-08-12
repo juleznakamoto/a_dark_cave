@@ -238,6 +238,10 @@ export function SegmentedProgress({
     // eslint-disable-next-line react-hooks/exhaustive-deps -- intentional
   }, [value, isInitialized, animate, tweenDurationMs]);
 
+  const tipSegmentIndex = emitSparksOnGrow
+    ? getActiveSegmentIndex(displayValue, segments)
+    : -1;
+
   return (
     <>
       <div
@@ -287,6 +291,11 @@ export function SegmentedProgress({
               const delay = isInitialized && !changeOnlyGrow ? index * 20 : 0;
               const showSegmentGlow =
                 glowKey > 0 && index === glowSegmentIndex && fill > 0;
+              // Anchor sparks to the real fill tip (not displayValue% of the
+              // track). Gaps between segments make a raw % sit left of each
+              // section's start.
+              const showTipMarker =
+                tipSegmentIndex >= 0 && fill > 0 && index === tipSegmentIndex;
 
               return (
                 <div
@@ -335,6 +344,24 @@ export function SegmentedProgress({
                           }}
                         />
                       )}
+                      {showTipMarker ? (
+                        // Zero-size tip at the fill's right edge so sparks follow
+                        // the segment box, not a gap-blind track percentage.
+                        <div
+                          ref={tipMarkerRef}
+                          className="pointer-events-none absolute right-0 top-1/2 z-20 w-0 -translate-y-1/2"
+                          aria-hidden
+                        >
+                          {growSparkTipGlow && showGrowTransition && (
+                            <div
+                              className={cn(
+                                "absolute right-0 top-1/2 h-2 min-h-[8px] w-0.5 -translate-y-1/2",
+                                sparkPalette.tipMarkerClassName,
+                              )}
+                            />
+                          )}
+                        </div>
+                      ) : null}
                     </div>
                   </div>
                   {/*
@@ -357,26 +384,6 @@ export function SegmentedProgress({
                 </div>
               );
             })}
-
-            {emitSparksOnGrow && (
-              // Zero-size tip anchor (same as Progress): glow radius uses
-              // Math.max(17, height*5); h-full here inflated the orb.
-              <div
-                ref={tipMarkerRef}
-                className="pointer-events-none absolute top-1/2 z-20 w-0 -translate-y-1/2"
-                style={{ left: `${Math.min(100, Math.max(0, displayValue))}%` }}
-                aria-hidden
-              >
-                {growSparkTipGlow && showGrowTransition && (
-                  <div
-                    className={cn(
-                      "absolute right-0 top-1/2 h-2 min-h-[8px] w-0.5 -translate-y-1/2",
-                      sparkPalette.tipMarkerClassName,
-                    )}
-                  />
-                )}
-              </div>
-            )}
           </div>
         </div>
 
