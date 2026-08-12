@@ -2,7 +2,7 @@ import React from "react";
 import type { GameState } from "@shared/schema";
 import { villageBuildActions } from "./villageBuildActions";
 import { getBuildingUpgradeMarginalEffectLines } from "./buildingTooltipSections";
-import { craftActionIdToItemKey, getCraftItemDescription } from "./craftItemDescription";
+import { craftActionIdToItemKey } from "./craftItemDescription";
 import { clothingEffects, toolEffects, weaponEffects } from "./effects";
 import { renderItemTooltip } from "./itemTooltips";
 import { isCraftOnceAction, isBuildingAction } from "./insightReveal";
@@ -36,7 +36,7 @@ function getCraftItemType(
   return null;
 }
 
-/** Effect lines only (no title/description) after insight reveal is purchased. */
+/** Effect lines only (no title/description) for craft/build tooltips. */
 export function getRevealedEffectsTooltipContent(
   actionId: string,
   state: GameState,
@@ -63,11 +63,11 @@ export function getRevealedEffectsTooltipContent(
   return null;
 }
 
+/** Effects for action tooltips; always available (no insight gate). */
 export function getRevealedEffectsForActionTooltip(
   actionId: string,
   state: GameState,
 ): React.ReactNode | null {
-  if (!(state.revealedEffects ?? []).includes(actionId)) return null;
   return getRevealedEffectsTooltipContent(actionId, state);
 }
 

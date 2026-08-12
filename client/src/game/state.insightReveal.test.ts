@@ -3,8 +3,6 @@ import {
   ACHIEVEMENT_TITLE_INSIGHT_COST_TIER_0,
   BUILDING_DESCRIPTIONS_INSIGHT_KEY,
   CRAFT_DESCRIPTIONS_INSIGHT_KEY,
-  BUILDING_DESCRIPTIONS_INSIGHT_COST,
-  CRAFT_DESCRIPTIONS_INSIGHT_COST,
   getAchievementTitleInsightKey,
   PRESET_UNLOCK_INSIGHT_KEY,
   TIMED_EVENT_INSIGHT_PROLONG_KEY,
@@ -18,7 +16,7 @@ describe("revealBuildingDescriptions", () => {
     useGameStore.getState().initialize();
   });
 
-  it("deducts insight and starts reveal animation before flag is set", () => {
+  it("does nothing (descriptions are always unlocked)", () => {
     useGameStore.setState({
       buildings: {
         ...useGameStore.getState().buildings,
@@ -31,48 +29,11 @@ describe("revealBuildingDescriptions", () => {
       },
     });
 
-    const ok = useGameStore.getState().revealBuildingDescriptions();
-    expect(ok).toBe(true);
-
-    const after = useGameStore.getState();
-    expect(after.resources.insight).toBe(
-      3000 - BUILDING_DESCRIPTIONS_INSIGHT_COST,
-    );
-    expect(after.buildingDescriptionsRevealed).toBeFalsy();
-    expect(
-      after.insightRevealing[BUILDING_DESCRIPTIONS_INSIGHT_KEY],
-    ).toBeGreaterThan(Date.now());
+    expect(useGameStore.getState().revealBuildingDescriptions()).toBe(false);
+    expect(useGameStore.getState().resources.insight).toBe(3000);
   });
 
-  it("does nothing without prerequisites or insufficient insight", () => {
-    useGameStore.setState({
-      buildings: {
-        ...useGameStore.getState().buildings,
-        clerksHut: 1,
-        buildersLodge: 0,
-      },
-      resources: {
-        ...useGameStore.getState().resources,
-        insight: 3000,
-      },
-    });
-    expect(useGameStore.getState().revealBuildingDescriptions()).toBe(false);
-
-    useGameStore.setState({
-      buildings: {
-        ...useGameStore.getState().buildings,
-        buildersLodge: 1,
-      },
-      resources: {
-        ...useGameStore.getState().resources,
-        insight: 100,
-      },
-    });
-    expect(useGameStore.getState().revealBuildingDescriptions()).toBe(false);
-    expect(useGameStore.getState().resources.insight).toBe(100);
-  });
-
-  it("sets buildingDescriptionsRevealed after reveal window", () => {
+  it("clears expired buildingDescriptions reveal animation keys", () => {
     useGameStore.setState({
       buildingDescriptionsRevealed: false,
       insightRevealing: {
@@ -93,7 +54,7 @@ describe("revealCraftDescriptions", () => {
     useGameStore.getState().initialize();
   });
 
-  it("deducts insight and starts reveal animation before flag is set", () => {
+  it("does nothing (descriptions are always unlocked)", () => {
     useGameStore.setState({
       buildings: {
         ...useGameStore.getState().buildings,
@@ -106,48 +67,11 @@ describe("revealCraftDescriptions", () => {
       },
     });
 
-    const ok = useGameStore.getState().revealCraftDescriptions();
-    expect(ok).toBe(true);
-
-    const after = useGameStore.getState();
-    expect(after.resources.insight).toBe(
-      3000 - CRAFT_DESCRIPTIONS_INSIGHT_COST,
-    );
-    expect(after.craftDescriptionsRevealed).toBeFalsy();
-    expect(
-      after.insightRevealing[CRAFT_DESCRIPTIONS_INSIGHT_KEY],
-    ).toBeGreaterThan(Date.now());
+    expect(useGameStore.getState().revealCraftDescriptions()).toBe(false);
+    expect(useGameStore.getState().resources.insight).toBe(3000);
   });
 
-  it("does nothing without prerequisites or insufficient insight", () => {
-    useGameStore.setState({
-      buildings: {
-        ...useGameStore.getState().buildings,
-        clerksHut: 1,
-        blacksmith: 0,
-      },
-      resources: {
-        ...useGameStore.getState().resources,
-        insight: 3000,
-      },
-    });
-    expect(useGameStore.getState().revealCraftDescriptions()).toBe(false);
-
-    useGameStore.setState({
-      buildings: {
-        ...useGameStore.getState().buildings,
-        blacksmith: 1,
-      },
-      resources: {
-        ...useGameStore.getState().resources,
-        insight: 100,
-      },
-    });
-    expect(useGameStore.getState().revealCraftDescriptions()).toBe(false);
-    expect(useGameStore.getState().resources.insight).toBe(100);
-  });
-
-  it("sets craftDescriptionsRevealed after reveal window", () => {
+  it("clears expired craftDescriptions reveal animation keys", () => {
     useGameStore.setState({
       craftDescriptionsRevealed: false,
       insightRevealing: {

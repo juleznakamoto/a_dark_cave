@@ -11,13 +11,13 @@ export type ActionTooltipParts = {
   headerTrailing?: React.ReactNode;
   /** Flavour text — never includes the action/item title. */
   description?: string;
-  /** Stat/effect lines (e.g. after paying insight to reveal). */
+  /** Stat/effect lines for the craft/build result. */
   effects?: React.ReactNode;
   className?: string;
   style?: React.CSSProperties;
 };
 
-/** Standard action tooltip order: header → divider → description → divider → effects. */
+/** Standard action tooltip order: header → divider → effects → divider → description. */
 /** Matches building upgrade tooltips: trailing icon sits in the header row only. */
 export function wrapTooltipHeaderWithTrailing(
   header: React.ReactNode,
@@ -54,18 +54,18 @@ export function composeActionTooltip({
   return (
     <div className={className} style={style}>
       {hasHeader ? wrapTooltipHeaderWithTrailing(header, headerTrailing) : null}
-      {hasDescription ? (
+      {hasEffects ? (
         <>
           {hasHeader ? <ActionTooltipSeparator /> : null}
+          <div>{effects}</div>
+        </>
+      ) : null}
+      {hasDescription ? (
+        <>
+          {hasHeader || hasEffects ? <ActionTooltipSeparator /> : null}
           <div className="whitespace-normal text-muted-foreground">
             {description}
           </div>
-        </>
-      ) : null}
-      {hasEffects ? (
-        <>
-          {hasHeader || hasDescription ? <ActionTooltipSeparator /> : null}
-          <div>{effects}</div>
         </>
       ) : null}
     </div>

@@ -170,6 +170,16 @@ export function resolveEventChoiceCost(
   fallback?: string,
   vars?: TranslateOptions,
 ): string | undefined {
+  const costVariant = vars?.costVariant;
+  if (typeof costVariant === "string" && costVariant) {
+    const variantCost = tEvent(
+      catalogId,
+      `choices.${choiceId}.cost_${costVariant}`,
+      vars,
+    );
+    if (variantCost) return variantCost;
+  }
+
   const cost = tEvent(catalogId, `choices.${choiceId}.cost`, vars);
   if (cost) return cost;
 

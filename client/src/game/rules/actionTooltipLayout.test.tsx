@@ -5,7 +5,7 @@ import { render, screen } from "@testing-library/react";
 import { composeActionTooltip } from "./actionTooltipLayout";
 
 describe("composeActionTooltip", () => {
-  it("orders cost, description, and effects with dividers between sections", () => {
+  it("orders cost, effects, and description with dividers between sections", () => {
     const node = composeActionTooltip({
       header: <span data-testid="cost">-10 Wood</span>,
       description: "A fine bow.",
@@ -13,9 +13,13 @@ describe("composeActionTooltip", () => {
     });
     render(<>{node}</>);
 
-    expect(screen.getByTestId("cost")).toBeTruthy();
-    expect(screen.getByText("A fine bow.")).toBeTruthy();
-    expect(screen.getByTestId("effects")).toBeTruthy();
+    const cost = screen.getByTestId("cost");
+    const effects = screen.getByTestId("effects");
+    const description = screen.getByText("A fine bow.");
+    expect(cost.compareDocumentPosition(effects) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
+    expect(
+      effects.compareDocumentPosition(description) & Node.DOCUMENT_POSITION_FOLLOWING,
+    ).toBeTruthy();
     expect(document.querySelectorAll(".border-t").length).toBe(2);
   });
 
@@ -23,6 +27,16 @@ describe("composeActionTooltip", () => {
     const node = composeActionTooltip({
       header: <span data-testid="cost">-10 Wood</span>,
       description: "A fine bow.",
+    });
+    render(<>{node}</>);
+
+    expect(document.querySelectorAll(".border-t").length).toBe(1);
+  });
+
+  it("puts a divider above effects when header is present", () => {
+    const node = composeActionTooltip({
+      header: <span data-testid="cost">-10 Wood</span>,
+      effects: <span data-testid="effects">Strength: +2</span>,
     });
     render(<>{node}</>);
 

@@ -14,11 +14,11 @@ export const INSIGHT_REVEAL_STONE_HUT_MID_THRESHOLD = 5;
 export const INSIGHT_REVEAL_DURATION_MS = 3_000;
 /** Action button cooldown (seconds); ticks subtract 0.25 every 250ms → 1s per unit. */
 export const INSIGHT_REVEAL_ACTION_COOLDOWN_SEC = 3;
-/** One-time cost to reveal all side-panel stat effect tooltips. */
+/** @deprecated Stat effect tooltips are always visible. */
 export const STAT_EFFECTS_INSIGHT_COST = 1000;
-/** One-time cost to reveal all village build action descriptions. */
+/** @deprecated Building descriptions are always visible. */
 export const BUILDING_DESCRIPTIONS_INSIGHT_COST = 1000;
-/** One-time cost to reveal all cave craft action descriptions. */
+/** @deprecated Craft descriptions are always visible. */
 export const CRAFT_DESCRIPTIONS_INSIGHT_COST = 1000;
 /** Insight cost to unveil a first-ring (tier 0 / leftmost) achievement title. */
 export const ACHIEVEMENT_TITLE_INSIGHT_COST_TIER_0 = 250;
@@ -152,85 +152,56 @@ export function getInsightRevealCost(
   return null;
 }
 
-export function isBuildingDescriptionsRevealed(state: GameState): boolean {
-  return Boolean(state.buildingDescriptionsRevealed);
+export function isBuildingDescriptionsRevealed(_state: GameState): boolean {
+  return true;
 }
 
-export function isCraftDescriptionsRevealed(state: GameState): boolean {
-  return Boolean(state.craftDescriptionsRevealed);
+export function isCraftDescriptionsRevealed(_state: GameState): boolean {
+  return true;
 }
 
+/** @deprecated Building descriptions are always visible; always false. */
 export function isBuildingDescriptionsUnlockAvailable(
-  state: Pick<GameState, "buildings">,
+  _state: Pick<GameState, "buildings">,
 ): boolean {
-  return (
-    (state.buildings.clerksHut ?? 0) >= 1 &&
-    (state.buildings.buildersLodge ?? 0) >= 1
-  );
+  return false;
 }
 
+/** @deprecated Craft descriptions are always visible; always false. */
 export function isCraftDescriptionsUnlockAvailable(
-  state: Pick<GameState, "buildings">,
+  _state: Pick<GameState, "buildings">,
 ): boolean {
-  return (
-    (state.buildings.clerksHut ?? 0) >= 1 &&
-    (state.buildings.blacksmith ?? 0) >= 1
-  );
+  return false;
 }
 
 export function isBuildingDescriptionVisible(
-  state: GameState,
-  actionId: string,
+  _state: GameState,
+  _actionId: string,
 ): boolean {
-  return Boolean(
-    state.books?.book_of_craftsmanship ||
-    isBuildingDescriptionsRevealed(state) ||
-    (state.revealedEffects ?? []).includes(actionId),
-  );
+  return true;
 }
 
 export function isCraftDescriptionVisible(
-  state: GameState,
-  actionId: string,
+  _state: GameState,
+  _actionId: string,
 ): boolean {
-  return Boolean(
-    state.books?.book_of_craftsmanship ||
-    isCraftDescriptionsRevealed(state) ||
-    (state.revealedEffects ?? []).includes(actionId),
-  );
+  return true;
 }
 
+/** @deprecated Building descriptions are always visible; always false. */
 export function canRevealBuildingDescriptions(
-  state: GameState,
-  insightRevealing?: Record<string, number>,
+  _state: GameState,
+  _insightRevealing?: Record<string, number>,
 ): boolean {
-  if (!isInsightUnlocked(state)) return false;
-  if (!isBuildingDescriptionsUnlockAvailable(state)) return false;
-  if (isBuildingDescriptionsRevealed(state)) return false;
-  if (
-    isInsightRevealInProgress(
-      BUILDING_DESCRIPTIONS_INSIGHT_KEY,
-      insightRevealing,
-    )
-  ) {
-    return false;
-  }
-  return getInsightAmount(state) >= BUILDING_DESCRIPTIONS_INSIGHT_COST;
+  return false;
 }
 
+/** @deprecated Craft descriptions are always visible; always false. */
 export function canRevealCraftDescriptions(
-  state: GameState,
-  insightRevealing?: Record<string, number>,
+  _state: GameState,
+  _insightRevealing?: Record<string, number>,
 ): boolean {
-  if (!isInsightUnlocked(state)) return false;
-  if (!isCraftDescriptionsUnlockAvailable(state)) return false;
-  if (isCraftDescriptionsRevealed(state)) return false;
-  if (
-    isInsightRevealInProgress(CRAFT_DESCRIPTIONS_INSIGHT_KEY, insightRevealing)
-  ) {
-    return false;
-  }
-  return getInsightAmount(state) >= CRAFT_DESCRIPTIONS_INSIGHT_COST;
+  return false;
 }
 
 /** @deprecated Per-action build/craft insight reveal removed; always false. */

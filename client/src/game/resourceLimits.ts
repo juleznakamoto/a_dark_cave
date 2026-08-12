@@ -53,8 +53,9 @@ export function isBombAtLimit(
 const UNLIMITED_RESOURCES = ['silver', 'gold', 'insight'];
 
 // Get the current resource limit based on storage building level.
-// IMPORTANT: Server-side validation mirrors this logic in
-// supabase/migrations/001_supabase-setup.sql (save_game_with_analytics).
+// IMPORTANT: Server-side validation mirrors storage tiers in
+// supabase/migrations (save_game_with_analytics). Migration 042 allows
+// event overcap past this limit (sanity ceiling); production stays client-capped.
 // If you change storage tiers or limits here, update the SQL function too.
 export function getResourceLimit(state: GameState): number {
   // Determine storage level based on highest storage building
@@ -85,7 +86,21 @@ export function isResourceLimited(resourceKey: string, state: GameState): boolea
   return !UNLIMITED_RESOURCES.includes(resourceKey);
 }
 
-// Cap a resource value to the current limit
+export type ConstrainResourceOptions = {
+  /** Amount before this write. Used to preserve existing overcap on production/action paths. */
+  previousAmount?: number;
+  /**
+   * When true, skip warehouse storage clamping (event rewards may exceed storage).
+   * The storage limit itself is unchanged; excess is kept until spent.
+   * Hard caps (Veinfire Elixir) still apply.
+   */
+  allowOvercap?: boolean;
+};
+
+/**
+ * Hard clamp to the warehouse storage limit (and Veinfire hard cap).
+ * Prefer `constrainResourceAmount` for gameplay writes so event overcap is not wiped.
+ */
 export function capResourceToLimit(
   resourceKey: string,
   value: number,
@@ -101,9 +116,46 @@ export function capResourceToLimit(
   }
 
   const limit = getResourceLimit(state);
-  const cappedValue = Math.min(value, limit);
+  return Math.min(value, limit);
+}
 
-  return cappedValue;
+/**
+ * Constrain a resource write for production, actions, or event rewards.
+ * - Without `allowOvercap`: cannot gain past the storage limit; existing overcap is kept (not clamped down).
+ * - With `allowOvercap`: warehouse storage limit ignored (events); Veinfire hard cap still applies.
+ */
+export function constrainResourceAmount(
+  resourceKey: string,
+  nextAmount: number,
+  state: GameState,
+  options?: ConstrainResourceOptions,
+): number {
+  let value = Math.max(0, nextAmount);
+
+  if (!isResourceLimited(resourceKey, state)) {
+    return value;
+  }
+
+  if (isVeinfireElixirResource(resourceKey)) {
+    return Math.min(value, getMaxVeinfireElixirLimit());
+  }
+
+  if (options?.allowOvercap) {
+    return value;
+  }
+
+  const limit = getResourceLimit(state);
+  if (value <= limit) {
+    return value;
+  }
+
+  const previous = options?.previousAmount;
+  if (previous !== undefined && previous >= limit) {
+    // Already at/over cap: allow decreases, block further gains
+    return Math.min(value, previous);
+  }
+
+  return limit;
 }
 
 // Get display text for current storage capacity

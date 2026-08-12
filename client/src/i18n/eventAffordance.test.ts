@@ -1,5 +1,6 @@
-import { describe, it, expect, beforeEach } from "vitest";
+import { describe, it, expect, beforeAll, beforeEach } from "vitest";
 import i18n from "./index";
+import { ensureGameplayLocalesLoaded } from "./loadLocaleResources";
 import {
   eventChoiceHasBlockingCost,
   getEventChoiceAffordance,
@@ -39,21 +40,39 @@ function makeState(
 }
 
 describe("eventAffordance", () => {
+  beforeAll(async () => {
+    await ensureGameplayLocalesLoaded();
+  });
+
   beforeEach(async () => {
     await i18n.changeLanguage("en");
   });
 
-  it("resolves solstice gathering costs from i18n template vars in English", () => {
+  it("resolves first solstice gathering wood costs from i18n template vars in English", () => {
     const costs = getResourceCostsFromCatalogTemplate(
       "solsticeGathering",
       "hostSolstice",
-      { goldCost: 25, foodCost: 250 },
+      { costVariant: "wood", woodCost: 250, foodCost: 250 },
       makeState().resources,
     );
 
     expect(costs).toEqual([
-      { resource: "gold", amount: 25 },
+      { resource: "wood", amount: 250 },
       { resource: "food", amount: 250 },
+    ]);
+  });
+
+  it("resolves later solstice gathering gold costs from i18n template vars in English", () => {
+    const costs = getResourceCostsFromCatalogTemplate(
+      "solsticeGathering",
+      "hostSolstice",
+      { costVariant: "gold", goldCost: 50, foodCost: 500 },
+      makeState().resources,
+    );
+
+    expect(costs).toEqual([
+      { resource: "gold", amount: 50 },
+      { resource: "food", amount: 500 },
     ]);
   });
 
@@ -65,14 +84,14 @@ describe("eventAffordance", () => {
       makeState(),
       {
         catalogId: "solsticeGathering",
-        vars: { goldCost: 25, foodCost: 250 },
+        vars: { costVariant: "gold", goldCost: 50, foodCost: 500 },
       },
     );
 
     expect(affordance.canAfford).toBe(true);
     expect(affordance.costs).toEqual([
-      { resource: "gold", amount: 25 },
-      { resource: "food", amount: 250 },
+      { resource: "gold", amount: 50 },
+      { resource: "food", amount: 500 },
     ]);
   });
 
@@ -84,13 +103,28 @@ describe("eventAffordance", () => {
       makeState({ food: 100 }),
       {
         catalogId: "solsticeGathering",
-        vars: { goldCost: 25, foodCost: 250 },
+        vars: { costVariant: "gold", goldCost: 50, foodCost: 500 },
       },
     );
 
     expect(affordance.canAfford).toBe(false);
     expect(affordance.individualAffordance.food).toBe(false);
     expect(affordance.individualAffordance.gold).toBe(true);
+  });
+
+  it("marks first solstice gathering unaffordable when wood is too low", () => {
+    const affordance = getEventChoiceAffordance(
+      { id: "hostSolstice", effect: () => ({}) },
+      makeState({ wood: 100 }),
+      {
+        catalogId: "solsticeGathering",
+        vars: { costVariant: "wood", woodCost: 250, foodCost: 250 },
+      },
+    );
+
+    expect(affordance.canAfford).toBe(false);
+    expect(affordance.individualAffordance.wood).toBe(false);
+    expect(affordance.individualAffordance.food).toBe(true);
   });
 
   it("uses merchant trade structured sellResource data", () => {

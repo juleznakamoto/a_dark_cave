@@ -15,7 +15,7 @@ import { capitalizeWords, cn } from "@/lib/utils";
 import { getTotalPopulationEffects } from "@/game/population";
 import { audioManager, SOUND_VOLUME } from "@/lib/audio";
 import { resetProductionCycle } from "@/game/loop";
-import { BOMB_RESOURCES, capResourceToLimit } from "@/game/resourceLimits";
+import { BOMB_RESOURCES, constrainResourceAmount } from "@/game/resourceLimits";
 import { gameStateSchema, type GameState } from "@shared/schema";
 
 /** Same order as the side-panel Resources list (schema key order + precious first). */
@@ -50,15 +50,25 @@ import {
   isSleepResourceAtStorageMax,
 } from "@/game/sleepGainDisplay";
 
-/** Match live play: limited resources cannot exceed storage cap during sleep simulation. */
+/** Match live play: soft storage cap during sleep (preserve event overcap, no further gains). */
 function clampSimulatedResourcesToStorage(
   simulated: Record<string, number>,
   gameState: GameState,
+  previousAmounts?: Record<string, number>,
 ): void {
   for (const key of Object.keys(simulated)) {
     const v = simulated[key];
     if (v === undefined || v === null || Number.isNaN(v)) continue;
-    simulated[key] = capResourceToLimit(key, Math.max(0, v), gameState);
+    const previous =
+      previousAmounts?.[key] ??
+      gameState.resources[key as keyof GameState["resources"]] ??
+      0;
+    simulated[key] = constrainResourceAmount(
+      key,
+      Math.max(0, v),
+      gameState,
+      { previousAmount: previous },
+    );
   }
 }
 
@@ -104,9 +114,11 @@ function applySleepProductionInterval(
   resources: Record<string, number>,
 ): void {
   const rates = getProductionPerInterval(state, multiplier);
+  const before: Record<string, number> = { ...resources };
   for (const [resource, rate] of Object.entries(rates)) {
     resources[resource] = (resources[resource] || 0) + rate;
   }
+  clampSimulatedResourcesToStorage(resources, state as GameState, before);
 }
 
 export default function IdleModeDialog() {
@@ -197,7 +209,6 @@ export default function IdleModeDialog() {
             PRODUCTION_SPEED_MULTIPLIER,
             offlineResources,
           );
-          clampSimulatedResourcesToStorage(offlineResources, currentState);
         }
 
         // Calculate the delta (change) from starting resources
@@ -341,10 +352,6 @@ export default function IdleModeDialog() {
           currentState,
           multiplier,
           simulatedResources,
-        );
-        clampSimulatedResourcesToStorage(
-          simulatedResources,
-          currentState as GameState,
         );
 
         // Calculate new deltas from initial state
@@ -602,12 +609,8 @@ export default function IdleModeDialog() {
             const currentAmount = isFocus
               ? focusPoints
               : Math.floor(
-                capResourceToLimit(
-                  resource,
-                  (initialResources[resource] || 0) +
-                  (accumulatedResources[resource] || 0),
-                  state as GameState,
-                ),
+                (initialResources[resource] || 0) +
+                (accumulatedResources[resource] || 0),
               );
             const isAtStorageMax =
               !isFocus &&

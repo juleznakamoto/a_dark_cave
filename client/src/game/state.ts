@@ -57,7 +57,7 @@ import {
   markSeenResources,
   isCompletedOneShotExecutionGhost,
 } from "@/game/stateHelpers";
-import { capResourceToLimit } from "@/game/resourceLimits";
+import { constrainResourceAmount } from "@/game/resourceLimits";
 import {
   resolveVillageEffectAnnouncementTheme,
   type VillageEffectDialogData,
@@ -1112,6 +1112,7 @@ const CAVE_EXPLORE_SOUND_ACTIONS = new Set([
 const mergeStateUpdates = (
   prevState: GameState,
   stateUpdates: Partial<GameState>,
+  options?: { allowResourceOvercap?: boolean },
 ): Partial<GameState> => {
   // Ensure resources never go negative when merging, and apply resource limits
   const mergedResources = { ...prevState.resources, ...stateUpdates.resources };
@@ -1124,8 +1125,18 @@ const mergeStateUpdates = (
       if (value < 0) {
         value = 0;
       }
-      // Then apply resource limit
-      value = capResourceToLimit(key, value, { ...prevState, ...stateUpdates });
+      const previousAmount =
+        prevState.resources[key as keyof GameState["resources"]] ?? 0;
+      // Event rewards may overcap; production/actions preserve existing overcap
+      value = constrainResourceAmount(
+        key,
+        value,
+        { ...prevState, ...stateUpdates },
+        {
+          previousAmount,
+          allowOvercap: options?.allowResourceOvercap,
+        },
+      );
       mergedResources[key as keyof typeof mergedResources] = value;
     }
   });
@@ -1991,7 +2002,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
     set({ detectedCurrency: currency }),
 
   updateResource: (resource: keyof GameState["resources"], amount: number) => {
-    // updateResource in stateHelpers automatically applies capResourceToLimit
+    // updateResource in stateHelpers automatically applies soft storage constraints
     set((state) => updateResource(state, resource, amount));
 
     // If updating free villagers, update population counts immediately
@@ -3907,8 +3918,11 @@ export const useGameStore = create<GameStore>((set, get) => ({
       clearCollectorPendingRewards
     ) {
       set((prevState) => {
-        // Use the same mergeStateUpdates function that other actions use
-        const mergedUpdates = mergeStateUpdates(prevState, updatedChanges);
+        // Use the same mergeStateUpdates function that other actions use.
+        // Event rewards may exceed warehouse storage (kept until spent).
+        const mergedUpdates = mergeStateUpdates(prevState, updatedChanges, {
+          allowResourceOvercap: true,
+        });
 
         const timedEventTab =
           collectorPendingRewards || clearCollectorPendingRewards
@@ -5027,14 +5041,16 @@ export const useGameStore = create<GameStore>((set, get) => ({
     set((state) => {
       const cappedUpdates: Partial<GameState["resources"]> = {};
 
-      // Apply resource limits to each updated resource
+      // Soft storage cap: block gains past limit, preserve event overcap
       for (const [key, value] of Object.entries(updates)) {
         if (typeof value === "number") {
-          // Cap the absolute value, not the delta
-          cappedUpdates[key as keyof typeof cappedUpdates] = capResourceToLimit(
+          const resourceKey = key as keyof GameState["resources"];
+          const previousAmount = state.resources[resourceKey] ?? 0;
+          cappedUpdates[resourceKey] = constrainResourceAmount(
             key,
             value,
             state,
+            { previousAmount },
           );
         }
       }

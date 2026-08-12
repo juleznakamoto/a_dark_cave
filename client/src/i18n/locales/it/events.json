@@ -1941,6 +1941,7 @@
     "choices": {
       "hostSolstice": {
         "cost": "{{goldCost}} oro, {{foodCost}} cibo",
+        "cost_wood": "{{woodCost}} legno, {{foodCost}} cibo",
         "label": "Ospita il raduno"
       },
       "refuseSolstice": {

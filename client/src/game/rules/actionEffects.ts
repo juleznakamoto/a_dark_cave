@@ -5,7 +5,7 @@ import {
   isBombResource,
   isVeinfireElixirResource,
   isResourceLimited,
-  capResourceToLimit,
+  constrainResourceAmount,
   BOMB_RESOURCES,
 } from "@/game/resourceLimits";
 import { collectStorageMaxHitUpdates } from "@/game/resourceStorageMax";
@@ -797,8 +797,12 @@ export function applyActionEffects(
         continue;
       }
       if (isBombResource(resourceKey)) continue;
+      const previousAmount =
+        state.resources[resourceKey as keyof GameState["resources"]] ?? 0;
       updates.resources[resourceKey as keyof typeof updates.resources] =
-        capResourceToLimit(resourceKey, value, state);
+        constrainResourceAmount(resourceKey, value, state, {
+          previousAmount,
+        });
     }
 
     const storageMaxHits = collectStorageMaxHitUpdates(

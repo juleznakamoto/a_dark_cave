@@ -16,7 +16,6 @@ import CooldownButton, {
   gameActionButtonRowsClassName,
 } from "@/components/CooldownButton";
 import { ActionButtonSlot } from "@/components/game/GameActionButtonStack";
-import { ActionInsightBadge } from "@/components/game/ActionInsightBadge";
 import { ConstructionBoostBadge } from "@/components/game/ConstructionBoostBadge";
 import { isConstructionBoostAvailable } from "@/game/constructionQueueSlots";
 import { isCraftDescriptionVisible } from "@/game/rules/insightReveal";
@@ -517,9 +516,6 @@ export default function CavePanel() {
                   {group.title && (
                     <h3 className="inline-flex items-center gap-1.5 text-xs font-medium text-foreground">
                       {group.title}
-                      {"isCraftSection" in group && group.isCraftSection ? (
-                        <ActionInsightBadge target="craftDescriptions" />
-                      ) : null}
                     </h3>
                   )}
                   <div className={gameActionButtonRowsClassName("w-full")}>

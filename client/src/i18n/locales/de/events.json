@@ -1959,6 +1959,7 @@
     "choices": {
       "hostSolstice": {
         "cost": "{{goldCost}} Gold, {{foodCost}} Nahrung",
+        "cost_wood": "{{woodCost}} Holz, {{foodCost}} Nahrung",
         "label": "Fest ausrichten"
       },
       "refuseSolstice": {

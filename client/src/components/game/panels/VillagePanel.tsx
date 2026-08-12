@@ -93,7 +93,6 @@ import { useState, useEffect, useRef, useCallback } from "react";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import { ANIMATED_COUNTER_TEXT_CLASS } from "@/components/ui/animated-counter";
 import { TooltipWrapper } from "@/components/game/TooltipWrapper";
-import { ActionInsightBadge } from "@/components/game/ActionInsightBadge";
 import { ConstructionBoostBadge } from "@/components/game/ConstructionBoostBadge";
 import { getRevealedEffectsForActionTooltip } from "@/game/rules/insightRevealTooltip";
 import { composeActionTooltip } from "@/game/rules/actionTooltipLayout";
@@ -1316,7 +1315,6 @@ export default function VillagePanel() {
                   <div className="flex w-full items-center gap-2">
                     <h3 className="inline-flex shrink-0 items-center gap-1.5 text-xs font-medium text-foreground leading-none">
                       {t("village.sectionBuild")}
-                      <ActionInsightBadge target="buildingDescriptions" />
                     </h3>
                     {(() => {
                       const nextUnlockCost = getNextQueueSlotUnlockCost(state);

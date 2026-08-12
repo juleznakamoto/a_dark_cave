@@ -1959,6 +1959,7 @@
     "choices": {
       "hostSolstice": {
         "cost": "{{goldCost}} oro, {{foodCost}} comida",
+        "cost_wood": "{{woodCost}} madera, {{foodCost}} comida",
         "label": "Organizar la celebración" //x1.7
       },
       "refuseSolstice": {

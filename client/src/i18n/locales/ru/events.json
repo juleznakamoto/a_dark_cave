@@ -1959,6 +1959,7 @@
     "choices": {
       "hostSolstice": {
         "cost": "{{goldCost}} золота, {{foodCost}} еды",
+        "cost_wood": "{{woodCost}} дерева, {{foodCost}} еды",
         "label": "Устроить праздник"
       },
       "refuseSolstice": {

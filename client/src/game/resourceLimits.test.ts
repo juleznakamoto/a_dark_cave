@@ -3,7 +3,7 @@ import { GameState } from '@shared/schema';
 import {
   getResourceLimit,
   capResourceToLimit,
-  isResourceCapped,
+  constrainResourceAmount,
   getStorageLimitText,
   isResourceLimited,
   getStorageBuildingName,
@@ -114,6 +114,48 @@ describe('Resource Limits - Core Functionality', () => {
     it('should handle edge case of exact limit', () => {
       state.buildings.supplyHut = 1; // limit = 1000
       expect(capResourceToLimit('wood', 1000, state)).toBe(1000);
+    });
+  });
+
+  describe('constrainResourceAmount', () => {
+    beforeEach(() => {
+      state.buildings.supplyHut = 1; // limit = 1000
+    });
+
+    it('fills up to storage limit from below', () => {
+      expect(
+        constrainResourceAmount('wood', 1500, state, { previousAmount: 800 }),
+      ).toBe(1000);
+    });
+
+    it('preserves existing overcap and blocks further gains', () => {
+      expect(
+        constrainResourceAmount('wood', 1600, state, { previousAmount: 1500 }),
+      ).toBe(1500);
+    });
+
+    it('allows spending down while overcap', () => {
+      expect(
+        constrainResourceAmount('wood', 1400, state, { previousAmount: 1500 }),
+      ).toBe(1400);
+    });
+
+    it('allows event overcap past storage limit', () => {
+      expect(
+        constrainResourceAmount('wood', 3500, state, {
+          previousAmount: 1000,
+          allowOvercap: true,
+        }),
+      ).toBe(3500);
+    });
+
+    it('still hard-caps veinfire elixir when allowOvercap', () => {
+      expect(
+        constrainResourceAmount('veinfire_elixir', 99, state, {
+          previousAmount: 0,
+          allowOvercap: true,
+        }),
+      ).toBe(getMaxVeinfireElixirLimit());
     });
   });
 
@@ -385,10 +427,14 @@ describe('Resource Limits - Integration with Game Components', () => {
       state.buildings.storehouse = 1; // 2500 limit (overrides supplyHut)
       expect(getResourceLimit(state)).toBe(2500);
 
-      // Resources above old limit but below new limit should be allowed
+      // Overcap from events is preserved; gains past the new limit are blocked
       state.resources.wood = 3000;
       const updates = updateResource(state, 'wood', 1000);
-      expect(updates.resources?.wood).toBe(2500);
+      expect(updates.resources?.wood).toBe(3000);
+
+      state.resources.wood = 2000;
+      const fillUpdates = updateResource(state, 'wood', 1000);
+      expect(fillUpdates.resources?.wood).toBe(2500);
     });
 
     it('should cap at new limit after upgrade', () => {

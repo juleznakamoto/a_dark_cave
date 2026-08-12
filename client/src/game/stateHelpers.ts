@@ -10,7 +10,7 @@ import { getCurrentPopulation, getMaxPopulation, getVillagersInVillage } from ".
 import {
   isResourceLimited,
   getResourceLimit,
-  capResourceToLimit,
+  constrainResourceAmount,
 } from "./resourceLimits";
 import {
   collectStorageMaxHitUpdates,
@@ -166,8 +166,10 @@ export function updateResource(
   const currentAmount = state.resources[resource] || 0;
   const newAmount = Math.max(0, currentAmount + amount);
 
-  // Apply resource cap
-  const cappedAmount = capResourceToLimit(resource, newAmount, state);
+  // Soft storage cap: block gains past limit, preserve event overcap
+  const cappedAmount = constrainResourceAmount(resource, newAmount, state, {
+    previousAmount: currentAmount,
+  });
 
   // Check if we hit the limit for the first time
   // This should trigger when the resource reaches the limit, not just when capped
@@ -241,7 +243,9 @@ export function applyResourceDeltas(
     const resource = key as keyof GameState['resources'];
     const currentAmount = newResources[resource] || 0;
     const newAmount = Math.max(0, currentAmount + delta);
-    const cappedAmount = capResourceToLimit(resource, newAmount, state);
+    const cappedAmount = constrainResourceAmount(resource, newAmount, state, {
+      previousAmount: currentAmount,
+    });
     if (resource === "insight" && delta < 0) {
       insightSpent += Math.max(0, currentAmount - cappedAmount);
     }
@@ -1159,16 +1163,4 @@ export function stackTimedDebuff(
     endTime,
     duration: endTime - now,
   };
-}
-
-// Cap resource to current storage limit
-function capResourceToLimit(resource: keyof GameState['resources'], amount: number, state: GameState): number {
-  // Check if this resource should be limited
-  if (!isResourceLimited(resource, state)) {
-    return amount;
-  }
-
-  // Get the current limit and cap the amount
-  const limit = getResourceLimit(state);
-  return Math.min(amount, limit);
 }

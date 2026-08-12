@@ -55,6 +55,9 @@ client/public/email/*
 !client/public/email/icons/reddit.png
 !client/public/email/icons/instagram.png
 
+# One-shot local helper scripts (never commit)
+_tmp_*
+
 # Cursor IDE — local only (MCP keys, rules, hooks, settings)
 .cursor/
 

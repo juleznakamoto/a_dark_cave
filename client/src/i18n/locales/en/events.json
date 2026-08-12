@@ -2055,6 +2055,7 @@
     "choices": {
       "hostSolstice": {
         "cost": "{{goldCost}} gold, {{foodCost}} food",
+        "cost_wood": "{{woodCost}} wood, {{foodCost}} food",
         "label": "Host gathering"
       },
       "refuseSolstice": {

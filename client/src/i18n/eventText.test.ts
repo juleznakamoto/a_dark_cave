@@ -1,5 +1,6 @@
-import { describe, it, expect, beforeEach } from "vitest";
+import { describe, it, expect, beforeAll, beforeEach } from "vitest";
 import i18n from "./index";
+import { ensureGameplayLocalesLoaded } from "./loadLocaleResources";
 import {
   localizeEventChoices,
   resolveEventChoiceCost,
@@ -12,6 +13,10 @@ import type { EventChoice } from "@/game/rules/events";
 import type { GameState } from "@shared/schema";
 
 describe("localizeEventChoices", () => {
+  beforeAll(async () => {
+    await ensureGameplayLocalesLoaded();
+  });
+
   beforeEach(async () => {
     await i18n.changeLanguage("en");
   });
@@ -70,18 +75,26 @@ describe("localizeEventChoices", () => {
       { id: "hostSolstice", effect: () => ({}) },
       { id: "refuseSolstice", effect: () => ({}) },
     ];
-    const vars = { goldCost: 25, foodCost: 250 };
+    const firstVars = { costVariant: "wood", woodCost: 250, foodCost: 250 };
+    const laterVars = { costVariant: "gold", goldCost: 50, foodCost: 500 };
 
-    const localized = localizeEventChoices(
+    const first = localizeEventChoices(
       "solsticeGathering",
       choices,
       {} as GameState,
-      vars,
+      firstVars,
+    );
+    const later = localizeEventChoices(
+      "solsticeGathering",
+      choices,
+      {} as GameState,
+      laterVars,
     );
 
-    expect(localized![0].label).toBe("Host gathering");
-    expect(localized![0].cost).toBe("25 gold, 250 food");
-    expect(localized![1].label).toBe("Refuse");
+    expect(first![0].label).toBe("Host gathering");
+    expect(first![0].cost).toBe("250 wood, 250 food");
+    expect(later![0].cost).toBe("50 gold, 500 food");
+    expect(first![1].label).toBe("Refuse");
   });
 
   it("resolves solsticeGathering labels in German", async () => {
@@ -90,7 +103,7 @@ describe("localizeEventChoices", () => {
       { id: "hostSolstice", effect: () => ({}) },
       { id: "refuseSolstice", effect: () => ({}) },
     ];
-    const vars = { goldCost: 25, foodCost: 250 };
+    const vars = { costVariant: "wood", woodCost: 250, foodCost: 250 };
 
     const localized = localizeEventChoices(
       "solsticeGathering",
@@ -100,7 +113,7 @@ describe("localizeEventChoices", () => {
     );
 
     expect(localized![0].label).toBe("Fest ausrichten");
-    expect(localized![0].cost).toBe("25 Gold, 250 Nahrung");
+    expect(localized![0].cost).toBe("250 Holz, 250 Nahrung");
     expect(localized![1].label).toBe("Ablehnen");
   });
 

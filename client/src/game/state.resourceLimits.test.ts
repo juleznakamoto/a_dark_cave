@@ -297,4 +297,47 @@ describe('State - Resource Limits Integration', () => {
       expect(useGameStore.getState().resources.food).toBe(1000);
     });
   });
+  describe('event reward overcap', () => {
+    it('lets woodcutter wood exceed storage and preserves it on later production gains', () => {
+      useGameStore.getState().initialize();
+      useGameStore.setState((state) => ({
+        isPaused: false,
+        buildings: {
+          ...state.buildings,
+          supplyHut: 1, // limit 1000
+          woodenHut: 2,
+        },
+        resources: {
+          ...state.resources,
+          wood: 1000,
+          food: 100,
+        },
+        woodcutterState: {
+          isActive: true,
+          endTime: Date.now() + 60_000,
+        },
+        timedEventTab: {
+          isActive: true,
+          eventId: 'woodcutter1',
+          endTime: Date.now() + 60_000,
+        },
+      }));
+
+      const ok = useGameStore
+        .getState()
+        .applyEventChoice('acceptServices', 'woodcutter1');
+      expect(ok).toBe(true);
+
+      const afterEvent = useGameStore.getState();
+      // Level 1 reward is 250 wood on top of full stores
+      expect(afterEvent.resources.wood).toBe(1250);
+      expect(afterEvent.resources.food).toBe(75);
+
+      afterEvent.updateResource('wood', 100);
+      expect(useGameStore.getState().resources.wood).toBe(1250);
+
+      useGameStore.getState().updateResource('wood', -50);
+      expect(useGameStore.getState().resources.wood).toBe(1200);
+    });
+  });
 });

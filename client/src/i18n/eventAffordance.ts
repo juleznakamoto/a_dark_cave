@@ -80,7 +80,21 @@ function resolveResourceKeyFromDisplayName(
 function getCatalogCostTemplate(
   catalogId: string,
   choiceId: string,
+  vars?: TranslateOptions,
 ): string | null {
+  const costVariant = vars?.costVariant;
+  if (typeof costVariant === "string" && costVariant) {
+    const contextKey = eventCatalogKey(
+      catalogId,
+      `choices.${choiceId}.cost_${costVariant}`,
+    );
+    const contextFull = `events:${contextKey}`;
+    if (i18n.exists(contextFull)) {
+      const template = i18n.getResource(i18n.language, "events", contextKey);
+      if (typeof template === "string") return template;
+    }
+  }
+
   const key = eventCatalogKey(catalogId, `choices.${choiceId}.cost`);
   const fullKey = `events:${key}`;
   if (i18n.exists(fullKey)) {
@@ -107,7 +121,7 @@ export function getResourceCostsFromCatalogTemplate(
   vars: TranslateOptions | undefined,
   resources: GameState["resources"],
 ): EventResourceCost[] {
-  const template = getCatalogCostTemplate(catalogId, choiceId);
+  const template = getCatalogCostTemplate(catalogId, choiceId, vars);
   if (!template) {
     return [];
   }
