@@ -17,6 +17,7 @@ import {
   computeResourceRandomRange,
 } from "./effectsCalculation";
 import { getTotemSacrificeUsageFlatBonus } from "./forestSacrificeActions";
+import { actionAllowsResourceOvercap } from "@/game/resourceOvercapGrants";
 import {
   getUpgradeBonusMultiplier,
   ACTION_TO_UPGRADE_KEY,
@@ -802,6 +803,7 @@ export function applyActionEffects(
       updates.resources[resourceKey as keyof typeof updates.resources] =
         constrainResourceAmount(resourceKey, value, state, {
           previousAmount,
+          allowOvercap: actionAllowsResourceOvercap(actionId),
         });
     }
 

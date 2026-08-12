@@ -58,6 +58,7 @@ import {
   isCompletedOneShotExecutionGhost,
 } from "@/game/stateHelpers";
 import { constrainResourceAmount } from "@/game/resourceLimits";
+import { actionAllowsResourceOvercap } from "@/game/resourceOvercapGrants";
 import {
   resolveVillageEffectAnnouncementTheme,
   type VillageEffectDialogData,
@@ -499,6 +500,7 @@ interface GameStore extends GameState {
   updateResource: (
     resource: keyof GameState["resources"],
     amount: number,
+    options?: { allowOvercap?: boolean },
   ) => void;
   setFlag: (flag: keyof GameState["flags"], value: boolean) => void;
   setHoveredTooltip: (tooltipId: string, value: boolean) => void;
@@ -2001,9 +2003,13 @@ export const useGameStore = create<GameStore>((set, get) => ({
   setDetectedCurrency: (currency: "EUR" | "USD") =>
     set({ detectedCurrency: currency }),
 
-  updateResource: (resource: keyof GameState["resources"], amount: number) => {
-    // updateResource in stateHelpers automatically applies soft storage constraints
-    set((state) => updateResource(state, resource, amount));
+  updateResource: (
+    resource: keyof GameState["resources"],
+    amount: number,
+    options?: { allowOvercap?: boolean },
+  ) => {
+    // Soft storage constraints by default; pass allowOvercap for reward grants
+    set((state) => updateResource(state, resource, amount, options));
 
     // If updating free villagers, update population counts immediately
     if (resource === ("free" as any)) {
@@ -2229,7 +2235,9 @@ export const useGameStore = create<GameStore>((set, get) => ({
 
     // Apply state updates
     set((prevState) => {
-      const mergedUpdates = mergeStateUpdates(prevState, result.stateUpdates);
+      const mergedUpdates = mergeStateUpdates(prevState, result.stateUpdates, {
+        allowResourceOvercap: actionAllowsResourceOvercap(actionId),
+      });
       const newStateAfterUpdates = {
         ...prevState,
         ...mergedUpdates,
@@ -2600,7 +2608,10 @@ export const useGameStore = create<GameStore>((set, get) => ({
     }
     for (const [key, amount] of Object.entries(snapshot.resourceRefund)) {
       if (amount !== 0) {
-        get().updateResource(key as keyof GameState["resources"], amount);
+        // Refunds may restore warehouse resources above storage (same as reward overcap)
+        get().updateResource(key as keyof GameState["resources"], amount, {
+          allowOvercap: true,
+        });
         addResourceChange(key, amount);
       }
     }

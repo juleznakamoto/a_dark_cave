@@ -979,7 +979,9 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
           if (item.rewards.resources) {
             Object.entries(item.rewards.resources).forEach(
               ([resource, amount]) => {
-                gameState.updateResource(resource as any, amount);
+                gameState.updateResource(resource as any, amount, {
+                  allowOvercap: true,
+                });
               },
             );
           }
@@ -1496,7 +1498,9 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
       // Grant resources if this is a bundle
       if (item.rewards.resources) {
         Object.entries(item.rewards.resources).forEach(([resource, amount]) => {
-          gameState.updateResource(resource as any, amount);
+          gameState.updateResource(resource as any, amount, {
+            allowOvercap: true,
+          });
         });
       }
 
@@ -1532,7 +1536,9 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
     // Grant rewards
     if (item.rewards.resources) {
       Object.entries(item.rewards.resources).forEach(([resource, amount]) => {
-        gameState.updateResource(resource as any, amount);
+        gameState.updateResource(resource as any, amount, {
+          allowOvercap: true,
+        });
       });
     }
 

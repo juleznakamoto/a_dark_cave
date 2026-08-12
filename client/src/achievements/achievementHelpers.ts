@@ -1,4 +1,5 @@
 import { useGameStore } from "@/game/state";
+import type { GameState } from "@shared/schema";
 import type { AchievementChartConfig } from "./achievementTypes";
 import { getAchievementConfigForEdition } from "./achievementEdition";
 import {
@@ -136,7 +137,11 @@ export function claimAchievement(
 
   for (const [resource, amount] of Object.entries(rewards)) {
     if (amount > 0) {
-      useGameStore.getState().updateResource(resource, amount);
+      useGameStore
+        .getState()
+        .updateResource(resource as keyof GameState["resources"], amount, {
+          allowOvercap: true,
+        });
     }
   }
 

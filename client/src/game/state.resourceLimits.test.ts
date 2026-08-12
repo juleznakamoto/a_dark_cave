@@ -339,5 +339,30 @@ describe('State - Resource Limits Integration', () => {
       useGameStore.getState().updateResource('wood', -50);
       expect(useGameStore.getState().resources.wood).toBe(1200);
     });
+
+    it('lets claimAchievement wood exceed storage', async () => {
+      useGameStore.getState().initialize();
+      useGameStore.setState((state) => ({
+        buildings: {
+          ...state.buildings,
+          supplyHut: 1, // limit 1000
+        },
+        resources: {
+          ...state.resources,
+          wood: 1000,
+        },
+        claimedAchievements: [],
+      }));
+
+      const { claimAchievement } = await import("@/achievements/achievementHelpers");
+      claimAchievement('basic-woodcutter-test', {
+        fallbackName: 'Test',
+        rewards: { wood: 500 },
+        maxCount: 1,
+      });
+
+      expect(useGameStore.getState().resources.wood).toBe(1500);
+    });
   });
 });
+

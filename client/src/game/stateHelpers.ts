@@ -162,13 +162,15 @@ export function updateResource(
   state: GameState,
   resource: keyof GameState['resources'],
   amount: number,
+  options?: { allowOvercap?: boolean },
 ): Partial<GameState> {
   const currentAmount = state.resources[resource] || 0;
   const newAmount = Math.max(0, currentAmount + amount);
 
-  // Soft storage cap: block gains past limit, preserve event overcap
+  // Soft storage cap by default; reward grants (events/achievements/shop) may overcap
   const cappedAmount = constrainResourceAmount(resource, newAmount, state, {
     previousAmount: currentAmount,
+    allowOvercap: options?.allowOvercap,
   });
 
   // Check if we hit the limit for the first time
