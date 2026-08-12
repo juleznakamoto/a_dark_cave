@@ -971,9 +971,96 @@ export function migrateDialogGatedExpeditionSoftLocks(
   };
 }
 
-/** Run one-time load migrations on loaded saves (trader shop unlock gate). */
+const CUBE_STORY_ARCHIVE_V2_APPLIED_KEY = "cubeStoryArchiveV2Applied";
+
+/**
+ * Preserve the original cube chain for saves created before its early story
+ * beats were split. New saves set the marker when the cube is discovered.
+ */
+export function migrateCubeStoryArchiveOnLoad(
+  state: GameState,
+): Partial<GameState> | null {
+  const seen = state.story?.seen ?? {};
+  if (seen[CUBE_STORY_ARCHIVE_V2_APPLIED_KEY]) return null;
+
+  const nextSeen = {
+    ...seen,
+    [CUBE_STORY_ARCHIVE_V2_APPLIED_KEY]: true,
+  };
+
+  if (seen.exploreCaveCount === undefined) {
+    const legacyExploreCount = Math.max(
+      0,
+      Number(seen.caveExploreCount) || (seen.caveExplored ? 1 : 0),
+    );
+    const initialExploreStageNoLongerAvailable =
+      Boolean(seen.venturedDeeper) || (state.buildings?.blacksmith ?? 0) >= 1;
+
+    nextSeen.exploreCaveCount = initialExploreStageNoLongerAvailable
+      ? 3
+      : Math.min(legacyExploreCount, 3);
+  }
+
+  const nextEvents = { ...state.events };
+  if (state.events.cube01 && !state.events.cubeLostCivilization) {
+    nextEvents.cubeLostCivilization = true;
+  }
+  if (
+    (state.events.cube06 || seen.portalBlasted) &&
+    !state.events.cubeLostKnowledge
+  ) {
+    nextEvents.cubeLostKnowledge = true;
+  }
+
+  return {
+    events: nextEvents,
+    story: {
+      ...state.story,
+      seen: nextSeen,
+    },
+  };
+}
+
+const CUBE_HESITANT_V3_APPLIED_KEY = "cubeHesitantV3Applied";
+
+/** Skip the new first-boss memory only when a legacy save has passed it. */
+export function migrateCubeHesitantOnLoad(
+  state: GameState,
+): Partial<GameState> | null {
+  const seen = state.story?.seen ?? {};
+  if (seen[CUBE_HESITANT_V3_APPLIED_KEY]) return null;
+
+  const nextEvents = { ...state.events };
+  if (
+    (state.events.cube10 || seen.sixthWaveVictory) &&
+    !state.events.cubeHesitant
+  ) {
+    nextEvents.cubeHesitant = true;
+  }
+
+  return {
+    events: nextEvents,
+    story: {
+      ...state.story,
+      seen: {
+        ...seen,
+        [CUBE_HESITANT_V3_APPLIED_KEY]: true,
+      },
+    },
+  };
+}
+
+/** Run one-time load migrations on loaded saves. */
 export function applyGameStateLoadMigrations(state: GameState): GameState {
   let migrated = reconcileInFlightExecutionsOnLoad(state);
+  const cubeStory = migrateCubeStoryArchiveOnLoad(migrated);
+  if (cubeStory) {
+    migrated = { ...migrated, ...cubeStory };
+  }
+  const cubeHesitant = migrateCubeHesitantOnLoad(migrated);
+  if (cubeHesitant) {
+    migrated = { ...migrated, ...cubeHesitant };
+  }
   const trader = migrateTraderShopUnlockOnLoad(migrated);
   if (trader?.story) {
     migrated = { ...migrated, story: trader.story };

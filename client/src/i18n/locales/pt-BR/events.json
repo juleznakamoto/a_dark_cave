@@ -359,8 +359,17 @@
         "label": "Fechar"
       }
     },
-    "message": "Você acorda durante a noite. O cubo zumbe suavemente. De repente, uma voz gentil e melódica emerge dele: 'Há muito tempo, uma grande civilização prosperou neste mundo, mas ela ruiu, seu conhecimento perdido nas eras.'",
+    "message": "Você acorda durante a noite quando o cubo começa a zumbir suavemente. Ao tocar sua superfície, o pulso dele acelera até acompanhar exatamente as batidas do seu coração. Entre rajadas de estática, surge uma voz gentil e melódica: 'Nenhum registro encontrado... identidade não confirmada.' Então o cubo fica em silêncio.",
     "title": "O Cubo Desperta"
+  },
+  "cubeLostCivilization": {
+    "choices": {
+      "close": {
+        "label": "Fechar"
+      }
+    },
+    "message": "Certa noite, enquanto você se senta junto ao fogo, o cubo começa a falar de repente: 'Há muito tempo, uma grande civilização prosperava neste mundo, mas ela ruiu e seu conhecimento se perdeu ao longo das eras.'",
+    "title": "A Civilização Perdida"
   },
   "cube02": {
     "choices": {
@@ -368,8 +377,8 @@
         "label": "Fechar"
       }
     },
-    "message": "'Num passado distante, uma tribo de ferozes guerreiros foi escolhida para viver nas profundezas das cavernas. Seu propósito era guardar algo de grande importância.'",
-    "title": "A Tribo dos Guerreiros"
+    "message": "'Num passado distante, uma ordem de guerreiros foi enviada às profundezas das cavernas. Eles se tornaram os guardiões de algo de grande importância.'",
+    "title": "Os Guardiões"
   },
   "cube03": {
     "choices": {
@@ -398,13 +407,22 @@
     "message": "'Muito depois de os habitantes da cidade subterrânea perecerem, o objeto de sua devoção permaneceu: um portão colossal e impenetrável, criado com tecnologia há muito esquecida, oculto nas câmaras mais baixas da cidade'",
     "title": "O Portão Selado"
   },
+  "cubeLostKnowledge": {
+    "choices": {
+      "close": {
+        "label": "Fechar"
+      }
+    },
+    "message": "A superfície do cubo tremeluz com uma luz pálida. 'Pesquisando o arquivo... dados corrompidos... recuperação falhou. Algo de grande importância para a antiga civilização era protegido pelo portão, ou mantido trancado atrás dele.'",
+    "title": "O Conhecimento Perdido"
+  },
   "cube06": {
     "choices": {
       "close": {
         "label": "Fechar"
       }
     },
-    "message": "Enquanto o portão se estilhaça, o cubo treme em suas mãos, esquentando. Um sussurro suave, porém urgente, escapa dele: 'Adquiri novos discernimentos.'",
+    "message": "Enquanto o portão se estilhaça, o cubo treme em suas mãos e se aquece. Um sussurro suave, porém urgente, escapa dele: 'Recuperei o conhecimento perdido.'",
     "title": "O Portão se Abre"
   },
   "cube07": {
@@ -433,6 +451,15 @@
     },
     "message": "'Com o auxílio dos dispositivos, a civilização prosperou. Começou uma era de paz e progresso sem precedentes, seu conhecimento e habilidade atingindo patamares que jamais seriam revistos.'",
     "title": "A Era de Ouro"
+  },
+  "cubeHesitant": {
+    "choices": {
+      "close": {
+        "label": "Fechar"
+      }
+    },
+    "message": "O cubo fala de uma memória do último ataque. Uma das criaturas que avançavam em sua direção parou de repente e abaixou a arma. Seus lábios tentaram formar uma palavra, mas antes que qualquer som surgisse, um de seus combatentes a abateu.",
+    "title": "O Hesitante"
   },
   "cube10": {
     "choices": {

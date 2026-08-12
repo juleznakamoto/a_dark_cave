@@ -965,7 +965,8 @@ export function handleExploreCave(
     pushFirstVisitLog(result, "exploreCave", "firstVisit", "explore-cave");
   }
 
-  // Increment cave explore count for basic achievements
+  // Track this stage separately for story triggers; caveExploreCount includes
+  // every deeper cave stage and cannot identify the third Explore Cave use.
   effectUpdates.story = {
     ...state.story,
     ...effectUpdates.story,
@@ -973,6 +974,7 @@ export function handleExploreCave(
       ...state.story?.seen,
       ...(effectUpdates.story as { seen?: Record<string, unknown> })?.seen,
       caveExploreCount: (Number(state.story?.seen?.caveExploreCount) || 0) + 1,
+      exploreCaveCount: (Number(state.story?.seen?.exploreCaveCount) || 0) + 1,
     },
   };
 

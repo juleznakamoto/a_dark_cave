@@ -359,8 +359,17 @@
         "label": "Chiudi"
       }
     },
-    "message": "Ti svegli nella notte. Il cubo ronza dolcemente. All'improvviso una voce gentile e melodica ne emerge: 'Molto tempo fa, una grande civiltà prosperò su questo mondo, ma si sgretolò, la sua conoscenza perduta nelle ere.'",
+    "message": "Ti svegli nella notte mentre il cubo inizia a ronzare dolcemente. Quando tocchi la sua superficie, il suo impulso accelera fino a seguire esattamente il battito del tuo cuore. Tra scariche di interferenza emerge una voce gentile e melodica: 'Nessun dato trovato... identità non confermata.' Poi il cubo tace.",
     "title": "Il Cubo si Risveglia"
+  },
+  "cubeLostCivilization": {
+    "choices": {
+      "close": {
+        "label": "Chiudi"
+      }
+    },
+    "message": "Una sera, mentre siedi accanto al fuoco, il cubo inizia improvvisamente a parlare: 'Molto tempo fa, una grande civiltà prosperava su questo mondo, ma crollò e la sua conoscenza andò perduta nel corso dei secoli.'",
+    "title": "La Civiltà Perduta"
   },
   "cube02": {
     "choices": {
@@ -368,8 +377,8 @@
         "label": "Chiudi"
       }
     },
-    "message": "'In un lontano passato, una tribù di feroci guerrieri fu scelta per vivere nelle profondità delle caverne. Il loro scopo era custodire qualcosa di grande importanza.'",
-    "title": "La Tribù dei Guerrieri"
+    "message": "'In un lontano passato, un ordine di guerrieri fu inviato nelle profondità delle caverne. Divennero i guardiani di qualcosa di grande importanza.'",
+    "title": "I Guardiani"
   },
   "cube03": {
     "choices": {
@@ -398,13 +407,22 @@
     "message": "'Molto dopo che gli abitanti della città sotterranea perirono, l'oggetto della loro devozione rimase: un colossale cancello impenetrabile, costruito con una tecnologia da tempo dimenticata, nascosto nelle camere più basse della città'",
     "title": "Il Cancello Sigillato"
   },
+  "cubeLostKnowledge": {
+    "choices": {
+      "close": {
+        "label": "Chiudi"
+      }
+    },
+    "message": "La superficie del cubo tremola di una luce pallida. 'Ricerca nell'archivio... dati corrotti... recupero fallito. Qualcosa di grande importanza per l'antica civiltà era protetto dal cancello, o rinchiuso dietro di esso.'",
+    "title": "La Conoscenza Perduta"
+  },
   "cube06": {
     "choices": {
       "close": {
         "label": "Chiudi"
       }
     },
-    "message": "Mentre il cancello va in frantumi, il cubo trema nelle tue mani, scaldandosi. Un sussurro sommesso ma urgente ne sfugge: 'Ho acquisito nuove intuizioni.'",
+    "message": "Mentre il cancello va in frantumi, il cubo trema nelle tue mani e si scalda. Un sussurro sommesso ma urgente ne sfugge: 'Ho recuperato la conoscenza perduta.'",
     "title": "Il Cancello si Apre"
   },
   "cube07": {
@@ -433,6 +451,15 @@
     },
     "message": "'Con l'aiuto dei dispositivi, la civiltà prosperò. Iniziò un'era di pace e progresso senza precedenti, la loro conoscenza e abilità raggiunsero vette che non si sarebbero mai più riviste.'",
     "title": "L'Età dell'Oro"
+  },
+  "cubeHesitant": {
+    "choices": {
+      "close": {
+        "label": "Chiudi"
+      }
+    },
+    "message": "Il cubo parla di un ricordo dell'ultimo attacco. Una delle creature che correvano verso di te si fermò all'improvviso e abbassò l'arma. Le sue labbra tentarono di formare una parola, ma prima che ne uscisse un suono, uno dei tuoi combattenti la abbatté.",
+    "title": "L'Esitante"
   },
   "cube10": {
     "choices": {

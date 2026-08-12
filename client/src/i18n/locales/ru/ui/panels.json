@@ -89,7 +89,7 @@
     "sleepIntensity": "Интенсивность сна",
     "sleepIntensityDescription": "Получайте {{percent}}% производства деревни во время сна",
     "skills": "Навыки",
-    "cubeWhispers": "Шёпот куба",
+    "cubeWhispers": "Нашёптанные воспоминания", //x1.3
     "huntressTraining": "Обучение охотницы",
     "crushingStrike": "Сокрушающий удар",
     "bloodflameSphere": "Сфера кровавого пламени", //x1.4

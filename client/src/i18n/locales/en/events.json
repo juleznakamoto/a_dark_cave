@@ -370,8 +370,17 @@
         "label": "Close"
       }
     },
-    "message": "You wake in the night. The cube hums softly. Suddenly a gentle, melodic voice emerges from it: 'Long ago, a great civilization thrived upon this world, but it crumbled, its knowledge lost to the ages.'",
+    "message": "You wake in the night as the cube begins to hum softly. When you touch its surface, its pulse quickens until it matches your heartbeat exactly. A gentle, melodic voice emerges through bursts of static: 'No record found... identity unconfirmed.' Then the cube falls silent.",
     "title": "The Cube Awakens"
+  },
+  "cubeLostCivilization": {
+    "choices": {
+      "close": {
+        "label": "Close"
+      }
+    },
+    "message": "One evening, as you sit by the fire, the cube suddenly begins to speak: 'Long ago, a great civilization thrived upon this world, but it crumbled, its knowledge lost to the ages.'",
+    "title": "The Lost Civilization"
   },
   "cube02": {
     "choices": {
@@ -379,8 +388,8 @@
         "label": "Close"
       }
     },
-    "message": "'In the distant past, a tribe of fierce warriors was chosen to live deep in the caves. Their purpose was to guard something of great importance.'",
-    "title": "The Warrior Tribe"
+    "message": "'In the distant past, an order of warriors was sent deep into the caves. They became guardians of something of great importance.'",
+    "title": "The Guardians"
   },
   "cube03": {
     "choices": {
@@ -409,13 +418,22 @@
     "message": "'Long after the inhabitants of the underground city perished, the object of their devotion remained: a colossal, impenetrable gate, crafted with long-forgotten technology and hidden deep within the city's lowest chambers.'",
     "title": "The Sealed Gate"
   },
+  "cubeLostKnowledge": {
+    "choices": {
+      "close": {
+        "label": "Close"
+      }
+    },
+    "message": "The cube's surface flickers with pale light. 'Searching archive... data corrupted... retrieval failed. Something of great importance to the ancient civilization was protected by the gate, or locked behind it.'",
+    "title": "The Lost Knowledge"
+  },
   "cube06": {
     "choices": {
       "close": {
         "label": "Close"
       }
     },
-    "message": "As the gate shatters, the cube trembles in your hands and grows warm. A soft but urgent whisper escapes it: 'I have gained new insights.'",
+    "message": "As the gate shatters, the cube trembles in your hands and grows warm. A soft but urgent whisper escapes it: 'I have recovered lost knowledge.'",
     "title": "The Gate Opens"
   },
   "cube07": {
@@ -444,6 +462,15 @@
     },
     "message": "'With the aid of the devices, the civilization thrived. An era of unprecedented peace and progress began, their knowledge and skill reaching heights that would never be seen again.'",
     "title": "The Golden Age"
+  },
+  "cubeHesitant": {
+    "choices": {
+      "close": {
+        "label": "Close"
+      }
+    },
+    "message": "The cube speaks of a memory from the last attack. One of the creatures charging toward you suddenly stopped and lowered its weapon. Its lips struggled to form a word, but before any sound emerged, one of your fighters struck it down.",
+    "title": "The Hesitant"
   },
   "cube10": {
     "choices": {

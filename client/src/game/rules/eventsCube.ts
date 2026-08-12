@@ -6,7 +6,8 @@ export const cubeEvents: Record<string, GameEvent> = {
   cubeDiscovery: {
     id: "cubeDiscovery",
     condition: (state: GameState) =>
-      state.buildings.woodenHut >= 2 && !state.relics.whispering_cube,
+      (Number(state.story.seen.exploreCaveCount) || 0) >= 3 &&
+      !state.relics.whispering_cube,
     timeProbability: 1,
     priority: 3,
     repeatable: true,
@@ -19,6 +20,13 @@ export const cubeEvents: Record<string, GameEvent> = {
               ...state.relics,
               whispering_cube: true,
             },
+            story: {
+              ...state.story,
+              seen: {
+                ...state.story.seen,
+                cubeStoryArchiveV2Applied: true,
+              },
+            },
           };
         },
       },
@@ -30,7 +38,7 @@ export const cubeEvents: Record<string, GameEvent> = {
     condition: (state: GameState) =>
       Boolean(
         state.relics.whispering_cube &&
-        state.story.seen.venturedDeeper &&
+        state.buildings.woodenHut >= 2 &&
         !state.events.cube01,
       ),
     timeProbability: 1,
@@ -51,12 +59,39 @@ export const cubeEvents: Record<string, GameEvent> = {
     ],
   },
 
+  cubeLostCivilization: {
+    id: "cubeLostCivilization",
+    condition: (state: GameState) =>
+      Boolean(
+        state.relics.whispering_cube &&
+        state.story.seen.venturedDeeper &&
+        state.events.cube01 &&
+        !state.events.cubeLostCivilization,
+      ),
+    timeProbability: 1,
+    priority: 3,
+    repeatable: true,
+    choices: [
+      {
+        id: "close",
+        effect: (state: GameState) => {
+          return {
+            events: {
+              ...state.events,
+              cubeLostCivilization: true,
+            },
+          };
+        },
+      },
+    ],
+  },
+
   cube02: {
     id: "cube02",
     condition: (state: GameState) =>
       Boolean(
         state.story.seen.descendedFurther &&
-        state.events.cube01 &&
+        state.events.cubeLostCivilization &&
         !state.events.cube02,
       ),
     timeProbability: 1,
@@ -155,12 +190,40 @@ export const cubeEvents: Record<string, GameEvent> = {
     ],
   },
 
+  cubeLostKnowledge: {
+    id: "cubeLostKnowledge",
+    condition: (state: GameState) =>
+      Boolean(
+        state.relics.whispering_cube &&
+        state.buildings.alchemistHall >= 1 &&
+        state.story.seen.portalDiscovered &&
+        !state.events.cubeLostKnowledge,
+      ),
+    timeProbability: 1,
+    priority: 3,
+    repeatable: true,
+    choices: [
+      {
+        id: "close",
+        effect: (state: GameState) => {
+          return {
+            events: {
+              ...state.events,
+              cubeLostKnowledge: true,
+            },
+          };
+        },
+      },
+    ],
+  },
+
   cube06: {
     id: "cube06",
     condition: (state: GameState) =>
       Boolean(
         state.story.seen.portalBlasted &&
         state.events.cube05 &&
+        state.events.cubeLostKnowledge &&
         !state.events.cube06,
       ),
     timeProbability: 1,
@@ -259,12 +322,39 @@ export const cubeEvents: Record<string, GameEvent> = {
     ],
   },
 
+  cubeHesitant: {
+    id: "cubeHesitant",
+    condition: (state: GameState) =>
+      Boolean(
+        state.story.seen.firstBossWaveVictory &&
+        state.events.cube09 &&
+        !state.events.cubeHesitant,
+      ),
+    timeProbability: 1,
+    priority: 3,
+    repeatable: true,
+    choices: [
+      {
+        id: "close",
+        effect: (state: GameState) => {
+          return {
+            events: {
+              ...state.events,
+              cubeHesitant: true,
+            },
+          };
+        },
+      },
+    ],
+  },
+
   cube10: {
     id: "cube10",
     condition: (state: GameState) =>
       Boolean(
         state.story.seen.sixthWaveVictory &&
         state.events.cube09 &&
+        state.events.cubeHesitant &&
         !state.events.cube10,
       ),
     timeProbability: 0.25,

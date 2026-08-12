@@ -359,8 +359,17 @@
         "label": "Schließen"
       }
     },
-    "message": "Du wachst in der Nacht auf. Der Würfel summt leise. Plötzlich erhebt sich eine sanfte, melodische Stimme aus ihm: „Vor langer Zeit blühte eine große Zivilisation auf dieser Welt, doch sie zerfiel und ihr Wissen ging in den Stürmen der Zeit verloren.“",
+    "message": "Du wachst in der Nacht auf, als der Würfel leise zu summen beginnt. Als du seine Oberfläche berührst, beschleunigt sich sein Puls, bis er genau deinem Herzschlag entspricht. Durch statisches Rauschen erklingt eine sanfte, melodische Stimme: „Kein Datensatz gefunden ... Identität unbestätigt.“ Dann verstummt der Würfel.",
     "title": "Der Würfel erwacht"
+  },
+  "cubeLostCivilization": {
+    "choices": {
+      "close": {
+        "label": "Schließen"
+      }
+    },
+    "message": "Eines Abends, als du am Feuer sitzt, beginnt der Würfel plötzlich zu sprechen: „Vor langer Zeit blühte auf dieser Welt eine große Zivilisation, doch sie zerfiel und ihr Wissen ging im Lauf der Zeitalter verloren.“",
+    "title": "Die verlorene Zivilisation"
   },
   "cube02": {
     "choices": {
@@ -368,8 +377,8 @@
         "label": "Schließen"
       }
     },
-    "message": "„In ferner Vergangenheit wurde ein Stamm wilder Krieger auserwählt, tief in den Höhlen zu leben. Ihre Bestimmung war es, etwas von großer Bedeutung zu bewachen.“",
-    "title": "Der Kriegerstamm"
+    "message": "„In ferner Vergangenheit wurde ein Orden von Kriegern tief in die Höhlen entsandt. Sie wurden zu den Wächtern von etwas, das von großer Bedeutung war.“",
+    "title": "Die Wächter"
   },
   "cube03": {
     "choices": {
@@ -398,13 +407,22 @@
     "message": "„Lange nachdem die Bewohner der unterirdischen Stadt starben, blieb der Gegenstand ihrer Hingabe: ein kolossales, undurchdringliches Tor, geschmiedet mit vergessener Technologie, verborgen in den tiefsten Kammern der Stadt.“",
     "title": "Das versiegelte Tor"
   },
+  "cubeLostKnowledge": {
+    "choices": {
+      "close": {
+        "label": "Schließen"
+      }
+    },
+    "message": "Die Oberfläche des Würfels flackert in blassem Licht. „Archiv wird durchsucht ... Daten beschädigt ... Abruf fehlgeschlagen. Etwas von großer Bedeutung für die alte Zivilisation wurde durch das Tor geschützt oder dahinter eingeschlossen.“",
+    "title": "Das verlorene Wissen"
+  },
   "cube06": {
     "choices": {
       "close": {
         "label": "Schließen"
       }
     },
-    "message": "Als das Tor zerbricht, bebt der Würfel in deinen Händen und wird warm. Ein leises, aber dringliches Flüstern entweicht ihm: „Ich habe neue Erkenntnisse gewonnen.“",
+    "message": "Als das Tor zerbricht, bebt der Würfel in deinen Händen und wird warm. Ein leises, aber dringliches Flüstern entweicht ihm: „Ich habe verlorenes Wissen wiederhergestellt.“",
     "title": "Das Tor öffnet sich"
   },
   "cube07": {
@@ -433,6 +451,15 @@
     },
     "message": "„Mit Hilfe der Geräte gedieh die Zivilisation. Eine Ära beispiellosen Friedens und Fortschritts begann; ihr Wissen und Können erreichte Höhen, die nie wieder erreicht wurden.“",
     "title": "Das goldene Zeitalter"
+  },
+  "cubeHesitant": {
+    "choices": {
+      "close": {
+        "label": "Schließen"
+      }
+    },
+    "message": "Der Würfel spricht von einer Erinnerung an den letzten Angriff. Eine der Kreaturen, die auf dich zustürmten, hielt plötzlich inne und senkte ihre Waffe. Ihre Lippen mühten sich, ein Wort zu formen, doch bevor ein Laut hervordrang, streckte einer deiner Kämpfer sie nieder.",
+    "title": "Der Zögernde"
   },
   "cube10": {
     "choices": {

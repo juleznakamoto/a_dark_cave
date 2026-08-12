@@ -359,8 +359,17 @@
         "label": "Fermer"
       }
     },
-    "message": "Vous vous réveillez dans la nuit. Le cube bourdonne doucement. Soudain, une voix douce et mélodieuse en sort : « Il y a bien longtemps, une grande civilisation prospérait sur ce monde, mais elle s'effondra et son savoir fut perdu dans les âges. »",
+    "message": "Vous vous réveillez dans la nuit tandis que le cube se met à bourdonner doucement. Lorsque vous touchez sa surface, ses pulsations s'accélèrent jusqu'à suivre exactement les battements de votre cœur. Une voix douce et mélodieuse émerge parmi les grésillements : « Aucun dossier trouvé... identité non confirmée. » Puis le cube se tait.",
     "title": "Le cube s'éveille"
+  },
+  "cubeLostCivilization": {
+    "choices": {
+      "close": {
+        "label": "Fermer"
+      }
+    },
+    "message": "Un soir, tandis que vous êtes assis près du feu, le cube se met soudain à parler : « Il y a bien longtemps, une grande civilisation prospérait sur ce monde, mais elle s'effondra et son savoir fut perdu au fil des âges. »",
+    "title": "La civilisation perdue"
   },
   "cube02": {
     "choices": {
@@ -368,8 +377,8 @@
         "label": "Fermer"
       }
     },
-    "message": "« Dans un passé lointain, une tribu de guerriers féroces fut choisie pour vivre au plus profond des grottes. Sa mission était de garder quelque chose d'une importance capitale. »",
-    "title": "La tribu des guerriers"
+    "message": "« Dans un passé lointain, un ordre de guerriers fut envoyé au plus profond des grottes. Ils devinrent les gardiens de quelque chose d'une importance capitale. »",
+    "title": "Les gardiens"
   },
   "cube03": {
     "choices": {
@@ -398,13 +407,22 @@
     "message": "« Longtemps après la mort des habitants de la cité souterraine, l'objet de leur dévotion demeurait : une porte colossale et impénétrable, forgée avec une technologie oubliée, cachée dans les chambres les plus basses de la cité. »",
     "title": "La porte scellée"
   },
+  "cubeLostKnowledge": {
+    "choices": {
+      "close": {
+        "label": "Fermer"
+      }
+    },
+    "message": "La surface du cube vacille d'une lueur pâle. « Recherche dans les archives... données corrompues... récupération impossible. Quelque chose d'une grande importance pour l'ancienne civilisation était protégé par la porte, ou enfermé derrière elle. »",
+    "title": "Le savoir perdu"
+  },
   "cube06": {
     "choices": {
       "close": {
         "label": "Fermer"
       }
     },
-    "message": "Lorsque la porte se brise, le cube tremble dans vos mains et devient chaud. Un murmure doux mais urgent s'en échappe : « J'ai acquis de nouvelles connaissances. »",
+    "message": "Lorsque la porte se brise, le cube tremble dans vos mains et devient chaud. Un murmure doux mais urgent s'en échappe : « J'ai retrouvé le savoir perdu. »",
     "title": "La porte s'ouvre"
   },
   "cube07": {
@@ -433,6 +451,15 @@
     },
     "message": "« Grâce aux dispositifs, la civilisation prospéra. Une ère de paix et de progrès sans précédent commença ; leur savoir et leur art atteignirent des sommets qu'on ne reverrait plus jamais. »",
     "title": "L'âge d'or"
+  },
+  "cubeHesitant": {
+    "choices": {
+      "close": {
+        "label": "Fermer"
+      }
+    },
+    "message": "Le cube évoque un souvenir de la dernière attaque. L'une des créatures qui fonçaient sur vous s'arrêta soudain et abaissa son arme. Ses lèvres tentèrent de former un mot, mais avant qu'un son n'en sorte, l'un de vos combattants l'abattit.",
+    "title": "Celui qui hésita"
   },
   "cube10": {
     "choices": {

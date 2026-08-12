@@ -3,6 +3,12 @@ import { EventManager, gameEvents, type EventRollState } from './events';
 import { GameState } from '@shared/schema';
 import { createInitialState, useGameStore } from '../state';
 import { GAME_CONSTANTS } from '../constants';
+import {
+  migrateCubeHesitantOnLoad,
+  migrateCubeStoryArchiveOnLoad,
+} from '../stateHelpers';
+import { handleExploreCave } from './caveExploreActions';
+import { cubeEvents } from './eventsCube';
 
 describe('Event System', () => {
   let mockState: Partial<GameState>;
@@ -398,5 +404,124 @@ describe('Event System', () => {
     const { stateChanges } = EventManager.checkEvents(state);
     expect(stateChanges.triggeredEvents?.villageBecomesCity).toBe(true);
     expect(stateChanges.flags?.hasCity).toBe(true);
+  });
+});
+
+describe('cube story progression', () => {
+  function cubeState(): GameState {
+    return createInitialState();
+  }
+
+  it('discovers the cube on the third Explore Cave use', () => {
+    const state = cubeState();
+    state.buildings.woodenHut = 5;
+    state.story.seen.exploreCaveCount = 2;
+
+    expect(cubeEvents.cubeDiscovery.condition(state)).toBe(false);
+
+    state.story.seen.exploreCaveCount = 3;
+    expect(cubeEvents.cubeDiscovery.condition(state)).toBe(true);
+
+    state.relics.whispering_cube = true;
+    expect(cubeEvents.cubeDiscovery.condition(state)).toBe(false);
+  });
+
+  it('increments the Explore Cave-only story counter', () => {
+    const state = cubeState();
+    state.story.seen.exploreCaveCount = 2;
+
+    const result = handleExploreCave(state, {
+      stateUpdates: {},
+      logEntries: [],
+    });
+    expect(result.stateUpdates.story?.seen.exploreCaveCount).toBe(3);
+  });
+
+  it('awakens after two wooden huts without requiring Venture Deeper', () => {
+    const state = cubeState();
+    state.relics.whispering_cube = true;
+    state.buildings.woodenHut = 1;
+
+    expect(cubeEvents.cube01.condition(state)).toBe(false);
+
+    state.buildings.woodenHut = 2;
+    expect(cubeEvents.cube01.condition(state)).toBe(true);
+  });
+
+  it('places the lost civilization beat after Venture Deeper', () => {
+    const state = cubeState();
+    state.relics.whispering_cube = true;
+    state.events.cube01 = true;
+
+    expect(cubeEvents.cubeLostCivilization.condition(state)).toBe(false);
+
+    state.story.seen.venturedDeeper = true;
+    expect(cubeEvents.cubeLostCivilization.condition(state)).toBe(true);
+  });
+
+  it('places lost knowledge at the Ember Bomb unlock before the gate opens', () => {
+    const state = cubeState();
+    state.relics.whispering_cube = true;
+    state.buildings.alchemistHall = 1;
+    state.story.seen.portalDiscovered = true;
+
+    expect(cubeEvents.cubeLostKnowledge.condition(state)).toBe(true);
+
+    state.events.cube05 = true;
+    state.story.seen.portalBlasted = true;
+    expect(cubeEvents.cube06.condition(state)).toBe(false);
+
+    state.events.cubeLostKnowledge = true;
+    expect(cubeEvents.cube06.condition(state)).toBe(true);
+  });
+
+  it('shows The Hesitant after the first boss and before cube10', () => {
+    const state = cubeState();
+    state.events.cube09 = true;
+    state.story.seen.firstBossWaveVictory = true;
+
+    expect(cubeEvents.cubeHesitant.condition(state)).toBe(true);
+
+    state.story.seen.sixthWaveVictory = true;
+    expect(cubeEvents.cube10.condition(state)).toBe(false);
+
+    state.events.cubeHesitant = true;
+    expect(cubeEvents.cube10.condition(state)).toBe(true);
+  });
+
+  it('grandfathers old cube lore without replaying split events', () => {
+    const state = cubeState();
+    state.buildings.blacksmith = 1;
+    state.story.seen = {
+      caveExplored: true,
+      venturedDeeper: true,
+      portalBlasted: true,
+    };
+    state.events.cube01 = true;
+    state.events.cube06 = true;
+
+    const patch = migrateCubeStoryArchiveOnLoad(state);
+
+    expect(patch?.story?.seen.exploreCaveCount).toBe(3);
+    expect(patch?.story?.seen.cubeStoryArchiveV2Applied).toBe(true);
+    expect(patch?.events?.cubeLostCivilization).toBe(true);
+    expect(patch?.events?.cubeLostKnowledge).toBe(true);
+  });
+
+  it('does not migrate saves already using the revised cube chain', () => {
+    const state = cubeState();
+    state.story.seen.cubeStoryArchiveV2Applied = true;
+
+    expect(migrateCubeStoryArchiveOnLoad(state)).toBeNull();
+  });
+
+  it('skips The Hesitant only for legacy saves past the first boss', () => {
+    const state = cubeState();
+    state.story.seen.sixthWaveVictory = true;
+
+    const patch = migrateCubeHesitantOnLoad(state);
+
+    expect(patch?.events?.cubeHesitant).toBe(true);
+    expect(patch?.story?.seen.cubeHesitantV3Applied).toBe(true);
   });
 });
