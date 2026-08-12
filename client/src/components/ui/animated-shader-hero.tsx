@@ -665,22 +665,9 @@ const Hero: React.FC<HeroProps> = ({
             </div>
           )}
 
-          {/* Steam Wishlist Section — hidden on Steam desktop (already on Steam). */}
-          {!hideSteamWishlist && (
-            <div className="pt-3 flex flex-col items-center gap-3 mt-14 animate-fade-in-up animation-delay-4000 w-full min-w-0">
-              <p className="text-sm sm:text-base font-medium text-grey-200 text-center max-w-md px-2 sm:px-4 break-words">
-                {t("endScreen.steamWishlistBlurb", {
-                  defaultValue:
-                    "A Dark Cave is soon launching on Steam. Add it to your wishlist today so you'll be notified the moment it launches.",
-                })}
-              </p>
-              <SteamStoreWidget />
-            </div>
-          )}
-
-          {/* Feedback CTA (swapped with Buy Me a Coffee). */}
+          {/* Feedback CTA */}
           {buttons?.feedback && (
-            <div className="py-3 flex flex-col items-center gap-3 mt-8 animate-fade-in-up animation-delay-4500 w-full min-w-0">
+            <div className="py-3 flex flex-col items-center gap-3 mt-14 animate-fade-in-up animation-delay-4000 w-full min-w-0">
               <p className="text-sm sm:text-base font-medium text-grey-200 text-center max-w-md px-2 sm:px-4 break-words">
                 {t("endScreen.feedbackBlurb", {
                   defaultValue:
@@ -703,11 +690,39 @@ const Hero: React.FC<HeroProps> = ({
             </div>
           )}
 
+          {/* Steam Wishlist Section — hidden on Steam desktop (already on Steam). */}
+          {!hideSteamWishlist && (
+            <div className="pt-3 flex flex-col items-center gap-3 mt-8 animate-fade-in-up animation-delay-4500 w-full min-w-0">
+              <p className="text-sm sm:text-base font-medium text-grey-200 text-center max-w-md px-2 sm:px-4 break-words">
+                {t("endScreen.steamWishlistBlurb", {
+                  defaultValue:
+                    "A Dark Cave is soon launching on Steam. Add it to your wishlist today so you'll be notified the moment it launches.",
+                })}
+              </p>
+              <SteamStoreWidget />
+            </div>
+          )}
+
           {/* Buy Me a Coffee + Continue Playing (+ More Games on web) */}
           {(buttons?.secondary || buttons?.secondaryTrailing) && (
             <div className="flex flex-col items-center gap-4 animate-fade-in-up animation-delay-4500 px-2">
               <div className="w-full flex justify-center">
                 <div className="flex flex-wrap justify-center gap-3 sm:gap-4 items-center">
+                  {buttons?.secondaryTrailing && (
+                    <button
+                      type="button"
+                      onClick={buttons.secondaryTrailing.onClick}
+                      button_id={buttons.secondaryTrailing.buttonId}
+                      className={END_SCREEN_LINK_BUTTON_CLASS}
+                    >
+                      <GameUiIcon
+                        name="discover"
+                        sizeClassName="h-3.5 w-3.5"
+                        className="text-blue-400 opacity-100"
+                      />
+                      <span>{buttons.secondaryTrailing.text}</span>
+                    </button>
+                  )}
                   <button
                     type="button"
                     onClick={() =>
@@ -731,21 +746,6 @@ const Hero: React.FC<HeroProps> = ({
                       })}
                     </span>
                   </button>
-                  {buttons?.secondaryTrailing && (
-                    <button
-                      type="button"
-                      onClick={buttons.secondaryTrailing.onClick}
-                      button_id={buttons.secondaryTrailing.buttonId}
-                      className={END_SCREEN_LINK_BUTTON_CLASS}
-                    >
-                      <GameUiIcon
-                        name="discover"
-                        sizeClassName="h-3.5 w-3.5"
-                        className="text-blue-400 opacity-100"
-                      />
-                      <span>{buttons.secondaryTrailing.text}</span>
-                    </button>
-                  )}
                   {buttons?.secondary && (
                     <button
                       type="button"
