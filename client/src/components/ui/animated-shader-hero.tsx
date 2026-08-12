@@ -1,4 +1,4 @@
-import React, { useRef, useEffect } from "react";
+import React, { useRef, useEffect, useState } from "react";
 import { logger } from "@/lib/logger";
 import { StarshipShader } from "@/components/ui/starship-shader";
 import { GameUiIcon } from "@/components/game/GameUiIcon";
@@ -11,28 +11,64 @@ import {
 export type EndScreenBackgroundVariant = "default" | "starship";
 
 /**
- * Official Steam store widget.
+ * Official Steam store widget (Steamworks Embed / CreateWidget output).
+ * Exact markup Steam generates:
+ * `<iframe src="…/widget/{appid}/" frameborder="0" width="646" height="190"></iframe>`
+ * Optional `?t=` description is supported by Steam’s CreateWidget.
+ *
  * Our app uses `color-scheme: dark` on `:root`. Steam’s widget document does not,
- * so browsers paint an opaque iframe canvas (white flash). Setting
- * `color-scheme: light dark` on the iframe lets the schemes match and keeps
- * Steam’s transparent body, so the end-screen shader shows through.
+ * so browsers paint an opaque iframe canvas unless schemes are aligned.
+ * @see https://partner.steamgames.com/doc/marketing/widget
  * @see https://fvsch.com/transparent-iframes
  */
+const STEAM_WIDGET_WIDTH = 646;
+const STEAM_WIDGET_HEIGHT = 190;
+
 function SteamStoreWidget() {
+  const wrapRef = useRef<HTMLDivElement>(null);
+  const [scale, setScale] = useState(1);
+
+  useEffect(() => {
+    const el = wrapRef.current;
+    if (!el) return;
+
+    const updateScale = () => {
+      setScale(Math.min(1, el.clientWidth / STEAM_WIDGET_WIDTH));
+    };
+    updateScale();
+
+    const observer = new ResizeObserver(updateScale);
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, []);
+
   return (
-    <div className="mx-auto w-full max-w-[460px] px-2 bg-transparent">
-      <iframe
-        title="A Dark Cave on Steam"
-        src={steamWidgetUrl(STEAM_STORE_UTM_CONTENT.endScreenWishlist)}
-        loading="lazy"
-        allowTransparency
-        className="block w-full border-0 bg-transparent"
+    <div ref={wrapRef} className="mx-auto w-full max-w-[646px] px-2">
+      <div
+        className="relative overflow-hidden bg-transparent"
         style={{
-          height: 190,
-          backgroundColor: "transparent",
-          colorScheme: "light dark",
+          width: STEAM_WIDGET_WIDTH * scale,
+          height: STEAM_WIDGET_HEIGHT * scale,
+          marginInline: "auto",
         }}
-      />
+      >
+        <iframe
+          title="A Dark Cave on Steam"
+          src={steamWidgetUrl(STEAM_STORE_UTM_CONTENT.endScreenWishlist)}
+          frameBorder={0}
+          width={STEAM_WIDGET_WIDTH}
+          height={STEAM_WIDGET_HEIGHT}
+          loading="lazy"
+          allowTransparency
+          className="absolute left-0 top-0 border-0 bg-transparent"
+          style={{
+            transform: `scale(${scale})`,
+            transformOrigin: "top left",
+            backgroundColor: "transparent",
+            colorScheme: "light dark",
+          }}
+        />
+      </div>
     </div>
   );
 }
