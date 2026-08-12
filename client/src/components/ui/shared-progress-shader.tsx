@@ -124,9 +124,12 @@ function syncSegmentRims(host: HTMLElement, rimLayer: HTMLElement) {
       rimLayer.appendChild(rim);
     }
     const r = cell.getBoundingClientRect();
-    rim.style.left = `${r.left - layerRect.left}px`;
+    // Keep the 1px outside rim flush with the segment's left edge. The source
+    // rim starts 1px inside so its shadow still reaches, but never overhangs,
+    // that edge.
+    rim.style.left = `${r.left - layerRect.left + 1}px`;
     rim.style.top = `${r.top - layerRect.top}px`;
-    rim.style.width = `${r.width}px`;
+    rim.style.width = `${Math.max(0, r.width - 1)}px`;
     rim.style.height = `${r.height}px`;
 
     const sourceRim = cell.querySelector<HTMLElement>(
