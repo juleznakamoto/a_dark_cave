@@ -50,7 +50,9 @@
     "demoProgress": "Demo Progress",
     "feedback": "Feedback",
     "openFeedback": "Open feedback form",
-    "progress": "进度"
+    "progress": "进度",
+    "network": "社交",
+    "email": "邮箱"
   },
   "profile": {
     "title": "菜单",

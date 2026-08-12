@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Placeholder network / socials icon (connected nodes). Replace with final art later. -->
+<svg fill="#FFFFFF" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+  <!-- Links (filled for CSS mask) -->
+  <path d="M8.2 7.2h7.6v1.6H8.2z"/>
+  <path d="M9.1 8.6l1.2-.8 3.6 5.4-1.2.8z"/>
+  <path d="M14.9 7.8l1.2.8-3.6 5.4-1.2-.8z"/>
+  <!-- Nodes -->
+  <circle cx="7" cy="8" r="2.6"/>
+  <circle cx="17" cy="8" r="2.6"/>
+  <circle cx="12" cy="17" r="2.6"/>
+</svg>

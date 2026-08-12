@@ -34,6 +34,7 @@ import {
   markPlaylightDiscoveryUserInitiated,
 } from "@/lib/playlight";
 import PlaylightDiscoveryButton from "./PlaylightDiscoveryButton";
+import FooterNetworkMenu from "./FooterNetworkMenu";
 import { GAME_CHROME_NO_BG_HOVER } from "./gameChrome";
 import { useCoinHoverParticles } from "@/components/ui/coin-hover-particles";
 import { FOOTER_TRADER_PARTICLE_CONFIG } from "@/components/ui/bubbly-button.particles";
@@ -300,6 +301,7 @@ export default function GameFooter() {
               <>
                 {feedbackButton}
                 {progressButton}
+                <FooterNetworkMenu labelClassName={FOOTER_SOCIAL_LABEL} />
               </>
             )}
             {GAME_FOOTER_RIGHT_ICON_ORDER.map((platform) => {
@@ -317,7 +319,7 @@ export default function GameFooter() {
                 platform === "contact"
                   ? tWithFallback("ui", "footer.contact", title)
                   : title;
-              /** Reddit / Mail stay icon-only; Steam keeps a desktop label. */
+              /** Steam keeps a desktop label; other inline icons stay icon-only. */
               const showSocialLabel = platform === "steam";
               const socialLink = (
                 <a
@@ -364,6 +366,7 @@ export default function GameFooter() {
                     >
                       {socialLink}
                     </HoverCalloutTooltip>
+                    <FooterNetworkMenu labelClassName={FOOTER_SOCIAL_LABEL} />
                   </div>
                 );
               }

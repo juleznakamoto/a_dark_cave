@@ -8,6 +8,7 @@ import { SITE_ORIGIN } from "@shared/publicSeo";
 export type FooterSocialPlatformId =
   | "reddit"
   | "instagram"
+  | "youtube"
   | "steam"
   | "contact";
 
@@ -18,6 +19,10 @@ export const OFFICIAL_REDDIT_URL =
 /** Official Instagram URL (footer, start screen, social rewards). */
 export const OFFICIAL_INSTAGRAM_URL =
   "https://www.instagram.com/a_dark_cave/" as const;
+
+/** Official YouTube channel URL. */
+export const OFFICIAL_YOUTUBE_URL =
+  "https://www.youtube.com/channel/UCdQDWTJe_Bno7xyjnO1aC-w" as const;
 
 /** Canonical Steam store page (no tracking params; use {@link steamStoreUrl} for clicks). */
 export const OFFICIAL_STEAM_URL =
@@ -115,6 +120,10 @@ export const GAME_FOOTER_RIGHT_ICON_LINKS: Readonly<
     href: OFFICIAL_INSTAGRAM_URL,
     title: "Instagram",
   },
+  youtube: {
+    href: OFFICIAL_YOUTUBE_URL,
+    title: "YouTube",
+  },
   steam: {
     // Bare canonical URL; click sites must use steamStoreUrl(...) for tracking.
     href: OFFICIAL_STEAM_URL,
@@ -122,13 +131,17 @@ export const GAME_FOOTER_RIGHT_ICON_LINKS: Readonly<
   },
   contact: {
     href: "mailto:support@a-dark-cave.com",
-    title: "Contact",
+    title: "Email",
   },
 } as const;
+
+/** Links shown in the footer Network dropdown (not inline icons). */
+export const NETWORK_MENU_PLATFORM_ORDER: readonly Exclude<
+  FooterSocialPlatformId,
+  "steam"
+>[] = ["reddit", "instagram", "youtube", "contact"] as const;
 
 /** Stable row order for the game footer icons and start-screen mirrors. */
 export const GAME_FOOTER_RIGHT_ICON_ORDER: readonly FooterSocialPlatformId[] = [
   "steam",
-  "reddit",
-  "contact",
 ] as const;

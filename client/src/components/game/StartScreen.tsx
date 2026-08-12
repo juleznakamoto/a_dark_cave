@@ -10,6 +10,7 @@ import {
   SOUND_VOLUME,
 } from "@/lib/audio";
 import { FooterSocialIcon } from "@/components/game/FooterSocialIcon";
+import FooterNetworkMenu from "@/components/game/FooterNetworkMenu";
 import { GameUiIcon } from "@/components/game/GameUiIcon";
 import LanguageSelector from "@/components/game/LanguageSelector";
 import {
@@ -711,7 +712,7 @@ export default function StartScreen({
                 platform === "contact"
                   ? t("footer.contact", { defaultValue: title })
                   : title;
-              /** Match game footer: Reddit / Mail are icon-only. */
+              /** Steam keeps a desktop label. */
               const showSocialLabel = platform === "steam";
               const linkContent = (
                 <>
@@ -750,6 +751,16 @@ export default function StartScreen({
                 </a>
               );
             })}
+          {!hideStartScreenSocialLinks && (
+            <FooterNetworkMenu
+              side="top"
+              align="end"
+              triggerClassName={START_FOOTER_SOCIAL_LINK}
+              iconClassName="opacity-100"
+              iconSizeClassName="w-3.5 h-3.5"
+              labelClassName="sr-only sm:not-sr-only sm:inline"
+            />
+          )}
           {!steamEditionActive && (
             <div className="flex flex-col items-end leading-tight sm:flex-row sm:items-center sm:gap-x-3">
               <a

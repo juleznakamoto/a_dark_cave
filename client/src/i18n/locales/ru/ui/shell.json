@@ -50,7 +50,9 @@
     "demoProgress": "Demo Progress",
     "feedback": "Feedback",
     "openFeedback": "Open feedback form",
-    "progress": "Прогресс"
+    "progress": "Прогресс",
+    "network": "Сеть",
+    "email": "Email"
   },
   "profile": {
     "title": "Меню",

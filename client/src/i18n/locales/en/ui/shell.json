@@ -54,7 +54,9 @@
     "cruelModeActive": "Cruel Mode activated",
     "wishlistOnSteam": "Wishlist on Steam",
     "demoProgress": "Demo Progress",
-    "progress": "Progress"
+    "progress": "Progress",
+    "network": "Network",
+    "email": "Email"
   },
   "profile": {
     "title": "Menu",
