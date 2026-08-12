@@ -40,17 +40,17 @@ import { FOOTER_TRADER_PARTICLE_CONFIG } from "@/components/ui/bubbly-button.par
 
 const FOOTER_CONTROL_BTN_BASE =
   `group shrink-0 px-1 py-1 text-xs text-neutral-300 hover ${GAME_CHROME_NO_BG_HOVER}`;
-const FOOTER_CONTROL_BTN =
-  `${FOOTER_CONTROL_BTN_BASE} hover:!text-red-600`;
+/** Default chrome: opacity only. Color accents are reserved for trader / more games / donate. */
+const FOOTER_CONTROL_BTN = FOOTER_CONTROL_BTN_BASE;
 const FOOTER_CONTROL_BTN_FADE =
   "opacity-80 transition-[opacity,color] group-hover:opacity-100";
-/** Icons keep their color on hover; labels match via FOOTER_CONTROL_TEXT / accent spans. */
+/** Neutral icons/labels stay the same color; only brighten on hover. */
 const FOOTER_CONTROL_ICON =
   `${FOOTER_CONTROL_BTN_FADE} text-neutral-300 group-hover:!text-neutral-300`;
 const FOOTER_CONTROL_SVG_ICON_HOVER =
   `w-4 h-4 ${FOOTER_CONTROL_ICON}`;
 const FOOTER_CONTROL_TEXT =
-  `${FOOTER_CONTROL_BTN_FADE} group-hover:!text-red-600`;
+  `${FOOTER_CONTROL_BTN_FADE} text-neutral-300 group-hover:!text-neutral-300`;
 const FOOTER_SOCIAL_LABEL =
   `${FOOTER_CONTROL_TEXT} hidden sm:inline`;
 const FOOTER_LEGAL_LINK =
@@ -58,6 +58,8 @@ const FOOTER_LEGAL_LINK =
 /** Heart stays red; opacity-only transition so scale pump is not overridden. */
 const DONATE_HEART =
   "donate-heart text-base leading-none text-red-600 opacity-80 group-hover:opacity-100 transition-opacity";
+const FOOTER_DONATE_TEXT =
+  `${FOOTER_CONTROL_BTN_FADE} group-hover:!text-red-600`;
 const FOOTER_TRADER_TEXT =
   `${FOOTER_CONTROL_BTN_FADE} group-hover:!text-yellow-500`;
 
@@ -250,7 +252,7 @@ export default function GameFooter() {
                 onClick={handleOfferTribute}
                 onMouseEnter={triggerDonateHeartPump}
                 aria-label={t("footer.supportGame")}
-                className={`${FOOTER_CONTROL_BTN} flex items-center gap-1`}
+                className={`${FOOTER_CONTROL_BTN_BASE} hover:!text-red-600 flex items-center gap-1`}
               >
                 <span
                   ref={donateHeartRef}
@@ -265,7 +267,7 @@ export default function GameFooter() {
                 >
                   ❤︎⁠
                 </span>
-                <span className={FOOTER_CONTROL_TEXT}>
+                <span className={FOOTER_DONATE_TEXT}>
                   {t("footer.donate")}
                 </span>
               </Button>

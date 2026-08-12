@@ -70,10 +70,11 @@ const HEADER_ICON_BTN =
   `group shrink-0 p-0 w-7 h-7 flex items-center justify-center ${GAME_CHROME_NO_BG_HOVER}`;
 /** Slightly larger mask icons for header actions (button stays w-7 h-7). */
 const HEADER_ACCENT_ICON_SIZE = "game-header-accent-icon";
+/** Header chrome: opacity only (color accents live in the footer). */
 const HEADER_ICON_SYMBOL_HOVER =
-  "text-neutral-300 opacity-80 transition-[opacity,color] group-hover:opacity-100 group-hover:!text-red-600";
+  "text-neutral-300 opacity-80 transition-opacity group-hover:opacity-100 group-hover:!text-neutral-300";
 const HEADER_TEXT_BTN =
-  `group shrink-0 px-2 py-1 text-xs text-neutral-300 hover hover:!text-red-600 ${GAME_CHROME_NO_BG_HOVER}`;
+  `group shrink-0 px-2 py-1 text-xs text-neutral-300 hover ${GAME_CHROME_NO_BG_HOVER}`;
 
 type ProfileMenuContextValue = ReturnType<typeof useProfileMenuState>;
 

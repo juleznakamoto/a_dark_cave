@@ -8,7 +8,7 @@ import { GAME_CHROME_NO_BG_HOVER } from "./gameChrome";
 const HEADER_ICON_BTN =
   `group shrink-0 p-0 w-7 h-7 flex items-center justify-center ${GAME_CHROME_NO_BG_HOVER}`;
 const HEADER_ICON_SYMBOL_HOVER =
-  "text-neutral-300 opacity-80 transition-[opacity,color] group-hover:opacity-100 group-hover:!text-red-600";
+  "text-neutral-300 opacity-80 transition-opacity group-hover:opacity-100 group-hover:!text-neutral-300";
 
 export function FullscreenButton() {
   const { isFullscreen, toggleFullscreen, available } = useFullscreen();
