@@ -406,7 +406,7 @@
         "label": "Close"
       }
     },
-    "message": "'Long after the inhabitants of the underground city perished, the object of their devotion remained: a colossal, impenetrable gate, crafted with long-forgotten technology, hidden deep within the city's lowest chambers'",
+    "message": "'Long after the inhabitants of the underground city perished, the object of their devotion remained: a colossal, impenetrable gate, crafted with long-forgotten technology and hidden deep within the city's lowest chambers.'",
     "title": "The Sealed Gate"
   },
   "cube06": {
@@ -415,7 +415,7 @@
         "label": "Close"
       }
     },
-    "message": "As the gate is shatters, the cube trembles in your hands, growing warm. A soft, but urgent whisper escapes it: 'I have gained new insights.'",
+    "message": "As the gate shatters, the cube trembles in your hands and grows warm. A soft but urgent whisper escapes it: 'I have gained new insights.'",
     "title": "The Gate Opens"
   },
   "cube07": {
@@ -424,7 +424,7 @@
         "label": "Close"
       }
     },
-    "message": "'The ancient civilization that forged the gate possessed knowledge and technology far beyond the current age. They even crafted devices designed to be implanted within their skulls, enhancing both mind and body'",
+    "message": "'The ancient civilization that forged the gate possessed knowledge and technology far beyond the current age. They even crafted devices designed to be implanted within their skulls, enhancing both mind and body.'",
     "title": "Ancient Technology"
   },
   "cube08": {
@@ -451,8 +451,8 @@
         "label": "Close"
       }
     },
-    "message": "'Knowledge flowed instantly, and society thrived. Behind the progress, the skull devices orchestrated humanity's thoughts, connecting minds in a quiet, inescapable web.''",
-    "title": "The Great Collapse"
+    "message": "'Knowledge flowed instantly, and society thrived. Behind the progress, the skull devices orchestrated humanity's thoughts, connecting minds in a quiet, inescapable web.'",
+    "title": "The Hive Mind"
   },
   "cube11": {
     "choices": {
@@ -460,8 +460,8 @@
         "label": "Close"
       }
     },
-    "message": "'One day, without warning, an unimaginable magneto-electric pulse swept across the globe. Every device of the civilization, including those embedded within the skulls, was obliterated.'",
-    "title": "The Hive Mind"
+    "message": "'One day, without warning, an unimaginable electromagnetic pulse swept across the globe. Every device of the civilization, including those embedded within the skulls, was obliterated.'",
+    "title": "The Great Collapse"
   },
   "cube12": {
     "choices": {
@@ -496,7 +496,7 @@
         "label": "Continue"
       }
     },
-    "message": "'One day, deep in the earth, they found a monolith of unknown ore. From it they forged an explosive to destroy the gate. But the bomb failed to breach the gate, instead unleashed an electro-magnetic pulse spanning the whole planet destroying all devices, ending civilization.'",
+    "message": "'One day, deep in the earth, they found a monolith of unknown ore. From it they forged an explosive to destroy the gate. But the bomb failed to breach the gate. Instead, it unleashed an electromagnetic pulse that spanned the planet, destroying all devices and ending civilization.'",
     "title": "The Unknown Ore"
   },
   "cube14c": {
@@ -506,7 +506,7 @@
       }
     },
     "message": "'Shortly after the explosion, a man standing nearby began to dematerialize, his form flickering, half-transparent for seconds. Terrified and driven mad by what had happened, he took his own life moments later.'",
-    "title": "The Unknown Ore"
+    "title": "The Flickering Man"
   },
   "cube14d": {
     "choices": {
@@ -523,7 +523,7 @@
         "label": "Close"
       }
     },
-    "message": "That was when you recognize that the creatures did not attack as they recognized you as one of their own. You are the man who vanished through the gate.",
+    "message": "Only then do you realize why the creatures did not attack you: they recognized you as one of their own. You are the man who vanished through the gate.",
     "title": "Recognition"
   },
   "cube15b": {
@@ -532,7 +532,7 @@
         "label": "Close"
       }
     },
-    "message": "After finishing their story one of the survivors steps forward, pointing at you: 'You are the man who vanished through the gate. You are one of us.",
+    "message": "After finishing their story, one of the survivors steps forward and points at you: 'You are the man who vanished through the gate. You are one of us.'",
     "title": "Recognition"
   },
   "cube16a": {
