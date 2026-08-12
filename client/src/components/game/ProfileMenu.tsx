@@ -73,8 +73,6 @@ const HEADER_ACCENT_ICON_SIZE = "game-header-accent-icon";
 /** Header chrome: opacity only (color accents live in the footer). */
 const HEADER_ICON_SYMBOL_HOVER =
   "text-neutral-300 opacity-80 transition-opacity group-hover:opacity-100 group-hover:!text-neutral-300";
-const HEADER_TEXT_BTN =
-  `group shrink-0 px-2 py-1 text-xs text-neutral-300 hover ${GAME_CHROME_NO_BG_HOVER}`;
 
 type ProfileMenuContextValue = ReturnType<typeof useProfileMenuState>;
 
@@ -601,17 +599,23 @@ export function GameHeaderControls() {
         onOpenChange={setAccountDropdownOpen}
         modal={false}
       >
-        <DropdownMenuTrigger asChild>
-          <Button
-            variant="ghost"
-            size="xs"
-            className={HEADER_TEXT_BTN}
-          >
-            <span className={HEADER_ICON_SYMBOL_HOVER}>
-              {t("profile.title")}
-            </span>
-          </Button>
-        </DropdownMenuTrigger>
+        <HoverCalloutTooltip label={t("profile.title")} side="bottom">
+          <DropdownMenuTrigger asChild>
+            <Button
+              type="button"
+              variant="ghost"
+              size="xs"
+              aria-label={t("profile.title")}
+              className={`${HEADER_ICON_BTN} group touch-manipulation`}
+            >
+              <GameUiIcon
+                name="menu"
+                sizeClassName={HEADER_ACCENT_ICON_SIZE}
+                className={HEADER_ICON_SYMBOL_HOVER}
+              />
+            </Button>
+          </DropdownMenuTrigger>
+        </HoverCalloutTooltip>
         <DropdownMenuContent
           align="end"
           side="bottom"
