@@ -670,6 +670,42 @@ const sellTrades = [
   ),
 ];
 
+function buildGoldCostSpecialTrade(
+  trade: {
+    id: string;
+    label?: string;
+    give: string;
+    giveItem: string;
+    costs: { resource: string; amounts: number[] }[];
+  },
+  discount: number,
+): MerchantTradeData {
+  const goldCost = trade.costs[0].amounts[0];
+  const discountedCost = Math.ceil(goldCost * (1 - discount));
+  const toolLabelFallback = getToolTradeLabelFallback(trade);
+  const goldName = getResourceName("gold", "Gold");
+  return {
+    id: trade.id,
+    label: tWithFallback(
+      "events",
+      `merchant.toolTrades.${trade.id}.label`,
+      toolLabelFallback,
+    ),
+    cost: tWithFallback(
+      "events",
+      "merchant.tradeCost",
+      `${discountedCost} ${goldName}`,
+      { amount: discountedCost, resource: goldName },
+    ),
+    buyResource: trade.give,
+    buyAmount: 1,
+    buyItem: trade.giveItem,
+    sellResource: "gold",
+    sellAmount: discountedCost,
+    executed: false,
+  };
+}
+
 function getToolTradeLabelFallback(trade: {
   id: string;
   label?: string;
@@ -745,8 +781,8 @@ const toolTrades = [
     label: getEffectName("books", "book_of_trials", bookEffects.book_of_trials?.name ?? "Book of Trials"),
     give: "book",
     giveItem: "book_of_trials",
-    condition: (state: GameState) =>
-      state.buildings.darkEstate >= 1 && !state.books.book_of_trials,
+    // Available from the first merchant visit until purchased (no Dark Estate gate).
+    condition: (state: GameState) => !state.books.book_of_trials,
     costs: [{ resource: "gold", amounts: [50] }],
 
   },
@@ -1229,45 +1265,19 @@ export function generateMerchantChoices(state: GameState): MerchantTradeData[] {
     false,
   );
 
-  // At most one special (book/tool/schematic/weapon/relic) trade per visit — all eligible
-  // options share one random draw, including map fragments.
+  // At most one special (book/tool/schematic/weapon/relic) trade per visit.
+  // Book of Trials always takes that slot while unowned; otherwise one random draw.
   const eligibleSpecialTrades = toolTrades.filter((trade) =>
     trade.condition(state),
   );
-
   const availableToolTrades: MerchantTradeData[] = [];
   if (eligibleSpecialTrades.length > 0) {
     const trade =
+      eligibleSpecialTrades.find((t) => t.id === "trade_book_of_trials") ??
       eligibleSpecialTrades[
       Math.floor(Math.random() * eligibleSpecialTrades.length)
       ];
-
-    // Tool trades always cost gold (no 1.1 markup - use exact discounted price)
-    const goldCost = trade.costs[0].amounts[0];
-    const discountedCost = Math.ceil(goldCost * (1 - discount));
-
-    const toolLabelFallback = getToolTradeLabelFallback(trade);
-    const goldName = getResourceName("gold", "Gold");
-    availableToolTrades.push({
-      id: trade.id,
-      label: tWithFallback(
-        "events",
-        `merchant.toolTrades.${trade.id}.label`,
-        toolLabelFallback,
-      ),
-      cost: tWithFallback(
-        "events",
-        "merchant.tradeCost",
-        `${discountedCost} ${goldName}`,
-        { amount: discountedCost, resource: goldName },
-      ),
-      buyResource: trade.give, // Category: "tool", "book", "schematic", "weapon", "relic", …
-      buyAmount: 1,
-      buyItem: trade.giveItem,
-      sellResource: "gold",
-      sellAmount: discountedCost,
-      executed: false,
-    });
+    availableToolTrades.push(buildGoldCostSpecialTrade(trade, discount));
   }
 
   const finalChoices: MerchantTradeData[] = [

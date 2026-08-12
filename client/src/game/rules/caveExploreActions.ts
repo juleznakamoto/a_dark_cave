@@ -194,7 +194,7 @@ const caveItems = {
   exploreCave: [
     {
       key: "survivors_notes",
-      probability: 0.2,
+      probability: 0.3,
       logMessageKey: "debrisScroll",
       category: "relics",
       condition: "!books.book_of_trials",
