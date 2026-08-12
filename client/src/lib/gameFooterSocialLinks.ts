@@ -135,7 +135,7 @@ export const GAME_FOOTER_RIGHT_ICON_LINKS: Readonly<
   },
 } as const;
 
-/** Links shown in the footer Connect dropdown (not inline icons). */
+/** Links shown in the footer Social dropdown (not inline icons). */
 export const NETWORK_MENU_PLATFORM_ORDER: readonly Exclude<
   FooterSocialPlatformId,
   "steam"
