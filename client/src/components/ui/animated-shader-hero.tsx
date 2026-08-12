@@ -1,10 +1,11 @@
 import React, { useRef, useEffect } from "react";
 import { logger } from "@/lib/logger";
 import { StarshipShader } from "@/components/ui/starship-shader";
-import { FooterSocialIcon } from "@/components/game/FooterSocialIcon";
+import { GameUiIcon } from "@/components/game/GameUiIcon";
+import { useUiTranslation } from "@/i18n/useUiTranslation";
 import {
   STEAM_STORE_UTM_CONTENT,
-  steamStoreUrl,
+  steamWidgetUrl,
 } from "@/lib/gameFooterSocialLinks";
 
 export type EndScreenBackgroundVariant = "default" | "starship";
@@ -62,12 +63,12 @@ function renderSymbolLabelButtonContent(text: string) {
   return (
     <>
       <span
-        className="font-noto-symbols-2 inline-flex h-5 w-5 shrink-0 items-center justify-center text-base sm:text-lg leading-none"
+        className="font-noto-symbols-2 inline-flex h-[1.1em] w-[1.1em] shrink-0 items-center justify-center text-[1.05em] leading-none translate-y-[0.12em]"
         aria-hidden
       >
         {parts[1]}
       </span>
-      <span>{parts[2]}</span>
+      <span className="leading-none">{parts[2]}</span>
     </>
   );
 }
@@ -80,21 +81,6 @@ const END_SCREEN_CTA_BUTTON_GROUP_CLASS =
 
 const END_SCREEN_LINK_BUTTON_CLASS =
   "px-2.5 sm:px-3 py-1.5 sm:py-1.5 bg-orange-500/10 hover:bg-red-500/20 border border-red-300/30 hover:border-red-300/50 text-slate-200 rounded-md font-normal text-xs sm:text-sm transition-all duration-300 hover:scale-105 backdrop-blur-sm flex items-center gap-1 sm:gap-1.5 min-w-0";
-
-/** Icon + label for compact end-screen buttons (icon box matches w-3.5 SVG icons). */
-function renderEmojiLabelButtonContent(emoji: string, label: string) {
-  return (
-    <>
-      <span
-        className="inline-flex h-3.5 w-3.5 shrink-0 items-center justify-center text-sm leading-none"
-        aria-hidden
-      >
-        {emoji}
-      </span>
-      <span>{label}</span>
-    </>
-  );
-}
 
 // Reusable Shader Background Hook
 const useShaderBackground = (enabled: boolean) => {
@@ -438,6 +424,7 @@ const Hero: React.FC<HeroProps> = ({
   hideSteamWishlist = false,
   className = "",
 }) => {
+  const { t } = useUiTranslation();
   const useDefaultBackground = backgroundVariant === "default";
   const canvasRef = useShaderBackground(useDefaultBackground);
 
@@ -635,105 +622,111 @@ const Hero: React.FC<HeroProps> = ({
           {!hideSteamWishlist && (
             <div className="pt-3 flex flex-col items-center gap-3 mt-14 animate-fade-in-up animation-delay-4000 w-full min-w-0">
               <p className="text-sm sm:text-base font-medium text-grey-200 text-center max-w-md px-2 sm:px-4 break-words">
-                A Dark Cave is soon launching on Steam. Add it to your wishlist
-                today so you'll be notified the moment it launches.
+                {t("endScreen.steamWishlistBlurb", {
+                  defaultValue:
+                    "A Dark Cave is soon launching on Steam. Add it to your wishlist today so you'll be notified the moment it launches.",
+                })}
               </p>
-              <div className="flex gap-2 sm:gap-3 flex-wrap justify-center px-2">
-                <button
-                  onClick={() =>
-                    window.open(
-                      steamStoreUrl(STEAM_STORE_UTM_CONTENT.endScreenWishlist),
-                      "_blank",
-                      "noopener,noreferrer",
-                    )
-                  }
-                  className={END_SCREEN_CTA_BUTTON_CLASS}
-                >
-                  <FooterSocialIcon
-                    platform="steam"
-                    className="h-5 w-5 shrink-0"
-                  />
-                  <span>Steam</span>
-                </button>
+              <div className="w-full max-w-[646px] mx-auto overflow-x-auto px-2">
+                <iframe
+                  title="A Dark Cave on Steam"
+                  src={steamWidgetUrl(STEAM_STORE_UTM_CONTENT.endScreenWishlist)}
+                  width={646}
+                  height={190}
+                  loading="lazy"
+                  className="mx-auto block max-w-none border-0 bg-transparent"
+                />
               </div>
             </div>
           )}
 
-          {/* Support Section */}
-          <div className="py-3 flex flex-col items-center gap-3 mt-8 animate-fade-in-up animation-delay-4500 w-full min-w-0">
-            <p className="text-sm sm:text-base font-medium text-grey-200 text-center max-w-md px-2 sm:px-4 break-words">
-              If you enjoyed the game, I would be very happy if you support me
-              so I can continue to develop it.
-            </p>
-            <button
-              onClick={() =>
-                window.open(
-                  "https://buymeacoffee.com/julez.b",
-                  "_blank",
-                  "noopener,noreferrer",
-                )
-              }
-              className={END_SCREEN_CTA_BUTTON_CLASS}
-            >
-              <span
-                className="inline-flex h-5 w-5 shrink-0 items-center justify-center text-base sm:text-lg leading-none"
-                aria-hidden
+          {/* Feedback CTA (swapped with Buy Me a Coffee). */}
+          {buttons?.feedback && (
+            <div className="py-3 flex flex-col items-center gap-3 mt-8 animate-fade-in-up animation-delay-4500 w-full min-w-0">
+              <p className="text-sm sm:text-base font-medium text-grey-200 text-center max-w-md px-2 sm:px-4 break-words">
+                {t("endScreen.feedbackBlurb", {
+                  defaultValue:
+                    "If you encounter any bugs, translation issues, or have ideas or feedback, I'd love to hear from you.",
+                })}
+              </p>
+              <button
+                type="button"
+                onClick={buttons.feedback.onClick}
+                button_id={buttons.feedback.buttonId}
+                className={END_SCREEN_CTA_BUTTON_CLASS}
               >
-                ☕
-              </span>
-              <span>Buy Me a Coffee</span>
-            </button>
-          </div>
+                <GameUiIcon
+                  name="feedback"
+                  sizeClassName="h-5 w-5"
+                  className="opacity-100"
+                />
+                <span>{buttons.feedback.text}</span>
+              </button>
+            </div>
+          )}
 
-          {/* Feedback + Continue Playing (+ More Games on web) */}
-          {(buttons?.feedback ||
-            buttons?.secondary ||
-            buttons?.secondaryTrailing) && (
-              <div className="flex flex-col items-center gap-4 animate-fade-in-up animation-delay-4500 px-2">
-                <div className="w-full flex justify-center">
-                  <div className="flex flex-wrap justify-center gap-3 sm:gap-4 items-center">
-                    {buttons?.feedback && (
-                      <button
-                        type="button"
-                        onClick={buttons.feedback.onClick}
-                        button_id={buttons.feedback.buttonId}
-                        className={END_SCREEN_LINK_BUTTON_CLASS}
-                      >
-                        <svg
-                          className="w-3.5 h-3.5 shrink-0"
-                          viewBox="0 0 24 24"
-                          fill="currentColor"
-                          aria-hidden
-                        >
-                          <path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z" />
-                        </svg>
-                        <span>{buttons.feedback.text}</span>
-                      </button>
-                    )}
-                    {buttons?.secondaryTrailing && (
-                      <button
-                        type="button"
-                        onClick={buttons.secondaryTrailing.onClick}
-                        button_id={buttons.secondaryTrailing.buttonId}
-                        className={END_SCREEN_LINK_BUTTON_CLASS}
-                      >
-                        {renderEmojiLabelButtonContent("🎮", buttons.secondaryTrailing.text)}
-                      </button>
-                    )}
-                    {buttons?.secondary && (
-                      <button
-                        type="button"
-                        onClick={buttons.secondary.onClick}
-                        button_id={buttons.secondary.buttonId}
-                        className={END_SCREEN_LINK_BUTTON_CLASS}
-                      >
-                        {renderEmojiLabelButtonContent("▶", buttons.secondary.text)}
-                      </button>
-                    )}
-                  </div>
+          {/* Buy Me a Coffee + Continue Playing (+ More Games on web) */}
+          {(buttons?.secondary || buttons?.secondaryTrailing) && (
+            <div className="flex flex-col items-center gap-4 animate-fade-in-up animation-delay-4500 px-2">
+              <div className="w-full flex justify-center">
+                <div className="flex flex-wrap justify-center gap-3 sm:gap-4 items-center">
+                  <button
+                    type="button"
+                    onClick={() =>
+                      window.open(
+                        "https://buymeacoffee.com/julez.b",
+                        "_blank",
+                        "noopener,noreferrer",
+                      )
+                    }
+                    className={END_SCREEN_LINK_BUTTON_CLASS}
+                  >
+                    <span
+                      className="inline-flex h-3.5 w-3.5 shrink-0 items-center justify-center text-sm leading-none"
+                      aria-hidden
+                    >
+                      ❤️
+                    </span>
+                    <span>
+                      {t("endScreen.buyMeACoffee", {
+                        defaultValue: "Buy Me a Coffee",
+                      })}
+                    </span>
+                  </button>
+                  {buttons?.secondaryTrailing && (
+                    <button
+                      type="button"
+                      onClick={buttons.secondaryTrailing.onClick}
+                      button_id={buttons.secondaryTrailing.buttonId}
+                      className={END_SCREEN_LINK_BUTTON_CLASS}
+                    >
+                      <GameUiIcon
+                        name="discover"
+                        sizeClassName="h-3.5 w-3.5"
+                        className="opacity-100"
+                      />
+                      <span>{buttons.secondaryTrailing.text}</span>
+                    </button>
+                  )}
+                  {buttons?.secondary && (
+                    <button
+                      type="button"
+                      onClick={buttons.secondary.onClick}
+                      button_id={buttons.secondary.buttonId}
+                      className={END_SCREEN_LINK_BUTTON_CLASS}
+                    >
+                      <GameUiIcon
+                        name="unpause"
+                        sizeClassName="h-3.5 w-3.5"
+                        className="opacity-100"
+                      />
+                      <span>{buttons.secondary.text}</span>
+                    </button>
+                  )}
                 </div>
               </div>
-            )}
+            </div>
+          )}
         </div>
       </div>
     </div>

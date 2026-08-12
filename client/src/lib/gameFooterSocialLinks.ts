@@ -23,6 +23,10 @@ export const OFFICIAL_INSTAGRAM_URL =
 export const OFFICIAL_STEAM_URL =
   "https://store.steampowered.com/app/4882240/A_Dark_Cave/" as const;
 
+/** Official Steam store embed widget (no tracking params; use {@link steamWidgetUrl}). */
+export const OFFICIAL_STEAM_WIDGET_URL =
+  "https://store.steampowered.com/widget/4882240/" as const;
+
 /**
  * Readable `utm_content` values for in-game Steam store links.
  * Steam / analytics show these verbatim — pick the key that matches the button.
@@ -32,7 +36,7 @@ export const STEAM_STORE_UTM_CONTENT = {
   gameFooter: "game_footer",
   /** Start-screen footer Steam icon. */
   startScreenFooter: "start_screen_footer",
-  /** End-screen "Wishlist on Steam" CTA. */
+  /** End-screen Steam wishlist widget / CTA. */
   endScreenWishlist: "end_screen_wishlist",
   /** Demo time-up dialog wishlist button (Galaxy / Steam demo). */
   demoTimeUp: "demo_time_up",
@@ -43,18 +47,31 @@ export const STEAM_STORE_UTM_CONTENT = {
 export type SteamStoreUtmContent =
   (typeof STEAM_STORE_UTM_CONTENT)[keyof typeof STEAM_STORE_UTM_CONTENT];
 
+function applySteamStoreUtm(
+  url: URL,
+  utmContent: SteamStoreUtmContent,
+): string {
+  url.searchParams.set("utm_source", "a_dark_cave");
+  url.searchParams.set("utm_medium", "web_game");
+  url.searchParams.set("utm_campaign", "steam_store");
+  url.searchParams.set("utm_content", utmContent);
+  return url.toString();
+}
+
 /**
  * Steam store URL with UTM so each button/source is identifiable:
  * `utm_source=a_dark_cave`, `utm_medium=web_game`, `utm_campaign=steam_store`,
  * `utm_content=<button id>`.
  */
 export function steamStoreUrl(utmContent: SteamStoreUtmContent): string {
-  const url = new URL(OFFICIAL_STEAM_URL);
-  url.searchParams.set("utm_source", "a_dark_cave");
-  url.searchParams.set("utm_medium", "web_game");
-  url.searchParams.set("utm_campaign", "steam_store");
-  url.searchParams.set("utm_content", utmContent);
-  return url.toString();
+  return applySteamStoreUtm(new URL(OFFICIAL_STEAM_URL), utmContent);
+}
+
+/**
+ * Steam store widget iframe `src` with the same UTM scheme as {@link steamStoreUrl}.
+ */
+export function steamWidgetUrl(utmContent: SteamStoreUtmContent): string {
+  return applySteamStoreUtm(new URL(OFFICIAL_STEAM_WIDGET_URL), utmContent);
 }
 
 /**

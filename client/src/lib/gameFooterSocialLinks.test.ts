@@ -2,9 +2,11 @@ import { describe, expect, it } from "vitest";
 import { SITE_ORIGIN } from "@shared/publicSeo";
 import {
   OFFICIAL_STEAM_URL,
+  OFFICIAL_STEAM_WIDGET_URL,
   STEAM_STORE_UTM_CONTENT,
   X_GAME_UTM_CONTENT,
   steamStoreUrl,
+  steamWidgetUrl,
   xGameLandingUrl,
 } from "./gameFooterSocialLinks";
 
@@ -25,6 +27,19 @@ describe("steamStoreUrl", () => {
       (content) => new URL(steamStoreUrl(content)).searchParams.get("utm_content"),
     );
     expect(new Set(contents).size).toBe(contents.length);
+  });
+});
+
+describe("steamWidgetUrl", () => {
+  it("keeps the widget path and mirrors steamStoreUrl UTM params", () => {
+    const href = steamWidgetUrl(STEAM_STORE_UTM_CONTENT.endScreenWishlist);
+    const url = new URL(href);
+
+    expect(href.startsWith(OFFICIAL_STEAM_WIDGET_URL)).toBe(true);
+    expect(url.searchParams.get("utm_source")).toBe("a_dark_cave");
+    expect(url.searchParams.get("utm_medium")).toBe("web_game");
+    expect(url.searchParams.get("utm_campaign")).toBe("steam_store");
+    expect(url.searchParams.get("utm_content")).toBe("end_screen_wishlist");
   });
 });
 
