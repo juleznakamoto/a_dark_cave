@@ -14,7 +14,7 @@ import OutcomeDialog, {
 } from "./OutcomeDialog";
 import { triggerExclusivePromoPingOnce } from "@/lib/exclusivePromoShockwave";
 
-/** Same center symbol + shockwave as Profile → “Rewards tasks” shortcut (exclusive promo track). */
+/** Same center symbol + shockwave as the header Rewards shortcut (exclusive promo track). */
 function SocialPromoTasksOutcomeIcon() {
   const ringRef = useRef<HTMLSpanElement>(null);
 

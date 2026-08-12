@@ -61,7 +61,6 @@
     "emailsOff": "E-mails désactivés", //x1.8
     "marketingOnTooltip": "Vous recevez actuellement des e-mails avec des mises à jour, des réductions et des récompenses exclusives. Appuyez pour les désactiver.", //x1.4
     "marketingOffTooltip": "Vous ne recevez actuellement pas d'e-mails avec des mises à jour, des réductions et des récompenses exclusives. Appuyez pour les activer.",
-    "rewardsTasks": "Tâches de récompenses", //x1.6
     "save": "Sauvegarder", //x2.8
     "newGame": "Nouvelle partie", //x1.9
     "restart": "Recommencer", //x1.6

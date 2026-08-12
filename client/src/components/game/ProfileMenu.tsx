@@ -468,7 +468,7 @@ function ProfileMenuDialogs() {
   );
 }
 
-export function GameHeaderControls() {
+export function GameHeaderRewardsShortcut() {
   const steamEditionActive = useSteamEditionActive();
   const playTime = useGameStore((s) => s.playTime);
   const rewardsTasksRingRef = useRef<HTMLSpanElement>(null);
@@ -484,25 +484,8 @@ export function GameHeaderControls() {
     zIndex: 50,
   });
 
-  const {
-    showRewardsTasksShortcut,
-    cruelMode,
-    t,
-    setSocialPromptDialogOpen,
-    accountDropdownOpen,
-    setAccountDropdownOpen,
-    currentUser,
-    handleManualSave,
-    cooldowns,
-    lastSaved,
-    handleRestartGame,
-    handleSetAuthDialogOpen,
-    handleSignOut,
-    hasWonAnyGame,
-    devMode,
-    setLeaderboardDialogOpen,
-    setSettingsDialogOpen,
-  } = useProfileMenuContext();
+  const { showRewardsTasksShortcut, t, setSocialPromptDialogOpen } =
+    useProfileMenuContext();
 
   useEffect(() => {
     if (!showRewardsTasksShortcut) {
@@ -526,36 +509,64 @@ export function GameHeaderControls() {
     }
   }, [showRewardsTasksShortcut, playTime]);
 
+  if (!showRewardsTasksShortcut || steamEditionActive) {
+    return null;
+  }
+
+  const rewardsLabel = t("profile.rewards");
+
+  return (
+    <>
+      <button
+        type="button"
+        aria-label={rewardsLabel}
+        onClick={() => setSocialPromptDialogOpen(true)}
+        {...rewardsTasksHoverHandlers}
+        className={`group relative flex h-7 shrink-0 items-center gap-1 overflow-visible px-1 ${GAME_CHROME_NO_BG_HOVER}`}
+      >
+        <span
+          ref={rewardsTasksRingRef}
+          className="exclusive-promo-shockwave-ring"
+          aria-hidden
+        />
+        <span ref={rewardsTasksIconRef} className="relative z-[1] inline-flex">
+          <GameUiIcon
+            name="socialReward"
+            sizeClassName={HEADER_ACCENT_ICON_SIZE}
+            className={`text-lime-500 ${LIME_ACCENT_MASK_ICON_CLASS}`}
+          />
+        </span>
+        <span className="relative z-[1] text-sm font-medium tracking-wide text-lime-500 opacity-80 transition-opacity group-hover:opacity-100">
+          {rewardsLabel}
+        </span>
+      </button>
+      {rewardsTasksParticlePortal}
+    </>
+  );
+}
+
+export function GameHeaderControls() {
+  const steamEditionActive = useSteamEditionActive();
+  const {
+    cruelMode,
+    t,
+    accountDropdownOpen,
+    setAccountDropdownOpen,
+    currentUser,
+    handleManualSave,
+    cooldowns,
+    lastSaved,
+    handleRestartGame,
+    handleSetAuthDialogOpen,
+    handleSignOut,
+    hasWonAnyGame,
+    devMode,
+    setLeaderboardDialogOpen,
+    setSettingsDialogOpen,
+  } = useProfileMenuContext();
+
   return (
     <div className="flex items-center gap-0.5 shrink-0">
-      {showRewardsTasksShortcut && !steamEditionActive && (
-        <HoverCalloutTooltip
-          label={t("profile.rewardsTasks")}
-          side="bottom"
-        >
-          <button
-            type="button"
-            aria-label={t("profile.rewardsTasks")}
-            onClick={() => setSocialPromptDialogOpen(true)}
-            {...rewardsTasksHoverHandlers}
-            className={`${HEADER_ICON_BTN} relative overflow-visible`}
-          >
-            <span
-              ref={rewardsTasksRingRef}
-              className="exclusive-promo-shockwave-ring"
-              aria-hidden
-            />
-            <span ref={rewardsTasksIconRef} className="relative z-[1] inline-flex">
-              <GameUiIcon
-                name="socialReward"
-                sizeClassName={HEADER_ACCENT_ICON_SIZE}
-                className={`text-lime-500 ${LIME_ACCENT_MASK_ICON_CLASS}`}
-              />
-            </span>
-          </button>
-        </HoverCalloutTooltip>
-      )}
-      {rewardsTasksParticlePortal}
       {cruelMode && (
         <HoverCalloutTooltip
           label={t("footer.cruelModeActive")}

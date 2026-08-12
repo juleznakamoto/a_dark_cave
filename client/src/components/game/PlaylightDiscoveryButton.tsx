@@ -90,6 +90,7 @@ export default function PlaylightDiscoveryButton({
     <HoverCalloutTooltip
       label={tooltipLabel}
       side={tooltipSide}
+      size="md"
       forceVisible={forceShowTooltip || showDiscoveryTooltip}
       fadeDurationMs={
         forceShowTooltip ? forceTooltipFadeDurationMs : undefined

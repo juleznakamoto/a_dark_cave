@@ -17,7 +17,18 @@ export type HoverCalloutSide = "top" | "left" | "right" | "bottom";
 export type HoverCalloutArrowAlign = "start" | "center" | "end";
 
 const CALLOUT_CHROME =
-  "flex appearance-none [-webkit-appearance:none] rounded-md bg-primary px-2 py-1.5 text-2xs font-semibold leading-none tracking-wide text-primary-foreground shadow-md transition-opacity duration-300";
+  "flex appearance-none [-webkit-appearance:none] rounded-md font-semibold leading-none tracking-wide text-primary-foreground shadow-md transition-opacity duration-300";
+
+const CALLOUT_SIZE = {
+  sm: "px-2 py-1.5 text-2xs",
+  /** Matches footer control labels (`text-xs`). */
+  md: "px-3 py-2 text-xs",
+} as const;
+
+const CALLOUT_ARROW_SIZE = {
+  sm: "p-1",
+  md: "p-1.5",
+} as const;
 
 /** Matches `mb-1.5` / `mt-1.5` on in-flow callouts. */
 const PORTAL_GAP_PX = 6;
@@ -162,6 +173,8 @@ export interface HoverCalloutTooltipProps {
    * (e.g. the floating invite button over the footer Steam wishlist hint).
    */
   portal?: boolean;
+  /** `sm` is header chrome. `md` matches footer label size (`text-xs`). */
+  size?: keyof typeof CALLOUT_SIZE;
 }
 
 /** Playlight-style hover callout with a rotated-square arrow. */
@@ -177,6 +190,7 @@ export function HoverCalloutTooltip({
   onCalloutClick,
   onHoverStart,
   portal = false,
+  size = "sm",
 }: HoverCalloutTooltipProps) {
   const wrapRef = useRef<HTMLDivElement>(null);
   const [isHovered, setIsHovered] = useState(false);
@@ -207,7 +221,8 @@ export function HoverCalloutTooltip({
       <span className="whitespace-nowrap">{label}</span>
       <div
         className={cn(
-          "absolute rotate-45 bg-inherit p-1",
+          "absolute rotate-45 bg-inherit",
+          CALLOUT_ARROW_SIZE[size],
           layout.arrow,
         )}
         aria-hidden
@@ -242,6 +257,8 @@ export function HoverCalloutTooltip({
 
   const calloutClassName = cn(
     CALLOUT_CHROME,
+    "bg-primary",
+    CALLOUT_SIZE[size],
     portal ? "fixed" : "absolute z-[1]",
     !portal && layout.callout,
     calloutClickable
