@@ -102,6 +102,7 @@ function SteamDemoProgressBar() {
 export default function GameFooter() {
   const {
     setShopDialogOpen,
+    setShareDialogOpen,
     isPaused,
     togglePause,
     idleModeDialog,
@@ -188,6 +189,24 @@ export default function GameFooter() {
       </span>
     </Button>
   );
+  const progressLabel = tWithFallback("ui", "footer.progress", "Progress");
+  const progressButton = !steamEditionActive ? (
+    <Button
+      variant="ghost"
+      size="xs"
+      onClick={() => setShareDialogOpen(true)}
+      data-testid="button-footer-progress"
+      aria-label={progressLabel}
+      className={`${FOOTER_CONTROL_BTN} flex items-center gap-1`}
+    >
+      <GameUiIcon
+        name="share"
+        sizeClassName="game-tab-icon"
+        className={FOOTER_CONTROL_ICON}
+      />
+      <span className={FOOTER_CONTROL_TEXT}>{progressLabel}</span>
+    </Button>
+  ) : null;
   const playlightButton = !steamEditionActive ? (
     <PlaylightDiscoveryButton
       onClick={handlePlaylightDiscovery}
@@ -276,8 +295,13 @@ export default function GameFooter() {
           </div>
           <div className="flex-1 flex justify-end gap-1 items-center">
             {steamDemoActive && playlightButton}
-            {/* Steam edition hides the store link — keep Feedback in the right cluster. */}
-            {hideSteamStoreLink && feedbackButton}
+            {/* Steam edition hides the store link — keep Feedback (+ Progress on web) in the right cluster. */}
+            {hideSteamStoreLink && (
+              <>
+                {feedbackButton}
+                {progressButton}
+              </>
+            )}
             {GAME_FOOTER_RIGHT_ICON_ORDER.map((platform) => {
               if (platform === "steam" && hideSteamStoreLink) {
                 return null;
@@ -321,6 +345,7 @@ export default function GameFooter() {
                 return (
                   <div key={platform} className="contents">
                     {feedbackButton}
+                    {progressButton}
                     <HoverCalloutTooltip
                       label={t("footer.wishlistOnSteam")}
                       side="top"

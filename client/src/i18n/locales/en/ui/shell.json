@@ -53,7 +53,8 @@
     "unmuteSfx": "Mute sound effects",
     "cruelModeActive": "Cruel Mode activated",
     "wishlistOnSteam": "Wishlist on Steam",
-    "demoProgress": "Demo Progress"
+    "demoProgress": "Demo Progress",
+    "progress": "Progress"
   },
   "profile": {
     "title": "Menu",

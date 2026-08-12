@@ -470,7 +470,6 @@ function ProfileMenuDialogs() {
 
 export function GameHeaderControls() {
   const steamEditionActive = useSteamEditionActive();
-  const setShareDialogOpen = useGameStore((s) => s.setShareDialogOpen);
   const playTime = useGameStore((s) => s.playTime);
   const rewardsTasksRingRef = useRef<HTMLSpanElement>(null);
   const rewardsTasksIconRef = useRef<HTMLSpanElement>(null);
@@ -570,28 +569,6 @@ export function GameHeaderControls() {
               ⛤
             </span>
           </span>
-        </HoverCalloutTooltip>
-      )}
-      {/* Social share is web-only. */}
-      {!steamEditionActive && (
-        <HoverCalloutTooltip
-          label={t("share.title", { defaultValue: "See your progress" })}
-          side="bottom"
-        >
-          <Button
-            type="button"
-            variant="ghost"
-            size="xs"
-            onClick={() => setShareDialogOpen(true)}
-            aria-label={t("share.title", { defaultValue: "See your progress" })}
-            className={`${HEADER_ICON_BTN} group touch-manipulation`}
-          >
-            <GameUiIcon
-              name="share"
-              sizeClassName={HEADER_ACCENT_ICON_SIZE}
-              className={HEADER_ICON_SYMBOL_HOVER}
-            />
-          </Button>
         </HoverCalloutTooltip>
       )}
       <DropdownMenu

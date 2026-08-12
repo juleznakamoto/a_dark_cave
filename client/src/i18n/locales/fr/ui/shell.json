@@ -49,7 +49,8 @@
     "wishlistOnSteam": "Ajouter à la liste de souhaits Steam", //x2.1
     "demoProgress": "Demo Progress",
     "feedback": "Feedback",
-    "openFeedback": "Open feedback form"
+    "openFeedback": "Open feedback form",
+    "progress": "Progression"
   },
   "profile": {
     "title": "Menu",

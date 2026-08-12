@@ -81,6 +81,7 @@ export default function PlaylightDiscoveryButton({
   }, []);
 
   const label = t("playlight.moreGames", { defaultValue: "More Games" });
+  const shortLabel = t("playlight.more", { defaultValue: "More" });
   const tooltipLabel = t("playlight.tryMoreGames", {
     defaultValue: "Try more Games",
   });
@@ -125,7 +126,10 @@ export default function PlaylightDiscoveryButton({
             />
           )}
         </span>
-        <span className="hidden sm:inline opacity-80 transition-[opacity,color] group-hover:opacity-100 group-hover:!text-blue-400">
+        <span className="inline opacity-80 transition-[opacity,color] group-hover:opacity-100 group-hover:!text-blue-400 sm:hidden">
+          {shortLabel}
+        </span>
+        <span className="hidden opacity-80 transition-[opacity,color] group-hover:opacity-100 group-hover:!text-blue-400 sm:inline">
           {label}
         </span>
       </Button>
