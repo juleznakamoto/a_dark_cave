@@ -4,12 +4,13 @@
  */
 
 import { ATTACK_WAVE_VICTORY_FLAGS } from "@shared/hutLadderAdminStats";
+import { LATER_THAN_SECOND_BOSS_LEGACY_SEEN_FLAGS } from "@shared/bossWaveMigration";
 
 /** Soft docs only — PostgREST max_rows caps a single response near this size. */
 export const ADMIN_DATA_PAGE_SIZE = 1000;
 export const ADMIN_SAVE_ANALYSIS_LIMIT = 100;
 /** Bump when slimGameStateForAdmin shape changes so clients can bust cache. */
-export const ADMIN_SAVES_SLIM_VERSION = 7;
+export const ADMIN_SAVES_SLIM_VERSION = 8;
 export const PURCHASES_LIST_COLUMNS =
   "user_id,item_id,item_name,price_paid,purchased_at,bundle_id,country,cruel_mode,currency,stripe_payment_intent_id,stripe_fx_quote_id,reporting_eur_cents,reporting_usd_cents,payment_type";
 
@@ -118,13 +119,23 @@ export function slimGameStateForAdmin(
     slim.clothing = slimClothing;
   }
 
+  const postCompletion = gs.postCompletionAttackWaveCount;
+  const postCompletionCount =
+    typeof postCompletion === "number" ? postCompletion : Number(postCompletion);
+  if (Number.isFinite(postCompletionCount) && postCompletionCount > 0) {
+    slim.postCompletionAttackWaveCount = Math.floor(postCompletionCount);
+  }
+
   // Attack-wave victories for hut-ladder A1–A12 funnel (after stone ≥10).
   const story = gs.story;
   if (story && typeof story === "object") {
     const seen = (story as Record<string, unknown>).seen;
     if (seen && typeof seen === "object") {
       const slimSeen: Record<string, true> = {};
-      for (const flag of ATTACK_WAVE_VICTORY_FLAGS) {
+      for (const flag of [
+        ...ATTACK_WAVE_VICTORY_FLAGS,
+        ...LATER_THAN_SECOND_BOSS_LEGACY_SEEN_FLAGS,
+      ]) {
         if ((seen as Record<string, unknown>)[flag] === true) {
           slimSeen[flag] = true;
         }

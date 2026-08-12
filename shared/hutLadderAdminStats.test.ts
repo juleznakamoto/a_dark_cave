@@ -22,6 +22,8 @@ function save(opts: {
   referralProcessed?: boolean;
   gameComplete?: boolean;
   wavesWon?: number;
+  postCompletionAttackWaveCount?: number;
+  events?: Record<string, unknown>;
   /** Legacy flags without boss victories (for imply tests). */
   legacySeen?: Record<string, true>;
 }) {
@@ -52,6 +54,8 @@ function save(opts: {
       cruelMode: opts.cruelMode,
       referralProcessed: opts.referralProcessed,
       gameComplete: opts.gameComplete,
+      events: opts.events,
+      postCompletionAttackWaveCount: opts.postCompletionAttackWaveCount,
       buildings: {
         woodenHut: opts.woodenHut ?? 0,
         stoneHut: opts.stoneHut ?? 0,
@@ -225,7 +229,7 @@ describe("hutLadderAdminStats", () => {
     expect(cohort[0]?.game_state?.cruelMode).toBeFalsy();
   });
 
-  it("implies legacy boss victories when counting wave reach", () => {
+  it("implies first boss from later waves but not second boss from tenth alone", () => {
     const saves = [
       save({
         created_at: "2026-07-15T00:00:00.000Z",
@@ -247,7 +251,83 @@ describe("hutLadderAdminStats", () => {
     ];
     const funnel = computeHutLadderFunnel(saves, 30, now);
     expect(funnel.waves[5]?.players).toBe(1); // ≥6 first boss implied
+    expect(funnel.waves[11]?.players).toBe(0); // tenth alone does not imply final boss
+  });
+
+  it("implies second boss when beyond-gate progress proves legacy chart completion", () => {
+    const saves = [
+      save({
+        created_at: "2026-07-15T00:00:00.000Z",
+        woodenHut: 10,
+        stoneHut: 10,
+        legacySeen: {
+          firstWaveVictory: true,
+          secondWaveVictory: true,
+          thirdWaveVictory: true,
+          fourthWaveVictory: true,
+          fifthWaveVictory: true,
+          sixthWaveVictory: true,
+          seventhWaveVictory: true,
+          eighthWaveVictory: true,
+          ninthWaveVictory: true,
+          tenthWaveVictory: true,
+          beyondGateVentureUnlocked: true,
+        },
+      }),
+    ];
+    const funnel = computeHutLadderFunnel(saves, 30, now);
     expect(funnel.waves[11]?.players).toBe(1); // ≥12 second boss implied
+  });
+
+  it("implies second boss when post-completion waves prove legacy chart completion", () => {
+    const tenthThrough = {
+      firstWaveVictory: true,
+      secondWaveVictory: true,
+      thirdWaveVictory: true,
+      fourthWaveVictory: true,
+      fifthWaveVictory: true,
+      sixthWaveVictory: true,
+      seventhWaveVictory: true,
+      eighthWaveVictory: true,
+      ninthWaveVictory: true,
+      tenthWaveVictory: true,
+    } as const;
+    const saves = [
+      save({
+        created_at: "2026-07-15T00:00:00.000Z",
+        woodenHut: 10,
+        stoneHut: 10,
+        legacySeen: { ...tenthThrough },
+        postCompletionAttackWaveCount: 1,
+      }),
+    ];
+    const funnel = computeHutLadderFunnel(saves, 30, now);
+    expect(funnel.waves[11]?.players).toBe(1);
+  });
+
+  it("implies second boss when post-siege cube progress proves legacy chart completion", () => {
+    const saves = [
+      save({
+        created_at: "2026-07-15T00:00:00.000Z",
+        woodenHut: 10,
+        stoneHut: 10,
+        legacySeen: {
+          firstWaveVictory: true,
+          secondWaveVictory: true,
+          thirdWaveVictory: true,
+          fourthWaveVictory: true,
+          fifthWaveVictory: true,
+          sixthWaveVictory: true,
+          seventhWaveVictory: true,
+          eighthWaveVictory: true,
+          ninthWaveVictory: true,
+          tenthWaveVictory: true,
+        },
+        events: { cube12: true },
+      }),
+    ];
+    const funnel = computeHutLadderFunnel(saves, 30, now);
+    expect(funnel.waves[11]?.players).toBe(1);
   });
 
   it("stone ≥1 step drop is vs wooden ≥10 unlock cohort", () => {

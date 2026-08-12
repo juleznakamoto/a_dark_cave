@@ -3,6 +3,7 @@ import type { GameState } from "@shared/schema";
 import {
   applyGameStateLoadMigrations,
   isCompletedOneShotExecutionGhost,
+  migrateBossWavesOnLoad,
   reconcileInFlightExecutionsOnLoad,
 } from "./stateHelpers";
 import { canExecuteAction } from "./rules";
@@ -149,6 +150,7 @@ describe("applyGameStateLoadMigrations", () => {
   it("reconciles execution state instead of wiping progress on load", () => {
     const state = {
       ...baseState(),
+      events: {},
       executionStartTimes: { chopWood: NOW - 1000 },
       executionDurations: { chopWood: 4 },
     } as GameState;
@@ -156,5 +158,35 @@ describe("applyGameStateLoadMigrations", () => {
     const migrated = applyGameStateLoadMigrations(state);
     expect(migrated.executionStartTimes?.chopWood).toBe(NOW - 1000);
     expect(migrated.executionDurations?.chopWood).toBe(4);
+  });
+});
+
+describe("migrateBossWavesOnLoad", () => {
+  it("does not auto-complete final boss wave when waiting after tenth", () => {
+    const state = {
+      ...baseState(),
+      story: {
+        seen: {
+          tenthWaveVictory: true,
+        },
+      },
+      attackWaveTimers: {
+        secondBossWave: {
+          startTime: NOW,
+          duration: 600_000,
+          elapsedTime: 120_000,
+          defeated: false,
+          provoked: false,
+        },
+      },
+      postCompletionAttackWaveCount: 0,
+      events: {},
+    } as GameState;
+
+    const patch = migrateBossWavesOnLoad(state);
+    expect(patch?.story?.seen?.secondBossWaveVictory).toBeFalsy();
+    expect(patch?.attackWaveTimers?.secondBossWave).toBeUndefined();
+    // First boss may still be implied from tenth; final boss must not.
+    expect(patch?.story?.seen?.firstBossWaveVictory).toBe(true);
   });
 });

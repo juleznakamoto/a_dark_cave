@@ -22,12 +22,14 @@ describe("slimGameStateForAdmin", () => {
       flags: { gameStarted: true, villageUnlocked: true },
       buildings: { woodenHut: 7, stoneHut: 0, cabin: 3 },
       referralProcessed: true,
+      postCompletionAttackWaveCount: 2,
       resources: { gold: 9999 },
       story: {
         seen: {
           huge: true,
           firstWaveVictory: true,
           thirdWaveVictory: true,
+          beyondGateVentureUnlocked: true,
         },
       },
     });
@@ -45,10 +47,12 @@ describe("slimGameStateForAdmin", () => {
       flags: { gameStarted: true },
       buildings: { woodenHut: 7, stoneHut: 0 },
       referralProcessed: true,
+      postCompletionAttackWaveCount: 2,
       story: {
         seen: {
           firstWaveVictory: true,
           thirdWaveVictory: true,
+          beyondGateVentureUnlocked: true,
         },
       },
     });

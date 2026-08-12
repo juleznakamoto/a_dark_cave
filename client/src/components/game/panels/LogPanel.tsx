@@ -62,7 +62,7 @@ function LogPanel() {
       >
         <div className="pl-0 relative">
           <div ref={topRef} />
-          <div className="space-y-[calc(0.25rem*0.85)] md:space-y-1 text-xs pb-1">
+          <div className="space-y-[calc(0.25rem*0.5)] md:space-y-1 text-xs pb-1">
             {recentEntries.map((entry: any, index: number) => {
               const typedEntry = entry as ExtendedLogEntry;
               const isUnread = !readEntries.has(typedEntry.id);
@@ -131,7 +131,7 @@ function LogPanel() {
                     cancelMarkReadTimer();
                   }}
                   onPointerCancel={cancelMarkReadTimer}
-                  className="group flex items-start gap-2 text-foreground leading-relaxed py-[calc(0.125rem*0.85)] md:py-0.5"
+                  className="group flex items-start gap-2 text-foreground leading-relaxed py-[calc(0.125rem*0.5)] md:py-0.5"
                 >
                   {showNewIndicator ? (
                     <span

@@ -8,7 +8,11 @@
  * grant the referrer bonus, which inflates early wooden-hut drop-off.
  */
 
-import { implyBossWaveVictoriesInSeen } from "./bossWaveMigration";
+import {
+  bossWaveLegacyEvidenceFromState,
+  implyBossWaveVictoriesInSeen,
+} from "./bossWaveMigration";
+import type { BossWaveLegacyEvidence } from "./bossWaveMigration";
 import { hasReachedGameEnding } from "./gameCompletionAdminStats";
 
 export const HUT_LADDER_MAX_LEVEL = 10;
@@ -49,6 +53,8 @@ export type HutLadderSaveRow = {
     referralProcessed?: boolean;
     gameComplete?: boolean;
     events?: Record<string, unknown>;
+    /** Endless wave wins after the chart; used to imply legacy second-boss victory. */
+    postCompletionAttackWaveCount?: number;
     buildings?: {
       woodenHut?: number;
       stoneHut?: number;
@@ -106,7 +112,7 @@ function buildingCount(
 /** Highest attack-wave victory index 0..12 (0 = none won). Implies legacy boss flags. */
 export function highestAttackWaveWon(
   seen: Partial<Record<string, boolean>> | undefined,
-  evidence?: Parameters<typeof implyBossWaveVictoriesInSeen>[1],
+  evidence?: BossWaveLegacyEvidence,
 ): number {
   const effective = implyBossWaveVictoriesInSeen(seen, evidence);
   let highest = 0;
@@ -277,7 +283,10 @@ export function computeHutLadderFunnelFromCohort(
   for (const save of cohort) {
     const wooden = buildingCount(save.game_state?.buildings, "woodenHut");
     const stone = buildingCount(save.game_state?.buildings, "stoneHut");
-    const wavesWon = highestAttackWaveWon(save.game_state?.story?.seen);
+    const wavesWon = highestAttackWaveWon(
+      save.game_state?.story?.seen,
+      bossWaveLegacyEvidenceFromState(save.game_state ?? {}),
+    );
     for (let level = 0; level <= HUT_LADDER_MAX_LEVEL; level++) {
       if (wooden >= level) woodenCounts[level]!++;
       if (stone >= level) stoneCounts[level]!++;

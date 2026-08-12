@@ -1,5 +1,6 @@
 import { describe, expect, it } from "vitest";
 import {
+  bossWaveLegacyEvidenceFromState,
   implyBossWaveVictoriesInSeen,
   migrateBossWaveTimers,
   migrateBossWaveVictoriesInSeen,
@@ -21,9 +22,48 @@ describe("migrateBossWaveVictoriesInSeen", () => {
     });
   });
 
-  it("grants both bosses when tenth is won", () => {
+  it("grants first boss from tenth but not second boss without legacy evidence", () => {
     expect(
       migrateBossWaveVictoriesInSeen({ tenthWaveVictory: true }),
+    ).toEqual({
+      tenthWaveVictory: true,
+      firstBossWaveVictory: true,
+    });
+  });
+
+  it("grants second boss when beyond-gate progress proves past old chart end", () => {
+    expect(
+      migrateBossWaveVictoriesInSeen({
+        tenthWaveVictory: true,
+        beyondGateVentureUnlocked: true,
+      }),
+    ).toEqual({
+      tenthWaveVictory: true,
+      beyondGateVentureUnlocked: true,
+      firstBossWaveVictory: true,
+      secondBossWaveVictory: true,
+    });
+  });
+
+  it("grants second boss when post-completion wins prove past old chart end", () => {
+    expect(
+      migrateBossWaveVictoriesInSeen(
+        { tenthWaveVictory: true },
+        { postCompletionAttackWaveCount: 1 },
+      ),
+    ).toEqual({
+      tenthWaveVictory: true,
+      firstBossWaveVictory: true,
+      secondBossWaveVictory: true,
+    });
+  });
+
+  it("grants second boss when post-siege cube progress proves past old chart end", () => {
+    expect(
+      migrateBossWaveVictoriesInSeen(
+        { tenthWaveVictory: true },
+        { hasPostSiegeProgress: true },
+      ),
     ).toEqual({
       tenthWaveVictory: true,
       firstBossWaveVictory: true,
@@ -40,6 +80,31 @@ describe("migrateBossWaveVictoriesInSeen", () => {
         secondBossWaveVictory: true,
       }),
     ).toBeNull();
+  });
+});
+
+describe("bossWaveLegacyEvidenceFromState", () => {
+  it("detects post-siege cube and post-completion wins", () => {
+    expect(
+      bossWaveLegacyEvidenceFromState({
+        postCompletionAttackWaveCount: 2,
+        events: { cube12: true },
+      }),
+    ).toEqual({
+      postCompletionAttackWaveCount: 2,
+      hasPostSiegeProgress: true,
+    });
+  });
+
+  it("ignores pre-siege cube progress", () => {
+    expect(
+      bossWaveLegacyEvidenceFromState({
+        events: { cube11: true },
+      }),
+    ).toEqual({
+      postCompletionAttackWaveCount: 0,
+      hasPostSiegeProgress: false,
+    });
   });
 });
 
@@ -96,6 +161,12 @@ describe("implyBossWaveVictoriesInSeen", () => {
     expect(
       implyBossWaveVictoriesInSeen({ tenthWaveVictory: true })
         .secondBossWaveVictory,
+    ).toBeUndefined();
+    expect(
+      implyBossWaveVictoriesInSeen(
+        { tenthWaveVictory: true },
+        { postCompletionAttackWaveCount: 1 },
+      ).secondBossWaveVictory,
     ).toBe(true);
   });
 });
