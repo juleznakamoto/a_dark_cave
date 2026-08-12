@@ -130,6 +130,5 @@ export const GAME_FOOTER_RIGHT_ICON_LINKS: Readonly<
 export const GAME_FOOTER_RIGHT_ICON_ORDER: readonly FooterSocialPlatformId[] = [
   "steam",
   "reddit",
-  "instagram",
   "contact",
 ] as const;

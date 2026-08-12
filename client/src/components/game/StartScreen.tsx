@@ -711,7 +711,7 @@ export default function StartScreen({
                 platform === "contact"
                   ? t("footer.contact", { defaultValue: title })
                   : title;
-              /** Match game footer: Reddit / Instagram / Mail are icon-only. */
+              /** Match game footer: Reddit / Mail are icon-only. */
               const showSocialLabel = platform === "steam";
               const linkContent = (
                 <>
