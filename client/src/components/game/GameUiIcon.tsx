@@ -24,7 +24,7 @@ export const GAME_UI_ICON_SRC = {
   socialReward: "/icons/cut_diamond.svg",
   exclusiveReward: "/icons/diamond_ring.svg",
   trader: "/icons/coin_stack.svg",
-  network: "/icons/network_nodes.svg",
+  network: "/icons/side-panel/user_group.svg",
 } as const;
 
 export type GameUiIconName = keyof typeof GAME_UI_ICON_SRC;

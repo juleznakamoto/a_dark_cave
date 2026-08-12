@@ -19,7 +19,7 @@ import { GAME_CHROME_NO_BG_HOVER } from "./gameChrome";
 type FooterNetworkMenuProps = {
   /** Trigger button classes (game footer chrome by default). */
   triggerClassName?: string;
-  /** Show the "Network" label (hidden on mobile when using footer social label class). */
+  /** Show the "Connect" label (hidden on mobile when using footer social label class). */
   labelClassName?: string;
   iconClassName?: string;
   iconSizeClassName?: string;
@@ -37,7 +37,7 @@ export default function FooterNetworkMenu({
   align = "end",
 }: FooterNetworkMenuProps) {
   const [open, setOpen] = useState(false);
-  const networkLabel = tWithFallback("ui", "footer.network", "Network");
+  const connectLabel = tWithFallback("ui", "footer.connect", "Connect");
 
   return (
     <DropdownMenu open={open} onOpenChange={setOpen} modal={false}>
@@ -46,8 +46,8 @@ export default function FooterNetworkMenu({
           type="button"
           variant="ghost"
           size="xs"
-          data-testid="button-footer-network"
-          aria-label={networkLabel}
+          data-testid="button-footer-connect"
+          aria-label={connectLabel}
           className={cn(
             `group shrink-0 px-1 py-1 text-xs text-neutral-300 hover flex items-center gap-1 ${GAME_CHROME_NO_BG_HOVER}`,
             triggerClassName,
@@ -59,7 +59,7 @@ export default function FooterNetworkMenu({
             className={cn("text-neutral-300 group-hover:!text-neutral-300", iconClassName)}
           />
           <span className={cn("text-neutral-300 group-hover:!text-neutral-300", labelClassName)}>
-            {networkLabel}
+            {connectLabel}
           </span>
         </Button>
       </DropdownMenuTrigger>
