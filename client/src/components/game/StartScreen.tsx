@@ -4,7 +4,11 @@ import { ParticleButton } from "@/components/ui/particle-button";
 import { Button } from "@/components/ui/button";
 import CloudShader from "@/components/ui/cloud-shader";
 import VaporizeTextCycle from "@/components/ui/vapour-text-effect";
-import { audioManager, SOUND_VOLUME } from "@/lib/audio";
+import {
+  audioManager,
+  scheduleStartScreenSoundPreloadAfterLcp,
+  SOUND_VOLUME,
+} from "@/lib/audio";
 import { FooterSocialIcon } from "@/components/game/FooterSocialIcon";
 import { GameUiIcon } from "@/components/game/GameUiIcon";
 import LanguageSelector from "@/components/game/LanguageSelector";
@@ -170,15 +174,17 @@ export default function StartScreen({
     audioManager.sfxMute(sfxMuted);
   }, [musicMuted, sfxMuted, musicVolume, sfxVolume]);
 
-  // Ensure Light Fire is decoded before the click (module preload can still be in flight).
+  // Fetch wind + Light Fire only after LCP (not on module import / first paint).
   useEffect(() => {
-    void audioManager.loadSound("lightFire", "/sounds/light_fire.mp3");
+    scheduleStartScreenSoundPreloadAfterLcp();
   }, []);
 
   useEffect(() => {
     // Wind plays as soon as the user shows intent (mousemove on desktop, touchstart on mobile).
     // Both events fire before the click event, so executedRef.current is still false
     // even when the user's first action is clicking "Light Fire".
+    // Decode is scheduled after LCP (not gesture-gated): on mobile the first gesture
+    // is often Make Fire itself, which stops wind.
     const playWind = () => {
       audioManager.playLoopingSound("wind", SOUND_VOLUME.wind, false, 1);
     };

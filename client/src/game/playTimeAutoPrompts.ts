@@ -9,7 +9,7 @@ import {
   socialPromoExclusiveStepsCompleted,
 } from "@/game/socialPromoExclusiveReward";
 import { isSteamEditionActive } from "@/lib/edition";
-import { openFeedbackDialog } from "@/lib/gameFeedbackForm";
+import { openFeedbackDialog } from "@/lib/openFeedbackDialog";
 
 /**
  * After one play-time auto prompt closes, wait this long (wall clock) before

@@ -3,9 +3,10 @@ import { beforeEach, describe, expect, it, vi } from "vitest";
 import {
   GAME_FEEDBACK_FORM_BASE_URL,
   getGameFeedbackFormUrl,
-  openFeedbackDialog,
   openGameFeedbackFormFromDialog,
+  rememberFeedbackFormSource,
 } from "./gameFeedbackForm";
+import { openFeedbackDialog } from "./openFeedbackDialog";
 
 vi.mock("@/game/state", () => ({
   useGameStore: {
@@ -40,7 +41,7 @@ describe("openFeedbackDialog", () => {
     vi.mocked(useGameStore.setState).mockClear();
   });
 
-  it("opens the dialog and remembers source for the form CTA", () => {
+  it("opens the dialog synchronously and remembers source for the form CTA", () => {
     const openSpy = vi.spyOn(window, "open").mockImplementation(() => null);
     openFeedbackDialog("end");
     expect(useGameStore.setState).toHaveBeenCalledWith({
@@ -49,6 +50,18 @@ describe("openFeedbackDialog", () => {
     openGameFeedbackFormFromDialog();
     expect(openSpy).toHaveBeenCalledWith(
       expect.stringContaining("adc_source=end"),
+      "_blank",
+      "noopener,noreferrer",
+    );
+    openSpy.mockRestore();
+  });
+
+  it("rememberFeedbackFormSource alone drives the dialog form CTA", () => {
+    const openSpy = vi.spyOn(window, "open").mockImplementation(() => null);
+    rememberFeedbackFormSource("footer");
+    openGameFeedbackFormFromDialog();
+    expect(openSpy).toHaveBeenCalledWith(
+      expect.stringContaining("adc_source=footer"),
       "_blank",
       "noopener,noreferrer",
     );

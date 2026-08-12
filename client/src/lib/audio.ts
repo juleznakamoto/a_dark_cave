@@ -373,20 +373,24 @@ export class AudioManager {
     });
   }
 
+  private static readonly START_SCREEN_SOUNDS: Record<string, string> = {
+    wind: '/sounds/wind.mp3',
+    lightFire: '/sounds/light_fire.mp3',
+  };
+
+  /** Register start-screen URLs without fetching (play* can still fetch on demand). */
+  registerStartScreenSoundUrls(): void {
+    this.registerSoundUrls(AudioManager.START_SCREEN_SOUNDS);
+  }
+
   /**
-   * Decode start-screen cues early so Light Fire is not waiting on first-click
-   * fetch/decode (especially slow on Vite/dev). Autoplay only blocks play(), not load.
+   * Decode start-screen cues (wind + Light Fire). Call only after LCP so the
+   * ~1MB wind file does not contend with critical JS/fonts on Slow 4G.
    */
   async preloadSounds(): Promise<void> {
+    this.registerStartScreenSoundUrls();
     logger.log('Preloading start-screen sounds...');
-    const initialSounds = {
-      wind: '/sounds/wind.mp3',
-      lightFire: '/sounds/light_fire.mp3',
-    };
-
-    await Promise.all(
-      Object.entries(initialSounds).map(([name, url]) => this.loadSound(name, url)),
-    );
+    await this.loadSoundMap(AudioManager.START_SCREEN_SOUNDS);
     logger.log('Start-screen sound preload complete');
   }
 
@@ -593,6 +597,58 @@ export class AudioManager {
 }
 
 export const audioManager = AudioManager.getInstance();
-audioManager.preloadSounds().catch(error => {
-  logger.warn('Failed to preload some sounds:', error);
-});
+// URLs only — do not fetch wind.mp3 (~1MB) on module evaluate / StartScreen import.
+audioManager.registerStartScreenSoundUrls();
+
+let startScreenSoundPreloadScheduled = false;
+
+/**
+ * Fetch/decode start-screen sounds after Largest Contentful Paint (with idle +
+ * timeout fallbacks). Not gesture-gated: on mobile the first gesture is often
+ * Make Fire, which stops wind.
+ */
+export function scheduleStartScreenSoundPreloadAfterLcp(): void {
+  if (typeof window === "undefined" || startScreenSoundPreloadScheduled) return;
+  startScreenSoundPreloadScheduled = true;
+
+  let started = false;
+  const start = () => {
+    if (started) return;
+    started = true;
+    void audioManager.preloadSounds().catch((error) => {
+      logger.warn("Failed to preload some sounds:", error);
+    });
+  };
+
+  const afterLcp = () => {
+    const ric = (
+      window as Window & {
+        requestIdleCallback?: (
+          cb: () => void,
+          opts?: { timeout: number },
+        ) => number;
+      }
+    ).requestIdleCallback;
+    if (typeof ric === "function") {
+      ric(() => start(), { timeout: 2000 });
+    } else {
+      window.setTimeout(start, 0);
+    }
+  };
+
+  try {
+    const observer = new PerformanceObserver((list) => {
+      if (list.getEntries().length === 0) return;
+      observer.disconnect();
+      afterLcp();
+    });
+    observer.observe({ type: "largest-contentful-paint", buffered: true });
+    // Hidden tabs / odd lab runs may never report LCP.
+    window.setTimeout(() => {
+      observer.disconnect();
+      start();
+    }, 4000);
+  } catch {
+    window.setTimeout(start, 2000);
+  }
+}
