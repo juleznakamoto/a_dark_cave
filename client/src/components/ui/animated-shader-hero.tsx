@@ -1,40 +1,59 @@
 import React, { useRef, useEffect } from "react";
 import { logger } from "@/lib/logger";
 import { StarshipShader } from "@/components/ui/starship-shader";
+import { FooterSocialIcon } from "@/components/game/FooterSocialIcon";
 import { GameUiIcon } from "@/components/game/GameUiIcon";
 import { useUiTranslation } from "@/i18n/useUiTranslation";
 import {
   STEAM_STORE_UTM_CONTENT,
-  steamWidgetUrl,
+  steamStoreUrl,
 } from "@/lib/gameFooterSocialLinks";
 
 export type EndScreenBackgroundVariant = "default" | "starship";
 
-const STEAM_WIDGET_HEIGHT = 190;
-/** Under 500px Steam uses its compact capsule layout. */
-const STEAM_WIDGET_MAX_WIDTH = 460;
-/** Matches Steam widget card so transparent iframe areas don't flash white. */
-const STEAM_WIDGET_BG = "#282e39";
+/** Steam small capsule (stable CDN path; matches store widget art). */
+const STEAM_CAPSULE_SRC =
+  "https://cdn.cloudflare.steamstatic.com/steam/apps/4882240/capsule_184x69.jpg";
 
-/** Official Steam store widget (native compact width, no scale/scrollbars). */
-function SteamStoreWidget({ src }: { src: string }) {
+/**
+ * Custom Steam wishlist card (not the official iframe).
+ * Steam's embed uses a transparent document body; browsers still paint an opaque
+ * white iframe backdrop, which fights the end-screen shader. This card stays
+ * transparent around the edges so the shader shows through.
+ */
+function SteamStoreWidget() {
+  const { t } = useUiTranslation();
+  const href = steamStoreUrl(STEAM_STORE_UTM_CONTENT.endScreenWishlist);
+
   return (
-    <div
-      className="mx-auto w-full px-2"
-      style={{ maxWidth: STEAM_WIDGET_MAX_WIDTH }}
+    <a
+      href={href}
+      target="_blank"
+      rel="noopener noreferrer"
+      className="mx-auto flex w-full max-w-[420px] items-center gap-3 rounded-md border border-[#424c5c] bg-gradient-to-br from-[#3b4351]/90 to-[#282e39]/90 px-3 py-3 shadow-[2px_2px_15px_rgba(0,0,0,0.4)] backdrop-blur-[2px] transition hover:from-[#3b4351] hover:to-[#282e39] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#66c0f4]"
     >
-      <iframe
-        title="A Dark Cave on Steam"
-        src={src}
-        loading="lazy"
-        className="block w-full rounded-sm border-0"
-        style={{
-          height: STEAM_WIDGET_HEIGHT,
-          backgroundColor: STEAM_WIDGET_BG,
-          colorScheme: "dark",
-        }}
+      <img
+        src={STEAM_CAPSULE_SRC}
+        alt=""
+        width={184}
+        height={69}
+        className="h-[69px] w-[184px] shrink-0 rounded-sm object-cover"
       />
-    </div>
+      <div className="flex min-w-0 flex-1 flex-col items-start gap-2">
+        <span className="inline-flex items-center gap-1.5 text-sm font-semibold text-slate-100">
+          A Dark Cave
+          <FooterSocialIcon
+            platform="steam"
+            className="h-4 w-4 text-[#66c0f4]"
+          />
+        </span>
+        <span className="inline-flex rounded-sm bg-gradient-to-r from-[#6fa720] to-[#588a1b] px-2.5 py-1 text-xs font-semibold text-white shadow-sm">
+          {t("endScreen.wishlistOnSteam", {
+            defaultValue: "Wishlist on Steam",
+          })}
+        </span>
+      </div>
+    </a>
   );
 }
 
@@ -655,9 +674,7 @@ const Hero: React.FC<HeroProps> = ({
                     "A Dark Cave is soon launching on Steam. Add it to your wishlist today so you'll be notified the moment it launches.",
                 })}
               </p>
-              <SteamStoreWidget
-                src={steamWidgetUrl(STEAM_STORE_UTM_CONTENT.endScreenWishlist)}
-              />
+              <SteamStoreWidget />
             </div>
           )}
 
