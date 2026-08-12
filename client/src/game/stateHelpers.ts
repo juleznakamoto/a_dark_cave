@@ -4,6 +4,7 @@ import { repairUnlockFlags } from "@shared/repairUnlockFlags";
 import {
   migrateBossWaveTimers,
   migrateBossWaveVictoriesInSeen,
+  bossWaveLegacyEvidenceFromState,
 } from "@shared/bossWaveMigration";
 import type { CombatResultSummary } from "./types";
 import { getCurrentPopulation, getMaxPopulation, getVillagersInVillage } from "./population";
@@ -838,7 +839,8 @@ export function migrateBossWavesOnLoad(
   state: GameState,
 ): Partial<GameState> | null {
   const seen = state.story?.seen ?? {};
-  const nextSeen = migrateBossWaveVictoriesInSeen(seen);
+  const evidence = bossWaveLegacyEvidenceFromState(state);
+  const nextSeen = migrateBossWaveVictoriesInSeen(seen, evidence);
   const effectiveSeen = nextSeen ?? seen;
   const nextTimers = migrateBossWaveTimers(state.attackWaveTimers, effectiveSeen);
 

@@ -11,14 +11,83 @@ export const LATER_THAN_FIRST_BOSS_VICTORY_FLAGS = [
   "tenthWaveVictory",
 ] as const;
 
+/**
+ * story.seen flags that only appear after finishing the pre-insert chart
+ * (old final wave = tenth). tenthWaveVictory alone is not enough: that is the
+ * normal waiting state for the new final boss (wave 12).
+ */
+export const LATER_THAN_SECOND_BOSS_LEGACY_SEEN_FLAGS = [
+  "beyondGateVentureUnlocked",
+] as const;
+
 export type StorySeenRecord = Record<string, number | boolean>;
+
+/**
+ * Extra legacy evidence that lives outside story.seen (post-chart endless waves,
+ * cube/ending progress that required beating the old final wave).
+ */
+export type BossWaveLegacyEvidence = {
+  /** Endless wave wins after the old chart end (tenth was final). */
+  postCompletionAttackWaveCount?: number;
+  /** cube12+ / gameComplete / endings that required the old final wave. */
+  hasPostSiegeProgress?: boolean;
+};
+
+/** Cube/event ids that required beating the old final wave before second boss existed. */
+export const POST_SIEGE_CUBE_EVENT_IDS = [
+  "cube12",
+  "cube13",
+  "cube14a",
+  "cube14b",
+  "cube14c",
+  "cube14d",
+  "cube15a",
+  "cube15b",
+  "cube16a",
+  "cube16b",
+] as const;
+
+/** Build migration evidence from a save / game-state slice. */
+export function bossWaveLegacyEvidenceFromState(state: {
+  postCompletionAttackWaveCount?: number;
+  gameComplete?: boolean;
+  events?: Record<string, unknown> | null;
+}): BossWaveLegacyEvidence {
+  const events = state.events ?? {};
+  return {
+    postCompletionAttackWaveCount: state.postCompletionAttackWaveCount ?? 0,
+    hasPostSiegeProgress: Boolean(
+      state.gameComplete ||
+        POST_SIEGE_CUBE_EVENT_IDS.some((id) => Boolean(events[id])),
+    ),
+  };
+}
+
+function hasLegacySecondBossEvidence(
+  seen: StorySeenRecord,
+  evidence?: BossWaveLegacyEvidence,
+): boolean {
+  if (
+    LATER_THAN_SECOND_BOSS_LEGACY_SEEN_FLAGS.some((flag) => seen[flag] === true)
+  ) {
+    return true;
+  }
+  if ((evidence?.postCompletionAttackWaveCount ?? 0) > 0) return true;
+  if (evidence?.hasPostSiegeProgress) return true;
+  return false;
+}
 
 /**
  * Grant missing boss victory flags for saves that already passed the insert points.
  * Returns a new seen object if changed, otherwise null.
+ *
+ * First boss: any victory after the insert (sixth+) without firstBossWaveVictory.
+ * Second boss: only when there is proof of progress past the old chart end —
+ * not merely tenthWaveVictory (players waiting for wave 12).
  */
 export function migrateBossWaveVictoriesInSeen(
   seen: StorySeenRecord | null | undefined,
+  evidence?: BossWaveLegacyEvidence,
 ): StorySeenRecord | null {
   if (!seen || typeof seen !== "object") return null;
 
@@ -32,7 +101,11 @@ export function migrateBossWaveVictoriesInSeen(
   }
 
   const base = next ?? seen;
-  if (base.tenthWaveVictory === true && base.secondBossWaveVictory !== true) {
+  if (
+    base.tenthWaveVictory === true &&
+    base.secondBossWaveVictory !== true &&
+    hasLegacySecondBossEvidence(base, evidence)
+  ) {
     next = { ...base, secondBossWaveVictory: true };
   }
 
@@ -42,8 +115,9 @@ export function migrateBossWaveVictoriesInSeen(
 /** Apply seen imply for read-only metrics (always returns a usable seen object). */
 export function implyBossWaveVictoriesInSeen(
   seen: StorySeenRecord | null | undefined,
+  evidence?: BossWaveLegacyEvidence,
 ): StorySeenRecord {
-  const migrated = migrateBossWaveVictoriesInSeen(seen);
+  const migrated = migrateBossWaveVictoriesInSeen(seen, evidence);
   return migrated ?? seen ?? {};
 }
 

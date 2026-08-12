@@ -106,8 +106,9 @@ function buildingCount(
 /** Highest attack-wave victory index 0..12 (0 = none won). Implies legacy boss flags. */
 export function highestAttackWaveWon(
   seen: Partial<Record<string, boolean>> | undefined,
+  evidence?: Parameters<typeof implyBossWaveVictoriesInSeen>[1],
 ): number {
-  const effective = implyBossWaveVictoriesInSeen(seen);
+  const effective = implyBossWaveVictoriesInSeen(seen, evidence);
   let highest = 0;
   for (let i = 0; i < ATTACK_WAVE_VICTORY_FLAGS.length; i++) {
     const flag = ATTACK_WAVE_VICTORY_FLAGS[i]!;
@@ -126,7 +127,9 @@ export function totalAttackWavesWon(
   seen: Partial<Record<string, boolean>> | undefined,
   postCompletionAttackWaveCount = 0,
 ): number {
-  const effective = implyBossWaveVictoriesInSeen(seen);
+  const effective = implyBossWaveVictoriesInSeen(seen, {
+    postCompletionAttackWaveCount,
+  });
   let count = 0;
   for (const flag of ATTACK_WAVE_VICTORY_FLAGS) {
     if (effective[flag] === true) count += 1;
@@ -147,7 +150,7 @@ export function highestAttackWaveNumber(
   const postWon =
     Number.isFinite(post) && post > 0 ? Math.floor(post) : 0;
   if (postWon > 0) return ATTACK_WAVE_LADDER_MAX + postWon;
-  return highestAttackWaveWon(seen);
+  return highestAttackWaveWon(seen, { postCompletionAttackWaveCount });
 }
 
 export function isGameStartedSave(save: HutLadderSaveRow): boolean {
