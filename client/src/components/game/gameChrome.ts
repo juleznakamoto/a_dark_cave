@@ -3,10 +3,11 @@ export const GAME_HEADER_INSET = "36px";
 export const GAME_FOOTER_INSET = "36px";
 
 /**
- * Header/footer chrome controls: Reddit-style hover (opacity/color only, no fill).
- * Overrides Button `ghost` `hover:bg-accent`.
+ * Header/footer chrome controls: Reddit-style hover (opacity/color only, no fill)
+ * and no press squash. Overrides Button `ghost` `hover:bg-accent` and
+ * `active:scale-[0.97]`.
  */
-export const GAME_CHROME_NO_BG_HOVER = "hover:bg-transparent";
+export const GAME_CHROME_NO_BG_HOVER = "hover:bg-transparent active:scale-100";
 
 /** Fixed overlay between header/footer; click particles portal here (below action buttons). */
 export const GAME_PARTICLE_LAYER_ID = "adc-game-particle-layer";

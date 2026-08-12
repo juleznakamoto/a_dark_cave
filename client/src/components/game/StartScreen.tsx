@@ -24,6 +24,7 @@ import { useTranslation } from "react-i18next";
 import { useLocale } from "@/i18n/useLocale";
 import { OG_LOCALE_TAGS, SUPPORTED_LOCALES } from "@/i18n/locales";
 import { FullscreenButton } from "@/components/game/FullscreenButton";
+import { GAME_CHROME_NO_BG_HOVER } from "@/components/game/gameChrome";
 import { clearStaleChunkReloadGuard } from "@/lib/hardReload";
 import { mountFiraSansFontFace } from "@/lib/firaSansFontFace";
 import { logger } from "@/lib/logger";
@@ -72,7 +73,7 @@ const START_FOOTER_LINK_BASE =
 const START_FOOTER_SOCIAL_LINK = `${START_FOOTER_LINK_BASE} opacity-70 hover:opacity-100`;
 const START_FOOTER_LEGAL_LINK = `${START_FOOTER_LINK_BASE} opacity-40 hover:opacity-100 text-3xs sm:text-2xs`;
 /** Icon controls (language / music / sfx): same color/opacity as social text links; kill ghost Button accent hover. */
-const START_FOOTER_ICON_BTN = `${START_FOOTER_SOCIAL_LINK} shrink-0 p-0 w-7 h-7 justify-center bg-transparent hover:bg-transparent shadow-none`;
+const START_FOOTER_ICON_BTN = `${START_FOOTER_SOCIAL_LINK} shrink-0 p-0 w-7 h-7 justify-center bg-transparent ${GAME_CHROME_NO_BG_HOVER} shadow-none`;
 const START_FOOTER_ICON = "size-4 shrink-0";
 /** Paint original PNG glyphs with currentColor (matches language + social text). */
 const START_AUDIO_ICON_MASK = `${START_FOOTER_ICON} bg-current [mask-size:contain] [mask-repeat:no-repeat] [mask-position:center] [mask-mode:alpha] [-webkit-mask-size:contain] [-webkit-mask-repeat:no-repeat] [-webkit-mask-position:center]`;
