@@ -136,22 +136,16 @@ export function SegmentedProgress({
   /** Segment index locked when a grow glow starts (target bucket, not live tip). */
   const [glowSegmentIndex, setGlowSegmentIndex] = useState(-1);
   const [growSparkSession, setGrowSparkSession] = useState(0);
-  const [growTransitionActive, setGrowTransitionActive] = useState(false);
   const animationRef = useRef<number | null>(null);
   const startValueRef = useRef(changeOnlyGrow ? initialValue : 0);
   const startTimeRef = useRef(0);
   const prevValueRef = useRef(initialValue);
   const tipMarkerRef = useRef<HTMLDivElement>(null);
-  const growTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const sparkPalette = useMemo(
     () => resolveSparkPalette(sparkClassName),
     [sparkClassName],
   );
-
-  const isGrowingThisRender = value > prevValueRef.current;
-  const showGrowTransition =
-    changeOnlyGrow && (growTransitionActive || isGrowingThisRender);
 
   useEffect(() => {
     if (!showDemo) {
@@ -171,31 +165,17 @@ export function SegmentedProgress({
         setGlowKey((k) => k + 1);
         setGlowSegmentIndex(getActiveSegmentIndex(value, segments));
       }
-      setGrowTransitionActive(true);
-      if (growTimerRef.current) clearTimeout(growTimerRef.current);
-      growTimerRef.current = setTimeout(() => {
-        setGrowTransitionActive(false);
-        growTimerRef.current = null;
-      }, tweenDurationMs);
       if (emitSparksOnGrow) {
         setGrowSparkSession((s) => s + 1);
       }
     }
     prevValueRef.current = value;
-
-    return () => {
-      if (growTimerRef.current) {
-        clearTimeout(growTimerRef.current);
-        growTimerRef.current = null;
-      }
-    };
   }, [
     value,
     segments,
     changeOnlyGrow,
     disableGlow,
     emitSparksOnGrow,
-    tweenDurationMs,
   ]);
 
   useEffect(() => {
@@ -351,16 +331,7 @@ export function SegmentedProgress({
                           ref={tipMarkerRef}
                           className="pointer-events-none absolute right-0 top-1/2 z-20 w-0 -translate-y-1/2"
                           aria-hidden
-                        >
-                          {growSparkTipGlow && showGrowTransition && (
-                            <div
-                              className={cn(
-                                "absolute right-0 top-1/2 h-2 min-h-[8px] w-0.5 -translate-y-1/2",
-                                sparkPalette.tipMarkerClassName,
-                              )}
-                            />
-                          )}
-                        </div>
+                        />
                       ) : null}
                     </div>
                   </div>
