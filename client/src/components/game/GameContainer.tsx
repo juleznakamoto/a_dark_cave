@@ -16,7 +16,7 @@ import GameHeader from "./GameHeader";
 import {
   GAME_FOOTER_INSET,
   GAME_HEADER_INSET,
-  GAME_PANEL_HEADER_BAND,
+  GAME_NAV_TAB_BAND,
   GAME_PARTICLE_LAYER_ID,
   TAB_ICON_ALIGN_CLASS,
   TAB_ICON_SIZE_CLASS,
@@ -1187,7 +1187,7 @@ export default function GameContainer() {
     ? "opacity-100 text-foreground"
     : "opacity-100";
   const tabButtonClass =
-    `${GAME_PANEL_HEADER_BAND} bg-transparent font-normal outline-none focus:outline-none focus-visible:outline-none`;
+    `${GAME_NAV_TAB_BAND} bg-transparent font-normal outline-none focus:outline-none focus-visible:outline-none`;
 
   const tabHotkeyCount = visibleHotkeyTabs.length;
   const pauseHotkeyHintContent = (

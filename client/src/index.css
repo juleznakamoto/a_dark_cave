@@ -540,10 +540,16 @@ html.adc-text-large .game-panel-header-indicator-row {
   height: calc(18px * var(--adc-control-scale, 1));
 }
 
-/* Main tab + side-panel section mask icons (~14px); track text scale with labels. */
+/* Side-panel section mask icons (~14px); track text scale with labels. */
 .game-tab-icon {
   width: calc(0.875rem * var(--adc-text-scale, 1));
   height: calc(0.875rem * var(--adc-text-scale, 1));
+}
+
+/* Main nav tabs (Cave/Forest/Trader/… icons, ~16px). */
+.game-nav-tab-icon {
+  width: calc(1rem * var(--adc-text-scale, 1));
+  height: calc(1rem * var(--adc-text-scale, 1));
 }
 
 /* Village − / + assignment hit targets.

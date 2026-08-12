@@ -11,11 +11,16 @@ export const GAME_CHROME_NO_BG_HOVER = "hover:bg-transparent";
 /** Fixed overlay between header/footer; click particles portal here (below action buttons). */
 export const GAME_PARTICLE_LAYER_ID = "adc-game-particle-layer";
 
-/** Shared bottom-aligned header label band (tabs + side-panel section titles). */
+/** Shared bottom-aligned header label band (side-panel section titles). */
 export const GAME_PANEL_HEADER_BAND =
   // !leading-none: scaled .text-sm line-height must not inflate this band or
   // icon tabs (quest book) sit below the text baselines.
   "inline-flex h-9 items-end pb-2 text-sm !leading-none";
+
+/** Main game tabs (Cave, Forest, Trader, …). Slightly larger than side-panel titles. */
+export const GAME_NAV_TAB_BAND =
+  // !leading-none: same baseline rule as GAME_PANEL_HEADER_BAND.
+  "inline-flex h-10 items-end pb-2 text-base !leading-none";
 
 /**
  * Insight unlock blobs + construction/preset slot chrome in panel headers.
@@ -46,14 +51,14 @@ export const TAB_ICON_MASK_BOTTOM =
   "[mask-position:bottom] [-webkit-mask-position:bottom]";
 
 /**
- * Align tab mask icons with capital labels in GAME_PANEL_HEADER_BAND.
+ * Align tab mask icons with capital labels in GAME_NAV_TAB_BAND.
  * Mask-bottom keeps wide art on the icon-box floor; negative translate offsets
  * the font descent space that `items-end` otherwise shares with the icons.
  */
 export const TAB_ICON_ALIGN_CLASS = `${TAB_ICON_MASK_BOTTOM} -translate-y-[3px]`;
 
 /** Default size for Cave/City/… tab mask icons (scales with `--adc-text-scale`). */
-export const TAB_ICON_SIZE_CLASS = "game-tab-icon";
+export const TAB_ICON_SIZE_CLASS = "game-nav-tab-icon";
 
 /** Timed-event hourglass tab icon alignment (same baseline as other tab icons). */
 export const TAB_TIMED_EVENT_ICON_CLASS = TAB_ICON_ALIGN_CLASS;
