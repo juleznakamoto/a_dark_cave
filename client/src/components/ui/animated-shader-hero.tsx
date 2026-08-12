@@ -1,4 +1,4 @@
-import React, { useRef, useEffect } from "react";
+import React, { useRef, useEffect, useState } from "react";
 import { logger } from "@/lib/logger";
 import { StarshipShader } from "@/components/ui/starship-shader";
 import { GameUiIcon } from "@/components/game/GameUiIcon";
@@ -9,6 +9,56 @@ import {
 } from "@/lib/gameFooterSocialLinks";
 
 export type EndScreenBackgroundVariant = "default" | "starship";
+
+const STEAM_WIDGET_WIDTH = 646;
+const STEAM_WIDGET_HEIGHT = 190;
+/** Cap so the embed stays compact on the end screen. */
+const STEAM_WIDGET_MAX_WIDTH = 420;
+
+/** Official Steam store widget, scaled to fit without scrollbars or distortion. */
+function SteamStoreWidget({ src }: { src: string }) {
+  const wrapRef = useRef<HTMLDivElement>(null);
+  const [scale, setScale] = useState(STEAM_WIDGET_MAX_WIDTH / STEAM_WIDGET_WIDTH);
+
+  useEffect(() => {
+    const el = wrapRef.current;
+    if (!el) return;
+
+    const updateScale = () => {
+      setScale(Math.min(1, el.clientWidth / STEAM_WIDGET_WIDTH));
+    };
+    updateScale();
+
+    const observer = new ResizeObserver(updateScale);
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, []);
+
+  return (
+    <div
+      ref={wrapRef}
+      className="mx-auto w-full max-w-[420px] px-2"
+    >
+      <div
+        className="relative overflow-hidden rounded-sm"
+        style={{ height: STEAM_WIDGET_HEIGHT * scale }}
+      >
+        <iframe
+          title="A Dark Cave on Steam"
+          src={src}
+          width={STEAM_WIDGET_WIDTH}
+          height={STEAM_WIDGET_HEIGHT}
+          loading="lazy"
+          className="absolute left-0 top-0 border-0 bg-transparent"
+          style={{
+            transform: `scale(${scale})`,
+            transformOrigin: "top left",
+          }}
+        />
+      </div>
+    </div>
+  );
+}
 
 // Types for component props
 interface HeroProps {
@@ -627,16 +677,9 @@ const Hero: React.FC<HeroProps> = ({
                     "A Dark Cave is soon launching on Steam. Add it to your wishlist today so you'll be notified the moment it launches.",
                 })}
               </p>
-              <div className="w-full max-w-[646px] mx-auto overflow-x-auto px-2">
-                <iframe
-                  title="A Dark Cave on Steam"
-                  src={steamWidgetUrl(STEAM_STORE_UTM_CONTENT.endScreenWishlist)}
-                  width={646}
-                  height={190}
-                  loading="lazy"
-                  className="mx-auto block max-w-none border-0 bg-transparent"
-                />
-              </div>
+              <SteamStoreWidget
+                src={steamWidgetUrl(STEAM_STORE_UTM_CONTENT.endScreenWishlist)}
+              />
             </div>
           )}
 
@@ -658,9 +701,9 @@ const Hero: React.FC<HeroProps> = ({
                 <GameUiIcon
                   name="feedback"
                   sizeClassName="h-5 w-5"
-                  className="opacity-100"
+                  className="opacity-100 translate-y-[0.05em]"
                 />
-                <span>{buttons.feedback.text}</span>
+                <span className="leading-none">{buttons.feedback.text}</span>
               </button>
             </div>
           )}
@@ -703,7 +746,7 @@ const Hero: React.FC<HeroProps> = ({
                       <GameUiIcon
                         name="discover"
                         sizeClassName="h-3.5 w-3.5"
-                        className="opacity-100"
+                        className="text-blue-400 opacity-100"
                       />
                       <span>{buttons.secondaryTrailing.text}</span>
                     </button>
