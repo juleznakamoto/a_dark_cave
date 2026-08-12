@@ -1,4 +1,4 @@
-import React, { useRef, useEffect, useState } from "react";
+import React, { useRef, useEffect } from "react";
 import { logger } from "@/lib/logger";
 import { StarshipShader } from "@/components/ui/starship-shader";
 import { GameUiIcon } from "@/components/game/GameUiIcon";
@@ -10,52 +10,30 @@ import {
 
 export type EndScreenBackgroundVariant = "default" | "starship";
 
-const STEAM_WIDGET_WIDTH = 646;
 const STEAM_WIDGET_HEIGHT = 190;
-/** Cap so the embed stays compact on the end screen. */
-const STEAM_WIDGET_MAX_WIDTH = 420;
+/** Under 500px Steam uses its compact capsule layout. */
+const STEAM_WIDGET_MAX_WIDTH = 460;
+/** Matches Steam widget card so transparent iframe areas don't flash white. */
+const STEAM_WIDGET_BG = "#282e39";
 
-/** Official Steam store widget, scaled to fit without scrollbars or distortion. */
+/** Official Steam store widget (native compact width, no scale/scrollbars). */
 function SteamStoreWidget({ src }: { src: string }) {
-  const wrapRef = useRef<HTMLDivElement>(null);
-  const [scale, setScale] = useState(STEAM_WIDGET_MAX_WIDTH / STEAM_WIDGET_WIDTH);
-
-  useEffect(() => {
-    const el = wrapRef.current;
-    if (!el) return;
-
-    const updateScale = () => {
-      setScale(Math.min(1, el.clientWidth / STEAM_WIDGET_WIDTH));
-    };
-    updateScale();
-
-    const observer = new ResizeObserver(updateScale);
-    observer.observe(el);
-    return () => observer.disconnect();
-  }, []);
-
   return (
     <div
-      ref={wrapRef}
-      className="mx-auto w-full max-w-[420px] px-2"
+      className="mx-auto w-full px-2"
+      style={{ maxWidth: STEAM_WIDGET_MAX_WIDTH }}
     >
-      <div
-        className="relative overflow-hidden rounded-sm"
-        style={{ height: STEAM_WIDGET_HEIGHT * scale }}
-      >
-        <iframe
-          title="A Dark Cave on Steam"
-          src={src}
-          width={STEAM_WIDGET_WIDTH}
-          height={STEAM_WIDGET_HEIGHT}
-          loading="lazy"
-          className="absolute left-0 top-0 border-0 bg-transparent"
-          style={{
-            transform: `scale(${scale})`,
-            transformOrigin: "top left",
-          }}
-        />
-      </div>
+      <iframe
+        title="A Dark Cave on Steam"
+        src={src}
+        loading="lazy"
+        className="block w-full rounded-sm border-0"
+        style={{
+          height: STEAM_WIDGET_HEIGHT,
+          backgroundColor: STEAM_WIDGET_BG,
+          colorScheme: "dark",
+        }}
+      />
     </div>
   );
 }
