@@ -1021,8 +1021,9 @@ html.adc-text-large .game-panel-header-indicator-row {
   animation: madness-pulse 1s ease-in-out infinite;
 }
 
-/* Shadow-only lub-dub at 0.5 beat/sec (dialog stays still). */
+/* Shadow-only lub-dub at ~0.33 beat/sec (dialog stays still). */
 @keyframes cube-glow-pulse {
+
   0%,
   100% {
     box-shadow: 0 0 18px 2px rgba(192, 192, 192, .32);
@@ -1046,7 +1047,7 @@ html.adc-text-large .game-panel-header-indicator-row {
 }
 
 .cube-dialog-glow {
-  animation: cube-glow-pulse 2s ease-in-out infinite;
+  animation: cube-glow-pulse 3s ease-in-out infinite;
 }
 
 @keyframes madness-glow-pulse {
@@ -1202,6 +1203,7 @@ html.adc-text-large .game-panel-header-indicator-row {
 
 /* Footer More Games d-pad: slight left → right tilt on hover. */
 @keyframes playlight-discover-tilt {
+
   0%,
   100% {
     transform: rotate(0deg);
@@ -1222,6 +1224,7 @@ html.adc-text-large .game-panel-header-indicator-row {
 }
 
 @media (prefers-reduced-motion: reduce) {
+
   .playlight-discovery-btn:hover .playlight-discover-icon,
   .playlight-discovery-btn:focus-visible .playlight-discover-icon {
     animation: none;
