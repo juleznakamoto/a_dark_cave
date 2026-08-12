@@ -862,7 +862,7 @@ export default function CombatDialog({
 
     let integrityAfterEnemy = currentIntegrity;
     if (enemyStunnedRounds > 0) {
-      // Enemy is stunned, skip attack and decrement stun counter
+      // Enemy is stunned: skip attack, heal, and stun; only tick the stun counter
       setEnemyStunnedRounds((prev) => Math.max(0, prev - 1));
       setWasEnemyCriticalStrike(false);
     } else {
@@ -873,78 +873,81 @@ export default function CombatDialog({
       );
       if (attackResult.defeated) return;
       integrityAfterEnemy = attackResult.integrity;
-    }
 
-    // Boss heal roll (after enemy attack, before player attack)
-    if (
-      (currentEnemy.healChancePercent ?? 0) > 0 &&
-      (currentEnemy.healAmount ?? 0) > 0 &&
-      Math.random() < (currentEnemy.healChancePercent ?? 0) / 100
-    ) {
-      const healed = Math.min(
-        currentEnemy.maxHealth,
-        currentEnemyHealth + (currentEnemy.healAmount ?? 0),
-      );
-      const healAmount = healed - currentEnemyHealth;
-      if (healAmount > 0) {
-        currentEnemyHealth = healed;
-        showEnemyHeal(healAmount);
-        setCurrentEnemy((prev) =>
-          prev ? { ...prev, currentHealth: healed } : null,
+      // Boss heal roll (after enemy attack, before player attack)
+      if (
+        (currentEnemy.healChancePercent ?? 0) > 0 &&
+        (currentEnemy.healAmount ?? 0) > 0 &&
+        Math.random() < (currentEnemy.healChancePercent ?? 0) / 100
+      ) {
+        const healed = Math.min(
+          currentEnemy.maxHealth,
+          currentEnemyHealth + (currentEnemy.healAmount ?? 0),
         );
+        const healAmount = healed - currentEnemyHealth;
+        if (healAmount > 0) {
+          currentEnemyHealth = healed;
+          showEnemyHeal(healAmount);
+          setCurrentEnemy((prev) =>
+            prev ? { ...prev, currentHealth: healed } : null,
+          );
+        }
       }
-    }
 
-    // Boss stun roll: skip player attack, lock actions, delay next enemy attack
-    const stunLanded =
-      (currentEnemy.stunChancePercent ?? 0) > 0 &&
-      Math.random() < (currentEnemy.stunChancePercent ?? 0) / 100;
+      // Boss stun roll: skip player attack, lock actions, delay next enemy attack
+      const stunLanded =
+        (currentEnemy.stunChancePercent ?? 0) > 0 &&
+        Math.random() < (currentEnemy.stunChancePercent ?? 0) / 100;
 
-    if (stunLanded) {
-      const dotOnly = poisonDamageDealt + burnDamageDealt;
-      const newHealth = Math.max(0, currentEnemyHealth - dotOnly);
-      currentEnemyHealth = newHealth;
-      if (dotOnly > 0) {
-        showEnemyDamage(dotOnly);
-      }
-      setCurrentEnemy((prev) =>
-        prev ? { ...prev, currentHealth: newHealth } : null,
-      );
-      setPlayerStunned(true);
-      setPlayerStrikeFailed(false);
+      if (stunLanded) {
+        const dotOnly = poisonDamageDealt + burnDamageDealt;
+        const newHealth = Math.max(0, currentEnemyHealth - dotOnly);
+        currentEnemyHealth = newHealth;
+        if (dotOnly > 0) {
+          showEnemyDamage(dotOnly);
+        }
+        setCurrentEnemy((prev) =>
+          prev ? { ...prev, currentHealth: newHealth } : null,
+        );
+        setPlayerStunned(true);
+        setPlayerStrikeFailed(false);
 
-      if (newHealth <= 0) {
-        setCombatEnded(true);
-        setCombatResult("victory");
-        setPlayerStunned(false);
-        setIsProcessingRound(false);
+        if (newHealth <= 0) {
+          setCombatEnded(true);
+          setCombatResult("victory");
+          setPlayerStunned(false);
+          setIsProcessingRound(false);
+          return;
+        }
+
+        if (playerStunTimeoutRef.current) {
+          clearTimeout(playerStunTimeoutRef.current);
+        }
+        const stunnedEnemySnapshot = {
+          ...currentEnemy,
+          currentHealth: newHealth,
+        };
+        playerStunTimeoutRef.current = setTimeout(() => {
+          playerStunTimeoutRef.current = null;
+          setCurrentIntegrity((integrityNow) => {
+            const delayed = resolveEnemyAttack(
+              stunnedEnemySnapshot,
+              integrityNow,
+              0,
+            );
+            if (delayed.defeated) {
+              return delayed.integrity;
+            }
+            setRound((r) => r + 1);
+            setUsedItemsInRound(new Set());
+            setPlayerStunned(false);
+            setPlayerStrikeFailed(false);
+            setIsProcessingRound(false);
+            return delayed.integrity;
+          });
+        }, BOSS_STUN_DELAY_MS);
         return;
       }
-
-      if (playerStunTimeoutRef.current) {
-        clearTimeout(playerStunTimeoutRef.current);
-      }
-      const stunnedEnemySnapshot = { ...currentEnemy, currentHealth: newHealth };
-      playerStunTimeoutRef.current = setTimeout(() => {
-        playerStunTimeoutRef.current = null;
-        setCurrentIntegrity((integrityNow) => {
-          const delayed = resolveEnemyAttack(
-            stunnedEnemySnapshot,
-            integrityNow,
-            0,
-          );
-          if (delayed.defeated) {
-            return delayed.integrity;
-          }
-          setRound((r) => r + 1);
-          setUsedItemsInRound(new Set());
-          setPlayerStunned(false);
-          setPlayerStrikeFailed(false);
-          setIsProcessingRound(false);
-          return delayed.integrity;
-        });
-      }, BOSS_STUN_DELAY_MS);
-      return;
     }
 
     // Player attacks
