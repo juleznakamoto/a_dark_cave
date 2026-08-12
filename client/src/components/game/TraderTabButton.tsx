@@ -109,7 +109,7 @@ export function TraderTabButton({
           </span>
           <span
             className={cn(
-              "col-start-1 row-start-1 font-normal transition-[opacity,color]",
+              "col-start-1 row-start-1 font-medium transition-[opacity,color]",
               isAnimating
                 ? ""
                 : showActiveGlow
