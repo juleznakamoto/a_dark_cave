@@ -21,13 +21,8 @@ const CALLOUT_CHROME =
 
 const CALLOUT_SIZE = {
   sm: "px-2 py-1.5 text-2xs",
-  /** Matches footer control labels (`text-xs`). */
-  md: "px-3 py-2 text-xs",
-} as const;
-
-const CALLOUT_ARROW_SIZE = {
-  sm: "p-1",
-  md: "p-1.5",
+  /** Footer Playlight / Steam: same type size as footer labels, slightly roomier padding. */
+  md: "px-2.5 py-1.5 text-xs",
 } as const;
 
 /** Matches `mb-1.5` / `mt-1.5` on in-flow callouts. */
@@ -221,8 +216,7 @@ export function HoverCalloutTooltip({
       <span className="whitespace-nowrap">{label}</span>
       <div
         className={cn(
-          "absolute rotate-45 bg-inherit",
-          CALLOUT_ARROW_SIZE[size],
+          "absolute rotate-45 bg-inherit p-1",
           layout.arrow,
         )}
         aria-hidden
