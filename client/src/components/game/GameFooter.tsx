@@ -204,7 +204,7 @@ export default function GameFooter() {
         sizeClassName="game-tab-icon"
         className={FOOTER_CONTROL_ICON}
       />
-      <span className={FOOTER_CONTROL_TEXT}>{progressLabel}</span>
+      <span className={FOOTER_SOCIAL_LABEL}>{progressLabel}</span>
     </Button>
   ) : null;
   const playlightButton = !steamEditionActive ? (
