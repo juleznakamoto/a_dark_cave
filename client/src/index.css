@@ -1021,52 +1021,32 @@ html.adc-text-large .game-panel-header-indicator-row {
   animation: madness-pulse 1s ease-in-out infinite;
 }
 
+/* Shadow-only lub-dub at 1 beat/sec (dialog stays still). */
 @keyframes cube-glow-pulse {
-
   0%,
   100% {
-    box-shadow: 0 0 22px 2px rgba(192, 192, 192, .35);
+    box-shadow: 0 0 18px 2px rgba(192, 192, 192, .32);
   }
 
-  50% {
-    box-shadow: 0 0 10px 2px rgba(192, 192, 192, .6);
+  14% {
+    box-shadow: 0 0 28px 4px rgba(192, 192, 192, .48);
+  }
+
+  28% {
+    box-shadow: 0 0 18px 2px rgba(192, 192, 192, .32);
+  }
+
+  42% {
+    box-shadow: 0 0 34px 5px rgba(192, 192, 192, .58);
+  }
+
+  56% {
+    box-shadow: 0 0 18px 2px rgba(192, 192, 192, .32);
   }
 }
 
 .cube-dialog-glow {
-  animation: cube-glow-pulse 5s ease-in-out infinite;
-}
-
-/* Lub-dub scale at 1 beat/sec; used on an inner panel so DialogContent centering transform is untouched. */
-@keyframes cube-dialog-heartbeat {
-  0%,
-  100% {
-    transform: scale(1);
-  }
-
-  14% {
-    transform: scale(1.035);
-  }
-
-  28% {
-    transform: scale(1);
-  }
-
-  42% {
-    transform: scale(1.055);
-  }
-
-  56% {
-    transform: scale(1);
-  }
-}
-
-.cube-dialog-beat {
-  transform-origin: center center;
-  animation: cube-dialog-heartbeat 1s ease-in-out infinite;
-  box-shadow:
-    0 28px 55px -10px rgb(0 0 0 / 0.4),
-    0 0 28px 3px rgba(192, 192, 192, 0.32);
+  animation: cube-glow-pulse 1s ease-in-out infinite;
 }
 
 @keyframes madness-glow-pulse {

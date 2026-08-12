@@ -128,30 +128,28 @@ export default function CubeDialog({
 
   return (
     <Dialog open={isOpen} onOpenChange={() => { }}>
-      <DialogContent className="[&>button]:hidden border-0 bg-transparent shadow-none p-0 [--adc-dialog-max-w:22rem] overflow-visible z-[100]">
-        <div className="cube-dialog-beat relative border-2 border-gray-400 bg-background p-6 h-[21rem] max-h-[21rem] w-full flex flex-col overflow-visible sm:rounded-lg">
-          <div className="absolute inset-0 -z-10 cube-dialog-glow pointer-events-none"></div>
-          <DialogHeader className="flex-shrink-0">
-            <DialogTitle className="pr-0 text-lg font-semibold">
-              {resolvedTitle}
-            </DialogTitle>
-            <DialogDescription className="text-sm text-muted-foreground mt-2 leading-relaxed">
-              {resolvedMessage}
-            </DialogDescription>
-          </DialogHeader>
+      <DialogContent className="[&>button]:hidden border-2 border-gray-400 shadow-2xl p-6 [--adc-dialog-max-w:22rem] h-[21rem] max-h-[21rem] flex flex-col overflow-visible z-[100]">
+        <div className="absolute inset-0 -z-10 cube-dialog-glow pointer-events-none"></div>
+        <DialogHeader className="flex-shrink-0">
+          <DialogTitle className="pr-0 text-lg font-semibold">
+            {resolvedTitle}
+          </DialogTitle>
+          <DialogDescription className="text-sm text-muted-foreground mt-2 leading-relaxed">
+            {resolvedMessage}
+          </DialogDescription>
+        </DialogHeader>
 
-          <div className="flex-1 flex items-end justify-center pt-4">
-            <Button
-              onClick={handleClose}
-              variant="outline"
-              size="sm"
-              className="px-8 border-2 border-gray-700 rounded-lg hover:bg-black/0 hover:text-gray-100 hover:border-gray-400"
-              disabled={fallbackExecutedRef.current}
-              button_id={`cube-close-${event?.id || 'unknown'}`}
-            >
-              {closeLabel}
-            </Button>
-          </div>
+        <div className="flex-1 flex items-end justify-center pt-4">
+          <Button
+            onClick={handleClose}
+            variant="outline"
+            size="sm"
+            className="px-8 border-2 border-gray-700 rounded-lg hover:bg-black/0 hover:text-gray-100 hover:border-gray-400"
+            disabled={fallbackExecutedRef.current}
+            button_id={`cube-close-${event?.id || 'unknown'}`}
+          >
+            {closeLabel}
+          </Button>
         </div>
       </DialogContent>
     </Dialog>
