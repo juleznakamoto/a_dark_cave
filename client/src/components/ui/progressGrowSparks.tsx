@@ -154,8 +154,8 @@ function createGrowSparkParticle(
   const isBright = variant === "bright";
   const speed = isBright ? 50 + Math.random() * 250 : 20 + Math.random() * 30;
   const maxLife = isBright
-    ? 0.2 + Math.random() * 0.6
-    : 0.2 + Math.random() * 0.4;
+    ? 0.2 + Math.random() * 0.5
+    : 0.2 + Math.random() * 0.3;
   const colors = isBright ? palette.brightColors : palette.warmColors;
   return {
     x,

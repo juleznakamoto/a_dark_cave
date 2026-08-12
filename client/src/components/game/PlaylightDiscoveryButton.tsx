@@ -34,6 +34,7 @@ type PlaylightDiscoveryButtonProps = {
   onClick: () => void;
   showNotificationDot?: boolean;
   forceShowTooltip?: boolean;
+  forceTooltipFadeDurationMs?: number;
   tooltipSide?: "top" | "left" | "right" | "bottom";
   className?: string;
 };
@@ -42,6 +43,7 @@ export default function PlaylightDiscoveryButton({
   onClick,
   showNotificationDot = false,
   forceShowTooltip = false,
+  forceTooltipFadeDurationMs,
   tooltipSide = "top",
   className,
 }: PlaylightDiscoveryButtonProps) {
@@ -88,6 +90,9 @@ export default function PlaylightDiscoveryButton({
       label={tooltipLabel}
       side={tooltipSide}
       forceVisible={forceShowTooltip || showDiscoveryTooltip}
+      fadeDurationMs={
+        forceShowTooltip ? forceTooltipFadeDurationMs : undefined
+      }
       hoverEnabled={false}
       onCalloutClick={onClick}
     >

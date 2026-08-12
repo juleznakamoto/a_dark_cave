@@ -803,7 +803,7 @@ export default function ShareDialog() {
         className="flex w-max max-w-[min(95vw,28rem)] max-h-[95vh] flex-col items-center gap-4 overflow-visible border-0 bg-transparent p-0 shadow-none duration-0 data-[state=open]:!animate-none data-[state=closed]:!animate-none sm:rounded-none"
       >
         <DialogTitle className="sr-only">
-          {t("share.title", { defaultValue: "Share your progress" })}
+          {t("share.title", { defaultValue: "See your progress" })}
         </DialogTitle>
 
         {/* Outer box stays at final size so dialog centering never jumps. */}

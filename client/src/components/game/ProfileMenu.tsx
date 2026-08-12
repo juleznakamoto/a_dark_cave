@@ -577,7 +577,7 @@ export function GameHeaderControls() {
       {/* Social share is web-only. */}
       {!steamEditionActive && (
         <HoverCalloutTooltip
-          label={t("share.title", { defaultValue: "Share your progress" })}
+          label={t("share.title", { defaultValue: "See your progress" })}
           side="bottom"
         >
           <Button
@@ -585,7 +585,7 @@ export function GameHeaderControls() {
             variant="ghost"
             size="xs"
             onClick={() => setShareDialogOpen(true)}
-            aria-label={t("share.title", { defaultValue: "Share your progress" })}
+            aria-label={t("share.title", { defaultValue: "See your progress" })}
             className={`${HEADER_ICON_BTN} group touch-manipulation`}
           >
             <GameUiIcon

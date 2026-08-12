@@ -84,6 +84,8 @@ export interface HoverCalloutTooltipProps {
   children: ReactNode;
   className?: string;
   forceVisible?: boolean;
+  /** Overrides the default 300ms opacity transition. */
+  fadeDurationMs?: number;
   /** When false, only `forceVisible` shows the callout (no hover). Default true. */
   hoverEnabled?: boolean;
   /** When set, the callout is clickable while visible (Playlight discovery). */
@@ -100,6 +102,7 @@ export function HoverCalloutTooltip({
   children,
   className,
   forceVisible = false,
+  fadeDurationMs,
   hoverEnabled = true,
   onCalloutClick,
   onHoverStart,
@@ -160,6 +163,11 @@ export function HoverCalloutTooltip({
               ? "pointer-events-auto cursor-pointer opacity-100 hover:bg-primary/90"
               : "pointer-events-none opacity-0",
           )}
+          style={
+            fadeDurationMs === undefined
+              ? undefined
+              : { transitionDuration: `${fadeDurationMs}ms` }
+          }
         >
           {callout}
         </button>
@@ -171,6 +179,11 @@ export function HoverCalloutTooltip({
             visible ? "opacity-100" : "opacity-0",
             "pointer-events-none",
           )}
+          style={
+            fadeDurationMs === undefined
+              ? undefined
+              : { transitionDuration: `${fadeDurationMs}ms` }
+          }
           aria-hidden={!visible}
         >
           {callout}

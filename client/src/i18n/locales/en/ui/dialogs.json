@@ -216,7 +216,7 @@
     "buyGold": "Buy Gold"
   },
   "share": {
-    "title": "Share your progress",
+    "title": "See your progress",
     "description": "Save or share an image of your game progress.",
     "resources": "Resources: {{percent}} %",
     "achievements": "Achievements: {{percent}} %",

@@ -192,6 +192,7 @@ export default function GameFooter() {
     <PlaylightDiscoveryButton
       onClick={handlePlaylightDiscovery}
       forceShowTooltip={showPauseSleepCallout}
+      forceTooltipFadeDurationMs={1_000}
       tooltipSide="top"
     />
   ) : null;
@@ -324,6 +325,7 @@ export default function GameFooter() {
                       label={t("footer.wishlistOnSteam")}
                       side="top"
                       forceVisible={showPauseSleepCallout}
+                      fadeDurationMs={showPauseSleepCallout ? 1_000 : undefined}
                       onCalloutClick={
                         showPauseSleepCallout
                           ? () =>
