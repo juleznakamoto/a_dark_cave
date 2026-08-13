@@ -1,5 +1,6 @@
 import { Action, GameState } from "@shared/schema";
 import { formatNumber } from "@/lib/utils";
+import { PRESET_SLOTS_BY_BUILDING_TIER } from "@/game/villagerJobPresets";
 import { getBoneyardBurialMadnessReduction } from "./boneyardMadness";
 import { bt, type BuildingTooltipEffect } from "./buildingTooltipEffects";
 
@@ -11,14 +12,14 @@ function storageResourceLimitTooltip(limit: number): BuildingTooltipEffect {
   );
 }
 
-/** Cumulative villager job preset slots at each archive chain tier. */
-function archivePresetUnlockTooltip(totalSlots: number): BuildingTooltipEffect {
+/** Preset slots this archive building adds (matches PRESET_SLOTS_BY_BUILDING_TIER). */
+function archivePresetUnlockTooltip(slotCount: number): BuildingTooltipEffect {
   return bt(
     "addsVillagerPreset",
-    totalSlots === 1
-      ? "Adds {{count}} villager job preset"
-      : "Adds {{count}} villager job presets",
-    { count: totalSlots },
+    slotCount === 1
+      ? "Adds {{count}} villager job preset slot"
+      : "Adds {{count}} villager job preset slots",
+    { count: slotCount },
   );
 }
 
@@ -1808,7 +1809,7 @@ export const villageBuildActions: Record<string, Action> = {
     tooltipEffects: [
       bt("knowledgeBonus", "+{{amount}} Knowledge", { amount: 2 }),
       bt("unlocksScholar", "Unlocks Scholar"),
-      bt("scholarInsight1", "Scholar produces 1 Insight per cycle"),
+      bt("scholarInsight", "Scholar: +{{amount}} Insight", { amount: 1 }),
     ],
     building: true,
     show_when: {
@@ -1841,7 +1842,7 @@ export const villageBuildActions: Record<string, Action> = {
     description: "Hub of wisdom where scholars gather Knowledge",
     tooltipEffects: [
       bt("knowledgeBonus", "+{{amount}} Knowledge", { amount: 5 }),
-      bt("scholarInsight2", "Scholar produces 2 Insight per cycle"),
+      bt("scholarInsight", "Scholar: +{{amount}} Insight", { amount: 2 }),
     ],
     building: true,
     show_when: {
@@ -1876,7 +1877,7 @@ export const villageBuildActions: Record<string, Action> = {
       "Grand academy where master scholars distill deep Knowledge",
     tooltipEffects: [
       bt("knowledgeBonus", "+{{amount}} Knowledge", { amount: 10 }),
-      bt("scholarInsight3", "Scholar produces 3 Insight per cycle"),
+      bt("scholarInsight", "Scholar: +{{amount}} Insight", { amount: 3 }),
       bt("weaponEnchantment", "Weapon Enchantment"),
     ],
     building: true,
@@ -1911,7 +1912,7 @@ export const villageBuildActions: Record<string, Action> = {
     label: "Scribe's Office",
     description:
       "A quiet room where scribes keep careful tallies of every hand at work, so no labor is forgotten",
-    tooltipEffects: [archivePresetUnlockTooltip(2)],
+    tooltipEffects: [archivePresetUnlockTooltip(PRESET_SLOTS_BY_BUILDING_TIER[0])],
     building: true,
     show_when: {
       1: {
@@ -1939,7 +1940,7 @@ export const villageBuildActions: Record<string, Action> = {
     label: "Records Hall",
     description:
       "Hall full of shelves of weathered ledgers and rosters, the village's memory set down in ink and kept in order",
-    tooltipEffects: [archivePresetUnlockTooltip(3)],
+    tooltipEffects: [archivePresetUnlockTooltip(PRESET_SLOTS_BY_BUILDING_TIER[1])],
     building: true,
     show_when: {
       1: {
@@ -1969,7 +1970,7 @@ export const villageBuildActions: Record<string, Action> = {
     label: "Grand Archive",
     description:
       "A vast vault of scrolls preserving all the village has been, every name and toil etched",
-    tooltipEffects: [archivePresetUnlockTooltip(5)],
+    tooltipEffects: [archivePresetUnlockTooltip(PRESET_SLOTS_BY_BUILDING_TIER[2])],
     building: true,
     show_when: {
       1: {

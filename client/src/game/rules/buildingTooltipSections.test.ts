@@ -29,17 +29,17 @@ describe("getBuildingUpgradeMarginalEffectLines", () => {
     expect(lines).toEqual(["Unlocks Steel Forgers"]);
   });
 
-  it("shows cumulative preset totals for the archive chain", () => {
+  it("shows preset slots added by each archive building", () => {
     const state = createInitialState();
 
     expect(
       getBuildingUpgradeMarginalEffectLines("scribesOffice", state),
-    ).toEqual(["Adds 1 villager job preset"]);
+    ).toEqual(["Adds 2 villager job preset slots"]);
     expect(
       getBuildingUpgradeMarginalEffectLines("recordsHall", state),
-    ).toEqual(["Adds 2 villager job presets"]);
+    ).toEqual(["Adds 1 villager job preset slot"]);
     expect(
       getBuildingUpgradeMarginalEffectLines("grandArchive", state),
-    ).toEqual(["Adds 3 villager job presets"]);
+    ).toEqual(["Adds 2 villager job preset slots"]);
   });
 });

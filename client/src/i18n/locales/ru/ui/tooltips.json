@@ -132,11 +132,9 @@
       "improvedResourceChangeHints": "Улучшенные подсказки об изменении ресурсов", //x1.4
       "resourceHighlighting": "Подсветка ресурсов",
       "unlocksScholar": "Разблокирует учёных", //x1.3
-      "addsVillagerPreset_one": "Добавляет {{count}} пресет работ жителей",
-      "addsVillagerPreset_other": "Добавляет {{count}} пресетов работ жителей",
-      "scholarInsight1": "Учёный производит 1 проницательность за цикл",
-      "scholarInsight2": "Учёный производит 2 проницательности за цикл",
-      "scholarInsight3": "Учёный производит 3 проницательности за цикл",
+      "addsVillagerPreset_one": "Добавляет {{count}} слот пресета работ жителей",
+      "addsVillagerPreset_other": "Добавляет {{count}} слота пресетов работ жителей",
+      "scholarInsight": "Учёный: +{{amount}} проницательности",
       "insightRevealCost": "{{cost}} проницательности", //x1.6
       "insightRevealSeeEffects": "Показать эффекты за {{cost}} {{resource}}",
       "insightRevealEffects": "Эффекты",

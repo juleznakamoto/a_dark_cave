@@ -132,11 +132,9 @@
       "improvedResourceChangeHints": "Indicaciones mejoradas de cambio de recursos", //x1.5
       "resourceHighlighting": "Resaltado de recursos",
       "unlocksScholar": "Desbloquea eruditos", //x1.3
-      "addsVillagerPreset_one": "Añade {{count}} preset de trabajos",
-      "addsVillagerPreset_other": "Añade {{count}} presets de trabajos",
-      "scholarInsight1": "El erudito produce 1 perspicacia por ciclo",
-      "scholarInsight2": "El erudito produce 2 perspicacias por ciclo",
-      "scholarInsight3": "El erudito produce 3 perspicacias por ciclo",
+      "addsVillagerPreset_one": "Añade {{count}} espacio de preset de trabajos",
+      "addsVillagerPreset_other": "Añade {{count}} espacios de preset de trabajos",
+      "scholarInsight": "Erudito: +{{amount}} perspicacia",
       "insightRevealCost": "{{cost}} perspicacia", //x1.3
       "insightRevealSeeEffects": "Ver efectos por {{cost}} {{resource}}",
       "insightRevealEffects": "Efectos",
