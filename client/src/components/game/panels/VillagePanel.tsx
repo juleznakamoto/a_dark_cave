@@ -1011,9 +1011,6 @@ export default function VillagePanel() {
   const totalPopulation = useGameStore((s) => getCurrentPopulation(s));
   const maxPopulation = useGameStore((s) => s.total_population);
   const onMissionCount = useGameStore((s) => getExpeditionVillagerCount(s));
-  const hasDisgracedPrior = useGameStore((s) =>
-    Boolean(s.fellowship?.disgraced_prior),
-  );
   const priorFoodUpkeep = useGameStore((s) =>
     getDisgracedPriorFoodUpkeepPerCycle(s),
   );
@@ -2390,7 +2387,7 @@ export default function VillagePanel() {
                     t(`village.jobs.${job.id}`, { defaultValue: job.label }),
                   ),
                 )}
-                {hasDisgracedPrior && renderDisgracedPriorRow()}
+                {priorFoodUpkeep > 0 && renderDisgracedPriorRow()}
               </div>
             </div>
           )}
