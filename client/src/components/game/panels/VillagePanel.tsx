@@ -27,6 +27,7 @@ import {
   resolveActionDescription,
   resolveActionLabel,
 } from "@/i18n/actionLabels";
+import { getEffectName } from "@/i18n/resolveGameText";
 import { useUiTranslation } from "@/i18n/useUiTranslation";
 import {
   formatTooltipCostLine,
@@ -44,6 +45,7 @@ import { ActionButtonSlot } from "@/components/game/GameActionButtonStack";
 import { Button } from "@/components/ui/button";
 import {
   getCurrentPopulation,
+  getDisgracedPriorFoodUpkeepPerCycle,
   getExpeditionVillagerCount,
   getPopulationProduction,
   isVillagerFoodUpkeepActive,
@@ -1009,6 +1011,12 @@ export default function VillagePanel() {
   const totalPopulation = useGameStore((s) => getCurrentPopulation(s));
   const maxPopulation = useGameStore((s) => s.total_population);
   const onMissionCount = useGameStore((s) => getExpeditionVillagerCount(s));
+  const hasDisgracedPrior = useGameStore((s) =>
+    Boolean(s.fellowship?.disgraced_prior),
+  );
+  const priorFoodUpkeep = useGameStore((s) =>
+    getDisgracedPriorFoodUpkeepPerCycle(s),
+  );
   const freeVillagers = villagers.free ?? 0;
 
   // Filter visible population jobs
@@ -1141,6 +1149,39 @@ export default function VillagePanel() {
               )}
             </span>
           )}
+      </span>
+    </div>
+  );
+
+  const renderDisgracedPriorRow = () => (
+    <div
+      key="disgraced-prior"
+      className={VILLAGER_COUNT_ROW_CLASS}
+      data-testid="villager-disgraced-prior"
+    >
+      <div className={VILLAGER_COUNT_CONTROL_GRID_CLASS}>
+        <span
+          className={cn(VILLAGER_COUNT_BUTTON_SIZE_CLASS, "inline-block")}
+          aria-hidden
+        />
+        {renderVillagerCount(1)}
+        <span
+          className={cn(VILLAGER_COUNT_BUTTON_SIZE_CLASS, "inline-block")}
+          aria-hidden
+        />
+      </div>
+      <span translate="no" className={VILLAGER_COUNT_CAP_CLASS}>
+        /1
+      </span>
+      {renderCapUpgradeSlot()}
+      <span className={villagerCountLabelClass}>
+        {getEffectName("fellowship", "disgraced_prior", "Disgraced Prior")}{" "}
+        <span className={VILLAGER_RESOURCE_HINT_CLASS}>
+          <span translate="no" className="notranslate">
+            -{priorFoodUpkeep}
+          </span>{" "}
+          {formatTooltipResourceName("food")}
+        </span>
       </span>
     </div>
   );
@@ -2349,6 +2390,7 @@ export default function VillagePanel() {
                     t(`village.jobs.${job.id}`, { defaultValue: job.label }),
                   ),
                 )}
+                {hasDisgracedPrior && renderDisgracedPriorRow()}
               </div>
             </div>
           )}
