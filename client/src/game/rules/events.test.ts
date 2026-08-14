@@ -9,6 +9,7 @@ import {
 } from '../stateHelpers';
 import { handleExploreCave } from './caveExploreActions';
 import { cubeEvents } from './eventsCube';
+import { setGameTabHiddenForTests } from '@/lib/tabVisibility';
 
 describe('Event System', () => {
   let mockState: Partial<GameState>;
@@ -38,6 +39,7 @@ describe('Event System', () => {
 
   afterEach(() => {
     vi.restoreAllMocks();
+    setGameTabHiddenForTests(null);
   });
 
   it('should trigger events based on conditions', () => {
@@ -96,6 +98,25 @@ describe('Event System', () => {
 
     const { stateChanges } = EventManager.checkEvents(state);
     expect(stateChanges._timedTabEvent).toBeDefined();
+  });
+
+  it('does not spawn a timed-tab event while the game tab is hidden', () => {
+    vi.spyOn(Math, 'random').mockReturnValue(0);
+    setGameTabHiddenForTests(true);
+    const now = Date.now();
+    const state = {
+      ...createInitialState(),
+      buildings: { ...createInitialState().buildings, woodenHut: 3 },
+      timedEventTab: {
+        isActive: false,
+        event: null,
+        expiryTime: 0,
+        lastEndedAt: now - GAME_CONSTANTS.TIMED_TAB_MIN_GAP_MS - 1,
+      },
+    } as EventRollState;
+
+    const { stateChanges } = EventManager.checkEvents(state);
+    expect(stateChanges._timedTabEvent).toBeUndefined();
   });
 
   it('records lastEndedAt when a timed tab is deactivated', async () => {

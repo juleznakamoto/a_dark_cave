@@ -1,5 +1,6 @@
 import { GameState } from "@shared/schema";
 import { logger } from "../../lib/logger";
+import { isGameTabHidden } from "../../lib/tabVisibility";
 import type {
   EventChoice,
   EventChoiceEffectResult,
@@ -161,8 +162,14 @@ export class EventManager {
       // Skip if event was already triggered this session (for non-repeatable events)
       if (state.triggeredEvents?.[event.id] && !event.repeatable) continue;
 
-      // Active visit or recent close: only block another timed-tab spawn, not random/log events.
-      if (event.showAsTimedTab && (isTimedTabActive || isTimedTabGapActive)) continue;
+      // Active visit, recent close, or backgrounded tab: only block another timed-tab spawn,
+      // not random/log events. Hidden tabs must not start a timed visit the player cannot see.
+      if (
+        event.showAsTimedTab &&
+        (isTimedTabActive || isTimedTabGapActive || isGameTabHidden())
+      ) {
+        continue;
+      }
 
       // Recent EventDialog close: only block another modal/log event, not timed tabs.
       // Intentional follow-ups bypass this by calling setEventDialog directly.

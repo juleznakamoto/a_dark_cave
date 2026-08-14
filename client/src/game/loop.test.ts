@@ -2,13 +2,21 @@ import { describe, it, expect, beforeEach, afterEach, vi } from "vitest";
 import {
   useGameStore,
   isModalDialogOpen,
+  syncTimedEventTabPauseTracking,
+  getTimedEventTabEffectiveRemainingMs,
 } from "./state";
 import { EventManager, type EventRollState } from "./rules/events";
 import { clearExpiredTimedEventTab } from "./loop";
+import { setGameTabHiddenForTests } from "@/lib/tabVisibility";
 
 describe('Game Loop Production', () => {
   beforeEach(() => {
     useGameStore.getState().initialize();
+  });
+
+  afterEach(() => {
+    setGameTabHiddenForTests(null);
+    vi.useRealTimers();
   });
 
   it('should produce resources based on villager assignments', async () => {
@@ -249,6 +257,77 @@ describe('Game Loop Production', () => {
     expect(applySpy).not.toHaveBeenCalled();
 
     applySpy.mockRestore();
+  });
+
+  it("does not expire a timed tab while the document is hidden", () => {
+    setGameTabHiddenForTests(true);
+
+    const mockEvent = {
+      id: "test-event",
+      eventId: "test-event",
+      message: "Test event",
+      title: "Test Event",
+      type: "event" as const,
+      choices: [{ id: "choice1", label: "Choice 1", effect: () => ({}) }],
+      fallbackChoice: { id: "choice1", label: "Choice 1", effect: () => ({}) },
+    };
+    const applySpy = vi.spyOn(useGameStore.getState(), "applyEventChoice");
+
+    useGameStore.setState({
+      timedEventTab: {
+        isActive: true,
+        event: mockEvent,
+        expiryTime: Date.now() - 1000,
+        startTime: Date.now() - 2000,
+        pauseAccumMs: 0,
+        pauseStartedAt: 0,
+      },
+    });
+
+    clearExpiredTimedEventTab();
+
+    const s = useGameStore.getState();
+    expect(s.timedEventTab.isActive).toBe(true);
+    expect(s.timedEventTab.event).toEqual(mockEvent);
+    expect(applySpy).not.toHaveBeenCalled();
+
+    applySpy.mockRestore();
+  });
+
+  it("keeps remaining timed-tab time after the tab was hidden", () => {
+    vi.useFakeTimers();
+    const mockEvent = {
+      id: "test-event",
+      eventId: "test-event",
+      message: "Test event",
+      title: "Test Event",
+      type: "event" as const,
+      choices: [{ id: "choice1", label: "Choice 1", effect: () => ({}) }],
+      fallbackChoice: { id: "choice1", label: "Choice 1", effect: () => ({}) },
+    };
+
+    const now = Date.now();
+    useGameStore.setState({
+      timedEventTab: {
+        isActive: true,
+        event: mockEvent,
+        expiryTime: now + 60_000,
+        startTime: now,
+        pauseAccumMs: 0,
+        pauseStartedAt: 0,
+      },
+    });
+
+    setGameTabHiddenForTests(true);
+    syncTimedEventTabPauseTracking();
+    vi.advanceTimersByTime(120_000);
+    setGameTabHiddenForTests(false);
+    syncTimedEventTabPauseTracking();
+    clearExpiredTimedEventTab();
+
+    const s = useGameStore.getState();
+    expect(s.timedEventTab.isActive).toBe(true);
+    expect(getTimedEventTabEffectiveRemainingMs(s)).toBeGreaterThan(50_000);
   });
 });
 

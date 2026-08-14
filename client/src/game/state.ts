@@ -129,6 +129,7 @@ import {
   GAMBLER_TUTORIAL_PLAYS_REMAINING_SEEN_KEY,
 } from "@/game/gamblerSession";
 import { logger } from "@/lib/logger";
+import { isGameTabHidden } from "@/lib/tabVisibility";
 import {
   shopOpenButtonId,
   type ShopOpenSource,
@@ -1681,11 +1682,17 @@ export function shouldBlockGameHotkeys(state: GameStore): boolean {
 }
 
 /**
- * True when the timed-event tab countdown should stop (manual pause, reward dialog, or another blocking dialog).
- * Excludes the active timed tab itself so the player's decision timer can still tick.
+ * True when the timed-event tab countdown should stop (manual pause, reward dialog,
+ * another blocking dialog, or a backgrounded game tab). Excludes the active timed
+ * tab itself so the player's decision timer can still tick while they are looking.
  */
 export function shouldFreezeTimedEventTabCountdown(state: GameStore): boolean {
-  return state.isPaused || state.rewardDialog.isOpen || isBlockingDialogOpen(state);
+  return (
+    state.isPaused ||
+    state.rewardDialog.isOpen ||
+    isBlockingDialogOpen(state) ||
+    isGameTabHidden()
+  );
 }
 
 const DIALOG_DEFER_POLL_MS = 200;
@@ -5161,8 +5168,9 @@ export const useGameStore = create<GameStore>((set, get) => ({
 }));
 
 /**
- * Updates `timedEventTab.pauseAccumMs` / `pauseStartedAt` from game pause + blocking modals.
- * Call before reading effective remaining time (panel timer, clearExpiredTimedEventTab).
+ * Updates `timedEventTab.pauseAccumMs` / `pauseStartedAt` from game pause, blocking
+ * modals, and a backgrounded tab. Call before reading effective remaining time
+ * (panel timer, clearExpiredTimedEventTab).
  */
 export function syncTimedEventTabPauseTracking(): void {
   const state = useGameStore.getState();

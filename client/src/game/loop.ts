@@ -33,6 +33,7 @@ import {
 import { GAME_CONSTANTS } from "./constants";
 import { POST_COMPLETION_ATTACK_WAVE_ID } from "./rules/attackWaveOrder";
 import { logger } from "@/lib/logger";
+import { isGameTabHidden } from "@/lib/tabVisibility";
 import { formatSaveTimestamp } from "@/lib/utils";
 import { gameActions, canExecuteAction, shouldShowAction } from "./rules";
 import { getResourceLimit, isResourceLimited } from "./resourceLimits";
@@ -171,10 +172,12 @@ function handleUserActivity() {
 }
 
 function handleActivityVisibilityChange() {
-  if (!document.hidden) {
+  // Freeze or unfreeze the timed-tab countdown on hide/show. rAF often stops
+  // while hidden, so this must run on visibilitychange rather than the loop tick.
+  syncTimedEventTabPauseTracking();
+  if (!isGameTabHidden()) {
     lastUserActivity = Date.now();
-    // Immediately clear any timed event that expired while the tab was hidden,
-    // rather than waiting up to 15 seconds for the next production tick.
+    // After unfreeze, drop a visit only if its remaining time is actually gone.
     clearExpiredTimedEventTab();
   }
 }
@@ -321,6 +324,9 @@ export function startGameLoop() {
 
     // Get fresh state on each tick to avoid stale dialog states
     const state = useGameStore.getState();
+    if (state.timedEventTab.isActive) {
+      syncTimedEventTabPauseTracking();
+    }
 
     // Blocking modals: `isModalDialogOpen` in state.ts (add new dialogs there only).
     const IsDialogOpen = isModalDialogOpen(state);
