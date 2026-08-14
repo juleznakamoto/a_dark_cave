@@ -498,133 +498,133 @@ export default function EstatePanel() {
 
   return (
     <ScrollArea className="h-full w-full">
-      <SharedProgressShaderHost className="w-full">
-        <div className="w-full space-y-2 pt-2 md:pt-0 mt-0 md:mt-2 mb-2 pr-2 pb-2">
-          {/* Sleep Mode Section */}
-          <div className="space-y-">
-            {/* Indicator-height band matches Produce rings so Sleep/Focus below don't jump */}
-            <div className="pb-2">
-              <div className="game-panel-header-indicator-row flex w-full items-center gap-2">
-                <h3 className="inline-flex shrink-0 items-center text-xs font-medium text-foreground leading-none">
-                  {t("estate.rest")}
-                </h3>
-                {focusState?.isActive && focusState.endTime > Date.now() && (
-                  <TooltipWrapper
-                    tooltip={
-                      <div className="text-xs">
-                        {focusTooltip.getContent(state)}
-                      </div>
-                    }
-                    tooltipId="focus-progress"
-                    disabled
-                    tooltipTriggerClassName={
-                      GAME_PANEL_HEADER_INDICATOR_TRIGGER_CLASS
-                    }
-                    className={GAME_PANEL_HEADER_INDICATOR_CLASS}
-                  >
-                    <div className={GAME_PANEL_HEADER_INDICATOR_INNER_CLASS}>
-                      <CircularProgress
-                        value={focusProgress}
-                        size={GAME_PANEL_HEADER_INDICATOR_SIZE_PX}
-                        fill
-                        strokeWidth={2}
-                        className="text-teal-400"
-                      />
-                      <span
-                        className={`${GAME_PANEL_HEADER_INDICATOR_GLYPH_CLASS} game-panel-header-indicator-glyph--sm mt-[2px] text-teal-400`}
-                      >
-                        ☩
-                      </span>
-                    </div>
-                  </TooltipWrapper>
-                )}
-              </div>
-            </div>
-            <TooltipWrapper
-              tooltip={
-                <div className="text-xs">
-                  {canActivateIdle ? (
-                    <div>{t("estate.sleepTooltipReady")}</div>
-                  ) : (
-                    <div>{t("estate.sleepTooltipBlocked")}</div>
-                  )}
-                  <div className="border-t border-border my-1" />
-                  <div className="whitespace-nowrap">
-                    <div>{t("estate.sleepTooltipCurrentProduction")}</div>
-                    <div>
-                      {getResourceName("wood", "Wood")}:{" "}
-                      {formatSignedNumber(Math.round(woodProduction))}
-                    </div>
-                    <div>
-                      {getResourceName("food", "Food")}:{" "}
-                      {formatSignedNumber(Math.round(foodProduction))}
-                    </div>
-                  </div>
-                </div>
-              }
-              tooltipId="sleep-button"
-              disabled={!canActivateIdle}
-            >
-              <div className="h-5 inline-block pb-1 text-xs font-medium text-foreground">
-                <Button
-                  onClick={handleActivateIdleMode}
-                  disabled={!canActivateIdle}
-                  size="xs"
-                  variant="outline"
-                  className={gameActionOutlineButtonClassName(!canActivateIdle)}
-                  button_id="activate-sleep-mode"
-                >
-                  {t("estate.sleep")}
-                </Button>
-              </div>
-            </TooltipWrapper>
-
-            {/* Focus Activation Button */}
-            {showFocusButton && (
-              <div className="relative inline-block pb-1 text-xs font-medium text-foreground ml-2">
-                <CooldownButton
-                  onClick={() => {
-                    const now = Date.now();
-                    const focusPoints = focusState?.points || 0;
-                    const focusDuration = calculateFocusDuration(focusPoints);
-                    updateFocusState({
-                      isActive: true,
-                      endTime: now + focusDuration,
-                      startTime: now,
-                      duration: focusDuration,
-                      points: 0,
-                    });
-                  }}
-                  cooldownMs={0}
-                  size="xs"
-                  variant="outline"
-                  className="focus-glow-hover"
-                  button_id="activate-focus"
-                  disabled={!focusState?.points || focusState.points === 0 || focusState?.isActive}
+      <div className="w-full space-y-2 pt-2 md:pt-0 mt-0 md:mt-2 mb-2 pr-2 pb-2">
+        {/* Sleep Mode Section */}
+        <div className="space-y-">
+          {/* Indicator-height band matches Produce rings so Sleep/Focus below don't jump */}
+          <div className="pb-2">
+            <div className="game-panel-header-indicator-row flex w-full items-center gap-2">
+              <h3 className="inline-flex shrink-0 items-center text-xs font-medium text-foreground leading-none">
+                {t("estate.rest")}
+              </h3>
+              {focusState?.isActive && focusState.endTime > Date.now() && (
+                <TooltipWrapper
                   tooltip={
-                    <div className="text-xs whitespace-nowrap">
-                      <div>{t("estate.focusPointTooltip")}</div>
-                      <div>
-                        {t("estate.focusRewardTooltip", {
-                          count: focusState?.points || 0,
-                        })}
-                      </div>
+                    <div className="text-xs">
+                      {focusTooltip.getContent(state)}
                     </div>
                   }
+                  tooltipId="focus-progress"
+                  disabled
+                  tooltipTriggerClassName={
+                    GAME_PANEL_HEADER_INDICATOR_TRIGGER_CLASS
+                  }
+                  className={GAME_PANEL_HEADER_INDICATOR_CLASS}
                 >
-                  {t("estate.focus")}
-                </CooldownButton>
-                {focusState && focusState.points > 0 && (
-                  <div
-                    className="absolute -top-[9px] right-[-9px] flex items-center justify-center w-5 h-5 bg-teal-950 rounded-full text-[10px] font-medium z-[20] pointer-events-none"
-                  >
-                    {focusState.points}
+                  <div className={GAME_PANEL_HEADER_INDICATOR_INNER_CLASS}>
+                    <CircularProgress
+                      value={focusProgress}
+                      size={GAME_PANEL_HEADER_INDICATOR_SIZE_PX}
+                      fill
+                      strokeWidth={2}
+                      className="text-teal-400"
+                    />
+                    <span
+                      className={`${GAME_PANEL_HEADER_INDICATOR_GLYPH_CLASS} game-panel-header-indicator-glyph--sm mt-[2px] text-teal-400`}
+                    >
+                      ☩
+                    </span>
                   </div>
-                )}
-              </div>
-            )}
+                </TooltipWrapper>
+              )}
+            </div>
           </div>
+          <TooltipWrapper
+            tooltip={
+              <div className="text-xs">
+                {canActivateIdle ? (
+                  <div>{t("estate.sleepTooltipReady")}</div>
+                ) : (
+                  <div>{t("estate.sleepTooltipBlocked")}</div>
+                )}
+                <div className="border-t border-border my-1" />
+                <div className="whitespace-nowrap">
+                  <div>{t("estate.sleepTooltipCurrentProduction")}</div>
+                  <div>
+                    {getResourceName("wood", "Wood")}:{" "}
+                    {formatSignedNumber(Math.round(woodProduction))}
+                  </div>
+                  <div>
+                    {getResourceName("food", "Food")}:{" "}
+                    {formatSignedNumber(Math.round(foodProduction))}
+                  </div>
+                </div>
+              </div>
+            }
+            tooltipId="sleep-button"
+            disabled={!canActivateIdle}
+          >
+            <div className="h-5 inline-block pb-1 text-xs font-medium text-foreground">
+              <Button
+                onClick={handleActivateIdleMode}
+                disabled={!canActivateIdle}
+                size="xs"
+                variant="outline"
+                className={gameActionOutlineButtonClassName(!canActivateIdle)}
+                button_id="activate-sleep-mode"
+              >
+                {t("estate.sleep")}
+              </Button>
+            </div>
+          </TooltipWrapper>
 
+          {/* Focus Activation Button */}
+          {showFocusButton && (
+            <div className="relative inline-block pb-1 text-xs font-medium text-foreground ml-2">
+              <CooldownButton
+                onClick={() => {
+                  const now = Date.now();
+                  const focusPoints = focusState?.points || 0;
+                  const focusDuration = calculateFocusDuration(focusPoints);
+                  updateFocusState({
+                    isActive: true,
+                    endTime: now + focusDuration,
+                    startTime: now,
+                    duration: focusDuration,
+                    points: 0,
+                  });
+                }}
+                cooldownMs={0}
+                size="xs"
+                variant="outline"
+                className="focus-glow-hover"
+                button_id="activate-focus"
+                disabled={!focusState?.points || focusState.points === 0 || focusState?.isActive}
+                tooltip={
+                  <div className="text-xs whitespace-nowrap">
+                    <div>{t("estate.focusPointTooltip")}</div>
+                    <div>
+                      {t("estate.focusRewardTooltip", {
+                        count: focusState?.points || 0,
+                      })}
+                    </div>
+                  </div>
+                }
+              >
+                {t("estate.focus")}
+              </CooldownButton>
+              {focusState && focusState.points > 0 && (
+                <div
+                  className="absolute -top-[9px] right-[-9px] flex items-center justify-center w-5 h-5 bg-teal-950 rounded-full text-[10px] font-medium z-[20] pointer-events-none"
+                >
+                  {focusState.points}
+                </div>
+              )}
+            </div>
+          )}
+        </div>
+
+        <SharedProgressShaderHost className="w-full">
           {/* Sleep Upgrades Section */}
           <div className="w-full space-y-1 pt-2">
             {/* Sleep Length Upgrade */}
@@ -1010,34 +1010,34 @@ export default function EstatePanel() {
                 })()}
               </div>
             )}
+        </SharedProgressShaderHost>
 
-          {/* Cube Section — only when at least one whisper is unlocked */}
-          {completedCubeEvents.length > 0 && (
-            <div className="w-full space-y-2 pt-1 pb-4">
-              <h3 className="text-xs font-medium text-foreground">{t("estate.cubeWhispers")}</h3>
+        {/* Cube Section — only when at least one whisper is unlocked */}
+        {completedCubeEvents.length > 0 && (
+          <div className="w-full space-y-2 pt-1 pb-4">
+            <h3 className="text-xs font-medium text-foreground">{t("estate.cubeWhispers")}</h3>
 
-              <div
-                className={cn(
-                  "w-full",
-                  useTwoCubeColumns ? "flex gap-3" : "flex flex-col gap-2",
-                )}
-              >
-                <div className="flex flex-col gap-2 min-w-0 flex-1">
-                  {firstColumnCubeEvents.map(renderCubeEventRow)}
-                </div>
-                {useTwoCubeColumns && (
-                  <>
-                    <div className="w-px shrink-0 bg-border self-stretch" />
-                    <div className="flex flex-col gap-2 min-w-0 flex-1">
-                      {secondColumnCubeEvents.map(renderCubeEventRow)}
-                    </div>
-                  </>
-                )}
+            <div
+              className={cn(
+                "w-full",
+                useTwoCubeColumns ? "flex gap-3" : "flex flex-col gap-2",
+              )}
+            >
+              <div className="flex flex-col gap-2 min-w-0 flex-1">
+                {firstColumnCubeEvents.map(renderCubeEventRow)}
               </div>
+              {useTwoCubeColumns && (
+                <>
+                  <div className="w-px shrink-0 bg-border self-stretch" />
+                  <div className="flex flex-col gap-2 min-w-0 flex-1">
+                    {secondColumnCubeEvents.map(renderCubeEventRow)}
+                  </div>
+                </>
+              )}
             </div>
-          )}
-        </div>
-      </SharedProgressShaderHost>
+          </div>
+        )}
+      </div>
       <ScrollBar orientation="vertical" />
     </ScrollArea>
   );

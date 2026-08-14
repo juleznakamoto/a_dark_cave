@@ -90,59 +90,94 @@ const SHARED_PROGRESS_FRAGMENT_SHADER = buildSharedProgressFragmentShader(
   SMOKE_FLOW_FRAGMENT_SHADER,
 );
 
-type SegmentRegistration = {
-  id: string;
-  element: HTMLElement;
+type MeasuredSegment = {
+  fillRect: DOMRectReadOnly;
+  shapeRect: DOMRectReadOnly;
+};
+
+type MeasuredRimCell = {
+  filled: boolean;
+  left: number;
+  top: number;
+  width: number;
+  height: number;
 };
 
 /** Matches SegmentedProgress cell rim — painted above the WebGL canvas. */
 const SEGMENT_RIM_BASE_CLASS =
-  "absolute rounded-[4px] transition-[box-shadow] duration-300";
+  "pointer-events-none absolute rounded-[4px] transition-[box-shadow] duration-300";
+/** Tailwind `orange-600/0.8` — avoid getComputedStyle in the animation loop. */
+const SEGMENT_RIM_FILLED_SHADOW = "0 0 0 1px rgba(234, 88, 12, 0.8)";
+const SEGMENT_RIM_EMPTY_SHADOW = "0 0 0 1px transparent";
+
+function measureSegments(
+  segments: Map<string, HTMLElement>,
+): MeasuredSegment[] {
+  const list: MeasuredSegment[] = [];
+  segments.forEach((element) => {
+    const fillRect = element.getBoundingClientRect();
+    if (fillRect.width < 0.5 || fillRect.height < 0.5) return;
+    const cell = element.closest<HTMLElement>(
+      "[data-segmented-progress-cell]",
+    );
+    list.push({
+      fillRect,
+      shapeRect: cell ? cell.getBoundingClientRect() : fillRect,
+    });
+  });
+  return list;
+}
+
+function measureRimCells(
+  host: HTMLElement,
+  rimLayer: HTMLElement,
+): MeasuredRimCell[] {
+  const cells = host.querySelectorAll<HTMLElement>(
+    "[data-segmented-progress-cell]",
+  );
+  const layerRect = rimLayer.getBoundingClientRect();
+  const out: MeasuredRimCell[] = [];
+  for (const cell of Array.from(cells)) {
+    const r = cell.getBoundingClientRect();
+    out.push({
+      filled: cell.hasAttribute("data-filled"),
+      left: r.left - layerRect.left + 1,
+      top: r.top - layerRect.top,
+      width: Math.max(0, r.width - 1),
+      height: r.height,
+    });
+  }
+  return out;
+}
 
 /**
  * Position rim divs over each SegmentedProgress cell so the outside ring sits
  * above the shared smoke canvas (the in-cell rim alone would be covered).
- *
- * Uses box-shadow copied from `[data-segmented-progress-rim]` so the ring stays
- * outside the bg and color edits on SegmentedProgress still apply.
  */
-function syncSegmentRims(host: HTMLElement, rimLayer: HTMLElement) {
-  const cells = host.querySelectorAll<HTMLElement>(
-    "[data-segmented-progress-cell]",
-  );
-  // Rims are positioned inside rimLayer — use its box, not the host border box.
-  const layerRect = rimLayer.getBoundingClientRect();
+function applySegmentRims(
+  rimLayer: HTMLElement,
+  measured: MeasuredRimCell[],
+) {
   let i = 0;
-  for (const cell of Array.from(cells)) {
+  for (const cell of measured) {
     let rim = rimLayer.children[i] as HTMLElement | undefined;
-    const created = !rim;
     if (!rim) {
       rim = document.createElement("div");
       rim.className = SEGMENT_RIM_BASE_CLASS;
-      rim.style.boxShadow = "0 0 0 1px transparent";
+      rim.style.pointerEvents = "none";
       rim.setAttribute("aria-hidden", "true");
       rimLayer.appendChild(rim);
     }
-    const r = cell.getBoundingClientRect();
     // Keep the 1px outside rim flush with the segment's left edge. The source
     // rim starts 1px inside so its shadow still reaches, but never overhangs,
     // that edge.
-    rim.style.left = `${r.left - layerRect.left + 1}px`;
-    rim.style.top = `${r.top - layerRect.top}px`;
-    rim.style.width = `${Math.max(0, r.width - 1)}px`;
-    rim.style.height = `${r.height}px`;
-
-    const sourceRim = cell.querySelector<HTMLElement>(
-      "[data-segmented-progress-rim]",
-    );
-    const nextShadow = sourceRim
-      ? getComputedStyle(sourceRim).boxShadow
-      : "none";
-    if (created && nextShadow !== "none") {
-      // Start transparent, then flip so the shadow can fade in.
-      void rim.offsetWidth;
-    }
-    rim.style.boxShadow = nextShadow;
+    rim.style.left = `${cell.left}px`;
+    rim.style.top = `${cell.top}px`;
+    rim.style.width = `${cell.width}px`;
+    rim.style.height = `${cell.height}px`;
+    rim.style.boxShadow = cell.filled
+      ? SEGMENT_RIM_FILLED_SHADOW
+      : SEGMENT_RIM_EMPTY_SHADOW;
     i++;
   }
   while (rimLayer.children.length > i) {
@@ -324,8 +359,10 @@ class SharedProgressShaderRenderer {
     const height = Math.max(1, Math.round(displayHeight * dpr));
     // Pin the CSS box to whole device pixels. Letting `w-full` stretch the
     // backing store by a fraction of a pixel resamples the fill and softens it.
-    this.canvas.style.width = `${width / dpr}px`;
-    this.canvas.style.height = `${height / dpr}px`;
+    const cssW = `${width / dpr}px`;
+    const cssH = `${height / dpr}px`;
+    if (this.canvas.style.width !== cssW) this.canvas.style.width = cssW;
+    if (this.canvas.style.height !== cssH) this.canvas.style.height = cssH;
     if (this.canvas.width === width && this.canvas.height === height) return;
     this.canvas.width = width;
     this.canvas.height = height;
@@ -341,7 +378,7 @@ class SharedProgressShaderRenderer {
    * border box) so scissor lines up with `position:absolute; inset:0`.
    */
   render(
-    segments: SegmentRegistration[],
+    segments: MeasuredSegment[],
     canvasRect: DOMRectReadOnly,
     dpr: number,
   ) {
@@ -367,17 +404,7 @@ class SharedProgressShaderRenderer {
     // Fill the whole cell bg; the CSS rim sits on top of this edge.
     const cornerRadiusPx = SEGMENT_CORNER_RADIUS_CSS_PX * dpr;
 
-    for (const { element } of segments) {
-      const rect = element.getBoundingClientRect();
-      if (rect.width < 0.5 || rect.height < 0.5) continue;
-
-      // Round against the whole cell, not the fill: a partially filled cell must
-      // keep a straight cut at the fill edge and curve only at the cell's corners.
-      const cell = element.closest<HTMLElement>(
-        "[data-segmented-progress-cell]",
-      );
-      const shapeRect = cell ? cell.getBoundingClientRect() : rect;
-
+    for (const { fillRect, shapeRect } of segments) {
       const left = (shapeRect.left - canvasRect.left) * dpr;
       const bottom = canvasH - (shapeRect.bottom - canvasRect.top) * dpr;
       const width = shapeRect.width * dpr;
@@ -388,10 +415,10 @@ class SharedProgressShaderRenderer {
       // sit under the CSS rim (box-shadow). Do not pad left: that bled into the
       // gap before each segment and made the grow look like it started left of
       // the section.
-      const fillLeft = (rect.left - canvasRect.left) * dpr;
-      const fillRight = fillLeft + rect.width * dpr;
-      const fillBottom = canvasH - (rect.bottom - canvasRect.top) * dpr;
-      const fillTop = fillBottom + rect.height * dpr;
+      const fillLeft = (fillRect.left - canvasRect.left) * dpr;
+      const fillRight = fillLeft + fillRect.width * dpr;
+      const fillBottom = canvasH - (fillRect.bottom - canvasRect.top) * dpr;
+      const fillTop = fillBottom + fillRect.height * dpr;
       const outerRight = left + width;
       const outerTop = bottom + height;
 
@@ -478,6 +505,7 @@ export function SharedProgressShaderHost({
 
     activeRef.current = true;
     let frameCount = 0;
+    let hostVisible = true;
 
     try {
       rendererRef.current = new SharedProgressShaderRenderer(
@@ -496,6 +524,27 @@ export function SharedProgressShaderHost({
       return;
     }
 
+    const dropShader = () => {
+      if (rafRef.current) cancelAnimationFrame(rafRef.current);
+      rafRef.current = 0;
+      try {
+        rendererRef.current?.reset();
+      } catch {
+        // Context may already be lost.
+      }
+      rendererRef.current = null;
+      setUseShader(false);
+    };
+
+    const onContextLost = (event: Event) => {
+      event.preventDefault();
+      logger.warn(
+        "[SharedProgressShader] WebGL context lost, using CSS fallback",
+      );
+      dropShader();
+    };
+    canvas.addEventListener("webglcontextlost", onContextLost);
+
     const syncSize = () => {
       const renderer = rendererRef.current;
       if (!renderer) return;
@@ -508,31 +557,53 @@ export function SharedProgressShaderHost({
     };
 
     const loop = () => {
-      if (!activeRef.current || !rendererRef.current || document.hidden) {
+      if (
+        !activeRef.current ||
+        !rendererRef.current ||
+        document.hidden ||
+        !hostVisible
+      ) {
         return;
       }
       // ~30fps — same budget as shop SmokeShader.
       if (frameCount % 2 === 0) {
         const renderer = rendererRef.current;
+        const rimLayer = rimLayerRef.current;
         if (renderer) {
+          // Read layout first, then write (resize / rims). Mixing them in the
+          // same frame forced reflow on every estate bar cell.
           const canvasRect = canvas.getBoundingClientRect();
+          const measured = measureSegments(segmentsRef.current);
+          const rims = rimLayer ? measureRimCells(host, rimLayer) : null;
           const dpr = Math.min(window.devicePixelRatio || 1, 2);
           renderer.resizeToDisplay(canvasRect.width, canvasRect.height, dpr);
-          const list: SegmentRegistration[] = [];
-          segmentsRef.current.forEach((element, id) => {
-            list.push({ id, element });
-          });
-          renderer.render(list, canvasRect, dpr);
+          try {
+            renderer.render(measured, canvasRect, dpr);
+          } catch (err) {
+            const message = err instanceof Error ? err.message : String(err);
+            logger.warn(
+              "[SharedProgressShader] WebGL render failed, using CSS fallback:",
+              message,
+            );
+            dropShader();
+            return;
+          }
+          if (rims && rimLayer) applySegmentRims(rimLayer, rims);
         }
-        const rimLayer = rimLayerRef.current;
-        if (rimLayer) syncSegmentRims(host, rimLayer);
       }
       frameCount++;
       rafRef.current = requestAnimationFrame(loop);
     };
 
     const startLoop = () => {
-      if (!activeRef.current || document.hidden) return;
+      if (
+        !activeRef.current ||
+        document.hidden ||
+        !hostVisible ||
+        !rendererRef.current
+      ) {
+        return;
+      }
       if (rafRef.current) cancelAnimationFrame(rafRef.current);
       rafRef.current = requestAnimationFrame(loop);
     };
@@ -554,16 +625,34 @@ export function SharedProgressShaderHost({
         ? new ResizeObserver(() => syncSize())
         : null;
     ro?.observe(host);
+    const io =
+      typeof IntersectionObserver !== "undefined"
+        ? new IntersectionObserver((entries) => {
+          hostVisible = entries.some((entry) => entry.isIntersecting);
+          if (hostVisible) startLoop();
+          else if (rafRef.current) {
+            cancelAnimationFrame(rafRef.current);
+            rafRef.current = 0;
+          }
+        })
+        : null;
+    io?.observe(host);
     window.addEventListener("resize", syncSize);
     document.addEventListener("visibilitychange", onVisibility);
 
     return () => {
       activeRef.current = false;
       ro?.disconnect();
+      io?.disconnect();
+      canvas.removeEventListener("webglcontextlost", onContextLost);
       window.removeEventListener("resize", syncSize);
       document.removeEventListener("visibilitychange", onVisibility);
       if (rafRef.current) cancelAnimationFrame(rafRef.current);
-      rendererRef.current?.reset();
+      try {
+        rendererRef.current?.reset();
+      } catch {
+        // Context may already be lost.
+      }
       rendererRef.current = null;
     };
   }, [useShader, colors, scale]);
@@ -583,19 +672,25 @@ export function SharedProgressShaderHost({
           track backgrounds, so the shader must be drawn on top.)
         */}
         {useShader ? (
-          <>
+          <div
+            aria-hidden
+            className="pointer-events-none absolute inset-0 z-10 !m-0"
+            style={{ pointerEvents: "none" }}
+          >
             <canvas
               ref={canvasRef}
               aria-hidden
-              className="pointer-events-none absolute inset-0 z-10 !m-0 h-full w-full opacity-90"
+              className="pointer-events-none absolute inset-0 h-full w-full opacity-90"
+              style={{ pointerEvents: "none" }}
             />
             {/* Cell rims above smoke so the grey border is not covered by WebGL. */}
             <div
               ref={rimLayerRef}
               aria-hidden
-              className="pointer-events-none absolute inset-0 z-20 !m-0"
+              className="pointer-events-none absolute inset-0 z-[1]"
+              style={{ pointerEvents: "none" }}
             />
-          </>
+          </div>
         ) : null}
       </div>
     </SharedProgressShaderContext.Provider>
