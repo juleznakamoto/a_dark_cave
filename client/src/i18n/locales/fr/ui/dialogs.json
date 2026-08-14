@@ -49,6 +49,7 @@
     "tasksRemaining_one": "1 tâche restante",
     "tasksRemaining_other": "{{count}} tâches restantes",
     "progressToward": "Récompense exclusive :", //x1.3
+    "exclusiveRewardEffect": "{{percent}} % pour doubler les gains d'action",
     "progressAriaLabel": "Récompense exclusive", //x1.3
     "alreadyClaimedReward": "Vous avez déjà récupéré cette récompense !",
     "playlightDiscoverRewardLog": "Vous avez reçu {{amount}} pièces d'or pour avoir découvert des jeux !", //x1.4

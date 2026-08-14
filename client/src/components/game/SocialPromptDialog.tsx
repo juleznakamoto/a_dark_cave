@@ -66,7 +66,6 @@ import {
   isSocialRewardFulfilled,
 } from "@/game/socialTaskRewards";
 import { clothingEffects } from "@/game/rules/effects";
-import { renderItemTooltip } from "@/game/rules/itemTooltips";
 import { getEffectName } from "@/i18n/resolveGameText";
 import { useTranslation } from "react-i18next";
 
@@ -81,25 +80,6 @@ const SOCIAL_TASK_ROW_LABEL_CLASS = "font-medium text-xs sm:text-sm";
 const SOCIAL_EXCLUSIVE_REWARD_ICON_SIZE = "w-5 h-5 sm:w-6 sm:h-6";
 /** Shared claimed / fulfilled / exclusive-track box chrome. */
 const SOCIAL_TASK_HIGHLIGHT_BOX = "border-green-500/40 bg-green-500/5";
-
-function ExclusivePromoItemInfoIcon({ tooltipId }: { tooltipId: string }) {
-  return (
-    <TooltipWrapper
-      tooltip={renderItemTooltip(EXCLUSIVE_PROMO_REWARD_ITEM_ID, "blessing")}
-      tooltipId={tooltipId}
-      disabled
-      tooltipContentClassName="max-w-xs border border-amber-600"
-      className="inline-flex shrink-0 items-center justify-center w-6 h-6 rounded-full text-green-400 hover:text-green-300 cursor-pointer motion-safe:animate-shop-info-pulse align-text-bottom translate-y-[0.06em]"
-    >
-      <span
-        className="inline-flex shrink-0 items-center justify-center font-noto-symbols-2 text-base font-normal leading-none"
-        aria-hidden
-      >
-        🛈
-      </span>
-    </TooltipWrapper>
-  );
-}
 
 function TaskInfoIcon({
   tooltipId,
@@ -490,6 +470,10 @@ export default function SocialPromptDialog({
     EXCLUSIVE_PROMO_REWARD_ITEM_ID,
     clothingEffects.gifted_ring.name,
   );
+  const exclusiveRewardChancePercent = Math.round(
+    (clothingEffects.gifted_ring.bonuses.generalBonuses?.actionBonusChance ??
+      0.05) * 100,
+  );
 
   return (
     <Dialog
@@ -804,11 +788,12 @@ export default function SocialPromptDialog({
                 {exclusiveRewardComplete ? (
                   t("socialPrompt.progressComplete")
                 ) : (
-                  <span className="inline-flex flex-wrap items-baseline gap-x-1">
-                    <span>{t("socialPrompt.progressToward")}</span>
-                    <span className="inline-flex items-baseline gap-x-2 font-bold">
-                      {exclusiveItemName}
-                      <ExclusivePromoItemInfoIcon tooltipId="social-prompt-exclusive-item-info" />
+                  <span className="flex flex-col items-start gap-0.5">
+                    <span className="font-bold">{exclusiveItemName}</span>
+                    <span className="font-normal">
+                      {t("socialPrompt.exclusiveRewardEffect", {
+                        percent: exclusiveRewardChancePercent,
+                      })}
                     </span>
                   </span>
                 )}

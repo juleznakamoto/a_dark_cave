@@ -49,6 +49,7 @@
     "tasksRemaining_one": "1 task remaining",
     "tasksRemaining_other": "{{count}} tasks remaining",
     "progressToward": "Exclusive Reward:",
+    "exclusiveRewardEffect": "{{percent}}% to double action gains",
     "progressAriaLabel": "Exclusive reward",
     "alreadyClaimedReward": "You've already claimed this reward!",
     "playlightDiscoverRewardLog": "You received {{amount}} Gold for discovering games!",

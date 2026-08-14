@@ -49,6 +49,7 @@
     "tasksRemaining_one": "Осталась 1 задача",
     "tasksRemaining_other": "Осталось {{count}} задач",
     "progressToward": "Эксклюзивная награда:", //x1.2
+    "exclusiveRewardEffect": "{{percent}} % к удвоению наград за действия",
     "progressAriaLabel": "Эксклюзивная награда", //x1.3
     "alreadyClaimedReward": "Вы уже получили эту награду!",
     "playlightDiscoverRewardLog": "Вы получили {{amount}} золота за открытие игр!",

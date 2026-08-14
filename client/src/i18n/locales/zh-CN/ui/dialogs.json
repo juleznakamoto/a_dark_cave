@@ -49,6 +49,7 @@
     "tasksRemaining_one": "还剩 1 项任务",
     "tasksRemaining_other": "还剩 {{count}} 项任务",
     "progressToward": "专属奖励：",
+    "exclusiveRewardEffect": "{{percent}}% 使行动收益翻倍",
     "progressAriaLabel": "专属奖励",
     "alreadyClaimedReward": "你已领取此奖励！",
     "playlightDiscoverRewardLog": "发现游戏奖励：获得 {{amount}} 金币！",

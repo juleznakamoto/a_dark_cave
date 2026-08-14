@@ -1163,7 +1163,7 @@ export const clothingEffects: Record<string, EffectDefinition> = {
 
   gifted_ring: {
     id: "gifted_ring",
-    name: "Gifted Ring",
+    name: "Ring of Fortune",
     description:
       "Plain ring someone left for you to find",
     bonuses: {

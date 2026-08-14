@@ -44,6 +44,7 @@
     "tasksRemaining_one": "1 attività rimanente",
     "tasksRemaining_other": "{{count}} attività rimanenti",
     "progressToward": "Ricompensa esclusiva:",
+    "exclusiveRewardEffect": "{{percent}}% per raddoppiare i guadagni delle azioni",
     "progressAriaLabel": "Ricompensa esclusiva",
     "alreadyClaimedReward": "Hai già riscattato questa ricompensa!",
     "playlightDiscoverRewardLog": "Hai ricevuto {{amount}} Oro per aver scoperto giochi!",

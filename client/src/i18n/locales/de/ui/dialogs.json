@@ -49,6 +49,7 @@
     "tasksRemaining_one": "1 Aufgabe übrig",
     "tasksRemaining_other": "{{count}} Aufgaben übrig",
     "progressToward": "Exklusive Belohnung:",
+    "exclusiveRewardEffect": "{{percent}} % Aktionsgewinne verdoppeln",
     "progressAriaLabel": "Exklusive Belohnung",
     "alreadyClaimedReward": "Du hast diese Belohnung bereits abgeholt!",
     "playlightDiscoverRewardLog": "Du hast {{amount}} Gold für das Entdecken von Spielen erhalten!",
