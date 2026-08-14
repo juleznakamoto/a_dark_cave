@@ -70,6 +70,9 @@ export function ShadersSection() {
         <Button size="xs" variant="outline" asChild>
           <a href="/dev/combat-dialog">Combat dialog</a>
         </Button>
+        <Button size="xs" variant="outline" asChild>
+          <a href="/dev/sounds">Sounds</a>
+        </Button>
       </div>
 
       <div className="grid gap-3 md:grid-cols-2">

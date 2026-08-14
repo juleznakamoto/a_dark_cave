@@ -65,6 +65,10 @@ export class AudioManager {
     return Boolean(sound && typeof sound.playing === 'function' && sound.playing());
   }
 
+  isPlaying(name: string): boolean {
+    return this.isSoundPlaying(name);
+  }
+
   private getCurrentVolume(name: string): number {
     const sound = this.sounds.get(name);
     if (!sound || typeof sound.volume !== 'function') return 0;
