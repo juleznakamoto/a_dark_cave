@@ -816,11 +816,14 @@ export const forestFearTooltip: TooltipConfig = {
             {getUiTooltip("forestFear", "Forest Fear")}
           </div>
           <div>
-            {getUiTooltip(
-              "hunterGathererProductionPenalty",
-              "Hunter and Gatherer Production: {{value}}",
-              { value: "-25%" },
-            )}
+            {getUiTooltip("hunterProduction", "Hunter Production: {{value}}", {
+              value: "-25%",
+            })}
+          </div>
+          <div>
+            {getUiTooltip("gathererProduction", "Gatherer Production: {{value}}", {
+              value: "-25%",
+            })}
           </div>
           <div>{formatEffectRemaining(remainingMs)}</div>
         </>

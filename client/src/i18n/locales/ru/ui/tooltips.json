@@ -187,6 +187,7 @@
     "staringDeer": "Пристальный взгляд оленей",
     "foodProductionBonus": "Бонус производства пищи: {{value}}",
     "forestFear": "Страх леса",
-    "hunterGathererProductionPenalty": "Производство охотников и собирателей: {{value}}"
+    "hunterProduction": "Производство охотников: {{value}}",
+    "gathererProduction": "Производство собирателей: {{value}}"
   }
 }

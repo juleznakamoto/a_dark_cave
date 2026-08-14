@@ -187,6 +187,7 @@
     "staringDeer": "凝视的鹿",
     "foodProductionBonus": "食物生产加成：{{value}}",
     "forestFear": "林中恐惧",
-    "hunterGathererProductionPenalty": "猎人和采集者生产：{{value}}"
+    "hunterProduction": "猎人生产：{{value}}",
+    "gathererProduction": "采集者生产：{{value}}"
   }
 }

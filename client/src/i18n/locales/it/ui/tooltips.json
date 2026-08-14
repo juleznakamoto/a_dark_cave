@@ -187,6 +187,7 @@
     "staringDeer": "Cervi che fissano",
     "foodProductionBonus": "Bonus di produzione di cibo: {{value}}",
     "forestFear": "Paura della foresta",
-    "hunterGathererProductionPenalty": "Produzione di cacciatori e raccoglitori: {{value}}"
+    "hunterProduction": "Produzione cacciatori: {{value}}",
+    "gathererProduction": "Produzione raccoglitori: {{value}}"
   }
 }

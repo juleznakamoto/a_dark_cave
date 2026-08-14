@@ -21,6 +21,7 @@ import { cn } from "@/lib/utils";
 import { Progress } from "@/components/ui/progress";
 import { TooltipWrapper } from "@/components/game/TooltipWrapper";
 import CubeDialog from "./CubeDialog";
+import VillageEffectDialog from "./VillageEffectDialog";
 import { useTranslation } from "react-i18next";
 import {
   getEventRulesCatalogId,
@@ -43,6 +44,7 @@ import {
   RelevantStatIcon,
 } from "@/components/game/EventChoiceSuccessTooltip";
 import { madnessEvents } from "@/game/rules/eventsMadness";
+import { resolveVillageEffectAnnouncementTheme } from "@/game/villageEffectThemes";
 import {
   audioManager,
   EVENT_DIALOG_AMBIENCE_FADE_SECONDS,
@@ -279,6 +281,29 @@ export default function EventDialog({
     gameState,
     ruleEventId,
   );
+
+  const villageThemeId =
+    !isCubeEvent && catalogId
+      ? resolveVillageEffectAnnouncementTheme(catalogId, {})
+      : null;
+  const continueChoice =
+    eventChoices.length === 1 && eventChoices[0]?.id === "continue"
+      ? eventChoices[0]
+      : null;
+
+  if (villageThemeId && continueChoice) {
+    return (
+      <VillageEffectDialog
+        isOpen={isOpen}
+        data={{
+          themeId: villageThemeId,
+          title: displayTitle,
+          message: displayMessage,
+        }}
+        onClose={() => handleChoice(continueChoice.id)}
+      />
+    );
+  }
 
   return (
     <>

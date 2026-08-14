@@ -187,6 +187,7 @@
     "staringDeer": "Starrende Hirsche",
     "foodProductionBonus": "Nahrungsproduktionsbonus: {{value}}",
     "forestFear": "Waldangst",
-    "hunterGathererProductionPenalty": "Jäger- und Sammlerproduktion: {{value}}"
+    "hunterProduction": "Jägerproduktion: {{value}}",
+    "gathererProduction": "Sammlerproduktion: {{value}}"
   }
 }
