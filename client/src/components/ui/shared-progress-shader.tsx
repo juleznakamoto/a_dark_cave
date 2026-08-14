@@ -97,14 +97,18 @@ type SegmentRegistration = {
 
 /** Matches SegmentedProgress cell rim — painted above the WebGL canvas. */
 const SEGMENT_RIM_BASE_CLASS =
-  "absolute rounded-[4px] transition-[box-shadow] duration-300";
+  "pointer-events-none absolute rounded-[4px] transition-[box-shadow] duration-300";
+/** Same class as SegmentedProgress filled rims (already in the CSS bundle). */
+const SEGMENT_RIM_FILLED_CLASS =
+  "shadow-[0_0_0_1px_theme(colors.orange.600/0.8)]";
 
 /**
  * Position rim divs over each SegmentedProgress cell so the outside ring sits
  * above the shared smoke canvas (the in-cell rim alone would be covered).
  *
- * Uses box-shadow copied from `[data-segmented-progress-rim]` so the ring stays
- * outside the bg and color edits on SegmentedProgress still apply.
+ * Filled vs empty uses `data-filled` + the same Tailwind shadow class as the
+ * in-cell rim. Reading getComputedStyle here ran in the 30fps loop and forced
+ * a style recalc on every bar cell.
  */
 function syncSegmentRims(host: HTMLElement, rimLayer: HTMLElement) {
   const cells = host.querySelectorAll<HTMLElement>(
@@ -115,11 +119,10 @@ function syncSegmentRims(host: HTMLElement, rimLayer: HTMLElement) {
   let i = 0;
   for (const cell of Array.from(cells)) {
     let rim = rimLayer.children[i] as HTMLElement | undefined;
-    const created = !rim;
     if (!rim) {
       rim = document.createElement("div");
       rim.className = SEGMENT_RIM_BASE_CLASS;
-      rim.style.boxShadow = "0 0 0 1px transparent";
+      rim.style.pointerEvents = "none";
       rim.setAttribute("aria-hidden", "true");
       rimLayer.appendChild(rim);
     }
@@ -131,18 +134,10 @@ function syncSegmentRims(host: HTMLElement, rimLayer: HTMLElement) {
     rim.style.top = `${r.top - layerRect.top}px`;
     rim.style.width = `${Math.max(0, r.width - 1)}px`;
     rim.style.height = `${r.height}px`;
-
-    const sourceRim = cell.querySelector<HTMLElement>(
-      "[data-segmented-progress-rim]",
+    rim.classList.toggle(
+      SEGMENT_RIM_FILLED_CLASS,
+      cell.hasAttribute("data-filled"),
     );
-    const nextShadow = sourceRim
-      ? getComputedStyle(sourceRim).boxShadow
-      : "none";
-    if (created && nextShadow !== "none") {
-      // Start transparent, then flip so the shadow can fade in.
-      void rim.offsetWidth;
-    }
-    rim.style.boxShadow = nextShadow;
     i++;
   }
   while (rimLayer.children.length > i) {
@@ -324,8 +319,12 @@ class SharedProgressShaderRenderer {
     const height = Math.max(1, Math.round(displayHeight * dpr));
     // Pin the CSS box to whole device pixels. Letting `w-full` stretch the
     // backing store by a fraction of a pixel resamples the fill and softens it.
-    this.canvas.style.width = `${width / dpr}px`;
-    this.canvas.style.height = `${height / dpr}px`;
+    // Only write when the value changed: this runs from the rAF loop, and a
+    // style write followed by getBoundingClientRect is a forced reflow.
+    const cssW = `${width / dpr}px`;
+    const cssH = `${height / dpr}px`;
+    if (this.canvas.style.width !== cssW) this.canvas.style.width = cssW;
+    if (this.canvas.style.height !== cssH) this.canvas.style.height = cssH;
     if (this.canvas.width === width && this.canvas.height === height) return;
     this.canvas.width = width;
     this.canvas.height = height;
@@ -594,6 +593,7 @@ export function SharedProgressShaderHost({
               ref={rimLayerRef}
               aria-hidden
               className="pointer-events-none absolute inset-0 z-20 !m-0"
+              style={{ pointerEvents: "none" }}
             />
           </>
         ) : null}

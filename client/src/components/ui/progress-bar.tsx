@@ -338,7 +338,7 @@ export function SegmentedProgress({
                   {/*
                     1px ring outside the bg (box-shadow, not border). With the
                     shared shader, SharedProgressShaderHost mirrors this above
-                    the canvas and copies the computed box-shadow.
+                    the canvas using `data-filled` + the same shadow class.
                   */}
                   {showRim ? (
                     <div
