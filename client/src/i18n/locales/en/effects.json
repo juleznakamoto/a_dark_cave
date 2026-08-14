@@ -5,7 +5,7 @@
       "name": "Book of Ascension"
     },
     "book_of_absolution": {
-      "description": "Rites for quieting cursed things. Spend Insight to lessen the madness an artifact inflicts.",
+      "description": "Book with rites for quieting cursed objects. Allows to lessen negative effects of objects.",
       "name": "Book of Absolution"
     },
     "book_of_chainmaster": {
@@ -13,7 +13,7 @@
       "name": "Book of Chainmaster"
     },
     "book_of_trials": {
-      "description": "Book about navigating life’s challenges. Unlocks rewards for those who prove themselves through achievements.",
+      "description": "Book about navigating life's challenges. Unlocks rewards for those who prove themselves through achievements.",
       "name": "Book of Trials"
     }
   },
