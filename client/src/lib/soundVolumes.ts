@@ -27,7 +27,8 @@ export const SOUND_VOLUME = {
   buildingComplete: 0.5,
   craft: 0.25,
   mining: 0.5,
-  chopWood: 0.8,
+  /** Forest Chop Wood. File peak is already -3.8 dBFS; 0.8 made the hit as loud as explosion. */
+  chopWood: 0.4,
   /** Cave Gather Wood (chopWood before forest unlock) */
   gatherWood: 0.55,
   /** All cave explore / delve actions; +perLevel × caveExplore button upgrade */
@@ -35,7 +36,8 @@ export const SOUND_VOLUME = {
     base: 0.5,
     perLevel: 0.025,
   },
-  hunt: 0.2,
+  /** Hunt bow snap is 350ms and near full scale; keep this low or it pokes. */
+  hunt: 0.15,
   /** Log line, dialog open, timed tab, and timed-tab check (non-merchant) */
   eventUi: 0.1,
   /** When checkEvents queues new entries (quieter than UI cues) */
@@ -48,8 +50,8 @@ export const SOUND_VOLUME = {
   combatWaveIntro: 0.45,
   /** New game-tab unlock fade-in (3s visual) */
   tabFadeIn: 0.35,
-  /** Achievement becomes claimable (fulfilled, not yet claimed) */
-  achievement: 0.4,
+  /** Achievement claimable sting. File peaks +3 dBFS (clips); 0.4 was a loud bong. */
+  achievement: 0.2,
 } as const;
 
 export function feedFireVolume(heartfireLevel: number): number {

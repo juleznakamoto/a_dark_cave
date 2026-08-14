@@ -106,7 +106,7 @@ import {
 } from "@/game/rules/effectsCalculation";
 import { calculateBastionStats } from "@/game/bastionStats";
 import { getCurrentPopulation, getMaxPopulation } from "@/game/population";
-import { audioManager, SOUND_VOLUME } from "@/lib/audio";
+import { audioManager, SOUND_VOLUME, caveExploreVolume } from "@/lib/audio";
 import { BLOOD_MOON_EVENT_ID } from "@/game/bloodMoonOverlay";
 import { GAME_CONSTANTS, getCallMerchantGoldCost } from "@/game/constants";
 import {
@@ -1116,6 +1116,40 @@ const CAVE_EXPLORE_SOUND_ACTIONS = new Set([
   "blastPortal",
   "encounterBeyondPortal",
 ]);
+
+/** One-shot action cues that should fire when the player clicks, not when the bar finishes. */
+function playActionStartSfx(
+  actionId: string,
+  opts: { forestUnlocked: boolean; caveExploreLevel: number },
+): void {
+  if (actionId.startsWith("craft")) {
+    audioManager.playSound("craft", SOUND_VOLUME.craft);
+    return;
+  }
+  if (actionId.startsWith("mine")) {
+    audioManager.playSound("mining", SOUND_VOLUME.mining);
+    return;
+  }
+  // chopWood is Gather Wood in the cave, Chop Wood once the forest is unlocked
+  if (actionId === "chopWood") {
+    if (opts.forestUnlocked) {
+      audioManager.playSound("chopWood", SOUND_VOLUME.chopWood);
+    } else {
+      audioManager.playSound("gatherWood", SOUND_VOLUME.gatherWood);
+    }
+    return;
+  }
+  if (actionId === "hunt") {
+    audioManager.playSound("hunt", SOUND_VOLUME.hunt);
+    return;
+  }
+  if (CAVE_EXPLORE_SOUND_ACTIONS.has(actionId)) {
+    audioManager.playSound(
+      "caveExplore",
+      caveExploreVolume(opts.caveExploreLevel),
+    );
+  }
+}
 
 // Helper functions
 const mergeStateUpdates = (
@@ -2281,6 +2315,15 @@ export const useGameStore = create<GameStore>((set, get) => ({
     // Action SFX only for manual clicks — Prior automation stays silent.
     const playActionSfx = meta?.executionSource !== "prior";
     if (playActionSfx) {
+      // Instant actions (no execution bar) still play their start cue here.
+      // Timed actions play it in startActionExecution on click.
+      if (!isCompletingExecution) {
+        playActionStartSfx(actionId, {
+          forestUnlocked: Boolean(get().flags?.forestUnlocked),
+          caveExploreLevel: get().buttonUpgrades?.caveExplore?.level ?? 0,
+        });
+      }
+
       // Village build + bastion repair share the same completion cue
       const isBastionRepair =
         actionId === "repairBastion" ||
@@ -2290,57 +2333,10 @@ export const useGameStore = create<GameStore>((set, get) => ({
         (actionId.startsWith("build") && result.stateUpdates.buildings) ||
         isBastionRepair
       ) {
-        // Import audioManager here to avoid circular dependency
-        import("@/lib/audio").then(({ audioManager }) => {
-          audioManager.playSound(
-            "buildingComplete",
-            SOUND_VOLUME.buildingComplete,
-          );
-        });
-      }
-
-      // Play craft sound for successful crafting actions
-      if (actionId.startsWith("craft")) {
-        import("@/lib/audio").then(({ audioManager }) => {
-          audioManager.playSound("craft", SOUND_VOLUME.craft);
-        });
-      }
-
-      // Play mining sound for successful mine actions
-      if (actionId.startsWith("mine")) {
-        import("@/lib/audio").then(({ audioManager }) => {
-          audioManager.playSound("mining", SOUND_VOLUME.mining);
-        });
-      }
-
-      // chopWood is Gather Wood in the cave, Chop Wood once the forest is unlocked
-      if (actionId === "chopWood") {
-        const forestUnlocked = Boolean(get().flags?.forestUnlocked);
-        import("@/lib/audio").then(({ audioManager }) => {
-          if (forestUnlocked) {
-            audioManager.playSound("chopWood", SOUND_VOLUME.chopWood);
-          } else {
-            audioManager.playSound("gatherWood", SOUND_VOLUME.gatherWood);
-          }
-        });
-      }
-
-      // Play hunt sound for hunt action
-      if (actionId === "hunt") {
-        import("@/lib/audio").then(({ audioManager }) => {
-          audioManager.playSound("hunt", SOUND_VOLUME.hunt);
-        });
-      }
-
-      // Shared cue for the cave explore / delve chain
-      if (CAVE_EXPLORE_SOUND_ACTIONS.has(actionId)) {
-        const exploreLevel = get().buttonUpgrades?.caveExplore?.level ?? 0;
-        import("@/lib/audio").then(({ audioManager, caveExploreVolume }) => {
-          audioManager.playSound(
-            "caveExplore",
-            caveExploreVolume(exploreLevel),
-          );
-        });
+        audioManager.playSound(
+          "buildingComplete",
+          SOUND_VOLUME.buildingComplete,
+        );
       }
     }
 
@@ -2517,6 +2513,13 @@ export const useGameStore = create<GameStore>((set, get) => ({
         [actionId]: false,
       },
     });
+
+    if (isPlayerStarted) {
+      playActionStartSfx(actionId, {
+        forestUnlocked: Boolean(state.flags?.forestUnlocked),
+        caveExploreLevel: state.buttonUpgrades?.caveExplore?.level ?? 0,
+      });
+    }
   },
 
   completeActionExecution: (actionId: string) => {

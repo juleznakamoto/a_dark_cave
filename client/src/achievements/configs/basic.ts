@@ -69,7 +69,7 @@ export const basicChartConfig: AchievementChartConfig = {
         segmentId: "0-steelForger",
         maxCount: 250,
         label: "Forge Steel",
-        rewards: { silver: 100 },
+        rewards: { coal: 100 },
         getCount: (state: GameState) =>
           Number(state.story?.seen?.steelForgedTotal) || 0,
         segments: 10,
@@ -87,7 +87,7 @@ export const basicChartConfig: AchievementChartConfig = {
         segmentId: "0-tanner",
         maxCount: 250,
         label: "Tanner",
-        rewards: { insight: 500 },
+        rewards: { food: 250 },
         getCount: (state: GameState) =>
           Number(state.story?.seen?.totalLeatherGathered) || 0,
         segments: 10,
@@ -98,7 +98,7 @@ export const basicChartConfig: AchievementChartConfig = {
         segmentId: "1-explorer",
         maxCount: 20,
         label: "Explore Cave",
-        rewards: { silver: 50 },
+        rewards: { torch: 25 },
         getCount: (state: GameState) =>
           Number(state.story?.seen?.caveExploreCount) || 0,
       },
@@ -106,7 +106,7 @@ export const basicChartConfig: AchievementChartConfig = {
         segmentId: "1-torchCrafter",
         maxCount: 50,
         label: "Craft Torches",
-        rewards: { steel: 50 },
+        rewards: { wood: 250 },
         getCount: (state: GameState) =>
           Number(state.story?.seen?.torchesCraftedTotal) || 0,
         segments: 10,
@@ -115,7 +115,7 @@ export const basicChartConfig: AchievementChartConfig = {
         segmentId: "1-toolCrafter",
         maxCount: 5,
         label: "Craft Tools",
-        rewards: { leather: 100 },
+        rewards: { stone: 100 },
         getCount: (state: GameState) => {
           const tools = state.tools || {};
           return TOOL_KEYS_FOR_ACHIEVEMENT.filter(
@@ -127,7 +127,7 @@ export const basicChartConfig: AchievementChartConfig = {
         segmentId: "1-builder",
         maxCount: 5,
         label: "Construct Buildings",
-        rewards: { steel: 100 },
+        rewards: { wood: 250 },
         getCount: (state: GameState) =>
           Object.values(state.buildings || {}).reduce(
             (a, b) => a + (b || 0),
@@ -138,7 +138,7 @@ export const basicChartConfig: AchievementChartConfig = {
         segmentId: "1-communityBuilder",
         maxCount: 10,
         label: "Build Community",
-        rewards: { gold: 50 },
+        rewards: { food: 250 },
         getCount: (state: GameState) =>
           Number(state.story?.seen?.maxPopulationReached) || 0,
       },
