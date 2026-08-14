@@ -639,23 +639,26 @@ export default function SidePanel() {
   const madnessTooltipContent = (
     <>
       {showMadnessBreakdown && (
-        <div>
+        <>
           <div>
-            {t("sidePanel.madnessFromItems", {
-              value: formatSignedNumber(fromItems),
-            })}
+            <div>
+              {t("sidePanel.madnessFromItems", {
+                value: formatSignedNumber(fromItems),
+              })}
+            </div>
+            <div>
+              {t("sidePanel.madnessFromBuildings", {
+                value: formatSignedNumber(fromBuildings),
+              })}
+            </div>
+            <div>
+              {t("sidePanel.madnessFromEvents", {
+                value: formatSignedNumber(fromEvents),
+              })}
+            </div>
           </div>
-          <div>
-            {t("sidePanel.madnessFromBuildings", {
-              value: formatSignedNumber(fromBuildings),
-            })}
-          </div>
-          <div>
-            {t("sidePanel.madnessFromEvents", {
-              value: formatSignedNumber(fromEvents),
-            })}
-          </div>
-        </div>
+          <ActionTooltipSeparator />
+        </>
       )}
       <StatEffectsTooltip statKey="madness" />
       <ActionTooltipSeparator />
