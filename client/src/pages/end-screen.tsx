@@ -120,7 +120,6 @@ export default function EndScreenPage() {
           feedback: {
             text: t("endScreen.feedback"),
             onClick: handleFeedback,
-            buttonId: "end-screen-feedback",
           },
           secondary: {
             text: t("endScreen.continuePlaying"),

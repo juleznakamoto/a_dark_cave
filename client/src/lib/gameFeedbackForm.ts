@@ -17,6 +17,13 @@ export type GameFeedbackFormSource = "footer" | "end" | "dialog" | "demoEnd";
 
 let pendingFeedbackFormSource: GameFeedbackFormSource = "dialog";
 
+/** button_clicks id written when the hosted form opens from this source. */
+export function feedbackFormButtonId(source: GameFeedbackFormSource): string {
+  // Preserve the historical end-screen analytics id.
+  if (source === "end") return "end-screen-feedback";
+  return `feedback-open-${source}`;
+}
+
 /** Remember which CTA opened FeedbackDialog (used by the dialog form button). */
 export function rememberFeedbackFormSource(
   source: GameFeedbackFormSource,
@@ -33,9 +40,28 @@ export function getGameFeedbackFormUrl(
   return url.toString();
 }
 
+/**
+ * Record who opened the form (button_clicks + wall-clock stamp on the save).
+ * Dynamic import so StartScreen does not pull the game engine until click.
+ */
+function trackFeedbackFormOpen(source: GameFeedbackFormSource): void {
+  void import("@/game/state")
+    .then(({ useGameStore }) => {
+      useGameStore.getState().trackButtonClick(feedbackFormButtonId(source));
+      useGameStore.setState({
+        lastFeedbackOpenedAt: Date.now(),
+        lastFeedbackOpenedSource: source,
+      });
+    })
+    .catch(() => {
+      // Opening the form must not fail if analytics is unavailable.
+    });
+}
+
 /** Open the feedback form in the system / Steam overlay browser. */
 export function openGameFeedbackForm(source: GameFeedbackFormSource): void {
   window.open(getGameFeedbackFormUrl(source), "_blank", "noopener,noreferrer");
+  trackFeedbackFormOpen(source);
 }
 
 /** Open the form using the source from the last {@link rememberFeedbackFormSource} call. */

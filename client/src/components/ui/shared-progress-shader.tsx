@@ -39,6 +39,26 @@ export const SHARED_PROGRESS_SHADER_FALLBACK_CLASS = "bg-red-950";
 const SEGMENT_CORNER_RADIUS_CSS_PX = 4;
 
 /**
+ * Padding-box size of a positioned host. Absolute children (the canvas) are
+ * sized against this box, not the border box. Using the border box painted a
+ * second strip under each bar when the host had a border.
+ */
+function hostPaddingBoxSize(host: HTMLElement): { width: number; height: number } {
+  const rect = host.getBoundingClientRect();
+  const style = getComputedStyle(host);
+  return {
+    width:
+      rect.width -
+      parseFloat(style.borderLeftWidth) -
+      parseFloat(style.borderRightWidth),
+    height:
+      rect.height -
+      parseFloat(style.borderTopWidth) -
+      parseFloat(style.borderBottomWidth),
+  };
+}
+
+/**
  * Smoke flow + per-draw rounded-rect clip. Packs corner radius into `u_finish.w`
  * (grain unused here) and adds one `u_clipRect` so we stay within WebGL1's
  * 16 fragment uniform-vector minimum.
@@ -257,8 +277,11 @@ class SharedProgressShaderRenderer {
   resizeToDisplay(displayWidth: number, displayHeight: number, dpr: number) {
     const width = Math.max(1, Math.round(displayWidth * dpr));
     const height = Math.max(1, Math.round(displayHeight * dpr));
-    // Pin the CSS box to whole device pixels. Letting `w-full` stretch the
-    // backing store by a fraction of a pixel resamples the fill and softens it.
+    // Pin the CSS box to whole device pixels. Stretching the backing store
+    // across a fractional CSS size resamples the fill and softens it. The
+    // canvas is `absolute; top/left: 0` only (no `inset-0` / `w-full`), so
+    // these inline sizes are the used layout size rather than being ignored
+    // by top/right/bottom/left: 0 stretching to the host.
     const cssW = `${width / dpr}px`;
     const cssH = `${height / dpr}px`;
     if (this.canvas.style.width !== cssW) this.canvas.style.width = cssW;
@@ -275,7 +298,7 @@ class SharedProgressShaderRenderer {
    * parts of one continuous field.
    *
    * `canvasRect` must be the canvas element's on-screen box (not the host
-   * border box) so scissor lines up with `position:absolute; inset:0`.
+   * border box) so scissor lines up with the snapped CSS size at top-left.
    *
    * Fill vs cell: the registered node is the growing fill; rounded corners
    * clip to the parent `[data-segmented-progress-cell]` so a partial fill
@@ -435,12 +458,12 @@ export function SharedProgressShaderHost({
     const syncSize = () => {
       const renderer = rendererRef.current;
       if (!renderer) return;
-      // Prefer the canvas layout box (inset:0 padding box), not the host
-      // border box — mismatch was painting a second strip under each bar.
-      const rect = canvas.getBoundingClientRect();
-      if (rect.width < 1 || rect.height < 1) return;
+      // Size from the host padding box. Measuring the canvas would either see
+      // the 300×150 default (before the first pin) or echo the already-snapped box.
+      const { width, height } = hostPaddingBoxSize(host);
+      if (width < 1 || height < 1) return;
       const dpr = Math.min(window.devicePixelRatio || 1, 2);
-      renderer.resizeToDisplay(rect.width, rect.height, dpr);
+      renderer.resizeToDisplay(width, height, dpr);
     };
 
     const loop = () => {
@@ -456,10 +479,14 @@ export function SharedProgressShaderHost({
       if (frameCount % 2 === 0) {
         const renderer = rendererRef.current;
         if (renderer) {
-          const canvasRect = canvas.getBoundingClientRect();
+          const { width, height } = hostPaddingBoxSize(host);
           const dpr = Math.min(window.devicePixelRatio || 1, 2);
-          renderer.resizeToDisplay(canvasRect.width, canvasRect.height, dpr);
-          renderer.render(segmentsRef.current, canvasRect, dpr);
+          renderer.resizeToDisplay(width, height, dpr);
+          renderer.render(
+            segmentsRef.current,
+            canvas.getBoundingClientRect(),
+            dpr,
+          );
         }
       }
       frameCount++;
@@ -536,7 +563,7 @@ export function SharedProgressShaderHost({
           <canvas
             ref={canvasRef}
             aria-hidden
-            className="pointer-events-none absolute inset-0 z-10 h-full w-full"
+            className="pointer-events-none absolute left-0 top-0 z-10"
             style={{ pointerEvents: "none" }}
           />
         ) : null}

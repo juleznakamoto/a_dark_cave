@@ -124,6 +124,25 @@ export default function LookupTab(props: LookupTabProps) {
                     </p>
                   </CardContent>
                 </Card>
+                <Card>
+                  <CardHeader>
+                    <CardTitle>Last feedback form</CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <p className="text-sm">
+                      {lookupResult.game_state?.lastFeedbackOpenedAt
+                        ? new Date(
+                          lookupResult.game_state.lastFeedbackOpenedAt,
+                        ).toLocaleString()
+                        : "Never"}
+                    </p>
+                    {lookupResult.game_state?.lastFeedbackOpenedSource ? (
+                      <p className="text-xs text-muted-foreground mt-1">
+                        Source: {lookupResult.game_state.lastFeedbackOpenedSource}
+                      </p>
+                    ) : null}
+                  </CardContent>
+                </Card>
               </div>
 
               <Card>

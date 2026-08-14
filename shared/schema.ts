@@ -757,6 +757,10 @@ export const gameStateSchema = z.object({
   seenResources: z.array(z.string()).default([]),
   /** One-time feedback dialog at 105m play time has been shown or skipped. */
   feedbackPromptShown: z.boolean().default(false),
+  /** Wall-clock ms of the last hosted feedback-form open (0 = never). Survives restarts. */
+  lastFeedbackOpenedAt: z.number().default(0),
+  /** CTA that last opened the hosted feedback form (`footer` / `end` / `dialog` / `demoEnd`). */
+  lastFeedbackOpenedSource: z.string().default(""),
   /** Village/Forest tab hotkey tutorial callout was dismissed or timed out. */
   villageHotkeyTutorialShown: z.boolean().default(false),
   /** Timestamp (ms) of last free gold claim from the shop. */

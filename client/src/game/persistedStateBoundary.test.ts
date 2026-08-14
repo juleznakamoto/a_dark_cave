@@ -19,6 +19,8 @@ describe("persistedStateBoundary", () => {
       villageHotkeyTutorialShown: true,
       feedbackPromptShown: true,
       lastFreeGoldClaim: 1_700_000_000_000,
+      lastFeedbackOpenedAt: 1_700_000_100_000,
+      lastFeedbackOpenedSource: "footer",
       shopDialogOpen: true,
       shopCruelModeHighlight: true,
       compassGlowButton: "explore",
@@ -48,6 +50,8 @@ describe("persistedStateBoundary", () => {
     expect(persisted.villageHotkeyTutorialShown).toBe(true);
     expect(persisted.feedbackPromptShown).toBe(true);
     expect(persisted.lastFreeGoldClaim).toBe(1_700_000_000_000);
+    expect(persisted.lastFeedbackOpenedAt).toBe(1_700_000_100_000);
+    expect(persisted.lastFeedbackOpenedSource).toBe("footer");
     expect(persisted.executionStartTimes).toEqual({ buildHut: 123 });
     expect(persisted.timedEventTab).toEqual({
       isActive: true,
@@ -65,6 +69,8 @@ describe("persistedStateBoundary", () => {
       feedbackPromptShown: true,
       villageHotkeyTutorialShown: true,
       lastFreeGoldClaim: 42,
+      lastFeedbackOpenedAt: 99,
+      lastFeedbackOpenedSource: "dialog",
       referralProcessed: true,
       referralCode: "AB3K9M",
     });
@@ -72,6 +78,8 @@ describe("persistedStateBoundary", () => {
     expect(persisted.feedbackPromptShown).toBe(true);
     expect(persisted.villageHotkeyTutorialShown).toBe(true);
     expect(persisted.lastFreeGoldClaim).toBe(42);
+    expect(persisted.lastFeedbackOpenedAt).toBe(99);
+    expect(persisted.lastFeedbackOpenedSource).toBe("dialog");
     expect(persisted.referralProcessed).toBe(true);
     expect(persisted.referralCode).toBe("AB3K9M");
   });

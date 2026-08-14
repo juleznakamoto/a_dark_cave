@@ -344,6 +344,9 @@ interface GameStore extends GameState {
 
   // Free gold claim tracking
   lastFreeGoldClaim: number; // timestamp of last claim
+  /** Wall-clock ms of last hosted feedback-form open (0 = never). */
+  lastFeedbackOpenedAt: number;
+  lastFeedbackOpenedSource: string;
 
   // Currency detection (persists across game restarts)
   detectedCurrency: Currency | null;
@@ -1579,6 +1582,8 @@ export const createInitialState = (): GameState => ({
 
   // Initialize free gold claim tracking
   lastFreeGoldClaim: 0,
+  lastFeedbackOpenedAt: 0,
+  lastFeedbackOpenedSource: "",
 
   // Initialize currency detection
   detectedCurrency: null,
@@ -1968,6 +1973,8 @@ export const useGameStore = create<GameStore>((set, get) => ({
 
   // Initialize free gold claim tracking
   lastFreeGoldClaim: 0,
+  lastFeedbackOpenedAt: 0,
+  lastFeedbackOpenedSource: "",
 
   // Merchant trades state
   merchantTrades: {
@@ -2985,6 +2992,10 @@ export const useGameStore = create<GameStore>((set, get) => ({
       googleAdsSource: state.googleAdsSource || null,
       // Preserve first-touch UTM attribution across restarts
       utmAttribution: state.utmAttribution || null,
+
+      // Last hosted feedback-form open (so admin can match a Google Form timestamp)
+      lastFeedbackOpenedAt: state.lastFeedbackOpenedAt || 0,
+      lastFeedbackOpenedSource: state.lastFeedbackOpenedSource || "",
     };
 
     // Reset everything else to default
@@ -3394,6 +3405,18 @@ export const useGameStore = create<GameStore>((set, get) => ({
         forestFearState:
           savedState.forestFearState || defaultGameState.forestFearState,
         lastFreeGoldClaim: savedState.lastFreeGoldClaim || 0, // Load lastFreeGoldClaim
+        lastFeedbackOpenedAt:
+          typeof (savedState as { lastFeedbackOpenedAt?: number })
+            .lastFeedbackOpenedAt === "number"
+            ? (savedState as { lastFeedbackOpenedAt: number })
+              .lastFeedbackOpenedAt
+            : 0,
+        lastFeedbackOpenedSource:
+          typeof (savedState as { lastFeedbackOpenedSource?: string })
+            .lastFeedbackOpenedSource === "string"
+            ? (savedState as { lastFeedbackOpenedSource: string })
+              .lastFeedbackOpenedSource
+            : "",
         traderDialogOpens: savedState.traderDialogOpens ?? 0,
         completePurchaseDialogOpens:
           savedState.completePurchaseDialogOpens ?? 0,
