@@ -27,10 +27,10 @@ import {
  * Wide luminance span (like shop Insight blue-950→blue-100) so swirls read clearly.
  */
 export const SHARED_PROGRESS_SHADER_COLOR_TOKENS = [
-  "red-900",
+  "red-950",
   "red-800",
-  "red-600",
   "red-500",
+  "orange-100",
 ] as const;
 
 export const SHARED_PROGRESS_SHADER_FALLBACK_CLASS = "bg-red-950";
@@ -59,26 +59,21 @@ uniform vec4 u_clipRect; // xy bottom-left, zw size (gl_FragCoord / scissor spac
       gl_FragCoord.xy + vec2(u_seed * 17.0, u_seed * 31.0)) - 0.5) * u_grain;
   gl_FragColor = vec4(clamp(col, 0.0, 1.0), 1.0);
 }`,
-    `  // Clip to segment rounded-[4px] (scissor alone is square). Coverage is
-  // smoothed over one device pixel so corners are antialiased, and the result
-  // is premultiplied to match the context's premultipliedAlpha.
-  float coverage = 1.0;
-  if (u_clipRect.z > 0.5 && u_clipRect.w > 0.5) {
+    `  // Clip to segment rounded-[4px] (scissor alone is square).
+  float cornerR = u_finish.w;
+  if (cornerR > 0.001 && u_clipRect.z > 0.5 && u_clipRect.w > 0.5) {
     vec2 halfSize = u_clipRect.zw * 0.5;
     vec2 center = u_clipRect.xy + halfSize;
     vec2 p = gl_FragCoord.xy - center;
-    float r = clamp(u_finish.w, 0.0, min(halfSize.x, halfSize.y));
+    float r = min(cornerR, min(halfSize.x, halfSize.y));
     vec2 d = abs(p) - halfSize + vec2(r);
     float dist = length(max(d, 0.0)) + min(max(d.x, d.y), 0.0) - r;
-    // Fade only outside the shape. Centering AA on the edge ([-0.5,0.5]) left
-    // the perimeter half-transparent and showed a dark hairline under the rim.
-    coverage = 1.0 - smoothstep(0.0, 1.0, dist);
-    if (coverage <= 0.002) discard;
+    if (dist > 0.0) discard;
   }
-  gl_FragColor = vec4(clamp(col, 0.0, 1.0) * coverage, coverage);
+  gl_FragColor = vec4(clamp(col, 0.0, 1.0), 1.0);
 }`,
   );
-  if (!patched.includes("u_clipRect") || !patched.includes("coverage")) {
+  if (!patched.includes("u_clipRect") || !patched.includes("discard")) {
     throw new Error(
       "Shared progress fragment splice failed — smoke shader source changed?",
     );
@@ -90,100 +85,10 @@ const SHARED_PROGRESS_FRAGMENT_SHADER = buildSharedProgressFragmentShader(
   SMOKE_FLOW_FRAGMENT_SHADER,
 );
 
-type MeasuredSegment = {
-  fillRect: DOMRectReadOnly;
-  shapeRect: DOMRectReadOnly;
+type SegmentRegistration = {
+  id: string;
+  element: HTMLElement;
 };
-
-type MeasuredRimCell = {
-  filled: boolean;
-  left: number;
-  top: number;
-  width: number;
-  height: number;
-};
-
-/** Matches SegmentedProgress cell rim — painted above the WebGL canvas. */
-const SEGMENT_RIM_BASE_CLASS =
-  "pointer-events-none absolute rounded-[4px] transition-[box-shadow] duration-300";
-/** Tailwind `orange-600/0.8` — avoid getComputedStyle in the animation loop. */
-const SEGMENT_RIM_FILLED_SHADOW = "0 0 0 1px rgba(234, 88, 12, 0.8)";
-const SEGMENT_RIM_EMPTY_SHADOW = "0 0 0 1px transparent";
-
-function measureSegments(
-  segments: Map<string, HTMLElement>,
-): MeasuredSegment[] {
-  const list: MeasuredSegment[] = [];
-  segments.forEach((element) => {
-    const fillRect = element.getBoundingClientRect();
-    if (fillRect.width < 0.5 || fillRect.height < 0.5) return;
-    const cell = element.closest<HTMLElement>(
-      "[data-segmented-progress-cell]",
-    );
-    list.push({
-      fillRect,
-      shapeRect: cell ? cell.getBoundingClientRect() : fillRect,
-    });
-  });
-  return list;
-}
-
-function measureRimCells(
-  host: HTMLElement,
-  rimLayer: HTMLElement,
-): MeasuredRimCell[] {
-  const cells = host.querySelectorAll<HTMLElement>(
-    "[data-segmented-progress-cell]",
-  );
-  const layerRect = rimLayer.getBoundingClientRect();
-  const out: MeasuredRimCell[] = [];
-  for (const cell of Array.from(cells)) {
-    const r = cell.getBoundingClientRect();
-    out.push({
-      filled: cell.hasAttribute("data-filled"),
-      left: r.left - layerRect.left + 1,
-      top: r.top - layerRect.top,
-      width: Math.max(0, r.width - 1),
-      height: r.height,
-    });
-  }
-  return out;
-}
-
-/**
- * Position rim divs over each SegmentedProgress cell so the outside ring sits
- * above the shared smoke canvas (the in-cell rim alone would be covered).
- */
-function applySegmentRims(
-  rimLayer: HTMLElement,
-  measured: MeasuredRimCell[],
-) {
-  let i = 0;
-  for (const cell of measured) {
-    let rim = rimLayer.children[i] as HTMLElement | undefined;
-    if (!rim) {
-      rim = document.createElement("div");
-      rim.className = SEGMENT_RIM_BASE_CLASS;
-      rim.style.pointerEvents = "none";
-      rim.setAttribute("aria-hidden", "true");
-      rimLayer.appendChild(rim);
-    }
-    // Keep the 1px outside rim flush with the segment's left edge. The source
-    // rim starts 1px inside so its shadow still reaches, but never overhangs,
-    // that edge.
-    rim.style.left = `${cell.left}px`;
-    rim.style.top = `${cell.top}px`;
-    rim.style.width = `${cell.width}px`;
-    rim.style.height = `${cell.height}px`;
-    rim.style.boxShadow = cell.filled
-      ? SEGMENT_RIM_FILLED_SHADOW
-      : SEGMENT_RIM_EMPTY_SHADOW;
-    i++;
-  }
-  while (rimLayer.children.length > i) {
-    rimLayer.lastChild?.remove();
-  }
-}
 
 type SharedProgressShaderApi = {
   registerSegment: (id: string, element: HTMLElement | null) => void;
@@ -263,11 +168,7 @@ class SharedProgressShaderRenderer {
     if (!gl) throw new Error("WebGL1 context not available");
     this.gl = gl;
 
-    const vs = this.compile(
-      gl.VERTEX_SHADER,
-      SMOKE_FLOW_VERTEX_SHADER,
-      "vertex",
-    );
+    const vs = this.compile(gl.VERTEX_SHADER, SMOKE_FLOW_VERTEX_SHADER, "vertex");
     const fs = this.compile(
       gl.FRAGMENT_SHADER,
       SHARED_PROGRESS_FRAGMENT_SHADER,
@@ -324,20 +225,16 @@ class SharedProgressShaderRenderer {
 
     gl.useProgram(program);
     gl.uniform3fv(this.uniforms.colors, this.colors);
-    // High scale: bars are ~h-2; shop's ~1.7 zoom reads as a flat color there.
-    // Warp + intensity keep swirls moving inside each scissor window.
-    gl.uniform4f(this.uniforms.shape, this.scale, 0.85, 0.5, 0.35);
-    gl.uniform4f(this.uniforms.surface, 2.8, 1.35, 0.0, 1.15);
+    // Slightly higher intensity/contrast than shop smoke so red swirls separate.
+    gl.uniform4f(this.uniforms.shape, this.scale, 0.75, 0.5, 0.0);
+    gl.uniform4f(this.uniforms.surface, 2.4, 1.45, 0.0, 1.1);
     // finish.w = corner radius in px (see SHARED_PROGRESS_FRAGMENT_SHADER).
     gl.uniform4f(this.uniforms.finish, 0.0, 0.0, 0.0, 0.0);
-    gl.uniform4f(this.uniforms.transform, 635.0, 0.0, 0.12, 1.0);
+    gl.uniform4f(this.uniforms.transform, 635.0, 0.0, 0.0, 0.0);
     gl.uniform4f(this.uniforms.space, 0.0, 0.0, 0.0, 0.0);
     gl.uniform4f(this.uniforms.cursor, 0.0, 2.0, 0.65, 0.46);
     gl.uniform4f(this.uniforms.clipRect, 0.0, 0.0, 0.0, 0.0);
     gl.enable(gl.SCISSOR_TEST);
-    // Premultiplied source: needed so antialiased corner pixels blend out.
-    gl.enable(gl.BLEND);
-    gl.blendFunc(gl.ONE, gl.ONE_MINUS_SRC_ALPHA);
   }
 
   private compile(type: number, source: string, label: string): WebGLShader {
@@ -357,12 +254,6 @@ class SharedProgressShaderRenderer {
   resizeToDisplay(displayWidth: number, displayHeight: number, dpr: number) {
     const width = Math.max(1, Math.round(displayWidth * dpr));
     const height = Math.max(1, Math.round(displayHeight * dpr));
-    // Pin the CSS box to whole device pixels. Letting `w-full` stretch the
-    // backing store by a fraction of a pixel resamples the fill and softens it.
-    const cssW = `${width / dpr}px`;
-    const cssH = `${height / dpr}px`;
-    if (this.canvas.style.width !== cssW) this.canvas.style.width = cssW;
-    if (this.canvas.style.height !== cssH) this.canvas.style.height = cssH;
     if (this.canvas.width === width && this.canvas.height === height) return;
     this.canvas.width = width;
     this.canvas.height = height;
@@ -378,12 +269,12 @@ class SharedProgressShaderRenderer {
    * border box) so scissor lines up with `position:absolute; inset:0`.
    */
   render(
-    segments: MeasuredSegment[],
+    segments: SegmentRegistration[],
     canvasRect: DOMRectReadOnly,
     dpr: number,
   ) {
     const gl = this.gl;
-    const seconds = ((performance.now() - this.startMs) / 1000) * 0.15;
+    const seconds = ((performance.now() - this.startMs) / 1000) * 0.97;
     gl.disable(gl.SCISSOR_TEST);
     gl.clearColor(0, 0, 0, 0);
     gl.clear(gl.COLOR_BUFFER_BIT);
@@ -397,48 +288,39 @@ class SharedProgressShaderRenderer {
       seconds,
       this.colorCount,
     );
-    gl.uniform4f(this.uniforms.shape, this.scale, 0.85, 0.5, 0.35);
+    gl.uniform4f(this.uniforms.shape, this.scale, 0.75, 0.5, 0.0);
 
     const canvasW = this.canvas.width;
     const canvasH = this.canvas.height;
-    // Fill the whole cell bg; the CSS rim sits on top of this edge.
     const cornerRadiusPx = SEGMENT_CORNER_RADIUS_CSS_PX * dpr;
 
-    for (const { fillRect, shapeRect } of segments) {
-      const left = (shapeRect.left - canvasRect.left) * dpr;
-      const bottom = canvasH - (shapeRect.bottom - canvasRect.top) * dpr;
-      const width = shapeRect.width * dpr;
-      const height = shapeRect.height * dpr;
-      if (width < 0.5 || height < 0.5) continue;
+    for (const { element } of segments) {
+      const rect = element.getBoundingClientRect();
+      if (rect.width < 0.5 || rect.height < 0.5) continue;
 
-      // Scissor to the fill tip. Pad top/bottom/right 1px so outside-only AA can
-      // sit under the CSS rim (box-shadow). Do not pad left: that bled into the
-      // gap before each segment and made the grow look like it started left of
-      // the section.
-      const fillLeft = (fillRect.left - canvasRect.left) * dpr;
-      const fillRight = fillLeft + fillRect.width * dpr;
-      const fillBottom = canvasH - (fillRect.bottom - canvasRect.top) * dpr;
-      const fillTop = fillBottom + fillRect.height * dpr;
-      const outerRight = left + width;
-      const outerTop = bottom + height;
+      // Map viewport → canvas backing-store pixels using the canvas box.
+      let x = Math.round((rect.left - canvasRect.left) * dpr);
+      let w = Math.round(rect.width * dpr);
+      let h = Math.round(rect.height * dpr);
+      // WebGL scissor origin is bottom-left.
+      let y = Math.round((canvasRect.bottom - rect.bottom) * dpr);
 
-      const sx = Math.max(0, Math.floor(Math.max(fillLeft, left)));
-      const sy = Math.max(0, Math.floor(Math.max(fillBottom, bottom) - 1));
-      const sRight = Math.min(
-        canvasW,
-        Math.ceil(Math.min(fillRight, outerRight) + 1),
-      );
-      const sTop = Math.min(
-        canvasH,
-        Math.ceil(Math.min(fillTop, outerTop) + 1),
-      );
-      const sw = sRight - sx;
-      const sh = sTop - sy;
-      if (sw <= 0 || sh <= 0) continue;
+      // Clamp to canvas so a host/canvas box mismatch cannot paint a stray strip.
+      if (x < 0) {
+        w += x;
+        x = 0;
+      }
+      if (y < 0) {
+        h += y;
+        y = 0;
+      }
+      if (x + w > canvasW) w = canvasW - x;
+      if (y + h > canvasH) h = canvasH - y;
+      if (w <= 0 || h <= 0) continue;
 
-      gl.uniform4f(this.uniforms.clipRect, left, bottom, width, height);
+      gl.uniform4f(this.uniforms.clipRect, x, y, w, h);
       gl.uniform4f(this.uniforms.finish, 0.0, 0.0, 0.0, cornerRadiusPx);
-      gl.scissor(sx, sy, sw, sh);
+      gl.scissor(x, y, w, h);
       gl.drawArrays(gl.TRIANGLES, 0, 3);
     }
   }
@@ -454,9 +336,7 @@ class SharedProgressShaderRenderer {
 export function SharedProgressShaderHost({
   children,
   className,
-  // Higher than shop smoke: thin progress segments need smaller features or
-  // each scissor window is one flat mid-palette color.
-  scale = 3,
+  scale = 1.1,
 }: {
   children: ReactNode;
   className?: string;
@@ -465,7 +345,6 @@ export function SharedProgressShaderHost({
 }) {
   const hostRef = useRef<HTMLDivElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const rimLayerRef = useRef<HTMLDivElement>(null);
   const rendererRef = useRef<SharedProgressShaderRenderer | null>(null);
   const segmentsRef = useRef<Map<string, HTMLElement>>(new Map());
   const rafRef = useRef(0);
@@ -505,7 +384,6 @@ export function SharedProgressShaderHost({
 
     activeRef.current = true;
     let frameCount = 0;
-    let hostVisible = true;
 
     try {
       rendererRef.current = new SharedProgressShaderRenderer(
@@ -524,27 +402,6 @@ export function SharedProgressShaderHost({
       return;
     }
 
-    const dropShader = () => {
-      if (rafRef.current) cancelAnimationFrame(rafRef.current);
-      rafRef.current = 0;
-      try {
-        rendererRef.current?.reset();
-      } catch {
-        // Context may already be lost.
-      }
-      rendererRef.current = null;
-      setUseShader(false);
-    };
-
-    const onContextLost = (event: Event) => {
-      event.preventDefault();
-      logger.warn(
-        "[SharedProgressShader] WebGL context lost, using CSS fallback",
-      );
-      dropShader();
-    };
-    canvas.addEventListener("webglcontextlost", onContextLost);
-
     const syncSize = () => {
       const renderer = rendererRef.current;
       if (!renderer) return;
@@ -557,38 +414,21 @@ export function SharedProgressShaderHost({
     };
 
     const loop = () => {
-      if (
-        !activeRef.current ||
-        !rendererRef.current ||
-        document.hidden ||
-        !hostVisible
-      ) {
+      if (!activeRef.current || !rendererRef.current || document.hidden) {
         return;
       }
       // ~30fps — same budget as shop SmokeShader.
       if (frameCount % 2 === 0) {
         const renderer = rendererRef.current;
-        const rimLayer = rimLayerRef.current;
         if (renderer) {
-          // Read layout first, then write (resize / rims). Mixing them in the
-          // same frame forced reflow on every estate bar cell.
           const canvasRect = canvas.getBoundingClientRect();
-          const measured = measureSegments(segmentsRef.current);
-          const rims = rimLayer ? measureRimCells(host, rimLayer) : null;
           const dpr = Math.min(window.devicePixelRatio || 1, 2);
           renderer.resizeToDisplay(canvasRect.width, canvasRect.height, dpr);
-          try {
-            renderer.render(measured, canvasRect, dpr);
-          } catch (err) {
-            const message = err instanceof Error ? err.message : String(err);
-            logger.warn(
-              "[SharedProgressShader] WebGL render failed, using CSS fallback:",
-              message,
-            );
-            dropShader();
-            return;
-          }
-          if (rims && rimLayer) applySegmentRims(rimLayer, rims);
+          const list: SegmentRegistration[] = [];
+          segmentsRef.current.forEach((element, id) => {
+            list.push({ id, element });
+          });
+          renderer.render(list, canvasRect, dpr);
         }
       }
       frameCount++;
@@ -596,14 +436,7 @@ export function SharedProgressShaderHost({
     };
 
     const startLoop = () => {
-      if (
-        !activeRef.current ||
-        document.hidden ||
-        !hostVisible ||
-        !rendererRef.current
-      ) {
-        return;
-      }
+      if (!activeRef.current || document.hidden) return;
       if (rafRef.current) cancelAnimationFrame(rafRef.current);
       rafRef.current = requestAnimationFrame(loop);
     };
@@ -625,72 +458,35 @@ export function SharedProgressShaderHost({
         ? new ResizeObserver(() => syncSize())
         : null;
     ro?.observe(host);
-    const io =
-      typeof IntersectionObserver !== "undefined"
-        ? new IntersectionObserver((entries) => {
-          hostVisible = entries.some((entry) => entry.isIntersecting);
-          if (hostVisible) startLoop();
-          else if (rafRef.current) {
-            cancelAnimationFrame(rafRef.current);
-            rafRef.current = 0;
-          }
-        })
-        : null;
-    io?.observe(host);
     window.addEventListener("resize", syncSize);
     document.addEventListener("visibilitychange", onVisibility);
 
     return () => {
       activeRef.current = false;
       ro?.disconnect();
-      io?.disconnect();
-      canvas.removeEventListener("webglcontextlost", onContextLost);
       window.removeEventListener("resize", syncSize);
       document.removeEventListener("visibilitychange", onVisibility);
       if (rafRef.current) cancelAnimationFrame(rafRef.current);
-      try {
-        rendererRef.current?.reset();
-      } catch {
-        // Context may already be lost.
-      }
+      rendererRef.current?.reset();
       rendererRef.current = null;
     };
   }, [useShader, colors, scale]);
 
   return (
     <SharedProgressShaderContext.Provider value={api}>
-      {/* overflow-visible: segment rims sit 1px outside the bg via box-shadow */}
-      <div ref={hostRef} className={cn("relative overflow-visible", className)}>
-        {/*
-          Content wrapper: host className often includes space-y-*, which would
-          otherwise margin-shift the absolute canvas / rim layer down the page.
-        */}
-        <div className="relative">{children}</div>
+      <div ref={hostRef} className={cn("relative overflow-hidden", className)}>
+        {children}
         {/*
           Canvas sits above bar chrome and paints only into registered segment
           scissor rects. (Transparent "holes" cannot punch through opaque
           track backgrounds, so the shader must be drawn on top.)
         */}
         {useShader ? (
-          <div
+          <canvas
+            ref={canvasRef}
             aria-hidden
-            className="pointer-events-none absolute inset-0 z-10 !m-0"
-            style={{ pointerEvents: "none" }}
-          >
-            <canvas
-              ref={canvasRef}
-              aria-hidden
-              className="pointer-events-none absolute inset-0 h-full w-full opacity-90"
-              style={{ pointerEvents: "none" }}
-            />
-            {/* Cell rims above smoke so the grey border is not covered by WebGL. */}
-            <div
-              ref={rimLayerRef}
-              aria-hidden
-              className="pointer-events-none absolute inset-0 z-[1]"
-              style={{ pointerEvents: "none" }}
-            />
-          </div>
+            className="pointer-events-none absolute inset-0 z-10 h-full w-full"
+          />
         ) : null}
       </div>
     </SharedProgressShaderContext.Provider>
