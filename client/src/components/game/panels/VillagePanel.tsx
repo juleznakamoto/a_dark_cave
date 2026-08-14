@@ -1167,9 +1167,11 @@ export default function VillagePanel() {
           aria-hidden
         />
       </div>
-      <span translate="no" className={VILLAGER_COUNT_CAP_CLASS}>
-        /1
-      </span>
+      <span
+        translate="no"
+        className={VILLAGER_COUNT_CAP_CLASS}
+        aria-hidden
+      />
       {renderCapUpgradeSlot()}
       <span className={villagerCountLabelClass}>
         {getEffectName("fellowship", "disgraced_prior", "Disgraced Prior")}{" "}
