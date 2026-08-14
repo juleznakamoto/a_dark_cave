@@ -18,15 +18,15 @@ export const SOUND_VOLUME = {
   /** Loop under EventDialog (normal + madness; not cube) */
   eventDialog: 0.35,
   /** Blood moon timed-tab one-shot when the event starts */
-  bloodMoon: 0.45,
+  bloodMoon: 0.4,
   feedFire: {
     base: 0.3,
     perHeartfireLevel: 0.05,
   },
   newVillager: 0.02,
-  buildingComplete: 0.5,
+  buildingComplete: 0.45,
   craft: 0.25,
-  mining: 0.5,
+  mining: 0.45,
   /** Forest Chop Wood. File peak is already -3.8 dBFS; 0.8 made the hit as loud as explosion. */
   chopWood: 0.4,
   /** Cave Gather Wood (chopWood before forest unlock) */
@@ -39,10 +39,8 @@ export const SOUND_VOLUME = {
   /** Hunt bow snap is 350ms and near full scale; keep this low or it pokes. */
   hunt: 0.15,
   /** Log line, dialog open, timed tab, and timed-tab check (non-merchant) */
-  eventUi: 0.1,
-  /** When checkEvents queues new entries (quieter than UI cues) */
-  eventCheckEvents: 0.02,
-  merchant: 0.8,
+  eventUi: 0.09,
+  merchant: 0.7,
   explosion: 0.5,
   sleep: 0.3,
   combat: 0.3,
@@ -51,7 +49,7 @@ export const SOUND_VOLUME = {
   /** New game-tab unlock fade-in (3s visual) */
   tabFadeIn: 0.35,
   /** Achievement claimable sting. File peaks +3 dBFS (clips); 0.4 was a loud bong. */
-  achievement: 0.2,
+  achievement: 0.1,
 } as const;
 
 export function feedFireVolume(heartfireLevel: number): number {

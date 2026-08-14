@@ -3703,18 +3703,6 @@ export const useGameStore = create<GameStore>((set, get) => ({
       }
 
       StateManager.schedulePopulationUpdate(get);
-
-      // Play sound if new events were triggered
-      const madnessEventIds = Object.keys(madnessEvents);
-
-      const hasMadnessEvent = newLogEntries.some((entry) =>
-        madnessEventIds.includes(entry.id.split("-")[0]),
-      );
-
-      audioManager.playSound(
-        hasMadnessEvent ? "eventMadness" : "event",
-        SOUND_VOLUME.eventCheckEvents,
-      );
     } else if (hasPersistableStateChanges) {
       StateManager.schedulePopulationUpdate(get);
     }

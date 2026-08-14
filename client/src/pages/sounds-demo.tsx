@@ -66,12 +66,6 @@ const SFX: DemoCue[] = [
   },
   { id: "event", label: "Event UI", volume: SOUND_VOLUME.eventUi },
   {
-    id: "eventCheck",
-    sound: "event",
-    label: "Event check (quiet)",
-    volume: SOUND_VOLUME.eventCheckEvents,
-  },
-  {
     id: "eventMadness",
     label: "Event madness",
     volume: SOUND_VOLUME.eventUi,
