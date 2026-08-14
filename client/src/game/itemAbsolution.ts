@@ -11,7 +11,7 @@ import { getInsightAmount, isInsightUnlocked } from "@/game/rules/insightReveal"
 import { CRUEL_MODE } from "@/game/cruelMode";
 
 /** Insight spent to cleanse one item's madness by 1. */
-export const ABSOLUTION_INSIGHT_COST = 500;
+export const ABSOLUTION_INSIGHT_COST = 250;
 
 /** Madness removed from an item by one Absolution rite. */
 export const ABSOLUTION_MADNESS_REDUCTION = 1;

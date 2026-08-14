@@ -187,7 +187,7 @@ shared/schema.tsâ€” Zod GameState schema (source of truth for persisted sha
   Levels persist in `weaponEnchantments` (`shared/schema.ts`); bonuses applied in `calculateTotalEffects`,
   spent via `enchantWeapon` (`state.ts`), UI badge + blue tooltip stats in `SidePanelSection` / `itemTooltips.tsx`,
   combat poison rounds via `getPoisonArrowsDotFightRounds` (`CombatDialog`, `tooltips.tsx`).
-- **`itemAbsolution.ts`** - Book of Absolution: once per item, reduce madness by 1 for 500 Insight
+- **`itemAbsolution.ts`** - Book of Absolution: once per item, reduce madness by 1 for 250 Insight
   (Feeding Ring excluded). Merchant special after Clerk's Hut (250 Gold). Levels persist in
   `absolvedItems` (`shared/schema.ts`); spent via `absolveItem` (`state.ts`); Insight badge in
   `SidePanelSection` / blue `-1` on item tooltips.
