@@ -53,6 +53,8 @@ import { choiceEvents } from "./eventsChoices";
 import { cubeEvents } from "./eventsCube";
 import { feastEvents } from "./eventsFeast";
 import { solsticeGatheringEvents } from "./eventsSolsticeGathering";
+import { staringDeerEvents } from "./eventsStaringDeer";
+import { forestFearEvents } from "./eventsForestFear";
 import { loreEvents } from "./eventsLore";
 import { madnessEvents } from "./eventsMadness";
 import { merchantEvents } from "./eventsMerchant";
@@ -908,6 +910,8 @@ export const allEvents: Record<string, GameEvent> = {
   ...cubeEvents,
   ...feastEvents,
   ...solsticeGatheringEvents,
+  ...staringDeerEvents,
+  ...forestFearEvents,
   ...merchantEvents,
   ...fellowshipEvents,
   ...riddleEvents,

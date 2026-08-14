@@ -561,6 +561,28 @@ export const gameStateSchema = z.object({
       endTime: 0,
     }),
 
+  /** Strange deer stare: doubles food production while active. */
+  staringDeerState: z
+    .object({
+      isActive: z.boolean().default(false),
+      endTime: z.number().default(0),
+    })
+    .default({
+      isActive: false,
+      endTime: 0,
+    }),
+
+  /** Forest attack fear: -25% hunter/gatherer production while active. */
+  forestFearState: z
+    .object({
+      isActive: z.boolean().default(false),
+      endTime: z.number().default(0),
+    })
+    .default({
+      isActive: false,
+      endTime: 0,
+    }),
+
   combatSkills: z
     .object({
       crushingStrikeLevel: z.number().default(0),

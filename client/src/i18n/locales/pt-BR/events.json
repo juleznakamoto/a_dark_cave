@@ -2837,5 +2837,23 @@
     },
     "message": "Na beira da floresta, os aldeões encontram uma carroça abandonada com comida. O que devem fazer?",
     "title": "A Carroça Abandonada"
+  },
+  "forestFear": {
+    "choices": {
+      "continue": {
+        "label": "Continuar"
+      }
+    },
+    "message": "Um aldeão foi atacado e morto por algo na floresta. Era alto e rápido, ninguém conseguiu vê-lo com clareza. Caçadores e coletores estão com medo demais de entrar na floresta.",
+    "title": "Algo na floresta"
+  },
+  "staringDeer": {
+    "choices": {
+      "continue": {
+        "label": "Continuar"
+      }
+    },
+    "message": "Os cervos se comportam de forma estranha. Não fogem. Parecem olhar fixamente para os caçadores. Caçar está fácil agora, mas os caçadores voltam abalados.",
+    "title": "Cervos que olham"
   }
 }

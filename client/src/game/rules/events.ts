@@ -34,6 +34,8 @@ import { recurringEvents } from "./eventsRecurring";
 import { noChoiceEvents } from "./eventsNoChoices";
 import { feastEvents } from "./eventsFeast";
 import { solsticeGatheringEvents } from "./eventsSolsticeGathering";
+import { staringDeerEvents } from "./eventsStaringDeer";
+import { forestFearEvents } from "./eventsForestFear";
 import { boneDevourerEvents } from "./eventsBoneDevourer";
 import { villageAttackEvents } from "./eventsVillageAttacks";
 import { bloodMoonEvents } from "./eventsBloodMoon";
@@ -78,6 +80,8 @@ export const gameEvents: Record<string, GameEvent> = {
   ...noChoiceEvents,
   ...feastEvents,
   ...solsticeGatheringEvents,
+  ...staringDeerEvents,
+  ...forestFearEvents,
   ...boneDevourerEvents,
   ...villageAttackEvents,
   ...bloodMoonEvents,

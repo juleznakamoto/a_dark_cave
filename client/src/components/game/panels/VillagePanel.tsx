@@ -17,6 +17,8 @@ import {
   disgustTooltip,
   heartfireTooltip,
   madnessProductionTooltip,
+  staringDeerTooltip,
+  forestFearTooltip,
   getActionDurationLine,
 } from "@/game/rules/tooltips";
 import {
@@ -130,6 +132,8 @@ import {
 } from "@/game/rules/investmentHallTables";
 import { GAME_CONSTANTS, getCallMerchantGoldCost } from "@/game/constants";
 import { GREAT_FEAST_DURATION_MS } from "@shared/shopItems";
+import { STARING_DEER_DURATION_MS } from "@/game/rules/eventsStaringDeer";
+import { FOREST_FEAR_DURATION_MS } from "@/game/rules/eventsForestFear";
 import { useNewItemPulseTooltips } from "@/hooks/useNewItemPulseTooltip";
 import {
   GAME_PANEL_HEADER_INDICATOR_CLASS,
@@ -150,6 +154,8 @@ const VILLAGE_INDICATOR_TOOLTIP_IDS = [
   "heartfire-progress",
   "frostfall-progress",
   "fog-progress",
+  "staring-deer-progress",
+  "forest-fear-progress",
   "madness-production",
 ] as const;
 
@@ -1654,6 +1660,10 @@ export default function VillagePanel() {
                   const miningBoostState =
                     useGameStore.getState().miningBoostState;
                   const frostfallState = useGameStore.getState().frostfallState; // Assume frostfallState exists
+                  const staringDeerState =
+                    useGameStore.getState().staringDeerState;
+                  const forestFearState =
+                    useGameStore.getState().forestFearState;
                   const isGreatFeast =
                     greatFeastState?.isActive &&
                     greatFeastState.endTime > Date.now();
@@ -1672,6 +1682,12 @@ export default function VillagePanel() {
                   const isSolstice =
                     solsticeState?.isActive &&
                     solsticeState.endTime > Date.now();
+                  const isStaringDeer =
+                    staringDeerState?.isActive &&
+                    staringDeerState.endTime > Date.now();
+                  const isForestFear =
+                    forestFearState?.isActive &&
+                    forestFearState.endTime > Date.now();
 
                   return (
                     <>
@@ -2059,6 +2075,110 @@ export default function VillagePanel() {
                           </TooltipWrapper>
                         );
                       })()}
+
+                      {/* Staring Deer Indicator */}
+                      {isStaringDeer && (
+                        <TooltipWrapper
+                          tooltip={
+                            <div className="text-xs">
+                              {staringDeerTooltip.getContent(state)}
+                            </div>
+                          }
+                          tooltipId="staring-deer-progress"
+                          disabled
+                          tooltipTriggerClassName={
+                            GAME_PANEL_HEADER_INDICATOR_TRIGGER_CLASS
+                          }
+                          className={pulseClassName(
+                            "staring-deer-progress",
+                            GAME_PANEL_HEADER_INDICATOR_CLASS,
+                          )}
+                          onMouseEnter={() =>
+                            onMouseEnter("staring-deer-progress")
+                          }
+                          onMouseLeave={() =>
+                            onMouseLeave("staring-deer-progress")
+                          }
+                        >
+                          <div className={GAME_PANEL_HEADER_INDICATOR_INNER_CLASS}>
+                            <CircularProgress
+                              value={(() => {
+                                const timeRemaining = Math.max(
+                                  0,
+                                  staringDeerState.endTime - Date.now(),
+                                );
+                                const elapsed =
+                                  STARING_DEER_DURATION_MS - timeRemaining;
+                                return Math.min(
+                                  100,
+                                  (elapsed / STARING_DEER_DURATION_MS) * 100,
+                                );
+                              })()}
+                              size={GAME_PANEL_HEADER_INDICATOR_SIZE_PX}
+                              fill
+                              strokeWidth={2}
+                              className="text-green-800"
+                            />
+                            <span
+                              className={`${GAME_PANEL_HEADER_INDICATOR_GLYPH_CLASS} mt-[2px] text-green-800`}
+                            >
+                              ⯏
+                            </span>
+                          </div>
+                        </TooltipWrapper>
+                      )}
+
+                      {/* Forest Fear Indicator */}
+                      {isForestFear && (
+                        <TooltipWrapper
+                          tooltip={
+                            <div className="text-xs">
+                              {forestFearTooltip.getContent(state)}
+                            </div>
+                          }
+                          tooltipId="forest-fear-progress"
+                          disabled
+                          tooltipTriggerClassName={
+                            GAME_PANEL_HEADER_INDICATOR_TRIGGER_CLASS
+                          }
+                          className={pulseClassName(
+                            "forest-fear-progress",
+                            GAME_PANEL_HEADER_INDICATOR_CLASS,
+                          )}
+                          onMouseEnter={() =>
+                            onMouseEnter("forest-fear-progress")
+                          }
+                          onMouseLeave={() =>
+                            onMouseLeave("forest-fear-progress")
+                          }
+                        >
+                          <div className={GAME_PANEL_HEADER_INDICATOR_INNER_CLASS}>
+                            <CircularProgress
+                              value={(() => {
+                                const timeRemaining = Math.max(
+                                  0,
+                                  forestFearState.endTime - Date.now(),
+                                );
+                                const elapsed =
+                                  FOREST_FEAR_DURATION_MS - timeRemaining;
+                                return Math.min(
+                                  100,
+                                  (elapsed / FOREST_FEAR_DURATION_MS) * 100,
+                                );
+                              })()}
+                              size={GAME_PANEL_HEADER_INDICATOR_SIZE_PX}
+                              fill
+                              strokeWidth={2}
+                              className="text-red-800"
+                            />
+                            <span
+                              className={`${GAME_PANEL_HEADER_INDICATOR_GLYPH_CLASS} mt-[2px] text-red-800`}
+                            >
+                              ⯸
+                            </span>
+                          </div>
+                        </TooltipWrapper>
+                      )}
 
                       {/* Madness Production Effect Indicator */}
                       {(() => {

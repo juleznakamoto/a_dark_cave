@@ -832,6 +832,32 @@ export function processActionTicks() {
       },
     });
   }
+
+  // Check if staring deer has expired
+  if (
+    state.staringDeerState?.isActive &&
+    state.staringDeerState.endTime <= Date.now()
+  ) {
+    useGameStore.setState({
+      staringDeerState: {
+        ...state.staringDeerState,
+        isActive: false,
+      },
+    });
+  }
+
+  // Check if forest fear has expired
+  if (
+    state.forestFearState?.isActive &&
+    state.forestFearState.endTime <= Date.now()
+  ) {
+    useGameStore.setState({
+      forestFearState: {
+        ...state.forestFearState,
+        isActive: false,
+      },
+    });
+  }
 }
 
 function processTick() {

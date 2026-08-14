@@ -1263,6 +1263,10 @@ const mergeStateUpdates = (
     heartfireState: stateUpdates.heartfireState || prevState.heartfireState,
     miningBoostState:
       stateUpdates.miningBoostState || prevState.miningBoostState,
+    staringDeerState:
+      stateUpdates.staringDeerState || prevState.staringDeerState,
+    forestFearState:
+      stateUpdates.forestFearState || prevState.forestFearState,
     greatFeastActivations:
       stateUpdates.greatFeastActivations !== undefined
         ? stateUpdates.greatFeastActivations
@@ -1526,6 +1530,14 @@ export const createInitialState = (): GameState => ({
   },
   obsidianOrbState: {
     nextFocusGainTime: 0,
+  },
+  staringDeerState: {
+    isActive: false,
+    endTime: 0,
+  },
+  forestFearState: {
+    isActive: false,
+    endTime: 0,
   },
   combatSkills: {
     crushingStrikeLevel: 0,
@@ -3377,6 +3389,10 @@ export const useGameStore = create<GameStore>((set, get) => ({
         obsidianOrbState:
           savedState.obsidianOrbState || defaultGameState.obsidianOrbState,
         solsticeState: savedState.solsticeState || defaultGameState.solsticeState, // Load solsticeState
+        staringDeerState:
+          savedState.staringDeerState || defaultGameState.staringDeerState,
+        forestFearState:
+          savedState.forestFearState || defaultGameState.forestFearState,
         lastFreeGoldClaim: savedState.lastFreeGoldClaim || 0, // Load lastFreeGoldClaim
         traderDialogOpens: savedState.traderDialogOpens ?? 0,
         completePurchaseDialogOpens:

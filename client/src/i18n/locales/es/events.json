@@ -2837,5 +2837,23 @@
     },
     "message": "En el límite del bosque, los aldeanos encuentran una carreta abandonada con comida. ¿Qué deben hacer?",
     "title": "La carreta abandonada"
+  },
+  "forestFear": {
+    "choices": {
+      "continue": {
+        "label": "Continuar"
+      }
+    },
+    "message": "Un aldeano fue atacado y muerto por algo en el bosque. Era alto y rápido, nadie pudo verlo con claridad. Los cazadores y recolectores tienen demasiado miedo de entrar en el bosque.",
+    "title": "Algo en el bosque"
+  },
+  "staringDeer": {
+    "choices": {
+      "continue": {
+        "label": "Continuar"
+      }
+    },
+    "message": "Los ciervos se comportan de forma extraña. No huyen. Parecen mirar fijamente a los cazadores. Cazar es fácil ahora, pero los cazadores regresan alterados.",
+    "title": "Ciervos que miran"
   }
 }

@@ -852,6 +852,15 @@
     "message": "Pale figures emerge from the cave, finally freed, their ember eyes cutting through the dark as they march towards the city.",
     "title": "The First Wave"
   },
+  "forestFear": {
+    "choices": {
+      "continue": {
+        "label": "Continue"
+      }
+    },
+    "message": "A villager got attacked and killed by something in the woods. It was tall and fast, nobody could clearly see it. Hunters and gatherers are too scared to go into the forest.",
+    "title": "Something in the Woods"
+  },
   "forestTribeHelpRequest": {
     "choices": {
       "accept_help": {
@@ -2101,6 +2110,15 @@
     },
     "message": "The villagers propose a gathering to mark the longest night of the year. Fires will be lit, food prepared, and games held. Travelers may come, drawn by the light.",
     "title": "Solstice Gathering"
+  },
+  "staringDeer": {
+    "choices": {
+      "continue": {
+        "label": "Continue"
+      }
+    },
+    "message": "The deer behave strangely. They are not fleeing. They seem to be staring right at the hunters. Hunting is easy now, but the hunters return shaken.",
+    "title": "Staring Deer"
   },
   "swampSanctuaryChoice": {
     "choices": {

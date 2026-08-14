@@ -161,7 +161,7 @@ export function getScholarInsightPerWorker(
 }
 
 export interface GetPopulationProductionOptions {
-  /** When true, excludes temporary bonuses (feast, solstice gathering, heartfire, curse, frostfall, fog, disgust, mining boost) and Disgraced Prior food upkeep. Use for sleep / idle eligibility: those effects are inactive while the sim is paused in sleep, and the Prior does not auto-execute. */
+  /** When true, excludes temporary bonuses (feast, solstice gathering, heartfire, curse, frostfall, fog, disgust, mining boost, staring deer, forest fear) and Disgraced Prior food upkeep. Use for sleep / idle eligibility: those effects are inactive while the sim is paused in sleep, and the Prior does not auto-execute. */
   excludeTemporaryBonuses?: boolean;
 }
 
@@ -333,6 +333,35 @@ export const getPopulationProduction = (
   ) {
     baseProduction.forEach((prod) => {
       prod.totalAmount = Math.ceil(prod.totalAmount * 2); // Mining boost doubles mining production
+    });
+  }
+
+  // Staring deer: doubles food production while active - temporary, inactive during sleep
+  const staringDeerState = state.staringDeerState;
+  if (
+    !excludeTemporary &&
+    staringDeerState?.isActive &&
+    staringDeerState.endTime > Date.now()
+  ) {
+    baseProduction.forEach((prod) => {
+      if (prod.resource === "food" && prod.totalAmount > 0) {
+        prod.totalAmount = Math.ceil(prod.totalAmount * 2);
+      }
+    });
+  }
+
+  // Forest fear: -25% hunter/gatherer production while active - temporary, inactive during sleep
+  const forestFearState = state.forestFearState;
+  if (
+    !excludeTemporary &&
+    (jobId === "hunter" || jobId === "gatherer") &&
+    forestFearState?.isActive &&
+    forestFearState.endTime > Date.now()
+  ) {
+    baseProduction.forEach((prod) => {
+      if (prod.totalAmount > 0) {
+        prod.totalAmount = Math.ceil(prod.totalAmount * 0.75);
+      }
     });
   }
 

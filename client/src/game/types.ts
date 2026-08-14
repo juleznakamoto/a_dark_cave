@@ -89,6 +89,8 @@ export interface ActionEffectUpdates {
   frostfallState?: GameState["frostfallState"];
   woodcutterState?: GameState["woodcutterState"];
   fogState?: GameState["fogState"];
+  staringDeerState?: GameState["staringDeerState"];
+  forestFearState?: GameState["forestFearState"];
   sleepUpgrades?: GameState["sleepUpgrades"];
   combatSkills?: GameState["combatSkills"];
   clickAnalytics?: Partial<GameState["clickAnalytics"]>;

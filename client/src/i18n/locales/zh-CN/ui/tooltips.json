@@ -183,6 +183,10 @@
       "constructionBoost": "建造加速：消耗洞见跳过 50% 建造时间（每次建造限用一次）",
       "craftingBoost": "制作加速：消耗洞见跳过 50% 制作时间（每次制作限用一次）",
       "weaponEnchantment": "武器附魔"
-    }
+    },
+    "staringDeer": "凝视的鹿",
+    "foodProductionBonus": "食物生产加成：{{value}}",
+    "forestFear": "林中恐惧",
+    "hunterGathererProductionPenalty": "猎人和采集者生产：{{value}}"
   }
 }

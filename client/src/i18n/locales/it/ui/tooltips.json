@@ -183,6 +183,10 @@
     },
     "enemyDamageReductionActive": "Danno nemico: -{{percent}}%",
     "roundsRemaining_one": "{{count}} round rimanente",
-    "roundsRemaining_other": "{{count}} round rimanenti"
+    "roundsRemaining_other": "{{count}} round rimanenti",
+    "staringDeer": "Cervi che fissano",
+    "foodProductionBonus": "Bonus di produzione di cibo: {{value}}",
+    "forestFear": "Paura della foresta",
+    "hunterGathererProductionPenalty": "Produzione di cacciatori e raccoglitori: {{value}}"
   }
 }

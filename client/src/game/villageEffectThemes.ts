@@ -7,7 +7,9 @@ export type VillageEffectThemeId =
   | "disgust"
   | "miningBoost"
   | "frostfall"
-  | "fog";
+  | "fog"
+  | "staringDeer"
+  | "forestFear";
 
 export interface VillageEffectTheme {
   id: VillageEffectThemeId;
@@ -86,6 +88,24 @@ export const VILLAGE_EFFECT_THEMES: Record<
     iconClassName:
       "font-noto-symbols-2 inline-flex items-center justify-center text-4xl text-gray-500 leading-none translate-y-0.5",
   },
+  staringDeer: {
+    id: "staringDeer",
+    symbol: "⯏",
+    border: "border-green-800",
+    iconRing: "border-green-800/45 bg-green-950/35",
+    glowRgb: "22, 101, 52",
+    iconClassName:
+      "font-noto-symbols-2 inline-flex items-center justify-center text-4xl text-green-800 leading-none translate-y-0.5",
+  },
+  forestFear: {
+    id: "forestFear",
+    symbol: "⯸",
+    border: "border-red-800",
+    iconRing: "border-red-800/45 bg-red-950/35",
+    glowRgb: "153, 27, 27",
+    iconClassName:
+      "font-noto-symbols-2 inline-flex items-center justify-center text-4xl text-red-800 leading-none translate-y-0.5",
+  },
 };
 
 type TimedEffectSlice = { isActive?: boolean; endTime?: number } | null | undefined;
@@ -112,6 +132,8 @@ const EVENT_ID_THEMES: Record<string, VillageEffectThemeId> = {
   witchsCurse: "curse",
   frostfall: "frostfall",
   unnamedWanderer: "miningBoost",
+  staringDeer: "staringDeer",
+  forestFear: "forestFear",
 };
 
 /** Maps event outcome state updates + catalog id to a village produce-header effect theme. */
@@ -145,6 +167,12 @@ export function resolveVillageEffectAnnouncementTheme(
   }
   if (isTimedEffectActivated(changes.fogState as TimedEffectSlice)) {
     return "fog";
+  }
+  if (isTimedEffectActivated(changes.staringDeerState as TimedEffectSlice)) {
+    return "staringDeer";
+  }
+  if (isTimedEffectActivated(changes.forestFearState as TimedEffectSlice)) {
+    return "forestFear";
   }
 
   const baseId = stripEventRulesId(eventId);

@@ -12,13 +12,13 @@
     "gainUnknown": "+? {{resource}}",
     "costLine": "-{{amount}} {{resource}}",
     "duration": "{{duration}}",
-    "villagerCost_one": "-{{count}} Dorfbewohner",  //x1.2
+    "villagerCost_one": "-{{count}} Dorfbewohner", //x1.2
     "villagerCost_other": "-{{count}} Dorfbewohner",
-    "freeVillagerCost_one": "-{{count}} freier Dorfbewohner",  //x1.3
+    "freeVillagerCost_one": "-{{count}} freier Dorfbewohner", //x1.3
     "freeVillagerCost_other": "-{{count}} freie Dorfbewohner",
     "mapFragmentProgress": "{{count}} von {{total}} Kartenfragmenten",
-    "defense": "Verteidigung: {{value}}",  //x1.3
-    "madnessFromItems": "{{value}} von Gegenständen",  //x1.3
+    "defense": "Verteidigung: {{value}}", //x1.3
+    "madnessFromItems": "{{value}} von Gegenständen", //x1.3
     "madnessFromBuildings": "{{value}} von Gebäuden",
     "madnessFromEvents": "{{value}} von Ereignissen",
     "madnessTitle": "Wahnsinn",
@@ -34,13 +34,13 @@
     "solsticeGathering": "Sonnenwendversammlung",
     "newVillagerChanceBonus": "Chance auf neue Dorfbewohner +{{percent}} %",
     "witchsCurse": "Hexenfluch",
-    "villagerDisgust": "Ekel der Dorfbewohner",  //x1.3
+    "villagerDisgust": "Ekel der Dorfbewohner", //x1.3
     "miningBoost": "Abbau-Boost",
     "miningBonus": "Abbau-Bonus: {{percent}} %",
     "heartfire": "Herzfeuer",
     "newVillagerChance": "Chance auf neue Dorfbewohner: +{{percent}} %",
     "frostfall": "Froststurz",
-    "chokingFog": "Erstickender Nebel",  //x1.6
+    "chokingFog": "Erstickender Nebel", //x1.6
     "focus": "Fokus",
     "obsidianOrbFocusRate": "Fokus: 1 alle 15 Minuten",
     "obsidianOrbFocusCountdown": "{{time}} bis zum nächsten Fokuspunkt",
@@ -51,7 +51,7 @@
     "totalDamage": "Gesamtschaden: {{value}}",
     "totalDamageForRounds": "Gesamtschaden: {{value}} für {{rounds}} Runden",
     "selfDamageChance": "5 % Chance, dir selbst Schaden zuzufügen",
-    "restoreIntegrity": "Stellt bis zu {{amount}} Integrität wieder her",  //x1.4
+    "restoreIntegrity": "Stellt bis zu {{amount}} Integrität wieder her", //x1.4
     "damage": "Schaden: {{value}}",
     "stunDuration_one": "Betäubungsdauer: {{rounds}} Runde",
     "stunDuration_other": "Betäubungsdauer: {{rounds}} Runden",
@@ -65,7 +65,7 @@
     "roundsRemaining_other": "Noch {{count}} Runden",
     "healthCost": "Lebenskosten: {{value}}",
     "currentResource": "Aktuell: {{amount}} {{resource}}",
-    "damaged": "(beschädigt)",  //x1.3
+    "damaged": "(beschädigt)", //x1.3
     "level": "Stufe {{level}}",
     "improveForInsight": "Verbessern für {{cost}} Einsicht",
     "unlockMoreJobsForInsight": "Limit erhöhen für {{cost}} Einsicht",
@@ -103,27 +103,27 @@
     "productionBonusLine": "+{{percent}} % Produktion",
     "secRemaining": "Noch {{count}} Sek.",
     "buildings": {
-      "unlocksHunters": "Schaltet Jäger frei",  //x1.3
-      "unlocksCrafting": "Schaltet Herstellung frei",  //x1.6
-      "unlocksSchematicCrafting": "Schaltet Bauplanherstellung frei",  //x1.2
-      "unlocksBlacksteelCrafting": "Schaltet Schwarzstahlherstellung frei",  //x1.4
-      "unlocksBlacksteelForgers": "Schaltet Schwarzstahlschmiede frei",  //x1.3
-      "unlocksIronMiners": "Schaltet Eisenbergleute frei",  //x1.5
-      "unlocksCoalMiners": "Schaltet Kohlebergleute frei",  //x1.5
-      "unlocksSulfurMiners": "Schaltet Schwefelbergleute frei",  //x1.5
-      "unlocksObsidianMiners": "Schaltet Obsidianbergleute frei",  //x1.3
-      "unlocksAdamantMiners": "Schaltet Adamantbergleute frei",  //x1.4
-      "unlocksMoonstoneMiners": "Schaltet Mondsteinbergleute frei",  //x1.3
-      "unlocksSteelForgers": "Schaltet Stahlschmiede frei",  //x1.3
-      "unlocksTanners": "Schaltet Gerber frei",  //x1.3
-      "unlocksInvestments": "Schaltet Investitionen frei",  //x1.4
-      "unlocksPowderMakers": "Schaltet Pulvermacher frei",  //x1.2
-      "unlocksCallMerchant": "Schaltet Händler rufen frei",  //x1.3
-      "unlocksWizardStory": "Schaltet Magier Storyline frei",  //x1.5
-      "unlocksEstateTab": "Schaltet Anwesen-Tab frei",  //x1.4
+      "unlocksHunters": "Schaltet Jäger frei", //x1.3
+      "unlocksCrafting": "Schaltet Herstellung frei", //x1.6
+      "unlocksSchematicCrafting": "Schaltet Bauplanherstellung frei", //x1.2
+      "unlocksBlacksteelCrafting": "Schaltet Schwarzstahlherstellung frei", //x1.4
+      "unlocksBlacksteelForgers": "Schaltet Schwarzstahlschmiede frei", //x1.3
+      "unlocksIronMiners": "Schaltet Eisenbergleute frei", //x1.5
+      "unlocksCoalMiners": "Schaltet Kohlebergleute frei", //x1.5
+      "unlocksSulfurMiners": "Schaltet Schwefelbergleute frei", //x1.5
+      "unlocksObsidianMiners": "Schaltet Obsidianbergleute frei", //x1.3
+      "unlocksAdamantMiners": "Schaltet Adamantbergleute frei", //x1.4
+      "unlocksMoonstoneMiners": "Schaltet Mondsteinbergleute frei", //x1.3
+      "unlocksSteelForgers": "Schaltet Stahlschmiede frei", //x1.3
+      "unlocksTanners": "Schaltet Gerber frei", //x1.3
+      "unlocksInvestments": "Schaltet Investitionen frei", //x1.4
+      "unlocksPowderMakers": "Schaltet Pulvermacher frei", //x1.2
+      "unlocksCallMerchant": "Schaltet Händler rufen frei", //x1.3
+      "unlocksWizardStory": "Schaltet Magier Storyline frei", //x1.5
+      "unlocksEstateTab": "Schaltet Anwesen-Tab frei", //x1.4
       "unlocksFeedFireAction": "Schaltet Feuer schüren frei",
-      "craftDiscountSpaced": "2,5 % Herstellungsrabatt",  //x1.2
-      "craftDiscountSpaced5": "5 % Herstellungsrabatt",  //x1.2
+      "craftDiscountSpaced": "2,5 % Herstellungsrabatt", //x1.2
+      "craftDiscountSpaced5": "5 % Herstellungsrabatt", //x1.2
       "craftDiscount": "{{percent}} % Herstellungsrabatt",
       "buildDiscount": "{{percent}} % Baurabatt",
       "gathererWood": "Sammler: +{{amount}} Holz",
@@ -133,20 +133,20 @@
       "hunterFur": "Jäger: +{{amount}} Fell",
       "hunterBones": "Jäger: +{{amount}} Knochen",
       "knowledgeBonus": "+{{amount}} Wissen",
-      "resourceChangeHints": "Hinweise zu Ressourcenänderungen",  //x1.5
-      "improvedResourceChangeHints": "Verbesserte Hinweise zu Ressourcenänderungen",  //x1.5
+      "resourceChangeHints": "Hinweise zu Ressourcenänderungen", //x1.5
+      "improvedResourceChangeHints": "Verbesserte Hinweise zu Ressourcenänderungen", //x1.5
       "resourceHighlighting": "Ressourcen-Hervorhebung",
-      "unlocksScholar": "Schaltet Gelehrte frei",  //x1.5
+      "unlocksScholar": "Schaltet Gelehrte frei", //x1.5
       "addsVillagerPreset_one": "Fügt {{count}} Job-Vorlagen-Slot hinzu",
       "addsVillagerPreset_other": "Fügt {{count}} Job-Vorlagen-Slots hinzu",
       "scholarInsight": "Gelehrter: +{{amount}} Einsicht",
       "insightRevealCost": "{{cost}} Einsicht",
       "insightRevealSeeEffects": "Effekte für {{cost}} {{resource}} anzeigen",
       "insightRevealEffects": "Effekte",
-      "abortActions": "Aktionen abbrechen",  //x1.4
+      "abortActions": "Aktionen abbrechen", //x1.4
       "madnessReduction": "-{{amount}} Wahnsinn",
       "madnessIncrease": "+{{amount}} Wahnsinn",
-      "defenseBonus": "+{{amount}} Verteidigung",  //x1.3
+      "defenseBonus": "+{{amount}} Verteidigung", //x1.3
       "attackBonus": "+{{amount}} Angriff",
       "integrityBonus": "+{{amount}} Integrität",
       "luckyChance": "+{{percent}} % Glückschance",
@@ -181,8 +181,12 @@
       "addsConstructionQueueSlot_one": "Fügt {{count}} Bauwarteschlange hinzu",
       "addsConstructionQueueSlot_other": "Fügt {{count}} Bauwarteschlangen hinzu",
       "constructionBoost": "Bau-Boost: Einsicht ausgeben, um 50 % der Bauzeit zu überspringen (einmal pro Bau)",
-      "craftingBoost": "Herstellungs-Boost: Einsicht ausgeben, um 50 % der Herstellungszeit zu überspringen (einmal pro Herstellung)",  //x1.5
+      "craftingBoost": "Herstellungs-Boost: Einsicht ausgeben, um 50 % der Herstellungszeit zu überspringen (einmal pro Herstellung)", //x1.5
       "weaponEnchantment": "Waffenverzauberung"
-    }
+    },
+    "staringDeer": "Starrende Hirsche",
+    "foodProductionBonus": "Nahrungsproduktionsbonus: {{value}}",
+    "forestFear": "Waldangst",
+    "hunterGathererProductionPenalty": "Jäger- und Sammlerproduktion: {{value}}"
   }
 }

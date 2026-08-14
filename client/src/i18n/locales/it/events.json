@@ -2837,5 +2837,23 @@
     },
     "message": "Al limitare della foresta, gli abitanti trovano un carro abbandonato con del cibo. Cosa dovrebbero fare?",
     "title": "Il Carro Abbandonato"
+  },
+  "forestFear": {
+    "choices": {
+      "continue": {
+        "label": "Continua"
+      }
+    },
+    "message": "Un abitante del villaggio è stato attaccato e ucciso da qualcosa nei boschi. Era alto e veloce, nessuno è riuscito a vederlo chiaramente. Cacciatori e raccoglitori hanno troppa paura di entrare nella foresta.",
+    "title": "Qualcosa nei boschi"
+  },
+  "staringDeer": {
+    "choices": {
+      "continue": {
+        "label": "Continua"
+      }
+    },
+    "message": "I cervi si comportano in modo strano. Non fuggono. Sembrano fissare i cacciatori. Cacciare è facile ora, ma i cacciatori tornano scossi.",
+    "title": "Cervi che fissano"
   }
 }

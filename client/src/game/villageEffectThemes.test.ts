@@ -52,6 +52,25 @@ describe("resolveVillageEffectAnnouncementTheme", () => {
     ).toBe("fog");
   });
 
+  it("detects staring deer and forest fear from state activation", () => {
+    expect(
+      resolveVillageEffectAnnouncementTheme("staringDeer", {
+        staringDeerState: { isActive: true, endTime: Date.now() + 60_000 },
+      }),
+    ).toBe("staringDeer");
+    expect(
+      resolveVillageEffectAnnouncementTheme("forestFear", {
+        forestFearState: { isActive: true, endTime: Date.now() + 60_000 },
+      }),
+    ).toBe("forestFear");
+    expect(resolveVillageEffectAnnouncementTheme("staringDeer", {})).toBe(
+      "staringDeer",
+    );
+    expect(resolveVillageEffectAnnouncementTheme("forestFear", {})).toBe(
+      "forestFear",
+    );
+  });
+
   it("returns null for unrelated announcements", () => {
     expect(
       resolveVillageEffectAnnouncementTheme("obsidianOrbVisit", {

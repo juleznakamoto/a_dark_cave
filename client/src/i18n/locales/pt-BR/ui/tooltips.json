@@ -183,6 +183,10 @@
     },
     "enemyDamageReductionActive": "Dano inimigo: -{{percent}}%",
     "roundsRemaining_one": "{{count}} rodada restante",
-    "roundsRemaining_other": "{{count}} rodadas restantes"
+    "roundsRemaining_other": "{{count}} rodadas restantes",
+    "staringDeer": "Cervos que olham",
+    "foodProductionBonus": "Bônus de produção de comida: {{value}}",
+    "forestFear": "Medo da floresta",
+    "hunterGathererProductionPenalty": "Produção de caçadores e coletores: {{value}}"
   }
 }

@@ -2837,5 +2837,23 @@
     },
     "message": "Am Waldrand finden Dorfbewohner einen verlassenen Karren mit Nahrung. Was sollen sie tun?",
     "title": "Der verlassene Karren"
+  },
+  "forestFear": {
+    "choices": {
+      "continue": {
+        "label": "Weiter"
+      }
+    },
+    "message": "Ein Dorfbewohner wurde im Wald angegriffen und getötet. Es war groß und schnell, niemand konnte es klar erkennen. Jäger und Sammler haben zu viel Angst, in den Wald zu gehen.",
+    "title": "Etwas im Wald"
+  },
+  "staringDeer": {
+    "choices": {
+      "continue": {
+        "label": "Weiter"
+      }
+    },
+    "message": "Die Hirsche verhalten sich seltsam. Sie fliehen nicht. Sie scheinen die Jäger direkt anzustarren. Die Jagd ist jetzt leicht, aber die Jäger kehren verstört zurück.",
+    "title": "Starrende Hirsche"
   }
 }

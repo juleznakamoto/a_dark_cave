@@ -2837,5 +2837,23 @@
     },
     "message": "À l'orée de la forêt, des villageois trouvent une charrette abandonnée chargée de nourriture. Que doivent-ils faire ?",
     "title": "La charrette abandonnée"
+  },
+  "forestFear": {
+    "choices": {
+      "continue": {
+        "label": "Continuer"
+      }
+    },
+    "message": "Un villageois a été attaqué et tué par quelque chose dans les bois. C'était grand et rapide, personne n'a pu le voir clairement. Les chasseurs et les collecteurs ont trop peur d'entrer dans la forêt.",
+    "title": "Quelque chose dans les bois"
+  },
+  "staringDeer": {
+    "choices": {
+      "continue": {
+        "label": "Continuer"
+      }
+    },
+    "message": "Les cerfs se comportent étrangement. Ils ne fuient pas. Ils semblent fixer les chasseurs. La chasse est facile à présent, mais les chasseurs reviennent ébranlés.",
+    "title": "Cerfs figés"
   }
 }

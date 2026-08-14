@@ -775,6 +775,62 @@ export const fogTooltip: TooltipConfig = {
   },
 };
 
+export const staringDeerTooltip: TooltipConfig = {
+  getContent: (state: GameState) => {
+    const staringDeerState = state.staringDeerState;
+    const isActive =
+      staringDeerState?.isActive && staringDeerState.endTime > Date.now();
+
+    if (isActive) {
+      const remainingMs = staringDeerState.endTime - Date.now();
+      return (
+        <>
+          <div className="font-bold">
+            {getUiTooltip("staringDeer", "Staring Deer")}
+          </div>
+          <div>
+            {getUiTooltip("foodProductionBonus", "Food Production Bonus: {{value}}", {
+              value: "100%",
+            })}
+          </div>
+          <div>{formatEffectRemaining(remainingMs)}</div>
+        </>
+      );
+    }
+
+    return null;
+  },
+};
+
+export const forestFearTooltip: TooltipConfig = {
+  getContent: (state: GameState) => {
+    const forestFearState = state.forestFearState;
+    const isActive =
+      forestFearState?.isActive && forestFearState.endTime > Date.now();
+
+    if (isActive) {
+      const remainingMs = forestFearState.endTime - Date.now();
+      return (
+        <>
+          <div className="font-bold">
+            {getUiTooltip("forestFear", "Forest Fear")}
+          </div>
+          <div>
+            {getUiTooltip(
+              "hunterGathererProductionPenalty",
+              "Hunter and Gatherer Production: {{value}}",
+              { value: "-25%" },
+            )}
+          </div>
+          <div>{formatEffectRemaining(remainingMs)}</div>
+        </>
+      );
+    }
+
+    return null;
+  },
+};
+
 export const focusTooltip: TooltipConfig = {
   getContent: (state: GameState) => {
     const focusState = state.focusState;
