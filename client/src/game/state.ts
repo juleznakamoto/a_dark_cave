@@ -1787,7 +1787,7 @@ function openEventDialogNow(
     const isMadnessEvent = madnessEventIds.includes(eventId);
     audioManager.playSound(
       isMadnessEvent ? "eventMadness" : "event",
-      SOUND_VOLUME.eventUi,
+      isMadnessEvent ? SOUND_VOLUME.eventMadness : SOUND_VOLUME.eventUi,
     );
   }
 }
@@ -4434,7 +4434,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
         const isMadnessEvent = madnessEventIds.includes(catalogId!);
         audioManager.playSound(
           isMadnessEvent ? "eventMadness" : "event",
-          SOUND_VOLUME.eventUi,
+          isMadnessEvent ? SOUND_VOLUME.eventMadness : SOUND_VOLUME.eventUi,
         );
       }
     }

@@ -24,9 +24,9 @@ export const SOUND_VOLUME = {
     perHeartfireLevel: 0.05,
   },
   newVillager: 0.02,
-  buildingComplete: 0.45,
+  buildingComplete: 0.4,
   craft: 0.25,
-  mining: 0.45,
+  mining: 0.35,
   /** Forest Chop Wood. File peak is already -3.8 dBFS; 0.8 made the hit as loud as explosion. */
   chopWood: 0.4,
   /** Cave Gather Wood (chopWood before forest unlock) */
@@ -40,6 +40,8 @@ export const SOUND_VOLUME = {
   hunt: 0.15,
   /** Log line, dialog open, timed tab, and timed-tab check (non-merchant) */
   eventUi: 0.09,
+  /** Madness event sting (separate file from Event UI) */
+  eventMadness: 0.1,
   merchant: 0.7,
   explosion: 0.5,
   sleep: 0.3,
@@ -49,7 +51,7 @@ export const SOUND_VOLUME = {
   /** New game-tab unlock fade-in (3s visual) */
   tabFadeIn: 0.35,
   /** Achievement claimable sting. File peaks +3 dBFS (clips); 0.4 was a loud bong. */
-  achievement: 0.1,
+  achievement: 0.05,
 } as const;
 
 export function feedFireVolume(heartfireLevel: number): number {
