@@ -1223,10 +1223,6 @@
         "message": "你买下了试炼之书。商人会意地微笑：「供追踪旅程者参阅的指南。」",
         "label": "试炼之书"
       },
-      "trade_book_of_craftsmanship": {
-        "message": "你买下了工艺之书。商人赞许地点头：「工匠之册，陈旧却智慧充盈，会向建造者低语秘密。」",
-        "label": "工艺之书"
-      },
       "trade_reinforced_rope": {
         "message": "你买下了强化绳索，可承受巨大拉力，抵达最深洞穴。",
         "label": "强化绳索"

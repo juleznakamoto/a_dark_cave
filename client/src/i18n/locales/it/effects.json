@@ -4,10 +4,6 @@
       "description": "Libro sull'ascesa di sé. Concede la capacità di migliorare nei compiti attraverso la pratica.",
       "name": "Libro dell'Ascensione"
     },
-    "book_of_craftsmanship": {
-      "description": "Antico tomo di un maestro artigiano. Rivela sottili indizi sulla fabbricazione di oggetti e la costruzione di edifici.",
-      "name": "Libro dell'Artigianato"
-    },
     "book_of_chainmaster": {
       "description": "Libro del Maestro delle catene morto da tempo, contenente metodi crudeli per spingere i lavoratori oltre i loro limiti.",
       "name": "Libro del Maestro delle catene"

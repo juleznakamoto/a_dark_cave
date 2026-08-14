@@ -4,10 +4,6 @@
       "description": "关于自我升华的书。使你能够通过练习提升各项行动能力。",
       "name": "升华之书"
     },
-    "book_of_craftsmanship": {
-      "description": "大师工匠留下的古老典籍。揭示制作物品与建造建筑的微妙诀窍。",
-      "name": "工艺之书"
-    },
     "book_of_chainmaster": {
       "description": "已故链主之书，记载着驱使工人超越极限的严苛手段。",
       "name": "链主之书"

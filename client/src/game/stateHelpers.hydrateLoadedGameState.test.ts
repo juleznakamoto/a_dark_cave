@@ -46,4 +46,21 @@ describe("hydrateLoadedGameState", () => {
     expect(hydrated.flags.villageUnlocked).toBe(true);
     expect(hydrated.flags.forestUnlocked).toBe(true);
   });
+
+  it("strips removed Book of Craftsmanship from legacy saves", () => {
+    const hydrated = hydrateLoadedGameState({
+      books: {
+        book_of_trials: true,
+        book_of_craftsmanship: true,
+      } as unknown as ReturnType<typeof gameStateSchema.parse>["books"],
+    });
+
+    expect(hydrated.books.book_of_trials).toBe(true);
+    expect(
+      Object.prototype.hasOwnProperty.call(
+        hydrated.books,
+        "book_of_craftsmanship",
+      ),
+    ).toBe(false);
+  });
 });

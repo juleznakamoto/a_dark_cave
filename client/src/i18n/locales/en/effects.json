@@ -4,10 +4,6 @@
       "description": "Book on ascending the self. Grants the ability to improve at tasks through practice.",
       "name": "Book of Ascension"
     },
-    "book_of_craftsmanship": {
-      "description": "Ancient tome of a master craftsman. Reveals subtle hints about crafting items and constructing buildings.",
-      "name": "Book of Craftsmanship"
-    },
     "book_of_chainmaster": {
       "description": "Book of the long-dead Chainmaster containing harsh methods to drive workers beyond their limits.",
       "name": "Book of Chainmaster"

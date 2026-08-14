@@ -1125,10 +1125,6 @@
         "message": "Acquisti il Libro delle Prove. Il mercante sorride con cognizione di causa: 'Una guida per chi cerca di seguire il proprio viaggio.'",
         "label": "Libro delle Prove"
       },
-      "trade_book_of_craftsmanship": {
-        "message": "Acquisti il Libro dell'Artigianato. Il mercante annuisce con approvazione: 'Un tomo da artigiano, logoro ma pieno di saggezza. Sussurrerà segreti a chi costruisce.'",
-        "label": "Libro dell'Artigianato"
-      },
       "trade_reinforced_rope": {
         "message": "Acquisti la corda rinforzata. Questa corda può sopportare uno sforzo enorme e raggiungere luoghi nelle camere più profonde della caverna.",
         "label": "Corda Rinforzata"

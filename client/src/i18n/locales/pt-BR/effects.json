@@ -4,10 +4,6 @@
       "description": "Livro sobre a ascensão do eu. Concede a habilidade de melhorar nas tarefas por meio de prática.",
       "name": "Livro da Ascensão"
     },
-    "book_of_craftsmanship": {
-      "description": "Tomo antigo de um artesão mestre. Revela dicas sutis sobre fabricar itens e construir edifícios.",
-      "name": "Livro de Artesanato"
-    },
     "book_of_chainmaster": {
       "description": "Livro do Mestre das Correntes morto há muito, contendo métodos severos para levar os trabalhadores além de seus limites.",
       "name": "Livro do Mestre das Correntes"

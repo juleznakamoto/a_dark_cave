@@ -1125,10 +1125,6 @@
         "message": "Você compra o Livro das Provações. O mercador sorri com conhecimento: 'Um guia para aqueles que buscam acompanhar sua jornada.'",
         "label": "Livro das Provações"
       },
-      "trade_book_of_craftsmanship": {
-        "message": "Você compra o Livro do Ofício. O mercador acena com aprovação: 'Um tomo de artesão, gasto, mas cheio de sabedoria. Ele sussurrará segredos àqueles que constroem.'",
-        "label": "Livro do Ofício"
-      },
       "trade_reinforced_rope": {
         "message": "Você compra a corda reforçada. Esta corda pode suportar uma tensão tremenda e alcançar lugares nas câmaras mais profundas da caverna.",
         "label": "Corda Reforçada"

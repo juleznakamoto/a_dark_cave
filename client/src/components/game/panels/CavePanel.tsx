@@ -209,8 +209,8 @@ export default function CavePanel() {
     },
   };
 
-  /** Bombs / Veinfire: cost & gain tooltip only; skip Book of Craftsmanship flavour text */
-  const CRAFT_NO_BOOK_DESCRIPTION = new Set([
+  /** Bombs / Veinfire: cost & gain tooltip only; skip item flavour text */
+  const CRAFT_SKIP_ITEM_DESCRIPTION = new Set([
     "craftEmberBomb",
     "craftAshfireBomb",
     "craftVoidBomb",
@@ -345,7 +345,7 @@ export default function CavePanel() {
 
       const craftDescription =
         isCraftAction &&
-          !CRAFT_NO_BOOK_DESCRIPTION.has(actionId) &&
+          !CRAFT_SKIP_ITEM_DESCRIPTION.has(actionId) &&
           isCraftDescriptionVisible(state, actionId)
           ? getCraftItemDescription(actionId)
           : undefined;

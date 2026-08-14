@@ -1223,10 +1223,6 @@
         "message": "Du kaufst das Buch der Prüfungen. Der Händler lächelt wissend: „Ein Leitfaden für diejenigen, die ihre Reise verfolgen wollen.“",
         "label": "Buch der Prüfungen" //x1.3
       },
-      "trade_book_of_craftsmanship": {
-        "message": "Du kaufst das Buch der Handwerkskunst. Der Händler nickt anerkennend: „Ein Handwerkerbuch, abgenutzt, aber voller Weisheit. Es wird denen Geheimnisse zuflüstern, die bauen.“",
-        "label": "Buch der Handwerkskunst"
-      },
       "trade_reinforced_rope": {
         "message": "Du kaufst das verstärkte Seil. Dieses Seil hält enormer Belastung stand und erreicht Orte in den tiefsten Höhlenkammern.",
         "label": "Verstärktes Seil"

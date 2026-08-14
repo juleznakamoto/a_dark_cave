@@ -1223,10 +1223,6 @@
         "message": "You purchase the Book of Trials. The merchant smiles knowingly: 'A guide for those who seek to track their journey.'",
         "label": "Book of Trials"
       },
-      "trade_book_of_craftsmanship": {
-        "message": "You purchase the Book of Craftsmanship. The merchant nods approvingly: 'A craftsman's tome, worn but full of wisdom. It will whisper secrets to those who build.'",
-        "label": "Book of Craftsmanship"
-      },
       "trade_reinforced_rope": {
         "message": "You purchase the reinforced rope. This rope can withstand tremendous strain and reach places in the deepest cave chambers.",
         "label": "Reinforced Rope"

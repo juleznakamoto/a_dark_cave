@@ -1223,10 +1223,6 @@
         "message": "Compras el Libro de pruebas. El mercader sonríe con aire de saber: «Una guía para quienes buscan seguir el rastro de su viaje.»",
         "label": "Libro de pruebas"
       },
-      "trade_book_of_craftsmanship": {
-        "message": "Compras el Libro de artesanía. El mercader asiente con aprobación: «Un tomo de artesano, gastado pero lleno de sabiduría. Susurrará secretos a quienes construyen.»",
-        "label": "Libro de artesanía"
-      },
       "trade_reinforced_rope": {
         "message": "Compras la cuerda reforzada. Esta cuerda soporta una tensión enorme y alcanza lugares en las cámaras más profundas de la cueva.",
         "label": "Cuerda reforzada"

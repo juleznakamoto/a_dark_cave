@@ -10,7 +10,7 @@ export function craftActionIdToItemKey(actionId: string): string {
     .replace(/^_/, "");
 }
 
-/** Localized item flavour text shown on craft buttons when Book of Craftsmanship is owned. */
+/** Localized item flavour text shown on craft buttons. */
 export function getCraftItemDescription(actionId: string): string | undefined {
   const itemKey = craftActionIdToItemKey(actionId);
 

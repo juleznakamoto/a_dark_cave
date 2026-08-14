@@ -4,10 +4,6 @@
       "description": "Buch über die Erhebung des Selbst. Ermöglicht, durch Übung besser in Aufgaben zu werden.",
       "name": "Buch des Aufstiegs"
     },
-    "book_of_craftsmanship": {
-      "description": "Alter Foliant eines Meisterhandwerkers. Offenbart Hinweise zum Herstellen von Gegenständen und Errichten von Gebäuden.",
-      "name": "Buch der Handwerkskunst"
-    },
     "book_of_chainmaster": {
       "description": "Buch des längst totem Kettenmeisters mit harten Methoden, Arbeiter über ihre Grenzen hinaus zu treiben.",
       "name": "Buch des Kettenmeisters" //x1.2

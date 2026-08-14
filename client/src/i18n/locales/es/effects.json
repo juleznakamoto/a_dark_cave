@@ -4,10 +4,6 @@
       "description": "Libro sobre la elevación del yo. Otorga la capacidad de mejorar en las tareas mediante la práctica.",
       "name": "Libro de ascensión"
     },
-    "book_of_craftsmanship": {
-      "description": "Antiguo tomo de un maestro artesano. Revela pistas sutiles sobre la fabricación de objetos y la construcción de edificios.",
-      "name": "Libro de artesanía"
-    },
     "book_of_chainmaster": {
       "description": "Libro del Maestro de las cadenas muerto hace mucho, con métodos crueles para llevar a los trabajadores más allá de sus límites.",
       "name": "Libro del Maestro de las cadenas" //x1.7

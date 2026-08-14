@@ -1223,10 +1223,6 @@
         "message": "Vous achetez le Livre des épreuves. Le marchand sourit d'un air entendu : « Un guide pour ceux qui cherchent à suivre leur voyage. »",
         "label": "Livre des épreuves" //x1.3
       },
-      "trade_book_of_craftsmanship": {
-        "message": "Vous achetez le Livre de l'artisanat. Le marchand hoche la tête avec approbation : « Un tome d'artisan, usé mais rempli de sagesse. Il murmurera ses secrets à ceux qui bâtissent. »",
-        "label": "Livre de l'artisanat"
-      },
       "trade_reinforced_rope": {
         "message": "Vous achetez la corde renforcée. Cette corde résiste à une tension immense et peut atteindre des lieux dans les chambres les plus profondes de la grotte.",
         "label": "Corde renforcée"

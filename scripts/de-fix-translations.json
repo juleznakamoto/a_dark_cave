@@ -403,8 +403,6 @@
   "events.merchant.toolTrades.trade_veinfire_elixir.message": "Du kaufst eine Flasche Aderfeuer-Elixier.",
   "events.merchant.toolTrades.trade_book_of_trials.message": "Du kaufst das Buch der Prüfungen. Der Händler lächelt wissend: „Ein Leitfaden für diejenigen, die ihre Reise verfolgen wollen.“",
   "events.merchant.toolTrades.trade_book_of_trials.label": "Buch der Prüfungen",
-  "events.merchant.toolTrades.trade_book_of_craftsmanship.message": "Du kaufst das Buch der Handwerkskunst. Der Händler nickt anerkennend: „Ein Handwerkerbuch, abgenutzt, aber voller Weisheit. Es wird denen Geheimnisse zuflüstern, die bauen.“",
-  "events.merchant.toolTrades.trade_book_of_craftsmanship.label": "Buch der Handwerkskunst",
   "events.merchant.toolTrades.trade_reinforced_rope.message": "Du kaufst das verstärkte Seil. Dieses Seil hält enormer Belastung stand und erreicht Orte in den tiefsten Höhlenkammern.",
   "events.merchant.toolTrades.trade_reinforced_rope.label": "Verstärktes Seil",
   "events.merchant.toolTrades.trade_occultist_map.message": "Als du die Karte des Okkultisten kaufst, flüstert der Händler: „Ein alter Okkultist verbarg seine Geheimnisse in einer Kammer tief in der Höhle. Diese Karte wird dich führen.“",

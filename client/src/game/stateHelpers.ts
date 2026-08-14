@@ -907,10 +907,7 @@ export function hydrateLoadedGameState<T extends Partial<GameState>>(
       ...defaults.weapons,
       ...savedState.weapons,
     },
-    books: {
-      ...defaults.books,
-      ...savedState.books,
-    },
+    books: gameStateSchema.shape.books.parse(savedState.books ?? {}),
     fellowship: {
       ...defaults.fellowship,
       ...savedState.fellowship,
