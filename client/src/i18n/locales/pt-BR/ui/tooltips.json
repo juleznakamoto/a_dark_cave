@@ -68,6 +68,7 @@
     "unlockMoreJobsForInsight": "Aumentar o limite por {{cost}} Perspicácia",
     "villagerCapJobs": "{{count}} trabalhos",
     "enchantForInsight": "Encantar por {{cost}} Perspicácia",
+    "absolveMadnessForInsight": "Reduza a Loucura em 1 por {{cost}} Perspicácia",
     "maxHeld": "Máx.: {{value}}",
     "doubleActionChance": "{{percent}}% de chance de dobrar os ganhos das ações",
     "luck": "Sorte: +{{value}}",

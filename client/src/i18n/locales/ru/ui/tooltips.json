@@ -71,6 +71,7 @@
     "unlockMoreJobsForInsight": "Увеличить лимит за {{cost}} Прозрение",
     "villagerCapJobs": "{{count}} мест",
     "enchantForInsight": "Зачаровать за {{cost}} Прозрение",
+    "absolveMadnessForInsight": "Снизить Безумие на 1 за {{cost}} Прозрение",
     "maxHeld": "Макс.: {{value}}",
     "doubleActionChance": "{{percent}} % шанс удвоить награды действия",
     "luck": "Удача: +{{value}}",

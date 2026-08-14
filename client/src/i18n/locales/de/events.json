@@ -1223,6 +1223,10 @@
         "message": "Du kaufst das Buch der Prüfungen. Der Händler lächelt wissend: „Ein Leitfaden für diejenigen, die ihre Reise verfolgen wollen.“",
         "label": "Buch der Prüfungen" //x1.3
       },
+      "trade_book_of_absolution": {
+        "message": "Du kaufst das Buch der Absolution. Der Händler senkt die Stimme: „Ein Ritus für jene, die behalten, was sie nicht sollten. Einsicht kann einen Teil des Makels abwaschen.“",
+        "label": "Buch der Absolution"
+      },
       "trade_reinforced_rope": {
         "message": "Du kaufst das verstärkte Seil. Dieses Seil hält enormer Belastung stand und erreicht Orte in den tiefsten Höhlenkammern.",
         "label": "Verstärktes Seil"

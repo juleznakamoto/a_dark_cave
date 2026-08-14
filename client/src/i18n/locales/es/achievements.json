@@ -264,7 +264,7 @@
     },
     "3-ancient_books": {
       "label": "Sabiduría antigua", //x1.2
-      "description": "Colecciona los dos libros antiguos."
+      "description": "Colecciona los tres libros antiguos."
     },
     "3-fellowship": {
       "label": "Buena compañía",

@@ -71,6 +71,7 @@
     "unlockMoreJobsForInsight": "Augmenter la limite pour {{cost}} Perspicacité",
     "villagerCapJobs": "{{count}} emplois",  //x1.2
     "enchantForInsight": "Enchanter pour {{cost}} Perspicacité",  //x1.3
+    "absolveMadnessForInsight": "Réduire la Folie de 1 pour {{cost}} Perspicacité",
     "maxHeld": "Max : {{value}}",
     "doubleActionChance": "{{percent}} % de chance de doubler les gains d'action",
     "luck": "Chance : +{{value}}",

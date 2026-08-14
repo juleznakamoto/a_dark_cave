@@ -48,7 +48,6 @@ import {
   resolveBuildingTooltipEffect,
 } from "@/i18n/tooltipLabels";
 import { useGameStore } from "../state";
-import { CRUEL_MODE } from "../cruelMode";
 import { getMapFragmentCount, MAP_FRAGMENT_TOTAL } from "../mapFragments";
 import {
   formatObsidianOrbFocusCountdown,
@@ -66,6 +65,11 @@ import {
   getWeaponEnchantBonus,
   getWeaponEnchantLevel,
 } from "@/game/weaponEnchantments";
+import {
+  ABSOLUTION_MADNESS_REDUCTION,
+  getItemMadnessAmount,
+  isItemAbsolved,
+} from "@/game/itemAbsolution";
 import { getTotalKnowledge } from "@/game/rules/effectsCalculation";
 import { POISON_ARROWS_DOT_FIGHT_ROUNDS } from "@/game/rules/skillUpgrades";
 
@@ -714,18 +718,9 @@ export function renderItemTooltip(
     );
   }
 
-  // Get cruel mode state
-  const cruelMode = useGameStore.getState().cruelMode;
-
-  // Calculate madness value with cruel mode bonus
-  let madnessValue = effect.bonuses?.generalBonuses?.madness;
-  if (
-    madnessValue &&
-    cruelMode &&
-    madnessValue >= CRUEL_MODE.itemMadness.highMadnessThreshold
-  ) {
-    madnessValue += CRUEL_MODE.itemMadness.highMadnessExtra;
-  }
+  const gameState = useGameStore.getState() as unknown as GameState;
+  const madnessValue = getItemMadnessAmount(gameState, itemId);
+  const itemAbsolved = isItemAbsolved(gameState, itemId);
 
   const mapFragmentCount =
     itemId === "map_fragment"
@@ -892,14 +887,19 @@ export function renderItemTooltip(
                 {renderEnchantStatSuffix(enchantBonusKnowledge)}
               </div>
             )}
-          {madnessValue && (
+          {madnessValue ? (
             <div>
               {getUiTooltip("madnessStat", "Madness:{{sign}}{{value}}", {
                 sign: madnessValue > 0 ? " +" : " ",
                 value: madnessValue,
               })}
+              {itemAbsolved && madnessValue > 0 && (
+                <span className={INSIGHT_TEXT_CLASS}>
+                  {` -${ABSOLUTION_MADNESS_REDUCTION}`}
+                </span>
+              )}
             </div>
-          )}
+          ) : null}
           {effect.bonuses.generalBonuses.insightPerCycle != null &&
             effect.bonuses.generalBonuses.insightPerCycle > 0 && (
               <div>

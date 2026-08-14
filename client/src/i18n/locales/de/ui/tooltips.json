@@ -71,6 +71,7 @@
     "unlockMoreJobsForInsight": "Limit erhöhen für {{cost}} Einsicht",
     "villagerCapJobs": "{{count}} Jobs",
     "enchantForInsight": "Verzaubern für {{cost}} Einsicht",
+    "absolveMadnessForInsight": "Wahnsinn um 1 senken für {{cost}} Einsicht",
     "maxHeld": "Max.: {{value}}",
     "doubleActionChance": "{{percent}} % Chance, Aktionsgewinne zu verdoppeln",
     "luck": "Glück: +{{value}}",

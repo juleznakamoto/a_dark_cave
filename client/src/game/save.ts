@@ -132,6 +132,7 @@ const ALWAYS_FULL_CLOUD_SLICES = [
   "crowsEyeSkills",
   "disgracedPriorSkills",
   "weaponEnchantments",
+  "absolvedItems",
   "merchantTrades",
   "triggeredEvents",
   "effects",

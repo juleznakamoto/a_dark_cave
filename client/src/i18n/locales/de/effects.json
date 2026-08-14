@@ -4,6 +4,10 @@
       "description": "Buch über die Erhebung des Selbst. Ermöglicht, durch Übung besser in Aufgaben zu werden.",
       "name": "Buch des Aufstiegs"
     },
+    "book_of_absolution": {
+      "description": "Riten, um verfluchte Dinge zu beruhigen. Setze Einsicht ein, um den Wahnsinn eines Artefakts zu mindern.",
+      "name": "Buch der Absolution"
+    },
     "book_of_chainmaster": {
       "description": "Buch des längst totem Kettenmeisters mit harten Methoden, Arbeiter über ihre Grenzen hinaus zu treiben.",
       "name": "Buch des Kettenmeisters" //x1.2

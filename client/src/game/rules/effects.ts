@@ -1717,6 +1717,13 @@ export const bookEffects: Record<string, EffectDefinition> = {
       "Book of the long-dead Chainmaster containing harsh methods to drive workers beyond their limits.",
     bonuses: {},
   },
+  book_of_absolution: {
+    id: "book_of_absolution",
+    name: "Book of Absolution",
+    description:
+      "Rites for quieting cursed things. Spend Insight to lessen the madness an artifact inflicts.",
+    bonuses: {},
+  },
 };
 
 export const fellowshipEffects: Record<string, EffectDefinition> = {

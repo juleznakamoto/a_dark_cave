@@ -171,6 +171,10 @@ import {
   getWeaponEnchantLevel,
 } from "@/game/weaponEnchantments";
 import {
+  ABSOLUTION_INSIGHT_COST,
+  canAbsolveItem,
+} from "@/game/itemAbsolution";
+import {
   isI18nReturnedObjectError,
   resolveEventMessage,
   resolveEventTitle,
@@ -551,6 +555,8 @@ interface GameStore extends GameState {
   /** Spend Insight to skip 50% of an in-progress building's construction time (once). */
   boostConstruction: (actionId: string) => boolean;
   enchantWeapon: (weaponId: string) => boolean;
+  /** Spend Insight to reduce an item's madness by 1 (Book of Absolution, once per item). */
+  absolveItem: (itemId: string) => boolean;
   setEventDialog: (isOpen: boolean, event?: LogEntry | null) => void;
   setCombatDialog: (isOpen: boolean, data?: any) => void;
   setTimedEventTab: (isActive: boolean, event?: LogEntry | null, duration?: number) => Promise<void>;
@@ -4322,6 +4328,27 @@ export const useGameStore = create<GameStore>((set, get) => ({
       weaponEnchantments: {
         ...(state.weaponEnchantments ?? {}),
         [weaponId]: level + 1,
+      },
+    });
+    StateManager.scheduleEffectsUpdate(get);
+    return true;
+  },
+
+  absolveItem: (itemId: string) => {
+    const state = get();
+    if (!canAbsolveItem(state, itemId)) return false;
+
+    const resourceUpdates = updateResource(
+      state,
+      "insight",
+      -ABSOLUTION_INSIGHT_COST,
+    );
+
+    set({
+      ...resourceUpdates,
+      absolvedItems: {
+        ...(state.absolvedItems ?? {}),
+        [itemId]: true,
       },
     });
     StateManager.scheduleEffectsUpdate(get);

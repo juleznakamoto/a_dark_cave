@@ -71,6 +71,7 @@
     "unlockMoreJobsForInsight": "消耗 {{cost}} 洞见提高上限",
     "villagerCapJobs": "{{count}} 岗位",
     "enchantForInsight": "消耗 {{cost}} 洞见附魔",
+    "absolveMadnessForInsight": "消耗 {{cost}} 洞见，使疯狂 -1",
     "maxHeld": "上限：{{value}}",
     "doubleActionChance": "{{percent}}% 几率使行动收益翻倍",
     "luck": "幸运：+{{value}}",

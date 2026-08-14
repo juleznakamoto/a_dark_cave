@@ -4,6 +4,10 @@
       "description": "Libro sull'ascesa di sé. Concede la capacità di migliorare nei compiti attraverso la pratica.",
       "name": "Libro dell'Ascensione"
     },
+    "book_of_absolution": {
+      "description": "Riti per quietare le cose maledette. Spendi Intuizione per attenuare la follia inflitta da un artefatto.",
+      "name": "Libro dell'Assoluzione"
+    },
     "book_of_chainmaster": {
       "description": "Libro del Maestro delle catene morto da tempo, contenente metodi crudeli per spingere i lavoratori oltre i loro limiti.",
       "name": "Libro del Maestro delle catene"

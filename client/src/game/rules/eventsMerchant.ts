@@ -787,6 +787,16 @@ const toolTrades = [
 
   },
   {
+    id: "trade_book_of_absolution",
+    label: getEffectName("books", "book_of_absolution", bookEffects.book_of_absolution?.name ?? "Book of Absolution"),
+    give: "book",
+    giveItem: "book_of_absolution",
+    condition: (state: GameState) =>
+      (state.buildings.clerksHut ?? 0) >= 1 && !state.books.book_of_absolution,
+    costs: [{ resource: "gold", amounts: [250] }],
+
+  },
+  {
     id: "trade_reinforced_rope",
     label: getEffectName("tools", "reinforced_rope", "Reinforced Rope"),
     give: "tool",
@@ -1245,15 +1255,28 @@ export function generateMerchantChoices(state: GameState): MerchantTradeData[] {
     false,
   );
 
-  // At most one special (book/tool/schematic/weapon/relic) trade per visit.
-  // Book of Trials always takes that slot while unowned; otherwise one random draw.
+  // At most one random special (tool/schematic/weapon/relic) trade per visit.
+  // Book of Trials and Book of Absolution are guaranteed while unowned.
   const eligibleSpecialTrades = toolTrades.filter((trade) =>
     trade.condition(state),
   );
   const availableToolTrades: MerchantTradeData[] = [];
-  if (eligibleSpecialTrades.length > 0) {
+  const trialsTrade = eligibleSpecialTrades.find(
+    (t) => t.id === "trade_book_of_trials",
+  );
+  const absolutionTrade = eligibleSpecialTrades.find(
+    (t) => t.id === "trade_book_of_absolution",
+  );
+  if (trialsTrade) {
+    availableToolTrades.push(buildGoldCostSpecialTrade(trialsTrade, discount));
+  }
+  if (absolutionTrade) {
+    availableToolTrades.push(
+      buildGoldCostSpecialTrade(absolutionTrade, discount),
+    );
+  }
+  if (!trialsTrade && !absolutionTrade && eligibleSpecialTrades.length > 0) {
     const trade =
-      eligibleSpecialTrades.find((t) => t.id === "trade_book_of_trials") ??
       eligibleSpecialTrades[
       Math.floor(Math.random() * eligibleSpecialTrades.length)
       ];

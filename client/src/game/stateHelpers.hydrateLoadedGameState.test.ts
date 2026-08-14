@@ -63,4 +63,14 @@ describe("hydrateLoadedGameState", () => {
       ),
     ).toBe(false);
   });
+
+  it("defaults missing absolvedItems and preserves cleansed relics", () => {
+    const missing = hydrateLoadedGameState({ playTime: 10 });
+    expect(missing.absolvedItems).toEqual({});
+
+    const hydrated = hydrateLoadedGameState({
+      absolvedItems: { unnamed_book: true },
+    });
+    expect(hydrated.absolvedItems.unnamed_book).toBe(true);
+  });
 });

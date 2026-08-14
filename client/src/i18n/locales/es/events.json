@@ -1223,6 +1223,10 @@
         "message": "Compras el Libro de pruebas. El mercader sonríe con aire de saber: «Una guía para quienes buscan seguir el rastro de su viaje.»",
         "label": "Libro de pruebas"
       },
+      "trade_book_of_absolution": {
+        "message": "Compras el Libro de la absolución. El mercader baja la voz: «Un rito para quienes guardan lo que no deberían. La Perspicacia puede lavar un poco de la mancha.»",
+        "label": "Libro de la absolución"
+      },
       "trade_reinforced_rope": {
         "message": "Compras la cuerda reforzada. Esta cuerda soporta una tensión enorme y alcanza lugares en las cámaras más profundas de la cueva.",
         "label": "Cuerda reforzada"

@@ -264,6 +264,7 @@ export const gameStateSchema = z.object({
       book_of_ascension: z.boolean().default(false),
       book_of_trials: z.boolean().default(false),
       book_of_chainmaster: z.boolean().default(false),
+      book_of_absolution: z.boolean().default(false),
     })
     .default({}),
   buildings: z
@@ -390,6 +391,8 @@ export const gameStateSchema = z.object({
   constructionBoostsUsed: z.record(z.string(), z.boolean()).default({}),
   // Weapon enchantment levels keyed by weapon id (Tomewarden Academy feature).
   weaponEnchantments: z.record(z.string(), z.number()).default({}),
+  // Book of Absolution: item ids whose madness has been cleansed once.
+  absolvedItems: z.record(z.string(), z.boolean()).default({}),
   expeditionVillagers: z.record(z.string(), z.number()).default({}),
   story: z
     .object({

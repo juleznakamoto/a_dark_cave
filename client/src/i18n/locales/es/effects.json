@@ -4,6 +4,10 @@
       "description": "Libro sobre la elevación del yo. Otorga la capacidad de mejorar en las tareas mediante la práctica.",
       "name": "Libro de ascensión"
     },
+    "book_of_absolution": {
+      "description": "Ritos para aquietar lo maldito. Gasta Perspicacia para reducir la locura que inflige un artefacto.",
+      "name": "Libro de la absolución"
+    },
     "book_of_chainmaster": {
       "description": "Libro del Maestro de las cadenas muerto hace mucho, con métodos crueles para llevar a los trabajadores más allá de sus límites.",
       "name": "Libro del Maestro de las cadenas" //x1.7

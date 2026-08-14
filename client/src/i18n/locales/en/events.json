@@ -1223,6 +1223,10 @@
         "message": "You purchase the Book of Trials. The merchant smiles knowingly: 'A guide for those who seek to track their journey.'",
         "label": "Book of Trials"
       },
+      "trade_book_of_absolution": {
+        "message": "You purchase the Book of Absolution. The merchant lowers his voice: 'A rite for those who keep what they should not. Insight can wash a little of the stain away.'",
+        "label": "Book of Absolution"
+      },
       "trade_reinforced_rope": {
         "message": "You purchase the reinforced rope. This rope can withstand tremendous strain and reach places in the deepest cave chambers.",
         "label": "Reinforced Rope"

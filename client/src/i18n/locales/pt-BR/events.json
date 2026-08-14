@@ -1125,6 +1125,10 @@
         "message": "Você compra o Livro das Provações. O mercador sorri com conhecimento: 'Um guia para aqueles que buscam acompanhar sua jornada.'",
         "label": "Livro das Provações"
       },
+      "trade_book_of_absolution": {
+        "message": "Você compra o Livro da Absolvição. O mercador baixa a voz: 'Um rito para quem guarda o que não deveria. A Perspicácia pode lavar um pouco da mancha.'",
+        "label": "Livro da Absolvição"
+      },
       "trade_reinforced_rope": {
         "message": "Você compra a corda reforçada. Esta corda pode suportar uma tensão tremenda e alcançar lugares nas câmaras mais profundas da caverna.",
         "label": "Corda Reforçada"

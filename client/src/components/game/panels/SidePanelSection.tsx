@@ -42,6 +42,11 @@ import {
   getNextEnchantCost,
   isWeaponEnchantUnlocked,
 } from "@/game/weaponEnchantments";
+import {
+  ABSOLUTION_INSIGHT_COST,
+  canAbsolveItem,
+  shouldShowAbsolveBadge,
+} from "@/game/itemAbsolution";
 import { getUiTooltip } from "@/i18n/tooltipLabels";
 import { GAME_PANEL_HEADER_BAND } from "@/components/game/gameChrome";
 
@@ -397,6 +402,105 @@ function WeaponEnchantBadge({ weaponId }: { weaponId: string }) {
       <button
         type="button"
         aria-label={enchantTooltip}
+        aria-busy={playing}
+        disabled={isDisabled}
+        onClick={(e) => {
+          e.stopPropagation();
+          handleClick();
+        }}
+        className={getInsightBadgeTriggerClassName({
+          canAfford: affordable,
+          playing,
+          suppressHover,
+          className: cn(
+            pulseClassName,
+            INSIGHT_BADGE_SIDE_PANEL_SIZE_CLASS,
+            "leading-none",
+          ),
+        })}
+      >
+        <BuildingActionBadge embedded size="sm" playing={playing} />
+      </button>
+    </TooltipWrapper>
+  );
+}
+
+function ItemAbsolveBadge({ itemId }: { itemId: string }) {
+  const tooltipId = `item-absolve-${itemId}`;
+  const {
+    pulseClassName,
+    dismissPulse,
+    handleTooltipEnter,
+    handleTooltipLeave,
+  } = useInsightBadgeTooltipPulse(tooltipId);
+  const gameState = useGameStore((s) => s as unknown as GameState);
+  const setHighlightedResources = useGameStore(
+    (s) => s.setHighlightedResources,
+  );
+  const [playingUntil, setPlayingUntil] = useState(0);
+  const [suppressHover, setSuppressHover] = useState(false);
+  const [, forceUpdate] = useState(0);
+  const absolveTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  const playing = playingUntil > 0 && playingUntil > Date.now();
+
+  useEffect(() => {
+    if (!playingUntil) return;
+    const interval = setInterval(() => forceUpdate((n) => n + 1), 100);
+    return () => clearInterval(interval);
+  }, [playingUntil]);
+
+  useEffect(
+    () => () => {
+      if (absolveTimerRef.current) clearTimeout(absolveTimerRef.current);
+    },
+    [],
+  );
+
+  if (!shouldShowAbsolveBadge(gameState, itemId)) return null;
+
+  const affordable = canAbsolveItem(gameState, itemId);
+  const isDisabled = !affordable || playing;
+  const absolveTooltip = getUiTooltip(
+    "absolveMadnessForInsight",
+    "Reduce Madness by 1 for {{cost}} Insight",
+    { cost: ABSOLUTION_INSIGHT_COST },
+  );
+
+  const handleClick = () => {
+    if (isDisabled) return;
+    dismissPulse();
+    setSuppressHover(false);
+    setPlayingUntil(Date.now() + INSIGHT_REVEAL_DURATION_MS);
+    setHighlightedResources(["insight"]);
+    if (absolveTimerRef.current) clearTimeout(absolveTimerRef.current);
+    absolveTimerRef.current = setTimeout(() => {
+      useGameStore.getState().absolveItem(itemId);
+      setHighlightedResources([]);
+      setPlayingUntil(0);
+      setSuppressHover(true);
+    }, INSIGHT_REVEAL_DURATION_MS);
+  };
+
+  return (
+    <TooltipWrapper
+      tooltip={<div className="text-xs">{absolveTooltip}</div>}
+      tooltipId={tooltipId}
+      disabled={isDisabled}
+      tooltipContentClassName="max-w-xs"
+      tooltipTriggerAsChild
+      tooltipTriggerClassName={INSIGHT_BADGE_TOOLTIP_TRIGGER_CLASS}
+      onMouseEnter={handleTooltipEnter}
+      onMouseLeave={() => {
+        setSuppressHover(false);
+        handleTooltipLeave(playing);
+      }}
+      className="inline-flex shrink-0 items-center self-center"
+    >
+      <button
+        type="button"
+        data-testid={`button-absolve-${itemId}`}
+        aria-label={absolveTooltip}
         aria-busy={playing}
         disabled={isDisabled}
         onClick={(e) => {
@@ -1054,6 +1158,7 @@ export default function SidePanelSection({
         sectionId === "weapons" ? (
           <WeaponEnchantBadge weaponId={item.id} />
         ) : null;
+      const absolveBadge = <ItemAbsolveBadge itemId={item.id} />;
       return (
         <div
           key={item.id}
@@ -1095,6 +1200,7 @@ export default function SidePanelSection({
               {labelContent}
             </TooltipWrapper>
             {enchantBadge}
+            {absolveBadge}
           </span>
         </div>
       );
@@ -1116,22 +1222,28 @@ export default function SidePanelSection({
                 : ""
             }`}
         >
-          <TooltipWrapper
-            tooltip={renderItemTooltip(
-              item.id,
-              itemType,
-              undefined,
-              SIDE_PANEL_ITEM_TOOLTIP_DISPLAY,
-            )}
-            tooltipId={item.id}
-            disabled
-            tooltipContentClassName="max-w-xs"
-            onMouseEnter={() => handleItemTooltipEnter(item.id)}
-            onMouseLeave={() => handleItemTooltipLeave(item.id)}
-            className={sidePanelTooltipTriggerClass}
-          >
-            {labelContent}
-          </TooltipWrapper>
+          <span className="inline-flex min-w-0 max-w-full items-center gap-0.5">
+            <TooltipWrapper
+              tooltip={renderItemTooltip(
+                item.id,
+                itemType,
+                undefined,
+                SIDE_PANEL_ITEM_TOOLTIP_DISPLAY,
+              )}
+              tooltipId={item.id}
+              disabled
+              tooltipContentClassName="max-w-xs"
+              onMouseEnter={() => handleItemTooltipEnter(item.id)}
+              onMouseLeave={() => handleItemTooltipLeave(item.id)}
+              className={cn(
+                "inline-flex min-w-0 shrink-0",
+                globalTooltip.isMobile && "cursor-pointer",
+              )}
+            >
+              {labelContent}
+            </TooltipWrapper>
+            <ItemAbsolveBadge itemId={item.id} />
+          </span>
         </div>
       );
     }

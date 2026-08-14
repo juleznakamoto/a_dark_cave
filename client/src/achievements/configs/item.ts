@@ -142,13 +142,14 @@ export const itemChartConfig: AchievementChartConfig = {
     [
       {
         segmentId: "3-ancient_books",
-        maxCount: 2,
+        maxCount: 3,
         label: "Ancient Wisdom",
         reward: 250,
         getCount: (_state: GameState) =>
           getItemCount([
             "book_of_ascension",
             "book_of_trials",
+            "book_of_absolution",
           ]),
       },
       {

@@ -4,6 +4,10 @@
       "description": "Livro sobre a ascensão do eu. Concede a habilidade de melhorar nas tarefas por meio de prática.",
       "name": "Livro da Ascensão"
     },
+    "book_of_absolution": {
+      "description": "Ritos para acalmar coisas amaldiçoadas. Gaste Perspicácia para reduzir a loucura que um artefato inflige.",
+      "name": "Livro da Absolvição"
+    },
     "book_of_chainmaster": {
       "description": "Livro do Mestre das Correntes morto há muito, contendo métodos severos para levar os trabalhadores além de seus limites.",
       "name": "Livro do Mestre das Correntes"

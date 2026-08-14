@@ -4,6 +4,10 @@
       "description": "Book on ascending the self. Grants the ability to improve at tasks through practice.",
       "name": "Book of Ascension"
     },
+    "book_of_absolution": {
+      "description": "Rites for quieting cursed things. Spend Insight to lessen the madness an artifact inflicts.",
+      "name": "Book of Absolution"
+    },
     "book_of_chainmaster": {
       "description": "Book of the long-dead Chainmaster containing harsh methods to drive workers beyond their limits.",
       "name": "Book of Chainmaster"

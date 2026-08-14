@@ -21,6 +21,7 @@ import { BUILDING_HIERARCHIES } from "@/game/buildingHierarchy";
 import { getBonusSidebarLabel } from "@/i18n/resolveGameText";
 import { CRAFT_UPGRADE_ACTIONS, getCraftPriorMultiplier } from "@/game/craftUpgradeUtils";
 import { getWeaponEnchantBonus } from "@/game/weaponEnchantments";
+import { getAbsolvedItemMadnessAmount } from "@/game/itemAbsolution";
 import {
   getBuilderBuildCostReduction,
   getBuilderBuildTimeReduction,
@@ -1091,14 +1092,10 @@ export const calculateTotalEffects = (state: GameState) => {
   activeEffects.forEach((effect) => {
     // Process madness bonuses from general bonuses (items that ADD madness)
     if (effect.bonuses?.generalBonuses?.madness) {
-      let madnessValue = effect.bonuses.generalBonuses.madness;
-      if (
-        state.cruelMode &&
-        madnessValue >= CRUEL_MODE.itemMadness.highMadnessThreshold
-      ) {
-        madnessValue += CRUEL_MODE.itemMadness.highMadnessExtra;
+      const madnessValue = getAbsolvedItemMadnessAmount(state, effect.id);
+      if (madnessValue) {
+        effects.statBonuses.madness += madnessValue;
       }
-      effects.statBonuses.madness += madnessValue;
     }
 
     // Process madness reduction from general bonuses (items that REDUCE madness)

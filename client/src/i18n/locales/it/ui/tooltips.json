@@ -68,6 +68,7 @@
     "unlockMoreJobsForInsight": "Aumenta il limite per {{cost}} Intuizione",
     "villagerCapJobs": "{{count}} lavori",
     "enchantForInsight": "Incanta per {{cost}} Intuizione",
+    "absolveMadnessForInsight": "Riduci la Follia di 1 per {{cost}} Intuizione",
     "maxHeld": "Max: {{value}}",
     "doubleActionChance": "{{percent}}% di probabilità di raddoppiare i guadagni delle azioni",
     "luck": "Fortuna: +{{value}}",
