@@ -2814,7 +2814,7 @@
       }
     },
     "log": {
-      "outcome0": "Os caçadores voltam com muita carne. A aldeia come bem esta noite.",
+      "outcome0": "A caçada é um sucesso. Os caçadores voltam com muita carne. A aldeia come bem esta noite.",
       "outcome1": "Os lobos os encontram antes que possam derrubar os cervos. Um caçador não retorna.",
       "outcome2": "Você ordena que os caçadores fiquem por perto. Os cervos seguem adiante, e os lobos permanecem invisíveis."
     },

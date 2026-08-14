@@ -611,7 +611,7 @@
       }
     },
     "log": {
-      "outcome0": "Les chasseurs reviennent avec beaucoup de viande. Le village mange bien ce soir.",
+      "outcome0": "La chasse est un succès. Les chasseurs reviennent avec beaucoup de viande. Le village mange bien ce soir.",
       "outcome1": "Les loups les trouvent avant qu'ils puissent abattre les cerfs. Un chasseur ne revient pas.",
       "outcome2": "Vous ordonnez aux chasseurs de rester près du village. Les cerfs s'éloignent, et les loups restent invisibles."
     },

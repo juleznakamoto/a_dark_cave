@@ -2814,7 +2814,7 @@
       }
     },
     "log": {
-      "outcome0": "I cacciatori tornano con molta carne. Stasera il villaggio mangia bene.",
+      "outcome0": "La caccia è un successo. I cacciatori tornano con molta carne. Stasera il villaggio mangia bene.",
       "outcome1": "I lupi li trovano prima che possano abbattere i cervi. Un cacciatore non fa ritorno.",
       "outcome2": "Ordini ai cacciatori di restare vicini. I cervi se ne vanno, e i lupi restano invisibili."
     },

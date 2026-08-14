@@ -611,7 +611,7 @@
       }
     },
     "log": {
-      "outcome0": "Los cazadores regresan con mucha carne. Esta noche el pueblo come bien.",
+      "outcome0": "La cacería es un éxito. Los cazadores regresan con mucha carne. Esta noche el pueblo come bien.",
       "outcome1": "Los lobos los encuentran antes de que puedan abatir a los ciervos. Un cazador no regresa.",
       "outcome2": "Ordenas a los cazadores que se queden cerca. Los ciervos se alejan, y los lobos permanecen ocultos."
     },

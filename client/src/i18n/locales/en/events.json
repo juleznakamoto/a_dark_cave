@@ -611,7 +611,7 @@
       }
     },
     "log": {
-      "outcome0": "The hunters return with lots of meat. The village eats well tonight.",
+      "outcome0": "The hunt is a success. The hunters return with lots of meat. The village eats well tonight.",
       "outcome1": "Wolves find them before they can bring the deer down. One hunter does not return.",
       "outcome2": "You order the hunters to stay close. The deer move on, and the wolves remain unseen."
     },

@@ -611,7 +611,7 @@
       }
     },
     "log": {
-      "outcome0": "Die Jäger kehren mit viel Fleisch zurück. Das Dorf isst heute Abend gut.",
+      "outcome0": "Die Jagd ist erfolgreich. Die Jäger kehren mit viel Fleisch zurück. Das Dorf isst heute Abend gut.",
       "outcome1": "Wölfe finden sie, bevor sie die Hirsche erlegen können. Ein Jäger kehrt nicht zurück.",
       "outcome2": "Du befiehlst den Jägern, in der Nähe zu bleiben. Die Hirsche ziehen weiter, und die Wölfe bleiben ungesehen."
     },

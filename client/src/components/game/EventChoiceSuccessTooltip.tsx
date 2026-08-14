@@ -32,7 +32,7 @@ export function RelevantStatIcon({
   return (
     <span
       className={cn(
-        "font-noto-symbols-2 inline-flex shrink-0 items-center justify-center translate-y-px text-xs leading-none",
+        "font-noto-symbols-2 inline-flex w-4 shrink-0 items-center justify-center translate-y-px text-xs leading-none",
         statInfo.color,
         className,
       )}
