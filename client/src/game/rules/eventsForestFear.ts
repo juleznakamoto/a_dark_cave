@@ -2,7 +2,7 @@ import type { GameEvent } from "./eventTypes";
 import { GameState } from "@shared/schema";
 import { killVillagers } from "@/game/stateHelpers";
 
-const FOREST_FEAR_DURATION_MS = 15 * 60 * 1000;
+const FOREST_FEAR_DURATION_MS = 20 * 60 * 1000;
 
 export const forestFearEvent: GameEvent = {
   id: "forestFear",
