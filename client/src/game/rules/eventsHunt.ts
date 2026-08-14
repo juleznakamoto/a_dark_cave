@@ -26,7 +26,7 @@ export const huntEvents: Record<string, GameEvent> = {
       (state.buildings.woodenHut ?? 0) >= 2,
     timeProbability: 5,
     priority: 3,
-    repeatable: true,
+    repeatable: false,
     choices: [
       {
         id: "sendThem",

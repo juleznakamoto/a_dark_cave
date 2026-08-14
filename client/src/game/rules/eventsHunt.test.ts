@@ -36,7 +36,7 @@ describe("deerHerd", () => {
   it("is a blocking dialog event, not a timed tab", () => {
     expect(event.showAsTimedTab).toBeFalsy();
     expect(event.timeProbability).toBe(5);
-    expect(event.repeatable).toBe(true);
+    expect(event.repeatable).toBe(false);
   });
 
   it("triggers at 250 food with 2 hunters and 2 wooden huts", () => {
