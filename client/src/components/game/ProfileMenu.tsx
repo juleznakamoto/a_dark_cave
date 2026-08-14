@@ -588,23 +588,21 @@ export function GameHeaderControls() {
         onOpenChange={setAccountDropdownOpen}
         modal={false}
       >
-        <HoverCalloutTooltip label={t("profile.title")} side="bottom">
-          <DropdownMenuTrigger asChild>
-            <Button
-              type="button"
-              variant="ghost"
-              size="xs"
-              aria-label={t("profile.title")}
-              className={`${HEADER_ICON_BTN} group touch-manipulation`}
-            >
-              <GameUiIcon
-                name="menu"
-                sizeClassName={HEADER_ACCENT_ICON_SIZE}
-                className={HEADER_ICON_SYMBOL_HOVER}
-              />
-            </Button>
-          </DropdownMenuTrigger>
-        </HoverCalloutTooltip>
+        <DropdownMenuTrigger asChild>
+          <Button
+            type="button"
+            variant="ghost"
+            size="xs"
+            aria-label={t("profile.title")}
+            className={`${HEADER_ICON_BTN} group touch-manipulation`}
+          >
+            <GameUiIcon
+              name="menu"
+              sizeClassName={HEADER_ACCENT_ICON_SIZE}
+              className={HEADER_ICON_SYMBOL_HOVER}
+            />
+          </Button>
+        </DropdownMenuTrigger>
         <DropdownMenuContent
           align="end"
           side="bottom"
