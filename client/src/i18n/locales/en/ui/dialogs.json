@@ -6,7 +6,9 @@
     "knowledgeTimeBonus": "+{{seconds}}s Decision Time due to Knowledge{{maxSuffix}}",
     "knowledgeTimeBonusMax": " (max)",
     "successChance": "Success Chance: {{percent}}%",
-    "successChanceLocked": "Success Chance: ??%",
+    "successChanceBase": "Base: {{percent}}%",
+    "successChanceStatPerPoint": "+{{percent}}% per point",
+    "successChanceCruel": "Cruel Mode: {{percent}}%",
     "influencedBy": "Influenced by:"
   },
   "reward": {

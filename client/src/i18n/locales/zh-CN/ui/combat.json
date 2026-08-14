@@ -6,6 +6,8 @@
     "fighting": "战斗中...",
     "startFight": "开始战斗",
     "roundTitle": "战斗 - 第 {{round}} 回合",
+    "bossRoundTitle": "首领战 – 第{{round}}回合",
+    "bossTitle": "首领战",
     "youLost": "你输了",
     "youWin": "你赢了",
     "bastion": "堡垒",
@@ -14,6 +16,10 @@
     "integrity": "完整度",
     "attack": "攻击",
     "defense": "防御",
+    "healChance": "治疗几率",
+    "stunChance": "眩晕几率",
+    "stunned": "眩晕",
+    "enemyHealed": "已治疗",
     "attackFailed": "攻击失败",
     "crushingStrikeFailed": "粉碎打击失败",
     "feralHowlFailed": "野性咆哮失败",
@@ -42,13 +48,7 @@
     "fellowInjured": "{{name}} 受伤了。",
     "buildingDamaged": "{{name}} 受损了。",
     "silverClaimed": "获得 {{amount}} 白银。",
-    "goldClaimed": "获得 {{amount}} 金币。",
-    "bossRoundTitle": "首领战 – 第{{round}}回合",
-    "bossTitle": "首领战",
-    "healChance": "治疗几率",
-    "stunChance": "眩晕几率",
-    "stunned": "眩晕",
-    "enemyHealed": "已治疗"
+    "goldClaimed": "获得 {{amount}} 金币。"
   },
   "bastion": {
     "heal": "治疗",
@@ -68,12 +68,12 @@
       "thirdWave": "第三波",
       "fourthWave": "第四波",
       "fifthWave": "第五波",
+      "firstBossWave": "首领波",
       "sixthWave": "第六波",
       "seventhWave": "第七波",
       "eighthWave": "第八波",
       "ninthWave": "第九波",
       "tenthWave": "第十波",
-      "firstBossWave": "首领波",
       "secondBossWave": "最终首领波"
     }
   },

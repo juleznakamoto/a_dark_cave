@@ -1,5 +1,5 @@
 import type { GameEvent } from "./eventTypes";
-import { calculateSuccessChance } from "./eventSuccessChance";
+import { calculateSuccessChance, defineSuccessChance } from "./eventSuccessChance";
 import { GameState } from "@shared/schema";
 import { addFreeVillagersWithinCap, killVillagers } from "@/game/stateHelpers";
 import { getTotalMadness, getTotalLuck } from "./effectsCalculation";
@@ -68,13 +68,10 @@ export const madnessEvents: Record<string, GameEvent> = {
     choices: [
       {
         id: "stare_at_shadows",
-        relevant_stats: ["knowledge"],
-        success_chance: (state: GameState) => {
-          return calculateSuccessChance(state, 0.0, {
-            type: "knowledge",
-            multiplier: 0.015,
-          });
-        },
+        ...defineSuccessChance({
+          base: 0.0,
+          stats: [{ type: "knowledge", multiplier: 0.015 }],
+        }),
         effect: (state: GameState) => {
           const successChance = calculateSuccessChance(state, 0.0, {
             type: "knowledge",
@@ -140,13 +137,10 @@ export const madnessEvents: Record<string, GameEvent> = {
     choices: [
       {
         id: "confront",
-        relevant_stats: ["knowledge"],
-        success_chance: (state: GameState) => {
-          return calculateSuccessChance(state, 0.1, {
-            type: "knowledge",
-            multiplier: 0.01,
-          });
-        },
+        ...defineSuccessChance({
+          base: 0.1,
+          stats: [{ type: "knowledge", multiplier: 0.01 }],
+        }),
         effect: (state: GameState) => {
           const successChance = calculateSuccessChance(state, 0.1, {
             type: "knowledge",
@@ -223,13 +217,10 @@ export const madnessEvents: Record<string, GameEvent> = {
     choices: [
       {
         id: "drink_water",
-        relevant_stats: ["knowledge"],
-        success_chance: (state: GameState) => {
-          return calculateSuccessChance(state, 0.0, {
-            type: "knowledge",
-            multiplier: 0.1,
-          });
-        },
+        ...defineSuccessChance({
+          base: 0.0,
+          stats: [{ type: "knowledge", multiplier: 0.1 }],
+        }),
         effect: (state: GameState) => {
           const successChance = calculateSuccessChance(state, 0.0, {
             type: "knowledge",
@@ -292,13 +283,10 @@ export const madnessEvents: Record<string, GameEvent> = {
     choices: [
       {
         id: "examine",
-        relevant_stats: ["knowledge"],
-        success_chance: (state: GameState) => {
-          return calculateSuccessChance(state, 0.0, {
-            type: "knowledge",
-            multiplier: 0.0075,
-          });
-        },
+        ...defineSuccessChance({
+          base: 0.0,
+          stats: [{ type: "knowledge", multiplier: 0.0075 }],
+        }),
         effect: (state: GameState) => {
           const successChance = calculateSuccessChance(state, 0.0, {
             type: "knowledge",
@@ -377,13 +365,10 @@ export const madnessEvents: Record<string, GameEvent> = {
     choices: [
       {
         id: "talk_to_them",
-        relevant_stats: ["knowledge"],
-        success_chance: (state: GameState) => {
-          return calculateSuccessChance(state, 0.0, {
-            type: "knowledge",
-            multiplier: 0.0075,
-          });
-        },
+        ...defineSuccessChance({
+          base: 0.0,
+          stats: [{ type: "knowledge", multiplier: 0.0075 }],
+        }),
         effect: (state: GameState) => {
           const successChance = calculateSuccessChance(state, 0.0, {
             type: "knowledge",
@@ -453,16 +438,13 @@ export const madnessEvents: Record<string, GameEvent> = {
     choices: [
       {
         id: "calm_down",
-        relevant_stats: ["knowledge", "luck"],
-        success_chance: (state: GameState) => {
-          return calculateSuccessChance(state, 0.0, {
-            type: "knowledge",
-            multiplier: 0.005,
-          }, {
-            type: "luck",
-            multiplier: 0.01,
-          });
-        },
+        ...defineSuccessChance({
+          base: 0.0,
+          stats: [
+            { type: "knowledge", multiplier: 0.005 },
+            { type: "luck", multiplier: 0.01 },
+          ],
+        }),
         effect: (state: GameState) => {
           const successChance = calculateSuccessChance(state, 0.0, {
             type: "knowledge",
@@ -542,13 +524,10 @@ export const madnessEvents: Record<string, GameEvent> = {
     choices: [
       {
         id: "burn_hut",
-        relevant_stats: ["luck"],
-        success_chance: (state: GameState) => {
-          return calculateSuccessChance(state, 0.1, {
-            type: "luck",
-            multiplier: 0.015,
-          });
-        },
+        ...defineSuccessChance({
+          base: 0.1,
+          stats: [{ type: "luck", multiplier: 0.015 }],
+        }),
         effect: (state: GameState) => {
           const successChance = calculateSuccessChance(state, 0.1, {
             type: "luck",
@@ -633,16 +612,13 @@ export const madnessEvents: Record<string, GameEvent> = {
     choices: [
       {
         id: "investigate",
-        relevant_stats: ["knowledge", "luck"],
-        success_chance: (state: GameState) => {
-          return calculateSuccessChance(state, 0.1, {
-            type: "knowledge",
-            multiplier: 0.0025,
-          }, {
-            type: "luck",
-            multiplier: 0.005,
-          });
-        },
+        ...defineSuccessChance({
+          base: 0.1,
+          stats: [
+            { type: "knowledge", multiplier: 0.0025 },
+            { type: "luck", multiplier: 0.005 },
+          ],
+        }),
         effect: (state: GameState) => {
           const successChance = calculateSuccessChance(state, 0.1, {
             type: "knowledge",
@@ -720,16 +696,13 @@ export const madnessEvents: Record<string, GameEvent> = {
     choices: [
       {
         id: "shake_them",
-        relevant_stats: ["knowledge", "luck"],
-        success_chance: (state: GameState) => {
-          return calculateSuccessChance(state, 0.1, {
-            type: "knowledge",
-            multiplier: 0.0025,
-          }, {
-            type: "luck",
-            multiplier: 0.005,
-          });
-        },
+        ...defineSuccessChance({
+          base: 0.1,
+          stats: [
+            { type: "knowledge", multiplier: 0.0025 },
+            { type: "luck", multiplier: 0.005 },
+          ],
+        }),
         effect: (state: GameState) => {
           const successChance = calculateSuccessChance(state, 0.1, {
             type: "knowledge",

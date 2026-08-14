@@ -32,8 +32,8 @@
     "firstPurchaseInsightBannerBefore": "获得",
     "firstPurchaseInsightBannerInsight": "洞见",
     "firstPurchaseInsightBannerAfter": "首次购买免费赠送",
-    "firstPurchaseInsightGranted": "首次购买礼包：+{{amount}} {{glyph}} 洞见",
     "firstPurchaseInsightCheckoutFree": "免费",
+    "firstPurchaseInsightGranted": "首次购买礼包：+{{amount}} {{glyph}} 洞见",
     "cruelModeSteamDemoBannerBefore": "残酷模式目前免费，以庆祝",
     "cruelModeSteamDemoBannerSteam": "Steam",
     "cruelModeSteamDemoBannerAfter": " 试玩版上线。",
@@ -71,22 +71,22 @@
     "journeyCompleteDiscount": "通关特别折扣",
     "artifactSkullLantern": {
       "title": "颅骨灯笼",
+      "unlocksStoryline": "解锁骷髅灯笼剧情线",
       "caveExploreBonus": "探索洞穴：+200% 加成",
       "caveExploreCooldown": "探索洞穴：-5 秒冷却",
       "miningBonus": "采矿：+200% 加成",
-      "miningCooldown": "采矿：-5 秒冷却",
-      "unlocksStoryline": "解锁骷髅灯笼剧情线"
+      "miningCooldown": "采矿：-5 秒冷却"
     },
     "artifactTarnishedCompass": {
       "title": "黯淡指南针",
+      "unlocksStoryline": "解锁罗盘剧情线",
       "doubleGain": "10% 几率双倍行动收益",
-      "luck": "+5 幸运",
-      "unlocksStoryline": "解锁罗盘剧情线"
+      "luck": "+5 幸运"
     },
     "artifactCrowHarness": {
       "title": "独眼乌鸦",
-      "doubleGain": "最高 15% 几率双倍行动收益",
-      "unlocksStoryline": "解锁乌鸦剧情线"
+      "unlocksStoryline": "解锁乌鸦剧情线",
+      "doubleGain": "最高 15% 几率双倍行动收益"
     },
     "cruelMode": {
       "title": "残酷模式",

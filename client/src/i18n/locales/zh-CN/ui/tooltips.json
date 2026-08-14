@@ -60,6 +60,9 @@
     "enemyDamageReduction_other": "敌人伤害：-{{percent}}%，持续 {{rounds}} 回合",
     "burnDamage_one": "{{damage}} 伤害，持续 {{rounds}} 回合",
     "burnDamage_other": "{{damage}} 伤害，持续 {{rounds}} 回合",
+    "enemyDamageReductionActive": "敌人伤害：-{{percent}}%",
+    "roundsRemaining_one": "剩余 {{count}} 回合",
+    "roundsRemaining_other": "剩余 {{count}} 回合",
     "healthCost": "生命代价：{{value}}",
     "currentResource": "当前：{{amount}} {{resource}}",
     "damaged": "（受损）",
@@ -74,7 +77,7 @@
     "strength": "力量：+{{value}}",
     "knowledge": "知识：+{{value}}",
     "madnessStat": "疯狂：{{sign}}{{value}}",
-    "insightPerCycle": "Produces {{amount}} Insight per cycle",
+    "insightPerCycle": "生产s {{amount}} Insight per cycle",
     "craftDiscount": "制作折扣：-{{percent}}%",
     "buildDiscount": "建造折扣：-{{percent}}%",
     "merchantDiscount": "商人折扣：+{{percent}}%",
@@ -124,6 +127,7 @@
       "buildDiscount": "{{percent}}% 建造折扣",
       "gathererWood": "采集者：+{{amount}} 木材",
       "gathererStone": "采集者：+{{amount}} 石头",
+      "gathererVeinroot": "采集者：+{{amount}} 脉络根",
       "hunterFood": "猎人：+{{amount}} 食物",
       "hunterFur": "猎人：+{{amount}} 毛皮",
       "hunterBones": "猎人：+{{amount}} 骨头",
@@ -177,11 +181,7 @@
       "addsConstructionQueueSlot_other": "增加 {{count}} 个建造队列槽位",
       "constructionBoost": "建造加速：消耗洞见跳过 50% 建造时间（每次建造限用一次）",
       "craftingBoost": "制作加速：消耗洞见跳过 50% 制作时间（每次制作限用一次）",
-      "weaponEnchantment": "武器附魔",
-      "gathererVeinroot": "采集者：+{{amount}} 脉络根"
-    },
-    "enemyDamageReductionActive": "敌人伤害：-{{percent}}%",
-    "roundsRemaining_one": "剩余 {{count}} 回合",
-    "roundsRemaining_other": "剩余 {{count}} 回合"
+      "weaponEnchantment": "武器附魔"
+    }
   }
 }

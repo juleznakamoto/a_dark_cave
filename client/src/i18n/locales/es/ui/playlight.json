@@ -5,7 +5,7 @@
     "welcomeDiscount": "También obtienes un {{percent}} % de descuento en tu primera compra en la tienda. El descuento se aplica automáticamente.",
     "moreGames": "Más juegos",
     "more": "Más",
-    "tryMoreGames": "Prueba más juegos",
+    "tryMoreGames": "Prueba más juegos",  //x1.2
     "discoveryAria": "Descubrir"
   }
 }

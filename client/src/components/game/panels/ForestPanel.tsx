@@ -403,6 +403,7 @@ export default function ForestPanel() {
                   gameState={state}
                   successChance={action.success_chance}
                   relevantStats={action.relevant_stats}
+                  successFormula={action.success_formula}
                 />
               </>
             )}

@@ -6,7 +6,9 @@
     "knowledgeTimeBonus": "知识额外增加 {{seconds}} 秒决策时间{{maxSuffix}}",
     "knowledgeTimeBonusMax": "（上限）",
     "successChance": "成功几率：{{percent}}%",
-    "successChanceLocked": "成功几率：??%",
+    "successChanceBase": "基础：{{percent}}%",
+    "successChanceStatPerPoint": "每点 +{{percent}}%",
+    "successChanceCruel": "残酷模式：{{percent}}%",
     "influencedBy": "受以下影响："
   },
   "reward": {
@@ -226,6 +228,7 @@
     "on": "开",
     "off": "关",
     "playTime": "游戏时长",
+    "playForFreeAt": "免费畅玩：",
     "save": "保存",
     "copy": "复制",
     "copiedTitle": "已复制到剪贴板",
@@ -234,25 +237,24 @@
     "generating": "生成中…",
     "share": "分享",
     "errorTitle": "无法创建图片",
-    "errorDesc": "生成图片时出现问题。",
-    "playForFreeAt": "免费畅玩："
+    "errorDesc": "生成图片时出现问题。"
   },
   "feedback": {
     "title": "反馈",
     "message": "如果你遇到错误、翻译问题，或有想法和建议，我很乐意听取你的意见。",
+    "openForm": "提供反馈",
     "contactVia": "你也可以通过以下方式联系我：",
     "reddit": "Reddit",
     "instagram": "Instagram",
     "steam": "Steam",
-    "email": "E-Mail",
-    "openForm": "提供反馈"
+    "email": "E-Mail"
   },
   "galaxy": {
     "title": "试玩到此为止",
     "description": "请将完整版加入 Steam 愿望单，以便在发布后继续旅程。",
     "wishlistButton": "加入 Steam 愿望单",
+    "feedbackButton": "Feedback",
     "startNewGameButton": "开始新游戏",
-    "releaseNote": "计划发售：2026 年第四季度",
-    "feedbackButton": "Feedback"
+    "releaseNote": "计划发售：2026 年第四季度"
   }
 }

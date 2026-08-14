@@ -235,6 +235,17 @@
     "message": "你在洞穴中发现一瓶清晰灵药。饮下后，心智变得轻盈。",
     "title": "清晰灵药"
   },
+  "caveWallMarkings": {
+    "choices": {
+      "continue": {
+        "label": "继续"
+      }
+    },
+    "log": {
+      "outcome0": "村民在洞壁上发现了褪色的标记。学者们研究这些符号，发掘出关于往昔的知识。"
+    },
+    "title": "古老标记"
+  },
   "boneTempleProposal": {
     "choices": {
       "acceptBoneTemple": {
@@ -590,6 +601,23 @@
     "message": "一名脸色苍白的村民冲到你面前，因恐惧而喘不过气。“雇佣兵营地……所有人都死了。他们在夜里互相残杀。我们在尸体间找到了一些白银。”",
     "title": "屠杀"
   },
+  "deerHerd": {
+    "choices": {
+      "keepThemHere": {
+        "label": "让他们留下"
+      },
+      "sendThem": {
+        "label": "派他们去"
+      }
+    },
+    "log": {
+      "outcome0": "猎人们带回了许多肉。今晚村子吃得很好。",
+      "outcome1": "狼群在他们放倒鹿之前发现了他们。一名猎人没有回来。",
+      "outcome2": "你命令猎人留在附近。鹿群离开了，狼也未曾现身。"
+    },
+    "message": "猎人报告在森林里发现一大群鹿，但那片区域靠近狼窝。你要派他们去那里狩猎吗？",
+    "title": "鹿群"
+  },
   "desperateAmputation": {
     "choices": {
       "severFinger": {
@@ -942,6 +970,22 @@
     "message": "巨大的生物在陷阱中扭动，触手抽打着钢栏。它古老的眼睛望着你，里面或许藏着智慧。你要怎么做？",
     "title": "生物的命运"
   },
+  "ladyFromTheMountains": {
+    "choices": {
+      "sendAway": {
+        "label": "打发走"
+      },
+      "welcome": {
+        "label": "接纳"
+      }
+    },
+    "log": {
+      "sendAwayOutcome": "你拒绝了她。她笑得过分平静。“你和这村里每一个灵魂都会后悔的，”她说完便转身离去。",
+      "welcomeOutcome": "你接纳了那位红发女子。她轻声道谢，谈起能治病也能害人的草木，并表示愿意帮忙建造一座药草园。村民们小心翼翼地打量着她。"
+    },
+    "message": "一位美丽的红发女子到来。她说山中的村子已死于饥荒，请求留下。她自称深谙草木及其功效。",
+    "title": "山中红发女子"
+  },
   "lastSurvivor": {
     "choices": {
       "letHimStay": {
@@ -957,6 +1001,26 @@
     },
     "message": "一名陌生人来到村庄，几乎只剩一口气。他讲起北方的定居点，那里食物短缺迫使村民在绝望中自相残杀。他请求留下几晚恢复体力。",
     "title": "最后的幸存者"
+  },
+  "liquidDeath": {
+    "choices": {
+      "digWell": {
+        "cost": "5000 食物",
+        "label": "再挖一口井"
+      },
+      "searchWoman": {
+        "label": "搜寻那名女子"
+      }
+    },
+    "log": {
+      "digWellOutcome": "村民们挖出一口新井，水源恢复。傍晚，一名饥肠辘辘的男人从林中到来。",
+      "searchOutcome": "已经无水可饮。{{deaths}} 名年长的村民渴死。找不到那名女子，但搜寻者从林中拖回一名饥饿的男人。"
+    },
+    "message": {
+      "rejected": "某日清晨，{{deaths}} 名村民被发现死在自家棚屋里。他们的嘴唇发青，像压碎的颠茄。有人声称前一天在井边见过一名红发女子。",
+      "welcomed": "某日清晨，{{deaths}} 名村民被发现死在自家棚屋里。他们的嘴唇发青，像压碎的颠茄。有人声称前一天在井边见过那位来自山村的红发女子。"
+    },
+    "title": "液态死亡"
   },
   "leatherboundBookFound": {
     "choices": {
@@ -995,6 +1059,22 @@
     },
     "message": "村里一名女人走近你，脸颊微微泛红。她垂下眼，犹豫片刻才开口：“我想问问你能不能匀一些皮革。我想给我的伴侣做点东西……一副挽具。给他一个惊喜。”",
     "title": "村里的女人"
+  },
+  "manFromTheMountains": {
+    "choices": {
+      "believeAndHelp": {
+        "label": "相信他并帮助"
+      },
+      "sendAway": {
+        "label": "打发走"
+      }
+    },
+    "log": {
+      "believeOutcome": "那人提出带领搜寻那名女子。他说知道她藏身何处，并要你带上许多人。",
+      "sendAwayOutcome": "你把那名饥饿的男人打发走。他并不争辩。村民们望着林缘，看着他消失。"
+    },
+    "message": "那名饥饿的男人被带到你面前。他几乎说不清话，自称是一座山村的最后幸存者。他说他们的井被一名红发草药师下了毒。",
+    "title": "山中男子"
   },
   "madBeduine": {
     "choices": {
@@ -1148,7 +1228,7 @@
         "label": "工艺之书"
       },
       "trade_book_of_war": {
-        "message": "你买下了战争之书。商人庄重地点头：「来自远东失落王国的知识，助你更懂抉择的后果。」",
+        "message": "你买下了战争之书。商人庄重地点头：「来自远东失落王国的知识。」",
         "label": "战争之书"
       },
       "trade_reinforced_rope": {
@@ -1182,6 +1262,30 @@
     },
     "tradeCost": "{{amount}} {{resource}}",
     "tradeLabel": "{{amount}} {{resource}}"
+  },
+  "mountainPairNightAttack": {
+    "choices": {
+      "continue": {
+        "label": "继续"
+      }
+    },
+    "log": {
+      "outcome": "夜里，那名男子与红发女子一同袭击。{{deaths}} 名村民倒下后，其余人终于制服了他们。你还来不及插手，村民们已将两人绞死。原来他们一直是同伙。在男子身上，你发现一张通往山村的地图。"
+    },
+    "message": "夜里，那名男子与红发女子一同袭击村庄。{{deaths}} 名村民倒下后，其余人终于制服了这对搭档。你还来不及做什么，村民们已将他们绞死。在男子身上，你发现一张通往山村的地图。",
+    "title": "夜袭"
+  },
+  "searchMountainLadyAmbush": {
+    "choices": {
+      "continue": {
+        "label": "继续"
+      }
+    },
+    "log": {
+      "outcome": "那人把你们引向密林深处。村民们踩进陷阱。红发女子忽然现身，两人一同扑向你们的人。{{deaths}} 名村民倒下后，幸存者才杀死两名袭击者。他们在男子身上发现一张通往山村的地图。"
+    },
+    "message": "那人把你们引向密林深处。村民们踩进陷阱。红发女子忽然现身，两人一同扑向你们的人。{{deaths}} 名村民倒下后，幸存者才杀死两名袭击者。他们在男子身上发现一张通往山村的地图。",
+    "title": "伏击"
   },
   "monasteryMonk": {
     "choices": {
@@ -1426,6 +1530,15 @@
     },
     "message": "黎明时，村民瞥见一个高大、苍白、细瘦的身影站在林缘。你要怎么做？",
     "title": "细瘦身影"
+  },
+  "portalBlasted": {
+    "choices": {
+      "continue": {
+        "label": "继续"
+      }
+    },
+    "message": "余烬炸弹在耀眼的火光中爆炸。古老的门扉碎裂坍塌。无论其中封印着什么，都已释放出来。城市该为即将出现的东西做准备了。",
+    "title": "大门崩塌"
   },
   "portalDiscovered": {
     "message": "你在城堡最底层的厅室中发现一扇巨门，由未知且坚不可摧的金属铸成。或许炼金术士的造物能够打开它。"
@@ -2037,9 +2150,29 @@
     "message": "洞穴最深处喷发出难以想象的苍白生物洪流。它们如活潮漫过大地，城市准备迎接毁灭。",
     "title": "第十波攻势"
   },
+  "firstBossWave": {
+    "message": "一大群苍白野兽率领围攻，向城市逼近。它们每一步都透出嗜血的渴望。",
+    "title": "首领波攻势"
+  },
+  "secondBossWave": {
+    "message": "一支苍白野兽大军聚集在城墙前，正为对城市的最后一击集结。",
+    "title": "最终首领波攻势"
+  },
   "postCompletionWave": {
     "message": "洞穴暗处不断涌出无意识的苍白生物，无休止地袭击着城市。",
     "title": "第{{waveNumber}}波"
+  },
+  "theHoundFound": {
+    "choices": {
+      "accept": {
+        "label": "接纳"
+      }
+    },
+    "log": {
+      "outcome": "你接纳了。虽被毒物削弱，却仍有气息，蛮犬加入了你的同伴。"
+    },
+    "message": "你的远征队发现一座满是中毒死者的山村。尸堆中躺着一名几乎死去的男人，肌肉发达却面目全非，几乎无法说话。他说人们只叫他蛮犬。他似乎挺过了毒药，尽管只差一点。他想加入你们。",
+    "title": "蛮犬"
   },
   "theDamned": {
     "choices": {
@@ -2283,14 +2416,14 @@
   },
   "wandering_collector": {
     "choices": {
+      "_buyItem": {
+        "cost": "{{goldCost}} 金币"
+      },
       "_sellItem": {
         "reward": "+{{reward}} 金币"
       },
       "sell_nothing": {
         "label": "无"
-      },
-      "_buyItem": {
-        "cost": "{{goldCost}} 金币"
       }
     },
     "log": {
@@ -2302,10 +2435,10 @@
     "title": "流浪收藏家",
     "message": {
       "visit0": "一个裹着破袍的人影走近。他似乎对你收集的东西很感兴趣。「我感觉到你的财物中有价值之物，」他低语，「让我带走一件。」",
-      "visit1": "黑袍人影再度归来，脚步无声。「更多遗物，更多秘密，」他低语，「再让我取走一件。」",
-      "visit0_both": "A figure wrapped in tattered robes approaches. 'I sense value among your possessions,' he murmurs. 'Sell me one, or buy back what others left behind.'",
+      "visit0_both": "A figure wrapped in tattered robes approaches. 'I sense value among your possessions,' he murmurs. '出售 me one, or buy back what others left behind.'",
       "visit0_buy": "A figure wrapped in tattered robes approaches, a satchel of discarded relics at his side. 'I gather what others refuse,' he murmurs. 'Any of these can be yours.'",
-      "visit1_both": "The robed figure returns, silent as before. 'Sell me another,' he whispers, 'or claim one I found.'",
+      "visit1": "黑袍人影再度归来，脚步无声。「更多遗物，更多秘密，」他低语，「再让我取走一件。」",
+      "visit1_both": "The robed figure returns, silent as before. '出售 me another,' he whispers, 'or claim one I found.'",
       "visit1_buy": "The robed figure returns with forgotten relics. 'What others once refused, I kept,' he whispers. 'Any may be yours.'"
     }
   },
@@ -2691,121 +2824,5 @@
     },
     "message": "一名年轻女人走近你，泪水顺着脸颊流下。“我的父母都被献给了那座受诅的方尖碑，”她哭喊，“这种野蛮行为必须停止！”",
     "title": "年轻女人的恳求"
-  },
-  "ladyFromTheMountains": {
-    "choices": {
-      "sendAway": {
-        "label": "打发走"
-      },
-      "welcome": {
-        "label": "接纳"
-      }
-    },
-    "log": {
-      "sendAwayOutcome": "你拒绝了她。她笑得过分平静。“你和这村里每一个灵魂都会后悔的，”她说完便转身离去。",
-      "welcomeOutcome": "你接纳了那位红发女子。她轻声道谢，谈起能治病也能害人的草木，并表示愿意帮忙建造一座药草园。村民们小心翼翼地打量着她。"
-    },
-    "message": "一位美丽的红发女子到来。她说山中的村子已死于饥荒，请求留下。她自称深谙草木及其功效。",
-    "title": "山中红发女子"
-  },
-  "liquidDeath": {
-    "choices": {
-      "digWell": {
-        "cost": "5000 食物",
-        "label": "再挖一口井"
-      },
-      "searchWoman": {
-        "label": "搜寻那名女子"
-      }
-    },
-    "log": {
-      "digWellOutcome": "村民们挖出一口新井，水源恢复。傍晚，一名饥肠辘辘的男人从林中到来。",
-      "searchOutcome": "已经无水可饮。{{deaths}} 名年长的村民渴死。找不到那名女子，但搜寻者从林中拖回一名饥饿的男人。"
-    },
-    "message": {
-      "rejected": "某日清晨，{{deaths}} 名村民被发现死在自家棚屋里。他们的嘴唇发青，像压碎的颠茄。有人声称前一天在井边见过一名红发女子。",
-      "welcomed": "某日清晨，{{deaths}} 名村民被发现死在自家棚屋里。他们的嘴唇发青，像压碎的颠茄。有人声称前一天在井边见过那位来自山村的红发女子。"
-    },
-    "title": "液态死亡"
-  },
-  "manFromTheMountains": {
-    "choices": {
-      "believeAndHelp": {
-        "label": "相信他并帮助"
-      },
-      "sendAway": {
-        "label": "打发走"
-      }
-    },
-    "log": {
-      "believeOutcome": "那人提出带领搜寻那名女子。他说知道她藏身何处，并要你带上许多人。",
-      "sendAwayOutcome": "你把那名饥饿的男人打发走。他并不争辩。村民们望着林缘，看着他消失。"
-    },
-    "message": "那名饥饿的男人被带到你面前。他几乎说不清话，自称是一座山村的最后幸存者。他说他们的井被一名红发草药师下了毒。",
-    "title": "山中男子"
-  },
-  "mountainPairNightAttack": {
-    "choices": {
-      "continue": {
-        "label": "继续"
-      }
-    },
-    "log": {
-      "outcome": "夜里，那名男子与红发女子一同袭击。{{deaths}} 名村民倒下后，其余人终于制服了他们。你还来不及插手，村民们已将两人绞死。原来他们一直是同伙。在男子身上，你发现一张通往山村的地图。"
-    },
-    "message": "夜里，那名男子与红发女子一同袭击村庄。{{deaths}} 名村民倒下后，其余人终于制服了这对搭档。你还来不及做什么，村民们已将他们绞死。在男子身上，你发现一张通往山村的地图。",
-    "title": "夜袭"
-  },
-  "searchMountainLadyAmbush": {
-    "choices": {
-      "continue": {
-        "label": "继续"
-      }
-    },
-    "log": {
-      "outcome": "那人把你们引向密林深处。村民们踩进陷阱。红发女子忽然现身，两人一同扑向你们的人。{{deaths}} 名村民倒下后，幸存者才杀死两名袭击者。他们在男子身上发现一张通往山村的地图。"
-    },
-    "message": "那人把你们引向密林深处。村民们踩进陷阱。红发女子忽然现身，两人一同扑向你们的人。{{deaths}} 名村民倒下后，幸存者才杀死两名袭击者。他们在男子身上发现一张通往山村的地图。",
-    "title": "伏击"
-  },
-  "theHoundFound": {
-    "choices": {
-      "accept": {
-        "label": "接纳"
-      }
-    },
-    "log": {
-      "outcome": "你接纳了。虽被毒物削弱，却仍有气息，蛮犬加入了你的同伴。"
-    },
-    "message": "你的远征队发现一座满是中毒死者的山村。尸堆中躺着一名几乎死去的男人，肌肉发达却面目全非，几乎无法说话。他说人们只叫他蛮犬。他似乎挺过了毒药，尽管只差一点。他想加入你们。",
-    "title": "蛮犬"
-  },
-  "firstBossWave": {
-    "message": "一大群苍白野兽率领围攻，向城市逼近。它们每一步都透出嗜血的渴望。",
-    "title": "首领波攻势"
-  },
-  "secondBossWave": {
-    "message": "一支苍白野兽大军聚集在城墙前，正为对城市的最后一击集结。",
-    "title": "最终首领波攻势"
-  },
-  "portalBlasted": {
-    "choices": {
-      "continue": {
-        "label": "继续"
-      }
-    },
-    "message": "余烬炸弹在耀眼的火光中爆炸。古老的门扉碎裂坍塌。无论其中封印着什么，都已释放出来。城市该为即将出现的东西做准备了。",
-    "title": "大门崩塌"
-  },
-  "caveWallMarkings": {
-    "choices": {
-      "continue": {
-        "label": "继续"
-      }
-    },
-    "log": {
-      "outcome0": "村民在洞壁上发现了褪色的标记。学者们研究这些符号，发掘出关于往昔的知识。"
-    },
-    "title": "古老标记"
   }
 }

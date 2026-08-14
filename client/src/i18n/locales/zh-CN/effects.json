@@ -17,7 +17,7 @@
       "name": "试炼之书"
     },
     "book_of_war": {
-      "description": "蕴含战斗智慧的书。显示战斗与遭遇中的成功概率。",
+      "description": "蕴含战斗智慧的书。",
       "name": "战争之书"
     }
   },
@@ -454,6 +454,10 @@
       "description": "陈旧地图，揭示洞穴中秘术师密室的位置",
       "name": "秘术师地图"
     },
+    "mountain_village_map": {
+      "description": "粗陋的地图，标出通往高山隘口、通向一座山村的路径。",
+      "name": "山村地图"
+    },
     "reinforced_rope": {
       "description": "结实绳索，使你能够进入更深的洞穴腔室",
       "name": "加固绳索"
@@ -485,10 +489,6 @@
     "stone_pickaxe": {
       "description": "用于采矿的粗糙镐子",
       "name": "石镐"
-    },
-    "mountain_village_map": {
-      "description": "粗陋的地图，标出通往高山隘口、通向一座山村的路径。",
-      "name": "山村地图"
     }
   },
   "weapons": {

@@ -1147,6 +1147,22 @@ export const actionSchema = z.object({
   craftingCostReduction: z.number().optional(),
   buildingCostReduction: z.number().optional(),
   success_chance: z.function().args(z.any()).returns(z.number()).optional(),
+  success_formula: z
+    .object({
+      base: z.union([z.number(), z.function()]),
+      stats: z.union([
+        z.array(
+          z.object({
+            type: z.enum(["strength", "knowledge", "luck"]),
+            multiplier: z.number(),
+          }),
+        ),
+        z.function(),
+      ]),
+      cmMultiplier: z.number().optional(),
+      forceZero: z.function().args(z.any()).returns(z.boolean()).optional(),
+    })
+    .optional(),
   relevant_stats: z
     .array(z.enum(["strength", "knowledge", "luck", "madness"]))
     .optional(),

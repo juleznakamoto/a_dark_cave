@@ -235,6 +235,17 @@
     "message": "Vous trouvez un élixir de clarté dans la grotte. En le buvant, votre esprit semble plus léger.",
     "title": "Élixir de clarté"
   },
+  "caveWallMarkings": {
+    "choices": {
+      "continue": {
+        "label": "Continuer"
+      }
+    },
+    "log": {
+      "outcome0": "Des villageois découvrent des marques effacées sur les parois de la grotte. Les érudits étudient les symboles et mettent au jour des connaissances du passé." //x1.4
+    },
+    "title": "Marques anciennes"
+  },
   "boneTempleProposal": {
     "choices": {
       "acceptBoneTemple": {
@@ -590,6 +601,23 @@
     "message": "Un villageois blême accourt vers vous, haletant de terreur. 'Le camp des mercenaires... ils sont tous morts. Ils se sont entretués dans la nuit. Nous avons trouvé de l'argent parmi les cadavres.'",
     "title": "Le Massacre"
   },
+  "deerHerd": {
+    "choices": {
+      "keepThemHere": {
+        "label": "Les garder ici"
+      },
+      "sendThem": {
+        "label": "Les envoyer"
+      }
+    },
+    "log": {
+      "outcome0": "Les chasseurs reviennent avec beaucoup de viande. Le village mange bien ce soir.",
+      "outcome1": "Les loups les trouvent avant qu'ils puissent abattre les cerfs. Un chasseur ne revient pas.",
+      "outcome2": "Vous ordonnez aux chasseurs de rester près du village. Les cerfs s'éloignent, et les loups restent invisibles."
+    },
+    "message": "Les chasseurs signalent une grande harde de cerfs dans la forêt, mais la zone se trouve près d'une tanière de loups. Les envoyez-vous chasser là-bas ?",
+    "title": "La harde de cerfs"
+  },
   "desperateAmputation": {
     "choices": {
       "severFinger": {
@@ -942,6 +970,22 @@
     "message": "La créature massive se tord dans le piège, ses tentacules fouettant les barreaux d'acier. Ses yeux anciens vous considèrent avec ce qui pourrait être de l'intelligence. Que ferez-vous ?",
     "title": "Le Destin de la créature"
   },
+  "ladyFromTheMountains": {
+    "choices": {
+      "sendAway": {
+        "label": "Renvoyer"
+      },
+      "welcome": {
+        "label": "Accueillir"
+      }
+    },
+    "log": {
+      "sendAwayOutcome": "Tu la refuses. Elle sourit trop calmement. 'Toi et chaque âme de ce village le regretterez,' dit-elle, puis elle s'éloigne.",
+      "welcomeOutcome": "Tu accueilles la femme aux cheveux roux. Elle te remercie doucement et parle de plantes qui guérissent et qui nuisent. Elle propose d'aider à construire un jardin d'herbes. Les villageois l'observent avec attention."
+    },
+    "message": "Une belle femme aux cheveux roux arrive. Elle dit que son village dans les montagnes est mort de famine, et demande à rester. Elle affirme bien connaître les plantes et leurs effets.",
+    "title": "La Dame des Montagnes"
+  },
   "lastSurvivor": {
     "choices": {
       "letHimStay": {
@@ -957,6 +1001,26 @@
     },
     "message": "Un étranger arrive au village, à peine accroché à la vie. Il parle de sa colonie au nord, où les pénuries de nourriture ont poussé les villageois à s'entretuer de désespoir. Il demande à rester quelques nuits pour se rétablir.",
     "title": "Le Dernier survivant"
+  },
+  "liquidDeath": {
+    "choices": {
+      "digWell": {
+        "cost": "5000 nourriture",
+        "label": "Creuser un autre puits"
+      },
+      "searchWoman": {
+        "label": "Chercher la femme"
+      }
+    },
+    "log": {
+      "digWellOutcome": "Vos villageois creusent un nouveau puits. L'eau revient. Ce soir-là, un homme affamé arrive de la forêt.",
+      "searchOutcome": "Il n'y a plus rien à boire. {{deaths}} villageois âgés meurent de soif. La femme est introuvable, mais les chercheurs ramènent un homme affamé de la forêt."
+    },
+    "message": {
+      "rejected": "Un matin, {{deaths}} villageois sont trouvés morts dans leurs huttes. Leurs lèvres sont bleues comme de la morelle écrasée. Un villageois affirme avoir vu une femme aux cheveux roux près du puits la veille.",
+      "welcomed": "Un matin, {{deaths}} villageois sont trouvés morts dans leurs huttes. Leurs lèvres sont bleues comme de la morelle écrasée. Un villageois affirme avoir vu la femme aux cheveux roux du village de montagne près du puits la veille."
+    },
+    "title": "Mort liquide"
   },
   "leatherboundBookFound": {
     "choices": {
@@ -995,6 +1059,22 @@
     },
     "message": "Une femme du village s'approche de vous, les joues légèrement rosies. Elle hésite avant de parler, les yeux baissés : 'Je me demandais si vous pourriez épargner un peu de cuir. J'aimerais fabriquer quelque chose... pour mon partenaire. Un harnais. Pour lui faire une surprise.'",
     "title": "Une femme du village"
+  },
+  "manFromTheMountains": {
+    "choices": {
+      "believeAndHelp": {
+        "label": "Le croire et l'aider"
+      },
+      "sendAway": {
+        "label": "Renvoyer"
+      }
+    },
+    "log": {
+      "believeOutcome": "L'homme propose de mener la recherche de la femme. Il dit savoir où elle se cache, et que tu devrais amener beaucoup d'hommes.",
+      "sendAwayOutcome": "Tu renvoies l'homme affamé. Il ne discute pas. Les villageois regardent la lisière tandis qu'il disparaît."
+    },
+    "message": "L'homme affamé est amené devant toi. À peine capable de parler clairement, il affirme être le dernier survivant d'un village de montagne. Il dit que leur puits a été empoisonné par une herboriste aux cheveux roux.",
+    "title": "L'Homme des Montagnes"
   },
   "madBeduine": {
     "choices": {
@@ -1148,7 +1228,7 @@
         "label": "Livre de l'artisanat"
       },
       "trade_book_of_war": {
-        "message": "Vous achetez le Livre de la guerre. Le marchand hoche gravement la tête : « Un savoir venu d'un royaume depuis longtemps disparu, loin à l'est. Avec ceci, vous comprendrez mieux les conséquences de vos choix. »",
+        "message": "Vous achetez le Livre de la guerre. Le marchand hoche gravement la tête : « Un savoir venu d'un royaume depuis longtemps disparu, loin à l'est. »",
         "label": "Livre de la guerre" //x1.6
       },
       "trade_reinforced_rope": {
@@ -1182,6 +1262,30 @@
     },
     "tradeCost": "{{amount}} {{resource}}",
     "tradeLabel": "{{amount}} {{resource}}"
+  },
+  "mountainPairNightAttack": {
+    "choices": {
+      "continue": {
+        "label": "Continuer"
+      }
+    },
+    "log": {
+      "outcome": "La nuit, l'homme et la femme aux cheveux roux attaquent ensemble. {{deaths}} villageois meurent avant que les autres ne les submergent. Avant que tu puisses intervenir, les villageois les pendent tous les deux. Ils étaient complices depuis le début. Sur le corps de l'homme, tu trouves une carte vers un village de montagne."
+    },
+    "message": "La nuit, l'homme et la femme aux cheveux roux attaquent le village ensemble. {{deaths}} villageois tombent avant que les autres ne submergent le couple. Avant que tu puisses rien faire, les villageois les pendent. Sur le corps de l'homme, tu trouves une carte vers un village de montagne.",
+    "title": "Attaque nocturne"
+  },
+  "searchMountainLadyAmbush": {
+    "choices": {
+      "continue": {
+        "label": "Continuer"
+      }
+    },
+    "log": {
+      "outcome": "L'homme vous mène au plus profond des bois. Vos villageois tombent dans des pièges. Soudain la femme aux cheveux roux apparaît, et ensemble ils fondent sur vos hommes. {{deaths}} villageois meurent avant que les survivants ne tuent les deux assaillants. Sur le corps de l'homme, ils trouvent une carte vers un village de montagne."
+    },
+    "message": "L'homme vous mène au plus profond des bois. Vos villageois tombent dans des pièges. Soudain la femme aux cheveux roux apparaît, et ensemble ils fondent sur vos hommes. {{deaths}} villageois meurent avant que les survivants ne tuent les deux assaillants. Sur le corps de l'homme, ils trouvent une carte vers un village de montagne.",
+    "title": "L'embuscade"
   },
   "monasteryMonk": {
     "choices": {
@@ -1426,6 +1530,15 @@
     },
     "message": "À l'aube, des villageois aperçoivent une grande silhouette pâle et mince à la lisière des bois. Que faites-vous ?",
     "title": "La Silhouette mince"
+  },
+  "portalBlasted": {
+    "choices": {
+      "continue": {
+        "label": "Continuer"
+      }
+    },
+    "message": "Les bombes braise explosent dans un éclat de feu et de lumière. L'ancienne porte se fissure et s'effondre. Quoi qu'il y avait là-dedans a été libéré. La cité devrait se préparer à ce qui en sortira.",
+    "title": "La Porte tombe"
   },
   "portalDiscovered": {
     "message": "Dans les chambres les plus basses de la citadelle, vous trouvez une porte colossale forgée dans un métal inconnu et inflexible. Peut-être les créations de l'alchimiste sauront-elles l'ouvrir."
@@ -2037,9 +2150,29 @@
     "message": "Des profondeurs les plus reculées de la grotte, une masse inimaginable de créatures pâles jaillit. Elles inondent la terre comme une marée vivante, tandis que la cité se prépare à l'anéantissement.",
     "title": "La dixième vague"
   },
+  "firstBossWave": {
+    "message": "Une grande meute de bêtes pâles mène le siège vers la cité. Leur soif de sang se lit dans chacun de leurs pas.",
+    "title": "La vague boss"
+  },
+  "secondBossWave": {
+    "message": "Une armée de bêtes pâles se rassemble devant les remparts, massée pour un dernier assaut sur la cité.",
+    "title": "La vague boss finale"
+  },
   "postCompletionWave": {
     "message": "Des profondeurs cachées de la grotte, des créatures pâles sans esprit continuent d'émerger, assaillant la cité sans fin.",
     "title": "Vague {{waveNumber}}"
+  },
+  "theHoundFound": {
+    "choices": {
+      "accept": {
+        "label": "Accepter"
+      }
+    },
+    "log": {
+      "outcome": "Tu acceptes. Affaibli par le poison mais respirant encore, le Chien Brutal rejoint ta compagnie."
+    },
+    "message": "Votre expédition trouve un village de montagne rempli de morts empoisonnés. Parmi les corps gît un homme presque mort, très musclé mais défiguré, à peine capable de parler. Il dit qu'on l'appelait juste le Chien Brutal. Il semble avoir résisté au poison, même de justesse. Il veut se joindre à vous.",
+    "title": "Chien Brutal"
   },
   "theDamned": {
     "choices": {
@@ -2283,29 +2416,29 @@
   },
   "wandering_collector": {
     "choices": {
+      "_buyItem": {
+        "cost": "{{goldCost}} or"
+      },
       "_sellItem": {
         "reward": "+{{reward}} or"
       },
       "sell_nothing": {
         "label": "Rien"
-      },
-      "_buyItem": {
-        "cost": "{{goldCost}} or"
       }
     },
     "log": {
       "whisper0": "Le collectionneur soupire et se détourne. « Au cours de mes voyages, j'ai découvert de nombreuses reliques de la civilisation ancienne. Elle était bien plus avancée que nous ne l'avons jamais été », murmure-t-il avant de se fondre dans l'obscurité.",
       "whisper1": "Un faible bourdonnement s'échappe de sous sa capuche. « La grande explosion a détruit la plupart des artefacts de la civilisation ancienne. Ce qui reste est dispersé et rare », murmure-t-il.",
       "whisper2": "Un souffle ténu échappe au collectionneur. « J'ai beaucoup appris sur la civilisation ancienne au cours de mes voyages. Avant la grande explosion, il n'y avait pas de magie dans ce monde. Elle est née à cet instant », murmure-t-il en partant.",
-      "whisperGeneric": "Le collectionneur hoche la tête une fois et s'éloigne."
+      "whisperGeneric": "Le collectionneur hoche la tête une fois et s'éloigne." //x1.4
     },
     "title": "Le Collectionneur errant",
     "message": {
       "visit0": "Une silhouette enveloppée de robes en lambeaux s'approche. Elle semble intriguée par ce que vous avez amassé. « Je sens de la valeur parmi vos possessions », murmure-t-elle. « Laissez-moi en prendre une. »",
-      "visit1": "La silhouette revient, ses pas silencieux sur le sol. « Plus d'artefacts, plus de secrets », chuchote-t-elle. « Laissez-moi en reprendre un. »",
-      "visit0_both": "A figure wrapped in tattered robes approaches. 'I sense value among your possessions,' he murmurs. 'Sell me one, or buy back what others left behind.'",
+      "visit0_both": "A figure wrapped in tattered robes approaches. 'I sense value among your possessions,' he murmurs. 'Vendre me one, or buy back what others left behind.'",
       "visit0_buy": "A figure wrapped in tattered robes approaches, a satchel of discarded relics at his side. 'I gather what others refuse,' he murmurs. 'Any of these can be yours.'",
-      "visit1_both": "The robed figure returns, silent as before. 'Sell me another,' he whispers, 'or claim one I found.'",
+      "visit1": "La silhouette revient, ses pas silencieux sur le sol. « Plus d'artefacts, plus de secrets », chuchote-t-elle. « Laissez-moi en reprendre un. »",
+      "visit1_both": "The robed figure returns, silent as before. 'Vendre me another,' he whispers, 'or claim one I found.'",
       "visit1_buy": "The robed figure returns with forgotten relics. 'What others once refused, I kept,' he whispers. 'Any may be yours.'"
     }
   },
@@ -2691,121 +2824,5 @@
     },
     "message": "Une jeune femme s'approche de vous, les larmes ruisselant sur son visage. 'Mes deux parents ont été sacrifiés à ce monolithe maudit,' crie-t-elle. 'Ce comportement barbare doit cesser !'",
     "title": "La Supplication de la jeune femme" //x1.5
-  },
-  "ladyFromTheMountains": {
-    "choices": {
-      "sendAway": {
-        "label": "Renvoyer"
-      },
-      "welcome": {
-        "label": "Accueillir"
-      }
-    },
-    "log": {
-      "sendAwayOutcome": "Tu la refuses. Elle sourit trop calmement. 'Toi et chaque âme de ce village le regretterez,' dit-elle, puis elle s'éloigne.",
-      "welcomeOutcome": "Tu accueilles la femme aux cheveux roux. Elle te remercie doucement et parle de plantes qui guérissent et qui nuisent. Elle propose d'aider à construire un jardin d'herbes. Les villageois l'observent avec attention."
-    },
-    "message": "Une belle femme aux cheveux roux arrive. Elle dit que son village dans les montagnes est mort de famine, et demande à rester. Elle affirme bien connaître les plantes et leurs effets.",
-    "title": "La Dame des Montagnes"
-  },
-  "liquidDeath": {
-    "choices": {
-      "digWell": {
-        "cost": "5000 nourriture",
-        "label": "Creuser un autre puits"
-      },
-      "searchWoman": {
-        "label": "Chercher la femme"
-      }
-    },
-    "log": {
-      "digWellOutcome": "Vos villageois creusent un nouveau puits. L'eau revient. Ce soir-là, un homme affamé arrive de la forêt.",
-      "searchOutcome": "Il n'y a plus rien à boire. {{deaths}} villageois âgés meurent de soif. La femme est introuvable, mais les chercheurs ramènent un homme affamé de la forêt."
-    },
-    "message": {
-      "rejected": "Un matin, {{deaths}} villageois sont trouvés morts dans leurs huttes. Leurs lèvres sont bleues comme de la morelle écrasée. Un villageois affirme avoir vu une femme aux cheveux roux près du puits la veille.",
-      "welcomed": "Un matin, {{deaths}} villageois sont trouvés morts dans leurs huttes. Leurs lèvres sont bleues comme de la morelle écrasée. Un villageois affirme avoir vu la femme aux cheveux roux du village de montagne près du puits la veille."
-    },
-    "title": "Mort liquide"
-  },
-  "manFromTheMountains": {
-    "choices": {
-      "believeAndHelp": {
-        "label": "Le croire et l'aider"
-      },
-      "sendAway": {
-        "label": "Renvoyer"
-      }
-    },
-    "log": {
-      "believeOutcome": "L'homme propose de mener la recherche de la femme. Il dit savoir où elle se cache, et que tu devrais amener beaucoup d'hommes.",
-      "sendAwayOutcome": "Tu renvoies l'homme affamé. Il ne discute pas. Les villageois regardent la lisière tandis qu'il disparaît."
-    },
-    "message": "L'homme affamé est amené devant toi. À peine capable de parler clairement, il affirme être le dernier survivant d'un village de montagne. Il dit que leur puits a été empoisonné par une herboriste aux cheveux roux.",
-    "title": "L'Homme des Montagnes"
-  },
-  "mountainPairNightAttack": {
-    "choices": {
-      "continue": {
-        "label": "Continuer"
-      }
-    },
-    "log": {
-      "outcome": "La nuit, l'homme et la femme aux cheveux roux attaquent ensemble. {{deaths}} villageois meurent avant que les autres ne les submergent. Avant que tu puisses intervenir, les villageois les pendent tous les deux. Ils étaient complices depuis le début. Sur le corps de l'homme, tu trouves une carte vers un village de montagne."
-    },
-    "message": "La nuit, l'homme et la femme aux cheveux roux attaquent le village ensemble. {{deaths}} villageois tombent avant que les autres ne submergent le couple. Avant que tu puisses rien faire, les villageois les pendent. Sur le corps de l'homme, tu trouves une carte vers un village de montagne.",
-    "title": "Attaque nocturne"
-  },
-  "searchMountainLadyAmbush": {
-    "choices": {
-      "continue": {
-        "label": "Continuer"
-      }
-    },
-    "log": {
-      "outcome": "L'homme vous mène au plus profond des bois. Vos villageois tombent dans des pièges. Soudain la femme aux cheveux roux apparaît, et ensemble ils fondent sur vos hommes. {{deaths}} villageois meurent avant que les survivants ne tuent les deux assaillants. Sur le corps de l'homme, ils trouvent une carte vers un village de montagne."
-    },
-    "message": "L'homme vous mène au plus profond des bois. Vos villageois tombent dans des pièges. Soudain la femme aux cheveux roux apparaît, et ensemble ils fondent sur vos hommes. {{deaths}} villageois meurent avant que les survivants ne tuent les deux assaillants. Sur le corps de l'homme, ils trouvent une carte vers un village de montagne.",
-    "title": "L'embuscade"
-  },
-  "theHoundFound": {
-    "choices": {
-      "accept": {
-        "label": "Accepter"
-      }
-    },
-    "log": {
-      "outcome": "Tu acceptes. Affaibli par le poison mais respirant encore, le Chien Brutal rejoint ta compagnie."
-    },
-    "message": "Votre expédition trouve un village de montagne rempli de morts empoisonnés. Parmi les corps gît un homme presque mort, très musclé mais défiguré, à peine capable de parler. Il dit qu'on l'appelait juste le Chien Brutal. Il semble avoir résisté au poison, même de justesse. Il veut se joindre à vous.",
-    "title": "Chien Brutal"
-  },
-  "firstBossWave": {
-    "message": "Une grande meute de bêtes pâles mène le siège vers la cité. Leur soif de sang se lit dans chacun de leurs pas.",
-    "title": "La vague boss"
-  },
-  "secondBossWave": {
-    "message": "Une armée de bêtes pâles se rassemble devant les remparts, massée pour un dernier assaut sur la cité.",
-    "title": "La vague boss finale"
-  },
-  "portalBlasted": {
-    "choices": {
-      "continue": {
-        "label": "Continuer"
-      }
-    },
-    "message": "Les bombes braise explosent dans un éclat de feu et de lumière. L'ancienne porte se fissure et s'effondre. Quoi qu'il y avait là-dedans a été libéré. La cité devrait se préparer à ce qui en sortira.",
-    "title": "La Porte tombe"
-  },
-  "caveWallMarkings": {
-    "choices": {
-      "continue": {
-        "label": "Continuer"
-      }
-    },
-    "log": {
-      "outcome0": "Des villageois découvrent des marques effacées sur les parois de la grotte. Les érudits étudient les symboles et mettent au jour des connaissances du passé."
-    },
-    "title": "Marques anciennes"
   }
 }

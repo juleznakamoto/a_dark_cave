@@ -1130,7 +1130,7 @@
         "label": "Libro dell'Artigianato"
       },
       "trade_book_of_war": {
-        "message": "Acquisti il Libro della Guerra. Il mercante annuisce gravemente: 'Conoscenza da un regno scomparso del lontano est. Con questo, comprenderai meglio gli esiti delle tue scelte.'",
+        "message": "Acquisti il Libro della Guerra. Il mercante annuisce gravemente: 'Conoscenza da un regno scomparso del lontano est.'",
         "label": "Libro della Guerra"
       },
       "trade_reinforced_rope": {
@@ -2807,5 +2807,22 @@
       "outcome0": "Gli abitanti trovano incisioni sbiadite sulle pareti della caverna. Gli studiosi esaminano i simboli e rivelano conoscenze del passato."
     },
     "title": "Antiche incisioni"
+  },
+  "deerHerd": {
+    "choices": {
+      "keepThemHere": {
+        "label": "Tienili qui"
+      },
+      "sendThem": {
+        "label": "Mandali"
+      }
+    },
+    "log": {
+      "outcome0": "I cacciatori tornano con molta carne. Stasera il villaggio mangia bene.",
+      "outcome1": "I lupi li trovano prima che possano abbattere i cervi. Un cacciatore non fa ritorno.",
+      "outcome2": "Ordini ai cacciatori di restare vicini. I cervi se ne vanno, e i lupi restano invisibili."
+    },
+    "message": "I cacciatori riferiscono di aver avvistato un grande branco di cervi nella foresta, ma la zona si trova vicino a una tana di lupi. Li mandi lì a cacciare?",
+    "title": "Il branco di cervi"
   }
 }

@@ -1,5 +1,5 @@
 import type { GameEvent } from "./eventTypes";
-import { calculateSuccessChance } from "./eventSuccessChance";
+import { calculateSuccessChance, defineSuccessChance } from "./eventSuccessChance";
 import { GameState } from "@shared/schema";
 import { addFreeVillagersWithinCap, killVillagers, stackTimedDebuff } from "@/game/stateHelpers";
 import { getTotalStrength } from "./effectsCalculation";
@@ -47,15 +47,13 @@ export const choiceEvents: Record<string, GameEvent> = {
     choices: [
       {
         id: "investigate",
-        relevant_stats: ["luck", "strength"],
-        success_chance: (state: GameState) => {
-          return calculateSuccessChance(
-            state,
-            0.1,
+        ...defineSuccessChance({
+          base: 0.1,
+          stats: [
             { type: "strength", multiplier: 0.01 },
             { type: "luck", multiplier: 0.005 },
-          );
-        },
+          ],
+        }),
         effect: (state: GameState) => {
           const mantleChance = calculateSuccessChance(
             state,
@@ -110,13 +108,10 @@ export const choiceEvents: Record<string, GameEvent> = {
       },
       {
         id: "ignore",
-        relevant_stats: ["luck"],
-        success_chance: (state: GameState) => {
-          return calculateSuccessChance(state, 0.4, {
-            type: "luck",
-            multiplier: 0.01,
-          });
-        },
+        ...defineSuccessChance({
+          base: 0.4,
+          stats: [{ type: "luck", multiplier: 0.01 }],
+        }),
         effect: (state: GameState) => {
           const successChance = calculateSuccessChance(state, 0.4, {
             type: "luck",
@@ -285,13 +280,10 @@ export const choiceEvents: Record<string, GameEvent> = {
             ? CRUEL_MODE.offerForestGods.sacrificeLabel.cruel
             : CRUEL_MODE.offerForestGods.sacrificeLabel.normal
           } villagers`,
-        relevant_stats: ["knowledge"],
-        success_chance: (state: GameState) => {
-          return calculateSuccessChance(state, 0.3, {
-            type: "knowledge",
-            multiplier: 0.01,
-          });
-        },
+        ...defineSuccessChance({
+          base: 0.3,
+          stats: [{ type: "knowledge", multiplier: 0.01 }],
+        }),
         effect: (state: GameState) => {
           const successChance = calculateSuccessChance(state, 0.3, {
             type: "knowledge",
@@ -351,7 +343,11 @@ export const choiceEvents: Record<string, GameEvent> = {
       },
       {
         id: "refuse",
-        relevant_stats: ["luck"],
+        ...defineSuccessChance({
+          base: 0.1,
+          stats: [{ type: "luck", multiplier: 0.01 }],
+          cmMultiplier: CRUEL_MODE.successChance.refuseForestGodsCruelMultiplier,
+        }),
         effect: (state: GameState) => {
           const successChance = calculateSuccessChance(
             state,
@@ -485,13 +481,10 @@ export const choiceEvents: Record<string, GameEvent> = {
     choices: [
       {
         id: "investigate",
-        relevant_stats: ["strength"],
-        success_chance: (state: GameState) => {
-          return calculateSuccessChance(state, 0.2, {
-            type: "strength",
-            multiplier: 0.01,
-          });
-        },
+        ...defineSuccessChance({
+          base: 0.2,
+          stats: [{ type: "strength", multiplier: 0.01 }],
+        }),
         effect: (state: GameState) => {
           const successChance = calculateSuccessChance(state, 0.2, {
             type: "strength",
@@ -539,13 +532,10 @@ export const choiceEvents: Record<string, GameEvent> = {
       },
       {
         id: "avoidLake",
-        relevant_stats: ["luck"],
-        success_chance: (state: GameState) => {
-          return calculateSuccessChance(state, 0.4, {
-            type: "luck",
-            multiplier: 0.01,
-          });
-        },
+        ...defineSuccessChance({
+          base: 0.4,
+          stats: [{ type: "luck", multiplier: 0.01 }],
+        }),
         effect: (state: GameState) => {
           const successChance = calculateSuccessChance(state, 0.4, {
             type: "luck",
@@ -709,13 +699,10 @@ export const choiceEvents: Record<string, GameEvent> = {
       },
       {
         id: "forceHim",
-        relevant_stats: ["strength"],
-        success_chance: (state: GameState) => {
-          return calculateSuccessChance(state, 0.2, {
-            type: "strength",
-            multiplier: 0.01,
-          });
-        },
+        ...defineSuccessChance({
+          base: 0.2,
+          stats: [{ type: "strength", multiplier: 0.01 }],
+        }),
         effect: (state: GameState) => {
           const successChance = calculateSuccessChance(state, 0.2, {
             type: "strength",
@@ -1265,13 +1252,10 @@ export const choiceEvents: Record<string, GameEvent> = {
       },
       {
         id: "doNotPay",
-        relevant_stats: ["luck"],
-        success_chance: (state: GameState) => {
-          return calculateSuccessChance(state, 0.25, {
-            type: "luck",
-            multiplier: 0.015,
-          });
-        },
+        ...defineSuccessChance({
+          base: 0.25,
+          stats: [{ type: "luck", multiplier: 0.015 }],
+        }),
         effect: (state: GameState) => {
           const avoidCurseChance = calculateSuccessChance(state, 0.25, {
             type: "luck",
@@ -1310,13 +1294,10 @@ export const choiceEvents: Record<string, GameEvent> = {
       },
       {
         id: "attackHer",
-        relevant_stats: ["strength"],
-        success_chance: (state: GameState) => {
-          return calculateSuccessChance(state, 0.15, {
-            type: "strength",
-            multiplier: 0.01,
-          });
-        },
+        ...defineSuccessChance({
+          base: 0.15,
+          stats: [{ type: "strength", multiplier: 0.01 }],
+        }),
         effect: (state: GameState) => {
           const successChance = calculateSuccessChance(state, 0.15, {
             type: "strength",
@@ -1355,13 +1336,10 @@ export const choiceEvents: Record<string, GameEvent> = {
       },
       {
         id: "threatenHer",
-        relevant_stats: ["knowledge"],
-        success_chance: (state: GameState) => {
-          return calculateSuccessChance(state, 0.2, {
-            type: "knowledge",
-            multiplier: 0.01,
-          });
-        },
+        ...defineSuccessChance({
+          base: 0.2,
+          stats: [{ type: "knowledge", multiplier: 0.01 }],
+        }),
         effect: (state: GameState) => {
           const successChance = calculateSuccessChance(state, 0.2, {
             type: "knowledge",

@@ -72,6 +72,10 @@
       "label": "灰火炸弹工匠",
       "description": "制作20个灰火炸弹。"
     },
+    "3-burningVeins": {
+      "label": "Burning Veins",
+      "description": "使用10瓶脉火灵药。"
+    },
     "3-emberBombs": {
       "label": "余烬炸弹工匠",
       "description": "制作20个余烬炸弹。"
@@ -84,9 +88,17 @@
       "label": "添火者",
       "description": "添柴100次。"
     },
+    "4-insightful": {
+      "label": "Insightful",
+      "description": "累计花费10,000洞见。"
+    },
     "4-investor": {
       "label": "投资者",
       "description": "累计投资2,500黄金。"
+    },
+    "4-luckyInvestor": {
+      "label": "Lucky Investor",
+      "description": "成功投资10次。"
     },
     "4-mentalClarity": {
       "label": "心智清明",
@@ -96,6 +108,10 @@
       "label": "交易好手",
       "description": "与商人交易100次。"
     },
+    "4-pileOfDead": {
+      "label": "Pile of Dead",
+      "description": "在所有游戏中累计失去250名村民。"
+    },
     "4-solsticeGatherings": {
       "label": "至日庆祝者",
       "description": "举行10次至日聚会。"
@@ -103,22 +119,6 @@
     "4-wellRested": {
       "label": "酣眠者",
       "description": "累计休息20小时。"
-    },
-    "3-burningVeins": {
-      "label": "Burning Veins",
-      "description": "使用10瓶脉火灵药。"
-    },
-    "4-insightful": {
-      "label": "Insightful",
-      "description": "累计花费10,000洞见。"
-    },
-    "4-luckyInvestor": {
-      "label": "Lucky Investor",
-      "description": "成功投资10次。"
-    },
-    "4-pileOfDead": {
-      "label": "Pile of Dead",
-      "description": "在所有游戏中累计失去250名村民。"
     }
   },
   "basic": {
@@ -141,6 +141,10 @@
     "0-stoneMiner": {
       "label": "采集石料",
       "description": "累计采集500石头。"
+    },
+    "0-tanner": {
+      "label": "Tanner",
+      "description": "累计采集250皮革。"
     },
     "0-woodGatherer": {
       "label": "采集木材",
@@ -165,10 +169,6 @@
     "1-torchCrafter": {
       "label": "制作火把",
       "description": "累计制作50个火把。"
-    },
-    "0-tanner": {
-      "label": "Tanner",
-      "description": "累计采集250皮革。"
     }
   },
   "building": {
@@ -280,9 +280,25 @@
     }
   },
   "overall": {
+    "0-achievementMaxer": {
+      "label": "Achievement Maxer",
+      "description": "完成所有非史诗成就。"
+    },
+    "0-caveVeteran": {
+      "label": "洞穴 Veteran",
+      "description": "赢得3局游戏。"
+    },
     "0-endurant": {
       "label": "Endurant",
       "description": "在所有游戏中累计游玩30小时。"
+    },
+    "0-resourceMaxer": {
+      "label": "Resource Maxer",
+      "description": "使每种有上限的资源都达到大金库容量。"
+    },
+    "0-upgradeMaxer": {
+      "label": "Upgrade Maxer",
+      "description": "将庄园页签中的每一项升级升至满级。"
     },
     "0-speedrunner": {
       "label": "Speedrunner",
@@ -300,22 +316,6 @@
     "0-winNormal": {
       "label": "Normal Victory",
       "description": "在普通模式下赢得一局。"
-    },
-    "0-caveVeteran": {
-      "label": "Cave Veteran",
-      "description": "赢得3局游戏。"
-    },
-    "0-achievementMaxer": {
-      "label": "Achievement Maxer",
-      "description": "完成所有非史诗成就。"
-    },
-    "0-resourceMaxer": {
-      "label": "Resource Maxer",
-      "description": "使每种有上限的资源都达到大金库容量。"
-    },
-    "0-upgradeMaxer": {
-      "label": "Upgrade Maxer",
-      "description": "将庄园页签中的每一项升级升至满级。"
     }
   }
 }

@@ -6,7 +6,9 @@
     "knowledgeTimeBonus": "+{{seconds}}s de temps de décision grâce au Savoir{{maxSuffix}}",
     "knowledgeTimeBonusMax": " (max.)",
     "successChance": "Chance de réussite : {{percent}}%",
-    "successChanceLocked": "Chance de réussite : ??%",
+    "successChanceBase": "Base : {{percent}}%",
+    "successChanceStatPerPoint": "+{{percent}}% par point",
+    "successChanceCruel": "Mode cruel : {{percent}}%",
     "influencedBy": "Influencé par :"
   },
   "reward": {
@@ -68,12 +70,12 @@
   },
   "invite": {
     "button": "Inviter",
-    "copyInviteCode": "Copier le code d'invitation",
+    "copyInviteCode": "Copier le code d'invitation", //x1.7
     "goldBonus": "+{{amount}} or",
     "linkCopied": "Lien d'invitation copié !", //x1.3
     "linkCopiedDesc": "Partagez-le avec des amis pour gagner {{amount}} or chacun.",
     "copyFailed": "Impossible de copier le lien d'invitation", //x1.6
-    "copyFailedNotSignedIn": "Connecte-toi pour copier ton lien d'invitation",
+    "copyFailedNotSignedIn": "Connecte-toi pour copier ton lien d'invitation", //x1.4
     "tooltip": "Invitez vos amis - vous recevrez tous les deux {{amount}} or. Vous pouvez inviter jusqu'à {{cap}} amis. ({{count}}/{{cap}} invités)."
   },
   "invest": {
@@ -155,7 +157,7 @@
     "purchaseSuccessfulDesc": "Jeu complet débloqué et activé ! Vous pouvez poursuivre votre voyage sans restrictions.",
     "legalConsent": "Accès immédiat au contenu numérique après l'achat.",
     "termsOfService": "Conditions",
-    "rightOfWithdrawal": "Rétractation",
+    "rightOfWithdrawal": "Rétractation", //x1.2
     "completePurchaseFor": "Finaliser l'achat pour {{price}}",
     "paymentFailed": "Paiement échoué",
     "notAuthenticated": "Utilisateur non authentifié", //x1.2
@@ -216,43 +218,43 @@
     "buyGold": "Acheter de l'or" //x1.9
   },
   "share": {
-    "title": "Partager votre progression", //x1.4
+    "title": "Partager votre progression", //x1.5
     "description": "Enregistrez ou partagez une image de votre progression dans le jeu.", //x1.5
     "resources": "Ressources : {{percent}} %",
     "achievements": "Succès : {{percent}} %",
     "killedCreatures": "Créatures tuées",
-    "highestAttackWave": "Plus haute vague d'attaque",
+    "highestAttackWave": "Plus haute vague d'attaque", //x1.4
     "cruelMode": "Mode cruel",
     "on": "Activé",
     "off": "Désactivé",
     "playTime": "Temps de jeu", //x1.3
-    "save": "Enregistrer",
+    "playForFreeAt": "Jouez gratuitement sur", //x1.4
+    "save": "Enregistrer", //x2.8
     "copy": "Copier",
-    "copiedTitle": "Copié dans le presse-papiers",
-    "copyErrorTitle": "Impossible de copier l'image",
+    "copiedTitle": "Copié dans le presse-papiers", //x1.5
+    "copyErrorTitle": "Impossible de copier l'image", //x1.4
     "copyErrorDesc": "Une erreur s'est produite lors de la copie dans le presse-papiers.",
     "generating": "Génération…",
     "share": "Partager",
     "errorTitle": "Impossible de créer l'image", //x1.2
-    "errorDesc": "Une erreur s'est produite lors de la génération de l'image.",
-    "playForFreeAt": "Jouez gratuitement sur"
+    "errorDesc": "Une erreur s'est produite lors de la génération de l'image."
   },
   "feedback": {
     "title": "Retour",
     "message": "Si vous rencontrez des bugs, des problèmes de traduction ou si vous avez des idées ou des retours, j'aimerais beaucoup vous lire.",
+    "openForm": "Donner un avis",
     "contactVia": "Vous pouvez aussi me contacter via :",
     "reddit": "Reddit",
     "instagram": "Instagram",
     "steam": "Steam",
-    "email": "E-Mail",
-    "openForm": "Donner un avis"
+    "email": "E-Mail"
   },
   "galaxy": {
     "title": "La démo s'arrête ici", //x1.4
     "description": "Ajoutez le jeu complet à votre liste de souhaits Steam pour poursuivre l'aventure à sa sortie.",
     "wishlistButton": "Ajouter à la liste de souhaits Steam", //x2.1
+    "feedbackButton": "Feedback",
     "startNewGameButton": "Nouvelle partie",
-    "releaseNote": "Sortie prévue : T4 2026",
-    "feedbackButton": "Feedback"
+    "releaseNote": "Sortie prévue : T4 2026"
   }
 }

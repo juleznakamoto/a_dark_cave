@@ -6,7 +6,9 @@
     "knowledgeTimeBonus": "+{{seconds}}s Entscheidungszeit durch Wissen{{maxSuffix}}",
     "knowledgeTimeBonusMax": " (max.)",
     "successChance": "Erfolgschance: {{percent}}%",
-    "successChanceLocked": "Erfolgschance: ??%",
+    "successChanceBase": "Basis: {{percent}}%",
+    "successChanceStatPerPoint": "+{{percent}}% pro Punkt",
+    "successChanceCruel": "Grausamer Modus: {{percent}}%",
     "influencedBy": "Beeinflusst durch:" //x1.3
   },
   "reward": {
@@ -68,12 +70,12 @@
   },
   "invite": {
     "button": "Einladen",
-    "copyInviteCode": "Einladungscode kopieren",
+    "copyInviteCode": "Einladungscode kopieren", //x1.4
     "goldBonus": "+{{amount}} Gold",
     "linkCopied": "Einladungslink kopiert!", //x1.2
     "linkCopiedDesc": "Teile ihn mit Freunden, um beide {{amount}} Gold zu verdienen.",
     "copyFailed": "Einladungslink konnte nicht kopiert werden", //x1.6
-    "copyFailedNotSignedIn": "Melde dich an, um deinen Einladungslink zu kopieren",
+    "copyFailedNotSignedIn": "Melde dich an, um deinen Einladungslink zu kopieren", //x1.6
     "tooltip": "Lade deine Freunde ein – ihr beide erhaltet {{amount}} Gold. Du kannst bis zu {{cap}} Freunde einladen. ({{count}}/{{cap}} eingeladen)."
   },
   "invest": {
@@ -226,33 +228,33 @@
     "on": "An",
     "off": "Aus",
     "playTime": "Spielzeit",
+    "playForFreeAt": "Kostenlos spielen unter", //x1.4
     "save": "Speichern",
     "copy": "Kopieren",
-    "copiedTitle": "In Zwischenablage kopiert",
-    "copyErrorTitle": "Bild konnte nicht kopiert werden",
+    "copiedTitle": "In Zwischenablage kopiert", //x1.3
+    "copyErrorTitle": "Bild konnte nicht kopiert werden", //x1.6
     "copyErrorDesc": "Beim Kopieren in die Zwischenablage ist etwas schiefgelaufen.",
     "generating": "Wird erstellt…", //x1.3
     "share": "Teilen",
     "errorTitle": "Bild konnte nicht erstellt werden", //x1.5
-    "errorDesc": "Beim Erstellen des Bildes ist etwas schiefgelaufen.",
-    "playForFreeAt": "Kostenlos spielen unter"
+    "errorDesc": "Beim Erstellen des Bildes ist etwas schiefgelaufen."
   },
   "feedback": {
     "title": "Feedback",
     "message": "Wenn du Fehler, Übersetzungsprobleme findest oder Ideen und Feedback hast, würde ich mich freuen, von dir zu hören.",
+    "openForm": "Feedback geben",
     "contactVia": "Du erreichst mich auch über:",
     "reddit": "Reddit",
     "instagram": "Instagram",
     "steam": "Steam",
-    "email": "E-Mail",
-    "openForm": "Feedback geben"
+    "email": "E-Mail"
   },
   "galaxy": {
     "title": "Die Demo endet hier", //x1.4
     "description": "Setze das vollständige Spiel auf deine Steam-Wunschliste, um die Reise nach der Veröffentlichung fortzusetzen.", //x1.5
     "wishlistButton": "Auf Steam wünschen",
+    "feedbackButton": "Feedback",
     "startNewGameButton": "Neues Spiel starten", //x1.4
-    "releaseNote": "Geplante Veröffentlichung: Q4 2026", //x1.4
-    "feedbackButton": "Feedback"
+    "releaseNote": "Geplante Veröffentlichung: Q4 2026" //x1.4
   }
 }

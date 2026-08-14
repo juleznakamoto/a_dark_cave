@@ -6,24 +6,30 @@
     "fighting": "Сражение...",
     "startFight": "Начать бой",
     "roundTitle": "Бой - раунд {{round}}",
-    "youLost": "Вы проиграли",
-    "youWin": "Вы победили",
+    "bossRoundTitle": "Бой с боссом – Раунд {{round}}",
+    "bossTitle": "Бой с боссом",  //x1.2
+    "youLost": "Вы проиграли",  //x1.5
+    "youWin": "Вы победили",  //x1.6
     "bastion": "Бастион",
     "fortress": "Крепость",
     "items": "Предметы",
-    "integrity": "Целостность", //x1.2
+    "integrity": "Целостность",  //x1.2
     "attack": "Атака",
     "defense": "Защита",
-    "attackFailed": "Атака не удалась",
+    "healChance": "Шанс лечения",
+    "stunChance": "Шанс оглушения",  //x1.3
+    "stunned": "Оглушён",
+    "enemyHealed": "Исцелён",
+    "attackFailed": "Атака не удалась",  //x1.2
     "crushingStrikeFailed": "Сокрушающий удар не удался",
     "feralHowlFailed": "Дикий вой не удался",
     "critical": "критический",
     "criticalParen": "({{label}})",
     "available": "Доступно: {{current}}/{{max}}",
     "crushingStrike": "Сокрушающий удар",
-    "bloodflameSphere": "Сфера кровавого пламени",
+    "bloodflameSphere": "Сфера кровавого пламени",  //x1.4
     "feralHowl": "Дикий вой",
-    "poisonArrows": "Отравленные стрелы",
+    "poisonArrows": "Отравленные стрелы",  //x1.4
     "critChance": "{{percent}} % шанс критического удара",
     "critFromLuck": "{{percent}} % от {{stat}}{{maxSuffix}}",
     "critFromLuckMaxSuffix": " (макс.)",
@@ -42,13 +48,7 @@
     "fellowInjured": "{{name}} получил ранение.",
     "buildingDamaged": "{{name}} повреждено.",
     "silverClaimed": "Получено серебра: {{amount}}.",
-    "goldClaimed": "Получено золота: {{amount}}.",
-    "bossRoundTitle": "Бой с боссом – Раунд {{round}}",
-    "bossTitle": "Бой с боссом",
-    "healChance": "Шанс лечения",
-    "stunChance": "Шанс оглушения",
-    "stunned": "Оглушён",
-    "enemyHealed": "Исцелён"
+    "goldClaimed": "Получено золота: {{amount}}."
   },
   "bastion": {
     "heal": "Лечение",
@@ -58,42 +58,42 @@
     "title": "Волны атак",
     "calm": "Пока что спокойно…",
     "soon": "скоро",
-    "provoke": "Спровоцировать",
+    "provoke": "Спровоцировать",  //x2.0
     "pause": "Пауза",
     "unpause": "Продолжить",
     "postCompletion": "Волна {{waveNumber}}",
     "waves": {
-      "firstWave": "Первая волна",
+      "firstWave": "Первая волна",  //x1.2
       "secondWave": "Вторая волна",
-      "thirdWave": "Третья волна",
-      "fourthWave": "Четвёртая волна", //x1.4
+      "thirdWave": "Третья волна",  //x1.2
+      "fourthWave": "Четвёртая волна",  //x1.4
       "fifthWave": "Пятая волна",
-      "sixthWave": "Шестая волна",
+      "firstBossWave": "Волна босса",  //x1.2
+      "sixthWave": "Шестая волна",  //x1.2
       "seventhWave": "Седьмая волна",
       "eighthWave": "Восьмая волна",
-      "ninthWave": "Девятая волна",
-      "tenthWave": "Десятая волна",
-      "firstBossWave": "Волна босса",
-      "secondBossWave": "Финальная волна босса"
+      "ninthWave": "Девятая волна",  //x1.3
+      "tenthWave": "Десятая волна",  //x1.3
+      "secondBossWave": "Финальная волна босса"  //x1.4
     }
   },
   "fortifications": {
     "bastion": "Бастион",
     "fortifiedMoat": "Укреплённый ров",
-    "chitinPlating": "Хитиновая обшивка",
-    "watchtower1": "Сторожевая башня",
-    "watchtower2": "Караульная башня",
+    "chitinPlating": "Хитиновая обшивка",  //x1.2
+    "watchtower1": "Сторожевая башня",  //x1.6
+    "watchtower2": "Караульная башня",  //x1.5
     "watchtower3": "Укреплённая башня",
     "watchtower4": "Пушечная башня",
-    "palisades1": "Деревянные частоколы",
+    "palisades1": "Деревянные частоколы",  //x1.3
     "palisades2": "Укреплённые частоколы",
-    "palisades3": "Каменная стена",
+    "palisades3": "Каменная стена",  //x1.4
     "palisades4": "Укреплённая стена",
     "palisadesFallback": "Частокол",
-    "watchtowerFallback": "Сторожевая башня",
-    "damaged": "(повреждено)",
+    "watchtowerFallback": "Сторожевая башня",  //x1.6
+    "damaged": "(повреждено)",  //x1.3
     "attack": "+{{value}} к атаке",
     "defense": "+{{value}} к защите",
-    "integrity": "+{{value}} к целостности" //x1.2
+    "integrity": "+{{value}} к целостности"  //x1.2
   }
 }

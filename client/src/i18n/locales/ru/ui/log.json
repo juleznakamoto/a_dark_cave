@@ -97,19 +97,19 @@
     "buttonUpgrade": {
       "deepens": "Ваше мастерство в {{skill}} углубляется.",
       "skills": {
-        "caveExplore": "исследовании пещер", //x1.3
+        "caveExplore": "исследовании пещер",  //x1.3
         "mineStone": "добыче камня",
         "mineIron": "добыче железа",
         "mineCoal": "добыче угля",
         "mineSulfur": "добыче серы",
         "mineObsidian": "добыче обсидиана",
         "mineAdamant": "добыче адаманта",
-        "mineMoonstone": "добыче лунного камня",
+        "mineMoonstone": "добыче лунного камня",  //x1.3
         "hunt": "охоте",
         "chopWood": "рубке дерева",
         "craftTorches": "изготовлении факелов",
         "craftBoneTotems": "изготовлении костяных тотемов",
-        "craftLeatherTotems": "изготовлении кожаных тотемов" //x1.3
+        "craftLeatherTotems": "изготовлении кожаных тотемов"  //x1.3
       }
     }
   }

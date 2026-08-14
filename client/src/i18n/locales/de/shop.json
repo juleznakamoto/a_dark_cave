@@ -1,8 +1,8 @@
 {
   "additional_preset_slots": {
     "activationMessage": "Zwei zusätzliche Voreinstellungs-Slots für Dorfbewohner wurden hinzugefügt.",
-    "description": "Zwei weitere Voreinstellungs-Slots für Dorfbewohner-Arbeit", //x1.7
-    "name": "2 zusätzliche Voreinstellungs-Slots" //x1.4
+    "description": "Zwei weitere Voreinstellungs-Slots für Dorfbewohner-Arbeit",  //x1.7
+    "name": "2 zusätzliche Voreinstellungs-Slots"  //x1.4
   },
   "additional_construction_queue_slot": {
     "activationMessage": "Zwei zusätzliche Bauwarteschlangen-Slots wurden hinzugefügt.",

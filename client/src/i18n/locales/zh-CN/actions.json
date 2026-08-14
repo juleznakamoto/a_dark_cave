@@ -64,6 +64,10 @@
     "description": "安葬死者的土地，抚慰村民的哀伤。",
     "label": "埋骨地"
   },
+  "buildHerbGarden": {
+    "description": "精心照料的有用植物苗床，用途广泛。",
+    "label": "药草园"
+  },
   "buildBottomlessPit": {
     "description": "极深的矿坑，可抵达最稀有的矿材",
     "label": "无底矿坑"
@@ -283,6 +287,9 @@
   "buildWoodenHut": {
     "description": "提供基础庇护的简易木屋",
     "label": "木屋"
+  },
+  "exploreMountainVillage": {
+    "label": "探索山村"
   },
   "canyonBridge": {
     "label": "峡谷桥",
@@ -668,6 +675,9 @@
   "sellSteelBatch": {
     "label": "出售钢"
   },
+  "searchMountainLady": {
+    "label": "搜寻山中女子"
+  },
   "steelDelivery": {
     "label": "运送钢材",
     "log": {
@@ -740,15 +750,5 @@
       "mapFragment": "在洞穴地上，你发现一块残破的地图片段。",
       "firstVisit": "越往洞穴深处，空气越发寒冷。洞壁光滑得不自然，仿佛曾被人塑造。"
     }
-  },
-  "buildHerbGarden": {
-    "description": "精心照料的有用植物苗床，用途广泛。",
-    "label": "药草园"
-  },
-  "exploreMountainVillage": {
-    "label": "探索山村"
-  },
-  "searchMountainLady": {
-    "label": "搜寻山中女子"
   }
 }

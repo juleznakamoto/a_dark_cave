@@ -30,6 +30,10 @@
     "makeFire": "生火",
     "recommendedBy": "推荐来源"
   },
+  "errorScreen": {
+    "message": "We are digging deeper. Please check back soon.",
+    "reload": "Reload game"
+  },
   "footer": {
     "fullGame": "完整版",
     "trader": "商人",
@@ -39,6 +43,8 @@
     "privacy": "隐私",
     "imprint": "法律信息",
     "contact": "联系",
+    "feedback": "Feedback",
+    "openFeedback": "Open feedback form",
     "pauseGame": "暂停游戏",
     "resumeGame": "继续游戏",
     "muteMusic": "静音环境音",
@@ -48,8 +54,6 @@
     "cruelModeActive": "残酷模式已启用",
     "wishlistOnSteam": "加入 Steam 愿望单",
     "demoProgress": "Demo Progress",
-    "feedback": "Feedback",
-    "openFeedback": "Open feedback form",
     "progress": "进度",
     "social": "社交",
     "email": "邮箱"
@@ -80,6 +84,7 @@
     "signedOut": "已成功退出登录",
     "signOutError": "退出登录时出错",
     "gameSaved": "游戏已成功保存",
+    "cloudSaveFailed": "已保存在本设备，但云同步失败。自动保存将重试。",
     "saveFailed": "保存游戏失败",
     "accountDeleted": "你的账户已删除",
     "accountDeletedDesc": "你已退出登录，本设备的本地存档已清除。",
@@ -92,8 +97,7 @@
     "unsubscribedDesc": "你将不会收到我们的营销邮件。",
     "preferenceUpdateFailed": "无法更新偏好设置",
     "enterFullscreen": "Full screen",
-    "exitFullscreen": "Exit full screen",
-    "cloudSaveFailed": "已保存在本设备，但云同步失败。自动保存将重试。"
+    "exitFullscreen": "Exit full screen"
   },
   "pauseHotkey": {
     "hintPrefix": "使用 ",
@@ -103,9 +107,5 @@
   "villageHotkeyTutorial": {
     "dismiss": "关闭"
   },
-  "never": "从未",
-  "errorScreen": {
-    "message": "We are digging deeper. Please check back soon.",
-    "reload": "Reload game"
-  }
+  "never": "从未"
 }

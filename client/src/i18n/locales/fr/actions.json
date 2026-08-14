@@ -64,8 +64,12 @@
     "description": "Terrain où reposent les morts, apaisant le deuil des villageois.",
     "label": "Cimetière"
   },
+  "buildHerbGarden": {
+    "description": "Parcelles cultivées de plantes utiles, soigneusement entretenues pour leurs nombreux usages.",
+    "label": "Jardin d'herbes"
+  },
   "buildBottomlessPit": {
-    "description": "Fosse extrêmement profonde atteignant les matériaux les plus rares", //x1.4
+    "description": "Fosse extrêmement profonde atteignant les matériaux les plus rares",  //x1.4
     "label": "Fosse sans fond"
   },
   "buildBuildersLodge": {
@@ -81,7 +85,7 @@
     "label": "Guilde des bâtisseurs"
   },
   "buildCabin": {
-    "description": "Cabane de chasse rudimentaire avec des outils pour les chasseurs", //x1.5
+    "description": "Cabane de chasse rudimentaire avec des outils pour les chasseurs",  //x1.5
     "label": "Cabane de chasse"
   },
   "buildChitinPlating": {
@@ -109,11 +113,11 @@
     "label": "Fosse profonde"
   },
   "buildDeepeningPit": {
-    "description": "Fosse plus profonde atteignant davantage de ressources souterraines", //x1.6
+    "description": "Fosse plus profonde atteignant davantage de ressources souterraines",  //x1.6
     "label": "Fosse approfondie"
   },
   "buildFortifiedMoat": {
-    "description": "Douves défensives ralentissant et affaiblissant les assaillants", //x1.4
+    "description": "Douves défensives ralentissant et affaiblissant les assaillants",  //x1.4
     "label": "Douves fortifiées"
   },
   "buildFortifiedStorehouse": {
@@ -142,15 +146,15 @@
   },
   "buildGrandHunterLodge": {
     "description": "Pavillon de chasse suprême pour maîtres chasseurs",
-    "label": "Grand pavillon de chasse" //x1.3
+    "label": "Grand pavillon de chasse"  //x1.3
   },
   "buildGrandRepository": {
     "description": "Immense dépôt à la capacité de stockage exceptionnelle",
     "label": "Grand dépôt"
   },
   "buildGreatCabin": {
-    "description": "Pavillon de chasse agrandi augmentant la production des chasseurs", //x1.4
-    "label": "Grande cabane de chasse" //x1.3
+    "description": "Pavillon de chasse agrandi augmentant la production des chasseurs",  //x1.4
+    "label": "Grande cabane de chasse"  //x1.3
   },
   "buildGreatVault": {
     "description": "Coffre suprême capable de stocker d'immenses ressources",
@@ -170,7 +174,7 @@
   },
   "buildInkwardenAcademy": {
     "description": "Grande académie où des maîtres érudits distillent un savoir profond",
-    "label": "Académie des gardiens des écrits" //x1.8
+    "label": "Académie des gardiens des écrits"  //x1.8
   },
   "buildLonghouse": {
     "description": "Immense halle commune nordique abritant de nombreux villageois",
@@ -205,7 +209,7 @@
     "label": "Fonderie majeure"
   },
   "buildQuarry": {
-    "description": "Carrière de pierre augmentant la production de pierre des récolteurs", //x1.5
+    "description": "Carrière de pierre augmentant la production de pierre des récolteurs",  //x1.5
     "label": "Carrière"
   },
   "buildRecordsHall": {
@@ -217,7 +221,7 @@
     "label": "Sanctuaire"
   },
   "buildScribesOffice": {
-    "description": "Une pièce tranquille où les scribes tiennent un décompte minutieux de chaque bras au travail, afin qu'aucun labeur ne soit oublié", //x1.4
+    "description": "Une pièce tranquille où les scribes tiennent un décompte minutieux de chaque bras au travail, afin qu'aucun labeur ne soit oublié",  //x1.4
     "label": "Bureau du scribe"
   },
   "buildScriptorium": {
@@ -237,12 +241,12 @@
     "label": "Hutte de pierre"
   },
   "buildStorehouse": {
-    "description": "Installation de stockage agrandie pour davantage de ressources", //x1.4
+    "description": "Installation de stockage agrandie pour davantage de ressources",  //x1.4
     "label": "Entrepôt"
   },
   "buildSupplyHut": {
     "description": "Petite hutte pour stocker les ressources",
-    "label": "Hutte de ravitaillement" //x2.3
+    "label": "Hutte de ravitaillement"  //x2.3
   },
   "buildTannery": {
     "description": "Atelier où les fourrures sont transformées en cuir",
@@ -257,7 +261,7 @@
     "label": "Scierie"
   },
   "buildTradePost": {
-    "description": "Comptoir commercial attirant des marchands qui vendent des biens", //x1.4
+    "description": "Comptoir commercial attirant des marchands qui vendent des biens",  //x1.4
     "label": "Comptoir commercial"
   },
   "buildTraps": {
@@ -283,6 +287,9 @@
   "buildWoodenHut": {
     "description": "Simple hutte de bois offrant un abri rudimentaire",
     "label": "Hutte de bois"
+  },
+  "exploreMountainVillage": {
+    "label": "Explorer le village de montagne"
   },
   "canyonBridge": {
     "label": "Pont du canyon",
@@ -330,7 +337,7 @@
     "label": "Arbalète"
   },
   "craftAshenGreatshield": {
-    "label": "Grand bouclier cendreux" //x1.4
+    "label": "Grand bouclier cendreux"  //x1.4
   },
   "craftAshfireBomb": {
     "label": "Bombe feu-cendre"
@@ -354,7 +361,7 @@
     "label": "Épée d'acier noir"
   },
   "craftBloodstoneStaff": {
-    "label": "Bâton de pierre de sang" //x1.4
+    "label": "Bâton de pierre de sang"  //x1.4
   },
   "craftBoneTotems": {
     "label": "Totems d'os"
@@ -453,7 +460,7 @@
     "label": "Pioche de pierre"
   },
   "craftStormglassHalberd": {
-    "label": "Hallebarde de verre-tempête" //x1.5
+    "label": "Hallebarde de verre-tempête"  //x1.5
   },
   "craftTorches": {
     "label": "Torchees"
@@ -470,11 +477,11 @@
   "descendFurther": {
     "label": "Descendre davantage",
     "log": {
-      "firstVisit": "La lanterne projette une lueur stable tandis que vous descendez encore plus bas. Soudain, vos pieds touchent des marches de pierre taillées par la main de l'homme, usées par le temps." //x1.5
+      "firstVisit": "La lanterne projette une lueur stable tandis que vous descendez encore plus bas. Soudain, vos pieds touchent des marches de pierre taillées par la main de l'homme, usées par le temps."  //x1.5
     }
   },
   "encounterBeyondPortal": {
-    "label": "S'aventurer au-delà de la porte" //x1.6
+    "label": "S'aventurer au-delà de la porte"  //x1.6
   },
   "exploreCave": {
     "label": "Explorer la grotte",
@@ -529,7 +536,7 @@
     "label": "Soigner le vieux mage"
   },
   "healRestlessKnight": {
-    "label": "Soigner le chevalier tourmenté" //x1.5
+    "label": "Soigner le chevalier tourmenté"  //x1.5
   },
   "hiddenLibrary": {
     "label": "Bibliothèque cachée",
@@ -632,13 +639,13 @@
     "label": "Minage"
   },
   "occultistChamber": {
-    "label": "Chambre de l'occultiste", //x1.4
+    "label": "Chambre de l'occultiste",  //x1.4
     "log": {
       "complete": "En suivant la carte de l'occultiste, vous trouvez la chambre qui contient ses trésors. Parmi eux se trouve son grimoire, rempli de savoir interdit et de secrets arcanes."
     }
   },
   "provokeAttackWave": {
-    "label": "Provoquer une vague d'attaque" //x1.5
+    "label": "Provoquer une vague d'attaque"  //x1.5
   },
   "repairBastion": {
     "label": "Réparer le bastion"
@@ -647,7 +654,7 @@
     "label": "Réparer les palissades"
   },
   "repairWatchtower": {
-    "label": "Réparer la tour de guet" //x1.4
+    "label": "Réparer la tour de guet"  //x1.4
   },
   "risingSmoke": {
     "label": "Fumée montante",
@@ -667,6 +674,9 @@
   },
   "sellSteelBatch": {
     "label": "Vendre l'acier"
+  },
+  "searchMountainLady": {
+    "label": "Chercher la dame des montagnes"  //x1.5
   },
   "steelDelivery": {
     "label": "Livraison d'acier",
@@ -688,16 +698,16 @@
     "label": "Acheter de l'adamant"
   },
   "tradeGoldForAshfireBomb": {
-    "label": "Acheter une bombe feu-cendre" //x1.8
+    "label": "Acheter une bombe feu-cendre"  //x1.8
   },
   "tradeGoldForBlacksteel": {
-    "label": "Acheter de l'acier noir" //x1.6
+    "label": "Acheter de l'acier noir"  //x1.6
   },
   "tradeGoldForEmberBomb": {
-    "label": "Acheter une bombe de braise" //x1.9
+    "label": "Acheter une bombe de braise"  //x1.9
   },
   "tradeGoldForFood": {
-    "label": "Acheter de la nourriture" //x3.0
+    "label": "Acheter de la nourriture"  //x3.0
   },
   "tradeGoldForIron": {
     "label": "Acheter du fer"
@@ -706,7 +716,7 @@
     "label": "Acheter du cuir"
   },
   "tradeGoldForObsidian": {
-    "label": "Acheter de l'obsidienne" //x1.9
+    "label": "Acheter de l'obsidienne"  //x1.9
   },
   "tradeGoldForSteel": {
     "label": "Acheter de l'acier"
@@ -718,13 +728,13 @@
     "label": "Acheter une torche"
   },
   "tradeGoldForVoidBomb": {
-    "label": "Acheter une bombe du Vide" //x1.9
+    "label": "Acheter une bombe du Vide"  //x1.9
   },
   "tradeGoldForInsightPotion": {
     "label": "Élixir de perspicacité"
   },
   "tradeGoldForVeinfireElixir": {
-    "label": "Acheter un élixir feu-veine" //x1.4
+    "label": "Acheter un élixir feu-veine"  //x1.4
   },
   "tradeGoldForWood": {
     "label": "Acheter du bois"
@@ -733,22 +743,12 @@
     "label": "Acheter de l'or"
   },
   "ventureDeeper": {
-    "label": "S'aventurer plus profond", //x1.7
+    "label": "S'aventurer plus profond",  //x1.7
     "log": {
       "tarnishedAmulet": "Dans l'ombre de la grotte, quelque chose scintille. Vous trouvez un amulette ternie.",
       "silverSack": "Vous trouvez un petit sac en cuir contenant 50 pièces d'argent.",
       "mapFragment": "Sur le sol de la grotte, vous trouvez un fragment de carte déchiré.",
       "firstVisit": "L'air devient plus froid à mesure que vous descendez plus profondément dans la grotte. Les parois semblent anormalement lisses, comme façonnées par quelqu'un."
     }
-  },
-  "buildHerbGarden": {
-    "description": "Parcelles cultivées de plantes utiles, soigneusement entretenues pour leurs nombreux usages.",
-    "label": "Jardin d'herbes"
-  },
-  "exploreMountainVillage": {
-    "label": "Explorer le village de montagne"
-  },
-  "searchMountainLady": {
-    "label": "Chercher la dame des montagnes"
   }
 }

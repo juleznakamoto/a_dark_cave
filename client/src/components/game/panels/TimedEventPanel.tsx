@@ -514,10 +514,7 @@ export default function TimedEventPanel() {
     };
 
     let successPercentage: string | null = null;
-    if (
-      hasDefinedSuccessChance(choice.success_chance) &&
-      gameState.books?.book_of_war
-    ) {
+    if (hasDefinedSuccessChance(choice.success_chance)) {
       const successPercent = getEventChoiceSuccessPercent(choice, gameState);
       if (successPercent !== null) {
         successPercentage = `${successPercent}%`;

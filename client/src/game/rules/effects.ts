@@ -1706,8 +1706,7 @@ export const bookEffects: Record<string, EffectDefinition> = {
   book_of_war: {
     id: "book_of_war",
     name: "Book of War",
-    description:
-      "Book containing wisdom about combat. Reveals the likelihood of success in battles and encounters.",
+    description: "Book containing wisdom about combat.",
     bonuses: {},
   },
   book_of_trials: {

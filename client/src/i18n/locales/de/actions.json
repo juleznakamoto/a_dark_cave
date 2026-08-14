@@ -26,7 +26,7 @@
   },
   "buildAdvancedBlacksmith": {
     "description": "Verbesserte Schmiede mit besseren Werkzeugen und Techniken",
-    "label": "Fortgeschrittene Schmiede" //x1.3
+    "label": "Fortgeschrittene Schmiede"  //x1.3
   },
   "buildAlchemistHall": {
     "description": "Halle, in der der Alchemist Pulver und Sprengstoffe herstellt",
@@ -63,6 +63,10 @@
   "buildBoneyard": {
     "description": "Ort, an dem die Toten zur Ruhe gebettet werden und die Trauer der Dorfbewohner nachlässt.",
     "label": "Totenacker"
+  },
+  "buildHerbGarden": {
+    "description": "Gepflegte Beete nützlicher Pflanzen, sorgfältig gehegt für ihre vielen Verwendungen.",
+    "label": "Kräutergarten"
   },
   "buildBottomlessPit": {
     "description": "Extrem tiefe Grube, die zu den seltensten Materialien führt",
@@ -129,7 +133,7 @@
     "label": "Fellzelt"
   },
   "buildGrandArchive": {
-    "description": "Ein riesiges Gewölbe voller Schriftrollen, das alles bewahrt, was das Dorf je war – jeder Name und jede Mühe in Tinte verewigt", //x1.4
+    "description": "Ein riesiges Gewölbe voller Schriftrollen, das alles bewahrt, was das Dorf je war – jeder Name und jede Mühe in Tinte verewigt",  //x1.4
     "label": "Großes Archiv"
   },
   "buildGrandBazaar": {
@@ -170,14 +174,14 @@
   },
   "buildInkwardenAcademy": {
     "description": "Große Akademie, in der Meistergelehrte tiefes Wissen destillieren",
-    "label": "Schriftenwächterakademie" //x1.3
+    "label": "Schriftenwächterakademie"  //x1.3
   },
   "buildLonghouse": {
     "description": "Massive nordische Hütte, die viele Dorfbewohner beherbergt",
     "label": "Langhaus"
   },
   "buildMasterTannery": {
-    "description": "Fortgeschrittene Gerberei, die die Lederproduktion verbessert", //x1.4
+    "description": "Fortgeschrittene Gerberei, die die Lederproduktion verbessert",  //x1.4
     "label": "Meistergerberei"
   },
   "buildMasterworkFoundry": {
@@ -283,6 +287,9 @@
   "buildWoodenHut": {
     "description": "Einfache Holzhütte, die grundlegenden Schutz bietet",
     "label": "Holzhütte"
+  },
+  "exploreMountainVillage": {
+    "label": "Bergdorf erkunden"
   },
   "canyonBridge": {
     "label": "Canyonbrücke",
@@ -470,7 +477,7 @@
   "descendFurther": {
     "label": "Tiefer hinabsteigen",
     "log": {
-      "firstVisit": "Die Laterne wirft ein gleichmäßiges Licht, während du noch tiefer hinabsteigst. Plötzlich berühren deine Füße von Menschenhand gemeißelte Steinstufen, vom Alter abgenutzt." //x1.4
+      "firstVisit": "Die Laterne wirft ein gleichmäßiges Licht, während du noch tiefer hinabsteigst. Plötzlich berühren deine Füße von Menschenhand gemeißelte Steinstufen, vom Alter abgenutzt."  //x1.4
     }
   },
   "encounterBeyondPortal": {
@@ -638,7 +645,7 @@
     }
   },
   "provokeAttackWave": {
-    "label": "Angriffswelle provozieren" //x1.3
+    "label": "Angriffswelle provozieren"  //x1.3
   },
   "repairBastion": {
     "label": "Bastion reparieren"
@@ -667,6 +674,9 @@
   },
   "sellSteelBatch": {
     "label": "Stahl verkaufen"
+  },
+  "searchMountainLady": {
+    "label": "Bergdame suchen"
   },
   "steelDelivery": {
     "label": "Stahllieferung",
@@ -724,7 +734,7 @@
     "label": "Einsicht-Elixier"
   },
   "tradeGoldForVeinfireElixir": {
-    "label": "Aderfeuer-Elixier kaufen" //x1.3
+    "label": "Aderfeuer-Elixier kaufen"  //x1.3
   },
   "tradeGoldForWood": {
     "label": "Holz kaufen"
@@ -740,15 +750,5 @@
       "mapFragment": "Auf dem Höhlenboden findest du ein zerrissenes Kartenfragment.",
       "firstVisit": "Die Luft wird kälter, während du den Pfad tiefer in die Höhle hinabsteigst. Die Wände wirken unnatürlich glatt, als hätte sie jemand geformt."
     }
-  },
-  "buildHerbGarden": {
-    "description": "Gepflegte Beete nützlicher Pflanzen, sorgfältig gehegt für ihre vielen Verwendungen.",
-    "label": "Kräutergarten"
-  },
-  "exploreMountainVillage": {
-    "label": "Bergdorf erkunden"
-  },
-  "searchMountainLady": {
-    "label": "Bergdame suchen"
   }
 }

@@ -1,11 +1,13 @@
 {
   "combat": {
     "title": "Combate",
-    "skillsTitle": "Habilidades de combate",
+    "skillsTitle": "Habilidades de combate",  //x1.7
     "fight": "Luchar",
     "fighting": "Luchando…",
-    "startFight": "Iniciar combate",
+    "startFight": "Iniciar combate",  //x1.4
     "roundTitle": "Combate – Ronda {{round}}",
+    "bossRoundTitle": "Combate de jefe – Ronda {{round}}",
+    "bossTitle": "Combate de jefe",  //x1.5
     "youLost": "Has perdido",
     "youWin": "Has ganado",
     "bastion": "Bastión",
@@ -14,15 +16,19 @@
     "integrity": "Integridad",
     "attack": "Ataque",
     "defense": "Defensa",
+    "healChance": "Probabilidad de curación",  //x2.2
+    "stunChance": "Probabilidad de aturdimiento",  //x2.5
+    "stunned": "Aturdido",
+    "enemyHealed": "Curado",
     "attackFailed": "Ataque fallido",
     "crushingStrikeFailed": "Golpe aplastante fallido",
-    "feralHowlFailed": "Aullido salvaje fallido",
+    "feralHowlFailed": "Aullido salvaje fallido",  //x1.4
     "critical": "crítico",
     "criticalParen": "({{label}})",
     "available": "Disponible: {{current}}/{{max}}",
     "crushingStrike": "Golpe aplastante",
     "bloodflameSphere": "Esfera de llama sangrienta", //ok
-    "feralHowl": "Aullido salvaje",
+    "feralHowl": "Aullido salvaje",  //x1.5
     "poisonArrows": "Flechas envenenadas", //ok
     "critChance": "{{percent}} % de probabilidad de golpe crítico",
     "critFromLuck": "{{percent}} % por {{stat}}{{maxSuffix}}",
@@ -31,8 +37,8 @@
     "critDamage": "+{{percent}} % de daño de golpe crítico",
     "missChance": "{{percent}} % de probabilidad de fallo (según {{stat}})",
     "enemies": {
-      "paleCreatures": "Criaturas pálidas",
-      "paleBeasts": "Bestias pálidas"
+      "paleCreatures": "Criaturas pálidas",  //x1.2
+      "paleBeasts": "Bestias pálidas"  //x1.4
     },
     "restlessKnightWounded": "El Caballero inquieto está herido y no puede luchar",
     "elderWizardWounded": "El mago anciano está herido y no puede lanzar hechizos",
@@ -42,20 +48,14 @@
     "fellowInjured": "{{name}} resultó herido.",
     "buildingDamaged": "{{name}} resultó dañado.",
     "silverClaimed": "{{amount}} plata recibida.",
-    "goldClaimed": "{{amount}} oro recibido.",
-    "bossRoundTitle": "Combate de jefe – Ronda {{round}}",
-    "bossTitle": "Combate de jefe",
-    "healChance": "Probabilidad de curación",
-    "stunChance": "Probabilidad de aturdimiento",
-    "stunned": "Aturdido",
-    "enemyHealed": "Curado"
+    "goldClaimed": "{{amount}} oro recibido."
   },
   "bastion": {
     "heal": "Curar",
     "repair": "Reparar"
   },
   "attackWaves": {
-    "title": "Oleadas de ataque",
+    "title": "Oleadas de ataque",  //x1.4
     "calm": "Por ahora reina la calma…",
     "soon": "pronto",
     "provoke": "Provocar",
@@ -65,23 +65,23 @@
     "waves": {
       "firstWave": "Primera oleada", //ok
       "secondWave": "Segunda oleada", //ok
-      "thirdWave": "Tercera oleada",
+      "thirdWave": "Tercera oleada",  //x1.4
       "fourthWave": "Cuarta oleada",
-      "fifthWave": "Quinta oleada",
-      "sixthWave": "Sexta oleada",
+      "fifthWave": "Quinta oleada",  //x1.3
+      "firstBossWave": "Oleada del jefe",  //x1.7
+      "sixthWave": "Sexta oleada",  //x1.2
       "seventhWave": "Séptima oleada",
       "eighthWave": "Octava oleada",
-      "ninthWave": "Novena oleada",
-      "tenthWave": "Décima oleada",
-      "firstBossWave": "Oleada del jefe",
-      "secondBossWave": "Oleada final del jefe"
+      "ninthWave": "Novena oleada",  //x1.3
+      "tenthWave": "Décima oleada",  //x1.3
+      "secondBossWave": "Oleada final del jefe"  //x1.4
     }
   },
   "fortifications": {
     "bastion": "Bastión",
     "fortifiedMoat": "Foso fortificado",
     "chitinPlating": "Blindaje de quitina", //ok
-    "watchtower1": "Torre de vigilancia",
+    "watchtower1": "Torre de vigilancia",  //x1.9
     "watchtower2": "Torre de guardia", //ok
     "watchtower3": "Torre fortificada",
     "watchtower4": "Torre de cañones", //ok

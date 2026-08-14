@@ -3,6 +3,11 @@ import { useTranslation } from "react-i18next";
 import type { EventChoice } from "@/game/rules/events";
 import type { GameState } from "@shared/schema";
 import { cn } from "@/lib/utils";
+import {
+  getSuccessChanceBreakdown,
+  getSuccessChanceFormula,
+  type SuccessChanceFormula,
+} from "@/game/rules/eventSuccessChance";
 
 export type RelevantStat = "strength" | "knowledge" | "luck" | "madness";
 
@@ -81,12 +86,14 @@ interface SuccessChanceTooltipContentProps {
   gameState: GameState;
   successChance?: SuccessChanceValue;
   relevantStats?: RelevantStat[];
+  successFormula?: SuccessChanceFormula;
 }
 
 export function SuccessChanceTooltipContent({
   gameState,
   successChance,
   relevantStats = [],
+  successFormula,
 }: SuccessChanceTooltipContentProps) {
   const { t } = useTranslation(["ui", "common"]);
 
@@ -94,26 +101,54 @@ export function SuccessChanceTooltipContent({
     return null;
   }
 
-  const hasBookOfWar = !!gameState.books?.book_of_war;
   const percent = getSuccessPercent(successChance, gameState);
+  const formula = getSuccessChanceFormula(successChance, successFormula);
+  const breakdown = formula
+    ? getSuccessChanceBreakdown(formula, gameState)
+    : null;
 
   return (
     <div className="text-xs whitespace-nowrap">
-      {hasBookOfWar && percent !== null ? (
+      {percent !== null && (
         <div>{t("ui:event.successChance", { percent })}</div>
-      ) : (
-        <div>{t("ui:event.successChanceLocked")}</div>
       )}
-      {relevantStats.length > 0 && (
+      {breakdown && !breakdown.forceZero ? (
         <>
-          <div className="mt-1">{t("ui:event.influencedBy")}</div>
-          {relevantStats.map((stat) => (
-            <div key={stat} className="flex items-center gap-1.5">
-              <RelevantStatIcon stat={stat} />
-              <span>{t(`common:stats.${stat.toLowerCase()}`)}</span>
+          <div className="mt-1">{t("ui:event.successChanceBase", { percent: breakdown.basePercent, defaultValue: "Base: {{percent}}%" })}</div>
+          {breakdown.stats.map((stat) => (
+            <div key={stat.type} className="flex items-center gap-1.5">
+              <RelevantStatIcon stat={stat.type} />
+              <span>{t(`common:stats.${stat.type}`)}</span>
+              <span>
+                {t("ui:event.successChanceStatPerPoint", {
+                  percent: stat.percentPerPoint,
+                  defaultValue: "+{{percent}}% per point",
+                })}
+              </span>
             </div>
           ))}
+          {breakdown.cruelPercent !== null && (
+            <div>
+              {t("ui:event.successChanceCruel", {
+                percent: breakdown.cruelPercent,
+                defaultValue: "Cruel Mode: {{percent}}%",
+              })}
+            </div>
+          )}
         </>
+      ) : (
+        relevantStats.length > 0 &&
+        !breakdown && (
+          <>
+            <div className="mt-1">{t("ui:event.influencedBy")}</div>
+            {relevantStats.map((stat) => (
+              <div key={stat} className="flex items-center gap-1.5">
+                <RelevantStatIcon stat={stat} />
+                <span>{t(`common:stats.${stat.toLowerCase()}`)}</span>
+              </div>
+            ))}
+          </>
+        )
       )}
     </div>
   );
@@ -144,6 +179,7 @@ export function EventChoiceSuccessTooltipContent({
       gameState={gameState}
       successChance={choice.success_chance}
       relevantStats={choice.relevant_stats}
+      successFormula={choice.success_formula}
     />
   );
 }

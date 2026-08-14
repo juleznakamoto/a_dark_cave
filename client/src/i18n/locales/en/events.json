@@ -601,6 +601,23 @@
     "message": "A pale villager rushes to you, breathless with terror. 'The mercenary camp... everyone's dead. They killed each other in the night. We found some silver among the corpses.'",
     "title": "The Massacre"
   },
+  "deerHerd": {
+    "choices": {
+      "keepThemHere": {
+        "label": "Keep them here"
+      },
+      "sendThem": {
+        "label": "Send them"
+      }
+    },
+    "log": {
+      "outcome0": "The hunters return with lots of meat. The village eats well tonight.",
+      "outcome1": "Wolves find them before they can bring the deer down. One hunter does not return.",
+      "outcome2": "You order the hunters to stay close. The deer move on, and the wolves remain unseen."
+    },
+    "message": "Hunters report spotting a large herd of deer in the forest, but the area lies close to a wolf den. Do you send them there to hunt?",
+    "title": "The Deer Herd"
+  },
   "desperateAmputation": {
     "choices": {
       "severFinger": {
@@ -1211,7 +1228,7 @@
         "label": "Book of Craftsmanship"
       },
       "trade_book_of_war": {
-        "message": "You purchase the Book of War. The merchant nods gravely: 'Knowledge from a long gone kingdom in the far east. With this, you will better understand the outcomes of your choices.'",
+        "message": "You purchase the Book of War. The merchant nods gravely: 'Knowledge from a long gone kingdom in the far east.'",
         "label": "Book of War"
       },
       "trade_reinforced_rope": {

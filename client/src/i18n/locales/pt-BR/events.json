@@ -1130,7 +1130,7 @@
         "label": "Livro do Ofício"
       },
       "trade_book_of_war": {
-        "message": "Você compra o Livro da Guerra. O mercador acena gravemente: 'Conhecimento de um reino há muito desaparecido no extremo leste. Com isto, você compreenderá melhor os resultados de suas escolhas.'",
+        "message": "Você compra o Livro da Guerra. O mercador acena gravemente: 'Conhecimento de um reino há muito desaparecido no extremo leste.'",
         "label": "Livro da Guerra"
       },
       "trade_reinforced_rope": {
@@ -2807,5 +2807,22 @@
       "outcome0": "Os aldeões encontram marcas desbotadas nas paredes da caverna. Os estudiosos examinam os símbolos e revelam conhecimento do passado."
     },
     "title": "Marcas antigas"
+  },
+  "deerHerd": {
+    "choices": {
+      "keepThemHere": {
+        "label": "Mantê-los aqui"
+      },
+      "sendThem": {
+        "label": "Enviá-los"
+      }
+    },
+    "log": {
+      "outcome0": "Os caçadores voltam com muita carne. A aldeia come bem esta noite.",
+      "outcome1": "Os lobos os encontram antes que possam derrubar os cervos. Um caçador não retorna.",
+      "outcome2": "Você ordena que os caçadores fiquem por perto. Os cervos seguem adiante, e os lobos permanecem invisíveis."
+    },
+    "message": "Os caçadores relatam ter avistado uma grande manada de cervos na floresta, mas a área fica perto de uma toca de lobos. Você os envia para caçar lá?",
+    "title": "A manada de cervos"
   }
 }

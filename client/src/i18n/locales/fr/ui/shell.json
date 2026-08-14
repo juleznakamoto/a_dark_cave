@@ -11,8 +11,8 @@
     "gameModeSteamDemo": "Steam Demo"
   },
   "textScale": {
-    "label": "Taille du texte", //x1.7
-    "ariaLabel": "Choisir la taille du texte", //x1.6
+    "label": "Taille du texte",  //x1.7
+    "ariaLabel": "Choisir la taille du texte",  //x1.6
     "normal": "Normal",
     "large": "Grand"
   },
@@ -21,91 +21,91 @@
     "ariaLabel": "Choisir la langue"
   },
   "startScreen": {
-    "titleNormal": "Une grotte sombre.", //x1.5
-    "titleCruel": "Une grotte très sombre.", //x1.4
+    "titleNormal": "Une grotte sombre.",  //x1.5
+    "titleCruel": "Une grotte très sombre.",  //x1.4
     "airNormal": "L'air est froid et humide.",
     "airCruel": "L'air est glacial et humide.",
-    "seeNormal": "Vous distinguez à peine les formes autour de vous.", //x1.4
+    "seeNormal": "Vous distinguez à peine les formes autour de vous.",  //x1.4
     "seeCruel": "Vous ne distinguez presque rien autour de vous.",
-    "makeFire": "Faire du feu", //x1.3
+    "makeFire": "Faire du feu",  //x1.3
     "recommendedBy": "Recommandé par"
   },
+  "errorScreen": {
+    "message": "We are digging deeper. Please check back soon.",
+    "reload": "Reload game"
+  },
   "footer": {
-    "fullGame": "Jeu complet", //x1.2
+    "fullGame": "Jeu complet",  //x1.2
     "trader": "Marchand",
-    "openShop": "Ouvrir la boutique", //x2.0
-    "donate": "Faire un don", //x2.0
-    "supportGame": "Soutenir le jeu", //x1.3
-    "privacy": "Confidentialité", //x2.1
-    "imprint": "Mentions légales", //x2.3
+    "openShop": "Ouvrir la boutique",  //x2.0
+    "donate": "Faire un don",  //x2.0
+    "supportGame": "Soutenir le jeu",  //x1.3
+    "privacy": "Confidentialité",  //x2.1
+    "imprint": "Mentions légales",  //x2.3
     "contact": "Contacts",
-    "pauseGame": "Mettre le jeu en pause", //x2.2
-    "resumeGame": "Reprendre le jeu", //x1.5
-    "muteMusic": "Couper l'ambiance", //x1.7
-    "unmuteMusic": "Rétablir l'ambiance", //x1.6
-    "muteSfx": "Couper les effets sonores", //x1.4
-    "unmuteSfx": "Couper les effets sonores", //x1.4
-    "cruelModeActive": "Mode cruel activé",
-    "wishlistOnSteam": "Ajouter à la liste de souhaits Steam", //x2.1
-    "demoProgress": "Demo Progress",
     "feedback": "Feedback",
     "openFeedback": "Open feedback form",
+    "pauseGame": "Mettre le jeu en pause",  //x2.2
+    "resumeGame": "Reprendre le jeu",  //x1.5
+    "muteMusic": "Couper l'ambiance",  //x1.3
+    "unmuteMusic": "Rétablir l'ambiance",  //x1.3
+    "muteSfx": "Couper les effets sonores",  //x1.4
+    "unmuteSfx": "Couper les effets sonores",  //x1.4
+    "cruelModeActive": "Mode cruel activé",
+    "wishlistOnSteam": "Ajouter à la liste de souhaits Steam",  //x2.1
+    "demoProgress": "Demo Progress",
     "progress": "Progression",
     "social": "Social",
     "email": "E-mail"
   },
   "profile": {
     "title": "Menu",
-    "signInUp": "Connexion/Inscription", //x2.1
-    "emailsOn": "E-mails activés", //x1.7
-    "emailsOff": "E-mails désactivés", //x1.8
-    "marketingOnTooltip": "Vous recevez actuellement des e-mails avec des mises à jour, des réductions et des récompenses exclusives. Appuyez pour les désactiver.", //x1.4
+    "signInUp": "Connexion/Inscription",  //x2.1
+    "emailsOn": "E-mails activés",  //x1.7
+    "emailsOff": "E-mails désactivés",  //x1.8
+    "marketingOnTooltip": "Vous recevez actuellement des e-mails avec des mises à jour, des réductions et des récompenses exclusives. Appuyez pour les désactiver.",  //x1.4
     "marketingOffTooltip": "Vous ne recevez actuellement pas d'e-mails avec des mises à jour, des réductions et des récompenses exclusives. Appuyez pour les activer.",
-    "save": "Sauvegarder", //x2.8
-    "newGame": "Nouvelle partie", //x1.9
-    "restart": "Recommencer", //x1.6
-    "signIn": "Se connecter", //x1.7
-    "signOut": "Se déconnecter", //x1.8
+    "save": "Sauvegarder",  //x2.8
+    "newGame": "Nouvelle partie",  //x1.9
+    "restart": "Recommencer",  //x1.6
+    "signIn": "Se connecter",  //x1.7
+    "signOut": "Se déconnecter",  //x1.8
     "leaderboard": "Classement",
-    "rewards": "Récompenses", //x1.6
-    "deleteAccount": "Supprimer le compte", //x1.4
+    "rewards": "Récompenses",  //x1.6
+    "deleteAccount": "Supprimer le compte",  //x1.4
     "marketingSubscribe": "S'abonner aux e-mails",
     "marketingUnsubscribe": "Se désabonner des e-mails",
-    "autoSaveSignedIn": "Sauvegarde automatique chaque minute", //x1.3
-    "autoSaveGuest": "Sauvegarde automatique toutes les 15 secondes", //x1.4
-    "signUpCloudSave": "Inscrivez-vous pour sauvegarder dans le cloud", //x1.4
+    "autoSaveSignedIn": "Sauvegarde automatique chaque minute",  //x1.3
+    "autoSaveGuest": "Sauvegarde automatique toutes les 15 secondes",  //x1.4
+    "signUpCloudSave": "Inscrivez-vous pour sauvegarder dans le cloud",  //x1.4
     "autoSaveSteam": "Game auto-saves every 15 seconds",
     "steamCloudSave": "Progress syncs to Steam Cloud when you save.",
-    "lastSave": "Dernière sauvegarde : {{time}}", //x1.6
+    "lastSave": "Dernière sauvegarde : {{time}}",  //x1.6
     "signedOut": "Déconnexion réussie",
-    "signOutError": "Erreur de déconnexion", //x1.2
+    "signOutError": "Erreur de déconnexion",  //x1.2
     "gameSaved": "Partie sauvegardée",
+    "cloudSaveFailed": "Sauvegardé sur cet appareil, mais la sync cloud a échoué. L'autosave réessaiera.",
     "saveFailed": "Échec de la sauvegarde",
     "accountDeleted": "Votre compte a été supprimé",
     "accountDeletedDesc": "Vous avez été déconnecté et la sauvegarde locale de cet appareil a été effacée.",
-    "deleteAccountFailed": "Impossible de supprimer le compte", //x1.4
-    "tryAgainLater": "Réessayez plus tard.", //x1.3
+    "deleteAccountFailed": "Impossible de supprimer le compte",  //x1.4
+    "tryAgainLater": "Réessayez plus tard.",  //x1.3
     "notSignedIn": "Non connecté",
     "subscribed": "Vous êtes abonné",
     "unsubscribed": "Vous êtes désabonné",
     "subscribedDesc": "Nous vous enverrons parfois des nouvelles et des offres par e-mail.",
     "unsubscribedDesc": "Vous ne recevrez pas d'e-mails marketing de notre part.",
-    "preferenceUpdateFailed": "Impossible de mettre à jour la préférence", //x1.5
+    "preferenceUpdateFailed": "Impossible de mettre à jour la préférence",  //x1.5
     "enterFullscreen": "Full screen",
-    "exitFullscreen": "Exit full screen",
-    "cloudSaveFailed": "Sauvegardé sur cet appareil, mais la sync cloud a échoué. L'autosave réessaiera."
+    "exitFullscreen": "Exit full screen"
   },
   "pauseHotkey": {
     "hintPrefix": "Utilisez ",
-    "hintSelect": " pour sélectionner un onglet ou ", //x1.8
-    "hintSuffix": " pour changer d'onglet" //x1.5
+    "hintSelect": " pour sélectionner un onglet ou ",  //x1.8
+    "hintSuffix": " pour changer d'onglet"  //x1.5
   },
   "villageHotkeyTutorial": {
     "dismiss": "Fermer"
   },
-  "never": "Jamais",
-  "errorScreen": {
-    "message": "We are digging deeper. Please check back soon.",
-    "reload": "Reload game"
-  }
+  "never": "Jamais"
 }

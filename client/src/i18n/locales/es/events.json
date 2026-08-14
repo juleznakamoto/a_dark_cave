@@ -235,6 +235,17 @@
     "message": "Encuentras un Elixir de claridad en la cueva. Al beberlo, tu mente se siente más ligera.",
     "title": "Elixir de claridad"
   },
+  "caveWallMarkings": {
+    "choices": {
+      "continue": {
+        "label": "Continuar"
+      }
+    },
+    "log": {
+      "outcome0": "Los aldeanos encuentran marcas desvanecidas en las paredes de la cueva. Los eruditos estudian los símbolos y descubren conocimiento del pasado."
+    },
+    "title": "Marcas antiguas"
+  },
   "boneTempleProposal": {
     "choices": {
       "acceptBoneTemple": {
@@ -590,6 +601,23 @@
     "message": "Un aldeano pálido corre hacia ti, sin aliento por el terror. 'El campamento mercenario... todos están muertos. Se mataron entre ellos durante la noche. Encontramos algo de plata entre los cadáveres'.",
     "title": "La masacre"
   },
+  "deerHerd": {
+    "choices": {
+      "keepThemHere": {
+        "label": "Dejarlos aquí"
+      },
+      "sendThem": {
+        "label": "Enviarlos"
+      }
+    },
+    "log": {
+      "outcome0": "Los cazadores regresan con mucha carne. Esta noche el pueblo come bien.",
+      "outcome1": "Los lobos los encuentran antes de que puedan abatir a los ciervos. Un cazador no regresa.",
+      "outcome2": "Ordenas a los cazadores que se queden cerca. Los ciervos se alejan, y los lobos permanecen ocultos."
+    },
+    "message": "Los cazadores informan haber avistado una gran manada de ciervos en el bosque, pero la zona queda cerca de una guarida de lobos. ¿Los envías allí a cazar?",
+    "title": "La manada de ciervos"
+  },
   "desperateAmputation": {
     "choices": {
       "severFinger": {
@@ -942,6 +970,22 @@
     "message": "La criatura enorme se retuerce en la trampa, sus tentáculos golpeando los barrotes de acero. Sus ojos antiguos te miran con lo que podría ser inteligencia. ¿Qué harás?",
     "title": "El destino de la criatura"
   },
+  "ladyFromTheMountains": {
+    "choices": {
+      "sendAway": {
+        "label": "Despedir"
+      },
+      "welcome": {
+        "label": "Dar la bienvenida"
+      }
+    },
+    "log": {
+      "sendAwayOutcome": "La rechazas. Sonríe con demasiada calma. 'Tú y cada alma de esta aldea lo lamentaréis', dice, y luego se aleja.",
+      "welcomeOutcome": "Das la bienvenida a la mujer pelirroja. Te agradece en voz baja y habla de plantas que curan y que dañan. Ofrece ayudar a construir un jardín de hierbas. Los aldeanos la observan con cuidado."
+    },
+    "message": "Llega una hermosa mujer pelirroja. Dice que su aldea en las montañas murió de hambre y pide quedarse. Afirma saber mucho sobre las plantas y sus efectos.",
+    "title": "La Dama de las Montañas"
+  },
   "lastSurvivor": {
     "choices": {
       "letHimStay": {
@@ -957,6 +1001,26 @@
     },
     "message": "Un desconocido llega a la aldea, apenas aferrado a la vida. Habla de su asentamiento al norte, donde la escasez de comida llevó a los aldeanos a matarse entre sí por desesperación. Pide quedarse unas noches para recuperarse.",
     "title": "El último superviviente"
+  },
+  "liquidDeath": {
+    "choices": {
+      "digWell": {
+        "cost": "5000 comida",
+        "label": "Cavar otro pozo"
+      },
+      "searchWoman": {
+        "label": "Buscar a la mujer"
+      }
+    },
+    "log": {
+      "digWellOutcome": "Tus aldeanos cavan un nuevo pozo. El agua vuelve. Esa tarde, un hombre famélico llega del bosque.",
+      "searchOutcome": "No queda nada que beber. {{deaths}} aldeanos mayores mueren de sed. No encuentran a la mujer, pero los buscadores arrastran a un hombre famélico del bosque."
+    },
+    "message": {
+      "rejected": "Una mañana encuentran a {{deaths}} aldeanos muertos en sus cabañas. Sus labios están azules como belladona aplastada. Un aldeano afirma haber visto a una mujer pelirroja cerca del pozo el día anterior.",
+      "welcomed": "Una mañana encuentran a {{deaths}} aldeanos muertos en sus cabañas. Sus labios están azules como belladona aplastada. Un aldeano afirma haber visto a la mujer pelirroja de la aldea de montaña cerca del pozo el día anterior."
+    },
+    "title": "Muerte líquida"
   },
   "leatherboundBookFound": {
     "choices": {
@@ -995,6 +1059,22 @@
     },
     "message": "Una mujer de la aldea se acerca a ti, las mejillas levemente sonrojadas. Vacila antes de hablar, con la mirada baja: 'Me preguntaba si podrías darme algo de cuero. Quisiera fabricar algo... para mi pareja. Un arnés. Para sorprenderlo'.",
     "title": "Una mujer de la aldea"
+  },
+  "manFromTheMountains": {
+    "choices": {
+      "believeAndHelp": {
+        "label": "Creerle y ayudar"
+      },
+      "sendAway": {
+        "label": "Despedir"
+      }
+    },
+    "log": {
+      "believeOutcome": "El hombre ofrece dirigir la búsqueda de la mujer. Dice saber dónde se esconde y que deberías llevar a muchos hombres.",
+      "sendAwayOutcome": "Envías al hombre famélico. No discute. Los aldeanos miran el borde del bosque mientras desaparece."
+    },
+    "message": "Traen ante ti al hombre famélico. Apenas puede hablar con claridad y afirma ser el último superviviente de una aldea de montaña. Dice que su pozo fue envenenado por una herbolaria pelirroja.",
+    "title": "El Hombre de las Montañas"
   },
   "madBeduine": {
     "choices": {
@@ -1148,7 +1228,7 @@
         "label": "Libro de artesanía"
       },
       "trade_book_of_war": {
-        "message": "Compras el Libro de la guerra. El mercader asiente con gravedad: «Conocimiento de un reino desaparecido hace mucho en el lejano oriente. Con esto entenderás mejor las consecuencias de tus decisiones.»",
+        "message": "Compras el Libro de la guerra. El mercader asiente con gravedad: «Conocimiento de un reino desaparecido hace mucho en el lejano oriente.»",
         "label": "Libro de la guerra" //x1.6
       },
       "trade_reinforced_rope": {
@@ -1182,6 +1262,30 @@
     },
     "tradeCost": "{{amount}} {{resource}}",
     "tradeLabel": "{{amount}} {{resource}}"
+  },
+  "mountainPairNightAttack": {
+    "choices": {
+      "continue": {
+        "label": "Continuar"
+      }
+    },
+    "log": {
+      "outcome": "Por la noche, el hombre y la mujer pelirroja atacan juntos. {{deaths}} aldeanos mueren antes de que el resto los derrote. Antes de que puedas intervenir, los aldeanos los ahorcan a ambos. Eran cómplices desde el principio. En el cuerpo del hombre encuentras un mapa hacia una aldea de montaña."
+    },
+    "message": "Por la noche, el hombre y la mujer pelirroja atacan la aldea juntos. {{deaths}} aldeanos caen antes de que el resto derrote a la pareja. Antes de que puedas hacer nada, los aldeanos los ahorcan. En el cuerpo del hombre encuentras un mapa hacia una aldea de montaña.",
+    "title": "Ataque nocturno"
+  },
+  "searchMountainLadyAmbush": {
+    "choices": {
+      "continue": {
+        "label": "Continuar"
+      }
+    },
+    "log": {
+      "outcome": "El hombre os lleva a lo profundo del bosque. Vuestros aldeanos caen en trampas. De pronto aparece la mujer pelirroja y juntos se lanzan sobre vuestros hombres. {{deaths}} aldeanos mueren antes de que los supervivientes maten a ambos atacantes. En el cuerpo del hombre encuentran un mapa hacia una aldea de montaña."
+    },
+    "message": "El hombre os lleva a lo profundo del bosque. Vuestros aldeanos caen en trampas. De pronto aparece la mujer pelirroja y juntos se lanzan sobre vuestros hombres. {{deaths}} aldeanos mueren antes de que los supervivientes maten a ambos atacantes. En el cuerpo del hombre encuentran un mapa hacia una aldea de montaña.",
+    "title": "La emboscada"
   },
   "monasteryMonk": {
     "choices": {
@@ -1426,6 +1530,15 @@
     },
     "message": "Al amanecer, los aldeanos vislumbran una figura alta, pálida y esbelta en el borde del bosque. ¿Qué haces?",
     "title": "La figura esbelta"
+  },
+  "portalBlasted": {
+    "choices": {
+      "continue": {
+        "label": "Continuar"
+      }
+    },
+    "message": "Las bombas de brasa detonan en un brillante destello de fuego y luz. La antigua puerta se resquebraja y se desmorona. Lo que fuera que estuviera sellado en su interior ha sido liberado. La ciudad debería prepararse para lo que salga de allí.",
+    "title": "La puerta cae"
   },
   "portalDiscovered": {
     "message": "En las cámaras más bajas de la ciudadela encuentras una puerta colosal forjada con un metal desconocido e inflexible. Quizá las creaciones del alquimista puedan abrirla."
@@ -2037,9 +2150,29 @@
     "message": "Desde los confines más profundos de la cueva estalla una masa inimaginable de criaturas pálidas. Inundan la tierra como una marea viva, mientras la ciudad se prepara para la aniquilación.",
     "title": "La décima oleada"
   },
+  "firstBossWave": {
+    "message": "Una gran manada de bestias pálidas lidera el asedio hacia la ciudad. Su sed de sangre se ve en cada paso que dan.",
+    "title": "La oleada del jefe"
+  },
+  "secondBossWave": {
+    "message": "Un ejército de bestias pálidas se reúne ante los muros de la ciudad, acumulándose para un asalto final.",
+    "title": "La oleada final del jefe"
+  },
   "postCompletionWave": {
     "message": "Desde las profundidades ocultas de la cueva, criaturas pálidas sin mente siguen emergiendo, asaltando la ciudad sin cesar.",
     "title": "Oleada {{waveNumber}}"
+  },
+  "theHoundFound": {
+    "choices": {
+      "accept": {
+        "label": "Aceptar"
+      }
+    },
+    "log": {
+      "outcome": "Aceptas. Debilitado por el veneno pero aún respirando, el Sabueso Bruto se une a tu compañía."
+    },
+    "message": "Tu expedición encuentra una aldea de montaña llena de muertos envenenados. Entre los cuerpos yace un hombre casi muerto, muy musculoso pero desfigurado, apenas capaz de hablar. Dice que solo lo llamaban el Sabueso Bruto. Parece haber resistido el veneno, aunque por poco. Quiere unirse a vosotros.",
+    "title": "Sabueso Bruto"
   },
   "theDamned": {
     "choices": {
@@ -2283,14 +2416,14 @@
   },
   "wandering_collector": {
     "choices": {
+      "_buyItem": {
+        "cost": "{{goldCost}} oro"
+      },
       "_sellItem": {
         "reward": "+{{reward}} oro"
       },
       "sell_nothing": {
         "label": "Nada"
-      },
-      "_buyItem": {
-        "cost": "{{goldCost}} oro"
       }
     },
     "log": {
@@ -2302,10 +2435,10 @@
     "title": "El coleccionista errante",
     "message": {
       "visit0": "Una figura envuelta en ropas harapientas se acerca. Parece intrigada por lo que has reunido. «Siento valor entre tus posesiones», murmura. «Permíteme llevarte una.»",
-      "visit1": "La figura regresa, sus pasos silenciosos en el suelo. «Más artefactos, más secretos», susurra. «Déjame reclamar uno más.»",
-      "visit0_both": "A figure wrapped in tattered robes approaches. 'I sense value among your possessions,' he murmurs. 'Sell me one, or buy back what others left behind.'",
+      "visit0_both": "A figure wrapped in tattered robes approaches. 'I sense value among your possessions,' he murmurs. 'Vender me one, or buy back what others left behind.'",
       "visit0_buy": "A figure wrapped in tattered robes approaches, a satchel of discarded relics at his side. 'I gather what others refuse,' he murmurs. 'Any of these can be yours.'",
-      "visit1_both": "The robed figure returns, silent as before. 'Sell me another,' he whispers, 'or claim one I found.'",
+      "visit1": "La figura regresa, sus pasos silenciosos en el suelo. «Más artefactos, más secretos», susurra. «Déjame reclamar uno más.»",
+      "visit1_both": "The robed figure returns, silent as before. 'Vender me another,' he whispers, 'or claim one I found.'",
       "visit1_buy": "The robed figure returns with forgotten relics. 'What others once refused, I kept,' he whispers. 'Any may be yours.'"
     }
   },
@@ -2691,121 +2824,5 @@
     },
     "message": "Una joven se acerca a ti con lágrimas corriendo por su rostro. 'Mis dos padres fueron sacrificados a ese monolito maldito', llora. '¡Este comportamiento bárbaro tiene que terminar!'",
     "title": "La súplica de la joven"
-  },
-  "ladyFromTheMountains": {
-    "choices": {
-      "sendAway": {
-        "label": "Despedir"
-      },
-      "welcome": {
-        "label": "Dar la bienvenida"
-      }
-    },
-    "log": {
-      "sendAwayOutcome": "La rechazas. Sonríe con demasiada calma. 'Tú y cada alma de esta aldea lo lamentaréis', dice, y luego se aleja.",
-      "welcomeOutcome": "Das la bienvenida a la mujer pelirroja. Te agradece en voz baja y habla de plantas que curan y que dañan. Ofrece ayudar a construir un jardín de hierbas. Los aldeanos la observan con cuidado."
-    },
-    "message": "Llega una hermosa mujer pelirroja. Dice que su aldea en las montañas murió de hambre y pide quedarse. Afirma saber mucho sobre las plantas y sus efectos.",
-    "title": "La Dama de las Montañas"
-  },
-  "liquidDeath": {
-    "choices": {
-      "digWell": {
-        "cost": "5000 comida",
-        "label": "Cavar otro pozo"
-      },
-      "searchWoman": {
-        "label": "Buscar a la mujer"
-      }
-    },
-    "log": {
-      "digWellOutcome": "Tus aldeanos cavan un nuevo pozo. El agua vuelve. Esa tarde, un hombre famélico llega del bosque.",
-      "searchOutcome": "No queda nada que beber. {{deaths}} aldeanos mayores mueren de sed. No encuentran a la mujer, pero los buscadores arrastran a un hombre famélico del bosque."
-    },
-    "message": {
-      "rejected": "Una mañana encuentran a {{deaths}} aldeanos muertos en sus cabañas. Sus labios están azules como belladona aplastada. Un aldeano afirma haber visto a una mujer pelirroja cerca del pozo el día anterior.",
-      "welcomed": "Una mañana encuentran a {{deaths}} aldeanos muertos en sus cabañas. Sus labios están azules como belladona aplastada. Un aldeano afirma haber visto a la mujer pelirroja de la aldea de montaña cerca del pozo el día anterior."
-    },
-    "title": "Muerte líquida"
-  },
-  "manFromTheMountains": {
-    "choices": {
-      "believeAndHelp": {
-        "label": "Creerle y ayudar"
-      },
-      "sendAway": {
-        "label": "Despedir"
-      }
-    },
-    "log": {
-      "believeOutcome": "El hombre ofrece dirigir la búsqueda de la mujer. Dice saber dónde se esconde y que deberías llevar a muchos hombres.",
-      "sendAwayOutcome": "Envías al hombre famélico. No discute. Los aldeanos miran el borde del bosque mientras desaparece."
-    },
-    "message": "Traen ante ti al hombre famélico. Apenas puede hablar con claridad y afirma ser el último superviviente de una aldea de montaña. Dice que su pozo fue envenenado por una herbolaria pelirroja.",
-    "title": "El Hombre de las Montañas"
-  },
-  "mountainPairNightAttack": {
-    "choices": {
-      "continue": {
-        "label": "Continuar"
-      }
-    },
-    "log": {
-      "outcome": "Por la noche, el hombre y la mujer pelirroja atacan juntos. {{deaths}} aldeanos mueren antes de que el resto los derrote. Antes de que puedas intervenir, los aldeanos los ahorcan a ambos. Eran cómplices desde el principio. En el cuerpo del hombre encuentras un mapa hacia una aldea de montaña."
-    },
-    "message": "Por la noche, el hombre y la mujer pelirroja atacan la aldea juntos. {{deaths}} aldeanos caen antes de que el resto derrote a la pareja. Antes de que puedas hacer nada, los aldeanos los ahorcan. En el cuerpo del hombre encuentras un mapa hacia una aldea de montaña.",
-    "title": "Ataque nocturno"
-  },
-  "searchMountainLadyAmbush": {
-    "choices": {
-      "continue": {
-        "label": "Continuar"
-      }
-    },
-    "log": {
-      "outcome": "El hombre os lleva a lo profundo del bosque. Vuestros aldeanos caen en trampas. De pronto aparece la mujer pelirroja y juntos se lanzan sobre vuestros hombres. {{deaths}} aldeanos mueren antes de que los supervivientes maten a ambos atacantes. En el cuerpo del hombre encuentran un mapa hacia una aldea de montaña."
-    },
-    "message": "El hombre os lleva a lo profundo del bosque. Vuestros aldeanos caen en trampas. De pronto aparece la mujer pelirroja y juntos se lanzan sobre vuestros hombres. {{deaths}} aldeanos mueren antes de que los supervivientes maten a ambos atacantes. En el cuerpo del hombre encuentran un mapa hacia una aldea de montaña.",
-    "title": "La emboscada"
-  },
-  "theHoundFound": {
-    "choices": {
-      "accept": {
-        "label": "Aceptar"
-      }
-    },
-    "log": {
-      "outcome": "Aceptas. Debilitado por el veneno pero aún respirando, el Sabueso Bruto se une a tu compañía."
-    },
-    "message": "Tu expedición encuentra una aldea de montaña llena de muertos envenenados. Entre los cuerpos yace un hombre casi muerto, muy musculoso pero desfigurado, apenas capaz de hablar. Dice que solo lo llamaban el Sabueso Bruto. Parece haber resistido el veneno, aunque por poco. Quiere unirse a vosotros.",
-    "title": "Sabueso Bruto"
-  },
-  "firstBossWave": {
-    "message": "Una gran manada de bestias pálidas lidera el asedio hacia la ciudad. Su sed de sangre se ve en cada paso que dan.",
-    "title": "La oleada del jefe"
-  },
-  "secondBossWave": {
-    "message": "Un ejército de bestias pálidas se reúne ante los muros de la ciudad, acumulándose para un asalto final.",
-    "title": "La oleada final del jefe"
-  },
-  "portalBlasted": {
-    "choices": {
-      "continue": {
-        "label": "Continuar"
-      }
-    },
-    "message": "Las bombas de brasa detonan en un brillante destello de fuego y luz. La antigua puerta se resquebraja y se desmorona. Lo que fuera que estuviera sellado en su interior ha sido liberado. La ciudad debería prepararse para lo que salga de allí.",
-    "title": "La puerta cae"
-  },
-  "caveWallMarkings": {
-    "choices": {
-      "continue": {
-        "label": "Continuar"
-      }
-    },
-    "log": {
-      "outcome0": "Los aldeanos encuentran marcas desvanecidas en las paredes de la cueva. Los eruditos estudian los símbolos y descubren conocimiento del pasado."
-    },
-    "title": "Marcas antiguas"
   }
 }

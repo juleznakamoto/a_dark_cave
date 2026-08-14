@@ -4,16 +4,16 @@
     "trustBadge": "Bravo !",
     "headline1": "Votre voyage",
     "headline2": "s'achève ici",
-    "subtitle1": "Du moins pour l'instant…", //x1.3
+    "subtitle1": "Du moins pour l'instant…",  //x1.3
     "subtitle2": "Essayez le mode cruel pour un défi encore plus grand avec un gameplay étendu. Parce que vous avez terminé le jeu, vous recevez une réduction spéciale.",
     "cruelMode": "⛤ Mode cruel",
     "cruelModeBadge": "Réduction spéciale",
-    "feedback": "Commentaires", //x1.5
+    "feedback": "Commentaires",  //x1.5
     "feedbackBlurb": "Si vous rencontrez des bugs, des problèmes de traduction ou avez des idées, j'aimerais beaucoup avoir votre avis.",
     "steamWishlistBlurb": "A Dark Cave sort bientôt sur Steam. Ajoutez-le à votre liste de souhaits pour être prévenu dès sa sortie.",
-    "wishlistOnSteam": "Ajouter à la liste de souhaits Steam",
-    "buyMeACoffee": "Offrez-moi un café",
+    "wishlistOnSteam": "Ajouter à la liste de souhaits Steam",  //x2.1
+    "buyMeACoffee": "Offrez-moi un café",  //x1.2
     "continuePlaying": "Continuer à jouer",
-    "moreGames": "Plus de jeux" //x1.2
+    "moreGames": "Plus de jeux"  //x1.2
   }
 }

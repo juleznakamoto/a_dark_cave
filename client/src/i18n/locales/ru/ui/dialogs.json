@@ -6,7 +6,9 @@
     "knowledgeTimeBonus": "+{{seconds}}с к времени решения благодаря Знанию{{maxSuffix}}",
     "knowledgeTimeBonusMax": " (макс.)",
     "successChance": "Шанс успеха: {{percent}}%",
-    "successChanceLocked": "Шанс успеха: ??%",
+    "successChanceBase": "База: {{percent}}%",
+    "successChanceStatPerPoint": "+{{percent}}% за очко",
+    "successChanceCruel": "Жестокий режим: {{percent}}%",
     "influencedBy": "Зависит от:"
   },
   "reward": {
@@ -68,12 +70,12 @@
   },
   "invite": {
     "button": "Пригласить",
-    "copyInviteCode": "Копировать код приглашения",
+    "copyInviteCode": "Копировать код приглашения", //x1.6
     "goldBonus": "+{{amount}} золота",
     "linkCopied": "Ссылка-приглашение скопирована!", //x1.6
     "linkCopiedDesc": "Поделитесь ссылкой с друзьями - каждый получит {{amount}} золота.",
     "copyFailed": "Не удалось скопировать ссылку",
-    "copyFailedNotSignedIn": "Войдите в аккаунт, чтобы скопировать ссылку-приглашение",
+    "copyFailedNotSignedIn": "Войдите в аккаунт, чтобы скопировать ссылку-приглашение", //x1.7
     "tooltip": "Пригласите друзей - вы оба получите {{amount}} золота. Можно пригласить до {{cap}} друзей. ({{count}}/{{cap}} приглашено)."
   },
   "invest": {
@@ -216,7 +218,7 @@
     "buyGold": "Купить золото" //x1.6
   },
   "share": {
-    "title": "Поделиться прогрессом",
+    "title": "Поделиться прогрессом", //x1.2
     "description": "Сохраните или отправьте изображение вашего игрового прогресса.", //x1.4
     "resources": "Ресурсы: {{percent}} %",
     "achievements": "Достижения: {{percent}} %",
@@ -226,33 +228,33 @@
     "on": "Вкл",
     "off": "Выкл",
     "playTime": "Время игры",
+    "playForFreeAt": "Играйте бесплатно на", //x1.3
     "save": "Сохранить",
     "copy": "Копировать",
-    "copiedTitle": "Скопировано в буфер обмена",
-    "copyErrorTitle": "Не удалось скопировать изображение",
+    "copiedTitle": "Скопировано в буфер обмена", //x1.4
+    "copyErrorTitle": "Не удалось скопировать изображение", //x1.7
     "copyErrorDesc": "При копировании в буфер обмена что-то пошло не так.",
     "generating": "Создание…",
     "share": "Поделиться",
     "errorTitle": "Не удалось создать изображение", //x1.4
-    "errorDesc": "При создании изображения что-то пошло не так.",
-    "playForFreeAt": "Играйте бесплатно на"
+    "errorDesc": "При создании изображения что-то пошло не так."
   },
   "feedback": {
     "title": "Обратная связь", //x1.8
     "message": "Если вы нашли ошибки, проблемы с переводом или хотите поделиться идеями и отзывами, буду рад услышать вас.",
+    "openForm": "Оставить отзыв",
     "contactVia": "Также со мной можно связаться через:",
     "reddit": "Reddit",
     "instagram": "Instagram",
     "steam": "Steam",
-    "email": "E-Mail",
-    "openForm": "Оставить отзыв"
+    "email": "E-Mail"
   },
   "galaxy": {
     "title": "Демо заканчивается здесь", //x1.7
     "description": "Добавьте полную игру в список желаемого Steam, чтобы продолжить путешествие после выхода.",
     "wishlistButton": "Добавить в список желаемого Steam", //x1.9
+    "feedbackButton": "Feedback",
     "startNewGameButton": "Начать новую игру", //x1.2
-    "releaseNote": "Планируемый релиз: Q4 2026",
-    "feedbackButton": "Feedback"
+    "releaseNote": "Планируемый релиз: Q4 2026"
   }
 }

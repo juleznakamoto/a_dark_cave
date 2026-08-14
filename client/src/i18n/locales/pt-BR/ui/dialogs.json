@@ -10,8 +10,10 @@
     "knowledgeTimeBonus": "+{{seconds}}s de Tempo de Decisão por Conhecimento{{maxSuffix}}",
     "knowledgeTimeBonusMax": " (máx.)",
     "successChance": "Chance de Sucesso: {{percent}}%",
-    "successChanceLocked": "Chance de Sucesso: ??%",
-    "influencedBy": "Influenciado por:"
+    "influencedBy": "Influenciado por:",
+    "successChanceBase": "Base: {{percent}}%",
+    "successChanceStatPerPoint": "+{{percent}}% por ponto",
+    "successChanceCruel": "Modo Cruel: {{percent}}%"
   },
   "reward": {
     "title": "Recompensa",

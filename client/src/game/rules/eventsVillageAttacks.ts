@@ -1,5 +1,5 @@
 import type { GameEvent } from "./eventTypes";
-import { calculateSuccessChance } from "./eventSuccessChance";
+import { calculateSuccessChance, defineSuccessChance } from "./eventSuccessChance";
 import { GameState } from "@shared/schema";
 import { killVillagers } from "@/game/stateHelpers";
 import { getTotalStrength, getTotalLuck } from "./effectsCalculation";
@@ -104,14 +104,10 @@ export const villageAttackEvents: Record<string, GameEvent> = {
     choices: [
       {
         id: "defendAgainstBoneArmy",
-        relevant_stats: ["strength"],
-        success_chance: (state: GameState) => {
-          const traps = state.buildings.traps;
-          return calculateSuccessChance(state, 0.0 + traps * 0.1, {
-            type: "strength",
-            multiplier: 0.0075,
-          });
-        },
+        ...defineSuccessChance({
+          base: (state) => (state.buildings.traps ?? 0) * 0.1,
+          stats: [{ type: "strength", multiplier: 0.0075 }],
+        }),
         effect: (state: GameState) => {
           const traps = state.buildings.traps;
           const strength = getTotalStrength(state);
@@ -206,14 +202,10 @@ export const villageAttackEvents: Record<string, GameEvent> = {
       },
       {
         id: "hideFromBoneArmy",
-        relevant_stats: ["luck"],
-        success_chance: (state: GameState) => {
-          const traps = state.buildings.traps;
-          return calculateSuccessChance(state, 0.0 + traps * 0.1, {
-            type: "luck",
-            multiplier: 0.01,
-          });
-        },
+        ...defineSuccessChance({
+          base: (state) => (state.buildings.traps ?? 0) * 0.1,
+          stats: [{ type: "luck", multiplier: 0.01 }],
+        }),
         effect: (state: GameState) => {
           const traps = state.buildings.traps;
           const success_chance = calculateSuccessChance(
@@ -303,19 +295,11 @@ export const villageAttackEvents: Record<string, GameEvent> = {
     choices: [
       {
         id: "defendVillage",
-        relevant_stats: ["strength"],
-        success_chance: (state: GameState) => {
-          const traps = state.buildings.traps;
-
-          if (!state.story.seen.firstWolfAttack) {
-            return 0;
-          }
-
-          return calculateSuccessChance(state, 0.15 + traps * 0.1, {
-            type: "strength",
-            multiplier: 0.01,
-          });
-        },
+        ...defineSuccessChance({
+          base: (state) => 0.15 + (state.buildings.traps ?? 0) * 0.1,
+          stats: [{ type: "strength", multiplier: 0.01 }],
+          forceZero: (state) => !state.story.seen.firstWolfAttack,
+        }),
         effect: (state: GameState) => {
           const traps = state.buildings.traps;
           const strength = getTotalStrength(state);
@@ -422,14 +406,10 @@ export const villageAttackEvents: Record<string, GameEvent> = {
       },
       {
         id: "hideAndWait",
-        relevant_stats: ["luck"],
-        success_chance: (state: GameState) => {
-          const traps = state.buildings.traps * 0.1;
-          return calculateSuccessChance(state, 0.15 + traps * 0.1, {
-            type: "luck",
-            multiplier: 0.02,
-          });
-        },
+        ...defineSuccessChance({
+          base: (state) => 0.15 + (state.buildings.traps ?? 0) * 0.1 * 0.1,
+          stats: [{ type: "luck", multiplier: 0.02 }],
+        }),
         effect: (state: GameState) => {
           const traps = state.buildings.traps * 0.1;
           const success_chance = calculateSuccessChance(
@@ -524,14 +504,10 @@ export const villageAttackEvents: Record<string, GameEvent> = {
     choices: [
       {
         id: "fightCannibals",
-        relevant_stats: ["strength"],
-        success_chance: (state: GameState) => {
-          const traps = state.buildings.traps;
-          return calculateSuccessChance(state, 0.1 + traps * 0.1, {
-            type: "strength",
-            multiplier: 0.01,
-          });
-        },
+        ...defineSuccessChance({
+          base: (state) => 0.1 + (state.buildings.traps ?? 0) * 0.1,
+          stats: [{ type: "strength", multiplier: 0.01 }],
+        }),
         effect: (state: GameState) => {
           const traps = state.buildings.traps;
           const strength = getTotalStrength(state);
@@ -635,14 +611,10 @@ export const villageAttackEvents: Record<string, GameEvent> = {
       },
       {
         id: "hideFromCannibals",
-        relevant_stats: ["luck"],
-        success_chance: (state: GameState) => {
-          const traps = state.buildings.traps;
-          return calculateSuccessChance(state, 0.05 + traps * 0.1, {
-            type: "luck",
-            multiplier: 0.01,
-          });
-        },
+        ...defineSuccessChance({
+          base: (state) => 0.05 + (state.buildings.traps ?? 0) * 0.1,
+          stats: [{ type: "luck", multiplier: 0.01 }],
+        }),
         effect: (state: GameState) => {
           const traps = state.buildings.traps;
           const success_chance = calculateSuccessChance(

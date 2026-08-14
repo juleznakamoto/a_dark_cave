@@ -1,5 +1,5 @@
 import type { GameEvent } from "./eventTypes";
-import { calculateSuccessChance } from "./eventSuccessChance";
+import { calculateSuccessChance, defineSuccessChance } from "./eventSuccessChance";
 import { GameState } from "@shared/schema";
 
 export const loreEvents: Record<string, GameEvent> = {
@@ -36,33 +36,30 @@ export const loreEvents: Record<string, GameEvent> = {
         id: "payGold",
         cost: "50 gold",
         effect: (state: GameState) => ({
-            resources: {
-              ...state.resources,
-              gold: state.resources.gold - 50,
+          resources: {
+            ...state.resources,
+            gold: state.resources.gold - 50,
+          },
+          story: {
+            ...state.story,
+            seen: {
+              ...state.story.seen,
+              restlessKnightSuccess: true,
             },
-            story: {
-              ...state.story,
-              seen: {
-                ...state.story.seen,
-                restlessKnightSuccess: true,
-              },
-            },
-            stats: {
-              ...state.stats,
-              madnessFromEvents: (state.stats.madnessFromEvents || 0) - 1,
-            },
-            _logMessageKey: "outcome2",
+          },
+          stats: {
+            ...state.stats,
+            madnessFromEvents: (state.stats.madnessFromEvents || 0) - 1,
+          },
+          _logMessageKey: "outcome2",
         }),
       },
       {
         id: "convince",
-        relevant_stats: ["knowledge"],
-        success_chance: (state: GameState) => {
-          return calculateSuccessChance(state, 0.2, {
-            type: "knowledge",
-            multiplier: 0.01,
-          });
-        },
+        ...defineSuccessChance({
+          base: 0.2,
+          stats: [{ type: "knowledge", multiplier: 0.01 }],
+        }),
         effect: (state: GameState) => {
           const successChance = calculateSuccessChance(state, 0.2, {
             type: "knowledge",
@@ -148,44 +145,44 @@ export const loreEvents: Record<string, GameEvent> = {
         id: "payGold",
         cost: "50 gold",
         effect: (state: GameState) => ({
-            resources: {
-              ...state.resources,
-              gold: state.resources.gold - 50,
+          resources: {
+            ...state.resources,
+            gold: state.resources.gold - 50,
+          },
+          story: {
+            ...state.story,
+            seen: {
+              ...state.story.seen,
+              restlessKnightMountains: true,
             },
-            story: {
-              ...state.story,
-              seen: {
-                ...state.story.seen,
-                restlessKnightMountains: true,
-              },
-            },
-            stats: {
-              ...state.stats,
-              madnessFromEvents: (state.stats.madnessFromEvents || 0) - 1,
-            },
-            _logMessageKey: "outcome2",
+          },
+          stats: {
+            ...state.stats,
+            madnessFromEvents: (state.stats.madnessFromEvents || 0) - 1,
+          },
+          _logMessageKey: "outcome2",
         }),
       },
       {
         id: "payFood",
         cost: "2500 food",
         effect: (state: GameState) => ({
-            resources: {
-              ...state.resources,
-              food: state.resources.food - 2500,
+          resources: {
+            ...state.resources,
+            food: state.resources.food - 2500,
+          },
+          story: {
+            ...state.story,
+            seen: {
+              ...state.story.seen,
+              restlessKnightMountains: true,
             },
-            story: {
-              ...state.story,
-              seen: {
-                ...state.story.seen,
-                restlessKnightMountains: true,
-              },
-            },
-            stats: {
-              ...state.stats,
-              madnessFromEvents: (state.stats.madnessFromEvents || 0) - 1,
-            },
-            _logMessageKey: "outcome4",
+          },
+          stats: {
+            ...state.stats,
+            madnessFromEvents: (state.stats.madnessFromEvents || 0) - 1,
+          },
+          _logMessageKey: "outcome4",
         }),
       },
       {
@@ -238,55 +235,52 @@ export const loreEvents: Record<string, GameEvent> = {
         id: "payGold",
         cost: "50 gold",
         effect: (state: GameState) => ({
-            resources: {
-              ...state.resources,
-              gold: state.resources.gold - 50,
+          resources: {
+            ...state.resources,
+            gold: state.resources.gold - 50,
+          },
+          story: {
+            ...state.story,
+            seen: {
+              ...state.story.seen,
+              restlessKnightCoast: true,
             },
-            story: {
-              ...state.story,
-              seen: {
-                ...state.story.seen,
-                restlessKnightCoast: true,
-              },
-            },
-            stats: {
-              ...state.stats,
-              madnessFromEvents: (state.stats.madnessFromEvents || 0) - 1,
-            },
-            _logMessageKey: "outcome2",
+          },
+          stats: {
+            ...state.stats,
+            madnessFromEvents: (state.stats.madnessFromEvents || 0) - 1,
+          },
+          _logMessageKey: "outcome2",
         }),
       },
       {
         id: "payFood",
         cost: "2500 food",
         effect: (state: GameState) => ({
-            resources: {
-              ...state.resources,
-              food: state.resources.food - 2500,
+          resources: {
+            ...state.resources,
+            food: state.resources.food - 2500,
+          },
+          story: {
+            ...state.story,
+            seen: {
+              ...state.story.seen,
+              restlessKnightCoast: true,
             },
-            story: {
-              ...state.story,
-              seen: {
-                ...state.story.seen,
-                restlessKnightCoast: true,
-              },
-            },
-            stats: {
-              ...state.stats,
-              madnessFromEvents: (state.stats.madnessFromEvents || 0) - 1,
-            },
-            _logMessageKey: "outcome4",
+          },
+          stats: {
+            ...state.stats,
+            madnessFromEvents: (state.stats.madnessFromEvents || 0) - 1,
+          },
+          _logMessageKey: "outcome4",
         }),
       },
       {
         id: "convince",
-        relevant_stats: ["knowledge"],
-        success_chance: (state: GameState) => {
-          return calculateSuccessChance(state, 0.1, {
-            type: "knowledge",
-            multiplier: 0.01,
-          });
-        },
+        ...defineSuccessChance({
+          base: 0.1,
+          stats: [{ type: "knowledge", multiplier: 0.01 }],
+        }),
         effect: (state: GameState) => {
           const successChance = calculateSuccessChance(state, 0.1, {
             type: "knowledge",
@@ -373,63 +367,60 @@ export const loreEvents: Record<string, GameEvent> = {
         id: "payGold",
         cost: "250 gold",
         effect: (state: GameState) => ({
-            resources: {
-              ...state.resources,
-              gold: state.resources.gold - 250,
+          resources: {
+            ...state.resources,
+            gold: state.resources.gold - 250,
+          },
+          story: {
+            ...state.story,
+            seen: {
+              ...state.story.seen,
+              restlessKnightDesert: true,
             },
-            story: {
-              ...state.story,
-              seen: {
-                ...state.story.seen,
-                restlessKnightDesert: true,
-              },
-            },
-            fellowship: {
-              ...state.fellowship,
-              restless_knight: true,
-            },
-            stats: {
-              ...state.stats,
-              madnessFromEvents: (state.stats.madnessFromEvents || 0) - 1,
-            },
-            _logMessageKey: "outcome2",
+          },
+          fellowship: {
+            ...state.fellowship,
+            restless_knight: true,
+          },
+          stats: {
+            ...state.stats,
+            madnessFromEvents: (state.stats.madnessFromEvents || 0) - 1,
+          },
+          _logMessageKey: "outcome2",
         }),
       },
       {
         id: "paySilver",
         cost: "1000 silver",
         effect: (state: GameState) => ({
-            resources: {
-              ...state.resources,
-              silver: state.resources.silver - 1000,
+          resources: {
+            ...state.resources,
+            silver: state.resources.silver - 1000,
+          },
+          story: {
+            ...state.story,
+            seen: {
+              ...state.story.seen,
+              restlessKnightDesert: true,
             },
-            story: {
-              ...state.story,
-              seen: {
-                ...state.story.seen,
-                restlessKnightDesert: true,
-              },
-            },
-            fellowship: {
-              ...state.fellowship,
-              restless_knight: true,
-            },
-            stats: {
-              ...state.stats,
-              madnessFromEvents: (state.stats.madnessFromEvents || 0) - 1,
-            },
-            _logMessageKey: "outcome4",
+          },
+          fellowship: {
+            ...state.fellowship,
+            restless_knight: true,
+          },
+          stats: {
+            ...state.stats,
+            madnessFromEvents: (state.stats.madnessFromEvents || 0) - 1,
+          },
+          _logMessageKey: "outcome4",
         }),
       },
       {
         id: "convince",
-        relevant_stats: ["knowledge"],
-        success_chance: (state: GameState) => {
-          return calculateSuccessChance(state, 0.05, {
-            type: "knowledge",
-            multiplier: 0.005,
-          });
-        },
+        ...defineSuccessChance({
+          base: 0.05,
+          stats: [{ type: "knowledge", multiplier: 0.005 }],
+        }),
         effect: (state: GameState) => {
           const successChance = calculateSuccessChance(state, 0.05, {
             type: "knowledge",

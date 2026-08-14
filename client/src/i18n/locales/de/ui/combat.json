@@ -6,6 +6,8 @@
     "fighting": "Kämpft...",
     "startFight": "Kampf starten", //ok
     "roundTitle": "Kampf – Runde {{round}}",
+    "bossRoundTitle": "Bosskampf – Runde {{round}}",
+    "bossTitle": "Bosskampf",
     "youLost": "Du hast verloren", //ok
     "youWin": "Du gewinnst", //ok
     "bastion": "Bastion",
@@ -14,15 +16,19 @@
     "integrity": "Integrität",
     "attack": "Angriff",
     "defense": "Verteidigung", //ok
+    "healChance": "Heilchance",
+    "stunChance": "Betäubungschance",  //x1.5
+    "stunned": "Betäubt",
+    "enemyHealed": "Geheilt",
     "attackFailed": "Angriff gescheitert", //ok
     "crushingStrikeFailed": "Fähigkeit gescheitert",
-    "feralHowlFailed": "Wildes Heulen fehlgeschlagen",
+    "feralHowlFailed": "Wildes Heulen fehlgeschlagen",  //x1.6
     "critical": "kritisch",
     "criticalParen": "({{label}})",
     "available": "Verfügbar: {{current}}/{{max}}",
     "crushingStrike": "Schmetterschlag",
     "bloodflameSphere": "Blutflammensphäre",
-    "feralHowl": "Wildes Heulen",
+    "feralHowl": "Wildes Heulen",  //x1.3
     "poisonArrows": "Giftpfeile",
     "critChance": "{{percent}} % kritische Trefferchance",
     "critFromLuck": "{{percent}} % durch {{stat}}{{maxSuffix}}",
@@ -32,7 +38,7 @@
     "missChance": "{{percent}} % Fehlschlag-Chance (basierend auf {{stat}})",
     "enemies": {
       "paleCreatures": "Bleiche Kreaturen", //ok
-      "paleBeasts": "Bleiche Bestien"
+      "paleBeasts": "Bleiche Bestien"  //x1.4
     },
     "restlessKnightWounded": "Der Ruhelose Ritter ist verwundet und kann nicht kämpfen", //ok
     "elderWizardWounded": "Der Erzmagier ist verwundet und kann keine Zauber wirken", //ok
@@ -42,13 +48,7 @@
     "fellowInjured": "{{name}} wurde verletzt.",
     "buildingDamaged": "{{name}} wurde beschädigt.", //ok
     "silverClaimed": "{{amount}} Silber erhalten.",
-    "goldClaimed": "{{amount}} Gold erhalten.",
-    "bossRoundTitle": "Bosskampf – Runde {{round}}",
-    "bossTitle": "Bosskampf",
-    "healChance": "Heilchance",
-    "stunChance": "Betäubungschance",
-    "stunned": "Betäubt",
-    "enemyHealed": "Geheilt"
+    "goldClaimed": "{{amount}} Gold erhalten."
   },
   "bastion": {
     "heal": "Heilen",
@@ -68,12 +68,12 @@
       "thirdWave": "Dritte Welle", //ok
       "fourthWave": "Vierte Welle",
       "fifthWave": "Fünfte Welle", //ok
+      "firstBossWave": "Bosswelle",
       "sixthWave": "Sechste Welle", //ok
       "seventhWave": "Siebte Welle",
       "eighthWave": "Achte Welle",
       "ninthWave": "Neunte Welle", //ok
       "tenthWave": "Zehnte Welle", //ok
-      "firstBossWave": "Bosswelle",
       "secondBossWave": "Letzte Bosswelle"
     }
   },

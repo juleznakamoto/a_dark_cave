@@ -1,7 +1,7 @@
 import { GameState } from "@shared/schema";
 import { killVillagers } from "@/game/stateHelpers";
 import type { GameEvent } from "./eventTypes";
-import { calculateSuccessChance } from "./eventSuccessChance";
+import { calculateSuccessChance, defineSuccessChance } from "./eventSuccessChance";
 import { bloodMoonSacrificeAmount } from "../cruelMode";
 
 function bloodMoonI18nVars(state: GameState) {
@@ -57,22 +57,13 @@ export const bloodMoonEvents: Record<string, GameEvent> = {
       },
       {
         id: "prepareForAttack",
-        relevant_stats: ["strength", "knowledge"],
-        success_chance: (state: GameState) => {
-          const traps = state.buildings.traps;
-          return calculateSuccessChance(
-            state,
-            0.0 + traps * 0.1,
-            {
-              type: "strength",
-              multiplier: 0.0025,
-            },
-            {
-              type: "knowledge",
-              multiplier: 0.0025,
-            },
-          );
-        },
+        ...defineSuccessChance({
+          base: (state) => (state.buildings.traps ?? 0) * 0.1,
+          stats: [
+            { type: "strength", multiplier: 0.0025 },
+            { type: "knowledge", multiplier: 0.0025 },
+          ],
+        }),
         effect: (state: GameState) => {
           const traps = state.buildings.traps;
           const sacrificeAmount = bloodMoonSacrificeAmount(

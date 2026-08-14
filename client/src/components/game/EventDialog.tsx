@@ -373,12 +373,8 @@ export default function EventDialog({
                 const labelText =
                   typeof choice.label === "string" ? choice.label : "";
 
-                // Calculate success percentage if this choice has odds (Book of War)
                 let successPercentage: string | null = null;
-                if (
-                  hasDefinedSuccessChance(choice.success_chance) &&
-                  gameState.books?.book_of_war
-                ) {
+                if (hasDefinedSuccessChance(choice.success_chance)) {
                   const percent = getEventChoiceSuccessPercent(choice, gameState);
                   if (percent !== null) {
                     successPercentage = `${percent}%`;

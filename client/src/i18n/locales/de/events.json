@@ -235,6 +235,17 @@
     "message": "In der Höhle findest du ein Elixier der Klarheit. Als du es trinkst, fühlt sich dein Geist leichter an.",
     "title": "Elixier der Klarheit"
   },
+  "caveWallMarkings": {
+    "choices": {
+      "continue": {
+        "label": "Weiter"
+      }
+    },
+    "log": {
+      "outcome0": "Dorfbewohner finden verblichene Zeichen an den Höhlenwänden. Die Gelehrten studieren die Symbole und enthüllen Wissen über die Vergangenheit."
+    },
+    "title": "Uralte Zeichen"
+  },
   "boneTempleProposal": {
     "choices": {
       "acceptBoneTemple": {
@@ -590,6 +601,23 @@
     "message": "Ein bleicher Dorfbewohner rennt atemlos vor Entsetzen zu dir. 'Das Söldnerlager... alle sind tot. Sie haben sich in der Nacht gegenseitig umgebracht. Wir haben Silber zwischen den Leichen gefunden.'",
     "title": "Das Massaker"
   },
+  "deerHerd": {
+    "choices": {
+      "keepThemHere": {
+        "label": "Hier behalten"
+      },
+      "sendThem": {
+        "label": "Losschicken"
+      }
+    },
+    "log": {
+      "outcome0": "Die Jäger kehren mit viel Fleisch zurück. Das Dorf isst heute Abend gut.",
+      "outcome1": "Wölfe finden sie, bevor sie die Hirsche erlegen können. Ein Jäger kehrt nicht zurück.",
+      "outcome2": "Du befiehlst den Jägern, in der Nähe zu bleiben. Die Hirsche ziehen weiter, und die Wölfe bleiben ungesehen."
+    },
+    "message": "Jäger berichten, eine große Hirschherde im Wald entdeckt zu haben, doch das Gebiet liegt nahe einem Wolfsbau. Schickst du sie dorthin zur Jagd?",
+    "title": "Die Hirschherde"
+  },
   "desperateAmputation": {
     "choices": {
       "severFinger": {
@@ -942,6 +970,22 @@
     "message": "Die massive Kreatur windet sich in der Falle, ihre Tentakel schlagen gegen die Stahlstäbe. Ihre alten Augen mustern dich mit etwas, das Intelligenz sein könnte. Was wirst du tun?",
     "title": "Das Schicksal der Kreatur"
   },
+  "ladyFromTheMountains": {
+    "choices": {
+      "sendAway": {
+        "label": "Wegschicken"
+      },
+      "welcome": {
+        "label": "Willkommen heißen"
+      }
+    },
+    "log": {
+      "sendAwayOutcome": "Du weist sie ab. Sie lächelt zu ruhig. 'Du und jede Seele in diesem Dorf werdet das bereuen', sagt sie, dann wendet sie sich ab.",
+      "welcomeOutcome": "Du heißt die rothaarige Frau willkommen. Sie dankt dir leise und spricht von Pflanzen, die heilen und schaden. Sie bietet an, beim Bau eines Kräutergartens zu helfen. Die Dorfbewohner beobachten sie aufmerksam."
+    },
+    "message": "Eine schöne rothaarige Frau trifft ein. Sie sagt, ihr Dorf in den Bergen sei verhungert, und bittet, bleiben zu dürfen. Sie behauptet, viel über Pflanzen und ihre Wirkungen zu wissen.",
+    "title": "Die Dame aus den Bergen"
+  },
   "lastSurvivor": {
     "choices": {
       "letHimStay": {
@@ -957,6 +1001,26 @@
     },
     "message": "Ein Fremder erreicht das Dorf und klammert sich kaum noch ans Leben. Er spricht von seiner Siedlung im Norden, wo Nahrungsknappheit die Dorfbewohner in Verzweiflung dazu trieb, einander zu töten. Er bittet darum, ein paar Nächte bleiben zu dürfen, um sich zu erholen.",
     "title": "Der letzte Überlebende"
+  },
+  "liquidDeath": {
+    "choices": {
+      "digWell": {
+        "cost": "5000 Nahrung",
+        "label": "Einen neuen Brunnen graben" //x1.6
+      },
+      "searchWoman": {
+        "label": "Nach der Frau suchen"
+      }
+    },
+    "log": {
+      "digWellOutcome": "Eure Dorfbewohner graben einen neuen Brunnen. Das Wasser kehrt zurück. Am Abend trifft ein ausgehungerter Mann aus dem Wald ein.",
+      "searchOutcome": "Es gibt nichts mehr zu trinken. {{deaths}} ältere Dorfbewohner sterben vor Durst. Die Frau ist nicht zu finden, doch die Suchenden schleppen einen ausgehungerten Mann aus dem Wald."
+    },
+    "message": {
+      "rejected": "Eines Morgens werden {{deaths}} Dorfbewohner tot in ihren Hütten gefunden. Ihre Lippen sind blau wie zerquetschter Nachtschatten. Ein Dorfbewohner behauptet, am Vortag eine rothaarige Frau am Brunnen gesehen zu haben.",
+      "welcomed": "Eines Morgens werden {{deaths}} Dorfbewohner tot in ihren Hütten gefunden. Ihre Lippen sind blau wie zerquetschter Nachtschatten. Ein Dorfbewohner behauptet, am Vortag die rothaarige Frau aus dem Bergdorf am Brunnen gesehen zu haben."
+    },
+    "title": "Flüssiger Tod"
   },
   "leatherboundBookFound": {
     "choices": {
@@ -995,6 +1059,22 @@
     },
     "message": "Eine Frau aus dem Dorf tritt an dich heran, ihre Wangen leicht gerötet. Sie zögert, bevor sie spricht, den Blick gesenkt: 'Ich wollte fragen, ob du etwas Leder entbehren könntest. Ich möchte etwas... für meinen Partner anfertigen. Ein Geschirr. Um ihn zu überraschen.'",
     "title": "Eine Dorffrau"
+  },
+  "manFromTheMountains": {
+    "choices": {
+      "believeAndHelp": {
+        "label": "Ihm glauben und helfen"
+      },
+      "sendAway": {
+        "label": "Wegschicken"
+      }
+    },
+    "log": {
+      "believeOutcome": "Der Mann bietet an, die Suche nach der Frau anzuführen. Er sagt, er wisse, wo sie sich versteckt, und dass du viele Männer mitbringen solltest.",
+      "sendAwayOutcome": "Du schickst den ausgehungerten Mann fort. Er widerspricht nicht. Die Dorfbewohner blicken auf den Waldrand, während er verschwindet."
+    },
+    "message": "Der ausgehungerte Mann wird vor dich gebracht. Kaum verständlich spricht er und behauptet, der letzte Überlebende eines Bergdorfs zu sein. Er sagt, ihr Brunnen sei von einer rothaarigen Kräuterkundigen vergiftet worden.",
+    "title": "Der Mann aus den Bergen"
   },
   "madBeduine": {
     "choices": {
@@ -1148,7 +1228,7 @@
         "label": "Buch der Handwerkskunst"
       },
       "trade_book_of_war": {
-        "message": "Du kaufst das Buch des Krieges. Der Händler nickt ernst: „Wissen aus einem längst vergangenen Königreich im fernen Osten. Damit wirst du die Folgen deiner Entscheidungen besser verstehen.“",
+        "message": "Du kaufst das Buch des Krieges. Der Händler nickt ernst: „Wissen aus einem längst vergangenen Königreich im fernen Osten.“",
         "label": "Buch des Krieges" //x1.5
       },
       "trade_reinforced_rope": {
@@ -1182,6 +1262,30 @@
     },
     "tradeCost": "{{amount}} {{resource}}",
     "tradeLabel": "{{amount}} {{resource}}"
+  },
+  "mountainPairNightAttack": {
+    "choices": {
+      "continue": {
+        "label": "Weiter"
+      }
+    },
+    "log": {
+      "outcome": "In der Nacht greifen der Mann und die rothaarige Frau gemeinsam an. {{deaths}} Dorfbewohner sterben, bevor die übrigen sie überwältigen. Bevor du eingreifen kannst, hängen die Dorfbewohner beide. Sie waren die ganze Zeit Verbündete. Am Körper des Mannes findest du eine Karte zu einem Bergdorf."
+    },
+    "message": "In der Nacht greifen der Mann und die rothaarige Frau gemeinsam das Dorf an. {{deaths}} Dorfbewohner fallen, bevor die übrigen das Paar überwältigen. Bevor du etwas tun kannst, hängen die Dorfbewohner sie. Am Körper des Mannes findest du eine Karte zu einem Bergdorf.",
+    "title": "Nachtangriff"
+  },
+  "searchMountainLadyAmbush": {
+    "choices": {
+      "continue": {
+        "label": "Weiter"
+      }
+    },
+    "log": {
+      "outcome": "Der Mann führt euch tief in den Wald. Eure Dorfbewohner stolpern in Fallen. Plötzlich erscheint die rothaarige Frau, und gemeinsam fallen sie über eure Männer her. {{deaths}} Dorfbewohner sterben, bevor die Überlebenden beide Angreifer töten. Am Körper des Mannes finden sie eine Karte zu einem Bergdorf."
+    },
+    "message": "Der Mann führt euch tief in den Wald. Eure Dorfbewohner stolpern in Fallen. Plötzlich erscheint die rothaarige Frau, und gemeinsam fallen sie über eure Männer her. {{deaths}} Dorfbewohner sterben, bevor die Überlebenden beide Angreifer töten. Am Körper des Mannes finden sie eine Karte zu einem Bergdorf.",
+    "title": "Der Hinterhalt"
   },
   "monasteryMonk": {
     "choices": {
@@ -1426,6 +1530,15 @@
     },
     "message": "Im Morgengrauen erblicken Dorfbewohner am Waldrand eine hohe, bleiche, schlanke Gestalt. Was tust du?",
     "title": "Die schlanke Gestalt"
+  },
+  "portalBlasted": {
+    "choices": {
+      "continue": {
+        "label": "Weiter"
+      }
+    },
+    "message": "Die Glutbomben detonieren in einem hellen Feuerblitz. Das alte Tor bricht und bröckelt. Was auch immer darin eingeschlossen war, ist frei. Die Stadt sollte sich auf das vorbereiten, was hervorkommt.",
+    "title": "Das Tor fällt"
   },
   "portalDiscovered": {
     "message": "In den tiefsten Kammern der Zitadelle findest du ein kolossales Tor, geschmiedet aus einem unbekannten, unnachgiebigen Metall. Vielleicht können die Schöpfungen des Alchemisten es öffnen."
@@ -2037,9 +2150,29 @@
     "message": "Aus den tiefsten Tiefen der Höhle bricht eine unvorstellbare Masse bleicher Kreaturen hervor. Sie fluten das Land wie eine lebende Flut, während die Stadt sich auf die Vernichtung vorbereitet.",
     "title": "Die zehnte Welle"
   },
+  "firstBossWave": {
+    "message": "Eine große Horde bleicher Bestien führt die Belagerung auf die Stadt zu. Ihr Blutdurst ist in jedem ihrer Schritte zu erkennen.",
+    "title": "Die Bosswelle"
+  },
+  "secondBossWave": {
+    "message": "Eine Armee bleicher Bestien versammelt sich vor den Stadtmauern und sammelt sich für einen letzten Sturmangriff auf die Stadt.",
+    "title": "Die letzte Bosswelle"
+  },
   "postCompletionWave": {
     "message": "Aus den verborgenen Tiefen der Höhle tauchen immer wieder gedankenlose bleiche Kreaturen auf und stürmen sich ohne Ende auf die Stadt.",
     "title": "Welle {{waveNumber}}"
+  },
+  "theHoundFound": {
+    "choices": {
+      "accept": {
+        "label": "Annehmen"
+      }
+    },
+    "log": {
+      "outcome": "Du nimmst an. Vom Gift geschwächt, doch noch atmend, schließt sich der Brutale Hund deiner Gefolgschaft an."
+    },
+    "message": "Eure Expedition findet ein Bergdorf voll vergifteter Toter. Unter den Leichen liegt ein fast toter Mann, sehr muskulös, doch entstellt, kaum fähig zu sprechen. Er sagt, sie nannten ihn nur den Brutalen Hund. Offenbar hat er dem Gift widerstanden, wenn auch kaum. Er will sich euch anschließen.",
+    "title": "Brutaler Hund"
   },
   "theDamned": {
     "choices": {
@@ -2283,14 +2416,14 @@
   },
   "wandering_collector": {
     "choices": {
+      "_buyItem": {
+        "cost": "{{goldCost}} Gold"
+      },
       "_sellItem": {
         "reward": "+{{reward}} Gold"
       },
       "sell_nothing": {
         "label": "Nichts"
-      },
-      "_buyItem": {
-        "cost": "{{goldCost}} Gold"
       }
     },
     "log": {
@@ -2302,10 +2435,10 @@
     "title": "Der wandernde Sammler",
     "message": {
       "visit0": "Eine Gestalt in zerrissenen Roben nähert sich. Sie scheint fasziniert von dem, was du gesammelt hast. \"Ich spüre Wert unter deinen Besitztümern\", murmelt sie. \"Erlaube mir, eines mitzunehmen.\"",
-      "visit1": "Die verhüllte Gestalt kehrt zurück, ihre Schritte lautlos auf dem Boden. \"Mehr Artefakte, mehr Geheimnisse\", flüstert sie. \"Lass mich wieder eines nehmen.\"",
-      "visit0_both": "A figure wrapped in tattered robes approaches. 'I sense value among your possessions,' he murmurs. 'Sell me one, or buy back what others left behind.'",
+      "visit0_both": "A figure wrapped in tattered robes approaches. 'I sense value among your possessions,' he murmurs. 'Verkaufen me one, or buy back what others left behind.'",
       "visit0_buy": "A figure wrapped in tattered robes approaches, a satchel of discarded relics at his side. 'I gather what others refuse,' he murmurs. 'Any of these can be yours.'",
-      "visit1_both": "The robed figure returns, silent as before. 'Sell me another,' he whispers, 'or claim one I found.'",
+      "visit1": "Die verhüllte Gestalt kehrt zurück, ihre Schritte lautlos auf dem Boden. \"Mehr Artefakte, mehr Geheimnisse\", flüstert sie. \"Lass mich wieder eines nehmen.\"",
+      "visit1_both": "The robed figure returns, silent as before. 'Verkaufen me another,' he whispers, 'or claim one I found.'",
       "visit1_buy": "The robed figure returns with forgotten relics. 'What others once refused, I kept,' he whispers. 'Any may be yours.'"
     }
   },
@@ -2691,121 +2824,5 @@
     },
     "message": "Eine junge Frau tritt an dich heran, Tränen strömen über ihr Gesicht. 'Meine beiden Eltern wurden diesem verfluchten Monolithen geopfert', ruft sie. 'Dieses barbarische Verhalten muss aufhören!'",
     "title": "Die Bitte der jungen Frau"
-  },
-  "ladyFromTheMountains": {
-    "choices": {
-      "sendAway": {
-        "label": "Wegschicken"
-      },
-      "welcome": {
-        "label": "Willkommen heißen"
-      }
-    },
-    "log": {
-      "sendAwayOutcome": "Du weist sie ab. Sie lächelt zu ruhig. 'Du und jede Seele in diesem Dorf werdet das bereuen', sagt sie, dann wendet sie sich ab.",
-      "welcomeOutcome": "Du heißt die rothaarige Frau willkommen. Sie dankt dir leise und spricht von Pflanzen, die heilen und schaden. Sie bietet an, beim Bau eines Kräutergartens zu helfen. Die Dorfbewohner beobachten sie aufmerksam."
-    },
-    "message": "Eine schöne rothaarige Frau trifft ein. Sie sagt, ihr Dorf in den Bergen sei verhungert, und bittet, bleiben zu dürfen. Sie behauptet, viel über Pflanzen und ihre Wirkungen zu wissen.",
-    "title": "Die Dame aus den Bergen"
-  },
-  "liquidDeath": {
-    "choices": {
-      "digWell": {
-        "cost": "5000 Nahrung",
-        "label": "Einen neuen Brunnen graben"
-      },
-      "searchWoman": {
-        "label": "Nach der Frau suchen"
-      }
-    },
-    "log": {
-      "digWellOutcome": "Eure Dorfbewohner graben einen neuen Brunnen. Das Wasser kehrt zurück. Am Abend trifft ein ausgehungerter Mann aus dem Wald ein.",
-      "searchOutcome": "Es gibt nichts mehr zu trinken. {{deaths}} ältere Dorfbewohner sterben vor Durst. Die Frau ist nicht zu finden, doch die Suchenden schleppen einen ausgehungerten Mann aus dem Wald."
-    },
-    "message": {
-      "rejected": "Eines Morgens werden {{deaths}} Dorfbewohner tot in ihren Hütten gefunden. Ihre Lippen sind blau wie zerquetschter Nachtschatten. Ein Dorfbewohner behauptet, am Vortag eine rothaarige Frau am Brunnen gesehen zu haben.",
-      "welcomed": "Eines Morgens werden {{deaths}} Dorfbewohner tot in ihren Hütten gefunden. Ihre Lippen sind blau wie zerquetschter Nachtschatten. Ein Dorfbewohner behauptet, am Vortag die rothaarige Frau aus dem Bergdorf am Brunnen gesehen zu haben."
-    },
-    "title": "Flüssiger Tod"
-  },
-  "manFromTheMountains": {
-    "choices": {
-      "believeAndHelp": {
-        "label": "Ihm glauben und helfen"
-      },
-      "sendAway": {
-        "label": "Wegschicken"
-      }
-    },
-    "log": {
-      "believeOutcome": "Der Mann bietet an, die Suche nach der Frau anzuführen. Er sagt, er wisse, wo sie sich versteckt, und dass du viele Männer mitbringen solltest.",
-      "sendAwayOutcome": "Du schickst den ausgehungerten Mann fort. Er widerspricht nicht. Die Dorfbewohner blicken auf den Waldrand, während er verschwindet."
-    },
-    "message": "Der ausgehungerte Mann wird vor dich gebracht. Kaum verständlich spricht er und behauptet, der letzte Überlebende eines Bergdorfs zu sein. Er sagt, ihr Brunnen sei von einer rothaarigen Kräuterkundigen vergiftet worden.",
-    "title": "Der Mann aus den Bergen"
-  },
-  "mountainPairNightAttack": {
-    "choices": {
-      "continue": {
-        "label": "Weiter"
-      }
-    },
-    "log": {
-      "outcome": "In der Nacht greifen der Mann und die rothaarige Frau gemeinsam an. {{deaths}} Dorfbewohner sterben, bevor die übrigen sie überwältigen. Bevor du eingreifen kannst, hängen die Dorfbewohner beide. Sie waren die ganze Zeit Verbündete. Am Körper des Mannes findest du eine Karte zu einem Bergdorf."
-    },
-    "message": "In der Nacht greifen der Mann und die rothaarige Frau gemeinsam das Dorf an. {{deaths}} Dorfbewohner fallen, bevor die übrigen das Paar überwältigen. Bevor du etwas tun kannst, hängen die Dorfbewohner sie. Am Körper des Mannes findest du eine Karte zu einem Bergdorf.",
-    "title": "Nachtangriff"
-  },
-  "searchMountainLadyAmbush": {
-    "choices": {
-      "continue": {
-        "label": "Weiter"
-      }
-    },
-    "log": {
-      "outcome": "Der Mann führt euch tief in den Wald. Eure Dorfbewohner stolpern in Fallen. Plötzlich erscheint die rothaarige Frau, und gemeinsam fallen sie über eure Männer her. {{deaths}} Dorfbewohner sterben, bevor die Überlebenden beide Angreifer töten. Am Körper des Mannes finden sie eine Karte zu einem Bergdorf."
-    },
-    "message": "Der Mann führt euch tief in den Wald. Eure Dorfbewohner stolpern in Fallen. Plötzlich erscheint die rothaarige Frau, und gemeinsam fallen sie über eure Männer her. {{deaths}} Dorfbewohner sterben, bevor die Überlebenden beide Angreifer töten. Am Körper des Mannes finden sie eine Karte zu einem Bergdorf.",
-    "title": "Der Hinterhalt"
-  },
-  "theHoundFound": {
-    "choices": {
-      "accept": {
-        "label": "Annehmen"
-      }
-    },
-    "log": {
-      "outcome": "Du nimmst an. Vom Gift geschwächt, doch noch atmend, schließt sich der Brutale Hund deiner Gefolgschaft an."
-    },
-    "message": "Eure Expedition findet ein Bergdorf voll vergifteter Toter. Unter den Leichen liegt ein fast toter Mann, sehr muskulös, doch entstellt, kaum fähig zu sprechen. Er sagt, sie nannten ihn nur den Brutalen Hund. Offenbar hat er dem Gift widerstanden, wenn auch kaum. Er will sich euch anschließen.",
-    "title": "Brutaler Hund"
-  },
-  "firstBossWave": {
-    "message": "Eine große Horde bleicher Bestien führt die Belagerung auf die Stadt zu. Ihr Blutdurst ist in jedem ihrer Schritte zu erkennen.",
-    "title": "Die Bosswelle"
-  },
-  "secondBossWave": {
-    "message": "Eine Armee bleicher Bestien versammelt sich vor den Stadtmauern und sammelt sich für einen letzten Sturmangriff auf die Stadt.",
-    "title": "Die letzte Bosswelle"
-  },
-  "portalBlasted": {
-    "choices": {
-      "continue": {
-        "label": "Weiter"
-      }
-    },
-    "message": "Die Glutbomben detonieren in einem hellen Feuerblitz. Das alte Tor bricht und bröckelt. Was auch immer darin eingeschlossen war, ist frei. Die Stadt sollte sich auf das vorbereiten, was hervorkommt.",
-    "title": "Das Tor fällt"
-  },
-  "caveWallMarkings": {
-    "choices": {
-      "continue": {
-        "label": "Weiter"
-      }
-    },
-    "log": {
-      "outcome0": "Dorfbewohner finden verblichene Zeichen an den Höhlenwänden. Die Gelehrten studieren die Symbole und enthüllen Wissen über die Vergangenheit."
-    },
-    "title": "Uralte Zeichen"
   }
 }

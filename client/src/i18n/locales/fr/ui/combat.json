@@ -1,29 +1,35 @@
 {
   "combat": {
     "title": "Combat",
-    "skillsTitle": "Compétences de combat",
+    "skillsTitle": "Compétences de combat",  //x1.6
     "fight": "Combattre",
-    "fighting": "Combat en cours…", //x1.5
-    "startFight": "Lancer le combat",
+    "fighting": "Combat en cours…",  //x1.5
+    "startFight": "Lancer le combat",  //x1.5
     "roundTitle": "Combat – Manche {{round}}",
-    "youLost": "Vous avez perdu",
-    "youWin": "Vous gagnez",
+    "bossRoundTitle": "Combat de boss – Manche {{round}}",
+    "bossTitle": "Combat de boss",  //x1.4
+    "youLost": "Vous avez perdu",  //x1.9
+    "youWin": "Vous gagnez",  //x1.6
     "bastion": "Bastion",
     "fortress": "Forteresse",
     "items": "Objets",
     "integrity": "Intégrité",
     "attack": "Attaque",
     "defense": "Défense",
+    "healChance": "Chance de soin",  //x1.3
+    "stunChance": "Chance d'étourdissement",  //x2.1
+    "stunned": "Étourdi",
+    "enemyHealed": "Soigné",
     "attackFailed": "Attaque échouée",
     "crushingStrikeFailed": "Frappe écrasante échouée",
-    "feralHowlFailed": "Hurlement sauvage échoué",
+    "feralHowlFailed": "Hurlement sauvage échoué",  //x1.4
     "critical": "critique",
     "criticalParen": "({{label}})",
     "available": "Disponible : {{current}}/{{max}}",
     "crushingStrike": "Frappe écrasante",
-    "bloodflameSphere": "Sphère de flamme sanglante",
-    "feralHowl": "Hurlement sauvage",
-    "poisonArrows": "Flèches empoisonnées",
+    "bloodflameSphere": "Sphère de flamme sanglante",  //x1.5
+    "feralHowl": "Hurlement sauvage",  //x1.7
+    "poisonArrows": "Flèches empoisonnées",  //x1.5
     "critChance": "{{percent}} % de chance de coup critique",
     "critFromLuck": "{{percent}} % grâce à {{stat}}{{maxSuffix}}",
     "critFromLuckMaxSuffix": " (max.)",
@@ -34,64 +40,58 @@
       "paleCreatures": "Créatures pâles",
       "paleBeasts": "Bêtes pâles"
     },
-    "restlessKnightWounded": "Le Chevalier sans repos est blessé et ne peut pas combattre",
+    "restlessKnightWounded": "Le Chevalier sans repos est blessé et ne peut pas combattre",  //x1.4
     "elderWizardWounded": "Le mage ancien est blessé et ne peut pas lancer de sorts",
-    "noCasualties": "Aucun villageois n'est mort.",
-    "oneCasualty": "1 villageois est mort.",
-    "manyCasualties": "{{count}} villageois sont morts.",
+    "noCasualties": "Aucun villageois n'est mort.",  //x1.6
+    "oneCasualty": "1 villageois est mort.",  //x1.4
+    "manyCasualties": "{{count}} villageois sont morts.",  //x1.3
     "fellowInjured": "{{name}} a été blessé.",
     "buildingDamaged": "{{name}} a été endommagé.",
     "silverClaimed": "{{amount}} argent reçu.",
-    "goldClaimed": "{{amount}} or reçu.",
-    "bossRoundTitle": "Combat de boss – Manche {{round}}",
-    "bossTitle": "Combat de boss",
-    "healChance": "Chance de soin",
-    "stunChance": "Chance d'étourdissement",
-    "stunned": "Étourdi",
-    "enemyHealed": "Soigné"
+    "goldClaimed": "{{amount}} or reçu."
   },
   "bastion": {
     "heal": "Soigner",
     "repair": "Réparer"
   },
   "attackWaves": {
-    "title": "Vagues d'attaque",
-    "calm": "C'est calme, pour l'instant…", //x1.3
+    "title": "Vagues d'attaque",  //x1.3
+    "calm": "C'est calme, pour l'instant…",  //x1.3
     "soon": "bientôt",
-    "provoke": "Provocation",
+    "provoke": "Provocation",  //x1.6
     "pause": "Pause",
     "unpause": "Reprendre",
     "postCompletion": "Vague {{waveNumber}}",
     "waves": {
-      "firstWave": "Première vague",
-      "secondWave": "Deuxième vague",
-      "thirdWave": "Troisième vague",
-      "fourthWave": "Quatrième vague", //x1.4
-      "fifthWave": "Cinquième vague",
-      "sixthWave": "Sixième vague",
-      "seventhWave": "Septième vague",
-      "eighthWave": "Huitième vague", //x1.3
-      "ninthWave": "Neuvième vague",
-      "tenthWave": "Dixième vague",
+      "firstWave": "Première vague",  //x1.4
+      "secondWave": "Deuxième vague",  //x1.3
+      "thirdWave": "Troisième vague",  //x1.5
+      "fourthWave": "Quatrième vague",  //x1.4
+      "fifthWave": "Cinquième vague",  //x1.5
       "firstBossWave": "Vague boss",
+      "sixthWave": "Sixième vague",  //x1.3
+      "seventhWave": "Septième vague",
+      "eighthWave": "Huitième vague",  //x1.3
+      "ninthWave": "Neuvième vague",  //x1.4
+      "tenthWave": "Dixième vague",  //x1.3
       "secondBossWave": "Vague boss finale"
     }
   },
   "fortifications": {
     "bastion": "Bastion",
-    "fortifiedMoat": "Douves fortifiées",
-    "chitinPlating": "Blindage de chitine",
-    "watchtower1": "Tour de guet",
+    "fortifiedMoat": "Douves fortifiées",  //x1.2
+    "chitinPlating": "Blindage de chitine",  //x1.4
+    "watchtower1": "Tour de guet",  //x1.2
     "watchtower2": "Tour de garde",
     "watchtower3": "Tour fortifiée",
     "watchtower4": "Tour à canon",
     "palisades1": "Palissades en bois",
     "palisades2": "Palissades fortifiées",
-    "palisades3": "Mur de pierre",
+    "palisades3": "Mur de pierre",  //x1.3
     "palisades4": "Mur renforcé",
     "palisadesFallback": "Palissades",
-    "watchtowerFallback": "Tour de guet",
-    "damaged": "(endommagé)",
+    "watchtowerFallback": "Tour de guet",  //x1.2
+    "damaged": "(endommagé)",  //x1.2
     "attack": "+{{value}} Attaque",
     "defense": "+{{value}} Défense",
     "integrity": "+{{value}} Intégrité"

@@ -1,20 +1,17 @@
 // estate 1, stone hut 4, 5
 
 import type { EventChoice, GameEvent } from "./eventTypes";
-import { calculateSuccessChance } from "./eventSuccessChance";
+import { calculateSuccessChance, defineSuccessChance } from "./eventSuccessChance";
 import { GameState } from "@shared/schema";
 import { killVillagers } from "@/game/stateHelpers";
 import { cruelModeScale } from "../cruelMode";
 
 const mercenaryDemandRefuse: EventChoice = {
   id: "refuse",
-  relevant_stats: ["strength"],
-  success_chance: (state: GameState) => {
-    return calculateSuccessChance(state, 0.1, {
-      type: "strength",
-      multiplier: 0.005,
-    });
-  },
+  ...defineSuccessChance({
+    base: 0.1,
+    stats: [{ type: "strength", multiplier: 0.005 }],
+  }),
   effect: (state: GameState) => {
     const success =
       Math.random() <
@@ -51,13 +48,10 @@ const mercenaryDemandRefuse: EventChoice = {
 
 const mercenaryReturnDemandRefuse: EventChoice = {
   id: "refuse",
-  relevant_stats: ["strength"],
-  success_chance: (state: GameState) => {
-    return calculateSuccessChance(state, 0.1, {
-      type: "strength",
-      multiplier: 0.005,
-    });
-  },
+  ...defineSuccessChance({
+    base: 0.1,
+    stats: [{ type: "strength", multiplier: 0.005 }],
+  }),
   effect: (state: GameState) => {
     const successChance = calculateSuccessChance(state, 0.0, {
       type: "strength",

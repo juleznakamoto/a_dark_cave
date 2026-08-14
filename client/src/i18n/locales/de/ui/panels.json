@@ -2,13 +2,13 @@
   "cave": {
     "sectionMine": "Abbauen",
     "sectionCraft": "Herstellen",
-    "requiresFreeVillagers_one": "Erfordert {{count}} freien Dorfbewohner", //x1.2
+    "requiresFreeVillagers_one": "Erfordert {{count}} freien Dorfbewohner",  //x1.2
     "requiresFreeVillagers_other": "Erfordert {{count}} freie Dorfbewohner",
     "cooldownReduction": "-{{seconds}}s Abklingzeit",
     "abortForGold": "Abbrechen für {{amount}} Gold",
     "craftTorch_one": "Fackel",
     "craftTorch_other": "Fackeln",
-    "craftBoneTotem_one": "Knochentotem", //x1.2
+    "craftBoneTotem_one": "Knochentotem",  //x1.2
     "craftBoneTotem_other": "Knochentotems",
     "craftLeatherTotem_one": "Ledertotem",
     "craftLeatherTotem_other": "Ledertotems",
@@ -22,24 +22,24 @@
   },
   "village": {
     "sectionBuild": "Bauen",
-    "sectionProduce": "Produzieren", //x1.6
-    "villagers": "Dorfbewohner", //x1.3
+    "sectionProduce": "Produzieren",  //x1.6
+    "villagers": "Dorfbewohner",  //x1.3
     "villagersAvailable": "verfügbar",
     "villagersOnMission": "auf Mission",
     "presetApply": "Vorlage {{slot}} anwenden",
     "presetEmpty": "Vorlage {{slot}} ist leer: wähle sie aus und speichere dann deine aktuellen Jobs",
     "presetLocked": "Gesperrt: zum Freischalten kaufbar",
-    "presetLockedBuilding": "{{building}} zum Freischalten erforderlich", //x1.4
+    "presetLockedBuilding": "{{building}} zum Freischalten erforderlich",  //x1.4
     "presetSave": "Aktuelle Jobs in Vorlage {{slot}} speichern",
-    "presetSlotsPurchase": "2 weitere Vorlagen-Slots hinzufügen", //x1.5
-    "queueSlotsPurchase": "2 weitere Bauwarteschlangen-Slots hinzufügen", //x1.3
+    "presetSlotsPurchase": "2 weitere Vorlagen-Slots hinzufügen",  //x1.5
+    "queueSlotsPurchase": "2 weitere Bauwarteschlangen-Slots hinzufügen",  //x1.3
     "presetUnlock": "Job-Vorlage für {{cost}} Einsicht freischalten",
     "queueSlotUnlock": "Bauwarteschlange für {{cost}} Einsicht freischalten",
     "queueSlotUsed": "Warteschlange {{slot}}: Bau in Arbeit",
     "queueSlotFree": "Warteschlange {{slot}}: verfügbar",
     "queueSlotLocked": "Warteschlange {{slot}}: gesperrt",
     "slotInsightUnlockAvailable": "Kann für {{cost}} Einsicht freigeschaltet werden",
-    "slotBuildingNeededToUnlock": "Gebäude zum Freischalten erforderlich", //x1.4
+    "slotBuildingNeededToUnlock": "Gebäude zum Freischalten erforderlich",  //x1.4
     "constructionBoost": "Bau um {{time}} für {{cost}} {{resource}} beschleunigen",
     "constructionBoostFinish": "Bau für {{cost}} {{resource}} abschließen",
     "cycle": "Zyklus",
@@ -49,22 +49,22 @@
     "lowPopulationBonus": "{{percent}} % Bonus bei geringer Bevölkerung",
     "fromBuildings": "{{percent}} % durch Gebäude",
     "fromBlessings": "{{percent}} % durch Segen",
-    "fromEvents": "{{percent}} % durch Ereignisse", //x1.3
+    "fromEvents": "{{percent}} % durch Ereignisse",  //x1.3
     "fromHeartfire": "{{percent}} % durch Herzfeuer",
-    "merchantBlocked": "Der Händler kann nicht gerufen werden, solange ein anderes Ereignis aktiv ist", //x1.4
+    "merchantBlocked": "Der Händler kann nicht gerufen werden, solange ein anderes Ereignis aktiv ist",  //x1.4
     "merchantAvailableIn": "Verfügbar in {{time}}",
-    "merchantAbortCall": "Anruf abbrechen", //x1.4
+    "merchantAbortCall": "Anruf abbrechen",  //x1.4
     "investCompleteIn": "Investition abgeschlossen in {{time}}",
     "investAvailableIn": "Investitionen verfügbar in {{time}}",
-    "investPreparing": "Investitionsangebote werden vorbereitet…", //x1.4
+    "investPreparing": "Investitionsangebote werden vorbereitet…",  //x1.4
     "jobs": {
       "gatherer": "Sammler",
       "hunter": "Jäger",
-      "iron_miner": "Eisenbergmann", //x1.3
-      "coal_miner": "Kohlebergmann", //x1.3
+      "iron_miner": "Eisenbergmann",  //x1.3
+      "coal_miner": "Kohlebergmann",  //x1.3
       "steel_forger": "Stahlschmied",
       "blacksteel_forger": "Schwarzstahlschmied",
-      "sulfur_miner": "Schwefelbergmann", //x1.3
+      "sulfur_miner": "Schwefelbergmann",  //x1.3
       "obsidian_miner": "Obsidianbergmann",
       "adamant_miner": "Adamantbergmann",
       "moonstone_miner": "Mondsteinbergmann",
@@ -88,13 +88,13 @@
     "sleepLengthDescription": "Max. {{hours}} Stunden ununterbrochener Schlaf",
     "sleepIntensity": "Schlafintensität",
     "sleepIntensityDescription": "Erhalte {{percent}}% der Dorfproduktion während des Schlafs",
-    "skills": "Fähigkeiten", //x1.8
-    "cubeWhispers": "Geflüsterte Erinnerungen", //x1.3
+    "skills": "Fähigkeiten",  //x1.8
+    "cubeWhispers": "Geflüsterte Erinnerungen",  //x1.3
     "huntressTraining": "Jägerinausbildung",
     "crushingStrike": "Schmetterschlag",
     "bloodflameSphere": "Blutflammensphäre",
-    "feralHowl": "Wildes Heulen",
-    "tirelessWorker": "Unermüdlicher Arbeiter",
+    "feralHowl": "Wildes Heulen",  //x1.3
+    "tirelessWorker": "Unermüdlicher Arbeiter",  //x1.5
     "crowsEye": "Krähenauge",
     "maxLevel": "Max. Stufe",
     "improve": "Verbessern",
@@ -107,14 +107,14 @@
     "skillFurBonus": "+{{amount}} Fell",
     "skillBonesBonus": "+{{amount}} Knochen",
     "skillDamageBonus": "+{{amount}} Schaden",
-    "skillStunRound_one": "+{{amount}} Betäubungsrunde", //x1.2
-    "skillStunRound_other": "+{{amount}} Betäubungsrunden", //x1.2
+    "skillStunRound_one": "+{{amount}} Betäubungsrunde",  //x1.2
+    "skillStunRound_other": "+{{amount}} Betäubungsrunden",  //x1.2
     "skillSuccessChanceBonus": "+{{amount}} % Erfolgschance",
     "crushingStrikeSummary": "{{damage}} Schaden, {{rounds}} Betäubung, {{success}} % Erfolg",
     "skillBurnDamage": "+{{amount}} Brandschaden",
     "skillBurnRound_one": "+{{amount}} Brandrunde",
     "skillBurnRound_other": "+{{amount}} Brandrunden",
-    "skillHealthCost": "+{{amount}} Gesundheitskosten", //x1.3
+    "skillHealthCost": "+{{amount}} Gesundheitskosten",  //x1.3
     "bloodflameSummary": "{{damage}} Schaden für {{rounds}} Runden, {{health}} Gesundheitskosten",
     "bloodflameSummary_one": "{{damage}} Schaden für {{rounds}} Runde, {{health}} Gesundheitskosten",
     "skillEnemyDamageReduction": "-{{amount}} % Feindschaden",
@@ -139,33 +139,33 @@
   },
   "bonuses": {
     "caveExplore": "Höhle erkunden",
-    "chopWood": "Holz hacken", //x1.2
+    "chopWood": "Holz hacken",  //x1.2
     "hunt": "Jagd",
-    "mineAll": "Abbauen (Alle)", //x1.4
-    "mineStone": "Stein abbauen", //x1.3
-    "mineIron": "Eisen abbauen", //x1.4
-    "mineCoal": "Kohle abbauen", //x1.4
-    "mineSulfur": "Schwefel abbauen", //x1.5
-    "mineObsidian": "Obsidian abbauen", //x1.2
-    "mineAdamant": "Adamant abbauen", //x1.3
-    "mineMoonstone": "Mondstein abbauen", //x1.3
+    "mineAll": "Abbauen (Alle)",  //x1.4
+    "mineStone": "Stein abbauen",  //x1.3
+    "mineIron": "Eisen abbauen",  //x1.4
+    "mineCoal": "Kohle abbauen",  //x1.4
+    "mineSulfur": "Schwefel abbauen",  //x1.5
+    "mineObsidian": "Obsidian abbauen",  //x1.2
+    "mineAdamant": "Adamant abbauen",  //x1.3
+    "mineMoonstone": "Mondstein abbauen",  //x1.2
     "boneTotems": "Knochentotems",
     "leatherTotems": "Ledertotems",
-    "craftDiscount": "Herstellungsrabatt", //x1.3
+    "craftDiscount": "Herstellungsrabatt",  //x1.3
     "buildDiscount": "Baurabatt",
     "doubleGainChance": "Doppelgewinn-Chance"
   },
   "badges": {
     "priorUpgradeRequired": "Verbessere den Gefallenen Prior, um mehr Aktionen zuzuweisen",
-    "priorRemove": "Klicken, um den Gefallenen Prior zu entfernen", //x1.5
-    "priorAssign": "Klicken, um den Gefallenen Prior zuzuweisen", //x1.4
+    "priorRemove": "Klicken, um den Gefallenen Prior zu entfernen",  //x1.5
+    "priorAssign": "Klicken, um den Gefallenen Prior zuzuweisen",  //x1.4
     "insightRevealSeeEffects": "Effekte für {{cost}} {{resource}} anzeigen",
     "insightRevealSeeStatEffects": "Stat-Effekte für {{cost}} {{resource}} anzeigen",
     "insightRevealBuildingDescriptions": "Gebäudebeschreibungen für {{cost}} {{resource}} freischalten",
     "insightRevealCraftDescriptions": "Herstellungsbeschreibungen für {{cost}} {{resource}} freischalten",
     "bonus": "Bonus:",
-    "nextBonus": "Nächster Bonus:", //x1.4
-    "craftMultiplier": "Herstellung x{{amount}}", //x1.4
+    "nextBonus": "Nächster Bonus:",  //x1.4
+    "craftMultiplier": "Herstellung x{{amount}}",  //x1.4
     "bonusPercent": "+{{percent}}%",
     "maxLevel": "max. Stufe",
     "executionTimeReduction": "-50 % Ausführungszeit"
@@ -189,9 +189,9 @@
     "stats": "Werte",
     "bonuses": "Boni",
     "fortifications": "Befestigungen",
-    "combatItems": "Kampfgegenstände", //x1.3
+    "combatItems": "Kampfgegenstände",  //x1.3
     "mapFragments": "Kartenfragmente",
-    "craftDiscount": "Herstellungsrabatt", //x1.3
+    "craftDiscount": "Herstellungsrabatt",  //x1.3
     "buildDiscount": "Baurabatt",
     "constructionTime": "Bauzeit",
     "productionBonus": "Produktionsbonus",
@@ -200,11 +200,11 @@
     "resourceLimitMax": "max. {{limit}}",
     "resourceLimitTooltip": "kein Limit für Silber, Gold und Einsicht",
     "statsTooltip": "Werte beeinflussen den Ausgang von Ereignissen und gewähren spezifische Effekte, die sich im Verlauf enthüllen.",
-    "statLuckTooltip": "Beugt das Schicksal zu deinen Gunsten", //x1.5
+    "statLuckTooltip": "Beugt das Schicksal zu deinen Gunsten",  //x1.5
     "statStrengthTooltip": "Hilft dort, wo Worte an ihre Grenzen stoßen",
     "statKnowledgeTooltip": "Beeinflusst Dinge, bei denen Klugheit hilft",
     "statMadnessTooltip": "Führt Gedanken auf gefährliche Pfade",
-    "statEffectNotUnlockedYet": "Noch nicht freigeschaltet", //x1.6
+    "statEffectNotUnlockedYet": "Noch nicht freigeschaltet",  //x1.6
     "statEffectMaxPercent": "max. {{value}} %",
     "statEffectMaxGold": "max. {{value}} Gold",
     "statEffectMaxSeconds": "max. {{value}} s",
@@ -212,14 +212,14 @@
     "statLuckEffectGambling": "Max. {{amount}} Gold Einsatz beim Spieler",
     "statStrengthEffectBastion": "+{{value}} Bastion-Angriff (½ Stärke)",
     "statKnowledgeEffectMerchant": "{{percent}} % Rabatt beim reisenden Händler",
-    "statKnowledgeEffectDecisionTime": "+{{seconds}} s Entscheidungszeit bei zeitlich begrenzten Ereignissen", //x1.6
+    "statKnowledgeEffectDecisionTime": "+{{seconds}} s Entscheidungszeit bei zeitlich begrenzten Ereignissen",  //x1.6
     "statKnowledgeEffectCombatItems": "+{{bombDamage}} Bombenschaden (+2 pro 5 Wissen), +{{arrowDamage}} Giftpfeilschaden (+1 pro 5 Wissen)",
     "statMadnessEffectProduction": "−{{percent}} % Dorfproduktion",
     "statMadnessEffectCombat": "{{percent}} % Chance auf gescheiterte Angriffe im Kampf",
     "statMadnessEffectDeaths": "{{percent}} % Chance auf Wahnsinnstod eines Dorfbewohners pro Zyklus",
-    "madnessFromItems": "{{value}} durch Gegenstände", //x1.4
+    "madnessFromItems": "{{value}} durch Gegenstände",  //x1.4
     "madnessFromBuildings": "{{value}} durch Gebäude",
-    "madnessFromEvents": "{{value}} durch Ereignisse", //x1.2
+    "madnessFromEvents": "{{value}} durch Ereignisse",  //x1.2
     "bonusSourceEffect": "{{source}}: {{effect}}",
     "bastionDefenseTooltip": "Verringert eingehenden Schaden im Kampf",
     "bastionIntegrityTooltip": "Erreicht die Integrität 0, verlierst du die Schlacht",
@@ -228,16 +228,16 @@
     "bastionAttackFromStrength": "{{value}} durch Stärke (50 %)"
   },
   "achievements": {
-    "title": "Notizen des Überlebenden", //x1.5
-    "notUnlocked": "Noch nicht freigeschaltet.", //x1.5
-    "chartUnavailable": "Diagramm nicht verfügbar", //x1.4
+    "title": "Notizen des Überlebenden",  //x1.5
+    "notUnlocked": "Noch nicht freigeschaltet.",  //x1.5
+    "chartUnavailable": "Diagramm nicht verfügbar",  //x1.4
     "claim": "Einfordern",
     "unlockTitleForInsight": "Titel für {{cost}} Einsicht freischalten",
     "completeLog": "Erfolg abgeschlossen: {{name}}: {{rewards}}",
     "categories": {
       "basic": "Grundlagen",
       "building": "Gebäude",
-      "item": "Gegenstände",
+      "item": "Gegenstände",  //x2.2
       "action": "Aktionen",
       "overall": "Episch"
     }
@@ -248,9 +248,9 @@
     "awake": "Du bist wach!",
     "wakingIn": "Erwachen in: {{time}}",
     "villageProduction": "Dorfproduktion: {{percent}}%",
-    "wake": "Jetzt aufwachen", //x1.4
+    "wake": "Jetzt aufwachen",  //x1.4
     "getUp": "Aufstehen",
     "focusGainedLog": "Du hast durch deine Ruhe {{count}} Fokus erhalten.",
-    "villagersProducedLog": "Dorfbewohner haben produziert: {{resources}}" //x1.3
+    "villagersProducedLog": "Dorfbewohner haben produziert: {{resources}}"  //x1.3
   }
 }

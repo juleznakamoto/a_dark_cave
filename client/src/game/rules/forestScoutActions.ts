@@ -3,7 +3,7 @@ import { ActionResult } from "@/game/actions";
 import { applyActionEffects } from "./actionEffects";
 import { addFreeVillagersWithinCap, killVillagers } from "@/game/stateHelpers";
 import type { LogEntry } from "./eventTypes";
-import { calculateSuccessChance } from "./eventSuccessChance";
+import { defineSuccessChance } from "./eventSuccessChance";
 import { gameEvents } from "./events";
 import { logger } from "@/lib/logger";
 import { ActionEffectUpdates } from "@/game/types";
@@ -163,13 +163,10 @@ export const forestScoutActions: Record<string, Action> = {
     effects: {
       "story.seen.trapLaid": true,
     },
-    success_chance: (state: GameState) => {
-      return calculateSuccessChance(state, 0.2, {
-        type: "luck",
-        multiplier: 0.01,
-      });
-    },
-    relevant_stats: ["luck"],
+    ...defineSuccessChance({
+      base: 0.2,
+      stats: [{ type: "luck", multiplier: 0.01 }],
+    }),
     executionTime: 30,
     cooldown: 0,
   },
@@ -189,15 +186,13 @@ export const forestScoutActions: Record<string, Action> = {
       "resources.food": 2500,
     },
     effects: {},
-    success_chance: (state: GameState) => {
-      return calculateSuccessChance(
-        state,
-        0.2,
+    ...defineSuccessChance({
+      base: 0.2,
+      stats: [
         { type: "strength", multiplier: 0.005 },
         { type: "knowledge", multiplier: 0.005 },
-      );
-    },
-    relevant_stats: ["strength", "knowledge"],
+      ],
+    }),
     executionTime: 30,
     cooldown: 0,
   },
@@ -217,15 +212,13 @@ export const forestScoutActions: Record<string, Action> = {
       "resources.food": 5000,
     },
     effects: {},
-    success_chance: (state: GameState) => {
-      return calculateSuccessChance(
-        state,
-        0.1,
+    ...defineSuccessChance({
+      base: 0.1,
+      stats: [
         { type: "strength", multiplier: 0.005 },
         { type: "knowledge", multiplier: 0.005 },
-      );
-    },
-    relevant_stats: ["strength", "knowledge"],
+      ],
+    }),
     executionTime: 45,
     cooldown: 0,
   },
@@ -248,15 +241,13 @@ export const forestScoutActions: Record<string, Action> = {
     effects: {
       "events.wizardSaysBloodstoneStaff": true,
     },
-    success_chance: (state: GameState) => {
-      return calculateSuccessChance(
-        state,
-        0.0,
+    ...defineSuccessChance({
+      base: 0.0,
+      stats: [
         { type: "strength", multiplier: 0.005 },
         { type: "knowledge", multiplier: 0.005 },
-      );
-    },
-    relevant_stats: ["strength", "knowledge"],
+      ],
+    }),
     executionTime: 60,
     cooldown: 0,
   },
@@ -298,15 +289,13 @@ export const forestScoutActions: Record<string, Action> = {
       "resources.food": 2500,
     },
     effects: {},
-    success_chance: (state: GameState) => {
-      return calculateSuccessChance(
-        state,
-        0.15,
+    ...defineSuccessChance({
+      base: 0.15,
+      stats: [
         { type: "strength", multiplier: 0.005 },
         { type: "knowledge", multiplier: 0.005 },
-      );
-    },
-    relevant_stats: ["strength", "knowledge"],
+      ],
+    }),
     executionTime: 60,
     cooldown: 0,
   },
@@ -326,15 +315,13 @@ export const forestScoutActions: Record<string, Action> = {
       "resources.food": 1000,
     },
     effects: {},
-    success_chance: (state: GameState) => {
-      return calculateSuccessChance(
-        state,
-        0.2,
+    ...defineSuccessChance({
+      base: 0.2,
+      stats: [
         { type: "strength", multiplier: 0.005 },
         { type: "knowledge", multiplier: 0.005 },
-      );
-    },
-    relevant_stats: ["strength", "knowledge"],
+      ],
+    }),
     executionTime: 45,
     cooldown: 0,
   },
@@ -388,14 +375,13 @@ export const forestScoutActions: Record<string, Action> = {
       "resources.food": 2500,
     },
     effects: {},
-    success_chance: (state: GameState) =>
-      calculateSuccessChance(
-        state,
-        0.1,
+    ...defineSuccessChance({
+      base: 0.1,
+      stats: [
         { type: "strength", multiplier: 0.0025 },
         { type: "knowledge", multiplier: 0.002 },
-      ),
-    relevant_stats: ["strength", "knowledge"],
+      ],
+    }),
     executionTime: 90,
     cooldown: 0,
   },
@@ -415,9 +401,10 @@ export const forestScoutActions: Record<string, Action> = {
       "resources.food": 1000,
     },
     effects: {},
-    success_chance: (state: GameState) =>
-      calculateSuccessChance(state, 0, { type: "strength", multiplier: 0.01 }),
-    relevant_stats: ["strength"],
+    ...defineSuccessChance({
+      base: 0,
+      stats: [{ type: "strength", multiplier: 0.01 }],
+    }),
     executionTime: 45,
     cooldown: 0,
   },

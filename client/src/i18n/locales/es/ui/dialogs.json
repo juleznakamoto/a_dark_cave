@@ -6,7 +6,9 @@
     "knowledgeTimeBonus": "+{{seconds}}s de tiempo de decisión por Conocimiento{{maxSuffix}}",
     "knowledgeTimeBonusMax": " (máx.)",
     "successChance": "Probabilidad de éxito: {{percent}}%", //x1.3
-    "successChanceLocked": "Probabilidad de éxito: ??%", //x1.4
+    "successChanceBase": "Base: {{percent}}%",
+    "successChanceStatPerPoint": "+{{percent}}% por punto",
+    "successChanceCruel": "Modo cruel: {{percent}}%",
     "influencedBy": "Influido por:"
   },
   "reward": {
@@ -68,12 +70,12 @@
   },
   "invite": {
     "button": "Invitar",
-    "copyInviteCode": "Copiar código de invitación",
+    "copyInviteCode": "Copiar código de invitación", //x1.7
     "goldBonus": "+{{amount}} oro",
     "linkCopied": "¡Enlace de invitación copiado!", //x1.6
     "linkCopiedDesc": "Compártelo con amigos para ganar {{amount}} de oro cada uno.",
     "copyFailed": "No se pudo copiar el enlace de invitación", //x1.6
-    "copyFailedNotSignedIn": "Inicia sesión para copiar tu enlace de invitación",
+    "copyFailedNotSignedIn": "Inicia sesión para copiar tu enlace de invitación", //x1.5
     "tooltip": "Invita a tus amigos - ambos recibiréis {{amount}} de oro. Puedes invitar hasta {{cap}} amigos. ({{count}}/{{cap}} invitados)."
   },
   "invest": {
@@ -154,8 +156,8 @@
     "purchaseSuccessful": "¡Compra realizada!",
     "purchaseSuccessfulDesc": "¡Juego completo desbloqueado y activado! Puedes continuar tu viaje sin restricciones.",
     "legalConsent": "Acceso instantáneo al contenido digital tras la compra.",
-    "termsOfService": "Condiciones",
-    "rightOfWithdrawal": "Desistimiento",
+    "termsOfService": "Condiciones", //x2.2
+    "rightOfWithdrawal": "Desistimiento", //x1.3
     "completePurchaseFor": "Completar compra por {{price}}",
     "paymentFailed": "Pago fallido",
     "notAuthenticated": "Usuario no autenticado",
@@ -220,39 +222,39 @@
     "description": "Guarda o comparte una imagen de tu progreso en el juego.",
     "resources": "Recursos: {{percent}} %",
     "achievements": "Logros: {{percent}} %",
-    "killedCreatures": "Criaturas eliminadas",
+    "killedCreatures": "Criaturas eliminadas", //x1.3
     "highestAttackWave": "Oleada de ataque más alta",
     "cruelMode": "Modo cruel",
     "on": "Activado",
     "off": "Desactivado", //x3.7
     "playTime": "Tiempo de juego", //x1.7
+    "playForFreeAt": "Juega gratis en",
     "save": "Guardar",
     "copy": "Copiar",
-    "copiedTitle": "Copiado al portapapeles",
-    "copyErrorTitle": "No se pudo copiar la imagen",
+    "copiedTitle": "Copiado al portapapeles", //x1.2
+    "copyErrorTitle": "No se pudo copiar la imagen", //x1.4
     "copyErrorDesc": "Algo salió mal al copiar al portapapeles.",
     "generating": "Generando…",
     "share": "Compartir",
     "errorTitle": "No se pudo crear la imagen",
-    "errorDesc": "Algo salió mal al generar la imagen.",
-    "playForFreeAt": "Juega gratis en"
+    "errorDesc": "Algo salió mal al generar la imagen."
   },
   "feedback": {
     "title": "Comentarios",
     "message": "Si encuentras errores, problemas de traducción o tienes ideas o comentarios, me encantaría saber de ti.",
+    "openForm": "Dar feedback",
     "contactVia": "También puedes contactarme en:",
     "reddit": "Reddit",
     "instagram": "Instagram",
     "steam": "Steam",
-    "email": "E-Mail",
-    "openForm": "Dar feedback"
+    "email": "E-Mail"
   },
   "galaxy": {
     "title": "La demo termina aquí", //x1.4
     "description": "Añade el juego completo a tu lista de deseados de Steam para continuar el viaje cuando se publique.",
     "wishlistButton": "Añadir a la lista de deseados en Steam", //x2.2
+    "feedbackButton": "Feedback",
     "startNewGameButton": "Empezar partida nueva", //x1.5
-    "releaseNote": "Lanzamiento previsto: Q4 2026", //x1.2
-    "feedbackButton": "Feedback"
+    "releaseNote": "Lanzamiento previsto: Q4 2026" //x1.2
   }
 }

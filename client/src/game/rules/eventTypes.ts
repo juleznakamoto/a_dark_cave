@@ -1,4 +1,5 @@
 import type { GameState } from "@shared/schema";
+import type { SuccessChanceFormula } from "./eventSuccessChance";
 
 /**
  * Event type definitions live here (not in events.ts) so topic modules can import
@@ -32,8 +33,8 @@ export interface GameEvent {
   i18nKey?: string;
   /** Interpolation vars for catalog strings (e.g. foodCost); may depend on state */
   i18nVars?:
-    | Record<string, string | number>
-    | ((state: GameState) => Record<string, string | number>);
+  | Record<string, string | number>
+  | ((state: GameState) => Record<string, string | number>);
 }
 
 /** Runtime fields returned from choice effects (stripped before state merge). */
@@ -45,6 +46,8 @@ export type EventChoiceEffectResult = Partial<GameState> & {
   _combatData?: unknown;
   /** Choice blocked by affordance (e.g. insufficient free villagers); no state merge or outcome UI. */
   _choiceRejected?: boolean;
+  /** Villager deaths from this choice; used by the outcome dialog. */
+  villagersKilled?: number;
 };
 
 export interface EventChoice {
@@ -53,6 +56,8 @@ export interface EventChoice {
   label?: string | ((state: GameState) => string);
   relevant_stats?: ("strength" | "knowledge" | "luck" | "madness")[];
   success_chance?: number | ((state: GameState) => number); // Success probability for this choice
+  /** Structured formula for tooltip breakdown (survives pre-eval of success_chance). */
+  success_formula?: SuccessChanceFormula;
   cost?: string | ((state: GameState) => string); // Optional cost information for hover display
   effect: (state: GameState) => EventChoiceEffectResult;
   cooldown?: number; // Cooldown in seconds for choice buttons
