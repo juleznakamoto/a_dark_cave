@@ -711,20 +711,20 @@
   "insightBlessingOffer": {
     "choices": {
       "receiveBlessing": {
-        "cost": "{{insightCost}} Insight",
-        "label": "Receive Blessing"
+        "cost": "{{insightCost}} Perspicacia",
+        "label": "Recibir bendición"
       },
       "sendAway": {
-        "label": "Send away"
+        "label": "Enviar lejos"
       }
     },
     "log": {
-      "outcomeChosen": "Without another word, the figure quietly departs, leaving you with a newfound blessing.",
-      "outcomeSendAway": "You turn the figure away. They leave without a word, but you sense they may return.",
-      "outcomeFallback": "The figure waits no longer and slips back into the dark."
+      "outcomeChosen": "Sin otra palabra, la figura se marcha en silencio y te deja una bendición recién obtenida.",
+      "outcomeSendAway": "Rechazas a la figura. Se va sin decir nada, pero sientes que podría volver.",
+      "outcomeFallback": "La figura no espera más y se desliza de vuelta a la oscuridad."
     },
-    "message": "A hooded figure appears at the estate, silent, then whispering in a low voice. They offer to give you a blessing.",
-    "title": "A Quiet Offering"
+    "message": "Una figura encapuchada aparece en la finca, en silencio, y luego susurra en voz baja. Ofrece darte una bendición.",
+    "title": "Una ofrenda callada"
   },
   "obsidianOrbVisit": {
     "choices": {
@@ -2431,11 +2431,11 @@
     "title": "El coleccionista errante",
     "message": {
       "visit0": "Una figura envuelta en ropas harapientas se acerca. Parece intrigada por lo que has reunido. «Siento valor entre tus posesiones», murmura. «Permíteme llevarte una.»",
-      "visit0_both": "A figure wrapped in tattered robes approaches. 'I sense value among your possessions,' he murmurs. 'Vender me one, or buy back what others left behind.'",
-      "visit0_buy": "A figure wrapped in tattered robes approaches, a satchel of discarded relics at his side. 'I gather what others refuse,' he murmurs. 'Any of these can be yours.'",
+      "visit0_both": "Una figura envuelta en ropas harapientas se acerca. «Siento valor entre tus posesiones», murmura. «Véndeme una, o compra de vuelta lo que otros dejaron atrás.»",
+      "visit0_buy": "Una figura envuelta en ropas harapientas se acerca, con un saco de reliquias descartadas a su lado. «Recojo lo que otros rechazan», murmura. «Cualquiera de estas puede ser tuya.»",
       "visit1": "La figura regresa, sus pasos silenciosos en el suelo. «Más artefactos, más secretos», susurra. «Déjame reclamar uno más.»",
-      "visit1_both": "The robed figure returns, silent as before. 'Vender me another,' he whispers, 'or claim one I found.'",
-      "visit1_buy": "The robed figure returns with forgotten relics. 'What others once refused, I kept,' he whispers. 'Any may be yours.'"
+      "visit1_both": "La figura regresa, silenciosa como antes. «Véndeme otra», susurra, «o reclama una que encontré.»",
+      "visit1_buy": "La figura regresa con reliquias olvidadas. «Lo que otros rechazaron, yo lo guardé», susurra. «Cualquiera puede ser tuya.»"
     }
   },
   "wanderingFirecrafter": {
@@ -2820,5 +2820,22 @@
     },
     "message": "Una joven se acerca a ti con lágrimas corriendo por su rostro. 'Mis dos padres fueron sacrificados a ese monolito maldito', llora. '¡Este comportamiento bárbaro tiene que terminar!'",
     "title": "La súplica de la joven"
+  },
+  "abandonedCart": {
+    "choices": {
+      "leaveCart": {
+        "label": "Dejar la carreta"
+      },
+      "takeFood": {
+        "label": "Tomar la comida"
+      }
+    },
+    "log": {
+      "outcome0": "Los aldeanos llevan los sacos a casa. La comida sigue buena.",
+      "outcome1": "La comida estaba envenenada. Dos aldeanos se desploman tras los primeros bocados.",
+      "outcome2": "Dejas la carreta donde está. No ocurre nada."
+    },
+    "message": "En el límite del bosque, los aldeanos encuentran una carreta abandonada con comida. ¿Qué deben hacer?",
+    "title": "La carreta abandonada"
   }
 }

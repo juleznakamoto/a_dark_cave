@@ -3,7 +3,8 @@ import { calculateSuccessChance, defineSuccessChance } from "./eventSuccessChanc
 import { GameState } from "@shared/schema";
 import { addFreeVillagersWithinCap, killVillagers, stackTimedDebuff } from "@/game/stateHelpers";
 import { getTotalStrength } from "./effectsCalculation";
-import { getCurrentPopulation, getMaxPopulation } from "@/game/population";
+import { getCurrentPopulation, getMaxPopulation, getVillagersInVillage } from "@/game/population";
+import { getResourceLimit } from "@/game/resourceLimits";
 import { woodcutterEvents } from "./eventsWoodcutter";
 import { loreEvents } from "./eventsLore";
 import { shopItemEvents } from "./eventsShopItems";
@@ -17,6 +18,17 @@ import {
   collectorItemRejectedStoryPatch,
   markCollectorItemRejectedInSeen,
 } from "./collectorRejectedItems";
+
+/** 50% + 4% Luck. Cruel mode applies the default -10% penalty. */
+const abandonedCartSuccess = defineSuccessChance({
+  base: 0.5,
+  stats: [{ type: "luck", multiplier: 0.04 }],
+  relevantStats: ["luck"],
+});
+
+export function getAbandonedCartSuccessChance(state: GameState): number {
+  return abandonedCartSuccess.success_chance(state);
+}
 
 /** Death outcomes only draw from unassigned villagers at the forest edge. */
 function paleFigureFreeVillagers(state: GameState): number {
@@ -2168,6 +2180,47 @@ export const choiceEvents: Record<string, GameEvent> = {
               swampSanctuaryExplored: true,
             },
           },
+          _logMessageKey: "outcome2",
+        }),
+      },
+    ],
+  },
+
+  abandonedCart: {
+    id: "abandonedCart",
+    condition: (state: GameState) =>
+      getVillagersInVillage(state) >= 5 &&
+      (state.buildings.woodenHut ?? 0) >= 3 &&
+      getResourceLimit(state) >= 1000 &&
+      (state.resources.food ?? 0) <= 500,
+    timeProbability: 10,
+    priority: 3,
+    repeatable: false,
+    choices: [
+      {
+        id: "takeFood",
+        ...abandonedCartSuccess,
+        effect: (state: GameState) => {
+          const successChance = getAbandonedCartSuccessChance(state);
+          if (Math.random() < successChance) {
+            return {
+              resources: {
+                ...state.resources,
+                food: (state.resources.food || 0) + 500,
+              },
+              _logMessageKey: "outcome0",
+            };
+          }
+
+          return {
+            ...killVillagers(state, 2),
+            _logMessageKey: "outcome1",
+          };
+        },
+      },
+      {
+        id: "leaveCart",
+        effect: () => ({
           _logMessageKey: "outcome2",
         }),
       },

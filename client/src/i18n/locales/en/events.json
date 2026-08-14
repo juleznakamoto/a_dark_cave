@@ -1,4 +1,21 @@
 {
+  "abandonedCart": {
+    "choices": {
+      "leaveCart": {
+        "label": "Leave Cart"
+      },
+      "takeFood": {
+        "label": "Take Food"
+      }
+    },
+    "log": {
+      "outcome0": "The villagers haul the sacks home. The food is still good.",
+      "outcome1": "The food was poisoned. Two villagers collapse after the first few bites.",
+      "outcome2": "You leave the cart where it sits. Nothing happens."
+    },
+    "message": "At the forest's edge, villagers find an abandoned cart with food. What should they do?",
+    "title": "The Abandoned Cart"
+  },
   "alchemistArrives": {
     "message": "The alchemist emerges from his hall: 'I have been conducting experiments day and night,' holding a vial of shimmering dust. 'I've created something extraordinary and terribly dangerous.'",
     "title": "The Alchemist's Discovery"

@@ -711,20 +711,20 @@
   "insightBlessingOffer": {
     "choices": {
       "receiveBlessing": {
-        "cost": "{{insightCost}} Insight",
-        "label": "Receive Blessing"
+        "cost": "{{insightCost}} 洞见",
+        "label": "接受祝福"
       },
       "sendAway": {
-        "label": "Send away"
+        "label": "送走"
       }
     },
     "log": {
-      "outcomeChosen": "Without another word, the figure quietly departs, leaving you with a newfound blessing.",
-      "outcomeSendAway": "You turn the figure away. They leave without a word, but you sense they may return.",
-      "outcomeFallback": "The figure waits no longer and slips back into the dark."
+      "outcomeChosen": "那人影不再多言，悄然离去，留下一份新的祝福。",
+      "outcomeSendAway": "你把那人影打发走。它一言不发地离开，但你感到它可能还会回来。",
+      "outcomeFallback": "那人影不再等待，悄然退回黑暗之中。"
     },
-    "message": "A hooded figure appears at the estate, silent, then whispering in a low voice. They offer to give you a blessing.",
-    "title": "A Quiet Offering"
+    "message": "一个戴着兜帽的人影出现在庄园，先是沉默，随后低声呢喃。它提出要赐予你一份祝福。",
+    "title": "静默的馈赠"
   },
   "obsidianOrbVisit": {
     "choices": {
@@ -2431,11 +2431,11 @@
     "title": "流浪收藏家",
     "message": {
       "visit0": "一个裹着破袍的人影走近。他似乎对你收集的东西很感兴趣。「我感觉到你的财物中有价值之物，」他低语，「让我带走一件。」",
-      "visit0_both": "A figure wrapped in tattered robes approaches. 'I sense value among your possessions,' he murmurs. '出售 me one, or buy back what others left behind.'",
-      "visit0_buy": "A figure wrapped in tattered robes approaches, a satchel of discarded relics at his side. 'I gather what others refuse,' he murmurs. 'Any of these can be yours.'",
+      "visit0_both": "一个裹着破袍的人影走近。「我感觉到你的财物中有价值之物，」他低语，「卖给我一件，或买回别人留下的。」",
+      "visit0_buy": "一个裹着破袍的人影走近，身侧挂着一袋被弃的遗物。「我收集别人拒绝之物，」他低语，「这些都可以归你。」",
       "visit1": "黑袍人影再度归来，脚步无声。「更多遗物，更多秘密，」他低语，「再让我取走一件。」",
-      "visit1_both": "The robed figure returns, silent as before. '出售 me another,' he whispers, 'or claim one I found.'",
-      "visit1_buy": "The robed figure returns with forgotten relics. 'What others once refused, I kept,' he whispers. 'Any may be yours.'"
+      "visit1_both": "黑袍人影再度归来，一如既往地沉默。「再卖给我一件，」他低语，「或取走我找到的一件。」",
+      "visit1_buy": "黑袍人影带着被遗忘的遗物归来。「别人曾拒绝的，我留下了，」他低语，「任意一件都可以归你。」"
     }
   },
   "wanderingFirecrafter": {
@@ -2820,5 +2820,22 @@
     },
     "message": "一名年轻女人走近你，泪水顺着脸颊流下。“我的父母都被献给了那座受诅的方尖碑，”她哭喊，“这种野蛮行为必须停止！”",
     "title": "年轻女人的恳求"
+  },
+  "abandonedCart": {
+    "choices": {
+      "leaveCart": {
+        "label": "留下马车"
+      },
+      "takeFood": {
+        "label": "拿走食物"
+      }
+    },
+    "log": {
+      "outcome0": "村民把袋子扛回家。食物还没坏。",
+      "outcome1": "食物有毒。两名村民吃了几口后倒下。",
+      "outcome2": "你让马车留在原处。什么也没发生。"
+    },
+    "message": "在森林边缘，村民发现一辆装着食物的废弃马车。他们该怎么办？",
+    "title": "废弃马车"
   }
 }

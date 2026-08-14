@@ -2281,10 +2281,10 @@
     "message": {
       "visit0": "Una figura avvolta in vesti laceri si avvicina. Sembra incuriosita da ciò che hai raccolto. 'Percepisco valore tra i tuoi averi,' mormora. 'Permettimi di prenderne uno.'",
       "visit1": "La figura in vesti ritorna, i passi silenziosi sul terreno. 'Più artefatti, più segreti', sussurra. 'Lascia che ne reclami un altro.'",
-      "visit0_both": "A figure wrapped in tattered robes approaches. 'I sense value among your possessions,' he murmurs. 'Sell me one, or buy back what others left behind.'",
-      "visit0_buy": "A figure wrapped in tattered robes approaches, a satchel of discarded relics at his side. 'I gather what others refuse,' he murmurs. 'Any of these can be yours.'",
-      "visit1_both": "The robed figure returns, silent as before. 'Sell me another,' he whispers, 'or claim one I found.'",
-      "visit1_buy": "The robed figure returns with forgotten relics. 'What others once refused, I kept,' he whispers. 'Any may be yours.'"
+      "visit0_both": "Una figura avvolta in vesti laceri si avvicina. 'Percepisco valore tra i tuoi averi,' mormora. 'Vendimi uno, o ricomprati ciò che altri hanno lasciato.'",
+      "visit0_buy": "Una figura avvolta in vesti laceri si avvicina, una bisaccia di reliquie scartate al fianco. 'Raccolgo ciò che altri rifiutano,' mormora. 'Ognuna di queste può essere tua.'",
+      "visit1_both": "La figura in vesti ritorna, silenziosa come prima. 'Vendimi un altro,' sussurra, 'o prendi uno che ho trovato.'",
+      "visit1_buy": "La figura in vesti ritorna con reliquie dimenticate. 'Ciò che altri un tempo rifiutarono, io l'ho tenuto,' sussurra. 'Ognuna può essere tua.'"
     }
   },
   "wanderingFirecrafter": {
@@ -2673,20 +2673,20 @@
   "insightBlessingOffer": {
     "choices": {
       "receiveBlessing": {
-        "cost": "{{insightCost}} Insight",
-        "label": "Receive Blessing"
+        "cost": "{{insightCost}} Intuizione",
+        "label": "Ricevi la Benedizione"
       },
       "sendAway": {
-        "label": "Send away"
+        "label": "Mandare via"
       }
     },
     "log": {
-      "outcomeChosen": "Without another word, the figure quietly departs, leaving you with a newfound blessing.",
-      "outcomeSendAway": "You turn the figure away. They leave without a word, but you sense they may return.",
-      "outcomeFallback": "The figure waits no longer and slips back into the dark."
+      "outcomeChosen": "Senza un'altra parola, la figura se ne va in silenzio, lasciandoti una nuova benedizione.",
+      "outcomeSendAway": "Allontani la figura. Se ne va senza una parola, ma senti che potrebbe tornare.",
+      "outcomeFallback": "La figura non attende oltre e scivola di nuovo nel buio."
     },
-    "message": "A hooded figure appears at the estate, silent, then whispering in a low voice. They offer to give you a blessing.",
-    "title": "A Quiet Offering"
+    "message": "Una figura incappucciata compare alla tenuta, silenziosa, poi sussurra con voce bassa. Offre di darti una benedizione.",
+    "title": "Un'Offerta Silenziosa"
   },
   "ladyFromTheMountains": {
     "choices": {
@@ -2820,5 +2820,22 @@
     },
     "message": "I cacciatori riferiscono di aver avvistato un grande branco di cervi nella foresta, ma la zona si trova vicino a una tana di lupi. Li mandi lì a cacciare?",
     "title": "Il branco di cervi"
+  },
+  "abandonedCart": {
+    "choices": {
+      "leaveCart": {
+        "label": "Lascia il carro"
+      },
+      "takeFood": {
+        "label": "Prendi il cibo"
+      }
+    },
+    "log": {
+      "outcome0": "Gli abitanti riportano i sacchi a casa. Il cibo è ancora buono.",
+      "outcome1": "Il cibo era avvelenato. Due abitanti collassano dopo i primi bocconi.",
+      "outcome2": "Lasci il carro dove si trova. Non succede nulla."
+    },
+    "message": "Al limitare della foresta, gli abitanti trovano un carro abbandonato con del cibo. Cosa dovrebbero fare?",
+    "title": "Il Carro Abbandonato"
   }
 }

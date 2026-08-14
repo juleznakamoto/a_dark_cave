@@ -711,20 +711,20 @@
   "insightBlessingOffer": {
     "choices": {
       "receiveBlessing": {
-        "cost": "{{insightCost}} Insight",
-        "label": "Receive Blessing"
+        "cost": "{{insightCost}} Perspicacité",
+        "label": "Recevoir la bénédiction"
       },
       "sendAway": {
-        "label": "Send away"
+        "label": "Renvoyer"
       }
     },
     "log": {
-      "outcomeChosen": "Without another word, the figure quietly departs, leaving you with a newfound blessing.",
-      "outcomeSendAway": "You turn the figure away. They leave without a word, but you sense they may return.",
-      "outcomeFallback": "The figure waits no longer and slips back into the dark."
+      "outcomeChosen": "Sans un mot de plus, la silhouette s'éloigne en silence, vous laissant une bénédiction nouvelle.",
+      "outcomeSendAway": "Vous renvoyez la silhouette. Elle part sans un mot, mais vous sentez qu'elle pourrait revenir.",
+      "outcomeFallback": "La silhouette n'attend plus et se fond dans l'obscurité."
     },
-    "message": "A hooded figure appears at the estate, silent, then whispering in a low voice. They offer to give you a blessing.",
-    "title": "A Quiet Offering"
+    "message": "Une silhouette encapuchonnée apparaît au domaine, silencieuse, puis murmure d'une voix basse. Elle offre de vous accorder une bénédiction.",
+    "title": "Une offre silencieuse"
   },
   "obsidianOrbVisit": {
     "choices": {
@@ -2431,11 +2431,11 @@
     "title": "Le Collectionneur errant",
     "message": {
       "visit0": "Une silhouette enveloppée de robes en lambeaux s'approche. Elle semble intriguée par ce que vous avez amassé. « Je sens de la valeur parmi vos possessions », murmure-t-elle. « Laissez-moi en prendre une. »",
-      "visit0_both": "A figure wrapped in tattered robes approaches. 'I sense value among your possessions,' he murmurs. 'Vendre me one, or buy back what others left behind.'",
-      "visit0_buy": "A figure wrapped in tattered robes approaches, a satchel of discarded relics at his side. 'I gather what others refuse,' he murmurs. 'Any of these can be yours.'",
+      "visit0_both": "Une silhouette enveloppée de robes en lambeaux s'approche. « Je sens de la valeur parmi vos possessions », murmure-t-elle. « Vendez-m'en une, ou rachetez ce que d'autres ont laissé. »",
+      "visit0_buy": "Une silhouette enveloppée de robes en lambeaux s'approche, une besace de reliques délaissées à ses côtés. « Je recueille ce que les autres refusent », murmure-t-elle. « Chacune peut être vôtre. »",
       "visit1": "La silhouette revient, ses pas silencieux sur le sol. « Plus d'artefacts, plus de secrets », chuchote-t-elle. « Laissez-moi en reprendre un. »",
-      "visit1_both": "The robed figure returns, silent as before. 'Vendre me another,' he whispers, 'or claim one I found.'",
-      "visit1_buy": "The robed figure returns with forgotten relics. 'What others once refused, I kept,' he whispers. 'Any may be yours.'"
+      "visit1_both": "La silhouette revient, silencieuse comme avant. « Vendez-m'en une autre », chuchote-t-elle, « ou prenez-en une que j'ai trouvée. »",
+      "visit1_buy": "La silhouette revient avec des reliques oubliées. « Ce que d'autres ont jadis refusé, je l'ai gardé », chuchote-t-elle. « Chacune peut être vôtre. »"
     }
   },
   "wanderingFirecrafter": {
@@ -2820,5 +2820,22 @@
     },
     "message": "Une jeune femme s'approche de vous, les larmes ruisselant sur son visage. 'Mes deux parents ont été sacrifiés à ce monolithe maudit,' crie-t-elle. 'Ce comportement barbare doit cesser !'",
     "title": "La Supplication de la jeune femme" //x1.5
+  },
+  "abandonedCart": {
+    "choices": {
+      "leaveCart": {
+        "label": "Laisser la charrette"
+      },
+      "takeFood": {
+        "label": "Prendre la nourriture"
+      }
+    },
+    "log": {
+      "outcome0": "Les villageois ramènent les sacs. La nourriture est encore bonne.",
+      "outcome1": "La nourriture était empoisonnée. Deux villageois s'effondrent après les premières bouchées.",
+      "outcome2": "Vous laissez la charrette où elle est. Rien ne se passe."
+    },
+    "message": "À l'orée de la forêt, des villageois trouvent une charrette abandonnée chargée de nourriture. Que doivent-ils faire ?",
+    "title": "La charrette abandonnée"
   }
 }

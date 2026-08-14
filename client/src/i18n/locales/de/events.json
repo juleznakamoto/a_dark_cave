@@ -711,20 +711,20 @@
   "insightBlessingOffer": {
     "choices": {
       "receiveBlessing": {
-        "cost": "{{insightCost}} Insight",
-        "label": "Receive Blessing"
+        "cost": "{{insightCost}} Einsicht",
+        "label": "Segen empfangen"
       },
       "sendAway": {
-        "label": "Send away"
+        "label": "Wegschicken"
       }
     },
     "log": {
-      "outcomeChosen": "Without another word, the figure quietly departs, leaving you with a newfound blessing.",
-      "outcomeSendAway": "You turn the figure away. They leave without a word, but you sense they may return.",
-      "outcomeFallback": "The figure waits no longer and slips back into the dark."
+      "outcomeChosen": "Ohne ein weiteres Wort entfernt sich die Gestalt still und hinterlässt dir einen neuen Segen.",
+      "outcomeSendAway": "Du weist die Gestalt ab. Sie geht ohne ein Wort, doch du spürst, dass sie zurückkehren könnte.",
+      "outcomeFallback": "Die Gestalt wartet nicht länger und gleitet zurück ins Dunkel."
     },
-    "message": "A hooded figure appears at the estate, silent, then whispering in a low voice. They offer to give you a blessing.",
-    "title": "A Quiet Offering"
+    "message": "Eine verhüllte Gestalt erscheint am Anwesen, schweigt, dann flüstert sie mit leiser Stimme. Sie bietet dir einen Segen an.",
+    "title": "Ein stilles Angebot"
   },
   "obsidianOrbVisit": {
     "choices": {
@@ -2431,11 +2431,11 @@
     "title": "Der wandernde Sammler",
     "message": {
       "visit0": "Eine Gestalt in zerrissenen Roben nähert sich. Sie scheint fasziniert von dem, was du gesammelt hast. \"Ich spüre Wert unter deinen Besitztümern\", murmelt sie. \"Erlaube mir, eines mitzunehmen.\"",
-      "visit0_both": "A figure wrapped in tattered robes approaches. 'I sense value among your possessions,' he murmurs. 'Verkaufen me one, or buy back what others left behind.'",
-      "visit0_buy": "A figure wrapped in tattered robes approaches, a satchel of discarded relics at his side. 'I gather what others refuse,' he murmurs. 'Any of these can be yours.'",
+      "visit0_both": "Eine Gestalt in zerrissenen Roben nähert sich. \"Ich spüre Wert unter deinen Besitztümern\", murmelt sie. \"Verkauf mir eines, oder kaufe zurück, was andere zurückließen.\"",
+      "visit0_buy": "Eine Gestalt in zerrissenen Roben nähert sich, eine Tasche verworfener Relikte an der Seite. \"Ich sammle, was andere ablehnen\", murmelt sie. \"Jedes davon kann dir gehören.\"",
       "visit1": "Die verhüllte Gestalt kehrt zurück, ihre Schritte lautlos auf dem Boden. \"Mehr Artefakte, mehr Geheimnisse\", flüstert sie. \"Lass mich wieder eines nehmen.\"",
-      "visit1_both": "The robed figure returns, silent as before. 'Verkaufen me another,' he whispers, 'or claim one I found.'",
-      "visit1_buy": "The robed figure returns with forgotten relics. 'What others once refused, I kept,' he whispers. 'Any may be yours.'"
+      "visit1_both": "Die verhüllte Gestalt kehrt zurück, still wie zuvor. \"Verkauf mir ein weiteres\", flüstert sie, \"oder nimm eines, das ich gefunden habe.\"",
+      "visit1_buy": "Die verhüllte Gestalt kehrt mit vergessenen Relikten zurück. \"Was andere einst ablehnten, habe ich behalten\", flüstert sie. \"Jedes kann dir gehören.\""
     }
   },
   "wanderingFirecrafter": {
@@ -2820,5 +2820,22 @@
     },
     "message": "Eine junge Frau tritt an dich heran, Tränen strömen über ihr Gesicht. 'Meine beiden Eltern wurden diesem verfluchten Monolithen geopfert', ruft sie. 'Dieses barbarische Verhalten muss aufhören!'",
     "title": "Die Bitte der jungen Frau"
+  },
+  "abandonedCart": {
+    "choices": {
+      "leaveCart": {
+        "label": "Karren lassen"
+      },
+      "takeFood": {
+        "label": "Nahrung nehmen"
+      }
+    },
+    "log": {
+      "outcome0": "Die Dorfbewohner schleppen die Säcke heim. Die Nahrung ist noch gut.",
+      "outcome1": "Die Nahrung war vergiftet. Zwei Dorfbewohner stürzen nach den ersten Bissen zusammen.",
+      "outcome2": "Du lässt den Karren stehen. Nichts geschieht."
+    },
+    "message": "Am Waldrand finden Dorfbewohner einen verlassenen Karren mit Nahrung. Was sollen sie tun?",
+    "title": "Der verlassene Karren"
   }
 }

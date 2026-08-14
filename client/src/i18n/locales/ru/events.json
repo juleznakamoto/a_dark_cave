@@ -711,20 +711,20 @@
   "insightBlessingOffer": {
     "choices": {
       "receiveBlessing": {
-        "cost": "{{insightCost}} Insight",
-        "label": "Receive Blessing"
+        "cost": "{{insightCost}} Прозрение",
+        "label": "Принять благословение"
       },
       "sendAway": {
-        "label": "Send away"
+        "label": "Отправить прочь"
       }
     },
     "log": {
-      "outcomeChosen": "Without another word, the figure quietly departs, leaving you with a newfound blessing.",
-      "outcomeSendAway": "You turn the figure away. They leave without a word, but you sense they may return.",
-      "outcomeFallback": "The figure waits no longer and slips back into the dark."
+      "outcomeChosen": "Без лишних слов фигура тихо уходит, оставляя вам новое благословение.",
+      "outcomeSendAway": "Вы отсылаете фигуру. Она уходит молча, но вы чувствуете, что она может вернуться.",
+      "outcomeFallback": "Фигура больше не ждёт и скользит обратно во тьму."
     },
-    "message": "A hooded figure appears at the estate, silent, then whispering in a low voice. They offer to give you a blessing.",
-    "title": "A Quiet Offering"
+    "message": "У поместья появляется фигура в капюшоне. Сначала молчит, затем шепчет тихим голосом. Она предлагает даровать вам благословение.",
+    "title": "Тихое подношение"
   },
   "obsidianOrbVisit": {
     "choices": {
@@ -2431,11 +2431,11 @@
     "title": "Странствующий коллекционер",
     "message": {
       "visit0": "К вашему жилищу приближается фигура в лохмотьях. Её заинтересовало ваше имущество. «Я чую ценность среди ваших вещей», - шепчет она. «Позвольте забрать одну.»",
-      "visit0_both": "A figure wrapped in tattered robes approaches. 'I sense value among your possessions,' he murmurs. 'Продать me one, or buy back what others left behind.'",
-      "visit0_buy": "A figure wrapped in tattered robes approaches, a satchel of discarded relics at his side. 'I gather what others refuse,' he murmurs. 'Any of these can be yours.'",
+      "visit0_both": "К вашему жилищу приближается фигура в лохмотьях. «Я чую ценность среди ваших вещей», - шепчет она. «Продайте мне одну, или выкупите то, что другие оставили.»",
+      "visit0_buy": "К вашему жилищу приближается фигура в лохмотьях, с сумкой отвергнутых реликвий. «Я собираю то, от чего другие отказываются», - шепчет она. «Любая из них может стать вашей.»",
       "visit1": "Фигура возвращается, шаги бесшумны. «Больше артефактов, больше тайн», - шепчет она. «Отдайте ещё одну.»",
-      "visit1_both": "The robed figure returns, silent as before. 'Продать me another,' he whispers, 'or claim one I found.'",
-      "visit1_buy": "The robed figure returns with forgotten relics. 'What others once refused, I kept,' he whispers. 'Any may be yours.'"
+      "visit1_both": "Фигура возвращается, тихая как прежде. «Продайте ещё одну», - шепчет она, - «или возьмите ту, что я нашла.»",
+      "visit1_buy": "Фигура возвращается с забытыми реликвиями. «То, от чего другие отказались, я сохранила», - шепчет она. «Любая может стать вашей.»"
     }
   },
   "wanderingFirecrafter": {
@@ -2820,5 +2820,22 @@
     },
     "message": "К вам подходит молодая женщина, слезы текут по ее лицу. «Обоих моих родителей принесли в жертву этому проклятому монолиту, - плачет она. - Это варварство должно прекратиться!»",
     "title": "Мольба молодой женщины"
+  },
+  "abandonedCart": {
+    "choices": {
+      "leaveCart": {
+        "label": "Оставить телегу"
+      },
+      "takeFood": {
+        "label": "Взять еду"
+      }
+    },
+    "log": {
+      "outcome0": "Жители тащат мешки домой. Еда ещё годная.",
+      "outcome1": "Еда была отравлена. Двое жителей падают после первых кусков.",
+      "outcome2": "Вы оставляете телегу на месте. Ничего не происходит."
+    },
+    "message": "На опушке леса жители находят брошенную телегу с едой. Что им делать?",
+    "title": "Брошенная телега"
   }
 }
