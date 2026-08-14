@@ -456,8 +456,6 @@
   "events.merchant.toolTrades.trade_book_of_trials.label": "Livre des épreuves",
   "events.merchant.toolTrades.trade_book_of_craftsmanship.message": "Vous achetez das Livre de l'artisanat. Der marchand nickt anerkennend: „Ein Handwerkerbuch, abgenutzt, aber voller Weisheit. Es wird denen Geheimnisse zuflüstern, die bauen.“",
   "events.merchant.toolTrades.trade_book_of_craftsmanship.label": "Livre de l'artisanat",
-  "events.merchant.toolTrades.trade_book_of_war.message": "Vous achetez das Livre de la guerre. Der marchand nickt ernst: „savoir aus einem längst vergangenen Königreich im fernen Osten. Damit wirst du die Folgen deiner Entscheidungen besser verstehen.“",
-  "events.merchant.toolTrades.trade_book_of_war.label": "Livre de la guerre",
   "events.merchant.toolTrades.trade_reinforced_rope.message": "Vous achetez das verstärkte Seil. Dieses Seil hält enormer Belastung stand et erreicht Orte in den tiefsten grottenkammern.",
   "events.merchant.toolTrades.trade_reinforced_rope.label": "Corde renforcée",
   "events.merchant.toolTrades.trade_occultist_map.message": "Als du die Carte de l'occultiste kaufst, flüstert der marchand: „Ein alter Okkultist verbarg seine Geheimnisse in einer Kammer tief in der grotte. Diese Karte wird dich führen.“",

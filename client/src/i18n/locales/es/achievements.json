@@ -5,11 +5,11 @@
       "description": "Mejora Reunir madera al nivel 10."
     },
     "0-craftTorches": {
-      "label": "Artesano de antorchas",  //x1.6
+      "label": "Artesano de antorchas", //x1.6
       "description": "Mejora Antorchas al nivel 10."
     },
     "0-exploreCave": {
-      "label": "Explorador de cuevas",  //x1.5
+      "label": "Explorador de cuevas", //x1.5
       "description": "Mejora Explorar la cueva al nivel 10."
     },
     "0-gamblerWins": {
@@ -21,23 +21,23 @@
       "description": "Mejora Cazar al nivel 10."
     },
     "1-mineAdamant": {
-      "label": "Minero de adamantita",  //x1.5
+      "label": "Minero de adamantita", //x1.5
       "description": "Mejora Adamantita al nivel 10."
     },
     "1-mineCoal": {
-      "label": "Minero de carbón",  //x1.6
+      "label": "Minero de carbón", //x1.6
       "description": "Mejora Carbón al nivel 10."
     },
     "1-mineIron": {
-      "label": "Minero de hierro",  //x1.6
+      "label": "Minero de hierro", //x1.6
       "description": "Mejora Hierro al nivel 10."
     },
     "1-mineMoonstone": {
-      "label": "Minero de piedra lunar",  //x1.5
+      "label": "Minero de piedra lunar", //x1.5
       "description": "Mejora Piedra lunar al nivel 10."
     },
     "1-mineObsidian": {
-      "label": "Minero de obsidiana",  //x1.4
+      "label": "Minero de obsidiana", //x1.4
       "description": "Mejora Obsidiana al nivel 10."
     },
     "1-mineStone": {
@@ -45,19 +45,19 @@
       "description": "Mejora Piedra al nivel 10."
     },
     "1-mineSulfur": {
-      "label": "Minero de azufre",  //x1.3
+      "label": "Minero de azufre", //x1.3
       "description": "Mejora Azufre al nivel 10."
     },
     "2-animals": {
-      "label": "Sacrificador de animales",  //x1.4
+      "label": "Sacrificador de animales", //x1.4
       "description": "Sacrifica animales 10 veces."
     },
     "2-boneTotems": {
-      "label": "Sacrificador de huesos",  //x1.5
+      "label": "Sacrificador de huesos", //x1.5
       "description": "Sacrifica tótems de hueso 20 veces."
     },
     "2-craftBoneTotems": {
-      "label": "Artesano de tótems de hueso",  //x1.5
+      "label": "Artesano de tótems de hueso", //x1.5
       "description": "Mejora Tótems de hueso al nivel 10."
     },
     "2-craftLeatherTotems": {
@@ -69,23 +69,23 @@
       "description": "Sacrifica tótems de cuero 20 veces."
     },
     "3-ashfireBombs": {
-      "label": "Artesano de bombas de fuego ceniciento",  //x1.8
-      "description": "Fabrica 20 bombas de fuego ceniciento."  //x1.7
+      "label": "Artesano de bombas de fuego ceniciento", //x1.8
+      "description": "Fabrica 20 bombas de fuego ceniciento." //x1.7
     },
     "3-burningVeins": {
       "label": "Burning Veins",
       "description": "Usa 10 elixires de fuego venal."
     },
     "3-emberBombs": {
-      "label": "Artesano de bombas de brasas",  //x1.5
+      "label": "Artesano de bombas de brasas", //x1.5
       "description": "Fabrica 20 bombas de brasas."
     },
     "3-veinfireElixir": {
-      "label": "Artesano de elixir de fuego venal",  //x1.6
+      "label": "Artesano de elixir de fuego venal", //x1.6
       "description": "Fabrica 10 elixires de fuego venal."
     },
     "4-feedFire": {
-      "label": "Alimentador del fuego",  //x1.9
+      "label": "Alimentador del fuego", //x1.9
       "description": "Alimenta el fuego 100 veces."
     },
     "4-insightful": {
@@ -113,11 +113,11 @@
       "description": "Pierde 250 aldeanos en todas las partidas."
     },
     "4-solsticeGatherings": {
-      "label": "Celebrante del solsticio",  //x1.3
+      "label": "Celebrante del solsticio", //x1.3
       "description": "Celebra 10 reuniones del solsticio."
     },
     "4-wellRested": {
-      "label": "Dormilón profundo",  //x1.3
+      "label": "Dormilón profundo", //x1.3
       "description": "Descansa 20 horas en total."
     }
   },
@@ -155,38 +155,38 @@
       "description": "Posee al menos 5 edificios."
     },
     "1-communityBuilder": {
-      "label": "Construir comunidad",  //x1.3
+      "label": "Construir comunidad", //x1.3
       "description": "Alcanza una población de 10."
     },
     "1-explorer": {
-      "label": "Explorar la cueva",  //x1.4
+      "label": "Explorar la cueva", //x1.4
       "description": "Explora la cueva 20 veces."
     },
     "1-toolCrafter": {
-      "label": "Fabricar herramientas",  //x1.9
-      "description": "Posee 5 herramientas distintas."  //x1.4
+      "label": "Fabricar herramientas", //x1.9
+      "description": "Posee 5 herramientas distintas." //x1.4
     },
     "1-torchCrafter": {
-      "label": "Fabricar antorchas",  //x1.4
+      "label": "Fabricar antorchas", //x1.4
       "description": "Fabrica 50 antorchas en total."
     }
   },
   "building": {
     "0-0": {
       "label": "Refugio básico",
-      "description": "Construye 10 chozas de madera."  //x1.4
+      "description": "Construye 10 chozas de madera." //x1.4
     },
     "0-1": {
-      "label": "Refugio resistente",  //x1.3
-      "description": "Construye 10 chozas de piedra."  //x1.5
+      "label": "Refugio resistente", //x1.3
+      "description": "Construye 10 chozas de piedra." //x1.5
     },
     "0-2": {
       "label": "Refugio nórdico",
-      "description": "Construye 5 casas comunales."  //x1.5
+      "description": "Construye 5 casas comunales." //x1.5
     },
     "0-3": {
       "label": "Refugio nómada",
-      "description": "Construye 5 tiendas de pieles."  //x1.7
+      "description": "Construye 5 tiendas de pieles." //x1.7
     },
     "1-0": {
       "label": "Cazadores",
@@ -198,39 +198,39 @@
     },
     "1-2": {
       "label": "Fundidores",
-      "description": "Construye la fundición y todas las mejoras."  //x1.4
+      "description": "Construye la fundición y todas las mejoras." //x1.4
     },
     "1-3": {
       "label": "Curtidores",
-      "description": "Construye la curtiduría y todas las mejoras."  //x1.4
+      "description": "Construye la curtiduría y todas las mejoras." //x1.4
     },
     "2-0": {
       "label": "Mineros",
-      "description": "Construye el pozo superficial y todas las mejoras."  //x1.4
+      "description": "Construye el pozo superficial y todas las mejoras." //x1.4
     },
     "3-0": {
-      "label": "Comerciantes",  //x1.7
-      "description": "Construye el puesto comercial y todas las mejoras."  //x1.5
+      "label": "Comerciantes", //x1.7
+      "description": "Construye el puesto comercial y todas las mejoras." //x1.5
     },
     "3-1": {
       "label": "Proveedores",
-      "description": "Construye la choza de suministros y todas las mejoras."  //x1.6
+      "description": "Construye la choza de suministros y todas las mejoras." //x1.6
     },
     "3-2": {
       "label": "Eruditos",
-      "description": "Construye la choza de escribientes y todas las mejoras."  //x1.6
+      "description": "Construye la choza de escribientes y todas las mejoras." //x1.6
     },
     "3-3": {
       "label": "Sacerdotes",
       "description": "Construye el altar y todas las mejoras."
     },
     "4-0": {
-      "label": "Murallas del bastión",  //x2.0
-      "description": "Construye las empalizadas y todas las mejoras."  //x1.4
+      "label": "Murallas del bastión", //x2.0
+      "description": "Construye las empalizadas y todas las mejoras." //x1.4
     },
     "4-1": {
       "label": "Vigía",
-      "description": "Construye la torre de vigilancia y todas las mejoras."  //x1.6
+      "description": "Construye la torre de vigilancia y todas las mejoras." //x1.6
     }
   },
   "item": {
@@ -263,8 +263,8 @@
       "description": "Fabrica tres armas de esquema."
     },
     "3-ancient_books": {
-      "label": "Sabiduría antigua",  //x1.2
-      "description": "Colecciona los cuatro libros antiguos."
+      "label": "Sabiduría antigua", //x1.2
+      "description": "Colecciona los tres libros antiguos."
     },
     "3-fellowship": {
       "label": "Buena compañía",
@@ -272,11 +272,11 @@
     },
     "4-blacksteel_equipment": {
       "label": "Equipo bélico oscuro",
-      "description": "Fabrica los tres equipos de guerra de acero negro."  //x1.4
+      "description": "Fabrica los tres equipos de guerra de acero negro." //x1.4
     },
     "4-blacksteel_tools": {
-      "label": "Herramientas oscuras",  //x2.0
-      "description": "Fabrica las tres herramientas de acero negro."  //x1.4
+      "label": "Herramientas oscuras", //x2.0
+      "description": "Fabrica las tres herramientas de acero negro." //x1.4
     }
   },
   "overall": {
@@ -286,7 +286,7 @@
     },
     "0-caveVeteran": {
       "label": "Cueva Veteran",
-      "description": "Gana 3 partidas."  //x1.3
+      "description": "Gana 3 partidas." //x1.3
     },
     "0-endurant": {
       "label": "Endurant",
@@ -311,11 +311,11 @@
     },
     "0-winCruel": {
       "label": "Cruel Victory",
-      "description": "Gana una partida en modo cruel."  //x1.6
+      "description": "Gana una partida en modo cruel." //x1.6
     },
     "0-winNormal": {
       "label": "Normal Victory",
-      "description": "Gana una partida en modo normal."  //x1.5
+      "description": "Gana una partida en modo normal." //x1.5
     }
   }
 }

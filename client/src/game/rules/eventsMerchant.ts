@@ -797,16 +797,6 @@ const toolTrades = [
 
   },
   {
-    id: "trade_book_of_war",
-    label: getEffectName("books", "book_of_war", bookEffects.book_of_war?.name ?? "Book of War"),
-    give: "book",
-    giveItem: "book_of_war",
-    condition: (state: GameState) =>
-      state.buildings.darkEstate >= 1 && !state.books.book_of_war,
-    costs: [{ resource: "gold", amounts: [300] }],
-
-  },
-  {
     id: "trade_reinforced_rope",
     label: getEffectName("tools", "reinforced_rope", "Reinforced Rope"),
     give: "tool",

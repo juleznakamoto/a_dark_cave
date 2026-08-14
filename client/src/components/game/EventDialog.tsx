@@ -303,8 +303,7 @@ export default function EventDialog({
             )}
             <DialogHeader>
               <div className="flex items-center justify-between gap-2">
-                {/* pr-0: close control is hidden ([&>button]:hidden); skip DialogTitle's default pr-8. */}
-                <DialogTitle className="pr-0 text-lg font-semibold">
+                <DialogTitle className="text-lg font-semibold">
                   {displayTitle}
                 </DialogTitle>
                 <div className="flex gap-2 items-center flex-shrink-0">

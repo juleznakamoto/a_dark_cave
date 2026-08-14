@@ -1227,10 +1227,6 @@
         "message": "Du kaufst das Buch der Handwerkskunst. Der Händler nickt anerkennend: „Ein Handwerkerbuch, abgenutzt, aber voller Weisheit. Es wird denen Geheimnisse zuflüstern, die bauen.“",
         "label": "Buch der Handwerkskunst"
       },
-      "trade_book_of_war": {
-        "message": "Du kaufst das Buch des Krieges. Der Händler nickt ernst: „Wissen aus einem längst vergangenen Königreich im fernen Osten.“",
-        "label": "Buch des Krieges" //x1.5
-      },
       "trade_reinforced_rope": {
         "message": "Du kaufst das verstärkte Seil. Dieses Seil hält enormer Belastung stand und erreicht Orte in den tiefsten Höhlenkammern.",
         "label": "Verstärktes Seil"

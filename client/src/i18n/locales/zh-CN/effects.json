@@ -15,10 +15,6 @@
     "book_of_trials": {
       "description": "讲述如何穿越人生试炼的书。为通过成就证明自己的人解锁奖励。",
       "name": "试炼之书"
-    },
-    "book_of_war": {
-      "description": "蕴含战斗智慧的书。",
-      "name": "战争之书"
     }
   },
   "clothing": {

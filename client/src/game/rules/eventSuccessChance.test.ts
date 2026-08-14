@@ -29,7 +29,12 @@ describe("eventSuccessChance", () => {
 
     expect(defined.success_chance(state)).toBeCloseTo(0.4);
     expect(getSuccessChanceBreakdown(defined.success_formula, state).stats).toEqual(
-      [{ type: "strength", percentPerPoint: "2" }],
+      [{
+        type: "strength",
+        statValue: 0,
+        percentPerPoint: "2",
+        contributionPercent: "0",
+      }],
     );
   });
 
@@ -50,9 +55,32 @@ describe("eventSuccessChance", () => {
     expect(breakdown.forceZero).toBe(false);
     expect(breakdown.basePercent).toBe("15");
     expect(breakdown.stats).toEqual([
-      { type: "strength", percentPerPoint: "1" },
+      {
+        type: "strength",
+        statValue: 0,
+        percentPerPoint: "1",
+        contributionPercent: "0",
+      },
     ]);
     expect(breakdown.cruelPercent).toBeNull();
+  });
+
+  it("includes current stat value and contribution in the breakdown", () => {
+    const state = createInitialState();
+    state.weapons.crude_bow = true;
+    const { success_formula } = defineSuccessChance({
+      base: 0.1,
+      stats: [{ type: "strength", multiplier: 0.02 }],
+    });
+
+    expect(getSuccessChanceBreakdown(success_formula, state).stats).toEqual([
+      {
+        type: "strength",
+        statValue: 1,
+        percentPerPoint: "2",
+        contributionPercent: "2",
+      },
+    ]);
   });
 
   it("shows cruel penalty in the breakdown when cruel mode is on", () => {

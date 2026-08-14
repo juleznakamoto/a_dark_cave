@@ -25,11 +25,11 @@
       "description": "Verbessere Adamant auf Stufe 10."
     },
     "1-mineCoal": {
-      "label": "Kohleschürfer",  //x1.3
+      "label": "Kohleschürfer", //x1.3
       "description": "Verbessere Kohle auf Stufe 10."
     },
     "1-mineIron": {
-      "label": "Eisenschürfer",  //x1.3
+      "label": "Eisenschürfer", //x1.3
       "description": "Verbessere Eisen auf Stufe 10."
     },
     "1-mineMoonstone": {
@@ -45,7 +45,7 @@
       "description": "Verbessere Stein auf Stufe 10."
     },
     "1-mineSulfur": {
-      "label": "Schwefelschürfer",  //x1.3
+      "label": "Schwefelschürfer", //x1.3
       "description": "Verbessere Schwefel auf Stufe 10."
     },
     "2-animals": {
@@ -53,7 +53,7 @@
       "description": "Opfere 10 Mal Tiere."
     },
     "2-boneTotems": {
-      "label": "Knochentotemopferer",  //x1.3
+      "label": "Knochentotemopferer", //x1.3
       "description": "Opfere 20 Mal Knochentotems."
     },
     "2-craftBoneTotems": {
@@ -70,11 +70,11 @@
     },
     "3-ashfireBombs": {
       "label": "Aschfeuerbombenmacher",
-      "description": "Stelle 20 Aschfeuerbomben her."  //x1.3
+      "description": "Stelle 20 Aschfeuerbomben her." //x1.3
     },
     "3-burningVeins": {
       "label": "Burning Veins",
-      "description": "Benutze 10 Aderfeuer-Elixiere."  //x1.3
+      "description": "Benutze 10 Aderfeuer-Elixiere." //x1.3
     },
     "3-emberBombs": {
       "label": "Glutbombenmacher",
@@ -82,7 +82,7 @@
     },
     "3-veinfireElixir": {
       "label": "Aderfeuer-Elixier-Brauer",
-      "description": "Stelle 10 Aderfeuer-Elixiere her."  //x1.3
+      "description": "Stelle 10 Aderfeuer-Elixiere her." //x1.3
     },
     "4-feedFire": {
       "label": "Feuerschürer",
@@ -98,19 +98,19 @@
     },
     "4-luckyInvestor": {
       "label": "Lucky Investor",
-      "description": "Schließe 10 Investitionen erfolgreich ab."  //x1.6
+      "description": "Schließe 10 Investitionen erfolgreich ab." //x1.6
     },
     "4-mentalClarity": {
-      "label": "Geistige Klarheit",  //x1.2
-      "description": "Benutze 5 Elixiere der Klarheit."  //x1.5
+      "label": "Geistige Klarheit", //x1.2
+      "description": "Benutze 5 Elixiere der Klarheit." //x1.5
     },
     "4-merchantPurchases": {
-      "label": "Handelspartner",  //x1.4
+      "label": "Handelspartner", //x1.4
       "description": "Tätige 100 Händlerkäufe."
     },
     "4-pileOfDead": {
       "label": "Pile of Dead",
-      "description": "Verliere über alle Spiele hinweg 250 Dorfbewohner."  //x1.4
+      "description": "Verliere über alle Spiele hinweg 250 Dorfbewohner." //x1.4
     },
     "4-solsticeGatherings": {
       "label": "Sonnenwendfeierer",
@@ -135,7 +135,7 @@
       "description": "Sammle insgesamt 500 Eisen."
     },
     "0-steelForger": {
-      "label": "Stahl schmieden",  //x1.4
+      "label": "Stahl schmieden", //x1.4
       "description": "Schmiede insgesamt 250 Stahl."
     },
     "0-stoneMiner": {
@@ -155,7 +155,7 @@
       "description": "Besitze mindestens 5 Gebäude."
     },
     "1-communityBuilder": {
-      "label": "Gemeinschaft aufbauen",  //x1.4
+      "label": "Gemeinschaft aufbauen", //x1.4
       "description": "Erreiche eine Bevölkerung von 10."
     },
     "1-explorer": {
@@ -163,25 +163,25 @@
       "description": "Erkunde die Höhle 20 Mal."
     },
     "1-toolCrafter": {
-      "label": "Werkzeuge herstellen",  //x1.8
-      "description": "Besitze 5 verschiedene Werkzeuge."  //x1.5
+      "label": "Werkzeuge herstellen", //x1.8
+      "description": "Besitze 5 verschiedene Werkzeuge." //x1.5
     },
     "1-torchCrafter": {
-      "label": "Fackeln herstellen",  //x1.4
+      "label": "Fackeln herstellen", //x1.4
       "description": "Stelle insgesamt 50 Fackeln her."
     }
   },
   "building": {
     "0-0": {
-      "label": "Einfache Unterkunft",  //x1.5
+      "label": "Einfache Unterkunft", //x1.5
       "description": "Baue 10 Holzhütten."
     },
     "0-1": {
-      "label": "Stabile Unterkunft",  //x1.3
+      "label": "Stabile Unterkunft", //x1.3
       "description": "Baue 10 Steinhütten."
     },
     "0-2": {
-      "label": "Nordische Unterkunft",  //x1.4
+      "label": "Nordische Unterkunft", //x1.4
       "description": "Baue 5 Langhäuser."
     },
     "0-3": {
@@ -248,7 +248,7 @@
     },
     "1-bows": {
       "label": "Bögen",
-      "description": "Stelle jeden Bogen vom einfachen bis zum Meisterbogen her."  //x1.6
+      "description": "Stelle jeden Bogen vom einfachen bis zum Meisterbogen her." //x1.6
     },
     "1-swords": {
       "label": "Schwerter",
@@ -264,18 +264,18 @@
     },
     "3-ancient_books": {
       "label": "Altes Wissen",
-      "description": "Sammle alle vier uralten Bücher."
+      "description": "Sammle alle drei uralten Bücher."
     },
     "3-fellowship": {
-      "label": "Gute Gesellschaft",  //x1.4
+      "label": "Gute Gesellschaft", //x1.4
       "description": "Rekrutiere alle fünf Gefährten."
     },
     "4-blacksteel_equipment": {
-      "label": "Dunkle Kriegsausrüstung",  //x1.3
-      "description": "Stelle alle drei Schwarzstahl-Kriegsausrüstungen her."  //x1.4
+      "label": "Dunkle Kriegsausrüstung", //x1.3
+      "description": "Stelle alle drei Schwarzstahl-Kriegsausrüstungen her." //x1.4
     },
     "4-blacksteel_tools": {
-      "label": "Dunkle Werkzeuge",  //x1.6
+      "label": "Dunkle Werkzeuge", //x1.6
       "description": "Stelle alle drei Schwarzstahl-Werkzeuge her."
     }
   },
@@ -286,7 +286,7 @@
     },
     "0-caveVeteran": {
       "label": "Höhle Veteran",
-      "description": "Gewinne 3 Spiele."  //x1.4
+      "description": "Gewinne 3 Spiele." //x1.4
     },
     "0-endurant": {
       "label": "Endurant",
@@ -294,7 +294,7 @@
     },
     "0-resourceMaxer": {
       "label": "Resource Maxer",
-      "description": "Erreiche die Kapazität des Großen Tresors mit jeder begrenzten Ressource."  //x1.4
+      "description": "Erreiche die Kapazität des Großen Tresors mit jeder begrenzten Ressource." //x1.4
     },
     "0-upgradeMaxer": {
       "label": "Upgrade Maxer",
@@ -311,11 +311,11 @@
     },
     "0-winCruel": {
       "label": "Cruel Victory",
-      "description": "Gewinne ein Spiel im Grausamen Modus."  //x1.9
+      "description": "Gewinne ein Spiel im Grausamen Modus." //x1.9
     },
     "0-winNormal": {
       "label": "Normal Victory",
-      "description": "Gewinne ein Spiel im Normalen Modus."  //x1.7
+      "description": "Gewinne ein Spiel im Normalen Modus." //x1.7
     }
   }
 }

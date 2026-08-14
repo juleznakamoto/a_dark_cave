@@ -149,7 +149,9 @@ export function formatSuccessChancePercent(chance: number): string {
 
 export type SuccessChanceBreakdownStat = {
   type: SuccessChanceStatType;
+  statValue: number;
   percentPerPoint: string;
+  contributionPercent: string;
 };
 
 export type SuccessChanceBreakdown = {
@@ -174,10 +176,17 @@ export function getSuccessChanceBreakdown(
   return {
     forceZero: false,
     basePercent: formatSuccessChancePercent(resolveSuccessChanceBase(formula, state)),
-    stats: resolveSuccessChanceStats(formula, state).map((stat) => ({
-      type: stat.type,
-      percentPerPoint: formatSuccessChancePercent(stat.multiplier),
-    })),
+    stats: resolveSuccessChanceStats(formula, state).map((stat) => {
+      const statValue = getStatValue(state, stat.type);
+      return {
+        type: stat.type,
+        statValue,
+        percentPerPoint: formatSuccessChancePercent(stat.multiplier),
+        contributionPercent: formatSuccessChancePercent(
+          statValue * stat.multiplier,
+        ),
+      };
+    }),
     cruelPercent: cruelApplies
       ? formatSuccessChancePercent(formula.cmMultiplier)
       : null,

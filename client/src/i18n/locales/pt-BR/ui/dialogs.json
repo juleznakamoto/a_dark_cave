@@ -12,7 +12,7 @@
     "successChance": "Chance de Sucesso: {{percent}}%",
     "influencedBy": "Influenciado por:",
     "successChanceBase": "Base: {{percent}}%",
-    "successChanceStatPerPoint": "+{{percent}}% por ponto",
+    "successChanceStatLine": "{{statValue}} {{statName}} * {{percentPerPoint}}% = {{contribution}}%",
     "successChanceCruel": "Modo Cruel: {{percent}}%"
   },
   "reward": {

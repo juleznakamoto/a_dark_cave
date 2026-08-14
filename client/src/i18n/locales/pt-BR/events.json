@@ -1129,10 +1129,6 @@
         "message": "Você compra o Livro do Ofício. O mercador acena com aprovação: 'Um tomo de artesão, gasto, mas cheio de sabedoria. Ele sussurrará segredos àqueles que constroem.'",
         "label": "Livro do Ofício"
       },
-      "trade_book_of_war": {
-        "message": "Você compra o Livro da Guerra. O mercador acena gravemente: 'Conhecimento de um reino há muito desaparecido no extremo leste.'",
-        "label": "Livro da Guerra"
-      },
       "trade_reinforced_rope": {
         "message": "Você compra a corda reforçada. Esta corda pode suportar uma tensão tremenda e alcançar lugares nas câmaras mais profundas da caverna.",
         "label": "Corda Reforçada"

@@ -1227,10 +1227,6 @@
         "message": "You purchase the Book of Craftsmanship. The merchant nods approvingly: 'A craftsman's tome, worn but full of wisdom. It will whisper secrets to those who build.'",
         "label": "Book of Craftsmanship"
       },
-      "trade_book_of_war": {
-        "message": "You purchase the Book of War. The merchant nods gravely: 'Knowledge from a long gone kingdom in the far east.'",
-        "label": "Book of War"
-      },
       "trade_reinforced_rope": {
         "message": "You purchase the reinforced rope. This rope can withstand tremendous strain and reach places in the deepest cave chambers.",
         "label": "Reinforced Rope"

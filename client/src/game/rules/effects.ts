@@ -1703,12 +1703,6 @@ export const bookEffects: Record<string, EffectDefinition> = {
       "Book on ascending the self. Grants the ability to improve at tasks through practice.",
     bonuses: {},
   },
-  book_of_war: {
-    id: "book_of_war",
-    name: "Book of War",
-    description: "Book containing wisdom about combat.",
-    bonuses: {},
-  },
   book_of_trials: {
     id: "book_of_trials",
     name: "Book of Trials",

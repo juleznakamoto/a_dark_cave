@@ -7,7 +7,7 @@
     "knowledgeTimeBonusMax": "（上限）",
     "successChance": "成功几率：{{percent}}%",
     "successChanceBase": "基础：{{percent}}%",
-    "successChanceStatPerPoint": "每点 +{{percent}}%",
+    "successChanceStatLine": "{{statValue}} {{statName}} * {{percentPerPoint}}% = {{contribution}}%",
     "successChanceCruel": "残酷模式：{{percent}}%",
     "influencedBy": "受以下影响："
   },

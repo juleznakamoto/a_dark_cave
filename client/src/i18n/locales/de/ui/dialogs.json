@@ -7,7 +7,7 @@
     "knowledgeTimeBonusMax": " (max.)",
     "successChance": "Erfolgschance: {{percent}}%",
     "successChanceBase": "Basis: {{percent}}%",
-    "successChanceStatPerPoint": "+{{percent}}% pro Punkt",
+    "successChanceStatLine": "{{statValue}} {{statName}} * {{percentPerPoint}}% = {{contribution}}%",
     "successChanceCruel": "Grausamer Modus: {{percent}}%",
     "influencedBy": "Beeinflusst durch:" //x1.3
   },

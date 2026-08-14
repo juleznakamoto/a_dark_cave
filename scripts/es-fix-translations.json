@@ -463,8 +463,6 @@
   "events.merchant.toolTrades.trade_book_of_trials.label": "Libro de pruebas",
   "events.merchant.toolTrades.trade_book_of_craftsmanship.message": "Compras das Libro de artesanía. Der comerciante nickt anerkennend: „Ein Handwerkerbuch, abgenutzt, aber voller Weisheit. Es wird denen Geheimnisse zuflüstern, die bauen.“",
   "events.merchant.toolTrades.trade_book_of_craftsmanship.label": "Libro de artesanía",
-  "events.merchant.toolTrades.trade_book_of_war.message": "Compras das Libro de la guerra. Der comerciante nickt ernst: „conocimiento aus einem längst vergangenen Königreich im fernen Osten. Damit wirst du die Folgen deiner Entscheidungen besser verstehen.“",
-  "events.merchant.toolTrades.trade_book_of_war.label": "Libro de la guerra",
   "events.merchant.toolTrades.trade_reinforced_rope.message": "Compras das verstärkte Seil. Dieses Seil hält enormer Belastung stand y erreicht Orte in den tiefsten cuevankammern.",
   "events.merchant.toolTrades.trade_reinforced_rope.label": "Cuerda reforzada",
   "events.merchant.toolTrades.trade_occultist_map.message": "Als du die Mapa del ocultista kaufst, flüstert der comerciante: „Ein alter Okkultist verbarg seine Geheimnisse in einer Kammer tief in der cueva. Diese Karte wird dich führen.“",

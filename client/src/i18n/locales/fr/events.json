@@ -1227,10 +1227,6 @@
         "message": "Vous achetez le Livre de l'artisanat. Le marchand hoche la tête avec approbation : « Un tome d'artisan, usé mais rempli de sagesse. Il murmurera ses secrets à ceux qui bâtissent. »",
         "label": "Livre de l'artisanat"
       },
-      "trade_book_of_war": {
-        "message": "Vous achetez le Livre de la guerre. Le marchand hoche gravement la tête : « Un savoir venu d'un royaume depuis longtemps disparu, loin à l'est. »",
-        "label": "Livre de la guerre" //x1.6
-      },
       "trade_reinforced_rope": {
         "message": "Vous achetez la corde renforcée. Cette corde résiste à une tension immense et peut atteindre des lieux dans les chambres les plus profondes de la grotte.",
         "label": "Corde renforcée"

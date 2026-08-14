@@ -15,10 +15,6 @@
     "book_of_trials": {
       "description": "Livro sobre superar os desafios da vida. Desbloqueia recompensas para quem se prova por meio de conquistas.",
       "name": "Livro das Provações"
-    },
-    "book_of_war": {
-      "description": "Livro que contém sabedoria sobre o combate.",
-      "name": "Livro da Guerra"
     }
   },
   "clothing": {

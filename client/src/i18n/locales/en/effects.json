@@ -15,10 +15,6 @@
     "book_of_trials": {
       "description": "Book about navigating life’s challenges. Unlocks rewards for those who prove themselves through achievements.",
       "name": "Book of Trials"
-    },
-    "book_of_war": {
-      "description": "Book containing wisdom about combat.",
-      "name": "Book of War"
     }
   },
   "clothing": {

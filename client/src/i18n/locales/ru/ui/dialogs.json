@@ -7,7 +7,7 @@
     "knowledgeTimeBonusMax": " (макс.)",
     "successChance": "Шанс успеха: {{percent}}%",
     "successChanceBase": "База: {{percent}}%",
-    "successChanceStatPerPoint": "+{{percent}}% за очко",
+    "successChanceStatLine": "{{statValue}} {{statName}} * {{percentPerPoint}}% = {{contribution}}%",
     "successChanceCruel": "Жестокий режим: {{percent}}%",
     "influencedBy": "Зависит от:"
   },

@@ -10,15 +10,11 @@
     },
     "book_of_chainmaster": {
       "description": "Buch des längst totem Kettenmeisters mit harten Methoden, Arbeiter über ihre Grenzen hinaus zu treiben.",
-      "name": "Buch des Kettenmeisters"  //x1.2
+      "name": "Buch des Kettenmeisters" //x1.2
     },
     "book_of_trials": {
       "description": "Buch über das Bestehen der Prüfungen des Lebens. Schaltet Belohnungen für jene frei, die sich durch Erfolge beweisen.",
       "name": "Buch der Prüfungen"
-    },
-    "book_of_war": {
-      "description": "Buch mit Weisheit über den Kampf.",
-      "name": "Buch des Krieges"
     }
   },
   "clothing": {
@@ -140,7 +136,7 @@
     },
     "flames_touch_enhanced": {
       "description": "Herstellungskosten sind stark reduziert",
-      "name": "Starke Berührung der Flamme"  //x1.4
+      "name": "Starke Berührung der Flamme" //x1.4
     },
     "forests_grace": {
       "description": "Die Hirsche des Waldes scheinen dich weniger zu bemerken",
@@ -176,7 +172,7 @@
     },
     "hollow_king_scepter": {
       "description": "Zepter des verlorenen Königs, strahlend vor Macht und Wahnsinn. Bergbauaktionen haben eine Chance von 5 %, die Belohnungen zu verdoppeln.",
-      "name": "Zepter des Hohlen Königs"  //x1.3
+      "name": "Zepter des Hohlen Königs" //x1.3
     },
     "hunter_cloak": {
       "description": "Geschmeidiger Lederumhang, der jede Bewegung dämpft",
@@ -316,7 +312,7 @@
     },
     "survivors_notes": {
       "description": "Alte Schriftrolle voller praktischer Ratschläge, hinterlassen von jemandem, der vor langer Zeit hier lebte. Schaltet einfache Erfolge frei.",
-      "name": "Notizen des Überlebenden"  //x1.5
+      "name": "Notizen des Überlebenden" //x1.5
     },
     "tarnished_amulet": {
       "description": "Altes Amulett, das Glück bringt",
@@ -416,7 +412,7 @@
     },
     "hidden_library_map": {
       "description": "Karte aus dem Kloster, die den Ort einer verborgenen Bibliothek tief in der Höhle zeigt",
-      "name": "Karte der verborgenen Bibliothek"  //x1.8
+      "name": "Karte der verborgenen Bibliothek" //x1.8
     },
     "iron_axe": {
       "description": "Scharfe Axt für schweres Hacken",
