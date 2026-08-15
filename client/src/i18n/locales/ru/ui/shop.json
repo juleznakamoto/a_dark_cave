@@ -72,10 +72,8 @@
     "artifactSkullLantern": {
       "title": "Фонарь из черепа", //x1.2
       "unlocksStoryline": "Открывает сюжетную линию Черепного фонаря",
-      "caveExploreBonus": "Исследование пещеры: +200% бонус", //x1.3
-      "caveExploreCooldown": "Исследование пещеры: -5 с перезарядки", //x1.4
-      "miningBonus": "Добыча: +200% бонус",
-      "miningCooldown": "Добыча: -5с перезарядки"
+      "caveExplore": "Исследование пещеры: +200% бонус, -5 с перезарядки",
+      "mining": "Добыча: +200% бонус, -5с перезарядки"
     },
     "artifactTarnishedCompass": {
       "title": "Потускневший компас",

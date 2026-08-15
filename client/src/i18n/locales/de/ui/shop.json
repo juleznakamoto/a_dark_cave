@@ -72,10 +72,8 @@
     "artifactSkullLantern": {
       "title": "Schädellaterne",
       "unlocksStoryline": "Schaltet die Schädellaternenhandlung frei", //x1.3
-      "caveExploreBonus": "Höhlenerkundung: +200 % Bonus",
-      "caveExploreCooldown": "Höhlenerkundung: -5 s Abklingzeit", //x1.3
-      "miningBonus": "Abbau: +200 % Bonus",
-      "miningCooldown": "Abbau: -5s Abklingzeit"
+      "caveExplore": "Höhlenerkundung: +200 % Bonus, -5 s Abklingzeit",
+      "mining": "Abbau: +200 % Bonus, -5s Abklingzeit"
     },
     "artifactTarnishedCompass": {
       "title": "Angelaufener Kompass",

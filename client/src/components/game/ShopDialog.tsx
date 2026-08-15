@@ -264,10 +264,12 @@ function ArtifactEffectsList({
   const lines =
     artifact === "skull_lantern"
       ? [
-        t("shop.artifactSkullLantern.caveExploreBonus"),
-        t("shop.artifactSkullLantern.caveExploreCooldown"),
-        t("shop.artifactSkullLantern.miningBonus"),
-        t("shop.artifactSkullLantern.miningCooldown"),
+        t("shop.artifactSkullLantern.caveExplore", {
+          defaultValue: "Cave Explore: +200% Bonus, -5s Cooldown",
+        }),
+        t("shop.artifactSkullLantern.mining", {
+          defaultValue: "Mining: +200% Bonus, -5s Cooldown",
+        }),
         t("shop.artifactSkullLantern.unlocksStoryline"),
       ]
       : artifact === "tarnished_compass"

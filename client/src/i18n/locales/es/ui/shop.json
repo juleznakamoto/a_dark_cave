@@ -72,10 +72,8 @@
     "artifactSkullLantern": {
       "title": "Linterna de cráneo", //x1.4
       "unlocksStoryline": "Desbloquea la historia del farol de cráneo", //x1.4
-      "caveExploreBonus": "Exploración de cueva: +200 % de bonificación", //x1.8
-      "caveExploreCooldown": "Exploración de cueva: -5 s de recarga", //x1.4
-      "miningBonus": "Extracción: +200 % de bonificación", //x1.8
-      "miningCooldown": "Extracción: -5 s de recarga" //x1.4
+      "caveExplore": "Exploración de cueva: +200 % de bonificación, -5 s de recarga",
+      "mining": "Extracción: +200 % de bonificación, -5 s de recarga"
     },
     "artifactTarnishedCompass": {
       "title": "Brújula deslustrada",

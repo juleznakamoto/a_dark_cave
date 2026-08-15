@@ -66,10 +66,8 @@
     "journeyCompleteDiscount": "Sconto speciale per aver completato il gioco",
     "artifactSkullLantern": {
       "title": "Lanterna di Teschio",
-      "caveExploreBonus": "Esplora Caverna: +200% Bonus",
-      "caveExploreCooldown": "Esplora Caverna: -5s Recupero",
-      "miningBonus": "Estrazione: +200% Bonus",
-      "miningCooldown": "Estrazione: -5s Recupero",
+      "caveExplore": "Esplora Caverna: +200% Bonus, -5s Recupero",
+      "mining": "Estrazione: +200% Bonus, -5s Recupero",
       "unlocksStoryline": "Sblocca la trama della Lanterna di Teschio"
     },
     "artifactTarnishedCompass": {

@@ -72,10 +72,8 @@
     "artifactSkullLantern": {
       "title": "Lanterne crânienne", //x1.4
       "unlocksStoryline": "Débloque l'histoire de la lanterne-crâne",
-      "caveExploreBonus": "Exploration de grotte : +200 % de bonus", //x1.6
-      "caveExploreCooldown": "Exploration de grotte : -5 s de recharge", //x1.5
-      "miningBonus": "Extraction : +200 % de bonus", //x1.5
-      "miningCooldown": "Extraction : -5 s de recharge" //x1.5
+      "caveExplore": "Exploration de grotte : +200 % de bonus, -5 s de recharge",
+      "mining": "Extraction : +200 % de bonus, -5 s de recharge"
     },
     "artifactTarnishedCompass": {
       "title": "Boussole ternie",

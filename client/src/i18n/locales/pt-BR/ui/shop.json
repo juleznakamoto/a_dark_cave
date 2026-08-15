@@ -66,10 +66,8 @@
     "journeyCompleteDiscount": "Desconto especial por concluir o jogo",
     "artifactSkullLantern": {
       "title": "Lanterna de Caveira",
-      "caveExploreBonus": "Explorar Caverna: +200% de Bônus",
-      "caveExploreCooldown": "Explorar Caverna: -5s de Recarga",
-      "miningBonus": "Mineração: +200% de Bônus",
-      "miningCooldown": "Mineração: -5s de Recarga",
+      "caveExplore": "Explorar Caverna: +200% de Bônus, -5s de Recarga",
+      "mining": "Mineração: +200% de Bônus, -5s de Recarga",
       "unlocksStoryline": "Desbloqueia a trama da Lanterna de Caveira"
     },
     "artifactTarnishedCompass": {

@@ -72,10 +72,8 @@
     "artifactSkullLantern": {
       "title": "Skull Lantern",
       "unlocksStoryline": "Unlocks Skull Lantern storyline",
-      "caveExploreBonus": "Cave Explore: +200% Bonus",
-      "caveExploreCooldown": "Cave Explore: -5s Cooldown",
-      "miningBonus": "Mining: +200% Bonus",
-      "miningCooldown": "Mining: -5s Cooldown"
+      "caveExplore": "Cave Explore: +200% Bonus, -5s Cooldown",
+      "mining": "Mining: +200% Bonus, -5s Cooldown"
     },
     "artifactTarnishedCompass": {
       "title": "Tarnished Compass",
