@@ -449,7 +449,7 @@ describe('Stripe Shop Integration', () => {
         expect(result.clientSecret).toBe("test_secret");
         expect(mockPaymentIntents.create).toHaveBeenCalledWith(
           expect.objectContaining({
-            amount: 399,
+            amount: 349,
             metadata: expect.objectContaining({
               itemId: "cruel_mode",
               cruelModeJourneyCompleteDiscountApplied: "true",
