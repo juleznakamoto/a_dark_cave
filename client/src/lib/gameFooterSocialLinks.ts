@@ -79,6 +79,23 @@ export function steamWidgetUrl(utmContent: SteamStoreUtmContent): string {
   return applySteamStoreUtm(new URL(OFFICIAL_STEAM_WIDGET_URL), utmContent);
 }
 
+export type GameLandingUtmParams = {
+  source: string;
+  medium: string;
+  campaign: string;
+  content: string;
+};
+
+/** Game homepage with UTM params (inbound landings tracked on the Traffic tab). */
+export function gameLandingUrl(params: GameLandingUtmParams): string {
+  const url = new URL(SITE_ORIGIN + "/");
+  url.searchParams.set("utm_source", params.source);
+  url.searchParams.set("utm_medium", params.medium);
+  url.searchParams.set("utm_campaign", params.campaign);
+  url.searchParams.set("utm_content", params.content);
+  return url.toString();
+}
+
 /**
  * Readable `utm_content` for X (Twitter) posts that link to the game.
  */
@@ -98,13 +115,144 @@ export type XGameUtmContent =
 export function xGameLandingUrl(
   utmContent: XGameUtmContent = X_GAME_UTM_CONTENT.post,
 ): string {
-  const url = new URL(SITE_ORIGIN + "/");
-  url.searchParams.set("utm_source", "x");
-  url.searchParams.set("utm_medium", "social");
-  url.searchParams.set("utm_campaign", "game");
-  url.searchParams.set("utm_content", utmContent);
-  return url.toString();
+  return gameLandingUrl({
+    source: "x",
+    medium: "social",
+    campaign: "game",
+    content: utmContent,
+  });
 }
+
+export type UtmCampaignLinkGroup = "inbound" | "steam_store";
+
+export type UtmCampaignLink = {
+  id: string;
+  label: string;
+  description: string;
+  group: UtmCampaignLinkGroup;
+  url: string;
+};
+
+/**
+ * Canonical UTM URLs for posting and in-game Steam CTAs.
+ * Traffic tab lists these for one-click copy.
+ */
+export const UTM_CAMPAIGN_LINKS: readonly UtmCampaignLink[] = [
+  {
+    id: "x-post",
+    label: "X / Twitter",
+    description: "Posts and replies",
+    group: "inbound",
+    url: xGameLandingUrl(),
+  },
+  {
+    id: "reddit-post",
+    label: "Reddit",
+    description: "Posts and comments",
+    group: "inbound",
+    url: gameLandingUrl({
+      source: "reddit",
+      medium: "social",
+      campaign: "game",
+      content: "post",
+    }),
+  },
+  {
+    id: "instagram-bio",
+    label: "Instagram",
+    description: "Bio and stories",
+    group: "inbound",
+    url: gameLandingUrl({
+      source: "instagram",
+      medium: "social",
+      campaign: "game",
+      content: "bio",
+    }),
+  },
+  {
+    id: "youtube-description",
+    label: "YouTube",
+    description: "Video and channel description",
+    group: "inbound",
+    url: gameLandingUrl({
+      source: "youtube",
+      medium: "social",
+      campaign: "game",
+      content: "description",
+    }),
+  },
+  {
+    id: "email-newsletter",
+    label: "Email",
+    description: "Newsletter and marketing mail",
+    group: "inbound",
+    url: gameLandingUrl({
+      source: "email",
+      medium: "email",
+      campaign: "newsletter",
+      content: "link",
+    }),
+  },
+  {
+    id: "steam-store-description",
+    label: "Steam (to web game)",
+    description: "Store page or community linking here",
+    group: "inbound",
+    url: gameLandingUrl({
+      source: "steam",
+      medium: "store",
+      campaign: "game",
+      content: "description",
+    }),
+  },
+  {
+    id: "playlight-exit",
+    label: "Playlight",
+    description: "Discovery / exit-intent landing",
+    group: "inbound",
+    url: gameLandingUrl({
+      source: "playlight",
+      medium: "discovery",
+      campaign: "exit",
+      content: "banner",
+    }),
+  },
+  {
+    id: "steam-store-game-footer",
+    label: "Steam store · game footer",
+    description: "In-game footer Steam icon",
+    group: "steam_store",
+    url: steamStoreUrl(STEAM_STORE_UTM_CONTENT.gameFooter),
+  },
+  {
+    id: "steam-store-start-screen",
+    label: "Steam store · start screen",
+    description: "Start-screen footer Steam icon",
+    group: "steam_store",
+    url: steamStoreUrl(STEAM_STORE_UTM_CONTENT.startScreenFooter),
+  },
+  {
+    id: "steam-store-end-screen",
+    label: "Steam store · end screen",
+    description: "End-screen wishlist widget / CTA",
+    group: "steam_store",
+    url: steamStoreUrl(STEAM_STORE_UTM_CONTENT.endScreenWishlist),
+  },
+  {
+    id: "steam-store-demo-time-up",
+    label: "Steam store · demo time up",
+    description: "Galaxy / Steam demo time-up dialog",
+    group: "steam_store",
+    url: steamStoreUrl(STEAM_STORE_UTM_CONTENT.demoTimeUp),
+  },
+  {
+    id: "steam-store-html-noscript",
+    label: "Steam store · HTML fallback",
+    description: "Noscript footer in index.html",
+    group: "steam_store",
+    url: steamStoreUrl(STEAM_STORE_UTM_CONTENT.htmlNoscriptFooter),
+  },
+] as const;
 
 export const GAME_FOOTER_RIGHT_ICON_LINKS: Readonly<
   Record<

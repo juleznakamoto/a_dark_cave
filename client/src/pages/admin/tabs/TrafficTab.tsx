@@ -31,6 +31,29 @@ import {
   ChartTimeRangeSelectOverview,
   type AdminOverviewChartRange,
 } from "../adminChartTimeRange";
+import {
+  UTM_CAMPAIGN_LINKS,
+  type UtmCampaignLink,
+  type UtmCampaignLinkGroup,
+} from "@/lib/gameFooterSocialLinks";
+import { logger } from "@/lib/logger";
+
+const UTM_LINK_GROUPS: Array<{
+  id: UtmCampaignLinkGroup;
+  title: string;
+  description: string;
+}> = [
+    {
+      id: "inbound",
+      title: "Game landing",
+      description: "Use these when posting. Landings show up in the charts below.",
+    },
+    {
+      id: "steam_store",
+      title: "Steam store (outbound)",
+      description: "In-game Steam CTAs. Tracked on Steam, not in this tab.",
+    },
+  ];
 
 interface UtmDashboard {
   days_back: number;
@@ -107,6 +130,42 @@ function emptyDashboard(days: number): UtmDashboard {
 function formatPct(part: number, whole: number): string {
   if (!whole) return "0%";
   return `${((part / whole) * 100).toFixed(1)}%`;
+}
+
+function CopyableUtmUrl({ link }: { link: UtmCampaignLink }) {
+  const [copied, setCopied] = useState(false);
+
+  async function copyUrl() {
+    try {
+      await navigator.clipboard.writeText(link.url);
+      setCopied(true);
+      window.setTimeout(() => setCopied(false), 1600);
+    } catch (error) {
+      logger.error("Failed to copy UTM URL:", error);
+    }
+  }
+
+  return (
+    <button
+      type="button"
+      onClick={() => void copyUrl()}
+      className="w-full rounded-md border border-border/70 bg-muted/30 px-3 py-2 text-left transition-colors hover:bg-muted/60"
+      title="Click to copy"
+    >
+      <div className="flex items-start justify-between gap-3">
+        <div className="min-w-0">
+          <p className="text-sm font-medium">{link.label}</p>
+          <p className="text-xs text-muted-foreground">{link.description}</p>
+        </div>
+        <span className="shrink-0 text-xs font-medium text-muted-foreground">
+          {copied ? "Copied" : "Copy"}
+        </span>
+      </div>
+      <p className="mt-1 break-all font-mono text-xs text-muted-foreground">
+        {link.url}
+      </p>
+    </button>
+  );
 }
 
 export default function TrafficTab({ environment }: TrafficTabProps) {
@@ -245,6 +304,35 @@ export default function TrafficTab({ environment }: TrafficTabProps) {
           onChange={setChartTimeRange}
         />
       </div>
+
+      <Card>
+        <CardHeader>
+          <CardTitle>Campaign URLs</CardTitle>
+          <CardDescription>Click a row to copy the full UTM URL</CardDescription>
+        </CardHeader>
+        <CardContent className="space-y-5">
+          {UTM_LINK_GROUPS.map((group) => {
+            const links = UTM_CAMPAIGN_LINKS.filter(
+              (link) => link.group === group.id,
+            );
+            return (
+              <div key={group.id} className="space-y-2">
+                <div>
+                  <h3 className="text-sm font-medium">{group.title}</h3>
+                  <p className="text-xs text-muted-foreground">
+                    {group.description}
+                  </p>
+                </div>
+                <div className="grid grid-cols-1 gap-2 lg:grid-cols-2">
+                  {links.map((link) => (
+                    <CopyableUtmUrl key={link.id} link={link} />
+                  ))}
+                </div>
+              </div>
+            );
+          })}
+        </CardContent>
+      </Card>
 
       {dashboard.error ? (
         <Card className="border-destructive/40">

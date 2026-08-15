@@ -4,6 +4,7 @@ import {
   OFFICIAL_STEAM_URL,
   OFFICIAL_STEAM_WIDGET_URL,
   STEAM_STORE_UTM_CONTENT,
+  UTM_CAMPAIGN_LINKS,
   X_GAME_UTM_CONTENT,
   steamStoreUrl,
   steamWidgetUrl,
@@ -54,5 +55,35 @@ describe("xGameLandingUrl", () => {
     expect(url.searchParams.get("utm_medium")).toBe("social");
     expect(url.searchParams.get("utm_campaign")).toBe("game");
     expect(url.searchParams.get("utm_content")).toBe(X_GAME_UTM_CONTENT.post);
+  });
+});
+
+describe("UTM_CAMPAIGN_LINKS", () => {
+  it("lists unique ids and urls", () => {
+    const ids = UTM_CAMPAIGN_LINKS.map((link) => link.id);
+    const urls = UTM_CAMPAIGN_LINKS.map((link) => link.url);
+    expect(new Set(ids).size).toBe(ids.length);
+    expect(new Set(urls).size).toBe(urls.length);
+  });
+
+  it("keeps inbound links on the game origin with full UTM params", () => {
+    const inbound = UTM_CAMPAIGN_LINKS.filter((link) => link.group === "inbound");
+    expect(inbound.length).toBeGreaterThan(0);
+    for (const link of inbound) {
+      const url = new URL(link.url);
+      expect(url.origin).toBe(SITE_ORIGIN);
+      expect(url.searchParams.get("utm_source")).toBeTruthy();
+      expect(url.searchParams.get("utm_medium")).toBeTruthy();
+      expect(url.searchParams.get("utm_campaign")).toBeTruthy();
+      expect(url.searchParams.get("utm_content")).toBeTruthy();
+    }
+  });
+
+  it("includes the X landing URL and every Steam store placement", () => {
+    const urls = new Set(UTM_CAMPAIGN_LINKS.map((link) => link.url));
+    expect(urls.has(xGameLandingUrl())).toBe(true);
+    for (const content of Object.values(STEAM_STORE_UTM_CONTENT)) {
+      expect(urls.has(steamStoreUrl(content))).toBe(true);
+    }
   });
 });
