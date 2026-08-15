@@ -86,6 +86,7 @@ function SteamDemoProgressBar() {
           showPercentage={false}
           showDemo={false}
           compact
+          showRim={false}
           filledClassName="bg-green-700"
           emptyClassName="bg-neutral-800"
           segmentClassName="h-1.5"
@@ -191,7 +192,7 @@ export default function GameFooter() {
     </Button>
   );
   const progressLabel = tWithFallback("ui", "footer.progress", "Progress");
-  const progressButton = !steamEditionActive ? (
+  const progressButton = (
     <Button
       variant="ghost"
       size="xs"
@@ -207,7 +208,7 @@ export default function GameFooter() {
       />
       <span className={FOOTER_SOCIAL_LABEL}>{progressLabel}</span>
     </Button>
-  ) : null;
+  );
   const playlightButton = !steamEditionActive ? (
     <PlaylightDiscoveryButton
       onClick={handlePlaylightDiscovery}
@@ -296,7 +297,7 @@ export default function GameFooter() {
           </div>
           <div className="flex-1 flex justify-end gap-1 items-center">
             {steamDemoActive && playlightButton}
-            {/* Steam edition hides the store link — keep Feedback (+ Progress on web) in the right cluster. */}
+            {/* Steam edition hides the store link — keep Feedback + Progress in the right cluster. */}
             {hideSteamStoreLink && (
               <>
                 {feedbackButton}

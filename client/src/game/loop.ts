@@ -7,6 +7,7 @@ import {
   getTimedEventTabEffectiveRemainingMs,
 } from "./state";
 import { saveGame } from "./save";
+import { shouldAllowPlaytimeOverwrite } from "./saveConflict";
 import { GameState } from "@shared/schema";
 import {
   getCurrentPopulation,
@@ -1304,17 +1305,22 @@ async function handleAutoSave() {
   const gameState: GameState = buildGameState(state);
 
   try {
-    // New games must persist playTime 0 until the first successful cloud sync.
-    // (Previously this passed a number as saveGame's isAutosave boolean.)
-    if (state.isNewGame) {
+    // Restart overwrite must persist playTime 0 until cloud accepts.
+    // Do not key this off isNewGame: guests never get a cloud accept, so that
+    // wiped real playTime on every autosave (buildings stayed, clock did not).
+    if (
+      shouldAllowPlaytimeOverwrite({
+        allowPlayTimeOverwrite: state.allowPlayTimeOverwrite,
+      })
+    ) {
       gameState.playTime = 0;
     }
 
     await saveGame(gameState, true);
     const timestamp = formatSaveTimestamp();
 
-    // isNewGame / allowPlayTimeOverwrite are cleared inside saveGame after cloud
-    // accepts (so a failed restart sync keeps overwrite for the next attempt).
+    // allowPlayTimeOverwrite is cleared inside saveGame after cloud accepts
+    // (so a failed restart sync keeps overwrite for the next attempt).
     useGameStore.setState({
       lastSaved: timestamp,
     });
@@ -1482,7 +1488,11 @@ export async function manualSave() {
   const gameState: GameState = buildGameState(state);
 
   try {
-    if (state.isNewGame) {
+    if (
+      shouldAllowPlaytimeOverwrite({
+        allowPlayTimeOverwrite: state.allowPlayTimeOverwrite,
+      })
+    ) {
       gameState.playTime = 0;
     }
     await saveGame(gameState, false);

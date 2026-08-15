@@ -102,6 +102,8 @@ describe('Referral System', () => {
     expect(updatePayload.game_state.referrals).toEqual([
       expect.objectContaining({ userId: newUserId, claimed: false }),
     ]);
+    expect(updatePayload.game_state.referredUsers).toEqual([newUserId]);
+    expect(updatePayload.game_state.referralCount).toBe(1);
   });
 
   it('should return already_processed when referrer already has the entry', async () => {
@@ -292,5 +294,11 @@ describe('Referral System', () => {
     expect(result).toEqual({ success: true });
     expect(mockUpdate).toHaveBeenCalled();
     expect(mockUpsert).toHaveBeenCalled();
+    const referrerState = mockUpdate.mock.calls[0][0].game_state;
+    expect(referrerState.referrals).toEqual([
+      expect.objectContaining({ userId: newUserId, claimed: false }),
+    ]);
+    expect(referrerState.referredUsers).toEqual([newUserId]);
+    expect(referrerState.referralCount).toBe(1);
   });
 });

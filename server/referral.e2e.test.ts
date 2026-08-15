@@ -78,6 +78,8 @@ describe('Referral E2E Flow', () => {
     // Step 2: Verify referrer got the unclaimed referral
     const referrerUpdateCall = mockUpdate.mock.calls[0];
     expect(referrerUpdateCall).toBeDefined();
+    expect(referrerUpdateCall[0].game_state.referredUsers).toEqual([newUserId]);
+    expect(referrerUpdateCall[0].game_state.referralCount).toBe(1);
 
     // Step 3: Verify new user got bonus gold
     const newUserUpsertCall = mockUpsert.mock.calls[0];

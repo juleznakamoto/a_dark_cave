@@ -14,6 +14,7 @@ import {
 } from "@/lib/gameFooterSocialLinks";
 import { tWithFallback } from "@/i18n/resolveGameText";
 import { cn } from "@/lib/utils";
+import { Z_INDEX } from "@/lib/z-index";
 import { GAME_CHROME_NO_BG_HOVER } from "./gameChrome";
 
 type FooterNetworkMenuProps = {
@@ -68,6 +69,7 @@ export default function FooterNetworkMenu({
         side={side}
         sideOffset={8}
         className="text-xs !max-h-none w-auto"
+        style={{ zIndex: Z_INDEX.dropdown }}
       >
         {NETWORK_MENU_PLATFORM_ORDER.map((platform) => {
           const { href, title } = GAME_FOOTER_RIGHT_ICON_LINKS[platform];

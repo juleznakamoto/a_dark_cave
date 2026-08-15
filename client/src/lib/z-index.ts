@@ -12,6 +12,7 @@
  * - particles: Body-portaled effects (feed fire, explosions, dialog-adjacent bursts)
  * - tooltip: Tooltips, must appear above dialogs
  * - topLayer: Full-screen overlays (end screen, start screen CTA)
+ * - dropdown: Open menus (footer social) — above tooltips
  */
 export const Z_INDEX = {
   /** Sleep mist / pause overlay — covers main content only; action buttons must drop below this while active. */
@@ -29,5 +30,7 @@ export const Z_INDEX = {
   particles: 1000,
   particlesForeground: 1001,
   tooltip: 10000,
+  /** Footer social menu — above the Steam wishlist callout. */
+  dropdown: 10001,
   topLayer: 10000,
 } as const;

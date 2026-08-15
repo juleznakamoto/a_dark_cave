@@ -148,6 +148,7 @@ export function ProgressBarsSection() {
             showPercentage
             showDemo
             compact
+            showRim={false}
             filledClassName="bg-green-700"
             emptyClassName="bg-neutral-800"
             segmentClassName="h-1.5"

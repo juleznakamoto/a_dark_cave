@@ -1391,6 +1391,86 @@ describe('Save Game System - Comprehensive Tests', () => {
       await saveGame(createMockGameState({ playTime: 3000 }), true);
       expect(mockPut).toHaveBeenCalled();
     });
+
+    it('keeps guest playTime when isNewGame is still set', async () => {
+      const auth = await import('./auth');
+      const state = await import('./state');
+      vi.mocked(auth.getCurrentUser).mockResolvedValue(null);
+
+      const playTime = 45 * 60_000;
+      await saveGame(
+        createMockGameState({
+          playTime,
+          isNewGame: true,
+          buildings: { woodenHut: 6 },
+        }),
+        true,
+      );
+
+      const saved = readMainSave(mockStores);
+      expect(saved?.playTime).toBe(playTime);
+      expect(saved?.gameState.playTime).toBe(playTime);
+      expect(saved?.gameState.buildings?.woodenHut).toBe(6);
+      expect(state.useGameStore.setState).toHaveBeenCalledWith({ isNewGame: false });
+    });
+
+    it('uploads real playTime on first signed-in save while isNewGame is set', async () => {
+      const auth = await import('./auth');
+      const { getSupabaseClient } = await import('@/lib/supabase');
+      vi.mocked(auth.getCurrentUser).mockResolvedValue({
+        id: 'user-1',
+        email: 'test@example.com',
+      });
+      const mockInvoke = vi.fn().mockResolvedValue({
+        data: { success: true },
+        error: null,
+      });
+      vi.mocked(getSupabaseClient).mockResolvedValue({
+        auth: {
+          getSession: vi.fn().mockResolvedValue({
+            data: { session: { access_token: 'tok' } },
+          }),
+        },
+        functions: { invoke: mockInvoke },
+      } as any);
+
+      const playTime = 57 * 60_000;
+      await saveGame(
+        createMockGameState({
+          playTime,
+          isNewGame: true,
+          buildings: { woodenHut: 6 },
+        }),
+        true,
+      );
+
+      expect(mockInvoke).toHaveBeenCalledWith(
+        'save-game',
+        expect.objectContaining({
+          body: expect.objectContaining({
+            gameStateDiff: expect.objectContaining({ playTime }),
+          }),
+        }),
+      );
+    });
+
+    it('zeros playTime only for an explicit restart overwrite', async () => {
+      const auth = await import('./auth');
+      vi.mocked(auth.getCurrentUser).mockResolvedValue(null);
+
+      await saveGame(
+        createMockGameState({
+          playTime: 45 * 60_000,
+          isNewGame: true,
+          allowPlayTimeOverwrite: true,
+        }),
+        true,
+      );
+
+      const saved = readMainSave(mockStores);
+      expect(saved?.playTime).toBe(0);
+      expect(saved?.gameState.playTime).toBe(0);
+    });
   });
 
   describe('8. Edge Cases and Race Conditions', () => {

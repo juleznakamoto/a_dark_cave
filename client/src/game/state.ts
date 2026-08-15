@@ -3063,8 +3063,9 @@ export const useGameStore = create<GameStore>((set, get) => ({
     });
 
     // Immediately save the new game state to cloud to prevent OCC issues.
-    // saveGame clears isNewGame / allowPlayTimeOverwrite only after cloud accepts
+    // saveGame clears allowPlayTimeOverwrite only after cloud accepts
     // (or when cloud is intentionally skipped for guests / local-only).
+    // isNewGame clears after the first successful persist and must not zero playTime.
     const { saveGame } = await import("@/game/save");
     try {
       const result = await saveGame(get(), false);

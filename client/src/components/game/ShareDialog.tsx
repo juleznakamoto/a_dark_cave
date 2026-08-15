@@ -44,6 +44,7 @@ import { capitalizeWords, cn, formatNumber } from "@/lib/utils";
 import { logger } from "@/lib/logger";
 import { getShareFontEmbedCss } from "@/lib/shareImageFonts";
 import { useToast } from "@/hooks/use-toast";
+import { useSteamDesktopEditionActive } from "@/hooks/useSteamEditionActive";
 import { gameStateSchema, type GameState } from "@shared/schema";
 import {
   highestAttackWaveNumber,
@@ -356,7 +357,7 @@ function ShareCard({
   cruelModeValueLabel: string;
   playTimeLabel: string;
   playTimeMs: number;
-  playForFreeAtLabel: string;
+  playForFreeAtLabel?: string;
 }) {
   const { precious, others } = getVisibleResourceKeys(resources, seenResources);
   const hasPreciousSpacer = precious.length > 0 && others.length > 0;
@@ -464,19 +465,21 @@ function ShareCard({
           </div>
         </div>
 
-        <div
-          className="absolute bottom-16 left-16 flex flex-col font-medium text-neutral-100"
-          style={{
-            fontSize: CTA_FONT_SIZE,
-            gap: 10,
-            lineHeight: 1,
-            width: "max-content",
-            maxWidth: "calc(100% - 8rem)",
-          }}
-        >
-          <div style={{ whiteSpace: "nowrap" }}>{playForFreeAtLabel}</div>
-          <div style={{ whiteSpace: "nowrap" }}>{SHARE_URL_IMAGE}</div>
-        </div>
+        {playForFreeAtLabel ? (
+          <div
+            className="absolute bottom-16 left-16 flex flex-col font-medium text-neutral-100"
+            style={{
+              fontSize: CTA_FONT_SIZE,
+              gap: 10,
+              lineHeight: 1,
+              width: "max-content",
+              maxWidth: "calc(100% - 8rem)",
+            }}
+          >
+            <div style={{ whiteSpace: "nowrap" }}>{playForFreeAtLabel}</div>
+            <div style={{ whiteSpace: "nowrap" }}>{SHARE_URL_IMAGE}</div>
+          </div>
+        ) : null}
         <div
           className="absolute bottom-16 right-16 flex flex-col gap-3 text-right leading-none"
           style={{
@@ -512,6 +515,7 @@ function ShareCard({
 export default function ShareDialog() {
   const { t } = useTranslation("ui");
   const { toast } = useToast();
+  const steamDesktopEditionActive = useSteamDesktopEditionActive();
   const open = useGameStore((s) => s.shareDialogOpen);
   const setOpen = useGameStore((s) => s.setShareDialogOpen);
   const resources = useGameStore((s) => s.resources) as Record<string, number>;
@@ -681,10 +685,15 @@ export default function ShareDialog() {
       const shareData: ShareData = {
         files: [file],
         title: "A Dark Cave",
-        text: t("share.shareText", {
-          percent,
-          defaultValue: `I'm ${percent}% through A Dark Cave. Play for free at ${SHARE_URL}`,
-        }),
+        text: steamDesktopEditionActive
+          ? t("share.shareTextSteam", {
+            percent,
+            defaultValue: `I'm ${percent}% through A Dark Cave.`,
+          })
+          : t("share.shareText", {
+            percent,
+            defaultValue: `I'm ${percent}% through A Dark Cave. Play for free at ${SHARE_URL}`,
+          }),
       };
       if (navigator.canShare?.({ files: [file] })) {
         await navigator.share(shareData);
@@ -895,9 +904,13 @@ export default function ShareDialog() {
                     defaultValue: "Play time",
                   })}
                   playTimeMs={playTimeMs}
-                  playForFreeAtLabel={t("share.playForFreeAt", {
-                    defaultValue: "Play for free at",
-                  })}
+                  playForFreeAtLabel={
+                    steamDesktopEditionActive
+                      ? undefined
+                      : t("share.playForFreeAt", {
+                        defaultValue: "Play for free at",
+                      })
+                  }
                 />
               </div>
             </div>
@@ -916,35 +929,37 @@ export default function ShareDialog() {
             actionsReady && "is-ready",
           )}
         >
-          <TooltipWrapper
-            tooltip={
-              <p className="text-xs">
-                {t("invite.tooltip", {
-                  amount: REFERRAL_REWARD_GOLD,
-                  cap: SOCIAL_PROMPT_REFERRAL_CAP,
-                  count: referralCount,
-                })}
-              </p>
-            }
-            tooltipId="share-dialog-invite"
-            tooltipContentClassName="max-w-xs"
-            onClick={() => {
-              void handleCopyInviteLink();
-            }}
-          >
-            <Button
-              variant="outline"
-              size="xs"
-              className="shrink-0 font-medium px-3"
+          {!steamDesktopEditionActive && (
+            <TooltipWrapper
+              tooltip={
+                <p className="text-xs">
+                  {t("invite.tooltip", {
+                    amount: REFERRAL_REWARD_GOLD,
+                    cap: SOCIAL_PROMPT_REFERRAL_CAP,
+                    count: referralCount,
+                  })}
+                </p>
+              }
+              tooltipId="share-dialog-invite"
+              tooltipContentClassName="max-w-xs"
               onClick={() => {
                 void handleCopyInviteLink();
               }}
             >
-              {t("invite.copyInviteCode", {
-                defaultValue: "Copy Invite Code",
-              })}
-            </Button>
-          </TooltipWrapper>
+              <Button
+                variant="outline"
+                size="xs"
+                className="shrink-0 font-medium px-3"
+                onClick={() => {
+                  void handleCopyInviteLink();
+                }}
+              >
+                {t("invite.copyInviteCode", {
+                  defaultValue: "Copy Invite Code",
+                })}
+              </Button>
+            </TooltipWrapper>
+          )}
           <Button
             variant="outline"
             size="xs"

@@ -101,6 +101,7 @@ import { GameUiIcon } from "@/components/game/GameUiIcon";
 
 const TAB_ICON_SIZE = TAB_ICON_SIZE_CLASS;
 const steamBuild = import.meta.env.VITE_STEAM_BUILD === "1";
+const ShareDialog = lazy(() => import("./ShareDialog"));
 const WebOnlyDialogs = steamBuild
   ? null
   : lazy(() => import("./WebOnlyDialogs"));
@@ -1633,6 +1634,9 @@ export default function GameContainer() {
 
         {/* Idle Mode Dialog */}
         <IdleModeDialog />
+        <Suspense fallback={null}>
+          <ShareDialog />
+        </Suspense>
         {WebOnlyDialogs && !steamEditionActive && (
           <Suspense fallback={null}>
             <WebOnlyDialogs

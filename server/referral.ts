@@ -1,4 +1,5 @@
 import { createServerSupabaseClient } from './supabaseServerClient';
+import { mergeReferralLists } from '@shared/referralMerge';
 import { REFERRAL_REWARD_GOLD } from '@shared/schema';
 import { resolveReferrerUserId } from './referralCodes';
 import type { SupabaseClient } from '@supabase/supabase-js';
@@ -33,13 +34,13 @@ export async function ensureReferrerHasReferral(
 ): Promise<
   | { ok: true; alreadyPresent: boolean }
   | {
-      ok: false;
-      reason:
-        | 'referrer_fetch_error'
-        | 'referrer_no_save'
-        | 'referrer_limit_reached'
-        | 'referrer_update_error';
-    }
+    ok: false;
+    reason:
+    | 'referrer_fetch_error'
+    | 'referrer_no_save'
+    | 'referrer_limit_reached'
+    | 'referrer_update_error';
+  }
 > {
   const { data: referrerSave, error: referrerError } = await adminClient
     .from('game_saves')
@@ -68,22 +69,28 @@ export async function ensureReferrerHasReferral(
     return { ok: false, reason: 'referrer_limit_reached' };
   }
 
-  const updatedReferrerState = {
-    ...referrerState,
-    referrals: [
-      ...referrals,
+  const merged = mergeReferralLists(
+    referrals,
+    [
       {
         userId: newUserId,
         claimed: false,
         timestamp: opts?.timestamp ?? Date.now(),
       },
     ],
-    referralCount: Math.max(
-      typeof referrerState.referralCount === 'number'
-        ? referrerState.referralCount
-        : 0,
-      referrals.length + 1,
-    ),
+    {
+      localReferralCount:
+        typeof referrerState.referralCount === 'number'
+          ? referrerState.referralCount
+          : 0,
+    },
+  );
+
+  const updatedReferrerState = {
+    ...referrerState,
+    referrals: merged.referrals,
+    referralCount: merged.referralCount,
+    referredUsers: merged.referredUsers,
   };
 
   const { error: referrerUpdateError } = await adminClient

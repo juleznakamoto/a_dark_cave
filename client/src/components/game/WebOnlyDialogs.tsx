@@ -1,6 +1,5 @@
 import { ShopDialog } from "./ShopDialog";
 import LeaderboardDialog from "./LeaderboardDialog";
-import ShareDialog from "./ShareDialog";
 import InviteFriendsFloatingButton from "./InviteFriendsFloatingButton";
 import type { ShopOpenSource } from "@/game/shopOpenSource";
 
@@ -11,7 +10,7 @@ export interface WebOnlyDialogsProps {
   setLeaderboardDialogOpen: (open: boolean) => void;
 }
 
-/** Shop, leaderboard, share, invite — bundled only in the web build. */
+/** Shop, leaderboard, invite — bundled only in the web build. */
 export default function WebOnlyDialogs({
   shopDialogOpen,
   setShopDialogOpen,
@@ -29,7 +28,6 @@ export default function WebOnlyDialogs({
         isOpen={leaderboardDialogOpen}
         onClose={() => setLeaderboardDialogOpen(false)}
       />
-      <ShareDialog />
       <InviteFriendsFloatingButton />
     </>
   );

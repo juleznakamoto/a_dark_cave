@@ -76,6 +76,12 @@ async function clearPlaytimeOverwriteFlags(): Promise<void> {
   } as never);
 }
 
+/** Drop the first-run marker after a successful persist (local or cloud). */
+async function clearNewGameFlag(): Promise<void> {
+  const { useGameStore } = await import("./state");
+  useGameStore.setState({ isNewGame: false });
+}
+
 /** Normalize restart overwrite fields onto the schema key before persisting. */
 function normalizePlaytimeOverwriteFields<T extends Record<string, unknown>>(
   state: T,
@@ -572,8 +578,10 @@ export async function saveGame(
       sanitizedState.startTime = Date.now();
     }
 
-    // New-game saves must persist playTime 0 so load envelopes cannot keep a stale clock.
-    if (sanitizedState.isNewGame === true) {
+    // Restart overwrite must persist playTime 0 so load envelopes cannot keep a
+    // stale clock. `isNewGame` alone is the first Light Fire / guest run — do
+    // not zero it or guest progress is saved with buildings and a 0 clock.
+    if (shouldAllowPlaytimeOverwrite(sanitizedState)) {
       sanitizedState.playTime = 0;
     }
 
@@ -607,6 +615,8 @@ export async function saveGame(
     if (isLocalOnlyEdition()) {
       if (allowOverwrite) {
         await clearPlaytimeOverwriteFlags();
+      } else {
+        await clearNewGameFlag();
       }
       return { localSaved: true, cloudSaved: false, cloudSkipped: true };
     }
@@ -620,6 +630,8 @@ export async function saveGame(
         // Guest / signed-out: no cloud document to replace.
         if (allowOverwrite) {
           await clearPlaytimeOverwriteFlags();
+        } else {
+          await clearNewGameFlag();
         }
         return { localSaved: true, cloudSaved: false, cloudSkipped: true };
       }
@@ -779,12 +791,15 @@ export async function saveGame(
 
       logger.log('[SAVE CLOUD] Edge Function success:', data);
 
-      // Clear restart flags in the persisted blob + store only after cloud accepts.
+      // Clear restart / first-run flags in the blob + store only after cloud accepts.
       if (allowOverwrite) {
         sanitizedState.allowPlayTimeOverwrite = false;
         sanitizedState.isNewGame = false;
         await clearPlaytimeOverwriteFlags();
         logger.log("[SAVE] 🔓 Cleared playtime overwrite flags after successful cloud save");
+      } else if (isNewGame) {
+        sanitizedState.isNewGame = false;
+        await clearNewGameFlag();
       }
 
       // Update lastCloudState only after successful cloud save
