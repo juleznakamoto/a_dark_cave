@@ -86,7 +86,8 @@
     "artifactCrowHarness": {
       "title": "独眼乌鸦",
       "unlocksStoryline": "解锁乌鸦剧情线",
-      "doubleGain": "最高 15% 几率双倍行动收益"
+      "doubleGain": "最高 15% 几率双倍行动收益",
+      "addsFellowshipMember": "增加一名同伴"
     },
     "cruelMode": {
       "title": "残酷模式",

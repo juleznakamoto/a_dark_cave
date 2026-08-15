@@ -278,6 +278,9 @@ function ArtifactEffectsList({
         ]
         : [
           t("shop.artifactCrowHarness.doubleGain"),
+          t("shop.artifactCrowHarness.addsFellowshipMember", {
+            defaultValue: "Adds fellowship member",
+          }),
           t("shop.artifactCrowHarness.unlocksStoryline"),
         ];
 

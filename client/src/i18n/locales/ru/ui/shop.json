@@ -11,7 +11,7 @@
     "betaDiscountTitle": "Сейчас действуют бета-скидки до {{percent}}%.",
     "betaDiscountNote": "Все покупки сохраняются в будущих прохождениях и после релиза.",
     "noPurchasesTitle": "Покупок пока нет.",
-    "noPurchasesHint": "Откройте вкладку «В продаже», чтобы купить предметы.",  //x1.4
+    "noPurchasesHint": "Откройте вкладку «В продаже», чтобы купить предметы.", //x1.4
     "activatePurchasesTitle": "Активируйте покупки, чтобы получить награды.",
     "activatePurchasesNote": "Каждую покупку можно активировать один раз за прохождение.",
     "highlights": "Избранное",
@@ -19,11 +19,11 @@
     "artifacts": "Артефакты",
     "boosts": "Усиления",
     "bundles": "Наборы",
-    "mostPopular": "Самое популярное",  //x1.3
+    "mostPopular": "Самое популярное", //x1.3
     "threeXValue": "Ценность",
     "availableInOneHour": "Доступно через 1 час",
     "availableInHours": "Доступно через {{hours}} ч",
-    "signInToClaim": "Войдите, чтобы получить",  //x1.4
+    "signInToClaim": "Войдите, чтобы получить", //x1.4
     "alreadyClaimed": "Уже получено",
     "alreadyPurchased": "Уже куплено",
     "continueCheckout": "Продолжить",
@@ -44,7 +44,7 @@
     "bundleDiscount": "Скидка на набор",
     "betaDiscount": "Бета-скидка",
     "additionalDiscount": "Дополнительная скидка",
-    "eventDiscount": "Скидка за событие",  //x1.2
+    "eventDiscount": "Скидка за событие", //x1.2
     "total": "Итого",
     "legalConsent": "Мгновенный доступ к цифровому контенту после покупки.",
     "termsOfService": "Условия",
@@ -53,7 +53,7 @@
     "paymentFailed": "Ошибка оплаты",
     "tooManyPaymentRequests": "Слишком много запросов на оплату. Попробуйте позже.",
     "cruelModeDeactivatedLog": "Жестокий режим отключён. Новые игры будут с обычной сложностью.",
-    "notAuthenticated": "Пользователь не авторизован",  //x1.2
+    "notAuthenticated": "Пользователь не авторизован", //x1.2
     "verificationFailed": "Ошибка проверки платежа. Свяжитесь с поддержкой.",
     "unexpectedError": "Произошла непредвиденная ошибка",
     "purchaseSuccessful": "Покупка успешна!",
@@ -70,41 +70,42 @@
     "playlightDiscount": "Дополнительная скидка {{percent}}% на первую покупку за реальные деньги как игрок Playlight.",
     "journeyCompleteDiscount": "Особая скидка за прохождение игры",
     "artifactSkullLantern": {
-      "title": "Фонарь из черепа",  //x1.2
+      "title": "Фонарь из черепа", //x1.2
       "unlocksStoryline": "Открывает сюжетную линию Черепного фонаря",
-      "caveExploreBonus": "Исследование пещеры: +200% бонус",  //x1.3
-      "caveExploreCooldown": "Исследование пещеры: -5 с перезарядки",  //x1.4
+      "caveExploreBonus": "Исследование пещеры: +200% бонус", //x1.3
+      "caveExploreCooldown": "Исследование пещеры: -5 с перезарядки", //x1.4
       "miningBonus": "Добыча: +200% бонус",
       "miningCooldown": "Добыча: -5с перезарядки"
     },
     "artifactTarnishedCompass": {
       "title": "Потускневший компас",
-      "unlocksStoryline": "Открывает сюжетную линию компаса",  //x1.3
+      "unlocksStoryline": "Открывает сюжетную линию компаса", //x1.3
       "doubleGain": "10% шанс удвоить награды за действия",
       "luck": "+5 удачи"
     },
     "artifactCrowHarness": {
-      "title": "Одноглазая ворона",  //x1.3
-      "unlocksStoryline": "Открывает сюжетную линию ворона",  //x1.4
-      "doubleGain": "до 15% шанс удвоить награды за действия"
+      "title": "Одноглазая ворона", //x1.3
+      "unlocksStoryline": "Открывает сюжетную линию ворона", //x1.4
+      "doubleGain": "до 15% шанс удвоить награды за действия",
+      "addsFellowshipMember": "Добавляет спутника"
     },
     "cruelMode": {
-      "title": "Жестокий режим",  //x1.4
-      "moreEvents": "Больше событий",  //x1.3
-      "moreItems": "Больше предметов",  //x1.6
+      "title": "Жестокий режим", //x1.4
+      "moreEvents": "Больше событий", //x1.3
+      "moreItems": "Больше предметов", //x1.6
       "strongerEnemies": "Сильнее враги",
       "harderChallenges": "Сложнее испытания",
-      "reusePurchases": "Повторное использование покупок"  //x1.3
+      "reusePurchases": "Повторное использование покупок" //x1.3
     },
     "alreadyClaimedItemLog": "Вы уже получили {{name}}.",
     "claimFailedLog": "Не удалось получить {{name}}. Попробуйте снова.",
     "activatedDefaultLog": "Активировано: {{name}}! Награды добавлены в инвентарь.",
     "noCardDataStored": "Данные карт не хранятся на наших серверах.",
-    "securePaymentVia": "Безопасная оплата через",  //x1.3
+    "securePaymentVia": "Безопасная оплата через", //x1.3
     "securePaymentWith": "с",
     "securePurchaseTitle": "Защитите покупку",
     "securePurchaseBody": "Покупка сохранена только в этом браузере. Создайте аккаунт, чтобы сохранить покупки и прогресс при смене устройства или очистке данных браузера.",
-    "securePurchaseSignUp": "Зарегистрироваться",  //x2.6
+    "securePurchaseSignUp": "Зарегистрироваться", //x2.6
     "securePurchaseLater": "Позже"
   }
 }

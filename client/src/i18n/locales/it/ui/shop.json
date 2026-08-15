@@ -81,7 +81,8 @@
     "artifactCrowHarness": {
       "title": "Corvo Guercio",
       "doubleGain": "fino al 15% di probabilità di raddoppiare i guadagni delle azioni",
-      "unlocksStoryline": "Sblocca la trama del Corvo"
+      "unlocksStoryline": "Sblocca la trama del Corvo",
+      "addsFellowshipMember": "Aggiunge un membro della compagnia"
     },
     "cruelMode": {
       "title": "Modalità Crudele",

@@ -81,7 +81,8 @@
     "artifactCrowHarness": {
       "title": "Corvo Caolho",
       "doubleGain": "até 15% de chance de dobrar os ganhos das ações",
-      "unlocksStoryline": "Desbloqueia a trama do Corvo"
+      "unlocksStoryline": "Desbloqueia a trama do Corvo",
+      "addsFellowshipMember": "Adiciona um membro da irmandade"
     },
     "cruelMode": {
       "title": "Modo Cruel",

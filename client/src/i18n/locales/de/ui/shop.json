@@ -19,11 +19,11 @@
     "artifacts": "Artefakte",
     "boosts": "Boosts",
     "bundles": "Bundles",
-    "mostPopular": "Am beliebtesten",  //x1.3
+    "mostPopular": "Am beliebtesten", //x1.3
     "threeXValue": "Wert",
     "availableInOneHour": "Verfügbar in 1 Stunde",
     "availableInHours": "Verfügbar in {{hours}} Stunden",
-    "signInToClaim": "Zum Abholen anmelden",  //x1.3
+    "signInToClaim": "Zum Abholen anmelden", //x1.3
     "alreadyClaimed": "Bereits abgeholt",
     "alreadyPurchased": "Bereits gekauft",
     "continueCheckout": "Weiter",
@@ -36,8 +36,8 @@
     "firstPurchaseInsightGranted": "Erstkauf-Geschenk: +{{amount}} {{glyph}} Einsicht",
     "cruelModeSteamDemoBannerBefore": "Grausamer Modus ist derzeit kostenlos, um den Demo-Launch auf",
     "cruelModeSteamDemoBannerSteam": "Steam",
-    "cruelModeSteamDemoBannerAfter": " zu feiern.",  //x11.0
-    "loadingPayment": "Zahlungssystem wird geladen...",  //x1.2
+    "cruelModeSteamDemoBannerAfter": " zu feiern.", //x11.0
+    "loadingPayment": "Zahlungssystem wird geladen...", //x1.2
     "paymentSrDescription": "Schließe deine Zahlung für {{name}} ab",
     "originalPrice": "Originalpreis",
     "saleDiscount": "Sale-Rabatt",
@@ -50,12 +50,12 @@
     "termsOfService": "AGB",
     "rightOfWithdrawal": "Widerruf",
     "completePurchaseFor": "Kauf abschließen für {{price}}",
-    "paymentFailed": "Zahlung fehlgeschlagen",  //x1.6
+    "paymentFailed": "Zahlung fehlgeschlagen", //x1.6
     "tooManyPaymentRequests": "Zu viele Zahlungsanfragen. Bitte versuche es später erneut.",
-    "cruelModeDeactivatedLog": "Grausamer Modus deaktiviert. Neue Spiele verwenden den normalen Schwierigkeitsgrad.",  //x1.4
-    "notAuthenticated": "Benutzer nicht authentifiziert",  //x1.4
+    "cruelModeDeactivatedLog": "Grausamer Modus deaktiviert. Neue Spiele verwenden den normalen Schwierigkeitsgrad.", //x1.4
+    "notAuthenticated": "Benutzer nicht authentifiziert", //x1.4
     "verificationFailed": "Zahlungsüberprüfung fehlgeschlagen. Bitte kontaktiere den Support.",
-    "unexpectedError": "Ein unerwarteter Fehler ist aufgetreten",  //x1.4
+    "unexpectedError": "Ein unerwarteter Fehler ist aufgetreten", //x1.4
     "purchaseSuccessful": "Kauf erfolgreich!",
     "purchaseSuccess": "Kauf erfolgreich",
     "purchaseAddedSingle": "{{name}} wurde deinen Käufen hinzugefügt. Prüfe den Tab „Käufe“, um es zu aktivieren.",
@@ -71,40 +71,41 @@
     "journeyCompleteDiscount": "Sonderrabatt für den Abschluss des Spiels",
     "artifactSkullLantern": {
       "title": "Schädellaterne",
-      "unlocksStoryline": "Schaltet die Schädellaternenhandlung frei",  //x1.3
+      "unlocksStoryline": "Schaltet die Schädellaternenhandlung frei", //x1.3
       "caveExploreBonus": "Höhlenerkundung: +200 % Bonus",
-      "caveExploreCooldown": "Höhlenerkundung: -5 s Abklingzeit",  //x1.3
+      "caveExploreCooldown": "Höhlenerkundung: -5 s Abklingzeit", //x1.3
       "miningBonus": "Abbau: +200 % Bonus",
       "miningCooldown": "Abbau: -5s Abklingzeit"
     },
     "artifactTarnishedCompass": {
       "title": "Angelaufener Kompass",
-      "unlocksStoryline": "Schaltet die Kompasshandlung frei",  //x1.3
+      "unlocksStoryline": "Schaltet die Kompasshandlung frei", //x1.3
       "doubleGain": "10 % Chance, Aktionsgewinne zu verdoppeln",
       "luck": "+5 Glück"
     },
     "artifactCrowHarness": {
       "title": "Einäugige Krähe",
-      "unlocksStoryline": "Schaltet die Krähenhandlung frei",  //x1.5
-      "doubleGain": "bis zu 15 % Chance, Aktionsgewinne zu verdoppeln"
+      "unlocksStoryline": "Schaltet die Krähenhandlung frei", //x1.5
+      "doubleGain": "bis zu 15 % Chance, Aktionsgewinne zu verdoppeln",
+      "addsFellowshipMember": "Fügt einen Gefährten hinzu"
     },
     "cruelMode": {
-      "title": "Grausamer Modus",  //x1.5
-      "moreEvents": "Mehr Ereignisse",  //x1.4
-      "moreItems": "Mehr Gegenstände",  //x1.6
+      "title": "Grausamer Modus", //x1.5
+      "moreEvents": "Mehr Ereignisse", //x1.4
+      "moreItems": "Mehr Gegenstände", //x1.6
       "strongerEnemies": "Stärkere Feinde",
-      "harderChallenges": "Härtere Herausforderungen",  //x1.5
-      "reusePurchases": "Bestehende Käufe wiederverwenden"  //x1.3
+      "harderChallenges": "Härtere Herausforderungen", //x1.5
+      "reusePurchases": "Bestehende Käufe wiederverwenden" //x1.3
     },
     "alreadyClaimedItemLog": "Du hast {{name}} bereits abgeholt.",
-    "claimFailedLog": "{{name}} konnte nicht abgeholt werden. Bitte versuche es erneut.",  //x1.5
+    "claimFailedLog": "{{name}} konnte nicht abgeholt werden. Bitte versuche es erneut.", //x1.5
     "activatedDefaultLog": "{{name}} aktiviert! Belohnungen wurden deinem Inventar hinzugefügt.",
-    "noCardDataStored": "Keine Kartendaten werden auf unseren Servern gespeichert.",  //x1.5
+    "noCardDataStored": "Keine Kartendaten werden auf unseren Servern gespeichert.", //x1.5
     "securePaymentVia": "Sichere Zahlung über",
     "securePaymentWith": "mit",
     "securePurchaseTitle": "Kauf sichern",
     "securePurchaseBody": "Dein Kauf ist nur in diesem Browser gespeichert. Erstelle ein Konto, damit Käufe und Fortschritt erhalten bleiben, wenn du das Gerät wechselst oder Browserdaten löschst.",
-    "securePurchaseSignUp": "Registrieren",  //x1.7
-    "securePurchaseLater": "Vielleicht später"  //x1.5
+    "securePurchaseSignUp": "Registrieren", //x1.7
+    "securePurchaseLater": "Vielleicht später" //x1.5
   }
 }

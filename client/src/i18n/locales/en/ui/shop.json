@@ -86,7 +86,8 @@
     "artifactCrowHarness": {
       "title": "One-eyed Crow",
       "unlocksStoryline": "Unlocks Crow storyline",
-      "doubleGain": "up to 15% chance to double action gains"
+      "doubleGain": "up to 15% chance to double action gains",
+      "addsFellowshipMember": "Adds fellowship member"
     },
     "cruelMode": {
       "title": "Cruel Mode",
