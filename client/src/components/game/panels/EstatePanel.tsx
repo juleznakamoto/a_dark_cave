@@ -498,546 +498,551 @@ export default function EstatePanel() {
 
   return (
     <ScrollArea className="h-full w-full">
-      <SharedProgressShaderHost className="w-full">
-        <div className="w-full space-y-2 pt-2 md:pt-0 mt-0 md:mt-2 mb-2 pr-2 pb-2">
-          {/* Sleep Mode Section */}
-          <div className="space-y-">
-            {/* Indicator-height band matches Produce rings so Sleep/Focus below don't jump */}
-            <div className="pb-2">
-              <div className="game-panel-header-indicator-row flex w-full items-center gap-2">
-                <h3 className="inline-flex shrink-0 items-center text-xs font-medium text-foreground leading-none">
-                  {t("estate.rest")}
-                </h3>
-                {focusState?.isActive && focusState.endTime > Date.now() && (
-                  <TooltipWrapper
-                    tooltip={
-                      <div className="text-xs">
-                        {focusTooltip.getContent(state)}
-                      </div>
-                    }
-                    tooltipId="focus-progress"
-                    disabled
-                    tooltipTriggerClassName={
-                      GAME_PANEL_HEADER_INDICATOR_TRIGGER_CLASS
-                    }
-                    className={GAME_PANEL_HEADER_INDICATOR_CLASS}
-                  >
-                    <div className={GAME_PANEL_HEADER_INDICATOR_INNER_CLASS}>
-                      <CircularProgress
-                        value={focusProgress}
-                        size={GAME_PANEL_HEADER_INDICATOR_SIZE_PX}
-                        fill
-                        strokeWidth={2}
-                        className="text-teal-400"
-                      />
-                      <span
-                        className={`${GAME_PANEL_HEADER_INDICATOR_GLYPH_CLASS} game-panel-header-indicator-glyph--sm mt-[2px] text-teal-400`}
-                      >
-                        ☩
-                      </span>
-                    </div>
-                  </TooltipWrapper>
-                )}
-              </div>
-            </div>
-            <TooltipWrapper
-              tooltip={
-                <div className="text-xs">
-                  {canActivateIdle ? (
-                    <div>{t("estate.sleepTooltipReady")}</div>
-                  ) : (
-                    <div>{t("estate.sleepTooltipBlocked")}</div>
-                  )}
-                  <div className="border-t border-border my-1" />
-                  <div className="whitespace-nowrap">
-                    <div>{t("estate.sleepTooltipCurrentProduction")}</div>
-                    <div>
-                      {getResourceName("wood", "Wood")}:{" "}
-                      {formatSignedNumber(Math.round(woodProduction))}
-                    </div>
-                    <div>
-                      {getResourceName("food", "Food")}:{" "}
-                      {formatSignedNumber(Math.round(foodProduction))}
-                    </div>
-                  </div>
-                </div>
-              }
-              tooltipId="sleep-button"
-              disabled={!canActivateIdle}
-            >
-              <div className="h-5 inline-block pb-1 text-xs font-medium text-foreground">
-                <Button
-                  onClick={handleActivateIdleMode}
-                  disabled={!canActivateIdle}
-                  size="xs"
-                  variant="outline"
-                  className={gameActionOutlineButtonClassName(!canActivateIdle)}
-                  button_id="activate-sleep-mode"
-                >
-                  {t("estate.sleep")}
-                </Button>
-              </div>
-            </TooltipWrapper>
-
-            {/* Focus Activation Button */}
-            {showFocusButton && (
-              <div className="relative inline-block pb-1 text-xs font-medium text-foreground ml-2">
-                <CooldownButton
-                  onClick={() => {
-                    const now = Date.now();
-                    const focusPoints = focusState?.points || 0;
-                    const focusDuration = calculateFocusDuration(focusPoints);
-                    updateFocusState({
-                      isActive: true,
-                      endTime: now + focusDuration,
-                      startTime: now,
-                      duration: focusDuration,
-                      points: 0,
-                    });
-                  }}
-                  cooldownMs={0}
-                  size="xs"
-                  variant="outline"
-                  className="focus-glow-hover"
-                  button_id="activate-focus"
-                  disabled={!focusState?.points || focusState.points === 0 || focusState?.isActive}
+      <div className="w-full space-y-2 pt-2 md:pt-0 mt-0 md:mt-2 mb-2 pr-2 pb-2">
+        {/* Sleep Mode Section */}
+        <div className="space-y-">
+          {/* Indicator-height band matches Produce rings so Sleep/Focus below don't jump */}
+          <div className="pb-2">
+            <div className="game-panel-header-indicator-row flex w-full items-center gap-2">
+              <h3 className="inline-flex shrink-0 items-center text-xs font-medium text-foreground leading-none">
+                {t("estate.rest")}
+              </h3>
+              {focusState?.isActive && focusState.endTime > Date.now() && (
+                <TooltipWrapper
                   tooltip={
-                    <div className="text-xs whitespace-nowrap">
-                      <div>{t("estate.focusPointTooltip")}</div>
-                      <div>
-                        {t("estate.focusRewardTooltip", {
-                          count: focusState?.points || 0,
-                        })}
-                      </div>
+                    <div className="text-xs">
+                      {focusTooltip.getContent(state)}
                     </div>
                   }
+                  tooltipId="focus-progress"
+                  disabled
+                  tooltipTriggerClassName={
+                    GAME_PANEL_HEADER_INDICATOR_TRIGGER_CLASS
+                  }
+                  className={GAME_PANEL_HEADER_INDICATOR_CLASS}
                 >
-                  {t("estate.focus")}
-                </CooldownButton>
-                {focusState && focusState.points > 0 && (
-                  <div
-                    className="absolute -top-[9px] right-[-9px] flex items-center justify-center w-5 h-5 bg-teal-950 rounded-full text-[10px] font-medium z-[20] pointer-events-none"
-                  >
-                    {focusState.points}
+                  <div className={GAME_PANEL_HEADER_INDICATOR_INNER_CLASS}>
+                    <CircularProgress
+                      value={focusProgress}
+                      size={GAME_PANEL_HEADER_INDICATOR_SIZE_PX}
+                      fill
+                      strokeWidth={2}
+                      className="text-teal-400"
+                    />
+                    <span
+                      className={`${GAME_PANEL_HEADER_INDICATOR_GLYPH_CLASS} game-panel-header-indicator-glyph--sm mt-[2px] text-teal-400`}
+                    >
+                      ☩
+                    </span>
                   </div>
-                )}
-              </div>
-            )}
-          </div>
-
-          {/* Sleep Upgrades Section */}
-          <div className="w-full space-y-1 pt-2">
-            {/* Sleep Length Upgrade */}
-            <div className="space-y-1">
-              <EstateUpgradeRowHeader
-                title={t("estate.sleepLength")}
-                action={
-                  sleepUpgrades.lengthLevel < MAX_SLEEP_LENGTH_LEVEL ? (
-                    <TooltipWrapper
-                      tooltip={
-                        <div className="text-xs whitespace-nowrap">
-                          <div>
-                            +
-                            {nextLengthUpgrade.hours - currentLengthUpgrade.hours}
-                            h
-                          </div>
-                          <div className="border-t border-border my-1" />
-                          <div
-                            className={
-                              resources.gold >= nextLengthUpgrade.cost
-                                ? ""
-                                : "text-muted-foreground"
-                            }
-                          >
-                            -{formatNumber(nextLengthUpgrade.cost)} Gold
-                          </div>
-                        </div>
-                      }
-                      tooltipId="upgrade-length-button"
-                      disabled={!canUpgradeLength && !openShopForLength}
-                      onClick={openShopForLength}
-                      onMouseEnter={() => {
-                        setHighlightedResources(["gold"]);
-                      }}
-                      onMouseLeave={() => {
-                        setHighlightedResources([]);
-                      }}
-                    >
-                      <ImproveButton
-                        onClick={handleSleepLengthUpgrade}
-                        disabled={!canUpgradeLength}
-                        onUnaffordableClick={openShopForLength}
-                        button_id="upgrade-sleep-length"
-                      />
-                    </TooltipWrapper>
-                  ) : null
-                }
-              />
-              <EstateUpgradeProgress
-                value={(sleepUpgrades.lengthLevel / MAX_SLEEP_LENGTH_LEVEL) * 100}
-                segments={MAX_SLEEP_LENGTH_LEVEL}
-              />
-              <div className="flex justify-between text-xs text-muted-foreground">
-                <span>
-                  {t("estate.sleepLengthDescription", {
-                    hours: currentLengthUpgrade.hours + blackEstateBonusHours,
-                  })}
-                </span>
-              </div>
-            </div>
-
-            {/* Sleep Intensity Upgrade */}
-            <div className="space-y-1 pt-2">
-              <EstateUpgradeRowHeader
-                title={t("estate.sleepIntensity")}
-                action={
-                  sleepUpgrades.intensityLevel < MAX_SLEEP_INTENSITY_LEVEL ? (
-                    <TooltipWrapper
-                      tooltip={
-                        <div className="text-xs whitespace-nowrap">
-                          <div>
-                            +
-                            {nextIntensityUpgrade.percentage -
-                              currentIntensityUpgrade.percentage}
-                            %
-                          </div>
-                          <div className="border-t border-border my-1" />
-                          <div
-                            className={
-                              resources.gold >= nextIntensityUpgrade.cost
-                                ? ""
-                                : "text-muted-foreground"
-                            }
-                          >
-                            {formatTooltipCostLine(nextIntensityUpgrade.cost, "gold")}
-                          </div>
-                        </div>
-                      }
-                      tooltipId="upgrade-intensity-button"
-                      disabled={!canUpgradeIntensity && !openShopForIntensity}
-                      onClick={openShopForIntensity}
-                      onMouseEnter={() => {
-                        setHighlightedResources(["gold"]);
-                      }}
-                      onMouseLeave={() => {
-                        setHighlightedResources([]);
-                      }}
-                    >
-                      <ImproveButton
-                        onClick={handleSleepIntensityUpgrade}
-                        disabled={!canUpgradeIntensity}
-                        onUnaffordableClick={openShopForIntensity}
-                        button_id="upgrade-sleep-intensity"
-                      />
-                    </TooltipWrapper>
-                  ) : null
-                }
-              />
-              <EstateUpgradeProgress
-                value={
-                  (sleepUpgrades.intensityLevel / MAX_SLEEP_INTENSITY_LEVEL) * 100
-                }
-                segments={MAX_SLEEP_INTENSITY_LEVEL}
-              />
-              <div className="flex justify-between text-xs text-muted-foreground">
-                <span>
-                  {t("estate.sleepIntensityDescription", {
-                    percent:
-                      currentIntensityUpgrade.percentage +
-                      blackEstateBonusIntensity,
-                  })}
-                </span>
-              </div>
+                </TooltipWrapper>
+              )}
             </div>
           </div>
-
-          {/* Skills Section */}
-          {(fellowship.ashwraith_huntress ||
-            fellowship.restless_knight ||
-            fellowship.elder_wizard ||
-            fellowship.the_hound ||
-            fellowship.one_eyed_crow ||
-            fellowship.disgraced_prior ||
-            books.book_of_chainmaster) && (
-              <div className="space-y-1 pt-2">
-                <h3 className="text-xs font-medium text-foreground">{t("estate.skills")}</h3>
-
-                {/* Huntress Training */}
-                {fellowship.ashwraith_huntress && (
-                  <SkillUpgradeRow
-                    title={t("estate.huntressTraining")}
-                    level={huntingSkills.level}
-                    upgradeCost={HUNTING_SKILL_UPGRADES[huntingSkills.level + 1]?.cost ?? 0}
-                    canAfford={resources.gold >= (HUNTING_SKILL_UPGRADES[huntingSkills.level + 1]?.cost ?? Infinity)}
-                    tooltipId="upgrade-hunting-button"
-                    buttonId="upgrade-hunting-skills"
-                    onUpgrade={handleHuntingSkillUpgrade}
-                    tooltipContent={<>
-                      {HUNTING_SKILL_UPGRADES[huntingSkills.level + 1]?.food > HUNTING_SKILL_UPGRADES[huntingSkills.level]?.food && (
-                        <div>{t("estate.skillFoodPerHunter", { amount: HUNTING_SKILL_UPGRADES[huntingSkills.level + 1].food - HUNTING_SKILL_UPGRADES[huntingSkills.level].food })}</div>
-                      )}
-                      {HUNTING_SKILL_UPGRADES[huntingSkills.level + 1]?.fur > HUNTING_SKILL_UPGRADES[huntingSkills.level]?.fur && (
-                        <div>{t("estate.skillFurPerHunter", { amount: HUNTING_SKILL_UPGRADES[huntingSkills.level + 1].fur - HUNTING_SKILL_UPGRADES[huntingSkills.level].fur })}</div>
-                      )}
-                      {HUNTING_SKILL_UPGRADES[huntingSkills.level + 1]?.bones > HUNTING_SKILL_UPGRADES[huntingSkills.level]?.bones && (
-                        <div>{t("estate.skillBonesPerHunter", { amount: HUNTING_SKILL_UPGRADES[huntingSkills.level + 1].bones - HUNTING_SKILL_UPGRADES[huntingSkills.level].bones })}</div>
-                      )}
-                      {HUNTING_SKILL_UPGRADES[huntingSkills.level + 1]?.huntBonus > HUNTING_SKILL_UPGRADES[huntingSkills.level]?.huntBonus && (
-                        <div>{t("estate.skillHuntBonus", { amount: HUNTING_SKILL_UPGRADES[huntingSkills.level + 1].huntBonus - HUNTING_SKILL_UPGRADES[huntingSkills.level].huntBonus })}</div>
-                      )}
-                    </>}
-                    description={[
-                      t("estate.skillHuntBonus", { amount: HUNTING_SKILL_UPGRADES[huntingSkills.level].huntBonus }),
-                      HUNTING_SKILL_UPGRADES[huntingSkills.level].food > 0 && t("estate.skillHunterFood", { amount: HUNTING_SKILL_UPGRADES[huntingSkills.level].food }),
-                      HUNTING_SKILL_UPGRADES[huntingSkills.level].fur > 0 && t("estate.skillFurBonus", { amount: HUNTING_SKILL_UPGRADES[huntingSkills.level].fur }),
-                      HUNTING_SKILL_UPGRADES[huntingSkills.level].bones > 0 && t("estate.skillBonesBonus", { amount: HUNTING_SKILL_UPGRADES[huntingSkills.level].bones }),
-                    ].filter(Boolean).join(", ")}
-                  />
+          <TooltipWrapper
+            tooltip={
+              <div className="text-xs">
+                {canActivateIdle ? (
+                  <div>{t("estate.sleepTooltipReady")}</div>
+                ) : (
+                  <div>{t("estate.sleepTooltipBlocked")}</div>
                 )}
-
-                {/* Crushing Strike */}
-                {fellowship.restless_knight && (
-                  <SkillUpgradeRow
-                    title={t("estate.crushingStrike")}
-                    level={combatSkills.crushingStrikeLevel}
-                    upgradeCost={CRUSHING_STRIKE_UPGRADES[combatSkills.crushingStrikeLevel + 1]?.cost ?? 0}
-                    canAfford={resources.gold >= (CRUSHING_STRIKE_UPGRADES[combatSkills.crushingStrikeLevel + 1]?.cost ?? Infinity)}
-                    tooltipId="upgrade-crushing-strike-button"
-                    buttonId="upgrade-crushing-strike"
-                    onUpgrade={handleCrushingStrikeUpgrade}
-                    tooltipContent={<>
-                      {CRUSHING_STRIKE_UPGRADES[combatSkills.crushingStrikeLevel + 1]?.damage > CRUSHING_STRIKE_UPGRADES[combatSkills.crushingStrikeLevel]?.damage && (
-                        <div>{t("estate.skillDamageBonus", { amount: CRUSHING_STRIKE_UPGRADES[combatSkills.crushingStrikeLevel + 1].damage - CRUSHING_STRIKE_UPGRADES[combatSkills.crushingStrikeLevel].damage })}</div>
-                      )}
-                      {CRUSHING_STRIKE_UPGRADES[combatSkills.crushingStrikeLevel + 1]?.stunRounds > CRUSHING_STRIKE_UPGRADES[combatSkills.crushingStrikeLevel]?.stunRounds && (
-                        <div>{t("estate.skillStunRound", { count: CRUSHING_STRIKE_UPGRADES[combatSkills.crushingStrikeLevel + 1].stunRounds - CRUSHING_STRIKE_UPGRADES[combatSkills.crushingStrikeLevel].stunRounds, amount: CRUSHING_STRIKE_UPGRADES[combatSkills.crushingStrikeLevel + 1].stunRounds - CRUSHING_STRIKE_UPGRADES[combatSkills.crushingStrikeLevel].stunRounds })}</div>
-                      )}
-                      {CRUSHING_STRIKE_UPGRADES[combatSkills.crushingStrikeLevel + 1]?.successChance > CRUSHING_STRIKE_UPGRADES[combatSkills.crushingStrikeLevel]?.successChance && (
-                        <div>{t("estate.skillSuccessChanceBonus", { amount: CRUSHING_STRIKE_UPGRADES[combatSkills.crushingStrikeLevel + 1].successChance - CRUSHING_STRIKE_UPGRADES[combatSkills.crushingStrikeLevel].successChance })}</div>
-                      )}
-                    </>}
-                    description={t("estate.crushingStrikeSummary", {
-                      damage: CRUSHING_STRIKE_UPGRADES[combatSkills.crushingStrikeLevel].damage,
-                      rounds: CRUSHING_STRIKE_UPGRADES[combatSkills.crushingStrikeLevel].stunRounds,
-                      success: CRUSHING_STRIKE_UPGRADES[combatSkills.crushingStrikeLevel].successChance,
-                    })}
-                  />
-                )}
-
-                {/* Bloodflame Sphere */}
-                {fellowship.elder_wizard && (() => {
-                  const lvl = combatSkills.bloodflameSphereLevel;
-                  const cur = BLOODFLAME_SPHERE_UPGRADES[lvl];
-                  const nxt = BLOODFLAME_SPHERE_UPGRADES[lvl + 1];
-                  return (
-                    <SkillUpgradeRow
-                      title={t("estate.bloodflameSphere")}
-                      level={lvl}
-                      upgradeCost={nxt?.cost ?? 0}
-                      canAfford={resources.gold >= (nxt?.cost ?? Infinity)}
-                      tooltipId="upgrade-bloodflame-sphere-button"
-                      buttonId="upgrade-bloodflame-sphere"
-                      onUpgrade={handleBloodflameSphereUpgrade}
-                      tooltipContent={<>
-                        {nxt?.burnDamage > cur?.burnDamage && <div>{t("estate.skillBurnDamage", { amount: nxt.burnDamage - cur.burnDamage })}</div>}
-                        {nxt?.burnRounds > cur?.burnRounds && (() => {
-                          const d = nxt.burnRounds - cur.burnRounds;
-                          return (
-                            <div>
-                              {t("estate.skillBurnRound", { count: d, amount: d })}
-                            </div>
-                          );
-                        })()}
-                        {nxt?.healthCost > cur?.healthCost && <div>{t("estate.skillHealthCost", { amount: nxt.healthCost - cur.healthCost })}</div>}
-                      </>}
-                      description={t(cur.burnRounds === 1 ? "estate.bloodflameSummary_one" : "estate.bloodflameSummary", {
-                        damage: cur.burnDamage,
-                        rounds: cur.burnRounds,
-                        health: cur.healthCost,
-                      })}
-                    />
-                  );
-                })()}
-
-                {/* Feral Howl */}
-                {fellowship.the_hound && (() => {
-                  const lvl = combatSkills.feralHowlLevel ?? 0;
-                  const cur = FERAL_HOWL_UPGRADES[lvl];
-                  const nxt = FERAL_HOWL_UPGRADES[lvl + 1];
-                  return (
-                    <SkillUpgradeRow
-                      title={t("estate.feralHowl")}
-                      level={lvl}
-                      upgradeCost={nxt?.cost ?? 0}
-                      canAfford={resources.gold >= (nxt?.cost ?? Infinity)}
-                      tooltipId="upgrade-feral-howl-button"
-                      buttonId="upgrade-feral-howl"
-                      onUpgrade={handleFeralHowlUpgrade}
-                      tooltipContent={<>
-                        {nxt && nxt.successChance > cur.successChance && (
-                          <div>{t("estate.skillSuccessChanceBonus", { amount: nxt.successChance - cur.successChance })}</div>
-                        )}
-                        {nxt && nxt.enemyDamageReduction > cur.enemyDamageReduction && (
-                          <div>{t("estate.skillEnemyDamageReduction", { amount: nxt.enemyDamageReduction - cur.enemyDamageReduction })}</div>
-                        )}
-                        {nxt && nxt.debuffRounds > cur.debuffRounds && (() => {
-                          const d = nxt.debuffRounds - cur.debuffRounds;
-                          return (
-                            <div>{t("estate.skillDebuffRound", { count: d, amount: d })}</div>
-                          );
-                        })()}
-                        {nxt && nxt.critDamageBonus > cur.critDamageBonus && (
-                          <div>{t("estate.skillCritDamageBonus", { amount: nxt.critDamageBonus - cur.critDamageBonus })}</div>
-                        )}
-                      </>}
-                      description={t(
-                        cur.debuffRounds === 1
-                          ? "estate.feralHowlSummary_one"
-                          : "estate.feralHowlSummary",
-                        {
-                          success: cur.successChance,
-                          reduction: cur.enemyDamageReduction,
-                          rounds: cur.debuffRounds,
-                          crit: cur.critDamageBonus,
-                        },
-                      )}
-                    />
-                  );
-                })()}
-
-                {/* Crow's Eye */}
-                {fellowship.one_eyed_crow && (() => {
-                  const lvl = crowsEyeSkills.level;
-                  const cur = CROWS_EYE_UPGRADES[lvl];
-                  const nxt = CROWS_EYE_UPGRADES[lvl + 1];
-                  return (
-                    <SkillUpgradeRow
-                      title={t("estate.crowsEye")}
-                      level={lvl}
-                      upgradeCost={nxt?.cost ?? 0}
-                      canAfford={resources.gold >= (nxt?.cost ?? Infinity)}
-                      tooltipId="upgrade-crows-eye-button"
-                      buttonId="upgrade-crows-eye"
-                      onUpgrade={handleCrowsEyeUpgrade}
-                      tooltipContent={<div>{t("estate.skillDoubleGain", { amount: (nxt?.doubleChance ?? 0) - (cur?.doubleChance ?? 0) })}</div>}
-                      description={t("estate.crowsEyeSummary", { percent: cur.doubleChance })}
-                    />
-                  );
-                })()}
-
-                {/* Tireless Worker (Disgraced Prior) */}
-                {fellowship.disgraced_prior && (() => {
-                  const lvl = disgracedPriorSkills?.level ?? 0;
-                  const cur = DISGRACED_PRIOR_UPGRADES[lvl];
-                  const nxt = DISGRACED_PRIOR_UPGRADES[lvl + 1];
-                  const actionDelta = nxt ? nxt.maxActions - cur.maxActions : 0;
-                  const bonusPercent = nxt ? (nxt.rewardMultiplier - 1) * 100 : 0;
-                  const tooltipContent = nxt ? (
-                    actionDelta > 0
-                      ? <div>{t("estate.priorConcurrentAction", { count: actionDelta })}</div>
-                      : <div>{t("estate.priorActionBonus", { percent: bonusPercent })}</div>
-                  ) : <div>{t("estate.maxLevel")}</div>;
-                  const curBonusPercent = (cur.rewardMultiplier - 1) * 100;
-                  const upkeepText = t("estate.priorUpkeepShort", {
-                    amount: DISGRACED_PRIOR_FOOD_PER_ASSIGNED_ACTION_PER_CYCLE,
-                  });
-                  const description =
-                    curBonusPercent > 0
-                      ? t("estate.priorSummaryBonus", {
-                        actions: cur.maxActions,
-                        bonus: curBonusPercent,
-                        upkeep: upkeepText,
-                      })
-                      : t("estate.priorSummaryNoBonus", {
-                        count: cur.maxActions,
-                        upkeep: upkeepText,
-                      });
-                  return (
-                    <SkillUpgradeRow
-                      title={t("estate.tirelessWorker")}
-                      level={lvl}
-                      upgradeCost={nxt?.cost ?? 0}
-                      canAfford={resources.gold >= (nxt?.cost ?? Infinity)}
-                      tooltipId="upgrade-disgraced-prior-button"
-                      buttonId="upgrade-disgraced-prior"
-                      onUpgrade={handleDgracedPriorUpgrade}
-                      tooltipContent={tooltipContent}
-                      description={description}
-                    />
-                  );
-                })()}
-
-                {/* Chainmaster */}
-                {books.book_of_chainmaster && (() => {
-                  const lvl = chainmasterSkills?.level ?? 0;
-                  const cur = CHAINMASTER_UPGRADES[lvl];
-                  const nxt = CHAINMASTER_UPGRADES[lvl + 1];
-                  const curPercent = Math.round(cur.productionBonus * 100);
-                  const nextPercent = nxt
-                    ? Math.round(nxt.productionBonus * 100)
-                    : 0;
-                  const tooltipContent = nxt ? (
-                    <>
-                      <div>
-                        {t("estate.chainmasterProductionBonus", {
-                          percent: nextPercent - curPercent,
-                        })}
-                      </div>
-                      <div>
-                        {t("estate.chainmasterDisgustDuration", {
-                          minutes: nxt.disgustMinutes,
-                        })}
-                      </div>
-                    </>
-                  ) : (
-                    <div>{t("estate.maxLevel")}</div>
-                  );
-                  return (
-                    <SkillUpgradeRow
-                      title={t("estate.chainmaster")}
-                      level={lvl}
-                      upgradeCost={nxt?.cost ?? 0}
-                      canAfford={resources.gold >= (nxt?.cost ?? Infinity)}
-                      tooltipId="upgrade-chainmaster-button"
-                      buttonId="upgrade-chainmaster"
-                      onUpgrade={handleChainmasterUpgrade}
-                      tooltipContent={tooltipContent}
-                      description={t("estate.chainmasterSummary", {
-                        percent: curPercent,
-                      })}
-                    />
-                  );
-                })()}
-              </div>
-            )}
-
-          {/* Cube Section — only when at least one whisper is unlocked */}
-          {completedCubeEvents.length > 0 && (
-            <div className="w-full space-y-2 pt-1 pb-4">
-              <h3 className="text-xs font-medium text-foreground">{t("estate.cubeWhispers")}</h3>
-
-              <div
-                className={cn(
-                  "w-full",
-                  useTwoCubeColumns ? "flex gap-3" : "flex flex-col gap-2",
-                )}
-              >
-                <div className="flex flex-col gap-2 min-w-0 flex-1">
-                  {firstColumnCubeEvents.map(renderCubeEventRow)}
+                <div className="border-t border-border my-1" />
+                <div className="whitespace-nowrap">
+                  <div>{t("estate.sleepTooltipCurrentProduction")}</div>
+                  <div>
+                    {getResourceName("wood", "Wood")}:{" "}
+                    {formatSignedNumber(Math.round(woodProduction))}
+                  </div>
+                  <div>
+                    {getResourceName("food", "Food")}:{" "}
+                    {formatSignedNumber(Math.round(foodProduction))}
+                  </div>
                 </div>
-                {useTwoCubeColumns && (
-                  <>
-                    <div className="w-px shrink-0 bg-border self-stretch" />
-                    <div className="flex flex-col gap-2 min-w-0 flex-1">
-                      {secondColumnCubeEvents.map(renderCubeEventRow)}
-                    </div>
-                  </>
-                )}
               </div>
+            }
+            tooltipId="sleep-button"
+            disabled={!canActivateIdle}
+          >
+            <div className="h-5 inline-block pb-1 text-xs font-medium text-foreground">
+              <Button
+                onClick={handleActivateIdleMode}
+                disabled={!canActivateIdle}
+                size="xs"
+                variant="outline"
+                className={gameActionOutlineButtonClassName(!canActivateIdle)}
+                button_id="activate-sleep-mode"
+              >
+                {t("estate.sleep")}
+              </Button>
+            </div>
+          </TooltipWrapper>
+
+          {/* Focus Activation Button */}
+          {showFocusButton && (
+            <div className="relative inline-block pb-1 text-xs font-medium text-foreground ml-2">
+              <CooldownButton
+                onClick={() => {
+                  const now = Date.now();
+                  const focusPoints = focusState?.points || 0;
+                  const focusDuration = calculateFocusDuration(focusPoints);
+                  updateFocusState({
+                    isActive: true,
+                    endTime: now + focusDuration,
+                    startTime: now,
+                    duration: focusDuration,
+                    points: 0,
+                  });
+                }}
+                cooldownMs={0}
+                size="xs"
+                variant="outline"
+                className="focus-glow-hover"
+                button_id="activate-focus"
+                disabled={!focusState?.points || focusState.points === 0 || focusState?.isActive}
+                tooltip={
+                  <div className="text-xs whitespace-nowrap">
+                    <div>{t("estate.focusPointTooltip")}</div>
+                    <div>
+                      {t("estate.focusRewardTooltip", {
+                        count: focusState?.points || 0,
+                      })}
+                    </div>
+                  </div>
+                }
+              >
+                {t("estate.focus")}
+              </CooldownButton>
+              {focusState && focusState.points > 0 && (
+                <div
+                  className="absolute -top-[9px] right-[-9px] flex items-center justify-center w-5 h-5 bg-teal-950 rounded-full text-[10px] font-medium z-[20] pointer-events-none"
+                >
+                  {focusState.points}
+                </div>
+              )}
             </div>
           )}
         </div>
-      </SharedProgressShaderHost>
+
+        {/* Smoke canvas must wrap only the upgrade bars. Wrapping the whole
+              panel (Sleep + cube whispers) sized a WebGL framebuffer to the
+              full scroll height and stalled the tab on first open. */}
+        <SharedProgressShaderHost className="w-full">
+          <div className="space-y-2">
+            {/* Sleep Upgrades Section */}
+            <div className="w-full space-y-1 pt-2">
+              {/* Sleep Length Upgrade */}
+              <div className="space-y-1">
+                <EstateUpgradeRowHeader
+                  title={t("estate.sleepLength")}
+                  action={
+                    sleepUpgrades.lengthLevel < MAX_SLEEP_LENGTH_LEVEL ? (
+                      <TooltipWrapper
+                        tooltip={
+                          <div className="text-xs whitespace-nowrap">
+                            <div>
+                              +
+                              {nextLengthUpgrade.hours - currentLengthUpgrade.hours}
+                              h
+                            </div>
+                            <div className="border-t border-border my-1" />
+                            <div
+                              className={
+                                resources.gold >= nextLengthUpgrade.cost
+                                  ? ""
+                                  : "text-muted-foreground"
+                              }
+                            >
+                              -{formatNumber(nextLengthUpgrade.cost)} Gold
+                            </div>
+                          </div>
+                        }
+                        tooltipId="upgrade-length-button"
+                        disabled={!canUpgradeLength && !openShopForLength}
+                        onClick={openShopForLength}
+                        onMouseEnter={() => {
+                          setHighlightedResources(["gold"]);
+                        }}
+                        onMouseLeave={() => {
+                          setHighlightedResources([]);
+                        }}
+                      >
+                        <ImproveButton
+                          onClick={handleSleepLengthUpgrade}
+                          disabled={!canUpgradeLength}
+                          onUnaffordableClick={openShopForLength}
+                          button_id="upgrade-sleep-length"
+                        />
+                      </TooltipWrapper>
+                    ) : null
+                  }
+                />
+                <EstateUpgradeProgress
+                  value={(sleepUpgrades.lengthLevel / MAX_SLEEP_LENGTH_LEVEL) * 100}
+                  segments={MAX_SLEEP_LENGTH_LEVEL}
+                />
+                <div className="flex justify-between text-xs text-muted-foreground">
+                  <span>
+                    {t("estate.sleepLengthDescription", {
+                      hours: currentLengthUpgrade.hours + blackEstateBonusHours,
+                    })}
+                  </span>
+                </div>
+              </div>
+
+              {/* Sleep Intensity Upgrade */}
+              <div className="space-y-1 pt-2">
+                <EstateUpgradeRowHeader
+                  title={t("estate.sleepIntensity")}
+                  action={
+                    sleepUpgrades.intensityLevel < MAX_SLEEP_INTENSITY_LEVEL ? (
+                      <TooltipWrapper
+                        tooltip={
+                          <div className="text-xs whitespace-nowrap">
+                            <div>
+                              +
+                              {nextIntensityUpgrade.percentage -
+                                currentIntensityUpgrade.percentage}
+                              %
+                            </div>
+                            <div className="border-t border-border my-1" />
+                            <div
+                              className={
+                                resources.gold >= nextIntensityUpgrade.cost
+                                  ? ""
+                                  : "text-muted-foreground"
+                              }
+                            >
+                              {formatTooltipCostLine(nextIntensityUpgrade.cost, "gold")}
+                            </div>
+                          </div>
+                        }
+                        tooltipId="upgrade-intensity-button"
+                        disabled={!canUpgradeIntensity && !openShopForIntensity}
+                        onClick={openShopForIntensity}
+                        onMouseEnter={() => {
+                          setHighlightedResources(["gold"]);
+                        }}
+                        onMouseLeave={() => {
+                          setHighlightedResources([]);
+                        }}
+                      >
+                        <ImproveButton
+                          onClick={handleSleepIntensityUpgrade}
+                          disabled={!canUpgradeIntensity}
+                          onUnaffordableClick={openShopForIntensity}
+                          button_id="upgrade-sleep-intensity"
+                        />
+                      </TooltipWrapper>
+                    ) : null
+                  }
+                />
+                <EstateUpgradeProgress
+                  value={
+                    (sleepUpgrades.intensityLevel / MAX_SLEEP_INTENSITY_LEVEL) * 100
+                  }
+                  segments={MAX_SLEEP_INTENSITY_LEVEL}
+                />
+                <div className="flex justify-between text-xs text-muted-foreground">
+                  <span>
+                    {t("estate.sleepIntensityDescription", {
+                      percent:
+                        currentIntensityUpgrade.percentage +
+                        blackEstateBonusIntensity,
+                    })}
+                  </span>
+                </div>
+              </div>
+            </div>
+
+            {/* Skills Section */}
+            {(fellowship.ashwraith_huntress ||
+              fellowship.restless_knight ||
+              fellowship.elder_wizard ||
+              fellowship.the_hound ||
+              fellowship.one_eyed_crow ||
+              fellowship.disgraced_prior ||
+              books.book_of_chainmaster) && (
+                <div className="space-y-1 pt-2">
+                  <h3 className="text-xs font-medium text-foreground">{t("estate.skills")}</h3>
+
+                  {/* Huntress Training */}
+                  {fellowship.ashwraith_huntress && (
+                    <SkillUpgradeRow
+                      title={t("estate.huntressTraining")}
+                      level={huntingSkills.level}
+                      upgradeCost={HUNTING_SKILL_UPGRADES[huntingSkills.level + 1]?.cost ?? 0}
+                      canAfford={resources.gold >= (HUNTING_SKILL_UPGRADES[huntingSkills.level + 1]?.cost ?? Infinity)}
+                      tooltipId="upgrade-hunting-button"
+                      buttonId="upgrade-hunting-skills"
+                      onUpgrade={handleHuntingSkillUpgrade}
+                      tooltipContent={<>
+                        {HUNTING_SKILL_UPGRADES[huntingSkills.level + 1]?.food > HUNTING_SKILL_UPGRADES[huntingSkills.level]?.food && (
+                          <div>{t("estate.skillFoodPerHunter", { amount: HUNTING_SKILL_UPGRADES[huntingSkills.level + 1].food - HUNTING_SKILL_UPGRADES[huntingSkills.level].food })}</div>
+                        )}
+                        {HUNTING_SKILL_UPGRADES[huntingSkills.level + 1]?.fur > HUNTING_SKILL_UPGRADES[huntingSkills.level]?.fur && (
+                          <div>{t("estate.skillFurPerHunter", { amount: HUNTING_SKILL_UPGRADES[huntingSkills.level + 1].fur - HUNTING_SKILL_UPGRADES[huntingSkills.level].fur })}</div>
+                        )}
+                        {HUNTING_SKILL_UPGRADES[huntingSkills.level + 1]?.bones > HUNTING_SKILL_UPGRADES[huntingSkills.level]?.bones && (
+                          <div>{t("estate.skillBonesPerHunter", { amount: HUNTING_SKILL_UPGRADES[huntingSkills.level + 1].bones - HUNTING_SKILL_UPGRADES[huntingSkills.level].bones })}</div>
+                        )}
+                        {HUNTING_SKILL_UPGRADES[huntingSkills.level + 1]?.huntBonus > HUNTING_SKILL_UPGRADES[huntingSkills.level]?.huntBonus && (
+                          <div>{t("estate.skillHuntBonus", { amount: HUNTING_SKILL_UPGRADES[huntingSkills.level + 1].huntBonus - HUNTING_SKILL_UPGRADES[huntingSkills.level].huntBonus })}</div>
+                        )}
+                      </>}
+                      description={[
+                        t("estate.skillHuntBonus", { amount: HUNTING_SKILL_UPGRADES[huntingSkills.level].huntBonus }),
+                        HUNTING_SKILL_UPGRADES[huntingSkills.level].food > 0 && t("estate.skillHunterFood", { amount: HUNTING_SKILL_UPGRADES[huntingSkills.level].food }),
+                        HUNTING_SKILL_UPGRADES[huntingSkills.level].fur > 0 && t("estate.skillFurBonus", { amount: HUNTING_SKILL_UPGRADES[huntingSkills.level].fur }),
+                        HUNTING_SKILL_UPGRADES[huntingSkills.level].bones > 0 && t("estate.skillBonesBonus", { amount: HUNTING_SKILL_UPGRADES[huntingSkills.level].bones }),
+                      ].filter(Boolean).join(", ")}
+                    />
+                  )}
+
+                  {/* Crushing Strike */}
+                  {fellowship.restless_knight && (
+                    <SkillUpgradeRow
+                      title={t("estate.crushingStrike")}
+                      level={combatSkills.crushingStrikeLevel}
+                      upgradeCost={CRUSHING_STRIKE_UPGRADES[combatSkills.crushingStrikeLevel + 1]?.cost ?? 0}
+                      canAfford={resources.gold >= (CRUSHING_STRIKE_UPGRADES[combatSkills.crushingStrikeLevel + 1]?.cost ?? Infinity)}
+                      tooltipId="upgrade-crushing-strike-button"
+                      buttonId="upgrade-crushing-strike"
+                      onUpgrade={handleCrushingStrikeUpgrade}
+                      tooltipContent={<>
+                        {CRUSHING_STRIKE_UPGRADES[combatSkills.crushingStrikeLevel + 1]?.damage > CRUSHING_STRIKE_UPGRADES[combatSkills.crushingStrikeLevel]?.damage && (
+                          <div>{t("estate.skillDamageBonus", { amount: CRUSHING_STRIKE_UPGRADES[combatSkills.crushingStrikeLevel + 1].damage - CRUSHING_STRIKE_UPGRADES[combatSkills.crushingStrikeLevel].damage })}</div>
+                        )}
+                        {CRUSHING_STRIKE_UPGRADES[combatSkills.crushingStrikeLevel + 1]?.stunRounds > CRUSHING_STRIKE_UPGRADES[combatSkills.crushingStrikeLevel]?.stunRounds && (
+                          <div>{t("estate.skillStunRound", { count: CRUSHING_STRIKE_UPGRADES[combatSkills.crushingStrikeLevel + 1].stunRounds - CRUSHING_STRIKE_UPGRADES[combatSkills.crushingStrikeLevel].stunRounds, amount: CRUSHING_STRIKE_UPGRADES[combatSkills.crushingStrikeLevel + 1].stunRounds - CRUSHING_STRIKE_UPGRADES[combatSkills.crushingStrikeLevel].stunRounds })}</div>
+                        )}
+                        {CRUSHING_STRIKE_UPGRADES[combatSkills.crushingStrikeLevel + 1]?.successChance > CRUSHING_STRIKE_UPGRADES[combatSkills.crushingStrikeLevel]?.successChance && (
+                          <div>{t("estate.skillSuccessChanceBonus", { amount: CRUSHING_STRIKE_UPGRADES[combatSkills.crushingStrikeLevel + 1].successChance - CRUSHING_STRIKE_UPGRADES[combatSkills.crushingStrikeLevel].successChance })}</div>
+                        )}
+                      </>}
+                      description={t("estate.crushingStrikeSummary", {
+                        damage: CRUSHING_STRIKE_UPGRADES[combatSkills.crushingStrikeLevel].damage,
+                        rounds: CRUSHING_STRIKE_UPGRADES[combatSkills.crushingStrikeLevel].stunRounds,
+                        success: CRUSHING_STRIKE_UPGRADES[combatSkills.crushingStrikeLevel].successChance,
+                      })}
+                    />
+                  )}
+
+                  {/* Bloodflame Sphere */}
+                  {fellowship.elder_wizard && (() => {
+                    const lvl = combatSkills.bloodflameSphereLevel;
+                    const cur = BLOODFLAME_SPHERE_UPGRADES[lvl];
+                    const nxt = BLOODFLAME_SPHERE_UPGRADES[lvl + 1];
+                    return (
+                      <SkillUpgradeRow
+                        title={t("estate.bloodflameSphere")}
+                        level={lvl}
+                        upgradeCost={nxt?.cost ?? 0}
+                        canAfford={resources.gold >= (nxt?.cost ?? Infinity)}
+                        tooltipId="upgrade-bloodflame-sphere-button"
+                        buttonId="upgrade-bloodflame-sphere"
+                        onUpgrade={handleBloodflameSphereUpgrade}
+                        tooltipContent={<>
+                          {nxt?.burnDamage > cur?.burnDamage && <div>{t("estate.skillBurnDamage", { amount: nxt.burnDamage - cur.burnDamage })}</div>}
+                          {nxt?.burnRounds > cur?.burnRounds && (() => {
+                            const d = nxt.burnRounds - cur.burnRounds;
+                            return (
+                              <div>
+                                {t("estate.skillBurnRound", { count: d, amount: d })}
+                              </div>
+                            );
+                          })()}
+                          {nxt?.healthCost > cur?.healthCost && <div>{t("estate.skillHealthCost", { amount: nxt.healthCost - cur.healthCost })}</div>}
+                        </>}
+                        description={t(cur.burnRounds === 1 ? "estate.bloodflameSummary_one" : "estate.bloodflameSummary", {
+                          damage: cur.burnDamage,
+                          rounds: cur.burnRounds,
+                          health: cur.healthCost,
+                        })}
+                      />
+                    );
+                  })()}
+
+                  {/* Feral Howl */}
+                  {fellowship.the_hound && (() => {
+                    const lvl = combatSkills.feralHowlLevel ?? 0;
+                    const cur = FERAL_HOWL_UPGRADES[lvl];
+                    const nxt = FERAL_HOWL_UPGRADES[lvl + 1];
+                    return (
+                      <SkillUpgradeRow
+                        title={t("estate.feralHowl")}
+                        level={lvl}
+                        upgradeCost={nxt?.cost ?? 0}
+                        canAfford={resources.gold >= (nxt?.cost ?? Infinity)}
+                        tooltipId="upgrade-feral-howl-button"
+                        buttonId="upgrade-feral-howl"
+                        onUpgrade={handleFeralHowlUpgrade}
+                        tooltipContent={<>
+                          {nxt && nxt.successChance > cur.successChance && (
+                            <div>{t("estate.skillSuccessChanceBonus", { amount: nxt.successChance - cur.successChance })}</div>
+                          )}
+                          {nxt && nxt.enemyDamageReduction > cur.enemyDamageReduction && (
+                            <div>{t("estate.skillEnemyDamageReduction", { amount: nxt.enemyDamageReduction - cur.enemyDamageReduction })}</div>
+                          )}
+                          {nxt && nxt.debuffRounds > cur.debuffRounds && (() => {
+                            const d = nxt.debuffRounds - cur.debuffRounds;
+                            return (
+                              <div>{t("estate.skillDebuffRound", { count: d, amount: d })}</div>
+                            );
+                          })()}
+                          {nxt && nxt.critDamageBonus > cur.critDamageBonus && (
+                            <div>{t("estate.skillCritDamageBonus", { amount: nxt.critDamageBonus - cur.critDamageBonus })}</div>
+                          )}
+                        </>}
+                        description={t(
+                          cur.debuffRounds === 1
+                            ? "estate.feralHowlSummary_one"
+                            : "estate.feralHowlSummary",
+                          {
+                            success: cur.successChance,
+                            reduction: cur.enemyDamageReduction,
+                            rounds: cur.debuffRounds,
+                            crit: cur.critDamageBonus,
+                          },
+                        )}
+                      />
+                    );
+                  })()}
+
+                  {/* Crow's Eye */}
+                  {fellowship.one_eyed_crow && (() => {
+                    const lvl = crowsEyeSkills.level;
+                    const cur = CROWS_EYE_UPGRADES[lvl];
+                    const nxt = CROWS_EYE_UPGRADES[lvl + 1];
+                    return (
+                      <SkillUpgradeRow
+                        title={t("estate.crowsEye")}
+                        level={lvl}
+                        upgradeCost={nxt?.cost ?? 0}
+                        canAfford={resources.gold >= (nxt?.cost ?? Infinity)}
+                        tooltipId="upgrade-crows-eye-button"
+                        buttonId="upgrade-crows-eye"
+                        onUpgrade={handleCrowsEyeUpgrade}
+                        tooltipContent={<div>{t("estate.skillDoubleGain", { amount: (nxt?.doubleChance ?? 0) - (cur?.doubleChance ?? 0) })}</div>}
+                        description={t("estate.crowsEyeSummary", { percent: cur.doubleChance })}
+                      />
+                    );
+                  })()}
+
+                  {/* Tireless Worker (Disgraced Prior) */}
+                  {fellowship.disgraced_prior && (() => {
+                    const lvl = disgracedPriorSkills?.level ?? 0;
+                    const cur = DISGRACED_PRIOR_UPGRADES[lvl];
+                    const nxt = DISGRACED_PRIOR_UPGRADES[lvl + 1];
+                    const actionDelta = nxt ? nxt.maxActions - cur.maxActions : 0;
+                    const bonusPercent = nxt ? (nxt.rewardMultiplier - 1) * 100 : 0;
+                    const tooltipContent = nxt ? (
+                      actionDelta > 0
+                        ? <div>{t("estate.priorConcurrentAction", { count: actionDelta })}</div>
+                        : <div>{t("estate.priorActionBonus", { percent: bonusPercent })}</div>
+                    ) : <div>{t("estate.maxLevel")}</div>;
+                    const curBonusPercent = (cur.rewardMultiplier - 1) * 100;
+                    const upkeepText = t("estate.priorUpkeepShort", {
+                      amount: DISGRACED_PRIOR_FOOD_PER_ASSIGNED_ACTION_PER_CYCLE,
+                    });
+                    const description =
+                      curBonusPercent > 0
+                        ? t("estate.priorSummaryBonus", {
+                          actions: cur.maxActions,
+                          bonus: curBonusPercent,
+                          upkeep: upkeepText,
+                        })
+                        : t("estate.priorSummaryNoBonus", {
+                          count: cur.maxActions,
+                          upkeep: upkeepText,
+                        });
+                    return (
+                      <SkillUpgradeRow
+                        title={t("estate.tirelessWorker")}
+                        level={lvl}
+                        upgradeCost={nxt?.cost ?? 0}
+                        canAfford={resources.gold >= (nxt?.cost ?? Infinity)}
+                        tooltipId="upgrade-disgraced-prior-button"
+                        buttonId="upgrade-disgraced-prior"
+                        onUpgrade={handleDgracedPriorUpgrade}
+                        tooltipContent={tooltipContent}
+                        description={description}
+                      />
+                    );
+                  })()}
+
+                  {/* Chainmaster */}
+                  {books.book_of_chainmaster && (() => {
+                    const lvl = chainmasterSkills?.level ?? 0;
+                    const cur = CHAINMASTER_UPGRADES[lvl];
+                    const nxt = CHAINMASTER_UPGRADES[lvl + 1];
+                    const curPercent = Math.round(cur.productionBonus * 100);
+                    const nextPercent = nxt
+                      ? Math.round(nxt.productionBonus * 100)
+                      : 0;
+                    const tooltipContent = nxt ? (
+                      <>
+                        <div>
+                          {t("estate.chainmasterProductionBonus", {
+                            percent: nextPercent - curPercent,
+                          })}
+                        </div>
+                        <div>
+                          {t("estate.chainmasterDisgustDuration", {
+                            minutes: nxt.disgustMinutes,
+                          })}
+                        </div>
+                      </>
+                    ) : (
+                      <div>{t("estate.maxLevel")}</div>
+                    );
+                    return (
+                      <SkillUpgradeRow
+                        title={t("estate.chainmaster")}
+                        level={lvl}
+                        upgradeCost={nxt?.cost ?? 0}
+                        canAfford={resources.gold >= (nxt?.cost ?? Infinity)}
+                        tooltipId="upgrade-chainmaster-button"
+                        buttonId="upgrade-chainmaster"
+                        onUpgrade={handleChainmasterUpgrade}
+                        tooltipContent={tooltipContent}
+                        description={t("estate.chainmasterSummary", {
+                          percent: curPercent,
+                        })}
+                      />
+                    );
+                  })()}
+                </div>
+              )}
+          </div>
+        </SharedProgressShaderHost>
+
+        {/* Cube Section — only when at least one whisper is unlocked */}
+        {completedCubeEvents.length > 0 && (
+          <div className="w-full space-y-2 pt-1 pb-4">
+            <h3 className="text-xs font-medium text-foreground">{t("estate.cubeWhispers")}</h3>
+
+            <div
+              className={cn(
+                "w-full",
+                useTwoCubeColumns ? "flex gap-3" : "flex flex-col gap-2",
+              )}
+            >
+              <div className="flex flex-col gap-2 min-w-0 flex-1">
+                {firstColumnCubeEvents.map(renderCubeEventRow)}
+              </div>
+              {useTwoCubeColumns && (
+                <>
+                  <div className="w-px shrink-0 bg-border self-stretch" />
+                  <div className="flex flex-col gap-2 min-w-0 flex-1">
+                    {secondColumnCubeEvents.map(renderCubeEventRow)}
+                  </div>
+                </>
+              )}
+            </div>
+          </div>
+        )}
+      </div>
       <ScrollBar orientation="vertical" />
     </ScrollArea>
   );

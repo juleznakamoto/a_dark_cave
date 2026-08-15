@@ -213,6 +213,13 @@ class SharedProgressShaderRenderer {
     this.colors = colors;
     this.colorCount = colorCount;
     this.scale = scale;
+    // Compile against a 1×1 backing store. Growing to the host size after
+    // link keeps first-context + shader compile off a huge framebuffer
+    // (Estate used to size this canvas to the whole scrollable panel).
+    if (canvas.width !== 1 || canvas.height !== 1) {
+      canvas.width = 1;
+      canvas.height = 1;
+    }
     const gl = canvas.getContext("webgl", {
       alpha: true,
       antialias: false,
@@ -423,6 +430,57 @@ class SharedProgressShaderRenderer {
   }
 }
 
+let prewarmRenderer: SharedProgressShaderRenderer | null = null;
+let prewarmScheduled = false;
+
+/**
+ * Compile this shader on a hidden 1×1 canvas during idle time.
+ *
+ * Opening the Estate tab used to create the first WebGL context of the
+ * session and compile this nested-fbm program on the main thread. On Windows
+ * ANGLE that can stall the page for many seconds: the cursor still moves,
+ * but clicks, hovers, and tab switches queue until compile finishes.
+ * Opening Trader "fixed" it because the shop banner compiled a sibling
+ * smoke shader first and warmed the GPU.
+ */
+export function scheduleSharedProgressShaderPrewarm(): void {
+  if (prewarmScheduled || typeof window === "undefined") return;
+  if (!shouldAnimateSmokeShader()) return;
+  prewarmScheduled = true;
+
+  const run = () => {
+    if (prewarmRenderer) return;
+    const canvas = document.createElement("canvas");
+    canvas.width = 1;
+    canvas.height = 1;
+    canvas.setAttribute("aria-hidden", "true");
+    canvas.style.cssText =
+      "position:fixed;width:1px;height:1px;opacity:0;pointer-events:none;left:-9999px;bottom:0;";
+    document.body.appendChild(canvas);
+    try {
+      prewarmRenderer = new SharedProgressShaderRenderer(
+        canvas,
+        buildColors(SHARED_PROGRESS_SHADER_COLOR_TOKENS),
+        SHARED_PROGRESS_SHADER_COLOR_TOKENS.length,
+        3,
+      );
+    } catch (err) {
+      const message = err instanceof Error ? err.message : String(err);
+      logger.warn("[SharedProgressShader] Prewarm failed:", message);
+      canvas.remove();
+      prewarmRenderer = null;
+      prewarmScheduled = false;
+    }
+  };
+
+  const ric = window.requestIdleCallback;
+  if (typeof ric === "function") {
+    ric.call(window, run, { timeout: 4000 });
+  } else {
+    setTimeout(run, 0);
+  }
+}
+
 export function SharedProgressShaderHost({
   children,
   className,
@@ -477,23 +535,12 @@ export function SharedProgressShaderHost({
 
     activeRef.current = true;
     let frameCount = 0;
-
-    try {
-      rendererRef.current = new SharedProgressShaderRenderer(
-        canvas,
-        colors,
-        SHARED_PROGRESS_SHADER_COLOR_TOKENS.length,
-        scale,
-      );
-    } catch (err) {
-      const message = err instanceof Error ? err.message : String(err);
-      logger.warn(
-        "[SharedProgressShader] WebGL init failed, using CSS fallback:",
-        message,
-      );
-      setUseShader(false);
-      return;
-    }
+    let cancelled = false;
+    let idleId: number | undefined;
+    let timeoutId: ReturnType<typeof setTimeout> | undefined;
+    let paintRaf = 0;
+    let resizeRaf = 0;
+    let ro: ResizeObserver | null = null;
 
     const syncSize = () => {
       const renderer = rendererRef.current;
@@ -545,19 +592,61 @@ export function SharedProgressShaderHost({
       }
     };
 
-    syncSize();
-    startLoop();
+    const startRenderer = () => {
+      if (cancelled) return;
+      try {
+        rendererRef.current = new SharedProgressShaderRenderer(
+          canvas,
+          colors,
+          SHARED_PROGRESS_SHADER_COLOR_TOKENS.length,
+          scale,
+        );
+      } catch (err) {
+        const message = err instanceof Error ? err.message : String(err);
+        logger.warn(
+          "[SharedProgressShader] WebGL init failed, using CSS fallback:",
+          message,
+        );
+        setUseShader(false);
+        return;
+      }
 
-    const ro =
-      typeof ResizeObserver !== "undefined"
-        ? new ResizeObserver(() => syncSize())
-        : null;
-    ro?.observe(host);
-    window.addEventListener("resize", syncSize);
-    document.addEventListener("visibilitychange", onVisibility);
+      // Grow the backing store on the next frame so compile (1×1) and the
+      // full-size buffer allocation do not hit the same turn as tab paint.
+      resizeRaf = requestAnimationFrame(() => {
+        if (cancelled) return;
+        syncSize();
+        startLoop();
+        ro =
+          typeof ResizeObserver !== "undefined"
+            ? new ResizeObserver(() => syncSize())
+            : null;
+        ro?.observe(host);
+        window.addEventListener("resize", syncSize);
+        document.addEventListener("visibilitychange", onVisibility);
+      });
+    };
+
+    // Yield past the Estate tab's first paint so Sleep / side-panel hovers
+    // stay responsive while the GPU compiler warms (or uses the prewarm).
+    const ric = window.requestIdleCallback;
+    if (typeof ric === "function") {
+      idleId = ric.call(window, startRenderer, { timeout: 100 });
+    } else {
+      paintRaf = requestAnimationFrame(() => {
+        timeoutId = setTimeout(startRenderer, 0);
+      });
+    }
 
     return () => {
+      cancelled = true;
       activeRef.current = false;
+      if (idleId !== undefined && typeof window.cancelIdleCallback === "function") {
+        window.cancelIdleCallback(idleId);
+      }
+      if (timeoutId !== undefined) clearTimeout(timeoutId);
+      if (paintRaf) cancelAnimationFrame(paintRaf);
+      if (resizeRaf) cancelAnimationFrame(resizeRaf);
       ro?.disconnect();
       window.removeEventListener("resize", syncSize);
       document.removeEventListener("visibilitychange", onVisibility);

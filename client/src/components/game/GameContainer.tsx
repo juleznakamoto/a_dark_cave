@@ -30,6 +30,7 @@ import BastionPanel from "./panels/BastionPanel";
 import AchievementsPanel from "./panels/AchievementsPanel";
 import TimedEventPanel from "./panels/TimedEventPanel";
 import LogPanel from "./panels/LogPanel";
+import { scheduleSharedProgressShaderPrewarm } from "@/components/ui/shared-progress-shader";
 import StartScreen, {
   type StartScreenPreferences,
 } from "./StartScreen";
@@ -187,6 +188,14 @@ export default function GameContainer() {
   const modalDialogOpen = useGameStore(isModalDialogOpen);
   // Estate unlocks when Dark Estate is built
   const estateUnlocked = buildings.darkEstate >= 1;
+
+  // Warm the Estate progress shader on a 1×1 canvas while the player is
+  // still on another tab. First WebGL compile on Windows can stall the
+  // page for many seconds if it waits until they open Estate.
+  useEffect(() => {
+    if (!estateUnlocked) return;
+    scheduleSharedProgressShaderPrewarm();
+  }, [estateUnlocked]);
 
   // Tooltips sit above modal overlays (z-10000). Force behind-modal tooltips
   // closed while a blocking dialog is open — closeAll alone leaves hover
