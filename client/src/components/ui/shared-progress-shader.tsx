@@ -107,7 +107,7 @@ const SEGMENT_RIM_FILLED_CLASS =
  * above the shared smoke canvas (the in-cell rim alone would be covered).
  *
  * Filled vs empty uses `data-filled` + the same Tailwind shadow class as the
- * in-cell rim. Reading getComputedStyle here ran in the 30fps loop and forced
+ * in-cell rim. Reading getComputedStyle here ran in the 15fps loop and forced
  * a style recalc on every bar cell.
  */
 function syncSegmentRims(host: HTMLElement, rimLayer: HTMLElement) {
@@ -557,8 +557,8 @@ export function SharedProgressShaderHost({
       if (!activeRef.current || !rendererRef.current || document.hidden) {
         return;
       }
-      // ~30fps — same budget as shop SmokeShader.
-      if (frameCount % 2 === 0) {
+      // ~15fps: same budget as shop SmokeShader.
+      if (frameCount % 4 === 0) {
         const renderer = rendererRef.current;
         if (renderer) {
           const canvasRect = canvas.getBoundingClientRect();

@@ -225,12 +225,18 @@ export function SmokeBackground({
     handleResize();
     window.addEventListener("resize", handleResize);
 
+    const FRAME_INTERVAL_MS = 1000 / 30;
     let animationFrameId = 0;
+    let lastFrameTime = 0;
     const loop = (now: number) => {
-      renderer.render(now);
       animationFrameId = requestAnimationFrame(loop);
+      if (lastFrameTime > 0 && now - lastFrameTime < FRAME_INTERVAL_MS) {
+        return;
+      }
+      lastFrameTime = now;
+      renderer.render(now);
     };
-    loop(0);
+    animationFrameId = requestAnimationFrame(loop);
 
     return () => {
       window.removeEventListener("resize", handleResize);

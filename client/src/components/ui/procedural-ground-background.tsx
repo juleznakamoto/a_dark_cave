@@ -97,8 +97,16 @@ export const ProceduralGroundBackground: React.FC = () => {
     const timeLoc = gl.getUniformLocation(program, "u_time");
     const resLoc = gl.getUniformLocation(program, "u_resolution");
 
+    const FRAME_INTERVAL_MS = 1000 / 30;
     let animationFrameId: number;
+    let lastFrameTime = 0;
     const render = (time: number) => {
+      animationFrameId = requestAnimationFrame(render);
+      if (lastFrameTime > 0 && time - lastFrameTime < FRAME_INTERVAL_MS) {
+        return;
+      }
+      lastFrameTime = time;
+
       const { innerWidth: width, innerHeight: height } = window;
       if (canvas.width !== width || canvas.height !== height) {
         canvas.width = width;
@@ -109,7 +117,6 @@ export const ProceduralGroundBackground: React.FC = () => {
       gl.uniform1f(timeLoc, time * 0.0002);
       gl.uniform2f(resLoc, width, height);
       gl.drawArrays(gl.TRIANGLES, 0, 6);
-      animationFrameId = requestAnimationFrame(render);
     };
 
     animationFrameId = requestAnimationFrame(render);

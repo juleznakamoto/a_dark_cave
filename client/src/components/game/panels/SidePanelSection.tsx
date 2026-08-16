@@ -1066,15 +1066,17 @@ export default function SidePanelSection({
       isCriticalZeroResource && "resource-critical-blink font-bold",
     );
 
+    const showVillageProductionColors =
+      tabForProductionColors === "village" || isHighlighted;
     const productionDeltaCellClassName = cn(
       isResourcesSection && RESOURCE_DELTA_SLOT_CLASS,
       isResourcesSection && RESOURCE_ROW_TEXT_CLASS,
       isResourcesSection && "font-normal",
-      tabForProductionColors !== "village" && "text-muted-foreground",
-      tabForProductionColors === "village" &&
+      !showVillageProductionColors && "text-muted-foreground",
+      showVillageProductionColors &&
       (item.productionDelta ?? 0) > 0 &&
       "text-green-600/80",
-      tabForProductionColors === "village" &&
+      showVillageProductionColors &&
       (item.productionDelta ?? 0) < 0 &&
       "text-red-600/80",
     );
@@ -1123,28 +1125,35 @@ export default function SidePanelSection({
       </>
     ) : null;
 
-    const renderLabelValueRow = (tooltip?: React.ReactNode) => (
-      <div data-testid={item.testId} className={resourceRowClassName}>
-        <div className="min-w-0">
-          {tooltip ? (
-            <TooltipWrapper
-              tooltip={tooltip}
-              tooltipId={item.id}
-              disabled
-              tooltipContentClassName="max-w-xs"
-              onMouseEnter={() => handleItemTooltipEnter(item.id)}
-              onMouseLeave={() => handleItemTooltipLeave(item.id)}
-              className={sidePanelTooltipTriggerClass}
-            >
-              {labelContent}
-            </TooltipWrapper>
-          ) : (
-            labelContent
-          )}
+    const renderLabelValueRow = (tooltip?: React.ReactNode) => {
+      const row = (
+        <div data-testid={item.testId} className={resourceRowClassName}>
+          <div className="min-w-0">{labelContent}</div>
+          {labelValueCells}
         </div>
-        {labelValueCells}
-      </div>
-    );
+      );
+
+      if (!tooltip) return row;
+
+      return (
+        <TooltipWrapper
+          tooltip={tooltip}
+          tooltipId={item.id}
+          disabled
+          tooltipContentClassName="max-w-xs"
+          onMouseEnter={() => handleItemTooltipEnter(item.id)}
+          onMouseLeave={() => handleItemTooltipLeave(item.id)}
+          className={cn(
+            isResourcesSection
+              ? "min-w-0 w-fit max-w-full"
+              : sidePanelTooltipTriggerClass,
+            globalTooltip.isMobile && "cursor-pointer",
+          )}
+        >
+          {row}
+        </TooltipWrapper>
+      );
+    };
 
     const itemContent = renderLabelValueRow();
 

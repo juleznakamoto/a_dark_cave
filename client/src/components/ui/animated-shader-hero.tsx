@@ -441,18 +441,24 @@ void main(){gl_Position=position;}`;
     }
 
     let isActive = true;
+    const FRAME_INTERVAL_MS = 1000 / 30;
+    let lastFrameTime = 0;
     const loop = (now: number) => {
       if (!isActive || !rendererRef.current || !pointersRef.current) return;
+      animationFrameRef.current = requestAnimationFrame(loop);
+      if (lastFrameTime > 0 && now - lastFrameTime < FRAME_INTERVAL_MS) {
+        return;
+      }
+      lastFrameTime = now;
 
       rendererRef.current.updateMouse(pointersRef.current.first);
       rendererRef.current.updatePointerCount(pointersRef.current.count);
       rendererRef.current.updatePointerCoords(pointersRef.current.coords);
       rendererRef.current.updateMove(pointersRef.current.move);
       rendererRef.current.render(now);
-      animationFrameRef.current = requestAnimationFrame(loop);
     };
 
-    loop(0);
+    animationFrameRef.current = requestAnimationFrame(loop);
 
     window.addEventListener("resize", resize);
 

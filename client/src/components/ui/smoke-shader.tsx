@@ -585,8 +585,8 @@ export function SmokeShader({
       if (!isActiveRef.current || !rendererRef.current || document.hidden) {
         return;
       }
-      // ~30fps: half the fill cost, still smooth enough for a shop banner.
-      if (frameCount % 2 === 0) {
+      // ~15fps: quarter the fill cost vs 60fps, enough for a shop banner.
+      if (frameCount % 4 === 0) {
         rendererRef.current.setScale(scaleRef.current);
         rendererRef.current.render();
       }

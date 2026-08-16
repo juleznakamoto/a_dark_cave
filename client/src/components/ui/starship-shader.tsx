@@ -246,10 +246,16 @@ export function StarshipShader({ className, onFatalError }: StarshipShaderProps)
       renderer.resizeToDisplay(width, height);
       rendererRef.current = renderer;
 
+      const FRAME_INTERVAL_MS = 1000 / 30;
+      let lastFrameTime = 0;
       const loop = (now: number) => {
         if (!isActiveRef.current || !rendererRef.current) return;
-        rendererRef.current.render(now);
         animationFrameRef.current = requestAnimationFrame(loop);
+        if (lastFrameTime > 0 && now - lastFrameTime < FRAME_INTERVAL_MS) {
+          return;
+        }
+        lastFrameTime = now;
+        rendererRef.current.render(now);
       };
       animationFrameRef.current = requestAnimationFrame(loop);
     } catch (err) {
