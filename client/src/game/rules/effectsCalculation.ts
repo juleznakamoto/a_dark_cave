@@ -778,22 +778,27 @@ export const getTotalKnowledge = (state: GameState): number => {
   return effects.statBonuses?.knowledge || 0;
 };
 
+/** Subset of `calculateTotalEffects` needed for the madness breakdown. */
+export type EffectsForMadnessComponents = {
+  statBonuses?: { madness?: number };
+  madness_reduction?: Record<string, number>;
+};
+
 /** Unclamped contributions; total matches getTotalMadness (clamped). */
 export const getMadnessComponents = (
   state: GameState,
+  effects: EffectsForMadnessComponents = calculateTotalEffects(state),
 ): {
   fromItems: number;
   fromBuildings: number;
   fromEvents: number;
   total: number;
 } => {
-  const effects = calculateTotalEffects(state);
-
   const effectMadness = effects.statBonuses?.madness || 0;
 
   let buildingMadness = 0;
   let itemMadnessReduction = 0;
-  Object.entries(effects.madness_reduction).forEach(([key, reduction]) => {
+  Object.entries(effects.madness_reduction ?? {}).forEach(([key, reduction]) => {
     // calculateTotalEffects: gear/fellowship use "*_madness_reduction", buildings use "*_madness"
     if (key.endsWith("_madness_reduction")) {
       itemMadnessReduction += reduction;

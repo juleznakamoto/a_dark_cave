@@ -20,7 +20,10 @@ import { buildGameState } from "@/game/stateHelpers";
 import { logger } from "@/lib/logger";
 import { formatSaveTimestamp } from "@/lib/utils";
 import { isLocalOnlyEdition } from "@/lib/edition";
-import { useSteamEditionActive } from "@/hooks/useSteamEditionActive";
+import {
+  useCrazyGamesEditionActive,
+  useSteamEditionActive,
+} from "@/hooks/useSteamEditionActive";
 import { triggerExclusivePromoPingOnce } from "@/lib/exclusivePromoShockwave";
 import { HoverCalloutTooltip } from "@/components/game/HoverCalloutTooltip";
 import { DropdownMenuItemWithTooltip } from "@/components/game/DropdownMenuItemWithTooltip";
@@ -544,6 +547,7 @@ export function GameHeaderRewardsShortcut() {
 
 export function GameHeaderControls() {
   const steamEditionActive = useSteamEditionActive();
+  const crazyGamesEditionActive = useCrazyGamesEditionActive();
   const {
     cruelMode,
     t,
@@ -625,55 +629,59 @@ export function GameHeaderControls() {
             </span>
           </DropdownMenuItem>
           <DropdownMenuSeparator />
-          <DropdownMenuItemWithTooltip
-            tooltip={
-              <div className="text-xs">
-                {steamEditionActive ? (
-                  <>
-                    <p>
-                      {t("profile.autoSaveSteam", {
-                        defaultValue: "Game auto-saves every 15 seconds",
-                      })}
-                    </p>
-                    <p className="mt-1">
-                      {t("profile.steamCloudSave", {
-                        defaultValue:
-                          "Progress syncs to Steam Cloud when you save.",
-                      })}
-                    </p>
-                  </>
-                ) : (
-                  <>
-                    <p>
-                      {currentUser
-                        ? t("profile.autoSaveSignedIn")
-                        : t("profile.autoSaveGuest")}
-                    </p>
-                    {!currentUser && (
-                      <p className="mt-1">{t("profile.signUpCloudSave")}</p>
+          {!crazyGamesEditionActive && (
+            <>
+              <DropdownMenuItemWithTooltip
+                tooltip={
+                  <div className="text-xs">
+                    {steamEditionActive ? (
+                      <>
+                        <p>
+                          {t("profile.autoSaveSteam", {
+                            defaultValue: "Game auto-saves every 15 seconds",
+                          })}
+                        </p>
+                        <p className="mt-1">
+                          {t("profile.steamCloudSave", {
+                            defaultValue:
+                              "Progress syncs to Steam Cloud when you save.",
+                          })}
+                        </p>
+                      </>
+                    ) : (
+                      <>
+                        <p>
+                          {currentUser
+                            ? t("profile.autoSaveSignedIn")
+                            : t("profile.autoSaveGuest")}
+                        </p>
+                        {!currentUser && (
+                          <p className="mt-1">{t("profile.signUpCloudSave")}</p>
+                        )}
+                      </>
                     )}
-                  </>
-                )}
-                {lastSaved && (
-                  <p className="mt-1">
-                    {t("profile.lastSave", { time: lastSaved })}
-                  </p>
-                )}
-              </div>
-            }
-            tooltipId="manual-save-info"
-            disabled={!!currentUser && cooldowns["manualSave"] > 0}
-            onClick={() => {
-              handleManualSave();
-              setAccountDropdownOpen(false);
-            }}
-          >
-            <span className="flex items-center gap-1.5">
-              <GameUiIcon name="saveGame" />
-              {t("profile.save")}
-            </span>
-          </DropdownMenuItemWithTooltip>
-          <DropdownMenuSeparator />
+                    {lastSaved && (
+                      <p className="mt-1">
+                        {t("profile.lastSave", { time: lastSaved })}
+                      </p>
+                    )}
+                  </div>
+                }
+                tooltipId="manual-save-info"
+                disabled={!!currentUser && cooldowns["manualSave"] > 0}
+                onClick={() => {
+                  handleManualSave();
+                  setAccountDropdownOpen(false);
+                }}
+              >
+                <span className="flex items-center gap-1.5">
+                  <GameUiIcon name="saveGame" />
+                  {t("profile.save")}
+                </span>
+              </DropdownMenuItemWithTooltip>
+              <DropdownMenuSeparator />
+            </>
+          )}
           <DropdownMenuItem onClick={handleRestartGame}>
             <span className="flex items-center gap-1.5">
               <GameUiIcon name="newGame" />

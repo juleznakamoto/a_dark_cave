@@ -10,6 +10,7 @@ import {
 } from "react";
 import { createPortal } from "react-dom";
 import { Helmet } from "react-helmet-async";
+import { useShallow } from "zustand/react/shallow";
 import GameTabs from "./GameTabs";
 import GameFooter from "./GameFooter";
 import GameHeader from "./GameHeader";
@@ -113,6 +114,7 @@ export default function GameContainer() {
   const steamDesktopEditionActive = useSteamDesktopEditionActive();
   const hideSteamStoreLink = useHideSteamStoreLink();
   const demoEditionActive = useDemoEditionActive();
+  // Shallow pick only: playTime / loopProgress write at 4 Hz and must not redraw the shell.
   const {
     activeTab,
     flags,
@@ -133,7 +135,29 @@ export default function GameContainer() {
     sfxMuted,
     musicVolume,
     sfxVolume,
-  } = useGameStore();
+  } = useGameStore(
+    useShallow((state) => ({
+      activeTab: state.activeTab,
+      flags: state.flags,
+      buildings: state.buildings,
+      relics: state.relics,
+      books: state.books,
+      eventDialog: state.eventDialog,
+      combatDialog: state.combatDialog,
+      idleModeDialog: state.idleModeDialog,
+      timedEventTab: state.timedEventTab,
+      setActiveTab: state.setActiveTab,
+      setEventDialog: state.setEventDialog,
+      setCombatDialog: state.setCombatDialog,
+      isPaused: state.isPaused,
+      inactivityDialogOpen: state.inactivityDialogOpen,
+      cruelMode: state.cruelMode,
+      musicMuted: state.musicMuted,
+      sfxMuted: state.sfxMuted,
+      musicVolume: state.musicVolume,
+      sfxVolume: state.sfxVolume,
+    })),
+  );
 
   const handleStartScreenLightFire = useCallback(
     async (preferences: StartScreenPreferences) => {
@@ -294,7 +318,10 @@ export default function GameContainer() {
   const hasWonCruelGame = useGameStore((s) => s.hasWonCruelGame);
   const hasSpeedrunWin = useGameStore((s) => s.hasSpeedrunWin);
   const lifetimeGamesWon = useGameStore((s) => s.lifetimeGamesWon);
-  const lifetimePlayTimeMs = useGameStore((s) => s.lifetimePlayTimeMs);
+  // Hour buckets only: raw lifetimePlayTimeMs updates at 4 Hz with playTime.
+  const lifetimePlayTimeHours = useGameStore((s) =>
+    Math.floor((s.lifetimePlayTimeMs || 0) / (60 * 60 * 1000)),
+  );
   const lifetimeStorageMaxHits = useGameStore((s) => s.lifetimeStorageMaxHits);
   const lifetimeEstateUpgradeMaxHits = useGameStore(
     (s) => s.lifetimeEstateUpgradeMaxHits,
@@ -312,7 +339,7 @@ export default function GameContainer() {
       hasWonCruelGame,
       hasSpeedrunWin,
       lifetimeGamesWon,
-      lifetimePlayTimeMs,
+      lifetimePlayTimeHours,
       lifetimeStorageMaxHits,
       lifetimeEstateUpgradeMaxHits,
       hasAchievementMaxer,
@@ -335,7 +362,7 @@ export default function GameContainer() {
         hasWonCruelGame,
         hasSpeedrunWin,
         lifetimeGamesWon,
-        lifetimePlayTimeMs,
+        lifetimePlayTimeMs: useGameStore.getState().lifetimePlayTimeMs,
         lifetimeStorageMaxHits,
         lifetimeEstateUpgradeMaxHits,
         hasAchievementMaxer,
@@ -353,7 +380,7 @@ export default function GameContainer() {
       hasWonCruelGame,
       hasSpeedrunWin,
       lifetimeGamesWon,
-      lifetimePlayTimeMs,
+      lifetimePlayTimeHours,
       lifetimeStorageMaxHits,
       lifetimeEstateUpgradeMaxHits,
       hasAchievementMaxer,

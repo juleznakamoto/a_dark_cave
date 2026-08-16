@@ -27,10 +27,6 @@ import { useTranslation } from "react-i18next";
 import { type FortificationBuildingKey } from "@/game/bastionStats";
 import {
   getDisplayTools,
-  getTotalLuck,
-  getTotalStrength,
-  getTotalKnowledge,
-  getTotalMadness,
   getMadnessComponents,
   getAllActionBonuses,
   getTotalCraftingCostReduction,
@@ -185,11 +181,11 @@ export default function SidePanel() {
   const gameState = useGameStore();
   const gameStateTyped = gameState as unknown as GameState;
 
-  // Calculate total stats including bonuses from relics/clothing
-  const totalLuck = getTotalLuck(gameState);
-  const totalStrength = getTotalStrength(gameState);
-  const totalKnowledge = getTotalKnowledge(gameState);
-  const totalMadness = getTotalMadness(gameState);
+  // Store already caches these via scheduleEffectsUpdate; do not re-walk calculateTotalEffects.
+  const totalLuck = gameState.stats.luck;
+  const totalStrength = gameState.stats.strength;
+  const totalKnowledge = gameState.stats.knowledge;
+  const totalMadness = gameState.stats.madness;
 
   // Show resource if it has ever been > 0, even if currently 0 (persisted in game state)
   const seenResourceKeySet = new Set(getSeenResourceKeys(gameStateTyped));
@@ -642,8 +638,13 @@ export default function SidePanel() {
     ),
   });
 
-  const { fromItems, fromBuildings, fromEvents } =
-    getMadnessComponents(gameState);
+  const cachedEffects = gameState.effects;
+  const { fromItems, fromBuildings, fromEvents } = getMadnessComponents(
+    gameStateTyped,
+    "statBonuses" in cachedEffects || "madness_reduction" in cachedEffects
+      ? cachedEffects
+      : undefined,
+  );
   const showMadnessBreakdown =
     fromItems !== 0 || fromBuildings !== 0 || fromEvents !== 0;
   const madnessTooltipContent = (

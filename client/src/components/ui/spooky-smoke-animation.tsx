@@ -226,9 +226,10 @@ export function SmokeBackground({
     window.addEventListener("resize", handleResize);
 
     const FRAME_INTERVAL_MS = 1000 / 30;
-    let animationFrameId = 0;
+    let animationFrameId: number | undefined;
     let lastFrameTime = 0;
     const loop = (now: number) => {
+      if (document.hidden) return;
       animationFrameId = requestAnimationFrame(loop);
       if (lastFrameTime > 0 && now - lastFrameTime < FRAME_INTERVAL_MS) {
         return;
@@ -236,11 +237,31 @@ export function SmokeBackground({
       lastFrameTime = now;
       renderer.render(now);
     };
-    animationFrameId = requestAnimationFrame(loop);
+
+    const startLoop = () => {
+      if (document.hidden) return;
+      if (animationFrameId) cancelAnimationFrame(animationFrameId);
+      animationFrameId = requestAnimationFrame(loop);
+    };
+
+    const onVisibilityChange = () => {
+      if (document.hidden) {
+        if (animationFrameId) {
+          cancelAnimationFrame(animationFrameId);
+          animationFrameId = undefined;
+        }
+      } else {
+        startLoop();
+      }
+    };
+
+    document.addEventListener("visibilitychange", onVisibilityChange);
+    startLoop();
 
     return () => {
       window.removeEventListener("resize", handleResize);
-      cancelAnimationFrame(animationFrameId);
+      document.removeEventListener("visibilitychange", onVisibilityChange);
+      if (animationFrameId) cancelAnimationFrame(animationFrameId);
       renderer.reset();
       rendererRef.current = null;
     };

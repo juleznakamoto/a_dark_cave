@@ -107,15 +107,6 @@ const CooldownButton = forwardRef<HTMLButtonElement, CooldownButtonProps>(
     },
     ref
   ) {
-    const {
-      cooldowns,
-      initialCooldowns,
-      executionStartTimes,
-      executionDurations,
-      compassGlowButton,
-      insightRevealing,
-      playTime,
-    } = useGameStore();
     const isFirstRenderRef = useRef<boolean>(true);
     const [, forceUpdate] = useState(0);
 
@@ -124,21 +115,25 @@ const CooldownButton = forwardRef<HTMLButtonElement, CooldownButtonProps>(
       ?.replace("button-", "")
       .replace(/-([a-z])/g, (_, letter) => letter.toUpperCase()) || "unknown";
 
+    const currentCooldown = useGameStore((s) => s.cooldowns[actionIdFromProps] || 0);
+    const storedInitialCooldown = useGameStore((s) => s.initialCooldowns[actionIdFromProps] || 0);
+    const executionStart = useGameStore((s) => s.executionStartTimes?.[actionIdFromProps] || 0);
+    const executionDurationSec = useGameStore((s) => s.executionDurations?.[actionIdFromProps] || 0);
+    const insightRevealEnd = useGameStore((s) => s.insightRevealing?.[actionIdFromProps]);
+    const isCompassGlowing = useGameStore((s) => s.compassGlowButton === actionIdFromProps);
+    // Only subscribe to the 4 Hz playTime clock when this button has a play-time overlay.
+    const currentPlayTime = useGameStore((s) =>
+      playTimeCooldown ? (s.playTime ?? 0) : 0,
+    );
     const executionAbortEligible = useGameStore((s) => s.executionAbortEligible?.[actionIdFromProps]);
     const hasAbortSnapshot = useGameStore((s) => s.executionSpendSnapshots?.[actionIdFromProps] != null);
     const hasClerksHut = useGameStore((s) => (s.buildings.clerksHut ?? 0) > 0);
     const gold = useGameStore((s) => s.resources.gold ?? 0);
     const abortActionExecution = useGameStore((s) => s.abortActionExecution);
 
-    // Get current and initial cooldown from game state
-    const currentCooldown = cooldowns[actionIdFromProps] || 0;
-    const storedInitialCooldown = initialCooldowns[actionIdFromProps] || 0;
     const isCoolingDown = currentCooldown > 0;
-    const insightRevealEnd = insightRevealing?.[actionIdFromProps];
     const isInsightRevealing =
       typeof insightRevealEnd === "number" && insightRevealEnd > Date.now();
-
-    const currentPlayTime = playTime ?? 0;
 
     const playTimeRange = playTimeCooldown;
     const isPlayTimeOverlayActive = !!(
@@ -165,7 +160,7 @@ const CooldownButton = forwardRef<HTMLButtonElement, CooldownButtonProps>(
         : 0;
 
     // Force re-renders during execution / insight reveal so overlay updates
-    const isExecutingCheck = !!(executionStartTimes && executionStartTimes[actionIdFromProps]);
+    const isExecutingCheck = executionStart > 0;
     useEffect(() => {
       if (!isExecutingCheck && !isInsightRevealing && !isPlayTimeOverlayActive) return;
       const id = setInterval(() => forceUpdate((n) => n + 1), 100);
@@ -173,8 +168,6 @@ const CooldownButton = forwardRef<HTMLButtonElement, CooldownButtonProps>(
     }, [isExecutingCheck, isInsightRevealing, isPlayTimeOverlayActive, actionIdFromProps]);
 
     // Execution state (reverse cooldown - fills as time passes)
-    const executionStart = executionStartTimes?.[actionIdFromProps] || 0;
-    const executionDurationSec = executionDurations?.[actionIdFromProps] || 0;
     const isExecuting = executionStart > 0 && executionDurationSec > 0;
     const executionElapsed = isExecuting ? (Date.now() - executionStart) / 1000 : 0;
     const executionProgress = executionDurationSec > 0 ? Math.min(1, executionElapsed / executionDurationSec) : 0;
@@ -268,7 +261,6 @@ const CooldownButton = forwardRef<HTMLButtonElement, CooldownButtonProps>(
 
     const isButtonDisabled =
       disabled || isCoolingDown || isExecuting || isInsightRevealing || isPlayTimeOverlayActive;
-    const isCompassGlowing = compassGlowButton === actionIdFromProps;
 
     const buttonId = testId || `button-${Math.random()}`;
 

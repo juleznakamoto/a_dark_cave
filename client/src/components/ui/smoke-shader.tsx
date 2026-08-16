@@ -11,8 +11,9 @@ export const SMOKE_SHADER_FALLBACK_CLASS = "bg-blue-950";
 
 /**
  * Skip the animated shader on weak / battery-sensitive devices. Nested fbm
- * per pixel at 60fps is fine on a tiny banner for most phones, but reduced
- * motion, Data Saver, and very low-RAM devices should get the CSS fallback.
+ * per pixel is fine on a tiny banner for most phones, but reduced motion,
+ * Data Saver, and low-RAM devices (Chrome reports 4 on a 4 GB box) should
+ * get the CSS fallback.
  */
 export function shouldAnimateSmokeShader(): boolean {
   if (typeof window === "undefined") return false;
@@ -24,7 +25,7 @@ export function shouldAnimateSmokeShader(): boolean {
     connection?: { saveData?: boolean };
   };
   if (nav.connection?.saveData) return false;
-  if (typeof nav.deviceMemory === "number" && nav.deviceMemory <= 2) {
+  if (typeof nav.deviceMemory === "number" && nav.deviceMemory <= 4) {
     return false;
   }
   return true;

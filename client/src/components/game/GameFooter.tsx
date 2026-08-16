@@ -102,13 +102,11 @@ function SteamDemoProgressBar() {
 }
 
 export default function GameFooter() {
-  const {
-    setShopDialogOpen,
-    setShareDialogOpen,
-    isPaused,
-    togglePause,
-    idleModeDialog,
-  } = useGameStore();
+  const setShopDialogOpen = useGameStore((s) => s.setShopDialogOpen);
+  const setShareDialogOpen = useGameStore((s) => s.setShareDialogOpen);
+  const isPaused = useGameStore((s) => s.isPaused);
+  const togglePause = useGameStore((s) => s.togglePause);
+  const idleModeDialogOpen = useGameStore((s) => s.idleModeDialog.isOpen);
   const [glowingButton, setGlowingButton] = useState<string | null>(null);
   const donateHeartRef = useRef<HTMLSpanElement>(null);
   const { t } = useTranslation("ui");
@@ -166,7 +164,7 @@ export default function GameFooter() {
 
   const socialLinkClass = `group ${FOOTER_CONTROL_BTN} flex items-center justify-center gap-1`;
   const socialIconClass = `${FOOTER_CONTROL_SVG_ICON_HOVER}${isPaused ? " !opacity-100" : ""}`;
-  const showPauseSleepCallout = isPaused || idleModeDialog.isOpen;
+  const showPauseSleepCallout = isPaused || idleModeDialogOpen;
   const feedbackButton = (
     <Button
       variant="ghost"
@@ -228,11 +226,11 @@ export default function GameFooter() {
               size="xs"
               onClick={togglePause}
               data-testid="button-pause-game"
-              disabled={idleModeDialog.isOpen}
+              disabled={idleModeDialogOpen}
               aria-label={
                 isPaused ? t("footer.resumeGame") : t("footer.pauseGame")
               }
-              className={`${FOOTER_CONTROL_BTN} ${idleModeDialog.isOpen ? "opacity-30 cursor-not-allowed" : ""} ${isPaused ? "!text-red-600 !opacity-100" : ""} ${isPaused && !idleModeDialog.isOpen ? "continue-pause-flash" : ""}`}
+              className={`${FOOTER_CONTROL_BTN} ${idleModeDialogOpen ? "opacity-30 cursor-not-allowed" : ""} ${isPaused ? "!text-red-600 !opacity-100" : ""} ${isPaused && !idleModeDialogOpen ? "continue-pause-flash" : ""}`}
             >
               <GameUiIcon
                 name={isPaused ? "unpause" : "pause"}

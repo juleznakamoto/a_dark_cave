@@ -23,7 +23,7 @@ const MARK_READ_HOVER_MS = 300;
 
 function LogPanel() {
   const { i18n } = useTranslation("ui");
-  const { log } = useGameStore();
+  const log = useGameStore((s) => s.log);
   const [readEntries, setReadEntries] = useState<Set<string>>(
     () => new Set(log.map((entry) => entry.id)),
   );

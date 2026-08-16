@@ -32,7 +32,7 @@ const MistBackground: React.FC = () => {
     const canvas = canvasRef.current;
     if (!canvas) return;
 
-    const gl = canvas.getContext('webgl');
+    const gl = canvas.getContext('webgl', { failIfMajorPerformanceCaveat: true });
     if (!gl) return;
 
     const vsSource = `
@@ -147,9 +147,10 @@ const MistBackground: React.FC = () => {
     window.addEventListener('mousemove', handleMouseMove);
 
     const FRAME_INTERVAL_MS = 1000 / 30;
-    let animationFrameId: number;
+    let animationFrameId: number | undefined;
     let lastFrameTime = 0;
     const render = (time: number) => {
+      if (document.hidden) return;
       animationFrameId = requestAnimationFrame(render);
 
       if (lastFrameTime > 0 && time - lastFrameTime < FRAME_INTERVAL_MS) {
@@ -170,11 +171,30 @@ const MistBackground: React.FC = () => {
       gl.drawArrays(gl.TRIANGLES, 0, 6);
     };
 
-    animationFrameId = requestAnimationFrame(render);
+    const startLoop = () => {
+      if (document.hidden) return;
+      if (animationFrameId) cancelAnimationFrame(animationFrameId);
+      animationFrameId = requestAnimationFrame(render);
+    };
+
+    const onVisibilityChange = () => {
+      if (document.hidden) {
+        if (animationFrameId) {
+          cancelAnimationFrame(animationFrameId);
+          animationFrameId = undefined;
+        }
+      } else {
+        startLoop();
+      }
+    };
+
+    document.addEventListener('visibilitychange', onVisibilityChange);
+    startLoop();
 
     return () => {
       window.removeEventListener('mousemove', handleMouseMove);
-      cancelAnimationFrame(animationFrameId);
+      document.removeEventListener('visibilitychange', onVisibilityChange);
+      if (animationFrameId) cancelAnimationFrame(animationFrameId);
     };
   }, []);
 
