@@ -11,6 +11,7 @@ import {
 } from "./state";
 import { EventManager } from "./rules/events";
 import { GameState } from "@shared/schema";
+import { ensureGameplayLocalesLoaded } from "@/i18n/loadLocaleResources";
 
 const {
   mockLoadGame,
@@ -1009,6 +1010,50 @@ describe("deferred dialog scheduling", () => {
 
     expect(useGameStore.getState().rewardDialog.isOpen).toBe(true);
     expect(useGameStore.getState().rewardDialog.data).toEqual(secondRewards);
+  });
+
+  it("hosts solstice gathering with the village-effect dialog, not the rewards icon", async () => {
+    await ensureGameplayLocalesLoaded();
+    useGameStore.setState({
+      resources: {
+        ...useGameStore.getState().resources,
+        wood: 500,
+        food: 500,
+        gold: 0,
+      },
+      solsticeState: {
+        isActive: false,
+        endTime: 0,
+        tier: 1,
+        activationsCount: 0,
+      },
+      eventDialog: {
+        isOpen: true,
+        currentEvent: {
+          id: "solsticeGathering-test",
+          eventId: "solsticeGathering",
+          message: "Gathering",
+          timestamp: Date.now(),
+          type: "event",
+          choices: [
+            { id: "hostSolstice", label: "Host gathering", effect: () => ({}) },
+          ],
+        },
+        lastEndedAt: 0,
+      },
+    });
+
+    useGameStore.getState().applyEventChoice("hostSolstice", "solsticeGathering");
+
+    expect(useGameStore.getState().rewardDialog.isOpen).toBe(false);
+    expect(useGameStore.getState().solsticeState.isActive).toBe(true);
+
+    vi.advanceTimersByTime(200);
+
+    const afterHandoff = useGameStore.getState();
+    expect(afterHandoff.rewardDialog.isOpen).toBe(false);
+    expect(afterHandoff.villageEffectDialog.isOpen).toBe(true);
+    expect(afterHandoff.villageEffectDialog.data?.themeId).toBe("solstice");
   });
 
   it("stamps lastEndedAt for no-choice log events so a second event cannot spawn immediately", () => {

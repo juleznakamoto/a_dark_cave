@@ -3890,7 +3890,13 @@ export const useGameStore = create<GameStore>((set, get) => ({
       const successLog = logMessage || undefined;
       const isMerchantEvent = eventId === "merchant" || eventId?.startsWith?.("merchant-");
       const isCubeDiscoveryEvent = eventId === "cubeDiscovery";
-      const isFeastEvent = eventId?.startsWith?.("feast");
+      // Feast, solstice, curse, etc. announce via VillageEffectDialog. Hosting
+      // costs would otherwise trip the loss+log RewardDialog path (wrong icon).
+      const villageTheme = resolveVillageEffectAnnouncementTheme(
+        eventId,
+        updatedChanges,
+        state,
+      );
       const isCollectorEvent =
         eventId === "wandering_collector" ||
         eventId?.startsWith?.("wandering_collector-");
@@ -3949,7 +3955,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
         hasRewards &&
         !isMerchantEvent &&
         !isCubeDiscoveryEvent &&
-        !isFeastEvent &&
+        !villageTheme &&
         !isCollectorTrade
       ) {
         const rewardTitle =
@@ -3982,8 +3988,9 @@ export const useGameStore = create<GameStore>((set, get) => ({
       }
 
       // Only clear logMessage when it will be shown in reward or madness dialog.
-      // For events that suppress the reward dialog (cubeDiscovery, merchant, feast)
-      // but have outcomes, we must keep logMessage so the narrative dialog can show it.
+      // For events that suppress the reward dialog (cubeDiscovery, merchant,
+      // village-effect announcements) but have outcomes, keep logMessage so
+      // VillageEffectDialog / the narrative dialog can show it.
       if (shouldShowRewardDialog || shouldShowMadnessDialog) {
         logMessage = null;
       }
