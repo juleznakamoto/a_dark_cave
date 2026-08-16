@@ -189,6 +189,7 @@ describe("resolveStartupVisit", () => {
     ).resolves.toMatchObject({
       surface: "start",
       steamDesktopEditionActive: true,
+      crazyGamesEditionActive: true,
       hideSteamStoreLink: false,
     });
   });

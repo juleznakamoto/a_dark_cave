@@ -21,6 +21,7 @@ export type StartupResolution =
     devGameMode: DevGameMode;
     steamEditionActive: boolean;
     steamDesktopEditionActive: boolean;
+    crazyGamesEditionActive: boolean;
     hideSteamStoreLink: boolean;
   };
 
@@ -81,6 +82,9 @@ function createStartResolution(
       devSteamMode,
     steamDesktopEditionActive:
       isSteamBuild || isCrazyGamesEdition() || devSteamMode,
+    crazyGamesEditionActive:
+      isCrazyGamesEdition() ||
+      (import.meta.env.DEV && !isSteamBuild && devGameMode === "crazyGamesDemo"),
     hideSteamStoreLink: shouldHideSteamStoreLink(devGameMode),
   };
 }

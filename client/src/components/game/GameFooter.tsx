@@ -13,6 +13,7 @@ import { useTranslation } from "react-i18next";
 import { GameUiIcon } from "@/components/game/GameUiIcon";
 import { tWithFallback } from "@/i18n/resolveGameText";
 import {
+  useCrazyGamesEditionActive,
   useHideSteamStoreLink,
   useSteamDemoActive,
   useSteamEditionActive,
@@ -112,10 +113,13 @@ export default function GameFooter() {
   const { t } = useTranslation("ui");
   const steamEditionActive = useSteamEditionActive();
   const steamDemoActive = useSteamDemoActive();
+  const crazyGamesEditionActive = useCrazyGamesEditionActive();
   const showFooterDonate = !steamEditionActive || isGalaxyEdition();
   // Steam Game / Playtest / Demo (build or DEV Game Mode) hide the store link.
-  // Galaxy, CrazyGames, and Normal/web keep the wishlist link.
+  // Galaxy and Normal/web keep the wishlist link. CrazyGames moves Steam +
+  // socials into the upper-right menu.
   const hideSteamStoreLink = useHideSteamStoreLink();
+  const hideFooterSteamAndSocial = crazyGamesEditionActive;
 
   const triggerDonateHeartPump = useCallback(() => {
     pumpDonateHeart(donateHeartRef.current);
@@ -295,15 +299,20 @@ export default function GameFooter() {
           <div className="flex-1 flex justify-end gap-1 items-center">
             {steamDemoActive && playlightButton}
             {/* Steam edition hides the store link — keep Feedback + Progress in the right cluster. */}
-            {hideSteamStoreLink && (
+            {(hideSteamStoreLink || hideFooterSteamAndSocial) && (
               <>
                 {feedbackButton}
                 {progressButton}
-                <FooterNetworkMenu labelClassName={FOOTER_SOCIAL_LABEL} />
+                {!hideFooterSteamAndSocial && (
+                  <FooterNetworkMenu labelClassName={FOOTER_SOCIAL_LABEL} />
+                )}
               </>
             )}
             {GAME_FOOTER_RIGHT_ICON_ORDER.map((platform) => {
-              if (platform === "steam" && hideSteamStoreLink) {
+              if (
+                platform === "steam" &&
+                (hideSteamStoreLink || hideFooterSteamAndSocial)
+              ) {
                 return null;
               }
 

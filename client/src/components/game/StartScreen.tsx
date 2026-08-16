@@ -24,6 +24,7 @@ import { useTranslation } from "react-i18next";
 import { useLocale } from "@/i18n/useLocale";
 import { OG_LOCALE_TAGS, SUPPORTED_LOCALES } from "@/i18n/locales";
 import { FullscreenButton } from "@/components/game/FullscreenButton";
+import CrazyGamesCornerMenu from "@/components/game/CrazyGamesMenuLinks";
 import { GAME_CHROME_NO_BG_HOVER } from "@/components/game/gameChrome";
 import { clearStaleChunkReloadGuard } from "@/lib/hardReload";
 import { mountFiraSansFontFace } from "@/lib/firaSansFontFace";
@@ -91,6 +92,7 @@ interface StartScreenProps {
   initialPreferences: StartScreenPreferences;
   steamEditionActive: boolean;
   steamDesktopEditionActive: boolean;
+  crazyGamesEditionActive: boolean;
   hideSteamStoreLink: boolean;
   onLightFireStart?: (preferences: StartScreenPreferences) => void;
   onLightFire: (preferences: StartScreenPreferences) => void | Promise<void>;
@@ -100,6 +102,7 @@ export default function StartScreen({
   initialPreferences,
   steamEditionActive,
   steamDesktopEditionActive,
+  crazyGamesEditionActive,
   hideSteamStoreLink,
   onLightFireStart,
   onLightFire,
@@ -551,9 +554,15 @@ export default function StartScreen({
         />
       )}
 
-      {steamEditionActive && (
+      {(steamEditionActive || crazyGamesEditionActive) && (
         <div className="absolute top-2 right-2 z-20">
-          <FullscreenButton />
+          {crazyGamesEditionActive ? (
+            <CrazyGamesCornerMenu
+              steamUtmContent={STEAM_STORE_UTM_CONTENT.startScreenMenu}
+            />
+          ) : (
+            <FullscreenButton />
+          )}
         </div>
       )}
 
@@ -705,6 +714,7 @@ export default function StartScreen({
             </button>
           )}
           {!hideSteamStoreLink &&
+            !crazyGamesEditionActive &&
             GAME_FOOTER_RIGHT_ICON_ORDER.map((platform) => {
               const { href: defaultHref, title } =
                 GAME_FOOTER_RIGHT_ICON_LINKS[platform];

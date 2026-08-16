@@ -49,6 +49,8 @@ import {
 import { isRewardsTasksShortcutVisible } from "@/game/socialPromoExclusiveReward";
 import { useTranslation } from "react-i18next";
 import { FullscreenButton } from "./FullscreenButton";
+import { CrazyGamesMenuItems } from "./CrazyGamesMenuLinks";
+import { STEAM_STORE_UTM_CONTENT } from "@/lib/gameFooterSocialLinks";
 import { useCoinHoverParticles } from "@/components/ui/coin-hover-particles";
 import { REWARDS_TASKS_PARTICLE_CONFIG } from "@/components/ui/bubbly-button.particles";
 import {
@@ -688,6 +690,15 @@ export function GameHeaderControls() {
               {t("profile.newGame")}
             </span>
           </DropdownMenuItem>
+          {crazyGamesEditionActive && (
+            <>
+              <DropdownMenuSeparator />
+              <CrazyGamesMenuItems
+                steamUtmContent={STEAM_STORE_UTM_CONTENT.profileMenu}
+                onItemSelect={() => setAccountDropdownOpen(false)}
+              />
+            </>
+          )}
           {(hasWonAnyGame || devMode) && !steamEditionActive && (
             <>
               <DropdownMenuSeparator />

@@ -87,6 +87,7 @@ import {
 import { TraderTabButton } from "@/components/game/TraderTabButton";
 import {
   useDemoEditionActive,
+  useCrazyGamesEditionActive,
   useHideSteamStoreLink,
   useSteamDesktopEditionActive,
   useSteamEditionActive,
@@ -112,6 +113,7 @@ export default function GameContainer() {
   const { t } = useTranslation();
   const steamEditionActive = useSteamEditionActive();
   const steamDesktopEditionActive = useSteamDesktopEditionActive();
+  const crazyGamesEditionActive = useCrazyGamesEditionActive();
   const hideSteamStoreLink = useHideSteamStoreLink();
   const demoEditionActive = useDemoEditionActive();
   // Shallow pick only: playTime / loopProgress write at 4 Hz and must not redraw the shell.
@@ -1147,6 +1149,7 @@ export default function GameContainer() {
           }}
           steamEditionActive={steamEditionActive}
           steamDesktopEditionActive={steamDesktopEditionActive}
+          crazyGamesEditionActive={crazyGamesEditionActive}
           hideSteamStoreLink={hideSteamStoreLink}
           onLightFire={handleStartScreenLightFire}
         />

@@ -39,8 +39,12 @@ export const OFFICIAL_STEAM_WIDGET_URL =
 export const STEAM_STORE_UTM_CONTENT = {
   /** In-game footer Steam icon (+ wishlist callout). */
   gameFooter: "game_footer",
+  /** CrazyGames in-game header menu Steam item. */
+  profileMenu: "profile_menu",
   /** Start-screen footer Steam icon. */
   startScreenFooter: "start_screen_footer",
+  /** CrazyGames start-screen header menu Steam item. */
+  startScreenMenu: "start_screen_menu",
   /** End-screen Steam wishlist widget / CTA. */
   endScreenWishlist: "end_screen_wishlist",
   /** Demo time-up dialog wishlist button (Galaxy / Steam demo). */
@@ -225,11 +229,25 @@ export const UTM_CAMPAIGN_LINKS: readonly UtmCampaignLink[] = [
     url: steamStoreUrl(STEAM_STORE_UTM_CONTENT.gameFooter),
   },
   {
+    id: "steam-store-profile-menu",
+    label: "Steam store · profile menu",
+    description: "CrazyGames header menu Steam item",
+    group: "steam_store",
+    url: steamStoreUrl(STEAM_STORE_UTM_CONTENT.profileMenu),
+  },
+  {
     id: "steam-store-start-screen",
     label: "Steam store · start screen",
     description: "Start-screen footer Steam icon",
     group: "steam_store",
     url: steamStoreUrl(STEAM_STORE_UTM_CONTENT.startScreenFooter),
+  },
+  {
+    id: "steam-store-start-screen-menu",
+    label: "Steam store · start screen menu",
+    description: "CrazyGames start-screen header menu Steam item",
+    group: "steam_store",
+    url: steamStoreUrl(STEAM_STORE_UTM_CONTENT.startScreenMenu),
   },
   {
     id: "steam-store-end-screen",
