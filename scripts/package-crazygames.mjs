@@ -5,7 +5,7 @@
  * not a zip). Upload that folder on developer.crazygames.com.
  */
 import { execSync } from "node:child_process";
-import { cpSync, mkdirSync, rmSync } from "node:fs";
+import { cpSync, existsSync, mkdirSync, readdirSync, rmSync } from "node:fs";
 import { join } from "node:path";
 
 const root = join(import.meta.dirname, "..");
@@ -27,7 +27,20 @@ run("cross-env VITE_CRAZYGAMES=1 vite build");
 
 mkdirSync(releaseDir, { recursive: true });
 rmSync(legacyZipPath, { force: true });
-rmSync(outDir, { recursive: true, force: true });
+// Windows EPERM: Explorer / Cursor often hold the output folder itself.
+// Wipe children instead of deleting the directory, then copy over it.
+if (existsSync(outDir)) {
+  for (const entry of readdirSync(outDir)) {
+    rmSync(join(outDir, entry), {
+      recursive: true,
+      force: true,
+      maxRetries: 8,
+      retryDelay: 150,
+    });
+  }
+} else {
+  mkdirSync(outDir, { recursive: true });
+}
 cpSync(distPublic, outDir, { recursive: true });
 
 console.log(`CrazyGames folder ready: ${outDir}`);

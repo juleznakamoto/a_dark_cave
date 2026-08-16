@@ -18,7 +18,7 @@ if %ERR% neq 0 (
 ) else (
   echo  Done. Folder: %ROOT%\release\a-dark-cave-crazygames
   echo  Upload that folder at https://developer.crazygames.com
-  explorer "%ROOT%\release\a-dark-cave-crazygames"
+  explorer /select,"%ROOT%\release\a-dark-cave-crazygames"
 )
 echo.
 pause
