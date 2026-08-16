@@ -658,8 +658,8 @@ export default function StartScreen({
               aria-hidden
               className={START_AUDIO_ICON_MASK}
               style={{
-                maskImage: `url(${musicMuted ? "/music_off.png" : "/music_on.png"})`,
-                WebkitMaskImage: `url(${musicMuted ? "/music_off.png" : "/music_on.png"})`,
+                maskImage: `url(${publicUrl(musicMuted ? "/music_off.png" : "/music_on.png")})`,
+                WebkitMaskImage: `url(${publicUrl(musicMuted ? "/music_off.png" : "/music_on.png")})`,
               }}
             />
           </Button>
@@ -675,8 +675,8 @@ export default function StartScreen({
               aria-hidden
               className={START_AUDIO_ICON_MASK}
               style={{
-                maskImage: `url(${sfxMuted ? "/sound_off.png" : "/sound_on.png"})`,
-                WebkitMaskImage: `url(${sfxMuted ? "/sound_off.png" : "/sound_on.png"})`,
+                maskImage: `url(${publicUrl(sfxMuted ? "/sound_off.png" : "/sound_on.png")})`,
+                WebkitMaskImage: `url(${publicUrl(sfxMuted ? "/sound_off.png" : "/sound_on.png")})`,
               }}
             />
           </Button>

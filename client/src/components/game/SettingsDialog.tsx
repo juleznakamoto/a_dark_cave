@@ -13,6 +13,7 @@ import {
   type DevGameMode,
 } from "@/lib/edition";
 import { useSteamEditionActive } from "@/hooks/useSteamEditionActive";
+import { publicUrl } from "@/lib/publicUrl";
 import { GameUiIcon } from "@/components/game/GameUiIcon";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -306,8 +307,8 @@ export default function SettingsDialog({
         <div className="space-y-2">
           <section className="space-y-2">
             <AudioControlRow
-              iconOn="/music_on.png"
-              iconOff="/music_off.png"
+              iconOn={publicUrl("/music_on.png")}
+              iconOff={publicUrl("/music_off.png")}
               title={t("settings.music")}
               label={
                 musicMuted ? t("footer.unmuteMusic") : t("footer.muteMusic")
@@ -318,8 +319,8 @@ export default function SettingsDialog({
               onVolumeChange={changeMusicVolume}
             />
             <AudioControlRow
-              iconOn="/sound_on.png"
-              iconOff="/sound_off.png"
+              iconOn={publicUrl("/sound_on.png")}
+              iconOff={publicUrl("/sound_off.png")}
               title={t("settings.sound")}
               label={sfxMuted ? t("footer.unmuteSfx") : t("footer.muteSfx")}
               muted={sfxMuted}

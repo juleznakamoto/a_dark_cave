@@ -1,12 +1,14 @@
 import React, {
-  createContext,
-  useContext,
   useState,
   useEffect,
   useRef,
   useCallback,
   type ReactNode,
 } from "react";
+import {
+  ProfileMenuContext,
+  useProfileMenuContext,
+} from "./profileMenuContext";
 import { Button } from "@/components/ui/button";
 import { useGameStore } from "@/game/state";
 import { deleteSave } from "@/game/save";
@@ -74,18 +76,6 @@ const HEADER_ACCENT_ICON_SIZE = "game-header-accent-icon";
 /** Header chrome: opacity only (color accents live in the footer). */
 const HEADER_ICON_SYMBOL_HOVER =
   "text-neutral-300 opacity-80 transition-opacity group-hover:opacity-100 group-hover:!text-neutral-300";
-
-type ProfileMenuContextValue = ReturnType<typeof useProfileMenuState>;
-
-const ProfileMenuContext = createContext<ProfileMenuContextValue | null>(null);
-
-function useProfileMenuContext(): ProfileMenuContextValue {
-  const ctx = useContext(ProfileMenuContext);
-  if (!ctx) {
-    throw new Error("GameHeaderControls must be used within ProfileMenuProvider");
-  }
-  return ctx;
-}
 
 function useProfileMenuState() {
   const {
@@ -391,6 +381,12 @@ function useProfileMenuState() {
   };
 }
 
+type ProfileMenuContextValue = ReturnType<typeof useProfileMenuState>;
+
+function useProfileMenu(): ProfileMenuContextValue {
+  return useProfileMenuContext<ProfileMenuContextValue>();
+}
+
 function ProfileMenuDialogs() {
   const steamEditionActive = useSteamEditionActive();
   const {
@@ -412,7 +408,7 @@ function ProfileMenuDialogs() {
     marketingPrefLoading,
     handleMarketingPreferenceToggle,
     social_media_rewards,
-  } = useProfileMenuContext();
+  } = useProfileMenu();
 
   // Web-only dialog: clear stale open state if something sets the flag on Steam.
   useEffect(() => {
@@ -486,7 +482,7 @@ export function GameHeaderRewardsShortcut() {
   });
 
   const { showRewardsTasksShortcut, t, setSocialPromptDialogOpen } =
-    useProfileMenuContext();
+    useProfileMenu();
 
   useEffect(() => {
     if (!showRewardsTasksShortcut) {
@@ -564,7 +560,7 @@ export function GameHeaderControls() {
     devMode,
     setLeaderboardDialogOpen,
     setSettingsDialogOpen,
-  } = useProfileMenuContext();
+  } = useProfileMenu();
 
   return (
     <div className="flex items-center gap-0.5 shrink-0">
