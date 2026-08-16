@@ -719,7 +719,7 @@ export default function ShareDialog() {
 
   const handleCopyInviteLink = async () => {
     try {
-      await copyInviteLinkToClipboard();
+      await copyInviteLinkToClipboard("share");
       toast({
         title: t("invite.linkCopied"),
         description: t("invite.linkCopiedDesc", {

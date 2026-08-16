@@ -3,11 +3,13 @@ import {
   createInitialState,
   useGameStore,
   detectRewards,
+  isModalDialogOpen,
   mergeRewardPayloads,
   rewardDialogActions,
   rewardPayloadHasPositiveChanges,
   rewardPayloadHasOutcomeLosses,
 } from "./state";
+import { EventManager } from "./rules/events";
 import { GameState } from "@shared/schema";
 
 const {
@@ -882,7 +884,7 @@ describe("deferred dialog scheduling", () => {
     };
 
     // Another blocking modal is open and the event dialog is closed: the new
-    // event must wait (in-place replace only applies when eventDialog is already open).
+    // event must wait rather than replace anything.
     useGameStore.setState({
       rewardDialog: { isOpen: true, data: { rewards: {}, variant: "success" } },
       eventDialog: { isOpen: false, currentEvent: null, lastEndedAt: 0 },
@@ -898,6 +900,138 @@ describe("deferred dialog scheduling", () => {
     expect(useGameStore.getState().eventDialog.currentEvent?.id).toBe(
       deferredEvent.id,
     );
+  });
+
+  it("queues a second event instead of replacing the open event dialog", () => {
+    const firstEvent = {
+      id: "boneArmyAttack-test",
+      message: "Bone army",
+      timestamp: Date.now(),
+      type: "event" as const,
+      skipSound: true,
+      choices: [{ id: "defendAgainstBoneArmy", label: "Defend", effect: () => ({}) }],
+    };
+    const secondEvent = {
+      id: "wizardNecromancerCastle-test",
+      message: "Castle",
+      timestamp: Date.now(),
+      type: "event" as const,
+      skipSound: true,
+      choices: [{ id: "continue", label: "Continue", effect: () => ({}) }],
+    };
+
+    useGameStore.getState().setEventDialog(true, firstEvent);
+    useGameStore.getState().setEventDialog(true, secondEvent);
+
+    expect(useGameStore.getState().eventDialog.currentEvent?.id).toBe(
+      firstEvent.id,
+    );
+
+    useGameStore.getState().setEventDialog(false);
+    vi.advanceTimersByTime(3000 + 200 + 50);
+
+    expect(useGameStore.getState().eventDialog.isOpen).toBe(true);
+    expect(useGameStore.getState().eventDialog.currentEvent?.id).toBe(
+      secondEvent.id,
+    );
+  });
+
+  it("keeps the sim paused between event resolve and the reward dialog", () => {
+    useGameStore.setState({
+      resources: {
+        ...useGameStore.getState().resources,
+        bones: 0,
+        silver: 0,
+        steel: 0,
+      },
+      clothing: {
+        ...useGameStore.getState().clothing,
+        devourer_crown: false,
+      },
+      relics: {
+        ...useGameStore.getState().relics,
+        bone_devourer_blood: false,
+      },
+      buildings: {
+        ...useGameStore.getState().buildings,
+        traps: 10,
+        woodenHut: 5,
+      },
+      eventDialog: {
+        isOpen: true,
+        currentEvent: {
+          id: "boneArmyAttack-test",
+          eventId: "boneArmyAttack",
+          message: "Army",
+          timestamp: Date.now(),
+          type: "event",
+          choices: [
+            { id: "defendAgainstBoneArmy", label: "Defend", effect: () => ({}) },
+          ],
+        },
+        lastEndedAt: 0,
+      },
+    });
+    const randomSpy = vi.spyOn(Math, "random").mockReturnValue(0);
+
+    useGameStore
+      .getState()
+      .applyEventChoice("defendAgainstBoneArmy", "boneArmyAttack");
+
+    const afterChoice = useGameStore.getState();
+    expect(afterChoice.dialogHandoffPending).toBe(true);
+    expect(afterChoice.rewardDialog.isOpen).toBe(false);
+    expect(isModalDialogOpen(afterChoice)).toBe(true);
+
+    useGameStore.getState().checkEvents();
+    expect(useGameStore.getState().eventDialog.isOpen).toBe(false);
+
+    vi.advanceTimersByTime(200);
+    const afterHandoff = useGameStore.getState();
+    expect(afterHandoff.rewardDialog.isOpen).toBe(true);
+    expect(afterHandoff.dialogHandoffPending).toBe(false);
+    expect(afterHandoff.clothing.devourer_crown).toBe(true);
+    expect(afterHandoff.relics.bone_devourer_blood).toBe(true);
+    randomSpy.mockRestore();
+  });
+
+  it("queues a second reward dialog instead of overwriting the first", () => {
+    const firstRewards = { rewards: { resources: { bones: 5000 } }, variant: "success" as const };
+    const secondRewards = { rewards: { relics: ["ancient_scrolls"] }, variant: "success" as const };
+
+    useGameStore.getState().setRewardDialog(true, firstRewards);
+    useGameStore.getState().setRewardDialog(true, secondRewards);
+
+    expect(useGameStore.getState().rewardDialog.data).toEqual(firstRewards);
+
+    useGameStore.getState().setRewardDialog(false);
+    vi.advanceTimersByTime(3000 + 200 + 50);
+
+    expect(useGameStore.getState().rewardDialog.isOpen).toBe(true);
+    expect(useGameStore.getState().rewardDialog.data).toEqual(secondRewards);
+  });
+
+  it("stamps lastEndedAt for no-choice log events so a second event cannot spawn immediately", () => {
+    const checkSpy = vi.spyOn(EventManager, "checkEvents").mockReturnValue({
+      newLogEntries: [
+        {
+          id: "wizardNecromancerCastle-1",
+          eventId: "wizardNecromancerCastle",
+          message: "The wizard calls you to his tower.",
+          timestamp: Date.now(),
+          type: "event",
+        },
+      ],
+      stateChanges: {},
+    });
+
+    const before = Date.now();
+    useGameStore.getState().checkEvents();
+    const endedAt = useGameStore.getState().eventDialog.lastEndedAt ?? 0;
+
+    expect(endedAt).toBeGreaterThanOrEqual(before);
+    expect(useGameStore.getState().eventDialog.isOpen).toBe(false);
+    checkSpy.mockRestore();
   });
 });
 

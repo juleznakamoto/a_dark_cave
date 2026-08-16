@@ -5,9 +5,13 @@ import {
   getVillagersInVillage,
   getPopulationProduction,
   getTotalPopulationEffects,
+  getResourceProductionBreakdown,
+  getAssignedPopulationJobIds,
   getScholarInsightPerWorker,
   isVillagerFoodUpkeepActive,
   isVillagerWoodUpkeepActive,
+  VILLAGER_UPKEEP_SOURCE_ID,
+  DISGRACED_PRIOR_SOURCE_ID,
 } from './population';
 import { DISGRACED_PRIOR_FOOD_PER_ASSIGNED_ACTION_PER_CYCLE } from './rules/skillUpgrades';
 import { GameState } from '@shared/schema';
@@ -836,5 +840,78 @@ describe('Scholar insight production', () => {
     expect(effects.insight).toBe(1);
     expect(effects.wood).toBe(-1);
     expect(effects.food).toBe(-6);
+  });
+});
+
+describe('resource production breakdown', () => {
+  it('lists jobs then villager upkeep for a resource', () => {
+    const state = createTestState({
+      villagers: {
+        ...createTestState().villagers,
+        gatherer: 2,
+        iron_miner: 1,
+        free: 2,
+      },
+    });
+
+    expect(getAssignedPopulationJobIds(state)).toEqual(['gatherer', 'iron_miner']);
+
+    expect(getResourceProductionBreakdown(state, 'wood')).toEqual([
+      { sourceId: 'gatherer', amount: 20 },
+      { sourceId: VILLAGER_UPKEEP_SOURCE_ID, amount: -5 },
+    ]);
+    expect(getResourceProductionBreakdown(state, 'food')).toEqual([
+      { sourceId: 'iron_miner', amount: -5 },
+      { sourceId: VILLAGER_UPKEEP_SOURCE_ID, amount: -5 },
+    ]);
+    expect(getResourceProductionBreakdown(state, 'iron')).toEqual([
+      { sourceId: 'iron_miner', amount: 5 },
+    ]);
+  });
+
+  it('includes Disgraced Prior food upkeep after villager upkeep', () => {
+    const state = createTestState({
+      villagers: { ...createTestState().villagers, hunter: 1, free: 4 },
+      fellowship: { disgraced_prior: true },
+      priorAssignedActions: ['chopWood'],
+    });
+
+    expect(getResourceProductionBreakdown(state, 'food')).toEqual([
+      { sourceId: 'hunter', amount: 5 },
+      { sourceId: VILLAGER_UPKEEP_SOURCE_ID, amount: -5 },
+      {
+        sourceId: DISGRACED_PRIOR_SOURCE_ID,
+        amount: -DISGRACED_PRIOR_FOOD_PER_ASSIGNED_ACTION_PER_CYCLE,
+      },
+    ]);
+  });
+
+  it('sums to the same totals as getTotalPopulationEffects', () => {
+    const state = createTestState({
+      villagers: {
+        ...createTestState().villagers,
+        gatherer: 3,
+        hunter: 2,
+        tanner: 1,
+        free: 1,
+      },
+      buildings: { ...createTestState().buildings, tannery: 1, cabin: 1 },
+    });
+    const jobIds = getAssignedPopulationJobIds(state);
+    const totals = getTotalPopulationEffects(state, jobIds);
+    for (const [resource, total] of Object.entries(totals)) {
+      const breakdownSum = getResourceProductionBreakdown(state, resource).reduce(
+        (sum, line) => sum + line.amount,
+        0,
+      );
+      expect(breakdownSum).toBe(total);
+    }
+  });
+
+  it('returns no lines for resources with no village flow', () => {
+    const state = createTestState({
+      villagers: { ...createTestState().villagers, gatherer: 1, free: 0 },
+    });
+    expect(getResourceProductionBreakdown(state, 'gold')).toEqual([]);
   });
 });

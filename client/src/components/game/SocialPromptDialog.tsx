@@ -35,6 +35,11 @@ import {
 } from "@/game/claimSocialFollowReward";
 import { SocialPlatformGlyph } from "@/components/game/SocialPlatformGlyph";
 import { getCurrentUser } from "@/game/auth";
+import {
+  copyInviteLinkToClipboard,
+  isInviteNotSignedInError,
+} from "@/game/copyInviteLink";
+import { logger } from "@/lib/logger";
 import { Check, Circle } from "lucide-react";
 import { GameUiIcon } from "@/components/game/GameUiIcon";
 import { cn } from "@/lib/utils";
@@ -419,20 +424,26 @@ export default function SocialPromptDialog({
   };
 
   const handleCopyInvite = async () => {
-    const user = await getCurrentUser();
-    if (!user) {
+    try {
+      await copyInviteLinkToClipboard("rewards");
       toast({
-        title: t("profile.notSignedIn"),
+        title: t("invite.linkCopied"),
+        description: t("invite.linkCopiedDesc", { amount: REFERRAL_REWARD_GOLD }),
+      });
+    } catch (error) {
+      const notSignedIn = isInviteNotSignedInError(error);
+      if (!notSignedIn) {
+        logger.error("Failed to copy invite link:", error);
+      }
+      toast({
+        title: notSignedIn
+          ? t("invite.copyFailedNotSignedIn", {
+            defaultValue: "Sign in to copy your invite link",
+          })
+          : t("invite.copyFailed"),
         variant: "destructive",
       });
-      return;
     }
-    const inviteLink = `${window.location.origin}?ref=${user.id}`;
-    await navigator.clipboard.writeText(inviteLink);
-    toast({
-      title: t("invite.linkCopied"),
-      description: t("invite.linkCopiedDesc", { amount: REFERRAL_REWARD_GOLD }),
-    });
   };
 
   const referralsComplete = referralCount >= SOCIAL_PROMPT_REFERRAL_CAP;

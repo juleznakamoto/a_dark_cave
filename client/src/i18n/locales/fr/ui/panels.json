@@ -5,7 +5,7 @@
     "requiresFreeVillagers_one": "Nécessite {{count}} villageois libre",
     "requiresFreeVillagers_other": "Nécessite {{count}} villageois libres",
     "cooldownReduction": "-{{seconds}} s de recharge",
-    "abortForGold": "Annuler pour {{amount}} pièces d'or",  //x1.4
+    "abortForGold": "Annuler pour {{amount}} pièces d'or", //x1.4
     "craftTorch_one": "Torche",
     "craftTorch_other": "Torches",
     "craftBoneTotem_one": "Totem d'os",
@@ -24,17 +24,17 @@
     "sectionBuild": "Construire",
     "sectionProduce": "Produire",
     "villagers": "Villageois",
-    "villagersAvailable": "disponibles",  //x1.2
+    "villagersAvailable": "disponibles", //x1.2
     "villagersOnMission": "en mission",
-    "presetApply": "Appliquer le préréglage {{slot}}",  //x1.5
-    "presetEmpty": "Le préréglage {{slot}} est vide: sélectionnez-le, puis enregistrez vos tâches actuelles",  //x1.4
+    "presetApply": "Appliquer le préréglage {{slot}}", //x1.5
+    "presetEmpty": "Le préréglage {{slot}} est vide: sélectionnez-le, puis enregistrez vos tâches actuelles", //x1.4
     "presetLocked": "Verrouillé: disponible à l'achat",
-    "presetLockedBuilding": "{{building}} requis pour déverrouiller",  //x1.3
-    "presetSave": "Enregistrer les tâches actuelles dans le préréglage {{slot}}",  //x1.7
-    "presetSlotsPurchase": "Ajouter 2 emplacements de préréglage",  //x1.6
+    "presetLockedBuilding": "{{building}} requis pour déverrouiller", //x1.3
+    "presetSave": "Enregistrer les tâches actuelles dans le préréglage {{slot}}", //x1.7
+    "presetSlotsPurchase": "Ajouter 2 emplacements de préréglage", //x1.6
     "queueSlotsPurchase": "Ajouter 2 emplacements de file de construction",
-    "presetUnlock": "Débloquer un préréglage de métiers pour {{cost}} Perspicacité",  //x1.4
-    "queueSlotUnlock": "Débloquer un emplacement de file de construction pour {{cost}} Perspicacité",  //x1.5
+    "presetUnlock": "Débloquer un préréglage de métiers pour {{cost}} Perspicacité", //x1.4
+    "queueSlotUnlock": "Débloquer un emplacement de file de construction pour {{cost}} Perspicacité", //x1.5
     "queueSlotUsed": "Emplacement {{slot}}: construction en cours",
     "queueSlotFree": "Emplacement {{slot}}: disponible",
     "queueSlotLocked": "Emplacement {{slot}}: verrouillé",
@@ -49,27 +49,27 @@
     "lowPopulationBonus": "{{percent}} % de bonus population faible",
     "fromBuildings": "{{percent}} % grâce aux bâtiments",
     "fromBlessings": "{{percent}} % grâce aux bénédictions",
-    "fromEvents": "{{percent}} % grâce aux événements",  //x1.4
+    "fromEvents": "{{percent}} % grâce aux événements", //x1.4
     "fromHeartfire": "{{percent}} % grâce au feu du foyer",
     "merchantBlocked": "Le marchand ne peut pas être appelé tant qu'un autre événement est actif",
     "merchantAvailableIn": "Disponible dans {{time}}",
-    "merchantAbortCall": "Annuler l'appel",  //x1.4
+    "merchantAbortCall": "Annuler l'appel", //x1.4
     "investCompleteIn": "Investissement terminé dans {{time}}",
-    "investAvailableIn": "Investissements disponibles dans {{time}}",  //x1.2
-    "investPreparing": "Préparation des offres d'investissement…",  //x1.4
+    "investAvailableIn": "Investissements disponibles dans {{time}}", //x1.2
+    "investPreparing": "Préparation des offres d'investissement…", //x1.4
     "jobs": {
       "gatherer": "Collecteur",
       "hunter": "Chasseur",
-      "iron_miner": "Mineur de fer",  //x1.3
-      "coal_miner": "Mineur de charbon",  //x1.7
-      "steel_forger": "Forgeron d'acier",  //x1.3
-      "blacksteel_forger": "Forgeron d'acier noir",  //x1.2
-      "sulfur_miner": "Mineur de soufre",  //x1.3
-      "obsidian_miner": "Mineur d'obsidienne",  //x1.4
-      "adamant_miner": "Mineur d'adamantine",  //x1.5
-      "moonstone_miner": "Mineur de pierre de lune",  //x1.6
-      "powder_maker": "Fabricant de poudre",  //x1.6
-      "ashfire_dust_maker": "Fabricant de poussière de feu cendré",  //x2.0
+      "iron_miner": "Mineur de fer", //x1.3
+      "coal_miner": "Mineur de charbon", //x1.7
+      "steel_forger": "Forgeron d'acier", //x1.3
+      "blacksteel_forger": "Forgeron d'acier noir", //x1.2
+      "sulfur_miner": "Mineur de soufre", //x1.3
+      "obsidian_miner": "Mineur d'obsidienne", //x1.4
+      "adamant_miner": "Mineur d'adamantine", //x1.5
+      "moonstone_miner": "Mineur de pierre de lune", //x1.6
+      "powder_maker": "Fabricant de poudre", //x1.6
+      "ashfire_dust_maker": "Fabricant de poussière de feu cendré", //x2.0
       "tanner": "Tanneur",
       "scholar": "Érudit"
     }
@@ -77,49 +77,49 @@
   "estate": {
     "rest": "Repos",
     "sleep": "Dormir",
-    "focus": "Concentration",  //x2.6
+    "focus": "Concentration", //x2.6
     "sleepTooltipReady": "Laissez le monde avancer en votre absence",
     "sleepTooltipBlocked": "Nécessite une production positive de bois et de nourriture (bonus de production exclus)",
     "sleepTooltipCurrentProduction": "Production actuelle :",
-    "focusRewardTooltip_one": "Obtenez des récompenses x2 sur les actions pendant {{count}} minute",  //x1.5
-    "focusRewardTooltip_other": "Obtenez des récompenses x2 sur les actions pendant {{count}} minutes",  //x1.4
-    "focusPointTooltip": "Gagnez 1 point de concentration par heure de sommeil",  //x1.4
-    "sleepLength": "Durée du sommeil",  //x1.3
+    "focusRewardTooltip_one": "Obtenez des récompenses x2 sur les actions pendant {{count}} minute", //x1.5
+    "focusRewardTooltip_other": "Obtenez des récompenses x2 sur les actions pendant {{count}} minutes", //x1.4
+    "focusPointTooltip": "Gagnez 1 point de concentration par heure de sommeil", //x1.4
+    "sleepLength": "Durée du sommeil", //x1.3
     "sleepLengthDescription": "Max. {{hours}} heures de sommeil continu",
-    "sleepIntensity": "Intensité du sommeil",  //x1.3
+    "sleepIntensity": "Intensité du sommeil", //x1.3
     "sleepIntensityDescription": "Recevez {{percent}}% de la production du village pendant le sommeil",
-    "skills": "Compétences",  //x1.8
+    "skills": "Compétences", //x1.8
     "cubeWhispers": "Souvenirs murmurés",
-    "huntressTraining": "Entraînement de chasseresse",  //x1.6
+    "huntressTraining": "Entraînement de chasseresse", //x1.6
     "crushingStrike": "Frappe écrasante",
-    "bloodflameSphere": "Sphère de flamme sanglante",  //x1.5
-    "feralHowl": "Hurlement sauvage",  //x1.7
-    "tirelessWorker": "Travailleur infatigable",  //x1.5
-    "crowsEye": "Œil du corbeau",  //x1.4
-    "maxLevel": "Niveau max.",  //x1.2
+    "bloodflameSphere": "Sphère de flamme sanglante", //x1.5
+    "feralHowl": "Hurlement sauvage", //x1.7
+    "tirelessWorker": "Travailleur infatigable", //x1.5
+    "crowsEye": "Œil du corbeau", //x1.4
+    "maxLevel": "Niveau max.", //x1.2
     "improve": "Améliorer",
     "upkeepPerCycle": "{{amount}} nourriture d'entretien par action assignée par cycle",
-    "skillFoodPerHunter": "+{{amount}} nourriture par chasseur",  //x1.3
-    "skillFurPerHunter": "+{{amount}} fourrure par chasseur",  //x1.3
+    "skillFoodPerHunter": "+{{amount}} nourriture par chasseur", //x1.3
+    "skillFurPerHunter": "+{{amount}} fourrure par chasseur", //x1.3
     "skillBonesPerHunter": "+{{amount}} os par chasseur",
-    "skillHuntBonus": "+{{amount}} % de bonus de chasse",  //x1.4
-    "skillHunterFood": "Chasseur : +{{amount}} nourriture",  //x1.4
-    "skillFurBonus": "+{{amount}} fourrure",  //x1.3
+    "skillHuntBonus": "+{{amount}} % de bonus de chasse", //x1.4
+    "skillHunterFood": "Chasseur : +{{amount}} nourriture", //x1.4
+    "skillFurBonus": "+{{amount}} fourrure", //x1.3
     "skillBonesBonus": "+{{amount}} os",
     "skillDamageBonus": "+{{amount}} dégâts",
-    "skillStunRound_one": "+{{amount}} tour d'étourdissement",  //x1.5
-    "skillStunRound_other": "+{{amount}} tours d'étourdissement",  //x1.5
+    "skillStunRound_one": "+{{amount}} tour d'étourdissement", //x1.5
+    "skillStunRound_other": "+{{amount}} tours d'étourdissement", //x1.5
     "skillSuccessChanceBonus": "+{{amount}} % de chance de succès",
     "crushingStrikeSummary": "{{damage}} dégâts, {{rounds}} étourdissement, {{success}} % de succès",
-    "skillBurnDamage": "+{{amount}} dégâts de brûlure",  //x1.3
-    "skillBurnRound_one": "+{{amount}} tour de brûlure",  //x1.2
-    "skillBurnRound_other": "+{{amount}} tours de brûlure",  //x1.2
+    "skillBurnDamage": "+{{amount}} dégâts de brûlure", //x1.3
+    "skillBurnRound_one": "+{{amount}} tour de brûlure", //x1.2
+    "skillBurnRound_other": "+{{amount}} tours de brûlure", //x1.2
     "skillHealthCost": "+{{amount}} coût en santé",
     "bloodflameSummary": "{{damage}} dégâts pendant {{rounds}} tours, {{health}} coût en santé",
     "bloodflameSummary_one": "{{damage}} dégâts pendant {{rounds}} tour, {{health}} coût en santé",
     "skillEnemyDamageReduction": "-{{amount}} % dégâts ennemis",
-    "skillDebuffRound_one": "+{{amount}} tour d'affaiblissement",  //x1.4
-    "skillDebuffRound_other": "+{{amount}} tours d'affaiblissement",  //x1.4
+    "skillDebuffRound_one": "+{{amount}} tour d'affaiblissement", //x1.4
+    "skillDebuffRound_other": "+{{amount}} tours d'affaiblissement", //x1.4
     "skillCritDamageBonus": "+{{amount}} % dégâts critiques",
     "feralHowlSummary": "{{success}} % de succès, -{{reduction}} % dégâts ennemis pendant {{rounds}} tours, +{{crit}} % dégâts critiques",
     "feralHowlSummary_one": "{{success}} % de succès, -{{reduction}} % dégâts ennemis pendant {{rounds}} tour, +{{crit}} % dégâts critiques",
@@ -132,27 +132,27 @@
     "priorSummaryBonus": "{{actions}} actions, +{{bonus}} % de bonus, {{upkeep}}",
     "priorSummaryNoBonus_one": "{{count}} action simultanée, {{upkeep}}",
     "priorSummaryNoBonus_other": "{{count}} actions simultanées, {{upkeep}}",
-    "chainmaster": "Maître des chaînes",  //x1.6
+    "chainmaster": "Maître des chaînes", //x1.6
     "chainmasterProductionBonus": "+{{percent}} % de production des villageois",
     "chainmasterDisgustDuration": "Dégoût des villageois : {{minutes}} min",
     "chainmasterSummary": "+{{percent}} % de production des villageois"
   },
   "bonuses": {
-    "caveExplore": "Exploration de grotte",  //x1.8
-    "chopWood": "Couper du bois",  //x1.6
+    "caveExplore": "Exploration de grotte", //x1.8
+    "chopWood": "Couper du bois", //x1.6
     "hunt": "Chasse",
     "mineAll": "Mine (tout)",
-    "mineStone": "Extraire de la pierre",  //x2.1
-    "mineIron": "Extraire du fer",  //x1.7
-    "mineCoal": "Extraire du charbon",  //x2.1
-    "mineSulfur": "Extraire du soufre",  //x1.6
-    "mineObsidian": "Extraire de l'obsidienne",  //x1.8
-    "mineAdamant": "Extraire de l'adamantine",  //x2.0
-    "mineMoonstone": "Extraire de la pierre de lune",  //x2.1
+    "mineStone": "Extraire de la pierre", //x2.1
+    "mineIron": "Extraire du fer", //x1.7
+    "mineCoal": "Extraire du charbon", //x2.1
+    "mineSulfur": "Extraire du soufre", //x1.6
+    "mineObsidian": "Extraire de l'obsidienne", //x1.8
+    "mineAdamant": "Extraire de l'adamantine", //x2.0
+    "mineMoonstone": "Extraire de la pierre de lune", //x2.1
     "boneTotems": "Totems d'os",
     "leatherTotems": "Totems de cuir",
-    "craftDiscount": "Réduction d'artisanat",  //x1.5
-    "buildDiscount": "Réduction de construction",  //x1.8
+    "craftDiscount": "Réduction d'artisanat", //x1.5
+    "buildDiscount": "Réduction de construction", //x1.8
     "doubleGainChance": "Chance de gain double"
   },
   "badges": {
@@ -164,11 +164,11 @@
     "insightRevealBuildingDescriptions": "Révéler les descriptions de bâtiments pour {{cost}} {{resource}}",
     "insightRevealCraftDescriptions": "Révéler les descriptions d'artisanat pour {{cost}} {{resource}}",
     "bonus": "Bonus :",
-    "nextBonus": "Prochain bonus :",  //x1.5
-    "craftMultiplier": "Artisanat x{{amount}}",  //x1.2
+    "nextBonus": "Prochain bonus :", //x1.5
+    "craftMultiplier": "Artisanat x{{amount}}", //x1.2
     "bonusPercent": "+{{percent}} %",
-    "maxLevel": "niveau max.",  //x1.2
-    "executionTimeReduction": "-50 % de temps d'exécution"  //x1.4
+    "maxLevel": "niveau max.", //x1.2
+    "executionTimeReduction": "-50 % de temps d'exécution" //x1.4
   },
   "sidePanel": {
     "bastion": "Bastion",
@@ -182,25 +182,25 @@
     "clothing": "Vêtements",
     "relics": "Reliques",
     "schematics": "Schémas",
-    "blessings": "Bénédictions",  //x1.3
+    "blessings": "Bénédictions", //x1.3
     "buildings": "Bâtiments",
     "books": "Livres",
     "fellowship": "Compagnie",
-    "stats": "Statistiques",  //x2.4
+    "stats": "Statistiques", //x2.4
     "bonuses": "Bonus",
     "fortifications": "Fortifications",
-    "combatItems": "Objets de combat",  //x1.3
-    "mapFragments": "Fragments de carte",  //x1.4
-    "craftDiscount": "Réduction d'artisanat",  //x1.5
-    "buildDiscount": "Réduction de construction",  //x1.8
-    "constructionTime": "Temps de construction",  //x1.2
+    "combatItems": "Objets de combat", //x1.3
+    "mapFragments": "Fragments de carte", //x1.4
+    "craftDiscount": "Réduction d'artisanat", //x1.5
+    "buildDiscount": "Réduction de construction", //x1.8
+    "constructionTime": "Temps de construction", //x1.2
     "productionBonus": "Bonus de production",
     "doubleGainChance": "Chance de gain double",
     "populationTooltip": "Chaque villageois consomme 1 nourriture et 1 bois",
     "resourceLimitMax": "max. {{limit}}",
-    "resourceLimitTooltip": "pas de limite pour l'argent, l'or et la perspicacité",  //x1.5
-    "statsTooltip": "Les statistiques influencent l'issue des événements et confèrent des effets spécifiques qui se révèlent au fil de la progression.",  //x1.4
-    "statLuckTooltip": "Incline la fortune en votre faveur",  //x1.4
+    "resourceLimitTooltip": "pas de limite pour l'argent, l'or et la perspicacité", //x1.5
+    "statsTooltip": "Les statistiques influencent l'issue des événements et confèrent des effets spécifiques qui se révèlent au fil de la progression.", //x1.4
+    "statLuckTooltip": "Incline la fortune en votre faveur", //x1.4
     "statStrengthTooltip": "Aide là où les mots atteignent leurs limites",
     "statKnowledgeTooltip": "Influence les choses où l'astuce aide",
     "statMadnessTooltip": "Mène les pensées sur des chemins dangereux",
@@ -212,7 +212,7 @@
     "statLuckEffectGambling": "Mise max. de {{amount}} d'or chez le Joueur",
     "statStrengthEffectBastion": "+{{value}} d'attaque de la Bastion (½ de Force)",
     "statKnowledgeEffectMerchant": "{{percent}} % de réduction chez le marchand itinérant",
-    "statKnowledgeEffectDecisionTime": "+{{seconds}} s de temps de décision dans les événements chronométrés",  //x1.6
+    "statKnowledgeEffectDecisionTime": "+{{seconds}} s de temps de décision dans les événements chronométrés", //x1.6
     "statKnowledgeEffectCombatItems": "+{{bombDamage}} de dégâts des bombes (+2 par 5 de Savoir), +{{arrowDamage}} de dégâts des flèches empoisonnées (+1 par 5 de Savoir)",
     "statMadnessEffectProduction": "−{{percent}} % de production du village",
     "statMadnessEffectCombat": "{{percent}} % de chances d'échec de l'attaque au combat",
@@ -221,6 +221,7 @@
     "madnessFromBuildings": "{{value}} des bâtiments",
     "madnessFromEvents": "{{value}} des événements",
     "bonusSourceEffect": "{{source}}: {{effect}}",
+    "resourceFlowLine": "{{source}} {{amount}}",
     "bastionDefenseTooltip": "Réduit les dégâts entrants pendant le combat",
     "bastionIntegrityTooltip": "Si l'intégrité atteint 0, vous perdez le combat",
     "bastionAttackTooltip": "Dégâts infligés aux ennemis à chaque tour de combat",
@@ -230,9 +231,9 @@
   "achievements": {
     "title": "Notes du survivant",
     "notUnlocked": "Pas encore débloqué.",
-    "chartUnavailable": "Graphique indisponible",  //x1.3
+    "chartUnavailable": "Graphique indisponible", //x1.3
     "claim": "Récupérer",
-    "unlockTitleForInsight": "Débloquer le titre pour {{cost}} Perspicacité",  //x1.4
+    "unlockTitleForInsight": "Débloquer le titre pour {{cost}} Perspicacité", //x1.4
     "completeLog": "Succès terminé : {{name}} : {{rewards}}",
     "categories": {
       "basic": "Bases",
@@ -243,14 +244,14 @@
     }
   },
   "idleMode": {
-    "title": "Mode sommeil",  //x1.2
-    "sleeping": "En train de dormir",  //x2.3
-    "awake": "Vous êtes réveillé !",  //x1.4
+    "title": "Mode sommeil", //x1.2
+    "sleeping": "En train de dormir", //x2.3
+    "awake": "Vous êtes réveillé !", //x1.4
     "wakingIn": "Réveil dans : {{time}}",
     "villageProduction": "Production du village : {{percent}}%",
-    "wake": "Se réveiller maintenant",  //x2.1
+    "wake": "Se réveiller maintenant", //x2.1
     "getUp": "Se lever",
-    "focusGainedLog": "Vous avez gagné {{count}} de concentration grâce à votre repos.",  //x1.5
+    "focusGainedLog": "Vous avez gagné {{count}} de concentration grâce à votre repos.", //x1.5
     "villagersProducedLog": "Les villageois ont produit : {{resources}}"
   }
 }

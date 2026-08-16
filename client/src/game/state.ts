@@ -252,6 +252,12 @@ interface GameStore extends GameState {
      */
     lastEndedAt?: number;
   };
+  /**
+   * True while a follow-up modal (reward, outcome, etc.) is scheduled after
+   * closing another dialog. Freezes sim so a second event cannot spawn in the gap.
+   * Runtime-only; not persisted.
+   */
+  dialogHandoffPending: boolean;
   combatDialog: {
     isOpen: boolean;
     enemy: any | null;
@@ -1029,7 +1035,7 @@ function scheduleMadnessDialogWhenClear(
 ): void {
   scheduleWhenDialogClear(
     get,
-    (store) => isModalDialogOpen(store) && !store.madnessDialog.isOpen,
+    (store) => isVisibleModalDialogOpen(store) && !store.madnessDialog.isOpen,
     () => get().setMadnessDialog(true, data),
     initialDelayMs,
   );
@@ -1042,7 +1048,7 @@ function scheduleInsightPotionDialogWhenClear(
 ): void {
   scheduleWhenDialogClear(
     get,
-    (store) => isModalDialogOpen(store) && !store.insightPotionDialog.isOpen,
+    (store) => isVisibleModalDialogOpen(store) && !store.insightPotionDialog.isOpen,
     () => get().setInsightPotionDialog(true, data),
     initialDelayMs,
   );
@@ -1055,7 +1061,7 @@ function scheduleVillageEffectDialogWhenClear(
 ): void {
   scheduleWhenDialogClear(
     get,
-    (store) => isModalDialogOpen(store) && !store.villageEffectDialog.isOpen,
+    (store) => isVisibleModalDialogOpen(store) && !store.villageEffectDialog.isOpen,
     () => get().setVillageEffectDialog(true, data),
     initialDelayMs,
   );
@@ -1718,9 +1724,14 @@ function isNonRewardBlockingModalOpen(state: GameStore): boolean {
   return isBlockingDialogOpen(state);
 }
 
+/** Visible reward or blocking modal, excluding the post-close handoff gap. */
+function isVisibleModalDialogOpen(state: GameStore): boolean {
+  return state.rewardDialog.isOpen || isNonRewardBlockingModalOpen(state);
+}
+
 /** True while simulation should freeze (loop, attack-wave timers, random events, etc.). */
 export function isModalDialogOpen(state: GameStore): boolean {
-  return state.rewardDialog.isOpen || isNonRewardBlockingModalOpen(state);
+  return isVisibleModalDialogOpen(state) || Boolean(state.dialogHandoffPending);
 }
 
 /**
@@ -1729,7 +1740,7 @@ export function isModalDialogOpen(state: GameStore): boolean {
  * players should still switch tabs with 1–9 / arrows while a visit is open.
  */
 export function shouldBlockGameHotkeys(state: GameStore): boolean {
-  return state.rewardDialog.isOpen || isBlockingDialogOpen(state);
+  return isModalDialogOpen(state);
 }
 
 /**
@@ -1740,8 +1751,7 @@ export function shouldBlockGameHotkeys(state: GameStore): boolean {
 export function shouldFreezeTimedEventTabCountdown(state: GameStore): boolean {
   return (
     state.isPaused ||
-    state.rewardDialog.isOpen ||
-    isBlockingDialogOpen(state) ||
+    isModalDialogOpen(state) ||
     isGameTabHidden()
   );
 }
@@ -1785,12 +1795,17 @@ function scheduleWhenDialogClear(
   }, initialDelayMs);
 }
 
+function beginDialogHandoff(set: GameStoreSetter): void {
+  set({ dialogHandoffPending: true });
+}
+
 function openEventDialogNow(
   set: GameStoreSetter,
   currentEvent: LogEntry,
 ): void {
   set((state) => ({
     ...state,
+    dialogHandoffPending: false,
     eventDialog: {
       isOpen: true,
       currentEvent,
@@ -1829,9 +1844,10 @@ function scheduleEventDialogWhenClear(
 }
 
 /**
- * After `initialDelayMs`, opens the reward dialog only when no other blocking modal is open;
+ * After `initialDelayMs`, opens the reward dialog only when no visible modal is open;
  * otherwise retries every {@link DIALOG_DEFER_POLL_MS} and waits {@link DIALOG_HANDOFF_DELAY_MS}
  * after the blocking dialog closes so back-to-back popups do not feel spammed.
+ * Waits for an already-open reward so a second outcome cannot overwrite the first.
  */
 function scheduleRewardDialogWhenClear(
   get: () => GameStore,
@@ -1840,7 +1856,7 @@ function scheduleRewardDialogWhenClear(
 ): void {
   scheduleWhenDialogClear(
     get,
-    isNonRewardBlockingModalOpen,
+    isVisibleModalDialogOpen,
     () => get().setRewardDialog(true, data),
     initialDelayMs,
   );
@@ -1897,6 +1913,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
     currentEvent: null,
     lastEndedAt: 0,
   },
+  dialogHandoffPending: false,
   combatDialog: {
     isOpen: false,
     enemy: null,
@@ -2282,6 +2299,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
           delete (result.stateUpdates as any)._logMessage;
         }
 
+        beginDialogHandoff(set);
         scheduleRewardDialogWhenClear(
           get,
           { rewards, successLog },
@@ -2295,6 +2313,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
       const insightGain = detectRewards(result.stateUpdates, state, actionId)
         ?.resources?.insight;
       if (typeof insightGain === "number" && insightGain > 0) {
+        beginDialogHandoff(set);
         scheduleInsightPotionDialogWhenClear(get, { insightGain }, 500);
       }
     }
@@ -2404,6 +2423,15 @@ export const useGameStore = create<GameStore>((set, get) => ({
 
     // Handle event dialogs
     if (result.logEntries) {
+      const willOpenChoiceDialog = result.logEntries.some(
+        (entry) =>
+          Boolean(entry.choices?.length) &&
+          !getClarityElixirCaveEventId(entry) &&
+          !getCaveWallMarkingsEventId(entry),
+      );
+      if (willOpenChoiceDialog) {
+        beginDialogHandoff(set);
+      }
       result.logEntries.forEach((entry) => {
         if (!entry.choices?.length) return;
 
@@ -3732,11 +3760,16 @@ export const useGameStore = create<GameStore>((set, get) => ({
               get().setEventDialog(true, entry);
             }
           } else if (hasLogEntryText(entry)) {
-            // Only add to log if it's not a choice event
+            // Stamp lastEndedAt so a same-frame catch-up roll cannot also
+            // spawn a choice event (no-choice beats do not open EventDialog).
             set((prevState) => ({
               log: [...prevState.log, entry].slice(
                 -GAME_CONSTANTS.LOG_MAX_ENTRIES,
               ),
+              eventDialog: {
+                ...prevState.eventDialog,
+                lastEndedAt: Date.now(),
+              },
             }));
           }
         });
@@ -4009,12 +4042,14 @@ export const useGameStore = create<GameStore>((set, get) => ({
 
     // Show reward/outcome dialog before madness-only popup so narrative + gains are visible.
     if (shouldShowRewardDialog && rewardDialogData) {
+      beginDialogHandoff(set);
       get().setEventDialog(false);
       scheduleRewardDialogWhenClear(get, rewardDialogData, 200);
       return true;
     }
 
     if (shouldShowMadnessDialog && madnessDialogData) {
+      beginDialogHandoff(set);
       get().setEventDialog(false);
       scheduleMadnessDialogWhenClear(get, madnessDialogData, 200);
       return true;
@@ -4033,6 +4068,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
       !shouldShowRewardDialog &&
       !shouldShowMadnessDialog
     ) {
+      beginDialogHandoff(set);
       get().setEventDialog(false);
       const storedTitle =
         logEntry?.title && !isI18nReturnedObjectError(logEntry.title)
@@ -4420,9 +4456,12 @@ export const useGameStore = create<GameStore>((set, get) => ({
   setEventDialog: (isOpen: boolean, currentEvent?: LogEntry) => {
     if (isOpen && currentEvent) {
       const store = get();
-      // Replace in-place when the event dialog is already showing; otherwise wait for
-      // any blocking modal (rewards, social prompts, combat, etc.) to clear first.
-      if (isModalDialogOpen(store) && !store.eventDialog.isOpen) {
+      const eventAlreadyShowing = Boolean(
+        store.eventDialog.isOpen && store.eventDialog.currentEvent,
+      );
+      // Queue behind an already-open event instead of replacing it. Outcome
+      // follow-ups close first, then reopen during the handoff gap.
+      if (eventAlreadyShowing || isVisibleModalDialogOpen(store)) {
         scheduleEventDialogWhenClear(get, set, currentEvent, 0);
         return;
       }
@@ -4908,6 +4947,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
       const title =
         resolveEventTitle("insightBlessingOffer", undefined, state) ||
         tWithFallback("ui", "event.fallbackTitle", "Event");
+      beginDialogHandoff(set);
       scheduleRewardDialogWhenClear(
         get,
         {
@@ -5141,17 +5181,26 @@ export const useGameStore = create<GameStore>((set, get) => ({
   },
 
   setRewardDialog: (isOpen, data) => {
-    set((state) => ({
+    if (isOpen && data) {
+      const store = get();
+      if (store.rewardDialog.isOpen) {
+        scheduleRewardDialogWhenClear(get, data, 0);
+        return;
+      }
+    }
+
+    set(() => ({
       rewardDialog: {
         isOpen,
         data: data || null,
       },
+      ...(isOpen ? { dialogHandoffPending: false } : {}),
     }));
   },
   setMadnessDialog: (isOpen, data) => {
     if (isOpen && data) {
       const store = get();
-      if (isModalDialogOpen(store) && !store.madnessDialog.isOpen) {
+      if (isVisibleModalDialogOpen(store) && !store.madnessDialog.isOpen) {
         scheduleMadnessDialogWhenClear(get, data, 0);
         return;
       }
@@ -5162,12 +5211,13 @@ export const useGameStore = create<GameStore>((set, get) => ({
         isOpen,
         data: data || null,
       },
+      ...(isOpen ? { dialogHandoffPending: false } : {}),
     }));
   },
   setInsightPotionDialog: (isOpen, data) => {
     if (isOpen && data) {
       const store = get();
-      if (isModalDialogOpen(store) && !store.insightPotionDialog.isOpen) {
+      if (isVisibleModalDialogOpen(store) && !store.insightPotionDialog.isOpen) {
         scheduleInsightPotionDialogWhenClear(get, data, 0);
         return;
       }
@@ -5178,12 +5228,13 @@ export const useGameStore = create<GameStore>((set, get) => ({
         isOpen,
         data: data || null,
       },
+      ...(isOpen ? { dialogHandoffPending: false } : {}),
     }));
   },
   setVillageEffectDialog: (isOpen, data) => {
     if (isOpen && data) {
       const store = get();
-      if (isModalDialogOpen(store) && !store.villageEffectDialog.isOpen) {
+      if (isVisibleModalDialogOpen(store) && !store.villageEffectDialog.isOpen) {
         scheduleVillageEffectDialogWhenClear(get, data, 0);
         return;
       }
@@ -5194,6 +5245,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
         isOpen,
         data: data ?? null,
       },
+      ...(isOpen ? { dialogHandoffPending: false } : {}),
     }));
   },
 }));

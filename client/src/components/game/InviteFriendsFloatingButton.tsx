@@ -62,7 +62,7 @@ export default function InviteFriendsFloatingButton() {
 
   const handleCopyInviteLink = async () => {
     try {
-      await copyInviteLinkToClipboard();
+      await copyInviteLinkToClipboard("floating");
       toast({
         title: t("invite.linkCopied"),
         description: t("invite.linkCopiedDesc", { amount: REFERRAL_REWARD_GOLD }),

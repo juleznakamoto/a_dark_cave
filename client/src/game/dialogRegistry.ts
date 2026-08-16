@@ -174,6 +174,15 @@ export const GAME_DIALOG_REGISTRY: readonly DialogRegistryEntry[] = [
     resetOnLoad: CLOSED_DATA_DIALOG,
   },
   {
+    id: "dialogHandoff",
+    storeKey: "dialogHandoffPending",
+    kind: "boolean",
+    // Pause is applied in isModalDialogOpen (not isBlockingDialogOpen) so the
+    // scheduled follow-up can still open during the handoff gap.
+    blocking: false,
+    resetOnLoad: false,
+  },
+  {
     id: "leaderboard",
     storeKey: "leaderboardDialogOpen",
     kind: "boolean",

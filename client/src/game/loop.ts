@@ -432,9 +432,14 @@ export function startGameLoop() {
       eventCheckAccumulator += deltaTime;
       while (eventCheckAccumulator >= EVENT_CHECK_INTERVAL) {
         eventCheckAccumulator -= EVENT_CHECK_INTERVAL;
-        if (!useGameStore.getState().idleModeState?.isActive) {
-          processEventCheck();
+        const eventCheckState = useGameStore.getState();
+        if (
+          eventCheckState.idleModeState?.isActive ||
+          isModalDialogOpen(eventCheckState)
+        ) {
+          continue;
         }
+        processEventCheck();
       }
 
       // Auto-save logic (skip if inactive, recently loaded, or in sleep/idle mode)

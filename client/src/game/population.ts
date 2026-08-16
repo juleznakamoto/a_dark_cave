@@ -587,54 +587,115 @@ export function isVillagerWoodUpkeepActive(
   return !!state.story?.seen?.hasHunted;
 }
 
+/** Base food/wood upkeep line in resource-flow tooltips (1 per villager). */
+export const VILLAGER_UPKEEP_SOURCE_ID = "villagers";
+/** Disgraced Prior food upkeep line in resource-flow tooltips. */
+export const DISGRACED_PRIOR_SOURCE_ID = "disgraced_prior";
+
+export type PopulationResourceFlowLine = {
+  sourceId: string;
+  resource: string;
+  amount: number;
+};
+
+/** Job ids that currently have at least one assigned villager. */
+export function getAssignedPopulationJobIds(state: GameState): string[] {
+  return Object.keys(populationJobs).filter(
+    (id) => (state.villagers[id as keyof GameState["villagers"]] ?? 0) > 0,
+  );
+}
+
+function pushFlowLine(
+  lines: PopulationResourceFlowLine[],
+  sourceId: string,
+  resource: string,
+  amount: number,
+): void {
+  if (amount === 0) return;
+  lines.push({ sourceId, resource, amount });
+}
+
+/**
+ * Per-source village production and consumption for one cycle.
+ * Job lines first (definition order), then villager upkeep, then Prior.
+ */
+export function getPopulationResourceFlows(
+  state: GameState,
+  visibleJobIds: string[],
+  options?: GetPopulationProductionOptions,
+): PopulationResourceFlowLine[] {
+  const lines: PopulationResourceFlowLine[] = [];
+
+  const jobIdsInOrder = Object.keys(populationJobs).filter((jobId) =>
+    visibleJobIds.includes(jobId),
+  );
+  for (const jobId of jobIdsInOrder) {
+    const currentCount =
+      state.villagers[jobId as keyof typeof state.villagers] || 0;
+    if (currentCount <= 0) continue;
+    const production = getPopulationProduction(
+      jobId,
+      currentCount,
+      state,
+      options,
+    );
+    for (const prod of production) {
+      pushFlowLine(lines, jobId, prod.resource, prod.totalAmount);
+    }
+  }
+
+  const totalPopulation = getCurrentPopulation(state);
+  if (totalPopulation > 0) {
+    if (isVillagerWoodUpkeepActive(state)) {
+      pushFlowLine(lines, VILLAGER_UPKEEP_SOURCE_ID, "wood", -totalPopulation);
+    }
+    if (isVillagerFoodUpkeepActive(state)) {
+      pushFlowLine(lines, VILLAGER_UPKEEP_SOURCE_ID, "food", -totalPopulation);
+    }
+  }
+
+  const excludeTemporaryBonuses = options?.excludeTemporaryBonuses ?? false;
+  if (!excludeTemporaryBonuses) {
+    const priorUpkeep = getDisgracedPriorFoodUpkeepPerCycle(state);
+    if (priorUpkeep > 0) {
+      pushFlowLine(lines, DISGRACED_PRIOR_SOURCE_ID, "food", -priorUpkeep);
+    }
+  }
+
+  return lines;
+}
+
+/** Job/upkeep lines that touch one resource (side-panel tooltip). */
+export function getResourceProductionBreakdown(
+  state: GameState,
+  resource: string,
+  options?: GetPopulationProductionOptions,
+): Array<{ sourceId: string; amount: number }> {
+  return getPopulationResourceFlows(
+    state,
+    getAssignedPopulationJobIds(state),
+    options,
+  )
+    .filter((line) => line.resource === resource)
+    .map(({ sourceId, amount }) => ({ sourceId, amount }));
+}
+
+export function hasResourceProductionBreakdown(
+  state: GameState,
+  resource: string,
+): boolean {
+  return getResourceProductionBreakdown(state, resource).length > 0;
+}
+
 export const getTotalPopulationEffects = (
   state: GameState,
   visibleJobIds: string[],
   options?: GetPopulationProductionOptions,
 ): Record<string, number> => {
   const totalEffects: Record<string, number> = {};
-
-  // Calculate total population for base consumption
-  const totalPopulation = getCurrentPopulation(state);
-
-  // Base consumption (1 per villager per 15s) — only after upkeep is active in the loop
-  if (totalPopulation > 0) {
-    if (isVillagerWoodUpkeepActive(state)) {
-      totalEffects.wood = (totalEffects.wood || 0) - totalPopulation;
-    }
-    if (isVillagerFoodUpkeepActive(state)) {
-      totalEffects.food = (totalEffects.food || 0) - totalPopulation;
-    }
+  for (const line of getPopulationResourceFlows(state, visibleJobIds, options)) {
+    totalEffects[line.resource] = (totalEffects[line.resource] || 0) + line.amount;
   }
-
-  // Calculate production for each visible job
-  visibleJobIds.forEach((jobId) => {
-    const currentCount =
-      state.villagers[jobId as keyof typeof state.villagers] || 0;
-    if (currentCount > 0) {
-      const production = getPopulationProduction(
-        jobId,
-        currentCount,
-        state,
-        options,
-      );
-      production.forEach((prod) => {
-        totalEffects[prod.resource] =
-          (totalEffects[prod.resource] || 0) + prod.totalAmount;
-      });
-    }
-  });
-
-  // Disgraced Prior upkeep (see handlePopulationSurvival). Omitted when excludeTemporaryBonuses:
-  // during sleep the game loop skips production and the Prior does not run.
-  const excludeTemporaryBonuses = options?.excludeTemporaryBonuses ?? false;
-  if (!excludeTemporaryBonuses) {
-    const priorUpkeep = getDisgracedPriorFoodUpkeepPerCycle(state);
-    if (priorUpkeep > 0) {
-      totalEffects.food = (totalEffects.food || 0) - priorUpkeep;
-    }
-  }
-
   return totalEffects;
 };
 

@@ -6,6 +6,7 @@ import SidePanelSection, {
 } from "./SidePanelSection";
 import StatEffectsTooltip from "@/components/game/StatEffectsTooltip";
 import BonusCompositionTooltip from "@/components/game/BonusCompositionTooltip";
+import ResourceFlowTooltip from "@/components/game/ResourceFlowTooltip";
 import { ActionTooltipSeparator } from "@/game/rules/actionTooltipLayout";
 import { hasBonusComposition } from "@/game/rules/bonusComposition";
 import { ResourceCoinIcon } from "@/components/ui/resource-coin-icon";
@@ -54,7 +55,11 @@ import {
   shouldHideBuilding,
   shouldExcludeFromBuildingsSection,
 } from "@/game/buildingHierarchy";
-import { getTotalPopulationEffects } from "@/game/population";
+import {
+  getAssignedPopulationJobIds,
+  getTotalPopulationEffects,
+  hasResourceProductionBreakdown,
+} from "@/game/population";
 import { getMapFragmentCount } from "@/game/mapFragments";
 import { getSeenResourceKeys } from "@/game/stateHelpers";
 
@@ -210,13 +215,16 @@ export default function SidePanel() {
   );
 
   // Net production per resource (for sidepanel delta column)
+  const assignedJobIds = getAssignedPopulationJobIds(gameState);
   const productionDeltas: Record<string, number> = getTotalPopulationEffects(
     gameState,
-    Object.keys(gameState.villagers).filter(
-      (id) =>
-        (gameState.villagers[id as keyof typeof gameState.villagers] ?? 0) > 0,
-    ),
+    assignedJobIds,
   );
+
+  const resourceFlowTooltip = (resourceId: string) =>
+    hasResourceProductionBreakdown(gameState, resourceId) ? (
+      <ResourceFlowTooltip resourceId={resourceId} />
+    ) : undefined;
 
   // Create resource items with special styling for gold and silver
   const resourceItems = [
@@ -240,6 +248,7 @@ export default function SidePanel() {
       ),
       value: resources[key as keyof typeof resources] ?? 0,
       productionDelta: productionDeltas[key] ?? undefined,
+      tooltip: resourceFlowTooltip(key),
       testId: `resource-${key}`,
       visible: true,
       isPrecious: true,
@@ -252,6 +261,7 @@ export default function SidePanel() {
       label: getResourceName(key, capitalizeWords(key)),
       value: resources[key as keyof typeof resources] ?? 0,
       productionDelta: productionDeltas[key] ?? undefined,
+      tooltip: resourceFlowTooltip(key),
       testId: `resource-${key}`,
       visible: true,
     })),

@@ -957,7 +957,7 @@ export default function SidePanelSection({
           EFFECT_TOOLTIP_SECTIONS.has(sectionId)) ||
         (hasTooltip &&
           (sectionId === "fortifications" || sectionId === "buildings")) ||
-        Boolean(item.tooltip);
+        (Boolean(item.tooltip) && sectionId !== "resources");
 
     const newItemPulseClass =
       shouldPulse && !hoveredTooltips[item.id] ? "new-item-pulse" : "";
