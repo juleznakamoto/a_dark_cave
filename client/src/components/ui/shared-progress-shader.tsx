@@ -534,7 +534,8 @@ export function SharedProgressShaderHost({
     if (!canvas || !host) return;
 
     activeRef.current = true;
-    let frameCount = 0;
+    const FRAME_INTERVAL_MS = 1000 / 15;
+    let lastFrameTime = 0;
     let cancelled = false;
     let idleId: number | undefined;
     let timeoutId: ReturnType<typeof setTimeout> | undefined;
@@ -553,28 +554,29 @@ export function SharedProgressShaderHost({
       renderer.resizeToDisplay(rect.width, rect.height, dpr);
     };
 
-    const loop = () => {
+    const loop = (now: number) => {
       if (!activeRef.current || !rendererRef.current || document.hidden) {
         return;
       }
-      // ~15fps: same budget as shop SmokeShader.
-      if (frameCount % 4 === 0) {
-        const renderer = rendererRef.current;
-        if (renderer) {
-          const canvasRect = canvas.getBoundingClientRect();
-          const dpr = Math.min(window.devicePixelRatio || 1, 2);
-          renderer.resizeToDisplay(canvasRect.width, canvasRect.height, dpr);
-          const list: SegmentRegistration[] = [];
-          segmentsRef.current.forEach((element, id) => {
-            list.push({ id, element });
-          });
-          renderer.render(list, canvasRect, dpr);
-        }
-        const rimLayer = rimLayerRef.current;
-        if (rimLayer) syncSegmentRims(host, rimLayer);
-      }
-      frameCount++;
       rafRef.current = requestAnimationFrame(loop);
+      // 15fps wall-clock cap (not "every 4th rAF") so 120Hz stays at 15.
+      if (lastFrameTime > 0 && now - lastFrameTime < FRAME_INTERVAL_MS) {
+        return;
+      }
+      lastFrameTime = now;
+      const renderer = rendererRef.current;
+      if (renderer) {
+        const canvasRect = canvas.getBoundingClientRect();
+        const dpr = Math.min(window.devicePixelRatio || 1, 2);
+        renderer.resizeToDisplay(canvasRect.width, canvasRect.height, dpr);
+        const list: SegmentRegistration[] = [];
+        segmentsRef.current.forEach((element, id) => {
+          list.push({ id, element });
+        });
+        renderer.render(list, canvasRect, dpr);
+      }
+      const rimLayer = rimLayerRef.current;
+      if (rimLayer) syncSegmentRims(host, rimLayer);
     };
 
     const startLoop = () => {

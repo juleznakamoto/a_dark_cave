@@ -69,8 +69,8 @@ function isInUpperLeftQuadrantHotZone(
 }
 
 const START_FOOTER_LINK_BASE =
-  "inline-flex items-center gap-0 sm:gap-1 hover:text-foreground transition-opacity";
-const START_FOOTER_SOCIAL_LINK = `${START_FOOTER_LINK_BASE} opacity-70 hover:opacity-100`;
+  "inline-flex items-center gap-0 sm:gap-1 font-normal text-muted-foreground hover:text-foreground transition-opacity";
+const START_FOOTER_SOCIAL_LINK = `${START_FOOTER_LINK_BASE} text-2xs sm:text-xs opacity-70 hover:opacity-100`;
 const START_FOOTER_LEGAL_LINK = `${START_FOOTER_LINK_BASE} opacity-40 hover:opacity-100 text-3xs sm:text-2xs`;
 /** Icon controls (language / music / sfx): same color/opacity as social text links; kill ghost Button accent hover. */
 const START_FOOTER_ICON_BTN = `${START_FOOTER_SOCIAL_LINK} shrink-0 p-0 w-7 h-7 justify-center bg-transparent ${GAME_CHROME_NO_BG_HOVER} shadow-none`;

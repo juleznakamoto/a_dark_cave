@@ -57,11 +57,9 @@ export default function FooterNetworkMenu({
           <GameUiIcon
             name="network"
             sizeClassName={iconSizeClassName}
-            className={cn("text-neutral-300 group-hover:!text-neutral-300", iconClassName)}
+            className={iconClassName}
           />
-          <span className={cn("text-neutral-300 group-hover:!text-neutral-300", labelClassName)}>
-            {socialLabel}
-          </span>
+          <span className={labelClassName}>{socialLabel}</span>
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent

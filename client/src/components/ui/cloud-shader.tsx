@@ -237,13 +237,17 @@ export default function CloudShader({ className = "" }: CloudShaderProps) {
               rendererRef.current = renderer;
               setVisible(true); // fade-in once
 
-              // animation loop
-              let frameCount = 0;
+              const FRAME_INTERVAL_MS = 1000 / 30;
+              let lastFrameTime = 0;
               const loop = (now: number) => {
                 if (!isActiveRef.current || !rendererRef.current) return;
-                if (frameCount % 2 === 0) rendererRef.current.render(now);
-                frameCount++;
                 animationFrameRef.current = requestAnimationFrame(loop);
+                // 30fps wall-clock cap (not "every other rAF") so 120Hz stays at 30.
+                if (lastFrameTime > 0 && now - lastFrameTime < FRAME_INTERVAL_MS) {
+                  return;
+                }
+                lastFrameTime = now;
+                rendererRef.current.render(now);
               };
               animationFrameRef.current = requestAnimationFrame(loop);
             } catch (err) {
@@ -311,9 +315,8 @@ export default function CloudShader({ className = "" }: CloudShaderProps) {
   return (
     <canvas
       ref={canvasRef}
-      className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ${
-        visible ? "opacity-100" : "opacity-0"
-      } ${className}`}
+      className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ${visible ? "opacity-100" : "opacity-0"
+        } ${className}`}
       style={{
         background: "black",
       }}

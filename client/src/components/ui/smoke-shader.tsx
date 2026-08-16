@@ -572,7 +572,8 @@ export function SmokeShader({
 
     isActiveRef.current = true;
     let resizeObserver: ResizeObserver | null = null;
-    let frameCount = 0;
+    const FRAME_INTERVAL_MS = 1000 / 15;
+    let lastFrameTime = 0;
 
     const resizeFromParent = () => {
       const parent = canvas.parentElement;
@@ -581,17 +582,18 @@ export function SmokeShader({
       rendererRef.current.resizeToDisplay(rect.width, rect.height);
     };
 
-    const loop = () => {
+    const loop = (now: number) => {
       if (!isActiveRef.current || !rendererRef.current || document.hidden) {
         return;
       }
-      // ~15fps: quarter the fill cost vs 60fps, enough for a shop banner.
-      if (frameCount % 4 === 0) {
-        rendererRef.current.setScale(scaleRef.current);
-        rendererRef.current.render();
-      }
-      frameCount++;
       animationFrameRef.current = requestAnimationFrame(loop);
+      // 15fps wall-clock cap (not "every 4th rAF") so 120Hz stays at 15.
+      if (lastFrameTime > 0 && now - lastFrameTime < FRAME_INTERVAL_MS) {
+        return;
+      }
+      lastFrameTime = now;
+      rendererRef.current.setScale(scaleRef.current);
+      rendererRef.current.render();
     };
 
     const startLoop = () => {
