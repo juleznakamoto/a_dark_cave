@@ -1,4 +1,4 @@
-import { useGameStore } from "@/game/state";
+import { useGameStoreWithoutTickClock } from "@/game/useGameStoreWithoutTickClock";
 import {
   gameActions,
   shouldShowAction,
@@ -47,16 +47,15 @@ import { useTranslation } from "react-i18next";
 
 export default function CavePanel() {
   const { t } = useTranslation(["ui", "common"]);
+  const state = useGameStoreWithoutTickClock();
   const {
     executeAction,
     setHighlightedResources,
     story,
     timedEventTab,
-    playTime,
     resources,
     buildings,
-  } = useGameStore();
-  const state = useGameStore();
+  } = state;
   const explosionEffect = useExplosionEffect();
 
   // Separate refs for each explosion button

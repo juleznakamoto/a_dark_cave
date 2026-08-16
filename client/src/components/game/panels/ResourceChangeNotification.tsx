@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef } from "react";
-import { useGameStore } from "@/game/state";
+import { useGameStoreWithoutTickClock } from "@/game/useGameStoreWithoutTickClock";
 import { abbreviateNumber } from "@/lib/utils";
 import type { GameState } from "@shared/schema";
 import {
@@ -48,7 +48,7 @@ export default function ResourceChangeNotification({
   changes,
   onVisibleChange,
 }: ResourceChangeNotificationProps) {
-  const gameState = useGameStore();
+  const gameState = useGameStoreWithoutTickClock();
   const [visibleChange, setVisibleChange] = useState<ResourceChange | null>(
     null,
   );

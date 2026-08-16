@@ -1,4 +1,5 @@
 import React from "react";
+import { useShallow } from "zustand/react/shallow";
 import { useGameStore } from "@/game/state";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import { cubeEvents } from "@/game/rules/eventsCube";
@@ -205,7 +206,26 @@ export default function EstatePanel() {
     resources,
     updateFocusState,
     updateResource,
-  } = useGameStore();
+  } = useGameStore(
+    useShallow((s) => ({
+      events: s.events,
+      relics: s.relics,
+      setEventDialog: s.setEventDialog,
+      setIdleModeDialog: s.setIdleModeDialog,
+      sleepUpgrades: s.sleepUpgrades,
+      huntingSkills: s.huntingSkills,
+      crowsEyeSkills: s.crowsEyeSkills,
+      combatSkills: s.combatSkills,
+      fellowship: s.fellowship,
+      disgracedPriorSkills: s.disgracedPriorSkills,
+      chainmasterSkills: s.chainmasterSkills,
+      books: s.books,
+      setHighlightedResources: s.setHighlightedResources,
+      resources: s.resources,
+      updateFocusState: s.updateFocusState,
+      updateResource: s.updateResource,
+    })),
+  );
   const state = useGameStore.getState();
   // Calculate focus progress based on game loop timing
   const [focusProgress, setFocusProgress] = React.useState(0);

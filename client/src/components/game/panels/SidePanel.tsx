@@ -1,4 +1,5 @@
 import { useGameStore } from "@/game/state";
+import { useGameStoreWithoutTickClock } from "@/game/useGameStoreWithoutTickClock";
 import SidePanelSection, {
   clearSidePanelActiveTooltipHover,
   SIDE_PANEL_GRID_CLASS,
@@ -122,6 +123,7 @@ const BASTION_STAT_SIDE_PANEL_ICON_COLORS: Record<
 
 export default function SidePanel() {
   const { t } = useTranslation("ui");
+  const gameState = useGameStoreWithoutTickClock();
   const {
     resources,
     buildings,
@@ -129,7 +131,7 @@ export default function SidePanel() {
     bastion_stats, // Added bastion_stats
     story,
     flags,
-  } = useGameStore();
+  } = gameState;
 
   // Track resource changes for notifications with a max size limit
   const [resourceChanges, setResourceChanges] = useState<
@@ -177,8 +179,6 @@ export default function SidePanel() {
     );
   }, [resourceChangeEvents]);
 
-  // Get game state once for the entire component (needed early for stat calculations)
-  const gameState = useGameStore();
   const gameStateTyped = gameState as unknown as GameState;
 
   // Store already caches these via scheduleEffectsUpdate; do not re-walk calculateTotalEffects.

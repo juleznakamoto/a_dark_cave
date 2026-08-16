@@ -1,5 +1,5 @@
 import React from "react";
-import { useGameStore } from "@/game/state";
+import { useGameStoreWithoutTickClock } from "@/game/useGameStoreWithoutTickClock";
 import {
   gameActions,
   shouldShowAction,
@@ -132,8 +132,8 @@ function resolveForestPanelTradeCost(
 
 export default function ForestPanel() {
   const { t } = useTranslation("ui");
-  const { executeAction, setHighlightedResources } = useGameStore();
-  const state = useGameStore();
+  const state = useGameStoreWithoutTickClock();
+  const { executeAction, setHighlightedResources } = state;
 
   // Define action groups with their actions
   const actionGroups = [

@@ -1,5 +1,6 @@
 import React from "react";
 import { useGameStore } from "@/game/state";
+import { useGameStoreWithoutTickClock } from "@/game/useGameStoreWithoutTickClock";
 import {
   gameActions,
   shouldShowAction,
@@ -211,6 +212,286 @@ const VILLAGER_COUNT_LABEL_WITH_CAP_UPGRADE_CLASS =
 const VILLAGER_RESOURCE_HINT_CLASS =
   "text-xs leading-snug text-muted-foreground";
 
+function VillageProductionCycleIndicator({
+  pulseClassName,
+  onMouseEnter,
+  onMouseLeave,
+}: {
+  pulseClassName: (tooltipId: string, className?: string) => string;
+  onMouseEnter: (tooltipId: string) => void;
+  onMouseLeave: (tooltipId: string) => void;
+}) {
+  const { t } = useUiTranslation();
+  const loopProgress = useGameStore((state) => state.loopProgress);
+  const productionSecondsRemaining = Math.max(
+    0,
+    Math.ceil(((100 - loopProgress) / 100) * 15),
+  );
+  return (
+    <TooltipWrapper
+      tooltip={(() => {
+        const state =
+          useGameStore.getState() as unknown as import("@shared/schema").GameState;
+        const {
+          rawChance,
+          lowPopulationBonus,
+          fromBuildings,
+          fromBlessings,
+          fromEvents,
+          fromHeartfire,
+        } = getStrangerApproachProbability(state);
+        const chancePct = Math.round(rawChance * 100);
+        return (
+          <div className="text-xs">
+            <div className="font-semibold">{t("village.cycle")}</div>
+            <div>
+              {t("village.nextCycleIn", {
+                seconds: productionSecondsRemaining,
+              })}
+            </div>
+            <div className="border-t border-gray-600 my-1" />
+            <div>
+              {t("village.newVillagerChance", {
+                percent: chancePct,
+              })}
+            </div>
+            {lowPopulationBonus > 0 && (
+              <div className="text-gray-400/70">
+                {t("village.lowPopulationBonus", {
+                  percent: Math.round(lowPopulationBonus * 100),
+                })}
+              </div>
+            )}
+            {fromBuildings > 0 && (
+              <div className="text-gray-400/70">
+                {t("village.fromBuildings", {
+                  percent: Math.round(fromBuildings * 100),
+                })}
+              </div>
+            )}
+            {fromBlessings > 0 && (
+              <div className="text-gray-400/70">
+                {t("village.fromBlessings", {
+                  percent: Math.round(fromBlessings * 100),
+                })}
+              </div>
+            )}
+            {fromEvents > 0 && (
+              <div className="text-gray-400/70">
+                {t("village.fromEvents", {
+                  percent: Math.round(fromEvents * 100),
+                })}
+              </div>
+            )}
+            {fromHeartfire > 0 && (
+              <div className="text-gray-400/70">
+                {t("village.fromHeartfire", {
+                  percent: Math.round(fromHeartfire * 100),
+                })}
+              </div>
+            )}
+            <div className="border-t border-gray-600 my-1" />
+            <div className="text-gray-400/70">
+              {t("village.cycleDescription")}
+            </div>
+          </div>
+        );
+      })()}
+      tooltipId="production-cycle-progress"
+      disabled
+      tooltipTriggerClassName={GAME_PANEL_HEADER_INDICATOR_TRIGGER_CLASS}
+      className={pulseClassName(
+        "production-cycle-progress",
+        GAME_PANEL_HEADER_INDICATOR_CLASS,
+      )}
+      onMouseEnter={() => onMouseEnter("production-cycle-progress")}
+      onMouseLeave={() => onMouseLeave("production-cycle-progress")}
+    >
+      <div className={GAME_PANEL_HEADER_INDICATOR_INNER_CLASS}>
+        <CircularProgress
+          value={loopProgress}
+          size={GAME_PANEL_HEADER_INDICATOR_SIZE_PX}
+          fill
+          strokeWidth={2}
+          className="text-gray-400"
+        />
+        <span
+          className={`${GAME_PANEL_HEADER_INDICATOR_GLYPH_CLASS} game-panel-header-indicator-glyph--sm leading-none translate-x-[0.05em] translate-y-[0.1em] text-gray-400`}
+        >
+          ↦
+        </span>
+      </div>
+    </TooltipWrapper>
+  );
+}
+
+function VillageInvestButton({ label }: { label: string }) {
+  const { t } = useUiTranslation();
+  const playTime = useGameStore((s) => s.playTime);
+  const investmentHallState = useGameStore((s) => s.investmentHallState);
+  const investDialogOpen = useGameStore((s) => s.investDialogOpen);
+  const setInvestDialogOpen = useGameStore((s) => s.setInvestDialogOpen);
+
+  const handleInvestDialogOpenChange = useCallback(
+    (next: boolean) => {
+      if (next && !isInvestmentWaveReadyForUi(useGameStore.getState())) return;
+      setInvestDialogOpen(next);
+    },
+    [setInvestDialogOpen],
+  );
+
+  const ih = investmentHallState;
+  const active = ih?.active;
+  const nextWave = ih?.nextWavePlayTime ?? 0;
+  const currentPlayTime = playTime ?? 0;
+  const formatRemaining = (ms: number) =>
+    formatCompactDuration(Math.max(0, ms) / 1000);
+  const investReady = isInvestmentWaveReadyForUi({
+    playTime: currentPlayTime,
+    investmentHallState: ih,
+  });
+  const investPlayTimeCooldown = active
+    ? {
+      startPlayTime: active.startPlayTime,
+      endPlayTime: active.endPlayTime,
+      mode: "progress" as const,
+    }
+    : nextWave > 0 && currentPlayTime < nextWave
+      ? {
+        startPlayTime: nextWave - getInvestmentWaveGapMs(),
+        endPlayTime: nextWave,
+      }
+      : null;
+  const tooltipContent = !investReady ? (
+    active ? (
+      <div className="text-xs max-w-[220px]">
+        {t("village.investCompleteIn", {
+          time: formatRemaining(
+            Math.max(0, active.endPlayTime - currentPlayTime),
+          ),
+        })}
+      </div>
+    ) : currentPlayTime < nextWave ? (
+      <div className="text-xs whitespace-nowrap">
+        {t("village.investAvailableIn", {
+          time: formatRemaining(Math.max(0, nextWave - currentPlayTime)),
+        })}
+      </div>
+    ) : (
+      <div className="text-xs whitespace-nowrap">
+        {t("village.investPreparing")}
+      </div>
+    )
+  ) : undefined;
+
+  return (
+    <React.Fragment>
+      <CooldownButton
+        onClick={() => setInvestDialogOpen(true)}
+        cooldownMs={0}
+        data-testid="button-invest"
+        actionId="invest"
+        button_id="invest"
+        disabled={!investReady}
+        playTimeCooldown={investPlayTimeCooldown}
+        size="xs"
+        variant="outline"
+        className=""
+        tooltip={tooltipContent}
+        style={{ pointerEvents: "auto" }}
+      >
+        <span className="flex items-center gap-1">
+          {resolveActionLabel("invest", label)}
+        </span>
+      </CooldownButton>
+      <InvestDialog
+        open={investDialogOpen}
+        onOpenChange={handleInvestDialogOpenChange}
+      />
+    </React.Fragment>
+  );
+}
+
+function VillageCallMerchantButton({ label }: { label: string }) {
+  const { t } = useUiTranslation();
+  const playTime = useGameStore((s) => s.playTime);
+  const story = useGameStore((s) => s.story);
+  const timedEventTab = useGameStore((s) => s.timedEventTab);
+  const resources = useGameStore((s) => s.resources);
+  const callMerchant = useGameStore((s) => s.callMerchant);
+  const isCallingMerchant = useGameStore(
+    (s) => !!s.executionStartTimes?.callMerchant,
+  );
+
+  const callMerchantLastEndPlayTime = story?.seen
+    ?.callMerchantLastEndPlayTime as number | undefined;
+  const usageCount = (story?.seen?.callMerchantUsageCount as number) || 0;
+  const price = getCallMerchantGoldCost(usageCount);
+  const isMerchantActive =
+    timedEventTab?.isActive &&
+    timedEventTab?.event?.id?.includes?.("merchant");
+  const isOtherEventActive = timedEventTab?.isActive && !isMerchantActive;
+
+  const cooldownEndPlayTime =
+    (callMerchantLastEndPlayTime ?? 0) +
+    GAME_CONSTANTS.CALL_MERCHANT_COOLDOWN_MS;
+  const currentPlayTime = playTime ?? 0;
+  const isOnCooldown =
+    callMerchantLastEndPlayTime != null &&
+    currentPlayTime < cooldownEndPlayTime;
+  const remainingMs = Math.max(0, cooldownEndPlayTime - currentPlayTime);
+  const merchantPlayTimeCooldown =
+    isOnCooldown && callMerchantLastEndPlayTime != null
+      ? {
+        startPlayTime: callMerchantLastEndPlayTime,
+        endPlayTime: cooldownEndPlayTime,
+      }
+      : null;
+  const canAfford = (resources?.gold ?? 0) >= price;
+  const isDisabled =
+    isOtherEventActive || isOnCooldown || (!isCallingMerchant && !canAfford);
+
+  const formatRemaining = (ms: number) =>
+    formatCompactDuration(Math.max(0, ms) / 1000);
+
+  const tooltipContent = isOtherEventActive ? (
+    <div className="text-xs">{t("village.merchantBlocked")}</div>
+  ) : isOnCooldown ? (
+    <div className="text-xs whitespace-nowrap">
+      {t("village.merchantAvailableIn", {
+        time: formatRemaining(remainingMs),
+      })}
+    </div>
+  ) : (
+    <div className="text-xs whitespace-nowrap">
+      <div className={canAfford ? "text-foreground" : "text-muted-foreground"}>
+        {formatTooltipCostLine(price, "gold")}
+      </div>
+    </div>
+  );
+
+  return (
+    <CooldownButton
+      onClick={() => callMerchant()}
+      cooldownMs={0}
+      data-testid="button-call-merchant"
+      actionId="callMerchant"
+      button_id="callMerchant"
+      disabled={isDisabled}
+      playTimeCooldown={merchantPlayTimeCooldown}
+      size="xs"
+      variant="outline"
+      className=""
+      tooltip={tooltipContent}
+      style={{ pointerEvents: "auto" }}
+    >
+      <span className="flex items-center gap-1">
+        {resolveActionLabel("callMerchant", label)}
+      </span>
+    </CooldownButton>
+  );
+}
+
 export default function VillagePanel() {
   const { t } = useUiTranslation();
   const {
@@ -218,16 +499,11 @@ export default function VillagePanel() {
     buildings,
     story,
     timedEventTab,
-    playTime,
     resources,
     executeAction,
     assignVillager,
     unassignVillager,
     setHighlightedResources,
-    callMerchant,
-    investmentHallState,
-    investDialogOpen,
-    setInvestDialogOpen,
     villagerJobPresets,
     activePresetSlot,
     villagerPresetsPurchased,
@@ -238,17 +514,9 @@ export default function VillagePanel() {
     purchaseVillagerPresetSlot,
     purchaseConstructionQueueSlot,
     constructionQueueSlotsPurchased,
-  } = useGameStore();
+  } = useGameStoreWithoutTickClock();
   const { pulseClassName, onMouseEnter, onMouseLeave } =
     useNewItemPulseTooltips(VILLAGE_INDICATOR_TOOLTIP_IDS);
-
-  const handleInvestDialogOpenChange = useCallback(
-    (next: boolean) => {
-      if (next && !isInvestmentWaveReadyForUi(useGameStore.getState())) return;
-      setInvestDialogOpen(next);
-    },
-    [setInvestDialogOpen],
-  );
 
   const state =
     useGameStore.getState() as unknown as import("@shared/schema").GameState;
@@ -340,12 +608,6 @@ export default function VillagePanel() {
     [],
   );
 
-  // Get progress from game loop state
-  const loopProgress = useGameStore((state) => state.loopProgress);
-  const productionSecondsRemaining = Math.max(
-    0,
-    Math.ceil(((100 - loopProgress) / 100) * 15),
-  );
   const feastState = useGameStore((state) => state.feastState);
   const greatFeastState = useGameStore((state) => state.greatFeastState);
   const solsticeState = useGameStore((state) => state.solsticeState);
@@ -633,152 +895,11 @@ export default function VillagePanel() {
       return null;
 
     if (actionId === "invest") {
-      const ih = investmentHallState;
-      const active = ih?.active;
-      const nextWave = ih?.nextWavePlayTime ?? 0;
-      const currentPlayTime = playTime ?? 0;
-      const formatRemaining = (ms: number) =>
-        formatCompactDuration(Math.max(0, ms) / 1000);
-      const investReady = isInvestmentWaveReadyForUi({
-        playTime: currentPlayTime,
-        investmentHallState: ih,
-      });
-      const investPlayTimeCooldown = active
-        ? {
-          startPlayTime: active.startPlayTime,
-          endPlayTime: active.endPlayTime,
-          mode: "progress" as const,
-        }
-        : nextWave > 0 && currentPlayTime < nextWave
-          ? {
-            startPlayTime: nextWave - getInvestmentWaveGapMs(),
-            endPlayTime: nextWave,
-          }
-          : null;
-      const tooltipContent = !investReady ? (
-        active ? (
-          <div className="text-xs max-w-[220px]">
-            {t("village.investCompleteIn", {
-              time: formatRemaining(
-                Math.max(0, active.endPlayTime - currentPlayTime),
-              ),
-            })}
-          </div>
-        ) : currentPlayTime < nextWave ? (
-          <div className="text-xs whitespace-nowrap">
-            {t("village.investAvailableIn", {
-              time: formatRemaining(Math.max(0, nextWave - currentPlayTime)),
-            })}
-          </div>
-        ) : (
-          <div className="text-xs whitespace-nowrap">
-            {t("village.investPreparing")}
-          </div>
-        )
-      ) : undefined;
-      return (
-        <React.Fragment key="invest">
-          <CooldownButton
-            onClick={() => setInvestDialogOpen(true)}
-            cooldownMs={0}
-            data-testid="button-invest"
-            actionId="invest"
-            button_id="invest"
-            disabled={!investReady}
-            playTimeCooldown={investPlayTimeCooldown}
-            size="xs"
-            variant="outline"
-            className=""
-            tooltip={tooltipContent}
-            style={{ pointerEvents: "auto" }}
-          >
-            <span className="flex items-center gap-1">
-              {resolveActionLabel("invest", label)}
-            </span>
-          </CooldownButton>
-          <InvestDialog
-            open={investDialogOpen}
-            onOpenChange={handleInvestDialogOpenChange}
-          />
-        </React.Fragment>
-      );
+      return <VillageInvestButton key="invest" label={label} />;
     }
 
-    // Special case for Call Merchant button (same CooldownButton structure as other actions)
     if (actionId === "callMerchant") {
-      const callMerchantLastEndPlayTime = story?.seen
-        ?.callMerchantLastEndPlayTime as number | undefined;
-      const usageCount = (story?.seen?.callMerchantUsageCount as number) || 0;
-      const price = getCallMerchantGoldCost(usageCount);
-      const isCallingMerchant = !!state.executionStartTimes?.callMerchant;
-      const isMerchantActive =
-        timedEventTab?.isActive &&
-        timedEventTab?.event?.id?.includes?.("merchant");
-      const isOtherEventActive = timedEventTab?.isActive && !isMerchantActive;
-
-      const cooldownEndPlayTime =
-        (callMerchantLastEndPlayTime ?? 0) +
-        GAME_CONSTANTS.CALL_MERCHANT_COOLDOWN_MS;
-      const currentPlayTime = playTime ?? 0;
-      const isOnCooldown =
-        callMerchantLastEndPlayTime != null &&
-        currentPlayTime < cooldownEndPlayTime;
-      const remainingMs = Math.max(0, cooldownEndPlayTime - currentPlayTime);
-      const merchantPlayTimeCooldown =
-        isOnCooldown && callMerchantLastEndPlayTime != null
-          ? {
-            startPlayTime: callMerchantLastEndPlayTime,
-            endPlayTime: cooldownEndPlayTime,
-          }
-          : null;
-      const canAfford = (resources?.gold ?? 0) >= price;
-      const isDisabled =
-        isOtherEventActive ||
-        isOnCooldown ||
-        (!isCallingMerchant && !canAfford);
-
-      const formatRemaining = (ms: number) =>
-        formatCompactDuration(Math.max(0, ms) / 1000);
-
-      const tooltipContent = isOtherEventActive ? (
-        <div className="text-xs">{t("village.merchantBlocked")}</div>
-      ) : isOnCooldown ? (
-        <div className="text-xs whitespace-nowrap">
-          {t("village.merchantAvailableIn", {
-            time: formatRemaining(remainingMs),
-          })}
-        </div>
-      ) : (
-        <div className="text-xs whitespace-nowrap">
-          <div
-            className={canAfford ? "text-foreground" : "text-muted-foreground"}
-          >
-            {formatTooltipCostLine(price, "gold")}
-          </div>
-        </div>
-      );
-
-      return (
-        <CooldownButton
-          key="callMerchant"
-          onClick={() => callMerchant()}
-          cooldownMs={0}
-          data-testid="button-call-merchant"
-          actionId="callMerchant"
-          button_id="callMerchant"
-          disabled={isDisabled}
-          playTimeCooldown={merchantPlayTimeCooldown}
-          size="xs"
-          variant="outline"
-          className=""
-          tooltip={tooltipContent}
-          style={{ pointerEvents: "auto" }}
-        >
-          <span className="flex items-center gap-1">
-            {resolveActionLabel("callMerchant", label)}
-          </span>
-        </CooldownButton>
-      );
+      return <VillageCallMerchantButton key="callMerchant" label={label} />;
     }
 
     // Special case for Feed Fire button
@@ -1551,104 +1672,11 @@ export default function VillagePanel() {
                 <h3 className="inline-flex shrink-0 items-center text-xs font-medium text-foreground leading-none">
                   {t("village.sectionProduce")}
                 </h3>
-                {/* Production Cycle */}
-                <TooltipWrapper
-                  tooltip={(() => {
-                    const state = useGameStore.getState();
-                    const {
-                      rawChance,
-                      lowPopulationBonus,
-                      fromBuildings,
-                      fromBlessings,
-                      fromEvents,
-                      fromHeartfire,
-                    } = getStrangerApproachProbability(state);
-                    const chancePct = Math.round(rawChance * 100);
-                    return (
-                      <div className="text-xs">
-                        <div className="font-semibold">
-                          {t("village.cycle")}
-                        </div>
-                        <div>
-                          {t("village.nextCycleIn", {
-                            seconds: productionSecondsRemaining,
-                          })}
-                        </div>
-                        <div className="border-t border-gray-600 my-1" />
-                        <div>
-                          {t("village.newVillagerChance", {
-                            percent: chancePct,
-                          })}
-                        </div>
-                        {lowPopulationBonus > 0 && (
-                          <div className="text-gray-400/70">
-                            {t("village.lowPopulationBonus", {
-                              percent: Math.round(lowPopulationBonus * 100),
-                            })}
-                          </div>
-                        )}
-                        {fromBuildings > 0 && (
-                          <div className="text-gray-400/70">
-                            {t("village.fromBuildings", {
-                              percent: Math.round(fromBuildings * 100),
-                            })}
-                          </div>
-                        )}
-                        {fromBlessings > 0 && (
-                          <div className="text-gray-400/70">
-                            {t("village.fromBlessings", {
-                              percent: Math.round(fromBlessings * 100),
-                            })}
-                          </div>
-                        )}
-                        {fromEvents > 0 && (
-                          <div className="text-gray-400/70">
-                            {t("village.fromEvents", {
-                              percent: Math.round(fromEvents * 100),
-                            })}
-                          </div>
-                        )}
-                        {fromHeartfire > 0 && (
-                          <div className="text-gray-400/70">
-                            {t("village.fromHeartfire", {
-                              percent: Math.round(fromHeartfire * 100),
-                            })}
-                          </div>
-                        )}
-                        <div className="border-t border-gray-600 my-1" />
-                        <div className="text-gray-400/70">
-                          {t("village.cycleDescription")}
-                        </div>
-                      </div>
-                    );
-                  })()}
-                  tooltipId="production-cycle-progress"
-                  disabled
-                  tooltipTriggerClassName={
-                    GAME_PANEL_HEADER_INDICATOR_TRIGGER_CLASS
-                  }
-                  className={pulseClassName(
-                    "production-cycle-progress",
-                    GAME_PANEL_HEADER_INDICATOR_CLASS,
-                  )}
-                  onMouseEnter={() => onMouseEnter("production-cycle-progress")}
-                  onMouseLeave={() => onMouseLeave("production-cycle-progress")}
-                >
-                  <div className={GAME_PANEL_HEADER_INDICATOR_INNER_CLASS}>
-                    <CircularProgress
-                      value={loopProgress}
-                      size={GAME_PANEL_HEADER_INDICATOR_SIZE_PX}
-                      fill
-                      strokeWidth={2}
-                      className="text-gray-400"
-                    />
-                    <span
-                      className={`${GAME_PANEL_HEADER_INDICATOR_GLYPH_CLASS} game-panel-header-indicator-glyph--sm leading-none translate-x-[0.05em] translate-y-[0.1em] text-gray-400`}
-                    >
-                      ↦
-                    </span>
-                  </div>
-                </TooltipWrapper>
+                <VillageProductionCycleIndicator
+                  pulseClassName={pulseClassName}
+                  onMouseEnter={onMouseEnter}
+                  onMouseLeave={onMouseLeave}
+                />
                 {/* Feast Timer and other production effects */}
                 {(() => {
                   const feastState = useGameStore.getState().feastState;

@@ -5,12 +5,14 @@ import React, {
   useRef,
   useState,
 } from "react";
+import { useShallow } from "zustand/react/shallow";
 import {
   useGameStore,
   shouldFreezeTimedEventTabCountdown,
   syncTimedEventTabPauseTracking,
   getTimedEventTabEffectiveRemainingMs,
 } from "@/game/state";
+import { useGameStoreWithoutTickClock } from "@/game/useGameStoreWithoutTickClock";
 import { Button } from "@/components/ui/button";
 import {
   gameActionButtonGridClassName,
@@ -78,8 +80,20 @@ export default function TimedEventPanel() {
     setShopFilter,
     setGamblerDiceDialogOpen,
     setBlessingOfferDialogOpen,
-  } = useGameStore();
-  const gameState = useGameStore();
+  } = useGameStore(
+    useShallow((s) => ({
+      timedEventTab: s.timedEventTab,
+      applyEventChoice: s.applyEventChoice,
+      setTimedEventTab: s.setTimedEventTab,
+      setEventDialog: s.setEventDialog,
+      setHighlightedResources: s.setHighlightedResources,
+      setShopDialogOpen: s.setShopDialogOpen,
+      setShopFilter: s.setShopFilter,
+      setGamblerDiceDialogOpen: s.setGamblerDiceDialogOpen,
+      setBlessingOfferDialogOpen: s.setBlessingOfferDialogOpen,
+    })),
+  );
+  const gameState = useGameStoreWithoutTickClock();
 
   // ALL HOOKS MUST BE CALLED BEFORE ANY EARLY RETURNS
   const [timeRemaining, setTimeRemaining] = useState<number>(0);

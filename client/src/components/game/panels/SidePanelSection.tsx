@@ -20,6 +20,7 @@ import { TooltipWrapper } from "@/components/game/TooltipWrapper";
 import ResourceChangeNotification from "./ResourceChangeNotification";
 import { SidePanelSectionIcon } from "./SidePanelSectionIcon";
 import { useGameStore } from "@/game/state";
+import { useGameStoreWithoutTickClock } from "@/game/useGameStoreWithoutTickClock";
 import { useGlobalTooltip } from "@/hooks/useGlobalTooltip";
 import { useNewItemPulseTooltips } from "@/hooks/useNewItemPulseTooltip";
 import { cn } from "@/lib/utils";
@@ -325,7 +326,7 @@ function WeaponEnchantBadge({ weaponId }: { weaponId: string }) {
     handleTooltipEnter,
     handleTooltipLeave,
   } = useInsightBadgeTooltipPulse(tooltipId);
-  const gameState = useGameStore((s) => s as unknown as GameState);
+  const gameState = useGameStoreWithoutTickClock() as unknown as GameState;
   const setHighlightedResources = useGameStore(
     (s) => s.setHighlightedResources,
   );
@@ -433,7 +434,7 @@ function ItemAbsolveBadge({ itemId }: { itemId: string }) {
     handleTooltipEnter,
     handleTooltipLeave,
   } = useInsightBadgeTooltipPulse(tooltipId);
-  const gameState = useGameStore((s) => s as unknown as GameState);
+  const gameState = useGameStoreWithoutTickClock() as unknown as GameState;
   const setHighlightedResources = useGameStore(
     (s) => s.setHighlightedResources,
   );
@@ -542,7 +543,7 @@ export default function SidePanelSection({
   const activeTooltipHoverId = useSidePanelActiveTooltipHoverId();
   const prevValuesRef = useRef<Map<string, number>>(new Map());
   const isInitialRender = useRef(true);
-  const gameState = useGameStore((state) => state);
+  const gameState = useGameStoreWithoutTickClock() as unknown as GameState;
   const storeActiveTab = useGameStore((state) => state.activeTab);
   const hoveredTooltips = useGameStore((state) => state.hoveredTooltips || {});
   const setHoveredTooltip = useGameStore((state) => state.setHoveredTooltip);

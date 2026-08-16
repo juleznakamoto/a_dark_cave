@@ -10,6 +10,7 @@ import {
   INSIGHT_BADGE_TOOLTIP_TRIGGER_CLASS,
 } from "@/components/game/BuildingActionBadge";
 import { useGameStore } from "@/game/state";
+import { useGameStoreWithoutTickClock } from "@/game/useGameStoreWithoutTickClock";
 import {
   buildingChartConfig,
   itemChartConfig,
@@ -97,7 +98,7 @@ function AchievementTitleInsightBadge({
   currentCount: number;
 }) {
   const { t } = useUiTranslation();
-  const gameState = useGameStore((s) => s as unknown as GameState);
+  const gameState = useGameStoreWithoutTickClock() as unknown as GameState;
   const revealAchievementTitle = useGameStore((s) => s.revealAchievementTitle);
   const setHighlightedResources = useGameStore((s) => s.setHighlightedResources);
   const insightKey = getAchievementTitleInsightKey(achievementId);
@@ -190,7 +191,7 @@ function AchievementRowComponent({
 }) {
   const { t } = useUiTranslation();
   const { t: tAchievements } = useTranslation("achievements");
-  const gameState = useGameStore((s) => s as unknown as GameState);
+  const gameState = useGameStoreWithoutTickClock() as unknown as GameState;
   const insightKey = getAchievementTitleInsightKey(row.achievementId);
   // Key presence (not Date.now): stays redacted until the loop clears the key
   // in the same store update that unmounts the badge.
@@ -322,7 +323,7 @@ function AchievementTabContent({
   // Subscribe to the store (not getState-only): Claim buttons depend on
   // buildings/tools/story/etc., and a narrow selector left rows stale so
   // completed achievements never flipped to canClaim until remount.
-  const state = useGameStore((s) => s);
+  const state = useGameStoreWithoutTickClock();
   const rows = getAchievementRows(
     config,
     state,
@@ -415,7 +416,7 @@ function TabTriggerWithTooltipWhenLocked({
 
 export default function AchievementsPanel() {
   const { t } = useUiTranslation();
-  const gameState = useGameStore((s) => s as unknown as GameState);
+  const gameState = useGameStoreWithoutTickClock() as unknown as GameState;
   const bookOfTrials = !!gameState.books?.book_of_trials;
   const survivorsNotes = !!gameState.relics?.survivors_notes;
   const hasBasicTab = survivorsNotes || bookOfTrials;
