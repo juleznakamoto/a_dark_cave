@@ -13,8 +13,8 @@ import { useTranslation } from "react-i18next";
 import { GameUiIcon } from "@/components/game/GameUiIcon";
 import { tWithFallback } from "@/i18n/resolveGameText";
 import {
+  useHideSteamStoreLink,
   useSteamDemoActive,
-  useSteamDesktopEditionActive,
   useSteamEditionActive,
 } from "@/hooks/useSteamEditionActive";
 import { isGalaxyEdition } from "@/lib/edition";
@@ -113,12 +113,11 @@ export default function GameFooter() {
   const donateHeartRef = useRef<HTMLSpanElement>(null);
   const { t } = useTranslation("ui");
   const steamEditionActive = useSteamEditionActive();
-  const steamDesktopEditionActive = useSteamDesktopEditionActive();
   const steamDemoActive = useSteamDemoActive();
   const showFooterDonate = !steamEditionActive || isGalaxyEdition();
-  // Steam Game / Playtest / Demo (build or DEV Game Mode) — no "Steam" in footer.
-  // Galaxy and Normal/web keep the wishlist link.
-  const hideSteamStoreLink = steamDesktopEditionActive;
+  // Steam Game / Playtest / Demo (build or DEV Game Mode) hide the store link.
+  // Galaxy, CrazyGames, and Normal/web keep the wishlist link.
+  const hideSteamStoreLink = useHideSteamStoreLink();
 
   const triggerDonateHeartPump = useCallback(() => {
     pumpDonateHeart(donateHeartRef.current);

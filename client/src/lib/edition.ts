@@ -97,7 +97,7 @@ export function isDemoEdition(): boolean {
 
 /**
  * Steam-demo chrome (footer progress bar, no donate). CrazyGames uses the same
- * chrome. Galaxy does not (it keeps the Steam wishlist + donate).
+ * chrome but keeps the Steam store footer link. Galaxy keeps Steam + donate.
  */
 export function isSteamDemoActive(): boolean {
   return (

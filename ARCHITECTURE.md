@@ -408,7 +408,7 @@ Edition behavior reuses `isSteamEditionActive()` / `useSteamEditionActive()` for
 
 HTML5 demo for [CrazyGames](https://docs.crazygames.com/). Same Steam-demo chrome: 8 wooden-hut
 cap, footer progress bar, no shop / donate / Playlight / auth, isolated IndexedDB key
-`crazyGamesSave`. Steam wishlist stays on `DemoTimeUpDialog` only (not the footer). Dedicated
+`crazyGamesSave`. Steam wishlist is in the footer and on `DemoTimeUpDialog`. Dedicated
 upload build uses relative asset paths (`base: "./"`) and hash routing so CrazyGames can host
 the zip in a subdirectory.
 
