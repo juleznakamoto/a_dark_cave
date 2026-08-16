@@ -1,5 +1,4 @@
 import { GameState } from "@shared/schema";
-import { LogEntry } from "@/game/rules/events";
 import { gameActions } from "@/game/rules";
 import { logger } from "@/lib/logger";
 import { ActionResult } from "@/game/types";

@@ -1,5 +1,5 @@
 import { Action, GameState } from "@shared/schema";
-import { ActionResult } from "@/game/actions";
+import type { ActionResult } from "@/game/types";
 import { applyActionEffects } from "./actionEffects";
 import { calculateTotalEffects } from "./effectsCalculation";
 import { getActionLogMessage, getResourceName } from "@/i18n/resolveGameText";

@@ -1,5 +1,5 @@
 import { Action, GameState } from "@shared/schema";
-import { ActionResult } from "@/game/actions";
+import type { ActionResult } from "@/game/types";
 import { applyActionEffects } from "./actionEffects";
 import { addFreeVillagersWithinCap, killVillagers } from "@/game/stateHelpers";
 import type { LogEntry } from "./eventTypes";

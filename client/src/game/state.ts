@@ -3,6 +3,7 @@ import { create } from "zustand";
 import { GameState, gameStateSchema, Referral } from "@shared/schema";
 import type { UtmAttribution } from "@shared/utmAttribution";
 import { isBlockingDialogOpenFromRegistry } from "./dialogRegistry";
+import { bindGameStore } from "./gameStoreHolder";
 import {
   isFullGameUnlockedEdition,
   isLocalOnlyEdition,
@@ -5256,6 +5257,14 @@ export const useGameStore = create<GameStore>((set, get) => ({
     }));
   },
 }));
+
+bindGameStore({
+  getState: () => useGameStore.getState(),
+  setState: (partial) => {
+    useGameStore.setState(partial as Parameters<typeof useGameStore.setState>[0]);
+  },
+  isModalDialogOpen: (state) => isModalDialogOpen(state as GameStore),
+});
 
 /**
  * Updates `timedEventTab.pauseAccumMs` / `pauseStartedAt` from game pause, blocking

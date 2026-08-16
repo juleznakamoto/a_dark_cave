@@ -1,0 +1,19 @@
+import { describe, expect, it } from "vitest";
+// Load the action aggregator first. Vite native ESM used to TDZ
+// `attackWaveEvents` / `caveExploreActions` when `rules/index` cycled
+// through `actions.ts` or `state.ts`.
+import { allEvents, gameActions } from "./index";
+import { gameEvents } from "./events";
+
+describe("event module initialization", () => {
+  it("exposes attack wave events after the rules/index ↔ state ↔ events cycle", () => {
+    expect(allEvents.firstWave?.id).toBe("firstWave");
+    expect(gameEvents.firstWave?.id).toBe("firstWave");
+    expect(gameEvents.postCompletionWave?.id).toBe("postCompletionWave");
+  });
+
+  it("registers cave explore actions after the actions.ts ↔ rules/index cycle", () => {
+    expect(gameActions.lightFire?.id).toBe("lightFire");
+    expect(gameActions.exploreCave?.id).toBe("exploreCave");
+  });
+});

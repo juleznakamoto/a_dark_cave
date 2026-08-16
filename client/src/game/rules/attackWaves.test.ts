@@ -1,14 +1,7 @@
 import { describe, expect, it, vi, beforeEach } from "vitest";
 import i18n from "@/i18n/index";
 import { GameState } from "@shared/schema";
-
-vi.mock("@/game/state", () => ({
-  useGameStore: {
-    getState: () => ({}),
-    setState: vi.fn(),
-  },
-  isModalDialogOpen: () => false,
-}));
+import { bindGameStore } from "@/game/gameStoreHolder";
 
 import {
   ATTACK_WAVE_IDS,
@@ -28,6 +21,14 @@ import {
 } from "./bastionActions";
 
 describe("attack waves expansion", () => {
+  beforeEach(() => {
+    bindGameStore({
+      getState: () => ({}),
+      setState: vi.fn(),
+      isModalDialogOpen: () => false,
+    });
+  });
+
   it("exposes 12 canonical wave ids ending in secondBossWave", () => {
     expect(TOTAL_ATTACK_WAVES).toBe(12);
     expect(ATTACK_WAVE_IDS).toHaveLength(12);

@@ -1,7 +1,7 @@
 import type { EventChoiceEffectResult, GameEvent } from "./eventTypes";
 import { GameState } from "@shared/schema";
 import { killVillagers } from "@/game/stateHelpers";
-import { useGameStore, isModalDialogOpen } from "@/game/state";
+import { getBoundGameStore } from "@/game/gameStoreHolder";
 import { CRUEL_MODE, cruelModeScale } from "../cruelMode";
 import { getVillagersInVillage } from "../population";
 import {
@@ -568,9 +568,10 @@ function createAttackWaveEvent(waveId: AttackWaveId): GameEvent {
       const timer = state.attackWaveTimers?.[waveId];
       if (!timer) {
         setTimeout(() => {
-          const currentState = useGameStore.getState();
+          const storeApi = getBoundGameStore();
+          const currentState = storeApi.getState();
           if (!currentState.attackWaveTimers?.[waveId]) {
-            useGameStore.setState({
+            storeApi.setState({
               attackWaveTimers: {
                 ...currentState.attackWaveTimers,
                 [waveId]: {
@@ -589,16 +590,17 @@ function createAttackWaveEvent(waveId: AttackWaveId): GameEvent {
 
       if (timer.defeated) return false;
 
-      const store = useGameStore.getState();
+      const storeApi = getBoundGameStore();
+      const store = storeApi.getState();
       const isPaused = Boolean(
-        store.isPaused || isModalDialogOpen(store),
+        store.isPaused || storeApi.isModalDialogOpen(store),
       );
 
       if (isPaused) {
         if (timer.startTime && timer.elapsedTime !== undefined) {
           const currentElapsedTime =
             timer.elapsedTime + (Date.now() - timer.startTime);
-          useGameStore.setState((prevState) => ({
+          storeApi.setState((prevState) => ({
             attackWaveTimers: {
               ...prevState.attackWaveTimers,
               [waveId]: {
@@ -728,7 +730,7 @@ function createAttackWaveEvent(waveId: AttackWaveId): GameEvent {
 
 function clearPostCompletionAttackWaveTimer(): void {
   setTimeout(() => {
-    useGameStore.setState((prevState) => {
+    getBoundGameStore().setState((prevState) => {
       const timers = { ...(prevState.attackWaveTimers ?? {}) };
       delete timers[POST_COMPLETION_ATTACK_WAVE_ID];
       return { attackWaveTimers: timers };
@@ -752,9 +754,10 @@ function createPostCompletionAttackWaveEvent(): GameEvent {
 
       if (!timer) {
         setTimeout(() => {
-          const currentState = useGameStore.getState();
+          const storeApi = getBoundGameStore();
+          const currentState = storeApi.getState();
           if (!currentState.attackWaveTimers?.[waveId]) {
-            useGameStore.setState({
+            storeApi.setState({
               attackWaveTimers: {
                 ...currentState.attackWaveTimers,
                 [waveId]: {
@@ -775,14 +778,17 @@ function createPostCompletionAttackWaveEvent(): GameEvent {
         return false;
       }
 
-      const store = useGameStore.getState();
-      const isPaused = Boolean(store.isPaused || isModalDialogOpen(store));
+      const storeApi = getBoundGameStore();
+      const store = storeApi.getState();
+      const isPaused = Boolean(
+        store.isPaused || storeApi.isModalDialogOpen(store),
+      );
 
       if (isPaused) {
         if (timer.startTime && timer.elapsedTime !== undefined) {
           const currentElapsedTime =
             timer.elapsedTime + (Date.now() - timer.startTime);
-          useGameStore.setState((prevState) => ({
+          storeApi.setState((prevState) => ({
             attackWaveTimers: {
               ...prevState.attackWaveTimers,
               [waveId]: {

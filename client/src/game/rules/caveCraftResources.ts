@@ -1,5 +1,5 @@
 import { Action, GameState } from "@shared/schema";
-import { ActionResult } from '@/game/actions';
+import type { ActionResult } from "@/game/types";
 import { getUpgradeBonusMultiplier } from "@/game/buttonUpgrades";
 import { scaleCraftProduceAmount } from "@/game/craftUpgradeUtils";
 import { applyActionEffects } from "./actionEffects";
