@@ -1,3 +1,4 @@
+import { publicUrl } from "@/lib/publicUrl";
 import cn from "clsx";
 import type { SidePanelSectionId } from "./SidePanelSection";
 
@@ -32,7 +33,7 @@ export function SidePanelSectionIcon({
   className?: string;
   sizeClassName?: string;
 }) {
-  const src = SIDE_PANEL_SECTION_ICON_SRC[sectionId];
+  const src = publicUrl(SIDE_PANEL_SECTION_ICON_SRC[sectionId]);
 
   return (
     <span

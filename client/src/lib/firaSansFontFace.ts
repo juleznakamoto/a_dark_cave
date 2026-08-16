@@ -4,7 +4,9 @@
  * unicode-range lets the browser fetch only scripts that appear on screen.
  */
 
-const FIRA_BASE = "/fonts";
+import { publicUrl } from "./publicUrl";
+
+const FIRA_BASE = publicUrl("/fonts");
 
 /** Weights used on the start screen (body + "Recommended by"). */
 const FIRA_START_WEIGHTS = [400, 500] as const;

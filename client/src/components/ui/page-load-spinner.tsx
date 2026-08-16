@@ -3,6 +3,7 @@ import { useCoinHoverParticles } from "@/components/ui/coin-hover-particles";
 import { FIRE_LOAD_PARTICLE_CONFIG } from "@/components/ui/bubbly-button.particles";
 import { mountFatalErrorScreen, FATAL_UI_TIMEOUT_MS } from "@/lib/fatalErrorScreen";
 import { tryOneModuleLoadRecovery } from "@/lib/hardReload";
+import { publicUrl } from "@/lib/publicUrl";
 
 const SPINNER_DELAY_MS = 500;
 const BOOT_SPINNER_ID = "adc-boot-spinner";
@@ -129,7 +130,7 @@ export default function PageLoadSpinner({
             <span className="adc-page-load-spinner__core">
               <img
                 className="adc-page-load-spinner__logo"
-                src="/apple-touch-icon.png"
+                src={publicUrl("/apple-touch-icon.png")}
                 alt=""
               />
             </span>

@@ -8,7 +8,8 @@
     "gameModeNormal": "Normal Mode",
     "gameModeSteamGame": "Steam Game",
     "gameModeSteamPlaytest": "Steam Playtest",
-    "gameModeSteamDemo": "Steam Demo"
+    "gameModeSteamDemo": "Steam Demo",
+    "gameModeCrazyGamesDemo": "CrazyGames 试玩"
   },
   "textScale": {
     "label": "文字大小",

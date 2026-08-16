@@ -17,8 +17,8 @@ function archivePresetUnlockTooltip(slotCount: number): BuildingTooltipEffect {
   return bt(
     "addsVillagerPreset",
     slotCount === 1
-      ? "Adds {{count}} villager job preset slot"
-      : "Adds {{count}} villager job preset slots",
+      ? "Makes {{count}} villager job preset slot available for Insight"
+      : "Makes {{count}} villager job preset slots available for Insight",
     { count: slotCount },
   );
 }
@@ -35,8 +35,8 @@ function constructionQueueSlotTooltip(count: number): BuildingTooltipEffect {
   return bt(
     "addsConstructionQueueSlot",
     count === 1
-      ? "Adds {{count}} construction queue slot"
-      : "Adds {{count}} construction queue slots",
+      ? "Makes {{count}} construction queue slot available for Insight"
+      : "Makes {{count}} construction queue slots available for Insight",
     { count },
   );
 }

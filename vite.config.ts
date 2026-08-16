@@ -1,4 +1,4 @@
-import { defineConfig } from "vite";
+import { defineConfig, type Plugin } from "vite";
 import react from "@vitejs/plugin-react";
 import path from "path";
 import { execSync } from "node:child_process";
@@ -26,11 +26,27 @@ function resolveBuildSha(mode: string): string {
 }
 
 const isSteamBuild = process.env.VITE_STEAM_BUILD === "1";
+const isCrazyGamesBuild = process.env.VITE_CRAZYGAMES === "1";
+const useOfflineStubs = isSteamBuild || isCrazyGamesBuild;
 const clientRoot = path.resolve(import.meta.dirname, "client");
 
+function crazyGamesRelativeHtmlPlugin(): Plugin {
+  return {
+    name: "crazygames-relative-html",
+    transformIndexHtml(html) {
+      if (!isCrazyGamesBuild) return html;
+      return html
+        .replaceAll('href="/', 'href="./')
+        .replaceAll('src="/', 'src="./');
+    },
+  };
+}
+
 export default defineConfig(async ({ mode }) => ({
+  base: isCrazyGamesBuild ? "./" : "/",
   plugins: [
     react(),
+    crazyGamesRelativeHtmlPlugin(),
     compression(),
     runtimeErrorOverlay(),
     ...(process.env.NODE_ENV !== "production" &&
@@ -51,7 +67,7 @@ export default defineConfig(async ({ mode }) => ({
       "@": path.resolve(clientRoot, "src"),
       "@shared": path.resolve(import.meta.dirname, "shared"),
       "@assets": path.resolve(import.meta.dirname, "attached_assets"),
-      ...(isSteamBuild
+      ...(useOfflineStubs
         ? {
           "@/lib/supabase": path.resolve(clientRoot, "src/stubs/steam/supabase.ts"),
           "@/lib/playlight": path.resolve(clientRoot, "src/stubs/steam/playlight.ts"),
@@ -91,7 +107,7 @@ export default defineConfig(async ({ mode }) => ({
     },
     rollupOptions: {
       output: {
-        manualChunks: isSteamBuild
+        manualChunks: useOfflineStubs
           ? {
             "vendor-react": ["react", "react-dom"],
             "vendor-framer": ["framer-motion"],

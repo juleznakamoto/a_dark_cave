@@ -137,8 +137,8 @@
       "improvedResourceChangeHints": "Улучшенные подсказки об изменении ресурсов", //x1.4
       "resourceHighlighting": "Подсветка ресурсов",
       "unlocksScholar": "Разблокирует учёных", //x1.3
-      "addsVillagerPreset_one": "Добавляет {{count}} слот пресета работ жителей",
-      "addsVillagerPreset_other": "Добавляет {{count}} слота пресетов работ жителей",
+      "addsVillagerPreset_one": "Делает доступным {{count}} слот пресета работ жителей за прозрение",
+      "addsVillagerPreset_other": "Делает доступными {{count}} слота пресетов работ жителей за прозрение",
       "scholarInsight": "Учёный: +{{amount}} проницательности", //x1.3
       "insightRevealCost": "{{cost}} проницательности", //x1.6
       "insightRevealSeeEffects": "Показать эффекты за {{cost}} {{resource}}",
@@ -178,8 +178,8 @@
       "tannerLeather": "Дубильщик: +{{amount}} кожи",
       "buildTimeReduction": "-{{percent}}% времени строительства", //x1.5
       "buildingCostReduction": "-{{percent}}% стоимости строительства", //x1.3
-      "addsConstructionQueueSlot_one": "Добавляет {{count}} слот очереди строительства",
-      "addsConstructionQueueSlot_other": "Добавляет {{count}} слота очереди строительства",
+      "addsConstructionQueueSlot_one": "Делает доступным {{count}} слот очереди строительства за прозрение",
+      "addsConstructionQueueSlot_other": "Делает доступными {{count}} слота очереди строительства за прозрение",
       "constructionBoost": "Ускорение строительства: потратьте прозрение, чтобы пропустить 50% времени строительства (один раз за постройку)", //x1.5
       "craftingBoost": "Ускорение создания: потратьте прозрение, чтобы пропустить 50% времени создания (один раз за создание)", //x1.4
       "weaponEnchantment": "Зачарование оружия"

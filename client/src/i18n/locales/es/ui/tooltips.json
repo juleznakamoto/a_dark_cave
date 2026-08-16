@@ -137,8 +137,8 @@
       "improvedResourceChangeHints": "Indicaciones mejoradas de cambio de recursos", //x1.5
       "resourceHighlighting": "Resaltado de recursos",
       "unlocksScholar": "Desbloquea eruditos", //x1.3
-      "addsVillagerPreset_one": "Añade {{count}} espacio de preset de trabajos",
-      "addsVillagerPreset_other": "Añade {{count}} espacios de preset de trabajos",
+      "addsVillagerPreset_one": "Hace disponible {{count}} espacio de preset de trabajos por Perspicacia",
+      "addsVillagerPreset_other": "Hace disponibles {{count}} espacios de preset de trabajos por Perspicacia",
       "scholarInsight": "Erudito: +{{amount}} perspicacia",
       "insightRevealCost": "{{cost}} perspicacia", //x1.3
       "insightRevealSeeEffects": "Ver efectos por {{cost}} {{resource}}",
@@ -178,8 +178,8 @@
       "tannerLeather": "Curtidor: +{{amount}} cuero",
       "buildTimeReduction": "-{{percent}} % de tiempo de construcción", //x1.7
       "buildingCostReduction": "-{{percent}} % de costes de construcción", //x1.4
-      "addsConstructionQueueSlot_one": "Añade {{count}} espacio de cola de construcción",
-      "addsConstructionQueueSlot_other": "Añade {{count}} espacios de cola de construcción",
+      "addsConstructionQueueSlot_one": "Hace disponible {{count}} espacio de cola de construcción por Perspicacia",
+      "addsConstructionQueueSlot_other": "Hace disponibles {{count}} espacios de cola de construcción por Perspicacia",
       "constructionBoost": "Impulso de construcción: gasta Perspicacia para saltarte el 50 % del tiempo de construcción (una vez por construcción)", //x1.6
       "craftingBoost": "Impulso de artesanía: gasta Perspicacia para saltarte el 50 % del tiempo de artesanía (una vez por artesanía)", //x1.5
       "weaponEnchantment": "Encantamiento de armas" //x1.2

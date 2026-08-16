@@ -23,6 +23,7 @@ export type PublicRouteSeo = {
 export const KNOWN_SPA_PATHS = new Set([
   "/",
   "/galaxy",
+  "/crazygames",
   "/boost",
   "/game",
   "/end-screen",
@@ -48,6 +49,7 @@ const HOME_ROUTE_SEO: PublicRouteSeo = {
 const ROUTE_SEO: Record<string, PublicRouteSeo> = {
   "/": HOME_ROUTE_SEO,
   "/galaxy": HOME_ROUTE_SEO,
+  "/crazygames": HOME_ROUTE_SEO,
   "/boost": HOME_ROUTE_SEO,
   "/game": HOME_ROUTE_SEO,
   "/privacy": {

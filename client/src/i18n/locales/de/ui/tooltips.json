@@ -137,8 +137,8 @@
       "improvedResourceChangeHints": "Verbesserte Hinweise zu Ressourcenänderungen", //x1.5
       "resourceHighlighting": "Ressourcen-Hervorhebung",
       "unlocksScholar": "Schaltet Gelehrte frei", //x1.5
-      "addsVillagerPreset_one": "Fügt {{count}} Job-Vorlagen-Slot hinzu",
-      "addsVillagerPreset_other": "Fügt {{count}} Job-Vorlagen-Slots hinzu",
+      "addsVillagerPreset_one": "Macht {{count}} Job-Vorlagen-Slot für Einsicht verfügbar",
+      "addsVillagerPreset_other": "Macht {{count}} Job-Vorlagen-Slots für Einsicht verfügbar",
       "scholarInsight": "Gelehrter: +{{amount}} Einsicht",
       "insightRevealCost": "{{cost}} Einsicht",
       "insightRevealSeeEffects": "Effekte für {{cost}} {{resource}} anzeigen",
@@ -178,8 +178,8 @@
       "tannerLeather": "Gerber: +{{amount}} Leder",
       "buildTimeReduction": "-{{percent}} % Bauzeit",
       "buildingCostReduction": "-{{percent}} % Baukosten",
-      "addsConstructionQueueSlot_one": "Fügt {{count}} Bauwarteschlange hinzu",
-      "addsConstructionQueueSlot_other": "Fügt {{count}} Bauwarteschlangen hinzu",
+      "addsConstructionQueueSlot_one": "Macht {{count}} Bauwarteschlange für Einsicht verfügbar",
+      "addsConstructionQueueSlot_other": "Macht {{count}} Bauwarteschlangen für Einsicht verfügbar",
       "constructionBoost": "Bau-Boost: Einsicht ausgeben, um 50 % der Bauzeit zu überspringen (einmal pro Bau)",
       "craftingBoost": "Herstellungs-Boost: Einsicht ausgeben, um 50 % der Herstellungszeit zu überspringen (einmal pro Herstellung)", //x1.5
       "weaponEnchantment": "Waffenverzauberung"

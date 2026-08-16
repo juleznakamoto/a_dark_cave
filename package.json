@@ -13,6 +13,8 @@
     "build:steam": "cross-env VITE_STEAM_BUILD=1 vite build",
     "build:steam-demo": "cross-env VITE_STEAM_BUILD=1 VITE_STEAM_DEMO=1 vite build",
     "build:steam-playtest": "cross-env VITE_STEAM_BUILD=1 VITE_STEAM_PLAYTEST=1 vite build",
+    "build:crazygames": "cross-env VITE_CRAZYGAMES=1 vite build",
+    "package:crazygames": "node scripts/package-crazygames.mjs",
     "electron:build": "node scripts/build-electron.mjs",
     "electron:start": "electron .",
     "electron:dev": "npm run build:steam && npm run electron:build && electron .",

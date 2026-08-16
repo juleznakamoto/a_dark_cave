@@ -128,7 +128,12 @@ export async function loadLocaleResources(
 export async function ensureInitialLocalesLoaded(): Promise<void> {
   const path =
     typeof window === "undefined" ? "/" : window.location.pathname;
-  if (path !== "/" && path !== "/galaxy" && path !== "/boost") {
+  if (
+    path !== "/" &&
+    path !== "/galaxy" &&
+    path !== "/crazygames" &&
+    path !== "/boost"
+  ) {
     await ensureGameplayLocalesLoaded();
     return;
   }

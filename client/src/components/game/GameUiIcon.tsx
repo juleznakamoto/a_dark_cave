@@ -1,3 +1,4 @@
+import { publicUrl } from "@/lib/publicUrl";
 import { cn } from "@/lib/utils";
 
 /** Grunge UI icons in `client/public/icons/` (white SVG masks from Pixarts bundle). */
@@ -42,7 +43,7 @@ export function GameUiIcon({
   /** Tailwind/CSS size utilities, e.g. `w-5 h-5` or `game-tab-icon`. */
   sizeClassName?: string;
 }) {
-  const src = GAME_UI_ICON_SRC[name];
+  const src = publicUrl(GAME_UI_ICON_SRC[name]);
   return (
     <span
       aria-hidden="true"

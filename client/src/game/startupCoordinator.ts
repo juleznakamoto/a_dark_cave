@@ -1,5 +1,6 @@
 import type { StartScreenPreferences } from "@/components/game/StartScreen";
 import {
+  isCrazyGamesEdition,
   isGalaxyEdition,
   isSteamBuild,
   type DevGameMode,
@@ -71,8 +72,13 @@ function createStartResolution(
     surface: "start",
     preferences,
     devGameMode,
-    steamEditionActive: isSteamBuild || isGalaxyEdition() || devSteamMode,
-    steamDesktopEditionActive: isSteamBuild || devSteamMode,
+    steamEditionActive:
+      isSteamBuild ||
+      isGalaxyEdition() ||
+      isCrazyGamesEdition() ||
+      devSteamMode,
+    steamDesktopEditionActive:
+      isSteamBuild || isCrazyGamesEdition() || devSteamMode,
   };
 }
 

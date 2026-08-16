@@ -42,7 +42,12 @@ async function inlineFontFaceCss(css: string): Promise<string> {
     new Set(
       Array.from(css.matchAll(/url\(([^)]+)\)/g))
         .map((match) => match[1])
-        .filter((url) => url.startsWith("http") || url.startsWith("/fonts/")),
+        .filter(
+          (url) =>
+            url.startsWith("http") ||
+            url.startsWith("/fonts/") ||
+            url.includes("/fonts/"),
+        ),
     ),
   );
   const inlined = await Promise.all(

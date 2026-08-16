@@ -237,8 +237,8 @@ interface GameStore extends GameState {
   | "timedevent";
   devMode: boolean;
   /**
-   * Dev-only: simulate Normal / Steam Game / Steam Playtest / Steam Demo
-   * without a Steam build (Settings → Game Mode).
+   * Dev-only: simulate Normal / Steam Game / Steam Playtest / Steam Demo /
+   * CrazyGames Demo without a Steam build (Settings → Game Mode).
    */
   devGameMode: DevGameMode;
   lastSaved: string;

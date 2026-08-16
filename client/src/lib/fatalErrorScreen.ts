@@ -1,3 +1,5 @@
+import { publicUrl } from "./publicUrl";
+
 /** Shared fatal-UI timings (keep index.html boot watchdog in sync: 45000). */
 export const BOOT_LOCALE_TIMEOUT_MS = 20_000;
 /** Stuck loading / never-mounted React escalate after this. */
@@ -101,7 +103,7 @@ function buildFatalErrorMarkup(copy: ErrorCopy): string {
   <span class="adc-page-load-spinner" aria-hidden="true">
     <span class="adc-page-load-spinner__ring"></span>
     <span class="adc-page-load-spinner__core">
-      <img class="adc-page-load-spinner__logo" src="/apple-touch-icon.png" alt="" />
+      <img class="adc-page-load-spinner__logo" src="${publicUrl("/apple-touch-icon.png")}" alt="" />
     </span>
   </span>
   <p data-adc-fatal-message style="max-width:24rem;margin:0;font-size:0.875rem;line-height:1.625;color:#a3a3a3;">${copy.message}</p>

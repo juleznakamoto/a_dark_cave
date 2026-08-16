@@ -46,6 +46,7 @@ const DEV_GAME_MODES = new Set<DevGameMode>([
   "steamGame",
   "steamPlaytest",
   "steamDemo",
+  "crazyGamesDemo",
 ]);
 
 class InvalidStartupSaveError extends Error {

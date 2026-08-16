@@ -20,6 +20,7 @@ import { Howl, Howler } from 'howler';
   }
 })();
 import { logger } from './logger';
+import { publicUrl } from './publicUrl';
 import { EVENT_AMBIENCE_FADE_SECONDS, SOUND_VOLUME } from './soundVolumes';
 
 export {
@@ -113,7 +114,8 @@ export class AudioManager {
   }
 
   async loadSound(name: string, url: string): Promise<void> {
-    this.soundUrls.set(name, url);
+    const resolvedUrl = publicUrl(url);
+    this.soundUrls.set(name, resolvedUrl);
 
     const existing = this.sounds.get(name);
     if (existing) {
@@ -123,11 +125,11 @@ export class AudioManager {
 
     try {
       const config: Record<string, unknown> = {
-        src: [url],
+        src: [resolvedUrl],
         preload: true,
         onload: () => logger.log(`Successfully loaded sound: ${name}`),
         onloaderror: (id: number, error: unknown) =>
-          logger.warn(`Failed to load sound ${name} from ${url}:`, error),
+          logger.warn(`Failed to load sound ${name} from ${resolvedUrl}:`, error),
       };
 
       // Howler best practice: on playerror (autoplay blocked), wait for unlock then retry
@@ -436,7 +438,7 @@ export class AudioManager {
 
   private registerSoundUrls(sounds: Record<string, string>): void {
     for (const [name, url] of Object.entries(sounds)) {
-      this.soundUrls.set(name, url);
+      this.soundUrls.set(name, publicUrl(url));
     }
   }
 

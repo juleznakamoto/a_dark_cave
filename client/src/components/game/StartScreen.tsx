@@ -28,6 +28,7 @@ import { GAME_CHROME_NO_BG_HOVER } from "@/components/game/gameChrome";
 import { clearStaleChunkReloadGuard } from "@/lib/hardReload";
 import { mountFiraSansFontFace } from "@/lib/firaSansFontFace";
 import { logger } from "@/lib/logger";
+import { publicUrl } from "@/lib/publicUrl";
 
 const START_INTRO_VAPORIZE_COLOR = "rgba(209, 213, 219, 0.9)";
 const START_INTRO_VAPORIZE_ANIMATION = {
@@ -42,8 +43,8 @@ const START_INTRO_VAPORIZE_FONT_FALLBACK = {
 } as const;
 
 /** Easter egg: flash eyes at center of the upper-left screen quadrant. */
-const EYES_EASTER_EGG_SRC = "/images/eyes-easter-egg.png";
-const EYES_EASTER_EGG_SOUND = "/sounds/monster_start.mp3";
+const EYES_EASTER_EGG_SRC = publicUrl("/images/eyes-easter-egg.png");
+const EYES_EASTER_EGG_SOUND = publicUrl("/sounds/monster_start.mp3");
 const EYES_EASTER_EGG_DURATION_MS = 250;
 /** Defer asset fetch until well after LCP / lab SEO windows. */
 const EYES_EASTER_EGG_ASSET_LOAD_MS = 90_000;
@@ -464,7 +465,7 @@ export default function StartScreen({
               {t("startScreen.recommendedBy")}
             </p>
             <img
-              src="/the_hustle_logo.svg"
+              src={publicUrl("/the_hustle_logo.svg")}
               alt="The Hustle"
               width={116}
               height={40}

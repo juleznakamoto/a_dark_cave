@@ -137,8 +137,8 @@
       "improvedResourceChangeHints": "Indications améliorées de changement de ressources", //x1.7
       "resourceHighlighting": "Mise en évidence des ressources", //x1.5
       "unlocksScholar": "Débloque les érudits", //x1.3
-      "addsVillagerPreset_one": "Ajoute {{count}} emplacement de préréglage de métiers", //x1.4
-      "addsVillagerPreset_other": "Ajoute {{count}} emplacements de préréglage de métiers", //x1.4
+      "addsVillagerPreset_one": "Rend {{count}} emplacement de préréglage de métiers disponible contre de la Perspicacité", //x1.4
+      "addsVillagerPreset_other": "Rend {{count}} emplacements de préréglage de métiers disponibles contre de la Perspicacité", //x1.4
       "scholarInsight": "Érudit : +{{amount}} perspicacité",
       "insightRevealCost": "{{cost}} perspicacité", //x1.3
       "insightRevealSeeEffects": "Voir les effets pour {{cost}} {{resource}}",
@@ -178,8 +178,8 @@
       "tannerLeather": "Tanneur : +{{amount}} cuir",
       "buildTimeReduction": "-{{percent}} % de temps de construction", //x1.6
       "buildingCostReduction": "-{{percent}} % de coûts de construction", //x1.4
-      "addsConstructionQueueSlot_one": "Ajoute {{count}} emplacement de file de construction", //x1.4
-      "addsConstructionQueueSlot_other": "Ajoute {{count}} emplacements de file de construction", //x1.4
+      "addsConstructionQueueSlot_one": "Rend {{count}} emplacement de file de construction disponible contre de la Perspicacité", //x1.4
+      "addsConstructionQueueSlot_other": "Rend {{count}} emplacements de file de construction disponibles contre de la Perspicacité", //x1.4
       "constructionBoost": "Boost de construction : dépenser de la Perspicacité pour sauter 50 % du temps de construction (une fois par construction)", //x1.6
       "craftingBoost": "Boost d'artisanat : dépenser de la Perspicacité pour sauter 50 % du temps d'artisanat (une fois par artisanat)", //x1.5
       "weaponEnchantment": "Enchantement d'armes"

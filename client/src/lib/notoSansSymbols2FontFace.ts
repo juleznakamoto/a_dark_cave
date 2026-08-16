@@ -5,7 +5,9 @@
  *
  * Unicode-range slices match the Google Fonts CSS payload (Noto Sans Symbols 2 v25).
  */
-const NOTO_BASE = "/fonts";
+import { publicUrl } from "./publicUrl";
+
+const NOTO_BASE = publicUrl("/fonts");
 
 export const NOTO_SANS_SYMBOLS_2_FONT_FACE_CSS = `
 @font-face {

@@ -67,11 +67,13 @@ const GAME_MODE_LABEL_KEYS: Record<
   | "settings.gameModeSteamGame"
   | "settings.gameModeSteamPlaytest"
   | "settings.gameModeSteamDemo"
+  | "settings.gameModeCrazyGamesDemo"
 > = {
   normal: "settings.gameModeNormal",
   steamGame: "settings.gameModeSteamGame",
   steamPlaytest: "settings.gameModeSteamPlaytest",
   steamDemo: "settings.gameModeSteamDemo",
+  crazyGamesDemo: "settings.gameModeCrazyGamesDemo",
 };
 
 const GAME_MODE_DEFAULTS: Record<DevGameMode, string> = {
@@ -79,6 +81,7 @@ const GAME_MODE_DEFAULTS: Record<DevGameMode, string> = {
   steamGame: "Steam Game",
   steamPlaytest: "Steam Playtest",
   steamDemo: "Steam Demo",
+  crazyGamesDemo: "CrazyGames Demo",
 };
 
 interface AudioControlRowProps {

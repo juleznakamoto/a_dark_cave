@@ -15,6 +15,7 @@ vi.mock("./startupGameLoader", () => ({
 
 vi.mock("@/lib/edition", () => ({
   isGalaxyEdition: () => false,
+  isCrazyGamesEdition: () => false,
   isSteamBuild: false,
 }));
 
