@@ -2,6 +2,7 @@ import { describe, it, expect } from "vitest";
 import { gameStateSchema } from "@shared/schema";
 import type { ActionResult } from "@/game/actions";
 import "@/game/rules"; // register actions for applyActionEffects
+import { getActionCostBreakdown } from "./index";
 import {
   getInsightElixirGoldCost,
   getInsightElixirPurchaseCount,
@@ -64,5 +65,25 @@ describe("Insight Elixir gold ladder", () => {
     expect(result.stateUpdates.story?.seen?.insightElixirPurchases).toBe(3);
     expect(result.stateUpdates.resources?.gold).toBe(5000 - 350);
     expect(result.stateUpdates.resources?.insight).toBe(3000);
+  });
+
+  it("exposes the next gold cost for the purchase tooltip", () => {
+    const state = stateWithPurchases(2);
+    const breakdown = getActionCostBreakdown(
+      "tradeGoldForInsightPotion",
+      state,
+    );
+    expect(breakdown).toHaveLength(1);
+    expect(breakdown[0].text).toContain("350");
+    expect(breakdown[0].satisfied).toBe(true);
+
+    const broke = stateWithPurchases(0);
+    broke.resources.gold = 100;
+    const unaffordable = getActionCostBreakdown(
+      "tradeGoldForInsightPotion",
+      broke,
+    );
+    expect(unaffordable[0].text).toContain("250");
+    expect(unaffordable[0].satisfied).toBe(false);
   });
 });

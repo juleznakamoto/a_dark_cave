@@ -121,7 +121,10 @@ function resolveForestPanelTradeCost(
   action: Action,
   state: GameState,
 ): Record<string, number> | undefined {
-  if (!action.cost || typeof action.cost === "function") return undefined;
+  if (!action.cost) return undefined;
+  if (typeof action.cost === "function") {
+    return action.cost(state) as Record<string, number>;
+  }
   const raw = action.cost as Record<string, Record<string, number>>;
   if (!isTieredNumericRecord(raw)) {
     return raw as unknown as Record<string, number>;
@@ -204,7 +207,10 @@ export default function ForestPanel() {
     if (!action) return null;
 
     let canExecute = canExecuteAction(actionId, state);
-    const showCost = action.cost && Object.keys(action.cost).length > 0;
+    const showCost =
+      action.cost &&
+      (typeof action.cost === "function" ||
+        Object.keys(action.cost as object).length > 0);
     const isTradeButton =
       actionId.startsWith("trade") || actionId.startsWith("sell");
     const isSellButton = actionId.startsWith("sell");
