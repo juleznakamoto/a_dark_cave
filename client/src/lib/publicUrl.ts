@@ -1,6 +1,6 @@
 /**
  * Resolve a site-root public path (`/sounds/x.mp3`) against the Vite base.
- * CrazyGames hosts the zip in a subdirectory, so the build uses `base: "./"`.
+ * CrazyGames hosts the folder in a subdirectory, so the build uses `base: "./"`.
  */
 export function publicUrl(path: string): string {
   if (!path.startsWith("/")) return path;

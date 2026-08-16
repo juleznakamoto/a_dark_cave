@@ -71,7 +71,7 @@ export function useSteamDemoActive(): boolean {
   );
 }
 
-/** CrazyGames zip, `/crazygames` path, or DEV Game Mode CrazyGames Demo. */
+/** CrazyGames folder, `/crazygames` path, or DEV Game Mode CrazyGames Demo. */
 export function useCrazyGamesEditionActive(): boolean {
   const devGameMode = useGameStore((s) => s.devGameMode);
   return (

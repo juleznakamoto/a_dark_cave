@@ -37,7 +37,7 @@ in the client; **Supabase** handles auth/cloud saves and **Stripe** handles paym
 `electron-builder.playtest.yml` (Steam playtest packaging),
 `steam_appid.txt` (full game App ID **4882240**), `steam_appid_demo.txt` (demo App ID **4971800**),
 `steam_appid_playtest.txt` (playtest App ID **4972040**). CrazyGames HTML5 demo: `build:crazygames` /
-`package:crazygames` (`VITE_CRAZYGAMES=1`, relative `base`, zip in `release/`).
+`package:crazygames` (`VITE_CRAZYGAMES=1`, relative `base`, folder in `release/`).
 
 **Path aliases:** `@/*` â†’ `client/src/*`, `@shared/*` â†’ `shared/*`, `@assets` â†’ `attached_assets`.
 
@@ -263,7 +263,7 @@ run ad hoc for locale maintenance.
 | `import:resend-legacy-segments` | `import-legacy-resend-segments.ts` | One-time import of two legacy cohorts into Resend **Segments** (oldestâ†’newest): pre-consent users (no `marketing_preferences` row) and currently-subscribed users. Shares env with `resendScriptEnv.ts`. |
 | `rebuild:resend-marketing` | `rebuild-resend-marketing-contacts.ts` | Wipe all Resend contacts, then re-import pre-consent + subscribed cohorts (excludes opt-outs; `--dry-run` / `--skip-delete`). |
 | `test:gender` | `test-gender-service.js` | Smoke-test `services/gender-service/`. |
-| `build:crazygames` / `package:crazygames` | `package-crazygames.mjs` | CrazyGames HTML5 demo zip (`VITE_CRAZYGAMES=1`, relative base). |
+| `build:crazygames` / `package:crazygames` | `package-crazygames.mjs` | CrazyGames HTML5 demo folder (`VITE_CRAZYGAMES=1`, relative base). |
 
 Support modules (not always npm-wired): `write-build-meta.mjs` (git HEAD â†’ `dist/build-meta.json` after client build), `generate-logo-assets.py` (resize `build-resources/logo-source.png` â†’ favicons, PWA, OG, Electron icons), `locale-catalog.mjs`, `parse-locale-json.mjs`,
 `i18n-ui-shards.mjs`, `audit-locale-translations.mjs`, `audit-timed-tab-i18n.mjs`,
@@ -404,13 +404,13 @@ Edition behavior reuses `isSteamEditionActive()` / `useSteamEditionActive()` for
 
 ---
 
-## CrazyGames demo (`/crazygames` + upload zip)
+## CrazyGames demo (`/crazygames` + upload folder)
 
 HTML5 demo for [CrazyGames](https://docs.crazygames.com/). Same Steam-demo chrome: 8 wooden-hut
 cap, footer progress bar, no shop / donate / Playlight / auth, isolated IndexedDB key
 `crazyGamesSave`. Steam wishlist is in the footer and on `DemoTimeUpDialog`. Dedicated
 upload build uses relative asset paths (`base: "./"`) and hash routing so CrazyGames can host
-the zip in a subdirectory.
+the folder in a subdirectory.
 
 | Path | Responsibility |
 |------|----------------|
@@ -418,8 +418,8 @@ the zip in a subdirectory.
 | `client/src/lib/publicUrl.ts` | Prefix `/sounds` `/icons` `/fonts` with Vite `BASE_URL` for subdirectory hosting. |
 | `client/src/game/demoLimit.ts` | Shared wooden-hut cap (Galaxy + Steam demo + CrazyGames). |
 | `client/src/game/saveStorage.ts` | IndexedDB key `crazyGamesSave`. |
-| `client/src/App.tsx` | Route `/crazygames`; CrazyGames zip uses `useHashLocation`. |
-| `scripts/package-crazygames.mjs` | `npm run package:crazygames` — Vite build + zip `dist/public` → `release/a-dark-cave-crazygames.zip`. |
+| `client/src/App.tsx` | Route `/crazygames`; CrazyGames folder uses `useHashLocation`. |
+| `scripts/package-crazygames.mjs` | `npm run package:crazygames` — Vite build + copy `dist/public` → `release/a-dark-cave-crazygames/`. |
 | `scripts/PackageCrazyGames.cmd` | Double-click / desktop shortcut wrapper for `package:crazygames`. |
 
 DEV Settings → Game Mode includes **CrazyGames Demo**. Scripts: `build:crazygames`, `package:crazygames`.

@@ -10,7 +10,7 @@ interface ImportMetaEnv {
   readonly VITE_STEAM_DEMO?: string;
   /** "1" only in the Steam desktop playtest build (`build:steam-playtest`). */
   readonly VITE_STEAM_PLAYTEST?: string;
-  /** "1" only in the CrazyGames HTML5 demo zip (`build:crazygames`). */
+  /** "1" only in the CrazyGames HTML5 demo folder (`build:crazygames`). */
   readonly VITE_CRAZYGAMES?: string;
 }
 

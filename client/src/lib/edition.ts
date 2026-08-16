@@ -39,7 +39,7 @@ export const isSteamFullBuild =
 /** Convenience inverse for readability at web-only call sites. */
 export const isWebBuild = !isSteamBuild;
 
-/** CrazyGames HTML5 demo zip (`build:crazygames`). */
+/** CrazyGames HTML5 demo folder (`build:crazygames`). */
 export const isCrazyGamesBuild = import.meta.env.VITE_CRAZYGAMES === "1";
 
 const GALAXY_PATH_PREFIX = "/galaxy";
@@ -77,7 +77,7 @@ export function isGalaxyEdition(): boolean {
 }
 
 /**
- * CrazyGames demo: dedicated zip (`VITE_CRAZYGAMES=1`) or `/crazygames` on the
+ * CrazyGames demo: dedicated folder (`VITE_CRAZYGAMES=1`) or `/crazygames` on the
  * main site. DEV Game Mode is handled separately (same pattern as Steam Demo).
  */
 export function isCrazyGamesEdition(): boolean {

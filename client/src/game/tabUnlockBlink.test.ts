@@ -1,4 +1,5 @@
 import { describe, expect, it } from "vitest";
+import { isOverallAchievementCategoryEnabled } from "@/achievements/configs/overall";
 import {
   buildTabUnlockSnapshot,
   getNewlyUnlockedTabsForBlink,
@@ -58,5 +59,24 @@ describe("tabUnlockBlink", () => {
         "bastion",
       ),
     ).toBe(true);
+  });
+
+  it("unlocks achievements from social promo fields on the full state", () => {
+    const full = minimalState({
+      isUserSignedIn: true,
+      referralCount: 1,
+      social_media_rewards: {
+        marketing_email: { claimed: true },
+        instagram: { claimed: true },
+        reddit: { claimed: true },
+        playlight_discover: { claimed: true },
+      },
+    });
+    expect(buildTabUnlockSnapshot(full).achievementsUnlocked).toBe(
+      isOverallAchievementCategoryEnabled,
+    );
+
+    const { social_media_rewards: _s, referralCount: _r, ...partial } = full;
+    expect(buildTabUnlockSnapshot(partial).achievementsUnlocked).toBe(false);
   });
 });

@@ -71,7 +71,7 @@ import MistBackground from "@/components/ui/mist-background";
 import { SmokeBackground } from "@/components/ui/spooky-smoke-animation";
 import { isBloodMoonOverlayVisible, BLOOD_MOON_OVERLAY_FADE_MS } from "@/game/bloodMoonOverlay";
 import { audioManager, SOUND_VOLUME } from "@/lib/audio";
-import { getUnclaimedAchievementIds, isAchievementsGameTabUnlocked } from "@/achievements";
+import { getUnclaimedAchievementIds } from "@/achievements";
 import { getVisibleHotkeyTabs, isEditableKeyboardTarget } from "./tabHotkeys";
 import { isTraderShopUnlocked } from "@/game/stateHelpers";
 import {
@@ -314,78 +314,14 @@ export default function GameContainer() {
 
   // Track unlocked tabs to trigger one-time blink until clicked (persisted in story.seen)
   const traderUnlocked = isTraderShopUnlocked({ story, traderDialogOpens });
-  const hasWonNormalGame = useGameStore((s) => s.hasWonNormalGame);
-  const hasWonCruelGame = useGameStore((s) => s.hasWonCruelGame);
-  const hasSpeedrunWin = useGameStore((s) => s.hasSpeedrunWin);
-  const lifetimeGamesWon = useGameStore((s) => s.lifetimeGamesWon);
-  // Hour buckets only: raw lifetimePlayTimeMs updates at 4 Hz with playTime.
-  const lifetimePlayTimeHours = useGameStore((s) =>
-    Math.floor((s.lifetimePlayTimeMs || 0) / (60 * 60 * 1000)),
+  // Full-store selector (not a field-list memo): overall unlock can flip from
+  // social_media_rewards, referralCount, live estate levels, or Achievement
+  // Maxer tallies that a partial dep list would miss. useShallow keeps the
+  // shell from redrawing on 4 Hz playTime writes.
+  const tabUnlockSnapshot = useGameStore(
+    useShallow((s) => buildTabUnlockSnapshot(s)),
   );
-  const lifetimeStorageMaxHits = useGameStore((s) => s.lifetimeStorageMaxHits);
-  const lifetimeEstateUpgradeMaxHits = useGameStore(
-    (s) => s.lifetimeEstateUpgradeMaxHits,
-  );
-  const hasAchievementMaxer = useGameStore((s) => s.hasAchievementMaxer);
-  // Full store required: unlock checks overall "Achievement Maxer",
-  // which tallies building getCount(state.buildings.*). A partial
-  // `{ relics, books, ... } as GameState` omitted buildings and crashed after Light Fire.
-  const achievementsUnlocked = useMemo(
-    () => isAchievementsGameTabUnlocked(useGameStore.getState()),
-    [
-      relics,
-      books,
-      hasWonNormalGame,
-      hasWonCruelGame,
-      hasSpeedrunWin,
-      lifetimeGamesWon,
-      lifetimePlayTimeHours,
-      lifetimeStorageMaxHits,
-      lifetimeEstateUpgradeMaxHits,
-      hasAchievementMaxer,
-    ],
-  );
-  const tools = useGameStore((state) => state.tools);
-  const weapons = useGameStore((state) => state.weapons);
-  const tabUnlockSnapshot = useMemo(
-    () =>
-      buildTabUnlockSnapshot({
-        flags,
-        buildings,
-        tools,
-        weapons,
-        relics,
-        books,
-        story,
-        traderDialogOpens,
-        hasWonNormalGame,
-        hasWonCruelGame,
-        hasSpeedrunWin,
-        lifetimeGamesWon,
-        lifetimePlayTimeMs: useGameStore.getState().lifetimePlayTimeMs,
-        lifetimeStorageMaxHits,
-        lifetimeEstateUpgradeMaxHits,
-        hasAchievementMaxer,
-      }),
-    [
-      flags,
-      buildings,
-      tools,
-      weapons,
-      relics?.survivors_notes,
-      books?.book_of_trials,
-      story,
-      traderDialogOpens,
-      hasWonNormalGame,
-      hasWonCruelGame,
-      hasSpeedrunWin,
-      lifetimeGamesWon,
-      lifetimePlayTimeHours,
-      lifetimeStorageMaxHits,
-      lifetimeEstateUpgradeMaxHits,
-      hasAchievementMaxer,
-    ],
-  );
+  const achievementsUnlocked = tabUnlockSnapshot.achievementsUnlocked;
   const villageTabVisible = tabUnlockSnapshot.villageUnlocked;
   const forestTabVisible = tabUnlockSnapshot.forestUnlocked;
   const bastionTabVisible = tabUnlockSnapshot.bastionUnlocked;
