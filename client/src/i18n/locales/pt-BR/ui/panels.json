@@ -55,7 +55,7 @@
     "merchantAvailableIn": "Disponível em {{time}}",
     "merchantAbortCall": "Cancelar chamada",
     "investCompleteIn": "Investimento concluído em {{time}}",
-    "investAvailableIn": "Investimentos disponíveis em {{time}}",
+    "investAvailableIn": "Investimento concluído. Próximas ofertas em {{time}}.",
     "investPreparing": "Preparando ofertas de investimento…",
     "jobs": {
       "gatherer": "Coletor",

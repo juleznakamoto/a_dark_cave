@@ -106,7 +106,8 @@
       "lucky": "Probabilidad en caso de éxito de multiplicar tu beneficio por {{multiplier}}.",
       "loss": "La parte de tu inversión que pierdes en caso de fracaso.",
       "wipeout": "Probabilidad de perder toda tu inversión en caso de fracaso.",
-      "potentialProfit": "Beneficio máximo posible de tu inversión. El segundo valor aplica si se activa la probabilidad de suerte (beneficio × {{multiplier}})."
+      "potentialProfit": "Beneficio máximo posible de tu inversión. El segundo valor aplica si se activa la probabilidad de suerte (beneficio × {{multiplier}}).",
+      "wait": "Después de cada inversión, tardan 30 minutos en aparecer nuevas ofertas."
     }
   },
   "gambler": {

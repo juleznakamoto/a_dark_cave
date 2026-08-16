@@ -106,7 +106,8 @@
       "lucky": "Chance bei Erfolg, den Gewinn mit {{multiplier}} zu multiplizieren.",
       "loss": "Der Anteil deiner Investition, den du bei Misserfolg verlierst.",
       "wipeout": "Chance, bei Misserfolg die gesamte Investition zu verlieren.",
-      "potentialProfit": "Maximaler Gewinn deiner Investition. Der zweite Wert gilt, wenn Glückschance eintritt (Gewinn × {{multiplier}})."
+      "potentialProfit": "Maximaler Gewinn deiner Investition. Der zweite Wert gilt, wenn Glückschance eintritt (Gewinn × {{multiplier}}).",
+      "wait": "Nach jeder Investition dauert es 30 Minuten, bis neue Angebote erscheinen."
     }
   },
   "gambler": {

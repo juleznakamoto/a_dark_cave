@@ -222,6 +222,7 @@ export default function InvestDialog({ open, onOpenChange }: Props) {
           })}
         </li>
       </ul>
+      <p className="text-muted-foreground">{t("invest.tooltip.wait")}</p>
     </div>
   );
 

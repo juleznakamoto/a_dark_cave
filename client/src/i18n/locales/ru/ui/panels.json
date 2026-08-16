@@ -55,7 +55,7 @@
     "merchantAvailableIn": "Доступно через {{time}}",
     "merchantAbortCall": "Отменить вызов", //x1.3
     "investCompleteIn": "Инвестиция завершится через {{time}}",
-    "investAvailableIn": "Инвестиции доступны через {{time}}",
+    "investAvailableIn": "Инвестиция завершена. Новые предложения через {{time}}.",
     "investPreparing": "Подготовка инвестиционных предложений…", //x1.4
     "jobs": {
       "gatherer": "Собиратель",

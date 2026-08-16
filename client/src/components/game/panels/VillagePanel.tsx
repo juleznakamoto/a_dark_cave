@@ -372,7 +372,7 @@ function VillageInvestButton({ label }: { label: string }) {
         })}
       </div>
     ) : currentPlayTime < nextWave ? (
-      <div className="text-xs whitespace-nowrap">
+      <div className="text-xs max-w-[220px]">
         {t("village.investAvailableIn", {
           time: formatRemaining(Math.max(0, nextWave - currentPlayTime)),
         })}
