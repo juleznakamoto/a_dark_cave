@@ -5,6 +5,7 @@
 ## Docs
 
 - [A Dark Cave](https://a-dark-cave.com): Main game. Text-based incremental survival with settlement building, resource management, turn-based combat, and Lovecraftian atmosphere. Inspired by A Dark Room, Candy Box, Kittens Game, and Darkest Dungeon.
+- [Citation sheet](https://a-dark-cave.com/llms-full.txt): Full facts, similar-to notes, and FAQ for A Dark Cave.
 - [Privacy Policy](https://a-dark-cave.com/privacy): Privacy policy and data handling practices for A Dark Cave.
 - [Terms of Service](https://a-dark-cave.com/terms): Terms of service and usage conditions for the game.
 - [Imprint](https://a-dark-cave.com/imprint): Legal imprint and publisher information.
@@ -14,7 +15,8 @@
 
 - [A Dark Cave Wiki](https://a-dark-cave.fandom.com/wiki/A_Dark_Cave_Wiki): Community wiki with game guides, mechanics, and lore.
 - [Reddit r/aDarkCave](https://www.reddit.com/r/aDarkCave/): Community discussion and updates.
-- [Steam](https://store.steampowered.com/app/4882240/A_Dark_Cave/): Steam store page. Wishlist for the upcoming Steam release.
+- [Steam](https://store.steampowered.com/app/4882240/A_Dark_Cave/): Steam store page. Free Steam Demo available now. Wishlist the full Steam release.
+- [Steam Demo](https://store.steampowered.com/app/4971800/): Free Steam Demo (app 4971800).
 - [itch.io](https://a-dark-cave.itch.io/a-dark-cave): Game page on itch.io.
 - [MobyGames](https://www.mobygames.com/game/255071/a-dark-cave/): Game entry in the MobyGames video game database.
 - [YouTube Channel](https://www.youtube.com/channel/UCdQDWTJe_Bno7xyjnO1aC-w): Official YouTube channel for A Dark Cave.
@@ -22,8 +24,8 @@
 ## Key Facts
 
 - Genre: Incremental, Idle, Strategy, Survival, Settlement Builder, Resource Management
-- Platform: Web browser (HTML5), desktop and mobile
-- Price: Free to play
+- Platform: Web browser (HTML5), desktop and mobile. Free Steam Demo available now.
+- Price: Free to play with optional full game unlock
 - Play mode: Single player
 - Features: Text-based narrative, crafting, villager management, world exploration, turn-based combat, idle mode, persistent local save
 - Inspired by: A Dark Room, Candy Box, Kittens Game, Darkest Dungeon
@@ -33,6 +35,7 @@
 - Website: https://a-dark-cave.com
 - Reddit: https://www.reddit.com/r/aDarkCave/
 - Steam: https://store.steampowered.com/app/4882240/A_Dark_Cave/
+- Steam Demo: https://store.steampowered.com/app/4971800/
 - itch.io: https://a-dark-cave.itch.io/a-dark-cave
 - MobyGames: https://www.mobygames.com/game/255071/a-dark-cave/
 - Buy Me a Coffee: https://buymeacoffee.com/julez.b

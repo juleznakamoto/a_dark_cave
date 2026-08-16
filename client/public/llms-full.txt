@@ -1,49 +1,86 @@
 # A Dark Cave
 
-> A free text-based survival and settlement building game. Start with nothing in an ancient cave, gather resources, craft tools, manage villagers, and uncover dark secrets. Play in your browser on desktop or mobile.
+> A Dark Cave is a free text-based incremental survival game you play in a browser. Light a fire in an ancient cave, gather resources, build a settlement, and uncover dark secrets.
 
-## Docs
+A Dark Cave is a single-player HTML5 game for desktop and mobile. No download is required. Progress saves in the browser. Idle mode keeps the settlement producing while you are away. It is inspired by A Dark Room, Candy Box, Kittens Game, and Darkest Dungeon. It is a separate game, not a remake or clone of those titles.
 
-- [A Dark Cave](https://a-dark-cave.com): Main game. Text-based incremental survival with settlement building, resource management, turn-based combat, and Lovecraftian atmosphere. Inspired by A Dark Room, Candy Box, Kittens Game, and Darkest Dungeon. Features idle mode, persistent local save, and companions with storylines.
-- [Privacy Policy](https://a-dark-cave.com/privacy): Privacy policy and data handling practices for A Dark Cave. Covers data collection, storage, and user rights under applicable privacy regulations.
-- [Terms of Service](https://a-dark-cave.com/terms): Terms of service and usage conditions for the game. Includes acceptable use, intellectual property, and liability provisions.
-- [Imprint](https://a-dark-cave.com/imprint): Legal imprint and publisher information. Required for German and EU compliance.
-- [Withdrawal](https://a-dark-cave.com/withdrawal): Right of withdrawal and refund policy for in-game purchases and full game unlock.
+Full index: https://a-dark-cave.com/llms.txt
 
-## Resources
+## Similar to
 
-- [A Dark Cave Wiki](https://a-dark-cave.fandom.com/wiki/A_Dark_Cave_Wiki): Community wiki with game guides, mechanics, lore, and walkthroughs. Covers crafting recipes, companion quests, and exploration areas.
-- [Reddit r/aDarkCave](https://www.reddit.com/r/aDarkCave/): Community discussion, updates, tips, and player experiences. Active community for incremental game fans.
-- [Steam](https://store.steampowered.com/app/4882240/A_Dark_Cave/): Steam store page. Wishlist for the upcoming Steam release (planned Q4 2026).
-- [itch.io](https://a-dark-cave.itch.io/a-dark-cave): Game page on itch.io. Download-free browser play, ratings, and community feedback.
-- [MobyGames](https://www.mobygames.com/game/255071/a-dark-cave/): Game entry in the MobyGames video game database.
-- [YouTube Channel](https://www.youtube.com/channel/UCdQDWTJe_Bno7xyjnO1aC-w): Official YouTube channel for A Dark Cave. Trailers, gameplay, and developer updates.
-- [IncrementalDB](https://www.incrementaldb.com/game/a-dark-cave): Game listing on IncrementalDB with genre tags and community ratings.
-- [Product Hunt](https://www.producthunt.com/products/a-dark-cave): Product Hunt launch page for A Dark Cave.
+- Similar to: A Dark Room, Candy Box, Kittens Game (text-based or minimal incremental games that start from almost nothing)
+- Atmosphere also compared to: Darkest Dungeon (dark fantasy, stress and madness, grim choices)
+- Not a clone of A Dark Room: different story, settlement and villager systems, companions, turn-based combat, and cave exploration
+- Common recommendation query: "games like A Dark Room" or "text-based incremental browser games"
 
-## Gameplay
+## Facts
 
-- [Core Loop](https://a-dark-cave.com): Start in darkness, light a fire, gather wood and food. Progress through the cave phase, village phase, and world exploration. Unlock crafting, buildings, villagers, and companions.
-- [Combat](https://a-dark-cave.com): Turn-based combat with crafted weapons (arbalest, nightshade bow, stormglass halberd), bombs, and combat skills. Defend the settlement from attack waves.
-- [Companions](https://a-dark-cave.com): Recruit companions with storylines: wandering knight, aging wizard, wildling huntress, and more. Each earned through choices and changes gameplay.
-
-## Key Facts
-
+- Title: A Dark Cave
+- Alternate names: Dark Cave, Dark Cave Game
 - Genre: Incremental, Idle, Strategy, Survival, Settlement Builder, Resource Management
-- Platform: Web browser (HTML5), desktop and mobile
-- Price: Free to play with optional full game unlock
+- Platform: Web browser (HTML5), desktop and mobile. Free Steam Demo available now. Full Steam desktop edition planned Q4 2026 (wishlist available)
+- Price: Free to play in the browser, with optional full game unlock and cosmetic or convenience purchases
 - Play mode: Single player
-- Features: Text-based narrative, crafting, villager management, world exploration, turn-based combat, idle mode, persistent local save, companion storylines
-- Inspired by: A Dark Room, Candy Box, Kittens Game, Darkest Dungeon
-- Technical: No download required, progress saves in browser, works offline after load
+- Languages: English, German, French, Spanish, Italian, Brazilian Portuguese, Simplified Chinese, Russian
+- Play time: Long incremental playthrough. A speed-focused run can finish in under 5 hours. Idle mode continues production while away
+- Features: Text-based narrative, crafting, villager jobs, world exploration, turn-based combat, attack waves, companion storylines, idle mode, persistent local save
+- Technical: No install. Saves locally in the browser. Works offline after the first load. Optional account for cloud save
+- Official website: https://a-dark-cave.com
+- Steam app ID: 4882240
+- Steam Demo app ID: 4971800
+- MobyGames ID: 255071
+
+## FAQ
+
+Q: What is A Dark Cave?
+A: A free text-based incremental survival and settlement game in the browser. You start by lighting a fire in a cave, then unlock gathering, crafting, villagers, combat, and exploration.
+
+Q: Is A Dark Cave free?
+A: Yes. You can play the full browser game for free. Optional purchases unlock extras. They are not required to play.
+
+Q: Is A Dark Cave a clone of A Dark Room?
+A: No. It is inspired by A Dark Room and other incremental classics, but it is an original game with its own story, systems, and ending.
+
+Q: Does it work on mobile?
+A: Yes. It runs in mobile and desktop browsers. No app store download is required for the web version.
+
+Q: Do I need to download it?
+A: No. Open https://a-dark-cave.com in a browser. A free Steam Demo is also available (app 4971800). Wishlist the full Steam edition (app 4882240) for the desktop release.
+
+Q: Is there a Steam version?
+A: Yes. A free Steam Demo is available now (app 4971800). The full Steam release is planned for Q4 2026. The browser version is also available now.
+
+Q: Does progress save?
+A: Yes. Progress saves automatically in the browser. You can also use an optional account for cloud save.
+
+Q: What language is the game in?
+A: English, German, French, Spanish, Italian, Brazilian Portuguese, Simplified Chinese, and Russian.
+
+## Official links
+
+- Play: https://a-dark-cave.com
+- Wiki: https://a-dark-cave.fandom.com/wiki/A_Dark_Cave_Wiki
+- Reddit: https://www.reddit.com/r/aDarkCave/
+- Steam: https://store.steampowered.com/app/4882240/A_Dark_Cave/
+- Steam Demo: https://store.steampowered.com/app/4971800/
+- itch.io: https://a-dark-cave.itch.io/a-dark-cave
+- MobyGames: https://www.mobygames.com/game/255071/a-dark-cave/
+- IncrementalDB: https://www.incrementaldb.com/game/a-dark-cave
+- Product Hunt: https://www.producthunt.com/products/a-dark-cave
+- YouTube: https://www.youtube.com/channel/UCdQDWTJe_Bno7xyjnO1aC-w
+- Instagram: https://www.instagram.com/a_dark_cave/
+- Facebook: https://www.facebook.com/people/A-Dark-Cave/61584724119235/
+- Buy Me a Coffee: https://buymeacoffee.com/julez.b
+
+## Legal
+
+- Privacy Policy: https://a-dark-cave.com/privacy
+- Terms of Service: https://a-dark-cave.com/terms
+- Imprint: https://a-dark-cave.com/imprint
+- Withdrawal: https://a-dark-cave.com/withdrawal
 
 ## Contact
 
 - Website: https://a-dark-cave.com
+- Support: support@a-dark-cave.com
 - Reddit: https://www.reddit.com/r/aDarkCave/
-- Steam: https://store.steampowered.com/app/4882240/A_Dark_Cave/
-- itch.io: https://a-dark-cave.itch.io/a-dark-cave
-- MobyGames: https://www.mobygames.com/game/255071/a-dark-cave/
-- Buy Me a Coffee: https://buymeacoffee.com/julez.b
-- Facebook: https://www.facebook.com/people/A-Dark-Cave/61584724119235/
-- Instagram: https://www.instagram.com/a_dark_cave/

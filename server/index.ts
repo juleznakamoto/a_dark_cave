@@ -241,17 +241,23 @@ app.use((req, res, next) => {
 const publicDir = fs.existsSync(path.resolve(__dirname, "public", "llms.txt"))
   ? path.resolve(__dirname, "public")
   : path.resolve(__dirname, "..", "client", "public");
+function sendLlmsText(res: Response, fileName: string) {
+  const filePath = path.join(publicDir, fileName);
+  if (fs.existsSync(filePath)) {
+    res.set("Content-Type", "text/plain; charset=utf-8");
+    res.set("Cache-Control", "public, max-age=86400");
+    res.sendFile(filePath);
+    return;
+  }
+  res.status(404).send("Not found");
+}
 ["llms.txt", "llms-full.txt"].forEach((file) => {
-  app.get(`/${file}`, (req, res) => {
-    const filePath = path.join(publicDir, file);
-    if (fs.existsSync(filePath)) {
-      res.set("Content-Type", "text/plain; charset=utf-8");
-      res.set("Cache-Control", "public, max-age=86400");
-      res.sendFile(filePath);
-    } else {
-      res.status(404).send("Not found");
-    }
+  app.get(`/${file}`, (_req, res) => {
+    sendLlmsText(res, file);
   });
+});
+app.get("/.well-known/llms.txt", (_req, res) => {
+  sendLlmsText(res, "llms.txt");
 });
 
 app.get("/api/config", (req, res) => {

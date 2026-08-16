@@ -446,7 +446,7 @@ rate-limited `/api/*` routes.
 | `/api/config` | inline | Public Supabase keys |
 | `/api/version` | inline | Deploy build sha + semver (`no-store`; client compares against `__BUILD_SHA__`) |
 
-Support: `server/vite.ts` (dev/prod hosting + SPA fallback with route allowlist/404 and per-route HTML head patching via `server/spaHtml.ts` + `shared/publicSeo.ts`; `boot.js` served with no-cache like `index.html`), `server/securityHeaders.ts` (Phase A: `X-Content-Type-Options`, `X-Frame-Options`, `Referrer-Policy`), `server/supabaseServerClient.ts` (service-role client),
+Support: `server/vite.ts` (dev/prod hosting + SPA fallback with route allowlist/404 and per-route HTML head patching via `server/spaHtml.ts` + `shared/publicSeo.ts`; `boot.js` served with no-cache like `index.html`), GEO plain-text `llms.txt` / `llms-full.txt` plus `/.well-known/llms.txt` in `server/index.ts` (before SPA fallback), `server/securityHeaders.ts` (Phase A: `X-Content-Type-Options`, `X-Frame-Options`, `Referrer-Policy`), `server/supabaseServerClient.ts` (service-role client),
 `server/paymentVerifyAuth.ts` (payment-verify session/body user match), `server/stripeFxQuote.ts`,
 `server/stripeWebhook.ts` (`POST /api/payment/webhook`, raw body + `STRIPE_WEBHOOK_SECRET_DEV` / `_PROD`),
 `server/resendContactCsv.ts` (marketing CSV rows + `unsubscribe_url` tokens; `loadResendLegacyCohorts` splits confirmed users into pre-consent / subscribed cohorts, oldestâ†’newest),
