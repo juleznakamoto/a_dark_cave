@@ -13,11 +13,15 @@ vi.mock("./startupGameLoader", () => ({
   loadStoreForStartupCheck: mockLoadStore,
 }));
 
-vi.mock("@/lib/edition", () => ({
-  isGalaxyEdition: () => false,
-  isCrazyGamesEdition: () => false,
-  isSteamBuild: false,
-}));
+vi.mock("@/lib/edition", async (importOriginal) => {
+  const actual = await importOriginal<typeof import("@/lib/edition")>();
+  return {
+    ...actual,
+    isGalaxyEdition: () => false,
+    isCrazyGamesEdition: () => false,
+    isSteamBuild: false,
+  };
+});
 
 vi.mock("@/lib/supabase", () => ({
   AUTH_STORAGE_KEY: "a-dark-cave-auth",
@@ -138,6 +142,55 @@ describe("resolveStartupVisit", () => {
       resolveStartupVisit({ pathname: "/", search: "", hash: "" }),
     ).resolves.toMatchObject({ surface: "start" });
     expect(mockLoadStore).toHaveBeenCalledOnce();
+  });
+
+  it("hides the Steam store link from a DEV Steam Demo header", async () => {
+    mockReadHeader.mockResolvedValue({
+      status: "loaded",
+      header: {
+        gameStarted: false,
+        cruelMode: false,
+        musicMuted: false,
+        sfxMuted: false,
+        musicVolume: 1,
+        sfxVolume: 1,
+        devGameMode: "steamDemo",
+      },
+    });
+    const { resolveStartupVisit } = await import("./startupCoordinator");
+
+    await expect(
+      resolveStartupVisit({ pathname: "/", search: "", hash: "" }),
+    ).resolves.toMatchObject({
+      surface: "start",
+      steamDesktopEditionActive: true,
+      hideSteamStoreLink: true,
+    });
+    expect(mockLoadStore).not.toHaveBeenCalled();
+  });
+
+  it("keeps the Steam store link for a DEV CrazyGames Demo header", async () => {
+    mockReadHeader.mockResolvedValue({
+      status: "loaded",
+      header: {
+        gameStarted: false,
+        cruelMode: false,
+        musicMuted: false,
+        sfxMuted: false,
+        musicVolume: 1,
+        sfxVolume: 1,
+        devGameMode: "crazyGamesDemo",
+      },
+    });
+    const { resolveStartupVisit } = await import("./startupCoordinator");
+
+    await expect(
+      resolveStartupVisit({ pathname: "/", search: "", hash: "" }),
+    ).resolves.toMatchObject({
+      surface: "start",
+      steamDesktopEditionActive: true,
+      hideSteamStoreLink: false,
+    });
   });
 
   it("preserves startup persistence failures", async () => {

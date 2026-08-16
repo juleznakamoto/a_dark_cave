@@ -23,6 +23,15 @@ describe("CrazyGames edition", () => {
     expect(edition.isSteamEditionActive()).toBe(true);
   });
 
+  it("hides the Steam store link for DEV Steam modes, not CrazyGames", async () => {
+    const edition = await loadEdition();
+    expect(edition.shouldHideSteamStoreLink("normal")).toBe(false);
+    expect(edition.shouldHideSteamStoreLink("crazyGamesDemo")).toBe(false);
+    expect(edition.shouldHideSteamStoreLink("steamGame")).toBe(true);
+    expect(edition.shouldHideSteamStoreLink("steamPlaytest")).toBe(true);
+    expect(edition.shouldHideSteamStoreLink("steamDemo")).toBe(true);
+  });
+
   it("does not treat other paths as CrazyGames", async () => {
     vi.stubGlobal("window", {
       location: { pathname: "/galaxy" },

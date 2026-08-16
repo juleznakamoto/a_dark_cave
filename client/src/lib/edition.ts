@@ -141,6 +141,25 @@ export function getDevGameModeOverride(): DevGameMode {
 }
 
 /**
+ * Hide the Steam store / wishlist footer link. Steam desktop (and DEV Steam
+ * Game / Playtest / Demo) already are on Steam. Web, Galaxy, and CrazyGames
+ * keep the link. Store-free so the lightweight start screen can use it.
+ */
+export function shouldHideSteamStoreLink(
+  devGameMode: DevGameMode = "normal",
+): boolean {
+  if (isSteamBuild) return true;
+  if (import.meta.env.DEV && !isSteamBuild) {
+    return (
+      devGameMode === "steamGame" ||
+      devGameMode === "steamPlaytest" ||
+      devGameMode === "steamDemo"
+    );
+  }
+  return false;
+}
+
+/**
  * Runtime Steam-like edition check — compile-time Steam / CrazyGames / Galaxy,
  * or DEV Game Mode (Steam Game / Playtest / Demo / CrazyGames Demo). Use for UI
  * and shop-slot behavior; keep `isSteamBuild` for build-time stubs, save

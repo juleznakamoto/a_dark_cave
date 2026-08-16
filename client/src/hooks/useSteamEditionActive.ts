@@ -4,6 +4,7 @@ import {
   isGalaxyEdition,
   isSteamBuild,
   isSteamDemoRuntime,
+  shouldHideSteamStoreLink,
   type DevGameMode,
 } from "@/lib/edition";
 
@@ -43,22 +44,10 @@ export function useSteamDesktopEditionActive(): boolean {
   );
 }
 
-/**
- * Hide the Steam store / wishlist footer link. Steam desktop (and DEV Steam
- * Game / Playtest / Demo) already are on Steam. Web, Galaxy, and CrazyGames
- * keep the link.
- */
+/** Reactive {@link shouldHideSteamStoreLink} for game-path UI (store already loaded). */
 export function useHideSteamStoreLink(): boolean {
   const devGameMode = useGameStore((s) => s.devGameMode);
-  if (isSteamBuild) return true;
-  if (import.meta.env.DEV && !isSteamBuild) {
-    return (
-      devGameMode === "steamGame" ||
-      devGameMode === "steamPlaytest" ||
-      devGameMode === "steamDemo"
-    );
-  }
-  return false;
+  return shouldHideSteamStoreLink(devGameMode);
 }
 
 /** Reactive Galaxy / CrazyGames / Steam demo / DEV capped demo — wooden-hut cap + demo-end dialog. */

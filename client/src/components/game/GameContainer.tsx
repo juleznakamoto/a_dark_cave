@@ -86,6 +86,7 @@ import {
 import { TraderTabButton } from "@/components/game/TraderTabButton";
 import {
   useDemoEditionActive,
+  useHideSteamStoreLink,
   useSteamDesktopEditionActive,
   useSteamEditionActive,
 } from "@/hooks/useSteamEditionActive";
@@ -110,6 +111,7 @@ export default function GameContainer() {
   const { t } = useTranslation();
   const steamEditionActive = useSteamEditionActive();
   const steamDesktopEditionActive = useSteamDesktopEditionActive();
+  const hideSteamStoreLink = useHideSteamStoreLink();
   const demoEditionActive = useDemoEditionActive();
   const {
     activeTab,
@@ -1182,6 +1184,7 @@ export default function GameContainer() {
           }}
           steamEditionActive={steamEditionActive}
           steamDesktopEditionActive={steamDesktopEditionActive}
+          hideSteamStoreLink={hideSteamStoreLink}
           onLightFire={handleStartScreenLightFire}
         />
         {demoEditionActive && <DemoTimeUpDialog />}

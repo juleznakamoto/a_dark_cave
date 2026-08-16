@@ -127,6 +127,7 @@ export default function StartScreenPage() {
       steamDesktopEditionActive={
         startResolution.steamDesktopEditionActive
       }
+      hideSteamStoreLink={startResolution.hideSteamStoreLink}
       onLightFireStart={handleLightFireStart}
       onLightFire={handleLightFire}
     />

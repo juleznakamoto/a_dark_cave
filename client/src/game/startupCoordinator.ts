@@ -3,6 +3,7 @@ import {
   isCrazyGamesEdition,
   isGalaxyEdition,
   isSteamBuild,
+  shouldHideSteamStoreLink,
   type DevGameMode,
 } from "@/lib/edition";
 import { AUTH_STORAGE_KEY } from "@/lib/supabase";
@@ -20,6 +21,7 @@ export type StartupResolution =
     devGameMode: DevGameMode;
     steamEditionActive: boolean;
     steamDesktopEditionActive: boolean;
+    hideSteamStoreLink: boolean;
   };
 
 const DEFAULT_PREFERENCES: StartScreenPreferences = {
@@ -79,6 +81,7 @@ function createStartResolution(
       devSteamMode,
     steamDesktopEditionActive:
       isSteamBuild || isCrazyGamesEdition() || devSteamMode,
+    hideSteamStoreLink: shouldHideSteamStoreLink(devGameMode),
   };
 }
 

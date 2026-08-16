@@ -20,7 +20,6 @@ import {
   steamStoreUrl,
 } from "@/lib/gameFooterSocialLinks";
 import { openGameFeedbackForm } from "@/lib/gameFeedbackForm";
-import { useHideSteamStoreLink } from "@/hooks/useSteamEditionActive";
 import { useTranslation } from "react-i18next";
 import { useLocale } from "@/i18n/useLocale";
 import { OG_LOCALE_TAGS, SUPPORTED_LOCALES } from "@/i18n/locales";
@@ -92,6 +91,7 @@ interface StartScreenProps {
   initialPreferences: StartScreenPreferences;
   steamEditionActive: boolean;
   steamDesktopEditionActive: boolean;
+  hideSteamStoreLink: boolean;
   onLightFireStart?: (preferences: StartScreenPreferences) => void;
   onLightFire: (preferences: StartScreenPreferences) => void | Promise<void>;
 }
@@ -100,6 +100,7 @@ export default function StartScreen({
   initialPreferences,
   steamEditionActive,
   steamDesktopEditionActive,
+  hideSteamStoreLink,
   onLightFireStart,
   onLightFire,
 }: StartScreenProps) {
@@ -130,9 +131,8 @@ export default function StartScreen({
   const introLineClipRefs = useRef<Array<HTMLElement | null>>([]);
   const { t } = useTranslation("ui");
   const { locale } = useLocale();
-  // Steam Game / Playtest / Demo hide store + social links. CrazyGames keeps Steam.
+  // Steam Game / Playtest / Demo (build or DEV Game Mode) — no social/store links in footer.
   // Galaxy and Normal/web keep Steam / Reddit / Contact.
-  const hideSteamStoreLink = useHideSteamStoreLink();
   const hideStartScreenSocialLinks = steamDesktopEditionActive;
 
   // Real content mounted — allow a future deploy's one-shot chunk retry again.
