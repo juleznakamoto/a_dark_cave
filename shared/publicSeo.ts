@@ -81,7 +81,7 @@ const ROUTE_SEO: Record<string, PublicRouteSeo> = {
   "/about": {
     title: "About - A Dark Cave",
     description:
-      "A Dark Cave is a free text-based incremental survival and settlement game by Julian Bauer. Play in your browser. Steam demo available.",
+      "A Dark Cave is a free text-based incremental survival and settlement game. Play in your browser. Steam demo available.",
     includeHomeJsonLd: false,
     robots: "index, follow",
     pageName: "About",

@@ -207,8 +207,9 @@ describe("publicSeo", () => {
     expect(about).toContain(
       '<link rel="canonical" href="https://a-dark-cave.com/about"',
     );
-    expect(about).toContain("Julian Bauer");
-    expect(about).toContain('"@type":"Person"');
+    expect(about).toContain("text-based incremental survival and settlement game");
+    expect(about).not.toContain("Julian Bauer");
+    expect(about).toContain('"@type":"Organization"');
     expect(about).not.toContain("adc:jsonld-home");
   });
 
