@@ -734,12 +734,6 @@ const Hero: React.FC<HeroProps> = ({
           {/* Steam Wishlist Section — hidden on Steam desktop (already on Steam). */}
           {!hideSteamWishlist && (
             <div className="pt-3 flex flex-col items-center gap-3 mt-8 animate-fade-in-up animation-delay-4500 w-full min-w-0">
-              <p className="text-sm sm:text-base font-medium text-grey-200 text-center max-w-md px-2 sm:px-4 break-words">
-                {t("endScreen.steamWishlistBlurb", {
-                  defaultValue:
-                    "A Dark Cave is soon launching on Steam. Add it to your wishlist today so you'll be notified the moment it launches.",
-                })}
-              </p>
               <SteamStoreWidget />
             </div>
           )}
@@ -796,7 +790,7 @@ const Hero: React.FC<HeroProps> = ({
                       </span>
                       <span>
                         {t("endScreen.buyMeACoffee", {
-                          defaultValue: "Buy Me a Coffee",
+                          defaultValue: "Support",
                         })}
                       </span>
                     </button>
