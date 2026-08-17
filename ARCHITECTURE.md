@@ -21,10 +21,11 @@ in the client; **Supabase** handles auth/cloud saves and **Stripe** handles paym
 | `client/` | React SPA: UI, game engine, i18n, assets. Vite root. |
 | `electron/` | Steam desktop shell (Electron `main`/`preload` + loopback static server + steamworks.js). See [Steam edition](#steam-edition-electron) below. |
 | `server/` | Express server: API routes, Stripe/referral/marketing, dev Vite middleware, prod static serving. |
-| `shared/` | Cross-cutting TypeScript shared by client + server: Zod schemas, shop/referral pricing, referral list union-merge (`referralMerge.ts`), UTM first-touch helpers (`utmAttribution.ts`), admin dashboard aggregates (`gameCompletionAdminStats.ts`, `socialPromptAdminStats.ts`, `hutLadderAdminStats.ts`), save integrity + client-build version checks (`saveGameAnalysis.ts`), tool rebuild from story flags (`rebuildToolsFromStorySeen.ts`), tab-unlock flag repair from progression evidence (`repairUnlockFlags.ts`), boss-wave insert migration for `story.seen` / attack timers (`bossWaveMigration.ts`), public SEO route metadata (`publicSeo.ts`). |
-| `supabase/` | SQL migrations + edge function (`functions/save-game/`) for Postgres/RLS. Notable: `024` deep-merge saves, `025` permanent tools/weapons/books protection, `030` flagged full-document replace on V1 (`p_full_replace`; old clients keep deep-merge), `034` admin session intra-day stats RPC, `035` drop abandoned `game_state_v2` dual-write sidecar (historical `028`/`029`), `036` raise per-save gold/silver delta caps (5000 / 10000), `037` referral union-merge + row lock on full-replace (prevents wiping server-written invite rewards), `038` intraday session RPC excludes 24h duration-capped rows (avoids left-edge spike from `updated_at - duration`), `039` OR-preserve invitee `referralProcessed` / keep `referralCode` on full-replace (stops client allowlist wipes), `040` anonymous `utm_landings` + `admin_utm_dashboard` RPC for Traffic tab, `041` Traffic RPC timeout fix (partial UTM index) + session vs UTM coverage, `042` cloud save allows event resource overcap (sanity ceiling replaces hard storage reject). |
+| `shared/` | Cross-cutting TypeScript shared by client + server: Zod schemas, shop/referral pricing, referral list union-merge (`referralMerge.ts`), UTM first-touch helpers (`utmAttribution.ts`), admin dashboard aggregates (`gameCompletionAdminStats.ts`, `socialPromptAdminStats.ts`, `hutLadderAdminStats.ts`), save integrity + client-build version checks (`saveGameAnalysis.ts`), tool rebuild from story flags (`rebuildToolsFromStorySeen.ts`), tab-unlock flag repair from progression evidence (`repairUnlockFlags.ts`), boss-wave insert migration for `story.seen` / attack timers (`bossWaveMigration.ts`), public SEO route metadata (`publicSeo.ts`; homepage title/description must match `CANONICAL_FACTS.md`). |
+| `supabase/` | SQL migrations + edge function (`functions/save-game/`) for Postgres/RLS. Notable: `024` deep-merge saves, `025` permanent tools/weapons/books protection, `030` flagged full-document replace on V1 (`p_full_replace`; old clients keep deep-merge), `034` admin session intra-day stats RPC, `035` drop abandoned `game_state_v2` dual-write sidecar (historical `028`/`029`), `036` raise per-save gold/silver delta caps (5000 / 10000), `037` referral union-merge + row lock on full-replace (prevents wiping server-written invite rewards), `038` intraday session RPC excludes 24h duration-capped rows (avoids left-edge spike from `updated_at - duration`), `039` OR-preserve invitee `referralProcessed` / keep `referralCode` on full-replace (stops client allowlist wipes), `040` anonymous `utm_landings` + `admin_utm_dashboard` RPC for Traffic tab, `041` Traffic RPC timeout fix (partial UTM index) + session vs UTM coverage, `042` cloud save allows event resource overcap (sanity ceiling replaces hard storage reject), `043` OR-preserve Book of Absolution `absolvedItems` on full-replace (spent Insight without the rite flags). |
 | `scripts/` | Build & i18n tooling â€” see [Scripts](#scripts-scripts) below. |
 | `services/` | Internal auxiliary services (currently `gender-service/` â€” first-name gender inference, localhost only). |
+| `CANONICAL_FACTS.md` | Source of truth for first-party marketing/SEO claims (price, genre, platforms, comps, dates). |
 | `public/`, `attached_assets/` | Static assets (`@assets` alias â†’ `attached_assets`). |
 | `dist/` | Build output (`dist/public` client, `dist/index.js` server). |
 | `build-resources/` | Electron/Windows packaging assets (`logo-source.png` master, `icon.ico`/`icon.png` for taskbar/installer). |
@@ -194,7 +195,9 @@ shared/schema.tsâ€” Zod GameState schema (source of truth for persisted sha
 - **`itemAbsolution.ts`** - Book of Absolution: once per item, reduce madness by 1 for 250 Insight
   (Feeding Ring excluded). Merchant special after Clerk's Hut (250 Gold). Levels persist in
   `absolvedItems` (`shared/schema.ts`); spent via `absolveItem` (`state.ts`); Insight badge in
-  `SidePanelSection` / blue `-1` on item tooltips.
+  `SidePanelSection` / blue `-1` on item tooltips. Local/cloud load union-merges true keys
+  (`mergeAbsolvedItemsFromSaves` in `save.ts`) so a full-replace cannot drop rites while
+  keeping spent Insight.
 
 ---
 
@@ -419,6 +422,7 @@ the folder in a subdirectory.
 |------|----------------|
 | `client/src/lib/edition.ts` | `isCrazyGamesBuild` (`VITE_CRAZYGAMES=1`), `isCrazyGamesEdition()` (build or `/crazygames`), `isSteamDemoActive()`. |
 | `client/src/lib/publicUrl.ts` | Prefix `/sounds` `/icons` `/fonts` with Vite `BASE_URL` for subdirectory hosting. |
+| `client/src/lib/spaNavigate.ts` | In-app jumps (`/end-screen`, `/?game=true`) stay on the hash + subdirectory URL. |
 | `client/src/game/demoLimit.ts` | Shared wooden-hut cap (Galaxy + Steam demo + CrazyGames). |
 | `client/src/game/saveStorage.ts` | IndexedDB key `crazyGamesSave`. |
 | `client/src/App.tsx` | Route `/crazygames`; CrazyGames folder uses `useHashLocation`. |
@@ -446,7 +450,7 @@ rate-limited `/api/*` routes.
 | `/api/config` | inline | Public Supabase keys |
 | `/api/version` | inline | Deploy build sha + semver (`no-store`; client compares against `__BUILD_SHA__`) |
 
-Support: `server/vite.ts` (dev/prod hosting + SPA fallback with route allowlist/404 and per-route HTML head patching via `server/spaHtml.ts` + `shared/publicSeo.ts`; `boot.js` served with no-cache like `index.html`), GEO plain-text `llms.txt` / `llms-full.txt` plus `/.well-known/llms.txt` in `server/index.ts` (before SPA fallback), `server/securityHeaders.ts` (Phase A: `X-Content-Type-Options`, `X-Frame-Options`, `Referrer-Policy`), `server/supabaseServerClient.ts` (service-role client),
+Support: `server/vite.ts` (dev/prod hosting + SPA fallback with route allowlist/404 and per-route HTML head patching via `server/spaHtml.ts` + `shared/publicSeo.ts`; `boot.js` served with no-cache like `index.html`; static extensions never fall through to `index.html`), GEO static `llms.txt` / `llms-full.txt` / `robots.txt` / `sitemap.xml` plus `/.well-known/llms.txt` in `server/index.ts` (before SPA fallback), `server/apexRedirect.ts` (301 `www.a-dark-cave.com` → apex), `server/securityHeaders.ts` (Phase A: `X-Content-Type-Options`, `X-Frame-Options`, `Referrer-Policy`), `server/supabaseServerClient.ts` (service-role client),
 `server/paymentVerifyAuth.ts` (payment-verify session/body user match), `server/stripeFxQuote.ts`,
 `server/stripeWebhook.ts` (`POST /api/payment/webhook`, raw body + `STRIPE_WEBHOOK_SECRET_DEV` / `_PROD`),
 `server/resendContactCsv.ts` (marketing CSV rows + `unsubscribe_url` tokens; `loadResendLegacyCohorts` splits confirmed users into pre-consent / subscribed cohorts, oldestâ†’newest),

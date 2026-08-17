@@ -44,6 +44,9 @@ describe("publicSeo", () => {
 
   it("detects static asset paths", () => {
     expect(isStaticAssetPath("/assets/index-abc123.js")).toBe(true);
+    expect(isStaticAssetPath("/sitemap.xml")).toBe(true);
+    expect(isStaticAssetPath("/robots.txt")).toBe(true);
+    expect(isStaticAssetPath("/llms.txt")).toBe(true);
     expect(isStaticAssetPath("/privacy")).toBe(false);
   });
 
@@ -54,6 +57,7 @@ describe("publicSeo", () => {
 
   it("returns 200 for known routes", () => {
     expect(resolveSpaHtmlResponse("/privacy").status).toBe(200);
+    expect(resolveSpaHtmlResponse("/dev/sounds").status).toBe(200);
   });
 
   it("customizes legal page metadata and strips home JSON-LD", () => {
@@ -73,8 +77,26 @@ describe("publicSeo", () => {
     expect(html).not.toContain('"@type":"WebPage"');
   });
 
-  it("keeps home meta description within search snippet length", () => {
-    expect(HOME_SEO.description.length).toBeLessThanOrEqual(160);
+  it("uses the canonical homepage title and description", () => {
+    expect(HOME_SEO.title).toBe(
+      "A Dark Cave - Survive the Darkness, Build Your Settlement",
+    );
+    expect(HOME_SEO.description).toBe(
+      "A text-based incremental survival game. Light a fire, gather resources, build a settlement, and descend into the cave. Play for free in your browser. Steam demo available.",
+    );
+    expect(HOME_SEO.description).not.toMatch(/optional unlock/i);
+    expect(HOME_SEO.description).not.toMatch(/\bIdle\b/);
+  });
+
+  it("gives legal routes unique canonicals and no home JSON-LD", () => {
+    for (const path of ["/privacy", "/terms", "/imprint", "/withdrawal"] as const) {
+      const seo = getPublicRouteSeo(path)!;
+      const html = customizeSpaIndexHtml(SAMPLE_HTML, path);
+      expect(html).toContain(`<title>${seo.title}</title>`);
+      expect(html).toContain(`href="https://a-dark-cave.com${path}"`);
+      expect(html).not.toContain("VideoGame");
+      expect(html).not.toContain('href="https://a-dark-cave.com/"');
+    }
   });
 
   it("customizes 404 metadata", () => {

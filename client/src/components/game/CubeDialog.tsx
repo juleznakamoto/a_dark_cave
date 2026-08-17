@@ -11,6 +11,7 @@ import { Button } from "@/components/ui/button";
 import { audioManager, SOUND_VOLUME } from "@/lib/audio";
 import { useGameStore } from "@/game/state"; // Import useGameStore
 import { logger } from "@/lib/logger";
+import { navigateSpa } from "@/lib/spaNavigate";
 import {
   getEventTitle,
   getEventMessage,
@@ -105,7 +106,7 @@ export default function CubeDialog({
 
       // Navigate to end screen page after save completes
       setTimeout(() => {
-        window.location.href = "/end-screen";
+        navigateSpa("/end-screen");
       }, 500);
     }
   };

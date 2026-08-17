@@ -2,6 +2,7 @@ import fs from "node:fs";
 import { describe, expect, it } from "vitest";
 import { createInitialState, useGameStore } from "@/game/state";
 import { calculateTotalEffects } from "@/game/rules/effectsCalculation";
+import { buildGameState, hydrateLoadedGameState } from "@/game/stateHelpers";
 import { SUPPORTED_LOCALES } from "@/i18n/locales";
 import { parseLocaleJson } from "../../../scripts/parse-locale-json.mjs";
 import {
@@ -89,6 +90,24 @@ describe("itemAbsolution", () => {
     expect(next.absolvedItems.unnamed_book).toBe(true);
     expect(next.resources.insight).toBe(0);
     expect(useGameStore.getState().absolveItem("unnamed_book")).toBe(false);
+  });
+
+  it("keeps the rite through save allowlist + load hydrate", () => {
+    useGameStore.getState().initialize(withBookAndRelic("unnamed_book"));
+    expect(useGameStore.getState().absolveItem("unnamed_book")).toBe(true);
+
+    const persisted = buildGameState(useGameStore.getState());
+    expect(persisted.absolvedItems.unnamed_book).toBe(true);
+    expect(persisted.resources.insight).toBe(0);
+
+    const hydrated = hydrateLoadedGameState(persisted);
+    expect(hydrated.absolvedItems.unnamed_book).toBe(true);
+    expect(isItemAbsolved(hydrated, "unnamed_book")).toBe(true);
+    expect(shouldShowAbsolveBadge(hydrated, "unnamed_book")).toBe(false);
+    expect(calculateTotalEffects(hydrated).statBonuses.madness).toBe(
+      calculateTotalEffects(withBookAndRelic("unnamed_book")).statBonuses
+        .madness - 1,
+    );
   });
 });
 

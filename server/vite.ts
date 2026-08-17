@@ -135,6 +135,12 @@ export async function setupVite(app: Express, server: Server) {
       return next();
     }
 
+    const reqPath = req.path || url.split("?")[0] || "/";
+    if (isStaticAssetPath(reqPath)) {
+      res.status(404).send("Not found");
+      return;
+    }
+
     try {
       const clientTemplate = path.resolve(
         import.meta.dirname,

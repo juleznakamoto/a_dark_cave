@@ -1,12 +1,13 @@
-/** Public SPA routes and server-side HTML head metadata (SEO / crawlers). */
+/** Public SPA routes and server-side HTML head metadata (SEO / crawlers).
+ *  Homepage title/description must match CANONICAL_FACTS.md.
+ */
 
 export const SITE_ORIGIN = "https://a-dark-cave.com";
 
 export const HOME_SEO = {
   title: "A Dark Cave - Survive the Darkness, Build Your Settlement",
-  /** Keep ≤160 chars so search snippets are not truncated mid-sentence. */
   description:
-    "A text-based survival game. Light a fire in an ancient cave, gather resources, build a settlement, and uncover dark secrets. Free in your browser.",
+    "A text-based incremental survival game. Light a fire, gather resources, build a settlement, and descend into the cave. Play for free in your browser. Steam demo available.",
 } as const;
 
 export type PublicRouteSeo = {
@@ -38,6 +39,8 @@ export const KNOWN_SPA_PATHS = new Set([
   "/dev/animations",
   "/dev/combat-dialog",
   "/dev/estate-bar-upgrade",
+  "/dev/demo-end",
+  "/dev/sounds",
 ]);
 
 const HOME_ROUTE_SEO: PublicRouteSeo = {
@@ -133,6 +136,20 @@ const ROUTE_SEO: Record<string, PublicRouteSeo> = {
     robots: "noindex, nofollow",
     pageName: "Animations Demo",
   },
+  "/dev/demo-end": {
+    title: "Demo End Screen - A Dark Cave",
+    description: "Development preview for A Dark Cave demo end screen.",
+    includeHomeJsonLd: false,
+    robots: "noindex, nofollow",
+    pageName: "Demo End Screen",
+  },
+  "/dev/sounds": {
+    title: "Sounds Demo - A Dark Cave",
+    description: "Development preview for A Dark Cave audio.",
+    includeHomeJsonLd: false,
+    robots: "noindex, nofollow",
+    pageName: "Sounds Demo",
+  },
 };
 
 export const NOT_FOUND_SEO: PublicRouteSeo = {
@@ -159,7 +176,9 @@ export function isStaticAssetPath(pathname: string): boolean {
   return (
     reqPath.startsWith("/assets/") ||
     /\.[a-f0-9]{8,}\.(js|css|mjs)$/i.test(reqPath) ||
-    /\.(js|css|mjs|woff2?|ttf|otf|png|jpg|svg|ico|webp|br|gz)$/i.test(reqPath)
+    /\.(js|css|mjs|woff2?|ttf|otf|png|jpg|svg|ico|webp|br|gz|txt|xml|json)$/i.test(
+      reqPath,
+    )
   );
 }
 

@@ -7,6 +7,7 @@ import { spawn, spawnSync } from "child_process";
 import { fileURLToPath } from "url";
 import { setupVite, serveStatic, log, getRecentLogs, type LogLevel } from "./vite";
 import { securityHeadersMiddleware } from "./securityHeaders";
+import { apexRedirectMiddleware } from "./apexRedirect";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -129,6 +130,7 @@ app.set('trust proxy', 1);
 
 // Phase A browser safety headers (nosniff, frame deny, referrer policy)
 app.use(securityHeadersMiddleware);
+app.use(apexRedirectMiddleware);
 
 // Rate limiting configurations (defined before routes; JSON parser registered after webhook)
 const generalLimiter = rateLimit({
@@ -241,10 +243,14 @@ app.use((req, res, next) => {
 const publicDir = fs.existsSync(path.resolve(__dirname, "public", "llms.txt"))
   ? path.resolve(__dirname, "public")
   : path.resolve(__dirname, "..", "client", "public");
-function sendLlmsText(res: Response, fileName: string) {
+function sendPublicStaticFile(
+  res: Response,
+  fileName: string,
+  contentType: string,
+) {
   const filePath = path.join(publicDir, fileName);
   if (fs.existsSync(filePath)) {
-    res.set("Content-Type", "text/plain; charset=utf-8");
+    res.set("Content-Type", contentType);
     res.set("Cache-Control", "public, max-age=86400");
     res.sendFile(filePath);
     return;
@@ -253,11 +259,17 @@ function sendLlmsText(res: Response, fileName: string) {
 }
 ["llms.txt", "llms-full.txt"].forEach((file) => {
   app.get(`/${file}`, (_req, res) => {
-    sendLlmsText(res, file);
+    sendPublicStaticFile(res, file, "text/plain; charset=utf-8");
   });
 });
 app.get("/.well-known/llms.txt", (_req, res) => {
-  sendLlmsText(res, "llms.txt");
+  sendPublicStaticFile(res, "llms.txt", "text/plain; charset=utf-8");
+});
+app.get("/robots.txt", (_req, res) => {
+  sendPublicStaticFile(res, "robots.txt", "text/plain; charset=utf-8");
+});
+app.get("/sitemap.xml", (_req, res) => {
+  sendPublicStaticFile(res, "sitemap.xml", "application/xml; charset=utf-8");
 });
 
 app.get("/api/config", (req, res) => {

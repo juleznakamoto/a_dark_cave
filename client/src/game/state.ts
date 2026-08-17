@@ -3248,6 +3248,20 @@ export const useGameStore = create<GameStore>((set, get) => ({
       );
 
       const hydratedPermanent = hydrateLoadedGameState(savedForHydration);
+      const cruelMode =
+        savedState.cruelMode !== undefined
+          ? savedState.cruelMode
+          : Boolean((savedState as { CM?: number }).CM);
+      const absolvedItems = {
+        ...defaultGameState.absolvedItems,
+        ...hydratedPermanent.absolvedItems,
+      };
+      const stateForDerived = {
+        ...savedState,
+        ...hydratedPermanent,
+        cruelMode,
+        absolvedItems,
+      };
 
       const loadedState = {
         ...hydratedPermanent,
@@ -3295,8 +3309,6 @@ export const useGameStore = create<GameStore>((set, get) => ({
           ...savedState.clothing,
           obsidian_orb: false,
         },
-        activeTab,
-        gamblerDiceDialogOpen,
         timedEventTab,
         cooldowns: savedState.cooldowns || {},
         attackWaveTimers: savedState.attackWaveTimers || {},
@@ -3306,12 +3318,10 @@ export const useGameStore = create<GameStore>((set, get) => ({
         // Keep session Game Mode; do not restore from save (UI-only).
         devGameMode: get().devGameMode,
         boostApplied: savedState.boostApplied === true,
-        effects: calculateTotalEffects(savedState),
-        bastion_stats: calculateBastionStats(savedState),
-        cruelMode:
-          savedState.cruelMode !== undefined
-            ? savedState.cruelMode
-            : Boolean((savedState as { CM?: number }).CM),
+        effects: calculateTotalEffects(stateForDerived),
+        bastion_stats: calculateBastionStats(stateForDerived),
+        cruelMode,
+        absolvedItems,
         activatedPurchases: savedState.activatedPurchases || {},
         feastActivations: savedState.feastActivations || {},
         // Ensure loop state is loaded correctly
@@ -3525,6 +3535,9 @@ export const useGameStore = create<GameStore>((set, get) => ({
         isUserSignedIn: get().isUserSignedIn,
         // Never restore transient dialog UI from older saves that persisted these fields.
         ...getTransientDialogResetOnLoad(),
+        // Resume after the reset so a live gambler round can reopen the table.
+        activeTab,
+        gamblerDiceDialogOpen,
       };
 
       set(applyGameStateLoadMigrations(loadedState));

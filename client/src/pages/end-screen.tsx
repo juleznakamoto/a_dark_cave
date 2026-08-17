@@ -12,6 +12,7 @@ import {
 } from "@/hooks/useSteamEditionActive";
 import { logger } from "@/lib/logger";
 import { openGameFeedbackForm } from "@/lib/gameFeedbackForm";
+import { navigateSpa } from "@/lib/spaNavigate";
 
 export default function EndScreenPage() {
   const { t } = useTranslation("ui");
@@ -37,7 +38,7 @@ export default function EndScreenPage() {
   const isCruelModeCompletion = isCruelModeRun === true;
 
   const handleMainMenu = async () => {
-    window.location.href = "/";
+    navigateSpa("/");
   };
 
   const handleCruelMode = async () => {
@@ -56,10 +57,10 @@ export default function EndScreenPage() {
       } catch (error) {
         logger.error("[END SCREEN] Failed to start Cruel Mode:", error);
       }
-      window.location.href = "/?game=true";
+      navigateSpa("/?game=true");
       return;
     }
-    window.location.href = "/?game=true&openShop=true&cruelHighlight=true";
+    navigateSpa("/?game=true&openShop=true&cruelHighlight=true");
   };
 
   const handleFeedback = () => {

@@ -344,6 +344,57 @@ export async function clearLastCloudState(): Promise<void> {
  * When local IndexedDB has more playTime, load still prefers local — merge cloud
  * referrals so invite rewards are not lost. (SQL save path also union-merges.)
  */
+/** OR-merge boolean maps so a preferred save cannot drop true keys from the other copy. */
+export function unionTrueRecord(
+  ...maps: Array<Record<string, boolean> | undefined | null>
+): Record<string, boolean> {
+  const out: Record<string, boolean> = {};
+  for (const map of maps) {
+    if (!map || typeof map !== "object") continue;
+    for (const [key, value] of Object.entries(map)) {
+      if (value === true) out[key] = true;
+    }
+  }
+  return out;
+}
+
+/**
+ * Book of Absolution rites are permanent for a playthrough. Full-document cloud
+ * replace can drop `absolvedItems` while keeping the spent Insight. Union the
+ * other copy when both saves are the same run (not a restart / new gameId).
+ */
+export function mergeAbsolvedItemsFromSaves(
+  preferred: GameState,
+  other: GameState | undefined | null,
+): GameState {
+  if (!other) return preferred;
+  if (
+    shouldAllowPlaytimeOverwrite(preferred) ||
+    shouldAllowPlaytimeOverwrite(other)
+  ) {
+    return preferred;
+  }
+  if (
+    preferred.gameId &&
+    other.gameId &&
+    preferred.gameId !== other.gameId
+  ) {
+    return preferred;
+  }
+
+  const merged = unionTrueRecord(preferred.absolvedItems, other.absolvedItems);
+  const preferredMap = preferred.absolvedItems ?? {};
+  const mergedKeys = Object.keys(merged);
+  if (
+    mergedKeys.length === Object.keys(preferredMap).length &&
+    mergedKeys.every((key) => preferredMap[key] === true)
+  ) {
+    return preferred;
+  }
+
+  return { ...preferred, absolvedItems: merged };
+}
+
 export function mergeCloudReferralsIntoState(
   localState: GameState,
   cloudState: Pick<
@@ -892,8 +943,11 @@ async function loadGameStateOrThrow(): Promise<GameState | null> {
 
         if (preferred === "local") {
           logger.log("[LOAD] 💾 Preferring local save and syncing to cloud");
-          loadedState = mergeCloudReferralsIntoState(
-            localSave.gameState,
+          loadedState = mergeAbsolvedItemsFromSaves(
+            mergeCloudReferralsIntoState(
+              localSave.gameState,
+              cloudSave.gameState,
+            ),
             cloudSave.gameState,
           );
 
@@ -956,7 +1010,10 @@ async function loadGameStateOrThrow(): Promise<GameState | null> {
         } else {
           // Cloud preferred (same-run higher playTime, or newer gameId/startTime)
           logger.log("[LOAD] ☁️ Preferring cloud save");
-          loadedState = cloudSave.gameState; // Assign to loadedState
+          loadedState = mergeAbsolvedItemsFromSaves(
+            cloudSave.gameState,
+            localSave.gameState,
+          );
 
           const { formatSaveTimestamp } = await import("@/lib/utils");
 

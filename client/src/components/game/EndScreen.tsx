@@ -1,6 +1,7 @@
+import { navigateSpa } from "@/lib/spaNavigate";
 
 export default function EndScreen() {
   // Navigate to the dedicated end screen page
-  window.location.href = "/end-screen";
+  navigateSpa("/end-screen");
   return null;
 }

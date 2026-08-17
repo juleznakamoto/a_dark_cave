@@ -84,6 +84,19 @@ describe("persistedStateBoundary", () => {
     expect(persisted.referralCode).toBe("AB3K9M");
   });
 
+  it("persists Book of Absolution rites through the save allowlist", () => {
+    const persisted = buildPersistedGameState({
+      resources: { insight: 0 },
+      playTime: 10,
+      absolvedItems: { unnamed_book: true, elder_scroll: true },
+    });
+
+    expect(persisted.absolvedItems).toEqual({
+      unnamed_book: true,
+      elder_scroll: true,
+    });
+  });
+
   it("serializes only resumable timed-event fields", () => {
     expect(
       serializeTimedEventTabForSave({

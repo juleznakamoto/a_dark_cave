@@ -11,7 +11,7 @@
   <title>A Dark Cave - Survive the Darkness, Build Your Settlement</title>
   <meta name="title" content="A Dark Cave - Survive the Darkness, Build Your Settlement" />
   <meta name="description"
-    content="A text-based survival game. Light a fire in an ancient cave, gather resources, build a settlement, and uncover dark secrets. Free in your browser." />
+    content="A text-based incremental survival game. Light a fire, gather resources, build a settlement, and descend into the cave. Play for free in your browser. Steam demo available." />
   <meta name="author" content="A Dark Cave" />
   <meta name="robots" content="index, follow" />
 
@@ -20,7 +20,7 @@
   <meta property="og:url" content="https://a-dark-cave.com/" />
   <meta property="og:title" content="A Dark Cave - Survive the Darkness, Build Your Settlement" />
   <meta property="og:description"
-    content="A text-based survival game. Light a fire in an ancient cave, gather resources, build a settlement, and uncover dark secrets. Free in your browser." />
+    content="A text-based incremental survival game. Light a fire, gather resources, build a settlement, and descend into the cave. Play for free in your browser. Steam demo available." />
   <meta property="og:image" content="https://a-dark-cave.com/og-image-1200x630.png" />
   <meta property="og:image:width" content="1200" />
   <meta property="og:image:height" content="630" />
@@ -32,7 +32,7 @@
   <meta name="twitter:url" content="https://a-dark-cave.com/" />
   <meta name="twitter:title" content="A Dark Cave - Survive the Darkness, Build Your Settlement" />
   <meta name="twitter:description"
-    content="A text-based survival game. Light a fire in an ancient cave, gather resources, build a settlement, and uncover dark secrets. Free in your browser." />
+    content="A text-based incremental survival game. Light a fire, gather resources, build a settlement, and descend into the cave. Play for free in your browser. Steam demo available." />
   <meta name="twitter:image" content="https://a-dark-cave.com/og-image-1200x630.png" />
   <meta name="twitter:image:alt" content="A Dark Cave game artwork" />
 
@@ -41,6 +41,7 @@
 
   <!-- llms.txt - AI crawler discovery (GEO) -->
   <link rel="alternate" type="text/plain" href="https://a-dark-cave.com/llms.txt" title="llms.txt" />
+  <link rel="alternate" type="text/plain" href="https://a-dark-cave.com/llms-full.txt" title="llms-full.txt" />
 
   <!-- Theme Color -->
   <meta name="theme-color" content="#1a1a1a" />
@@ -77,17 +78,16 @@
         "@context": "https://schema.org",
         "@type": "WebApplication",
         "name": "A Dark Cave",
-        "alternateName": "Dark Cave Game",
         "url": "https://a-dark-cave.com",
-        "description": "A text-based survival and settlement building game. Start with nothing in the depths of an ancient cave and build your way to survival. Gather resources, craft tools, manage villagers, and uncover dark secrets.",
+        "description": "A text-based incremental survival and settlement-building game. Light a fire, gather resources, build a settlement, and descend into the cave. Play for free in the browser. Steam demo available.",
         "applicationCategory": "Game",
         "genre": [
           "Incremental",
-          "Idle",
           "Strategy",
           "Survival",
           "Settlement Builder",
-          "Resource Management"
+          "Resource Management",
+          "Text-Based"
         ],
         "sameAs": [
           "https://www.reddit.com/r/aDarkCave/",
@@ -106,11 +106,23 @@
           "https://buymeacoffee.com/julez.b"
         ],
         "browserRequirements": "Requires JavaScript. Requires HTML5.",
-        "offers": {
-          "@type": "Offer",
-          "price": "0",
-          "priceCurrency": "USD"
-        },
+        "isAccessibleForFree": true,
+        "offers": [
+          {
+            "@type": "Offer",
+            "name": "Browser",
+            "price": "0",
+            "priceCurrency": "USD",
+            "description": "Play for free in the browser",
+            "url": "https://a-dark-cave.com"
+          },
+          {
+            "@type": "Offer",
+            "name": "Steam",
+            "availability": "https://schema.org/PreOrder",
+            "url": "https://store.steampowered.com/app/4882240/A_Dark_Cave/"
+          }
+        ],
         "operatingSystem": "Any",
         "inLanguage": "en",
         "availableLanguage": ["en", "de", "fr", "es", "it", "pt-BR", "zh-Hans", "ru"],
@@ -120,8 +132,8 @@
           "target": "https://a-dark-cave.com/"
         },
         "author": {
-          "@type": "Organization",
-          "name": "A Dark Cave"
+          "@type": "Person",
+          "name": "Julian Bauer"
         }
       }
     </script>
@@ -133,21 +145,60 @@
         "@type": "VideoGame",
         "name": "A Dark Cave",
         "url": "https://a-dark-cave.com",
-        "description": "A text-based survival and settlement building game set in the depths of an ancient cave. Gather resources, craft tools, manage villagers, and uncover dark secrets.",
+        "description": "A text-based incremental survival and settlement-building game. Light a fire, gather resources, build a settlement, and descend into the cave. Play for free in the browser. Steam demo available.",
+        "image": "https://a-dark-cave.com/og-image-1200x630.png",
         "genre": [
           "Incremental",
-          "Idle",
           "Strategy",
           "Survival",
           "Settlement Builder",
-          "Resource Management"
+          "Resource Management",
+          "Text-Based"
         ],
-        "gamePlatform": "Web Browser",
+        "gamePlatform": [
+          "Web Browser",
+          "PC"
+        ],
         "playMode": "SinglePlayer",
         "applicationCategory": "Game",
+        "isAccessibleForFree": true,
+        "datePublished": "2025-11-17",
+        "author": {
+          "@type": "Person",
+          "name": "Julian Bauer"
+        },
+        "offers": [
+          {
+            "@type": "Offer",
+            "name": "Browser",
+            "price": "0",
+            "priceCurrency": "USD",
+            "description": "Play for free in the browser",
+            "url": "https://a-dark-cave.com"
+          },
+          {
+            "@type": "Offer",
+            "name": "Steam",
+            "availability": "https://schema.org/PreOrder",
+            "url": "https://store.steampowered.com/app/4882240/A_Dark_Cave/"
+          }
+        ],
         "sameAs": [
+          "https://a-dark-cave.com",
           "https://store.steampowered.com/app/4882240/A_Dark_Cave/",
-          "https://www.mobygames.com/game/255071/a-dark-cave/"
+          "https://a-dark-cave.itch.io/a-dark-cave",
+          "https://www.reddit.com/r/aDarkCave/",
+          "https://www.incrementaldb.com/game/a-dark-cave",
+          "https://www.indiedb.com/members/a-dark-cave",
+          "https://www.instagram.com/a_dark_cave/",
+          "https://a-dark-cave.fandom.com/wiki/A_Dark_Cave_Wiki",
+          "https://www.youtube.com/channel/UCdQDWTJe_Bno7xyjnO1aC-w",
+          "https://www.producthunt.com/products/a-dark-cave",
+          "https://www.facebook.com/people/A-Dark-Cave/61584724119235/",
+          "https://almostidle.com/game/a-dark-cave",
+          "https://www.moddb.com/games/a-dark-cave",
+          "https://www.mobygames.com/game/255071/a-dark-cave/",
+          "https://buymeacoffee.com/julez.b"
         ],
         "potentialAction": {
           "@type": "PlayAction",
@@ -441,27 +492,24 @@
   <div id="root"></div>
   <main id="seo-fallback" aria-hidden="true" style="display: none">
     <h1 style="color: #444444">
-      A Dark Cave – Text-Based Survival &amp; Incremental Browser Game
+      A Dark Cave – Text-Based Survival and Incremental Settlement Game
     </h1>
 
     <p>
-      A Dark Cave is a free text-based survival and settlement building game playable in your browser. Explore an
-      ancient cave, find the remains of a lost civilization, and uncover their dark secrets. Gather resources, build a
-      settlement, and manage villagers as you push deeper into a world that doesn't want to be found. No download
-      required. The game combines incremental idle mechanics with narrative-driven gameplay, inspired by classics like A
-      Dark Room, Candy Box, Kittens Game, and Darkest Dungeon. Start by lighting a fire in the darkness and gradually
-      unlock new abilities: tend the cave, craft tools, construct buildings, recruit villagers, and venture into the
-      wilderness. Each playthrough offers different choices and consequences, with turn-based combat, crafting systems,
-      and companions who bring their own storylines. Progress saves automatically so you can continue anytime. The game
-      runs on desktop and mobile browsers with no installation needed.
+      A Dark Cave is a text-based survival and settlement-building incremental you can play for free in your browser on
+      desktop
+      or mobile. Light a fire in an ancient cave, gather resources, recruit companions, and uncover what lives below.
+      Inspired by minimalist incrementals such as A Dark Room, Kittens Game, and Candy Box.
+      Also on Steam with a free demo.
     </p>
 
     <h2 style="color: #444444">An Incremental Survival RPG</h2>
 
     <p>
-      Inspired by A Dark Room, Candy Box, Kittens Game, and Darkest Dungeon.
-      Incremental idle mechanics meet settlement building, resource
-      management, turn-based combat, and Lovecraftian horror.
+      Inspired by A Dark Room, Kittens Game, and Candy Box.
+      Settlement building, resource management, turn-based combat, and a
+      dark fantasy atmosphere. Semi-idle plus active: you make choices and
+      manage a settlement. Not a clicker and not a second-screen idle.
     </p>
 
     <h2 style="color: #444444">Gather, Craft, Upgrade</h2>
@@ -473,8 +521,8 @@
       tools like axes and picks, then weapons and armor for turn-based combat. Build structures including the workshop,
       barracks, and shrine, each unlocking new capabilities. Villagers can be assigned to gathering, crafting, or
       construction tasks. Schematics unlock advanced items like the arbalest, nightshade bow, and stormglass halberd.
-      The settlement grows from a single fire to a fortified village as you push deeper into the world. Idle mode lets
-      your settlement produce resources while you're away, and the game saves progress automatically in your browser for
+      The settlement grows from a single fire to a fortified village as you push deeper into the world. Your settlement
+      can keep producing resources while you are away, and the game saves progress automatically in your browser for
       both desktop and mobile play.
     </p>
 
@@ -510,11 +558,11 @@
       strengthen your people. Others lead to madness.
     </p>
 
-    <h2 style="color: #444444">Play Free in Your Browser</h2>
+    <h2 style="color: #444444">Play for Free in Your Browser</h2>
 
     <p>
-      Free HTML5 browser game on desktop and mobile. Progress saves locally.
-      Idle mode lets your settlement grow while you are away.
+      Play for free in your browser on desktop or mobile. Progress saves locally.
+      Also on Steam with a free demo.
     </p>
 
     <p>
@@ -544,6 +592,22 @@
         </li>
         <li>
           <a href="mailto:support@a-dark-cave.com" style="color: #444444">Contact</a>
+        </li>
+      </ul>
+    </nav>
+    <nav aria-label="Legal">
+      <ul style="margin: 1em 0 0; padding: 0; list-style: none; display: flex; flex-wrap: wrap; gap: 0.75rem 1.25rem;">
+        <li>
+          <a href="https://a-dark-cave.com/privacy" style="color: #444444">Privacy Policy</a>
+        </li>
+        <li>
+          <a href="https://a-dark-cave.com/terms" style="color: #444444">Terms of Service</a>
+        </li>
+        <li>
+          <a href="https://a-dark-cave.com/imprint" style="color: #444444">Imprint</a>
+        </li>
+        <li>
+          <a href="https://a-dark-cave.com/withdrawal" style="color: #444444">Right of Withdrawal</a>
         </li>
       </ul>
     </nav>

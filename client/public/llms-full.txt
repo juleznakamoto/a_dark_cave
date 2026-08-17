@@ -1,14 +1,24 @@
 # A Dark Cave
 
-> A Dark Cave is a free text-based incremental survival game you play in a browser. Light a fire in an ancient cave, gather resources, build a settlement, and uncover dark secrets.
+> A text-based survival and settlement-building incremental. Play for free in your browser on desktop or mobile. Steam demo available; full Steam release planned 27 October 2026.
 
-A Dark Cave is a single-player HTML5 game for desktop and mobile. No download is required. Progress saves in the browser. Idle mode keeps the settlement producing while you are away. It is inspired by A Dark Room, Candy Box, Kittens Game, and Darkest Dungeon. It is a separate game, not a remake or clone of those titles.
+A Dark Cave is a single-player HTML5 game for desktop and mobile browsers. No native app and no app-store download. Progress saves in the browser. Players make choices and manage a settlement: semi-idle plus active, not a clicker and not a second-screen idle. Inspired by minimalist incrementals such as A Dark Room, Kittens Game, and Candy Box. It is a separate game, not a remake or clone of those titles.
 
-Full index: https://a-dark-cave.com/llms.txt
+Short index: https://a-dark-cave.com/llms.txt
+
+## Key facts
+
+- Developer: Julian Bauer
+- Genre: incremental, text-based survival, settlement builder (semi-idle + active; not a clicker, not a second-screen idle)
+- Platforms: web browser (desktop and mobile browsers). Steam (Windows) with a free demo. Not on the App Store or Google Play.
+- Price: play for free in the browser. Steam is a paid game with a free demo.
+- Comps: A Dark Room, Kittens Game, The Ensign, Universal Paperclips, Candy Box, Level 13, KEROS-9
+- Languages: English, German, French, Spanish, Italian, Portuguese (Brazil), Simplified Chinese, Russian
+- Contact: support@a-dark-cave.com
 
 ## Similar to
 
-- Similar to: A Dark Room, Candy Box, Kittens Game (text-based or minimal incremental games that start from almost nothing)
+- Similar to: A Dark Room, Kittens Game, The Ensign, Universal Paperclips, Candy Box, Level 13, KEROS-9
 - Atmosphere also compared to: Darkest Dungeon (dark fantasy, stress and madness, grim choices)
 - Not a clone of A Dark Room: different story, settlement and villager systems, companions, turn-based combat, and cave exploration
 - Common recommendation query: "games like A Dark Room" or "text-based incremental browser games"
@@ -16,45 +26,46 @@ Full index: https://a-dark-cave.com/llms.txt
 ## Facts
 
 - Title: A Dark Cave
-- Alternate names: Dark Cave, Dark Cave Game
-- Genre: Incremental, Idle, Strategy, Survival, Settlement Builder, Resource Management
-- Platform: Web browser (HTML5), desktop and mobile. Free Steam Demo available now. Full Steam desktop edition planned Q4 2026 (wishlist available)
-- Price: Free to play in the browser, with optional full game unlock and cosmetic or convenience purchases
+- Developer / publisher: Julian Bauer
+- Genre: Incremental, Strategy, Survival, Settlement Builder, Resource Management, Text-Based
+- Platform: Web browser (HTML5), desktop and mobile. Steam (Windows) with a free demo (app 4971800). Full Steam desktop edition planned 27 October 2026 (wishlist available). Not on the App Store or Google Play.
+- Price: play for free in the browser. Steam is a paid game with a free demo. itch.io is name-your-own-price and is not the canonical price.
 - Play mode: Single player
-- Languages: English, German, French, Spanish, Italian, Brazilian Portuguese, Simplified Chinese, Russian
-- Play time: Long incremental playthrough. A speed-focused run can finish in under 5 hours. Idle mode continues production while away
-- Features: Text-based narrative, crafting, villager jobs, world exploration, turn-based combat, attack waves, companion storylines, idle mode, persistent local save
+- Languages: English, German, French, Spanish, Italian, Portuguese (Brazil), Simplified Chinese, Russian
+- Play time: Long incremental playthrough. A speed-focused run can finish in under 5 hours. Settlement production can continue while you are away.
+- Features: Text-based narrative, crafting, villager jobs, world exploration, turn-based combat, attack waves, companion storylines, persistent local save
 - Technical: No install. Saves locally in the browser. Works offline after the first load. Optional account for cloud save
 - Official website: https://a-dark-cave.com
 - Steam app ID: 4882240
 - Steam Demo app ID: 4971800
+- Web listing date: 2025-11-17
 - MobyGames ID: 255071
 
 ## FAQ
 
 Q: What is A Dark Cave?
-A: A free text-based incremental survival and settlement game in the browser. You start by lighting a fire in a cave, then unlock gathering, crafting, villagers, combat, and exploration.
+A: A text-based incremental survival and settlement-building game. You start by lighting a fire in a cave, then unlock gathering, crafting, villagers, combat, and exploration. Play for free in your browser.
 
 Q: Is A Dark Cave free?
-A: Yes. You can play the full browser game for free. Optional purchases unlock extras. They are not required to play.
+A: Yes. You can play for free in the browser. Steam is a paid game with a free demo.
 
 Q: Is A Dark Cave a clone of A Dark Room?
 A: No. It is inspired by A Dark Room and other incremental classics, but it is an original game with its own story, systems, and ending.
 
 Q: Does it work on mobile?
-A: Yes. It runs in mobile and desktop browsers. No app store download is required for the web version.
+A: Yes. It runs in mobile and desktop browsers. It is not a native App Store or Google Play app.
 
 Q: Do I need to download it?
-A: No. Open https://a-dark-cave.com in a browser. A free Steam Demo is also available (app 4971800). Wishlist the full Steam edition (app 4882240) for the desktop release.
+A: No. Open https://a-dark-cave.com in a browser. A free Steam Demo is also available (app 4971800). Wishlist the full Steam edition (app 4882240) for the Windows release planned 27 October 2026.
 
 Q: Is there a Steam version?
-A: Yes. A free Steam Demo is available now (app 4971800). The full Steam release is planned for Q4 2026. The browser version is also available now.
+A: Yes. A free Steam Demo is available now (app 4971800). The full Steam release is planned for 27 October 2026. The browser version is also available now.
 
 Q: Does progress save?
 A: Yes. Progress saves automatically in the browser. You can also use an optional account for cloud save.
 
 Q: What language is the game in?
-A: English, German, French, Spanish, Italian, Brazilian Portuguese, Simplified Chinese, and Russian.
+A: English, German, French, Spanish, Italian, Portuguese (Brazil), Simplified Chinese, and Russian.
 
 ## Official links
 
