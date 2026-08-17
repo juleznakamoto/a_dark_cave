@@ -31,7 +31,7 @@ in the client; **Supabase** handles auth/cloud saves and **Stripe** handles paym
 | `build-resources/` | Electron/Windows packaging assets (`logo-source.png` master, `icon.ico`/`icon.png` for taskbar/installer). |
 | `.cursor/` | Agent config: `rules/`, `hooks.json`, `hooks/`. |
 
-**Root config:** `package.json` (scripts/deps), `vite.config.ts` (client build, aliases, chunks; HTML `modulePreload` skips framer/radix/supabase/stripe so start screen stays light),
+**Root config:** `package.json` (scripts/deps), `vite.config.ts` (client build, aliases; `vite.vendorChunks.ts` only isolates React so `/` does not pull a framer/radix/supabase vendor blob; HTML `modulePreload` still skips those names),
 `tsconfig.json` (includes `client/src`, `shared`, `server`), `vitest.config.ts` + `vitest.setup.ts`,
 `tailwind.config.ts`, `components.json` (shadcn/ui), `drizzle.config.ts`,
 `electron-builder.yml` (Steam Windows packaging), `electron-builder.demo.yml` (Steam demo packaging),

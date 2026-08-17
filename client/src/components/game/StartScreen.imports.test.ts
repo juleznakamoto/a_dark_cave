@@ -1,4 +1,4 @@
-import { readFileSync } from "node:fs";
+import { existsSync, readFileSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 import { describe, expect, it } from "vitest";
@@ -92,5 +92,64 @@ describe("start-screen first-load imports", () => {
       "utf8",
     );
     expect(src).not.toMatch(/from ["']zod["']/);
+  });
+});
+
+const repoRoot = join(dir, "../../../..");
+const distHtml = join(repoRoot, "dist/public/index.html");
+const HEAVY_FIRST_LOAD_VENDORS = [
+  "vendor-framer",
+  "vendor-radix",
+  "vendor-supabase",
+  "vendor-stripe",
+];
+
+function staticChunkImports(src: string): string[] {
+  return [...src.matchAll(/from"(\.\/[^"]+)"/g)].map((match) =>
+    match[1].replace("./", ""),
+  );
+}
+
+function firstLoadChunkNames(html: string, assetsDir: string): string[] {
+  const entryHref = html.match(/src="(?:\.\/|\/)?assets\/(index-[^"]+\.js)"/)?.[1];
+  if (!entryHref) {
+    throw new Error("Built index.html has no entry module");
+  }
+  const seen = new Set<string>();
+  const queue = [entryHref];
+  const entrySrc = readFileSync(join(assetsDir, entryHref), "utf8");
+  for (const match of entrySrc.matchAll(/import\("\.\/(start-screen-page-[^"]+\.js)"\)/g)) {
+    queue.push(match[1]);
+  }
+  while (queue.length) {
+    const name = queue.pop();
+    if (!name || seen.has(name)) continue;
+    seen.add(name);
+    const file = join(assetsDir, name);
+    if (!existsSync(file)) continue;
+    for (const spec of staticChunkImports(readFileSync(file, "utf8"))) {
+      queue.push(spec);
+    }
+  }
+  return [...seen];
+}
+
+describe.skipIf(!existsSync(distHtml))("built `/` first-load chunks", () => {
+  it("does not statically pull framer, radix, supabase, or stripe", () => {
+    const html = readFileSync(distHtml, "utf8");
+    const assetsDir = join(repoRoot, "dist/public/assets");
+    const chunks = firstLoadChunkNames(html, assetsDir);
+    const heavy = chunks.filter((name) =>
+      HEAVY_FIRST_LOAD_VENDORS.some((vendor) => name.includes(vendor)),
+    );
+    expect(heavy).toEqual([]);
+
+    const firstLoadSource = chunks
+      .filter((name) => existsSync(join(assetsDir, name)))
+      .map((name) => readFileSync(join(assetsDir, name), "utf8"))
+      .join("\n");
+    expect(firstLoadSource).not.toMatch(/GoTrueClient|supabase-js/);
+    expect(firstLoadSource).not.toMatch(/framer-motion/);
+    expect(firstLoadSource).not.toMatch(/@radix-ui|data-radix-/);
   });
 });

@@ -4,6 +4,7 @@ import path from "path";
 import { execSync } from "node:child_process";
 import runtimeErrorOverlay from "@replit/vite-plugin-runtime-error-modal";
 import { compression } from "vite-plugin-compression2";
+import { vendorManualChunk } from "./vite.vendorChunks";
 
 /**
  * Baked into the client bundle; compared against `/api/version` at runtime.
@@ -90,9 +91,8 @@ export default defineConfig(async ({ mode }) => ({
         drop_debugger: true,
       },
     },
-    // Keep heavy vendors off the HTML entry modulepreload list so the start
-    // screen is not competing with framer/radix/supabase on first paint.
-    // They still load with the chunks that import them (StartScreen, game, etc.).
+    // Keep leftover named vendor files off the HTML preload list. React is
+    // the only forced vendor chunk; framer/radix/supabase follow importers.
     modulePreload: {
       resolveDependencies: (_filename, deps, { hostType }) => {
         if (hostType !== "html") return deps;
@@ -107,33 +107,9 @@ export default defineConfig(async ({ mode }) => ({
     },
     rollupOptions: {
       output: {
-        manualChunks: useOfflineStubs
-          ? {
-            "vendor-react": ["react", "react-dom"],
-            "vendor-framer": ["framer-motion"],
-            "vendor-radix": [
-              "@radix-ui/react-dialog",
-              "@radix-ui/react-dropdown-menu",
-              "@radix-ui/react-select",
-              "@radix-ui/react-tabs",
-              "@radix-ui/react-toast",
-              "@radix-ui/react-tooltip",
-            ],
-          }
-          : {
-            "vendor-react": ["react", "react-dom"],
-            "vendor-framer": ["framer-motion"],
-            "vendor-radix": [
-              "@radix-ui/react-dialog",
-              "@radix-ui/react-dropdown-menu",
-              "@radix-ui/react-select",
-              "@radix-ui/react-tabs",
-              "@radix-ui/react-toast",
-              "@radix-ui/react-tooltip",
-            ],
-            "vendor-stripe": ["@stripe/stripe-js", "@stripe/react-stripe-js"],
-            "vendor-supabase": ["@supabase/supabase-js"],
-          },
+        manualChunks(id) {
+          return vendorManualChunk(id, { offlineStubs: useOfflineStubs });
+        },
       },
     },
   },

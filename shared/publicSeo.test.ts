@@ -1,3 +1,6 @@
+import { readFileSync } from "node:fs";
+import { dirname, join } from "node:path";
+import { fileURLToPath } from "node:url";
 import { describe, it, expect } from "vitest";
 import {
   customizeSpaIndexHtml,
@@ -8,6 +11,11 @@ import {
   resolveSpaHtmlResponse,
   HOME_SEO,
 } from "./publicSeo";
+
+const REAL_INDEX_HTML = readFileSync(
+  join(dirname(fileURLToPath(import.meta.url)), "../client/index.html"),
+  "utf8",
+);
 
 const SAMPLE_HTML = `<!doctype html>
 <html>
@@ -106,5 +114,41 @@ describe("publicSeo", () => {
     expect(html).toContain("<title>Page Not Found - A Dark Cave</title>");
     expect(html).toContain('content="noindex, nofollow"');
     expect(html).not.toContain("VideoGame");
+  });
+
+  it("patches the real index.html shell for legal pages and unknown URLs", () => {
+    const home = customizeSpaIndexHtml(REAL_INDEX_HTML, "/");
+    expect(resolveSpaHtmlResponse("/").status).toBe(200);
+    expect(home).toContain(`<title>${HOME_SEO.title}</title>`);
+    expect(home).toContain('href="https://a-dark-cave.com/"');
+    expect(home).toContain("adc:jsonld-home");
+
+    for (const path of ["/privacy", "/terms", "/imprint", "/withdrawal"] as const) {
+      const seo = getPublicRouteSeo(path)!;
+      const html = customizeSpaIndexHtml(REAL_INDEX_HTML, path);
+      expect(resolveSpaHtmlResponse(path).status).toBe(200);
+      expect(html).toContain(`<title>${seo.title}</title>`);
+      expect(html).toContain(
+        `<link rel="canonical" href="https://a-dark-cave.com${path}"`,
+      );
+      expect(html).not.toContain(
+        '<link rel="canonical" href="https://a-dark-cave.com/"',
+      );
+      expect(html).toContain('content="index, follow"');
+      expect(html).not.toContain("adc:jsonld-home");
+    }
+
+    const missing = customizeSpaIndexHtml(REAL_INDEX_HTML, "/this-page-does-not-exist-xyz", {
+      notFound: true,
+    });
+    expect(resolveSpaHtmlResponse("/this-page-does-not-exist-xyz").status).toBe(404);
+    expect(resolveSpaHtmlResponse("/blog").status).toBe(404);
+    expect(resolveSpaHtmlResponse("/about").status).toBe(404);
+    expect(missing).toContain("<title>Page Not Found - A Dark Cave</title>");
+    expect(missing).toContain('content="noindex, nofollow"');
+    expect(missing).not.toContain("adc:jsonld-home");
+    expect(missing).not.toContain(
+      '<link rel="canonical" href="https://a-dark-cave.com/"',
+    );
   });
 });
