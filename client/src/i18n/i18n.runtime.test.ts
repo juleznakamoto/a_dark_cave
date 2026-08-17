@@ -1,6 +1,9 @@
 import { describe, it, expect, beforeAll, beforeEach } from "vitest";
 import i18n from "./index";
-import { ensureGameplayLocalesLoaded } from "./loadLocaleResources";
+import {
+  ensureGameplayLocalesLoaded,
+  loadLocaleResources,
+} from "./loadLocaleResources";
 import { getEnUiCatalogString } from "./enUiCatalog";
 import {
   getActionLabel,
@@ -250,5 +253,13 @@ describe("i18n runtime", () => {
     );
     const deMsg = resolveEventMessage("solsticeGathering", undefined, state);
     expect(deMsg).toContain("längste Nacht");
+  });
+
+  it("reloads gameplay catalogs when i18n lost the events bundle", async () => {
+    expect(i18n.hasResourceBundle("en", "events")).toBe(true);
+    i18n.removeResourceBundle("en", "events");
+    expect(i18n.hasResourceBundle("en", "events")).toBe(false);
+    await loadLocaleResources("en");
+    expect(i18n.hasResourceBundle("en", "events")).toBe(true);
   });
 });

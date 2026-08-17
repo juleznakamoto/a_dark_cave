@@ -99,10 +99,28 @@ export async function loadStartupLocaleResources(
   installLocaleResources(locale, resources);
 }
 
+/** Gameplay catalogs include `events`. Startup shards (shell/seo) do not. */
+function hasGameplayCatalog(locale: SupportedLocale): boolean {
+  return i18n.hasResourceBundle(locale, "events");
+}
+
+function forgetLoadedLocale(locale: SupportedLocale): void {
+  fullyLoadedLocales.delete(locale);
+  const prefix = `./locales/${locale}/`;
+  for (const path of [...loadedModulePaths]) {
+    if (path.startsWith(prefix)) loadedModulePaths.delete(path);
+  }
+}
+
 export async function loadLocaleResources(
   locale: SupportedLocale,
 ): Promise<void> {
-  if (fullyLoadedLocales.has(locale)) return;
+  if (fullyLoadedLocales.has(locale)) {
+    // Locale JSON HMR re-inits i18n with empty resources while this module
+    // still thinks catalogs are loaded. Re-fetch when the gameplay bundle is gone.
+    if (hasGameplayCatalog(locale)) return;
+    forgetLoadedLocale(locale);
+  }
 
   const inFlight = loadingFullLocales.get(locale);
   if (inFlight) {

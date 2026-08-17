@@ -710,10 +710,7 @@ const Hero: React.FC<HeroProps> = ({
           {buttons?.feedback && (
             <div className="py-3 flex flex-col items-center gap-3 mt-14 animate-fade-in-up animation-delay-4000 w-full min-w-0">
               <p className="text-sm sm:text-base font-medium text-grey-200 text-center max-w-md px-2 sm:px-4 break-words">
-                {t("endScreen.feedbackBlurb", {
-                  defaultValue:
-                    "If you encounter any bugs, translation issues, or have ideas or feedback, I'd love to hear from you.",
-                })}
+                {t("endScreen.feedbackBlurb")}
               </p>
               <button
                 type="button"
@@ -789,9 +786,7 @@ const Hero: React.FC<HeroProps> = ({
                         ❤︎⁠
                       </span>
                       <span>
-                        {t("endScreen.buyMeACoffee", {
-                          defaultValue: "Support",
-                        })}
+                        {t("endScreen.buyMeACoffee")}
                       </span>
                     </button>
                     {buttons?.secondary && (

@@ -4,7 +4,8 @@ import Hero from "@/components/ui/animated-shader-hero";
 import { initPlaylight, markPlaylightDiscoveryUserInitiated } from "@/lib/playlight";
 import { mountNotoSansSymbols2FontFace } from "@/lib/notoSansSymbols2FontFace";
 import { useGameStore } from "@/game/state";
-import { useTranslation } from "react-i18next";
+import { useUiTranslation } from "@/i18n/useUiTranslation";
+import { ensureGameplayLocalesLoaded } from "@/i18n/loadLocaleResources";
 import { isSteamBuild } from "@/lib/edition";
 import {
   useSteamDesktopEditionActive,
@@ -16,7 +17,7 @@ import { navigateSpa } from "@/lib/spaNavigate";
 import { ITCH_URL } from "@shared/publicPages";
 
 export default function EndScreenPage() {
-  const { t } = useTranslation("ui");
+  const { t } = useUiTranslation();
   const steamEditionActive = useSteamEditionActive();
   const steamDesktopEditionActive = useSteamDesktopEditionActive();
   const [isCruelModeRun, setIsCruelModeRun] = useState<boolean | null>(null);
@@ -28,7 +29,10 @@ export default function EndScreenPage() {
   useEffect(() => {
     void (async () => {
       try {
-        await useGameStore.getState().loadGame();
+        await Promise.all([
+          ensureGameplayLocalesLoaded(),
+          useGameStore.getState().loadGame(),
+        ]);
         setIsCruelModeRun(Boolean(useGameStore.getState().cruelMode));
       } catch {
         setIsCruelModeRun(false);
@@ -141,9 +145,7 @@ export default function EndScreenPage() {
                 buttonId: "end-screen-more-games",
               },
               rateItch: {
-                text: t("endScreen.rateOnItch", {
-                  defaultValue: "Rate on itch.io",
-                }),
+                text: t("endScreen.rateOnItch"),
                 onClick: handleRateItch,
                 buttonId: "end-screen-rate-itch",
               },
