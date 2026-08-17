@@ -25,6 +25,7 @@ import type LanguageSelector from "@/components/game/LanguageSelector";
 import type FooterNetworkMenu from "@/components/game/FooterNetworkMenu";
 import type CrazyGamesCornerMenu from "@/components/game/CrazyGamesMenuLinks";
 import type { ParticleButton } from "@/components/ui/particle-button";
+import { shouldOpenDeferredStartMenu } from "@/components/game/startScreenDeferredMenu";
 
 const START_INTRO_VAPORIZE_COLOR = "rgba(209, 213, 219, 0.9)";
 const START_INTRO_VAPORIZE_ANIMATION = {
@@ -172,6 +173,10 @@ export default function StartScreen({
   const [CrazyGamesCornerMenuCmp, setCrazyGamesCornerMenuCmp] = useState<
     typeof CrazyGamesCornerMenu | null
   >(null);
+  const [languageDefaultOpen, setLanguageDefaultOpen] = useState(false);
+  const [networkDefaultOpen, setNetworkDefaultOpen] = useState(false);
+  const [crazyGamesDefaultOpen, setCrazyGamesDefaultOpen] = useState(false);
+  const deferredMenuGenRef = useRef(0);
   const [showEyesEasterEgg, setShowEyesEasterEgg] = useState(false);
   const eyesEasterEggInsideHotZoneRef = useRef(false);
   const eyesEasterEggConsumedRef = useRef(false);
@@ -474,6 +479,10 @@ export default function StartScreen({
       sfxVolume,
     };
     onLightFireStart?.(preferences);
+    deferredMenuGenRef.current += 1;
+    setLanguageDefaultOpen(false);
+    setNetworkDefaultOpen(false);
+    setCrazyGamesDefaultOpen(false);
 
     // Show button effect for 3 seconds on both mobile and desktop.
     // ParticleButton pulls Framer; load it only after Light Fire.
@@ -505,22 +514,46 @@ export default function StartScreen({
 
   const loadLanguageSelector = () => {
     if (LanguageSelectorCmp) return;
+    const requestGen = ++deferredMenuGenRef.current;
     void import("@/components/game/LanguageSelector").then((mod) => {
       setLanguageSelectorCmp(() => mod.default);
+      setLanguageDefaultOpen(
+        shouldOpenDeferredStartMenu(
+          executedRef.current,
+          requestGen,
+          deferredMenuGenRef.current,
+        ),
+      );
     });
   };
 
   const loadFooterNetworkMenu = () => {
     if (FooterNetworkMenuCmp) return;
+    const requestGen = ++deferredMenuGenRef.current;
     void import("@/components/game/FooterNetworkMenu").then((mod) => {
       setFooterNetworkMenuCmp(() => mod.default);
+      setNetworkDefaultOpen(
+        shouldOpenDeferredStartMenu(
+          executedRef.current,
+          requestGen,
+          deferredMenuGenRef.current,
+        ),
+      );
     });
   };
 
   const loadCrazyGamesCornerMenu = () => {
     if (CrazyGamesCornerMenuCmp) return;
+    const requestGen = ++deferredMenuGenRef.current;
     void import("@/components/game/CrazyGamesMenuLinks").then((mod) => {
       setCrazyGamesCornerMenuCmp(() => mod.default);
+      setCrazyGamesDefaultOpen(
+        shouldOpenDeferredStartMenu(
+          executedRef.current,
+          requestGen,
+          deferredMenuGenRef.current,
+        ),
+      );
     });
   };
 
@@ -638,7 +671,7 @@ export default function StartScreen({
             CrazyGamesCornerMenuCmp ? (
               <CrazyGamesCornerMenuCmp
                 steamUtmContent={STEAM_STORE_UTM_CONTENT.startScreenMenu}
-                defaultOpen
+                defaultOpen={crazyGamesDefaultOpen}
               />
             ) : (
               <button
@@ -762,7 +795,7 @@ export default function StartScreen({
               iconVariant="globe"
               menuAlign="start"
               showTooltip={false}
-              defaultOpen
+              defaultOpen={languageDefaultOpen}
             />
           ) : (
             <button
@@ -891,7 +924,7 @@ export default function StartScreen({
                 iconClassName="opacity-100"
                 iconSizeClassName="w-3.5 h-3.5"
                 labelClassName="sr-only sm:not-sr-only sm:inline"
-                defaultOpen
+                defaultOpen={networkDefaultOpen}
               />
             ) : (
               <button
