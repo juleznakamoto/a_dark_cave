@@ -1,0 +1,69 @@
+{
+  "publicPages": {
+    "faqHeading": "Domande frequenti",
+    "aboutHeading": "Informazioni su A Dark Cave",
+    "faq": {
+      "whatIs": {
+        "q": "Che cos'è A Dark Cave?",
+        "a": "A Dark Cave è un gioco incremental testuale di sopravvivenza e insediamento. Ti svegli in una caverna senza memoria, accendi un fuoco, raccogli risorse, costruisci un villaggio e scendi nel buio."
+      },
+      "free": {
+        "q": "A Dark Cave è gratis?",
+        "a": "Sì. Puoi giocare gratis nel browser su <site>a-dark-cave.com</site>. Ci sono acquisti del tutto opzionali."
+      },
+      "idle": {
+        "q": "È un idle o un clicker?",
+        "a": "No. È un gioco incremental, semi-idle e attivo. Fai scelte e gestisci un insediamento. Non è un clicker da secondo schermo."
+      },
+      "like": {
+        "q": "A quali giochi somiglia?",
+        "a": "Se ti piacciono A Dark Room, Kittens Game, The Ensign, Universal Paperclips, Candy Box, Level 13 o KEROS-9, è pensato per quel gusto. Non è affiliato a quei giochi."
+      },
+      "phone": {
+        "q": "Posso giocare sul telefono?",
+        "a": "Sì, in un browser mobile. Non c'è un'app su App Store o Google Play."
+      },
+      "steam": {
+        "q": "C'è una versione Steam?",
+        "a": "Sì. A Dark Cave arriva su <steam>Steam</steam> il 27 ottobre 2026. Una <demo>demo gratuita</demo> è già disponibile. L'edizione Steam è un gioco a pagamento."
+      },
+      "download": {
+        "q": "Devo scaricare il gioco nel browser?",
+        "a": "No. Giocalo nel browser."
+      },
+      "save": {
+        "q": "I progressi si salvano?",
+        "a": "Sì. I progressi si salvano da soli nel browser. Un account opzionale aggiunge il salvataggio cloud."
+      },
+      "account": {
+        "q": "Serve un account?",
+        "a": "No. Puoi giocare senza. Un account serve solo per il salvataggio cloud."
+      },
+      "singlePlayer": {
+        "q": "È un gioco single-player?",
+        "a": "Sì. A Dark Cave è un gioco per un solo giocatore."
+      },
+      "ending": {
+        "q": "Il gioco ha un finale?",
+        "a": "Sì. C'è una storia, tanti segreti e lore, e più di un finale."
+      },
+      "languages": {
+        "q": "Quali lingue sono supportate?",
+        "a": "Nel browser: inglese, tedesco, francese, spagnolo, italiano, portoghese (Brasile), cinese semplificato e russo. Steam elenca anche il giapponese."
+      },
+      "help": {
+        "q": "Dove posso chiedere aiuto?",
+        "a": "Scrivi a <email>support@a-dark-cave.com</email> o chiedi sul <reddit>subreddit di A Dark Cave</reddit>."
+      }
+    },
+    "about": {
+      "p1": "A Dark Cave è un gioco incremental testuale di sopravvivenza e insediamento di Julian Bauer. Ti svegli all'ingresso di una caverna, accendi un fuoco, raccogli quello che puoi, costruisci un villaggio sulla soglia e torni giù.",
+      "p2": "Gioca gratis nel browser su <site>https://a-dark-cave.com</site>. Una demo Steam gratuita è già disponibile. L'uscita Steam completa è prevista per il 27 ottobre 2026.",
+      "p3": "È pensato per chi ama gli incremental minimalisti come A Dark Room, Kittens Game e Candy Box. Non è un clicker e non è un idle da secondo schermo.",
+      "support": "Supporto: support@a-dark-cave.com",
+      "reddit": "Reddit",
+      "steam": "Steam",
+      "itch": "itch.io"
+    }
+  }
+}

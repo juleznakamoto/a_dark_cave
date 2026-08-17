@@ -2,6 +2,12 @@
  *  Homepage title/description must match CANONICAL_FACTS.md.
  */
 
+import {
+  getPublicPageBodyHtml,
+  getPublicPageExtraJsonLd,
+  STATIC_PAGE_HIDE_AFTER_HYDRATE,
+} from "./publicPages";
+
 export const SITE_ORIGIN = "https://a-dark-cave.com";
 
 export const HOME_SEO = {
@@ -30,6 +36,8 @@ export const KNOWN_SPA_PATHS = new Set([
   "/end-screen",
   "/imprint",
   "/privacy",
+  "/faq",
+  "/about",
   "/terms",
   "/withdrawal",
   "/unsubscribe",
@@ -61,6 +69,22 @@ const ROUTE_SEO: Record<string, PublicRouteSeo> = {
       "Privacy Policy for A Dark Cave. Learn how we handle your data in our text-based survival and settlement building game.",
     includeHomeJsonLd: false,
     pageName: "Privacy Policy",
+  },
+  "/faq": {
+    title: "FAQ - A Dark Cave",
+    description:
+      "Answers about A Dark Cave: a free text-based incremental survival game in your browser. Steam demo and release date, platforms, and similar games.",
+    includeHomeJsonLd: false,
+    robots: "index, follow",
+    pageName: "FAQ",
+  },
+  "/about": {
+    title: "About - A Dark Cave",
+    description:
+      "A Dark Cave is a free text-based incremental survival and settlement game by Julian Bauer. Play in your browser. Steam demo available.",
+    includeHomeJsonLd: false,
+    robots: "index, follow",
+    pageName: "About",
   },
   "/terms": {
     title: "Terms of Service - A Dark Cave",
@@ -340,11 +364,24 @@ export function customizeSpaIndexHtml(
   );
 
   if (!seo.includeHomeJsonLd) {
-    const routeJsonLd = buildRouteJsonLd(path, seo);
+    const extraJsonLd = getPublicPageExtraJsonLd(path);
+    const routeJsonLd = [buildRouteJsonLd(path, seo), extraJsonLd]
+      .filter(Boolean)
+      .join("\n  ");
     out = out.replace(
       "</head>",
       `  <!-- adc:jsonld-route -->\n  ${routeJsonLd}\n  <!-- /adc:jsonld-route -->\n</head>`,
     );
+  }
+
+  const pageBody = getPublicPageBodyHtml(path);
+  if (pageBody) {
+    out = out.replace("</head>", `  ${STATIC_PAGE_HIDE_AFTER_HYDRATE}\n</head>`);
+    if (/<main id="seo-fallback"[\s\S]*?<\/main>/.test(out)) {
+      out = out.replace(/<main id="seo-fallback"[\s\S]*?<\/main>/, pageBody);
+    } else {
+      out = out.replace("</body>", `${pageBody}\n</body>`);
+    }
   }
 
   return out;

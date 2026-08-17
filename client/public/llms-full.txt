@@ -69,6 +69,8 @@ A: English, German, French, Spanish, Italian, Portuguese (Brazil), Simplified Ch
 
 ## Official links
 
+- FAQ: https://a-dark-cave.com/faq
+- About: https://a-dark-cave.com/about
 - Play: https://a-dark-cave.com
 - Wiki: https://a-dark-cave.fandom.com/wiki/A_Dark_Cave_Wiki
 - Reddit: https://www.reddit.com/r/aDarkCave/

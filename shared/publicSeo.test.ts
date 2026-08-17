@@ -94,6 +94,8 @@ describe("publicSeo", () => {
 
   it("returns 200 for known routes", () => {
     expect(resolveSpaHtmlResponse("/privacy").status).toBe(200);
+    expect(resolveSpaHtmlResponse("/faq").status).toBe(200);
+    expect(resolveSpaHtmlResponse("/about").status).toBe(200);
     expect(resolveSpaHtmlResponse("/dev/sounds").status).toBe(200);
   });
 
@@ -172,12 +174,50 @@ describe("publicSeo", () => {
     });
     expect(resolveSpaHtmlResponse("/this-page-does-not-exist-xyz").status).toBe(404);
     expect(resolveSpaHtmlResponse("/blog").status).toBe(404);
-    expect(resolveSpaHtmlResponse("/about").status).toBe(404);
     expect(missing).toContain("<title>Page Not Found - A Dark Cave</title>");
     expect(missing).toContain('content="noindex, nofollow"');
     expect(missing).not.toContain("adc:jsonld-home");
     expect(missing).not.toContain(
       '<link rel="canonical" href="https://a-dark-cave.com/"',
     );
+  });
+
+  it("gives /faq and /about unique raw HTML with visible body copy", () => {
+    const home = customizeSpaIndexHtml(REAL_INDEX_HTML, "/");
+    const faq = customizeSpaIndexHtml(REAL_INDEX_HTML, "/faq");
+    const about = customizeSpaIndexHtml(REAL_INDEX_HTML, "/about");
+
+    expect(faq).not.toBe(home);
+    expect(faq).not.toBe(about);
+    expect(faq).toContain("<title>FAQ - A Dark Cave</title>");
+    expect(faq).toContain(
+      '<link rel="canonical" href="https://a-dark-cave.com/faq"',
+    );
+    expect(faq).toContain('content="index, follow"');
+    expect(faq).toContain("What is A Dark Cave?");
+    expect(faq).toContain("fully optional purchases");
+    expect(faq).toContain("FAQPage");
+    expect(faq).not.toContain("Who made A Dark Cave?");
+    expect(faq).not.toContain("adc:jsonld-home");
+    expect(faq).not.toMatch(
+      /<main id="seo-fallback"[^>]*style="[^"]*display:\s*none/,
+    );
+
+    expect(about).toContain("<title>About - A Dark Cave</title>");
+    expect(about).toContain(
+      '<link rel="canonical" href="https://a-dark-cave.com/about"',
+    );
+    expect(about).toContain("Julian Bauer");
+    expect(about).toContain('"@type":"Person"');
+    expect(about).not.toContain("adc:jsonld-home");
+  });
+
+  it("lists /faq and /about in sitemap.xml", () => {
+    const sitemap = readFileSync(
+      join(dirname(fileURLToPath(import.meta.url)), "../client/public/sitemap.xml"),
+      "utf8",
+    );
+    expect(sitemap).toContain("<loc>https://a-dark-cave.com/faq</loc>");
+    expect(sitemap).toContain("<loc>https://a-dark-cave.com/about</loc>");
   });
 });

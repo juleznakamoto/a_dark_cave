@@ -19,6 +19,8 @@
 
 ## Official links
 
+- FAQ: https://a-dark-cave.com/faq
+- About: https://a-dark-cave.com/about
 - Steam demo: https://store.steampowered.com/app/4971800/
 - Reddit: https://www.reddit.com/r/aDarkCave/
 - Support: support@a-dark-cave.com

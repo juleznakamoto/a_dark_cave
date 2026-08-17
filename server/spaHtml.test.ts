@@ -58,6 +58,18 @@ describe("sendSpaIndexHtml catch-all", () => {
     expect(res.text).not.toContain("VideoGame");
   });
 
+  it("gives /faq a unique title, canonical, and visible FAQ copy", async () => {
+    const res = await request(spaFallbackApp()).get("/faq");
+    expect(res.status).toBe(200);
+    expect(res.text).toContain("<title>FAQ - A Dark Cave</title>");
+    expect(res.text).toContain(
+      '<link rel="canonical" href="https://a-dark-cave.com/faq"',
+    );
+    expect(res.text).toContain("What is A Dark Cave?");
+    expect(res.text).toContain("FAQPage");
+    expect(res.text).not.toContain("VideoGame");
+  });
+
   it("returns a real 404 for unknown paths", async () => {
     const res = await request(spaFallbackApp()).get(
       "/this-page-does-not-exist-xyz",

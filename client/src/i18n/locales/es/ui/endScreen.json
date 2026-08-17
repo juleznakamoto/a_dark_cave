@@ -11,9 +11,10 @@
     "feedback": "Comentarios",
     "feedbackBlurb": "Si encuentras errores, problemas de traducción o tienes ideas, me encantaría escuchar tu feedback.",
     "steamWishlistBlurb": "A Dark Cave se lanza pronto en Steam. Añádelo a tu lista de deseados para enterarte en cuanto salga.",
-    "wishlistOnSteam": "Añadir a la lista de deseados en Steam",  //x2.2
-    "buyMeACoffee": "Invítame a un café",  //x1.2
+    "wishlistOnSteam": "Añadir a la lista de deseados en Steam", //x2.2
+    "buyMeACoffee": "Invítame a un café", //x1.2
     "continuePlaying": "Seguir jugando",
-    "moreGames": "Más juegos"
+    "moreGames": "Más juegos",
+    "rateOnItch": "Valorar en itch.io"
   }
 }

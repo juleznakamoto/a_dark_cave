@@ -1,0 +1,69 @@
+{
+  "publicPages": {
+    "faqHeading": "常见问题",
+    "aboutHeading": "关于 A Dark Cave",
+    "faq": {
+      "whatIs": {
+        "q": "A Dark Cave 是什么？",
+        "a": "A Dark Cave 是一款文字增量生存与定居游戏。你在洞穴中醒来，没有记忆，点燃篝火，收集资源，建立村庄，然后走入黑暗。"
+      },
+      "free": {
+        "q": "A Dark Cave 免费吗？",
+        "a": "是的。你可以在浏览器中免费游玩：<site>a-dark-cave.com</site>。另有完全可选的购买项。"
+      },
+      "idle": {
+        "q": "这是挂机或点击游戏吗？",
+        "a": "不是。这是一款半挂机、需要操作的增量游戏。你要做选择、管理定居点。它不是用来放在第二块屏幕上点的点击游戏。"
+      },
+      "like": {
+        "q": "它像哪些游戏？",
+        "a": "如果你喜欢 A Dark Room、Kittens Game、The Ensign、Universal Paperclips、Candy Box、Level 13 或 KEROS-9，就是这个路子。本作与它们没有从属关系。"
+      },
+      "phone": {
+        "q": "能在手机上玩吗？",
+        "a": "可以，用手机浏览器即可。没有 App Store 或 Google Play 应用。"
+      },
+      "steam": {
+        "q": "有 Steam 版吗？",
+        "a": "有。A Dark Cave 计划于 2026 年 10 月 27 日登陆 <steam>Steam</steam>。现在已有<demo>免费试玩</demo>。Steam 版是付费游戏。"
+      },
+      "download": {
+        "q": "浏览器版需要下载吗？",
+        "a": "不需要。在浏览器里玩即可。"
+      },
+      "save": {
+        "q": "进度会保存吗？",
+        "a": "会。进度会自动保存在浏览器中。可选账户可增加云存档。"
+      },
+      "account": {
+        "q": "必须注册账户吗？",
+        "a": "不必。没有账户也能玩。账户只用于云存档。"
+      },
+      "singlePlayer": {
+        "q": "是单人游戏吗？",
+        "a": "是。A Dark Cave 是单人游戏。"
+      },
+      "ending": {
+        "q": "游戏有结局吗？",
+        "a": "有。有剧情、大量秘密与设定，而且不止一个结局。"
+      },
+      "languages": {
+        "q": "支持哪些语言？",
+        "a": "浏览器版：英语、德语、法语、西班牙语、意大利语、葡萄牙语（巴西）、简体中文和俄语。Steam 还列出了日语。"
+      },
+      "help": {
+        "q": "去哪里寻求帮助？",
+        "a": "发邮件至 <email>support@a-dark-cave.com</email>，或在 <reddit>A Dark Cave 的 subreddit</reddit> 提问。"
+      }
+    },
+    "about": {
+      "p1": "A Dark Cave 是 Julian Bauer 制作的文字增量生存与定居游戏。你在洞穴入口醒来，点燃篝火，收集能找到的东西，在门槛处建起村庄，然后再走下去。",
+      "p2": "在浏览器免费游玩：<site>https://a-dark-cave.com</site>。Steam 免费试玩现已推出。完整 Steam 版计划于 2026 年 10 月 27 日发行。",
+      "p3": "它写给喜欢 A Dark Room、Kittens Game、Candy Box 这类极简增量游戏的人。它不是点击游戏，也不是第二屏幕挂机游戏。",
+      "support": "支持：support@a-dark-cave.com",
+      "reddit": "Reddit",
+      "steam": "Steam",
+      "itch": "itch.io"
+    }
+  }
+}

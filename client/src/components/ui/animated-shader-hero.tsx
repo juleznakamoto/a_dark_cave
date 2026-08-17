@@ -105,6 +105,12 @@ interface HeroProps {
       onClick?: () => void;
       buttonId?: string;
     };
+    /** Shown after `secondaryTrailing` (e.g. end screen: Rate on itch.io). */
+    rateItch?: {
+      text: string;
+      onClick?: () => void;
+      buttonId?: string;
+    };
     feedback?: {
       text: string;
       onClick?: () => void;
@@ -724,68 +730,85 @@ const Hero: React.FC<HeroProps> = ({
             </div>
           )}
 
-          {/* Buy Me a Coffee + Continue Playing (+ More Games on web) */}
-          {(buttons?.secondary || buttons?.secondaryTrailing) && (
-            <div className="flex flex-col items-center gap-4 animate-fade-in-up animation-delay-4500 px-2">
-              <div className="w-full flex justify-center">
-                <div className="flex flex-wrap justify-center gap-3 sm:gap-4 items-center">
-                  {buttons?.secondaryTrailing && (
+          {/* Buy Me a Coffee + Continue Playing (+ More Games / Rate on itch.io on web) */}
+          {(buttons?.secondary ||
+            buttons?.secondaryTrailing ||
+            buttons?.rateItch) && (
+              <div className="flex flex-col items-center gap-4 animate-fade-in-up animation-delay-4500 px-2">
+                <div className="w-full flex justify-center">
+                  <div className="flex flex-wrap justify-center gap-3 sm:gap-4 items-center">
+                    {buttons?.secondaryTrailing && (
+                      <button
+                        type="button"
+                        onClick={buttons.secondaryTrailing.onClick}
+                        button_id={buttons.secondaryTrailing.buttonId}
+                        className={END_SCREEN_LINK_BUTTON_CLASS}
+                      >
+                        <GameUiIcon
+                          name="discover"
+                          sizeClassName="h-3.5 w-3.5"
+                          className="text-blue-400 opacity-100"
+                        />
+                        <span>{buttons.secondaryTrailing.text}</span>
+                      </button>
+                    )}
+                    {buttons?.rateItch && (
+                      <button
+                        type="button"
+                        onClick={buttons.rateItch.onClick}
+                        button_id={buttons.rateItch.buttonId}
+                        className={END_SCREEN_LINK_BUTTON_CLASS}
+                      >
+                        <GameUiIcon
+                          name="leaderboard"
+                          sizeClassName="h-3.5 w-3.5"
+                          className="text-amber-400 opacity-100"
+                        />
+                        <span>{buttons.rateItch.text}</span>
+                      </button>
+                    )}
                     <button
                       type="button"
-                      onClick={buttons.secondaryTrailing.onClick}
-                      button_id={buttons.secondaryTrailing.buttonId}
+                      onClick={() =>
+                        window.open(
+                          "https://buymeacoffee.com/julez.b",
+                          "_blank",
+                          "noopener,noreferrer",
+                        )
+                      }
                       className={END_SCREEN_LINK_BUTTON_CLASS}
                     >
-                      <GameUiIcon
-                        name="discover"
-                        sizeClassName="h-3.5 w-3.5"
-                        className="text-blue-400 opacity-100"
-                      />
-                      <span>{buttons.secondaryTrailing.text}</span>
+                      <span
+                        className="donate-heart inline-flex h-3.5 w-3.5 shrink-0 items-center justify-center text-sm leading-none text-red-600"
+                        aria-hidden
+                      >
+                        ❤︎⁠
+                      </span>
+                      <span>
+                        {t("endScreen.buyMeACoffee", {
+                          defaultValue: "Buy Me a Coffee",
+                        })}
+                      </span>
                     </button>
-                  )}
-                  <button
-                    type="button"
-                    onClick={() =>
-                      window.open(
-                        "https://buymeacoffee.com/julez.b",
-                        "_blank",
-                        "noopener,noreferrer",
-                      )
-                    }
-                    className={END_SCREEN_LINK_BUTTON_CLASS}
-                  >
-                    <span
-                      className="donate-heart inline-flex h-3.5 w-3.5 shrink-0 items-center justify-center text-sm leading-none text-red-600"
-                      aria-hidden
-                    >
-                      ❤︎⁠
-                    </span>
-                    <span>
-                      {t("endScreen.buyMeACoffee", {
-                        defaultValue: "Buy Me a Coffee",
-                      })}
-                    </span>
-                  </button>
-                  {buttons?.secondary && (
-                    <button
-                      type="button"
-                      onClick={buttons.secondary.onClick}
-                      button_id={buttons.secondary.buttonId}
-                      className={END_SCREEN_LINK_BUTTON_CLASS}
-                    >
-                      <GameUiIcon
-                        name="unpause"
-                        sizeClassName="h-3.5 w-3.5"
-                        className="opacity-100"
-                      />
-                      <span>{buttons.secondary.text}</span>
-                    </button>
-                  )}
+                    {buttons?.secondary && (
+                      <button
+                        type="button"
+                        onClick={buttons.secondary.onClick}
+                        button_id={buttons.secondary.buttonId}
+                        className={END_SCREEN_LINK_BUTTON_CLASS}
+                      >
+                        <GameUiIcon
+                          name="unpause"
+                          sizeClassName="h-3.5 w-3.5"
+                          className="opacity-100"
+                        />
+                        <span>{buttons.secondary.text}</span>
+                      </button>
+                    )}
+                  </div>
                 </div>
               </div>
-            </div>
-          )}
+            )}
         </div>
       </div>
     </div>

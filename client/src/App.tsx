@@ -37,6 +37,12 @@ const Imprint = lazy(() =>
 const Privacy = lazy(() =>
   offlinePortalBuild ? redirectHome() : import("@/pages/privacy"),
 );
+const Faq = lazy(() =>
+  offlinePortalBuild ? redirectHome() : import("@/pages/faq"),
+);
+const About = lazy(() =>
+  offlinePortalBuild ? redirectHome() : import("@/pages/about"),
+);
 const Terms = lazy(() =>
   offlinePortalBuild ? redirectHome() : import("@/pages/terms"),
 );
@@ -64,6 +70,8 @@ function AppRoutes() {
         <Route path="/end-screen" component={EndScreenPage} />
         <Route path="/imprint" component={Imprint} />
         <Route path="/privacy" component={Privacy} />
+        <Route path="/faq" component={Faq} />
+        <Route path="/about" component={About} />
         <Route path="/terms" component={Terms} />
         <Route path="/withdrawal" component={Withdrawal} />
         <Route path="/unsubscribe" component={Unsubscribe} />

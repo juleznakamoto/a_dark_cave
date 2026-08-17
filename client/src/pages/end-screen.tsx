@@ -13,6 +13,7 @@ import {
 import { logger } from "@/lib/logger";
 import { openGameFeedbackForm } from "@/lib/gameFeedbackForm";
 import { navigateSpa } from "@/lib/spaNavigate";
+import { ITCH_URL } from "@shared/publicPages";
 
 export default function EndScreenPage() {
   const { t } = useTranslation("ui");
@@ -65,6 +66,10 @@ export default function EndScreenPage() {
 
   const handleFeedback = () => {
     openGameFeedbackForm("end");
+  };
+
+  const handleRateItch = () => {
+    window.open(ITCH_URL, "_blank", "noopener,noreferrer");
   };
 
   const handleMoreGames = async () => {
@@ -134,6 +139,13 @@ export default function EndScreenPage() {
                 text: t("endScreen.moreGames"),
                 onClick: handleMoreGames,
                 buttonId: "end-screen-more-games",
+              },
+              rateItch: {
+                text: t("endScreen.rateOnItch", {
+                  defaultValue: "Rate on itch.io",
+                }),
+                onClick: handleRateItch,
+                buttonId: "end-screen-rate-itch",
               },
             }),
         }}
