@@ -7,10 +7,9 @@ const FOREST_FEAR_DURATION_MS = 20 * 60 * 1000;
 export const forestFearEvent: GameEvent = {
   id: "forestFear",
   condition: (state: GameState) => {
-    if (
-      state.forestFearState?.isActive &&
-      state.forestFearState.endTime > Date.now()
-    ) {
+    // endTime > 0 means it already fired (active or expired), including old saves
+    // from when this event was repeatable.
+    if ((state.forestFearState?.endTime ?? 0) > 0) {
       return false;
     }
     return (
@@ -21,7 +20,7 @@ export const forestFearEvent: GameEvent = {
   },
   timeProbability: 15,
   priority: 3,
-  repeatable: true,
+  repeatable: false,
   choices: [
     {
       id: "continue",
