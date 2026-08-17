@@ -11,7 +11,7 @@ import {
 import { type Server } from "http";
 import viteConfig from "../vite.config";
 import { nanoid } from "nanoid";
-import { isStaticAssetPath } from "@shared/publicSeo";
+import { isStaticAssetPath, publicPathFromRequest } from "@shared/publicSeo";
 import { sendSpaIndexHtml } from "./spaHtml";
 
 const viteLogger = createLogger();
@@ -127,15 +127,15 @@ export async function setupVite(app: Express, server: Server) {
   });
 
   app.use(vite.middlewares);
-  app.use("*", async (req, res, next) => {
+  app.use(async (req, res, next) => {
     const url = req.originalUrl;
+    const reqPath = publicPathFromRequest(req);
 
     // Skip Vite middleware for API routes - let Express handle them
     if (url.startsWith('/api/')) {
       return next();
     }
 
-    const reqPath = req.path || url.split("?")[0] || "/";
     if (isStaticAssetPath(reqPath)) {
       res.status(404).send("Not found");
       return;
@@ -156,7 +156,7 @@ export async function setupVite(app: Express, server: Server) {
         `src="/src/main.tsx?v=${nanoid()}"`,
       );
       const page = await vite.transformIndexHtml(url, template);
-      sendSpaIndexHtml(res, page, req.path || "/");
+      sendSpaIndexHtml(res, page, reqPath);
     } catch (e) {
       vite.ssrFixStacktrace(e as Error);
       next(e);
@@ -196,8 +196,9 @@ export function serveStatic(app: Express) {
   // SPA fallback: serve index.html only for route-like requests (no file extension).
   // NEVER serve HTML for asset requests (/assets/*, *.js, *.css) - return 404 instead.
   // Otherwise missing assets (e.g. old cached HTML after deploy) get HTML → MIME type error.
-  app.use("*", (req, res) => {
-    const reqPath = req.path || req.originalUrl?.split("?")[0] || "";
+  // Pathless `app.use` (not `"*"`): Express `"*"` sets `req.path` to `/`.
+  app.use((req, res) => {
+    const reqPath = publicPathFromRequest(req);
     if (isStaticAssetPath(reqPath)) {
       res.status(404).send("Not found");
       return;

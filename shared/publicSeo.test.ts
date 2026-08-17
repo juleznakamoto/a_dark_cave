@@ -8,6 +8,7 @@ import {
   isKnownSpaPath,
   isStaticAssetPath,
   normalizePublicPath,
+  publicPathFromRequest,
   resolveSpaHtmlResponse,
   HOME_SEO,
 } from "./publicSeo";
@@ -43,6 +44,22 @@ describe("publicSeo", () => {
     expect(normalizePublicPath("/privacy/")).toBe("/privacy");
     expect(normalizePublicPath("privacy")).toBe("/privacy");
     expect(normalizePublicPath("/")).toBe("/");
+  });
+
+  it("reads the public path from originalUrl, not a stripped req.path", () => {
+    expect(
+      publicPathFromRequest({
+        path: "/",
+        originalUrl: "/privacy?utm=1",
+      }),
+    ).toBe("/privacy");
+    expect(
+      publicPathFromRequest({
+        path: "/",
+        originalUrl: "/this-page-does-not-exist-xyz",
+      }),
+    ).toBe("/this-page-does-not-exist-xyz");
+    expect(publicPathFromRequest({ path: "/", originalUrl: "/" })).toBe("/");
   });
 
   it("detects known vs unknown SPA paths", () => {

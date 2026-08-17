@@ -167,6 +167,20 @@ export function normalizePublicPath(pathname: string): string {
   return withLeading.endsWith("/") ? withLeading.slice(0, -1) : withLeading;
 }
 
+/**
+ * Path for SEO / SPA fallback. Prefer `originalUrl`: Express `app.use("*")`
+ * sets `req.path` to `/` for every request, which would make /privacy look
+ * like the homepage.
+ */
+export function publicPathFromRequest(req: {
+  originalUrl?: string;
+  url?: string;
+  path?: string;
+}): string {
+  const raw = req.originalUrl || req.url || req.path || "/";
+  return normalizePublicPath(raw);
+}
+
 export function isKnownSpaPath(pathname: string): boolean {
   return KNOWN_SPA_PATHS.has(normalizePublicPath(pathname));
 }
