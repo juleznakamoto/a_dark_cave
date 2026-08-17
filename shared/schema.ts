@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { utmAttributionSchema } from "./utmAttribution";
+import { utmAttributionSchema } from "./utmAttributionSchema";
 
 // Define LogEntry schema first since it's used in gameStateSchema
 export const logEntrySchema = z.object({

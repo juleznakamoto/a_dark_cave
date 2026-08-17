@@ -2,11 +2,11 @@
 import { createClient, SupabaseClient } from '@supabase/supabase-js';
 import { logger } from '@/lib/logger';
 import { isLocalOnlyEdition } from '@/lib/edition';
+import { AUTH_STORAGE_KEY } from '@/lib/authStorageKey';
+
+export { AUTH_STORAGE_KEY } from '@/lib/authStorageKey';
 
 const isDev = import.meta.env.MODE === 'development';
-
-/** Must stay in sync with createClient auth.storageKey. */
-export const AUTH_STORAGE_KEY = 'a-dark-cave-auth';
 
 let supabaseClient: SupabaseClient | null = null;
 let initPromise: Promise<SupabaseClient> | null = null;

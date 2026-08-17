@@ -390,8 +390,20 @@ export class AudioManager {
   }
 
   /**
-   * Decode start-screen cues (wind + Light Fire). Call only after LCP so the
-   * ~1MB wind file does not contend with critical JS/fonts on Slow 4G.
+   * Decode the Light Fire one-shot only (~22KB). Call on first gesture so
+   * click can play immediately. Does not fetch wind.mp3.
+   */
+  preloadLightFireCue(): void {
+    const url = AudioManager.START_SCREEN_SOUNDS.lightFire;
+    this.registerSoundUrls({ lightFire: url });
+    void this.loadSound("lightFire", url).catch((error) => {
+      logger.warn("Failed to preload Light Fire cue:", error);
+    });
+  }
+
+  /**
+   * Decode start-screen cues (wind + Light Fire). Dev playground only.
+   * Production start screen fetches wind on gesture and Light Fire on gesture.
    */
   async preloadSounds(): Promise<void> {
     this.registerStartScreenSoundUrls();
@@ -603,58 +615,6 @@ export class AudioManager {
 }
 
 export const audioManager = AudioManager.getInstance();
-// URLs only — do not fetch wind.mp3 (~1MB) on module evaluate / StartScreen import.
+// URLs only. Do not fetch wind.mp3 (~1MB) until a gesture or sound-on action.
+// light_fire.mp3 is decoded on that same gesture so Light Fire can play at once.
 audioManager.registerStartScreenSoundUrls();
-
-let startScreenSoundPreloadScheduled = false;
-
-/**
- * Fetch/decode start-screen sounds after Largest Contentful Paint (with idle +
- * timeout fallbacks). Not gesture-gated: on mobile the first gesture is often
- * Make Fire, which stops wind.
- */
-export function scheduleStartScreenSoundPreloadAfterLcp(): void {
-  if (typeof window === "undefined" || startScreenSoundPreloadScheduled) return;
-  startScreenSoundPreloadScheduled = true;
-
-  let started = false;
-  const start = () => {
-    if (started) return;
-    started = true;
-    void audioManager.preloadSounds().catch((error) => {
-      logger.warn("Failed to preload some sounds:", error);
-    });
-  };
-
-  const afterLcp = () => {
-    const ric = (
-      window as Window & {
-        requestIdleCallback?: (
-          cb: () => void,
-          opts?: { timeout: number },
-        ) => number;
-      }
-    ).requestIdleCallback;
-    if (typeof ric === "function") {
-      ric(() => start(), { timeout: 2000 });
-    } else {
-      window.setTimeout(start, 0);
-    }
-  };
-
-  try {
-    const observer = new PerformanceObserver((list) => {
-      if (list.getEntries().length === 0) return;
-      observer.disconnect();
-      afterLcp();
-    });
-    observer.observe({ type: "largest-contentful-paint", buffered: true });
-    // Hidden tabs / odd lab runs may never report LCP.
-    window.setTimeout(() => {
-      observer.disconnect();
-      start();
-    }, 4000);
-  } catch {
-    window.setTimeout(start, 2000);
-  }
-}

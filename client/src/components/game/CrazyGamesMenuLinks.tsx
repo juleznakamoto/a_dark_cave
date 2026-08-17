@@ -91,10 +91,12 @@ const CORNER_MENU_BTN =
 /** Start-screen upper-right menu used only on CrazyGames. */
 export default function CrazyGamesCornerMenu({
   steamUtmContent,
+  defaultOpen = false,
 }: {
   steamUtmContent: SteamStoreUtmContent;
+  defaultOpen?: boolean;
 }) {
-  const [open, setOpen] = useState(false);
+  const [open, setOpen] = useState(defaultOpen);
   const menuLabel = tWithFallback("ui", "profile.title", "Menu");
 
   return (

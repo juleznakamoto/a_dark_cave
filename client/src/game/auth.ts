@@ -830,7 +830,7 @@ export async function getCurrentUserForLoad(): Promise<AuthUser | null> {
   // Avoid backend initialization for a browser that has never had a session.
   if (typeof window !== 'undefined') {
     try {
-      const { AUTH_STORAGE_KEY } = await import('@/lib/supabase');
+      const { AUTH_STORAGE_KEY } = await import('@/lib/authStorageKey');
       if (!localStorage.getItem(AUTH_STORAGE_KEY)) return null;
     } catch {
       // Storage access itself is uncertain; let Supabase resolve it.

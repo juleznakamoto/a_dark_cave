@@ -4,9 +4,9 @@ type TooltipProviderComponent = ComponentType<{ children?: ReactNode }>;
 type ToasterComponent = ComponentType;
 
 /**
- * Mount Radix TooltipProvider + Toaster after first paint / idle.
- * Keeps vendor-radix (and toast) off the critical start-screen path.
+ * Mount Radix TooltipProvider + Toaster after the first user gesture.
  * Start screen uses HoverCalloutTooltip only — no global provider needed there.
+ * Idle-loading still pulled vendor-radix during lab first-load traces.
  */
 export default function DeferredAppChrome({ children }: { children: ReactNode }) {
   const [TooltipProvider, setTooltipProvider] =
@@ -15,10 +15,10 @@ export default function DeferredAppChrome({ children }: { children: ReactNode })
 
   useEffect(() => {
     let cancelled = false;
-    let idleId: number | undefined;
-    let timeoutId: ReturnType<typeof setTimeout> | undefined;
 
     const load = () => {
+      document.removeEventListener("pointerdown", load);
+      document.removeEventListener("keydown", load);
       void Promise.all([
         import("@/components/ui/tooltip"),
         import("@/components/ui/toaster"),
@@ -29,19 +29,13 @@ export default function DeferredAppChrome({ children }: { children: ReactNode })
       });
     };
 
-    const ric = window.requestIdleCallback;
-    if (typeof ric === "function") {
-      idleId = ric.call(window, load, { timeout: 2500 });
-    } else {
-      timeoutId = setTimeout(load, 1);
-    }
+    document.addEventListener("pointerdown", load, { once: true });
+    document.addEventListener("keydown", load, { once: true });
 
     return () => {
       cancelled = true;
-      if (idleId !== undefined && typeof window.cancelIdleCallback === "function") {
-        window.cancelIdleCallback(idleId);
-      }
-      if (timeoutId !== undefined) clearTimeout(timeoutId);
+      document.removeEventListener("pointerdown", load);
+      document.removeEventListener("keydown", load);
     };
   }, []);
 

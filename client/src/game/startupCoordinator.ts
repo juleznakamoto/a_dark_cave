@@ -6,7 +6,7 @@ import {
   shouldHideSteamStoreLink,
   type DevGameMode,
 } from "@/lib/edition";
-import { AUTH_STORAGE_KEY } from "@/lib/supabase";
+import { AUTH_STORAGE_KEY } from "@/lib/authStorageKey";
 import {
   readStartupSaveHeaderResult,
   type StartupSaveHeader,

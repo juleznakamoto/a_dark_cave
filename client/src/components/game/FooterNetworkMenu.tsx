@@ -27,6 +27,8 @@ type FooterNetworkMenuProps = {
   /** Dropdown opens upward in the game footer. */
   side?: "top" | "bottom";
   align?: "start" | "center" | "end";
+  /** Open on mount (start-screen click-to-load). */
+  defaultOpen?: boolean;
 };
 
 export default function FooterNetworkMenu({
@@ -36,8 +38,9 @@ export default function FooterNetworkMenu({
   iconSizeClassName = "game-tab-icon",
   side = "top",
   align = "end",
+  defaultOpen = false,
 }: FooterNetworkMenuProps) {
-  const [open, setOpen] = useState(false);
+  const [open, setOpen] = useState(defaultOpen);
   const socialLabel = tWithFallback("ui", "footer.social", "Social");
 
   return (

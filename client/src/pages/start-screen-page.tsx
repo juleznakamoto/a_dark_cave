@@ -15,7 +15,6 @@ import {
   consumeStartupAuthCallback,
 } from "@/game/startupUrlCleanup";
 import { initSessionTracker } from "@/lib/sessionTracker";
-import { reportUtmLanding } from "@/lib/utmLanding";
 
 // Lazy load Game component - only loaded when needed
 const Game = lazy(() => import("@/pages/game"));
@@ -51,9 +50,17 @@ export default function StartScreenPage() {
   useEffect(() => {
     const checkGameState = async () => {
       try {
-        // Anonymous session + UTM landing before any campaign URL strip.
+        // Anonymous session first. UTM beacon is a dynamic import so Zod stays
+        // off the start-screen graph; snapshot the URL before any later strip.
         initSessionTracker();
-        reportUtmLanding(window.location);
+        const landingLocation = {
+          pathname: window.location.pathname,
+          search: window.location.search,
+          hash: window.location.hash,
+        };
+        void import("@/lib/utmLanding").then(({ reportUtmLanding }) => {
+          reportUtmLanding(landingLocation);
+        });
         // Consume OAuth/PKCE before stripping auth params or routing.
         await consumeStartupAuthCallback(window.location);
         applyStartupUrlCleanup(window.location, ["hard-reload-bust"]);

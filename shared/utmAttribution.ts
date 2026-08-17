@@ -1,22 +1,15 @@
-import { z } from "zod";
-
 /** Max length for each UTM field (API + schema). */
 export const UTM_FIELD_MAX_LENGTH = 128;
 
-export const utmAttributionSchema = z
-  .object({
-    source: z.string().max(UTM_FIELD_MAX_LENGTH).nullable().default(null),
-    medium: z.string().max(UTM_FIELD_MAX_LENGTH).nullable().default(null),
-    campaign: z.string().max(UTM_FIELD_MAX_LENGTH).nullable().default(null),
-    content: z.string().max(UTM_FIELD_MAX_LENGTH).nullable().default(null),
-    term: z.string().max(UTM_FIELD_MAX_LENGTH).nullable().default(null),
-    /** Wall-clock ms when first-touch attribution was written. */
-    capturedAt: z.number().nullable().default(null),
-  })
-  .nullable()
-  .default(null);
-
-export type UtmAttribution = NonNullable<z.infer<typeof utmAttributionSchema>>;
+export type UtmAttribution = {
+  source: string | null;
+  medium: string | null;
+  campaign: string | null;
+  content: string | null;
+  term: string | null;
+  /** Wall-clock ms when first-touch attribution was written. */
+  capturedAt: number | null;
+};
 
 /** Synthetic source used when only legacy `?c=` is present. */
 export const LEGACY_GOOGLE_ADS_UTM_SOURCE = "google_ads";

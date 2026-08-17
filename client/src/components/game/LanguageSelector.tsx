@@ -31,6 +31,7 @@ export default function LanguageSelector({
   /** Nested in a Radix Dialog — non-modal menu portaled into the dialog layer. */
   inDialog = false,
   menuPortalContainer = null,
+  defaultOpen = false,
 }: {
   buttonClassName?: string;
   iconClassName?: string;
@@ -45,6 +46,8 @@ export default function LanguageSelector({
   showChevron?: boolean;
   inDialog?: boolean;
   menuPortalContainer?: HTMLElement | null;
+  /** Open on mount (start-screen click-to-load). */
+  defaultOpen?: boolean;
 } = {}) {
   const { locale, setLocale, locales, localeLabels } = useLocale();
   const { t } = useTranslation("ui");
@@ -107,6 +110,7 @@ export default function LanguageSelector({
       open={inDialog ? open : undefined}
       onOpenChange={inDialog ? handleOpenChange : undefined}
       modal={!inDialog}
+      defaultOpen={!inDialog ? defaultOpen : undefined}
     >
       {showTooltip ? (
         <HoverCalloutTooltip

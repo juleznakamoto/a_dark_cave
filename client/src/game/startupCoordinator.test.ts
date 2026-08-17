@@ -23,7 +23,7 @@ vi.mock("@/lib/edition", async (importOriginal) => {
   };
 });
 
-vi.mock("@/lib/supabase", () => ({
+vi.mock("@/lib/authStorageKey", () => ({
   AUTH_STORAGE_KEY: "a-dark-cave-auth",
 }));
 

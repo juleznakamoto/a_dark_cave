@@ -1,18 +1,10 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { Helmet } from "react-helmet-async";
-import { ParticleButton } from "@/components/ui/particle-button";
-import { Button } from "@/components/ui/button";
 import CloudShader from "@/components/ui/cloud-shader";
 import VaporizeTextCycle from "@/components/ui/vapour-text-effect";
-import {
-  audioManager,
-  scheduleStartScreenSoundPreloadAfterLcp,
-  SOUND_VOLUME,
-} from "@/lib/audio";
+import { audioManager, SOUND_VOLUME } from "@/lib/audio";
 import { FooterSocialIcon } from "@/components/game/FooterSocialIcon";
-import FooterNetworkMenu from "@/components/game/FooterNetworkMenu";
 import { GameUiIcon } from "@/components/game/GameUiIcon";
-import LanguageSelector from "@/components/game/LanguageSelector";
 import {
   GAME_FOOTER_RIGHT_ICON_LINKS,
   GAME_FOOTER_RIGHT_ICON_ORDER,
@@ -23,13 +15,16 @@ import { openGameFeedbackForm } from "@/lib/gameFeedbackForm";
 import { useTranslation } from "react-i18next";
 import { useLocale } from "@/i18n/useLocale";
 import { OG_LOCALE_TAGS, SUPPORTED_LOCALES } from "@/i18n/locales";
-import { FullscreenButton } from "@/components/game/FullscreenButton";
-import CrazyGamesCornerMenu from "@/components/game/CrazyGamesMenuLinks";
 import { GAME_CHROME_NO_BG_HOVER } from "@/components/game/gameChrome";
+import { useFullscreen } from "@/hooks/useFullscreen";
 import { clearStaleChunkReloadGuard } from "@/lib/hardReload";
 import { mountFiraSansFontFace } from "@/lib/firaSansFontFace";
 import { logger } from "@/lib/logger";
 import { publicUrl } from "@/lib/publicUrl";
+import type LanguageSelector from "@/components/game/LanguageSelector";
+import type FooterNetworkMenu from "@/components/game/FooterNetworkMenu";
+import type CrazyGamesCornerMenu from "@/components/game/CrazyGamesMenuLinks";
+import type { ParticleButton } from "@/components/ui/particle-button";
 
 const START_INTRO_VAPORIZE_COLOR = "rgba(209, 213, 219, 0.9)";
 const START_INTRO_VAPORIZE_ANIMATION = {
@@ -79,6 +74,56 @@ const START_FOOTER_ICON_BTN = `${START_FOOTER_SOCIAL_LINK} shrink-0 p-0 w-7 h-7 
 const START_FOOTER_ICON = "size-4 shrink-0";
 /** Paint original PNG glyphs with currentColor (matches language + social text). */
 const START_AUDIO_ICON_MASK = `${START_FOOTER_ICON} bg-current [mask-size:contain] [mask-repeat:no-repeat] [mask-position:center] [mask-mode:alpha] [-webkit-mask-size:contain] [-webkit-mask-repeat:no-repeat] [-webkit-mask-position:center]`;
+const START_FULLSCREEN_BTN = `group shrink-0 p-0 w-7 h-7 flex items-center justify-center ${GAME_CHROME_NO_BG_HOVER}`;
+
+function StartScreenFullscreenButton() {
+  const { isFullscreen, toggleFullscreen, available } = useFullscreen();
+  const { t } = useTranslation("ui");
+  if (!available) return null;
+  const label = isFullscreen
+    ? t("profile.exitFullscreen", { defaultValue: "Exit full screen" })
+    : t("profile.enterFullscreen", { defaultValue: "Full screen" });
+  return (
+    <button
+      type="button"
+      onClick={() => void toggleFullscreen()}
+      aria-label={label}
+      className={`${START_FULLSCREEN_BTN} group touch-manipulation bg-transparent text-neutral-300`}
+      data-testid="button-toggle-fullscreen"
+    >
+      <svg
+        viewBox="0 0 24 24"
+        className="h-[15px] w-[15px] opacity-80"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="2"
+        aria-hidden
+      >
+        {isFullscreen ? (
+          <path d="M8 3v3a2 2 0 0 1-2 2H3m18 0h-3a2 2 0 0 1-2-2V3m0 18v-3a2 2 0 0 1 2-2h3M3 16h3a2 2 0 0 1 2 2v3" />
+        ) : (
+          <path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7" />
+        )}
+      </svg>
+    </button>
+  );
+}
+
+function StartScreenGlobeIcon({ className }: { className?: string }) {
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      className={className}
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      aria-hidden
+    >
+      <circle cx="12" cy="12" r="10" />
+      <path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z" />
+    </svg>
+  );
+}
 
 export interface StartScreenPreferences {
   cruelMode: boolean;
@@ -115,6 +160,18 @@ export default function StartScreen({
   const musicVolume = initialPreferences.musicVolume;
   const sfxVolume = initialPreferences.sfxVolume;
   const [showParticles, setShowParticles] = useState(false);
+  const [ParticleButtonCmp, setParticleButtonCmp] = useState<
+    typeof ParticleButton | null
+  >(null);
+  const [LanguageSelectorCmp, setLanguageSelectorCmp] = useState<
+    typeof LanguageSelector | null
+  >(null);
+  const [FooterNetworkMenuCmp, setFooterNetworkMenuCmp] = useState<
+    typeof FooterNetworkMenu | null
+  >(null);
+  const [CrazyGamesCornerMenuCmp, setCrazyGamesCornerMenuCmp] = useState<
+    typeof CrazyGamesCornerMenu | null
+  >(null);
   const [showEyesEasterEgg, setShowEyesEasterEgg] = useState(false);
   const eyesEasterEggInsideHotZoneRef = useRef(false);
   const eyesEasterEggConsumedRef = useRef(false);
@@ -182,23 +239,15 @@ export default function StartScreen({
     audioManager.sfxMute(sfxMuted);
   }, [musicMuted, sfxMuted, musicVolume, sfxVolume]);
 
-  // Fetch wind + Light Fire only after LCP (not on module import / first paint).
   useEffect(() => {
-    scheduleStartScreenSoundPreloadAfterLcp();
-  }, []);
-
-  useEffect(() => {
-    // Wind plays as soon as the user shows intent (mousemove on desktop, touchstart on mobile).
-    // Both events fire before the click event, so executedRef.current is still false
-    // even when the user's first action is clicking "Light Fire".
-    // Decode is scheduled after LCP (not gesture-gated): on mobile the first gesture
-    // is often Make Fire itself, which stops wind.
+    // Fetch + play wind only after a real gesture. Do not preload on LCP.
     const playWind = () => {
       audioManager.playLoopingSound("wind", SOUND_VOLUME.wind, false, 1);
     };
 
     const handleInitialGesture = () => {
       if (!executedRef.current) {
+        audioManager.preloadLightFireCue();
         playWind();
       }
       document.removeEventListener("mousemove", handleInitialGesture);
@@ -426,7 +475,11 @@ export default function StartScreen({
     };
     onLightFireStart?.(preferences);
 
-    // Show button effect for 3 seconds on both mobile and desktop
+    // Show button effect for 3 seconds on both mobile and desktop.
+    // ParticleButton pulls Framer; load it only after Light Fire.
+    void import("@/components/ui/particle-button").then((mod) => {
+      setParticleButtonCmp(() => mod.ParticleButton);
+    });
     setShowParticles(true);
     setTimeout(() => {
       void onLightFire(preferences);
@@ -444,6 +497,31 @@ export default function StartScreen({
     const next = !sfxMuted;
     setSfxMuted(next);
     audioManager.sfxMute(next);
+    if (!next && !executedRef.current) {
+      audioManager.preloadLightFireCue();
+      audioManager.playLoopingSound("wind", SOUND_VOLUME.wind, false, 1);
+    }
+  };
+
+  const loadLanguageSelector = () => {
+    if (LanguageSelectorCmp) return;
+    void import("@/components/game/LanguageSelector").then((mod) => {
+      setLanguageSelectorCmp(() => mod.default);
+    });
+  };
+
+  const loadFooterNetworkMenu = () => {
+    if (FooterNetworkMenuCmp) return;
+    void import("@/components/game/FooterNetworkMenu").then((mod) => {
+      setFooterNetworkMenuCmp(() => mod.default);
+    });
+  };
+
+  const loadCrazyGamesCornerMenu = () => {
+    if (CrazyGamesCornerMenuCmp) return;
+    void import("@/components/game/CrazyGamesMenuLinks").then((mod) => {
+      setCrazyGamesCornerMenuCmp(() => mod.default);
+    });
   };
 
   return (
@@ -557,11 +635,28 @@ export default function StartScreen({
       {(steamEditionActive || crazyGamesEditionActive) && (
         <div className="absolute top-2 right-2 z-20">
           {crazyGamesEditionActive ? (
-            <CrazyGamesCornerMenu
-              steamUtmContent={STEAM_STORE_UTM_CONTENT.startScreenMenu}
-            />
+            CrazyGamesCornerMenuCmp ? (
+              <CrazyGamesCornerMenuCmp
+                steamUtmContent={STEAM_STORE_UTM_CONTENT.startScreenMenu}
+                defaultOpen
+              />
+            ) : (
+              <button
+                type="button"
+                onClick={loadCrazyGamesCornerMenu}
+                aria-label={t("profile.title", { defaultValue: "Menu" })}
+                data-testid="button-crazygames-corner-menu"
+                className={`${START_FULLSCREEN_BTN} group touch-manipulation bg-transparent text-neutral-300`}
+              >
+                <GameUiIcon
+                  name="menu"
+                  sizeClassName="game-header-accent-icon"
+                  className="text-neutral-300 opacity-80"
+                />
+              </button>
+            )
           ) : (
-            <FullscreenButton />
+            <StartScreenFullscreenButton />
           )}
         </div>
       )}
@@ -631,15 +726,27 @@ export default function StartScreen({
         </div>
 
         <div className={showParticles ? undefined : "fire-glow-hint"}>
-          <ParticleButton
-            ref={buttonRef}
-            onClick={handleLightFire}
-            autoStart={showParticles}
-            className={`bg-transparent border-none text-gray-300/90 hover:bg-transparent text-lg px-8 py-4 fire-hover z-[10000] ${showParticles ? "fire-active" : "animate-fade-in-button"}`}
-            data-testid="button-light-fire"
-          >
-            {t("startScreen.makeFire")}
-          </ParticleButton>
+          {ParticleButtonCmp && showParticles ? (
+            <ParticleButtonCmp
+              ref={buttonRef}
+              onClick={handleLightFire}
+              autoStart
+              className="bg-transparent border-none text-gray-300/90 hover:bg-transparent text-lg px-8 py-4 fire-hover z-[10000] fire-active"
+              data-testid="button-light-fire"
+            >
+              {t("startScreen.makeFire")}
+            </ParticleButtonCmp>
+          ) : (
+            <button
+              ref={buttonRef}
+              type="button"
+              onClick={handleLightFire}
+              className={`bg-transparent border-none text-gray-300/90 hover:bg-transparent text-lg px-8 py-4 fire-hover z-[10000] ${showParticles ? "fire-active" : "animate-fade-in-button"}`}
+              data-testid="button-light-fire"
+            >
+              {t("startScreen.makeFire")}
+            </button>
+          )}
         </div>
       </main>
 
@@ -648,16 +755,27 @@ export default function StartScreen({
         aria-label="Site links"
       >
         <div className="flex flex-wrap items-center gap-x-2 gap-y-1.5">
-          <LanguageSelector
-            buttonClassName={START_FOOTER_ICON_BTN}
-            iconClassName={START_FOOTER_ICON}
-            iconVariant="globe"
-            menuAlign="start"
-            showTooltip={false}
-          />
-          <Button
-            variant="ghost"
-            size="xs"
+          {LanguageSelectorCmp ? (
+            <LanguageSelectorCmp
+              buttonClassName={START_FOOTER_ICON_BTN}
+              iconClassName={START_FOOTER_ICON}
+              iconVariant="globe"
+              menuAlign="start"
+              showTooltip={false}
+              defaultOpen
+            />
+          ) : (
+            <button
+              type="button"
+              onClick={loadLanguageSelector}
+              className={START_FOOTER_ICON_BTN}
+              aria-label={t("languageSelector.ariaLabel")}
+            >
+              <StartScreenGlobeIcon className={START_FOOTER_ICON} />
+            </button>
+          )}
+          <button
+            type="button"
             onClick={toggleMusic}
             data-testid="button-start-toggle-music"
             className={START_FOOTER_ICON_BTN}
@@ -673,10 +791,9 @@ export default function StartScreen({
                 WebkitMaskImage: `url(${publicUrl(musicMuted ? "/music_off.png" : "/music_on.png")})`,
               }}
             />
-          </Button>
-          <Button
-            variant="ghost"
-            size="xs"
+          </button>
+          <button
+            type="button"
             onClick={toggleSfx}
             data-testid="button-start-toggle-sfx"
             className={START_FOOTER_ICON_BTN}
@@ -690,7 +807,7 @@ export default function StartScreen({
                 WebkitMaskImage: `url(${publicUrl(sfxMuted ? "/sound_off.png" : "/sound_on.png")})`,
               }}
             />
-          </Button>
+          </button>
         </div>
         <div className="flex flex-wrap justify-end items-center gap-x-3 gap-y-1.5">
           {steamDesktopEditionActive && (
@@ -765,16 +882,35 @@ export default function StartScreen({
                 </a>
               );
             })}
-          {!hideStartScreenSocialLinks && (
-            <FooterNetworkMenu
-              side="top"
-              align="end"
-              triggerClassName={START_FOOTER_SOCIAL_LINK}
-              iconClassName="opacity-100"
-              iconSizeClassName="w-3.5 h-3.5"
-              labelClassName="sr-only sm:not-sr-only sm:inline"
-            />
-          )}
+          {!hideStartScreenSocialLinks &&
+            (FooterNetworkMenuCmp ? (
+              <FooterNetworkMenuCmp
+                side="top"
+                align="end"
+                triggerClassName={START_FOOTER_SOCIAL_LINK}
+                iconClassName="opacity-100"
+                iconSizeClassName="w-3.5 h-3.5"
+                labelClassName="sr-only sm:not-sr-only sm:inline"
+                defaultOpen
+              />
+            ) : (
+              <button
+                type="button"
+                onClick={loadFooterNetworkMenu}
+                data-testid="button-footer-social"
+                className={START_FOOTER_SOCIAL_LINK}
+                aria-label={t("footer.social", { defaultValue: "Social" })}
+              >
+                <GameUiIcon
+                  name="network"
+                  sizeClassName="w-3.5 h-3.5"
+                  className="opacity-100"
+                />
+                <span className="sr-only sm:not-sr-only sm:inline">
+                  {t("footer.social", { defaultValue: "Social" })}
+                </span>
+              </button>
+            ))}
           {!steamEditionActive && (
             <div className="flex flex-col items-end leading-tight sm:flex-row sm:items-center sm:gap-x-3">
               <a

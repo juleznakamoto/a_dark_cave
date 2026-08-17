@@ -1,6 +1,4 @@
-import { useEffect, useRef, useState } from "react";
-import { useCoinHoverParticles } from "@/components/ui/coin-hover-particles";
-import { FIRE_LOAD_PARTICLE_CONFIG } from "@/components/ui/bubbly-button.particles";
+import { useEffect, useState } from "react";
 import { mountFatalErrorScreen, FATAL_UI_TIMEOUT_MS } from "@/lib/fatalErrorScreen";
 import { tryOneModuleLoadRecovery } from "@/lib/hardReload";
 import { publicUrl } from "@/lib/publicUrl";
@@ -42,10 +40,11 @@ function takeOverBootSpinner(): boolean {
 }
 
 /**
- * Full-viewport black loading screen with a fire-colored spinner.
- * Spinner (and particles) appear only after 500ms to avoid a flash on fast loads.
+ * Full-viewport black loading screen with a fire-colored CSS spinner.
+ * Spinner appears only after 500ms to avoid a flash on fast loads.
  * Decorative only — does not replace SEO fallback content in index.html.
  * Escalates to the fatal error screen if still mounted after escalateAfterMs.
+ * No Framer/particle imports: this module is on the `/` Suspense path.
  */
 export default function PageLoadSpinner({
   escalateAfterMs = FATAL_UI_TIMEOUT_MS,
@@ -55,15 +54,6 @@ export default function PageLoadSpinner({
       sharedSpinnerVisible = true;
     }
     return sharedSpinnerVisible;
-  });
-  const originRef = useRef<HTMLSpanElement | null>(null);
-
-  const { setForcedEmit, portal } = useCoinHoverParticles("gold", {
-    particleOriginRef: originRef,
-    particleConfig: FIRE_LOAD_PARTICLE_CONFIG,
-    enabled: showSpinner,
-    // Below the spinner layer (z=2) so embers emerge from under the rim.
-    zIndex: 1,
   });
 
   useEffect(() => {
@@ -103,11 +93,6 @@ export default function PageLoadSpinner({
     return () => clearTimeout(timer);
   }, [showSpinner]);
 
-  useEffect(() => {
-    setForcedEmit(showSpinner);
-    return () => setForcedEmit(false);
-  }, [showSpinner, setForcedEmit]);
-
   return (
     <>
       <div
@@ -118,14 +103,13 @@ export default function PageLoadSpinner({
         aria-busy="true"
         aria-label="Loading"
       />
-      {portal}
       {showSpinner ? (
         <div
           className="pointer-events-none fixed inset-0 flex items-center justify-center"
           style={{ zIndex: 2 }}
           aria-hidden="true"
         >
-          <span ref={originRef} className="adc-page-load-spinner">
+          <span className="adc-page-load-spinner">
             <span className="adc-page-load-spinner__ring" />
             <span className="adc-page-load-spinner__core">
               <img
