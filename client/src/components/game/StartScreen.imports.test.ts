@@ -105,7 +105,7 @@ const HEAVY_FIRST_LOAD_VENDORS = [
 ];
 
 function staticChunkImports(src: string): string[] {
-  return [...src.matchAll(/from"(\.\/[^"]+)"/g)].map((match) =>
+  return [...src.matchAll(/\bfrom\s*["'](\.\/[^"']+)["']/g)].map((match) =>
     match[1].replace("./", ""),
   );
 }
@@ -118,7 +118,9 @@ function firstLoadChunkNames(html: string, assetsDir: string): string[] {
   const seen = new Set<string>();
   const queue = [entryHref];
   const entrySrc = readFileSync(join(assetsDir, entryHref), "utf8");
-  for (const match of entrySrc.matchAll(/import\("\.\/(start-screen-page-[^"]+\.js)"\)/g)) {
+  for (const match of entrySrc.matchAll(
+    /import\s*\(\s*["']\.\/(start-screen-page-[^"']+\.js)["']\s*\)/g,
+  )) {
     queue.push(match[1]);
   }
   while (queue.length) {
@@ -133,6 +135,19 @@ function firstLoadChunkNames(html: string, assetsDir: string): string[] {
   }
   return [...seen];
 }
+
+describe("staticChunkImports", () => {
+  it("matches minified and spaced Rollup from specifiers", () => {
+    expect(
+      staticChunkImports(
+        `import{r as e}from"./vendor-react-abc.js";import{x}from "./gameChrome-def.js";`,
+      ),
+    ).toEqual(["vendor-react-abc.js", "gameChrome-def.js"]);
+    expect(
+      staticChunkImports(`export{y}from './audio-ghi.js'`),
+    ).toEqual(["audio-ghi.js"]);
+  });
+});
 
 describe.skipIf(!existsSync(distHtml))("built `/` first-load chunks", () => {
   it("does not statically pull framer, radix, supabase, or stripe", () => {
