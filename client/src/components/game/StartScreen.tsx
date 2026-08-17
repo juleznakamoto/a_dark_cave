@@ -25,7 +25,10 @@ import type LanguageSelector from "@/components/game/LanguageSelector";
 import type FooterNetworkMenu from "@/components/game/FooterNetworkMenu";
 import type CrazyGamesCornerMenu from "@/components/game/CrazyGamesMenuLinks";
 import type { ParticleButton } from "@/components/ui/particle-button";
-import { shouldOpenDeferredStartMenu } from "@/components/game/startScreenDeferredMenu";
+import {
+  resolveDeferredStartMenuMount,
+  shouldBlockDeferredStartMenuLoad,
+} from "@/components/game/startScreenDeferredMenu";
 
 const START_INTRO_VAPORIZE_COLOR = "rgba(209, 213, 219, 0.9)";
 const START_INTRO_VAPORIZE_ANIMATION = {
@@ -177,6 +180,9 @@ export default function StartScreen({
   const [networkDefaultOpen, setNetworkDefaultOpen] = useState(false);
   const [crazyGamesDefaultOpen, setCrazyGamesDefaultOpen] = useState(false);
   const deferredMenuGenRef = useRef(0);
+  const languageLoadInFlightRef = useRef(false);
+  const networkLoadInFlightRef = useRef(false);
+  const crazyGamesLoadInFlightRef = useRef(false);
   const [showEyesEasterEgg, setShowEyesEasterEgg] = useState(false);
   const eyesEasterEggInsideHotZoneRef = useRef(false);
   const eyesEasterEggConsumedRef = useRef(false);
@@ -512,49 +518,80 @@ export default function StartScreen({
     }
   };
 
-  const loadLanguageSelector = () => {
-    if (LanguageSelectorCmp) return;
+  const finishDeferredMenuLoad = <T,>(
+    requestGen: number,
+    setCmp: (component: T) => void,
+    setDefaultOpen: (open: boolean) => void,
+    component: T,
+  ) => {
+    const { apply, open } = resolveDeferredStartMenuMount(
+      executedRef.current,
+      requestGen,
+      deferredMenuGenRef.current,
+    );
+    if (!apply) return;
+    setCmp(component);
+    setDefaultOpen(open);
+  };
+
+  const queueDeferredMenuImport = <T,>(
+    alreadyLoaded: T | null,
+    inFlightRef: { current: boolean },
+    importer: () => Promise<{ default: T }>,
+    setCmp: (component: T) => void,
+    setDefaultOpen: (open: boolean) => void,
+  ) => {
+    if (shouldBlockDeferredStartMenuLoad(Boolean(alreadyLoaded), inFlightRef.current)) {
+      return;
+    }
+    inFlightRef.current = true;
     const requestGen = ++deferredMenuGenRef.current;
-    void import("@/components/game/LanguageSelector").then((mod) => {
-      setLanguageSelectorCmp(() => mod.default);
-      setLanguageDefaultOpen(
-        shouldOpenDeferredStartMenu(
-          executedRef.current,
+    void importer()
+      .then((mod) => {
+        finishDeferredMenuLoad(
           requestGen,
-          deferredMenuGenRef.current,
-        ),
-      );
-    });
+          setCmp,
+          setDefaultOpen,
+          mod.default,
+        );
+      })
+      .catch((error: unknown) => {
+        logger.error("Failed to load start-screen menu", error);
+      })
+      .finally(() => {
+        // Stale/Light Fire skips must not latch this guard, or the placeholder dies.
+        inFlightRef.current = false;
+      });
+  };
+
+  const loadLanguageSelector = () => {
+    queueDeferredMenuImport(
+      LanguageSelectorCmp,
+      languageLoadInFlightRef,
+      () => import("@/components/game/LanguageSelector"),
+      (component) => setLanguageSelectorCmp(() => component),
+      setLanguageDefaultOpen,
+    );
   };
 
   const loadFooterNetworkMenu = () => {
-    if (FooterNetworkMenuCmp) return;
-    const requestGen = ++deferredMenuGenRef.current;
-    void import("@/components/game/FooterNetworkMenu").then((mod) => {
-      setFooterNetworkMenuCmp(() => mod.default);
-      setNetworkDefaultOpen(
-        shouldOpenDeferredStartMenu(
-          executedRef.current,
-          requestGen,
-          deferredMenuGenRef.current,
-        ),
-      );
-    });
+    queueDeferredMenuImport(
+      FooterNetworkMenuCmp,
+      networkLoadInFlightRef,
+      () => import("@/components/game/FooterNetworkMenu"),
+      (component) => setFooterNetworkMenuCmp(() => component),
+      setNetworkDefaultOpen,
+    );
   };
 
   const loadCrazyGamesCornerMenu = () => {
-    if (CrazyGamesCornerMenuCmp) return;
-    const requestGen = ++deferredMenuGenRef.current;
-    void import("@/components/game/CrazyGamesMenuLinks").then((mod) => {
-      setCrazyGamesCornerMenuCmp(() => mod.default);
-      setCrazyGamesDefaultOpen(
-        shouldOpenDeferredStartMenu(
-          executedRef.current,
-          requestGen,
-          deferredMenuGenRef.current,
-        ),
-      );
-    });
+    queueDeferredMenuImport(
+      CrazyGamesCornerMenuCmp,
+      crazyGamesLoadInFlightRef,
+      () => import("@/components/game/CrazyGamesMenuLinks"),
+      (component) => setCrazyGamesCornerMenuCmp(() => component),
+      setCrazyGamesDefaultOpen,
+    );
   };
 
   return (

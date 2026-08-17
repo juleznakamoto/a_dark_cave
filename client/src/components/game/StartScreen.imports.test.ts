@@ -33,6 +33,12 @@ describe("start-screen first-load imports", () => {
     expect(src).toContain('import("@/components/game/LanguageSelector")');
   });
 
+  it("clears deferred menu in-flight flags when the import settles", () => {
+    const src = source("StartScreen.tsx");
+    expect(src).toContain(".finally(");
+    expect(src).toContain("inFlightRef.current = false");
+  });
+
   it("startupCoordinator does not import the Supabase client module", () => {
     const src = readFileSync(
       join(dir, "../../game/startupCoordinator.ts"),
