@@ -58,6 +58,18 @@ describe("publicSeo", () => {
     expect(isStaticAssetPath("/privacy")).toBe(false);
   });
 
+  it("keeps robots.txt to real directives only", () => {
+    const robots = readFileSync(
+      join(dirname(fileURLToPath(import.meta.url)), "../client/public/robots.txt"),
+      "utf8",
+    );
+    expect(robots).toContain("Sitemap: https://a-dark-cave.com/sitemap.xml");
+    expect(robots).not.toMatch(/LLMs-Txt/i);
+    expect(REAL_INDEX_HTML).toContain(
+      'rel="alternate" type="text/plain" href="https://a-dark-cave.com/llms.txt"',
+    );
+  });
+
   it("returns 404 resolution for unknown routes", () => {
     expect(resolveSpaHtmlResponse("/fake-url").status).toBe(404);
     expect(resolveSpaHtmlResponse("/fake-url").notFound).toBe(true);

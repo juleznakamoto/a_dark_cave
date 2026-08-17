@@ -25,6 +25,5 @@ Disallow: /dev
 Disallow: /unsubscribe
 Disallow: /reset-password
 
-# Sitemap and llms.txt (AI discovery)
+# Sitemap (llms.txt is linked from HTML, not a robots directive)
 Sitemap: https://a-dark-cave.com/sitemap.xml
-LLMs-Txt: https://a-dark-cave.com/llms.txt
