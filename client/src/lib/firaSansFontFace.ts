@@ -60,18 +60,23 @@ type FiraMountStage = "start" | "game";
 
 let mountedStage: FiraMountStage | null = null;
 
+/** Cap so gameplay init cannot hang if the face never resolves. */
+const FIRA_LOAD_TIMEOUT_MS = 800;
+
 /**
  * Mount Fira Sans @font-face CSS.
  * - `start`: only 400/500 (start screen). Browser still downloads only the
  *   script slices needed for on-screen text via unicode-range (~24KB latin-400
  *   for English).
  * - `game`: full weight set for in-game UI (upgrades the start mount).
+ * Resolves when the 400 face is ready (or the timeout elapses) so callers can
+ * wait before first in-game paint.
  */
 export function mountFiraSansFontFace(options?: {
   stage?: FiraMountStage;
   applyFontLoadedClass?: boolean;
-}): void {
-  if (typeof document === "undefined") return;
+}): Promise<void> {
+  if (typeof document === "undefined") return Promise.resolve();
 
   const stage = options?.stage ?? "game";
   const applyClass = options?.applyFontLoadedClass ?? false;
@@ -99,15 +104,24 @@ export function mountFiraSansFontFace(options?: {
 
   if (!("fonts" in document)) {
     markLoaded();
-    return;
+    return Promise.resolve();
   }
 
-  // Kick the fetch for the primary face used on start / body copy.
-  void document.fonts
-    .load("400 16px 'Fira Sans'")
-    .then(markLoaded, () => {
-      if (applyClass) {
-        setTimeout(markLoaded, 100);
-      }
-    });
+  const loaded = document.fonts.load("400 16px 'Fira Sans'").then(
+    () => {
+      markLoaded();
+    },
+    () => {
+      markLoaded();
+    },
+  );
+  return Promise.race([
+    loaded,
+    new Promise<void>((resolve) => {
+      setTimeout(() => {
+        markLoaded();
+        resolve();
+      }, FIRA_LOAD_TIMEOUT_MS);
+    }),
+  ]);
 }

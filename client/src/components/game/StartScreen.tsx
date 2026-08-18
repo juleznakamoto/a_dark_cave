@@ -88,8 +88,6 @@ interface StartScreenProps {
   initialPreferences: StartScreenPreferences;
   steamEditionActive: boolean;
   steamDesktopEditionActive: boolean;
-  crazyGamesEditionActive: boolean;
-  hideSteamStoreLink: boolean;
   onLightFireStart?: (preferences: StartScreenPreferences) => void;
   onLightFire: (preferences: StartScreenPreferences) => void | Promise<void>;
 }
@@ -98,8 +96,6 @@ export default function StartScreen({
   initialPreferences,
   steamEditionActive,
   steamDesktopEditionActive,
-  crazyGamesEditionActive,
-  hideSteamStoreLink,
   onLightFireStart,
   onLightFire,
 }: StartScreenProps) {
@@ -111,6 +107,10 @@ export default function StartScreen({
   const musicVolume = initialPreferences.musicVolume;
   const sfxVolume = initialPreferences.sfxVolume;
   const [showParticles, setShowParticles] = useState(false);
+  const [languageDefaultOpen, setLanguageDefaultOpen] = useState(false);
+  const [networkDefaultOpen, setNetworkDefaultOpen] = useState(false);
+  const [crazyGamesDefaultOpen, setCrazyGamesDefaultOpen] = useState(false);
+  const [startMenuEpoch, setStartMenuEpoch] = useState(0);
   const [showEyesEasterEgg, setShowEyesEasterEgg] = useState(false);
   const eyesEasterEggInsideHotZoneRef = useRef(false);
   const eyesEasterEggConsumedRef = useRef(false);
@@ -178,15 +178,23 @@ export default function StartScreen({
     audioManager.sfxMute(sfxMuted);
   }, [musicMuted, sfxMuted, musicVolume, sfxVolume]);
 
+  // Fetch wind + Light Fire only after LCP (not on module import / first paint).
   useEffect(() => {
-    // Fetch + play wind only after a real gesture. Do not preload on LCP.
+    scheduleStartScreenSoundPreloadAfterLcp();
+  }, []);
+
+  useEffect(() => {
+    // Wind plays as soon as the user shows intent (mousemove on desktop, touchstart on mobile).
+    // Both events fire before the click event, so executedRef.current is still false
+    // even when the user's first action is clicking "Light Fire".
+    // Decode is scheduled after LCP (not gesture-gated): on mobile the first gesture
+    // is often Make Fire itself, which stops wind.
     const playWind = () => {
       audioManager.playLoopingSound("wind", SOUND_VOLUME.wind, false, 1);
     };
 
     const handleInitialGesture = () => {
       if (!executedRef.current) {
-        audioManager.preloadLightFireCue();
         playWind();
       }
       document.removeEventListener("mousemove", handleInitialGesture);
@@ -414,6 +422,11 @@ export default function StartScreen({
     };
     onLightFireStart?.(preferences);
 
+    setLanguageDefaultOpen(false);
+    setNetworkDefaultOpen(false);
+    setCrazyGamesDefaultOpen(false);
+    setStartMenuEpoch((epoch) => epoch + 1);
+
     // Show button effect for 3 seconds on both mobile and desktop
     setShowParticles(true);
     setTimeout(() => {
@@ -432,6 +445,10 @@ export default function StartScreen({
     const next = !sfxMuted;
     setSfxMuted(next);
     audioManager.sfxMute(next);
+    if (!next && !executedRef.current) {
+      audioManager.preloadLightFireCue();
+      audioManager.playLoopingSound("wind", SOUND_VOLUME.wind, false, 1);
+    }
   };
 
   return (
@@ -542,15 +559,9 @@ export default function StartScreen({
         />
       )}
 
-      {(steamEditionActive || crazyGamesEditionActive) && (
+      {steamEditionActive && (
         <div className="absolute top-2 right-2 z-20">
-          {crazyGamesEditionActive ? (
-            <CrazyGamesCornerMenu
-              steamUtmContent={STEAM_STORE_UTM_CONTENT.startScreenMenu}
-            />
-          ) : (
-            <FullscreenButton />
-          )}
+          <FullscreenButton />
         </div>
       )}
 
@@ -637,11 +648,13 @@ export default function StartScreen({
       >
         <div className="flex flex-wrap items-center gap-x-2 gap-y-1.5">
           <LanguageSelector
+            key={startMenuEpoch}
             buttonClassName={START_FOOTER_ICON_BTN}
             iconClassName={START_FOOTER_ICON}
             iconVariant="globe"
             menuAlign="start"
             showTooltip={false}
+            defaultOpen={languageDefaultOpen}
           />
           <Button
             variant="ghost"
@@ -701,8 +714,7 @@ export default function StartScreen({
               </span>
             </button>
           )}
-          {!hideSteamStoreLink &&
-            !crazyGamesEditionActive &&
+          {!hideStartScreenSocialLinks &&
             GAME_FOOTER_RIGHT_ICON_ORDER.map((platform) => {
               const { href: defaultHref, title } =
                 GAME_FOOTER_RIGHT_ICON_LINKS[platform];
@@ -755,16 +767,38 @@ export default function StartScreen({
             })}
           {!hideStartScreenSocialLinks && (
             <FooterNetworkMenu
+              key={startMenuEpoch}
               side="top"
               align="end"
               triggerClassName={START_FOOTER_SOCIAL_LINK}
               iconClassName="opacity-100"
               iconSizeClassName="w-3.5 h-3.5"
               labelClassName="sr-only sm:not-sr-only sm:inline"
+              defaultOpen={networkDefaultOpen}
             />
           )}
           {!steamEditionActive && (
             <div className="flex flex-col items-end leading-tight sm:flex-row sm:items-center sm:gap-x-3">
+              {!crazyGamesEditionActive && (
+                <>
+                  <a
+                    href="/faq"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className={START_FOOTER_LEGAL_LINK}
+                  >
+                    {t("footer.faq")}
+                  </a>
+                  <a
+                    href="/about"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className={START_FOOTER_LEGAL_LINK}
+                  >
+                    {t("footer.about")}
+                  </a>
+                </>
+              )}
               <a
                 href="/privacy"
                 target="_blank"

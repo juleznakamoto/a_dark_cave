@@ -68,7 +68,12 @@ export async function runGameplayInitialization(
   }
 
   // Upgrade start-screen 400/500 mount to the full in-game weight set.
-  mountFiraSansFontFace({ stage: "game", applyFontLoadedClass: true });
+  // Load in parallel with save/audio; await before the loop so GameContainer
+  // does not paint on the fallback face and then jump when Fira swaps in.
+  const firaReady = mountFiraSansFontFace({
+    stage: "game",
+    applyFontLoadedClass: true,
+  });
   mountNotoSansSymbols2FontFace();
 
   const preparedHydration = consumePreparedGameHydration();
@@ -200,6 +205,7 @@ export async function runGameplayInitialization(
     }
   }
 
+  await firaReady;
   startGameLoop();
 
   if (isSteamBuild) {
