@@ -168,7 +168,6 @@ export default function StartScreen({
   const musicVolume = initialPreferences.musicVolume;
   const sfxVolume = initialPreferences.sfxVolume;
   const [showParticles, setShowParticles] = useState(false);
-  const [buttonFadeInDone, setButtonFadeInDone] = useState(false);
   const [ParticleButtonCmp, setParticleButtonCmp] = useState<
     typeof ParticleButton | null
   >(null);
@@ -441,8 +440,9 @@ export default function StartScreen({
       });
   }, []);
 
-  // Prefetch after the fade delay so hover sparks are ready before the button
-  // is hoverable. Framer stays off the first paint / LCP path.
+  // Prefetch after the fade delay so Light Fire sparks are ready on click.
+  // Do not swap this control to ParticleButton here: that remounts a shadcn
+  // Button (different height) and shoves the centered intro text.
   useEffect(() => {
     const prefetchId = window.setTimeout(() => {
       loadParticleButton();
@@ -450,26 +450,17 @@ export default function StartScreen({
     return () => window.clearTimeout(prefetchId);
   }, [loadParticleButton]);
 
-  // Swap only after fade-in. Remounting ParticleButton mid-animation restarts it.
   useEffect(() => {
     const btn = buttonRef.current;
-    const markFadeInDone = (event?: AnimationEvent) => {
-      if (event?.animationName && event.animationName !== "fade-in-button") {
+    const handleAnimationEnd = (event: AnimationEvent) => {
+      if (event.animationName && event.animationName !== "fade-in-button") {
         return;
       }
       btn?.classList.remove("animate-fade-in-button");
-      setButtonFadeInDone(true);
     };
 
-    btn?.addEventListener("animationend", markFadeInDone);
-    const fallbackId = window.setTimeout(
-      () => markFadeInDone(),
-      MAKE_FIRE_BUTTON_FADE_DELAY_MS + MAKE_FIRE_BUTTON_FADE_DURATION_MS + 100,
-    );
-    return () => {
-      btn?.removeEventListener("animationend", markFadeInDone);
-      window.clearTimeout(fallbackId);
-    };
+    btn?.addEventListener("animationend", handleAnimationEnd);
+    return () => btn?.removeEventListener("animationend", handleAnimationEnd);
   }, []);
 
   const handleLightFire = () => {
@@ -814,12 +805,12 @@ export default function StartScreen({
         </div>
 
         <div className={showParticles ? undefined : "fire-glow-hint"}>
-          {ParticleButtonCmp && (buttonFadeInDone || showParticles) ? (
+          {ParticleButtonCmp && showParticles ? (
             <ParticleButtonCmp
               ref={buttonRef}
               onClick={handleLightFire}
-              autoStart={showParticles}
-              className={`bg-transparent border-none text-gray-300/90 hover:bg-transparent text-lg px-8 py-4 fire-hover z-[10000] ${showParticles ? "fire-active" : ""}`}
+              autoStart
+              className="bg-transparent border-none text-gray-300/90 hover:bg-transparent text-lg px-8 py-4 fire-hover z-[10000] fire-active"
               data-testid="button-light-fire"
             >
               {t("startScreen.makeFire")}
