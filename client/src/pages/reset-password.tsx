@@ -216,7 +216,12 @@ export default function ResetPassword() {
                 minLength={6}
               />
             </div>
-            <Button type="submit" className="w-full" disabled={loading}>
+            <Button
+              type="submit"
+              className="w-full"
+              disabled={loading}
+              button_id="reset-password-submit"
+            >
               {loading ? <TextShimmer>Updating...</TextShimmer> : 'Update Password'}
             </Button>
           </form>

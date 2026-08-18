@@ -198,6 +198,7 @@ export default function GameFooter() {
       variant="ghost"
       size="xs"
       onClick={() => setShareDialogOpen(true)}
+      button_id="footer-progress"
       data-testid="button-footer-progress"
       aria-label={progressLabel}
       className={`${FOOTER_CONTROL_BTN} flex items-center gap-1`}
@@ -229,6 +230,7 @@ export default function GameFooter() {
               variant="ghost"
               size="xs"
               onClick={togglePause}
+              button_id="footer-pause"
               data-testid="button-pause-game"
               disabled={idleModeDialogOpen}
               aria-label={
@@ -274,6 +276,7 @@ export default function GameFooter() {
                 size="xs"
                 onClick={handleOfferTribute}
                 onMouseEnter={triggerDonateHeartPump}
+                button_id="footer-donate"
                 aria-label={t("footer.supportGame")}
                 className={`${FOOTER_CONTROL_BTN_BASE} hover:!text-red-600 flex items-center gap-1`}
               >

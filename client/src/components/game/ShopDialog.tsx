@@ -1925,6 +1925,7 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
                     <Button
                       variant={selectedFilter === null ? "default" : "outline"}
                       size="xs"
+                      button_id="shop-filter-highlights"
                       onClick={() => setSelectedFilter(null)}
                       className={
                         selectedFilter === null
@@ -1939,6 +1940,7 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
                         selectedFilter === "gold" ? "default" : "outline"
                       }
                       size="xs"
+                      button_id="shop-filter-gold"
                       onClick={() => setSelectedFilter("gold")}
                       className={
                         selectedFilter === "gold"
@@ -1953,6 +1955,7 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
                         selectedFilter === "artifacts" ? "default" : "outline"
                       }
                       size="xs"
+                      button_id="shop-filter-artifacts"
                       onClick={() => setSelectedFilter("artifacts")}
                       className={
                         selectedFilter === "artifacts"
@@ -1967,6 +1970,7 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
                         selectedFilter === "boosts" ? "default" : "outline"
                       }
                       size="xs"
+                      button_id="shop-filter-boosts"
                       onClick={() => setSelectedFilter("boosts")}
                       className={
                         selectedFilter === "boosts"
@@ -1981,6 +1985,7 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
                         selectedFilter === "bundles" ? "default" : "outline"
                       }
                       size="xs"
+                      button_id="shop-filter-bundles"
                       onClick={() => setSelectedFilter("bundles")}
                       className={
                         selectedFilter === "bundles"

@@ -522,7 +522,10 @@ export function GameHeaderRewardsShortcut() {
       <button
         type="button"
         aria-label={rewardsLabel}
-        onClick={() => setSocialPromptDialogOpen(true)}
+        onClick={() => {
+          useGameStore.getState().trackButtonClick("header-rewards");
+          setSocialPromptDialogOpen(true);
+        }}
         {...rewardsTasksHoverHandlers}
         className={`group relative flex h-7 shrink-0 items-center gap-1 overflow-visible px-1 ${GAME_CHROME_NO_BG_HOVER}`}
       >
@@ -596,6 +599,7 @@ export function GameHeaderControls() {
             variant="ghost"
             size="xs"
             aria-label={t("profile.title")}
+            button_id="profile-menu"
             className={`${HEADER_ICON_BTN} group touch-manipulation`}
           >
             <GameUiIcon

@@ -333,7 +333,11 @@ export default function LeaderboardDialog({
                     maxLength={12}
                     className="h-9 w-32"
                   />
-                  <Button onClick={handleSaveUsername} size="sm">
+                  <Button
+                    onClick={handleSaveUsername}
+                    size="sm"
+                    button_id="leaderboard-save-username"
+                  >
                     {t("common:buttons.save")}
                   </Button>
                   <Button
@@ -343,6 +347,7 @@ export default function LeaderboardDialog({
                     }}
                     variant="outline"
                     size="sm"
+                    button_id="leaderboard-cancel-username"
                   >
                     {t("common:buttons.cancel")}
                   </Button>
@@ -359,6 +364,7 @@ export default function LeaderboardDialog({
                       variant="ghost"
                       size="sm"
                       className="h-8 w-8 p-0"
+                      button_id="leaderboard-edit-username"
                     >
                       <svg
                         xmlns="http://www.w3.org/2000/svg"

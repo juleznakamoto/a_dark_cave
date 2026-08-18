@@ -964,6 +964,7 @@ export default function ShareDialog() {
             variant="outline"
             size="xs"
             className="shrink-0 font-medium px-3"
+            button_id="share-save"
             onClick={() => {
               void handleDownload();
             }}
@@ -974,6 +975,7 @@ export default function ShareDialog() {
             variant="outline"
             size="xs"
             className="shrink-0 font-medium px-3"
+            button_id="share-copy"
             onClick={() => {
               void handleCopyImage();
             }}
@@ -983,6 +985,7 @@ export default function ShareDialog() {
           <Button
             size="xs"
             className="shrink-0 font-medium px-3"
+            button_id="share-share"
             onClick={() => {
               void handleShare();
             }}

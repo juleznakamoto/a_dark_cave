@@ -1382,7 +1382,10 @@ export default function GameContainer() {
                           ? tabActiveTextClass
                           : tabInactiveTextClass
                           } `}
-                        onClick={() => setActiveTab("cave")}
+                        onClick={() => {
+                          useGameStore.getState().trackButtonClick("tab-cave");
+                          setActiveTab("cave");
+                        }}
                         data-testid="tab-cave"
                       >
                         {t("tabs.cave", { ns: "common" })}
@@ -1399,6 +1402,7 @@ export default function GameContainer() {
                               : tabInactiveTextClass
                             }`}
                           onClick={() => {
+                            useGameStore.getState().trackButtonClick("tab-village");
                             clearTabAnimation("village");
                             setActiveTab("village");
                           }}
@@ -1421,6 +1425,7 @@ export default function GameContainer() {
                               : tabInactiveTextClass
                             }`}
                           onClick={() => {
+                            useGameStore.getState().trackButtonClick("tab-forest");
                             clearTabAnimation("forest");
                             setActiveTab("forest");
                           }}
@@ -1442,6 +1447,7 @@ export default function GameContainer() {
                               : tabInactiveTextClass
                             }`}
                           onClick={() => {
+                            useGameStore.getState().trackButtonClick("tab-estate");
                             clearTabAnimation("estate");
                             setActiveTab("estate");
                           }}
@@ -1462,6 +1468,7 @@ export default function GameContainer() {
                               : tabInactiveTextClass
                             }`}
                           onClick={() => {
+                            useGameStore.getState().trackButtonClick("tab-bastion");
                             clearTabAnimation("bastion");
                             setActiveTab("bastion");
                           }}
@@ -1485,6 +1492,7 @@ export default function GameContainer() {
                               : tabInactiveTextClass
                             }`}
                           onClick={() => {
+                            useGameStore.getState().trackButtonClick("tab-achievements");
                             clearTabAnimation("achievements");
                             markAchievementTabPulseViewed(
                               unclaimedAchievementIds,
@@ -1509,7 +1517,10 @@ export default function GameContainer() {
                             ? tabActiveTextClass
                             : tabInactiveTextClass
                             }`}
-                          onClick={() => setActiveTab("timedevent")}
+                          onClick={() => {
+                            useGameStore.getState().trackButtonClick("tab-timedevent");
+                            setActiveTab("timedevent");
+                          }}
                           data-testid="tab-timedevent"
                         >
                           <GameUiIcon

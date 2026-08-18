@@ -107,6 +107,7 @@ export default function CrazyGamesCornerMenu({
           variant="ghost"
           size="xs"
           aria-label={menuLabel}
+          button_id="crazygames-corner-menu"
           data-testid="button-crazygames-corner-menu"
           className={`${CORNER_MENU_BTN} group touch-manipulation`}
         >

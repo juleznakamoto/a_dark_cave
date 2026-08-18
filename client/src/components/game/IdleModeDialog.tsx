@@ -711,6 +711,7 @@ export default function IdleModeDialog() {
               "text-xs h-8",
               gameActionOutlineButtonClassName(false),
             )}
+            button_id="idle-wake"
           >
             {isTimeUp ? t("idleMode.getUp") : t("idleMode.wake")}
           </Button>

@@ -62,6 +62,7 @@ export default function TextScaleSelector({
           className={buttonClassName}
           aria-label={t("textScale.ariaLabel")}
           aria-expanded={inDialog ? open : undefined}
+          button_id="text-scale-selector"
         >
           <span className="inline">{t(TEXT_SCALE_LABEL_KEYS[textScale])}</span>
           <ChevronDown className="w-3.5 h-3.5 shrink-0 opacity-70" aria-hidden />

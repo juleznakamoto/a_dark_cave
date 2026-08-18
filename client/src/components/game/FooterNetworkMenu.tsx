@@ -50,6 +50,7 @@ export default function FooterNetworkMenu({
           type="button"
           variant="ghost"
           size="xs"
+          button_id="footer-social"
           data-testid="button-footer-social"
           aria-label={socialLabel}
           className={cn(

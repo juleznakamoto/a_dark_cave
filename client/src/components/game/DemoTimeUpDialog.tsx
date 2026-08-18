@@ -60,7 +60,7 @@ export default function DemoTimeUpDialog({
           <DialogDescription>{t("galaxy.description")}</DialogDescription>
         </DialogHeader>
         <div className="flex flex-col gap-3 pt-2">
-          <Button asChild>
+          <Button asChild button_id="demo-end-wishlist">
             <a
               href={steamStoreUrl(STEAM_STORE_UTM_CONTENT.demoTimeUp)}
               target="_blank"
@@ -92,6 +92,7 @@ export default function DemoTimeUpDialog({
             variant="outline"
             type="button"
             onClick={handleStartNewGame}
+            button_id="demo-end-new-game"
             className="inline-flex items-center gap-1.5"
           >
             <GameUiIcon

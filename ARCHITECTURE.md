@@ -98,6 +98,9 @@ in the client; **Supabase** handles auth/cloud saves and **Stripe** handles paym
 
 **Lazy-loading:** start screen loads first; the full `Game` chunk loads only after "Light Fire"
 or when a saved `gameStarted` flag exists â€” keeps the initial bundle small.
+`ParticleButton` (Framer hover/click sparks) is dynamically imported after the Make Fire fade
+delay so first paint stays Framer-free; the start screen swaps it in after fade-in so hover
+works before click.
 
 ---
 

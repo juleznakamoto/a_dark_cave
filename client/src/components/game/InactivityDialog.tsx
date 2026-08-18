@@ -50,12 +50,20 @@ export default function InactivityDialog() {
           </DialogDescription>
         </DialogHeader>
         {isTimeout && (
-          <Button onClick={handleContinue} className="w-full">
+          <Button
+            onClick={handleContinue}
+            className="w-full"
+            button_id="inactivity-resume"
+          >
             {t("inactivity.resume")}
           </Button>
         )}
         {isMultiTab && (
-          <Button onClick={handleReload} className="w-full">
+          <Button
+            onClick={handleReload}
+            className="w-full"
+            button_id="inactivity-reload"
+          >
             {t("inactivity.reload")}
           </Button>
         )}

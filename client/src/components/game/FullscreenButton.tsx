@@ -29,6 +29,7 @@ export function FullscreenButton() {
         onClick={() => void toggleFullscreen()}
         aria-label={label}
         className={`${HEADER_ICON_BTN} group touch-manipulation`}
+        button_id="fullscreen-toggle"
         data-testid="button-toggle-fullscreen"
       >
         {isFullscreen ? (

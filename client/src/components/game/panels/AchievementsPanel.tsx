@@ -281,6 +281,7 @@ function AchievementRowComponent({
               size="xs"
               className={`h-5 px-2 ${claimButtonClass}`}
               onClick={handleClaim}
+              button_id={`achievement-claim-${row.achievementId}`}
               tooltip={tooltipText}
               tooltipId={`achievement-claim-${row.achievementId}`}
             >

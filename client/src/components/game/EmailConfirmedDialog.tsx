@@ -38,7 +38,11 @@ export default function EmailConfirmedDialog({
           </DialogDescription>
         </DialogHeader>
         <DialogFooter>
-          <Button onClick={onClose} className="w-full font-medium">
+          <Button
+            onClick={onClose}
+            className="w-full font-medium"
+            button_id="email-confirmed-continue"
+          >
             {t("common:buttons.continue")}
           </Button>
         </DialogFooter>

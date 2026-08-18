@@ -226,10 +226,12 @@ function TaskClaimButton({
   className,
   disabled,
   onClick,
+  button_id,
 }: {
   className?: string;
   disabled?: boolean;
   onClick: () => void;
+  button_id: string;
 }) {
   const { t } = useTranslation("ui");
   return (
@@ -238,6 +240,7 @@ function TaskClaimButton({
       className={cn("shrink-0 font-medium px-2", className)}
       disabled={disabled}
       onClick={onClick}
+      button_id={button_id}
     >
       {t("socialPrompt.claim")}
     </Button>
@@ -534,6 +537,7 @@ export default function SocialPromptDialog({
                     <TaskRowActions amount={platform.reward}>
                       {fulfilled ? (
                         <TaskClaimButton
+                          button_id={`social-claim-${platform.id}`}
                           onClick={() =>
                             claimWithAnimation(platform.id, () =>
                               claimSocialFollowGoldReward(
@@ -547,6 +551,7 @@ export default function SocialPromptDialog({
                         <Button
                           size="xs"
                           className="shrink-0 font-medium px-2"
+                          button_id={`social-follow-${platform.id}`}
                           onClick={() =>
                             fulfillSocialFollowReward(platform.id, platform.url)
                           }
@@ -594,6 +599,7 @@ export default function SocialPromptDialog({
                 >
                   {playlightDiscoverRewardFulfilled ? (
                     <TaskClaimButton
+                      button_id="social-claim-playlight"
                       onClick={() =>
                         claimWithAnimation(PLAYLIGHT_DISCOVER_REWARD_KEY, () =>
                           claimPlaylightDiscoverGoldReward(),
@@ -604,6 +610,7 @@ export default function SocialPromptDialog({
                     <Button
                       size="xs"
                       className="shrink-0 font-medium px-2"
+                      button_id="social-playlight-discover"
                       disabled={discoverGamesLoading}
                       onClick={() => {
                         if (discoverGamesLoading) return;
@@ -658,6 +665,7 @@ export default function SocialPromptDialog({
                 >
                   {signUpFulfilled ? (
                     <TaskClaimButton
+                      button_id="social-claim-signup"
                       onClick={() =>
                         claimWithAnimation("signup", () =>
                           claimSignupWelcomeGold(),
@@ -668,6 +676,7 @@ export default function SocialPromptDialog({
                     <Button
                       size="xs"
                       className="shrink-0 font-medium px-2"
+                      button_id="social-signup"
                       onClick={handleSignUpTaskClick}
                     >
                       {t("socialPrompt.signUpButton")}
@@ -710,6 +719,7 @@ export default function SocialPromptDialog({
                 >
                   {emailRewardFulfilled ? (
                     <TaskClaimButton
+                      button_id="social-claim-email"
                       onClick={() =>
                         claimWithAnimation(MARKETING_EMAIL_REWARD_KEY, () =>
                           claimMarketingEmailGoldReward(),
@@ -724,6 +734,7 @@ export default function SocialPromptDialog({
                         "socialPrompt.signUpRequiresSignInTooltip",
                       )}
                       size="xs"
+                      button_id="social-email-subscribe"
                       disabled={prefLoading || subscribeLoading}
                       onClick={() => void handleSubscribe()}
                     >

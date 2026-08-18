@@ -4,6 +4,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
+import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { useGameStore } from "@/game/state";
 import { audioManager } from "@/lib/audio";
@@ -96,6 +97,7 @@ interface AudioControlRowProps {
   volume: number;
   onToggleMute: () => void;
   onVolumeChange: (volume: number) => void;
+  muteButtonId: string;
 }
 
 /** One [icon][label][slider] row: tapping the icon or label mutes/unmutes, the slider sets volume. */
@@ -108,14 +110,17 @@ function AudioControlRow({
   volume,
   onToggleMute,
   onVolumeChange,
+  muteButtonId,
 }: AudioControlRowProps) {
   return (
     <div className={ROW}>
-      <button
+      <Button
         type="button"
+        variant="ghost"
         onClick={onToggleMute}
         aria-label={label}
         aria-pressed={!muted}
+        button_id={muteButtonId}
         className={`group ${ICON_SLOT} h-7 rounded-md hover:bg-muted/40 transition-colors`}
       >
         <img
@@ -125,16 +130,18 @@ function AudioControlRow({
           className={`w-5 h-5 object-contain [filter:invert(1)] transition-opacity ${muted ? "opacity-40" : "opacity-90 group-hover:opacity-100"
             }`}
         />
-      </button>
-      <button
+      </Button>
+      <Button
         type="button"
+        variant="ghost"
         onClick={onToggleMute}
         aria-label={label}
         aria-pressed={!muted}
+        button_id={muteButtonId}
         className={`w-24 shrink-0 whitespace-nowrap rounded-md px-1 py-1 text-left text-sm hover:bg-muted/40 transition-colors ${muted ? "opacity-40" : ""}`}
       >
         {title}
-      </button>
+      </Button>
       <div className="flex flex-1 items-center">
         <input
           type="range"
@@ -190,6 +197,7 @@ function GameModeSelector({
           className="group -mr-2 flex items-center gap-1 rounded-md px-2 py-1 text-sm hover:bg-muted/40 transition-colors"
           aria-label={t("settings.gameMode", { defaultValue: "Game Mode" })}
           aria-expanded={open}
+          button_id="settings-game-mode"
         >
           <span className="inline">
             {t(GAME_MODE_LABEL_KEYS[value], {
@@ -317,6 +325,7 @@ export default function SettingsDialog({
               volume={musicVolume}
               onToggleMute={toggleMusic}
               onVolumeChange={changeMusicVolume}
+              muteButtonId="settings-mute-music"
             />
             <AudioControlRow
               iconOn={publicUrl("/sound_on.png")}
@@ -326,6 +335,7 @@ export default function SettingsDialog({
               muted={sfxMuted}
               volume={sfxVolume}
               onToggleMute={toggleSfx}
+              muteButtonId="settings-mute-sfx"
               onVolumeChange={changeSfxVolume}
             />
             <div className={ROW}>
@@ -403,9 +413,11 @@ export default function SettingsDialog({
               </div>
 
               <div className="h-px bg-border my-1" />
-              <button
+              <Button
                 type="button"
+                variant="ghost"
                 onClick={onDeleteAccount}
+                button_id="settings-delete-account"
                 className={`${ROW} rounded-md text-muted-foreground hover:bg-muted/40 hover:text-foreground transition-colors`}
               >
                 <span className={ICON_SLOT}>
@@ -414,7 +426,7 @@ export default function SettingsDialog({
                 <span className="flex-1 text-left text-sm">
                   {t("profile.deleteAccount")}
                 </span>
-              </button>
+              </Button>
             </>
           )}
         </div>

@@ -296,13 +296,15 @@ export default function AuthDialog({
                 </div>
                 {mode === "signin" && (
                   <div className="flex justify-end pt-0.5">
-                    <button
+                    <Button
                       type="button"
+                      variant="link"
                       onClick={() => switchMode("reset")}
-                      className="text-xs text-muted-foreground hover:text-foreground/70 underline-offset-2 hover:underline"
+                      button_id="auth-forgot-password"
+                      className="h-auto p-0 text-xs text-muted-foreground hover:text-foreground/70 underline-offset-2 hover:underline"
                     >
                       {t("auth.forgotPassword")}
-                    </button>
+                    </Button>
                   </div>
                 )}
               </div>
@@ -337,6 +339,7 @@ export default function AuthDialog({
                 type="submit"
                 className="font-medium text-sm"
                 disabled={loading}
+                button_id={`auth-submit-${mode}`}
               >
                 {emailLoading ? (
                   <TextShimmer>{submitLabel}</TextShimmer>
@@ -351,6 +354,7 @@ export default function AuthDialog({
                   onClick={handleGoogleSignIn}
                   disabled={loading}
                   className="font-medium text-sm"
+                  button_id="auth-google"
                 >
                   <svg className="mr-2 h-4 w-4" viewBox="0 0 24 24">
                     <path
@@ -408,6 +412,7 @@ export default function AuthDialog({
                 type="button"
                 variant="ghost"
                 className="text-sm"
+                button_id="auth-switch-mode"
                 onClick={() =>
                   switchMode(mode === "signin" ? "signup" : "signin")
                 }

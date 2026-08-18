@@ -81,6 +81,7 @@ export default function LanguageSelector({
         className={buttonClassName}
         aria-label={t("languageSelector.ariaLabel")}
         aria-expanded={inDialog ? open : undefined}
+        button_id="language-selector"
       >
         {showIcon &&
           (iconVariant === "globe" ? (

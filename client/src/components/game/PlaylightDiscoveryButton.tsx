@@ -7,6 +7,8 @@ import { GameUiIcon } from "@/components/game/GameUiIcon";
 import { useUiTranslation } from "@/i18n/useUiTranslation";
 import { GAME_CHROME_NO_BG_HOVER } from "./gameChrome";
 
+const PLAYLIGHT_FOOTER_BUTTON_ID = "footer-playlight";
+
 const SHOW_MS = 20 * 1000;
 const FIRST_SHOW_PLAY_MS = 75 * 60 * 1000;
 /** Phase 1: 75–135 min active play — every 10 min; then every 20 min. */
@@ -80,6 +82,11 @@ export default function PlaylightDiscoveryButton({
     };
   }, []);
 
+  const handleCalloutClick = () => {
+    useGameStore.getState().trackButtonClick(PLAYLIGHT_FOOTER_BUTTON_ID);
+    onClick();
+  };
+
   const label = t("playlight.moreGames", { defaultValue: "More Games" });
   const shortLabel = t("playlight.more", { defaultValue: "More" });
   const tooltipLabel = t("playlight.tryMoreGames", {
@@ -96,13 +103,14 @@ export default function PlaylightDiscoveryButton({
         forceShowTooltip ? forceTooltipFadeDurationMs : undefined
       }
       hoverEnabled={false}
-      onCalloutClick={onClick}
+      onCalloutClick={handleCalloutClick}
     >
       <Button
         variant="ghost"
         size="xs"
         type="button"
         onClick={onClick}
+        button_id={PLAYLIGHT_FOOTER_BUTTON_ID}
         data-testid="button-footer-playlight"
         aria-label={tooltipLabel}
         className={cn(
