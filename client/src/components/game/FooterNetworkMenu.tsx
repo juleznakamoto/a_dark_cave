@@ -29,6 +29,11 @@ type FooterNetworkMenuProps = {
   align?: "start" | "center" | "end";
   /** Open on mount (start-screen click-to-load). */
   defaultOpen?: boolean;
+  /**
+   * Native button with no shadcn size/padding. Start-screen placeholder and
+   * loaded trigger must share the same box so hover-prefetch does not jump.
+   */
+  unstyledTrigger?: boolean;
 };
 
 export default function FooterNetworkMenu({
@@ -39,32 +44,50 @@ export default function FooterNetworkMenu({
   side = "top",
   align = "end",
   defaultOpen = false,
+  unstyledTrigger = false,
 }: FooterNetworkMenuProps) {
   const [open, setOpen] = useState(defaultOpen);
   const socialLabel = tWithFallback("ui", "footer.social", "Social");
 
+  const triggerInner = (
+    <>
+      <GameUiIcon
+        name="network"
+        sizeClassName={iconSizeClassName}
+        className={iconClassName}
+      />
+      <span className={labelClassName}>{socialLabel}</span>
+    </>
+  );
+
   return (
     <DropdownMenu open={open} onOpenChange={setOpen} modal={false}>
       <DropdownMenuTrigger asChild>
-        <Button
-          type="button"
-          variant="ghost"
-          size="xs"
-          button_id="footer-social"
-          data-testid="button-footer-social"
-          aria-label={socialLabel}
-          className={cn(
-            `group shrink-0 px-1 py-1 text-xs text-neutral-300 hover flex items-center gap-1 ${GAME_CHROME_NO_BG_HOVER}`,
-            triggerClassName,
-          )}
-        >
-          <GameUiIcon
-            name="network"
-            sizeClassName={iconSizeClassName}
-            className={iconClassName}
-          />
-          <span className={labelClassName}>{socialLabel}</span>
-        </Button>
+        {unstyledTrigger ? (
+          <button
+            type="button"
+            data-testid="button-footer-social"
+            aria-label={socialLabel}
+            className={triggerClassName}
+          >
+            {triggerInner}
+          </button>
+        ) : (
+          <Button
+            type="button"
+            variant="ghost"
+            size="xs"
+            button_id="footer-social"
+            data-testid="button-footer-social"
+            aria-label={socialLabel}
+            className={cn(
+              `group shrink-0 px-1 py-1 text-xs text-neutral-300 hover flex items-center gap-1 ${GAME_CHROME_NO_BG_HOVER}`,
+              triggerClassName,
+            )}
+          >
+            {triggerInner}
+          </Button>
+        )}
       </DropdownMenuTrigger>
       <DropdownMenuContent
         align={align}

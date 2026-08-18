@@ -989,6 +989,7 @@ export default function StartScreen({
                 key={startMenuEpoch}
                 side="top"
                 align="end"
+                unstyledTrigger
                 triggerClassName={START_FOOTER_SOCIAL_LINK}
                 iconClassName="opacity-100"
                 iconSizeClassName="w-3.5 h-3.5"

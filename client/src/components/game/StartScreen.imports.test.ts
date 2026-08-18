@@ -45,6 +45,7 @@ describe("start-screen first-load imports", () => {
     expect(src).toContain('loadLanguageSelector("prefetch")');
     expect(src).toContain('loadFooterNetworkMenu("prefetch")');
     expect(src).toContain('loadCrazyGamesCornerMenu("prefetch")');
+    expect(src).toContain("unstyledTrigger");
   });
 
   it("clears deferred menu in-flight flags when the import settles", () => {
