@@ -13,26 +13,34 @@ export interface ButtonProps
 }
 
 const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
-  ({ className, variant, size, asChild = false, onClick, ...props }, ref) => {
+  (
+    {
+      className,
+      variant,
+      size,
+      asChild = false,
+      onClick,
+      button_id,
+      ...props
+    },
+    ref,
+  ) => {
     const Comp = asChild ? Slot : "button"
 
     const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
-      // Track analytics if button_id is provided
-      const buttonId = (e.currentTarget as HTMLButtonElement).getAttribute('button_id');
-      if (buttonId) {
+      // Read from the prop, not the DOM. `asChild` renders a Slot and the
+      // click target (e.g. an inner <a> or icon) may not carry `button_id`.
+      if (button_id) {
         void import("@/game/state")
           .then(({ useGameStore }) => {
-            useGameStore.getState().trackButtonClick(buttonId);
+            useGameStore.getState().trackButtonClick(button_id);
           })
           .catch(() => {
             // Silently ignore analytics failures
           });
       }
 
-      // Call original onClick
-      if (onClick) {
-        onClick(e);
-      }
+      onClick?.(e);
     };
 
     return (
@@ -40,6 +48,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
         className={cn(buttonVariants({ variant, size }), className)}
         ref={ref}
         onClick={handleClick}
+        button_id={button_id}
         {...props}
       />
     )
