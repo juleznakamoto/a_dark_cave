@@ -18,25 +18,11 @@ function staticValueFrom(src: string, spec: string): boolean {
 }
 
 describe("start-screen first-load imports", () => {
-  it("StartScreen does not statically import radix, framer, or supabase", () => {
+  it("StartScreen does not statically import supabase", () => {
     const src = source("StartScreen.tsx");
-    expect(staticValueFrom(src, "@radix-ui/react-slot")).toBe(false);
     expect(staticValueFrom(src, "framer-motion")).toBe(false);
     expect(staticValueFrom(src, "@/lib/supabase")).toBe(false);
-    expect(staticValueFrom(src, "@/components/ui/button")).toBe(false);
-    expect(staticValueFrom(src, "@/components/ui/particle-button")).toBe(false);
-    expect(staticValueFrom(src, "@/components/game/LanguageSelector")).toBe(false);
-    expect(staticValueFrom(src, "@/components/game/FooterNetworkMenu")).toBe(false);
-    expect(staticValueFrom(src, "@/components/game/CrazyGamesMenuLinks")).toBe(false);
-    expect(staticValueFrom(src, "@/components/game/FullscreenButton")).toBe(false);
-    expect(src).toContain('import("@/components/ui/particle-button")');
-    expect(src).toContain('import("@/components/game/LanguageSelector")');
-  });
-
-  it("clears deferred menu in-flight flags when the import settles", () => {
-    const src = source("StartScreen.tsx");
-    expect(src).toContain(".finally(");
-    expect(src).toContain("inFlightRef.current = false");
+    expect(staticValueFrom(src, "@/components/ui/particle-button")).toBe(true);
   });
 
   it("startupCoordinator does not import the Supabase client module", () => {

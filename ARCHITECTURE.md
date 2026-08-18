@@ -97,11 +97,7 @@ in the client; **Supabase** handles auth/cloud saves and **Stripe** handles paym
 | `achievements/` | Achievement configs, charts, claim logic | `AchievementMiniRingChart.tsx` (sizeable ring donut), `achievementProgress.ts` (overall/per-category % complete), `achievementEdition.ts` (`webOnly` filter for Steam UI/sync), `nonOverallCompletion.ts` (Achievement Maxer: all non-overall complete), `configs/` (basic/building/item/action + non-claimable `overall` with Resource Maxer / Upgrade Maxer / Achievement Maxer / Cave Veteran; Supporter is `webOnly`) |
 
 **Lazy-loading:** start screen loads first; the full `Game` chunk loads only after "Light Fire"
-or when a saved `gameStarted` flag exists â€” keeps the initial bundle small.
-`ParticleButton` (Framer hover/click sparks) is dynamically imported after the Make Fire fade
-delay so first paint stays Framer-free; the start screen swaps it in after fade-in so hover
-works before click. The placeholder uses the same `adc-btn-size-default` box so that swap
-does not move the centered intro lines.
+or when a saved `gameStarted` flag exists, which keeps the initial bundle small.
 
 ---
 
