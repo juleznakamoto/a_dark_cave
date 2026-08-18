@@ -87,6 +87,19 @@ describe("publicSeo", () => {
     );
   });
 
+  it("uses Markdown links in llms.txt so Lighthouse counts them", () => {
+    const llms = readFileSync(
+      join(dirname(fileURLToPath(import.meta.url)), "../client/public/llms.txt"),
+      "utf8",
+    );
+    expect(llms).toMatch(/^# A Dark Cave\r?\n/);
+    expect(llms).toMatch(/\[Play A Dark Cave\]\(https:\/\/a-dark-cave\.com\/\)/);
+    expect(llms).toMatch(/\[FAQ\]\(https:\/\/a-dark-cave\.com\/faq\)/);
+    expect(llms).toMatch(
+      /\[Full facts\]\(https:\/\/a-dark-cave\.com\/llms-full\.txt\)/,
+    );
+  });
+
   it("returns 404 resolution for unknown routes", () => {
     expect(resolveSpaHtmlResponse("/fake-url").status).toBe(404);
     expect(resolveSpaHtmlResponse("/fake-url").notFound).toBe(true);

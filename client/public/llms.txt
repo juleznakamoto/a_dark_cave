@@ -2,25 +2,26 @@
 
 > A text-based survival and settlement-building incremental. Play for free in your browser on desktop or mobile. Steam demo available; full Steam release planned 27 October 2026.
 
-- Site: https://a-dark-cave.com
-- Steam: https://store.steampowered.com/app/4882240/A_Dark_Cave/
-- itch.io: https://a-dark-cave.itch.io/a-dark-cave
-- Full facts: https://a-dark-cave.com/llms-full.txt
+Developer: Julian Bauer. Incremental, text-based survival, and settlement builder (semi-idle plus active; not a clicker, not a second-screen idle). Play for free in the browser on desktop or mobile. Steam (Windows) is a paid game with a free demo. Not on the App Store or Google Play. Similar to A Dark Room, Kittens Game, The Ensign, Universal Paperclips, Candy Box, Level 13, and KEROS-9. Languages: English, German, French, Spanish, Italian, Portuguese (Brazil), Simplified Chinese, and Russian.
 
-## Key facts
+## Docs
 
-- Developer: Julian Bauer
-- Genre: incremental, text-based survival, settlement builder (semi-idle + active; not a clicker, not a second-screen idle)
-- Platforms: web browser (desktop and mobile browsers). Steam (Windows) with a free demo. Not on the App Store or Google Play.
-- Price: play for free in the browser. Steam is a paid game with a free demo.
-- Comps: A Dark Room, Kittens Game, The Ensign, Universal Paperclips, Candy Box, Level 13, KEROS-9
-- Languages: English, German, French, Spanish, Italian, Portuguese (Brazil), Simplified Chinese, Russian
-- Contact: support@a-dark-cave.com
+- [Play A Dark Cave](https://a-dark-cave.com/): Free browser game
+- [Full facts](https://a-dark-cave.com/llms-full.txt): Longer canonical facts, FAQ, and listings
+- [FAQ](https://a-dark-cave.com/faq): Common questions
+- [About](https://a-dark-cave.com/about): What the game is
 
 ## Official links
 
-- FAQ: https://a-dark-cave.com/faq
-- About: https://a-dark-cave.com/about
-- Steam demo: https://store.steampowered.com/app/4971800/
-- Reddit: https://www.reddit.com/r/aDarkCave/
-- Support: support@a-dark-cave.com
+- [Steam](https://store.steampowered.com/app/4882240/A_Dark_Cave/): Full Steam edition, planned 27 October 2026
+- [Steam demo](https://store.steampowered.com/app/4971800/): Free demo available now
+- [itch.io](https://a-dark-cave.itch.io/a-dark-cave): Name-your-own-price listing
+- [Reddit](https://www.reddit.com/r/aDarkCave/): Community
+- [Support](mailto:support@a-dark-cave.com): support@a-dark-cave.com
+
+## Optional
+
+- [Privacy Policy](https://a-dark-cave.com/privacy)
+- [Terms of Service](https://a-dark-cave.com/terms)
+- [Imprint](https://a-dark-cave.com/imprint)
+- [Right of Withdrawal](https://a-dark-cave.com/withdrawal)

@@ -4,7 +4,7 @@
 
 A Dark Cave is a single-player HTML5 game for desktop and mobile browsers. No native app and no app-store download. Progress saves in the browser. Players make choices and manage a settlement: semi-idle plus active, not a clicker and not a second-screen idle. Inspired by minimalist incrementals such as A Dark Room, Kittens Game, and Candy Box. It is a separate game, not a remake or clone of those titles.
 
-Short index: https://a-dark-cave.com/llms.txt
+See the short index: [llms.txt](https://a-dark-cave.com/llms.txt).
 
 ## Key facts
 
@@ -35,7 +35,7 @@ Short index: https://a-dark-cave.com/llms.txt
 - Play time: Long incremental playthrough. A speed-focused run can finish in under 5 hours. Settlement production can continue while you are away.
 - Features: Text-based narrative, crafting, villager jobs, world exploration, turn-based combat, attack waves, companion storylines, persistent local save
 - Technical: No install. Saves locally in the browser. Works offline after the first load. Optional account for cloud save
-- Official website: https://a-dark-cave.com
+- Official website: [a-dark-cave.com](https://a-dark-cave.com/)
 - Steam app ID: 4882240
 - Steam Demo app ID: 4971800
 - Web listing date: 2025-11-17
@@ -56,7 +56,7 @@ Q: Does it work on mobile?
 A: Yes. It runs in mobile and desktop browsers. It is not a native App Store or Google Play app.
 
 Q: Do I need to download it?
-A: No. Open https://a-dark-cave.com in a browser. A free Steam Demo is also available (app 4971800). Wishlist the full Steam edition (app 4882240) for the Windows release planned 27 October 2026.
+A: No. Open [a-dark-cave.com](https://a-dark-cave.com/) in a browser. A free Steam Demo is also available (app 4971800). Wishlist the full Steam edition (app 4882240) for the Windows release planned 27 October 2026.
 
 Q: Is there a Steam version?
 A: Yes. A free Steam Demo is available now (app 4971800). The full Steam release is planned for 27 October 2026. The browser version is also available now.
@@ -69,31 +69,31 @@ A: English, German, French, Spanish, Italian, Portuguese (Brazil), Simplified Ch
 
 ## Official links
 
-- FAQ: https://a-dark-cave.com/faq
-- About: https://a-dark-cave.com/about
-- Play: https://a-dark-cave.com
-- Wiki: https://a-dark-cave.fandom.com/wiki/A_Dark_Cave_Wiki
-- Reddit: https://www.reddit.com/r/aDarkCave/
-- Steam: https://store.steampowered.com/app/4882240/A_Dark_Cave/
-- Steam Demo: https://store.steampowered.com/app/4971800/
-- itch.io: https://a-dark-cave.itch.io/a-dark-cave
-- MobyGames: https://www.mobygames.com/game/255071/a-dark-cave/
-- IncrementalDB: https://www.incrementaldb.com/game/a-dark-cave
-- Product Hunt: https://www.producthunt.com/products/a-dark-cave
-- YouTube: https://www.youtube.com/channel/UCdQDWTJe_Bno7xyjnO1aC-w
-- Instagram: https://www.instagram.com/a_dark_cave/
-- Facebook: https://www.facebook.com/people/A-Dark-Cave/61584724119235/
-- Buy Me a Coffee: https://buymeacoffee.com/julez.b
+- [FAQ](https://a-dark-cave.com/faq)
+- [About](https://a-dark-cave.com/about)
+- [Play](https://a-dark-cave.com/)
+- [Wiki](https://a-dark-cave.fandom.com/wiki/A_Dark_Cave_Wiki)
+- [Reddit](https://www.reddit.com/r/aDarkCave/)
+- [Steam](https://store.steampowered.com/app/4882240/A_Dark_Cave/)
+- [Steam Demo](https://store.steampowered.com/app/4971800/)
+- [itch.io](https://a-dark-cave.itch.io/a-dark-cave)
+- [MobyGames](https://www.mobygames.com/game/255071/a-dark-cave/)
+- [IncrementalDB](https://www.incrementaldb.com/game/a-dark-cave)
+- [Product Hunt](https://www.producthunt.com/products/a-dark-cave)
+- [YouTube](https://www.youtube.com/channel/UCdQDWTJe_Bno7xyjnO1aC-w)
+- [Instagram](https://www.instagram.com/a_dark_cave/)
+- [Facebook](https://www.facebook.com/people/A-Dark-Cave/61584724119235/)
+- [Buy Me a Coffee](https://buymeacoffee.com/julez.b)
 
 ## Legal
 
-- Privacy Policy: https://a-dark-cave.com/privacy
-- Terms of Service: https://a-dark-cave.com/terms
-- Imprint: https://a-dark-cave.com/imprint
-- Withdrawal: https://a-dark-cave.com/withdrawal
+- [Privacy Policy](https://a-dark-cave.com/privacy)
+- [Terms of Service](https://a-dark-cave.com/terms)
+- [Imprint](https://a-dark-cave.com/imprint)
+- [Right of Withdrawal](https://a-dark-cave.com/withdrawal)
 
 ## Contact
 
-- Website: https://a-dark-cave.com
-- Support: support@a-dark-cave.com
-- Reddit: https://www.reddit.com/r/aDarkCave/
+- [Website](https://a-dark-cave.com/)
+- [Support](mailto:support@a-dark-cave.com): support@a-dark-cave.com
+- [Reddit](https://www.reddit.com/r/aDarkCave/)
