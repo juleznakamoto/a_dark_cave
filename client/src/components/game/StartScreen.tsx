@@ -88,6 +88,8 @@ interface StartScreenProps {
   initialPreferences: StartScreenPreferences;
   steamEditionActive: boolean;
   steamDesktopEditionActive: boolean;
+  crazyGamesEditionActive: boolean;
+  hideSteamStoreLink: boolean;
   onLightFireStart?: (preferences: StartScreenPreferences) => void;
   onLightFire: (preferences: StartScreenPreferences) => void | Promise<void>;
 }
@@ -96,6 +98,8 @@ export default function StartScreen({
   initialPreferences,
   steamEditionActive,
   steamDesktopEditionActive,
+  crazyGamesEditionActive,
+  hideSteamStoreLink,
   onLightFireStart,
   onLightFire,
 }: StartScreenProps) {
@@ -178,23 +182,17 @@ export default function StartScreen({
     audioManager.sfxMute(sfxMuted);
   }, [musicMuted, sfxMuted, musicVolume, sfxVolume]);
 
-  // Fetch wind + Light Fire only after LCP (not on module import / first paint).
-  useEffect(() => {
-    scheduleStartScreenSoundPreloadAfterLcp();
-  }, []);
-
   useEffect(() => {
     // Wind plays as soon as the user shows intent (mousemove on desktop, touchstart on mobile).
     // Both events fire before the click event, so executedRef.current is still false
     // even when the user's first action is clicking "Light Fire".
-    // Decode is scheduled after LCP (not gesture-gated): on mobile the first gesture
-    // is often Make Fire itself, which stops wind.
     const playWind = () => {
       audioManager.playLoopingSound("wind", SOUND_VOLUME.wind, false, 1);
     };
 
     const handleInitialGesture = () => {
       if (!executedRef.current) {
+        audioManager.preloadLightFireCue();
         playWind();
       }
       document.removeEventListener("mousemove", handleInitialGesture);
@@ -559,9 +557,17 @@ export default function StartScreen({
         />
       )}
 
-      {steamEditionActive && (
+      {(steamEditionActive || crazyGamesEditionActive) && (
         <div className="absolute top-2 right-2 z-20">
-          <FullscreenButton />
+          {crazyGamesEditionActive ? (
+            <CrazyGamesCornerMenu
+              key={startMenuEpoch}
+              steamUtmContent={STEAM_STORE_UTM_CONTENT.startScreenMenu}
+              defaultOpen={crazyGamesDefaultOpen}
+            />
+          ) : (
+            <FullscreenButton />
+          )}
         </div>
       )}
 
@@ -714,7 +720,8 @@ export default function StartScreen({
               </span>
             </button>
           )}
-          {!hideStartScreenSocialLinks &&
+          {!hideSteamStoreLink &&
+            !crazyGamesEditionActive &&
             GAME_FOOTER_RIGHT_ICON_ORDER.map((platform) => {
               const { href: defaultHref, title } =
                 GAME_FOOTER_RIGHT_ICON_LINKS[platform];
