@@ -25,7 +25,7 @@ describe("start-screen first-load imports", () => {
     expect(staticValueFrom(src, "@/components/ui/particle-button")).toBe(true);
   });
 
-  it("StartScreen click-loads language, social, and CrazyGames menus", () => {
+  it("StartScreen hover-prefetches language, social, and CrazyGames menus", () => {
     const src = source("StartScreen.tsx");
     expect(staticValueFrom(src, "@/components/game/LanguageSelector")).toBe(
       false,
@@ -42,6 +42,9 @@ describe("start-screen first-load imports", () => {
     expect(src).toContain('import("@/components/game/LanguageSelector")');
     expect(src).toContain('import("@/components/game/FooterNetworkMenu")');
     expect(src).toContain('import("@/components/game/CrazyGamesMenuLinks")');
+    expect(src).toContain('loadLanguageSelector("prefetch")');
+    expect(src).toContain('loadFooterNetworkMenu("prefetch")');
+    expect(src).toContain('loadCrazyGamesCornerMenu("prefetch")');
   });
 
   it("clears deferred menu in-flight flags when the import settles", () => {

@@ -29,6 +29,8 @@ import type CrazyGamesCornerMenu from "@/components/game/CrazyGamesMenuLinks";
 import {
   resolveDeferredStartMenuMount,
   shouldBlockDeferredStartMenuLoad,
+  shouldRequestOpenOnInFlightLoad,
+  type DeferredStartMenuLoadKind,
 } from "@/components/game/startScreenDeferredMenu";
 
 const START_INTRO_VAPORIZE_COLOR = "rgba(209, 213, 219, 0.9)";
@@ -183,6 +185,9 @@ export default function StartScreen({
   const languageLoadInFlightRef = useRef(false);
   const networkLoadInFlightRef = useRef(false);
   const crazyGamesLoadInFlightRef = useRef(false);
+  const languagePendingOpenRef = useRef(false);
+  const networkPendingOpenRef = useRef(false);
+  const crazyGamesPendingOpenRef = useRef(false);
   const [showEyesEasterEgg, setShowEyesEasterEgg] = useState(false);
   const eyesEasterEggInsideHotZoneRef = useRef(false);
   const eyesEasterEggConsumedRef = useRef(false);
@@ -495,6 +500,9 @@ export default function StartScreen({
     onLightFireStart?.(preferences);
 
     deferredMenuGenRef.current += 1;
+    languagePendingOpenRef.current = false;
+    networkPendingOpenRef.current = false;
+    crazyGamesPendingOpenRef.current = false;
     setLanguageDefaultOpen(false);
     setNetworkDefaultOpen(false);
     setCrazyGamesDefaultOpen(false);
@@ -528,13 +536,16 @@ export default function StartScreen({
     requestGen: number,
     setCmp: (component: T) => void,
     setDefaultOpen: (open: boolean) => void,
+    pendingOpenRef: { current: boolean },
     component: T,
   ) => {
     const { apply, open } = resolveDeferredStartMenuMount(
       executedRef.current,
       requestGen,
       deferredMenuGenRef.current,
+      pendingOpenRef.current,
     );
+    pendingOpenRef.current = false;
     if (!apply) return;
     setCmp(component);
     setDefaultOpen(open);
@@ -543,18 +554,24 @@ export default function StartScreen({
   const queueDeferredMenuImport = <T,>(
     alreadyLoaded: T | null,
     inFlightRef: { current: boolean },
+    pendingOpenRef: { current: boolean },
+    kind: DeferredStartMenuLoadKind,
     importer: () => Promise<{ default: T }>,
     setCmp: (component: T) => void,
     setDefaultOpen: (open: boolean) => void,
   ) => {
+    const loaded = Boolean(alreadyLoaded);
     if (
-      shouldBlockDeferredStartMenuLoad(
-        Boolean(alreadyLoaded),
-        inFlightRef.current,
-      )
+      shouldRequestOpenOnInFlightLoad(loaded, inFlightRef.current) &&
+      kind === "open"
     ) {
+      pendingOpenRef.current = true;
       return;
     }
+    if (shouldBlockDeferredStartMenuLoad(loaded, inFlightRef.current)) {
+      return;
+    }
+    pendingOpenRef.current = kind === "open";
     inFlightRef.current = true;
     const requestGen = ++deferredMenuGenRef.current;
     void importer()
@@ -563,6 +580,7 @@ export default function StartScreen({
           requestGen,
           setCmp,
           setDefaultOpen,
+          pendingOpenRef,
           mod.default,
         );
       })
@@ -575,30 +593,36 @@ export default function StartScreen({
       });
   };
 
-  const loadLanguageSelector = () => {
+  const loadLanguageSelector = (kind: DeferredStartMenuLoadKind) => {
     queueDeferredMenuImport(
       LanguageSelectorCmp,
       languageLoadInFlightRef,
+      languagePendingOpenRef,
+      kind,
       () => import("@/components/game/LanguageSelector"),
       (component) => setLanguageSelectorCmp(() => component),
       setLanguageDefaultOpen,
     );
   };
 
-  const loadFooterNetworkMenu = () => {
+  const loadFooterNetworkMenu = (kind: DeferredStartMenuLoadKind) => {
     queueDeferredMenuImport(
       FooterNetworkMenuCmp,
       networkLoadInFlightRef,
+      networkPendingOpenRef,
+      kind,
       () => import("@/components/game/FooterNetworkMenu"),
       (component) => setFooterNetworkMenuCmp(() => component),
       setNetworkDefaultOpen,
     );
   };
 
-  const loadCrazyGamesCornerMenu = () => {
+  const loadCrazyGamesCornerMenu = (kind: DeferredStartMenuLoadKind) => {
     queueDeferredMenuImport(
       CrazyGamesCornerMenuCmp,
       crazyGamesLoadInFlightRef,
+      crazyGamesPendingOpenRef,
+      kind,
       () => import("@/components/game/CrazyGamesMenuLinks"),
       (component) => setCrazyGamesCornerMenuCmp(() => component),
       setCrazyGamesDefaultOpen,
@@ -725,7 +749,9 @@ export default function StartScreen({
             ) : (
               <button
                 type="button"
-                onClick={loadCrazyGamesCornerMenu}
+                onPointerEnter={() => loadCrazyGamesCornerMenu("prefetch")}
+                onFocus={() => loadCrazyGamesCornerMenu("prefetch")}
+                onClick={() => loadCrazyGamesCornerMenu("open")}
                 aria-label={t("profile.title", { defaultValue: "Menu" })}
                 data-testid="button-crazygames-corner-menu"
                 className={`${START_FULLSCREEN_BTN} group touch-manipulation bg-transparent text-neutral-300`}
@@ -838,7 +864,9 @@ export default function StartScreen({
           ) : (
             <button
               type="button"
-              onClick={loadLanguageSelector}
+              onPointerEnter={() => loadLanguageSelector("prefetch")}
+              onFocus={() => loadLanguageSelector("prefetch")}
+              onClick={() => loadLanguageSelector("open")}
               className={START_FOOTER_ICON_BTN}
               aria-label={t("languageSelector.ariaLabel")}
             >
@@ -970,7 +998,9 @@ export default function StartScreen({
             ) : (
               <button
                 type="button"
-                onClick={loadFooterNetworkMenu}
+                onPointerEnter={() => loadFooterNetworkMenu("prefetch")}
+                onFocus={() => loadFooterNetworkMenu("prefetch")}
+                onClick={() => loadFooterNetworkMenu("open")}
                 data-testid="button-footer-social"
                 className={START_FOOTER_SOCIAL_LINK}
                 aria-label={t("footer.social", { defaultValue: "Social" })}
