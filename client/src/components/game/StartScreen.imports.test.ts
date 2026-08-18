@@ -95,6 +95,8 @@ describe("start-screen first-load imports", () => {
     expect(src).toContain('import("@/components/ui/tooltip")');
     expect(src).toContain("pointerdown");
     expect(src).not.toMatch(/requestIdleCallback/);
+    // Wrapping children in the deferred provider remounts StartScreen on first click.
+    expect(src).not.toMatch(/if\s*\(\s*!TooltipProvider\s*\)/);
   });
 
   it("utm helpers stay zod-free", () => {
