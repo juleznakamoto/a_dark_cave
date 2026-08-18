@@ -25,6 +25,31 @@ describe("start-screen first-load imports", () => {
     expect(staticValueFrom(src, "@/components/ui/particle-button")).toBe(true);
   });
 
+  it("StartScreen click-loads language, social, and CrazyGames menus", () => {
+    const src = source("StartScreen.tsx");
+    expect(staticValueFrom(src, "@/components/game/LanguageSelector")).toBe(
+      false,
+    );
+    expect(staticValueFrom(src, "@/components/game/FooterNetworkMenu")).toBe(
+      false,
+    );
+    expect(staticValueFrom(src, "@/components/game/CrazyGamesMenuLinks")).toBe(
+      false,
+    );
+    expect(staticValueFrom(src, "@/components/game/FullscreenButton")).toBe(
+      false,
+    );
+    expect(src).toContain('import("@/components/game/LanguageSelector")');
+    expect(src).toContain('import("@/components/game/FooterNetworkMenu")');
+    expect(src).toContain('import("@/components/game/CrazyGamesMenuLinks")');
+  });
+
+  it("clears deferred menu in-flight flags when the import settles", () => {
+    const src = source("StartScreen.tsx");
+    expect(src).toContain(".finally(");
+    expect(src).toContain("inFlightRef.current = false");
+  });
+
   it("startupCoordinator does not import the Supabase client module", () => {
     const src = readFileSync(
       join(dir, "../../game/startupCoordinator.ts"),

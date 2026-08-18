@@ -6,9 +6,7 @@ import CloudShader from "@/components/ui/cloud-shader";
 import VaporizeTextCycle from "@/components/ui/vapour-text-effect";
 import { audioManager, SOUND_VOLUME } from "@/lib/audio";
 import { FooterSocialIcon } from "@/components/game/FooterSocialIcon";
-import FooterNetworkMenu from "@/components/game/FooterNetworkMenu";
 import { GameUiIcon } from "@/components/game/GameUiIcon";
-import LanguageSelector from "@/components/game/LanguageSelector";
 import {
   GAME_FOOTER_RIGHT_ICON_LINKS,
   GAME_FOOTER_RIGHT_ICON_ORDER,
@@ -19,13 +17,19 @@ import { openGameFeedbackForm } from "@/lib/gameFeedbackForm";
 import { useTranslation } from "react-i18next";
 import { useLocale } from "@/i18n/useLocale";
 import { OG_LOCALE_TAGS, SUPPORTED_LOCALES } from "@/i18n/locales";
-import { FullscreenButton } from "@/components/game/FullscreenButton";
-import CrazyGamesCornerMenu from "@/components/game/CrazyGamesMenuLinks";
 import { GAME_CHROME_NO_BG_HOVER } from "@/components/game/gameChrome";
+import { useFullscreen } from "@/hooks/useFullscreen";
 import { clearStaleChunkReloadGuard } from "@/lib/hardReload";
 import { mountFiraSansFontFace } from "@/lib/firaSansFontFace";
 import { logger } from "@/lib/logger";
 import { publicUrl } from "@/lib/publicUrl";
+import type LanguageSelector from "@/components/game/LanguageSelector";
+import type FooterNetworkMenu from "@/components/game/FooterNetworkMenu";
+import type CrazyGamesCornerMenu from "@/components/game/CrazyGamesMenuLinks";
+import {
+  resolveDeferredStartMenuMount,
+  shouldBlockDeferredStartMenuLoad,
+} from "@/components/game/startScreenDeferredMenu";
 
 const START_INTRO_VAPORIZE_COLOR = "rgba(209, 213, 219, 0.9)";
 const START_INTRO_VAPORIZE_ANIMATION = {
@@ -75,6 +79,56 @@ const START_FOOTER_ICON_BTN = `${START_FOOTER_SOCIAL_LINK} shrink-0 p-0 w-7 h-7 
 const START_FOOTER_ICON = "size-4 shrink-0";
 /** Paint original PNG glyphs with currentColor (matches language + social text). */
 const START_AUDIO_ICON_MASK = `${START_FOOTER_ICON} bg-current [mask-size:contain] [mask-repeat:no-repeat] [mask-position:center] [mask-mode:alpha] [-webkit-mask-size:contain] [-webkit-mask-repeat:no-repeat] [-webkit-mask-position:center]`;
+const START_FULLSCREEN_BTN = `group shrink-0 p-0 w-7 h-7 flex items-center justify-center ${GAME_CHROME_NO_BG_HOVER}`;
+
+function StartScreenFullscreenButton() {
+  const { isFullscreen, toggleFullscreen, available } = useFullscreen();
+  const { t } = useTranslation("ui");
+  if (!available) return null;
+  const label = isFullscreen
+    ? t("profile.exitFullscreen", { defaultValue: "Exit full screen" })
+    : t("profile.enterFullscreen", { defaultValue: "Full screen" });
+  return (
+    <button
+      type="button"
+      onClick={() => void toggleFullscreen()}
+      aria-label={label}
+      className={`${START_FULLSCREEN_BTN} group touch-manipulation bg-transparent text-neutral-300`}
+      data-testid="button-toggle-fullscreen"
+    >
+      <svg
+        viewBox="0 0 24 24"
+        className="h-[15px] w-[15px] opacity-80"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="2"
+        aria-hidden
+      >
+        {isFullscreen ? (
+          <path d="M8 3v3a2 2 0 0 1-2 2H3m18 0h-3a2 2 0 0 1-2-2V3m0 18v-3a2 2 0 0 1 2-2h3M3 16h3a2 2 0 0 1 2 2v3" />
+        ) : (
+          <path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7" />
+        )}
+      </svg>
+    </button>
+  );
+}
+
+function StartScreenGlobeIcon({ className }: { className?: string }) {
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      className={className}
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      aria-hidden
+    >
+      <circle cx="12" cy="12" r="10" />
+      <path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z" />
+    </svg>
+  );
+}
 
 export interface StartScreenPreferences {
   cruelMode: boolean;
@@ -111,10 +165,23 @@ export default function StartScreen({
   const musicVolume = initialPreferences.musicVolume;
   const sfxVolume = initialPreferences.sfxVolume;
   const [showParticles, setShowParticles] = useState(false);
+  const [LanguageSelectorCmp, setLanguageSelectorCmp] = useState<
+    typeof LanguageSelector | null
+  >(null);
+  const [FooterNetworkMenuCmp, setFooterNetworkMenuCmp] = useState<
+    typeof FooterNetworkMenu | null
+  >(null);
+  const [CrazyGamesCornerMenuCmp, setCrazyGamesCornerMenuCmp] = useState<
+    typeof CrazyGamesCornerMenu | null
+  >(null);
   const [languageDefaultOpen, setLanguageDefaultOpen] = useState(false);
   const [networkDefaultOpen, setNetworkDefaultOpen] = useState(false);
   const [crazyGamesDefaultOpen, setCrazyGamesDefaultOpen] = useState(false);
   const [startMenuEpoch, setStartMenuEpoch] = useState(0);
+  const deferredMenuGenRef = useRef(0);
+  const languageLoadInFlightRef = useRef(false);
+  const networkLoadInFlightRef = useRef(false);
+  const crazyGamesLoadInFlightRef = useRef(false);
   const [showEyesEasterEgg, setShowEyesEasterEgg] = useState(false);
   const eyesEasterEggInsideHotZoneRef = useRef(false);
   const eyesEasterEggConsumedRef = useRef(false);
@@ -420,6 +487,7 @@ export default function StartScreen({
     };
     onLightFireStart?.(preferences);
 
+    deferredMenuGenRef.current += 1;
     setLanguageDefaultOpen(false);
     setNetworkDefaultOpen(false);
     setCrazyGamesDefaultOpen(false);
@@ -447,6 +515,87 @@ export default function StartScreen({
       audioManager.preloadLightFireCue();
       audioManager.playLoopingSound("wind", SOUND_VOLUME.wind, false, 1);
     }
+  };
+
+  const finishDeferredMenuLoad = <T,>(
+    requestGen: number,
+    setCmp: (component: T) => void,
+    setDefaultOpen: (open: boolean) => void,
+    component: T,
+  ) => {
+    const { apply, open } = resolveDeferredStartMenuMount(
+      executedRef.current,
+      requestGen,
+      deferredMenuGenRef.current,
+    );
+    if (!apply) return;
+    setCmp(component);
+    setDefaultOpen(open);
+  };
+
+  const queueDeferredMenuImport = <T,>(
+    alreadyLoaded: T | null,
+    inFlightRef: { current: boolean },
+    importer: () => Promise<{ default: T }>,
+    setCmp: (component: T) => void,
+    setDefaultOpen: (open: boolean) => void,
+  ) => {
+    if (
+      shouldBlockDeferredStartMenuLoad(
+        Boolean(alreadyLoaded),
+        inFlightRef.current,
+      )
+    ) {
+      return;
+    }
+    inFlightRef.current = true;
+    const requestGen = ++deferredMenuGenRef.current;
+    void importer()
+      .then((mod) => {
+        finishDeferredMenuLoad(
+          requestGen,
+          setCmp,
+          setDefaultOpen,
+          mod.default,
+        );
+      })
+      .catch((error: unknown) => {
+        logger.error("Failed to load start-screen menu", error);
+      })
+      .finally(() => {
+        // Stale/Light Fire skips must not latch this guard, or the placeholder dies.
+        inFlightRef.current = false;
+      });
+  };
+
+  const loadLanguageSelector = () => {
+    queueDeferredMenuImport(
+      LanguageSelectorCmp,
+      languageLoadInFlightRef,
+      () => import("@/components/game/LanguageSelector"),
+      (component) => setLanguageSelectorCmp(() => component),
+      setLanguageDefaultOpen,
+    );
+  };
+
+  const loadFooterNetworkMenu = () => {
+    queueDeferredMenuImport(
+      FooterNetworkMenuCmp,
+      networkLoadInFlightRef,
+      () => import("@/components/game/FooterNetworkMenu"),
+      (component) => setFooterNetworkMenuCmp(() => component),
+      setNetworkDefaultOpen,
+    );
+  };
+
+  const loadCrazyGamesCornerMenu = () => {
+    queueDeferredMenuImport(
+      CrazyGamesCornerMenuCmp,
+      crazyGamesLoadInFlightRef,
+      () => import("@/components/game/CrazyGamesMenuLinks"),
+      (component) => setCrazyGamesCornerMenuCmp(() => component),
+      setCrazyGamesDefaultOpen,
+    );
   };
 
   return (
@@ -560,13 +709,29 @@ export default function StartScreen({
       {(steamEditionActive || crazyGamesEditionActive) && (
         <div className="absolute top-2 right-2 z-20">
           {crazyGamesEditionActive ? (
-            <CrazyGamesCornerMenu
-              key={startMenuEpoch}
-              steamUtmContent={STEAM_STORE_UTM_CONTENT.startScreenMenu}
-              defaultOpen={crazyGamesDefaultOpen}
-            />
+            CrazyGamesCornerMenuCmp ? (
+              <CrazyGamesCornerMenuCmp
+                key={startMenuEpoch}
+                steamUtmContent={STEAM_STORE_UTM_CONTENT.startScreenMenu}
+                defaultOpen={crazyGamesDefaultOpen}
+              />
+            ) : (
+              <button
+                type="button"
+                onClick={loadCrazyGamesCornerMenu}
+                aria-label={t("profile.title", { defaultValue: "Menu" })}
+                data-testid="button-crazygames-corner-menu"
+                className={`${START_FULLSCREEN_BTN} group touch-manipulation bg-transparent text-neutral-300`}
+              >
+                <GameUiIcon
+                  name="menu"
+                  sizeClassName="game-header-accent-icon"
+                  className="text-neutral-300 opacity-80"
+                />
+              </button>
+            )
           ) : (
-            <FullscreenButton />
+            <StartScreenFullscreenButton />
           )}
         </div>
       )}
@@ -653,15 +818,26 @@ export default function StartScreen({
         aria-label="Site links"
       >
         <div className="flex flex-wrap items-center gap-x-2 gap-y-1.5">
-          <LanguageSelector
-            key={startMenuEpoch}
-            buttonClassName={START_FOOTER_ICON_BTN}
-            iconClassName={START_FOOTER_ICON}
-            iconVariant="globe"
-            menuAlign="start"
-            showTooltip={false}
-            defaultOpen={languageDefaultOpen}
-          />
+          {LanguageSelectorCmp ? (
+            <LanguageSelectorCmp
+              key={startMenuEpoch}
+              buttonClassName={START_FOOTER_ICON_BTN}
+              iconClassName={START_FOOTER_ICON}
+              iconVariant="globe"
+              menuAlign="start"
+              showTooltip={false}
+              defaultOpen={languageDefaultOpen}
+            />
+          ) : (
+            <button
+              type="button"
+              onClick={loadLanguageSelector}
+              className={START_FOOTER_ICON_BTN}
+              aria-label={t("languageSelector.ariaLabel")}
+            >
+              <StartScreenGlobeIcon className={START_FOOTER_ICON} />
+            </button>
+          )}
           <Button
             variant="ghost"
             size="xs"
@@ -772,18 +948,36 @@ export default function StartScreen({
                 </a>
               );
             })}
-          {!hideStartScreenSocialLinks && (
-            <FooterNetworkMenu
-              key={startMenuEpoch}
-              side="top"
-              align="end"
-              triggerClassName={START_FOOTER_SOCIAL_LINK}
-              iconClassName="opacity-100"
-              iconSizeClassName="w-3.5 h-3.5"
-              labelClassName="sr-only sm:not-sr-only sm:inline"
-              defaultOpen={networkDefaultOpen}
-            />
-          )}
+          {!hideStartScreenSocialLinks &&
+            (FooterNetworkMenuCmp ? (
+              <FooterNetworkMenuCmp
+                key={startMenuEpoch}
+                side="top"
+                align="end"
+                triggerClassName={START_FOOTER_SOCIAL_LINK}
+                iconClassName="opacity-100"
+                iconSizeClassName="w-3.5 h-3.5"
+                labelClassName="sr-only sm:not-sr-only sm:inline"
+                defaultOpen={networkDefaultOpen}
+              />
+            ) : (
+              <button
+                type="button"
+                onClick={loadFooterNetworkMenu}
+                data-testid="button-footer-social"
+                className={START_FOOTER_SOCIAL_LINK}
+                aria-label={t("footer.social", { defaultValue: "Social" })}
+              >
+                <GameUiIcon
+                  name="network"
+                  sizeClassName="w-3.5 h-3.5"
+                  className="opacity-100"
+                />
+                <span className="sr-only sm:not-sr-only sm:inline">
+                  {t("footer.social", { defaultValue: "Social" })}
+                </span>
+              </button>
+            ))}
           {!steamEditionActive && (
             <div className="flex flex-col items-end leading-tight sm:flex-row sm:items-center sm:gap-x-3">
               {!crazyGamesEditionActive && (
