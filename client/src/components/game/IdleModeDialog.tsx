@@ -15,6 +15,7 @@ import { capitalizeWords, cn } from "@/lib/utils";
 import { getTotalPopulationEffects } from "@/game/population";
 import { audioManager, SOUND_VOLUME } from "@/lib/audio";
 import { resetProductionCycle } from "@/game/loop";
+import { logger } from "@/lib/logger";
 import { BOMB_RESOURCES, constrainResourceAmount } from "@/game/resourceLimits";
 import { gameStateSchema, type GameState } from "@shared/schema";
 
@@ -238,37 +239,10 @@ export default function IdleModeDialog() {
         if (stillActive) {
           audioManager.playSound("sleep", SOUND_VOLUME.sleep);
         }
-      } else if (!idleModeState?.isActive && idleModeState?.startTime === 0) {
-        // Only start fresh idle mode if there's no active state AND no previous startTime
-        // This prevents starting a new idle mode after one just finished
-
-        // Get the CURRENT (most recent) resources state
-        const currentState = useGameStore.getState();
-        setIsActive(true);
-        setStartTime(initNow);
-        setAccumulatedResources({});
-        setRemainingTime(IDLE_DURATION_MS);
-        // Store the CURRENT resources as initial state
-        setInitialResources({ ...currentState.resources });
-
-        // Persist the start time
-        useGameStore.setState({
-          idleModeState: {
-            isActive: true,
-            startTime: initNow,
-            needsDisplay: true,
-          },
-        });
-
-        // Play sleep sound when entering sleep mode
-        audioManager.playSound("sleep", SOUND_VOLUME.sleep);
-
-        // Immediately save to Supabase so user can close tab
-        (async () => {
-          const { saveGame } = await import("@/game/save");
-          const currentState = useGameStore.getState();
-          await saveGame(currentState, currentState.playTime);
-        })();
+      } else {
+        // Estate always writes startTime before opening. A dialog with no session
+        // is a stale restore after wake — close it instead of starting a new sleep.
+        useGameStore.getState().setIdleModeDialog(false);
       }
     }
   }, [idleModeDialog.isOpen, isActive]);
@@ -506,6 +480,13 @@ export default function IdleModeDialog() {
       },
       idleModeDialog: { isOpen: false },
     });
+
+    // Persist wake so a remount / reload cannot restore the sleep dialog.
+    void import("@/game/save")
+      .then(({ saveGame }) => saveGame(useGameStore.getState(), false))
+      .catch((error) => {
+        logger.error("[SLEEP] Failed to save after wake:", error);
+      });
 
     // Close dialog and reset local state
     setIsActive(false);

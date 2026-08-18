@@ -155,6 +155,7 @@ let lastRenderTime = 0;
 let lastUserActivity = 0;
 let inactivityCheckInterval: NodeJS.Timeout | null = null;
 let sessionCheckInterval: NodeJS.Timeout | null = null; // Added for session checking
+let idleModeDisplayTimeoutId: NodeJS.Timeout | null = null;
 let isInactive = false;
 let lastGameLoadTime = 0; // Track when game was last loaded
 
@@ -209,6 +210,23 @@ function detachActivityListeners() {
 export function getMsSinceUserActivity(): number {
   if (lastUserActivity === 0) return 0;
   return Date.now() - lastUserActivity;
+}
+
+/** True when a sleep session is still in progress and the dialog should come back. */
+export function shouldRestoreSleepDialog(state: {
+  idleModeState?: { needsDisplay?: boolean; startTime?: number } | null;
+}): boolean {
+  return (
+    state.idleModeState?.needsDisplay === true &&
+    (state.idleModeState.startTime ?? 0) > 0
+  );
+}
+
+function clearIdleModeDisplayTimeout(): void {
+  if (idleModeDisplayTimeoutId) {
+    clearTimeout(idleModeDisplayTimeoutId);
+    idleModeDisplayTimeoutId = null;
+  }
 }
 
 export function startGameLoop() {
@@ -303,11 +321,15 @@ export function startGameLoop() {
   sessionCheckInterval = setInterval(checkSession, SESSION_CHECK_INTERVAL);
 
   // Check if idle mode needs to be displayed (user left during idle mode)
+  clearIdleModeDisplayTimeout();
   const state = useGameStore.getState();
-  if (state.idleModeState?.needsDisplay && state.idleModeState.startTime > 0) {
-    // Open idle mode dialog to show accumulated resources
-    setTimeout(() => {
-      useGameStore.getState().setIdleModeDialog(true);
+  if (shouldRestoreSleepDialog(state)) {
+    idleModeDisplayTimeoutId = setTimeout(() => {
+      idleModeDisplayTimeoutId = null;
+      const current = useGameStore.getState();
+      if (shouldRestoreSleepDialog(current)) {
+        current.setIdleModeDialog(true);
+      }
     }, 500);
   }
 
@@ -633,6 +655,7 @@ export function stopGameLoop() {
     sessionCheckInterval = null;
   }
 
+  clearIdleModeDisplayTimeout();
 
   detachActivityListeners();
 

@@ -6,7 +6,12 @@ import {
   getTimedEventTabEffectiveRemainingMs,
 } from "./state";
 import { EventManager, type EventRollState } from "./rules/events";
-import { clearExpiredTimedEventTab } from "./loop";
+import {
+  clearExpiredTimedEventTab,
+  shouldRestoreSleepDialog,
+  startGameLoop,
+  stopGameLoop,
+} from "./loop";
 import { setGameTabHiddenForTests } from "@/lib/tabVisibility";
 
 describe('Game Loop Production', () => {
@@ -372,6 +377,105 @@ describe("reward and event dialog stacking", () => {
     expect(useGameStore.getState().eventDialog.currentEvent?.id).toBe(
       "test-event",
     );
+  });
+});
+
+describe("sleep dialog restore on loop start", () => {
+  beforeEach(() => {
+    vi.useFakeTimers();
+    const listenerTarget = {
+      addEventListener: vi.fn(),
+      removeEventListener: vi.fn(),
+    };
+    vi.stubGlobal("window", listenerTarget);
+    vi.stubGlobal("document", listenerTarget);
+    vi.stubGlobal("performance", { now: () => Date.now() });
+    vi.stubGlobal("requestAnimationFrame", () => 1);
+    vi.stubGlobal("cancelAnimationFrame", () => { });
+    useGameStore.getState().initialize();
+  });
+
+  afterEach(() => {
+    stopGameLoop();
+    vi.useRealTimers();
+    vi.unstubAllGlobals();
+  });
+
+  it("restores sleep only while a session is still pending display", () => {
+    expect(
+      shouldRestoreSleepDialog({
+        idleModeState: { needsDisplay: true, startTime: 1 },
+      }),
+    ).toBe(true);
+    expect(
+      shouldRestoreSleepDialog({
+        idleModeState: { needsDisplay: false, startTime: 1 },
+      }),
+    ).toBe(false);
+    expect(
+      shouldRestoreSleepDialog({
+        idleModeState: { needsDisplay: true, startTime: 0 },
+      }),
+    ).toBe(false);
+  });
+
+  it("opens the sleep dialog when a session is still pending", () => {
+    useGameStore.setState({
+      idleModeState: {
+        isActive: true,
+        startTime: Date.now() - 1000,
+        needsDisplay: true,
+      },
+      idleModeDialog: { isOpen: false },
+    });
+
+    startGameLoop();
+    vi.advanceTimersByTime(600);
+
+    expect(useGameStore.getState().idleModeDialog.isOpen).toBe(true);
+  });
+
+  it("does not reopen sleep after the player already woke", () => {
+    useGameStore.setState({
+      idleModeState: {
+        isActive: true,
+        startTime: Date.now() - 1000,
+        needsDisplay: true,
+      },
+      idleModeDialog: { isOpen: true },
+    });
+
+    startGameLoop();
+
+    useGameStore.setState({
+      idleModeState: {
+        isActive: false,
+        startTime: 0,
+        needsDisplay: false,
+      },
+      idleModeDialog: { isOpen: false },
+    });
+
+    vi.advanceTimersByTime(600);
+
+    expect(useGameStore.getState().idleModeDialog.isOpen).toBe(false);
+  });
+
+  it("cancels a pending sleep restore when the loop stops", () => {
+    useGameStore.setState({
+      idleModeState: {
+        isActive: true,
+        startTime: Date.now() - 1000,
+        needsDisplay: true,
+      },
+      idleModeDialog: { isOpen: false },
+    });
+
+    startGameLoop();
+    stopGameLoop();
+    vi.advanceTimersByTime(600);
+
+    expect(useGameStore.getState().idleModeDialog.isOpen).toBe(false);
   });
 });
 

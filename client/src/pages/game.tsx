@@ -1,4 +1,4 @@
-import { useEffect, useState, lazy } from "react";
+import { useEffect, useState, lazy, Suspense } from "react";
 import GameContainer from "@/components/game/GameContainer";
 import { useGameStore } from "@/game/state";
 import { stopGameLoop } from "@/game/loop";
@@ -79,14 +79,14 @@ export default function Game() {
       <GameContainer />
 
       {!steamEditionActive && (
-        <>
+        <Suspense fallback={null}>
           <EmailConfirmedDialog
             isOpen={emailConfirmedDialogOpen}
             onClose={() => setEmailConfirmedDialogOpen(false)}
           />
           <PlaylightWelcomeDialog />
           <FeedbackDialog />
-        </>
+        </Suspense>
       )}
     </div>
   );
