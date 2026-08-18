@@ -56,6 +56,9 @@ const EYES_EASTER_EGG_HOT_ZONE_RATIO = 0.08;
 /** Matches `.animate-fade-in-button` delay. Prefetch Framer here, after LCP. */
 const MAKE_FIRE_BUTTON_FADE_DELAY_MS = 1500;
 const MAKE_FIRE_BUTTON_FADE_DURATION_MS = 1000;
+/** Same box as ParticleButton's shadcn Button so the post-fade swap does not shove the intro. */
+const MAKE_FIRE_BUTTON_CLASS =
+  "bg-transparent border-none text-gray-300/90 hover:bg-transparent text-lg px-8 py-4 fire-hover z-[10000] adc-btn-size-default";
 
 function isInUpperLeftQuadrantHotZone(
   clientX: number,
@@ -168,6 +171,7 @@ export default function StartScreen({
   const musicVolume = initialPreferences.musicVolume;
   const sfxVolume = initialPreferences.sfxVolume;
   const [showParticles, setShowParticles] = useState(false);
+  const [buttonFadeInDone, setButtonFadeInDone] = useState(false);
   const [ParticleButtonCmp, setParticleButtonCmp] = useState<
     typeof ParticleButton | null
   >(null);
@@ -197,6 +201,7 @@ export default function StartScreen({
   const eyesEasterEggHideTimeoutRef = useRef<ReturnType<
     typeof setTimeout
   > | null>(null);
+  const [introFadeInDone, setIntroFadeInDone] = useState(false);
   const [introVaporFont, setIntroVaporFont] = useState<{
     fontFamily: string;
     fontSize: string;
@@ -440,9 +445,8 @@ export default function StartScreen({
       });
   }, []);
 
-  // Prefetch after the fade delay so Light Fire sparks are ready on click.
-  // Do not swap this control to ParticleButton here: that remounts a shadcn
-  // Button (different height) and shoves the centered intro text.
+  // Prefetch after the fade delay so hover sparks are ready before the button
+  // is hoverable. Framer stays off the first paint / LCP path.
   useEffect(() => {
     const prefetchId = window.setTimeout(() => {
       loadParticleButton();
@@ -450,18 +454,45 @@ export default function StartScreen({
     return () => window.clearTimeout(prefetchId);
   }, [loadParticleButton]);
 
+  // Swap only after fade-in. Remounting ParticleButton mid-animation restarts it.
   useEffect(() => {
     const btn = buttonRef.current;
-    const handleAnimationEnd = (event: AnimationEvent) => {
-      if (event.animationName && event.animationName !== "fade-in-button") {
+    const markFadeInDone = (event?: AnimationEvent) => {
+      if (event?.animationName && event.animationName !== "fade-in-button") {
         return;
       }
       btn?.classList.remove("animate-fade-in-button");
+      setButtonFadeInDone(true);
     };
 
-    btn?.addEventListener("animationend", handleAnimationEnd);
-    return () => btn?.removeEventListener("animationend", handleAnimationEnd);
+    btn?.addEventListener("animationend", markFadeInDone);
+    const fallbackId = window.setTimeout(
+      () => markFadeInDone(),
+      MAKE_FIRE_BUTTON_FADE_DELAY_MS + MAKE_FIRE_BUTTON_FADE_DURATION_MS + 100,
+    );
+    return () => {
+      btn?.removeEventListener("animationend", markFadeInDone);
+      window.clearTimeout(fallbackId);
+    };
   }, []);
+
+  // Drop intro fade-in class after it finishes so Light Fire / vaporize does
+  // not restart the blur or clear a filter containing-block (that looked like
+  // the three lines jumping or playing again).
+  useEffect(() => {
+    if (introFadeInDone) return;
+    const firstLine = introLineRefs.current[0]?.parentElement;
+    if (!firstLine) return;
+
+    const handleIntroAnimationEnd = (event: AnimationEvent) => {
+      if (event.animationName !== "fade-in-text") return;
+      setIntroFadeInDone(true);
+    };
+
+    firstLine.addEventListener("animationend", handleIntroAnimationEnd);
+    return () =>
+      firstLine.removeEventListener("animationend", handleIntroAnimationEnd);
+  }, [introFadeInDone]);
 
   const handleLightFire = () => {
     if (executedRef.current) return;
@@ -654,9 +685,7 @@ export default function StartScreen({
           pointer-events: none;
         }
 
-        /* Opacity stays 1 so LCP can fire on first paint; only un-blur for atmosphere.
-           Leave this class on after the animation (forwards = blur(0)). Removing
-           filter later creates a containing-block change that shoves the lines. */
+        /* Opacity stays 1 so LCP can fire on first paint; only un-blur for atmosphere. */
         @keyframes fade-in-text {
           0% { filter: blur(10px); }
           100% { filter: blur(0px); }
@@ -759,7 +788,7 @@ export default function StartScreen({
             return (
               <div
                 key={`${index}-${line}`}
-                className="relative mx-auto w-fit text-lg leading-relaxed text-gray-300/90 font-normal [contain:layout]"
+                className="relative mx-auto w-fit text-lg leading-relaxed text-gray-300/90 font-normal"
               >
                 {showParticles && (
                   <div className="pointer-events-none absolute inset-0 z-10">
@@ -789,7 +818,8 @@ export default function StartScreen({
                   ) => {
                     introLineClipRefs.current[index] = el;
                   }}
-                  className="relative z-0 m-0 text-lg leading-relaxed font-normal animate-fade-in-text"
+                  className={`relative z-0 m-0 text-lg leading-relaxed font-normal ${introFadeInDone ? "" : "animate-fade-in-text"
+                    }`}
                 >
                   <span
                     ref={(el) => {
@@ -805,26 +835,28 @@ export default function StartScreen({
         </div>
 
         <div className={showParticles ? undefined : "fire-glow-hint"}>
-          {ParticleButtonCmp && showParticles ? (
+          {ParticleButtonCmp && (buttonFadeInDone || showParticles) ? (
             <ParticleButtonCmp
               ref={buttonRef}
               onClick={handleLightFire}
-              autoStart
-              className="bg-transparent border-none text-gray-300/90 hover:bg-transparent text-lg px-8 py-4 fire-hover z-[10000] fire-active"
+              autoStart={showParticles}
+              className={`${MAKE_FIRE_BUTTON_CLASS} ${showParticles ? "fire-active" : ""}`}
               data-testid="button-light-fire"
             >
               {t("startScreen.makeFire")}
             </ParticleButtonCmp>
           ) : (
-            <button
-              ref={buttonRef}
-              type="button"
-              onClick={handleLightFire}
-              className={`bg-transparent border-none text-gray-300/90 hover:bg-transparent text-lg px-8 py-4 fire-hover z-[10000] ${showParticles ? "fire-active" : "animate-fade-in-button"}`}
-              data-testid="button-light-fire"
-            >
-              {t("startScreen.makeFire")}
-            </button>
+            <div className="relative inline-block isolate">
+              <button
+                ref={buttonRef}
+                type="button"
+                onClick={handleLightFire}
+                className={`${MAKE_FIRE_BUTTON_CLASS} ${showParticles ? "fire-active" : "animate-fade-in-button"}`}
+                data-testid="button-light-fire"
+              >
+                {t("startScreen.makeFire")}
+              </button>
+            </div>
           )}
         </div>
       </main>

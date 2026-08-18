@@ -120,19 +120,22 @@ export function mountFiraSansFontFace(options?: {
   }
 
   // Kick the fetch for the primary face used on start / body copy.
-  return document.fonts.load("400 16px 'Fira Sans'").then(
+  // Cap the wait so gameplay init cannot hang if the face never resolves.
+  const loaded = document.fonts.load("400 16px 'Fira Sans'").then(
     () => {
       markLoaded();
     },
     () => {
-      if (applyClass) {
-        return new Promise<void>((resolve) => {
-          setTimeout(() => {
-            markLoaded();
-            resolve();
-          }, 100);
-        });
-      }
+      markLoaded();
     },
   );
+  return Promise.race([
+    loaded,
+    new Promise<void>((resolve) => {
+      setTimeout(() => {
+        markLoaded();
+        resolve();
+      }, 800);
+    }),
+  ]);
 }
