@@ -14,7 +14,7 @@ import { gameActionOutlineButtonClassName } from "@/components/CooldownButton";
 import { capitalizeWords, cn } from "@/lib/utils";
 import { getTotalPopulationEffects } from "@/game/population";
 import { audioManager, SOUND_VOLUME } from "@/lib/audio";
-import { resetProductionCycle } from "@/game/loop";
+import { resetProductionCycle, resolveSleepDialogInit } from "@/game/loop";
 import { logger } from "@/lib/logger";
 import { BOMB_RESOURCES, constrainResourceAmount } from "@/game/resourceLimits";
 import { gameStateSchema, type GameState } from "@shared/schema";
@@ -126,8 +126,6 @@ export default function IdleModeDialog() {
   const { t } = useTranslation("ui");
   const {
     idleModeDialog,
-    setIdleModeDialog,
-    idleModeState,
     sleepUpgrades,
     gameId,
     devMode,
@@ -178,17 +176,20 @@ export default function IdleModeDialog() {
     setDisplayNow(Date.now());
   }, [gameId]);
 
-  // Initialize idle mode when dialog opens
+  // Initialize idle mode when dialog opens.
+  // Read the live store session: the hook value can be stale because this
+  // effect does not list idleModeState in its deps.
   useEffect(() => {
     if (idleModeDialog.isOpen && !isActive) {
       const initNow = Date.now();
+      const session = useGameStore.getState().idleModeState;
 
-      // Check if there's a persisted idle mode state
-      if (idleModeState?.startTime && idleModeState.startTime > 0) {
-        const initElapsed = initNow - idleModeState.startTime;
+      if (resolveSleepDialogInit(session) === "resume") {
+        const sessionStart = session?.startTime ?? 0;
+        const initElapsed = initNow - sessionStart;
         const remaining = Math.max(0, IDLE_DURATION_MS - initElapsed);
 
-        setStartTime(idleModeState.startTime);
+        setStartTime(sessionStart);
         setRemainingTime(remaining);
 
         // Calculate resources accumulated while offline
@@ -240,9 +241,31 @@ export default function IdleModeDialog() {
           audioManager.playSound("sleep", SOUND_VOLUME.sleep);
         }
       } else {
-        // Estate always writes startTime before opening. A dialog with no session
-        // is a stale restore after wake — close it instead of starting a new sleep.
-        useGameStore.getState().setIdleModeDialog(false);
+        // Fresh sleep: Estate usually writes startTime first, but this effect
+        // can still run against a stale hook snapshot (startTime 0). Starting
+        // here keeps Sleep from closing itself.
+        const currentState = useGameStore.getState();
+        setIsActive(true);
+        setStartTime(initNow);
+        setAccumulatedResources({});
+        setRemainingTime(IDLE_DURATION_MS);
+        setInitialResources({ ...currentState.resources });
+
+        useGameStore.setState({
+          idleModeState: {
+            isActive: true,
+            startTime: initNow,
+            needsDisplay: true,
+          },
+        });
+
+        audioManager.playSound("sleep", SOUND_VOLUME.sleep);
+
+        void import("@/game/save")
+          .then(({ saveGame }) => saveGame(useGameStore.getState(), false))
+          .catch((error) => {
+            logger.error("[SLEEP] Failed to save after starting sleep:", error);
+          });
       }
     }
   }, [idleModeDialog.isOpen, isActive]);

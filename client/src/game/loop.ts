@@ -222,6 +222,14 @@ export function shouldRestoreSleepDialog(state: {
   );
 }
 
+/** How the sleep dialog should initialize when it opens. */
+export function resolveSleepDialogInit(session: {
+  isActive?: boolean;
+  startTime?: number;
+} | null | undefined): "resume" | "startFresh" {
+  return (session?.startTime ?? 0) > 0 ? "resume" : "startFresh";
+}
+
 function clearIdleModeDisplayTimeout(): void {
   if (idleModeDisplayTimeoutId) {
     clearTimeout(idleModeDisplayTimeoutId);

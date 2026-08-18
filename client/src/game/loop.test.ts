@@ -9,6 +9,7 @@ import { EventManager, type EventRollState } from "./rules/events";
 import {
   clearExpiredTimedEventTab,
   shouldRestoreSleepDialog,
+  resolveSleepDialogInit,
   startGameLoop,
   stopGameLoop,
 } from "./loop";
@@ -399,6 +400,16 @@ describe("sleep dialog restore on loop start", () => {
     stopGameLoop();
     vi.useRealTimers();
     vi.unstubAllGlobals();
+  });
+
+  it("starts a fresh sleep when the dialog opens with no session", () => {
+    expect(resolveSleepDialogInit({ isActive: false, startTime: 0 })).toBe(
+      "startFresh",
+    );
+    expect(resolveSleepDialogInit(undefined)).toBe("startFresh");
+    expect(
+      resolveSleepDialogInit({ isActive: true, startTime: Date.now() }),
+    ).toBe("resume");
   });
 
   it("restores sleep only while a session is still pending display", () => {
