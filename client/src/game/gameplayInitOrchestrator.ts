@@ -68,7 +68,12 @@ export async function runGameplayInitialization(
   }
 
   // Upgrade start-screen 400/500 mount to the full in-game weight set.
-  mountFiraSansFontFace({ stage: "game", applyFontLoadedClass: true });
+  // Await the 400 face so the first GameContainer paint already uses Fira
+  // (otherwise `.font-loaded` swapping in ~1s later shoves the log text).
+  const firaReady = mountFiraSansFontFace({
+    stage: "game",
+    applyFontLoadedClass: true,
+  });
   mountNotoSansSymbols2FontFace();
 
   const preparedHydration = consumePreparedGameHydration();
@@ -199,6 +204,8 @@ export async function runGameplayInitialization(
       useGameStore.setState({ galaxyTimeUpDialogOpen: true });
     }
   }
+
+  await firaReady;
 
   startGameLoop();
 

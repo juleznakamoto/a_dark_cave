@@ -198,7 +198,6 @@ export default function StartScreen({
   const eyesEasterEggHideTimeoutRef = useRef<ReturnType<
     typeof setTimeout
   > | null>(null);
-  const [introFadeInDone, setIntroFadeInDone] = useState(false);
   const [introVaporFont, setIntroVaporFont] = useState<{
     fontFamily: string;
     fontSize: string;
@@ -473,23 +472,6 @@ export default function StartScreen({
     };
   }, []);
 
-  // Drop intro fade-in class after it finishes so Make Fire does not clear a
-  // filter containing-block (that subtle layout shift looked like the text jumping).
-  useEffect(() => {
-    if (introFadeInDone) return;
-    const firstLine = introLineRefs.current[0]?.parentElement;
-    if (!firstLine) return;
-
-    const handleIntroAnimationEnd = (event: AnimationEvent) => {
-      if (event.animationName !== "fade-in-text") return;
-      setIntroFadeInDone(true);
-    };
-
-    firstLine.addEventListener("animationend", handleIntroAnimationEnd);
-    return () =>
-      firstLine.removeEventListener("animationend", handleIntroAnimationEnd);
-  }, [introFadeInDone]);
-
   const handleLightFire = () => {
     if (executedRef.current) return;
     executedRef.current = true;
@@ -671,14 +653,8 @@ export default function StartScreen({
 
       <style>{`
         @keyframes fade-in-button {
-          0% {
-            opacity: 0;
-            filter: blur(10px);
-          }
-          100% {
-            opacity: 1;
-            filter: blur(0px);
-          }
+          0% { opacity: 0; }
+          100% { opacity: 1; }
         }
 
         .animate-fade-in-button {
@@ -687,7 +663,9 @@ export default function StartScreen({
           pointer-events: none;
         }
 
-        /* Opacity stays 1 so LCP can fire on first paint; only un-blur for atmosphere. */
+        /* Opacity stays 1 so LCP can fire on first paint; only un-blur for atmosphere.
+           Leave this class on after the animation (forwards = blur(0)). Removing
+           filter later creates a containing-block change that shoves the lines. */
         @keyframes fade-in-text {
           0% { filter: blur(10px); }
           100% { filter: blur(0px); }
@@ -790,7 +768,7 @@ export default function StartScreen({
             return (
               <div
                 key={`${index}-${line}`}
-                className="relative mx-auto w-fit text-lg leading-relaxed text-gray-300/90 font-normal"
+                className="relative mx-auto w-fit text-lg leading-relaxed text-gray-300/90 font-normal [contain:layout]"
               >
                 {showParticles && (
                   <div className="pointer-events-none absolute inset-0 z-10">
@@ -820,8 +798,7 @@ export default function StartScreen({
                   ) => {
                     introLineClipRefs.current[index] = el;
                   }}
-                  className={`relative z-0 m-0 text-lg leading-relaxed font-normal ${introFadeInDone ? "" : "animate-fade-in-text"
-                    }`}
+                  className="relative z-0 m-0 text-lg leading-relaxed font-normal animate-fade-in-text"
                 >
                   <span
                     ref={(el) => {

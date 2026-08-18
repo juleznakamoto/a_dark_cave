@@ -32,8 +32,11 @@ const FIRA_SCRIPT_RANGES: ReadonlyArray<{ script: string; unicodeRange: string }
   },
 ];
 
+type FiraFontDisplay = "swap" | "optional";
+
 function buildFiraSansFontFaceCss(
   weights: readonly number[],
+  fontDisplay: FiraFontDisplay = "swap",
 ): string {
   const blocks: string[] = [];
   for (const weight of weights) {
@@ -42,7 +45,7 @@ function buildFiraSansFontFaceCss(
   font-family: 'Fira Sans';
   font-style: normal;
   font-weight: ${weight};
-  font-display: swap;
+  font-display: ${fontDisplay};
   src: url(${FIRA_BASE}/fira-sans-${script}-${weight}-normal.woff2) format('woff2');
   unicode-range: ${unicodeRange};
 }`);
@@ -54,6 +57,12 @@ function buildFiraSansFontFaceCss(
 /** Full face list for share-image inlining (all game weights × scripts). */
 export const FIRA_SANS_FONT_FACE_CSS = buildFiraSansFontFaceCss(FIRA_GAME_WEIGHTS);
 
+/** Start-screen faces: `optional` so a late fetch cannot swap glyphs and shove text. */
+const FIRA_START_FONT_FACE_CSS = buildFiraSansFontFaceCss(
+  FIRA_START_WEIGHTS,
+  "optional",
+);
+
 const FIRA_STYLE_ID = "fira-sans-font-face";
 
 type FiraMountStage = "start" | "game";
@@ -64,14 +73,17 @@ let mountedStage: FiraMountStage | null = null;
  * Mount Fira Sans @font-face CSS.
  * - `start`: only 400/500 (start screen). Browser still downloads only the
  *   script slices needed for on-screen text via unicode-range (~24KB latin-400
- *   for English).
- * - `game`: full weight set for in-game UI (upgrades the start mount).
+ *   for English). Uses `font-display: optional` and applies `.font-loaded`
+ *   immediately so a late fetch cannot swap metrics after first paint.
+ * - `game`: full weight set for in-game UI (upgrades the start mount). Waits
+ *   for the 400 face before applying `.font-loaded` so GameContainer's first
+ *   paint already uses Fira.
  */
 export function mountFiraSansFontFace(options?: {
   stage?: FiraMountStage;
   applyFontLoadedClass?: boolean;
-}): void {
-  if (typeof document === "undefined") return;
+}): Promise<void> {
+  if (typeof document === "undefined") return Promise.resolve();
 
   const stage = options?.stage ?? "game";
   const applyClass = options?.applyFontLoadedClass ?? false;
@@ -81,9 +93,7 @@ export function mountFiraSansFontFace(options?: {
     const el = document.createElement("style");
     el.id = FIRA_STYLE_ID;
     el.textContent =
-      stage === "start"
-        ? buildFiraSansFontFaceCss(FIRA_START_WEIGHTS)
-        : FIRA_SANS_FONT_FACE_CSS;
+      stage === "start" ? FIRA_START_FONT_FACE_CSS : FIRA_SANS_FONT_FACE_CSS;
     document.head.appendChild(el);
     mountedStage = stage;
   } else if (mountedStage === "start" && stage === "game") {
@@ -97,17 +107,32 @@ export function mountFiraSansFontFace(options?: {
     }
   };
 
+  // Start screen: put Fira in the stack now. `optional` keeps the fallback if
+  // the file is still in flight, so body copy does not jump when it arrives.
+  if (stage === "start") {
+    markLoaded();
+    return Promise.resolve();
+  }
+
   if (!("fonts" in document)) {
     markLoaded();
-    return;
+    return Promise.resolve();
   }
 
   // Kick the fetch for the primary face used on start / body copy.
-  void document.fonts
-    .load("400 16px 'Fira Sans'")
-    .then(markLoaded, () => {
+  return document.fonts.load("400 16px 'Fira Sans'").then(
+    () => {
+      markLoaded();
+    },
+    () => {
       if (applyClass) {
-        setTimeout(markLoaded, 100);
+        return new Promise<void>((resolve) => {
+          setTimeout(() => {
+            markLoaded();
+            resolve();
+          }, 100);
+        });
       }
-    });
+    },
+  );
 }
