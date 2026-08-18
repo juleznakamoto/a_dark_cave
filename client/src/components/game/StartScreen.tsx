@@ -53,13 +53,6 @@ const EYES_EASTER_EGG_ARM_MS = 120_000;
 /** Hit radius as a fraction of min(viewport w, h) around the quadrant center. */
 const EYES_EASTER_EGG_HOT_ZONE_RATIO = 0.08;
 
-/** Matches `.animate-fade-in-button` delay. Prefetch Framer here, after LCP. */
-const MAKE_FIRE_BUTTON_FADE_DELAY_MS = 1500;
-const MAKE_FIRE_BUTTON_FADE_DURATION_MS = 1000;
-/** Same box as ParticleButton's shadcn Button so the post-fade swap does not shove the intro. */
-const MAKE_FIRE_BUTTON_CLASS =
-  "bg-transparent border-none text-gray-300/90 hover:bg-transparent text-lg px-8 py-4 fire-hover z-[10000] adc-btn-size-default";
-
 function isInUpperLeftQuadrantHotZone(
   clientX: number,
   clientY: number,
@@ -171,12 +164,9 @@ export default function StartScreen({
   const musicVolume = initialPreferences.musicVolume;
   const sfxVolume = initialPreferences.sfxVolume;
   const [showParticles, setShowParticles] = useState(false);
-  const [buttonFadeInDone, setButtonFadeInDone] = useState(false);
   const [ParticleButtonCmp, setParticleButtonCmp] = useState<
     typeof ParticleButton | null
   >(null);
-  const particleButtonLoadedRef = useRef(false);
-  const particleButtonLoadInFlightRef = useRef(false);
   const [LanguageSelectorCmp, setLanguageSelectorCmp] = useState<
     typeof LanguageSelector | null
   >(null);
@@ -427,58 +417,21 @@ export default function StartScreen({
     };
   }, []);
 
-  const loadParticleButton = useCallback(() => {
-    if (particleButtonLoadedRef.current || particleButtonLoadInFlightRef.current) {
-      return;
-    }
-    particleButtonLoadInFlightRef.current = true;
-    void import("@/components/ui/particle-button")
-      .then((mod) => {
-        particleButtonLoadedRef.current = true;
-        setParticleButtonCmp(() => mod.ParticleButton);
-      })
-      .catch((error) => {
-        logger.warn("Failed to load Make Fire particle button:", error);
-      })
-      .finally(() => {
-        particleButtonLoadInFlightRef.current = false;
-      });
-  }, []);
-
-  // Prefetch after the fade delay so hover sparks are ready before the button
-  // is hoverable. Framer stays off the first paint / LCP path.
-  useEffect(() => {
-    const prefetchId = window.setTimeout(() => {
-      loadParticleButton();
-    }, MAKE_FIRE_BUTTON_FADE_DELAY_MS);
-    return () => window.clearTimeout(prefetchId);
-  }, [loadParticleButton]);
-
-  // Swap only after fade-in. Remounting ParticleButton mid-animation restarts it.
+  // ✅ Remove animation class after it finishes once
   useEffect(() => {
     const btn = buttonRef.current;
-    const markFadeInDone = (event?: AnimationEvent) => {
-      if (event?.animationName && event.animationName !== "fade-in-button") {
-        return;
-      }
-      btn?.classList.remove("animate-fade-in-button");
-      setButtonFadeInDone(true);
+    if (!btn) return;
+
+    const handleAnimationEnd = () => {
+      btn.classList.remove("animate-fade-in-button");
     };
 
-    btn?.addEventListener("animationend", markFadeInDone);
-    const fallbackId = window.setTimeout(
-      () => markFadeInDone(),
-      MAKE_FIRE_BUTTON_FADE_DELAY_MS + MAKE_FIRE_BUTTON_FADE_DURATION_MS + 100,
-    );
-    return () => {
-      btn?.removeEventListener("animationend", markFadeInDone);
-      window.clearTimeout(fallbackId);
-    };
+    btn.addEventListener("animationend", handleAnimationEnd);
+    return () => btn.removeEventListener("animationend", handleAnimationEnd);
   }, []);
 
-  // Drop intro fade-in class after it finishes so Light Fire / vaporize does
-  // not restart the blur or clear a filter containing-block (that looked like
-  // the three lines jumping or playing again).
+  // Drop intro fade-in class after it finishes so Make Fire does not clear a
+  // filter containing-block (that subtle layout shift looked like the text jumping).
   useEffect(() => {
     if (introFadeInDone) return;
     const firstLine = introLineRefs.current[0]?.parentElement;
@@ -538,8 +491,10 @@ export default function StartScreen({
     setCrazyGamesDefaultOpen(false);
 
     // Show button effect for 3 seconds on both mobile and desktop.
-    // Prefetch usually already resolved; this is the click fallback.
-    loadParticleButton();
+    // ParticleButton pulls Framer; load it only after Light Fire.
+    void import("@/components/ui/particle-button").then((mod) => {
+      setParticleButtonCmp(() => mod.ParticleButton);
+    });
     setShowParticles(true);
     setTimeout(() => {
       void onLightFire(preferences);
@@ -675,12 +630,18 @@ export default function StartScreen({
 
       <style>{`
         @keyframes fade-in-button {
-          0% { opacity: 0; }
-          100% { opacity: 1; }
+          0% {
+            opacity: 0;
+            filter: blur(10px);
+          }
+          100% {
+            opacity: 1;
+            filter: blur(0px);
+          }
         }
 
         .animate-fade-in-button {
-          animation: fade-in-button ${MAKE_FIRE_BUTTON_FADE_DURATION_MS}ms ease-in ${MAKE_FIRE_BUTTON_FADE_DELAY_MS}ms forwards;
+          animation: fade-in-button 1s ease-in 1.5s forwards;
           opacity: 0;
           pointer-events: none;
         }
@@ -835,28 +796,26 @@ export default function StartScreen({
         </div>
 
         <div className={showParticles ? undefined : "fire-glow-hint"}>
-          {ParticleButtonCmp && (buttonFadeInDone || showParticles) ? (
+          {ParticleButtonCmp && showParticles ? (
             <ParticleButtonCmp
               ref={buttonRef}
               onClick={handleLightFire}
-              autoStart={showParticles}
-              className={`${MAKE_FIRE_BUTTON_CLASS} ${showParticles ? "fire-active" : ""}`}
+              autoStart
+              className="bg-transparent border-none text-gray-300/90 hover:bg-transparent text-lg px-8 py-4 fire-hover z-[10000] fire-active"
               data-testid="button-light-fire"
             >
               {t("startScreen.makeFire")}
             </ParticleButtonCmp>
           ) : (
-            <div className="relative inline-block isolate">
-              <button
-                ref={buttonRef}
-                type="button"
-                onClick={handleLightFire}
-                className={`${MAKE_FIRE_BUTTON_CLASS} ${showParticles ? "fire-active" : "animate-fade-in-button"}`}
-                data-testid="button-light-fire"
-              >
-                {t("startScreen.makeFire")}
-              </button>
-            </div>
+            <button
+              ref={buttonRef}
+              type="button"
+              onClick={handleLightFire}
+              className={`bg-transparent border-none text-gray-300/90 hover:bg-transparent text-lg px-8 py-4 fire-hover z-[10000] ${showParticles ? "fire-active" : "animate-fade-in-button"}`}
+              data-testid="button-light-fire"
+            >
+              {t("startScreen.makeFire")}
+            </button>
           )}
         </div>
       </main>

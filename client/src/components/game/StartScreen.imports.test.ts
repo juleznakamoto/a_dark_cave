@@ -30,7 +30,6 @@ describe("start-screen first-load imports", () => {
     expect(staticValueFrom(src, "@/components/game/CrazyGamesMenuLinks")).toBe(false);
     expect(staticValueFrom(src, "@/components/game/FullscreenButton")).toBe(false);
     expect(src).toContain('import("@/components/ui/particle-button")');
-    expect(src).toContain("MAKE_FIRE_BUTTON_FADE_DELAY_MS");
     expect(src).toContain('import("@/components/game/LanguageSelector")');
   });
 
