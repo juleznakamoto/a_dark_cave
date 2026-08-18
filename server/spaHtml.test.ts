@@ -45,7 +45,7 @@ describe("sendSpaIndexHtml catch-all", () => {
     expect(res.body.originalUrl).toBe("/privacy");
   });
 
-  it("gives /privacy its own title and canonical", async () => {
+  it("gives /privacy its own title, canonical, and visible privacy copy", async () => {
     const res = await request(spaFallbackApp()).get("/privacy");
     expect(res.status).toBe(200);
     expect(res.text).toContain("<title>Privacy Policy - A Dark Cave</title>");
@@ -56,6 +56,20 @@ describe("sendSpaIndexHtml catch-all", () => {
       '<link rel="canonical" href="https://a-dark-cave.com/"',
     );
     expect(res.text).not.toContain("VideoGame");
+    expect(res.text).toContain("This Privacy Policy informs you");
+    expect(res.text).not.toContain("Play for Free in Your Browser");
+  });
+
+  it("points /galaxy at the homepage canonical", async () => {
+    const res = await request(spaFallbackApp()).get("/galaxy");
+    expect(res.status).toBe(200);
+    expect(res.text).toContain(
+      '<link rel="canonical" href="https://a-dark-cave.com/"',
+    );
+    expect(res.text).not.toContain(
+      '<link rel="canonical" href="https://a-dark-cave.com/galaxy"',
+    );
+    expect(res.text).toContain("VideoGame");
   });
 
   it("gives /faq a unique title, canonical, and visible FAQ copy", async () => {
@@ -77,5 +91,8 @@ describe("sendSpaIndexHtml catch-all", () => {
     expect(res.status).toBe(404);
     expect(res.text).toContain("<title>Page Not Found - A Dark Cave</title>");
     expect(res.text).toContain('content="noindex, nofollow"');
+    expect(res.text).toContain("The darkness swallowed this page.");
+    expect(res.text).not.toContain("Play for Free in Your Browser");
+    expect(res.text).not.toContain("A Dark Room");
   });
 });

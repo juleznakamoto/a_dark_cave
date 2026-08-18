@@ -37,7 +37,30 @@ export async function prepareGameFromStartScreen(
   await hydrateStoreOnce();
   return {
     useGameStore,
+    commitLightFireStart,
   };
+}
+
+/**
+ * Apply start-screen preferences and Light Fire. executeAction can no-op if the
+ * action registry is not ready; still mark the run started so GameContainer
+ * does not remount the intro.
+ */
+export function commitLightFireStart(
+  preferences: StartScreenPreferences,
+): void {
+  useGameStore.setState(preferences);
+  useGameStore.getState().trackButtonClick("light-fire");
+  useGameStore.getState().executeAction("lightFire");
+  const flags = useGameStore.getState().flags;
+  if (flags.gameStarted) return;
+  useGameStore.setState({
+    flags: {
+      ...flags,
+      gameStarted: true,
+      villagerCapsEnabled: true,
+    },
+  });
 }
 
 /** Transfer ownership of a prepared store to Game without loading it again. */

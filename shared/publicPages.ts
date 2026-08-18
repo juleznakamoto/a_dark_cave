@@ -1,4 +1,6 @@
-/** First-HTML body + extra JSON-LD for /faq and /about. English only. */
+/** First-HTML body + extra JSON-LD for public docs. English only. */
+
+import { getLegalPageInnerHtml, getNotFoundPageInnerHtml } from "./publicLegalPages";
 
 export const SITE = "https://a-dark-cave.com";
 export const STEAM_URL = "https://store.steampowered.com/app/4882240/A_Dark_Cave/";
@@ -127,7 +129,7 @@ export const ABOUT_HEADING = "About A Dark Cave";
 
 export const ABOUT_PARAGRAPHS_HTML = [
   "A Dark Cave is a text-based incremental survival and settlement game. You wake in the entrance of a cave, light a fire, gather what you can, build a village at the threshold, and go back down.",
-  `Play for free in your browser at <a href="${SITE}">https://a-dark-cave.com</a>. A free Steam demo is available now. The full Steam release is planned for 27 October 2026.`,
+  `Play for free in your browser at <a href="${SITE}">https://a-dark-cave.com</a>. <a href="${STEAM_DEMO_URL}">A free Steam demo</a> is available now. The full Steam release is planned for 27 October 2026.`,
   "It is built for people who like minimalist incrementals such as A Dark Room, Kittens Game, and Candy Box. It is not a clicker and not a second-screen idle game.",
 ] as const;
 
@@ -165,13 +167,17 @@ function aboutBodyInnerHtml(): string {
   return `<h1>${escapeHtml(ABOUT_HEADING)}</h1>${paras}<ul>${links}</ul>`;
 }
 
-export function getPublicPageBodyHtml(path: string): string | null {
-  const inner =
-    path === "/faq"
+export function getPublicPageBodyHtml(
+  path: string,
+  options?: { notFound?: boolean },
+): string | null {
+  const inner = options?.notFound
+    ? getNotFoundPageInnerHtml()
+    : path === "/faq"
       ? faqBodyInnerHtml()
       : path === "/about"
         ? aboutBodyInnerHtml()
-        : null;
+        : getLegalPageInnerHtml(path);
   if (!inner) return null;
   return `<main id="seo-fallback" style="${STATIC_PAGE_STYLE}">${inner}</main>`;
 }

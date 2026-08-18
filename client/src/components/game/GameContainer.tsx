@@ -171,12 +171,11 @@ export default function GameContainer() {
         }
       }
 
-      useGameStore.setState(preferences);
       // Sign-out stops the loop; restart it before lighting the fire in-place.
       const { startGameLoop } = await import("@/game/loop");
       startGameLoop();
-      useGameStore.getState().trackButtonClick("light-fire");
-      useGameStore.getState().executeAction("lightFire");
+      const { commitLightFireStart } = await import("@/game/startupGameLoader");
+      commitLightFireStart(preferences);
     },
     [],
   );

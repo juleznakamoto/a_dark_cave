@@ -165,6 +165,7 @@ export default function StartScreen({
   const musicVolume = initialPreferences.musicVolume;
   const sfxVolume = initialPreferences.sfxVolume;
   const [showParticles, setShowParticles] = useState(false);
+  const [buttonFadeInDone, setButtonFadeInDone] = useState(false);
   const [LanguageSelectorCmp, setLanguageSelectorCmp] = useState<
     typeof LanguageSelector | null
   >(null);
@@ -418,34 +419,40 @@ export default function StartScreen({
     };
   }, []);
 
-  // ✅ Remove animation class after it finishes once
+  // Keep fade-in off React className after it finishes. Re-applying the class
+  // on any re-render restarts the blur (and pointer-events: none on the button).
   useEffect(() => {
+    if (buttonFadeInDone) return;
     const btn = buttonRef.current;
-    if (!btn) return;
-
-    const handleAnimationEnd = () => {
-      btn.classList.remove("animate-fade-in-button");
+    const markDone = (event?: AnimationEvent) => {
+      if (event?.animationName && event.animationName !== "fade-in-button") {
+        return;
+      }
+      setButtonFadeInDone(true);
     };
+    btn?.addEventListener("animationend", markDone);
+    const fallbackId = window.setTimeout(markDone, 2600);
+    return () => {
+      btn?.removeEventListener("animationend", markDone);
+      window.clearTimeout(fallbackId);
+    };
+  }, [buttonFadeInDone]);
 
-    btn.addEventListener("animationend", handleAnimationEnd);
-    return () => btn.removeEventListener("animationend", handleAnimationEnd);
-  }, []);
-
-  // Drop intro fade-in class after it finishes so Make Fire does not clear a
-  // filter containing-block (that subtle layout shift looked like the text jumping).
+  // Drop intro fade-in class after it finishes so Make Fire does not restart
+  // the blur (filter containing-block) or look like the three lines replayed.
   useEffect(() => {
     if (introFadeInDone) return;
     const firstLine = introLineRefs.current[0]?.parentElement;
-    if (!firstLine) return;
-
     const handleIntroAnimationEnd = (event: AnimationEvent) => {
       if (event.animationName !== "fade-in-text") return;
       setIntroFadeInDone(true);
     };
-
-    firstLine.addEventListener("animationend", handleIntroAnimationEnd);
-    return () =>
-      firstLine.removeEventListener("animationend", handleIntroAnimationEnd);
+    firstLine?.addEventListener("animationend", handleIntroAnimationEnd);
+    const fallbackId = window.setTimeout(() => setIntroFadeInDone(true), 1100);
+    return () => {
+      firstLine?.removeEventListener("animationend", handleIntroAnimationEnd);
+      window.clearTimeout(fallbackId);
+    };
   }, [introFadeInDone]);
 
   const handleLightFire = () => {
@@ -805,7 +812,7 @@ export default function StartScreen({
             ref={buttonRef}
             onClick={handleLightFire}
             autoStart={showParticles}
-            className={`bg-transparent border-none text-gray-300/90 hover:bg-transparent text-lg px-8 py-4 fire-hover z-[10000] ${showParticles ? "fire-active" : "animate-fade-in-button"}`}
+            className={`bg-transparent border-none text-gray-300/90 hover:bg-transparent text-lg px-8 py-4 fire-hover z-[10000] ${showParticles ? "fire-active" : buttonFadeInDone ? "" : "animate-fade-in-button"}`}
             data-testid="button-light-fire"
           >
             {t("startScreen.makeFire")}

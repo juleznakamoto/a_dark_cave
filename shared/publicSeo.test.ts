@@ -129,6 +129,22 @@ describe("publicSeo", () => {
     expect(html).not.toContain('"@type":"WebPage"');
   });
 
+  it("points homepage clones at the home canonical", () => {
+    for (const path of ["/galaxy", "/crazygames", "/boost"] as const) {
+      const html = customizeSpaIndexHtml(SAMPLE_HTML, path);
+      expect(resolveSpaHtmlResponse(path).status).toBe(200);
+      expect(html).toContain(`<title>${HOME_SEO.title}</title>`);
+      expect(html).toContain(
+        '<link rel="canonical" href="https://a-dark-cave.com/"',
+      );
+      expect(html).not.toContain(
+        `<link rel="canonical" href="https://a-dark-cave.com${path}"`,
+      );
+      expect(html).toContain("VideoGame");
+      expect(html).not.toContain('content="noindex');
+    }
+  });
+
   it("uses the canonical homepage title and description", () => {
     expect(HOME_SEO.title).toBe(
       "A Dark Cave - Survive the Darkness, Build Your Settlement",
@@ -193,6 +209,43 @@ describe("publicSeo", () => {
     expect(missing).not.toContain(
       '<link rel="canonical" href="https://a-dark-cave.com/"',
     );
+    expect(missing).toContain("The darkness swallowed this page.");
+    expect(missing).not.toContain("Play for Free in Your Browser");
+    expect(missing).not.toContain("A Dark Room");
+  });
+
+  it("gives legal routes unique raw HTML with visible legal copy, not homepage marketing", () => {
+    const home = customizeSpaIndexHtml(REAL_INDEX_HTML, "/");
+    const privacy = customizeSpaIndexHtml(REAL_INDEX_HTML, "/privacy");
+    const terms = customizeSpaIndexHtml(REAL_INDEX_HTML, "/terms");
+    const imprint = customizeSpaIndexHtml(REAL_INDEX_HTML, "/imprint");
+    const withdrawal = customizeSpaIndexHtml(REAL_INDEX_HTML, "/withdrawal");
+
+    expect(privacy).not.toBe(home);
+    expect(privacy).not.toBe(terms);
+    expect(privacy).toContain("This Privacy Policy informs you");
+    expect(privacy).toContain("Art. 15 GDPR");
+    expect(privacy).toContain("Julian Bauer");
+    expect(privacy).not.toContain("Play for Free in Your Browser");
+    expect(privacy).not.toContain("A Dark Room");
+    expect(privacy).not.toMatch(
+      /<main id="seo-fallback"[^>]*style="[^"]*display:\s*none/,
+    );
+
+    expect(terms).toContain("These Terms of Service apply");
+    expect(terms).toContain("Cloud Save");
+    expect(terms).not.toContain("Play for Free in Your Browser");
+    expect(terms).not.toContain("A Dark Room");
+
+    expect(imprint).toContain("§ 5 TMG");
+    expect(imprint).toContain("DE362802949");
+    expect(imprint).not.toContain("Play for Free in Your Browser");
+    expect(imprint).not.toContain("A Dark Room");
+
+    expect(withdrawal).toContain("fourteen days without giving any reason");
+    expect(withdrawal).toContain("Model Withdrawal Form");
+    expect(withdrawal).not.toContain("Play for Free in Your Browser");
+    expect(withdrawal).not.toContain("A Dark Room");
   });
 
   it("gives /faq and /about unique raw HTML with visible body copy", () => {
@@ -233,5 +286,8 @@ describe("publicSeo", () => {
     );
     expect(sitemap).toContain("<loc>https://a-dark-cave.com/faq</loc>");
     expect(sitemap).toContain("<loc>https://a-dark-cave.com/about</loc>");
+    expect(sitemap).not.toContain("a-dark-cave.com/galaxy");
+    expect(sitemap).not.toContain("a-dark-cave.com/crazygames");
+    expect(sitemap).not.toContain("a-dark-cave.com/boost");
   });
 });

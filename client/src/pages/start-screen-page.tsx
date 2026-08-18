@@ -91,10 +91,8 @@ export default function StartScreenPage() {
 
   const handleLightFire = async (nextPreferences: StartScreenPreferences) => {
     try {
-      const { useGameStore } = await prepareGame(nextPreferences);
-      useGameStore.setState(nextPreferences);
-      useGameStore.getState().trackButtonClick("light-fire");
-      useGameStore.getState().executeAction("lightFire");
+      const { commitLightFireStart } = await prepareGame(nextPreferences);
+      commitLightFireStart(nextPreferences);
       setShouldLoadGame(true);
     } catch (error) {
       preparedGameRef.current = null;

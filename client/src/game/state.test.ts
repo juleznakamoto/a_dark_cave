@@ -818,6 +818,27 @@ describe("Timed event tab cleanup on new game", () => {
   });
 });
 
+describe("loadGame after Light Fire", () => {
+  beforeEach(() => {
+    useGameStore.getState().initialize();
+    mockLoadGame.mockReset();
+    mockSetLastGameLoadTime.mockReset();
+  });
+
+  it("does not reset an in-memory Light Fire start when no save exists", async () => {
+    useGameStore.setState({
+      flags: { ...useGameStore.getState().flags, gameStarted: true },
+      isNewGame: true,
+    });
+    mockLoadGame.mockResolvedValue(null);
+
+    const hadPersistedSave = await useGameStore.getState().loadGame();
+
+    expect(hadPersistedSave).toBe(false);
+    expect(useGameStore.getState().flags.gameStarted).toBe(true);
+  });
+});
+
 describe("Disgraced Prior assignment does not bypass affordability", () => {
   beforeEach(() => {
     useGameStore.getState().initialize();

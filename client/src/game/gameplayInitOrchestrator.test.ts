@@ -147,6 +147,34 @@ describe("runGameplayInitialization", () => {
     expect(mocks.startGameLoop).toHaveBeenCalledOnce();
   });
 
+  it("skips loadGame when Light Fire already started the run", async () => {
+    mocks.consumePrepared.mockReturnValue(null);
+    mocks.getState.mockReturnValue({
+      loadGame: mocks.loadGame,
+      flags: { gameStarted: true },
+      googleAdsSource: null,
+      utmAttribution: null,
+      musicVolume: 1,
+      sfxVolume: 1,
+      musicMuted: true,
+      sfxMuted: true,
+      referrals: [],
+      addLogEntry: vi.fn(),
+    });
+    const { runGameplayInitialization } = await import(
+      "./gameplayInitOrchestrator"
+    );
+
+    const result = await runGameplayInitialization({
+      pathname: "/",
+      search: "",
+      hash: "",
+    });
+
+    expect(mocks.loadGame).not.toHaveBeenCalled();
+    expect(result.hadPersistedSave).toBe(false);
+  });
+
   it("skips startup purchase rehydrate on payment return", async () => {
     const { runGameplayInitialization } = await import(
       "./gameplayInitOrchestrator"

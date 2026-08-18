@@ -24,6 +24,11 @@ export type PublicRouteSeo = {
   robots?: string;
   /** Short page label for WebPage / Breadcrumb JSON-LD on non-home routes. */
   pageName?: string;
+  /**
+   * Canonical path. Homepage clones (`/galaxy`, `/crazygames`, `/boost`)
+   * must point at `/` so they do not compete with the real homepage.
+   */
+  canonicalPath?: string;
 };
 
 /** Paths served by the client router (exact match after normalization). */
@@ -57,11 +62,17 @@ const HOME_ROUTE_SEO: PublicRouteSeo = {
   includeHomeJsonLd: true,
 };
 
+/** Same shell as `/`, but first-HTML canonical stays on the homepage. */
+const HOME_CLONE_SEO: PublicRouteSeo = {
+  ...HOME_ROUTE_SEO,
+  canonicalPath: "/",
+};
+
 const ROUTE_SEO: Record<string, PublicRouteSeo> = {
   "/": HOME_ROUTE_SEO,
-  "/galaxy": HOME_ROUTE_SEO,
-  "/crazygames": HOME_ROUTE_SEO,
-  "/boost": HOME_ROUTE_SEO,
+  "/galaxy": HOME_CLONE_SEO,
+  "/crazygames": HOME_CLONE_SEO,
+  "/boost": HOME_CLONE_SEO,
   "/game": HOME_ROUTE_SEO,
   "/privacy": {
     title: "Privacy Policy - A Dark Cave",
@@ -286,9 +297,8 @@ export function customizeSpaIndexHtml(
   const seo = options?.notFound
     ? NOT_FOUND_SEO
     : (getPublicRouteSeo(path) ?? NOT_FOUND_SEO);
-  const canonical = options?.notFound
-    ? `${SITE_ORIGIN}${path}`
-    : `${SITE_ORIGIN}${path === "/" ? "/" : path}`;
+  const canonicalPath = options?.notFound ? path : (seo.canonicalPath ?? path);
+  const canonical = `${SITE_ORIGIN}${canonicalPath === "/" ? "/" : canonicalPath}`;
 
   const title = escapeHtml(seo.title);
   const description = escapeHtml(seo.description);
@@ -374,7 +384,7 @@ export function customizeSpaIndexHtml(
     );
   }
 
-  const pageBody = getPublicPageBodyHtml(path);
+  const pageBody = getPublicPageBodyHtml(path, { notFound: options?.notFound });
   if (pageBody) {
     out = out.replace("</head>", `  ${STATIC_PAGE_HIDE_AFTER_HYDRATE}\n</head>`);
     if (/<main id="seo-fallback"[\s\S]*?<\/main>/.test(out)) {

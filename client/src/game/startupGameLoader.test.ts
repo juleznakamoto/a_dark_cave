@@ -1,13 +1,22 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
-const { mockLoadGame, mockSetState } = vi.hoisted(() => ({
-  mockLoadGame: vi.fn(),
-  mockSetState: vi.fn(),
-}));
+const { mockLoadGame, mockSetState, mockTrackButtonClick, mockExecuteAction, mockFlags } =
+  vi.hoisted(() => ({
+    mockLoadGame: vi.fn(),
+    mockSetState: vi.fn(),
+    mockTrackButtonClick: vi.fn(),
+    mockExecuteAction: vi.fn(),
+    mockFlags: { gameStarted: false, villagerCapsEnabled: false },
+  }));
 
 vi.mock("./state", () => ({
   useGameStore: {
-    getState: () => ({ loadGame: mockLoadGame }),
+    getState: () => ({
+      loadGame: mockLoadGame,
+      trackButtonClick: mockTrackButtonClick,
+      executeAction: mockExecuteAction,
+      flags: mockFlags,
+    }),
     setState: mockSetState,
   },
 }));
@@ -17,6 +26,10 @@ describe("startup game hydration handoff", () => {
     vi.resetModules();
     mockLoadGame.mockReset();
     mockSetState.mockReset();
+    mockTrackButtonClick.mockReset();
+    mockExecuteAction.mockReset();
+    mockFlags.gameStarted = false;
+    mockFlags.villagerCapsEnabled = false;
     mockLoadGame.mockResolvedValue(true);
   });
 
@@ -66,6 +79,29 @@ describe("startup game hydration handoff", () => {
     expect(mockLoadGame).toHaveBeenCalledOnce();
     expect(loader.consumePreparedGameHydration()).toEqual({
       hadPersistedSave: false,
+    });
+  });
+
+  it("forces gameStarted when Light Fire executeAction is a no-op", async () => {
+    const loader = await import("./startupGameLoader");
+    mockExecuteAction.mockImplementation(() => {
+      mockFlags.gameStarted = false;
+    });
+
+    loader.commitLightFireStart({
+      cruelMode: false,
+      musicMuted: false,
+      sfxMuted: false,
+      musicVolume: 1,
+      sfxVolume: 1,
+    });
+
+    expect(mockExecuteAction).toHaveBeenCalledWith("lightFire");
+    expect(mockSetState).toHaveBeenCalledWith({
+      flags: {
+        gameStarted: true,
+        villagerCapsEnabled: true,
+      },
     });
   });
 });
