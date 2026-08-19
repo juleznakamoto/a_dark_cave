@@ -10,6 +10,7 @@ export type FooterSocialPlatformId =
   | "instagram"
   | "youtube"
   | "steam"
+  | "itch"
   | "contact";
 
 /** Official subreddit URL (structured data, footer, start screen). */
@@ -31,6 +32,10 @@ export const OFFICIAL_STEAM_URL =
 /** Official Steam store embed widget (no tracking params; use {@link steamWidgetUrl}). */
 export const OFFICIAL_STEAM_WIDGET_URL =
   "https://store.steampowered.com/widget/4882240/" as const;
+
+/** Official itch.io page (same URL as `ITCH_URL` in `shared/publicPages.ts`). */
+export const OFFICIAL_ITCH_URL =
+  "https://a-dark-cave.itch.io/a-dark-cave" as const;
 
 /**
  * Readable `utm_content` values for in-game Steam store links.
@@ -295,6 +300,10 @@ export const GAME_FOOTER_RIGHT_ICON_LINKS: Readonly<
     href: OFFICIAL_STEAM_URL,
     title: "Steam",
   },
+  itch: {
+    href: OFFICIAL_ITCH_URL,
+    title: "itch.io",
+  },
   contact: {
     href: "mailto:support@a-dark-cave.com",
     title: "Email",
@@ -305,7 +314,7 @@ export const GAME_FOOTER_RIGHT_ICON_LINKS: Readonly<
 export const NETWORK_MENU_PLATFORM_ORDER: readonly Exclude<
   FooterSocialPlatformId,
   "steam"
->[] = ["reddit", "instagram", "youtube", "contact"] as const;
+>[] = ["reddit", "instagram", "youtube", "itch", "contact"] as const;
 
 /** Stable row order for the game footer icons and start-screen mirrors. */
 export const GAME_FOOTER_RIGHT_ICON_ORDER: readonly FooterSocialPlatformId[] = [

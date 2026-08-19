@@ -14,7 +14,7 @@ import {
   REFERRAL_REWARD_GOLD,
 } from "@/game/socialPromptAuto";
 import { isInviteFriendsFloatingButtonVisible } from "@/game/socialPromoExclusiveReward";
-import { useTranslation } from "react-i18next";
+import { Trans, useTranslation } from "react-i18next";
 import { GAME_FOOTER_INSET } from "./gameChrome";
 import { Z_INDEX } from "@/lib/z-index";
 
@@ -85,7 +85,7 @@ export default function InviteFriendsFloatingButton() {
 
   return (
     <div
-      className="pointer-events-auto fixed right-4"
+      className="pointer-events-auto fixed left-4"
       style={{
         bottom: `calc(${GAME_FOOTER_INSET} + 1rem)`,
         zIndex: idleModeDialogOpen
@@ -97,11 +97,16 @@ export default function InviteFriendsFloatingButton() {
         <TooltipWrapper
           tooltip={
             <p className="text-xs">
-              {t("invite.tooltip", {
-                amount: REFERRAL_REWARD_GOLD,
-                cap: SOCIAL_PROMPT_REFERRAL_CAP,
-                count: referralCount,
-              })}
+              <Trans
+                i18nKey="invite.tooltip"
+                ns="ui"
+                values={{
+                  amount: REFERRAL_REWARD_GOLD,
+                  cap: SOCIAL_PROMPT_REFERRAL_CAP,
+                  count: referralCount,
+                }}
+                components={{ bold: <span className="font-semibold" /> }}
+              />
             </p>
           }
           tooltipId="referral-floating-invite"
@@ -114,14 +119,12 @@ export default function InviteFriendsFloatingButton() {
           <button
             type="button"
             className="invite-friends-float-btn flex items-center gap-2 rounded-md border border-border border-red-700/50 bg-red-950/30 px-2.5 py-1.5 text-xs text-neutral-300 backdrop-blur-sm"
+            aria-label={t("invite.button")}
             onClick={() => {
               void handleCopyInviteLink();
             }}
           >
-            <div className="flex min-w-0 items-center gap-1.5">
-              <GameUiIcon name="inviteUser" sizeClassName="h-4 w-4" />
-              <span>{t("invite.button")}</span>
-            </div>
+            <GameUiIcon name="inviteUser" sizeClassName="h-4 w-4" />
             <span className="shrink-0 font-semibold">
               {t("invite.goldBonus", { amount: REFERRAL_REWARD_GOLD })}
             </span>

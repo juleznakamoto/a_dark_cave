@@ -6,7 +6,7 @@ import {
   type CSSProperties,
 } from "react";
 import type { AchievementChartConfig } from "@/achievements/achievementTypes";
-import { useTranslation } from "react-i18next";
+import { Trans, useTranslation } from "react-i18next";
 import {
   Dialog,
   DialogClose,
@@ -949,11 +949,16 @@ export default function ShareDialog() {
             <TooltipWrapper
               tooltip={
                 <p className="text-xs">
-                  {t("invite.tooltip", {
-                    amount: REFERRAL_REWARD_GOLD,
-                    cap: SOCIAL_PROMPT_REFERRAL_CAP,
-                    count: referralCount,
-                  })}
+                  <Trans
+                    i18nKey="invite.tooltip"
+                    ns="ui"
+                    values={{
+                      amount: REFERRAL_REWARD_GOLD,
+                      cap: SOCIAL_PROMPT_REFERRAL_CAP,
+                      count: referralCount,
+                    }}
+                    components={{ bold: <span className="font-semibold" /> }}
+                  />
                 </p>
               }
               tooltipId="share-dialog-invite"

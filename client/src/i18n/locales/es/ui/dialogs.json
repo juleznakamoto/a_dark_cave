@@ -77,7 +77,7 @@
     "linkCopiedDesc": "Compártelo con amigos para ganar {{amount}} de oro cada uno.",
     "copyFailed": "No se pudo copiar el enlace de invitación", //x1.6
     "copyFailedNotSignedIn": "Inicia sesión para copiar tu enlace de invitación", //x1.5
-    "tooltip": "Invita a tus amigos - ambos recibiréis {{amount}} de oro. Puedes invitar hasta {{cap}} amigos. ({{count}}/{{cap}} invitados)."
+    "tooltip": "<bold>Invita a tus amigos</bold> - ambos recibiréis {{amount}} de oro. Puedes invitar hasta {{cap}} amigos. ({{count}}/{{cap}} invitados)."
   },
   "invest": {
     "title": "Invertir",

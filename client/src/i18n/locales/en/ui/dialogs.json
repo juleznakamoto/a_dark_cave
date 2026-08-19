@@ -77,7 +77,7 @@
     "linkCopiedDesc": "Share it with friends to earn {{amount}} Gold each.",
     "copyFailed": "Could not copy invite link",
     "copyFailedNotSignedIn": "Sign in to copy your invite link",
-    "tooltip": "Invite your friends and both of you will receive {{amount}} Gold. You can invite up to {{cap}} friends. ({{count}}/{{cap}} invited)."
+    "tooltip": "<bold>Invite your friends</bold> and both of you will receive {{amount}} Gold. You can invite up to {{cap}} friends. ({{count}}/{{cap}} invited)."
   },
   "invest": {
     "title": "Invest",

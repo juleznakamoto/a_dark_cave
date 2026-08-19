@@ -1,7 +1,8 @@
 import { describe, expect, it } from "vitest";
-import { PUBLIC_STEAM_URL } from "@shared/publicPages";
+import { ITCH_URL, PUBLIC_STEAM_URL } from "@shared/publicPages";
 import { SITE_ORIGIN } from "@shared/publicSeo";
 import {
+  OFFICIAL_ITCH_URL,
   OFFICIAL_STEAM_URL,
   OFFICIAL_STEAM_WIDGET_URL,
   STEAM_STORE_UTM_CONTENT,
@@ -62,6 +63,12 @@ describe("xGameLandingUrl", () => {
     expect(url.searchParams.get("utm_medium")).toBe("social");
     expect(url.searchParams.get("utm_campaign")).toBe("game");
     expect(url.searchParams.get("utm_content")).toBe(X_GAME_UTM_CONTENT.post);
+  });
+});
+
+describe("OFFICIAL_ITCH_URL", () => {
+  it("matches the public-page itch.io URL used on /about and the end screen", () => {
+    expect(OFFICIAL_ITCH_URL).toBe(ITCH_URL);
   });
 });
 
