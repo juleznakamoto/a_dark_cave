@@ -1911,15 +1911,18 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
                     </TabsTrigger>
                   </TabsList>
                   {activeTab === "shop" && (
-                    <div className="mt-3 flex items-center gap-1.5 text-sm font-normal text-foreground">
+                    <div className="mt-3 flex items-center gap-1.5 text-sm font-normal leading-none text-foreground">
                       <span
                         className={`inline-flex ${SHOP_INFO_HIT_SIZE_CLASS} shrink-0 items-center justify-center text-muted-foreground`}
                       >
-                        <span className={SHOP_INFO_GLYPH_CLASS} aria-hidden>
+                        <span
+                          className={`${SHOP_INFO_GLYPH_CLASS} translate-y-[0.12em]`}
+                          aria-hidden
+                        >
                           🛈
                         </span>
                       </span>
-                      <span className="min-w-0 flex-1">
+                      <span className="min-w-0 flex-1 leading-none">
                         {t("ui:shop.forSalePlaythroughNote")}
                       </span>
                     </div>
@@ -1957,7 +1960,7 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
                           className="pointer-events-none absolute inset-0 bg-cyan-950/55"
                           aria-hidden
                         />
-                        <div className="relative z-10 px-2 py-2 text-center text-sm font-bold text-white sm:text-base">
+                        <div className="relative z-10 px-2 py-2 text-center text-sm font-semibold text-white sm:text-base">
                           {t("ui:shop.firstPurchaseInsightBannerBefore", {
                             defaultValue: "Get",
                           })}{" "}

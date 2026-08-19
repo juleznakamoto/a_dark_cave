@@ -15,7 +15,7 @@ import {
 function stateWithPurchases(purchases: number) {
   return gameStateSchema.parse({
     resources: { gold: 5000, insight: 0 },
-    buildings: { scriptorium: 1, tradePost: 1 },
+    buildings: { clerksHut: 1, tradePost: 1 },
     story: {
       seen: purchases > 0 ? { insightElixirPurchases: purchases } : {},
     },

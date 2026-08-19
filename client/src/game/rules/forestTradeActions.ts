@@ -634,7 +634,7 @@ export const forestTradeActions: Record<string, Action> = {
     id: "tradeGoldForInsightPotion",
     label: "Insight Elixir",
     show_when: {
-      "buildings.scriptorium": 1,
+      "buildings.clerksHut": 1,
     },
     cost: (state: GameState) => ({
       "resources.gold": getInsightElixirGoldCost(state),
