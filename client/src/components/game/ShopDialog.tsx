@@ -1813,9 +1813,18 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
             className={cn(
               showSecurePurchasePrompt
                 ? "[--adc-dialog-max-w:28rem] max-h-[80vh] z-[70] gap-2"
-                : "[--adc-dialog-max-w:56rem] flex max-h-[82vh] min-h-0 flex-col gap-2 overflow-hidden z-[70] p-6",
+                : "[--adc-dialog-max-w:56rem] flex h-[82vh] min-h-0 flex-col gap-3 overflow-hidden z-[70] p-6",
               isPaymentMode && "hidden",
             )}
+            style={
+              showSecurePurchasePrompt
+                ? undefined
+                : {
+                  height: "82vh",
+                  maxHeight: "82vh",
+                  minHeight: "82vh",
+                }
+            }
             onPointerDownOutside={(e) => e.preventDefault()}
             onInteractOutside={(e) => e.preventDefault()}
           >
@@ -1885,48 +1894,39 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
               >
                 {/* Header stays outside ScrollArea: DialogContent uses CSS transform for centering,
                     which breaks position:sticky for descendants; pin tabs/copy via layout instead. */}
-                <div className="shrink-0 pb-1.5 pt-0.5">
-                  <div className="flex items-center gap-1.5">
-                    <TabsList className="grid h-10 min-w-0 flex-1 grid-cols-2 items-stretch gap-0 overflow-hidden rounded-md border-2 border-foreground/55 bg-muted p-1 shadow-sm dark:border-foreground/65">
-                      <TabsTrigger
-                        value="shop"
-                        className="flex h-full min-h-0 min-w-0 w-full items-center justify-center rounded-sm border border-transparent py-0 data-[state=active]:border-foreground/60 data-[state=active]:shadow-md dark:data-[state=active]:border-foreground/70"
-                      >
-                        {t("ui:shop.forSale")}
-                      </TabsTrigger>
-                      <TabsTrigger
-                        value="purchases"
-                        disabled={!sessionUser}
-                        className="flex h-full min-h-0 min-w-0 w-full items-center justify-center rounded-sm border border-transparent py-0 data-[state=active]:border-foreground/60 data-[state=active]:shadow-md dark:data-[state=active]:border-foreground/70"
-                      >
-                        {t("ui:shop.purchases")}
-                      </TabsTrigger>
-                    </TabsList>
-                    {activeTab === "shop" && (
-                      <TooltipWrapper
-                        tooltip={
-                          <div className="text-xs">
-                            {t("ui:shop.forSalePlaythroughNote")}
-                          </div>
-                        }
-                        tooltipId="shop-playthrough-note"
-                        className="inline-flex shrink-0"
+                <div className="shrink-0 pb-2 pt-0.5">
+                  <TabsList className="grid h-10 w-full grid-cols-2 items-stretch gap-0 overflow-hidden rounded-md border-2 border-foreground/55 bg-muted p-1 shadow-sm dark:border-foreground/65">
+                    <TabsTrigger
+                      value="shop"
+                      className="flex h-full min-h-0 min-w-0 w-full items-center justify-center rounded-sm border border-transparent py-0 data-[state=active]:border-foreground/60 data-[state=active]:shadow-md dark:data-[state=active]:border-foreground/70"
+                    >
+                      {t("ui:shop.forSale")}
+                    </TabsTrigger>
+                    <TabsTrigger
+                      value="purchases"
+                      disabled={!sessionUser}
+                      className="flex h-full min-h-0 min-w-0 w-full items-center justify-center rounded-sm border border-transparent py-0 data-[state=active]:border-foreground/60 data-[state=active]:shadow-md dark:data-[state=active]:border-foreground/70"
+                    >
+                      {t("ui:shop.purchases")}
+                    </TabsTrigger>
+                  </TabsList>
+                  {activeTab === "shop" && (
+                    <div className="mt-3 flex items-center gap-1.5 text-sm font-normal leading-none text-foreground">
+                      <span
+                        className={`inline-flex ${SHOP_INFO_HIT_SIZE_CLASS} shrink-0 items-center justify-center text-muted-foreground`}
                       >
                         <span
-                          className={`inline-flex ${SHOP_INFO_HIT_SIZE_CLASS} items-center justify-center text-muted-foreground`}
-                          role="img"
-                          aria-label={t("ui:shop.forSalePlaythroughNote")}
+                          className={`${SHOP_INFO_GLYPH_CLASS} translate-y-[0.12em]`}
+                          aria-hidden
                         >
-                          <span
-                            className={`${SHOP_INFO_GLYPH_CLASS} translate-y-[0.12em]`}
-                            aria-hidden
-                          >
-                            🛈
-                          </span>
+                          🛈
                         </span>
-                      </TooltipWrapper>
-                    )}
-                  </div>
+                      </span>
+                      <span className="min-w-0 flex-1 leading-none">
+                        {t("ui:shop.forSalePlaythroughNote")}
+                      </span>
+                    </div>
+                  )}
                   {activeTab === "purchases" && (
                     <div className="mt-3 rounded-md border border-green-500/40 bg-green-500/5 px-2 py-2 text-xs font-normal  text-foreground">
                       {purchasedItems.length === 0 &&
@@ -1953,14 +1953,14 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
                   {/* Pinned via flex split below TabsList + intro (sticky breaks under dialog transforms). */}
                   {(import.meta.env.DEV ||
                     !gameState.hasMadeNonFreePurchase) && (
-                      <div className="relative mb-2 shrink-0 overflow-hidden rounded-md border border-blue-500/40 bg-blue-950">
+                      <div className="relative mb-3 shrink-0 overflow-hidden rounded-md border border-blue-500/40 bg-blue-950">
                         <SmokeShader scale={SMOKE_SHADER_BANNER_SCALE} />
                         {/* Soft scrim so bright smoke peaks don't wash out the copy. */}
                         <div
                           className="pointer-events-none absolute inset-0 bg-cyan-950/55"
                           aria-hidden
                         />
-                        <div className="relative z-10 px-2 py-1 text-center text-sm font-semibold leading-tight text-white">
+                        <div className="relative z-10 px-2 py-2 text-center text-sm font-semibold text-white sm:text-base">
                           {t("ui:shop.firstPurchaseInsightBannerBefore", {
                             defaultValue: "Get",
                           })}{" "}
@@ -1985,7 +1985,7 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
                         </div>
                       </div>
                     )}
-                  <div className="flex shrink-0 flex-wrap gap-x-1.5 gap-y-2 pb-2">
+                  <div className="flex shrink-0 flex-wrap gap-x-1.5 gap-y-4 pb-3">
                     <Button
                       variant={selectedFilter === null ? "default" : "outline"}
                       size="xs"
