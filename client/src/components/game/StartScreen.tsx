@@ -1,10 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { Helmet } from "react-helmet-async";
-import { ParticleButton } from "@/components/ui/particle-button";
 import { Button } from "@/components/ui/button";
-import CloudShader from "@/components/ui/cloud-shader";
-import VaporizeTextCycle from "@/components/ui/vapour-text-effect";
-import { audioManager, SOUND_VOLUME } from "@/lib/audio";
 import { FooterSocialIcon } from "@/components/game/FooterSocialIcon";
 import { GameUiIcon } from "@/components/game/GameUiIcon";
 import {
@@ -82,6 +78,23 @@ const START_FOOTER_ICON = "size-4 shrink-0";
 /** Paint original PNG glyphs with currentColor (matches language + social text). */
 const START_AUDIO_ICON_MASK = `${START_FOOTER_ICON} bg-current [mask-size:contain] [mask-repeat:no-repeat] [mask-position:center] [mask-mode:alpha] [-webkit-mask-size:contain] [-webkit-mask-repeat:no-repeat] [-webkit-mask-position:center]`;
 const START_FULLSCREEN_BTN = `group shrink-0 p-0 w-7 h-7 flex items-center justify-center ${GAME_CHROME_NO_BG_HOVER}`;
+
+const MAKE_FIRE_BUTTON_CLASS =
+  "bg-transparent border-none text-gray-300/90 hover:bg-transparent text-lg px-8 py-4 fire-hover z-[10000]";
+
+function isNoindexStartPath(): boolean {
+  if (typeof window === "undefined") return false;
+  const path = window.location.pathname;
+  return path === "/galaxy" || path === "/crazygames" || path === "/boost";
+}
+
+type AudioModule = typeof import("@/lib/audio");
+type ParticleButtonComponent =
+  typeof import("@/components/ui/particle-button").ParticleButton;
+type CloudShaderComponent =
+  typeof import("@/components/ui/cloud-shader").default;
+type VaporizeTextCycleComponent =
+  typeof import("@/components/ui/vapour-text-effect").default;
 
 function StartScreenFullscreenButton() {
   const { isFullscreen, toggleFullscreen, available } = useFullscreen();
@@ -167,7 +180,13 @@ export default function StartScreen({
   const musicVolume = initialPreferences.musicVolume;
   const sfxVolume = initialPreferences.sfxVolume;
   const [showParticles, setShowParticles] = useState(false);
-  const [buttonFadeInDone, setButtonFadeInDone] = useState(false);
+  const [ParticleButtonCmp, setParticleButtonCmp] =
+    useState<ParticleButtonComponent | null>(null);
+  const [CloudShaderCmp, setCloudShaderCmp] =
+    useState<CloudShaderComponent | null>(null);
+  const [VaporizeTextCycleCmp, setVaporizeTextCycleCmp] =
+    useState<VaporizeTextCycleComponent | null>(null);
+  const audioRef = useRef<AudioModule | null>(null);
   const [LanguageSelectorCmp, setLanguageSelectorCmp] = useState<
     typeof LanguageSelector | null
   >(null);
@@ -222,12 +241,6 @@ export default function StartScreen({
     mountFiraSansFontFace({ stage: "start", applyFontLoadedClass: true });
   }, []);
 
-  // New Game / sign-out can show this screen in-place without a reload. Clear any
-  // leftover gameplay audio so only wind (started on first gesture) is heard.
-  useEffect(() => {
-    audioManager.stopAllSounds();
-  }, []);
-
   useEffect(() => {
     if (showParticles) return;
     // Reset wipe clips if start screen is shown again.
@@ -246,42 +259,106 @@ export default function StartScreen({
     [],
   );
 
-  useEffect(() => {
-    audioManager.setMusicVolume(musicVolume ?? 1);
-    audioManager.setSfxVolume(sfxVolume ?? 1);
+  const audioPrefsRef = useRef({
+    musicMuted,
+    sfxMuted,
+    musicVolume,
+    sfxVolume,
+  });
+  audioPrefsRef.current = {
+    musicMuted,
+    sfxMuted,
+    musicVolume,
+    sfxVolume,
+  };
+
+  const applyAudioPrefs = useCallback((mod: AudioModule) => {
+    const prefs = audioPrefsRef.current;
+    mod.audioManager.setMusicVolume(prefs.musicVolume ?? 1);
+    mod.audioManager.setSfxVolume(prefs.sfxVolume ?? 1);
     // Never resume BGM here — start screen is wind-only until Light Fire.
     // (musicMute(false) would otherwise restart gameplay music after New Game.)
-    audioManager.musicMute(musicMuted, { resume: false });
-    audioManager.sfxMute(sfxMuted);
-  }, [musicMuted, sfxMuted, musicVolume, sfxVolume]);
+    mod.audioManager.musicMute(prefs.musicMuted, { resume: false });
+    mod.audioManager.sfxMute(prefs.sfxMuted);
+  }, []);
+
+  // Howler / motion / shader stay off the first paint. Plain Make Fire is up first.
+  useEffect(() => {
+    let cancelled = false;
+    void import("@/lib/audio").then((mod) => {
+      if (cancelled) return;
+      audioRef.current = mod;
+      // New Game / sign-out can show this screen in-place without a reload.
+      mod.audioManager.stopAllSounds();
+      applyAudioPrefs(mod);
+    });
+    void import("@/components/ui/particle-button").then((mod) => {
+      if (!cancelled) setParticleButtonCmp(() => mod.ParticleButton);
+    });
+    void import("@/components/ui/cloud-shader").then((mod) => {
+      if (!cancelled) setCloudShaderCmp(() => mod.default);
+    });
+    return () => {
+      cancelled = true;
+    };
+  }, [applyAudioPrefs]);
+
+  useEffect(() => {
+    const mod = audioRef.current;
+    if (mod) applyAudioPrefs(mod);
+  }, [applyAudioPrefs, musicMuted, sfxMuted, musicVolume, sfxVolume]);
 
   useEffect(() => {
     // Wind plays as soon as the user shows intent (mousemove on desktop, touchstart on mobile).
     // Both events fire before the click event, so executedRef.current is still false
     // even when the user's first action is clicking "Light Fire".
-    const playWind = () => {
-      audioManager.playLoopingSound("wind", SOUND_VOLUME.wind, false, 1);
+    let cancelled = false;
+    let handleInitialGesture: (() => void) | undefined;
+
+    const attachGesture = (mod: AudioModule) => {
+      if (cancelled) return;
+      const playWind = () => {
+        mod.audioManager.playLoopingSound(
+          "wind",
+          mod.SOUND_VOLUME.wind,
+          false,
+          1,
+        );
+      };
+
+      handleInitialGesture = () => {
+        if (!executedRef.current) {
+          mod.audioManager.preloadLightFireCue();
+          playWind();
+        }
+        document.removeEventListener("mousemove", handleInitialGesture!);
+        document.removeEventListener("touchstart", handleInitialGesture!);
+      };
+      document.addEventListener("mousemove", handleInitialGesture, {
+        once: true,
+      });
+      document.addEventListener("touchstart", handleInitialGesture, {
+        once: true,
+      });
     };
 
-    const handleInitialGesture = () => {
-      if (!executedRef.current) {
-        audioManager.preloadLightFireCue();
-        playWind();
-      }
-      document.removeEventListener("mousemove", handleInitialGesture);
-      document.removeEventListener("touchstart", handleInitialGesture);
-    };
-    document.addEventListener("mousemove", handleInitialGesture, {
-      once: true,
-    });
-    document.addEventListener("touchstart", handleInitialGesture, {
-      once: true,
-    });
+    if (audioRef.current) {
+      attachGesture(audioRef.current);
+    } else {
+      void import("@/lib/audio").then((mod) => {
+        if (cancelled || executedRef.current) return;
+        audioRef.current = mod;
+        attachGesture(mod);
+      });
+    }
 
     return () => {
-      audioManager.stopLoopingSound("wind", 2);
-      document.removeEventListener("mousemove", handleInitialGesture);
-      document.removeEventListener("touchstart", handleInitialGesture);
+      cancelled = true;
+      if (handleInitialGesture) {
+        document.removeEventListener("mousemove", handleInitialGesture);
+        document.removeEventListener("touchstart", handleInitialGesture);
+      }
+      audioRef.current?.audioManager.stopLoopingSound("wind", 2);
     };
   }, []);
 
@@ -327,8 +404,10 @@ export default function StartScreen({
 
       try {
         // Prefetch off the critical path; wait until both assets are actually ready.
+        const audio = audioRef.current ?? (await import("@/lib/audio"));
+        audioRef.current = audio;
         await Promise.all([
-          audioManager.loadSound("monsterStart", EYES_EASTER_EGG_SOUND),
+          audio.audioManager.loadSound("monsterStart", EYES_EASTER_EGG_SOUND),
           preloadEyesImage(EYES_EASTER_EGG_SRC),
         ]);
         if (stillOnStartScreen()) {
@@ -360,7 +439,13 @@ export default function StartScreen({
       eyesEasterEggConsumedRef.current = true;
       window.removeEventListener("mousemove", handlePointerMove);
       setShowEyesEasterEgg(true);
-      audioManager.playSound("monsterStart", SOUND_VOLUME.monsterStart);
+      const audio = audioRef.current;
+      if (audio) {
+        audio.audioManager.playSound(
+          "monsterStart",
+          audio.SOUND_VOLUME.monsterStart,
+        );
+      }
       if (eyesEasterEggHideTimeoutRef.current) {
         clearTimeout(eyesEasterEggHideTimeoutRef.current);
       }
@@ -424,25 +509,6 @@ export default function StartScreen({
     };
   }, []);
 
-  // Keep fade-in off React className after it finishes. Re-applying the class
-  // on any re-render restarts the blur (and pointer-events: none on the button).
-  useEffect(() => {
-    if (buttonFadeInDone) return;
-    const btn = buttonRef.current;
-    const markDone = (event?: AnimationEvent) => {
-      if (event?.animationName && event.animationName !== "fade-in-button") {
-        return;
-      }
-      setButtonFadeInDone(true);
-    };
-    btn?.addEventListener("animationend", markDone);
-    const fallbackId = window.setTimeout(markDone, 2600);
-    return () => {
-      btn?.removeEventListener("animationend", markDone);
-      window.clearTimeout(fallbackId);
-    };
-  }, [buttonFadeInDone]);
-
   // Drop intro fade-in class after it finishes so Make Fire does not restart
   // the blur (filter containing-block) or look like the three lines replayed.
   useEffect(() => {
@@ -476,19 +542,40 @@ export default function StartScreen({
       });
     }
 
-    // Fire one-shot first so it is not delayed by the wind fade setup.
-    audioManager.playSound("lightFire", SOUND_VOLUME.lightFire);
-    audioManager.stopLoopingSound("wind", 1);
+    const playLightFireAudio = (mod: AudioModule) => {
+      // Fire one-shot first so it is not delayed by the wind fade setup.
+      mod.audioManager.playSound("lightFire", mod.SOUND_VOLUME.lightFire);
+      mod.audioManager.stopLoopingSound("wind", 1);
 
-    // After Light Fire one-shot: load core pack (BGM + early cave), start music,
-    // then deferred sounds continue in the background.
-    window.setTimeout(() => {
-      void audioManager.loadGameSounds().then(() => {
-        if (!musicMuted) {
-          void audioManager.startBackgroundMusic();
-        }
+      // After Light Fire one-shot: load core pack (BGM + early cave), start music,
+      // then deferred sounds continue in the background.
+      window.setTimeout(() => {
+        void mod.audioManager.loadGameSounds().then(() => {
+          if (!musicMuted) {
+            void mod.audioManager.startBackgroundMusic();
+          }
+        });
+      }, 200);
+    };
+    if (audioRef.current) {
+      playLightFireAudio(audioRef.current);
+    } else {
+      void import("@/lib/audio").then((mod) => {
+        audioRef.current = mod;
+        playLightFireAudio(mod);
       });
-    }, 200);
+    }
+
+    if (!VaporizeTextCycleCmp) {
+      void import("@/components/ui/vapour-text-effect").then((mod) => {
+        setVaporizeTextCycleCmp(() => mod.default);
+      });
+    }
+    if (!ParticleButtonCmp) {
+      void import("@/components/ui/particle-button").then((mod) => {
+        setParticleButtonCmp(() => mod.ParticleButton);
+      });
+    }
 
     const preferences = {
       cruelMode: isCruelMode,
@@ -519,16 +606,23 @@ export default function StartScreen({
     const next = !musicMuted;
     setMusicMuted(next);
     // Start screen must not start BGM on unmute; Light Fire starts it explicitly.
-    audioManager.musicMute(next, { resume: false });
+    audioRef.current?.audioManager.musicMute(next, { resume: false });
   };
 
   const toggleSfx = () => {
     const next = !sfxMuted;
     setSfxMuted(next);
-    audioManager.sfxMute(next);
+    const audio = audioRef.current;
+    if (!audio) return;
+    audio.audioManager.sfxMute(next);
     if (!next && !executedRef.current) {
-      audioManager.preloadLightFireCue();
-      audioManager.playLoopingSound("wind", SOUND_VOLUME.wind, false, 1);
+      audio.audioManager.preloadLightFireCue();
+      audio.audioManager.playLoopingSound(
+        "wind",
+        audio.SOUND_VOLUME.wind,
+        false,
+        1,
+      );
     }
   };
 
@@ -645,6 +739,9 @@ export default function StartScreen({
           />
         ))}
         <link rel="canonical" href="https://a-dark-cave.com/" />
+        {isNoindexStartPath() && (
+          <meta name="robots" content="noindex, follow" />
+        )}
       </Helmet>
       {!steamEditionActive && (
         <div className="absolute bottom-12 right-4 z-20 animate-fade-in-featured">
@@ -664,23 +761,6 @@ export default function StartScreen({
       )}
 
       <style>{`
-        @keyframes fade-in-button {
-          0% {
-            opacity: 0;
-            filter: blur(10px);
-          }
-          100% {
-            opacity: 1;
-            filter: blur(0px);
-          }
-        }
-
-        .animate-fade-in-button {
-          animation: fade-in-button 1s ease-in 1.5s forwards;
-          opacity: 0;
-          pointer-events: none;
-        }
-
         /* Opacity stays 1 so LCP can fire on first paint; only un-blur for atmosphere. */
         @keyframes fade-in-text {
           0% { filter: blur(10px); }
@@ -718,7 +798,7 @@ export default function StartScreen({
         }
       `}</style>
 
-      <CloudShader />
+      {CloudShaderCmp ? <CloudShaderCmp /> : null}
 
       {showEyesEasterEgg && (
         <img
@@ -773,14 +853,22 @@ export default function StartScreen({
         <div className="text-center mb-4 w-full max-w-xl px-4">
           {(isCruelMode
             ? [
-              t("startScreen.titleCruel"),
-              t("startScreen.airCruel"),
-              t("startScreen.seeCruel"),
+              t("startScreen.titleCruel", { defaultValue: "A very dark cave." }),
+              t("startScreen.airCruel", {
+                defaultValue: "The air is freezing and damp.",
+              }),
+              t("startScreen.seeCruel", {
+                defaultValue: "You barely see anything around you.",
+              }),
             ]
             : [
-              t("startScreen.titleNormal"),
-              t("startScreen.airNormal"),
-              t("startScreen.seeNormal"),
+              t("startScreen.titleNormal", { defaultValue: "A dark cave." }),
+              t("startScreen.airNormal", {
+                defaultValue: "The air is cold and damp.",
+              }),
+              t("startScreen.seeNormal", {
+                defaultValue: "You barely see the shapes around you.",
+              }),
             ]
           ).map((line, index) => {
             const LineTag = index === 0 ? "h1" : "p";
@@ -789,9 +877,9 @@ export default function StartScreen({
                 key={`${index}-${line}`}
                 className="relative mx-auto w-fit text-lg leading-relaxed text-gray-300/90 font-normal"
               >
-                {showParticles && (
+                {showParticles && VaporizeTextCycleCmp && (
                   <div className="pointer-events-none absolute inset-0 z-10">
-                    <VaporizeTextCycle
+                    <VaporizeTextCycleCmp
                       texts={[line]}
                       loop={false}
                       play={showParticles}
@@ -834,15 +922,26 @@ export default function StartScreen({
         </div>
 
         <div className={showParticles ? undefined : "fire-glow-hint"}>
-          <ParticleButton
-            ref={buttonRef}
-            onClick={handleLightFire}
-            autoStart={showParticles}
-            className={`bg-transparent border-none text-gray-300/90 hover:bg-transparent text-lg px-8 py-4 fire-hover z-[10000] ${showParticles ? "fire-active" : buttonFadeInDone ? "" : "animate-fade-in-button"}`}
-            data-testid="button-light-fire"
-          >
-            {t("startScreen.makeFire")}
-          </ParticleButton>
+          {ParticleButtonCmp ? (
+            <ParticleButtonCmp
+              ref={buttonRef}
+              onClick={handleLightFire}
+              autoStart={showParticles}
+              className={`${MAKE_FIRE_BUTTON_CLASS} ${showParticles ? "fire-active" : ""}`}
+              data-testid="button-light-fire"
+            >
+              {t("startScreen.makeFire", { defaultValue: "Make Fire" })}
+            </ParticleButtonCmp>
+          ) : (
+            <Button
+              ref={buttonRef}
+              onClick={handleLightFire}
+              className={MAKE_FIRE_BUTTON_CLASS}
+              data-testid="button-light-fire"
+            >
+              {t("startScreen.makeFire", { defaultValue: "Make Fire" })}
+            </Button>
+          )}
         </div>
       </main>
 

@@ -60,7 +60,7 @@ describe("sendSpaIndexHtml catch-all", () => {
     expect(res.text).not.toContain("Play for Free in Your Browser");
   });
 
-  it("points /galaxy at the homepage canonical", async () => {
+  it("points /galaxy at the homepage canonical and noindexes it", async () => {
     const res = await request(spaFallbackApp()).get("/galaxy");
     expect(res.status).toBe(200);
     expect(res.text).toContain(
@@ -69,6 +69,8 @@ describe("sendSpaIndexHtml catch-all", () => {
     expect(res.text).not.toContain(
       '<link rel="canonical" href="https://a-dark-cave.com/galaxy"',
     );
+    expect(res.text).toContain('content="noindex, follow"');
+    expect(res.text).not.toContain('content="index, follow"');
     expect(res.text).toContain("VideoGame");
   });
 

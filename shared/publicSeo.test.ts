@@ -129,7 +129,7 @@ describe("publicSeo", () => {
     expect(html).not.toContain('"@type":"WebPage"');
   });
 
-  it("points homepage clones at the home canonical", () => {
+  it("points homepage clones at the home canonical and noindexes them", () => {
     for (const path of ["/galaxy", "/crazygames", "/boost"] as const) {
       const html = customizeSpaIndexHtml(SAMPLE_HTML, path);
       expect(resolveSpaHtmlResponse(path).status).toBe(200);
@@ -140,8 +140,9 @@ describe("publicSeo", () => {
       expect(html).not.toContain(
         `<link rel="canonical" href="https://a-dark-cave.com${path}"`,
       );
+      expect(html).toContain('content="noindex, follow"');
+      expect(html).not.toContain('content="index, follow"');
       expect(html).toContain("VideoGame");
-      expect(html).not.toContain('content="noindex');
     }
   });
 

@@ -62,10 +62,11 @@ const HOME_ROUTE_SEO: PublicRouteSeo = {
   includeHomeJsonLd: true,
 };
 
-/** Same shell as `/`, but first-HTML canonical stays on the homepage. */
+/** Same shell as `/`, but first-HTML points at the homepage and stays out of the index. */
 const HOME_CLONE_SEO: PublicRouteSeo = {
   ...HOME_ROUTE_SEO,
   canonicalPath: "/",
+  robots: "noindex, follow",
 };
 
 const ROUTE_SEO: Record<string, PublicRouteSeo> = {

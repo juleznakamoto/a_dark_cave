@@ -1,5 +1,5 @@
 /**
- * Early boot helpers: cache-bust retry, delayed spinner, load watchdog.
+ * Early boot helpers: cache-bust retry, load watchdog.
  * Loaded with defer from index.html so it does not block HTML parsing.
  * Watchdog timeout must match FATAL_UI_TIMEOUT_MS in client/src/lib/fatalErrorScreen.ts (45000).
  */
@@ -85,15 +85,6 @@
       });
     }
   }
-
-  // Show boot spinner only after 500ms (avoids flash; decorative / non-SEO).
-  window.__ADC_BOOT_SPINNER_TIMER = setTimeout(function () {
-    window.__ADC_BOOT_SPINNER_TIMER = undefined;
-    var el = document.getElementById("adc-boot-spinner");
-    if (!el) return;
-    el.dataset.visible = "1";
-    el.classList.add("adc-boot-spinner--visible");
-  }, 500);
 
   // Must match FATAL_UI_TIMEOUT_MS in client/src/lib/fatalErrorScreen.ts (45000).
   window.__ADC_BOOT_WATCHDOG = setTimeout(function () {

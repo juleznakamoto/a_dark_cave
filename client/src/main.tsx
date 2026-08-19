@@ -2,7 +2,10 @@ import { createRoot } from "react-dom/client";
 import { HelmetProvider } from "react-helmet-async";
 import { I18nextProvider } from "react-i18next";
 import i18n from "./i18n";
-import { ensureInitialLocalesLoaded } from "./i18n/loadLocaleResources";
+import {
+  ensureInitialLocalesLoaded,
+  isStartupSurfacePath,
+} from "./i18n/loadLocaleResources";
 import App from "./App";
 import AppErrorBoundary from "@/components/AppErrorBoundary";
 import { mountFatalErrorScreen } from "@/lib/fatalErrorScreen";
@@ -113,24 +116,25 @@ declare global {
   }
 }
 
+createRoot(document.getElementById("root")!).render(
+  <AppErrorBoundary>
+    <I18nextProvider i18n={i18n}>
+      <HelmetProvider>
+        <App />
+      </HelmetProvider>
+    </I18nextProvider>
+  </AppErrorBoundary>,
+);
+markAppMounted();
+
 void withTimeout(
   ensureInitialLocalesLoaded(),
   BOOT_LOCALE_TIMEOUT_MS,
   "Initial locale load",
-)
-  .then(() => {
-    createRoot(document.getElementById("root")!).render(
-      <AppErrorBoundary>
-        <I18nextProvider i18n={i18n}>
-          <HelmetProvider>
-            <App />
-          </HelmetProvider>
-        </I18nextProvider>
-      </AppErrorBoundary>,
-    );
-    markAppMounted();
-  })
-  .catch((error) => {
-    logger.error("[boot] Failed to start app:", error);
+).catch((error) => {
+  logger.error("[boot] Failed to load initial locales:", error);
+  // Start surfaces already have English shell/seo seeded in i18n.init.
+  if (!isStartupSurfacePath(window.location.pathname)) {
     mountFatalErrorScreen(error);
-  });
+  }
+});

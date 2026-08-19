@@ -142,16 +142,20 @@ export async function loadLocaleResources(
   }
 }
 
-/** Load only the StartScreen shell + SEO strings before first React paint. */
+export function isStartupSurfacePath(path: string): boolean {
+  return (
+    path === "/" ||
+    path === "/galaxy" ||
+    path === "/crazygames" ||
+    path === "/boost"
+  );
+}
+
+/** Load StartScreen shell + SEO strings (or full catalogs on other routes). */
 export async function ensureInitialLocalesLoaded(): Promise<void> {
   const path =
     typeof window === "undefined" ? "/" : window.location.pathname;
-  if (
-    path !== "/" &&
-    path !== "/galaxy" &&
-    path !== "/crazygames" &&
-    path !== "/boost"
-  ) {
+  if (!isStartupSurfacePath(path)) {
     await ensureGameplayLocalesLoaded();
     return;
   }

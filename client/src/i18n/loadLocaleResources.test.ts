@@ -1,5 +1,8 @@
 import { describe, expect, it } from "vitest";
-import { isStartupLocaleModulePath } from "./loadLocaleResources";
+import {
+  isStartupLocaleModulePath,
+  isStartupSurfacePath,
+} from "./loadLocaleResources";
 
 describe("startup locale module selection", () => {
   it("includes only shell and SEO UI shards for the requested locale", () => {
@@ -18,5 +21,11 @@ describe("startup locale module selection", () => {
     expect(
       isStartupLocaleModulePath("./locales/en/ui/shell.json", "de"),
     ).toBe(false);
+  });
+
+  it("treats play routes as startup surfaces", () => {
+    expect(isStartupSurfacePath("/")).toBe(true);
+    expect(isStartupSurfacePath("/galaxy")).toBe(true);
+    expect(isStartupSurfacePath("/faq")).toBe(false);
   });
 });

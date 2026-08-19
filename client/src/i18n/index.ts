@@ -9,9 +9,27 @@ import {
   type SupportedLocale,
 } from "./locales";
 import { loadResourcesForLanguageChange } from "./loadLocaleResources";
+import { parseLocaleJson } from "./parseLocaleJson";
+
+const englishStartupUiModules = import.meta.glob<string>(
+  ["./locales/en/ui/shell.json", "./locales/en/ui/seo.json"],
+  { eager: true, query: "?raw", import: "default" },
+);
+
+function englishStartupUiBundle(): Record<string, unknown> {
+  const ui: Record<string, unknown> = {};
+  for (const raw of Object.values(englishStartupUiModules)) {
+    Object.assign(ui, parseLocaleJson(raw));
+  }
+  return ui;
+}
 
 void i18n.use(initReactI18next).init({
-  resources: {},
+  resources: {
+    [DEFAULT_LOCALE]: {
+      ui: englishStartupUiBundle(),
+    },
+  },
   lng: getInitialLocale(),
   fallbackLng: DEFAULT_LOCALE,
   ns: [...I18N_NAMESPACES],

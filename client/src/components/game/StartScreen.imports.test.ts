@@ -22,7 +22,16 @@ describe("start-screen first-load imports", () => {
     const src = source("StartScreen.tsx");
     expect(staticValueFrom(src, "framer-motion")).toBe(false);
     expect(staticValueFrom(src, "@/lib/supabase")).toBe(false);
-    expect(staticValueFrom(src, "@/components/ui/particle-button")).toBe(true);
+    expect(staticValueFrom(src, "@/lib/audio")).toBe(false);
+    expect(staticValueFrom(src, "@/components/ui/particle-button")).toBe(false);
+    expect(staticValueFrom(src, "@/components/ui/cloud-shader")).toBe(false);
+    expect(staticValueFrom(src, "@/components/ui/vapour-text-effect")).toBe(
+      false,
+    );
+    expect(src).toContain('import("@/lib/audio")');
+    expect(src).toContain('import("@/components/ui/particle-button")');
+    expect(src).toContain('import("@/components/ui/cloud-shader")');
+    expect(src).toContain('import("@/components/ui/vapour-text-effect")');
   });
 
   it("StartScreen hover-prefetches language, social, and CrazyGames menus", () => {
@@ -83,6 +92,17 @@ describe("start-screen first-load imports", () => {
     expect(src).not.toMatch(/@radix-ui/);
     expect(src).not.toMatch(/bubbly-button/);
     expect(src).not.toMatch(/coin-hover-particles/);
+    expect(src).not.toMatch(/SPINNER_DELAY_MS/);
+    expect(src).toContain("data-testid=\"page-load-spinner\"");
+  });
+
+  it("boot HTML shows the spinner immediately", () => {
+    const html = readFileSync(join(dir, "../../../index.html"), "utf8");
+    const boot = readFileSync(join(dir, "../../../public/boot.js"), "utf8");
+    expect(html).toContain('id="adc-boot-spinner"');
+    expect(html).not.toMatch(/#adc-boot-spinner\s*\{[^}]*opacity:\s*0/);
+    expect(boot).not.toMatch(/adc-boot-spinner--visible/);
+    expect(boot).not.toMatch(/500\);/);
   });
 
   it("audio does not auto-preload start-screen sounds", () => {
@@ -183,5 +203,6 @@ describe.skipIf(!existsSync(distHtml))("built `/` first-load chunks", () => {
     expect(firstLoadSource).not.toMatch(/GoTrueClient|supabase-js/);
     expect(firstLoadSource).not.toMatch(/framer-motion/);
     expect(firstLoadSource).not.toMatch(/@radix-ui|data-radix-/);
+    expect(firstLoadSource).not.toMatch(/\bHowl\b|howler/);
   });
 });

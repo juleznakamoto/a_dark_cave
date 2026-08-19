@@ -344,12 +344,6 @@
       justify-content: center;
       pointer-events: none;
       background: #000;
-      opacity: 0;
-      transition: opacity 0.2s ease;
-    }
-
-    #adc-boot-spinner.adc-boot-spinner--visible {
-      opacity: 1;
     }
 
     .adc-page-load-spinner {
@@ -453,7 +447,7 @@
 </head>
 
 <body>
-  <!-- Deferred: cache-bust retry, boot spinner delay, load watchdog (see public/boot.js) -->
+  <!-- Deferred: cache-bust retry + load watchdog (see public/boot.js) -->
   <script src="/boot.js" defer></script>
   <!-- Decorative boot loader: aria-hidden, outside #seo-fallback, no indexable copy -->
   <div id="adc-boot-spinner" aria-hidden="true">
