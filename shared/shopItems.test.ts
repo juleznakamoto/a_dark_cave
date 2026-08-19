@@ -164,6 +164,15 @@ describe('Shop Items Configuration', () => {
     it('does not list the Dark Artifacts Bundle in Highlights', () => {
       expect(HIGHLIGHTS_ORDER).not.toContain('artifact_bundle');
     });
+
+    it('does not include withdrawn artifacts in the Ashen Throne Bundle', () => {
+      const bundle = SHOP_ITEMS.ashen_throne_bundle;
+      expect(bundle.bundleComponents).not.toContain('skull_lantern');
+      expect(bundle.bundleComponents).not.toContain('tarnished_compass');
+      expect(bundle.bundleComponents).not.toContain('crow_harness');
+      expect(bundle.rewards.tools).toBeUndefined();
+      expect(bundle.rewards.relics).toBeUndefined();
+    });
   });
 
   describe('Cruel Mode price', () => {
@@ -441,9 +450,6 @@ describe('Shop Items Configuration', () => {
       expect(bundle.bundleComponents).toEqual([
         'gold_15000',
         'great_feast_3',
-        'skull_lantern',
-        'tarnished_compass',
-        'crow_harness',
         'cruel_mode',
       ]);
     });
@@ -452,11 +458,13 @@ describe('Shop Items Configuration', () => {
       const bundle = SHOP_ITEMS.ashen_throne_bundle;
       expect(bundle.price).toBe(1349);
       expect(bundleComponentsListPriceSumCents(bundle.bundleComponents!, SHOP_ITEMS)).toBe(
-        2594,
+        SHOP_ITEMS.gold_15000.price +
+        SHOP_ITEMS.great_feast_3.price +
+        SHOP_ITEMS.cruel_mode.price,
       );
     });
 
-    it('should price below component sum and below Pale King + Dark Artifacts + Cruel Mode', () => {
+    it('should price below component sum and below Pale King + Cruel Mode', () => {
       const bundle = SHOP_ITEMS.ashen_throne_bundle;
       const listSum = bundleComponentsListPriceSumCents(
         bundle.bundleComponents!,
@@ -464,22 +472,20 @@ describe('Shop Items Configuration', () => {
       );
       expect(listSum).toBeGreaterThan(bundle.price);
       expect(bundle.price).toBeLessThan(
-        SHOP_ITEMS.advanced_bundle.price +
-        SHOP_ITEMS.artifact_bundle.price +
-        SHOP_ITEMS.cruel_mode.price,
+        SHOP_ITEMS.advanced_bundle.price + SHOP_ITEMS.cruel_mode.price,
       );
     });
 
-    it('should merge Pale King, Dark Artifacts, and Cruel Mode', () => {
+    it('should merge Pale King and Cruel Mode', () => {
       const bundle = SHOP_ITEMS.ashen_throne_bundle;
       expect(bundle.rewards.resources?.gold).toBe(15000);
       expect(bundle.rewards.feastActivations).toBe(3);
-      expect(bundle.rewards.tools).toEqual(['skull_lantern', 'crow_harness']);
-      expect(bundle.rewards.relics).toEqual(['tarnished_compass']);
+      expect(bundle.rewards.tools).toBeUndefined();
+      expect(bundle.rewards.relics).toBeUndefined();
       expect(bundle.bundleComponents).toContain('cruel_mode');
     });
 
-    it('should not be repeatable (artifacts and Cruel Mode are one-time)', () => {
+    it('should not be repeatable (Cruel Mode is one-time)', () => {
       expect(SHOP_ITEMS.ashen_throne_bundle.canPurchaseMultipleTimes).toBe(
         false,
       );

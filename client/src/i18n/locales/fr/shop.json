@@ -1,13 +1,13 @@
 {
   "additional_preset_slots": {
-    "activationMessage": "Deux emplacements de préréglages de villageois supplémentaires ont été ajoutés.",  //x1.4
-    "description": "Deux emplacements de préréglages de travail des villageois supplémentaires",  //x2.2
-    "name": "2 emplacements de préréglages supplémentaires"  //x1.8
+    "activationMessage": "Deux emplacements de préréglages de villageois supplémentaires ont été ajoutés.", //x1.4
+    "description": "Deux emplacements de préréglages de travail des villageois supplémentaires", //x2.2
+    "name": "2 emplacements de préréglages supplémentaires" //x1.8
   },
   "additional_construction_queue_slot": {
     "activationMessage": "Deux emplacements de file de construction supplémentaires ont été ajoutés.",
-    "description": "Deux emplacements de construction parallèle supplémentaires",  //x1.6
-    "name": "2 emplacements de file de construction supplémentaires"  //x1.5
+    "description": "Deux emplacements de construction parallèle supplémentaires", //x1.6
+    "name": "2 emplacements de file de construction supplémentaires" //x1.5
   },
   "advanced_bundle": {
     "activationMessage": "Les éléments du pack du Roi pâle ont été ajoutés à vos achats !",
@@ -47,7 +47,7 @@
   },
   "gold_100_free": {
     "activationMessage": "100 or ont été ajoutés à votre inventaire en cadeau !",
-    "description": "Une petite faveur quotidienne dans un monde froid",
+    "description": "Une faveur quotidienne dans un monde froid",
     "name": "Cadeau de 100 or"
   },
   "gold_15000": {
@@ -77,12 +77,12 @@
   },
   "great_feast_1": {
     "activationMessage": "Un grand festin a commencé !",
-    "description": "Multiplie par 5 la production des villageois pendant 30 minutes.",
+    "description": "Pendant 30 minutes :\n• Production du village ×5\n• +25 % de chance de nouveau villageois",
     "name": "1 grand festin"
   },
   "great_feast_3": {
     "activationMessage": "Un grand festin a commencé !",
-    "description": "Multiplie par 5 la production des villageois pendant 30 minutes (3 fois).",
+    "description": "Pendant 30 minutes :\n• Production du village ×5\n• +25 % de chance de nouveau villageois",
     "name": "3 grands festins"
   },
   "skull_lantern": {

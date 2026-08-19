@@ -47,7 +47,7 @@
   },
   "gold_100_free": {
     "activationMessage": "100 Oro sono stati aggiunti al tuo inventario in regalo!",
-    "description": "Una piccola grazia quotidiana in un mondo freddo",
+    "description": "Una grazia quotidiana in un mondo freddo",
     "name": "Regalo di 100 Oro"
   },
   "gold_15000": {
@@ -77,12 +77,12 @@
   },
   "great_feast_1": {
     "activationMessage": "È iniziato un Grande Banchetto!",
-    "description": "Aumenta la produzione degli abitanti di 5x per 30 minuti",
+    "description": "Per 30 minuti:\n• Produzione del villaggio 5x\n• +25 % probabilità di nuovo abitante",
     "name": "1 Grande Banchetto"
   },
   "great_feast_3": {
     "activationMessage": "È iniziato un Grande Banchetto!",
-    "description": "Aumenta la produzione degli abitanti di 5x per 30 minuti (3 volte)",
+    "description": "Per 30 minuti:\n• Produzione del villaggio 5x\n• +25 % probabilità di nuovo abitante",
     "name": "3 Grandi Banchetti"
   },
   "skull_lantern": {

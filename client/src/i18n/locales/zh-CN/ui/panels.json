@@ -51,6 +51,7 @@
     "fromBlessings": "{{percent}}% 来自祝福",
     "fromEvents": "{{percent}}% 来自事件",
     "fromHeartfire": "{{percent}}% 来自炉火",
+    "fromGreatFeast": "{{percent}}% 来自盛宴",
     "merchantBlocked": "其他事件进行中时无法召唤商人",
     "merchantAvailableIn": "{{time}} 后可用",
     "merchantAbortCall": "取消召唤",

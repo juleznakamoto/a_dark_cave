@@ -95,6 +95,11 @@
       "harderChallenges": "Härtere Herausforderungen", //x1.5
       "reusePurchases": "Bestehende Käufe wiederverwenden" //x1.3
     },
+    "greatFeast": {
+      "forMinutes": "Für {{minutes}} Minuten:",
+      "villageProduction": "5-fache Dorfproduktion",
+      "newVillagerChance": "+25 % Chance auf neue Dorfbewohner"
+    },
     "alreadyClaimedItemLog": "Du hast {{name}} bereits abgeholt.",
     "claimFailedLog": "{{name}} konnte nicht abgeholt werden. Bitte versuche es erneut.", //x1.5
     "activatedDefaultLog": "{{name}} aktiviert! Belohnungen wurden deinem Inventar hinzugefügt.",

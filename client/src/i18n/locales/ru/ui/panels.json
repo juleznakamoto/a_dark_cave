@@ -51,6 +51,7 @@
     "fromBlessings": "{{percent}}% от благословений",
     "fromEvents": "{{percent}}% от событий",
     "fromHeartfire": "{{percent}}% от очага",
+    "fromGreatFeast": "{{percent}}% от Великого пира",
     "merchantBlocked": "Нельзя вызвать торговца, пока активно другое событие",
     "merchantAvailableIn": "Доступно через {{time}}",
     "merchantAbortCall": "Отменить вызов", //x1.3

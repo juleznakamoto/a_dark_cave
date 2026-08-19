@@ -1,8 +1,8 @@
 {
   "additional_preset_slots": {
     "activationMessage": "Zwei zusätzliche Voreinstellungs-Slots für Dorfbewohner wurden hinzugefügt.",
-    "description": "Zwei weitere Voreinstellungs-Slots für Dorfbewohner-Arbeit",  //x1.7
-    "name": "2 zusätzliche Voreinstellungs-Slots"  //x1.4
+    "description": "Zwei weitere Voreinstellungs-Slots für Dorfbewohner-Arbeit", //x1.7
+    "name": "2 zusätzliche Voreinstellungs-Slots" //x1.4
   },
   "additional_construction_queue_slot": {
     "activationMessage": "Zwei zusätzliche Bauwarteschlangen-Slots wurden hinzugefügt.",
@@ -47,7 +47,7 @@
   },
   "gold_100_free": {
     "activationMessage": "100 Gold wurden deinem Inventar als Geschenk hinzugefügt!",
-    "description": "Kleine tägliche Gnade in einer kalten Welt", //ok
+    "description": "Tägliche Gnade in einer kalten Welt",
     "name": "100 Gold Geschenk" //ok
   },
   "gold_15000": {
@@ -77,12 +77,12 @@
   },
   "great_feast_1": {
     "activationMessage": "Ein großes Fest hat begonnen!",
-    "description": "Steigert die Produktion der Dorfbewohner 30 Minuten lang um das 5-Fache.", //ok
+    "description": "Für 30 Minuten:\n• 5-fache Dorfproduktion\n• +25 % Chance auf neue Dorfbewohner",
     "name": "1 großes Fest"
   },
   "great_feast_3": {
     "activationMessage": "Ein großes Fest hat begonnen!",
-    "description": "Steigert die Produktion der Dorfbewohner 30 Minuten lang um das 5-Fache (3-mal).", //ok
+    "description": "Für 30 Minuten:\n• 5-fache Dorfproduktion\n• +25 % Chance auf neue Dorfbewohner",
     "name": "3 große Feste"
   },
   "skull_lantern": {

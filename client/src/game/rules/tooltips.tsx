@@ -9,6 +9,7 @@ import {
   getTotalMadness,
   getVeinrootFindMultiplier,
   computeResourceRandomRange,
+  GREAT_FEAST_STRANGER_APPROACH_BONUS,
 } from "./effectsCalculation";
 import { getMadnessProductionMultiplier } from "@/game/population";
 import {
@@ -548,6 +549,13 @@ export const feastTooltip: TooltipConfig = {
             {getUiTooltip("productionBonus", "Production Bonus: {{value}}", {
               value: "400%",
             })}
+          </div>
+          <div>
+            {getUiTooltip(
+              "newVillagerChanceBonus",
+              "New Villager Chance +{{percent}}%",
+              { percent: Math.round(GREAT_FEAST_STRANGER_APPROACH_BONUS * 100) },
+            )}
           </div>
           <div>{formatEffectRemaining(remainingMs)}</div>
         </>

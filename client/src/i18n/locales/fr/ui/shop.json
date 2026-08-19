@@ -95,6 +95,11 @@
       "harderChallenges": "Défis plus difficiles", //x1.2
       "reusePurchases": "Réutiliser les achats existants" //x1.3
     },
+    "greatFeast": {
+      "forMinutes": "Pendant {{minutes}} minutes :",
+      "villageProduction": "Production du village ×5",
+      "newVillagerChance": "+25 % de chance de nouveau villageois"
+    },
     "alreadyClaimedItemLog": "Vous avez déjà récupéré {{name}}.",
     "claimFailedLog": "Impossible de récupérer {{name}}. Veuillez réessayer.",
     "activatedDefaultLog": "{{name}} activé ! Les récompenses ont été ajoutées à votre inventaire.",

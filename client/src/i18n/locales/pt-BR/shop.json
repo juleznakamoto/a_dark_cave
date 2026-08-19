@@ -47,7 +47,7 @@
   },
   "gold_100_free": {
     "activationMessage": "100 Ouro foram adicionados ao seu inventário como presente!",
-    "description": "Uma pequena clemência diária num mundo gélido",
+    "description": "Uma clemência diária num mundo gélido",
     "name": "Presente de 100 Ouro"
   },
   "gold_15000": {
@@ -77,12 +77,12 @@
   },
   "great_feast_1": {
     "activationMessage": "Um Grande Banquete começou!",
-    "description": "Aumenta a produção dos aldeões em 5x por 30 minutos",
+    "description": "Por 30 minutos:\n• Produção da aldeia 5x\n• +25 % de chance de novo aldeão",
     "name": "1 Grande Banquete"
   },
   "great_feast_3": {
     "activationMessage": "Um Grande Banquete começou!",
-    "description": "Aumenta a produção dos aldeões em 5x por 30 minutos (3 usos)",
+    "description": "Por 30 minutos:\n• Produção da aldeia 5x\n• +25 % de chance de novo aldeão",
     "name": "3 Grandes Banquetes"
   },
   "skull_lantern": {

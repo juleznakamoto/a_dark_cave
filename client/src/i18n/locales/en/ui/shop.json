@@ -95,6 +95,11 @@
       "harderChallenges": "Harder Challenges",
       "reusePurchases": "Reuse existing Purchases"
     },
+    "greatFeast": {
+      "forMinutes": "For {{minutes}} minutes:",
+      "villageProduction": "5x Village Production",
+      "newVillagerChance": "+25 % New Villager Chance"
+    },
     "alreadyClaimedItemLog": "You have already claimed {{name}}.",
     "claimFailedLog": "Failed to claim {{name}}. Please try again.",
     "activatedDefaultLog": "Activated {{name}}! Rewards have been added to your inventory.",

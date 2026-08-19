@@ -51,6 +51,7 @@
     "fromBlessings": "{{percent}}% from Blessings",
     "fromEvents": "{{percent}}% from Events",
     "fromHeartfire": "{{percent}}% from Heartfire",
+    "fromGreatFeast": "{{percent}}% from Great Feast",
     "merchantBlocked": "Merchant cannot be called while another event is active",
     "merchantAvailableIn": "Available in {{time}}",
     "merchantAbortCall": "Cancel call",

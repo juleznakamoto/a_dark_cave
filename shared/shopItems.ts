@@ -36,7 +36,7 @@ export const SHOP_ITEMS: Record<string, ShopItem> = {
   gold_100_free: {
     id: "gold_100_free",
     name: "100 Gold Gift",
-    description: "A small daily mercy in a cold world",
+    description: "A daily mercy in a cold world",
     price: 0,
     rewards: {
       resources: { gold: 100 },
@@ -164,7 +164,7 @@ export const SHOP_ITEMS: Record<string, ShopItem> = {
   great_feast_1: {
     id: "great_feast_1",
     name: "1 Great Feast",
-    description: `Boost villager production by 5x for ${GREAT_FEAST_DURATION_MS / 60000} minutes`,
+    description: `For ${GREAT_FEAST_DURATION_MS / 60000} minutes:\n• 5x Village Production\n• +25 % New Villager Chance`,
     price: 149, // 1.49 €
     rewards: {
       feastActivations: 1,
@@ -179,7 +179,7 @@ export const SHOP_ITEMS: Record<string, ShopItem> = {
   great_feast_3: {
     id: "great_feast_3",
     name: "3 Great Feasts",
-    description: `Boost villager production by 5x for ${GREAT_FEAST_DURATION_MS / 60000} minutes (3 times)`,
+    description: `For ${GREAT_FEAST_DURATION_MS / 60000} minutes:\n• 5x Village Production\n• +25 % New Villager Chance`,
     price: 299, // 2.99 €
     rewards: {
       feastActivations: 3,
@@ -318,8 +318,6 @@ export const SHOP_ITEMS: Record<string, ShopItem> = {
     rewards: {
       resources: { gold: 15000 },
       feastActivations: 3,
-      tools: ["skull_lantern", "crow_harness"],
-      relics: ["tarnished_compass"],
     },
     canPurchaseMultipleTimes: false,
     category: "bundle",
@@ -327,14 +325,8 @@ export const SHOP_ITEMS: Record<string, ShopItem> = {
       "Ashen Throne Bundle components have been added to your purchases!",
     symbol: "⯓",
     symbolColor: "text-stone-300",
-    bundleComponents: [
-      "gold_15000",
-      "great_feast_3",
-      "skull_lantern",
-      "tarnished_compass",
-      "crow_harness",
-      "cruel_mode",
-    ],
+    // Pale King contents + Cruel Mode. Dark artifacts were withdrawn from MTX.
+    bundleComponents: ["gold_15000", "great_feast_3", "cruel_mode"],
   },
 };
 

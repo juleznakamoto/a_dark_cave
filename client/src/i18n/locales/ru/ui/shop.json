@@ -95,6 +95,11 @@
       "harderChallenges": "Сложнее испытания",
       "reusePurchases": "Повторное использование покупок" //x1.3
     },
+    "greatFeast": {
+      "forMinutes": "На {{minutes}} минут:",
+      "villageProduction": "Производство деревни ×5",
+      "newVillagerChance": "+25 % шанс нового жителя"
+    },
     "alreadyClaimedItemLog": "Вы уже получили {{name}}.",
     "claimFailedLog": "Не удалось получить {{name}}. Попробуйте снова.",
     "activatedDefaultLog": "Активировано: {{name}}! Награды добавлены в инвентарь.",

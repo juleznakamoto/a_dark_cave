@@ -47,7 +47,7 @@
   },
   "gold_100_free": {
     "activationMessage": "100 黄金已作为礼物加入你的库存！",
-    "description": "寒冷世界里每日的一点怜悯",
+    "description": "寒冷世界里每日的怜悯",
     "name": "100 黄金赠礼"
   },
   "gold_15000": {
@@ -77,12 +77,12 @@
   },
   "great_feast_1": {
     "activationMessage": "盛宴已经开始！",
-    "description": "30 分钟内村民产量提升至 5 倍。",
+    "description": "30 分钟内：\n• 村庄产量 5 倍\n• 新村民几率 +25%",
     "name": "1 场盛宴"
   },
   "great_feast_3": {
     "activationMessage": "盛宴已经开始！",
-    "description": "30 分钟内村民产量提升至 5 倍（可使用 3 次）。",
+    "description": "30 分钟内：\n• 村庄产量 5 倍\n• 新村民几率 +25%",
     "name": "3 场盛宴"
   },
   "skull_lantern": {

@@ -51,6 +51,7 @@
     "fromBlessings": "{{percent}} % de bendiciones",
     "fromEvents": "{{percent}} % de eventos",
     "fromHeartfire": "{{percent}} % del fuego del hogar",
+    "fromGreatFeast": "{{percent}} % del gran festín",
     "merchantBlocked": "No se puede llamar al comerciante mientras otro evento está activo",
     "merchantAvailableIn": "Disponible en {{time}}",
     "merchantAbortCall": "Cancelar llamada",

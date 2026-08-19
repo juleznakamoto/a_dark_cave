@@ -51,6 +51,7 @@
     "fromBlessings": "{{percent}}% de Bênçãos",
     "fromEvents": "{{percent}}% de Eventos",
     "fromHeartfire": "{{percent}}% de Fogo do Coração",
+    "fromGreatFeast": "{{percent}}% do Grande Banquete",
     "merchantBlocked": "O mercador não pode ser chamado enquanto outro evento está ativo",
     "merchantAvailableIn": "Disponível em {{time}}",
     "merchantAbortCall": "Cancelar chamada",

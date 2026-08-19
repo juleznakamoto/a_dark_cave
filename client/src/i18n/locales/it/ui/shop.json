@@ -90,6 +90,11 @@
       "harderChallenges": "Sfide più Difficili",
       "reusePurchases": "Riutilizza gli Acquisti esistenti"
     },
+    "greatFeast": {
+      "forMinutes": "Per {{minutes}} minuti:",
+      "villageProduction": "Produzione del villaggio 5x",
+      "newVillagerChance": "+25 % probabilità di nuovo abitante"
+    },
     "alreadyClaimedItemLog": "Hai già riscattato {{name}}.",
     "claimFailedLog": "Impossibile riscattare {{name}}. Riprova.",
     "activatedDefaultLog": "{{name}} attivato! Le ricompense sono state aggiunte al tuo inventario.",

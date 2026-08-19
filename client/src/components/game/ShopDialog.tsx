@@ -315,6 +315,33 @@ function CruelModeEffectsList() {
   );
 }
 
+function GreatFeastEffectsList() {
+  const { t } = useTranslation("ui");
+  const minutes = GREAT_FEAST_DURATION_MS / 60000;
+  return (
+    <div className="space-y-0.5">
+      <div>
+        {t("shop.greatFeast.forMinutes", {
+          minutes,
+          defaultValue: "For {{minutes}} minutes:",
+        })}
+      </div>
+      <div>
+        •{" "}
+        {t("shop.greatFeast.villageProduction", {
+          defaultValue: "5x Village Production",
+        })}
+      </div>
+      <div>
+        •{" "}
+        {t("shop.greatFeast.newVillagerChance", {
+          defaultValue: "+25 % New Villager Chance",
+        })}
+      </div>
+    </div>
+  );
+}
+
 function ArtifactShopTooltipIcon({
   artifact,
   tooltipId,
@@ -565,6 +592,10 @@ function ShopItemDescriptionParagraph({ item }: { item: ShopItem }) {
   const artifact = shopArtifactIdFromShopItemId(item.id);
   if (artifact) {
     return <ArtifactEffectsList artifact={artifact} />;
+  }
+
+  if (item.rewards.feastActivations) {
+    return <GreatFeastEffectsList />;
   }
 
   return resolveShopItemDescription(item);
@@ -2530,7 +2561,7 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
                                     {/* Display remaining activations */}
                                   </span>
                                   <span className="text-xs text-muted-foreground">
-                                    {resolveShopItemDescription(item)}
+                                    <GreatFeastEffectsList />
                                   </span>
                                 </div>
                                 <Button

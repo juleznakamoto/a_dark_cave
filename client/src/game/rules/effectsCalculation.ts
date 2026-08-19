@@ -681,12 +681,13 @@ const STRANGER_APPROACH_BUILDINGS = [
  * - Blessings: ravens_mark +10%, ravens_mark_enhanced +15%. Both stack: 25%.
  * - Low population (pop ≤ 4): see CRUEL_MODE.strangerApproach.lowPopBonusWhenPopLte4.
  * - Events: Solstice active +50%.
+ * - Great Feast: +25% while active.
  * - Heartfire: Level 1 +1%, 2 +2.5%, 3 +5%, 4 +7.5%, 5 +10%.
  *
- * Total = lowPopulationBonus + fromBuildings + fromBlessings + fromEvents + fromHeartfire.
+ * Total = lowPopulationBonus + fromBuildings + fromBlessings + fromEvents + fromGreatFeast + fromHeartfire.
  * Capped at 100%. Effective probability is 0 when at max population.
  *
- * Absolute maximum: 50 + 22.5 + 25 + 50 = 147.5% → 100% (cap).
+ * Absolute maximum: 50 + 22.5 + 25 + 50 + 25 + 10 = 182.5% → 100% (cap).
  */
 const HEARTFIRE_VILLAGER_BONUS: Record<number, number> = {
   1: 0.01,
@@ -696,6 +697,8 @@ const HEARTFIRE_VILLAGER_BONUS: Record<number, number> = {
   5: 0.1,
 };
 
+export const GREAT_FEAST_STRANGER_APPROACH_BONUS = 0.25;
+
 export function getStrangerApproachProbability(state: GameState): {
   probability: number;
   rawChance: number;
@@ -704,6 +707,7 @@ export function getStrangerApproachProbability(state: GameState): {
   fromBuildings: number;
   fromBlessings: number;
   fromEvents: number;
+  fromGreatFeast: number;
   fromHeartfire: number;
 } {
   const currentPopulation = getCurrentPopulation(state);
@@ -745,12 +749,23 @@ export function getStrangerApproachProbability(state: GameState): {
     state.solsticeState.endTime > Date.now();
   const fromEvents = isSolsticeActive ? 0.5 : 0;
 
+  const fromGreatFeast =
+    state.greatFeastState?.isActive &&
+      state.greatFeastState.endTime > Date.now()
+      ? GREAT_FEAST_STRANGER_APPROACH_BONUS
+      : 0;
+
   const heartfireLevel = state.heartfireState?.level || 0;
   const fromHeartfire = HEARTFIRE_VILLAGER_BONUS[heartfireLevel] ?? 0;
 
   const rawChance = Math.min(
     1,
-    lowPopulationBonus + fromBuildings + fromBlessings + fromEvents + fromHeartfire,
+    lowPopulationBonus +
+    fromBuildings +
+    fromBlessings +
+    fromEvents +
+    fromGreatFeast +
+    fromHeartfire,
   );
   const probability = atCapacity ? 0 : rawChance;
 
@@ -761,6 +776,7 @@ export function getStrangerApproachProbability(state: GameState): {
     fromBuildings,
     fromBlessings,
     fromEvents,
+    fromGreatFeast,
     fromHeartfire,
     atCapacity,
   };

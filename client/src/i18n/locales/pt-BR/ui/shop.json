@@ -90,6 +90,11 @@
       "harderChallenges": "Desafios Mais Difíceis",
       "reusePurchases": "Reutilizar Compras existentes"
     },
+    "greatFeast": {
+      "forMinutes": "Por {{minutes}} minutos:",
+      "villageProduction": "Produção da aldeia 5x",
+      "newVillagerChance": "+25 % de chance de novo aldeão"
+    },
     "alreadyClaimedItemLog": "Você já resgatou {{name}}.",
     "claimFailedLog": "Falha ao resgatar {{name}}. Tente novamente.",
     "activatedDefaultLog": "{{name}} ativado! As recompensas foram adicionadas ao seu inventário.",

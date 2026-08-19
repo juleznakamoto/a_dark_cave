@@ -1,7 +1,10 @@
 import { describe, it, expect } from "vitest";
 import { GameState } from "@shared/schema";
 import { createInitialState } from "../state";
-import { getStrangerApproachProbability } from "./effectsCalculation";
+import {
+  getStrangerApproachProbability,
+  GREAT_FEAST_STRANGER_APPROACH_BONUS,
+} from "./effectsCalculation";
 
 function createMockState(overrides?: Partial<GameState>): GameState {
   const base = createInitialState();
@@ -19,6 +22,12 @@ function createMockState(overrides?: Partial<GameState>): GameState {
       ...base.solsticeState,
       ...overrides.solsticeState,
     } as GameState["solsticeState"];
+  }
+  if (overrides?.greatFeastState) {
+    merged.greatFeastState = {
+      ...base.greatFeastState,
+      ...overrides.greatFeastState,
+    };
   }
   return merged;
 }
@@ -154,7 +163,9 @@ describe("getStrangerApproachProbability", () => {
       result.lowPopulationBonus +
       result.fromBuildings +
       result.fromBlessings +
-      result.fromEvents;
+      result.fromEvents +
+      result.fromGreatFeast +
+      result.fromHeartfire;
     expect(result.rawChance).toBe(breakdownSum); // tooltip main number matches breakdown
     expect(result.fromBuildings).toBe(0.01); // 1 wooden hut +1%
   });
@@ -174,7 +185,30 @@ describe("getStrangerApproachProbability", () => {
       result.lowPopulationBonus +
       result.fromBuildings +
       result.fromBlessings +
-      result.fromEvents;
+      result.fromEvents +
+      result.fromGreatFeast +
+      result.fromHeartfire;
     expect(result.probability).toBe(Math.min(1, preCap));
+  });
+
+  it("should add fromGreatFeast when a Great Feast is active", () => {
+    const state = createMockState({
+      villagers: { ...createInitialState().villagers, free: 5 },
+      buildings: { ...createInitialState().buildings, woodenHut: 5 },
+      greatFeastState: { isActive: true, endTime: Date.now() + 60_000 },
+    });
+    const result = getStrangerApproachProbability(state);
+    expect(result.fromGreatFeast).toBe(GREAT_FEAST_STRANGER_APPROACH_BONUS);
+    expect(result.probability).toBeCloseTo(0.05 + GREAT_FEAST_STRANGER_APPROACH_BONUS);
+  });
+
+  it("should not add fromGreatFeast when the Great Feast has expired", () => {
+    const state = createMockState({
+      villagers: { ...createInitialState().villagers, free: 5 },
+      buildings: { ...createInitialState().buildings, woodenHut: 5 },
+      greatFeastState: { isActive: true, endTime: Date.now() - 1 },
+    });
+    const result = getStrangerApproachProbability(state);
+    expect(result.fromGreatFeast).toBe(0);
   });
 });
