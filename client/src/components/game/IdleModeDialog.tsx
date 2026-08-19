@@ -8,6 +8,7 @@ import {
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
+import { TooltipWrapper } from "@/components/game/TooltipWrapper";
 import { useGameStore } from "@/game/state";
 import { AnimatedCounter } from "@/components/ui/animated-counter";
 import { gameActionOutlineButtonClassName } from "@/components/CooldownButton";
@@ -600,10 +601,36 @@ export default function IdleModeDialog() {
         </DialogHeader>
 
         <div className="pb-1.5 border-border text-xs space-y-0.5">
-          <div className="text-muted-foreground pb-1">
-            {t("idleMode.villageProduction", {
-              percent: villageProductionPercent,
-            })}
+          <div className="text-muted-foreground pb-1 flex items-center gap-1">
+            <span>
+              {t("idleMode.villageProduction", {
+                percent: villageProductionPercent,
+                defaultValue: "Village production: {{percent}}%",
+              })}
+            </span>
+            <TooltipWrapper
+              tooltip={
+                <p className="text-xs">
+                  {t("idleMode.villageProductionTooltip", {
+                    defaultValue:
+                      "Temporary production bonuses not active while sleeping",
+                  })}
+                </p>
+              }
+              tooltipId="idle-mode-village-production-info"
+              disabled
+              tooltipContentClassName="max-w-xs"
+              className="inline-flex items-center justify-center w-4 h-4 shrink-0 rounded-full text-muted-foreground hover:text-foreground cursor-pointer"
+            >
+              <span
+                className="font-noto-symbols-2 inline-flex shrink-0 items-center justify-center text-sm font-normal leading-none"
+                aria-label={t("idleMode.villageProductionInfoAriaLabel", {
+                  defaultValue: "Village production details",
+                })}
+              >
+                🛈
+              </span>
+            </TooltipWrapper>
           </div>
           {displayResources.map((resource) => {
             const isFocus = resource === "Focus";

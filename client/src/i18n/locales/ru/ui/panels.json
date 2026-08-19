@@ -249,7 +249,9 @@
     "sleeping": "Спит",
     "awake": "Вы проснулись!",
     "wakingIn": "Пробуждение через: {{time}}", //x1.2
-    "villageProduction": "Производство деревни: {{percent}}%, временные бонусы производства не действуют во время сна",
+    "villageProduction": "Производство деревни: {{percent}}%",
+    "villageProductionTooltip": "Временные бонусы производства не действуют во время сна",
+    "villageProductionInfoAriaLabel": "Сведения о производстве деревни",
     "wake": "Проснуться сейчас", //x1.5
     "getUp": "Встать",
     "focusGainedLog": "Вы получили {{count}} фокуса за отдых.",

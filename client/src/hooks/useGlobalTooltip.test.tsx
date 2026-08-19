@@ -238,6 +238,7 @@ describe("useGlobalTooltip - modal suppression", () => {
     "social-prompt-signup-info",
     "share-dialog-invite",
     "event-time-bonus",
+    "idle-mode-village-production-info",
   ])(
     "allows dialog info tooltip id %s while suppressed",
     async (tooltipId) => {
