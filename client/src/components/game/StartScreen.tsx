@@ -180,6 +180,8 @@ export default function StartScreen({
   const musicVolume = initialPreferences.musicVolume;
   const sfxVolume = initialPreferences.sfxVolume;
   const [showParticles, setShowParticles] = useState(false);
+  const [buttonFadeInDone, setButtonFadeInDone] = useState(false);
+  const buttonFadeRef = useRef<HTMLDivElement>(null);
   const [ParticleButtonCmp, setParticleButtonCmp] =
     useState<ParticleButtonComponent | null>(null);
   const [CloudShaderCmp, setCloudShaderCmp] =
@@ -509,6 +511,25 @@ export default function StartScreen({
     };
   }, []);
 
+  // Keep fade-in off React className after it finishes. Re-applying the class
+  // on any re-render restarts the blur (and pointer-events: none on the button).
+  useEffect(() => {
+    if (buttonFadeInDone) return;
+    const wrap = buttonFadeRef.current;
+    const markDone = (event?: AnimationEvent) => {
+      if (event?.animationName && event.animationName !== "fade-in-button") {
+        return;
+      }
+      setButtonFadeInDone(true);
+    };
+    wrap?.addEventListener("animationend", markDone);
+    const fallbackId = window.setTimeout(markDone, 2600);
+    return () => {
+      wrap?.removeEventListener("animationend", markDone);
+      window.clearTimeout(fallbackId);
+    };
+  }, [buttonFadeInDone]);
+
   // Drop intro fade-in class after it finishes so Make Fire does not restart
   // the blur (filter containing-block) or look like the three lines replayed.
   useEffect(() => {
@@ -761,6 +782,23 @@ export default function StartScreen({
       )}
 
       <style>{`
+        @keyframes fade-in-button {
+          0% {
+            opacity: 0;
+            filter: blur(10px);
+          }
+          100% {
+            opacity: 1;
+            filter: blur(0px);
+          }
+        }
+
+        .animate-fade-in-button {
+          animation: fade-in-button 1s ease-in 1.5s forwards;
+          opacity: 0;
+          pointer-events: none;
+        }
+
         /* Opacity stays 1 so LCP can fire on first paint; only un-blur for atmosphere. */
         @keyframes fade-in-text {
           0% { filter: blur(10px); }
@@ -922,26 +960,35 @@ export default function StartScreen({
         </div>
 
         <div className={showParticles ? undefined : "fire-glow-hint"}>
-          {ParticleButtonCmp ? (
-            <ParticleButtonCmp
-              ref={buttonRef}
-              onClick={handleLightFire}
-              autoStart={showParticles}
-              className={`${MAKE_FIRE_BUTTON_CLASS} ${showParticles ? "fire-active" : ""}`}
-              data-testid="button-light-fire"
-            >
-              {t("startScreen.makeFire", { defaultValue: "Make Fire" })}
-            </ParticleButtonCmp>
-          ) : (
-            <Button
-              ref={buttonRef}
-              onClick={handleLightFire}
-              className={MAKE_FIRE_BUTTON_CLASS}
-              data-testid="button-light-fire"
-            >
-              {t("startScreen.makeFire", { defaultValue: "Make Fire" })}
-            </Button>
-          )}
+          <div
+            ref={buttonFadeRef}
+            className={
+              showParticles || buttonFadeInDone
+                ? undefined
+                : "animate-fade-in-button"
+            }
+          >
+            {ParticleButtonCmp ? (
+              <ParticleButtonCmp
+                ref={buttonRef}
+                onClick={handleLightFire}
+                autoStart={showParticles}
+                className={`${MAKE_FIRE_BUTTON_CLASS} ${showParticles ? "fire-active" : ""}`}
+                data-testid="button-light-fire"
+              >
+                {t("startScreen.makeFire", { defaultValue: "Make Fire" })}
+              </ParticleButtonCmp>
+            ) : (
+              <Button
+                ref={buttonRef}
+                onClick={handleLightFire}
+                className={MAKE_FIRE_BUTTON_CLASS}
+                data-testid="button-light-fire"
+              >
+                {t("startScreen.makeFire", { defaultValue: "Make Fire" })}
+              </Button>
+            )}
+          </div>
         </div>
       </main>
 
