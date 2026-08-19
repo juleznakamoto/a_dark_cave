@@ -6,7 +6,7 @@ import {
   type CSSProperties,
 } from "react";
 import type { AchievementChartConfig } from "@/achievements/achievementTypes";
-import { Trans, useTranslation } from "react-i18next";
+import { useTranslation } from "react-i18next";
 import {
   Dialog,
   DialogClose,
@@ -22,10 +22,8 @@ import {
   copyInviteLinkToClipboard,
   isInviteNotSignedInError,
 } from "@/game/copyInviteLink";
-import {
-  REFERRAL_REWARD_GOLD,
-  SOCIAL_PROMPT_REFERRAL_CAP,
-} from "@/game/socialPromptAuto";
+import { REFERRAL_REWARD_GOLD } from "@/game/socialPromptAuto";
+import { InviteFriendsTooltip } from "@/components/game/InviteFriendsMenuItem";
 import { ResourceCoinIcon } from "@/components/ui/resource-coin-icon";
 import { ResourceInsightIcon } from "@/components/ui/resource-insight-icon";
 import AchievementMiniRingChart from "@/achievements/AchievementMiniRingChart";
@@ -947,20 +945,7 @@ export default function ShareDialog() {
         >
           {!steamDesktopEditionActive && (
             <TooltipWrapper
-              tooltip={
-                <p className="text-xs">
-                  <Trans
-                    i18nKey="invite.tooltip"
-                    ns="ui"
-                    values={{
-                      amount: REFERRAL_REWARD_GOLD,
-                      cap: SOCIAL_PROMPT_REFERRAL_CAP,
-                      count: referralCount,
-                    }}
-                    components={{ bold: <span className="font-semibold" /> }}
-                  />
-                </p>
-              }
+              tooltip={<InviteFriendsTooltip count={referralCount} />}
               tooltipId="share-dialog-invite"
               tooltipContentClassName="max-w-xs"
               onClick={() => {

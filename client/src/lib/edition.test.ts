@@ -39,6 +39,8 @@ describe("CrazyGames edition", () => {
     const edition = await loadEdition();
     expect(edition.isCrazyGamesEdition()).toBe(false);
     expect(edition.isGalaxyEdition()).toBe(true);
+    expect(edition.isLocalOnlyEdition()).toBe(true);
+    expect(edition.isSteamEditionActive()).toBe(true);
     expect(edition.isSteamDemoActive()).toBe(false);
   });
 });

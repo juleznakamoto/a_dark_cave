@@ -9,12 +9,10 @@ import {
   copyInviteLinkToClipboard,
   isInviteNotSignedInError,
 } from "@/game/copyInviteLink";
-import {
-  SOCIAL_PROMPT_REFERRAL_CAP,
-  REFERRAL_REWARD_GOLD,
-} from "@/game/socialPromptAuto";
+import { REFERRAL_REWARD_GOLD } from "@/game/socialPromptAuto";
 import { isInviteFriendsFloatingButtonVisible } from "@/game/socialPromoExclusiveReward";
-import { Trans, useTranslation } from "react-i18next";
+import { InviteFriendsTooltip } from "@/components/game/InviteFriendsMenuItem";
+import { useTranslation } from "react-i18next";
 import { GAME_FOOTER_INSET } from "./gameChrome";
 import { Z_INDEX } from "@/lib/z-index";
 
@@ -85,7 +83,7 @@ export default function InviteFriendsFloatingButton() {
 
   return (
     <div
-      className="pointer-events-auto fixed left-4"
+      className="pointer-events-auto fixed right-4"
       style={{
         bottom: `calc(${GAME_FOOTER_INSET} + 1rem)`,
         zIndex: idleModeDialogOpen
@@ -95,20 +93,7 @@ export default function InviteFriendsFloatingButton() {
     >
       <div className="invite-friends-float relative inline-block">
         <TooltipWrapper
-          tooltip={
-            <p className="text-xs">
-              <Trans
-                i18nKey="invite.tooltip"
-                ns="ui"
-                values={{
-                  amount: REFERRAL_REWARD_GOLD,
-                  cap: SOCIAL_PROMPT_REFERRAL_CAP,
-                  count: referralCount,
-                }}
-                components={{ bold: <span className="font-semibold" /> }}
-              />
-            </p>
-          }
+          tooltip={<InviteFriendsTooltip count={referralCount} />}
           tooltipId="referral-floating-invite"
           tooltipContentClassName="max-w-xs"
           className="inline-flex"

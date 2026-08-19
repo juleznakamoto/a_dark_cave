@@ -15,6 +15,7 @@ import {
 import { tWithFallback } from "@/i18n/resolveGameText";
 import { cn } from "@/lib/utils";
 import { Z_INDEX } from "@/lib/z-index";
+import { InviteFriendsMenuItem } from "./InviteFriendsMenuItem";
 import { GAME_CHROME_NO_BG_HOVER } from "./gameChrome";
 
 type FooterNetworkMenuProps = {
@@ -34,6 +35,7 @@ type FooterNetworkMenuProps = {
    * loaded trigger must share the same box so hover-prefetch does not jump.
    */
   unstyledTrigger?: boolean;
+  referralCount?: number;
 };
 
 export default function FooterNetworkMenu({
@@ -45,6 +47,7 @@ export default function FooterNetworkMenu({
   align = "end",
   defaultOpen = false,
   unstyledTrigger = false,
+  referralCount = 0,
 }: FooterNetworkMenuProps) {
   const [open, setOpen] = useState(defaultOpen);
   const socialLabel = tWithFallback("ui", "footer.social", "Social");
@@ -126,6 +129,10 @@ export default function FooterNetworkMenu({
             </DropdownMenuItem>
           );
         })}
+        <InviteFriendsMenuItem
+          referralCount={referralCount}
+          onSelect={() => setOpen(false)}
+        />
       </DropdownMenuContent>
     </DropdownMenu>
   );

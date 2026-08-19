@@ -175,6 +175,7 @@ function SteamDemoProgressBar() {
 
 export default function GameFooter() {
   const setShopDialogOpen = useGameStore((s) => s.setShopDialogOpen);
+  const referralCount = useGameStore((s) => s.referralCount ?? 0);
   const isPaused = useGameStore((s) => s.isPaused);
   const togglePause = useGameStore((s) => s.togglePause);
   const idleModeDialogOpen = useGameStore((s) => s.idleModeDialog.isOpen);
@@ -360,6 +361,7 @@ export default function GameFooter() {
                   <FooterNetworkMenu
                     iconClassName={FOOTER_CONTROL_ICON}
                     labelClassName={FOOTER_SOCIAL_LABEL}
+                    referralCount={referralCount}
                   />
                 )}
               </>
@@ -424,6 +426,7 @@ export default function GameFooter() {
                     <FooterNetworkMenu
                       iconClassName={FOOTER_CONTROL_ICON}
                       labelClassName={FOOTER_SOCIAL_LABEL}
+                      referralCount={referralCount}
                     />
                   </div>
                 );

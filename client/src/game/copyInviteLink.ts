@@ -4,7 +4,12 @@ import { apiUrl } from "@/lib/apiUrl";
 export const INVITE_NOT_SIGNED_IN_ERROR = "Not signed in";
 
 /** Where the player copied an invite URL. Ids land in `button_clicks` as `copy-invite-{source}`. */
-export const COPY_INVITE_SOURCES = ["rewards", "share", "floating"] as const;
+export const COPY_INVITE_SOURCES = [
+  "rewards",
+  "share",
+  "floating",
+  "social",
+] as const;
 export type CopyInviteLinkSource = (typeof COPY_INVITE_SOURCES)[number];
 
 export function copyInviteButtonId(source: CopyInviteLinkSource): string {

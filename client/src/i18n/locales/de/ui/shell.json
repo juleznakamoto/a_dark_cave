@@ -59,7 +59,8 @@
     "demoProgress": "Demo-Fortschritt", //x1.2
     "progress": "Fortschritt",
     "social": "Social",
-    "email": "E-Mail"
+    "email": "E-Mail",
+    "inviteFriends": "Freunde einladen"
   },
   "profile": {
     "title": "Menü",

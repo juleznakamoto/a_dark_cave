@@ -35,7 +35,13 @@ describe("copyInviteButtonId", () => {
     expect(copyInviteButtonId("rewards")).toBe("copy-invite-rewards");
     expect(copyInviteButtonId("share")).toBe("copy-invite-share");
     expect(copyInviteButtonId("floating")).toBe("copy-invite-floating");
-    expect(COPY_INVITE_SOURCES).toEqual(["rewards", "share", "floating"]);
+    expect(copyInviteButtonId("social")).toBe("copy-invite-social");
+    expect(COPY_INVITE_SOURCES).toEqual([
+      "rewards",
+      "share",
+      "floating",
+      "social",
+    ]);
   });
 });
 
