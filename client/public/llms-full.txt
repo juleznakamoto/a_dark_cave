@@ -40,6 +40,7 @@ See the short index: [llms.txt](https://a-dark-cave.com/llms.txt).
 - Steam Demo app ID: 4971800
 - Web listing date: 2025-11-17
 - MobyGames ID: 255071
+- IGDB: https://www.igdb.com/games/a-dark-cave
 
 ## FAQ
 
@@ -78,6 +79,7 @@ A: English, German, French, Spanish, Italian, Portuguese (Brazil), Simplified Ch
 - [Steam Demo](https://store.steampowered.com/app/4971800/)
 - [itch.io](https://a-dark-cave.itch.io/a-dark-cave)
 - [MobyGames](https://www.mobygames.com/game/255071/a-dark-cave/)
+- [IGDB](https://www.igdb.com/games/a-dark-cave)
 - [IncrementalDB](https://www.incrementaldb.com/game/a-dark-cave)
 - [Product Hunt](https://www.producthunt.com/products/a-dark-cave)
 - [YouTube](https://www.youtube.com/channel/UCdQDWTJe_Bno7xyjnO1aC-w)
