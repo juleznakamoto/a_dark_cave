@@ -14,6 +14,7 @@ import {
 import {
   hasAnyOverallAchievementReached,
   isAchievementsGameTabUnlocked,
+  isBasicAchievementTabUnlocked,
   isOverallAchievementCategoryEnabled,
   isOverallAchievementTabUnlocked,
 } from "./overall";
@@ -60,7 +61,23 @@ describe("overall achievement tab unlock", () => {
     } as GameState;
 
     expect(isOverallAchievementTabUnlocked(state)).toBe(false);
+    expect(isBasicAchievementTabUnlocked(state)).toBe(true);
     expect(isAchievementsGameTabUnlocked(state)).toBe(true);
+  });
+
+  it("keeps the Basics tab locked on a new run with only prior overall progress", () => {
+    const state = {
+      ...createInitialState(),
+      hasWonNormalGame: true,
+    } as GameState;
+
+    expect(isAchievementsGameTabUnlocked(state)).toBe(
+      isOverallAchievementCategoryEnabled,
+    );
+    expect(isOverallAchievementTabUnlocked(state)).toBe(
+      isOverallAchievementCategoryEnabled,
+    );
+    expect(isBasicAchievementTabUnlocked(state)).toBe(false);
   });
 
   it("unlocks the Achievements game tab from completed social promo steps", () => {

@@ -169,6 +169,11 @@ export function hasAnyOverallAchievementReached(state: GameState): boolean {
   return false;
 }
 
+/** Basics category tab: Survivor's Notes or Book of Trials. */
+export function isBasicAchievementTabUnlocked(state: GameState): boolean {
+  return !!state.relics?.survivors_notes || !!state.books?.book_of_trials;
+}
+
 /**
  * Overall (general) category tab: unlocked by Book of Trials, or when any
  * overall achievement is already reached (so it stays available on later runs).
@@ -181,8 +186,7 @@ export function isOverallAchievementTabUnlocked(state: GameState): boolean {
 /** Main Achievements game tab: notes, book, or overall progress from a prior run. */
 export function isAchievementsGameTabUnlocked(state: GameState): boolean {
   return (
-    !!state.relics?.survivors_notes ||
-    !!state.books?.book_of_trials ||
+    isBasicAchievementTabUnlocked(state) ||
     isOverallAchievementTabUnlocked(state)
   );
 }

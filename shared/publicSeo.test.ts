@@ -279,6 +279,8 @@ describe("publicSeo", () => {
     );
     expect(about).toContain("How it plays");
     expect(about).toContain("Julian Bauer");
+    expect(about).toContain("utm_content=html_noscript_footer");
+    expect(about).toContain('target="_blank"');
     expect(about).toContain('"@type":"Organization"');
     expect(about).not.toContain("adc:jsonld-home");
   });

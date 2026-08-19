@@ -8,6 +8,32 @@ export const STEAM_DEMO_URL = "https://store.steampowered.com/app/4971800/";
 export const ITCH_URL = "https://a-dark-cave.itch.io/a-dark-cave";
 export const REDDIT_URL = "https://www.reddit.com/r/aDarkCave/";
 
+/**
+ * Same UTM as `STEAM_STORE_UTM_CONTENT.htmlNoscriptFooter` in
+ * `client/src/lib/gameFooterSocialLinks.ts` (public / crawlable Steam CTAs).
+ */
+export function withPublicSteamUtm(baseUrl: string): string {
+  const url = new URL(baseUrl);
+  url.searchParams.set("utm_source", "a_dark_cave");
+  url.searchParams.set("utm_medium", "web_game");
+  url.searchParams.set("utm_campaign", "steam_store");
+  url.searchParams.set("utm_content", "html_noscript_footer");
+  return url.toString();
+}
+
+export const PUBLIC_STEAM_URL = withPublicSteamUtm(STEAM_URL);
+export const PUBLIC_STEAM_DEMO_URL = withPublicSteamUtm(STEAM_DEMO_URL);
+
+const EXTERNAL_ANCHOR_ATTRS = ' target="_blank" rel="noopener noreferrer"';
+
+function htmlAnchor(
+  href: string,
+  labelHtml: string,
+  options?: { external?: boolean },
+): string {
+  return `<a href="${escapeHtml(href)}"${options?.external ? EXTERNAL_ANCHOR_ATTRS : ""}>${labelHtml}</a>`;
+}
+
 export const FAQ_ITEM_IDS = [
   "whatIs",
   "free",
@@ -77,7 +103,7 @@ export const FAQ_ITEMS: FaqItem[] = [
     question: "Is there a Steam version?",
     answerText:
       "Yes. A Dark Cave is coming to Steam on 27 October 2026. A free demo is available now. The Steam edition is a paid game.",
-    answerHtml: `Yes. A Dark Cave is coming to <a href="${STEAM_URL}">Steam</a> on 27 October 2026. A <a href="${STEAM_DEMO_URL}">free demo</a> is available now. The Steam edition is a paid game.`,
+    answerHtml: `Yes. A Dark Cave is coming to ${htmlAnchor(PUBLIC_STEAM_URL, "Steam", { external: true })} on 27 October 2026. A ${htmlAnchor(PUBLIC_STEAM_DEMO_URL, "free demo", { external: true })} is available now. The Steam edition is a paid game.`,
   },
   {
     question: "Do I need to download the browser game?",
@@ -117,7 +143,7 @@ export const FAQ_ITEMS: FaqItem[] = [
     question: "Where can I get help?",
     answerText:
       "Email support@a-dark-cave.com or ask on the A Dark Cave subreddit.",
-    answerHtml: `Email <a href="mailto:support@a-dark-cave.com">support@a-dark-cave.com</a> or ask on the <a href="${REDDIT_URL}">A Dark Cave subreddit</a>.`,
+    answerHtml: `Email ${htmlAnchor("mailto:support@a-dark-cave.com", "support@a-dark-cave.com")} or ask on the ${htmlAnchor(REDDIT_URL, "A Dark Cave subreddit", { external: true })}.`,
   },
 ];
 
@@ -128,19 +154,22 @@ for (const item of FAQ_ITEMS) {
 export const ABOUT_HEADING = "About A Dark Cave";
 
 export const ABOUT_NAV_LINKS = [
-  { id: "play", href: SITE, label: "Play" },
-  { id: "faq", href: "/faq", label: "FAQ" },
-  { id: "steam", href: STEAM_URL, label: "Steam" },
-  { id: "reddit", href: REDDIT_URL, label: "Reddit" },
+  { id: "play", href: SITE, label: "Play", external: false },
+  { id: "faq", href: "/faq", label: "FAQ", external: false },
+  { id: "steam", href: PUBLIC_STEAM_URL, label: "Steam", external: true },
+  { id: "reddit", href: REDDIT_URL, label: "Reddit", external: true },
 ] as const;
 
 export type AboutNavLinkId = (typeof ABOUT_NAV_LINKS)[number]["id"];
 
-const aboutSiteLink = `<a href="${SITE}">a-dark-cave.com</a>`;
+const aboutSiteLink = htmlAnchor(SITE, "a-dark-cave.com");
 const aboutDemoLink = (label: string) =>
-  `<a href="${STEAM_DEMO_URL}">${escapeHtml(label)}</a>`;
-const aboutSteamLink = `<a href="${STEAM_URL}">Steam</a>`;
-const aboutEmailLink = `<a href="mailto:support@a-dark-cave.com">support@a-dark-cave.com</a>`;
+  htmlAnchor(PUBLIC_STEAM_DEMO_URL, escapeHtml(label), { external: true });
+const aboutSteamLink = htmlAnchor(PUBLIC_STEAM_URL, "Steam", { external: true });
+const aboutEmailLink = htmlAnchor(
+  "mailto:support@a-dark-cave.com",
+  "support@a-dark-cave.com",
+);
 
 export const ABOUT_SECTIONS: {
   heading?: string;
@@ -217,7 +246,7 @@ function aboutBodyInnerHtml(): string {
   }).join("");
   const nav = ABOUT_NAV_LINKS.map((link, index) => {
     const sep = index > 0 ? " · " : "";
-    return `${sep}<a href="${escapeHtml(link.href)}">${escapeHtml(link.label)}</a>`;
+    return `${sep}${htmlAnchor(link.href, escapeHtml(link.label), { external: link.external })}`;
   }).join("");
   return `<h1>${escapeHtml(ABOUT_HEADING)}</h1>${sections}<p>${nav}</p>`;
 }

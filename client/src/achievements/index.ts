@@ -6,6 +6,7 @@ import {
   isOverallAchievementCategoryEnabled,
   overallChartConfig,
   hasAnyOverallAchievementReached,
+  isBasicAchievementTabUnlocked,
   isOverallAchievementTabUnlocked,
   isAchievementsGameTabUnlocked,
 } from "./configs/overall";
@@ -41,6 +42,7 @@ export {
   isOverallAchievementCategoryEnabled,
   overallChartConfig,
   hasAnyOverallAchievementReached,
+  isBasicAchievementTabUnlocked,
   isOverallAchievementTabUnlocked,
   isAchievementsGameTabUnlocked,
 };

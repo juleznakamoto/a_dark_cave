@@ -1,4 +1,5 @@
 import { describe, expect, it } from "vitest";
+import { PUBLIC_STEAM_URL } from "@shared/publicPages";
 import { SITE_ORIGIN } from "@shared/publicSeo";
 import {
   OFFICIAL_STEAM_URL,
@@ -21,6 +22,12 @@ describe("steamStoreUrl", () => {
     expect(url.searchParams.get("utm_medium")).toBe("web_game");
     expect(url.searchParams.get("utm_campaign")).toBe("steam_store");
     expect(url.searchParams.get("utm_content")).toBe("game_footer");
+  });
+
+  it("matches the public-page Steam URL already used on /about and /faq", () => {
+    expect(PUBLIC_STEAM_URL).toBe(
+      steamStoreUrl(STEAM_STORE_UTM_CONTENT.htmlNoscriptFooter),
+    );
   });
 
   it("uses a distinct utm_content per placement", () => {

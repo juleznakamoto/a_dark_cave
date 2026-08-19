@@ -55,7 +55,13 @@ export default function About() {
         {ABOUT_NAV_LINKS.map((link, index) => (
           <span key={link.id}>
             {index > 0 ? " · " : null}
-            <a href={link.href} className={publicPageLinkClassName}>
+            <a
+              href={link.href}
+              className={publicPageLinkClassName}
+              {...(link.external
+                ? { target: "_blank", rel: "noopener noreferrer" }
+                : {})}
+            >
               {t(`publicPages.about.${link.id}`)}
             </a>
           </span>

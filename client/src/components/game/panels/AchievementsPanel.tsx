@@ -16,6 +16,7 @@ import {
   itemChartConfig,
   actionChartConfig,
   basicChartConfig,
+  isBasicAchievementTabUnlocked,
   isOverallAchievementCategoryEnabled,
   isOverallAchievementTabUnlocked,
   overallChartConfig,
@@ -419,29 +420,28 @@ export default function AchievementsPanel() {
   const { t } = useUiTranslation();
   const gameState = useGameStoreWithoutTickClock() as unknown as GameState;
   const bookOfTrials = !!gameState.books?.book_of_trials;
-  const survivorsNotes = !!gameState.relics?.survivors_notes;
-  const hasBasicTab = survivorsNotes || bookOfTrials;
+  const basicUnlocked = isBasicAchievementTabUnlocked(gameState);
   const showOverallTab = isOverallAchievementCategoryEnabled;
   const overallUnlocked = isOverallAchievementTabUnlocked(gameState);
-  // basic? + building/item/action + overall? (overall is last when enabled)
-  const tabCount = (hasBasicTab ? 1 : 0) + 3 + (showOverallTab ? 1 : 0);
+  // basic + building/item/action + overall? (overall is last when enabled)
+  const tabCount = 4 + (showOverallTab ? 1 : 0);
   const tabGridClass =
     tabCount === 5
       ? "grid-cols-5"
       : tabCount === 4
         ? "grid-cols-4"
         : "grid-cols-3";
-  const defaultTab = hasBasicTab
+  const defaultTab = basicUnlocked
     ? "basic"
     : overallUnlocked
       ? "overall"
       : "building";
   const [activeTab, setActiveTab] = useState(defaultTab);
   let effectiveTab = activeTab;
-  if (!hasBasicTab && effectiveTab === "basic") {
+  if (!basicUnlocked && effectiveTab === "basic") {
     effectiveTab = overallUnlocked ? "overall" : "building";
   } else if (effectiveTab === "overall" && !overallUnlocked) {
-    effectiveTab = hasBasicTab ? "basic" : "building";
+    effectiveTab = basicUnlocked ? "basic" : "building";
   }
   const lockedTooltip = t("achievements.notUnlocked");
   const chartUnavailable = t("achievements.chartUnavailable");
@@ -455,13 +455,14 @@ export default function AchievementsPanel() {
         <TabsList
           className={`sticky top-0 z-10 grid w-full mb-2 shrink-0 overflow-visible h-auto min-h-12 bg-transparent py-1 pl-2 ${tabGridClass}`}
         >
-          {hasBasicTab && (
-            <TabsTrigger value="basic" className={TAB_TRIGGER_CLASS}>
-              <ChartErrorBoundary unavailableLabel={chartUnavailable}>
-                <AchievementMiniRingChart config={basicChartConfig} isActive={effectiveTab === "basic"} />
-              </ChartErrorBoundary>
-            </TabsTrigger>
-          )}
+          <TabTriggerWithTooltipWhenLocked
+            value="basic"
+            config={basicChartConfig}
+            isActive={effectiveTab === "basic"}
+            disabled={!basicUnlocked}
+            lockedTooltip={lockedTooltip}
+            chartUnavailable={chartUnavailable}
+          />
           <TabTriggerWithTooltipWhenLocked
             value="building"
             config={buildingChartConfig}
@@ -469,7 +470,7 @@ export default function AchievementsPanel() {
             disabled={!bookOfTrials}
             lockedTooltip={lockedTooltip}
             chartUnavailable={chartUnavailable}
-            centerSymbolClassName={hasBasicTab ? "pt-1" : undefined}
+            centerSymbolClassName="pt-1"
           />
           <TabTriggerWithTooltipWhenLocked
             value="item"
@@ -501,11 +502,11 @@ export default function AchievementsPanel() {
             />
           )}
         </TabsList>
-        {hasBasicTab && (
-          <TabsContent value="basic" className="mt-0 flex-1 min-h-0 data-[state=inactive]:hidden flex flex-col overflow-hidden">
-            {effectiveTab === "basic" && <AchievementTabContent config={basicChartConfig} tabId="basic" />}
-          </TabsContent>
-        )}
+        <TabsContent value="basic" className="mt-0 flex-1 min-h-0 data-[state=inactive]:hidden flex flex-col overflow-hidden">
+          {effectiveTab === "basic" && basicUnlocked && (
+            <AchievementTabContent config={basicChartConfig} tabId="basic" />
+          )}
+        </TabsContent>
         <TabsContent value="building" className="mt-0 flex-1 min-h-0 data-[state=inactive]:hidden flex flex-col overflow-hidden">
           {effectiveTab === "building" && <AchievementTabContent config={buildingChartConfig} tabId="building" />}
         </TabsContent>
