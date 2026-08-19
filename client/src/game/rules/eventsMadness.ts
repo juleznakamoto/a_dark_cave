@@ -762,10 +762,10 @@ export const madnessEvents: Record<string, GameEvent> = {
   monolithDemand: {
     id: "monolithDemand",
     condition: (state: GameState) =>
-      getTotalMadness(state) >= 20 &&
+      getTotalMadness(state) >= 15 &&
       !state.events.monolithDemand &&
       !state.buildings.blackMonolith,
-    timeProbability: 5,
+    timeProbability: 1,
 
     priority: 3,
     repeatable: false,

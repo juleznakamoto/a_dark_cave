@@ -719,17 +719,20 @@ export function GameHeaderControls() {
             </span>
           </DropdownMenuItem>
           {(hasWonAnyGame || devMode) && !steamEditionActive && (
-            <DropdownMenuItem
-              onClick={() => {
-                setAccountDropdownOpen(false);
-                setLeaderboardDialogOpen(true);
-              }}
-            >
-              <span className="flex items-center gap-1.5">
-                <GameUiIcon name="leaderboard" />
-                {t("profile.leaderboard")}
-              </span>
-            </DropdownMenuItem>
+            <>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem
+                onClick={() => {
+                  setAccountDropdownOpen(false);
+                  setLeaderboardDialogOpen(true);
+                }}
+              >
+                <span className="flex items-center gap-1.5">
+                  <GameUiIcon name="leaderboard" />
+                  {t("profile.leaderboard")}
+                </span>
+              </DropdownMenuItem>
+            </>
           )}
           {/* Account / auth are web-only (Supabase). */}
           {!steamEditionActive && <DropdownMenuSeparator />}
