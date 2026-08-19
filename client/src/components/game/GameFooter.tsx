@@ -8,7 +8,7 @@ import {
   STEAM_STORE_UTM_CONTENT,
   steamStoreUrl,
 } from "@/lib/gameFooterSocialLinks";
-import { useState, useEffect, useRef, useCallback, cloneElement } from "react";
+import { useState, useEffect, useRef, useCallback, cloneElement, type ReactNode } from "react";
 import { useTranslation } from "react-i18next";
 import { GameUiIcon } from "@/components/game/GameUiIcon";
 import { tWithFallback } from "@/i18n/resolveGameText";
@@ -36,6 +36,7 @@ import {
 } from "@/lib/playlight";
 import PlaylightDiscoveryButton from "./PlaylightDiscoveryButton";
 import FooterNetworkMenu from "./FooterNetworkMenu";
+import { usePeriodicPlayTimeTooltip } from "@/hooks/usePeriodicPlayTimeTooltip";
 import { GAME_CHROME_NO_BG_HOVER } from "./gameChrome";
 import { useCoinHoverParticles } from "@/components/ui/coin-hover-particles";
 import { FOOTER_TRADER_PARTICLE_CONFIG } from "@/components/ui/bubbly-button.particles";
@@ -64,6 +65,76 @@ const FOOTER_DONATE_TEXT =
   `${FOOTER_CONTROL_BTN_FADE} group-hover:!text-red-600`;
 const FOOTER_TRADER_TEXT =
   `${FOOTER_CONTROL_BTN_FADE} group-hover:!text-yellow-500`;
+
+const FOOTER_STEAM_BUTTON_ID = "footer-steam";
+const FOOTER_STEAM_WISHLIST_CLICKED_SEEN_KEY = "footerSteamWishlistClicked";
+
+/** First auto-show after 60 min active play, then every 30 min until clicked. */
+const STEAM_TOOLTIP_FIRST_SHOW_PLAY_MS = 60 * 60 * 1000;
+const STEAM_TOOLTIP_INTERVAL_MS = 30 * 60 * 1000;
+
+function markFooterSteamClicked() {
+  const state = useGameStore.getState();
+  state.trackButtonClick(FOOTER_STEAM_BUTTON_ID);
+  if (state.story?.seen?.[FOOTER_STEAM_WISHLIST_CLICKED_SEEN_KEY] === true) {
+    return;
+  }
+  useGameStore.setState({
+    story: {
+      ...state.story,
+      seen: {
+        ...state.story.seen,
+        [FOOTER_STEAM_WISHLIST_CLICKED_SEEN_KEY]: true,
+      },
+    },
+  });
+}
+
+function FooterSteamWishlistCallout({
+  href,
+  label,
+  forceShowTooltip,
+  forceTooltipFadeDurationMs,
+  children,
+}: {
+  href: string;
+  label: string;
+  forceShowTooltip: boolean;
+  forceTooltipFadeDurationMs?: number;
+  children: ReactNode;
+}) {
+  const steamClicked = useGameStore(
+    (s) => s.story?.seen?.[FOOTER_STEAM_WISHLIST_CLICKED_SEEN_KEY] === true,
+  );
+  const showPeriodicTooltip = usePeriodicPlayTimeTooltip({
+    firstShowPlayMs: STEAM_TOOLTIP_FIRST_SHOW_PLAY_MS,
+    intervalMs: STEAM_TOOLTIP_INTERVAL_MS,
+    enabled: !steamClicked,
+  });
+  const autoVisible =
+    !steamClicked && (forceShowTooltip || showPeriodicTooltip);
+
+  return (
+    <HoverCalloutTooltip
+      label={label}
+      side="top"
+      size="md"
+      portal
+      forceVisible={autoVisible}
+      fadeDurationMs={
+        forceShowTooltip && !steamClicked
+          ? forceTooltipFadeDurationMs
+          : undefined
+      }
+      onCalloutClick={() => {
+        markFooterSteamClicked();
+        window.open(href, "_blank", "noopener,noreferrer");
+      }}
+    >
+      {children}
+    </HoverCalloutTooltip>
+  );
+}
 
 function SteamDemoProgressBar() {
   const { t } = useTranslation("ui");
@@ -324,6 +395,9 @@ export default function GameFooter() {
                     : {})}
                   className={socialLinkClass}
                   aria-label={linkLabel}
+                  onClick={
+                    platform === "steam" ? markFooterSteamClicked : undefined
+                  }
                 >
                   <FooterSocialIcon
                     platform={platform}
@@ -339,26 +413,14 @@ export default function GameFooter() {
                 return (
                   <div key={platform} className="contents">
                     {feedbackButton}
-                    <HoverCalloutTooltip
+                    <FooterSteamWishlistCallout
+                      href={href}
                       label={t("footer.wishlistOnSteam")}
-                      side="top"
-                      size="md"
-                      portal
-                      forceVisible={showPauseSleepCallout}
-                      fadeDurationMs={showPauseSleepCallout ? 1_000 : undefined}
-                      onCalloutClick={
-                        showPauseSleepCallout
-                          ? () =>
-                            window.open(
-                              href,
-                              "_blank",
-                              "noopener,noreferrer",
-                            )
-                          : undefined
-                      }
+                      forceShowTooltip={showPauseSleepCallout}
+                      forceTooltipFadeDurationMs={1_000}
                     >
                       {socialLink}
-                    </HoverCalloutTooltip>
+                    </FooterSteamWishlistCallout>
                     <FooterNetworkMenu
                       iconClassName={FOOTER_CONTROL_ICON}
                       labelClassName={FOOTER_SOCIAL_LABEL}

@@ -1,36 +1,17 @@
-import { useEffect, useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { HoverCalloutTooltip } from "@/components/game/HoverCalloutTooltip";
 import { useGameStore } from "@/game/state";
 import { cn } from "@/lib/utils";
 import { GameUiIcon } from "@/components/game/GameUiIcon";
+import { usePeriodicPlayTimeTooltip } from "@/hooks/usePeriodicPlayTimeTooltip";
 import { useUiTranslation } from "@/i18n/useUiTranslation";
 import { GAME_CHROME_NO_BG_HOVER } from "./gameChrome";
 
 const PLAYLIGHT_FOOTER_BUTTON_ID = "footer-playlight";
 
-const SHOW_MS = 20 * 1000;
+/** First auto-show after 75 min active play, then every 30 min. */
 const FIRST_SHOW_PLAY_MS = 75 * 60 * 1000;
-/** Phase 1: 75–135 min active play — every 10 min; then every 20 min. */
-const PHASE1_END_PLAY_MS = (75 + 60) * 60 * 1000;
-const INTERVAL_PHASE1_MS = 10 * 60 * 1000;
-const INTERVAL_PHASE2_MS = 20 * 60 * 1000;
-
-function getLatestTooltipMilestonePlayMs(playTimeMs: number): number {
-  if (playTimeMs < FIRST_SHOW_PLAY_MS) {
-    return 0;
-  }
-
-  if (playTimeMs < PHASE1_END_PLAY_MS) {
-    const elapsed = playTimeMs - FIRST_SHOW_PLAY_MS;
-    const steps = Math.floor(elapsed / INTERVAL_PHASE1_MS);
-    return FIRST_SHOW_PLAY_MS + steps * INTERVAL_PHASE1_MS;
-  }
-
-  const elapsed = playTimeMs - PHASE1_END_PLAY_MS;
-  const steps = Math.floor(elapsed / INTERVAL_PHASE2_MS);
-  return PHASE1_END_PLAY_MS + steps * INTERVAL_PHASE2_MS;
-}
+const INTERVAL_MS = 30 * 60 * 1000;
 
 type PlaylightDiscoveryButtonProps = {
   onClick: () => void;
@@ -50,37 +31,10 @@ export default function PlaylightDiscoveryButton({
   className,
 }: PlaylightDiscoveryButtonProps) {
   const { t } = useUiTranslation();
-  const playTime = useGameStore((state) => state.playTime ?? 0);
-  const [showDiscoveryTooltip, setShowDiscoveryTooltip] = useState(false);
-  const lastShownMilestoneRef = useRef(
-    getLatestTooltipMilestonePlayMs(playTime),
-  );
-  const hideTimeoutRef = useRef<number | undefined>(undefined);
-
-  useEffect(() => {
-    const latestMilestone = getLatestTooltipMilestonePlayMs(playTime);
-    if (latestMilestone <= lastShownMilestoneRef.current) {
-      return;
-    }
-
-    lastShownMilestoneRef.current = latestMilestone;
-    if (hideTimeoutRef.current !== undefined) {
-      window.clearTimeout(hideTimeoutRef.current);
-    }
-    setShowDiscoveryTooltip(true);
-    hideTimeoutRef.current = window.setTimeout(() => {
-      setShowDiscoveryTooltip(false);
-      hideTimeoutRef.current = undefined;
-    }, SHOW_MS);
-  }, [playTime]);
-
-  useEffect(() => {
-    return () => {
-      if (hideTimeoutRef.current !== undefined) {
-        window.clearTimeout(hideTimeoutRef.current);
-      }
-    };
-  }, []);
+  const showDiscoveryTooltip = usePeriodicPlayTimeTooltip({
+    firstShowPlayMs: FIRST_SHOW_PLAY_MS,
+    intervalMs: INTERVAL_MS,
+  });
 
   const handleCalloutClick = () => {
     useGameStore.getState().trackButtonClick(PLAYLIGHT_FOOTER_BUTTON_ID);
