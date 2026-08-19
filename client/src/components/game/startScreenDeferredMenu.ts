@@ -1,5 +1,5 @@
 export type DeferredStartMenuMount = {
-  /** False when a newer click or Light Fire invalidated this import. */
+  /** False when a newer click or Make Fire invalidated this import. */
   apply: boolean;
   open: boolean;
 };
@@ -14,10 +14,10 @@ export type DeferredStartMenuLoadKind = "prefetch" | "open";
  * per-menu in-flight flag when the import settles so a later click can retry.
  *
  * Hover prefetches with openOnMount false. Click (or a click during prefetch)
- * opens unless Light Fire already started.
+ * opens unless Make Fire already started.
  */
 export function resolveDeferredStartMenuMount(
-  lightFireStarted: boolean,
+  makeFireStarted: boolean,
   requestGen: number,
   currentGen: number,
   openOnMount: boolean,
@@ -25,7 +25,7 @@ export function resolveDeferredStartMenuMount(
   if (requestGen !== currentGen) {
     return { apply: false, open: false };
   }
-  return { apply: true, open: openOnMount && !lightFireStarted };
+  return { apply: true, open: openOnMount && !makeFireStarted };
 }
 
 /** Click during a hover prefetch should open when that import settles. */

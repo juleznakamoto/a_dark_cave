@@ -38,7 +38,7 @@ const AMBIENCE: DemoCue[] = [
 ];
 
 const SFX: DemoCue[] = [
-  { id: "lightFire", label: "Light Fire", volume: SOUND_VOLUME.lightFire },
+  { id: "makeFire", label: "Make Fire", volume: SOUND_VOLUME.makeFire },
   {
     id: "monsterStart",
     label: "Start-screen eyes",

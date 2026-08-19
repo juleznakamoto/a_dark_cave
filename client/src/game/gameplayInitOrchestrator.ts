@@ -77,7 +77,7 @@ export async function runGameplayInitialization(
   mountNotoSansSymbols2FontFace();
 
   const preparedHydration = consumePreparedGameHydration();
-  // Light Fire already flipped gameStarted on this store. Reloading a missing
+  // Make Fire already flipped gameStarted on this store. Reloading a missing
   // save would reset to a fresh new-game blob and remount the start screen.
   const alreadyStarted = useGameStore.getState().flags.gameStarted === true;
   const hadPersistedSave =

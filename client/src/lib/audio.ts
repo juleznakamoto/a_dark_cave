@@ -381,7 +381,7 @@ export class AudioManager {
 
   private static readonly START_SCREEN_SOUNDS: Record<string, string> = {
     wind: '/sounds/wind.mp3',
-    lightFire: '/sounds/light_fire.mp3',
+    makeFire: '/sounds/light_fire.mp3',
   };
 
   /** Register start-screen URLs without fetching (play* can still fetch on demand). */
@@ -390,20 +390,20 @@ export class AudioManager {
   }
 
   /**
-   * Decode the Light Fire one-shot only (~22KB). Call on first gesture so
+   * Decode the Make Fire one-shot only (~22KB). Call on first gesture so
    * click can play immediately. Does not fetch wind.mp3.
    */
-  preloadLightFireCue(): void {
-    const url = AudioManager.START_SCREEN_SOUNDS.lightFire;
-    this.registerSoundUrls({ lightFire: url });
-    void this.loadSound("lightFire", url).catch((error) => {
-      logger.warn("Failed to preload Light Fire cue:", error);
+  preloadMakeFireCue(): void {
+    const url = AudioManager.START_SCREEN_SOUNDS.makeFire;
+    this.registerSoundUrls({ makeFire: url });
+    void this.loadSound("makeFire", url).catch((error) => {
+      logger.warn("Failed to preload Make Fire cue:", error);
     });
   }
 
   /**
-   * Decode start-screen cues (wind + Light Fire). Dev playground only.
-   * Production start screen fetches wind on gesture and Light Fire on gesture.
+   * Decode start-screen cues (wind + Make Fire). Dev playground only.
+   * Production start screen fetches wind on gesture and Make Fire on gesture.
    */
   async preloadSounds(): Promise<void> {
     this.registerStartScreenSoundUrls();
@@ -413,7 +413,7 @@ export class AudioManager {
   }
 
   /**
-   * Sounds needed in the first minutes after Light Fire (BGM + early cave loop).
+   * Sounds needed in the first minutes after Make Fire (BGM + early cave loop).
    * Awaited before starting background music.
    */
   private static readonly CORE_GAME_SOUNDS: Record<string, string> = {
@@ -616,5 +616,5 @@ export class AudioManager {
 
 export const audioManager = AudioManager.getInstance();
 // URLs only. Do not fetch wind.mp3 (~1MB) until a gesture or sound-on action.
-// light_fire.mp3 is decoded on that same gesture so Light Fire can play at once.
+// light_fire.mp3 is decoded on that same gesture so Make Fire can play at once.
 audioManager.registerStartScreenSoundUrls();

@@ -575,8 +575,8 @@
   "leatherTotems": {
     "label": "皮革图腾"
   },
-  "lightFire": {
-    "label": "点燃火焰",
+  "makeFire": {
+    "label": "生火",
     "log": {
       "firstVisit": "火焰轻轻噼啪作响，在洞壁上投下跳动的影子。温暖令人安心。"
     }

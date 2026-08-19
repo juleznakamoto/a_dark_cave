@@ -63,7 +63,7 @@ export function StartScreenFxSection() {
             className="fire-hover h-10 bg-transparent px-6 text-lg text-gray-300/90 hover:bg-transparent"
             onClick={() => { }}
           >
-            Light Fire
+            Make Fire
           </ParticleButton>
         </div>
         <Button

@@ -13,7 +13,7 @@ describe("event module initialization", () => {
   });
 
   it("registers cave explore actions after the actions.ts ↔ rules/index cycle", () => {
-    expect(gameActions.lightFire?.id).toBe("lightFire");
+    expect(gameActions.makeFire?.id).toBe("makeFire");
     expect(gameActions.exploreCave?.id).toBe("exploreCave");
   });
 });

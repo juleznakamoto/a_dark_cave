@@ -20,7 +20,7 @@ describe("resolveDeferredStartMenuMount", () => {
     });
   });
 
-  it("applies closed if Light Fire already started", () => {
+  it("applies closed if Make Fire already started", () => {
     expect(resolveDeferredStartMenuMount(true, 1, 1, true)).toEqual({
       apply: true,
       open: false,

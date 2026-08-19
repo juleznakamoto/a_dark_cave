@@ -159,8 +159,8 @@ interface StartScreenProps {
   steamDesktopEditionActive: boolean;
   crazyGamesEditionActive: boolean;
   hideSteamStoreLink: boolean;
-  onLightFireStart?: (preferences: StartScreenPreferences) => void;
-  onLightFire: (preferences: StartScreenPreferences) => void | Promise<void>;
+  onMakeFireStart?: (preferences: StartScreenPreferences) => void;
+  onMakeFire: (preferences: StartScreenPreferences) => void | Promise<void>;
 }
 
 export default function StartScreen({
@@ -169,8 +169,8 @@ export default function StartScreen({
   steamDesktopEditionActive,
   crazyGamesEditionActive,
   hideSteamStoreLink,
-  onLightFireStart,
-  onLightFire,
+  onMakeFireStart,
+  onMakeFire,
 }: StartScreenProps) {
   const buttonRef = useRef<HTMLButtonElement>(null);
   const executedRef = useRef(false);
@@ -278,7 +278,7 @@ export default function StartScreen({
     const prefs = audioPrefsRef.current;
     mod.audioManager.setMusicVolume(prefs.musicVolume ?? 1);
     mod.audioManager.setSfxVolume(prefs.sfxVolume ?? 1);
-    // Never resume BGM here — start screen is wind-only until Light Fire.
+    // Never resume BGM here. Start screen is wind-only until Make Fire.
     // (musicMute(false) would otherwise restart gameplay music after New Game.)
     mod.audioManager.musicMute(prefs.musicMuted, { resume: false });
     mod.audioManager.sfxMute(prefs.sfxMuted);
@@ -313,7 +313,7 @@ export default function StartScreen({
   useEffect(() => {
     // Wind plays as soon as the user shows intent (mousemove on desktop, touchstart on mobile).
     // Both events fire before the click event, so executedRef.current is still false
-    // even when the user's first action is clicking "Light Fire".
+    // even when the user's first action is clicking "Make Fire".
     let cancelled = false;
     let handleInitialGesture: (() => void) | undefined;
 
@@ -330,7 +330,7 @@ export default function StartScreen({
 
       handleInitialGesture = () => {
         if (!executedRef.current) {
-          mod.audioManager.preloadLightFireCue();
+          mod.audioManager.preloadMakeFireCue();
           playWind();
         }
         document.removeEventListener("mousemove", handleInitialGesture!);
@@ -547,7 +547,7 @@ export default function StartScreen({
     };
   }, [introFadeInDone]);
 
-  const handleLightFire = () => {
+  const handleMakeFire = () => {
     if (executedRef.current) return;
     executedRef.current = true;
 
@@ -563,12 +563,12 @@ export default function StartScreen({
       });
     }
 
-    const playLightFireAudio = (mod: AudioModule) => {
+    const playMakeFireAudio = (mod: AudioModule) => {
       // Fire one-shot first so it is not delayed by the wind fade setup.
-      mod.audioManager.playSound("lightFire", mod.SOUND_VOLUME.lightFire);
+      mod.audioManager.playSound("makeFire", mod.SOUND_VOLUME.makeFire);
       mod.audioManager.stopLoopingSound("wind", 1);
 
-      // After Light Fire one-shot: load core pack (BGM + early cave), start music,
+      // After Make Fire one-shot: load core pack (BGM + early cave), start music,
       // then deferred sounds continue in the background.
       window.setTimeout(() => {
         void mod.audioManager.loadGameSounds().then(() => {
@@ -579,11 +579,11 @@ export default function StartScreen({
       }, 200);
     };
     if (audioRef.current) {
-      playLightFireAudio(audioRef.current);
+      playMakeFireAudio(audioRef.current);
     } else {
       void import("@/lib/audio").then((mod) => {
         audioRef.current = mod;
-        playLightFireAudio(mod);
+        playMakeFireAudio(mod);
       });
     }
 
@@ -605,7 +605,7 @@ export default function StartScreen({
       musicVolume,
       sfxVolume,
     };
-    onLightFireStart?.(preferences);
+    onMakeFireStart?.(preferences);
 
     deferredMenuGenRef.current += 1;
     languagePendingOpenRef.current = false;
@@ -619,14 +619,14 @@ export default function StartScreen({
     // Show button effect for 3 seconds on both mobile and desktop
     setShowParticles(true);
     setTimeout(() => {
-      void onLightFire(preferences);
+      void onMakeFire(preferences);
     }, 3000);
   };
 
   const toggleMusic = () => {
     const next = !musicMuted;
     setMusicMuted(next);
-    // Start screen must not start BGM on unmute; Light Fire starts it explicitly.
+    // Start screen must not start BGM on unmute; Make Fire starts it explicitly.
     audioRef.current?.audioManager.musicMute(next, { resume: false });
   };
 
@@ -637,7 +637,7 @@ export default function StartScreen({
     if (!audio) return;
     audio.audioManager.sfxMute(next);
     if (!next && !executedRef.current) {
-      audio.audioManager.preloadLightFireCue();
+      audio.audioManager.preloadMakeFireCue();
       audio.audioManager.playLoopingSound(
         "wind",
         audio.SOUND_VOLUME.wind,
@@ -703,7 +703,7 @@ export default function StartScreen({
         logger.error("Failed to load start-screen menu", error);
       })
       .finally(() => {
-        // Stale/Light Fire skips must not latch this guard, or the placeholder dies.
+        // Stale/Make Fire skips must not latch this guard, or the placeholder dies.
         inFlightRef.current = false;
       });
   };
@@ -971,19 +971,19 @@ export default function StartScreen({
             {ParticleButtonCmp ? (
               <ParticleButtonCmp
                 ref={buttonRef}
-                onClick={handleLightFire}
+                onClick={handleMakeFire}
                 autoStart={showParticles}
                 className={`${MAKE_FIRE_BUTTON_CLASS} ${showParticles ? "fire-active" : ""}`}
-                data-testid="button-light-fire"
+                data-testid="button-make-fire"
               >
                 {t("startScreen.makeFire", { defaultValue: "Make Fire" })}
               </ParticleButtonCmp>
             ) : (
               <Button
                 ref={buttonRef}
-                onClick={handleLightFire}
+                onClick={handleMakeFire}
                 className={MAKE_FIRE_BUTTON_CLASS}
-                data-testid="button-light-fire"
+                data-testid="button-make-fire"
               >
                 {t("startScreen.makeFire", { defaultValue: "Make Fire" })}
               </Button>

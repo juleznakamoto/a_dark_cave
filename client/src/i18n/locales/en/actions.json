@@ -575,8 +575,8 @@
   "leatherTotems": {
     "label": "Leather Totems"
   },
-  "lightFire": {
-    "label": "Light Fire",
+  "makeFire": {
+    "label": "Make Fire",
     "log": {
       "firstVisit": "The fire crackles softly, casting dancing shadows on the cave walls. The warmth is comforting."
     }

@@ -147,7 +147,7 @@ describe("runGameplayInitialization", () => {
     expect(mocks.startGameLoop).toHaveBeenCalledOnce();
   });
 
-  it("skips loadGame when Light Fire already started the run", async () => {
+  it("skips loadGame when Make Fire already started the run", async () => {
     mocks.consumePrepared.mockReturnValue(null);
     mocks.getState.mockReturnValue({
       loadGame: mocks.loadGame,

@@ -21,7 +21,7 @@ const Game = lazy(() => import("@/pages/game"));
 
 /**
  * Standalone start screen page that doesn't load the heavy Game component.
- * Only loads Game after user clicks "Light Fire".
+ * Only loads Game after user clicks "Make Fire".
  */
 export default function StartScreenPage() {
   const [shouldLoadGame, setShouldLoadGame] = useState(false);
@@ -82,17 +82,17 @@ export default function StartScreenPage() {
     checkGameState();
   }, []);
 
-  const handleLightFireStart = (nextPreferences: StartScreenPreferences) => {
+  const handleMakeFireStart = (nextPreferences: StartScreenPreferences) => {
     void prepareGame(nextPreferences).catch((error) => {
       preparedGameRef.current = null;
       logger.error("Failed to prepare game:", error);
     });
   };
 
-  const handleLightFire = async (nextPreferences: StartScreenPreferences) => {
+  const handleMakeFire = async (nextPreferences: StartScreenPreferences) => {
     try {
-      const { commitLightFireStart } = await prepareGame(nextPreferences);
-      commitLightFireStart(nextPreferences);
+      const { commitMakeFireStart } = await prepareGame(nextPreferences);
+      commitMakeFireStart(nextPreferences);
       setShouldLoadGame(true);
     } catch (error) {
       preparedGameRef.current = null;
@@ -134,8 +134,8 @@ export default function StartScreenPage() {
       }
       crazyGamesEditionActive={startResolution.crazyGamesEditionActive}
       hideSteamStoreLink={startResolution.hideSteamStoreLink}
-      onLightFireStart={handleLightFireStart}
-      onLightFire={handleLightFire}
+      onMakeFireStart={handleMakeFireStart}
+      onMakeFire={handleMakeFire}
     />
   );
 }

@@ -88,7 +88,7 @@ function normalizePlaytimeOverwriteFields<T extends Record<string, unknown>>(
 ): T {
   const legacy = (state as { allowPlaytimeOverwrite?: boolean })
     .allowPlaytimeOverwrite;
-  // Do not promote `isNewGame` → overwrite. A fresh Light Fire on another device
+  // Do not promote `isNewGame` → overwrite. A fresh Make Fire on another device
   // is a new game, but must not be allowed to wipe a longer cloud save on login.
   if (legacy === true || state.allowPlayTimeOverwrite === true) {
     (state as { allowPlayTimeOverwrite?: boolean }).allowPlayTimeOverwrite =
@@ -630,7 +630,7 @@ export async function saveGame(
     }
 
     // Restart overwrite must persist playTime 0 so load envelopes cannot keep a
-    // stale clock. `isNewGame` alone is the first Light Fire / guest run — do
+    // stale clock. `isNewGame` alone is the first Make Fire / guest run. Do
     // not zero it or guest progress is saved with buildings and a 0 clock.
     if (shouldAllowPlaytimeOverwrite(sanitizedState)) {
       sanitizedState.playTime = 0;

@@ -8,7 +8,7 @@ export type PlaytimeOverwriteFields = Partial<GameState> & {
 /**
  * True when this save is allowed to replace a cloud document that has a higher
  * playTime. Only explicit restart overwrite flags count — `isNewGame` alone must
- * not wipe cloud progress (e.g. Light Fire on another device, then login).
+ * not wipe cloud progress (e.g. Make Fire on another device, then login).
  */
 export function shouldAllowPlaytimeOverwrite(
   state: PlaytimeOverwriteFields | null | undefined,
@@ -29,7 +29,7 @@ export function shouldAllowPlaytimeOverwrite(
  * - Else if cloud `startTime` is newer, cloud wins (restart already synced elsewhere;
  *   do not resurrect a stale longer local finished run).
  * - Else keep local only when it has more playTime; otherwise keep cloud.
- *   This blocks "fresh Light Fire on another screen → login" from zeroing cloud.
+ *   This blocks "fresh Make Fire on another screen → login" from zeroing cloud.
  */
 export function pickPreferredSave(
   local: SaveData,

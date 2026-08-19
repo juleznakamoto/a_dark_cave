@@ -559,7 +559,7 @@
   "leatherTotems": {
     "label": "Totem di Cuoio"
   },
-  "lightFire": {
+  "makeFire": {
     "label": "Accendi il Fuoco",
     "log": {
       "firstVisit": "Il fuoco crepita dolcemente, proiettando ombre danzanti sulle pareti della caverna. Il calore è confortante."

@@ -26,7 +26,7 @@
   },
   "buildAdvancedBlacksmith": {
     "description": "Verbesserte Schmiede mit besseren Werkzeugen und Techniken",
-    "label": "Fortgeschrittene Schmiede"  //x1.3
+    "label": "Fortgeschrittene Schmiede" //x1.3
   },
   "buildAlchemistHall": {
     "description": "Halle, in der der Alchemist Pulver und Sprengstoffe herstellt",
@@ -133,7 +133,7 @@
     "label": "Fellzelt"
   },
   "buildGrandArchive": {
-    "description": "Ein riesiges Gewölbe voller Schriftrollen, das alles bewahrt, was das Dorf je war – jeder Name und jede Mühe in Tinte verewigt",  //x1.4
+    "description": "Ein riesiges Gewölbe voller Schriftrollen, das alles bewahrt, was das Dorf je war – jeder Name und jede Mühe in Tinte verewigt", //x1.4
     "label": "Großes Archiv"
   },
   "buildGrandBazaar": {
@@ -174,14 +174,14 @@
   },
   "buildInkwardenAcademy": {
     "description": "Große Akademie, in der Meistergelehrte tiefes Wissen destillieren",
-    "label": "Schriftenwächterakademie"  //x1.3
+    "label": "Schriftenwächterakademie" //x1.3
   },
   "buildLonghouse": {
     "description": "Massive nordische Hütte, die viele Dorfbewohner beherbergt",
     "label": "Langhaus"
   },
   "buildMasterTannery": {
-    "description": "Fortgeschrittene Gerberei, die die Lederproduktion verbessert",  //x1.4
+    "description": "Fortgeschrittene Gerberei, die die Lederproduktion verbessert", //x1.4
     "label": "Meistergerberei"
   },
   "buildMasterworkFoundry": {
@@ -477,7 +477,7 @@
   "descendFurther": {
     "label": "Tiefer hinabsteigen",
     "log": {
-      "firstVisit": "Die Laterne wirft ein gleichmäßiges Licht, während du noch tiefer hinabsteigst. Plötzlich berühren deine Füße von Menschenhand gemeißelte Steinstufen, vom Alter abgenutzt."  //x1.4
+      "firstVisit": "Die Laterne wirft ein gleichmäßiges Licht, während du noch tiefer hinabsteigst. Plötzlich berühren deine Füße von Menschenhand gemeißelte Steinstufen, vom Alter abgenutzt." //x1.4
     }
   },
   "encounterBeyondPortal": {
@@ -575,8 +575,8 @@
   "leatherTotems": {
     "label": "Ledertotems"
   },
-  "lightFire": {
-    "label": "Feuer entzünden",
+  "makeFire": {
+    "label": "Feuer machen",
     "log": {
       "firstVisit": "Das Feuer knistert leise und wirft tanzende Schatten auf die Höhlenwände. Die Wärme ist tröstlich."
     }
@@ -645,7 +645,7 @@
     }
   },
   "provokeAttackWave": {
-    "label": "Angriffswelle provozieren"  //x1.3
+    "label": "Angriffswelle provozieren" //x1.3
   },
   "repairBastion": {
     "label": "Bastion reparieren"
@@ -734,7 +734,7 @@
     "label": "Einsicht-Elixier"
   },
   "tradeGoldForVeinfireElixir": {
-    "label": "Aderfeuer-Elixier kaufen"  //x1.3
+    "label": "Aderfeuer-Elixier kaufen" //x1.3
   },
   "tradeGoldForWood": {
     "label": "Holz kaufen"

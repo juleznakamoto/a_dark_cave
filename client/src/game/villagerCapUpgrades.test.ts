@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import type { GameState } from "@shared/schema";
-import { handleLightFire } from "@/game/rules/caveExploreActions";
+import { handleMakeFire } from "@/game/rules/caveExploreActions";
 import { useGameStore } from "@/game/state";
 import {
   areVillagerCapsEnabled,
@@ -187,12 +187,12 @@ describe("villagerCapUpgrades", () => {
     expect(canUpgradeVillagerCap(maxed, "hunter")).toBe(false);
   });
 
-  it("handleLightFire enables villager caps for new games", () => {
+  it("handleMakeFire enables villager caps for new games", () => {
     const state = baseState({
       flags: { gameStarted: false, villagerCapsEnabled: false } as GameState["flags"],
       story: { seen: {}, merchantPurchases: 0, heavySleeperHours: 0 },
     });
-    const result = handleLightFire(state, { stateUpdates: {}, logEntries: [] });
+    const result = handleMakeFire(state, { stateUpdates: {}, logEntries: [] });
     expect(result.stateUpdates.flags?.gameStarted).toBe(true);
     expect(result.stateUpdates.flags?.villagerCapsEnabled).toBe(true);
   });

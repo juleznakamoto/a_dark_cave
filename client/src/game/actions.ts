@@ -18,7 +18,7 @@ import { killVillagers } from "@/game/stateHelpers";
 import { getProvokeAttackWaveExecutionUpdates } from "@/game/rules/bastionActions";
 // Import all handlers from the modular action files
 import {
-  handleLightFire,
+  handleMakeFire,
   handleChopWood,
   handleExploreCave,
   handleVentureDeeper,
@@ -386,8 +386,8 @@ export function executeGameAction(
     case "testExplosion":
       // Test button does nothing, just triggers explosion effect
       return result;
-    case "lightFire":
-      return handleLightFire(state, result);
+    case "makeFire":
+      return handleMakeFire(state, result);
     case "chopWood":
       return handleChopWood(state, result);
     case "exploreCave":

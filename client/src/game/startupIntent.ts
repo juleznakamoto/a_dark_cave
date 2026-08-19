@@ -19,7 +19,7 @@ export interface StartupIntent {
   boost: boolean;
   /**
    * True when this visit should open Game immediately.
-   * OAuth alone does not force Game; the player may still be on Light Fire.
+   * OAuth alone does not force Game; the player may still be on Make Fire.
    */
   forceGame: boolean;
   openShop: boolean;

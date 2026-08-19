@@ -118,8 +118,8 @@ function ensurePlaylightStylesheet(): void {
 }
 
 /**
- * Load Playlight SDK + CSS. Call only after Light Fire / when gameplay mounts —
- * not needed on the start screen.
+ * Load Playlight SDK + CSS. Call only after Make Fire / when gameplay mounts.
+ * Not needed on the start screen.
  */
 export async function initPlaylight() {
   // If initialization is already in progress or completed, return the existing promise

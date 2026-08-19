@@ -37,21 +37,21 @@ export async function prepareGameFromStartScreen(
   await hydrateStoreOnce();
   return {
     useGameStore,
-    commitLightFireStart,
+    commitMakeFireStart,
   };
 }
 
 /**
- * Apply start-screen preferences and Light Fire. executeAction can no-op if the
+ * Apply start-screen preferences and Make Fire. executeAction can no-op if the
  * action registry is not ready; still mark the run started so GameContainer
  * does not remount the intro.
  */
-export function commitLightFireStart(
+export function commitMakeFireStart(
   preferences: StartScreenPreferences,
 ): void {
   useGameStore.setState(preferences);
-  useGameStore.getState().trackButtonClick("light-fire");
-  useGameStore.getState().executeAction("lightFire");
+  useGameStore.getState().trackButtonClick("make-fire");
+  useGameStore.getState().executeAction("makeFire");
   const flags = useGameStore.getState().flags;
   if (flags.gameStarted) return;
   useGameStore.setState({

@@ -495,9 +495,9 @@ function getInheritedItems(actionId: string) {
 }
 
 export const caveExploreActions: Record<string, Action> = {
-  lightFire: {
-    id: "lightFire",
-    label: "Light Fire",
+  makeFire: {
+    id: "makeFire",
+    label: "Make Fire",
     show_when: {},
     cost: {},
     effects: {
@@ -858,7 +858,7 @@ export const caveExploreActions: Record<string, Action> = {
 };
 
 // Action handlers
-export function handleLightFire(
+export function handleMakeFire(
   state: GameState,
   result: ActionResult,
 ): ActionResult {
@@ -916,7 +916,7 @@ export function handleLightFire(
 
   pushFirstVisitLog(
     result,
-    "lightFire",
+    "makeFire",
     "firstVisit",
     "fire-lit",
   );

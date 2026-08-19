@@ -10,7 +10,7 @@ export const EVENT_DIALOG_AMBIENCE_FADE_SECONDS = 1;
 
 export const SOUND_VOLUME = {
   wind: 0.2,
-  lightFire: 0.8,
+  makeFire: 0.8,
   /** Start-screen eyes easter egg */
   monsterStart: 0.45,
   backgroundMusic: 0.3,

@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import type { GameState } from "@shared/schema";
-import { handleLightFire } from "@/game/rules/caveExploreActions";
+import { handleMakeFire } from "@/game/rules/caveExploreActions";
 import { useGameStore } from "@/game/state";
 import {
   BASE_QUEUE_SLOTS,
@@ -54,7 +54,7 @@ function baseState(
 }
 
 describe("constructionQueueSlots", () => {
-  it("handleLightFire enables villager caps for new games", () => {
+  it("handleMakeFire enables villager caps for new games", () => {
     const state = baseState({
       flags: {
         gameStarted: false,
@@ -62,7 +62,7 @@ describe("constructionQueueSlots", () => {
       } as GameState["flags"],
       story: { seen: {}, merchantPurchases: 0, heavySleeperHours: 0 },
     });
-    const result = handleLightFire(state, { stateUpdates: {}, logEntries: [] });
+    const result = handleMakeFire(state, { stateUpdates: {}, logEntries: [] });
     expect(result.stateUpdates.flags?.villagerCapsEnabled).toBe(true);
   });
 

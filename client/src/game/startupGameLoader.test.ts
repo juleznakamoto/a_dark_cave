@@ -33,7 +33,7 @@ describe("startup game hydration handoff", () => {
     mockLoadGame.mockResolvedValue(true);
   });
 
-  it("hydrates once across startup checking and Light Fire preparation", async () => {
+  it("hydrates once across startup checking and Make Fire preparation", async () => {
     const loader = await import("./startupGameLoader");
 
     await loader.loadStoreForStartupCheck();
@@ -52,7 +52,7 @@ describe("startup game hydration handoff", () => {
     expect(loader.consumePreparedGameHydration()).toBeNull();
   });
 
-  it("shares hydration when startup checking and Light Fire run concurrently", async () => {
+  it("shares hydration when startup checking and Make Fire run concurrently", async () => {
     let resolveLoadGame!: (hadPersistedSave: boolean) => void;
     mockLoadGame.mockImplementation(
       () =>
@@ -63,7 +63,7 @@ describe("startup game hydration handoff", () => {
     const loader = await import("./startupGameLoader");
 
     const startupCheck = loader.loadStoreForStartupCheck();
-    const lightFirePreparation = loader.prepareGameFromStartScreen({
+    const makeFirePreparation = loader.prepareGameFromStartScreen({
       cruelMode: false,
       musicMuted: false,
       sfxMuted: false,
@@ -74,7 +74,7 @@ describe("startup game hydration handoff", () => {
     expect(mockLoadGame).toHaveBeenCalledOnce();
 
     resolveLoadGame(false);
-    await Promise.all([startupCheck, lightFirePreparation]);
+    await Promise.all([startupCheck, makeFirePreparation]);
 
     expect(mockLoadGame).toHaveBeenCalledOnce();
     expect(loader.consumePreparedGameHydration()).toEqual({
@@ -82,13 +82,13 @@ describe("startup game hydration handoff", () => {
     });
   });
 
-  it("forces gameStarted when Light Fire executeAction is a no-op", async () => {
+  it("forces gameStarted when Make Fire executeAction is a no-op", async () => {
     const loader = await import("./startupGameLoader");
     mockExecuteAction.mockImplementation(() => {
       mockFlags.gameStarted = false;
     });
 
-    loader.commitLightFireStart({
+    loader.commitMakeFireStart({
       cruelMode: false,
       musicMuted: false,
       sfxMuted: false,
@@ -96,7 +96,7 @@ describe("startup game hydration handoff", () => {
       sfxVolume: 1,
     });
 
-    expect(mockExecuteAction).toHaveBeenCalledWith("lightFire");
+    expect(mockExecuteAction).toHaveBeenCalledWith("makeFire");
     expect(mockSetState).toHaveBeenCalledWith({
       flags: {
         gameStarted: true,

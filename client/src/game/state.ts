@@ -3546,11 +3546,11 @@ export const useGameStore = create<GameStore>((set, get) => ({
       flushOverdueActionExecutions();
       StateManager.scheduleEffectsUpdate(get);
     } else {
-      // Light Fire starts the run in memory before a save exists. A second
+      // Make Fire starts the run in memory before a save exists. A second
       // loadGame (Game remount, missed hydration handoff) must not wipe that.
       if (get().flags.gameStarted) {
         logger.log(
-          "[STATE] loadGame found no save; keeping in-memory Light Fire start",
+          "[STATE] loadGame found no save; keeping in-memory Make Fire start",
         );
         return false;
       }

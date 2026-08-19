@@ -161,7 +161,7 @@ export default function GameContainer() {
     })),
   );
 
-  const handleStartScreenLightFire = useCallback(
+  const handleStartScreenMakeFire = useCallback(
     async (preferences: StartScreenPreferences) => {
       if (isDemoEdition()) {
         const state = useGameStore.getState();
@@ -171,11 +171,11 @@ export default function GameContainer() {
         }
       }
 
-      // Sign-out stops the loop; restart it before lighting the fire in-place.
+      // Sign-out stops the loop; restart it before making the fire in-place.
       const { startGameLoop } = await import("@/game/loop");
       startGameLoop();
-      const { commitLightFireStart } = await import("@/game/startupGameLoader");
-      commitLightFireStart(preferences);
+      const { commitMakeFireStart } = await import("@/game/startupGameLoader");
+      commitMakeFireStart(preferences);
     },
     [],
   );
@@ -1150,7 +1150,7 @@ export default function GameContainer() {
           steamDesktopEditionActive={steamDesktopEditionActive}
           crazyGamesEditionActive={crazyGamesEditionActive}
           hideSteamStoreLink={hideSteamStoreLink}
-          onLightFire={handleStartScreenLightFire}
+          onMakeFire={handleStartScreenMakeFire}
         />
         {demoEditionActive && <DemoTimeUpDialog />}
       </>

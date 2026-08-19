@@ -818,14 +818,14 @@ describe("Timed event tab cleanup on new game", () => {
   });
 });
 
-describe("loadGame after Light Fire", () => {
+describe("loadGame after Make Fire", () => {
   beforeEach(() => {
     useGameStore.getState().initialize();
     mockLoadGame.mockReset();
     mockSetLastGameLoadTime.mockReset();
   });
 
-  it("does not reset an in-memory Light Fire start when no save exists", async () => {
+  it("does not reset an in-memory Make Fire start when no save exists", async () => {
     useGameStore.setState({
       flags: { ...useGameStore.getState().flags, gameStarted: true },
       isNewGame: true,

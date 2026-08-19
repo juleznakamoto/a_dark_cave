@@ -4,7 +4,7 @@ export const CAVE_FIRST_VISIT_LOG_FALLBACKS: Record<
   string,
   Record<string, string>
 > = {
-  lightFire: {
+  makeFire: {
     firstVisit:
       "The fire crackles softly, casting dancing shadows on the cave walls. The warmth is comforting.",
   },
