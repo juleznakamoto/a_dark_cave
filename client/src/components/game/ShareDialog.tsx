@@ -50,6 +50,7 @@ import {
   highestAttackWaveNumber,
   totalAttackWavesWon,
 } from "@shared/hutLadderAdminStats";
+import { hasReachedFirstAttackWaves } from "@/game/shareCardStats";
 
 const SHARE_IMAGE_WIDTH = 1080;
 const SHARE_IMAGE_HEIGHT = 1350;
@@ -331,6 +332,7 @@ function ShareCard({
   resourcesLabel,
   achievementsLabel,
   ringLabels,
+  showAttackWaveStats,
   killedCreaturesLabel,
   killedCreaturesValue,
   highestAttackWaveLabel,
@@ -349,6 +351,7 @@ function ShareCard({
   resourcesLabel: string;
   achievementsLabel: string;
   ringLabels: Record<AchievementChartConfig["idPrefix"], string>;
+  showAttackWaveStats: boolean;
   killedCreaturesLabel: string;
   killedCreaturesValue: number;
   highestAttackWaveLabel: string;
@@ -488,14 +491,18 @@ function ShareCard({
             maxWidth: "calc(100% - 8rem)",
           }}
         >
-          <div style={{ whiteSpace: "nowrap" }}>
-            <span className="text-gray-400">{killedCreaturesLabel}</span>{" "}
-            <span className="text-gray-300">{killedCreaturesValue}</span>
-          </div>
-          <div style={{ whiteSpace: "nowrap" }}>
-            <span className="text-gray-400">{highestAttackWaveLabel}</span>{" "}
-            <span className="text-gray-300">{highestAttackWaveValue}</span>
-          </div>
+          {showAttackWaveStats ? (
+            <>
+              <div style={{ whiteSpace: "nowrap" }}>
+                <span className="text-gray-400">{killedCreaturesLabel}</span>{" "}
+                <span className="text-gray-300">{killedCreaturesValue}</span>
+              </div>
+              <div style={{ whiteSpace: "nowrap" }}>
+                <span className="text-gray-400">{highestAttackWaveLabel}</span>{" "}
+                <span className="text-gray-300">{highestAttackWaveValue}</span>
+              </div>
+            </>
+          ) : null}
           <div style={{ whiteSpace: "nowrap" }}>
             <span className="text-gray-400">{cruelModeLabel}</span>{" "}
             <span className="text-gray-300">{cruelModeValueLabel}</span>
@@ -524,6 +531,7 @@ export default function ShareDialog() {
   const cruelMode = useGameStore((s) => s.cruelMode);
   const referralCount = useGameStore((s) => s.referralCount ?? 0);
   const storySeen = useGameStore((s) => s.story?.seen);
+  const bastionCount = useGameStore((s) => s.buildings.bastion ?? 0);
   const postCompletionAttackWaveCount = useGameStore(
     (s) => s.postCompletionAttackWaveCount ?? 0,
   );
@@ -551,6 +559,13 @@ export default function ShareDialog() {
   const highestAttackWave = open
     ? highestAttackWaveNumber(storySeen, postCompletionAttackWaveCount)
     : 0;
+  const showAttackWaveStats = open
+    ? hasReachedFirstAttackWaves(
+      storySeen as Record<string, unknown> | undefined,
+      bastionCount,
+      postCompletionAttackWaveCount,
+    )
+    : false;
 
   useLayoutEffect(() => {
     if (!open) return;
@@ -884,6 +899,7 @@ export default function ShareDialog() {
                       defaultValue: CATEGORY_HEADER_DEFAULTS.overall,
                     }),
                   }}
+                  showAttackWaveStats={showAttackWaveStats}
                   killedCreaturesLabel={t("share.killedCreatures", {
                     defaultValue: "Killed Creatures",
                   })}

@@ -1920,7 +1920,7 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
                 onValueChange={(value) =>
                   setActiveTab(value as "shop" | "purchases")
                 }
-                className="flex min-h-0 w-full flex-1 flex-col"
+                className="flex h-full min-h-0 w-full flex-1 flex-col overflow-hidden"
               >
                 {/* Header stays outside ScrollArea: DialogContent uses CSS transform for centering,
                     which breaks position:sticky for descendants; pin tabs/copy via layout instead. */}
@@ -1978,7 +1978,7 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
 
                 <TabsContent
                   value="shop"
-                  className="mt-0 flex min-h-0 flex-1 flex-col overflow-hidden outline-none ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 data-[state=inactive]:hidden"
+                  className="mt-0 flex h-0 min-h-0 flex-1 flex-col overflow-hidden outline-none ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 data-[state=inactive]:hidden"
                 >
                   {/* Pinned via flex split below TabsList + intro (sticky breaks under dialog transforms). */}
                   {(import.meta.env.DEV ||
@@ -2076,7 +2076,7 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
                     </Button>
                   </div>
                   <ScrollAreaWithIndicator
-                    className="min-h-0 flex-1"
+                    className="h-0 min-h-0 flex-1"
                     scrollAreaId="shop-dialog-for-sale"
                     viewportClassName="!pl-0 !pr-0"
                   >
@@ -2546,14 +2546,14 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
 
                 <TabsContent
                   value="purchases"
-                  className="mt-0 flex min-h-0 flex-1 flex-col overflow-hidden outline-none ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 data-[state=inactive]:hidden"
+                  className="mt-0 flex h-0 min-h-0 flex-1 flex-col overflow-hidden outline-none ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 data-[state=inactive]:hidden"
                 >
                   {!(
                     purchasedItems.length === 0 &&
                     Object.keys(gameState.feastActivations || {}).length === 0
                   ) ? (
                     <ScrollAreaWithIndicator
-                      className="min-h-0 flex-1"
+                      className="h-0 min-h-0 flex-1"
                       scrollAreaId="shop-dialog-purchases"
                       viewportClassName="!pl-0 !pr-0"
                     >
