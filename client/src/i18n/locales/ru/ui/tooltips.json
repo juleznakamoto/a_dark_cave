@@ -188,6 +188,7 @@
     "foodProductionBonus": "Бонус производства пищи: {{value}}",
     "forestFear": "Страх леса",
     "hunterProduction": "Производство охотников: {{value}}",
-    "gathererProduction": "Производство собирателей: {{value}}"
+    "gathererProduction": "Производство собирателей: {{value}}",
+    "clarityElixirDescription": "A draught that eases the grip of madness."
   }
 }

@@ -36,6 +36,7 @@ import {
   getEventChoiceAffordance,
 } from "@/i18n/eventAffordance";
 import type { MerchantTradeData } from "@/game/types";
+import { composeMerchantSpecialItemTooltip } from "@/game/rules/eventsMerchantTooltip";
 import {
   EventChoiceSuccessTooltipContent,
   getEventChoiceSuccessPercent,
@@ -267,6 +268,7 @@ export default function EventDialog({
       : 0;
 
   const isCubeEvent = event?.id?.startsWith("cube");
+  const isMerchantEvent = Boolean(event?.id?.includes("merchant"));
 
   // Violet glow for all madness-ladder dialogs (SSOT: madnessEvents keys)
   const eventBaseId = event?.id?.split("-")[0];
@@ -464,27 +466,42 @@ export default function EventDialog({
                   ? resolveEventChoiceReward(catalogId, choice.id, eventI18nVars)
                   : undefined;
 
+                const costHeader =
+                  costBreakdown.length > 0 ? (
+                    <>
+                      {costBreakdown.map((costItem, index) => (
+                        <div
+                          key={index}
+                          className={
+                            costItem.satisfied
+                              ? "text-foreground"
+                              : "text-muted-foreground"
+                          }
+                        >
+                          {costItem.text}
+                        </div>
+                      ))}
+                    </>
+                  ) : costText ? (
+                    <div>{costText}</div>
+                  ) : undefined;
+
+                const merchantItemTooltip =
+                  isMerchantEvent && tradeChoice.buyItem
+                    ? composeMerchantSpecialItemTooltip(
+                      {
+                        buyItem: tradeChoice.buyItem,
+                        buyResource: tradeChoice.buyResource,
+                      },
+                      costHeader,
+                    )
+                    : null;
+
                 const tooltipContent =
-                  costText || costBreakdown.length > 0 || rewardText || showSuccessTooltip ? (
+                  merchantItemTooltip ??
+                  (costText || costBreakdown.length > 0 || rewardText || showSuccessTooltip ? (
                     <div className="text-xs whitespace-nowrap">
-                      {costBreakdown.length > 0 ? (
-                        <>
-                          {costBreakdown.map((costItem, index) => (
-                            <div
-                              key={index}
-                              className={
-                                costItem.satisfied
-                                  ? "text-foreground"
-                                  : "text-muted-foreground"
-                              }
-                            >
-                              {costItem.text}
-                            </div>
-                          ))}
-                        </>
-                      ) : (
-                        costText && <div>{costText}</div>
-                      )}
+                      {costHeader}
                       {(costText || costBreakdown.length > 0) && rewardText && (
                         <div className="border-t border-border my-1" />
                       )}
@@ -502,7 +519,7 @@ export default function EventDialog({
                         />
                       )}
                     </div>
-                  ) : undefined;
+                  ) : undefined);
 
                 return tooltipContent ? (
                   <TooltipWrapper

@@ -1,3 +1,4 @@
+import React from "react";
 import {
   weaponEffects,
   toolEffects,
@@ -772,6 +773,16 @@ export function renderItemTooltip(
       itemId === "ebon_grace" ||
       (itemType === "weapon" && itemId === "nightshade_bow"),
     );
+
+  if (
+    !hasTitle &&
+    !hasDescription &&
+    !hasAnyEffects &&
+    !(itemId === "map_fragment" && mapFragmentMoonGlyph) &&
+    enchantLevel === 0
+  ) {
+    return null;
+  }
 
   return (
     <div className="text-xs">

@@ -151,13 +151,14 @@ export async function createPaymentIntent(
   supabase?: Parameters<typeof assertCanPurchaseShopItem>[0],
 ) {
   // Retired / legacy SKUs — never create new PaymentIntents for them.
-  // `gold_20000` stays in the catalog so old unactivated purchases still grant 20k.
-  if (itemId === 'full_game' || itemId === 'gold_20000') {
+  // They stay in the catalog so old unactivated purchases still grant rewards
+  // (gold_20000, withdrawn dark artifacts / Dark Artifacts Bundle).
+  if (itemId === 'full_game') {
     throw new Error('Invalid item');
   }
 
   const item = SHOP_ITEMS[itemId];
-  if (!item) {
+  if (!item || item.hiddenFromShop) {
     throw new Error('Invalid item');
   }
 

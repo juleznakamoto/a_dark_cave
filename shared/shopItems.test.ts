@@ -140,6 +140,38 @@ describe('Shop Items Configuration', () => {
     });
   });
 
+  describe('Withdrawn dark artifacts (kept for existing purchases)', () => {
+    it('hides individual artifacts and the Dark Artifacts Bundle from the shop', () => {
+      expect(SHOP_ITEMS.skull_lantern.hiddenFromShop).toBe(true);
+      expect(SHOP_ITEMS.tarnished_compass.hiddenFromShop).toBe(true);
+      expect(SHOP_ITEMS.crow_harness.hiddenFromShop).toBe(true);
+      expect(SHOP_ITEMS.artifact_bundle.hiddenFromShop).toBe(true);
+    });
+
+    it('keeps artifact rewards so old real-money purchases still activate', () => {
+      expect(SHOP_ITEMS.skull_lantern.rewards.tools).toEqual(['skull_lantern']);
+      expect(SHOP_ITEMS.tarnished_compass.rewards.relics).toEqual([
+        'tarnished_compass',
+      ]);
+      expect(SHOP_ITEMS.crow_harness.rewards.tools).toEqual(['crow_harness']);
+      expect(SHOP_ITEMS.artifact_bundle.bundleComponents).toEqual([
+        'skull_lantern',
+        'tarnished_compass',
+        'crow_harness',
+      ]);
+    });
+
+    it('does not list the Dark Artifacts Bundle in Highlights', () => {
+      expect(HIGHLIGHTS_ORDER).not.toContain('artifact_bundle');
+    });
+  });
+
+  describe('Cruel Mode price', () => {
+    it('is 4.99 EUR', () => {
+      expect(SHOP_ITEMS.cruel_mode.price).toBe(499);
+    });
+  });
+
   describe('Legacy gold_20000 vs shop gold_15000', () => {
     it('keeps legacy 20k grant for unactivated old purchases', () => {
       expect(SHOP_ITEMS.gold_20000.rewards.resources?.gold).toBe(20000);
@@ -404,7 +436,7 @@ describe('Shop Items Configuration', () => {
       );
     });
 
-    it('should list five leaf components in a fixed order', () => {
+    it('should list leaf components in a fixed order', () => {
       const bundle = SHOP_ITEMS.ashen_throne_bundle;
       expect(bundle.bundleComponents).toEqual([
         'gold_15000',
@@ -412,18 +444,19 @@ describe('Shop Items Configuration', () => {
         'skull_lantern',
         'tarnished_compass',
         'crow_harness',
+        'cruel_mode',
       ]);
     });
 
     it('should have correct catalog pricing', () => {
       const bundle = SHOP_ITEMS.ashen_throne_bundle;
-      expect(bundle.price).toBe(1499);
+      expect(bundle.price).toBe(1349);
       expect(bundleComponentsListPriceSumCents(bundle.bundleComponents!, SHOP_ITEMS)).toBe(
-        2095,
+        2594,
       );
     });
 
-    it('should price below component sum and below Pale King + Dark Artifacts bundles combined', () => {
+    it('should price below component sum and below Pale King + Dark Artifacts + Cruel Mode', () => {
       const bundle = SHOP_ITEMS.ashen_throne_bundle;
       const listSum = bundleComponentsListPriceSumCents(
         bundle.bundleComponents!,
@@ -431,19 +464,22 @@ describe('Shop Items Configuration', () => {
       );
       expect(listSum).toBeGreaterThan(bundle.price);
       expect(bundle.price).toBeLessThan(
-        SHOP_ITEMS.advanced_bundle.price + SHOP_ITEMS.artifact_bundle.price,
+        SHOP_ITEMS.advanced_bundle.price +
+        SHOP_ITEMS.artifact_bundle.price +
+        SHOP_ITEMS.cruel_mode.price,
       );
     });
 
-    it('should merge Pale King and Dark Artifacts rewards', () => {
+    it('should merge Pale King, Dark Artifacts, and Cruel Mode', () => {
       const bundle = SHOP_ITEMS.ashen_throne_bundle;
       expect(bundle.rewards.resources?.gold).toBe(15000);
       expect(bundle.rewards.feastActivations).toBe(3);
       expect(bundle.rewards.tools).toEqual(['skull_lantern', 'crow_harness']);
       expect(bundle.rewards.relics).toEqual(['tarnished_compass']);
+      expect(bundle.bundleComponents).toContain('cruel_mode');
     });
 
-    it('should not be repeatable (artifacts are one-time)', () => {
+    it('should not be repeatable (artifacts and Cruel Mode are one-time)', () => {
       expect(SHOP_ITEMS.ashen_throne_bundle.canPurchaseMultipleTimes).toBe(
         false,
       );

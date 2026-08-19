@@ -27,9 +27,9 @@ export const GAME_CONSTANTS = {
    */
   EVENT_DIALOG_MIN_GAP_MS: 15_000,
   /** First call costs this much gold; each subsequent call adds `CALL_MERCHANT_GOLD_PER_CALL`. */
-  CALL_MERCHANT_BASE_GOLD: 50,
-  CALL_MERCHANT_GOLD_PER_CALL: 25,
-  CALL_MERCHANT_MAX_GOLD: 250,
+  CALL_MERCHANT_BASE_GOLD: 10,
+  CALL_MERCHANT_GOLD_PER_CALL: 10,
+  CALL_MERCHANT_MAX_GOLD: 100,
 } as const;
 
 /** Gold cost to call the merchant for the given number of prior completed calls. */

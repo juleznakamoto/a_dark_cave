@@ -24,7 +24,7 @@ import { cn } from "@/lib/utils";
 import { Plus } from "lucide-react";
 import { TooltipWrapper } from "@/components/game/TooltipWrapper";
 import { isTraderShopUnlocked } from "@/game/stateHelpers";
-import { getMerchantTradeEffectTooltipLine } from "@/game/rules/eventsMerchant";
+import { composeMerchantSpecialItemTooltip } from "@/game/rules/eventsMerchantTooltip";
 import { EventChoice, type LogEntry } from "@/game/rules/events";
 import { logger } from "@/lib/logger";
 import {
@@ -593,49 +593,57 @@ export default function TimedEventPanel() {
       </Button>
     );
 
-    const merchantEffectLine =
-      isMerchantEvent && tradeChoice.buyItem
-        ? getMerchantTradeEffectTooltipLine(tradeChoice)
-        : null;
-
     const rewardText = catalogId
       ? resolveEventChoiceReward(catalogId, choice.id, eventI18nVars)
       : undefined;
 
+    const costHeader =
+      costBreakdown.length > 0 ? (
+        <div>
+          {costBreakdown.map((costItem, index) => (
+            <div
+              key={index}
+              className={
+                costItem.satisfied
+                  ? "text-foreground"
+                  : "text-muted-foreground"
+              }
+            >
+              {costItem.text}
+            </div>
+          ))}
+        </div>
+      ) : costText ? (
+        <div>{costText}</div>
+      ) : undefined;
+
+    const merchantItemTooltip =
+      isMerchantEvent && tradeChoice.buyItem
+        ? composeMerchantSpecialItemTooltip(
+          {
+            buyItem: tradeChoice.buyItem,
+            buyResource: tradeChoice.buyResource,
+          },
+          costHeader,
+        )
+        : null;
+
     const tooltipContent =
-      costText ||
+      merchantItemTooltip ??
+      (costText ||
         costBreakdown.length > 0 ||
         rewardText ||
-        showSuccessTooltip ||
-        merchantEffectLine ? (
+        showSuccessTooltip ? (
         <div className="text-xs whitespace-nowrap">
-          {costBreakdown.length > 0 ? (
-            <div>
-              {costBreakdown.map((costItem, index) => (
-                <div
-                  key={index}
-                  className={
-                    costItem.satisfied
-                      ? "text-foreground"
-                      : "text-muted-foreground"
-                  }
-                >
-                  {costItem.text}
-                </div>
-              ))}
-            </div>
-          ) : (
-            costText && <div>{costText}</div>
-          )}
+          {costHeader}
           {(costText || costBreakdown.length > 0) && rewardText && (
             <div className="border-t border-border my-1" />
           )}
           {rewardText && <div className="text-foreground">{rewardText}</div>}
           {(costText || costBreakdown.length > 0 || rewardText) &&
-            (showSuccessTooltip || merchantEffectLine) && (
+            showSuccessTooltip && (
               <div className="border-t border-border my-1" />
             )}
-          {merchantEffectLine && <div>{merchantEffectLine}</div>}
           {showSuccessTooltip && (
             <EventChoiceSuccessTooltipContent
               choice={choice}
@@ -643,7 +651,7 @@ export default function TimedEventPanel() {
             />
           )}
         </div>
-      ) : undefined;
+      ) : undefined);
 
     const highlightCostResources = () => {
       const costResources = affordance.costs.map(({ resource }) => resource);

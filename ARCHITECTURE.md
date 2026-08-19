@@ -153,7 +153,8 @@ shared/schema.tsâ€” Zod GameState schema (source of truth for persisted sha
   legacy insight purchase paths disabled), `actionTooltipLayout.tsx` (`composeActionTooltip` â€” cost,
   effects, description), `focusTooltipIndicator.tsx` (focus `â˜©` icon on eligible action
   tooltips while focus is active), `buildingUpgradeTooltipIndicator.tsx` (upgrade `ðŸ •` icon on
-  construction tooltips for buildings that replace earlier tiers), `tooltips.tsx` / `itemTooltips.tsx`.
+  construction tooltips for buildings that replace earlier tiers), `tooltips.tsx` / `itemTooltips.tsx`,
+  `eventsMerchantTooltip.tsx` (merchant special-item tooltips: cost, effects, description).
 - **Action path:** UI â†’ `useGameStore.executeAction(id)` â†’ `actions.ts` maps ID â†’ `handle*`
   function in a rule module â†’ `StateManager.scheduleEffectsUpdate()` recomputes derived stats.
   Action modules import `ActionResult` from `types.ts`, not `actions.ts` (avoids Vite TDZ on `caveExploreActions`).

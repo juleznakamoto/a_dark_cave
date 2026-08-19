@@ -188,6 +188,7 @@
     "foodProductionBonus": "Bonus de production de nourriture : {{value}}",
     "forestFear": "Peur de la forêt",
     "hunterProduction": "Production des chasseurs : {{value}}",
-    "gathererProduction": "Production des collecteurs : {{value}}"
+    "gathererProduction": "Production des collecteurs : {{value}}",
+    "clarityElixirDescription": "A draught that eases the grip of madness."
   }
 }

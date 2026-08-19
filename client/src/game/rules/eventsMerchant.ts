@@ -3,7 +3,6 @@ import {
   getResourceName,
   tWithFallback,
 } from "@/i18n/resolveGameText";
-import { getUiTooltip } from "@/i18n/tooltipLabels";
 import { bookEffects, clothingEffects } from "./effects";
 import type { GameEvent } from "./eventTypes";
 import { GameState } from "@shared/schema";
@@ -758,23 +757,6 @@ export function getClarityElixirsUsedCount(state: GameState): number {
   return Math.min(Math.max(tracked, legacy), 5);
 }
 
-export function getMerchantTradeEffectTooltipLine(
-  trade: Pick<MerchantTradeData, "buyItem">,
-): string | null {
-  if (trade.buyItem === "clarity_elixir") {
-    return getUiTooltip("buildings.madnessReduction", "-{{amount}} Madness", {
-      amount: CLARITY_ELIXIR_MADNESS_REDUCTION,
-    });
-  }
-  if (trade.buyItem === "rootseeker_charm") {
-    return getUiTooltip(
-      "veinrootFindMultiplier",
-      "Doubles chance of finding Veinroot",
-    );
-  }
-  return null;
-}
-
 const toolTrades = [
   {
     id: "trade_book_of_trials",
@@ -876,7 +858,7 @@ const toolTrades = [
       state.buildings.stoneHut >= 9 &&
       state.buildings.bastion >= 1 &&
       !state.schematics.nightshade_bow_schematic,
-    costs: [{ resource: "gold", amounts: [2500] }],
+    costs: [{ resource: "gold", amounts: [2000] }],
 
   },
   {
@@ -884,10 +866,9 @@ const toolTrades = [
     give: "tool",
     giveItem: "skull_lantern",
     condition: (state: GameState) =>
-      state.BTP === 1 &&
-      state.buildings.stoneHut >= 1 &&
+      state.buildings.woodenHut >= 10 &&
       !state.tools.skull_lantern,
-    costs: [{ resource: "gold", amounts: [1500] }],
+    costs: [{ resource: "gold", amounts: [2000] }],
 
   },
   {
@@ -895,8 +876,7 @@ const toolTrades = [
     give: "relic",
     giveItem: "tarnished_compass",
     condition: (state: GameState) =>
-      state.BTP === 1 &&
-      state.buildings.stoneHut >= 3 &&
+      state.buildings.stoneHut >= 2 &&
       !state.relics.tarnished_compass,
     costs: [{ resource: "gold", amounts: [2000] }],
 
@@ -940,10 +920,9 @@ const toolTrades = [
     give: "tool",
     giveItem: "crow_harness",
     condition: (state: GameState) =>
-      state.BTP === 1 &&
       state.buildings.stoneHut >= 5 &&
       !state.tools.crow_harness,
-    costs: [{ resource: "gold", amounts: [2500] }],
+    costs: [{ resource: "gold", amounts: [2000] }],
 
   },
   {
@@ -1255,32 +1234,26 @@ export function generateMerchantChoices(state: GameState): MerchantTradeData[] {
     false,
   );
 
-  // At most one random special (tool/schematic/weapon/relic) trade per visit.
-  // Book of Trials and Book of Absolution are guaranteed while unowned.
+  // At most one special (tool/schematic/weapon/relic/book) per visit.
+  // Unowned books take that slot: Trials first, then Absolution.
   const eligibleSpecialTrades = toolTrades.filter((trade) =>
     trade.condition(state),
   );
   const availableToolTrades: MerchantTradeData[] = [];
-  const trialsTrade = eligibleSpecialTrades.find(
-    (t) => t.id === "trade_book_of_trials",
-  );
-  const absolutionTrade = eligibleSpecialTrades.find(
-    (t) => t.id === "trade_book_of_absolution",
-  );
-  if (trialsTrade) {
-    availableToolTrades.push(buildGoldCostSpecialTrade(trialsTrade, discount));
-  }
-  if (absolutionTrade) {
-    availableToolTrades.push(
-      buildGoldCostSpecialTrade(absolutionTrade, discount),
-    );
-  }
-  if (!trialsTrade && !absolutionTrade && eligibleSpecialTrades.length > 0) {
-    const trade =
-      eligibleSpecialTrades[
+  const guaranteedBook =
+    eligibleSpecialTrades.find((t) => t.id === "trade_book_of_trials") ??
+    eligibleSpecialTrades.find((t) => t.id === "trade_book_of_absolution");
+  const selectedSpecial =
+    guaranteedBook ??
+    (eligibleSpecialTrades.length > 0
+      ? eligibleSpecialTrades[
       Math.floor(Math.random() * eligibleSpecialTrades.length)
-      ];
-    availableToolTrades.push(buildGoldCostSpecialTrade(trade, discount));
+      ]
+      : undefined);
+  if (selectedSpecial) {
+    availableToolTrades.push(
+      buildGoldCostSpecialTrade(selectedSpecial, discount),
+    );
   }
 
   const finalChoices: MerchantTradeData[] = [

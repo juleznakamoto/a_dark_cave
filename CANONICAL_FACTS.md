@@ -165,7 +165,7 @@ Organization `logo` may keep `/og-image.png` until a real wordmark exists.
 ## Verified in this repo (do not guess beyond this)
 
 - Cruel Mode (`cruel_mode` in `shared/shopItems.ts`) is still a paid shop item
-  (4.49 EUR). Optional paid unlocks are accurate.
+  (4.99 EUR). Optional paid unlocks are accurate.
 - The old web `full_game` buy-to-play SKU is retired. Web is MTX-only now.
   Steam/Galaxy still use `full_game` as an entitlement key, not a shop SKU.
   Do not say "optional full game unlock" for the browser game.

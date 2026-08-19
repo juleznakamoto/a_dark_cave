@@ -56,7 +56,7 @@ export const SHOP_ITEMS: Record<string, ShopItem> = {
     name: "Cruel Mode",
     description:
       "Play again in a more cruel world, with expanded story, more items, deadlier foes and much more.",
-    price: 449, // 4.49 €
+    price: 499, // 4.99 €
     rewards: {},
     canPurchaseMultipleTimes: false,
     category: "blessing",
@@ -191,6 +191,12 @@ export const SHOP_ITEMS: Record<string, ShopItem> = {
     symbolColor: "text-orange-600",
   },
 
+  /**
+   * Dark artifacts: withdrawn from the real-money store (sold at the merchant
+   * for gold, same as Steam). Definitions are kept so existing Stripe purchases
+   * and old bundle component rows still activate. Do not delete.
+   */
+  // skull_lantern / tarnished_compass / crow_harness (commented out of the shop, not deleted)
   skull_lantern: {
     id: "skull_lantern",
     name: "Skull Lantern",
@@ -206,6 +212,7 @@ export const SHOP_ITEMS: Record<string, ShopItem> = {
       "The Skull Lantern has been added to your tools! Its eerie light will guide you through the depths.",
     symbol: "❊",
     symbolColor: "text-purple-400",
+    hiddenFromShop: true,
   },
 
   tarnished_compass: {
@@ -223,6 +230,7 @@ export const SHOP_ITEMS: Record<string, ShopItem> = {
       "The Tarnished Compass has been added to your inventory! Its ancient magic may grant fortune to your endeavors.",
     symbol: "⛯",
     symbolColor: "text-amber-300/90",
+    hiddenFromShop: true,
   },
 
   crow_harness: {
@@ -240,6 +248,7 @@ export const SHOP_ITEMS: Record<string, ShopItem> = {
       "The Crow Harness has been added to your tools! Now you must seek out a crow to bind to the harness.",
     symbol: "⟑",
     symbolColor: "text-slate-400",
+    hiddenFromShop: true,
   },
 
   basic_survival_bundle: {
@@ -260,6 +269,11 @@ export const SHOP_ITEMS: Record<string, ShopItem> = {
     bundleComponents: ["gold_5000", "great_feast_1"], // Component items
   },
 
+  /**
+   * Dark Artifacts Bundle: withdrawn from the real-money store.
+   * Kept so existing buyers can still activate component rows. Do not delete.
+   */
+  // artifact_bundle (commented out of the shop, not deleted)
   artifact_bundle: {
     id: "artifact_bundle",
     name: "Dark Artifacts Bundle",
@@ -275,6 +289,7 @@ export const SHOP_ITEMS: Record<string, ShopItem> = {
     symbol: "🜋",
     symbolColor: "text-green-600/90",
     bundleComponents: ["skull_lantern", "tarnished_compass", "crow_harness"],
+    hiddenFromShop: true,
   },
 
   advanced_bundle: {
@@ -299,7 +314,7 @@ export const SHOP_ITEMS: Record<string, ShopItem> = {
     id: "ashen_throne_bundle",
     name: "Ashen Throne Bundle",
     description: "",
-    price: 1499, // 14.99 €
+    price: 1349, // 13.49 €
     rewards: {
       resources: { gold: 15000 },
       feastActivations: 3,
@@ -318,6 +333,7 @@ export const SHOP_ITEMS: Record<string, ShopItem> = {
       "skull_lantern",
       "tarnished_compass",
       "crow_harness",
+      "cruel_mode",
     ],
   },
 };
@@ -345,7 +361,6 @@ hydrateBundleDescriptions(SHOP_ITEMS);
 export const HIGHLIGHTS_ORDER = [
   "gold_100_free", // Free Gift - shown first with special blue border
   "cruel_mode",
-  "artifact_bundle", // Dark Artifacts Bundle
   "gold_15000", // 15'000 Gold (even playTime); swapped to gold_1000 when odd
   "advanced_bundle", // Pale King's Bundle
   "ashen_throne_bundle",

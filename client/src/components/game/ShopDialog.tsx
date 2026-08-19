@@ -297,6 +297,24 @@ function ArtifactEffectsList({
   );
 }
 
+function CruelModeEffectsList() {
+  const { t } = useTranslation("ui");
+  const lines = [
+    t("shop.cruelMode.moreEvents"),
+    t("shop.cruelMode.moreItems"),
+    t("shop.cruelMode.strongerEnemies"),
+    t("shop.cruelMode.harderChallenges"),
+    t("shop.cruelMode.reusePurchases"),
+  ];
+  return (
+    <div className="space-y-0.5 text-xs">
+      {lines.map((line) => (
+        <div key={line}>• {line}</div>
+      ))}
+    </div>
+  );
+}
+
 function ArtifactShopTooltipIcon({
   artifact,
   tooltipId,
@@ -522,6 +540,19 @@ function ShopItemDescriptionParagraph({ item }: { item: ShopItem }) {
                     tooltipId={`${artifact}-info-desc-${item.id}`}
                     variant="description"
                   />
+                ) : null}
+                {componentId === "cruel_mode" ? (
+                  <TooltipWrapper
+                    tooltip={<CruelModeEffectsList />}
+                    tooltipId={`cruel-mode-info-desc-${item.id}`}
+                    disabled
+                    tooltipContentClassName="max-w-xs border border-amber-600"
+                    className={`ml-0.5 inline-flex items-center justify-center ${SHOP_INFO_HIT_SIZE_CLASS} rounded-full text-white-500 cursor-pointer motion-safe:animate-shop-info-pulse align-text-bottom translate-y-[0.08em]`}
+                  >
+                    <span className={SHOP_INFO_GLYPH_CLASS} aria-hidden>
+                      🛈
+                    </span>
+                  </TooltipWrapper>
                 ) : null}
               </span>
             </div>
@@ -764,7 +795,7 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
   const [isLoading, setIsLoading] = useState(true);
   const [activeTab, setActiveTab] = useState<"shop" | "purchases">("shop");
   const [selectedFilter, setSelectedFilter] = useState<
-    "gold" | "artifacts" | "boosts" | "bundles" | null
+    "gold" | "boosts" | "bundles" | null
   >(null);
   const [sessionUser, setSessionUser] = useState<{
     id: string;
@@ -919,7 +950,7 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
     if (directCheckoutStartedRef.current) return;
     if (clientSecret || selectedItem) return;
     if (isDetectingCurrency) return;
-    if (!SHOP_ITEMS[shopCheckoutItemId]) return;
+    if (!SHOP_ITEMS[shopCheckoutItemId] || SHOP_ITEMS[shopCheckoutItemId].hiddenFromShop) return;
     directCheckoutStartedRef.current = true;
     void handlePurchaseClick(shopCheckoutItemId);
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -950,6 +981,7 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
 
   const handlePurchaseClick = async (itemId: string) => {
     const item = SHOP_ITEMS[itemId];
+    if (!item || item.hiddenFromShop) return;
 
     // For free items, handle them directly
     if (item.price === 0) {
@@ -1952,21 +1984,6 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
                     </Button>
                     <Button
                       variant={
-                        selectedFilter === "artifacts" ? "default" : "outline"
-                      }
-                      size="xs"
-                      button_id="shop-filter-artifacts"
-                      onClick={() => setSelectedFilter("artifacts")}
-                      className={
-                        selectedFilter === "artifacts"
-                          ? "h-6 text-xs"
-                          : "h-6 border border-red-500/50 text-xs"
-                      }
-                    >
-                      {t("ui:shop.artifacts")}
-                    </Button>
-                    <Button
-                      variant={
                         selectedFilter === "boosts" ? "default" : "outline"
                       }
                       size="xs"
@@ -2017,14 +2034,6 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
                           // Apply filter based on selectedFilter
                           if (selectedFilter === "gold") {
                             return shopItemMatchesGoldFilterTab(item);
-                          }
-                          if (selectedFilter === "artifacts") {
-                            // Artifacts are tools, weapons, or relics
-                            return (
-                              item.category === "tool" ||
-                              item.category === "weapon" ||
-                              item.category === "relic"
-                            );
                           }
                           if (selectedFilter === "boosts") {
                             // Boosts include Great Feasts and other boost items
@@ -2088,40 +2097,7 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
                                         )}
                                         {item.id === "cruel_mode" && (
                                           <TooltipWrapper
-                                            tooltip={
-                                              <div className="space-y-0.5 text-xs">
-                                                <div>
-                                                  •{" "}
-                                                  {t(
-                                                    "ui:shop.cruelMode.moreEvents",
-                                                  )}
-                                                </div>
-                                                <div>
-                                                  •{" "}
-                                                  {t(
-                                                    "ui:shop.cruelMode.moreItems",
-                                                  )}
-                                                </div>
-                                                <div>
-                                                  •{" "}
-                                                  {t(
-                                                    "ui:shop.cruelMode.strongerEnemies",
-                                                  )}
-                                                </div>
-                                                <div>
-                                                  •{" "}
-                                                  {t(
-                                                    "ui:shop.cruelMode.harderChallenges",
-                                                  )}
-                                                </div>
-                                                <div>
-                                                  •{" "}
-                                                  {t(
-                                                    "ui:shop.cruelMode.reusePurchases",
-                                                  )}
-                                                </div>
-                                              </div>
-                                            }
+                                            tooltip={<CruelModeEffectsList />}
                                             tooltipId="cruel-mode-info"
                                             disabled
                                             tooltipContentClassName="max-w-xs border border-amber-600"

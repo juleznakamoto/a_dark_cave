@@ -209,6 +209,13 @@ describe('Stripe Shop Integration', () => {
       await expect(createPaymentIntent('gold_20000')).rejects.toThrow('Invalid item');
     });
 
+    it('should reject withdrawn dark artifact SKUs (kept only for activating old purchases)', async () => {
+      await expect(createPaymentIntent('skull_lantern')).rejects.toThrow('Invalid item');
+      await expect(createPaymentIntent('tarnished_compass')).rejects.toThrow('Invalid item');
+      await expect(createPaymentIntent('crow_harness')).rejects.toThrow('Invalid item');
+      await expect(createPaymentIntent('artifact_bundle')).rejects.toThrow('Invalid item');
+    });
+
     it('should allow current top gold pack gold_15000', async () => {
       mockPaymentIntents.create.mockResolvedValue({
         client_secret: 'test_secret',
@@ -781,12 +788,12 @@ describe('Purchase Restrictions', () => {
 
   it('blocks payment intent creation when user already owns a one-time item', async () => {
     const ownedSupabase = createSupabaseMockForStripeVerify({
-      userPurchaseRows: [{ item_id: 'skull_lantern' }],
+      userPurchaseRows: [{ item_id: 'cruel_mode' }],
     });
 
     await expect(
       createPaymentIntent(
-        'skull_lantern',
+        'cruel_mode',
         undefined,
         'user123',
         undefined,
@@ -808,7 +815,7 @@ describe('Purchase Restrictions', () => {
 
     // Should allow creating payment intent even for non-repeatable items
     // (the enforcement of "already purchased" should happen client-side and during purchase verification)
-    const result = await createPaymentIntent('skull_lantern');
+    const result = await createPaymentIntent('cruel_mode');
     expect(result.clientSecret).toBe('test_secret');
   });
 

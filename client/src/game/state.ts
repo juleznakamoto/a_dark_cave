@@ -272,7 +272,7 @@ interface GameStore extends GameState {
   /** Transient: pulse Cruel Mode shop card (e.g. after end-screen "Cruel Mode" → open shop). Cleared when shop closes. */
   shopCruelModeHighlight: boolean;
   /** Transient: open shop on a specific filter tab (e.g. gold packs). Cleared when shop closes. */
-  shopFilter: "gold" | "artifacts" | "boosts" | "bundles" | null;
+  shopFilter: "gold" | "boosts" | "bundles" | null;
   /** True while the obsessed gambler dice minigame UI is open (freezes production like other modal dialogs). */
   gamblerDiceDialogOpen: boolean;
   /** True while the Insight blessing card-picker overlay is open (blocking). */
@@ -582,7 +582,7 @@ interface GameStore extends GameState {
   setShopDialogOpen: (isOpen: boolean, source?: ShopOpenSource) => void;
   setShopCruelModeHighlight: (highlight: boolean) => void;
   setShopFilter: (
-    filter: "gold" | "artifacts" | "boosts" | "bundles" | null,
+    filter: "gold" | "boosts" | "bundles" | null,
   ) => void;
   recordCompletePurchaseDialogOpen: () => void;
   setGamblerDiceDialogOpen: (isOpen: boolean) => void;
@@ -1554,9 +1554,10 @@ export const createInitialState = (): GameState => ({
     bloodflameSphereLevel: 0,
     feralHowlLevel: 0,
   },
-  // Steam/Galaxy: one-time purchase editions run in BTP mode (merchant sells dark
-  // artifacts + rebalanced economy). `full_game` on activatedPurchases is an
-  // entitlement sentinel only — web no longer sells a Full Game SKU (MTX shop).
+  // Steam/Galaxy: one-time purchase editions run in BTP mode (rebalanced economy).
+  // Dark artifacts are merchant-sold on web and Steam. `full_game` on
+  // activatedPurchases is an entitlement sentinel only — web no longer sells a
+  // Full Game SKU (MTX shop).
   activatedPurchases: isFullGameUnlockedEdition() ? { full_game: true } : {},
   BTP: isFullGameUnlockedEdition() ? 1 : 0,
   feastActivations: {},

@@ -77,12 +77,15 @@ describe("merchant Book of Absolution", () => {
     }
   });
 
-  it("appears together with Book of Trials while both are unowned", () => {
+  it("yields to Book of Trials while both are unowned", () => {
     const state = merchantState({ bookOfTrials: false });
     for (let i = 0; i < 20; i++) {
       const ids = generateMerchantChoices(state).map((c) => c.id);
       expect(ids).toContain("trade_book_of_trials");
-      expect(ids).toContain("trade_book_of_absolution");
+      expect(ids).not.toContain("trade_book_of_absolution");
+      expect(
+        ids.filter((id) => id.startsWith("trade_book_")).length,
+      ).toBe(1);
     }
   });
 });
