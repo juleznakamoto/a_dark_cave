@@ -87,6 +87,8 @@ export function InviteFriendsMenuItem({
         tooltip={<InviteFriendsTooltip count={referralCount} />}
         tooltipId="footer-social-invite"
         tooltipContentClassName="max-w-xs"
+        tooltipSide="top"
+        tooltipAvoidCollisions={false}
         data-testid="button-footer-invite-friends"
         onSelect={() => {
           onSelect?.();

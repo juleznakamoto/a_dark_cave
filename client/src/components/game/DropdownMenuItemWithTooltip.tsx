@@ -34,6 +34,8 @@ export interface DropdownMenuItemWithTooltipProps
   disabled?: boolean;
   onTooltipAction?: () => void;
   tooltipContentClassName?: string;
+  tooltipSide?: React.ComponentPropsWithoutRef<typeof TooltipContent>["side"];
+  tooltipAvoidCollisions?: boolean;
 }
 
 /**
@@ -54,6 +56,8 @@ export function DropdownMenuItemWithTooltip({
   disabled = false,
   onTooltipAction,
   tooltipContentClassName,
+  tooltipSide,
+  tooltipAvoidCollisions,
   className,
   onMouseDown,
   onMouseUp,
@@ -144,7 +148,11 @@ export function DropdownMenuItemWithTooltip({
             {...props}
           />
         </TooltipTrigger>
-        <TooltipContent className={tooltipContentClassName}>
+        <TooltipContent
+          side={tooltipSide}
+          avoidCollisions={tooltipAvoidCollisions}
+          className={tooltipContentClassName}
+        >
           {tooltip}
         </TooltipContent>
       </Tooltip>
