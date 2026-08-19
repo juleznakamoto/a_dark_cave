@@ -249,7 +249,7 @@
     "sleeping": "En train de dormir", //x2.3
     "awake": "Vous êtes réveillé !", //x1.4
     "wakingIn": "Réveil dans : {{time}}",
-    "villageProduction": "Production du village : {{percent}}%",
+    "villageProduction": "Production du village : {{percent}} %, les bonus de production temporaires ne sont pas actifs pendant le sommeil",
     "wake": "Se réveiller maintenant", //x2.1
     "getUp": "Se lever",
     "focusGainedLog": "Vous avez gagné {{count}} de concentration grâce à votre repos.", //x1.5

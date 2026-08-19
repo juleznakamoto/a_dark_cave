@@ -249,7 +249,7 @@
     "sleeping": "Sleeping",
     "awake": "You are awake!",
     "wakingIn": "Waking up in: {{time}}",
-    "villageProduction": "Village production: {{percent}}%",
+    "villageProduction": "Village production: {{percent}}%, temporary production bonuses not active while sleeping",
     "wake": "Wake up now",
     "getUp": "Get Up",
     "focusGainedLog": "You gained {{count}} Focus from your rest.",

@@ -249,7 +249,7 @@
     "sleeping": "Schlafen",
     "awake": "Du bist wach!",
     "wakingIn": "Erwachen in: {{time}}",
-    "villageProduction": "Dorfproduktion: {{percent}}%",
+    "villageProduction": "Dorfproduktion: {{percent}}%, temporäre Produktionsboni sind während des Schlafs nicht aktiv",
     "wake": "Jetzt aufwachen", //x1.4
     "getUp": "Aufstehen",
     "focusGainedLog": "Du hast durch deine Ruhe {{count}} Fokus erhalten.",

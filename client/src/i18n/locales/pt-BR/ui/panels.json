@@ -249,7 +249,7 @@
     "sleeping": "Dormindo",
     "awake": "Você está acordado!",
     "wakingIn": "Acordando em: {{time}}",
-    "villageProduction": "Produção da vila: {{percent}}%",
+    "villageProduction": "Produção da vila: {{percent}}%, bônus de produção temporários não estão ativos enquanto você dorme",
     "wake": "Acordar agora",
     "getUp": "Levantar",
     "focusGainedLog": "Você ganhou {{count}} de Foco com seu descanso.",
