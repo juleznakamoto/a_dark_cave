@@ -1957,11 +1957,11 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
                           className="pointer-events-none absolute inset-0 bg-cyan-950/55"
                           aria-hidden
                         />
-                        <div className="relative z-10 px-2 py-2 text-center text-sm font-normal text-white">
+                        <div className="relative z-10 px-2 py-2 text-center text-sm font-bold text-white sm:text-base">
                           {t("ui:shop.firstPurchaseInsightBannerBefore", {
                             defaultValue: "Get",
                           })}{" "}
-                          <span className="font-bold tabular-nums">
+                          <span className="tabular-nums">
                             {formatNumber(FIRST_PURCHASE_INSIGHT_BONUS)}
                           </span>{" "}
                           <span
@@ -1973,11 +1973,9 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
                           >
                             {INSIGHT_GLYPH}
                           </span>{" "}
-                          <span className="font-bold">
-                            {t("ui:shop.firstPurchaseInsightBannerInsight", {
-                              defaultValue: "Insight",
-                            })}
-                          </span>{" "}
+                          {t("ui:shop.firstPurchaseInsightBannerInsight", {
+                            defaultValue: "Insight",
+                          })}{" "}
                           {t("ui:shop.firstPurchaseInsightBannerAfter", {
                             defaultValue: "free with your first purchase",
                           })}
