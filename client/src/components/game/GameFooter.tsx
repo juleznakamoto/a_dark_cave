@@ -104,7 +104,6 @@ function SteamDemoProgressBar() {
 
 export default function GameFooter() {
   const setShopDialogOpen = useGameStore((s) => s.setShopDialogOpen);
-  const setShareDialogOpen = useGameStore((s) => s.setShareDialogOpen);
   const isPaused = useGameStore((s) => s.isPaused);
   const togglePause = useGameStore((s) => s.togglePause);
   const idleModeDialogOpen = useGameStore((s) => s.idleModeDialog.isOpen);
@@ -190,25 +189,6 @@ export default function GameFooter() {
       <span className={FOOTER_SOCIAL_LABEL}>
         {tWithFallback("ui", "footer.feedback", "Feedback")}
       </span>
-    </Button>
-  );
-  const progressLabel = tWithFallback("ui", "footer.progress", "Progress");
-  const progressButton = (
-    <Button
-      variant="ghost"
-      size="xs"
-      onClick={() => setShareDialogOpen(true)}
-      button_id="footer-progress"
-      data-testid="button-footer-progress"
-      aria-label={progressLabel}
-      className={`${FOOTER_CONTROL_BTN} flex items-center gap-1`}
-    >
-      <GameUiIcon
-        name="share"
-        sizeClassName="game-tab-icon"
-        className={FOOTER_CONTROL_ICON}
-      />
-      <span className={FOOTER_SOCIAL_LABEL}>{progressLabel}</span>
     </Button>
   );
   const playlightButton = !steamEditionActive ? (
@@ -301,11 +281,10 @@ export default function GameFooter() {
           </div>
           <div className="flex-1 flex justify-end gap-1 items-center">
             {steamDemoActive && playlightButton}
-            {/* Steam edition hides the store link — keep Feedback + Progress in the right cluster. */}
+            {/* Steam edition hides the store link — keep Feedback in the right cluster. */}
             {(hideSteamStoreLink || hideFooterSteamAndSocial) && (
               <>
                 {feedbackButton}
-                {progressButton}
                 {!hideFooterSteamAndSocial && (
                   <FooterNetworkMenu
                     iconClassName={FOOTER_CONTROL_ICON}
@@ -360,7 +339,6 @@ export default function GameFooter() {
                 return (
                   <div key={platform} className="contents">
                     {feedbackButton}
-                    {progressButton}
                     <HoverCalloutTooltip
                       label={t("footer.wishlistOnSteam")}
                       side="top"

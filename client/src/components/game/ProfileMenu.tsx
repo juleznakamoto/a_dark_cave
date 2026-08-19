@@ -96,6 +96,7 @@ function useProfileMenuState() {
     social_media_rewards,
     leaderboardDialogOpen,
     setLeaderboardDialogOpen,
+    setShareDialogOpen,
     hasWonAnyGame,
     restartGameDialogOpen, // Added from store
     setRestartGameDialogOpen, // Added from store
@@ -380,6 +381,7 @@ function useProfileMenuState() {
     hasWonAnyGame,
     devMode,
     setLeaderboardDialogOpen,
+    setShareDialogOpen,
     leaderboardDialogOpen,
     settingsDialogOpen,
     setSettingsDialogOpen,
@@ -568,6 +570,7 @@ export function GameHeaderControls() {
     hasWonAnyGame,
     devMode,
     setLeaderboardDialogOpen,
+    setShareDialogOpen,
     setSettingsDialogOpen,
   } = useProfileMenu();
 
@@ -703,21 +706,30 @@ export function GameHeaderControls() {
               />
             </>
           )}
+          <DropdownMenuSeparator />
+          <DropdownMenuItem
+            onClick={() => {
+              setAccountDropdownOpen(false);
+              setShareDialogOpen(true);
+            }}
+          >
+            <span className="flex items-center gap-1.5">
+              <GameUiIcon name="share" />
+              {t("footer.progress")}
+            </span>
+          </DropdownMenuItem>
           {(hasWonAnyGame || devMode) && !steamEditionActive && (
-            <>
-              <DropdownMenuSeparator />
-              <DropdownMenuItem
-                onClick={() => {
-                  setAccountDropdownOpen(false);
-                  setLeaderboardDialogOpen(true);
-                }}
-              >
-                <span className="flex items-center gap-1.5">
-                  <GameUiIcon name="leaderboard" />
-                  {t("profile.leaderboard")}
-                </span>
-              </DropdownMenuItem>
-            </>
+            <DropdownMenuItem
+              onClick={() => {
+                setAccountDropdownOpen(false);
+                setLeaderboardDialogOpen(true);
+              }}
+            >
+              <span className="flex items-center gap-1.5">
+                <GameUiIcon name="leaderboard" />
+                {t("profile.leaderboard")}
+              </span>
+            </DropdownMenuItem>
           )}
           {/* Account / auth are web-only (Supabase). */}
           {!steamEditionActive && <DropdownMenuSeparator />}

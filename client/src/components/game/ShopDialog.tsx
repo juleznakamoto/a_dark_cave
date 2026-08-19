@@ -834,6 +834,8 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
   } | null>(null);
   const [showSecurePurchasePrompt, setShowSecurePurchasePrompt] =
     useState(false);
+  const shopDialogContentRef = React.useRef<HTMLDivElement>(null);
+  const [lockedShopHeight, setLockedShopHeight] = useState<number | null>(null);
   const detectedCurrency = useGameStore((state) => state.detectedCurrency);
   const setDetectedCurrency = useGameStore(
     (state) => state.setDetectedCurrency,
@@ -888,17 +890,44 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
       },
     );
 
-  // Reset filter when dialog closes; apply store-requested filter when opening
+  // Reset filter when dialog closes. Store-requested filter is applied after
+  // Highlights height is locked so the dialog does not jump.
   useEffect(() => {
     if (!isOpen) {
       setSelectedFilter(null);
+      setActiveTab("shop");
       setShowSecurePurchasePrompt(false);
+      setLockedShopHeight(null);
+    }
+  }, [isOpen]);
+
+  React.useLayoutEffect(() => {
+    if (!isOpen || isLoading || showSecurePurchasePrompt || isDirectCheckout) {
       return;
     }
-    if (shopFilter) {
+    if (lockedShopHeight == null) {
+      if (activeTab !== "shop" || selectedFilter !== null) return;
+      const el = shopDialogContentRef.current;
+      if (!el) return;
+      const next = Math.round(el.getBoundingClientRect().height);
+      if (next > 0) {
+        setLockedShopHeight(Math.min(next, window.innerHeight * 0.82));
+      }
+      return;
+    }
+    if (shopFilter && selectedFilter !== shopFilter) {
       setSelectedFilter(shopFilter);
     }
-  }, [isOpen, shopFilter]);
+  }, [
+    isOpen,
+    isLoading,
+    showSecurePurchasePrompt,
+    isDirectCheckout,
+    activeTab,
+    selectedFilter,
+    lockedShopHeight,
+    shopFilter,
+  ]);
 
   useEffect(() => {
     if (!isOpen || !shopCruelModeHighlight) return;
@@ -1809,21 +1838,22 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
             not remount DialogContent and replay the enter animation. */}
         {!isDirectCheckout && (
           <DialogContent
+            ref={shopDialogContentRef}
             hideOverlay={isPaymentMode}
             className={cn(
               showSecurePurchasePrompt
                 ? "[--adc-dialog-max-w:28rem] max-h-[80vh] z-[70] gap-2"
-                : "[--adc-dialog-max-w:56rem] flex h-[82vh] min-h-0 flex-col gap-3 overflow-hidden z-[70] p-6",
+                : "[--adc-dialog-max-w:56rem] flex max-h-[82vh] min-h-0 flex-col gap-3 overflow-hidden z-[70] p-6",
               isPaymentMode && "hidden",
             )}
             style={
-              showSecurePurchasePrompt
-                ? undefined
-                : {
-                  height: "82vh",
+              !showSecurePurchasePrompt && lockedShopHeight != null
+                ? {
+                  height: lockedShopHeight,
+                  minHeight: lockedShopHeight,
                   maxHeight: "82vh",
-                  minHeight: "82vh",
                 }
+                : undefined
             }
             onPointerDownOutside={(e) => e.preventDefault()}
             onInteractOutside={(e) => e.preventDefault()}
