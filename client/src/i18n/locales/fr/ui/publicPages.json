@@ -57,13 +57,27 @@
       }
     },
     "about": {
-      "p1": "A Dark Cave est un jeu incremental de survie et de colonie en texte. Tu te réveilles à l'entrée d'une grotte, tu allumes un feu, tu ramasses ce que tu peux, tu construis un village au seuil, puis tu redescends.",
-      "p2": "Joue gratuitement dans ton navigateur sur <site>https://a-dark-cave.com</site>. <demo>Une démo Steam gratuite</demo> est déjà disponible. La sortie Steam complète est prévue le 27 octobre 2026.",
-      "p3": "Il s'adresse aux gens qui aiment les incrementals minimalistes comme A Dark Room, Kittens Game et Candy Box. Ce n'est ni un clicker ni un idle pour le second écran.",
-      "support": "Support : support@a-dark-cave.com",
-      "reddit": "Reddit",
+      "intro1": "J'ai fait ce jeu parce qu'il y a de nombreuses années j'ai joué à A Dark Room, qui m'a inspiré à créer mon propre jeu un jour. Ce jour est venu.",
+      "intro2": "Tu te réveilles à l'entrée d'une grotte sombre. Pas de mémoire. Pas de possessions. Tu fais un feu, puis tu ramasses du bois, tu fabriques une torche, tu construis ton premier abri. Des inconnus arrivent. Le village grandit. Tu commences à explorer ce qui se trouve au fond de la grotte. Le passé de ta civilisation. Ton passé. Voilà A Dark Cave : un incremental textuel sur survivre, construire, et découvrir ce qu'il y a vraiment là-dessous, et peut-être où nous allons en tant qu'humanité.",
+      "intro3": "C'est gratuit dans ton navigateur : <site>a-dark-cave.com</site>. Pour soutenir le jeu, il y a des achats entièrement optionnels. Il y a une <demo>démo Steam</demo> si tu préfères jouer comme ça. La version Steam complète est prévue pour le 27 octobre 2026.",
+      "howHeading": "Comment on joue",
+      "how1": "Tu commences avec rien. Tu débloques progressivement des objets, des bâtiments, des compétences, des métiers, des membres de la compagnie, et bien plus. Une histoire se déploie, riche en lore, sur le passé d'une civilisation qui a vécu avant. Tu en apprends davantage à mesure que tu descends dans la grotte. Mais le danger grandit aussi.",
+      "how2": "Le gameplay est actif. Tu prends des décisions qui influencent le jeu. Il y a aussi un mode idle pour que le jeu avance pendant que tu es absent. Le jeu a une fin, ou peut-être plus d'une.",
+      "likedHeading": "Si tu aimais les anciens jeux incrementals",
+      "liked1": "Les gens arrivent souvent ici via A Dark Room, Kittens Game, Universal Paperclips, Candy Box, et des jeux comme ceux-là. Tu retrouveras certaines mécaniques de ces jeux dans A Dark Cave. A Dark Cave est minimaliste dans ses graphismes, mais j'ai fait les animations à la main, ajouté beaucoup de sons, et l'ai fait marcher sur ordinateur et mobile pour qu'il corresponde à notre époque.",
+      "whoHeading": "Pour qui c'est",
+      "who1": "C'est pour les gens qui aiment les jeux qui commencent simple et deviennent plus compliqués exprès. Pas parce qu'un tutoriel déverse vingt systèmes dès la première minute, mais parce que tu as mérité le suivant.",
+      "who2": "Si tu veux des graphismes tape-à-l'œil, tu n'es pas sur le bon onglet. La plus grande partie du jeu est du texte, avec quelques animations (espérons-le) gratifiantes entre les deux. J'ai passé beaucoup de temps à écrire une histoire intéressante, profondément liée à notre histoire et à notre avenir.",
+      "platformsHeading": "Plateformes",
+      "platforms1": "Joue dans un navigateur sur ordinateur ou mobile. Il n'y a pas d'application App Store ou Google Play. La progression se sauvegarde sur ton appareil. Tu peux créer un compte si tu veux une sauvegarde cloud.",
+      "platforms2": "<steam>Steam</steam> (Windows) est un jeu payant avec une <demo>démo gratuite</demo>. Le jeu navigateur reste gratuit.",
+      "platforms3": "Le jeu est en anglais, allemand, français, espagnol, italien, portugais (Brésil), chinois simplifié et russe.",
+      "meHeading": "Qui je suis",
+      "me1": "Je suis Julian Bauer. J'ai construit A Dark Cave tout seul. Si quelque chose est cassé, ou si tu veux simplement écrire, écris à <email>support@a-dark-cave.com</email>.",
+      "play": "Jouer",
+      "faq": "FAQ",
       "steam": "Steam",
-      "itch": "itch.io"
+      "reddit": "Reddit"
     }
   }
 }

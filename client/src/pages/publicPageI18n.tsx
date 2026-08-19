@@ -6,14 +6,14 @@ import {
   STEAM_URL,
 } from "@shared/publicPages";
 
-const linkClassName = "underline";
+export const publicPageLinkClassName = "underline";
 
 export const publicPageLinkComponents = {
-  site: <a href={SITE} className={linkClassName} />,
-  steam: <a href={STEAM_URL} className={linkClassName} />,
-  demo: <a href={STEAM_DEMO_URL} className={linkClassName} />,
-  email: <a href="mailto:support@a-dark-cave.com" className={linkClassName} />,
-  reddit: <a href={REDDIT_URL} className={linkClassName} />,
+  site: <a href={SITE} className={publicPageLinkClassName} />,
+  steam: <a href={STEAM_URL} className={publicPageLinkClassName} />,
+  demo: <a href={STEAM_DEMO_URL} className={publicPageLinkClassName} />,
+  email: <a href="mailto:support@a-dark-cave.com" className={publicPageLinkClassName} />,
+  reddit: <a href={REDDIT_URL} className={publicPageLinkClassName} />,
 };
 
 export function PublicPageTrans({ i18nKey }: { i18nKey: string }) {

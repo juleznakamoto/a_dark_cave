@@ -57,13 +57,27 @@
       }
     },
     "about": {
-      "p1": "A Dark Cave 是一款文字增量生存与定居游戏。你在洞穴入口醒来，点燃篝火，收集能找到的东西，在门槛处建起村庄，然后再走下去。",
-      "p2": "在浏览器免费游玩：<site>https://a-dark-cave.com</site>。<demo>Steam 免费试玩</demo>现已推出。完整 Steam 版计划于 2026 年 10 月 27 日发行。",
-      "p3": "它写给喜欢 A Dark Room、Kittens Game、Candy Box 这类极简增量游戏的人。它不是点击游戏，也不是第二屏幕挂机游戏。",
-      "support": "支持：support@a-dark-cave.com",
-      "reddit": "Reddit",
+      "intro1": "我做这款游戏，是因为很多年前我玩过 A Dark Room，它让我想有一天做出自己的游戏。那一天到了。",
+      "intro2": "你在黑暗洞穴的入口醒来。没有记忆。没有财物。你生起一堆火，然后捡些木头，做一支火把，建起第一座庇护所。陌生人到来。聚落长大。你开始探索洞穴深处。你的文明的过去。你的过去。这就是 A Dark Cave：一款关于生存、建造，以及弄清下面到底有什么、也许还有人类将走向何方的文字增量游戏。",
+      "intro3": "浏览器里免费玩：<site>a-dark-cave.com</site>。若想支持游戏，有完全可选的购买项。如果你更想那样玩，也有 <demo>Steam 试玩</demo>。完整 Steam 版计划于 2026 年 10 月 27 日发行。",
+      "howHeading": "怎么玩",
+      "how1": "你从一无所有开始。逐渐解锁物品、建筑、技能、职业、同伴，以及更多。故事展开，充满设定，讲的是此前一个文明的过去。你走得越深，知道得越多。但危险也在增长。",
+      "how2": "玩法是主动的。你做的决定会影响游戏。也有挂机模式，让你不在时游戏仍能推进。游戏有结局，也许不止一个。",
+      "likedHeading": "如果你喜欢早期增量游戏",
+      "liked1": "人们通常是从 A Dark Room、Kittens Game、Universal Paperclips、Candy Box 这类游戏找到这里的。这些游戏的部分机制，你也会在 A Dark Cave 里见到。A Dark Cave 画面极简，但我手做了动画，加了很多音效，并让它在桌面和手机上都能玩，好适应现在的玩法。",
+      "whoHeading": "写给谁",
+      "who1": "写给喜欢游戏从简单开始、再有意变复杂的人。不是教程在第一分钟塞给你二十套系统，而是因为你挣到了下一套。",
+      "who2": "如果你要炫目画面，这个标签页不对。游戏大部分是文字，中间夹着一些（希望）值得一看的动画。我花了很多时间写一个有意思的故事，它和我们的故事与未来深深相连。",
+      "platformsHeading": "平台",
+      "platforms1": "在桌面或手机浏览器游玩。没有 App Store 或 Google Play 应用。进度保存在你的设备上。如果想要云存档，可以注册账号。",
+      "platforms2": "<steam>Steam</steam>（Windows）是付费游戏，带 <demo>免费试玩</demo>。浏览器游戏保持免费。",
+      "platforms3": "游戏支持英语、德语、法语、西班牙语、意大利语、葡萄牙语（巴西）、简体中文和俄语。",
+      "meHeading": "我是谁",
+      "me1": "我是 Julian Bauer。A Dark Cave 是我一个人做的。如果有东西坏了，或你只是想联系，写信到 <email>support@a-dark-cave.com</email>。",
+      "play": "开始玩",
+      "faq": "FAQ",
       "steam": "Steam",
-      "itch": "itch.io"
+      "reddit": "Reddit"
     }
   }
 }

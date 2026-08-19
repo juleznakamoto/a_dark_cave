@@ -127,18 +127,67 @@ for (const item of FAQ_ITEMS) {
 
 export const ABOUT_HEADING = "About A Dark Cave";
 
-export const ABOUT_PARAGRAPHS_HTML = [
-  "A Dark Cave is a text-based incremental survival and settlement game. You wake in the entrance of a cave, light a fire, gather what you can, build a village at the threshold, and go back down.",
-  `Play for free in your browser at <a href="${SITE}">https://a-dark-cave.com</a>. <a href="${STEAM_DEMO_URL}">A free Steam demo</a> is available now. The full Steam release is planned for 27 October 2026.`,
-  "It is built for people who like minimalist incrementals such as A Dark Room, Kittens Game, and Candy Box. It is not a clicker and not a second-screen idle game.",
+export const ABOUT_NAV_LINKS = [
+  { id: "play", href: SITE, label: "Play" },
+  { id: "faq", href: "/faq", label: "FAQ" },
+  { id: "steam", href: STEAM_URL, label: "Steam" },
+  { id: "reddit", href: REDDIT_URL, label: "Reddit" },
 ] as const;
 
-export const ABOUT_LINKS: { label: string; href: string }[] = [
-  { label: "Support: support@a-dark-cave.com", href: "mailto:support@a-dark-cave.com" },
-  { label: "Reddit", href: REDDIT_URL },
-  { label: "Steam", href: STEAM_URL },
-  { label: "itch.io", href: ITCH_URL },
-];
+export type AboutNavLinkId = (typeof ABOUT_NAV_LINKS)[number]["id"];
+
+const aboutSiteLink = `<a href="${SITE}">a-dark-cave.com</a>`;
+const aboutDemoLink = (label: string) =>
+  `<a href="${STEAM_DEMO_URL}">${escapeHtml(label)}</a>`;
+const aboutSteamLink = `<a href="${STEAM_URL}">Steam</a>`;
+const aboutEmailLink = `<a href="mailto:support@a-dark-cave.com">support@a-dark-cave.com</a>`;
+
+export const ABOUT_SECTIONS: {
+  heading?: string;
+  paragraphsHtml: readonly string[];
+}[] = [
+    {
+      paragraphsHtml: [
+        "I made this game because many years ago I played A Dark Room, which inspired me to create my own game one day. That day has come.",
+        "You wake up at the entrance of a dark cave. No memory. No possessions. You make a fire, then gather some wood, craft a torch, build your first shelter. Strangers arrive. The settlement grows. You start to explore what is deep in the cave. The past of your civilization. Your past. That is A Dark Cave: a text incremental about surviving, building, and finding out what is actually down there, and maybe where we are heading as humanity.",
+        `It is free in your browser: ${aboutSiteLink}. To support the game, there are fully optional purchases. There is a ${aboutDemoLink("Steam demo")} if you would rather play it that way. The full Steam version is planned for 27 October 2026.`,
+      ],
+    },
+    {
+      heading: "How it plays",
+      paragraphsHtml: [
+        "You start with nothing. You gradually unlock items, buildings, skills, jobs, fellowship members, and much more. A story unfolds, rich in lore, about the past of a civilization that lived before. You learn more the deeper you go into the cave. But danger also grows.",
+        "The gameplay is active. You make decisions that influence the game. There is also an idle mode so the game can progress while you are away. The game has an ending, or maybe more than one.",
+      ],
+    },
+    {
+      heading: "If you liked older incremental games",
+      paragraphsHtml: [
+        "People usually find this from A Dark Room, Kittens Game, Universal Paperclips, Candy Box, and games like them. You will find some of the mechanics of these games in A Dark Cave as well. A Dark Cave is minimalistic in its graphics, but I handcrafted animations, added lots of sounds, and made it work on desktop and mobile so it fits the way we play now.",
+      ],
+    },
+    {
+      heading: "Who it is for",
+      paragraphsHtml: [
+        "It is for people who like games that start simple and get more complicated on purpose. Not because a tutorial dumped twenty systems on minute one, but because you earned the next one.",
+        "If you want flashy graphics, this is the wrong tab. Most of the game is text, with some (hopefully) rewarding animations in between. I spent a lot of time crafting an interesting story that is deeply connected with our story and future.",
+      ],
+    },
+    {
+      heading: "Platforms",
+      paragraphsHtml: [
+        "Play on a desktop or mobile browser. There is no App Store or Google Play app. Progress saves on your device. You can make an account if you want a cloud save.",
+        `${aboutSteamLink} (Windows) is a paid game with a ${aboutDemoLink("free demo")}. The browser game stays free.`,
+        "The game is in English, German, French, Spanish, Italian, Portuguese (Brazil), Simplified Chinese, and Russian.",
+      ],
+    },
+    {
+      heading: "Who I am",
+      paragraphsHtml: [
+        `I am Julian Bauer. I built A Dark Cave by myself. If something is broken, or you just want to reach out, write to ${aboutEmailLink}.`,
+      ],
+    },
+  ];
 
 const STATIC_PAGE_STYLE = [
   "background:#111",
@@ -159,12 +208,18 @@ function faqBodyInnerHtml(): string {
 }
 
 function aboutBodyInnerHtml(): string {
-  const paras = ABOUT_PARAGRAPHS_HTML.map((html) => `<p>${html}</p>`).join("");
-  const links = ABOUT_LINKS.map(
-    (link) =>
-      `<li><a href="${escapeHtml(link.href)}">${escapeHtml(link.label)}</a></li>`,
-  ).join("");
-  return `<h1>${escapeHtml(ABOUT_HEADING)}</h1>${paras}<ul>${links}</ul>`;
+  const sections = ABOUT_SECTIONS.map((section) => {
+    const heading = section.heading
+      ? `<h2>${escapeHtml(section.heading)}</h2>`
+      : "";
+    const paras = section.paragraphsHtml.map((html) => `<p>${html}</p>`).join("");
+    return `${heading}${paras}`;
+  }).join("");
+  const nav = ABOUT_NAV_LINKS.map((link, index) => {
+    const sep = index > 0 ? " · " : "";
+    return `${sep}<a href="${escapeHtml(link.href)}">${escapeHtml(link.label)}</a>`;
+  }).join("");
+  return `<h1>${escapeHtml(ABOUT_HEADING)}</h1>${sections}<p>${nav}</p>`;
 }
 
 export function getPublicPageBodyHtml(
@@ -207,6 +262,10 @@ export function getPublicPageExtraJsonLd(path: string): string | null {
           name: "A Dark Cave",
           url: SITE,
           email: "support@a-dark-cave.com",
+          founder: {
+            "@type": "Person",
+            name: "Julian Bauer",
+          },
         },
       ],
     };

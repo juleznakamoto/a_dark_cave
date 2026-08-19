@@ -270,12 +270,15 @@ describe("publicSeo", () => {
       /<main id="seo-fallback"[^>]*style="[^"]*display:\s*none/,
     );
 
-    expect(about).toContain("<title>About - A Dark Cave</title>");
+    expect(about).toContain("<title>About A Dark Cave</title>");
     expect(about).toContain(
       '<link rel="canonical" href="https://a-dark-cave.com/about"',
     );
-    expect(about).toContain("text-based incremental survival and settlement game");
-    expect(about).not.toContain("Julian Bauer");
+    expect(about).toContain(
+      "I made A Dark Cave, a text incremental: make a fire, build a village, explore a dark cave",
+    );
+    expect(about).toContain("How it plays");
+    expect(about).toContain("Julian Bauer");
     expect(about).toContain('"@type":"Organization"');
     expect(about).not.toContain("adc:jsonld-home");
   });

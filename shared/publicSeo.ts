@@ -91,12 +91,12 @@ const ROUTE_SEO: Record<string, PublicRouteSeo> = {
     pageName: "FAQ",
   },
   "/about": {
-    title: "About - A Dark Cave",
+    title: "About A Dark Cave",
     description:
-      "A Dark Cave is a free text-based incremental survival and settlement game. Play in your browser. Steam demo available.",
+      "I made A Dark Cave, a text incremental: make a fire, build a village, explore a dark cave. Play in the browser. Steam demo is live.",
     includeHomeJsonLd: false,
     robots: "index, follow",
-    pageName: "About",
+    pageName: "About A Dark Cave",
   },
   "/terms": {
     title: "Terms of Service - A Dark Cave",
