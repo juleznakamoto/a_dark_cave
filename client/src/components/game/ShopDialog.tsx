@@ -149,6 +149,20 @@ function shopCardStrikethroughCents(
   return shopCardCatalogSaleListCents(item);
 }
 
+/** Dialog chrome plus any Highlights rows still inside the scroll viewport. */
+function measureShopDialogHeight(el: HTMLElement): number {
+  const dialogH = el.getBoundingClientRect().height;
+  const activePane = el.querySelector<HTMLElement>('[data-state="active"]');
+  const viewport = activePane?.querySelector<HTMLElement>(
+    "[data-radix-scroll-area-viewport]",
+  );
+  if (!viewport) return dialogH;
+  const content = viewport.firstElementChild as HTMLElement | null;
+  const contentH = content?.scrollHeight ?? viewport.scrollHeight;
+  const clipped = contentH - viewport.clientHeight;
+  return clipped > 1 ? dialogH + clipped : dialogH;
+}
+
 /** Gold tab listings: paid resource packs with gold (excludes free gift + legacy packs). */
 function shopItemMatchesGoldFilterTab(item: ShopItem): boolean {
   return (
@@ -909,7 +923,7 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
       if (activeTab !== "shop" || selectedFilter !== null) return;
       const el = shopDialogContentRef.current;
       if (!el) return;
-      const next = Math.round(el.getBoundingClientRect().height);
+      const next = Math.round(measureShopDialogHeight(el));
       if (next > 0) {
         setLockedShopHeight(Math.min(next, window.innerHeight * 0.82));
       }
@@ -1920,7 +1934,11 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
                 onValueChange={(value) =>
                   setActiveTab(value as "shop" | "purchases")
                 }
-                className="flex h-full min-h-0 w-full flex-1 flex-col overflow-hidden"
+                className={cn(
+                  "flex min-h-0 w-full flex-col",
+                  lockedShopHeight != null &&
+                  "h-full flex-1 overflow-hidden",
+                )}
               >
                 {/* Header stays outside ScrollArea: DialogContent uses CSS transform for centering,
                     which breaks position:sticky for descendants; pin tabs/copy via layout instead. */}
@@ -1978,7 +1996,12 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
 
                 <TabsContent
                   value="shop"
-                  className="mt-0 flex h-0 min-h-0 flex-1 flex-col overflow-hidden outline-none ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 data-[state=inactive]:hidden"
+                  className={cn(
+                    "mt-0 flex flex-col outline-none ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 data-[state=inactive]:hidden",
+                    lockedShopHeight != null
+                      ? "h-0 min-h-0 flex-1 overflow-hidden"
+                      : "min-h-0",
+                  )}
                 >
                   {/* Pinned via flex split below TabsList + intro (sticky breaks under dialog transforms). */}
                   {(import.meta.env.DEV ||
@@ -2076,7 +2099,11 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
                     </Button>
                   </div>
                   <ScrollAreaWithIndicator
-                    className="h-0 min-h-0 flex-1"
+                    className={
+                      lockedShopHeight != null
+                        ? "h-0 min-h-0 flex-1"
+                        : "min-h-0"
+                    }
                     scrollAreaId="shop-dialog-for-sale"
                     viewportClassName="!pl-0 !pr-0"
                   >
@@ -2546,14 +2573,23 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
 
                 <TabsContent
                   value="purchases"
-                  className="mt-0 flex h-0 min-h-0 flex-1 flex-col overflow-hidden outline-none ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 data-[state=inactive]:hidden"
+                  className={cn(
+                    "mt-0 flex flex-col outline-none ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 data-[state=inactive]:hidden",
+                    lockedShopHeight != null
+                      ? "h-0 min-h-0 flex-1 overflow-hidden"
+                      : "min-h-0",
+                  )}
                 >
                   {!(
                     purchasedItems.length === 0 &&
                     Object.keys(gameState.feastActivations || {}).length === 0
                   ) ? (
                     <ScrollAreaWithIndicator
-                      className="h-0 min-h-0 flex-1"
+                      className={
+                        lockedShopHeight != null
+                          ? "h-0 min-h-0 flex-1"
+                          : "min-h-0"
+                      }
                       scrollAreaId="shop-dialog-purchases"
                       viewportClassName="!pl-0 !pr-0"
                     >
