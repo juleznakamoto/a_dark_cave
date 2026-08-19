@@ -38,8 +38,8 @@ type FooterNetworkMenuProps = {
 
 export default function FooterNetworkMenu({
   triggerClassName,
-  labelClassName = "hidden sm:inline opacity-80 transition-[opacity,color] group-hover:opacity-100",
-  iconClassName = "opacity-80 transition-[opacity,color] group-hover:opacity-100",
+  labelClassName = "hidden sm:inline text-neutral-300 opacity-80 transition-opacity group-hover:opacity-100 group-hover:!text-neutral-300",
+  iconClassName = "text-neutral-300 opacity-80 transition-opacity group-hover:opacity-100 group-hover:!text-neutral-300",
   iconSizeClassName = "game-tab-icon",
   side = "top",
   align = "end",
@@ -81,7 +81,7 @@ export default function FooterNetworkMenu({
             data-testid="button-footer-social"
             aria-label={socialLabel}
             className={cn(
-              `group shrink-0 px-1 py-1 text-xs text-neutral-300 hover flex items-center gap-1 ${GAME_CHROME_NO_BG_HOVER}`,
+              `group shrink-0 px-1 py-1 text-xs text-neutral-300 hover:!text-neutral-300 flex items-center gap-1 ${GAME_CHROME_NO_BG_HOVER}`,
               triggerClassName,
             )}
           >

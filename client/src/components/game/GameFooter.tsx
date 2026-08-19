@@ -307,7 +307,10 @@ export default function GameFooter() {
                 {feedbackButton}
                 {progressButton}
                 {!hideFooterSteamAndSocial && (
-                  <FooterNetworkMenu labelClassName={FOOTER_SOCIAL_LABEL} />
+                  <FooterNetworkMenu
+                    iconClassName={FOOTER_CONTROL_ICON}
+                    labelClassName={FOOTER_SOCIAL_LABEL}
+                  />
                 )}
               </>
             )}
@@ -378,7 +381,10 @@ export default function GameFooter() {
                     >
                       {socialLink}
                     </HoverCalloutTooltip>
-                    <FooterNetworkMenu labelClassName={FOOTER_SOCIAL_LABEL} />
+                    <FooterNetworkMenu
+                      iconClassName={FOOTER_CONTROL_ICON}
+                      labelClassName={FOOTER_SOCIAL_LABEL}
+                    />
                   </div>
                 );
               }
