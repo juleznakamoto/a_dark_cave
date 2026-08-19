@@ -8,6 +8,7 @@ import {
 } from "@/components/ui/tooltip";
 import { DropdownMenuItem } from "@/components/ui/dropdown-menu";
 import { cn } from "@/lib/utils";
+import { Z_INDEX } from "@/lib/z-index";
 
 type EventHandler<E> = (e: E) => void;
 
@@ -152,6 +153,7 @@ export function DropdownMenuItemWithTooltip({
           side={tooltipSide}
           avoidCollisions={tooltipAvoidCollisions}
           className={tooltipContentClassName}
+          style={{ zIndex: Z_INDEX.dropdownItemTooltip }}
         >
           {tooltip}
         </TooltipContent>

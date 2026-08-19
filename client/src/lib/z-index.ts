@@ -11,8 +11,9 @@
  * - floatingPromo: Awake-mode floating invite CTA (above action panels; spatially above footer)
  * - particles: Body-portaled effects (feed fire, explosions, dialog-adjacent bursts)
  * - tooltip: Tooltips, must appear above dialogs
+ * - dropdown: Open menus (footer social) — above hover callouts
+ * - dropdownItemTooltip: Tooltips on dropdown rows — above the open menu
  * - topLayer: Full-screen overlays (end screen, start screen CTA)
- * - dropdown: Open menus (footer social) — above tooltips
  */
 export const Z_INDEX = {
   /** Sleep mist / pause overlay — covers main content only; action buttons must drop below this while active. */
@@ -32,5 +33,7 @@ export const Z_INDEX = {
   tooltip: 10000,
   /** Footer social menu — above the Steam wishlist callout. */
   dropdown: 10001,
+  /** Tooltip on a dropdown row — must paint above the open menu. */
+  dropdownItemTooltip: 10002,
   topLayer: 10000,
 } as const;
