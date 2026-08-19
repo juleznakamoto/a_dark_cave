@@ -41,7 +41,7 @@ import { useCoinHoverParticles } from "@/components/ui/coin-hover-particles";
 import { FOOTER_TRADER_PARTICLE_CONFIG } from "@/components/ui/bubbly-button.particles";
 
 const FOOTER_CONTROL_BTN_BASE =
-  `group shrink-0 px-1 py-1 text-xs text-neutral-300 hover ${GAME_CHROME_NO_BG_HOVER}`;
+  `group shrink-0 px-1 py-1 text-xs font-medium text-neutral-300 hover ${GAME_CHROME_NO_BG_HOVER}`;
 /** Default chrome: opacity only. Color accents are reserved for trader / more games / donate. */
 const FOOTER_CONTROL_BTN = FOOTER_CONTROL_BTN_BASE;
 const FOOTER_CONTROL_BTN_FADE =
