@@ -1959,7 +1959,7 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
                     </TabsTrigger>
                   </TabsList>
                   {activeTab === "shop" && (
-                    <div className="mt-3 flex items-center gap-1.5 text-sm font-normal leading-none text-foreground">
+                    <div className="mt-3 flex items-center gap-1.5 text-xs font-normal leading-none text-foreground sm:text-sm">
                       <span
                         className={`inline-flex ${SHOP_INFO_HIT_SIZE_CLASS} shrink-0 items-center justify-center text-muted-foreground`}
                       >
