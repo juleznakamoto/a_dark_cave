@@ -5,7 +5,7 @@
     "owned": "Im Besitz",
     "notEnoughGold": "Du hast nicht genug Gold.",
     "forSale": "Kaufen",
-    "forSalePlaythroughNote": "Alle Käufe können in jedem Durchlauf erneut verwendet werden.",
+    "forSalePlaythroughNote": "Käufe können in jedem Durchlauf erneut verwendet werden.",
     "purchases": "Käufe",
     "srDescription": "Shop für Gold, Artefakte, Boosts und Bundles",
     "betaDiscountTitle": "Beta-Rabatte von bis zu {{percent}} % sind derzeit aktiv.",

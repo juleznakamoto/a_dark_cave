@@ -5,7 +5,7 @@
     "owned": "Adquirido",
     "notEnoughGold": "Você não tem ouro suficiente.",
     "forSale": "À Venda",
-    "forSalePlaythroughNote": "Todas as compras podem ser usadas novamente em cada partida.",
+    "forSalePlaythroughNote": "As compras podem ser usadas novamente em cada partida.",
     "purchases": "Compras",
     "srDescription": "Loja de ouro, artefatos, impulsos e pacotes",
     "betaDiscountTitle": "Descontos beta de até {{percent}} estão ativos no momento.",
