@@ -46,10 +46,16 @@ function LogPanel() {
     [log, i18n.language],
   );
 
-  // Auto-scroll to top when new entries are added
+  // Auto-scroll the log viewport to the newest entry (top). Do not use
+  // scrollIntoView: in an iframe (CrazyGames) it also scrolls the host page.
   useEffect(() => {
     if (log.length > prevLogLengthRef.current && topRef.current) {
-      topRef.current.scrollIntoView({ behavior: "smooth" });
+      const viewport = topRef.current.closest(
+        "[data-radix-scroll-area-viewport]",
+      );
+      if (viewport instanceof HTMLElement) {
+        viewport.scrollTo({ top: 0, behavior: "smooth" });
+      }
     }
     prevLogLengthRef.current = log.length;
   }, [log.length]);
