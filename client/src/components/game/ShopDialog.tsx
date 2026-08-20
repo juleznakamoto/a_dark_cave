@@ -154,12 +154,11 @@ function shopCardStrikethroughCents(
   return shopCardCatalogSaleListCents(item);
 }
 
-/** Extra px so the Highlights second row fits inside the one locked height. */
-const SHOP_HIGHLIGHTS_HEIGHT_SLACK_PX = 40;
-
 /**
  * One-shot Highlights height, or `null` if the grid is not laid out yet.
  * Uses offsetHeight so the open zoom animation does not shrink the lock.
+ * Only adds clipped scroll when the dialog is already at the 82vh cap;
+ * otherwise the auto-sized dialog already includes both Highlights rows.
  */
 function measureShopDialogHeight(el: HTMLElement): number | null {
   // Must target the tab panel. `[data-state=active]` alone matches the trigger first.
@@ -178,8 +177,12 @@ function measureShopDialogHeight(el: HTMLElement): number | null {
 
   const dialogH = el.offsetHeight;
   if (dialogH <= 0) return null;
-  const clipped = Math.max(0, content.scrollHeight - viewport.clientHeight);
-  return dialogH + clipped + SHOP_HIGHLIGHTS_HEIGHT_SLACK_PX;
+  const cap = Math.round(window.innerHeight * 0.82);
+  const clipped =
+    dialogH >= cap - 1
+      ? Math.max(0, content.scrollHeight - viewport.clientHeight)
+      : 0;
+  return dialogH + clipped;
 }
 
 /** Gold tab listings: paid resource packs with gold (excludes free gift + legacy packs). */
@@ -999,23 +1002,13 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
         el &&
         (selectedFilterRef.current !== null || activeTabRef.current !== "shop")
       ) {
-        setLockedShopHeight(
-          Math.min(
-            el.offsetHeight + SHOP_HIGHLIGHTS_HEIGHT_SLACK_PX,
-            cap(),
-          ),
-        );
+        setLockedShopHeight(Math.min(el.offsetHeight, cap()));
         return;
       }
       frames += 1;
       if (frames > 90) {
         if (el && el.offsetHeight > 0) {
-          setLockedShopHeight(
-            Math.min(
-              el.offsetHeight + SHOP_HIGHLIGHTS_HEIGHT_SLACK_PX,
-              cap(),
-            ),
-          );
+          setLockedShopHeight(Math.min(el.offsetHeight, cap()));
         }
         return;
       }
