@@ -21,7 +21,8 @@ import ResourceChangeNotification from "./ResourceChangeNotification";
 import { SidePanelSectionIcon } from "./SidePanelSectionIcon";
 import { useGameStore } from "@/game/state";
 import { useGameStoreWithoutTickClock } from "@/game/useGameStoreWithoutTickClock";
-import { useGlobalTooltip } from "@/hooks/useGlobalTooltip";
+import { useOpenGlobalTooltipId } from "@/hooks/useGlobalTooltip";
+import { useIsMobile } from "@/hooks/use-mobile";
 import { useNewItemPulseTooltips } from "@/hooks/useNewItemPulseTooltip";
 import { cn } from "@/lib/utils";
 import { getResourceLimit, isResourceLimited } from "@/game/resourceLimits";
@@ -559,11 +560,12 @@ export default function SidePanelSection({
       : new Set(
         Array.isArray(highlightedResourcesRaw) ? highlightedResourcesRaw : [],
       );
-  const globalTooltip = useGlobalTooltip();
+  const isMobile = useIsMobile();
+  const openTooltipId = useOpenGlobalTooltipId();
 
   const sidePanelTooltipTriggerClass = cn(
     "min-w-0 flex-1 break-words",
-    globalTooltip.isMobile && "cursor-pointer",
+    isMobile && "cursor-pointer",
   );
 
   const handleItemTooltipEnter = (itemId: string) => {
@@ -574,7 +576,7 @@ export default function SidePanelSection({
     }
     setSidePanelActiveTooltipHoverId(scopedKey);
     // Desktop-only: 500ms hover dismisses new-item pulse (old handleTooltipHover guard).
-    if (!globalTooltip.isMobile) {
+    if (!isMobile) {
       scheduleSidePanelPulseDismiss(sectionId, itemId);
     }
   };
@@ -593,7 +595,7 @@ export default function SidePanelSection({
     if (activeTooltipHoverId !== null) {
       return activeTooltipHoverId === scopedKey;
     }
-    return globalTooltip.openTooltipId === itemId;
+    return openTooltipId === itemId;
   };
 
   const visibleItemIdsRef = useRef<string[]>([]);
@@ -613,12 +615,12 @@ export default function SidePanelSection({
   // Mark as hovered when tooltip opens via hold (stops pulse animation)
   useEffect(() => {
     if (
-      globalTooltip.openTooltipId &&
-      !hoveredTooltips[globalTooltip.openTooltipId]
+      openTooltipId &&
+      !hoveredTooltips[openTooltipId]
     ) {
-      setHoveredTooltip(globalTooltip.openTooltipId, true);
+      setHoveredTooltip(openTooltipId, true);
     }
-  }, [globalTooltip.openTooltipId, hoveredTooltips, setHoveredTooltip]);
+  }, [openTooltipId, hoveredTooltips, setHoveredTooltip]);
 
   /** Last seen effect-line keys per stat; when new lines unlock, pulse until hover. */
   const prevStatEffectSigsRef = useRef<Partial<Record<TooltipStatKey, string>>>(
@@ -1148,7 +1150,7 @@ export default function SidePanelSection({
             isResourcesSection
               ? "min-w-0 w-fit max-w-full"
               : sidePanelTooltipTriggerClass,
-            globalTooltip.isMobile && "cursor-pointer",
+            isMobile && "cursor-pointer",
           )}
         >
           {row}
@@ -1204,7 +1206,7 @@ export default function SidePanelSection({
               onMouseLeave={() => handleItemTooltipLeave(item.id)}
               className={cn(
                 "inline-flex min-w-0 shrink-0",
-                globalTooltip.isMobile && "cursor-pointer",
+                isMobile && "cursor-pointer",
               )}
             >
               {labelContent}
@@ -1247,7 +1249,7 @@ export default function SidePanelSection({
               onMouseLeave={() => handleItemTooltipLeave(item.id)}
               className={cn(
                 "inline-flex min-w-0 shrink-0",
-                globalTooltip.isMobile && "cursor-pointer",
+                isMobile && "cursor-pointer",
               )}
             >
               {labelContent}
@@ -1323,7 +1325,7 @@ export default function SidePanelSection({
             onMouseLeave={() => handleItemTooltipLeave(item.id)}
             className={cn(
               sidePanelTooltipTriggerClass,
-              globalTooltip.isMobile && "cursor-pointer",
+              isMobile && "cursor-pointer",
             )}
           >
             {labelContent}

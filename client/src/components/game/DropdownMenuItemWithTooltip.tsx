@@ -1,5 +1,9 @@
 import React from "react";
-import { useGlobalTooltip } from "@/hooks/useGlobalTooltip";
+import {
+  useGlobalTooltip,
+  useGlobalTooltipOpen,
+  useInsideGameTooltipProvider,
+} from "@/hooks/useGlobalTooltip";
 import {
   Tooltip,
   TooltipContent,
@@ -69,6 +73,8 @@ export function DropdownMenuItemWithTooltip({
   ...props
 }: DropdownMenuItemWithTooltipProps) {
   const globalTooltip = useGlobalTooltip();
+  const isLongPressTooltipOpen = useGlobalTooltipOpen(tooltipId);
+  const insideGameProvider = useInsideGameTooltipProvider();
 
   const wrappedAction = React.useCallback(() => {
     onTooltipAction?.();
@@ -84,80 +90,82 @@ export function DropdownMenuItemWithTooltip({
     [disabled],
   );
 
-  return (
-    <TooltipProvider>
-      <Tooltip
-        open={globalTooltip.isTooltipOpen(tooltipId)}
-        delayDuration={300}
+  const tooltipTree = (
+    <Tooltip
+      open={isLongPressTooltipOpen ? true : undefined}
+      delayDuration={300}
+    >
+      <TooltipTrigger asChild>
+        <DropdownMenuItem
+          data-tooltip-trigger-id={tooltipId}
+          style={{ touchAction: "manipulation" }}
+          aria-disabled={disabled || undefined}
+          className={cn(
+            disabled && "opacity-50 cursor-default",
+            className,
+          )}
+          onSelect={(e) => {
+            if (disabled) {
+              e.preventDefault();
+              return;
+            }
+            onSelect?.(e);
+          }}
+          onMouseDown={mergeHandlers(
+            (e) =>
+              globalTooltip.handleMouseDown(tooltipId, disabled, false, e),
+            onMouseDown
+          )}
+          onMouseUp={mergeHandlers(
+            (e) =>
+              globalTooltip.handleMouseUp(
+                tooltipId,
+                disabled,
+                wrappedAction,
+                e
+              ),
+            onMouseUp
+          )}
+          onTouchStart={mergeHandlers(
+            (e) =>
+              globalTooltip.handleTouchStart(tooltipId, disabled, false, e),
+            onTouchStart
+          )}
+          onTouchEnd={mergeHandlers(
+            (e) =>
+              globalTooltip.handleTouchEnd(
+                tooltipId,
+                disabled,
+                wrappedAction,
+                e
+              ),
+            onTouchEnd
+          )}
+          onClick={mergeHandlers(
+            (e) => {
+              if (blockWhenDisabled(e)) return;
+              globalTooltip.handleWrapperClick(tooltipId, disabled, false, e);
+            },
+            (e) => {
+              if (disabled) return;
+              onClick?.(e);
+            },
+          )}
+          {...props}
+        />
+      </TooltipTrigger>
+      <TooltipContent
+        side={tooltipSide}
+        avoidCollisions={tooltipAvoidCollisions}
+        className={tooltipContentClassName}
+        style={{ zIndex: Z_INDEX.dropdownItemTooltip }}
       >
-        <TooltipTrigger asChild>
-          <DropdownMenuItem
-            data-tooltip-trigger-id={tooltipId}
-            style={{ touchAction: "manipulation" }}
-            aria-disabled={disabled || undefined}
-            className={cn(
-              disabled && "opacity-50 cursor-default",
-              className,
-            )}
-            onSelect={(e) => {
-              if (disabled) {
-                e.preventDefault();
-                return;
-              }
-              onSelect?.(e);
-            }}
-            onMouseDown={mergeHandlers(
-              (e) =>
-                globalTooltip.handleMouseDown(tooltipId, disabled, false, e),
-              onMouseDown
-            )}
-            onMouseUp={mergeHandlers(
-              (e) =>
-                globalTooltip.handleMouseUp(
-                  tooltipId,
-                  disabled,
-                  wrappedAction,
-                  e
-                ),
-              onMouseUp
-            )}
-            onTouchStart={mergeHandlers(
-              (e) =>
-                globalTooltip.handleTouchStart(tooltipId, disabled, false, e),
-              onTouchStart
-            )}
-            onTouchEnd={mergeHandlers(
-              (e) =>
-                globalTooltip.handleTouchEnd(
-                  tooltipId,
-                  disabled,
-                  wrappedAction,
-                  e
-                ),
-              onTouchEnd
-            )}
-            onClick={mergeHandlers(
-              (e) => {
-                if (blockWhenDisabled(e)) return;
-                globalTooltip.handleWrapperClick(tooltipId, disabled, false, e);
-              },
-              (e) => {
-                if (disabled) return;
-                onClick?.(e);
-              },
-            )}
-            {...props}
-          />
-        </TooltipTrigger>
-        <TooltipContent
-          side={tooltipSide}
-          avoidCollisions={tooltipAvoidCollisions}
-          className={tooltipContentClassName}
-          style={{ zIndex: Z_INDEX.dropdownItemTooltip }}
-        >
-          {tooltip}
-        </TooltipContent>
-      </Tooltip>
-    </TooltipProvider>
+        {tooltip}
+      </TooltipContent>
+    </Tooltip>
+  );
+
+  return insideGameProvider ? tooltipTree : (
+    <TooltipProvider>{tooltipTree}</TooltipProvider>
   );
 }

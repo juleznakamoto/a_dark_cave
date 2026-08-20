@@ -19,15 +19,19 @@ export default function WebOnlyDialogs({
 }: WebOnlyDialogsProps) {
   return (
     <>
-      <ShopDialog
-        isOpen={shopDialogOpen}
-        onClose={() => setShopDialogOpen(false)}
-        onOpen={() => setShopDialogOpen(true)}
-      />
-      <LeaderboardDialog
-        isOpen={leaderboardDialogOpen}
-        onClose={() => setLeaderboardDialogOpen(false)}
-      />
+      {shopDialogOpen && (
+        <ShopDialog
+          isOpen={shopDialogOpen}
+          onClose={() => setShopDialogOpen(false)}
+          onOpen={() => setShopDialogOpen(true)}
+        />
+      )}
+      {leaderboardDialogOpen && (
+        <LeaderboardDialog
+          isOpen={leaderboardDialogOpen}
+          onClose={() => setLeaderboardDialogOpen(false)}
+        />
+      )}
       <InviteFriendsFloatingButton />
     </>
   );

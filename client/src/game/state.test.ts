@@ -1167,3 +1167,84 @@ describe("callMerchant execution", () => {
     expect(state.story.seen.callMerchantUsageCount).toBeUndefined();
   });
 });
+
+describe("no-op store ticks skip subscriber notify", () => {
+  beforeEach(() => {
+    useGameStore.getState().initialize();
+  });
+
+  it("tickInvestmentHall does not notify when there is no Coinhouse", () => {
+    expect(useGameStore.getState().buildings.coinhouse).toBeFalsy();
+    const listener = vi.fn();
+    const unsub = useGameStore.subscribe(listener);
+
+    useGameStore.getState().tickInvestmentHall();
+
+    expect(listener).not.toHaveBeenCalled();
+    unsub();
+  });
+
+  it("tickInvestmentHall does not notify when Coinhouse is idle", () => {
+    useGameStore.setState({
+      buildings: { ...useGameStore.getState().buildings, coinhouse: 1 },
+      playTime: 0,
+      investmentHallState: {
+        ...useGameStore.getState().investmentHallState,
+        active: null,
+        offers: [],
+        nextWavePlayTime: 60_000,
+      },
+    });
+    const listener = vi.fn();
+    const unsub = useGameStore.subscribe(listener);
+
+    useGameStore.getState().tickInvestmentHall();
+
+    expect(listener).not.toHaveBeenCalled();
+    unsub();
+  });
+
+  it("updatePlayTime does not notify or change playTime while paused", () => {
+    const playTimeBefore = useGameStore.getState().playTime;
+    useGameStore.setState({ isPaused: true, isPausedPreviously: false });
+    const listener = vi.fn();
+    const unsub = useGameStore.subscribe(listener);
+
+    useGameStore.getState().updatePlayTime(250);
+
+    expect(listener).not.toHaveBeenCalled();
+    expect(useGameStore.getState().playTime).toBe(playTimeBefore);
+    unsub();
+  });
+
+  it("updatePlayTime does not notify while isPausedPreviously", () => {
+    const playTimeBefore = useGameStore.getState().playTime;
+    useGameStore.setState({ isPaused: false, isPausedPreviously: true });
+    const listener = vi.fn();
+    const unsub = useGameStore.subscribe(listener);
+
+    useGameStore.getState().updatePlayTime(250);
+
+    expect(listener).not.toHaveBeenCalled();
+    expect(useGameStore.getState().playTime).toBe(playTimeBefore);
+    unsub();
+  });
+
+  it("updatePlayTime still increments playTime when unpaused", () => {
+    useGameStore.setState({
+      isPaused: false,
+      isPausedPreviously: false,
+      playTime: 1000,
+      lifetimePlayTimeMs: 1000,
+    });
+    const listener = vi.fn();
+    const unsub = useGameStore.subscribe(listener);
+
+    useGameStore.getState().updatePlayTime(250);
+
+    expect(listener).toHaveBeenCalled();
+    expect(useGameStore.getState().playTime).toBe(1250);
+    expect(useGameStore.getState().lifetimePlayTimeMs).toBe(1250);
+    unsub();
+  });
+});

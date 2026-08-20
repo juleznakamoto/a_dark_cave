@@ -14,16 +14,22 @@ import { useUiTranslation } from "@/i18n/useUiTranslation";
 import { SidePanelSectionIcon } from "@/components/game/panels/SidePanelSectionIcon";
 
 export default function BlessingOfferDialog() {
-  const { t } = useUiTranslation();
   const isOpen = useGameStore((s) => s.blessingOfferDialogOpen);
+  if (!isOpen) return null;
+  return <BlessingOfferDialogOpen />;
+}
+
+function BlessingOfferDialogOpen() {
+  const { t } = useUiTranslation();
   const chooseInsightBlessing = useGameStore((s) => s.chooseInsightBlessing);
-  const gameState = useGameStore() as unknown as GameState;
+  const insight = useGameStore((s) => s.resources.insight ?? 0);
+  const gameState = useGameStore.getState() as unknown as GameState;
 
   const offered = getVisibleInsightBlessingOffers(gameState);
   const cost = getInsightBlessingCost(gameState);
-  const canAfford = (gameState.resources.insight ?? 0) >= cost;
+  const canAfford = insight >= cost;
 
-  if (!isOpen || typeof document === "undefined") {
+  if (typeof document === "undefined") {
     return null;
   }
 

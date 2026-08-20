@@ -1,5 +1,7 @@
 import React, { useState, useEffect, useRef, useMemo } from "react";
 import { useGameStore } from "@/game/state";
+import { useGameStoreWithoutTickClock } from "@/game/useGameStoreWithoutTickClock";
+import type { GameState } from "@shared/schema";
 import { LogEntry } from "@/game/rules/events";
 import { getTotalKnowledge } from "@/game/rules/effectsCalculation";
 import { calculateKnowledgeTimeBonus, isKnowledgeBonusMaxed } from "@/game/rules/effectsStats";
@@ -59,14 +61,20 @@ interface EventDialogProps {
   | null;
 }
 
-export default function EventDialog({
+export default function EventDialog(props: EventDialogProps) {
+  if (!props.isOpen || !props.event) return null;
+  return <EventDialogOpen {...props} event={props.event} />;
+}
+
+function EventDialogOpen({
   isOpen,
   onClose,
   event,
-}: EventDialogProps) {
+}: EventDialogProps & { event: LogEntry }) {
   const { t } = useTranslation("ui");
-  const { applyEventChoice } = useGameStore();
-  const gameState = useGameStore();
+  const applyEventChoice = useGameStore((s) => s.applyEventChoice);
+  const setShopDialogOpen = useGameStore((s) => s.setShopDialogOpen);
+  const gameState = useGameStoreWithoutTickClock() as unknown as GameState;
   const [timeRemaining, setTimeRemaining] = useState<number | null>(null);
   const [totalTime, setTotalTime] = useState<number>(0);
   const startTimeRef = useRef<number>(0);
@@ -237,7 +245,7 @@ export default function EventDialog({
           fallbackExecutedRef.current = true;
           applyEventChoice(choiceId, eventId);
           onClose();
-          gameState.setShopDialogOpen(true, "event");
+          setShopDialogOpen(true, "event");
           return;
         }
 

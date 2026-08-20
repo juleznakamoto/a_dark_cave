@@ -5,7 +5,10 @@ import { describe, it, expect, beforeEach, afterEach, vi } from "vitest";
 import { render, screen, fireEvent, act } from "@testing-library/react";
 import React from "react";
 import {
+  closeAllGlobalTooltips,
   useGlobalTooltip,
+  useGlobalTooltipOpen,
+  setGlobalTooltipIsMobile,
   setGlobalTooltipsSuppressed,
 } from "./useGlobalTooltip";
 
@@ -25,6 +28,7 @@ function TestTooltipButton({
   preferNativeClick?: boolean;
 }) {
   const globalTooltip = useGlobalTooltip();
+  const isOpen = useGlobalTooltipOpen(id);
 
   return (
     <>
@@ -53,7 +57,7 @@ function TestTooltipButton({
         </button>
       </div>
       <div data-testid={`open-${id}`}>
-        {globalTooltip.isTooltipOpen(id) ? "open" : "closed"}
+        {isOpen ? "open" : "closed"}
       </div>
     </>
   );
@@ -62,11 +66,13 @@ function TestTooltipButton({
 describe("useGlobalTooltip - mobile long-press behavior", () => {
   beforeEach(() => {
     vi.useFakeTimers();
+    setGlobalTooltipIsMobile(true);
     setGlobalTooltipsSuppressed(false);
   });
 
   afterEach(() => {
     setGlobalTooltipsSuppressed(false);
+    closeAllGlobalTooltips();
     vi.useRealTimers();
   });
 
@@ -195,11 +201,13 @@ describe("useGlobalTooltip - mobile long-press behavior", () => {
 describe("useGlobalTooltip - modal suppression", () => {
   beforeEach(() => {
     vi.useFakeTimers();
+    setGlobalTooltipIsMobile(true);
     setGlobalTooltipsSuppressed(false);
   });
 
   afterEach(() => {
     setGlobalTooltipsSuppressed(false);
+    closeAllGlobalTooltips();
     vi.useRealTimers();
   });
 
@@ -290,5 +298,64 @@ describe("useGlobalTooltip - modal suppression", () => {
 
     expect(onAction).not.toHaveBeenCalled();
     expect(state.textContent).toBe("closed");
+  });
+});
+
+describe("useGlobalTooltip - per-id subscribe", () => {
+  beforeEach(() => {
+    setGlobalTooltipIsMobile(true);
+    setGlobalTooltipsSuppressed(false);
+  });
+
+  afterEach(() => {
+    closeAllGlobalTooltips();
+    setGlobalTooltipsSuppressed(false);
+  });
+
+  it("does not re-render other wrappers when a different tooltip opens", () => {
+    const renderA = vi.fn();
+    const renderB = vi.fn();
+
+    function Probe({
+      id,
+      onRender,
+    }: {
+      id: string;
+      onRender: () => void;
+    }) {
+      onRender();
+      useGlobalTooltip();
+      useGlobalTooltipOpen(id);
+      return <div data-testid={`probe-${id}`} />;
+    }
+
+    function Opener() {
+      const { setOpenTooltip } = useGlobalTooltip();
+      return (
+        <button
+          type="button"
+          data-testid="open-a"
+          onClick={() => setOpenTooltip("a")}
+        />
+      );
+    }
+
+    render(
+      <>
+        <Opener />
+        <Probe id="a" onRender={renderA} />
+        <Probe id="b" onRender={renderB} />
+      </>,
+    );
+
+    const afterMountA = renderA.mock.calls.length;
+    const afterMountB = renderB.mock.calls.length;
+
+    act(() => {
+      fireEvent.click(screen.getByTestId("open-a"));
+    });
+
+    expect(renderA.mock.calls.length).toBe(afterMountA + 1);
+    expect(renderB.mock.calls.length).toBe(afterMountB);
   });
 });

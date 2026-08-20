@@ -10,11 +10,8 @@ import {
 } from "@/components/game/BuildingActionBadge";
 import { TooltipWrapper } from "@/components/game/TooltipWrapper";
 import {
-  canProlongTimedEventTab,
   canRevealEffects,
-  getInsightAmount,
   getInsightRevealCost,
-  isInsightUnlocked,
   TIMED_EVENT_INSIGHT_PROLONG_KEY,
   TIMED_EVENT_TAB_PROLONG_INSIGHT_COST,
   TIMED_EVENT_TAB_PROLONG_MS,
@@ -46,7 +43,8 @@ export function ActionInsightBadge(props: ActionInsightBadgeProps) {
     target === "timedEvent" ? props.timeRemainingMs : 0;
 
   const { t, i18n } = useTranslation(["ui", "common"]);
-  const state = useGameStore((s) => s as unknown as GameState);
+  const clerksHut = useGameStore((s) => s.buildings.clerksHut ?? 0);
+  const insight = useGameStore((s) => s.resources.insight ?? 0);
   const timedTabActive = useGameStore((s) => s.timedEventTab.isActive);
   const insightProlongUsed = useGameStore(
     (s) => s.timedEventTab.insightProlongUsed ?? false,
@@ -82,11 +80,12 @@ export function ActionInsightBadge(props: ActionInsightBadgeProps) {
     effectiveTimedRemaining != null &&
     effectiveTimedRemaining > 0;
 
+  const insightUnlocked = clerksHut >= 1;
   const canShow = isTimedEvent
-    ? isInsightUnlocked(state) &&
+    ? insightUnlocked &&
     timedTabActive &&
     (!insightProlongUsed || isInsightRevealAnimating)
-    : canRevealEffects(actionId!, state);
+    : canRevealEffects(actionId!, useGameStore.getState() as unknown as GameState);
   const isExecuting = target === "action" && executionStart > 0 && executionDuration > 0;
   const isRevealing = isInsightRevealAnimating;
   const playing = canShow && !isExecuting && isRevealing;
@@ -115,7 +114,7 @@ export function ActionInsightBadge(props: ActionInsightBadgeProps) {
   const cost = isTimedEvent
     ? TIMED_EVENT_TAB_PROLONG_INSIGHT_COST
     : actionId
-      ? (getInsightRevealCost(actionId, state) ?? 0)
+      ? (getInsightRevealCost(actionId, useGameStore.getState() as unknown as GameState) ?? 0)
       : 0;
 
   const insightResource = formatTooltipResourceName("insight");
@@ -146,8 +145,12 @@ export function ActionInsightBadge(props: ActionInsightBadgeProps) {
   if (revealStartedRef.current && !isRevealing) return null;
 
   const canAfford = isTimedEvent
-    ? canProlongTimedEventTab(state, effectiveTimedRemaining)
-    : getInsightAmount(state) >= cost;
+    ? insightUnlocked &&
+      timedTabActive &&
+      !insightProlongUsed &&
+      (effectiveTimedRemaining ?? 0) > 0 &&
+      insight >= TIMED_EVENT_TAB_PROLONG_INSIGHT_COST
+    : insight >= cost;
 
   const isBadgeDisabled = isTimedEvent
     ? !timedTimerUsable || !canAfford || playing

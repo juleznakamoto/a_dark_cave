@@ -1,4 +1,4 @@
-import React, { useRef, useEffect, useState, forwardRef } from "react";
+import React, { useRef, useEffect, useId, useState, forwardRef } from "react";
 import { Button } from "@/components/ui/button";
 import { useGameStore } from "@/game/state";
 import { TooltipWrapper } from "@/components/game/TooltipWrapper";
@@ -109,6 +109,7 @@ const CooldownButton = forwardRef<HTMLButtonElement, CooldownButtonProps>(
   ) {
     const isFirstRenderRef = useRef<boolean>(true);
     const [, forceUpdate] = useState(0);
+    const generatedButtonId = useId();
 
     // Get the action ID from the test ID or generate one
     const actionIdFromProps = props.actionId || props.button_id || testId
@@ -262,7 +263,7 @@ const CooldownButton = forwardRef<HTMLButtonElement, CooldownButtonProps>(
     const isButtonDisabled =
       disabled || isCoolingDown || isExecuting || isInsightRevealing || isPlayTimeOverlayActive;
 
-    const buttonId = testId || `button-${Math.random()}`;
+    const buttonId = testId || generatedButtonId;
 
     // Create the button content with cooldown overlay
     const buttonContent = (

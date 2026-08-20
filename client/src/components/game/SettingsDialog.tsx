@@ -6,6 +6,7 @@ import {
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
+import { useShallow } from "zustand/react/shallow";
 import { useGameStore } from "@/game/state";
 import { audioManager } from "@/lib/audio";
 import {
@@ -262,7 +263,20 @@ export default function SettingsDialog({
     setSfxVolume,
     devGameMode,
     setDevGameMode,
-  } = useGameStore();
+  } = useGameStore(
+    useShallow((s) => ({
+      musicMuted: s.musicMuted,
+      sfxMuted: s.sfxMuted,
+      musicVolume: s.musicVolume,
+      sfxVolume: s.sfxVolume,
+      setMusicMuted: s.setMusicMuted,
+      setSfxMuted: s.setSfxMuted,
+      setMusicVolume: s.setMusicVolume,
+      setSfxVolume: s.setSfxVolume,
+      devGameMode: s.devGameMode,
+      setDevGameMode: s.setDevGameMode,
+    })),
+  );
 
   const toggleMusic = () => {
     const next = !musicMuted;

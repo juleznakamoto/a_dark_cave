@@ -13,7 +13,7 @@ import { logger } from "@/lib/logger";
 import { useTranslation } from "react-i18next";
 
 export default function InactivityDialog() {
-  const { inactivityReason } = useGameStore();
+  const inactivityReason = useGameStore((s) => s.inactivityReason);
   const { t } = useTranslation("ui");
 
   const handleContinue = () => {

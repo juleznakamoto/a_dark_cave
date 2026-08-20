@@ -881,7 +881,12 @@ interface ShopDialogProps {
   onOpen: () => void;
 }
 
-export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
+export function ShopDialog(props: ShopDialogProps) {
+  if (!props.isOpen) return null;
+  return <ShopDialogOpen {...props} />;
+}
+
+function ShopDialogOpen({ isOpen, onClose, onOpen }: ShopDialogProps) {
   const { t } = useTranslation(["ui", "common"]);
   const [selectedItem, setSelectedItem] = useState<string | null>(null);
   const [clientSecret, setClientSecret] = useState<string | null>(null);

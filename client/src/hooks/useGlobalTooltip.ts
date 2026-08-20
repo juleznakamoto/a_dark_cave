@@ -1,5 +1,16 @@
-import { useState, useEffect, useRef, useCallback } from "react";
+import {
+  createContext,
+  createElement,
+  useCallback,
+  useContext,
+  useEffect,
+  useSyncExternalStore,
+  type ReactNode,
+} from "react";
+import { TooltipProvider } from "@/components/ui/tooltip";
 import { useIsMobile } from "./use-mobile";
+
+const MOBILE_BREAKPOINT = 768;
 
 /** True when the tooltip trigger lives inside an open dialog (e.g. shop / gambler / invest info icons). */
 function isTooltipTriggerInsideDialog(id: string): boolean {
@@ -17,6 +28,10 @@ function isTooltipTriggerInsideDialog(id: string): boolean {
   }
 }
 
+function triggerSelector(id: string): string {
+  return `[data-tooltip-trigger-id="${CSS.escape(id)}"]`;
+}
+
 /**
  * Global tooltip state manager
  * Ensures only one tooltip is open at a time across the entire application
@@ -24,20 +39,69 @@ function isTooltipTriggerInsideDialog(id: string): boolean {
 class GlobalTooltipManager {
   private openTooltipId: string | null = null;
   private suppressed = false;
-  private listeners: Set<(id: string | null) => void> = new Set();
-  private pressTimers: Map<string, NodeJS.Timeout> = new Map();
+  private mobile = false;
+  private listeners: Set<() => void> = new Set();
+  private idListeners: Map<string, Set<() => void>> = new Map();
+  private pressTimers: Map<string, ReturnType<typeof setTimeout>> = new Map();
   private pressingIds: Set<string> = new Set();
   private tooltipsOpenedByTimer: Set<string> = new Set();
+  private outsideListenerAttached = false;
 
-  subscribe(listener: (id: string | null) => void) {
+  subscribe(listener: () => void) {
     this.listeners.add(listener);
     return () => {
       this.listeners.delete(listener);
     };
   }
 
-  private notify() {
-    this.listeners.forEach((listener) => listener(this.openTooltipId));
+  subscribeId(id: string, listener: () => void) {
+    let set = this.idListeners.get(id);
+    if (!set) {
+      set = new Set();
+      this.idListeners.set(id, set);
+    }
+    set.add(listener);
+    return () => {
+      set!.delete(listener);
+      if (set!.size === 0) this.idListeners.delete(id);
+    };
+  }
+
+  private notifyId(id: string | null) {
+    if (!id) return;
+    this.idListeners.get(id)?.forEach((listener) => listener());
+  }
+
+  private notify(previousId: string | null) {
+    this.listeners.forEach((listener) => listener());
+    if (previousId && previousId !== this.openTooltipId) {
+      this.notifyId(previousId);
+    }
+    this.notifyId(this.openTooltipId);
+  }
+
+  private handleOutside = (event: MouseEvent | TouchEvent) => {
+    const openId = this.openTooltipId;
+    if (!openId) return;
+    const target = event.target as Element | null;
+    if (!target) return;
+    if (target.closest?.('[role="tooltip"]')) return;
+    if (target.closest?.(triggerSelector(openId))) return;
+    this.setOpenTooltip(null);
+  };
+
+  private attachOutsideListener() {
+    if (this.outsideListenerAttached || typeof document === "undefined") return;
+    this.outsideListenerAttached = true;
+    document.addEventListener("click", this.handleOutside, true);
+    document.addEventListener("touchstart", this.handleOutside, true);
+  }
+
+  private detachOutsideListener() {
+    if (!this.outsideListenerAttached || typeof document === "undefined") return;
+    this.outsideListenerAttached = false;
+    document.removeEventListener("click", this.handleOutside, true);
+    document.removeEventListener("touchstart", this.handleOutside, true);
   }
 
   setOpenTooltip(id: string | null, openedByTimer: boolean = false) {
@@ -51,28 +115,50 @@ class GlobalTooltipManager {
       return;
     }
 
-    // Clear any existing press timers when opening a new tooltip
-    if (id !== this.openTooltipId) {
-      this.clearAllPressTimers();
-      this.tooltipsOpenedByTimer.clear();
+    if (id === this.openTooltipId) {
+      if (openedByTimer && id) {
+        this.tooltipsOpenedByTimer.add(id);
+      }
+      return;
     }
+
+    const previousId = this.openTooltipId;
+
+    // Clear any existing press timers when opening a new tooltip
+    this.clearAllPressTimers();
+    this.tooltipsOpenedByTimer.clear();
 
     this.openTooltipId = id;
     if (openedByTimer && id) {
       this.tooltipsOpenedByTimer.add(id);
     }
-    this.notify();
+    if (id) {
+      this.attachOutsideListener();
+    } else {
+      this.detachOutsideListener();
+    }
+    this.notify(previousId);
   }
 
   setSuppressed(suppressed: boolean) {
     if (this.suppressed === suppressed) return;
     this.suppressed = suppressed;
+    const previousId = this.openTooltipId;
     if (suppressed) {
       this.clearAllPressTimers();
       this.openTooltipId = null;
       this.tooltipsOpenedByTimer.clear();
+      this.detachOutsideListener();
     }
-    this.notify();
+    this.notify(previousId);
+  }
+
+  setMobile(isMobile: boolean) {
+    this.mobile = isMobile;
+  }
+
+  isMobile() {
+    return this.mobile;
   }
 
   isSuppressed() {
@@ -103,7 +189,7 @@ class GlobalTooltipManager {
     this.tooltipsOpenedByTimer.delete(id);
   }
 
-  setPressTimer(id: string, timer: NodeJS.Timeout) {
+  setPressTimer(id: string, timer: ReturnType<typeof setTimeout>) {
     // Clear any existing timer for this id
     const existingTimer = this.pressTimers.get(id);
     if (existingTimer) {
@@ -129,6 +215,10 @@ class GlobalTooltipManager {
 
 const globalTooltipManager = new GlobalTooltipManager();
 
+if (typeof window !== "undefined") {
+  globalTooltipManager.setMobile(window.innerWidth < MOBILE_BREAKPOINT);
+}
+
 /** Close any open tooltip and cancel in-progress long-press timers. */
 export function closeAllGlobalTooltips() {
   globalTooltipManager.clearAllPressTimers();
@@ -144,63 +234,57 @@ export function setGlobalTooltipsSuppressed(suppressed: boolean) {
   globalTooltipManager.setSuppressed(suppressed);
 }
 
+/** Keep the manager's mobile flag in sync without one useIsMobile per wrapper. */
+export function setGlobalTooltipIsMobile(isMobile: boolean) {
+  globalTooltipManager.setMobile(isMobile);
+}
+
+const GameTooltipTreeContext = createContext(false);
+
+/** True when a `GameTooltipProvider` ancestor already mounted Radix's provider. */
+export function useInsideGameTooltipProvider(): boolean {
+  return useContext(GameTooltipTreeContext);
+}
+
 /**
- * Hook for managing tooltip state globally
- * Ensures only one tooltip is open at a time
+ * One Radix provider for the game tree, plus a single mobile-breakpoint sync.
+ * Do not wrap the start screen (DeferredAppChrome must not remount `/`).
+ */
+export function GameTooltipProvider({ children }: { children: ReactNode }) {
+  const isMobile = useIsMobile();
+  useEffect(() => {
+    setGlobalTooltipIsMobile(isMobile);
+  }, [isMobile]);
+  return createElement(
+    GameTooltipTreeContext.Provider,
+    { value: true },
+    createElement(TooltipProvider, null, children),
+  );
+}
+
+/** Subscribe to whichever tooltip is open. For pulse/hover hosts, not per-button wrappers. */
+export function useOpenGlobalTooltipId(): string | null {
+  return useSyncExternalStore(
+    (onChange) => globalTooltipManager.subscribe(onChange),
+    () => globalTooltipManager.getOpenTooltip(),
+    () => null,
+  );
+}
+
+/** Subscribe to one tooltip id. Other wrappers do not re-render when this opens. */
+export function useGlobalTooltipOpen(id: string): boolean {
+  return useSyncExternalStore(
+    (onChange) => globalTooltipManager.subscribeId(id, onChange),
+    () => globalTooltipManager.isTooltipOpen(id),
+    () => false,
+  );
+}
+
+/**
+ * Stable handlers for tooltip triggers. Does not subscribe to open-id changes.
+ * Use `useGlobalTooltipOpen(id)` or `useOpenGlobalTooltipId()` to re-render.
  */
 export function useGlobalTooltip() {
-  const isMobile = useIsMobile();
-  const [openTooltipId, setOpenTooltipId] = useState<string | null>(null);
-  const [tooltipsSuppressed, setTooltipsSuppressed] = useState(
-    () => globalTooltipManager.isSuppressed(),
-  );
-
-  useEffect(() => {
-    // Subscribe to global tooltip changes
-    const unsubscribe = globalTooltipManager.subscribe((id) => {
-      setOpenTooltipId(id);
-      setTooltipsSuppressed(globalTooltipManager.isSuppressed());
-    });
-
-    // Initialize with current global state
-    setOpenTooltipId(globalTooltipManager.getOpenTooltip());
-    setTooltipsSuppressed(globalTooltipManager.isSuppressed());
-
-    return unsubscribe;
-  }, []);
-
-  // Effect to handle click/tap outside of tooltip - closes when user taps elsewhere
-  useEffect(() => {
-    const shouldClose = (target: EventTarget | null) => {
-      if (!openTooltipId || !target) return false;
-      const el = target as Element;
-      // Don't close if clicking inside the tooltip content
-      if (el.closest?.('[role="tooltip"]')) return false;
-      // Don't close if clicking on the trigger that opened this tooltip (prevents flash from synthetic click)
-      if (el.closest?.(`[data-tooltip-trigger-id="${openTooltipId}"]`)) return false;
-      return true;
-    };
-
-    const handleOutside = (event: MouseEvent | TouchEvent) => {
-      const target = "touches" in event ? (event as TouchEvent).target : (event as MouseEvent).target;
-      if (shouldClose(target)) {
-        globalTooltipManager.setOpenTooltip(null);
-      }
-    };
-
-    if (openTooltipId) {
-      document.addEventListener("click", handleOutside, true);
-      if (isMobile) {
-        document.addEventListener("touchstart", handleOutside, true);
-      }
-    }
-
-    return () => {
-      document.removeEventListener("click", handleOutside, true);
-      document.removeEventListener("touchstart", handleOutside, true);
-    };
-  }, [openTooltipId, isMobile]);
-
   const setOpenTooltip = useCallback((id: string | null) => {
     globalTooltipManager.setOpenTooltip(id);
   }, []);
@@ -217,10 +301,10 @@ export function useGlobalTooltip() {
     }
     // Return tooltip open state for long press tooltips (works on all devices)
     return globalTooltipManager.isTooltipOpen(id) ? true : undefined;
-  }, [tooltipsSuppressed]);
+  }, []);
 
   const handleWrapperClick = useCallback((id: string, disabled: boolean, isCoolingDown: boolean, e: React.MouseEvent) => {
-    if (!isMobile || isCoolingDown) return;
+    if (!globalTooltipManager.isMobile() || isCoolingDown) return;
 
     // On mobile with tooltip, handle inactive buttons specially
     if (disabled) {
@@ -228,7 +312,7 @@ export function useGlobalTooltip() {
       const currentOpen = globalTooltipManager.getOpenTooltip();
       globalTooltipManager.setOpenTooltip(currentOpen === id ? null : id);
     }
-  }, [isMobile]);
+  }, []);
 
   const handleMouseDown = useCallback((id: string, disabled: boolean, isCoolingDown: boolean, e: React.MouseEvent) => {
     // Clear any existing timer before creating a new one
@@ -281,7 +365,7 @@ export function useGlobalTooltip() {
     // On mobile, short taps on disabled controls should open the tooltip directly.
     // Relying on a later click is unreliable because disabled buttons may not emit one.
     if (wasPressing && !tooltipWasOpen) {
-      if (disabled && isMobile) {
+      if (disabled && globalTooltipManager.isMobile()) {
         e.preventDefault();
         e.stopPropagation();
         const currentOpen = globalTooltipManager.getOpenTooltip();
@@ -300,21 +384,21 @@ export function useGlobalTooltip() {
         onClick();
       }
     }
-  }, [isMobile]);
+  }, []);
 
   const handleTouchStart = useCallback((id: string, disabled: boolean, isCoolingDown: boolean, e: React.TouchEvent) => {
     // Clear any existing timer before creating a new one
     globalTooltipManager.clearPressTimer(id);
 
     // Start timer to show tooltip (250ms on mobile for faster feedback, 300ms on desktop)
-    const delay = isMobile ? 250 : 300;
+    const delay = globalTooltipManager.isMobile() ? 250 : 300;
     const timer = setTimeout(() => {
       globalTooltipManager.setOpenTooltip(id, true); // Mark as opened by timer
       globalTooltipManager.clearPressTimer(id);
     }, delay);
 
     globalTooltipManager.setPressTimer(id, timer);
-  }, [isMobile]);
+  }, []);
 
   const handleTouchEnd = useCallback((
     id: string,
@@ -373,18 +457,16 @@ export function useGlobalTooltip() {
         onClick();
       }
     }
-  }, [isMobile]);
+  }, []);
 
   const closeTooltip = useCallback(() => {
     closeAllGlobalTooltips();
   }, []);
 
   return {
-    isMobile,
-    openTooltipId,
-    tooltipsSuppressed,
-    setOpenTooltip,
+    isMobile: globalTooltipManager.isMobile(),
     isTooltipOpen,
+    setOpenTooltip,
     handleWrapperClick,
     handleMouseDown,
     handleMouseUp,

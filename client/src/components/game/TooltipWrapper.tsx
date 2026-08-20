@@ -1,6 +1,10 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useId, useRef } from "react";
 import { cn } from "@/lib/utils";
-import { useGlobalTooltip } from "@/hooks/useGlobalTooltip";
+import {
+  useGlobalTooltip,
+  useGlobalTooltipOpen,
+  useInsideGameTooltipProvider,
+} from "@/hooks/useGlobalTooltip";
 import {
   Tooltip,
   TooltipContent,
@@ -62,11 +66,10 @@ export function TooltipWrapper({
   onMouseEnterRef.current = onMouseEnter;
   onMouseLeaveRef.current = onMouseLeave;
 
-  // Generate a unique tooltip ID if not provided
-  const finalTooltipId = tooltipId || `tooltip-${Math.random().toString(36).substr(2, 9)}`;
-
-  const isLongPressTooltipOpen =
-    globalTooltip.openTooltipId === finalTooltipId;
+  const generatedTooltipId = useId();
+  const finalTooltipId = tooltipId || generatedTooltipId;
+  const isLongPressTooltipOpen = useGlobalTooltipOpen(finalTooltipId);
+  const insideGameProvider = useInsideGameTooltipProvider();
 
   // Long-press / tap-to-open tooltips do not fire mouseenter on touch devices.
   // Mirror hover callbacks so side-panel resource highlighting works on mobile too.
@@ -99,6 +102,42 @@ export function TooltipWrapper({
   }
 
   const tooltipTriggerCursorClass = disabled ? "cursor-default" : undefined;
+  const tooltipTree = (
+    <Tooltip
+      open={isLongPressTooltipOpen ? true : undefined}
+      delayDuration={300}
+    >
+      <TooltipTrigger asChild>
+        {tooltipTriggerAsChild && React.isValidElement(children) ? (
+          tooltipTriggerClassName ? (
+            React.cloneElement(
+              children as React.ReactElement<{ className?: string }>,
+              {
+                className: cn(
+                  (children as React.ReactElement<{ className?: string }>).props
+                    .className,
+                  tooltipTriggerClassName,
+                  tooltipTriggerCursorClass,
+                ),
+              },
+            )
+          ) : (
+            children
+          )
+        ) : (
+          <span
+            className={cn(
+              tooltipTriggerClassName ?? "block w-full",
+              tooltipTriggerCursorClass,
+            )}
+          >
+            {children}
+          </span>
+        )}
+      </TooltipTrigger>
+      <TooltipContent className={tooltipContentClassName}>{tooltip}</TooltipContent>
+    </Tooltip>
+  );
 
   return (
     <div
@@ -112,7 +151,7 @@ export function TooltipWrapper({
           e.stopPropagation();
         }
       }}
-      onClick={globalTooltip.isMobile ? (e) => {
+      onClick={(e) => {
         // Don't show tooltip if action was just executed
         if (actionExecutedRef.current) return;
 
@@ -121,7 +160,7 @@ export function TooltipWrapper({
           e.stopPropagation();
           globalTooltip.handleWrapperClick(finalTooltipId, disabled, false, e);
         }
-      } : undefined}
+      }}
       onMouseDown={(e) => {
         // Start hold timer for tooltip (works on all devices including tablets)
         globalTooltip.handleMouseDown(finalTooltipId, disabled, false, e);
@@ -183,42 +222,9 @@ export function TooltipWrapper({
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
     >
-      <TooltipProvider>
-        <Tooltip
-          open={globalTooltip.isTooltipOpen(finalTooltipId)}
-          delayDuration={300}
-        >
-          <TooltipTrigger asChild>
-            {tooltipTriggerAsChild && React.isValidElement(children) ? (
-              tooltipTriggerClassName ? (
-                React.cloneElement(
-                  children as React.ReactElement<{ className?: string }>,
-                  {
-                    className: cn(
-                      (children as React.ReactElement<{ className?: string }>).props
-                        .className,
-                      tooltipTriggerClassName,
-                      tooltipTriggerCursorClass,
-                    ),
-                  },
-                )
-              ) : (
-                children
-              )
-            ) : (
-              <span
-                className={cn(
-                  tooltipTriggerClassName ?? "block w-full",
-                  tooltipTriggerCursorClass,
-                )}
-              >
-                {children}
-              </span>
-            )}
-          </TooltipTrigger>
-          <TooltipContent className={tooltipContentClassName}>{tooltip}</TooltipContent>
-        </Tooltip>
-      </TooltipProvider>
+      {insideGameProvider ? tooltipTree : (
+        <TooltipProvider>{tooltipTree}</TooltipProvider>
+      )}
     </div>
   );
 }

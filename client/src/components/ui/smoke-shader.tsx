@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { cn } from "@/lib/utils";
 import { logger } from "@/lib/logger";
 import { tailwindToHex } from "@/lib/tailwindColors";
@@ -26,6 +26,10 @@ export function shouldAnimateSmokeShader(): boolean {
   };
   if (nav.connection?.saveData) return false;
   if (typeof nav.deviceMemory === "number" && nav.deviceMemory <= 4) {
+    return false;
+  }
+  // Vitest/jsdom has no WebGL. Stay on the CSS fallback.
+  if (typeof navigator !== "undefined" && /jsdom/i.test(navigator.userAgent)) {
     return false;
   }
   return true;

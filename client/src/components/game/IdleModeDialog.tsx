@@ -9,6 +9,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { TooltipWrapper } from "@/components/game/TooltipWrapper";
+import { useShallow } from "zustand/react/shallow";
 import { useGameStore } from "@/game/state";
 import { AnimatedCounter } from "@/components/ui/animated-counter";
 import { gameActionOutlineButtonClassName } from "@/components/CooldownButton";
@@ -124,6 +125,12 @@ function applySleepProductionInterval(
 }
 
 export default function IdleModeDialog() {
+  const isOpen = useGameStore((s) => s.idleModeDialog.isOpen);
+  if (!isOpen) return null;
+  return <IdleModeDialogOpen />;
+}
+
+function IdleModeDialogOpen() {
   const { t } = useTranslation("ui");
   const {
     idleModeDialog,
@@ -132,7 +139,16 @@ export default function IdleModeDialog() {
     devMode,
     buildings,
     shareDialogOpen,
-  } = useGameStore();
+  } = useGameStore(
+    useShallow((s) => ({
+      idleModeDialog: s.idleModeDialog,
+      sleepUpgrades: s.sleepUpgrades,
+      gameId: s.gameId,
+      devMode: s.devMode,
+      buildings: s.buildings,
+      shareDialogOpen: s.shareDialogOpen,
+    })),
+  );
   const [accumulatedResources, setAccumulatedResources] = useState<
     Record<string, number>
   >({});

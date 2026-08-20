@@ -2835,7 +2835,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
   tickCooldowns: () => {
     set((state) => {
       const newCooldowns = { ...state.cooldowns };
-      const newInitialCooldowns = { ...state.initialCooldowns };
+      let newInitialCooldowns = state.initialCooldowns;
       let changed = false;
 
       for (const key in newCooldowns) {
@@ -2845,6 +2845,9 @@ export const useGameStore = create<GameStore>((set, get) => ({
           newCooldowns[key] = newValue < 0.001 ? 0 : newValue;
 
           if (newCooldowns[key] === 0) {
+            if (newInitialCooldowns === state.initialCooldowns) {
+              newInitialCooldowns = { ...state.initialCooldowns };
+            }
             delete newInitialCooldowns[key];
           }
           changed = true;
@@ -4769,7 +4772,9 @@ export const useGameStore = create<GameStore>((set, get) => ({
   tickInvestmentHall: () => {
     let logEntry: LogEntry | null = null;
     set((state) => {
-      if (!state.buildings.coinhouse) return {};
+      // Same-reference no-op: `return {}` still makes Zustand assign a new root
+      // and notify every subscriber. This runs ~4x/sec from the game loop.
+      if (!state.buildings.coinhouse) return state;
       const ih = state.investmentHallState;
       const active = ih.active;
       if (active && state.playTime >= active.endPlayTime) {
@@ -4823,7 +4828,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
           },
         };
       }
-      return {};
+      return state;
     });
     if (logEntry) {
       get().addLogEntry(logEntry);
@@ -5170,8 +5175,8 @@ export const useGameStore = create<GameStore>((set, get) => ({
           lifetimePlayTimeMs: (state.lifetimePlayTimeMs || 0) + deltaTime,
         };
       }
-      // If paused or was previously paused, return state without updating playTime
-      return {};
+      // Same-reference no-op so Zustand does not notify subscribers.
+      return state;
     });
   },
 

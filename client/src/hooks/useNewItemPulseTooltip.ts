@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useRef } from "react";
 import { useGameStore } from "@/game/state";
-import { useGlobalTooltip } from "@/hooks/useGlobalTooltip";
+import { useOpenGlobalTooltipId } from "@/hooks/useGlobalTooltip";
 import { cn } from "@/lib/utils";
 
 const HOVER_DISMISS_MS = 500;
@@ -16,7 +16,7 @@ export function useNewItemPulseTooltips(knownTooltipIds?: readonly string[]) {
   const hoverTimersRef = useRef<Map<string, ReturnType<typeof setTimeout>>>(
     new Map(),
   );
-  const globalTooltip = useGlobalTooltip();
+  const openTooltipId = useOpenGlobalTooltipId();
 
   const dismissPulse = useCallback(
     (tooltipId: string) => {
@@ -49,11 +49,10 @@ export function useNewItemPulseTooltips(knownTooltipIds?: readonly string[]) {
   }, []);
 
   useEffect(() => {
-    const openId = globalTooltip.openTooltipId;
-    if (!openId) return;
-    if (knownTooltipIds && !knownTooltipIds.includes(openId)) return;
-    dismissPulse(openId);
-  }, [globalTooltip.openTooltipId, knownTooltipIds, dismissPulse]);
+    if (!openTooltipId) return;
+    if (knownTooltipIds && !knownTooltipIds.includes(openTooltipId)) return;
+    dismissPulse(openTooltipId);
+  }, [openTooltipId, knownTooltipIds, dismissPulse]);
 
   useEffect(
     () => () => {

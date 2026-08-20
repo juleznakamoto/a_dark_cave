@@ -10,6 +10,7 @@ import {
   useProfileMenuContext,
 } from "./profileMenuContext";
 import { Button } from "@/components/ui/button";
+import { useShallow } from "zustand/react/shallow";
 import { useGameStore } from "@/game/state";
 import { deleteSave } from "@/game/save";
 import { getCurrentUser, signOut, deleteAccount } from "@/game/auth";
@@ -98,20 +99,50 @@ function useProfileMenuState() {
     setLeaderboardDialogOpen,
     setShareDialogOpen,
     hasWonAnyGame,
-    restartGameDialogOpen, // Added from store
-    setRestartGameDialogOpen, // Added from store
+    restartGameDialogOpen,
+    setRestartGameDialogOpen,
     deleteAccountDialogOpen,
     setDeleteAccountDialogOpen,
     settingsDialogOpen,
     setSettingsDialogOpen,
-    cooldowns,
+    manualSaveCooldown,
     lastSaved,
     devMode,
     isUserSignedIn,
     signupWelcomeGoldClaimed,
     clothing,
     cruelMode,
-  } = useGameStore();
+  } = useGameStore(
+    useShallow((s) => ({
+      restartGame: s.restartGame,
+      setAuthDialogOpen: s.setAuthDialogOpen,
+      authDialogOpen: s.authDialogOpen,
+      socialPromptDialogOpen: s.socialPromptDialogOpen,
+      setSocialPromptDialogOpen: s.setSocialPromptDialogOpen,
+      setSignUpPromptEligibleForGold: s.setSignUpPromptEligibleForGold,
+      setIsUserSignedIn: s.setIsUserSignedIn,
+      referralCount: s.referralCount,
+      referrals: s.referrals,
+      social_media_rewards: s.social_media_rewards,
+      leaderboardDialogOpen: s.leaderboardDialogOpen,
+      setLeaderboardDialogOpen: s.setLeaderboardDialogOpen,
+      setShareDialogOpen: s.setShareDialogOpen,
+      hasWonAnyGame: s.hasWonAnyGame,
+      restartGameDialogOpen: s.restartGameDialogOpen,
+      setRestartGameDialogOpen: s.setRestartGameDialogOpen,
+      deleteAccountDialogOpen: s.deleteAccountDialogOpen,
+      setDeleteAccountDialogOpen: s.setDeleteAccountDialogOpen,
+      settingsDialogOpen: s.settingsDialogOpen,
+      setSettingsDialogOpen: s.setSettingsDialogOpen,
+      manualSaveCooldown: s.cooldowns.manualSave ?? 0,
+      lastSaved: s.lastSaved,
+      devMode: s.devMode,
+      isUserSignedIn: s.isUserSignedIn,
+      signupWelcomeGoldClaimed: s.signupWelcomeGoldClaimed,
+      clothing: s.clothing,
+      cruelMode: s.cruelMode,
+    })),
+  );
 
   const signupWelcomeGoldClaimedBool = signupWelcomeGoldClaimed === true;
 
@@ -228,7 +259,7 @@ function useProfileMenuState() {
   const handleManualSave = async () => {
     const actionId = "manualSave";
     const signedIn = !!currentUser;
-    const currentCooldown = cooldowns[actionId] || 0;
+    const currentCooldown = manualSaveCooldown;
 
     if (signedIn && currentCooldown > 0) {
       return; // Still on cooldown (signed-in only)
@@ -370,7 +401,7 @@ function useProfileMenuState() {
     setAccountDropdownOpen,
     currentUser,
     handleManualSave,
-    cooldowns,
+    manualSaveCooldown,
     lastSaved,
     handleRestartGame,
     handleSignOut,
@@ -426,6 +457,7 @@ function ProfileMenuDialogs() {
 
   return (
     <>
+      {settingsDialogOpen && (
       <SettingsDialog
         isOpen={settingsDialogOpen}
         onClose={() => setSettingsDialogOpen(false)}
@@ -443,6 +475,7 @@ function ProfileMenuDialogs() {
           setDeleteAccountDialogOpen(true);
         }}
       />
+      )}
       {!steamEditionActive && (
         <>
           <SocialPromptDialog isOpen={socialPromptDialogOpen} />
@@ -562,7 +595,7 @@ export function GameHeaderControls() {
     setAccountDropdownOpen,
     currentUser,
     handleManualSave,
-    cooldowns,
+    manualSaveCooldown,
     lastSaved,
     handleRestartGame,
     handleSetAuthDialogOpen,
@@ -659,7 +692,7 @@ export function GameHeaderControls() {
                   </div>
                 }
                 tooltipId="manual-save-info"
-                disabled={!!currentUser && cooldowns["manualSave"] > 0}
+                disabled={!!currentUser && manualSaveCooldown > 0}
                 onClick={() => {
                   handleManualSave();
                   setAccountDropdownOpen(false);

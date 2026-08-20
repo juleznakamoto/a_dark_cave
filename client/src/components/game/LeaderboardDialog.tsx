@@ -142,7 +142,8 @@ export default function LeaderboardDialog({
   onClose,
 }: LeaderboardDialogProps) {
   const { t } = useTranslation(["ui", "common"]);
-  const { username, setUsername } = useGameStore();
+  const username = useGameStore((s) => s.username);
+  const setUsername = useGameStore((s) => s.setUsername);
   const [normalLeaderboard, setNormalLeaderboard] = useState<
     LeaderboardEntry[]
   >([]);

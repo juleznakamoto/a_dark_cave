@@ -42,7 +42,10 @@ import {
   syncTimedEventTabPauseTracking,
   getTimedEventTabEffectiveRemainingMs,
 } from "@/game/state";
-import { setGlobalTooltipsSuppressed } from "@/hooks/useGlobalTooltip";
+import {
+  GameTooltipProvider,
+  setGlobalTooltipsSuppressed,
+} from "@/hooks/useGlobalTooltip";
 import type { GameTab } from "@/game/types";
 import EventDialog from "./EventDialog";
 import CombatDialog from "./CombatDialog";
@@ -1181,482 +1184,484 @@ export default function GameContainer() {
   );
 
   return (
-    <ProfileMenuProvider>
-      <Helmet>
-        <title>A Dark Cave</title>
-      </Helmet>
-      <div
-        className="fixed inset-0 bg-background text-foreground flex flex-col"
-        style={{
-          backgroundColor: showBloodMoonOverlay ? "hsl(0, 50%, 5%)" : undefined,
-          transition: `background-color ${BLOOD_MOON_OVERLAY_FADE_MS}ms ease-in-out`,
-          ...iosChromeViewportStyle,
-        }}
-      >
-        {/* Blood moon smoke — between header/footer only (same insets as pause/sleep). */}
-        {showBloodMoonOverlay && (
-          <div
-            className="pointer-events-none absolute inset-x-0 z-0 blood-moon-smoke-fade-in"
-            style={{
-              top: GAME_HEADER_INSET,
-              bottom: GAME_FOOTER_INSET,
-              animationDuration: `${BLOOD_MOON_OVERLAY_FADE_MS}ms`,
-            }}
-            aria-hidden
-          >
-            <SmokeBackground smokeColor="#cc0000" className="h-full w-full" />
-          </div>
-        )}
-
-        <GameHeader />
-
-        {/* Pause Overlay - covers panels; header and footer stay above */}
-        {isPaused && (
-          <div
-            className="fixed inset-0 bg-black/80 pointer-events-auto overlay-fade-in"
-            style={{
-              top: GAME_HEADER_INSET,
-              bottom: GAME_FOOTER_INSET,
-              zIndex: Z_INDEX.sleepFog,
-            }}
-          />
-        )}
-
-        {showTabHotkeyOverlay &&
-          typeof document !== "undefined" &&
-          createPortal(
+    <GameTooltipProvider>
+      <ProfileMenuProvider>
+        <Helmet>
+          <title>A Dark Cave</title>
+        </Helmet>
+        <div
+          className="fixed inset-0 bg-background text-foreground flex flex-col"
+          style={{
+            backgroundColor: showBloodMoonOverlay ? "hsl(0, 50%, 5%)" : undefined,
+            transition: `background-color ${BLOOD_MOON_OVERLAY_FADE_MS}ms ease-in-out`,
+            ...iosChromeViewportStyle,
+          }}
+        >
+          {/* Blood moon smoke — between header/footer only (same insets as pause/sleep). */}
+          {showBloodMoonOverlay && (
             <div
-              className="pointer-events-none fixed inset-0 hidden md:block"
-              style={{ zIndex: Z_INDEX.tabHotkeyOverlay }}
-              aria-hidden={false}
+              className="pointer-events-none absolute inset-x-0 z-0 blood-moon-smoke-fade-in"
+              style={{
+                top: GAME_HEADER_INSET,
+                bottom: GAME_FOOTER_INSET,
+                animationDuration: `${BLOOD_MOON_OVERLAY_FADE_MS}ms`,
+              }}
+              aria-hidden
             >
-              {villageHotkeyBoxLayout != null && (
-                <div
-                  className={`absolute z-0 rounded border border-red-500 bg-neutral-950${showVillageHotkeyBox ? " pointer-events-auto" : " pointer-events-none"}`}
-                  style={{
-                    top: villageHotkeyBoxLayout.top,
-                    left: villageHotkeyBoxLayout.left,
-                    width: villageHotkeyBoxLayout.width,
-                    height: villageHotkeyBoxLayout.height,
-                  }}
-                  data-testid={
-                    showVillageHotkeyBox
-                      ? "village-hotkey-tutorial-box"
-                      : "pause-hotkey-callout-box"
-                  }
-                >
-                  {showVillageHotkeyBox && (
-                    <button
-                      type="button"
-                      className="absolute -top-2 -right-2 flex h-4 w-4 items-center justify-center rounded-full bg-red-950 text-white shadow-sm border border-red-800/50 hover:bg-red-900 transition-colors cursor-pointer"
-                      aria-label={t("villageHotkeyTutorial.dismiss", {
-                        ns: "ui",
-                        defaultValue: "Dismiss",
-                      })}
-                      data-testid="village-hotkey-tutorial-dismiss"
-                      onClick={closeVillageHotkeyTutorial}
-                    >
-                      <X className="h-2.5 w-2.5 stroke-[3]" />
-                    </button>
-                  )}
-                </div>
-              )}
-              {pauseHotkeyBadges.map((b) => (
-                <span
-                  key={b.key}
-                  className="pause-hotkey-badge-animated absolute z-[1] text-xs font-semibold leading-none text-foreground drop-shadow"
-                  style={{
-                    left: b.left,
-                    top: b.top,
-                    transform: "translate(-50%, 0)",
-                  }}
-                >
-                  {b.label}
-                </span>
-              ))}
-              {pauseHotkeyHint != null && (
-                <div
-                  data-testid="tab-hotkey-hint"
-                  className="pause-hotkey-hint-animated absolute z-[2] w-max max-w-[calc(100vw-1rem)] whitespace-nowrap px-1 text-center text-xs leading-none text-foreground drop-shadow"
-                  style={{
-                    top: pauseHotkeyHint.top,
-                    left: pauseHotkeyHint.left,
-                    transform: "translateX(-50%)",
-                  }}
-                >
-                  {pauseHotkeyHintContent}
-                </div>
-              )}
-            </div>,
-            document.body,
+              <SmokeBackground smokeColor="#cc0000" className="h-full w-full" />
+            </div>
           )}
 
-        {/* Main Content Area - Fills remaining space.
-          Desktop (left → right): resources side panel, tabs/actions, event log.
-          Mobile (stacked top → bottom): event log, side panel, tabs/actions. */}
-        <main
-          ref={panelResize.mainRef}
-          className="relative flex-1 pb-0 flex flex-col md:grid md:w-full md:grid-cols-[minmax(20rem,28rem)_minmax(24rem,1fr)_minmax(14rem,26rem)] min-h-0 overflow-hidden"
-          style={panelResize.mainStyle}
-        >
-          {/* Click-particle portal — above side panel, tabs, log; below action buttons (z-50).
-              Drop elevation during pause/sleep so the fog overlays (z-40) can cover content. */}
-          <div
-            id={GAME_PARTICLE_LAYER_ID}
-            className="pointer-events-none absolute inset-0"
-            style={{
-              zIndex:
-                idleModeDialog.isOpen || isPaused
-                  ? undefined
-                  : Z_INDEX.gameParticleLayer,
-            }}
-            aria-hidden
-          />
+          <GameHeader />
 
-          {/* Event Log - top on mobile, right column on desktop. Resizable via a handle on
-              its bottom edge (mobile) / left edge (desktop). */}
-          <div
-            ref={panelResize.logRef}
-            className="order-1 md:order-3 relative w-full h-[18vh] md:h-auto min-h-[6rem] md:min-h-0 overflow-hidden pt-1 md:pt-2 pr-2 pb-0 pl-1 md:border-l border-border"
-            style={panelResize.logStyle}
-          >
-            <LogPanel />
-            <PanelResizeHandle
-              edge="log"
-              onPointerDown={panelResize.startLogResize}
-              onReset={panelResize.resetLog}
+          {/* Pause Overlay - covers panels; header and footer stay above */}
+          {isPaused && (
+            <div
+              className="fixed inset-0 bg-black/80 pointer-events-auto overlay-fade-in"
+              style={{
+                top: GAME_HEADER_INSET,
+                bottom: GAME_FOOTER_INSET,
+                zIndex: Z_INDEX.sleepFog,
+              }}
             />
-          </div>
+          )}
 
-          {/* Resources Side Panel - below log on mobile, left column on desktop.
-              Mobile: defaults to 36vh so the panel (and tabs/actions below it) keep a
-              consistent height regardless of the active tab's side-panel content.
-              Desktop: md:min-h-0 lets it shrink within the grid column. Resizable via a
-              handle on its bottom edge (mobile) / right edge (desktop). */}
-          <div
-            ref={panelResize.sidePanelRef}
-            className="order-2 md:order-1 relative h-[36vh] md:h-auto min-h-[36vh] md:min-h-0 w-full pr-0 border-t md:border-t-0 md:border-r border-border overflow-hidden"
-            style={panelResize.sidePanelStyle}
-          >
-            <GameTabs />
-            <PanelResizeHandle
-              edge="sidePanel"
-              onPointerDown={panelResize.startSidePanelResize}
-              onReset={panelResize.resetSidePanel}
-            />
-          </div>
-
-          {/* Game tab area - below side panel on mobile, middle column on desktop (flexible; shrinks first).
-              Mobile: flex-1 so the section fills the space left by the fixed log/side panels and its
-              inner action list scrolls internally — keeping panel heights consistent across tabs
-              instead of growing with the active tab's content. (Ignored on desktop grid.) */}
-          <section className="order-3 md:order-2 flex-1 min-w-0 flex flex-col min-h-0 overflow-hidden md:pl-0">
-            {/* Horizontal Game Tabs */}
-            <nav className="relative border-t md:border-t-0 border-border pl-2 pr-2 flex-shrink-0">
-              {useLimelightNav ? (
-                // Alternative LimelightNav design
-                <LimelightNav
-                  items={limelightNavItems}
-                  defaultActiveIndex={limelightNavItems.findIndex(
-                    (item) => item.id === activeTab,
-                  )}
-                  onTabChange={(index) => {
-                    const selectedTab = limelightNavItems[index];
-                    if (selectedTab && selectedTab.onClick) {
-                      selectedTab.onClick();
+          {showTabHotkeyOverlay &&
+            typeof document !== "undefined" &&
+            createPortal(
+              <div
+                className="pointer-events-none fixed inset-0 hidden md:block"
+                style={{ zIndex: Z_INDEX.tabHotkeyOverlay }}
+                aria-hidden={false}
+              >
+                {villageHotkeyBoxLayout != null && (
+                  <div
+                    className={`absolute z-0 rounded border border-red-500 bg-neutral-950${showVillageHotkeyBox ? " pointer-events-auto" : " pointer-events-none"}`}
+                    style={{
+                      top: villageHotkeyBoxLayout.top,
+                      left: villageHotkeyBoxLayout.left,
+                      width: villageHotkeyBoxLayout.width,
+                      height: villageHotkeyBoxLayout.height,
+                    }}
+                    data-testid={
+                      showVillageHotkeyBox
+                        ? "village-hotkey-tutorial-box"
+                        : "pause-hotkey-callout-box"
                     }
-                  }}
-                  className="bg-transparent border-0"
-                />
-              ) : (
-                <>
-                  {/* Standard button design */}
-                  <div className="flex w-full max-w-full flex-nowrap items-end gap-x-2">
-                    <div
-                      ref={tabButtonRowRef}
-                      className="inline-flex min-w-0 flex-1 flex-nowrap items-end gap-x-2 overflow-x-auto scrollbar-hide"
-                    >
+                  >
+                    {showVillageHotkeyBox && (
                       <button
-                        className={`${tabButtonClass} ${activeTab === "cave"
-                          ? tabActiveTextClass
-                          : tabInactiveTextClass
-                          } `}
-                        onClick={() => {
-                          useGameStore.getState().trackButtonClick("tab-cave");
-                          setActiveTab("cave");
-                        }}
-                        data-testid="tab-cave"
+                        type="button"
+                        className="absolute -top-2 -right-2 flex h-4 w-4 items-center justify-center rounded-full bg-red-950 text-white shadow-sm border border-red-800/50 hover:bg-red-900 transition-colors cursor-pointer"
+                        aria-label={t("villageHotkeyTutorial.dismiss", {
+                          ns: "ui",
+                          defaultValue: "Dismiss",
+                        })}
+                        data-testid="village-hotkey-tutorial-dismiss"
+                        onClick={closeVillageHotkeyTutorial}
                       >
-                        {t("tabs.cave", { ns: "common" })}
+                        <X className="h-2.5 w-2.5 stroke-[3]" />
                       </button>
-
-                      {villageTabVisible && (
-                        <button
-                          className={`${tabButtonClass} ${animatingTabs.has("village")
-                            ? fadePhaseTabs.has("village")
-                              ? "tab-fade-in"
-                              : "tab-blink-new"
-                            : activeTab === "village"
-                              ? tabActiveTextClass
-                              : tabInactiveTextClass
-                            }`}
-                          onClick={() => {
-                            useGameStore.getState().trackButtonClick("tab-village");
-                            clearTabAnimation("village");
-                            setActiveTab("village");
-                          }}
-                          data-testid="tab-village"
-                        >
-                          {buildings.stoneHut >= 5
-                            ? t("tabs.city", { ns: "common" })
-                            : t("tabs.village", { ns: "common" })}
-                        </button>
-                      )}
-
-                      {forestTabVisible && (
-                        <button
-                          className={`${tabButtonClass} ${animatingTabs.has("forest")
-                            ? fadePhaseTabs.has("forest")
-                              ? "tab-fade-in"
-                              : "tab-blink-new"
-                            : activeTab === "forest"
-                              ? tabActiveTextClass
-                              : tabInactiveTextClass
-                            }`}
-                          onClick={() => {
-                            useGameStore.getState().trackButtonClick("tab-forest");
-                            clearTabAnimation("forest");
-                            setActiveTab("forest");
-                          }}
-                          data-testid="tab-forest"
-                        >
-                          {t("tabs.forest", { ns: "common" })}
-                        </button>
-                      )}
-
-                      {/* Estate Tab Button */}
-                      {(estateUnlocked || buildings.darkEstate >= 1) && (
-                        <button
-                          className={`${tabButtonClass} ${animatingTabs.has("estate")
-                            ? fadePhaseTabs.has("estate")
-                              ? "tab-fade-in"
-                              : "tab-blink-new"
-                            : activeTab === "estate"
-                              ? tabActiveTextClass
-                              : tabInactiveTextClass
-                            }`}
-                          onClick={() => {
-                            useGameStore.getState().trackButtonClick("tab-estate");
-                            clearTabAnimation("estate");
-                            setActiveTab("estate");
-                          }}
-                          data-testid="tab-estate"
-                        >
-                          {t("tabs.estate", { ns: "common" })}
-                        </button>
-                      )}
-
-                      {bastionTabVisible && (
-                        <button
-                          className={`${tabButtonClass} ${animatingTabs.has("bastion")
-                            ? fadePhaseTabs.has("bastion")
-                              ? "tab-fade-in"
-                              : "tab-blink-new"
-                            : activeTab === "bastion"
-                              ? tabActiveTextClass
-                              : tabInactiveTextClass
-                            }`}
-                          onClick={() => {
-                            useGameStore.getState().trackButtonClick("tab-bastion");
-                            clearTabAnimation("bastion");
-                            setActiveTab("bastion");
-                          }}
-                          data-testid="tab-bastion"
-                        >
-                          {flags.hasFortress
-                            ? t("tabs.fortress", { ns: "common" })
-                            : t("tabs.bastion", { ns: "common" })}
-                        </button>
-                      )}
-
-                      {/* Achievements Tab Button */}
-                      {achievementsUnlocked && (
-                        <button
-                          className={`${tabButtonClass} ${animatingTabs.has("achievements")
-                            ? fadePhaseTabs.has("achievements")
-                              ? "tab-fade-in"
-                              : "tab-blink-new"
-                            : activeTab === "achievements"
-                              ? tabActiveTextClass
-                              : tabInactiveTextClass
-                            }`}
-                          onClick={() => {
-                            useGameStore.getState().trackButtonClick("tab-achievements");
-                            clearTabAnimation("achievements");
-                            markAchievementTabPulseViewed(
-                              unclaimedAchievementIds,
-                            );
-                            setActiveTab("achievements");
-                          }}
-                          data-testid="tab-achievements"
-                        >
-                          <GameUiIcon
-                            name="achievements"
-                            sizeClassName={TAB_ICON_SIZE}
-                            className={TAB_ICON_ALIGN_CLASS}
-                          />
-                        </button>
-                      )}
-
-                      {/* Timed Event Tab Button */}
-                      {timedEventTab.isActive && (
-                        <button
-                          className={`${tabButtonClass} gap-1 ${activeTab === "timedevent" ||
-                            timedEventTabPulseClass
-                            ? tabActiveTextClass
-                            : tabInactiveTextClass
-                            }`}
-                          onClick={() => {
-                            useGameStore.getState().trackButtonClick("tab-timedevent");
-                            setActiveTab("timedevent");
-                          }}
-                          data-testid="tab-timedevent"
-                        >
-                          <GameUiIcon
-                            name="timedEvent"
-                            sizeClassName={TAB_ICON_SIZE}
-                            className={`timer-symbol ${TAB_TIMED_EVENT_ICON_CLASS} ${timedEventTabPulseClass}`}
-                          />
-                        </button>
-                      )}
-                    </div>
-
-                    {traderUnlocked && !steamEditionActive && (
-                      <TraderTabButton
-                        tabButtonClass={tabButtonClass}
-                        tabInactiveTextClass={tabInactiveTextClass}
-                        isPaused={isPaused}
-                        isAnimating={animatingTabs.has("trader")}
-                        isFadePhase={fadePhaseTabs.has("trader")}
-                        onClick={() => {
-                          clearTabAnimation("trader");
-                          setShopDialogOpen(true, "tab");
-                        }}
-                      />
                     )}
                   </div>
-                </>
-              )}
-            </nav>
+                )}
+                {pauseHotkeyBadges.map((b) => (
+                  <span
+                    key={b.key}
+                    className="pause-hotkey-badge-animated absolute z-[1] text-xs font-semibold leading-none text-foreground drop-shadow"
+                    style={{
+                      left: b.left,
+                      top: b.top,
+                      transform: "translate(-50%, 0)",
+                    }}
+                  >
+                    {b.label}
+                  </span>
+                ))}
+                {pauseHotkeyHint != null && (
+                  <div
+                    data-testid="tab-hotkey-hint"
+                    className="pause-hotkey-hint-animated absolute z-[2] w-max max-w-[calc(100vw-1rem)] whitespace-nowrap px-1 text-center text-xs leading-none text-foreground drop-shadow"
+                    style={{
+                      top: pauseHotkeyHint.top,
+                      left: pauseHotkeyHint.left,
+                      transform: "translateX(-50%)",
+                    }}
+                  >
+                    {pauseHotkeyHintContent}
+                  </div>
+                )}
+              </div>,
+              document.body,
+            )}
 
-            {/* Action Panels — above particle layer so bursts stay behind buttons.
-                Clear z-index while paused/sleeping so the overlay (z-40) blocks clicks. */}
+          {/* Main Content Area - Fills remaining space.
+          Desktop (left → right): resources side panel, tabs/actions, event log.
+          Mobile (stacked top → bottom): event log, side panel, tabs/actions. */}
+          <main
+            ref={panelResize.mainRef}
+            className="relative flex-1 pb-0 flex flex-col md:grid md:w-full md:grid-cols-[minmax(20rem,28rem)_minmax(24rem,1fr)_minmax(14rem,26rem)] min-h-0 overflow-hidden"
+            style={panelResize.mainStyle}
+          >
+            {/* Click-particle portal — above side panel, tabs, log; below action buttons (z-50).
+              Drop elevation during pause/sleep so the fog overlays (z-40) can cover content. */}
             <div
-              className={`relative flex-1 overflow-x-hidden min-h-0 ${activeTab === "achievements"
-                ? "overflow-hidden"
-                : "overflow-y-auto scrollbar-hide"
-                }`}
+              id={GAME_PARTICLE_LAYER_ID}
+              className="pointer-events-none absolute inset-0"
               style={{
                 zIndex:
                   idleModeDialog.isOpen || isPaused
                     ? undefined
-                    : Z_INDEX.gameActionButtons,
+                    : Z_INDEX.gameParticleLayer,
+              }}
+              aria-hidden
+            />
+
+            {/* Event Log - top on mobile, right column on desktop. Resizable via a handle on
+              its bottom edge (mobile) / left edge (desktop). */}
+            <div
+              ref={panelResize.logRef}
+              className="order-1 md:order-3 relative w-full h-[18vh] md:h-auto min-h-[6rem] md:min-h-0 overflow-hidden pt-1 md:pt-2 pr-2 pb-0 pl-1 md:border-l border-border"
+              style={panelResize.logStyle}
+            >
+              <LogPanel />
+              <PanelResizeHandle
+                edge="log"
+                onPointerDown={panelResize.startLogResize}
+                onReset={panelResize.resetLog}
+              />
+            </div>
+
+            {/* Resources Side Panel - below log on mobile, left column on desktop.
+              Mobile: defaults to 36vh so the panel (and tabs/actions below it) keep a
+              consistent height regardless of the active tab's side-panel content.
+              Desktop: md:min-h-0 lets it shrink within the grid column. Resizable via a
+              handle on its bottom edge (mobile) / right edge (desktop). */}
+            <div
+              ref={panelResize.sidePanelRef}
+              className="order-2 md:order-1 relative h-[36vh] md:h-auto min-h-[36vh] md:min-h-0 w-full pr-0 border-t md:border-t-0 md:border-r border-border overflow-hidden"
+              style={panelResize.sidePanelStyle}
+            >
+              <GameTabs />
+              <PanelResizeHandle
+                edge="sidePanel"
+                onPointerDown={panelResize.startSidePanelResize}
+                onReset={panelResize.resetSidePanel}
+              />
+            </div>
+
+            {/* Game tab area - below side panel on mobile, middle column on desktop (flexible; shrinks first).
+              Mobile: flex-1 so the section fills the space left by the fixed log/side panels and its
+              inner action list scrolls internally — keeping panel heights consistent across tabs
+              instead of growing with the active tab's content. (Ignored on desktop grid.) */}
+            <section className="order-3 md:order-2 flex-1 min-w-0 flex flex-col min-h-0 overflow-hidden md:pl-0">
+              {/* Horizontal Game Tabs */}
+              <nav className="relative border-t md:border-t-0 border-border pl-2 pr-2 flex-shrink-0">
+                {useLimelightNav ? (
+                  // Alternative LimelightNav design
+                  <LimelightNav
+                    items={limelightNavItems}
+                    defaultActiveIndex={limelightNavItems.findIndex(
+                      (item) => item.id === activeTab,
+                    )}
+                    onTabChange={(index) => {
+                      const selectedTab = limelightNavItems[index];
+                      if (selectedTab && selectedTab.onClick) {
+                        selectedTab.onClick();
+                      }
+                    }}
+                    className="bg-transparent border-0"
+                  />
+                ) : (
+                  <>
+                    {/* Standard button design */}
+                    <div className="flex w-full max-w-full flex-nowrap items-end gap-x-2">
+                      <div
+                        ref={tabButtonRowRef}
+                        className="inline-flex min-w-0 flex-1 flex-nowrap items-end gap-x-2 overflow-x-auto scrollbar-hide"
+                      >
+                        <button
+                          className={`${tabButtonClass} ${activeTab === "cave"
+                            ? tabActiveTextClass
+                            : tabInactiveTextClass
+                            } `}
+                          onClick={() => {
+                            useGameStore.getState().trackButtonClick("tab-cave");
+                            setActiveTab("cave");
+                          }}
+                          data-testid="tab-cave"
+                        >
+                          {t("tabs.cave", { ns: "common" })}
+                        </button>
+
+                        {villageTabVisible && (
+                          <button
+                            className={`${tabButtonClass} ${animatingTabs.has("village")
+                              ? fadePhaseTabs.has("village")
+                                ? "tab-fade-in"
+                                : "tab-blink-new"
+                              : activeTab === "village"
+                                ? tabActiveTextClass
+                                : tabInactiveTextClass
+                              }`}
+                            onClick={() => {
+                              useGameStore.getState().trackButtonClick("tab-village");
+                              clearTabAnimation("village");
+                              setActiveTab("village");
+                            }}
+                            data-testid="tab-village"
+                          >
+                            {buildings.stoneHut >= 5
+                              ? t("tabs.city", { ns: "common" })
+                              : t("tabs.village", { ns: "common" })}
+                          </button>
+                        )}
+
+                        {forestTabVisible && (
+                          <button
+                            className={`${tabButtonClass} ${animatingTabs.has("forest")
+                              ? fadePhaseTabs.has("forest")
+                                ? "tab-fade-in"
+                                : "tab-blink-new"
+                              : activeTab === "forest"
+                                ? tabActiveTextClass
+                                : tabInactiveTextClass
+                              }`}
+                            onClick={() => {
+                              useGameStore.getState().trackButtonClick("tab-forest");
+                              clearTabAnimation("forest");
+                              setActiveTab("forest");
+                            }}
+                            data-testid="tab-forest"
+                          >
+                            {t("tabs.forest", { ns: "common" })}
+                          </button>
+                        )}
+
+                        {/* Estate Tab Button */}
+                        {(estateUnlocked || buildings.darkEstate >= 1) && (
+                          <button
+                            className={`${tabButtonClass} ${animatingTabs.has("estate")
+                              ? fadePhaseTabs.has("estate")
+                                ? "tab-fade-in"
+                                : "tab-blink-new"
+                              : activeTab === "estate"
+                                ? tabActiveTextClass
+                                : tabInactiveTextClass
+                              }`}
+                            onClick={() => {
+                              useGameStore.getState().trackButtonClick("tab-estate");
+                              clearTabAnimation("estate");
+                              setActiveTab("estate");
+                            }}
+                            data-testid="tab-estate"
+                          >
+                            {t("tabs.estate", { ns: "common" })}
+                          </button>
+                        )}
+
+                        {bastionTabVisible && (
+                          <button
+                            className={`${tabButtonClass} ${animatingTabs.has("bastion")
+                              ? fadePhaseTabs.has("bastion")
+                                ? "tab-fade-in"
+                                : "tab-blink-new"
+                              : activeTab === "bastion"
+                                ? tabActiveTextClass
+                                : tabInactiveTextClass
+                              }`}
+                            onClick={() => {
+                              useGameStore.getState().trackButtonClick("tab-bastion");
+                              clearTabAnimation("bastion");
+                              setActiveTab("bastion");
+                            }}
+                            data-testid="tab-bastion"
+                          >
+                            {flags.hasFortress
+                              ? t("tabs.fortress", { ns: "common" })
+                              : t("tabs.bastion", { ns: "common" })}
+                          </button>
+                        )}
+
+                        {/* Achievements Tab Button */}
+                        {achievementsUnlocked && (
+                          <button
+                            className={`${tabButtonClass} ${animatingTabs.has("achievements")
+                              ? fadePhaseTabs.has("achievements")
+                                ? "tab-fade-in"
+                                : "tab-blink-new"
+                              : activeTab === "achievements"
+                                ? tabActiveTextClass
+                                : tabInactiveTextClass
+                              }`}
+                            onClick={() => {
+                              useGameStore.getState().trackButtonClick("tab-achievements");
+                              clearTabAnimation("achievements");
+                              markAchievementTabPulseViewed(
+                                unclaimedAchievementIds,
+                              );
+                              setActiveTab("achievements");
+                            }}
+                            data-testid="tab-achievements"
+                          >
+                            <GameUiIcon
+                              name="achievements"
+                              sizeClassName={TAB_ICON_SIZE}
+                              className={TAB_ICON_ALIGN_CLASS}
+                            />
+                          </button>
+                        )}
+
+                        {/* Timed Event Tab Button */}
+                        {timedEventTab.isActive && (
+                          <button
+                            className={`${tabButtonClass} gap-1 ${activeTab === "timedevent" ||
+                              timedEventTabPulseClass
+                              ? tabActiveTextClass
+                              : tabInactiveTextClass
+                              }`}
+                            onClick={() => {
+                              useGameStore.getState().trackButtonClick("tab-timedevent");
+                              setActiveTab("timedevent");
+                            }}
+                            data-testid="tab-timedevent"
+                          >
+                            <GameUiIcon
+                              name="timedEvent"
+                              sizeClassName={TAB_ICON_SIZE}
+                              className={`timer-symbol ${TAB_TIMED_EVENT_ICON_CLASS} ${timedEventTabPulseClass}`}
+                            />
+                          </button>
+                        )}
+                      </div>
+
+                      {traderUnlocked && !steamEditionActive && (
+                        <TraderTabButton
+                          tabButtonClass={tabButtonClass}
+                          tabInactiveTextClass={tabInactiveTextClass}
+                          isPaused={isPaused}
+                          isAnimating={animatingTabs.has("trader")}
+                          isFadePhase={fadePhaseTabs.has("trader")}
+                          onClick={() => {
+                            clearTabAnimation("trader");
+                            setShopDialogOpen(true, "tab");
+                          }}
+                        />
+                      )}
+                    </div>
+                  </>
+                )}
+              </nav>
+
+              {/* Action Panels — above particle layer so bursts stay behind buttons.
+                Clear z-index while paused/sleeping so the overlay (z-40) blocks clicks. */}
+              <div
+                className={`relative flex-1 overflow-x-hidden min-h-0 ${activeTab === "achievements"
+                  ? "overflow-hidden"
+                  : "overflow-y-auto scrollbar-hide"
+                  }`}
+                style={{
+                  zIndex:
+                    idleModeDialog.isOpen || isPaused
+                      ? undefined
+                      : Z_INDEX.gameActionButtons,
+                }}
+              >
+                {activeTab === "cave" && <CavePanel />}
+                {activeTab === "village" && <VillagePanel />}
+                {activeTab === "forest" && <ForestPanel />}
+                {activeTab === "estate" && <EstatePanel />}
+                {activeTab === "bastion" && <BastionPanel />}
+                {activeTab === "achievements" && <AchievementsPanel />}
+                {activeTab === "timedevent" && <TimedEventPanel />}
+              </div>
+            </section>
+          </main>
+
+          {/* Sleep Mode Mist Background - covers main panels; header, footer, and promos stay above */}
+          {idleModeDialog.isOpen && (
+            <div
+              className="fixed inset-0 pointer-events-auto"
+              style={{
+                top: GAME_HEADER_INSET,
+                bottom: GAME_FOOTER_INSET,
+                zIndex: Z_INDEX.sleepFog,
               }}
             >
-              {activeTab === "cave" && <CavePanel />}
-              {activeTab === "village" && <VillagePanel />}
-              {activeTab === "forest" && <ForestPanel />}
-              {activeTab === "estate" && <EstatePanel />}
-              {activeTab === "bastion" && <BastionPanel />}
-              {activeTab === "achievements" && <AchievementsPanel />}
-              {activeTab === "timedevent" && <TimedEventPanel />}
+              <MistBackground />
             </div>
-          </section>
-        </main>
+          )}
 
-        {/* Sleep Mode Mist Background - covers main panels; header, footer, and promos stay above */}
-        {idleModeDialog.isOpen && (
-          <div
-            className="fixed inset-0 pointer-events-auto"
-            style={{
-              top: GAME_HEADER_INSET,
-              bottom: GAME_FOOTER_INSET,
-              zIndex: Z_INDEX.sleepFog,
-            }}
-          >
-            <MistBackground />
+          {/* Footer - above pause overlay so hover tooltips stay visible when paused */}
+          <div className="relative z-50 flex-shrink-0 pointer-events-auto">
+            <GameFooter />
           </div>
-        )}
 
-        {/* Footer - above pause overlay so hover tooltips stay visible when paused */}
-        <div className="relative z-50 flex-shrink-0 pointer-events-auto">
-          <GameFooter />
-        </div>
+          {/* Event Dialog */}
+          <EventDialog
+            isOpen={eventDialog.isOpen}
+            onClose={() => setEventDialog(false)}
+            event={eventDialog.currentEvent}
+          />
 
-        {/* Event Dialog */}
-        <EventDialog
-          isOpen={eventDialog.isOpen}
-          onClose={() => setEventDialog(false)}
-          event={eventDialog.currentEvent}
-        />
+          {/* Combat Dialog */}
+          <CombatDialog
+            isOpen={combatDialog.isOpen}
+            onClose={() => setCombatDialog(false)}
+            enemy={combatDialog.enemy}
+            eventTitle={combatDialog.eventTitle}
+            eventMessage={combatDialog.eventMessage}
+            onVictory={combatDialog.onVictory || (() => ({}))}
+            onDefeat={combatDialog.onDefeat || (() => ({}))}
+          />
 
-        {/* Combat Dialog */}
-        <CombatDialog
-          isOpen={combatDialog.isOpen}
-          onClose={() => setCombatDialog(false)}
-          enemy={combatDialog.enemy}
-          eventTitle={combatDialog.eventTitle}
-          eventMessage={combatDialog.eventMessage}
-          onVictory={combatDialog.onVictory || (() => ({}))}
-          onDefeat={combatDialog.onDefeat || (() => ({}))}
-        />
-
-        {/* Idle Mode Dialog */}
-        <IdleModeDialog />
-        <Suspense fallback={null}>
-          <ShareDialog />
-        </Suspense>
-        {WebOnlyDialogs && !steamEditionActive && (
+          {/* Idle Mode Dialog */}
+          <IdleModeDialog />
           <Suspense fallback={null}>
-            <WebOnlyDialogs
-              shopDialogOpen={shopDialogOpen}
-              setShopDialogOpen={setShopDialogOpen}
-              leaderboardDialogOpen={leaderboardDialogOpen}
-              setLeaderboardDialogOpen={setLeaderboardDialogOpen}
-            />
+            <ShareDialog />
           </Suspense>
-        )}
-        {inactivityDialogOpen && <InactivityDialog />}
+          {WebOnlyDialogs && !steamEditionActive && (
+            <Suspense fallback={null}>
+              <WebOnlyDialogs
+                shopDialogOpen={shopDialogOpen}
+                setShopDialogOpen={setShopDialogOpen}
+                leaderboardDialogOpen={leaderboardDialogOpen}
+                setLeaderboardDialogOpen={setLeaderboardDialogOpen}
+              />
+            </Suspense>
+          )}
+          {inactivityDialogOpen && <InactivityDialog />}
 
-        {/* Reward Dialog */}
-        <RewardDialog
-          isOpen={rewardDialog.isOpen}
-          data={rewardDialog.data}
-          onClose={() => setRewardDialog(false)}
-        />
-        <InvestmentResultDialog
-          isOpen={investmentResultDialog.isOpen}
-          data={investmentResultDialog.data}
-          onClose={() => setInvestmentResultDialog(false)}
-        />
-        <MadnessDialog
-          isOpen={madnessDialog.isOpen}
-          data={madnessDialog.data}
-          onClose={() => setMadnessDialog(false)}
-        />
-        <InsightPotionDialog
-          isOpen={insightPotionDialog.isOpen}
-          data={insightPotionDialog.data}
-          onClose={() => setInsightPotionDialog(false)}
-        />
-        <VillageEffectDialog
-          isOpen={villageEffectDialog.isOpen}
-          data={villageEffectDialog.data}
-          onClose={() => setVillageEffectDialog(false)}
-        />
-        <BlessingOfferDialog />
-        {demoEditionActive && <DemoTimeUpDialog />}
-      </div>
-    </ProfileMenuProvider>
+          {/* Reward Dialog */}
+          <RewardDialog
+            isOpen={rewardDialog.isOpen}
+            data={rewardDialog.data}
+            onClose={() => setRewardDialog(false)}
+          />
+          <InvestmentResultDialog
+            isOpen={investmentResultDialog.isOpen}
+            data={investmentResultDialog.data}
+            onClose={() => setInvestmentResultDialog(false)}
+          />
+          <MadnessDialog
+            isOpen={madnessDialog.isOpen}
+            data={madnessDialog.data}
+            onClose={() => setMadnessDialog(false)}
+          />
+          <InsightPotionDialog
+            isOpen={insightPotionDialog.isOpen}
+            data={insightPotionDialog.data}
+            onClose={() => setInsightPotionDialog(false)}
+          />
+          <VillageEffectDialog
+            isOpen={villageEffectDialog.isOpen}
+            data={villageEffectDialog.data}
+            onClose={() => setVillageEffectDialog(false)}
+          />
+          <BlessingOfferDialog />
+          {demoEditionActive && <DemoTimeUpDialog />}
+        </div>
+      </ProfileMenuProvider>
+    </GameTooltipProvider>
   );
 }
