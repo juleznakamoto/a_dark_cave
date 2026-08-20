@@ -1,3 +1,5 @@
+import { isLocalOnlyEdition } from "@/lib/edition";
+
 const SID_KEY = "st_sid";
 const START_KEY = "st_start";
 const PING_INTERVAL_MS = 5 * 60 * 1000;
@@ -64,6 +66,8 @@ function sendPing() {
 let initialized = false;
 
 export function initSessionTracker() {
+  // Steam / Galaxy / CrazyGames have no Express `/api/session/ping` host.
+  if (isLocalOnlyEdition()) return;
   if (initialized) return;
   initialized = true;
 

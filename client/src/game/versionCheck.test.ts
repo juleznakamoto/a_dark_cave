@@ -1,5 +1,14 @@
 /** @vitest-environment jsdom */
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
+
+const editionMocks = vi.hoisted(() => ({
+  isLocalOnlyEdition: vi.fn(() => false),
+}));
+
+vi.mock("@/lib/edition", () => ({
+  isLocalOnlyEdition: () => editionMocks.isLocalOnlyEdition(),
+}));
+
 import {
   MAX_HARD_RELOAD_ATTEMPTS,
   __checkVersionForTests,
@@ -26,6 +35,7 @@ function mockVersionApi(sha: string | null, ok = true) {
 describe("versionCheck reload retries", () => {
   beforeEach(() => {
     sessionStorage.clear();
+    editionMocks.isLocalOnlyEdition.mockReturnValue(false);
     __resetVersionCheckForTests();
     __setRunningBuildShaForTests("running-old");
   });
@@ -159,5 +169,15 @@ describe("versionCheck reload retries", () => {
     startVersionCheck(callback);
     await __checkVersionForTests();
     expect(callback).not.toHaveBeenCalled();
+  });
+
+  it("does not fetch /api/version on Steam / CrazyGames", async () => {
+    editionMocks.isLocalOnlyEdition.mockReturnValue(true);
+    mockVersionApi("deployed-new");
+    const callback = vi.fn(async (_info: VersionUpdateInfo) => { });
+    startVersionCheck(callback);
+    await __checkVersionForTests();
+    expect(callback).not.toHaveBeenCalled();
+    expect(fetch).not.toHaveBeenCalled();
   });
 });

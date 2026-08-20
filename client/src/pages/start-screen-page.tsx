@@ -14,6 +14,7 @@ import {
   applyStartupUrlCleanup,
   consumeStartupAuthCallback,
 } from "@/game/startupUrlCleanup";
+import { isLocalOnlyEdition } from "@/lib/edition";
 import { initSessionTracker } from "@/lib/sessionTracker";
 
 // Lazy load Game component - only loaded when needed
@@ -52,7 +53,9 @@ export default function StartScreenPage() {
       try {
         // Anonymous session first. UTM beacon is a dynamic import so Zod stays
         // off the start-screen graph; snapshot the URL before any later strip.
-        initSessionTracker();
+        if (!isLocalOnlyEdition()) {
+          initSessionTracker();
+        }
         const landingLocation = {
           pathname: window.location.pathname,
           search: window.location.search,

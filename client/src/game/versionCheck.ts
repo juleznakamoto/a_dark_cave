@@ -1,3 +1,4 @@
+import { isLocalOnlyEdition } from "@/lib/edition";
 import { logger } from "@/lib/logger";
 
 /**
@@ -114,6 +115,7 @@ export function recordUpdateHardReloadAttempt(serverSha: string): number {
 
 /** Read the deployed build sha from the uncached `/api/version` endpoint. */
 async function fetchServerSha(): Promise<string | null> {
+  if (isLocalOnlyEdition()) return null;
   try {
     const response = await fetch("/api/version", { cache: "no-store" });
     if (!response.ok) return null;
@@ -126,6 +128,8 @@ async function fetchServerSha(): Promise<string | null> {
 }
 
 async function checkVersion() {
+  // Steam / Galaxy / CrazyGames have no Express `/api/version` host.
+  if (isLocalOnlyEdition()) return;
   // Local/dev builds have no real commit id to compare against.
   if (getRunningBuildSha() === "dev") return;
 
@@ -168,6 +172,8 @@ function handleVisibilityChange() {
 }
 
 export function startVersionCheck(onNewVersionDetected: VersionUpdateCallback) {
+  if (isLocalOnlyEdition()) return;
+
   versionCheckCallback = onNewVersionDetected;
 
   if (isVersionCheckActive) {
