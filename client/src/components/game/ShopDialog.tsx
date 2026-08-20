@@ -153,24 +153,21 @@ function shopCardStrikethroughCents(
   return shopCardCatalogSaleListCents(item);
 }
 
-/** Extra px so the Highlights second row is not flush-clipped after height lock. */
+/** Extra px so the Highlights second row fits inside the one locked height. */
 const SHOP_HIGHLIGHTS_HEIGHT_SLACK_PX = 40;
 
-/** Pixels of Highlights card grid still clipped by the For Sale scroll viewport. */
-function measureShopDialogClippedPx(el: HTMLElement): number {
+/** Dialog chrome plus any Highlights rows still inside the scroll viewport. */
+function measureShopDialogHeight(el: HTMLElement): number {
+  const dialogH = el.getBoundingClientRect().height;
   const activePane = el.querySelector<HTMLElement>('[data-state="active"]');
   const viewport = activePane?.querySelector<HTMLElement>(
     "[data-radix-scroll-area-viewport]",
   );
-  if (!viewport) return 0;
+  if (!viewport) return dialogH + SHOP_HIGHLIGHTS_HEIGHT_SLACK_PX;
   const content = viewport.firstElementChild as HTMLElement | null;
   const contentH = content?.scrollHeight ?? viewport.scrollHeight;
-  return Math.max(0, contentH - viewport.clientHeight);
-}
-
-/** Dialog chrome plus any Highlights rows still inside the scroll viewport. */
-function measureShopDialogHeight(el: HTMLElement): number {
-  return el.getBoundingClientRect().height + measureShopDialogClippedPx(el);
+  const clipped = Math.max(0, contentH - viewport.clientHeight);
+  return dialogH + clipped + SHOP_HIGHLIGHTS_HEIGHT_SLACK_PX;
 }
 
 /** Gold tab listings: paid resource packs with gold (excludes free gift + legacy packs). */
@@ -956,28 +953,14 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
     if (!isOpen || isLoading || showSecurePurchasePrompt || isDirectCheckout) {
       return;
     }
-    if (activeTab === "shop" && selectedFilter === null) {
+    if (lockedShopHeight == null) {
+      if (activeTab !== "shop" || selectedFilter !== null) return;
       const el = shopDialogContentRef.current;
       if (!el) return;
-      const cap = Math.round(window.innerHeight * 0.82);
-      if (lockedShopHeight == null) {
-        const next = Math.round(
-          measureShopDialogHeight(el) + SHOP_HIGHLIGHTS_HEIGHT_SLACK_PX,
-        );
-        if (next > 0) {
-          setLockedShopHeight(Math.min(next, cap));
-        }
-        return;
+      const next = Math.round(measureShopDialogHeight(el));
+      if (next > 0) {
+        setLockedShopHeight(Math.min(next, window.innerHeight * 0.82));
       }
-      const stillClipped = Math.round(measureShopDialogClippedPx(el));
-      if (stillClipped > 1) {
-        setLockedShopHeight((h) =>
-          Math.min((h ?? 0) + stillClipped, cap),
-        );
-        return;
-      }
-    }
-    if (lockedShopHeight == null) {
       return;
     }
     if (shopFilter && selectedFilter !== shopFilter) {
@@ -2006,23 +1989,6 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
                       <span className="min-w-0 flex-1 leading-none">
                         {t("ui:shop.forSalePlaythroughNote")}
                       </span>
-                    </div>
-                  )}
-                  {activeTab === "purchases" && (
-                    <div className="mt-3 rounded-md border border-green-500/40 bg-green-500/5 px-2 py-2 text-xs font-normal  text-foreground">
-                      {purchasedItems.length === 0 &&
-                        Object.keys(gameState.feastActivations || {}).length ===
-                        0 ? (
-                        <>
-                          <p>{t("ui:shop.noPurchasesTitle")}</p>
-                          <p>{t("ui:shop.noPurchasesHint")}</p>
-                        </>
-                      ) : (
-                        <>
-                          <p>{t("ui:shop.activatePurchasesTitle")}</p>
-                          <p>{t("ui:shop.activatePurchasesNote")}</p>
-                        </>
-                      )}
                     </div>
                   )}
                 </div>
