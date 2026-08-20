@@ -2472,19 +2472,13 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
                                       {(item.id === "gold_15000" ||
                                         item.id === "gold_30000") && (
                                           <div
-                                            className="shop-value-badge-pulse pointer-events-none absolute right-[-16px] top-[-16px] z-20 flex size-[36px] items-center justify-center rounded-full border border-red-600 bg-red-800"
+                                            className="shop-value-badge-pulse pointer-events-none absolute -right-2 -top-2.5 z-20 rounded border border-red-600 bg-red-800 px-2 py-0.5 text-center text-2xs font-semibold uppercase leading-tight tracking-wide text-white"
                                             aria-hidden
                                           >
-                                            <span className="flex flex-col items-center gap-px px-0.5 text-[8px] font-medium leading-none text-white">
-                                              <span className="text-[9px] font-semibold">
-                                                {item.id === "gold_30000"
-                                                  ? "3x"
-                                                  : "2.5x"}
-                                              </span>
-                                              <span>
-                                                {t("ui:shop.threeXValue")}
-                                              </span>
-                                            </span>
+                                            {item.id === "gold_30000"
+                                              ? "3x"
+                                              : "2.5x"}{" "}
+                                            {t("ui:shop.threeXValue")}
                                           </div>
                                         )}
                                       <Button
