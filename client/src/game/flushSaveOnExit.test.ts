@@ -83,6 +83,66 @@ describe("flushSaveOnExit", () => {
     stop();
   });
 
+  it("still saves after a start-screen pagehide no-op", async () => {
+    getState.mockReturnValue({
+      flags: { gameStarted: false },
+      isGameLoopActive: false,
+    });
+    const { installFlushSaveOnExit } = await import("./flushSaveOnExit");
+    const stop = installFlushSaveOnExit();
+    window.dispatchEvent(new Event("pagehide"));
+    await vi.waitFor(() => {
+      expect(getState).toHaveBeenCalled();
+    });
+    await Promise.resolve();
+
+    const live = {
+      flags: { gameStarted: true },
+      isGameLoopActive: true,
+      resources: { wood: 3 },
+    };
+    getState.mockReturnValue(live);
+    window.dispatchEvent(new Event("pagehide"));
+    await vi.waitFor(() => {
+      expect(saveGame).toHaveBeenCalledWith(live, false, { force: true });
+    });
+    stop();
+  });
+
+  it("Steam quit still saves after a start-screen pagehide no-op", async () => {
+    let willQuit: (() => void) | undefined;
+    steamOnWillQuit.mockImplementation((cb: () => void) => {
+      willQuit = cb;
+      return vi.fn();
+    });
+    getState.mockReturnValue({
+      flags: { gameStarted: false },
+      isGameLoopActive: false,
+    });
+    const { installFlushSaveOnExit } = await import("./flushSaveOnExit");
+    const stop = installFlushSaveOnExit();
+    window.dispatchEvent(new Event("pagehide"));
+    await vi.waitFor(() => {
+      expect(getState).toHaveBeenCalled();
+    });
+    await Promise.resolve();
+
+    getState.mockReturnValue({
+      flags: { gameStarted: true },
+      isGameLoopActive: true,
+    });
+    willQuit?.();
+    await vi.waitFor(() => {
+      expect(saveGame).toHaveBeenCalledWith(
+        expect.objectContaining({ flags: { gameStarted: true } }),
+        false,
+        { force: true },
+      );
+      expect(steamNotifyQuitSaveComplete).toHaveBeenCalled();
+    });
+    stop();
+  });
+
   it("force-saves a live game on pagehide", async () => {
     const live = {
       flags: { gameStarted: true },

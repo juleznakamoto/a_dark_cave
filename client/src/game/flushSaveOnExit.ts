@@ -5,9 +5,9 @@
  * CrazyGames / Galaxy / web: `pagehide` is best-effort only (no exit API;
  * the iframe or tab can disappear before IndexedDB finishes).
  *
- * Exit is one write only. Clearing `flushInFlight` after the Steam handshake
- * save would let the still-registered `pagehide` start a second `saveGame`
- * while Electron destroys the window, which can truncate `adc-steam-save.dat`.
+ * Steam exit is one write only: after the handshake flush settles we lock and
+ * drop `pagehide` before acking. A start-screen no-op must not take that lock,
+ * or a later live quit would skip `saveGame`.
  */
 import { logger } from "@/lib/logger";
 import {
@@ -17,7 +17,10 @@ import {
 
 let uninstall: (() => void) | null = null;
 let flushInFlight: Promise<void> | null = null;
-/** After the first exit flush starts, never start another (Steam or pagehide). */
+/**
+ * Set only after the Steam quit handshake flush settles. A start-screen
+ * pagehide is a no-op and must not block a later live save.
+ */
 let exitFlushLocked = false;
 
 function hasLiveGameToFlush(state: {
@@ -41,7 +44,6 @@ function flushLiveGameOnce(): Promise<void> {
   if (flushInFlight) return flushInFlight;
   if (exitFlushLocked) return Promise.resolve();
 
-  exitFlushLocked = true;
   flushInFlight = flushLiveGame()
     .catch((error) => {
       logger.warn("[SAVE] Exit flush failed:", error);
@@ -77,7 +79,9 @@ export function installFlushSaveOnExit(): () => void {
 
   stopWillQuit = steamOnWillQuit(() => {
     void flushLiveGameOnce().finally(() => {
-      // Drop pagehide before Electron tears the window down, then ack.
+      // One Steam handshake write only. Lock + drop pagehide before ack so
+      // window teardown cannot start a second saveGame.
+      exitFlushLocked = true;
       detachExitListeners();
       steamNotifyQuitSaveComplete();
     });

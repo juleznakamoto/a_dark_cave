@@ -908,21 +908,7 @@ function processTick() {
  * every simulation tick, so event scanning (which grows with unlocked content) is ~4x cheaper.
  */
 function processEventCheck() {
-  const state = useGameStore.getState();
-
-  // Check for random events
-  const prevEvents = { ...state.events };
-  state.checkEvents();
-
-  // Trigger save if events changed (for cube events persistence)
-  // Skip save during sleep/idle mode
-  const eventsChanged = Object.keys(state.events).some(
-    (key) => state.events[key] !== prevEvents[key],
-  );
-  if (eventsChanged && import.meta.env.DEV && !state.idleModeState?.isActive) {
-    // Manually call autosave to persist events changes
-    handleAutoSave();
-  }
+  useGameStore.getState().checkEvents();
 }
 
 /** Accumulate a production output/consumption delta into a batch map. */
