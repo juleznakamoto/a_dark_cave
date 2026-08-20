@@ -153,18 +153,24 @@ function shopCardStrikethroughCents(
   return shopCardCatalogSaleListCents(item);
 }
 
-/** Dialog chrome plus any Highlights rows still inside the scroll viewport. */
-function measureShopDialogHeight(el: HTMLElement): number {
-  const dialogH = el.getBoundingClientRect().height;
+/** Extra px so the Highlights second row is not flush-clipped after height lock. */
+const SHOP_HIGHLIGHTS_HEIGHT_SLACK_PX = 40;
+
+/** Pixels of Highlights card grid still clipped by the For Sale scroll viewport. */
+function measureShopDialogClippedPx(el: HTMLElement): number {
   const activePane = el.querySelector<HTMLElement>('[data-state="active"]');
   const viewport = activePane?.querySelector<HTMLElement>(
     "[data-radix-scroll-area-viewport]",
   );
-  if (!viewport) return dialogH;
+  if (!viewport) return 0;
   const content = viewport.firstElementChild as HTMLElement | null;
   const contentH = content?.scrollHeight ?? viewport.scrollHeight;
-  const clipped = contentH - viewport.clientHeight;
-  return clipped > 1 ? dialogH + clipped : dialogH;
+  return Math.max(0, contentH - viewport.clientHeight);
+}
+
+/** Dialog chrome plus any Highlights rows still inside the scroll viewport. */
+function measureShopDialogHeight(el: HTMLElement): number {
+  return el.getBoundingClientRect().height + measureShopDialogClippedPx(el);
 }
 
 /** Gold tab listings: paid resource packs with gold (excludes free gift + legacy packs). */
@@ -950,14 +956,28 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
     if (!isOpen || isLoading || showSecurePurchasePrompt || isDirectCheckout) {
       return;
     }
-    if (lockedShopHeight == null) {
-      if (activeTab !== "shop" || selectedFilter !== null) return;
+    if (activeTab === "shop" && selectedFilter === null) {
       const el = shopDialogContentRef.current;
       if (!el) return;
-      const next = Math.round(measureShopDialogHeight(el));
-      if (next > 0) {
-        setLockedShopHeight(Math.min(next, window.innerHeight * 0.82));
+      const cap = Math.round(window.innerHeight * 0.82);
+      if (lockedShopHeight == null) {
+        const next = Math.round(
+          measureShopDialogHeight(el) + SHOP_HIGHLIGHTS_HEIGHT_SLACK_PX,
+        );
+        if (next > 0) {
+          setLockedShopHeight(Math.min(next, cap));
+        }
+        return;
       }
+      const stillClipped = Math.round(measureShopDialogClippedPx(el));
+      if (stillClipped > 1) {
+        setLockedShopHeight((h) =>
+          Math.min((h ?? 0) + stillClipped, cap),
+        );
+        return;
+      }
+    }
+    if (lockedShopHeight == null) {
       return;
     }
     if (shopFilter && selectedFilter !== shopFilter) {
