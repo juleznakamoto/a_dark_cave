@@ -50,6 +50,7 @@ import {
 } from "./playTimeAutoPrompts";
 import { processDemoLimit } from "./demoLimit";
 import { tickObsidianOrbFocus } from "@/game/obsidianOrb";
+import { isSteamEditionActive } from "@/lib/edition";
 let gameLoopId: number | null = null;
 let lastFrameTime = 0;
 
@@ -137,7 +138,8 @@ function canPriorExecute(actionId: string, state: GameState): boolean {
 const TICK_INTERVAL = GAME_CONSTANTS.TICK_INTERVAL;
 const EVENT_CHECK_INTERVAL = GAME_CONSTANTS.EVENT_CHECK_INTERVAL; // Roll events once per second (decoupled from the 250ms tick)
 const AUTO_SAVE_INTERVAL_SIGNED_IN = 60 * 1000; // Cloud autosave every 1 minute
-const AUTO_SAVE_INTERVAL_GUEST = 15 * 1000; // Local IndexedDB only — matches production tick
+const AUTO_SAVE_INTERVAL_GUEST = 15 * 1000; // Web guest: local IndexedDB only
+const AUTO_SAVE_INTERVAL_LOCAL_ONLY = 3 * 1000; // Steam / Galaxy / CrazyGames (no cloud)
 const PRODUCTION_INTERVAL = 15000; // All production and checks happen every 15 seconds
 const INACTIVITY_TIMEOUT = 15 * 60 * 1000; // 15 minute in milliseconds
 const TARGET_FPS = 4;
@@ -478,9 +480,11 @@ export function startGameLoop() {
       const currentStateForSave = useGameStore.getState();
       const isInSleepMode = currentStateForSave.idleModeState?.isActive === true;
 
-      const autoSaveInterval = currentStateForSave.isUserSignedIn
-        ? AUTO_SAVE_INTERVAL_SIGNED_IN
-        : AUTO_SAVE_INTERVAL_GUEST;
+      const autoSaveInterval = isSteamEditionActive()
+        ? AUTO_SAVE_INTERVAL_LOCAL_ONLY
+        : currentStateForSave.isUserSignedIn
+          ? AUTO_SAVE_INTERVAL_SIGNED_IN
+          : AUTO_SAVE_INTERVAL_GUEST;
 
       if (
         timestamp - lastAutoSave >= autoSaveInterval &&

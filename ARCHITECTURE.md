@@ -141,7 +141,7 @@ shared/schema.tsâ€” Zod GameState schema (source of truth for persisted sha
   pause, reset-on-load, and runtime-only keys; schema-derived allowlist for `buildGameState()`.
 - **`loop.ts`** â€” `TARGET_FPS = 4`. ~15s production cycle (`PRODUCTION_INTERVAL`), fixed tick
   (`TICK_INTERVAL` from `constants.ts`), pause gates (manual pause, idle, inactivity,
-  `isModalDialogOpen`), autosave (15s guest / 60s signed-in cloud diff),
+  `isModalDialogOpen`), autosave (15s web guest / 60s signed-in cloud / 3s Steam·Galaxy·CrazyGames),
   attack-wave timer, play-time accumulation. Timed-tab countdown freezes while the page is hidden (`visibilitychange` + `isGameTabHidden()`). Started from `gameplayInitOrchestrator.ts`; stopped on `pages/game.tsx` unmount via
   `stopGameLoop()`.
 - **`rules/`** â€” `actionsRegistry.ts` (central `gameActions`), per-area action modules

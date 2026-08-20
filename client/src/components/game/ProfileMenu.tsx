@@ -638,36 +638,18 @@ export function GameHeaderControls() {
             </span>
           </DropdownMenuItem>
           <DropdownMenuSeparator />
-          {!crazyGamesEditionActive && (
+          {!steamEditionActive && (
             <>
               <DropdownMenuItemWithTooltip
                 tooltip={
                   <div className="text-xs">
-                    {steamEditionActive ? (
-                      <>
-                        <p>
-                          {t("profile.autoSaveSteam", {
-                            defaultValue: "Game auto-saves every 15 seconds",
-                          })}
-                        </p>
-                        <p className="mt-1">
-                          {t("profile.steamCloudSave", {
-                            defaultValue:
-                              "Progress syncs to Steam Cloud when you save.",
-                          })}
-                        </p>
-                      </>
-                    ) : (
-                      <>
-                        <p>
-                          {currentUser
-                            ? t("profile.autoSaveSignedIn")
-                            : t("profile.autoSaveGuest")}
-                        </p>
-                        {!currentUser && (
-                          <p className="mt-1">{t("profile.signUpCloudSave")}</p>
-                        )}
-                      </>
+                    <p>
+                      {currentUser
+                        ? t("profile.autoSaveSignedIn")
+                        : t("profile.autoSaveGuest")}
+                    </p>
+                    {!currentUser && (
+                      <p className="mt-1">{t("profile.signUpCloudSave")}</p>
                     )}
                     {lastSaved && (
                       <p className="mt-1">
