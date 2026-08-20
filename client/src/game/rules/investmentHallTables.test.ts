@@ -9,8 +9,10 @@ import {
   getLuckWinChanceBonus,
   getSuccessChancePercent,
   isInvestmentWaveReadyForUi,
+  luckyChanceSuccessProfitGoldRange,
   maxLuckyChanceSuccessProfitGold,
   maxSuccessProfitGold,
+  successProfitGoldRange,
   randomIntInclusive,
   winPercentInclusiveRange,
 } from "./investmentHallTables";
@@ -47,6 +49,24 @@ describe("winPercentInclusiveRange", () => {
     const r = winPercentInclusiveRange("A", 15);
     expect(r.from).toBe(5);
     expect(r.to).toBe(15);
+  });
+});
+
+describe("successProfitGoldRange / luckyChanceSuccessProfitGoldRange", () => {
+  it("uses inclusive win % band and Lucky Chance ×4 multiplier", () => {
+    expect(successProfitGoldRange(100, "A", 15)).toEqual({ from: 5, to: 15 });
+    expect(luckyChanceSuccessProfitGoldRange(100, "A", 15)).toEqual({
+      from: 20,
+      to: 60,
+    });
+    expect(successProfitGoldRange(1000, "A", 30)).toEqual({
+      from: 100,
+      to: 200,
+    });
+    expect(luckyChanceSuccessProfitGoldRange(1000, "A", 30)).toEqual({
+      from: 400,
+      to: 800,
+    });
   });
 });
 

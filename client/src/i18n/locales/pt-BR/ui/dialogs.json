@@ -101,7 +101,7 @@
       "lucky": "Chance, em caso de sucesso, de multiplicar seu lucro por {{multiplier}}.",
       "loss": "A parte do seu investimento que você perde em caso de fracasso.",
       "wipeout": "Chance de perder todo o seu investimento em caso de fracasso.",
-      "potentialProfit": "Lucro máximo que você pode obter no seu investimento. O segundo valor é caso o Golpe de Sorte ocorra (lucro × {{multiplier}}).",
+      "potentialProfit": "Faixa de lucro em um investimento bem-sucedido. A segunda faixa é caso o Golpe de Sorte ocorra (lucro × {{multiplier}}).",
       "wait": "Depois de cada investimento, leva 30 minutos para novas ofertas aparecerem."
     }
   },

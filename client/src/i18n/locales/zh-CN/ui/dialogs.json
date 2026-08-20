@@ -106,7 +106,7 @@
       "lucky": "成功时利润乘以 {{multiplier}} 的几率。",
       "loss": "失败时损失的投资比例。",
       "wipeout": "失败时损失全部投资的几率。",
-      "potentialProfit": "最大利润。第二值为幸运触发（利润×{{multiplier}}）。",
+      "potentialProfit": "成功时的利润区间。第二区间为幸运触发（利润×{{multiplier}}）。",
       "wait": "每次投资后，需要 30 分钟才会出现新方案。"
     }
   },

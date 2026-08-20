@@ -20,8 +20,8 @@ import {
   LUCKY_CHANCE_WIN_MULTIPLIER,
   TOTAL_LOSS_PCT,
   lossPercentInclusiveRange,
-  maxLuckyChanceSuccessProfitGold,
-  maxSuccessProfitGold,
+  luckyChanceSuccessProfitGoldRange,
+  successProfitGoldRange,
   winPercentInclusiveRange,
 } from "@/game/rules/investmentHallTables";
 import type { InvestmentDurationMin } from "@/game/rules/investmentHallTables";
@@ -66,6 +66,16 @@ function formatPercentDisplay(p: number): string {
 /** Single trailing percent, en dash between values (e.g. `10–20 %`). */
 function formatPercentRange(from: number, to: number): string {
   return `${formatPercentDisplay(from)}–${formatPercentDisplay(to)} %`;
+}
+
+function formatGoldRange(
+  from: number,
+  to: number,
+  t: TFunction<["ui", "common"]>,
+): string {
+  return t("common:currency.goldAmount", {
+    amount: `${formatNumber(from)}–${formatNumber(to)}`,
+  });
 }
 
 type Props = {
@@ -123,11 +133,14 @@ export default function InvestDialog({ open, onOpenChange }: Props) {
     const offer = offers[idx];
     const stake = Number(amountStr);
     if (!offer || !Number.isFinite(stake) || stake <= 0) {
-      return { normal: 0, luckyChance: 0 };
+      return {
+        normal: { from: 0, to: 0 },
+        luckyChance: { from: 0, to: 0 },
+      };
     }
     return {
-      normal: maxSuccessProfitGold(stake, offer.tier, offer.durationMin),
-      luckyChance: maxLuckyChanceSuccessProfitGold(
+      normal: successProfitGoldRange(stake, offer.tier, offer.durationMin),
+      luckyChance: luckyChanceSuccessProfitGoldRange(
         stake,
         offer.tier,
         offer.durationMin,
@@ -234,7 +247,7 @@ export default function InvestDialog({ open, onOpenChange }: Props) {
       >
         <DialogHeader className="min-w-0">
           <div className="flex items-center gap-1 pr-10">
-            <DialogTitle className="m-0 leading-none">
+            <DialogTitle className="m-0 pr-0 leading-none">
               {t("invest.title")}
             </DialogTitle>
             <TooltipWrapper
@@ -242,7 +255,7 @@ export default function InvestDialog({ open, onOpenChange }: Props) {
               tooltipId="invest-dialog-info"
               disabled
               tooltipContentClassName="max-w-sm"
-              className="-ml-0.5 flex h-7 w-7 shrink-0 items-center justify-center rounded-full text-muted-foreground hover:text-foreground cursor-pointer"
+              className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full text-muted-foreground hover:text-foreground cursor-pointer"
               tooltipTriggerClassName="flex h-full w-full items-center justify-center"
             >
               <button
@@ -514,15 +527,19 @@ export default function InvestDialog({ open, onOpenChange }: Props) {
               <p className="text-center text-xs text-muted-foreground tabular-nums">
                 {t("invest.potentialProfit")}{" "}
                 <span className="text-xs text-foreground font-medium tabular-nums">
-                  {t("common:currency.goldAmount", {
-                    amount: formatNumber(potentialProfitGold.normal),
-                  })}
+                  {formatGoldRange(
+                    potentialProfitGold.normal.from,
+                    potentialProfitGold.normal.to,
+                    t,
+                  )}
                 </span>
                 {" / "}
                 <span className="text-xs text-foreground font-medium tabular-nums">
-                  {t("common:currency.goldAmount", {
-                    amount: formatNumber(potentialProfitGold.luckyChance),
-                  })}
+                  {formatGoldRange(
+                    potentialProfitGold.luckyChance.from,
+                    potentialProfitGold.luckyChance.to,
+                    t,
+                  )}
                 </span>
               </p>
               <Button

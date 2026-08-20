@@ -118,14 +118,51 @@ export function winPercentInclusiveRange(
   return { from: Math.round(min), to: Math.round(max) };
 }
 
+function profitGoldFromWinPercent(
+  amountGold: number,
+  winPercent: number,
+  multiplier = 1,
+): number {
+  return Math.floor((amountGold * winPercent * multiplier) / 100);
+}
+
+/** Gold profit band on success (no lucky multiplier). */
+export function successProfitGoldRange(
+  amountGold: number,
+  tier: InvestmentTier,
+  durationMin: number,
+): { from: number; to: number } {
+  const { from, to } = winPercentInclusiveRange(tier, durationMin);
+  return {
+    from: profitGoldFromWinPercent(amountGold, from),
+    to: profitGoldFromWinPercent(amountGold, to),
+  };
+}
+
+/** Gold profit band on success if Lucky Chance multiplies the rolled win %. */
+export function luckyChanceSuccessProfitGoldRange(
+  amountGold: number,
+  tier: InvestmentTier,
+  durationMin: number,
+): { from: number; to: number } {
+  const { from, to } = winPercentInclusiveRange(tier, durationMin);
+  return {
+    from: profitGoldFromWinPercent(
+      amountGold,
+      from,
+      LUCKY_CHANCE_WIN_MULTIPLIER,
+    ),
+    to: profitGoldFromWinPercent(amountGold, to, LUCKY_CHANCE_WIN_MULTIPLIER),
+  };
+}
+
 /** Max gold profit on success using highest win % roll (no lucky multiplier). */
 export function maxSuccessProfitGold(
   amountGold: number,
   tier: InvestmentTier,
   durationMin: number,
 ): number {
-  const { to } = winPercentInclusiveRange(tier, durationMin);
-  return Math.floor((amountGold * to) / 100);
+  return successProfitGoldRange(amountGold, tier, durationMin).to;
 }
 
 /** Max gold profit on success if highest win % roll gets the Lucky Chance multiplier. */
@@ -134,10 +171,7 @@ export function maxLuckyChanceSuccessProfitGold(
   tier: InvestmentTier,
   durationMin: number,
 ): number {
-  const { to } = winPercentInclusiveRange(tier, durationMin);
-  return Math.floor(
-    (amountGold * to * LUCKY_CHANCE_WIN_MULTIPLIER) / 100,
-  );
+  return luckyChanceSuccessProfitGoldRange(amountGold, tier, durationMin).to;
 }
 
 export function lossPercentInclusiveRange(

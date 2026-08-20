@@ -106,7 +106,7 @@
       "lucky": "Chance on success to multiply your profit by {{multiplier}}.",
       "loss": "The portion of your investment you lose in case of failure.",
       "wipeout": "Chance to lose your entire investment in case of failure.",
-      "potentialProfit": "Maximum profit you can gain on your investment. Second value is if Lucky Chance hits (profit × {{multiplier}}).",
+      "potentialProfit": "Profit range on a successful investment. The second range is if Lucky Chance hits (profit × {{multiplier}}).",
       "wait": "After each investment, it takes 30 minutes for new offers to appear."
     }
   },

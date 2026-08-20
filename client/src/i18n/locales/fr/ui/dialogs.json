@@ -106,7 +106,7 @@
       "lucky": "Probabilité en cas de succès de multiplier votre profit par {{multiplier}}.",
       "loss": "La part de votre investissement perdue en cas d'échec.",
       "wipeout": "Probabilité de perdre la totalité de votre investissement en cas d'échec.",
-      "potentialProfit": "Profit maximal possible sur votre investissement. La seconde valeur s'applique si la chance supplémentaire se déclenche (profit × {{multiplier}}).",
+      "potentialProfit": "Fourchette de profit en cas de succès. La seconde fourchette s'applique si la chance supplémentaire se déclenche (profit × {{multiplier}}).",
       "wait": "Après chaque investissement, il faut 30 minutes pour que de nouvelles offres apparaissent."
     }
   },
