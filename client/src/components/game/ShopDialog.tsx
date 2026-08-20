@@ -56,6 +56,7 @@ import { userOwnsShopItemFromPurchaseRows } from "@shared/shopPurchaseEligibilit
 import {
   GREAT_FEAST_DURATION_MS,
   SHOP_ITEMS,
+  HIGHLIGHTS_ORDER,
   getHighlightsOrder,
   bundleComponentsListPriceSumCents,
   isShopPaidGoldPackItem,
@@ -156,17 +157,28 @@ function shopCardStrikethroughCents(
 /** Extra px so the Highlights second row fits inside the one locked height. */
 const SHOP_HIGHLIGHTS_HEIGHT_SLACK_PX = 40;
 
-/** Dialog chrome plus any Highlights rows still inside the scroll viewport. */
-function measureShopDialogHeight(el: HTMLElement): number {
-  const dialogH = el.getBoundingClientRect().height;
-  const activePane = el.querySelector<HTMLElement>('[data-state="active"]');
-  const viewport = activePane?.querySelector<HTMLElement>(
+/**
+ * One-shot Highlights height, or `null` if the grid is not laid out yet.
+ * Uses offsetHeight so the open zoom animation does not shrink the lock.
+ */
+function measureShopDialogHeight(el: HTMLElement): number | null {
+  // Must target the tab panel. `[data-state=active]` alone matches the trigger first.
+  const shopPane = el.querySelector<HTMLElement>(
+    "[data-shop-for-sale-pane][data-state='active']",
+  );
+  const viewport = shopPane?.querySelector<HTMLElement>(
     "[data-radix-scroll-area-viewport]",
   );
-  if (!viewport) return dialogH + SHOP_HIGHLIGHTS_HEIGHT_SLACK_PX;
+  if (!viewport) return null;
   const content = viewport.firstElementChild as HTMLElement | null;
-  const contentH = content?.scrollHeight ?? viewport.scrollHeight;
-  const clipped = Math.max(0, contentH - viewport.clientHeight);
+  if (!content) return null;
+  const grid = content.querySelector("[data-shop-card-grid]");
+  const cardCount = grid?.childElementCount ?? 0;
+  if (cardCount < HIGHLIGHTS_ORDER.length) return null;
+
+  const dialogH = el.offsetHeight;
+  if (dialogH <= 0) return null;
+  const clipped = Math.max(0, content.scrollHeight - viewport.clientHeight);
   return dialogH + clipped + SHOP_HIGHLIGHTS_HEIGHT_SLACK_PX;
 }
 
@@ -945,34 +957,80 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
       setSelectedFilter(null);
       setActiveTab("shop");
       setShowSecurePurchasePrompt(false);
-      setLockedShopHeight(null);
     }
   }, [isOpen]);
 
+  const selectedFilterRef = React.useRef(selectedFilter);
+  selectedFilterRef.current = selectedFilter;
+  const activeTabRef = React.useRef(activeTab);
+  activeTabRef.current = activeTab;
+
   React.useLayoutEffect(() => {
-    if (!isOpen || isLoading || showSecurePurchasePrompt || isDirectCheckout) {
-      return;
-    }
-    if (lockedShopHeight == null) {
-      if (activeTab !== "shop" || selectedFilter !== null) return;
-      const el = shopDialogContentRef.current;
-      if (!el) return;
-      const next = Math.round(measureShopDialogHeight(el));
-      if (next > 0) {
-        setLockedShopHeight(Math.min(next, window.innerHeight * 0.82));
+    if (!isOpen) {
+      if (lockedShopHeight != null) {
+        setLockedShopHeight(null);
       }
       return;
     }
-    if (shopFilter && selectedFilter !== shopFilter) {
-      setSelectedFilter(shopFilter);
+    if (isLoading || showSecurePurchasePrompt || isDirectCheckout) {
+      return;
     }
+    if (lockedShopHeight != null) {
+      if (shopFilter && selectedFilterRef.current !== shopFilter) {
+        setSelectedFilter(shopFilter);
+      }
+      return;
+    }
+
+    let cancelled = false;
+    let raf = 0;
+    let frames = 0;
+    const cap = () => Math.round(window.innerHeight * 0.82);
+    const tryLock = () => {
+      if (cancelled) return;
+      const el = shopDialogContentRef.current;
+      const next = el ? measureShopDialogHeight(el) : null;
+      if (next != null && next > 0) {
+        setLockedShopHeight(Math.min(Math.round(next), cap()));
+        return;
+      }
+      // Left Highlights before the grid was measurable: freeze current size.
+      if (
+        el &&
+        (selectedFilterRef.current !== null || activeTabRef.current !== "shop")
+      ) {
+        setLockedShopHeight(
+          Math.min(
+            el.offsetHeight + SHOP_HIGHLIGHTS_HEIGHT_SLACK_PX,
+            cap(),
+          ),
+        );
+        return;
+      }
+      frames += 1;
+      if (frames > 90) {
+        if (el && el.offsetHeight > 0) {
+          setLockedShopHeight(
+            Math.min(
+              el.offsetHeight + SHOP_HIGHLIGHTS_HEIGHT_SLACK_PX,
+              cap(),
+            ),
+          );
+        }
+        return;
+      }
+      raf = requestAnimationFrame(tryLock);
+    };
+    raf = requestAnimationFrame(tryLock);
+    return () => {
+      cancelled = true;
+      cancelAnimationFrame(raf);
+    };
   }, [
     isOpen,
     isLoading,
     showSecurePurchasePrompt,
     isDirectCheckout,
-    activeTab,
-    selectedFilter,
     lockedShopHeight,
     shopFilter,
   ]);
@@ -1881,7 +1939,7 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
                 ? {
                   height: lockedShopHeight,
                   minHeight: lockedShopHeight,
-                  maxHeight: "82vh",
+                  maxHeight: lockedShopHeight,
                 }
                 : undefined
             }
@@ -1995,6 +2053,7 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
 
                 <TabsContent
                   value="shop"
+                  data-shop-for-sale-pane
                   className={cn(
                     "mt-0 flex flex-col outline-none ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 data-[state=inactive]:hidden",
                     lockedShopHeight != null
@@ -2106,7 +2165,10 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
                     scrollAreaId="shop-dialog-for-sale"
                     viewportClassName="!pl-0 !pr-0"
                   >
-                    <div className="grid w-full grid-cols-1 gap-4 md:grid-cols-3">
+                    <div
+                      data-shop-card-grid
+                      className="grid w-full grid-cols-1 gap-4 md:grid-cols-3"
+                    >
                       {(selectedFilter === null
                         ? getHighlightsOrder(gameState.playTime || 0)
                           .map((id) => SHOP_ITEMS[id])
