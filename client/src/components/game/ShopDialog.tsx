@@ -2469,21 +2469,24 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
                                   </CardContent>
                                   <CardFooter className="pl-4 pr-4 pb-4 flex-col gap-2">
                                     <div className="relative z-0 w-full overflow-visible pt-1">
-                                      {item.id === "gold_15000" && (
-                                        <div
-                                          className="shop-value-badge-pulse pointer-events-none absolute right-[-16px] top-[-16px] z-20 flex size-[36px] items-center justify-center rounded-full border border-red-600 bg-red-800"
-                                          aria-hidden
-                                        >
-                                          <span className="flex flex-col items-center gap-px px-0.5 text-[8px] font-medium leading-none text-white">
-                                            <span className="text-[9px] font-semibold">
-                                              2.5x
+                                      {(item.id === "gold_15000" ||
+                                        item.id === "gold_30000") && (
+                                          <div
+                                            className="shop-value-badge-pulse pointer-events-none absolute right-[-16px] top-[-16px] z-20 flex size-[36px] items-center justify-center rounded-full border border-red-600 bg-red-800"
+                                            aria-hidden
+                                          >
+                                            <span className="flex flex-col items-center gap-px px-0.5 text-[8px] font-medium leading-none text-white">
+                                              <span className="text-[9px] font-semibold">
+                                                {item.id === "gold_30000"
+                                                  ? "3x"
+                                                  : "2.5x"}
+                                              </span>
+                                              <span>
+                                                {t("ui:shop.threeXValue")}
+                                              </span>
                                             </span>
-                                            <span>
-                                              {t("ui:shop.threeXValue")}
-                                            </span>
-                                          </span>
-                                        </div>
-                                      )}
+                                          </div>
+                                        )}
                                       <Button
                                         onClick={() =>
                                           handleShopItemPurchaseClick(item.id)

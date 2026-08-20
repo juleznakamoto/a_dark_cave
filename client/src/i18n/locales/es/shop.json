@@ -60,6 +60,11 @@
     "description": "Una cantidad impía de oro",
     "name": "20'000 de oro"
   },
+  "gold_30000": {
+    "activationMessage": "Se han añadido 30'000 de oro a tu inventario.",
+    "description": "Una cantidad blasfema de oro",
+    "name": "30'000 de oro"
+  },
   "gold_250": {
     "activationMessage": "Se han añadido 1000 de oro a tu inventario.",
     "description": "Una cantidad decente de oro",

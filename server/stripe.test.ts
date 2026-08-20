@@ -231,6 +231,21 @@ describe('Stripe Shop Integration', () => {
       );
     });
 
+    it('should allow gold_30000 at catalog price', async () => {
+      mockPaymentIntents.create.mockResolvedValue({
+        client_secret: 'test_secret',
+      } as any);
+
+      const result = await createPaymentIntent('gold_30000');
+      expect(result.clientSecret).toBe('test_secret');
+      expect(mockPaymentIntents.create).toHaveBeenCalledWith(
+        expect.objectContaining({
+          amount: 1499,
+          metadata: expect.objectContaining({ itemId: 'gold_30000' }),
+        }),
+      );
+    });
+
     it('should always use server-side price, never client price', async () => {
       mockPaymentIntents.create.mockResolvedValue({
         client_secret: 'test_secret',

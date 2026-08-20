@@ -60,6 +60,11 @@
     "description": "Unholy amounts of Gold",
     "name": "20'000 Gold"
   },
+  "gold_30000": {
+    "activationMessage": "30'000 Gold have been added to your inventory.",
+    "description": "Blasphemous amounts of Gold",
+    "name": "30'000 Gold"
+  },
   "gold_250": {
     "activationMessage": "1000 Gold have been added to your inventory.",
     "description": "A decent amount of Gold",

@@ -60,6 +60,11 @@
     "description": "Quantità empie di Oro",
     "name": "20'000 Oro"
   },
+  "gold_30000": {
+    "activationMessage": "30'000 Oro sono stati aggiunti al tuo inventario.",
+    "description": "Quantità blasfeme di Oro",
+    "name": "30'000 Oro"
+  },
   "gold_250": {
     "activationMessage": "1000 Oro sono stati aggiunti al tuo inventario.",
     "description": "Una discreta quantità di Oro",

@@ -60,6 +60,11 @@
     "description": "Une quantité impie d'or",
     "name": "20'000 or"
   },
+  "gold_30000": {
+    "activationMessage": "30'000 or ont été ajoutés à votre inventaire.",
+    "description": "Une quantité blasphématoire d'or",
+    "name": "30'000 or"
+  },
   "gold_250": {
     "activationMessage": "1000 or ont été ajoutés à votre inventaire.",
     "description": "Une quantité correcte d'or",

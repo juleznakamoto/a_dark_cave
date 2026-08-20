@@ -77,7 +77,7 @@ export const SHOP_ITEMS: Record<string, ShopItem> = {
     canPurchaseMultipleTimes: true,
     category: "resource",
     activationMessage: "1000 Gold have been added to your inventory.",
-    symbol: "🟇",
+    symbol: "🟃",
     symbolColor: "text-yellow-600",
   },
 
@@ -92,7 +92,7 @@ export const SHOP_ITEMS: Record<string, ShopItem> = {
     canPurchaseMultipleTimes: true,
     category: "resource",
     activationMessage: "1000 Gold have been added to your inventory.",
-    symbol: "🟇",
+    symbol: "🟃",
     symbolColor: "text-yellow-600",
   },
 
@@ -107,7 +107,7 @@ export const SHOP_ITEMS: Record<string, ShopItem> = {
     canPurchaseMultipleTimes: true,
     category: "resource",
     activationMessage: "2500 Gold have been added to your inventory.",
-    symbol: "🟍",
+    symbol: "🟇",
     symbolColor: "text-yellow-600",
   },
 
@@ -122,7 +122,7 @@ export const SHOP_ITEMS: Record<string, ShopItem> = {
     canPurchaseMultipleTimes: true,
     category: "resource",
     activationMessage: "5000 Gold have been added to your inventory.",
-    symbol: "🟑",
+    symbol: "🟍",
     symbolColor: "text-yellow-600",
   },
 
@@ -137,6 +137,21 @@ export const SHOP_ITEMS: Record<string, ShopItem> = {
     canPurchaseMultipleTimes: true,
     category: "resource",
     activationMessage: "15'000 Gold have been added to your inventory.",
+    symbol: "🟑",
+    symbolColor: "text-yellow-600",
+  },
+
+  gold_30000: {
+    id: "gold_30000",
+    name: "30'000 Gold",
+    description: "Blasphemous amounts of Gold",
+    price: 1499, // 14.99 €
+    rewards: {
+      resources: { gold: 30000 },
+    },
+    canPurchaseMultipleTimes: true,
+    category: "resource",
+    activationMessage: "30'000 Gold have been added to your inventory.",
     symbol: "🟔",
     symbolColor: "text-yellow-600",
   },
@@ -413,6 +428,7 @@ export const SHOP_PAID_GOLD_PACK_IDS: ReadonlySet<string> = new Set([
   "gold_5000",
   "gold_15000",
   "gold_20000",
+  "gold_30000",
 ]);
 
 export function isShopPaidGoldPackItem(id: string): boolean {

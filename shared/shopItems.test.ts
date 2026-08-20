@@ -45,6 +45,7 @@ describe('Shop Items Configuration', () => {
       expect(SHOP_ITEMS.gold_5000.canPurchaseMultipleTimes).toBe(true);
       expect(SHOP_ITEMS.gold_20000.canPurchaseMultipleTimes).toBe(true);
       expect(SHOP_ITEMS.gold_15000.canPurchaseMultipleTimes).toBe(true);
+      expect(SHOP_ITEMS.gold_30000.canPurchaseMultipleTimes).toBe(true);
     });
 
     it('should allow multiple purchases of feast items', () => {
@@ -67,6 +68,7 @@ describe('Shop Items Configuration', () => {
         SHOP_ITEMS.gold_5000,
         SHOP_ITEMS.gold_15000,
         SHOP_ITEMS.gold_20000,
+        SHOP_ITEMS.gold_30000,
       ];
 
       goldItems.forEach(item => {
@@ -109,12 +111,14 @@ describe('Shop Items Configuration', () => {
           'gold_20000',
           'gold_250',
           'gold_2500',
+          'gold_30000',
           'gold_5000',
         ].sort(),
       );
       expect(isShopPaidGoldPackItem('gold_100_free')).toBe(false);
       expect(isShopPaidGoldPackItem('gold_1000')).toBe(true);
       expect(isShopPaidGoldPackItem('gold_15000')).toBe(true);
+      expect(isShopPaidGoldPackItem('gold_30000')).toBe(true);
       expect(isShopPaidGoldPackItem('gold_250')).toBe(true);
     });
   });
@@ -188,10 +192,25 @@ describe('Shop Items Configuration', () => {
       expect(SHOP_ITEMS.gold_20000.price).toBe(899);
     });
 
-    it('sells 15k as the current top shop pack', () => {
+    it('sells 15k as a mid-high shop pack', () => {
       expect(SHOP_ITEMS.gold_15000.rewards.resources?.gold).toBe(15000);
       expect(SHOP_ITEMS.gold_15000.hiddenFromShop).toBeFalsy();
       expect(SHOP_ITEMS.gold_15000.price).toBe(899);
+    });
+
+    it('sells 30k as the current top shop pack', () => {
+      expect(SHOP_ITEMS.gold_30000.rewards.resources?.gold).toBe(30000);
+      expect(SHOP_ITEMS.gold_30000.hiddenFromShop).toBeFalsy();
+      expect(SHOP_ITEMS.gold_30000.price).toBe(1499);
+    });
+
+    it('uses a rising gold-pack glyph ladder', () => {
+      expect(SHOP_ITEMS.gold_1000.symbol).toBe('🟃');
+      expect(SHOP_ITEMS.gold_250.symbol).toBe('🟃');
+      expect(SHOP_ITEMS.gold_2500.symbol).toBe('🟇');
+      expect(SHOP_ITEMS.gold_5000.symbol).toBe('🟍');
+      expect(SHOP_ITEMS.gold_15000.symbol).toBe('🟑');
+      expect(SHOP_ITEMS.gold_30000.symbol).toBe('🟔');
     });
   });
 
@@ -534,6 +553,7 @@ describe('Shop Items Configuration', () => {
     it('returns savings vs catalog baselines only (no optional sale originalPrice)', () => {
       expect(shopPackageSavingsPercent(SHOP_ITEMS.gold_1000)).toBeNull();
       expect(shopPackageSavingsPercent(SHOP_ITEMS.gold_2500)).toBe(20);
+      expect(shopPackageSavingsPercent(SHOP_ITEMS.gold_30000)).toBe(66);
       expect(shopPackageSavingsPercent(SHOP_ITEMS.great_feast_3)).toBe(33);
       const bundle = SHOP_ITEMS.basic_survival_bundle;
       const catalogSum = bundleComponentsCatalogPriceSumCents(
