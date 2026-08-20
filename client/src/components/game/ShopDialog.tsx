@@ -122,6 +122,10 @@ const getSupabaseClient = async () => {
 const SHOP_CARD_PROMO_TAG_CLASS =
   "ml-1 px-1 py-[1px] leading-tight text-xs text-green-500 font-medium border border-green-500/40 rounded bg-green-500/5";
 
+/** Same promo-pill shape as `SHOP_CARD_PROMO_TAG_CLASS`, red gold-value variant. */
+const SHOP_CARD_VALUE_TAG_CLASS =
+  "ml-1 px-1 py-[1px] leading-tight text-xs text-red-500 font-medium border border-red-500/40 rounded bg-red-500/5";
+
 /** Same promo-pill shape as `SHOP_CARD_PROMO_TAG_CLASS`, Insight / blue variant. */
 const SHOP_INSIGHT_PROMO_TAG_CLASS =
   "inline-flex shrink-0 items-center gap-x-1 px-1.5 py-1 leading-none text-sm font-normal border border-blue-800 rounded bg-blue-950/60";
@@ -1797,24 +1801,6 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
                 }
               }
 
-                .shop-value-badge-pulse {
-                  animation: shop-value-badge-shadow-pulse 4.75s ease-in-out infinite;
-                }
-
-              @keyframes shop-value-badge-shadow-pulse {
-                0%, 100% {
-                  box-shadow:
-                    0 0 10px rgba(239, 68, 68, 0.55),
-                    0 0 22px rgba(239, 68, 68, 0.35),
-                    0 4px 12px rgba(0, 0, 0, 0.6);
-                }
-                50% {
-                  box-shadow:
-                    0 0 17px rgba(239, 68, 68, 0.88),
-                    0 0 34px rgba(239, 68, 68, 0.58),
-                    0 4px 13px rgba(0, 0, 0, 0.64);
-                }
-              }
               `}</style>
       <Dialog open={isOpen} onOpenChange={handleShopDialogOpenChange}>
         {isDirectCheckout && !isPaymentMode && (
@@ -2458,6 +2444,17 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
                                           {t("ui:shop.mostPopular")}
                                         </span>
                                       )}
+                                      {(item.id === "gold_15000" ||
+                                        item.id === "gold_30000") && (
+                                          <span
+                                            className={SHOP_CARD_VALUE_TAG_CLASS}
+                                          >
+                                            {item.id === "gold_30000"
+                                              ? "3x"
+                                              : "2.5x"}{" "}
+                                            {t("ui:shop.threeXValue")}
+                                          </span>
+                                        )}
                                     </CardDescription>
                                   </CardHeader>
                                   <CardContent className="min-h-16 pl-4 pr-4 pb-2 flex-1">
@@ -2469,18 +2466,6 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
                                   </CardContent>
                                   <CardFooter className="pl-4 pr-4 pb-4 flex-col gap-2">
                                     <div className="relative z-0 w-full overflow-visible pt-1">
-                                      {(item.id === "gold_15000" ||
-                                        item.id === "gold_30000") && (
-                                          <div
-                                            className="shop-value-badge-pulse pointer-events-none absolute -right-2 -top-2.5 z-20 rounded border border-red-600 bg-red-800 px-2 py-0.5 text-center text-2xs font-semibold uppercase leading-tight tracking-wide text-white"
-                                            aria-hidden
-                                          >
-                                            {item.id === "gold_30000"
-                                              ? "3x"
-                                              : "2.5x"}{" "}
-                                            {t("ui:shop.threeXValue")}
-                                          </div>
-                                        )}
                                       <Button
                                         onClick={() =>
                                           handleShopItemPurchaseClick(item.id)
