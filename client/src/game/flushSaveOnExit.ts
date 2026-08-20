@@ -4,6 +4,10 @@
  * Steam: Electron asks the renderer to save, waits for an ack, then quits.
  * CrazyGames / Galaxy / web: `pagehide` is best-effort only (no exit API;
  * the iframe or tab can disappear before IndexedDB finishes).
+ *
+ * Exit is one write only. Clearing `flushInFlight` after the Steam handshake
+ * save would let the still-registered `pagehide` start a second `saveGame`
+ * while Electron destroys the window, which can truncate `adc-steam-save.dat`.
  */
 import { logger } from "@/lib/logger";
 import {
@@ -13,6 +17,8 @@ import {
 
 let uninstall: (() => void) | null = null;
 let flushInFlight: Promise<void> | null = null;
+/** After the first exit flush starts, never start another (Steam or pagehide). */
+let exitFlushLocked = false;
 
 function hasLiveGameToFlush(state: {
   flags?: { gameStarted?: boolean };
@@ -32,15 +38,17 @@ async function flushLiveGame(): Promise<void> {
 }
 
 function flushLiveGameOnce(): Promise<void> {
-  if (!flushInFlight) {
-    flushInFlight = flushLiveGame()
-      .catch((error) => {
-        logger.warn("[SAVE] Exit flush failed:", error);
-      })
-      .finally(() => {
-        flushInFlight = null;
-      });
-  }
+  if (flushInFlight) return flushInFlight;
+  if (exitFlushLocked) return Promise.resolve();
+
+  exitFlushLocked = true;
+  flushInFlight = flushLiveGame()
+    .catch((error) => {
+      logger.warn("[SAVE] Exit flush failed:", error);
+    })
+    .finally(() => {
+      flushInFlight = null;
+    });
   return flushInFlight;
 }
 
@@ -60,15 +68,25 @@ export function installFlushSaveOnExit(): () => void {
   };
   window.addEventListener("pagehide", onPageHide);
 
-  const stopWillQuit = steamOnWillQuit(() => {
+  let stopWillQuit: (() => void) | undefined;
+  const detachExitListeners = () => {
+    window.removeEventListener("pagehide", onPageHide);
+    stopWillQuit?.();
+    stopWillQuit = undefined;
+  };
+
+  stopWillQuit = steamOnWillQuit(() => {
     void flushLiveGameOnce().finally(() => {
+      // Drop pagehide before Electron tears the window down, then ack.
+      detachExitListeners();
       steamNotifyQuitSaveComplete();
     });
   });
 
   uninstall = () => {
-    window.removeEventListener("pagehide", onPageHide);
-    stopWillQuit?.();
+    detachExitListeners();
+    flushInFlight = null;
+    exitFlushLocked = false;
     uninstall = null;
   };
   return uninstall;

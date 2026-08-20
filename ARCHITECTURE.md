@@ -304,7 +304,7 @@ shop, the whole game unlocked, merchant-sold dark artifacts, and local + Steam C
 | `client/src/lib/edition.ts` | `isSteamBuild`, `isSteamDemoBuild`, `isSteamPlaytestBuild`, `isCrazyGamesBuild`, `isDemoEdition()`, `isSteamDemoActive()`, `isSteamEditionActive()` (+ DEV Settings → Game Mode: Normal / Steam Game / Playtest / Demo / CrazyGames Demo). |
 | `client/src/lib/steam.ts` | Renderer-side safe wrapper over `window.steamBridge` (achievements, saves, quit-save, full-screen; no-ops on web). |
 | `client/src/game/steamSaveAdapter.ts` | Mirrors the encoded `ADC2:` save blob to the Steam Cloud file; reconciles with IndexedDB by `playTime`. |
-| `client/src/game/flushSaveOnExit.ts` | Steam will-quit: flush live save, then ack so Electron can exit; web `pagehide` is best-effort. |
+| `client/src/game/flushSaveOnExit.ts` | Steam will-quit: one live-save flush, detach `pagehide`, then ack so Electron can exit; web `pagehide` is best-effort. |
 | `client/src/achievements/steamAchievements.ts` | Maps ring achievements to Steam API names (`ACH_*`), skipping `webOnly` (e.g. Supporter); unlocks on criteria-met (loop + load backfill). |
 | `scripts/build-electron.mjs` | esbuild bundles `main`/`preload` to `dist-electron/*.cjs` (`ADC_STEAM_DEMO=1` / `ADC_STEAM_PLAYTEST=1` for variants). |
 | `scripts/package-steam-demo.mjs` | `npm run electron:package:demo` â€” Vite demo build + Electron bundle + `electron-builder.demo.yml`. |

@@ -41,7 +41,12 @@ vi.mock("@/lib/logger", () => ({
 
 describe("flushSaveOnExit", () => {
   beforeEach(() => {
-    saveGame.mockClear();
+    saveGame.mockReset();
+    saveGame.mockResolvedValue({
+      localSaved: true,
+      cloudSaved: false,
+      cloudSkipped: true,
+    });
     buildGameState.mockClear();
     steamNotifyQuitSaveComplete.mockClear();
     steamOnWillQuit.mockReset();
@@ -115,6 +120,64 @@ describe("flushSaveOnExit", () => {
       );
       expect(steamNotifyQuitSaveComplete).toHaveBeenCalled();
     });
+    stop();
+  });
+
+  it("does not start a second save when pagehide fires after Steam quit ack", async () => {
+    let willQuit: (() => void) | undefined;
+    steamOnWillQuit.mockImplementation((cb: () => void) => {
+      willQuit = cb;
+      return vi.fn();
+    });
+    const live = {
+      flags: { gameStarted: true },
+      isGameLoopActive: true,
+    };
+    getState.mockReturnValue(live);
+    const { installFlushSaveOnExit } = await import("./flushSaveOnExit");
+    const stop = installFlushSaveOnExit();
+    willQuit?.();
+    await vi.waitFor(() => {
+      expect(saveGame).toHaveBeenCalledTimes(1);
+      expect(steamNotifyQuitSaveComplete).toHaveBeenCalled();
+    });
+    window.dispatchEvent(new Event("pagehide"));
+    await Promise.resolve();
+    await Promise.resolve();
+    expect(saveGame).toHaveBeenCalledTimes(1);
+    stop();
+  });
+
+  it("coalesces pagehide into the in-flight Steam quit save", async () => {
+    let resolveSave: ((value: unknown) => void) | undefined;
+    saveGame.mockImplementation(
+      () =>
+        new Promise((resolve) => {
+          resolveSave = resolve;
+        }),
+    );
+    let willQuit: (() => void) | undefined;
+    steamOnWillQuit.mockImplementation((cb: () => void) => {
+      willQuit = cb;
+      return vi.fn();
+    });
+    getState.mockReturnValue({
+      flags: { gameStarted: true },
+      isGameLoopActive: true,
+    });
+    const { installFlushSaveOnExit } = await import("./flushSaveOnExit");
+    const stop = installFlushSaveOnExit();
+    willQuit?.();
+    await vi.waitFor(() => {
+      expect(saveGame).toHaveBeenCalledTimes(1);
+    });
+    window.dispatchEvent(new Event("pagehide"));
+    expect(saveGame).toHaveBeenCalledTimes(1);
+    resolveSave?.({ localSaved: true, cloudSaved: false, cloudSkipped: true });
+    await vi.waitFor(() => {
+      expect(steamNotifyQuitSaveComplete).toHaveBeenCalled();
+    });
+    expect(saveGame).toHaveBeenCalledTimes(1);
     stop();
   });
 
