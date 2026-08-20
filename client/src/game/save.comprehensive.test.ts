@@ -1511,6 +1511,22 @@ describe('Save Game System - Comprehensive Tests', () => {
       expect(mockPut).not.toHaveBeenCalled();
     });
 
+    it('saves when inactivity dialog is open if force is set', async () => {
+      const state = await import('./state');
+      vi.mocked(state.useGameStore.getState).mockReturnValue({
+        inactivityDialogOpen: true,
+        getAndResetClickAnalytics: vi.fn(),
+        getAndResetResourceAnalytics: vi.fn(),
+      } as any);
+
+      await saveGame(createMockGameState({ playTime: 4000 }), true, { force: true });
+      const mainSaveCall = mockPut.mock.calls.find(
+        (call: unknown[]) => call[0] === 'saves',
+      );
+      expect(mainSaveCall).toBeDefined();
+      expect(decodeMainSavePutArg(mainSaveCall![1])?.playTime).toBe(4000);
+    });
+
     it('should handle database connection failures', async () => {
       mockOpenDB.mockRejectedValue(new Error('Failed to open database'));
 

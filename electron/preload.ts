@@ -22,6 +22,16 @@ contextBridge.exposeInMainWorld("steamBridge", {
   saveRead: (): Promise<string | null> => ipcRenderer.invoke("save:read"),
   saveWrite: (payload: string): Promise<boolean> => ipcRenderer.invoke("save:write", payload),
   quit: (): Promise<void> => ipcRenderer.invoke("app:quit"),
+  onWillQuit: (callback: () => void): (() => void) => {
+    const handler = () => callback();
+    ipcRenderer.on("app:will-quit", handler);
+    return () => {
+      ipcRenderer.removeListener("app:will-quit", handler);
+    };
+  },
+  notifyQuitSaveComplete: (): void => {
+    ipcRenderer.send("app:save-complete");
+  },
   isFullscreen: (): Promise<boolean> => ipcRenderer.invoke("window:is-fullscreen"),
   toggleFullscreen: (): Promise<boolean> => ipcRenderer.invoke("window:toggle-fullscreen"),
   onFullscreenChanged: (callback: (isFullscreen: boolean) => void): (() => void) => {

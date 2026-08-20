@@ -21,6 +21,7 @@ import {
 } from "./lib/hardReload";
 import { logger } from "./lib/logger";
 import { BOOT_LOCALE_TIMEOUT_MS } from "./lib/fatalErrorScreen";
+import { installFlushSaveOnExit } from "./game/flushSaveOnExit";
 
 bootstrapAfterHardReload();
 installStaleChunkAutoReload();
@@ -28,6 +29,7 @@ installStaleChunkAutoReload();
 installSuppressReplitFragmentWarnings();
 initTextScaleFromStorage();
 initTabVisibilityClass();
+installFlushSaveOnExit();
 
 // Workaround for Google Translate (and similar) mutating text nodes, which
 // leaves React reconciliation pointing at nodes whose real parent has changed.

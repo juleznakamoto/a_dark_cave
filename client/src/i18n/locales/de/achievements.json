@@ -110,7 +110,7 @@
     },
     "4-pileOfDead": {
       "label": "Pile of Dead",
-      "description": "Verliere über alle Spiele hinweg 250 Dorfbewohner." //x1.4
+      "description": "Verliere insgesamt 250 Dorfbewohner."
     },
     "4-solsticeGatherings": {
       "label": "Sonnenwendfeierer",

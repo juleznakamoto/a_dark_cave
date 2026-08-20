@@ -3,6 +3,7 @@ import type { GameState, SaveData } from "@shared/schema";
 import {
   LOCAL_SAVE_PREFIX,
   encodeLocalSave,
+  encodeLocalSaveJson,
   encodeLocalGameState,
   decodeLocalSave,
   decodeLocalGameState,
@@ -77,5 +78,14 @@ describe("saveCodec", () => {
 
     const decoded = decodeLocalSave(encodeLocalSave(data));
     expect(decoded?.gameState.log?.[0]?.message).toBe("Cave dweller - welcome");
+  });
+
+  it("encodes a pre-stringified envelope without a second object walk", () => {
+    const original = minimalSaveData();
+    const json = JSON.stringify(original);
+    const encoded = encodeLocalSaveJson(json);
+    expect(encoded.startsWith(LOCAL_SAVE_PREFIX)).toBe(true);
+    expect(decodeLocalSave(encoded)).toEqual(original);
+    expect(decodeLocalSave(encoded)).toEqual(decodeLocalSave(encodeLocalSave(original)));
   });
 });

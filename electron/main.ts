@@ -36,6 +36,10 @@ const DEV_SERVER_URL = process.env.ADC_DEV_SERVER_URL; // set by electron:dev to
 
 let mainWindow: BrowserWindow | null = null;
 let loopback: LoopbackServer | null = null;
+/** After the renderer acks an exit save (or the timeout fires), window close may proceed. */
+let readyToQuit = false;
+let quitSaveInFlight = false;
+const QUIT_SAVE_TIMEOUT_MS = 8000;
 /**
  * Intended fullscreen state while Electron/Windows catches up.
  * On Windows (esp. with Steam overlay), `maximize` fires during fullscreen
@@ -185,10 +189,44 @@ async function createWindow(): Promise<void> {
   mainWindow.on("maximize", notifyLayoutChange);
   mainWindow.on("unmaximize", notifyLayoutChange);
 
+  mainWindow.on("close", (event) => {
+    if (readyToQuit) return;
+    event.preventDefault();
+    beginQuitSave();
+  });
+
   mainWindow.on("closed", () => {
     mainWindow = null;
     fullscreenIntent = null;
   });
+}
+
+function beginQuitSave(): void {
+  if (readyToQuit || quitSaveInFlight) return;
+  quitSaveInFlight = true;
+
+  let timeout: ReturnType<typeof setTimeout> | undefined;
+  const onRendererSaved = (): void => {
+    finishQuit();
+  };
+
+  const finishQuit = (): void => {
+    if (readyToQuit) return;
+    if (timeout !== undefined) clearTimeout(timeout);
+    ipcMain.removeListener("app:save-complete", onRendererSaved);
+    readyToQuit = true;
+    quitSaveInFlight = false;
+    app.quit();
+  };
+
+  timeout = setTimeout(finishQuit, QUIT_SAVE_TIMEOUT_MS);
+  ipcMain.once("app:save-complete", onRendererSaved);
+
+  if (mainWindow && !mainWindow.isDestroyed()) {
+    mainWindow.webContents.send("app:will-quit");
+    return;
+  }
+  finishQuit();
 }
 
 function registerIpc(): void {
@@ -255,6 +293,12 @@ if (!app.requestSingleInstanceLock()) {
     app.on("activate", () => {
       if (BrowserWindow.getAllWindows().length === 0) void createWindow();
     });
+  });
+
+  app.on("before-quit", (event) => {
+    if (readyToQuit) return;
+    event.preventDefault();
+    beginQuitSave();
   });
 
   app.on("window-all-closed", () => {

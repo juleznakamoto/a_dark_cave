@@ -13,6 +13,7 @@ import { getSupabaseClient } from "@/lib/supabase";
 import {
   encodeLocalGameState,
   encodeLocalSave,
+  encodeLocalSaveJson,
   decodeLocalGameState,
   decodeLocalSave,
 } from "./saveCodec";
@@ -80,6 +81,54 @@ async function clearPlaytimeOverwriteFlags(): Promise<void> {
 async function clearNewGameFlag(): Promise<void> {
   const { useGameStore } = await import("./state");
   useGameStore.setState({ isNewGame: false });
+}
+
+export type SaveGameOptions = {
+  /** Persist even when the inactivity dialog is open (quit / hide flush). */
+  force?: boolean;
+};
+
+/**
+ * Stamp save metadata, then stringify the envelope once. Encode reuses this
+ * JSON; the parsed clone is the sanitized object for cloud / further writes.
+ */
+export function prepareLocalSaveEnvelope(gameState: GameState): {
+  json: string;
+  data: SaveData;
+} {
+  const persistedState = buildGameState(gameState) as GameState &
+    Record<string, unknown>;
+  normalizePlaytimeOverwriteFields(persistedState);
+
+  if (!persistedState.cooldownDurations) {
+    persistedState.cooldownDurations = {};
+  }
+  if (!persistedState.startTime) {
+    persistedState.startTime = Date.now();
+  }
+  if (shouldAllowPlaytimeOverwrite(persistedState)) {
+    persistedState.playTime = 0;
+  }
+
+  const now = Date.now();
+  persistedState.lastSaved = now;
+
+  const runningBuildSha =
+    typeof __BUILD_SHA__ !== "undefined" ? __BUILD_SHA__ : "dev";
+  persistedState.clientBuildSha = runningBuildSha;
+
+  const playTimeForEnvelope =
+    typeof persistedState.playTime === "number"
+      ? persistedState.playTime
+      : gameState.playTime;
+
+  const stamped: SaveData = {
+    gameState: persistedState as GameState,
+    timestamp: now,
+    playTime: playTimeForEnvelope,
+  };
+  const json = JSON.stringify(stamped);
+  return { json, data: JSON.parse(json) as SaveData };
 }
 
 /** Normalize restart overwrite fields onto the schema key before persisting. */
@@ -285,8 +334,9 @@ function mergeSavePlayTimeIntoState(
 async function putLocalSave(
   db: Awaited<ReturnType<typeof getGameSaveDatabase>>,
   data: SaveData,
+  json?: string,
 ): Promise<void> {
-  const encoded = encodeLocalSave(data);
+  const encoded = json ? encodeLocalSaveJson(json) : encodeLocalSave(data);
   await db.put("saves", encoded, getSaveKey());
   writeStartupSaveHeader(data);
   // Steam build: also mirror to the Steam Cloud file (no-op on web).
@@ -591,73 +641,40 @@ async function processUnclaimedReferralsImpl(
 export async function saveGame(
   gameState: GameState,
   isAutosave: boolean = true,
+  options?: SaveGameOptions,
 ): Promise<SaveGameResult> {
   try {
     // Check if game is inactive - if so, don't save
     const { useGameStore } = await import("./state");
     const currentState = useGameStore.getState();
-    if (currentState.inactivityDialogOpen) {
+    if (currentState.inactivityDialogOpen && !options?.force) {
       logger.log("[SAVE] ⚠️ Game is inactive - skipping save");
       return SAVE_SKIPPED;
     }
 
     const db = await getGameSaveDatabase();
 
-    // Strip UI-only store fields (dialog open flags, etc.) even when callers pass get().
-    const persistedState = buildGameState(gameState);
-
-    // Deep clone and sanitize the game state to remove non-serializable data
-    let sanitizedState: any;
+    let saveData: SaveData;
+    let saveJson: string | undefined;
     try {
-      // Omit undefined keys — persisting them as null breaks load (object spread / Object.entries).
-      sanitizedState = JSON.parse(JSON.stringify(persistedState));
+      const prepared = prepareLocalSaveEnvelope(gameState);
+      saveJson = prepared.json;
+      saveData = prepared.data;
     } catch (parseError) {
       logger.warn("[SAVE] ⚠️ JSON serialization failed, using gameState directly:", parseError);
-      // Fallback: use gameState directly if JSON round-trip fails
-      sanitizedState = { ...gameState };
+      const fallbackState = { ...(gameState as GameState & Record<string, unknown>) };
+      normalizePlaytimeOverwriteFields(fallbackState);
+      saveData = {
+        gameState: fallbackState as GameState,
+        timestamp: Date.now(),
+        playTime: typeof fallbackState.playTime === "number" ? fallbackState.playTime : 0,
+      };
     }
 
-    normalizePlaytimeOverwriteFields(sanitizedState);
-
-    // Ensure cooldownDurations is always present
-    if (!sanitizedState.cooldownDurations) {
-      sanitizedState.cooldownDurations = {};
-    }
-
-    // Ensure startTime is always present for completion tracking
-    if (!sanitizedState.startTime) {
-      sanitizedState.startTime = Date.now();
-    }
-
-    // Restart overwrite must persist playTime 0 so load envelopes cannot keep a
-    // stale clock. `isNewGame` alone is the first Make Fire / guest run. Do
-    // not zero it or guest progress is saved with buildings and a 0 clock.
-    if (shouldAllowPlaytimeOverwrite(sanitizedState)) {
-      sanitizedState.playTime = 0;
-    }
-
-    // Add timestamp to track save recency
-    const now = Date.now();
-    sanitizedState.lastSaved = now;
-
-    // Stamp the running client build so cloud saves can be audited for stale bundles.
-    const runningBuildSha =
-      typeof __BUILD_SHA__ !== "undefined" ? __BUILD_SHA__ : "dev";
-    sanitizedState.clientBuildSha = runningBuildSha;
-
-    const playTimeForEnvelope =
-      typeof sanitizedState.playTime === "number"
-        ? sanitizedState.playTime
-        : gameState.playTime;
-
-    const saveData: SaveData = {
-      gameState: sanitizedState,
-      timestamp: now,
-      playTime: playTimeForEnvelope,
-    };
+    const sanitizedState: any = saveData.gameState;
 
     // Save locally first (most important)
-    await putLocalSave(db, saveData);
+    await putLocalSave(db, saveData, saveJson);
 
     const allowOverwrite = shouldAllowPlaytimeOverwrite(sanitizedState);
 

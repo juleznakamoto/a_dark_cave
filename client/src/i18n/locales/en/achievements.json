@@ -110,7 +110,7 @@
     },
     "4-pileOfDead": {
       "label": "Pile of Dead",
-      "description": "Lose 250 villagers across all games."
+      "description": "Lose 250 villagers in total."
     },
     "4-solsticeGatherings": {
       "label": "Solstice Celebrant",

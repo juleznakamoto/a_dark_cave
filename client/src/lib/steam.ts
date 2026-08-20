@@ -75,6 +75,24 @@ export async function steamQuit(): Promise<void> {
   }
 }
 
+/** Steam shell is about to quit; save then call {@link steamNotifyQuitSaveComplete}. */
+export function steamOnWillQuit(callback: () => void): (() => void) | undefined {
+  const b = bridge();
+  if (!b?.available || !b.onWillQuit) return undefined;
+  return b.onWillQuit(callback);
+}
+
+/** Tell the Steam shell the exit save finished (or was skipped). */
+export function steamNotifyQuitSaveComplete(): void {
+  const b = bridge();
+  if (!b?.available || !b.notifyQuitSaveComplete) return;
+  try {
+    b.notifyQuitSaveComplete();
+  } catch {
+    /* ignore */
+  }
+}
+
 /** Whether the Steam desktop window is in full-screen mode. */
 export async function steamIsFullscreen(): Promise<boolean> {
   const b = bridge();

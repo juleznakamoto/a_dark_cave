@@ -37,7 +37,8 @@ function base64ToBytes(b64: string): string {
   return bytes;
 }
 
-function encodeJsonPayload(json: string): string {
+/** XOR+Base64 an already-stringified save JSON (avoids a second stringify). */
+export function encodeLocalSaveJson(json: string): string {
   const bytes = textEncoder.encode(json);
   const xored = xorBytes(bytes, getKeyBytes());
   return LOCAL_SAVE_PREFIX + bytesToBase64(xored);
@@ -73,11 +74,11 @@ function isLegacyGameState(raw: unknown): raw is GameState {
 }
 
 export function encodeLocalSave(data: SaveData): string {
-  return encodeJsonPayload(JSON.stringify(data));
+  return encodeLocalSaveJson(JSON.stringify(data));
 }
 
 export function encodeLocalGameState(state: GameState): string {
-  return encodeJsonPayload(JSON.stringify(state));
+  return encodeLocalSaveJson(JSON.stringify(state));
 }
 
 export function decodeLocalSave(raw: unknown): SaveData | null {

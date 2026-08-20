@@ -32,6 +32,8 @@ interface SteamBridge {
   saveRead(): Promise<string | null>;
   saveWrite(payload: string): Promise<boolean>;
   quit(): Promise<void>;
+  onWillQuit(callback: () => void): () => void;
+  notifyQuitSaveComplete(): void;
   isFullscreen(): Promise<boolean>;
   toggleFullscreen(): Promise<boolean>;
   onFullscreenChanged(callback: (isFullscreen: boolean) => void): () => void;

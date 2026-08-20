@@ -110,7 +110,7 @@
     },
     "4-pileOfDead": {
       "label": "Pile of Dead",
-      "description": "Pierde 250 aldeanos en todas las partidas."
+      "description": "Pierde 250 aldeanos en total."
     },
     "4-solsticeGatherings": {
       "label": "Celebrante del solsticio", //x1.3

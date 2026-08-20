@@ -110,7 +110,7 @@
     },
     "4-pileOfDead": {
       "label": "Pile of Dead",
-      "description": "在所有游戏中累计失去250名村民。"
+      "description": "累计失去250名村民。"
     },
     "4-solsticeGatherings": {
       "label": "至日庆祝者",
