@@ -9,6 +9,7 @@ function artifactMerchantState(overrides?: {
   skullLantern?: boolean;
   tarnishedCompass?: boolean;
   crowHarness?: boolean;
+  oneEyedCrow?: boolean;
 }) {
   return gameStateSchema.parse({
     BTP: overrides?.BTP ?? 0,
@@ -22,6 +23,9 @@ function artifactMerchantState(overrides?: {
     },
     relics: {
       tarnished_compass: overrides?.tarnishedCompass ?? false,
+    },
+    fellowship: {
+      one_eyed_crow: overrides?.oneEyedCrow ?? false,
     },
     story: { seen: {} },
   });
@@ -66,6 +70,16 @@ describe("merchant dark artifacts (web + Steam)", () => {
     expect(
       isMerchantTradeCurrentlyAvailable("trade_tarnished_compass", state),
     ).toBe(false);
+    expect(isMerchantTradeCurrentlyAvailable("trade_crow_harness", state)).toBe(
+      false,
+    );
+  });
+
+  it("hides crow harness after it was consumed to tame the one-eyed crow", () => {
+    const state = artifactMerchantState({
+      crowHarness: false,
+      oneEyedCrow: true,
+    });
     expect(isMerchantTradeCurrentlyAvailable("trade_crow_harness", state)).toBe(
       false,
     );

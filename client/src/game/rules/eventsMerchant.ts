@@ -921,7 +921,8 @@ const toolTrades = [
     giveItem: "crow_harness",
     condition: (state: GameState) =>
       state.buildings.stoneHut >= 5 &&
-      !state.tools.crow_harness,
+      !state.tools.crow_harness &&
+      !state.fellowship.one_eyed_crow,
     costs: [{ resource: "gold", amounts: [2000] }],
 
   },
