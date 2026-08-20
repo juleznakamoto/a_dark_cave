@@ -74,7 +74,11 @@ export function tWithFallback(
       ? fallback
       : interpolateFallback(fallback, options);
 
-  const lng = normalizeLocale(i18n.resolvedLanguage ?? i18n.language);
+  // Prefer the requested language. `resolvedLanguage` can stay on `en` after
+  // init (only English shell is seeded) even when `language` is `de` and the
+  // full catalog has since loaded — that left About/FAQ headings in English
+  // while `<Trans>` body copy followed `language`.
+  const lng = normalizeLocale(i18n.language ?? i18n.resolvedLanguage);
   const translateOpts = {
     ...(options as Record<string, unknown>),
     lng,

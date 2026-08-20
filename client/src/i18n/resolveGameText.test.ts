@@ -1,8 +1,13 @@
-import { describe, it, expect, beforeEach, vi } from "vitest";
+import { describe, it, expect, beforeAll, beforeEach, vi } from "vitest";
 import i18n from "./index";
+import { ensureGameplayLocalesLoaded } from "./loadLocaleResources";
 import { tWithFallback } from "./resolveGameText";
 
 describe("tWithFallback", () => {
+  beforeAll(async () => {
+    await ensureGameplayLocalesLoaded();
+  });
+
   beforeEach(async () => {
     await i18n.changeLanguage("en");
   });

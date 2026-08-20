@@ -1,4 +1,4 @@
-import { describe, it, expect, beforeAll, beforeEach } from "vitest";
+import { describe, it, expect, beforeAll, beforeEach, vi } from "vitest";
 import i18n from "./index";
 import {
   ensureGameplayLocalesLoaded,
@@ -140,6 +140,51 @@ describe("i18n runtime", () => {
     const result = i18n.t("ui:timedEvent.prolongForInsight", opts);
     expect(result).toBe("Zeit um 5 Min. für 250 Einsicht verlängern");
     expect(result).not.toContain("Extend time by");
+  });
+
+  it("tWithFallback uses requested language when resolvedLanguage is still English", async () => {
+    await i18n.changeLanguage("de");
+    const resolvedSpy = vi
+      .spyOn(i18n, "resolvedLanguage", "get")
+      .mockReturnValue("en");
+    try {
+      expect(
+        tWithFallback("ui", "publicPages.about.howHeading", "How it plays"),
+      ).toBe("So spielt es sich");
+      expect(
+        tWithFallback("ui", "publicPages.faq.whatIs.q", "What is A Dark Cave?"),
+      ).toBe("Was ist A Dark Cave?");
+    } finally {
+      resolvedSpy.mockRestore();
+    }
+  });
+
+  it("resolves About and FAQ headings in German", async () => {
+    await i18n.changeLanguage("de");
+    expect(
+      tWithFallback("ui", "publicPages.aboutHeading", "About A Dark Cave"),
+    ).toBe("Über A Dark Cave");
+    expect(
+      tWithFallback("ui", "publicPages.about.howHeading", "How it plays"),
+    ).toBe("So spielt es sich");
+    expect(
+      tWithFallback("ui", "publicPages.about.likedHeading", "If you liked older incremental games"),
+    ).toBe("Wenn du ältere Incremental-Spiele mochtest");
+    expect(
+      tWithFallback("ui", "publicPages.about.whoHeading", "Who it is for"),
+    ).toBe("Für wen es ist");
+    expect(
+      tWithFallback("ui", "publicPages.about.platformsHeading", "Platforms"),
+    ).toBe("Plattformen");
+    expect(
+      tWithFallback("ui", "publicPages.about.meHeading", "Who I am"),
+    ).toBe("Wer ich bin");
+    expect(
+      tWithFallback("ui", "publicPages.faqHeading", "Frequently asked questions"),
+    ).toBe("Häufig gestellte Fragen");
+    expect(
+      tWithFallback("ui", "publicPages.faq.free.q", "Is A Dark Cave free?"),
+    ).toBe("Ist A Dark Cave kostenlos?");
   });
 
   it("tWithFallback uses German catalog when language tag is de-DE", async () => {
