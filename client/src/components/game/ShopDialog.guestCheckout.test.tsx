@@ -2,11 +2,14 @@
  * @vitest-environment jsdom
  */
 import React from 'react';
-import { describe, it, expect, beforeEach, vi, afterEach } from 'vitest';
+import { describe, it, expect, beforeAll, beforeEach, vi, afterEach } from 'vitest';
 import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { ShopDialog } from './ShopDialog';
 import { useGameStore } from '@/game/state';
+import { shopFetchJsonResponse } from './shopDialogTestMocks';
+import i18n from '@/i18n';
+import { ensureGameplayLocalesLoaded } from '@/i18n/loadLocaleResources';
 
 const SHOP_PAID_ITEM_CTA = /^(Continue|Purchase)$/i;
 
@@ -87,6 +90,11 @@ vi.mock('@stripe/react-stripe-js', () => ({
 }));
 
 describe('ShopDialog guest checkout', () => {
+  beforeAll(async () => {
+    await ensureGameplayLocalesLoaded();
+    await i18n.changeLanguage('en');
+  });
+
   beforeEach(() => {
     Object.defineProperty(window, 'matchMedia', {
       writable: true,
@@ -122,22 +130,15 @@ describe('ShopDialog guest checkout', () => {
     global.fetch = vi.fn((url) => {
       const u = String(url);
       if (u.includes('ipapi.co')) {
-        return Promise.resolve({
-          json: () => Promise.resolve({ country_code: 'US' }),
-        } as Response);
+        return Promise.resolve(shopFetchJsonResponse({ country_code: 'US' }));
       }
       if (u.includes('/api/payment/create-intent')) {
-        return Promise.resolve({
-          ok: true,
-          json: () => Promise.resolve({ clientSecret: 'cs_test' }),
-        } as Response);
+        return Promise.resolve(shopFetchJsonResponse({ clientSecret: 'cs_test' }));
       }
       if (u.includes('/api/payment/verify')) {
-        return Promise.resolve({
-          ok: true,
-          json: () =>
-            Promise.resolve({ success: true, itemId: 'great_feast_1' }),
-        } as Response);
+        return Promise.resolve(
+          shopFetchJsonResponse({ success: true, itemId: 'great_feast_1' }),
+        );
       }
       return Promise.reject(new Error(`Unknown URL: ${url}`));
     });

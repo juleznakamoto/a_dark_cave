@@ -73,7 +73,7 @@ export function DropdownMenuItemWithTooltip({
   ...props
 }: DropdownMenuItemWithTooltipProps) {
   const globalTooltip = useGlobalTooltip();
-  const isLongPressTooltipOpen = useGlobalTooltipOpen(tooltipId);
+  const tooltipOpen = useGlobalTooltipOpen(tooltipId);
   const insideGameProvider = useInsideGameTooltipProvider();
 
   const wrappedAction = React.useCallback(() => {
@@ -92,7 +92,7 @@ export function DropdownMenuItemWithTooltip({
 
   const tooltipTree = (
     <Tooltip
-      open={isLongPressTooltipOpen ? true : undefined}
+      open={tooltipOpen}
       delayDuration={300}
     >
       <TooltipTrigger asChild>

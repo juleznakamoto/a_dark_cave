@@ -68,7 +68,8 @@ export function TooltipWrapper({
 
   const generatedTooltipId = useId();
   const finalTooltipId = tooltipId || generatedTooltipId;
-  const isLongPressTooltipOpen = useGlobalTooltipOpen(finalTooltipId);
+  const tooltipOpen = useGlobalTooltipOpen(finalTooltipId);
+  const isLongPressTooltipOpen = tooltipOpen === true;
   const insideGameProvider = useInsideGameTooltipProvider();
 
   // Long-press / tap-to-open tooltips do not fire mouseenter on touch devices.
@@ -104,7 +105,7 @@ export function TooltipWrapper({
   const tooltipTriggerCursorClass = disabled ? "cursor-default" : undefined;
   const tooltipTree = (
     <Tooltip
-      open={isLongPressTooltipOpen ? true : undefined}
+      open={tooltipOpen}
       delayDuration={300}
     >
       <TooltipTrigger asChild>

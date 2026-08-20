@@ -6,9 +6,9 @@ import { describe, it, expect, beforeEach, vi, afterEach, beforeAll } from 'vite
 import { render, screen, waitFor, fireEvent } from '@testing-library/react';
 import { ShopDialog } from './ShopDialog';
 import { useGameStore } from '@/game/state';
-import { createShopDialogFetchMock, resetShopDialogAuthMocks } from './shopDialogTestMocks';
+import { createShopDialogFetchMock, resetShopDialogAuthMocks, shopFetchJsonResponse } from './shopDialogTestMocks';
 import i18n from '@/i18n';
-import { ensureInitialLocalesLoaded } from '@/i18n/loadLocaleResources';
+import { ensureGameplayLocalesLoaded } from '@/i18n/loadLocaleResources';
 
 const SHOP_PAID_ITEM_CTA = /^(Continue|Purchase)$/i;
 
@@ -84,7 +84,7 @@ vi.mock('@stripe/react-stripe-js', () => ({
 
 describe('ShopDialog Currency Detection', { timeout: 15_000 }, () => {
   beforeAll(async () => {
-    await ensureInitialLocalesLoaded();
+    await ensureGameplayLocalesLoaded();
     await i18n.changeLanguage('en');
   });
 
@@ -364,10 +364,9 @@ describe('ShopDialog Currency Detection', { timeout: 15_000 }, () => {
     it('should send correct currency to payment intent creation', async () => {
       global.fetch = createShopDialogFetchMock((u) => {
         if (u.includes('/api/payment/create-intent')) {
-          return Promise.resolve({
-            ok: true,
-            json: () => Promise.resolve({ clientSecret: 'test_secret_eur' }),
-          } as Response);
+          return Promise.resolve(
+            shopFetchJsonResponse({ clientSecret: 'test_secret_eur' }),
+          );
         }
         return null;
       });
@@ -402,10 +401,9 @@ describe('ShopDialog Currency Detection', { timeout: 15_000 }, () => {
           } as Response);
         }
         if (u.includes('/api/payment/create-intent')) {
-          return Promise.resolve({
-            ok: true,
-            json: () => Promise.resolve({ clientSecret: 'test_secret_usd' }),
-          } as Response);
+          return Promise.resolve(
+            shopFetchJsonResponse({ clientSecret: 'test_secret_usd' }),
+          );
         }
         return null;
       });

@@ -42,6 +42,7 @@ class GlobalTooltipManager {
   private mobile = false;
   private listeners: Set<() => void> = new Set();
   private idListeners: Map<string, Set<() => void>> = new Map();
+  private suppressedListeners: Set<() => void> = new Set();
   private pressTimers: Map<string, ReturnType<typeof setTimeout>> = new Map();
   private pressingIds: Set<string> = new Set();
   private tooltipsOpenedByTimer: Set<string> = new Set();
@@ -64,6 +65,14 @@ class GlobalTooltipManager {
     return () => {
       set!.delete(listener);
       if (set!.size === 0) this.idListeners.delete(id);
+    };
+  }
+
+  /** Fires only when modal suppression flips, not when another tooltip opens. */
+  subscribeSuppressed(listener: () => void) {
+    this.suppressedListeners.add(listener);
+    return () => {
+      this.suppressedListeners.delete(listener);
     };
   }
 
@@ -151,6 +160,7 @@ class GlobalTooltipManager {
       this.detachOutsideListener();
     }
     this.notify(previousId);
+    this.suppressedListeners.forEach((listener) => listener());
   }
 
   setMobile(isMobile: boolean) {
@@ -271,12 +281,35 @@ export function useOpenGlobalTooltipId(): string | null {
   );
 }
 
-/** Subscribe to one tooltip id. Other wrappers do not re-render when this opens. */
-export function useGlobalTooltipOpen(id: string): boolean {
+/**
+ * Radix `open` for one tooltip:
+ * - `true` while this id is the long-press / tap tooltip
+ * - `false` while a blocking modal suppresses behind-the-overlay triggers
+ * - `undefined` otherwise so hover stays uncontrolled
+ */
+export function getTooltipOpenProp(id: string): boolean | undefined {
+  if (
+    globalTooltipManager.isSuppressed() &&
+    !isTooltipTriggerInsideDialog(id)
+  ) {
+    return false;
+  }
+  return globalTooltipManager.isTooltipOpen(id) ? true : undefined;
+}
+
+/** Subscribe to one tooltip id plus modal suppression. Other ids do not re-render on long-press. */
+export function useGlobalTooltipOpen(id: string): boolean | undefined {
   return useSyncExternalStore(
-    (onChange) => globalTooltipManager.subscribeId(id, onChange),
-    () => globalTooltipManager.isTooltipOpen(id),
-    () => false,
+    (onChange) => {
+      const unsubId = globalTooltipManager.subscribeId(id, onChange);
+      const unsubSuppressed = globalTooltipManager.subscribeSuppressed(onChange);
+      return () => {
+        unsubId();
+        unsubSuppressed();
+      };
+    },
+    () => getTooltipOpenProp(id),
+    () => undefined,
   );
 }
 
@@ -290,17 +323,7 @@ export function useGlobalTooltip() {
   }, []);
 
   const isTooltipOpen = useCallback((id: string) => {
-    // Force closed for behind-modal triggers while suppressed. Hover tooltips use
-    // uncontrolled mode via `undefined`, so only `false` actually hides them.
-    // Triggers inside the open dialog stay usable (shop info icons, etc.).
-    if (
-      globalTooltipManager.isSuppressed() &&
-      !isTooltipTriggerInsideDialog(id)
-    ) {
-      return false;
-    }
-    // Return tooltip open state for long press tooltips (works on all devices)
-    return globalTooltipManager.isTooltipOpen(id) ? true : undefined;
+    return getTooltipOpenProp(id);
   }, []);
 
   const handleWrapperClick = useCallback((id: string, disabled: boolean, isCoolingDown: boolean, e: React.MouseEvent) => {

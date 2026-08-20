@@ -6,6 +6,7 @@ import { render, screen, fireEvent, act } from "@testing-library/react";
 import React from "react";
 import {
   closeAllGlobalTooltips,
+  getTooltipOpenProp,
   useGlobalTooltip,
   useGlobalTooltipOpen,
   setGlobalTooltipIsMobile,
@@ -298,6 +299,48 @@ describe("useGlobalTooltip - modal suppression", () => {
 
     expect(onAction).not.toHaveBeenCalled();
     expect(state.textContent).toBe("closed");
+  });
+
+  it("forces behind-modal hover tooltips closed so they cannot stay above the overlay", () => {
+    function Probe({ id }: { id: string }) {
+      const open = useGlobalTooltipOpen(id);
+      return (
+        <div data-testid={`prop-${id}`}>
+          {open === false ? "forced-closed" : open === true ? "open" : "uncontrolled"}
+        </div>
+      );
+    }
+
+    render(
+      <>
+        <div data-tooltip-trigger-id="behind-hover" />
+        <div role="dialog">
+          <div data-tooltip-trigger-id="shop-hover" />
+        </div>
+        <Probe id="behind-hover" />
+        <Probe id="shop-hover" />
+      </>,
+    );
+
+    expect(screen.getByTestId("prop-behind-hover").textContent).toBe(
+      "uncontrolled",
+    );
+    expect(screen.getByTestId("prop-shop-hover").textContent).toBe(
+      "uncontrolled",
+    );
+    expect(getTooltipOpenProp("behind-hover")).toBeUndefined();
+
+    act(() => {
+      setGlobalTooltipsSuppressed(true);
+    });
+
+    expect(screen.getByTestId("prop-behind-hover").textContent).toBe(
+      "forced-closed",
+    );
+    expect(getTooltipOpenProp("behind-hover")).toBe(false);
+    expect(screen.getByTestId("prop-shop-hover").textContent).toBe(
+      "uncontrolled",
+    );
   });
 });
 

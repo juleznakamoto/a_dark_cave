@@ -5,6 +5,20 @@ export const SHOP_TEST_USER = {
   email: "test@example.com",
 };
 
+/** Fetch mock body with both `json()` and `text()` (shop reads `response.text()`). */
+export function shopFetchJsonResponse(
+  data: unknown,
+  init?: { ok?: boolean; status?: number },
+): Response {
+  const raw = JSON.stringify(data);
+  return {
+    ok: init?.ok ?? true,
+    status: init?.status ?? 200,
+    json: () => Promise.resolve(data),
+    text: () => Promise.resolve(raw),
+  } as Response;
+}
+
 /** Default fetch: ipapi (EUR) + payment create-intent. */
 export function createShopDialogFetchMock(
   overrides?: (url: string | URL) => Response | Promise<Response> | null,
@@ -16,15 +30,12 @@ export function createShopDialogFetchMock(
       if (custom !== null) return custom;
     }
     if (u.includes("ipapi.co")) {
-      return Promise.resolve({
-        json: () => Promise.resolve({ country_code: "DE" }),
-      } as Response);
+      return Promise.resolve(shopFetchJsonResponse({ country_code: "DE" }));
     }
     if (u.includes("/api/payment/create-intent")) {
-      return Promise.resolve({
-        ok: true,
-        json: () => Promise.resolve({ clientSecret: "test_secret" }),
-      } as Response);
+      return Promise.resolve(
+        shopFetchJsonResponse({ clientSecret: "test_secret" }),
+      );
     }
     return Promise.reject(new Error(`Unknown URL: ${url}`));
   });

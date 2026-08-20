@@ -34,9 +34,9 @@ async function clickShopFilter(
 import { ShopDialog } from './ShopDialog';
 import { useGameStore } from '@/game/state';
 import { SHOP_ITEMS, bundleComponentsCatalogPriceSumCents, bundleComponentsListPriceSumCents } from '@shared/shopItems';
-import { createShopDialogFetchMock, resetShopDialogAuthMocks } from './shopDialogTestMocks';
+import { createShopDialogFetchMock, resetShopDialogAuthMocks, shopFetchJsonResponse } from './shopDialogTestMocks';
 import i18n from '@/i18n';
-import { ensureInitialLocalesLoaded } from '@/i18n/loadLocaleResources';
+import { ensureGameplayLocalesLoaded } from '@/i18n/loadLocaleResources';
 
 /** Paid shop card CTA (checkout step still uses "Complete Purchase…"). */
 const SHOP_PAID_ITEM_CTA = /^(Continue|Purchase)$/i;
@@ -121,7 +121,7 @@ vi.mock('@stripe/react-stripe-js', () => ({
 
 describe('ShopDialog', { timeout: 15_000 }, () => {
   beforeAll(async () => {
-    await ensureInitialLocalesLoaded();
+    await ensureGameplayLocalesLoaded();
     await i18n.changeLanguage('en');
   });
 
@@ -194,7 +194,7 @@ describe('ShopDialog', { timeout: 15_000 }, () => {
       await user.click(claimButton);
 
       await waitFor(() => {
-        expect(updateResource).toHaveBeenCalledWith('gold', 100);
+        expect(updateResource).toHaveBeenCalledWith('gold', 100, { allowOvercap: true });
       });
 
       // Should NOT create a purchase record for daily free gold (from() is called to load purchases on mount, but insert should not be called for gold_100_free)
@@ -280,7 +280,7 @@ describe('ShopDialog', { timeout: 15_000 }, () => {
       await user.click(claimButton!);
 
       await waitFor(() => {
-        expect(updateResource).toHaveBeenCalledWith('gold', 100);
+        expect(updateResource).toHaveBeenCalledWith('gold', 100, { allowOvercap: true });
       });
     });
 
@@ -508,10 +508,8 @@ describe('ShopDialog', { timeout: 15_000 }, () => {
       }));
 
       global.fetch = vi.fn(() =>
-        Promise.resolve({
-          json: () => Promise.resolve({ clientSecret: 'test_secret' }),
-        })
-      ) as any;
+        Promise.resolve(shopFetchJsonResponse({ clientSecret: 'test_secret' })),
+      ) as typeof fetch;
 
       render(<ShopDialog isOpen={true} onClose={onClose} />);
 
@@ -578,7 +576,7 @@ describe('ShopDialog', { timeout: 15_000 }, () => {
       await user.click(activateButton);
 
       await waitFor(() => {
-        expect(updateResource).toHaveBeenCalledWith('gold', 1000);
+        expect(updateResource).toHaveBeenCalledWith('gold', 1000, { allowOvercap: true });
       });
     });
 
@@ -1121,7 +1119,7 @@ describe('ShopDialog', { timeout: 15_000 }, () => {
 
       await waitFor(
         () => {
-          expect(updateResource).toHaveBeenCalledWith('gold', 5000);
+          expect(updateResource).toHaveBeenCalledWith('gold', 5000, { allowOvercap: true });
         },
         { timeout: 10_000 },
       );
@@ -1172,10 +1170,8 @@ describe('ShopDialog', { timeout: 15_000 }, () => {
       const onClose = vi.fn();
 
       global.fetch = vi.fn(() =>
-        Promise.resolve({
-          json: () => Promise.resolve({ clientSecret: 'test_secret' }),
-        })
-      ) as any;
+        Promise.resolve(shopFetchJsonResponse({ clientSecret: 'test_secret' })),
+      ) as typeof fetch;
 
       const insertMock = vi.fn(() => ({
         data: { id: 999 },
@@ -1451,7 +1447,7 @@ describe('ShopDialog', { timeout: 15_000 }, () => {
     await user.click(goldButton);
 
     await waitFor(() => {
-      expect(updateResource).toHaveBeenCalledWith('gold', 20000);
+      expect(updateResource).toHaveBeenCalledWith('gold', 20000, { allowOvercap: true });
     });
   });
 
@@ -1578,7 +1574,7 @@ describe('ShopDialog', { timeout: 15_000 }, () => {
     await user.click(goldButton);
 
     await waitFor(() => {
-      expect(updateResource).toHaveBeenCalledWith('gold', 5000);
+      expect(updateResource).toHaveBeenCalledWith('gold', 5000, { allowOvercap: true });
     });
   });
 
