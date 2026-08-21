@@ -35,11 +35,24 @@ function TestTooltipButton({
     <>
       <div
         data-tooltip-trigger-id={id}
+        onClickCapture={(e) => globalTooltip.handleClickCapture(id, e)}
         onTouchStart={(e) =>
           globalTooltip.handleTouchStart(id, disabled, false, e)
         }
         onTouchEnd={(e) =>
           globalTooltip.handleTouchEnd(
+            id,
+            disabled,
+            onAction,
+            e,
+            preferNativeClick,
+          )
+        }
+        onMouseDown={(e) =>
+          globalTooltip.handleMouseDown(id, disabled, false, e)
+        }
+        onMouseUp={(e) =>
+          globalTooltip.handleMouseUp(
             id,
             disabled,
             onAction,
@@ -102,8 +115,40 @@ describe("useGlobalTooltip - mobile long-press behavior", () => {
     expect(onAction).not.toHaveBeenCalled();
 
     await act(async () => {
+      fireEvent.click(trigger);
+    });
+
+    expect(onAction).not.toHaveBeenCalled();
+    expect(screen.getByTestId("open-test").textContent).toBe("open");
+
+    await act(async () => {
       fireEvent.click(outside);
     });
+  });
+
+  it("does not execute after long-press when the browser fires compatibility mouse events plus click", async () => {
+    const onAction = vi.fn();
+    render(
+      <TestTooltipButton id="compat" disabled={false} onAction={onAction} />,
+    );
+
+    const trigger = screen.getByTestId("trigger-compat");
+
+    await act(async () => {
+      fireEvent.touchStart(trigger);
+    });
+    await act(async () => {
+      vi.advanceTimersByTime(250);
+    });
+    await act(async () => {
+      fireEvent.touchEnd(trigger);
+      fireEvent.mouseDown(trigger);
+      fireEvent.mouseUp(trigger);
+      fireEvent.click(trigger);
+    });
+
+    expect(onAction).not.toHaveBeenCalled();
+    expect(screen.getByTestId("open-compat").textContent).toBe("open");
   });
 
   it("does not call wrapper onAction on short tap when preferNativeClick is true", async () => {

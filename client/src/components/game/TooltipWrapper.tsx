@@ -146,6 +146,8 @@ export function TooltipWrapper({
       data-tooltip-trigger-id={finalTooltipId}
       style={{ touchAction: "manipulation" }}
       onClickCapture={(e) => {
+        // Long-press tooltip: swallow the synthesized click so release does not run the action.
+        if (globalTooltip.handleClickCapture(finalTooltipId, e)) return;
         // Prevent double execution: if we already ran the action via mouseup/touchend, block the click from reaching the child
         if (actionExecutedRef.current) {
           e.preventDefault();

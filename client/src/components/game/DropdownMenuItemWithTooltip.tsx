@@ -141,16 +141,13 @@ export function DropdownMenuItemWithTooltip({
               ),
             onTouchEnd
           )}
-          onClick={mergeHandlers(
-            (e) => {
-              if (blockWhenDisabled(e)) return;
-              globalTooltip.handleWrapperClick(tooltipId, disabled, false, e);
-            },
-            (e) => {
-              if (disabled) return;
-              onClick?.(e);
-            },
-          )}
+          onClick={(e) => {
+            if (globalTooltip.handleClickCapture(tooltipId, e)) return;
+            if (blockWhenDisabled(e)) return;
+            globalTooltip.handleWrapperClick(tooltipId, disabled, false, e);
+            if (disabled || e.defaultPrevented) return;
+            onClick?.(e);
+          }}
           {...props}
         />
       </TooltipTrigger>

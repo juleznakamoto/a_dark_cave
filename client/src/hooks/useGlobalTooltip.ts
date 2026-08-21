@@ -46,6 +46,8 @@ class GlobalTooltipManager {
   private pressTimers: Map<string, ReturnType<typeof setTimeout>> = new Map();
   private pressingIds: Set<string> = new Set();
   private tooltipsOpenedByTimer: Set<string> = new Set();
+  private suppressNextClickIds: Set<string> = new Set();
+  private clickSuppressTimers: Map<string, ReturnType<typeof setTimeout>> = new Map();
   private outsideListenerAttached = false;
 
   subscribe(listener: () => void) {
@@ -199,6 +201,40 @@ class GlobalTooltipManager {
     this.tooltipsOpenedByTimer.delete(id);
   }
 
+  /**
+   * Swallow the browser's synthesized click after a long-press (touchend/mouseup
+   * preventDefault on the wrapper does not stop the child button's click).
+   */
+  suppressNextClick(id: string) {
+    this.suppressNextClickIds.add(id);
+    const existing = this.clickSuppressTimers.get(id);
+    if (existing) clearTimeout(existing);
+    this.clickSuppressTimers.set(
+      id,
+      setTimeout(() => {
+        this.suppressNextClickIds.delete(id);
+        this.clickSuppressTimers.delete(id);
+      }, 400),
+    );
+  }
+
+  consumeClickSuppression(id: string): boolean {
+    const existing = this.clickSuppressTimers.get(id);
+    if (existing) {
+      clearTimeout(existing);
+      this.clickSuppressTimers.delete(id);
+    }
+    if (!this.suppressNextClickIds.has(id)) return false;
+    this.suppressNextClickIds.delete(id);
+    return true;
+  }
+
+  clearAllClickSuppression() {
+    this.clickSuppressTimers.forEach((timer) => clearTimeout(timer));
+    this.clickSuppressTimers.clear();
+    this.suppressNextClickIds.clear();
+  }
+
   setPressTimer(id: string, timer: ReturnType<typeof setTimeout>) {
     // Clear any existing timer for this id
     const existingTimer = this.pressTimers.get(id);
@@ -232,6 +268,7 @@ if (typeof window !== "undefined") {
 /** Close any open tooltip and cancel in-progress long-press timers. */
 export function closeAllGlobalTooltips() {
   globalTooltipManager.clearAllPressTimers();
+  globalTooltipManager.clearAllClickSuppression();
   globalTooltipManager.setOpenTooltip(null);
 }
 
@@ -327,7 +364,13 @@ export function useGlobalTooltip() {
   }, []);
 
   const handleWrapperClick = useCallback((id: string, disabled: boolean, isCoolingDown: boolean, e: React.MouseEvent) => {
-    if (!globalTooltipManager.isMobile() || isCoolingDown) return;
+    if (globalTooltipManager.consumeClickSuppression(id)) {
+      e.preventDefault();
+      e.stopPropagation();
+      return true;
+    }
+
+    if (!globalTooltipManager.isMobile() || isCoolingDown) return false;
 
     // On mobile with tooltip, handle inactive buttons specially
     if (disabled) {
@@ -335,6 +378,14 @@ export function useGlobalTooltip() {
       const currentOpen = globalTooltipManager.getOpenTooltip();
       globalTooltipManager.setOpenTooltip(currentOpen === id ? null : id);
     }
+    return false;
+  }, []);
+
+  const handleClickCapture = useCallback((id: string, e: React.MouseEvent) => {
+    if (!globalTooltipManager.consumeClickSuppression(id)) return false;
+    e.preventDefault();
+    e.stopPropagation();
+    return true;
   }, []);
 
   const handleMouseDown = useCallback((id: string, disabled: boolean, isCoolingDown: boolean, e: React.MouseEvent) => {
@@ -367,19 +418,19 @@ export function useGlobalTooltip() {
       const wasOpenedByTimer = globalTooltipManager.wasOpenedByTimer(id);
 
       // If tooltip was opened by long press: keep it open, prevent action. User clicks elsewhere to close.
+      // Keep openedByTimer so a follow-up compatibility mouseup is treated the same way.
       if (wasOpenedByTimer) {
         e.preventDefault();
         e.stopPropagation();
-        globalTooltipManager.clearOpenedByTimer(id);
+        globalTooltipManager.suppressNextClick(id);
         return;
       }
 
-      // If tooltip was already open (not from timer), close on release and allow
-      // the normal child click to proceed. Closing a tooltip should not itself
-      // execute an action.
+      // Tooltip was already open (not from this press). Close it and block the
+      // synthesized click so closing a tooltip never executes the action.
       globalTooltipManager.setOpenTooltip(null);
       globalTooltipManager.clearOpenedByTimer(id);
-      if (!disabled) return;
+      globalTooltipManager.suppressNextClick(id);
       e.preventDefault();
       e.stopPropagation();
       return;
@@ -440,19 +491,19 @@ export function useGlobalTooltip() {
       const wasOpenedByTimer = globalTooltipManager.wasOpenedByTimer(id);
 
       // If tooltip was opened by long press: keep it open, prevent action. User clicks elsewhere to close.
+      // Keep openedByTimer so a follow-up compatibility mouseup is treated the same way.
       if (wasOpenedByTimer) {
         if (e.cancelable) e.preventDefault();
         e.stopPropagation();
-        globalTooltipManager.clearOpenedByTimer(id);
+        globalTooltipManager.suppressNextClick(id);
         return;
       }
 
-      // If tooltip was already open (not from timer), close on release and allow
-      // the normal child click to proceed. Closing a tooltip should not itself
-      // execute an action.
+      // Tooltip was already open (not from this press). Close it and block the
+      // synthesized click so closing a tooltip never executes the action.
       globalTooltipManager.setOpenTooltip(null);
       globalTooltipManager.clearOpenedByTimer(id);
-      if (!disabled) return;
+      globalTooltipManager.suppressNextClick(id);
       if (e.cancelable) e.preventDefault();
       e.stopPropagation();
       return;
@@ -491,6 +542,7 @@ export function useGlobalTooltip() {
     isTooltipOpen,
     setOpenTooltip,
     handleWrapperClick,
+    handleClickCapture,
     handleMouseDown,
     handleMouseUp,
     handleTouchStart,
