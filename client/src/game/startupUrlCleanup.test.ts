@@ -100,6 +100,15 @@ describe("startupUrlCleanup", () => {
     expect(window.location.search).toBe("?game=true");
   });
 
+  it("persists then strips ?ref=", () => {
+    window.history.replaceState({}, "", "/?ref=ab3k9m&keep=1");
+    applyStartupUrlCleanup(window.location, ["referral"]);
+    expect(window.location.search).toBe("?keep=1");
+    expect(window.localStorage.getItem("adc_landing_referral_code")).toBe(
+      "AB3K9M",
+    );
+  });
+
   it("strips Stripe return params", () => {
     window.history.replaceState(
       {},

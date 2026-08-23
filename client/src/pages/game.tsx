@@ -54,6 +54,9 @@ export default function Game() {
           setEmailConfirmedDialogOpen(true);
         }
         setIsInitialized(true);
+        void result.background.catch((error) => {
+          logger.error("[GAME PAGE] Background gameplay init failed:", error);
+        });
       })
       .catch((error) => {
         logger.error("[GAME PAGE] Failed to initialize game:", error);

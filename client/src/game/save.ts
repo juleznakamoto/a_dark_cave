@@ -1,5 +1,6 @@
 import { GameState, SaveData, REFERRAL_REWARD_GOLD } from "@shared/schema";
 import { mergeReferralLists } from "@shared/referralMerge";
+import { withInviteeReferralGold } from "@shared/referralReward";
 import {
   saveGameToSupabase,
   loadGameFromSupabase,
@@ -41,6 +42,11 @@ import {
   writeStartupSaveHeader,
 } from "./startupSaveHeader";
 const isDev = import.meta.env.DEV;
+
+/** `cloud: false` reads IndexedDB only (no auth, referral, or Supabase). */
+export type LoadGameOptions = {
+  cloud?: boolean;
+};
 
 export type SaveGameResult = {
   localSaved: boolean;
@@ -498,7 +504,7 @@ export function mergeCloudReferralsIntoState(
 
   if (listUnchanged && inviteeUnchanged) return localState;
 
-  return {
+  const merged = {
     ...localState,
     referrals,
     referralCount,
@@ -506,6 +512,12 @@ export function mergeCloudReferralsIntoState(
     referralProcessed,
     referralCode,
   };
+
+  if (referralProcessed && localState.referralProcessed !== true) {
+    return withInviteeReferralGold(merged, referralCode);
+  }
+
+  return merged;
 }
 
 /** Serialize referral claiming so concurrent loadGame() paths cannot double-award (promise chain: swap gate before awaiting prev). */
@@ -886,7 +898,24 @@ export async function saveGame(
   }
 }
 
-async function loadGameStateOrThrow(): Promise<GameState | null> {
+async function loadLocalGameState(): Promise<GameState | null> {
+  const db = await getGameSaveDatabase();
+  const localSave = await getLocalSave(db);
+  if (!localSave) return null;
+  const stateWithDefaults = {
+    ...localSave.gameState,
+    cooldownDurations: localSave.gameState.cooldownDurations || {},
+  };
+  return mergeSavePlayTimeIntoState(localSave, stateWithDefaults);
+}
+
+async function loadGameStateOrThrow(
+  options?: LoadGameOptions,
+): Promise<GameState | null> {
+  if (options?.cloud === false) {
+    return loadLocalGameState();
+  }
+
   // Referral metadata sync is web only (Supabase-backed).
   if (!isLocalOnlyEdition()) {
     await flushPendingReferralToUserMetadata();
@@ -1159,9 +1188,11 @@ async function loadGameStateOrThrow(): Promise<GameState | null> {
   return null;
 }
 
-export async function loadGameResult(): Promise<LoadGameResult> {
+export async function loadGameResult(
+  options?: LoadGameOptions,
+): Promise<LoadGameResult> {
   try {
-    const state = await loadGameStateOrThrow();
+    const state = await loadGameStateOrThrow(options);
     return state ? { status: "loaded", state } : { status: "not-found" };
   } catch (error) {
     logger.error("Failed to load game:", error);
@@ -1177,8 +1208,10 @@ export async function loadGameResult(): Promise<LoadGameResult> {
  * Compatibility API for existing callers. Errors are thrown so callers can
  * never confuse an unavailable/corrupt save with a confirmed missing save.
  */
-export async function loadGame(): Promise<GameState | null> {
-  const result = await loadGameResult();
+export async function loadGame(
+  options?: LoadGameOptions,
+): Promise<GameState | null> {
+  const result = await loadGameResult(options);
   if (result.status === "error") throw result.error;
   return result.status === "loaded" ? result.state : null;
 }

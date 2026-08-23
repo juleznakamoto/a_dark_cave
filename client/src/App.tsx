@@ -8,6 +8,7 @@ import PageLoadSpinner, {
   dismissBootSpinner,
 } from "@/components/ui/page-load-spinner";
 import AppErrorBoundary from "@/components/AppErrorBoundary";
+import { shouldBootGameSurface } from "@/game/startupBootSurface";
 
 const steamBuild = import.meta.env.VITE_STEAM_BUILD === "1";
 const crazyGamesBuild = import.meta.env.VITE_CRAZYGAMES === "1";
@@ -22,8 +23,17 @@ const AdminDashboard = lazy(() =>
   offlinePortalBuild ? redirectHome() : import("@/pages/admin/dashboard"),
 );
 
-// Start screen page - lightweight wrapper that conditionally loads Game
 const StartScreenPage = lazy(() => import("@/pages/start-screen-page"));
+const GamePage = lazy(() => import("@/pages/game"));
+
+/** Returning / forceGame visits skip the start-screen chunk. */
+function PlayRoute() {
+  return shouldBootGameSurface(window.location) ? (
+    <GamePage />
+  ) : (
+    <StartScreenPage />
+  );
+}
 
 // Lazy load all other pages
 const EndScreenPage = lazy(() => import("@/pages/end-screen"));
@@ -62,10 +72,10 @@ function AppRoutes() {
   return (
     <Suspense fallback={<PageLoadSpinner />}>
       <Switch>
-        <Route path="/" component={StartScreenPage} />
-        <Route path="/galaxy" component={StartScreenPage} />
-        <Route path="/crazygames" component={StartScreenPage} />
-        <Route path="/boost" component={StartScreenPage} />
+        <Route path="/" component={PlayRoute} />
+        <Route path="/galaxy" component={PlayRoute} />
+        <Route path="/crazygames" component={PlayRoute} />
+        <Route path="/boost" component={PlayRoute} />
         <Route path="/game">{() => <Redirect to="/" />}</Route>
         <Route path="/end-screen" component={EndScreenPage} />
         <Route path="/imprint" component={Imprint} />

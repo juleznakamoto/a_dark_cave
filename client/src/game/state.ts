@@ -201,8 +201,6 @@ import {
 import {
   getEventLogMessageByFallback,
   getEventsCatalogText,
-  getStartScreenNarrativeEnglishFallback,
-  START_NARRATIVE_LOG_KEY,
   resolveEventLogMessage,
   tWithFallback,
 } from "@/i18n/resolveGameText";
@@ -523,7 +521,7 @@ interface GameStore extends GameState {
   initialize: (state: GameState) => void;
   restartGame: () => void;
   /** Hydrate the store once; returns true when a persisted save was loaded. */
-  loadGame: () => Promise<boolean>;
+  loadGame: (options?: { cloud?: boolean }) => Promise<boolean>;
   toggleDevMode: () => void;
   getMaxPopulation: () => number;
   updatePopulation: () => void;
@@ -3078,17 +3076,6 @@ export const useGameStore = create<GameStore>((set, get) => ({
     set(resetState);
     StateManager.scheduleEffectsUpdate(get);
 
-    const cruelMode = Boolean(preserved.cruelMode);
-    const initialLogEntry: LogEntry = {
-      id: "initial-narrative",
-      logKey: START_NARRATIVE_LOG_KEY,
-      logVars: { cruelMode: cruelMode ? 1 : 0 },
-      message: getStartScreenNarrativeEnglishFallback(cruelMode),
-      timestamp: Date.now(),
-      type: "system",
-    };
-    get().addLogEntry(initialLogEntry);
-
     // Reset analytics trackers
     set({
       clickAnalytics: {},
@@ -3181,9 +3168,9 @@ export const useGameStore = create<GameStore>((set, get) => ({
     return snapshot;
   },
 
-  loadGame: async () => {
+  loadGame: async (options) => {
     const { loadGame: loadFromIDB } = await import("@/game/save");
-    const savedState = await loadFromIDB();
+    const savedState = await loadFromIDB(options);
 
     logger.log("[STATE] 📊 loadGame received state from save.ts:", {
       exists: !!savedState,
@@ -3577,17 +3564,6 @@ export const useGameStore = create<GameStore>((set, get) => ({
       };
 
       set(newGameState);
-
-      const cruelMode = Boolean(get().cruelMode);
-      const initialLogEntry: LogEntry = {
-        id: "initial-narrative",
-        logKey: START_NARRATIVE_LOG_KEY,
-        logVars: { cruelMode: cruelMode ? 1 : 0 },
-        message: getStartScreenNarrativeEnglishFallback(cruelMode),
-        timestamp: Date.now(),
-        type: "system",
-      };
-      get().addLogEntry(initialLogEntry);
     }
 
     // Re-sync from live session so a persisted false cannot stick after load.

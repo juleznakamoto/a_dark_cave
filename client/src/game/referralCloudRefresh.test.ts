@@ -63,6 +63,34 @@ describe("applyReferralCloudRefreshPatch", () => {
     expect(patch.nextState.resources.wood).toBe(10);
   });
 
+  it("repairs a missing flag without paying again when the invitee log is already present", () => {
+    const live = baseState({
+      referralProcessed: false,
+      resources: { gold: 250 } as GameState["resources"],
+      log: [
+        {
+          id: "referral-bonus-new-1",
+          message: `You were invited by someone to this world! +${REFERRAL_REWARD_GOLD} Gold`,
+          timestamp: 1,
+          type: "system",
+        },
+      ],
+    });
+    const cloud = {
+      referralProcessed: true,
+      referralCode: "ABC",
+      referrals: [],
+      referralCount: 0,
+      referredUsers: [],
+    };
+
+    const patch = applyReferralCloudRefreshPatch(live, cloud);
+    expect(patch.changed).toBe(true);
+    expect(patch.nextState.referralProcessed).toBe(true);
+    expect(patch.nextState.referralCode).toBe("ABC");
+    expect(patch.nextState.resources.gold).toBe(250);
+  });
+
   it("is idempotent when already processed locally", () => {
     const live = baseState({
       referralProcessed: true,

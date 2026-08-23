@@ -72,6 +72,18 @@ describe("parseStartupIntent", () => {
     });
   });
 
+  it("parses a short invite code from ?ref=", () => {
+    expect(
+      parseStartupIntent({
+        pathname: "/",
+        search: "?ref=ab3k9m",
+        hash: "",
+      }),
+    ).toMatchObject({
+      referralCode: "AB3K9M",
+    });
+  });
+
   it("keeps an ordinary landing visit on the start screen", () => {
     expect(
       parseStartupIntent({ pathname: "/", search: "", hash: "" }),
@@ -84,6 +96,7 @@ describe("parseStartupIntent", () => {
       openShop: false,
       hardReloadCacheBust: false,
       utmAttribution: null,
+      referralCode: null,
     });
   });
 });

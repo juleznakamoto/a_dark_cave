@@ -72,6 +72,24 @@ describe("start-screen first-load imports", () => {
     expect(staticValueFrom(src, "@/lib/authStorageKey")).toBe(true);
   });
 
+  it("App can boot Game without the start-screen chunk", () => {
+    const src = readFileSync(join(dir, "../../App.tsx"), "utf8");
+    expect(src).toContain("shouldBootGameSurface");
+    expect(src).toContain('import("@/pages/game")');
+    expect(src).toContain('import("@/pages/start-screen-page")');
+  });
+
+  it("boot-surface helper stays off the game engine and Supabase", () => {
+    const src = readFileSync(
+      join(dir, "../../game/startupBootSurface.ts"),
+      "utf8",
+    );
+    expect(staticValueFrom(src, "@/lib/supabase")).toBe(false);
+    expect(staticValueFrom(src, "@/game/state")).toBe(false);
+    expect(staticValueFrom(src, "./state")).toBe(false);
+    expect(src).not.toMatch(/from ["']idb["']/);
+  });
+
   it("start-screen page keeps UTM + Zod off the static graph", () => {
     const src = readFileSync(
       join(dir, "../../pages/start-screen-page.tsx"),

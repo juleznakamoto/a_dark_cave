@@ -410,6 +410,13 @@ export function getStartScreenNarrativeEnglishFallback(cruelMode: boolean): stri
 
 export const START_NARRATIVE_LOG_KEY = "gameplay.startNarrative";
 
+export function isStartScreenNarrativeLogEntry(entry: {
+  id?: string;
+  logKey?: string;
+}): boolean {
+  return entry.id === "initial-narrative" || entry.logKey === START_NARRATIVE_LOG_KEY;
+}
+
 export function inferCruelModeFromStartNarrativeMessage(message: string): boolean {
   const cruelEn = getStartScreenNarrativeEnglishFallback(true);
   if (message === cruelEn) return true;

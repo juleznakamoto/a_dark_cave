@@ -7,6 +7,7 @@ import {
   type StartupIntent,
   type StartupLocation,
 } from "./startupIntent";
+import { persistLandingReferralCode } from "./referralLanding";
 
 export type StartupUrlCleanupScope =
   | "auth-callback"
@@ -15,7 +16,8 @@ export type StartupUrlCleanupScope =
   | "stripe-return"
   | "boost-path"
   | "hard-reload-bust"
-  | "shop";
+  | "shop"
+  | "referral";
 
 export interface StartupUrlCleanupPlan {
   /** True when URL carries OAuth/PKCE material Supabase must read first. */
@@ -40,6 +42,7 @@ export function planStartupUrlCleanup(
   if (intent.paymentReturn) scopes.push("stripe-return");
   if (intent.boost) scopes.push("boost-path");
   if (intent.hardReloadCacheBust) scopes.push("hard-reload-bust");
+  if (intent.referralCode) scopes.push("referral");
 
   return {
     needsAuthConsumption: intent.oauthCallback,
@@ -133,6 +136,9 @@ function stripSearchParams(
   if (scopes.includes("hard-reload-bust")) {
     search.delete(HARD_RELOAD_CACHE_BUST_PARAM);
   }
+  if (scopes.includes("referral")) {
+    search.delete("ref");
+  }
 }
 
 /** Idempotent URL cleanup. Safe after consumeStartupAuthCallback for auth scopes. */
@@ -140,6 +146,9 @@ export function applyStartupUrlCleanup(
   location: StartupLocation = window.location,
   scopes: StartupUrlCleanupScope[],
 ): void {
+  if (scopes.includes("referral")) {
+    persistLandingReferralCode(location.search);
+  }
   const next = buildCleanedUrl(location, scopes);
   if (!next) return;
   if (typeof window === "undefined" || !window.history?.replaceState) return;

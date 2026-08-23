@@ -3,6 +3,7 @@ import {
   utmAttributionFromSearchParams,
   type UtmAttribution,
 } from "@shared/utmAttribution";
+import { parseRefParam } from "@shared/referralCode";
 
 export interface StartupLocation {
   pathname: string;
@@ -27,6 +28,8 @@ export interface StartupIntent {
   googleAdsSource: string | null;
   /** First-touch campaign params from the landing URL (UTM + legacy `c`). */
   utmAttribution: UtmAttribution | null;
+  /** Valid `?ref=` invite code, if present. */
+  referralCode: string | null;
   hardReloadCacheBust: boolean;
 }
 
@@ -70,6 +73,7 @@ export function parseStartupIntent(location: StartupLocation): StartupIntent {
       openShop && search.get("cruelHighlight") === "true",
     googleAdsSource: search.get("c"),
     utmAttribution,
+    referralCode: parseRefParam(search.get("ref")),
     hardReloadCacheBust: search.has("_cb"),
   };
 }

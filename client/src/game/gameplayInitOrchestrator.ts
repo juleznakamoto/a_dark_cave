@@ -13,6 +13,7 @@ import { saveGame } from "@/game/save";
 import {
   flushPendingMarketingPreferences,
   getCurrentUser,
+  loadGameFromSupabase,
   syncStoreAuthFromSession,
 } from "@/game/auth";
 import { parseStartupIntent, type StartupLocation } from "@/game/startupIntent";
@@ -25,26 +26,32 @@ import { rehydratePurchasesOnStartup } from "@/game/shopPurchases";
 import { mountFiraSansFontFace } from "@/lib/firaSansFontFace";
 import { reportUtmLanding } from "@/lib/utmLanding";
 import { hasUtmAttribution } from "@shared/utmAttribution";
+import { pickPreferredSave } from "@/game/saveConflict";
+import { applyReferralCloudRefreshPatch } from "@/game/referralCloudRefresh";
+import type { GameState, SaveData } from "@shared/schema";
 
 export interface GameplayInitResult {
   hadPersistedSave: boolean;
   showEmailConfirmedDialog: boolean;
   openShop: boolean;
   cruelShopHighlight: boolean;
+  /** Auth, cloud merge, Stripe, audio, and fonts. Does not block first paint. */
+  background: Promise<void>;
 }
 
+type BackgroundInitContext = {
+  didLocalLoad: boolean;
+  persistAttribution: boolean;
+};
+
 /**
- * Ordered gameplay bootstrap. Mutates the store and starts the loop.
- * React pages should only apply the returned UI flags.
+ * Paint after local hydrate. Auth, cloud, Stripe, audio, and fonts continue
+ * in `background` so returning visits are not gated on the network.
  */
 export async function runGameplayInitialization(
   location: StartupLocation = window.location,
 ): Promise<GameplayInitResult> {
   const gameplayLocalesPromise = ensureGameplayLocalesLoaded();
-  await new Promise<void>((resolve) =>
-    requestAnimationFrame(() => requestAnimationFrame(() => resolve())),
-  );
-  await gameplayLocalesPromise;
 
   const intent = parseStartupIntent(location);
   if (intent.oauthCallback) {
@@ -54,42 +61,18 @@ export async function runGameplayInitialization(
     logger.log("[GAME] Email confirmation callback detected");
   }
 
-  // Before any campaign URL strip: anonymous landing beacon (once per tab).
   reportUtmLanding(location, intent.utmAttribution);
 
-  await consumeStartupAuthCallback(location);
-  applyStartupUrlCleanup(location, ["auth-callback", "email-confirmed"]);
-
-  const user = isLocalOnlyEdition() ? null : await getCurrentUser();
-  if (user) {
-    logger.log("[GAME] User authenticated, loading game");
-    await syncStoreAuthFromSession();
-    await flushPendingMarketingPreferences();
-  }
-
-  // Upgrade start-screen 400/500 mount to the full in-game weight set.
-  // Load in parallel with save/audio; await before the loop so GameContainer
-  // does not paint on the fallback face and then jump when Fira swaps in.
-  const firaReady = mountFiraSansFontFace({
-    stage: "game",
-    applyFontLoadedClass: true,
-  });
-  mountNotoSansSymbols2FontFace();
-
   const preparedHydration = consumePreparedGameHydration();
-  // Make Fire already flipped gameStarted on this store. Reloading a missing
-  // save would reset to a fresh new-game blob and remount the start screen.
   const alreadyStarted = useGameStore.getState().flags.gameStarted === true;
+  const didLocalLoad = preparedHydration == null && !alreadyStarted;
   const hadPersistedSave =
     preparedHydration?.hadPersistedSave ??
     (alreadyStarted
       ? false
-      : await useGameStore.getState().loadGame());
+      : await useGameStore.getState().loadGame({ cloud: false }));
 
-  // loadGame syncs auth; keep a confirmed session sticky across guest saves.
-  if (user) {
-    await syncStoreAuthFromSession();
-  }
+  await gameplayLocalesPromise;
 
   const hydratedState = useGameStore.getState();
   const shouldTrackGoogleAds =
@@ -118,50 +101,11 @@ export async function runGameplayInitialization(
     ...getTransientDialogResetOnLoad(),
   });
 
-  if (shouldTrackGoogleAds || shouldTrackUtm) {
-    if (shouldTrackGoogleAds) {
-      logger.log(`[GAME] Tracking Google Ads source: ${intent.googleAdsSource}`);
-    }
-    if (shouldTrackUtm) {
-      logger.log(
-        `[GAME] Tracking UTM attribution: ${intent.utmAttribution?.source ?? ""}/${intent.utmAttribution?.campaign ?? ""}`,
-      );
-    }
-    try {
-      await saveGame(useGameStore.getState(), false);
-      logger.log("[GAME] Successfully saved campaign attribution");
-    } catch (error) {
-      logger.error("[GAME] Failed to save campaign attribution:", error);
-    }
-  }
-
   if (hadPersistedSave) {
     logger.log("[GAME] Game loaded from save");
     syncSocialPromoExclusiveRewardPending();
-
-    const currentState = useGameStore.getState();
-    if (
-      user &&
-      currentState.referrals?.some((referral) => referral.claimed)
-    ) {
-      logger.log("[GAME] Detected claimed referrals - saving to cloud");
-      try {
-        await saveGame(useGameStore.getState(), false);
-        logger.log("[GAME] Successfully saved claimed referrals to cloud");
-      } catch (error) {
-        logger.error("[GAME] Failed to save claimed referrals:", error);
-      }
-    }
   } else {
     logger.log("[GAME] Game initialized with defaults");
-  }
-
-  if (!isLocalOnlyEdition()) {
-    await rehydratePurchasesOnStartup({
-      paymentReturn: intent.paymentReturn,
-      skipIfPaymentReturn: true,
-    });
-    await processStripePaymentReturn();
   }
 
   if (intent.boost) {
@@ -174,32 +118,6 @@ export async function runGameplayInitialization(
       });
       useGameStore.getState().addLogEntry(logEntry);
       StateManager.scheduleEffectsUpdate(useGameStore.getState);
-      try {
-        await saveGame(useGameStore.getState(), false);
-        logger.log("[GAME] One-time /boost bonus applied and saved");
-      } catch (error) {
-        logger.error("[GAME] Failed to save after /boost bonus:", error);
-      }
-    }
-  }
-
-  applyStartupUrlCleanup(location, [
-    "campaign",
-    "shop",
-    ...(intent.boost ? (["boost-path"] as const) : []),
-  ]);
-
-  const { audioManager } = await import("@/lib/audio");
-  const currentState = useGameStore.getState();
-  audioManager.setMusicVolume(currentState.musicVolume ?? 1);
-  audioManager.setSfxVolume(currentState.sfxVolume ?? 1);
-  audioManager.musicMute(currentState.musicMuted);
-  audioManager.sfxMute(currentState.sfxMuted);
-
-  if (currentState.flags.gameStarted || intent.forceGame) {
-    await audioManager.loadGameSounds();
-    if (!currentState.musicMuted) {
-      await audioManager.startBackgroundMusic();
     }
   }
 
@@ -210,15 +128,7 @@ export async function runGameplayInitialization(
     }
   }
 
-  await firaReady;
   startGameLoop();
-
-  if (isSteamBuild) {
-    void import("@/achievements/steamAchievements").then(
-      ({ syncSteamAchievements }) =>
-        syncSteamAchievements(useGameStore.getState()),
-    );
-  }
 
   return {
     hadPersistedSave,
@@ -226,5 +136,142 @@ export async function runGameplayInitialization(
       intent.emailConfirmed && !isLocalOnlyEdition(),
     openShop: intent.openShop,
     cruelShopHighlight: intent.cruelShopHighlight,
+    background: Promise.resolve().then(() =>
+      finishGameplayInitialization(location, {
+        didLocalLoad,
+        persistAttribution: shouldTrackGoogleAds || shouldTrackUtm,
+      }),
+    ),
   };
+}
+
+async function finishGameplayInitialization(
+  location: StartupLocation,
+  { didLocalLoad, persistAttribution }: BackgroundInitContext,
+): Promise<void> {
+  const intent = parseStartupIntent(location);
+
+  await consumeStartupAuthCallback(location);
+  applyStartupUrlCleanup(location, [
+    "auth-callback",
+    "email-confirmed",
+    "referral",
+  ]);
+
+  const user = isLocalOnlyEdition() ? null : await getCurrentUser();
+  if (user) {
+    logger.log("[GAME] User authenticated, loading game");
+    await syncStoreAuthFromSession();
+    await flushPendingMarketingPreferences();
+  }
+
+  if (didLocalLoad && user) {
+    await reconcileCloudWithoutWipingLivePlay();
+    await syncStoreAuthFromSession();
+  }
+
+  if (persistAttribution) {
+    try {
+      await saveGame(useGameStore.getState(), false);
+      logger.log("[GAME] Successfully saved campaign attribution");
+    } catch (error) {
+      logger.error("[GAME] Failed to save campaign attribution:", error);
+    }
+  }
+
+  if (
+    user &&
+    useGameStore.getState().referrals?.some((referral) => referral.claimed)
+  ) {
+    logger.log("[GAME] Detected claimed referrals - saving to cloud");
+    try {
+      await saveGame(useGameStore.getState(), false);
+      logger.log("[GAME] Successfully saved claimed referrals to cloud");
+    } catch (error) {
+      logger.error("[GAME] Failed to save claimed referrals:", error);
+    }
+  }
+
+  if (intent.boost && useGameStore.getState().boostApplied) {
+    try {
+      await saveGame(useGameStore.getState(), false);
+      logger.log("[GAME] One-time /boost bonus applied and saved");
+    } catch (error) {
+      logger.error("[GAME] Failed to save after /boost bonus:", error);
+    }
+  }
+
+  if (!isLocalOnlyEdition()) {
+    await rehydratePurchasesOnStartup({
+      paymentReturn: intent.paymentReturn,
+      skipIfPaymentReturn: true,
+    });
+    await processStripePaymentReturn();
+  }
+
+  applyStartupUrlCleanup(location, [
+    "campaign",
+    "shop",
+    ...(intent.boost ? (["boost-path"] as const) : []),
+  ]);
+
+  void mountFiraSansFontFace({
+    stage: "game",
+    applyFontLoadedClass: true,
+  });
+  mountNotoSansSymbols2FontFace();
+
+  const { audioManager } = await import("@/lib/audio");
+  const audioState = useGameStore.getState();
+  audioManager.setMusicVolume(audioState.musicVolume ?? 1);
+  audioManager.setSfxVolume(audioState.sfxVolume ?? 1);
+  audioManager.musicMute(audioState.musicMuted);
+  audioManager.sfxMute(audioState.sfxMuted);
+
+  if (audioState.flags.gameStarted || intent.forceGame) {
+    await audioManager.loadGameSounds();
+    if (!audioState.musicMuted) {
+      await audioManager.startBackgroundMusic();
+    }
+  }
+
+  if (isSteamBuild) {
+    void import("@/achievements/steamAchievements").then(
+      ({ syncSteamAchievements }) =>
+        syncSteamAchievements(useGameStore.getState()),
+    );
+  }
+}
+
+/**
+ * Signed-in cloud follow-up after a live local hydrate.
+ * Do not call `loadGame()` here: that would replace the store with a stale
+ * IndexedDB snapshot and wipe clicks since first paint. Replace only when
+ * cloud is preferred (other device / newer run).
+ */
+async function reconcileCloudWithoutWipingLivePlay(): Promise<void> {
+  try {
+    const cloudSave = await loadGameFromSupabase();
+    const live = useGameStore.getState() as GameState;
+    if (!cloudSave) {
+      return;
+    }
+
+    const localEnvelope = {
+      gameState: live,
+      playTime: live.playTime ?? 0,
+      timestamp: Date.now(),
+    } as SaveData;
+    if (pickPreferredSave(localEnvelope, cloudSave) === "cloud") {
+      await useGameStore.getState().loadGame();
+      return;
+    }
+
+    const patch = applyReferralCloudRefreshPatch(live, cloudSave.gameState);
+    if (patch.changed) {
+      useGameStore.setState(patch.nextState);
+    }
+  } catch (error) {
+    logger.error("[GAME] Cloud reconcile after local hydrate failed:", error);
+  }
 }

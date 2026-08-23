@@ -1,5 +1,6 @@
 import { GameState, REFERRAL_REWARD_GOLD } from "@shared/schema";
 import { mergeReferralLists } from "@shared/referralMerge";
+import { withInviteeReferralGold } from "@shared/referralReward";
 
 /** Fields server referral processing may write onto a cloud save. */
 export type ReferralOwnedCloudSlice = Pick<
@@ -17,14 +18,6 @@ export type ReferralOwnedCloudSlice = Pick<
 export interface ReferralCloudRefreshPatch {
   changed: boolean;
   nextState: GameState;
-}
-
-function hasReferralInviteLog(log: GameState["log"] | undefined): boolean {
-  return (log ?? []).some(
-    (entry) =>
-      typeof entry?.message === "string" &&
-      entry.message.includes("invited by someone"),
-  );
 }
 
 function mergeReferralListsIntoLive(
@@ -78,26 +71,10 @@ export function applyReferralCloudRefreshPatch(
   const localProcessed = liveState.referralProcessed === true;
 
   if (cloudProcessed && !localProcessed) {
-    const gold = (next.resources?.gold ?? 0) + REFERRAL_REWARD_GOLD;
-    const log = [...(next.log ?? [])];
-    if (!hasReferralInviteLog(log)) {
-      log.push({
-        id: `referral-bonus-new-${Date.now()}`,
-        message: `You were invited by someone to this world! +${REFERRAL_REWARD_GOLD} Gold`,
-        timestamp: Date.now(),
-        type: "system",
-      });
-    }
-    next = {
-      ...next,
-      referralProcessed: true,
-      referralCode: cloudState.referralCode ?? next.referralCode,
-      resources: {
-        ...next.resources,
-        gold,
-      },
-      log: log.slice(-100),
-    };
+    next = withInviteeReferralGold(
+      next,
+      cloudState.referralCode ?? next.referralCode,
+    );
     changed = true;
   } else if (
     cloudProcessed &&

@@ -23,7 +23,7 @@ import { buildGameState } from "@/game/stateHelpers";
 import { useToast } from "@/hooks/use-toast";
 import { useGameStore } from "@/game/state";
 import { logger } from "@/lib/logger";
-import { parseRefParam } from "@shared/referralCode";
+import { getLandingReferralCode, persistLandingReferralCode } from "@/game/referralLanding";
 import { Trans, useTranslation } from "react-i18next";
 import { Eye, EyeOff } from "lucide-react";
 
@@ -51,8 +51,8 @@ export default function AuthDialog({
   const emailInputRef = useRef<HTMLInputElement>(null);
 
   const getReferralCode = () => {
-    const params = new URLSearchParams(window.location.search);
-    return parseRefParam(params.get("ref"));
+    persistLandingReferralCode();
+    return getLandingReferralCode();
   };
 
   const [mode, setMode] = useState<"signin" | "signup" | "reset">(() =>

@@ -66,7 +66,7 @@ export default function StartScreenPage() {
         });
         // Consume OAuth/PKCE before stripping auth params or routing.
         await consumeStartupAuthCallback(window.location);
-        applyStartupUrlCleanup(window.location, ["hard-reload-bust"]);
+        applyStartupUrlCleanup(window.location, ["hard-reload-bust", "referral"]);
 
         const resolution = await resolveStartupVisit(window.location);
         if (resolution.surface === "game") {

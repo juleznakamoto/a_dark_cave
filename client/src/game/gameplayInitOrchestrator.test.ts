@@ -17,6 +17,7 @@ const mocks = vi.hoisted(() => ({
   ensureLocales: vi.fn(),
   mountFont: vi.fn(),
   syncSocial: vi.fn(),
+  loadGameFromSupabase: vi.fn(),
 }));
 
 vi.mock("@/i18n/loadLocaleResources", () => ({
@@ -33,6 +34,7 @@ vi.mock("@/game/auth", () => ({
   getCurrentUser: () => mocks.getCurrentUser(),
   syncStoreAuthFromSession: () => mocks.syncAuth(),
   flushPendingMarketingPreferences: () => mocks.flushMarketing(),
+  loadGameFromSupabase: () => mocks.loadGameFromSupabase(),
 }));
 vi.mock("@/game/startupGameLoader", () => ({
   consumePreparedGameHydration: () => mocks.consumePrepared(),
@@ -108,6 +110,7 @@ describe("runGameplayInitialization", () => {
     mocks.rehydrateStartup.mockResolvedValue([]);
     mocks.processStripe.mockResolvedValue(undefined);
     mocks.saveGame.mockResolvedValue({});
+    mocks.loadGameFromSupabase.mockResolvedValue(null);
     mocks.getState.mockReturnValue({
       loadGame: mocks.loadGame,
       googleAdsSource: null,
@@ -120,10 +123,30 @@ describe("runGameplayInitialization", () => {
       referrals: [],
       addLogEntry: vi.fn(),
     });
-    vi.stubGlobal("requestAnimationFrame", (cb: FrameRequestCallback) => {
-      cb(0);
-      return 0;
+  });
+
+  it("paints after local hydrate and defers auth until background", async () => {
+    const { runGameplayInitialization } = await import(
+      "./gameplayInitOrchestrator"
+    );
+
+    const result = await runGameplayInitialization({
+      pathname: "/",
+      search: "",
+      hash: "",
     });
+
+    expect(mocks.loadGame).toHaveBeenCalledWith({ cloud: false });
+    expect(mocks.startGameLoop).toHaveBeenCalledOnce();
+
+    await result.background;
+
+    expect(mocks.consumeAuth).toHaveBeenCalled();
+    expect(mocks.getCurrentUser).toHaveBeenCalled();
+    expect(mocks.rehydrateStartup).toHaveBeenCalled();
+    expect(mocks.startGameLoop.mock.invocationCallOrder[0]).toBeLessThan(
+      mocks.consumeAuth.mock.invocationCallOrder[0],
+    );
   });
 
   it("consumes auth before cleanup and skips a second load when prepared", async () => {
@@ -134,17 +157,21 @@ describe("runGameplayInitialization", () => {
 
     const result = await runGameplayInitialization({
       pathname: "/",
-      search: "#access_token=tok".startsWith("#") ? "" : "",
+      search: "",
       hash: "#access_token=tok",
     });
+
+    expect(mocks.loadGame).not.toHaveBeenCalled();
+    expect(result.hadPersistedSave).toBe(true);
+    expect(mocks.startGameLoop).toHaveBeenCalledOnce();
+
+    await result.background;
 
     expect(mocks.consumeAuth).toHaveBeenCalled();
     const consumeOrder = mocks.consumeAuth.mock.invocationCallOrder[0];
     const cleanupOrder = mocks.applyCleanup.mock.invocationCallOrder[0];
     expect(consumeOrder).toBeLessThan(cleanupOrder);
     expect(mocks.loadGame).not.toHaveBeenCalled();
-    expect(result.hadPersistedSave).toBe(true);
-    expect(mocks.startGameLoop).toHaveBeenCalledOnce();
   });
 
   it("skips loadGame when Make Fire already started the run", async () => {
@@ -171,6 +198,8 @@ describe("runGameplayInitialization", () => {
       hash: "",
     });
 
+    await result.background;
+
     expect(mocks.loadGame).not.toHaveBeenCalled();
     expect(result.hadPersistedSave).toBe(false);
   });
@@ -180,11 +209,12 @@ describe("runGameplayInitialization", () => {
       "./gameplayInitOrchestrator"
     );
 
-    await runGameplayInitialization({
+    const result = await runGameplayInitialization({
       pathname: "/",
       search: "?payment_intent=pi_1&redirect_status=succeeded",
       hash: "",
     });
+    await result.background;
 
     expect(mocks.rehydrateStartup).toHaveBeenCalledWith({
       paymentReturn: true,

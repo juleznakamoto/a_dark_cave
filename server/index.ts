@@ -1228,21 +1228,19 @@ app.post("/api/leaderboard/update-username", leaderboardUpdateLimiter, async (re
     }
   });
 
-  // Referral endpoint
+  // Referral claim / sync. Invitee is the bearer; never trust a user id in the body.
   app.post("/api/referral/process", authLimiter, async (req, res) => {
     try {
-      const { newUserId, referralCode } = req.body || {};
-
-      if (!newUserId || !referralCode) {
-        return res.status(400).json({
-          error: "Missing required parameters",
-          received: { newUserId: !!newUserId, referralCode: !!referralCode },
-        });
+      const user = await getSessionUserIdFromBearer(req);
+      if (!user) {
+        return res.status(401).json({ error: "Authorization required" });
       }
 
-      const result = await processReferral(newUserId, referralCode);
+      const referralCode =
+        typeof req.body?.referralCode === "string" ? req.body.referralCode : null;
 
-      // Ensure we send JSON with correct content-type
+      const result = await processReferral(user.id, referralCode);
+
       res.setHeader("Content-Type", "application/json");
       res.json(result);
     } catch (error: any) {

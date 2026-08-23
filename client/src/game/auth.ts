@@ -4,6 +4,11 @@ import { GameState, SaveData, SIGN_UP_WELCOME_GOLD } from '@shared/schema';
 import { logger } from '@/lib/logger';
 import type { AuthUser } from '@/game/types';
 import { parseRefParam } from '@shared/referralCode';
+import {
+  clearLandingReferralCode,
+  persistLandingReferralCode,
+  readLandingReferralCode,
+} from './referralLanding';
 import type { LogEntry } from '@/game/rules/events';
 
 function buildSignupWelcomeLogEntry(): LogEntry {
@@ -148,17 +153,22 @@ function stashPendingReferralCodeForOAuth(referralCode: string | null | undefine
 }
 
 /**
- * Merge pending OAuth referral into Supabase `user_metadata.referral_code` before referral processing.
+ * Merge pending OAuth / landing referral into Supabase `user_metadata.referral_code`.
  * No-op if already set (email sign-up path) or user not signed in.
+ * Landing codes attach only for new accounts or an explicit signup OAuth stash.
  */
 export async function flushPendingReferralToUserMetadata(): Promise<void> {
-  let pending: string | null = null;
+  let sessionPending: string | null = null;
   try {
-    pending = sessionStorage.getItem(PENDING_REFERRAL_CODE_KEY);
+    sessionPending = sessionStorage.getItem(PENDING_REFERRAL_CODE_KEY);
   } catch {
-    return;
+    sessionPending = null;
   }
-  const code = pending?.trim();
+
+  persistLandingReferralCode();
+  const fromSignupStash = parseRefParam(sessionPending);
+  const landing = readLandingReferralCode();
+  const code = fromSignupStash ?? landing;
   if (!code) return;
 
   const supabase = await getSupabaseClient();
@@ -179,6 +189,13 @@ export async function flushPendingReferralToUserMetadata(): Promise<void> {
       : '';
   if (existing) {
     clearPendingReferralCode();
+    return;
+  }
+
+  if (
+    !fromSignupStash &&
+    !isAuthUserWithinSignupWelcomeWindow(authUser.created_at)
+  ) {
     return;
   }
 
@@ -411,7 +428,6 @@ export async function signUp(
 }
 
 export async function processReferralAfterConfirmation(): Promise<void> {
-  // Don't await - process in background without blocking game load
   processReferralInBackground().catch(error => {
     logger.error('[REFERRAL] Background processing failed:', error);
   });
@@ -424,107 +440,128 @@ async function processReferralInBackground(): Promise<void> {
   }
 
   const supabase = await getSupabaseClient();
-
-  // Get user metadata
-  const { data: { user: authUser } } = await supabase.auth.getUser();
-  if (!authUser?.user_metadata?.referral_code) {
-    return; // No referral code to process
+  const {
+    data: { session },
+  } = await supabase.auth.getSession();
+  if (!session?.access_token) {
+    return;
   }
 
-  const referralCode = authUser.user_metadata.referral_code;
-
-  // Check if referral has already been processed
-  const { data: existingSave } = await supabase
-    .from('game_saves')
-    .select('game_state')
-    .eq('user_id', user.id)
-    .maybeSingle();
-
-  if (existingSave?.game_state?.referralProcessed) {
-    return; // Already processed
+  const {
+    data: { user: authUser },
+  } = await supabase.auth.getUser();
+  if (!authUser) {
+    return;
   }
 
-  // Wait a bit for server to be fully ready (especially in dev with HMR)
-  await new Promise(resolve => setTimeout(resolve, 2000));
+  persistLandingReferralCode();
+  const metaCode = parseRefParam(
+    typeof authUser.user_metadata?.referral_code === "string"
+      ? authUser.user_metadata.referral_code
+      : null,
+  );
+  const landing = readLandingReferralCode();
+  const canUseLanding =
+    Boolean(metaCode) ||
+    isAuthUserWithinSignupWelcomeWindow(authUser.created_at);
+  const referralCode = metaCode ?? (canUseLanding ? landing : null);
 
-  // Add retry logic with longer delays for dev environment
   let attempts = 0;
-  const maxAttempts = 5;
+  const maxAttempts = 3;
 
   while (attempts < maxAttempts) {
     try {
-      const response = await fetch(apiUrl('/api/referral/process'), {
-        method: 'POST',
+      const response = await fetch(apiUrl("/api/referral/process"), {
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${session.access_token}`,
         },
-        body: JSON.stringify({
-          newUserId: user.id,
-          referralCode: referralCode,
-        }),
+        body: JSON.stringify(referralCode ? { referralCode } : {}),
       });
 
-      const contentType = response.headers.get('content-type');
-
-      // Check if we got HTML instead of JSON (server not ready or Vite middleware caught it)
-      if (!contentType || !contentType.includes('application/json')) {
-        throw new Error(`Server returned ${contentType || 'HTML'} instead of JSON - API route not matched`);
+      const contentType = response.headers.get("content-type");
+      if (!contentType || !contentType.includes("application/json")) {
+        throw new Error(
+          `Server returned ${contentType || "HTML"} instead of JSON - API route not matched`,
+        );
       }
 
       const result = await response.json();
 
-      if (!response.ok) {
+      if (response.status === 401) {
         return;
       }
 
-      // Stop retrying if already processed or successful
-      if (result.success || result.reason === 'already_processed') {
-        // Narrow-merge referral-owned fields only — never replace live gameplay.
-        try {
-          const freshStateData = await loadGameFromSupabase();
-          if (freshStateData) {
-            const { useGameStore } = await import('./state');
-            const { applyReferralCloudRefreshPatch } = await import(
-              './referralCloudRefresh'
-            );
-            const { syncLocalSaveFromCloud } = await import('./save');
-            const { buildGameState } = await import('./stateHelpers');
-            const currentState = useGameStore.getState();
-            const patch = applyReferralCloudRefreshPatch(
-              currentState,
-              freshStateData.gameState,
-            );
-            if (patch.changed) {
-              useGameStore.setState(patch.nextState);
-              await syncLocalSaveFromCloud({
-                gameState: buildGameState(patch.nextState),
-                timestamp: Date.now(),
-                playTime: patch.nextState.playTime || currentState.playTime || 0,
-              });
-            }
-          }
-        } catch (error) {
-          logger.error('Failed to update game state:', error);
+      if (!response.ok) {
+        attempts++;
+        if (attempts < maxAttempts) {
+          await new Promise((resolve) =>
+            setTimeout(resolve, 500 * Math.pow(2, attempts)),
+          );
         }
-        return; // Stop retrying after success or already_processed
+        continue;
       }
 
-      // If we got here, retry with exponential backoff
+      if (result.success) {
+        try {
+          const { useGameStore } = await import("./state");
+          const { applyReferralCloudRefreshPatch } = await import(
+            "./referralCloudRefresh"
+          );
+          const { syncLocalSaveFromCloud } = await import("./save");
+          const { buildGameState } = await import("./stateHelpers");
+          const currentState = useGameStore.getState();
+          const patch = applyReferralCloudRefreshPatch(currentState, {
+            referrals: Array.isArray(result.referrals) ? result.referrals : [],
+            referralCount: result.referralCount ?? currentState.referralCount,
+            referredUsers: Array.isArray(result.referredUsers)
+              ? result.referredUsers
+              : currentState.referredUsers,
+            referralProcessed: result.referralProcessed === true,
+            referralCode: result.referralCode ?? currentState.referralCode,
+          });
+          if (patch.changed) {
+            useGameStore.setState(patch.nextState);
+            await syncLocalSaveFromCloud({
+              gameState: buildGameState(patch.nextState),
+              timestamp: Date.now(),
+              playTime: patch.nextState.playTime || currentState.playTime || 0,
+            });
+          }
+        } catch (error) {
+          logger.error("Failed to update game state:", error);
+        }
+        if (result.referralProcessed) {
+          clearLandingReferralCode();
+        }
+        return;
+      }
+
+      if (
+        result.reason === "invalid_referral_code" ||
+        result.reason === "self_referral" ||
+        result.reason === "referrer_limit_reached"
+      ) {
+        return;
+      }
+
       attempts++;
       if (attempts < maxAttempts) {
-        await new Promise(resolve => setTimeout(resolve, 1000 * Math.pow(2, attempts)));
+        await new Promise((resolve) =>
+          setTimeout(resolve, 500 * Math.pow(2, attempts)),
+        );
       }
     } catch (error) {
-      logger.error('Failed to process referral after confirmation:', error);
+      logger.error("Failed to process referral after confirmation:", error);
       attempts++;
       if (attempts < maxAttempts) {
-        await new Promise(resolve => setTimeout(resolve, 1000 * Math.pow(2, attempts)));
+        await new Promise((resolve) =>
+          setTimeout(resolve, 500 * Math.pow(2, attempts)),
+        );
       }
     }
   }
-
-  // Don't set isNewGame or allowPlayTimeOverwrite for referral processing
-  // This is not a new game, just a state update
 }
 
 export async function signIn(email: string, password: string) {

@@ -1,142 +1,58 @@
+import { describe, it, expect, beforeEach, vi } from "vitest";
+import { processReferral } from "./referral";
 
-import { REFERRAL_REWARD_GOLD } from '@shared/schema';
-import { describe, it, expect, beforeEach, vi } from 'vitest';
-import { processReferral } from './referral';
-import { resolveReferrerUserId } from './referralCodes';
+const mockRpc = vi.fn();
 
-// Mock Supabase client
-const mockSupabaseClient = {
-  from: vi.fn(),
-  auth: {
-    signUp: vi.fn(),
-    signIn: vi.fn(),
-  },
-};
-
-vi.mock('@supabase/supabase-js', () => ({
-  createClient: vi.fn(() => mockSupabaseClient),
+vi.mock("./supabaseServerClient", () => ({
+  createServerSupabaseClient: vi.fn(() => ({
+    rpc: mockRpc,
+  })),
 }));
 
-vi.mock('./referralCodes', () => ({
-  resolveReferrerUserId: vi.fn(),
-  getOrCreateReferralCode: vi.fn(),
-}));
-
-describe('Referral E2E Flow', () => {
+describe("Referral claim flow", () => {
   beforeEach(() => {
     vi.clearAllMocks();
-    process.env.NODE_ENV = 'development';
-    process.env.VITE_SUPABASE_URL_DEV = 'https://test.supabase.co';
-    process.env.SUPABASE_SERVICE_ROLE_KEY_DEV = 'test-key';
+    process.env.NODE_ENV = "development";
+    process.env.VITE_SUPABASE_URL_DEV = "https://test.supabase.co";
+    process.env.SUPABASE_SERVICE_ROLE_KEY_DEV = "test-key";
   });
 
-  it('should handle complete referral flow: signup -> process -> claim', async () => {
-    const referrerId = 'referrer-123';
-    const newUserId = 'new-user-456';
-    const shortCode = 'AB3K9M';
-
-    vi.mocked(resolveReferrerUserId).mockResolvedValue({ userId: referrerId });
-
-    // Mock successful referral processing
-    let selectCallCount = 0;
-    const mockSelect = vi.fn().mockReturnValue({
-      eq: vi.fn().mockReturnValue({
-        maybeSingle: vi.fn().mockImplementation(() => {
-          selectCallCount++;
-          if (selectCallCount === 1) {
-            return Promise.resolve({ data: null }); // New user has no save
-          } else {
-            return Promise.resolve({
-              data: {
-                game_state: {
-                  referrals: [],
-                  resources: { gold: 100 },
-                },
-              },
-            });
-          }
-        }),
-      }),
+  it("returns the ledger slice after a successful claim", async () => {
+    mockRpc.mockResolvedValue({
+      data: {
+        success: true,
+        referralProcessed: true,
+        referralCode: "AB3K9M",
+        referrals: [],
+        referralCount: 0,
+        referredUsers: [],
+      },
+      error: null,
     });
 
-    const mockUpdate = vi.fn().mockReturnValue({
-      eq: vi.fn().mockResolvedValue({ error: null }),
-    });
+    const result = await processReferral("new-user-456", "AB3K9M");
 
-    const mockUpsert = vi.fn().mockResolvedValue({ error: null });
-
-    mockSupabaseClient.from.mockImplementation(() => ({
-      select: mockSelect,
-      update: mockUpdate,
-      upsert: mockUpsert,
-    }));
-
-    // Step 1: Process referral
-    const result = await processReferral(newUserId, shortCode);
     expect(result.success).toBe(true);
-
-    // Step 2: Verify referrer got the unclaimed referral
-    const referrerUpdateCall = mockUpdate.mock.calls[0];
-    expect(referrerUpdateCall).toBeDefined();
-    expect(referrerUpdateCall[0].game_state.referredUsers).toEqual([newUserId]);
-    expect(referrerUpdateCall[0].game_state.referralCount).toBe(1);
-
-    // Step 3: Verify new user got bonus gold
-    const newUserUpsertCall = mockUpsert.mock.calls[0];
-    expect(newUserUpsertCall).toBeDefined();
-    expect(newUserUpsertCall[0].game_state.resources.gold).toBe(
-      REFERRAL_REWARD_GOLD,
-    );
+    expect(result.referralProcessed).toBe(true);
+    expect(result.referralCode).toBe("AB3K9M");
   });
 
-  it('should repair referrer when new user already processed', async () => {
-    const newUserId = 'existing-user-123';
-    const referralCode = 'XY2Z4W';
-
-    vi.mocked(resolveReferrerUserId).mockResolvedValue({
-      userId: 'referrer-456',
+  it("repairs a missing referrer projection", async () => {
+    mockRpc.mockResolvedValue({
+      data: {
+        success: true,
+        reason: "referrer_repaired",
+        referralProcessed: true,
+      },
+      error: null,
     });
 
-    let selectCount = 0;
-    const mockUpdate = vi.fn().mockReturnValue({
-      eq: vi.fn().mockResolvedValue({ error: null }),
-    });
-
-    mockSupabaseClient.from.mockImplementation(() => ({
-      select: vi.fn().mockReturnValue({
-        eq: vi.fn().mockReturnValue({
-          maybeSingle: vi.fn().mockImplementation(() => {
-            selectCount++;
-            if (selectCount === 1) {
-              return Promise.resolve({
-                data: {
-                  game_state: {
-                    referralProcessed: true,
-                    playTime: 5000,
-                  },
-                },
-              });
-            }
-            return Promise.resolve({
-              data: {
-                game_state: {
-                  referrals: [],
-                  resources: { gold: 0 },
-                },
-              },
-            });
-          }),
-        }),
-      }),
-      update: mockUpdate,
-    }));
-
-    const result = await processReferral(newUserId, referralCode);
+    const result = await processReferral("existing-user-123", "XY2Z4W");
 
     expect(result).toEqual({
       success: true,
-      reason: 'referrer_repaired',
+      reason: "referrer_repaired",
+      referralProcessed: true,
     });
-    expect(mockUpdate).toHaveBeenCalled();
   });
 });

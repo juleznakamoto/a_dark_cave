@@ -39,6 +39,9 @@ export const FELLOWSHIP_MEMBER_ORDER = Object.keys(fellowshipShape) as (keyof ty
  */
 export const REFERRAL_REWARD_GOLD = 200;
 
+/** Max successful invites per referrer (ledger + rewards UI). */
+export const REFERRAL_LIMIT = 10;
+
 /** One-time welcome gold when creating an account (email or Google). */
 export const SIGN_UP_WELCOME_GOLD = 200;
 

@@ -1,4 +1,7 @@
-import type { GameState } from "@shared/schema";
+import {
+  REFERRAL_LIMIT as SOCIAL_PROMPT_REFERRAL_CAP,
+  type GameState,
+} from "@shared/schema";
 import { isMarketingEmailRewardClaimedForPrompt } from "@/game/marketingEmailReward";
 import { PLAYLIGHT_DISCOVER_REWARD_KEY } from "@/game/playlightDiscoverReward";
 import { SOCIAL_PLATFORMS } from "@/game/socialPlatforms";
@@ -107,8 +110,7 @@ export function socialPromptMilestoneIndexAfterOpen(
   );
 }
 
-export const SOCIAL_PROMPT_REFERRAL_CAP = 10;
-
+export { SOCIAL_PROMPT_REFERRAL_CAP };
 export { REFERRAL_REWARD_GOLD } from "@shared/schema";
 
 function socialPlatformsRewardDone(

@@ -791,6 +791,9 @@ describe("Timed event tab cleanup on new game", () => {
     expect(state.gamblerDiceDialogOpen).toBe(false);
     expect(state.merchantTrades.choices).toEqual([]);
     expect(state.activeTab).toBe("cave");
+    expect(state.log.some((entry) => entry.id === "initial-narrative")).toBe(
+      false,
+    );
   });
 
   it("restartGame re-applies gold from already-claimed social tasks", async () => {
@@ -836,6 +839,16 @@ describe("loadGame after Make Fire", () => {
 
     expect(hadPersistedSave).toBe(false);
     expect(useGameStore.getState().flags.gameStarted).toBe(true);
+  });
+
+  it("does not copy the start-screen narrative into the event log", async () => {
+    mockLoadGame.mockResolvedValue(null);
+
+    await useGameStore.getState().loadGame();
+
+    expect(
+      useGameStore.getState().log.some((entry) => entry.id === "initial-narrative"),
+    ).toBe(false);
   });
 });
 

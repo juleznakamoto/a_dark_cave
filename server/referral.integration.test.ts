@@ -1,91 +1,69 @@
+import { describe, it, expect, beforeAll, vi } from "vitest";
+import request from "supertest";
+import express from "express";
+import { processReferral } from "./referral";
+import { getOrCreateReferralCode } from "./referralCodes";
 
-import { describe, it, expect, beforeAll, vi } from 'vitest';
-import request from 'supertest';
-import express from 'express';
-import { processReferral } from './referral';
-import { getOrCreateReferralCode } from './referralCodes';
-
-vi.mock('./referralCodes', async (importOriginal) => {
-  const actual = await importOriginal<typeof import('./referralCodes')>();
+vi.mock("./referralCodes", async (importOriginal) => {
+  const actual = await importOriginal<typeof import("./referralCodes")>();
   return {
     ...actual,
     getOrCreateReferralCode: vi.fn(),
   };
 });
 
-describe('Referral API Integration', { timeout: 15_000 }, () => {
+vi.mock("./referral", () => ({
+  processReferral: vi.fn(),
+}));
+
+describe("Referral API Integration", { timeout: 15_000 }, () => {
   let app: express.Application;
 
   beforeAll(() => {
     app = express();
     app.use(express.json());
 
-    app.get('/api/referral/code', async (_req, res) => {
-      const code = await getOrCreateReferralCode({} as never, 'user-1');
+    app.get("/api/referral/code", async (_req, res) => {
+      const code = await getOrCreateReferralCode({} as never, "user-1");
       res.json({ referralCode: code });
     });
 
-    app.post('/api/referral/process', async (req, res) => {
-      try {
-        const { newUserId, referralCode } = req.body || {};
-        
-        if (!newUserId || !referralCode) {
-          return res.status(400).json({ 
-            error: 'Missing required parameters',
-            received: { newUserId: !!newUserId, referralCode: !!referralCode }
-          });
-        }
-        
-        const result = await processReferral(newUserId, referralCode);
-        
-        res.setHeader('Content-Type', 'application/json');
-        res.json(result);
-      } catch (error: any) {
-        res.status(500).json({ error: error.message });
+    app.post("/api/referral/process", async (req, res) => {
+      if (!req.headers.authorization?.startsWith("Bearer ")) {
+        return res.status(401).json({ error: "Authorization required" });
       }
+      const referralCode =
+        typeof req.body?.referralCode === "string" ? req.body.referralCode : null;
+      const result = await processReferral("session-user", referralCode);
+      res.setHeader("Content-Type", "application/json");
+      res.json(result);
     });
   });
 
-  it('should return 400 when missing parameters', async () => {
+  it("rejects unauthenticated claims", async () => {
+    const response = await request(app).post("/api/referral/process").send({
+      referralCode: "AB3K9M",
+    });
+
+    expect(response.status).toBe(401);
+  });
+
+  it("accepts an authenticated sync without a code", async () => {
+    vi.mocked(processReferral).mockResolvedValue({ success: true });
     const response = await request(app)
-      .post('/api/referral/process')
+      .post("/api/referral/process")
+      .set("Authorization", "Bearer tok")
       .send({});
 
-    expect(response.status).toBe(400);
-    expect(response.body.error).toBe('Missing required parameters');
-  });
-
-  it('should return 400 when missing newUserId', async () => {
-    const response = await request(app)
-      .post('/api/referral/process')
-      .send({ referralCode: 'test-code' });
-
-    expect(response.status).toBe(400);
-  });
-
-  it('should return 400 when missing referralCode', async () => {
-    const response = await request(app)
-      .post('/api/referral/process')
-      .send({ newUserId: 'test-user' });
-
-    expect(response.status).toBe(400);
-  });
-
-  it('should return referral code JSON', async () => {
-    vi.mocked(getOrCreateReferralCode).mockResolvedValue('AB3K9M');
-    const response = await request(app).get('/api/referral/code');
     expect(response.status).toBe(200);
-    expect(response.body).toEqual({ referralCode: 'AB3K9M' });
+    expect(response.body).toEqual({ success: true });
+    expect(processReferral).toHaveBeenCalledWith("session-user", null);
   });
 
-  it('should return JSON content-type', async () => {
-    const response = await request(app)
-      .post('/api/referral/process')
-      .send({ 
-        newUserId: 'new-user-123',
-        referralCode: 'referrer-456'
-      });
-
-    expect(response.headers['content-type']).toContain('application/json');
+  it("should return referral code JSON", async () => {
+    vi.mocked(getOrCreateReferralCode).mockResolvedValue("AB3K9M");
+    const response = await request(app).get("/api/referral/code");
+    expect(response.status).toBe(200);
+    expect(response.body).toEqual({ referralCode: "AB3K9M" });
   });
 });
