@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef } from "react";
-import { useGameStoreWithoutTickClock } from "@/game/useGameStoreWithoutTickClock";
+import { useDerivedGameState } from "@/game/useGameStoreWithoutTickClock";
 import { abbreviateNumber } from "@/lib/utils";
 import type { GameState } from "@shared/schema";
 import {
@@ -48,7 +48,6 @@ export default function ResourceChangeNotification({
   changes,
   onVisibleChange,
 }: ResourceChangeNotificationProps) {
-  const gameState = useGameStoreWithoutTickClock();
   const [visibleChange, setVisibleChange] = useState<ResourceChange | null>(
     null,
   );
@@ -153,15 +152,15 @@ export default function ResourceChangeNotification({
     onVisibleChange?.(visibleChange !== null);
   }, [visibleChange, onVisibleChange]);
 
+  const hitResourceCap = useDerivedGameState((s) =>
+    visibleChange
+      ? isPositiveGainAtResourceCap(resource, visibleChange.amount, s)
+      : false,
+  );
+
   if (!visibleChange) {
     return null;
   }
-
-  const hitResourceCap = isPositiveGainAtResourceCap(
-    resource,
-    visibleChange.amount,
-    gameState as GameState,
-  );
 
   return (
     <div

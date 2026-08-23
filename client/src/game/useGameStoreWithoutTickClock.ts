@@ -1,4 +1,5 @@
 import { useStoreWithEqualityFn } from "zustand/traditional";
+import type { GameState } from "@shared/schema";
 import { useGameStore } from "@/game/state";
 
 export type GameStoreSnapshot = ReturnType<typeof useGameStore.getState>;
@@ -77,11 +78,51 @@ export function storeEqualsIgnoringTickClock<T extends object>(
 }
 
 /**
+ * True when two lists of plain objects match by key/value (new array
+ * identity from helpers does not force a re-render).
+ */
+export function derivedListEqual<T extends object>(
+  a: readonly T[],
+  b: readonly T[],
+): boolean {
+  if (a === b) return true;
+  if (a.length !== b.length) return false;
+  for (let i = 0; i < a.length; i++) {
+    const left = a[i] as Record<string, unknown>;
+    const right = b[i] as Record<string, unknown>;
+    if (left === right) continue;
+    const keys = Object.keys(left);
+    if (keys.length !== Object.keys(right).length) return false;
+    for (const key of keys) {
+      if (left[key] !== right[key]) return false;
+    }
+  }
+  return true;
+}
+
+/**
+ * Subscribe to a derived helper result. Helpers may still take GameState
+ * inside the selector; the component only re-renders when the result
+ * changes (`Object.is`, or a custom equality fn for new-array returns).
+ */
+export function useDerivedGameState<T>(
+  selector: (state: GameState) => T,
+  equalityFn: (a: T, b: T) => boolean = Object.is,
+): T {
+  return useStoreWithEqualityFn(
+    useGameStore,
+    (s) => selector(s as unknown as GameState),
+    equalityFn,
+  );
+}
+
+/**
  * Full store for panel helpers (`shouldShowAction`, tooltips) without
  * re-rendering on playTime / loopProgress / attack-wave elapsed writes
  * or cooldown remaining-time ticks (Prior / crafts stay assigned).
- * Zustand 5 `useGameStore(selector)` has no equality argument; use
- * `useStoreWithEqualityFn` from `zustand/traditional`.
+ * Prefer `useDerivedGameState` when the UI only needs a boolean, cost,
+ * or similar helper result. Zustand 5 `useGameStore(selector)` has no
+ * equality argument; use `useStoreWithEqualityFn` from `zustand/traditional`.
  */
 export function useGameStoreWithoutTickClock(): GameStoreSnapshot {
   return useStoreWithEqualityFn(

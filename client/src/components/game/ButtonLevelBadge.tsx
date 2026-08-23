@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { UpgradeKey, getButtonUpgradeInfo, getUpgradeLevelsForKey } from "@/game/buttonUpgrades";
 import { getCraftProduceAmount } from "@/game/craftUpgradeUtils";
 import { useGameStore } from "@/game/state";
+import { useDerivedGameState } from "@/game/useGameStoreWithoutTickClock";
 import {
   Tooltip,
   TooltipContent,
@@ -19,11 +20,13 @@ const CRAFT_UPGRADE_KEYS: UpgradeKey[] = ["craftTorches", "craftBoneTotems", "cr
 
 export function ButtonLevelBadge({ upgradeKey }: ButtonLevelBadgeProps) {
   const { t } = useTranslation("ui");
-  const state = useGameStore((s) => s);
   const buttonUpgrade = useGameStore(
     (state) => state.buttonUpgrades[upgradeKey],
   );
   const hasBook = useGameStore((state) => state.books?.book_of_ascension);
+  const produceAmount = useDerivedGameState((s) =>
+    getCraftProduceAmount(upgradeKey, s),
+  );
   const [isOpen, setIsOpen] = useState(false);
 
   if (!hasBook) {
@@ -33,7 +36,6 @@ export function ButtonLevelBadge({ upgradeKey }: ButtonLevelBadgeProps) {
   const upgrade = buttonUpgrade ?? { clicks: 0, level: 0 };
   const info = getButtonUpgradeInfo(upgradeKey, upgrade);
   const isCraftUpgrade = CRAFT_UPGRADE_KEYS.includes(upgradeKey);
-  const produceAmount = isCraftUpgrade ? getCraftProduceAmount(upgradeKey, state) : undefined;
 
   // Calculate progress within current level range
   const upgradeLevels = getUpgradeLevelsForKey(upgradeKey);

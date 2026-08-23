@@ -6,10 +6,10 @@ import {
 } from "@/components/game/BuildingActionBadge";
 import { TooltipWrapper } from "@/components/game/TooltipWrapper";
 import { useGameStore } from "@/game/state";
+import { useDerivedGameState } from "@/game/useGameStoreWithoutTickClock";
 import { useNewItemPulseTooltips } from "@/hooks/useNewItemPulseTooltip";
 import { cn } from "@/lib/utils";
 import { getInsightAmount } from "@/game/rules/insightReveal";
-import type { GameState } from "@shared/schema";
 import {
   getNextCapUpgradeCost,
   getVillagerCapLevel,
@@ -75,7 +75,8 @@ export function VillagerCapUpgradeBadge({
     handleTooltipEnter,
     handleTooltipLeave,
   } = useInsightBadgeTooltipPulse(tooltipId);
-  const gameState = useGameStore((s) => s as unknown as GameState);
+  const level = useDerivedGameState((s) => getVillagerCapLevel(s, groupId));
+  const insight = useDerivedGameState((s) => getInsightAmount(s));
   const insightRevealEnd = useGameStore(
     (s) => s.insightRevealing?.[revealKey],
   );
@@ -115,9 +116,8 @@ export function VillagerCapUpgradeBadge({
     }
   }, [isPlaying]);
 
-  const level = getVillagerCapLevel(gameState, groupId);
   const cost = getNextCapUpgradeCost(level);
-  const affordable = getInsightAmount(gameState) >= cost;
+  const affordable = insight >= cost;
   const isDisabled = !affordable || isPlaying;
   const upgradeTooltip = getUiTooltip(
     "unlockMoreJobsForInsight",

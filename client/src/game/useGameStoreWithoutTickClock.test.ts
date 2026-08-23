@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 import {
   cooldownActiveSetEqual,
+  derivedListEqual,
   storeEqualsIgnoringTickClock,
 } from "./useGameStoreWithoutTickClock";
 
@@ -82,6 +83,26 @@ describe("storeEqualsIgnoringTickClock", () => {
     const a = { playTime: 1000, buildings: { woodenHut: 1 } };
     const b = { playTime: 1000, buildings: { woodenHut: 2 } };
     expect(storeEqualsIgnoringTickClock(a, b)).toBe(false);
+  });
+});
+
+describe("derivedListEqual", () => {
+  it("treats equal contents as equal despite new array identity", () => {
+    expect(
+      derivedListEqual(
+        [{ sourceId: "gatherer", amount: 10 }],
+        [{ sourceId: "gatherer", amount: 10 }],
+      ),
+    ).toBe(true);
+  });
+
+  it("treats a value change as unequal", () => {
+    expect(
+      derivedListEqual(
+        [{ sourceId: "gatherer", amount: 10 }],
+        [{ sourceId: "gatherer", amount: 11 }],
+      ),
+    ).toBe(false);
   });
 });
 

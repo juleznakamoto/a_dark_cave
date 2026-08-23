@@ -1,10 +1,12 @@
 import React from "react";
-import { useGameStore } from "@/game/state";
+import {
+  derivedListEqual,
+  useDerivedGameState,
+} from "@/game/useGameStoreWithoutTickClock";
 import {
   getBonusComposition,
   type BonusCompositionLine,
 } from "@/game/rules/bonusComposition";
-import type { GameState } from "@shared/schema";
 import { useUiTranslation } from "@/i18n/useUiTranslation";
 
 function formatPercent(percent: number): string {
@@ -37,8 +39,10 @@ export default function BonusCompositionTooltip({
   bonusId: string;
 }) {
   const { t } = useUiTranslation();
-  const state = useGameStore() as unknown as GameState;
-  const lines = getBonusComposition(bonusId, state);
+  const lines = useDerivedGameState(
+    (s) => getBonusComposition(bonusId, s),
+    derivedListEqual,
+  );
   if (lines.length === 0) return null;
   return (
     <div className="text-xs">

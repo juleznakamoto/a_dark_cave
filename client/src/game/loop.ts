@@ -49,6 +49,7 @@ import {
   resetPlayTimeAutoPromptHandoff,
 } from "./playTimeAutoPrompts";
 import { processDemoLimit } from "./demoLimit";
+import { processTimedEffects } from "./timedEffects";
 import { tickObsidianOrbFocus } from "@/game/obsidianOrb";
 import { isLocalOnlyEdition } from "@/lib/edition";
 let gameLoopId: number | null = null;
@@ -752,96 +753,10 @@ export function processActionTicks() {
     }
   }
 
-  // Check if feast has expired
-  if (state.feastState?.isActive && state.feastState.endTime <= Date.now()) {
-    useGameStore.setState({
-      feastState: {
-        ...state.feastState,
-        isActive: false,
-      },
-    });
-  }
-
-  // Check if Great Feast has expired
-  if (
-    state.greatFeastState?.isActive &&
-    state.greatFeastState.endTime <= Date.now()
-  ) {
-    useGameStore.setState({
-      greatFeastState: {
-        ...state.greatFeastState,
-        isActive: false,
-      },
-    });
-  }
-
-  // Check if Solstice Gathering has expired
-  if (
-    state.solsticeState?.isActive &&
-    state.solsticeState.endTime <= Date.now()
-  ) {
-    useGameStore.setState({
-      solsticeState: {
-        ...state.solsticeState,
-        isActive: false,
-      },
-    });
-  }
-
-  // Check if curse has expired
-  if (state.curseState?.isActive && state.curseState.endTime <= Date.now()) {
-    useGameStore.setState({
-      curseState: {
-        ...state.curseState,
-        isActive: false,
-      },
-    });
-  }
-
-  // Check if frostfall has expired
-  if (
-    state.frostfallState?.isActive &&
-    state.frostfallState.endTime <= Date.now()
-  ) {
-    useGameStore.setState({
-      frostfallState: {
-        ...state.frostfallState,
-        isActive: false,
-      },
-    });
-  }
-
-  // Check if fog has expired
-  if (state.fogState?.isActive && state.fogState.endTime <= Date.now()) {
-    useGameStore.setState({
-      fogState: {
-        ...state.fogState,
-        isActive: false,
-      },
-    });
-  }
-
-  // Check if villager disgust has expired
-  if (
-    state.disgustState?.isActive &&
-    state.disgustState.endTime <= Date.now()
-  ) {
-    useGameStore.setState({
-      disgustState: {
-        ...state.disgustState,
-        isActive: false,
-      },
-    });
-  }
-
-  // Check if focus has expired
-  if (state.focusState?.isActive && state.focusState.endTime <= Date.now()) {
-    useGameStore.setState({
-      focusState: {
-        ...state.focusState,
-        isActive: false,
-      },
-    });
+  // Fresh state: Prior automation above may have written the store.
+  const timedPatch = processTimedEffects(useGameStore.getState());
+  if (timedPatch) {
+    useGameStore.setState(timedPatch);
   }
 
   const obsidianOrbPatch = tickObsidianOrbFocus(
@@ -857,45 +772,6 @@ export function processActionTicks() {
       totalFocusEarned:
         (s.totalFocusEarned || 0) + obsidianOrbPatch.totalFocusEarned,
     }));
-  }
-
-  // Check if mining boost has expired
-  if (
-    state.miningBoostState?.isActive &&
-    state.miningBoostState.endTime <= Date.now()
-  ) {
-    useGameStore.setState({
-      miningBoostState: {
-        ...state.miningBoostState,
-        isActive: false,
-      },
-    });
-  }
-
-  // Check if staring deer has expired
-  if (
-    state.staringDeerState?.isActive &&
-    state.staringDeerState.endTime <= Date.now()
-  ) {
-    useGameStore.setState({
-      staringDeerState: {
-        ...state.staringDeerState,
-        isActive: false,
-      },
-    });
-  }
-
-  // Check if forest fear has expired
-  if (
-    state.forestFearState?.isActive &&
-    state.forestFearState.endTime <= Date.now()
-  ) {
-    useGameStore.setState({
-      forestFearState: {
-        ...state.forestFearState,
-        isActive: false,
-      },
-    });
   }
 }
 

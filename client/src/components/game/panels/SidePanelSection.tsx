@@ -20,7 +20,7 @@ import { TooltipWrapper } from "@/components/game/TooltipWrapper";
 import ResourceChangeNotification from "./ResourceChangeNotification";
 import { SidePanelSectionIcon } from "./SidePanelSectionIcon";
 import { useGameStore } from "@/game/state";
-import { useGameStoreWithoutTickClock } from "@/game/useGameStoreWithoutTickClock";
+import { useDerivedGameState } from "@/game/useGameStoreWithoutTickClock";
 import { useOpenGlobalTooltipId } from "@/hooks/useGlobalTooltip";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { useNewItemPulseTooltips } from "@/hooks/useNewItemPulseTooltip";
@@ -35,12 +35,12 @@ import {
   type TooltipStatKey,
 } from "@/components/game/StatEffectsTooltip";
 import {
-  getInsightAmount,
   INSIGHT_REVEAL_DURATION_MS,
   isInsightUnlocked,
 } from "@/game/rules/insightReveal";
 import type { GameState } from "@shared/schema";
 import {
+  canEnchantWeapon,
   getNextEnchantCost,
   isWeaponEnchantUnlocked,
 } from "@/game/weaponEnchantments";
@@ -327,10 +327,17 @@ function WeaponEnchantBadge({ weaponId }: { weaponId: string }) {
     handleTooltipEnter,
     handleTooltipLeave,
   } = useInsightBadgeTooltipPulse(tooltipId);
-  const gameState = useGameStoreWithoutTickClock() as unknown as GameState;
   const setHighlightedResources = useGameStore(
     (s) => s.setHighlightedResources,
   );
+  const canShow = useDerivedGameState((s) => {
+    if (!isWeaponEnchantUnlocked(s)) return false;
+    if (!isInsightUnlocked(s)) return false;
+    if (!(s.weapons as Record<string, boolean>)[weaponId]) return false;
+    return getNextEnchantCost(s, weaponId) != null;
+  });
+  const cost = useDerivedGameState((s) => getNextEnchantCost(s, weaponId));
+  const affordable = useDerivedGameState((s) => canEnchantWeapon(s, weaponId));
   const [playingUntil, setPlayingUntil] = useState(0);
   const [suppressHover, setSuppressHover] = useState(false);
   const [, forceUpdate] = useState(0);
@@ -351,15 +358,7 @@ function WeaponEnchantBadge({ weaponId }: { weaponId: string }) {
     [],
   );
 
-  if (!isWeaponEnchantUnlocked(gameState)) return null;
-  if (!isInsightUnlocked(gameState)) return null;
-  if (!(gameState.weapons as Record<string, boolean>)[weaponId]) return null;
-
-  const cost = getNextEnchantCost(gameState, weaponId);
-  // Hide once the weapon is fully enchanted (no further level available).
-  if (cost == null) return null;
-
-  const affordable = getInsightAmount(gameState) >= cost;
+  if (!canShow || cost == null) return null;
   const isDisabled = !affordable || playing;
   const enchantTooltip = getUiTooltip(
     "enchantForInsight",
@@ -435,10 +434,13 @@ function ItemAbsolveBadge({ itemId }: { itemId: string }) {
     handleTooltipEnter,
     handleTooltipLeave,
   } = useInsightBadgeTooltipPulse(tooltipId);
-  const gameState = useGameStoreWithoutTickClock() as unknown as GameState;
   const setHighlightedResources = useGameStore(
     (s) => s.setHighlightedResources,
   );
+  const canShow = useDerivedGameState((s) =>
+    shouldShowAbsolveBadge(s, itemId),
+  );
+  const affordable = useDerivedGameState((s) => canAbsolveItem(s, itemId));
   const [playingUntil, setPlayingUntil] = useState(0);
   const [suppressHover, setSuppressHover] = useState(false);
   const [, forceUpdate] = useState(0);
@@ -459,9 +461,7 @@ function ItemAbsolveBadge({ itemId }: { itemId: string }) {
     [],
   );
 
-  if (!shouldShowAbsolveBadge(gameState, itemId)) return null;
-
-  const affordable = canAbsolveItem(gameState, itemId);
+  if (!canShow) return null;
   const isDisabled = !affordable || playing;
   const absolveTooltip = getUiTooltip(
     "absolveMadnessForInsight",
@@ -544,7 +544,40 @@ export default function SidePanelSection({
   const activeTooltipHoverId = useSidePanelActiveTooltipHoverId();
   const prevValuesRef = useRef<Map<string, number>>(new Map());
   const isInitialRender = useRef(true);
-  const gameState = useGameStoreWithoutTickClock() as unknown as GameState;
+  const storageLimit = useDerivedGameState((s) => getResourceLimit(s));
+  const limitedResourceKeySig = useDerivedGameState((s) =>
+    Object.keys(s.resources)
+      .filter((key) => isResourceLimited(key, s))
+      .sort()
+      .join(","),
+  );
+  const villageResourceHints = useDerivedGameState(
+    (s) => ({
+      population: s.current_population ?? 0,
+      foodUpkeep: isVillagerFoodUpkeepActive(s),
+      woodUpkeep: isVillagerWoodUpkeepActive(s),
+    }),
+    (a, b) =>
+      a.population === b.population &&
+      a.foodUpkeep === b.foodUpkeep &&
+      a.woodUpkeep === b.woodUpkeep,
+  );
+  const statEffectSigs = useDerivedGameState(
+    (s) => ({
+      luck: getStatEffectLinesSignature("luck", s),
+      strength: getStatEffectLinesSignature("strength", s),
+      knowledge: getStatEffectLinesSignature("knowledge", s),
+      madness: getStatEffectLinesSignature("madness", s),
+    }),
+    (a, b) =>
+      a.luck === b.luck &&
+      a.strength === b.strength &&
+      a.knowledge === b.knowledge &&
+      a.madness === b.madness,
+  );
+  const madnessTooltipContent = useDerivedGameState(
+    (s) => madnessTooltip.getContent(s) ?? "",
+  );
   const storeActiveTab = useGameStore((state) => state.activeTab);
   const hoveredTooltips = useGameStore((state) => state.hoveredTooltips || {});
   const setHoveredTooltip = useGameStore((state) => state.setHoveredTooltip);
@@ -634,10 +667,8 @@ export default function SidePanelSection({
   useEffect(() => {
     if (sectionId !== "stats") return;
 
-    const state = gameState as unknown as GameState;
-
     for (const statId of STAT_EFFECT_PULSE_STAT_IDS) {
-      const sig = getStatEffectLinesSignature(statId, state);
+      const sig = statEffectSigs[statId];
       const prev = prevStatEffectSigsRef.current[statId] ?? "";
 
       if (!statEffectPulseInitializedRef.current) {
@@ -661,7 +692,7 @@ export default function SidePanelSection({
     }
 
     statEffectPulseInitializedRef.current = true;
-  }, [gameState, sectionId, setHoveredTooltip]);
+  }, [statEffectSigs, sectionId, setHoveredTooltip]);
 
   // Clear stat pulse flags once the player dismisses via hover or tooltip open.
   useEffect(() => {
@@ -692,6 +723,7 @@ export default function SidePanelSection({
     const newDecreaseAnimatedItems = new Set<string>();
     const newMaxAnimatedItems = new Set<string>();
 
+    const state = useGameStore.getState() as unknown as GameState;
     visibleItems.forEach((item) => {
       const currentValue =
         typeof item.value === "number"
@@ -705,9 +737,8 @@ export default function SidePanelSection({
         return;
       }
 
-      // Check if resource is at max limit
-      const isLimited = isResourceLimited(item.id, gameState);
-      const limit = isLimited ? getResourceLimit(gameState) : null;
+      const isLimited = isResourceLimited(item.id, state);
+      const limit = isLimited ? getResourceLimit(state) : null;
       const isAtLimit = isLimited && limit !== null && currentValue === limit;
       const hitMax = isAtLimit && prevValue !== undefined && prevValue < limit;
 
@@ -804,7 +835,7 @@ export default function SidePanelSection({
     if (newMaxAnimatedItems.size > 0) {
       setMaxAnimatedItems((prev) => new Set([...prev, ...newMaxAnimatedItems]));
     }
-  }, [visibleItems, onResourceChange, gameState]); // Simplified dependencies
+  }, [visibleItems, onResourceChange]);
 
   // Track resource changes to detect intended changes even when capped
   useEffect(() => {
@@ -885,8 +916,8 @@ export default function SidePanelSection({
       item.id === "madness" && typeof item.value === "number" && item.value < 0
         ? `0 (-${formatNumber(Math.abs(item.value))})`
         : formatValue(item.value);
-    const isLimited = isResourceLimited(item.id, gameState);
-    const limit = isLimited ? getResourceLimit(gameState) : null;
+    const isLimited = limitedResourceKeySig.split(",").includes(item.id);
+    const limit = isLimited ? storageLimit : null;
     const isAtMax =
       isLimited &&
       limit !== null &&
@@ -934,8 +965,6 @@ export default function SidePanelSection({
     };
 
     // Check if the item is 'madness' and if there's any madness from events to display
-    const madnessTooltipContent =
-      item.id === "madness" ? madnessTooltip.getContent(gameState) : "";
     const isMadnessTooltip =
       item.id === "madness" && madnessTooltipContent.length > 0;
 
@@ -974,16 +1003,16 @@ export default function SidePanelSection({
     const isVillageTab = tabForProductionColors === "village";
     const villagerUpkeepActiveForResource =
       item.id === "food"
-        ? isVillagerFoodUpkeepActive(gameState)
+        ? villageResourceHints.foodUpkeep
         : item.id === "wood"
-          ? isVillagerWoodUpkeepActive(gameState)
+          ? villageResourceHints.woodUpkeep
           : false;
     const isCriticalZeroResource =
       isResourcesSection &&
       CRITICAL_ZERO_RESOURCES.has(item.id) &&
       typeof item.value === "number" &&
       item.value === 0 &&
-      (gameState.current_population ?? 0) > 0 &&
+      villageResourceHints.population > 0 &&
       villagerUpkeepActiveForResource;
     const showVillageMaxCapacityHighlight =
       isResourcesSection &&

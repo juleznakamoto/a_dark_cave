@@ -20,9 +20,9 @@ import {
   getTimedEventTabEffectiveRemainingMs,
   useGameStore,
 } from "@/game/state";
+import { useDerivedGameState } from "@/game/useGameStoreWithoutTickClock";
 import { formatTooltipResourceName } from "@/i18n/tooltipLabels";
 import { cn } from "@/lib/utils";
-import type { GameState } from "@shared/schema";
 
 const PROLONG_MINUTES = TIMED_EVENT_TAB_PROLONG_MS / 60_000;
 
@@ -65,6 +65,12 @@ export function ActionInsightBadge(props: ActionInsightBadgeProps) {
   const executionDuration = useGameStore((s) =>
     actionId ? (s.executionDurations?.[actionId] ?? 0) : 0,
   );
+  const canShowActionReveal = useDerivedGameState((s) =>
+    actionId ? canRevealEffects(actionId, s) : false,
+  );
+  const actionRevealCost = useDerivedGameState((s) =>
+    actionId ? (getInsightRevealCost(actionId, s) ?? 0) : 0,
+  );
   const [, forceUpdate] = useState(0);
 
   const isTimedEvent = target === "timedEvent";
@@ -85,7 +91,7 @@ export function ActionInsightBadge(props: ActionInsightBadgeProps) {
     ? insightUnlocked &&
     timedTabActive &&
     (!insightProlongUsed || isInsightRevealAnimating)
-    : canRevealEffects(actionId!, useGameStore.getState() as unknown as GameState);
+    : canShowActionReveal;
   const isExecuting = target === "action" && executionStart > 0 && executionDuration > 0;
   const isRevealing = isInsightRevealAnimating;
   const playing = canShow && !isExecuting && isRevealing;
@@ -114,7 +120,7 @@ export function ActionInsightBadge(props: ActionInsightBadgeProps) {
   const cost = isTimedEvent
     ? TIMED_EVENT_TAB_PROLONG_INSIGHT_COST
     : actionId
-      ? (getInsightRevealCost(actionId, useGameStore.getState() as unknown as GameState) ?? 0)
+      ? actionRevealCost
       : 0;
 
   const insightResource = formatTooltipResourceName("insight");
@@ -146,10 +152,10 @@ export function ActionInsightBadge(props: ActionInsightBadgeProps) {
 
   const canAfford = isTimedEvent
     ? insightUnlocked &&
-      timedTabActive &&
-      !insightProlongUsed &&
-      (effectiveTimedRemaining ?? 0) > 0 &&
-      insight >= TIMED_EVENT_TAB_PROLONG_INSIGHT_COST
+    timedTabActive &&
+    !insightProlongUsed &&
+    (effectiveTimedRemaining ?? 0) > 0 &&
+    insight >= TIMED_EVENT_TAB_PROLONG_INSIGHT_COST
     : insight >= cost;
 
   const isBadgeDisabled = isTimedEvent

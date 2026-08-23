@@ -2,7 +2,10 @@ import React from "react";
 import { useTranslation } from "react-i18next";
 import type { GameState } from "@shared/schema";
 import { isBastionTabVisible } from "@shared/repairUnlockFlags";
-import { useGameStore } from "@/game/state";
+import {
+  derivedListEqual,
+  useDerivedGameState,
+} from "@/game/useGameStoreWithoutTickClock";
 import {
   getTotalLuck,
   getTotalStrength,
@@ -324,8 +327,10 @@ export default function StatEffectsTooltip({
   statKey: TooltipStatKey;
 }) {
   const { t } = useTranslation("ui");
-  const state = useGameStore() as unknown as GameState;
-  const rows = getStatEffectRows(statKey, state, t);
+  const rows = useDerivedGameState(
+    (s) => getStatEffectRows(statKey, s, t),
+    derivedListEqual,
+  );
   if (rows.length === 0) return null;
   return (
     <div>

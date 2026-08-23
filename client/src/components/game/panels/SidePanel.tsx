@@ -1,5 +1,5 @@
 import { useGameStore } from "@/game/state";
-import { useGameStoreWithoutTickClock } from "@/game/useGameStoreWithoutTickClock";
+import { useDerivedGameState } from "@/game/useGameStoreWithoutTickClock";
 import SidePanelSection, {
   clearSidePanelActiveTooltipHover,
   SIDE_PANEL_GRID_CLASS,
@@ -9,7 +9,6 @@ import StatEffectsTooltip from "@/components/game/StatEffectsTooltip";
 import BonusCompositionTooltip from "@/components/game/BonusCompositionTooltip";
 import ResourceFlowTooltip from "@/components/game/ResourceFlowTooltip";
 import { ActionTooltipSeparator } from "@/game/rules/actionTooltipLayout";
-import { hasBonusComposition } from "@/game/rules/bonusComposition";
 import { ResourceCoinIcon } from "@/components/ui/resource-coin-icon";
 import { ResourceInsightIcon } from "@/components/ui/resource-insight-icon";
 import { clothingEffects } from "@/game/rules/effects";
@@ -19,6 +18,7 @@ import { villageBuildActions } from "@/game/rules/villageBuildActions";
 import { capitalizeWords, cn, formatSignedNumber } from "@/lib/utils";
 import {
   getActionLabel,
+  getBonusSidebarLabel,
   getEffectName,
   getResourceName,
   getStatName,
@@ -26,50 +26,22 @@ import {
 import React, { useState, useEffect, useRef } from "react";
 import { useTranslation } from "react-i18next";
 import { type FortificationBuildingKey } from "@/game/bastionStats";
-import {
-  getDisplayTools,
-  getMadnessComponents,
-  getAllActionBonuses,
-  getTotalCraftingCostReduction,
-  getTotalBuildingCostReduction,
-  getTotalBuildingTimeReduction,
-  getDoubleGainChance,
-} from "@/game/rules/effectsCalculation";
-import { getChainmasterProductionBonus } from "@/game/rules/skillUpgrades";
 import { bookEffects, fellowshipEffects } from "@/game/rules/effects";
 import {
-  gameStateSchema,
-  FELLOWSHIP_MEMBER_ORDER,
-  type GameState,
-} from "@shared/schema";
-import {
-  isResourceLimited,
-  getResourceLimit,
-  COMBAT_ITEM_RESOURCES,
-  type CombatItemResourceKey,
-} from "@/game/resourceLimits";
-import {
-  shouldHideBuilding,
-  shouldExcludeFromBuildingsSection,
-} from "@/game/buildingHierarchy";
-import {
-  getAssignedPopulationJobIds,
-  getTotalPopulationEffects,
-  hasResourceProductionBreakdown,
-} from "@/game/population";
-import { getMapFragmentCount } from "@/game/mapFragments";
-import { getSeenResourceKeys } from "@/game/stateHelpers";
+  getSidePanelModel,
+  sidePanelModelEqual,
+  type SidePanelBonusRow,
+} from "@/game/sidePanelModel";
 
 function getFortificationDisplayLabel(
   key: FortificationBuildingKey,
-  buildings: GameState["buildings"],
+  level: number,
   t: (key: string, options?: Record<string, unknown>) => string,
 ): string {
   if (key === "bastion") return t("fortifications.bastion");
   if (key === "fortifiedMoat") return t("fortifications.fortifiedMoat");
   if (key === "chitinPlating") return t("fortifications.chitinPlating");
   if (key === "watchtower") {
-    const level = buildings.watchtower ?? 0;
     const levelKeys = [
       "fortifications.watchtower1",
       "fortifications.watchtower2",
@@ -79,7 +51,6 @@ function getFortificationDisplayLabel(
     return t(levelKeys[level - 1] ?? "fortifications.watchtowerFallback");
   }
   if (key === "palisades") {
-    const level = buildings.palisades ?? 0;
     const levelKeys = [
       "fortifications.palisades1",
       "fortifications.palisades2",
@@ -91,12 +62,6 @@ function getFortificationDisplayLabel(
   return key;
 }
 
-// Extract property order from schema by parsing defaults
-const defaultGameState = gameStateSchema.parse({});
-const resourceOrder = Object.keys(defaultGameState.resources);
-const buildingOrder = Object.keys(defaultGameState.buildings);
-
-/** Fortress / Bastion side panel row order (`bastion_stats` object uses defense-first insertion order). */
 const BASTION_STAT_SIDE_PANEL_ORDER = [
   "attack",
   "defense",
@@ -121,19 +86,25 @@ const BASTION_STAT_SIDE_PANEL_ICON_COLORS: Record<
   integrity: "text-green-400/60",
 };
 
+const EXTRA_BONUS_LABEL_KEYS: Record<string, string> = {
+  craftingCostReduction: "sidePanel.craftDiscount",
+  buildingCostReduction: "sidePanel.buildDiscount",
+  buildingTimeReduction: "sidePanel.constructionTime",
+  villagerProductionBonus: "sidePanel.productionBonus",
+  doubleGainChance: "sidePanel.doubleGainChance",
+};
+
+function bonusTooltip(row: SidePanelBonusRow) {
+  return row.hasComposition ? (
+    <BonusCompositionTooltip bonusId={row.id} />
+  ) : undefined;
+}
+
 export default function SidePanel() {
   const { t } = useTranslation("ui");
-  const gameState = useGameStoreWithoutTickClock();
-  const {
-    resources,
-    buildings,
-    activeTab,
-    bastion_stats, // Added bastion_stats
-    story,
-    flags,
-  } = gameState;
+  const model = useDerivedGameState(getSidePanelModel, sidePanelModelEqual);
+  const activeTab = useGameStore((s) => s.activeTab);
 
-  // Track resource changes for notifications with a max size limit
   const [resourceChanges, setResourceChanges] = useState<
     Array<{ resource: string; amount: number; timestamp: number }>
   >([]);
@@ -142,7 +113,6 @@ export default function SidePanel() {
   );
   const consumedResourceChangeEventIdsRef = useRef<Set<string>>(new Set());
 
-  // Clean up old resource changes periodically
   useEffect(() => {
     if (resourceChanges.length === 0) return;
 
@@ -179,230 +149,102 @@ export default function SidePanel() {
     );
   }, [resourceChangeEvents]);
 
-  const gameStateTyped = gameState as unknown as GameState;
-
-  // Store already caches these via scheduleEffectsUpdate; do not re-walk calculateTotalEffects.
-  const totalLuck = gameState.stats.luck;
-  const totalStrength = gameState.stats.strength;
-  const totalKnowledge = gameState.stats.knowledge;
-  const totalMadness = gameState.stats.madness;
-
-  // Show resource if it has ever been > 0, even if currently 0 (persisted in game state)
-  const seenResourceKeySet = new Set(getSeenResourceKeys(gameStateTyped));
-  const seenResourceKeys = resourceOrder.filter((key) =>
-    seenResourceKeySet.has(key),
-  );
-
-  const PRECIOUS_RESOURCE_ORDER = ["silver", "gold", "insight"] as const;
-  const preciousResources = seenResourceKeys.filter((key) =>
-    PRECIOUS_RESOURCE_ORDER.includes(
-      key as (typeof PRECIOUS_RESOURCE_ORDER)[number],
-    ),
-  );
-  const otherResources = seenResourceKeys.filter(
-    (key) =>
-      !PRECIOUS_RESOURCE_ORDER.includes(
-        key as (typeof PRECIOUS_RESOURCE_ORDER)[number],
-      ) && !COMBAT_ITEM_RESOURCES.includes(key as CombatItemResourceKey),
-  );
-
-  const orderedPrecious = PRECIOUS_RESOURCE_ORDER.filter((key) =>
-    preciousResources.includes(key),
-  );
-
-  // Net production per resource (for sidepanel delta column)
-  const assignedJobIds = getAssignedPopulationJobIds(gameState);
-  const productionDeltas: Record<string, number> = getTotalPopulationEffects(
-    gameState,
-    assignedJobIds,
-  );
-
-  const resourceFlowTooltip = (resourceId: string) =>
-    hasResourceProductionBreakdown(gameState, resourceId) ? (
-      <ResourceFlowTooltip resourceId={resourceId} />
-    ) : undefined;
-
-  // Create resource items with special styling for gold and silver
-  const resourceItems = [
-    ...orderedPrecious.map((key, index) => ({
-      id: key,
-      label: (
-        <span className="inline-flex items-center gap-1">
-          {key === "insight" ? (
-            <ResourceInsightIcon className={cn("shrink-0", "text-blue-600")} />
-          ) : (
-            <ResourceCoinIcon
-              resource={key as "gold" | "silver"}
-              className={cn(
-                "shrink-0",
-                key === "gold" ? "text-yellow-600" : "text-gray-400",
-              )}
-            />
-          )}
-          <span>{getResourceName(key, capitalizeWords(key))}</span>
-        </span>
-      ),
-      value: resources[key as keyof typeof resources] ?? 0,
-      productionDelta: productionDeltas[key] ?? undefined,
-      tooltip: resourceFlowTooltip(key),
-      testId: `resource-${key}`,
-      visible: true,
-      isPrecious: true,
-      hasSpacingAfter:
-        index === orderedPrecious.length - 1 && otherResources.length > 0,
-    })),
-    // Other resources
-    ...otherResources.map((key) => ({
-      id: key,
-      label: getResourceName(key, capitalizeWords(key)),
-      value: resources[key as keyof typeof resources] ?? 0,
-      productionDelta: productionDeltas[key] ?? undefined,
-      tooltip: resourceFlowTooltip(key),
-      testId: `resource-${key}`,
-      visible: true,
-    })),
-  ];
-
-  // Dynamically generate tool items from state (only show best tools, no weapons)
-  const displayTools = getDisplayTools(gameState);
-
-  // Filter out weapons from tools display and used special items
-  const toolItems = Object.entries(displayTools)
-    .filter(([key, value]) => {
-      // Filter out weapons
-      if (Object.keys(gameState.weapons).includes(key)) return false;
-
-      // Filter out reinforced_rope after low chamber is explored
-      if (key === "reinforced_rope" && gameState.tools.mastermason_chisel) {
-        return false;
-      }
-
-      // Filter out giant_trap after laying trap
-      if (key === "giant_trap" && gameState.clothing.black_bear_fur) {
-        return false;
-      }
-
-      // Filter out occultist_map after exploring occultist chamber
-      if (key === "occultist_map" && gameState.relics.occultist_grimoire) {
-        return false;
-      }
-
-      // Filter out hidden_library_map after exploring hidden library
-      if (key === "hidden_library_map" && gameState.relics.stonebinders_codex) {
-        return false;
-      }
-
-      // Filter out mountain village map after the expedition
-      if (
-        key === "mountain_village_map" &&
-        gameState.story?.seen?.mountainVillageExplored
-      ) {
-        return false;
-      }
-
-      return true;
-    })
-    .map(([key, value]) => ({
-      id: key,
-      label: getEffectName("tools", key, capitalizeWords(key)),
-      value: 1,
-      testId: `tool-${key}`,
-      visible: true,
-      tooltip: true,
-    }));
-
-  // Dynamically generate weapon items from state (only show weapons from displayTools)
-  const weaponItemsFromTools = Object.entries(displayTools)
-    .filter(([key, value]) => Object.keys(gameState.weapons).includes(key))
-    .map(([key, value]) => ({
-      id: key,
-      label: getEffectName("weapons", key, capitalizeWords(key)),
-      value: 1,
-      testId: `weapon-${key}`,
-      visible: true,
-      tooltip: true,
-    }));
-
-  // Combat Items section (bombs + consumables stored in resources)
-  const combatItemRows = COMBAT_ITEM_RESOURCES.filter((key) =>
-    seenResourceKeySet.has(key),
-  ).map((key) => {
-    const value = resources[key as keyof typeof resources] ?? 0;
-    const label = getResourceName(key, capitalizeWords(key));
-    return {
-      id: key,
-      label,
-      value,
-      testId: `combat-${key}`,
-      visible: true,
-      tooltip: true,
-    };
-  });
-
-  const weaponItems = weaponItemsFromTools;
-
-  // Check if any resource has hit the limit
-  const limit = getResourceLimit(gameState);
-  const hasResourceAtLimit = resourceOrder.some((key) => {
-    const resource = resources[key as keyof typeof resources];
-    return isResourceLimited(key, gameState) && resource >= limit;
-  });
-
-  // Set the flag if we detect a resource at limit and flag isn't set yet
   useEffect(() => {
-    if (hasResourceAtLimit && !gameState.flags.hasHitResourceLimit) {
+    if (model.hasResourceAtLimit && !model.hasHitResourceLimit) {
       useGameStore.getState().setFlag("hasHitResourceLimit", true);
     }
-  }, [hasResourceAtLimit, gameState.flags.hasHitResourceLimit]);
+  }, [model.hasResourceAtLimit, model.hasHitResourceLimit]);
 
-  // Dynamically generate tool items from state (only show best tools, no weapons)
+  const resourceItems = model.resourceRows.map((row) => ({
+    id: row.id,
+    label: row.isPrecious ? (
+      <span className="inline-flex items-center gap-1">
+        {row.id === "insight" ? (
+          <ResourceInsightIcon className={cn("shrink-0", "text-blue-600")} />
+        ) : (
+          <ResourceCoinIcon
+            resource={row.id as "gold" | "silver"}
+            className={cn(
+              "shrink-0",
+              row.id === "gold" ? "text-yellow-600" : "text-gray-400",
+            )}
+          />
+        )}
+        <span>{getResourceName(row.id, capitalizeWords(row.id))}</span>
+      </span>
+    ) : (
+      getResourceName(row.id, capitalizeWords(row.id))
+    ),
+    value: row.value,
+    productionDelta:
+      row.productionDelta === 0 ? undefined : row.productionDelta,
+    tooltip: row.hasFlow ? (
+      <ResourceFlowTooltip resourceId={row.id} />
+    ) : undefined,
+    testId: `resource-${row.id}`,
+    visible: true,
+    isPrecious: row.isPrecious,
+    hasSpacingAfter: row.hasSpacingAfter,
+  }));
 
-  // Dynamically generate clothing items from state
-  const clothingItems = Object.entries(gameState.clothing || {})
-    .filter(([key, value]) => value === true)
-    .map(([key, value]) => ({
-      id: key,
-      label: getEffectName(
-        "clothing",
-        key,
-        clothingEffects[key]?.name || capitalizeWords(key),
-      ),
-      value: 1,
-      testId: `clothing-${key}`,
-      visible: true,
-      tooltip: true,
-    }));
+  const toolItems = model.toolIds.map((key) => ({
+    id: key,
+    label: getEffectName("tools", key, capitalizeWords(key)),
+    value: 1,
+    testId: `tool-${key}`,
+    visible: true,
+    tooltip: true,
+  }));
 
-  // Dynamically generate relic items from state (whispering_cube always first)
-  const mapFragmentCount = getMapFragmentCount(gameState as GameState);
-  const showMapFragmentRow =
-    mapFragmentCount > 0 && !gameState.story?.seen?.swampMapAssembled;
+  const weaponItems = model.weaponIds.map((key) => ({
+    id: key,
+    label: getEffectName("weapons", key, capitalizeWords(key)),
+    value: 1,
+    testId: `weapon-${key}`,
+    visible: true,
+    tooltip: true,
+  }));
 
-  const relicItems = Object.entries(gameState.relics || {})
-    .filter(([key, value]) => value === true)
-    .map(([key, value]) => ({
-      id: key,
-      label: getEffectName(
-        "clothing",
-        key,
-        clothingEffects[key]?.name || capitalizeWords(key),
-      ),
-      value: 1,
-      testId: `relic-${key}`,
-      visible: true,
-      tooltip: true,
-    }))
-    .sort((a, b) => {
-      if (a.id === "whispering_cube") return -1;
-      if (b.id === "whispering_cube") return 1;
-      return 0;
-    });
+  const combatItemRows = model.combatItemRows.map((row) => ({
+    id: row.id,
+    label: getResourceName(row.id, capitalizeWords(row.id)),
+    value: row.value,
+    testId: `combat-${row.id}`,
+    visible: true,
+    tooltip: true,
+  }));
 
-  if (showMapFragmentRow) {
+  const clothingItems = model.clothingIds.map((key) => ({
+    id: key,
+    label: getEffectName(
+      "clothing",
+      key,
+      clothingEffects[key]?.name || capitalizeWords(key),
+    ),
+    value: 1,
+    testId: `clothing-${key}`,
+    visible: true,
+    tooltip: true,
+  }));
+
+  const relicItems = model.relicIds.map((key) => ({
+    id: key,
+    label: getEffectName(
+      "clothing",
+      key,
+      clothingEffects[key]?.name || capitalizeWords(key),
+    ),
+    value: 1,
+    testId: `relic-${key}`,
+    visible: true,
+    tooltip: true,
+  }));
+
+  if (model.showMapFragmentRow) {
     const mapRow = {
       id: "map_fragment",
       label: t("sidePanel.mapFragments"),
-      value: mapFragmentCount,
+      value: model.mapFragmentCount,
       testId: "relic-map_fragment",
       visible: true,
       tooltip: true,
@@ -411,331 +253,202 @@ export default function SidePanel() {
     relicItems.splice(insertAt, 0, mapRow);
   }
 
-  // Dynamically generate book items from state
-  const bookItems = Object.entries(gameState.books || {})
-    .filter(([key, value]) => value === true)
-    .map(([key, value]) => ({
-      id: key,
-      label: getEffectName(
-        "books",
-        key,
-        bookEffects[key]?.name || capitalizeWords(key),
-      ),
-      value: 1,
-      testId: `book-${key}`,
-      visible: true,
-      tooltip: true, // Tooltip will be generated in itemTooltips.tsx
-    }));
-
-  // Dynamically generate fellowship items from state, sorted by schema-defined order
-  const fellowshipItems = Object.entries(gameState.fellowship || {})
-    .filter(([key, value]) => value === true)
-    .sort(([a], [b]) => {
-      const ai = FELLOWSHIP_MEMBER_ORDER.indexOf(a as any);
-      const bi = FELLOWSHIP_MEMBER_ORDER.indexOf(b as any);
-      return (ai === -1 ? Infinity : ai) - (bi === -1 ? Infinity : bi);
-    })
-    .map(([key]) => ({
-      id: key,
-      label: getEffectName(
-        "fellowship",
-        key,
-        fellowshipEffects[key]?.name || capitalizeWords(key),
-      ),
-      value: 1,
-      testId: `fellowship-${key}`,
-      visible: true,
-      tooltip: true, // Tooltip will be generated in itemTooltips.tsx
-    }));
-
-  // Dynamically generate schematic items from state
-  const schematicItems = Object.entries(gameState.schematics || {})
-    .filter(([key, value]) => {
-      if (!value) return false;
-
-      // Hide schematic if item is crafted
-      const k = key.replace("_schematic", "");
-
-      if (
-        (k in gameState.weapons &&
-          gameState.weapons[k as keyof typeof gameState.weapons]) ||
-        (k in gameState.tools &&
-          gameState.tools[k as keyof typeof gameState.tools]) ||
-        (k in gameState.clothing &&
-          gameState.clothing[k as keyof typeof gameState.clothing]) ||
-        (k in gameState.relics &&
-          gameState.relics[k as keyof typeof gameState.relics])
-      ) {
-        return false;
-      }
-
-      return true;
-    })
-    .map(([key, value]) => ({
-      id: key,
-      label: getEffectName(
-        "clothing",
-        key,
-        clothingEffects[key]?.name ||
-        capitalizeWords(key.replace("_schematic", "")),
-      ),
-      value: 1,
-      testId: `schematic-${key}`,
-      visible: true,
-      tooltip: true,
-    }));
-
-  // Dynamically generate blessing items from state
-  const blessingItems = Object.entries(gameState.blessings || {})
-    .filter(([key, value]) => {
-      // Show blessing if it's true OR if its enhanced version is true
-      if (value === true) return true;
-
-      // Check if this is a base blessing with an enhanced version
-      const enhancedKey = `${key}_enhanced`;
-      if (
-        gameState.blessings[enhancedKey as keyof typeof gameState.blessings]
-      ) {
-        return true;
-      }
-
-      return false;
-    })
-    .filter(([key]) => {
-      // Don't show base blessing if enhanced version exists and is active
-      if (key.endsWith("_enhanced")) return true;
-
-      const enhancedKey = `${key}_enhanced`;
-      if (
-        gameState.blessings[enhancedKey as keyof typeof gameState.blessings]
-      ) {
-        return false; // Hide base version, show enhanced instead
-      }
-
-      return true;
-    })
-    .map(([key, value]) => ({
-      id: key,
-      label: getEffectName(
-        "clothing",
-        key,
-        clothingEffects[key]?.name || capitalizeWords(key),
-      ),
-      value: 1,
-      testId: `blessing-${key}`,
-      visible: true,
-      tooltip: true,
-    }));
-
-  // Dynamically generate building items from state (in schema order)
-  const buildingItems = buildingOrder
-    .filter((key) => {
-      if (shouldExcludeFromBuildingsSection(key)) {
-        return false;
-      }
-      // Filter out fortification buildings from the buildings section
-      if (
-        ["bastion", "watchtower", "palisades", "fortifiedMoat"].includes(key)
-      ) {
-        return false;
-      }
-      return (buildings[key as keyof typeof buildings] ?? 0) > 0;
-    })
-    .map((key) => {
-      const value = buildings[key as keyof typeof buildings];
-      // Get the action definition to access the label
-      const actionId = `build${key.charAt(0).toUpperCase() + key.slice(1)}`;
-      const buildAction = villageBuildActions[actionId];
-
-      // Use the label from villageBuildActions, with special handling for multiple huts
-      let label = getActionLabel(
-        actionId,
-        buildAction?.label || capitalizeWords(key),
-      );
-      const showCount =
-        key === "woodenHut" || key === "stoneHut" || key === "longhouse";
-
-      return {
-        id: key,
-        label: showCount ? (
-          <>
-            {label} <span className="text-muted-foreground">({value})</span>
-          </>
-        ) : (
-          label
-        ),
-        value: value ?? 0,
-        testId: `building-${key}`,
-        visible: (value ?? 0) > 0,
-        tooltip: true, // Tooltip will be generated in itemTooltips.tsx
-      };
-    })
-    .filter((item) => item !== null) // Remove nulls from buildings not present
-    .filter((item) => {
-      // Hide buildings that are superseded by higher-tier versions or have specific conditions
-      if (shouldHideBuilding(item.id, buildings)) {
-        return false;
-      }
-      return true;
-    });
-
-  // Build stats items with total values
-  const statsItems = [];
-  statsItems.push({
-    id: "luck",
-    label: getStatName("luck", "Luck"),
-    value: totalLuck,
-    testId: "stat-luck",
-    visible: true,
-    icon: "☆",
-    iconColor: "text-green-300/80",
-    tooltip: (
-      <>
-        <StatEffectsTooltip statKey="luck" />
-        <ActionTooltipSeparator />
-        <span className="text-muted-foreground">
-          {t("sidePanel.statLuckTooltip")}
-        </span>
-      </>
+  const bookItems = model.bookIds.map((key) => ({
+    id: key,
+    label: getEffectName(
+      "books",
+      key,
+      bookEffects[key]?.name || capitalizeWords(key),
     ),
-  });
-
-  statsItems.push({
-    id: "strength",
-    label: getStatName("strength", "Strength"),
-    value: totalStrength,
-    testId: "stat-strength",
+    value: 1,
+    testId: `book-${key}`,
     visible: true,
-    icon: "⬡",
-    iconColor: "text-red-300/80",
-    tooltip: (
-      <>
-        <StatEffectsTooltip statKey="strength" />
-        <ActionTooltipSeparator />
-        <span className="text-muted-foreground">
-          {t("sidePanel.statStrengthTooltip")}
-        </span>
-      </>
-    ),
-  });
+    tooltip: true,
+  }));
 
-  statsItems.push({
-    id: "knowledge",
-    label: getStatName("knowledge", "Knowledge"),
-    value: totalKnowledge,
-    testId: "stat-knowledge",
+  const fellowshipItems = model.fellowshipIds.map((key) => ({
+    id: key,
+    label: getEffectName(
+      "fellowship",
+      key,
+      fellowshipEffects[key]?.name || capitalizeWords(key),
+    ),
+    value: 1,
+    testId: `fellowship-${key}`,
     visible: true,
-    icon: "✧",
-    iconColor: "text-blue-300/80",
-    tooltip: (
-      <>
-        <StatEffectsTooltip statKey="knowledge" />
-        <ActionTooltipSeparator />
-        <span className="text-muted-foreground">
-          {t("sidePanel.statKnowledgeTooltip")}
-        </span>
-      </>
-    ),
-  });
+    tooltip: true,
+  }));
 
-  const cachedEffects = gameState.effects;
-  const { fromItems, fromBuildings, fromEvents } = getMadnessComponents(
-    gameStateTyped,
-    "statBonuses" in cachedEffects || "madness_reduction" in cachedEffects
-      ? cachedEffects
-      : undefined,
-  );
-  const showMadnessBreakdown =
-    fromItems !== 0 || fromBuildings !== 0 || fromEvents !== 0;
-  const madnessTooltipContent = (
-    <>
-      {showMadnessBreakdown && (
+  const schematicItems = model.schematicIds.map((key) => ({
+    id: key,
+    label: getEffectName(
+      "clothing",
+      key,
+      clothingEffects[key]?.name ||
+      capitalizeWords(key.replace("_schematic", "")),
+    ),
+    value: 1,
+    testId: `schematic-${key}`,
+    visible: true,
+    tooltip: true,
+  }));
+
+  const blessingItems = model.blessingIds.map((key) => ({
+    id: key,
+    label: getEffectName(
+      "clothing",
+      key,
+      clothingEffects[key]?.name || capitalizeWords(key),
+    ),
+    value: 1,
+    testId: `blessing-${key}`,
+    visible: true,
+    tooltip: true,
+  }));
+
+  const buildingItems = model.buildingRows.map((row) => {
+    const actionId = `build${row.id.charAt(0).toUpperCase() + row.id.slice(1)}`;
+    const buildAction = villageBuildActions[actionId];
+    const label = getActionLabel(
+      actionId,
+      buildAction?.label || capitalizeWords(row.id),
+    );
+    return {
+      id: row.id,
+      label: row.showCount ? (
         <>
-          <div>
-            <div>
-              {t("sidePanel.madnessFromItems", {
-                value: formatSignedNumber(fromItems),
-              })}
-            </div>
-            <div>
-              {t("sidePanel.madnessFromBuildings", {
-                value: formatSignedNumber(fromBuildings),
-              })}
-            </div>
-            <div>
-              {t("sidePanel.madnessFromEvents", {
-                value: formatSignedNumber(fromEvents),
-              })}
-            </div>
-          </div>
-          <ActionTooltipSeparator />
+          {label} <span className="text-muted-foreground">({row.value})</span>
         </>
-      )}
-      <StatEffectsTooltip statKey="madness" />
-      <ActionTooltipSeparator />
-      <div className="text-muted-foreground">
-        {t("sidePanel.statMadnessTooltip")}
-      </div>
-    </>
-  );
-
-  statsItems.push({
-    id: "madness",
-    label: getStatName("madness", "Madness"),
-    value: totalMadness,
-    testId: "stat-madness",
-    visible: true,
-    icon: "✺",
-    iconColor: "text-violet-300/80",
-    tooltip: madnessTooltipContent,
+      ) : (
+        label
+      ),
+      value: row.value,
+      testId: `building-${row.id}`,
+      visible: row.value > 0,
+      tooltip: true,
+    };
   });
 
-  // Dynamically generate fortification items from state
-  const fortificationItems = Object.entries(buildings)
-    .map(([key, value]) => {
-      // Only include fortification buildings
-      if (
-        ![
-          "bastion",
-          "watchtower",
-          "palisades",
-          "fortifiedMoat",
-          "chitinPlating",
-        ].includes(key)
-      ) {
-        return null;
-      }
+  const showMadnessBreakdown =
+    model.madnessFromItems !== 0 ||
+    model.madnessFromBuildings !== 0 ||
+    model.madnessFromEvents !== 0;
 
-      if ((value ?? 0) === 0) return null;
+  const statsItems = [
+    {
+      id: "luck",
+      label: getStatName("luck", "Luck"),
+      value: model.luck,
+      testId: "stat-luck",
+      visible: true,
+      icon: "☆",
+      iconColor: "text-green-300/80",
+      tooltip: (
+        <>
+          <StatEffectsTooltip statKey="luck" />
+          <ActionTooltipSeparator />
+          <span className="text-muted-foreground">
+            {t("sidePanel.statLuckTooltip")}
+          </span>
+        </>
+      ),
+    },
+    {
+      id: "strength",
+      label: getStatName("strength", "Strength"),
+      value: model.strength,
+      testId: "stat-strength",
+      visible: true,
+      icon: "⬡",
+      iconColor: "text-red-300/80",
+      tooltip: (
+        <>
+          <StatEffectsTooltip statKey="strength" />
+          <ActionTooltipSeparator />
+          <span className="text-muted-foreground">
+            {t("sidePanel.statStrengthTooltip")}
+          </span>
+        </>
+      ),
+    },
+    {
+      id: "knowledge",
+      label: getStatName("knowledge", "Knowledge"),
+      value: model.knowledge,
+      testId: "stat-knowledge",
+      visible: true,
+      icon: "✧",
+      iconColor: "text-blue-300/80",
+      tooltip: (
+        <>
+          <StatEffectsTooltip statKey="knowledge" />
+          <ActionTooltipSeparator />
+          <span className="text-muted-foreground">
+            {t("sidePanel.statKnowledgeTooltip")}
+          </span>
+        </>
+      ),
+    },
+    {
+      id: "madness",
+      label: getStatName("madness", "Madness"),
+      value: model.madness,
+      testId: "stat-madness",
+      visible: true,
+      icon: "✺",
+      iconColor: "text-violet-300/80",
+      tooltip: (
+        <>
+          {showMadnessBreakdown && (
+            <>
+              <div>
+                <div>
+                  {t("sidePanel.madnessFromItems", {
+                    value: formatSignedNumber(model.madnessFromItems),
+                  })}
+                </div>
+                <div>
+                  {t("sidePanel.madnessFromBuildings", {
+                    value: formatSignedNumber(model.madnessFromBuildings),
+                  })}
+                </div>
+                <div>
+                  {t("sidePanel.madnessFromEvents", {
+                    value: formatSignedNumber(model.madnessFromEvents),
+                  })}
+                </div>
+              </div>
+              <ActionTooltipSeparator />
+            </>
+          )}
+          <StatEffectsTooltip statKey="madness" />
+          <ActionTooltipSeparator />
+          <div className="text-muted-foreground">
+            {t("sidePanel.statMadnessTooltip")}
+          </div>
+        </>
+      ),
+    },
+  ];
 
-      const fk = key as FortificationBuildingKey;
-      let label = getFortificationDisplayLabel(fk, buildings, t);
+  const fortificationItems = model.fortificationRows.map((row) => {
+    const fk = row.id as FortificationBuildingKey;
+    let label = getFortificationDisplayLabel(fk, row.value, t);
+    if (row.damaged) label += " ↓";
+    return {
+      id: row.id,
+      label,
+      value: row.value,
+      testId: `fortification-${row.id}`,
+      visible: row.value > 0,
+    };
+  });
 
-      const isDamaged =
-        (key === "watchtower" && story?.seen?.watchtowerDamaged) ||
-        (key === "bastion" && story?.seen?.bastionDamaged) ||
-        (key === "palisades" && story?.seen?.palisadesDamaged);
-
-      if (isDamaged) {
-        label += " ↓";
-      }
-
-      return {
-        id: key,
-        label,
-        value: value ?? 0,
-        testId: `fortification-${key}`,
-        visible: (value ?? 0) > 0,
-      };
-    })
-    .filter((item) => item !== null); // Remove nulls from buildings not present
-
-  // Dynamically generate bastion stats items from state (fixed display order).
   const bastionStatsItems =
-    bastion_stats == null
+    model.bastionStats == null
       ? []
       : BASTION_STAT_SIDE_PANEL_ORDER.map((key) => {
-        const value = bastion_stats[key] ?? 0;
+        const value = model.bastionStats![key];
         let tooltip = undefined;
 
         if (key === "defense") {
@@ -755,18 +468,16 @@ export default function SidePanel() {
         }
 
         if (key === "attack") {
-          const fortAttack = bastion_stats.attackFromFortifications || 0;
-          const strengthAttack = bastion_stats.attackFromStrength || 0;
           tooltip = (
             <div>
               <div>
                 {t("sidePanel.bastionAttackFromFortifications", {
-                  value: fortAttack,
+                  value: model.bastionStats!.attackFromFortifications,
                 })}
               </div>
               <div>
                 {t("sidePanel.bastionAttackFromStrength", {
-                  value: strengthAttack,
+                  value: model.bastionStats!.attackFromStrength,
                 })}
               </div>
               <ActionTooltipSeparator />
@@ -789,101 +500,40 @@ export default function SidePanel() {
         };
       });
 
-  // Use SSOT for bonus calculations
-  const bonusItems = getAllActionBonuses(gameState).map((bonus) => ({
-    id: bonus.id,
-    label: bonus.label,
-    value: bonus.displayValue,
-    testId: `bonus-${bonus.id}`,
-    visible: true,
-    tooltip: hasBonusComposition(bonus.id, gameState) ? (
-      <BonusCompositionTooltip bonusId={bonus.id} />
-    ) : undefined,
-  }));
-
-  // Add crafting cost reduction if present
-  const craftingCostReduction = getTotalCraftingCostReduction(gameState);
-  if (craftingCostReduction > 0) {
-    bonusItems.push({
-      id: "craftingCostReduction",
-      label: t("sidePanel.craftDiscount"),
-      value: `${Number((craftingCostReduction * 100).toFixed(1))}%`,
-      testId: "bonus-crafting-cost-reduction",
+  const bonusItems = [
+    ...model.bonusRows.map((row) => ({
+      id: row.id,
+      label: getBonusSidebarLabel(row.id),
+      value: row.displayValue,
+      testId: `bonus-${row.id}`,
       visible: true,
-      tooltip: hasBonusComposition("craftingCostReduction", gameState) ? (
-        <BonusCompositionTooltip bonusId="craftingCostReduction" />
-      ) : undefined,
-    });
-  }
-
-  // Add building cost reduction if present
-  const buildingCostReduction = getTotalBuildingCostReduction(gameState);
-  if (buildingCostReduction > 0) {
-    bonusItems.push({
-      id: "buildingCostReduction",
-      label: t("sidePanel.buildDiscount"),
-      value: `${Number((buildingCostReduction * 100).toFixed(1))}%`,
-      testId: "bonus-building-cost-reduction",
+      tooltip: bonusTooltip(row),
+    })),
+    ...model.extraBonusRows.map((row) => ({
+      id: row.id,
+      label: t(EXTRA_BONUS_LABEL_KEYS[row.id] ?? row.id),
+      value: row.displayValue,
+      testId:
+        row.id === "craftingCostReduction"
+          ? "bonus-crafting-cost-reduction"
+          : row.id === "buildingCostReduction"
+            ? "bonus-building-cost-reduction"
+            : row.id === "buildingTimeReduction"
+              ? "bonus-building-time-reduction"
+              : row.id === "villagerProductionBonus"
+                ? "bonus-villager-production"
+                : "bonus-double-gain-chance",
       visible: true,
-      tooltip: hasBonusComposition("buildingCostReduction", gameState) ? (
-        <BonusCompositionTooltip bonusId="buildingCostReduction" />
-      ) : undefined,
-    });
-  }
-
-  const buildingTimeReduction = getTotalBuildingTimeReduction(gameState);
-  if (buildingTimeReduction > 0) {
-    bonusItems.push({
-      id: "buildingTimeReduction",
-      label: t("sidePanel.constructionTime"),
-      value: `-${Number((buildingTimeReduction * 100).toFixed(1))}%`,
-      testId: "bonus-building-time-reduction",
-      visible: true,
-      tooltip: hasBonusComposition("buildingTimeReduction", gameState) ? (
-        <BonusCompositionTooltip bonusId="buildingTimeReduction" />
-      ) : undefined,
-    });
-  }
-
-  const chainmasterProductionBonus =
-    getChainmasterProductionBonus(gameState);
-  if (chainmasterProductionBonus > 0) {
-    bonusItems.push({
-      id: "villagerProductionBonus",
-      label: t("sidePanel.productionBonus"),
-      value: `${Math.round(chainmasterProductionBonus * 100)}%`,
-      testId: "bonus-villager-production",
-      visible: true,
-      tooltip: hasBonusComposition("villagerProductionBonus", gameState) ? (
-        <BonusCompositionTooltip bonusId="villagerProductionBonus" />
-      ) : undefined,
-    });
-  }
-
-  const doubleGainChance = getDoubleGainChance(gameState);
-  if (doubleGainChance > 0) {
-    bonusItems.push({
-      id: "doubleGainChance",
-      label: t("sidePanel.doubleGainChance"),
-      value: `${Number((doubleGainChance * 100).toFixed(1))}%`,
-      testId: "bonus-double-gain-chance",
-      visible: true,
-      tooltip: hasBonusComposition("doubleGainChance", gameState) ? (
-        <BonusCompositionTooltip bonusId="doubleGainChance" />
-      ) : undefined,
-    });
-  }
-
-  // Check if estate is unlocked
-  const estateUnlocked = gameState.buildings.darkEstate >= 1;
+      tooltip: bonusTooltip(row),
+    })),
+  ];
 
   const anyPlayerStatPositive =
-    totalLuck > 0 ||
-    totalStrength > 0 ||
-    totalKnowledge > 0 ||
-    totalMadness > 0;
+    model.luck > 0 ||
+    model.strength > 0 ||
+    model.knowledge > 0 ||
+    model.madness > 0;
 
-  // Determine which sections to show based on active tab
   const shouldShowSection = (sectionName: string): boolean => {
     switch (activeTab) {
       case "cave": {
@@ -894,8 +544,8 @@ export default function SidePanel() {
           "clothing",
           "schematics",
         ];
-        if (!flags.bastionUnlocked) caveSections.push("combatItems");
-        if (!estateUnlocked) caveSections.push("stats");
+        if (!model.bastionUnlocked) caveSections.push("combatItems");
+        if (!model.estateUnlocked) caveSections.push("stats");
         return caveSections.includes(sectionName);
       }
       case "village":
@@ -920,7 +570,7 @@ export default function SidePanel() {
       case "timedevent":
         return ["resources"].includes(sectionName);
       default:
-        return true; // Show all sections by default
+        return true;
     }
   };
 
@@ -928,7 +578,6 @@ export default function SidePanel() {
     event: React.PointerEvent<HTMLDivElement>,
   ) => {
     const related = event.relatedTarget;
-    // Touch/pointer events often omit relatedTarget or set a non-Node EventTarget.
     if (
       related == null ||
       !(related instanceof Node) ||
@@ -946,7 +595,6 @@ export default function SidePanel() {
     >
       <ScrollArea className="h-full w-full pb-1.5 pr-2">
         <div className={cn("pb-1", SIDE_PANEL_GRID_CLASS)}>
-          {/* First column - Resources */}
           <div className={cn(SIDE_PANEL_SECTION_SPACING_CLASS)}>
             {resourceItems.length > 0 && shouldShowSection("resources") && (
               <SidePanelSection
@@ -976,7 +624,6 @@ export default function SidePanel() {
             )}
           </div>
 
-          {/* Second column - Everything else */}
           <div className={cn("min-w-0 w-full", SIDE_PANEL_SECTION_SPACING_CLASS)}>
             {toolItems.length > 0 && shouldShowSection("tools") && (
               <SidePanelSection
@@ -996,7 +643,7 @@ export default function SidePanel() {
               <SidePanelSection
                 sectionId="bastion"
                 title={
-                  flags.hasFortress
+                  model.hasFortress
                     ? t("sidePanel.fortress")
                     : t("sidePanel.bastion")
                 }

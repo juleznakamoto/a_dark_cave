@@ -1,11 +1,13 @@
 import React from "react";
-import { useGameStore } from "@/game/state";
+import {
+  derivedListEqual,
+  useDerivedGameState,
+} from "@/game/useGameStoreWithoutTickClock";
 import {
   DISGRACED_PRIOR_SOURCE_ID,
   VILLAGER_UPKEEP_SOURCE_ID,
   getResourceProductionBreakdown,
 } from "@/game/population";
-import type { GameState } from "@shared/schema";
 import {
   getEffectName,
   getVillagerJobName,
@@ -34,8 +36,10 @@ export default function ResourceFlowTooltip({
   resourceId: string;
 }) {
   const { t } = useUiTranslation();
-  const state = useGameStore() as unknown as GameState;
-  const lines = getResourceProductionBreakdown(state, resourceId);
+  const lines = useDerivedGameState(
+    (s) => getResourceProductionBreakdown(s, resourceId),
+    derivedListEqual,
+  );
   if (lines.length === 0) return null;
   return (
     <div className="flex min-w-[7rem] flex-col text-xs">

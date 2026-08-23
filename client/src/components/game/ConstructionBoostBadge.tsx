@@ -16,9 +16,9 @@ import {
   isConstructionBoostAvailable,
 } from "@/game/constructionQueueSlots";
 import { useGameStore } from "@/game/state";
+import { useDerivedGameState } from "@/game/useGameStoreWithoutTickClock";
 import { formatTooltipResourceName } from "@/i18n/tooltipLabels";
 import { cn, formatCompactDuration } from "@/lib/utils";
-import type { GameState } from "@shared/schema";
 
 const BOOST_GLYPH = "\u23E9";
 
@@ -28,7 +28,6 @@ interface ConstructionBoostBadgeProps {
 
 export function ConstructionBoostBadge({ actionId }: ConstructionBoostBadgeProps) {
   const { t } = useTranslation("ui");
-  const state = useGameStore((s) => s as unknown as GameState);
   const setHighlightedResources = useGameStore((s) => s.setHighlightedResources);
   const boostConstruction = useGameStore((s) => s.boostConstruction);
   const executionStart = useGameStore((s) =>
@@ -37,10 +36,32 @@ export function ConstructionBoostBadge({ actionId }: ConstructionBoostBadgeProps
   const executionDuration = useGameStore((s) =>
     s.executionDurations?.[actionId] ?? 0,
   );
-  const constructionBoostsUsed = useGameStore(
-    (s) => s.constructionBoostsUsed?.[actionId] === true,
+  const canShow = useDerivedGameState((s) =>
+    isConstructionBoostAvailable(s, actionId),
   );
-  const insight = useGameStore((s) => s.resources?.insight ?? 0);
+  const cost = useDerivedGameState((s) =>
+    getConstructionBoostCost(
+      {
+        executionDurations:
+          (s as { executionDurations?: Record<string, number> })
+            .executionDurations ?? {},
+      },
+      actionId,
+    ),
+  );
+  const reductionSeconds = useDerivedGameState((s) =>
+    getConstructionBoostReductionSeconds(
+      {
+        executionDurations:
+          (s as { executionDurations?: Record<string, number> })
+            .executionDurations ?? {},
+      },
+      actionId,
+    ),
+  );
+  const canAfford = useDerivedGameState((s) =>
+    canBoostConstruction(s, actionId),
+  );
   const [now, setNow] = useState(() => Date.now());
 
   useEffect(() => {
@@ -49,44 +70,13 @@ export function ConstructionBoostBadge({ actionId }: ConstructionBoostBadgeProps
     return () => clearInterval(id);
   }, [executionStart, executionDuration, actionId]);
 
-  const liveState = useMemo(
-    () =>
-      ({
-        ...state,
-        executionStartTimes: {
-          ...(state.executionStartTimes ?? {}),
-          ...(executionStart ? { [actionId]: executionStart } : {}),
-        },
-        executionDurations: {
-          ...(state.executionDurations ?? {}),
-          ...(executionDuration ? { [actionId]: executionDuration } : {}),
-        },
-        constructionBoostsUsed: {
-          ...(state.constructionBoostsUsed ?? {}),
-          ...(constructionBoostsUsed ? { [actionId]: true } : {}),
-        },
-        resources: { ...state.resources, insight },
-      }) as GameState,
-    [
-      state,
-      actionId,
-      executionStart,
-      executionDuration,
-      constructionBoostsUsed,
-      insight,
-    ],
-  );
-
-  const canShow = isConstructionBoostAvailable(liveState, actionId);
-  const cost = getConstructionBoostCost(liveState, actionId);
-  const reductionSeconds = getConstructionBoostReductionSeconds(
-    liveState,
-    actionId,
-  );
   const savedTime = formatCompactDuration(reductionSeconds, "round");
   const insightResource = formatTooltipResourceName("insight");
   const finishesBuild = constructionBoostWillFinishBuild(
-    liveState,
+    {
+      executionStartTimes: { [actionId]: executionStart },
+      executionDurations: { [actionId]: executionDuration },
+    },
     actionId,
     now,
   );
@@ -114,8 +104,6 @@ export function ConstructionBoostBadge({ actionId }: ConstructionBoostBadgeProps
   );
 
   if (!canShow) return null;
-
-  const canAfford = canBoostConstruction(liveState, actionId);
 
   return (
     <div
