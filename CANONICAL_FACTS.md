@@ -20,6 +20,7 @@ conflicts with a claim here, update this file to match the code.
 | Steam demo | app **4971800**, available now |
 | itch.io | https://a-dark-cave.itch.io/a-dark-cave |
 | IGDB | https://www.igdb.com/games/a-dark-cave |
+| Wikidata | https://www.wikidata.org/wiki/Q141133318 (Q141133318) |
 | Reddit | u/Pure-Map-6717, https://www.reddit.com/r/aDarkCave/ |
 | Support | support@a-dark-cave.com |
 
@@ -157,7 +158,7 @@ described as play-for-free, plus a Steam offer without a fake price
 
 Keep existing real `sameAs` profile URLs (Reddit, IncrementalDB, IGDB, itch, IndieDB,
 Instagram, Fandom, YouTube, Product Hunt, Facebook, Almost Idle, ModDB,
-MobyGames, Buy Me a Coffee). Do not add Wikipedia or RAWG.
+MobyGames, Wikidata, Buy Me a Coffee). Do not add Wikipedia or RAWG.
 
 Organization `logo` may keep `/og-image.png` until a real wordmark exists.
 
