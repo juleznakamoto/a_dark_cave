@@ -14,6 +14,7 @@ import {
   flushPendingMarketingPreferences,
   getCurrentUser,
   loadGameFromSupabase,
+  processReferralAfterConfirmation,
   syncStoreAuthFromSession,
 } from "@/game/auth";
 import { parseStartupIntent, type StartupLocation } from "@/game/startupIntent";
@@ -168,6 +169,14 @@ async function finishGameplayInitialization(
   if (didLocalLoad && user) {
     await reconcileCloudWithoutWipingLivePlay();
     await syncStoreAuthFromSession();
+  }
+
+  // Email-confirm and returning loads use loadGame({ cloud: false }) first,
+  // then reconcile without a full loadGame when local is preferred or there
+  // is no cloud save yet. Claim here so ?ref= / user_metadata still writes
+  // the ledger after verify, and so the inviter picks up credit on refresh.
+  if (user) {
+    await processReferralAfterConfirmation();
   }
 
   if (persistAttribution) {

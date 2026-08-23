@@ -18,6 +18,7 @@ const mocks = vi.hoisted(() => ({
   mountFont: vi.fn(),
   syncSocial: vi.fn(),
   loadGameFromSupabase: vi.fn(),
+  processReferral: vi.fn(),
 }));
 
 vi.mock("@/i18n/loadLocaleResources", () => ({
@@ -35,6 +36,7 @@ vi.mock("@/game/auth", () => ({
   syncStoreAuthFromSession: () => mocks.syncAuth(),
   flushPendingMarketingPreferences: () => mocks.flushMarketing(),
   loadGameFromSupabase: () => mocks.loadGameFromSupabase(),
+  processReferralAfterConfirmation: () => mocks.processReferral(),
 }));
 vi.mock("@/game/startupGameLoader", () => ({
   consumePreparedGameHydration: () => mocks.consumePrepared(),
@@ -111,6 +113,7 @@ describe("runGameplayInitialization", () => {
     mocks.processStripe.mockResolvedValue(undefined);
     mocks.saveGame.mockResolvedValue({});
     mocks.loadGameFromSupabase.mockResolvedValue(null);
+    mocks.processReferral.mockResolvedValue(undefined);
     mocks.getState.mockReturnValue({
       loadGame: mocks.loadGame,
       googleAdsSource: null,
@@ -143,6 +146,7 @@ describe("runGameplayInitialization", () => {
 
     expect(mocks.consumeAuth).toHaveBeenCalled();
     expect(mocks.getCurrentUser).toHaveBeenCalled();
+    expect(mocks.processReferral).not.toHaveBeenCalled();
     expect(mocks.rehydrateStartup).toHaveBeenCalled();
     expect(mocks.startGameLoop.mock.invocationCallOrder[0]).toBeLessThan(
       mocks.consumeAuth.mock.invocationCallOrder[0],
@@ -221,5 +225,30 @@ describe("runGameplayInitialization", () => {
       skipIfPaymentReturn: true,
     });
     expect(mocks.processStripe).toHaveBeenCalledOnce();
+  });
+
+  it("claims referrals after auth even when there is no cloud save yet", async () => {
+    mocks.getCurrentUser.mockResolvedValue({ id: "invitee", email: "b@b.c" });
+    const { runGameplayInitialization } = await import(
+      "./gameplayInitOrchestrator"
+    );
+
+    const result = await runGameplayInitialization({
+      pathname: "/",
+      search: "?email_confirmed=true",
+      hash: "",
+    });
+
+    expect(mocks.processReferral).not.toHaveBeenCalled();
+    expect(mocks.loadGame).toHaveBeenCalledWith({ cloud: false });
+
+    await result.background;
+
+    expect(mocks.processReferral).toHaveBeenCalledOnce();
+    expect(mocks.loadGameFromSupabase).toHaveBeenCalledOnce();
+    expect(mocks.loadGame).toHaveBeenCalledTimes(1);
+    expect(mocks.processReferral.mock.invocationCallOrder[0]).toBeGreaterThan(
+      mocks.getCurrentUser.mock.invocationCallOrder[0],
+    );
   });
 });

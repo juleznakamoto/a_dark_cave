@@ -428,9 +428,11 @@ export async function signUp(
 }
 
 export async function processReferralAfterConfirmation(): Promise<void> {
-  processReferralInBackground().catch(error => {
+  try {
+    await processReferralInBackground();
+  } catch (error) {
     logger.error('[REFERRAL] Background processing failed:', error);
-  });
+  }
 }
 
 async function processReferralInBackground(): Promise<void> {

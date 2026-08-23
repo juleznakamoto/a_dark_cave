@@ -65,6 +65,7 @@ import {
 import {
   claimSignupWelcomeGold,
   isSignupWelcomeGoldClaimEligible,
+  processReferralAfterConfirmation,
 } from "@/game/auth";
 import {
   isSocialRewardClaimed,
@@ -322,6 +323,11 @@ export default function SocialPromptDialog({
       cancelled = true;
     };
   }, [isOpen]);
+
+  useEffect(() => {
+    if (!isOpen || !isUserSignedIn) return;
+    void processReferralAfterConfirmation();
+  }, [isOpen, isUserSignedIn]);
 
   useEffect(() => {
     if (!isOpen || signupWelcomeGoldClaimed) {
