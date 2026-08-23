@@ -5,9 +5,6 @@ import { addFreeVillagersWithinCap, killVillagers, stackTimedDebuff } from "@/ga
 import { getTotalStrength } from "./effectsCalculation";
 import { getCurrentPopulation, getMaxPopulation, getVillagersInVillage } from "@/game/population";
 import { getResourceLimit } from "@/game/resourceLimits";
-import { woodcutterEvents } from "./eventsWoodcutter";
-import { loreEvents } from "./eventsLore";
-import { shopItemEvents } from "./eventsShopItems";
 import {
   CRUEL_MODE,
   curseLikeDurationMs,
@@ -43,9 +40,6 @@ function paleFigureDeathsWithinFree(
 }
 
 export const choiceEvents: Record<string, GameEvent> = {
-  ...woodcutterEvents,
-  ...loreEvents,
-  ...shopItemEvents,
   paleFigure: {
     id: "paleFigure",
     condition: (state: GameState) =>

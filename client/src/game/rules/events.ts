@@ -2,23 +2,14 @@ import { GameState } from "@shared/schema";
 import { logger } from "../../lib/logger";
 import { isGameTabHidden } from "../../lib/tabVisibility";
 import type {
-  EventChoice,
   EventChoiceEffectResult,
   GameEvent,
   LogEntry,
 } from "./eventTypes";
-
-// Re-export types + success helper so existing `@/game/rules/events` imports keep working.
-export type {
-  EventChoice,
-  EventChoiceEffectResult,
-  GameEvent,
-  LogEntry,
-} from "./eventTypes";
-export { calculateSuccessChance } from "./eventSuccessChance";
-
 import { storyEvents } from "./eventsStory";
 import { choiceEvents } from "./eventsChoices";
+import { woodcutterEvents } from "./eventsWoodcutter";
+import { shopItemEvents } from "./eventsShopItems";
 import {
   merchantEvents,
   generateMerchantChoices,
@@ -67,8 +58,19 @@ import {
 } from "@/i18n/eventText";
 import { getEventChoiceAffordance } from "@/i18n/eventAffordance";
 
+// Re-export types so existing `@/game/rules/events` imports keep working.
+export type {
+  EventChoice,
+  EventChoiceEffectResult,
+  GameEvent,
+  LogEntry,
+} from "./eventTypes";
+
 export const gameEvents: Record<string, GameEvent> = {
   ...storyEvents,
+  ...woodcutterEvents,
+  ...loreEvents,
+  ...shopItemEvents,
   ...choiceEvents,
   ...merchantEvents,
   ...madnessEvents,
@@ -85,7 +87,6 @@ export const gameEvents: Record<string, GameEvent> = {
   ...boneDevourerEvents,
   ...villageAttackEvents,
   ...bloodMoonEvents,
-  ...loreEvents,
   ...fellowshipEvents,
   ...riddleEvents,
   ...ringEvents,
@@ -134,9 +135,6 @@ export function getEventI18nVars(
 }
 
 export class EventManager {
-  // Assuming `allEvents` is intended to be `gameEvents` based on context
-  private static allEvents: Record<string, GameEvent> = gameEvents;
-
   static checkEvents(state: EventRollState): {
     newLogEntries: LogEntry[];
     stateChanges: Partial<GameState>;
@@ -369,7 +367,7 @@ export class EventManager {
     if (result._choiceRejected) return result;
     if (Object.keys(result).length === 0) return result;
 
-    const eventDefinition = this.allEvents[eventId];
+    const eventDefinition = gameEvents[eventId];
     if (!eventDefinition || eventDefinition.repeatable) return result;
 
     eventDefinition.triggered = true;
@@ -412,7 +410,7 @@ export class EventManager {
       merchantTradesKeys: (state as any).merchantTrades ? Object.keys((state as any).merchantTrades) : [],
     });
 
-    const eventDefinition = this.allEvents[eventId];
+    const eventDefinition = gameEvents[eventId];
     if (!eventDefinition) {
       logger.error('[EVENT MANAGER] No event definition found for:', eventId);
       return {};

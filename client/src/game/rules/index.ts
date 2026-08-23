@@ -1,6 +1,5 @@
 import { Action } from "@shared/schema";
 import { GameState } from "@shared/schema";
-import type { GameEvent } from "./eventTypes";
 import { registerActions, getGameActions } from "./actionsRegistry";
 import { getNextBuildingLevel } from "./villageBuildActions";
 import { getMaxHutLevelForBuildAction } from "@/game/cruelMode";
@@ -45,29 +44,6 @@ import { forestResearchActions } from "./forestResearchActions";
 import { getFinanceExpeditionTier } from "./financeExpedition";
 import { bastionActions } from "./bastionActions";
 import { getExecutionTime } from "./executionTime";
-
-// Import event modules
-import { caveEvents } from "./eventsCave";
-import { huntEvents } from "./eventsHunt";
-import { choiceEvents } from "./eventsChoices";
-import { cubeEvents } from "./eventsCube";
-import { feastEvents } from "./eventsFeast";
-import { solsticeGatheringEvents } from "./eventsSolsticeGathering";
-import { staringDeerEvents } from "./eventsStaringDeer";
-import { forestFearEvents } from "./eventsForestFear";
-import { loreEvents } from "./eventsLore";
-import { madnessEvents } from "./eventsMadness";
-import { merchantEvents } from "./eventsMerchant";
-import { noChoiceEvents } from "./eventsNoChoices";
-import { recurringEvents } from "./eventsRecurring";
-import { storyEvents } from "./eventsStory";
-import { villageAttackEvents } from "./eventsVillageAttacks";
-import { bloodMoonEvents } from "./eventsBloodMoon";
-import { woodcutterEvents } from "./eventsWoodcutter";
-import { fellowshipEvents } from "./eventsFellowship";
-import { attackWaveEvents } from "./eventsAttackWaves";
-import { riddleEvents } from "./eventsRiddles";
-import { gamblerEvents } from "./eventsGambler";
 
 // Register all actions with the central registry
 registerActions({
@@ -892,28 +868,3 @@ export function getEventChoiceCostBreakdown(
 
   return breakdown;
 }
-
-// Combine all event types
-export const allEvents: Record<string, GameEvent> = {
-  ...caveEvents,
-  ...huntEvents,
-  ...storyEvents,
-  ...loreEvents,
-  ...madnessEvents,
-  ...noChoiceEvents,
-  ...recurringEvents,
-  ...woodcutterEvents,
-  ...villageAttackEvents,
-  ...bloodMoonEvents,
-  ...attackWaveEvents,
-  ...choiceEvents,
-  ...cubeEvents,
-  ...feastEvents,
-  ...solsticeGatheringEvents,
-  ...staringDeerEvents,
-  ...forestFearEvents,
-  ...merchantEvents,
-  ...fellowshipEvents,
-  ...riddleEvents,
-  ...gamblerEvents,
-};

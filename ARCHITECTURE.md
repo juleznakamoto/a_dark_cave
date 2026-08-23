@@ -65,7 +65,7 @@ in the client; **Supabase** handles auth/cloud saves and **Stripe** handles paym
 | `client/src/game/state.ts` | Zustand store: game state + UI slice + all gameplay actions. Largest, central file. |
 | `client/src/game/loop.ts` | rAF simulation loop (~4 FPS): production, events, autosave, timers, pause gates. |
 | `client/src/game/actions.ts` | Action execution dispatch â€” maps action IDs to handlers, applies costs/effects. |
-| `client/src/game/rules/index.ts` | Action visibility/affordability (`shouldShowAction`, `canExecuteAction`) + event aggregation (`allEvents`). |
+| `client/src/game/rules/index.ts` | Action visibility/affordability (`shouldShowAction`, `canExecuteAction`). |
 | `client/src/game/rules/actionsRegistry.ts` | Central `gameActions` map; action modules register via `registerActions()`. |
 | `client/src/game/rules/executionTime.ts` | `getExecutionTime()` â€” action duration lookup without importing `rules/index` (avoids registration cycles). |
 | `client/src/game/gameStoreHolder.ts` | Late-bound `useGameStore` access so event modules do not import `state.ts` (avoids `attackWaveEvents` TDZ). |
@@ -149,7 +149,7 @@ shared/schema.tsâ€” Zod GameState schema (source of truth for persisted sha
   `stopGameLoop()`.
 - **`rules/`** â€” `actionsRegistry.ts` (central `gameActions`), per-area action modules
   (`caveLogFallbacks.ts`, `caveExploreActions.ts`, `villageBuildActions.ts`, `forestSacrificeActions.ts`,
-  `forestResearchActions.ts`, `financeExpedition.ts` (tier/cost helpers leaf; avoids buttonUpgrades/rules init cycles), `bastionActions.ts`, â€¦), `index.ts` (visibility/affordability + `allEvents`), effects
+  `forestResearchActions.ts`, `financeExpedition.ts` (tier/cost helpers leaf; avoids buttonUpgrades/rules init cycles), `bastionActions.ts`, â€¦), `index.ts` (visibility/affordability), effects
   (`actionEffects.ts`, `effectsCalculation.ts`, `bonusComposition.ts` (side-panel bonus source breakdown), `costCalculation.ts`, `skillUpgrades.ts` (Estate/combat skill tiers incl. Crushing Strike, Bloodflame Sphere, Feral Howl), `executionTime.ts`), events (`eventTypes.ts` / `eventSuccessChance.ts` for types + chance helper without the aggregator; `events.ts`
   â†’ `EventManager`, `gameEvents`, re-exports; plus topic files `events*.ts` incl. `eventsLadyMountains.ts` â€” DEV-only Lady/Liquid Death/Man/night attack + The Hound fellowship (Feral Howl); `eventsWanderingCollector.ts` / `collectorRejectedItems.ts` â€” wandering collector buy/sell timed tab + rejected-item tracking; `eventsChainmaster.ts` â€” Leatherbound Book discovery + collector timed tab; `eventsInsightBlessings.ts` / `insightBlessings.ts` â€” Insight-paid blessing timed tab + 3-card offer; `eventsStaringDeer.ts` â€” staring-deer Continue dialog (2x food production); `eventsForestFear.ts` â€” forest-attack Continue dialog (hunter/gatherer -25%)), `insightReveal.ts` /
   `insightRevealTooltip.tsx` (building/craft/stat descriptions always visible;
@@ -161,7 +161,7 @@ shared/schema.tsâ€” Zod GameState schema (source of truth for persisted sha
 - **Action path:** UI â†’ `useGameStore.executeAction(id)` â†’ `actions.ts` maps ID â†’ `handle*`
   function in a rule module â†’ `StateManager.scheduleEffectsUpdate()` recomputes derived stats.
   Action modules import `ActionResult` from `types.ts`, not `actions.ts` (avoids Vite TDZ on `caveExploreActions`).
-- **Event path:** `loop.ts`/store â†’ `checkEvents()` â†’ `EventManager` evaluates `allEvents`
+- **Event path:** `loop.ts`/store â†’ `checkEvents()` â†’ `EventManager` evaluates `gameEvents`
   â†’ opens `EventDialog`, `VillageEffectDialog` (themed village timed-effect outcomes), or `timedEventTab`. Timed-tab events do not spawn while the game tab is hidden (Steam, web, all editions).
 - **`villageEffectThemes.ts`** â€” maps event outcomes to produce-header symbols/colors; `resolveVillageEffectAnnouncementTheme()` in `applyEventChoice` (`state.ts`) schedules `VillageEffectDialog`.
 - **`playlightExitIntent.ts`** â€” play-time exit-intent milestones (90m/150m/210m/270m/330m);
@@ -486,7 +486,7 @@ Support: `server/vite.ts` (dev/prod hosting + SPA fallback with route allowlist/
 1. **Single game store** â€” all gameplay reads/writes go through `useGameStore`; UI state is mixed
    in but stripped on save via `persistedStateBoundary.ts` (`UI_ONLY_PROPERTIES` alias).
 2. **Declarative actions/events** â€” actions are objects (`show_when`, `cost`, `effects`,
-   optional `executionTime`); events are records merged into `allEvents`.
+   optional `executionTime`); events are records merged into `gameEvents`.
 3. **Handler dispatch table** â€” `actions.ts` maps action IDs to `handle*` functions in rule modules.
 4. **Modal-pause SSOT** - `dialogRegistry.ts` → `isModalDialogOpen` in `state.ts` (visible modals plus `dialogHandoffPending`).
 5. **Log entries carry i18n keys** â€” `{ logKey, logVars }` resolved by `i18n/logDisplay.ts`.
