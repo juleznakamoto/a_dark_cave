@@ -10,7 +10,18 @@ import { getTotalKnowledge, getTotalMadness } from "./effectsCalculation";
 import { getTotalMerchantDiscount } from "./effectsStats";
 import { logger } from "@/lib/logger";
 import { GAME_CONSTANTS } from "@/game/constants";
+import { getSeenResourceKeys } from "@/game/stateHelpers";
 import type { MerchantTradeData } from "@/game/types";
+
+/** Gold and silver are merchant currency, always valid even before the player has found them. */
+const MERCHANT_CURRENCY = new Set(["gold", "silver"]);
+
+function isKnownMerchantResource(
+  resource: string,
+  seenResources: Set<string>,
+): boolean {
+  return MERCHANT_CURRENCY.has(resource) || seenResources.has(resource);
+}
 
 // Resource prices in gold per unit
 const PRICES = {
@@ -963,6 +974,7 @@ function selectTrades(
   usedResourcePairs: Set<string>,
   usedRewardTypes: Set<string>,
   isBuyTrade: boolean,
+  seenResources?: Set<string>,
 ): MerchantTradeData[] {
   const selected: MerchantTradeData[] = [];
   const availableTrades = [...trades];
@@ -1001,6 +1013,12 @@ function selectTrades(
       buyAmount = 0;
       validOptions = (trade.rewards || []).filter(
         (r: any) => r.resource !== trade.take,
+      );
+    }
+
+    if (seenResources) {
+      validOptions = validOptions.filter((option: any) =>
+        isKnownMerchantResource(option.resource, seenResources),
       );
     }
 
@@ -1148,11 +1166,14 @@ export function generateMerchantChoices(state: GameState): MerchantTradeData[] {
   // Shared resource pair tracking
   const usedResourcePairs = new Set<string>();
   const usedRewardTypes = new Set<string>();
+  const seenResources = new Set(getSeenResourceKeys(state));
 
   // Filter buy trades (post-last-wave totems are appended separately so they always appear)
   const filteredBuyTrades = buyTrades.filter((trade) => {
     return (
-      trade.condition(state) && !POST_LAST_WAVE_BUY_TRADE_IDS.has(trade.id)
+      trade.condition(state) &&
+      !POST_LAST_WAVE_BUY_TRADE_IDS.has(trade.id) &&
+      seenResources.has(trade.give)
     );
   });
   const filteredPostLastWaveBuyTrades = buyTrades.filter(
@@ -1190,6 +1211,7 @@ export function generateMerchantChoices(state: GameState): MerchantTradeData[] {
     usedResourcePairs,
     usedRewardTypes,
     true,
+    seenResources,
   );
 
   // Guaranteed after wave 10: offer 1 or 2 of bone/leather totems (500)
@@ -1214,13 +1236,14 @@ export function generateMerchantChoices(state: GameState): MerchantTradeData[] {
           new Set<string>(),
           new Set<string>(),
           true,
+          seenResources,
         ),
       );
   })();
 
   // Filter sell trades (use separate resource pair tracking)
   const filteredSellTrades = sellTrades.filter((trade) => {
-    return trade.condition(state);
+    return trade.condition(state) && seenResources.has(trade.take);
   });
 
   const sellUsedResourcePairs = new Set<string>();
@@ -1233,6 +1256,7 @@ export function generateMerchantChoices(state: GameState): MerchantTradeData[] {
     sellUsedResourcePairs,
     sellUsedRewardTypes,
     false,
+    seenResources,
   );
 
   // At most one special (tool/schematic/weapon/relic/book) per visit.

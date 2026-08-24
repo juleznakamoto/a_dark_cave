@@ -617,7 +617,7 @@ function pushFlowLine(
 
 /**
  * Per-source village production and consumption for one cycle.
- * Job lines first (definition order), then villager upkeep, then Prior.
+ * Villager upkeep first, then Prior, then job lines (definition order).
  */
 export function getPopulationResourceFlows(
   state: GameState,
@@ -625,24 +625,6 @@ export function getPopulationResourceFlows(
   options?: GetPopulationProductionOptions,
 ): PopulationResourceFlowLine[] {
   const lines: PopulationResourceFlowLine[] = [];
-
-  const jobIdsInOrder = Object.keys(populationJobs).filter((jobId) =>
-    visibleJobIds.includes(jobId),
-  );
-  for (const jobId of jobIdsInOrder) {
-    const currentCount =
-      state.villagers[jobId as keyof typeof state.villagers] || 0;
-    if (currentCount <= 0) continue;
-    const production = getPopulationProduction(
-      jobId,
-      currentCount,
-      state,
-      options,
-    );
-    for (const prod of production) {
-      pushFlowLine(lines, jobId, prod.resource, prod.totalAmount);
-    }
-  }
 
   const totalPopulation = getCurrentPopulation(state);
   if (totalPopulation > 0) {
@@ -659,6 +641,24 @@ export function getPopulationResourceFlows(
     const priorUpkeep = getDisgracedPriorFoodUpkeepPerCycle(state);
     if (priorUpkeep > 0) {
       pushFlowLine(lines, DISGRACED_PRIOR_SOURCE_ID, "food", -priorUpkeep);
+    }
+  }
+
+  const jobIdsInOrder = Object.keys(populationJobs).filter((jobId) =>
+    visibleJobIds.includes(jobId),
+  );
+  for (const jobId of jobIdsInOrder) {
+    const currentCount =
+      state.villagers[jobId as keyof typeof state.villagers] || 0;
+    if (currentCount <= 0) continue;
+    const production = getPopulationProduction(
+      jobId,
+      currentCount,
+      state,
+      options,
+    );
+    for (const prod of production) {
+      pushFlowLine(lines, jobId, prod.resource, prod.totalAmount);
     }
   }
 

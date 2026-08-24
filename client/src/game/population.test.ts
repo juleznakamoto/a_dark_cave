@@ -844,7 +844,7 @@ describe('Scholar insight production', () => {
 });
 
 describe('resource production breakdown', () => {
-  it('lists jobs then villager upkeep for a resource', () => {
+  it('lists villager upkeep first, then jobs for a resource', () => {
     const state = createTestState({
       villagers: {
         ...createTestState().villagers,
@@ -857,12 +857,12 @@ describe('resource production breakdown', () => {
     expect(getAssignedPopulationJobIds(state)).toEqual(['gatherer', 'iron_miner']);
 
     expect(getResourceProductionBreakdown(state, 'wood')).toEqual([
-      { sourceId: 'gatherer', amount: 20 },
       { sourceId: VILLAGER_UPKEEP_SOURCE_ID, amount: -5 },
+      { sourceId: 'gatherer', amount: 20 },
     ]);
     expect(getResourceProductionBreakdown(state, 'food')).toEqual([
-      { sourceId: 'iron_miner', amount: -5 },
       { sourceId: VILLAGER_UPKEEP_SOURCE_ID, amount: -5 },
+      { sourceId: 'iron_miner', amount: -5 },
     ]);
     expect(getResourceProductionBreakdown(state, 'iron')).toEqual([
       { sourceId: 'iron_miner', amount: 5 },
@@ -877,12 +877,12 @@ describe('resource production breakdown', () => {
     });
 
     expect(getResourceProductionBreakdown(state, 'food')).toEqual([
-      { sourceId: 'hunter', amount: 5 },
       { sourceId: VILLAGER_UPKEEP_SOURCE_ID, amount: -5 },
       {
         sourceId: DISGRACED_PRIOR_SOURCE_ID,
         amount: -DISGRACED_PRIOR_FOOD_PER_ASSIGNED_ACTION_PER_CYCLE,
       },
+      { sourceId: 'hunter', amount: 5 },
     ]);
   });
 
