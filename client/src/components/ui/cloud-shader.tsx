@@ -239,11 +239,17 @@ export default function CloudShader({ className = "" }: CloudShaderProps) {
   useEffect(() => {
     if (!canvasRef.current) return;
 
+    // Per-effect gate. isActiveRef is shared across Strict Mode remounts, so a
+    // stale inner rAF from the previous run can see it flipped back to true.
+    let cancelled = false;
+    let outerFrame = 0;
+    let innerFrame = 0;
     isActiveRef.current = true;
 
     const startRenderer = () => {
+      if (cancelled) return;
       const canvas = canvasRef.current;
-      if (!canvas || !isActiveRef.current) return;
+      if (!canvas) return;
       const { width, height } = getViewportSize();
       const baseScale = width < 600 ? 0.25 : 0.4;
       const dpr = Math.max(1, baseScale * window.devicePixelRatio);
@@ -254,13 +260,17 @@ export default function CloudShader({ className = "" }: CloudShaderProps) {
         const renderer = new WebGLRenderer(canvas, dpr, shaderSource);
         renderer.setup();
         renderer.init();
+        if (cancelled) {
+          renderer.reset();
+          return;
+        }
         rendererRef.current = renderer;
         setVisible(true);
 
         const FRAME_INTERVAL_MS = 1000 / 30;
         let lastFrameTime = 0;
         const loop = (now: number) => {
-          if (!isActiveRef.current || !rendererRef.current) return;
+          if (cancelled || !isActiveRef.current || !rendererRef.current) return;
           animationFrameRef.current = requestAnimationFrame(loop);
           // 30fps wall-clock cap (not "every other rAF") so 120Hz stays at 30.
           if (lastFrameTime > 0 && now - lastFrameTime < FRAME_INTERVAL_MS) {
@@ -278,12 +288,13 @@ export default function CloudShader({ className = "" }: CloudShaderProps) {
     // Wait one frame so the start-screen first paint is not blocked.
     // Do not use requestIdleCallback here: a busy start screen can starve it
     // forever (no timeout), which leaves the background black.
-    const paintFrame = requestAnimationFrame(() => {
-      requestAnimationFrame(startRenderer);
+    outerFrame = requestAnimationFrame(() => {
+      if (cancelled) return;
+      innerFrame = requestAnimationFrame(startRenderer);
     });
 
     const handleResize = () => {
-      if (!rendererRef.current) return;
+      if (cancelled || !rendererRef.current) return;
       const { width, height } = getViewportSize();
       rendererRef.current.resizeToDisplay(width, height);
     };
@@ -293,7 +304,7 @@ export default function CloudShader({ className = "" }: CloudShaderProps) {
     const syncMouseFromClient = (clientX: number, clientY: number) => {
       const canvas = canvasRef.current;
       const renderer = rendererRef.current;
-      if (!canvas || !renderer) return;
+      if (cancelled || !canvas || !renderer) return;
       const rect = canvas.getBoundingClientRect();
       if (rect.width < 1 || rect.height < 1) return;
       const canvasX = ((clientX - rect.left) / rect.width) * canvas.width;
@@ -315,8 +326,10 @@ export default function CloudShader({ className = "" }: CloudShaderProps) {
     window.addEventListener("touchmove", handleTouchMove, { passive: true });
 
     return () => {
+      cancelled = true;
       isActiveRef.current = false;
-      cancelAnimationFrame(paintFrame);
+      cancelAnimationFrame(outerFrame);
+      cancelAnimationFrame(innerFrame);
       unsubscribeViewport();
       window.removeEventListener("mousemove", handleMouseMove);
       window.removeEventListener("touchmove", handleTouchMove);

@@ -1,4 +1,23 @@
 import React, { useEffect, useRef, useState } from 'react';
+import { logger } from '@/lib/logger';
+
+function createWebGL1Context(canvas: HTMLCanvasElement): WebGLRenderingContext | null {
+  const attempts: WebGLContextAttributes[] = [
+    {
+      alpha: false,
+      antialias: false,
+      depth: false,
+      stencil: false,
+      failIfMajorPerformanceCaveat: false,
+    },
+    {},
+  ];
+  for (const attrs of attempts) {
+    const gl = canvas.getContext('webgl', attrs);
+    if (gl) return gl;
+  }
+  return null;
+}
 
 /**
  * Mist Background Component
@@ -32,8 +51,11 @@ const MistBackground: React.FC = () => {
     const canvas = canvasRef.current;
     if (!canvas) return;
 
-    const gl = canvas.getContext('webgl', { failIfMajorPerformanceCaveat: true });
-    if (!gl) return;
+    const gl = createWebGL1Context(canvas);
+    if (!gl) {
+      logger.warn('[MistBackground] WebGL context not available');
+      return;
+    }
 
     const vsSource = `
       attribute vec2 position;
