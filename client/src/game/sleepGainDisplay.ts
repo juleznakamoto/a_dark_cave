@@ -47,6 +47,23 @@ export function capSleepGainDeltasToStorageRoom(
   return capped;
 }
 
+/**
+ * Sleep pays whole units only. 0.5 rounds to 1 so the rate column and each
+ * 15s cycle stay in sync (no fractional bank).
+ */
+export function roundSleepCycleRates(
+  rates: Record<string, number>,
+): Record<string, number> {
+  const rounded: Record<string, number> = {};
+  for (const [resource, amount] of Object.entries(rates)) {
+    const whole = Math.round(amount);
+    if (whole !== 0) {
+      rounded[resource] = whole;
+    }
+  }
+  return rounded;
+}
+
 /** Total-gain column: never count overflow past storage room. */
 export function getSleepTotalGainDisplay(
   resource: string,

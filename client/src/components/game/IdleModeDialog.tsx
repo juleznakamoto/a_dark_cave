@@ -51,6 +51,7 @@ import {
   capSleepGainDeltasToStorageRoom,
   getSleepTotalGainDisplay,
   isSleepResourceAtStorageMax,
+  roundSleepCycleRates,
 } from "@/game/sleepGainDisplay";
 
 /** Match live play: soft storage cap during sleep (preserve event overcap, no further gains). */
@@ -79,9 +80,9 @@ function clampSimulatedResourcesToStorage(
 const SLEEP_PRODUCTION_OPTIONS = { excludeTemporaryBonuses: true };
 
 /**
- * Sleep production rate per 15s cycle (dialog rate column + tick accumulation).
+ * Sleep production per 15s cycle (dialog rate column + tick payout).
  * Same net math as the village side panel, with temp bonuses excluded and sleep
- * intensity applied — includes negative consumption.
+ * intensity applied, then rounded to whole units so display and each cycle match.
  */
 function getProductionPerInterval(
   state: any,
@@ -97,9 +98,8 @@ function getProductionPerInterval(
   );
   const productionPerInterval: Record<string, number> = {};
   for (const [resource, amount] of Object.entries(effects)) {
-    const scaled = amount * multiplier;
-    if (scaled !== 0) {
-      productionPerInterval[resource] = scaled;
+    if (amount !== 0) {
+      productionPerInterval[resource] = amount * multiplier;
     }
   }
   const insight = getPassiveInsightPerCycle(state);
@@ -107,7 +107,7 @@ function getProductionPerInterval(
     productionPerInterval.insight =
       (productionPerInterval.insight || 0) + insight * multiplier;
   }
-  return productionPerInterval;
+  return roundSleepCycleRates(productionPerInterval);
 }
 
 /** Apply one sleep production interval onto absolute resource amounts. */

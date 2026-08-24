@@ -3,6 +3,7 @@ import type { GameState } from "@shared/schema";
 import {
   capSleepGainDeltasToStorageRoom,
   getSleepTotalGainDisplay,
+  roundSleepCycleRates,
 } from "./sleepGainDisplay";
 
 function stateWithStorage(storageBuilding?: string): GameState {
@@ -19,6 +20,28 @@ function stateWithStorage(storageBuilding?: string): GameState {
   }
   return { buildings, clothing: {} } as GameState;
 }
+
+describe("roundSleepCycleRates", () => {
+  it("rounds half-up so a 0.6 food rate pays 1 per cycle", () => {
+    expect(roundSleepCycleRates({ food: 0.6, wood: 5.4, bones: 0.4 })).toEqual({
+      food: 1,
+      wood: 5,
+    });
+  });
+
+  it("rounds 0.5 to 1 and drops exact zeros", () => {
+    expect(roundSleepCycleRates({ food: 0.5, stone: 0, fur: -0.4 })).toEqual({
+      food: 1,
+    });
+  });
+
+  it("keeps whole-number consumption", () => {
+    expect(roundSleepCycleRates({ food: -0.6, wood: -2 })).toEqual({
+      food: -1,
+      wood: -2,
+    });
+  });
+});
 
 describe("sleep total gain vs storage max", () => {
   it("caps displayed total gain at remaining storage room", () => {
