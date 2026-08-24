@@ -15,7 +15,6 @@ import {
   type DevGameMode,
 } from "@/lib/edition";
 import { useSteamEditionActive } from "@/hooks/useSteamEditionActive";
-import { publicUrl } from "@/lib/publicUrl";
 import { GameUiIcon } from "@/components/game/GameUiIcon";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -87,8 +86,7 @@ const GAME_MODE_DEFAULTS: Record<DevGameMode, string> = {
 };
 
 interface AudioControlRowProps {
-  iconOn: string;
-  iconOff: string;
+  icon: "music" | "sound";
   /** Visible channel name, e.g. "Ambience" / "Sound". */
   title: string;
   /** Accessible mute/unmute action label. */
@@ -102,8 +100,7 @@ interface AudioControlRowProps {
 
 /** One [icon][label][slider] row: tapping the icon or label mutes/unmutes, the slider sets volume. */
 function AudioControlRow({
-  iconOn,
-  iconOff,
+  icon,
   title,
   label,
   muted,
@@ -112,33 +109,44 @@ function AudioControlRow({
   onVolumeChange,
   muteButtonId,
 }: AudioControlRowProps) {
+  const iconName =
+    icon === "music"
+      ? muted
+        ? "musicMuted"
+        : "music"
+      : muted
+        ? "soundMuted"
+        : "sound";
+
   return (
     <div className={ROW}>
+      <span className={ICON_SLOT}>
+        <Button
+          type="button"
+          variant="ghost"
+          size="xs"
+          onClick={onToggleMute}
+          aria-label={label}
+          aria-pressed={!muted}
+          button_id={muteButtonId}
+          className="h-7 w-7 p-0 rounded-md hover:bg-muted/40 transition-colors"
+        >
+          <GameUiIcon
+            name={iconName}
+            sizeClassName="w-5 h-5"
+            className={muted ? "opacity-40" : undefined}
+          />
+        </Button>
+      </span>
       <Button
         type="button"
         variant="ghost"
+        size="xs"
         onClick={onToggleMute}
         aria-label={label}
         aria-pressed={!muted}
         button_id={muteButtonId}
-        className={`group ${ICON_SLOT} h-7 rounded-md hover:bg-muted/40 transition-colors`}
-      >
-        <img
-          src={muted ? iconOff : iconOn}
-          alt=""
-          aria-hidden="true"
-          className={`w-5 h-5 object-contain [filter:invert(1)] transition-opacity ${muted ? "opacity-40" : "opacity-90 group-hover:opacity-100"
-            }`}
-        />
-      </Button>
-      <Button
-        type="button"
-        variant="ghost"
-        onClick={onToggleMute}
-        aria-label={label}
-        aria-pressed={!muted}
-        button_id={muteButtonId}
-        className={`w-24 shrink-0 whitespace-nowrap rounded-md px-1 py-1 text-left text-sm hover:bg-muted/40 transition-colors ${muted ? "opacity-40" : ""}`}
+        className={`shrink-0 justify-start px-0 text-sm text-foreground hover:bg-muted/40 transition-colors ${muted ? "opacity-40" : ""}`}
       >
         {title}
       </Button>
@@ -328,8 +336,7 @@ export default function SettingsDialog({
         <div className="space-y-2">
           <section className="space-y-2">
             <AudioControlRow
-              iconOn={publicUrl("/music_on.png")}
-              iconOff={publicUrl("/music_off.png")}
+              icon="music"
               title={t("settings.music")}
               label={
                 musicMuted ? t("footer.unmuteMusic") : t("footer.muteMusic")
@@ -341,8 +348,7 @@ export default function SettingsDialog({
               muteButtonId="settings-mute-music"
             />
             <AudioControlRow
-              iconOn={publicUrl("/sound_on.png")}
-              iconOff={publicUrl("/sound_off.png")}
+              icon="sound"
               title={t("settings.sound")}
               label={sfxMuted ? t("footer.unmuteSfx") : t("footer.muteSfx")}
               muted={sfxMuted}
