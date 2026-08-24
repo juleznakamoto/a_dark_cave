@@ -960,7 +960,7 @@
       },
       "spareCreature": {
         "label": "饶命",
-        "reward": "+500 金币"
+        "reward": "+{{gold}} 金币"
       }
     },
     "log": {
@@ -1332,7 +1332,7 @@
     "choices": {
       "doNotRing": {
         "label": "不敲响",
-        "reward": "+500 金币"
+        "reward": "+{{gold}} 金币"
       },
       "ringBell": {
         "label": "敲响"

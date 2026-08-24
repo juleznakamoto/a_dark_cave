@@ -960,7 +960,7 @@
       },
       "spareCreature": {
         "label": "Perdonar la vida",
-        "reward": "+500 oro"
+        "reward": "+{{gold}} oro"
       }
     },
     "log": {
@@ -1332,7 +1332,7 @@
     "choices": {
       "doNotRing": {
         "label": "No hacer sonar",
-        "reward": "+500 oro"
+        "reward": "+{{gold}} oro"
       },
       "ringBell": {
         "label": "Hacer sonar"

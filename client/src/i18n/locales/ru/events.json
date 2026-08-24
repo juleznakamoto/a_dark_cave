@@ -960,7 +960,7 @@
       },
       "spareCreature": {
         "label": "Пощадить",
-        "reward": "+500 золота" //x1.2
+        "reward": "+{{gold}} золота" //x1.2
       }
     },
     "log": {
@@ -1332,7 +1332,7 @@
     "choices": {
       "doNotRing": {
         "label": "Не звонить",
-        "reward": "+500 золота" //x1.2
+        "reward": "+{{gold}} золота" //x1.2
       },
       "ringBell": {
         "label": "Позвонить"

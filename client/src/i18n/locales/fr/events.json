@@ -960,7 +960,7 @@
       },
       "spareCreature": {
         "label": "Épargner",
-        "reward": "+500 or"
+        "reward": "+{{gold}} or"
       }
     },
     "log": {
@@ -1332,7 +1332,7 @@
     "choices": {
       "doNotRing": {
         "label": "Ne pas sonner",
-        "reward": "+500 or"
+        "reward": "+{{gold}} or"
       },
       "ringBell": {
         "label": "Sonner"

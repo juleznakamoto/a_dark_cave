@@ -5,6 +5,7 @@ import { killVillagers } from "@/game/stateHelpers";
 import { getTotalStrength, getTotalLuck } from "./effectsCalculation";
 import { CRUEL_MODE, cruelModeScale } from "../cruelMode";
 import { getCurrentPopulation, getVillagersInVillage } from "../population";
+import { btpLootAmount } from "@/game/btpLoot";
 
 function deathsKey(
   count: number,
@@ -134,7 +135,7 @@ export const villageAttackEvents: Record<string, GameEvent> = {
               resources: {
                 ...state.resources,
                 bones: state.resources.bones + 5000,
-                silver: state.resources.silver + 500,
+                silver: state.resources.silver + btpLootAmount(500, state),
               },
               _logMessageKey: "outcome0",
             };
@@ -326,7 +327,7 @@ export const villageAttackEvents: Record<string, GameEvent> = {
               resources: {
                 ...state.resources,
                 fur: state.resources.fur + 500,
-                silver: state.resources.silver + 250,
+                silver: state.resources.silver + btpLootAmount(250, state),
               },
               _logMessageKey: "outcome0",
             };
@@ -533,7 +534,7 @@ export const villageAttackEvents: Record<string, GameEvent> = {
               ...deathResult,
               resources: {
                 ...state.resources,
-                silver: state.resources.silver + 500,
+                silver: state.resources.silver + btpLootAmount(500, state),
               },
               clothing: {
                 ...state.clothing,

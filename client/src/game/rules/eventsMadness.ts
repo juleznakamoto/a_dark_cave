@@ -5,6 +5,7 @@ import { addFreeVillagersWithinCap, killVillagers } from "@/game/stateHelpers";
 import { getTotalMadness, getTotalLuck } from "./effectsCalculation";
 import { getCurrentPopulation, getMaxPopulation } from "../population";
 import { CRUEL_MODE, cruelModeScale } from "../cruelMode";
+import { btpLootAmount } from "@/game/btpLoot";
 
 const withCruelMadnessBonus = (state: GameState, baseMadnessGain: number): number =>
   baseMadnessGain +
@@ -542,7 +543,7 @@ export const madnessEvents: Record<string, GameEvent> = {
               },
               resources: {
                 ...state.resources,
-                gold: (state.resources.gold || 0) + 250,
+                gold: (state.resources.gold || 0) + btpLootAmount(250, state),
               },
               buildings: {
                 ...state.buildings,

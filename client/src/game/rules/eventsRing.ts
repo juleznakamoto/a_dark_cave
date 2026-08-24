@@ -5,6 +5,7 @@ import { calculateSuccessChance, defineSuccessChance } from "./eventSuccessChanc
 import { GameState } from "@shared/schema";
 import { killVillagers } from "@/game/stateHelpers";
 import { cruelModeScale } from "../cruelMode";
+import { btpLootAmount } from "@/game/btpLoot";
 
 const mercenaryDemandRefuse: EventChoice = {
   id: "refuse",
@@ -333,7 +334,7 @@ export const ringEvents: Record<string, GameEvent> = {
           return {
             resources: {
               ...state.resources,
-              silver: state.resources.silver + 500,
+              silver: state.resources.silver + btpLootAmount(500, state),
             },
             _logMessageKey: "outcome0",
           };

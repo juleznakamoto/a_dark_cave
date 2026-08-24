@@ -10,6 +10,7 @@ import { ActionEffectUpdates } from "@/game/types";
 import { CRUEL_MODE, cruelModeScale } from "../cruelMode";
 import { buildLocalizedEventLogEntry } from "@/i18n/buildEventLogEntry";
 import { getActionLogMessage } from "@/i18n/resolveGameText";
+import { btpLootAmount } from "@/game/btpLoot";
 
 // Helper function to process triggered events from action effects
 function processTriggeredEvents(
@@ -666,8 +667,8 @@ export function handleCastleRuins(
       (state as any)._completingExecution === "castleRuins";
     result.stateUpdates.resources = {
       ...state.resources,
-      silver: (state.resources.silver || 0) + 100,
-      gold: (state.resources.gold || 0) + 50,
+      silver: (state.resources.silver || 0) + btpLootAmount(100, state),
+      gold: (state.resources.gold || 0) + btpLootAmount(50, state),
       ...(isCompletingExecution
         ? {}
         : { food: (state.resources.food || 0) - 2500 }),
@@ -763,8 +764,8 @@ export function handleHillGrave(
       (state as any)._completingExecution === "hillGrave";
     result.stateUpdates.resources = {
       ...state.resources,
-      silver: (state.resources.silver || 0) + 200,
-      gold: (state.resources.gold || 0) + 100,
+      silver: (state.resources.silver || 0) + btpLootAmount(200, state),
+      gold: (state.resources.gold || 0) + btpLootAmount(100, state),
       ...(isCompletingExecution
         ? {}
         : { food: (state.resources.food || 0) - 5000 }),
@@ -843,8 +844,8 @@ export function handleSunkenTemple(
       (state as any)._completingExecution === "sunkenTemple";
     result.stateUpdates.resources = {
       ...state.resources,
-      silver: (state.resources.silver || 0) + 500,
-      gold: (state.resources.gold || 0) + 250,
+      silver: (state.resources.silver || 0) + btpLootAmount(500, state),
+      gold: (state.resources.gold || 0) + btpLootAmount(250, state),
       ...(isCompletingExecution
         ? {}
         : { food: (state.resources.food || 0) - 5000 }),
@@ -945,8 +946,8 @@ export function handlecollapsedTower(
       (state as any)._completingExecution === "collapsedTower";
     result.stateUpdates.resources = {
       ...state.resources,
-      silver: (state.resources.silver || 0) + 500,
-      gold: (state.resources.gold || 0) + 250,
+      silver: (state.resources.silver || 0) + btpLootAmount(500, state),
+      gold: (state.resources.gold || 0) + btpLootAmount(250, state),
       ...(isCompletingExecution
         ? {}
         : { food: (state.resources.food || 0) - 2500 }),
@@ -1031,8 +1032,8 @@ export function handleForestCave(
       (state as any)._completingExecution === "forestCave";
     result.stateUpdates.resources = {
       ...state.resources,
-      silver: (state.resources.silver || 0) + 250,
-      gold: (state.resources.gold || 0) + 100,
+      silver: (state.resources.silver || 0) + btpLootAmount(250, state),
+      gold: (state.resources.gold || 0) + btpLootAmount(100, state),
       fur: (state.resources.fur || 0) + 500,
       ...(isCompletingExecution
         ? {}
@@ -1190,9 +1191,9 @@ export function handleRisingSmoke(
   if (Math.random() < successChance) {
     const isCompletingExecution =
       (state as any)._completingExecution === "risingSmoke";
-    let goldGain = 500;
+    let goldGain = btpLootAmount(500, state);
     if (state.tools.skeleton_key) {
-      goldGain += 250;
+      goldGain += btpLootAmount(250, state);
     }
 
     const { added, patch: captivePatch } = addFreeVillagersWithinCap(state, 20);
@@ -1296,7 +1297,7 @@ export function handleBanditLair(
       (state as any)._completingExecution === "banditLair";
     result.stateUpdates.resources = {
       ...state.resources,
-      silver: (state.resources.silver || 0) + 250,
+      silver: (state.resources.silver || 0) + btpLootAmount(250, state),
       ...(isCompletingExecution
         ? {}
         : { food: (state.resources.food || 0) - 500 }),

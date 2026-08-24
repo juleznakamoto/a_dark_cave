@@ -478,7 +478,7 @@ describe("Reward Dialog System", () => {
           mastermason_chisel: true,
         },
         resources: {
-          silver: 251,  // gained 251 (250 + 1 bonus)
+          silver: 250,  // gained 250
           gold: 50,     // gained 50
           obsidian: 50, // gained 50
           adamant: 50,  // gained 50
@@ -502,7 +502,7 @@ describe("Reward Dialog System", () => {
 
       expect(rewards).toEqual({
         tools: ["mastermason_chisel"],
-        resources: { silver: 251, gold: 50, obsidian: 50, adamant: 50 },
+        resources: { silver: 250, gold: 50, obsidian: 50, adamant: 50 },
       });
     });
   });

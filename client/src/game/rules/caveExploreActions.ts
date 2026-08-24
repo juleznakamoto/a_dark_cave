@@ -7,6 +7,7 @@ import { logger } from "../../lib/logger";
 import { isPlaylightReferralUrl } from "@/lib/playlight";
 import { isSteamEditionActive } from "@/lib/edition";
 import { PLAYLIGHT_WELCOME_GOLD } from "@/game/playlightRewards";
+import { btpLootAmount } from "@/game/btpLoot";
 import { buildLocalizedEventLogEntry } from "@/i18n/buildEventLogEntry";
 import {
   getActionLogMessage,
@@ -705,11 +706,9 @@ export const caveExploreActions: Record<string, Action> = {
       "resources.food": 1000,
     },
     effects: (state: GameState) => {
-      const silverBonus = state.BTP === 1 ? 150 : 1;
-      const goldBonus = state.BTP === 1 ? 100 : 0;
       return {
-        "resources.silver": 250 + silverBonus,
-        "resources.gold": 50 + goldBonus,
+        "resources.silver": btpLootAmount(250, state),
+        "resources.gold": btpLootAmount(50, state),
         "resources.obsidian": 50,
         "resources.adamant": 50,
         "tools.mastermason_chisel": true,
@@ -732,9 +731,8 @@ export const caveExploreActions: Record<string, Action> = {
       "resources.food": 1000,
     },
     effects: (state: GameState) => {
-      const goldBonus = state.BTP === 1 ? 150 : 0;
       return {
-        "resources.gold": 150 + goldBonus,
+        "resources.gold": btpLootAmount(150, state),
         "resources.obsidian": 75,
         "resources.adamant": 50,
         "resources.moonstone": 25,
@@ -758,9 +756,8 @@ export const caveExploreActions: Record<string, Action> = {
       "resources.food": 2500,
     },
     effects: (state: GameState) => {
-      const goldBonus = state.BTP === 1 ? 100 : 0;
       return {
-        "resources.gold": 100 + goldBonus,
+        "resources.gold": btpLootAmount(100, state),
         "relics.stonebinders_codex": true,
         "story.seen.hiddenLibraryExplored": true,
       };
@@ -783,10 +780,9 @@ export const caveExploreActions: Record<string, Action> = {
       "resources.iron": 500,
     },
     effects: (state: GameState) => {
-      const goldBonus = state.BTP === 1 ? 100 : 0;
       return {
-        "resources.silver": 500,
-        "resources.gold": 100 + goldBonus,
+        "resources.silver": btpLootAmount(500, state),
+        "resources.gold": btpLootAmount(100, state),
         "resources.obsidian": 150,
         "resources.adamant": 100,
         "resources.moonstone": 25,

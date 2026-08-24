@@ -11,6 +11,7 @@ import {
   disgustDurationMs,
   cruelModeScale,
 } from "../cruelMode";
+import { btpLootAmount } from "@/game/btpLoot";
 import {
   collectorItemRejectedStoryPatch,
   markCollectorItemRejectedInSeen,
@@ -505,7 +506,7 @@ export const choiceEvents: Record<string, GameEvent> = {
             return {
               resources: {
                 ...state.resources,
-                silver: state.resources.silver + 250,
+                silver: state.resources.silver + btpLootAmount(250, state),
                 bones: state.resources.bones + 1000,
               },
               clothing: {

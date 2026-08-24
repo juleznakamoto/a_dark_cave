@@ -3,6 +3,7 @@ import { killVillagers } from "@/game/stateHelpers";
 import type { GameEvent } from "./eventTypes";
 import { calculateSuccessChance, defineSuccessChance } from "./eventSuccessChance";
 import { bloodMoonSacrificeAmount } from "../cruelMode";
+import { btpLootAmount } from "@/game/btpLoot";
 
 function bloodMoonI18nVars(state: GameState) {
   return {
@@ -95,7 +96,7 @@ export const bloodMoonEvents: Record<string, GameEvent> = {
               },
               resources: {
                 ...state.resources,
-                gold: state.resources.gold + 150,
+                gold: state.resources.gold + btpLootAmount(150, state),
                 fur: state.resources.fur + 500,
               },
               bloodMoonState: {
@@ -165,7 +166,7 @@ export const bloodMoonEvents: Record<string, GameEvent> = {
             },
             resources: {
               ...state.resources,
-              gold: state.resources.gold + 150,
+              gold: state.resources.gold + btpLootAmount(150, state),
               fur: state.resources.fur + 500,
             },
             bloodMoonState: {

@@ -960,7 +960,7 @@
       },
       "spareCreature": {
         "label": "Leben schenken",
-        "reward": "+500 Gold"
+        "reward": "+{{gold}} Gold"
       }
     },
     "log": {
@@ -1332,7 +1332,7 @@
     "choices": {
       "doNotRing": {
         "label": "Nicht läuten",
-        "reward": "+500 Gold"
+        "reward": "+{{gold}} Gold"
       },
       "ringBell": {
         "label": "Läuten"

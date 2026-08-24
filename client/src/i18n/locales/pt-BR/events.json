@@ -914,7 +914,7 @@
       },
       "spareCreature": {
         "label": "Poupar a vida",
-        "reward": "+500 ouro"
+        "reward": "+{{gold}} ouro"
       }
     },
     "log": {
@@ -1210,7 +1210,7 @@
     "choices": {
       "doNotRing": {
         "label": "Não tocá-lo",
-        "reward": "+500 ouro"
+        "reward": "+{{gold}} ouro"
       },
       "ringBell": {
         "label": "Tocá-lo"

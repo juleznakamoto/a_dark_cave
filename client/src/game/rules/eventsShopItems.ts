@@ -1,5 +1,6 @@
 import type { GameEvent } from "./eventTypes";
 import { GameState } from "@shared/schema";
+import { btpLootAmount } from "@/game/btpLoot";
 
 export const shopItemEvents: Record<string, GameEvent> = {
   // Tarnished Compass Events
@@ -64,48 +65,48 @@ export const shopItemEvents: Record<string, GameEvent> = {
         id: "payTribute",
         cost: "5000 wood, 5000 stone, 5000 food, 500 leather, 500 steel",
         effect: (state: GameState) => ({
-            resources: {
-              ...state.resources,
-              wood: state.resources.wood - 5000,
-              stone: state.resources.stone - 5000,
-              food: state.resources.food - 5000,
-              leather: state.resources.leather - 500,
-              steel: state.resources.steel - 500,
+          resources: {
+            ...state.resources,
+            wood: state.resources.wood - 5000,
+            stone: state.resources.stone - 5000,
+            food: state.resources.food - 5000,
+            leather: state.resources.leather - 500,
+            steel: state.resources.steel - 500,
+          },
+          schematics: {
+            ...state.schematics,
+            skeleton_key_schematic: true,
+          },
+          story: {
+            ...state.story,
+            seen: {
+              ...state.story.seen,
+              monasteryMonkAccepted: true,
             },
-            schematics: {
-              ...state.schematics,
-              skeleton_key_schematic: true,
-            },
-            story: {
-              ...state.story,
-              seen: {
-                ...state.story.seen,
-                monasteryMonkAccepted: true,
-              },
-            },
-            _logMessageKey: "outcome2",
+          },
+          _logMessageKey: "outcome2",
         }),
       },
       {
         id: "offerGold",
         cost: "250 gold",
         effect: (state: GameState) => ({
-            resources: {
-              ...state.resources,
-              gold: state.resources.gold - 250,
+          resources: {
+            ...state.resources,
+            gold: state.resources.gold - 250,
+          },
+          schematics: {
+            ...state.schematics,
+            skeleton_key_schematic: true,
+          },
+          story: {
+            ...state.story,
+            seen: {
+              ...state.story.seen,
+              monasteryMonkAccepted: true,
             },
-            schematics: {
-              ...state.schematics,
-              skeleton_key_schematic: true,
-            },
-            story: {
-              ...state.story,
-              seen: {
-                ...state.story.seen,
-                monasteryMonkAccepted: true,
-              },
-            },
-            _logMessageKey: "outcome4",
+          },
+          _logMessageKey: "outcome4",
         }),
       },
       {
@@ -126,6 +127,7 @@ export const shopItemEvents: Record<string, GameEvent> = {
       state.relics?.sealed_chest &&
       !state.story.seen.mysteriousChestOpened,
     timeProbability: 0.5,
+    i18nVars: (state: GameState) => ({ gold: btpLootAmount(500, state) }),
 
     priority: 5,
     repeatable: false,
@@ -160,7 +162,7 @@ export const shopItemEvents: Record<string, GameEvent> = {
           return {
             resources: {
               ...state.resources,
-              gold: state.resources.gold + 500,
+              gold: state.resources.gold + btpLootAmount(500, state),
             },
             relics: {
               ...state.relics,
@@ -246,6 +248,7 @@ export const shopItemEvents: Record<string, GameEvent> = {
       state.story.seen.lakeCreatureLured &&
       !state.story.seen.lakeCreatureFateDecided,
     timeProbability: 0.2,
+    i18nVars: (state: GameState) => ({ gold: btpLootAmount(500, state) }),
 
     priority: 4,
     repeatable: false,
@@ -277,7 +280,7 @@ export const shopItemEvents: Record<string, GameEvent> = {
           return {
             resources: {
               ...state.resources,
-              gold: (state.resources.gold || 0) + 500,
+              gold: (state.resources.gold || 0) + btpLootAmount(500, state),
             },
             story: {
               ...state.story,

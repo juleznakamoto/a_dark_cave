@@ -3,6 +3,7 @@ import type { GameEvent } from "./eventTypes";
 import { GameState } from "@shared/schema";
 import { riddleFogDurationMs, cruelModeScale } from "../cruelMode";
 import { stackTimedDebuff } from "@/game/stateHelpers";
+import { btpLootAmount } from "@/game/btpLoot";
 
 const RIDDLE_REWARD = 150;
 
@@ -151,7 +152,7 @@ function createRiddleEvent(
       return (state: GameState) => ({
         resources: {
           ...state.resources,
-          gold: state.resources.gold + RIDDLE_REWARD + (state.BTP === 1 ? 100 : 0),
+          gold: state.resources.gold + btpLootAmount(RIDDLE_REWARD, state),
         },
         events: {
           ...state.events,
