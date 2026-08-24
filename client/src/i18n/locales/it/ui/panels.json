@@ -43,7 +43,7 @@
     "constructionBoost": "Accelera la costruzione di {{time}} per {{cost}} {{resource}}",
     "constructionBoostFinish": "Completa la costruzione per {{cost}} {{resource}}",
     "cycle": "Ciclo",
-    "cycleDescription": "Ad ogni ciclo i tuoi abitanti producono risorse e c'è una possibilità che arrivino nuovi abitanti.",
+    "cycleDescription": "Ad ogni ciclo gli abitanti producono risorse e c'è una possibilità che arrivino nuovi abitanti.",
     "nextCycleIn": "Prossimo ciclo tra {{seconds}} secondi",
     "newVillagerChance": "Probabilità di Nuovo Abitante: {{percent}}%",
     "lowPopulationBonus": "{{percent}}% bonus bassa popolazione",

@@ -639,7 +639,7 @@
     "log": {
       "outcome0": "Il accepte votre offre sans un mot et reprend son labeur. Ses yeux portent le tourment silencieux d'un homme qui a vu sa foi s'effondrer. Autrefois il prêchait la vertu, jusqu'au jour où il commit un grand péché. Le Prieur déchu a rejoint votre compagnie."
     },
-    "message": "Vos villageois signalent un homme émacié en robes déchirées qui répare en silence les murs des huttes de pierre. Il travaille sans parler, sans repos, sans rien demander. Quand on l'aborde, il dit seulement qu'il a beaucoup à expier.",
+    "message": "Les villageois signalent un homme émacié en robes déchirées qui répare en silence les murs des huttes de pierre. Il travaille sans parler, sans repos, sans rien demander. Quand on l'aborde, il dit seulement qu'il a beaucoup à expier.",
     "title": "Un réparateur silencieux"
   },
   "doNothing": {
@@ -1013,7 +1013,7 @@
       }
     },
     "log": {
-      "digWellOutcome": "Vos villageois creusent un nouveau puits. L'eau revient. Ce soir-là, un homme affamé arrive de la forêt.",
+      "digWellOutcome": "Les villageois creusent un nouveau puits. L'eau revient. Ce soir-là, un homme affamé arrive de la forêt.",
       "searchOutcome": "Il n'y a plus rien à boire. {{deaths}} villageois âgés meurent de soif. La femme est introuvable, mais les chercheurs ramènent un homme affamé de la forêt."
     },
     "message": {
@@ -1142,7 +1142,7 @@
     },
     "log": {
       "outcome0": "Vous remettez l'or. Le mercenaire le compte lentement, un sourire cruel au visage. 'Un plaisir de faire affaire,' dit-il avant de disparaître.",
-      "outcome1": "Le mercenaire fait signe à ses hommes d'attaquer. La bataille est féroce, mais vos villageois l'emportent. Les mercenaires fuient dans la forêt, laissant derrière eux leurs armes et leurs blessés.",
+      "outcome1": "Le mercenaire fait signe à ses hommes d'attaquer. La bataille est féroce, mais les villageois l'emportent. Les mercenaires fuient dans la forêt, laissant derrière eux leurs armes et leurs blessés.",
       "outcome2": "Le mercenaire fait signe à ses hommes d'attaquer. Malgré tous vos efforts, vous êtes submergé. {{deaths}} villageois tombent avant que les mercenaires ne battent enfin en retraite, satisfaits du carnage.",
       "outcome3": "Vous lui offrez l'anneau nourricier que vous gardiez encore dans un coffre verrouillé. Le mercenaire l'examine avec intérêt et le glisse à son propre doigt. 'Un bel anneau,' dit-il, 'mais pas assez. Je reviendrai demain pour récupérer l'or.'"
     },
@@ -1278,9 +1278,9 @@
       }
     },
     "log": {
-      "outcome": "L'homme vous mène au plus profond des bois. Vos villageois tombent dans des pièges. Soudain la femme aux cheveux roux apparaît, et ensemble ils fondent sur vos hommes. {{deaths}} villageois meurent avant que les survivants ne tuent les deux assaillants. Sur le corps de l'homme, ils trouvent une carte vers un village de montagne."
+      "outcome": "L'homme vous mène au plus profond des bois. Les villageois tombent dans des pièges. Soudain la femme aux cheveux roux apparaît, et ensemble ils fondent sur vos hommes. {{deaths}} villageois meurent avant que les survivants ne tuent les deux assaillants. Sur le corps de l'homme, ils trouvent une carte vers un village de montagne."
     },
-    "message": "L'homme vous mène au plus profond des bois. Vos villageois tombent dans des pièges. Soudain la femme aux cheveux roux apparaît, et ensemble ils fondent sur vos hommes. {{deaths}} villageois meurent avant que les survivants ne tuent les deux assaillants. Sur le corps de l'homme, ils trouvent une carte vers un village de montagne.",
+    "message": "L'homme vous mène au plus profond des bois. Les villageois tombent dans des pièges. Soudain la femme aux cheveux roux apparaît, et ensemble ils fondent sur vos hommes. {{deaths}} villageois meurent avant que les survivants ne tuent les deux assaillants. Sur le corps de l'homme, ils trouvent une carte vers un village de montagne.",
     "title": "L'embuscade"
   },
   "monasteryMonk": {
@@ -2061,7 +2061,7 @@
       "outcome2": "Vos hommes attaquent le trafiquant d'esclaves, mais il est prêt ! Il riposte avec férocité. {{actualDeaths}} villageois tombent dans la lutte. Le marchand s'échappe avec ses captifs, ne laissant que la mort derrière lui.",
       "outcome3": "Vous refusez l'offre vile de l'esclavagiste. Il crache par terre avec dégoût et repart avec ses captifs."
     },
-    "message": "Un homme sur une charrette tirée par deux chevaux approche du village. Une cage de fer sur la charrette retient trois esclaves misérables. Le trafiquant sourit avec cruauté : 'Je vous paierai 100 unités d'acier pour deux de vos villageois. Qu'en dites-vous ?'",
+    "message": "Un homme sur une charrette tirée par deux chevaux approche du village. Une cage de fer sur la charrette retient trois esclaves misérables. Le trafiquant sourit avec cruauté : 'Je vous paierai 100 unités d'acier pour deux des villageois. Qu'en dites-vous ?'",
     "title": "Le Trafiquant d'esclaves"
   },
   "solsticeGathering": {

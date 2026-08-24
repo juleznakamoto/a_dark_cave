@@ -639,7 +639,7 @@
     "log": {
       "outcome0": "Er nimmt dein Angebot wortlos an und setzt seine Mühsal fort. In seinen Augen liegt die stille Qual eines Mannes, der seinen Glauben zerbrechen sah. Einst predigte er von Tugend, bis zu dem Tag, an dem er eine große Sünde beging. Gefallener Prior hat sich deinen Gefährten angeschlossen."
     },
-    "message": "Deine Dorfbewohner berichten von einem ausgezehrten Mann in zerlumpten Roben, der still die Mauern der Steinhütten ausbessert. Er arbeitet ohne ein Wort, ohne Rast und verlangt nichts. Wenn man ihn anspricht, sagt er nur, dass er viel wiedergutzumachen habe.",
+    "message": "Die Dorfbewohner berichten von einem ausgezehrten Mann in zerlumpten Roben, der still die Mauern der Steinhütten ausbessert. Er arbeitet ohne ein Wort, ohne Rast und verlangt nichts. Wenn man ihn anspricht, sagt er nur, dass er viel wiedergutzumachen habe.",
     "title": "Ein stiller Reparateur"
   },
   "doNothing": {
@@ -1013,7 +1013,7 @@
       }
     },
     "log": {
-      "digWellOutcome": "Eure Dorfbewohner graben einen neuen Brunnen. Das Wasser kehrt zurück. Am Abend trifft ein ausgehungerter Mann aus dem Wald ein.",
+      "digWellOutcome": "Die Dorfbewohner graben einen neuen Brunnen. Das Wasser kehrt zurück. Am Abend trifft ein ausgehungerter Mann aus dem Wald ein.",
       "searchOutcome": "Es gibt nichts mehr zu trinken. {{deaths}} ältere Dorfbewohner sterben vor Durst. Die Frau ist nicht zu finden, doch die Suchenden schleppen einen ausgehungerten Mann aus dem Wald."
     },
     "message": {
@@ -1142,7 +1142,7 @@
     },
     "log": {
       "outcome0": "Du übergibst das Gold. Der Söldner zählt es langsam, ein grausames Lächeln im Gesicht. 'Eine Freude, Geschäfte mit dir zu machen', sagt er, bevor er verschwindet.",
-      "outcome1": "Der Söldner gibt seinen Männern das Zeichen zum Angriff. Der Kampf ist heftig, doch deine Dorfbewohner siegen. Die Söldner fliehen in den Wald und lassen Waffen und Verwundete zurück.",
+      "outcome1": "Der Söldner gibt seinen Männern das Zeichen zum Angriff. Der Kampf ist heftig, doch die Dorfbewohner siegen. Die Söldner fliehen in den Wald und lassen Waffen und Verwundete zurück.",
       "outcome2": "Der Söldner gibt seinen Männern das Zeichen zum Angriff. Trotz all deiner Mühen werdet ihr überwältigt. {{deaths}} Dorfbewohner fallen, bevor die Söldner schließlich abziehen, zufrieden mit dem Blutbad.",
       "outcome3": "Du bietest ihm den Fütternden Ring an, den du noch immer in einer verschlossenen Truhe aufbewahrt hast. Der Söldner betrachtet ihn interessiert und streift ihn über seinen eigenen Finger. 'Ein hübscher Ring', sagt er, 'aber nicht genug. Ich komme morgen wieder, um das Gold zu holen.'"
     },
@@ -1278,9 +1278,9 @@
       }
     },
     "log": {
-      "outcome": "Der Mann führt euch tief in den Wald. Eure Dorfbewohner stolpern in Fallen. Plötzlich erscheint die rothaarige Frau, und gemeinsam fallen sie über eure Männer her. {{deaths}} Dorfbewohner sterben, bevor die Überlebenden beide Angreifer töten. Am Körper des Mannes finden sie eine Karte zu einem Bergdorf."
+      "outcome": "Der Mann führt euch tief in den Wald. Die Dorfbewohner stolpern in Fallen. Plötzlich erscheint die rothaarige Frau, und gemeinsam fallen sie über eure Männer her. {{deaths}} Dorfbewohner sterben, bevor die Überlebenden beide Angreifer töten. Am Körper des Mannes finden sie eine Karte zu einem Bergdorf."
     },
-    "message": "Der Mann führt euch tief in den Wald. Eure Dorfbewohner stolpern in Fallen. Plötzlich erscheint die rothaarige Frau, und gemeinsam fallen sie über eure Männer her. {{deaths}} Dorfbewohner sterben, bevor die Überlebenden beide Angreifer töten. Am Körper des Mannes finden sie eine Karte zu einem Bergdorf.",
+    "message": "Der Mann führt euch tief in den Wald. Die Dorfbewohner stolpern in Fallen. Plötzlich erscheint die rothaarige Frau, und gemeinsam fallen sie über eure Männer her. {{deaths}} Dorfbewohner sterben, bevor die Überlebenden beide Angreifer töten. Am Körper des Mannes finden sie eine Karte zu einem Bergdorf.",
     "title": "Der Hinterhalt"
   },
   "monasteryMonk": {
@@ -2061,7 +2061,7 @@
       "outcome2": "Deine Männer greifen den Sklavenhändler an, doch er ist vorbereitet! Er wehrt sich erbittert. {{actualDeaths}} Dorfbewohner fallen im Kampf. Der Händler entkommt mit seinen Gefangenen und hinterlässt nur den Tod.",
       "outcome3": "Du lehnst das widerwärtige Angebot des Sklavenhändlers ab. Er spuckt angewidert auf den Boden und reitet mit seinen Gefangenen davon."
     },
-    "message": "Ein Mann auf einem von zwei Pferden gezogenen Karren nähert sich dem Dorf. Auf dem Karren steht ein Eisenkäfig mit drei elenden Sklaven. Der Händler grinst böse: 'Ich zahle dir 100 Stahl für zwei deiner Dorfbewohner. Was sagst du?'",
+    "message": "Ein Mann auf einem von zwei Pferden gezogenen Karren nähert sich dem Dorf. Auf dem Karren steht ein Eisenkäfig mit drei elenden Sklaven. Der Händler grinst böse: 'Ich zahle dir 100 Stahl für zwei der Dorfbewohner. Was sagst du?'",
     "title": "Der Sklavenhändler"
   },
   "solsticeGathering": {
@@ -2481,7 +2481,7 @@
     "title": "Flüsterer im Dunkeln",
     "message": {
       "original": "Es klopft an der Tür des Anwesens. Eine Gestalt, ganz in dunkle Roben gehüllt, steht draußen im Schatten. Sie flüstert: 'Stimmlos schreit es, flügellos flattert es, zahnlos beißt es, mundlos murmelt es.'",
-      "variant": "Es klopft an der Tür des Anwesens. Eine Gestalt, ganz in dunkle Roben gehüllt, steht draußen im Schatten. Sie flüstert: 'Der Wunsch einer Dame, gewachsen in der Finsternis, leuchtend mit blasslichem Licht.'"
+      "variant": "Es klopft an der Tür des Anwesens. Eine Gestalt, ganz in dunkle Roben gehüllt, steht draußen im Schatten. Sie flüstert: 'Der Wunsch einer Dame, gewachsen in der Finsternis, leuchtend mit blassem Licht.'"
     },
     "choices": {
       "answerFire": {
@@ -2509,7 +2509,7 @@
     "title": "Flüsterer im Dunkeln",
     "message": {
       "original": "Es klopft an der Tür des Anwesens. Eine Gestalt, ganz in dunkle Roben gehüllt, steht draußen im Schatten. Sie flüstert: 'Stimmlos schreit es, flügellos flattert es, zahnlos beißt es, mundlos murmelt es.'",
-      "variant": "Es klopft an der Tür des Anwesens. Eine Gestalt, ganz in dunkle Roben gehüllt, steht draußen im Schatten. Sie flüstert: 'Der Wunsch einer Dame, gewachsen in der Finsternis, leuchtend mit blasslichem Licht.'"
+      "variant": "Es klopft an der Tür des Anwesens. Eine Gestalt, ganz in dunkle Roben gehüllt, steht draußen im Schatten. Sie flüstert: 'Der Wunsch einer Dame, gewachsen in der Finsternis, leuchtend mit blassem Licht.'"
     },
     "choices": {
       "answerSilver": {

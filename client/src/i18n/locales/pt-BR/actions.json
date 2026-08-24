@@ -9,7 +9,7 @@
     "label": "Covil do Bandido",
     "log": {
       "success": "Seu grupo rastreia o bandido até um covil em ruínas. Você o domina, recupera a adaga do mercador e encontra 250 Prata escondidas em meio à pilhagem.",
-      "failure": "Seus aldeões vasculham as colinas, mas não conseguem encurralar o bandido. A trilha esfria, e ele continua com a adaga."
+      "failure": "Os aldeões vasculham as colinas, mas não conseguem encurralar o bandido. A trilha esfria, e ele continua com a adaga."
     }
   },
   "blackreachCanyon": {
@@ -531,7 +531,7 @@
   "hillGrave": {
     "label": "Túmulo da Colina",
     "log": {
-      "success": "Sua expedição contorna com cuidado as armadilhas traiçoeiras do túmulo da colina. Seus aldeões desarmam os antigos mecanismos e alcançam a câmara funerária. Entre os tesouros do rei, você descobre vidro-de-gelo puro, frio como o próprio vazio.",
+      "success": "Sua expedição contorna com cuidado as armadilhas traiçoeiras do túmulo da colina. Os aldeões desarmam os antigos mecanismos e alcançam a câmara funerária. Entre os tesouros do rei, você descobre vidro-de-gelo puro, frio como o próprio vazio.",
       "failure": "Sua expedição entra no túmulo da colina, mas lhe falta habilidade para contornar suas armadilhas letais. {{count}} aldeões caem diante das defesas finais do rei antes que os sobreviventes recuem horrorizados, deixando os corpos dos companheiros na tumba amaldiçoada."
     }
   },
@@ -550,7 +550,7 @@
   "layTrap": {
     "label": "Armar Armadilha",
     "log": {
-      "trapSuccessNoDeaths": "A armadilha gigante funciona perfeitamente! Um enorme urso negro de olhos vermelhos brilhantes é capturado. Seus aldeões abatem a fera sobrenatural e tomam seu pelo negro amaldiçoado como troféu.",
+      "trapSuccessNoDeaths": "A armadilha gigante funciona perfeitamente! Um enorme urso negro de olhos vermelhos brilhantes é capturado. Os aldeões abatem a fera sobrenatural e tomam seu pelo negro amaldiçoado como troféu.",
       "trapSuccessWithDeaths": "A armadilha gigante captura um colossal urso negro de olhos vermelhos ardentes! {{count}} aldeões caem diante de suas garras sobrenaturais antes de a fera ser finalmente abatida. Você toma seu pelo negro amaldiçoado como um troféu arduamente conquistado.",
       "trapSuccessHeavy": "A armadilha gigante captura um colossal urso negro de olhos como brasas ardentes. {{count}} aldeões caem diante de sua fúria sobrenatural antes de a fera ser finalmente dominada. Você toma seu pelo negro amaldiçoado.",
       "trapFailed": "A armadilha gigante é montada, mas, ao ser verificada, só se encontram marcas de garras gigantes ao lado dela. O que quer que ronde estas florestas é astuto demais para sua armadilha... por enquanto."

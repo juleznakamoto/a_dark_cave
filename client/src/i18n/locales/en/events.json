@@ -656,7 +656,7 @@
     "log": {
       "outcome0": "He accepts your offer without a word and resumes his toil. His eyes hold the quiet torment of a man who has seen his faith crumble. Once he preached of virtue, until the day he committed a great sin. The Disgraced Prior has joined your fellowship."
     },
-    "message": "Your villagers report a gaunt man in tattered robes quietly repairing the walls of stone huts. He works without speaking, without rest, asking for nothing. When approached, he only says he has much to make amends for.",
+    "message": "The villagers report a gaunt man in tattered robes quietly repairing the walls of stone huts. He works without speaking, without rest, asking for nothing. When approached, he only says he has much to make amends for.",
     "title": "A Silent Repairman"
   },
   "doNothing": {
@@ -1039,7 +1039,7 @@
       }
     },
     "log": {
-      "digWellOutcome": "Your villagers dig a new well. Water returns. That evening, an starved man arrives from the forest.",
+      "digWellOutcome": "The villagers dig a new well. Water returns. That evening, an starved man arrives from the forest.",
       "searchOutcome": "There is nothing left to drink. {{deaths}} older villagers die of thirst. The woman cannot be found, but the searchers drag a starved man from the forest."
     },
     "message": {
@@ -1304,9 +1304,9 @@
       }
     },
     "log": {
-      "outcome": "The man leads you deep into the woods. Your villagers stumble into traps. Suddenly the red-haired woman appears, and together they fall upon your men. {{deaths}} villagers die before the survivors kill both attackers. On the man's body they find a map to a mountain village."
+      "outcome": "The man leads you deep into the woods. The villagers stumble into traps. Suddenly the red-haired woman appears, and together they fall upon your men. {{deaths}} villagers die before the survivors kill both attackers. On the man's body they find a map to a mountain village."
     },
-    "message": "The man leads you deep into the woods. Your villagers stumble into traps. Suddenly the red-haired woman appears, and together they fall upon your men. {{deaths}} villagers die before the survivors kill both attackers. On the man's body they find a map to a mountain village.",
+    "message": "The man leads you deep into the woods. The villagers stumble into traps. Suddenly the red-haired woman appears, and together they fall upon your men. {{deaths}} villagers die before the survivors kill both attackers. On the man's body they find a map to a mountain village.",
     "title": "The Ambush"
   },
   "monasteryMonk": {
@@ -2087,7 +2087,7 @@
       "outcome2": "Your men attack the slaver, but he's prepared! He fights back viciously. {{actualDeaths}} villagers fall in the struggle. The trader escapes with his captives, leaving only death behind.",
       "outcome3": "You refuse the slaver's vile offer. He spits on the ground in disgust and rides away with his captives."
     },
-    "message": "A man on a cart drawn by two horses approaches the village. An iron cage on the cart holds three miserable slaves. The trader grins wickedly: 'I'll pay you 100 Steel for two of your villagers. What do you say?'",
+    "message": "A man on a cart drawn by two horses approaches the village. An iron cage on the cart holds three miserable slaves. The trader grins wickedly: 'I'll pay you 100 Steel for two of the villagers. What do you say?'",
     "title": "The Slave Trader"
   },
   "solsticeGathering": {

@@ -250,7 +250,7 @@ export const SLEEP_INTENSITY_UPGRADES = [
 ];
 
 /** Food consumed per 15s production cycle for each action assigned to the Disgraced Prior. */
-export const DISGRACED_PRIOR_FOOD_PER_ASSIGNED_ACTION_PER_CYCLE = 50;
+export const DISGRACED_PRIOR_FOOD_PER_ASSIGNED_ACTION_PER_CYCLE = 25;
 
 // Disgraced Prior upgrade configurations (fellowship member who auto-executes assigned actions)
 // Odd levels (1, 3, 5) add an action slot. Even levels (2, 4) increase the reward multiplier.

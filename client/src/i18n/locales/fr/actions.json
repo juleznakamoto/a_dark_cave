@@ -6,7 +6,7 @@
     "label": "Repaire de bandits",
     "log": {
       "success": "Votre groupe traque le bandit jusqu'à un repaire délabré. Vous l'accablez, récupérez la dague du marchand et trouvez 250 argent cachés dans son butin.",
-      "failure": "Vos villageois fouillent les collines mais ne parviennent pas à acculer le bandit. La piste se refroidit, et la dague est toujours entre ses mains."
+      "failure": "Les villageois fouillent les collines mais ne parviennent pas à acculer le bandit. La piste se refroidit, et la dague est toujours entre ses mains."
     }
   },
   "blackreachCanyon": {
@@ -547,7 +547,7 @@
   "hillGrave": {
     "label": "Tombe de la colline",
     "log": {
-      "success": "Votre expédition traverse habilement les pièges traîtres de la tombe de la colline. Vos villageois désactivent les anciens mécanismes et atteignent la chambre funéraire. Parmi les trésors du roi, vous découvrez du frostglass pur, froid comme le vide lui-même.",
+      "success": "Votre expédition traverse habilement les pièges traîtres de la tombe de la colline. Les villageois désactivent les anciens mécanismes et atteignent la chambre funéraire. Parmi les trésors du roi, vous découvrez du frostglass pur, froid comme le vide lui-même.",
       "failure": "Votre expédition entre dans la tombe de la colline mais manque de l'habileté pour naviguer dans ses pièges mortels. {{count}} villageois succombent aux dernières défenses du roi avant que les survivants ne battent en retraite, horrifiés, laissant les corps de leurs compagnons dans la tombe maudite."
     }
   },
@@ -566,7 +566,7 @@
   "layTrap": {
     "label": "Poser un piège",
     "log": {
-      "trapSuccessNoDeaths": "Le piège géant fonctionne à la perfection ! Un énorme ours noir aux yeux rouges brillants est pris. Vos villageois abattent la bête surnaturelle et revendiquent sa fourrure noire maudite comme trophée.",
+      "trapSuccessNoDeaths": "Le piège géant fonctionne à la perfection ! Un énorme ours noir aux yeux rouges brillants est pris. Les villageois abattent la bête surnaturelle et revendiquent sa fourrure noire maudite comme trophée.",
       "trapSuccessWithDeaths": "Le piège géant capture un colossal ours noir aux yeux rouges ardents ! {{count}} villageois tombent sous ses griffes surnaturelles avant que la bête ne soit enfin abattue. Vous revendiquez sa fourrure noire maudite comme un trophée durement gagné.",
       "trapSuccessHeavy": "Le piège géant capture un colossal ours noir aux yeux comme des braises ardentes. {{count}} villageois tombent sous sa fureur surnaturelle avant que la bête ne soit enfin maîtrisée. Vous revendiquez sa fourrure noire maudite.",
       "trapFailed": "Le piège géant est posé, mais lorsque vous le vérifiez, seules d'énormes marques de griffes se trouvent à côté. Ce qui rôde dans ces forêts est trop rusé pour votre piège... cette fois."

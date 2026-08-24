@@ -9,7 +9,7 @@
     "label": "Covo del Bandito",
     "log": {
       "success": "Il tuo gruppo segue le tracce del bandito fino a un covo malridotto. Lo sopraffai, recuperi il pugnale del mercante e trovi 250 argento nascosti tra il suo bottino.",
-      "failure": "I tuoi abitanti perlustrano le colline ma non riescono a mettere alle strette il bandito. La pista si raffredda e il pugnale è ancora nelle sue mani."
+      "failure": "Gli abitanti perlustrano le colline ma non riescono a mettere alle strette il bandito. La pista si raffredda e il pugnale è ancora nelle sue mani."
     }
   },
   "blackreachCanyon": {
@@ -531,7 +531,7 @@
   "hillGrave": {
     "label": "Tomba della Collina",
     "log": {
-      "success": "La tua spedizione attraversa con attenzione le insidiose trappole della tomba della collina. I tuoi abitanti disinnescano gli antichi meccanismi e raggiungono la camera sepolcrale. Tra i tesori del re, scopri vetro di gelo puro, freddo come il vuoto stesso.",
+      "success": "La tua spedizione attraversa con attenzione le insidiose trappole della tomba della collina. Gli abitanti disinnescano gli antichi meccanismi e raggiungono la camera sepolcrale. Tra i tesori del re, scopri vetro di gelo puro, freddo come il vuoto stesso.",
       "failure": "La tua spedizione entra nella tomba della collina ma manca dell'abilità di superare le sue trappole mortali. {{count}} abitanti cadono per le ultime difese del re prima che i sopravvissuti si ritirino inorriditi, lasciando i corpi dei loro compagni nella tomba maledetta."
     }
   },
@@ -550,7 +550,7 @@
   "layTrap": {
     "label": "Disponi Trappola",
     "log": {
-      "trapSuccessNoDeaths": "La trappola gigante funziona alla perfezione! Un enorme orso nero dagli occhi rossi luminosi viene catturato. I tuoi abitanti abbattono la bestia soprannaturale e ne reclamano la maledetta pelliccia nera come trofeo.",
+      "trapSuccessNoDeaths": "La trappola gigante funziona alla perfezione! Un enorme orso nero dagli occhi rossi luminosi viene catturato. Gli abitanti abbattono la bestia soprannaturale e ne reclamano la maledetta pelliccia nera come trofeo.",
       "trapSuccessWithDeaths": "La trappola gigante cattura un colossale orso nero dagli occhi rossi ardenti! {{count}} abitanti cadono per i suoi artigli soprannaturali prima che la bestia venga infine abbattuta. Reclami la sua maledetta pelliccia nera come trofeo conquistato a caro prezzo.",
       "trapSuccessHeavy": "La trappola gigante cattura un colossale orso nero dagli occhi come carboni ardenti. {{count}} abitanti cadono per la sua furia soprannaturale prima che la bestia venga infine sopraffatta. Reclami la sua maledetta pelliccia nera.",
       "trapFailed": "La trappola gigante è posizionata, ma al controllo si trovano solo enormi segni di artigli accanto ad essa. Qualunque cosa si aggiri in queste foreste è troppo astuta per la tua trappola... per questa volta."

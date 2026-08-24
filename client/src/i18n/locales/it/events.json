@@ -611,7 +611,7 @@
     "log": {
       "outcome0": "Accetta la tua offerta senza una parola e riprende la sua fatica. I suoi occhi celano il tormento silenzioso di un uomo che ha visto crollare la propria fede. Un tempo predicava la virtù, fino al giorno in cui commise un grande peccato. Il Priore Caduto in Disgrazia si è unito alla tua compagnia."
     },
-    "message": "I tuoi abitanti riferiscono di un uomo emaciato in vesti laceri che ripara silenziosamente le mura delle capanne di pietra. Lavora senza parlare, senza riposo, senza chiedere nulla. Quando avvicinato, dice soltanto che ha molto di cui farsi perdonare.",
+    "message": "Gli abitanti riferiscono di un uomo emaciato in vesti laceri che ripara silenziosamente le mura delle capanne di pietra. Lavora senza parlare, senza riposo, senza chiedere nulla. Quando avvicinato, dice soltanto che ha molto di cui farsi perdonare.",
     "title": "Un Riparatore Silenzioso"
   },
   "doNothing": {
@@ -2715,7 +2715,7 @@
       }
     },
     "log": {
-      "digWellOutcome": "I vostri abitanti scavano un nuovo pozzo. L'acqua torna. Quella sera, un uomo affamato arriva dalla foresta.",
+      "digWellOutcome": "Gli abitanti scavano un nuovo pozzo. L'acqua torna. Quella sera, un uomo affamato arriva dalla foresta.",
       "searchOutcome": "Non c'è più nulla da bere. {{deaths}} abitanti anziani muoiono di sete. La donna non si trova, ma i cercatori trascinano dalla foresta un uomo affamato."
     },
     "message": {
@@ -2759,9 +2759,9 @@
       }
     },
     "log": {
-      "outcome": "L'uomo vi guida in profondità nel bosco. I vostri abitanti cadono in trappole. All'improvviso compare la donna dai capelli rossi e insieme si avventano sui vostri uomini. {{deaths}} abitanti muoiono prima che i sopravvissuti uccidano entrambi gli assalitori. Sul corpo dell'uomo trovano una mappa per un villaggio di montagna."
+      "outcome": "L'uomo vi guida in profondità nel bosco. Gli abitanti cadono in trappole. All'improvviso compare la donna dai capelli rossi e insieme si avventano sui vostri uomini. {{deaths}} abitanti muoiono prima che i sopravvissuti uccidano entrambi gli assalitori. Sul corpo dell'uomo trovano una mappa per un villaggio di montagna."
     },
-    "message": "L'uomo vi guida in profondità nel bosco. I vostri abitanti cadono in trappole. All'improvviso compare la donna dai capelli rossi e insieme si avventano sui vostri uomini. {{deaths}} abitanti muoiono prima che i sopravvissuti uccidano entrambi gli assalitori. Sul corpo dell'uomo trovano una mappa per un villaggio di montagna.",
+    "message": "L'uomo vi guida in profondità nel bosco. Gli abitanti cadono in trappole. All'improvviso compare la donna dai capelli rossi e insieme si avventano sui vostri uomini. {{deaths}} abitanti muoiono prima che i sopravvissuti uccidano entrambi gli assalitori. Sul corpo dell'uomo trovano una mappa per un villaggio di montagna.",
     "title": "L'imboscata"
   },
   "theHoundFound": {

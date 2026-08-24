@@ -6,7 +6,7 @@
     "label": "Banditenlager",
     "log": {
       "success": "Eure Gruppe verfolgt den Banditen zu einem wackeligen Unterschlupf. Ihr überwältigt ihn, bergt den Dolch des Händlers und findet 250 Silber unter seiner Beute.",
-      "failure": "Eure Dorfbewohner durchsuchen die Hügel, können den Banditen aber nicht stellen. Die Spur verliert sich, und der Dolch ist noch immer in seinen Händen."
+      "failure": "Die Dorfbewohner durchsuchen die Hügel, können den Banditen aber nicht stellen. Die Spur verliert sich, und der Dolch ist noch immer in seinen Händen."
     }
   },
   "blackreachCanyon": {
@@ -547,7 +547,7 @@
   "hillGrave": {
     "label": "Hügelgrab",
     "log": {
-      "success": "Eure Expedition navigiert geschickt durch die tückischen Fallen des Hügelgrabs. Eure Dorfbewohner entschärfen die alten Mechanismen und erreichen die Grabkammer. Unter den Schätzen des Königs entdeckt ihr reines Frostglas, kalt wie die Leere selbst.",
+      "success": "Eure Expedition navigiert geschickt durch die tückischen Fallen des Hügelgrabs. Die Dorfbewohner entschärfen die alten Mechanismen und erreichen die Grabkammer. Unter den Schätzen des Königs entdeckt ihr reines Frostglas, kalt wie die Leere selbst.",
       "failure": "Eure Expedition betritt das Hügelgrab, verfügt aber nicht über das Geschick, seine tödlichen Fallen zu überwinden. {{count}} Dorfbewohner fallen den letzten Verteidigungen des Königs zum Opfer, bevor die Überlebenden voller Entsetzen fliehen und die Körper ihrer Gefährten im verfluchten Grab zurücklassen."
     }
   },
@@ -566,7 +566,7 @@
   "layTrap": {
     "label": "Falle legen",
     "log": {
-      "trapSuccessNoDeaths": "Die Riesenfalle funktioniert perfekt! Ein massiver Schwarzbär mit glühend roten Augen ist gefangen. Eure Dorfbewohner erschlagen das übernatürliche Biest und beanspruchen sein verfluchtes schwarzes Fell als Trophäe.",
+      "trapSuccessNoDeaths": "Die Riesenfalle funktioniert perfekt! Ein massiver Schwarzbär mit glühend roten Augen ist gefangen. Die Dorfbewohner erschlagen das übernatürliche Biest und beanspruchen sein verfluchtes schwarzes Fell als Trophäe.",
       "trapSuccessWithDeaths": "Die Riesenfalle schnappt einen kolossalen Schwarzbären mit brennend roten Augen! {{count}} Dorfbewohner fallen seinen übernatürlichen Klauen zum Opfer, bevor das Biest endlich erlegt wird. Ihr beansprucht sein verfluchtes schwarzes Fell als hart erkämpfte Trophäe.",
       "trapSuccessHeavy": "Die Riesenfalle schnappt einen kolossalen Schwarzbären mit Augen wie glühende Kohlen. {{count}} Dorfbewohner fallen seiner übernatürlichen Wut zum Opfer, bevor das Biest endlich überwältigt wird. Ihr beansprucht sein verfluchtes schwarzes Fell.",
       "trapFailed": "Die Riesenfalle ist aufgestellt, doch als ihr nachseht, findet ihr nur riesige Klauenspuren daneben. Was auch immer in diesen Wäldern umherstreift, ist zu listig für eure Falle … diesmal."

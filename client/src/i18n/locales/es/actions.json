@@ -6,7 +6,7 @@
     "label": "Guarida de bandidos",
     "log": {
       "success": "Tu grupo sigue al bandido hasta una guarida destartalada. Lo abrumas, recuperas la daga del mercader y encuentras 250 plata escondida entre su botín.",
-      "failure": "Tus aldeanos buscan en las colinas pero no logran acorralar al bandido. El rastro se enfría y la daga sigue en sus manos."
+      "failure": "Los aldeanos buscan en las colinas pero no logran acorralar al bandido. El rastro se enfría y la daga sigue en sus manos."
     }
   },
   "blackreachCanyon": {
@@ -547,7 +547,7 @@
   "hillGrave": {
     "label": "Tumba de la colina",
     "log": {
-      "success": "Tu expedición navega con cuidado las traicioneras trampas de la tumba de la colina. Tus aldeanos desactivan los antiguos mecanismos y llegan a la cámara funeraria. Entre los tesoros del rey, descubres frostglass puro, frío como el vacío mismo.",
+      "success": "Tu expedición navega con cuidado las traicioneras trampas de la tumba de la colina. Los aldeanos desactivan los antiguos mecanismos y llegan a la cámara funeraria. Entre los tesoros del rey, descubres frostglass puro, frío como el vacío mismo.",
       "failure": "Tu expedición entra en la tumba de la colina pero carece de la habilidad para sortear sus trampas mortales. {{count}} aldeanos caen ante las últimas defensas del rey antes de que los supervivientes huyan horrorizados, dejando los cuerpos de sus compañeros en la tumba maldita."
     }
   },
@@ -566,7 +566,7 @@
   "layTrap": {
     "label": "Colocar trampa",
     "log": {
-      "trapSuccessNoDeaths": "¡La trampa gigante funciona a la perfección! Un enorme oso negro con ojos rojos brillantes queda atrapado. Tus aldeanos abatten a la bestia sobrenatural y reclaman su maldita piel negra como trofeo.",
+      "trapSuccessNoDeaths": "¡La trampa gigante funciona a la perfección! Un enorme oso negro con ojos rojos brillantes queda atrapado. Los aldeanos abatten a la bestia sobrenatural y reclaman su maldita piel negra como trofeo.",
       "trapSuccessWithDeaths": "¡La trampa gigante atrapa a un colosal oso negro con ojos rojos ardientes! {{count}} aldeanos caen ante sus garras sobrenaturales antes de que la bestia sea finalmente abatida. Reclamas su maldita piel negra como un trofeo duramente ganado.",
       "trapSuccessHeavy": "La trampa gigante atrapa a un colosal oso negro con ojos como brasas ardientes. {{count}} aldeanos caen ante su furia sobrenatural antes de que la bestia sea finalmente abatida. Reclamas su maldita piel negra.",
       "trapFailed": "La trampa gigante está tendida, pero al revisarla solo encuentras marcas de garras gigantes junto a ella. Lo que acecha en estos bosques es demasiado astuto para tu trampa... esta vez."

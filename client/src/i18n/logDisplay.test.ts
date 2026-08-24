@@ -1,6 +1,7 @@
-import { describe, it, expect, beforeEach } from "vitest";
+import { describe, it, expect, beforeAll, beforeEach } from "vitest";
 import i18n from "./index";
 import { hasLogEntryText, resolveLogPanelMessage, resolveOutcomeLogMessage } from "./logDisplay";
+import { ensureGameplayLocalesLoaded } from "./loadLocaleResources";
 import {
   getStartScreenNarrativeEnglishFallback,
   resolveInheritedActionLogMessage,
@@ -22,6 +23,10 @@ function systemEntry(
 }
 
 describe("resolveLogPanelMessage", () => {
+  beforeAll(async () => {
+    await ensureGameplayLocalesLoaded();
+  });
+
   beforeEach(async () => {
     await i18n.changeLanguage("en");
   });
@@ -333,7 +338,7 @@ describe("resolveLogPanelMessage", () => {
       ),
     );
     expect(text).toBe(
-      "Eure Expedition navigiert geschickt durch die tückischen Fallen des Hügelgrabs. Eure Dorfbewohner entschärfen die alten Mechanismen und erreichen die Grabkammer. Unter den Schätzen des Königs entdeckt ihr reines Frostglas, kalt wie die Leere selbst.",
+      "Eure Expedition navigiert geschickt durch die tückischen Fallen des Hügelgrabs. Die Dorfbewohner entschärfen die alten Mechanismen und erreichen die Grabkammer. Unter den Schätzen des Königs entdeckt ihr reines Frostglas, kalt wie die Leere selbst.",
     );
   });
 
@@ -343,7 +348,7 @@ describe("resolveLogPanelMessage", () => {
       "Your expedition carefully navigates the treacherous traps of the hill grave. Your villagers disarm the ancient mechanisms and reach the burial chamber. Among the king's treasures, you discover pure frostglass, cold as the void itself.",
     );
     expect(text).toBe(
-      "Eure Expedition navigiert geschickt durch die tückischen Fallen des Hügelgrabs. Eure Dorfbewohner entschärfen die alten Mechanismen und erreichen die Grabkammer. Unter den Schätzen des Königs entdeckt ihr reines Frostglas, kalt wie die Leere selbst.",
+      "Eure Expedition navigiert geschickt durch die tückischen Fallen des Hügelgrabs. Die Dorfbewohner entschärfen die alten Mechanismen und erreichen die Grabkammer. Unter den Schätzen des Königs entdeckt ihr reines Frostglas, kalt wie die Leere selbst.",
     );
   });
 
@@ -413,7 +418,7 @@ describe("resolveLogPanelMessage", () => {
       ),
     );
     expect(text).toBe(
-      "Eure Dorfbewohner durchsuchen die Hügel, können den Banditen aber nicht stellen. Die Spur verliert sich, und der Dolch ist noch immer in seinen Händen.",
+      "Die Dorfbewohner durchsuchen die Hügel, können den Banditen aber nicht stellen. Die Spur verliert sich, und der Dolch ist noch immer in seinen Händen.",
     );
   });
 

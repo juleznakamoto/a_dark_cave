@@ -639,7 +639,7 @@
     "log": {
       "outcome0": "Acepta tu oferta sin decir palabra y reanuda su labor. Sus ojos guardan el tormento silencioso de un hombre que ha visto derrumbarse su fe. Una vez predicó la virtud, hasta el día en que cometió un gran pecado. El Prior deshonrado se ha unido a tu compañía."
     },
-    "message": "Tus aldeanos informan de un hombre demacrado con túnicas harapientas que repara en silencio los muros de las chozas de piedra. Trabaja sin hablar, sin descansar y sin pedir nada. Cuando se le acerca alguien, solo dice que tiene mucho que expiar.",
+    "message": "Los aldeanos informan de un hombre demacrado con túnicas harapientas que repara en silencio los muros de las chozas de piedra. Trabaja sin hablar, sin descansar y sin pedir nada. Cuando se le acerca alguien, solo dice que tiene mucho que expiar.",
     "title": "Un reparador silencioso"
   },
   "doNothing": {
@@ -1013,7 +1013,7 @@
       }
     },
     "log": {
-      "digWellOutcome": "Tus aldeanos cavan un nuevo pozo. El agua vuelve. Esa tarde, un hombre famélico llega del bosque.",
+      "digWellOutcome": "Los aldeanos cavan un nuevo pozo. El agua vuelve. Esa tarde, un hombre famélico llega del bosque.",
       "searchOutcome": "No queda nada que beber. {{deaths}} aldeanos mayores mueren de sed. No encuentran a la mujer, pero los buscadores arrastran a un hombre famélico del bosque."
     },
     "message": {
@@ -1142,7 +1142,7 @@
     },
     "log": {
       "outcome0": "Entregas el oro. El mercenario lo cuenta despacio, con una sonrisa cruel en el rostro. 'Un placer hacer negocios', dice antes de desaparecer.",
-      "outcome1": "El mercenario ordena atacar a sus hombres. La batalla es feroz, pero tus aldeanos prevalecen. Los mercenarios huyen al bosque, dejando atrás armas y heridos.",
+      "outcome1": "El mercenario ordena atacar a sus hombres. La batalla es feroz, pero los aldeanos prevalecen. Los mercenarios huyen al bosque, dejando atrás armas y heridos.",
       "outcome2": "El mercenario ordena atacar a sus hombres. Pese a tus esfuerzos, te superan. {{deaths}} aldeanos caen antes de que los mercenarios se retiren al fin, satisfechos con la carnicería.",
       "outcome3": "Le ofreces el anillo hambriento que aún guardabas en un cofre cerrado. El mercenario lo examina con interés y se lo desliza en su propio dedo. 'Bonito anillo', dice, 'pero no basta. Volveré mañana a cobrar el oro'."
     },
@@ -2061,7 +2061,7 @@
       "outcome2": "Tus hombres atacan al traficante de esclavos, pero está preparado. Se defiende con ferocidad. {{actualDeaths}} aldeanos caen en el combate. El comerciante escapa con sus cautivos y deja solo muerte tras de sí.",
       "outcome3": "Rechazas la vil oferta del esclavista. Escupe al suelo con disgusto y se aleja con sus cautivos."
     },
-    "message": "Un hombre en un carro tirado por dos caballos se acerca a la aldea. Una jaula de hierro en el carro contiene a tres esclavos miserables. El traficante sonríe con malicia: 'Te pagaré 100 de acero por dos de tus aldeanos. ¿Qué dices?'",
+    "message": "Un hombre en un carro tirado por dos caballos se acerca a la aldea. Una jaula de hierro en el carro contiene a tres esclavos miserables. El traficante sonríe con malicia: 'Te pagaré 100 de acero por dos de los aldeanos. ¿Qué dices?'",
     "title": "El traficante de esclavos"
   },
   "solsticeGathering": {

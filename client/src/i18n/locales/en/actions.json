@@ -6,7 +6,7 @@
     "label": "Bandit Lair",
     "log": {
       "success": "Your party tracks the bandit to a ramshackle lair. You overwhelm him, recover the trader's dagger, and find 250 silver stashed among his plunder.",
-      "failure": "Your villagers search the hills but cannot corner the bandit. The trail goes cold, and the dagger is still in his hands."
+      "failure": "The villagers search the hills but cannot corner the bandit. The trail goes cold, and the dagger is still in his hands."
     }
   },
   "blackreachCanyon": {
@@ -547,7 +547,7 @@
   "hillGrave": {
     "label": "Hill Grave",
     "log": {
-      "success": "Your expedition carefully navigates the treacherous traps of the hill grave. Your villagers disarm the ancient mechanisms and reach the burial chamber. Among the king's treasures, you discover pure frostglass, cold as the void itself.",
+      "success": "Your expedition carefully navigates the treacherous traps of the hill grave. The villagers disarm the ancient mechanisms and reach the burial chamber. Among the king's treasures, you discover pure frostglass, cold as the void itself.",
       "failure": "Your expedition enters the hill grave but lacks the skill to navigate its deadly traps. {{count}} villagers fall to the king's final defenses before the survivors retreat in horror, leaving their companions' bodies in the cursed tomb."
     }
   },
@@ -566,7 +566,7 @@
   "layTrap": {
     "label": "Lay Trap",
     "log": {
-      "trapSuccessNoDeaths": "The giant trap works perfectly! A massive black bear with glowing red eyes is caught. Your villagers slay the supernatural beast and claim its cursed black fur as a trophy.",
+      "trapSuccessNoDeaths": "The giant trap works perfectly! A massive black bear with glowing red eyes is caught. The villagers slay the supernatural beast and claim its cursed black fur as a trophy.",
       "trapSuccessWithDeaths": "The giant trap snares a colossal black bear with burning red eyes! {{count}} villagers fall to its supernatural claws before the beast is finally slain. You claim its cursed black fur as a hard-won trophy.",
       "trapSuccessHeavy": "The giant trap snares a colossal black bear with eyes like burning coals. {{count}} villagers fall to its supernatural fury before the beast is finally overwhelmed. You claim its cursed black fur.",
       "trapFailed": "The giant trap is set, but when checked only giant claw marks are found next to it. Whatever prowls these forests is too cunning for your trap... this time."

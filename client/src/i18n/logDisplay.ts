@@ -532,7 +532,19 @@ const LEGACY_ACTION_LOG_MESSAGES: Array<{
       actionId: "banditLair",
       logKey: "failure",
       message:
+        "The villagers search the hills but cannot corner the bandit. The trail goes cold, and the dagger is still in his hands.",
+    },
+    {
+      actionId: "banditLair",
+      logKey: "failure",
+      message:
         "Your villagers search the hills but cannot corner the bandit. The trail goes cold, and the dagger is still in his hands.",
+    },
+    {
+      actionId: "banditLair",
+      logKey: "failure",
+      message:
+        "Eure Dorfbewohner durchsuchen die Hügel, können den Banditen aber nicht stellen. Die Spur verliert sich, und der Dolch ist noch immer in seinen Händen.",
     },
     {
       actionId: "canyonBridge",
@@ -550,7 +562,19 @@ const LEGACY_ACTION_LOG_MESSAGES: Array<{
       actionId: "hillGrave",
       logKey: "success",
       message:
+        "Your expedition carefully navigates the treacherous traps of the hill grave. The villagers disarm the ancient mechanisms and reach the burial chamber. Among the king's treasures, you discover pure frostglass, cold as the void itself.",
+    },
+    {
+      actionId: "hillGrave",
+      logKey: "success",
+      message:
         "Your expedition carefully navigates the treacherous traps of the hill grave. Your villagers disarm the ancient mechanisms and reach the burial chamber. Among the king's treasures, you discover pure frostglass, cold as the void itself.",
+    },
+    {
+      actionId: "hillGrave",
+      logKey: "success",
+      message:
+        "Eure Expedition navigiert geschickt durch die tückischen Fallen des Hügelgrabs. Eure Dorfbewohner entschärfen die alten Mechanismen und erreichen die Grabkammer. Unter den Schätzen des Königs entdeckt ihr reines Frostglas, kalt wie die Leere selbst.",
     },
     {
       actionId: "hunt",
@@ -562,7 +586,19 @@ const LEGACY_ACTION_LOG_MESSAGES: Array<{
       actionId: "layTrap",
       logKey: "trapSuccessNoDeaths",
       message:
+        "The giant trap works perfectly! A massive black bear with glowing red eyes is caught. The villagers slay the supernatural beast and claim its cursed black fur as a trophy.",
+    },
+    {
+      actionId: "layTrap",
+      logKey: "trapSuccessNoDeaths",
+      message:
         "The giant trap works perfectly! A massive black bear with glowing red eyes is caught. Your villagers slay the supernatural beast and claim its cursed black fur as a trophy.",
+    },
+    {
+      actionId: "layTrap",
+      logKey: "trapSuccessNoDeaths",
+      message:
+        "Die Riesenfalle funktioniert perfekt! Ein massiver Schwarzbär mit glühend roten Augen ist gefangen. Eure Dorfbewohner erschlagen das übernatürliche Biest und beanspruchen sein verfluchtes schwarzes Fell als Trophäe.",
     },
     {
       actionId: "layTrap",
@@ -777,6 +813,15 @@ function buildLegacyEnglishEventMessageMap(): Record<string, string> {
       map[def.message] = eventId;
     }
   }
+  map[
+    "Your villagers report a gaunt man in tattered robes quietly repairing the walls of stone huts. He works without speaking, without rest, asking for nothing. When approached, he only says he has much to make amends for."
+  ] = "disgracedPriorOffer";
+  map[
+    "The man leads you deep into the woods. Your villagers stumble into traps. Suddenly the red-haired woman appears, and together they fall upon your men. {{deaths}} villagers die before the survivors kill both attackers. On the man's body they find a map to a mountain village."
+  ] = "searchMountainLadyAmbush";
+  map[
+    "A man on a cart drawn by two horses approaches the village. An iron cage on the cart holds three miserable slaves. The trader grins wickedly: 'I'll pay you 100 Steel for two of your villagers. What do you say?'"
+  ] = "slaveTrader";
   return map;
 }
 

@@ -43,7 +43,7 @@
     "constructionBoost": "Speed up construction by {{time}} for {{cost}} {{resource}}",
     "constructionBoostFinish": "Finish construction for {{cost}} {{resource}}",
     "cycle": "Cycle",
-    "cycleDescription": "Each cycle your villagers produce resources and there is a chance of new villagers arriving.",
+    "cycleDescription": "Each cycle the villagers produce resources and there is a chance of new villagers arriving.",
     "nextCycleIn": "Next cycle in {{seconds}} seconds",
     "newVillagerChance": "New Villager Chance: {{percent}}%",
     "lowPopulationBonus": "{{percent}}% low population bonus",

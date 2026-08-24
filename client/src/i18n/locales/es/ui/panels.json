@@ -43,7 +43,7 @@
     "constructionBoost": "Acelerar construcción {{time}} por {{cost}} {{resource}}",
     "constructionBoostFinish": "Terminar construcción por {{cost}} {{resource}}",
     "cycle": "Ciclo",
-    "cycleDescription": "En cada ciclo, tus aldeanos producen recursos y hay posibilidad de que lleguen nuevos aldeanos.",
+    "cycleDescription": "En cada ciclo, los aldeanos producen recursos y hay posibilidad de que lleguen nuevos aldeanos.",
     "nextCycleIn": "Próximo ciclo en {{seconds}} segundos",
     "newVillagerChance": "Probabilidad de nuevo aldeano: {{percent}} %",
     "lowPopulationBonus": "{{percent}} % de bonificación por baja población",

@@ -586,7 +586,7 @@ export function handleLayTrap(
         message: getActionLogMessage(
           "layTrap",
           "trapSuccessNoDeaths",
-          "The giant trap works perfectly! A massive black bear with glowing red eyes is caught. Your villagers slay the supernatural beast and claim its cursed black fur as a trophy.",
+          "The giant trap works perfectly! A massive black bear with glowing red eyes is caught. The villagers slay the supernatural beast and claim its cursed black fur as a trophy.",
         ),
         timestamp: Date.now(),
         type: "system",
@@ -790,7 +790,7 @@ export function handleHillGrave(
       message: getActionLogMessage(
         "hillGrave",
         "success",
-        "Your expedition carefully navigates the treacherous traps of the hill grave. Your villagers disarm the ancient mechanisms and reach the burial chamber. Among the king's treasures, you discover pure frostglass, cold as the void itself.",
+        "Your expedition carefully navigates the treacherous traps of the hill grave. The villagers disarm the ancient mechanisms and reach the burial chamber. Among the king's treasures, you discover pure frostglass, cold as the void itself.",
       ),
       timestamp: Date.now(),
       type: "system",
@@ -1328,7 +1328,7 @@ export function handleBanditLair(
       message: getActionLogMessage(
         "banditLair",
         "failure",
-        "Your villagers search the hills but cannot corner the bandit. The trail goes cold, and the dagger is still in his hands.",
+        "The villagers search the hills but cannot corner the bandit. The trail goes cold, and the dagger is still in his hands.",
       ),
       timestamp: Date.now(),
       type: "system",

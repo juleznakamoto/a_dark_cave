@@ -611,7 +611,7 @@
     "log": {
       "outcome0": "Ele aceita sua oferta sem uma palavra e retoma seu labor. Seus olhos guardam o tormento silencioso de um homem que viu sua fé ruir. Outrora ele pregava a virtude, até o dia em que cometeu um grande pecado. O Prior Desonrado juntou-se à sua irmandade."
     },
-    "message": "Seus aldeões relatam um homem esquálido em vestes esfarrapadas reparando silenciosamente as paredes das cabanas de pedra. Ele trabalha sem falar, sem descanso, sem pedir nada. Quando abordado, diz apenas que tem muito do que se redimir.",
+    "message": "Os aldeões relatam um homem esquálido em vestes esfarrapadas reparando silenciosamente as paredes das cabanas de pedra. Ele trabalha sem falar, sem descanso, sem pedir nada. Quando abordado, diz apenas que tem muito do que se redimir.",
     "title": "Um Reparador Silencioso"
   },
   "doNothing": {
@@ -1044,7 +1044,7 @@
     },
     "log": {
       "outcome0": "Você entrega o ouro. O mercenário o conta lentamente, um sorriso cruel no rosto. 'Um prazer fazer negócios,' diz ele, antes de desaparecer.",
-      "outcome1": "O mercenário sinaliza para seus homens atacarem. A batalha é feroz, mas seus aldeões prevalecem. Os mercenários fogem para a floresta, deixando para trás suas armas e feridos.",
+      "outcome1": "O mercenário sinaliza para seus homens atacarem. A batalha é feroz, mas os aldeões prevalecem. Os mercenários fogem para a floresta, deixando para trás suas armas e feridos.",
       "outcome2": "O mercenário sinaliza para seus homens atacarem. Apesar dos seus melhores esforços, você é sobrepujado. {{deaths}} aldeões caem antes de os mercenários finalmente recuarem, satisfeitos com a carnificina.",
       "outcome3": "Você lhe oferece o anel voraz que ainda guardava num baú trancado. O mercenário o examina com interesse, deslizando-o no próprio dedo. 'Um belo anel,' diz ele, 'mas não é o bastante. Voltarei amanhã para recolher o ouro.'"
     },
@@ -1930,7 +1930,7 @@
       "outcome2": "Seus homens atacam o escravagista, mas ele está preparado! Ele revida ferozmente. {{actualDeaths}} aldeões caem na luta. O mercador escapa com seus cativos, deixando apenas morte para trás.",
       "outcome3": "Você recusa a vil oferta do escravagista. Ele cospe no chão enojado e parte a cavalo com seus cativos."
     },
-    "message": "Um homem numa carroça puxada por dois cavalos se aproxima da aldeia. Uma jaula de ferro na carroça contém três escravos miseráveis. O mercador sorri maldosamente: 'Pagarei 100 Aço por dois dos seus aldeões. O que me diz?'",
+    "message": "Um homem numa carroça puxada por dois cavalos se aproxima da aldeia. Uma jaula de ferro na carroça contém três escravos miseráveis. O mercador sorri maldosamente: 'Pagarei 100 Aço por dois dos aldeões. O que me diz?'",
     "title": "O Mercador de Escravos"
   },
   "solsticeGathering": {
@@ -2715,7 +2715,7 @@
       }
     },
     "log": {
-      "digWellOutcome": "Seus aldeões cavam um novo poço. A água volta. Naquela noite, um homem faminto chega da floresta.",
+      "digWellOutcome": "Os aldeões cavam um novo poço. A água volta. Naquela noite, um homem faminto chega da floresta.",
       "searchOutcome": "Não há mais nada para beber. {{deaths}} aldeões mais velhos morrem de sede. A mulher não é encontrada, mas os buscadores arrastam um homem faminto da floresta."
     },
     "message": {
@@ -2759,9 +2759,9 @@
       }
     },
     "log": {
-      "outcome": "O homem os leva fundo na floresta. Seus aldeões caem em armadilhas. De repente a mulher de cabelos ruivos aparece, e juntos atacam seus homens. {{deaths}} aldeões morrem antes que os sobreviventes matem os dois atacantes. No corpo do homem eles encontram um mapa para uma aldeia na montanha."
+      "outcome": "O homem os leva fundo na floresta. Os aldeões caem em armadilhas. De repente a mulher de cabelos ruivos aparece, e juntos atacam seus homens. {{deaths}} aldeões morrem antes que os sobreviventes matem os dois atacantes. No corpo do homem eles encontram um mapa para uma aldeia na montanha."
     },
-    "message": "O homem os leva fundo na floresta. Seus aldeões caem em armadilhas. De repente a mulher de cabelos ruivos aparece, e juntos atacam seus homens. {{deaths}} aldeões morrem antes que os sobreviventes matem os dois atacantes. No corpo do homem eles encontram um mapa para uma aldeia na montanha.",
+    "message": "O homem os leva fundo na floresta. Os aldeões caem em armadilhas. De repente a mulher de cabelos ruivos aparece, e juntos atacam seus homens. {{deaths}} aldeões morrem antes que os sobreviventes matem os dois atacantes. No corpo do homem eles encontram um mapa para uma aldeia na montanha.",
     "title": "A emboscada"
   },
   "theHoundFound": {
