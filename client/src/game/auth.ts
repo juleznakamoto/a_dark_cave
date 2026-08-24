@@ -430,18 +430,17 @@ export async function signUp(
 let referralClaimInFlight: Promise<void> | null = null;
 
 export async function processReferralAfterConfirmation(): Promise<void> {
-  if (referralClaimInFlight) {
-    await referralClaimInFlight;
-    return;
+  if (!referralClaimInFlight) {
+    // Catch on the shared promise so concurrent joiners do not see a rejection.
+    referralClaimInFlight = processReferralInBackground()
+      .catch((error) => {
+        logger.error("[REFERRAL] Background processing failed:", error);
+      })
+      .finally(() => {
+        referralClaimInFlight = null;
+      });
   }
-  referralClaimInFlight = processReferralInBackground().finally(() => {
-    referralClaimInFlight = null;
-  });
-  try {
-    await referralClaimInFlight;
-  } catch (error) {
-    logger.error('[REFERRAL] Background processing failed:', error);
-  }
+  await referralClaimInFlight;
 }
 
 async function processReferralInBackground(): Promise<void> {

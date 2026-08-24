@@ -163,4 +163,18 @@ describe("processReferralAfterConfirmation", () => {
       }),
     );
   });
+
+  it("does not reject joiners when the in-flight claim throws", async () => {
+    mockSignedInUser();
+    mockGetSupabaseClient.mockRejectedValue(new Error("supabase down"));
+    const errorSpy = vi.spyOn(console, "error").mockImplementation(() => { });
+
+    const { processReferralAfterConfirmation } = await import("./auth");
+    const first = processReferralAfterConfirmation();
+    const second = processReferralAfterConfirmation();
+
+    await expect(first).resolves.toBeUndefined();
+    await expect(second).resolves.toBeUndefined();
+    errorSpy.mockRestore();
+  });
 });
