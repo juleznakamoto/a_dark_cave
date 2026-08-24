@@ -6,13 +6,16 @@ import {
   getInsightBlessingCostLabel,
   hasUnownedInsightBlessings,
 } from "./insightBlessings";
+import { isInsightUnlocked } from "./insightReveal";
 import { formatNumber } from "@/lib/utils";
 
 export const insightBlessingEvents: Record<string, GameEvent> = {
   insightBlessingOffer: {
     id: "insightBlessingOffer",
     condition: (state: GameState) =>
-      (state.buildings.darkEstate ?? 0) >= 1 && hasUnownedInsightBlessings(state),
+      isInsightUnlocked(state) &&
+      (state.buildings.darkEstate ?? 0) >= 1 &&
+      hasUnownedInsightBlessings(state),
     timeProbability: 45,
     priority: 4,
     repeatable: true,
