@@ -252,7 +252,9 @@
     "wishlistButton": "Adicionar à lista de desejos na Steam",
     "startNewGameButton": "Iniciar novo jogo",
     "releaseNote": "Lançamento previsto: 27 de outubro de 2026",
-    "feedbackButton": "Feedback"
+    "feedbackButton": "Feedback",
+    "storeHeaderLink": "Lista de desejos",
+    "storeHeaderTooltip": "Adicionar o jogo completo à lista de desejos da Steam"
   },
   "blessingOffer": {
     "title": "Choose a Blessing",

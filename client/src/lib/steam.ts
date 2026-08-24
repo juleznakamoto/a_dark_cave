@@ -19,6 +19,21 @@ export function hasSteamBridge(): boolean {
   return isSteamBuild && !!bridge()?.available;
 }
 
+/**
+ * Open the full game store page in the Steam Overlay
+ * (`ISteamFriends::ActivateGameOverlayToStore`). Returns false on web / failure.
+ */
+export async function steamActivateOverlayToStore(): Promise<boolean> {
+  const b = bridge();
+  if (!b?.available || !b.activateOverlayToStore) return false;
+  try {
+    return await b.activateOverlayToStore();
+  } catch (error) {
+    logger.warn("[STEAM] Failed to open store overlay", error);
+    return false;
+  }
+}
+
 /** Unlock (activate) a Steam achievement by its configured API name. Safe no-op on web. */
 export async function steamUnlockAchievement(apiName: string): Promise<void> {
   const b = bridge();

@@ -6,17 +6,13 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
-import { FooterSocialIcon } from "@/components/game/FooterSocialIcon";
+import { SteamDemoEndStoreCta } from "@/components/game/SteamDemoStoreLink";
 import { GameUiIcon } from "@/components/game/GameUiIcon";
 import { EndScreenShaderBackground } from "@/components/ui/animated-shader-hero";
 import { useGameStore } from "@/game/state";
 import { startNewDemoGame } from "@/game/demoLimit";
 import { openGameFeedbackForm } from "@/lib/gameFeedbackForm";
-import { useTranslation } from "react-i18next";
-import {
-  STEAM_STORE_UTM_CONTENT,
-  steamStoreUrl,
-} from "@/lib/gameFooterSocialLinks";
+import { useUiTranslation } from "@/i18n/useUiTranslation";
 
 /** Blocking end-of-demo modal for Galaxy web demo and Steam desktop demo. */
 export default function DemoTimeUpDialog({
@@ -25,7 +21,7 @@ export default function DemoTimeUpDialog({
 }: {
   preview?: boolean;
 } = {}) {
-  const { t } = useTranslation("ui");
+  const { t } = useUiTranslation();
   const storeOpen = useGameStore((state) => state.galaxyTimeUpDialogOpen);
   const open = preview || storeOpen;
 
@@ -60,20 +56,7 @@ export default function DemoTimeUpDialog({
           <DialogDescription>{t("galaxy.description")}</DialogDescription>
         </DialogHeader>
         <div className="flex flex-col gap-3 pt-2">
-          <Button asChild button_id="demo-end-wishlist">
-            <a
-              href={steamStoreUrl(STEAM_STORE_UTM_CONTENT.demoTimeUp)}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-1.5"
-            >
-              <FooterSocialIcon
-                platform="steam"
-                className="h-4 w-4 shrink-0"
-              />
-              {t("galaxy.wishlistButton")}
-            </a>
-          </Button>
+          <SteamDemoEndStoreCta />
           <Button
             variant="outline"
             type="button"

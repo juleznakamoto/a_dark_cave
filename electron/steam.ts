@@ -25,7 +25,14 @@ type SteamClient = {
   localplayer: {
     getName: () => string;
   };
+  overlay?: {
+    /** ISteamFriends::ActivateGameOverlayToStore — StoreFlag.None = 0. */
+    activateToStore: (appId: number, flag: number) => void;
+  };
 };
+
+/** Full game App ID. Demo packages use a different steam_appid.txt. */
+export const FULL_GAME_STEAM_APP_ID = 4882240;
 
 let client: SteamClient | null = null;
 let initialized = false;
@@ -92,6 +99,25 @@ export function getPlayerName(): string | null {
     return client?.localplayer.getName() ?? null;
   } catch {
     return null;
+  }
+}
+
+/**
+ * Open the full game's Steam store page in the overlay
+ * (`ISteamFriends::ActivateGameOverlayToStore`). Always targets the parent
+ * app, never the demo App ID. Returns true if Steam accepted the call.
+ */
+export function activateOverlayToStore(
+  appId: number = FULL_GAME_STEAM_APP_ID,
+): boolean {
+  try {
+    if (!client?.overlay?.activateToStore) return false;
+    client.overlay.activateToStore(appId, 0);
+    return true;
+  } catch (error) {
+    // eslint-disable-next-line no-console
+    console.warn("[STEAM] activateOverlayToStore failed:", error);
+    return false;
   }
 }
 

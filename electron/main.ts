@@ -8,6 +8,7 @@ import {
   initSteam,
   getPlayerName,
   activateAchievement,
+  activateOverlayToStore,
   isSteamReady,
 } from "./steam";
 import {
@@ -23,7 +24,7 @@ import {
  * Electron main process for the A Dark Cave Steam build.
  *
  * Responsibilities:
- *  - Initialize Steamworks (achievements, overlay).
+ *  - Initialize Steamworks (achievements, overlay, overlay-to-store).
  *  - Serve the built SPA over a loopback HTTP server (absolute-path routing).
  *  - Persist saves to a flat Steam Cloud file (full + demo share one path;
  *    Auto-Cloud configured in the Steamworks partner backend).
@@ -235,6 +236,7 @@ function registerIpc(): void {
   ipcMain.handle("steam:unlock-achievement", (_event, apiName: string) =>
     activateAchievement(String(apiName)),
   );
+  ipcMain.handle("steam:overlay-to-store", () => activateOverlayToStore());
 
   ipcMain.handle("save:read", async (): Promise<string | null> => readSavePayload());
 

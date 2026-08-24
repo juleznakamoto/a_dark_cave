@@ -257,6 +257,8 @@
     "wishlistButton": "Añadir a la lista de deseados en Steam", //x2.2
     "feedbackButton": "Feedback",
     "startNewGameButton": "Empezar partida nueva", //x1.5
-    "releaseNote": "Lanzamiento previsto: 27 de octubre de 2026" //x1.2
+    "releaseNote": "Lanzamiento previsto: 27 de octubre de 2026", //x1.2
+    "storeHeaderLink": "Lista de deseados",
+    "storeHeaderTooltip": "Añadir el juego completo a la lista de deseados de Steam"
   }
 }

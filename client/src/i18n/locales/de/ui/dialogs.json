@@ -254,9 +254,11 @@
   "galaxy": {
     "title": "Die Demo endet hier", //x1.4
     "description": "Setze das vollständige Spiel auf deine Steam-Wunschliste, um die Reise nach der Veröffentlichung fortzusetzen.", //x1.5
-    "wishlistButton": "Auf Steam wünschen",
+    "wishlistButton": "Zur Wunschliste hinzufügen",
     "feedbackButton": "Feedback",
     "startNewGameButton": "Neues Spiel starten", //x1.4
-    "releaseNote": "Geplante Veröffentlichung: 27. Oktober 2026" //x1.4
+    "releaseNote": "Geplante Veröffentlichung: 27. Oktober 2026", //x1.4
+    "storeHeaderLink": "Zur Wunschliste",
+    "storeHeaderTooltip": "Vollversion auf die Steam-Wunschliste setzen"
   }
 }

@@ -29,6 +29,8 @@ interface SteamBridge {
   isSteamRunning(): Promise<boolean>;
   getPlayerName(): Promise<string | null>;
   unlockAchievement(apiName: string): Promise<boolean>;
+  /** ISteamFriends::ActivateGameOverlayToStore for the full game App ID. */
+  activateOverlayToStore(): Promise<boolean>;
   saveRead(): Promise<string | null>;
   saveWrite(payload: string): Promise<boolean>;
   quit(): Promise<void>;

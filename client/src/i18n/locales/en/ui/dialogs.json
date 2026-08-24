@@ -254,7 +254,9 @@
   "galaxy": {
     "title": "Demo ends here",
     "description": "Wishlist the full game on Steam to continue your journey when it releases.",
-    "wishlistButton": "Wishlist on Steam",
+    "storeHeaderLink": "Add to wishlist",
+    "storeHeaderTooltip": "Add the full game to your Steam wishlist",
+    "wishlistButton": "Add to wishlist",
     "feedbackButton": "Feedback",
     "startNewGameButton": "Start New Game",
     "releaseNote": "Planned release: 27 October 2026"

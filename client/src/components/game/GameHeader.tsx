@@ -1,4 +1,5 @@
 import { GameHeaderControls, GameHeaderRewardsShortcut } from "./ProfileMenu";
+import { SteamDemoHeaderStoreLink } from "./SteamDemoStoreLink";
 
 export default function GameHeader() {
   return (
@@ -9,6 +10,7 @@ export default function GameHeader() {
         </span>
         <div className="pointer-events-none absolute inset-0 flex items-center justify-center">
           <div className="pointer-events-auto">
+            <SteamDemoHeaderStoreLink />
             <GameHeaderRewardsShortcut />
           </div>
         </div>

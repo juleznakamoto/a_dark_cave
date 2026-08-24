@@ -42,6 +42,8 @@ export const OFFICIAL_ITCH_URL =
  * Steam / analytics show these verbatim — pick the key that matches the button.
  */
 export const STEAM_STORE_UTM_CONTENT = {
+  /** In-game header Steam store link (demo editions). */
+  gameHeader: "game_header",
   /** In-game footer Steam icon (+ wishlist callout). */
   gameFooter: "game_footer",
   /** CrazyGames in-game header menu Steam item. */
@@ -225,6 +227,13 @@ export const UTM_CAMPAIGN_LINKS: readonly UtmCampaignLink[] = [
       campaign: "exit",
       content: "banner",
     }),
+  },
+  {
+    id: "steam-store-game-header",
+    label: "Steam store · game header",
+    description: "In-game header Steam store link (demo editions)",
+    group: "steam_store",
+    url: steamStoreUrl(STEAM_STORE_UTM_CONTENT.gameHeader),
   },
   {
     id: "steam-store-game-footer",
