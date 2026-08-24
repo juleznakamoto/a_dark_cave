@@ -73,7 +73,7 @@
       "description": "Fabrica 20 bombas de fuego ceniciento." //x1.7
     },
     "3-burningVeins": {
-      "label": "Burning Veins",
+      "label": "Venas ardientes",
       "description": "Usa 10 elixires de fuego venal."
     },
     "3-emberBombs": {
@@ -89,7 +89,7 @@
       "description": "Alimenta el fuego 100 veces."
     },
     "4-insightful": {
-      "label": "Insightful",
+      "label": "Perspicaz",
       "description": "Gasta 10.000 de perspicacia en total."
     },
     "4-investor": {
@@ -97,7 +97,7 @@
       "description": "Invierte 2.500 de oro en total."
     },
     "4-luckyInvestor": {
-      "label": "Lucky Investor",
+      "label": "Inversor afortunado",
       "description": "Ten éxito en 10 inversiones."
     },
     "4-mentalClarity": {
@@ -109,7 +109,7 @@
       "description": "Haz 100 compras al mercader."
     },
     "4-pileOfDead": {
-      "label": "Pile of Dead",
+      "label": "Pila de muertos",
       "description": "Pierde 250 aldeanos en total."
     },
     "4-solsticeGatherings": {
@@ -143,7 +143,7 @@
       "description": "Reúne 500 de piedra en total."
     },
     "0-tanner": {
-      "label": "Tanner",
+      "label": "Curtidor",
       "description": "Reúne 250 de cuero en total."
     },
     "0-woodGatherer": {
@@ -281,40 +281,40 @@
   },
   "overall": {
     "0-achievementMaxer": {
-      "label": "Achievement Maxer",
+      "label": "Maximizador de logros",
       "description": "Completa todos los logros no épicos."
     },
     "0-caveVeteran": {
-      "label": "Cueva Veteran",
+      "label": "Veterano de la cueva",
       "description": "Gana 3 partidas." //x1.3
     },
     "0-endurant": {
-      "label": "Endurant",
+      "label": "Resistente",
       "description": "Juega 30 horas en todas las partidas."
     },
     "0-resourceMaxer": {
-      "label": "Resource Maxer",
+      "label": "Maximizador de recursos",
       "description": "Alcanza la capacidad de la Gran bóveda con cada recurso limitado."
     },
     "0-upgradeMaxer": {
-      "label": "Upgrade Maxer",
+      "label": "Maximizador de mejoras",
       "description": "Maximiza cada mejora de la pestaña Hacienda."
     },
     "0-speedrunner": {
-      "label": "Speedrunner",
+      "label": "Velocista",
       "detail": "<5 horas",
       "description": "Gana una partida en menos de 5 horas."
     },
     "0-supporter": {
-      "label": "Supporter",
+      "label": "Mecenas",
       "description": "Completa la ruta de recompensas de apoyo."
     },
     "0-winCruel": {
-      "label": "Cruel Victory",
+      "label": "Victoria cruel",
       "description": "Gana una partida en modo cruel." //x1.6
     },
     "0-winNormal": {
-      "label": "Normal Victory",
+      "label": "Victoria normal",
       "description": "Gana una partida en modo normal." //x1.5
     }
   }

@@ -73,7 +73,7 @@
       "description": "Stelle 20 Aschfeuerbomben her." //x1.3
     },
     "3-burningVeins": {
-      "label": "Burning Veins",
+      "label": "Brennende Adern",
       "description": "Benutze 10 Aderfeuer-Elixiere." //x1.3
     },
     "3-emberBombs": {
@@ -89,7 +89,7 @@
       "description": "Schüre das Feuer 100 Mal."
     },
     "4-insightful": {
-      "label": "Insightful",
+      "label": "Einsichtsvoll",
       "description": "Gib insgesamt 10.000 Einsicht aus."
     },
     "4-investor": {
@@ -97,7 +97,7 @@
       "description": "Investiere insgesamt 2.500 Gold."
     },
     "4-luckyInvestor": {
-      "label": "Lucky Investor",
+      "label": "Glücklicher Investor",
       "description": "Schließe 10 Investitionen erfolgreich ab." //x1.6
     },
     "4-mentalClarity": {
@@ -109,7 +109,7 @@
       "description": "Tätige 100 Händlerkäufe."
     },
     "4-pileOfDead": {
-      "label": "Pile of Dead",
+      "label": "Totenhaufen",
       "description": "Verliere insgesamt 250 Dorfbewohner."
     },
     "4-solsticeGatherings": {
@@ -143,7 +143,7 @@
       "description": "Sammle insgesamt 500 Stein."
     },
     "0-tanner": {
-      "label": "Tanner",
+      "label": "Gerber",
       "description": "Sammle insgesamt 250 Leder."
     },
     "0-woodGatherer": {
@@ -281,40 +281,40 @@
   },
   "overall": {
     "0-achievementMaxer": {
-      "label": "Achievement Maxer",
+      "label": "Erfolgsmaximierer",
       "description": "Schließe jeden nicht-epischen Erfolg ab."
     },
     "0-caveVeteran": {
-      "label": "Höhle Veteran",
+      "label": "Höhlenveteran",
       "description": "Gewinne 3 Spiele." //x1.4
     },
     "0-endurant": {
-      "label": "Endurant",
+      "label": "Ausdauernder",
       "description": "Spiele über alle Spiele hinweg 30 Stunden."
     },
     "0-resourceMaxer": {
-      "label": "Resource Maxer",
+      "label": "Ressourcenmaximierer",
       "description": "Erreiche die Kapazität des Großen Tresors mit jeder begrenzten Ressource." //x1.4
     },
     "0-upgradeMaxer": {
-      "label": "Upgrade Maxer",
+      "label": "Aufwertungsmaximierer",
       "description": "Bringe jedes Upgrade im Anwesen-Tab auf die Maximalstufe."
     },
     "0-speedrunner": {
-      "label": "Speedrunner",
+      "label": "Schnellläufer",
       "detail": "<5 Stunden",
       "description": "Gewinne ein Spiel in unter 5 Stunden."
     },
     "0-supporter": {
-      "label": "Supporter",
+      "label": "Unterstützer",
       "description": "Schließe die Unterstützer-Belohnungsspur ab."
     },
     "0-winCruel": {
-      "label": "Cruel Victory",
+      "label": "Grausamer Sieg",
       "description": "Gewinne ein Spiel im Grausamen Modus." //x1.9
     },
     "0-winNormal": {
-      "label": "Normal Victory",
+      "label": "Normaler Sieg",
       "description": "Gewinne ein Spiel im Normalen Modus." //x1.7
     }
   }

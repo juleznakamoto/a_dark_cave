@@ -73,7 +73,7 @@
       "description": "Создайте 20 пепельных бомб."
     },
     "3-burningVeins": {
-      "label": "Burning Veins",
+      "label": "Горящие вены",
       "description": "Используйте 10 эликсиров жилового огня." //x1.6
     },
     "3-emberBombs": {
@@ -89,7 +89,7 @@
       "description": "Подкормите огонь 100 раз."
     },
     "4-insightful": {
-      "label": "Insightful",
+      "label": "Проницательный",
       "description": "Потратьте всего 10 000 прозрения."
     },
     "4-investor": {
@@ -97,7 +97,7 @@
       "description": "Инвестируйте всего 2500 золота."
     },
     "4-luckyInvestor": {
-      "label": "Lucky Investor",
+      "label": "Удачливый инвестор",
       "description": "Успешно завершите 10 инвестиций." //x1.2
     },
     "4-mentalClarity": {
@@ -109,7 +109,7 @@
       "description": "Совершите 100 покупок у торговца."
     },
     "4-pileOfDead": {
-      "label": "Pile of Dead",
+      "label": "Груда мёртвых",
       "description": "Потеряйте всего 250 жителей."
     },
     "4-solsticeGatherings": {
@@ -143,7 +143,7 @@
       "description": "Соберите всего 500 камня."
     },
     "0-tanner": {
-      "label": "Tanner",
+      "label": "Кожевник",
       "description": "Соберите всего 250 кожи."
     },
     "0-woodGatherer": {
@@ -281,40 +281,40 @@
   },
   "overall": {
     "0-achievementMaxer": {
-      "label": "Achievement Maxer",
+      "label": "Максимизатор достижений",
       "description": "Выполните каждое неэпическое достижение."
     },
     "0-caveVeteran": {
-      "label": "Пещера Veteran",
+      "label": "Ветеран пещеры",
       "description": "Выиграйте 3 игры." //x1.4
     },
     "0-endurant": {
-      "label": "Endurant",
+      "label": "Выносливый",
       "description": "Играйте 30 часов за все игры."
     },
     "0-resourceMaxer": {
-      "label": "Resource Maxer",
+      "label": "Максимизатор ресурсов",
       "description": "Достигните вместимости Великого свода каждым ограниченным ресурсом."
     },
     "0-upgradeMaxer": {
-      "label": "Upgrade Maxer",
+      "label": "Максимизатор улучшений",
       "description": "Прокачайте каждое улучшение во вкладке Поместье до максимума."
     },
     "0-speedrunner": {
-      "label": "Speedrunner",
+      "label": "Скоростник",
       "detail": "<5 часов",
       "description": "Выиграйте игру менее чем за 5 часов."
     },
     "0-supporter": {
-      "label": "Supporter",
+      "label": "Меценат",
       "description": "Завершите путь наград поддержки."
     },
     "0-winCruel": {
-      "label": "Cruel Victory",
+      "label": "Жестокая победа",
       "description": "Выиграйте игру в жестоком режиме." //x1.7
     },
     "0-winNormal": {
-      "label": "Normal Victory",
+      "label": "Обычная победа",
       "description": "Выиграйте игру в обычном режиме." //x1.5
     }
   }

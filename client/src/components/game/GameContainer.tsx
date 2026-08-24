@@ -78,6 +78,7 @@ import { getUnclaimedAchievementIds } from "@/achievements";
 import { getVisibleHotkeyTabs, isEditableKeyboardTarget } from "./tabHotkeys";
 import { isTraderShopUnlocked } from "@/game/stateHelpers";
 import {
+  achievementTabPulseIds,
   hasUnviewedUnclaimedAchievementsForTabPulse,
   withAchievementTabPulseViewed,
 } from "@/game/achievementTabPulse";
@@ -291,21 +292,22 @@ export default function GameContainer() {
       books?.book_of_trials,
     ],
   );
+  const achievementPulseIds = useMemo(
+    () => achievementTabPulseIds(unclaimedAchievementIds, !!books?.book_of_trials),
+    [unclaimedAchievementIds, books?.book_of_trials],
+  );
   const hasUnviewedAchievement = useMemo(
     () =>
-      hasUnviewedUnclaimedAchievementsForTabPulse(
-        story,
-        unclaimedAchievementIds,
-      ),
-    [story, unclaimedAchievementIds],
+      hasUnviewedUnclaimedAchievementsForTabPulse(story, achievementPulseIds),
+    [story, achievementPulseIds],
   );
 
   // One-shot when an achievement newly becomes claimable (skip initial hydrate).
-  const prevUnclaimedAchievementIdsRef = useRef<Set<string> | null>(null);
+  const prevAchievementPulseIdsRef = useRef<Set<string> | null>(null);
   useEffect(() => {
-    const next = new Set(unclaimedAchievementIds);
-    const prev = prevUnclaimedAchievementIdsRef.current;
-    prevUnclaimedAchievementIdsRef.current = next;
+    const next = new Set(achievementPulseIds);
+    const prev = prevAchievementPulseIdsRef.current;
+    prevAchievementPulseIdsRef.current = next;
     if (!prev) return;
 
     for (const id of next) {
@@ -314,7 +316,7 @@ export default function GameContainer() {
         break;
       }
     }
-  }, [unclaimedAchievementIds]);
+  }, [achievementPulseIds]);
 
   // Track unlocked tabs to trigger one-time blink until clicked (persisted in story.seen)
   const traderUnlocked = isTraderShopUnlocked({ story, traderDialogOpens });
@@ -935,7 +937,7 @@ export default function GameContainer() {
           break;
         case "achievements":
           clearTabAnimation("achievements");
-          markAchievementTabPulseViewed(unclaimedAchievementIds);
+          markAchievementTabPulseViewed(achievementPulseIds);
           setActiveTab("achievements");
           break;
         default:
@@ -945,7 +947,7 @@ export default function GameContainer() {
     [
       clearTabAnimation,
       setActiveTab,
-      unclaimedAchievementIds,
+      achievementPulseIds,
       markAchievementTabPulseViewed,
     ],
   );
@@ -1498,7 +1500,7 @@ export default function GameContainer() {
                               useGameStore.getState().trackButtonClick("tab-achievements");
                               clearTabAnimation("achievements");
                               markAchievementTabPulseViewed(
-                                unclaimedAchievementIds,
+                                achievementPulseIds,
                               );
                               setActiveTab("achievements");
                             }}

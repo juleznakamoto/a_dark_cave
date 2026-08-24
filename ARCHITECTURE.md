@@ -173,7 +173,7 @@ shared/schema.tsâ€” Zod GameState schema (source of truth for persisted sha
   `boostApplied` (`shared/schema.ts`, migrated from legacy `boostMode`); applied on load in
   `gameplayInitOrchestrator.ts` via `canApplySaveBoost` / `applySaveBoost`.
 - **`tabUnlockBlink.ts`** â€” one-time tab unlock blink (`story.seen` `tabUnlockBlinkSeen_*`);
-- **`achievementTabPulse.ts`** â€” achievements tab pulse until opened (`story.seen` `achievementTabPulseSeen_*`);
+- **`achievementTabPulse.ts`** â€” achievements tab pulse until opened (`story.seen` `achievementTabPulseSeen_*`, including Book of Trials);
 - **`villagerCapUpgrades.ts`** â€” per-profession villager caps via Insight upgrades (group/building mapping,
   cap/cost tables, `flags.villagerCapsEnabled` new-games gate + `import.meta.env.DEV` until shipped); enforced in
   `assignVillagerToJob`, `upgradeVillagerCap` in `state.ts`, UI in `VillagePanel` / `SidePanelSection` /

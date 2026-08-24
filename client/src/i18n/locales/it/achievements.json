@@ -105,19 +105,19 @@
       "description": "Riposa per 20 ore in totale."
     },
     "3-burningVeins": {
-      "label": "Burning Veins",
+      "label": "Vene Ardenti",
       "description": "Usa 10 Elisir di Venafuoco."
     },
     "4-insightful": {
-      "label": "Insightful",
+      "label": "Perspicace",
       "description": "Spendi 10.000 di Intuizione in totale."
     },
     "4-luckyInvestor": {
-      "label": "Lucky Investor",
+      "label": "Investitore Fortunato",
       "description": "Riesci in 10 investimenti."
     },
     "4-pileOfDead": {
-      "label": "Pile of Dead",
+      "label": "Mucchio di Morti",
       "description": "Perdi 250 abitanti in totale."
     }
   },
@@ -167,7 +167,7 @@
       "description": "Crea 50 torce in totale."
     },
     "0-tanner": {
-      "label": "Tanner",
+      "label": "Conciatore",
       "description": "Raccogli 250 cuoio in totale."
     }
   },
@@ -281,40 +281,40 @@
   },
   "overall": {
     "0-endurant": {
-      "label": "Endurant",
+      "label": "Resistente",
       "description": "Gioca 30 ore in tutte le partite."
     },
     "0-speedrunner": {
-      "label": "Speedrunner",
+      "label": "Velocista",
       "detail": "<5 ore",
       "description": "Vinci una partita in meno di 5 ore."
     },
     "0-supporter": {
-      "label": "Supporter",
+      "label": "Sostenitore",
       "description": "Completa il percorso ricompense sostenitore."
     },
     "0-winCruel": {
-      "label": "Cruel Victory",
+      "label": "Vittoria Crudele",
       "description": "Vinci una partita in Modalità Crudele."
     },
     "0-winNormal": {
-      "label": "Normal Victory",
+      "label": "Vittoria Normale",
       "description": "Vinci una partita in Modalità Normale."
     },
     "0-caveVeteran": {
-      "label": "Cave Veteran",
+      "label": "Veterano della Caverna",
       "description": "Vinci 3 partite."
     },
     "0-achievementMaxer": {
-      "label": "Achievement Maxer",
+      "label": "Massimizzatore di obiettivi",
       "description": "Completa ogni obiettivo non Epico."
     },
     "0-resourceMaxer": {
-      "label": "Resource Maxer",
+      "label": "Massimizzatore di risorse",
       "description": "Raggiungi la capacità del Grande Caveau con ogni risorsa limitata."
     },
     "0-upgradeMaxer": {
-      "label": "Upgrade Maxer",
+      "label": "Massimizzatore di miglioramenti",
       "description": "Porta al massimo ogni miglioramento della scheda Tenuta."
     }
   }

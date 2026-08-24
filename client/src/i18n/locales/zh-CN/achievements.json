@@ -73,7 +73,7 @@
       "description": "制作20个灰火炸弹。"
     },
     "3-burningVeins": {
-      "label": "Burning Veins",
+      "label": "燃烧血脉",
       "description": "使用10瓶脉火灵药。"
     },
     "3-emberBombs": {
@@ -89,7 +89,7 @@
       "description": "添柴100次。"
     },
     "4-insightful": {
-      "label": "Insightful",
+      "label": "洞察者",
       "description": "累计花费10,000洞见。"
     },
     "4-investor": {
@@ -97,7 +97,7 @@
       "description": "累计投资2,500黄金。"
     },
     "4-luckyInvestor": {
-      "label": "Lucky Investor",
+      "label": "幸运投资者",
       "description": "成功投资10次。"
     },
     "4-mentalClarity": {
@@ -109,7 +109,7 @@
       "description": "与商人交易100次。"
     },
     "4-pileOfDead": {
-      "label": "Pile of Dead",
+      "label": "尸堆",
       "description": "累计失去250名村民。"
     },
     "4-solsticeGatherings": {
@@ -143,7 +143,7 @@
       "description": "累计采集500石头。"
     },
     "0-tanner": {
-      "label": "Tanner",
+      "label": "制革工",
       "description": "累计采集250皮革。"
     },
     "0-woodGatherer": {
@@ -281,40 +281,40 @@
   },
   "overall": {
     "0-achievementMaxer": {
-      "label": "Achievement Maxer",
+      "label": "成就达人",
       "description": "完成所有非史诗成就。"
     },
     "0-caveVeteran": {
-      "label": "洞穴 Veteran",
+      "label": "洞穴老兵",
       "description": "赢得3局游戏。"
     },
     "0-endurant": {
-      "label": "Endurant",
+      "label": "持久者",
       "description": "在所有游戏中累计游玩30小时。"
     },
     "0-resourceMaxer": {
-      "label": "Resource Maxer",
+      "label": "资源达人",
       "description": "使每种有上限的资源都达到大金库容量。"
     },
     "0-upgradeMaxer": {
-      "label": "Upgrade Maxer",
+      "label": "升级达人",
       "description": "将庄园页签中的每一项升级升至满级。"
     },
     "0-speedrunner": {
-      "label": "Speedrunner",
+      "label": "速通者",
       "detail": "<5小时",
       "description": "在5小时内赢得一局游戏。"
     },
     "0-supporter": {
-      "label": "Supporter",
+      "label": "支持者",
       "description": "完成支持者奖励进度。"
     },
     "0-winCruel": {
-      "label": "Cruel Victory",
+      "label": "残酷胜利",
       "description": "在残酷模式下赢得一局。"
     },
     "0-winNormal": {
-      "label": "Normal Victory",
+      "label": "普通胜利",
       "description": "在普通模式下赢得一局。"
     }
   }

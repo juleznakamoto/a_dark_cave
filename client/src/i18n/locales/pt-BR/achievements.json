@@ -105,19 +105,19 @@
       "description": "Descanse por 20 horas no total."
     },
     "3-burningVeins": {
-      "label": "Burning Veins",
+      "label": "Veias Ardentes",
       "description": "Use 10 Elixires de Fogo Venoso."
     },
     "4-insightful": {
-      "label": "Insightful",
+      "label": "Perspicaz",
       "description": "Gaste 10.000 de Perspicácia no total."
     },
     "4-luckyInvestor": {
-      "label": "Lucky Investor",
+      "label": "Investidor Sortudo",
       "description": "Tenha sucesso em 10 investimentos."
     },
     "4-pileOfDead": {
-      "label": "Pile of Dead",
+      "label": "Pilha de Mortos",
       "description": "Perca 250 aldeões no total."
     }
   },
@@ -167,7 +167,7 @@
       "description": "Crie 50 tochas no total."
     },
     "0-tanner": {
-      "label": "Tanner",
+      "label": "Curtidor",
       "description": "Colete 250 de couro no total."
     }
   },
@@ -281,40 +281,40 @@
   },
   "overall": {
     "0-endurant": {
-      "label": "Endurant",
+      "label": "Resistente",
       "description": "Jogue 30 horas em todos os jogos."
     },
     "0-speedrunner": {
-      "label": "Speedrunner",
+      "label": "Velocista",
       "detail": "<5 horas",
       "description": "Vença um jogo em menos de 5 horas."
     },
     "0-supporter": {
-      "label": "Supporter",
+      "label": "Apoiador",
       "description": "Complete a trilha de recompensas de apoiador."
     },
     "0-winCruel": {
-      "label": "Cruel Victory",
+      "label": "Vitória Cruel",
       "description": "Vença um jogo no Modo Cruel."
     },
     "0-winNormal": {
-      "label": "Normal Victory",
+      "label": "Vitória Normal",
       "description": "Vença um jogo no Modo Normal."
     },
     "0-caveVeteran": {
-      "label": "Cave Veteran",
+      "label": "Veterano da Caverna",
       "description": "Vença 3 jogos."
     },
     "0-achievementMaxer": {
-      "label": "Achievement Maxer",
+      "label": "Maximizador de conquistas",
       "description": "Complete todas as conquistas não Épicas."
     },
     "0-resourceMaxer": {
-      "label": "Resource Maxer",
+      "label": "Maximizador de recursos",
       "description": "Atinja a capacidade do Grande Cofre com cada recurso limitado."
     },
     "0-upgradeMaxer": {
-      "label": "Upgrade Maxer",
+      "label": "Maximizador de melhorias",
       "description": "Maximize cada melhoria da aba Propriedade."
     }
   }

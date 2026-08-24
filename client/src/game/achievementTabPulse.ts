@@ -3,6 +3,19 @@ import type { GameState } from "@shared/schema";
 /** `story.seen` prefix: true once the player opened the achievements tab while this id was unclaimed. */
 export const ACHIEVEMENT_TAB_PULSE_SEEN_PREFIX = "achievementTabPulseSeen_";
 
+/** Synthetic pulse id so buying Book of Trials glows the tab like a fulfilled achievement. */
+export const BOOK_OF_TRIALS_TAB_PULSE_ID = "book_of_trials";
+
+/** Unclaimed achievement ids plus the Book of Trials notice while that book is owned. */
+export function achievementTabPulseIds(
+  unclaimedIds: string[],
+  hasBookOfTrials: boolean,
+): string[] {
+  if (!hasBookOfTrials) return unclaimedIds;
+  if (unclaimedIds.includes(BOOK_OF_TRIALS_TAB_PULSE_ID)) return unclaimedIds;
+  return [...unclaimedIds, BOOK_OF_TRIALS_TAB_PULSE_ID];
+}
+
 export function achievementTabPulseSeenKey(achievementId: string): string {
   return `${ACHIEVEMENT_TAB_PULSE_SEEN_PREFIX}${achievementId}`;
 }
