@@ -12,5 +12,8 @@ describe("shared progress shader", () => {
   it("prewarm is safe to call when WebGL is missing", () => {
     expect(() => scheduleSharedProgressShaderPrewarm()).not.toThrow();
     expect(() => scheduleSharedProgressShaderPrewarm()).not.toThrow();
+    expect(() =>
+      scheduleSharedProgressShaderPrewarm({ immediate: true }),
+    ).not.toThrow();
   });
 });

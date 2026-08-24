@@ -59,12 +59,17 @@ function wolfDefendLogKey(
   return parts.join("_");
 }
 
-function wolfHideLogKey(deaths: number, foodLoss: number): string {
+function wolfHideLogKey(
+  deaths: number,
+  foodLoss: number,
+  firstAttack: boolean,
+): string {
   const parts = [
     "hide",
     deathsKey(deaths, "noDeaths", "oneDeath", "manyDeaths"),
   ];
   if (foodLoss > 0) parts.push("food");
+  if (firstAttack) parts.push("first");
   return parts.join("_");
 }
 
@@ -299,26 +304,20 @@ export const villageAttackEvents: Record<string, GameEvent> = {
         ...defineSuccessChance({
           base: (state) => 0.15 + (state.buildings.traps ?? 0) * 0.1,
           stats: [{ type: "strength", multiplier: 0.01 }],
-          forceZero: (state) => !state.story.seen.firstWolfAttack,
         }),
         effect: (state: GameState) => {
           const traps = state.buildings.traps;
           const strength = getTotalStrength(state);
 
-          let victoryChance;
-          if (!state.story.seen.firstWolfAttack) {
-            victoryChance = 0;
-          } else {
-            // Check for victory: 15% base chance + 1% per strength point
-            // Traps increase victory chance by 10%
-            victoryChance = calculateSuccessChance(state, 0.15 + traps * 0.1, {
-              type: "strength",
-              multiplier: 0.01,
-            });
-          }
+          // Check for victory: 15% base chance + 1% per strength point
+          // Traps increase victory chance by 10%
+          const victoryChance = calculateSuccessChance(state, 0.15 + traps * 0.1, {
+            type: "strength",
+            multiplier: 0.01,
+          });
 
           if (Math.random() < victoryChance) {
-            // Victory! Get Alpha's Hide
+            // Victory! Get Alpha's Hide. First kill still unlocks village traps.
             return {
               clothing: {
                 ...state.clothing,
@@ -329,7 +328,16 @@ export const villageAttackEvents: Record<string, GameEvent> = {
                 fur: state.resources.fur + 500,
                 silver: state.resources.silver + btpLootAmount(250, state),
               },
-              _logMessageKey: "outcome0",
+              story: {
+                ...state.story,
+                seen: {
+                  ...state.story.seen,
+                  firstWolfAttack: true,
+                },
+              },
+              _logMessageKey: !state.story.seen.firstWolfAttack
+                ? "outcome0_first"
+                : "outcome0",
             };
           }
 
@@ -433,7 +441,9 @@ export const villageAttackEvents: Record<string, GameEvent> = {
                   firstWolfAttack: true,
                 },
               },
-              _logMessageKey: "outcome1",
+              _logMessageKey: !state.story.seen.firstWolfAttack
+                ? "outcome1_first"
+                : "outcome1",
             };
           } else {
             const luck = getTotalLuck(state);
@@ -484,7 +494,11 @@ export const villageAttackEvents: Record<string, GameEvent> = {
                 firstWolfAttack: true,
               },
             },
-            _logMessageKey: wolfHideLogKey(actualDeaths, foodLoss),
+            _logMessageKey: wolfHideLogKey(
+              actualDeaths,
+              foodLoss,
+              !state.story.seen.firstWolfAttack,
+            ),
           };
         },
       },

@@ -4,7 +4,6 @@ import {
   createContext,
   useCallback,
   useContext,
-  useEffect,
   useId,
   useLayoutEffect,
   useMemo,
@@ -430,11 +429,110 @@ class SharedProgressShaderRenderer {
   }
 }
 
-let prewarmRenderer: SharedProgressShaderRenderer | null = null;
+const PARKED_CANVAS_STYLE =
+  "position:fixed;width:1px;height:1px;opacity:0;pointer-events:none;left:-9999px;bottom:0;";
+const ACTIVE_CANVAS_STYLE =
+  "position:absolute;inset:0;display:block;width:100%;height:100%;";
+
+type ParkedSharedProgressShader = {
+  renderer: SharedProgressShaderRenderer;
+  canvas: HTMLCanvasElement;
+};
+
+let parkedShader: ParkedSharedProgressShader | null = null;
+let createPromise: Promise<ParkedSharedProgressShader | null> | null = null;
+let shaderInUse = false;
 let prewarmScheduled = false;
 
+function applyParkedCanvasStyle(canvas: HTMLCanvasElement) {
+  canvas.setAttribute("aria-hidden", "true");
+  canvas.style.cssText = PARKED_CANVAS_STYLE;
+}
+
+function createShaderInstance(): ParkedSharedProgressShader | null {
+  const canvas = document.createElement("canvas");
+  canvas.width = 1;
+  canvas.height = 1;
+  applyParkedCanvasStyle(canvas);
+  document.body.appendChild(canvas);
+  try {
+    return {
+      renderer: new SharedProgressShaderRenderer(
+        canvas,
+        buildColors(SHARED_PROGRESS_SHADER_COLOR_TOKENS),
+        SHARED_PROGRESS_SHADER_COLOR_TOKENS.length,
+        3,
+      ),
+      canvas,
+    };
+  } catch (err) {
+    const message = err instanceof Error ? err.message : String(err);
+    logger.warn("[SharedProgressShader] WebGL init failed:", message);
+    canvas.remove();
+    return null;
+  }
+}
+
+function ensureSharedProgressShader(): Promise<ParkedSharedProgressShader | null> {
+  if (parkedShader) return Promise.resolve(parkedShader);
+  if (createPromise) return createPromise;
+  createPromise = Promise.resolve()
+    .then(() => {
+      if (parkedShader) return parkedShader;
+      parkedShader = createShaderInstance();
+      if (!parkedShader) prewarmScheduled = false;
+      return parkedShader;
+    })
+    .finally(() => {
+      createPromise = null;
+    });
+  return createPromise;
+}
+
+function takeParkedShader(): ParkedSharedProgressShader | null {
+  if (!parkedShader) return null;
+  const taken = parkedShader;
+  parkedShader = null;
+  shaderInUse = true;
+  return taken;
+}
+
+function parkSharedProgressShader(shader: ParkedSharedProgressShader): void {
+  // Move off the React tree first so unmount cannot delete the context.
+  if (shader.canvas.parentElement !== document.body) {
+    document.body.appendChild(shader.canvas);
+  }
+  applyParkedCanvasStyle(shader.canvas);
+  try {
+    shader.renderer.resizeToDisplay(1, 1, 1);
+  } catch (err) {
+    const message = err instanceof Error ? err.message : String(err);
+    logger.warn("[SharedProgressShader] Park resize failed:", message);
+  }
+  parkedShader = shader;
+  shaderInUse = false;
+}
+
+async function acquireSharedProgressShader(): Promise<ParkedSharedProgressShader | null> {
+  for (let attempt = 0; attempt < 8; attempt++) {
+    const ready = takeParkedShader();
+    if (ready) return ready;
+    if (!shaderInUse) {
+      const created = await ensureSharedProgressShader();
+      if (!created) return null;
+      const taken = takeParkedShader();
+      if (taken) return taken;
+    }
+    await new Promise<void>((resolve) => {
+      requestAnimationFrame(() => resolve());
+    });
+  }
+  return takeParkedShader();
+}
+
 /**
- * Compile this shader on a hidden 1×1 canvas during idle time.
+ * Compile this shader on a hidden 1×1 canvas during idle time, then keep
+ * that WebGL context parked so Estate can adopt it on first paint.
  *
  * Opening the Estate tab used to create the first WebGL context of the
  * session and compile this nested-fbm program on the main thread. On Windows
@@ -443,35 +541,26 @@ let prewarmScheduled = false;
  * Opening Trader "fixed" it because the shop banner compiled a sibling
  * smoke shader first and warmed the GPU.
  */
-export function scheduleSharedProgressShaderPrewarm(): void {
-  if (prewarmScheduled || typeof window === "undefined") return;
+export function scheduleSharedProgressShaderPrewarm(
+  options?: { immediate?: boolean },
+): void {
+  if (typeof window === "undefined") return;
   if (!shouldAnimateSmokeShader()) return;
-  prewarmScheduled = true;
+  if (parkedShader || createPromise || shaderInUse) return;
 
   const run = () => {
-    if (prewarmRenderer) return;
-    const canvas = document.createElement("canvas");
-    canvas.width = 1;
-    canvas.height = 1;
-    canvas.setAttribute("aria-hidden", "true");
-    canvas.style.cssText =
-      "position:fixed;width:1px;height:1px;opacity:0;pointer-events:none;left:-9999px;bottom:0;";
-    document.body.appendChild(canvas);
-    try {
-      prewarmRenderer = new SharedProgressShaderRenderer(
-        canvas,
-        buildColors(SHARED_PROGRESS_SHADER_COLOR_TOKENS),
-        SHARED_PROGRESS_SHADER_COLOR_TOKENS.length,
-        3,
-      );
-    } catch (err) {
-      const message = err instanceof Error ? err.message : String(err);
-      logger.warn("[SharedProgressShader] Prewarm failed:", message);
-      canvas.remove();
-      prewarmRenderer = null;
-      prewarmScheduled = false;
-    }
+    if (parkedShader || shaderInUse) return;
+    void ensureSharedProgressShader();
   };
+
+  if (options?.immediate) {
+    prewarmScheduled = true;
+    run();
+    return;
+  }
+
+  if (prewarmScheduled) return;
+  prewarmScheduled = true;
 
   const ric = window.requestIdleCallback;
   if (typeof ric === "function") {
@@ -484,28 +573,34 @@ export function scheduleSharedProgressShaderPrewarm(): void {
 export function SharedProgressShaderHost({
   children,
   className,
-  // Higher than shop smoke: thin progress segments need smaller features or
-  // each scissor window is one flat mid-palette color.
-  scale = 3,
+  // Parked singleton is compiled at this zoom. Thin progress segments need
+  // smaller features than shop smoke or each scissor window reads as flat.
+  scale: _scale = 3,
+  visible = true,
 }: {
   children: ReactNode;
   className?: string;
-  /** Field zoom (lower = larger smoke features). */
+  /** Field zoom (lower = larger smoke features). Shared parked context uses 3. */
   scale?: number;
+  /** False while Estate stays mounted but hidden. Pauses the 15fps loop. */
+  visible?: boolean;
 }) {
   const hostRef = useRef<HTMLDivElement>(null);
-  const canvasRef = useRef<HTMLCanvasElement>(null);
+  const canvasHolderRef = useRef<HTMLDivElement>(null);
+  const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const rimLayerRef = useRef<HTMLDivElement>(null);
   const rendererRef = useRef<SharedProgressShaderRenderer | null>(null);
+  const shaderRef = useRef<ParkedSharedProgressShader | null>(null);
   const segmentsRef = useRef<Map<string, HTMLElement>>(new Map());
   const rafRef = useRef(0);
   const activeRef = useRef(true);
-  const [useShader, setUseShader] = useState(false);
-
-  const colors = useMemo(
-    () => buildColors(SHARED_PROGRESS_SHADER_COLOR_TOKENS),
-    [],
-  );
+  const visibleRef = useRef(visible);
+  visibleRef.current = visible;
+  const paintRef = useRef<(canvas: HTMLCanvasElement) => void>(() => { });
+  const startLoopRef = useRef<() => void>(() => { });
+  // Resolve on the first commit so the holder exists in time to adopt a
+  // prewarmed context before the browser paints the Estate tab.
+  const [useShader, setUseShader] = useState(() => shouldAnimateSmokeShader());
 
   const registerSegment = useCallback(
     (id: string, element: HTMLElement | null) => {
@@ -523,39 +618,50 @@ export function SharedProgressShaderHost({
     [registerSegment, useShader],
   );
 
-  useEffect(() => {
-    setUseShader(shouldAnimateSmokeShader());
-  }, []);
-
-  useEffect(() => {
+  useLayoutEffect(() => {
     if (!useShader) return;
-    const canvas = canvasRef.current;
+    const holder = canvasHolderRef.current;
     const host = hostRef.current;
-    if (!canvas || !host) return;
+    if (!holder || !host) return;
 
     activeRef.current = true;
     const FRAME_INTERVAL_MS = 1000 / 15;
     let lastFrameTime = 0;
     let cancelled = false;
-    let idleId: number | undefined;
-    let timeoutId: ReturnType<typeof setTimeout> | undefined;
-    let paintRaf = 0;
-    let resizeRaf = 0;
+    let attachRaf = 0;
     let ro: ResizeObserver | null = null;
 
-    const syncSize = () => {
+    const paintFrame = (canvas: HTMLCanvasElement) => {
       const renderer = rendererRef.current;
       if (!renderer) return;
-      // Prefer the canvas layout box (inset:0 padding box), not the host
-      // border box — mismatch was painting a second strip under each bar.
-      const rect = canvas.getBoundingClientRect();
-      if (rect.width < 1 || rect.height < 1) return;
+      const canvasRect = canvas.getBoundingClientRect();
+      if (canvasRect.width < 1 || canvasRect.height < 1) return;
       const dpr = Math.min(window.devicePixelRatio || 1, 2);
-      renderer.resizeToDisplay(rect.width, rect.height, dpr);
+      renderer.resizeToDisplay(canvasRect.width, canvasRect.height, dpr);
+      const list: SegmentRegistration[] = [];
+      segmentsRef.current.forEach((element, id) => {
+        list.push({ id, element });
+      });
+      renderer.render(list, canvasRect, dpr);
+      const rimLayer = rimLayerRef.current;
+      if (rimLayer) syncSegmentRims(host, rimLayer);
     };
+    paintRef.current = paintFrame;
 
     const loop = (now: number) => {
-      if (!activeRef.current || !rendererRef.current || document.hidden) {
+      const canvas = canvasRef.current;
+      if (
+        !activeRef.current ||
+        !visibleRef.current ||
+        !rendererRef.current ||
+        !canvas ||
+        document.hidden
+      ) {
+        return;
+      }
+      const box = canvas.getBoundingClientRect();
+      if (box.width < 1 || box.height < 1) {
+        rafRef.current = 0;
         return;
       }
       rafRef.current = requestAnimationFrame(loop);
@@ -564,26 +670,15 @@ export function SharedProgressShaderHost({
         return;
       }
       lastFrameTime = now;
-      const renderer = rendererRef.current;
-      if (renderer) {
-        const canvasRect = canvas.getBoundingClientRect();
-        const dpr = Math.min(window.devicePixelRatio || 1, 2);
-        renderer.resizeToDisplay(canvasRect.width, canvasRect.height, dpr);
-        const list: SegmentRegistration[] = [];
-        segmentsRef.current.forEach((element, id) => {
-          list.push({ id, element });
-        });
-        renderer.render(list, canvasRect, dpr);
-      }
-      const rimLayer = rimLayerRef.current;
-      if (rimLayer) syncSegmentRims(host, rimLayer);
+      paintFrame(canvas);
     };
 
     const startLoop = () => {
-      if (!activeRef.current || document.hidden) return;
+      if (!activeRef.current || !visibleRef.current || document.hidden) return;
       if (rafRef.current) cancelAnimationFrame(rafRef.current);
       rafRef.current = requestAnimationFrame(loop);
     };
+    startLoopRef.current = startLoop;
 
     const onVisibility = () => {
       if (document.hidden) {
@@ -594,69 +689,88 @@ export function SharedProgressShaderHost({
       }
     };
 
-    const startRenderer = () => {
-      if (cancelled) return;
-      try {
-        rendererRef.current = new SharedProgressShaderRenderer(
-          canvas,
-          colors,
-          SHARED_PROGRESS_SHADER_COLOR_TOKENS.length,
-          scale,
-        );
-      } catch (err) {
-        const message = err instanceof Error ? err.message : String(err);
-        logger.warn(
-          "[SharedProgressShader] WebGL init failed, using CSS fallback:",
-          message,
-        );
-        setUseShader(false);
-        return;
-      }
-
-      // Grow the backing store on the next frame so compile (1×1) and the
-      // full-size buffer allocation do not hit the same turn as tab paint.
-      resizeRaf = requestAnimationFrame(() => {
-        if (cancelled) return;
-        syncSize();
-        startLoop();
-        ro =
-          typeof ResizeObserver !== "undefined"
-            ? new ResizeObserver(() => syncSize())
-            : null;
-        ro?.observe(host);
-        window.addEventListener("resize", syncSize);
-        document.addEventListener("visibilitychange", onVisibility);
-      });
+    const attachShader = (shader: ParkedSharedProgressShader) => {
+      shader.canvas.style.cssText = ACTIVE_CANVAS_STYLE;
+      holder.appendChild(shader.canvas);
+      canvasRef.current = shader.canvas;
+      rendererRef.current = shader.renderer;
+      shaderRef.current = shader;
+      // Children already registered in their layout effects. Paint now so
+      // the first Estate frame includes smoke instead of a solid fill.
+      paintFrame(shader.canvas);
+      startLoop();
+      ro =
+        typeof ResizeObserver !== "undefined"
+          ? new ResizeObserver(() => {
+            const canvas = canvasRef.current;
+            if (!canvas) return;
+            paintFrame(canvas);
+            startLoop();
+          })
+          : null;
+      ro?.observe(host);
+      window.addEventListener("resize", onResize);
+      document.addEventListener("visibilitychange", onVisibility);
     };
 
-    // Yield past the Estate tab's first paint so Sleep / side-panel hovers
-    // stay responsive while the GPU compiler warms (or uses the prewarm).
-    const ric = window.requestIdleCallback;
-    if (typeof ric === "function") {
-      idleId = ric.call(window, startRenderer, { timeout: 100 });
+    const onResize = () => {
+      const canvas = canvasRef.current;
+      if (canvas) paintFrame(canvas);
+    };
+
+    const detachShader = () => {
+      ro?.disconnect();
+      window.removeEventListener("resize", onResize);
+      document.removeEventListener("visibilitychange", onVisibility);
+      if (rafRef.current) cancelAnimationFrame(rafRef.current);
+      rafRef.current = 0;
+      rendererRef.current = null;
+      canvasRef.current = null;
+      const shader = shaderRef.current;
+      shaderRef.current = null;
+      if (shader) parkSharedProgressShader(shader);
+    };
+
+    const ready = takeParkedShader();
+    if (ready) {
+      attachShader(ready);
     } else {
-      paintRaf = requestAnimationFrame(() => {
-        timeoutId = setTimeout(startRenderer, 0);
+      // First paint already committed. Acquire after this frame so compile
+      // cannot stall the tab switch; reuse an in-flight prewarm if there is one.
+      attachRaf = requestAnimationFrame(() => {
+        void acquireSharedProgressShader().then((shader) => {
+          if (cancelled) {
+            if (shader) parkSharedProgressShader(shader);
+            return;
+          }
+          if (!shader) {
+            setUseShader(false);
+            return;
+          }
+          attachShader(shader);
+        });
       });
     }
 
     return () => {
       cancelled = true;
       activeRef.current = false;
-      if (idleId !== undefined && typeof window.cancelIdleCallback === "function") {
-        window.cancelIdleCallback(idleId);
-      }
-      if (timeoutId !== undefined) clearTimeout(timeoutId);
-      if (paintRaf) cancelAnimationFrame(paintRaf);
-      if (resizeRaf) cancelAnimationFrame(resizeRaf);
-      ro?.disconnect();
-      window.removeEventListener("resize", syncSize);
-      document.removeEventListener("visibilitychange", onVisibility);
-      if (rafRef.current) cancelAnimationFrame(rafRef.current);
-      rendererRef.current?.reset();
-      rendererRef.current = null;
+      if (attachRaf) cancelAnimationFrame(attachRaf);
+      detachShader();
     };
-  }, [useShader, colors, scale]);
+  }, [useShader]);
+
+  useLayoutEffect(() => {
+    if (!visible) {
+      if (rafRef.current) cancelAnimationFrame(rafRef.current);
+      rafRef.current = 0;
+      return;
+    }
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    paintRef.current(canvas);
+    startLoopRef.current();
+  }, [visible]);
 
   return (
     <SharedProgressShaderContext.Provider value={api}>
@@ -674,8 +788,8 @@ export function SharedProgressShaderHost({
         */}
         {useShader ? (
           <>
-            <canvas
-              ref={canvasRef}
+            <div
+              ref={canvasHolderRef}
               aria-hidden
               className="pointer-events-none absolute inset-0 z-10 !m-0 h-full w-full opacity-90"
             />

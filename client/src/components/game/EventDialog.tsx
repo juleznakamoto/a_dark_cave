@@ -535,7 +535,8 @@ function EventDialogOpen({
                     className="relative inline-block w-fit max-w-full"
                     tooltipTriggerClassName="inline-block w-fit max-w-full"
                     tooltip={tooltipContent}
-                    tooltipId={choice.id}
+                    tooltipId={`event-choice-${choice.id}`}
+                    tooltipTriggerAsChild
                     disabled={isDisabled}
                     onClick={isDisabled ? undefined : selectChoice}
                   >

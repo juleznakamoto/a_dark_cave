@@ -295,6 +295,7 @@ describe("useGlobalTooltip - modal suppression", () => {
     "social-prompt-signup-info",
     "share-dialog-invite",
     "event-time-bonus",
+    "event-choice-takeFood",
     "idle-mode-village-production-info",
   ])(
     "allows dialog info tooltip id %s while suppressed",
@@ -389,6 +390,58 @@ describe("useGlobalTooltip - modal suppression", () => {
     expect(screen.getByTestId("prop-shop-hover").textContent).toBe(
       "uncontrolled",
     );
+  });
+
+  it("does not force-close hover when the trigger is not in the DOM yet", () => {
+    function Probe({ id }: { id: string }) {
+      const open = useGlobalTooltipOpen(id);
+      return (
+        <div data-testid={`prop-${id}`}>
+          {open === false ? "forced-closed" : open === true ? "open" : "uncontrolled"}
+        </div>
+      );
+    }
+
+    render(<Probe id="event-choice-takeFood" />);
+
+    act(() => {
+      setGlobalTooltipsSuppressed(true);
+    });
+
+    expect(screen.getByTestId("prop-event-choice-takeFood").textContent).toBe(
+      "uncontrolled",
+    );
+    expect(getTooltipOpenProp("event-choice-takeFood")).toBeUndefined();
+  });
+
+  it("allows hover when any trigger with the id is inside a dialog", () => {
+    function Probe({ id }: { id: string }) {
+      const open = useGlobalTooltipOpen(id);
+      return (
+        <div data-testid={`prop-${id}`}>
+          {open === false ? "forced-closed" : open === true ? "open" : "uncontrolled"}
+        </div>
+      );
+    }
+
+    render(
+      <>
+        <div data-tooltip-trigger-id="takeFood" />
+        <div role="dialog">
+          <div data-tooltip-trigger-id="takeFood" />
+        </div>
+        <Probe id="takeFood" />
+      </>,
+    );
+
+    act(() => {
+      setGlobalTooltipsSuppressed(true);
+    });
+
+    expect(screen.getByTestId("prop-takeFood").textContent).toBe(
+      "uncontrolled",
+    );
+    expect(getTooltipOpenProp("takeFood")).toBeUndefined();
   });
 });
 

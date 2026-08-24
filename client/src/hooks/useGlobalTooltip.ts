@@ -13,20 +13,32 @@ import { useIsMobile } from "./use-mobile";
 
 const MOBILE_BREAKPOINT = 768;
 
-/** True when the tooltip trigger lives inside an open dialog (e.g. shop / gambler / invest info icons). */
-function isTooltipTriggerInsideDialog(id: string): boolean {
-  if (typeof document === "undefined") return false;
+const DIALOG_TRIGGER_SELECTOR = '[role="dialog"], [role="alertdialog"]';
+
+/**
+ * Where the trigger(s) for this tooltip id sit relative to an open dialog.
+ * `missing` must not be treated as "behind the modal": EventDialog portals can
+ * register after suppression flips, and forcing `open={false}` then sticks and
+ * kills Radix hover for the in-dialog button.
+ */
+function getTooltipTriggerDialogPresence(
+  id: string,
+): "inside" | "outside" | "missing" {
+  if (typeof document === "undefined") return "missing";
   try {
-    const trigger = document.querySelector(
-      `[data-tooltip-trigger-id="${CSS.escape(id)}"]`,
-    );
-    // Radix DialogContent + custom portals (e.g. BlessingOfferDialog) use role="dialog".
-    return Boolean(
-      trigger?.closest('[role="dialog"], [role="alertdialog"]'),
-    );
+    const triggers = document.querySelectorAll(triggerSelector(id));
+    if (triggers.length === 0) return "missing";
+    for (const trigger of triggers) {
+      if (trigger.closest(DIALOG_TRIGGER_SELECTOR)) return "inside";
+    }
+    return "outside";
   } catch {
-    return false;
+    return "missing";
   }
+}
+
+function isTooltipTriggerBehindModal(id: string): boolean {
+  return getTooltipTriggerDialogPresence(id) === "outside";
 }
 
 function triggerSelector(id: string): string {
@@ -124,11 +136,7 @@ class GlobalTooltipManager {
       return;
     }
 
-    if (
-      this.suppressed &&
-      id !== null &&
-      !isTooltipTriggerInsideDialog(id)
-    ) {
+    if (this.suppressed && id !== null && isTooltipTriggerBehindModal(id)) {
       return;
     }
 
@@ -208,7 +216,7 @@ class GlobalTooltipManager {
   isTooltipOpen(id: string) {
     if (this.tabHidden) return false;
     if (this.openTooltipId !== id) return false;
-    if (this.suppressed && !isTooltipTriggerInsideDialog(id)) return false;
+    if (this.suppressed && isTooltipTriggerBehindModal(id)) return false;
     return true;
   }
 
@@ -359,7 +367,7 @@ export function getTooltipOpenProp(id: string): boolean | undefined {
   }
   if (
     globalTooltipManager.isSuppressed() &&
-    !isTooltipTriggerInsideDialog(id)
+    isTooltipTriggerBehindModal(id)
   ) {
     return false;
   }

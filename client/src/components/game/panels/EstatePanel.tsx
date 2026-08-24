@@ -187,7 +187,11 @@ function SkillUpgradeRow({
 const MAX_SLEEP_LENGTH_LEVEL = SLEEP_LENGTH_UPGRADES.length - 1;
 const MAX_SLEEP_INTENSITY_LEVEL = SLEEP_INTENSITY_UPGRADES.length - 1;
 
-export default function EstatePanel() {
+export default function EstatePanel({
+  active = true,
+}: {
+  active?: boolean;
+}) {
   const { t } = useUiTranslation();
   const {
     events,
@@ -647,7 +651,7 @@ export default function EstatePanel() {
         {/* Smoke canvas must wrap only the upgrade bars. Wrapping the whole
               panel (Sleep + cube whispers) sized a WebGL framebuffer to the
               full scroll height and stalled the tab on first open. */}
-        <SharedProgressShaderHost className="w-full">
+        <SharedProgressShaderHost className="w-full" visible={active}>
           <div className="space-y-2">
             {/* Sleep Upgrades Section */}
             <div className="w-full space-y-1 pt-2">

@@ -240,6 +240,14 @@ export default function GameContainer() {
 
   const [animatingTabs, setAnimatingTabs] = useState<Set<string>>(new Set());
   const [fadePhaseTabs, setFadePhaseTabs] = useState<Set<string>>(new Set());
+  // Keep Estate mounted after the first visit so the progress shader is not
+  // compiled again every time the tab opens.
+  const [estatePanelKept, setEstatePanelKept] = useState(
+    () => activeTab === "estate",
+  );
+  useEffect(() => {
+    if (activeTab === "estate") setEstatePanelKept(true);
+  }, [activeTab]);
   const tabButtonRowRef = useRef<HTMLDivElement | null>(null);
   const [pauseHotkeyHint, setPauseHotkeyHint] = useState<{
     top: number;
@@ -1451,6 +1459,11 @@ export default function GameContainer() {
                                 ? tabActiveTextClass
                                 : tabInactiveTextClass
                               }`}
+                            onPointerEnter={() => {
+                              scheduleSharedProgressShaderPrewarm({
+                                immediate: true,
+                              });
+                            }}
                             onClick={() => {
                               useGameStore.getState().trackButtonClick("tab-estate");
                               clearTabAnimation("estate");
@@ -1572,7 +1585,11 @@ export default function GameContainer() {
                 {activeTab === "cave" && <CavePanel />}
                 {activeTab === "village" && <VillagePanel />}
                 {activeTab === "forest" && <ForestPanel />}
-                {activeTab === "estate" && <EstatePanel />}
+                {(activeTab === "estate" || estatePanelKept) && (
+                  <div hidden={activeTab !== "estate"}>
+                    <EstatePanel active={activeTab === "estate"} />
+                  </div>
+                )}
                 {activeTab === "bastion" && <BastionPanel />}
                 {activeTab === "achievements" && <AchievementsPanel />}
                 {activeTab === "timedevent" && <TimedEventPanel />}
