@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { useGameStore } from "@/game/state";
 import { DISGRACED_PRIOR_UPGRADES } from "@/game/rules/skillUpgrades";
 import { useTextScale } from "@/i18n/useTextScale";
@@ -17,6 +17,7 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { useTranslation } from "react-i18next";
+import { isGameTabHidden, subscribeGameTabHidden } from "@/lib/tabVisibility";
 
 /** Base diameter; CSS `.button-prior-badge` scales with `--adc-control-scale`. */
 const BADGE_SIZE = 10;
@@ -33,6 +34,15 @@ export function ButtonPriorBadge({ actionId }: ButtonPriorBadgeProps) {
   const disgracedPriorSkills = useGameStore((s) => s.disgracedPriorSkills);
   const togglePriorAction = useGameStore((s) => s.togglePriorAction);
   const [hovered, setHovered] = useState(false);
+  const [tabHidden, setTabHidden] = useState(false);
+
+  useEffect(() => {
+    return subscribeGameTabHidden(() => {
+      const hidden = isGameTabHidden();
+      setTabHidden(hidden);
+      if (hidden) setHovered(false);
+    });
+  }, []);
   const badgeFillMetrics = useMemo(
     () => getPriorDiscFillMetrics(BADGE_SIZE * getControlScaleFactor(textScale)),
     [textScale],
@@ -68,7 +78,7 @@ export function ButtonPriorBadge({ actionId }: ButtonPriorBadgeProps) {
 
   return (
     <TooltipProvider delayDuration={400}>
-      <Tooltip>
+      <Tooltip open={tabHidden ? false : undefined}>
         <TooltipTrigger asChild>
           <div
             onClick={handleClick}

@@ -1,5 +1,6 @@
 import {
   useCallback,
+  useEffect,
   useLayoutEffect,
   useRef,
   useState,
@@ -10,6 +11,7 @@ import {
 import { createPortal } from "react-dom";
 import { cn } from "@/lib/utils";
 import { Z_INDEX } from "@/lib/z-index";
+import { isGameTabHidden, subscribeGameTabHidden } from "@/lib/tabVisibility";
 
 export type HoverCalloutSide = "top" | "left" | "right" | "bottom";
 
@@ -191,6 +193,12 @@ export function HoverCalloutTooltip({
   const [isHovered, setIsHovered] = useState(false);
   const [triggerRect, setTriggerRect] = useState<DOMRect | null>(null);
   const visible = forceVisible || (hoverEnabled && isHovered);
+
+  useEffect(() => {
+    return subscribeGameTabHidden(() => {
+      if (isGameTabHidden()) setIsHovered(false);
+    });
+  }, []);
   const layout = SIDE_LAYOUT[side][arrowAlign];
   const calloutClickable = !!onCalloutClick;
 

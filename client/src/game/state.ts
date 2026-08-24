@@ -100,6 +100,7 @@ import {
 } from "@/game/rules/insightBlessings";
 import {
   calculateTotalEffects,
+  getMadnessComponents,
   getTotalLuck,
   getTotalStrength,
   getTotalKnowledge,
@@ -1418,10 +1419,21 @@ const mergeStateUpdates = (
     stateUpdates.clothing ||
     stateUpdates.relics ||
     stateUpdates.books ||
-    stateUpdates.buildings
+    stateUpdates.buildings ||
+    stateUpdates.blessings ||
+    stateUpdates.fellowship ||
+    stateUpdates.stats
   ) {
     const tempState = { ...prevState, ...merged };
     merged.effects = calculateTotalEffects(tempState);
+    // Side panel reads cached stats, not live getTotal* totals.
+    merged.stats = {
+      ...merged.stats,
+      luck: merged.effects.statBonuses.luck,
+      strength: merged.effects.statBonuses.strength,
+      knowledge: merged.effects.statBonuses.knowledge,
+      madness: getMadnessComponents(tempState, merged.effects).total,
+    };
   }
 
   return merged;
@@ -4048,6 +4060,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
       });
 
       StateManager.schedulePopulationUpdate(get);
+      StateManager.scheduleEffectsUpdate(get);
     }
 
     // Show reward/outcome dialog before madness-only popup so narrative + gains are visible.

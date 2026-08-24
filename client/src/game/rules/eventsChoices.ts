@@ -1,7 +1,7 @@
 import type { GameEvent } from "./eventTypes";
 import { calculateSuccessChance, defineSuccessChance } from "./eventSuccessChance";
 import { GameState } from "@shared/schema";
-import { addFreeVillagersWithinCap, killVillagers, stackTimedDebuff } from "@/game/stateHelpers";
+import { addFreeVillagersWithinCap, getSeenResourceKeys, killVillagers, stackTimedDebuff } from "@/game/stateHelpers";
 import { getTotalStrength } from "./effectsCalculation";
 import { getCurrentPopulation, getMaxPopulation, getVillagersInVillage } from "@/game/population";
 import { getResourceLimit } from "@/game/resourceLimits";
@@ -1132,6 +1132,7 @@ export const choiceEvents: Record<string, GameEvent> = {
         state.buildings.woodenHut >= 3 &&
         currentPopulation > 2 &&
         hasRoomForThree &&
+        getSeenResourceKeys(state).includes("steel") &&
         !state.story.seen.slaveTraderEvent
       );
     },

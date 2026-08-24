@@ -13,6 +13,30 @@ function baseState() {
   });
 }
 
+describe("slaveTrader condition", () => {
+  it("does not appear before the player has ever had steel", () => {
+    const state = baseState();
+    expect(choiceEvents.slaveTrader.condition(state)).toBe(false);
+  });
+
+  it("can appear after the player has obtained steel", () => {
+    const state = {
+      ...baseState(),
+      resources: { ...baseState().resources, steel: 1 },
+    };
+    expect(choiceEvents.slaveTrader.condition(state)).toBe(true);
+  });
+
+  it("can still appear if steel was obtained and then spent", () => {
+    const state = {
+      ...baseState(),
+      resources: { ...baseState().resources, steel: 0 },
+      seenResources: ["steel"],
+    };
+    expect(choiceEvents.slaveTrader.condition(state)).toBe(true);
+  });
+});
+
 describe("slaveTrader freeSlaves", () => {
   beforeEach(() => {
     vi.spyOn(Math, "random").mockReturnValue(0);

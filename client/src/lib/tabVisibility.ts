@@ -2,6 +2,11 @@ const TAB_HIDDEN_ATTR = "data-tab-hidden";
 
 /** Test-only: `null` reads live `document.hidden`. */
 let hiddenOverride: boolean | null = null;
+const hiddenListeners = new Set<() => void>();
+
+function notifyTabHiddenListeners() {
+  hiddenListeners.forEach((listener) => listener());
+}
 
 /** True when the game page is backgrounded (browser tab, Steam overlay window, etc.). */
 export function isGameTabHidden(): boolean {
@@ -9,15 +14,25 @@ export function isGameTabHidden(): boolean {
   return typeof document !== "undefined" && document.hidden === true;
 }
 
+/** Subscribe to browser-tab / window hide-show. Listener is also called from tests. */
+export function subscribeGameTabHidden(listener: () => void): () => void {
+  hiddenListeners.add(listener);
+  return () => {
+    hiddenListeners.delete(listener);
+  };
+}
+
 /** Test-only: force hidden/visible. Pass `null` to restore live `document.hidden`. */
 export function setGameTabHiddenForTests(hidden: boolean | null): void {
   hiddenOverride = hidden;
+  notifyTabHiddenListeners();
 }
 
 /** Sync a document-level flag so CSS can pause decorative animations while the tab is hidden. */
 export function initTabVisibilityClass(): void {
   const sync = () => {
     document.documentElement.toggleAttribute(TAB_HIDDEN_ATTR, document.hidden);
+    notifyTabHiddenListeners();
   };
 
   sync();

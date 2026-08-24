@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { UpgradeKey, getButtonUpgradeInfo, getUpgradeLevelsForKey } from "@/game/buttonUpgrades";
 import { getCraftProduceAmount } from "@/game/craftUpgradeUtils";
 import { useGameStore } from "@/game/state";
@@ -11,6 +11,7 @@ import {
 } from "@/components/ui/tooltip";
 import { CircularProgress } from "@/components/ui/circular-progress";
 import { useTranslation } from "react-i18next";
+import { isGameTabHidden, subscribeGameTabHidden } from "@/lib/tabVisibility";
 
 interface ButtonLevelBadgeProps {
   upgradeKey: UpgradeKey;
@@ -28,6 +29,12 @@ export function ButtonLevelBadge({ upgradeKey }: ButtonLevelBadgeProps) {
     getCraftProduceAmount(upgradeKey, s),
   );
   const [isOpen, setIsOpen] = useState(false);
+
+  useEffect(() => {
+    return subscribeGameTabHidden(() => {
+      if (isGameTabHidden()) setIsOpen(false);
+    });
+  }, []);
 
   if (!hasBook) {
     return null;

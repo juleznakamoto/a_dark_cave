@@ -8,6 +8,7 @@ import {
   type ReactNode,
 } from "react";
 import { TooltipProvider } from "@/components/ui/tooltip";
+import { isGameTabHidden, subscribeGameTabHidden } from "@/lib/tabVisibility";
 import { useIsMobile } from "./use-mobile";
 
 const MOBILE_BREAKPOINT = 768;
@@ -39,6 +40,7 @@ function triggerSelector(id: string): string {
 class GlobalTooltipManager {
   private openTooltipId: string | null = null;
   private suppressed = false;
+  private tabHidden = false;
   private mobile = false;
   private listeners: Set<() => void> = new Set();
   private idListeners: Map<string, Set<() => void>> = new Map();
@@ -118,6 +120,10 @@ class GlobalTooltipManager {
   setOpenTooltip(id: string | null, openedByTimer: boolean = false) {
     // Modal suppression blocks game-chrome tooltips, but not triggers inside
     // the open dialog (shop / settings info icons still need to work).
+    if (this.tabHidden && id !== null) {
+      return;
+    }
+
     if (
       this.suppressed &&
       id !== null &&
@@ -165,6 +171,24 @@ class GlobalTooltipManager {
     this.suppressedListeners.forEach((listener) => listener());
   }
 
+  setTabHidden(hidden: boolean) {
+    if (this.tabHidden === hidden) return;
+    this.tabHidden = hidden;
+    const previousId = this.openTooltipId;
+    if (hidden) {
+      this.clearAllPressTimers();
+      this.openTooltipId = null;
+      this.tooltipsOpenedByTimer.clear();
+      this.detachOutsideListener();
+    }
+    this.notify(previousId);
+    this.suppressedListeners.forEach((listener) => listener());
+  }
+
+  isTabHidden() {
+    return this.tabHidden;
+  }
+
   setMobile(isMobile: boolean) {
     this.mobile = isMobile;
   }
@@ -182,6 +206,7 @@ class GlobalTooltipManager {
   }
 
   isTooltipOpen(id: string) {
+    if (this.tabHidden) return false;
     if (this.openTooltipId !== id) return false;
     if (this.suppressed && !isTooltipTriggerInsideDialog(id)) return false;
     return true;
@@ -263,6 +288,10 @@ const globalTooltipManager = new GlobalTooltipManager();
 
 if (typeof window !== "undefined") {
   globalTooltipManager.setMobile(window.innerWidth < MOBILE_BREAKPOINT);
+  globalTooltipManager.setTabHidden(isGameTabHidden());
+  subscribeGameTabHidden(() => {
+    globalTooltipManager.setTabHidden(isGameTabHidden());
+  });
 }
 
 /** Close any open tooltip and cancel in-progress long-press timers. */
@@ -325,6 +354,9 @@ export function useOpenGlobalTooltipId(): string | null {
  * - `undefined` otherwise so hover stays uncontrolled
  */
 export function getTooltipOpenProp(id: string): boolean | undefined {
+  if (globalTooltipManager.isTabHidden()) {
+    return false;
+  }
   if (
     globalTooltipManager.isSuppressed() &&
     !isTooltipTriggerInsideDialog(id)

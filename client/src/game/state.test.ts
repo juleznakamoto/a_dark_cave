@@ -1261,3 +1261,26 @@ describe("no-op store ticks skip subscriber notify", () => {
     unsub();
   });
 });
+
+describe("odd elixir event stats", () => {
+  beforeEach(() => {
+    useGameStore.getState().initialize();
+    useGameStore.setState({ isPaused: false });
+  });
+
+  it("applies luck and strength when the strange elixir is drunk", () => {
+    const before = useGameStore.getState();
+    const luckBefore = before.stats.luck;
+    const strengthBefore = before.stats.strength;
+
+    const ok = useGameStore
+      .getState()
+      .applyEventChoice("drinkTrinket", "oddTrinket");
+
+    expect(ok).toBe(true);
+    const after = useGameStore.getState();
+    expect(after.relics.odd_trinket).toBe(true);
+    expect(after.stats.luck).toBe(luckBefore + 2);
+    expect(after.stats.strength).toBe(strengthBefore + 3);
+  });
+});

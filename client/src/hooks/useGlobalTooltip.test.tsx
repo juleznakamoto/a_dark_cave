@@ -12,6 +12,7 @@ import {
   setGlobalTooltipIsMobile,
   setGlobalTooltipsSuppressed,
 } from "./useGlobalTooltip";
+import { setGameTabHiddenForTests } from "@/lib/tabVisibility";
 
 vi.mock("./use-mobile", () => ({
   useIsMobile: vi.fn(() => true),
@@ -85,6 +86,7 @@ describe("useGlobalTooltip - mobile long-press behavior", () => {
   });
 
   afterEach(() => {
+    setGameTabHiddenForTests(null);
     setGlobalTooltipsSuppressed(false);
     closeAllGlobalTooltips();
     vi.useRealTimers();
@@ -252,6 +254,7 @@ describe("useGlobalTooltip - modal suppression", () => {
   });
 
   afterEach(() => {
+    setGameTabHiddenForTests(null);
     setGlobalTooltipsSuppressed(false);
     closeAllGlobalTooltips();
     vi.useRealTimers();
@@ -396,6 +399,7 @@ describe("useGlobalTooltip - per-id subscribe", () => {
   });
 
   afterEach(() => {
+    setGameTabHiddenForTests(null);
     closeAllGlobalTooltips();
     setGlobalTooltipsSuppressed(false);
   });
@@ -445,5 +449,90 @@ describe("useGlobalTooltip - per-id subscribe", () => {
 
     expect(renderA.mock.calls.length).toBe(afterMountA + 1);
     expect(renderB.mock.calls.length).toBe(afterMountB);
+  });
+});
+
+describe("useGlobalTooltip - inactive tab", () => {
+  beforeEach(() => {
+    setGlobalTooltipIsMobile(false);
+    setGlobalTooltipsSuppressed(false);
+    setGameTabHiddenForTests(false);
+  });
+
+  afterEach(() => {
+    setGameTabHiddenForTests(null);
+    setGlobalTooltipsSuppressed(false);
+    closeAllGlobalTooltips();
+  });
+
+  it("closes an open tooltip and forces hover tooltips closed when the tab hides", () => {
+    function Probe({ id }: { id: string }) {
+      const open = useGlobalTooltipOpen(id);
+      return (
+        <div data-testid={`prop-${id}`}>
+          {open === false ? "forced-closed" : open === true ? "open" : "uncontrolled"}
+        </div>
+      );
+    }
+
+    function Opener() {
+      const { setOpenTooltip } = useGlobalTooltip();
+      return (
+        <button
+          type="button"
+          data-testid="open-hover"
+          onClick={() => setOpenTooltip("hover-tip")}
+        />
+      );
+    }
+
+    render(
+      <>
+        <Opener />
+        <Probe id="hover-tip" />
+      </>,
+    );
+
+    act(() => {
+      fireEvent.click(screen.getByTestId("open-hover"));
+    });
+    expect(screen.getByTestId("prop-hover-tip").textContent).toBe("open");
+
+    act(() => {
+      setGameTabHiddenForTests(true);
+    });
+
+    expect(screen.getByTestId("prop-hover-tip").textContent).toBe(
+      "forced-closed",
+    );
+    expect(getTooltipOpenProp("hover-tip")).toBe(false);
+  });
+
+  it("returns hover tooltips to uncontrolled when the tab is active again", () => {
+    function Probe({ id }: { id: string }) {
+      const open = useGlobalTooltipOpen(id);
+      return (
+        <div data-testid={`prop-${id}`}>
+          {open === false ? "forced-closed" : open === true ? "open" : "uncontrolled"}
+        </div>
+      );
+    }
+
+    render(<Probe id="hover-tip" />);
+
+    act(() => {
+      setGameTabHiddenForTests(true);
+    });
+    expect(screen.getByTestId("prop-hover-tip").textContent).toBe(
+      "forced-closed",
+    );
+
+    act(() => {
+      setGameTabHiddenForTests(false);
+    });
+    expect(screen.getByTestId("prop-hover-tip").textContent).toBe(
+      "uncontrolled",
+    );
+    expect(getTooltipOpenProp("hover-tip")).toBeUndefined();
   });
 });
