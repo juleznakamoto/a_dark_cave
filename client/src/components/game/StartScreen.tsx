@@ -297,9 +297,13 @@ export default function StartScreen({
     void import("@/components/ui/particle-button").then((mod) => {
       if (!cancelled) setParticleButtonCmp(() => mod.ParticleButton);
     });
-    void import("@/components/ui/cloud-shader").then((mod) => {
-      if (!cancelled) setCloudShaderCmp(() => mod.default);
-    });
+    void import("@/components/ui/cloud-shader")
+      .then((mod) => {
+        if (!cancelled) setCloudShaderCmp(() => mod.default);
+      })
+      .catch((error) => {
+        logger.error("[StartScreen] Failed to load cloud shader:", error);
+      });
     return () => {
       cancelled = true;
     };

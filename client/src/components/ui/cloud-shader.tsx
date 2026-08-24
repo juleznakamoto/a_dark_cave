@@ -2,6 +2,32 @@ import { useRef, useEffect, useState } from "react";
 import { logger } from "@/lib/logger";
 import { getViewportSize, subscribeViewportResize } from "@/lib/viewportSize";
 
+function createWebGL2Context(canvas: HTMLCanvasElement): WebGL2RenderingContext {
+  const contexts: WebGLContextAttributes[] = [
+    {
+      alpha: false,
+      antialias: false,
+      depth: false,
+      stencil: false,
+      premultipliedAlpha: false,
+    },
+    {
+      alpha: false,
+      antialias: false,
+      depth: false,
+      stencil: false,
+      failIfMajorPerformanceCaveat: false,
+    },
+  ];
+
+  for (const attrs of contexts) {
+    const gl = canvas.getContext("webgl2", attrs);
+    if (gl) return gl;
+  }
+
+  throw new Error("WebGL2 context not available");
+}
+
 // ---------------- WebGL Renderer ----------------
 class WebGLRenderer {
   private canvas: HTMLCanvasElement;
@@ -24,11 +50,7 @@ class WebGLRenderer {
     this.canvas = canvas;
     this.scale = scale;
     this.shaderSource = shaderSource;
-    const gl = canvas.getContext("webgl2", { failIfMajorPerformanceCaveat: true });
-    if (!gl) {
-      logger.warn("WebGL2 context not available, falling back to basic rendering");
-      throw new Error("WebGL2 context not available");
-    }
+    const gl = createWebGL2Context(canvas);
     this.gl = gl;
     this.gl.viewport(0, 0, canvas.width, canvas.height);
   }
@@ -217,54 +239,48 @@ export default function CloudShader({ className = "" }: CloudShaderProps) {
   useEffect(() => {
     if (!canvasRef.current) return;
 
-    const initRenderer = () => {
+    isActiveRef.current = true;
+
+    const startRenderer = () => {
+      const canvas = canvasRef.current;
+      if (!canvas || !isActiveRef.current) return;
+      const { width, height } = getViewportSize();
+      const baseScale = width < 600 ? 0.25 : 0.4;
+      const dpr = Math.max(1, baseScale * window.devicePixelRatio);
+      canvas.width = Math.round(width * dpr);
+      canvas.height = Math.round(height * dpr);
+
       try {
-        // Wait for first paint
-        requestAnimationFrame(() => {
-          requestAnimationFrame(() => {
-            const canvas = canvasRef.current!;
-            if (!canvas) return;
-            const { width, height } = getViewportSize();
-            const baseScale = width < 600 ? 0.25 : 0.4;
-            const dpr = Math.max(1, baseScale * window.devicePixelRatio);
-            canvas.width = Math.round(width * dpr);
-            canvas.height = Math.round(height * dpr);
+        const renderer = new WebGLRenderer(canvas, dpr, shaderSource);
+        renderer.setup();
+        renderer.init();
+        rendererRef.current = renderer;
+        setVisible(true);
 
-            try {
-              const renderer = new WebGLRenderer(canvas, dpr, shaderSource);
-              renderer.setup();
-              renderer.init();
-              rendererRef.current = renderer;
-              setVisible(true); // fade-in once
-
-              const FRAME_INTERVAL_MS = 1000 / 30;
-              let lastFrameTime = 0;
-              const loop = (now: number) => {
-                if (!isActiveRef.current || !rendererRef.current) return;
-                animationFrameRef.current = requestAnimationFrame(loop);
-                // 30fps wall-clock cap (not "every other rAF") so 120Hz stays at 30.
-                if (lastFrameTime > 0 && now - lastFrameTime < FRAME_INTERVAL_MS) {
-                  return;
-                }
-                lastFrameTime = now;
-                rendererRef.current.render(now);
-              };
-              animationFrameRef.current = requestAnimationFrame(loop);
-            } catch (err) {
-              logger.warn("[CloudShader] WebGL execution failed:", err);
-            }
-          });
-        });
+        const FRAME_INTERVAL_MS = 1000 / 30;
+        let lastFrameTime = 0;
+        const loop = (now: number) => {
+          if (!isActiveRef.current || !rendererRef.current) return;
+          animationFrameRef.current = requestAnimationFrame(loop);
+          // 30fps wall-clock cap (not "every other rAF") so 120Hz stays at 30.
+          if (lastFrameTime > 0 && now - lastFrameTime < FRAME_INTERVAL_MS) {
+            return;
+          }
+          lastFrameTime = now;
+          rendererRef.current.render(now);
+        };
+        animationFrameRef.current = requestAnimationFrame(loop);
       } catch (err) {
-        logger.error("[CloudShader] WebGL init failed:", err);
+        logger.warn("[CloudShader] WebGL execution failed:", err);
       }
     };
 
-    if ("requestIdleCallback" in window) {
-      (window as any).requestIdleCallback(initRenderer);
-    } else {
-      setTimeout(initRenderer, 300);
-    }
+    // Wait one frame so the start-screen first paint is not blocked.
+    // Do not use requestIdleCallback here: a busy start screen can starve it
+    // forever (no timeout), which leaves the background black.
+    const paintFrame = requestAnimationFrame(() => {
+      requestAnimationFrame(startRenderer);
+    });
 
     const handleResize = () => {
       if (!rendererRef.current) return;
@@ -300,6 +316,7 @@ export default function CloudShader({ className = "" }: CloudShaderProps) {
 
     return () => {
       isActiveRef.current = false;
+      cancelAnimationFrame(paintFrame);
       unsubscribeViewport();
       window.removeEventListener("mousemove", handleMouseMove);
       window.removeEventListener("touchmove", handleTouchMove);
@@ -315,7 +332,7 @@ export default function CloudShader({ className = "" }: CloudShaderProps) {
   return (
     <canvas
       ref={canvasRef}
-      className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ${visible ? "opacity-100" : "opacity-0"
+      className={`absolute inset-0 z-0 w-full h-full object-cover transition-opacity duration-1000 ${visible ? "opacity-100" : "opacity-0"
         } ${className}`}
       style={{
         background: "black",
