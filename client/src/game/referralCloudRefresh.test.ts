@@ -110,4 +110,38 @@ describe("applyReferralCloudRefreshPatch", () => {
     expect(patch.changed).toBe(false);
     expect(patch.nextState).toBe(live);
   });
+
+  it("invitee claim then inviter refresh both grant 200", () => {
+    const invitee = applyReferralCloudRefreshPatch(
+      baseState({
+        resources: { wood: 10, gold: 200 } as GameState["resources"],
+      }),
+      {
+        referralProcessed: true,
+        referralCode: "EWEVJ9",
+        referrals: [],
+        referralCount: 0,
+        referredUsers: [],
+      },
+    );
+    expect(invitee.nextState.referralProcessed).toBe(true);
+    expect(invitee.nextState.resources.gold).toBe(200 + REFERRAL_REWARD_GOLD);
+
+    const inviter = applyReferralCloudRefreshPatch(
+      baseState({
+        resources: { wood: 10, gold: 200 } as GameState["resources"],
+      }),
+      {
+        referralProcessed: false,
+        referrals: [
+          { userId: "invitee-c", claimed: false, timestamp: 1 },
+        ],
+        referralCount: 1,
+        referredUsers: ["invitee-c"],
+      },
+    );
+    expect(inviter.nextState.referralCount).toBe(1);
+    expect(inviter.nextState.referrals?.[0]?.claimed).toBe(true);
+    expect(inviter.nextState.resources.gold).toBe(200 + REFERRAL_REWARD_GOLD);
+  });
 });

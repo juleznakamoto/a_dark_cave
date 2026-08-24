@@ -6,6 +6,7 @@ const mockRpc = vi.fn();
 vi.mock("./supabaseServerClient", () => ({
   createServerSupabaseClient: vi.fn(() => ({
     rpc: mockRpc,
+    auth: { admin: { getUserById: vi.fn().mockResolvedValue({ data: { user: null } }) } },
   })),
 }));
 

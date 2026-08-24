@@ -1,3 +1,4 @@
+import { parseRefParam } from "@shared/referralCode";
 import { createServerSupabaseClient } from "./supabaseServerClient";
 import type { ClaimReferralResult } from "@shared/referralClaim";
 
@@ -37,8 +38,18 @@ export async function processReferral(
   referralCode?: string | null,
 ): Promise<ClaimReferralResult> {
   const adminClient = getSupabaseAdmin();
-  const code =
+  let code =
     typeof referralCode === "string" ? referralCode.trim() || null : null;
+  if (!code) {
+    const { data: authUser } = await adminClient.auth.admin.getUserById(
+      inviteeUserId,
+    );
+    const meta =
+      typeof authUser?.user?.user_metadata?.referral_code === "string"
+        ? authUser.user.user_metadata.referral_code
+        : null;
+    code = parseRefParam(meta);
+  }
 
   const { data, error } = await adminClient.rpc("claim_referral", {
     p_invitee_id: inviteeUserId,

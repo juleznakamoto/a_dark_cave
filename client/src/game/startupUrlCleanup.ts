@@ -51,14 +51,15 @@ export function planStartupUrlCleanup(
 }
 
 /**
- * Initialize Supabase so detectSessionInUrl can consume OAuth/PKCE material.
- * Must run before any auth-related URL cleanup.
+ * Initialize Supabase so detectSessionInUrl can consume OAuth/PKCE or the
+ * email-confirm session before any auth-related URL cleanup.
  */
 export async function consumeStartupAuthCallback(
   location: StartupLocation = window.location,
 ): Promise<void> {
   const intent = parseStartupIntent(location);
-  if (!intent.oauthCallback || isLocalOnlyEdition()) return;
+  if (isLocalOnlyEdition()) return;
+  if (!intent.oauthCallback && !intent.emailConfirmed) return;
 
   try {
     const { getSupabaseClient } = await import("@/lib/supabase");

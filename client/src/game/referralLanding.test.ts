@@ -24,6 +24,12 @@ describe("referralLanding", () => {
     expect(readLandingReferralCode()).toBeNull();
   });
 
+  it("keeps EWEVJ9 after the URL is stripped to /", () => {
+    expect(persistLandingReferralCode("?ref=EWEVJ9")).toBe("EWEVJ9");
+    expect(getLandingReferralCode("")).toBe("EWEVJ9");
+    expect(getLandingReferralCode("?")).toBe("EWEVJ9");
+  });
+
   it("reads a stored code when the URL no longer has ref", () => {
     persistLandingReferralCode("?ref=AB3K9M");
     expect(getLandingReferralCode("")).toBe("AB3K9M");

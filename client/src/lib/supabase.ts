@@ -124,7 +124,7 @@ export async function getSupabaseClient(): Promise<SupabaseClient> {
         authStateListenerSetup = true;
 
         // Listen to auth state changes with minimal overhead
-        client.auth.onAuthStateChange((_event, session) => {
+        client.auth.onAuthStateChange((event, session) => {
           const nextUser = session?.user ?? null;
           cachedAuthUser = nextUser;
           authStateInitialized = true;
@@ -132,6 +132,19 @@ export async function getSupabaseClient(): Promise<SupabaseClient> {
           void import("@/game/auth").then(({ syncStoreAuthFromSession }) => {
             void syncStoreAuthFromSession();
           });
+
+          const shouldClaimReferral =
+            Boolean(nextUser?.email_confirmed_at) &&
+            (event === "SIGNED_IN" ||
+              event === "INITIAL_SESSION" ||
+              event === "USER_UPDATED");
+          if (shouldClaimReferral) {
+            void import("@/game/auth").then(
+              ({ processReferralAfterConfirmation }) => {
+                void processReferralAfterConfirmation();
+              },
+            );
+          }
         });
 
         // Initialize current session

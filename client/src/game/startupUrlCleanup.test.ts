@@ -71,6 +71,16 @@ describe("startupUrlCleanup", () => {
     expect(window.location.hash).toBe("");
   });
 
+  it("consumes the session on email confirm before referral strip", async () => {
+    mockGetSupabaseClient.mockImplementation(async () => ({
+      auth: { getSession: mockGetSession },
+    }));
+    window.history.replaceState({}, "", "/?email_confirmed=true&ref=EWEVJ9");
+    await consumeStartupAuthCallback(window.location);
+    expect(mockGetSupabaseClient).toHaveBeenCalled();
+    expect(mockGetSession).toHaveBeenCalled();
+  });
+
   it("strips campaign and shop params while preserving unrelated query", () => {
     window.history.replaceState(
       {},

@@ -427,9 +427,18 @@ export async function signUp(
   return data;
 }
 
+let referralClaimInFlight: Promise<void> | null = null;
+
 export async function processReferralAfterConfirmation(): Promise<void> {
+  if (referralClaimInFlight) {
+    await referralClaimInFlight;
+    return;
+  }
+  referralClaimInFlight = processReferralInBackground().finally(() => {
+    referralClaimInFlight = null;
+  });
   try {
-    await processReferralInBackground();
+    await referralClaimInFlight;
   } catch (error) {
     logger.error('[REFERRAL] Background processing failed:', error);
   }
