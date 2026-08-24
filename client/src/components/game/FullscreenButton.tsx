@@ -1,6 +1,5 @@
 import { Maximize2, Minimize2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { HoverCalloutTooltip } from "@/components/game/HoverCalloutTooltip";
 import { useFullscreen } from "@/hooks/useFullscreen";
 import { useTranslation } from "react-i18next";
 import { GAME_CHROME_NO_BG_HOVER } from "./gameChrome";
@@ -21,29 +20,27 @@ export function FullscreenButton() {
     : t("profile.enterFullscreen", { defaultValue: "Full screen" });
 
   return (
-    <HoverCalloutTooltip label={label} side="left" arrowAlign="end">
-      <Button
-        type="button"
-        variant="ghost"
-        size="xs"
-        onClick={() => void toggleFullscreen()}
-        aria-label={label}
-        className={`${HEADER_ICON_BTN} group touch-manipulation`}
-        button_id="fullscreen-toggle"
-        data-testid="button-toggle-fullscreen"
-      >
-        {isFullscreen ? (
-          <Minimize2
-            className={`h-[15px] w-[15px] ${HEADER_ICON_SYMBOL_HOVER}`}
-            aria-hidden="true"
-          />
-        ) : (
-          <Maximize2
-            className={`h-[15px] w-[15px] ${HEADER_ICON_SYMBOL_HOVER}`}
-            aria-hidden="true"
-          />
-        )}
-      </Button>
-    </HoverCalloutTooltip>
+    <Button
+      type="button"
+      variant="ghost"
+      size="xs"
+      onClick={() => void toggleFullscreen()}
+      aria-label={label}
+      className={`${HEADER_ICON_BTN} group touch-manipulation`}
+      button_id="fullscreen-toggle"
+      data-testid="button-toggle-fullscreen"
+    >
+      {isFullscreen ? (
+        <Minimize2
+          className={`h-[15px] w-[15px] ${HEADER_ICON_SYMBOL_HOVER}`}
+          aria-hidden="true"
+        />
+      ) : (
+        <Maximize2
+          className={`h-[15px] w-[15px] ${HEADER_ICON_SYMBOL_HOVER}`}
+          aria-hidden="true"
+        />
+      )}
+    </Button>
   );
 }
