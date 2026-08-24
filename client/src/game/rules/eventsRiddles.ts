@@ -175,6 +175,7 @@ function createRiddleEvent(
       config.precondition(state),
 
     timeProbability: level === "first" ? 30 : 45,
+    cooldownPercent: 0.3,
     message: isVariant ? "variant" : "original",
     priority: 4,
     repeatable: false,
@@ -211,6 +212,7 @@ export const riddleEvents: Record<string, GameEvent> = {
       !state.events.whisperersReward,
 
     timeProbability: 5,
+    cooldownPercent: 0.3,
 
     priority: 4,
     repeatable: true,
