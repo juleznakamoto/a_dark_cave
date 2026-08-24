@@ -15,7 +15,7 @@ import {
   type DevGameMode,
 } from "@/lib/edition";
 import { useSteamEditionActive } from "@/hooks/useSteamEditionActive";
-import { GameUiIcon } from "@/components/game/GameUiIcon";
+import { AudioGlyphIcon, GameUiIcon } from "@/components/game/GameUiIcon";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import LanguageSelector from "./LanguageSelector";
@@ -131,7 +131,7 @@ function AudioControlRow({
           button_id={muteButtonId}
           className="h-7 w-7 p-0 rounded-md hover:bg-muted/40 transition-colors"
         >
-          <GameUiIcon
+          <AudioGlyphIcon
             name={iconName}
             sizeClassName="w-5 h-5"
             className={muted ? "opacity-40" : undefined}

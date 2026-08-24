@@ -2,7 +2,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { Helmet } from "react-helmet-async";
 import { Button } from "@/components/ui/button";
 import { FooterSocialIcon } from "@/components/game/FooterSocialIcon";
-import { GameUiIcon } from "@/components/game/GameUiIcon";
+import { AudioGlyphIcon, GameUiIcon } from "@/components/game/GameUiIcon";
 import {
   GAME_FOOTER_RIGHT_ICON_LINKS,
   GAME_FOOTER_RIGHT_ICON_ORDER,
@@ -75,8 +75,6 @@ const START_FOOTER_LEGAL_LINK = `${START_FOOTER_LINK_BASE} opacity-40 hover:opac
 /** Icon controls (language / music / sfx): same color/opacity as social text links; kill ghost Button accent hover. */
 const START_FOOTER_ICON_BTN = `${START_FOOTER_SOCIAL_LINK} shrink-0 p-0 w-7 h-7 justify-center bg-transparent ${GAME_CHROME_NO_BG_HOVER} shadow-none`;
 const START_FOOTER_ICON = "size-4 shrink-0";
-/** Paint original PNG glyphs with currentColor (matches language + social text). */
-const START_AUDIO_ICON_MASK = `${START_FOOTER_ICON} bg-current [mask-size:contain] [mask-repeat:no-repeat] [mask-position:center] [mask-mode:alpha] [-webkit-mask-size:contain] [-webkit-mask-repeat:no-repeat] [-webkit-mask-position:center]`;
 const START_FULLSCREEN_BTN = `group shrink-0 p-0 w-7 h-7 flex items-center justify-center ${GAME_CHROME_NO_BG_HOVER}`;
 
 const MAKE_FIRE_BUTTON_CLASS =
@@ -1033,13 +1031,9 @@ export default function StartScreen({
               musicMuted ? t("footer.unmuteMusic") : t("footer.muteMusic")
             }
           >
-            <span
-              aria-hidden
-              className={START_AUDIO_ICON_MASK}
-              style={{
-                maskImage: `url(${publicUrl(musicMuted ? "/music_off.png" : "/music_on.png")})`,
-                WebkitMaskImage: `url(${publicUrl(musicMuted ? "/music_off.png" : "/music_on.png")})`,
-              }}
+            <AudioGlyphIcon
+              name={musicMuted ? "musicMuted" : "music"}
+              sizeClassName={START_FOOTER_ICON}
             />
           </Button>
           <Button
@@ -1050,13 +1044,9 @@ export default function StartScreen({
             className={START_FOOTER_ICON_BTN}
             aria-label={sfxMuted ? t("footer.unmuteSfx") : t("footer.muteSfx")}
           >
-            <span
-              aria-hidden
-              className={START_AUDIO_ICON_MASK}
-              style={{
-                maskImage: `url(${publicUrl(sfxMuted ? "/sound_off.png" : "/sound_on.png")})`,
-                WebkitMaskImage: `url(${publicUrl(sfxMuted ? "/sound_off.png" : "/sound_on.png")})`,
-              }}
+            <AudioGlyphIcon
+              name={sfxMuted ? "soundMuted" : "sound"}
+              sizeClassName={START_FOOTER_ICON}
             />
           </Button>
         </div>

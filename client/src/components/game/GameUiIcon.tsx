@@ -16,10 +16,6 @@ export const GAME_UI_ICON_SRC = {
   timedEvent: "/icons/time_hourglass.svg",
   language: "/icons/language_bubble.svg",
   textSize: "/icons/zoom_magnifier.svg",
-  music: "/music_on.png",
-  musicMuted: "/music_off.png",
-  sound: "/sound_on.png",
-  soundMuted: "/sound_off.png",
   email: "/icons/grungy_mail.svg",
   feedback: "/icons/speech_bubble.svg",
   share: "/icons/progress_arrows.svg",
@@ -52,6 +48,41 @@ export function GameUiIcon({
     <span
       aria-hidden="true"
       className={cn(DEFAULT_CLASS, sizeClassName, className)}
+      style={{
+        WebkitMaskImage: `url(${src})`,
+        maskImage: `url(${src})`,
+      }}
+    />
+  );
+}
+
+/** Dark-on-transparent PNG glyphs. Use alpha masks, not GameUiIcon luminance masks. */
+const AUDIO_GLYPH_SRC = {
+  music: "/music_on.png",
+  musicMuted: "/music_off.png",
+  sound: "/sound_on.png",
+  soundMuted: "/sound_off.png",
+} as const;
+
+export type AudioGlyphIconName = keyof typeof AUDIO_GLYPH_SRC;
+
+const AUDIO_GLYPH_CLASS =
+  "inline-block shrink-0 bg-current [mask-size:contain] [mask-repeat:no-repeat] [mask-position:center] [mask-mode:alpha] [-webkit-mask-size:contain] [-webkit-mask-repeat:no-repeat] [-webkit-mask-position:center]";
+
+export function AudioGlyphIcon({
+  name,
+  className,
+  sizeClassName = "w-5 h-5",
+}: {
+  name: AudioGlyphIconName;
+  className?: string;
+  sizeClassName?: string;
+}) {
+  const src = publicUrl(AUDIO_GLYPH_SRC[name]);
+  return (
+    <span
+      aria-hidden="true"
+      className={cn(AUDIO_GLYPH_CLASS, sizeClassName, className)}
       style={{
         WebkitMaskImage: `url(${src})`,
         maskImage: `url(${src})`,

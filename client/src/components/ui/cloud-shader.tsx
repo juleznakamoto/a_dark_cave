@@ -165,9 +165,9 @@ const shaderSource = `#version 300 es
     #define MN min(R.x,R.y)
 
     #define PRIMARY_COLOR vec3(0.7, 0.7, 0.7)
-    #define BACKGROUND_TINT vec3(0.025, 0.025, 0.025)
+    #define BACKGROUND_TINT vec3(0.03, 0.03, 0.03)
     #define MAX_COLOR_DEVIATION 1.0
-    #define CLOUD_COLOR_DEVIATION 1.2
+    #define CLOUD_COLOR_DEVIATION 1.5
     #define CLOUD_SPEED 0.04
 
     float rnd(vec2 p) {
