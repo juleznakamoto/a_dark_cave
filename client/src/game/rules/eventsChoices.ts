@@ -2,7 +2,7 @@ import type { GameEvent } from "./eventTypes";
 import { calculateSuccessChance, defineSuccessChance } from "./eventSuccessChance";
 import { GameState } from "@shared/schema";
 import { addFreeVillagersWithinCap, getSeenResourceKeys, killVillagers, stackTimedDebuff } from "@/game/stateHelpers";
-import { getTotalStrength } from "./effectsCalculation";
+import { getTotalMadness, getTotalStrength } from "./effectsCalculation";
 import { getCurrentPopulation, getMaxPopulation, getVillagersInVillage } from "@/game/population";
 import { getResourceLimit } from "@/game/resourceLimits";
 import {
@@ -1520,7 +1520,9 @@ export const choiceEvents: Record<string, GameEvent> = {
   veiledSeer: {
     id: "veiledSeer",
     condition: (state: GameState) =>
-      state.buildings.darkEstate >= 1 && state.resources.gold >= 50,
+      state.buildings.darkEstate >= 1 &&
+      state.resources.gold >= 50 &&
+      getTotalMadness(state) >= 2,
     timeProbability: 45,
     priority: 3,
     repeatable: false,
