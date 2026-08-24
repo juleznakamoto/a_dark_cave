@@ -1103,13 +1103,13 @@ describe('Resource Gain Tests', () => {
       // With upgrades: book + level 5
       const stateWithUpgrade = createTestState({
         books: { book_of_ascension: true },
-        buttonUpgrades: { chopWood: { clicks: 450, level: 5 } }, // Level 5 = 100% bonus
+        buttonUpgrades: { chopWood: { clicks: 450, level: 5 } }, // Level 5 = 125% bonus
       });
 
       const { expectedGains: expectedWithout } = testActionGains('chopWood', stateWithoutUpgrade, 50);
       const { expectedGains: expectedWith } = testActionGains('chopWood', stateWithUpgrade, 50);
 
-      // With upgrades should have higher gains (100% more at level 5)
+      // With upgrades should have higher gains (125% more at level 5)
       expect(expectedWith.wood.min).toBeGreaterThan(expectedWithout.wood.min);
       expect(expectedWith.wood.max).toBeGreaterThan(expectedWithout.wood.max);
     });
@@ -1124,13 +1124,13 @@ describe('Resource Gain Tests', () => {
       const stateWithUpgrade = createTestState({
         story: { seen: { actionCraftTorch: true } },
         books: { book_of_ascension: true },
-        buttonUpgrades: { caveExplore: { clicks: 142, level: 10 } }, // Level 10 = 100% bonus
+        buttonUpgrades: { caveExplore: { clicks: 142, level: 10 } }, // Level 10 = 200% bonus
       });
 
       const { expectedGains: expectedWithout } = testActionGains('exploreCave', stateWithoutUpgrade, 50);
       const { expectedGains: expectedWith } = testActionGains('exploreCave', stateWithUpgrade, 50);
 
-      // With max upgrades should have significantly higher gains (100% more at level 10)
+      // With max upgrades should have significantly higher gains (200% more at level 10)
       expect(expectedWith.wood.min).toBeGreaterThan(expectedWithout.wood.min);
       expect(expectedWith.wood.max).toBeGreaterThan(expectedWithout.wood.max);
     });

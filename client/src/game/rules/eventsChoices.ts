@@ -1537,7 +1537,7 @@ export const choiceEvents: Record<string, GameEvent> = {
             },
             stats: {
               ...state.stats,
-              madnessFromEvents: (state.stats.madnessFromEvents || 0) - 1,
+              madnessFromEvents: (state.stats.madnessFromEvents || 0) - 2,
             },
             _logMessageKey: "outcome1",
             _logMessageVars: { name },
