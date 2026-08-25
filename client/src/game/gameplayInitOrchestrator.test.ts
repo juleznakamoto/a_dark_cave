@@ -78,6 +78,7 @@ vi.mock("@/lib/edition", () => ({
   isLocalOnlyEdition: () => false,
   isDemoEdition: () => false,
   isSteamBuild: false,
+  shouldSyncSteamAchievements: () => false,
 }));
 vi.mock("@/lib/utmLanding", () => ({
   reportUtmLanding: vi.fn(),

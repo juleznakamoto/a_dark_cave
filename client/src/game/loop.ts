@@ -51,7 +51,7 @@ import {
 import { processDemoLimit } from "./demoLimit";
 import { processTimedEffects } from "./timedEffects";
 import { tickObsidianOrbFocus } from "@/game/obsidianOrb";
-import { isLocalOnlyEdition } from "@/lib/edition";
+import { isLocalOnlyEdition, shouldSyncSteamAchievements } from "@/lib/edition";
 let gameLoopId: number | null = null;
 let lastFrameTime = 0;
 
@@ -1008,6 +1008,13 @@ function runProductionCycle(): void {
     ({ persistAchievementMaxerIfComplete }) =>
       persistAchievementMaxerIfComplete(),
   );
+
+  if (shouldSyncSteamAchievements()) {
+    void import("@/achievements/steamAchievements").then(
+      ({ syncSteamAchievements }) =>
+        syncSteamAchievements(useGameStore.getState()),
+    );
+  }
 
   void import("@/game/estateUpgradeMax").then(
     ({ collectEstateUpgradeMaxHitUpdates }) => {

@@ -8,7 +8,8 @@
  * The canonical in-game ID is `{category}-{segmentId}` (e.g. `basic-0-woodGatherer`).
  * Steam API names must match `[A-Za-z0-9_]`, so we derive a stable upper-snake
  * name (e.g. `ACH_BASIC_0_WOODGATHERER`). When defining achievements in the
- * Steamworks partner backend, use these exact API names.
+ * Steamworks partner backend, use these exact API names. The Steam demo app
+ * has none; a demo save loaded in the full game backfills unlocks from progress.
  */
 import type { GameState } from "@shared/schema";
 import type { AchievementChartConfig } from "./achievementTypes";
@@ -21,7 +22,7 @@ import {
   overallChartConfig,
 } from "./index";
 import { getAchievementConfigForSteam } from "./achievementEdition";
-import { isSteamBuild } from "@/lib/edition";
+import { shouldSyncSteamAchievements } from "@/lib/edition";
 import { hasSteamBridge, steamUnlockAchievement } from "@/lib/steam";
 
 const ALL_CONFIGS: AchievementChartConfig[] = [
@@ -77,10 +78,12 @@ const pushed = new Set<string>();
 
 /**
  * Push any newly-completed achievements to Steam. Cheap to call frequently
- * (e.g. once per production cycle and on load); skips work on web.
+ * (e.g. once per production cycle and on load). No-op on web and in the
+ * Steam demo (the demo app has no partner achievements). Loading a demo save
+ * in the full game unlocks whatever that save already earned.
  */
 export async function syncSteamAchievements(state: GameState): Promise<void> {
-  if (!isSteamBuild || !hasSteamBridge()) return;
+  if (!shouldSyncSteamAchievements() || !hasSteamBridge()) return;
   for (const entry of getEntries()) {
     if (pushed.has(entry.apiName)) continue;
     let count = 0;
@@ -94,4 +97,9 @@ export async function syncSteamAchievements(state: GameState): Promise<void> {
       await steamUnlockAchievement(entry.apiName);
     }
   }
+}
+
+/** Test-only: clear the session cache of already-pushed Steam unlocks. */
+export function resetSteamAchievementSyncForTests(): void {
+  pushed.clear();
 }

@@ -1,5 +1,5 @@
 import { logger } from "@/lib/logger";
-import { isDemoEdition, isLocalOnlyEdition, isSteamBuild } from "@/lib/edition";
+import { isDemoEdition, isLocalOnlyEdition, shouldSyncSteamAchievements } from "@/lib/edition";
 import { ensureGameplayLocalesLoaded } from "@/i18n/loadLocaleResources";
 import { mountNotoSansSymbols2FontFace } from "@/lib/notoSansSymbols2FontFace";
 import { processStripePaymentReturn } from "@/lib/stripePaymentReturn";
@@ -244,7 +244,7 @@ async function finishGameplayInitialization(
     }
   }
 
-  if (isSteamBuild) {
+  if (shouldSyncSteamAchievements()) {
     void import("@/achievements/steamAchievements").then(
       ({ syncSteamAchievements }) =>
         syncSteamAchievements(useGameStore.getState()),

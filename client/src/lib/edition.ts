@@ -5,8 +5,9 @@
  * The Steam build is produced with `VITE_STEAM_BUILD=1` (see `build:steam` in
  * package.json). The Steam **demo** adds `VITE_STEAM_DEMO=1` (`build:steam-demo` /
  * `electron:package:demo`). Everything Steam-specific (no online services, no real-money
- * shop, merchant-sold artifacts, local + Steam Cloud saves, Steam achievements)
+ * shop, merchant-sold artifacts, local + Steam Cloud saves)
  * keys off `isSteamBuild`; the demo cap keys off `isSteamDemoBuild` / `isDemoEdition()`.
+ * Steam partner achievements are full/playtest only ({@link shouldSyncSteamAchievements}).
  * Playtest uses `VITE_STEAM_PLAYTEST=1` for an isolated save namespace (full game, no cap).
  * CrazyGames uses `VITE_CRAZYGAMES=1` (`build:crazygames`) or the `/crazygames` path.
  *
@@ -35,6 +36,15 @@ export const isSteamPlaytestBuild = import.meta.env.VITE_STEAM_PLAYTEST === "1";
 /** Full Steam desktop build (release app — not demo or playtest). */
 export const isSteamFullBuild =
   isSteamBuild && !isSteamDemoBuild && !isSteamPlaytestBuild;
+
+/**
+ * Steam partner achievements live on the full and playtest apps, not the demo.
+ * Demo progress is stored in the shared save; the full game backfills unlocks
+ * on load (and during play) from that save.
+ */
+export function shouldSyncSteamAchievements(): boolean {
+  return isSteamBuild && !isSteamDemoRuntime();
+}
 
 /** Convenience inverse for readability at web-only call sites. */
 export const isWebBuild = !isSteamBuild;

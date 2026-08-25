@@ -11,6 +11,7 @@
  * ready, which is the usual cause of Shift+Tab doing nothing. Call `initSteam`
  * before `whenReady` as well so SteamAPI_Init hooks before the GPU starts.
  */
+import { isSteamDemoBuild } from "./paths";
 
 type SteamworksModule = {
   init: (appId?: number) => SteamClient;
@@ -123,6 +124,9 @@ export function activateOverlayToStore(
 
 /** Activate an achievement by API name. Returns true if the call succeeded. */
 export function activateAchievement(apiName: string): boolean {
+  // Demo Steamworks app has no partner achievements. Full-game backfill
+  // unlocks earned progress when a demo save is loaded there.
+  if (isSteamDemoBuild) return false;
   try {
     if (!client) return false;
     if (client.achievement.isActivated(apiName)) return true;

@@ -32,6 +32,11 @@ describe("CrazyGames edition", () => {
     expect(edition.shouldHideSteamStoreLink("steamDemo")).toBe(true);
   });
 
+  it("does not sync Steam achievements on the web build", async () => {
+    const edition = await loadEdition();
+    expect(edition.shouldSyncSteamAchievements()).toBe(false);
+  });
+
   it("does not treat other paths as CrazyGames", async () => {
     vi.stubGlobal("window", {
       location: { pathname: "/galaxy" },
