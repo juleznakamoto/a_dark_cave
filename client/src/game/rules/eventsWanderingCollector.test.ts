@@ -78,6 +78,7 @@ describe("collectorRejectedItems", () => {
     expect([...COLLECTOR_ITEMS]).toEqual([
       "bloodstained_belt",
       "tarnished_amulet",
+      "fang_charm",
       "muttering_amulet",
       "cracked_crown",
       "ring_of_drowned",

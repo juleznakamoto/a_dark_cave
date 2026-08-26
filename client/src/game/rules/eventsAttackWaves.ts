@@ -187,9 +187,9 @@ const ATTACK_WAVE_DEFINITIONS: Record<AttackWaveId, AttackWaveDefinition> = {
     attack: { options: [60], cruelBonus: 15 },
     health: { base: 1000, cruelBonus: 150 },
     isBoss: true,
-    healChancePercent: 15,
+    healChancePercent: 10,
     healAmount: 100,
-    stunChancePercent: 10,
+    stunChancePercent: 5,
   },
   sixthWave: {
     ...ATTACK_WAVE_TIMER_DEFAULTS,
@@ -213,13 +213,13 @@ const ATTACK_WAVE_DEFINITIONS: Record<AttackWaveId, AttackWaveDefinition> = {
     ...ATTACK_WAVE_TIMER_DEFAULTS,
     ...attackWaveScaledParams(10),
     attack: { options: [100], cruelBonus: 40 },
-    health: { base: 1500, cruelBonus: 250 },
+    health: { base: 1400, cruelBonus: 250 },
   },
   tenthWave: {
     ...ATTACK_WAVE_TIMER_DEFAULTS,
     ...attackWaveScaledParams(10),
     attack: { options: [110], cruelBonus: 50 },
-    health: { base: 1400, cruelBonus: 300 },
+    health: { base: 1500, cruelBonus: 300 },
   },
   secondBossWave: {
     ...ATTACK_WAVE_TIMER_DEFAULTS,
@@ -227,9 +227,9 @@ const ATTACK_WAVE_DEFINITIONS: Record<AttackWaveId, AttackWaveDefinition> = {
     attack: { options: [120], cruelBonus: 50 },
     health: { base: 1600, cruelBonus: 300 },
     isBoss: true,
-    healChancePercent: 20,
+    healChancePercent: 15,
     healAmount: 100,
-    stunChancePercent: 15,
+    stunChancePercent: 10,
   },
 };
 

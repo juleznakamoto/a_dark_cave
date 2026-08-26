@@ -757,6 +757,19 @@ export const clothingEffects: Record<string, EffectDefinition> = {
     },
   },
 
+  fang_charm: {
+    id: "fang_charm",
+    name: "Fang Charm",
+    description:
+      "Cord of black fangs from a massive creature",
+    bonuses: {
+      generalBonuses: {
+        strength: 3,
+        madness: 1,
+      },
+    },
+  },
+
   ring_of_clarity: {
     id: "ring_of_clarity",
     name: "Ring of Clarity",
@@ -842,7 +855,7 @@ export const clothingEffects: Record<string, EffectDefinition> = {
     description: "Leather belt stained with old blood",
     bonuses: {
       generalBonuses: {
-        strength: 3,
+        strength: 4,
         luck: 1,
         madness: 1,
       },

@@ -341,6 +341,10 @@
     "wooden_figure": {
       "description": "Geschnitzte Holzfigur einer beunruhigenden Kreatur mit Tentakeln",
       "name": "Holzfigur"
+    },
+    "fang_charm": {
+      "description": "Band aus schwarzen Reißzähnen einer gewaltigen Kreatur",
+      "name": "Reißzahn-Talisman"
     }
   },
   "fellowship": {

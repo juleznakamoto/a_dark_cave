@@ -341,6 +341,10 @@
     "wooden_figure": {
       "description": "雕刻着触手怪物的木像，令人不安",
       "name": "木雕像"
+    },
+    "fang_charm": {
+      "description": "一串来自巨型生物的黑色獠牙",
+      "name": "獠牙护符"
     }
   },
   "fellowship": {

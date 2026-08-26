@@ -726,7 +726,8 @@
       "tarnishedAmulet": "Nelle ombre della caverna, qualcosa luccica. Trovi un Amuleto Annerito.",
       "silverSack": "Trovi un piccolo sacco di cuoio contenente 50 Argento.",
       "mapFragment": "Sul fondo della caverna trovi un frammento sbrindellato di una mappa.",
-      "firstVisit": "L'aria si fa più fredda mentre scendi lungo il sentiero più in profondità nella caverna. Le pareti attorno a te sembrano innaturalmente lisce, come se fossero state plasmate da qualcuno."
+      "firstVisit": "L'aria si fa più fredda mentre scendi lungo il sentiero più in profondità nella caverna. Le pareti attorno a te sembrano innaturalmente lisce, come se fossero state plasmate da qualcuno.",
+      "fangCharm": "Incuneato in una fessura del muro trovi un amuleto di zanne nere. Sono troppo grandi per qualsiasi cosa dovrebbe vivere qui."
     }
   },
   "buildGrandArchive": {

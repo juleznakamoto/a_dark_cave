@@ -341,6 +341,10 @@
     "trail_sense": {
       "description": "Your hunters bring back more food",
       "name": "Trail Sense"
+    },
+    "fang_charm": {
+      "description": "Cordão de presas pretas de uma criatura enorme",
+      "name": "Amuleto de Presas"
     }
   },
   "fellowship": {

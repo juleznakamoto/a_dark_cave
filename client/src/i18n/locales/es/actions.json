@@ -748,7 +748,8 @@
       "tarnishedAmulet": "En las sombras de la cueva, algo brilla. Encuentras un amuleto deslustrado.",
       "silverSack": "Encuentras un pequeño saco de cuero con 50 de plata.",
       "mapFragment": "En el suelo de la cueva encuentras un fragmento de mapa hecho jirones.",
-      "firstVisit": "El aire se vuelve más frío a medida que desciendes más profundo en la cueva. Las paredes parecen antinaturalmente lisas, como si alguien las hubiera moldeado."
+      "firstVisit": "El aire se vuelve más frío a medida que desciendes más profundo en la cueva. Las paredes parecen antinaturalmente lisas, como si alguien las hubiera moldeado.",
+      "fangCharm": "Encajado en una grieta de la pared encuentras un amuleto de colmillos negros. Son demasiado grandes para cualquier cosa que debería vivir aquí."
     }
   }
 }

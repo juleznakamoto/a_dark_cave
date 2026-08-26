@@ -341,6 +341,10 @@
     "wooden_figure": {
       "description": "Figura de madera tallada con forma de criatura inquietante con tentáculos",
       "name": "Figura de madera"
+    },
+    "fang_charm": {
+      "description": "Cordón de colmillos negros de una criatura enorme",
+      "name": "Amuleto de colmillos"
     }
   },
   "fellowship": {

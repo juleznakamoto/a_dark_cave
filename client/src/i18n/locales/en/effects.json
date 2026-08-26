@@ -122,6 +122,10 @@
       "description": "Well-crafted leather backpack easing the weight upon the shoulders",
       "name": "Explorer Backpack"
     },
+    "fang_charm": {
+      "description": "Cord of black fangs from a massive creature",
+      "name": "Fang Charm"
+    },
     "feeding_ring": {
       "description": "Ring that appeared one morning, seemingly fused to your finger",
       "name": "Feeding Ring"

@@ -726,7 +726,8 @@
       "tarnishedAmulet": "Nas sombras da caverna, algo reluz. Você encontra um Amuleto Manchado.",
       "silverSack": "Você encontra um pequeno saco de couro contendo 50 Prata.",
       "mapFragment": "No chão da caverna, você encontra um fragmento esfarrapado de um mapa.",
-      "firstVisit": "O ar fica mais frio conforme você desce o caminho mais fundo na caverna. As paredes ao seu redor parecem estranhamente lisas, como se moldadas por alguém."
+      "firstVisit": "O ar fica mais frio conforme você desce o caminho mais fundo na caverna. As paredes ao seu redor parecem estranhamente lisas, como se moldadas por alguém.",
+      "fangCharm": "Encaixado numa fenda da parede, você encontra um amuleto de presas pretas. Elas são grandes demais para qualquer coisa que deveria viver aqui."
     }
   },
   "buildGrandArchive": {

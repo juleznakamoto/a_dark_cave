@@ -341,6 +341,10 @@
     "wooden_figure": {
       "description": "Figurine de bois sculptée représentant une créature troublante aux tentacules",
       "name": "Figurine de bois"
+    },
+    "fang_charm": {
+      "description": "Cordon de crocs noirs provenant d'une créature massive",
+      "name": "Charme de crocs"
     }
   },
   "fellowship": {

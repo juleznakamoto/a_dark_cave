@@ -220,6 +220,12 @@ const caveItems = {
       category: "clothing",
     },
     {
+      key: "fang_charm",
+      probability: 0.1,
+      logMessageKey: "fangCharm",
+      category: "clothing",
+    },
+    {
       key: "bloodstained_belt",
       probability: 0.01,
       isChoice: true,

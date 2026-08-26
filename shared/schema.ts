@@ -182,6 +182,7 @@ export const gameStateSchema = z.object({
       highpriest_robe: z.boolean().default(false),
       loggers_gloves: z.boolean().default(false),
       tarnished_amulet: z.boolean().default(false),
+      fang_charm: z.boolean().default(false),
       bloodstained_belt: z.boolean().default(false),
       ravenfeather_mantle: z.boolean().default(false),
       muttering_amulet: z.boolean().default(false),

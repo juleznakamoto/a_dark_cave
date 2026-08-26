@@ -62,6 +62,8 @@ export const CAVE_LOOT_LOG_FALLBACKS: Record<string, Record<string, string>> = {
   ventureDeeper: {
     tarnishedAmulet:
       "In the cave's shadows, something glints. You find a Tarnished Amulet.",
+    fangCharm:
+      "Wedged in a crack in the wall you find a charm of black fangs. They are far too large for anything that should live here.",
     silverSack: "You find a small leather sack containing 50 Silver.",
     mapFragment: "On the cave floor you find a tattered fragment of a map.",
   },

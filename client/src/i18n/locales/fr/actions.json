@@ -748,7 +748,8 @@
       "tarnishedAmulet": "Dans l'ombre de la grotte, quelque chose scintille. Vous trouvez un amulette ternie.",
       "silverSack": "Vous trouvez un petit sac en cuir contenant 50 pièces d'argent.",
       "mapFragment": "Sur le sol de la grotte, vous trouvez un fragment de carte déchiré.",
-      "firstVisit": "L'air devient plus froid à mesure que vous descendez plus profondément dans la grotte. Les parois semblent anormalement lisses, comme façonnées par quelqu'un."
+      "firstVisit": "L'air devient plus froid à mesure que vous descendez plus profondément dans la grotte. Les parois semblent anormalement lisses, comme façonnées par quelqu'un.",
+      "fangCharm": "Calé dans une fissure du mur, vous trouvez un charme de crocs noirs. Ils sont bien trop grands pour tout ce qui devrait vivre ici."
     }
   }
 }

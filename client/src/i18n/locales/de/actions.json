@@ -748,7 +748,8 @@
       "tarnishedAmulet": "In den Schatten der Höhle glitzert etwas. Du findest ein Angelaufenes Amulett.",
       "silverSack": "Du findest einen kleinen Ledersack mit 50 Silber.",
       "mapFragment": "Auf dem Höhlenboden findest du ein zerrissenes Kartenfragment.",
-      "firstVisit": "Die Luft wird kälter, während du den Pfad tiefer in die Höhle hinabsteigst. Die Wände wirken unnatürlich glatt, als hätte sie jemand geformt."
+      "firstVisit": "Die Luft wird kälter, während du den Pfad tiefer in die Höhle hinabsteigst. Die Wände wirken unnatürlich glatt, als hätte sie jemand geformt.",
+      "fangCharm": "In einem Riss in der Wand findest du einen Talisman aus schwarzen Reißzähnen. Sie sind viel zu groß für alles, was hier leben sollte."
     }
   }
 }
