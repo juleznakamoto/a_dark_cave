@@ -366,7 +366,6 @@ export const caveCraftTools: Record<string, Action> = {
     id: "craftBlacksteelAxe",
     label: "Blacksteel Axe",
     show_when: {
-      "buildings.masterworkFoundry": 1,
       "buildings.grandBlacksmith": 1,
       "tools.blacksteel_axe": false,
     },
@@ -386,7 +385,6 @@ export const caveCraftTools: Record<string, Action> = {
     id: "craftBlacksteelPickaxe",
     label: "Blacksteel Pickaxe",
     show_when: {
-      "buildings.masterworkFoundry": 1,
       "buildings.grandBlacksmith": 1,
       "tools.blacksteel_pickaxe": false,
     },
@@ -406,7 +404,6 @@ export const caveCraftTools: Record<string, Action> = {
     id: "craftBlacksteelLantern",
     label: "Blacksteel Lantern",
     show_when: {
-      "buildings.masterworkFoundry": 1,
       "buildings.grandBlacksmith": 1,
       "tools.blacksteel_lantern": false,
     },
@@ -426,7 +423,6 @@ export const caveCraftTools: Record<string, Action> = {
     id: "craftBlacksteelArmor",
     label: "Blacksteel Armor",
     show_when: {
-      "buildings.masterworkFoundry": 1,
       "buildings.grandBlacksmith": 1,
       "clothing.blacksteel_armor": false,
     },

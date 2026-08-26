@@ -126,6 +126,7 @@ export default function OutcomeDialog({
       `}</style>
       <Dialog open={isOpen} onOpenChange={() => { }}>
         <DialogContent
+          openClickLockKey={`${title}-${buttonId}`}
           className={`[--adc-dialog-max-w:24rem] z-[70] gap-4 [&>button]:hidden border-2 shadow-2xl ${border}`}
         >
           <div

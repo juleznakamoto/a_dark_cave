@@ -47,7 +47,7 @@ export const BUILDING_HIERARCHIES: Record<string, string[]> = {
   // Hunter cabin chain
   cabin: ["cabin", "greatCabin", "grandHunterLodge"],
 
-  // Traps: side panel shows Improved Traps only once the upgrade exists (traps count stays 2 for combat)
+  // Traps: side panel shows Improved Traps only once the upgrade exists (combat tier is 2)
   traps: ["traps", "improvedTraps"],
 
   // Clerk chain
@@ -65,6 +65,26 @@ export const BUILDING_HIERARCHIES: Record<string, string[]> = {
   // Builder chain
   builders: ["buildersLodge", "buildersHall", "buildersGuild"],
 };
+
+/** Traps = 1 (+10% win), Improved Traps = 2 (+20%). Reads improvedTraps so older saves still get the upgrade. */
+export function getTrapLevel(buildings?: {
+  traps?: number;
+  improvedTraps?: number;
+}): number {
+  if ((buildings?.improvedTraps ?? 0) > 0) return 2;
+  if ((buildings?.traps ?? 0) > 0) return 1;
+  return 0;
+}
+
+/** +10% win chance per trap tier. */
+export const TRAP_WIN_CHANCE_PER_LEVEL = 0.1;
+
+export function getTrapWinChanceBonus(buildings?: {
+  traps?: number;
+  improvedTraps?: number;
+}): number {
+  return getTrapLevel(buildings) * TRAP_WIN_CHANCE_PER_LEVEL;
+}
 
 /**
  * Check if a building should be hidden based on upgrade hierarchies

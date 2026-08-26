@@ -262,7 +262,6 @@ export const caveCraftWeapons: Record<string, Action> = {
     id: "craftBlacksteelSword",
     label: "Blacksteel Sword",
     show_when: {
-      "buildings.masterworkFoundry": 1,
       "buildings.grandBlacksmith": 1,
       "weapons.blacksteel_sword": false,
     },
@@ -282,7 +281,6 @@ export const caveCraftWeapons: Record<string, Action> = {
     id: "craftBlacksteelBow",
     label: "Blacksteel Bow",
     show_when: {
-      "buildings.masterworkFoundry": 1,
       "buildings.grandBlacksmith": 1,
       "weapons.blacksteel_bow": false,
     },

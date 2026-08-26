@@ -4,6 +4,7 @@ import type { GameEvent } from "./eventTypes";
 import { calculateSuccessChance, defineSuccessChance } from "./eventSuccessChance";
 import { bloodMoonSacrificeAmount } from "../cruelMode";
 import { btpLootAmount } from "@/game/btpLoot";
+import { getTrapLevel, getTrapWinChanceBonus } from "@/game/buildingHierarchy";
 
 function bloodMoonI18nVars(state: GameState) {
   return {
@@ -59,14 +60,14 @@ export const bloodMoonEvents: Record<string, GameEvent> = {
       {
         id: "prepareForAttack",
         ...defineSuccessChance({
-          base: (state) => (state.buildings.traps ?? 0) * 0.1,
+          base: (state) => getTrapWinChanceBonus(state.buildings),
           stats: [
             { type: "strength", multiplier: 0.0025 },
             { type: "knowledge", multiplier: 0.0025 },
           ],
         }),
         effect: (state: GameState) => {
-          const traps = state.buildings.traps;
+          const traps = getTrapLevel(state.buildings);
           const sacrificeAmount = bloodMoonSacrificeAmount(
             state.cruelMode,
             state.bloodMoonState?.occurrenceCount ?? 0,
@@ -136,7 +137,7 @@ export const bloodMoonEvents: Record<string, GameEvent> = {
       id: "prepareForAttack",
       effect: (state: GameState) => {
         // Same logic as prepareForAttack choice
-        const traps = state.buildings.traps;
+        const traps = getTrapLevel(state.buildings);
         const sacrificeAmount = bloodMoonSacrificeAmount(
           state.cruelMode,
           state.bloodMoonState?.occurrenceCount ?? 0,

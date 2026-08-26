@@ -406,6 +406,8 @@ export const villageBuildActions: Record<string, Action> = {
       1: {
         "buildings.stoneHut": 5,
         "buildings.advancedBlacksmith": 1,
+        "buildings.primeFoundry": 1,
+        "buildings.bottomlessPit": 1,
         "buildings.grandBlacksmith": 0,
       },
     },
@@ -1067,7 +1069,7 @@ export const villageBuildActions: Record<string, Action> = {
     effects: {
       1: {
         "buildings.improvedTraps": 1,
-        "buildings.traps": 1,
+        "buildings.traps": 2,
       },
     },
     executionTime: 90,
