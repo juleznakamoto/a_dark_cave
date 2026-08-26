@@ -1156,28 +1156,28 @@ export default function StartScreen({
                 </span>
               </button>
             ))}
+          {!steamEditionActive && !crazyGamesEditionActive && (
+            <>
+              <a
+                href="/faq"
+                target="_blank"
+                rel="noopener noreferrer"
+                className={START_FOOTER_SOCIAL_LINK}
+              >
+                {t("footer.faq")}
+              </a>
+              <a
+                href="/about"
+                target="_blank"
+                rel="noopener noreferrer"
+                className={START_FOOTER_SOCIAL_LINK}
+              >
+                {t("footer.about")}
+              </a>
+            </>
+          )}
           {!steamEditionActive && (
-            <div className="flex flex-col items-end leading-tight sm:flex-row sm:items-center sm:gap-x-3">
-              {!crazyGamesEditionActive && (
-                <>
-                  <a
-                    href="/faq"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className={START_FOOTER_LEGAL_LINK}
-                  >
-                    {t("footer.faq")}
-                  </a>
-                  <a
-                    href="/about"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className={START_FOOTER_LEGAL_LINK}
-                  >
-                    {t("footer.about")}
-                  </a>
-                </>
-              )}
+            <div className="flex flex-col items-end leading-tight">
               <a
                 href="/privacy"
                 target="_blank"
