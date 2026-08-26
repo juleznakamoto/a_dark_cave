@@ -100,11 +100,11 @@ describe("resolveLogPanelMessage", () => {
     expect(text).toBe("Ein Neuankömmling trifft ein und richtet sich ein.");
   });
 
-  it("matches legacy English dark estate build log in German saves", async () => {
+  it("matches English dark estate build log in German saves", async () => {
     await i18n.changeLanguage("de");
     const text = resolveLogPanelMessage(
       systemEntry(
-        "The Dark Estate stands has been built on a small hill near the village, offering solitude and refuge.",
+        "The Dark Estate stands on a small hill near the village, offering solitude and refuge.",
       ),
     );
     expect(text).toBe(
@@ -116,7 +116,7 @@ describe("resolveLogPanelMessage", () => {
     await i18n.changeLanguage("de");
     const text = resolveLogPanelMessage(
       systemEntry(
-        "The Dark Estate stands has been built on a small hill near the village, offering solitude and refuge.",
+        "The Dark Estate stands on a small hill near the village, offering solitude and refuge.",
         { logKey: "building.darkEstate" },
       ),
     );

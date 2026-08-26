@@ -341,7 +341,7 @@ const LEGACY_SYSTEM_LOG_MATCHERS: PatternMatcher[] = [
   },
   {
     pattern:
-      /^The Dark Estate stands has been built on a small hill near the village, offering solitude and refuge\.$/,
+      /^The Dark Estate stands(?: has been built)? on a small hill near the village, offering solitude and refuge\.$/,
     resolve: () => ({ logKey: "building.darkEstate", vars: {} }),
   },
   {

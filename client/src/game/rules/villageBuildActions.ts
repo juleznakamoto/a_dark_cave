@@ -119,13 +119,13 @@ function formatStackedStrangerApproachPercent(
 function populationHutTooltipEffects(
   count: number,
   perLevel: number,
-  defaultAmount: number,
   strangerBonus: number,
 ): BuildingTooltipEffect[] {
-  const totalPopulation = count * perLevel;
+  // Build button and owned-building tooltips share this helper. Max pop is the
+  // increment of one more hut, not the stacked total from huts already built.
   const effects: BuildingTooltipEffect[] = [
     bt("maxPopulation", "+{{amount}} Max Population", {
-      amount: count > 0 ? totalPopulation : defaultAmount,
+      amount: perLevel,
     }),
   ];
   if (count > 0) {
@@ -163,7 +163,6 @@ export const villageBuildActions: Record<string, Action> = {
     tooltipEffects: (state: GameState) =>
       populationHutTooltipEffects(
         state.buildings.woodenHut || 0,
-        2,
         2,
         VILLAGE_BUILDING_STRANGER_APPROACH_BONUS.woodenHut,
       ),
@@ -865,7 +864,6 @@ export const villageBuildActions: Record<string, Action> = {
       populationHutTooltipEffects(
         state.buildings.longhouse || 0,
         8,
-        8,
         VILLAGE_BUILDING_STRANGER_APPROACH_BONUS.longhouse,
       ),
     strangerApproachBonus: VILLAGE_BUILDING_STRANGER_APPROACH_BONUS.longhouse,
@@ -949,7 +947,6 @@ export const villageBuildActions: Record<string, Action> = {
     tooltipEffects: (state: GameState) =>
       populationHutTooltipEffects(
         state.buildings.furTents || 0,
-        4,
         4,
         VILLAGE_BUILDING_STRANGER_APPROACH_BONUS.furTents,
       ),
@@ -2506,7 +2503,6 @@ export const villageBuildActions: Record<string, Action> = {
     tooltipEffects: (state: GameState) =>
       populationHutTooltipEffects(
         state.buildings.stoneHut || 0,
-        4,
         4,
         VILLAGE_BUILDING_STRANGER_APPROACH_BONUS.stoneHut,
       ),

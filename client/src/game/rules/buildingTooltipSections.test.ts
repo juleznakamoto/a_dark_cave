@@ -42,4 +42,30 @@ describe("getBuildingUpgradeMarginalEffectLines", () => {
       getBuildingUpgradeMarginalEffectLines("grandArchive", state),
     ).toEqual(["Adds 2 villager job preset slots"]);
   });
+
+  it("housing build tooltips show the next hut increment, not stacked max pop", () => {
+    const state = {
+      ...createInitialState(),
+      buildings: {
+        ...createInitialState().buildings,
+        woodenHut: 10,
+        stoneHut: 8,
+        longhouse: 4,
+        furTents: 3,
+      },
+    };
+
+    expect(getBuildingUpgradeMarginalEffectLines("woodenHut", state)[0]).toBe(
+      "+2 Max Population",
+    );
+    expect(getBuildingUpgradeMarginalEffectLines("stoneHut", state)[0]).toBe(
+      "+4 Max Population",
+    );
+    expect(getBuildingUpgradeMarginalEffectLines("longhouse", state)[0]).toBe(
+      "+8 Max Population",
+    );
+    expect(getBuildingUpgradeMarginalEffectLines("furTents", state)[0]).toBe(
+      "+4 Max Population",
+    );
+  });
 });

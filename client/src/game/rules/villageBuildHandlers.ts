@@ -1136,7 +1136,7 @@ export function handleBuildDarkEstate(
       estateResult,
       "dark-estate-built",
       "building.darkEstate",
-      "The Dark Estate stands has been built on a small hill near the village, offering solitude and refuge.",
+      "The Dark Estate stands on a small hill near the village, offering solitude and refuge.",
     );
   }
 
