@@ -173,7 +173,7 @@
       "defend_manyDeaths_steel": "Los aldeanos luchan desesperadamente contra el ejército de huesos. Varios aldeanos caen ante los guerreros esqueléticos. El ejército de huesos saquea los almacenes antes de marcharse.",
       "defend_manyDeaths_steel_hut": "Los aldeanos luchan desesperadamente contra el ejército de huesos. Varios aldeanos caen ante los guerreros esqueléticos. El ejército de huesos saquea los almacenes antes de marcharse. Las criaturas esqueléticas destrozan una de las chozas y la reducen a escombros.",
       "hide_noDeaths": "Los aldeanos se esconden aterrados mientras el ejército de huesos registra la aldea. Al amanecer, el ejército esquelético se ha marchado y solo deja fragmentos de hueso.",
-      "hide_noDeaths_loot": "Los aldeanos se esconden aterrados mientras el ejército de huesos registra la aldea. Al amanecer, el ejército esquelético se ha marchado y solo deja fragmentos de hueso. El ejército saquea tus provisiones antes de desaparecer en la oscuridad.",
+      "hide_noDeaths_loot": "Los aldeanos se esconden aterrados mientras el ejército de huesos registra la aldea. El ejército saquea tus provisiones y desaparece en la oscuridad, dejando solo fragmentos de hueso.",
       "hide_oneDeath": "Los aldeanos se esconden aterrados mientras el ejército de huesos registra la aldea. Un aldeano que intentó huir muere.",
       "hide_oneDeath_loot": "Los aldeanos se esconden aterrados mientras el ejército de huesos registra la aldea. Un aldeano que intentó huir muere. El ejército saquea tus provisiones antes de desaparecer en la oscuridad.",
       "hide_manyDeaths": "Los aldeanos se esconden aterrados mientras el ejército de huesos registra la aldea. Los aldeanos que intentaron huir mueren a manos de las criaturas de hueso.",
@@ -285,7 +285,7 @@
       "defeat_manyDeaths": "Los caníbales arrollan tus defensas. Varios aldeanos mueren o son secuestrados por los caníbales.",
       "defeat_manyDeaths_loot": "Los caníbales arrollan tus defensas. Varios aldeanos mueren o son secuestrados por los caníbales. Los caníbales saquean tus provisiones antes de retirarse a la espesura.",
       "hide_noDeaths": "Los aldeanos se esconden aterrados mientras los caníbales registran la aldea. Al amanecer, los caníbales se han marchado sin encontrar a nadie.",
-      "hide_noDeaths_loot": "Los aldeanos se esconden aterrados mientras los caníbales registran la aldea. Al amanecer, los caníbales se han marchado sin encontrar a nadie. Los caníbales saquean tus provisiones sin oposición antes de escabullirse.",
+      "hide_noDeaths_loot": "Los aldeanos se esconden aterrados mientras los caníbales registran la aldea. Los caníbales saquean tus provisiones sin oposición y se escabullen al amanecer sin encontrar a nadie.",
       "hide_oneDeath": "Los aldeanos se esconden aterrados mientras los caníbales registran la aldea. Un aldeano es secuestrado.",
       "hide_oneDeath_loot": "Los aldeanos se esconden aterrados mientras los caníbales registran la aldea. Un aldeano es secuestrado. Los caníbales saquean tus provisiones sin oposición antes de escabullirse.",
       "hide_manyDeaths": "Los aldeanos se esconden aterrados mientras los caníbales registran la aldea. Varios aldeanos mueren o son secuestrados.",
@@ -895,7 +895,7 @@
       "outcome0": "Sostienes el anillo en la mano. Se siente suave, apenas cálido y acogedor."
     },
     "message": "Una mañana, sobre un tocón junto a la entrada de la cueva, encuentras un anillo, como si alguien lo hubiera dejado allí para ti.",
-    "title": "Un regalo esperado"
+    "title": "Un regalo inesperado"
   },
   "hiddenLake": {
     "choices": {
@@ -2198,7 +2198,7 @@
         "label": "No ayudar"
       },
       "send_search_party": {
-        "cost": "500 comida, 50 antorcha",
+        "cost": "500 comida, 50 antorchas",
         "label": "Enviar grupo de búsqueda" //x1.4
       }
     },
@@ -2706,8 +2706,8 @@
       "defend_manyDeaths_food_hut_first": "Los aldeanos luchan desesperadamente contra los lobos. Varios aldeanos caen ante la furia sobrenatural de los lobos. En el caos, los lobos arrasan tus provisiones. En su frenesí, los lobos destruyen una de las chozas y no dejan más que madera astillada. Los aldeanos sugieren colocar trampas alrededor de la aldea para protegerse mejor de los lobos y otros enemigos.",
       "hide_noDeaths": "Los aldeanos se apiñan en sus chozas mientras los lobos merodean afuera. Al amanecer, los lobos se han marchado y solo dejan arañazos y terror.",
       "hide_noDeaths_first": "Los aldeanos se apiñan en sus chozas mientras los lobos merodean afuera. Al amanecer, los lobos se han marchado y solo dejan arañazos y terror. Los aldeanos sugieren colocar trampas alrededor de la aldea para protegerse mejor de los lobos y otros enemigos.",
-      "hide_noDeaths_food": "Los aldeanos se apiñan en sus chozas mientras los lobos merodean afuera. Al amanecer, los lobos se han marchado y solo dejan arañazos y terror. Los lobos saquean tus provisiones antes de desaparecer al amanecer.",
-      "hide_noDeaths_food_first": "Los aldeanos se apiñan en sus chozas mientras los lobos merodean afuera. Al amanecer, los lobos se han marchado y solo dejan arañazos y terror. Los lobos saquean tus provisiones antes de desaparecer al amanecer. Los aldeanos sugieren colocar trampas alrededor de la aldea para protegerse mejor de los lobos y otros enemigos.",
+      "hide_noDeaths_food": "Los aldeanos se apiñan en sus chozas mientras los lobos merodean afuera. Los lobos saquean tus provisiones y desaparecen al amanecer, dejando solo arañazos y terror.",
+      "hide_noDeaths_food_first": "Los aldeanos se apiñan en sus chozas mientras los lobos merodean afuera. Los lobos saquean tus provisiones y desaparecen al amanecer, dejando solo arañazos y terror. Los aldeanos sugieren colocar trampas alrededor de la aldea para protegerse mejor de los lobos y otros enemigos.",
       "hide_oneDeath": "Los aldeanos se apiñan en sus chozas mientras los lobos merodean afuera. Un aldeano que se aventuró afuera aparece despedazado al amanecer.",
       "hide_oneDeath_first": "Los aldeanos se apiñan en sus chozas mientras los lobos merodean afuera. Un aldeano que se aventuró afuera aparece despedazado al amanecer. Los aldeanos sugieren colocar trampas alrededor de la aldea para protegerse mejor de los lobos y otros enemigos.",
       "hide_oneDeath_food": "Los aldeanos se apiñan en sus chozas mientras los lobos merodean afuera. Un aldeano que se aventuró afuera aparece despedazado al amanecer. Los lobos saquean tus provisiones antes de desaparecer al amanecer.",

@@ -190,7 +190,7 @@
       "defend_manyDeaths_steel": "The villagers fight desperately against the bone army. Several villagers fall to the skeletal warriors. The bone army ransacks the stores before leaving.",
       "defend_manyDeaths_steel_hut": "The villagers fight desperately against the bone army. Several villagers fall to the skeletal warriors. The bone army ransacks the stores before leaving. The skeletal creatures tear apart one of the huts, reducing it to rubble.",
       "hide_noDeaths": "The villagers hide in terror as the bone army searches the village. By morning, the skeletal army has departed, leaving only bone fragments behind.",
-      "hide_noDeaths_loot": "The villagers hide in terror as the bone army searches the village. By morning, the skeletal army has departed, leaving only bone fragments behind. The army ransacks your supplies before disappearing into the dark.",
+      "hide_noDeaths_loot": "The villagers hide in terror as the bone army searches the village. The skeletal army ransacks your supplies, then disappears into the dark, leaving only bone fragments behind.",
       "hide_oneDeath": "The villagers hide in terror as the bone army searches the village. One villager who tried to flee is killed.",
       "hide_oneDeath_loot": "The villagers hide in terror as the bone army searches the village. One villager who tried to flee is killed. The army ransacks your supplies before disappearing into the dark.",
       "hide_manyDeaths": "The villagers hide in terror as the bone army searches the village. The villagers who tried to flee are killed by the bone creatures.",
@@ -323,7 +323,7 @@
     "log": {
       "outcome0": "You accept the elder's wisdom. The villagers nod in silent approval. The path to building the ultimate monument to the gods now lies open."
     },
-    "message": "An elder woman with clouded eyes approaches you, 'We must end the spillng of human blood,' she declares. 'The old gods demand a great monument in their honor. Only then will the gods grant us their continued favor.'",
+    "message": "An elder woman with clouded eyes approaches you, 'We must end the spilling of human blood,' she declares. 'The old gods demand a great monument in their honor. Only then will the gods grant us their continued favor.'",
     "title": "The Elder's Demand"
   },
   "boneyardPlea": {
@@ -353,15 +353,15 @@
       "defeat_manyDeaths": "The cannibals overwhelm your defenses. Several villagers are killed or abducted by the cannibals.",
       "defeat_manyDeaths_loot": "The cannibals overwhelm your defenses. Several villagers are killed or abducted by the cannibals. The cannibals ransack your stores before retreating to the wilds.",
       "hide_noDeaths": "The villagers hide in terror as the cannibals search the village. By dawn, the cannibals have left without finding anyone.",
-      "hide_noDeaths_loot": "The villagers hide in terror as the cannibals search the village. By dawn, the cannibals have left without finding anyone. The cannibals plunder your stores freely before slipping away.",
+      "hide_noDeaths_loot": "The villagers hide in terror as the cannibals search the village. The cannibals plunder your stores freely, then slip away at dawn without finding anyone.",
       "hide_oneDeath": "The villagers hide in terror as the cannibals search the village. One villager gets abducted.",
       "hide_oneDeath_loot": "The villagers hide in terror as the cannibals search the village. One villager gets abducted. The cannibals plunder your stores freely before slipping away.",
       "hide_manyDeaths": "The villagers hide in terror as the cannibals search the village. Several villagers are killed or abducted.",
       "hide_manyDeaths_loot": "The villagers hide in terror as the cannibals search the village. Several villagers are killed or abducted. The cannibals plunder your stores freely before slipping away.",
       "victory_one": "The villagers drive back the cannibals! One villager falls in the battle, but the tribe retreats in defeat. Among the bodies, you find a primitive necklace made of human bones.",
-      "victory_many": "The villagers fight valiantly and repel the cannibals! Multiple illagers fall in the battle, but the tribe is forced to retreat. Among the bodies, you find a primitive necklace made of human bones."
+      "victory_many": "The villagers fight valiantly and repel the cannibals! Several villagers fall in the battle, but the tribe is forced to retreat. Among the bodies, you find a primitive necklace made of human bones."
     },
-    "message": "War drums echo through the night as tribe of cannibals emerges from the wilderness. They advance on the village with crude weapons and terrible intent.",
+    "message": "War drums echo through the night as a tribe of cannibals emerges from the wilderness. They advance on the village with crude weapons and terrible intent.",
     "title": "Cannibal Raid"
   },
   "chainmasterCollector": {
@@ -394,7 +394,7 @@
       }
     },
     "log": {
-      "outcome0": "You follow the compass deap into the woods, where you unearth a small chest extraordinarily sturdy construction. You cannot open it, so you carry it back with you."
+      "outcome0": "You follow the compass deep into the woods, where you unearth a small chest of extraordinarily sturdy construction. You cannot open it, so you carry it back with you."
     },
     "message": "You wake in the night to a strange sound. The tarnished compass needle spins wildly in the darkness. When you grasp it, the needle stops, pointing firmly in one direction.",
     "title": "The Stirring Needle"
@@ -972,7 +972,7 @@
       "outcome0": "You hold the ring in your hand. It feels soft, faintly warm and welcoming."
     },
     "message": "One morning, on a tree stump beside the cave entrance, you find a ring, as though someone left it there for you.",
-    "title": "An Expected Gift"
+    "title": "An Unexpected Gift"
   },
   "hiddenLake": {
     "choices": {
@@ -1010,8 +1010,8 @@
       }
     },
     "log": {
-      "outcome0": "You grasp the Hollow King Scepter, feeling immense power flow through you. Ancient knowledge floods your mind, along with the King memories of his final, maddening days.",
-      "outcome1": "You decide to leave the dead King scepter where it belongs. As you turn away, you swear you hear a faint whisper of disappointment echoing through the empty throne room.",
+      "outcome0": "You grasp the Hollow King Scepter, feeling immense power flow through you. Ancient knowledge floods your mind, along with the king's memories of his final, maddening days.",
+      "outcome1": "You decide to leave the dead king's scepter where it belongs. As you turn away, you swear you hear a faint whisper of disappointment echoing through the empty throne room.",
       "outcome2": "As you stand frozen in indecision, the men grow impatient and greedy. One reaches for the scepter, then another. Soon they are fighting viciously. In the bloody melee {{actualDeaths}} of your fellowship die, their blood mixing with the dust of ages."
     },
     "message": "In the throne room of the citadel, you find a magnificent scepter of obsidian. It must have belonged to the king of this lost city. Dark knowledge flows from it. Do you keep it?",
@@ -1090,7 +1090,7 @@
       }
     },
     "log": {
-      "digWellOutcome": "The villagers dig a new well. Water returns. That evening, an starved man arrives from the forest.",
+      "digWellOutcome": "The villagers dig a new well. Water returns. That evening, a starved man arrives from the forest.",
       "searchOutcome": "There is nothing left to drink. {{deaths}} older villagers die of thirst. The woman cannot be found, but the searchers drag a starved man from the forest."
     },
     "message": {
@@ -1429,7 +1429,7 @@
       }
     },
     "log": {
-      "outcome0": "Within is a book which age you cannot guess. Its cover is long gone, the pages are torn, yet the perfectly written letters are still sharp. As you carefully turn the pages, you realize it teaches the slow shaping of the self through repetition."
+      "outcome0": "Within is a book whose age you cannot guess. Its cover is long gone, the pages are torn, yet the perfectly written letters are still sharp. As you carefully turn the pages, you realize it teaches the slow shaping of the self through repetition."
     },
     "message": "One late evening, you hear a gentle knock on the door of the estate. As you open it, no one is there, only something bound in dark brown leather resting on the doorstep.",
     "title": "A Quiet Knock"
@@ -1695,7 +1695,7 @@
     "log": {
       "outcome0": "The knight waited but you did not respond. 'Perhaps another time,' he says before continuing his journey.",
       "outcome2": "The knight shares: 'On the ocean shore I found a dead city, half-claimed by the waves. Among its ruins lie vast metal vessels, their rusted hulls still defying time. The ancients once ruled the seas with these giants, now stranded and silent on the sand.'",
-      "outcome4": "Content for the meal, the knight shares: 'On the ocean shore I found a dead city, half-claimed by the waves. Among its ruins lie vast metal vessels, their rusted hulls still defying time. The ancients once ruled the seas with these giants, now stranded and silent on the sand.'",
+      "outcome4": "Content with the meal, the knight shares: 'On the ocean shore I found a dead city, half-claimed by the waves. Among its ruins lie vast metal vessels, their rusted hulls still defying time. The ancients once ruled the seas with these giants, now stranded and silent on the sand.'",
       "outcome5": "Your words move the knight. He speaks: 'On the ocean shore I found a dead city, half-claimed by the waves. Among its ruins lie vast metal vessels, their rusted hulls still defying time. The ancients once ruled the seas with these giants, now stranded and silent on the sand.'",
       "outcome6": "The knight listens but remains unmoved. 'Your words are sincere, but this knowledge is precious. Perhaps another time.' He departs without sharing his discovery.",
       "outcome7": "You decline his offer. The knight nods solemnly. 'Very well. The secrets of the shore shall remain with me for now,' he says before walking away."
@@ -1724,11 +1724,11 @@
       "outcome0": "The knight waited but you did not respond. 'Perhaps another time,' he says before continuing his journey.",
       "outcome2": "The knight nods with satisfaction. 'A fair price. I shall defend your people with my life.' He removes his weathered helm, revealing a scarred but determined face. The restless knight has joined your fellowship.",
       "outcome4": "The knight accepts the silver with a solemn bow. 'I shall defend your people with my life.' He removes his weathered helm, revealing a scarred but determined face. The restless knight has joined your fellowship.",
-      "outcome5": "'Your purpose seems noble, the knight’s eyes brighten. 'I would be honored to stand with you.' He removes his weathered helm, revealing a scarred but determined face. The restless knight has joined your fellowship.",
+      "outcome5": "'Your purpose seems noble.' The knight's eyes brighten. 'I would be honored to stand with you.' He removes his weathered helm, revealing a scarred but determined face. The restless knight has joined your fellowship.",
       "outcome6": "The knight listens but shakes his head. 'Words alone cannot sustain a warrior. I must continue my journey, then, for now.', he says, turning away and departing.",
       "outcome7": "You decline his offer. The knight nods with understanding. 'I respect your decision. I must continue my journey, then, for now.', he says, turning away and departing."
     },
-    "message": "The knight returns, 'I traveled far south to a vast desert. There, I met a man devoted to recovering lost technology of the ancients. He showed me devices once embedded in the skull, enhancing senses beyond natural limits. ' He pauses, 'I have traveled enough. You could use a veteran blade. I offer my service in combat, if you accept.'",
+    "message": "The knight returns, 'I traveled far south to a vast desert. There, I met a man devoted to recovering lost technology of the ancients. He showed me devices once embedded in the skull, enhancing senses beyond natural limits.' He pauses, 'I have traveled enough. You could use a veteran blade. I offer my service in combat, if you accept.'",
     "title": "The Knight's Final Journey"
   },
   "restlessKnightMountains": {
@@ -1751,7 +1751,7 @@
       "outcome4": "Grateful for the meal, the knight shares his discovery: 'High in the mountains lies a monastery carved into the cliffs. The scholars there who study the past speak of a civilization far beyond our understanding. Their craft was so advanced it would seem like magic to us. Yet something brought their world to ruin.'",
       "outcome5": "You decline his offer. The knight nods understandingly. 'The knowledge will remain with me then,' he says before departing once more."
     },
-    "message": "The knight returns, his armor scratched and battered. 'I found something extraordinary in the mountains,' he says. I will tell you about it, for a price'",
+    "message": "The knight returns, his armor scratched and battered. 'I found something extraordinary in the mountains,' he says. 'I will tell you about it, for a price.'",
     "title": "Return from the Mountains"
   },
   "riddleOfAges": {
@@ -1891,7 +1891,7 @@
     },
     "log": {
       "wrong": "The figure shakes its head before vanishing. The next day, a dense fog creeps into the village. Villagers claim to see shifting shapes within it, many are too fearful to leave their huts.",
-      "success_fifth": "The figure bows its head in silent reverence before fading completely. A big sack of gold lays on the ground where it stood."
+      "success_fifth": "The figure bows its head in silent reverence before fading completely. A big sack of gold lies on the ground where it stood."
     }
   },
   "riddleOfEternal_variant": {
@@ -1919,14 +1919,14 @@
     },
     "log": {
       "wrong": "The figure shakes its head before vanishing. The next day, a dense fog creeps into the village. Villagers claim to see shifting shapes within it, many are too fearful to leave their huts.",
-      "success_fifth": "The figure bows its head in silent reverence before fading completely. A big sack of gold lays on the ground where it stood."
+      "success_fifth": "The figure bows its head in silent reverence before fading completely. A big sack of gold lies on the ground where it stood."
     }
   },
   "riddleOfTears": {
     "title": "A hooded Guest",
     "message": {
-      "original": "The hulled figure appears once more at the estate. It whispers: 'Flies without wings, cries without eyes, darkness follows wherever it goes.'",
-      "variant": "The hulled figure appears once more at the estate. It whispers: 'Soft, delicate, silky, but if you're wrapped in me, you scream.'"
+      "original": "The hooded figure appears once more at the estate. It whispers: 'Flies without wings, cries without eyes, darkness follows wherever it goes.'",
+      "variant": "The hooded figure appears once more at the estate. It whispers: 'Soft, delicate, silky, but if you're wrapped in me, you scream.'"
     },
     "choices": {
       "answerNight": {
@@ -1953,8 +1953,8 @@
   "riddleOfTears_variant": {
     "title": "A hooded Guest",
     "message": {
-      "original": "The hulled figure appears once more at the estate. It whispers: 'Flies without wings, cries without eyes, darkness follows wherever it goes.'",
-      "variant": "The hulled figure appears once more at the estate. It whispers: 'Soft, delicate, silky, but if you're wrapped in me, you scream.'"
+      "original": "The hooded figure appears once more at the estate. It whispers: 'Flies without wings, cries without eyes, darkness follows wherever it goes.'",
+      "variant": "The hooded figure appears once more at the estate. It whispers: 'Soft, delicate, silky, but if you're wrapped in me, you scream.'"
     },
     "choices": {
       "answerNightmares": {
@@ -2093,7 +2093,7 @@
     },
     "log": {
       "outcome0": "You took too long to decide. The fishermen's offer expires.",
-      "outcome2": "The fishermen share their elaborated techniques of building fish traps you.",
+      "outcome2": "The fishermen share their elaborate techniques for building fish traps with you.",
       "outcome3": "You decline the fishermen's offer. The opportunity is lost."
     },
     "message": "The one-eyed crow returns from the Shore Fishermen with dried fish as a gift. The fishermen offer to teach you the secrets of building powerful fish traps for 250 Gold.",
@@ -2117,7 +2117,7 @@
       "outcome1": "You try to calm yourself, but the sensation intensifies. Your vision blurs and you collapse. In your fevered dreams, ancient things whisper your true name. When you awaken, the crawling has stopped, but the memory lingers.",
       "outcome2": "You claw frantically at your skin, drawing blood. The villagers rush to stop you, grabbing your arms. In your maddened rage, you lash out violently, killing {{killedVillagers}} villagers before collapsing from exhaustion. When you awaken, the crawling has stopped, but blood stains your hands."
     },
-    "message": "Your skin begins to crawl - literally. You can see shapes moving beneath the surface, seamingly creating patterns. The villagers watch you scratch bloody furrows in your arms with expressions of great worry.",
+    "message": "Your skin begins to crawl - literally. You can see shapes moving beneath the surface, seemingly creating patterns. The villagers watch you scratch bloody furrows in your arms with expressions of great worry.",
     "title": "Crawling Skin"
   },
   "slaveTrader": {
@@ -2251,7 +2251,7 @@
       }
     },
     "log": {
-      "outcome": "You accept. Weakend by poison but still breathing, Brute Hound joins your fellowship."
+      "outcome": "You accept. Weakened by poison but still breathing, Brute Hound joins your fellowship."
     },
     "message": "Your expedition finds a mountain village full of poisoned dead. Among the bodies lies an almost-dead man, very muscular but disfigured, barely able to talk. He says they just called him Brute Hound. It seems he withstood the poison, even if barely. He wants to join you.",
     "title": "Brute Hound"
@@ -2284,7 +2284,7 @@
         "label": "Do not help"
       },
       "send_search_party": {
-        "cost": "500 food, 50 torch",
+        "cost": "500 food, 50 torches",
         "label": "Send search party"
       }
     },
@@ -2406,7 +2406,7 @@
       "outcome1": "The seer falls silent. His stare drifts beyond you. \"Great challenges await you{{name}},\" he says softly. \"You believe this world is yours to shape. But you are shaped in turn. When the final truth surfaces, you will see the strings. And by then, it might be too late.\"",
       "outcome2": "The seer nods. {{farewell}}"
     },
-    "message": "A hooded figureappears at dusk. His eyes gleam from beneath the veil. 'I have glimpsed what lies ahead,' he rasps. '50 Gold, and I shall tell you what awaits.'",
+    "message": "A hooded figure appears at dusk. His eyes gleam from beneath the veil. 'I have glimpsed what lies ahead,' he rasps. '50 Gold, and I shall tell you what awaits.'",
     "title": "The Veiled Seer"
   },
   "veinrootIntroduction": {
@@ -2566,8 +2566,8 @@
   "whispererInTheDark": {
     "title": "Whisperer in the Dark",
     "message": {
-      "original": "A knock comes from the estate door. A figure completely hulled in dark robes stands in the shadows outside. It whispers: 'Voiceless it cries, wingless flutters, toothless bites, mouthless mutters.'",
-      "variant": "A knock comes from the estate door. A figure completely hulled in dark robes stands in the shadows outside. It whispers: 'A lady's desire, grown in darkness, shining with pale light.'"
+      "original": "A knock comes from the estate door. A figure completely hooded in dark robes stands in the shadows outside. It whispers: 'Voiceless it cries, wingless flutters, toothless bites, mouthless mutters.'",
+      "variant": "A knock comes from the estate door. A figure completely hooded in dark robes stands in the shadows outside. It whispers: 'A lady's desire, grown in darkness, shining with pale light.'"
     },
     "choices": {
       "answerFire": {
@@ -2594,8 +2594,8 @@
   "whispererInTheDark_variant": {
     "title": "Whisperer in the Dark",
     "message": {
-      "original": "A knock comes from the estate door. A figure completely hulled in dark robes stands in the shadows outside. It whispers: 'Voiceless it cries, wingless flutters, toothless bites, mouthless mutters.'",
-      "variant": "A knock comes from the estate door. A figure completely hulled in dark robes stands in the shadows outside. It whispers: 'A lady's desire, grown in darkness, shining with pale light.'"
+      "original": "A knock comes from the estate door. A figure completely hooded in dark robes stands in the shadows outside. It whispers: 'Voiceless it cries, wingless flutters, toothless bites, mouthless mutters.'",
+      "variant": "A knock comes from the estate door. A figure completely hooded in dark robes stands in the shadows outside. It whispers: 'A lady's desire, grown in darkness, shining with pale light.'"
     },
     "choices": {
       "answerSilver": {
@@ -2717,7 +2717,7 @@
     "title": "The Bloodstone Staff"
   },
   "wizardDecryptsScrolls": {
-    "message": "The wizard steps from his tower, 'I have decrypted the ancient scrolls,' he says. 'The creatures below can only be slain with weapons of great power: a sword of frostglass and a staff crowned with bloodstone. 'Deep in the forest lies the grave of an ancient king which treasures may hold the frostglass we need.'",
+    "message": "The wizard steps from his tower, 'I have decrypted the ancient scrolls,' he says. 'The creatures below can only be slain with weapons of great power: a sword of frostglass and a staff crowned with bloodstone. Deep in the forest lies the grave of an ancient king whose treasures may hold the frostglass we need.'",
     "title": "Ancient Knowledge"
   },
   "wizardFrostglassSword": {
@@ -2792,8 +2792,8 @@
       "defend_manyDeaths_food_hut_first": "The villagers fight desperately against the wolves. The villagers fall to the wolves' supernatural fury. In the chaos, the wolves ravage your stores. In their rampage, the wolves destroy one of the huts, leaving only splintered wood. Villagers suggest to lay traps around the village to protect better from wolves and other foes.",
       "hide_noDeaths": "The villagers huddle in their huts as the wolves prowl outside. By dawn, the wolves have departed, leaving only scratches and terror behind.",
       "hide_noDeaths_first": "The villagers huddle in their huts as the wolves prowl outside. By dawn, the wolves have departed, leaving only scratches and terror behind. Villagers suggest to lay traps around the village to protect better from wolves and other foes.",
-      "hide_noDeaths_food": "The villagers huddle in their huts as the wolves prowl outside. By dawn, the wolves have departed, leaving only scratches and terror behind. The wolves ransack your supplies before vanishing at dawn.",
-      "hide_noDeaths_food_first": "The villagers huddle in their huts as the wolves prowl outside. By dawn, the wolves have departed, leaving only scratches and terror behind. The wolves ransack your supplies before vanishing at dawn. Villagers suggest to lay traps around the village to protect better from wolves and other foes.",
+      "hide_noDeaths_food": "The villagers huddle in their huts as the wolves prowl outside. The wolves ransack your supplies, then vanish at dawn, leaving only scratches and terror behind.",
+      "hide_noDeaths_food_first": "The villagers huddle in their huts as the wolves prowl outside. The wolves ransack your supplies, then vanish at dawn, leaving only scratches and terror behind. Villagers suggest to lay traps around the village to protect better from wolves and other foes.",
       "hide_oneDeath": "The villagers huddle in their huts as the wolves prowl outside. One villager who ventured out is found torn apart at sunrise.",
       "hide_oneDeath_first": "The villagers huddle in their huts as the wolves prowl outside. One villager who ventured out is found torn apart at sunrise. Villagers suggest to lay traps around the village to protect better from wolves and other foes.",
       "hide_oneDeath_food": "The villagers huddle in their huts as the wolves prowl outside. One villager who ventured out is found torn apart at sunrise. The wolves ransack your supplies before vanishing at dawn.",

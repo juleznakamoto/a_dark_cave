@@ -173,7 +173,7 @@
       "defend_manyDeaths_steel": "Os aldeões lutam desesperadamente contra o exército de ossos. Vários aldeões caem diante dos guerreiros esqueléticos. O exército de ossos saqueia os estoques antes de partir.",
       "defend_manyDeaths_steel_hut": "Os aldeões lutam desesperadamente contra o exército de ossos. Vários aldeões caem diante dos guerreiros esqueléticos. O exército de ossos saqueia os estoques antes de partir. As criaturas esqueléticas despedaçam uma das cabanas, reduzindo-a a escombros.",
       "hide_noDeaths": "Os aldeões se escondem aterrorizados enquanto o exército de ossos vasculha a aldeia. Ao amanhecer, o exército esquelético partiu, deixando para trás apenas fragmentos de osso.",
-      "hide_noDeaths_loot": "Os aldeões se escondem aterrorizados enquanto o exército de ossos vasculha a aldeia. Ao amanhecer, o exército esquelético partiu, deixando para trás apenas fragmentos de osso. O exército saqueia seus suprimentos antes de desaparecer na escuridão.",
+      "hide_noDeaths_loot": "Os aldeões se escondem aterrorizados enquanto o exército de ossos vasculha a aldeia. O exército saqueia seus suprimentos e desaparece na escuridão, deixando para trás apenas fragmentos de osso.",
       "hide_oneDeath": "Os aldeões se escondem aterrorizados enquanto o exército de ossos vasculha a aldeia. Um aldeão que tentou fugir é morto.",
       "hide_oneDeath_loot": "Os aldeões se escondem aterrorizados enquanto o exército de ossos vasculha a aldeia. Um aldeão que tentou fugir é morto. O exército saqueia seus suprimentos antes de desaparecer na escuridão.",
       "hide_manyDeaths": "Os aldeões se escondem aterrorizados enquanto o exército de ossos vasculha a aldeia. Os aldeões que tentaram fugir são mortos pelas criaturas de osso.",
@@ -274,7 +274,7 @@
       "defeat_manyDeaths": "Os canibais sobrepujam suas defesas. Vários aldeões são mortos ou sequestrados pelos canibais.",
       "defeat_manyDeaths_loot": "Os canibais sobrepujam suas defesas. Vários aldeões são mortos ou sequestrados pelos canibais. Os canibais saqueiam seus estoques antes de recuar para a selva.",
       "hide_noDeaths": "Os aldeões se escondem aterrorizados enquanto os canibais vasculham a aldeia. Ao amanhecer, os canibais partiram sem encontrar ninguém.",
-      "hide_noDeaths_loot": "Os aldeões se escondem aterrorizados enquanto os canibais vasculham a aldeia. Ao amanhecer, os canibais partiram sem encontrar ninguém. Os canibais saqueiam livremente seus estoques antes de escapulir.",
+      "hide_noDeaths_loot": "Os aldeões se escondem aterrorizados enquanto os canibais vasculham a aldeia. Os canibais saqueiam livremente seus estoques e escapulem ao amanhecer sem encontrar ninguém.",
       "hide_oneDeath": "Os aldeões se escondem aterrorizados enquanto os canibais vasculham a aldeia. Um aldeão é sequestrado.",
       "hide_oneDeath_loot": "Os aldeões se escondem aterrorizados enquanto os canibais vasculham a aldeia. Um aldeão é sequestrado. Os canibais saqueiam livremente seus estoques antes de escapulir.",
       "hide_manyDeaths": "Os aldeões se escondem aterrorizados enquanto os canibais vasculham a aldeia. Vários aldeões são mortos ou sequestrados.",
@@ -1543,7 +1543,7 @@
       "outcome4": "Grato pela refeição, o cavaleiro compartilha sua descoberta: 'No alto das montanhas jaz um mosteiro esculpido nos penhascos. Os eruditos de lá que estudam o passado falam de uma civilização muito além da nossa compreensão. Seu ofício era tão avançado que nos pareceria magia. Contudo, algo levou seu mundo à ruína.'",
       "outcome5": "Você recusa a oferta dele. O cavaleiro acena com compreensão. 'O conhecimento permanecerá comigo, então,' diz ele antes de partir mais uma vez."
     },
-    "message": "O cavaleiro retorna, sua armadura riscada e amassada. 'Encontrei algo extraordinário nas montanhas,' diz ele. 'Eu lhe contarei sobre isso, por um preço'",
+    "message": "O cavaleiro retorna, sua armadura riscada e amassada. 'Encontrei algo extraordinário nas montanhas,' diz ele. 'Eu lhe contarei sobre isso, por um preço.'",
     "title": "Retorno das Montanhas"
   },
   "riddleOfAges": {
@@ -2047,7 +2047,7 @@
         "label": "Não ajudar"
       },
       "send_search_party": {
-        "cost": "500 comida, 50 tocha",
+        "cost": "500 comida, 50 tochas",
         "label": "Enviar equipe de busca"
       }
     },
@@ -2480,7 +2480,7 @@
     "title": "O Cajado de Pedra de Sangue"
   },
   "wizardDecryptsScrolls": {
-    "message": "O mago sai de sua torre, 'Decifrei os pergaminhos antigos,' diz ele. 'As criaturas lá embaixo só podem ser mortas com armas de grande poder: uma espada de vidro de gelo e um cajado coroado com pedra de sangue. 'Nas profundezas da floresta jaz o túmulo de um antigo rei cujos tesouros podem guardar o vidro de gelo de que precisamos.'",
+    "message": "O mago sai de sua torre, 'Decifrei os pergaminhos antigos,' diz ele. 'As criaturas lá embaixo só podem ser mortas com armas de grande poder: uma espada de vidro de gelo e um cajado coroado com pedra de sangue. Nas profundezas da floresta jaz o túmulo de um antigo rei cujos tesouros podem guardar o vidro de gelo de que precisamos.'",
     "title": "Conhecimento Antigo"
   },
   "wizardFrostglassSword": {
@@ -2555,8 +2555,8 @@
       "defend_manyDeaths_food_hut_first": "Os aldeões lutam desesperadamente contra os lobos. Os aldeões caem diante da fúria sobrenatural dos lobos. No caos, os lobos devastam seus estoques. Em seu frenesi, os lobos destroem uma das cabanas, deixando apenas madeira estilhaçada. Os aldeões sugerem dispor armadilhas ao redor da aldeia para se proteger melhor de lobos e outros inimigos.",
       "hide_noDeaths": "Os aldeões se encolhem em suas cabanas enquanto os lobos rondam lá fora. Ao amanhecer, os lobos partiram, deixando para trás apenas arranhões e terror.",
       "hide_noDeaths_first": "Os aldeões se encolhem em suas cabanas enquanto os lobos rondam lá fora. Ao amanhecer, os lobos partiram, deixando para trás apenas arranhões e terror. Os aldeões sugerem dispor armadilhas ao redor da aldeia para se proteger melhor de lobos e outros inimigos.",
-      "hide_noDeaths_food": "Os aldeões se encolhem em suas cabanas enquanto os lobos rondam lá fora. Ao amanhecer, os lobos partiram, deixando para trás apenas arranhões e terror. Os lobos saqueiam seus suprimentos antes de sumir ao amanhecer.",
-      "hide_noDeaths_food_first": "Os aldeões se encolhem em suas cabanas enquanto os lobos rondam lá fora. Ao amanhecer, os lobos partiram, deixando para trás apenas arranhões e terror. Os lobos saqueiam seus suprimentos antes de sumir ao amanhecer. Os aldeões sugerem dispor armadilhas ao redor da aldeia para se proteger melhor de lobos e outros inimigos.",
+      "hide_noDeaths_food": "Os aldeões se encolhem em suas cabanas enquanto os lobos rondam lá fora. Os lobos saqueiam seus suprimentos e somem ao amanhecer, deixando para trás apenas arranhões e terror.",
+      "hide_noDeaths_food_first": "Os aldeões se encolhem em suas cabanas enquanto os lobos rondam lá fora. Os lobos saqueiam seus suprimentos e somem ao amanhecer, deixando para trás apenas arranhões e terror. Os aldeões sugerem dispor armadilhas ao redor da aldeia para se proteger melhor de lobos e outros inimigos.",
       "hide_oneDeath": "Os aldeões se encolhem em suas cabanas enquanto os lobos rondam lá fora. Um aldeão que se aventurou para fora é encontrado dilacerado ao nascer do sol.",
       "hide_oneDeath_first": "Os aldeões se encolhem em suas cabanas enquanto os lobos rondam lá fora. Um aldeão que se aventurou para fora é encontrado dilacerado ao nascer do sol. Os aldeões sugerem dispor armadilhas ao redor da aldeia para se proteger melhor de lobos e outros inimigos.",
       "hide_oneDeath_food": "Os aldeões se encolhem em suas cabanas enquanto os lobos rondam lá fora. Um aldeão que se aventurou para fora é encontrado dilacerado ao nascer do sol. Os lobos saqueiam seus suprimentos antes de sumir ao amanhecer.",

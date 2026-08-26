@@ -12,7 +12,7 @@
   "blackreachCanyon": {
     "label": "Blackreach Canyon",
     "log": {
-      "success": "You venture deep into Blackreach Canyon. There, perched on a stone pillar, sits a magnificent one-eyed crow. Using the harness, your carefully approach and bond with the creature. The One-eyed Crow has joined your fellowship."
+      "success": "You venture deep into Blackreach Canyon. There, perched on a stone pillar, sits a magnificent one-eyed crow. Using the harness, you carefully approach and bond with the creature. The One-eyed Crow has joined your fellowship."
     }
   },
   "blastPortal": {
@@ -101,7 +101,7 @@
     "label": "Coinhouse"
   },
   "buildConsecratedPaleCross": {
-    "description": "Towering monument of bleached bones geatly amplifying bone totem sacrifices.",
+    "description": "Towering monument of bleached bones greatly amplifying bone totem sacrifices.",
     "label": "Consecrated Pale Cross"
   },
   "buildDarkEstate": {

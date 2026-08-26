@@ -173,7 +173,7 @@
       "defend_manyDeaths_steel": "Gli abitanti combattono disperatamente contro l'esercito d'ossa. Diversi abitanti cadono per mano dei guerrieri scheletrici. L'esercito d'ossa saccheggia le scorte prima di andarsene.",
       "defend_manyDeaths_steel_hut": "Gli abitanti combattono disperatamente contro l'esercito d'ossa. Diversi abitanti cadono per mano dei guerrieri scheletrici. L'esercito d'ossa saccheggia le scorte prima di andarsene. Le creature scheletriche fanno a pezzi una delle capanne, riducendola in macerie.",
       "hide_noDeaths": "Gli abitanti si nascondono terrorizzati mentre l'esercito d'ossa perlustra il villaggio. All'alba, l'esercito scheletrico è partito, lasciando dietro di sé solo frammenti d'osso.",
-      "hide_noDeaths_loot": "Gli abitanti si nascondono terrorizzati mentre l'esercito d'ossa perlustra il villaggio. All'alba, l'esercito scheletrico è partito, lasciando dietro di sé solo frammenti d'osso. L'esercito saccheggia le tue provviste prima di sparire nell'oscurità.",
+      "hide_noDeaths_loot": "Gli abitanti si nascondono terrorizzati mentre l'esercito d'ossa perlustra il villaggio. L'esercito saccheggia le tue provviste, poi sparisce nell'oscurità, lasciando dietro di sé solo frammenti d'osso.",
       "hide_oneDeath": "Gli abitanti si nascondono terrorizzati mentre l'esercito d'ossa perlustra il villaggio. Un abitante che ha tentato di fuggire viene ucciso.",
       "hide_oneDeath_loot": "Gli abitanti si nascondono terrorizzati mentre l'esercito d'ossa perlustra il villaggio. Un abitante che ha tentato di fuggire viene ucciso. L'esercito saccheggia le tue provviste prima di sparire nell'oscurità.",
       "hide_manyDeaths": "Gli abitanti si nascondono terrorizzati mentre l'esercito d'ossa perlustra il villaggio. Gli abitanti che hanno tentato di fuggire vengono uccisi dalle creature d'ossa.",
@@ -274,7 +274,7 @@
       "defeat_manyDeaths": "I cannibali travolgono le tue difese. Diversi abitanti vengono uccisi o rapiti dai cannibali.",
       "defeat_manyDeaths_loot": "I cannibali travolgono le tue difese. Diversi abitanti vengono uccisi o rapiti dai cannibali. I cannibali saccheggiano le tue scorte prima di ritirarsi nelle terre selvagge.",
       "hide_noDeaths": "Gli abitanti si nascondono terrorizzati mentre i cannibali perlustrano il villaggio. All'alba, i cannibali se ne sono andati senza trovare nessuno.",
-      "hide_noDeaths_loot": "Gli abitanti si nascondono terrorizzati mentre i cannibali perlustrano il villaggio. All'alba, i cannibali se ne sono andati senza trovare nessuno. I cannibali saccheggiano liberamente le tue scorte prima di dileguarsi.",
+      "hide_noDeaths_loot": "Gli abitanti si nascondono terrorizzati mentre i cannibali perlustrano il villaggio. I cannibali saccheggiano liberamente le tue scorte, poi si dileguano all'alba senza trovare nessuno.",
       "hide_oneDeath": "Gli abitanti si nascondono terrorizzati mentre i cannibali perlustrano il villaggio. Un abitante viene rapito.",
       "hide_oneDeath_loot": "Gli abitanti si nascondono terrorizzati mentre i cannibali perlustrano il villaggio. Un abitante viene rapito. I cannibali saccheggiano liberamente le tue scorte prima di dileguarsi.",
       "hide_manyDeaths": "Gli abitanti si nascondono terrorizzati mentre i cannibali perlustrano il villaggio. Diversi abitanti vengono uccisi o rapiti.",
@@ -1543,7 +1543,7 @@
       "outcome4": "Grato per il pasto, il cavaliere condivide la sua scoperta: 'In alto tra le montagne giace un monastero scavato nelle rupi. Gli studiosi lì che studiano il passato parlano di una civiltà ben oltre la nostra comprensione. La loro arte era così avanzata da sembrarci magia. Eppure qualcosa portò il loro mondo alla rovina.'",
       "outcome5": "Rifiuti la sua offerta. Il cavaliere annuisce comprensivo. 'La conoscenza resterà con me, allora,' dice prima di andarsene ancora una volta."
     },
-    "message": "Il cavaliere ritorna, l'armatura graffiata e ammaccata. 'Ho trovato qualcosa di straordinario tra le montagne,' dice. 'Te ne parlerò, a un prezzo'",
+    "message": "Il cavaliere ritorna, l'armatura graffiata e ammaccata. 'Ho trovato qualcosa di straordinario tra le montagne,' dice. 'Te ne parlerò, a un prezzo.'",
     "title": "Ritorno dalle Montagne"
   },
   "riddleOfAges": {
@@ -2047,7 +2047,7 @@
         "label": "Non aiutare"
       },
       "send_search_party": {
-        "cost": "500 cibo, 50 torcia",
+        "cost": "500 cibo, 50 torce",
         "label": "Manda una squadra di ricerca"
       }
     },
@@ -2480,7 +2480,7 @@
     "title": "Il Bastone di Pietrasangue"
   },
   "wizardDecryptsScrolls": {
-    "message": "Il mago esce dalla sua torre, 'Ho decifrato le antiche pergamene,' dice. 'Le creature del profondo possono essere uccise solo con armi di grande potere: una spada di vetro di gelo e un bastone coronato di pietra di sangue. 'Nel profondo della foresta giace la tomba di un antico re i cui tesori potrebbero contenere il vetro di gelo che ci serve.'",
+    "message": "Il mago esce dalla sua torre, 'Ho decifrato le antiche pergamene,' dice. 'Le creature del profondo possono essere uccise solo con armi di grande potere: una spada di vetro di gelo e un bastone coronato di pietra di sangue. Nel profondo della foresta giace la tomba di un antico re i cui tesori potrebbero contenere il vetro di gelo che ci serve.'",
     "title": "Conoscenza Antica"
   },
   "wizardFrostglassSword": {
@@ -2555,8 +2555,8 @@
       "defend_manyDeaths_food_hut_first": "Gli abitanti combattono disperatamente contro i lupi. Gli abitanti cadono per la furia soprannaturale dei lupi. Nel caos, i lupi devastano le tue scorte. Nella loro furia, i lupi distruggono una delle capanne, lasciando solo legno scheggiato. Gli abitanti suggeriscono di disporre trappole attorno al villaggio per proteggersi meglio da lupi e altri nemici.",
       "hide_noDeaths": "Gli abitanti si rannicchiano nelle loro capanne mentre i lupi si aggirano fuori. All'alba, i lupi se ne sono andati, lasciandosi dietro solo graffi e terrore.",
       "hide_noDeaths_first": "Gli abitanti si rannicchiano nelle loro capanne mentre i lupi si aggirano fuori. All'alba, i lupi se ne sono andati, lasciandosi dietro solo graffi e terrore. Gli abitanti suggeriscono di disporre trappole attorno al villaggio per proteggersi meglio da lupi e altri nemici.",
-      "hide_noDeaths_food": "Gli abitanti si rannicchiano nelle loro capanne mentre i lupi si aggirano fuori. All'alba, i lupi se ne sono andati, lasciandosi dietro solo graffi e terrore. I lupi saccheggiano le tue scorte prima di svanire all'alba.",
-      "hide_noDeaths_food_first": "Gli abitanti si rannicchiano nelle loro capanne mentre i lupi si aggirano fuori. All'alba, i lupi se ne sono andati, lasciandosi dietro solo graffi e terrore. I lupi saccheggiano le tue scorte prima di svanire all'alba. Gli abitanti suggeriscono di disporre trappole attorno al villaggio per proteggersi meglio da lupi e altri nemici.",
+      "hide_noDeaths_food": "Gli abitanti si rannicchiano nelle loro capanne mentre i lupi si aggirano fuori. I lupi saccheggiano le tue scorte, poi svaniscono all'alba, lasciandosi dietro solo graffi e terrore.",
+      "hide_noDeaths_food_first": "Gli abitanti si rannicchiano nelle loro capanne mentre i lupi si aggirano fuori. I lupi saccheggiano le tue scorte, poi svaniscono all'alba, lasciandosi dietro solo graffi e terrore. Gli abitanti suggeriscono di disporre trappole attorno al villaggio per proteggersi meglio da lupi e altri nemici.",
       "hide_oneDeath": "Gli abitanti si rannicchiano nelle loro capanne mentre i lupi si aggirano fuori. Un abitante che si è avventurato fuori viene trovato fatto a pezzi all'alba.",
       "hide_oneDeath_first": "Gli abitanti si rannicchiano nelle loro capanne mentre i lupi si aggirano fuori. Un abitante che si è avventurato fuori viene trovato fatto a pezzi all'alba. Gli abitanti suggeriscono di disporre trappole attorno al villaggio per proteggersi meglio da lupi e altri nemici.",
       "hide_oneDeath_food": "Gli abitanti si rannicchiano nelle loro capanne mentre i lupi si aggirano fuori. Un abitante che si è avventurato fuori viene trovato fatto a pezzi all'alba. I lupi saccheggiano le tue scorte prima di svanire all'alba.",
