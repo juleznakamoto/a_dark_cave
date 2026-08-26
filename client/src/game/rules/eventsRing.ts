@@ -50,11 +50,11 @@ const mercenaryDemandRefuse: EventChoice = {
 const mercenaryReturnDemandRefuse: EventChoice = {
   id: "refuse",
   ...defineSuccessChance({
-    base: 0.0,
+    base: 0.05,
     stats: [{ type: "strength", multiplier: 0.005 }],
   }),
   effect: (state: GameState) => {
-    const successChance = calculateSuccessChance(state, 0.0, {
+    const successChance = calculateSuccessChance(state, 0.05, {
       type: "strength",
       multiplier: 0.005,
     });
