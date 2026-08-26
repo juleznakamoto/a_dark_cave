@@ -1,9 +1,15 @@
 import type { Request, Response, NextFunction } from "express";
 
-/** Phase A browser safety headers (no CSP). */
+/**
+ * Browser safety headers.
+ * X-Frame-Options is omitted on purpose: SAMEORIGIN would still block SlowDen,
+ * and that header cannot whitelist a third-party host. CSP frame-ancestors is
+ * the replacement (self + SlowDen only).
+ */
 export const SECURITY_HEADERS = {
   "X-Content-Type-Options": "nosniff",
-  "X-Frame-Options": "SAMEORIGIN",
+  "Content-Security-Policy":
+    "frame-ancestors 'self' https://slowden.com https://www.slowden.com",
   "Referrer-Policy": "strict-origin-when-cross-origin",
 } as const;
 
@@ -15,7 +21,7 @@ export function applySecurityHeaders(res: {
   }
 }
 
-/** Express middleware: set Phase A security headers on every response. */
+/** Express middleware: set browser safety headers on every response. */
 export function securityHeadersMiddleware(
   _req: Request,
   res: Response,

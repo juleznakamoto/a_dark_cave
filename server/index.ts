@@ -128,7 +128,7 @@ const app = express();
 // CRITICAL: Enable trust proxy for accurate rate limiting behind reverse proxy
 app.set('trust proxy', 1);
 
-// Phase A browser safety headers (nosniff, frame deny, referrer policy)
+// Browser safety headers (nosniff, frame-ancestors, referrer policy)
 app.use(securityHeadersMiddleware);
 app.use(apexRedirectMiddleware);
 
