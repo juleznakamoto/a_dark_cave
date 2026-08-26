@@ -404,6 +404,29 @@ export type HutLadderStepDropTimePoint = {
   startedCount: number;
 } & Partial<Record<HutLadderStepDropSeriesKey, number | null>>;
 
+/**
+ * Y-axis [0, max] for step-drop % charts. Max follows the series values
+ * (padded and rounded) so small drops are not crushed against a 100% ceiling.
+ */
+export function contentScaledPercentDomain(
+  rows: Array<Partial<Record<string, number | null | undefined>>>,
+  keys: readonly string[],
+): [number, number] {
+  let max = 0;
+  for (const row of rows) {
+    for (const key of keys) {
+      const value = row[key];
+      if (typeof value === "number" && Number.isFinite(value)) {
+        max = Math.max(max, value);
+      }
+    }
+  }
+  if (max <= 0) return [0, 10];
+  const padded = max * 1.12;
+  const step = padded <= 5 ? 1 : padded <= 20 ? 2 : padded <= 50 ? 5 : 10;
+  return [0, Math.min(100, Math.ceil(padded / step) * step)];
+}
+
 const MS_PER_DAY = 24 * 60 * 60 * 1000;
 
 /** UTC Monday 00:00 for the week containing `ms`. */

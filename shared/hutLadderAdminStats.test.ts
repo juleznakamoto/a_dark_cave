@@ -3,6 +3,7 @@ import {
   computeFinisherRatesByCohort,
   computeHutLadderFunnel,
   computeHutLadderStepDropTimeSeries,
+  contentScaledPercentDomain,
   filterHutLadderCohort,
   highestAttackWaveNumber,
   hutLadderReachChartData,
@@ -527,5 +528,29 @@ describe("hutLadderAdminStats", () => {
     );
     expect(totalAttackWavesWon(allChart, 2)).toBe(14);
     expect(highestAttackWaveNumber(allChart, 2)).toBe(14);
+  });
+});
+
+describe("contentScaledPercentDomain", () => {
+  it("falls back to 0–10 when there is no numeric content", () => {
+    expect(contentScaledPercentDomain([], ["W1"])).toEqual([0, 10]);
+    expect(
+      contentScaledPercentDomain([{ W1: null }, { W1: undefined }], ["W1"]),
+    ).toEqual([0, 10]);
+  });
+
+  it("scales to the series max with padding, ignoring other keys", () => {
+    const rows = [
+      { W1: 8.4, S1: 40 },
+      { W1: 3.1, S1: null },
+    ];
+    // max 8.4 → 9.408 padded → step 2 → 10
+    expect(contentScaledPercentDomain(rows, ["W1"])).toEqual([0, 10]);
+    // max 40 → 44.8 padded → step 5 → 45
+    expect(contentScaledPercentDomain(rows, ["S1"])).toEqual([0, 45]);
+  });
+
+  it("caps the ceiling at 100%", () => {
+    expect(contentScaledPercentDomain([{ W1: 95 }], ["W1"])).toEqual([0, 100]);
   });
 });

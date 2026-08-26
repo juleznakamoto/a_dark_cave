@@ -14,6 +14,7 @@ import {
   HUT_LADDER_WOODEN_SERIES_KEYS,
   HUT_LADDER_STONE_SERIES_KEYS,
   HUT_LADDER_WAVE_SERIES_KEYS,
+  contentScaledPercentDomain,
   type HutLadderCohortDays,
 } from "@shared/hutLadderAdminStats";
 import {
@@ -829,7 +830,10 @@ export default function ChurnTab(props: ChurnTabProps) {
                       />
                       <YAxis
                         unit="%"
-                        domain={[0, 100]}
+                        domain={contentScaledPercentDomain(
+                          hutStepDropTimeSeries,
+                          chart.keys,
+                        )}
                         label={{
                           value: "Step drop %",
                           angle: -90,
