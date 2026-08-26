@@ -56,7 +56,7 @@ export const choiceEvents: Record<string, GameEvent> = {
       {
         id: "investigate",
         ...defineSuccessChance({
-          base: 0.1,
+          base: 0.2,
           stats: [
             { type: "strength", multiplier: 0.01 },
             { type: "luck", multiplier: 0.005 },
@@ -65,7 +65,7 @@ export const choiceEvents: Record<string, GameEvent> = {
         effect: (state: GameState) => {
           const mantleChance = calculateSuccessChance(
             state,
-            0.1,
+            0.2,
             { type: "strength", multiplier: 0.01 },
             { type: "luck", multiplier: 0.005 },
           );
@@ -490,11 +490,11 @@ export const choiceEvents: Record<string, GameEvent> = {
       {
         id: "investigate",
         ...defineSuccessChance({
-          base: 0.2,
+          base: 0.25,
           stats: [{ type: "strength", multiplier: 0.01 }],
         }),
         effect: (state: GameState) => {
-          const successChance = calculateSuccessChance(state, 0.2, {
+          const successChance = calculateSuccessChance(state, 0.25, {
             type: "strength",
             multiplier: 0.01,
           });

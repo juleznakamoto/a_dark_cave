@@ -39,12 +39,15 @@ describe("DialogContent open click lock", () => {
 
     clickThrough(button);
     expect(button.textContent).toBe("0");
-    expect(button.closest("[data-adc-open-click-lock='true']")).toBeTruthy();
+    const locked = button.closest("[data-adc-open-click-lock='true']");
+    expect(locked).toBeTruthy();
+    expect(locked).toHaveClass("adc-dialog-open-click-lock");
 
     act(() => {
       vi.advanceTimersByTime(DIALOG_OPEN_CLICK_LOCK_MS);
     });
 
+    expect(button.closest(".adc-dialog-open-click-lock")).toBeNull();
     clickThrough(button);
     expect(button.textContent).toBe("1");
     vi.useRealTimers();

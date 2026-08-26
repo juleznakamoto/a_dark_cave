@@ -558,6 +558,14 @@ html.adc-text-large .game-panel-header-indicator-row {
   /* 14px @ Normal (was text-xs 12px) */
 }
 
+/* Open click lock: controls look disabled so a swallowed click is not surprising. */
+.adc-dialog-open-click-lock :is(button, [role="button"], a[href]) {
+  opacity: 0.5;
+  pointer-events: none;
+  cursor: default;
+  transform: none;
+}
+
 /* Shared dialog X: square hit target + icon grow slightly with Large text. */
 .adc-dialog-close {
   width: calc(1.5rem * var(--adc-control-scale, 1));
