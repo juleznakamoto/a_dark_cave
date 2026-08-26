@@ -1,4 +1,5 @@
 import { villageBuildActions } from "@/game/rules/villageBuildActions";
+import { BRIMSTONE_FLUX_STEEL_BONUS } from "@/game/rules/eventsBrimstoneFlux";
 import { GameState } from "@shared/schema"; // Assuming GameState is defined elsewhere
 import {
   DISGRACED_PRIOR_FOOD_PER_ASSIGNED_ACTION_PER_CYCLE,
@@ -398,7 +399,7 @@ export const getPopulationProduction = (
     }
   }
 
-  // Apply Flame's Touch blessing bonus to steel production
+  // Apply Flame's Touch, Brimstone Infusion, and timed brimstone flux to steel
   if (state && jobId === "steel_forger") {
     baseProduction.forEach((prod) => {
       if (prod.resource === "steel" && prod.baseAmount > 0) {
@@ -408,6 +409,17 @@ export const getPopulationProduction = (
         }
         if (state.blessings?.flames_touch_enhanced) {
           bonusSteel = 3; // +3 steel per forger (replaces the +1 from basic)
+        }
+        if (state.blessings?.brimstone_infusion) {
+          bonusSteel += 1;
+        }
+        const flux = state.brimstoneFluxState;
+        if (
+          !excludeTemporary &&
+          flux?.isActive &&
+          (flux.endTime ?? 0) > Date.now()
+        ) {
+          bonusSteel += BRIMSTONE_FLUX_STEEL_BONUS;
         }
         prod.totalAmount += bonusSteel * count;
       }

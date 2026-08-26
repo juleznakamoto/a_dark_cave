@@ -30,6 +30,7 @@ export type SleepBonusTimerState = {
   fogState?: TimedEndSlice;
   disgustState?: TimedEndSlice;
   miningBoostState?: TimedEndSlice;
+  brimstoneFluxState?: TimedEndSlice;
   staringDeerState?: TimedEndSlice;
   forestFearState?: TimedEndSlice;
   woodcutterState?: TimedEndSlice;
@@ -47,6 +48,7 @@ const TIMED_END_KEYS = [
   "fogState",
   "disgustState",
   "miningBoostState",
+  "brimstoneFluxState",
   "staringDeerState",
   "forestFearState",
   "woodcutterState",

@@ -48,6 +48,7 @@ import { scholarResearchEvents } from "./eventsScholarResearch";
 import { chainmasterEvents } from "./eventsChainmaster";
 import { insightBlessingEvents } from "./eventsInsightBlessings";
 import { ladyMountainsEvents } from "./eventsLadyMountains";
+import { brimstoneFluxEvents } from "./eventsBrimstoneFlux";
 import { GAME_CONSTANTS } from "../constants";
 import {
   getEventCatalogId,
@@ -104,6 +105,7 @@ export const gameEvents: Record<string, GameEvent> = {
   ...chainmasterEvents,
   ...insightBlessingEvents,
   ...ladyMountainsEvents,
+  ...brimstoneFluxEvents,
 };
 
 /** Priority order for event rolls (higher first). Static priorities — sorted once at module load. */

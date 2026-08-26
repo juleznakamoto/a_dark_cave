@@ -261,6 +261,7 @@ export const gameStateSchema = z.object({
       fresh_blood: z.boolean().default(false),
       depths_gift: z.boolean().default(false),
       rich_veins: z.boolean().default(false),
+      brimstone_infusion: z.boolean().default(false),
     })
     .default({}),
   books: z
@@ -556,6 +557,17 @@ export const gameStateSchema = z.object({
   greatFeastActivations: z.number().default(0),
 
   miningBoostState: z
+    .object({
+      isActive: z.boolean().default(false),
+      endTime: z.number().default(0),
+    })
+    .default({
+      isActive: false,
+      endTime: 0,
+    }),
+
+  /** Old smith brimstone flux: +2 steel per forger while active. */
+  brimstoneFluxState: z
     .object({
       isActive: z.boolean().default(false),
       endTime: z.number().default(0),

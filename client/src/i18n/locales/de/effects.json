@@ -345,6 +345,10 @@
     "fang_charm": {
       "description": "Band aus schwarzen Reißzähnen einer gewaltigen Kreatur",
       "name": "Reißzahn-Talisman"
+    },
+    "brimstone_infusion": {
+      "description": "Stahlschmiede erzeugen +1 Stahl",
+      "name": "Schwefelinfusion"
     }
   },
   "fellowship": {

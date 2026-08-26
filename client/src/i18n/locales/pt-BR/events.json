@@ -2863,5 +2863,56 @@
     },
     "message": "Os cervos se comportam de forma estranha. Não fogem. Parecem olhar fixamente para os caçadores. Caçar está fácil agora, mas os caçadores voltam abalados.",
     "title": "Cervos que olham"
+  },
+  "brimstoneFlux1": {
+    "title": "O Fluxo de Enxofre",
+    "message": "Um homem pequeno e barbudo, de braços enormes, chega à vila. Diz que conhece a fundição e pode melhorar sua produção de aço por um tempo. Precisa de enxofre e um pouco de ouro.",
+    "choices": {
+      "accept": {
+        "label": "Aceitar ajuda",
+        "cost": "{{sulfurCost}} Enxofre, {{goldCost}} Ouro"
+      },
+      "sendAway": {
+        "label": "Mandar embora"
+      }
+    },
+    "log": {
+      "accept": "Ele começa o trabalho. Logo depois, a fornalha queima mais quente do que nunca.",
+      "sendAway": "O ferreiro dá de ombros e vai embora. Diz que talvez volte."
+    }
+  },
+  "brimstoneFlux2": {
+    "title": "Outro Fluxo de Enxofre",
+    "message": "O pequeno ferreiro volta, com a barba chamuscada nas pontas. Diz que pode despertar as fornalhas de novo, mas desta vez vai custar mais.",
+    "choices": {
+      "accept": {
+        "label": "Aceitar a ajuda dele",
+        "cost": "{{sulfurCost}} Enxofre, {{goldCost}} Ouro"
+      },
+      "sendAway": {
+        "label": "Mandar embora"
+      }
+    },
+    "log": {
+      "accept": "Ele alimenta a fornalha de novo. A produção de aço aumenta na hora.",
+      "sendAway": "Ele vai embora sem discutir. Diz que talvez volte."
+    }
+  },
+  "brimstoneFlux3": {
+    "title": "A Infusão de Enxofre",
+    "message": "O ferreiro volta. Oferece melhorar a fundição de forma permanente. Mas vai custar.",
+    "choices": {
+      "accept": {
+        "label": "Aprender o método dele",
+        "cost": "{{sulfurCost}} Enxofre, {{goldCost}} Ouro"
+      },
+      "sendAway": {
+        "label": "Mandar embora"
+      }
+    },
+    "log": {
+      "accept": "Ele melhora a fornalha e parte antes do amanhecer. Os forjadores de aço produzem mais a partir de agora.",
+      "sendAway": "Ele olha para você, decepcionado, e vai embora. Diz que talvez volte."
+    }
   }
 }

@@ -6,6 +6,7 @@ export type VillageEffectThemeId =
   | "curse"
   | "disgust"
   | "miningBoost"
+  | "brimstoneFlux"
   | "frostfall"
   | "fog"
   | "staringDeer"
@@ -70,6 +71,15 @@ export const VILLAGE_EFFECT_THEMES: Record<
     iconClassName:
       "font-noto-symbols-2 inline-flex items-center justify-center text-3xl text-amber-600 leading-none",
   },
+  brimstoneFlux: {
+    id: "brimstoneFlux",
+    symbol: "🞜",
+    border: "border-yellow-500",
+    iconRing: "border-yellow-500/45 bg-yellow-950/35",
+    glowRgb: "234, 179, 8",
+    iconClassName:
+      "font-noto-symbols-2 inline-flex items-center justify-center text-3xl text-yellow-500 leading-none",
+  },
   frostfall: {
     id: "frostfall",
     symbol: "✼",
@@ -132,6 +142,9 @@ const EVENT_ID_THEMES: Record<string, VillageEffectThemeId> = {
   witchsCurse: "curse",
   frostfall: "frostfall",
   unnamedWanderer: "miningBoost",
+  brimstoneFlux1: "brimstoneFlux",
+  brimstoneFlux2: "brimstoneFlux",
+  brimstoneFlux3: "brimstoneFlux",
   staringDeer: "staringDeer",
   forestFear: "forestFear",
 };
@@ -156,6 +169,9 @@ export function resolveVillageEffectAnnouncementTheme(
   }
   if (isTimedEffectActivated(changes.miningBoostState as TimedEffectSlice)) {
     return "miningBoost";
+  }
+  if (isTimedEffectActivated(changes.brimstoneFluxState as TimedEffectSlice)) {
+    return "brimstoneFlux";
   }
   if (
     isDisgustStacked(

@@ -2863,5 +2863,56 @@
     },
     "message": "Los ciervos se comportan de forma extraña. No huyen. Parecen mirar fijamente a los cazadores. Cazar es fácil ahora, pero los cazadores regresan alterados.",
     "title": "Ciervos que miran"
+  },
+  "brimstoneFlux1": {
+    "title": "El flujo de azufre",
+    "message": "Un hombre pequeño y barbudo, de brazos enormes, llega a la aldea. Dice que conoce la fundición y que puede mejorar tu producción de acero por un tiempo. Necesita azufre y un poco de oro.",
+    "choices": {
+      "accept": {
+        "label": "Aceptar ayuda",
+        "cost": "{{sulfurCost}} Azufre, {{goldCost}} Oro"
+      },
+      "sendAway": {
+        "label": "Enviar lejos"
+      }
+    },
+    "log": {
+      "accept": "Empieza su trabajo. Poco después, el horno arde más que nunca.",
+      "sendAway": "El herrero se encoge de hombros y se va. Dice que quizá vuelva."
+    }
+  },
+  "brimstoneFlux2": {
+    "title": "Otro flujo de azufre",
+    "message": "El pequeño herrero regresa, con la barba chamuscada en los bordes. Dice que puede despertar los hornos de nuevo, pero esta vez costará más.",
+    "choices": {
+      "accept": {
+        "label": "Aceptar su ayuda",
+        "cost": "{{sulfurCost}} Azufre, {{goldCost}} Oro"
+      },
+      "sendAway": {
+        "label": "Enviar lejos"
+      }
+    },
+    "log": {
+      "accept": "Alimenta el horno otra vez. La producción de acero aumenta de inmediato.",
+      "sendAway": "Se va sin discutir. Dice que quizá vuelva."
+    }
+  },
+  "brimstoneFlux3": {
+    "title": "La infusión de azufre",
+    "message": "El herrero regresa. Ofrece mejorar la fundición de forma permanente. Pero te costará.",
+    "choices": {
+      "accept": {
+        "label": "Aprender su método",
+        "cost": "{{sulfurCost}} Azufre, {{goldCost}} Oro"
+      },
+      "sendAway": {
+        "label": "Enviar lejos"
+      }
+    },
+    "log": {
+      "accept": "Mejora el horno y se va antes del amanecer. Los forjadores de acero producen más a partir de ahora.",
+      "sendAway": "Te mira decepcionado y se va. Dice que quizá vuelva."
+    }
   }
 }

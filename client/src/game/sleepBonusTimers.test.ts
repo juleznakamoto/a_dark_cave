@@ -19,6 +19,7 @@ describe("buildSleepBonusTimerFreezePatch", () => {
     fogState: { isActive: false, endTime: 0, duration: 0 },
     disgustState: { isActive: false, endTime: 0, duration: 0 },
     miningBoostState: { isActive: false, endTime: 0 },
+    brimstoneFluxState: { isActive: false, endTime: 0 },
     woodcutterState: { isActive: false, endTime: 0 },
     focusState: { isActive: false, endTime: 0, startTime: 0, duration: 0 },
     heartfireState: { level: 0, lastLevelDecrease: 0 },

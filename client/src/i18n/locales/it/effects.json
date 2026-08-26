@@ -345,6 +345,10 @@
     "fang_charm": {
       "description": "Cordino di zanne nere di una creatura enorme",
       "name": "Amuleto di zanne"
+    },
+    "brimstone_infusion": {
+      "description": "I forgiatori d'acciaio producono +1 Acciaio",
+      "name": "Infusione di zolfo"
     }
   },
   "fellowship": {

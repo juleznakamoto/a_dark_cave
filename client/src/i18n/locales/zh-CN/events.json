@@ -2863,5 +2863,56 @@
     },
     "message": "鹿的行为很奇怪。它们并不逃跑。它们似乎正盯着猎人。打猎变得容易了，但猎人们回来时心神不宁。",
     "title": "凝视的鹿"
+  },
+  "brimstoneFlux1": {
+    "title": "硫磺助熔",
+    "message": "一个胳膊粗壮、留着胡子的矮个子男人来到村庄。他说自己懂铸造厂，能暂时提高钢产量。他需要硫磺，还要一点黄金。",
+    "choices": {
+      "accept": {
+        "label": "接受帮助",
+        "cost": "{{sulfurCost}} 硫磺，{{goldCost}} 黄金"
+      },
+      "sendAway": {
+        "label": "送走"
+      }
+    },
+    "log": {
+      "accept": "他开始干活。不久之后，炉火烧得比以往更旺。",
+      "sendAway": "铁匠耸耸肩离开了。他说也许还会再来。"
+    }
+  },
+  "brimstoneFlux2": {
+    "title": "又一次硫磺助熔",
+    "message": "那个矮个子铁匠回来了，胡子边烧焦了。他说还能再唤醒熔炉，但这次要得更多。",
+    "choices": {
+      "accept": {
+        "label": "接受他的帮助",
+        "cost": "{{sulfurCost}} 硫磺，{{goldCost}} 黄金"
+      },
+      "sendAway": {
+        "label": "送走"
+      }
+    },
+    "log": {
+      "accept": "他又给炉子添了料。钢产量立刻提高。",
+      "sendAway": "他没有争辩就走了。他说也许还会再来。"
+    }
+  },
+  "brimstoneFlux3": {
+    "title": "硫磺灌注",
+    "message": "铁匠又回来了。他提出永久改进铸造厂。但这次要付出代价。",
+    "choices": {
+      "accept": {
+        "label": "学习他的方法",
+        "cost": "{{sulfurCost}} 硫磺，{{goldCost}} 黄金"
+      },
+      "sendAway": {
+        "label": "送走"
+      }
+    },
+    "log": {
+      "accept": "他改进了熔炉，天亮前就离开了。从此炼钢工产出更多。",
+      "sendAway": "他失望地看了你一眼，然后离开。他说也许还会再来。"
+    }
   }
 }

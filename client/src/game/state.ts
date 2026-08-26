@@ -1272,6 +1272,8 @@ const mergeStateUpdates = (
     heartfireState: stateUpdates.heartfireState || prevState.heartfireState,
     miningBoostState:
       stateUpdates.miningBoostState || prevState.miningBoostState,
+    brimstoneFluxState:
+      stateUpdates.brimstoneFluxState || prevState.brimstoneFluxState,
     staringDeerState:
       stateUpdates.staringDeerState || prevState.staringDeerState,
     forestFearState:
@@ -1556,6 +1558,10 @@ export const createInitialState = (): GameState => ({
     endTime: 0,
   },
   forestFearState: {
+    isActive: false,
+    endTime: 0,
+  },
+  brimstoneFluxState: {
     isActive: false,
     endTime: 0,
   },
@@ -3447,6 +3453,8 @@ export const useGameStore = create<GameStore>((set, get) => ({
           savedState.staringDeerState || defaultGameState.staringDeerState,
         forestFearState:
           savedState.forestFearState || defaultGameState.forestFearState,
+        brimstoneFluxState:
+          savedState.brimstoneFluxState || defaultGameState.brimstoneFluxState,
         lastFreeGoldClaim: savedState.lastFreeGoldClaim || 0, // Load lastFreeGoldClaim
         lastFeedbackOpenedAt:
           typeof (savedState as { lastFeedbackOpenedAt?: number })

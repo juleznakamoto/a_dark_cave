@@ -146,6 +146,10 @@
       "description": "The deers of the forest seem to notice you less",
       "name": "Forest's Grace"
     },
+    "brimstone_infusion": {
+      "description": "Steel forgers produce +1 Steel",
+      "name": "Brimstone Infusion"
+    },
     "fresh_blood": {
       "description": "Strangers approach the village more often",
       "name": "Fresh Blood"

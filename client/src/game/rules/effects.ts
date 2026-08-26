@@ -1374,6 +1374,13 @@ export const clothingEffects: Record<string, EffectDefinition> = {
     },
   },
 
+  brimstone_infusion: {
+    id: "brimstone_infusion",
+    name: "Brimstone Infusion",
+    description: "Steel forgers produce +1 Steel",
+    bonuses: {},
+  },
+
   ravens_mark: {
     id: "ravens_mark",
     name: "Raven's Mark",

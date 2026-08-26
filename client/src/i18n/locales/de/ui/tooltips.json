@@ -189,6 +189,8 @@
     "forestFear": "Waldangst",
     "hunterProduction": "Jägerproduktion: {{value}}",
     "gathererProduction": "Sammlerproduktion: {{value}}",
-    "clarityElixirDescription": "A draught that eases the grip of madness."
+    "clarityElixirDescription": "A draught that eases the grip of madness.",
+    "brimstoneFlux": "Schwefelfluss",
+    "steelForgerSteelBonus": "Stahlschmiede: +{{amount}} Stahl"
   }
 }

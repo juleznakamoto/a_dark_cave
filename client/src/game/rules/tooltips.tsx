@@ -12,6 +12,7 @@ import {
   GREAT_FEAST_STRANGER_APPROACH_BONUS,
 } from "./effectsCalculation";
 import { getMadnessProductionMultiplier } from "@/game/population";
+import { BRIMSTONE_FLUX_STEEL_BONUS } from "./eventsBrimstoneFlux";
 import {
   getMadnessDeathChancePerCycle,
   madnessDeathChanceToTooltipPercent,
@@ -687,6 +688,34 @@ export const miningBoostTooltip: TooltipConfig = {
             {getUiTooltip("miningBonus", "Mining Bonus: {{percent}}%", {
               percent: 100,
             })}
+          </div>
+          <div>{formatEffectRemaining(remainingMs)}</div>
+        </>
+      );
+    }
+
+    return null;
+  },
+};
+
+export const brimstoneFluxTooltip: TooltipConfig = {
+  getContent: (state: GameState) => {
+    const flux = state.brimstoneFluxState;
+    const isActive = flux?.isActive && flux.endTime > Date.now();
+
+    if (isActive) {
+      const remainingMs = flux.endTime - Date.now();
+      return (
+        <>
+          <div className="font-bold">
+            {getUiTooltip("brimstoneFlux", "Brimstone Flux")}
+          </div>
+          <div>
+            {getUiTooltip(
+              "steelForgerSteelBonus",
+              "Steel Forgers: +{{amount}} Steel",
+              { amount: BRIMSTONE_FLUX_STEEL_BONUS },
+            )}
           </div>
           <div>{formatEffectRemaining(remainingMs)}</div>
         </>

@@ -2863,5 +2863,56 @@
     },
     "message": "Die Hirsche verhalten sich seltsam. Sie fliehen nicht. Sie scheinen die Jäger direkt anzustarren. Die Jagd ist jetzt leicht, aber die Jäger kehren verstört zurück.",
     "title": "Starrende Hirsche"
+  },
+  "brimstoneFlux1": {
+    "title": "Der Schwefelfluss",
+    "message": "Ein kleiner, bärtiger Mann mit gewaltigen Armen kommt ins Dorf. Er sagt, er kenne die Gießerei und könne die Stahlproduktion eine Zeit lang steigern. Er braucht Schwefel und ein wenig Gold.",
+    "choices": {
+      "accept": {
+        "label": "Hilfe annehmen",
+        "cost": "{{sulfurCost}} Schwefel, {{goldCost}} Gold"
+      },
+      "sendAway": {
+        "label": "Wegschicken"
+      }
+    },
+    "log": {
+      "accept": "Er beginnt seine Arbeit. Kurz darauf brennt der Ofen heißer als je zuvor.",
+      "sendAway": "Der Schmied zuckt mit den Schultern und geht. Er sagt, er komme vielleicht wieder."
+    }
+  },
+  "brimstoneFlux2": {
+    "title": "Noch ein Schwefelfluss",
+    "message": "Der kleine Schmied kehrt zurück, der Bart an den Rändern versengt. Er sagt, er könne die Öfen wieder wecken, aber diesmal werde es mehr kosten.",
+    "choices": {
+      "accept": {
+        "label": "Seine Hilfe annehmen",
+        "cost": "{{sulfurCost}} Schwefel, {{goldCost}} Gold"
+      },
+      "sendAway": {
+        "label": "Wegschicken"
+      }
+    },
+    "log": {
+      "accept": "Er speist den Ofen erneut. Die Stahlproduktion steigt sofort.",
+      "sendAway": "Er geht ohne Widerrede. Er sagt, er komme vielleicht wieder."
+    }
+  },
+  "brimstoneFlux3": {
+    "title": "Die Schwefelinfusion",
+    "message": "Der Schmied kehrt zurück. Er bietet an, die Gießerei dauerhaft zu verbessern. Aber es wird dich etwas kosten.",
+    "choices": {
+      "accept": {
+        "label": "Seine Methode lernen",
+        "cost": "{{sulfurCost}} Schwefel, {{goldCost}} Gold"
+      },
+      "sendAway": {
+        "label": "Wegschicken"
+      }
+    },
+    "log": {
+      "accept": "Er verbessert den Ofen und geht vor der Morgendämmerung. Stahlschmiede erzeugen von nun an mehr.",
+      "sendAway": "Er sieht dich enttäuscht an, dann geht er. Er sagt, er komme vielleicht wieder."
+    }
   }
 }

@@ -91,6 +91,7 @@ export interface ActionEffectUpdates {
   fogState?: GameState["fogState"];
   staringDeerState?: GameState["staringDeerState"];
   forestFearState?: GameState["forestFearState"];
+  brimstoneFluxState?: GameState["brimstoneFluxState"];
   sleepUpgrades?: GameState["sleepUpgrades"];
   combatSkills?: GameState["combatSkills"];
   clickAnalytics?: Partial<GameState["clickAnalytics"]>;

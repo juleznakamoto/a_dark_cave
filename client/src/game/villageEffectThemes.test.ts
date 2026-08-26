@@ -24,6 +24,17 @@ describe("resolveVillageEffectAnnouncementTheme", () => {
     expect(
       resolveVillageEffectAnnouncementTheme("unnamedWanderer", {}),
     ).toBe("miningBoost");
+    expect(
+      resolveVillageEffectAnnouncementTheme("brimstoneFlux3", {}),
+    ).toBe("brimstoneFlux");
+  });
+
+  it("detects brimstone flux from timed state activation", () => {
+    expect(
+      resolveVillageEffectAnnouncementTheme("brimstoneFlux1", {
+        brimstoneFluxState: { isActive: true, endTime: Date.now() + 60_000 },
+      }),
+    ).toBe("brimstoneFlux");
   });
 
   it("detects disgust only when the debuff is newly stacked", () => {

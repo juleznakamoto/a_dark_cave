@@ -345,6 +345,10 @@
     "fang_charm": {
       "description": "一串来自巨型生物的黑色獠牙",
       "name": "獠牙护符"
+    },
+    "brimstone_infusion": {
+      "description": "炼钢工产出 +1 钢",
+      "name": "硫磺灌注"
     }
   },
   "fellowship": {

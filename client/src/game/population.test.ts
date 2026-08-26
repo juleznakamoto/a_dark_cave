@@ -220,6 +220,7 @@ const createTestState = (overrides?: Partial<GameState>): GameState => {
     greatFeastState: { isActive: false, endTime: 0 },
     curseState: { isActive: false, endTime: 0 },
     miningBoostState: { isActive: false, endTime: 0 },
+    brimstoneFluxState: { isActive: false, endTime: 0 },
     frostfallState: { isActive: false, endTime: 0 },
     combatSkills: {},
     buttonUpgrades: {},
@@ -568,6 +569,38 @@ describe('Population Production Display Tests', () => {
       expect(displayedEffects.coal).toBe(-5);
       expect(displayedEffects.food).toBe(-5 - totalPop); // -5 from job - 5 base = -10
       expect(displayedEffects.wood).toBe(-totalPop);
+    });
+
+    it('steel forger gains Brimstone Infusion and timed brimstone flux', () => {
+      const forgerState = {
+        villagers: { ...createTestState().villagers, steel_forger: 1, free: 4 },
+        buildings: { ...createTestState().buildings, foundry: 1 },
+        resources: { ...createTestState().resources, iron: 500, coal: 500 },
+      };
+
+      const blessed = createTestState({
+        ...forgerState,
+        blessings: { brimstone_infusion: true },
+      });
+      expect(getTotalPopulationEffects(blessed, ['steel_forger']).steel).toBe(2);
+
+      const flux = createTestState({
+        ...forgerState,
+        brimstoneFluxState: { isActive: true, endTime: Date.now() + 60_000 },
+      });
+      expect(getTotalPopulationEffects(flux, ['steel_forger']).steel).toBe(3);
+      expect(
+        getTotalPopulationEffects(flux, ['steel_forger'], {
+          excludeTemporaryBonuses: true,
+        }).steel,
+      ).toBe(1);
+
+      const both = createTestState({
+        ...forgerState,
+        blessings: { brimstone_infusion: true },
+        brimstoneFluxState: { isActive: true, endTime: Date.now() + 60_000 },
+      });
+      expect(getTotalPopulationEffects(both, ['steel_forger']).steel).toBe(4);
     });
   });
 

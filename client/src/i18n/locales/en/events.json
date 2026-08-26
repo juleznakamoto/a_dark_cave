@@ -220,6 +220,57 @@
       "outcome3": "Your indecision frustrates the creature. It hisses in displeasure and retreats into the shadows."
     }
   },
+  "brimstoneFlux1": {
+    "title": "The Brimstone Flux",
+    "message": "A small, bearded man with enormous arms arrives at the village. He says he knows the foundry and can help improve your steel production for a time. He needs sulfur, and a little gold.",
+    "choices": {
+      "accept": {
+        "label": "Accept help",
+        "cost": "{{sulfurCost}} Sulfur, {{goldCost}} Gold"
+      },
+      "sendAway": {
+        "label": "Send away"
+      }
+    },
+    "log": {
+      "accept": "He begins his work. Shortly after, the furnace burns hotter than ever.",
+      "sendAway": "The smith shrugs and leaves. He says he might come again."
+    }
+  },
+  "brimstoneFlux2": {
+    "title": "Another Brimstone Flux",
+    "message": "The small smith returns, his beard singed at the edges. He says he can wake the furnaces again, but it will take more this time.",
+    "choices": {
+      "accept": {
+        "label": "Accept his help",
+        "cost": "{{sulfurCost}} Sulfur, {{goldCost}} Gold"
+      },
+      "sendAway": {
+        "label": "Send away"
+      }
+    },
+    "log": {
+      "accept": "He feeds the furnace again. Steel production immediately increases.",
+      "sendAway": "He leaves without argument. He says he might come again."
+    }
+  },
+  "brimstoneFlux3": {
+    "title": "The Brimstone Infusion",
+    "message": "The smith returns. He offers to improve the foundry permanently. But it will cost you.",
+    "choices": {
+      "accept": {
+        "label": "Learn his method",
+        "cost": "{{sulfurCost}} Sulfur, {{goldCost}} Gold"
+      },
+      "sendAway": {
+        "label": "Send away"
+      }
+    },
+    "log": {
+      "accept": "He improves the furnace and leaves before dawn. Steel forgers produce more from now on.",
+      "sendAway": "He looks at you disappointed, then leaves. He says he might come again."
+    }
+  },
   "boneDiceChoice": {
     "choices": {
       "doNothing": {

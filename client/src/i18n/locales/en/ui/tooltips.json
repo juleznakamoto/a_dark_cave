@@ -37,6 +37,8 @@
     "villagerDisgust": "Villager Disgust",
     "miningBoost": "Mining Boost",
     "miningBonus": "Mining Bonus: {{percent}}%",
+    "brimstoneFlux": "Brimstone Flux",
+    "steelForgerSteelBonus": "Steel Forgers: +{{amount}} Steel",
     "heartfire": "Heartfire",
     "newVillagerChance": "New Villager Chance: +{{percent}}%",
     "frostfall": "Frostfall",

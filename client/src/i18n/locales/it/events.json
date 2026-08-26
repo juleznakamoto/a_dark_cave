@@ -2863,5 +2863,56 @@
     },
     "message": "I cervi si comportano in modo strano. Non fuggono. Sembrano fissare i cacciatori. Cacciare è facile ora, ma i cacciatori tornano scossi.",
     "title": "Cervi che fissano"
+  },
+  "brimstoneFlux1": {
+    "title": "Il flusso di zolfo",
+    "message": "Un ometto barbuto dalle braccia enormi arriva al villaggio. Dice di conoscere la fonderia e di poter migliorare la produzione di acciaio per un po'. Ha bisogno di zolfo e un po' d'oro.",
+    "choices": {
+      "accept": {
+        "label": "Accetta l'aiuto",
+        "cost": "{{sulfurCost}} Zolfo, {{goldCost}} Oro"
+      },
+      "sendAway": {
+        "label": "Mandalo via"
+      }
+    },
+    "log": {
+      "accept": "Inizia il suo lavoro. Poco dopo, la fornace brucia più forte che mai.",
+      "sendAway": "Il fabbro alza le spalle e se ne va. Dice che forse tornerà."
+    }
+  },
+  "brimstoneFlux2": {
+    "title": "Un altro flusso di zolfo",
+    "message": "Il piccolo fabbro torna, con la barba bruciacchiata ai bordi. Dice di poter risvegliare di nuovo le fornaci, ma questa volta servirà di più.",
+    "choices": {
+      "accept": {
+        "label": "Accetta il suo aiuto",
+        "cost": "{{sulfurCost}} Zolfo, {{goldCost}} Oro"
+      },
+      "sendAway": {
+        "label": "Mandalo via"
+      }
+    },
+    "log": {
+      "accept": "Alimenta di nuovo la fornace. La produzione di acciaio aumenta subito.",
+      "sendAway": "Se ne va senza discutere. Dice che forse tornerà."
+    }
+  },
+  "brimstoneFlux3": {
+    "title": "L'infusione di zolfo",
+    "message": "Il fabbro torna. Offre di migliorare la fonderia in modo permanente. Ma ti costerà.",
+    "choices": {
+      "accept": {
+        "label": "Impara il suo metodo",
+        "cost": "{{sulfurCost}} Zolfo, {{goldCost}} Oro"
+      },
+      "sendAway": {
+        "label": "Mandalo via"
+      }
+    },
+    "log": {
+      "accept": "Migliora la fornace e se ne va prima dell'alba. I forgiatori d'acciaio producono di più d'ora in poi.",
+      "sendAway": "Ti guarda deluso, poi se ne va. Dice che forse tornerà."
+    }
   }
 }

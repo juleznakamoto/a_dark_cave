@@ -345,6 +345,10 @@
     "fang_charm": {
       "description": "Cordão de presas pretas de uma criatura enorme",
       "name": "Amuleto de Presas"
+    },
+    "brimstone_infusion": {
+      "description": "Forjadores de aço produzem +1 Aço",
+      "name": "Infusão de Enxofre"
     }
   },
   "fellowship": {

@@ -8,11 +8,13 @@ import {
   getActionCostBreakdown,
   getResourcesFromActionCost,
 } from "@/game/rules";
+import { BRIMSTONE_FLUX_DURATION_MS } from "@/game/rules/eventsBrimstoneFlux";
 import {
   feastTooltip,
   solsticeTooltip,
   curseTooltip,
   miningBoostTooltip,
+  brimstoneFluxTooltip,
   frostfallTooltip,
   fogTooltip,
   disgustTooltip,
@@ -619,6 +621,7 @@ export default function VillagePanel() {
   const feastState = useGameStore((state) => state.feastState);
   const greatFeastState = useGameStore((state) => state.greatFeastState);
   const solsticeState = useGameStore((state) => state.solsticeState);
+  const brimstoneFluxState = useGameStore((state) => state.brimstoneFluxState);
 
   // Calculate feast progress based on game loop timing
   const [feastProgress, setFeastProgress] = React.useState(0);
@@ -1712,6 +1715,9 @@ export default function VillagePanel() {
                   const isMiningBoosted =
                     miningBoostState?.isActive &&
                     miningBoostState.endTime > Date.now();
+                  const isBrimstoneFlux =
+                    brimstoneFluxState?.isActive &&
+                    brimstoneFluxState.endTime > Date.now();
                   const isFrostfall =
                     frostfallState?.isActive &&
                     frostfallState.endTime > Date.now();
@@ -1947,6 +1953,55 @@ export default function VillagePanel() {
                               className={`${GAME_PANEL_HEADER_INDICATOR_GLYPH_CLASS} game-panel-header-indicator-glyph--xs mt-[2px] text-amber-600`}
                             >
                               ⛰
+                            </span>
+                          </div>
+                        </TooltipWrapper>
+                      )}
+
+                      {/* Brimstone Flux Indicator */}
+                      {isBrimstoneFlux && (
+                        <TooltipWrapper
+                          tooltip={
+                            <div className="text-xs whitespace-pre-line">
+                              {brimstoneFluxTooltip.getContent(state)}
+                            </div>
+                          }
+                          tooltipId="brimstone-flux-progress"
+                          disabled
+                          tooltipTriggerClassName={
+                            GAME_PANEL_HEADER_INDICATOR_TRIGGER_CLASS
+                          }
+                          className={pulseClassName(
+                            "brimstone-flux-progress",
+                            GAME_PANEL_HEADER_INDICATOR_CLASS,
+                          )}
+                          onMouseEnter={() =>
+                            onMouseEnter("brimstone-flux-progress")
+                          }
+                          onMouseLeave={() =>
+                            onMouseLeave("brimstone-flux-progress")
+                          }
+                        >
+                          <div className={GAME_PANEL_HEADER_INDICATOR_INNER_CLASS}>
+                            <CircularProgress
+                              value={(() => {
+                                const fluxElapsed =
+                                  BRIMSTONE_FLUX_DURATION_MS -
+                                  (brimstoneFluxState.endTime - Date.now());
+                                return (
+                                  (fluxElapsed / BRIMSTONE_FLUX_DURATION_MS) *
+                                  100
+                                );
+                              })()}
+                              size={GAME_PANEL_HEADER_INDICATOR_SIZE_PX}
+                              fill
+                              strokeWidth={2}
+                              className="text-yellow-500"
+                            />
+                            <span
+                              className={`${GAME_PANEL_HEADER_INDICATOR_GLYPH_CLASS} game-panel-header-indicator-glyph--xs mt-[2px] text-yellow-500`}
+                            >
+                              🞜
                             </span>
                           </div>
                         </TooltipWrapper>

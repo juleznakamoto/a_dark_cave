@@ -2863,5 +2863,56 @@
     },
     "message": "Les cerfs se comportent étrangement. Ils ne fuient pas. Ils semblent fixer les chasseurs. La chasse est facile à présent, mais les chasseurs reviennent ébranlés.",
     "title": "Cerfs figés"
+  },
+  "brimstoneFlux1": {
+    "title": "Le Flux de soufre",
+    "message": "Un petit homme barbu aux bras énormes arrive au village. Il dit connaître la fonderie et pouvoir améliorer votre production d'acier pour un temps. Il a besoin de soufre, et un peu d'or.",
+    "choices": {
+      "accept": {
+        "label": "Accepter l'aide",
+        "cost": "{{sulfurCost}} Soufre, {{goldCost}} Or"
+      },
+      "sendAway": {
+        "label": "Renvoyer"
+      }
+    },
+    "log": {
+      "accept": "Il commence son travail. Peu après, le four brûle plus fort que jamais.",
+      "sendAway": "Le forgeron hausse les épaules et part. Il dit qu'il reviendra peut-être."
+    }
+  },
+  "brimstoneFlux2": {
+    "title": "Un autre flux de soufre",
+    "message": "Le petit forgeron revient, la barbe brûlée sur les bords. Il dit pouvoir réveiller les fours à nouveau, mais cela coûtera plus cette fois.",
+    "choices": {
+      "accept": {
+        "label": "Accepter son aide",
+        "cost": "{{sulfurCost}} Soufre, {{goldCost}} Or"
+      },
+      "sendAway": {
+        "label": "Renvoyer"
+      }
+    },
+    "log": {
+      "accept": "Il alimente le four à nouveau. La production d'acier augmente aussitôt.",
+      "sendAway": "Il part sans discuter. Il dit qu'il reviendra peut-être."
+    }
+  },
+  "brimstoneFlux3": {
+    "title": "L'Infusion de soufre",
+    "message": "Le forgeron revient. Il propose d'améliorer la fonderie de façon permanente. Mais cela vous coûtera.",
+    "choices": {
+      "accept": {
+        "label": "Apprendre sa méthode",
+        "cost": "{{sulfurCost}} Soufre, {{goldCost}} Or"
+      },
+      "sendAway": {
+        "label": "Renvoyer"
+      }
+    },
+    "log": {
+      "accept": "Il améliore le four et part avant l'aube. Les forgerons d'acier produisent plus désormais.",
+      "sendAway": "Il vous regarde, déçu, puis part. Il dit qu'il reviendra peut-être."
+    }
   }
 }

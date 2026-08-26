@@ -345,6 +345,10 @@
     "fang_charm": {
       "description": "Cordon de crocs noirs provenant d'une créature massive",
       "name": "Charme de crocs"
+    },
+    "brimstone_infusion": {
+      "description": "Les forgerons d'acier produisent +1 Acier",
+      "name": "Infusion de soufre"
     }
   },
   "fellowship": {

@@ -20,6 +20,7 @@ function baseState(): TimedEffectsState {
     disgustState: { ...inactiveSlice, duration: 0 },
     focusState: { ...inactiveSlice, startTime: 0, duration: 0, points: 0 },
     miningBoostState: { ...inactiveSlice },
+    brimstoneFluxState: { ...inactiveSlice },
     staringDeerState: { ...inactiveSlice },
     forestFearState: { ...inactiveSlice },
   };
