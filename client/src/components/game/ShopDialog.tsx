@@ -486,7 +486,7 @@ function ShopGlyphForItem({
             dominantBaseline="middle"
             fill="currentColor"
             className={fontClass}
-            fontFamily="'Noto Sans Symbols 2', 'Noto Symbol Compat'"
+            fontFamily="'Noto Symbol Compat', 'Noto Sans Symbols 2'"
             fontSize="27"
           >
             {glyph}
