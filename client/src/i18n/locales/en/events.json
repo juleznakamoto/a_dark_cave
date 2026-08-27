@@ -17,7 +17,7 @@
     "title": "The Abandoned Cart"
   },
   "alchemistArrives": {
-    "message": "The alchemist emerges from his hall: 'I have been conducting experiments day and night,' holding a vial of shimmering dust. 'I've created something extraordinary and terribly dangerous.'",
+    "message": "The alchemist emerges from his hall: 'I have been conducting experiments day and night.' He holds up a vial of shimmering dust. 'I've created something extraordinary and terribly dangerous.'",
     "title": "The Alchemist's Discovery"
   },
   "ashwraithCanyonTradeOffer": {
@@ -75,7 +75,7 @@
     "title": "The Giant's Forge"
   },
   "blindDruidBlessing": {
-    "message": "A blind druid emerges from the forest. He approaches the shrine and nods approvingly. 'The gods of the forest are pleased with your devotion, they grant you their blessing'.",
+    "message": "A blind druid emerges from the forest. He approaches the shrine and nods approvingly. 'The gods of the forest are pleased with your devotion, they grant you their blessing.'",
     "title": "The Blind Druid"
   },
   "bloodDrainedVillagers": {
@@ -86,7 +86,7 @@
     },
     "message": {
       "firstTime": "One morning, 6 villagers are found dead in their beds, pale and drained of all blood. Small punctures cover their skin. Some villagers suspect this could be connected to the collapsed tower in the forest where hunters heard strange sounds.",
-      "repeat": "Again, 8 more villagers are discovered dead at dawn, their bodies drained of blood, covered in the same mysterious marks. The demands that something be done about what dwells in the collapsed tower grow louder."
+      "repeat": "Again, 8 more villagers are discovered dead at dawn, their bodies drained of blood, covered in the same mysterious marks. Calls to deal with the collapsed tower grow louder."
     },
     "title": "Drained Bodies"
   },
@@ -141,7 +141,7 @@
       "outcome4": "The lycanthropes overwhelm your defenses and overrun the settlement! The blood moon fades, but the threat remains."
     },
     "message": {
-      "default": "The moon at night turned blood red, village elders speak of lycanthropes. Ancient pacts demand a sacrifice of {{sacrificeAmount}} villagers to appease the beasts. If you refuse, they will ensure their hunger is satisfied."
+      "default": "The moon turns blood-red. The elders speak of lycanthropes. Ancient pacts demand a sacrifice of {{sacrificeAmount}} villagers to appease the beasts. If you refuse, they will ensure their hunger is satisfied."
     },
     "title": "Blood Moon"
   },
@@ -900,7 +900,7 @@
     "title": "The Village Elder"
   },
   "firstWave": {
-    "message": "Pale figures emerge from the cave, finally freed, their ember eyes cutting through the dark as they march towards the city.",
+    "message": "Pale figures emerge from the cave, finally freed, their ember eyes cutting through the dark as they march toward the city.",
     "title": "The First Wave"
   },
   "forestFear": {
@@ -909,7 +909,7 @@
         "label": "Continue"
       }
     },
-    "message": "A villager got attacked and killed by something in the woods. It was tall and fast, nobody could clearly see it. Hunters and gatherers are too scared to go into the forest.",
+    "message": "Something in the woods killed a villager. It was tall and fast. No one saw it clearly. Hunters and gatherers are too scared to go into the forest.",
     "title": "Something in the Woods"
   },
   "forestTribeHelpRequest": {
@@ -925,7 +925,7 @@
     "title": "A Desperate Plea"
   },
   "fourthWave": {
-    "message": "The sky seems to darken as an uncountable mass of pale creatures surges from the cave, pressing towards the city.",
+    "message": "The sky seems to darken as an uncountable mass of pale creatures surges from the cave, pressing toward the city.",
     "title": "The Fourth Wave"
   },
   "frostfall": {
@@ -1166,8 +1166,8 @@
       "outcome0": "You grant the stranger shelter. At dawn, he has vanished. Only his robes remain, and within them lies a book bound in human skin. Its pages whisper forbidden knowledge.",
       "outcome1": "You refuse the stranger entry. He leaves screaming curses in an alien tongue. Before dawn, a barbarian tribe attacks as if summoned by his cries, killing {{actualDeaths}} villagers. In the morning you find a book on the ground, bound in human skin."
     },
-    "message": "In the evening, a robed figure approaches from the wilderness. His eyes burn with madness as he mutters in a foreign tongue, gestures sharp and unsettling. The villagers grow uneasy. Do you allow this Beduine to stay the night?",
-    "title": "The Mad Beduine"
+    "message": "In the evening, a robed figure approaches from the wilderness. His eyes burn with madness as he mutters in a foreign tongue, gestures sharp and unsettling. The villagers grow uneasy. Do you allow this Bedouin to stay the night?",
+    "title": "The Mad Bedouin"
   },
   "mapFragmentsAssembled": {
     "choices": {
@@ -1492,8 +1492,8 @@
     "log": {
       "ignoreForced": "You ignore the offer. The viking eventually spits on the ground and leaves with his war axe, muttering about your lack of respect.",
       "ignoreNormal": "You ignore the offer. The viking eventually nods and leaves with his war axe.",
-      "buyForced": "The viking takes the payment with a cold smile. 'Perhaps you should have been more generous before, instead of attacking me. You would have paid much less for the axe then.' he speaks before leaving.",
-      "buyNormal": "Happy with the trade the viking nods approvingly and departs.",
+      "buyForced": "The Viking takes the payment with a cold smile. 'Perhaps you should have been more generous before, instead of attacking me. You would have paid much less for the axe then,' he says before leaving.",
+      "buyNormal": "Happy with the trade, the Viking nods approvingly and departs.",
       "declineForced": "You decline the offer. The viking spits on the ground, muttering curses as he leaves with his war axe. 'You should have paid me when you had the chance,' he growls.",
       "declineNormal": "You decline the offer. The viking nods respectfully and leaves with his war axe."
     },
@@ -1610,7 +1610,7 @@
         "label": "Continue"
       }
     },
-    "message": "The ember bombs detonate in a bright flash of fire and light. The ancient gate cracks and crumbles. Whatever could have been sealed within has been released. The city should get ready for whatever comes out of there.",
+    "message": "The ember bombs detonate in a bright flash of fire and light. The ancient gate cracks and crumbles. Whatever was sealed inside is now free.",
     "title": "The Gate Falls"
   },
   "portalDiscovered": {
@@ -1867,7 +1867,7 @@
     }
   },
   "riddleOfEternal": {
-    "title": "The unknown Guest",
+    "title": "The Unknown Guest",
     "message": {
       "original": "The nightly figure appears one more time at the estate. Its voice silently echoes through the night: 'Your eyes are open, I am there, your eyes are closed, I am there too.'",
       "variant": "The nightly figure appears one more time at the estate. Its voice silently echoes through the night: 'Poor have me, rich need me. Eat me, you die.'"
@@ -1895,7 +1895,7 @@
     }
   },
   "riddleOfEternal_variant": {
-    "title": "The unknown Guest",
+    "title": "The Unknown Guest",
     "message": {
       "original": "The nightly figure appears one more time at the estate. Its voice silently echoes through the night: 'Your eyes are open, I am there, your eyes are closed, I am there too.'",
       "variant": "The nightly figure appears one more time at the estate. Its voice silently echoes through the night: 'Poor have me, rich need me. Eat me, you die.'"
@@ -1996,7 +1996,7 @@
       "outcome2": "Your hesitation proves fatal. One of your men, unable to resist the mysterious ring, picks it up. Immediately, water begins pouring from his mouth in an endless torrent. He drowns on dry land."
     },
     "message": "Deep in the forgotten city, you find a strange ring that drips constantly with water. Do you keep it?",
-    "title": "Ring of Drowned"
+    "title": "Ring of the Drowned"
   },
   "risingSmokeRumor": {
     "choices": {
@@ -2004,8 +2004,8 @@
         "label": "Continue"
       }
     },
-    "message": "Villagers come to you. They saw a very dense pillar of smoke rising in the woods. Maybe it makes sense to investigate it.",
-    "title": "Rising smoke"
+    "message": "Villagers come to you. They saw a very dense pillar of smoke rising in the woods. Someone should see what burns.",
+    "title": "Rising Smoke"
   },
   "sanctumDedication": {
     "choices": {
@@ -2113,7 +2113,7 @@
       }
     },
     "log": {
-      "outcome0": "You take deep breaths and force yourself to remain still. The crawling sensation gradually fades, and your skin returns to normal. You have conquered this horror through sheer willpower.",
+      "outcome0": "You hold still until the crawling stops. The skin is yours again. For now.",
       "outcome1": "You try to calm yourself, but the sensation intensifies. Your vision blurs and you collapse. In your fevered dreams, ancient things whisper your true name. When you awaken, the crawling has stopped, but the memory lingers.",
       "outcome2": "You claw frantically at your skin, drawing blood. The villagers rush to stop you, grabbing your arms. In your maddened rage, you lash out violently, killing {{killedVillagers}} villagers before collapsing from exhaustion. When you awaken, the crawling has stopped, but blood stains your hands."
     },
@@ -2233,7 +2233,7 @@
     "title": "The Tenth Wave"
   },
   "firstBossWave": {
-    "message": "A large pack of pale beasts leads the siege towards the city. Their blood thirst can be seen in every step they take.",
+    "message": "A large pack of pale beasts leads the siege toward the city. Their blood thirst can be seen in every step they take.",
     "title": "Boss Wave"
   },
   "secondBossWave": {
@@ -2271,7 +2271,7 @@
       "outcome2": "You turn them away. A bitter unease settles over the village as the villagers are not happy with your decision.",
       "outcome3": "You welcome them, but there is no room in the village for more villagers."
     },
-    "message": "A group of young men and women stumbles from the forest, half dead from cold and hunger. They were left in the woods as a sacrifice to the forest gods, yet somehow survived. Do you welcome them in the village?",
+    "message": "A group of young men and women stumbles from the forest, half dead from cold and hunger. They were left in the woods as a sacrifice to the forest gods, yet somehow survived. Do you let them into the village?",
     "title": "The Damned"
   },
   "thirdWave": {
@@ -2803,7 +2803,7 @@
       "hide_manyDeaths_food": "The villagers huddle in their huts as the wolves prowl outside. Several villagers are dragged from their huts, their screams echoing through the night. The wolves ransack your supplies before vanishing at dawn.",
       "hide_manyDeaths_food_first": "The villagers huddle in their huts as the wolves prowl outside. Several villagers are dragged from their huts, their screams echoing through the night. The wolves ransack your supplies before vanishing at dawn. The villagers suggest you lay traps around the village to better protect against wolves and other foes."
     },
-    "message": "Close to midnight, wolves emerge from the darkness, their eyes glowing with unnatural hunger. Their howls echo filled with malice as they circle the village.",
+    "message": "Close to midnight, wolves emerge from the darkness, their eyes glowing with unnatural hunger. Their howls carry malice as they circle the village.",
     "title": "Wolf Attack"
   },
   "woodcutter": {
@@ -2820,9 +2820,9 @@
       }
     },
     "log": {
-      "betray": "You hand over the food, but days pass with no sign of the woodcutter. It seems you got betrayed.",
-      "betrayLast": "You hand over the food. The woodcutter grins as he leaves towards the forest. You wait, but he never returns. It seems you got betrayed.",
-      "betrayLevel5": "You hand over the food. The woodcutter promises to return the same day. But he never does. It seems you got betrayed.",
+      "betray": "You hand over the food, but days pass with no sign of the woodcutter. You got betrayed.",
+      "betrayLast": "You hand over the food. The woodcutter grins as he leaves towards the forest. You wait, but he never returns. You got betrayed.",
+      "betrayLevel5": "You hand over the food. The woodcutter promises to return the same day. But he never does. You got betrayed.",
       "denyLastUneasy": "Something about his demeanor makes you uneasy. You refuse the deal. The woodcutter's smile fades, and he leaves without a word.",
       "denyLevel1": "You decline his offer. The woodcutter shrugs and walks away into the forest.",
       "denyLevel2": "You decline his offer. The woodcutter nods and departs without complaint.",
@@ -2846,8 +2846,8 @@
     },
     "message": {
       "level1": "A muscular man with a large axe approaches the village. He flexes his arms. \"I can cut trees like no other,\" he boasts. \"Give me {{foodCost}} Food, and I'll bring {{woodReward}} Wood.\"",
-      "level2": "The woodcutter returns, his axe gleaming in the sun. \"Your village grows well,\" he observes. \"I can bring you {{woodReward}} Wood. You give me {{foodCost}} Food. What do you say?\"",
-      "level3": "The woodcutter approaches again. \"I see your village continues to thrive,\" he says with a grin. \"I can bring you {{woodReward}} Wood if you pay {{foodCost}} Food for it.\"",
+      "level2": "The woodcutter returns, his axe gleaming in the sun. \"Your village has more mouths,\" he observes. \"I can bring you {{woodReward}} Wood. You give me {{foodCost}} Food. What do you say?\"",
+      "level3": "The woodcutter approaches again. \"Your village still stands,\" he says with a grin. \"I can bring you {{woodReward}} Wood if you pay {{foodCost}} Food for it.\"",
       "level4": "The woodcutter arrives once more. \"Do you want to use my services once more? {{woodReward}} Wood for {{foodCost}} Food,\" he asks.",
       "level5": "The woodcutter appears with a confident smile. \"How about we make one more deal? {{woodReward}} Wood for {{foodCost}} Food.\"",
       "level6": "The woodcutter returns to the village. \"Do you want to use my services once more? I offer {{woodReward}} Wood for {{foodCost}} Food,\" he says."

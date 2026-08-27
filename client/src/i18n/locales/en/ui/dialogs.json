@@ -33,7 +33,7 @@
   "socialPrompt": {
     "title": "Stay connected and earn Rewards",
     "description": "Complete the tasks below to receive bonuses. Complete all tasks to receive an exclusive item.",
-    "signUpRequiresSignInTooltip": "sign up to complete task",
+    "signUpRequiresSignInTooltip": "Sign in to complete this task",
     "signUpTitle": "Sign up",
     "signUpDesc": "Create a free account to sync your game progress across devices. Without an account, your progress is only saved locally and may be lost.",
     "signUpButton": "Sign Up",
@@ -114,7 +114,7 @@
     "title": "The Obsessed Gambler",
     "srDescription": "Dice game against the obsessed gambler",
     "rulesAriaLabel": "Dice game rules",
-    "rulesTurns": "You and the Gambler take turns rolling a dice.",
+    "rulesTurns": "You and the Gambler take turns rolling a die.",
     "rulesTotals": "Each player's rolls are added up.",
     "rulesGoal": "The goal is set to 15.",
     "rulesWinLose": "If a player reaches the goal exactly, he wins. If he goes over, he loses.",
@@ -145,7 +145,7 @@
     "titleTrial": "The Journey Continues",
     "titleCheckout": "Complete Your Purchase",
     "trialDesc": "You have reached the end of the trial. The full journey awaits beyond this point.",
-    "oneTimePurchase": "One time purchase. No subscriptions. No microtransactions.",
+    "oneTimePurchase": "One-time purchase. No subscriptions. No extra charges.",
     "featureHours": "14+ hours of gameplay",
     "featureStructures": "100+ structures",
     "featureItems": "250+ items, fellowship members, books, blessings...",
@@ -162,7 +162,7 @@
     "rightOfWithdrawal": "Withdrawal",
     "completePurchaseFor": "Complete Purchase for {{price}}",
     "paymentFailed": "Payment failed",
-    "notAuthenticated": "User not authenticated",
+    "notAuthenticated": "You are not signed in",
     "unexpectedError": "An unexpected error occurred"
   },
   "leaderboard": {
@@ -249,7 +249,7 @@
     "reddit": "Reddit",
     "instagram": "Instagram",
     "steam": "Steam",
-    "email": "E-Mail"
+    "email": "Email"
   },
   "galaxy": {
     "title": "Demo ends here",

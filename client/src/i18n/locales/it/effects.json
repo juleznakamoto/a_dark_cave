@@ -263,7 +263,7 @@
       "name": "Baule Sigillato"
     },
     "shadow_boots": {
-      "description": "Muoviti su ogni terreno veloce come un'ombra",
+      "description": "Muoviti su ogni terreno velocemente come un'ombra",
       "name": "Stivali d'Ombra"
     },
     "shadow_flute": {
@@ -320,7 +320,7 @@
     },
     "depths_gift": {
       "description": "Cave exploration yields more",
-      "name": "Depth's Gift"
+      "name": "Depths' Gift"
     },
     "fresh_blood": {
       "description": "Strangers approach the village more often",

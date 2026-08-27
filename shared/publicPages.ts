@@ -199,7 +199,7 @@ export const ABOUT_SECTIONS: {
       heading: "Who it is for",
       paragraphsHtml: [
         "It is for people who like games that start simple and get more complicated on purpose. Not because a tutorial dumped twenty systems on minute one, but because you earned the next one.",
-        "If you want flashy graphics, this is the wrong tab. Most of the game is text, with some (hopefully) rewarding animations in between. I spent a lot of time crafting an interesting story that is deeply connected with our story and future.",
+        "If you want flashy graphics, this is the wrong game. Most of the game is text, with some (hopefully) rewarding animations in between. I spent a lot of time crafting an interesting story that is deeply connected with our story and future.",
       ],
     },
     {

@@ -87,7 +87,7 @@ export const overallChartConfig: AchievementChartConfig = {
       {
         segmentId: "0-endurant",
         maxCount: ENDURANT_HOURS,
-        label: "Endurant",
+        label: "Enduring",
         segments: 10,
         getCount: (state: GameState) =>
           Math.min(

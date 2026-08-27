@@ -4,8 +4,9 @@
  * Steam/Electron loopback build works offline — remote Google Fonts URLs do not load there.
  *
  * Unicode-range slices match the Google Fonts CSS payload (Noto Sans Symbols 2 v25).
- * Those slices claim ranges they do not actually draw (e.g. U+27E1 feast ⟡), so
- * `Noto Symbol Compat` is listed first in `.font-noto-symbols-2` / `--font-sans`.
+ * Those slices claim ranges they do not actually draw (e.g. U+27E1 feast ⟡,
+ * U+27C1 basics ⟁, U+29D7 actions ⧗), so `Noto Symbol Compat` is listed first
+ * in `.font-noto-symbols-2` / `--font-sans`.
  * Compat is merged from Noto Math/Symbols and has a taller line box (hhea 1480);
  * `ascent-override` / `descent-override` match Symbols 2 (1069 / 630) so ×, ↦,
  * and other Symbols 2 fallback glyphs stay centered on mobile.
@@ -20,7 +21,7 @@ const NOTO_BASE = publicUrl("/fonts");
 /** UI glyphs used with `.font-noto-symbols-2` that Symbols 2's files omit. */
 export const NOTO_SYMBOL_COMPAT_CODEPOINTS = [
   0x2058, 0x2059, 0x2193, 0x2234, 0x224b, 0x2629, 0x26b5, 0x26e4, 0x26ef,
-  0x26f0, 0x2720, 0x27d0, 0x27d1, 0x27e1, 0x29c8, 0x1f70b,
+  0x26f0, 0x2720, 0x27c1, 0x27d0, 0x27d1, 0x27e1, 0x29c8, 0x29d7, 0x1f70b,
 ] as const;
 
 function unicodeRangeFromCodepoints(codepoints: readonly number[]): string {

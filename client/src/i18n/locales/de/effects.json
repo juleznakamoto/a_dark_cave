@@ -96,7 +96,7 @@
     },
     "depths_gift": {
       "description": "Höhle exploration yields more",
-      "name": "Depth's Gift"
+      "name": "Depths' Gift"
     },
     "dagons_gift_enhanced": {
       "description": "Deine Jagdfähigkeit ist stark verbessert",
@@ -107,7 +107,7 @@
       "name": "Verschlingerkrone"
     },
     "ebon_grace": {
-      "description": "Dunkler Segen, empfangen durch den schwarzen Baum",
+      "description": "Dunkler Segen vom schwarzen Baum",
       "name": "Ebenholzgnade"
     },
     "ebony_ring": {

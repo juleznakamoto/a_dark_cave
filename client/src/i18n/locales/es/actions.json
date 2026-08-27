@@ -18,7 +18,7 @@
   "blastPortal": {
     "label": "Puerta de estallido",
     "log": {
-      "complete": "Las bombas de brasa detonan en un brillante destello de fuego y luz. La antigua puerta se resquebraja y se desmorona. Lo que fuera que estuviera sellado en su interior ha sido liberado. La ciudad debería prepararse para lo que salga de allí."
+      "complete": "Las bombas de brasa detonan en un brillante destello de fuego y luz. La antigua puerta se resquebraja y se desmorona. Lo que estaba sellado en su interior ahora está libre."
     }
   },
   "boneTotems": {
@@ -33,7 +33,7 @@
     "label": "Salón del alquimista"
   },
   "buildAltar": {
-    "description": "Lugar sagrado de adoración y sacrificio",
+    "description": "Lugar de adoración y sacrificio",
     "label": "Altar"
   },
   "buildBank": {
@@ -257,7 +257,7 @@
     "label": "Templo"
   },
   "buildTimberMill": {
-    "description": "Molino que ayuda a procesar madera con más eficiencia",
+    "description": "Molino que procesa madera con más eficiencia",
     "label": "Aserradero"
   },
   "buildTradePost": {
@@ -269,7 +269,7 @@
     "label": "Trampas"
   },
   "buildTreasury": {
-    "description": "Gran edificio financiero que permite hacer inversiones muy grandes",
+    "description": "Cámara que permite arriesgar sumas mucho mayores",
     "label": "Tesorería"
   },
   "buildVillageWarehouse": {
@@ -528,7 +528,7 @@
   "forestCave": {
     "label": "Cueva del bosque",
     "log": {
-      "success": "Cuando los aldeanos descienden a la cueva, feroces sabuesos irrumpen de la oscuridad en manadas implacables. Los gritos resuenan mientras las garras desgarran y los dientes muerden. Cuando cae la última criatura, todos los aldeanos sobreviven, pero vaciados por lo que han padecido.",
+      "success": "Cuando los aldeanos descienden a la cueva, feroces sabuesos irrumpen de la oscuridad en manadas implacables. Los gritos resuenan mientras las garras desgarran y los dientes muerden. Cuando cae la última criatura, cada aldeano vive, vaciado por lo que vio.",
       "failure": "Cuando la expedición entra en la cueva, es abrumada por una manada de brutales sabuesos. {{count}} aldeanos son destrozados por mandíbulas salvajes antes de que los supervivientes logren retirarse."
     }
   },

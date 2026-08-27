@@ -13,9 +13,9 @@ describe("Noto symbol compat face", () => {
     document.documentElement.classList.remove("symbols-font-loaded");
   });
 
-  it("covers feast, fog, and mining-boost glyphs omitted by Symbols 2", () => {
+  it("covers feast, fog, mining-boost, and achievement-ring glyphs omitted by Symbols 2", () => {
     expect(NOTO_SYMBOL_COMPAT_CODEPOINTS).toEqual(
-      expect.arrayContaining([0x27e1, 0x224b, 0x26f0]),
+      expect.arrayContaining([0x27e1, 0x224b, 0x26f0, 0x27c1, 0x29d7]),
     );
   });
 
@@ -24,6 +24,8 @@ describe("Noto symbol compat face", () => {
     expect(css.indexOf("Noto Symbol Compat")).toBeGreaterThanOrEqual(0);
     expect(css.indexOf("noto-symbol-compat.woff2")).toBeGreaterThanOrEqual(0);
     expect(css.indexOf("U+27E1")).toBeGreaterThanOrEqual(0);
+    expect(css.indexOf("U+27C1")).toBeGreaterThanOrEqual(0);
+    expect(css.indexOf("U+29D7")).toBeGreaterThanOrEqual(0);
     expect(css.indexOf("Noto Symbol Compat")).toBeLessThan(
       css.indexOf("Noto Sans Symbols 2"),
     );

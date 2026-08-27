@@ -1018,7 +1018,7 @@ export const villageBuildActions: Record<string, Action> = {
     label: "Traps",
     description: "Traps around the village weakening all attackers",
     tooltipEffects: [
-      bt("trapWinChance10", "+10% chance to win against attacking foes and less villagers killed"),
+      bt("trapWinChance10", "+10% chance to win against attacking foes and fewer villagers killed"),
     ],
     building: true,
     show_when: {
@@ -1164,7 +1164,7 @@ export const villageBuildActions: Record<string, Action> = {
     id: "buildBoneyard",
     label: "Boneyard",
     description:
-      "Ground where the dead are laid to rest, easing the villager's grief.",
+      "Ground where the dead are laid to rest, easing the villagers' grief.",
     tooltipEffects: (state: GameState) => {
       const reduction = getBoneyardBurialMadnessReduction(state);
       const current =
@@ -1735,7 +1735,7 @@ export const villageBuildActions: Record<string, Action> = {
   buildTimberMill: {
     id: "buildTimberMill",
     label: "Timber Mill",
-    description: "Mill helping processes wood more efficiently",
+    description: "Mill processing wood more efficiently",
     tooltipEffects: [
       bt("gathererWood", "Gatherer: +{{amount}} Wood", { amount: 5 }),
     ],
@@ -2109,7 +2109,7 @@ export const villageBuildActions: Record<string, Action> = {
   buildAltar: {
     id: "buildAltar",
     label: "Altar",
-    description: "Sacred place of worship and sacrificing",
+    description: "Place of worship and sacrifice",
     tooltipEffects: [
       bt("madnessReduction", "-{{amount}} Madness", { amount: 2 }),
     ],
@@ -2238,7 +2238,7 @@ export const villageBuildActions: Record<string, Action> = {
   buildTreasury: {
     id: "buildTreasury",
     label: "Treasury",
-    description: "Big financial building allowing to make very large investments",
+    description: "Vault that lets you risk much larger sums",
     tooltipEffects: [
       bt("unlocksInvestments", "Unlocks Investments"),
       bt("investUpToGold", "Invest up to {{amount}} Gold", { amount: 1000 }),

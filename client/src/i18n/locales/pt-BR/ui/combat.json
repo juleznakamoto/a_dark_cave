@@ -39,7 +39,7 @@
     "noCasualties": "Nenhum Aldeão morreu.",
     "oneCasualty": "1 Aldeão morreu.",
     "manyCasualties": "{{count}} Aldeões morreram.",
-    "fellowInjured": "{{name}} se feriu.",
+    "fellowInjured": "{{name}} foi ferido.",
     "buildingDamaged": "{{name}} foi danificado.",
     "silverClaimed": "{{amount}} Prata coletada.",
     "goldClaimed": "{{amount}} Ouro coletado.",

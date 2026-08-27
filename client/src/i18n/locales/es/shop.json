@@ -41,7 +41,7 @@
     "name": "Juego completo"
   },
   "gold_1000": {
-    "activationMessage": "Se han añadido 1000 de oro a tu inventario.",
+    "activationMessage": "Se han añadido 1'000 de oro a tu inventario.",
     "description": "Una cantidad decente de oro",
     "name": "1'000 de oro" //x1.2
   },
@@ -66,17 +66,17 @@
     "name": "30'000 de oro"
   },
   "gold_250": {
-    "activationMessage": "Se han añadido 1000 de oro a tu inventario.",
+    "activationMessage": "Se han añadido 1'000 de oro a tu inventario.",
     "description": "Una cantidad decente de oro",
-    "name": "250 oro"
+    "name": "1'000 de oro"
   },
   "gold_2500": {
-    "activationMessage": "Se han añadido 2500 de oro a tu inventario.",
+    "activationMessage": "Se han añadido 2'500 de oro a tu inventario.",
     "description": "Un tesoro considerable",
     "name": "2'500 de oro" //x1.2
   },
   "gold_5000": {
-    "activationMessage": "Se han añadido 5000 de oro a tu inventario.",
+    "activationMessage": "Se han añadido 5'000 de oro a tu inventario.",
     "description": "Una fortuna en oro",
     "name": "5'000 de oro" //x1.2
   },

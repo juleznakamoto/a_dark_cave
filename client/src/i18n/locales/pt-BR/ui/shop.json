@@ -48,7 +48,7 @@
     "paymentFailed": "Pagamento falhou",
     "tooManyPaymentRequests": "Muitas solicitações de pagamento. Tente novamente mais tarde.",
     "cruelModeDeactivatedLog": "Modo Cruel desativado. Novos jogos usarão a dificuldade normal.",
-    "notAuthenticated": "Usuário não autenticado",
+    "notAuthenticated": "Você não está conectado",
     "verificationFailed": "A verificação do pagamento falhou. Entre em contato com o suporte.",
     "unexpectedError": "Ocorreu um erro inesperado",
     "purchaseSuccessful": "Compra Concluída!",

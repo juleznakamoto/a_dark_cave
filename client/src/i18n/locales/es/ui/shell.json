@@ -77,7 +77,7 @@
     "leaderboard": "Clasificación",
     "rewards": "Recompensas", //x1.6
     "deleteAccount": "Eliminar cuenta",
-    "marketingSubscribe": "Suscribirse a correos",
+    "marketingSubscribe": "Suscribirse al correo electrónico",
     "marketingUnsubscribe": "Cancelar suscripción",
     "autoSaveSignedIn": "La partida se guarda cada minuto",
     "autoSaveGuest": "La partida se guarda cada 15 segundos",
@@ -97,7 +97,7 @@
     "notSignedIn": "Sin sesión iniciada", //x1.5
     "subscribed": "Estás suscrito",
     "unsubscribed": "No estás suscrito",
-    "subscribedDesc": "Te enviaremos actualizaciones y ofertas ocasionales por correo.",
+    "subscribedDesc": "Te enviaremos actualizaciones y ofertas ocasionales por correo electrónico.",
     "unsubscribedDesc": "No recibirás correos de marketing nuestros.",
     "preferenceUpdateFailed": "No se pudo actualizar la preferencia",
     "enterFullscreen": "Full screen",

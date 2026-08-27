@@ -256,7 +256,7 @@ export const ladyMountainsEvents: Record<string, GameEvent> = {
     ],
   },
 
-  /** Opened by Search Mountain Lady after the ambush resolves. */
+  /** Opened by Seek Mountain Lady after the ambush resolves. */
   searchMountainLadyAmbush: {
     id: "searchMountainLadyAmbush",
     /** Action-triggered only; never rolled by EventManager. */

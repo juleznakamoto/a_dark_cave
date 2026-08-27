@@ -53,7 +53,7 @@
     "paymentFailed": "Paiement échoué",
     "tooManyPaymentRequests": "Trop de demandes de paiement. Veuillez réessayer plus tard.",
     "cruelModeDeactivatedLog": "Mode cruel désactivé. Les nouvelles parties utiliseront la difficulté normale.",
-    "notAuthenticated": "Utilisateur non authentifié", //x1.2
+    "notAuthenticated": "Vous n'êtes pas connecté", //x1.2
     "verificationFailed": "La vérification du paiement a échoué. Veuillez contacter le support.",
     "unexpectedError": "Une erreur inattendue s'est produite",
     "purchaseSuccessful": "Achat réussi !",

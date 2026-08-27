@@ -28,7 +28,7 @@
   "socialPrompt": {
     "title": "Mantenha-se conectado e ganhe Recompensas",
     "description": "Conclua as tarefas abaixo para receber bônus. Conclua todas as tarefas para receber um item exclusivo.",
-    "signUpRequiresSignInTooltip": "cadastre-se para concluir a tarefa",
+    "signUpRequiresSignInTooltip": "Entre para concluir esta tarefa",
     "signUpTitle": "Cadastre-se",
     "signUpDesc": "Crie uma conta gratuita para sincronizar seu progresso entre dispositivos. Sem uma conta, seu progresso é salvo apenas localmente e pode ser perdido.",
     "signUpButton": "Cadastrar",
@@ -140,7 +140,7 @@
     "titleTrial": "A Jornada Continua",
     "titleCheckout": "Conclua sua Compra",
     "trialDesc": "Você chegou ao fim da versão de teste. A jornada completa o aguarda além deste ponto.",
-    "oneTimePurchase": "Compra única. Sem assinaturas. Sem microtransações.",
+    "oneTimePurchase": "Compra única. Sem assinaturas. Sem taxas extras.",
     "featureHours": "Mais de 14 horas de jogo",
     "featureStructures": "Mais de 100 estruturas",
     "featureItems": "Mais de 250 itens, membros da irmandade, livros, bênçãos...",
@@ -157,7 +157,7 @@
     "rightOfWithdrawal": "Arrependimento",
     "completePurchaseFor": "Concluir Compra por {{price}}",
     "paymentFailed": "Pagamento falhou",
-    "notAuthenticated": "Usuário não autenticado",
+    "notAuthenticated": "Você não está conectado",
     "unexpectedError": "Ocorreu um erro inesperado"
   },
   "leaderboard": {

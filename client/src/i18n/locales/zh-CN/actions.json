@@ -18,7 +18,7 @@
   "blastPortal": {
     "label": "炸开大门",
     "log": {
-      "complete": "余烬炸弹在耀眼的火光中爆炸。古老的门扉碎裂坍塌。无论其中封印着什么，都已释放出来。城市该为即将出现的东西做准备了。"
+      "complete": "余烬炸弹在耀眼的火光中爆炸。古老的门扉碎裂坍塌。无论其中封印着什么，现在都已自由。"
     }
   },
   "boneTotems": {
@@ -33,7 +33,7 @@
     "label": "炼金大厅"
   },
   "buildAltar": {
-    "description": "用于崇拜与献祭的神圣之地",
+    "description": "用于崇拜与献祭之地",
     "label": "祭坛"
   },
   "buildBank": {
@@ -257,7 +257,7 @@
     "label": "神殿"
   },
   "buildTimberMill": {
-    "description": "帮助更高效加工木材的磨坊",
+    "description": "更高效加工木材的磨坊",
     "label": "木材厂"
   },
   "buildTradePost": {
@@ -269,7 +269,7 @@
     "label": "陷阱"
   },
   "buildTreasury": {
-    "description": "大型金融建筑，可进行巨额投资",
+    "description": "金库，可拿更大的金额去冒险",
     "label": "财库"
   },
   "buildVillageWarehouse": {
@@ -528,7 +528,7 @@
   "forestCave": {
     "label": "森林洞穴",
     "log": {
-      "success": "村民们下入洞穴时，凶恶的猎犬成群从黑暗中涌出。尖叫回荡，爪撕牙咬。当最后一只怪物倒下，所有村民都活了下来，但心中已被经历掏空。",
+      "success": "村民们下入洞穴时，凶恶的猎犬成群从黑暗中涌出。尖叫回荡，爪撕牙咬。当最后一只怪物倒下，每个村民都活着，却被所见掏空。",
       "failure": "探险队进入洞穴后，被一群凶残的猎犬淹没。{{count}} 名村民在幸存者撤退前被利齿撕碎。"
     }
   },

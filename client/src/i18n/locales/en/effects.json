@@ -96,7 +96,7 @@
     },
     "depths_gift": {
       "description": "Cave exploration yields more",
-      "name": "Depth's Gift"
+      "name": "Depths' Gift"
     },
     "dagons_gift_enhanced": {
       "description": "Your ability to hunt is greatly improved",
@@ -107,7 +107,7 @@
       "name": "Devourer Crown"
     },
     "ebon_grace": {
-      "description": "Dark blessing received by the black tree",
+      "description": "Dark blessing from the black tree",
       "name": "Ebon Grace"
     },
     "ebony_ring": {
@@ -176,7 +176,7 @@
     },
     "highpriest_robe": {
       "description": "Sacred robe adorned with gold thread",
-      "name": "Highpriest Robe"
+      "name": "High Priest's Robe"
     },
     "hollow_king_scepter": {
       "description": "Scepter of the lost king, radiating power and madness. Mining actions have a 5% chance to double rewards.",
@@ -272,7 +272,7 @@
     },
     "ring_of_drowned": {
       "description": "Tarnished ring that is always wet and cold",
-      "name": "Ring of Drowned"
+      "name": "Ring of the Drowned"
     },
     "ring_of_obedience": {
       "description": "Ring with a smaller ring attached gifted by a happy woman",
@@ -287,7 +287,7 @@
       "name": "Sealed Chest"
     },
     "shadow_boots": {
-      "description": "Move across all terrain as quick as a shadow",
+      "description": "Move over any ground as quickly as a shadow",
       "name": "Shadow Boots"
     },
     "shadow_flute": {
@@ -436,7 +436,7 @@
     },
     "mastermason_chisel": {
       "description": "Exquisitely crafted tool of a long-forgotten master builder",
-      "name": "Mastermason Chisel"
+      "name": "Master Mason's Chisel"
     },
     "natharit_pickaxe": {
       "description": "Extremely sturdy pickaxe of unknown material with exceptional quality",

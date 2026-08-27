@@ -21,7 +21,7 @@
   "blastPortal": {
     "label": "Cancello da Far Saltare",
     "log": {
-      "complete": "Le bombe di brace detonano in un lampo brillante di fuoco e luce. L'antico cancello si incrina e crolla. Qualunque cosa potesse essere sigillata al suo interno è stata liberata. La città dovrebbe prepararsi a ciò che ne uscirà."
+      "complete": "Le bombe di brace detonano in un lampo brillante di fuoco e luce. L'antico cancello si incrina e crolla. Qualunque cosa fosse sigillata all'interno ora è libera."
     }
   },
   "boneTotems": {
@@ -36,7 +36,7 @@
     "label": "Sala dell'Alchimista"
   },
   "buildAltar": {
-    "description": "Luogo sacro di culto e sacrificio",
+    "description": "Luogo di culto e sacrificio",
     "label": "Altare"
   },
   "buildBank": {
@@ -244,7 +244,7 @@
     "label": "Tempio"
   },
   "buildTimberMill": {
-    "description": "Mulino che aiuta a lavorare il legno in modo più efficiente",
+    "description": "Mulino che lavora il legno in modo più efficiente",
     "label": "Segheria"
   },
   "buildTradePost": {
@@ -256,7 +256,7 @@
     "label": "Trappole"
   },
   "buildTreasury": {
-    "description": "Grande edificio finanziario che consente di fare investimenti molto grandi",
+    "description": "Cassaforte che permette di rischiare somme molto più grandi",
     "label": "Tesoreria"
   },
   "buildVillageWarehouse": {
@@ -512,7 +512,7 @@
   "forestCave": {
     "label": "Caverna della Foresta",
     "log": {
-      "success": "Mentre gli abitanti scendono nella caverna, segugi selvaggi erompono dall'oscurità in branchi incessanti. Le urla riecheggiano mentre gli artigli lacerano e i denti azzannano. Quando l'ultima creatura cade, tutti gli abitanti sopravvivono, ma svuotati da ciò che hanno sopportato.",
+      "success": "Mentre gli abitanti scendono nella caverna, segugi selvaggi erompono dall'oscurità in branchi incessanti. Le urla riecheggiano mentre gli artigli lacerano e i denti azzannano. Quando l'ultima creatura cade, ogni abitante vive, svuotato da ciò che ha visto.",
       "failure": "Mentre la spedizione entra nella caverna viene sopraffatta da un branco di brutali segugi. {{count}} abitanti vengono fatti a pezzi da fauci selvagge prima che i sopravvissuti riescano a ritirarsi."
     }
   },

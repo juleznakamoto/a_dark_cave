@@ -53,7 +53,7 @@
     "paymentFailed": "Zahlung fehlgeschlagen", //x1.6
     "tooManyPaymentRequests": "Zu viele Zahlungsanfragen. Bitte versuche es später erneut.",
     "cruelModeDeactivatedLog": "Grausamer Modus deaktiviert. Neue Spiele verwenden den normalen Schwierigkeitsgrad.", //x1.4
-    "notAuthenticated": "Benutzer nicht authentifiziert", //x1.4
+    "notAuthenticated": "Du bist nicht angemeldet", //x1.4
     "verificationFailed": "Zahlungsüberprüfung fehlgeschlagen. Bitte kontaktiere den Support.",
     "unexpectedError": "Ein unerwarteter Fehler ist aufgetreten", //x1.4
     "purchaseSuccessful": "Kauf erfolgreich!",

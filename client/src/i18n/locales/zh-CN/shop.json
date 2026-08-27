@@ -41,7 +41,7 @@
     "name": "完整版"
   },
   "gold_1000": {
-    "activationMessage": "1000 黄金已加入你的库存。",
+    "activationMessage": "1'000 黄金已加入你的库存。",
     "description": "一笔可观的黄金",
     "name": "1'000 黄金"
   },
@@ -66,17 +66,17 @@
     "name": "30'000 黄金"
   },
   "gold_250": {
-    "activationMessage": "1000 黄金已加入你的库存。",
+    "activationMessage": "1'000 黄金已加入你的库存。",
     "description": "一笔可观的黄金",
     "name": "1'000 黄金"
   },
   "gold_2500": {
-    "activationMessage": "2500 黄金已加入你的库存。",
+    "activationMessage": "2'500 黄金已加入你的库存。",
     "description": "一份丰厚的宝藏",
     "name": "2'500 黄金"
   },
   "gold_5000": {
-    "activationMessage": "5000 黄金已加入你的库存。",
+    "activationMessage": "5'000 黄金已加入你的库存。",
     "description": "一大笔黄金财富",
     "name": "5'000 黄金"
   },

@@ -18,7 +18,7 @@
   "blastPortal": {
     "label": "Tor sprengen",
     "log": {
-      "complete": "Die Glutbomben detonieren in einem hellen Feuerblitz. Das alte Tor bricht und bröckelt. Was auch immer darin eingeschlossen war, ist frei. Die Stadt sollte sich auf das vorbereiten, was hervorkommt."
+      "complete": "Die Glutbomben detonieren in einem hellen Feuerblitz. Das alte Tor bricht und bröckelt. Was auch immer darin eingeschlossen war, ist jetzt frei."
     }
   },
   "boneTotems": {
@@ -33,7 +33,7 @@
     "label": "Alchemistenhalle"
   },
   "buildAltar": {
-    "description": "Heiliger Ort für Anbetung und Opfergaben",
+    "description": "Ort für Anbetung und Opfer",
     "label": "Altar"
   },
   "buildBank": {
@@ -269,7 +269,7 @@
     "label": "Fallen"
   },
   "buildTreasury": {
-    "description": "Großes Finanzgebäude, das sehr große Investitionen ermöglicht",
+    "description": "Tresor, mit dem du deutlich höhere Summen riskieren kannst",
     "label": "Schatzkammer"
   },
   "buildVillageWarehouse": {
@@ -528,7 +528,7 @@
   "forestCave": {
     "label": "Waldhöhle",
     "log": {
-      "success": "Als die Dorfbewohner in die Höhle hinabsteigen, brechen wilde Hunde in unerbittlichen Rudeln aus der Dunkelheit hervor. Schreie hallen wider, während Krallen reißen und Zähne schnappen. Als die letzte Kreatur fällt, überleben alle Dorfbewohner – aber erschüttert von dem, was sie erlebt haben.",
+      "success": "Als die Dorfbewohner in die Höhle hinabsteigen, brechen wilde Hunde in unerbittlichen Rudeln aus der Dunkelheit hervor. Schreie hallen wider, während Krallen reißen und Zähne schnappen. Als die letzte Kreatur fällt, lebt jeder Dorfbewohner, ausgehöhlt von dem, was sie gesehen haben.",
       "failure": "Als die Expedition die Höhle betritt, wird sie von einem Rudel brutaler Hunde überwältigt. {{count}} Dorfbewohner werden von wütenden Kiefern zerrissen, bevor die Überlebenden sich zurückziehen können."
     }
   },

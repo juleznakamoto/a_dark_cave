@@ -33,11 +33,11 @@
   "socialPrompt": {
     "title": "Mantente conectado y gana recompensas",
     "description": "Completa las tareas siguientes para recibir bonificaciones. Completa todas las tareas para recibir un objeto exclusivo.",
-    "signUpRequiresSignInTooltip": "regístrate para completar la tarea", //x1.4
+    "signUpRequiresSignInTooltip": "Inicia sesión para completar esta tarea", //x1.4
     "signUpTitle": "Registrarse", //x1.6
     "signUpDesc": "Crea una cuenta gratuita para sincronizar tu progreso entre dispositivos. Sin cuenta, tu progreso solo se guarda localmente y puede perderse.",
     "signUpButton": "Registrarse", //x1.6
-    "emailUpdatesTitle": "Actualizaciones por correo", //x2.0
+    "emailUpdatesTitle": "Actualizaciones por correo electrónico", //x2.0
     "subscribe": "Suscribirse", //x1.2
     "claim": "Reclamar",
     "playlightTitle": "Descubrir 1 juego",
@@ -53,7 +53,7 @@
     "progressAriaLabel": "Recompensa exclusiva", //x1.3
     "alreadyClaimedReward": "¡Ya has reclamado esta recompensa!",
     "playlightDiscoverRewardLog": "¡Has recibido {{amount}} de oro por descubrir juegos!",
-    "marketingSubscribeLog": "¡Has recibido {{amount}} de oro por suscribirte a las actualizaciones por correo!",
+    "marketingSubscribeLog": "¡Has recibido {{amount}} de oro por suscribirte a las actualizaciones por correo electrónico!",
     "followRewardLog": "Has recibido {{amount}} de oro por seguirnos en {{platform}}.",
     "platforms": {
       "instagram": {
@@ -145,7 +145,7 @@
     "titleTrial": "El viaje continúa",
     "titleCheckout": "Completar tu compra",
     "trialDesc": "Has llegado al final de la prueba. El viaje completo te espera más allá de este punto.",
-    "oneTimePurchase": "Compra única. Sin suscripciones. Sin microtransacciones.",
+    "oneTimePurchase": "Compra única. Sin suscripciones. Sin cargos extra.",
     "featureHours": "14+ horas de juego",
     "featureStructures": "100+ estructuras",
     "featureItems": "250+ objetos, compañeros, libros, bendiciones…",
@@ -162,7 +162,7 @@
     "rightOfWithdrawal": "Desistimiento", //x1.3
     "completePurchaseFor": "Completar compra por {{price}}",
     "paymentFailed": "Pago fallido",
-    "notAuthenticated": "Usuario no autenticado",
+    "notAuthenticated": "No has iniciado sesión",
     "unexpectedError": "Se produjo un error inesperado"
   },
   "leaderboard": {
@@ -249,7 +249,7 @@
     "reddit": "Reddit",
     "instagram": "Instagram",
     "steam": "Steam",
-    "email": "E-Mail"
+    "email": "Email"
   },
   "galaxy": {
     "title": "La demo termina aquí", //x1.4

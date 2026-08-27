@@ -839,7 +839,7 @@ export const caveExploreActions: Record<string, Action> = {
 
   encounterBeyondPortal: {
     id: "encounterBeyondPortal",
-    label: "Venture beyond Gate",
+    label: "Venture Beyond Gate",
     expeditionVillagersRequired: () => 6,
     // Use secondBossWaveVictory (not beyondGateVentureUnlocked): the latter only applies on Continue
     // and can be lost if a reload clears the dialog after triggeredEvents was written.

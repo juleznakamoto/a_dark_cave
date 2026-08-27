@@ -520,7 +520,7 @@ export const caveCraftTools: Record<string, Action> = {
 
   craftHighpriestRobe: {
     id: "craftHighpriestRobe",
-    label: "Highpriest Robe",
+    label: "High Priest's Robe",
     show_when: {
       "buildings.masterTannery": 1,
       "clothing.highpriest_robe": false,

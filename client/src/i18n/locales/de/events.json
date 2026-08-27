@@ -69,7 +69,7 @@
     },
     "message": {
       "firstTime": "Eines Morgens werden 6 Dorfbewohner tot in ihren Betten gefunden, blass und vollständig ausgeblutet. Kleine Einstiche bedecken ihre Haut. Manche vermuten einen Zusammenhang mit dem eingestürzten Turm im Wald, wo Jäger seltsame Geräusche hörten.",
-      "repeat": "Wieder werden bei Tagesanbruch 8 weitere Dorfbewohner tot aufgefunden, ihre Körper ausgeblutet, bedeckt mit denselben mysteriösen Zeichen. Die Forderungen, etwas gegen das Wesen im eingestürzten Turm zu unternehmen, werden lauter."
+      "repeat": "Wieder werden bei Tagesanbruch 8 weitere Dorfbewohner tot aufgefunden, ihre Körper ausgeblutet, bedeckt mit denselben mysteriösen Zeichen. Die Rufe, sich um den eingestürzten Turm zu kümmern, werden lauter."
     },
     "title": "Ausgezehrte Körper"
   },
@@ -124,7 +124,7 @@
       "outcome4": "Die Lykanthropen überwältigen deine Verteidigung und überrennen die Siedlung! Der Blutmond verblasst, doch die Bedrohung bleibt."
     },
     "message": {
-      "default": "Der Mond ist nachts blutrot geworden, die Dorfältesten sprechen von Lykanthropen. Uralte Pakte verlangen ein Opfer von {{sacrificeAmount}} Dorfbewohnern, um die Bestien zu besänftigen. Weigerst du dich, werden sie dafür sorgen, dass ihr Hunger gestillt wird."
+      "default": "Der Mond wird blutrot. Die Ältesten sprechen von Lykanthropen. Uralte Pakte verlangen ein Opfer von {{sacrificeAmount}} Dorfbewohnern, um die Bestien zu besänftigen. Weigerst du dich, werden sie dafür sorgen, dass ihr Hunger gestillt wird."
     },
     "title": "Blutmond"
   },
@@ -1533,7 +1533,7 @@
         "label": "Weiter"
       }
     },
-    "message": "Die Glutbomben detonieren in einem hellen Feuerblitz. Das alte Tor bricht und bröckelt. Was auch immer darin eingeschlossen war, ist frei. Die Stadt sollte sich auf das vorbereiten, was hervorkommt.",
+    "message": "Die Glutbomben detonieren in einem hellen Feuerblitz. Das alte Tor bricht und bröckelt. Was auch immer darin eingeschlossen war, ist jetzt frei.",
     "title": "Das Tor fällt"
   },
   "portalDiscovered": {
@@ -1927,7 +1927,7 @@
         "label": "Weiter"
       }
     },
-    "message": "Dorfbewohner kommen zu dir. Sie haben eine sehr dichte Rauchsäule gesehen, die in den Wäldern aufsteigt. Vielleicht ist es sinnvoll, sie zu untersuchen.",
+    "message": "Dorfbewohner kommen zu dir. Sie haben eine sehr dichte Rauchsäule gesehen, die in den Wäldern aufsteigt. Jemand sollte nachsehen, was da brennt.",
     "title": "Aufsteigender Rauch"
   },
   "sanctumDedication": {
@@ -2036,7 +2036,7 @@
       }
     },
     "log": {
-      "outcome0": "Du atmest tief ein und zwingst dich, still zu bleiben. Das kriechende Gefühl lässt langsam nach, und deine Haut wird wieder normal. Du hast dieses Grauen allein durch Willenskraft bezwungen.",
+      "outcome0": "Du hältst still, bis das Kriechen aufhört. Die Haut gehört dir wieder. Vorerst.",
       "outcome1": "Du versuchst, dich zu beruhigen, doch das Gefühl wird stärker. Deine Sicht verschwimmt, und du brichst zusammen. In deinen fiebrigen Träumen flüstern alte Dinge deinen wahren Namen. Als du erwachst, hat das Kriechen aufgehört, doch die Erinnerung bleibt.",
       "outcome2": "Du kratzt rasend an deiner Haut und ziehst Blut. Die Dorfbewohner stürzen herbei, um dich aufzuhalten, und packen deine Arme. In deinem wahnsinnigen Zorn schlägst du wild um dich und tötest {{killedVillagers}} Dorfbewohner, bevor du vor Erschöpfung zusammenbrichst. Als du erwachst, hat das Kriechen aufgehört, doch Blut befleckt deine Hände."
     },
@@ -2185,7 +2185,7 @@
       "outcome2": "Du weist sie ab. Eine bittere Unruhe legt sich über das Dorf, denn die Dorfbewohner sind mit deiner Entscheidung nicht einverstanden.",
       "outcome3": "Du nimmst sie auf, aber im Dorf ist kein Platz für weitere Bewohner."
     },
-    "message": "Eine Gruppe junger Männer und Frauen taumelt aus dem Wald, halbtot vor Kälte und Hunger. Sie wurden als Opfer für die Waldgötter im Wald zurückgelassen und haben dennoch irgendwie überlebt. Nimmst du sie im Dorf auf?",
+    "message": "Eine Gruppe junger Männer und Frauen taumelt aus dem Wald, halbtot vor Kälte und Hunger. Sie wurden als Opfer für die Waldgötter im Wald zurückgelassen und haben dennoch irgendwie überlebt. Nimmst du sie ins Dorf auf?",
     "title": "Die Verdammten"
   },
   "thirdWave": {
@@ -2734,9 +2734,9 @@
       }
     },
     "log": {
-      "betray": "Du übergibst die Nahrung, doch Tage vergehen ohne Spur des Holzfällers. Offenbar wurdest du betrogen.",
-      "betrayLast": "Du übergibst die Nahrung. Der Holzfäller grinst und zieht in den Wald. Du wartest, aber er kehrt nie zurück. Offenbar wurdest du betrogen.",
-      "betrayLevel5": "Du übergibst die Nahrung. Der Holzfäller verspricht, noch am selben Tag zurückzukehren. Doch er tut es nicht. Offenbar wurdest du betrogen.",
+      "betray": "Du übergibst die Nahrung, doch Tage vergehen ohne Spur des Holzfällers. Du wurdest betrogen.",
+      "betrayLast": "Du übergibst die Nahrung. Der Holzfäller grinst und zieht in den Wald. Du wartest, aber er kehrt nie zurück. Du wurdest betrogen.",
+      "betrayLevel5": "Du übergibst die Nahrung. Der Holzfäller verspricht, noch am selben Tag zurückzukehren. Doch er tut es nicht. Du wurdest betrogen.",
       "denyLastUneasy": "Etwas an seinem Auftreten beunruhigt dich. Du lehnst den Handel ab. Das Lächeln des Holzfällers verblasst, und er geht ohne ein Wort.",
       "denyLevel1": "Du lehnst sein Angebot ab. Der Holzfäller zuckt mit den Schultern und geht in den Wald.",
       "denyLevel2": "Du lehnst sein Angebot ab. Der Holzfäller nickt und zieht ohne Beschwerde weiter.",
@@ -2760,8 +2760,8 @@
     },
     "message": {
       "level1": "Ein muskulöser Mann mit einer großen Axt nähert sich dem Dorf. Er spannt die Arme an. „Keiner fällt Bäume wie ich“, prahlt er. „Gib mir {{foodCost}} Nahrung, und ich bringe {{woodReward}} Holz.“",
-      "level2": "Der Holzfäller kehrt zurück, seine Axt glänzt in der Sonne. „Euer Dorf wächst gut“, bemerkt er. „Ich kann euch {{woodReward}} Holz bringen. Ihr gebt mir {{foodCost}} Nahrung. Was sagt ihr?“",
-      "level3": "Der Holzfäller kommt erneut. „Ich sehe, euer Dorf gedeiht weiter“, sagt er mit einem Grinsen. „Ich bringe euch {{woodReward}} Holz, wenn ihr {{foodCost}} Nahrung dafür bezahlt.“",
+      "level2": "Der Holzfäller kehrt zurück, seine Axt glänzt in der Sonne. „Euer Dorf hat mehr Mäuler“, bemerkt er. „Ich kann euch {{woodReward}} Holz bringen. Ihr gebt mir {{foodCost}} Nahrung. Was sagt ihr?“",
+      "level3": "Der Holzfäller kommt erneut. „Euer Dorf steht noch“, sagt er mit einem Grinsen. „Ich bringe euch {{woodReward}} Holz, wenn ihr {{foodCost}} Nahrung dafür bezahlt.“",
       "level4": "Der Holzfäller erscheint wieder. „Wollt ihr meine Dienste noch einmal nutzen? {{woodReward}} Holz für {{foodCost}} Nahrung“, fragt er.",
       "level5": "Der Holzfäller erscheint mit selbstbewusstem Lächeln. „Wie wäre es mit einem weiteren Handel? {{woodReward}} Holz für {{foodCost}} Nahrung.“",
       "level6": "Der Holzfäller kehrt ins Dorf zurück. „Wollt ihr meine Dienste noch einmal nutzen? Ich biete {{woodReward}} Holz für {{foodCost}} Nahrung“, sagt er."
@@ -2852,7 +2852,7 @@
         "label": "Weiter"
       }
     },
-    "message": "Ein Dorfbewohner wurde im Wald angegriffen und getötet. Es war groß und schnell, niemand konnte es klar erkennen. Jäger und Sammler haben zu viel Angst, in den Wald zu gehen.",
+    "message": "Etwas im Wald hat einen Dorfbewohner getötet. Es war groß und schnell. Niemand konnte es klar erkennen. Jäger und Sammler haben zu viel Angst, in den Wald zu gehen.",
     "title": "Etwas im Wald"
   },
   "staringDeer": {

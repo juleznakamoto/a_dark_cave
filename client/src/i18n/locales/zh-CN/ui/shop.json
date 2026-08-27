@@ -53,7 +53,7 @@
     "paymentFailed": "支付失败",
     "tooManyPaymentRequests": "支付请求过多，请稍后再试。",
     "cruelModeDeactivatedLog": "残酷模式已关闭。新游戏将使用普通难度。",
-    "notAuthenticated": "用户未认证",
+    "notAuthenticated": "你尚未登录",
     "verificationFailed": "支付验证失败，请联系支持。",
     "unexpectedError": "发生意外错误",
     "purchaseSuccessful": "购买成功！",

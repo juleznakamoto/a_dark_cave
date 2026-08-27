@@ -41,42 +41,42 @@
     "name": "Full Game"
   },
   "gold_1000": {
-    "activationMessage": "1000 Gold have been added to your inventory.",
+    "activationMessage": "1'000 Gold has been added to your inventory.",
     "description": "A decent amount of Gold",
     "name": "1'000 Gold"
   },
   "gold_100_free": {
-    "activationMessage": "100 Gold have been added to your inventory as a gift!",
+    "activationMessage": "100 Gold has been added to your inventory as a gift!",
     "description": "A daily mercy in a cold world",
     "name": "100 Gold Gift"
   },
   "gold_15000": {
-    "activationMessage": "15'000 Gold have been added to your inventory.",
+    "activationMessage": "15'000 Gold has been added to your inventory.",
     "description": "Unholy amounts of Gold",
     "name": "15'000 Gold"
   },
   "gold_20000": {
-    "activationMessage": "20'000 Gold have been added to your inventory.",
+    "activationMessage": "20'000 Gold has been added to your inventory.",
     "description": "Unholy amounts of Gold",
     "name": "20'000 Gold"
   },
   "gold_30000": {
-    "activationMessage": "30'000 Gold have been added to your inventory.",
+    "activationMessage": "30'000 Gold has been added to your inventory.",
     "description": "Blasphemous amounts of Gold",
     "name": "30'000 Gold"
   },
   "gold_250": {
-    "activationMessage": "1000 Gold have been added to your inventory.",
+    "activationMessage": "1'000 Gold has been added to your inventory.",
     "description": "A decent amount of Gold",
     "name": "1'000 Gold"
   },
   "gold_2500": {
-    "activationMessage": "2500 Gold have been added to your inventory.",
+    "activationMessage": "2'500 Gold has been added to your inventory.",
     "description": "A substantial treasure",
     "name": "2'500 Gold"
   },
   "gold_5000": {
-    "activationMessage": "5000 Gold have been added to your inventory.",
+    "activationMessage": "5'000 Gold has been added to your inventory.",
     "description": "A fortune in Gold",
     "name": "5'000 Gold"
   },

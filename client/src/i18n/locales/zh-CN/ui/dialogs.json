@@ -33,7 +33,7 @@
   "socialPrompt": {
     "title": "保持联系，赢取奖励",
     "description": "完成下方任务以获得奖励。全部完成可获得专属物品。",
-    "signUpRequiresSignInTooltip": "注册以完成任务",
+    "signUpRequiresSignInTooltip": "登录以完成此任务",
     "signUpTitle": "注册",
     "signUpDesc": "创建免费账户以跨设备同步游戏进度。没有账户时，进度仅保存在本地，可能会丢失。",
     "signUpButton": "注册",
@@ -145,7 +145,7 @@
     "titleTrial": "旅程继续",
     "titleCheckout": "完成购买",
     "trialDesc": "你已到达试玩版终点，完整旅程在前方等待。",
-    "oneTimePurchase": "一次性购买，无订阅，无微交易。",
+    "oneTimePurchase": "一次性购买，无订阅，无额外收费。",
     "featureHours": "14+ 小时游戏内容",
     "featureStructures": "100+ 建筑",
     "featureItems": "250+ 物品、同伴、书籍、祝福……",
@@ -162,7 +162,7 @@
     "rightOfWithdrawal": "撤回",
     "completePurchaseFor": "完成购买 {{price}}",
     "paymentFailed": "支付失败",
-    "notAuthenticated": "用户未认证",
+    "notAuthenticated": "你尚未登录",
     "unexpectedError": "发生意外错误"
   },
   "leaderboard": {
@@ -249,7 +249,7 @@
     "reddit": "Reddit",
     "instagram": "Instagram",
     "steam": "Steam",
-    "email": "E-Mail"
+    "email": "Email"
   },
   "galaxy": {
     "title": "试玩到此为止",

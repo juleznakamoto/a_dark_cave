@@ -33,7 +33,7 @@
   "socialPrompt": {
     "title": "Bleib in Verbindung und verdiene Belohnungen", //x1.4
     "description": "Schließe die Aufgaben unten ab, um Boni zu erhalten. Schließe alle Aufgaben ab, um einen exklusiven Gegenstand zu erhalten.",
-    "signUpRequiresSignInTooltip": "Registriere dich, um die Aufgabe abzuschließen", //x1.9
+    "signUpRequiresSignInTooltip": "Melde dich an, um die Aufgabe abzuschließen", //x1.9
     "signUpTitle": "Registrieren", //x1.7
     "signUpDesc": "Erstelle ein kostenloses Konto, um deinen Spielfortschritt geräteübergreifend zu synchronisieren. Ohne Konto wird dein Fortschritt nur lokal gespeichert und kann verloren gehen.",
     "signUpButton": "Registrieren", //x1.7
@@ -145,7 +145,7 @@
     "titleTrial": "Die Reise geht weiter",
     "titleCheckout": "Kauf abschließen",
     "trialDesc": "Du hast das Ende der Testversion erreicht. Die vollständige Reise wartet jenseits dieses Punkts.",
-    "oneTimePurchase": "Einmaliger Kauf. Keine Abos. Keine Mikrotransaktionen.",
+    "oneTimePurchase": "Einmaliger Kauf. Keine Abos. Keine Zusatzkosten.",
     "featureHours": "14+ Stunden Spielzeit",
     "featureStructures": "100+ Gebäude",
     "featureItems": "250+ Gegenstände, Gefährten, Bücher, Segen…",
@@ -162,7 +162,7 @@
     "rightOfWithdrawal": "Widerruf",
     "completePurchaseFor": "Kauf abschließen für {{price}}",
     "paymentFailed": "Zahlung fehlgeschlagen", //x1.6
-    "notAuthenticated": "Benutzer nicht authentifiziert", //x1.4
+    "notAuthenticated": "Du bist nicht angemeldet", //x1.4
     "unexpectedError": "Ein unerwarteter Fehler ist aufgetreten" //x1.4
   },
   "leaderboard": {

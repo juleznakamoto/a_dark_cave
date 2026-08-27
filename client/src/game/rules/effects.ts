@@ -286,7 +286,7 @@ export const toolEffects: Record<string, EffectDefinition> = {
 
   mastermason_chisel: {
     id: "mastermason_chisel",
-    name: "Mastermason Chisel",
+    name: "Master Mason's Chisel",
     description: "Exquisitely crafted tool of a long-forgotten master builder",
     bonuses: {
       generalBonuses: {
@@ -721,7 +721,7 @@ export const clothingEffects: Record<string, EffectDefinition> = {
 
   highpriest_robe: {
     id: "highpriest_robe",
-    name: "Highpriest Robe",
+    name: "High Priest's Robe",
     description: "Sacred robe adorned with gold thread",
     bonuses: {
       generalBonuses: {
@@ -941,7 +941,7 @@ export const clothingEffects: Record<string, EffectDefinition> = {
   },
   ring_of_drowned: {
     id: "ring_of_drowned",
-    name: "Ring of Drowned",
+    name: "Ring of the Drowned",
     description: "Tarnished ring that is always wet and cold",
     bonuses: {
       generalBonuses: {
@@ -1140,7 +1140,7 @@ export const clothingEffects: Record<string, EffectDefinition> = {
   shadow_boots: {
     id: "shadow_boots",
     name: "Shadow Boots",
-    description: "Move across all terrain as quick as a shadow",
+    description: "Move over any ground as quickly as a shadow",
     bonuses: {
       actionBonuses: {
         caveExplore: {
@@ -1470,7 +1470,7 @@ export const clothingEffects: Record<string, EffectDefinition> = {
 
   depths_gift: {
     id: "depths_gift",
-    name: "Depth's Gift",
+    name: "Depths' Gift",
     description: "Cave exploration yields more",
     bonuses: {
       actionBonuses: {
@@ -1510,7 +1510,7 @@ export const clothingEffects: Record<string, EffectDefinition> = {
   ebon_grace: {
     id: "ebon_grace",
     name: "Ebon Grace",
-    description: "Dark blessing received by the black tree.",
+    description: "Dark blessing from the black tree.",
     bonuses: {
       generalBonuses: {
         knowledge: 5,

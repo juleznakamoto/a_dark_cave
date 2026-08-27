@@ -28,7 +28,7 @@
   "socialPrompt": {
     "title": "Resta connesso e guadagna Ricompense",
     "description": "Completa le attività qui sotto per ricevere bonus. Completa tutte le attività per ricevere un oggetto esclusivo.",
-    "signUpRequiresSignInTooltip": "registrati per completare l'attività",
+    "signUpRequiresSignInTooltip": "Accedi per completare questa attività",
     "signUpTitle": "Registrati",
     "signUpDesc": "Crea un account gratuito per sincronizzare i tuoi progressi su tutti i dispositivi. Senza un account, i tuoi progressi vengono salvati solo localmente e potrebbero andare persi.",
     "signUpButton": "Registrati",
@@ -140,7 +140,7 @@
     "titleTrial": "Il Viaggio Continua",
     "titleCheckout": "Completa il Tuo Acquisto",
     "trialDesc": "Hai raggiunto la fine della versione di prova. Il viaggio completo ti attende oltre questo punto.",
-    "oneTimePurchase": "Acquisto unico. Nessun abbonamento. Nessuna microtransazione.",
+    "oneTimePurchase": "Acquisto unico. Nessun abbonamento. Nessun costo extra.",
     "featureHours": "14+ ore di gioco",
     "featureStructures": "100+ strutture",
     "featureItems": "250+ oggetti, membri della compagnia, libri, benedizioni...",
@@ -157,7 +157,7 @@
     "rightOfWithdrawal": "Recesso",
     "completePurchaseFor": "Completa l'Acquisto per {{price}}",
     "paymentFailed": "Pagamento fallito",
-    "notAuthenticated": "Utente non autenticato",
+    "notAuthenticated": "Non hai effettuato l'accesso",
     "unexpectedError": "Si è verificato un errore imprevisto"
   },
   "leaderboard": {
@@ -243,7 +243,7 @@
     "reddit": "Reddit",
     "instagram": "Instagram",
     "steam": "Steam",
-    "email": "E-Mail",
+    "email": "Email",
     "openForm": "Lascia un feedback"
   },
   "galaxy": {

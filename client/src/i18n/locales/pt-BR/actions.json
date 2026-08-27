@@ -21,7 +21,7 @@
   "blastPortal": {
     "label": "Explodir Portão",
     "log": {
-      "complete": "As bombas de brasa detonam num clarão brilhante de fogo e luz. O portão antigo racha e desmorona. O que quer que estivesse selado ali dentro foi libertado. A cidade deveria se preparar para o que sair daí."
+      "complete": "As bombas de brasa detonam num clarão brilhante de fogo e luz. O portão antigo racha e desmorona. O que quer que estivesse selado ali dentro agora está livre."
     }
   },
   "boneTotems": {
@@ -36,7 +36,7 @@
     "label": "Salão do Alquimista"
   },
   "buildAltar": {
-    "description": "Lugar sagrado de culto e sacrifício",
+    "description": "Lugar de culto e sacrifício",
     "label": "Altar"
   },
   "buildBank": {
@@ -244,7 +244,7 @@
     "label": "Templo"
   },
   "buildTimberMill": {
-    "description": "Moinho que ajuda a processar madeira de forma mais eficiente",
+    "description": "Moinho que processa madeira de forma mais eficiente",
     "label": "Serraria"
   },
   "buildTradePost": {
@@ -256,7 +256,7 @@
     "label": "Armadilhas"
   },
   "buildTreasury": {
-    "description": "Grande edifício financeiro que permite fazer investimentos muito grandes",
+    "description": "Cofre que permite arriscar somas bem maiores",
     "label": "Tesouraria"
   },
   "buildVillageWarehouse": {
@@ -512,7 +512,7 @@
   "forestCave": {
     "label": "Caverna da Floresta",
     "log": {
-      "success": "Conforme os aldeões descem a caverna, cães selvagens irrompem da escuridão em matilhas implacáveis. Gritos ecoam enquanto garras rasgam e dentes estalam. Quando a última criatura tomba, todos os aldeões sobrevivem, mas marcados pelo que enfrentaram.",
+      "success": "Conforme os aldeões descem a caverna, cães selvagens irrompem da escuridão em matilhas implacáveis. Gritos ecoam enquanto garras rasgam e dentes estalam. Quando a última criatura tomba, cada aldeão vive, esvaziado pelo que viu.",
       "failure": "Quando a expedição entra na caverna, é dominada por uma matilha de cães brutais. {{count}} aldeões são despedaçados por mandíbulas selvagens antes que os sobreviventes consigam recuar."
     }
   },

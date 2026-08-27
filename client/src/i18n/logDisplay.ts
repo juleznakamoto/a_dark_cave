@@ -488,6 +488,12 @@ const LEGACY_ACTION_LOG_MESSAGES: Array<{
     },
     {
       actionId: "forestCave",
+      logKey: "success",
+      message:
+        "As the villagers descend the cave, savage hounds erupt from darkness in relentless packs. Screams echo as claws tear and teeth snap. When the last creature falls, every villager lives, hollowed by what they saw.",
+    },
+    {
+      actionId: "forestCave",
       logKey: "failure",
       message:
         "As the expedition enters the cave it is overwhelmed by a pack of brutal hounds. {{count}} villagers are torn apart by savage jaws before the survivors manage to retreat.",

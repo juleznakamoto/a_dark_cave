@@ -18,7 +18,7 @@
   "blastPortal": {
     "label": "Porte de souffle",
     "log": {
-      "complete": "Les bombes braise explosent dans un éclat de feu et de lumière. L'ancienne porte se fissure et s'effondre. Quoi qu'il y avait là-dedans a été libéré. La cité devrait se préparer à ce qui en sortira."
+      "complete": "Les bombes braise explosent dans un éclat de feu et de lumière. L'ancienne porte se fissure et s'effondre. Ce qui était scellé à l'intérieur est désormais libre."
     }
   },
   "boneTotems": {
@@ -33,7 +33,7 @@
     "label": "Salle de l'alchimiste"
   },
   "buildAltar": {
-    "description": "Lieu sacré de culte et de sacrifice",
+    "description": "Lieu de culte et de sacrifice",
     "label": "Autel"
   },
   "buildBank": {
@@ -257,7 +257,7 @@
     "label": "Temple"
   },
   "buildTimberMill": {
-    "description": "Moulin aidant à traiter le bois plus efficacement",
+    "description": "Moulin qui traite le bois plus efficacement",
     "label": "Scierie"
   },
   "buildTradePost": {
@@ -269,7 +269,7 @@
     "label": "Pièges"
   },
   "buildTreasury": {
-    "description": "Grand bâtiment financier permettant de réaliser de très gros investissements",
+    "description": "Coffre-fort qui permet de risquer des sommes bien plus importantes",
     "label": "Trésor"
   },
   "buildVillageWarehouse": {
@@ -528,7 +528,7 @@
   "forestCave": {
     "label": "Grotte forestière",
     "log": {
-      "success": "Alors que les villageois descendent dans la grotte, des chiens sauvages jaillissent des ténèbres en meutes implacables. Les cris résonnent tandis que griffes déchirent et dents claquent. Quand la dernière créature tombe, tous les villageois survivent, mais marqués par ce qu'ils ont enduré.",
+      "success": "Alors que les villageois descendent dans la grotte, des chiens sauvages jaillissent des ténèbres en meutes implacables. Les cris résonnent tandis que griffes déchirent et dents claquent. Quand la dernière créature tombe, chaque villageois vit, vidé par ce qu'il a vu.",
       "failure": "Lorsque l'expédition entre dans la grotte, elle est submergée par une meute de chiens brutaux. {{count}} villageois sont déchiquetés par des mâchoires sauvages avant que les survivants ne parviennent à se replier."
     }
   },

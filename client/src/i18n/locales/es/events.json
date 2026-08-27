@@ -58,7 +58,7 @@
     "title": "La forja del gigante"
   },
   "blindDruidBlessing": {
-    "message": "Un druida ciego emerge del bosque. Se acerca al santuario y asiente con aprobación. 'Los dioses del bosque están complacidos con tu devoción; te conceden su bendición'.",
+    "message": "Un druida ciego emerge del bosque. Se acerca al santuario y asiente con aprobación. 'Los dioses del bosque están complacidos con tu devoción; te conceden su bendición.'",
     "title": "El druida ciego"
   },
   "bloodDrainedVillagers": {
@@ -69,7 +69,7 @@
     },
     "message": {
       "firstTime": "Una mañana, 6 aldeanos aparecen muertos en sus camas, pálidos y completamente drenados de sangre. Pequeñas punciones cubren su piel. Algunos sospechan que esto podría estar relacionado con la torre derrumbada en el bosque, donde los cazadores oyeron sonidos extraños.",
-      "repeat": "De nuevo, 8 aldeanos más son descubiertos muertos al amanecer, con el cuerpo drenado de sangre y cubierto con las mismas marcas misteriosas. Las exigencias de hacer algo contra lo que habita en la torre derrumbada se vuelven más fuertes."
+      "repeat": "De nuevo, 8 aldeanos más son descubiertos muertos al amanecer, con el cuerpo drenado de sangre y cubierto con las mismas marcas misteriosas. Crecen las voces que piden ocuparse de la torre derrumbada."
     },
     "title": "Cuerpos drenados"
   },
@@ -124,7 +124,7 @@
       "outcome4": "¡Los licántropos arrollan tus defensas y arrasan el asentamiento! La luna de sangre se desvanece, pero la amenaza permanece."
     },
     "message": {
-      "default": "La luna se ha vuelto roja como la sangre durante la noche; los ancianos de la aldea hablan de licántropos. Pactos antiguos exigen el sacrificio de {{sacrificeAmount}} aldeanos para apaciguar a las bestias. Si te niegas, ellas se asegurarán de saciar su hambre."
+      "default": "La luna se vuelve roja como la sangre. Los ancianos hablan de licántropos. Pactos antiguos exigen el sacrificio de {{sacrificeAmount}} aldeanos para apaciguar a las bestias. Si te niegas, ellas se asegurarán de saciar su hambre."
     },
     "title": "Luna de sangre"
   },
@@ -1533,7 +1533,7 @@
         "label": "Continuar"
       }
     },
-    "message": "Las bombas de brasa detonan en un brillante destello de fuego y luz. La antigua puerta se resquebraja y se desmorona. Lo que fuera que estuviera sellado en su interior ha sido liberado. La ciudad debería prepararse para lo que salga de allí.",
+    "message": "Las bombas de brasa detonan en un brillante destello de fuego y luz. La antigua puerta se resquebraja y se desmorona. Lo que estaba sellado en su interior ahora está libre.",
     "title": "La puerta cae"
   },
   "portalDiscovered": {
@@ -1927,7 +1927,7 @@
         "label": "Continuar"
       }
     },
-    "message": "Unos aldeanos acuden a ti. Vieron una columna de humo muy densa alzándose en el bosque. Tal vez tenga sentido investigarla.",
+    "message": "Unos aldeanos acuden a ti. Vieron una columna de humo muy densa alzándose en el bosque. Alguien debería ver qué arde.",
     "title": "Humo ascendente"
   },
   "sanctumDedication": {
@@ -2036,7 +2036,7 @@
       }
     },
     "log": {
-      "outcome0": "Respiras hondo y te obligas a permanecer inmóvil. La sensación de movimiento bajo la piel se desvanece poco a poco, y tu piel vuelve a la normalidad. Has vencido este horror con pura fuerza de voluntad.",
+      "outcome0": "Te quedas quieto hasta que el hormigueo cesa. La piel es tuya otra vez. Por ahora.",
       "outcome1": "Intentas calmarte, pero la sensación se intensifica. La vista se te nubla y te desplomas. En tus sueños febriles, cosas antiguas susurran tu verdadero nombre. Cuando despiertas, el movimiento ha cesado, pero el recuerdo permanece.",
       "outcome2": "Te arañas la piel frenéticamente, haciéndote sangre. Los aldeanos corren a detenerte y te sujetan los brazos. En tu furia enloquecida, arremetes violentamente y matas a {{killedVillagers}} aldeanos antes de desplomarte de agotamiento. Cuando despiertas, el movimiento ha cesado, pero la sangre mancha tus manos."
     },
@@ -2717,7 +2717,7 @@
       "hide_manyDeaths_food": "Los aldeanos se apiñan en sus chozas mientras los lobos merodean afuera. Varios aldeanos son arrastrados fuera de sus chozas; sus gritos resuenan durante la noche. Los lobos saquean tus provisiones antes de desaparecer al amanecer.",
       "hide_manyDeaths_food_first": "Los aldeanos se apiñan en sus chozas mientras los lobos merodean afuera. Varios aldeanos son arrastrados fuera de sus chozas; sus gritos resuenan durante la noche. Los lobos saquean tus provisiones antes de desaparecer al amanecer. Los aldeanos te sugieren que coloques trampas alrededor de la aldea para protegerse mejor de los lobos y otros enemigos."
     },
-    "message": "Cerca de la medianoche, lobos emergen de la oscuridad, con los ojos brillando de hambre antinatural. Sus aullidos resuenan llenos de malicia mientras rodean la aldea.",
+    "message": "Cerca de la medianoche, lobos emergen de la oscuridad, con los ojos brillando de hambre antinatural. Sus aullidos cargan malicia mientras rodean la aldea.",
     "title": "Ataque de lobos"
   },
   "woodcutter": {
@@ -2734,9 +2734,9 @@
       }
     },
     "log": {
-      "betray": "Entregas la comida, pero pasan días sin seíales del leñador. Parece que te han traicionado.",
-      "betrayLast": "Entregas la comida. El leñador sonríe mientras se adentra en el bosque. Esperas, pero nunca regresa. Parece que te han traicionado.",
-      "betrayLevel5": "Entregas la comida. El leñador promete volver el mismo día. Pero no lo hace. Parece que te han traicionado.",
+      "betray": "Entregas la comida, pero pasan días sin seíales del leñador. Te han traicionado.",
+      "betrayLast": "Entregas la comida. El leñador sonríe mientras se adentra en el bosque. Esperas, pero nunca regresa. Te han traicionado.",
+      "betrayLevel5": "Entregas la comida. El leñador promete volver el mismo día. Pero no lo hace. Te han traicionado.",
       "denyLastUneasy": "Algo en su actitud te inquieta. Rechazas el trato. La sonrisa del leñador se desvanece y se marcha sin decir palabra.",
       "denyLevel1": "Rechazas su oferta. El leñador se encoge de hombros y se interna en el bosque.",
       "denyLevel2": "Rechazas su oferta. El leñador asiente y se marcha sin quejarse.",
@@ -2760,8 +2760,8 @@
     },
     "message": {
       "level1": "Un hombre musculoso con una gran hacha se acerca a la aldea. Flexiona los brazos. «Puedo talar árboles como nadie», presume. «Dame {{foodCost}} de comida y traeré {{woodReward}} de madera.»",
-      "level2": "El leñador regresa, con el hacha reluciendo al sol. «Tu aldea crece bien», observa. «Puedo traerte {{woodReward}} de madera. Tú me das {{foodCost}} de comida. ¿Qué dices?»",
-      "level3": "El leñador se acerca de nuevo. «Veo que tu aldea sigue prosperando», dice con una sonrisa. «Puedo traerte {{woodReward}} de madera si pagas {{foodCost}} de comida.»",
+      "level2": "El leñador regresa, con el hacha reluciendo al sol. «Tu aldea tiene más bocas», observa. «Puedo traerte {{woodReward}} de madera. Tú me das {{foodCost}} de comida. ¿Qué dices?»",
+      "level3": "El leñador se acerca de nuevo. «Tu aldea sigue en pie», dice con una sonrisa. «Puedo traerte {{woodReward}} de madera si pagas {{foodCost}} de comida.»",
       "level4": "El leñador llega una vez más. «¿Quieres usar mis servicios otra vez? {{woodReward}} de madera por {{foodCost}} de comida», pregunta.",
       "level5": "El leñador aparece con una sonrisa confiada. «¿Qué tal si hacemos un trato más? {{woodReward}} de madera por {{foodCost}} de comida.»",
       "level6": "El leñador regresa a la aldea. «¿Quieres usar mis servicios otra vez? Ofrezco {{woodReward}} de madera por {{foodCost}} de comida», dice."
@@ -2852,7 +2852,7 @@
         "label": "Continuar"
       }
     },
-    "message": "Un aldeano fue atacado y muerto por algo en el bosque. Era alto y rápido, nadie pudo verlo con claridad. Los cazadores y recolectores tienen demasiado miedo de entrar en el bosque.",
+    "message": "Algo en el bosque mató a un aldeano. Era alto y rápido. Nadie lo vio con claridad. Los cazadores y recolectores tienen demasiado miedo de entrar en el bosque.",
     "title": "Algo en el bosque"
   },
   "staringDeer": {

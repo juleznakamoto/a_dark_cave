@@ -18,7 +18,7 @@
   "blastPortal": {
     "label": "Blast Gate",
     "log": {
-      "complete": "The ember bombs detonate in a bright flash of fire and light. The ancient gate cracks and crumbles. Whatever could have been sealed within has been released. The city should get ready for whatever comes out of there."
+      "complete": "The ember bombs detonate in a bright flash of fire and light. The ancient gate cracks and crumbles. Whatever was sealed inside is now free."
     }
   },
   "boneTotems": {
@@ -33,7 +33,7 @@
     "label": "Alchemist's Hall"
   },
   "buildAltar": {
-    "description": "Sacred place of worship and sacrificing",
+    "description": "Place of worship and sacrifice",
     "label": "Altar"
   },
   "buildBank": {
@@ -61,7 +61,7 @@
     "label": "Bone Temple"
   },
   "buildBoneyard": {
-    "description": "Ground where the dead are laid to rest, easing the villager's grief.",
+    "description": "Ground where the dead are laid to rest, easing the villagers' grief.",
     "label": "Boneyard"
   },
   "buildHerbGarden": {
@@ -257,7 +257,7 @@
     "label": "Temple"
   },
   "buildTimberMill": {
-    "description": "Mill helping processes wood more efficiently",
+    "description": "Mill processing wood more efficiently",
     "label": "Timber Mill"
   },
   "buildTradePost": {
@@ -269,7 +269,7 @@
     "label": "Traps"
   },
   "buildTreasury": {
-    "description": "A large counting house that lets you make very large investments",
+    "description": "Vault that lets you risk much larger sums",
     "label": "Treasury"
   },
   "buildVillageWarehouse": {
@@ -385,7 +385,7 @@
     "label": "Grenadier's Bag"
   },
   "craftHighpriestRobe": {
-    "label": "Highpriest Robe"
+    "label": "High Priest's Robe"
   },
   "craftHunterCloak": {
     "label": "Hunter Cloak"
@@ -477,11 +477,11 @@
   "descendFurther": {
     "label": "Descend Further",
     "log": {
-      "firstVisit": "With the lantern casting a steady glow, you descend even deeper. Suddenly your feet touch manmade stone steps, worn by time."
+      "firstVisit": "With the lantern casting a steady glow, you descend even deeper. Suddenly your feet touch man-made stone steps, worn by time."
     }
   },
   "encounterBeyondPortal": {
-    "label": "Venture beyond Gate"
+    "label": "Venture Beyond Gate"
   },
   "exploreCave": {
     "label": "Explore Cave",
@@ -528,7 +528,7 @@
   "forestCave": {
     "label": "Forest Cave",
     "log": {
-      "success": "As the villagers descend the cave, savage hounds erupt from darkness in relentless packs. Screams echo as claws tear and teeth snap. When the last creature falls, all villagers survive, but hollowed by what they've endured.",
+      "success": "As the villagers descend the cave, savage hounds erupt from darkness in relentless packs. Screams echo as claws tear and teeth snap. When the last creature falls, every villager lives, hollowed by what they saw.",
       "failure": "As the expedition enters the cave it is overwhelmed by a pack of brutal hounds. {{count}} villagers are torn apart by savage jaws before the survivors manage to retreat."
     }
   },
@@ -657,7 +657,7 @@
     "label": "Repair Watchtower"
   },
   "risingSmoke": {
-    "label": "Rising smoke",
+    "label": "Rising Smoke",
     "log": {
       "success": "Your expedition finds an outlaw camp. The fight is brutal, but you win. In a chest you find 500 Gold.",
       "successKeyBonus": " With your skeleton key you open a hidden compartment and find another 250 Gold.",
@@ -676,7 +676,7 @@
     "label": "Sell Steel"
   },
   "searchMountainLady": {
-    "label": "Search Mountain Lady"
+    "label": "Seek Mountain Lady"
   },
   "steelDelivery": {
     "label": "Steel Delivery",

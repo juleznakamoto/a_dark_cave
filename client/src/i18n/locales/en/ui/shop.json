@@ -28,7 +28,7 @@
     "alreadyPurchased": "Already Purchased",
     "continueCheckout": "Continue",
     "feastAvailable": "{{name}} ({{remaining}}/{{total}} available)",
-    "cruelModeActivateHint": "(to play activate and start a new game)",
+    "cruelModeActivateHint": "Activate, then start a new game",
     "firstPurchaseInsightBannerBefore": "Get",
     "firstPurchaseInsightBannerInsight": "Insight",
     "firstPurchaseInsightBannerAfter": "free with your first purchase",
@@ -53,7 +53,7 @@
     "paymentFailed": "Payment failed",
     "tooManyPaymentRequests": "Too many payment requests, please try again later.",
     "cruelModeDeactivatedLog": "Cruel Mode deactivated. New games will use normal difficulty.",
-    "notAuthenticated": "User not authenticated",
+    "notAuthenticated": "You are not signed in",
     "verificationFailed": "Payment verification failed. Please contact support.",
     "unexpectedError": "An unexpected error occurred",
     "purchaseSuccessful": "Purchase Successful!",
@@ -78,7 +78,7 @@
     "artifactTarnishedCompass": {
       "title": "Tarnished Compass",
       "unlocksStoryline": "Unlocks Compass storyline",
-      "doubleGain": "10% chance to double actions gains",
+      "doubleGain": "10% chance to double action gains",
       "luck": "+5 Luck"
     },
     "artifactCrowHarness": {

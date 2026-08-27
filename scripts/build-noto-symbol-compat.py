@@ -1,8 +1,9 @@
 """Rebuild client/public/fonts/noto-symbol-compat.woff2.
 
 Noto Sans Symbols 2 (Google Fonts slices) omits several UI glyphs we already use
-(feast ⟡, fog ≋, mountain ⛰, heartfire dots, some shop marks). This script
-downloads OFL Noto sources and subsets those codepoints into one small face.
+(feast ⟡, fog ≋, mountain ⛰, heartfire dots, achievement rings ⟁ ⧗, some shop
+marks). This script downloads OFL Noto sources and subsets those codepoints
+into one small face.
 
 Keep CODEPOINTS in sync with NOTO_SYMBOL_COMPAT_CODEPOINTS in
 client/src/lib/notoSansSymbols2FontFace.ts.
@@ -33,10 +34,12 @@ CODEPOINTS = [
     0x26EF,
     0x26F0,
     0x2720,
+    0x27C1,
     0x27D0,
     0x27D1,
     0x27E1,
     0x29C8,
+    0x29D7,
     0x1F70B,
 ]
 

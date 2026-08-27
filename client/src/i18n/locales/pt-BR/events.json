@@ -1,6 +1,6 @@
 {
   "alchemistArrives": {
-    "message": "O alquimista emerge de seu salão: 'Tenho conduzido experimentos dia e noite,' segurando um frasco de poeira reluzente. 'Criei algo extraordinário e terrivelmente perigoso.'",
+    "message": "O alquimista emerge de seu salão: 'Tenho conduzido experimentos dia e noite.' Ele ergue um frasco de poeira reluzente. 'Criei algo extraordinário e terrivelmente perigoso.'",
     "title": "A Descoberta do Alquimista"
   },
   "ashwraithCanyonTradeOffer": {
@@ -58,7 +58,7 @@
     "title": "A Forja do Gigante"
   },
   "blindDruidBlessing": {
-    "message": "Um druida cego emerge da floresta. Ele se aproxima do santuário e acena com aprovação. 'Os deuses da floresta estão satisfeitos com sua devoção, eles lhe concedem sua bênção'.",
+    "message": "Um druida cego emerge da floresta. Ele se aproxima do santuário e acena com aprovação. 'Os deuses da floresta estão satisfeitos com sua devoção, eles lhe concedem sua bênção.'",
     "title": "O Druida Cego"
   },
   "bloodDrainedVillagers": {
@@ -69,7 +69,7 @@
     },
     "message": {
       "firstTime": "Certa manhã, 6 aldeões são encontrados mortos em suas camas, pálidos e drenados de todo o sangue. Pequenas perfurações cobrem sua pele. Alguns aldeões suspeitam que isso possa estar ligado à torre desmoronada na floresta, onde os caçadores ouviram sons estranhos.",
-      "repeat": "Novamente, mais 8 aldeões são descobertos mortos ao amanhecer, seus corpos drenados de sangue, cobertos pelas mesmas marcas misteriosas. As exigências de que algo seja feito sobre o que habita a torre desmoronada se tornam mais altas."
+      "repeat": "Novamente, mais 8 aldeões são descobertos mortos ao amanhecer, seus corpos drenados de sangue, cobertos pelas mesmas marcas misteriosas. Os apelos para lidar com a torre desmoronada ficam mais altos."
     },
     "title": "Corpos Drenados"
   },
@@ -124,7 +124,7 @@
       "outcome4": "Os licantropos sobrepujam suas defesas e invadem o assentamento! A lua de sangue se desvanece, mas a ameaça permanece."
     },
     "message": {
-      "default": "A lua à noite se tornou vermelho-sangue, os anciãos da aldeia falam de licantropos. Pactos antigos exigem o sacrifício de {{sacrificeAmount}} aldeões para apaziguar as feras. Se você recusar, elas garantirão que sua fome seja saciada."
+      "default": "A lua fica vermelho-sangue. Os anciãos falam de licantropos. Pactos antigos exigem o sacrifício de {{sacrificeAmount}} aldeões para apaziguar as feras. Se você recusar, elas garantirão que sua fome seja saciada."
     },
     "title": "Lua de Sangue"
   },
@@ -1293,7 +1293,7 @@
     "log": {
       "ignoreForced": "Você ignora a oferta. O viking acaba cuspindo no chão e parte com seu machado de guerra, resmungando sobre sua falta de respeito.",
       "ignoreNormal": "Você ignora a oferta. O viking acaba acenando e parte com seu machado de guerra.",
-      "buyForced": "O viking pega o pagamento com um sorriso frio. 'Talvez você devesse ter sido mais generoso antes, em vez de me atacar. Teria pagado bem menos pelo machado então.' diz ele antes de partir.",
+      "buyForced": "O viking pega o pagamento com um sorriso frio. 'Talvez você devesse ter sido mais generoso antes, em vez de me atacar. Teria pagado bem menos pelo machado então,' diz ele antes de partir.",
       "buyNormal": "Satisfeito com a troca, o viking acena com aprovação e parte.",
       "declineForced": "Você recusa a oferta. O viking cospe no chão, resmungando maldições enquanto parte com seu machado de guerra. 'Você deveria ter me pagado quando teve a chance,' ele rosna.",
       "declineNormal": "Você recusa a oferta. O viking acena respeitosamente e parte com seu machado de guerra."
@@ -1796,7 +1796,7 @@
         "label": "Continuar"
       }
     },
-    "message": "Aldeões vêm até você. Eles viram uma coluna de fumaça muito densa subindo na mata. Talvez faça sentido investigá-la.",
+    "message": "Aldeões vêm até você. Eles viram uma coluna de fumaça muito densa subindo na mata. Alguém deveria ver o que queima.",
     "title": "Fumaça Subindo"
   },
   "sanctumDedication": {
@@ -1905,7 +1905,7 @@
       }
     },
     "log": {
-      "outcome0": "Você respira fundo e se força a permanecer imóvel. A sensação de rastejamento se esvai gradualmente, e sua pele volta ao normal. Você conquistou este horror pela pura força de vontade.",
+      "outcome0": "Você fica imóvel até o rastejamento parar. A pele é sua de novo. Por enquanto.",
       "outcome1": "Você tenta se acalmar, mas a sensação se intensifica. Sua visão embaça e você desmaia. Em seus sonhos febris, coisas antigas sussurram seu verdadeiro nome. Quando você acorda, o rastejamento parou, mas a lembrança persiste.",
       "outcome2": "Você arranha freneticamente sua pele, tirando sangue. Os aldeões correm para detê-lo, agarrando seus braços. Em sua fúria enlouquecida, você ataca violentamente, matando {{killedVillagers}} aldeões antes de desabar de exaustão. Quando você acorda, o rastejamento parou, mas o sangue mancha suas mãos."
     },
@@ -2566,7 +2566,7 @@
       "hide_manyDeaths_food": "Os aldeões se encolhem em suas cabanas enquanto os lobos rondam lá fora. Vários aldeões são arrastados de suas cabanas, seus gritos ecoando pela noite. Os lobos saqueiam seus suprimentos antes de sumir ao amanhecer.",
       "hide_manyDeaths_food_first": "Os aldeões se encolhem em suas cabanas enquanto os lobos rondam lá fora. Vários aldeões são arrastados de suas cabanas, seus gritos ecoando pela noite. Os lobos saqueiam seus suprimentos antes de sumir ao amanhecer. Os aldeões sugerem que você disponha armadilhas ao redor da aldeia para se proteger melhor de lobos e outros inimigos."
     },
-    "message": "Perto da meia-noite, os lobos emergem da escuridão, seus olhos brilhando com fome sobrenatural. Seus uivos ecoam carregados de malícia enquanto circundam a aldeia.",
+    "message": "Perto da meia-noite, os lobos emergem da escuridão, seus olhos brilhando com fome sobrenatural. Seus uivos carregam malícia enquanto circundam a aldeia.",
     "title": "Ataque dos Lobos"
   },
   "woodcutter": {
@@ -2583,9 +2583,9 @@
       }
     },
     "log": {
-      "betray": "Você entrega a comida, mas os dias passam sem sinal do lenhador. Parece que você foi traído.",
-      "betrayLast": "Você entrega a comida. O lenhador sorri ao partir rumo à floresta. Você espera, mas ele nunca retorna. Parece que você foi traído.",
-      "betrayLevel5": "Você entrega a comida. O lenhador promete voltar no mesmo dia. Mas ele nunca volta. Parece que você foi traído.",
+      "betray": "Você entrega a comida, mas os dias passam sem sinal do lenhador. Você foi traído.",
+      "betrayLast": "Você entrega a comida. O lenhador sorri ao partir rumo à floresta. Você espera, mas ele nunca retorna. Você foi traído.",
+      "betrayLevel5": "Você entrega a comida. O lenhador promete voltar no mesmo dia. Mas ele nunca volta. Você foi traído.",
       "denyLastUneasy": "Algo no comportamento dele o deixa inquieto. Você recusa o acordo. O sorriso do lenhador se desfaz, e ele parte sem uma palavra.",
       "denyLevel1": "Você recusa a oferta dele. O lenhador dá de ombros e se afasta para a floresta.",
       "denyLevel2": "Você recusa a oferta dele. O lenhador acena e parte sem reclamar.",
@@ -2609,8 +2609,8 @@
     },
     "message": {
       "level1": "Um homem musculoso com um grande machado se aproxima da aldeia. Ele flexiona os braços. \"Sei cortar árvores como ninguém,\" gaba-se ele. \"Dê-me {{foodCost}} Comida, e eu trarei {{woodReward}} Madeira.\"",
-      "level2": "O lenhador retorna, seu machado reluzindo ao sol. \"Sua aldeia cresce bem,\" observa ele. \"Posso lhe trazer {{woodReward}} Madeira. Você me dá {{foodCost}} Comida. O que me diz?\"",
-      "level3": "O lenhador se aproxima novamente. \"Vejo que sua aldeia continua a prosperar,\" diz ele com um sorriso. \"Posso lhe trazer {{woodReward}} Madeira se você pagar {{foodCost}} Comida por ela.\"",
+      "level2": "O lenhador retorna, seu machado reluzindo ao sol. \"Sua aldeia tem mais bocas,\" observa ele. \"Posso lhe trazer {{woodReward}} Madeira. Você me dá {{foodCost}} Comida. O que me diz?\"",
+      "level3": "O lenhador se aproxima novamente. \"Sua aldeia ainda está de pé,\" diz ele com um sorriso. \"Posso lhe trazer {{woodReward}} Madeira se você pagar {{foodCost}} Comida por ela.\"",
       "level4": "O lenhador chega mais uma vez. \"Quer usar meus serviços mais uma vez? {{woodReward}} Madeira por {{foodCost}} Comida,\" pergunta ele.",
       "level5": "O lenhador aparece com um sorriso confiante. \"Que tal fecharmos mais um acordo? {{woodReward}} Madeira por {{foodCost}} Comida.\"",
       "level6": "O lenhador retorna à aldeia. \"Quer usar meus serviços mais uma vez? Ofereço {{woodReward}} Madeira por {{foodCost}} Comida,\" diz ele."
@@ -2798,7 +2798,7 @@
         "label": "Continuar"
       }
     },
-    "message": "As bombas de brasa detonam num clarão brilhante de fogo e luz. O portão antigo racha e desmorona. O que quer que estivesse selado ali dentro foi libertado. A cidade deveria se preparar para o que sair daí.",
+    "message": "As bombas de brasa detonam num clarão brilhante de fogo e luz. O portão antigo racha e desmorona. O que quer que estivesse selado ali dentro agora está livre.",
     "title": "O Portão Cai"
   },
   "caveWallMarkings": {
@@ -2852,7 +2852,7 @@
         "label": "Continuar"
       }
     },
-    "message": "Um aldeão foi atacado e morto por algo na floresta. Era alto e rápido, ninguém conseguiu vê-lo com clareza. Caçadores e coletores estão com medo demais de entrar na floresta.",
+    "message": "Algo na floresta matou um aldeão. Era alto e rápido. Ninguém o viu com clareza. Caçadores e coletores estão com medo demais de entrar na floresta.",
     "title": "Algo na floresta"
   },
   "staringDeer": {

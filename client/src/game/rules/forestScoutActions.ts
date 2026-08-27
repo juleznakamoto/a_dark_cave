@@ -363,7 +363,7 @@ export const forestScoutActions: Record<string, Action> = {
 
   risingSmoke: {
     id: "risingSmoke",
-    label: "Rising smoke",
+    label: "Rising Smoke",
     minVillagers: 16,
     expeditionVillagersRequired: (state: GameState) =>
       CRUEL_MODE.forestExpedition.risingSmoke.base +
@@ -431,7 +431,7 @@ export const forestScoutActions: Record<string, Action> = {
 
   searchMountainLady: {
     id: "searchMountainLady",
-    label: "Search Mountain Lady",
+    label: "Seek Mountain Lady",
     minVillagers: 30,
     expeditionVillagersRequired: () => 30,
     show_when: {
@@ -1054,7 +1054,7 @@ export function handleForestCave(
       message: getActionLogMessage(
         "forestCave",
         "success",
-        "As the villagers descend the cave, savage hounds erupt from darkness in relentless packs. Screams echo as claws tear and teeth snap. When the last creature falls, all villagers survive, but hollowed by what they've endured.",
+        "As the villagers descend the cave, savage hounds erupt from darkness in relentless packs. Screams echo as claws tear and teeth snap. When the last creature falls, every villager lives, hollowed by what they saw.",
       ),
       timestamp: Date.now(),
       type: "system",

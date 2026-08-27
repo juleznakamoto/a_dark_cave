@@ -33,7 +33,7 @@
   "socialPrompt": {
     "title": "Restez connecté et gagnez des récompenses",
     "description": "Accomplissez les tâches ci-dessous pour recevoir des bonus. Accomplissez toutes les tâches pour recevoir un objet exclusif.",
-    "signUpRequiresSignInTooltip": "inscrivez-vous pour accomplir la tâche", //x1.6
+    "signUpRequiresSignInTooltip": "Connectez-vous pour accomplir cette tâche", //x1.6
     "signUpTitle": "S'inscrire",
     "signUpDesc": "Créez un compte gratuit pour synchroniser votre progression entre vos appareils. Sans compte, votre progression n'est enregistrée que localement et peut être perdue.",
     "signUpButton": "S'inscrire",
@@ -145,7 +145,7 @@
     "titleTrial": "Le voyage continue",
     "titleCheckout": "Finaliser votre achat",
     "trialDesc": "Vous avez atteint la fin de la version d'essai. Le voyage complet vous attend au-delà de ce point.",
-    "oneTimePurchase": "Achat unique. Pas d'abonnement. Pas de microtransactions.",
+    "oneTimePurchase": "Achat unique. Pas d'abonnement. Pas de frais supplémentaires.",
     "featureHours": "14+ heures de jeu",
     "featureStructures": "100+ structures",
     "featureItems": "250+ objets, compagnons, livres, bénédictions…",
@@ -162,7 +162,7 @@
     "rightOfWithdrawal": "Rétractation", //x1.2
     "completePurchaseFor": "Finaliser l'achat pour {{price}}",
     "paymentFailed": "Paiement échoué",
-    "notAuthenticated": "Utilisateur non authentifié", //x1.2
+    "notAuthenticated": "Vous n'êtes pas connecté", //x1.2
     "unexpectedError": "Une erreur inattendue s'est produite"
   },
   "leaderboard": {
@@ -249,7 +249,7 @@
     "reddit": "Reddit",
     "instagram": "Instagram",
     "steam": "Steam",
-    "email": "E-Mail"
+    "email": "Email"
   },
   "galaxy": {
     "title": "La démo s'arrête ici", //x1.4

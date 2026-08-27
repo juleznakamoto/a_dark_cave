@@ -22,7 +22,7 @@ export const CAVE_FIRST_VISIT_LOG_FALLBACKS: Record<
   },
   descendFurther: {
     firstVisit:
-      "With the lantern casting a steady glow, you descend even deeper. Suddenly your feet touch manmade stone steps, worn by time.",
+      "With the lantern casting a steady glow, you descend even deeper. Suddenly your feet touch man-made stone steps, worn by time.",
   },
   exploreRuins: {
     firstVisit:
@@ -40,7 +40,7 @@ export const CAVE_FIRST_VISIT_LOG_FALLBACKS: Record<
 
 export const CAVE_EXPLORE_LOG_FALLBACKS: Record<string, string> = {
   blastPortal:
-    "The ember bombs detonate in a bright flash of fire and light. The ancient gate cracks and crumbles. Whatever could have been sealed within has been released. The city should get ready for whatever comes out of there.",
+    "The ember bombs detonate in a bright flash of fire and light. The ancient gate cracks and crumbles. Whatever was sealed inside is now free.",
   lowChamber:
     "Using the reinforced rope, you descend into the low chamber. Amongst the treasures you find a mastermason's chisel, a tool of legendary craftsmanship.",
   occultistChamber:

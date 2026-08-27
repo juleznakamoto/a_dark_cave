@@ -53,7 +53,7 @@
     "paymentFailed": "Ошибка оплаты",
     "tooManyPaymentRequests": "Слишком много запросов на оплату. Попробуйте позже.",
     "cruelModeDeactivatedLog": "Жестокий режим отключён. Новые игры будут с обычной сложностью.",
-    "notAuthenticated": "Пользователь не авторизован", //x1.2
+    "notAuthenticated": "Вы не вошли", //x1.2
     "verificationFailed": "Ошибка проверки платежа. Свяжитесь с поддержкой.",
     "unexpectedError": "Произошла непредвиденная ошибка",
     "purchaseSuccessful": "Покупка успешна!",

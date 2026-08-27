@@ -58,7 +58,7 @@
     "title": "La Forge du géant"
   },
   "blindDruidBlessing": {
-    "message": "Un druide aveugle émerge de la forêt. Il s'approche du sanctuaire et hoche la tête avec approbation. 'Les dieux de la forêt sont satisfaits de votre dévotion, ils vous accordent leur bénédiction'.",
+    "message": "Un druide aveugle émerge de la forêt. Il s'approche du sanctuaire et hoche la tête avec approbation. 'Les dieux de la forêt sont satisfaits de votre dévotion, ils vous accordent leur bénédiction.'",
     "title": "Le Druide aveugle"
   },
   "bloodDrainedVillagers": {
@@ -69,7 +69,7 @@
     },
     "message": {
       "firstTime": "Un matin, 6 villageois sont retrouvés morts dans leur lit, pâles et entièrement vidés de leur sang. De petites piqûres couvrent leur peau. Certains soupçonnent un lien avec la tour effondrée dans la forêt, où des chasseurs ont entendu des bruits étranges.",
-      "repeat": "À nouveau, 8 villageois de plus sont découverts morts à l'aube, leurs corps vidés de sang, couverts des mêmes marques mystérieuses. Les demandes pour agir contre ce qui habite la tour effondrée deviennent plus insistantes."
+      "repeat": "À nouveau, 8 villageois de plus sont découverts morts à l'aube, leurs corps vidés de sang, couverts des mêmes marques mystérieuses. Les appels à s'occuper de la tour effondrée se font plus insistants."
     },
     "title": "Corps vidés"
   },
@@ -124,7 +124,7 @@
       "outcome4": "Les lycanthropes submergent vos défenses et envahissent la colonie ! La lune de sang pâlit, mais la menace demeure."
     },
     "message": {
-      "default": "La nuit, la lune est devenue rouge sang, et les anciens du village parlent de lycanthropes. D'anciens pactes exigent le sacrifice de {{sacrificeAmount}} villageois pour apaiser les bêtes. Si vous refusez, elles veilleront à satisfaire leur faim."
+      "default": "La lune devient rouge sang. Les anciens parlent de lycanthropes. D'anciens pactes exigent le sacrifice de {{sacrificeAmount}} villageois pour apaiser les bêtes. Si vous refusez, elles veilleront à satisfaire leur faim."
     },
     "title": "Lune de sang"
   },
@@ -1533,7 +1533,7 @@
         "label": "Continuer"
       }
     },
-    "message": "Les bombes braise explosent dans un éclat de feu et de lumière. L'ancienne porte se fissure et s'effondre. Quoi qu'il y avait là-dedans a été libéré. La cité devrait se préparer à ce qui en sortira.",
+    "message": "Les bombes braise explosent dans un éclat de feu et de lumière. L'ancienne porte se fissure et s'effondre. Ce qui était scellé à l'intérieur est désormais libre.",
     "title": "La Porte tombe"
   },
   "portalDiscovered": {
@@ -1927,7 +1927,7 @@
         "label": "Continuer"
       }
     },
-    "message": "Des villageois viennent vous voir. Ils ont vu une colonne de fumée très dense s'élever dans les bois. Il serait peut-être sensé d'enquêter.",
+    "message": "Des villageois viennent vous voir. Ils ont vu une colonne de fumée très dense s'élever dans les bois. Quelqu'un devrait voir ce qui brûle.",
     "title": "Fumée montante"
   },
   "sanctumDedication": {
@@ -2036,7 +2036,7 @@
       }
     },
     "log": {
-      "outcome0": "Vous respirez profondément et vous forcez à rester immobile. La sensation de grouillement s'estompe peu à peu, et votre peau redevient normale. Vous avez vaincu cette horreur par la seule force de votre volonté.",
+      "outcome0": "Vous restez immobile jusqu'à ce que le grouillement cesse. La peau est à vous de nouveau. Pour l'instant.",
       "outcome1": "Vous tentez de vous calmer, mais la sensation s'intensifie. Votre vision se brouille et vous vous effondrez. Dans vos rêves fiévreux, des choses anciennes murmurent votre vrai nom. À votre réveil, le grouillement a cessé, mais le souvenir persiste.",
       "outcome2": "Vous griffez frénétiquement votre peau, faisant couler le sang. Les villageois se précipitent pour vous arrêter, vous saisissant les bras. Dans votre rage démente, vous frappez violemment autour de vous, tuant {{killedVillagers}} villageois avant de vous effondrer d'épuisement. À votre réveil, le grouillement a cessé, mais le sang tache vos mains."
     },
@@ -2734,9 +2734,9 @@
       }
     },
     "log": {
-      "betray": "Vous remettez la nourriture, mais des jours passent sans signe du bûcheron. Il semble que vous ayez été trahi.",
-      "betrayLast": "Vous remettez la nourriture. Le bûcheron sourit en s'enfonçant dans la forêt. Vous attendez, mais il ne revient jamais. Il semble que vous ayez été trahi.",
-      "betrayLevel5": "Vous remettez la nourriture. Le bûcheron promet de revenir le jour même. Mais il ne le fait pas. Il semble que vous ayez été trahi.",
+      "betray": "Vous remettez la nourriture, mais des jours passent sans signe du bûcheron. Vous avez été trahi.",
+      "betrayLast": "Vous remettez la nourriture. Le bûcheron sourit en s'enfonçant dans la forêt. Vous attendez, mais il ne revient jamais. Vous avez été trahi.",
+      "betrayLevel5": "Vous remettez la nourriture. Le bûcheron promet de revenir le jour même. Mais il ne le fait pas. Vous avez été trahi.",
       "denyLastUneasy": "Quelque chose dans son attitude vous met mal à l'aise. Vous refusez l'affaire. Le sourire du bûcheron s'efface, et il part sans un mot.",
       "denyLevel1": "Vous refusez son offre. Le bûcheron hausse les épaules et s'enfonce dans la forêt.",
       "denyLevel2": "Vous refusez son offre. Le bûcheron hoche la tête et repart sans se plaindre.",
@@ -2760,8 +2760,8 @@
     },
     "message": {
       "level1": "Un homme musclé portant une grande hache s'approche du village. Il contracte les bras. « Je coupe les arbres comme personne », se vante-t-il. « Donnez-moi {{foodCost}} nourriture, et je vous rapporterai {{woodReward}} bois. »",
-      "level2": "Le bûcheron revient, sa hache brillant au soleil. « Votre village prospère », observe-t-il. « Je peux vous apporter {{woodReward}} bois. Vous me donnez {{foodCost}} nourriture. Qu'en dites-vous ? »",
-      "level3": "Le bûcheron s'approche à nouveau. « Je vois que votre village continue de prospérer », dit-il avec un sourire. « Je peux vous apporter {{woodReward}} bois si vous payez {{foodCost}} nourriture. »",
+      "level2": "Le bûcheron revient, sa hache brillant au soleil. « Votre village a plus de bouches », observe-t-il. « Je peux vous apporter {{woodReward}} bois. Vous me donnez {{foodCost}} nourriture. Qu'en dites-vous ? »",
+      "level3": "Le bûcheron s'approche à nouveau. « Votre village tient encore », dit-il avec un sourire. « Je peux vous apporter {{woodReward}} bois si vous payez {{foodCost}} nourriture. »",
       "level4": "Le bûcheron arrive une fois de plus. « Voulez-vous encore utiliser mes services ? {{woodReward}} bois contre {{foodCost}} nourriture », demande-t-il.",
       "level5": "Le bûcheron apparaît avec un sourire confiant. « Et si nous concluions une affaire de plus ? {{woodReward}} bois contre {{foodCost}} nourriture. »",
       "level6": "Le bûcheron revient au village. « Voulez-vous encore utiliser mes services ? J'offre {{woodReward}} bois contre {{foodCost}} nourriture », dit-il."
@@ -2852,7 +2852,7 @@
         "label": "Continuer"
       }
     },
-    "message": "Un villageois a été attaqué et tué par quelque chose dans les bois. C'était grand et rapide, personne n'a pu le voir clairement. Les chasseurs et les collecteurs ont trop peur d'entrer dans la forêt.",
+    "message": "Quelque chose dans les bois a tué un villageois. C'était grand et rapide. Personne ne l'a vu clairement. Les chasseurs et les collecteurs ont trop peur d'entrer dans la forêt.",
     "title": "Quelque chose dans les bois"
   },
   "staringDeer": {

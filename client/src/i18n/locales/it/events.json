@@ -1,6 +1,6 @@
 {
   "alchemistArrives": {
-    "message": "L'alchimista emerge dalla sua sala: 'Ho condotto esperimenti giorno e notte,' tenendo una fiala di polvere scintillante. 'Ho creato qualcosa di straordinario e terribilmente pericoloso.'",
+    "message": "L'alchimista emerge dalla sua sala: 'Ho condotto esperimenti giorno e notte.' Solleva una fiala di polvere scintillante. 'Ho creato qualcosa di straordinario e terribilmente pericoloso.'",
     "title": "La Scoperta dell'Alchimista"
   },
   "ashwraithCanyonTradeOffer": {
@@ -58,7 +58,7 @@
     "title": "La Forgia del Gigante"
   },
   "blindDruidBlessing": {
-    "message": "Un druido cieco emerge dalla foresta. Si avvicina al sacrario e annuisce con approvazione. 'Gli dèi della foresta sono compiaciuti della tua devozione, ti concedono la loro benedizione'.",
+    "message": "Un druido cieco emerge dalla foresta. Si avvicina al sacrario e annuisce con approvazione. 'Gli dèi della foresta sono compiaciuti della tua devozione, ti concedono la loro benedizione.'",
     "title": "Il Druido Cieco"
   },
   "bloodDrainedVillagers": {
@@ -69,7 +69,7 @@
     },
     "message": {
       "firstTime": "Una mattina, 6 abitanti vengono trovati morti nei loro letti, pallidi e svuotati di tutto il sangue. Piccoli fori coprono la loro pelle. Alcuni abitanti sospettano che ciò possa essere collegato alla torre crollata nella foresta, dove i cacciatori udirono strani suoni.",
-      "repeat": "Di nuovo, altri 8 abitanti vengono scoperti morti all'alba, i loro corpi svuotati di sangue, coperti dagli stessi misteriosi segni. Le richieste che si faccia qualcosa riguardo a ciò che dimora nella torre crollata si fanno più insistenti."
+      "repeat": "Di nuovo, altri 8 abitanti vengono scoperti morti all'alba, i loro corpi svuotati di sangue, coperti dagli stessi misteriosi segni. Le richieste di occuparsi della torre crollata si fanno più insistenti."
     },
     "title": "Corpi Svuotati"
   },
@@ -124,7 +124,7 @@
       "outcome4": "I licantropi travolgono le tue difese e invadono l'insediamento! La luna di sangue svanisce, ma la minaccia rimane."
     },
     "message": {
-      "default": "La luna di notte si è tinta di rosso sangue, gli anziani del villaggio parlano di licantropi. Antichi patti esigono il sacrificio di {{sacrificeAmount}} abitanti per placare le bestie. Se ti rifiuti, faranno in modo di soddisfare la loro fame."
+      "default": "La luna si tinge di rosso sangue. Gli anziani parlano di licantropi. Antichi patti esigono il sacrificio di {{sacrificeAmount}} abitanti per placare le bestie. Se ti rifiuti, faranno in modo di soddisfare la loro fame."
     },
     "title": "Luna di Sangue"
   },
@@ -1293,8 +1293,8 @@
     "log": {
       "ignoreForced": "Ignori l'offerta. Il vichingo alla fine sputa a terra e se ne va con la sua ascia da guerra, borbottando sulla tua mancanza di rispetto.",
       "ignoreNormal": "Ignori l'offerta. Il vichingo alla fine annuisce e se ne va con la sua ascia da guerra.",
-      "buyForced": "Il vichingo prende il pagamento con un sorriso gelido. 'Forse avresti dovuto essere più generoso prima, invece di attaccarmi. Avresti pagato molto meno per l'ascia allora.' dice prima di andarsene.",
-      "buyNormal": "Soddisfatto dello scambio il vichingo annuisce con approvazione e se ne va.",
+      "buyForced": "Il vichingo prende il pagamento con un sorriso gelido. 'Forse avresti dovuto essere più generoso prima, invece di attaccarmi. Avresti pagato molto meno per l'ascia allora,' dice prima di andarsene.",
+      "buyNormal": "Soddisfatto dello scambio, il vichingo annuisce con approvazione e se ne va.",
       "declineForced": "Rifiuti l'offerta. Il vichingo sputa a terra, borbottando maledizioni mentre se ne va con la sua ascia da guerra. 'Avresti dovuto pagarmi quando ne avevi la possibilità,' ringhia.",
       "declineNormal": "Rifiuti l'offerta. Il vichingo annuisce rispettosamente e se ne va con la sua ascia da guerra."
     },
@@ -1796,7 +1796,7 @@
         "label": "Continua"
       }
     },
-    "message": "Gli abitanti vengono da te. Hanno visto una densissima colonna di fumo alzarsi nei boschi. Forse ha senso indagare.",
+    "message": "Gli abitanti vengono da te. Hanno visto una densissima colonna di fumo alzarsi nei boschi. Qualcuno dovrebbe vedere cosa brucia.",
     "title": "Fumo che si Alza"
   },
   "sanctumDedication": {
@@ -1905,7 +1905,7 @@
       }
     },
     "log": {
-      "outcome0": "Fai respiri profondi e ti costringi a restare immobile. La sensazione di strisciamento svanisce gradualmente, e la tua pelle torna normale. Hai vinto questo orrore con la pura forza di volontà.",
+      "outcome0": "Resti immobile finché lo strisciamento non cessa. La pelle è di nuovo tua. Per ora.",
       "outcome1": "Cerchi di calmarti, ma la sensazione si intensifica. La vista ti si annebbia e crolli. Nei tuoi sogni febbrili, cose antiche sussurrano il tuo vero nome. Quando ti svegli, lo strisciamento è cessato, ma il ricordo persiste.",
       "outcome2": "Ti gratti freneticamente la pelle, facendoti sanguinare. Gli abitanti accorrono per fermarti, afferrandoti le braccia. Nella tua furia folle, ti scagli violentemente, uccidendo {{killedVillagers}} abitanti prima di crollare per lo sfinimento. Quando ti svegli, lo strisciamento è cessato, ma il sangue ti macchia le mani."
     },
@@ -2566,7 +2566,7 @@
       "hide_manyDeaths_food": "Gli abitanti si rannicchiano nelle loro capanne mentre i lupi si aggirano fuori. Diversi abitanti vengono trascinati fuori dalle loro capanne, le loro urla che echeggiano nella notte. I lupi saccheggiano le tue scorte prima di svanire all'alba.",
       "hide_manyDeaths_food_first": "Gli abitanti si rannicchiano nelle loro capanne mentre i lupi si aggirano fuori. Diversi abitanti vengono trascinati fuori dalle loro capanne, le loro urla che echeggiano nella notte. I lupi saccheggiano le tue scorte prima di svanire all'alba. Gli abitanti ti suggeriscono di disporre trappole attorno al villaggio per proteggersi meglio da lupi e altri nemici."
     },
-    "message": "Verso mezzanotte, i lupi emergono dall'oscurità, gli occhi che brillano di fame innaturale. I loro ululati echeggiano carichi di malizia mentre circondano il villaggio.",
+    "message": "Verso mezzanotte, i lupi emergono dall'oscurità, gli occhi che brillano di fame innaturale. I loro ululati portano malizia mentre circondano il villaggio.",
     "title": "Attacco dei Lupi"
   },
   "woodcutter": {
@@ -2583,9 +2583,9 @@
       }
     },
     "log": {
-      "betray": "Consegni il cibo, ma passano i giorni senza alcun segno del taglialegna. Sembra che tu sia stato tradito.",
-      "betrayLast": "Consegni il cibo. Il taglialegna ghigna mentre si dirige verso la foresta. Aspetti, ma non torna mai. Sembra che tu sia stato tradito.",
-      "betrayLevel5": "Consegni il cibo. Il taglialegna promette di tornare lo stesso giorno. Ma non lo fa mai. Sembra che tu sia stato tradito.",
+      "betray": "Consegni il cibo, ma passano i giorni senza alcun segno del taglialegna. Sei stato tradito.",
+      "betrayLast": "Consegni il cibo. Il taglialegna ghigna mentre si dirige verso la foresta. Aspetti, ma non torna mai. Sei stato tradito.",
+      "betrayLevel5": "Consegni il cibo. Il taglialegna promette di tornare lo stesso giorno. Ma non lo fa mai. Sei stato tradito.",
       "denyLastUneasy": "C'è qualcosa nel suo atteggiamento che ti mette a disagio. Rifiuti l'accordo. Il sorriso del taglialegna svanisce, e se ne va senza una parola.",
       "denyLevel1": "Rifiuti la sua offerta. Il taglialegna alza le spalle e si allontana nella foresta.",
       "denyLevel2": "Rifiuti la sua offerta. Il taglialegna annuisce e se ne va senza lamentarsi.",
@@ -2609,8 +2609,8 @@
     },
     "message": {
       "level1": "Un uomo muscoloso con una grande ascia si avvicina al villaggio. Flette le braccia. \"So tagliare gli alberi come nessun altro,\" si vanta. \"Dammi {{foodCost}} Cibo, e ti porterò {{woodReward}} Legno.\"",
-      "level2": "Il taglialegna ritorna, l'ascia che luccica al sole. \"Il tuo villaggio cresce bene,\" osserva. \"Posso portarti {{woodReward}} Legno. Tu mi dai {{foodCost}} Cibo. Che ne dici?\"",
-      "level3": "Il taglialegna si avvicina di nuovo. \"Vedo che il tuo villaggio continua a prosperare,\" dice con un ghigno. \"Posso portarti {{woodReward}} Legno se paghi {{foodCost}} Cibo per averlo.\"",
+      "level2": "Il taglialegna ritorna, l'ascia che luccica al sole. \"Il tuo villaggio ha più bocche,\" osserva. \"Posso portarti {{woodReward}} Legno. Tu mi dai {{foodCost}} Cibo. Che ne dici?\"",
+      "level3": "Il taglialegna si avvicina di nuovo. \"Il tuo villaggio è ancora in piedi,\" dice con un ghigno. \"Posso portarti {{woodReward}} Legno se paghi {{foodCost}} Cibo per averlo.\"",
       "level4": "Il taglialegna arriva ancora una volta. \"Vuoi usare i miei servizi un'altra volta? {{woodReward}} Legno per {{foodCost}} Cibo,\" chiede.",
       "level5": "Il taglialegna appare con un sorriso sicuro. \"Che ne dici di fare un altro affare? {{woodReward}} Legno per {{foodCost}} Cibo.\"",
       "level6": "Il taglialegna torna al villaggio. \"Vuoi usare i miei servizi un'altra volta? Offro {{woodReward}} Legno per {{foodCost}} Cibo,\" dice."
@@ -2798,7 +2798,7 @@
         "label": "Continua"
       }
     },
-    "message": "Le bombe di brace detonano in un lampo brillante di fuoco e luce. L'antico cancello si incrina e crolla. Qualunque cosa potesse essere sigillata al suo interno è stata liberata. La città dovrebbe prepararsi a ciò che ne uscirà.",
+    "message": "Le bombe di brace detonano in un lampo brillante di fuoco e luce. L'antico cancello si incrina e crolla. Qualunque cosa fosse sigillata all'interno ora è libera.",
     "title": "Il Cancello cade"
   },
   "caveWallMarkings": {
@@ -2852,7 +2852,7 @@
         "label": "Continua"
       }
     },
-    "message": "Un abitante del villaggio è stato attaccato e ucciso da qualcosa nei boschi. Era alto e veloce, nessuno è riuscito a vederlo chiaramente. Cacciatori e raccoglitori hanno troppa paura di entrare nella foresta.",
+    "message": "Qualcosa nei boschi ha ucciso un abitante del villaggio. Era alto e veloce. Nessuno lo ha visto chiaramente. Cacciatori e raccoglitori hanno troppa paura di entrare nella foresta.",
     "title": "Qualcosa nei boschi"
   },
   "staringDeer": {

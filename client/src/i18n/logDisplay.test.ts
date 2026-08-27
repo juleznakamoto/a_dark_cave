@@ -240,7 +240,7 @@ describe("resolveLogPanelMessage", () => {
       ),
     );
     expect(text).toBe(
-      "Die Glutbomben detonieren in einem hellen Feuerblitz. Das alte Tor bricht und bröckelt. Was auch immer darin eingeschlossen war, ist frei. Die Stadt sollte sich auf das vorbereiten, was hervorkommt.",
+      "Die Glutbomben detonieren in einem hellen Feuerblitz. Das alte Tor bricht und bröckelt. Was auch immer darin eingeschlossen war, ist jetzt frei.",
     );
   });
 
@@ -252,7 +252,7 @@ describe("resolveLogPanelMessage", () => {
       ),
     );
     expect(text).toBe(
-      "Als die Dorfbewohner in die Höhle hinabsteigen, brechen wilde Hunde in unerbittlichen Rudeln aus der Dunkelheit hervor. Schreie hallen wider, während Krallen reißen und Zähne schnappen. Als die letzte Kreatur fällt, überleben alle Dorfbewohner – aber erschüttert von dem, was sie erlebt haben.",
+      "Als die Dorfbewohner in die Höhle hinabsteigen, brechen wilde Hunde in unerbittlichen Rudeln aus der Dunkelheit hervor. Schreie hallen wider, während Krallen reißen und Zähne schnappen. Als die letzte Kreatur fällt, lebt jeder Dorfbewohner, ausgehöhlt von dem, was sie gesehen haben.",
     );
   });
 

@@ -41,7 +41,7 @@
     "name": "Jeu complet"
   },
   "gold_1000": {
-    "activationMessage": "1000 or ont été ajoutés à votre inventaire.",
+    "activationMessage": "1'000 or ont été ajoutés à votre inventaire.",
     "description": "Une quantité correcte d'or",
     "name": "1'000 or"
   },
@@ -66,17 +66,17 @@
     "name": "30'000 or"
   },
   "gold_250": {
-    "activationMessage": "1000 or ont été ajoutés à votre inventaire.",
+    "activationMessage": "1'000 or ont été ajoutés à votre inventaire.",
     "description": "Une quantité correcte d'or",
-    "name": "250 or"
+    "name": "1'000 or"
   },
   "gold_2500": {
-    "activationMessage": "2500 or ont été ajoutés à votre inventaire.",
+    "activationMessage": "2'500 or ont été ajoutés à votre inventaire.",
     "description": "Un trésor conséquent",
     "name": "2'500 or"
   },
   "gold_5000": {
-    "activationMessage": "5000 or ont été ajoutés à votre inventaire.",
+    "activationMessage": "5'000 or ont été ajoutés à votre inventaire.",
     "description": "Une fortune en or",
     "name": "5'000 or"
   },
