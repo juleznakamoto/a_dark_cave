@@ -67,6 +67,67 @@ def cmap_of(path: Path) -> set[int]:
     return cps
 
 
+# Noto Sans Symbols 2 (upem 1000). Compat is first in `.font-noto-symbols-2`,
+# so these metrics become the line box for × / ↦ painted from Symbols 2.
+SYMBOLS_2_ASCENT = 1069
+SYMBOLS_2_DESCENT = -630
+SYMBOLS_2_LINE_GAP = 0
+SYMBOLS_2_WIN_ASCENT = 1069
+SYMBOLS_2_WIN_DESCENT = 630
+
+# Must stay in sync with apply_symbols_2_line_metrics / assert_symbols_2_line_metrics.
+SYMBOLS_2_LINE_METRICS = {
+    "hhea.ascent": SYMBOLS_2_ASCENT,
+    "hhea.descent": SYMBOLS_2_DESCENT,
+    "hhea.lineGap": SYMBOLS_2_LINE_GAP,
+    "OS/2.sTypoAscender": SYMBOLS_2_ASCENT,
+    "OS/2.sTypoDescender": SYMBOLS_2_DESCENT,
+    "OS/2.sTypoLineGap": SYMBOLS_2_LINE_GAP,
+    "OS/2.usWinAscent": SYMBOLS_2_WIN_ASCENT,
+    "OS/2.usWinDescent": SYMBOLS_2_WIN_DESCENT,
+}
+
+
+def _line_metrics_of(font: TTFont) -> dict[str, int]:
+    os2 = font["OS/2"]
+    return {
+        "hhea.ascent": font["hhea"].ascent,
+        "hhea.descent": font["hhea"].descent,
+        "hhea.lineGap": font["hhea"].lineGap,
+        "OS/2.sTypoAscender": os2.sTypoAscender,
+        "OS/2.sTypoDescender": os2.sTypoDescender,
+        "OS/2.sTypoLineGap": os2.sTypoLineGap,
+        "OS/2.usWinAscent": os2.usWinAscent,
+        "OS/2.usWinDescent": os2.usWinDescent,
+    }
+
+
+def apply_symbols_2_line_metrics(font: TTFont) -> None:
+    font["hhea"].ascent = SYMBOLS_2_LINE_METRICS["hhea.ascent"]
+    font["hhea"].descent = SYMBOLS_2_LINE_METRICS["hhea.descent"]
+    font["hhea"].lineGap = SYMBOLS_2_LINE_METRICS["hhea.lineGap"]
+    os2 = font["OS/2"]
+    os2.sTypoAscender = SYMBOLS_2_LINE_METRICS["OS/2.sTypoAscender"]
+    os2.sTypoDescender = SYMBOLS_2_LINE_METRICS["OS/2.sTypoDescender"]
+    os2.sTypoLineGap = SYMBOLS_2_LINE_METRICS["OS/2.sTypoLineGap"]
+    os2.usWinAscent = SYMBOLS_2_LINE_METRICS["OS/2.usWinAscent"]
+    os2.usWinDescent = SYMBOLS_2_LINE_METRICS["OS/2.usWinDescent"]
+
+
+def assert_symbols_2_line_metrics(font: TTFont) -> None:
+    actual = _line_metrics_of(font)
+    mismatches = [
+        f"{key}: got {actual[key]}, expected {expected}"
+        for key, expected in SYMBOLS_2_LINE_METRICS.items()
+        if actual[key] != expected
+    ]
+    if mismatches:
+        raise SystemExit(
+            "Output line metrics must match Noto Sans Symbols 2: "
+            + "; ".join(mismatches)
+        )
+
+
 def set_family_name(font: TTFont, family: str) -> None:
     ps_name = family.replace(" ", "")
     for rec in font["name"].names:
@@ -133,9 +194,15 @@ def main() -> None:
                 font.save(str(instantiated))
                 raw = instantiated
             slice_path = tmp / f"sub-{filename}"
-            covered |= subset_needed(raw, slice_path, needed - covered)
-            if slice_path.exists() and slice_path.stat().st_size > 0 and cmap_of(slice_path):
-                slices.append(slice_path)
+            subset_needed(raw, slice_path, needed - covered)
+            # Only claim coverage after the slice is mergeable. Updating
+            # `covered` first would hide missing glyphs when dest is empty
+            # or has no cmap, and would skip later sources that still have them.
+            if slice_path.exists() and slice_path.stat().st_size > 0:
+                slice_cps = cmap_of(slice_path)
+                if slice_cps:
+                    slices.append(slice_path)
+                    covered |= slice_cps
 
         missing = needed - covered
         if missing:
@@ -147,6 +214,9 @@ def main() -> None:
         print("Merging...")
         merged = Merger().merge([str(p) for p in slices])
         set_family_name(merged, "Noto Symbol Compat")
+        # Math/Symbols sources use a much taller line box (hhea 1480). Copy
+        # Symbols 2 metrics so × / ↦ painted from that fallback stay centered.
+        apply_symbols_2_line_metrics(merged)
         OUT.parent.mkdir(parents=True, exist_ok=True)
         merged.flavor = "woff2"
         merged.save(str(OUT))
@@ -156,6 +226,7 @@ def main() -> None:
         raise SystemExit(
             f"Output cmap mismatch. extra={verify - needed} missing={needed - verify}"
         )
+    assert_symbols_2_line_metrics(TTFont(str(OUT)))
     print(f"Wrote {OUT} ({OUT.stat().st_size} bytes, {len(verify)} glyphs)")
 
 

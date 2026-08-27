@@ -91,7 +91,8 @@ body {
 @layer utilities {
 
   /* Force symbol glyphs through Noto — avoid system-ui/Segoe fallbacks (Electron vs browser).
-     Compat is first: Symbols 2's unicode-range claims glyphs its files do not draw. */
+     Compat is first for claimed-but-missing glyphs (⟡). Its @font-face metric
+     overrides match Symbols 2 so × / ↦ fallbacks stay centered on mobile. */
   .font-noto-symbols-2 {
     font-family: "Noto Symbol Compat", "Noto Sans Symbols 2", sans-serif;
   }

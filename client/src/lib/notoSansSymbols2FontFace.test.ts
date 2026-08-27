@@ -28,6 +28,8 @@ describe("Noto symbol compat face", () => {
       css.indexOf("Noto Sans Symbols 2"),
     );
     expect(css).toContain("font-display: swap");
+    expect(css).toContain("ascent-override: 106.9%");
+    expect(css).toContain("descent-override: 63%");
   });
 
   it("does not prefetch the compat file on mount", () => {

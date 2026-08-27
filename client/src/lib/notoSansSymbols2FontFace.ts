@@ -6,6 +6,9 @@
  * Unicode-range slices match the Google Fonts CSS payload (Noto Sans Symbols 2 v25).
  * Those slices claim ranges they do not actually draw (e.g. U+27E1 feast ⟡), so
  * `Noto Symbol Compat` is listed first in `.font-noto-symbols-2` / `--font-sans`.
+ * Compat is merged from Noto Math/Symbols and has a taller line box (hhea 1480);
+ * `ascent-override` / `descent-override` match Symbols 2 (1069 / 630) so ×, ↦,
+ * and other Symbols 2 fallback glyphs stay centered on mobile.
  * The compat woff2 is not prefetched: unicode-range fetches it only when a
  * missing glyph is painted (start screen and public SEO pages never mount Noto).
  * Rebuild the woff2 with `python scripts/build-noto-symbol-compat.py`.
@@ -26,12 +29,19 @@ function unicodeRangeFromCodepoints(codepoints: readonly number[]): string {
     .join(", ");
 }
 
+/** Match Noto Sans Symbols 2 (upem 1000, hhea 1069 / -630) so fallback glyphs center. */
+const NOTO_SYMBOL_COMPAT_ASCENT_OVERRIDE = "106.9%";
+const NOTO_SYMBOL_COMPAT_DESCENT_OVERRIDE = "63%";
+
 const NOTO_SYMBOL_COMPAT_FONT_FACE_CSS = `
 @font-face {
   font-family: 'Noto Symbol Compat';
   font-style: normal;
   font-weight: 400;
   font-display: swap;
+  ascent-override: ${NOTO_SYMBOL_COMPAT_ASCENT_OVERRIDE};
+  descent-override: ${NOTO_SYMBOL_COMPAT_DESCENT_OVERRIDE};
+  line-gap-override: 0%;
   src: url(${NOTO_BASE}/noto-symbol-compat.woff2) format('woff2');
   unicode-range: ${unicodeRangeFromCodepoints(NOTO_SYMBOL_COMPAT_CODEPOINTS)};
 }
