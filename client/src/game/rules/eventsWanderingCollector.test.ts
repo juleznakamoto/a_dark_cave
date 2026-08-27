@@ -97,6 +97,11 @@ describe("collectorRejectedItems", () => {
 describe("wandering_collector buy/sell", () => {
   const event = wanderingCollectorEvents.wandering_collector;
 
+  it("returns on a 25-minute average with a 50% cooldown", () => {
+    expect(event.timeProbability).toBe(25);
+    expect(event.cooldownPercent).toBe(0.5);
+  });
+
   it("offers rejected items for goldCost and owned items for reward", () => {
     const state = baseState({
       buildings: { woodenHut: 6 } as any,

@@ -194,7 +194,8 @@ export const wanderingCollectorEvents: Record<string, GameEvent> = {
       if (hasGoods) return `visit${visitKey}_buy`;
       return `visit${visitKey}`;
     },
-    timeProbability: 15,
+    timeProbability: 25,
+    cooldownPercent: 0.5,
     repeatable: true,
     showAsTimedTab: true,
     timedTabDuration: 4 * 60 * 1000,
