@@ -3,7 +3,9 @@
  *
  * Steam: Electron asks the renderer to save, waits for an ack, then quits.
  * CrazyGames / Galaxy / web: `pagehide` is best-effort only (no exit API;
- * the iframe or tab can disappear before IndexedDB finishes).
+ * the iframe or tab can disappear before IndexedDB finishes). CrazyGames also
+ * mirrors the save to the SDK Data module + localStorage on each write so
+ * progress survives iframe storage wipes.
  *
  * Steam exit is one write only: after the handshake flush settles we lock and
  * drop `pagehide` before acking. A start-screen no-op must not take that lock,

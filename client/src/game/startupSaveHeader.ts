@@ -1,6 +1,11 @@
 import type { SaveData } from "@shared/schema";
-import type { DevGameMode } from "@/lib/edition";
+import { isCrazyGamesEdition, type DevGameMode } from "@/lib/edition";
 import { logger } from "@/lib/logger";
+import {
+  readCrazyGamesHeaderJson,
+  readCrazyGamesSave,
+  writeCrazyGamesHeaderJson,
+} from "./crazyGamesSaveAdapter";
 import { decodeLocalSave } from "./saveCodec";
 import {
   getGameSaveDatabase,
@@ -103,14 +108,13 @@ export function createStartupSaveHeader(data: SaveData): StartupSaveHeader {
 }
 
 export function writeStartupSaveHeader(data: SaveData): void {
+  const json = JSON.stringify(createStartupSaveHeader(data));
   try {
-    localStorage.setItem(
-      getStartupSaveHeaderKey(),
-      JSON.stringify(createStartupSaveHeader(data)),
-    );
+    localStorage.setItem(getStartupSaveHeaderKey(), json);
   } catch {
-    // IndexedDB remains authoritative when storage is unavailable.
+    // IndexedDB / CrazyGames Data remain the fallbacks.
   }
+  writeCrazyGamesHeaderJson(json);
 }
 
 export function clearStartupSaveHeader(): void {
@@ -125,31 +129,75 @@ export function clearStartupSaveHeader(): void {
  * Read the small startup record without importing the Zustand store, game
  * rules, auth, or Supabase. Existing saves are decoded once and backfilled.
  */
-export async function readStartupSaveHeader(): Promise<StartupSaveHeader | null> {
+function headerFromJson(raw: string | null): StartupSaveHeader | null {
+  if (!raw) return null;
   try {
-    const db = await getGameSaveDatabase();
-    const rawSave = await db.get("saves", getSaveKey());
-    if (rawSave === undefined || rawSave === null) {
-      clearStartupSaveHeader();
-      return null;
-    }
+    const storedHeader = JSON.parse(raw);
+    return isStartupSaveHeader(storedHeader) ? storedHeader : null;
+  } catch {
+    return null;
+  }
+}
 
-    try {
-      const rawHeader = localStorage.getItem(getStartupSaveHeaderKey());
-      if (rawHeader) {
-        const storedHeader = JSON.parse(rawHeader);
-        if (isStartupSaveHeader(storedHeader)) return storedHeader;
-      }
-    } catch {
-      // Fall through to the backward-compatible IndexedDB read.
-    }
-
-    const save = decodeLocalSave(rawSave);
-    if (!save) throw new InvalidStartupSaveError();
-
+async function readCrazyGamesStartupHeader(): Promise<StartupSaveHeader | null> {
+  if (!isCrazyGamesEdition()) return null;
+  const save = await readCrazyGamesSave();
+  if (save) {
     const header = createStartupSaveHeader(save);
     writeStartupSaveHeader(save);
     return header;
+  }
+  const header = headerFromJson(readCrazyGamesHeaderJson());
+  if (header) {
+    try {
+      localStorage.setItem(
+        getStartupSaveHeaderKey(),
+        JSON.stringify(header),
+      );
+    } catch {
+      // Peek can still work later from Data on the next boot prepare.
+    }
+  }
+  return header;
+}
+
+export async function readStartupSaveHeader(): Promise<StartupSaveHeader | null> {
+  try {
+    let rawSave: unknown;
+    try {
+      const db = await getGameSaveDatabase();
+      rawSave = await db.get("saves", getSaveKey());
+    } catch (error) {
+      if (!isCrazyGamesEdition()) throw error;
+      logger.warn(
+        "[startup] IndexedDB unavailable, checking CrazyGames persist:",
+        error,
+      );
+    }
+
+    if (rawSave !== undefined && rawSave !== null) {
+      try {
+        const storedHeader = headerFromJson(
+          localStorage.getItem(getStartupSaveHeaderKey()),
+        );
+        if (storedHeader) return storedHeader;
+      } catch {
+        // Fall through to the backward-compatible IndexedDB read.
+      }
+
+      const save = decodeLocalSave(rawSave);
+      if (!save) throw new InvalidStartupSaveError();
+
+      const header = createStartupSaveHeader(save);
+      writeStartupSaveHeader(save);
+      return header;
+    }
+
+    const crazyGamesHeader = await readCrazyGamesStartupHeader();
+    if (crazyGamesHeader) return crazyGamesHeader;
+
+    clearStartupSaveHeader();
+    return null;
   } catch (error) {
     logger.warn("[startup] Failed to read save header:", error);
     throw error;

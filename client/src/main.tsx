@@ -21,6 +21,7 @@ import {
 } from "./lib/hardReload";
 import { logger } from "./lib/logger";
 import { BOOT_LOCALE_TIMEOUT_MS } from "./lib/fatalErrorScreen";
+import { isCrazyGamesBuild } from "./lib/edition";
 import { installFlushSaveOnExit } from "./game/flushSaveOnExit";
 import { persistLandingReferralCode } from "./game/referralLanding";
 
@@ -120,16 +121,31 @@ declare global {
   }
 }
 
-createRoot(document.getElementById("root")!).render(
-  <AppErrorBoundary>
-    <I18nextProvider i18n={i18n}>
-      <HelmetProvider>
-        <App />
-      </HelmetProvider>
-    </I18nextProvider>
-  </AppErrorBoundary>,
-);
-markAppMounted();
+async function mountApp(): Promise<void> {
+  if (isCrazyGamesBuild) {
+    try {
+      const { prepareCrazyGamesStartup } = await import(
+        "./game/crazyGamesSaveAdapter"
+      );
+      await prepareCrazyGamesStartup();
+    } catch (error) {
+      logger.warn("[boot] CrazyGames persist prepare failed:", error);
+    }
+  }
+
+  createRoot(document.getElementById("root")!).render(
+    <AppErrorBoundary>
+      <I18nextProvider i18n={i18n}>
+        <HelmetProvider>
+          <App />
+        </HelmetProvider>
+      </I18nextProvider>
+    </AppErrorBoundary>,
+  );
+  markAppMounted();
+}
+
+void mountApp();
 
 void withTimeout(
   ensureInitialLocalesLoaded(),

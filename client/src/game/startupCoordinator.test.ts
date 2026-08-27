@@ -1,8 +1,9 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
-const { mockReadHeader, mockLoadStore } = vi.hoisted(() => ({
+const { mockReadHeader, mockLoadStore, editionMocks } = vi.hoisted(() => ({
   mockReadHeader: vi.fn(),
   mockLoadStore: vi.fn(),
+  editionMocks: { isCrazyGamesEdition: false },
 }));
 
 vi.mock("./startupSaveHeader", () => ({
@@ -18,7 +19,7 @@ vi.mock("@/lib/edition", async (importOriginal) => {
   return {
     ...actual,
     isGalaxyEdition: () => false,
-    isCrazyGamesEdition: () => false,
+    isCrazyGamesEdition: () => editionMocks.isCrazyGamesEdition,
     isSteamBuild: false,
   };
 });
@@ -32,6 +33,7 @@ describe("resolveStartupVisit", () => {
     vi.resetModules();
     mockReadHeader.mockReset();
     mockLoadStore.mockReset();
+    editionMocks.isCrazyGamesEdition = false;
     mockReadHeader.mockResolvedValue({ status: "not-found" });
     vi.stubGlobal("localStorage", {
       getItem: vi.fn(() => null),
@@ -192,6 +194,28 @@ describe("resolveStartupVisit", () => {
       crazyGamesEditionActive: true,
       hideSteamStoreLink: false,
     });
+  });
+
+  it("full-reconciles on CrazyGames when the header is missing", async () => {
+    editionMocks.isCrazyGamesEdition = true;
+    mockReadHeader.mockResolvedValue({ status: "not-found" });
+    mockLoadStore.mockResolvedValue({
+      getState: () => ({
+        flags: { gameStarted: true },
+        cruelMode: false,
+        musicMuted: false,
+        sfxMuted: false,
+        musicVolume: 1,
+        sfxVolume: 1,
+        devGameMode: "normal",
+      }),
+    });
+    const { resolveStartupVisit } = await import("./startupCoordinator");
+
+    await expect(
+      resolveStartupVisit({ pathname: "/", search: "", hash: "" }),
+    ).resolves.toEqual({ surface: "game" });
+    expect(mockLoadStore).toHaveBeenCalledOnce();
   });
 
   it("preserves startup persistence failures", async () => {

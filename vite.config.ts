@@ -36,7 +36,12 @@ function crazyGamesRelativeHtmlPlugin(): Plugin {
     name: "crazygames-relative-html",
     transformIndexHtml(html) {
       if (!isCrazyGamesBuild) return html;
-      return html
+      // Absolute SDK URL first so the relative-path rewrite does not touch it.
+      const withSdk = html.replace(
+        "</head>",
+        '  <script src="https://sdk.crazygames.com/crazygames-sdk-v3.js"></script>\n</head>',
+      );
+      return withSdk
         .replaceAll('href="/', 'href="./')
         .replaceAll('src="/', 'src="./');
     },

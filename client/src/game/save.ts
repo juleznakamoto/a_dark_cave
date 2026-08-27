@@ -21,12 +21,17 @@ import {
 import { tWithFallback } from "@/i18n/resolveGameText";
 import { syncSocialPromoExclusiveRewardPending } from "./socialPromoExclusiveReward";
 import { buildGameState } from "./stateHelpers";
-import { isLocalOnlyEdition, isSteamBuild } from "@/lib/edition";
+import { isCrazyGamesEdition, isLocalOnlyEdition, isSteamBuild } from "@/lib/edition";
 import {
   writeSteamCloudSave,
   readSteamCloudSave,
   pickNewerSave,
 } from "./steamSaveAdapter";
+import {
+  clearCrazyGamesPersistedData,
+  readCrazyGamesSave,
+  writeCrazyGamesCloudSave,
+} from "./crazyGamesSaveAdapter";
 import {
   needsPlaytimeOverwriteForSync,
   pickPreferredSave,
@@ -337,47 +342,83 @@ function mergeSavePlayTimeIntoState(
   return { ...state, playTime: merged };
 }
 
+type GameSaveDatabase = Awaited<ReturnType<typeof getGameSaveDatabase>>;
+
+/** IndexedDB is often blocked or wiped in the CrazyGames iframe. */
+async function tryGetGameSaveDatabase(): Promise<GameSaveDatabase | null> {
+  try {
+    return await getGameSaveDatabase();
+  } catch (error) {
+    if (isCrazyGamesEdition()) {
+      logger.warn("[SAVE] IndexedDB unavailable, using CrazyGames persist:", error);
+      return null;
+    }
+    throw error;
+  }
+}
+
 async function putLocalSave(
-  db: Awaited<ReturnType<typeof getGameSaveDatabase>>,
+  db: GameSaveDatabase | null,
   data: SaveData,
   json?: string,
 ): Promise<void> {
   const encoded = json ? encodeLocalSaveJson(json) : encodeLocalSave(data);
-  await db.put("saves", encoded, getSaveKey());
+  if (db) {
+    await db.put("saves", encoded, getSaveKey());
+  }
   writeStartupSaveHeader(data);
   // Steam build: also mirror to the Steam Cloud file (no-op on web).
   if (isSteamBuild) {
     await writeSteamCloudSave(encoded);
   }
+  if (isCrazyGamesEdition()) {
+    await writeCrazyGamesCloudSave(encoded);
+  }
+  if (!db && !isCrazyGamesEdition() && !isSteamBuild) {
+    throw new Error("No local save backend available");
+  }
 }
 
 async function getLocalSave(
-  db: Awaited<ReturnType<typeof getGameSaveDatabase>>,
+  db: GameSaveDatabase | null,
 ): Promise<SaveData | undefined> {
-  const raw = await db.get("saves", getSaveKey());
-  const decoded = decodeLocalSave(raw);
-  if (raw !== undefined && raw !== null && !decoded) {
-    throw new InvalidLocalSaveError();
+  let local: SaveData | undefined;
+  if (db) {
+    const raw = await db.get("saves", getSaveKey());
+    const decoded = decodeLocalSave(raw);
+    if (raw !== undefined && raw !== null && !decoded) {
+      throw new InvalidLocalSaveError();
+    }
+    local = decoded ?? undefined;
   }
-  const local = decoded ?? undefined;
   // Steam build: reconcile IndexedDB with the cloud-synced file (newer wins).
   if (isSteamBuild) {
     const cloud = await readSteamCloudSave();
-    return pickNewerSave(local, cloud);
+    local = pickNewerSave(local, cloud);
+  }
+  if (isCrazyGamesEdition()) {
+    const crazyGames = await readCrazyGamesSave();
+    const preferred = pickNewerSave(local, crazyGames);
+    if (preferred && !crazyGames) {
+      await writeCrazyGamesCloudSave(encodeLocalSave(preferred));
+    }
+    return preferred;
   }
   return local;
 }
 
 async function putLastCloudState(
-  db: Awaited<ReturnType<typeof getGameSaveDatabase>>,
+  db: GameSaveDatabase | null,
   state: GameState,
 ): Promise<void> {
+  if (!db) return;
   await db.put("lastCloudState", encodeLocalGameState(state), LAST_CLOUD_STATE_KEY);
 }
 
 async function getLastCloudState(
-  db: Awaited<ReturnType<typeof getGameSaveDatabase>>,
+  db: GameSaveDatabase | null,
 ): Promise<GameState | undefined> {
+  if (!db) return undefined;
   const raw = await db.get("lastCloudState", LAST_CLOUD_STATE_KEY);
   return decodeLocalGameState(raw) ?? undefined;
 }
@@ -664,7 +705,7 @@ export async function saveGame(
       return SAVE_SKIPPED;
     }
 
-    const db = await getGameSaveDatabase();
+    const db = await tryGetGameSaveDatabase();
 
     let saveData: SaveData;
     let saveJson: string | undefined;
@@ -899,7 +940,7 @@ export async function saveGame(
 }
 
 async function loadLocalGameState(): Promise<GameState | null> {
-  const db = await getGameSaveDatabase();
+  const db = await tryGetGameSaveDatabase();
   const localSave = await getLocalSave(db);
   if (!localSave) return null;
   const stateWithDefaults = {
@@ -922,7 +963,7 @@ async function loadGameStateOrThrow(
     await processReferralAfterConfirmation();
   }
 
-  const db = await getGameSaveDatabase();
+  const db = await tryGetGameSaveDatabase();
   const localSave = await getLocalSave(db);
 
   if (isDev) {
@@ -1022,7 +1063,7 @@ async function loadGameStateOrThrow(
 
           // Sync local progress to cloud
           try {
-            await db.delete("lastCloudState", LAST_CLOUD_STATE_KEY);
+            if (db) await db.delete("lastCloudState", LAST_CLOUD_STATE_KEY);
             const syncResult = await saveGame(reconciled, false);
             const cleared = {
               ...reconciled,
@@ -1134,7 +1175,7 @@ async function loadGameStateOrThrow(
 
         try {
           // Force sync by clearing lastCloudState, then saveGame will handle it
-          await db.delete("lastCloudState", LAST_CLOUD_STATE_KEY);
+          if (db) await db.delete("lastCloudState", LAST_CLOUD_STATE_KEY);
           // Do NOT use allowPlaytimeOverwrite here - this is not a new game
           await saveGame(reconciled, false);
           await putLastCloudState(db, reconciled);
@@ -1218,9 +1259,12 @@ export async function loadGame(
 
 export async function deleteSave(): Promise<void> {
   try {
-    const db = await getGameSaveDatabase();
-    await db.delete("saves", getSaveKey());
+    const db = await tryGetGameSaveDatabase();
+    if (db) {
+      await db.delete("saves", getSaveKey());
+    }
     clearStartupSaveHeader();
+    clearCrazyGamesPersistedData();
   } catch (error) {
     logger.error("Failed to delete save:", error);
   }

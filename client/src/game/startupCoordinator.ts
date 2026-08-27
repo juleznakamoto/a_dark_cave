@@ -130,7 +130,9 @@ export async function resolveStartupVisit(
   // reconciliation is only needed when no header exists and a cloud/Steam
   // save may still be present.
   const needsFullReconciliation =
-    (isSteamBuild || hasPersistedAuthSessionHint()) &&
+    (isSteamBuild ||
+      isCrazyGamesEdition() ||
+      hasPersistedAuthSessionHint()) &&
     (headerResult.status === "not-found" || header == null);
 
   if (needsFullReconciliation) {

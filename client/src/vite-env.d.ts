@@ -44,4 +44,7 @@ interface SteamBridge {
 
 interface Window {
   steamBridge?: SteamBridge;
+  CrazyGames?: {
+    SDK?: import("./lib/crazyGames").CrazyGamesSdk;
+  };
 }

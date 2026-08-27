@@ -8,13 +8,29 @@ import {
   writeStartupSaveHeader,
 } from "./startupSaveHeader";
 
-const { mockGet, mockOpenDB } = vi.hoisted(() => ({
+const { mockGet, mockOpenDB, editionMocks, mockReadCgSave } = vi.hoisted(() => ({
   mockGet: vi.fn(),
   mockOpenDB: vi.fn(),
+  editionMocks: { isCrazyGamesEdition: false },
+  mockReadCgSave: vi.fn(),
 }));
 
 vi.mock("idb", () => ({
   openDB: mockOpenDB,
+}));
+
+vi.mock("@/lib/edition", async (importOriginal) => {
+  const actual = await importOriginal<typeof import("@/lib/edition")>();
+  return {
+    ...actual,
+    isCrazyGamesEdition: () => editionMocks.isCrazyGamesEdition,
+  };
+});
+
+vi.mock("./crazyGamesSaveAdapter", () => ({
+  writeCrazyGamesHeaderJson: vi.fn(),
+  readCrazyGamesHeaderJson: vi.fn(() => null),
+  readCrazyGamesSave: mockReadCgSave,
 }));
 
 function createSave(): SaveData {
@@ -40,6 +56,9 @@ describe("startup save header", () => {
     storage.clear();
     mockGet.mockReset();
     mockOpenDB.mockReset();
+    mockReadCgSave.mockReset();
+    mockReadCgSave.mockResolvedValue(null);
+    editionMocks.isCrazyGamesEdition = false;
     mockOpenDB.mockResolvedValue({ get: mockGet });
     vi.stubGlobal("localStorage", {
       getItem: (key: string) => storage.get(key) ?? null,
@@ -87,6 +106,18 @@ describe("startup save header", () => {
     expect(mockOpenDB).toHaveBeenCalledOnce();
   });
 
+  it("keeps the header when IndexedDB is empty but CrazyGames has a save", async () => {
+    editionMocks.isCrazyGamesEdition = true;
+    writeStartupSaveHeader(createSave());
+    mockGet.mockResolvedValue(undefined);
+    mockReadCgSave.mockResolvedValue(createSave());
+
+    await expect(readStartupSaveHeader()).resolves.toMatchObject({
+      gameStarted: true,
+    });
+    expect(storage.size).toBe(1);
+  });
+
   it("clears a stale header when its IndexedDB save was deleted", async () => {
     writeStartupSaveHeader(createSave());
     mockGet.mockResolvedValue(undefined);
@@ -125,5 +156,25 @@ describe("startup save header", () => {
       status: "error",
       retryable: false,
     });
+  });
+
+  it("uses the CrazyGames save when IndexedDB is empty", async () => {
+    editionMocks.isCrazyGamesEdition = true;
+    mockGet.mockResolvedValue(undefined);
+    mockReadCgSave.mockResolvedValue(createSave());
+
+    await expect(readStartupSaveHeader()).resolves.toMatchObject({
+      gameStarted: true,
+      cruelMode: true,
+    });
+    expect(storage.size).toBe(1);
+  });
+
+  it("treats IndexedDB failure as missing when CrazyGames has no save", async () => {
+    editionMocks.isCrazyGamesEdition = true;
+    mockOpenDB.mockRejectedValue(new Error("IndexedDB unavailable"));
+    mockReadCgSave.mockResolvedValue(null);
+
+    await expect(readStartupSaveHeader()).resolves.toBeNull();
   });
 });
