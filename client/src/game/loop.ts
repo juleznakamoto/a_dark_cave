@@ -2,6 +2,7 @@ import {
   useGameStore,
   StateManager,
   isModalDialogOpen,
+  isVisibleModalDialogOpen,
   shouldFreezeTimedEventTabCountdown,
   syncTimedEventTabPauseTracking,
   getTimedEventTabEffectiveRemainingMs,
@@ -364,12 +365,14 @@ export function startGameLoop() {
     // Blocking modals: `isModalDialogOpen` in state.ts (add new dialogs there only).
     const IsDialogOpen = isModalDialogOpen(state);
 
-    const isPaused =
+    // Combined freeze: player pause, idle/sleep, a visible modal, or the
+    // post-close handoff gap. Not the same as `state.isPaused` (pause button).
+    const isSimulationFrozen =
       state.isPaused ||
       IsDialogOpen ||
       state.idleModeState?.isActive;
 
-    if (isPaused) {
+    if (isSimulationFrozen) {
       // Fade BGM out on pause; keep event ambience beds (cube, etc.) playing
       if (!state.isPausedPreviously && (!state.sfxMuted || !state.musicMuted)) {
         audioManager.pauseForSimulation(EVENT_AMBIENCE_FADE_SECONDS);
@@ -379,7 +382,13 @@ export function startGameLoop() {
       if (productionPauseStartedAt === null) {
         productionPauseStartedAt = timestamp;
       }
-      // Skip everything when paused
+      // Handoff with no visible modal: pause button is off, so still finish
+      // overdue bars. Otherwise Cave tasks sit at 0s until a dialog opens.
+      try {
+        flushOverdueExecutionsDuringHandoff(state);
+      } catch (error) {
+        logger.error("[GAME LOOP] handoff flush failed:", error);
+      }
       gameLoopId = requestAnimationFrame(tick);
       return;
     }
@@ -420,7 +429,7 @@ export function startGameLoop() {
 
       // Handle attack wave timer - update elapsed time when not paused
       const attackWaveTimers = state.attackWaveTimers || {};
-      if (!isPaused) {
+      if (!isSimulationFrozen) {
         // Update elapsed time for all active timers
         const updatedTimers: typeof attackWaveTimers = {};
         let hasUpdates = false;
@@ -453,7 +462,11 @@ export function startGameLoop() {
       let ticksProcessed = 0;
       while (tickAccumulator >= TICK_INTERVAL) {
         tickAccumulator -= TICK_INTERVAL;
-        processTick();
+        try {
+          processTick();
+        } catch (error) {
+          logger.error("[GAME LOOP] processTick failed:", error);
+        }
         ticksProcessed++;
       }
 
@@ -471,7 +484,11 @@ export function startGameLoop() {
         ) {
           continue;
         }
-        processEventCheck();
+        try {
+          processEventCheck();
+        } catch (error) {
+          logger.error("[GAME LOOP] processEventCheck failed:", error);
+        }
       }
 
       // Auto-save logic (skip if inactive, recently loaded, or in sleep/idle mode)
@@ -671,6 +688,21 @@ export function stopGameLoop() {
   detachActivityListeners();
 
   StateManager.clearUpdateTimer();
+}
+
+/**
+ * Finish overdue action bars when only a dialog handoff is holding ticks.
+ * Player pause and visible modals still leave bars untouched.
+ */
+export function flushOverdueExecutionsDuringHandoff(
+  state = useGameStore.getState(),
+): void {
+  // Player pause / idle, not the loop's combined freeze. Handoff-only freeze
+  // still reaches this from tick() because isModalDialogOpen includes handoff.
+  if (state.isPaused || state.idleModeState?.isActive) return;
+  if (isVisibleModalDialogOpen(state)) return;
+  if (!state.dialogHandoffPending) return;
+  flushOverdueActionExecutions();
 }
 
 /** Complete in-flight actions whose execution window already elapsed (e.g. after reload). */

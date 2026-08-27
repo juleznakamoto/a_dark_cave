@@ -37,7 +37,7 @@
     "label": "Altar"
   },
   "buildBank": {
-    "description": "Financial building allowing to make larger investments",
+    "description": "A counting house that lets you make larger investments",
     "label": "Bank"
   },
   "buildBastion": {
@@ -97,7 +97,7 @@
     "label": "Clerk's Hut"
   },
   "buildCoinhouse": {
-    "description": "Modest financial building allowing to make small investments",
+    "description": "A modest counting house that lets you make small investments",
     "label": "Coinhouse"
   },
   "buildConsecratedPaleCross": {
@@ -269,7 +269,7 @@
     "label": "Traps"
   },
   "buildTreasury": {
-    "description": "Big financial building allowing to make very large investments",
+    "description": "A large counting house that lets you make very large investments",
     "label": "Treasury"
   },
   "buildVillageWarehouse": {

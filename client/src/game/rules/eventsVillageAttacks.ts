@@ -511,10 +511,12 @@ export const villageAttackEvents: Record<string, GameEvent> = {
     id: "cannibalRaid",
     condition: (state: GameState) =>
       state.buildings.woodenHut >= 8 &&
+      state.clothing.alphas_hide &&
       getCurrentPopulation(state) > 10 &&
       !state.story.seen.cannibalRaidVictory,
 
     timeProbability: 40,
+    cooldownPercent: 0.75,
 
     priority: 4,
     repeatable: true,

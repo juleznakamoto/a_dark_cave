@@ -1743,7 +1743,7 @@ function isNonRewardBlockingModalOpen(state: GameStore): boolean {
 }
 
 /** Visible reward or blocking modal, excluding the post-close handoff gap. */
-function isVisibleModalDialogOpen(state: GameStore): boolean {
+export function isVisibleModalDialogOpen(state: GameStore): boolean {
   return state.rewardDialog.isOpen || isNonRewardBlockingModalOpen(state);
 }
 
@@ -1853,9 +1853,13 @@ function scheduleEventDialogWhenClear(
   event: LogEntry,
   initialDelayMs: number,
 ): void {
+  // Wait for visible modals only, not dialogHandoffPending. Handoff is the
+  // gap this queued open is supposed to clear. Using isModalDialogOpen here
+  // deadlocks: handoff stays true, the event never opens, and Cave action
+  // bars sit at 0s because ticks stay frozen (pause button is still off).
   scheduleWhenDialogClear(
     get,
-    isModalDialogOpen,
+    isVisibleModalDialogOpen,
     () => openEventDialogNow(set, event),
     initialDelayMs,
   );

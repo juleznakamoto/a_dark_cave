@@ -50,3 +50,46 @@ describe("wolfAttack", () => {
     expect(wolf.cooldownPercent).toBe(0.75);
   });
 });
+
+describe("cannibalRaid", () => {
+  const raid = villageAttackEvents.cannibalRaid;
+
+  it("starts at 8 wooden huts after Alpha's Hide and stops after victory", () => {
+    const populated = {
+      villagers: { free: 11 },
+      clothing: { alphas_hide: true },
+      story: { seen: {} },
+    };
+    expect(
+      raid.condition({
+        ...populated,
+        buildings: { woodenHut: 8 },
+      } as never),
+    ).toBe(true);
+    expect(
+      raid.condition({
+        ...populated,
+        buildings: { woodenHut: 7 },
+      } as never),
+    ).toBe(false);
+    expect(
+      raid.condition({
+        ...populated,
+        buildings: { woodenHut: 8 },
+        clothing: { alphas_hide: false },
+      } as never),
+    ).toBe(false);
+    expect(
+      raid.condition({
+        ...populated,
+        buildings: { woodenHut: 8 },
+        story: { seen: { cannibalRaidVictory: true } },
+      } as never),
+    ).toBe(false);
+  });
+
+  it("uses 40 minute cadence and 0.75 cooldown", () => {
+    expect(raid.timeProbability).toBe(40);
+    expect(raid.cooldownPercent).toBe(0.75);
+  });
+});

@@ -937,6 +937,39 @@ describe("deferred dialog scheduling", () => {
     );
   });
 
+  it("opens a deferred event after the blocking modal closes even when handoff is pending", () => {
+    const deferredEvent = {
+      id: "exploreCave-find-test",
+      message: "Deferred cave find",
+      timestamp: Date.now(),
+      type: "event" as const,
+      skipSound: true,
+      choices: [{ id: "continue", label: "Continue", effect: () => ({}) }],
+    };
+
+    // Completing a Cave action sets handoff, then setEventDialog may defer
+    // behind an already-visible reward. Handoff must not block that reopen
+    // or ticks stay frozen (pause button off) and Cave tasks sit at 0s left.
+    useGameStore.setState({
+      dialogHandoffPending: true,
+      rewardDialog: { isOpen: true, data: { rewards: {}, variant: "success" } },
+      eventDialog: { isOpen: false, currentEvent: null, lastEndedAt: 0 },
+    });
+
+    useGameStore.getState().setEventDialog(true, deferredEvent);
+    expect(useGameStore.getState().eventDialog.isOpen).toBe(false);
+    expect(isModalDialogOpen(useGameStore.getState())).toBe(true);
+
+    useGameStore.getState().setRewardDialog(false);
+    vi.advanceTimersByTime(3000 + 200 + 50);
+
+    const after = useGameStore.getState();
+    expect(after.eventDialog.isOpen).toBe(true);
+    expect(after.eventDialog.currentEvent?.id).toBe(deferredEvent.id);
+    expect(after.dialogHandoffPending).toBe(false);
+    expect(isModalDialogOpen(after)).toBe(true);
+  });
+
   it("queues a second event instead of replacing the open event dialog", () => {
     const firstEvent = {
       id: "boneArmyAttack-test",

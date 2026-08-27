@@ -160,13 +160,20 @@ const CooldownButton = forwardRef<HTMLButtonElement, CooldownButtonProps>(
           : (1 - playTimeElapsedFraction) * 100
         : 0;
 
-    // Force re-renders during execution / insight reveal so overlay updates
+    // Force re-renders during execution / insight reveal so overlay updates.
     const isExecutingCheck = executionStart > 0;
     useEffect(() => {
-      if (!isExecutingCheck && !isInsightRevealing && !isPlayTimeOverlayActive) return;
+      if (!isExecutingCheck && !isInsightRevealing && !isPlayTimeOverlayActive) {
+        return;
+      }
       const id = setInterval(() => forceUpdate((n) => n + 1), 100);
       return () => clearInterval(id);
-    }, [isExecutingCheck, isInsightRevealing, isPlayTimeOverlayActive, actionIdFromProps]);
+    }, [
+      isExecutingCheck,
+      isInsightRevealing,
+      isPlayTimeOverlayActive,
+      actionIdFromProps,
+    ]);
 
     // Execution state (reverse cooldown - fills as time passes)
     const isExecuting = executionStart > 0 && executionDurationSec > 0;

@@ -8,6 +8,8 @@ import {
 import { EventManager, type EventRollState } from "./rules/events";
 import {
   clearExpiredTimedEventTab,
+  flushOverdueExecutionsDuringHandoff,
+  processActionTicks,
   shouldRestoreSleepDialog,
   resolveSleepDialogInit,
   startGameLoop,
@@ -487,6 +489,61 @@ describe("sleep dialog restore on loop start", () => {
     vi.advanceTimersByTime(600);
 
     expect(useGameStore.getState().idleModeDialog.isOpen).toBe(false);
+  });
+});
+
+describe("processActionTicks cave executions", () => {
+  beforeEach(() => {
+    useGameStore.getState().initialize();
+  });
+
+  it("completes an overdue Cave gather so the bar does not stay at 0s left", () => {
+    const now = Date.now();
+    useGameStore.setState({
+      flags: { ...useGameStore.getState().flags, gameStarted: true },
+      executionStartTimes: { chopWood: now - 10_000 },
+      executionDurations: { chopWood: 4 },
+      resources: { ...useGameStore.getState().resources, wood: 0 },
+    });
+
+    processActionTicks();
+
+    expect(useGameStore.getState().executionStartTimes?.chopWood).toBeUndefined();
+    expect(useGameStore.getState().resources.wood).toBeGreaterThan(0);
+  });
+
+  it("completes an overdue Cave gather during dialog handoff when nothing is on screen", () => {
+    const now = Date.now();
+    useGameStore.setState({
+      flags: { ...useGameStore.getState().flags, gameStarted: true },
+      isPaused: false,
+      dialogHandoffPending: true,
+      executionStartTimes: { chopWood: now - 10_000 },
+      executionDurations: { chopWood: 4 },
+      resources: { ...useGameStore.getState().resources, wood: 0 },
+    });
+
+    flushOverdueExecutionsDuringHandoff();
+
+    expect(useGameStore.getState().executionStartTimes?.chopWood).toBeUndefined();
+    expect(useGameStore.getState().resources.wood).toBeGreaterThan(0);
+  });
+
+  it("does not complete Cave gathers when the player paused", () => {
+    const now = Date.now();
+    useGameStore.setState({
+      flags: { ...useGameStore.getState().flags, gameStarted: true },
+      isPaused: true,
+      dialogHandoffPending: true,
+      executionStartTimes: { chopWood: now - 10_000 },
+      executionDurations: { chopWood: 4 },
+      resources: { ...useGameStore.getState().resources, wood: 0 },
+    });
+
+    flushOverdueExecutionsDuringHandoff();
+
+    expect(useGameStore.getState().executionStartTimes?.chopWood).toBe(now - 10_000);
+    expect(useGameStore.getState().resources.wood).toBe(0);
   });
 });
 
