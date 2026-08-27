@@ -1792,8 +1792,8 @@
   "riddleOfEternal": {
     "title": "Der unbekannte Gast",
     "message": {
-      "original": "Die nächtliche Gestalt erscheint ein letztes Mal am Anwesen. Ihre Stimme hallt lautlos durch die Nacht: 'Deine Augen sind offen, ich bin da; deine Augen sind geschlossen, ich bin auch da.'",
-      "variant": "Die nächtliche Gestalt erscheint ein letztes Mal am Anwesen. Ihre Stimme hallt lautlos durch die Nacht: 'Arme haben mich, Reiche brauchen mich. Isst du mich, stirbst du.'"
+      "original": "Die nächtliche Gestalt erscheint ein letztes Mal am Anwesen. Ihre Stimme trägt durch die Nacht: 'Deine Augen sind offen, ich bin da; deine Augen sind geschlossen, ich bin auch da.'",
+      "variant": "Die nächtliche Gestalt erscheint ein letztes Mal am Anwesen. Ihre Stimme trägt durch die Nacht: 'Arme haben mich, Reiche brauchen mich. Isst du mich, stirbst du.'"
     },
     "choices": {
       "answerLight": {
@@ -1820,8 +1820,8 @@
   "riddleOfEternal_variant": {
     "title": "Der unbekannte Gast",
     "message": {
-      "original": "Die nächtliche Gestalt erscheint ein letztes Mal am Anwesen. Ihre Stimme hallt lautlos durch die Nacht: 'Deine Augen sind offen, ich bin da; deine Augen sind geschlossen, ich bin auch da.'",
-      "variant": "Die nächtliche Gestalt erscheint ein letztes Mal am Anwesen. Ihre Stimme hallt lautlos durch die Nacht: 'Arme haben mich, Reiche brauchen mich. Isst du mich, stirbst du.'"
+      "original": "Die nächtliche Gestalt erscheint ein letztes Mal am Anwesen. Ihre Stimme trägt durch die Nacht: 'Deine Augen sind offen, ich bin da; deine Augen sind geschlossen, ich bin auch da.'",
+      "variant": "Die nächtliche Gestalt erscheint ein letztes Mal am Anwesen. Ihre Stimme trägt durch die Nacht: 'Arme haben mich, Reiche brauchen mich. Isst du mich, stirbst du.'"
     },
     "choices": {
       "answerPoison": {

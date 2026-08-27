@@ -1661,8 +1661,8 @@
   "riddleOfEternal": {
     "title": "L'Ospite Sconosciuto",
     "message": {
-      "original": "La figura notturna appare un'altra volta alla tenuta. La sua voce echeggia silenziosa nella notte: 'I tuoi occhi sono aperti, io sono lì, i tuoi occhi sono chiusi, io sono lì anche allora.'",
-      "variant": "La figura notturna appare un'altra volta alla tenuta. La sua voce echeggia silenziosa nella notte: 'I poveri mi hanno, i ricchi ne hanno bisogno. Mangiami, e muori.'"
+      "original": "La figura notturna appare un'altra volta alla tenuta. La sua voce si propaga nella notte: 'I tuoi occhi sono aperti, io sono lì, i tuoi occhi sono chiusi, io sono lì anche allora.'",
+      "variant": "La figura notturna appare un'altra volta alla tenuta. La sua voce si propaga nella notte: 'I poveri mi hanno, i ricchi ne hanno bisogno. Mangiami, e muori.'"
     },
     "choices": {
       "answerLight": {
@@ -1689,8 +1689,8 @@
   "riddleOfEternal_variant": {
     "title": "L'Ospite Sconosciuto",
     "message": {
-      "original": "La figura notturna appare un'altra volta alla tenuta. La sua voce echeggia silenziosa nella notte: 'I tuoi occhi sono aperti, io sono lì, i tuoi occhi sono chiusi, io sono lì anche allora.'",
-      "variant": "La figura notturna appare un'altra volta alla tenuta. La sua voce echeggia silenziosa nella notte: 'I poveri mi hanno, i ricchi ne hanno bisogno. Mangiami, e muori.'"
+      "original": "La figura notturna appare un'altra volta alla tenuta. La sua voce si propaga nella notte: 'I tuoi occhi sono aperti, io sono lì, i tuoi occhi sono chiusi, io sono lì anche allora.'",
+      "variant": "La figura notturna appare un'altra volta alla tenuta. La sua voce si propaga nella notte: 'I poveri mi hanno, i ricchi ne hanno bisogno. Mangiami, e muori.'"
     },
     "choices": {
       "answerPoison": {

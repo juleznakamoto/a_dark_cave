@@ -1792,8 +1792,8 @@
   "riddleOfEternal": {
     "title": "L'hôte inconnu",
     "message": {
-      "original": "La silhouette nocturne apparaît une dernière fois au domaine. Sa voix résonne en silence dans la nuit : « Tes yeux sont ouverts, je suis là ; tes yeux sont fermés, je suis là aussi. »",
-      "variant": "La silhouette nocturne apparaît une dernière fois au domaine. Sa voix résonne en silence dans la nuit : « Les pauvres m'ont, les riches en ont besoin. Si tu me manges, tu meurs. »"
+      "original": "La silhouette nocturne apparaît une dernière fois au domaine. Sa voix porte dans la nuit : « Tes yeux sont ouverts, je suis là ; tes yeux sont fermés, je suis là aussi. »",
+      "variant": "La silhouette nocturne apparaît une dernière fois au domaine. Sa voix porte dans la nuit : « Les pauvres m'ont, les riches en ont besoin. Si tu me manges, tu meurs. »"
     },
     "choices": {
       "answerLight": {
@@ -1820,8 +1820,8 @@
   "riddleOfEternal_variant": {
     "title": "L'hôte inconnu",
     "message": {
-      "original": "La silhouette nocturne apparaît une dernière fois au domaine. Sa voix résonne en silence dans la nuit : « Tes yeux sont ouverts, je suis là ; tes yeux sont fermés, je suis là aussi. »",
-      "variant": "La silhouette nocturne apparaît une dernière fois au domaine. Sa voix résonne en silence dans la nuit : « Les pauvres m'ont, les riches en ont besoin. Si tu me manges, tu meurs. »"
+      "original": "La silhouette nocturne apparaît une dernière fois au domaine. Sa voix porte dans la nuit : « Tes yeux sont ouverts, je suis là ; tes yeux sont fermés, je suis là aussi. »",
+      "variant": "La silhouette nocturne apparaît une dernière fois au domaine. Sa voix porte dans la nuit : « Les pauvres m'ont, les riches en ont besoin. Si tu me manges, tu meurs. »"
     },
     "choices": {
       "answerPoison": {

@@ -1661,8 +1661,8 @@
   "riddleOfEternal": {
     "title": "O Hóspede Desconhecido",
     "message": {
-      "original": "A figura noturna aparece mais uma vez na propriedade. Sua voz ecoa silenciosamente pela noite: 'Seus olhos estão abertos, eu estou lá, seus olhos estão fechados, eu também estou lá.'",
-      "variant": "A figura noturna aparece mais uma vez na propriedade. Sua voz ecoa silenciosamente pela noite: 'Os pobres me têm, os ricos precisam de mim. Coma-me, e você morre.'"
+      "original": "A figura noturna aparece mais uma vez na propriedade. Sua voz atravessa a noite: 'Seus olhos estão abertos, eu estou lá, seus olhos estão fechados, eu também estou lá.'",
+      "variant": "A figura noturna aparece mais uma vez na propriedade. Sua voz atravessa a noite: 'Os pobres me têm, os ricos precisam de mim. Coma-me, e você morre.'"
     },
     "choices": {
       "answerLight": {
@@ -1689,8 +1689,8 @@
   "riddleOfEternal_variant": {
     "title": "O Hóspede Desconhecido",
     "message": {
-      "original": "A figura noturna aparece mais uma vez na propriedade. Sua voz ecoa silenciosamente pela noite: 'Seus olhos estão abertos, eu estou lá, seus olhos estão fechados, eu também estou lá.'",
-      "variant": "A figura noturna aparece mais uma vez na propriedade. Sua voz ecoa silenciosamente pela noite: 'Os pobres me têm, os ricos precisam de mim. Coma-me, e você morre.'"
+      "original": "A figura noturna aparece mais uma vez na propriedade. Sua voz atravessa a noite: 'Seus olhos estão abertos, eu estou lá, seus olhos estão fechados, eu também estou lá.'",
+      "variant": "A figura noturna aparece mais uma vez na propriedade. Sua voz atravessa a noite: 'Os pobres me têm, os ricos precisam de mim. Coma-me, e você morre.'"
     },
     "choices": {
       "answerPoison": {

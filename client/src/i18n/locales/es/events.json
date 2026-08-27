@@ -1792,8 +1792,8 @@
   "riddleOfEternal": {
     "title": "El huésped desconocido",
     "message": {
-      "original": "La figura nocturna aparece una vez más en la finca. Su voz resuena en silencio a través de la noche: «Tus ojos están abiertos, estoy ahí; tus ojos están cerrados, también estoy ahí.»",
-      "variant": "La figura nocturna aparece una vez más en la finca. Su voz resuena en silencio a través de la noche: «Los pobres me tienen, los ricos me necesitan. Si me comes, mueres.»"
+      "original": "La figura nocturna aparece una vez más en la finca. Su voz recorre la noche: «Tus ojos están abiertos, estoy ahí; tus ojos están cerrados, también estoy ahí.»",
+      "variant": "La figura nocturna aparece una vez más en la finca. Su voz recorre la noche: «Los pobres me tienen, los ricos me necesitan. Si me comes, mueres.»"
     },
     "choices": {
       "answerLight": {
@@ -1820,8 +1820,8 @@
   "riddleOfEternal_variant": {
     "title": "El huésped desconocido",
     "message": {
-      "original": "La figura nocturna aparece una vez más en la finca. Su voz resuena en silencio a través de la noche: «Tus ojos están abiertos, estoy ahí; tus ojos están cerrados, también estoy ahí.»",
-      "variant": "La figura nocturna aparece una vez más en la finca. Su voz resuena en silencio a través de la noche: «Los pobres me tienen, los ricos me necesitan. Si me comes, mueres.»"
+      "original": "La figura nocturna aparece una vez más en la finca. Su voz recorre la noche: «Tus ojos están abiertos, estoy ahí; tus ojos están cerrados, también estoy ahí.»",
+      "variant": "La figura nocturna aparece una vez más en la finca. Su voz recorre la noche: «Los pobres me tienen, los ricos me necesitan. Si me comes, mueres.»"
     },
     "choices": {
       "answerPoison": {

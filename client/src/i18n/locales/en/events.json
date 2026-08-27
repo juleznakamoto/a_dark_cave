@@ -1869,8 +1869,8 @@
   "riddleOfEternal": {
     "title": "The Unknown Guest",
     "message": {
-      "original": "The nightly figure appears one more time at the estate. Its voice silently echoes through the night: 'Your eyes are open, I am there, your eyes are closed, I am there too.'",
-      "variant": "The nightly figure appears one more time at the estate. Its voice silently echoes through the night: 'Poor have me, rich need me. Eat me, you die.'"
+      "original": "The nightly figure appears one more time at the estate. Its voice carries through the night: 'Your eyes are open, I am there, your eyes are closed, I am there too.'",
+      "variant": "The nightly figure appears one more time at the estate. Its voice carries through the night: 'Poor have me, rich need me. Eat me, you die.'"
     },
     "choices": {
       "answerLight": {
@@ -1897,8 +1897,8 @@
   "riddleOfEternal_variant": {
     "title": "The Unknown Guest",
     "message": {
-      "original": "The nightly figure appears one more time at the estate. Its voice silently echoes through the night: 'Your eyes are open, I am there, your eyes are closed, I am there too.'",
-      "variant": "The nightly figure appears one more time at the estate. Its voice silently echoes through the night: 'Poor have me, rich need me. Eat me, you die.'"
+      "original": "The nightly figure appears one more time at the estate. Its voice carries through the night: 'Your eyes are open, I am there, your eyes are closed, I am there too.'",
+      "variant": "The nightly figure appears one more time at the estate. Its voice carries through the night: 'Poor have me, rich need me. Eat me, you die.'"
     },
     "choices": {
       "answerPoison": {
