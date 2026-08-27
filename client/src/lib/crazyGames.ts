@@ -59,19 +59,28 @@ async function initializeCrazyGamesSdk(): Promise<boolean> {
   if (!sdk?.init) return false;
 
   try {
-    await Promise.race([
-      sdk.init(),
+    await withInitTimeout(sdk.init());
+    return true;
+  } catch (error) {
+    logger.warn("[CRAZYGAMES] SDK init failed:", error);
+    return false;
+  }
+}
+
+async function withInitTimeout<T>(promise: Promise<T>): Promise<T> {
+  let timeoutId: ReturnType<typeof setTimeout> | undefined;
+  try {
+    return await Promise.race([
+      promise,
       new Promise<never>((_, reject) => {
-        setTimeout(
+        timeoutId = setTimeout(
           () => reject(new Error("CrazyGames SDK init timed out")),
           INIT_TIMEOUT_MS,
         );
       }),
     ]);
-    return true;
-  } catch (error) {
-    logger.warn("[CRAZYGAMES] SDK init failed:", error);
-    return false;
+  } finally {
+    if (timeoutId !== undefined) clearTimeout(timeoutId);
   }
 }
 
