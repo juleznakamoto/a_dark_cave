@@ -163,6 +163,7 @@ shared/schema.tsâ€” Zod GameState schema (source of truth for persisted sha
   Action modules import `ActionResult` from `types.ts`, not `actions.ts` (avoids Vite TDZ on `caveExploreActions`).
 - **Event path:** `loop.ts`/store â†’ `checkEvents()` â†’ `EventManager` evaluates `gameEvents`
   â†’ opens `EventDialog`, `VillageEffectDialog` (themed village timed-effect outcomes), or `timedEventTab`. Timed-tab events do not spawn while the game tab is hidden (Steam, web, all editions).
+  Unresolved `EventDialog` prompts persist as `pendingModalEvent` and reopen on load (refresh cannot dismiss a choice or forced Continue). Timed visits already persist via `timedEventTab`; load also returns to that tab while a visit is active.
 - **`villageEffectThemes.ts`** â€” maps event outcomes to produce-header symbols/colors; `resolveVillageEffectAnnouncementTheme()` in `applyEventChoice` (`state.ts`) schedules `VillageEffectDialog`.
 - **`playlightExitIntent.ts`** â€” play-time exit-intent milestones (90m/150m/210m/270m/330m);
   skips 150m and 270m when Playlight discover social task is fulfilled;
@@ -211,6 +212,7 @@ shared/schema.tsâ€” Zod GameState schema (source of truth for persisted sha
 - **`stateHelpers.ts` / `persistedStateBoundary.ts`** â€” `buildGameState(state)` builds saves from a
   schema-derived allowlist plus documented store extensions (execution timers, timed visits, audio
   prefs). Dialog/runtime keys come from `dialogRegistry.ts`. Forces `isPaused: false` on save.
+  `pendingModalEvent` is a schema field (not a dialog key) so unresolved EventDialogs survive refresh.
 - **`save.ts`** â€” IndexedDB (`ADarkCaveDB`); `prepareLocalSaveEnvelope()` stringifies
   once, then `saveCodec.ts` XOR+Base64 (`ADC2:` prefix) reuses that JSON.
   Signed-in cloud save (V1 edge `save-game`):

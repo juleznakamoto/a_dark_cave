@@ -101,6 +101,7 @@ export async function runGameplayInitialization(
     },
     ...getTransientDialogResetOnLoad(),
   });
+  useGameStore.getState().resumePendingModalEventDialog?.();
 
   if (hadPersistedSave) {
     logger.log("[GAME] Game loaded from save");

@@ -84,6 +84,24 @@ describe("persistedStateBoundary", () => {
     expect(persisted.referralCode).toBe("AB3K9M");
   });
 
+  it("persists pendingModalEvent through the save allowlist", () => {
+    const pendingModalEvent = {
+      eventId: "paleFigure",
+      openedAt: 1_700_000_000_000,
+      title: "The Slender Figure",
+      message: "At dawn, villagers glimpse a tall, pale, slender figure.",
+    };
+    const persisted = buildPersistedGameState({
+      resources: { wood: 1 },
+      playTime: 10,
+      pendingModalEvent,
+      eventDialog: { isOpen: true, currentEvent: { id: "paleFigure-1" } },
+    });
+
+    expect(persisted.pendingModalEvent).toEqual(pendingModalEvent);
+    expect(persisted).not.toHaveProperty("eventDialog");
+  });
+
   it("persists Book of Absolution rites through the save allowlist", () => {
     const persisted = buildPersistedGameState({
       resources: { insight: 0 },

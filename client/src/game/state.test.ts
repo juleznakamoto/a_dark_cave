@@ -899,6 +899,88 @@ describe("Disgraced Prior assignment does not bypass affordability", () => {
   });
 });
 
+describe("pending modal event persist", () => {
+  beforeEach(() => {
+    useGameStore.getState().initialize();
+    mockLoadGame.mockReset();
+    mockSetLastGameLoadTime.mockReset();
+  });
+
+  it("writes pendingModalEvent when an event dialog opens and clears it on close", () => {
+    const event = {
+      id: "paleFigure-test",
+      eventId: "paleFigure",
+      message: "A slender figure waits.",
+      timestamp: 1_700_000_000_000,
+      type: "event" as const,
+      title: "The Slender Figure",
+      skipSound: true,
+      choices: [{ id: "ignore", label: "Ignore it", effect: () => ({}) }],
+    };
+
+    useGameStore.getState().setEventDialog(true, event);
+
+    expect(useGameStore.getState().pendingModalEvent).toEqual({
+      eventId: "paleFigure",
+      openedAt: 1_700_000_000_000,
+      title: "The Slender Figure",
+      message: "A slender figure waits.",
+      skipSound: true,
+    });
+
+    useGameStore.getState().setEventDialog(false);
+    expect(useGameStore.getState().pendingModalEvent).toBeNull();
+  });
+
+  it("reopens the event dialog from a saved pendingModalEvent", async () => {
+    const savedState = {
+      ...createInitialState(),
+      pendingModalEvent: {
+        eventId: "paleFigure",
+        openedAt: 1_700_000_000_000,
+        title: "The Slender Figure",
+        message: "A slender figure waits.",
+      },
+      log: [],
+    };
+
+    mockLoadGame.mockResolvedValue(savedState);
+
+    await useGameStore.getState().loadGame();
+
+    const state = useGameStore.getState();
+    expect(state.eventDialog.isOpen).toBe(true);
+    expect(state.eventDialog.currentEvent?.eventId).toBe("paleFigure");
+    expect(state.pendingModalEvent?.eventId).toBe("paleFigure");
+    expect(isModalDialogOpen(state)).toBe(true);
+  });
+
+  it("returns to the timed-event tab when a visit is still active", async () => {
+    const savedState = {
+      ...createInitialState(),
+      timedEventTab: {
+        isActive: true,
+        event: {
+          id: "feast1",
+          message: "",
+          timestamp: Date.now(),
+          type: "event" as const,
+        },
+        expiryTime: Date.now() + 60_000,
+      },
+      log: [],
+    };
+
+    mockLoadGame.mockResolvedValue(savedState);
+
+    await useGameStore.getState().loadGame();
+
+    expect(useGameStore.getState().activeTab).toBe("timedevent");
+    expect(useGameStore.getState().timedEventTab.isActive).toBe(true);
+    expect(useGameStore.getState().timedEventTab.event?.id).toBe("feast1");
+  });
+});
+
 describe("deferred dialog scheduling", () => {
   beforeEach(() => {
     vi.useFakeTimers();

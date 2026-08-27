@@ -1,5 +1,12 @@
 import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
-import { EventManager, gameEvents, type EventRollState } from './events';
+import {
+  EventManager,
+  gameEvents,
+  snapshotPendingModalEvent,
+  restorePendingModalEvent,
+  getPendingModalEventDialogResume,
+  type EventRollState,
+} from './events';
 import { GameState } from '@shared/schema';
 import { createInitialState, useGameStore } from '../state';
 import { GAME_CONSTANTS } from '../constants';
@@ -544,5 +551,68 @@ describe('cube story progression', () => {
 
     expect(patch?.events?.cubeHesitant).toBe(true);
     expect(patch?.story?.seen.cubeHesitantV3Applied).toBe(true);
+  });
+});
+
+describe('pending modal event resume', () => {
+  it('rebuilds a choice event from the persisted snapshot', () => {
+    const state = createInitialState();
+    const openedAt = 1_700_000_000_000;
+    const restored = restorePendingModalEvent(
+      {
+        eventId: 'paleFigure',
+        openedAt,
+        title: 'The Slender Figure',
+        message: 'At dawn, villagers glimpse a tall, pale, slender figure.',
+      },
+      state,
+    );
+
+    expect(restored?.eventId).toBe('paleFigure');
+    expect(restored?.timestamp).toBe(openedAt);
+    expect(restored?.title).toBe('The Slender Figure');
+    expect(Array.isArray(restored?.choices)).toBe(true);
+    expect(
+      (restored?.choices as { id: string }[]).map((choice) => choice.id),
+    ).toEqual(['investigate', 'ignore']);
+    expect(
+      typeof (restored?.choices as { effect?: unknown }[])[0]?.effect,
+    ).toBe('function');
+  });
+
+  it('snapshots and restores an acknowledge follow-up', () => {
+    const state = createInitialState();
+    const snapshot = snapshotPendingModalEvent({
+      id: 'log-message-123',
+      eventId: 'paleFigure',
+      message: 'The figure is gone.',
+      timestamp: 123,
+      type: 'event',
+      title: 'The Slender Figure',
+      skipSound: true,
+      choices: [{ id: 'acknowledge', effect: () => ({}) }],
+    });
+
+    expect(snapshot.acknowledge).toBe(true);
+    expect(snapshot.eventId).toBe('paleFigure');
+
+    const restored = restorePendingModalEvent(snapshot, state);
+    expect(restored?.choices).toEqual([
+      expect.objectContaining({ id: 'acknowledge' }),
+    ]);
+    expect(restored?.message).toBe('The figure is gone.');
+  });
+
+  it('clears a pending snapshot when the event no longer exists', () => {
+    const resume = getPendingModalEventDialogResume({
+      ...createInitialState(),
+      pendingModalEvent: {
+        eventId: 'removedEventId',
+        openedAt: Date.now(),
+      },
+    });
+
+    expect(resume.eventDialog.isOpen).toBe(false);
+    expect(resume.pendingModalEvent).toBeNull();
   });
 });

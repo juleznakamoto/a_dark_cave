@@ -143,10 +143,12 @@ function EventDialogOpen({
     const knowledge = getTotalKnowledge(gameState);
     const timeBonus = calculateKnowledgeTimeBonus(knowledge);
     const decisionTime = (event.baseDecisionTime || 15) + timeBonus;
+    const openedAt = event.timestamp > 0 ? event.timestamp : Date.now();
+    const alreadyElapsed = (Date.now() - openedAt) / 1000;
 
     setTotalTime(decisionTime);
-    setTimeRemaining(decisionTime);
-    startTimeRef.current = Date.now();
+    setTimeRemaining(Math.max(0, decisionTime - alreadyElapsed));
+    startTimeRef.current = openedAt;
     fallbackExecutedRef.current = false;
     pauseStartRef.current = 0;
     totalPausedMsRef.current = 0;

@@ -501,6 +501,21 @@ export const gameStateSchema = z.object({
   templeDedicatedTo: z.string().default(""),
   triggeredEvents: z.record(z.boolean()).default({}),
   eventCooldowns: z.record(z.number()).default({}), // Tracks last trigger time (timestamp) for each event
+  /**
+   * Unresolved EventDialog (choice / forced Continue). Restored on load so a
+   * refresh cannot dismiss the prompt. The live `eventDialog` slice stays runtime-only.
+   */
+  pendingModalEvent: z
+    .object({
+      eventId: z.string(),
+      openedAt: z.number(),
+      title: z.string().optional(),
+      message: z.string().optional(),
+      skipSound: z.boolean().optional(),
+      acknowledge: z.boolean().optional(),
+    })
+    .nullable()
+    .default(null),
   feastState: z
     .object({
       isActive: z.boolean().default(false),
@@ -1121,6 +1136,7 @@ export const gameStateSchema = z.object({
 });
 
 export type GameState = z.infer<typeof gameStateSchema>;
+export type PendingModalEvent = NonNullable<GameState["pendingModalEvent"]>;
 
 // Action schema for game rules
 export const actionSchema = z.object({

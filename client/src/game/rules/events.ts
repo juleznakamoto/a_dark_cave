@@ -1,4 +1,4 @@
-import { GameState } from "@shared/schema";
+import { GameState, type PendingModalEvent } from "@shared/schema";
 import { logger } from "../../lib/logger";
 import { isGameTabHidden } from "../../lib/tabVisibility";
 import type {
@@ -136,6 +136,182 @@ export function getEventI18nVars(
   return vars;
 }
 
+function evaluateEventChoices(
+  event: GameEvent,
+  state: GameState,
+) {
+  const catalogId = getEventCatalogId(event);
+  const i18nVars =
+    typeof event.i18nVars === "function"
+      ? event.i18nVars(state)
+      : event.i18nVars;
+
+  let eventChoicesRaw = event.choices;
+  let eventChoices =
+    typeof eventChoicesRaw === "function"
+      ? eventChoicesRaw(state)
+      : eventChoicesRaw;
+  if (event.id === "merchant") {
+    eventChoices = generateMerchantChoices(state) as typeof eventChoices;
+  }
+
+  if (Array.isArray(eventChoices)) {
+    eventChoices = localizeEventChoices(
+      catalogId,
+      eventChoices,
+      state,
+      i18nVars,
+    )!;
+    eventChoices = eventChoices.map((c) => {
+      const evaluatedSuccessChance =
+        typeof c.success_chance === "function"
+          ? c.success_chance(state)
+          : c.success_chance;
+      return {
+        ...c,
+        cost: typeof c.cost === "function" ? c.cost(state) : c.cost,
+        ...(evaluatedSuccessChance != null &&
+          !Number.isNaN(evaluatedSuccessChance) && {
+          success_chance: evaluatedSuccessChance,
+        }),
+      };
+    });
+  }
+
+  return {
+    catalogId,
+    i18nVars,
+    eventChoices,
+    localizedFallback: localizeFallbackChoice(
+      catalogId,
+      event.fallbackChoice,
+      state,
+      i18nVars,
+    ),
+  };
+}
+
+/** Build a dialog LogEntry from a rules event. Used on trigger and on save-load resume. */
+export function buildEventDialogLogEntry(
+  event: GameEvent,
+  state: GameState,
+  options?: {
+    openedAt?: number;
+    title?: string;
+    message?: string;
+    skipSound?: boolean;
+    instanceId?: string;
+  },
+): LogEntry {
+  const openedAt = options?.openedAt ?? Date.now();
+  const { catalogId, i18nVars, eventChoices, localizedFallback } =
+    evaluateEventChoices(event, state);
+
+  return {
+    id: options?.instanceId ?? `${event.id}-${openedAt}`,
+    eventId: event.id,
+    message:
+      options?.message ??
+      resolveEventMessage(catalogId, event.message, state, i18nVars),
+    timestamp: openedAt,
+    type: "event",
+    title:
+      options?.title ??
+      resolveEventTitle(catalogId, event.title, state, i18nVars),
+    choices: eventChoices,
+    isTimedChoice: event.isTimedChoice,
+    baseDecisionTime: event.baseDecisionTime,
+    fallbackChoice: localizedFallback,
+    relevant_stats: event.relevant_stats,
+    showAsTimedTab: event.showAsTimedTab,
+    timedTabDuration: event.timedTabDuration,
+    skipEventLog:
+      event.skipEventLog || Boolean(eventChoices && eventChoices.length > 0),
+    skipSound: options?.skipSound,
+  };
+}
+
+export function snapshotPendingModalEvent(entry: LogEntry): PendingModalEvent {
+  const eventId = entry.eventId || entry.id.split("-")[0];
+  const choices =
+    typeof entry.choices === "function" ? [] : entry.choices || [];
+  const acknowledge =
+    entry.id.startsWith("log-message-") ||
+    (choices.length === 1 && choices[0]?.id === "acknowledge");
+
+  return {
+    eventId,
+    openedAt: entry.timestamp || Date.now(),
+    ...(typeof entry.title === "string" && entry.title
+      ? { title: entry.title }
+      : {}),
+    ...(entry.message ? { message: entry.message } : {}),
+    ...(entry.skipSound ? { skipSound: true } : {}),
+    ...(acknowledge ? { acknowledge: true } : {}),
+  };
+}
+
+export function restorePendingModalEvent(
+  pending: PendingModalEvent | null | undefined,
+  state: GameState,
+): LogEntry | null {
+  if (!pending?.eventId) return null;
+
+  if (pending.acknowledge) {
+    return {
+      id: `log-message-${pending.openedAt}`,
+      eventId: pending.eventId,
+      message: pending.message || "",
+      timestamp: pending.openedAt,
+      type: "event",
+      title: pending.title,
+      skipSound: true,
+      choices: [
+        {
+          id: "acknowledge",
+          effect: () => ({}),
+        },
+      ],
+    };
+  }
+
+  const event = gameEvents[pending.eventId];
+  if (!event) return null;
+
+  return buildEventDialogLogEntry(event, state, {
+    openedAt: pending.openedAt,
+    title: pending.title,
+    message: pending.message,
+    skipSound: true,
+  });
+}
+
+/** Re-open EventDialog from the persisted pending snapshot after a dialog reset-on-load. */
+export function getPendingModalEventDialogResume(state: GameState): {
+  eventDialog: {
+    isOpen: boolean;
+    currentEvent: LogEntry | null;
+    lastEndedAt: number;
+  };
+  pendingModalEvent: PendingModalEvent | null;
+} {
+  const restored = restorePendingModalEvent(state.pendingModalEvent, state);
+  if (!restored) {
+    return {
+      eventDialog: { isOpen: false, currentEvent: null, lastEndedAt: 0 },
+      pendingModalEvent: null,
+    };
+  }
+  return {
+    eventDialog: {
+      isOpen: true,
+      currentEvent: restored,
+      lastEndedAt: 0,
+    },
+    pendingModalEvent: state.pendingModalEvent ?? null,
+  };
+}
+
 export class EventManager {
   static checkEvents(state: EventRollState): {
     newLogEntries: LogEntry[];
@@ -225,93 +401,24 @@ export class EventManager {
       }
 
       if (shouldTrigger) {
-        // Generate/evaluate choices
-        let eventChoicesRaw = event.choices;
-        let eventChoices = typeof eventChoicesRaw === 'function' ? eventChoicesRaw(state) : eventChoicesRaw;
-        if (event.id === "merchant") {
-          eventChoices = generateMerchantChoices(state);
-        }
-
-        // Select random message if message is an array, or evaluate if it's a function
-        const catalogId = getEventCatalogId(event);
-        const i18nVars =
-          typeof event.i18nVars === "function"
-            ? event.i18nVars(state)
-            : event.i18nVars;
-        let message = resolveEventMessage(
-          catalogId,
-          event.message,
-          state,
-          i18nVars,
-        );
-
-        const title = resolveEventTitle(
-          catalogId,
-          event.title,
-          state,
-          i18nVars,
-        );
-
-        // Localize choice labels, then pre-evaluate other dynamic choice fields
-        if (Array.isArray(eventChoices)) {
-          eventChoices = localizeEventChoices(
-            catalogId,
-            eventChoices,
-            state,
-            i18nVars,
-          )!;
-          eventChoices = eventChoices.map((c) => {
-            const evaluatedSuccessChance =
-              typeof c.success_chance === "function"
-                ? c.success_chance(state)
-                : c.success_chance;
-            return {
-              ...c,
-              cost: typeof c.cost === "function" ? c.cost(state) : c.cost,
-              ...(evaluatedSuccessChance != null &&
-                !Number.isNaN(evaluatedSuccessChance) && {
-                success_chance: evaluatedSuccessChance,
-              }),
-            };
-          });
-        }
-
-        const localizedFallback = localizeFallbackChoice(
-          catalogId,
-          event.fallbackChoice,
-          state,
-          i18nVars,
-        );
+        const logEntry = buildEventDialogLogEntry(event, state);
+        const eventChoices = Array.isArray(logEntry.choices)
+          ? logEntry.choices
+          : [];
 
         // Only create and add log entry if it's NOT a timed tab event
         if (!event.showAsTimedTab) {
-          const logEntry: LogEntry = {
-            id: `${event.id}-${Date.now()}`,
-            eventId: event.id,
-            message: message,
-            timestamp: Date.now(),
-            type: "event",
-            title,
-            choices: eventChoices,
-            isTimedChoice: event.isTimedChoice,
-            baseDecisionTime: event.baseDecisionTime,
-            fallbackChoice: localizedFallback,
-            relevant_stats: event.relevant_stats,
-            showAsTimedTab: event.showAsTimedTab,
-            timedTabDuration: event.timedTabDuration,
-            skipEventLog: event.skipEventLog || (eventChoices && eventChoices.length > 0),
-          };
           newLogEntries.push(logEntry);
         } else {
           // For timed tab events, pass event data directly without creating a LogEntry
           stateChanges._timedTabEvent = {
             id: event.id,
             eventId: event.id,
-            timestamp: Date.now(),
-            message: message,
-            title,
-            choices: eventChoices,
-            fallbackChoice: localizedFallback,
+            timestamp: logEntry.timestamp,
+            message: logEntry.message,
+            title: logEntry.title,
+            choices: logEntry.choices,
+            fallbackChoice: logEntry.fallbackChoice,
             timedTabDuration: event.timedTabDuration,
             _playSound: true, // Signal to play sound
           };
@@ -320,19 +427,18 @@ export class EventManager {
         // Apply effect if it exists
         // For timed tab events, always apply the effect to set up the timer state
         // For other events, only apply if there are no choices (choices will apply effects when selected)
-        if (event.effect && (!eventChoices?.length || event.showAsTimedTab)) {
+        if (event.effect && (!eventChoices.length || event.showAsTimedTab)) {
           // If the effect returns combat data, ensure it's handled correctly
           const effectResult = event.effect(state);
 
           stateChanges = { ...stateChanges, ...effectResult };
         }
 
-        const hasPlayerChoices =
-          Array.isArray(eventChoices) && eventChoices.length > 0;
+        const hasPlayerChoices = eventChoices.length > 0;
 
         // Non-repeatable events with choices must NOT write `triggeredEvents` here.
-        // `eventDialog` is runtime-only (cleared on load); marking seen on open would
-        // permanently suppress the beat if the player refreshes before choosing.
+        // Marking seen on open would permanently suppress the beat if the player
+        // refreshes before choosing. `pendingModalEvent` restores the dialog on load.
         // No-choice events apply their effect immediately, so mark them at trigger.
         if (!hasPlayerChoices) {
           event.triggered = true;

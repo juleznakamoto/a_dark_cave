@@ -19,6 +19,8 @@ import {
   gameEvents,
   getEventCatalogIdByEventId,
   getEventI18nVars,
+  getPendingModalEventDialogResume,
+  snapshotPendingModalEvent,
 } from "@/game/rules/events";
 import { checkMilestoneLogEntries } from "@/game/rules/eventLogEntries";
 import {
@@ -568,6 +570,8 @@ interface GameStore extends GameState {
   /** Spend Insight to reduce an item's madness by 1 (Book of Absolution, once per item). */
   absolveItem: (itemId: string) => boolean;
   setEventDialog: (isOpen: boolean, event?: LogEntry | null) => void;
+  /** Re-open EventDialog from `pendingModalEvent` after a load-time dialog reset. */
+  resumePendingModalEventDialog: () => void;
   setCombatDialog: (isOpen: boolean, data?: any) => void;
   setTimedEventTab: (isActive: boolean, event?: LogEntry | null, duration?: number) => Promise<void>;
   callMerchant: () => void;
@@ -1824,6 +1828,7 @@ function openEventDialogNow(
   set((state) => ({
     ...state,
     dialogHandoffPending: false,
+    pendingModalEvent: snapshotPendingModalEvent(currentEvent),
     eventDialog: {
       isOpen: true,
       currentEvent,
@@ -3250,10 +3255,15 @@ export const useGameStore = create<GameStore>((set, get) => ({
         savedState.gamblerGame !== undefined
           ? savedState.gamblerGame
           : defaultGameState.gamblerGame;
-      const { activeTab, gamblerDiceDialogOpen } = gamblerDiceResumeOnLoad({
+      const gamblerResume = gamblerDiceResumeOnLoad({
         timedEventTab,
         gamblerGame: gamblerGameForResume,
       });
+      const activeTab =
+        gamblerResume.activeTab === "timedevent" || timedEventTab.isActive
+          ? ("timedevent" as const)
+          : ("cave" as const);
+      const { gamblerDiceDialogOpen } = gamblerResume;
 
       const legacyObsidianOrbInClothing = Boolean(
         (savedState.clothing as { obsidian_orb?: boolean } | undefined)
@@ -3555,7 +3565,11 @@ export const useGameStore = create<GameStore>((set, get) => ({
         gamblerDiceDialogOpen,
       };
 
-      set(applyGameStateLoadMigrations(loadedState));
+      const migrated = applyGameStateLoadMigrations(loadedState);
+      set({
+        ...migrated,
+        ...getPendingModalEventDialogResume(migrated),
+      });
       const { flushOverdueActionExecutions } = await import("@/game/loop");
       flushOverdueActionExecutions();
       StateManager.scheduleEffectsUpdate(get);
@@ -4488,6 +4502,13 @@ export const useGameStore = create<GameStore>((set, get) => ({
     return getCurrentPopulation(get());
   },
 
+  resumePendingModalEventDialog: () => {
+    set((state) => ({
+      ...state,
+      ...getPendingModalEventDialogResume(state),
+    }));
+  },
+
   setEventDialog: (isOpen: boolean, currentEvent?: LogEntry) => {
     if (isOpen && currentEvent) {
       const store = get();
@@ -4506,6 +4527,9 @@ export const useGameStore = create<GameStore>((set, get) => ({
 
     set((state) => ({
       ...state,
+      pendingModalEvent: isOpen
+        ? state.pendingModalEvent
+        : null,
       eventDialog: {
         isOpen,
         currentEvent: currentEvent || null,
