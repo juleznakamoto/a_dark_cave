@@ -858,7 +858,7 @@ export default function StartScreen({
       )}
 
       {(steamEditionActive || crazyGamesEditionActive) && (
-        <div className="absolute top-2 right-2 z-20">
+        <div className="absolute top-4 right-4 z-20 md:top-2 md:right-2">
           {crazyGamesEditionActive ? (
             CrazyGamesCornerMenuCmp ? (
               <CrazyGamesCornerMenuCmp
