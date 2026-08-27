@@ -1710,7 +1710,7 @@ export const clothingEffects: Record<string, EffectDefinition> = {
   sealed_chest: {
     id: "sealed_chest",
     name: "Sealed Chest",
-    description: "A very sturdy chest you are not able to open",
+    description: "Very sturdy chest you are not able to open",
     bonuses: {},
   },
 };

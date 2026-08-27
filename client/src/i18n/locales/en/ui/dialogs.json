@@ -155,7 +155,7 @@
     "continueJourney": "Continue the Journey",
     "progressSaved": "Your progress is saved. You can return at any time and continue where you left off.",
     "loadingPayment": "Loading payment system...",
-    "purchaseSuccessful": "Purchase Successful!",
+    "purchaseSuccessful": "Purchase complete.",
     "purchaseSuccessfulDesc": "Full Game unlocked and activated! You can now continue your journey without restrictions.",
     "legalConsent": "Instant access to digital content after purchase.",
     "termsOfService": "Terms",
@@ -163,7 +163,7 @@
     "completePurchaseFor": "Complete Purchase for {{price}}",
     "paymentFailed": "Payment failed",
     "notAuthenticated": "You are not signed in",
-    "unexpectedError": "An unexpected error occurred"
+    "unexpectedError": "Something went wrong."
   },
   "leaderboard": {
     "title": "Leaderboard",

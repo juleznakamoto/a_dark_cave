@@ -12,7 +12,7 @@
       "one": "Un aldeano sucumbe al hambre.",
       "other": "{{count}} aldeanos mueren de hambre."
     },
-    "boostApplied": "Se ha aplicado el impulso",
+    "boostApplied": "Impulso aplicado.",
     "investmentComplete": {
       "success": "Inversión de {{amount}} de oro completada: Éxito. Has ganado {{payout}} de oro.",
       "successLucky": "Inversión de {{amount}} de oro completada: ¡Suerte! Has ganado {{payout}} de oro.",
@@ -36,7 +36,7 @@
       "firstWoodenHut": "La primera choza de madera está terminada; esto podría ser el comienzo de algo grande.",
       "villageGrowthSuggestion": "La aldea crece rápido. Quizá las casas de piedra puedan alojar a más aldeanos.",
       "cityGrowthMilestone": "La ciudad se ha convertido en una metrópolis bulliciosa, llena de comercio, industria y promesas de días mejores.",
-      "moonstoneDiscovered": "En las profundidades del pozo, los trabajadores descubren algo extraordinario. Hallan vetas de piedra lunar, un mineral luminiscente que contiene una energía inmensa.",
+      "moonstoneDiscovered": "En lo profundo del pozo, los trabajadores descubren vetas de piedra lunar, un mineral luminiscente rebosante de energía.",
       "foundry": "La fundición ruge al cobrar vida mientras el fuego y el calor fusionan las materias primas.",
       "masterworkFoundry": "La Fundición magistral está terminada, un monumento al dominio supremo de la metalurgia. En sus fuegos puede forjarse acero negro, casi irrompible, pero muy difícil de producir.",
       "altar": "Un altar se alza en el lindero del bosque, erigido para apaciguar a lo que habita dentro.",

@@ -55,8 +55,8 @@
     "cruelModeDeactivatedLog": "Grausamer Modus deaktiviert. Neue Spiele verwenden den normalen Schwierigkeitsgrad.", //x1.4
     "notAuthenticated": "Du bist nicht angemeldet", //x1.4
     "verificationFailed": "Zahlungsüberprüfung fehlgeschlagen. Bitte kontaktiere den Support.",
-    "unexpectedError": "Ein unerwarteter Fehler ist aufgetreten", //x1.4
-    "purchaseSuccessful": "Kauf erfolgreich!",
+    "unexpectedError": "Etwas ist schiefgelaufen.", //x1.4
+    "purchaseSuccessful": "Kauf abgeschlossen.",
     "purchaseSuccess": "Kauf erfolgreich",
     "purchaseAddedSingle": "{{name}} wurde deinen Käufen hinzugefügt. Prüfe den Tab „Käufe“, um es zu aktivieren.",
     "purchaseAddedBundle": "Die Bestandteile von {{name}} wurden deinen Käufen hinzugefügt. Prüfe den Tab „Käufe“, um sie zu aktivieren.",

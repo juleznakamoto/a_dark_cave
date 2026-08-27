@@ -55,8 +55,8 @@
     "cruelModeDeactivatedLog": "Mode cruel désactivé. Les nouvelles parties utiliseront la difficulté normale.",
     "notAuthenticated": "Vous n'êtes pas connecté", //x1.2
     "verificationFailed": "La vérification du paiement a échoué. Veuillez contacter le support.",
-    "unexpectedError": "Une erreur inattendue s'est produite",
-    "purchaseSuccessful": "Achat réussi !",
+    "unexpectedError": "Quelque chose s'est mal passé.",
+    "purchaseSuccessful": "Achat terminé.",
     "purchaseSuccess": "Achat réussi",
     "purchaseAddedSingle": "{{name}} a été ajouté à vos achats. Consultez l'onglet « Achats » pour l'activer.",
     "purchaseAddedBundle": "Les composants de {{name}} ont été ajoutés à vos achats. Consultez l'onglet « Achats » pour les activer.",

@@ -1199,7 +1199,7 @@
       "outcome0": "Your indecision frustrates the archer. He shakes his head and leaves, taking his expertise elsewhere.",
       "outcome2": "The master archer takes the payment and begins training your hunters immediately.",
       "outcome4": "The master archer takes the gold with a nod and begins training your hunters immediately.",
-      "outcome5": "The archer nods understandingly. 'I'll return in case you change your mind,' he says before disappearing into the forest."
+      "outcome5": "The archer nods. 'I'll return if you change your mind,' he says, then is gone into the forest."
     },
     "message": "A man in a dark red leather coat arrives with a confident grin and sharp eyes. He offers to help your archers, saying he can sharpen their aim and improve their hunting skills. If you accept, he'll stay and get to work.",
     "title": "The Master Archer"
@@ -1380,7 +1380,7 @@
       "outcome4": "The monk's eyes widen at the sight of gold. 'This will help the monastery greatly,' he says, drawing out detailed plans for a skeleton key. “This key is said to open any lock,” he says, before departing.",
       "outcome5": "You decline the monk's offer. He bows respectfully and begins his journey back to the mountains."
     },
-    "message": "A monk from a mountain monastery arrives in the village. 'I hear you found a mysterious chest, he says softly. 'The monastery knows how to open it. Offer a tribute, and I will share the secret.'",
+    "message": "A monk from a mountain monastery arrives in the village. 'I hear you found a mysterious chest,' he says softly. 'The monastery knows how to open it. Offer a tribute, and I will share the secret.'",
     "title": "The Mountain Monk"
   },
   "monasteryResponse": {
@@ -1749,7 +1749,7 @@
       "outcome0": "The knight waited but you did not respond. 'Perhaps another time,' he says before continuing his journey.",
       "outcome2": "The knight shares his discovery: 'High in the mountains lies a monastery carved into the cliffs. Scholars who gathered there to study the past tell of an advanced civilization far beyond our understanding. Yet something brought their world to ruin.'",
       "outcome4": "Grateful for the meal, the knight shares his discovery: 'High in the mountains lies a monastery carved into the cliffs. The scholars there who study the past speak of a civilization far beyond our understanding. Their craft was so advanced it would seem like magic to us. Yet something brought their world to ruin.'",
-      "outcome5": "You decline his offer. The knight nods understandingly. 'The knowledge will remain with me then,' he says before departing once more."
+      "outcome5": "You decline his offer. The knight nods. 'The knowledge will remain with me then,' he says, and leaves again."
     },
     "message": "The knight returns, his armor scratched and battered. 'I found something extraordinary in the mountains,' he says. 'I will tell you about it, for a price.'",
     "title": "Return from the Mountains"

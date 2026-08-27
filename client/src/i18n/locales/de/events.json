@@ -1122,7 +1122,7 @@
       "outcome0": "Deine Unentschlossenheit frustriert den Bogenschützen. Er schüttelt den Kopf und geht, seine Erfahrung nimmt er mit.",
       "outcome2": "Der Meisterschütze nimmt die Bezahlung und beginnt sofort, deine Jäger auszubilden.",
       "outcome4": "Der Meisterschütze nimmt das Gold mit einem Nicken und beginnt sofort, deine Jäger auszubilden.",
-      "outcome5": "Der Bogenschütze nickt verständnisvoll. 'Ich komme zurück, falls du deine Meinung änderst', sagt er, bevor er im Wald verschwindet."
+      "outcome5": "Der Bogenschütze nickt. 'Ich komme zurück, falls du deine Meinung änderst', sagt er, dann ist er im Wald verschwunden."
     },
     "message": "Ein Mann in einem dunkelroten Ledermantel trifft ein, mit selbstsicherem Grinsen und scharfen Augen. Er bietet an, deinen Bogenschützen zu helfen, und sagt, er könne ihr Ziel schärfen und ihre Jagdfähigkeiten verbessern. Wenn du annimmst, bleibt er und macht sich an die Arbeit.",
     "title": "Der Meisterschütze"
@@ -1672,7 +1672,7 @@
       "outcome0": "Der Ritter wartete, doch du hast nicht geantwortet. 'Vielleicht ein andermal', sagt er, bevor er seine Reise fortsetzt.",
       "outcome2": "Der Ritter teilt seine Entdeckung: 'Hoch in den Bergen liegt ein Kloster, in die Klippen gehauen. Gelehrte, die sich dort versammelten, um die Vergangenheit zu erforschen, erzählen von einer fortgeschrittenen Zivilisation jenseits unseres Verständnisses. Doch etwas brachte ihre Welt zu Fall.'",
       "outcome4": "Dankbar für die Mahlzeit teilt der Ritter seine Entdeckung: 'Hoch in den Bergen liegt ein Kloster, in die Klippen gehauen. Die Gelehrten dort, die die Vergangenheit erforschen, sprechen von einer Zivilisation jenseits unseres Verständnisses. Ihre Kunst war so fortgeschritten, dass sie uns wie Magie erscheinen würde. Doch etwas brachte ihre Welt zu Fall.'",
-      "outcome5": "Du lehnst sein Angebot ab. Der Ritter nickt verständnisvoll. 'Dann bleibt das Wissen bei mir', sagt er, bevor er erneut aufbricht."
+      "outcome5": "Du lehnst sein Angebot ab. Der Ritter nickt. 'Dann bleibt das Wissen bei mir', sagt er und zieht wieder weiter."
     },
     "message": "Der Ritter kehrt zurück, seine Rüstung zerkratzt und zerschunden. 'Ich fand etwas Außergewöhnliches in den Bergen', sagt er. 'Ich werde dir davon erzählen, für einen Preis.'",
     "title": "Rückkehr aus den Bergen"

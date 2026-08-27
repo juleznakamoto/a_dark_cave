@@ -155,7 +155,7 @@
     "continueJourney": "Продолжить путешествие",
     "progressSaved": "Прогресс сохранён. Вы можете вернуться и продолжить с того же места.",
     "loadingPayment": "Загрузка платёжной системы…",
-    "purchaseSuccessful": "Покупка успешна!",
+    "purchaseSuccessful": "Покупка завершена.",
     "purchaseSuccessfulDesc": "Полная версия разблокирована! Продолжайте путешествие без ограничений.",
     "legalConsent": "Мгновенный доступ к цифровому контенту после покупки.",
     "termsOfService": "Условия",
@@ -163,7 +163,7 @@
     "completePurchaseFor": "Завершить покупку за {{price}}",
     "paymentFailed": "Ошибка оплаты",
     "notAuthenticated": "Вы не вошли", //x1.2
-    "unexpectedError": "Произошла непредвиденная ошибка"
+    "unexpectedError": "Что-то пошло не так."
   },
   "leaderboard": {
     "title": "Таблица лидеров", //x1.4

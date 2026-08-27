@@ -155,7 +155,7 @@
     "continueJourney": "Reise fortsetzen",
     "progressSaved": "Dein Fortschritt ist gespeichert. Du kannst jederzeit zurückkehren und dort weiterspielen, wo du aufgehört hast.",
     "loadingPayment": "Zahlungssystem wird geladen…",
-    "purchaseSuccessful": "Kauf erfolgreich!",
+    "purchaseSuccessful": "Kauf abgeschlossen.",
     "purchaseSuccessfulDesc": "Vollversion freigeschaltet und aktiviert! Du kannst deine Reise nun ohne Einschränkungen fortsetzen.",
     "legalConsent": "Sofortiger Zugang zu digitalen Inhalten nach dem Kauf.",
     "termsOfService": "AGB",
@@ -163,7 +163,7 @@
     "completePurchaseFor": "Kauf abschließen für {{price}}",
     "paymentFailed": "Zahlung fehlgeschlagen", //x1.6
     "notAuthenticated": "Du bist nicht angemeldet", //x1.4
-    "unexpectedError": "Ein unerwarteter Fehler ist aufgetreten" //x1.4
+    "unexpectedError": "Etwas ist schiefgelaufen." //x1.4
   },
   "leaderboard": {
     "title": "Bestenliste",

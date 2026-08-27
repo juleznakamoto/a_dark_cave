@@ -155,7 +155,7 @@
     "continueJourney": "Poursuivre le voyage",
     "progressSaved": "Votre progression est sauvegardée. Vous pouvez revenir à tout moment et reprendre où vous vous êtes arrêté.",
     "loadingPayment": "Chargement du système de paiement…", //x1.4
-    "purchaseSuccessful": "Achat réussi !",
+    "purchaseSuccessful": "Achat terminé.",
     "purchaseSuccessfulDesc": "Jeu complet débloqué et activé ! Vous pouvez poursuivre votre voyage sans restrictions.",
     "legalConsent": "Accès immédiat au contenu numérique après l'achat.",
     "termsOfService": "Conditions",
@@ -163,7 +163,7 @@
     "completePurchaseFor": "Finaliser l'achat pour {{price}}",
     "paymentFailed": "Paiement échoué",
     "notAuthenticated": "Vous n'êtes pas connecté", //x1.2
-    "unexpectedError": "Une erreur inattendue s'est produite"
+    "unexpectedError": "Quelque chose s'est mal passé."
   },
   "leaderboard": {
     "title": "Classement",

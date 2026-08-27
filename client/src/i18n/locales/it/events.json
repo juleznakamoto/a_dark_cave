@@ -1024,7 +1024,7 @@
       "outcome0": "La tua indecisione frustra l'arciere. Scuote la testa e se ne va, portando altrove la sua esperienza.",
       "outcome2": "Il maestro arciere accetta il pagamento e inizia subito ad addestrare i tuoi cacciatori.",
       "outcome4": "Il maestro arciere prende l'oro con un cenno e inizia subito ad addestrare i tuoi cacciatori.",
-      "outcome5": "L'arciere annuisce comprensivo. 'Tornerò nel caso tu cambi idea,' dice prima di sparire nella foresta."
+      "outcome5": "L'arciere annuisce. 'Tornerò se cambi idea,' dice, poi sparisce nella foresta."
     },
     "message": "Un uomo in un cappotto di cuoio rosso scuro arriva con un sorriso sicuro e occhi acuti. Offre di aiutare i tuoi arcieri, dicendo di poter affinare la loro mira e migliorare le loro abilità di caccia. Se accetti, resterà e si metterà all'opera.",
     "title": "Il Maestro Arciere"
@@ -1541,7 +1541,7 @@
       "outcome0": "Il cavaliere attese ma tu non rispondesti. 'Forse un'altra volta,' dice prima di riprendere il suo viaggio.",
       "outcome2": "Il cavaliere condivide la sua scoperta: 'In alto tra le montagne giace un monastero scavato nelle rupi. Gli studiosi che vi si radunarono per studiare il passato raccontano di una civiltà avanzata ben oltre la nostra comprensione. Eppure qualcosa portò il loro mondo alla rovina.'",
       "outcome4": "Grato per il pasto, il cavaliere condivide la sua scoperta: 'In alto tra le montagne giace un monastero scavato nelle rupi. Gli studiosi lì che studiano il passato parlano di una civiltà ben oltre la nostra comprensione. La loro arte era così avanzata da sembrarci magia. Eppure qualcosa portò il loro mondo alla rovina.'",
-      "outcome5": "Rifiuti la sua offerta. Il cavaliere annuisce comprensivo. 'La conoscenza resterà con me, allora,' dice prima di andarsene ancora una volta."
+      "outcome5": "Rifiuti la sua offerta. Il cavaliere annuisce. 'La conoscenza resterà con me, allora,' dice, e se ne va di nuovo."
     },
     "message": "Il cavaliere ritorna, l'armatura graffiata e ammaccata. 'Ho trovato qualcosa di straordinario tra le montagne,' dice. 'Te ne parlerò, a un prezzo.'",
     "title": "Ritorno dalle Montagne"

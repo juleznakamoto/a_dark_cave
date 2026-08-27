@@ -1122,7 +1122,7 @@
       "outcome0": "Tu indecisión frustra al arquero. Sacude la cabeza y se marcha, llevando su pericia a otra parte.",
       "outcome2": "El maestro arquero toma el pago y comienza a entrenar a tus cazadores de inmediato.",
       "outcome4": "El maestro arquero toma el oro con un gesto de asentimiento y comienza a entrenar a tus cazadores de inmediato.",
-      "outcome5": "El arquero asiente con comprensión. 'Volveré por si cambias de opinión', dice antes de desaparecer en el bosque."
+      "outcome5": "El arquero asiente. 'Volveré si cambias de opinión', dice, y desaparece en el bosque."
     },
     "message": "Un hombre con abrigo de cuero rojo oscuro llega con una sonrisa confiada y ojos afilados. Ofrece ayudar a tus arqueros; dice que puede afinar su puntería y mejorar sus habilidades de caza. Si aceptas, se quedará y se pondrá manos a la obra.",
     "title": "El maestro arquero"
@@ -1672,7 +1672,7 @@
       "outcome0": "El caballero esperó, pero no respondiste. 'Quizá en otra ocasión', dice antes de continuar su viaje.",
       "outcome2": "El caballero comparte su descubrimiento: 'En lo alto de las montañas hay un monasterio tallado en los riscos. Los eruditos que se reunían allí para estudiar el pasado hablan de una civilización avanzada, muy por encima de nuestra comprensión. Sin embargo, algo llevó su mundo a la ruina'.",
       "outcome4": "Agradecido por la comida, el caballero comparte su descubrimiento: 'En lo alto de las montañas hay un monasterio tallado en los riscos. Los eruditos de allí, que estudian el pasado, hablan de una civilización muy por encima de nuestra comprensión. Su arte era tan avanzado que nos parecería magia. Sin embargo, algo llevó su mundo a la ruina'.",
-      "outcome5": "Rechazas su oferta. El caballero asiente con comprensión. 'Entonces el conocimiento permanecerá conmigo', dice antes de partir una vez más."
+      "outcome5": "Rechazas su oferta. El caballero asiente. 'Entonces el conocimiento permanecerá conmigo', dice, y se va de nuevo."
     },
     "message": "El caballero regresa, con la armadura arañada y maltratada. 'Encontré algo extraordinario en las montañas', dice. 'Te hablaré de ello, por un precio'.",
     "title": "Regreso de las montañas"

@@ -1024,7 +1024,7 @@
       "outcome0": "Sua indecisão frustra o arqueiro. Ele balança a cabeça e parte, levando sua expertise para outro lugar.",
       "outcome2": "O mestre arqueiro aceita o pagamento e começa a treinar seus caçadores imediatamente.",
       "outcome4": "O mestre arqueiro pega o ouro com um aceno e começa a treinar seus caçadores imediatamente.",
-      "outcome5": "O arqueiro acena com compreensão. 'Voltarei caso você mude de ideia,' diz ele antes de desaparecer na floresta."
+      "outcome5": "O arqueiro acena. 'Voltarei se você mudar de ideia,' diz ele, e desaparece na floresta."
     },
     "message": "Um homem com um casaco de couro vermelho-escuro chega com um sorriso confiante e olhos atentos. Ele se oferece para ajudar seus arqueiros, dizendo que pode aprimorar sua pontaria e melhorar suas habilidades de caça. Se você aceitar, ele ficará e começará a trabalhar.",
     "title": "O Mestre Arqueiro"
@@ -1541,7 +1541,7 @@
       "outcome0": "O cavaleiro esperou, mas você não respondeu. 'Talvez em outra ocasião,' diz ele antes de continuar sua jornada.",
       "outcome2": "O cavaleiro compartilha sua descoberta: 'No alto das montanhas jaz um mosteiro esculpido nos penhascos. Os eruditos que ali se reuniram para estudar o passado falam de uma civilização avançada muito além da nossa compreensão. Contudo, algo levou seu mundo à ruína.'",
       "outcome4": "Grato pela refeição, o cavaleiro compartilha sua descoberta: 'No alto das montanhas jaz um mosteiro esculpido nos penhascos. Os eruditos de lá que estudam o passado falam de uma civilização muito além da nossa compreensão. Seu ofício era tão avançado que nos pareceria magia. Contudo, algo levou seu mundo à ruína.'",
-      "outcome5": "Você recusa a oferta dele. O cavaleiro acena com compreensão. 'O conhecimento permanecerá comigo, então,' diz ele antes de partir mais uma vez."
+      "outcome5": "Você recusa a oferta dele. O cavaleiro acena. 'O conhecimento permanecerá comigo, então,' diz ele, e parte de novo."
     },
     "message": "O cavaleiro retorna, sua armadura riscada e amassada. 'Encontrei algo extraordinário nas montanhas,' diz ele. 'Eu lhe contarei sobre isso, por um preço.'",
     "title": "Retorno das Montanhas"

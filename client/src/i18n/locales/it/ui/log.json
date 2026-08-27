@@ -12,7 +12,7 @@
       "one": "Un abitante muore di fame.",
       "other": "{{count}} abitanti muoiono di fame."
     },
-    "boostApplied": "Potenziamento applicato",
+    "boostApplied": "Potenziamento applicato.",
     "investmentComplete": {
       "success": "Investimento di {{amount}} Oro completato: Successo. Hai guadagnato {{payout}} Oro.",
       "successLucky": "Investimento di {{amount}} Oro completato: Probabilità Fortunata! Hai guadagnato {{payout}} Oro.",
@@ -36,7 +36,7 @@
       "firstWoodenHut": "La prima capanna di legno è completa, questo potrebbe essere l'inizio di qualcosa di grande.",
       "villageGrowthSuggestion": "Il villaggio cresce in fretta. Forse case di pietra potrebbero ospitare più abitanti.",
       "cityGrowthMilestone": "La città è cresciuta fino a diventare una metropoli vivace, animata da commercio, industria e la promessa di giorni migliori.",
-      "moonstoneDiscovered": "Nelle profondità della cava, gli operai scoprono qualcosa di straordinario. Portano alla luce vene di pietra di luna - un minerale luminescente che contiene un'energia immensa.",
+      "moonstoneDiscovered": "In fondo alla cava, gli operai scoprono vene di pietra di luna, un minerale luminescente colmo di energia.",
       "foundry": "La fonderia ruggisce alla vita mentre fuoco e calore fondono le materie prime.",
       "masterworkFoundry": "La Fonderia Magistrale è completa, un monumento alla suprema maestria metallurgica. Tra le sue fiamme si può forgiare l'acciaio nero, quasi infrangibile, ma molto difficile da produrre.",
       "altar": "Un altare sorge ai margini della foresta, eretto per placare ciò che vi dimora.",

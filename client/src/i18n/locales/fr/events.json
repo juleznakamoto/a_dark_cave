@@ -1122,7 +1122,7 @@
       "outcome0": "Votre indécision frustre l'archer. Il secoue la tête et s'en va, emportant son expertise ailleurs.",
       "outcome2": "Le maître archer prend le paiement et commence aussitôt à entraîner vos chasseurs.",
       "outcome4": "Le maître archer prend l'or avec un hochement de tête et commence aussitôt à entraîner vos chasseurs.",
-      "outcome5": "L'archer hoche la tête avec compréhension. 'Je reviendrai si vous changez d'avis,' dit-il avant de disparaître dans la forêt."
+      "outcome5": "L'archer hoche la tête. 'Je reviendrai si vous changez d'avis,' dit-il, puis disparaît dans la forêt."
     },
     "message": "Un homme en manteau de cuir rouge sombre arrive avec un sourire assuré et des yeux perçants. Il propose d'aider vos archers, disant qu'il peut affûter leur visée et améliorer leurs talents de chasse. Si vous acceptez, il restera et se mettra au travail.",
     "title": "Le Maître archer"
@@ -1672,7 +1672,7 @@
       "outcome0": "Le chevalier a attendu, mais vous n'avez pas répondu. 'Peut-être une autre fois,' dit-il avant de poursuivre sa route.",
       "outcome2": "Le chevalier partage sa découverte : 'Haut dans les montagnes se trouve un monastère taillé dans les falaises. Les savants qui s'y rassemblaient pour étudier le passé parlent d'une civilisation avancée, bien au-delà de notre compréhension. Pourtant, quelque chose a précipité leur monde dans la ruine.'",
       "outcome4": "Reconnaissant pour le repas, le chevalier partage sa découverte : 'Haut dans les montagnes se trouve un monastère taillé dans les falaises. Les savants qui y étudient le passé parlent d'une civilisation bien au-delà de notre compréhension. Leur art était si avancé qu'il nous semblerait magique. Pourtant, quelque chose a précipité leur monde dans la ruine.'",
-      "outcome5": "Vous déclinez son offre. Le chevalier hoche la tête avec compréhension. 'Le savoir restera donc avec moi,' dit-il avant de repartir une fois encore."
+      "outcome5": "Vous déclinez son offre. Le chevalier hoche la tête. 'Le savoir restera donc avec moi,' dit-il, et repart."
     },
     "message": "Le chevalier revient, son armure éraflée et cabossée. 'J'ai trouvé quelque chose d'extraordinaire dans les montagnes,' dit-il. 'Je vous en parlerai, pour un prix.'",
     "title": "Retour des montagnes"

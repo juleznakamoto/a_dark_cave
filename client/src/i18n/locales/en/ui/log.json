@@ -12,7 +12,7 @@
       "one": "One villager succumbs to starvation.",
       "other": "{{count}} villagers starve to death."
     },
-    "boostApplied": "Boost has been applied",
+    "boostApplied": "Boost applied.",
     "investmentComplete": {
       "success": "{{amount}} Gold investment complete: Success. You gained {{payout}} Gold.",
       "successLucky": "{{amount}} Gold investment complete: Lucky Chance! You gained {{payout}} Gold.",
@@ -36,7 +36,7 @@
       "firstWoodenHut": "The first wooden hut stands complete, this could be the start of something great.",
       "villageGrowthSuggestion": "The village grows quickly. Perhaps stone houses could shelter more villagers.",
       "cityGrowthMilestone": "The city has grown into a bustling metropolis, alive with trade, industry, and the promise of brighter days.",
-      "moonstoneDiscovered": "In the depth of the pit, the workers discover something extraordinary. They uncover veins of moonstone - a luminescent mineral containing immense energy.",
+      "moonstoneDiscovered": "Deep in the pit, workers discover veins of moonstone, a luminescent mineral brimming with energy.",
       "foundry": "The foundry roars to life as fire and heat fuse raw materials.",
       "masterworkFoundry": "The Masterwork Foundry stands complete, a monument to supreme metallurgical mastery. Within its fires, blacksteel can be forged, nearly unbreakable, but very difficult to produce.",
       "altar": "An altar rises at the forest's edge, raised to appease what dwells within.",
@@ -52,7 +52,7 @@
       "temple": "A grand temple stands complete, its sacred halls echoing with whispered prayers that calm the tormented soul.",
       "sanctum": "The sanctum rises as a beacon of divine protection, its blessed aura driving away the darkest thoughts and fears.",
       "alchemistHall": "The Alchemist's Halls stand tall, their chambers filled with bubbling crucibles and gleaming instruments of forgotten craft.",
-      "tradePost": "A trade post is built near the forest attracting tradesman who look to sell their goods for gold.",
+      "tradePost": "A trade post is built near the forest. Traders come to sell their goods for gold.",
       "grandBazaar": "The Grand Bazaar rises, a sprawling marketplace where merchants from distant lands gather to trade goods.",
       "merchantsGuild": "The Merchants Guild stands complete, a powerful organization that controls all trade routes and brings unprecedented wealth to your settlement.",
       "bastion": "The bastion rises like a mountain of stone, its walls thick and unyielding. A promise of protection against whatever stirs in the depths below.",

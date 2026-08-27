@@ -285,7 +285,7 @@ export function handleBuildBottomlessPit(
       bottomlessPitResult,
       "moonstone-discovered",
       "building.moonstoneDiscovered",
-      "In the depth of the pit, the workers discover something extraordinary. They uncover veins of moonstone - a luminescent mineral containing immense energy.",
+      "Deep in the pit, workers discover veins of moonstone, a luminescent mineral brimming with energy.",
     );
   }
 
@@ -846,7 +846,7 @@ export function handleBuildTradePost(
       tradePostResult,
       "trade-post-built",
       "building.tradePost",
-      "A trade post is built near the forest attracting tradesman who look to sell their goods for gold.",
+      "A trade post is built near the forest. Traders come to sell their goods for gold.",
     );
     // Enable Call Merchant button (negative timestamp = cooldown already expired)
     if (!tradePostResult.stateUpdates.story) {

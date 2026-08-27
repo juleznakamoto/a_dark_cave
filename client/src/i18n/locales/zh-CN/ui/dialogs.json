@@ -155,7 +155,7 @@
     "continueJourney": "继续旅程",
     "progressSaved": "进度已保存，你可随时回来继续。",
     "loadingPayment": "正在加载支付系统……",
-    "purchaseSuccessful": "购买成功！",
+    "purchaseSuccessful": "购买完成。",
     "purchaseSuccessfulDesc": "完整版已解锁并激活！你现在可以不受限制地继续旅程。",
     "legalConsent": "购买后即可立即访问数字内容。",
     "termsOfService": "条款",
@@ -163,7 +163,7 @@
     "completePurchaseFor": "完成购买 {{price}}",
     "paymentFailed": "支付失败",
     "notAuthenticated": "你尚未登录",
-    "unexpectedError": "发生意外错误"
+    "unexpectedError": "出了点问题。"
   },
   "leaderboard": {
     "title": "排行榜",

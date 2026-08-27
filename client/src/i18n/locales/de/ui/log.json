@@ -12,7 +12,7 @@
       "one": "Ein Dorfbewohner erliegt dem Hunger.",
       "other": "{{count}} Dorfbewohner verhungern."
     },
-    "boostApplied": "Boost wurde angewendet",
+    "boostApplied": "Boost angewendet.",
     "investmentComplete": {
       "success": "{{amount}} Gold-Investition abgeschlossen: Erfolg. Du hast {{payout}} Gold erhalten.",
       "successLucky": "{{amount}} Gold-Investition abgeschlossen: Glückstreffer! Du hast {{payout}} Gold erhalten.",
@@ -36,7 +36,7 @@
       "firstWoodenHut": "Die erste Holzhütte ist erbaut – vielleicht der Anfang von etwas Großem.",
       "villageGrowthSuggestion": "Das Dorf wächst schnell. Vielleicht könnten Steinhäuser mehr Dorfbewohner beherbergen.",
       "cityGrowthMilestone": "Die Stadt ist zu einer pulsierenden Metropole gewachsen, erfüllt von Handel, Industrie und der Hoffnung auf bessere Tage.",
-      "moonstoneDiscovered": "In der Tiefe der Grube entdecken die Arbeiter etwas Außergewöhnliches. Sie stoßen auf Mondsteinvorkommen – ein leuchtendes Mineral von immenser Energie.",
+      "moonstoneDiscovered": "Tief in der Grube entdecken Arbeiter Mondsteinvorkommen, ein leuchtendes Mineral voller Energie.",
       "foundry": "Die Gießerei erwacht zum Leben, um mithilfe von Feuer und Hitze Erze zu verschmelzen.", //ok
       "masterworkFoundry": "Die Meistergießerei is fertiggestellt, ein Denkmal höchster metallurgischer Kunst. In ihren Flammen kann Schwarzstahl geschmiedet werden – nahezu unzerstörbar, aber sehr schwer herzustellen.",
       "altar": "Am Waldrand erhebt sich ein Altar, errichtet, um zu besänftigen, was darin wohnt.",

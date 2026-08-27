@@ -12,7 +12,7 @@ export const BOOST_RESOURCE_BONUS = {
 } as const;
 
 export const BOOST_APPLIED_LOG_KEY = "boostApplied";
-export const BOOST_APPLIED_LOG_MESSAGE = "Boost has been applied";
+export const BOOST_APPLIED_LOG_MESSAGE = "Boost applied.";
 
 export function canApplySaveBoost(state: GameState): boolean {
   return state.flags.gameStarted && !state.boostApplied;

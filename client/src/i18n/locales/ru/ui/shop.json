@@ -55,8 +55,8 @@
     "cruelModeDeactivatedLog": "Жестокий режим отключён. Новые игры будут с обычной сложностью.",
     "notAuthenticated": "Вы не вошли", //x1.2
     "verificationFailed": "Ошибка проверки платежа. Свяжитесь с поддержкой.",
-    "unexpectedError": "Произошла непредвиденная ошибка",
-    "purchaseSuccessful": "Покупка успешна!",
+    "unexpectedError": "Что-то пошло не так.",
+    "purchaseSuccessful": "Покупка завершена.",
     "purchaseSuccess": "Покупка успешна",
     "purchaseAddedSingle": "{{name}} добавлено в покупки. Активируйте на вкладке «Покупки».",
     "purchaseAddedBundle": "Компоненты {{name}} добавлены в покупки. Активируйте на вкладке «Покупки».",

@@ -12,7 +12,7 @@
       "one": "一名村民因饥饿而死亡。",
       "other": "{{count}} 名村民因饥饿而死亡。"
     },
-    "boostApplied": "加速已应用",
+    "boostApplied": "加速已应用。",
     "investmentComplete": {
       "success": "{{amount}} 金币投资完成：成功。你获得了 {{payout}} 金币。",
       "successLucky": "{{amount}} 金币投资完成：幸运！你获得了 {{payout}} 金币。",
@@ -36,7 +36,7 @@
       "firstWoodenHut": "第一间木屋已经完工，这或许是一段伟大事业的开端。",
       "villageGrowthSuggestion": "村庄发展迅速。也许石屋能容纳更多村民。",
       "cityGrowthMilestone": "城市已经成长为繁忙的大都会，充满贸易、工业，以及对光明未来的期许。",
-      "moonstoneDiscovered": "在矿坑深处，工人发现了非凡之物。他们挖出了月石矿脉，那是一种蕴含巨大能量的发光矿物。",
+      "moonstoneDiscovered": "在矿坑深处，工人发现了月石矿脉，一种充满能量的发光矿物。",
       "foundry": "铸造厂轰鸣着苏醒，火焰与热力将原料熔合在一起。",
       "masterworkFoundry": "大师铸造厂已经完工，这是一座献给至高冶金技艺的纪念碑。在它的炉火中，可以锻造几乎坚不可摧却极难生产的黑钢。",
       "altar": "一座祭坛在森林边缘升起，用来安抚栖居其中的存在。",

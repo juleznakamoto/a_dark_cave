@@ -12,7 +12,7 @@
       "one": "Un villageois succombe à la famine.",
       "other": "{{count}} villageois meurent de faim."
     },
-    "boostApplied": "Le boost a été appliqué",
+    "boostApplied": "Boost appliqué.",
     "investmentComplete": {
       "success": "Investissement de {{amount}} d'or terminé : Succès. Vous avez gagné {{payout}} d'or.",
       "successLucky": "Investissement de {{amount}} d'or terminé : Coup de chance ! Vous avez gagné {{payout}} d'or.",
@@ -36,7 +36,7 @@
       "firstWoodenHut": "La première hutte de bois est achevée ; cela pourrait être le début de quelque chose de grand.",
       "villageGrowthSuggestion": "Le village grandit rapidement. Peut-être des maisons de pierre pourraient-elles abriter davantage de villageois.", //x1.5
       "cityGrowthMilestone": "La ville est devenue une métropole animée, pleine de commerce, d'industrie et de promesses de jours meilleurs.",
-      "moonstoneDiscovered": "Dans les profondeurs de la fosse, les ouvriers découvrent quelque chose d'extraordinaire. Ils mettent au jour des veines de pierre de lune, un minéral luminescent chargé d'une énergie immense.",
+      "moonstoneDiscovered": "Au fond de la fosse, les ouvriers découvrent des veines de pierre de lune, un minéral luminescent débordant d'énergie.",
       "foundry": "La fonderie rugit et prend vie tandis que le feu et la chaleur fusionnent les matières brutes.",
       "masterworkFoundry": "La fonderie de maître est achevée, monument d'une maîtrise métallurgique suprême. Dans ses flammes, on peut forger de l'acier noir, presque incassable, mais très difficile à produire.",
       "altar": "Un autel s'élève à l'orée de la forêt, dressé pour apaiser ce qui y demeure.",

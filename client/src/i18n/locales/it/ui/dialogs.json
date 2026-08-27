@@ -150,7 +150,7 @@
     "continueJourney": "Continua il Viaggio",
     "progressSaved": "I tuoi progressi sono salvati. Puoi tornare in qualsiasi momento e continuare da dove hai interrotto.",
     "loadingPayment": "Caricamento del sistema di pagamento...",
-    "purchaseSuccessful": "Acquisto Completato!",
+    "purchaseSuccessful": "Acquisto completato.",
     "purchaseSuccessfulDesc": "Gioco Completo sbloccato e attivato! Ora puoi continuare il tuo viaggio senza restrizioni.",
     "legalConsent": "Accesso immediato ai contenuti digitali dopo l'acquisto.",
     "termsOfService": "Termini",
@@ -158,7 +158,7 @@
     "completePurchaseFor": "Completa l'Acquisto per {{price}}",
     "paymentFailed": "Pagamento fallito",
     "notAuthenticated": "Non hai effettuato l'accesso",
-    "unexpectedError": "Si è verificato un errore imprevisto"
+    "unexpectedError": "Qualcosa è andato storto."
   },
   "leaderboard": {
     "title": "Classifica",
