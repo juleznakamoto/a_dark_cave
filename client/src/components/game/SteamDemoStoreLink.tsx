@@ -1,7 +1,10 @@
 import { Button } from "@/components/ui/button";
 import { FooterSocialIcon } from "@/components/game/FooterSocialIcon";
 import { TooltipWrapper } from "@/components/game/TooltipWrapper";
-import { useDemoEditionActive } from "@/hooks/useSteamEditionActive";
+import {
+  useCrazyGamesEditionActive,
+  useDemoEditionActive,
+} from "@/hooks/useSteamEditionActive";
 import { useUiTranslation } from "@/i18n/useUiTranslation";
 import { STEAM_STORE_UTM_CONTENT } from "@/lib/gameFooterSocialLinks";
 import { openFullGameStore } from "@/lib/openFullGameStore";
@@ -10,9 +13,10 @@ import { GAME_CHROME_NO_BG_HOVER } from "./gameChrome";
 /** Small centered header link on demo editions (Steam overlay on desktop). */
 export function SteamDemoHeaderStoreLink() {
   const demoEditionActive = useDemoEditionActive();
+  const crazyGamesEditionActive = useCrazyGamesEditionActive();
   const { t } = useUiTranslation();
 
-  if (!demoEditionActive) return null;
+  if (!demoEditionActive || crazyGamesEditionActive) return null;
 
   const label = t("galaxy.storeHeaderLink", { defaultValue: "Add to wishlist" });
   const tooltip = t("galaxy.storeHeaderTooltip", {
