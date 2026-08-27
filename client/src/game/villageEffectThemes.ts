@@ -78,7 +78,7 @@ export const VILLAGE_EFFECT_THEMES: Record<
     iconRing: "border-yellow-500/45 bg-yellow-950/35",
     glowRgb: "234, 179, 8",
     iconClassName:
-      "font-noto-symbols-2 inline-flex items-center justify-center text-3xl text-yellow-500 leading-none",
+      "font-noto-symbols-2 inline-flex items-center justify-center text-3xl text-yellow-500 leading-none translate-y-0.5",
   },
   frostfall: {
     id: "frostfall",

@@ -36,8 +36,6 @@ export const SHARED_PROGRESS_SHADER_FALLBACK_CLASS = "bg-red-950";
 
 /** Matches Tailwind `rounded-[4px]` on SegmentedProgress segments. */
 const SEGMENT_CORNER_RADIUS_CSS_PX = 4;
-/** Extra clip so a 4px radius on an 8px bar still covers the cell. */
-const SEGMENT_CLIP_PAD_CSS_PX = 2;
 
 /**
  * Smoke flow + per-draw rounded-rect clip. Packs corner radius into `u_finish.w`
@@ -385,17 +383,18 @@ class SharedProgressShaderRenderer {
       );
       const shapeRect = cell ? cell.getBoundingClientRect() : rect;
 
-      const pad = SEGMENT_CLIP_PAD_CSS_PX * dpr;
       const left = (shapeRect.left - canvasRect.left) * dpr;
-      const bottom = canvasH - (shapeRect.bottom - canvasRect.top) * dpr - pad;
-      const width = shapeRect.width * dpr + pad;
-      const height = shapeRect.height * dpr + pad * 2;
+      const bottom = canvasH - (shapeRect.bottom - canvasRect.top) * dpr;
+      const width = shapeRect.width * dpr;
+      const height = shapeRect.height * dpr;
       if (width < 0.5 || height < 0.5) continue;
 
-      // Scissor to the fill tip. Pad top/bottom/right so the rounded clip can
-      // cover the cell. Do not pad left: that bled into the prior gap.
+      // Scissor to the fill tip. Pad top/bottom/right 1px so outside-only AA can
+      // sit under the CSS rim (box-shadow). Do not pad left: that bled into the
+      // gap before each segment and made the grow look like it started left of
+      // the section.
       const fillLeft = (rect.left - canvasRect.left) * dpr;
-      const fillRight = fillLeft + rect.width * dpr + pad;
+      const fillRight = fillLeft + rect.width * dpr;
       const fillBottom = canvasH - (rect.bottom - canvasRect.top) * dpr;
       const fillTop = fillBottom + rect.height * dpr;
       const outerRight = left + width;
