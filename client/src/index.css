@@ -44,15 +44,15 @@ body {
 
 /* Apply symbol fallback font only once confirmed loaded — avoids FOUT */
 :root.symbols-font-loaded {
-  --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, "Noto Symbol Compat", "Noto Sans Symbols 2", sans-serif;
+  --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, "Noto Sans Symbols 2", "Noto Symbol Compat", sans-serif;
 }
 
 :root.font-loaded.symbols-font-loaded {
-  --font-sans: 'Fira Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, "Noto Symbol Compat", "Noto Sans Symbols 2", sans-serif;
+  --font-sans: 'Fira Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, "Noto Sans Symbols 2", "Noto Symbol Compat", sans-serif;
 }
 
 :root.font-loaded.symbols-font-loaded body {
-  font-family: 'Fira Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, "Noto Symbol Compat", "Noto Sans Symbols 2", sans-serif;
+  font-family: 'Fira Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, "Noto Sans Symbols 2", "Noto Symbol Compat", sans-serif;
 }
 
 @layer base {
@@ -91,10 +91,11 @@ body {
 @layer utilities {
 
   /* Force symbol glyphs through Noto — avoid system-ui/Segoe fallbacks (Electron vs browser).
-     Compat is first for claimed-but-missing glyphs (⟡). Its @font-face metric
-     overrides match Symbols 2 so × / ↦ fallbacks stay centered on mobile. */
+     Symbols 2 is first so it owns the line box (× / ↦). Compat is second for
+     glyphs Symbols 2 claims-but-omits (⟡); those codepoints are punched out of
+     the Symbols 2 unicode-range so they can fall through. */
   .font-noto-symbols-2 {
-    font-family: "Noto Symbol Compat", "Noto Sans Symbols 2", sans-serif;
+    font-family: "Noto Sans Symbols 2", "Noto Symbol Compat", sans-serif;
   }
 
   /*
