@@ -34,8 +34,8 @@ export const SHARED_PROGRESS_SHADER_COLOR_TOKENS = [
 
 export const SHARED_PROGRESS_SHADER_FALLBACK_CLASS = "bg-red-950";
 
-/** Matches Tailwind `rounded-[4px]` on SegmentedProgress segments. */
-const SEGMENT_CORNER_RADIUS_CSS_PX = 4;
+/** Same as `rounded-[1px]` on the segment track and rim. Stay under half of `h-2`. */
+const SEGMENT_CORNER_RADIUS_CSS_PX = 1;
 
 /**
  * Smoke flow + per-draw rounded-rect clip. Packs corner radius into `u_finish.w`
@@ -58,7 +58,7 @@ uniform vec4 u_clipRect; // xy bottom-left, zw size (gl_FragCoord / scissor spac
       gl_FragCoord.xy + vec2(u_seed * 17.0, u_seed * 31.0)) - 0.5) * u_grain;
   gl_FragColor = vec4(clamp(col, 0.0, 1.0), 1.0);
 }`,
-    `  // Clip to segment rounded-[4px] (scissor alone is square). Coverage is
+    `  // Clip to segment rounded rect (scissor alone is square). Coverage is
   // smoothed over one device pixel so corners are antialiased, and the result
   // is premultiplied to match the context's premultipliedAlpha.
   float coverage = 1.0;
@@ -96,7 +96,7 @@ type SegmentRegistration = {
 
 /** Matches SegmentedProgress cell rim — painted above the WebGL canvas. */
 const SEGMENT_RIM_BASE_CLASS =
-  "pointer-events-none absolute rounded-[4px] transition-[box-shadow] duration-300";
+  "pointer-events-none absolute rounded-[1px] transition-[box-shadow] duration-300";
 /** Same class as SegmentedProgress filled rims (already in the CSS bundle). */
 const SEGMENT_RIM_FILLED_CLASS =
   "shadow-[0_0_0_1px_theme(colors.orange.600/0.8)]";
