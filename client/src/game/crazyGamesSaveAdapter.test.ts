@@ -22,6 +22,7 @@ vi.mock("@/lib/logger", () => ({
 
 vi.mock("@/lib/crazyGames", () => ({
   initCrazyGamesSdk: vi.fn().mockResolvedValue(true),
+  shouldUseCrazyGamesPersist: () => editionMocks.isCrazyGamesEdition,
   getCrazyGamesData: () => ({
     getItem: (key: string) => dataStore.get(key) ?? null,
     setItem: (key: string, value: string) => {
@@ -106,5 +107,20 @@ describe("crazyGamesSaveAdapter", () => {
 
     await prepareCrazyGamesStartup();
     expect(local.get(getStartupSaveHeaderKey())).toBe(header);
+    // Get-then-set so CrazyGames records Set Item, not only Get Item.
+    expect(dataStore.get(getStartupSaveHeaderKey())).toBe(header);
+  });
+
+  it("writes an existing Data save back through setItem on prepare", async () => {
+    const {
+      prepareCrazyGamesStartup,
+      CRAZYGAMES_SAVE_STORAGE_KEY,
+    } = await import("./crazyGamesSaveAdapter");
+    const encoded = encodeLocalSave(createSave(25));
+    dataStore.set(CRAZYGAMES_SAVE_STORAGE_KEY, encoded);
+
+    await prepareCrazyGamesStartup();
+    expect(dataStore.get(CRAZYGAMES_SAVE_STORAGE_KEY)).toBe(encoded);
+    expect(local.get(CRAZYGAMES_SAVE_STORAGE_KEY)).toBe(encoded);
   });
 });

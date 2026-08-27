@@ -8,7 +8,7 @@ import { logger } from "./logger";
  *
  * `html-to-image` rasterizes the cloned DOM by loading an SVG (with the markup in
  * a `<foreignObject>`) into an `<img>`. In that mode the browser refuses to fetch
- * external resources, so any `@font-face` pointing at a `/fonts/` URL renders with
+ * external resources, so any `@font-face` pointing at a font file URL renders with
  * a fallback face. Passing this inlined CSS as `fontEmbedCSS` guarantees the
  * resource icons and title text use the real game fonts in the exported PNG.
  */
@@ -22,6 +22,32 @@ function arrayBufferToBase64(buffer: ArrayBuffer): string {
     binary += String.fromCharCode.apply(null, chunk as unknown as number[]);
   }
   return btoa(binary);
+}
+
+/** Strip CSS `url()` quotes so `./fonts/x` and `'./fonts/x'` match the same. */
+function unwrapCssUrl(url: string): string {
+  return url.trim().replace(/^['"]|['"]$/g, "");
+}
+
+/**
+ * Same-origin font files, including CrazyGames relative `./fonts/…` / `fonts/…`
+ * from `publicUrl("/fonts/…")` when Vite `base` is `./`.
+ * `includes("/fonts/")` misses a leading `fonts/` (no slash before the folder).
+ */
+export function isShareImageFontSrcUrl(url: string): boolean {
+  const cleaned = unwrapCssUrl(url);
+  if (!cleaned || cleaned.startsWith("data:")) return false;
+  return /(?:^|\/)fonts\//.test(cleaned);
+}
+
+export function collectShareImageFontSrcUrls(css: string): string[] {
+  return [
+    ...new Set(
+      Array.from(css.matchAll(/url\(([^)]+)\)/g), (match) =>
+        unwrapCssUrl(match[1]),
+      ).filter(isShareImageFontSrcUrl),
+    ),
+  ];
 }
 
 async function fetchAsDataUrl(url: string): Promise<string | null> {
@@ -38,18 +64,7 @@ async function fetchAsDataUrl(url: string): Promise<string | null> {
 
 async function inlineFontFaceCss(css: string): Promise<string> {
   let next = css;
-  const remoteUrls = Array.from(
-    new Set(
-      Array.from(css.matchAll(/url\(([^)]+)\)/g))
-        .map((match) => match[1])
-        .filter(
-          (url) =>
-            url.startsWith("http") ||
-            url.startsWith("/fonts/") ||
-            url.includes("/fonts/"),
-        ),
-    ),
-  );
+  const remoteUrls = collectShareImageFontSrcUrls(css);
   const inlined = await Promise.all(
     remoteUrls.map(async (url) => [url, await fetchAsDataUrl(url)] as const),
   );

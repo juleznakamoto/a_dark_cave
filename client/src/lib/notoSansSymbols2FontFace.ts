@@ -1,15 +1,44 @@
 /**
- * @font-face blocks for Noto Sans Symbols 2.
+ * @font-face blocks for Noto Sans Symbols 2 plus a tiny compat face.
  * Self-hosted under `/fonts/` (copied from `client/public/fonts` at build time) so the
  * Steam/Electron loopback build works offline — remote Google Fonts URLs do not load there.
  *
  * Unicode-range slices match the Google Fonts CSS payload (Noto Sans Symbols 2 v25).
+ * Those slices claim ranges they do not actually draw (e.g. U+27E1 feast ⟡), so
+ * `Noto Symbol Compat` is listed first in `.font-noto-symbols-2` / `--font-sans`.
+ * The compat woff2 is not prefetched: unicode-range fetches it only when a
+ * missing glyph is painted (start screen and public SEO pages never mount Noto).
+ * Rebuild the woff2 with `python scripts/build-noto-symbol-compat.py`.
  */
 import { publicUrl } from "./publicUrl";
 
 const NOTO_BASE = publicUrl("/fonts");
 
+/** UI glyphs used with `.font-noto-symbols-2` that Symbols 2's files omit. */
+export const NOTO_SYMBOL_COMPAT_CODEPOINTS = [
+  0x2058, 0x2059, 0x2193, 0x2234, 0x224b, 0x2629, 0x26b5, 0x26e4, 0x26ef,
+  0x26f0, 0x2720, 0x27d0, 0x27d1, 0x27e1, 0x29c8, 0x1f70b,
+] as const;
+
+function unicodeRangeFromCodepoints(codepoints: readonly number[]): string {
+  return codepoints
+    .map((cp) => `U+${cp.toString(16).toUpperCase()}`)
+    .join(", ");
+}
+
+const NOTO_SYMBOL_COMPAT_FONT_FACE_CSS = `
+@font-face {
+  font-family: 'Noto Symbol Compat';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url(${NOTO_BASE}/noto-symbol-compat.woff2) format('woff2');
+  unicode-range: ${unicodeRangeFromCodepoints(NOTO_SYMBOL_COMPAT_CODEPOINTS)};
+}
+`.trim();
+
 export const NOTO_SANS_SYMBOLS_2_FONT_FACE_CSS = `
+${NOTO_SYMBOL_COMPAT_FONT_FACE_CSS}
 @font-face {
   font-family: 'Noto Sans Symbols 2';
   font-style: normal;

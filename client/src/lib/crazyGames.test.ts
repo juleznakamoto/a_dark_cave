@@ -58,4 +58,10 @@ describe("initCrazyGamesSdk timeout", () => {
     await vi.advanceTimersByTimeAsync(1);
     await expect(init).resolves.toBe(false);
   });
+
+  it("uses Data persist when the SDK is injected even off /crazygames", async () => {
+    stubSdk(() => Promise.resolve());
+    const { shouldUseCrazyGamesPersist } = await import("./crazyGames");
+    expect(shouldUseCrazyGamesPersist()).toBe(true);
+  });
 });

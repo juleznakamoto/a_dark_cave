@@ -22,6 +22,7 @@ import {
 import { logger } from "./lib/logger";
 import { BOOT_LOCALE_TIMEOUT_MS } from "./lib/fatalErrorScreen";
 import { isCrazyGamesBuild } from "./lib/edition";
+import { hasCrazyGamesSdk } from "./lib/crazyGames";
 import { installFlushSaveOnExit } from "./game/flushSaveOnExit";
 import { persistLandingReferralCode } from "./game/referralLanding";
 
@@ -122,7 +123,7 @@ declare global {
 }
 
 async function mountApp(): Promise<void> {
-  if (isCrazyGamesBuild) {
+  if (isCrazyGamesBuild || hasCrazyGamesSdk()) {
     try {
       const { prepareCrazyGamesStartup } = await import(
         "./game/crazyGamesSaveAdapter"

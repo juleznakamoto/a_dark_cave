@@ -21,7 +21,7 @@ import {
 import { tWithFallback } from "@/i18n/resolveGameText";
 import { syncSocialPromoExclusiveRewardPending } from "./socialPromoExclusiveReward";
 import { buildGameState } from "./stateHelpers";
-import { isCrazyGamesEdition, isLocalOnlyEdition, isSteamBuild } from "@/lib/edition";
+import { isLocalOnlyEdition, isSteamBuild } from "@/lib/edition";
 import {
   writeSteamCloudSave,
   readSteamCloudSave,
@@ -30,6 +30,7 @@ import {
 import {
   clearCrazyGamesPersistedData,
   readCrazyGamesSave,
+  shouldUseCrazyGamesPersist,
   writeCrazyGamesCloudSave,
 } from "./crazyGamesSaveAdapter";
 import {
@@ -349,7 +350,7 @@ async function tryGetGameSaveDatabase(): Promise<GameSaveDatabase | null> {
   try {
     return await getGameSaveDatabase();
   } catch (error) {
-    if (isCrazyGamesEdition()) {
+    if (shouldUseCrazyGamesPersist()) {
       logger.warn("[SAVE] IndexedDB unavailable, using CrazyGames persist:", error);
       return null;
     }
@@ -371,10 +372,8 @@ async function putLocalSave(
   if (isSteamBuild) {
     await writeSteamCloudSave(encoded);
   }
-  if (isCrazyGamesEdition()) {
-    await writeCrazyGamesCloudSave(encoded);
-  }
-  if (!db && !isCrazyGamesEdition() && !isSteamBuild) {
+  await writeCrazyGamesCloudSave(encoded);
+  if (!db && !shouldUseCrazyGamesPersist() && !isSteamBuild) {
     throw new Error("No local save backend available");
   }
 }
@@ -396,7 +395,7 @@ async function getLocalSave(
     const cloud = await readSteamCloudSave();
     local = pickNewerSave(local, cloud);
   }
-  if (isCrazyGamesEdition()) {
+  if (shouldUseCrazyGamesPersist()) {
     const crazyGames = await readCrazyGamesSave();
     const preferred = pickNewerSave(local, crazyGames);
     if (preferred && !crazyGames) {

@@ -31,6 +31,7 @@ vi.mock("./crazyGamesSaveAdapter", () => ({
   writeCrazyGamesHeaderJson: vi.fn(),
   readCrazyGamesHeaderJson: vi.fn(() => null),
   readCrazyGamesSave: mockReadCgSave,
+  shouldUseCrazyGamesPersist: () => editionMocks.isCrazyGamesEdition,
 }));
 
 function createSave(): SaveData {

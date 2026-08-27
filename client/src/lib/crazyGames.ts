@@ -6,7 +6,7 @@
  * method is a no-op. Always go through this module; game code never touches
  * `window.CrazyGames` directly.
  */
-import { isCrazyGamesBuild } from "@/lib/edition";
+import { isCrazyGamesBuild, isCrazyGamesEdition } from "@/lib/edition";
 import { logger } from "@/lib/logger";
 
 const SDK_WAIT_MS = 5000;
@@ -93,6 +93,14 @@ export async function initCrazyGamesSdk(): Promise<boolean> {
     initPromise = initializeCrazyGamesSdk();
   }
   return initPromise;
+}
+
+/**
+ * True when we should use CrazyGames Data persist: hosted folder, `/crazygames`,
+ * or the SDK was injected (developer preview of localhost / the main site).
+ */
+export function shouldUseCrazyGamesPersist(): boolean {
+  return isCrazyGamesEdition() || hasCrazyGamesSdk();
 }
 
 /** Data module after init, or null when the SDK is missing / disabled. */

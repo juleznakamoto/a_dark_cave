@@ -1,9 +1,10 @@
 import type { SaveData } from "@shared/schema";
-import { isCrazyGamesEdition, type DevGameMode } from "@/lib/edition";
+import { type DevGameMode } from "@/lib/edition";
 import { logger } from "@/lib/logger";
 import {
   readCrazyGamesHeaderJson,
   readCrazyGamesSave,
+  shouldUseCrazyGamesPersist,
   writeCrazyGamesHeaderJson,
 } from "./crazyGamesSaveAdapter";
 import { decodeLocalSave } from "./saveCodec";
@@ -140,7 +141,7 @@ function headerFromJson(raw: string | null): StartupSaveHeader | null {
 }
 
 async function readCrazyGamesStartupHeader(): Promise<StartupSaveHeader | null> {
-  if (!isCrazyGamesEdition()) return null;
+  if (!shouldUseCrazyGamesPersist()) return null;
   const save = await readCrazyGamesSave();
   if (save) {
     const header = createStartupSaveHeader(save);
@@ -168,7 +169,7 @@ export async function readStartupSaveHeader(): Promise<StartupSaveHeader | null>
       const db = await getGameSaveDatabase();
       rawSave = await db.get("saves", getSaveKey());
     } catch (error) {
-      if (!isCrazyGamesEdition()) throw error;
+      if (!shouldUseCrazyGamesPersist()) throw error;
       logger.warn(
         "[startup] IndexedDB unavailable, checking CrazyGames persist:",
         error,
