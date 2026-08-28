@@ -17,6 +17,7 @@ import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
 import { logger } from "@/lib/logger";
 import { useTranslation } from "react-i18next";
+import { GameUiIcon } from "@/components/game/GameUiIcon";
 
 const isDev = import.meta.env.DEV;
 
@@ -306,7 +307,10 @@ export default function LeaderboardDialog({
       <DialogContent className="[--adc-dialog-max-w:42rem] max-h-[80vh] flex flex-col overflow-hidden z-[70]">
         <DialogHeader>
           <DialogTitle className="flex items-center justify-between">
-            <span>{t("ui:leaderboard.title")}</span>
+            <span className="flex items-center gap-2">
+              <GameUiIcon name="leaderboard" sizeClassName="w-5 h-5" />
+              <span>{t("ui:leaderboard.title")}</span>
+            </span>
             {isDev && (
               <div className="flex items-center gap-2">
                 <Label htmlFor="env-switch" className="text-sm font-normal">

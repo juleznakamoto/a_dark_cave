@@ -3,7 +3,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/u
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
-/** Matches `RewardDialog` icon wrapper so outcome glyphs read the same (size + white on amber/orange). */
+/** Glyph size + white tint for outcome-dialog ring icons (investment arrows, etc.). */
 export const OUTCOME_DIALOG_REWARD_STYLE_ICON_CLASS =
   "font-noto-symbols-2 inline-flex items-center justify-center text-4xl text-white leading-none translate-y-0.5" as const;
 

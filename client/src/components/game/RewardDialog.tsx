@@ -9,9 +9,8 @@ import {
 } from "@/i18n/resolveGameText";
 import { useTranslation } from "react-i18next";
 import { resolveOutcomeLogMessage } from "@/i18n/logDisplay";
-import OutcomeDialog, {
-  OUTCOME_DIALOG_REWARD_STYLE_ICON_CLASS,
-} from "./OutcomeDialog";
+import OutcomeDialog from "./OutcomeDialog";
+import { GameUiIcon } from "@/components/game/GameUiIcon";
 import { triggerExclusivePromoPingOnce } from "@/lib/exclusivePromoShockwave";
 
 /** Same center symbol + shockwave as the header Rewards shortcut (exclusive promo track). */
@@ -309,9 +308,7 @@ export default function RewardDialog({
         useSocialPromoIcon ? (
           <SocialPromoTasksOutcomeIcon />
         ) : (
-          <span className={OUTCOME_DIALOG_REWARD_STYLE_ICON_CLASS} aria-hidden>
-            ⁂
-          </span>
+          <GameUiIcon name="reward" sizeClassName="w-9 h-9" />
         )
       }
       successLog={resolveOutcomeLogMessage(successLog)}
