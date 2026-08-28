@@ -462,6 +462,7 @@ export default function AchievementsPanel() {
             disabled={!basicUnlocked}
             lockedTooltip={lockedTooltip}
             chartUnavailable={chartUnavailable}
+            centerSymbolClassName="pt-0.5"
           />
           <TabTriggerWithTooltipWhenLocked
             value="building"
