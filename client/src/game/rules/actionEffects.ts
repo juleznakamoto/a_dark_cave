@@ -26,6 +26,7 @@ import { isCraftUpgradeAction } from "@/game/craftUpgradeUtils";
 import { getNextBuildingLevel } from "./villageBuildActions";
 import { calculateAdjustedCost } from "./costCalculation";
 import { clothingEffects } from "./effects";
+import { scaleDemoActionBaseRange, scaleDemoActionBaseReward } from "@/game/demoActionRewards";
 
 export const FOCUS_ELIGIBLE_ACTIONS = [
   "exploreCave",
@@ -519,6 +520,9 @@ export function applyActionEffects(
             if (match) {
               let min = parseInt(match[1]);
               let max = parseInt(match[2]);
+              const demoBase = scaleDemoActionBaseRange(min, max, actionId);
+              min = demoBase.min;
+              max = demoBase.max;
 
               const actionBonuses = getActionBonusesCalc(actionId, state);
               if (
@@ -635,11 +639,11 @@ export function applyActionEffects(
         }
       } else if (typeof effect === "number") {
         if (pathParts[0] === "resources") {
-          let adjustedEffect = effect;
+          let adjustedEffect = scaleDemoActionBaseReward(effect, actionId);
           if (!isCraftUpgradeAction(actionId)) {
             const actionBonuses = getActionBonusesCalc(actionId, state);
             const mult = actionBonuses?.resourceMultiplier ?? 1;
-            adjustedEffect = Math.floor(effect * mult);
+            adjustedEffect = Math.floor(adjustedEffect * mult);
           }
           let newValue =
             (state.resources[finalKey as keyof typeof state.resources] || 0) +

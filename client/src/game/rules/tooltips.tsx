@@ -18,6 +18,7 @@ import {
   madnessDeathChanceToTooltipPercent,
 } from "./effectsStats";
 import { isCraftUpgradeAction } from "@/game/craftUpgradeUtils";
+import { scaleDemoActionBaseReward } from "@/game/demoActionRewards";
 import { getTotemSacrificeUsageFlatBonus } from "./forestSacrificeActions";
 import { gameActions } from "./index";
 import { getBoneTotemsCost } from "./forestSacrificeActions";
@@ -251,8 +252,8 @@ export const calculateResourceGains = (
             gains.push({ resource, min, max });
           }
         } else if (typeof value === "number") {
-          // Fixed value
-          let amount = value;
+          // Fixed value — demo editions raise the base before bonuses.
+          let amount = scaleDemoActionBaseReward(value, actionId);
 
           if (!isCraftUpgradeAction(actionId)) {
             // Apply flat bonuses first

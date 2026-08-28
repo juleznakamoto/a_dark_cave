@@ -22,6 +22,7 @@ import { getBonusSidebarLabel } from "@/i18n/resolveGameText";
 import { CRAFT_UPGRADE_ACTIONS, getCraftPriorMultiplier } from "@/game/craftUpgradeUtils";
 import { getWeaponEnchantBonus } from "@/game/weaponEnchantments";
 import { getAbsolvedItemMadnessAmount } from "@/game/itemAbsolution";
+import { scaleDemoActionBaseRange } from "@/game/demoActionRewards";
 import {
   getBuilderBuildCostReduction,
   getBuilderBuildTimeReduction,
@@ -412,8 +413,9 @@ const CAVE_EXPLORE_ACTIONS = [
 
 /**
  * Scale a random resource range: each % multiplier applies to the base roll only;
- * flat bonuses (usage scaling, devourer crown, etc.) are added after — not multiplied.
+ * flat bonuses (usage scaling, devourer crown, etc.) are added after, not multiplied.
  * Prior and other multipliers stack additively on the base (same model as craft output).
+ * Demo editions raise the base first (`demoActionRewards`); that is not a bonus source.
  */
 export function computeResourceRandomRange(
   baseMin: number,
@@ -426,6 +428,10 @@ export function computeResourceRandomRange(
     includeCaveExplore?: boolean;
   } = {},
 ): { min: number; max: number } {
+  const demoBase = scaleDemoActionBaseRange(baseMin, baseMax, actionId);
+  baseMin = demoBase.min;
+  baseMax = demoBase.max;
+
   const bonuses = getActionBonuses(actionId, state);
   const mults: number[] = [];
 
