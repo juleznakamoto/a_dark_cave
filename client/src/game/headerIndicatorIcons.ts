@@ -234,7 +234,7 @@ export const DIALOG_INDICATOR_ICONS: DialogIndicatorIcon[] = [
     border: "border-purple-500",
     iconRing: "border-purple-500/45 bg-purple-950/35",
     glowRgb: "147, 51, 234",
-    glyphClassName: `${DG} text-4xl text-purple-500 translate-y-[0.11em]`,
+    glyphClassName: `${DG} text-4xl text-purple-500 translate-y-[0.145em]`,
     symbol: headerIndicatorIcon("curse").symbol,
   },
   {
