@@ -225,7 +225,7 @@ const ATTACK_WAVE_DEFINITIONS: Record<AttackWaveId, AttackWaveDefinition> = {
     ...ATTACK_WAVE_TIMER_DEFAULTS,
     ...attackWaveScaledParams(10),
     attack: { options: [120], cruelBonus: 50 },
-    health: { base: 1600, cruelBonus: 300 },
+    health: { base: 1500, cruelBonus: 300 },
     isBoss: true,
     healChancePercent: 15,
     healAmount: 100,
