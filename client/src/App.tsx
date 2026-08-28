@@ -67,6 +67,9 @@ const AnimationsDemo = lazy(() => import("@/pages/animations-demo"));
 const CombatDialogDemo = lazy(() => import("@/pages/combat-dialog-demo"));
 const DemoEndScreenDemo = lazy(() => import("@/pages/demo-end-screen-demo"));
 const SoundsDemo = lazy(() => import("@/pages/sounds-demo"));
+const ProductionIconsDemo = lazy(
+  () => import("@/pages/production-icons-demo"),
+);
 
 function AppRoutes() {
   return (
@@ -92,6 +95,10 @@ function AppRoutes() {
         <Route path="/dev/combat-dialog" component={CombatDialogDemo} />
         <Route path="/dev/demo-end" component={DemoEndScreenDemo} />
         <Route path="/dev/sounds" component={SoundsDemo} />
+        <Route
+          path="/dev/production-icons"
+          component={ProductionIconsDemo}
+        />
         <Route path="/dev/estate-bar-upgrade">
           {() => <Redirect to="/dev/animations#estate-bars" />}
         </Route>

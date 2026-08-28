@@ -1,10 +1,9 @@
 import React from "react";
-import { formatNumber } from "@/lib/utils";
+import { cn, formatNumber } from "@/lib/utils";
 import { getResourceName } from "@/i18n/resolveGameText";
 import { useTranslation } from "react-i18next";
-import OutcomeDialog, {
-  OUTCOME_DIALOG_INSIGHT_ICON_CLASS,
-} from "./OutcomeDialog";
+import { outcomeDialogIcon } from "@/game/headerIndicatorIcons";
+import OutcomeDialog from "./OutcomeDialog";
 
 interface InsightPotionDialogData {
   insightGain: number;
@@ -30,7 +29,16 @@ export default function InsightPotionDialog({
     <OutcomeDialog
       isOpen={isOpen}
       onClose={onClose}
-      icon={<span className={OUTCOME_DIALOG_INSIGHT_ICON_CLASS}>🟖</span>}
+      icon={
+        <span
+          className={cn(
+            outcomeDialogIcon("insight").glyphClassName,
+            outcomeDialogIcon("insight").uiIconSizeClassName,
+          )}
+        >
+          {outcomeDialogIcon("insight").symbol}
+        </span>
+      }
       successLog={t("ui:insightPotion.message")}
       title={t("ui:insightPotion.title")}
       variant="insight"

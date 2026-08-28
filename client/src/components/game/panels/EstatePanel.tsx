@@ -34,11 +34,11 @@ import { isTraderShopUnlocked, stackTimedDebuff } from "@/game/stateHelpers";
 import { focusTooltip } from "@/game/rules/tooltips";
 import {
   GAME_PANEL_HEADER_INDICATOR_CLASS,
-  GAME_PANEL_HEADER_INDICATOR_GLYPH_CLASS,
   GAME_PANEL_HEADER_INDICATOR_INNER_CLASS,
   GAME_PANEL_HEADER_INDICATOR_SIZE_PX,
   GAME_PANEL_HEADER_INDICATOR_TRIGGER_CLASS,
 } from "@/components/game/gameChrome";
+import { headerIndicatorIcon } from "@/game/headerIndicatorIcons";
 import { formatNumber, formatSignedNumber } from "@/lib/utils";
 import cn from "clsx";
 import { buildLocalizedEventLogEntry } from "@/i18n/buildEventLogEntry";
@@ -234,6 +234,7 @@ export default function EstatePanel({
   // Calculate focus progress based on game loop timing
   const [focusProgress, setFocusProgress] = React.useState(0);
   const focusState = useGameStore((state) => state.focusState);
+  const focusIcon = headerIndicatorIcon("focus");
 
   React.useEffect(() => {
     const updateFocusProgress = () => {
@@ -553,10 +554,8 @@ export default function EstatePanel({
                       strokeWidth={2}
                       className="text-teal-400"
                     />
-                    <span
-                      className={`${GAME_PANEL_HEADER_INDICATOR_GLYPH_CLASS} game-panel-header-indicator-glyph--sm mt-[2px] text-teal-400`}
-                    >
-                      ☩
+                    <span className={focusIcon.glyphClassName}>
+                      {focusIcon.symbol}
                     </span>
                   </div>
                 </TooltipWrapper>

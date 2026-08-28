@@ -3,18 +3,6 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/u
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
-/** Glyph size + white tint for outcome-dialog ring icons (investment arrows, etc.). */
-export const OUTCOME_DIALOG_REWARD_STYLE_ICON_CLASS =
-  "font-noto-symbols-2 inline-flex items-center justify-center text-4xl text-white leading-none translate-y-0.5" as const;
-
-/** Madness ✺ in its ring — bottom-aligned via the ring container, not vertical translate. */
-export const OUTCOME_DIALOG_MADNESS_ICON_CLASS =
-  "font-noto-symbols-2 inline-flex text-4xl text-violet-300/90 leading-none" as const;
-
-/** Insight 🟖 glyph in its ring — blue; translate nudges emoji down for optical center. */
-export const OUTCOME_DIALOG_INSIGHT_ICON_CLASS =
-  "font-noto-symbols-2 inline-flex items-center justify-center text-4xl text-blue-400 leading-none translate-y-1.5" as const;
-
 export type OutcomeDialogVariant = "success" | "loss" | "madness" | "insight";
 
 export interface OutcomeDialogEffectTheme {

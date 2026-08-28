@@ -3911,7 +3911,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
     let rewardDialogData: {
       rewards: any;
       successLog?: string;
-      variant: "success" | "loss";
+      variant: "success";
       title?: string;
     } | null = null;
     let shouldShowMadnessDialog = false;

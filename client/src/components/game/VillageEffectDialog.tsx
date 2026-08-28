@@ -1,10 +1,8 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { resolveOutcomeLogMessage } from "@/i18n/logDisplay";
-import {
-  getVillageEffectTheme,
-  type VillageEffectDialogData,
-} from "@/game/villageEffectThemes";
+import { getVillageEffectTheme } from "@/game/headerIndicatorIcons";
+import type { VillageEffectDialogData } from "@/game/villageEffectThemes";
 import OutcomeDialog, { type OutcomeDialogEffectTheme } from "./OutcomeDialog";
 
 export type { VillageEffectDialogData };

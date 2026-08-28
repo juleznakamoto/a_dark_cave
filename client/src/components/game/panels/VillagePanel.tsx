@@ -140,12 +140,26 @@ import { FOREST_FEAR_DURATION_MS } from "@/game/rules/eventsForestFear";
 import { useNewItemPulseTooltips } from "@/hooks/useNewItemPulseTooltip";
 import {
   GAME_PANEL_HEADER_INDICATOR_CLASS,
-  GAME_PANEL_HEADER_INDICATOR_GLYPH_CLASS,
   GAME_PANEL_HEADER_INDICATOR_INNER_CLASS,
   GAME_PANEL_HEADER_INDICATOR_SIZE_PX,
   GAME_PANEL_HEADER_INDICATOR_TRIGGER_CLASS,
   GAME_PANEL_HEADER_INSIGHT_BADGE_CLASS,
 } from "@/components/game/gameChrome";
+import {
+  headerIndicatorIcon,
+  heartfireIndicatorIcon,
+} from "@/game/headerIndicatorIcons";
+
+function HeaderIndicatorGlyph({ id }: { id: string }) {
+  const icon = headerIndicatorIcon(id);
+  return <span className={icon.glyphClassName}>{icon.symbol}</span>;
+}
+
+function HeartfireIndicatorGlyph({ level }: { level: number }) {
+  const icon = heartfireIndicatorIcon(level);
+  if (!icon) return null;
+  return <span className={icon.glyphClassName}>{icon.symbol}</span>;
+}
 
 const VILLAGE_INDICATOR_TOOLTIP_IDS = [
   "production-cycle-progress",
@@ -325,11 +339,7 @@ function VillageProductionCycleIndicator({
           strokeWidth={2}
           className="text-gray-400"
         />
-        <span
-          className={`${GAME_PANEL_HEADER_INDICATOR_GLYPH_CLASS} game-panel-header-indicator-glyph--sm leading-none translate-x-[0.05em] translate-y-[0.1em] text-gray-400`}
-        >
-          ↦
-        </span>
+        <HeaderIndicatorGlyph id="cycle" />
       </div>
     </TooltipWrapper>
   );
@@ -836,64 +846,6 @@ export default function VillagePanel() {
       showWhen: () => buildings.clerksHut > 0,
     },
   ];
-
-  const getHeartfireSymbol = (level: number) => {
-    const config: Record<
-      number,
-      {
-        symbol: string;
-        marginTop: string;
-        textSize: string;
-        fontWeight?: number;
-      }
-    > = {
-      1: {
-        symbol: "·",
-        marginTop: "3px",
-        textSize: "text-[16px]",
-        fontWeight: 800,
-      },
-      2: {
-        symbol: ":",
-        marginTop: "1px",
-        textSize: "text-[12px]",
-        fontWeight: 800,
-      },
-      3: {
-        symbol: "∴",
-        marginTop: "1px",
-        textSize: "text-[12px]",
-        fontWeight: 900,
-      },
-      4: {
-        symbol: "⁘",
-        marginTop: "0px",
-        textSize: "text-[16px]",
-        fontWeight: 700,
-      },
-      5: {
-        symbol: "⁙",
-        marginTop: "0px",
-        textSize: "text-[14px]",
-        fontWeight: 700,
-      },
-    };
-
-    const entry = config[level];
-    if (!entry) return null;
-
-    return (
-      <span
-        className={entry.textSize}
-        style={{
-          marginTop: entry.marginTop,
-          fontWeight: entry.fontWeight,
-        }}
-      >
-        {entry.symbol}
-      </span>
-    );
-  };
 
   const renderButton = (actionId: string, label: string) => {
     const action = gameActions[actionId];
@@ -1765,11 +1717,9 @@ export default function VillagePanel() {
                                   : "text-yellow-600"
                               }
                             />
-                            <span
-                              className={`${GAME_PANEL_HEADER_INDICATOR_GLYPH_CLASS} mt-[2px] ${isGreatFeast ? "text-orange-600" : "text-yellow-600"}`}
-                            >
-                              {isGreatFeast ? "✦" : "⟡"}
-                            </span>
+                            <HeaderIndicatorGlyph
+                              id={isGreatFeast ? "greatFeast" : "feast"}
+                            />
                           </div>
                         </TooltipWrapper>
                       )}
@@ -1802,11 +1752,7 @@ export default function VillagePanel() {
                               strokeWidth={2}
                               className="text-orange-500"
                             />
-                            <span
-                              className={`${GAME_PANEL_HEADER_INDICATOR_GLYPH_CLASS} game-panel-header-indicator-glyph--sm mt-[3px] text-orange-500`}
-                            >
-                              ☼
-                            </span>
+                            <HeaderIndicatorGlyph id="solstice" />
                           </div>
                         </TooltipWrapper>
                       )}
@@ -1852,11 +1798,7 @@ export default function VillagePanel() {
                               strokeWidth={2}
                               className="text-purple-600"
                             />
-                            <span
-                              className={`${GAME_PANEL_HEADER_INDICATOR_GLYPH_CLASS} -mt-[0px] text-purple-600`}
-                            >
-                              ✶
-                            </span>
+                            <HeaderIndicatorGlyph id="curse" />
                           </div>
                         </TooltipWrapper>
                       )}
@@ -1902,11 +1844,7 @@ export default function VillagePanel() {
                               strokeWidth={2}
                               className="text-green-800"
                             />
-                            <span
-                              className={`${GAME_PANEL_HEADER_INDICATOR_GLYPH_CLASS} font-normal mt-[4px] text-green-800`}
-                            >
-                              ❢
-                            </span>
+                            <HeaderIndicatorGlyph id="disgust" />
                           </div>
                         </TooltipWrapper>
                       )}
@@ -1949,11 +1887,7 @@ export default function VillagePanel() {
                               strokeWidth={2}
                               className="text-amber-600"
                             />
-                            <span
-                              className={`${GAME_PANEL_HEADER_INDICATOR_GLYPH_CLASS} game-panel-header-indicator-glyph--xs mt-[2px] text-amber-600`}
-                            >
-                              ⛰
-                            </span>
+                            <HeaderIndicatorGlyph id="mining" />
                           </div>
                         </TooltipWrapper>
                       )}
@@ -1998,11 +1932,7 @@ export default function VillagePanel() {
                               strokeWidth={2}
                               className="text-yellow-500"
                             />
-                            <span
-                              className={`${GAME_PANEL_HEADER_INDICATOR_GLYPH_CLASS} game-panel-header-indicator-glyph--xs mt-[2px] text-yellow-500`}
-                            >
-                              🞜
-                            </span>
+                            <HeaderIndicatorGlyph id="brimstone" />
                           </div>
                         </TooltipWrapper>
                       )}
@@ -2045,11 +1975,9 @@ export default function VillagePanel() {
                               strokeWidth={2}
                               className="text-red-700"
                             />
-                            <span
-                              className={`${GAME_PANEL_HEADER_INDICATOR_GLYPH_CLASS} text-red-700`}
-                            >
-                              {getHeartfireSymbol(state.heartfireState.level)}
-                            </span>
+                            <HeartfireIndicatorGlyph
+                              level={state.heartfireState.level}
+                            />
                           </div>
                         </TooltipWrapper>
                       )}
@@ -2100,11 +2028,7 @@ export default function VillagePanel() {
                               strokeWidth={2}
                               className="text-blue-600"
                             />
-                            <span
-                              className={`${GAME_PANEL_HEADER_INDICATOR_GLYPH_CLASS} mt-[2px] text-blue-600`}
-                            >
-                              ✼
-                            </span>
+                            <HeaderIndicatorGlyph id="frostfall" />
                           </div>
                         </TooltipWrapper>
                       )}
@@ -2157,11 +2081,7 @@ export default function VillagePanel() {
                                 strokeWidth={2}
                                 className="text-gray-500"
                               />
-                              <span
-                                className={`${GAME_PANEL_HEADER_INDICATOR_GLYPH_CLASS} leading-none mt-[1px] text-gray-500`}
-                              >
-                                ≋
-                              </span>
+                              <HeaderIndicatorGlyph id="fog" />
                             </div>
                           </TooltipWrapper>
                         );
@@ -2210,11 +2130,7 @@ export default function VillagePanel() {
                               strokeWidth={2}
                               className="text-green-800"
                             />
-                            <span
-                              className={`${GAME_PANEL_HEADER_INDICATOR_GLYPH_CLASS} mt-[2px] text-green-800`}
-                            >
-                              ⯏
-                            </span>
+                            <HeaderIndicatorGlyph id="deer" />
                           </div>
                         </TooltipWrapper>
                       )}
@@ -2262,11 +2178,7 @@ export default function VillagePanel() {
                               strokeWidth={2}
                               className="text-red-800"
                             />
-                            <span
-                              className={`${GAME_PANEL_HEADER_INDICATOR_GLYPH_CLASS} mt-[2px] text-red-800`}
-                            >
-                              ⯸
-                            </span>
+                            <HeaderIndicatorGlyph id="fear" />
                           </div>
                         </TooltipWrapper>
                       )}
@@ -2306,11 +2218,7 @@ export default function VillagePanel() {
                                 strokeWidth={2}
                                 className="text-violet-600"
                               />
-                              <span
-                                className={`${GAME_PANEL_HEADER_INDICATOR_GLYPH_CLASS} leading-none mt-[2px] text-violet-600`}
-                              >
-                                ✺
-                              </span>
+                              <HeaderIndicatorGlyph id="madness" />
                             </div>
                           </TooltipWrapper>
                         );

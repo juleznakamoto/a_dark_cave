@@ -1,5 +1,6 @@
 import type { GameState } from "@shared/schema";
 
+/** Keep this file free of `headerIndicatorIcons` value imports so class tweaks HMR. */
 export type VillageEffectThemeId =
   | "feast"
   | "solstice"
@@ -11,112 +12,6 @@ export type VillageEffectThemeId =
   | "fog"
   | "staringDeer"
   | "forestFear";
-
-export interface VillageEffectTheme {
-  id: VillageEffectThemeId;
-  symbol: string;
-  border: string;
-  iconRing: string;
-  glowRgb: string;
-  /** Centered Noto symbol styling — optical nudge per glyph (matches header indicators). */
-  iconClassName: string;
-}
-
-export const VILLAGE_EFFECT_THEMES: Record<
-  VillageEffectThemeId,
-  VillageEffectTheme
-> = {
-  feast: {
-    id: "feast",
-    symbol: "⟡",
-    border: "border-yellow-600",
-    iconRing: "border-yellow-500/45 bg-yellow-950/35",
-    glowRgb: "202, 138, 4",
-    iconClassName:
-      "font-noto-symbols-2 inline-flex items-center justify-center text-4xl text-yellow-600 leading-none translate-y-0.5",
-  },
-  solstice: {
-    id: "solstice",
-    symbol: "☼",
-    border: "border-orange-500",
-    iconRing: "border-orange-500/45 bg-orange-950/35",
-    glowRgb: "249, 115, 22",
-    iconClassName:
-      "font-noto-symbols-2 inline-flex items-center justify-center text-3xl text-orange-500 leading-none translate-y-1",
-  },
-  curse: {
-    id: "curse",
-    symbol: "✶",
-    border: "border-purple-600",
-    iconRing: "border-purple-500/45 bg-purple-950/35",
-    glowRgb: "147, 51, 234",
-    iconClassName:
-      "font-noto-symbols-2 inline-flex items-center justify-center text-4xl text-purple-600 leading-none translate-y-1",
-  },
-  disgust: {
-    id: "disgust",
-    symbol: "❢",
-    border: "border-green-800",
-    iconRing: "border-green-700/45 bg-green-950/35",
-    glowRgb: "22, 101, 52",
-    iconClassName:
-      "font-noto-symbols-2 inline-flex items-center justify-center text-4xl text-green-800 leading-none translate-y-1 font-normal",
-  },
-  miningBoost: {
-    id: "miningBoost",
-    symbol: "⛰",
-    border: "border-amber-600",
-    iconRing: "border-amber-500/45 bg-amber-950/35",
-    glowRgb: "217, 119, 6",
-    iconClassName:
-      "font-noto-symbols-2 inline-flex items-center justify-center text-3xl text-amber-600 leading-none",
-  },
-  brimstoneFlux: {
-    id: "brimstoneFlux",
-    symbol: "🞜",
-    border: "border-yellow-500",
-    iconRing: "border-yellow-500/45 bg-yellow-950/35",
-    glowRgb: "234, 179, 8",
-    iconClassName:
-      "font-noto-symbols-2 inline-flex items-center justify-center text-3xl text-yellow-500 leading-none translate-y-0.5",
-  },
-  frostfall: {
-    id: "frostfall",
-    symbol: "✼",
-    border: "border-blue-600",
-    iconRing: "border-blue-500/45 bg-blue-950/35",
-    glowRgb: "37, 99, 235",
-    iconClassName:
-      "font-noto-symbols-2 inline-flex items-center justify-center text-4xl text-blue-600 leading-none translate-y-0.5",
-  },
-  fog: {
-    id: "fog",
-    symbol: "≋",
-    border: "border-gray-500",
-    iconRing: "border-gray-500/45 bg-gray-950/35",
-    glowRgb: "107, 114, 128",
-    iconClassName:
-      "font-noto-symbols-2 inline-flex items-center justify-center text-4xl text-gray-500 leading-none translate-y-0.5",
-  },
-  staringDeer: {
-    id: "staringDeer",
-    symbol: "⯏",
-    border: "border-green-800",
-    iconRing: "border-green-800/45 bg-green-950/35",
-    glowRgb: "22, 101, 52",
-    iconClassName:
-      "font-noto-symbols-2 inline-flex items-center justify-center text-4xl text-green-800 leading-none translate-y-0.5",
-  },
-  forestFear: {
-    id: "forestFear",
-    symbol: "⯸",
-    border: "border-red-800",
-    iconRing: "border-red-800/45 bg-red-950/35",
-    glowRgb: "153, 27, 27",
-    iconClassName:
-      "font-noto-symbols-2 inline-flex items-center justify-center text-4xl text-red-800 leading-none translate-y-0.5",
-  },
-};
 
 type TimedEffectSlice = { isActive?: boolean; endTime?: number } | null | undefined;
 
@@ -197,12 +92,6 @@ export function resolveVillageEffectAnnouncementTheme(
   }
 
   return EVENT_ID_THEMES[baseId] ?? null;
-}
-
-export function getVillageEffectTheme(
-  themeId: VillageEffectThemeId,
-): VillageEffectTheme {
-  return VILLAGE_EFFECT_THEMES[themeId];
 }
 
 export interface VillageEffectDialogData {

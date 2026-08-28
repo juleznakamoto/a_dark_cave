@@ -503,7 +503,7 @@ html.adc-text-large .side-panel-item-list {
   gap: 0.125rem;
 }
 
-.game-panel-header-indicator-glyph {
+.game-panel-header-indicator-glyph--md {
   font-size: 12px;
 }
 
@@ -515,7 +515,7 @@ html.adc-text-large .side-panel-item-list {
   font-size: 7px;
 }
 
-html.adc-text-large .game-panel-header-indicator-glyph {
+html.adc-text-large .game-panel-header-indicator-glyph--md {
   font-size: 15px;
 }
 

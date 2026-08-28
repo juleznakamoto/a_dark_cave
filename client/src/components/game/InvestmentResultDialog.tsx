@@ -1,8 +1,7 @@
 import React from "react";
-import OutcomeDialog, {
-  OUTCOME_DIALOG_REWARD_STYLE_ICON_CLASS,
-} from "./OutcomeDialog";
-import { formatNumber } from "@/lib/utils";
+import { outcomeDialogIcon } from "@/game/headerIndicatorIcons";
+import OutcomeDialog from "./OutcomeDialog";
+import { cn, formatNumber } from "@/lib/utils";
 import { useTranslation } from "react-i18next";
 import {
   getInvestmentResultDialogBodyMeta,
@@ -16,34 +15,23 @@ interface InvestmentResultDialogProps {
   onClose: () => void;
 }
 
+const INVEST_ICON_ID = {
+  lucky_chance: "investLucky",
+  wipeout: "investWipeout",
+  partial_loss: "investPartialLoss",
+  success: "investSuccess",
+} as const;
+
 function OutcomeIcon({ kind }: { kind: InvestmentOutcomeUiKind }) {
-  const cls = OUTCOME_DIALOG_REWARD_STYLE_ICON_CLASS;
-  switch (kind) {
-    case "lucky_chance":
-      return (
-        <span className={cls} aria-hidden>
-          ⇮
-        </span>
-      );
-    case "wipeout":
-      return (
-        <span className={`${cls} rotate-180`} aria-hidden>
-          ⇮
-        </span>
-      );
-    case "partial_loss":
-      return (
-        <span className={cls} aria-hidden>
-          ⇩
-        </span>
-      );
-    case "success":
-      return (
-        <span className={cls} aria-hidden>
-          ⇧
-        </span>
-      );
-  }
+  const icon = outcomeDialogIcon(INVEST_ICON_ID[kind]);
+  return (
+    <span
+      className={cn(icon.glyphClassName, icon.uiIconSizeClassName)}
+      aria-hidden
+    >
+      {icon.symbol}
+    </span>
+  );
 }
 
 export default function InvestmentResultDialog({

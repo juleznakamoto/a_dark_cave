@@ -9,13 +9,15 @@ import {
 } from "@/i18n/resolveGameText";
 import { useTranslation } from "react-i18next";
 import { resolveOutcomeLogMessage } from "@/i18n/logDisplay";
+import { outcomeDialogIcon } from "@/game/headerIndicatorIcons";
 import OutcomeDialog from "./OutcomeDialog";
 import { GameUiIcon } from "@/components/game/GameUiIcon";
 import { triggerExclusivePromoPingOnce } from "@/lib/exclusivePromoShockwave";
 
-/** Same center symbol + shockwave as the header Rewards shortcut (exclusive promo track). */
+/** Same diamond-ring icon as SocialPromptDialog, plus the exclusive-promo shockwave. */
 function SocialPromoTasksOutcomeIcon() {
   const ringRef = useRef<HTMLSpanElement>(null);
+  const promoIcon = outcomeDialogIcon("rewardSocialPromo");
 
   useEffect(() => {
     triggerExclusivePromoPingOnce(ringRef.current);
@@ -35,12 +37,11 @@ function SocialPromoTasksOutcomeIcon() {
           }
         }}
       />
-      <span
-        className="relative z-[1] text-[26px] leading-none select-none text-lime-500"
-        aria-hidden
-      >
-        ⯫
-      </span>
+      <GameUiIcon
+        name={promoIcon.uiIcon!}
+        sizeClassName={promoIcon.uiIconSizeClassName}
+        className={promoIcon.uiIconClassName}
+      />
     </span>
   );
 }
@@ -64,7 +65,6 @@ interface RewardDialogData {
     stats?: Partial<GameState["stats"]>;
   };
   successLog?: string;
-  variant?: "success" | "loss";
   /** Dialog heading; omit for generic action rewards (e.g. cave actions). */
   title?: string;
   /** When set, show a madness delta line (same copy as MadnessDialog). */
@@ -124,8 +124,7 @@ export default function RewardDialog({
   const { t } = useTranslation(["ui", "common"]);
   if (!data) return null;
 
-  const { rewards, successLog, variant = "success", title, madnessChange } = data;
-  const isLossVariant = variant === "loss";
+  const { rewards, successLog, title, madnessChange } = data;
 
   const rewardItems: JSX.Element[] = [];
   if (rewards.stats && Object.keys(rewards.stats).length > 0) {
@@ -281,9 +280,10 @@ export default function RewardDialog({
   const hasLosses = lossItems.length > 0;
   const hasMadnessChange =
     typeof madnessChange === "number" && madnessChange !== 0;
-  const useSocialPromoIcon =
-    variant === "success" &&
-    Boolean(rewards.clothing?.includes("gifted_ring"));
+  const useSocialPromoIcon = Boolean(
+    rewards.clothing?.includes("gifted_ring"),
+  );
+  const rewardIcon = outcomeDialogIcon("rewardSuccess");
 
   const content = (
     <>
@@ -308,15 +308,16 @@ export default function RewardDialog({
         useSocialPromoIcon ? (
           <SocialPromoTasksOutcomeIcon />
         ) : (
-          <GameUiIcon name="reward" sizeClassName="w-9 h-9" />
+          <GameUiIcon
+            name={rewardIcon.uiIcon!}
+            sizeClassName={rewardIcon.uiIconSizeClassName}
+          />
         )
       }
       successLog={resolveOutcomeLogMessage(successLog)}
       title={title?.trim() ? title : t("ui:reward.actionReward")}
-      variant={isLossVariant ? "loss" : "success"}
-      buttonText={
-        isLossVariant ? t("common:buttons.continue") : t("ui:reward.claimRewards")
-      }
+      variant="success"
+      buttonText={t("ui:reward.claimRewards")}
       buttonId="reward-dialog-continue"
     >
       {content}

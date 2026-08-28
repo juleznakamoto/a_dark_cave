@@ -36,9 +36,11 @@ export const GAME_PANEL_HEADER_INDICATOR_CLASS =
   "game-panel-header-indicator inline-flex shrink-0 items-center justify-center self-center cursor-pointer rounded-full opacity-80 transition-opacity duration-150 hover:opacity-100";
 export const GAME_PANEL_HEADER_INDICATOR_TRIGGER_CLASS =
   "inline-flex items-center leading-none";
-/** Centered glyph over a header indicator ring; keep per-glyph mt/translate optical nudges at call sites. */
-export const GAME_PANEL_HEADER_INDICATOR_GLYPH_CLASS =
+/** Centered glyph over a header indicator ring (no font-size). Size via `--md`/`--sm`/`--xs` or `text-[Npx]`. */
+export const GAME_PANEL_HEADER_INDICATOR_GLYPH_LAYOUT_CLASS =
   "game-panel-header-indicator-glyph font-noto-symbols-2 absolute inset-0 flex items-center justify-center font-extrabold leading-none";
+/** Default 12px header glyph (see `.game-panel-header-indicator-glyph--md`). */
+export const GAME_PANEL_HEADER_INDICATOR_GLYPH_CLASS = `${GAME_PANEL_HEADER_INDICATOR_GLYPH_LAYOUT_CLASS} game-panel-header-indicator-glyph--md`;
 export const GAME_PANEL_HEADER_INDICATOR_INNER_CLASS =
   "relative inline-flex h-full w-full items-center justify-center";
 
