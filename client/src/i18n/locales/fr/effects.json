@@ -90,6 +90,10 @@
       "description": "Ancienne couronne d'or irradiant un pouvoir mystérieux",
       "name": "Couronne fissurée"
     },
+    "creatures_bones": {
+      "description": "Os massifs de la créature du lac souterrain. Le forgeron peut en forger un grand bouclier.",
+      "name": "Os de la créature"
+    },
     "dagons_gift": {
       "description": "Votre aptitude à chasser est améliorée",
       "name": "Don de Dagon"

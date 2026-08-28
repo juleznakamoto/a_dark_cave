@@ -950,7 +950,10 @@
         "label": "Continuar"
       }
     },
-    "message": "Unos hombres encontraron a la criatura del lago en la orilla del lago subterráneo, muerta de lo que parece vejez. Al observar los restos, el herrero declara: 'Sus huesos no se parecen a nada que haya visto. Puedo forjar con ellos un gran escudo poderoso'.",
+    "log": {
+      "outcome0": "Al observar los restos, el herrero declara: 'Sus huesos no se parecen a nada que haya visto. Puedo forjar con ellos un gran escudo poderoso'."
+    },
+    "message": "Unos hombres encontraron a la criatura del lago en la orilla del lago subterráneo, muerta de lo que parece vejez.",
     "title": "El fin de una era"
   },
   "lakeCreatureFate": {

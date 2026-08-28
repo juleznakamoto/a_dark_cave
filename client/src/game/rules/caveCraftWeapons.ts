@@ -320,11 +320,11 @@ export const caveCraftWeapons: Record<string, Action> = {
     label: "Ashen Greatshield",
     show_when: {
       "buildings.blacksmith": 1,
-      "story.seen.ashenGreatshieldUnlocked": true,
+      "relics.creatures_bones": true,
       "weapons.ashen_greatshield": false,
     },
     cost: {
-      "resources.bones": 5000,
+      "relics.creatures_bones": true,
       "resources.silver": 500,
     },
     effects: {

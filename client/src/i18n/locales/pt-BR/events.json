@@ -904,7 +904,10 @@
         "label": "Continuar"
       }
     },
-    "message": "Alguns homens encontraram a criatura do lago na margem do lago subterrâneo, morta pelo que parece ser velhice. Enquanto o ferreiro observa os restos, ele declara 'Seus ossos não se parecem com nada que eu já tenha visto. Posso forjar um poderoso grande escudo a partir deles.'",
+    "log": {
+      "outcome0": "Enquanto o ferreiro observa os restos, ele declara 'Seus ossos não se parecem com nada que eu já tenha visto. Posso forjar um poderoso grande escudo a partir deles.'"
+    },
+    "message": "Alguns homens encontraram a criatura do lago na margem do lago subterrâneo, morta pelo que parece ser velhice.",
     "title": "O Fim de uma Era"
   },
   "lakeCreatureFate": {

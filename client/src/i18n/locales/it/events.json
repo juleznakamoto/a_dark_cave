@@ -904,7 +904,10 @@
         "label": "Continua"
       }
     },
-    "message": "Alcuni uomini hanno trovato la creatura del lago sulla riva del lago sotterraneo, morta per quella che sembra vecchiaia. Mentre il fabbro osserva i resti, dichiara 'Le sue ossa sono come nient'altro che abbia mai visto. Posso forgiare da esse un possente grande scudo.'",
+    "log": {
+      "outcome0": "Mentre il fabbro osserva i resti, dichiara 'Le sue ossa sono come nient'altro che abbia mai visto. Posso forgiare da esse un possente grande scudo.'"
+    },
+    "message": "Alcuni uomini hanno trovato la creatura del lago sulla riva del lago sotterraneo, morta per quella che sembra vecchiaia.",
     "title": "La Fine di un'Era"
   },
   "lakeCreatureFate": {

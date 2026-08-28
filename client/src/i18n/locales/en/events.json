@@ -1027,7 +1027,10 @@
         "label": "Continue"
       }
     },
-    "message": "Some men found the lake creature on the shore of the underground lake, dead of what seems to be old age. As the blacksmith observes the remains, he declares 'Its bones are like nothing I've ever seen. I can forge a mighty greatshield from them.'",
+    "log": {
+      "outcome0": "As the blacksmith observes the remains, he declares 'Its bones are like nothing I've ever seen. I can forge a mighty greatshield from them.'"
+    },
+    "message": "Some men found the lake creature on the shore of the underground lake, dead of what seems to be old age.",
     "title": "End of an Age"
   },
   "lakeCreatureFate": {

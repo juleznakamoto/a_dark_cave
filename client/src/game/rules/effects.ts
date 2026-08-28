@@ -1707,6 +1707,14 @@ export const clothingEffects: Record<string, EffectDefinition> = {
     bonuses: {},
   },
 
+  creatures_bones: {
+    id: "creatures_bones",
+    name: "Creature's Bones",
+    description:
+      "Massive bones of the underground lake creature. The blacksmith can forge them into a greatshield.",
+    bonuses: {},
+  },
+
   sealed_chest: {
     id: "sealed_chest",
     name: "Sealed Chest",

@@ -257,9 +257,9 @@ export const shopItemEvents: Record<string, GameEvent> = {
         id: "killCreature",
         effect: (state: GameState) => {
           return {
-            resources: {
-              ...state.resources,
-              bones: (state.resources.bones || 0) + 5000,
+            relics: {
+              ...state.relics,
+              creatures_bones: true,
             },
             story: {
               ...state.story,
@@ -310,9 +310,9 @@ export const shopItemEvents: Record<string, GameEvent> = {
         id: "forge",
         effect: (state: GameState) => {
           return {
-            resources: {
-              ...state.resources,
-              bones: (state.resources.bones || 0) + 5000,
+            relics: {
+              ...state.relics,
+              creatures_bones: true,
             },
             story: {
               ...state.story,
@@ -322,6 +322,7 @@ export const shopItemEvents: Record<string, GameEvent> = {
                 ashenGreatshieldUnlocked: true,
               },
             },
+            _logMessageKey: "outcome0",
           };
         },
       },

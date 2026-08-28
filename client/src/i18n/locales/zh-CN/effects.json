@@ -90,6 +90,10 @@
       "description": "散发神秘力量的古老金冠",
       "name": "裂冠"
     },
+    "creatures_bones": {
+      "description": "地下湖生物的巨大骸骨。铁匠可以用它们锻造一面巨盾。",
+      "name": "生物之骨"
+    },
     "dagons_gift": {
       "description": "你的狩猎能力提升",
       "name": "达贡的馈赠"

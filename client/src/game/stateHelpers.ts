@@ -1104,6 +1104,16 @@ export function applyGameStateLoadMigrations(state: GameState): GameState {
   if (dialogSoftLocks) {
     migrated = { ...migrated, ...dialogSoftLocks };
   }
+  if (
+    migrated.story?.seen?.ashenGreatshieldUnlocked &&
+    !migrated.weapons?.ashen_greatshield &&
+    !migrated.relics?.creatures_bones
+  ) {
+    migrated = {
+      ...migrated,
+      relics: { ...migrated.relics, creatures_bones: true },
+    };
+  }
   // After expedition reconcile (and any other load repairs), enforce housing cap
   // so legacy/corrupt over-population cannot persist into the live session.
   const housingClamp = clampVillagersToHousingCap(migrated);

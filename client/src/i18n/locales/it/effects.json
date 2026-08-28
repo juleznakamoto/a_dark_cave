@@ -90,6 +90,10 @@
       "description": "Antica corona d'oro che irradia un potere misterioso",
       "name": "Corona Incrinata"
     },
+    "creatures_bones": {
+      "description": "Ossa enormi della creatura del lago sotterraneo. Il fabbro può forgiarle in un grande scudo.",
+      "name": "Ossa della creatura"
+    },
     "dagons_gift": {
       "description": "La tua capacità di cacciare è migliorata",
       "name": "Dono di Dagon"

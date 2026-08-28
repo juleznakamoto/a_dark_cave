@@ -164,6 +164,7 @@ export const gameStateSchema = z.object({
       war_bow: z.boolean().default(false),
       master_bow: z.boolean().default(false),
       ashen_dagger: z.boolean().default(false),
+      ashen_greatshield: z.boolean().default(false),
       arbalest: z.boolean().default(false),
       nightshade_bow: z.boolean().default(false),
       compound_bow: z.boolean().default(false),
@@ -234,6 +235,7 @@ export const gameStateSchema = z.object({
       black_wood: z.boolean().default(false),
       obsidian_orb: z.boolean().default(false),
       leatherbound_book: z.boolean().default(false),
+      creatures_bones: z.boolean().default(false),
     })
     .default({}),
   fellowship: z.object(fellowshipShape).default({}),

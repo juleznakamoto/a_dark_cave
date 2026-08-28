@@ -950,7 +950,10 @@
         "label": "Continuer"
       }
     },
-    "message": "Des hommes ont trouvé la créature du lac sur la rive du lac souterrain, morte de ce qui semble être la vieillesse. En observant les restes, le forgeron déclare : 'Ses os ne ressemblent à rien de ce que j'ai jamais vu. Je peux en forger un puissant grand bouclier.'",
+    "log": {
+      "outcome0": "En observant les restes, le forgeron déclare : 'Ses os ne ressemblent à rien de ce que j'ai jamais vu. Je peux en forger un puissant grand bouclier.'"
+    },
+    "message": "Des hommes ont trouvé la créature du lac sur la rive du lac souterrain, morte de ce qui semble être la vieillesse.",
     "title": "Fin d'un âge"
   },
   "lakeCreatureFate": {

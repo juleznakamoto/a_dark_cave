@@ -90,6 +90,10 @@
       "description": "Ancient golden crown radiating with mysterious power",
       "name": "Cracked Crown"
     },
+    "creatures_bones": {
+      "description": "Massive bones of the underground lake creature. The blacksmith can forge them into a greatshield.",
+      "name": "Creature's Bones"
+    },
     "dagons_gift": {
       "description": "Your ability to hunt is improved",
       "name": "Dagon's Gift"

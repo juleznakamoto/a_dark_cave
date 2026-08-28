@@ -90,6 +90,10 @@
       "description": "Alte goldene Krone, die rätselhafte Macht ausstrahlt",
       "name": "Geborstene Krone"
     },
+    "creatures_bones": {
+      "description": "Gewaltige Knochen der unterirdischen Seekreatur. Der Schmied kann daraus einen Großen Schild schmieden.",
+      "name": "Knochen der Kreatur"
+    },
     "dagons_gift": {
       "description": "Deine Jagdfähigkeit ist verbessert",
       "name": "Dagons Gabe"

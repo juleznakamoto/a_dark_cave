@@ -90,6 +90,10 @@
       "description": "Antigua corona dorada que irradia un poder misterioso",
       "name": "Corona agrietada"
     },
+    "creatures_bones": {
+      "description": "Huesos enormes de la criatura del lago subterráneo. El herrero puede forjarlos en un gran escudo.",
+      "name": "Huesos de la criatura"
+    },
     "dagons_gift": {
       "description": "Tu capacidad para cazar mejora",
       "name": "Don de Dagon"

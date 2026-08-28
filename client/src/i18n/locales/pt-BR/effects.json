@@ -90,6 +90,10 @@
       "description": "Coroa dourada antiga irradiando poder misterioso",
       "name": "Coroa Rachada"
     },
+    "creatures_bones": {
+      "description": "Ossos enormes da criatura do lago subterrâneo. O ferreiro pode forjá-los em um grande escudo.",
+      "name": "Ossos da Criatura"
+    },
     "dagons_gift": {
       "description": "Sua capacidade de caçar é aprimorada",
       "name": "Dádiva de Dagon"

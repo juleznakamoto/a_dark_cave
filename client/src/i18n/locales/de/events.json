@@ -950,7 +950,10 @@
         "label": "Weiter"
       }
     },
-    "message": "Einige Männer finden die Seekreatur am Ufer des unterirdischen Sees, tot, offenbar an Altersschwäche. Als der Schmied die Überreste betrachtet, erklärt er: 'Ihre Knochen sind wie nichts, das ich je gesehen habe. Daraus kann ich einen mächtigen Großschild schmieden.'",
+    "log": {
+      "outcome0": "Als der Schmied die Überreste betrachtet, erklärt er: 'Ihre Knochen sind wie nichts, das ich je gesehen habe. Daraus kann ich einen mächtigen Großschild schmieden.'"
+    },
+    "message": "Einige Männer finden die Seekreatur am Ufer des unterirdischen Sees, tot, offenbar an Altersschwäche.",
     "title": "Ende eines Zeitalters"
   },
   "lakeCreatureFate": {
