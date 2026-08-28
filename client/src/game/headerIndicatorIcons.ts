@@ -160,7 +160,7 @@ export const HEARTFIRE_INDICATOR_ICONS: HeaderIndicatorIcon[] = [
     id: "heartfire5",
     label: "Heartfire 5",
     ringClassName: "text-red-700",
-    glyphClassName: cn(GLYPH, "text-red-700 text-[10px] font-black translate-y-[0.16em]"),
+    glyphClassName: cn(GLYPH, "text-red-700 text-[9px] font-black translate-y-[0.145em]"),
     symbol: "\u2059",
   },
 ];
