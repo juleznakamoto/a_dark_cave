@@ -31,6 +31,7 @@ standards below — it does not duplicate the architecture map.
 
 ### Dev and Prod Environment
 - There is a dev and a prod environment. Secrets end with either `_DEV` or `_PROD`.
+- **Hosting / deploy**: Production for **https://a-dark-cave.com** is deployed from **Replit** (Autoscale; see `.replit`). After merging deploy-affecting changes, assume the user ships via Replit (pull/sync + reinstall/restart + Redeploy) — not a separate host. Do not assume Vercel/Netlify/etc.
 - **Database SQL**: Read-only diagnostics (`SELECT` / catalogs) on dev or prod are fine without asking. Never run mutating SQL (`INSERT`/`UPDATE`/`DELETE`/DDL), `apply_migration`, repairs, or backfills without asking first and getting explicit approval.
 
 ### Coding Standards
