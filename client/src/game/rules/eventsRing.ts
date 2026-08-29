@@ -4,19 +4,20 @@ import type { EventChoice, GameEvent } from "./eventTypes";
 import { calculateSuccessChance, defineSuccessChance } from "./eventSuccessChance";
 import { GameState } from "@shared/schema";
 import { killVillagers } from "@/game/stateHelpers";
-import { cruelModeScale } from "../cruelMode";
+import { CRUEL_MODE, cruelModeScale } from "../cruelMode";
 import { btpLootAmount } from "@/game/btpLoot";
+import { getTrapWinChanceBonus } from "@/game/buildingHierarchy";
 
 const mercenaryDemandRefuse: EventChoice = {
   id: "refuse",
   ...defineSuccessChance({
-    base: 0.1,
+    base: (state) => 0.1 + getTrapWinChanceBonus(state.buildings),
     stats: [{ type: "strength", multiplier: 0.005 }],
   }),
   effect: (state: GameState) => {
     const success =
       Math.random() <
-      calculateSuccessChance(state, 0.1, {
+      calculateSuccessChance(state, 0.1 + getTrapWinChanceBonus(state.buildings), {
         type: "strength",
         multiplier: 0.005,
       });
@@ -31,7 +32,9 @@ const mercenaryDemandRefuse: EventChoice = {
       };
     }
 
-    const deaths = 18 + 6 * cruelModeScale(state);
+    const deaths =
+      CRUEL_MODE.feedingRing.mercenaryDemand.base +
+      cruelModeScale(state) * CRUEL_MODE.feedingRing.mercenaryDemand.whenCruel;
     const deathResult = killVillagers(state, deaths);
     return {
       ...deathResult,
@@ -50,14 +53,18 @@ const mercenaryDemandRefuse: EventChoice = {
 const mercenaryReturnDemandRefuse: EventChoice = {
   id: "refuse",
   ...defineSuccessChance({
-    base: 0.05,
+    base: (state) => 0.05 + getTrapWinChanceBonus(state.buildings),
     stats: [{ type: "strength", multiplier: 0.005 }],
   }),
   effect: (state: GameState) => {
-    const successChance = calculateSuccessChance(state, 0.05, {
-      type: "strength",
-      multiplier: 0.005,
-    });
+    const successChance = calculateSuccessChance(
+      state,
+      0.05 + getTrapWinChanceBonus(state.buildings),
+      {
+        type: "strength",
+        multiplier: 0.005,
+      },
+    );
     const success = Math.random() < successChance;
 
     if (success) {
@@ -70,7 +77,10 @@ const mercenaryReturnDemandRefuse: EventChoice = {
       };
     }
 
-    const deaths = 24 + 6 * cruelModeScale(state);
+    const deaths =
+      CRUEL_MODE.feedingRing.mercenaryReturnDemand.base +
+      cruelModeScale(state) *
+      CRUEL_MODE.feedingRing.mercenaryReturnDemand.whenCruel;
     const deathResult = killVillagers(state, deaths);
     return {
       ...deathResult,
@@ -141,7 +151,11 @@ export const ringEvents: Record<string, GameEvent> = {
       {
         id: "investigateMurders",
         effect: (state: GameState) => {
-          const deathResult = killVillagers(state, 18);
+          const deaths =
+            CRUEL_MODE.feedingRing.bloodiedAwakening.base +
+            cruelModeScale(state) *
+            CRUEL_MODE.feedingRing.bloodiedAwakening.whenCruel;
+          const deathResult = killVillagers(state, deaths);
 
           return {
             ...deathResult,

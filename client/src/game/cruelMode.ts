@@ -10,6 +10,14 @@
 export function cruelModeScale(state: { cruelMode: boolean }): 0 | 1 {
   return state.cruelMode ? 1 : 0;
 }
+
+export function cruelRangedDeaths(
+  state: { cruelMode: boolean },
+  spec: { min: number; maxNormal: number; maxCruel: number },
+): number {
+  const max = state.cruelMode ? spec.maxCruel : spec.maxNormal;
+  return spec.min + Math.floor(Math.random() * (max - spec.min + 1));
+}
 export const CRUEL_MODE = {
   successChance: {
     /** Default subtracted in calculateSuccessChance when cruel mode is on */
@@ -71,7 +79,10 @@ export const CRUEL_MODE = {
 
   /** Attack wave combat defeat (eventsAttackWaves) */
   attackWaveDefeat: {
-    extraCasualtiesWhenCruel: 5,
+    /** Normal max casualties = wave × this. Defeat roll is 20%–100% of that max. */
+    maxCasualtiesPerWave: 4,
+    /** Cruel scales the same max (so wave 1 is 2–6, wave 2 is 3–12, …). */
+    maxScaleWhenCruel: 1.5,
     buildingDamageChanceCruelAdd: 0.1,
     fellowshipWoundChanceCruelAdd: 0.1,
   },
@@ -94,36 +105,36 @@ export const CRUEL_MODE = {
     boneArmy: {
       defendCasualtyWhenCruel: 0.05,
       defeatSteelLoss: { randMax: 10, step: 25, base: 50, whenCruel: 100 },
-      maxDeathsDefend: { randMax: 20, base: 10, whenCruel: 8 },
-      hutDestroyChance: { whenCruel: 0.45, trapPenalty: 0.05 },
+      maxDeathsDefend: { randMax: 17, base: 8, whenCruel: 8 },
+      hutDestroyChance: { whenCruel: 0.45 },
     },
     boneArmyHide: {
       casualtyWhenCruel: 0.05,
       steelLoss: { randMax: 20, step: 25, base: 100, whenCruel: 100 },
       ironLoss: { randMax: 20, step: 25, base: 200, whenCruel: 200 },
-      maxDeaths: { randMax: 15, base: 5, whenCruel: 8 },
+      maxDeaths: { randMax: 9, base: 4, whenCruel: 8 },
     },
     wolf: {
       defendCasualtyWhenCruel: 0.05,
       foodLossTail: { whenCruel: 100 },
-      maxDeathsDefend: { base: 4, perHut: 1, whenCruel: 2, trapMult: 3 },
-      hutDestroyChance: { whenCruel: 0.25, trapPenalty: 0.05 },
+      maxDeathsDefend: { base: 2, perHut: 1, whenCruel: 4 },
+      hutDestroyChance: { whenCruel: 0.25 },
     },
     wolfHide: {
       casualtyWhenCruel: 0.05,
       foodLossTail: { whenCruel: 2 },
-      maxDeaths: { base: 2, perHutHalf: 0.5, whenCruel: 2, trapMult: 1 },
+      maxDeaths: { base: 2, perHutHalf: 0.5, whenCruel: 2 },
     },
     cannibal: {
       victoryMinimalDeaths: { randMax: 2, whenCruel: 1 },
       defeatCasualtyWhenCruel: 0.1,
-      maxCasualtiesDefeat: { base: 4, perHut: 1, whenCruel: 2, trapMult: 3 },
+      maxCasualtiesDefeat: { base: 4, perHut: 1, whenCruel: 2 },
       silverLoss: { randMax: 4, step: 25, base: 25, whenCruel: 100 },
       foodLoss: { randMax: 6, step: 50, base: 50, whenCruel: 250 },
     },
     cannibalHide: {
       casualtyWhenCruel: 0.05,
-      maxCasualties: { base: 4, perHutHalf: 0.5, whenCruel: 2, trapMult: 2 },
+      maxCasualties: { base: 4, perHutHalf: 0.5, whenCruel: 2 },
       silverLoss: { randMax: 4, step: 50, base: 50, whenCruel: 200 },
       foodLoss: { randMax: 6, step: 100, base: 100, whenCruel: 500 },
     },
@@ -180,6 +191,17 @@ export const CRUEL_MODE = {
     forestCave: { base: 10, whenCruel: 4 },
     risingSmoke: { base: 16, whenCruel: 4 },
     swampSanctuary: { base: 20, whenCruel: 4 },
+  },
+
+  caveTimeout: {
+    shadowFlute: { min: 1, maxNormal: 5, maxCruel: 8 },
+    hollowKingScepter: { min: 3, maxNormal: 8, maxCruel: 12 },
+  },
+
+  feedingRing: {
+    bloodiedAwakening: { base: 12, whenCruel: 8 },
+    mercenaryDemand: { base: 16, whenCruel: 8 },
+    mercenaryReturnDemand: { base: 20, whenCruel: 8 },
   },
 
   paleFigure: {

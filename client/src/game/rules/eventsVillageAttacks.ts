@@ -6,7 +6,7 @@ import { getTotalStrength, getTotalLuck } from "./effectsCalculation";
 import { CRUEL_MODE, cruelModeScale } from "../cruelMode";
 import { getCurrentPopulation, getVillagersInVillage } from "../population";
 import { btpLootAmount } from "@/game/btpLoot";
-import { getTrapLevel, getTrapWinChanceBonus } from "@/game/buildingHierarchy";
+import { getTrapWinChanceBonus } from "@/game/buildingHierarchy";
 
 function deathsKey(
   count: number,
@@ -116,14 +116,13 @@ export const villageAttackEvents: Record<string, GameEvent> = {
           stats: [{ type: "strength", multiplier: 0.01 }],
         }),
         effect: (state: GameState) => {
-          const traps = getTrapLevel(state.buildings);
           const strength = getTotalStrength(state);
 
           // Check for victory: 10% base chance + 1% per strength point
-          // Traps increase victory chance by 10%
+          // Traps increase victory chance by 10% / 20%
           const victoryChance = calculateSuccessChance(
             state,
-            0.1 + traps * 0.1,
+            0.1 + getTrapWinChanceBonus(state.buildings),
             { type: "strength", multiplier: 0.01 },
           );
 
@@ -148,10 +147,8 @@ export const villageAttackEvents: Record<string, GameEvent> = {
           }
 
           // Base chance of casualties (75%), reduced by 2% per strength point, minimum 25%
-          // Traps reduce death chance by 10%
           const casualtyChance =
-            Math.max(0.25, 0.75 - strength * 0.005) -
-            traps * 0.1 +
+            Math.max(0.25, 0.75 - strength * 0.005) +
             cruelModeScale(state) * CRUEL_MODE.villageAttacks.boneArmy.defendCasualtyWhenCruel;
 
           let villagerDeaths = 0;
@@ -163,7 +160,6 @@ export const villageAttackEvents: Record<string, GameEvent> = {
           let hutDestroyed = false;
 
           // Determine villager casualties
-          // Traps reduce max deaths by 3
           const mdd = CRUEL_MODE.villageAttacks.boneArmy.maxDeathsDefend;
           const maxPotentialDeaths = Math.min(
             Math.floor(Math.random() * mdd.randMax) + mdd.base + cruelModeScale(state) * mdd.whenCruel,
@@ -178,7 +174,7 @@ export const villageAttackEvents: Record<string, GameEvent> = {
           // If 3+ villagers die and there's a hut
           if (villagerDeaths >= 3 && state.buildings.woodenHut > 0) {
             const hdc = CRUEL_MODE.villageAttacks.boneArmy.hutDestroyChance;
-            if (Math.random() < cruelModeScale(state) * hdc.whenCruel - traps * hdc.trapPenalty) {
+            if (Math.random() < cruelModeScale(state) * hdc.whenCruel) {
               hutDestroyed = true;
             }
           }
@@ -214,10 +210,9 @@ export const villageAttackEvents: Record<string, GameEvent> = {
           stats: [{ type: "luck", multiplier: 0.01 }],
         }),
         effect: (state: GameState) => {
-          const traps = getTrapLevel(state.buildings);
           const success_chance = calculateSuccessChance(
             state,
-            0.0 + traps * 0.1,
+            getTrapWinChanceBonus(state.buildings),
             { type: "luck", multiplier: 0.01 },
           );
 
@@ -234,8 +229,7 @@ export const villageAttackEvents: Record<string, GameEvent> = {
           } else {
             const luck = getTotalLuck(state);
             const casualtyChance =
-              Math.max(0.15, 0.4 - luck * 0.02) -
-              traps * 0.05 +
+              Math.max(0.15, 0.4 - luck * 0.02) +
               cruelModeScale(state) * CRUEL_MODE.villageAttacks.boneArmyHide.casualtyWhenCruel;
 
             const bh = CRUEL_MODE.villageAttacks.boneArmyHide;
@@ -308,15 +302,18 @@ export const villageAttackEvents: Record<string, GameEvent> = {
           stats: [{ type: "strength", multiplier: 0.01 }],
         }),
         effect: (state: GameState) => {
-          const traps = getTrapLevel(state.buildings);
           const strength = getTotalStrength(state);
 
           // Check for victory: 30% base chance + 1% per strength point
           // Traps +10%, Improved Traps +20%
-          const victoryChance = calculateSuccessChance(state, 0.30 + traps * 0.1, {
-            type: "strength",
-            multiplier: 0.01,
-          });
+          const victoryChance = calculateSuccessChance(
+            state,
+            0.30 + getTrapWinChanceBonus(state.buildings),
+            {
+              type: "strength",
+              multiplier: 0.01,
+            },
+          );
 
           if (Math.random() < victoryChance) {
             // Victory! Get Alpha's Hide. First kill still unlocks village traps.
@@ -344,10 +341,8 @@ export const villageAttackEvents: Record<string, GameEvent> = {
           }
 
           // Base chance of casualties (70%), reduced by 2% per strength point, minimum 20%
-          // Traps reduce death chance by 10%
           const casualtyChance =
-            Math.max(0.2, 0.6 - strength * 0.02) -
-            traps * 0.1 +
+            Math.max(0.2, 0.6 - strength * 0.02) +
             cruelModeScale(state) * CRUEL_MODE.villageAttacks.wolf.defendCasualtyWhenCruel;
 
           let villagerDeaths = 0;
@@ -360,13 +355,11 @@ export const villageAttackEvents: Record<string, GameEvent> = {
           let hutDestroyed = false;
 
           // Determine villager casualties
-          // Traps reduce max deaths by 3
           const wmd = CRUEL_MODE.villageAttacks.wolf.maxDeathsDefend;
           const maxPotentialDeaths = Math.min(
             wmd.base +
             state.buildings.woodenHut * wmd.perHut +
-            cruelModeScale(state) * wmd.whenCruel -
-            traps * wmd.trapMult,
+            cruelModeScale(state) * wmd.whenCruel,
             getVillagersInVillage(state),
           );
           for (let i = 0; i < maxPotentialDeaths; i++) {
@@ -378,7 +371,7 @@ export const villageAttackEvents: Record<string, GameEvent> = {
           // If 2+ villagers die and there's a hut, 25% chance to destroy it
           if (villagerDeaths >= 2 && state.buildings.woodenHut > 0) {
             const wh = CRUEL_MODE.villageAttacks.wolf.hutDestroyChance;
-            if (Math.random() < cruelModeScale(state) * wh.whenCruel - traps * wh.trapPenalty) {
+            if (Math.random() < cruelModeScale(state) * wh.whenCruel) {
               hutDestroyed = true;
             }
           }
@@ -418,14 +411,13 @@ export const villageAttackEvents: Record<string, GameEvent> = {
       {
         id: "hideAndWait",
         ...defineSuccessChance({
-          base: (state) => 0.30 + getTrapWinChanceBonus(state.buildings) * 0.1,
+          base: (state) => 0.30 + getTrapWinChanceBonus(state.buildings),
           stats: [{ type: "luck", multiplier: 0.02 }],
         }),
         effect: (state: GameState) => {
-          const traps = getTrapLevel(state.buildings) * 0.1;
           const success_chance = calculateSuccessChance(
             state,
-            0.30 + traps * 0.1,
+            0.30 + getTrapWinChanceBonus(state.buildings),
             { type: "luck", multiplier: 0.02 },
           );
 
@@ -450,8 +442,7 @@ export const villageAttackEvents: Record<string, GameEvent> = {
           } else {
             const luck = getTotalLuck(state);
             const casualtyChance =
-              Math.max(0.1, 0.35 - luck * 0.02) -
-              traps * 0.05 +
+              Math.max(0.1, 0.35 - luck * 0.02) +
               cruelModeScale(state) * CRUEL_MODE.villageAttacks.wolfHide.casualtyWhenCruel;
 
             foodLoss = Math.min(
@@ -466,8 +457,7 @@ export const villageAttackEvents: Record<string, GameEvent> = {
             const whd = CRUEL_MODE.villageAttacks.wolfHide.maxDeaths;
             const maxPotentialDeaths = Math.min(
               whd.base +
-              state.buildings.woodenHut * whd.perHutHalf -
-              traps * whd.trapMult +
+              state.buildings.woodenHut * whd.perHutHalf +
               cruelModeScale(state) * whd.whenCruel,
               getVillagersInVillage(state),
             );
@@ -528,13 +518,12 @@ export const villageAttackEvents: Record<string, GameEvent> = {
           stats: [{ type: "strength", multiplier: 0.01 }],
         }),
         effect: (state: GameState) => {
-          const traps = getTrapLevel(state.buildings);
           const strength = getTotalStrength(state);
 
           // Check for victory: 20% base chance + 1% per strength point
           const victoryChance = calculateSuccessChance(
             state,
-            0.2 + traps * 0.1,
+            0.2 + getTrapWinChanceBonus(state.buildings),
             { type: "strength", multiplier: 0.01 },
           );
 
@@ -573,8 +562,7 @@ export const villageAttackEvents: Record<string, GameEvent> = {
           // Defeat - casualties and resource loss
           // Base 50% casualty chance, reduced by 2% per strength point, minimum 15%
           const casualtyChance =
-            Math.max(0.15, 0.5 - strength * 0.01) -
-            traps * 0.1 +
+            Math.max(0.15, 0.5 - strength * 0.01) +
             cruelModeScale(state) * CRUEL_MODE.villageAttacks.cannibal.defeatCasualtyWhenCruel;
 
           let totalLost = 0;
@@ -583,8 +571,7 @@ export const villageAttackEvents: Record<string, GameEvent> = {
           const cmd = CRUEL_MODE.villageAttacks.cannibal.maxCasualtiesDefeat;
           const maxPotentialCasualties = Math.min(
             cmd.base +
-            state.buildings.woodenHut * cmd.perHut -
-            traps * cmd.trapMult +
+            state.buildings.woodenHut * cmd.perHut +
             cruelModeScale(state) * cmd.whenCruel,
             getVillagersInVillage(state),
           );
@@ -635,10 +622,9 @@ export const villageAttackEvents: Record<string, GameEvent> = {
           stats: [{ type: "luck", multiplier: 0.01 }],
         }),
         effect: (state: GameState) => {
-          const traps = getTrapLevel(state.buildings);
           const success_chance = calculateSuccessChance(
             state,
-            0.05 + traps * 0.1,
+            0.05 + getTrapWinChanceBonus(state.buildings),
             { type: "luck", multiplier: 0.01 },
           );
 
@@ -656,16 +642,14 @@ export const villageAttackEvents: Record<string, GameEvent> = {
             const luck = getTotalLuck(state);
             // Base 30% casualty chance, reduced by 1% per luck point, minimum 10%
             const casualtyChance =
-              Math.max(0.1, 0.3 - luck * 0.01) -
-              traps * 0.05 +
+              Math.max(0.1, 0.3 - luck * 0.01) +
               cruelModeScale(state) * CRUEL_MODE.villageAttacks.cannibalHide.casualtyWhenCruel;
 
             // Fewer potential casualties when hiding
             const ch = CRUEL_MODE.villageAttacks.cannibalHide;
             const maxPotentialCasualties = Math.min(
               ch.maxCasualties.base +
-              Math.floor(state.buildings.woodenHut * ch.maxCasualties.perHutHalf) -
-              traps * ch.maxCasualties.trapMult +
+              Math.floor(state.buildings.woodenHut * ch.maxCasualties.perHutHalf) +
               cruelModeScale(state) * ch.maxCasualties.whenCruel,
               getVillagersInVillage(state),
             );

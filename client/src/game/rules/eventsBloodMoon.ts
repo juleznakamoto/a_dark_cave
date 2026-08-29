@@ -4,7 +4,7 @@ import type { GameEvent } from "./eventTypes";
 import { calculateSuccessChance, defineSuccessChance } from "./eventSuccessChance";
 import { bloodMoonSacrificeAmount } from "../cruelMode";
 import { btpLootAmount } from "@/game/btpLoot";
-import { getTrapLevel, getTrapWinChanceBonus } from "@/game/buildingHierarchy";
+import { getTrapWinChanceBonus } from "@/game/buildingHierarchy";
 
 function bloodMoonI18nVars(state: GameState) {
   return {
@@ -67,17 +67,16 @@ export const bloodMoonEvents: Record<string, GameEvent> = {
           ],
         }),
         effect: (state: GameState) => {
-          const traps = getTrapLevel(state.buildings);
           const sacrificeAmount = bloodMoonSacrificeAmount(
             state.cruelMode,
             state.bloodMoonState?.occurrenceCount ?? 0,
           );
 
           // Check for victory using combined strength and knowledge
-          // Traps increase victory chance by 10%
+          // Traps increase victory chance by 10% / 20%
           const victoryChance = calculateSuccessChance(
             state,
-            0.0 + traps * 0.1,
+            getTrapWinChanceBonus(state.buildings),
             {
               type: "strength",
               multiplier: 0.0025,
@@ -109,10 +108,9 @@ export const bloodMoonEvents: Record<string, GameEvent> = {
           }
 
           // Defeat - lose villagers and food
-          // Traps reduce deaths by 3
           const villagerLoss = Math.max(
             0,
-            sacrificeAmount + Math.floor(Math.random() * 5) + 1 - traps * 3,
+            sacrificeAmount + Math.floor(Math.random() * 5) + 1,
           );
           const foodLoss = sacrificeAmount * 50;
 
@@ -137,17 +135,16 @@ export const bloodMoonEvents: Record<string, GameEvent> = {
       id: "prepareForAttack",
       effect: (state: GameState) => {
         // Same logic as prepareForAttack choice
-        const traps = getTrapLevel(state.buildings);
         const sacrificeAmount = bloodMoonSacrificeAmount(
           state.cruelMode,
           state.bloodMoonState?.occurrenceCount ?? 0,
         );
 
         // Check for victory using combined strength and knowledge
-        // Traps increase victory chance by 10%
+        // Traps increase victory chance by 10% / 20%
         const victoryChance = calculateSuccessChance(
           state,
-          0.0 + traps * 0.1,
+          getTrapWinChanceBonus(state.buildings),
           {
             type: "strength",
             multiplier: 0.0025,
@@ -179,10 +176,9 @@ export const bloodMoonEvents: Record<string, GameEvent> = {
         }
 
         // Defeat - lose villagers and food
-        // Traps reduce deaths by 3
         const villagerLoss = Math.max(
           0,
-          sacrificeAmount + Math.floor(Math.random() * 5) + 1 - traps * 3,
+          sacrificeAmount + Math.floor(Math.random() * 5) + 1,
         );
         const foodLoss = sacrificeAmount * 50;
 

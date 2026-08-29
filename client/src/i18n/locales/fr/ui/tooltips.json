@@ -154,8 +154,8 @@
       "higherTradeAmounts": "Montants d'échange plus élevés", //x1.5
       "tradesAtMerchant_one": "+{{count}} échange chez le marchand itinérant",
       "tradesAtMerchant_other": "+{{count}} échanges chez le marchand itinérant",
-      "trapWinChance10": "+10 % de chance de victoire contre les ennemis attaquants et moins de villageois tués",
-      "trapWinChance20": "+20 % de chance de victoire contre les ennemis attaquants et moins de villageois tués",
+      "trapWinChance10": "+10 % de chance de victoire contre les ennemis attaquants",
+      "trapWinChance20": "+20 % de chance de victoire contre les ennemis attaquants",
       "boneyardUpTo": "Jusqu'à -10 de folie",
       "boneyardPerDeath": "-1 folie par 50 villageois perdus depuis la construction",
       "boneyardCurrent": "Actuel : -{{amount}} folie",

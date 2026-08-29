@@ -154,8 +154,8 @@
       "higherTradeAmounts": "Montos de comercio más altos", //x1.4
       "tradesAtMerchant_one": "+{{count}} intercambio con el mercader ambulante",
       "tradesAtMerchant_other": "+{{count}} intercambios con el mercader ambulante",
-      "trapWinChance10": "+10 % de probabilidad de victoria contra enemigos atacantes y menos aldeanos muertos",
-      "trapWinChance20": "+20 % de probabilidad de victoria contra enemigos atacantes y menos aldeanos muertos",
+      "trapWinChance10": "+10 % de probabilidad de victoria contra enemigos atacantes",
+      "trapWinChance20": "+20 % de probabilidad de victoria contra enemigos atacantes",
       "boneyardUpTo": "Hasta -10 de locura",
       "boneyardPerDeath": "-1 locura por cada 50 aldeanos perdidos desde su construcción", //x1.4
       "boneyardCurrent": "Actual: -{{amount}} locura",

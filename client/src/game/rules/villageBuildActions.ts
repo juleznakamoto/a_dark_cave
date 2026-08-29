@@ -1018,7 +1018,7 @@ export const villageBuildActions: Record<string, Action> = {
     label: "Traps",
     description: "Traps around the village weakening all attackers",
     tooltipEffects: [
-      bt("trapWinChance10", "+10% chance to win against attacking foes and fewer villagers killed"),
+      bt("trapWinChance10", "+10% chance to win against attacking foes"),
     ],
     building: true,
     show_when: {
@@ -1047,7 +1047,7 @@ export const villageBuildActions: Record<string, Action> = {
     label: "Improved Traps",
     description: "Upgraded perimeter traps with stronger mechanisms and better coverage",
     tooltipEffects: [
-      bt("trapWinChance20", "+20% chance to win against attacking foes and fewer villagers killed"),
+      bt("trapWinChance20", "+20% chance to win against attacking foes"),
     ],
     building: true,
     show_when: {

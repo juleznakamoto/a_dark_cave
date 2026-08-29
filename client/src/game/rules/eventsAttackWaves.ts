@@ -144,7 +144,7 @@ function attackWaveScaledParams(waveNumber: number): Pick<
   return {
     buildingDamageMultiplier: 1 + waveNumber / 5,
     fellowshipWoundedMultiplier: waveNumber * 0.05,
-    maxCasualties: waveNumber * 5,
+    maxCasualties: waveNumber * CRUEL_MODE.attackWaveDefeat.maxCasualtiesPerWave,
     goldReward: waveNumber * 50,
   };
 }
@@ -411,10 +411,13 @@ function handleDefeat(
   fellowshipWoundedMultiplier: number,
 ) {
   const currentPopulation = getVillagersInVillage(state);
+  const scaledMax =
+    maxCasualties *
+    (1 +
+      cruelModeScale(state) *
+      (CRUEL_MODE.attackWaveDefeat.maxScaleWhenCruel - 1));
   const minCasualities = Math.ceil(
-    Math.random() * 0.8 * maxCasualties +
-    0.2 * maxCasualties +
-    cruelModeScale(state) * CRUEL_MODE.attackWaveDefeat.extraCasualtiesWhenCruel,
+    Math.random() * 0.8 * scaledMax + 0.2 * scaledMax,
   );
   const casualties = Math.min(minCasualities, currentPopulation);
   const deathResult = killVillagers(state, casualties);

@@ -12,7 +12,6 @@ import {
   cruelModeScale,
 } from "../cruelMode";
 import { btpLootAmount } from "@/game/btpLoot";
-import { getTrapLevel } from "@/game/buildingHierarchy";
 import {
   collectorItemRejectedStoryPatch,
   markCollectorItemRejectedInSeen,
@@ -451,11 +450,9 @@ export const choiceEvents: Record<string, GameEvent> = {
       {
         id: "turnAway",
         effect: (state: GameState) => {
-          const traps = getTrapLevel(state.buildings);
           const villagerDeaths = Math.floor(
             Math.random() * state.buildings.woodenHut +
-            2 -
-            traps * 2 +
+            2 +
             cruelModeScale(state) * CRUEL_MODE.madBeduine.turnAwayDeathsExtraWhenCruel,
           );
           const deathResult = killVillagers(state, villagerDeaths);

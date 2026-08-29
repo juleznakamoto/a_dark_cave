@@ -3,6 +3,7 @@ import { GameState } from "@shared/schema";
 import { killVillagers } from "@/game/stateHelpers";
 import { markCollectorItemRejectedInSeen } from "./collectorRejectedItems";
 import { isSteamEditionActive } from "@/lib/edition";
+import { CRUEL_MODE, cruelRangedDeaths } from "../cruelMode";
 
 function createClarityElixirCaveFoundEvent(
   id: string,
@@ -216,10 +217,8 @@ export const caveEvents: Record<string, GameEvent> = {
     ],
     fallbackChoice: {
       id: "doNothing",
-      relevant_stats: ["luck"],
       effect: (state: GameState) => {
-        const luck = state.stats.luck || 0;
-        const devoured = Math.floor((1 - luck) * Math.random() * 9) + 1;
+        const devoured = cruelRangedDeaths(state, CRUEL_MODE.caveTimeout.shadowFlute);
         const deathResult = killVillagers(state, devoured);
         const actualDevoured = deathResult.villagersKilled || 0;
         return {
@@ -291,8 +290,10 @@ export const caveEvents: Record<string, GameEvent> = {
     fallbackChoice: {
       id: "doNothing",
       effect: (state: GameState) => {
-        const luck = state.stats.luck || 0;
-        const deaths = Math.floor((1 - luck) * Math.random() * 6) + 3;
+        const deaths = cruelRangedDeaths(
+          state,
+          CRUEL_MODE.caveTimeout.hollowKingScepter,
+        );
         const deathResult = killVillagers(state, deaths);
         const actualDeaths = deathResult.villagersKilled || 0;
         return {
