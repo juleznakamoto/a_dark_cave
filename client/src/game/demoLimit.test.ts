@@ -67,6 +67,7 @@ import {
   isDemoLimitReached,
   isDemoLimitReachedFromState,
   isDemoPlayFrozen,
+  shouldDismissEventWithoutApplying,
   processDemoLimit,
   startNewDemoGame,
 } from "./demoLimit";
@@ -141,6 +142,28 @@ describe("demoLimit", () => {
   it("freezes play in DEV Demo End mode before the hut cap", () => {
     setDevGameModeOverride("demoEnd");
     expect(isDemoPlayFrozen({ buildings: { woodenHut: 0 } })).toBe(true);
+  });
+
+  it("dismisses view-only and demo-end event dialogs without applying", () => {
+    expect(
+      shouldDismissEventWithoutApplying(
+        { buildings: { woodenHut: 0 } },
+        { viewOnly: true },
+      ),
+    ).toBe(true);
+    expect(
+      shouldDismissEventWithoutApplying(
+        { buildings: { woodenHut: 0 } },
+        { viewOnly: false },
+      ),
+    ).toBe(false);
+    setDevGameModeOverride("demoEnd");
+    expect(
+      shouldDismissEventWithoutApplying(
+        { buildings: { woodenHut: 0 } },
+        { viewOnly: false },
+      ),
+    ).toBe(true);
   });
 
   it("starts a new demo run from the dialog", async () => {

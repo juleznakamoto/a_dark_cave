@@ -1,5 +1,6 @@
 import { describe, expect, it } from "vitest";
 import {
+  resolveSharedProgressShaderCellClip,
   resolveSharedProgressShaderDisplayBox,
   scheduleSharedProgressShaderPrewarm,
   SHARED_PROGRESS_SHADER_COLOR_TOKENS,
@@ -47,5 +48,16 @@ describe("resolveSharedProgressShaderDisplayBox", () => {
         { width: 320, height: 280 },
       ),
     ).toEqual({ width: 320, height: 280 });
+  });
+});
+
+describe("resolveSharedProgressShaderCellClip", () => {
+  it("insets the fill 1 CSS px from the left to match the segment rim", () => {
+    expect(
+      resolveSharedProgressShaderCellClip(
+        { left: 40, bottom: 10, width: 80, height: 16 },
+        2,
+      ),
+    ).toEqual({ left: 42, bottom: 10, width: 78, height: 16 });
   });
 });

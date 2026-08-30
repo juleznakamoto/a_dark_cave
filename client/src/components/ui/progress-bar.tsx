@@ -16,27 +16,29 @@ import {
   resolveSparkPalette,
 } from "@/components/ui/progressGrowSparks";
 
+/** Snap (n/segments)*100 back onto an integer bucket (5/12 is not exact in float). */
+const SEGMENT_UNIT_SNAP = 1e-9;
+
+function getFilledUnits(displayValue: number, segments: number): number {
+  if (segments <= 0) return 0;
+  const units = Math.min(segments, Math.max(0, (displayValue / 100) * segments));
+  const nearest = Math.round(units);
+  if (Math.abs(units - nearest) < SEGMENT_UNIT_SNAP) return nearest;
+  return units;
+}
+
 /** 0–1 fill for segment `index` from a 0–100 value across `segments` buckets. */
-function getSegmentFill(
+export function getSegmentFill(
   displayValue: number,
   segments: number,
   index: number,
 ): number {
-  if (segments <= 0) return 0;
-  const units = Math.min(
-    segments,
-    Math.max(0, (displayValue / 100) * segments),
-  );
-  return Math.min(1, Math.max(0, units - index));
+  return Math.min(1, Math.max(0, getFilledUnits(displayValue, segments) - index));
 }
 
 /** Segment currently filling (or just completed at a bucket boundary). */
 function getActiveSegmentIndex(displayValue: number, segments: number): number {
-  if (segments <= 0) return -1;
-  const units = Math.min(
-    segments,
-    Math.max(0, (displayValue / 100) * segments),
-  );
+  const units = getFilledUnits(displayValue, segments);
   if (units <= 0) return -1;
   const floored = Math.floor(units);
   // Exact boundary: tip sits at the end of the segment that just filled.
@@ -82,6 +84,8 @@ interface SegmentedProgressProps {
    * this; compact list bars (achievements) usually turn it off.
    */
   showRim?: boolean;
+  /** Shadow class for a filled cell rim. Shared shader host should use the same. */
+  rimFilledClassName?: string;
   /**
    * Optional fill layer (e.g. SharedProgressShaderSegment). When set, skips
    * solid `filledClassName` so the custom fill can show through.
@@ -112,6 +116,7 @@ export function SegmentedProgress({
   sparkClassName,
   disableGlow = false,
   showRim = true,
+  rimFilledClassName = "shadow-[0_0_0_1px_theme(colors.orange.600/0.8)]",
   renderFill,
   "aria-label": ariaLabel,
   "aria-valuenow": ariaValueNow,
@@ -347,7 +352,7 @@ export function SegmentedProgress({
                       className={cn(
                         "pointer-events-none absolute inset-y-0 left-px right-0 z-[2] rounded-[4px] transition-[box-shadow] duration-500",
                         fill > 0
-                          ? "shadow-[0_0_0_1px_theme(colors.orange.600/0.8)]"
+                          ? rimFilledClassName
                           : "shadow-[0_0_0_1px_transparent]",
                       )}
                     />

@@ -1,15 +1,14 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { ImproveButton } from "@/components/ui/improve-button";
-import { SegmentedProgress } from "@/components/ui/progress-bar";
+import AttackWavesProgressBar from "@/components/ui/attack-waves-progress";
 import {
+  EstateStyleProgress,
   SharedProgressShaderHost,
-  SharedProgressShaderSegment,
 } from "@/components/ui/shared-progress-shader";
+import { TOTAL_ATTACK_WAVES } from "@/game/rules/attackWaveOrder";
 import { DemoSection } from "@/pages/animations-demo/DemoSection";
-
-/** Same grow timing as EstatePanel upgrade bars. */
-const ESTATE_BAR_GROW_ANIMATION_MS = 1000;
+import { useDemoShaderVisible } from "@/pages/animations-demo/useDemoShaderVisible";
 
 const DEMO_BARS: { label: string; segments: number }[] = [
   { label: "3 segments", segments: 3 },
@@ -51,19 +50,9 @@ function EstateStyleShaderBar({
           </Button>
         </div>
       </div>
-      <SegmentedProgress
+      <EstateStyleProgress
         value={(level / segments) * 100}
         segments={segments}
-        showPercentage={false}
-        compact
-        growAnimationMs={ESTATE_BAR_GROW_ANIMATION_MS}
-        emitSparksOnGrow
-        filledClassName="bg-red-950"
-        emptyClassName="bg-neutral-800"
-        segmentClassName="h-2"
-        renderFill={() => (
-          <SharedProgressShaderSegment className="absolute inset-0" />
-        )}
       />
       <p className="text-xs text-muted-foreground">
         Level {level}/{segments}
@@ -76,6 +65,7 @@ export function SharedProgressShaderSection() {
   const [levels, setLevels] = useState(() => DEMO_BARS.map(() => 0));
   const [lateLevel, setLateLevel] = useState(2);
   const [showLateBar, setShowLateBar] = useState(false);
+  const shaderVisible = useDemoShaderVisible("shared-progress-shader");
 
   return (
     <DemoSection
@@ -83,7 +73,10 @@ export function SharedProgressShaderSection() {
       title="Shared progress shader"
       description="Estate-style SegmentedProgress (Improve, 1s grow, sparks) with one shared red Smoke-flow shader. Each segment is a scissor window into the same field."
     >
-      <SharedProgressShaderHost className="w-full max-w-md rounded-md border border-border/50 bg-neutral-950/80 p-4">
+      <SharedProgressShaderHost
+        className="w-full max-w-md rounded-md border border-border/50 bg-neutral-950/80 p-4"
+        visible={shaderVisible}
+      >
         <div className="space-y-4">
           {DEMO_BARS.map((bar, index) => (
             <EstateStyleShaderBar
@@ -145,6 +138,65 @@ export function SharedProgressShaderSection() {
         Same chrome as estate upgrade bars (`h-2`, Improve, grow sparks). Shader
         fallback: solid <code className="text-foreground">bg-red-950</code>.
       </p>
+    </DemoSection>
+  );
+}
+
+export function AttackWavesBarSection() {
+  const [completedWaves, setCompletedWaves] = useState(3);
+  const value = (completedWaves / TOTAL_ATTACK_WAVES) * 100;
+  const shaderVisible = useDemoShaderVisible("attack-waves-bar");
+
+  return (
+    <DemoSection
+      id="attack-waves-bar"
+      title="Attack waves chart"
+      description="Bastion-tab AttackWavesChart. Tweak ATTACK_WAVES_PROGRESS_STYLE in attackWavesProgressStyle.ts."
+    >
+      <div className="w-full max-w-md rounded-md border border-border/50 bg-neutral-950/80 p-4">
+        <div className="space-y-3">
+          <div className="flex items-center gap-2 flex-wrap">
+            <span className="text-xs font-medium text-foreground">
+              Attack Waves
+            </span>
+            <span className="text-xs text-muted-foreground">
+              {completedWaves}/{TOTAL_ATTACK_WAVES}
+            </span>
+          </div>
+          <AttackWavesProgressBar
+            value={value}
+            segments={TOTAL_ATTACK_WAVES}
+            visible={shaderVisible}
+          />
+        </div>
+      </div>
+
+      <div className="flex flex-wrap gap-2">
+        <Button
+          size="xs"
+          variant="outline"
+          onClick={() =>
+            setCompletedWaves((n) => Math.min(TOTAL_ATTACK_WAVES, n + 1))
+          }
+          disabled={completedWaves >= TOTAL_ATTACK_WAVES}
+        >
+          Complete wave
+        </Button>
+        <Button
+          size="xs"
+          variant="outline"
+          onClick={() => setCompletedWaves(0)}
+        >
+          Reset
+        </Button>
+        <Button
+          size="xs"
+          variant="outline"
+          onClick={() => setCompletedWaves(TOTAL_ATTACK_WAVES)}
+        >
+          All 12
+        </Button>
+      </div>
     </DemoSection>
   );
 }

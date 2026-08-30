@@ -46,6 +46,7 @@ import {
   hasEventChoiceSuccessTooltip,
   RelevantStatIcon,
 } from "@/components/game/EventChoiceSuccessTooltip";
+import { shouldDismissEventWithoutApplying } from "@/game/demoLimit";
 import { madnessEvents } from "@/game/rules/eventsMadness";
 import { resolveVillageEffectAnnouncementTheme } from "@/game/villageEffectThemes";
 import {
@@ -210,6 +211,13 @@ function EventDialogOpen({
 
   const handleChoice = (choiceId: string) => {
     if (fallbackExecutedRef.current) {
+      return;
+    }
+
+    // Cube rereads and demo-end: close without applyEventChoice (that path is frozen).
+    if (shouldDismissEventWithoutApplying(gameState, event)) {
+      fallbackExecutedRef.current = true;
+      onClose();
       return;
     }
 

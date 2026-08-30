@@ -44,12 +44,9 @@ function CssEffectSample({
   ) : (
     <span
       key={active ? `${effectId}-on` : `${effectId}-off`}
-      className={cn(
-        "inline-flex min-h-8 min-w-8 items-center justify-center rounded-md border border-border/50 px-2 text-xs",
-        pulseClass,
-      )}
+      className="inline-flex min-h-8 min-w-8 items-center justify-center overflow-visible rounded-md border border-border/50 px-3 py-2 text-xs"
     >
-      {sample}
+      <span className={pulseClass}>{sample}</span>
     </span>
   );
 

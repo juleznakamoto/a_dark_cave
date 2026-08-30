@@ -8,10 +8,9 @@ import { TooltipWrapper } from "@/components/game/TooltipWrapper";
 import { Button } from "@/components/ui/button";
 import { ImproveButton } from "@/components/ui/improve-button";
 import { getTotalPopulationEffects } from "@/game/population";
-import { SegmentedProgress } from "@/components/ui/progress-bar";
 import {
+  EstateStyleProgress,
   SharedProgressShaderHost,
-  SharedProgressShaderSegment,
 } from "@/components/ui/shared-progress-shader";
 import { CircularProgress } from "@/components/ui/circular-progress";
 import CooldownButton, {
@@ -56,33 +55,6 @@ import {
   type DemoEndEstateSkillId,
 } from "@/game/demoEndCatalog";
 
-
-const ESTATE_BAR_GROW_ANIMATION_MS = 1000;
-
-function EstateUpgradeProgress({
-  value,
-  segments,
-}: {
-  value: number;
-  segments: number;
-}) {
-  return (
-    <SegmentedProgress
-      value={value}
-      segments={segments}
-      showPercentage={false}
-      compact
-      growAnimationMs={ESTATE_BAR_GROW_ANIMATION_MS}
-      emitSparksOnGrow
-      filledClassName="bg-red-950/80"
-      emptyClassName="bg-neutral-800"
-      segmentClassName="h-2"
-      renderFill={() => (
-        <SharedProgressShaderSegment className="absolute inset-0" />
-      )}
-    />
-  );
-}
 
 /** Open Trader gold filter when an Improve costs more gold than the player has. */
 function useEstateGoldShopClick(canAfford: boolean) {
@@ -184,7 +156,7 @@ function SkillUpgradeRow({
           ) : null
         }
       />
-      <EstateUpgradeProgress
+      <EstateStyleProgress
         value={(level / maxLevel) * 100}
         segments={maxLevel}
       />
@@ -309,7 +281,7 @@ function RedactedEstateUpgradeRow({
           />
         }
       />
-      <EstateUpgradeProgress value={0} segments={5} />
+      <EstateStyleProgress value={0} segments={5} />
       <div className="flex justify-between text-xs text-muted-foreground">
         <RedactedLockedHint
           label={description}
@@ -477,11 +449,14 @@ export default function EstatePanel({
   );
 
   const handleCubeClick = (event: (typeof completedCubeEvents)[0]) => {
-    const logEntry = buildLocalizedEventLogEntry(
-      event.id,
-      event,
-      useGameStore.getState(),
-    );
+    const logEntry = {
+      ...buildLocalizedEventLogEntry(
+        event.id,
+        event,
+        useGameStore.getState(),
+      ),
+      viewOnly: true,
+    };
     setEventDialog(true, logEntry);
   };
 
@@ -894,7 +869,7 @@ export default function EstatePanel({
                     ) : null
                   }
                 />
-                <EstateUpgradeProgress
+                <EstateStyleProgress
                   value={(sleepUpgrades.lengthLevel / MAX_SLEEP_LENGTH_LEVEL) * 100}
                   segments={MAX_SLEEP_LENGTH_LEVEL}
                 />
@@ -954,7 +929,7 @@ export default function EstatePanel({
                     ) : null
                   }
                 />
-                <EstateUpgradeProgress
+                <EstateStyleProgress
                   value={
                     (sleepUpgrades.intensityLevel / MAX_SLEEP_INTENSITY_LEVEL) * 100
                   }

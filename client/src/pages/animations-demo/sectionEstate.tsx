@@ -1,57 +1,56 @@
 import { useState } from "react";
-import { SegmentedProgress } from "@/components/ui/progress-bar";
 import { ImproveButton } from "@/components/ui/improve-button";
 import { Button } from "@/components/ui/button";
 import {
   BuildingActionBadge,
   getInsightBadgeTriggerClassName,
 } from "@/components/game/BuildingActionBadge";
+import {
+  EstateStyleProgress,
+  SharedProgressShaderHost,
+} from "@/components/ui/shared-progress-shader";
 import { DemoRow, DemoSection } from "@/pages/animations-demo/DemoSection";
+import { useDemoShaderVisible } from "@/pages/animations-demo/useDemoShaderVisible";
 
-const ESTATE_BAR_GROW_ANIMATION_MS = 1000;
 const BOOST_GLYPH = "\u23E9";
 
 export function EstateBarsSection() {
   const [level, setLevel] = useState(0);
   const maxLevel = 5;
+  const shaderVisible = useDemoShaderVisible("estate-bars");
 
   return (
     <DemoSection
       id="estate-bars"
       title="Estate upgrade bars"
-      description="Real SegmentedProgress + ImproveButton (EstatePanel skill/sleep upgrades)."
+      description="Real EstateStyleProgress + ImproveButton (EstatePanel skill/sleep upgrades, shared red smoke shader)."
     >
-      <div className="w-full max-w-md space-y-1">
-        <div className="flex h-6 items-center justify-between">
-          <span className="text-xs font-medium">Sleep Length</span>
-          <div className="flex h-5 shrink-0 items-center justify-end pb-1">
-            {level < maxLevel ? (
-              <ImproveButton
-                onClick={() => setLevel((l) => Math.min(maxLevel, l + 1))}
-                disabled={false}
-                button_id="demo-estate-improve"
-              />
-            ) : null}
+      <SharedProgressShaderHost className="w-full max-w-md" visible={shaderVisible}>
+        <div className="space-y-1">
+          <div className="flex h-6 items-center justify-between">
+            <span className="text-xs font-medium">Sleep Length</span>
+            <div className="flex h-5 shrink-0 items-center justify-end pb-1">
+              {level < maxLevel ? (
+                <ImproveButton
+                  onClick={() => setLevel((l) => Math.min(maxLevel, l + 1))}
+                  disabled={false}
+                  button_id="demo-estate-improve"
+                />
+              ) : null}
+            </div>
           </div>
+          <EstateStyleProgress
+            value={(level / maxLevel) * 100}
+            segments={maxLevel}
+          />
+          <p className="text-xs text-muted-foreground">
+            Level {level}/{maxLevel}
+          </p>
+          <Button size="xs" variant="outline" onClick={() => setLevel(0)}>
+            Reset
+          </Button>
         </div>
-        <SegmentedProgress
-          value={(level / maxLevel) * 100}
-          segments={maxLevel}
-          showPercentage={false}
-          compact
-          growAnimationMs={ESTATE_BAR_GROW_ANIMATION_MS}
-          emitSparksOnGrow
-          filledClassName="bg-red-950"
-          emptyClassName="bg-neutral-800"
-          segmentClassName="h-2"
-        />
-        <p className="text-xs text-muted-foreground">
-          Level {level}/{maxLevel}
-        </p>
-        <Button size="xs" variant="outline" onClick={() => setLevel(0)}>
-          Reset
-        </Button>
-      </div>
+      </SharedProgressShaderHost>
     </DemoSection>
   );
 }

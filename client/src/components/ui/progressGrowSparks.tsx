@@ -73,6 +73,27 @@ export function resolveSparkPalette(indicatorClassName?: string): SparkPalette {
     };
   }
 
+  if (indicatorClassName?.includes("orange")) {
+    return {
+      warmColors: [
+        tailwindToHex("orange-500"),
+        tailwindToHex("orange-600"),
+        tailwindToHex("orange-800"),
+      ],
+      brightColors: [
+        tailwindToHex("orange-200"),
+        tailwindToHex("orange-300"),
+        tailwindToHex("amber-200"),
+        tailwindToHex("amber-300"),
+      ],
+      tipGlowInner: tailwindToHex("orange-200"),
+      tipGlowMid: tailwindToHex("orange-300"),
+      tipGlowOuter: tailwindToHex("orange-400/60"),
+      tipMarkerClassName:
+        "bg-orange-400 shadow-[0_0_10px_3px] shadow-orange-400",
+    };
+  }
+
   if (indicatorClassName?.includes("red")) {
     return {
       warmColors: [

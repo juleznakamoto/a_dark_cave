@@ -9,6 +9,7 @@ import {
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { audioManager, SOUND_VOLUME } from "@/lib/audio";
+import { shouldDismissEventWithoutApplying } from "@/game/demoLimit";
 import { useGameStore } from "@/game/state"; // Import useGameStore
 import { logger } from "@/lib/logger";
 import { navigateSpa } from "@/lib/spaNavigate";
@@ -58,6 +59,10 @@ export default function CubeDialog({
 
   const handleClose = async () => {
     onChoice(eventChoices[0]?.id);
+
+    if (shouldDismissEventWithoutApplying(useGameStore.getState(), event)) {
+      return;
+    }
 
     const baseEventId = event?.id?.split("-")?.[0] ?? "";
     const cruelMode = useGameStore.getState().cruelMode;

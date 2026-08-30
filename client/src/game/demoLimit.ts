@@ -83,6 +83,14 @@ export function isDemoPlayFrozen(state: {
   return isDemoLimitReachedFromState(state);
 }
 
+/** Reread / demo-end event dialogs close without applying choice effects. */
+export function shouldDismissEventWithoutApplying(
+  state: Parameters<typeof isDemoPlayFrozen>[0],
+  event?: { viewOnly?: boolean } | null,
+): boolean {
+  return Boolean(event?.viewOnly) || isDemoPlayFrozen(state);
+}
+
 export function processDemoLimit(): void {
   if (!isDemoEdition()) return;
   const store = getBoundGameStore();

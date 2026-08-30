@@ -23,6 +23,7 @@ import {
 import { cn } from "@/lib/utils";
 import { Plus } from "lucide-react";
 import { TooltipWrapper } from "@/components/game/TooltipWrapper";
+import { isDemoPlayFrozen } from "@/game/demoLimit";
 import { isTraderShopUnlocked } from "@/game/stateHelpers";
 import { composeMerchantSpecialItemTooltip } from "@/game/rules/eventsMerchantTooltip";
 import { EventChoice, type LogEntry } from "@/game/rules/events";
@@ -354,6 +355,17 @@ export default function TimedEventPanel() {
   };
 
   const handleChoice = (choiceId: string) => {
+    if (isDemoPlayFrozen(gameState)) {
+      const isDismiss =
+        choiceId === "say_goodbye" ||
+        choiceId === "acknowledge" ||
+        choiceId === "sell_nothing";
+      if (isDismiss) {
+        setHighlightedResources([]);
+        setTimedEventTab(false);
+      }
+      return;
+    }
     if (gameState.isPaused) {
       return;
     }

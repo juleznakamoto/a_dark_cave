@@ -9,7 +9,10 @@ import {
   HoverParticlesSection,
 } from "@/pages/animations-demo/sectionParticles";
 import { ProgressBarsSection } from "@/pages/animations-demo/sectionProgress";
-import { SharedProgressShaderSection } from "@/pages/animations-demo/sectionSharedProgressShader";
+import {
+  AttackWavesBarSection,
+  SharedProgressShaderSection,
+} from "@/pages/animations-demo/sectionSharedProgressShader";
 import { CssEffectsSection } from "@/pages/animations-demo/sectionCssEffects";
 import {
   ExplosionSection,
@@ -31,6 +34,11 @@ export type AnimationDemoSection = {
  */
 export const ANIMATION_DEMO_SECTIONS: AnimationDemoSection[] = [
   { id: "estate-bars", label: "Estate bars", Section: EstateBarsSection },
+  {
+    id: "attack-waves-bar",
+    label: "Attack waves",
+    Section: AttackWavesBarSection,
+  },
   { id: "improve-button", label: "Improve button", Section: ImproveButtonSection },
   { id: "insight-badge", label: "Insight badge", Section: InsightBadgeSection },
   {

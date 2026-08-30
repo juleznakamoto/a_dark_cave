@@ -246,13 +246,17 @@ export default function GameContainer() {
 
   const [animatingTabs, setAnimatingTabs] = useState<Set<string>>(new Set());
   const [fadePhaseTabs, setFadePhaseTabs] = useState<Set<string>>(new Set());
-  // Keep Estate mounted after the first visit so the progress shader is not
-  // compiled again every time the tab opens.
+  // Keep Estate / Bastion mounted after the first visit so the shared
+  // progress shader is not compiled again every time those tabs open.
   const [estatePanelKept, setEstatePanelKept] = useState(
     () => activeTab === "estate",
   );
+  const [bastionPanelKept, setBastionPanelKept] = useState(
+    () => activeTab === "bastion",
+  );
   useEffect(() => {
     if (activeTab === "estate") setEstatePanelKept(true);
+    if (activeTab === "bastion") setBastionPanelKept(true);
   }, [activeTab]);
   const tabButtonRowRef = useRef<HTMLDivElement | null>(null);
   const [pauseHotkeyHint, setPauseHotkeyHint] = useState<{
@@ -346,6 +350,10 @@ export default function GameContainer() {
   const villageTabVisible = tabUnlockSnapshot.villageUnlocked;
   const forestTabVisible = tabUnlockSnapshot.forestUnlocked;
   const bastionTabVisible = tabUnlockSnapshot.bastionUnlocked;
+  useEffect(() => {
+    if (!bastionTabVisible) return;
+    scheduleSharedProgressShaderPrewarm();
+  }, [bastionTabVisible]);
   const prevTabUnlockRef = useRef(tabUnlockSnapshot);
   /** Tabs mid unlock-blink; avoids re-trigger while fade timeout is pending. */
   const tabUnlockBlinkPendingRef = useRef<Set<TabUnlockBlinkId>>(new Set());
@@ -1519,6 +1527,11 @@ export default function GameContainer() {
                                 ? tabActiveTextClass
                                 : tabInactiveTextClass
                           }
+                          onPointerEnter={() => {
+                            scheduleSharedProgressShaderPrewarm({
+                              immediate: true,
+                            });
+                          }}
                           onClick={() => {
                             useGameStore.getState().trackButtonClick("tab-bastion");
                             clearTabAnimation("bastion");
@@ -1622,7 +1635,11 @@ export default function GameContainer() {
                     <EstatePanel active={activeTab === "estate"} />
                   </div>
                 )}
-                {activeTab === "bastion" && <BastionPanel />}
+                {(activeTab === "bastion" || bastionPanelKept) && (
+                  <div hidden={activeTab !== "bastion"}>
+                    <BastionPanel active={activeTab === "bastion"} />
+                  </div>
+                )}
                 {activeTab === "achievements" && <AchievementsPanel />}
                 {activeTab === "timedevent" && <TimedEventPanel />}
               </div>

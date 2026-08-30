@@ -22,7 +22,11 @@ import {
   getWatchtowerTierLabel,
 } from "@/i18n/fortificationLabels";
 
-export default function BastionPanel() {
+export default function BastionPanel({
+  active = true,
+}: {
+  active?: boolean;
+}) {
   const { t } = useTranslation("ui");
   const catalogActive = useDemoEndCatalogActive();
   const store = useGameStoreWithoutTickClock();
@@ -75,7 +79,7 @@ export default function BastionPanel() {
 
   return (
     <div className="w-full space-y-4 pt-2 md:pt-0 mt-0 md:mt-2 mb-2 pl-2 pr-2">
-      <AttackWavesChart />
+      <AttackWavesChart visible={active} />
 
       {showHealSection && (
         <div className="space-y-2">

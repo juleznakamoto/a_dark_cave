@@ -1,6 +1,6 @@
 import type { GameState } from "@shared/schema";
 import { useGameStore } from "@/game/state";
-import { Progress } from "@/components/ui/progress";
+import AttackWavesProgressBar from "@/components/ui/attack-waves-progress";
 import { useEffect, useState } from "react";
 import { RedactedLockedHint } from "@/components/game/RedactedHint";
 import {
@@ -27,7 +27,11 @@ import {
 
 const PROVOKE_ACTION_ID = "provokeAttackWave" as const;
 
-export default function AttackWavesChart() {
+export default function AttackWavesChart({
+  visible = true,
+}: {
+  visible?: boolean;
+}) {
   const { t } = useUiTranslation();
   const story = useGameStore((s) => s.story);
   const buildings = useGameStore((s) => s.buildings);
@@ -38,9 +42,10 @@ export default function AttackWavesChart() {
   const [, setTimerTick] = useState(0);
 
   useEffect(() => {
+    if (!visible) return;
     const interval = setInterval(() => setTimerTick((tick) => tick + 1), 1000);
     return () => clearInterval(interval);
-  }, []);
+  }, [visible]);
 
   const waves = getAttackWavesChartRows({ story, buildings, weapons });
 
@@ -102,11 +107,10 @@ export default function AttackWavesChart() {
             tooltipId="attack-waves-count-redacted"
           />
         </div>
-        <Progress
+        <AttackWavesProgressBar
           value={0}
-          className="h-2"
           segments={TOTAL_ATTACK_WAVES}
-          indicatorClassName="bg-orange-950"
+          visible={visible}
         />
         <div className="space-y-2 pt-2">
           <div className="flex items-center gap-2 flex-wrap">
@@ -143,11 +147,10 @@ export default function AttackWavesChart() {
           {completedWaves}/{totalWaves}
         </span>
       </div>
-      <Progress
+      <AttackWavesProgressBar
         value={currentWavePercentage}
-        className="h-2"
         segments={TOTAL_ATTACK_WAVES}
-        indicatorClassName="bg-orange-950"
+        visible={visible}
       />
 
       {activeWave ? (

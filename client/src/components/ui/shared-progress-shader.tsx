@@ -15,6 +15,7 @@ import {
 import { cn } from "@/lib/utils";
 import { logger } from "@/lib/logger";
 import { tailwindToHex } from "@/lib/tailwindColors";
+import { SegmentedProgress } from "@/components/ui/progress-bar";
 import {
   shouldAnimateSmokeShader,
   SMOKE_FLOW_FRAGMENT_SHADER,
@@ -57,6 +58,26 @@ export function resolveSharedProgressShaderDisplayBox(
   return {
     width: hostRect.width >= 1 ? hostRect.width : canvasRect.width,
     height: hostRect.height >= 1 ? hostRect.height : canvasRect.height,
+  };
+}
+
+/**
+ * SegmentedProgress rims are `left-px` (1 CSS px inset) so the 1px outside
+ * ring does not sit in the gap. The smoke fill must use the same inset or a
+ * bright sliver shows left of each border.
+ */
+export const SHARED_PROGRESS_RIM_LEFT_INSET_CSS_PX = 1;
+
+export function resolveSharedProgressShaderCellClip(
+  cell: { left: number; bottom: number; width: number; height: number },
+  dpr: number,
+): { left: number; bottom: number; width: number; height: number } {
+  const inset = SHARED_PROGRESS_RIM_LEFT_INSET_CSS_PX * dpr;
+  return {
+    left: cell.left + inset,
+    bottom: cell.bottom,
+    width: Math.max(0, cell.width - inset),
+    height: cell.height,
   };
 }
 
@@ -132,7 +153,11 @@ const SEGMENT_RIM_FILLED_CLASS =
  * in-cell rim. Reading getComputedStyle here ran in the 15fps loop and forced
  * a style recalc on every bar cell.
  */
-function syncSegmentRims(host: HTMLElement, rimLayer: HTMLElement) {
+function syncSegmentRims(
+  host: HTMLElement,
+  rimLayer: HTMLElement,
+  filledClass: string = SEGMENT_RIM_FILLED_CLASS,
+) {
   const cells = host.querySelectorAll<HTMLElement>(
     "[data-segmented-progress-cell]",
   );
@@ -143,7 +168,6 @@ function syncSegmentRims(host: HTMLElement, rimLayer: HTMLElement) {
     let rim = rimLayer.children[i] as HTMLElement | undefined;
     if (!rim) {
       rim = document.createElement("div");
-      rim.className = SEGMENT_RIM_BASE_CLASS;
       rim.style.pointerEvents = "none";
       rim.setAttribute("aria-hidden", "true");
       rimLayer.appendChild(rim);
@@ -156,10 +180,12 @@ function syncSegmentRims(host: HTMLElement, rimLayer: HTMLElement) {
     rim.style.top = `${r.top - layerRect.top}px`;
     rim.style.width = `${Math.max(0, r.width - 1)}px`;
     rim.style.height = `${r.height}px`;
-    rim.classList.toggle(
-      SEGMENT_RIM_FILLED_CLASS,
-      cell.hasAttribute("data-filled"),
-    );
+    rim.className = SEGMENT_RIM_BASE_CLASS;
+    if (cell.hasAttribute("data-filled")) {
+      for (const token of filledClass.split(/\s+/).filter(Boolean)) {
+        rim.classList.add(token);
+      }
+    }
     i++;
   }
   while (rimLayer.children.length > i) {
@@ -170,6 +196,7 @@ function syncSegmentRims(host: HTMLElement, rimLayer: HTMLElement) {
 type SharedProgressShaderApi = {
   registerSegment: (id: string, element: HTMLElement | null) => void;
   useShader: boolean;
+  fallbackClass: string;
 };
 
 const SharedProgressShaderContext =
@@ -329,6 +356,13 @@ class SharedProgressShaderRenderer {
     gl.blendFunc(gl.ONE, gl.ONE_MINUS_SRC_ALPHA);
   }
 
+  setColors(tokens: readonly string[]) {
+    this.colors = buildColors(tokens);
+    this.colorCount = tokens.length;
+    this.gl.useProgram(this.program);
+    this.gl.uniform3fv(this.uniforms.colors, this.colors);
+  }
+
   private compile(type: number, source: string, label: string): WebGLShader {
     const gl = this.gl;
     const shader = gl.createShader(type);
@@ -412,19 +446,23 @@ class SharedProgressShaderRenderer {
       const height = shapeRect.height * dpr;
       if (width < 0.5 || height < 0.5) continue;
 
+      const clip = resolveSharedProgressShaderCellClip(
+        { left, bottom, width, height },
+        dpr,
+      );
+
       // Scissor to the fill tip. Pad top/bottom/right 1px so outside-only AA can
-      // sit under the CSS rim (box-shadow). Do not pad left: that bled into the
-      // gap before each segment and made the grow look like it started left of
-      // the section.
+      // sit under the CSS rim (box-shadow). Start at ceil(clip.left): floor +
+      // left-pad painted a sliver in the gap before each segment.
       const fillLeft = (rect.left - canvasRect.left) * dpr;
       const fillRight = fillLeft + rect.width * dpr;
       const fillBottom = canvasH - (rect.bottom - canvasRect.top) * dpr;
       const fillTop = fillBottom + rect.height * dpr;
-      const outerRight = left + width;
-      const outerTop = bottom + height;
+      const outerRight = clip.left + clip.width;
+      const outerTop = clip.bottom + clip.height;
 
-      const sx = Math.max(0, Math.floor(Math.max(fillLeft, left)));
-      const sy = Math.max(0, Math.floor(Math.max(fillBottom, bottom) - 1));
+      const sx = Math.max(0, Math.ceil(Math.max(fillLeft, clip.left)));
+      const sy = Math.max(0, Math.floor(Math.max(fillBottom, clip.bottom) - 1));
       const sRight = Math.min(
         canvasW,
         Math.ceil(Math.min(fillRight, outerRight) + 1),
@@ -437,7 +475,13 @@ class SharedProgressShaderRenderer {
       const sh = sTop - sy;
       if (sw <= 0 || sh <= 0) continue;
 
-      gl.uniform4f(this.uniforms.clipRect, left, bottom, width, height);
+      gl.uniform4f(
+        this.uniforms.clipRect,
+        clip.left,
+        clip.bottom,
+        clip.width,
+        clip.height,
+      );
       gl.uniform4f(this.uniforms.finish, 0.0, 0.0, 0.0, cornerRadiusPx);
       gl.scissor(sx, sy, sw, sh);
       gl.drawArrays(gl.TRIANGLES, 0, 3);
@@ -600,13 +644,25 @@ export function SharedProgressShaderHost({
   // smaller features than shop smoke or each scissor window reads as flat.
   scale: _scale = 3,
   visible = true,
+  colorTokens = SHARED_PROGRESS_SHADER_COLOR_TOKENS,
+  rimFilledClass = SEGMENT_RIM_FILLED_CLASS,
+  fallbackClass = SHARED_PROGRESS_SHADER_FALLBACK_CLASS,
 }: {
   children: ReactNode;
   className?: string;
   /** Field zoom (lower = larger smoke features). Shared parked context uses 3. */
   scale?: number;
-  /** False while Estate stays mounted but hidden. Pauses the 15fps loop. */
+  /**
+   * False while a kept-mounted tab is hidden. Parks the singleton so another
+   * host (Estate ↔ Bastion) can adopt it, and pauses the 15fps loop.
+   */
   visible?: boolean;
+  /** Smoke palette tokens (low → high). Defaults to estate red. */
+  colorTokens?: readonly string[];
+  /** Filled-cell rim class mirrored above the canvas. */
+  rimFilledClass?: string;
+  /** Solid fill class when WebGL is off. */
+  fallbackClass?: string;
 }) {
   const hostRef = useRef<HTMLDivElement>(null);
   const canvasHolderRef = useRef<HTMLDivElement>(null);
@@ -636,13 +692,18 @@ export function SharedProgressShaderHost({
     [],
   );
 
+  const colorTokensRef = useRef(colorTokens);
+  colorTokensRef.current = colorTokens;
+  const rimFilledClassRef = useRef(rimFilledClass);
+  rimFilledClassRef.current = rimFilledClass;
+
   const api = useMemo<SharedProgressShaderApi>(
-    () => ({ registerSegment, useShader }),
-    [registerSegment, useShader],
+    () => ({ registerSegment, useShader, fallbackClass }),
+    [registerSegment, useShader, fallbackClass],
   );
 
   useLayoutEffect(() => {
-    if (!useShader) return;
+    if (!useShader || !visible) return;
     const holder = canvasHolderRef.current;
     const host = hostRef.current;
     if (!holder || !host) return;
@@ -673,7 +734,9 @@ export function SharedProgressShaderHost({
       });
       renderer.render(list, canvasRect, dpr);
       const rimLayer = rimLayerRef.current;
-      if (rimLayer) syncSegmentRims(host, rimLayer);
+      if (rimLayer) {
+        syncSegmentRims(host, rimLayer, rimFilledClassRef.current);
+      }
     };
     paintRef.current = paintFrame;
 
@@ -723,6 +786,7 @@ export function SharedProgressShaderHost({
       holder.appendChild(shader.canvas);
       canvasRef.current = shader.canvas;
       rendererRef.current = shader.renderer;
+      shader.renderer.setColors(colorTokensRef.current);
       shaderRef.current = shader;
       // Children already registered in their layout effects. Paint now so
       // the first Estate frame includes smoke instead of a solid fill.
@@ -773,7 +837,8 @@ export function SharedProgressShaderHost({
             return;
           }
           if (!shader) {
-            setUseShader(false);
+            // Another visible host still holds the singleton (demo page).
+            // Keep useShader so we can adopt it when that host parks.
             return;
           }
           attachShader(shader);
@@ -787,7 +852,7 @@ export function SharedProgressShaderHost({
       if (attachRaf) cancelAnimationFrame(attachRaf);
       detachShader();
     };
-  }, [useShader]);
+  }, [useShader, visible]);
 
   useLayoutEffect(() => {
     if (!visible) {
@@ -800,6 +865,10 @@ export function SharedProgressShaderHost({
     paintRef.current(canvas);
     startLoopRef.current();
   }, [visible]);
+
+  useLayoutEffect(() => {
+    rendererRef.current?.setColors(colorTokens);
+  }, [colorTokens]);
 
   return (
     <SharedProgressShaderContext.Provider value={api}>
@@ -858,11 +927,44 @@ export function SharedProgressShaderSegment({
     <div
       ref={ref}
       className={cn(
-        !api?.useShader && SHARED_PROGRESS_SHADER_FALLBACK_CLASS,
+        !api?.useShader &&
+        (api?.fallbackClass ?? SHARED_PROGRESS_SHADER_FALLBACK_CLASS),
         className,
       )}
       style={style}
       aria-hidden
+    />
+  );
+}
+
+/** Same grow timing as EstatePanel upgrade bars. */
+export const ESTATE_STYLE_PROGRESS_GROW_MS = 1000;
+
+/**
+ * Estate-tab SegmentedProgress chrome: red smoke fill, orange rim, grow sparks.
+ * Must sit inside a SharedProgressShaderHost.
+ */
+export function EstateStyleProgress({
+  value,
+  segments,
+}: {
+  value: number;
+  segments: number;
+}) {
+  return (
+    <SegmentedProgress
+      value={value}
+      segments={segments}
+      showPercentage={false}
+      compact
+      growAnimationMs={ESTATE_STYLE_PROGRESS_GROW_MS}
+      emitSparksOnGrow
+      filledClassName="bg-red-950/80"
+      emptyClassName="bg-neutral-800"
+      segmentClassName="h-2"
+      renderFill={() => (
+        <SharedProgressShaderSegment className="absolute inset-0" />
+      )}
     />
   );
 }

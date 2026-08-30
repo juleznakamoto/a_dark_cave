@@ -1013,47 +1013,66 @@ html.adc-text-large .game-panel-header-indicator-row {
 
   0%,
   100% {
-    text-shadow: 0 0 var(--p-s1) var(--p-c), 0 0 var(--p-s2) var(--p-c);
+    text-shadow:
+      0 0 var(--p-s1) var(--p-core),
+      0 0 var(--p-s2) var(--p-c),
+      0 0 var(--p-rest-bloom) var(--p-c);
   }
 
   50% {
-    text-shadow: 0 0 var(--p-s3) var(--p-c), 0 0 var(--p-s4) var(--p-c);
+    text-shadow:
+      0 0 var(--p-s3) var(--p-core),
+      0 0 var(--p-s4) var(--p-c),
+      0 0 var(--p-bloom) var(--p-c);
   }
 }
 
+/* Ranges do not overlap, so any pulse frame still reads light < medium < intense < extreme. */
 .madness-pulse-light {
-  --p-c: #ff7878;
-  --p-s1: 2px;
-  --p-s2: 4px;
-  --p-s3: 6px;
-  --p-s4: 10px;
+  --p-core: #ffd4d4;
+  --p-c: #ff8a8a;
+  --p-s1: 1px;
+  --p-s2: 2px;
+  --p-rest-bloom: 2px;
+  --p-s3: 2px;
+  --p-s4: 3px;
+  --p-bloom: 4px;
   animation: madness-pulse 2.5s ease-in-out infinite;
 }
 
 .madness-pulse-medium {
-  --p-c: #ff7878;
-  --p-s1: 3px;
+  --p-core: #ffe2e2;
+  --p-c: #ff6e6e;
+  --p-s1: 2px;
   --p-s2: 5px;
-  --p-s3: 8px;
-  --p-s4: 12px;
+  --p-rest-bloom: 6px;
+  --p-s3: 3px;
+  --p-s4: 7px;
+  --p-bloom: 8px;
   animation: madness-pulse 2s ease-in-out infinite;
 }
 
 .madness-pulse-intense {
-  --p-c: #ff7878;
+  --p-core: #fff2f2;
+  --p-c: #ff6e6e;
   --p-s1: 3px;
-  --p-s2: 50px;
-  --p-s3: 8px;
-  --p-s4: 80px;
+  --p-s2: 8px;
+  --p-rest-bloom: 11px;
+  --p-s3: 6px;
+  --p-s4: 13px;
+  --p-bloom: 14px;
   animation: madness-pulse 1.5s ease-in-out infinite;
 }
 
 .madness-pulse-extreme {
-  --p-c: #ff7878;
-  --p-s1: 3px;
-  --p-s2: 6px;
-  --p-s3: 10px;
-  --p-s4: 15px;
+  --p-core: #ffffff;
+  --p-c: #ff6e6e;
+  --p-s1: 5px;
+  --p-s2: 13px;
+  --p-rest-bloom: 18px;
+  --p-s3: 7px;
+  --p-s4: 20px;
+  --p-bloom: 24px;
   animation: madness-pulse 1s ease-in-out infinite;
 }
 
