@@ -25,12 +25,14 @@ function EstateStyleShaderBar({
   level,
   onImprove,
   onReset,
+  buttonId,
 }: {
   label: string;
   segments: number;
   level: number;
   onImprove: () => void;
   onReset: () => void;
+  buttonId?: string;
 }) {
   return (
     <div className="w-full space-y-1">
@@ -41,7 +43,7 @@ function EstateStyleShaderBar({
             <ImproveButton
               onClick={onImprove}
               disabled={false}
-              button_id={`demo-shader-improve-${segments}`}
+              button_id={buttonId ?? `demo-shader-improve-${segments}`}
             />
           ) : null}
           <Button size="xs" variant="outline" onClick={onReset}>
@@ -72,6 +74,8 @@ function EstateStyleShaderBar({
 
 export function SharedProgressShaderSection() {
   const [levels, setLevels] = useState(() => DEMO_BARS.map(() => 0));
+  const [lateLevel, setLateLevel] = useState(2);
+  const [showLateBar, setShowLateBar] = useState(false);
 
   return (
     <DemoSection
@@ -101,8 +105,41 @@ export function SharedProgressShaderSection() {
               }
             />
           ))}
+          {showLateBar ? (
+            <EstateStyleShaderBar
+              label="Late skill (after mount)"
+              segments={5}
+              level={lateLevel}
+              buttonId="demo-shader-improve-late"
+              onImprove={() => setLateLevel((level) => Math.min(5, level + 1))}
+              onReset={() => setLateLevel(0)}
+            />
+          ) : null}
         </div>
       </SharedProgressShaderHost>
+
+      <div className="flex flex-wrap gap-2">
+        <Button
+          size="xs"
+          variant="outline"
+          onClick={() => setShowLateBar(true)}
+          disabled={showLateBar}
+        >
+          Add late skill row
+        </Button>
+        {showLateBar ? (
+          <Button
+            size="xs"
+            variant="outline"
+            onClick={() => {
+              setShowLateBar(false);
+              setLateLevel(2);
+            }}
+          >
+            Remove late skill
+          </Button>
+        ) : null}
+      </div>
 
       <p className="max-w-md text-2xs text-muted-foreground">
         Same chrome as estate upgrade bars (`h-2`, Improve, grow sparks). Shader

@@ -38,6 +38,29 @@ export const SHARED_PROGRESS_SHADER_FALLBACK_CLASS = "bg-red-950";
 const SEGMENT_CORNER_RADIUS_CSS_PX = 4;
 
 /**
+ * Layout box used to size the shared WebGL canvas.
+ *
+ * After the first paint, `resizeToDisplay` pins the canvas CSS size to whole
+ * device pixels so the fill is not resampled. Measuring that pinned canvas
+ * again freezes the stale height, so later Estate rows (Tireless Worker and
+ * other skills unlocked after the first visit) sit below the shader and show
+ * only the solid `filledClassName` fallback.
+ *
+ * The host is the in-flow wrapper and grows with new bars — prefer it.
+ * Fall back to the canvas only when the host is unmeasurable (`hidden` /
+ * `display:none`).
+ */
+export function resolveSharedProgressShaderDisplayBox(
+  hostRect: { width: number; height: number },
+  canvasRect: { width: number; height: number },
+): { width: number; height: number } {
+  return {
+    width: hostRect.width >= 1 ? hostRect.width : canvasRect.width,
+    height: hostRect.height >= 1 ? hostRect.height : canvasRect.height,
+  };
+}
+
+/**
  * Smoke flow + per-draw rounded-rect clip. Packs corner radius into `u_finish.w`
  * (grain unused here) and adds one `u_clipRect` so we stay within WebGL1's
  * 16 fragment uniform-vector minimum.
@@ -634,10 +657,16 @@ export function SharedProgressShaderHost({
     const paintFrame = (canvas: HTMLCanvasElement) => {
       const renderer = rendererRef.current;
       if (!renderer) return;
+      const hostBox = host.getBoundingClientRect();
+      const canvasBox = canvas.getBoundingClientRect();
+      const display = resolveSharedProgressShaderDisplayBox(hostBox, canvasBox);
+      if (display.width < 1 || display.height < 1) return;
+      const dpr = Math.min(window.devicePixelRatio || 1, 2);
+      renderer.resizeToDisplay(display.width, display.height, dpr);
+      // Scissor math is relative to the canvas element's on-screen box *after*
+      // the CSS pin, which may be 1 device pixel off the host.
       const canvasRect = canvas.getBoundingClientRect();
       if (canvasRect.width < 1 || canvasRect.height < 1) return;
-      const dpr = Math.min(window.devicePixelRatio || 1, 2);
-      renderer.resizeToDisplay(canvasRect.width, canvasRect.height, dpr);
       const list: SegmentRegistration[] = [];
       segmentsRef.current.forEach((element, id) => {
         list.push({ id, element });
