@@ -7,6 +7,7 @@ import {
 import { getEnUiCatalogString } from "./enUiCatalog";
 import {
   getActionLabel,
+  getActionLogMessage,
   getCatalogString,
   getEffectName,
   getEventMessage,
@@ -201,6 +202,34 @@ describe("i18n runtime", () => {
         opts,
       ),
     ).toBe("Zeit um 5 Min. für 250 Einsicht verlängern");
+  });
+
+  it("pluralizes layTrap trapSuccessWithDeaths by villager count", async () => {
+    const one = getActionLogMessage(
+      "layTrap",
+      "trapSuccessWithDeaths",
+      "{{count}} villager falls",
+      { count: 1 },
+    );
+    const two = getActionLogMessage(
+      "layTrap",
+      "trapSuccessWithDeaths",
+      "{{count}} villagers fall",
+      { count: 2 },
+    );
+    expect(one).toContain("1 villager falls");
+    expect(one).not.toContain("villagers fall");
+    expect(two).toContain("2 villagers fall");
+
+    await i18n.changeLanguage("de");
+    const deOne = getActionLogMessage(
+      "layTrap",
+      "trapSuccessWithDeaths",
+      "{{count}} villager falls",
+      { count: 1 },
+    );
+    expect(deOne).toContain("1 Dorfbewohner fällt");
+    expect(deOne).not.toContain("fallen");
   });
 
   it("resolves villagerCost plural tooltip in English and German", async () => {

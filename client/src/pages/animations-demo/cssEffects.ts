@@ -46,6 +46,13 @@ export const CSS_EFFECT_DEMOS: CssEffectDemo[] = [
     sample: "● New",
   },
   {
+    id: "new-item-pulse-redacted",
+    label: "New item pulse (redacted tab)",
+    className: "new-item-pulse-redacted",
+    mode: "loop",
+    sample: "████",
+  },
+  {
     id: "resource-critical",
     label: "Resource critical",
     className: "resource-critical-blink text-red-500",

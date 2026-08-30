@@ -19,7 +19,7 @@ export const GAME_ACTION_BUTTON_GRID_GAP_CLASS = "gap-4";
 
 /** Flex-wrap layout for grids of game action buttons (panels, timed events, dialogs). */
 export function gameActionButtonGridClassName(className?: string): string {
-  return cn("flex flex-wrap", GAME_ACTION_BUTTON_GRID_GAP_CLASS, className);
+  return cn("flex flex-wrap items-center", GAME_ACTION_BUTTON_GRID_GAP_CLASS, className);
 }
 
 /** Vertical stack of separate button rows (e.g. Craft subGroups); gap matches the grid. */

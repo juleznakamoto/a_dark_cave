@@ -1,5 +1,5 @@
-import { useGameStore } from "@/game/state";
-import { isDemoEdition } from "@/lib/edition";
+import { getBoundGameStore } from "@/game/gameStoreHolder";
+import { isDemoEdition, isDemoEndDevMode } from "@/lib/edition";
 
 /** Demo ends after this many wooden huts have been built. */
 export const DEMO_WOODEN_HUT_LIMIT = 8;
@@ -72,13 +72,29 @@ export function isDemoLimitReachedFromState(state: {
 /** @deprecated Use {@link isDemoLimitReachedFromState}. */
 export const isGalaxyDemoLimitReachedFromState = isDemoLimitReachedFromState;
 
+/**
+ * Demo play is over: DEV Demo End, or a capped demo at the wooden-hut limit.
+ * The sim stays frozen after the end dialog is dismissed; only a new run unfreezes.
+ */
+export function isDemoPlayFrozen(state: {
+  buildings?: { woodenHut?: number };
+}): boolean {
+  if (isDemoEndDevMode()) return true;
+  return isDemoLimitReachedFromState(state);
+}
+
 export function processDemoLimit(): void {
   if (!isDemoEdition()) return;
-  const state = useGameStore.getState();
-  if (state.galaxyTimeUpDialogOpen) return;
+  const store = getBoundGameStore();
+  const state = store.getState() as {
+    galaxyTimeUpDialogOpen?: boolean;
+    demoEndDialogDismissed?: boolean;
+    buildings?: { woodenHut?: number };
+  };
+  if (state.galaxyTimeUpDialogOpen || state.demoEndDialogDismissed) return;
 
   if (isDemoLimitReachedFromState(state)) {
-    useGameStore.setState({ galaxyTimeUpDialogOpen: true });
+    store.setState({ galaxyTimeUpDialogOpen: true });
   }
 }
 
@@ -90,6 +106,7 @@ export async function startNewDemoGame(): Promise<void> {
   if (!isDemoEdition()) return;
 
   const { deleteSave } = await import("@/game/save");
+  const { useGameStore } = await import("@/game/state");
   const store = useGameStore.getState();
 
   store.setGalaxyTimeUpDialogOpen(false);

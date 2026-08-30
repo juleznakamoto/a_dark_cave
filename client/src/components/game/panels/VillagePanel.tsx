@@ -99,7 +99,18 @@ import { CircularProgress } from "@/components/ui/circular-progress";
 import { useState, useEffect, useRef, useCallback } from "react";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import { ANIMATED_COUNTER_TEXT_CLASS } from "@/components/ui/animated-counter";
+import {
+  RedactedLockedHint,
+  RedactedMoreHint,
+} from "@/components/game/RedactedHint";
 import { TooltipWrapper } from "@/components/game/TooltipWrapper";
+import { useDemoEndCatalogActive } from "@/hooks/useSteamEditionActive";
+import {
+  DEMO_END_VILLAGE_UTILITY_ACTION_IDS,
+  getDemoEndHiddenActionTeasers,
+  isDemoEndVillageUtilityRevealed,
+  type DemoEndVillageUtilityActionId,
+} from "@/game/demoEndCatalog";
 import { ConstructionBoostBadge } from "@/components/game/ConstructionBoostBadge";
 import { getRevealedEffectsForActionTooltip } from "@/game/rules/insightRevealTooltip";
 import { composeActionTooltip } from "@/game/rules/actionTooltipLayout";
@@ -347,6 +358,7 @@ function VillageProductionCycleIndicator({
 
 function VillageInvestButton({ label }: { label: string }) {
   const { t } = useUiTranslation();
+  const playFrozen = useDemoEndCatalogActive();
   const playTime = useGameStore((s) => s.playTime);
   const investmentHallState = useGameStore((s) => s.investmentHallState);
   const investDialogOpen = useGameStore((s) => s.investDialogOpen);
@@ -354,10 +366,11 @@ function VillageInvestButton({ label }: { label: string }) {
 
   const handleInvestDialogOpenChange = useCallback(
     (next: boolean) => {
+      if (next && playFrozen) return;
       if (next && !isInvestmentWaveReadyForUi(useGameStore.getState())) return;
       setInvestDialogOpen(next);
     },
-    [setInvestDialogOpen],
+    [playFrozen, setInvestDialogOpen],
   );
 
   const ih = investmentHallState;
@@ -412,7 +425,7 @@ function VillageInvestButton({ label }: { label: string }) {
         data-testid="button-invest"
         actionId="invest"
         button_id="invest"
-        disabled={!investReady}
+        disabled={playFrozen || !investReady}
         playTimeCooldown={investPlayTimeCooldown}
         size="xs"
         variant="outline"
@@ -434,6 +447,7 @@ function VillageInvestButton({ label }: { label: string }) {
 
 function VillageCallMerchantButton({ label }: { label: string }) {
   const { t } = useUiTranslation();
+  const playFrozen = useDemoEndCatalogActive();
   const playTime = useGameStore((s) => s.playTime);
   const story = useGameStore((s) => s.story);
   const timedEventTab = useGameStore((s) => s.timedEventTab);
@@ -469,7 +483,10 @@ function VillageCallMerchantButton({ label }: { label: string }) {
       : null;
   const canAfford = (resources?.gold ?? 0) >= price;
   const isDisabled =
-    isOtherEventActive || isOnCooldown || (!isCallingMerchant && !canAfford);
+    playFrozen ||
+    isOtherEventActive ||
+    isOnCooldown ||
+    (!isCallingMerchant && !canAfford);
 
   const formatRemaining = (ms: number) =>
     formatCompactDuration(Math.max(0, ms) / 1000);
@@ -514,6 +531,7 @@ function VillageCallMerchantButton({ label }: { label: string }) {
 
 export default function VillagePanel() {
   const { t } = useUiTranslation();
+  const catalogActive = useDemoEndCatalogActive();
   const {
     villagers,
     buildings,
@@ -1240,6 +1258,37 @@ export default function VillagePanel() {
     </div>
   );
 
+  const renderRedactedJobRow = (jobId: string, label: string) => (
+    <div
+      key={jobId}
+      className={VILLAGER_COUNT_ROW_CLASS}
+      data-testid={`village-job-${jobId}-redacted`}
+    >
+      <div className={VILLAGER_COUNT_CONTROL_GRID_CLASS}>
+        <span
+          className={cn(VILLAGER_COUNT_BUTTON_SIZE_CLASS, "inline-block")}
+          aria-hidden
+        />
+        <RedactedLockedHint
+          label="0"
+          tooltipId={`village-job-${jobId}-count`}
+        />
+        <span
+          className={cn(VILLAGER_COUNT_BUTTON_SIZE_CLASS, "inline-block")}
+          aria-hidden
+        />
+      </div>
+      <span translate="no" className={VILLAGER_COUNT_CAP_CLASS} aria-hidden />
+      {renderCapUpgradeSlot()}
+      <span className={villagerCountLabelClass}>
+        <RedactedLockedHint
+          label={label}
+          tooltipId={`village-job-${jobId}-label`}
+        />
+      </span>
+    </div>
+  );
+
   const renderDisgracedPriorRow = () => (
     <div
       key="disgraced-prior"
@@ -1284,7 +1333,9 @@ export default function VillagePanel() {
       (jobId === "gatherer" || areVillagerCapsEnabled(state));
     const atCap = showCap && currentCount >= cap;
     const canAssignMore =
-      villagers.free > 0 && (!showCap || currentCount < cap);
+      !catalogActive &&
+      villagers.free > 0 &&
+      (!showCap || currentCount < cap);
     const capUpgradeGroupId = capUpgradeGroupByJobId.get(jobId);
 
     const productionEntries =
@@ -1324,17 +1375,19 @@ export default function VillagePanel() {
               stopHold(true);
             }}
             onTouchCancel={() => stopHold(true)}
-            disabled={currentCount === 0}
+            disabled={catalogActive || currentCount === 0}
             variant="outline"
             size="xs"
-            className={villagerCountButtonClassName(currentCount === 0)}
+            className={villagerCountButtonClassName(
+              catalogActive || currentCount === 0,
+            )}
             style={{ touchAction: "manipulation" }}
             button_id={`unassign-${jobId}`}
           >
             <span
               className={cn(
                 "leading-none tabular-nums",
-                currentCount === 0 && "opacity-60",
+                (catalogActive || currentCount === 0) && "opacity-60",
               )}
             >
               -
@@ -1437,7 +1490,40 @@ export default function VillagePanel() {
               );
             });
 
-            if (visibleActions.length === 0) return null;
+            const redactedUtilityActions = catalogActive
+              ? group.actions.filter((action) => {
+                if (
+                  !(DEMO_END_VILLAGE_UTILITY_ACTION_IDS as readonly string[]).includes(
+                    action.id,
+                  )
+                ) {
+                  return false;
+                }
+                if (visibleActions.some((visible) => visible.id === action.id)) {
+                  return false;
+                }
+                return !isDemoEndVillageUtilityRevealed(
+                  state,
+                  action.id as DemoEndVillageUtilityActionId,
+                );
+              })
+              : [];
+
+            const { teasers: buildTeasers, showEllipsis: showBuildEllipsis } =
+              catalogActive && group.title === "Build"
+                ? getDemoEndHiddenActionTeasers(
+                    group.actions,
+                    new Set(visibleActions.map((action) => action.id)),
+                  )
+                : { teasers: [], showEllipsis: false };
+
+            if (
+              visibleActions.length === 0 &&
+              redactedUtilityActions.length === 0 &&
+              buildTeasers.length === 0
+            ) {
+              return null;
+            }
 
             return (
               <div key={groupIndex} className="space-y-2">
@@ -1620,898 +1706,969 @@ export default function VillagePanel() {
                   )
                 )}
                 <div className={gameActionButtonGridClassName("w-full")}>
-                  {visibleActions.map((action) =>
-                    renderButton(action.id, action.label),
-                  )}
+                  {group.actions.map((action) => {
+                    if (visibleActions.some((visible) => visible.id === action.id)) {
+                      return renderButton(action.id, action.label);
+                    }
+                    if (
+                      redactedUtilityActions.some(
+                        (redacted) => redacted.id === action.id,
+                      )
+                    ) {
+                      return (
+                        <RedactedLockedHint
+                          key={action.id}
+                          label={resolveActionLabel(action.id, action.label)}
+                          tooltipId={`village-${action.id}-redacted`}
+                        />
+                      );
+                    }
+                    return null;
+                  })}
+                  {buildTeasers.map((action) => (
+                    <RedactedLockedHint
+                      key={action.id}
+                      label={resolveActionLabel(action.id, action.label)}
+                      tooltipId={`village-${action.id}-redacted`}
+                    />
+                  ))}
+                  {showBuildEllipsis ? (
+                    <RedactedMoreHint tooltipId="village-build-more-redacted" />
+                  ) : null}
                 </div>
               </div>
             );
           })}
 
           {/* Rule Section */}
-          {story.seen?.hasVillagers && visiblePopulationJobs.length > 0 && (
-            <div className="space-y-2">
-              <div className="flex w-full items-center gap-2">
-                <h3 className="inline-flex shrink-0 items-center text-xs font-medium text-foreground leading-none">
-                  {t("village.sectionProduce")}
-                </h3>
-                <VillageProductionCycleIndicator
-                  pulseClassName={pulseClassName}
-                  onMouseEnter={onMouseEnter}
-                  onMouseLeave={onMouseLeave}
-                />
-                {/* Feast Timer and other production effects */}
-                {(() => {
-                  const feastState = useGameStore.getState().feastState;
-                  const greatFeastState =
-                    useGameStore.getState().greatFeastState;
-                  const solsticeState = useGameStore.getState().solsticeState;
-                  const curseState = useGameStore.getState().curseState;
-                  const disgustState = useGameStore.getState().disgustState;
-                  const miningBoostState =
-                    useGameStore.getState().miningBoostState;
-                  const frostfallState = useGameStore.getState().frostfallState; // Assume frostfallState exists
-                  const staringDeerState =
-                    useGameStore.getState().staringDeerState;
-                  const forestFearState =
-                    useGameStore.getState().forestFearState;
-                  const isGreatFeast =
-                    greatFeastState?.isActive &&
-                    greatFeastState.endTime > Date.now();
-                  const isFeast =
-                    feastState?.isActive && feastState.endTime > Date.now();
-                  const isCursed =
-                    curseState?.isActive && curseState.endTime > Date.now();
-                  const isDisgusted =
-                    disgustState?.isActive && disgustState.endTime > Date.now();
-                  const isMiningBoosted =
-                    miningBoostState?.isActive &&
-                    miningBoostState.endTime > Date.now();
-                  const isBrimstoneFlux =
-                    brimstoneFluxState?.isActive &&
-                    brimstoneFluxState.endTime > Date.now();
-                  const isFrostfall =
-                    frostfallState?.isActive &&
-                    frostfallState.endTime > Date.now();
-                  const isSolstice =
-                    solsticeState?.isActive &&
-                    solsticeState.endTime > Date.now();
-                  const isStaringDeer =
-                    staringDeerState?.isActive &&
-                    staringDeerState.endTime > Date.now();
-                  const isForestFear =
-                    forestFearState?.isActive &&
-                    forestFearState.endTime > Date.now();
+          {(catalogActive ||
+            (story.seen?.hasVillagers && visiblePopulationJobs.length > 0)) && (
+              <div className="space-y-2">
+                <div className="flex w-full items-center gap-2">
+                  <h3 className="inline-flex shrink-0 items-center text-xs font-medium text-foreground leading-none">
+                    {catalogActive && !story.seen?.hasVillagers ? (
+                      <RedactedLockedHint
+                        label={t("village.sectionProduce")}
+                        tooltipId="village-produce-header-redacted"
+                      />
+                    ) : (
+                      t("village.sectionProduce")
+                    )}
+                  </h3>
+                  {story.seen?.hasVillagers && (
+                    <VillageProductionCycleIndicator
+                      pulseClassName={pulseClassName}
+                      onMouseEnter={onMouseEnter}
+                      onMouseLeave={onMouseLeave}
+                    />
+                  )}
+                  {/* Feast Timer and other production effects */}
+                  {(() => {
+                    const feastState = useGameStore.getState().feastState;
+                    const greatFeastState =
+                      useGameStore.getState().greatFeastState;
+                    const solsticeState = useGameStore.getState().solsticeState;
+                    const curseState = useGameStore.getState().curseState;
+                    const disgustState = useGameStore.getState().disgustState;
+                    const miningBoostState =
+                      useGameStore.getState().miningBoostState;
+                    const frostfallState = useGameStore.getState().frostfallState; // Assume frostfallState exists
+                    const staringDeerState =
+                      useGameStore.getState().staringDeerState;
+                    const forestFearState =
+                      useGameStore.getState().forestFearState;
+                    const isGreatFeast =
+                      greatFeastState?.isActive &&
+                      greatFeastState.endTime > Date.now();
+                    const isFeast =
+                      feastState?.isActive && feastState.endTime > Date.now();
+                    const isCursed =
+                      curseState?.isActive && curseState.endTime > Date.now();
+                    const isDisgusted =
+                      disgustState?.isActive && disgustState.endTime > Date.now();
+                    const isMiningBoosted =
+                      miningBoostState?.isActive &&
+                      miningBoostState.endTime > Date.now();
+                    const isBrimstoneFlux =
+                      brimstoneFluxState?.isActive &&
+                      brimstoneFluxState.endTime > Date.now();
+                    const isFrostfall =
+                      frostfallState?.isActive &&
+                      frostfallState.endTime > Date.now();
+                    const isSolstice =
+                      solsticeState?.isActive &&
+                      solsticeState.endTime > Date.now();
+                    const isStaringDeer =
+                      staringDeerState?.isActive &&
+                      staringDeerState.endTime > Date.now();
+                    const isForestFear =
+                      forestFearState?.isActive &&
+                      forestFearState.endTime > Date.now();
 
-                  return (
-                    <>
-                      {/* Feast/Great Feast Indicator */}
-                      {(isGreatFeast || isFeast) && (
-                        <TooltipWrapper
-                          tooltip={
-                            <div className="text-xs">
-                              {feastTooltip.getContent(state)}
-                            </div>
-                          }
-                          tooltipId="feast-progress"
-                          disabled
-                          tooltipTriggerClassName={
-                            GAME_PANEL_HEADER_INDICATOR_TRIGGER_CLASS
-                          }
-                          className={pulseClassName(
-                            "feast-progress",
-                            GAME_PANEL_HEADER_INDICATOR_CLASS,
-                          )}
-                          onMouseEnter={() => onMouseEnter("feast-progress")}
-                          onMouseLeave={() => onMouseLeave("feast-progress")}
-                        >
-                          <div className={GAME_PANEL_HEADER_INDICATOR_INNER_CLASS}>
-                            <CircularProgress
-                              value={feastProgress}
-                              size={GAME_PANEL_HEADER_INDICATOR_SIZE_PX}
-                              fill
-                              strokeWidth={2}
-                              className={
-                                isGreatFeast
-                                  ? "text-orange-600"
-                                  : "text-yellow-600"
-                              }
-                            />
-                            <HeaderIndicatorGlyph
-                              id={isGreatFeast ? "greatFeast" : "feast"}
-                            />
-                          </div>
-                        </TooltipWrapper>
-                      )}
-
-                      {/* Solstice Gathering Indicator */}
-                      {isSolstice && (
-                        <TooltipWrapper
-                          tooltip={
-                            <div className="text-xs">
-                              {solsticeTooltip.getContent(state)}
-                            </div>
-                          }
-                          tooltipId="solstice-progress"
-                          disabled
-                          tooltipTriggerClassName={
-                            GAME_PANEL_HEADER_INDICATOR_TRIGGER_CLASS
-                          }
-                          className={pulseClassName(
-                            "solstice-progress",
-                            GAME_PANEL_HEADER_INDICATOR_CLASS,
-                          )}
-                          onMouseEnter={() => onMouseEnter("solstice-progress")}
-                          onMouseLeave={() => onMouseLeave("solstice-progress")}
-                        >
-                          <div className={GAME_PANEL_HEADER_INDICATOR_INNER_CLASS}>
-                            <CircularProgress
-                              value={solsticeProgress}
-                              size={GAME_PANEL_HEADER_INDICATOR_SIZE_PX}
-                              fill
-                              strokeWidth={2}
-                              className="text-orange-500"
-                            />
-                            <HeaderIndicatorGlyph id="solstice" />
-                          </div>
-                        </TooltipWrapper>
-                      )}
-
-                      {/* Curse Indicator */}
-                      {isCursed && (
-                        <TooltipWrapper
-                          tooltip={
-                            <div className="text-xs whitespace-pre-line">
-                              {curseTooltip.getContent(state)}
-                            </div>
-                          }
-                          tooltipId="curse-progress"
-                          disabled
-                          tooltipTriggerClassName={
-                            GAME_PANEL_HEADER_INDICATOR_TRIGGER_CLASS
-                          }
-                          className={pulseClassName(
-                            "curse-progress",
-                            GAME_PANEL_HEADER_INDICATOR_CLASS,
-                          )}
-                          onMouseEnter={() => onMouseEnter("curse-progress")}
-                          onMouseLeave={() => onMouseLeave("curse-progress")}
-                        >
-                          <div className={GAME_PANEL_HEADER_INDICATOR_INNER_CLASS}>
-                            <CircularProgress
-                              value={(() => {
-                                const timeRemaining = Math.max(
-                                  0,
-                                  curseState.endTime - Date.now(),
-                                );
-                                const totalDuration = curseLikeDurationMs(
-                                  cruelModeScale(state),
-                                );
-                                const elapsed = totalDuration - timeRemaining;
-                                return Math.min(
-                                  100,
-                                  (elapsed / totalDuration) * 100,
-                                );
-                              })()}
-                              size={GAME_PANEL_HEADER_INDICATOR_SIZE_PX}
-                              fill
-                              strokeWidth={2}
-                              className="text-purple-600"
-                            />
-                            <HeaderIndicatorGlyph id="curse" />
-                          </div>
-                        </TooltipWrapper>
-                      )}
-
-                      {/* Disgust Indicator */}
-                      {isDisgusted && (
-                        <TooltipWrapper
-                          tooltip={
-                            <div className="text-xs whitespace-pre-line">
-                              {disgustTooltip.getContent(state)}
-                            </div>
-                          }
-                          tooltipId="disgust-progress"
-                          disabled
-                          tooltipTriggerClassName={
-                            GAME_PANEL_HEADER_INDICATOR_TRIGGER_CLASS
-                          }
-                          className={pulseClassName(
-                            "disgust-progress",
-                            GAME_PANEL_HEADER_INDICATOR_CLASS,
-                          )}
-                          onMouseEnter={() => onMouseEnter("disgust-progress")}
-                          onMouseLeave={() => onMouseLeave("disgust-progress")}
-                        >
-                          <div className={GAME_PANEL_HEADER_INDICATOR_INNER_CLASS}>
-                            <CircularProgress
-                              value={(() => {
-                                const timeRemaining = Math.max(
-                                  0,
-                                  disgustState.endTime - Date.now(),
-                                );
-                                const totalDuration = disgustDurationMs(
-                                  state.cruelMode,
-                                );
-                                const elapsed = totalDuration - timeRemaining;
-                                return Math.min(
-                                  100,
-                                  (elapsed / totalDuration) * 100,
-                                );
-                              })()}
-                              size={GAME_PANEL_HEADER_INDICATOR_SIZE_PX}
-                              fill
-                              strokeWidth={2}
-                              className="text-green-800"
-                            />
-                            <HeaderIndicatorGlyph id="disgust" />
-                          </div>
-                        </TooltipWrapper>
-                      )}
-
-                      {/* Mining Boost Indicator */}
-                      {isMiningBoosted && (
-                        <TooltipWrapper
-                          tooltip={
-                            <div className="text-xs whitespace-pre-line">
-                              {miningBoostTooltip.getContent(state)}
-                            </div>
-                          }
-                          tooltipId="mining-boost-progress"
-                          disabled
-                          tooltipTriggerClassName={
-                            GAME_PANEL_HEADER_INDICATOR_TRIGGER_CLASS
-                          }
-                          className={pulseClassName(
-                            "mining-boost-progress",
-                            GAME_PANEL_HEADER_INDICATOR_CLASS,
-                          )}
-                          onMouseEnter={() =>
-                            onMouseEnter("mining-boost-progress")
-                          }
-                          onMouseLeave={() =>
-                            onMouseLeave("mining-boost-progress")
-                          }
-                        >
-                          <div className={GAME_PANEL_HEADER_INDICATOR_INNER_CLASS}>
-                            <CircularProgress
-                              value={(() => {
-                                const boostDuration = 30 * 60 * 1000;
-                                const boostElapsed =
-                                  boostDuration -
-                                  (miningBoostState.endTime - Date.now());
-                                return (boostElapsed / boostDuration) * 100;
-                              })()}
-                              size={GAME_PANEL_HEADER_INDICATOR_SIZE_PX}
-                              fill
-                              strokeWidth={2}
-                              className="text-amber-600"
-                            />
-                            <HeaderIndicatorGlyph id="mining" />
-                          </div>
-                        </TooltipWrapper>
-                      )}
-
-                      {/* Brimstone Flux Indicator */}
-                      {isBrimstoneFlux && (
-                        <TooltipWrapper
-                          tooltip={
-                            <div className="text-xs whitespace-pre-line">
-                              {brimstoneFluxTooltip.getContent(state)}
-                            </div>
-                          }
-                          tooltipId="brimstone-flux-progress"
-                          disabled
-                          tooltipTriggerClassName={
-                            GAME_PANEL_HEADER_INDICATOR_TRIGGER_CLASS
-                          }
-                          className={pulseClassName(
-                            "brimstone-flux-progress",
-                            GAME_PANEL_HEADER_INDICATOR_CLASS,
-                          )}
-                          onMouseEnter={() =>
-                            onMouseEnter("brimstone-flux-progress")
-                          }
-                          onMouseLeave={() =>
-                            onMouseLeave("brimstone-flux-progress")
-                          }
-                        >
-                          <div className={GAME_PANEL_HEADER_INDICATOR_INNER_CLASS}>
-                            <CircularProgress
-                              value={(() => {
-                                const fluxElapsed =
-                                  BRIMSTONE_FLUX_DURATION_MS -
-                                  (brimstoneFluxState.endTime - Date.now());
-                                return (
-                                  (fluxElapsed / BRIMSTONE_FLUX_DURATION_MS) *
-                                  100
-                                );
-                              })()}
-                              size={GAME_PANEL_HEADER_INDICATOR_SIZE_PX}
-                              fill
-                              strokeWidth={2}
-                              className="text-yellow-500"
-                            />
-                            <HeaderIndicatorGlyph id="brimstone" />
-                          </div>
-                        </TooltipWrapper>
-                      )}
-
-                      {/* Heartfire Indicator */}
-                      {state.heartfireState?.level > 0 && (
-                        <TooltipWrapper
-                          tooltip={
-                            <div className="text-xs">
-                              {heartfireTooltip.getContent(state)}
-                            </div>
-                          }
-                          tooltipId="heartfire-progress"
-                          disabled
-                          tooltipTriggerClassName={
-                            GAME_PANEL_HEADER_INDICATOR_TRIGGER_CLASS
-                          }
-                          className={pulseClassName(
-                            "heartfire-progress",
-                            GAME_PANEL_HEADER_INDICATOR_CLASS,
-                          )}
-                          onMouseEnter={() =>
-                            onMouseEnter("heartfire-progress")
-                          }
-                          onMouseLeave={() =>
-                            onMouseLeave("heartfire-progress")
-                          }
-                        >
-                          <div className={GAME_PANEL_HEADER_INDICATOR_INNER_CLASS}>
-                            <CircularProgress
-                              value={(() => {
-                                const now = Date.now();
-                                const lastDecrease =
-                                  state.heartfireState.lastLevelDecrease || 0;
-                                const elapsed = now - lastDecrease;
-                                return Math.min(100, (elapsed / 90000) * 100);
-                              })()}
-                              size={GAME_PANEL_HEADER_INDICATOR_SIZE_PX}
-                              fill
-                              strokeWidth={2}
-                              className="text-red-700"
-                            />
-                            <HeartfireIndicatorGlyph
-                              level={state.heartfireState.level}
-                            />
-                          </div>
-                        </TooltipWrapper>
-                      )}
-
-                      {/* Frostfall Indicator */}
-                      {isFrostfall && (
-                        <TooltipWrapper
-                          tooltip={
-                            <div className="text-xs">
-                              {frostfallTooltip.getContent(state)}
-                            </div>
-                          }
-                          tooltipId="frostfall-progress"
-                          disabled
-                          tooltipTriggerClassName={
-                            GAME_PANEL_HEADER_INDICATOR_TRIGGER_CLASS
-                          }
-                          className={pulseClassName(
-                            "frostfall-progress",
-                            GAME_PANEL_HEADER_INDICATOR_CLASS,
-                          )}
-                          onMouseEnter={() =>
-                            onMouseEnter("frostfall-progress")
-                          }
-                          onMouseLeave={() =>
-                            onMouseLeave("frostfall-progress")
-                          }
-                        >
-                          <div className={GAME_PANEL_HEADER_INDICATOR_INNER_CLASS}>
-                            <CircularProgress
-                              value={(() => {
-                                const frostfallDuration = curseLikeDurationMs(
-                                  cruelModeScale(state),
-                                );
-                                const timeRemaining = Math.max(
-                                  0,
-                                  frostfallState.endTime - Date.now(),
-                                );
-                                const elapsed =
-                                  frostfallDuration - timeRemaining;
-                                return Math.min(
-                                  100,
-                                  (elapsed / frostfallDuration) * 100,
-                                );
-                              })()}
-                              size={GAME_PANEL_HEADER_INDICATOR_SIZE_PX}
-                              fill
-                              strokeWidth={2}
-                              className="text-blue-600"
-                            />
-                            <HeaderIndicatorGlyph id="frostfall" />
-                          </div>
-                        </TooltipWrapper>
-                      )}
-
-                      {/* Fog Indicator */}
-                      {(() => {
-                        const fogState = useGameStore.getState().fogState;
-                        const isFog =
-                          fogState?.isActive && fogState.endTime > Date.now();
-
-                        if (!isFog) return null;
-
-                        return (
+                    return (
+                      <>
+                        {/* Feast/Great Feast Indicator */}
+                        {(isGreatFeast || isFeast) && (
                           <TooltipWrapper
                             tooltip={
                               <div className="text-xs">
-                                {fogTooltip.getContent(state)}
+                                {feastTooltip.getContent(state)}
                               </div>
                             }
-                            tooltipId="fog-progress"
+                            tooltipId="feast-progress"
                             disabled
                             tooltipTriggerClassName={
                               GAME_PANEL_HEADER_INDICATOR_TRIGGER_CLASS
                             }
                             className={pulseClassName(
-                              "fog-progress",
+                              "feast-progress",
                               GAME_PANEL_HEADER_INDICATOR_CLASS,
                             )}
-                            onMouseEnter={() => onMouseEnter("fog-progress")}
-                            onMouseLeave={() => onMouseLeave("fog-progress")}
+                            onMouseEnter={() => onMouseEnter("feast-progress")}
+                            onMouseLeave={() => onMouseLeave("feast-progress")}
+                          >
+                            <div className={GAME_PANEL_HEADER_INDICATOR_INNER_CLASS}>
+                              <CircularProgress
+                                value={feastProgress}
+                                size={GAME_PANEL_HEADER_INDICATOR_SIZE_PX}
+                                fill
+                                strokeWidth={2}
+                                className={
+                                  isGreatFeast
+                                    ? "text-orange-600"
+                                    : "text-yellow-600"
+                                }
+                              />
+                              <HeaderIndicatorGlyph
+                                id={isGreatFeast ? "greatFeast" : "feast"}
+                              />
+                            </div>
+                          </TooltipWrapper>
+                        )}
+
+                        {/* Solstice Gathering Indicator */}
+                        {isSolstice && (
+                          <TooltipWrapper
+                            tooltip={
+                              <div className="text-xs">
+                                {solsticeTooltip.getContent(state)}
+                              </div>
+                            }
+                            tooltipId="solstice-progress"
+                            disabled
+                            tooltipTriggerClassName={
+                              GAME_PANEL_HEADER_INDICATOR_TRIGGER_CLASS
+                            }
+                            className={pulseClassName(
+                              "solstice-progress",
+                              GAME_PANEL_HEADER_INDICATOR_CLASS,
+                            )}
+                            onMouseEnter={() => onMouseEnter("solstice-progress")}
+                            onMouseLeave={() => onMouseLeave("solstice-progress")}
+                          >
+                            <div className={GAME_PANEL_HEADER_INDICATOR_INNER_CLASS}>
+                              <CircularProgress
+                                value={solsticeProgress}
+                                size={GAME_PANEL_HEADER_INDICATOR_SIZE_PX}
+                                fill
+                                strokeWidth={2}
+                                className="text-orange-500"
+                              />
+                              <HeaderIndicatorGlyph id="solstice" />
+                            </div>
+                          </TooltipWrapper>
+                        )}
+
+                        {/* Curse Indicator */}
+                        {isCursed && (
+                          <TooltipWrapper
+                            tooltip={
+                              <div className="text-xs whitespace-pre-line">
+                                {curseTooltip.getContent(state)}
+                              </div>
+                            }
+                            tooltipId="curse-progress"
+                            disabled
+                            tooltipTriggerClassName={
+                              GAME_PANEL_HEADER_INDICATOR_TRIGGER_CLASS
+                            }
+                            className={pulseClassName(
+                              "curse-progress",
+                              GAME_PANEL_HEADER_INDICATOR_CLASS,
+                            )}
+                            onMouseEnter={() => onMouseEnter("curse-progress")}
+                            onMouseLeave={() => onMouseLeave("curse-progress")}
                           >
                             <div className={GAME_PANEL_HEADER_INDICATOR_INNER_CLASS}>
                               <CircularProgress
                                 value={(() => {
-                                  const fogDuration = riddleFogDurationMs(
-                                    cruelModeScale(state),
-                                  );
                                   const timeRemaining = Math.max(
                                     0,
-                                    fogState.endTime - Date.now(),
+                                    curseState.endTime - Date.now(),
                                   );
-                                  const elapsed = fogDuration - timeRemaining;
+                                  const totalDuration = curseLikeDurationMs(
+                                    cruelModeScale(state),
+                                  );
+                                  const elapsed = totalDuration - timeRemaining;
                                   return Math.min(
                                     100,
-                                    (elapsed / fogDuration) * 100,
+                                    (elapsed / totalDuration) * 100,
                                   );
                                 })()}
                                 size={GAME_PANEL_HEADER_INDICATOR_SIZE_PX}
                                 fill
                                 strokeWidth={2}
-                                className="text-gray-500"
+                                className="text-purple-600"
                               />
-                              <HeaderIndicatorGlyph id="fog" />
+                              <HeaderIndicatorGlyph id="curse" />
                             </div>
                           </TooltipWrapper>
-                        );
-                      })()}
+                        )}
 
-                      {/* Staring Deer Indicator */}
-                      {isStaringDeer && (
-                        <TooltipWrapper
-                          tooltip={
-                            <div className="text-xs">
-                              {staringDeerTooltip.getContent(state)}
-                            </div>
-                          }
-                          tooltipId="staring-deer-progress"
-                          disabled
-                          tooltipTriggerClassName={
-                            GAME_PANEL_HEADER_INDICATOR_TRIGGER_CLASS
-                          }
-                          className={pulseClassName(
-                            "staring-deer-progress",
-                            GAME_PANEL_HEADER_INDICATOR_CLASS,
-                          )}
-                          onMouseEnter={() =>
-                            onMouseEnter("staring-deer-progress")
-                          }
-                          onMouseLeave={() =>
-                            onMouseLeave("staring-deer-progress")
-                          }
-                        >
-                          <div className={GAME_PANEL_HEADER_INDICATOR_INNER_CLASS}>
-                            <CircularProgress
-                              value={(() => {
-                                const timeRemaining = Math.max(
-                                  0,
-                                  staringDeerState.endTime - Date.now(),
-                                );
-                                const elapsed =
-                                  STARING_DEER_DURATION_MS - timeRemaining;
-                                return Math.min(
-                                  100,
-                                  (elapsed / STARING_DEER_DURATION_MS) * 100,
-                                );
-                              })()}
-                              size={GAME_PANEL_HEADER_INDICATOR_SIZE_PX}
-                              fill
-                              strokeWidth={2}
-                              className="text-green-800"
-                            />
-                            <HeaderIndicatorGlyph id="deer" />
-                          </div>
-                        </TooltipWrapper>
-                      )}
-
-                      {/* Forest Fear Indicator */}
-                      {isForestFear && (
-                        <TooltipWrapper
-                          tooltip={
-                            <div className="text-xs">
-                              {forestFearTooltip.getContent(state)}
-                            </div>
-                          }
-                          tooltipId="forest-fear-progress"
-                          disabled
-                          tooltipTriggerClassName={
-                            GAME_PANEL_HEADER_INDICATOR_TRIGGER_CLASS
-                          }
-                          className={pulseClassName(
-                            "forest-fear-progress",
-                            GAME_PANEL_HEADER_INDICATOR_CLASS,
-                          )}
-                          onMouseEnter={() =>
-                            onMouseEnter("forest-fear-progress")
-                          }
-                          onMouseLeave={() =>
-                            onMouseLeave("forest-fear-progress")
-                          }
-                        >
-                          <div className={GAME_PANEL_HEADER_INDICATOR_INNER_CLASS}>
-                            <CircularProgress
-                              value={(() => {
-                                const timeRemaining = Math.max(
-                                  0,
-                                  forestFearState.endTime - Date.now(),
-                                );
-                                const elapsed =
-                                  FOREST_FEAR_DURATION_MS - timeRemaining;
-                                return Math.min(
-                                  100,
-                                  (elapsed / FOREST_FEAR_DURATION_MS) * 100,
-                                );
-                              })()}
-                              size={GAME_PANEL_HEADER_INDICATOR_SIZE_PX}
-                              fill
-                              strokeWidth={2}
-                              className="text-red-800"
-                            />
-                            <HeaderIndicatorGlyph id="fear" />
-                          </div>
-                        </TooltipWrapper>
-                      )}
-
-                      {/* Madness Production Effect Indicator */}
-                      {(() => {
-                        const totalMadness = getTotalMadness(state);
-                        if (totalMadness < 10) return null;
-                        return (
+                        {/* Disgust Indicator */}
+                        {isDisgusted && (
                           <TooltipWrapper
                             tooltip={
-                              <div className="text-xs">
-                                {madnessProductionTooltip.getContent(state)}
+                              <div className="text-xs whitespace-pre-line">
+                                {disgustTooltip.getContent(state)}
                               </div>
                             }
-                            tooltipId="madness-production"
+                            tooltipId="disgust-progress"
                             disabled
                             tooltipTriggerClassName={
                               GAME_PANEL_HEADER_INDICATOR_TRIGGER_CLASS
                             }
                             className={pulseClassName(
-                              "madness-production",
+                              "disgust-progress",
+                              GAME_PANEL_HEADER_INDICATOR_CLASS,
+                            )}
+                            onMouseEnter={() => onMouseEnter("disgust-progress")}
+                            onMouseLeave={() => onMouseLeave("disgust-progress")}
+                          >
+                            <div className={GAME_PANEL_HEADER_INDICATOR_INNER_CLASS}>
+                              <CircularProgress
+                                value={(() => {
+                                  const timeRemaining = Math.max(
+                                    0,
+                                    disgustState.endTime - Date.now(),
+                                  );
+                                  const totalDuration = disgustDurationMs(
+                                    state.cruelMode,
+                                  );
+                                  const elapsed = totalDuration - timeRemaining;
+                                  return Math.min(
+                                    100,
+                                    (elapsed / totalDuration) * 100,
+                                  );
+                                })()}
+                                size={GAME_PANEL_HEADER_INDICATOR_SIZE_PX}
+                                fill
+                                strokeWidth={2}
+                                className="text-green-800"
+                              />
+                              <HeaderIndicatorGlyph id="disgust" />
+                            </div>
+                          </TooltipWrapper>
+                        )}
+
+                        {/* Mining Boost Indicator */}
+                        {isMiningBoosted && (
+                          <TooltipWrapper
+                            tooltip={
+                              <div className="text-xs whitespace-pre-line">
+                                {miningBoostTooltip.getContent(state)}
+                              </div>
+                            }
+                            tooltipId="mining-boost-progress"
+                            disabled
+                            tooltipTriggerClassName={
+                              GAME_PANEL_HEADER_INDICATOR_TRIGGER_CLASS
+                            }
+                            className={pulseClassName(
+                              "mining-boost-progress",
                               GAME_PANEL_HEADER_INDICATOR_CLASS,
                             )}
                             onMouseEnter={() =>
-                              onMouseEnter("madness-production")
+                              onMouseEnter("mining-boost-progress")
                             }
                             onMouseLeave={() =>
-                              onMouseLeave("madness-production")
+                              onMouseLeave("mining-boost-progress")
                             }
                           >
                             <div className={GAME_PANEL_HEADER_INDICATOR_INNER_CLASS}>
                               <CircularProgress
-                                value={100}
+                                value={(() => {
+                                  const boostDuration = 30 * 60 * 1000;
+                                  const boostElapsed =
+                                    boostDuration -
+                                    (miningBoostState.endTime - Date.now());
+                                  return (boostElapsed / boostDuration) * 100;
+                                })()}
                                 size={GAME_PANEL_HEADER_INDICATOR_SIZE_PX}
                                 fill
                                 strokeWidth={2}
-                                className="text-violet-600"
+                                className="text-amber-600"
                               />
-                              <HeaderIndicatorGlyph id="madness" />
+                              <HeaderIndicatorGlyph id="mining" />
                             </div>
                           </TooltipWrapper>
-                        );
-                      })()}
-                    </>
-                  );
-                })()}
-                {arePresetsVisible(state) &&
-                  (() => {
-                    const presetState = {
-                      buildings: state.buildings,
-                      villagerPresetsPurchased,
-                      villagerPresetSlotsFromShop,
-                      villagerJobPresets,
-                    };
-                    const visibleSlots = getVisiblePresetSlotCount();
-                    const nextUnlockIndex =
-                      getNextPurchasablePresetSlotIndex(presetState);
-                    const nextUnlockCost = getNextPresetUnlockCost(presetState);
-                    const showPresetUnlock =
-                      nextUnlockIndex !== null && nextUnlockCost !== null;
-                    const canUnlockPreset = showPresetUnlock
-                      ? canPurchasePresetSlot(state, insightRevealing)
-                      : false;
-                    const canInteractPresetUnlock =
-                      canUnlockPreset && !isPresetUnlockAnimating;
-                    const hidePresetUnlockAfterReveal =
-                      presetUnlockRevealStartedRef.current &&
-                      !isPresetUnlockAnimating;
-                    return (
-                      <div className="ml-auto flex shrink-0 items-center gap-1">
-                        {showPresetUnlock && !hidePresetUnlockAfterReveal && (
+                        )}
+
+                        {/* Brimstone Flux Indicator */}
+                        {isBrimstoneFlux && (
                           <TooltipWrapper
-                            tooltipId="preset-unlock"
                             tooltip={
-                              <div className="text-xs">
-                                {t("village.presetUnlock", {
-                                  cost: formatNumber(nextUnlockCost),
-                                })}
+                              <div className="text-xs whitespace-pre-line">
+                                {brimstoneFluxTooltip.getContent(state)}
                               </div>
                             }
-                            tooltipContentClassName="text-white"
-                            className="inline-flex items-center"
+                            tooltipId="brimstone-flux-progress"
+                            disabled
                             tooltipTriggerClassName={
-                              INSIGHT_BADGE_TOOLTIP_TRIGGER_CLASS
+                              GAME_PANEL_HEADER_INDICATOR_TRIGGER_CLASS
                             }
-                            disabled={!canInteractPresetUnlock}
-                            onMouseEnter={() => {
-                              setHighlightedResources(["insight"]);
-                            }}
-                            onMouseLeave={() => {
-                              setHighlightedResources([]);
-                            }}
+                            className={pulseClassName(
+                              "brimstone-flux-progress",
+                              GAME_PANEL_HEADER_INDICATOR_CLASS,
+                            )}
+                            onMouseEnter={() =>
+                              onMouseEnter("brimstone-flux-progress")
+                            }
+                            onMouseLeave={() =>
+                              onMouseLeave("brimstone-flux-progress")
+                            }
                           >
-                            <button
-                              type="button"
-                              data-testid="preset-unlock"
-                              className={cn(
-                                getInsightBadgeTriggerClassName({
-                                  canAfford:
-                                    canUnlockPreset || isPresetUnlockAnimating,
-                                  playing: isPresetUnlockAnimating,
-                                  className: HEADER_SLOT_INSIGHT_BUTTON_CLASS,
-                                }),
-                              )}
-                              aria-label={t("village.presetUnlock", {
-                                cost: formatNumber(nextUnlockCost),
-                              })}
-                              disabled={!canInteractPresetUnlock}
-                              aria-busy={isPresetUnlockAnimating}
-                              onClick={(e) => {
-                                e.stopPropagation();
-                                e.preventDefault();
-                                if (canInteractPresetUnlock) {
-                                  handlePresetUnlock();
-                                }
-                              }}
-                            >
-                              <BuildingActionBadge embedded size="lg" />
-                            </button>
+                            <div className={GAME_PANEL_HEADER_INDICATOR_INNER_CLASS}>
+                              <CircularProgress
+                                value={(() => {
+                                  const fluxElapsed =
+                                    BRIMSTONE_FLUX_DURATION_MS -
+                                    (brimstoneFluxState.endTime - Date.now());
+                                  return (
+                                    (fluxElapsed / BRIMSTONE_FLUX_DURATION_MS) *
+                                    100
+                                  );
+                                })()}
+                                size={GAME_PANEL_HEADER_INDICATOR_SIZE_PX}
+                                fill
+                                strokeWidth={2}
+                                className="text-yellow-500"
+                              />
+                              <HeaderIndicatorGlyph id="brimstone" />
+                            </div>
                           </TooltipWrapper>
                         )}
-                        {Array.from({ length: visibleSlots }).map((_, i) => {
-                          const slot = i + 1;
-                          const isBuildingLocked = isPresetSlotBuildingLocked(
-                            presetState,
-                            i,
-                          );
-                          const isUnlocked = isPresetSlotUnlocked(
-                            presetState,
-                            i,
-                          );
-                          const presetTooltipId = `preset-slot-${slot}`;
 
-                          if (isBuildingLocked) {
-                            return (
-                              <TooltipWrapper
-                                key={`preset-slot-${slot}`}
-                                tooltipId={presetTooltipId}
-                                tooltip={
-                                  <div className="text-xs">
-                                    {t("village.slotBuildingNeededToUnlock", {
-                                      defaultValue:
-                                        "Building required to unlock",
-                                    })}
-                                  </div>
-                                }
-                                tooltipTriggerClassName="inline-flex items-center leading-none"
-                                className="inline-flex items-center"
+                        {/* Heartfire Indicator */}
+                        {state.heartfireState?.level > 0 && (
+                          <TooltipWrapper
+                            tooltip={
+                              <div className="text-xs">
+                                {heartfireTooltip.getContent(state)}
+                              </div>
+                            }
+                            tooltipId="heartfire-progress"
+                            disabled
+                            tooltipTriggerClassName={
+                              GAME_PANEL_HEADER_INDICATOR_TRIGGER_CLASS
+                            }
+                            className={pulseClassName(
+                              "heartfire-progress",
+                              GAME_PANEL_HEADER_INDICATOR_CLASS,
+                            )}
+                            onMouseEnter={() =>
+                              onMouseEnter("heartfire-progress")
+                            }
+                            onMouseLeave={() =>
+                              onMouseLeave("heartfire-progress")
+                            }
+                          >
+                            <div className={GAME_PANEL_HEADER_INDICATOR_INNER_CLASS}>
+                              <CircularProgress
+                                value={(() => {
+                                  const now = Date.now();
+                                  const lastDecrease =
+                                    state.heartfireState.lastLevelDecrease || 0;
+                                  const elapsed = now - lastDecrease;
+                                  return Math.min(100, (elapsed / 90000) * 100);
+                                })()}
+                                size={GAME_PANEL_HEADER_INDICATOR_SIZE_PX}
+                                fill
+                                strokeWidth={2}
+                                className="text-red-700"
+                              />
+                              <HeartfireIndicatorGlyph
+                                level={state.heartfireState.level}
+                              />
+                            </div>
+                          </TooltipWrapper>
+                        )}
+
+                        {/* Frostfall Indicator */}
+                        {isFrostfall && (
+                          <TooltipWrapper
+                            tooltip={
+                              <div className="text-xs">
+                                {frostfallTooltip.getContent(state)}
+                              </div>
+                            }
+                            tooltipId="frostfall-progress"
+                            disabled
+                            tooltipTriggerClassName={
+                              GAME_PANEL_HEADER_INDICATOR_TRIGGER_CLASS
+                            }
+                            className={pulseClassName(
+                              "frostfall-progress",
+                              GAME_PANEL_HEADER_INDICATOR_CLASS,
+                            )}
+                            onMouseEnter={() =>
+                              onMouseEnter("frostfall-progress")
+                            }
+                            onMouseLeave={() =>
+                              onMouseLeave("frostfall-progress")
+                            }
+                          >
+                            <div className={GAME_PANEL_HEADER_INDICATOR_INNER_CLASS}>
+                              <CircularProgress
+                                value={(() => {
+                                  const frostfallDuration = curseLikeDurationMs(
+                                    cruelModeScale(state),
+                                  );
+                                  const timeRemaining = Math.max(
+                                    0,
+                                    frostfallState.endTime - Date.now(),
+                                  );
+                                  const elapsed =
+                                    frostfallDuration - timeRemaining;
+                                  return Math.min(
+                                    100,
+                                    (elapsed / frostfallDuration) * 100,
+                                  );
+                                })()}
+                                size={GAME_PANEL_HEADER_INDICATOR_SIZE_PX}
+                                fill
+                                strokeWidth={2}
+                                className="text-blue-600"
+                              />
+                              <HeaderIndicatorGlyph id="frostfall" />
+                            </div>
+                          </TooltipWrapper>
+                        )}
+
+                        {/* Fog Indicator */}
+                        {(() => {
+                          const fogState = useGameStore.getState().fogState;
+                          const isFog =
+                            fogState?.isActive && fogState.endTime > Date.now();
+
+                          if (!isFog) return null;
+
+                          return (
+                            <TooltipWrapper
+                              tooltip={
+                                <div className="text-xs">
+                                  {fogTooltip.getContent(state)}
+                                </div>
+                              }
+                              tooltipId="fog-progress"
+                              disabled
+                              tooltipTriggerClassName={
+                                GAME_PANEL_HEADER_INDICATOR_TRIGGER_CLASS
+                              }
+                              className={pulseClassName(
+                                "fog-progress",
+                                GAME_PANEL_HEADER_INDICATOR_CLASS,
+                              )}
+                              onMouseEnter={() => onMouseEnter("fog-progress")}
+                              onMouseLeave={() => onMouseLeave("fog-progress")}
+                            >
+                              <div className={GAME_PANEL_HEADER_INDICATOR_INNER_CLASS}>
+                                <CircularProgress
+                                  value={(() => {
+                                    const fogDuration = riddleFogDurationMs(
+                                      cruelModeScale(state),
+                                    );
+                                    const timeRemaining = Math.max(
+                                      0,
+                                      fogState.endTime - Date.now(),
+                                    );
+                                    const elapsed = fogDuration - timeRemaining;
+                                    return Math.min(
+                                      100,
+                                      (elapsed / fogDuration) * 100,
+                                    );
+                                  })()}
+                                  size={GAME_PANEL_HEADER_INDICATOR_SIZE_PX}
+                                  fill
+                                  strokeWidth={2}
+                                  className="text-gray-500"
+                                />
+                                <HeaderIndicatorGlyph id="fog" />
+                              </div>
+                            </TooltipWrapper>
+                          );
+                        })()}
+
+                        {/* Staring Deer Indicator */}
+                        {isStaringDeer && (
+                          <TooltipWrapper
+                            tooltip={
+                              <div className="text-xs">
+                                {staringDeerTooltip.getContent(state)}
+                              </div>
+                            }
+                            tooltipId="staring-deer-progress"
+                            disabled
+                            tooltipTriggerClassName={
+                              GAME_PANEL_HEADER_INDICATOR_TRIGGER_CLASS
+                            }
+                            className={pulseClassName(
+                              "staring-deer-progress",
+                              GAME_PANEL_HEADER_INDICATOR_CLASS,
+                            )}
+                            onMouseEnter={() =>
+                              onMouseEnter("staring-deer-progress")
+                            }
+                            onMouseLeave={() =>
+                              onMouseLeave("staring-deer-progress")
+                            }
+                          >
+                            <div className={GAME_PANEL_HEADER_INDICATOR_INNER_CLASS}>
+                              <CircularProgress
+                                value={(() => {
+                                  const timeRemaining = Math.max(
+                                    0,
+                                    staringDeerState.endTime - Date.now(),
+                                  );
+                                  const elapsed =
+                                    STARING_DEER_DURATION_MS - timeRemaining;
+                                  return Math.min(
+                                    100,
+                                    (elapsed / STARING_DEER_DURATION_MS) * 100,
+                                  );
+                                })()}
+                                size={GAME_PANEL_HEADER_INDICATOR_SIZE_PX}
+                                fill
+                                strokeWidth={2}
+                                className="text-green-800"
+                              />
+                              <HeaderIndicatorGlyph id="deer" />
+                            </div>
+                          </TooltipWrapper>
+                        )}
+
+                        {/* Forest Fear Indicator */}
+                        {isForestFear && (
+                          <TooltipWrapper
+                            tooltip={
+                              <div className="text-xs">
+                                {forestFearTooltip.getContent(state)}
+                              </div>
+                            }
+                            tooltipId="forest-fear-progress"
+                            disabled
+                            tooltipTriggerClassName={
+                              GAME_PANEL_HEADER_INDICATOR_TRIGGER_CLASS
+                            }
+                            className={pulseClassName(
+                              "forest-fear-progress",
+                              GAME_PANEL_HEADER_INDICATOR_CLASS,
+                            )}
+                            onMouseEnter={() =>
+                              onMouseEnter("forest-fear-progress")
+                            }
+                            onMouseLeave={() =>
+                              onMouseLeave("forest-fear-progress")
+                            }
+                          >
+                            <div className={GAME_PANEL_HEADER_INDICATOR_INNER_CLASS}>
+                              <CircularProgress
+                                value={(() => {
+                                  const timeRemaining = Math.max(
+                                    0,
+                                    forestFearState.endTime - Date.now(),
+                                  );
+                                  const elapsed =
+                                    FOREST_FEAR_DURATION_MS - timeRemaining;
+                                  return Math.min(
+                                    100,
+                                    (elapsed / FOREST_FEAR_DURATION_MS) * 100,
+                                  );
+                                })()}
+                                size={GAME_PANEL_HEADER_INDICATOR_SIZE_PX}
+                                fill
+                                strokeWidth={2}
+                                className="text-red-800"
+                              />
+                              <HeaderIndicatorGlyph id="fear" />
+                            </div>
+                          </TooltipWrapper>
+                        )}
+
+                        {/* Madness Production Effect Indicator */}
+                        {(() => {
+                          const totalMadness = getTotalMadness(state);
+                          if (totalMadness < 10) return null;
+                          return (
+                            <TooltipWrapper
+                              tooltip={
+                                <div className="text-xs">
+                                  {madnessProductionTooltip.getContent(state)}
+                                </div>
+                              }
+                              tooltipId="madness-production"
+                              disabled
+                              tooltipTriggerClassName={
+                                GAME_PANEL_HEADER_INDICATOR_TRIGGER_CLASS
+                              }
+                              className={pulseClassName(
+                                "madness-production",
+                                GAME_PANEL_HEADER_INDICATOR_CLASS,
+                              )}
+                              onMouseEnter={() =>
+                                onMouseEnter("madness-production")
+                              }
+                              onMouseLeave={() =>
+                                onMouseLeave("madness-production")
+                              }
+                            >
+                              <div className={GAME_PANEL_HEADER_INDICATOR_INNER_CLASS}>
+                                <CircularProgress
+                                  value={100}
+                                  size={GAME_PANEL_HEADER_INDICATOR_SIZE_PX}
+                                  fill
+                                  strokeWidth={2}
+                                  className="text-violet-600"
+                                />
+                                <HeaderIndicatorGlyph id="madness" />
+                              </div>
+                            </TooltipWrapper>
+                          );
+                        })()}
+                      </>
+                    );
+                  })()}
+                  {(arePresetsVisible(state) || catalogActive) &&
+                    (() => {
+                      const presetState = {
+                        buildings: state.buildings,
+                        villagerPresetsPurchased,
+                        villagerPresetSlotsFromShop,
+                        villagerJobPresets,
+                      };
+                      const visibleSlots = getVisiblePresetSlotCount();
+                      const nextUnlockIndex =
+                        getNextPurchasablePresetSlotIndex(presetState);
+                      const nextUnlockCost = getNextPresetUnlockCost(presetState);
+                      const showPresetUnlock =
+                        !catalogActive &&
+                        nextUnlockIndex !== null &&
+                        nextUnlockCost !== null;
+                      const canUnlockPreset = showPresetUnlock
+                        ? canPurchasePresetSlot(state, insightRevealing)
+                        : false;
+                      const canInteractPresetUnlock =
+                        canUnlockPreset && !isPresetUnlockAnimating;
+                      const hidePresetUnlockAfterReveal =
+                        presetUnlockRevealStartedRef.current &&
+                        !isPresetUnlockAnimating;
+                      return (
+                        <div className="ml-auto flex shrink-0 items-center gap-1">
+                          {showPresetUnlock && !hidePresetUnlockAfterReveal && (
+                            <TooltipWrapper
+                              tooltipId="preset-unlock"
+                              tooltip={
+                                <div className="text-xs">
+                                  {t("village.presetUnlock", {
+                                    cost: formatNumber(nextUnlockCost),
+                                  })}
+                                </div>
+                              }
+                              tooltipContentClassName="text-white"
+                              className="inline-flex items-center"
+                              tooltipTriggerClassName={
+                                INSIGHT_BADGE_TOOLTIP_TRIGGER_CLASS
+                              }
+                              disabled={!canInteractPresetUnlock}
+                              onMouseEnter={() => {
+                                setHighlightedResources(["insight"]);
+                              }}
+                              onMouseLeave={() => {
+                                setHighlightedResources([]);
+                              }}
+                            >
+                              <button
+                                type="button"
+                                data-testid="preset-unlock"
+                                className={cn(
+                                  getInsightBadgeTriggerClassName({
+                                    canAfford:
+                                      canUnlockPreset || isPresetUnlockAnimating,
+                                    playing: isPresetUnlockAnimating,
+                                    className: HEADER_SLOT_INSIGHT_BUTTON_CLASS,
+                                  }),
+                                )}
+                                aria-label={t("village.presetUnlock", {
+                                  cost: formatNumber(nextUnlockCost),
+                                })}
+                                disabled={!canInteractPresetUnlock}
+                                aria-busy={isPresetUnlockAnimating}
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  e.preventDefault();
+                                  if (canInteractPresetUnlock) {
+                                    handlePresetUnlock();
+                                  }
+                                }}
                               >
+                                <BuildingActionBadge embedded size="lg" />
+                              </button>
+                            </TooltipWrapper>
+                          )}
+                          {Array.from({ length: visibleSlots }).map((_, i) => {
+                            const slot = i + 1;
+                            const isBuildingLocked = isPresetSlotBuildingLocked(
+                              presetState,
+                              i,
+                            );
+                            const isUnlocked = isPresetSlotUnlocked(
+                              presetState,
+                              i,
+                            );
+                            const presetTooltipId = `preset-slot-${slot}`;
+
+                            if (catalogActive && !isUnlocked) {
+                              return (
                                 <span
-                                  data-testid={presetTooltipId}
-                                  className={cn(
-                                    HEADER_SLOT_SIZE_CLASS,
-                                    "relative inline-flex items-center justify-center rounded-md border border-neutral-400/50 box-border opacity-70",
-                                  )}
+                                  key={`preset-slot-${slot}`}
+                                  data-testid={`village-preset-slot-${slot}-redacted`}
+                                >
+                                  <RedactedLockedHint
+                                    label={String(slot)}
+                                    tooltipId={`village-preset-slot-${slot}-redacted`}
+                                  />
+                                </span>
+                              );
+                            }
+
+                            if (isBuildingLocked) {
+                              return (
+                                <TooltipWrapper
+                                  key={`preset-slot-${slot}`}
+                                  tooltipId={presetTooltipId}
+                                  tooltip={
+                                    <div className="text-xs">
+                                      {t("village.slotBuildingNeededToUnlock", {
+                                        defaultValue:
+                                          "Building required to unlock",
+                                      })}
+                                    </div>
+                                  }
+                                  tooltipTriggerClassName="inline-flex items-center leading-none"
+                                  className="inline-flex items-center"
                                 >
                                   <span
-                                    aria-hidden
-                                    className="font-noto-symbols-2 text-[12px] translate-y-[2px] font-extrabold leading-none text-muted-foreground/45 select-none"
+                                    data-testid={presetTooltipId}
+                                    className={cn(
+                                      HEADER_SLOT_SIZE_CLASS,
+                                      "relative inline-flex items-center justify-center rounded-md border border-neutral-400/50 box-border opacity-70",
+                                    )}
                                   >
-                                    ×
-                                  </span>
-                                </span>
-                              </TooltipWrapper>
-                            );
-                          }
-
-                          if (!isUnlocked) {
-                            const isInsightPurchaseLocked =
-                              isPresetSlotInsightPurchaseLocked(presetState, i);
-                            const insightUnlockCost = isInsightPurchaseLocked
-                              ? getPresetUnlockCost(i)
-                              : null;
-                            return (
-                              <TooltipWrapper
-                                key={`preset-slot-${slot}`}
-                                tooltipId={presetTooltipId}
-                                tooltip={
-                                  <div className="text-xs">
-                                    {insightUnlockCost !== null
-                                      ? t(
-                                        "village.slotInsightUnlockAvailable",
-                                        {
-                                          cost: formatNumber(
-                                            insightUnlockCost,
-                                          ),
-                                          defaultValue:
-                                            "Can be unlocked for {{cost}} Insight",
-                                        },
-                                      )
-                                      : t("village.presetLocked", {
-                                        defaultValue:
-                                          "Locked: available for purchase",
-                                      })}
-                                  </div>
-                                }
-                                tooltipTriggerClassName="inline-flex items-center leading-none"
-                                className="inline-flex items-center"
-                              >
-                                <span
-                                  data-testid={presetTooltipId}
-                                  className={cn(
-                                    HEADER_SLOT_SIZE_CLASS,
-                                    "relative inline-flex items-center justify-center rounded-md border border-neutral-400/50 box-border",
-                                  )}
-                                >
-                                  {isInsightPurchaseLocked ? (
-                                    <span
-                                      aria-hidden
-                                      className="font-noto-symbols-2 text-[12px] translate-y-[2px] font-extrabold leading-none text-muted-foreground/45 select-none"
-                                    >
-                                      +
-                                    </span>
-                                  ) : (
                                     <span
                                       aria-hidden
                                       className="font-noto-symbols-2 text-[12px] translate-y-[2px] font-extrabold leading-none text-muted-foreground/45 select-none"
                                     >
                                       ×
                                     </span>
+                                  </span>
+                                </TooltipWrapper>
+                              );
+                            }
+
+                            if (!isUnlocked) {
+                              const isInsightPurchaseLocked =
+                                isPresetSlotInsightPurchaseLocked(presetState, i);
+                              const insightUnlockCost = isInsightPurchaseLocked
+                                ? getPresetUnlockCost(i)
+                                : null;
+                              return (
+                                <TooltipWrapper
+                                  key={`preset-slot-${slot}`}
+                                  tooltipId={presetTooltipId}
+                                  tooltip={
+                                    <div className="text-xs">
+                                      {insightUnlockCost !== null
+                                        ? t(
+                                          "village.slotInsightUnlockAvailable",
+                                          {
+                                            cost: formatNumber(
+                                              insightUnlockCost,
+                                            ),
+                                            defaultValue:
+                                              "Can be unlocked for {{cost}} Insight",
+                                          },
+                                        )
+                                        : t("village.presetLocked", {
+                                          defaultValue:
+                                            "Locked: available for purchase",
+                                        })}
+                                    </div>
+                                  }
+                                  tooltipTriggerClassName="inline-flex items-center leading-none"
+                                  className="inline-flex items-center"
+                                >
+                                  <span
+                                    data-testid={presetTooltipId}
+                                    className={cn(
+                                      HEADER_SLOT_SIZE_CLASS,
+                                      "relative inline-flex items-center justify-center rounded-md border border-neutral-400/50 box-border",
+                                    )}
+                                  >
+                                    {isInsightPurchaseLocked ? (
+                                      <span
+                                        aria-hidden
+                                        className="font-noto-symbols-2 text-[12px] translate-y-[2px] font-extrabold leading-none text-muted-foreground/45 select-none"
+                                      >
+                                        +
+                                      </span>
+                                    ) : (
+                                      <span
+                                        aria-hidden
+                                        className="font-noto-symbols-2 text-[12px] translate-y-[2px] font-extrabold leading-none text-muted-foreground/45 select-none"
+                                      >
+                                        ×
+                                      </span>
+                                    )}
+                                  </span>
+                                </TooltipWrapper>
+                              );
+                            }
+
+                            const isActive = activePresetSlot === slot;
+                            const hasPreset = !!getPresetSlot(presetState, i);
+                            const tooltipText = hasPreset
+                              ? t("village.presetApply", { slot })
+                              : t("village.presetEmpty", { slot });
+                            return (
+                              <TooltipWrapper
+                                key={`preset-slot-${slot}`}
+                                tooltipId={presetTooltipId}
+                                tooltip={
+                                  <div className="text-xs">{tooltipText}</div>
+                                }
+                                tooltipTriggerClassName="inline-flex items-center leading-none"
+                                className="group flex items-center cursor-pointer"
+                              >
+                                <Button
+                                  size="xs"
+                                  variant={isActive ? "default" : "outline"}
+                                  data-testid={`preset-slot-${slot}`}
+                                  button_id={`preset-slot-${slot}`}
+                                  className={cn(
+                                    HEADER_SLOT_BUTTON_CLASS,
+                                    "text-2xs tabular-nums",
+                                    isActive
+                                      ? "group-hover:bg-primary/90"
+                                      : gameActionOutlineButtonClassName(false, {
+                                        groupHover: true,
+                                      }),
                                   )}
-                                </span>
+                                  style={{ touchAction: "manipulation" }}
+                                  disabled={catalogActive}
+                                  onClick={() => applyVillagerJobPreset(slot)}
+                                >
+                                  <span
+                                    className={cn(!hasPreset && "opacity-70")}
+                                  >
+                                    {slot}
+                                  </span>
+                                </Button>
                               </TooltipWrapper>
                             );
-                          }
-
-                          const isActive = activePresetSlot === slot;
-                          const hasPreset = !!getPresetSlot(presetState, i);
-                          const tooltipText = hasPreset
-                            ? t("village.presetApply", { slot })
-                            : t("village.presetEmpty", { slot });
-                          return (
+                          })}
+                          {hasAnyUnlockedPresetSlot(presetState) && (
                             <TooltipWrapper
-                              key={`preset-slot-${slot}`}
-                              tooltipId={presetTooltipId}
+                              tooltipId="preset-save"
                               tooltip={
-                                <div className="text-xs">{tooltipText}</div>
+                                <div className="text-xs">
+                                  {t("village.presetSave", {
+                                    slot: activePresetSlot,
+                                  })}
+                                </div>
                               }
                               tooltipTriggerClassName="inline-flex items-center leading-none"
                               className="group flex items-center cursor-pointer"
                             >
                               <Button
                                 size="xs"
-                                variant={isActive ? "default" : "outline"}
-                                data-testid={`preset-slot-${slot}`}
-                                button_id={`preset-slot-${slot}`}
+                                variant="outline"
+                                data-testid="preset-save"
+                                button_id="preset-save"
                                 className={cn(
                                   HEADER_SLOT_BUTTON_CLASS,
-                                  "text-2xs tabular-nums",
-                                  isActive
-                                    ? "group-hover:bg-primary/90"
-                                    : gameActionOutlineButtonClassName(false, {
-                                      groupHover: true,
-                                    }),
+                                  gameActionOutlineButtonClassName(false, {
+                                    groupHover: true,
+                                  }),
                                 )}
                                 style={{ touchAction: "manipulation" }}
-                                onClick={() => applyVillagerJobPreset(slot)}
+                                disabled={catalogActive}
+                                onClick={handlePresetSave}
                               >
                                 <span
-                                  className={cn(!hasPreset && "opacity-70")}
+                                  className={
+                                    presetSaveConfirmed
+                                      ? "inline-flex items-center justify-center text-xxs leading-none text-green-500"
+                                      : "inline-flex items-center justify-center font-noto-symbols-2 text-[12px] leading-none translate-y-0.5"
+                                  }
                                 >
-                                  {slot}
+                                  {presetSaveConfirmed ? "✓" : "🖫"}
                                 </span>
                               </Button>
                             </TooltipWrapper>
-                          );
-                        })}
-                        {hasAnyUnlockedPresetSlot(presetState) && (
-                          <TooltipWrapper
-                            tooltipId="preset-save"
-                            tooltip={
-                              <div className="text-xs">
-                                {t("village.presetSave", {
-                                  slot: activePresetSlot,
-                                })}
-                              </div>
-                            }
-                            tooltipTriggerClassName="inline-flex items-center leading-none"
-                            className="group flex items-center cursor-pointer"
-                          >
-                            <Button
-                              size="xs"
-                              variant="outline"
-                              data-testid="preset-save"
-                              button_id="preset-save"
-                              className={cn(
-                                HEADER_SLOT_BUTTON_CLASS,
-                                gameActionOutlineButtonClassName(false, {
-                                  groupHover: true,
-                                }),
-                              )}
-                              style={{ touchAction: "manipulation" }}
-                              onClick={handlePresetSave}
-                            >
-                              <span
-                                className={
-                                  presetSaveConfirmed
-                                    ? "inline-flex items-center justify-center text-xxs leading-none text-green-500"
-                                    : "inline-flex items-center justify-center font-noto-symbols-2 text-[12px] leading-none translate-y-0.5"
-                                }
-                              >
-                                {presetSaveConfirmed ? "✓" : "🖫"}
-                              </span>
-                            </Button>
-                          </TooltipWrapper>
-                        )}
-                      </div>
-                    );
-                  })()}
+                          )}
+                        </div>
+                      );
+                    })()}
+                </div>
+                <div className={villagerCountStackClass}>
+                  {story.seen?.hasVillagers && (
+                    <>
+                      {renderVillagersSummaryRow()}
+                      {renderVillagerStatRow(
+                        "villagers-available",
+                        t("village.villagersAvailable"),
+                        freeVillagers,
+                      )}
+                      {renderVillagerStatRow(
+                        "villagers-on-mission",
+                        t("village.villagersOnMission"),
+                        onMissionCount,
+                      )}
+                      {visiblePopulationJobs.map((job) =>
+                        renderPopulationControl(
+                          job.id,
+                          t(`village.jobs.${job.id}`, { defaultValue: job.label }),
+                        ),
+                      )}
+                      {priorFoodUpkeep > 0 && renderDisgracedPriorRow()}
+                    </>
+                  )}
+                  {catalogActive &&
+                    populationJobs
+                      .filter(
+                        (job) =>
+                          !story.seen?.hasVillagers ||
+                          !visiblePopulationJobs.some((visible) => visible.id === job.id),
+                      )
+                      .map((job) =>
+                        renderRedactedJobRow(
+                          job.id,
+                          t(`village.jobs.${job.id}`, { defaultValue: job.label }),
+                        ),
+                      )}
+                </div>
               </div>
-              <div className={villagerCountStackClass}>
-                {renderVillagersSummaryRow()}
-                {renderVillagerStatRow(
-                  "villagers-available",
-                  t("village.villagersAvailable"),
-                  freeVillagers,
-                )}
-                {renderVillagerStatRow(
-                  "villagers-on-mission",
-                  t("village.villagersOnMission"),
-                  onMissionCount,
-                )}
-                {visiblePopulationJobs.map((job) =>
-                  renderPopulationControl(
-                    job.id,
-                    t(`village.jobs.${job.id}`, { defaultValue: job.label }),
-                  ),
-                )}
-                {priorFoodUpkeep > 0 && renderDisgracedPriorRow()}
-              </div>
-            </div>
-          )}
+            )}
         </div>
         <ScrollBar orientation="vertical" />
       </ScrollArea>

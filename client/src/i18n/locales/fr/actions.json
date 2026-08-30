@@ -567,7 +567,8 @@
     "label": "Poser un piège",
     "log": {
       "trapSuccessNoDeaths": "Le piège géant fonctionne à la perfection ! Un énorme ours noir aux yeux rouges brillants est pris. Les villageois abattent la bête surnaturelle et revendiquent sa fourrure noire maudite comme trophée.",
-      "trapSuccessWithDeaths": "Le piège géant capture un colossal ours noir aux yeux rouges ardents ! {{count}} villageois tombent sous ses griffes surnaturelles avant que la bête ne soit enfin abattue. Vous revendiquez sa fourrure noire maudite comme un trophée durement gagné.",
+      "trapSuccessWithDeaths_one": "Le piège géant capture un colossal ours noir aux yeux rouges ardents ! {{count}} villageois tombe sous ses griffes surnaturelles avant que la bête ne soit enfin abattue. Vous revendiquez sa fourrure noire maudite comme un trophée durement gagné.",
+      "trapSuccessWithDeaths_other": "Le piège géant capture un colossal ours noir aux yeux rouges ardents ! {{count}} villageois tombent sous ses griffes surnaturelles avant que la bête ne soit enfin abattue. Vous revendiquez sa fourrure noire maudite comme un trophée durement gagné.",
       "trapSuccessHeavy": "Le piège géant capture un colossal ours noir aux yeux comme des braises ardentes. {{count}} villageois tombent sous sa fureur surnaturelle avant que la bête ne soit enfin maîtrisée. Vous revendiquez sa fourrure noire maudite.",
       "trapFailed": "Le piège géant est posé, mais lorsque vous le vérifiez, seules d'énormes marques de griffes se trouvent à côté. Ce qui rôde dans ces forêts est trop rusé pour votre piège... cette fois."
     }

@@ -25,6 +25,7 @@ describe("persistedStateBoundary", () => {
       shopCruelModeHighlight: true,
       compassGlowButton: "explore",
       isPausedPreviously: true,
+      demoEndDialogDismissed: true,
       isUserSignedIn: true,
       current_population: 5,
       total_population: 8,
@@ -44,6 +45,7 @@ describe("persistedStateBoundary", () => {
     expect(persisted).not.toHaveProperty("shopCruelModeHighlight");
     expect(persisted).not.toHaveProperty("compassGlowButton");
     expect(persisted).not.toHaveProperty("isPausedPreviously");
+    expect(persisted).not.toHaveProperty("demoEndDialogDismissed");
     expect(persisted).not.toHaveProperty("isUserSignedIn");
     expect(persisted).not.toHaveProperty("current_population");
     expect(persisted.isPaused).toBe(false);

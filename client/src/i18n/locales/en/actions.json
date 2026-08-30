@@ -567,7 +567,8 @@
     "label": "Lay Trap",
     "log": {
       "trapSuccessNoDeaths": "The giant trap works perfectly! A massive black bear with glowing red eyes is caught. The villagers slay the supernatural beast and claim its cursed black fur as a trophy.",
-      "trapSuccessWithDeaths": "The giant trap snares a colossal black bear with burning red eyes! {{count}} villagers fall to its supernatural claws before the beast is finally slain. You claim its cursed black fur as a hard-won trophy.",
+      "trapSuccessWithDeaths_one": "The giant trap snares a colossal black bear with burning red eyes! {{count}} villager falls to its supernatural claws before the beast is finally slain. You claim its cursed black fur as a hard-won trophy.",
+      "trapSuccessWithDeaths_other": "The giant trap snares a colossal black bear with burning red eyes! {{count}} villagers fall to its supernatural claws before the beast is finally slain. You claim its cursed black fur as a hard-won trophy.",
       "trapSuccessHeavy": "The giant trap snares a colossal black bear with eyes like burning coals. {{count}} villagers fall to its supernatural fury before the beast is finally overwhelmed. You claim its cursed black fur.",
       "trapFailed": "The giant trap is set, but when checked only giant claw marks are found next to it. Whatever prowls these forests is too cunning for your trap... this time."
     }

@@ -26,6 +26,12 @@ import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import { useExplosionEffect } from "@/components/ui/explosion-effect";
 import { useRef, type ReactNode } from "react";
 import {
+  RedactedLockedHint,
+  RedactedMoreHint,
+} from "@/components/game/RedactedHint";
+import { getDemoEndHiddenActionTeasers } from "@/game/demoEndCatalog";
+import { useDemoEndCatalogActive } from "@/hooks/useSteamEditionActive";
+import {
   CRAFT_PARTICLE_CONFIG,
   getMineParticleConfig,
   getExploreParticleConfig,
@@ -57,6 +63,7 @@ export default function CavePanel() {
     buildings,
   } = state;
   const explosionEffect = useExplosionEffect();
+  const catalogActive = useDemoEndCatalogActive();
 
   // Separate refs for each explosion button
   const blastPortalRef = useRef<HTMLButtonElement>(null);
@@ -499,6 +506,7 @@ export default function CavePanel() {
           {actionGroups.map((group, groupIndex) => {
             // Handle groups with subGroups (like Craft)
             if (group.subGroups) {
+              const isCraftSection = group.isCraftSection === true;
               const hasAnyVisibleActions = group.subGroups.some((subGroup) =>
                 subGroup.actions.some((action) => {
                   if (action.showWhen !== undefined) {
@@ -507,8 +515,28 @@ export default function CavePanel() {
                   return shouldShowAction(action.id, state) || !!state.executionStartTimes?.[action.id];
                 }),
               );
+              const craftActions = isCraftSection
+                ? group.subGroups.flatMap((subGroup) => subGroup.actions)
+                : [];
+              const visibleCraftIds = new Set(
+                craftActions
+                  .filter((action) => {
+                    if (action.showWhen !== undefined) {
+                      return action.showWhen;
+                    }
+                    return (
+                      shouldShowAction(action.id, state) ||
+                      !!state.executionStartTimes?.[action.id]
+                    );
+                  })
+                  .map((action) => action.id),
+              );
+              const { teasers: craftTeasers, showEllipsis: showCraftEllipsis } =
+                catalogActive && isCraftSection
+                  ? getDemoEndHiddenActionTeasers(craftActions, visibleCraftIds)
+                  : { teasers: [], showEllipsis: false };
 
-              if (!hasAnyVisibleActions) return null;
+              if (!hasAnyVisibleActions && craftTeasers.length === 0) return null;
 
               return (
                 <div key={groupIndex} className="space-y-2">
@@ -536,6 +564,23 @@ export default function CavePanel() {
                         </div>
                       );
                     })}
+                    {craftTeasers.length > 0 ? (
+                      <div
+                        className={gameActionButtonGridClassName("w-full")}
+                        data-testid="cave-craft-redacted-teasers"
+                      >
+                        {craftTeasers.map((action) => (
+                          <RedactedLockedHint
+                            key={action.id}
+                            label={resolveActionLabel(action.id, action.label)}
+                            tooltipId={`cave-${action.id}-redacted`}
+                          />
+                        ))}
+                        {showCraftEllipsis ? (
+                          <RedactedMoreHint tooltipId="cave-craft-more-redacted" />
+                        ) : null}
+                      </div>
+                    ) : null}
                   </div>
                 </div>
               );

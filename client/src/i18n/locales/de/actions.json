@@ -567,7 +567,8 @@
     "label": "Falle legen",
     "log": {
       "trapSuccessNoDeaths": "Die Riesenfalle funktioniert perfekt! Ein massiver Schwarzbär mit glühend roten Augen ist gefangen. Die Dorfbewohner erschlagen das übernatürliche Biest und beanspruchen sein verfluchtes schwarzes Fell als Trophäe.",
-      "trapSuccessWithDeaths": "Die Riesenfalle schnappt einen kolossalen Schwarzbären mit brennend roten Augen! {{count}} Dorfbewohner fallen seinen übernatürlichen Klauen zum Opfer, bevor das Biest endlich erlegt wird. Ihr beansprucht sein verfluchtes schwarzes Fell als hart erkämpfte Trophäe.",
+      "trapSuccessWithDeaths_one": "Die Riesenfalle schnappt einen kolossalen Schwarzbären mit brennend roten Augen! {{count}} Dorfbewohner fällt seinen übernatürlichen Klauen zum Opfer, bevor das Biest endlich erlegt wird. Ihr beansprucht sein verfluchtes schwarzes Fell als hart erkämpfte Trophäe.",
+      "trapSuccessWithDeaths_other": "Die Riesenfalle schnappt einen kolossalen Schwarzbären mit brennend roten Augen! {{count}} Dorfbewohner fallen seinen übernatürlichen Klauen zum Opfer, bevor das Biest endlich erlegt wird. Ihr beansprucht sein verfluchtes schwarzes Fell als hart erkämpfte Trophäe.",
       "trapSuccessHeavy": "Die Riesenfalle schnappt einen kolossalen Schwarzbären mit Augen wie glühende Kohlen. {{count}} Dorfbewohner fallen seiner übernatürlichen Wut zum Opfer, bevor das Biest endlich überwältigt wird. Ihr beansprucht sein verfluchtes schwarzes Fell.",
       "trapFailed": "Die Riesenfalle ist aufgestellt, doch als ihr nachseht, findet ihr nur riesige Klauenspuren daneben. Was auch immer in diesen Wäldern umherstreift, ist zu listig für eure Falle … diesmal."
     }

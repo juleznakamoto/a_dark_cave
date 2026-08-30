@@ -137,7 +137,7 @@ function trueKeys(record: Record<string, boolean> | undefined): string[] {
   return ids;
 }
 
-function shouldShowDisplayTool(key: string, state: GameState): boolean {
+export function shouldShowDisplayTool(key: string, state: GameState): boolean {
   if (key === "reinforced_rope" && state.tools.mastermason_chisel) return false;
   if (key === "giant_trap" && state.clothing.black_bear_fur) return false;
   if (key === "occultist_map" && state.relics.occultist_grimoire) return false;

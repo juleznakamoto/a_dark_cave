@@ -39,6 +39,7 @@ export default function InsightPotionDialog({
           {outcomeDialogIcon("insight").symbol}
         </span>
       }
+      iconRingClassName={outcomeDialogIcon("insight").ringClassName}
       successLog={t("ui:insightPotion.message")}
       title={t("ui:insightPotion.title")}
       variant="insight"

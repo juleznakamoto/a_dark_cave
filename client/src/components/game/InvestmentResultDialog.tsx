@@ -60,6 +60,7 @@ export default function InvestmentResultDialog({
       isOpen={isOpen}
       onClose={onClose}
       icon={<OutcomeIcon kind={kind} />}
+      iconRingClassName={outcomeDialogIcon(INVEST_ICON_ID[kind]).ringClassName}
       successLog={bodyText}
       title={t("ui:investmentResult.title")}
       variant={isLoss ? "loss" : "success"}

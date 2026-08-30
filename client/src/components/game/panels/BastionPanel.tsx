@@ -7,8 +7,14 @@ import {
   getResourcesFromActionCost,
 } from "@/game/rules";
 import { getActionDurationLine } from "@/game/rules/tooltips";
+import {
+  isDemoEndBastionHealRevealed,
+  isDemoEndBastionRepairRevealed,
+} from "@/game/demoEndCatalog";
 import AttackWavesChart from "./AttackWavesChart";
 import CooldownButton, { gameActionButtonGridClassName } from "@/components/CooldownButton";
+import { RedactedLockedHint } from "@/components/game/RedactedHint";
+import { useDemoEndCatalogActive } from "@/hooks/useSteamEditionActive";
 import { useTranslation } from "react-i18next";
 import { getEffectName } from "@/i18n/resolveGameText";
 import {
@@ -18,16 +24,36 @@ import {
 
 export default function BastionPanel() {
   const { t } = useTranslation("ui");
+  const catalogActive = useDemoEndCatalogActive();
   const store = useGameStoreWithoutTickClock();
-  const { buildings, story, setHighlightedResources, executeAction } = store;
+  const { buildings, setHighlightedResources, executeAction } = store;
   const state = store as unknown as GameState;
 
-  const bastionDamaged = story?.seen?.bastionDamaged || false;
-  const watchtowerDamaged = story?.seen?.watchtowerDamaged || false;
-  const palisadesDamaged = story?.seen?.palisadesDamaged || false;
+  const showHealKnight = isDemoEndBastionHealRevealed(
+    state,
+    "healRestlessKnight",
+  );
+  const showHealWizard = isDemoEndBastionHealRevealed(state, "healElderWizard");
+  const anyHealVisible = showHealKnight || showHealWizard;
+  const showHealSection = anyHealVisible || catalogActive;
+  const redactHealHeader = catalogActive && !anyHealVisible;
 
-  const hasDamagedBuildings =
-    bastionDamaged || watchtowerDamaged || palisadesDamaged;
+  const showRepairBastion = isDemoEndBastionRepairRevealed(
+    state,
+    "repairBastion",
+  );
+  const showRepairWatchtower = isDemoEndBastionRepairRevealed(
+    state,
+    "repairWatchtower",
+  );
+  const showRepairPalisades = isDemoEndBastionRepairRevealed(
+    state,
+    "repairPalisades",
+  );
+  const anyRepairVisible =
+    showRepairBastion || showRepairWatchtower || showRepairPalisades;
+  const showRepairSection = anyRepairVisible || catalogActive;
+  const redactRepairHeader = catalogActive && !anyRepairVisible;
 
   const renderRepairTooltip = (repairActionId: string) => {
     const rows = getBastionRepairTooltipRows(repairActionId, state);
@@ -51,13 +77,20 @@ export default function BastionPanel() {
     <div className="w-full space-y-4 pt-2 md:pt-0 mt-0 md:mt-2 mb-2 pl-2 pr-2">
       <AttackWavesChart />
 
-      {(story?.seen?.restlessKnightWounded || story?.seen?.elderWizardWounded) && (
+      {showHealSection && (
         <div className="space-y-2">
           <h3 className="text-xs font-medium text-foreground">
-            {t("bastion.heal")}
+            {redactHealHeader ? (
+              <RedactedLockedHint
+                label={t("bastion.heal")}
+                tooltipId="bastion-heal-header-redacted"
+              />
+            ) : (
+              t("bastion.heal")
+            )}
           </h3>
           <div className={gameActionButtonGridClassName()}>
-            {story?.seen?.restlessKnightWounded && state.fellowship?.restless_knight && (
+            {showHealKnight ? (
               <CooldownButton
                 key="restless-knight"
                 actionId="healRestlessKnight"
@@ -97,9 +130,20 @@ export default function BastionPanel() {
               >
                 {getEffectName("fellowship", "restless_knight", "Restless Knight")}
               </CooldownButton>
+            ) : (
+              catalogActive && (
+                <RedactedLockedHint
+                  label={getEffectName(
+                    "fellowship",
+                    "restless_knight",
+                    "Restless Knight",
+                  )}
+                  tooltipId="button-heal-restless-knight-redacted"
+                />
+              )
             )}
 
-            {story?.seen?.elderWizardWounded && state.fellowship?.elder_wizard && (
+            {showHealWizard ? (
               <CooldownButton
                 key="elder-wizard"
                 actionId="healElderWizard"
@@ -139,18 +183,36 @@ export default function BastionPanel() {
               >
                 {getEffectName("fellowship", "elder_wizard", "Elder Wizard")}
               </CooldownButton>
+            ) : (
+              catalogActive && (
+                <RedactedLockedHint
+                  label={getEffectName(
+                    "fellowship",
+                    "elder_wizard",
+                    "Elder Wizard",
+                  )}
+                  tooltipId="button-heal-elder-wizard-redacted"
+                />
+              )
             )}
           </div>
         </div>
       )}
 
-      {hasDamagedBuildings && (
+      {showRepairSection && (
         <div className="space-y-2">
           <h3 className="text-xs font-medium text-foreground">
-            {t("bastion.repair")}
+            {redactRepairHeader ? (
+              <RedactedLockedHint
+                label={t("bastion.repair")}
+                tooltipId="bastion-repair-header-redacted"
+              />
+            ) : (
+              t("bastion.repair")
+            )}
           </h3>
           <div className={gameActionButtonGridClassName()}>
-            {bastionDamaged && buildings.bastion > 0 && (
+            {showRepairBastion ? (
               <CooldownButton
                 key="bastion"
                 actionId="repairBastion"
@@ -174,9 +236,16 @@ export default function BastionPanel() {
               >
                 {t("fortifications.bastion")}
               </CooldownButton>
+            ) : (
+              catalogActive && (
+                <RedactedLockedHint
+                  label={t("fortifications.bastion")}
+                  tooltipId="button-repair-bastion-redacted"
+                />
+              )
             )}
 
-            {watchtowerDamaged && buildings.watchtower > 0 && (
+            {showRepairWatchtower ? (
               <CooldownButton
                 key="watchtower"
                 actionId="repairWatchtower"
@@ -200,9 +269,16 @@ export default function BastionPanel() {
               >
                 {getWatchtowerTierLabel(buildings.watchtower || 0)}
               </CooldownButton>
+            ) : (
+              catalogActive && (
+                <RedactedLockedHint
+                  label={getWatchtowerTierLabel(0)}
+                  tooltipId="button-repair-watchtower-redacted"
+                />
+              )
             )}
 
-            {palisadesDamaged && buildings.palisades > 0 && (
+            {showRepairPalisades ? (
               <CooldownButton
                 key="palisades"
                 actionId="repairPalisades"
@@ -226,6 +302,13 @@ export default function BastionPanel() {
               >
                 {getPalisadesTierLabel(buildings.palisades || 0)}
               </CooldownButton>
+            ) : (
+              catalogActive && (
+                <RedactedLockedHint
+                  label={getPalisadesTierLabel(0)}
+                  tooltipId="button-repair-palisades-redacted"
+                />
+              )
             )}
           </div>
         </div>

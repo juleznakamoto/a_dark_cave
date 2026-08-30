@@ -52,6 +52,7 @@ const DEV_GAME_MODES = new Set<DevGameMode>([
   "steamGame",
   "steamPlaytest",
   "steamDemo",
+  "demoEnd",
   "crazyGamesDemo",
 ]);
 

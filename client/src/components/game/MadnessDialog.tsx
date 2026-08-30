@@ -180,6 +180,7 @@ export default function MadnessDialog({ isOpen, data, onClose }: MadnessDialogPr
           {outcomeDialogIcon("madness").symbol}
         </span>
       }
+      iconRingClassName={outcomeDialogIcon("madness").ringClassName}
       successLog={resolveOutcomeLogMessage(successLog)}
       title={t("ui:madness.title")}
       variant="madness"

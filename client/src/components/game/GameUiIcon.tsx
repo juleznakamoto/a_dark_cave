@@ -22,6 +22,7 @@ export const GAME_UI_ICON_SRC = {
   share: "/icons/progress_arrows.svg",
   inviteUser: "/icons/add_user.svg",
   discover: "/icons/directional_pad.svg",
+  unlockedPadlock: "/icons/unlocked_padlock.svg",
   signUp: "/icons/up_button.svg",
   socialReward: "/icons/cut_diamond.svg",
   exclusiveReward: "/icons/diamond_ring.svg",

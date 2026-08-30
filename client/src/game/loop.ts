@@ -49,7 +49,7 @@ import {
   processPlayTimeAutoPrompts,
   resetPlayTimeAutoPromptHandoff,
 } from "./playTimeAutoPrompts";
-import { processDemoLimit } from "./demoLimit";
+import { isDemoPlayFrozen, processDemoLimit } from "./demoLimit";
 import { processTimedEffects } from "./timedEffects";
 import { tickObsidianOrbFocus } from "@/game/obsidianOrb";
 import { isLocalOnlyEdition, shouldSyncSteamAchievements } from "@/lib/edition";
@@ -362,15 +362,20 @@ export function startGameLoop() {
       syncTimedEventTabPauseTracking();
     }
 
+    // Open the end dialog before the freeze return so the hut-cap tick still shows it.
+    processDemoLimit();
+
     // Blocking modals: `isModalDialogOpen` in state.ts (add new dialogs there only).
     const IsDialogOpen = isModalDialogOpen(state);
 
-    // Combined freeze: player pause, idle/sleep, a visible modal, or the
-    // post-close handoff gap. Not the same as `state.isPaused` (pause button).
+    // Combined freeze: player pause, idle/sleep, a visible modal, the
+    // post-close handoff gap, or demo-end (hut cap / DEV Demo End).
+    // Not the same as `state.isPaused` (pause button).
     const isSimulationFrozen =
       state.isPaused ||
       IsDialogOpen ||
-      state.idleModeState?.isActive;
+      state.idleModeState?.isActive ||
+      isDemoPlayFrozen(state);
 
     if (isSimulationFrozen) {
       // Fade BGM out on pause; keep event ambience beds (cube, etc.) playing
@@ -422,7 +427,6 @@ export function startGameLoop() {
     ) {
       currentState.updatePlayTime(deltaTime);
       useGameStore.getState().tickInvestmentHall();
-      processDemoLimit();
     }
 
     if (!IsDialogOpen) {
@@ -700,6 +704,7 @@ export function flushOverdueExecutionsDuringHandoff(
   // Player pause / idle, not the loop's combined freeze. Handoff-only freeze
   // still reaches this from tick() because isModalDialogOpen includes handoff.
   if (state.isPaused || state.idleModeState?.isActive) return;
+  if (isDemoPlayFrozen(state)) return;
   if (isVisibleModalDialogOpen(state)) return;
   if (!state.dialogHandoffPending) return;
   flushOverdueActionExecutions();

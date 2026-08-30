@@ -5,12 +5,20 @@ import { cn } from "@/lib/utils";
 
 const HOVER_DISMISS_MS = 500;
 
+/** Text-label glow (side panel, header rings). */
+export const NEW_ITEM_PULSE_CLASS = "new-item-pulse";
+/** Bar glow for redacted game tabs (no text, so box-shadow instead of text-shadow). */
+export const NEW_ITEM_PULSE_REDACTED_CLASS = "new-item-pulse-redacted";
+
 /**
  * First-time "new item" pulse for tooltip triggers. Glow stops after hover (desktop:
  * 500ms) or when the tooltip opens (mobile long-press). Dismissal is persisted in
  * `hoveredTooltips` so indicators do not re-pulse when they reappear later.
  */
-export function useNewItemPulseTooltips(knownTooltipIds?: readonly string[]) {
+export function useNewItemPulseTooltips(
+  knownTooltipIds?: readonly string[],
+  pulseClass: string = NEW_ITEM_PULSE_CLASS,
+) {
   const hoveredTooltips = useGameStore((s) => s.hoveredTooltips || {});
   const setHoveredTooltip = useGameStore((s) => s.setHoveredTooltip);
   const hoverTimersRef = useRef<Map<string, ReturnType<typeof setTimeout>>>(
@@ -64,8 +72,8 @@ export function useNewItemPulseTooltips(knownTooltipIds?: readonly string[]) {
 
   const pulseClassName = useCallback(
     (tooltipId: string, className?: string) =>
-      cn(className, !hoveredTooltips[tooltipId] && "new-item-pulse"),
-    [hoveredTooltips],
+      cn(className, !hoveredTooltips[tooltipId] && pulseClass),
+    [hoveredTooltips, pulseClass],
   );
 
   return { pulseClassName, onMouseEnter, onMouseLeave };

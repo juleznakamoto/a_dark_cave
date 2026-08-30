@@ -284,6 +284,7 @@ export default function RewardDialog({
     rewards.clothing?.includes("gifted_ring"),
   );
   const rewardIcon = outcomeDialogIcon("rewardSuccess");
+  const promoIcon = outcomeDialogIcon("rewardSocialPromo");
 
   const content = (
     <>
@@ -313,6 +314,9 @@ export default function RewardDialog({
             sizeClassName={rewardIcon.uiIconSizeClassName}
           />
         )
+      }
+      iconRingClassName={
+        useSocialPromoIcon ? promoIcon.ringClassName : rewardIcon.ringClassName
       }
       successLog={resolveOutcomeLogMessage(successLog)}
       title={title?.trim() ? title : t("ui:reward.actionReward")}

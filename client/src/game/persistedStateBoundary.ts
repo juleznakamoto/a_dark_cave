@@ -48,6 +48,7 @@ export const RUNTIME_ONLY_NON_DIALOG_KEYS = [
   "_completingExecution",
   "compassGlowButton",
   "isPausedPreviously",
+  "demoEndDialogDismissed",
 ] as const;
 
 const TIMED_EVENT_TAB_PERSISTED_KEYS = [

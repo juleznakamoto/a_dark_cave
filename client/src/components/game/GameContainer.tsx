@@ -89,8 +89,10 @@ import {
   type TabUnlockBlinkId,
 } from "@/game/tabUnlockBlink";
 import { TraderTabButton } from "@/components/game/TraderTabButton";
+import { GameLocationTabButton } from "@/components/game/DemoLockedTabButton";
 import {
   useDemoEditionActive,
+  useDemoEndCatalogActive,
   useCrazyGamesEditionActive,
   useHideSteamStoreLink,
   useSteamDesktopEditionActive,
@@ -120,6 +122,7 @@ export default function GameContainer() {
   const crazyGamesEditionActive = useCrazyGamesEditionActive();
   const hideSteamStoreLink = useHideSteamStoreLink();
   const demoEditionActive = useDemoEditionActive();
+  const demoEndCatalogActive = useDemoEndCatalogActive();
   // Shallow pick only: playTime / loopProgress write at 4 Hz and must not redraw the shell.
   const {
     activeTab,
@@ -169,7 +172,10 @@ export default function GameContainer() {
     async (preferences: StartScreenPreferences) => {
       if (isDemoEdition()) {
         const state = useGameStore.getState();
-        if (isDemoLimitReachedFromState(state)) {
+        if (
+          isDemoLimitReachedFromState(state) &&
+          !state.demoEndDialogDismissed
+        ) {
           useGameStore.setState({ galaxyTimeUpDialogOpen: true });
           return;
         }
@@ -336,6 +342,7 @@ export default function GameContainer() {
     useShallow((s) => buildTabUnlockSnapshot(s)),
   );
   const achievementsUnlocked = tabUnlockSnapshot.achievementsUnlocked;
+  const showAchievementsTab = achievementsUnlocked || demoEndCatalogActive;
   const villageTabVisible = tabUnlockSnapshot.villageUnlocked;
   const forestTabVisible = tabUnlockSnapshot.forestUnlocked;
   const bastionTabVisible = tabUnlockSnapshot.bastionUnlocked;
@@ -833,7 +840,7 @@ export default function GameContainer() {
     }
 
     // Add Achievements tab if Survivor's Notes, Book of Trials, or general progress
-    if (achievementsUnlocked) {
+    if (showAchievementsTab) {
       tabs.push({
         id: "achievements",
         icon: (
@@ -874,7 +881,7 @@ export default function GameContainer() {
     bastionTabVisible,
     buildings.stoneHut,
     setActiveTab,
-    achievementsUnlocked,
+    showAchievementsTab,
     timedEventTab.isActive,
     timedEventTab.event,
     t,
@@ -887,16 +894,18 @@ export default function GameContainer() {
         forestUnlocked: forestTabVisible,
         bastionUnlocked: bastionTabVisible,
         darkEstate: buildings.darkEstate ?? 0,
-        achievementsUnlocked,
+        achievementsUnlocked: showAchievementsTab,
         timedEventActive: timedEventTab.isActive,
+        includeDemoTeaserTabs: demoEditionActive,
       }),
     [
       villageTabVisible,
       forestTabVisible,
       bastionTabVisible,
       buildings.darkEstate,
-      achievementsUnlocked,
+      showAchievementsTab,
       timedEventTab.isActive,
+      demoEditionActive,
     ],
   );
 
@@ -1404,102 +1413,125 @@ export default function GameContainer() {
                           {t("tabs.cave", { ns: "common" })}
                         </button>
 
-                        {villageTabVisible && (
-                          <button
-                            className={`${tabButtonClass} ${animatingTabs.has("village")
+                        <GameLocationTabButton
+                          tabId="village"
+                          unlocked={villageTabVisible}
+                          demoTease={demoEditionActive}
+                          label={
+                            buildings.stoneHut >= 5
+                              ? t("tabs.city", { ns: "common" })
+                              : t("tabs.village", { ns: "common" })
+                          }
+                          tabButtonClass={tabButtonClass}
+                          tabInactiveTextClass={tabInactiveTextClass}
+                          className={
+                            animatingTabs.has("village")
                               ? fadePhaseTabs.has("village")
                                 ? "tab-fade-in"
                                 : "tab-blink-new"
                               : activeTab === "village"
                                 ? tabActiveTextClass
                                 : tabInactiveTextClass
-                              }`}
-                            onClick={() => {
-                              useGameStore.getState().trackButtonClick("tab-village");
-                              clearTabAnimation("village");
-                              setActiveTab("village");
-                            }}
-                            data-testid="tab-village"
-                          >
-                            {buildings.stoneHut >= 5
-                              ? t("tabs.city", { ns: "common" })
-                              : t("tabs.village", { ns: "common" })}
-                          </button>
-                        )}
+                          }
+                          onClick={() => {
+                            useGameStore.getState().trackButtonClick("tab-village");
+                            clearTabAnimation("village");
+                            setActiveTab("village");
+                          }}
+                        >
+                          {buildings.stoneHut >= 5
+                            ? t("tabs.city", { ns: "common" })
+                            : t("tabs.village", { ns: "common" })}
+                        </GameLocationTabButton>
 
-                        {forestTabVisible && (
-                          <button
-                            className={`${tabButtonClass} ${animatingTabs.has("forest")
+                        <GameLocationTabButton
+                          tabId="forest"
+                          unlocked={forestTabVisible}
+                          demoTease={demoEditionActive}
+                          label={t("tabs.forest", { ns: "common" })}
+                          tabButtonClass={tabButtonClass}
+                          tabInactiveTextClass={tabInactiveTextClass}
+                          className={
+                            animatingTabs.has("forest")
                               ? fadePhaseTabs.has("forest")
                                 ? "tab-fade-in"
                                 : "tab-blink-new"
                               : activeTab === "forest"
                                 ? tabActiveTextClass
                                 : tabInactiveTextClass
-                              }`}
-                            onClick={() => {
-                              useGameStore.getState().trackButtonClick("tab-forest");
-                              clearTabAnimation("forest");
-                              setActiveTab("forest");
-                            }}
-                            data-testid="tab-forest"
-                          >
-                            {t("tabs.forest", { ns: "common" })}
-                          </button>
-                        )}
+                          }
+                          onClick={() => {
+                            useGameStore.getState().trackButtonClick("tab-forest");
+                            clearTabAnimation("forest");
+                            setActiveTab("forest");
+                          }}
+                        >
+                          {t("tabs.forest", { ns: "common" })}
+                        </GameLocationTabButton>
 
-                        {/* Estate Tab Button */}
-                        {(estateUnlocked || buildings.darkEstate >= 1) && (
-                          <button
-                            className={`${tabButtonClass} ${animatingTabs.has("estate")
+                        <GameLocationTabButton
+                          tabId="estate"
+                          unlocked={estateUnlocked || buildings.darkEstate >= 1}
+                          demoTease={demoEditionActive}
+                          label={t("tabs.estate", { ns: "common" })}
+                          tabButtonClass={tabButtonClass}
+                          tabInactiveTextClass={tabInactiveTextClass}
+                          className={
+                            animatingTabs.has("estate")
                               ? fadePhaseTabs.has("estate")
                                 ? "tab-fade-in"
                                 : "tab-blink-new"
                               : activeTab === "estate"
                                 ? tabActiveTextClass
                                 : tabInactiveTextClass
-                              }`}
-                            onPointerEnter={() => {
-                              scheduleSharedProgressShaderPrewarm({
-                                immediate: true,
-                              });
-                            }}
-                            onClick={() => {
-                              useGameStore.getState().trackButtonClick("tab-estate");
-                              clearTabAnimation("estate");
-                              setActiveTab("estate");
-                            }}
-                            data-testid="tab-estate"
-                          >
-                            {t("tabs.estate", { ns: "common" })}
-                          </button>
-                        )}
+                          }
+                          onPointerEnter={() => {
+                            scheduleSharedProgressShaderPrewarm({
+                              immediate: true,
+                            });
+                          }}
+                          onClick={() => {
+                            useGameStore.getState().trackButtonClick("tab-estate");
+                            clearTabAnimation("estate");
+                            setActiveTab("estate");
+                          }}
+                        >
+                          {t("tabs.estate", { ns: "common" })}
+                        </GameLocationTabButton>
 
-                        {bastionTabVisible && (
-                          <button
-                            className={`${tabButtonClass} ${animatingTabs.has("bastion")
+                        <GameLocationTabButton
+                          tabId="bastion"
+                          unlocked={bastionTabVisible}
+                          demoTease={demoEditionActive}
+                          label={
+                            flags.hasFortress
+                              ? t("tabs.fortress", { ns: "common" })
+                              : t("tabs.bastion", { ns: "common" })
+                          }
+                          tabButtonClass={tabButtonClass}
+                          tabInactiveTextClass={tabInactiveTextClass}
+                          className={
+                            animatingTabs.has("bastion")
                               ? fadePhaseTabs.has("bastion")
                                 ? "tab-fade-in"
                                 : "tab-blink-new"
                               : activeTab === "bastion"
                                 ? tabActiveTextClass
                                 : tabInactiveTextClass
-                              }`}
-                            onClick={() => {
-                              useGameStore.getState().trackButtonClick("tab-bastion");
-                              clearTabAnimation("bastion");
-                              setActiveTab("bastion");
-                            }}
-                            data-testid="tab-bastion"
-                          >
-                            {flags.hasFortress
-                              ? t("tabs.fortress", { ns: "common" })
-                              : t("tabs.bastion", { ns: "common" })}
-                          </button>
-                        )}
+                          }
+                          onClick={() => {
+                            useGameStore.getState().trackButtonClick("tab-bastion");
+                            clearTabAnimation("bastion");
+                            setActiveTab("bastion");
+                          }}
+                        >
+                          {flags.hasFortress
+                            ? t("tabs.fortress", { ns: "common" })
+                            : t("tabs.bastion", { ns: "common" })}
+                        </GameLocationTabButton>
 
                         {/* Achievements Tab Button */}
-                        {achievementsUnlocked && (
+                        {showAchievementsTab && (
                           <button
                             className={`${tabButtonClass} ${animatingTabs.has("achievements")
                               ? fadePhaseTabs.has("achievements")

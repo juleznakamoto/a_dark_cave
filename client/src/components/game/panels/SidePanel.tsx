@@ -1,5 +1,8 @@
 import { useGameStore } from "@/game/state";
-import { useDerivedGameState } from "@/game/useGameStoreWithoutTickClock";
+import {
+  useDerivedGameState,
+  useGameStoreWithoutTickClock,
+} from "@/game/useGameStoreWithoutTickClock";
 import SidePanelSection, {
   clearSidePanelActiveTooltipHover,
   SIDE_PANEL_GRID_CLASS,
@@ -32,6 +35,26 @@ import {
   sidePanelModelEqual,
   type SidePanelBonusRow,
 } from "@/game/sidePanelModel";
+import {
+  appendRedactedItems,
+  DEMO_END_BASTION_STAT_IDS,
+  DEMO_END_BLESSING_IDS,
+  DEMO_END_BOOK_IDS,
+  DEMO_END_CLOTHING_IDS,
+  DEMO_END_COMBAT_ITEM_IDS,
+  DEMO_END_EXTRA_BONUS_IDS,
+  DEMO_END_FELLOWSHIP_IDS,
+  DEMO_END_FORTIFICATION_IDS,
+  DEMO_END_RELIC_IDS,
+  DEMO_END_RESOURCE_IDS,
+  DEMO_END_STAT_IDS,
+  DEMO_END_WEAPON_IDS,
+  getDemoEndBuildingCatalogIds,
+  getDemoEndSchematicCatalogIds,
+  getDemoEndToolCatalogIds,
+} from "@/game/demoEndCatalog";
+import { useDemoEndCatalogActive } from "@/hooks/useSteamEditionActive";
+import type { GameState } from "@shared/schema";
 
 function getFortificationDisplayLabel(
   key: FortificationBuildingKey,
@@ -104,6 +127,8 @@ export default function SidePanel() {
   const { t } = useTranslation("ui");
   const model = useDerivedGameState(getSidePanelModel, sidePanelModelEqual);
   const activeTab = useGameStore((s) => s.activeTab);
+  const catalogActive = useDemoEndCatalogActive();
+  const catalogState = useGameStoreWithoutTickClock() as unknown as GameState;
 
   const [resourceChanges, setResourceChanges] = useState<
     Array<{ resource: string; amount: number; timestamp: number }>
@@ -528,6 +553,212 @@ export default function SidePanel() {
     })),
   ];
 
+  const catalogToolIds = catalogActive
+    ? getDemoEndToolCatalogIds(catalogState)
+    : [];
+  const catalogBuildingIds = catalogActive
+    ? getDemoEndBuildingCatalogIds(catalogState)
+    : [];
+  const catalogSchematicIds = catalogActive
+    ? getDemoEndSchematicCatalogIds(catalogState)
+    : [];
+
+  const panelResourceItems = catalogActive
+    ? appendRedactedItems(resourceItems, DEMO_END_RESOURCE_IDS, (id) => ({
+      id,
+      label: getResourceName(id, capitalizeWords(id)),
+      value: 0,
+      testId: `resource-${id}`,
+      visible: true,
+    }))
+    : resourceItems;
+  const panelToolItems = catalogActive
+    ? appendRedactedItems(toolItems, catalogToolIds, (key) => ({
+      id: key,
+      label: getEffectName("tools", key, capitalizeWords(key)),
+      value: 1,
+      testId: `tool-${key}`,
+      visible: true,
+      tooltip: true,
+    }))
+    : toolItems;
+  const panelWeaponItems = catalogActive
+    ? appendRedactedItems(weaponItems, DEMO_END_WEAPON_IDS, (key) => ({
+      id: key,
+      label: getEffectName("weapons", key, capitalizeWords(key)),
+      value: 1,
+      testId: `weapon-${key}`,
+      visible: true,
+      tooltip: true,
+    }))
+    : weaponItems;
+  const panelCombatItems = catalogActive
+    ? appendRedactedItems(combatItemRows, DEMO_END_COMBAT_ITEM_IDS, (key) => ({
+      id: key,
+      label: getResourceName(key, capitalizeWords(key)),
+      value: 0,
+      testId: `combat-${key}`,
+      visible: true,
+      tooltip: true,
+    }))
+    : combatItemRows;
+  const panelClothingItems = catalogActive
+    ? appendRedactedItems(clothingItems, DEMO_END_CLOTHING_IDS, (key) => ({
+      id: key,
+      label: getEffectName(
+        "clothing",
+        key,
+        clothingEffects[key]?.name || capitalizeWords(key),
+      ),
+      value: 1,
+      testId: `clothing-${key}`,
+      visible: true,
+      tooltip: true,
+    }))
+    : clothingItems;
+  const panelRelicItems = catalogActive
+    ? appendRedactedItems(relicItems, DEMO_END_RELIC_IDS, (key) => ({
+      id: key,
+      label: getEffectName(
+        "clothing",
+        key,
+        clothingEffects[key]?.name || capitalizeWords(key),
+      ),
+      value: 1,
+      testId: `relic-${key}`,
+      visible: true,
+      tooltip: true,
+    }))
+    : relicItems;
+  const panelBookItems = catalogActive
+    ? appendRedactedItems(bookItems, DEMO_END_BOOK_IDS, (key) => ({
+      id: key,
+      label: getEffectName(
+        "books",
+        key,
+        bookEffects[key]?.name || capitalizeWords(key),
+      ),
+      value: 1,
+      testId: `book-${key}`,
+      visible: true,
+      tooltip: true,
+    }))
+    : bookItems;
+  const panelFellowshipItems = catalogActive
+    ? appendRedactedItems(fellowshipItems, DEMO_END_FELLOWSHIP_IDS, (key) => ({
+      id: key,
+      label: getEffectName(
+        "fellowship",
+        key,
+        fellowshipEffects[key]?.name || capitalizeWords(key),
+      ),
+      value: 1,
+      testId: `fellowship-${key}`,
+      visible: true,
+      tooltip: true,
+    }))
+    : fellowshipItems;
+  const panelSchematicItems = catalogActive
+    ? appendRedactedItems(schematicItems, catalogSchematicIds, (key) => ({
+      id: key,
+      label: getEffectName(
+        "clothing",
+        key,
+        clothingEffects[key]?.name ||
+        capitalizeWords(key.replace("_schematic", "")),
+      ),
+      value: 1,
+      testId: `schematic-${key}`,
+      visible: true,
+      tooltip: true,
+    }))
+    : schematicItems;
+  const panelBlessingItems = catalogActive
+    ? appendRedactedItems(blessingItems, DEMO_END_BLESSING_IDS, (key) => ({
+      id: key,
+      label: getEffectName(
+        "clothing",
+        key,
+        clothingEffects[key]?.name || capitalizeWords(key),
+      ),
+      value: 1,
+      testId: `blessing-${key}`,
+      visible: true,
+      tooltip: true,
+    }))
+    : blessingItems;
+  const panelBuildingItems = catalogActive
+    ? appendRedactedItems(buildingItems, catalogBuildingIds, (id) => {
+      const actionId = `build${id.charAt(0).toUpperCase() + id.slice(1)}`;
+      const buildAction = villageBuildActions[actionId];
+      return {
+        id,
+        label: getActionLabel(
+          actionId,
+          buildAction?.label || capitalizeWords(id),
+        ),
+        value: 0,
+        testId: `building-${id}`,
+        visible: true,
+        tooltip: true,
+      };
+    })
+    : buildingItems;
+  const panelFortificationItems = catalogActive
+    ? appendRedactedItems(
+      fortificationItems,
+      DEMO_END_FORTIFICATION_IDS,
+      (id) => ({
+        id,
+        label: getFortificationDisplayLabel(
+          id as FortificationBuildingKey,
+          1,
+          t,
+        ),
+        value: 0,
+        testId: `fortification-${id}`,
+        visible: true,
+      }),
+    )
+    : fortificationItems;
+  const panelBastionStatsItems =
+    catalogActive && !model.bastionUnlocked
+      ? DEMO_END_BASTION_STAT_IDS.map((id) => ({
+        id,
+        label: id.replace("bastion-", ""),
+        value: 0,
+        testId: `${id}-redacted-src`,
+        visible: true,
+        redacted: true,
+      }))
+      : bastionStatsItems;
+  const panelBonusItems = catalogActive
+    ? appendRedactedItems(bonusItems, DEMO_END_EXTRA_BONUS_IDS, (id) => ({
+      id,
+      label: t(EXTRA_BONUS_LABEL_KEYS[id] ?? id),
+      value: "",
+      testId: `bonus-${id}`,
+      visible: true,
+    }))
+    : bonusItems;
+  const panelStatsItems =
+    catalogActive &&
+      !(
+        model.luck > 0 ||
+        model.strength > 0 ||
+        model.knowledge > 0 ||
+        model.madness > 0
+      )
+      ? DEMO_END_STAT_IDS.map((id) => ({
+        id,
+        label: getStatName(id, capitalizeWords(id)),
+        value: 0,
+        testId: `stat-${id}`,
+        visible: true,
+        redacted: true,
+      }))
+      : statsItems;
+
   const anyPlayerStatPositive =
     model.luck > 0 ||
     model.strength > 0 ||
@@ -544,8 +775,13 @@ export default function SidePanel() {
           "clothing",
           "schematics",
         ];
-        if (!model.bastionUnlocked) caveSections.push("combatItems");
-        if (!model.estateUnlocked) caveSections.push("stats");
+        // Demo-end / clickable teaser tabs keep combat + stats on Bastion / Estate.
+        if (!catalogActive && !model.bastionUnlocked) {
+          caveSections.push("combatItems");
+        }
+        if (!catalogActive && !model.estateUnlocked) {
+          caveSections.push("stats");
+        }
         return caveSections.includes(sectionName);
       }
       case "village":
@@ -596,16 +832,17 @@ export default function SidePanel() {
       <ScrollArea className="h-full w-full pb-1.5 pr-2">
         <div className={cn("pb-1", SIDE_PANEL_GRID_CLASS)}>
           <div className={cn(SIDE_PANEL_SECTION_SPACING_CLASS)}>
-            {resourceItems.length > 0 && shouldShowSection("resources") && (
+            {panelResourceItems.length > 0 && shouldShowSection("resources") && (
               <SidePanelSection
                 sectionId="resources"
+                titleRedacted={catalogActive && model.resourceRows.length === 0}
                 title={
                   <span className="font-medium">
                     {t("sidePanel.resources")}
                   </span>
                 }
                 activeTab={activeTab}
-                items={resourceItems}
+                items={panelResourceItems}
                 onValueChange={(itemId, oldValue, newValue) => {
                   logger.log(
                     `Resource ${itemId} increased from ${oldValue} to ${newValue}`,
@@ -625,109 +862,138 @@ export default function SidePanel() {
           </div>
 
           <div className={cn("min-w-0 w-full", SIDE_PANEL_SECTION_SPACING_CLASS)}>
-            {toolItems.length > 0 && shouldShowSection("tools") && (
+            {panelToolItems.length > 0 && shouldShowSection("tools") && (
               <SidePanelSection
                 sectionId="tools"
+                titleRedacted={catalogActive && model.toolIds.length === 0}
                 title={t("sidePanel.tools")}
-                items={toolItems}
+                items={panelToolItems}
               />
             )}
-            {weaponItems.length > 0 && shouldShowSection("weapons") && (
+            {panelWeaponItems.length > 0 && shouldShowSection("weapons") && (
               <SidePanelSection
                 sectionId="weapons"
+                titleRedacted={catalogActive && model.weaponIds.length === 0}
                 title={t("sidePanel.weapons")}
-                items={weaponItems}
+                items={panelWeaponItems}
               />
             )}
-            {bastionStatsItems.length > 0 && shouldShowSection("bastion") && (
-              <SidePanelSection
-                sectionId="bastion"
-                title={
-                  model.hasFortress
-                    ? t("sidePanel.fortress")
-                    : t("sidePanel.bastion")
-                }
-                items={bastionStatsItems}
-              />
-            )}
-            {fortificationItems.length > 0 &&
+            {panelBastionStatsItems.length > 0 &&
+              shouldShowSection("bastion") && (
+                <SidePanelSection
+                  sectionId="bastion"
+                  titleRedacted={catalogActive && !model.bastionUnlocked}
+                  title={
+                    model.hasFortress
+                      ? t("sidePanel.fortress")
+                      : t("sidePanel.bastion")
+                  }
+                  items={panelBastionStatsItems}
+                />
+              )}
+            {panelFortificationItems.length > 0 &&
               shouldShowSection("fortifications") && (
                 <SidePanelSection
                   sectionId="fortifications"
+                  titleRedacted={
+                    catalogActive && model.fortificationRows.length === 0
+                  }
                   title={t("sidePanel.fortifications")}
-                  items={fortificationItems}
+                  items={panelFortificationItems}
                 />
               )}
-            {combatItemRows.length > 0 && shouldShowSection("combatItems") && (
-              <SidePanelSection
-                sectionId="combatItems"
-                title={t("sidePanel.combatItems")}
-                items={combatItemRows}
-              />
-            )}
-            {clothingItems.length > 0 && shouldShowSection("clothing") && (
+            {panelCombatItems.length > 0 &&
+              shouldShowSection("combatItems") && (
+                <SidePanelSection
+                  sectionId="combatItems"
+                  titleRedacted={
+                    catalogActive && model.combatItemRows.length === 0
+                  }
+                  title={t("sidePanel.combatItems")}
+                  items={panelCombatItems}
+                />
+              )}
+            {panelClothingItems.length > 0 && shouldShowSection("clothing") && (
               <SidePanelSection
                 sectionId="clothing"
+                titleRedacted={catalogActive && model.clothingIds.length === 0}
                 title={t("sidePanel.clothing")}
-                items={clothingItems}
+                items={panelClothingItems}
               />
             )}
-            {relicItems.length > 0 && shouldShowSection("relics") && (
+            {panelRelicItems.length > 0 && shouldShowSection("relics") && (
               <SidePanelSection
                 sectionId="relics"
+                titleRedacted={catalogActive && model.relicIds.length === 0}
                 title={t("sidePanel.relics")}
-                items={relicItems}
+                items={panelRelicItems}
               />
             )}
-            {schematicItems.length > 0 && shouldShowSection("schematics") && (
-              <SidePanelSection
-                sectionId="schematics"
-                title={t("sidePanel.schematics")}
-                items={schematicItems}
-              />
-            )}
-            {blessingItems.length > 0 && shouldShowSection("blessings") && (
+            {panelSchematicItems.length > 0 &&
+              shouldShowSection("schematics") && (
+                <SidePanelSection
+                  sectionId="schematics"
+                  titleRedacted={
+                    catalogActive && model.schematicIds.length === 0
+                  }
+                  title={t("sidePanel.schematics")}
+                  items={panelSchematicItems}
+                />
+              )}
+            {panelBlessingItems.length > 0 && shouldShowSection("blessings") && (
               <SidePanelSection
                 sectionId="blessings"
+                titleRedacted={catalogActive && model.blessingIds.length === 0}
                 title={t("sidePanel.blessings")}
-                items={blessingItems}
+                items={panelBlessingItems}
               />
             )}
-            {buildingItems.length > 0 && shouldShowSection("buildings") && (
+            {panelBuildingItems.length > 0 && shouldShowSection("buildings") && (
               <SidePanelSection
                 sectionId="buildings"
+                titleRedacted={
+                  catalogActive && model.buildingRows.length === 0
+                }
                 title={t("sidePanel.buildings")}
-                items={buildingItems}
+                items={panelBuildingItems}
               />
             )}
-            {anyPlayerStatPositive && shouldShowSection("stats") && (
-              <SidePanelSection
-                sectionId="stats"
-                title={t("sidePanel.stats")}
-                items={statsItems}
-              />
-            )}
-            {bonusItems.length > 0 && shouldShowSection("bonuses") && (
+            {(anyPlayerStatPositive || catalogActive) &&
+              shouldShowSection("stats") && (
+                <SidePanelSection
+                  sectionId="stats"
+                  titleRedacted={catalogActive && !anyPlayerStatPositive}
+                  title={t("sidePanel.stats")}
+                  items={panelStatsItems}
+                />
+              )}
+            {panelBonusItems.length > 0 && shouldShowSection("bonuses") && (
               <SidePanelSection
                 sectionId="bonuses"
+                titleRedacted={catalogActive && bonusItems.length === 0}
                 title={t("sidePanel.bonuses")}
-                items={bonusItems}
+                items={panelBonusItems}
               />
             )}
-            {bookItems.length > 0 && shouldShowSection("books") && (
+            {panelBookItems.length > 0 && shouldShowSection("books") && (
               <SidePanelSection
                 sectionId="books"
+                titleRedacted={catalogActive && model.bookIds.length === 0}
                 title={t("sidePanel.books")}
-                items={bookItems}
+                items={panelBookItems}
               />
             )}
-            {fellowshipItems.length > 0 && shouldShowSection("fellowship") && (
-              <SidePanelSection
-                sectionId="fellowship"
-                title={t("sidePanel.fellowship")}
-                items={fellowshipItems}
-              />
-            )}
+            {panelFellowshipItems.length > 0 &&
+              shouldShowSection("fellowship") && (
+                <SidePanelSection
+                  sectionId="fellowship"
+                  titleRedacted={
+                    catalogActive && model.fellowshipIds.length === 0
+                  }
+                  title={t("sidePanel.fellowship")}
+                  items={panelFellowshipItems}
+                />
+              )}
           </div>
         </div>
         <ScrollBar orientation="vertical" />

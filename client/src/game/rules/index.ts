@@ -44,6 +44,7 @@ import { forestResearchActions } from "./forestResearchActions";
 import { getFinanceExpeditionTier } from "./financeExpedition";
 import { bastionActions } from "./bastionActions";
 import { getExecutionTime } from "./executionTime";
+import { isDemoPlayFrozen } from "@/game/demoLimit";
 
 // Register all actions with the central registry
 registerActions({
@@ -288,6 +289,8 @@ export function getResourcesFromActionCost(
 
 // Utility function to check if requirements are met for an action
 export function canExecuteAction(actionId: string, state: GameState): boolean {
+  if (isDemoPlayFrozen(state)) return false;
+
   const action = getGameActions()[actionId];
   if (!action) return false;
 

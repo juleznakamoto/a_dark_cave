@@ -9,6 +9,7 @@
     "gameModeSteamGame": "Steam Game",
     "gameModeSteamPlaytest": "Steam Playtest",
     "gameModeSteamDemo": "Steam Demo",
+    "gameModeDemoEnd": "试玩结束",
     "gameModeCrazyGamesDemo": "CrazyGames 试玩"
   },
   "textScale": {
@@ -110,6 +111,9 @@
   },
   "villageHotkeyTutorial": {
     "dismiss": "关闭"
+  },
+  "demoTabs": {
+    "notYetUnlocked": "尚未解锁。"
   },
   "never": "从未"
 }

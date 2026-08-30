@@ -470,6 +470,67 @@ describe("Reward Dialog System", () => {
     });
   });
 
+  describe("banditLair action", () => {
+    const successText =
+      "Your party tracks the bandit to a ramshackle lair. You overwhelm him, recover the trader's dagger, and find 250 silver stashed among his plunder.";
+    const failureText =
+      "The villagers search the hills but cannot corner the bandit. The trail goes cold, and the dagger is still in his hands.";
+
+    function seedBanditLairReady() {
+      const base = createInitialState();
+      useGameStore.setState({
+        ...base,
+        flags: { ...base.flags, forestUnlocked: true },
+        story: {
+          ...base.story,
+          seen: { ...base.story.seen, tradersSonQuestActive: true },
+        },
+        resources: { ...base.resources, food: 10000 },
+        villagers: { ...base.villagers, free: 10 },
+        current_population: 10,
+        weapons: { ...base.weapons, crude_bow: true },
+        log: [],
+      });
+    }
+
+    function runBanditLair() {
+      useGameStore.getState().executeAction("banditLair");
+      useGameStore.getState().completeActionExecution("banditLair");
+    }
+
+    it("keeps the success story in the event log after the reward dialog", () => {
+      seedBanditLairReady();
+      const mockRandom = vi.spyOn(Math, "random").mockReturnValue(0);
+      runBanditLair();
+      mockRandom.mockRestore();
+
+      expect(useGameStore.getState().log.map((entry) => entry.message)).toContain(
+        successText,
+      );
+    });
+
+    it("records success after a prior miss so the log does not stay on the failure line", () => {
+      seedBanditLairReady();
+      const mockRandom = vi.spyOn(Math, "random");
+      mockRandom.mockReturnValue(0.99);
+      runBanditLair();
+      expect(useGameStore.getState().log.map((entry) => entry.message)).toContain(
+        failureText,
+      );
+
+      mockRandom.mockReturnValue(0);
+      runBanditLair();
+      mockRandom.mockRestore();
+
+      const messages = useGameStore.getState().log.map((entry) => entry.message);
+      expect(messages).toContain(failureText);
+      expect(messages).toContain(successText);
+      expect(messages.lastIndexOf(successText)).toBeGreaterThan(
+        messages.lastIndexOf(failureText),
+      );
+    });
+  });
+
   describe("lowChamber action", () => {
     it("should detect mastermason chisel and resource rewards", () => {
       // Test the reward detection logic directly

@@ -2,6 +2,7 @@ import type { GameState } from "@shared/schema";
 import { useGameStore } from "@/game/state";
 import { Progress } from "@/components/ui/progress";
 import { useEffect, useState } from "react";
+import { RedactedLockedHint } from "@/components/game/RedactedHint";
 import {
   getAttackWavesChartRows,
   getPostCompletionWaveNumber,
@@ -17,6 +18,7 @@ import {
   getResourcesFromActionCost,
 } from "@/game/rules";
 import CooldownButton from "@/components/CooldownButton";
+import { useDemoEndCatalogActive } from "@/hooks/useSteamEditionActive";
 import { useUiTranslation } from "@/i18n/useUiTranslation";
 import {
   getAttackWaveDisplayName,
@@ -76,10 +78,50 @@ export default function AttackWavesChart() {
     ? getPostCompletionWaveNumber(state)
     : null;
 
-  const shouldShowChart = buildings.bastion || false;
+  const catalogActive = useDemoEndCatalogActive();
+  const shouldShowChart = Boolean(buildings.bastion) || catalogActive;
+  const teaseRedacted =
+    catalogActive &&
+    !buildings.bastion &&
+    !waves.some((wave) => wave.completed || wave.conditionMet);
 
   if (!shouldShowChart) {
     return null;
+  }
+
+  if (teaseRedacted) {
+    return (
+      <div className="space-y-3" data-testid="attack-waves-chart-redacted">
+        <div className="flex items-center gap-2 flex-wrap">
+          <RedactedLockedHint
+            label={t("attackWaves.title")}
+            tooltipId="attack-waves-title-redacted"
+          />
+          <RedactedLockedHint
+            label={`${0}/${TOTAL_ATTACK_WAVES}`}
+            tooltipId="attack-waves-count-redacted"
+          />
+        </div>
+        <Progress
+          value={0}
+          className="h-2"
+          segments={TOTAL_ATTACK_WAVES}
+          indicatorClassName="bg-orange-950"
+        />
+        <div className="space-y-2 pt-2">
+          <div className="flex items-center gap-2 flex-wrap">
+            <RedactedLockedHint
+              label={t("attackWaves.waves.firstWave")}
+              tooltipId="attack-waves-current-redacted"
+            />
+          </div>
+          <RedactedLockedHint
+            label={t("attackWaves.provoke")}
+            tooltipId="button-provoke-attack-redacted"
+          />
+        </div>
+      </div>
+    );
   }
 
   const currentWaveIndex = waves.findIndex((wave) => !wave.completed);

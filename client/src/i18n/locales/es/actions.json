@@ -567,7 +567,8 @@
     "label": "Colocar trampa",
     "log": {
       "trapSuccessNoDeaths": "¡La trampa gigante funciona a la perfección! Un enorme oso negro con ojos rojos brillantes queda atrapado. Los aldeanos abatten a la bestia sobrenatural y reclaman su maldita piel negra como trofeo.",
-      "trapSuccessWithDeaths": "¡La trampa gigante atrapa a un colosal oso negro con ojos rojos ardientes! {{count}} aldeanos caen ante sus garras sobrenaturales antes de que la bestia sea finalmente abatida. Reclamas su maldita piel negra como un trofeo duramente ganado.",
+      "trapSuccessWithDeaths_one": "¡La trampa gigante atrapa a un colosal oso negro con ojos rojos ardientes! {{count}} aldeano cae ante sus garras sobrenaturales antes de que la bestia sea finalmente abatida. Reclamas su maldita piel negra como un trofeo duramente ganado.",
+      "trapSuccessWithDeaths_other": "¡La trampa gigante atrapa a un colosal oso negro con ojos rojos ardientes! {{count}} aldeanos caen ante sus garras sobrenaturales antes de que la bestia sea finalmente abatida. Reclamas su maldita piel negra como un trofeo duramente ganado.",
       "trapSuccessHeavy": "La trampa gigante atrapa a un colosal oso negro con ojos como brasas ardientes. {{count}} aldeanos caen ante su furia sobrenatural antes de que la bestia sea finalmente abatida. Reclamas su maldita piel negra.",
       "trapFailed": "La trampa gigante está tendida, pero al revisarla solo encuentras marcas de garras gigantes junto a ella. Lo que acecha en estos bosques es demasiado astuto para tu trampa... esta vez."
     }

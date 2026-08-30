@@ -9,6 +9,7 @@
     "gameModeSteamGame": "Steam-Spiel",
     "gameModeSteamPlaytest": "Steam-Playtest",
     "gameModeSteamDemo": "Steam-Demo",
+    "gameModeDemoEnd": "Demo-Ende",
     "gameModeCrazyGamesDemo": "CrazyGames-Demo"
   },
   "textScale": {
@@ -110,6 +111,9 @@
   },
   "villageHotkeyTutorial": {
     "dismiss": "Schließen"
+  },
+  "demoTabs": {
+    "notYetUnlocked": "Noch nicht freigeschaltet."
   },
   "never": "Nie"
 }

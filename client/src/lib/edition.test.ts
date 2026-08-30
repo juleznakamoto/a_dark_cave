@@ -30,6 +30,7 @@ describe("CrazyGames edition", () => {
     expect(edition.shouldHideSteamStoreLink("steamGame")).toBe(true);
     expect(edition.shouldHideSteamStoreLink("steamPlaytest")).toBe(true);
     expect(edition.shouldHideSteamStoreLink("steamDemo")).toBe(true);
+    expect(edition.shouldHideSteamStoreLink("demoEnd")).toBe(true);
   });
 
   it("does not sync Steam achievements on the web build", async () => {

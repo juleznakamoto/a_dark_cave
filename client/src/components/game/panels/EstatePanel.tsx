@@ -45,7 +45,16 @@ import { buildLocalizedEventLogEntry } from "@/i18n/buildEventLogEntry";
 import { useUiTranslation } from "@/i18n/useUiTranslation";
 import { formatTooltipCostLine } from "@/i18n/tooltipLabels";
 import { getResourceName } from "@/i18n/resolveGameText";
-import { useSteamEditionActive } from "@/hooks/useSteamEditionActive";
+import { useDemoEndCatalogActive, useSteamEditionActive } from "@/hooks/useSteamEditionActive";
+import { isDemoPlayFrozen } from "@/game/demoLimit";
+import { RedactedLockedHint } from "@/components/game/RedactedHint";
+import {
+  DEMO_END_CUBE_EVENT_IDS,
+  DEMO_END_ESTATE_SKILL_IDS,
+  isDemoEndCubeEventCompleted,
+  isDemoEndEstateSkillUnlocked,
+  type DemoEndEstateSkillId,
+} from "@/game/demoEndCatalog";
 
 
 const ESTATE_BAR_GROW_ANIMATION_MS = 1000;
@@ -139,7 +148,9 @@ function SkillUpgradeRow({
   description,
 }: SkillUpgradeRowProps) {
   const setHighlightedResources = useGameStore((s) => s.setHighlightedResources);
-  const openShop = useEstateGoldShopClick(canAfford);
+  const catalogActive = useDemoEndCatalogActive();
+  const canUpgrade = canAfford && !catalogActive;
+  const openShop = useEstateGoldShopClick(canUpgrade);
   const costLine = formatTooltipCostLine(upgradeCost, "gold");
   return (
     <div className="w-full space-y-1 pt-2">
@@ -158,14 +169,14 @@ function SkillUpgradeRow({
                 </div>
               }
               tooltipId={tooltipId}
-              disabled={!canAfford && !openShop}
+              disabled={!canUpgrade && !openShop}
               onClick={openShop}
               onMouseEnter={() => setHighlightedResources(["gold"])}
               onMouseLeave={() => setHighlightedResources([])}
             >
               <ImproveButton
                 onClick={onUpgrade}
-                disabled={!canAfford}
+                disabled={!canUpgrade}
                 onUnaffordableClick={openShop}
                 button_id={buttonId}
               />
@@ -187,12 +198,173 @@ function SkillUpgradeRow({
 const MAX_SLEEP_LENGTH_LEVEL = SLEEP_LENGTH_UPGRADES.length - 1;
 const MAX_SLEEP_INTENSITY_LEVEL = SLEEP_INTENSITY_UPGRADES.length - 1;
 
+const ESTATE_SKILL_TITLE_KEYS: Record<DemoEndEstateSkillId, string> = {
+  hunting: "estate.huntressTraining",
+  crushingStrike: "estate.crushingStrike",
+  bloodflameSphere: "estate.bloodflameSphere",
+  feralHowl: "estate.feralHowl",
+  crowsEye: "estate.crowsEye",
+  disgracedPrior: "estate.tirelessWorker",
+  chainmaster: "estate.chainmaster",
+};
+
+function getEstateSkillLevelZeroDescription(
+  id: DemoEndEstateSkillId,
+  t: (key: string, options?: Record<string, string | number | boolean | undefined>) => string,
+): string {
+  switch (id) {
+    case "hunting": {
+      const cur = HUNTING_SKILL_UPGRADES[0];
+      return [
+        t("estate.skillHuntBonus", { amount: cur.huntBonus }),
+        cur.food > 0 && t("estate.skillHunterFood", { amount: cur.food }),
+        cur.fur > 0 && t("estate.skillFurBonus", { amount: cur.fur }),
+        cur.bones > 0 && t("estate.skillBonesBonus", { amount: cur.bones }),
+      ]
+        .filter(Boolean)
+        .join(", ");
+    }
+    case "crushingStrike": {
+      const cur = CRUSHING_STRIKE_UPGRADES[0];
+      return t("estate.crushingStrikeSummary", {
+        damage: cur.damage,
+        rounds: cur.stunRounds,
+        success: cur.successChance,
+      });
+    }
+    case "bloodflameSphere": {
+      const cur = BLOODFLAME_SPHERE_UPGRADES[0];
+      return t(
+        cur.burnRounds === 1
+          ? "estate.bloodflameSummary_one"
+          : "estate.bloodflameSummary",
+        {
+          damage: cur.burnDamage,
+          rounds: cur.burnRounds,
+          health: cur.healthCost,
+        },
+      );
+    }
+    case "feralHowl": {
+      const cur = FERAL_HOWL_UPGRADES[0];
+      return t(
+        cur.debuffRounds === 1
+          ? "estate.feralHowlSummary_one"
+          : "estate.feralHowlSummary",
+        {
+          success: cur.successChance,
+          reduction: cur.enemyDamageReduction,
+          rounds: cur.debuffRounds,
+          crit: cur.critDamageBonus,
+        },
+      );
+    }
+    case "crowsEye":
+      return t("estate.crowsEyeSummary", {
+        percent: CROWS_EYE_UPGRADES[0].doubleChance,
+      });
+    case "disgracedPrior": {
+      const cur = DISGRACED_PRIOR_UPGRADES[0];
+      const upkeepText = t("estate.priorUpkeepShort", {
+        amount: DISGRACED_PRIOR_FOOD_PER_ASSIGNED_ACTION_PER_CYCLE,
+      });
+      const bonusPercent = (cur.rewardMultiplier - 1) * 100;
+      return bonusPercent > 0
+        ? t("estate.priorSummaryBonus", {
+          actions: cur.maxActions,
+          bonus: bonusPercent,
+          upkeep: upkeepText,
+        })
+        : t("estate.priorSummaryNoBonus", {
+          count: cur.maxActions,
+          upkeep: upkeepText,
+        });
+    }
+    case "chainmaster":
+      return t("estate.chainmasterSummary", {
+        percent: Math.round(CHAINMASTER_UPGRADES[0].productionBonus * 100),
+      });
+  }
+}
+
+function RedactedEstateUpgradeRow({
+  id,
+  title,
+}: {
+  id: DemoEndEstateSkillId;
+  title: string;
+}) {
+  const { t } = useUiTranslation();
+  const description = getEstateSkillLevelZeroDescription(id, t);
+  return (
+    <div
+      className="w-full space-y-1 pt-2"
+      data-testid={`estate-upgrade-${id}-redacted`}
+    >
+      <EstateUpgradeRowHeader
+        title={
+          <RedactedLockedHint
+            label={title}
+            tooltipId={`estate-upgrade-${id}-title`}
+          />
+        }
+      />
+      <EstateUpgradeProgress value={0} segments={5} />
+      <div className="flex justify-between text-xs text-muted-foreground">
+        <RedactedLockedHint
+          label={description}
+          tooltipId={`estate-upgrade-${id}-description`}
+        />
+      </div>
+    </div>
+  );
+}
+
+function CubeWhisperIcon({ hoverable = false }: { hoverable?: boolean }) {
+  return (
+    <span
+      className={cn(
+        "w-6 h-6 shrink-0 bg-neutral-900 border border-neutral-800 rounded-md flex items-center justify-center relative",
+        hoverable &&
+        "group-hover:bg-neutral-800 group-hover:border-neutral-500 transition-all",
+      )}
+    >
+      <span className="text-md">▣</span>
+      {hoverable ? (
+        <span className="absolute inset-0 cube-dialog-glow opacity-0 group-hover:opacity-30 transition-opacity pointer-events-none rounded" />
+      ) : null}
+    </span>
+  );
+}
+
+function RedactedCubeEventRow({
+  id,
+  title,
+}: {
+  id: string;
+  title: string;
+}) {
+  return (
+    <div
+      className="flex items-center gap-2 w-full"
+      data-testid={`estate-cube-${id}-redacted`}
+    >
+      <CubeWhisperIcon />
+      <RedactedLockedHint
+        label={title}
+        tooltipId={`estate-cube-${id}-title`}
+      />
+    </div>
+  );
+}
+
 export default function EstatePanel({
   active = true,
 }: {
   active?: boolean;
 }) {
   const { t } = useUiTranslation();
+  const catalogActive = useDemoEndCatalogActive();
   const {
     events,
     relics,
@@ -257,7 +429,11 @@ export default function EstatePanel({
       } else {
         setFocusProgress(0);
         // Clear focus state when timer expires
-        if (focusState?.isActive && focusState.endTime <= now) {
+        if (
+          focusState?.isActive &&
+          focusState.endTime <= now &&
+          !isDemoPlayFrozen(useGameStore.getState())
+        ) {
           useGameStore.setState({
             focusState: {
               isActive: false,
@@ -287,21 +463,18 @@ export default function EstatePanel({
   };
 
 
-  // Get all cube events that have been triggered.
-  // cubeDiscovery grants relics.whispering_cube and never sets events.cubeDiscovery.
-  const completedCubeEvents = Object.entries(cubeEvents)
-    .filter(([eventId]) => {
-      if (eventId === "cubeDiscovery") {
-        return relics.whispering_cube === true;
-      }
-      // Check if this cube event has been triggered
-      const baseEventId = eventId.replace(/[a-z]$/, ""); // Remove trailing letter (e.g., cube14a -> cube14)
-      return events[eventId] === true || events[baseEventId] === true;
-    })
-    .map(([eventId, eventData]) => ({
-      id: eventId,
-      ...eventData,
-    }));
+  const cubeProgressState = { events, relics };
+  const completedCubeEvents = DEMO_END_CUBE_EVENT_IDS.filter((eventId) =>
+    isDemoEndCubeEventCompleted(cubeProgressState, eventId),
+  ).map((eventId) => ({
+    id: eventId,
+    ...cubeEvents[eventId],
+  }));
+  const cubeRowsToShow = DEMO_END_CUBE_EVENT_IDS.filter(
+    (eventId) =>
+      catalogActive ||
+      isDemoEndCubeEventCompleted(cubeProgressState, eventId),
+  );
 
   const handleCubeClick = (event: (typeof completedCubeEvents)[0]) => {
     const logEntry = buildLocalizedEventLogEntry(
@@ -312,15 +485,15 @@ export default function EstatePanel({
     setEventDialog(true, logEntry);
   };
 
-  const totalCubeEventCount = Object.keys(cubeEvents).length;
+  const totalCubeEventCount = DEMO_END_CUBE_EVENT_IDS.length;
   const halfCubeEventCount = Math.ceil(totalCubeEventCount / 2);
-  const useTwoCubeColumns = completedCubeEvents.length >= halfCubeEventCount;
-  const cubeColumnSplitIndex = Math.ceil(completedCubeEvents.length / 2);
-  const firstColumnCubeEvents = useTwoCubeColumns
-    ? completedCubeEvents.slice(0, cubeColumnSplitIndex)
-    : completedCubeEvents;
-  const secondColumnCubeEvents = useTwoCubeColumns
-    ? completedCubeEvents.slice(cubeColumnSplitIndex)
+  const useTwoCubeColumns = cubeRowsToShow.length >= halfCubeEventCount;
+  const cubeColumnSplitIndex = Math.ceil(cubeRowsToShow.length / 2);
+  const firstColumnCubeEventIds = useTwoCubeColumns
+    ? cubeRowsToShow.slice(0, cubeColumnSplitIndex)
+    : cubeRowsToShow;
+  const secondColumnCubeEventIds = useTwoCubeColumns
+    ? cubeRowsToShow.slice(cubeColumnSplitIndex)
     : [];
 
   const renderCubeEventRow = (event: (typeof completedCubeEvents)[0]) => {
@@ -339,13 +512,21 @@ export default function EstatePanel({
         onClick={openCubeEvent}
         className="flex items-center gap-2 w-full text-left hover:opacity-80 transition-opacity cursor-pointer group"
       >
-        <span className="w-6 h-6 shrink-0 bg-neutral-900 border border-neutral-800 rounded-md flex items-center justify-center group-hover:bg-neutral-800 group-hover:border-neutral-500 transition-all relative">
-          <span className="text-md">▣</span>
-          <span className="absolute inset-0 cube-dialog-glow opacity-0 group-hover:opacity-30 transition-opacity pointer-events-none rounded" />
-        </span>
+        <CubeWhisperIcon hoverable />
         <span className="text-xs text-foreground">{cubeTitle}</span>
       </button>
     );
+  };
+
+  const renderCubeCatalogRow = (eventId: string) => {
+    const event = cubeEvents[eventId];
+    if (isDemoEndCubeEventCompleted(cubeProgressState, eventId) && event) {
+      return renderCubeEventRow({ id: eventId, ...event });
+    }
+    const title =
+      resolveEventTitle(eventId, event?.title, state) ??
+      (typeof event?.title === "string" ? event.title : eventId);
+    return <RedactedCubeEventRow key={eventId} id={eventId} title={title} />;
   };
 
   // Check if idle mode can be activated (use production without temporary bonuses,
@@ -357,9 +538,11 @@ export default function EstatePanel({
   );
   const woodProduction = totalEffects.wood || 0;
   const foodProduction = totalEffects.food || 0;
-  const canActivateIdle = woodProduction > 0 && foodProduction > 0;
+  const canActivateIdle =
+    !catalogActive && woodProduction > 0 && foodProduction > 0;
 
   const handleActivateIdleMode = async () => {
+    if (isDemoPlayFrozen(useGameStore.getState())) return;
     const now = Date.now();
 
     // Set idle mode state before opening dialog
@@ -387,6 +570,7 @@ export default function EstatePanel({
     upgrades: typeof SLEEP_LENGTH_UPGRADES | typeof SLEEP_INTENSITY_UPGRADES,
     levelKey: "lengthLevel" | "intensityLevel",
   ) => {
+    if (isDemoPlayFrozen(useGameStore.getState())) return;
     useGameStore.setState((state) => {
       const currentLevel = state.sleepUpgrades[levelKey];
       const maxLevel =
@@ -425,6 +609,7 @@ export default function EstatePanel({
     getCurrentLevel: (s: ReturnType<typeof useGameStore.getState>) => number,
     applyLevel: (s: ReturnType<typeof useGameStore.getState>, newLevel: number) => Partial<ReturnType<typeof useGameStore.getState>>,
   ) => {
+    if (isDemoPlayFrozen(useGameStore.getState())) return;
     useGameStore.setState((state) => {
       const currentLevel = getCurrentLevel(state);
       if (currentLevel >= 5) return state;
@@ -460,6 +645,7 @@ export default function EstatePanel({
     );
 
   const handleChainmasterUpgrade = () => {
+    if (isDemoPlayFrozen(useGameStore.getState())) return;
     useGameStore.setState((state) => {
       const currentLevel = state.chainmasterSkills?.level ?? 0;
       if (currentLevel >= 5) return state;
@@ -508,6 +694,7 @@ export default function EstatePanel({
   const nextLengthUpgrade =
     SLEEP_LENGTH_UPGRADES[sleepUpgrades.lengthLevel + 1];
   const canUpgradeLength =
+    !catalogActive &&
     sleepUpgrades.lengthLevel < MAX_SLEEP_LENGTH_LEVEL &&
     resources.gold >= (nextLengthUpgrade?.cost || 0);
   const openShopForLength = useEstateGoldShopClick(canUpgradeLength);
@@ -517,6 +704,7 @@ export default function EstatePanel({
   const nextIntensityUpgrade =
     SLEEP_INTENSITY_UPGRADES[sleepUpgrades.intensityLevel + 1];
   const canUpgradeIntensity =
+    !catalogActive &&
     sleepUpgrades.intensityLevel < MAX_SLEEP_INTENSITY_LEVEL &&
     resources.gold >= (nextIntensityUpgrade?.cost || 0);
   const openShopForIntensity = useEstateGoldShopClick(canUpgradeIntensity);
@@ -606,6 +794,7 @@ export default function EstatePanel({
             <div className="relative inline-block pb-1 text-xs font-medium text-foreground ml-2">
               <CooldownButton
                 onClick={() => {
+                  if (isDemoPlayFrozen(useGameStore.getState())) return;
                   const now = Date.now();
                   const focusPoints = focusState?.points || 0;
                   const focusDuration = calculateFocusDuration(focusPoints);
@@ -622,7 +811,12 @@ export default function EstatePanel({
                 variant="outline"
                 className="focus-glow-hover"
                 button_id="activate-focus"
-                disabled={!focusState?.points || focusState.points === 0 || focusState?.isActive}
+                disabled={
+                  catalogActive ||
+                  !focusState?.points ||
+                  focusState.points === 0 ||
+                  focusState?.isActive
+                }
                 tooltip={
                   <div className="text-xs whitespace-nowrap">
                     <div>{t("estate.focusPointTooltip")}</div>
@@ -779,7 +973,8 @@ export default function EstatePanel({
             </div>
 
             {/* Skills Section */}
-            {(fellowship.ashwraith_huntress ||
+            {(catalogActive ||
+              fellowship.ashwraith_huntress ||
               fellowship.restless_knight ||
               fellowship.elder_wizard ||
               fellowship.the_hound ||
@@ -787,10 +982,22 @@ export default function EstatePanel({
               fellowship.disgraced_prior ||
               books.book_of_chainmaster) && (
                 <div className="space-y-1 pt-2">
-                  <h3 className="text-xs font-medium text-foreground">{t("estate.skills")}</h3>
+                  <h3 className="text-xs font-medium text-foreground">
+                    {catalogActive &&
+                      !DEMO_END_ESTATE_SKILL_IDS.some((id) =>
+                        isDemoEndEstateSkillUnlocked(state, id),
+                      ) ? (
+                      <RedactedLockedHint
+                        label={t("estate.skills")}
+                        tooltipId="estate-skills-header-redacted"
+                      />
+                    ) : (
+                      t("estate.skills")
+                    )}
+                  </h3>
 
                   {/* Huntress Training */}
-                  {fellowship.ashwraith_huntress && (
+                  {fellowship.ashwraith_huntress ? (
                     <SkillUpgradeRow
                       title={t("estate.huntressTraining")}
                       level={huntingSkills.level}
@@ -820,10 +1027,17 @@ export default function EstatePanel({
                         HUNTING_SKILL_UPGRADES[huntingSkills.level].bones > 0 && t("estate.skillBonesBonus", { amount: HUNTING_SKILL_UPGRADES[huntingSkills.level].bones }),
                       ].filter(Boolean).join(", ")}
                     />
+                  ) : (
+                    catalogActive && (
+                      <RedactedEstateUpgradeRow
+                        id="hunting"
+                        title={t(ESTATE_SKILL_TITLE_KEYS.hunting)}
+                      />
+                    )
                   )}
 
                   {/* Crushing Strike */}
-                  {fellowship.restless_knight && (
+                  {fellowship.restless_knight ? (
                     <SkillUpgradeRow
                       title={t("estate.crushingStrike")}
                       level={combatSkills.crushingStrikeLevel}
@@ -849,10 +1063,17 @@ export default function EstatePanel({
                         success: CRUSHING_STRIKE_UPGRADES[combatSkills.crushingStrikeLevel].successChance,
                       })}
                     />
+                  ) : (
+                    catalogActive && (
+                      <RedactedEstateUpgradeRow
+                        id="crushingStrike"
+                        title={t(ESTATE_SKILL_TITLE_KEYS.crushingStrike)}
+                      />
+                    )
                   )}
 
                   {/* Bloodflame Sphere */}
-                  {fellowship.elder_wizard && (() => {
+                  {fellowship.elder_wizard ? (() => {
                     const lvl = combatSkills.bloodflameSphereLevel;
                     const cur = BLOODFLAME_SPHERE_UPGRADES[lvl];
                     const nxt = BLOODFLAME_SPHERE_UPGRADES[lvl + 1];
@@ -884,10 +1105,17 @@ export default function EstatePanel({
                         })}
                       />
                     );
-                  })()}
+                  })() : (
+                    catalogActive && (
+                      <RedactedEstateUpgradeRow
+                        id="bloodflameSphere"
+                        title={t(ESTATE_SKILL_TITLE_KEYS.bloodflameSphere)}
+                      />
+                    )
+                  )}
 
                   {/* Feral Howl */}
-                  {fellowship.the_hound && (() => {
+                  {fellowship.the_hound ? (() => {
                     const lvl = combatSkills.feralHowlLevel ?? 0;
                     const cur = FERAL_HOWL_UPGRADES[lvl];
                     const nxt = FERAL_HOWL_UPGRADES[lvl + 1];
@@ -930,10 +1158,17 @@ export default function EstatePanel({
                         )}
                       />
                     );
-                  })()}
+                  })() : (
+                    catalogActive && (
+                      <RedactedEstateUpgradeRow
+                        id="feralHowl"
+                        title={t(ESTATE_SKILL_TITLE_KEYS.feralHowl)}
+                      />
+                    )
+                  )}
 
                   {/* Crow's Eye */}
-                  {fellowship.one_eyed_crow && (() => {
+                  {fellowship.one_eyed_crow ? (() => {
                     const lvl = crowsEyeSkills.level;
                     const cur = CROWS_EYE_UPGRADES[lvl];
                     const nxt = CROWS_EYE_UPGRADES[lvl + 1];
@@ -950,10 +1185,17 @@ export default function EstatePanel({
                         description={t("estate.crowsEyeSummary", { percent: cur.doubleChance })}
                       />
                     );
-                  })()}
+                  })() : (
+                    catalogActive && (
+                      <RedactedEstateUpgradeRow
+                        id="crowsEye"
+                        title={t(ESTATE_SKILL_TITLE_KEYS.crowsEye)}
+                      />
+                    )
+                  )}
 
                   {/* Tireless Worker (Disgraced Prior) */}
-                  {fellowship.disgraced_prior && (() => {
+                  {fellowship.disgraced_prior ? (() => {
                     const lvl = disgracedPriorSkills?.level ?? 0;
                     const cur = DISGRACED_PRIOR_UPGRADES[lvl];
                     const nxt = DISGRACED_PRIOR_UPGRADES[lvl + 1];
@@ -992,10 +1234,17 @@ export default function EstatePanel({
                         description={description}
                       />
                     );
-                  })()}
+                  })() : (
+                    catalogActive && (
+                      <RedactedEstateUpgradeRow
+                        id="disgracedPrior"
+                        title={t(ESTATE_SKILL_TITLE_KEYS.disgracedPrior)}
+                      />
+                    )
+                  )}
 
                   {/* Chainmaster */}
-                  {books.book_of_chainmaster && (() => {
+                  {books.book_of_chainmaster ? (() => {
                     const lvl = chainmasterSkills?.level ?? 0;
                     const cur = CHAINMASTER_UPGRADES[lvl];
                     const nxt = CHAINMASTER_UPGRADES[lvl + 1];
@@ -1034,16 +1283,32 @@ export default function EstatePanel({
                         })}
                       />
                     );
-                  })()}
+                  })() : (
+                    catalogActive && (
+                      <RedactedEstateUpgradeRow
+                        id="chainmaster"
+                        title={t(ESTATE_SKILL_TITLE_KEYS.chainmaster)}
+                      />
+                    )
+                  )}
                 </div>
               )}
           </div>
         </SharedProgressShaderHost>
 
-        {/* Cube Section — only when at least one whisper is unlocked */}
-        {completedCubeEvents.length > 0 && (
+        {/* Cube Section — unlocked whispers, plus redacted catalog at demo end */}
+        {(catalogActive || completedCubeEvents.length > 0) && (
           <div className="w-full space-y-2 pt-1 pb-4">
-            <h3 className="text-xs font-medium text-foreground">{t("estate.cubeWhispers")}</h3>
+            <h3 className="text-xs font-medium text-foreground">
+              {catalogActive && completedCubeEvents.length === 0 ? (
+                <RedactedLockedHint
+                  label={t("estate.cubeWhispers")}
+                  tooltipId="estate-cube-header-redacted"
+                />
+              ) : (
+                t("estate.cubeWhispers")
+              )}
+            </h3>
 
             <div
               className={cn(
@@ -1052,13 +1317,13 @@ export default function EstatePanel({
               )}
             >
               <div className="flex flex-col gap-2 min-w-0 flex-1">
-                {firstColumnCubeEvents.map(renderCubeEventRow)}
+                {firstColumnCubeEventIds.map(renderCubeCatalogRow)}
               </div>
               {useTwoCubeColumns && (
                 <>
                   <div className="w-px shrink-0 bg-border self-stretch" />
                   <div className="flex flex-col gap-2 min-w-0 flex-1">
-                    {secondColumnCubeEvents.map(renderCubeEventRow)}
+                    {secondColumnCubeEventIds.map(renderCubeCatalogRow)}
                   </div>
                 </>
               )}

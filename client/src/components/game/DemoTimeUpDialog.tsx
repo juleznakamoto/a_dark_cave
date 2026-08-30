@@ -23,6 +23,7 @@ export default function DemoTimeUpDialog({
 } = {}) {
   const { t } = useUiTranslation();
   const storeOpen = useGameStore((state) => state.galaxyTimeUpDialogOpen);
+  const dismissDemoEndDialog = useGameStore((state) => state.dismissDemoEndDialog);
   const open = preview || storeOpen;
 
   const handleStartNewGame = () => {
@@ -30,8 +31,13 @@ export default function DemoTimeUpDialog({
     void startNewDemoGame();
   };
 
+  const handleOpenChange = (nextOpen: boolean) => {
+    if (preview || nextOpen) return;
+    dismissDemoEndDialog();
+  };
+
   return (
-    <Dialog open={open} onOpenChange={() => { }}>
+    <Dialog open={open} onOpenChange={handleOpenChange}>
       <DialogContent
         className="max-w-md"
         hideClose
@@ -49,10 +55,9 @@ export default function DemoTimeUpDialog({
           ) : null
         }
         onPointerDownOutside={(e) => e.preventDefault()}
-        onEscapeKeyDown={(e) => e.preventDefault()}
       >
         <DialogHeader>
-          <DialogTitle className="pr-0">{t("galaxy.title")}</DialogTitle>
+          <DialogTitle>{t("galaxy.title")}</DialogTitle>
           <DialogDescription>{t("galaxy.description")}</DialogDescription>
         </DialogHeader>
         <div className="flex flex-col gap-3 pt-2">
@@ -84,6 +89,25 @@ export default function DemoTimeUpDialog({
               className="opacity-100"
             />
             {t("galaxy.startNewGameButton")}
+          </Button>
+          <Button
+            variant="outline"
+            type="button"
+            onClick={() => {
+              if (preview) return;
+              dismissDemoEndDialog();
+            }}
+            data-testid="button-demo-end-see-whats-next"
+            className="inline-flex items-center gap-1.5"
+          >
+            <GameUiIcon
+              name="unlockedPadlock"
+              sizeClassName="w-4 h-4"
+              className="opacity-100"
+            />
+            {t("galaxy.seeWhatsNextButton", {
+              defaultValue: "See what's next",
+            })}
           </Button>
         </div>
       </DialogContent>

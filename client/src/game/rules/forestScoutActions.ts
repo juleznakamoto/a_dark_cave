@@ -597,7 +597,9 @@ export function handleLayTrap(
         message: getActionLogMessage(
           "layTrap",
           "trapSuccessWithDeaths",
-          "The giant trap snares a colossal black bear with burning red eyes! {{count}} villagers fall to its supernatural claws before the beast is finally slain. You claim its cursed black fur as a hard-won trophy.",
+          actualDeaths === 1
+            ? "The giant trap snares a colossal black bear with burning red eyes! {{count}} villager falls to its supernatural claws before the beast is finally slain. You claim its cursed black fur as a hard-won trophy."
+            : "The giant trap snares a colossal black bear with burning red eyes! {{count}} villagers fall to its supernatural claws before the beast is finally slain. You claim its cursed black fur as a hard-won trophy.",
           { count: actualDeaths },
         ),
         timestamp: Date.now(),

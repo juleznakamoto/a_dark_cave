@@ -16,15 +16,17 @@ export type VisibleHotkeyTabsParams = {
   darkEstate: number;
   achievementsUnlocked: boolean;
   timedEventActive: boolean;
+  /** Demo teaser tabs are on-screen and clickable even while still locked. */
+  includeDemoTeaserTabs?: boolean;
 };
 
 /** Tabs that receive 1–9 and arrow / A–D navigation, in on-screen order. */
 export function getVisibleHotkeyTabs(p: VisibleHotkeyTabsParams): GameTab[] {
   const tabs: GameTab[] = ["cave"];
-  if (p.villageUnlocked) tabs.push("village");
-  if (p.forestUnlocked) tabs.push("forest");
-  if (p.darkEstate >= 1) tabs.push("estate");
-  if (p.bastionUnlocked) tabs.push("bastion");
+  if (p.villageUnlocked || p.includeDemoTeaserTabs) tabs.push("village");
+  if (p.forestUnlocked || p.includeDemoTeaserTabs) tabs.push("forest");
+  if (p.darkEstate >= 1 || p.includeDemoTeaserTabs) tabs.push("estate");
+  if (p.bastionUnlocked || p.includeDemoTeaserTabs) tabs.push("bastion");
   if (p.achievementsUnlocked) tabs.push("achievements");
   if (p.timedEventActive) tabs.push("timedevent");
   return tabs;

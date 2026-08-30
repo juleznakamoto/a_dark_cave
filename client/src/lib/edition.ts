@@ -12,7 +12,7 @@
  * CrazyGames uses `VITE_CRAZYGAMES=1` (`build:crazygames`) or the `/crazygames` path.
  *
  * In DEV (non-Steam builds), Settings → Game Mode can simulate Steam Game / Playtest /
- * Demo / CrazyGames Demo via {@link setDevGameModeOverride}.
+ * Demo / Demo End / CrazyGames Demo via {@link setDevGameModeOverride}.
  */
 export const isSteamBuild = import.meta.env.VITE_STEAM_BUILD === "1";
 
@@ -61,6 +61,7 @@ export type DevGameMode =
   | "steamGame"
   | "steamPlaytest"
   | "steamDemo"
+  | "demoEnd"
   | "crazyGamesDemo";
 
 export const DEV_GAME_MODE_OPTIONS: readonly DevGameMode[] = [
@@ -68,12 +69,13 @@ export const DEV_GAME_MODE_OPTIONS: readonly DevGameMode[] = [
   "steamGame",
   "steamPlaytest",
   "steamDemo",
+  "demoEnd",
   "crazyGamesDemo",
 ] as const;
 
 function isPathPrefix(prefix: string): boolean {
   if (typeof window === "undefined") return false;
-  const path = window.location.pathname;
+  const path = window.location?.pathname ?? "";
   return path === prefix || path.startsWith(`${prefix}/`);
 }
 
@@ -101,6 +103,7 @@ export function isDemoEdition(): boolean {
     isCrazyGamesEdition() ||
     isSteamDemoRuntime() ||
     isDevGameMode("steamDemo") ||
+    isDevGameMode("demoEnd") ||
     isDevGameMode("crazyGamesDemo")
   );
 }
@@ -114,8 +117,14 @@ export function isSteamDemoActive(): boolean {
     isSteamDemoRuntime() ||
     isCrazyGamesEdition() ||
     isDevGameMode("steamDemo") ||
+    isDevGameMode("demoEnd") ||
     isDevGameMode("crazyGamesDemo")
   );
+}
+
+/** DEV Settings → Demo End, or a capped demo that has reached the hut limit. */
+export function isDemoEndDevMode(): boolean {
+  return isDevGameMode("demoEnd");
 }
 
 /** Steam desktop, Galaxy, or CrazyGames — no Supabase cloud saves or online services. */
@@ -163,7 +172,8 @@ export function shouldHideSteamStoreLink(
     return (
       devGameMode === "steamGame" ||
       devGameMode === "steamPlaytest" ||
-      devGameMode === "steamDemo"
+      devGameMode === "steamDemo" ||
+      devGameMode === "demoEnd"
     );
   }
   return false;

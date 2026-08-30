@@ -12,6 +12,7 @@ import {
   setDevGameModeOverride,
   type DevGameMode,
 } from "@/lib/edition";
+import { isDemoPlayFrozen } from "@/game/demoLimit";
 import { gameActions, shouldShowAction, canExecuteAction } from "@/game/rules";
 import {
   EventManager,
@@ -288,6 +289,8 @@ interface GameStore extends GameState {
   shareDialogOpen: boolean;
   /** Demo edition (Galaxy / Steam demo): blocking dialog when the wooden hut limit is reached. */
   galaxyTimeUpDialogOpen: boolean;
+  /** Player closed the demo-end dialog; do not auto-reopen this session. */
+  demoEndDialogDismissed: boolean;
   /**
    * Transient: when set, the shop dialog opens straight into checkout for this
    * item id (used for items hidden from the shop grid, e.g. additional preset
@@ -600,6 +603,7 @@ interface GameStore extends GameState {
   setLeaderboardDialogOpen: (isOpen: boolean) => void;
   setShareDialogOpen: (isOpen: boolean) => void;
   setGalaxyTimeUpDialogOpen: (isOpen: boolean) => void;
+  dismissDemoEndDialog: () => void;
   setShopCheckoutItemId: (itemId: string | null) => void;
   /** Grandfather legacy `additional_preset_slots` shop purchases. */
   grantAdditionalPresetSlots: () => void;
@@ -1774,6 +1778,7 @@ export function shouldFreezeTimedEventTabCountdown(state: GameStore): boolean {
   return (
     state.isPaused ||
     isModalDialogOpen(state) ||
+    isDemoPlayFrozen(state) ||
     isGameTabHidden()
   );
 }
@@ -1968,6 +1973,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
   leaderboardDialogOpen: false,
   shareDialogOpen: false,
   galaxyTimeUpDialogOpen: false,
+  demoEndDialogDismissed: false,
   shopCheckoutItemId: null,
   musicMuted: false,
   sfxMuted: false,
@@ -2166,6 +2172,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
 
   executeAction: (actionId: string, meta?: { executionSource?: "player" | "prior" }) => {
     const state = get();
+    if (isDemoPlayFrozen(state)) return;
     const action = gameActions[actionId];
 
     // If action has execution time and we're not completing one, start execution
@@ -2298,8 +2305,9 @@ export const useGameStore = create<GameStore>((set, get) => ({
       }, 1500);
     }
 
-    // Handle RewardDialog for whitelisted actions BEFORE applying state updates
-    // This allows us to extract and remove success log entries before they're added to the event log
+    // Copy the success story into RewardDialog, but keep it in the event log.
+    // The dialog is transient (reset on load); the log is the lasting record.
+    // Stripping the line made a later win disappear, so a prior miss stayed on top.
     if (rewardDialogActions.has(actionId)) {
       const rewards = detectRewards(result.stateUpdates, state, actionId);
       if (rewards && rewardPayloadHasPositiveChanges(rewards)) {
@@ -2315,9 +2323,6 @@ export const useGameStore = create<GameStore>((set, get) => ({
             successLog = typeof lastLogEntry.message === 'string'
               ? lastLogEntry.message
               : JSON.stringify(lastLogEntry.message);
-
-            // Remove this log entry so it doesn't appear in the event log
-            result.logEntries = result.logEntries.filter(entry => entry.id !== lastLogEntry.id);
           }
         }
 
@@ -2525,6 +2530,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
 
   startActionExecution: (actionId: string, meta?: { executionSource?: "player" | "prior" }) => {
     const state = get();
+    if (isDemoPlayFrozen(state)) return;
     const action = gameActions[actionId];
     const duration = getExecutionTime(actionId, state);
     if (duration <= 0) return;
@@ -2598,6 +2604,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
 
   completeActionExecution: (actionId: string) => {
     const state = get();
+    if (isDemoPlayFrozen(state)) return;
     const { executionStartTimes, executionDurations } = state;
     if (!executionStartTimes[actionId] || !executionDurations[actionId]) return;
 
@@ -3637,6 +3644,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
     const state = get();
     // If the game is paused, do not process events
     if (state.isPaused) return;
+    if (isDemoPlayFrozen(state)) return;
 
     if (isModalDialogOpen(state)) return;
 
@@ -3826,6 +3834,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
     const state = get();
     // If the game is paused, do not apply event choices
     if (state.isPaused) return false;
+    if (isDemoPlayFrozen(state)) return false;
 
     // Use passed currentLogEntry or fall back to eventDialog.currentEvent
     const logEntry = currentLogEntry || get().eventDialog.currentEvent;
@@ -4247,6 +4256,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
   },
 
   assignVillager: (job: keyof GameState["villagers"], count: number = 1) => {
+    if (isDemoPlayFrozen(get())) return;
     set((state) => {
       const updates = assignVillagerToJob(state, job, count);
       if (Object.keys(updates).length > 0) {
@@ -4257,6 +4267,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
   },
 
   unassignVillager: (job: keyof GameState["villagers"], count: number = 1) => {
+    if (isDemoPlayFrozen(get())) return;
     set((state) => {
       const updates = unassignVillagerFromJob(state, job, count);
       if (Object.keys(updates).length > 0) {
@@ -4273,6 +4284,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
 
   saveVillagerJobPreset: (slot: number) => {
     const state = get();
+    if (isDemoPlayFrozen(state)) return false;
     const slotIndex = slot - 1;
     if (!isPresetSlotUnlocked(state, slotIndex)) return false;
 
@@ -4291,6 +4303,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
 
   applyVillagerJobPreset: (slot: number) => {
     const state = get();
+    if (isDemoPlayFrozen(state)) return;
     const slotIndex = slot - 1;
     if (!isPresetSlotUnlocked(state, slotIndex)) return;
 
@@ -4308,6 +4321,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
 
   purchaseVillagerPresetSlot: () => {
     const state = get();
+    if (isDemoPlayFrozen(state)) return false;
     if (!canPurchasePresetSlot(state, state.insightRevealing)) return false;
 
     const slotIndex = getNextPurchasablePresetSlotIndex(state);
@@ -4341,6 +4355,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
 
   purchaseConstructionQueueSlot: () => {
     const state = get();
+    if (isDemoPlayFrozen(state)) return false;
     if (!canPurchaseQueueSlot(state, state.insightRevealing)) return false;
 
     const cost = getNextQueueSlotUnlockCost(state);
@@ -4704,6 +4719,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
 
   callMerchant: () => {
     const state = get();
+    if (isDemoPlayFrozen(state)) return;
     if ((state.buildings?.tradePost ?? 0) < 1) return;
     if (state.executionStartTimes?.callMerchant) return;
 
@@ -5025,6 +5041,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
   },
 
   setInvestDialogOpen: (isOpen: boolean) => {
+    if (isOpen && isDemoPlayFrozen(get())) return;
     set({ investDialogOpen: isOpen });
   },
 
@@ -5046,7 +5063,14 @@ export const useGameStore = create<GameStore>((set, get) => ({
   },
 
   setGalaxyTimeUpDialogOpen: (isOpen: boolean) => {
-    set({ galaxyTimeUpDialogOpen: isOpen });
+    set({
+      galaxyTimeUpDialogOpen: isOpen,
+      ...(isOpen ? { demoEndDialogDismissed: false } : {}),
+    });
+  },
+
+  dismissDemoEndDialog: () => {
+    set({ galaxyTimeUpDialogOpen: false, demoEndDialogDismissed: true });
   },
 
   setShopCheckoutItemId: (itemId: string | null) => {
@@ -5094,6 +5118,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
   },
 
   setIdleModeDialog: (isOpen: boolean) => {
+    if (isOpen && isDemoPlayFrozen(get())) return;
     set((state) => ({
       idleModeDialog: {
         isOpen,
@@ -5126,9 +5151,15 @@ export const useGameStore = create<GameStore>((set, get) => ({
         leaderboardDialogOpen: false,
         deleteAccountDialogOpen: false,
         socialPromptDialogOpen: false,
+        galaxyTimeUpDialogOpen: mode === "demoEnd",
+        demoEndDialogDismissed: false,
       });
     } else {
-      set({ devGameMode: "normal" });
+      set({
+        devGameMode: "normal",
+        galaxyTimeUpDialogOpen: false,
+        demoEndDialogDismissed: false,
+      });
     }
   },
 
@@ -5206,6 +5237,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
   },
 
   updateFocusState: (partial) => {
+    if (isDemoPlayFrozen(get())) return;
     set((state) => ({
       focusState: {
         ...state.focusState,

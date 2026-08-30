@@ -51,6 +51,8 @@ import {
 } from "@/game/itemAbsolution";
 import { getUiTooltip } from "@/i18n/tooltipLabels";
 import { GAME_PANEL_HEADER_BAND } from "@/components/game/gameChrome";
+import { getRedactedWidthCh, RedactedBar } from "@/components/game/RedactedHint";
+import { useUiTranslation } from "@/i18n/useUiTranslation";
 
 const STAT_EFFECT_PULSE_STAT_IDS: TooltipStatKey[] = [
   "luck",
@@ -72,6 +74,8 @@ interface SidePanelItem {
   isSpacer?: boolean; // For spacing between sections
   hasSpacingAfter?: boolean; // Add spacing after this item
   productionDelta?: number; // Net production per cycle for Resources section
+  /** Demo-end catalog tease: hide the name behind a redacted bar. */
+  redacted?: boolean;
 }
 
 interface ResourceChange {
@@ -276,6 +280,8 @@ interface SidePanelSectionProps {
   onResourceChange?: (change: ResourceChange) => void;
   titleExtra?: React.ReactNode;
   activeTab?: string;
+  /** Demo-end: keep the section icon, redact the header label. */
+  titleRedacted?: boolean;
 }
 import { logger } from "@/lib/logger";
 import { abbreviateNumber, formatNumber } from "@/lib/utils";
@@ -535,7 +541,12 @@ export default function SidePanelSection({
   onResourceChange,
   titleExtra,
   activeTab,
+  titleRedacted = false,
 }: SidePanelSectionProps) {
+  const { t } = useUiTranslation();
+  const notYetUnlocked = t("demoTabs.notYetUnlocked", {
+    defaultValue: "Not yet unlocked.",
+  });
   const visibleItems = (items || []).filter((item) => item.visible !== false);
   const [animatedItems, setAnimatedItems] = useState<Set<string>>(new Set());
   const [decreaseAnimatedItems, setDecreaseAnimatedItems] = useState<
@@ -888,7 +899,7 @@ export default function SidePanelSection({
     });
   }, [resourceChanges, visibleItems]);
 
-  if (visibleItems.length === 0) {
+  if (visibleItems.length === 0 && !titleRedacted) {
     return null;
   }
 
@@ -909,6 +920,28 @@ export default function SidePanelSection({
   };
 
   const renderItemWithTooltip = (item: SidePanelItem) => {
+    if (item.redacted) {
+      const labelText = typeof item.label === "string" ? item.label : item.id;
+      return (
+        <TooltipWrapper
+          tooltip={<div className="text-xs">{notYetUnlocked}</div>}
+          disabled={true}
+          tooltipId={`side-panel-redacted-${sectionId ?? "item"}-${item.id}`}
+          className="inline-flex w-full"
+        >
+          <div
+            className="py-0.5"
+            aria-label={notYetUnlocked}
+            data-testid={
+              item.testId ? `${item.testId}-redacted` : undefined
+            }
+          >
+            <RedactedBar widthCh={getRedactedWidthCh(labelText)} />
+          </div>
+        </TooltipWrapper>
+      );
+    }
+
     const isAnimated = animatedItems.has(item.id);
     const isDecreaseAnimated = decreaseAnimatedItems.has(item.id);
     const isMaxAnimated = maxAnimatedItems.has(item.id);
@@ -1442,18 +1475,37 @@ export default function SidePanelSection({
 
   const titleHeading = (
     <h3 className="font-medium tracking-wide text-gray-300">
-      <span
-        className={cn(
-          GAME_PANEL_HEADER_BAND,
-          titleExtra ? "gap-1.5" : "gap-1",
-        )}
-      >
-        {sectionId ? (
-          <SidePanelSectionIcon sectionId={sectionId} />
-        ) : null}
-        {title}
-        {titleExtra}
-      </span>
+      {titleRedacted ? (
+        <TooltipWrapper
+          tooltip={<div className="text-xs">{notYetUnlocked}</div>}
+          disabled={true}
+          tooltipId={`side-panel-section-redacted-${sectionId ?? "section"}`}
+          className="inline-flex"
+        >
+          <span
+            className={cn(GAME_PANEL_HEADER_BAND, "gap-1")}
+            aria-label={notYetUnlocked}
+          >
+            {sectionId ? <SidePanelSectionIcon sectionId={sectionId} /> : null}
+            <RedactedBar
+              widthCh={getRedactedWidthCh(
+                typeof title === "string" ? title : sectionId ?? "section",
+              )}
+            />
+          </span>
+        </TooltipWrapper>
+      ) : (
+        <span
+          className={cn(
+            GAME_PANEL_HEADER_BAND,
+            titleExtra ? "gap-1.5" : "gap-1",
+          )}
+        >
+          {sectionId ? <SidePanelSectionIcon sectionId={sectionId} /> : null}
+          {title}
+          {titleExtra}
+        </span>
+      )}
     </h3>
   );
 

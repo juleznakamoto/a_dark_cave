@@ -9,6 +9,7 @@
     "gameModeSteamGame": "Steam Game",
     "gameModeSteamPlaytest": "Steam Playtest",
     "gameModeSteamDemo": "Steam Demo",
+    "gameModeDemoEnd": "Fim da demo",
     "gameModeCrazyGamesDemo": "Demo CrazyGames"
   },
   "textScale": {
@@ -106,6 +107,9 @@
   },
   "villageHotkeyTutorial": {
     "dismiss": "Dispensar"
+  },
+  "demoTabs": {
+    "notYetUnlocked": "Ainda não desbloqueado."
   },
   "never": "Nunca",
   "errorScreen": {

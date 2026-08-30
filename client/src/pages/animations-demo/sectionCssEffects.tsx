@@ -10,6 +10,7 @@ import {
   handleDonateHeartAnimationEnd,
   triggerExclusivePromoPingOnce,
 } from "@/lib/exclusivePromoShockwave";
+import { RedactedBar } from "@/components/game/RedactedHint";
 import { CSS_EFFECT_DEMOS } from "@/pages/animations-demo/cssEffects";
 import { DemoRow, DemoSection } from "@/pages/animations-demo/DemoSection";
 
@@ -31,13 +32,21 @@ function CssEffectSample({
     requestAnimationFrame(() => setActive(true));
   };
 
-  const sampleEl = (
+  const pulseClass =
+    mode === "hover" || mode === "loop" || active ? className : "";
+  const sampleEl = className.includes("new-item-pulse-redacted") ? (
+    <span
+      key={active ? `${effectId}-on` : `${effectId}-off`}
+      className="inline-flex min-h-8 items-center overflow-visible px-2"
+    >
+      <RedactedBar widthCh={8} className={pulseClass} />
+    </span>
+  ) : (
     <span
       key={active ? `${effectId}-on` : `${effectId}-off`}
       className={cn(
         "inline-flex min-h-8 min-w-8 items-center justify-center rounded-md border border-border/50 px-2 text-xs",
-        mode === "hover" || (mode !== "loop" && !active) ? "" : className,
-        mode === "hover" ? className : null,
+        pulseClass,
       )}
     >
       {sample}

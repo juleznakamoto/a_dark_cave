@@ -551,7 +551,8 @@
     "label": "Disponi Trappola",
     "log": {
       "trapSuccessNoDeaths": "La trappola gigante funziona alla perfezione! Un enorme orso nero dagli occhi rossi luminosi viene catturato. Gli abitanti abbattono la bestia soprannaturale e ne reclamano la maledetta pelliccia nera come trofeo.",
-      "trapSuccessWithDeaths": "La trappola gigante cattura un colossale orso nero dagli occhi rossi ardenti! {{count}} abitanti cadono per i suoi artigli soprannaturali prima che la bestia venga infine abbattuta. Reclami la sua maledetta pelliccia nera come trofeo conquistato a caro prezzo.",
+      "trapSuccessWithDeaths_one": "La trappola gigante cattura un colossale orso nero dagli occhi rossi ardenti! {{count}} abitante cade per i suoi artigli soprannaturali prima che la bestia venga infine abbattuta. Reclami la sua maledetta pelliccia nera come trofeo conquistato a caro prezzo.",
+      "trapSuccessWithDeaths_other": "La trappola gigante cattura un colossale orso nero dagli occhi rossi ardenti! {{count}} abitanti cadono per i suoi artigli soprannaturali prima che la bestia venga infine abbattuta. Reclami la sua maledetta pelliccia nera come trofeo conquistato a caro prezzo.",
       "trapSuccessHeavy": "La trappola gigante cattura un colossale orso nero dagli occhi come carboni ardenti. {{count}} abitanti cadono per la sua furia soprannaturale prima che la bestia venga infine sopraffatta. Reclami la sua maledetta pelliccia nera.",
       "trapFailed": "La trappola gigante è posizionata, ma al controllo si trovano solo enormi segni di artigli accanto ad essa. Qualunque cosa si aggiri in queste foreste è troppo astuta per la tua trappola... per questa volta."
     }

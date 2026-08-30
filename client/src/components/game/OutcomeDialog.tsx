@@ -20,6 +20,8 @@ interface OutcomeDialogProps {
   variant: OutcomeDialogVariant;
   /** When set, overrides variant border/ring/glow (e.g. village timed-effect announcements). */
   effectTheme?: OutcomeDialogEffectTheme;
+  /** Extra 56px-ring classes from OUTCOME_DIALOG_ICONS.ringClassName. */
+  iconRingClassName?: string;
   buttonText: string;
   buttonId: string;
   children?: React.ReactNode;
@@ -56,6 +58,7 @@ export default function OutcomeDialog({
   title,
   variant,
   effectTheme,
+  iconRingClassName,
   buttonText,
   buttonId,
   children,
@@ -66,8 +69,6 @@ export default function OutcomeDialog({
   const glowClass = effectTheme
     ? "outcome-dialog-effect-glow"
     : variantStyle.glow;
-  const iconRingAlignMadness =
-    !effectTheme && variant === "madness" ? "items-end pb-1.5" : "items-center";
   const iconUsesColoredGlyph =
     Boolean(effectTheme) || variant === "madness" || variant === "insight";
   // Empty fragments (e.g. RewardDialog with no items) must not count as body content.
@@ -134,8 +135,8 @@ export default function OutcomeDialog({
               <div
                 className={cn(
                   "flex h-14 w-14 shrink-0 items-center justify-center overflow-visible rounded-full border-2",
-                  iconRingAlignMadness,
                   iconRing,
+                  iconRingClassName,
                   !iconUsesColoredGlyph && "text-white",
                 )}
               >

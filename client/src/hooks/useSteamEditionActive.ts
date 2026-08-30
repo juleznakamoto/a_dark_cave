@@ -7,6 +7,7 @@ import {
   shouldHideSteamStoreLink,
   type DevGameMode,
 } from "@/lib/edition";
+import { DEMO_WOODEN_HUT_LIMIT } from "@/game/demoLimit";
 
 function isDevSteamMode(devGameMode: DevGameMode): boolean {
   return import.meta.env.DEV && !isSteamBuild && devGameMode !== "normal";
@@ -16,7 +17,9 @@ function isDevCappedDemoMode(devGameMode: DevGameMode): boolean {
   return (
     import.meta.env.DEV &&
     !isSteamBuild &&
-    (devGameMode === "steamDemo" || devGameMode === "crazyGamesDemo")
+    (devGameMode === "steamDemo" ||
+      devGameMode === "demoEnd" ||
+      devGameMode === "crazyGamesDemo")
   );
 }
 
@@ -72,6 +75,22 @@ export function useSteamDemoActive(): boolean {
 }
 
 /** CrazyGames folder, `/crazygames` path, or DEV Game Mode CrazyGames Demo. */
+/** Demo play is frozen: DEV Demo End, or a capped demo at the hut limit. */
+export function useDemoPlayFrozen(): boolean {
+  const woodenHut = useGameStore((s) => s.buildings.woodenHut ?? 0);
+  const demoEdition = useDemoEditionActive();
+  const devGameMode = useGameStore((s) => s.devGameMode);
+  if (import.meta.env.DEV && !isSteamBuild && devGameMode === "demoEnd") {
+    return true;
+  }
+  return demoEdition && woodenHut >= DEMO_WOODEN_HUT_LIMIT;
+}
+
+/** Demo-end catalog tease: same gate as {@link useDemoPlayFrozen}. */
+export function useDemoEndCatalogActive(): boolean {
+  return useDemoPlayFrozen();
+}
+
 export function useCrazyGamesEditionActive(): boolean {
   const devGameMode = useGameStore((s) => s.devGameMode);
   return (

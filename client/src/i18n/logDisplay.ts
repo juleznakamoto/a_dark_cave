@@ -759,11 +759,14 @@ function resolveLegacySystemLog(message: string): string | null {
     /^The giant trap snares a colossal black bear with burning red eyes! (\d+) (?:brave )?villagers? falls? to its supernatural claws before the beast is finally slain\. You claim its cursed black fur as a hard-won trophy\.$/,
   );
   if (layTrapWithDeaths) {
+    const deaths = Number(layTrapWithDeaths[1]);
     return getActionLogMessage(
       "layTrap",
       "trapSuccessWithDeaths",
-      "The giant trap snares a colossal black bear with burning red eyes! {{count}} villagers fall to its supernatural claws before the beast is finally slain. You claim its cursed black fur as a hard-won trophy.",
-      { count: Number(layTrapWithDeaths[1]) },
+      deaths === 1
+        ? "The giant trap snares a colossal black bear with burning red eyes! {{count}} villager falls to its supernatural claws before the beast is finally slain. You claim its cursed black fur as a hard-won trophy."
+        : "The giant trap snares a colossal black bear with burning red eyes! {{count}} villagers fall to its supernatural claws before the beast is finally slain. You claim its cursed black fur as a hard-won trophy.",
+      { count: deaths },
     );
   }
 

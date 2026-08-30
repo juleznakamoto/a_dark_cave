@@ -42,6 +42,8 @@ import { getAchievementSegmentWeight } from "@/achievements/achievementTypes";
 import AchievementMiniRingChart from "@/achievements/AchievementMiniRingChart";
 import { useTranslation } from "react-i18next";
 import { useUiTranslation } from "@/i18n/useUiTranslation";
+import { getRedactedWidthCh, RedactedBar, RedactedLockedHint } from "@/components/game/RedactedHint";
+import { useDemoEndCatalogActive } from "@/hooks/useSteamEditionActive";
 import type { GameState } from "@shared/schema";
 
 const CATEGORY_HEADER_KEYS: Record<
@@ -184,11 +186,15 @@ function AchievementRowComponent({
   indicatorClassIncomplete,
   indicatorClassComplete,
   claimButtonClass,
+  forceRedacted,
+  catalogActive,
 }: {
   row: AchievementRow;
   indicatorClassIncomplete: string;
   indicatorClassComplete: string;
   claimButtonClass: string;
+  forceRedacted?: boolean;
+  catalogActive?: boolean;
 }) {
   const { t } = useUiTranslation();
   const { t: tAchievements } = useTranslation("achievements");
@@ -200,14 +206,16 @@ function AchievementRowComponent({
     (s) => s.insightRevealing?.[insightKey],
   );
   const isRevealAnimating = typeof insightRevealEnd === "number";
-  const canClaim = row.isFull && !row.isClaimed;
+  const canClaim = !forceRedacted && row.isFull && !row.isClaimed;
   const tooltipText = canClaim ? formatRewardsTooltip(row.rewards) : "";
   const isTitleVisible =
+    !forceRedacted &&
     isAchievementTitleVisible(
       gameState,
       row.achievementId,
       row.currentCount,
-    ) && !isRevealAnimating;
+    ) &&
+    !isRevealAnimating;
   const progressLabel = `${Math.min(Math.floor(row.currentCount), row.maxCount)}/${row.maxCount}`;
   const mutedSuffix =
     row.maxCount > 1 ? progressLabel : row.detailLabel;
@@ -215,9 +223,7 @@ function AchievementRowComponent({
     `${row.chartPrefix}.${row.segmentId}.description`,
     { defaultValue: row.description },
   );
-  const redactedWidthCh = description
-    ? Math.min(28, Math.max(14, Math.round(description.length * 0.55)))
-    : 0;
+  const redactedWidthCh = description ? getRedactedWidthCh(description) : 0;
 
   const handleClaim = () => {
     if (canClaim) {
@@ -231,8 +237,8 @@ function AchievementRowComponent({
   };
 
   return (
-    <div className="space-y-2 py-2">
-      <div className="flex items-start justify-between gap-2 min-h-5">
+    <div className="min-w-0 space-y-2 py-2">
+      <div className="flex min-h-5 min-w-0 items-start justify-between gap-2">
         <div className="flex min-w-0 flex-1 flex-col gap-0.5">
           <div className="flex items-center gap-1 min-w-0">
             {isTitleVisible ? (
@@ -247,6 +253,11 @@ function AchievementRowComponent({
                   </>
                 )}
               </span>
+            ) : forceRedacted || catalogActive ? (
+              <RedactedLockedHint
+                label={row.label}
+                tooltipId={`achievement-title-redacted-${row.achievementId}`}
+              />
             ) : (
               <>
                 <span
@@ -267,11 +278,8 @@ function AchievementRowComponent({
               {description}
             </p>
           ) : redactedWidthCh > 0 ? (
-            <p className="flex h-4 items-center" aria-hidden>
-              <span
-                className="inline-block h-2.5 rounded-[2px] bg-muted-foreground brightness-50"
-                style={{ width: `${redactedWidthCh}ch` }}
-              />
+            <p className="flex h-4 min-w-0 max-w-full items-center" aria-hidden>
+              <RedactedBar widthCh={redactedWidthCh} />
             </p>
           ) : null}
         </div>
@@ -292,13 +300,18 @@ function AchievementRowComponent({
         )}
       </div>
       <SegmentedProgress
+        className="min-w-0 w-full"
         // Clamp: gathering totals (e.g. leather) keep rising past maxCount.
-        value={Math.min(
-          100,
-          row.maxCount > 0
-            ? (Math.floor(row.currentCount) / row.maxCount) * 100
-            : 0,
-        )}
+        value={
+          forceRedacted
+            ? 0
+            : Math.min(
+              100,
+              row.maxCount > 0
+                ? (Math.floor(row.currentCount) / row.maxCount) * 100
+                : 0,
+            )
+        }
         segments={getAchievementSegmentWeight(row)}
         showPercentage={false}
         compact
@@ -317,9 +330,13 @@ function AchievementRowComponent({
 function AchievementTabContent({
   config,
   tabId,
+  forceRedacted,
+  catalogActive,
 }: {
   config: AchievementChartConfig;
   tabId: string;
+  forceRedacted?: boolean;
+  catalogActive?: boolean;
 }) {
   const { t } = useUiTranslation();
   // Subscribe to the store (not getState-only): Claim buttons depend on
@@ -340,10 +357,21 @@ function AchievementTabContent({
 
   return (
     <div className="flex-1 min-h-0 overflow-hidden flex flex-col w-full">
-      <ScrollAreaWithIndicator className="h-full w-full" scrollAreaId={`achievements-${tabId}`}>
-        <div className="pb-6 space-y-1">
+      <ScrollAreaWithIndicator
+        className="h-full w-full"
+        viewportClassName="[&>div]:!block [&>div]:min-w-0 [&>div]:w-full"
+        scrollAreaId={`achievements-${tabId}`}
+      >
+        <div className="min-w-0 space-y-1 pb-6">
           <h3 className="pt-1 pb-1 text-sm font-medium text-foreground">
-            {categoryHeader}
+            {forceRedacted ? (
+              <RedactedLockedHint
+                label={categoryHeader}
+                tooltipId={`achievement-category-${tabId}-redacted`}
+              />
+            ) : (
+              categoryHeader
+            )}
           </h3>
           {rows.map((row) => (
             <AchievementRowComponent
@@ -352,6 +380,8 @@ function AchievementTabContent({
               indicatorClassIncomplete={indicatorClassIncomplete}
               indicatorClassComplete={indicatorClassComplete}
               claimButtonClass={claimButtonClass}
+              forceRedacted={forceRedacted}
+              catalogActive={catalogActive}
             />
           ))}
         </div>
@@ -368,6 +398,7 @@ function TabTriggerWithTooltipWhenLocked({
   config,
   isActive,
   disabled,
+  hideProgress,
   lockedTooltip,
   chartUnavailable,
   centerSymbolClassName,
@@ -376,6 +407,7 @@ function TabTriggerWithTooltipWhenLocked({
   config: AchievementChartConfig;
   isActive: boolean;
   disabled: boolean;
+  hideProgress?: boolean;
   lockedTooltip: string;
   chartUnavailable: string;
   centerSymbolClassName?: string;
@@ -394,7 +426,7 @@ function TabTriggerWithTooltipWhenLocked({
         <AchievementMiniRingChart
           config={config}
           isActive={isActive}
-          hideProgress={disabled}
+          hideProgress={hideProgress ?? disabled}
           centerSymbolClassName={centerSymbolClassName}
         />
       </ChartErrorBoundary>
@@ -419,10 +451,14 @@ function TabTriggerWithTooltipWhenLocked({
 export default function AchievementsPanel() {
   const { t } = useUiTranslation();
   const gameState = useGameStoreWithoutTickClock() as unknown as GameState;
+  const catalogActive = useDemoEndCatalogActive();
   const bookOfTrials = !!gameState.books?.book_of_trials;
   const basicUnlocked = isBasicAchievementTabUnlocked(gameState);
   const showOverallTab = isOverallAchievementCategoryEnabled;
   const overallUnlocked = isOverallAchievementTabUnlocked(gameState);
+  const basicTabEnabled = basicUnlocked || catalogActive;
+  const bookTabsEnabled = bookOfTrials || catalogActive;
+  const overallTabEnabled = overallUnlocked || catalogActive;
   // basic + building/item/action + overall? (overall is last when enabled)
   const tabCount = 4 + (showOverallTab ? 1 : 0);
   const tabGridClass =
@@ -431,17 +467,17 @@ export default function AchievementsPanel() {
       : tabCount === 4
         ? "grid-cols-4"
         : "grid-cols-3";
-  const defaultTab = basicUnlocked
+  const defaultTab = basicTabEnabled
     ? "basic"
-    : overallUnlocked
+    : overallTabEnabled
       ? "overall"
       : "building";
   const [activeTab, setActiveTab] = useState(defaultTab);
   let effectiveTab = activeTab;
-  if (!basicUnlocked && effectiveTab === "basic") {
-    effectiveTab = overallUnlocked ? "overall" : "building";
-  } else if (effectiveTab === "overall" && !overallUnlocked) {
-    effectiveTab = basicUnlocked ? "basic" : "building";
+  if (!basicTabEnabled && effectiveTab === "basic") {
+    effectiveTab = overallTabEnabled ? "overall" : "building";
+  } else if (effectiveTab === "overall" && !overallTabEnabled) {
+    effectiveTab = basicTabEnabled ? "basic" : "building";
   }
   const lockedTooltip = t("achievements.notUnlocked");
   const chartUnavailable = t("achievements.chartUnavailable");
@@ -459,7 +495,8 @@ export default function AchievementsPanel() {
             value="basic"
             config={basicChartConfig}
             isActive={effectiveTab === "basic"}
-            disabled={!basicUnlocked}
+            disabled={!basicTabEnabled}
+            hideProgress={!basicUnlocked}
             lockedTooltip={lockedTooltip}
             chartUnavailable={chartUnavailable}
             centerSymbolClassName="pt-0.5"
@@ -468,7 +505,8 @@ export default function AchievementsPanel() {
             value="building"
             config={buildingChartConfig}
             isActive={effectiveTab === "building"}
-            disabled={!bookOfTrials}
+            disabled={!bookTabsEnabled}
+            hideProgress={!bookOfTrials}
             lockedTooltip={lockedTooltip}
             chartUnavailable={chartUnavailable}
             centerSymbolClassName="pt-1"
@@ -477,7 +515,8 @@ export default function AchievementsPanel() {
             value="item"
             config={itemChartConfig}
             isActive={effectiveTab === "item"}
-            disabled={!bookOfTrials}
+            disabled={!bookTabsEnabled}
+            hideProgress={!bookOfTrials}
             lockedTooltip={lockedTooltip}
             chartUnavailable={chartUnavailable}
             centerSymbolClassName="pt-1"
@@ -486,7 +525,8 @@ export default function AchievementsPanel() {
             value="action"
             config={actionChartConfig}
             isActive={effectiveTab === "action"}
-            disabled={!bookOfTrials}
+            disabled={!bookTabsEnabled}
+            hideProgress={!bookOfTrials}
             lockedTooltip={lockedTooltip}
             chartUnavailable={chartUnavailable}
             centerSymbolClassName="pt-1"
@@ -496,7 +536,8 @@ export default function AchievementsPanel() {
               value="overall"
               config={overallChartConfig}
               isActive={effectiveTab === "overall"}
-              disabled={!overallUnlocked}
+              disabled={!overallTabEnabled}
+              hideProgress={!overallUnlocked}
               lockedTooltip={lockedTooltip}
               chartUnavailable={chartUnavailable}
               centerSymbolClassName="pt-0.5"
@@ -504,23 +545,54 @@ export default function AchievementsPanel() {
           )}
         </TabsList>
         <TabsContent value="basic" className="mt-0 flex-1 min-h-0 data-[state=inactive]:hidden flex flex-col overflow-hidden">
-          {effectiveTab === "basic" && basicUnlocked && (
-            <AchievementTabContent config={basicChartConfig} tabId="basic" />
+          {effectiveTab === "basic" && basicTabEnabled && (
+            <AchievementTabContent
+              config={basicChartConfig}
+              tabId="basic"
+              forceRedacted={!basicUnlocked}
+              catalogActive={catalogActive}
+            />
           )}
         </TabsContent>
         <TabsContent value="building" className="mt-0 flex-1 min-h-0 data-[state=inactive]:hidden flex flex-col overflow-hidden">
-          {effectiveTab === "building" && <AchievementTabContent config={buildingChartConfig} tabId="building" />}
+          {effectiveTab === "building" && bookTabsEnabled && (
+            <AchievementTabContent
+              config={buildingChartConfig}
+              tabId="building"
+              forceRedacted={!bookOfTrials}
+              catalogActive={catalogActive}
+            />
+          )}
         </TabsContent>
         <TabsContent value="item" className="mt-0 flex-1 min-h-0 data-[state=inactive]:hidden flex flex-col overflow-hidden">
-          {effectiveTab === "item" && <AchievementTabContent config={itemChartConfig} tabId="item" />}
+          {effectiveTab === "item" && bookTabsEnabled && (
+            <AchievementTabContent
+              config={itemChartConfig}
+              tabId="item"
+              forceRedacted={!bookOfTrials}
+              catalogActive={catalogActive}
+            />
+          )}
         </TabsContent>
         <TabsContent value="action" className="mt-0 flex-1 min-h-0 data-[state=inactive]:hidden flex flex-col overflow-hidden">
-          {effectiveTab === "action" && <AchievementTabContent config={actionChartConfig} tabId="action" />}
+          {effectiveTab === "action" && bookTabsEnabled && (
+            <AchievementTabContent
+              config={actionChartConfig}
+              tabId="action"
+              forceRedacted={!bookOfTrials}
+              catalogActive={catalogActive}
+            />
+          )}
         </TabsContent>
         {showOverallTab && (
           <TabsContent value="overall" className="mt-0 flex-1 min-h-0 data-[state=inactive]:hidden flex flex-col overflow-hidden">
-            {effectiveTab === "overall" && overallUnlocked && (
-              <AchievementTabContent config={overallChartConfig} tabId="overall" />
+            {effectiveTab === "overall" && overallTabEnabled && (
+              <AchievementTabContent
+                config={overallChartConfig}
+                tabId="overall"
+                forceRedacted={!overallUnlocked}
+                catalogActive={catalogActive}
+              />
             )}
           </TabsContent>
         )}

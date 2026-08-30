@@ -37,6 +37,20 @@ describe("getVisibleHotkeyTabs", () => {
     ]);
   });
 
+  it("includes locked demo teaser tabs when asked", () => {
+    expect(
+      getVisibleHotkeyTabs({
+        villageUnlocked: false,
+        forestUnlocked: false,
+        bastionUnlocked: false,
+        darkEstate: 0,
+        achievementsUnlocked: false,
+        timedEventActive: false,
+        includeDemoTeaserTabs: true,
+      }),
+    ).toEqual(["cave", "village", "forest", "estate", "bastion"]);
+  });
+
   it("includes achievements when only book_of_trials is set", () => {
     expect(
       getVisibleHotkeyTabs({

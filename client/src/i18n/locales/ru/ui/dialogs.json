@@ -257,6 +257,7 @@
     "wishlistButton": "Добавить в список желаемого Steam", //x1.9
     "feedbackButton": "Feedback",
     "startNewGameButton": "Начать новую игру", //x1.2
+    "seeWhatsNextButton": "Посмотреть дальше",
     "releaseNote": "Планируемый релиз: 27 октября 2026",
     "storeHeaderLink": "В желаемое",
     "storeHeaderTooltip": "Добавить полную игру в список желаемого Steam"

@@ -49,6 +49,9 @@ interface SettingsDialogProps {
 /** Shared row layout so every settings row lines up its icon column and label. */
 const ROW = "flex items-center gap-2 px-2 min-h-9";
 const ICON_SLOT = "w-7 shrink-0 flex items-center justify-center";
+/** Both volume rows share one grid so the label column is as wide as the longer name. */
+const AUDIO_GRID =
+  "grid grid-cols-[1.75rem_auto_minmax(0,1fr)] items-center gap-x-2 gap-y-2 px-2";
 /** Dark unfilled track; filled portion stays red (WebKit gradient + Firefox progress). */
 const VOLUME_SLIDER =
   "w-full h-4 cursor-pointer appearance-none bg-transparent " +
@@ -68,12 +71,14 @@ const GAME_MODE_LABEL_KEYS: Record<
   | "settings.gameModeSteamGame"
   | "settings.gameModeSteamPlaytest"
   | "settings.gameModeSteamDemo"
+  | "settings.gameModeDemoEnd"
   | "settings.gameModeCrazyGamesDemo"
 > = {
   normal: "settings.gameModeNormal",
   steamGame: "settings.gameModeSteamGame",
   steamPlaytest: "settings.gameModeSteamPlaytest",
   steamDemo: "settings.gameModeSteamDemo",
+  demoEnd: "settings.gameModeDemoEnd",
   crazyGamesDemo: "settings.gameModeCrazyGamesDemo",
 };
 
@@ -82,6 +87,7 @@ const GAME_MODE_DEFAULTS: Record<DevGameMode, string> = {
   steamGame: "Steam Game",
   steamPlaytest: "Steam Playtest",
   steamDemo: "Steam Demo",
+  demoEnd: "Demo End",
   crazyGamesDemo: "CrazyGames Demo",
 };
 
@@ -119,8 +125,8 @@ function AudioControlRow({
         : "sound";
 
   return (
-    <div className={ROW}>
-      <span className={ICON_SLOT}>
+    <>
+      <span className={`${ICON_SLOT} min-h-9`}>
         <Button
           type="button"
           variant="ghost"
@@ -146,11 +152,11 @@ function AudioControlRow({
         aria-label={label}
         aria-pressed={!muted}
         button_id={muteButtonId}
-        className={`shrink-0 justify-start px-0 text-sm text-foreground hover:bg-muted/40 transition-colors ${muted ? "opacity-40" : ""}`}
+        className={`justify-self-start justify-start px-0 text-sm text-foreground hover:bg-muted/40 transition-colors ${muted ? "opacity-40" : ""}`}
       >
         {title}
       </Button>
-      <div className="flex flex-1 items-center">
+      <div className="flex min-h-9 items-center">
         <input
           type="range"
           min={0}
@@ -164,7 +170,7 @@ function AudioControlRow({
           className={`${VOLUME_SLIDER} ${muted ? "opacity-40 cursor-not-allowed" : ""}`}
         />
       </div>
-    </div>
+    </>
   );
 }
 
@@ -335,28 +341,30 @@ export default function SettingsDialog({
 
         <div className="space-y-2">
           <section className="space-y-2">
-            <AudioControlRow
-              icon="music"
-              title={t("settings.music")}
-              label={
-                musicMuted ? t("footer.unmuteMusic") : t("footer.muteMusic")
-              }
-              muted={musicMuted}
-              volume={musicVolume}
-              onToggleMute={toggleMusic}
-              onVolumeChange={changeMusicVolume}
-              muteButtonId="settings-mute-music"
-            />
-            <AudioControlRow
-              icon="sound"
-              title={t("settings.sound")}
-              label={sfxMuted ? t("footer.unmuteSfx") : t("footer.muteSfx")}
-              muted={sfxMuted}
-              volume={sfxVolume}
-              onToggleMute={toggleSfx}
-              muteButtonId="settings-mute-sfx"
-              onVolumeChange={changeSfxVolume}
-            />
+            <div className={AUDIO_GRID}>
+              <AudioControlRow
+                icon="music"
+                title={t("settings.music")}
+                label={
+                  musicMuted ? t("footer.unmuteMusic") : t("footer.muteMusic")
+                }
+                muted={musicMuted}
+                volume={musicVolume}
+                onToggleMute={toggleMusic}
+                onVolumeChange={changeMusicVolume}
+                muteButtonId="settings-mute-music"
+              />
+              <AudioControlRow
+                icon="sound"
+                title={t("settings.sound")}
+                label={sfxMuted ? t("footer.unmuteSfx") : t("footer.muteSfx")}
+                muted={sfxMuted}
+                volume={sfxVolume}
+                onToggleMute={toggleSfx}
+                muteButtonId="settings-mute-sfx"
+                onVolumeChange={changeSfxVolume}
+              />
+            </div>
             <div className={ROW}>
               <span className={ICON_SLOT}>
                 <TextScaleSettingsIcon />

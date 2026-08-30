@@ -125,7 +125,10 @@ export async function runGameplayInitialization(
 
   if (isDemoEdition()) {
     const loadedState = useGameStore.getState();
-    if (isDemoLimitReachedFromState(loadedState)) {
+    if (
+      isDemoLimitReachedFromState(loadedState) &&
+      !loadedState.demoEndDialogDismissed
+    ) {
       useGameStore.setState({ galaxyTimeUpDialogOpen: true });
     }
   }
