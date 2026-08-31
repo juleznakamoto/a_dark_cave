@@ -10,8 +10,10 @@ import {
   rewardPayloadHasOutcomeLosses,
 } from "./state";
 import { EventManager } from "./rules/events";
+import { gameActions } from "./rules";
 import { GameState } from "@shared/schema";
 import { ensureGameplayLocalesLoaded } from "@/i18n/loadLocaleResources";
+import { getActionLabel } from "@/i18n/resolveGameText";
 
 const {
   mockLoadGame,
@@ -246,6 +248,14 @@ describe("Reward Dialog System", () => {
     useGameStore.setState(initialState);
   });
 
+  it("resolves a real action label for every reward-dialog action", () => {
+    for (const actionId of rewardDialogActions) {
+      const label = getActionLabel(actionId, gameActions[actionId]?.label ?? "");
+      expect(label.trim(), actionId).not.toBe("");
+      expect(label, actionId).not.toBe("Action Reward");
+    }
+  });
+
   describe("rewardPayloadHasPositiveChanges", () => {
     it("is false for empty payload", () => {
       expect(rewardPayloadHasPositiveChanges({})).toBe(false);
@@ -448,13 +458,17 @@ describe("Reward Dialog System", () => {
       expect(rewardDialogActions.has("exploreUndergroundLake")).toBe(true);
     });
 
-    it("should trigger reward dialog for blackreachCanyon", () => {
-      // Setup: ensure player has crow harness and enough food
+    it("should trigger reward dialog for blackreachCanyon with the action label", () => {
+      vi.useFakeTimers();
       useGameStore.setState({
         ...initialState,
         tools: {
           ...initialState.tools,
           crow_harness: true,
+        },
+        buildings: {
+          ...initialState.buildings,
+          darkEstate: 1,
         },
         resources: {
           ...initialState.resources,
@@ -462,11 +476,15 @@ describe("Reward Dialog System", () => {
         },
       });
 
-      // Execute the action
       useGameStore.getState().executeAction("blackreachCanyon");
+      useGameStore.getState().completeActionExecution("blackreachCanyon");
+      vi.advanceTimersByTime(500);
 
-      // The dialog should be triggered (we test the setup, not the timeout)
-      // In a real scenario, the dialog would appear after 500ms
+      const dialog = useGameStore.getState().rewardDialog;
+      expect(dialog.isOpen).toBe(true);
+      expect(dialog.data?.title).toBe("Blackreach Canyon");
+      expect(dialog.data?.rewards?.fellowship).toEqual(["one_eyed_crow"]);
+      vi.useRealTimers();
     });
   });
 

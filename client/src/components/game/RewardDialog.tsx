@@ -65,7 +65,7 @@ interface RewardDialogData {
     stats?: Partial<GameState["stats"]>;
   };
   successLog?: string;
-  /** Dialog heading; omit for generic action rewards (e.g. cave actions). */
+  /** Dialog heading. Actions pass their localized label; events pass the event title. */
   title?: string;
   /** When set, show a madness delta line (same copy as MadnessDialog). */
   madnessChange?: number;

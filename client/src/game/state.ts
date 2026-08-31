@@ -203,6 +203,7 @@ import {
   investmentHallLuckyChanceBonusPct,
 } from "@/game/rules/investmentHallTables";
 import {
+  getActionLabel,
   getEventLogMessageByFallback,
   getEventsCatalogText,
   resolveEventLogMessage,
@@ -2334,7 +2335,14 @@ export const useGameStore = create<GameStore>((set, get) => ({
         beginDialogHandoff(set);
         scheduleRewardDialogWhenClear(
           get,
-          { rewards, successLog },
+          {
+            rewards,
+            successLog,
+            title: getActionLabel(
+              actionId,
+              gameActions[actionId]?.label ?? "",
+            ),
+          },
           500,
         ); // Initial delay preserves prior pacing; deferral avoids stacking on other modals
       }
