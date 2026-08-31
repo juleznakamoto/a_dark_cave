@@ -139,6 +139,38 @@ function canPriorExecute(actionId: string, state: GameState): boolean {
 }
 const TICK_INTERVAL = GAME_CONSTANTS.TICK_INTERVAL;
 const EVENT_CHECK_INTERVAL = GAME_CONSTANTS.EVENT_CHECK_INTERVAL; // Roll events once per second (decoupled from the 250ms tick)
+
+/**
+ * Advance elapsed time on active attack-wave timers. Returns a new map when
+ * any timer is counting, otherwise null so the frame can skip that field.
+ */
+export function advanceAttackWaveElapsed(
+  attackWaveTimers: GameState["attackWaveTimers"],
+  deltaTime: number,
+): GameState["attackWaveTimers"] | null {
+  const updatedTimers: GameState["attackWaveTimers"] = {};
+  let hasUpdates = false;
+
+  for (const [waveId, timer] of Object.entries(attackWaveTimers)) {
+    const isAwaitingPostCompletionProvoke =
+      waveId === POST_COMPLETION_ATTACK_WAVE_ID && !timer.provoked;
+    if (
+      !timer.defeated &&
+      timer.startTime > 0 &&
+      !isAwaitingPostCompletionProvoke
+    ) {
+      updatedTimers[waveId] = {
+        ...timer,
+        elapsedTime: (timer.elapsedTime || 0) + deltaTime,
+      };
+      hasUpdates = true;
+    } else {
+      updatedTimers[waveId] = timer;
+    }
+  }
+
+  return hasUpdates ? updatedTimers : null;
+}
 const AUTO_SAVE_INTERVAL_SIGNED_IN = 60 * 1000; // Cloud autosave every 1 minute
 const AUTO_SAVE_INTERVAL_LOCAL = 15 * 1000; // Guest web + Steam / Galaxy / CrazyGames
 const PRODUCTION_INTERVAL = 15000; // All production and checks happen every 15 seconds
@@ -416,52 +448,60 @@ export function startGameLoop() {
       tickAccumulator += deltaTime;
     }
 
-    // Update play time in state (only when not paused, not in idle mode, not inactive, and no dialogs open)
-    // Note: This is OUTSIDE the isDialogOpen check so we track time properly
+    // One Zustand write for the 4 Hz clock (playTime + wave elapsed +
+    // loopProgress). These used to be 2–3 setState calls per frame; each
+    // notify runs every subscriber selector, and late-game UI (kept Estate/
+    // Bastion + action buttons) adds more subscribers. Same values, one fan-out.
     const currentState = useGameStore.getState();
-    if (
+    const tickClockPatch: {
+      playTime?: number;
+      lifetimePlayTimeMs?: number;
+      attackWaveTimers?: typeof currentState.attackWaveTimers;
+      loopProgress?: number;
+    } = {};
+
+    const shouldAccumulatePlayTime =
       !state.isPaused &&
       !currentState.idleModeState?.isActive &&
       !isInactive &&
-      !IsDialogOpen // Added: Stop playTime when dialogs are open
-    ) {
-      currentState.updatePlayTime(deltaTime);
+      !IsDialogOpen;
+
+    if (shouldAccumulatePlayTime) {
+      tickClockPatch.playTime = currentState.playTime + deltaTime;
+      tickClockPatch.lifetimePlayTimeMs =
+        (currentState.lifetimePlayTimeMs || 0) + deltaTime;
+    }
+
+    if (!IsDialogOpen) {
+      const attackWaveTimers = state.attackWaveTimers || {};
+      if (!isSimulationFrozen) {
+        const updatedTimers = advanceAttackWaveElapsed(
+          attackWaveTimers,
+          deltaTime,
+        );
+        if (updatedTimers) {
+          tickClockPatch.attackWaveTimers = updatedTimers;
+        }
+      }
+
+      if (timestamp - lastProduction >= PRODUCTION_INTERVAL) {
+        tickClockPatch.loopProgress = 100;
+      } else {
+        const progressPercent =
+          ((timestamp - lastProduction) / PRODUCTION_INTERVAL) * 100;
+        tickClockPatch.loopProgress = Math.min(progressPercent, 100);
+      }
+    }
+
+    if (Object.keys(tickClockPatch).length > 0) {
+      useGameStore.setState(tickClockPatch);
+    }
+
+    if (shouldAccumulatePlayTime) {
       useGameStore.getState().tickInvestmentHall();
     }
 
     if (!IsDialogOpen) {
-
-      // Handle attack wave timer - update elapsed time when not paused
-      const attackWaveTimers = state.attackWaveTimers || {};
-      if (!isSimulationFrozen) {
-        // Update elapsed time for all active timers
-        const updatedTimers: typeof attackWaveTimers = {};
-        let hasUpdates = false;
-
-        for (const [waveId, timer] of Object.entries(attackWaveTimers)) {
-          const isAwaitingPostCompletionProvoke =
-            waveId === POST_COMPLETION_ATTACK_WAVE_ID && !timer.provoked;
-          if (
-            !timer.defeated &&
-            timer.startTime > 0 &&
-            !isAwaitingPostCompletionProvoke
-          ) {
-            const newElapsed = (timer.elapsedTime || 0) + deltaTime;
-            updatedTimers[waveId] = {
-              ...timer,
-              elapsedTime: newElapsed,
-            };
-            hasUpdates = true;
-          } else {
-            updatedTimers[waveId] = timer;
-          }
-        }
-
-        if (hasUpdates) {
-          useGameStore.setState({ attackWaveTimers: updatedTimers });
-        }
-      }
-
       // Process ticks in fixed intervals
       let ticksProcessed = 0;
       while (tickAccumulator >= TICK_INTERVAL) {
@@ -520,8 +560,6 @@ export function startGameLoop() {
 
       // All production and game logic checks (every 15 seconds)
       if (timestamp - lastProduction >= PRODUCTION_INTERVAL) {
-        // Set to 100% before resetting
-        useGameStore.setState({ loopProgress: 100 });
         lastProduction = timestamp;
 
         // Reset to 0 after a brief moment to ensure 100% is visible
@@ -531,13 +569,13 @@ export function startGameLoop() {
         }, 50);
 
         // Skip production if idle mode is active
-        const currentState = useGameStore.getState();
+        const productionState = useGameStore.getState();
 
         // Always check for expired timed events regardless of idle mode, so the
         // tab icon is never left visible after its timer has run out.
         clearExpiredTimedEventTab();
 
-        if (!currentState.idleModeState?.isActive) {
+        if (!productionState.idleModeState?.isActive) {
           runProductionCycle();
           handleStarvationCheck();
           handleFreezingCheck();
@@ -546,11 +584,6 @@ export function startGameLoop() {
           // Event rolling now runs on the dedicated 1s EVENT_CHECK_INTERVAL cadence above,
           // so it is intentionally not invoked here (avoids double-rolling on production ticks).
         }
-      } else {
-        // Update loop progress (0-100 based on production cycle)
-        const progressPercent =
-          ((timestamp - lastProduction) / PRODUCTION_INTERVAL) * 100;
-        useGameStore.setState({ loopProgress: Math.min(progressPercent, 100) });
       }
     }
 
