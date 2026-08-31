@@ -4,9 +4,9 @@ import StartScreen, {
 } from "@/components/game/StartScreen";
 import AppErrorBoundary from "@/components/AppErrorBoundary";
 import PageLoadSpinner from "@/components/ui/page-load-spinner";
-import PageErrorScreen from "@/components/ui/page-error-screen";
 import { logger } from "@/lib/logger";
 import {
+  peekStartScreenResolution,
   resolveStartupVisit,
   type StartupResolution,
 } from "@/game/startupCoordinator";
@@ -17,20 +17,18 @@ import {
 import { isLocalOnlyEdition } from "@/lib/edition";
 import { initSessionTracker } from "@/lib/sessionTracker";
 
-// Lazy load Game component - only loaded when needed
 const Game = lazy(() => import("@/pages/game"));
 
 /**
  * Standalone start screen page that doesn't load the heavy Game component.
- * Only loads Game after user clicks "Make Fire".
+ * Paints immediately. Loads Game after "Make Fire", or prefetches it after
+ * LCP plus the first pointer / key move.
  */
 export default function StartScreenPage() {
   const [shouldLoadGame, setShouldLoadGame] = useState(false);
-  const [isChecking, setIsChecking] = useState(true);
-  const [startupError, setStartupError] = useState<unknown>(null);
   const [startResolution, setStartResolution] = useState<
-    Extract<StartupResolution, { surface: "start" }> | null
-  >(null);
+    Extract<StartupResolution, { surface: "start" }>
+  >(peekStartScreenResolution);
   const preparedGameRef = useRef<
     ReturnType<
       typeof import("@/game/startupGameLoader").prepareGameFromStartScreen
@@ -47,12 +45,17 @@ export default function StartScreenPage() {
     return preparedGameRef.current;
   };
 
-  // Check if game has already started (from saved state or /boost path)
+  const prefetchGame = (nextPreferences: StartScreenPreferences) => {
+    void import("@/pages/game");
+    void prepareGame(nextPreferences).catch((error) => {
+      preparedGameRef.current = null;
+      logger.error("Failed to prefetch game:", error);
+    });
+  };
+
   useEffect(() => {
     const checkGameState = async () => {
       try {
-        // Anonymous session first. UTM beacon is a dynamic import so Zod stays
-        // off the start-screen graph; snapshot the URL before any later strip.
         if (!isLocalOnlyEdition()) {
           initSessionTracker();
         }
@@ -64,7 +67,6 @@ export default function StartScreenPage() {
         void import("@/lib/utmLanding").then(({ reportUtmLanding }) => {
           reportUtmLanding(landingLocation);
         });
-        // Consume OAuth/PKCE before stripping auth params or routing.
         await consumeStartupAuthCallback(window.location);
         applyStartupUrlCleanup(window.location, ["hard-reload-bust", "referral"]);
 
@@ -75,21 +77,16 @@ export default function StartScreenPage() {
           setStartResolution(resolution);
         }
       } catch (error) {
+        // Title is already painted. Persist failures surface on Make Fire.
         logger.error("Failed to check saved game state:", error);
-        setStartupError(error);
-      } finally {
-        setIsChecking(false);
       }
     };
 
-    checkGameState();
+    void checkGameState();
   }, []);
 
   const handleMakeFireStart = (nextPreferences: StartScreenPreferences) => {
-    void prepareGame(nextPreferences).catch((error) => {
-      preparedGameRef.current = null;
-      logger.error("Failed to prepare game:", error);
-    });
+    prefetchGame(nextPreferences);
   };
 
   const handleMakeFire = async (nextPreferences: StartScreenPreferences) => {
@@ -103,16 +100,6 @@ export default function StartScreenPage() {
     }
   };
 
-  // Show loading state while checking
-  if (isChecking) {
-    return <PageLoadSpinner />;
-  }
-
-  if (startupError) {
-    return <PageErrorScreen reason={startupError} />;
-  }
-
-  // Dynamically load Game component only when needed
   if (shouldLoadGame) {
     return (
       <AppErrorBoundary>
@@ -121,11 +108,6 @@ export default function StartScreenPage() {
         </Suspense>
       </AppErrorBoundary>
     );
-  }
-
-  // Show start screen - this doesn't load Game component
-  if (!startResolution) {
-    return <PageLoadSpinner />;
   }
 
   return (
@@ -137,6 +119,7 @@ export default function StartScreenPage() {
       }
       crazyGamesEditionActive={startResolution.crazyGamesEditionActive}
       hideSteamStoreLink={startResolution.hideSteamStoreLink}
+      onPlayerActivity={prefetchGame}
       onMakeFireStart={handleMakeFireStart}
       onMakeFire={handleMakeFire}
     />

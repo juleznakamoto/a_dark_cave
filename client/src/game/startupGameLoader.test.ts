@@ -95,12 +95,14 @@ describe("startup game hydration handoff", () => {
     });
 
     expect(mockSetState).toHaveBeenCalledWith({
-      cruelMode: true,
       musicMuted: false,
       sfxMuted: false,
       musicVolume: 1,
       sfxVolume: 1,
     });
+    expect(mockSetState).not.toHaveBeenCalledWith(
+      expect.objectContaining({ cruelMode: true }),
+    );
     expect(mockExecuteAction).not.toHaveBeenCalled();
     expect(mockTrackButtonClick).not.toHaveBeenCalled();
   });

@@ -1,10 +1,30 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import { getStartupSaveHeaderKey } from "./saveKeys";
 import {
+  peekResumeGame,
   peekStartupGameStarted,
   setPreferStartScreen,
+  setResumeGame,
   shouldBootGameSurface,
 } from "./startupBootSurface";
+
+const editionMocks = vi.hoisted(() => ({
+  isSteamBuild: false,
+  isGalaxy: false,
+  isCrazyGames: false,
+}));
+
+vi.mock("@/lib/edition", async (importOriginal) => {
+  const actual = await importOriginal<typeof import("@/lib/edition")>();
+  return {
+    ...actual,
+    get isSteamBuild() {
+      return editionMocks.isSteamBuild;
+    },
+    isGalaxyEdition: () => editionMocks.isGalaxy,
+    isCrazyGamesEdition: () => editionMocks.isCrazyGames,
+  };
+});
 
 describe("shouldBootGameSurface", () => {
   const storage = new Map<string, string>();
@@ -13,6 +33,9 @@ describe("shouldBootGameSurface", () => {
   beforeEach(() => {
     storage.clear();
     session.clear();
+    editionMocks.isSteamBuild = false;
+    editionMocks.isGalaxy = false;
+    editionMocks.isCrazyGames = false;
     vi.stubGlobal("localStorage", {
       getItem: (key: string) => storage.get(key) ?? null,
       setItem: (key: string, value: string) => storage.set(key, value),
@@ -33,7 +56,19 @@ describe("shouldBootGameSurface", () => {
     expect(peekStartupGameStarted()).toBe(false);
   });
 
-  it("boots Game when the save header says the run started", () => {
+  it("keeps a started web save on the start screen", () => {
+    storage.set(
+      getStartupSaveHeaderKey(),
+      JSON.stringify({ version: 1, gameStarted: true }),
+    );
+    expect(
+      shouldBootGameSurface({ pathname: "/", search: "", hash: "" }),
+    ).toBe(false);
+    expect(peekStartupGameStarted()).toBe(true);
+  });
+
+  it("boots Game for a started Steam / portal save", () => {
+    editionMocks.isSteamBuild = true;
     storage.set(
       getStartupSaveHeaderKey(),
       JSON.stringify({ version: 1, gameStarted: true }),
@@ -57,11 +92,31 @@ describe("shouldBootGameSurface", () => {
   });
 
   it("stays on the start screen when a title click prefers it", () => {
+    editionMocks.isCrazyGames = true;
     storage.set(
       getStartupSaveHeaderKey(),
       JSON.stringify({ version: 1, gameStarted: true }),
     );
     setPreferStartScreen();
+    expect(
+      shouldBootGameSurface({ pathname: "/", search: "", hash: "" }),
+    ).toBe(false);
+  });
+
+  it("resumes Game after an in-game reload even on web", () => {
+    storage.set(
+      getStartupSaveHeaderKey(),
+      JSON.stringify({ version: 1, gameStarted: true }),
+    );
+    setResumeGame();
+    expect(peekResumeGame()).toBe(true);
+    expect(
+      shouldBootGameSurface({ pathname: "/", search: "", hash: "" }),
+    ).toBe(true);
+  });
+
+  it("does not resume Game without a started save", () => {
+    setResumeGame();
     expect(
       shouldBootGameSurface({ pathname: "/", search: "", hash: "" }),
     ).toBe(false);

@@ -69,6 +69,7 @@ import {
   stopVersionCheck,
 } from "@/game/versionCheck";
 import { hardReload } from "@/lib/hardReload";
+import { setResumeGame } from "@/game/startupBootSurface";
 import { formatCompactDuration } from "@/lib/utils";
 import MistBackground from "@/components/ui/mist-background";
 import { SmokeBackground } from "@/components/ui/spooky-smoke-animation";
@@ -441,6 +442,7 @@ export default function GameContainer() {
       if (pendingServerSha) {
         recordUpdateHardReloadAttempt(pendingServerSha);
       }
+      setResumeGame();
       await hardReload();
     };
 

@@ -26,7 +26,7 @@ const AdminDashboard = lazy(() =>
 const StartScreenPage = lazy(() => import("@/pages/start-screen-page"));
 const GamePage = lazy(() => import("@/pages/game"));
 
-/** Returning / forceGame visits skip the start-screen chunk. */
+/** forceGame, in-game resume, and portal editions skip the start-screen chunk. */
 function PlayRoute() {
   return shouldBootGameSurface(window.location) ? (
     <GamePage />

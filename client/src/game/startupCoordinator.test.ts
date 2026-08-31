@@ -99,16 +99,28 @@ describe("resolveStartupVisit", () => {
     ).resolves.toMatchObject({ surface: "start" });
   });
 
-  it("routes a started local save to Game", async () => {
+  it("keeps a started web save on the start screen", async () => {
     mockReadHeader.mockResolvedValue({
       status: "loaded",
-      header: { gameStarted: true },
+      header: {
+        gameStarted: true,
+        cruelMode: true,
+        musicMuted: false,
+        sfxMuted: false,
+        musicVolume: 1,
+        sfxVolume: 1,
+        devGameMode: "normal",
+      },
     });
     const { resolveStartupVisit } = await import("./startupCoordinator");
 
     await expect(
       resolveStartupVisit({ pathname: "/", search: "", hash: "" }),
-    ).resolves.toEqual({ surface: "game" });
+    ).resolves.toMatchObject({
+      surface: "start",
+      preferences: { cruelMode: true },
+    });
+    expect(mockLoadStore).not.toHaveBeenCalled();
   });
 
   it("trusts a valid unstarted header for signed-in users without full load", async () => {
@@ -147,19 +159,8 @@ describe("resolveStartupVisit", () => {
     expect(mockLoadStore).not.toHaveBeenCalled();
   });
 
-  it("full-reconciles when signed-in and header is missing", async () => {
+  it("does not full-reconcile a signed-in web visitor with no header", async () => {
     mockReadHeader.mockResolvedValue({ status: "not-found" });
-    mockLoadStore.mockResolvedValue({
-      getState: () => ({
-        flags: { gameStarted: false },
-        cruelMode: false,
-        musicMuted: false,
-        sfxMuted: false,
-        musicVolume: 1,
-        sfxVolume: 1,
-        devGameMode: "normal",
-      }),
-    });
     vi.stubGlobal("localStorage", {
       getItem: vi.fn(() =>
         JSON.stringify({
@@ -173,7 +174,7 @@ describe("resolveStartupVisit", () => {
     await expect(
       resolveStartupVisit({ pathname: "/", search: "", hash: "" }),
     ).resolves.toMatchObject({ surface: "start" });
-    expect(mockLoadStore).toHaveBeenCalledOnce();
+    expect(mockLoadStore).not.toHaveBeenCalled();
   });
 
   it("hides the Steam store link from a DEV Steam Demo header", async () => {
@@ -224,6 +225,19 @@ describe("resolveStartupVisit", () => {
       crazyGamesEditionActive: true,
       hideSteamStoreLink: false,
     });
+  });
+
+  it("routes a started CrazyGames header to Game", async () => {
+    editionMocks.isCrazyGamesEdition = true;
+    mockReadHeader.mockResolvedValue({
+      status: "loaded",
+      header: { gameStarted: true },
+    });
+    const { resolveStartupVisit } = await import("./startupCoordinator");
+
+    await expect(
+      resolveStartupVisit({ pathname: "/", search: "", hash: "" }),
+    ).resolves.toEqual({ surface: "game" });
   });
 
   it("full-reconciles on CrazyGames when the header is missing", async () => {

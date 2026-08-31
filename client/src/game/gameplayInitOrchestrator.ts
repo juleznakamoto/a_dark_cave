@@ -23,7 +23,10 @@ import {
   consumeStartupAuthCallback,
 } from "@/game/startupUrlCleanup";
 import { consumePreparedGameHydration } from "@/game/startupGameLoader";
-import { clearPreferStartScreen } from "@/game/startupBootSurface";
+import {
+  clearPreferStartScreen,
+  clearResumeGame,
+} from "@/game/startupBootSurface";
 import { rehydratePurchasesOnStartup } from "@/game/shopPurchases";
 import { mountFiraSansFontFace } from "@/lib/firaSansFontFace";
 import { reportUtmLanding } from "@/lib/utmLanding";
@@ -55,6 +58,7 @@ export async function runGameplayInitialization(
 ): Promise<GameplayInitResult> {
   const gameplayLocalesPromise = ensureGameplayLocalesLoaded();
   clearPreferStartScreen();
+  clearResumeGame();
 
   const intent = parseStartupIntent(location);
   if (intent.oauthCallback) {

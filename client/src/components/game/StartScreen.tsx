@@ -28,6 +28,7 @@ import {
   shouldRequestOpenOnInFlightLoad,
   type DeferredStartMenuLoadKind,
 } from "@/components/game/startScreenDeferredMenu";
+import { subscribeStartScreenGamePrefetch } from "@/game/startScreenGamePrefetch";
 
 const START_INTRO_VAPORIZE_COLOR = "rgba(209, 213, 219, 0.9)";
 const START_INTRO_VAPORIZE_ANIMATION = {
@@ -159,6 +160,8 @@ interface StartScreenProps {
   hideSteamStoreLink: boolean;
   onMakeFireStart?: (preferences: StartScreenPreferences) => void;
   onMakeFire: (preferences: StartScreenPreferences) => void | Promise<void>;
+  /** After LCP plus the first pointer / key move. Does not mount Game. */
+  onPlayerActivity?: (preferences: StartScreenPreferences) => void;
 }
 
 export default function StartScreen({
@@ -169,6 +172,7 @@ export default function StartScreen({
   hideSteamStoreLink,
   onMakeFireStart,
   onMakeFire,
+  onPlayerActivity,
 }: StartScreenProps) {
   const buttonRef = useRef<HTMLButtonElement>(null);
   const executedRef = useRef(false);
@@ -229,11 +233,32 @@ export default function StartScreen({
   // Steam Game / Playtest / Demo (build or DEV Game Mode) — no social/store links in footer.
   // Galaxy and Normal/web keep Steam / Reddit / Contact.
   const hideStartScreenSocialLinks = steamDesktopEditionActive;
+  const activityPrefsRef = useRef<StartScreenPreferences>({
+    cruelMode: isCruelMode,
+    musicMuted,
+    sfxMuted,
+    musicVolume,
+    sfxVolume,
+  });
+  activityPrefsRef.current = {
+    cruelMode: isCruelMode,
+    musicMuted,
+    sfxMuted,
+    musicVolume,
+    sfxVolume,
+  };
 
   // Real content mounted — allow a future deploy's one-shot chunk retry again.
   useEffect(() => {
     clearStaleChunkReloadGuard();
   }, []);
+
+  useEffect(() => {
+    if (!onPlayerActivity) return;
+    return subscribeStartScreenGamePrefetch(() => {
+      onPlayerActivity(activityPrefsRef.current);
+    });
+  }, [onPlayerActivity]);
 
   // Start screen only needs 400/500; unicode-range fetches just the scripts on screen
   // (e.g. EN ≈ latin-400 ~24KB). Full game weights mount later in gameplay init.

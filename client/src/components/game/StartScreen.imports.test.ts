@@ -32,6 +32,7 @@ describe("start-screen first-load imports", () => {
     expect(src).toContain('import("@/components/ui/particle-button")');
     expect(src).toContain('import("@/components/ui/cloud-shader")');
     expect(src).toContain('import("@/components/ui/vapour-text-effect")');
+    expect(src).toContain("subscribeStartScreenGamePrefetch");
   });
 
   it("StartScreen hover-prefetches language, social, and CrazyGames menus", () => {
@@ -69,7 +70,7 @@ describe("start-screen first-load imports", () => {
       "utf8",
     );
     expect(staticValueFrom(src, "@/lib/supabase")).toBe(false);
-    expect(staticValueFrom(src, "@/lib/authStorageKey")).toBe(true);
+    expect(staticValueFrom(src, "@/lib/authStorageKey")).toBe(false);
   });
 
   it("App can boot Game without the start-screen chunk", () => {

@@ -9,6 +9,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { useGameStore } from "@/game/state";
 import { resumeFromInactivity } from "@/game/loop";
+import { setResumeGame } from "@/game/startupBootSurface";
 import { logger } from "@/lib/logger";
 import { useTranslation } from "react-i18next";
 
@@ -23,6 +24,7 @@ export default function InactivityDialog() {
 
   const handleReload = () => {
     logger.log("[INACTIVITY] User clicked reload button");
+    setResumeGame();
     window.location.reload();
   };
 

@@ -6,13 +6,17 @@ import {
   shouldHideSteamStoreLink,
   type DevGameMode,
 } from "@/lib/edition";
-import { AUTH_STORAGE_KEY } from "@/lib/authStorageKey";
 import {
   readStartupSaveHeaderResult,
   type StartupSaveHeader,
 } from "./startupSaveHeader";
-import { peekPreferStartScreen } from "./startupBootSurface";
-import { parseStartupIntent, type StartupLocation } from "./startupIntent";
+import {
+  isOfflinePortalBootEdition,
+  peekPreferStartScreen,
+  peekStartupSaveHeader,
+  shouldBootGameSurface,
+} from "./startupBootSurface";
+import { type StartupLocation } from "./startupIntent";
 
 export type StartupResolution =
   | { surface: "game" }
@@ -34,27 +38,26 @@ const DEFAULT_PREFERENCES: StartScreenPreferences = {
   sfxVolume: 1,
 };
 
-function hasPersistedAuthSessionHint(): boolean {
-  try {
-    const raw = localStorage.getItem(AUTH_STORAGE_KEY);
-    if (!raw) return false;
-    const session = JSON.parse(raw) as {
-      access_token?: unknown;
-      user?: unknown;
-    } | null;
-    return (
-      typeof session?.access_token === "string" &&
-      session.access_token.length > 0 &&
-      session.user !== null &&
-      typeof session.user === "object"
-    );
-  } catch {
-    return false;
-  }
+export function peekStartScreenResolution(): Extract<
+  StartupResolution,
+  { surface: "start" }
+> {
+  const header = peekStartupSaveHeader();
+  return createStartResolution(
+    preferencesFromHeader(header),
+    header?.devGameMode ?? "normal",
+  );
 }
 
 function preferencesFromHeader(
-  header: StartupSaveHeader | null,
+  header: Pick<
+    StartupSaveHeader,
+    | "cruelMode"
+    | "musicMuted"
+    | "sfxMuted"
+    | "musicVolume"
+    | "sfxVolume"
+  > | null,
 ): StartScreenPreferences {
   if (!header) return DEFAULT_PREFERENCES;
   return {
@@ -69,7 +72,7 @@ function preferencesFromHeader(
 function createStartResolution(
   preferences: StartScreenPreferences,
   devGameMode: DevGameMode,
-): StartupResolution {
+): Extract<StartupResolution, { surface: "start" }> {
   const devSteamMode =
     import.meta.env.DEV && !isSteamBuild && devGameMode !== "normal";
   return {
@@ -114,7 +117,7 @@ async function withStartupTimeout<T>(promise: Promise<T>): Promise<T> {
 export async function resolveStartupVisit(
   location: StartupLocation = window.location,
 ): Promise<StartupResolution> {
-  if (parseStartupIntent(location).forceGame) {
+  if (shouldBootGameSurface(location)) {
     return { surface: "game" };
   }
 
@@ -125,17 +128,18 @@ export async function resolveStartupVisit(
   const header =
     headerResult.status === "loaded" ? headerResult.header : null;
 
-  if (header?.gameStarted && !preferStartScreen) {
+  // Portal editions still resume a started save when the header was missing
+  // from the sync peek (CrazyGames Data module / Steam Cloud).
+  if (
+    isOfflinePortalBootEdition() &&
+    header?.gameStarted &&
+    !preferStartScreen
+  ) {
     return { surface: "game" };
   }
 
-  // A valid unstarted header already has start-screen preferences. Full
-  // reconciliation is only needed when no header exists and a cloud/Steam
-  // save may still be present.
   const needsFullReconciliation =
-    (isSteamBuild ||
-      isCrazyGamesEdition() ||
-      hasPersistedAuthSessionHint()) &&
+    isOfflinePortalBootEdition() &&
     (headerResult.status === "not-found" || header == null);
 
   if (needsFullReconciliation) {

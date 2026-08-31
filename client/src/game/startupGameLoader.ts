@@ -51,9 +51,18 @@ export function commitMakeFireStart(
   preferences: StartScreenPreferences,
 ): void {
   clearPreferStartScreen();
-  useGameStore.setState(preferences);
   const flags = useGameStore.getState().flags;
-  if (flags.gameStarted) return;
+  if (flags.gameStarted) {
+    // Mute / volume may change on the title. Never clobber cruelMode on a live run.
+    useGameStore.setState({
+      musicMuted: preferences.musicMuted,
+      sfxMuted: preferences.sfxMuted,
+      musicVolume: preferences.musicVolume,
+      sfxVolume: preferences.sfxVolume,
+    });
+    return;
+  }
+  useGameStore.setState(preferences);
   useGameStore.getState().trackButtonClick("make-fire");
   useGameStore.getState().executeAction("makeFire");
   const nextFlags = useGameStore.getState().flags;
