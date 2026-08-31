@@ -246,7 +246,7 @@ export function StarshipShader({ className, onFatalError }: StarshipShaderProps)
       renderer.resizeToDisplay(width, height);
       rendererRef.current = renderer;
 
-      const FRAME_INTERVAL_MS = 1000 / 30;
+      const FRAME_INTERVAL_MS = 1000 / 24;
       let lastFrameTime = 0;
       const loop = (now: number) => {
         if (!isActiveRef.current || !rendererRef.current) return;

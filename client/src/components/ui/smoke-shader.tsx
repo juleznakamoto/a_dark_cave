@@ -577,7 +577,7 @@ export function SmokeShader({
 
     isActiveRef.current = true;
     let resizeObserver: ResizeObserver | null = null;
-    const FRAME_INTERVAL_MS = 1000 / 15;
+    const FRAME_INTERVAL_MS = 1000 / 12;
     let lastFrameTime = 0;
 
     const resizeFromParent = () => {
@@ -592,7 +592,7 @@ export function SmokeShader({
         return;
       }
       animationFrameRef.current = requestAnimationFrame(loop);
-      // 15fps wall-clock cap (not "every 4th rAF") so 120Hz stays at 15.
+      // 12fps wall-clock cap (not "every 4th rAF") so 120Hz stays at 12.
       if (lastFrameTime > 0 && now - lastFrameTime < FRAME_INTERVAL_MS) {
         return;
       }

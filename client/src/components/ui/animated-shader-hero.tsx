@@ -448,7 +448,7 @@ void main(){gl_Position=position;}`;
     }
 
     let isActive = true;
-    const FRAME_INTERVAL_MS = 1000 / 30;
+    const FRAME_INTERVAL_MS = 1000 / 24;
     let lastFrameTime = 0;
     const loop = (now: number) => {
       if (!isActive || !rendererRef.current || !pointersRef.current) return;

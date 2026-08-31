@@ -267,12 +267,12 @@ export default function CloudShader({ className = "" }: CloudShaderProps) {
         rendererRef.current = renderer;
         setVisible(true);
 
-        const FRAME_INTERVAL_MS = 1000 / 30;
+        const FRAME_INTERVAL_MS = 1000 / 24;
         let lastFrameTime = 0;
         const loop = (now: number) => {
           if (cancelled || !isActiveRef.current || !rendererRef.current) return;
           animationFrameRef.current = requestAnimationFrame(loop);
-          // 30fps wall-clock cap (not "every other rAF") so 120Hz stays at 30.
+          // 24fps wall-clock cap (not "every other rAF") so 120Hz stays at 24.
           if (lastFrameTime > 0 && now - lastFrameTime < FRAME_INTERVAL_MS) {
             return;
           }

@@ -14,7 +14,12 @@ import {
   resolveSleepDialogInit,
   startGameLoop,
   stopGameLoop,
+  resetAttackWaveElapsedClock,
+  advanceAttackWaveTimers,
+  flushPendingAttackWaveElapsed,
+  manualSave,
 } from "./loop";
+import * as saveModule from "./save";
 import { setGameTabHiddenForTests } from "@/lib/tabVisibility";
 
 describe('Game Loop Production', () => {
@@ -489,6 +494,66 @@ describe("sleep dialog restore on loop start", () => {
     vi.advanceTimersByTime(600);
 
     expect(useGameStore.getState().idleModeDialog.isOpen).toBe(false);
+  });
+});
+
+describe("attack wave elapsed clock", () => {
+  const baseTimer = {
+    startTime: 1,
+    duration: 60_000,
+    defeated: false,
+    provoked: false,
+    elapsedTime: 0,
+  };
+
+  beforeEach(() => {
+    resetAttackWaveElapsedClock();
+  });
+
+  it("keeps sub-second ticks out of the store patch", () => {
+    expect(advanceAttackWaveTimers({ firstWave: baseTimer }, 250)).toBeNull();
+    expect(advanceAttackWaveTimers({ firstWave: baseTimer }, 250)).toBeNull();
+  });
+
+  it("flushes when a whole second has accumulated", () => {
+    advanceAttackWaveTimers({ firstWave: baseTimer }, 400);
+    const flushed = advanceAttackWaveTimers({ firstWave: baseTimer }, 700);
+    expect(flushed?.firstWave?.elapsedTime).toBe(1100);
+  });
+
+  it("flushes immediately when the wave becomes due", () => {
+    const almostDue = { ...baseTimer, elapsedTime: 59_900 };
+    const flushed = advanceAttackWaveTimers({ firstWave: almostDue }, 250);
+    expect(flushed?.firstWave?.elapsedTime).toBe(60_150);
+  });
+
+  it("writes leftover sub-second time on an explicit flush", () => {
+    advanceAttackWaveTimers({ firstWave: baseTimer }, 400);
+    const flushed = flushPendingAttackWaveElapsed({ firstWave: baseTimer });
+    expect(flushed?.firstWave?.elapsedTime).toBe(400);
+  });
+
+  it("manualSave flushes pending wave elapsed before persisting", async () => {
+    const saveSpy = vi.spyOn(saveModule, "saveGame").mockResolvedValue({
+      localSaved: true,
+      cloudSaved: false,
+      cloudSkipped: true,
+    });
+    useGameStore.getState().initialize();
+    useGameStore.setState({
+      attackWaveTimers: { firstWave: { ...baseTimer } },
+    });
+    advanceAttackWaveTimers(useGameStore.getState().attackWaveTimers, 400);
+    expect(useGameStore.getState().attackWaveTimers.firstWave?.elapsedTime).toBe(
+      0,
+    );
+
+    await manualSave();
+
+    expect(useGameStore.getState().attackWaveTimers.firstWave?.elapsedTime).toBe(
+      400,
+    );
+    saveSpy.mockRestore();
   });
 });
 
