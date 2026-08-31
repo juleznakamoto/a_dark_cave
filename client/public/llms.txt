@@ -10,6 +10,7 @@ Developer: Julian Bauer. Incremental, text-based survival, and settlement builde
 - [Full facts](https://a-dark-cave.com/llms-full.txt): Longer canonical facts, FAQ, and listings
 - [FAQ](https://a-dark-cave.com/faq): Common questions
 - [About](https://a-dark-cave.com/about): What the game is
+- [Press kit](https://a-dark-cave.com/press): Boilerplate, fact sheet, screenshots, and assets
 
 ## Official links
 

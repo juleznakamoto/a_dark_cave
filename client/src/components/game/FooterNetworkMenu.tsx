@@ -15,6 +15,10 @@ import {
 import { tWithFallback } from "@/i18n/resolveGameText";
 import { cn } from "@/lib/utils";
 import { Z_INDEX } from "@/lib/z-index";
+import {
+  useCrazyGamesEditionActive,
+  useSteamEditionActive,
+} from "@/hooks/useSteamEditionActive";
 import { InviteFriendsMenuItem } from "./InviteFriendsMenuItem";
 import { GAME_CHROME_NO_BG_HOVER } from "./gameChrome";
 
@@ -51,6 +55,8 @@ export default function FooterNetworkMenu({
 }: FooterNetworkMenuProps) {
   const [open, setOpen] = useState(defaultOpen);
   const socialLabel = tWithFallback("ui", "footer.social", "Social");
+  const hidePressKit =
+    useSteamEditionActive() || useCrazyGamesEditionActive();
 
   const triggerInner = (
     <>
@@ -99,6 +105,26 @@ export default function FooterNetworkMenu({
         className="text-xs !max-h-none w-auto"
         style={{ zIndex: Z_INDEX.dropdown }}
       >
+        {!hidePressKit && (
+          <DropdownMenuItem
+            onSelect={() => {
+              setOpen(false);
+              window.open("/press", "_blank", "noopener,noreferrer");
+            }}
+          >
+            <span className="flex items-center gap-1.5">
+              <svg
+                className="h-4 w-4 shrink-0"
+                viewBox="0 0 24 24"
+                fill="currentColor"
+                aria-hidden
+              >
+                <path d="M6 3h9l5 5v13H6V3zm8 1.5V9h4.5L14 4.5zM8 12h8v1.5H8V12zm0 3h8v1.5H8V15zM8 18h5v1.5H8V18z" />
+              </svg>
+              {tWithFallback("ui", "footer.pressKit", "Press Kit")}
+            </span>
+          </DropdownMenuItem>
+        )}
         {NETWORK_MENU_PLATFORM_ORDER.map((platform) => {
           const { href, title } = GAME_FOOTER_RIGHT_ICON_LINKS[platform];
           const label =

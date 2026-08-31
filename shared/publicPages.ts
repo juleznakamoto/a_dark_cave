@@ -1,6 +1,7 @@
 /** First-HTML body + extra JSON-LD for public docs. English only. */
 
 import { getLegalPageInnerHtml, getNotFoundPageInnerHtml } from "./publicLegalPages";
+import { getPressPageInnerHtml } from "./pressKit";
 
 export const SITE = "https://a-dark-cave.com";
 export const STEAM_URL = "https://store.steampowered.com/app/4882240/A_Dark_Cave/";
@@ -261,7 +262,9 @@ export function getPublicPageBodyHtml(
       ? faqBodyInnerHtml()
       : path === "/about"
         ? aboutBodyInnerHtml()
-        : getLegalPageInnerHtml(path);
+        : path === "/press"
+          ? getPressPageInnerHtml()
+          : getLegalPageInnerHtml(path);
   if (!inner) return null;
   return `<main id="seo-fallback" style="${STATIC_PAGE_STYLE}">${inner}</main>`;
 }

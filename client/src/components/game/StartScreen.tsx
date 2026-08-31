@@ -1174,6 +1174,14 @@ export default function StartScreen({
               >
                 {t("footer.about")}
               </a>
+              <a
+                href="/press"
+                target="_blank"
+                rel="noopener noreferrer"
+                className={START_FOOTER_SOCIAL_LINK}
+              >
+                {t("footer.pressKit", { defaultValue: "Press Kit" })}
+              </a>
             </>
           )}
           {!steamEditionActive && (

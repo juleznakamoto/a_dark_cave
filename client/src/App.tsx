@@ -53,6 +53,9 @@ const Faq = lazy(() =>
 const About = lazy(() =>
   offlinePortalBuild ? redirectHome() : import("@/pages/about"),
 );
+const Press = lazy(() =>
+  offlinePortalBuild ? redirectHome() : import("@/pages/press"),
+);
 const Terms = lazy(() =>
   offlinePortalBuild ? redirectHome() : import("@/pages/terms"),
 );
@@ -85,6 +88,7 @@ function AppRoutes() {
         <Route path="/privacy" component={Privacy} />
         <Route path="/faq" component={Faq} />
         <Route path="/about" component={About} />
+        <Route path="/press" component={Press} />
         <Route path="/terms" component={Terms} />
         <Route path="/withdrawal" component={Withdrawal} />
         <Route path="/unsubscribe" component={Unsubscribe} />

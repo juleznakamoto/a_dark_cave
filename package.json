@@ -39,6 +39,7 @@
     "test": "vitest",
     "test:ui": "vitest --ui",
     "test:gender": "node scripts/test-gender-service.js",
+    "press:assets": "node scripts/build-press-kit-assets.mjs",
     "i18n:extract": "node scripts/extract-i18n.mjs",
     "i18n:translate": "node scripts/translate-locales.mjs",
     "i18n:events:extract": "node scripts/extract-events-i18n.mjs",

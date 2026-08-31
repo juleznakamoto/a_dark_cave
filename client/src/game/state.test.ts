@@ -1,4 +1,4 @@
-import { describe, it, expect, beforeEach, vi } from "vitest";
+import { describe, it, expect, beforeEach, afterEach, vi } from "vitest";
 import {
   createInitialState,
   useGameStore,
@@ -429,6 +429,10 @@ describe("Reward Dialog System", () => {
   });
 
   describe("blackreachCanyon action", () => {
+    afterEach(() => {
+      vi.useRealTimers();
+    });
+
     it("should detect one-eyed crow fellowship reward", () => {
       // Test the reward detection logic directly
       const stateUpdates = {
@@ -484,7 +488,6 @@ describe("Reward Dialog System", () => {
       expect(dialog.isOpen).toBe(true);
       expect(dialog.data?.title).toBe("Blackreach Canyon");
       expect(dialog.data?.rewards?.fellowship).toEqual(["one_eyed_crow"]);
-      vi.useRealTimers();
     });
   });
 

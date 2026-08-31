@@ -23,6 +23,7 @@ conflicts with a claim here, update this file to match the code.
 | Wikidata | https://www.wikidata.org/wiki/Q141133318 (Q141133318) |
 | Reddit | u/Pure-Map-6717, https://www.reddit.com/r/aDarkCave/ |
 | Support | support@a-dark-cave.com |
+| Press kit | https://a-dark-cave.com/press |
 
 Not on Google Play or the App Store. Browser play works on desktop and mobile
 browsers. Never imply a native mobile app.
@@ -109,6 +110,7 @@ Do not write a single "released on" date that collapses web and Steam.
 | --- | --- |
 | Browser / web | Already live. Web listing date: **17 November 2025**. |
 | Steam | Planned **27 October 2026**. Demo is out now. |
+| Steam Next Fest | **19-26 October 2026**. |
 
 ---
 
@@ -173,7 +175,8 @@ Organization `logo` may keep `/og-image.png` until a real wordmark exists.
   Do not say "optional full game unlock" for the browser game.
 - Steam app IDs: full game `4882240`, demo `4971800` (`steam_appid.txt`,
   `steam_appid_demo.txt`).
-- Steam trailer movie id `257368796` is **not** stored in this repo. Do not
-  invent a `trailer` URL until that asset is added here.
+- Gameplay trailer (YouTube): https://www.youtube.com/watch?v=G8Gm7o4cZfQ
+  Steam movie id `257368796`. Downloadable MP4 lives in
+  `client/public/press-kit/video/a_dark_cave_gameplay_trailer.mp4`.
 - UI locales live under `client/src/i18n/locales/` as `en`, `de`, `fr`, `es`,
   `it`, `pt-BR`, `zh-CN`, `ru`.

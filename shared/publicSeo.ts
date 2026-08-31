@@ -43,6 +43,7 @@ export const KNOWN_SPA_PATHS = new Set([
   "/privacy",
   "/faq",
   "/about",
+  "/press",
   "/terms",
   "/withdrawal",
   "/unsubscribe",
@@ -97,6 +98,14 @@ const ROUTE_SEO: Record<string, PublicRouteSeo> = {
     includeHomeJsonLd: false,
     robots: "index, follow",
     pageName: "About A Dark Cave",
+  },
+  "/press": {
+    title: "Press Kit - A Dark Cave",
+    description:
+      "Press kit for A Dark Cave: boilerplate, fact sheet, screenshots, Steam capsules, trailer, and downloadable assets. Contact support@a-dark-cave.com.",
+    includeHomeJsonLd: false,
+    robots: "index, follow",
+    pageName: "Press Kit",
   },
   "/terms": {
     title: "Terms of Service - A Dark Cave",
@@ -226,7 +235,7 @@ export function isStaticAssetPath(pathname: string): boolean {
   return (
     reqPath.startsWith("/assets/") ||
     /\.[a-f0-9]{8,}\.(js|css|mjs)$/i.test(reqPath) ||
-    /\.(js|css|mjs|woff2?|ttf|otf|png|jpg|svg|ico|webp|br|gz|txt|xml|json)$/i.test(
+    /\.(js|css|mjs|woff2?|ttf|otf|png|jpe?g|svg|ico|webp|br|gz|txt|xml|json|mp4|zip)$/i.test(
       reqPath,
     )
   );

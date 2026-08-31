@@ -70,6 +70,10 @@ describe("publicSeo", () => {
   it("detects static asset paths", () => {
     expect(isStaticAssetPath("/assets/index-abc123.js")).toBe(true);
     expect(isStaticAssetPath("/sitemap.xml")).toBe(true);
+    expect(isStaticAssetPath("/press-kit/a_dark_cave_press_kit.zip")).toBe(true);
+    expect(
+      isStaticAssetPath("/press-kit/video/a_dark_cave_gameplay_trailer.mp4"),
+    ).toBe(true);
     expect(isStaticAssetPath("/robots.txt")).toBe(true);
     expect(isStaticAssetPath("/llms.txt")).toBe(true);
     expect(isStaticAssetPath("/privacy")).toBe(false);
@@ -109,6 +113,7 @@ describe("publicSeo", () => {
     expect(resolveSpaHtmlResponse("/privacy").status).toBe(200);
     expect(resolveSpaHtmlResponse("/faq").status).toBe(200);
     expect(resolveSpaHtmlResponse("/about").status).toBe(200);
+    expect(resolveSpaHtmlResponse("/press").status).toBe(200);
     expect(resolveSpaHtmlResponse("/dev/sounds").status).toBe(200);
   });
 
@@ -285,13 +290,29 @@ describe("publicSeo", () => {
     expect(about).not.toContain("adc:jsonld-home");
   });
 
-  it("lists /faq and /about in sitemap.xml", () => {
+  it("gives /press unique raw HTML with press-kit copy and assets", () => {
+    const press = customizeSpaIndexHtml(REAL_INDEX_HTML, "/press");
+    expect(press).toContain("<title>Press Kit - A Dark Cave</title>");
+    expect(press).toContain(
+      '<link rel="canonical" href="https://a-dark-cave.com/press"',
+    );
+    expect(press).toContain(
+      "Dark story-driven minimalist incremental village builder",
+    );
+    expect(press).toContain("Short boilerplate");
+    expect(press).toContain("a_dark_cave_press_kit.zip");
+    expect(press).toContain("support@a-dark-cave.com");
+    expect(press).not.toContain("adc:jsonld-home");
+  });
+
+  it("lists /faq, /about, and /press in sitemap.xml", () => {
     const sitemap = readFileSync(
       join(dirname(fileURLToPath(import.meta.url)), "../client/public/sitemap.xml"),
       "utf8",
     );
     expect(sitemap).toContain("<loc>https://a-dark-cave.com/faq</loc>");
     expect(sitemap).toContain("<loc>https://a-dark-cave.com/about</loc>");
+    expect(sitemap).toContain("<loc>https://a-dark-cave.com/press</loc>");
     expect(sitemap).not.toContain("a-dark-cave.com/galaxy");
     expect(sitemap).not.toContain("a-dark-cave.com/crazygames");
     expect(sitemap).not.toContain("a-dark-cave.com/boost");
