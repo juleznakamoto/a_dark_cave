@@ -179,6 +179,29 @@ describe("runGameplayInitialization", () => {
     expect(mocks.loadGame).not.toHaveBeenCalled();
   });
 
+  it("does not reconcile cloud when title hydration already loaded the store", async () => {
+    mocks.consumePrepared.mockReturnValue({ hadPersistedSave: true });
+    mocks.getCurrentUser.mockResolvedValue({ id: "u1", email: "a@b.c" });
+    const { runGameplayInitialization } = await import(
+      "./gameplayInitOrchestrator"
+    );
+
+    const result = await runGameplayInitialization({
+      pathname: "/",
+      search: "",
+      hash: "",
+    });
+
+    expect(mocks.loadGame).not.toHaveBeenCalled();
+    expect(result.hadPersistedSave).toBe(true);
+
+    await result.background;
+
+    expect(mocks.loadGameFromSupabase).not.toHaveBeenCalled();
+    expect(mocks.loadGame).not.toHaveBeenCalled();
+    expect(mocks.processReferral).toHaveBeenCalledOnce();
+  });
+
   it("skips loadGame when Make Fire already started the run", async () => {
     mocks.consumePrepared.mockReturnValue(null);
     mocks.getState.mockReturnValue({
