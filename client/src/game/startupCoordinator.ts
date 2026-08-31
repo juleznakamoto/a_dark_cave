@@ -11,6 +11,7 @@ import {
   readStartupSaveHeaderResult,
   type StartupSaveHeader,
 } from "./startupSaveHeader";
+import { peekPreferStartScreen } from "./startupBootSurface";
 import { parseStartupIntent, type StartupLocation } from "./startupIntent";
 
 export type StartupResolution =
@@ -117,12 +118,14 @@ export async function resolveStartupVisit(
     return { surface: "game" };
   }
 
+  const preferStartScreen = peekPreferStartScreen();
+
   const headerResult = await readStartupSaveHeaderResult();
   if (headerResult.status === "error") throw headerResult.error;
   const header =
     headerResult.status === "loaded" ? headerResult.header : null;
 
-  if (header?.gameStarted) {
+  if (header?.gameStarted && !preferStartScreen) {
     return { surface: "game" };
   }
 
@@ -142,7 +145,7 @@ export async function resolveStartupVisit(
       ),
     );
     const state = useGameStore.getState();
-    if (state.flags.gameStarted) {
+    if (state.flags.gameStarted && !preferStartScreen) {
       return { surface: "game" };
     }
     return createStartResolution(

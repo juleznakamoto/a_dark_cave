@@ -1,4 +1,5 @@
 import type { StartScreenPreferences } from "@/components/game/StartScreen";
+import { clearPreferStartScreen } from "./startupBootSurface";
 import { useGameStore } from "./state";
 
 export interface PreparedGameHydration {
@@ -49,14 +50,17 @@ export async function prepareGameFromStartScreen(
 export function commitMakeFireStart(
   preferences: StartScreenPreferences,
 ): void {
+  clearPreferStartScreen();
   useGameStore.setState(preferences);
-  useGameStore.getState().trackButtonClick("make-fire");
-  useGameStore.getState().executeAction("makeFire");
   const flags = useGameStore.getState().flags;
   if (flags.gameStarted) return;
+  useGameStore.getState().trackButtonClick("make-fire");
+  useGameStore.getState().executeAction("makeFire");
+  const nextFlags = useGameStore.getState().flags;
+  if (nextFlags.gameStarted) return;
   useGameStore.setState({
     flags: {
-      ...flags,
+      ...nextFlags,
       gameStarted: true,
       villagerCapsEnabled: true,
     },

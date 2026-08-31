@@ -38,6 +38,11 @@ describe("resolveStartupVisit", () => {
     vi.stubGlobal("localStorage", {
       getItem: vi.fn(() => null),
     });
+    vi.stubGlobal("sessionStorage", {
+      getItem: vi.fn(() => null),
+      setItem: vi.fn(),
+      removeItem: vi.fn(),
+    });
   });
 
   it("returns the lightweight start surface for a new visitor", async () => {
@@ -67,6 +72,31 @@ describe("resolveStartupVisit", () => {
       }),
     ).resolves.toEqual({ surface: "game" });
     expect(mockReadHeader).not.toHaveBeenCalled();
+  });
+
+  it("keeps a started local save on the start screen when preferred", async () => {
+    mockReadHeader.mockResolvedValue({
+      status: "loaded",
+      header: {
+        gameStarted: true,
+        cruelMode: false,
+        musicMuted: false,
+        sfxMuted: false,
+        musicVolume: 1,
+        sfxVolume: 1,
+        devGameMode: "normal",
+      },
+    });
+    vi.stubGlobal("sessionStorage", {
+      getItem: vi.fn(() => "1"),
+      setItem: vi.fn(),
+      removeItem: vi.fn(),
+    });
+    const { resolveStartupVisit } = await import("./startupCoordinator");
+
+    await expect(
+      resolveStartupVisit({ pathname: "/", search: "", hash: "" }),
+    ).resolves.toMatchObject({ surface: "start" });
   });
 
   it("routes a started local save to Game", async () => {

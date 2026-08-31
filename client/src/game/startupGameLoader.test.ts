@@ -82,6 +82,29 @@ describe("startup game hydration handoff", () => {
     });
   });
 
+  it("does not re-run Make Fire when the save is already started", async () => {
+    mockFlags.gameStarted = true;
+    const loader = await import("./startupGameLoader");
+
+    loader.commitMakeFireStart({
+      cruelMode: true,
+      musicMuted: false,
+      sfxMuted: false,
+      musicVolume: 1,
+      sfxVolume: 1,
+    });
+
+    expect(mockSetState).toHaveBeenCalledWith({
+      cruelMode: true,
+      musicMuted: false,
+      sfxMuted: false,
+      musicVolume: 1,
+      sfxVolume: 1,
+    });
+    expect(mockExecuteAction).not.toHaveBeenCalled();
+    expect(mockTrackButtonClick).not.toHaveBeenCalled();
+  });
+
   it("forces gameStarted when Make Fire executeAction is a no-op", async () => {
     const loader = await import("./startupGameLoader");
     mockExecuteAction.mockImplementation(() => {
