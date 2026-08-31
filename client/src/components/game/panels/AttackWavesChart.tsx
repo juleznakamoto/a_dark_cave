@@ -36,7 +36,9 @@ export default function AttackWavesChart({
   const story = useGameStore((s) => s.story);
   const buildings = useGameStore((s) => s.buildings);
   const weapons = useGameStore((s) => s.weapons);
-  const attackWaveTimers = useGameStore((s) => s.attackWaveTimers);
+  const attackWaveTimers = useGameStore((s) =>
+    visible ? s.attackWaveTimers : null,
+  );
   const setHighlightedResources = useGameStore((s) => s.setHighlightedResources);
   const executeAction = useGameStore((s) => s.executeAction);
   const [, setTimerTick] = useState(0);

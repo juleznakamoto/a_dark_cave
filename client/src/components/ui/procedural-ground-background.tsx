@@ -97,7 +97,7 @@ export const ProceduralGroundBackground: React.FC = () => {
     const timeLoc = gl.getUniformLocation(program, "u_time");
     const resLoc = gl.getUniformLocation(program, "u_resolution");
 
-    const FRAME_INTERVAL_MS = 1000 / 30;
+    const FRAME_INTERVAL_MS = 1000 / 24;
     let animationFrameId: number;
     let lastFrameTime = 0;
     const render = (time: number) => {

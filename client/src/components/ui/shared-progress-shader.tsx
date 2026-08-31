@@ -150,7 +150,7 @@ const SEGMENT_RIM_FILLED_CLASS =
  * above the shared smoke canvas (the in-cell rim alone would be covered).
  *
  * Filled vs empty uses `data-filled` + the same Tailwind shadow class as the
- * in-cell rim. Reading getComputedStyle here ran in the 15fps loop and forced
+ * in-cell rim. Reading getComputedStyle here ran in the 12fps loop and forced
  * a style recalc on every bar cell.
  */
 function syncSegmentRims(
@@ -654,7 +654,7 @@ export function SharedProgressShaderHost({
   scale?: number;
   /**
    * False while a kept-mounted tab is hidden. Parks the singleton so another
-   * host (Estate ↔ Bastion) can adopt it, and pauses the 15fps loop.
+   * host (Estate ↔ Bastion) can adopt it, and pauses the 12fps loop.
    */
   visible?: boolean;
   /** Smoke palette tokens (low → high). Defaults to estate red. */
@@ -709,7 +709,7 @@ export function SharedProgressShaderHost({
     if (!holder || !host) return;
 
     activeRef.current = true;
-    const FRAME_INTERVAL_MS = 1000 / 15;
+    const FRAME_INTERVAL_MS = 1000 / 12;
     let lastFrameTime = 0;
     let cancelled = false;
     let attachRaf = 0;
@@ -757,7 +757,7 @@ export function SharedProgressShaderHost({
         return;
       }
       rafRef.current = requestAnimationFrame(loop);
-      // 15fps wall-clock cap (not "every 4th rAF") so 120Hz stays at 15.
+      // 12fps wall-clock cap (not "every 4th rAF") so 120Hz stays at 12.
       if (lastFrameTime > 0 && now - lastFrameTime < FRAME_INTERVAL_MS) {
         return;
       }

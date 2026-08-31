@@ -160,9 +160,15 @@ export function getUnclaimedOverallIds(): string[] {
 
 /** True when at least one overall (general / meta) achievement is fully complete. */
 export function hasAnyOverallAchievementReached(state: GameState): boolean {
+  // Persisted flag: avoid walking every claimable achievement just to unlock a tab.
+  if (state.hasAchievementMaxer) return true;
   const config = getAchievementConfigForEdition(overallChartConfig);
   for (const ring of config.rings) {
     for (const seg of ring) {
+      // Achievement Maxer getCount scans every basic/building/item/action
+      // segment. Tab-unlock and 4 Hz store subscribers only need "any overall
+      // done"; the persisted flag above covers this row.
+      if (seg.segmentId === "0-achievementMaxer") continue;
       if (seg.getCount(state) >= seg.maxCount) return true;
     }
   }

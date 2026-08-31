@@ -31,6 +31,15 @@ describe("overall achievement tab unlock", () => {
     );
   });
 
+  it("treats persisted Achievement Maxer as overall progress", () => {
+    const state = {
+      ...createInitialState(),
+      hasAchievementMaxer: true,
+    } as GameState;
+
+    expect(hasAnyOverallAchievementReached(state)).toBe(true);
+  });
+
   it("unlocks overall tab when a meta achievement is already reached", () => {
     const state = {
       ...createInitialState(),

@@ -147,6 +147,100 @@ const TARGET_FPS = 4;
 const FRAME_DURATION = 1000 / TARGET_FPS; // 250ms per frame at 4 FPS
 const SESSION_CHECK_INTERVAL = 5 * 60 * 1000; // Check session every 5 minutes
 
+type AttackWaveTimerMap = GameState["attackWaveTimers"];
+
+/**
+ * Sub-second wave countdown lives here, not in Zustand. Writing `elapsedTime`
+ * every 250ms was notifying the whole store (and remounted Bastion chart)
+ * for the entire late game.
+ */
+const pendingWaveElapsedMs = new Map<string, number>();
+const lastFlushedWaveElapsedMs = new Map<string, number>();
+
+export function resetAttackWaveElapsedClock(): void {
+  pendingWaveElapsedMs.clear();
+  lastFlushedWaveElapsedMs.clear();
+}
+
+function syncPendingWaveElapsedFromStore(
+  waveId: string,
+  storeElapsed: number,
+): number {
+  const flushed = lastFlushedWaveElapsedMs.get(waveId);
+  if (flushed === undefined || storeElapsed !== flushed) {
+    pendingWaveElapsedMs.set(waveId, storeElapsed);
+    lastFlushedWaveElapsedMs.set(waveId, storeElapsed);
+    return storeElapsed;
+  }
+  return pendingWaveElapsedMs.get(waveId) ?? storeElapsed;
+}
+
+function shouldTickAttackWaveTimer(
+  waveId: string,
+  timer: AttackWaveTimerMap[string],
+): boolean {
+  const isAwaitingPostCompletionProvoke =
+    waveId === POST_COMPLETION_ATTACK_WAVE_ID && !timer.provoked;
+  return (
+    !timer.defeated && timer.startTime > 0 && !isAwaitingPostCompletionProvoke
+  );
+}
+
+/** Advance wave clocks. Returns a store patch only on a 1s boundary or when a wave is due. */
+export function advanceAttackWaveTimers(
+  timers: AttackWaveTimerMap,
+  deltaTime: number,
+): AttackWaveTimerMap | null {
+  let next: AttackWaveTimerMap | null = null;
+  for (const [waveId, timer] of Object.entries(timers)) {
+    if (!shouldTickAttackWaveTimer(waveId, timer)) {
+      pendingWaveElapsedMs.delete(waveId);
+      lastFlushedWaveElapsedMs.delete(waveId);
+      continue;
+    }
+    const storeElapsed = timer.elapsedTime || 0;
+    const newElapsed =
+      syncPendingWaveElapsedFromStore(waveId, storeElapsed) + deltaTime;
+    pendingWaveElapsedMs.set(waveId, newElapsed);
+    const shouldFlush =
+      newElapsed >= timer.duration ||
+      Math.floor(newElapsed / 1000) !== Math.floor(storeElapsed / 1000);
+    if (!shouldFlush) continue;
+    if (!next) next = { ...timers };
+    next[waveId] = { ...timer, elapsedTime: newElapsed };
+    lastFlushedWaveElapsedMs.set(waveId, newElapsed);
+  }
+  return next;
+}
+
+/** Push leftover sub-second elapsed into the store (pause, save, stop). */
+export function flushPendingAttackWaveElapsed(
+  timers: AttackWaveTimerMap | undefined,
+): AttackWaveTimerMap | null {
+  if (!timers) return null;
+  let next: AttackWaveTimerMap | null = null;
+  for (const [waveId, timer] of Object.entries(timers)) {
+    const pending = pendingWaveElapsedMs.get(waveId);
+    if (pending === undefined) continue;
+    const storeElapsed = timer.elapsedTime || 0;
+    if (pending === storeElapsed) continue;
+    if (!next) next = { ...timers };
+    next[waveId] = { ...timer, elapsedTime: pending };
+    lastFlushedWaveElapsedMs.set(waveId, pending);
+  }
+  return next;
+}
+
+function commitFlushedAttackWaveTimers(
+  timers: AttackWaveTimerMap | undefined = useGameStore.getState()
+    .attackWaveTimers,
+): void {
+  const flushed = flushPendingAttackWaveElapsed(timers);
+  if (flushed) {
+    useGameStore.setState({ attackWaveTimers: flushed });
+  }
+}
+
 let tickAccumulator = 0;
 /** Elapsed ms toward the next event roll; frozen during pause like `tickAccumulator` (not timestamp-based). */
 let eventCheckAccumulator = 0;
@@ -250,6 +344,7 @@ export function startGameLoop() {
   resetPlayTimeAutoPromptHandoff();
 
   useGameStore.setState({ isGameLoopActive: true });
+  resetAttackWaveElapsedClock();
   const now = performance.now();
   lastFrameTime = now;
   lastRenderTime = now;
@@ -378,6 +473,7 @@ export function startGameLoop() {
       isDemoPlayFrozen(state);
 
     if (isSimulationFrozen) {
+      commitFlushedAttackWaveTimers(state.attackWaveTimers);
       // Fade BGM out on pause; keep event ambience beds (cube, etc.) playing
       if (!state.isPausedPreviously && (!state.sfxMuted || !state.musicMuted)) {
         audioManager.pauseForSimulation(EVENT_AMBIENCE_FADE_SECONDS);
@@ -416,51 +512,53 @@ export function startGameLoop() {
       tickAccumulator += deltaTime;
     }
 
-    // Update play time in state (only when not paused, not in idle mode, not inactive, and no dialogs open)
-    // Note: This is OUTSIDE the isDialogOpen check so we track time properly
+    // One Zustand write for the 4 Hz clocks. Separate playTime / loopProgress /
+    // attackWaveTimers setStates were notifying every subscriber 2–3× per frame.
     const currentState = useGameStore.getState();
-    if (
+    const shouldAdvancePlayTime =
       !state.isPaused &&
       !currentState.idleModeState?.isActive &&
       !isInactive &&
-      !IsDialogOpen // Added: Stop playTime when dialogs are open
-    ) {
-      currentState.updatePlayTime(deltaTime);
+      !IsDialogOpen;
+    const clockPatch: {
+      playTime?: number;
+      lifetimePlayTimeMs?: number;
+      attackWaveTimers?: AttackWaveTimerMap;
+      loopProgress?: number;
+    } = {};
+    if (shouldAdvancePlayTime) {
+      clockPatch.playTime = currentState.playTime + deltaTime;
+      clockPatch.lifetimePlayTimeMs =
+        (currentState.lifetimePlayTimeMs || 0) + deltaTime;
+    }
+    if (!IsDialogOpen) {
+      const waveTimers = advanceAttackWaveTimers(
+        currentState.attackWaveTimers || {},
+        deltaTime,
+      );
+      if (waveTimers) {
+        clockPatch.attackWaveTimers = waveTimers;
+      }
+      // Village cycle bar is the only loopProgress subscriber. Skip writes
+      // on other tabs so Bastion/Estate sessions do not churn the store at 4 Hz.
+      if (currentState.activeTab === "village") {
+        clockPatch.loopProgress =
+          timestamp - lastProduction >= PRODUCTION_INTERVAL
+            ? 100
+            : Math.min(
+              ((timestamp - lastProduction) / PRODUCTION_INTERVAL) * 100,
+              100,
+            );
+      }
+    }
+    if (Object.keys(clockPatch).length > 0) {
+      useGameStore.setState(clockPatch);
+    }
+    if (shouldAdvancePlayTime) {
       useGameStore.getState().tickInvestmentHall();
     }
 
     if (!IsDialogOpen) {
-
-      // Handle attack wave timer - update elapsed time when not paused
-      const attackWaveTimers = state.attackWaveTimers || {};
-      if (!isSimulationFrozen) {
-        // Update elapsed time for all active timers
-        const updatedTimers: typeof attackWaveTimers = {};
-        let hasUpdates = false;
-
-        for (const [waveId, timer] of Object.entries(attackWaveTimers)) {
-          const isAwaitingPostCompletionProvoke =
-            waveId === POST_COMPLETION_ATTACK_WAVE_ID && !timer.provoked;
-          if (
-            !timer.defeated &&
-            timer.startTime > 0 &&
-            !isAwaitingPostCompletionProvoke
-          ) {
-            const newElapsed = (timer.elapsedTime || 0) + deltaTime;
-            updatedTimers[waveId] = {
-              ...timer,
-              elapsedTime: newElapsed,
-            };
-            hasUpdates = true;
-          } else {
-            updatedTimers[waveId] = timer;
-          }
-        }
-
-        if (hasUpdates) {
-          useGameStore.setState({ attackWaveTimers: updatedTimers });
-        }
-      }
 
       // Process ticks in fixed intervals
       let ticksProcessed = 0;
@@ -520,15 +618,15 @@ export function startGameLoop() {
 
       // All production and game logic checks (every 15 seconds)
       if (timestamp - lastProduction >= PRODUCTION_INTERVAL) {
-        // Set to 100% before resetting
-        useGameStore.setState({ loopProgress: 100 });
         lastProduction = timestamp;
 
         // Reset to 0 after a brief moment to ensure 100% is visible
-        if (loopProgressTimeoutId) clearTimeout(loopProgressTimeoutId);
-        loopProgressTimeoutId = setTimeout(() => {
-          useGameStore.setState({ loopProgress: 0 });
-        }, 50);
+        if (useGameStore.getState().activeTab === "village") {
+          if (loopProgressTimeoutId) clearTimeout(loopProgressTimeoutId);
+          loopProgressTimeoutId = setTimeout(() => {
+            useGameStore.setState({ loopProgress: 0 });
+          }, 50);
+        }
 
         // Skip production if idle mode is active
         const currentState = useGameStore.getState();
@@ -546,11 +644,6 @@ export function startGameLoop() {
           // Event rolling now runs on the dedicated 1s EVENT_CHECK_INTERVAL cadence above,
           // so it is intentionally not invoked here (avoids double-rolling on production ticks).
         }
-      } else {
-        // Update loop progress (0-100 based on production cycle)
-        const progressPercent =
-          ((timestamp - lastProduction) / PRODUCTION_INTERVAL) * 100;
-        useGameStore.setState({ loopProgress: Math.min(progressPercent, 100) });
       }
     }
 
@@ -618,6 +711,7 @@ async function handleInactivity() {
   // Save game before showing dialog (must happen before setting inactivityDialogOpen,
   // since saveGame skips when inactivityDialogOpen is true)
   try {
+    commitFlushedAttackWaveTimers();
     const state = useGameStore.getState();
     await saveGame(state, false);
     logger.log("[GAME LOOP] Game saved before inactivity dialog");
@@ -665,6 +759,8 @@ export function resetProductionCycle() {
 }
 
 export function stopGameLoop() {
+  commitFlushedAttackWaveTimers();
+  resetAttackWaveElapsedClock();
   if (gameLoopId) {
     cancelAnimationFrame(gameLoopId);
     gameLoopId = null;
@@ -1245,6 +1341,7 @@ function handleMadnessCheck() {
 }
 
 async function handleAutoSave() {
+  commitFlushedAttackWaveTimers();
   const state = useGameStore.getState();
   const gameState: GameState = buildGameState(state);
 
@@ -1427,6 +1524,7 @@ function handleStrangerApproach() {
 
 // Export the manual save function
 export async function manualSave() {
+  commitFlushedAttackWaveTimers();
   const state = useGameStore.getState();
 
   const gameState: GameState = buildGameState(state);
