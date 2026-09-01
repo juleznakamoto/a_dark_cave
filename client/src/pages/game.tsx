@@ -1,4 +1,4 @@
-import { useEffect, useState, lazy, Suspense } from "react";
+import { useEffect, useLayoutEffect, useRef, useState, lazy, Suspense } from "react";
 import GameContainer from "@/components/game/GameContainer";
 import { useGameStore } from "@/game/state";
 import { stopGameLoop } from "@/game/loop";
@@ -11,6 +11,13 @@ import PageErrorScreen from "@/components/ui/page-error-screen";
 import { clearStaleChunkReloadGuard } from "@/lib/hardReload";
 import { runGameplayInitialization } from "@/game/gameplayInitOrchestrator";
 
+type GameProps = {
+  /** Parent cover (Make Fire frame) can stay up until this fires. */
+  onReadyToPaint?: () => void;
+  /** Skip the page spinner so a parent title frame can remain visible. */
+  suppressLoadingSpinner?: boolean;
+};
+
 const EmailConfirmedDialog = lazy(
   () => import("@/components/game/EmailConfirmedDialog"),
 );
@@ -19,13 +26,18 @@ const PlaylightWelcomeDialog = lazy(
 );
 const FeedbackDialog = lazy(() => import("@/components/game/FeedbackDialog"));
 
-export default function Game() {
+export default function Game({
+  onReadyToPaint,
+  suppressLoadingSpinner = false,
+}: GameProps = {}) {
   const setShopDialogOpen = useGameStore((state) => state.setShopDialogOpen);
   const [isInitialized, setIsInitialized] = useState(false);
   const [initError, setInitError] = useState(false);
   const [emailConfirmedDialogOpen, setEmailConfirmedDialogOpen] =
     useState(false);
   const steamEditionActive = useSteamEditionActive();
+  const onReadyToPaintRef = useRef(onReadyToPaint);
+  onReadyToPaintRef.current = onReadyToPaint;
 
   useEffect(() => {
     clearStaleChunkReloadGuard();
@@ -69,12 +81,18 @@ export default function Game() {
     };
   }, [setShopDialogOpen]);
 
+  useLayoutEffect(() => {
+    if (isInitialized || initError) {
+      onReadyToPaintRef.current?.();
+    }
+  }, [isInitialized, initError]);
+
   if (initError) {
     return <PageErrorScreen />;
   }
 
   if (!isInitialized) {
-    return <PageLoadSpinner />;
+    return suppressLoadingSpinner ? null : <PageLoadSpinner />;
   }
 
   return (

@@ -100,6 +100,9 @@ describe("start-screen first-load imports", () => {
     expect(staticValueFrom(src, "@/lib/supabase")).toBe(false);
     expect(staticValueFrom(src, "@shared/utmAttribution")).toBe(false);
     expect(src).toContain('import("@/lib/utmLanding")');
+    expect(src).toContain("shouldHoldMakeFireFrame");
+    expect(src).toContain("make-fire-handoff-frame");
+    expect(src).toContain('import("@/i18n/loadLocaleResources")');
   });
 
   it("page-load spinner does not import Framer or Radix", () => {

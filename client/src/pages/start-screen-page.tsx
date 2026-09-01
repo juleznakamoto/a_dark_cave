@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState, Suspense, lazy } from "react";
+import { useCallback, useEffect, useRef, useState, Suspense, lazy } from "react";
 import StartScreen, {
   type StartScreenPreferences,
 } from "@/components/game/StartScreen";
@@ -14,8 +14,13 @@ import {
   applyStartupUrlCleanup,
   consumeStartupAuthCallback,
 } from "@/game/startupUrlCleanup";
+import {
+  MAKE_FIRE_HANDOFF_SPINNER_DELAY_MS,
+  shouldHoldMakeFireFrame,
+} from "@/game/makeFireHandoff";
 import { isLocalOnlyEdition } from "@/lib/edition";
 import { initSessionTracker } from "@/lib/sessionTracker";
+import { Z_INDEX } from "@/lib/z-index";
 
 const Game = lazy(() => import("@/pages/game"));
 
@@ -26,6 +31,9 @@ const Game = lazy(() => import("@/pages/game"));
  */
 export default function StartScreenPage() {
   const [shouldLoadGame, setShouldLoadGame] = useState(false);
+  const [fromMakeFire, setFromMakeFire] = useState(false);
+  const [gameReadyToPaint, setGameReadyToPaint] = useState(false);
+  const [spinnerDelayElapsed, setSpinnerDelayElapsed] = useState(false);
   const [startResolution, setStartResolution] = useState<
     Extract<StartupResolution, { surface: "start" }>
   >(peekStartScreenResolution);
@@ -87,12 +95,18 @@ export default function StartScreenPage() {
 
   const handleMakeFireStart = (nextPreferences: StartScreenPreferences) => {
     prefetchGame(nextPreferences);
+    void import("@/i18n/loadLocaleResources").then(
+      ({ ensureGameplayLocalesLoaded }) => {
+        void ensureGameplayLocalesLoaded();
+      },
+    );
   };
 
   const handleMakeFire = async (nextPreferences: StartScreenPreferences) => {
     try {
       const { commitMakeFireStart } = await prepareGame(nextPreferences);
       commitMakeFireStart(nextPreferences);
+      setFromMakeFire(true);
       setShouldLoadGame(true);
     } catch (error) {
       preparedGameRef.current = null;
@@ -100,28 +114,59 @@ export default function StartScreenPage() {
     }
   };
 
-  if (shouldLoadGame) {
-    return (
-      <AppErrorBoundary>
-        <Suspense fallback={<PageLoadSpinner />}>
-          <Game />
-        </Suspense>
-      </AppErrorBoundary>
-    );
-  }
+  const handleGameReadyToPaint = useCallback(() => {
+    setGameReadyToPaint(true);
+  }, []);
+
+  const holdMakeFireFrame = shouldHoldMakeFireFrame({
+    fromMakeFire,
+    gameReadyToPaint,
+    spinnerDelayElapsed,
+  });
+
+  useEffect(() => {
+    if (!fromMakeFire || !shouldLoadGame || gameReadyToPaint) return;
+    const timer = window.setTimeout(() => {
+      setSpinnerDelayElapsed(true);
+    }, MAKE_FIRE_HANDOFF_SPINNER_DELAY_MS);
+    return () => window.clearTimeout(timer);
+  }, [fromMakeFire, shouldLoadGame, gameReadyToPaint]);
+
+  const showStartScreen = !shouldLoadGame || holdMakeFireFrame;
 
   return (
-    <StartScreen
-      initialPreferences={startResolution.preferences}
-      steamEditionActive={startResolution.steamEditionActive}
-      steamDesktopEditionActive={
-        startResolution.steamDesktopEditionActive
-      }
-      crazyGamesEditionActive={startResolution.crazyGamesEditionActive}
-      hideSteamStoreLink={startResolution.hideSteamStoreLink}
-      onPlayerActivity={prefetchGame}
-      onMakeFireStart={handleMakeFireStart}
-      onMakeFire={handleMakeFire}
-    />
+    <>
+      {shouldLoadGame ? (
+        <AppErrorBoundary>
+          <Suspense fallback={holdMakeFireFrame ? null : <PageLoadSpinner />}>
+            <Game
+              suppressLoadingSpinner={holdMakeFireFrame}
+              onReadyToPaint={handleGameReadyToPaint}
+            />
+          </Suspense>
+        </AppErrorBoundary>
+      ) : null}
+      {showStartScreen ? (
+        <div
+          className={`fixed inset-0${holdMakeFireFrame ? " pointer-events-none" : ""}`}
+          style={holdMakeFireFrame ? { zIndex: Z_INDEX.topLayer } : undefined}
+          aria-hidden={holdMakeFireFrame || undefined}
+          data-testid={holdMakeFireFrame ? "make-fire-handoff-frame" : undefined}
+        >
+          <StartScreen
+            initialPreferences={startResolution.preferences}
+            steamEditionActive={startResolution.steamEditionActive}
+            steamDesktopEditionActive={
+              startResolution.steamDesktopEditionActive
+            }
+            crazyGamesEditionActive={startResolution.crazyGamesEditionActive}
+            hideSteamStoreLink={startResolution.hideSteamStoreLink}
+            onPlayerActivity={prefetchGame}
+            onMakeFireStart={handleMakeFireStart}
+            onMakeFire={handleMakeFire}
+          />
+        </div>
+      ) : null}
+    </>
   );
 }
