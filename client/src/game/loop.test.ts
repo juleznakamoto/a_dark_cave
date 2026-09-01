@@ -495,6 +495,35 @@ describe("sleep dialog restore on loop start", () => {
 
     expect(useGameStore.getState().idleModeDialog.isOpen).toBe(false);
   });
+
+  it("leaves the player stuck sleeping if dialogs reset after restore", async () => {
+    const { getTransientDialogResetOnLoad } = await import(
+      "./persistedStateBoundary"
+    );
+
+    useGameStore.setState({
+      idleModeState: {
+        isActive: true,
+        startTime: Date.now() - 1000,
+        needsDisplay: true,
+      },
+      idleModeDialog: { isOpen: false },
+    });
+
+    startGameLoop();
+    vi.advanceTimersByTime(600);
+    expect(useGameStore.getState().idleModeDialog.isOpen).toBe(true);
+
+    // loadGame / cloud reconcile always close transient dialogs.
+    useGameStore.setState(getTransientDialogResetOnLoad());
+    startGameLoop();
+    vi.advanceTimersByTime(600);
+
+    const stuck = useGameStore.getState();
+    expect(stuck.idleModeState.isActive).toBe(true);
+    expect(stuck.idleModeState.needsDisplay).toBe(true);
+    expect(stuck.idleModeDialog.isOpen).toBe(false);
+  });
 });
 
 describe("attack wave elapsed clock", () => {

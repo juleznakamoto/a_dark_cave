@@ -36,6 +36,20 @@ describe("shouldAllowPlaytimeOverwrite", () => {
 });
 
 describe("pickPreferredSave", () => {
+  it("prefers cloud when the same run has equal playTime", () => {
+    const local = save({
+      gameId: "game-a",
+      startTime: 100,
+      playTime: 5000,
+    });
+    const cloud = save({
+      gameId: "game-a",
+      startTime: 100,
+      playTime: 5000,
+    });
+    expect(pickPreferredSave(local, cloud)).toBe("cloud");
+  });
+
   it("prefers higher playTime for the same gameId", () => {
     const local = save({
       gameId: "game-a",

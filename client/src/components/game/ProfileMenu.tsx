@@ -59,6 +59,7 @@ import {
   LIME_ACCENT_MASK_ICON_CLASS,
   TAB_ICON_SIZE_CLASS,
 } from "./gameChrome";
+import { Z_INDEX } from "@/lib/z-index";
 
 const REWARDS_TASKS_ICON_PING_START_MS = 20 * 60 * 1000;
 const REWARDS_TASKS_ICON_PING_INTERVAL_MS = 5 * 60 * 1000;
@@ -458,23 +459,23 @@ function ProfileMenuDialogs() {
   return (
     <>
       {settingsDialogOpen && (
-      <SettingsDialog
-        isOpen={settingsDialogOpen}
-        onClose={() => setSettingsDialogOpen(false)}
-        currentUser={currentUser}
-        marketingOptIn={marketingOptIn}
-        marketingPrefLoading={marketingPrefLoading}
-        marketingRewardClaimed={
-          social_media_rewards[MARKETING_EMAIL_REWARD_KEY]?.claimed === true
-        }
-        onToggleMarketing={() => {
-          void handleMarketingPreferenceToggle();
-        }}
-        onDeleteAccount={() => {
-          setSettingsDialogOpen(false);
-          setDeleteAccountDialogOpen(true);
-        }}
-      />
+        <SettingsDialog
+          isOpen={settingsDialogOpen}
+          onClose={() => setSettingsDialogOpen(false)}
+          currentUser={currentUser}
+          marketingOptIn={marketingOptIn}
+          marketingPrefLoading={marketingPrefLoading}
+          marketingRewardClaimed={
+            social_media_rewards[MARKETING_EMAIL_REWARD_KEY]?.claimed === true
+          }
+          onToggleMarketing={() => {
+            void handleMarketingPreferenceToggle();
+          }}
+          onDeleteAccount={() => {
+            setSettingsDialogOpen(false);
+            setDeleteAccountDialogOpen(true);
+          }}
+        />
       )}
       {!steamEditionActive && (
         <>
@@ -650,6 +651,7 @@ export function GameHeaderControls() {
           side="bottom"
           sideOffset={8}
           className="text-xs !max-h-none w-auto"
+          style={{ zIndex: Z_INDEX.dropdown }}
         >
           {currentUser && (
             <>

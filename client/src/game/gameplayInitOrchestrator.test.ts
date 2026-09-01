@@ -275,4 +275,55 @@ describe("runGameplayInitialization", () => {
       mocks.getCurrentUser.mock.invocationCallOrder[0],
     );
   });
+
+  it("reloads from cloud after the loop starts when sleep playTime is tied", async () => {
+    mocks.getCurrentUser.mockResolvedValue({ id: "u1", email: "a@b.c" });
+    mocks.loadGame.mockResolvedValue(true);
+    mocks.getState.mockReturnValue({
+      loadGame: mocks.loadGame,
+      googleAdsSource: null,
+      utmAttribution: null,
+      flags: { gameStarted: false },
+      playTime: 60_000,
+      idleModeState: {
+        isActive: true,
+        startTime: 1,
+        needsDisplay: true,
+      },
+      musicVolume: 1,
+      sfxVolume: 1,
+      musicMuted: true,
+      sfxMuted: true,
+      referrals: [],
+      addLogEntry: vi.fn(),
+    });
+    mocks.loadGameFromSupabase.mockResolvedValue({
+      gameState: { gameId: "game-a", playTime: 60_000 },
+      playTime: 60_000,
+      timestamp: 1,
+    });
+
+    const { runGameplayInitialization } = await import(
+      "./gameplayInitOrchestrator"
+    );
+
+    const result = await runGameplayInitialization({
+      pathname: "/",
+      search: "",
+      hash: "",
+    });
+
+    expect(mocks.startGameLoop).toHaveBeenCalledOnce();
+    expect(mocks.loadGame).toHaveBeenCalledTimes(1);
+    expect(mocks.loadGame).toHaveBeenCalledWith({ cloud: false });
+
+    await result.background;
+
+    expect(mocks.loadGameFromSupabase).toHaveBeenCalledOnce();
+    expect(mocks.loadGame).toHaveBeenCalledTimes(2);
+    expect(mocks.loadGame.mock.calls[1]).toEqual([]);
+    expect(mocks.startGameLoop.mock.invocationCallOrder[0]).toBeLessThan(
+      mocks.loadGame.mock.invocationCallOrder[1],
+    );
+  });
 });

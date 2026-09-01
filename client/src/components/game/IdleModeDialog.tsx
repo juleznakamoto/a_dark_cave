@@ -138,7 +138,6 @@ function IdleModeDialogOpen() {
     gameId,
     devMode,
     buildings,
-    shareDialogOpen,
   } = useGameStore(
     useShallow((s) => ({
       idleModeDialog: s.idleModeDialog,
@@ -146,7 +145,6 @@ function IdleModeDialogOpen() {
       gameId: s.gameId,
       devMode: s.devMode,
       buildings: s.buildings,
-      shareDialogOpen: s.shareDialogOpen,
     })),
   );
   const [accumulatedResources, setAccumulatedResources] = useState<
@@ -589,7 +587,9 @@ function IdleModeDialogOpen() {
     <Dialog
       open={idleModeDialog.isOpen}
       onOpenChange={() => { }}
-      modal={!shareDialogOpen}
+      // Non-modal so header/footer chrome stay clickable. Gameplay is already
+      // blocked by the sleep fog overlay; Share and other header dialogs use z-70.
+      modal={false}
     >
       <DialogContent
         className="[--adc-dialog-max-w:28rem]"
