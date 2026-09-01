@@ -288,6 +288,7 @@ run ad hoc for locale maintenance.
 | `sync:resend-marketing` | `sync-resend-marketing-contacts.ts` | Push marketing opt-in contacts to Resend via Contacts Import API (with `unsubscribe_url` tokens). |
 | `import:resend-legacy-segments` | `import-legacy-resend-segments.ts` | One-time import of two legacy cohorts into Resend **Segments** (oldestâ†’newest): pre-consent users (no `marketing_preferences` row) and currently-subscribed users. Shares env with `resendScriptEnv.ts`. |
 | `rebuild:resend-marketing` | `rebuild-resend-marketing-contacts.ts` | Wipe all Resend contacts, then re-import pre-consent + subscribed cohorts (excludes opt-outs; `--dry-run` / `--skip-delete`). |
+| `import:resend-batches` | `import-resend-contact-batches.ts` | Split non-unsubscribed contacts into 10 Resend batches (1000-contact cap), wipe, upload `--batch N`. |
 | `test:gender` | `test-gender-service.js` | Smoke-test `services/gender-service/`. |
 | `press:assets` | `build-press-kit-assets.mjs` | Copy logos and zip `client/public/press-kit`. |
 | `build:crazygames` / `package:crazygames` | `package-crazygames.mjs` | CrazyGames HTML5 demo folder (`VITE_CRAZYGAMES=1`, relative base). |
