@@ -351,8 +351,10 @@ export function scheduleSleepDialogRestore(): void {
 export function startGameLoop() {
   if (gameLoopId) {
     // Loop already running (cloud reconcile, remount). Still restore Sleep
-    // if loadGame closed the dialog but left the session pending.
+    // if loadGame closed the dialog but left the session pending, and drop a
+    // visit whose timer already ran out in the newly loaded save.
     scheduleSleepDialogRestore();
+    clearExpiredTimedEventTab();
     return;
   }
 

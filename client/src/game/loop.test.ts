@@ -161,6 +161,52 @@ describe('Game Loop Production', () => {
     expect(finalState.timedEventTab.expiryTime).toBe(0);
   });
 
+  it("clears an expired timed tab when the loop is already running", () => {
+    setGameTabHiddenForTests(false);
+    const listenerTarget = {
+      addEventListener: vi.fn(),
+      removeEventListener: vi.fn(),
+    };
+    vi.stubGlobal("window", listenerTarget);
+    vi.stubGlobal("document", listenerTarget);
+    vi.stubGlobal("requestAnimationFrame", () => 1);
+    vi.stubGlobal("cancelAnimationFrame", () => { });
+
+    const mockEvent = {
+      id: "merchant",
+      eventId: "merchant",
+      message: "A merchant arrives",
+      title: "Merchant",
+      type: "event" as const,
+      choices: [{ id: "doNothing", label: "Leave", effect: () => ({}) }],
+      fallbackChoice: { id: "doNothing", label: "Leave", effect: () => ({}) },
+    };
+
+    try {
+      startGameLoop();
+      useGameStore.setState({
+        eventDialog: { isOpen: false, currentEvent: null },
+        timedEventTab: {
+          isActive: true,
+          event: mockEvent,
+          expiryTime: Date.now() - 1000,
+          startTime: Date.now() - 2000,
+          pauseAccumMs: 0,
+          pauseStartedAt: 0,
+        },
+      });
+
+      startGameLoop();
+
+      const after = useGameStore.getState();
+      expect(after.timedEventTab.isActive).toBe(false);
+      expect(after.timedEventTab.event).toBe(null);
+    } finally {
+      stopGameLoop();
+      vi.unstubAllGlobals();
+    }
+  });
+
   it('should clear expired timed events', () => {
     // Create a mock expired timed event by directly setting state
     const mockEvent = {

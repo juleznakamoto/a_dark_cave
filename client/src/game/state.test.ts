@@ -20,6 +20,8 @@ const {
   mockSetLastGameLoadTime,
   mockSaveGame,
   mockFlushOverdueActionExecutions,
+  mockScheduleSleepDialogRestore,
+  mockClearExpiredTimedEventTab,
 } = vi.hoisted(() => ({
   mockLoadGame: vi.fn(),
   mockSetLastGameLoadTime: vi.fn(),
@@ -29,6 +31,8 @@ const {
     cloudSkipped: false,
   }),
   mockFlushOverdueActionExecutions: vi.fn(),
+  mockScheduleSleepDialogRestore: vi.fn(),
+  mockClearExpiredTimedEventTab: vi.fn(),
 }));
 
 vi.mock("@/game/save", () => ({
@@ -40,6 +44,10 @@ vi.mock("@/game/loop", () => ({
   setLastGameLoadTime: (...args: unknown[]) => mockSetLastGameLoadTime(...args),
   flushOverdueActionExecutions: (...args: unknown[]) =>
     mockFlushOverdueActionExecutions(...args),
+  scheduleSleepDialogRestore: (...args: unknown[]) =>
+    mockScheduleSleepDialogRestore(...args),
+  clearExpiredTimedEventTab: (...args: unknown[]) =>
+    mockClearExpiredTimedEventTab(...args),
 }));
 
 describe("Focus State Management", () => {
@@ -1060,6 +1068,8 @@ describe("pending modal event persist", () => {
     expect(useGameStore.getState().activeTab).toBe("timedevent");
     expect(useGameStore.getState().timedEventTab.isActive).toBe(true);
     expect(useGameStore.getState().timedEventTab.event?.id).toBe("feast1");
+    expect(mockClearExpiredTimedEventTab).toHaveBeenCalled();
+    expect(mockScheduleSleepDialogRestore).toHaveBeenCalled();
   });
 });
 

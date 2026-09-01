@@ -3595,10 +3595,16 @@ export const useGameStore = create<GameStore>((set, get) => ({
         ...migrated,
         ...getPendingModalEventDialogResume(migrated),
       });
-      const { flushOverdueActionExecutions, scheduleSleepDialogRestore } =
-        await import("@/game/loop");
+      const {
+        flushOverdueActionExecutions,
+        scheduleSleepDialogRestore,
+        clearExpiredTimedEventTab,
+      } = await import("@/game/loop");
       flushOverdueActionExecutions();
       scheduleSleepDialogRestore();
+      // Loop may already be running (cloud reconcile). Re-run visit expiry
+      // here; startGameLoop() no-ops and would otherwise skip this clear.
+      clearExpiredTimedEventTab();
       StateManager.scheduleEffectsUpdate(get);
     } else {
       // Make Fire starts the run in memory before a save exists. A second
