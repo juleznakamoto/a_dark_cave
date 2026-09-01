@@ -19,6 +19,7 @@ const mocks = vi.hoisted(() => ({
   syncSocial: vi.fn(),
   loadGameFromSupabase: vi.fn(),
   processReferral: vi.fn(),
+  applyDevSave: vi.fn(),
 }));
 
 vi.mock("@/i18n/loadLocaleResources", () => ({
@@ -79,6 +80,9 @@ vi.mock("@/lib/edition", () => ({
   isDemoEdition: () => false,
   isSteamBuild: false,
   shouldSyncSteamAchievements: () => false,
+}));
+vi.mock("@/game/devSaves", () => ({
+  applyDevSaveToStore: (...args: unknown[]) => mocks.applyDevSave(...args),
 }));
 vi.mock("@/lib/utmLanding", () => ({
   reportUtmLanding: vi.fn(),
@@ -325,5 +329,28 @@ describe("runGameplayInitialization", () => {
     expect(mocks.startGameLoop.mock.invocationCallOrder[0]).toBeLessThan(
       mocks.loadGame.mock.invocationCallOrder[1],
     );
+  });
+
+  it("hydrates a DEV save fixture and skips local plus cloud load", async () => {
+    mocks.getCurrentUser.mockResolvedValue({ id: "u1", email: "a@b.c" });
+    const { runGameplayInitialization } = await import(
+      "./gameplayInitOrchestrator"
+    );
+
+    const result = await runGameplayInitialization({
+      pathname: "/",
+      search: "?devSave=sleep-unlocked",
+      hash: "",
+    });
+
+    expect(result.hadPersistedSave).toBe(true);
+    expect(mocks.applyDevSave).toHaveBeenCalledWith("sleep-unlocked");
+    expect(mocks.loadGame).not.toHaveBeenCalled();
+    expect(mocks.startGameLoop).toHaveBeenCalledOnce();
+
+    await result.background;
+
+    expect(mocks.loadGameFromSupabase).not.toHaveBeenCalled();
+    expect(mocks.loadGame).not.toHaveBeenCalled();
   });
 });

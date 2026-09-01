@@ -14,6 +14,12 @@ import {
   isSteamBuild,
   type DevGameMode,
 } from "@/lib/edition";
+import {
+  DEV_SAVE_CATALOG,
+  DEV_SAVE_IDS,
+  type DevSaveId,
+} from "@/game/devSaveIds";
+import { applyDevSaveToStore } from "@/game/devSaves";
 import { useSteamEditionActive } from "@/hooks/useSteamEditionActive";
 import { AudioGlyphIcon, GameUiIcon } from "@/components/game/GameUiIcon";
 import { useEffect, useState } from "react";
@@ -248,6 +254,73 @@ function GameModeSelector({
   );
 }
 
+function DevSaveSelector({
+  value,
+  menuPortalContainer,
+}: {
+  value: DevSaveId | null;
+  menuPortalContainer: HTMLElement | null;
+}) {
+  const [open, setOpen] = useState(false);
+  const dialogPortalReady = menuPortalContainer != null;
+
+  const handleOpenChange = (next: boolean) => {
+    if (next && !menuPortalContainer) return;
+    setOpen(next);
+  };
+
+  useEffect(() => {
+    if (!menuPortalContainer) {
+      setOpen(false);
+    }
+  }, [menuPortalContainer]);
+
+  return (
+    <DropdownMenu
+      open={open}
+      onOpenChange={handleOpenChange}
+      modal={false}
+    >
+      <DropdownMenuTrigger asChild>
+        <Button
+          variant="ghost"
+          size="xs"
+          className="group -mr-2 flex items-center gap-1 rounded-md px-2 py-1 text-sm hover:bg-muted/40 transition-colors"
+          aria-label="Load save"
+          aria-expanded={open}
+          button_id="settings-dev-save"
+        >
+          <span className="inline">
+            {value ? DEV_SAVE_CATALOG[value].label : "Load save"}
+          </span>
+          <ChevronDown className="w-3.5 h-3.5 shrink-0 opacity-70" aria-hidden />
+        </Button>
+      </DropdownMenuTrigger>
+      {dialogPortalReady && (
+        <DropdownMenuContent
+          align="end"
+          portalContainer={menuPortalContainer ?? undefined}
+          className="w-max min-w-0 text-sm z-[60]"
+          onCloseAutoFocus={(e) => e.preventDefault()}
+        >
+          {DEV_SAVE_IDS.map((option) => (
+            <DropdownMenuItem
+              key={option}
+              onClick={() => {
+                applyDevSaveToStore(option);
+                setOpen(false);
+              }}
+              className={cn(value === option && "font-semibold", "text-sm")}
+            >
+              {DEV_SAVE_CATALOG[option].label}
+            </DropdownMenuItem>
+          ))}
+        </DropdownMenuContent>
+      )}
+    </DropdownMenu>
+  );
+}
+
 /**
  * Settings dialog opened from the Profile menu. Houses audio (ambience + sound effects),
  * language, email preferences, and account deletion. Blocking: while open, the
@@ -277,6 +350,7 @@ export default function SettingsDialog({
     setSfxVolume,
     devGameMode,
     setDevGameMode,
+    activeDevSaveId,
   } = useGameStore(
     useShallow((s) => ({
       musicMuted: s.musicMuted,
@@ -289,6 +363,7 @@ export default function SettingsDialog({
       setSfxVolume: s.setSfxVolume,
       devGameMode: s.devGameMode,
       setDevGameMode: s.setDevGameMode,
+      activeDevSaveId: s.activeDevSaveId,
     })),
   );
 
@@ -410,6 +485,13 @@ export default function SettingsDialog({
                 <GameModeSelector
                   value={devGameMode}
                   onChange={setDevGameMode}
+                  menuPortalContainer={menuPortalContainer}
+                />
+              </div>
+              <div className={ROW}>
+                <span className="flex-1 text-sm">Dev save</span>
+                <DevSaveSelector
+                  value={activeDevSaveId}
                   menuPortalContainer={menuPortalContainer}
                 />
               </div>

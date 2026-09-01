@@ -1499,6 +1499,19 @@ describe('Save Game System - Comprehensive Tests', () => {
       expect(mockPut).toHaveBeenCalled();
     });
 
+    it('should skip save when a DEV save fixture is loaded', async () => {
+      const state = await import('./state');
+      vi.mocked(state.useGameStore.getState).mockReturnValue({
+        activeDevSaveId: 'sleep-unlocked',
+        inactivityDialogOpen: false,
+        getAndResetClickAnalytics: vi.fn(),
+        getAndResetResourceAnalytics: vi.fn(),
+      } as any);
+
+      await saveGame(createMockGameState(), true);
+      expect(mockPut).not.toHaveBeenCalled();
+    });
+
     it('should skip save when inactivity dialog is open', async () => {
       const state = await import('./state');
       vi.mocked(state.useGameStore.getState).mockReturnValue({

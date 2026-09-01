@@ -4,6 +4,7 @@ import {
   type UtmAttribution,
 } from "@shared/utmAttribution";
 import { parseRefParam } from "@shared/referralCode";
+import { parseDevSaveId, type DevSaveId } from "@/game/devSaveIds";
 
 export interface StartupLocation {
   pathname: string;
@@ -30,6 +31,11 @@ export interface StartupIntent {
   utmAttribution: UtmAttribution | null;
   /** Valid `?ref=` invite code, if present. */
   referralCode: string | null;
+  /**
+   * Dev-only named milestone (`?devSave=`). Null in production builds and
+   * when the id is unknown.
+   */
+  devSave: DevSaveId | null;
   hardReloadCacheBust: boolean;
 }
 
@@ -56,6 +62,9 @@ export function parseStartupIntent(location: StartupLocation): StartupIntent {
   const accessToken = hash.get("access_token") || search.get("access_token");
   const oauthCallback = hasOauthCallbackMaterial(search, hash);
   const utmAttribution = utmAttributionFromSearchParams(search);
+  const devSave = import.meta.env.DEV
+    ? parseDevSaveId(search.get("devSave"))
+    : null;
 
   return {
     accessToken,
@@ -67,13 +76,15 @@ export function parseStartupIntent(location: StartupLocation): StartupIntent {
       paymentReturn ||
       boost ||
       search.get("game") === "true" ||
-      emailConfirmed,
+      emailConfirmed ||
+      Boolean(devSave),
     openShop,
     cruelShopHighlight:
       openShop && search.get("cruelHighlight") === "true",
     googleAdsSource: search.get("c"),
     utmAttribution,
     referralCode: parseRefParam(search.get("ref")),
+    devSave,
     hardReloadCacheBust: search.has("_cb"),
   };
 }

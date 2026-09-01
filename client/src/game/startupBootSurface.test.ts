@@ -145,4 +145,14 @@ describe("shouldBootGameSurface", () => {
       shouldBootGameSurface({ pathname: "/boost", search: "", hash: "" }),
     ).toBe(true);
   });
+
+  it("boots Game for a DEV save fixture without a header", () => {
+    expect(
+      shouldBootGameSurface({
+        pathname: "/",
+        search: "?devSave=sleep-unlocked",
+        hash: "",
+      }),
+    ).toBe(true);
+  });
 });

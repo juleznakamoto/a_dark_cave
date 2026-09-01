@@ -58,6 +58,11 @@ standards below — it does not duplicate the architecture map.
 - Test files are located alongside source files with `.test.ts` extension
 - Use Vitest for testing
 - Run tests with `npm test` or `npm run test:ui`
+- **DEV save fixtures:** when browser-testing a mid-game feature, open
+  `/?devSave=<id>` (see `.cursor/rules/dev-save-fixtures.mdc`). In unit tests,
+  use `buildDevSave()` from `client/src/game/devSaves.ts` when the test needs
+  that milestone (Sleep unlocked, village, already sleeping, Bastion). Do not
+  click through from Make Fire or reuse a leftover browser save.
 
 ### File Organization
 - Keep game logic in `client/src/game/`

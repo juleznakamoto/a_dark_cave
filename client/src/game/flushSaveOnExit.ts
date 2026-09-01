@@ -28,7 +28,9 @@ let exitFlushLocked = false;
 function hasLiveGameToFlush(state: {
   flags?: { gameStarted?: boolean };
   isGameLoopActive?: boolean;
+  activeDevSaveId?: string | null;
 }): boolean {
+  if (state.activeDevSaveId) return false;
   return state.flags?.gameStarted === true || state.isGameLoopActive === true;
 }
 
@@ -60,6 +62,7 @@ function flushLiveGameOnce(): Promise<void> {
 export function shouldFlushLiveGameOnExit(state: {
   flags?: { gameStarted?: boolean };
   isGameLoopActive?: boolean;
+  activeDevSaveId?: string | null;
 }): boolean {
   return hasLiveGameToFlush(state);
 }

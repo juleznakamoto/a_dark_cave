@@ -12,6 +12,7 @@ import {
   setDevGameModeOverride,
   type DevGameMode,
 } from "@/lib/edition";
+import type { DevSaveId } from "@/game/devSaveIds";
 import { isDemoPlayFrozen } from "@/game/demoLimit";
 import { gameActions, shouldShowAction, canExecuteAction } from "@/game/rules";
 import {
@@ -245,6 +246,11 @@ interface GameStore extends GameState {
    * CrazyGames Demo without a Steam build (Settings → Game Mode).
    */
   devGameMode: DevGameMode;
+  /**
+   * Dev-only: named milestone fixture currently loaded (`?devSave=` / Settings).
+   * Runtime-only; never persisted. While set, local and cloud saves are skipped.
+   */
+  activeDevSaveId: DevSaveId | null;
   lastSaved: string;
   eventDialog: {
     isOpen: boolean;
@@ -1933,6 +1939,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
   activeTab: "cave",
   devMode: import.meta.env.DEV,
   devGameMode: "normal",
+  activeDevSaveId: null,
   lastSaved: "Never",
   cooldowns: {},
   executionStartTimes: {},
@@ -2165,6 +2172,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
 
     set((state) => ({
       ...stateToSet,
+      activeDevSaveId: null,
       ...getTransientDialogResetOnLoad(),
       ...getTimedEventTabCleanupPatch(state.activeTab),
     }));
@@ -3046,6 +3054,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
 
       // Dev Settings → Game Mode (session preference; not persisted to save)
       devGameMode: state.devGameMode,
+      activeDevSaveId: null,
 
       // Preserve meta win flags / lifetime stats across restarts
       hasWonAnyGame: state.hasWonAnyGame || false,
@@ -3355,6 +3364,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
         devMode: import.meta.env.DEV,
         // Keep session Game Mode; do not restore from save (UI-only).
         devGameMode: get().devGameMode,
+        activeDevSaveId: null,
         boostApplied: savedState.boostApplied === true,
         effects: calculateTotalEffects(stateForDerived),
         bastion_stats: calculateBastionStats(stateForDerived),
@@ -3585,8 +3595,10 @@ export const useGameStore = create<GameStore>((set, get) => ({
         ...migrated,
         ...getPendingModalEventDialogResume(migrated),
       });
-      const { flushOverdueActionExecutions } = await import("@/game/loop");
+      const { flushOverdueActionExecutions, scheduleSleepDialogRestore } =
+        await import("@/game/loop");
       flushOverdueActionExecutions();
+      scheduleSleepDialogRestore();
       StateManager.scheduleEffectsUpdate(get);
     } else {
       // Make Fire starts the run in memory before a save exists. A second
@@ -3607,6 +3619,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
         expeditionVillagers: {},
         log: [],
         devMode: import.meta.env.DEV,
+        activeDevSaveId: null,
         effects: calculateTotalEffects(defaultGameState),
         bastion_stats: calculateBastionStats(defaultGameState),
         startTime: Date.now(), // Set start time for new game

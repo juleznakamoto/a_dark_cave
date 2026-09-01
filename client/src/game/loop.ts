@@ -334,9 +334,26 @@ function clearIdleModeDisplayTimeout(): void {
   }
 }
 
+/** Re-open Sleep after load/cloud reset closes the dialog but keeps the session. */
+export function scheduleSleepDialogRestore(): void {
+  clearIdleModeDisplayTimeout();
+  const state = useGameStore.getState();
+  if (!shouldRestoreSleepDialog(state)) return;
+  idleModeDisplayTimeoutId = setTimeout(() => {
+    idleModeDisplayTimeoutId = null;
+    const current = useGameStore.getState();
+    if (shouldRestoreSleepDialog(current)) {
+      current.setIdleModeDialog(true);
+    }
+  }, 500);
+}
+
 export function startGameLoop() {
   if (gameLoopId) {
-    return; // Already running
+    // Loop already running (cloud reconcile, remount). Still restore Sleep
+    // if loadGame closed the dialog but left the session pending.
+    scheduleSleepDialogRestore();
+    return;
   }
 
   // Clear any timed event that expired while the game was closed (stale saved state).
@@ -427,17 +444,7 @@ export function startGameLoop() {
   sessionCheckInterval = setInterval(checkSession, SESSION_CHECK_INTERVAL);
 
   // Check if idle mode needs to be displayed (user left during idle mode)
-  clearIdleModeDisplayTimeout();
-  const state = useGameStore.getState();
-  if (shouldRestoreSleepDialog(state)) {
-    idleModeDisplayTimeoutId = setTimeout(() => {
-      idleModeDisplayTimeoutId = null;
-      const current = useGameStore.getState();
-      if (shouldRestoreSleepDialog(current)) {
-        current.setIdleModeDialog(true);
-      }
-    }, 500);
-  }
+  scheduleSleepDialogRestore();
 
   function tick(timestamp: number) {
     // Limit to 10 FPS

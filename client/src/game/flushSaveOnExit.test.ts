@@ -68,6 +68,12 @@ describe("flushSaveOnExit", () => {
       true,
     );
     expect(shouldFlushLiveGameOnExit({ isGameLoopActive: true })).toBe(true);
+    expect(
+      shouldFlushLiveGameOnExit({
+        flags: { gameStarted: true },
+        activeDevSaveId: "sleep-unlocked",
+      }),
+    ).toBe(false);
   });
 
   it("does not write a start-screen store on pagehide", async () => {

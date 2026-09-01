@@ -45,7 +45,7 @@ const START_INTRO_VAPORIZE_FONT_FALLBACK = {
 /** Easter egg: flash eyes at center of the upper-left screen quadrant. */
 const EYES_EASTER_EGG_SRC = publicUrl("/images/eyes-easter-egg.png");
 const EYES_EASTER_EGG_SOUND = publicUrl("/sounds/monster_start.mp3");
-const EYES_EASTER_EGG_DURATION_MS = 250;
+const EYES_EASTER_EGG_DURATION_MS = 350;
 /** Defer asset fetch until well after LCP / lab SEO windows. */
 const EYES_EASTER_EGG_ASSET_LOAD_MS = 90_000;
 /** Hot-zone is armed only after this idle time on the start screen. */

@@ -12,6 +12,7 @@ import {
   processActionTicks,
   shouldRestoreSleepDialog,
   resolveSleepDialogInit,
+  scheduleSleepDialogRestore,
   startGameLoop,
   stopGameLoop,
   resetAttackWaveElapsedClock,
@@ -21,6 +22,7 @@ import {
 } from "./loop";
 import * as saveModule from "./save";
 import { setGameTabHiddenForTests } from "@/lib/tabVisibility";
+import { buildDevSave } from "./devSaves";
 
 describe('Game Loop Production', () => {
   beforeEach(() => {
@@ -439,11 +441,7 @@ describe("sleep dialog restore on loop start", () => {
 
   it("opens the sleep dialog when a session is still pending", () => {
     useGameStore.setState({
-      idleModeState: {
-        isActive: true,
-        startTime: Date.now() - 1000,
-        needsDisplay: true,
-      },
+      ...buildDevSave("sleep-active"),
       idleModeDialog: { isOpen: false },
     });
 
@@ -455,11 +453,7 @@ describe("sleep dialog restore on loop start", () => {
 
   it("does not reopen sleep after the player already woke", () => {
     useGameStore.setState({
-      idleModeState: {
-        isActive: true,
-        startTime: Date.now() - 1000,
-        needsDisplay: true,
-      },
+      ...buildDevSave("sleep-active"),
       idleModeDialog: { isOpen: true },
     });
 
@@ -481,11 +475,7 @@ describe("sleep dialog restore on loop start", () => {
 
   it("cancels a pending sleep restore when the loop stops", () => {
     useGameStore.setState({
-      idleModeState: {
-        isActive: true,
-        startTime: Date.now() - 1000,
-        needsDisplay: true,
-      },
+      ...buildDevSave("sleep-active"),
       idleModeDialog: { isOpen: false },
     });
 
@@ -496,17 +486,13 @@ describe("sleep dialog restore on loop start", () => {
     expect(useGameStore.getState().idleModeDialog.isOpen).toBe(false);
   });
 
-  it("leaves the player stuck sleeping if dialogs reset after restore", async () => {
+  it("reopens sleep after load resets transient dialogs", async () => {
     const { getTransientDialogResetOnLoad } = await import(
       "./persistedStateBoundary"
     );
 
     useGameStore.setState({
-      idleModeState: {
-        isActive: true,
-        startTime: Date.now() - 1000,
-        needsDisplay: true,
-      },
+      ...buildDevSave("sleep-active"),
       idleModeDialog: { isOpen: false },
     });
 
@@ -516,13 +502,36 @@ describe("sleep dialog restore on loop start", () => {
 
     // loadGame / cloud reconcile always close transient dialogs.
     useGameStore.setState(getTransientDialogResetOnLoad());
-    startGameLoop();
+    expect(useGameStore.getState().idleModeDialog.isOpen).toBe(false);
+
+    // Cloud reconcile does not stop the loop; restore must still run.
+    scheduleSleepDialogRestore();
     vi.advanceTimersByTime(600);
 
-    const stuck = useGameStore.getState();
-    expect(stuck.idleModeState.isActive).toBe(true);
-    expect(stuck.idleModeState.needsDisplay).toBe(true);
-    expect(stuck.idleModeDialog.isOpen).toBe(false);
+    const restored = useGameStore.getState();
+    expect(restored.idleModeState.isActive).toBe(true);
+    expect(restored.idleModeState.needsDisplay).toBe(true);
+    expect(restored.idleModeDialog.isOpen).toBe(true);
+  });
+
+  it("reopens sleep when startGameLoop runs again after a dialog reset", async () => {
+    const { getTransientDialogResetOnLoad } = await import(
+      "./persistedStateBoundary"
+    );
+
+    useGameStore.setState({
+      ...buildDevSave("sleep-active"),
+      idleModeDialog: { isOpen: false },
+    });
+
+    startGameLoop();
+    vi.advanceTimersByTime(600);
+    useGameStore.setState(getTransientDialogResetOnLoad());
+    expect(useGameStore.getState().idleModeDialog.isOpen).toBe(false);
+
+    startGameLoop();
+    vi.advanceTimersByTime(600);
+    expect(useGameStore.getState().idleModeDialog.isOpen).toBe(true);
   });
 });
 

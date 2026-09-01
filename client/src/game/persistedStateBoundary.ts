@@ -39,6 +39,7 @@ export const RUNTIME_ONLY_NON_DIALOG_KEYS = [
   "activeTab",
   "devMode",
   "devGameMode",
+  "activeDevSaveId",
   // save.ts stamps lastSaved onto the sanitized blob after buildGameState.
   "lastSaved",
   "resourceChangeEvents",

@@ -699,6 +699,10 @@ export async function saveGame(
     // Check if game is inactive - if so, don't save
     const { useGameStore } = await import("./state");
     const currentState = useGameStore.getState();
+    if (currentState.activeDevSaveId) {
+      logger.log("[SAVE] Dev save fixture active - skipping persist");
+      return SAVE_SKIPPED;
+    }
     if (currentState.inactivityDialogOpen && !options?.force) {
       logger.log("[SAVE] ⚠️ Game is inactive - skipping save");
       return SAVE_SKIPPED;

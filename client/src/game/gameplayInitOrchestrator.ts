@@ -33,6 +33,7 @@ import { reportUtmLanding } from "@/lib/utmLanding";
 import { hasUtmAttribution } from "@shared/utmAttribution";
 import { pickPreferredSave } from "@/game/saveConflict";
 import { applyReferralCloudRefreshPatch } from "@/game/referralCloudRefresh";
+import { applyDevSaveToStore } from "@/game/devSaves";
 import type { GameState, SaveData } from "@shared/schema";
 
 export interface GameplayInitResult {
@@ -72,9 +73,14 @@ export async function runGameplayInitialization(
 
   const preparedHydration = consumePreparedGameHydration();
   const alreadyStarted = useGameStore.getState().flags.gameStarted === true;
-  const didLocalLoad = preparedHydration == null && !alreadyStarted;
-  const hadPersistedSave =
-    preparedHydration?.hadPersistedSave ??
+  if (intent.devSave) {
+    applyDevSaveToStore(intent.devSave);
+  }
+  const didLocalLoad =
+    !intent.devSave && preparedHydration == null && !alreadyStarted;
+  const hadPersistedSave = intent.devSave
+    ? true
+    : preparedHydration?.hadPersistedSave ??
     (alreadyStarted
       ? false
       : await useGameStore.getState().loadGame({ cloud: false }));

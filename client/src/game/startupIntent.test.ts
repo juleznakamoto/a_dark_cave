@@ -97,6 +97,33 @@ describe("parseStartupIntent", () => {
       hardReloadCacheBust: false,
       utmAttribution: null,
       referralCode: null,
+      devSave: null,
+    });
+  });
+
+  it("forces Game for a known DEV save fixture", () => {
+    expect(
+      parseStartupIntent({
+        pathname: "/",
+        search: "?devSave=sleep-unlocked",
+        hash: "",
+      }),
+    ).toMatchObject({
+      forceGame: true,
+      devSave: "sleep-unlocked",
+    });
+  });
+
+  it("ignores an unknown DEV save id", () => {
+    expect(
+      parseStartupIntent({
+        pathname: "/",
+        search: "?devSave=not-a-real-save",
+        hash: "",
+      }),
+    ).toMatchObject({
+      forceGame: false,
+      devSave: null,
     });
   });
 });
