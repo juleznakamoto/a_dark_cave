@@ -66,19 +66,19 @@
     "journeyCompleteDiscount": "Sconto speciale per aver completato il gioco",
     "artifactSkullLantern": {
       "title": "Lanterna di Teschio",
-      "caveExplore": "Esplora Caverna: +200% Bonus, -5s Recupero",
-      "mining": "Estrazione: +200% Bonus, -5s Recupero",
+      "caveExplore": "Esplora Caverna: +150% Bonus, -3s Recupero",
+      "mining": "Estrazione: +150% Bonus, -3s Recupero",
       "unlocksStoryline": "Sblocca la trama della Lanterna di Teschio"
     },
     "artifactTarnishedCompass": {
       "title": "Bussola Annerita",
-      "doubleGain": "10% di probabilità di raddoppiare i guadagni delle azioni",
+      "doubleGain": "5% di probabilità di raddoppiare i guadagni delle azioni",
       "luck": "+5 Fortuna",
       "unlocksStoryline": "Sblocca la trama della Bussola"
     },
     "artifactCrowHarness": {
       "title": "Corvo Guercio",
-      "doubleGain": "fino al 15% di probabilità di raddoppiare i guadagni delle azioni",
+      "doubleGain": "fino al 10% di probabilità di raddoppiare i guadagni delle azioni",
       "unlocksStoryline": "Sblocca la trama del Corvo",
       "addsFellowshipMember": "Aggiunge un membro della compagnia"
     },

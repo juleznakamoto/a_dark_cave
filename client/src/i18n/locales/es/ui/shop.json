@@ -72,19 +72,19 @@
     "artifactSkullLantern": {
       "title": "Linterna de cráneo", //x1.4
       "unlocksStoryline": "Desbloquea la historia del farol de cráneo", //x1.4
-      "caveExplore": "Exploración de cueva: +200 % de bonificación, -5 s de recarga",
-      "mining": "Extracción: +200 % de bonificación, -5 s de recarga"
+      "caveExplore": "Exploración de cueva: +150 % de bonificación, -3 s de recarga",
+      "mining": "Extracción: +150 % de bonificación, -3 s de recarga"
     },
     "artifactTarnishedCompass": {
       "title": "Brújula deslustrada",
       "unlocksStoryline": "Desbloquea la historia de la brújula", //x1.4
-      "doubleGain": "10 % de probabilidad de duplicar las ganancias de acciones", //x1.7
+      "doubleGain": "5 % de probabilidad de duplicar las ganancias de acciones", //x1.7
       "luck": "+5 Suerte"
     },
     "artifactCrowHarness": {
       "title": "Cuervo tuerto",
       "unlocksStoryline": "Desbloquea la historia del cuervo", //x1.5
-      "doubleGain": "Hasta un 15 % de probabilidad de duplicar las ganancias de acciones", //x1.7
+      "doubleGain": "Hasta un 10 % de probabilidad de duplicar las ganancias de acciones", //x1.7
       "addsFellowshipMember": "Añade un miembro de la compañía"
     },
     "cruelMode": {

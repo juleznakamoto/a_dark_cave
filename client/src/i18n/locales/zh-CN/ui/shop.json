@@ -72,19 +72,19 @@
     "artifactSkullLantern": {
       "title": "颅骨灯笼",
       "unlocksStoryline": "解锁骷髅灯笼剧情线",
-      "caveExplore": "探索洞穴：+200% 加成，-5 秒冷却",
-      "mining": "采矿：+200% 加成，-5 秒冷却"
+      "caveExplore": "探索洞穴：+150% 加成，-3 秒冷却",
+      "mining": "采矿：+150% 加成，-3 秒冷却"
     },
     "artifactTarnishedCompass": {
       "title": "黯淡指南针",
       "unlocksStoryline": "解锁罗盘剧情线",
-      "doubleGain": "10% 几率双倍行动收益",
+      "doubleGain": "5% 几率双倍行动收益",
       "luck": "+5 幸运"
     },
     "artifactCrowHarness": {
       "title": "独眼乌鸦",
       "unlocksStoryline": "解锁乌鸦剧情线",
-      "doubleGain": "最高 15% 几率双倍行动收益",
+      "doubleGain": "最高 10% 几率双倍行动收益",
       "addsFellowshipMember": "增加一名同伴"
     },
     "cruelMode": {

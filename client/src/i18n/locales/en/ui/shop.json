@@ -72,19 +72,19 @@
     "artifactSkullLantern": {
       "title": "Skull Lantern",
       "unlocksStoryline": "Unlocks Skull Lantern storyline",
-      "caveExplore": "Cave Explore: +200% Bonus, -5s Cooldown",
-      "mining": "Mining: +200% Bonus, -5s Cooldown"
+      "caveExplore": "Cave Explore: +150% Bonus, -3s Cooldown",
+      "mining": "Mining: +150% Bonus, -3s Cooldown"
     },
     "artifactTarnishedCompass": {
       "title": "Tarnished Compass",
       "unlocksStoryline": "Unlocks Compass storyline",
-      "doubleGain": "10% chance to double action gains",
+      "doubleGain": "5% chance to double action gains",
       "luck": "+5 Luck"
     },
     "artifactCrowHarness": {
       "title": "One-eyed Crow",
       "unlocksStoryline": "Unlocks Crow storyline",
-      "doubleGain": "up to 15% chance to double action gains",
+      "doubleGain": "up to 10% chance to double action gains",
       "addsFellowshipMember": "Adds fellowship member"
     },
     "cruelMode": {

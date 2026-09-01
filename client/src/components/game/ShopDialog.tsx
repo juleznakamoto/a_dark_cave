@@ -328,10 +328,10 @@ function ArtifactEffectsList({
     artifact === "skull_lantern"
       ? [
         t("shop.artifactSkullLantern.caveExplore", {
-          defaultValue: "Cave Explore: +200% Bonus, -5s Cooldown",
+          defaultValue: "Cave Explore: +150% Bonus, -3s Cooldown",
         }),
         t("shop.artifactSkullLantern.mining", {
-          defaultValue: "Mining: +200% Bonus, -5s Cooldown",
+          defaultValue: "Mining: +150% Bonus, -3s Cooldown",
         }),
         t("shop.artifactSkullLantern.unlocksStoryline"),
       ]

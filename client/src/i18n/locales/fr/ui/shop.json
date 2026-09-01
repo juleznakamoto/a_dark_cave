@@ -72,19 +72,19 @@
     "artifactSkullLantern": {
       "title": "Lanterne crânienne", //x1.4
       "unlocksStoryline": "Débloque l'histoire de la lanterne-crâne",
-      "caveExplore": "Exploration de grotte : +200 % de bonus, -5 s de recharge",
-      "mining": "Extraction : +200 % de bonus, -5 s de recharge"
+      "caveExplore": "Exploration de grotte : +150 % de bonus, -3 s de recharge",
+      "mining": "Extraction : +150 % de bonus, -3 s de recharge"
     },
     "artifactTarnishedCompass": {
       "title": "Boussole ternie",
       "unlocksStoryline": "Débloque l'histoire de la boussole", //x1.4
-      "doubleGain": "10 % de chance de doubler les gains d'actions",
+      "doubleGain": "5 % de chance de doubler les gains d'actions",
       "luck": "+5 Chance"
     },
     "artifactCrowHarness": {
       "title": "Corbeau borgne",
       "unlocksStoryline": "Débloque l'histoire du corbeau", //x1.4
-      "doubleGain": "Jusqu'à 15 % de chance de doubler les gains d'actions", //x1.4
+      "doubleGain": "Jusqu'à 10 % de chance de doubler les gains d'actions", //x1.4
       "addsFellowshipMember": "Ajoute un membre de la compagnie"
     },
     "cruelMode": {

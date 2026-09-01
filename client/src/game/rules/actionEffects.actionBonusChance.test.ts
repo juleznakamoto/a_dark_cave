@@ -37,8 +37,8 @@ describe('Tarnished Compass - actionBonusChance', () => {
 
     eligibleActions.forEach((actionId) => {
       it(`${actionId}: should trigger 2x bonus when random check succeeds`, () => {
-        // Mock Math.random to always trigger the bonus (return < 0.1)
-        vi.spyOn(Math, 'random').mockReturnValue(0.05);
+        // Mock Math.random to always trigger the bonus (return < 0.05)
+        vi.spyOn(Math, 'random').mockReturnValue(0.01);
 
         const state = createMockState({
           relics: { tarnished_compass: true },
@@ -55,7 +55,7 @@ describe('Tarnished Compass - actionBonusChance', () => {
       });
 
       it(`${actionId}: should not trigger bonus when random check fails`, () => {
-        // Mock Math.random to never trigger the bonus (return > 0.1)
+        // Mock Math.random to never trigger the bonus (return > 0.05)
         vi.spyOn(Math, 'random').mockReturnValue(0.15);
 
         const state = createMockState({

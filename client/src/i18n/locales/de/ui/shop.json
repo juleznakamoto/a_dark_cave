@@ -72,19 +72,19 @@
     "artifactSkullLantern": {
       "title": "Schädellaterne",
       "unlocksStoryline": "Schaltet die Schädellaternenhandlung frei", //x1.3
-      "caveExplore": "Höhlenerkundung: +200 % Bonus, -5 s Abklingzeit",
-      "mining": "Abbau: +200 % Bonus, -5s Abklingzeit"
+      "caveExplore": "Höhlenerkundung: +150 % Bonus, -3 s Abklingzeit",
+      "mining": "Abbau: +150 % Bonus, -3s Abklingzeit"
     },
     "artifactTarnishedCompass": {
       "title": "Angelaufener Kompass",
       "unlocksStoryline": "Schaltet die Kompasshandlung frei", //x1.3
-      "doubleGain": "10 % Chance, Aktionsgewinne zu verdoppeln",
+      "doubleGain": "5 % Chance, Aktionsgewinne zu verdoppeln",
       "luck": "+5 Glück"
     },
     "artifactCrowHarness": {
       "title": "Einäugige Krähe",
       "unlocksStoryline": "Schaltet die Krähenhandlung frei", //x1.5
-      "doubleGain": "bis zu 15 % Chance, Aktionsgewinne zu verdoppeln",
+      "doubleGain": "bis zu 10 % Chance, Aktionsgewinne zu verdoppeln",
       "addsFellowshipMember": "Fügt einen Gefährten hinzu"
     },
     "cruelMode": {

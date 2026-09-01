@@ -13,7 +13,7 @@ describe("composeMerchantSpecialItemTooltip", () => {
     render(<>{node}</>);
 
     const cost = screen.getByTestId("cost");
-    const effects = screen.getByText(/Mining: \+200% Bonus/);
+    const effects = screen.getByText(/Mining: \+150% Bonus/);
     const description = screen.getByText(
       /Forged from cursed bone illuminating the deepest depths/,
     );

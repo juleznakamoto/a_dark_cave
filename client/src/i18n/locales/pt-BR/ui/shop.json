@@ -66,19 +66,19 @@
     "journeyCompleteDiscount": "Desconto especial por concluir o jogo",
     "artifactSkullLantern": {
       "title": "Lanterna de Caveira",
-      "caveExplore": "Explorar Caverna: +200% de Bônus, -5s de Recarga",
-      "mining": "Mineração: +200% de Bônus, -5s de Recarga",
+      "caveExplore": "Explorar Caverna: +150% de Bônus, -3s de Recarga",
+      "mining": "Mineração: +150% de Bônus, -3s de Recarga",
       "unlocksStoryline": "Desbloqueia a trama da Lanterna de Caveira"
     },
     "artifactTarnishedCompass": {
       "title": "Bússola Manchada",
-      "doubleGain": "10% de chance de dobrar os ganhos das ações",
+      "doubleGain": "5% de chance de dobrar os ganhos das ações",
       "luck": "+5 de Sorte",
       "unlocksStoryline": "Desbloqueia a trama da Bússola"
     },
     "artifactCrowHarness": {
       "title": "Corvo Caolho",
-      "doubleGain": "até 15% de chance de dobrar os ganhos das ações",
+      "doubleGain": "até 10% de chance de dobrar os ganhos das ações",
       "unlocksStoryline": "Desbloqueia a trama do Corvo",
       "addsFellowshipMember": "Adiciona um membro da irmandade"
     },

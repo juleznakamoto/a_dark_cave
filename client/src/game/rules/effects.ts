@@ -393,12 +393,12 @@ export const toolEffects: Record<string, EffectDefinition> = {
     bonuses: {
       actionBonuses: {
         mining: {
-          resourceMultiplier: 3.0, // +200% = 3x total
-          executionTimeReduction: 5,
+          resourceMultiplier: 2.5, // +150% = 2.5x total
+          executionTimeReduction: 3,
         },
         caveExplore: {
-          resourceMultiplier: 3.0, // +200% = 3x total
-          executionTimeReduction: 5,
+          resourceMultiplier: 2.5, // +150% = 2.5x total
+          executionTimeReduction: 3,
         },
       },
     },
@@ -1667,7 +1667,7 @@ export const clothingEffects: Record<string, EffectDefinition> = {
     bonuses: {
       generalBonuses: {
         luck: 5,
-        actionBonusChance: 0.1, // 10% chance to double action gains
+        actionBonusChance: 0.05, // 5% chance to double action gains
       },
       actionBonuses: {
         caveExplore: {
