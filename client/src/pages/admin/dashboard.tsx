@@ -1359,7 +1359,7 @@ export default function AdminDashboard() {
                     getDailySignups={() => {
                       const days = ADMIN_OVERVIEW_CHART_DAYS[dailySignupsChartTimeRange];
 
-                      // Server keys are UTC calendar dates (DATE(created_at) in Postgres/UTC).
+                      // Server keys are UTC calendar dates from auth.users.created_at.
                       // Generate our range in UTC too so keys align regardless of the browser's timezone.
                       const lookup = new Map<string, number>();
                       for (const entry of dailySignupsData) {

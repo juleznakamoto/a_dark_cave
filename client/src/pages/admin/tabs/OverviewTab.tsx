@@ -585,7 +585,7 @@ export default function OverviewTab(props: OverviewTabProps) {
             <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
               <div>
                 <CardTitle>Daily Sign-ups ({adminOverviewChartTitleSuffix(dailySignupsChartTimeRange)})</CardTitle>
-                <CardDescription>New user registrations</CardDescription>
+                <CardDescription>New accounts created (auth, UTC)</CardDescription>
               </div>
               <ChartTimeRangeSelectOverview
                 value={dailySignupsChartTimeRange}
@@ -678,7 +678,7 @@ export default function OverviewTab(props: OverviewTabProps) {
       <Card>
         <CardHeader>
           <CardTitle>Hourly Sign-ups (Last 24 Hours)</CardTitle>
-          <CardDescription>New user registrations by hour</CardDescription>
+          <CardDescription>New accounts created (auth), by hour</CardDescription>
         </CardHeader>
         <CardContent>
           <ChartContainer config={{}} className="h-[300px] w-full">

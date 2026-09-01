@@ -1408,6 +1408,7 @@ app.post("/api/leaderboard/update-username", leaderboardUpdateLimiter, async (re
 
       // Compute currently-playing / DAU/WAU/MAU and signup aggregates.
       // DAU/WAU/MAU/signups use DB functions to avoid the PostgREST max_rows cap.
+      // Sign-ups are auth.users.created_at (see get_daily_signups / get_hourly_signups).
       // Currently playing is a narrow time window, so an exact count filter is enough.
       const [
         { count: currentlyPlayingCount, error: currentlyPlayingError },
