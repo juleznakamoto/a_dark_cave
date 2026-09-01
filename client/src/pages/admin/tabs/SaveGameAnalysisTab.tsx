@@ -88,7 +88,6 @@ const ISSUE_LABELS: Record<SaveGameIssueKind, string> = {
   missing_buildings_with_progress: "Missing/zero buildings with progress",
   missing_foundational_slices: "Missing foundational object slices",
   bad_slice_shape: "Slice present but not an object",
-  missing_ascension_book: "Button upgrades without book of ascension",
   missing_game_started: "Progress evidence but gameStarted false",
   missing_unlock_flags: "Missing tab unlock flags (village/forest/bastion)",
   bad_story_seen: "Malformed story.seen",

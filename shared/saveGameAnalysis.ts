@@ -81,7 +81,6 @@ export type SaveGameIssueKind =
   | "missing_buildings_with_progress"
   | "missing_foundational_slices"
   | "bad_slice_shape"
-  | "missing_ascension_book"
   | "missing_game_started"
   | "missing_unlock_flags"
   | "bad_story_seen"
@@ -268,17 +267,6 @@ function sumBuildingCounts(buildings: Record<string, unknown> | null): number {
   return Object.values(buildings).reduce<number>((sum, value) => {
     return sum + (typeof value === "number" && Number.isFinite(value) ? value : 0);
   }, 0);
-}
-
-function hasButtonUpgradeLevels(buttonUpgrades: unknown): boolean {
-  const upgrades = asObject(buttonUpgrades);
-  if (!upgrades) return false;
-  for (const value of Object.values(upgrades)) {
-    const entry = asObject(value);
-    if (!entry) continue;
-    if (typeof entry.level === "number" && entry.level > 0) return true;
-  }
-  return false;
 }
 
 function listMismatchedOwnedKeys(
@@ -601,19 +589,6 @@ export function analyzeSaveGameRow(
     issues.push({
       kind: "missing_unlock_flags",
       detail: missingUnlocks.join(","),
-    });
-  }
-
-  const books = asObject(gsObj.books);
-  if (
-    hasButtonUpgradeLevels(gsObj.buttonUpgrades) &&
-    books?.book_of_ascension !== true
-  ) {
-    issues.push({
-      kind: "missing_ascension_book",
-      detail: Object.prototype.hasOwnProperty.call(gsObj, "books")
-        ? "book_of_ascension false"
-        : "books key missing",
     });
   }
 

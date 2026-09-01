@@ -129,18 +129,22 @@ describe("saveGameAnalysis", () => {
     expect(result.issues.some((i) => i.kind === "wiped_weapons")).toBe(true);
   });
 
-  it("detects missing ascension book when button upgrades exist", () => {
+  it("does not flag leftover button upgrades without Book of Ascension", () => {
+    // Older clients tracked mastery clicks/levels for everyone. The book only
+    // applies the bonus; upgrades without it are not a wipe.
     const result = analyzeSaveGameRow({
       ...baseRow,
       game_state: {
         playTime: 60_000,
         books: { book_of_ascension: false },
-        buttonUpgrades: { caveExplore: { clicks: 10, level: 2 } },
+        buttonUpgrades: {
+          hunt: { clicks: 64, level: 3 },
+          chopWood: { clicks: 134, level: 3 },
+          caveExplore: { clicks: 10, level: 2 },
+        },
       },
     });
-    expect(result.issues.some((i) => i.kind === "missing_ascension_book")).toBe(
-      true,
-    );
+    expect(result.issues).toHaveLength(0);
   });
 
   it("detects missing foundational slices on progressed saves", () => {
