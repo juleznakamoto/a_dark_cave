@@ -77,7 +77,7 @@ describe('Tarnished Compass - actionBonusChance', () => {
   describe('Bonus Calculation', () => {
     it('chopWood: should exactly double the gained wood', () => {
       // Mock to trigger bonus
-      vi.spyOn(Math, 'random').mockReturnValue(0.05);
+      vi.spyOn(Math, 'random').mockReturnValue(0.01);
 
       const state = createMockState({
         relics: { tarnished_compass: true },
@@ -93,7 +93,7 @@ describe('Tarnished Compass - actionBonusChance', () => {
     });
 
     it('mineStone: should exactly double the gained stone', () => {
-      vi.spyOn(Math, 'random').mockReturnValue(0.05);
+      vi.spyOn(Math, 'random').mockReturnValue(0.01);
 
       const state = createMockState({
         relics: { tarnished_compass: true },
@@ -110,7 +110,7 @@ describe('Tarnished Compass - actionBonusChance', () => {
     });
 
     it('hunt: should double all gained resources (food, fur, bones)', () => {
-      vi.spyOn(Math, 'random').mockReturnValue(0.05);
+      vi.spyOn(Math, 'random').mockReturnValue(0.01);
 
       const state = createMockState({
         relics: { tarnished_compass: true },
@@ -129,7 +129,7 @@ describe('Tarnished Compass - actionBonusChance', () => {
 
   describe('Stacking with Other Bonuses', () => {
     it('chopWood: should apply 2x after tool bonuses', () => {
-      vi.spyOn(Math, 'random').mockReturnValue(0.05);
+      vi.spyOn(Math, 'random').mockReturnValue(0.01);
 
       const stateWithoutTool = createMockState({
         relics: { tarnished_compass: true },
@@ -155,7 +155,7 @@ describe('Tarnished Compass - actionBonusChance', () => {
     });
 
     it('mineStone: should apply 2x after pickaxe bonuses', () => {
-      vi.spyOn(Math, 'random').mockReturnValue(0.05);
+      vi.spyOn(Math, 'random').mockReturnValue(0.01);
 
       const state = createMockState({
         relics: { tarnished_compass: true },
@@ -173,7 +173,7 @@ describe('Tarnished Compass - actionBonusChance', () => {
     });
 
     it('exploreCave: should apply 2x after lantern bonuses', () => {
-      vi.spyOn(Math, 'random').mockReturnValue(0.05);
+      vi.spyOn(Math, 'random').mockReturnValue(0.01);
 
       const state = createMockState({
         relics: { tarnished_compass: true },
@@ -192,7 +192,7 @@ describe('Tarnished Compass - actionBonusChance', () => {
 
   describe('Without Tarnished Compass', () => {
     it('should not trigger bonus without compass equipped', () => {
-      vi.spyOn(Math, 'random').mockReturnValue(0.05);
+      vi.spyOn(Math, 'random').mockReturnValue(0.01);
 
       const state = createMockState({
         relics: { tarnished_compass: false },
@@ -218,7 +218,7 @@ describe('Tarnished Compass - actionBonusChance', () => {
 
     nonEligibleActions.forEach((actionId) => {
       it(`${actionId}: should not trigger bonus for non-eligible action`, () => {
-        vi.spyOn(Math, 'random').mockReturnValue(0.05);
+        vi.spyOn(Math, 'random').mockReturnValue(0.01);
 
         const state = createMockState({
           relics: { tarnished_compass: true },
@@ -235,7 +235,7 @@ describe('Tarnished Compass - actionBonusChance', () => {
   });
 
   describe('Probability Distribution', () => {
-    it('should trigger approximately 10% of the time over many iterations', () => {
+    it('should trigger approximately 5% of the time over many iterations', () => {
       const iterations = 1000;
       let triggeredCount = 0;
 
@@ -256,17 +256,17 @@ describe('Tarnished Compass - actionBonusChance', () => {
         }
       }
 
-      // Should be approximately 10% (with some variance)
-      // Allow 7% - 13% range for statistical variance
+      // Should be approximately 5% (with some variance)
+      // Allow 2% - 8% range for statistical variance
       const percentage = (triggeredCount / iterations) * 100;
-      expect(percentage).toBeGreaterThan(7);
-      expect(percentage).toBeLessThan(13);
+      expect(percentage).toBeGreaterThan(2);
+      expect(percentage).toBeLessThan(8);
     });
   });
 
   describe('Edge Cases', () => {
     it('should not double negative amounts (costs)', () => {
-      vi.spyOn(Math, 'random').mockReturnValue(0.05);
+      vi.spyOn(Math, 'random').mockReturnValue(0.01);
 
       const state = createMockState({
         relics: { tarnished_compass: true },
@@ -281,7 +281,7 @@ describe('Tarnished Compass - actionBonusChance', () => {
     });
 
     it('should handle zero gains correctly', () => {
-      vi.spyOn(Math, 'random').mockReturnValue(0.05);
+      vi.spyOn(Math, 'random').mockReturnValue(0.01);
 
       const state = createMockState({
         relics: { tarnished_compass: true },
@@ -298,7 +298,7 @@ describe('Tarnished Compass - actionBonusChance', () => {
 
   describe('Multiple Resources', () => {
     it('exploreCave: should double all resources gained', () => {
-      vi.spyOn(Math, 'random').mockReturnValue(0.05);
+      vi.spyOn(Math, 'random').mockReturnValue(0.01);
 
       const state = createMockState({
         relics: { tarnished_compass: true },
@@ -314,7 +314,7 @@ describe('Tarnished Compass - actionBonusChance', () => {
     });
 
     it('hunt: should double food, fur, and bones independently', () => {
-      vi.spyOn(Math, 'random').mockReturnValue(0.05);
+      vi.spyOn(Math, 'random').mockReturnValue(0.01);
 
       const state = createMockState({
         relics: { tarnished_compass: true },
