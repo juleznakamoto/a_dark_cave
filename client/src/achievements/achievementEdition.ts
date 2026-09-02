@@ -1,4 +1,4 @@
-import { isSteamEditionActive } from "@/lib/edition";
+import { isSteamEditionActive, type DevGameMode } from "@/lib/edition";
 import type { AchievementChartConfig, AchievementSegment } from "./achievementTypes";
 
 /** True when this segment should appear for the given edition filter. */
@@ -34,8 +34,9 @@ export function filterWebOnlyAchievements(
 /** Config for the current runtime edition (Steam Game Mode / Steam build strips web-only). */
 export function getAchievementConfigForEdition(
   config: AchievementChartConfig,
+  devGameMode?: DevGameMode,
 ): AchievementChartConfig {
-  return filterWebOnlyAchievements(config, isSteamEditionActive());
+  return filterWebOnlyAchievements(config, isSteamEditionActive(devGameMode));
 }
 
 /** Steam partner / sync list — never includes web-only achievements. */

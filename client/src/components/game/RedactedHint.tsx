@@ -12,14 +12,22 @@ export function RedactedBar({
   widthCh,
   className,
 }: {
-  widthCh: number;
+  /** Omit to stretch to the parent width. */
+  widthCh?: number;
   className?: string;
 }) {
+  const fill = widthCh == null;
   return (
-    <span className="flex h-[1em] min-w-0 max-w-full items-center" aria-hidden>
+    <span
+      className={cn(
+        "flex h-[1em] min-w-0 max-w-full items-center",
+        fill && "w-full",
+      )}
+      aria-hidden
+    >
       <span
         className="block h-2.5 min-w-0 max-w-full overflow-visible rounded-[2px]"
-        style={{ width: `${widthCh}ch` }}
+        style={fill ? { width: "100%" } : { width: `${widthCh}ch` }}
       >
         <span
           className={cn(
@@ -37,11 +45,14 @@ export function RedactedLockedHint({
   label,
   tooltipId,
   widthCh,
+  fill,
   className,
 }: {
   label?: string;
   tooltipId: string;
   widthCh?: number;
+  /** Stretch to the parent width instead of sizing from the label. */
+  fill?: boolean;
   className?: string;
 }) {
   const { t } = useUiTranslation();
@@ -53,10 +64,18 @@ export function RedactedLockedHint({
       tooltip={<div className="text-xs">{hint}</div>}
       disabled={true}
       tooltipId={tooltipId}
-      className={cn("inline-flex min-w-0 max-w-full items-center self-center", className)}
+      className={cn(
+        "inline-flex min-w-0 max-w-full items-center self-center",
+        fill && "w-full",
+        className,
+      )}
     >
-      <span aria-label={hint}>
-        <RedactedBar widthCh={widthCh ?? getRedactedWidthCh(label ?? "locked")} />
+      <span aria-label={hint} className={fill ? "block w-full" : undefined}>
+        <RedactedBar
+          widthCh={
+            fill ? undefined : (widthCh ?? getRedactedWidthCh(label ?? "locked"))
+          }
+        />
       </span>
     </TooltipWrapper>
   );

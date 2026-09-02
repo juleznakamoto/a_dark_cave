@@ -556,11 +556,23 @@ export default function CavePanel() {
 
                       if (visibleActions.length === 0) return null;
 
+                      const teaseableCount = subGroup.actions.filter(
+                        (action) => action.showWhen === undefined || action.showWhen,
+                      ).length;
+                      const showExploreEllipsis =
+                        catalogActive &&
+                        !isCraftSection &&
+                        subGroupIndex === 0 &&
+                        visibleActions.length < teaseableCount;
+
                       return (
                         <div key={subGroupIndex} className={gameActionButtonGridClassName("w-full")}>
                           {visibleActions.map((action) =>
                             renderButton(action.id, action.label),
                           )}
+                          {showExploreEllipsis ? (
+                            <RedactedMoreHint tooltipId="cave-explore-more-redacted" />
+                          ) : null}
                         </div>
                       );
                     })}
@@ -586,7 +598,7 @@ export default function CavePanel() {
               );
             }
 
-            // Handle regular groups (like Explore, Mine)
+            // Handle regular groups (like Mine)
             const visibleActions = group.actions.filter((action) => {
               // Handle custom show conditions
               if (action.showWhen !== undefined) {
@@ -595,20 +607,44 @@ export default function CavePanel() {
               // Use standard shouldShowAction for others, or keep visible if executing
               return shouldShowAction(action.id, state) || !!state.executionStartTimes?.[action.id];
             });
+            const visibleIds = new Set(visibleActions.map((action) => action.id));
+            const { teasers: mineTeasers, showEllipsis: showMineEllipsis } =
+              catalogActive
+                ? getDemoEndHiddenActionTeasers(group.actions, visibleIds)
+                : { teasers: [], showEllipsis: false };
 
-            if (visibleActions.length === 0) return null;
+            if (visibleActions.length === 0 && mineTeasers.length === 0) {
+              return null;
+            }
 
             return (
               <div key={groupIndex} className="space-y-2">
                 {group.title && (
                   <h3 className="text-xs font-medium text-foreground">
-                    {group.title}
+                    {catalogActive && visibleActions.length === 0 ? (
+                      <RedactedLockedHint
+                        label={group.title}
+                        tooltipId="cave-mine-header-redacted"
+                      />
+                    ) : (
+                      group.title
+                    )}
                   </h3>
                 )}
                 <div className={gameActionButtonGridClassName("w-full")}>
                   {visibleActions.map((action) =>
                     renderButton(action.id, action.label),
                   )}
+                  {mineTeasers.map((action) => (
+                    <RedactedLockedHint
+                      key={action.id}
+                      label={resolveActionLabel(action.id, action.label)}
+                      tooltipId={`cave-${action.id}-redacted`}
+                    />
+                  ))}
+                  {showMineEllipsis ? (
+                    <RedactedMoreHint tooltipId="cave-mine-more-redacted" />
+                  ) : null}
                 </div>
               </div>
             );

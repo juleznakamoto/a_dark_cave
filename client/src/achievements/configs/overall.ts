@@ -19,6 +19,7 @@ import {
   getNonOverallAchievementsCompletedCount,
 } from "../nonOverallCompletion";
 import { getAchievementConfigForEdition } from "../achievementEdition";
+import type { DevGameMode } from "@/lib/edition";
 import {
   CAVE_VETERAN_WINS,
   SPEEDRUN_WIN_MAX_MS,
@@ -162,7 +163,10 @@ export function getUnclaimedOverallIds(): string[] {
 export function hasAnyOverallAchievementReached(state: GameState): boolean {
   // Persisted flag: avoid walking every claimable achievement just to unlock a tab.
   if (state.hasAchievementMaxer) return true;
-  const config = getAchievementConfigForEdition(overallChartConfig);
+  const config = getAchievementConfigForEdition(
+    overallChartConfig,
+    (state as GameState & { devGameMode?: DevGameMode }).devGameMode,
+  );
   for (const ring of config.rings) {
     for (const seg of ring) {
       // Achievement Maxer getCount scans every basic/building/item/action

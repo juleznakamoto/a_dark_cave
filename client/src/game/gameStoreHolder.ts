@@ -30,6 +30,10 @@ export function bindGameStore(next: BoundGameStore): void {
   boundGameStore = next;
 }
 
+export function tryGetBoundGameStore(): BoundGameStore | null {
+  return boundGameStore;
+}
+
 export function getBoundGameStore(): BoundGameStore {
   if (!boundGameStore) {
     throw new Error("Game store used before bindGameStore()");

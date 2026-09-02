@@ -1,4 +1,5 @@
 import type { GameState } from "@shared/schema";
+import type { DevGameMode } from "@/lib/edition";
 import type { AchievementChartConfig } from "./achievementTypes";
 import {
   basicChartConfig,
@@ -28,7 +29,10 @@ function tallyConfig(
   config: AchievementChartConfig,
   state: GameState,
 ): CompletionTally {
-  const editionConfig = getAchievementConfigForEdition(config);
+  const editionConfig = getAchievementConfigForEdition(
+    config,
+    (state as GameState & { devGameMode?: DevGameMode }).devGameMode,
+  );
   let completed = 0;
   let total = 0;
   for (const ring of editionConfig.rings) {

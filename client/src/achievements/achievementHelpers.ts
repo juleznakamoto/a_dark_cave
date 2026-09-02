@@ -1,5 +1,6 @@
 import { useGameStore } from "@/game/state";
 import type { GameState } from "@shared/schema";
+import type { DevGameMode } from "@/lib/edition";
 import type { AchievementChartConfig } from "./achievementTypes";
 import { getAchievementConfigForEdition } from "./achievementEdition";
 import {
@@ -75,7 +76,10 @@ export function getAchievementRows(
   state: ReturnType<typeof useGameStore.getState>,
   claimedAchievements: string[]
 ): AchievementRow[] {
-  const editionConfig = getAchievementConfigForEdition(config);
+  const editionConfig = getAchievementConfigForEdition(
+    config,
+    (state as { devGameMode?: DevGameMode }).devGameMode,
+  );
   const BTP = state.BTP ?? 0;
   const claimable = editionConfig.claimable !== false;
   const rows: AchievementRow[] = [];

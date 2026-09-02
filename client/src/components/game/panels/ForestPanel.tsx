@@ -548,10 +548,15 @@ export default function ForestPanel() {
             const visibleActions = group.actions.filter((action) =>
               shouldShowAction(action.id, state) || !!state.executionStartTimes?.[action.id],
             );
+            const isExploreGroup = group.title === "";
             const isTradeGroup =
               group.title === "Buy" || group.title === "Sell";
             const isSacrificeGroup = group.title === "Sacrifice";
             const visibleIds = new Set(visibleActions.map((action) => action.id));
+            const showExploreEllipsis =
+              catalogActive &&
+              isExploreGroup &&
+              visibleActions.length < group.actions.length;
             const { teasers: sacrificeTeasers, showEllipsis: showSacrificeEllipsis } =
               catalogActive && isSacrificeGroup
                 ? getDemoEndHiddenActionTeasers(group.actions, visibleIds)
@@ -598,6 +603,9 @@ export default function ForestPanel() {
                   {visibleActions.map((action) =>
                     renderButton(action.id, action.label),
                   )}
+                  {showExploreEllipsis ? (
+                    <RedactedMoreHint tooltipId="forest-explore-more-redacted" />
+                  ) : null}
                   {catalogActive &&
                     isTradeGroup &&
                     group.actions

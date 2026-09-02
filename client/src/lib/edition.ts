@@ -14,6 +14,8 @@
  * In DEV (non-Steam builds), Settings → Game Mode can simulate Steam Game / Playtest /
  * Demo / Demo End / CrazyGames Demo via {@link setDevGameModeOverride}.
  */
+import { tryGetBoundGameStore } from "@/game/gameStoreHolder";
+
 export const isSteamBuild = import.meta.env.VITE_STEAM_BUILD === "1";
 
 /** Steam desktop demo build (`VITE_STEAM_DEMO=1` with `VITE_STEAM_BUILD=1`). */
@@ -179,19 +181,39 @@ export function shouldHideSteamStoreLink(
   return false;
 }
 
+function isKnownDevGameMode(value: unknown): value is DevGameMode {
+  return (
+    typeof value === "string" &&
+    (DEV_GAME_MODE_OPTIONS as readonly string[]).includes(value)
+  );
+}
+
+/** Live Settings → Game Mode when the store is bound; else the module override. */
+function resolveDevGameMode(explicit?: DevGameMode): DevGameMode {
+  if (explicit) return explicit;
+  if (import.meta.env.DEV && !isSteamBuild) {
+    const mode = tryGetBoundGameStore()?.getState()?.devGameMode;
+    if (isKnownDevGameMode(mode)) return mode;
+  }
+  return import.meta.env.DEV ? devGameModeOverride : "normal";
+}
+
 /**
  * Runtime Steam-like edition check — compile-time Steam / CrazyGames / Galaxy,
  * or DEV Game Mode (Steam Game / Playtest / Demo / CrazyGames Demo). Use for UI
  * and shop-slot behavior; keep `isSteamBuild` for build-time stubs, save
  * backends, and Steam API bridges.
+ *
+ * Pass store `devGameMode` when you have it so Settings → Game Mode stays the
+ * source of truth (the module override can reset on HMR).
  */
-export function isSteamEditionActive(): boolean {
+export function isSteamEditionActive(devGameMode?: DevGameMode): boolean {
   return (
     isSteamBuild ||
     isGalaxyEdition() ||
     isCrazyGamesEdition() ||
     (import.meta.env.DEV &&
       !isSteamBuild &&
-      devGameModeOverride !== "normal")
+      resolveDevGameMode(devGameMode) !== "normal")
   );
 }

@@ -9,6 +9,7 @@ import {
   type AchievementChartConfig,
 } from "./achievementTypes";
 import { getAchievementConfigForEdition } from "./achievementEdition";
+import type { DevGameMode } from "@/lib/edition";
 import {
   INCOMPLETE_COLOR,
   COMPLETE_COLOR,
@@ -44,7 +45,10 @@ export default function AchievementMiniRingChart({
   // Full store subscription — ring fill uses many slices (buildings, tools,
   // story, meta wins, …); getState() + a sleeper-only selector left charts stale.
   const state = useGameStore((s) => s);
-  const editionConfig = getAchievementConfigForEdition(config);
+  const editionConfig = getAchievementConfigForEdition(
+    config,
+    (state as { devGameMode?: DevGameMode }).devGameMode,
+  );
 
   // Radii are in chart pixel units; scale them with the outer size so larger
   // charts (e.g. share image) keep the same ring proportions as the tab icon.

@@ -4,6 +4,7 @@ import {
   isGalaxyEdition,
   isSteamBuild,
   isSteamDemoRuntime,
+  isSteamEditionActive,
   shouldHideSteamStoreLink,
   type DevGameMode,
 } from "@/lib/edition";
@@ -26,12 +27,7 @@ function isDevCappedDemoMode(devGameMode: DevGameMode): boolean {
 /** Reactive offline-demo edition flag for React components (Steam, Galaxy, CrazyGames, DEV Game Mode). */
 export function useSteamEditionActive(): boolean {
   const devGameMode = useGameStore((s) => s.devGameMode);
-  return (
-    isSteamBuild ||
-    isGalaxyEdition() ||
-    isCrazyGamesEdition() ||
-    isDevSteamMode(devGameMode)
-  );
+  return isSteamEditionActive(devGameMode);
 }
 
 /**

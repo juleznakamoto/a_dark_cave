@@ -1264,21 +1264,29 @@ export default function VillagePanel() {
       className={VILLAGER_COUNT_ROW_CLASS}
       data-testid={`village-job-${jobId}-redacted`}
     >
-      <div className={VILLAGER_COUNT_CONTROL_GRID_CLASS}>
-        <span
-          className={cn(VILLAGER_COUNT_BUTTON_SIZE_CLASS, "inline-block")}
+      <div className="relative col-span-2 flex min-w-0 items-center">
+        <div
+          className={cn(
+            VILLAGER_COUNT_CONTROL_GRID_CLASS,
+            "invisible pointer-events-none",
+          )}
           aria-hidden
-        />
-        <RedactedLockedHint
-          label="0"
-          tooltipId={`village-job-${jobId}-count`}
-        />
-        <span
-          className={cn(VILLAGER_COUNT_BUTTON_SIZE_CLASS, "inline-block")}
-          aria-hidden
-        />
+        >
+          <span
+            className={cn(VILLAGER_COUNT_BUTTON_SIZE_CLASS, "inline-block")}
+          />
+          <span />
+          <span
+            className={cn(VILLAGER_COUNT_BUTTON_SIZE_CLASS, "inline-block")}
+          />
+        </div>
+        <span className="absolute inset-0 flex items-center">
+          <RedactedLockedHint
+            fill
+            tooltipId={`village-job-${jobId}-count`}
+          />
+        </span>
       </div>
-      <span translate="no" className={VILLAGER_COUNT_CAP_CLASS} aria-hidden />
       {renderCapUpgradeSlot()}
       <span className={villagerCountLabelClass}>
         <RedactedLockedHint

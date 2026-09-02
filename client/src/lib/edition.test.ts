@@ -38,6 +38,15 @@ describe("CrazyGames edition", () => {
     expect(edition.shouldSyncSteamAchievements()).toBe(false);
   });
 
+  it("treats an explicit Steam Game Mode as Steam edition", async () => {
+    const edition = await loadEdition();
+    edition.setDevGameModeOverride("normal");
+    expect(edition.isSteamEditionActive("normal")).toBe(false);
+    expect(edition.isSteamEditionActive("steamGame")).toBe(true);
+    expect(edition.isSteamEditionActive("steamPlaytest")).toBe(true);
+    edition.setDevGameModeOverride("normal");
+  });
+
   it("does not treat other paths as CrazyGames", async () => {
     vi.stubGlobal("window", {
       location: { pathname: "/galaxy" },
