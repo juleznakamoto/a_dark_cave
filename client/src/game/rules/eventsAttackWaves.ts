@@ -142,8 +142,8 @@ function attackWaveScaledParams(waveNumber: number): Pick<
   | "fellowshipWoundedMultiplier"
 > {
   return {
-    buildingDamageMultiplier: 1 + waveNumber / 5,
-    fellowshipWoundedMultiplier: waveNumber * 0.05,
+    buildingDamageMultiplier: 1 + waveNumber / 6,
+    fellowshipWoundedMultiplier: waveNumber * 0.04,
     maxCasualties: waveNumber * CRUEL_MODE.attackWaveDefeat.maxCasualtiesPerWave,
     goldReward: waveNumber * 50,
   };
