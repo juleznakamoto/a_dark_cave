@@ -1205,7 +1205,7 @@ export default function StartScreen({
                 rel="noopener noreferrer"
                 className={START_FOOTER_SOCIAL_LINK}
               >
-                {t("footer.pressKit", { defaultValue: "Press Kit" })}
+                {t("footer.pressKit", { defaultValue: "Press" })}
               </a>
             </>
           )}

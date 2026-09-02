@@ -114,7 +114,7 @@ export default function FooterNetworkMenu({
           >
             <span className="flex items-center gap-1.5">
               <GameUiIcon name="pressKit" sizeClassName="w-4 h-4 shrink-0" />
-              {tWithFallback("ui", "footer.pressKit", "Press Kit")}
+              {tWithFallback("ui", "footer.pressKit", "Press")}
             </span>
           </DropdownMenuItem>
         )}

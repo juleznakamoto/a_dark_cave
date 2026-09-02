@@ -5180,6 +5180,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
         socialPromptDialogOpen: false,
         galaxyTimeUpDialogOpen: mode === "demoEnd",
         demoEndDialogDismissed: false,
+        ...(mode === "demoEnd" ? { settingsDialogOpen: false } : {}),
       });
     } else {
       set({
