@@ -821,6 +821,38 @@ export function reconcileInFlightExecutionsOnLoad(
   } as GameState;
 }
 
+/**
+ * A just-due wave (elapsed slightly past duration) is a pending fight.
+ * The leftover-clock flush bug restored many minutes of overdue time after a
+ * defeat reset. Only rewind clocks that are clearly inflated.
+ */
+export const ATTACK_WAVE_OVERDUE_RESET_SLACK_MS = 2 * 60 * 1000;
+
+export function repairOverdueAttackWaveTimersOnLoad(
+  state: Pick<GameState, "attackWaveTimers">,
+  now = Date.now(),
+): Partial<GameState> | null {
+  const timers = state.attackWaveTimers;
+  if (!timers) return null;
+
+  let changed = false;
+  const next = { ...timers };
+  for (const [waveId, timer] of Object.entries(timers)) {
+    if (!timer || timer.defeated || timer.provoked) continue;
+    const elapsed = timer.elapsedTime || 0;
+    const duration = timer.duration || 0;
+    if (duration <= 0) continue;
+    if (elapsed <= duration + ATTACK_WAVE_OVERDUE_RESET_SLACK_MS) continue;
+    next[waveId] = {
+      ...timer,
+      startTime: now,
+      elapsedTime: 0,
+    };
+    changed = true;
+  }
+  return changed ? { attackWaveTimers: next } : null;
+}
+
 /** Default post-completion wave counter on older saves. */
 export function migratePostCompletionAttackWavesOnLoad(
   state: GameState,
@@ -1085,6 +1117,10 @@ export function applyGameStateLoadMigrations(state: GameState): GameState {
       ...bossWaves,
       ...(bossWaves.story ? { story: bossWaves.story } : {}),
     };
+  }
+  const overdueWaves = repairOverdueAttackWaveTimersOnLoad(migrated);
+  if (overdueWaves) {
+    migrated = { ...migrated, ...overdueWaves };
   }
   const presetPurchases = migrateVillagerPresetsPurchasedOnLoad(migrated);
   if (presetPurchases) {

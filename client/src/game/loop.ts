@@ -162,14 +162,30 @@ export function resetAttackWaveElapsedClock(): void {
   lastFlushedWaveElapsedMs.clear();
 }
 
+function adoptStoreWaveElapsed(waveId: string, storeElapsed: number): void {
+  pendingWaveElapsedMs.set(waveId, storeElapsed);
+  lastFlushedWaveElapsedMs.set(waveId, storeElapsed);
+}
+
+/**
+ * True when gameplay rewrote this wave's store elapsed since the last clock
+ * flush (defeat reset, provoke, load). The in-memory leftover must not win.
+ */
+function storeWaveElapsedDivergedFromClock(
+  waveId: string,
+  storeElapsed: number,
+): boolean {
+  const flushed = lastFlushedWaveElapsedMs.get(waveId);
+  return flushed !== undefined && storeElapsed !== flushed;
+}
+
 function syncPendingWaveElapsedFromStore(
   waveId: string,
   storeElapsed: number,
 ): number {
   const flushed = lastFlushedWaveElapsedMs.get(waveId);
   if (flushed === undefined || storeElapsed !== flushed) {
-    pendingWaveElapsedMs.set(waveId, storeElapsed);
-    lastFlushedWaveElapsedMs.set(waveId, storeElapsed);
+    adoptStoreWaveElapsed(waveId, storeElapsed);
     return storeElapsed;
   }
   return pendingWaveElapsedMs.get(waveId) ?? storeElapsed;
@@ -224,6 +240,12 @@ export function flushPendingAttackWaveElapsed(
     if (pending === undefined) continue;
     const storeElapsed = timer.elapsedTime || 0;
     if (pending === storeElapsed) continue;
+    // Defeat sets elapsedTime to 0 while combat is still open. The freeze path
+    // flushes every frame; writing leftover pending here re-armed the wave.
+    if (storeWaveElapsedDivergedFromClock(waveId, storeElapsed)) {
+      adoptStoreWaveElapsed(waveId, storeElapsed);
+      continue;
+    }
     if (!next) next = { ...timers };
     next[waveId] = { ...timer, elapsedTime: pending };
     lastFlushedWaveElapsedMs.set(waveId, pending);

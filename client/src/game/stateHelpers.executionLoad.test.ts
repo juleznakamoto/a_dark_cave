@@ -2,9 +2,11 @@ import { describe, expect, it } from "vitest";
 import type { GameState } from "@shared/schema";
 import {
   applyGameStateLoadMigrations,
+  ATTACK_WAVE_OVERDUE_RESET_SLACK_MS,
   isCompletedOneShotExecutionGhost,
   migrateBossWavesOnLoad,
   reconcileInFlightExecutionsOnLoad,
+  repairOverdueAttackWaveTimersOnLoad,
 } from "./stateHelpers";
 import { canExecuteAction } from "./rules";
 
@@ -158,6 +160,88 @@ describe("applyGameStateLoadMigrations", () => {
     const migrated = applyGameStateLoadMigrations(state);
     expect(migrated.executionStartTimes?.chopWood).toBe(NOW - 1000);
     expect(migrated.executionDurations?.chopWood).toBe(4);
+  });
+
+  it("rewinds a leftover-clock inflated wave timer", () => {
+    const state = {
+      ...baseState(),
+      events: {},
+      attackWaveTimers: {
+        ninthWave: {
+          startTime: NOW - 2_000_000,
+          duration: 1_200_000,
+          elapsedTime: 1_974_328,
+          defeated: false,
+          provoked: false,
+        },
+      },
+    } as GameState;
+
+    const migrated = applyGameStateLoadMigrations(state);
+    expect(migrated.attackWaveTimers?.ninthWave?.elapsedTime).toBe(0);
+    expect(migrated.attackWaveTimers?.ninthWave?.duration).toBe(1_200_000);
+  });
+});
+
+describe("repairOverdueAttackWaveTimersOnLoad", () => {
+  const running = {
+    startTime: NOW,
+    duration: 1_200_000,
+    elapsedTime: 0,
+    defeated: false,
+    provoked: false,
+  };
+
+  it("leaves a just-due wave so the pending fight still starts", () => {
+    const patch = repairOverdueAttackWaveTimersOnLoad(
+      {
+        attackWaveTimers: {
+          firstWave: {
+            ...running,
+            duration: 600_000,
+            elapsedTime: 600_000 + 30_000,
+          },
+        },
+      },
+      NOW,
+    );
+    expect(patch).toBeNull();
+  });
+
+  it("does not rewind a provoked wave", () => {
+    const patch = repairOverdueAttackWaveTimersOnLoad(
+      {
+        attackWaveTimers: {
+          ninthWave: {
+            ...running,
+            elapsedTime: running.duration + ATTACK_WAVE_OVERDUE_RESET_SLACK_MS + 1,
+            provoked: true,
+          },
+        },
+      },
+      NOW,
+    );
+    expect(patch).toBeNull();
+  });
+
+  it("resets a clearly inflated unprovoked rematch timer", () => {
+    const patch = repairOverdueAttackWaveTimersOnLoad(
+      {
+        attackWaveTimers: {
+          ninthWave: {
+            ...running,
+            elapsedTime: 1_974_328,
+          },
+        },
+      },
+      NOW,
+    );
+    expect(patch?.attackWaveTimers?.ninthWave).toMatchObject({
+      elapsedTime: 0,
+      startTime: NOW,
+      duration: 1_200_000,
+      defeated: false,
+    });
   });
 });
 

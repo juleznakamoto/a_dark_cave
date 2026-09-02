@@ -102,7 +102,7 @@ const ATTACK_WAVE_BOSS_ENEMY_NAME = "Pale Beasts";
 /** Shared countdown timers for every attack wave (ms). */
 const ATTACK_WAVE_TIMER_DEFAULTS = {
   initialDuration: 10 * 60 * 1000,
-  defeatDuration: 20 * 60 * 1000,
+  defeatDuration: 30 * 60 * 1000,
 } as const;
 
 const CANONICAL_ATTACK_WAVE_COUNT = 12;
@@ -556,6 +556,13 @@ function attackWaveNumberFromId(waveId: AttackWaveId): number {
   return ATTACK_WAVE_IDS.indexOf(waveId) + 1;
 }
 
+/** Pause / blocking dialog: loop already freezes `elapsedTime`. Do not bank wall-clock. */
+function isAttackWaveSimPaused(): boolean {
+  const storeApi = getBoundGameStore();
+  const store = storeApi.getState();
+  return Boolean(store.isPaused || storeApi.isModalDialogOpen(store));
+}
+
 function createAttackWaveEvent(waveId: AttackWaveId): GameEvent {
   const def = ATTACK_WAVE_DEFINITIONS[waveId];
   const rules = WAVE_RULES[waveId];
@@ -593,29 +600,7 @@ function createAttackWaveEvent(waveId: AttackWaveId): GameEvent {
 
       if (timer.defeated) return false;
 
-      const storeApi = getBoundGameStore();
-      const store = storeApi.getState();
-      const isPaused = Boolean(
-        store.isPaused || storeApi.isModalDialogOpen(store),
-      );
-
-      if (isPaused) {
-        if (timer.startTime && timer.elapsedTime !== undefined) {
-          const currentElapsedTime =
-            timer.elapsedTime + (Date.now() - timer.startTime);
-          storeApi.setState((prevState) => ({
-            attackWaveTimers: {
-              ...prevState.attackWaveTimers,
-              [waveId]: {
-                ...prevState.attackWaveTimers[waveId],
-                startTime: Date.now(),
-                elapsedTime: currentElapsedTime,
-              },
-            },
-          }));
-        }
-        return false;
-      }
+      if (isAttackWaveSimPaused()) return false;
 
       const elapsed = timer.elapsedTime || 0;
       const shouldTrigger = elapsed >= timer.duration || timer.provoked;
@@ -781,29 +766,7 @@ function createPostCompletionAttackWaveEvent(): GameEvent {
         return false;
       }
 
-      const storeApi = getBoundGameStore();
-      const store = storeApi.getState();
-      const isPaused = Boolean(
-        store.isPaused || storeApi.isModalDialogOpen(store),
-      );
-
-      if (isPaused) {
-        if (timer.startTime && timer.elapsedTime !== undefined) {
-          const currentElapsedTime =
-            timer.elapsedTime + (Date.now() - timer.startTime);
-          storeApi.setState((prevState) => ({
-            attackWaveTimers: {
-              ...prevState.attackWaveTimers,
-              [waveId]: {
-                ...prevState.attackWaveTimers![waveId],
-                startTime: Date.now(),
-                elapsedTime: currentElapsedTime,
-              },
-            },
-          }));
-        }
-        return false;
-      }
+      if (isAttackWaveSimPaused()) return false;
 
       // Endless waves only attack when the player provokes them.
       return timer.provoked;

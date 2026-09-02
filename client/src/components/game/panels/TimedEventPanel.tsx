@@ -21,8 +21,12 @@ import {
   GAME_ACTION_BUTTON_STACK_CLASS,
 } from "@/components/CooldownButton";
 import { cn } from "@/lib/utils";
-import { Plus } from "lucide-react";
 import { TooltipWrapper } from "@/components/game/TooltipWrapper";
+import {
+  GoldShopBadge,
+  openGoldShopFilter,
+  shouldShowGoldShopPlus,
+} from "@/components/game/GoldShopBadge";
 import { isDemoPlayFrozen } from "@/game/demoLimit";
 import { isTraderShopUnlocked } from "@/game/stateHelpers";
 import { composeMerchantSpecialItemTooltip } from "@/game/rules/eventsMerchantTooltip";
@@ -78,7 +82,6 @@ export default function TimedEventPanel() {
     setEventDialog,
     setHighlightedResources,
     setShopDialogOpen,
-    setShopFilter,
     setGamblerDiceDialogOpen,
     setBlessingOfferDialogOpen,
   } = useGameStore(
@@ -89,7 +92,6 @@ export default function TimedEventPanel() {
       setEventDialog: s.setEventDialog,
       setHighlightedResources: s.setHighlightedResources,
       setShopDialogOpen: s.setShopDialogOpen,
-      setShopFilter: s.setShopFilter,
       setGamblerDiceDialogOpen: s.setGamblerDiceDialogOpen,
       setBlessingOfferDialogOpen: s.setBlessingOfferDialogOpen,
     })),
@@ -527,16 +529,18 @@ export default function TimedEventPanel() {
       collectorSectionLocked;
 
     const showGoldShopBadge =
-      !steamEditionActive &&
       !isPurchased &&
       timeRemaining > 0 &&
-      isTraderShopUnlocked(gameState) &&
-      affordance.costs.some((c) => c.resource === "gold") &&
-      affordance.individualAffordance.gold === false;
+      shouldShowGoldShopPlus({
+        goldUnaffordable:
+          affordance.costs.some((c) => c.resource === "gold") &&
+          affordance.individualAffordance.gold === false,
+        traderUnlocked: isTraderShopUnlocked(gameState),
+        steamEditionActive,
+      });
 
     const openGoldShop = () => {
-      setShopFilter("gold");
-      setShopDialogOpen(true, "timedevent-buy-gold");
+      openGoldShopFilter("timedevent-buy-gold");
     };
 
     let successPercentage: string | null = null;
@@ -681,24 +685,10 @@ export default function TimedEventPanel() {
     };
 
     const goldShopBadge = showGoldShopBadge ? (
-      <div className="absolute bottom-[-10px] right-[-7px] z-[30] pointer-events-auto">
-        <button
-          type="button"
-          className="flex h-4 w-4 items-center justify-center rounded-full bg-yellow-700 text-white shadow-sm border border-yellow-500/60 hover:bg-yellow-600 transition-colors cursor-pointer"
-          data-testid={`timedevent-${choice.id}-buy-gold`}
-          aria-label={t("ui:timedEvent.buyGold", {
-            defaultValue: "Buy Gold",
-          })}
-          onPointerDown={(e) => e.stopPropagation()}
-          onClick={(e) => {
-            e.stopPropagation();
-            e.preventDefault();
-            openGoldShop();
-          }}
-        >
-          <Plus className="h-2.5 w-2.5 stroke-[3]" />
-        </button>
-      </div>
+      <GoldShopBadge
+        testId={`timedevent-${choice.id}-buy-gold`}
+        onOpen={openGoldShop}
+      />
     ) : null;
 
     return (

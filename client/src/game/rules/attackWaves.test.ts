@@ -155,6 +155,30 @@ describe("attack waves expansion", () => {
     expect(canProvokeAttackWave(state)).toBe(true);
   });
 
+  it("does not bank wall-clock into elapsedTime while paused", () => {
+    const setState = vi.fn();
+    bindGameStore({
+      getState: () => ({ isPaused: true }),
+      setState,
+      isModalDialogOpen: () => false,
+    });
+    const state = {
+      story: { seen: { eighthWaveVictory: true }, merchantPurchases: 0 },
+      attackWaveTimers: {
+        ninthWave: {
+          startTime: Date.now() - 10 * 60 * 1000,
+          duration: 1_200_000,
+          defeated: false,
+          provoked: false,
+          elapsedTime: 60_000,
+        },
+      },
+    } as GameState;
+
+    expect(attackWaveEvents.ninthWave.condition!(state)).toBe(false);
+    expect(setState).not.toHaveBeenCalled();
+  });
+
   it("post-completion waves only trigger when provoked", () => {
     const baseTimer = {
       startTime: Date.now(),

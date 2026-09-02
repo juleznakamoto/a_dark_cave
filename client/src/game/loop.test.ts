@@ -617,6 +617,28 @@ describe("attack wave elapsed clock", () => {
     expect(flushed?.firstWave?.elapsedTime).toBe(400);
   });
 
+  it("does not restore leftover elapsed after a defeat reset", () => {
+    const overdue = { ...baseTimer, duration: 1_200_000, elapsedTime: 1_199_900 };
+    const due = advanceAttackWaveTimers({ ninthWave: overdue }, 250);
+    expect(due?.ninthWave?.elapsedTime).toBe(1_200_150);
+
+    const afterDefeat = {
+      ninthWave: {
+        ...baseTimer,
+        duration: 1_200_000,
+        elapsedTime: 0,
+      },
+    };
+    expect(flushPendingAttackWaveElapsed(afterDefeat)).toBeNull();
+    expect(flushPendingAttackWaveElapsed(afterDefeat)).toBeNull();
+    expect(afterDefeat.ninthWave.elapsedTime).toBe(0);
+
+    const nextTick = advanceAttackWaveTimers(afterDefeat, 250);
+    expect(nextTick).toBeNull();
+    const later = advanceAttackWaveTimers(afterDefeat, 800);
+    expect(later?.ninthWave?.elapsedTime).toBe(1_050);
+  });
+
   it("manualSave flushes pending wave elapsed before persisting", async () => {
     const saveSpy = vi.spyOn(saveModule, "saveGame").mockResolvedValue({
       localSaved: true,

@@ -83,6 +83,8 @@ interface CooldownButtonProps {
     endPlayTime: number;
     mode?: "cooldown" | "progress";
   } | null;
+  /** When unaffordable (not cooling down / executing), click runs this instead. */
+  onDisabledClick?: () => void;
 }
 
 const CooldownButton = forwardRef<HTMLButtonElement, CooldownButtonProps>(
@@ -103,6 +105,7 @@ const CooldownButton = forwardRef<HTMLButtonElement, CooldownButtonProps>(
       onMouseLeave,
       style,
       playTimeCooldown,
+      onDisabledClick,
       ...props
     },
     ref
@@ -252,19 +255,25 @@ const CooldownButton = forwardRef<HTMLButtonElement, CooldownButtonProps>(
       }
     };
 
+    const isOverlayBlocked =
+      isCoolingDown || isExecuting || isInsightRevealing || isPlayTimeOverlayActive;
+    const allowDisabledClick = Boolean(disabled && onDisabledClick && !isOverlayBlocked);
+
     const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
-      if (disabled && !isCoolingDown && !isExecuting && !isInsightRevealing && !isPlayTimeOverlayActive) return;
-      if (!isCoolingDown && !isExecuting && !isInsightRevealing && !isPlayTimeOverlayActive) {
-        actionExecutedRef.current = true;
-
-        emitClickParticles(e.currentTarget);
-
-        onClick();
-        // Reset the flag after a short delay
-        setTimeout(() => {
-          actionExecutedRef.current = false;
-        }, 100);
+      if (isOverlayBlocked) return;
+      if (disabled) {
+        onDisabledClick?.();
+        return;
       }
+      actionExecutedRef.current = true;
+
+      emitClickParticles(e.currentTarget);
+
+      onClick();
+      // Reset the flag after a short delay
+      setTimeout(() => {
+        actionExecutedRef.current = false;
+      }, 100);
     };
 
     const isButtonDisabled =
@@ -289,7 +298,7 @@ const CooldownButton = forwardRef<HTMLButtonElement, CooldownButtonProps>(
           // through and makes the dark outline buttons look flat/grey.
           "relative select-none appearance-none [-webkit-appearance:none]",
           particleConfig ? "overflow-visible" : "overflow-hidden",
-          isButtonDisabled && "pointer-events-none",
+          isButtonDisabled && !allowDisabledClick && "pointer-events-none",
           // aria-disabled (not native disabled) so outline variant hover styles still apply — reset them.
           isButtonDisabled &&
           "!bg-transparent hover:!bg-transparent hover:!text-foreground",
@@ -407,7 +416,7 @@ const CooldownButton = forwardRef<HTMLButtonElement, CooldownButtonProps>(
         <TooltipWrapper
           tooltip={resolvedTooltip}
           tooltipId={buttonId}
-          disabled={isButtonDisabled}
+          disabled={isButtonDisabled && !allowDisabledClick}
           onMouseEnter={onMouseEnter}
           onMouseLeave={onMouseLeave}
         >
