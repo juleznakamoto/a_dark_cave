@@ -29,6 +29,11 @@ import {
   type DeferredStartMenuLoadKind,
 } from "@/components/game/startScreenDeferredMenu";
 import { subscribeStartScreenGamePrefetch } from "@/game/startScreenGamePrefetch";
+import {
+  eyesEasterEggCenterFraction,
+  isInEyesEasterEggHotZone,
+  pickEyesEasterEggSide,
+} from "@/components/game/startScreenEyesEasterEgg";
 
 const START_INTRO_VAPORIZE_COLOR = "rgba(209, 213, 219, 0.9)";
 const START_INTRO_VAPORIZE_ANIMATION = {
@@ -42,7 +47,7 @@ const START_INTRO_VAPORIZE_FONT_FALLBACK = {
   fontWeight: 400,
 } as const;
 
-/** Easter egg: flash eyes at center of the upper-left screen quadrant. */
+/** Easter egg: flash eyes at the center of a random upper quadrant. */
 const EYES_EASTER_EGG_SRC = publicUrl("/images/eyes-easter-egg.png");
 const EYES_EASTER_EGG_SOUND = publicUrl("/sounds/monster_start.mp3");
 const EYES_EASTER_EGG_DURATION_MS = 350;
@@ -50,24 +55,6 @@ const EYES_EASTER_EGG_DURATION_MS = 350;
 const EYES_EASTER_EGG_ASSET_LOAD_MS = 90_000;
 /** Hot-zone is armed only after this idle time on the start screen. */
 const EYES_EASTER_EGG_ARM_MS = 120_000;
-/** Hit radius as a fraction of min(viewport w, h) around the quadrant center. */
-const EYES_EASTER_EGG_HOT_ZONE_RATIO = 0.08;
-
-function isInUpperLeftQuadrantHotZone(
-  clientX: number,
-  clientY: number,
-  viewportWidth: number,
-  viewportHeight: number,
-): boolean {
-  // Four equal rectangles; hot spot is the middle of the upper-left one.
-  const centerX = viewportWidth * 0.25;
-  const centerY = viewportHeight * 0.25;
-  const radius =
-    Math.min(viewportWidth, viewportHeight) * EYES_EASTER_EGG_HOT_ZONE_RATIO;
-  const dx = clientX - centerX;
-  const dy = clientY - centerY;
-  return dx * dx + dy * dy <= radius * radius;
-}
 
 const START_FOOTER_LINK_BASE =
   "inline-flex items-center gap-0 sm:gap-1 font-normal text-muted-foreground hover:text-foreground transition-opacity";
@@ -212,6 +199,8 @@ export default function StartScreen({
   const networkPendingOpenRef = useRef(false);
   const crazyGamesPendingOpenRef = useRef(false);
   const [showEyesEasterEgg, setShowEyesEasterEgg] = useState(false);
+  const [eyesEasterEggSide] = useState(pickEyesEasterEggSide);
+  const eyesEasterEggSideRef = useRef(eyesEasterEggSide);
   const eyesEasterEggInsideHotZoneRef = useRef(false);
   const eyesEasterEggConsumedRef = useRef(false);
   const eyesEasterEggAssetsReadyRef = useRef(false);
@@ -485,11 +474,12 @@ export default function StartScreen({
     };
 
     const handlePointerMove = (event: MouseEvent) => {
-      const inHotZone = isInUpperLeftQuadrantHotZone(
+      const inHotZone = isInEyesEasterEggHotZone(
         event.clientX,
         event.clientY,
         window.innerWidth,
         window.innerHeight,
+        eyesEasterEggSideRef.current,
       );
 
       // Always track hot-zone occupancy so a later "assets ready" state does not
@@ -771,6 +761,8 @@ export default function StartScreen({
     );
   };
 
+  const eyesEasterEggCenter = eyesEasterEggCenterFraction(eyesEasterEggSide);
+
   return (
     <div className="fixed inset-0 bg-black text-white overflow-hidden">
       <Helmet>
@@ -875,8 +867,8 @@ export default function StartScreen({
           fetchPriority="low"
           className="pointer-events-none absolute z-30 w-[min(14vw,110px)] h-auto select-none opacity-50"
           style={{
-            left: "25%",
-            top: "25%",
+            left: `${eyesEasterEggCenter.x * 100}%`,
+            top: `${eyesEasterEggCenter.y * 100}%`,
             transform: "translate(-50%, -50%)",
           }}
         />
