@@ -23,6 +23,8 @@ contextBridge.exposeInMainWorld("steamBridge", {
   activateOverlayToStore: (): Promise<boolean> =>
     ipcRenderer.invoke("steam:overlay-to-store"),
   saveRead: (): Promise<string | null> => ipcRenderer.invoke("save:read"),
+  saveReadDemo: (): Promise<string | null> => ipcRenderer.invoke("save:readDemo"),
+  saveClear: (): Promise<boolean> => ipcRenderer.invoke("save:clear"),
   saveWrite: (payload: string): Promise<boolean> => ipcRenderer.invoke("save:write", payload),
   quit: (): Promise<void> => ipcRenderer.invoke("app:quit"),
   onWillQuit: (callback: () => void): (() => void) => {

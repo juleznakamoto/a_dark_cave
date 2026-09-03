@@ -30,6 +30,10 @@
     "seeNormal": "Distingui a malapena le forme attorno a te.",
     "seeCruel": "Non distingui quasi nulla attorno a te.",
     "makeFire": "Accendi il Fuoco",
+    "demoContinueTitle": "È stato trovato un salvataggio della Demo.",
+    "demoContinueDescription": "Vuoi continuare il tuo viaggio o iniziarne uno nuovo?",
+    "demoContinueJourney": "Continua il tuo viaggio",
+    "demoStartNewJourney": "Inizia un nuovo viaggio",
     "recommendedBy": "Consigliato da"
   },
   "footer": {

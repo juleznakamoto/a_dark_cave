@@ -30,6 +30,10 @@
     "seeNormal": "You barely see the shapes around you.",
     "seeCruel": "You barely see anything around you.",
     "makeFire": "Make Fire",
+    "demoContinueTitle": "A save from the Demo was found.",
+    "demoContinueDescription": "Would you like to continue your journey, or start a new one?",
+    "demoContinueJourney": "Continue your journey",
+    "demoStartNewJourney": "Start a new journey",
     "recommendedBy": "Recommended by"
   },
   "errorScreen": {

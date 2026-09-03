@@ -30,6 +30,10 @@
     "seeNormal": "Du erkennst kaum die Umrisse um dich herum.",
     "seeCruel": "Du erkennst kaum etwas um dich herum.",
     "makeFire": "Feuer machen", //x1.3
+    "demoContinueTitle": "Ein Spielstand aus der Demo wurde gefunden.",
+    "demoContinueDescription": "Möchtest du deine Reise fortsetzen oder neu beginnen?",
+    "demoContinueJourney": "Reise fortsetzen",
+    "demoStartNewJourney": "Neue Reise beginnen",
     "recommendedBy": "Empfohlen von"
   },
   "errorScreen": {

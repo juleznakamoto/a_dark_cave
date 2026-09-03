@@ -30,6 +30,10 @@
     "seeNormal": "Você mal distingue as formas ao seu redor.",
     "seeCruel": "Você mal enxerga qualquer coisa ao seu redor.",
     "makeFire": "Acender Fogo",
+    "demoContinueTitle": "Um save da Demo foi encontrado.",
+    "demoContinueDescription": "Quer continuar sua jornada ou começar uma nova?",
+    "demoContinueJourney": "Continuar sua jornada",
+    "demoStartNewJourney": "Começar uma nova jornada",
     "recommendedBy": "Recomendado por"
   },
   "footer": {

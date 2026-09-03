@@ -30,6 +30,10 @@
     "seeNormal": "Vous distinguez à peine les formes autour de vous.", //x1.4
     "seeCruel": "Vous ne distinguez presque rien autour de vous.",
     "makeFire": "Faire du feu", //x1.3
+    "demoContinueTitle": "Une sauvegarde de la démo a été trouvée.",
+    "demoContinueDescription": "Voulez-vous continuer votre voyage, ou en commencer un nouveau ?",
+    "demoContinueJourney": "Continuer votre voyage",
+    "demoStartNewJourney": "Commencer un nouveau voyage",
     "recommendedBy": "Recommandé par"
   },
   "errorScreen": {

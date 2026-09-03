@@ -30,6 +30,10 @@
     "seeNormal": "你几乎看不清周围的轮廓。",
     "seeCruel": "你几乎什么都看不清。",
     "makeFire": "生火",
+    "demoContinueTitle": "发现来自试玩版的存档。",
+    "demoContinueDescription": "要继续这段旅程，还是重新开始？",
+    "demoContinueJourney": "继续旅程",
+    "demoStartNewJourney": "开始新的旅程",
     "recommendedBy": "推荐来源"
   },
   "errorScreen": {

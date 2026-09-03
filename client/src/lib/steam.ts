@@ -68,6 +68,29 @@ export async function steamWriteSave(payload: string): Promise<void> {
   }
 }
 
+/** Read the Demo Cloud file from the full-game shell. No-op on web / demo. */
+export async function steamReadDemoSave(): Promise<string | null> {
+  const b = bridge();
+  if (!b?.available || !b.saveReadDemo) return null;
+  try {
+    return await b.saveReadDemo();
+  } catch (error) {
+    logger.warn("[STEAM] Failed to read demo save", error);
+    return null;
+  }
+}
+
+/** Delete this edition's Steam Cloud file. Used when discarding a leftover Demo blob. */
+export async function steamClearSave(): Promise<void> {
+  const b = bridge();
+  if (!b?.available || !b.saveClear) return;
+  try {
+    await b.saveClear();
+  } catch (error) {
+    logger.warn("[STEAM] Failed to clear save", error);
+  }
+}
+
 /** Steam display name of the local player, or null on web / when unavailable. */
 export async function steamPlayerName(): Promise<string | null> {
   const b = bridge();

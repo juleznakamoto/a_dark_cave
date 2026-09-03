@@ -101,6 +101,7 @@ describe("prepareLocalSaveEnvelope", () => {
     expect(data.gameState.lastSaved).toEqual(expect.any(Number));
     expect(data.timestamp).toBe(data.gameState.lastSaved);
     expect(typeof data.gameState.clientBuildSha).toBe("string");
+    expect(data.gameState.saveOriginEdition).toBe("web");
     expect(data.gameState.cooldownDurations).toEqual({});
   });
 

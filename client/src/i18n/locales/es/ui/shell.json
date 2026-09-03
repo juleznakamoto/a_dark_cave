@@ -30,6 +30,10 @@
     "seeNormal": "Apenas distingues las formas a tu alrededor.",
     "seeCruel": "Apenas ves nada a tu alrededor.",
     "makeFire": "Encender fuego", //x1.6
+    "demoContinueTitle": "Se encontró una partida de la Demo.",
+    "demoContinueDescription": "¿Quieres continuar tu viaje o empezar uno nuevo?",
+    "demoContinueJourney": "Continuar tu viaje",
+    "demoStartNewJourney": "Empezar un nuevo viaje",
     "recommendedBy": "Recomendado por"
   },
   "errorScreen": {

@@ -76,6 +76,12 @@ export function commitMakeFireStart(
   });
 }
 
+/** Drop a prefetch hydrate so the next load sees a just-imported save. */
+export function resetPreparedGameHydration(): void {
+  preparedHydration = null;
+  hydrationInFlight = null;
+}
+
 /** Transfer ownership of a prepared store to Game without loading it again. */
 export function consumePreparedGameHydration(): PreparedGameHydration | null {
   const prepared = preparedHydration;

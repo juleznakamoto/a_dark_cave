@@ -30,6 +30,10 @@
     "seeNormal": "Вы едва различаете очертания вокруг.",
     "seeCruel": "Вы почти ничего не видите вокруг.",
     "makeFire": "Развести огонь", //x1.6
+    "demoContinueTitle": "Найдено сохранение из демо.",
+    "demoContinueDescription": "Продолжить путешествие или начать заново?",
+    "demoContinueJourney": "Продолжить путешествие",
+    "demoStartNewJourney": "Начать новое путешествие",
     "recommendedBy": "Рекомендует"
   },
   "errorScreen": {

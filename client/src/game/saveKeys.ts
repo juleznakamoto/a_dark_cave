@@ -8,7 +8,7 @@ import {
 const SAVE_KEY_MAIN = "mainSave";
 const SAVE_KEY_GALAXY = "galaxySave";
 const SAVE_KEY_CRAZYGAMES = "crazyGamesSave";
-const SAVE_KEY_STEAM_DEMO = "steamDemoSave";
+export const SAVE_KEY_STEAM_DEMO = "steamDemoSave";
 const SAVE_KEY_STEAM_PLAYTEST = "steamPlaytestSave";
 
 export function getSaveKey(): string {

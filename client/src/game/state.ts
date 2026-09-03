@@ -3066,6 +3066,8 @@ export const useGameStore = create<GameStore>((set, get) => ({
       lifetimeStorageMaxHits: state.lifetimeStorageMaxHits || [],
       lifetimeEstateUpgradeMaxHits: state.lifetimeEstateUpgradeMaxHits || [],
       hasAchievementMaxer: state.hasAchievementMaxer || false,
+      originatedFromSteamDemo: state.originatedFromSteamDemo === true,
+      steamDemoContinueResolved: state.steamDemoContinueResolved === true,
 
       // Preserve detected currency across restarts (persists forever)
       detectedCurrency: state.detectedCurrency || null,

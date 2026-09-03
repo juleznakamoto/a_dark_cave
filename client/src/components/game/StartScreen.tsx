@@ -147,6 +147,8 @@ interface StartScreenProps {
   hideSteamStoreLink: boolean;
   onMakeFireStart?: (preferences: StartScreenPreferences) => void;
   onMakeFire: (preferences: StartScreenPreferences) => void | Promise<void>;
+  /** Lock Make Fire while the Demo-continue prompt is open or still checking. */
+  makeFireDisabled?: boolean;
   /** After LCP plus the first pointer / key move. Does not mount Game. */
   onPlayerActivity?: (preferences: StartScreenPreferences) => void;
 }
@@ -159,6 +161,7 @@ export default function StartScreen({
   hideSteamStoreLink,
   onMakeFireStart,
   onMakeFire,
+  makeFireDisabled = false,
   onPlayerActivity,
 }: StartScreenProps) {
   const buttonRef = useRef<HTMLButtonElement>(null);
@@ -565,7 +568,7 @@ export default function StartScreen({
   }, [introFadeInDone]);
 
   const handleMakeFire = () => {
-    if (executedRef.current) return;
+    if (makeFireDisabled || executedRef.current) return;
     executedRef.current = true;
 
     // Match canvas type to the live DOM line (includes --adc-text-scale).
@@ -992,6 +995,7 @@ export default function StartScreen({
                 ref={buttonRef}
                 onClick={handleMakeFire}
                 autoStart={showParticles}
+                disabled={makeFireDisabled}
                 className={`${MAKE_FIRE_BUTTON_CLASS} ${showParticles ? "fire-active" : ""}`}
                 data-testid="button-make-fire"
               >
@@ -1001,6 +1005,7 @@ export default function StartScreen({
               <Button
                 ref={buttonRef}
                 onClick={handleMakeFire}
+                disabled={makeFireDisabled}
                 className={MAKE_FIRE_BUTTON_CLASS}
                 data-testid="button-make-fire"
               >

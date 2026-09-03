@@ -32,6 +32,8 @@ interface SteamBridge {
   /** ISteamFriends::ActivateGameOverlayToStore for the full game App ID. */
   activateOverlayToStore(): Promise<boolean>;
   saveRead(): Promise<string | null>;
+  saveReadDemo?(): Promise<string | null>;
+  saveClear?(): Promise<boolean>;
   saveWrite(payload: string): Promise<boolean>;
   quit(): Promise<void>;
   onWillQuit(callback: () => void): () => void;

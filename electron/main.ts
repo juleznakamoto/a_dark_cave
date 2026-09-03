@@ -1,5 +1,5 @@
 import { app, BrowserWindow, ipcMain, shell } from "electron";
-import { readFile, writeFile, mkdir } from "node:fs/promises";
+import { readFile, writeFile, mkdir, unlink } from "node:fs/promises";
 import { join, dirname } from "node:path";
 import { existsSync, readFileSync } from "node:fs";
 import { startLoopbackServer, type LoopbackServer } from "./loopbackServer";
@@ -18,6 +18,7 @@ import {
   isSteamPlaytestBuild,
   resolveLegacyDemoSavePath,
   resolveSteamCloudSavePath,
+  resolveSteamDemoCloudSavePath,
 } from "./paths";
 
 /**
@@ -26,8 +27,8 @@ import {
  * Responsibilities:
  *  - Initialize Steamworks (achievements, overlay, overlay-to-store).
  *  - Serve the built SPA over a loopback HTTP server (absolute-path routing).
- *  - Persist saves to a flat Steam Cloud file (full + demo share one path;
- *    Auto-Cloud configured in the Steamworks partner backend).
+ *  - Persist saves to edition-specific Steam Cloud files (demo cannot overwrite
+ *    the full-game file; Auto-Cloud configured in the Steamworks partner backend).
  */
 
 // Must run before `app.whenReady()` so Electron userData (IndexedDB) is per-variant.
@@ -69,28 +70,47 @@ function resolveAppId(): number {
   return 480;
 }
 
-/** Full path of the Steam Cloud save file (`%APPDATA%\\A Dark Cave\\adc-steam-save.dat` on Windows). */
+/** This edition's Steam Cloud save file. */
 function saveFilePath(): string {
   return resolveSteamCloudSavePath(app.getPath("appData"), app.getPath("userData"));
 }
 
-/** Legacy demo cloud path from before demo/full shared Auto-Cloud. */
+/** Demo Cloud file in the shared Auto-Cloud folder (full game reads this for import). */
+function sharedDemoSaveFilePath(): string {
+  return resolveSteamDemoCloudSavePath(app.getPath("appData"));
+}
+
+/** Legacy demo cloud path from early demo builds. */
 function legacyDemoSaveFilePath(): string {
   return resolveLegacyDemoSavePath(app.getPath("appData"));
 }
 
+async function readFirstExistingFile(paths: string[]): Promise<string | null> {
+  for (const file of paths) {
+    try {
+      return await readFile(file, "utf-8");
+    } catch {
+      /* try next */
+    }
+  }
+  return null;
+}
+
+/** Read this edition's save only. Full game does not fall back to the demo file. */
 async function readSavePayload(): Promise<string | null> {
-  try {
-    return await readFile(saveFilePath(), "utf-8");
-  } catch {
-    /* try legacy below */
+  if (isSteamDemoBuild) {
+    return readFirstExistingFile([saveFilePath(), legacyDemoSaveFilePath()]);
   }
+  return readFirstExistingFile([saveFilePath()]);
+}
+
+/** Full game: peek the Demo save without touching the full-game file. */
+async function readDemoSavePayload(): Promise<string | null> {
   if (isSteamPlaytestBuild) return null;
-  try {
-    return await readFile(legacyDemoSaveFilePath(), "utf-8");
-  } catch {
-    return null;
-  }
+  return readFirstExistingFile([
+    sharedDemoSaveFilePath(),
+    legacyDemoSaveFilePath(),
+  ]);
 }
 
 async function writeSavePayload(payload: string): Promise<boolean> {
@@ -99,7 +119,7 @@ async function writeSavePayload(payload: string): Promise<boolean> {
     await mkdir(dirname(file), { recursive: true });
     await writeFile(file, String(payload), "utf-8");
 
-    // Demo: keep the legacy file fresh so the pre-cutover Auto-Cloud row still syncs.
+    // Demo: keep the legacy userdata file fresh for the pre-split Auto-Cloud row.
     if (isSteamDemoBuild) {
       try {
         const legacy = legacyDemoSaveFilePath();
@@ -114,6 +134,23 @@ async function writeSavePayload(payload: string): Promise<boolean> {
   } catch (error) {
     // eslint-disable-next-line no-console
     console.warn("[STEAM] save:write failed:", error);
+    return false;
+  }
+}
+
+/** Remove this edition's Cloud file (full game discarding a leftover Demo blob). */
+async function clearSavePayload(): Promise<boolean> {
+  try {
+    await unlink(saveFilePath());
+    return true;
+  } catch (error) {
+    const code =
+      error && typeof error === "object" && "code" in error
+        ? (error as { code?: string }).code
+        : undefined;
+    if (code === "ENOENT") return true;
+    // eslint-disable-next-line no-console
+    console.warn("[STEAM] save:clear failed:", error);
     return false;
   }
 }
@@ -239,7 +276,10 @@ function registerIpc(): void {
   ipcMain.handle("steam:overlay-to-store", () => activateOverlayToStore());
 
   ipcMain.handle("save:read", async (): Promise<string | null> => readSavePayload());
-
+  ipcMain.handle("save:readDemo", async (): Promise<string | null> =>
+    readDemoSavePayload(),
+  );
+  ipcMain.handle("save:clear", async (): Promise<boolean> => clearSavePayload());
   ipcMain.handle("save:write", async (_event, payload: string): Promise<boolean> =>
     writeSavePayload(payload),
   );

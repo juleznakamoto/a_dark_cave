@@ -22,11 +22,13 @@ import { tWithFallback } from "@/i18n/resolveGameText";
 import { syncSocialPromoExclusiveRewardPending } from "./socialPromoExclusiveReward";
 import { buildGameState } from "./stateHelpers";
 import { isLocalOnlyEdition, isSteamBuild } from "@/lib/edition";
+import { getSaveOriginEdition } from "./saveOrigin";
 import {
   writeSteamCloudSave,
   readSteamCloudSave,
   pickNewerSave,
 } from "./steamSaveAdapter";
+import { shouldAdoptSteamCloudSave } from "./steamDemoContinue";
 import {
   clearCrazyGamesPersistedData,
   readCrazyGamesSave,
@@ -128,6 +130,7 @@ export function prepareLocalSaveEnvelope(gameState: GameState): {
   const runningBuildSha =
     typeof __BUILD_SHA__ !== "undefined" ? __BUILD_SHA__ : "dev";
   persistedState.clientBuildSha = runningBuildSha;
+  persistedState.saveOriginEdition = getSaveOriginEdition();
 
   const playTimeForEnvelope =
     typeof persistedState.playTime === "number"
@@ -358,6 +361,13 @@ async function tryGetGameSaveDatabase(): Promise<GameSaveDatabase | null> {
   }
 }
 
+/** Write an already-built envelope into this edition's IndexedDB + Steam Cloud. */
+export async function writeImportedLocalSave(data: SaveData): Promise<void> {
+  const db = await tryGetGameSaveDatabase();
+  const prepared = prepareLocalSaveEnvelope(data.gameState);
+  await putLocalSave(db, prepared.data, prepared.json);
+}
+
 async function putLocalSave(
   db: GameSaveDatabase | null,
   data: SaveData,
@@ -390,10 +400,13 @@ async function getLocalSave(
     }
     local = decoded ?? undefined;
   }
-  // Steam build: reconcile IndexedDB with the cloud-synced file (newer wins).
+  // Steam build: reconcile IndexedDB with this edition's Cloud file (newer wins).
+  // The full game never auto-adopts a Demo-origin blob (old shared filename).
   if (isSteamBuild) {
     const cloud = await readSteamCloudSave();
-    local = pickNewerSave(local, cloud);
+    if (cloud && shouldAdoptSteamCloudSave(local, cloud)) {
+      local = pickNewerSave(local, cloud);
+    }
   }
   if (shouldUseCrazyGamesPersist()) {
     const crazyGames = await readCrazyGamesSave();

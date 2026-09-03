@@ -21,6 +21,8 @@ import {
 import { isLocalOnlyEdition } from "@/lib/edition";
 import { initSessionTracker } from "@/lib/sessionTracker";
 import { Z_INDEX } from "@/lib/z-index";
+import SteamDemoContinueDialog from "@/components/game/SteamDemoContinueDialog";
+import type { SaveData } from "@shared/schema";
 
 const Game = lazy(() => import("@/pages/game"));
 
@@ -37,6 +39,11 @@ export default function StartScreenPage() {
   const [startResolution, setStartResolution] = useState<
     Extract<StartupResolution, { surface: "start" }>
   >(peekStartScreenResolution);
+  const [demoContinueOpen, setDemoContinueOpen] = useState(false);
+  const [demoContinueBusy, setDemoContinueBusy] = useState(false);
+  const [demoContinueChecking, setDemoContinueChecking] = useState(true);
+  const demoContinueCandidateRef = useRef<SaveData | null>(null);
+  const demoContinueLeftoverRef = useRef<SaveData | null>(null);
   const preparedGameRef = useRef<
     ReturnType<
       typeof import("@/game/startupGameLoader").prepareGameFromStartScreen
@@ -93,6 +100,30 @@ export default function StartScreenPage() {
     void checkGameState();
   }, []);
 
+  useEffect(() => {
+    let cancelled = false;
+    const checkDemoContinue = async () => {
+      try {
+        const { peekSteamDemoContinueOffer } = await import(
+          "@/game/steamDemoContinue"
+        );
+        const offer = await peekSteamDemoContinueOffer(window.location);
+        if (cancelled) return;
+        demoContinueCandidateRef.current = offer.candidate;
+        demoContinueLeftoverRef.current = offer.leftoverFullCloud;
+        setDemoContinueOpen(offer.offer);
+      } catch (error) {
+        logger.error("Failed to check Demo save:", error);
+      } finally {
+        if (!cancelled) setDemoContinueChecking(false);
+      }
+    };
+    void checkDemoContinue();
+    return () => {
+      cancelled = true;
+    };
+  }, []);
+
   const handleMakeFireStart = (nextPreferences: StartScreenPreferences) => {
     prefetchGame(nextPreferences);
     void import("@/i18n/loadLocaleResources").then(
@@ -111,6 +142,56 @@ export default function StartScreenPage() {
     } catch (error) {
       preparedGameRef.current = null;
       logger.error("Failed to start game:", error);
+    }
+  };
+
+  const handleDemoContinue = async () => {
+    if (demoContinueBusy) return;
+    setDemoContinueBusy(true);
+    try {
+      const candidate = demoContinueCandidateRef.current;
+      if (candidate) {
+        const { importSteamDemoSaveToFullGame } = await import(
+          "@/game/steamDemoContinue"
+        );
+        await importSteamDemoSaveToFullGame(candidate);
+      }
+      const { resetPreparedGameHydration } = await import(
+        "@/game/startupGameLoader"
+      );
+      resetPreparedGameHydration();
+      preparedGameRef.current = null;
+      const preferences = startResolution.preferences;
+      const { commitMakeFireStart } = await prepareGame(preferences);
+      commitMakeFireStart(preferences);
+      setDemoContinueOpen(false);
+      setFromMakeFire(true);
+      setShouldLoadGame(true);
+    } catch (error) {
+      preparedGameRef.current = null;
+      setDemoContinueBusy(false);
+      logger.error("Failed to continue Demo save:", error);
+    }
+  };
+
+  const handleDemoStartNew = async () => {
+    if (demoContinueBusy) return;
+    setDemoContinueBusy(true);
+    try {
+      const { declineSteamDemoContinue } = await import(
+        "@/game/steamDemoContinue"
+      );
+      await declineSteamDemoContinue(demoContinueLeftoverRef.current, {
+        persistDecision: Boolean(
+          demoContinueCandidateRef.current ||
+          demoContinueLeftoverRef.current,
+        ),
+      });
+      setDemoContinueOpen(false);
+    } catch (error) {
+      logger.error("Failed to decline Demo save:", error);
+    } finally {
+      setDemoContinueBusy(false);
     }
   };
 
@@ -161,9 +242,20 @@ export default function StartScreenPage() {
             }
             crazyGamesEditionActive={startResolution.crazyGamesEditionActive}
             hideSteamStoreLink={startResolution.hideSteamStoreLink}
-            onPlayerActivity={prefetchGame}
+            makeFireDisabled={demoContinueChecking || demoContinueOpen}
+            onPlayerActivity={
+              demoContinueChecking || demoContinueOpen
+                ? undefined
+                : prefetchGame
+            }
             onMakeFireStart={handleMakeFireStart}
             onMakeFire={handleMakeFire}
+          />
+          <SteamDemoContinueDialog
+            isOpen={demoContinueOpen}
+            busy={demoContinueBusy}
+            onContinue={() => void handleDemoContinue()}
+            onStartNew={() => void handleDemoStartNew()}
           />
         </div>
       ) : null}

@@ -20,19 +20,25 @@ describe("electron/paths Steam Cloud locations", () => {
     );
   });
 
-  it("demo build keeps Electron userData isolated but shares the cloud file path", async () => {
+  it("demo build keeps Electron userData isolated and writes its own cloud file", async () => {
     process.env.ADC_STEAM_DEMO_BUILD = "1";
     const {
       resolveSteamCloudSavePath,
+      resolveSteamDemoCloudSavePath,
       resolveLegacyDemoSavePath,
       STEAM_CLOUD_SAVE_FILE,
+      STEAM_FULL_CLOUD_SAVE_FILE,
       APP_USER_DATA_NAME,
     } = await import("./paths");
     expect(APP_USER_DATA_NAME).toBe("A Dark Cave Demo");
-    expect(STEAM_CLOUD_SAVE_FILE).toBe("adc-steam-save.dat");
+    expect(STEAM_CLOUD_SAVE_FILE).toBe("adc-steam-demo-save.dat");
+    expect(STEAM_FULL_CLOUD_SAVE_FILE).toBe("adc-steam-save.dat");
     expect(
       resolveSteamCloudSavePath(APP_DATA, join(APP_DATA, "A Dark Cave Demo")),
-    ).toBe(join(APP_DATA, "A Dark Cave", "adc-steam-save.dat"));
+    ).toBe(join(APP_DATA, "A Dark Cave", "adc-steam-demo-save.dat"));
+    expect(resolveSteamDemoCloudSavePath(APP_DATA)).toBe(
+      join(APP_DATA, "A Dark Cave", "adc-steam-demo-save.dat"),
+    );
     expect(resolveLegacyDemoSavePath(APP_DATA)).toBe(
       join(APP_DATA, "A Dark Cave Demo", "adc-steam-demo-save.dat"),
     );

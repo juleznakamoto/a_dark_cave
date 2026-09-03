@@ -45,6 +45,18 @@ export const REFERRAL_LIMIT = 10;
 /** One-time welcome gold when creating an account (email or Google). */
 export const SIGN_UP_WELCOME_GOLD = 200;
 
+/** Edition that last wrote a save. Used to tell Steam Demo files from full-game files. */
+export const SAVE_ORIGIN_EDITIONS = [
+  "web",
+  "steam-full",
+  "steam-demo",
+  "steam-playtest",
+  "galaxy",
+  "crazygames",
+] as const;
+
+export type SaveOriginEdition = (typeof SAVE_ORIGIN_EDITIONS)[number];
+
 // Game state schema for A Dark Cave
 export const gameStateSchema = z.object({
   gameId: z.string().optional(), // Unique identifier for this game playthrough
@@ -784,6 +796,19 @@ export const gameStateSchema = z.object({
    * Empty for saves from before version tracking; stamped on every save.
    */
   clientBuildSha: z.string().default(""),
+  /**
+   * Edition that last wrote this save. Missing on saves from before this field.
+   * Steam Demo and full game use separate Cloud files; this mark is how the
+   * full game recognizes a leftover Demo blob in the old shared filename.
+   */
+  saveOriginEdition: z.enum(SAVE_ORIGIN_EDITIONS).optional(),
+  /** Set once when the full Steam game imports a Demo save. Survives restarts. */
+  originatedFromSteamDemo: z.boolean().default(false),
+  /**
+   * Full Steam game already offered Continue / Start New for a Demo save.
+   * Survives restarts so that prompt is shown only once.
+   */
+  steamDemoContinueResolved: z.boolean().default(false),
   playTime: z.number().default(0), // Track total play time in milliseconds
   lastResourceSnapshotTime: z.number().default(0).optional(),
   /** Resource keys that have appeared in the side panel (persisted once amount > 0). */
