@@ -3,13 +3,13 @@ import { cn } from "@/lib/utils";
 import "./glowing-shadow.css";
 
 export type GlowingShadowProps = {
-  children: ReactNode;
+  children?: ReactNode;
   className?: string;
   contentClassName?: string;
-  /** Rainbow (default) or cool silver/white. */
-  variant?: "default" | "silver";
-  /** Demo card, content-sized shell, or full-bleed image frame. */
-  size?: "card" | "compact" | "frame";
+  /** Rainbow (default), cool silver/white, or red construction-queue rim. */
+  variant?: "default" | "silver" | "red";
+  /** Demo card, content-sized shell, full-bleed image frame, or header slot. */
+  size?: "card" | "compact" | "frame" | "slot";
   /** Hover intensify + pointer cursor. Off for static share imagery. */
   interactive?: boolean;
   /**
@@ -33,6 +33,8 @@ export function GlowingShadow({
   buttonRole = true,
 }: GlowingShadowProps) {
   const isFrame = size === "frame";
+  const isSlot = size === "slot";
+  const useRim = isFrame || isSlot;
   const asButton = interactive && buttonRole;
 
   return (
@@ -40,15 +42,17 @@ export function GlowingShadow({
       className={cn(
         "adc-gs",
         variant === "silver" && "adc-gs--silver",
+        variant === "red" && "adc-gs--red",
         size === "compact" && "adc-gs--compact",
         isFrame && "adc-gs--frame",
+        isSlot && "adc-gs--slot",
         interactive && "adc-gs--interactive",
         className,
       )}
       role={asButton ? "button" : undefined}
       tabIndex={asButton ? 0 : undefined}
     >
-      {isFrame ? (
+      {useRim ? (
         <div className="adc-gs__rim" aria-hidden>
           <div className="adc-gs__rim-spin" />
         </div>

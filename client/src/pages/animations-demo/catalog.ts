@@ -4,6 +4,7 @@ import {
   ImproveButtonSection,
   InsightBadgeSection,
 } from "@/pages/animations-demo/sectionEstate";
+import { QueueSlotsSection } from "@/pages/animations-demo/sectionVillage";
 import {
   ButtonParticlesSection,
   CooldownWashSection,
@@ -42,6 +43,7 @@ export const ANIMATION_DEMO_SECTIONS: AnimationDemoSection[] = [
   },
   { id: "improve-button", label: "Improve button", Section: ImproveButtonSection },
   { id: "cooldown-wash", label: "Cooldown wash", Section: CooldownWashSection },
+  { id: "queue-slots", label: "Build queue slots", Section: QueueSlotsSection },
   { id: "insight-badge", label: "Insight badge", Section: InsightBadgeSection },
   {
     id: "button-particles",

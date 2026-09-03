@@ -1,16 +1,27 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Redirect } from "wouter";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import { ANIMATION_DEMO_SECTIONS } from "@/pages/animations-demo/catalog";
 
+function currentHashId(): string {
+  return window.location.hash.replace(/^#/, "");
+}
+
 export default function AnimationsDemo() {
+  const [hashId, setHashId] = useState(currentHashId);
+
+  useEffect(() => {
+    const onHash = () => setHashId(currentHashId());
+    window.addEventListener("hashchange", onHash);
+    return () => window.removeEventListener("hashchange", onHash);
+  }, []);
+
   useEffect(() => {
     if (!import.meta.env.DEV) return;
-    const id = window.location.hash.replace(/^#/, "");
-    if (!id) return;
-    const el = document.getElementById(id);
+    if (!hashId) return;
+    const el = document.getElementById(hashId);
     el?.scrollIntoView({ block: "start" });
-  }, []);
+  }, [hashId]);
 
   if (!import.meta.env.DEV) {
     return <Redirect to="/" />;

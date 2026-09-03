@@ -46,6 +46,7 @@ import CooldownButton, {
   gameActionButtonGridClassName,
   gameActionOutlineButtonClassName,
 } from "@/components/CooldownButton";
+import { ConstructionQueueSlot } from "@/components/game/ConstructionQueueSlot";
 import { ActionButtonSlot } from "@/components/game/GameActionButtonStack";
 import { Button } from "@/components/ui/button";
 import {
@@ -588,6 +589,14 @@ export default function VillagePanel() {
     purchaseConstructionQueueSlot();
   }, [purchaseConstructionQueueSlot]);
 
+  const usedQueueSlotMask = useGameStore((s) => {
+    const visibleSlots = getVisibleQueueSlotCount();
+    let mask = 0;
+    for (let i = 0; i < visibleSlots; i++) {
+      if (isQueueSlotInUse(s, i)) mask |= 1 << i;
+    }
+    return mask;
+  });
   const insightRevealing = useGameStore((s) => s.insightRevealing);
   const isPresetUnlockAnimating = isInsightRevealInProgress(
     PRESET_UNLOCK_INSIGHT_KEY,
@@ -1520,9 +1529,9 @@ export default function VillagePanel() {
             const { teasers: buildTeasers, showEllipsis: showBuildEllipsis } =
               catalogActive && group.title === "Build"
                 ? getDemoEndHiddenActionTeasers(
-                    group.actions,
-                    new Set(visibleActions.map((action) => action.id)),
-                  )
+                  group.actions,
+                  new Set(visibleActions.map((action) => action.id)),
+                )
                 : { teasers: [], showEllipsis: false };
 
             if (
@@ -1619,7 +1628,7 @@ export default function VillagePanel() {
                             const isLocked = isQueueSlotLockedForUi(state, i);
                             const isInsightPurchaseLocked =
                               isQueueSlotInsightPurchaseLocked(state, i);
-                            const isUsed = isQueueSlotInUse(state, i);
+                            const isUsed = (usedQueueSlotMask & (1 << i)) !== 0;
                             const insightUnlockCost =
                               isInsightPurchaseLocked && i > 0
                                 ? getQueueSlotUnlockCost(i - 1)
@@ -1666,39 +1675,18 @@ export default function VillagePanel() {
                                 tooltipTriggerClassName="inline-flex items-center leading-none"
                                 className="inline-flex items-center"
                               >
-                                <span
-                                  data-testid={queueTooltipId}
-                                  className={cn(
-                                    HEADER_SLOT_SIZE_CLASS,
-                                    "relative inline-flex items-center justify-center rounded-md border border-neutral-400/50 box-border",
-                                    isBuildingLocked && "opacity-70",
-                                  )}
-                                >
-                                  {isLocked ? (
-                                    isInsightPurchaseLocked ? (
-                                      <span
-                                        aria-hidden
-                                        className="font-noto-symbols-2 text-[12px] translate-y-[2px] font-extrabold leading-none text-muted-foreground/45 select-none"
-                                      >
-                                        +
-                                      </span>
-                                    ) : (
-                                      <span
-                                        aria-hidden
-                                        className="font-noto-symbols-2 text-[12px] translate-y-[2px] font-extrabold leading-none text-muted-foreground/45 select-none"
-                                      >
-                                        ×
-                                      </span>
-                                    )
-                                  ) : (
-                                    isUsed && (
-                                      <span
-                                        aria-hidden
-                                        className="absolute inset-[3px] rounded-[1px] bg-red-700"
-                                      />
-                                    )
-                                  )}
-                                </span>
+                                <ConstructionQueueSlot
+                                  testId={queueTooltipId}
+                                  kind={
+                                    isLocked
+                                      ? isInsightPurchaseLocked
+                                        ? "plus"
+                                        : "locked"
+                                      : isUsed
+                                        ? "used"
+                                        : "free"
+                                  }
+                                />
                               </TooltipWrapper>
                             );
                           })}

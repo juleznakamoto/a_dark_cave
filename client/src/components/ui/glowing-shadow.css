@@ -150,6 +150,56 @@
   --adc-gs-glow-light: 88%;
 }
 
+/* Used construction-queue mark (same spinning rim as share, red, no hover) */
+.adc-gs--red {
+  --adc-gs-card-color: #b91c1c;
+  --adc-gs-hue: 0;
+  --adc-gs-hue-speed: 0;
+}
+
+.adc-gs--red .adc-gs__rim-spin {
+  /* Same traveling conic as the share frame, red, and blurred so it is a sheen. */
+  filter: blur(2px);
+  background: conic-gradient(from 0deg,
+      #ff3434 0deg,
+      #ff6464 300deg,
+      hsl(0, 100%, 84%) 322deg,
+      hsl(0, 100%, 93%) 338deg,
+      hsl(0, 100%, 84%) 352deg,
+      #ff3838 360deg);
+}
+
+/* Original used-mark size (inset 3px of the 18px queue box) + 2px share rim */
+.adc-gs--slot {
+  width: 100%;
+  height: 100%;
+  max-width: 100%;
+  max-height: 100%;
+  aspect-ratio: auto;
+  margin: 0;
+  overflow: hidden;
+  --adc-gs-card-width: 12px;
+  --adc-gs-card-radius: 1px;
+  --adc-gs-border-width: 1px;
+  --adc-gs-content-inset: 1px;
+  --adc-gs-rim-width: 2px;
+  --adc-gs-animation-speed: 4s;
+}
+
+.adc-gs--slot:before,
+.adc-gs--slot:after {
+  display: none;
+}
+
+.adc-gs--slot .adc-gs__content {
+  padding: 0;
+  border-radius: 1px;
+}
+
+.adc-gs--slot .adc-gs__content:before {
+  display: none;
+}
+
 /*
  * Share dialog preview wrapper (outside the export capture).
  * drop-shadow is used so the glow is not clipped by the scaled card.
