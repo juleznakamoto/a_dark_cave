@@ -1056,6 +1056,7 @@ export const gameStateSchema = z.object({
           z.object({
             durationMin: z.union([
               z.literal(5),
+              z.literal(10),
               z.literal(15),
               z.literal(30),
             ]),
@@ -1070,6 +1071,7 @@ export const gameStateSchema = z.object({
           amountGold: z.number(),
           durationMin: z.union([
             z.literal(5),
+            z.literal(10),
             z.literal(15),
             z.literal(30),
           ]),
@@ -1078,6 +1080,7 @@ export const gameStateSchema = z.object({
           winPercentInt: z.number().optional(),
           luckyChanceHit: z.boolean().optional(),
           effectiveWinPercent: z.number().optional(),
+          /** Legacy in-flight flag; new investments never wipe out. */
           totalLoss: z.boolean().optional(),
           lossPercentInt: z.number().optional(),
           payoutGold: z.number(),

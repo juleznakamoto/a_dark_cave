@@ -11,18 +11,14 @@ import { Button } from "@/components/ui/button";
 import { useGameStore } from "@/game/state";
 import { TooltipWrapper } from "@/components/game/TooltipWrapper";
 import {
-  getEffectiveLuckyChancePercent,
   getLuckWinChanceBonus,
+  getLuckyChancePercent,
   getSuccessChancePercent,
-  investmentHallLuckyChanceBonusPct,
   isInvestmentWaveReadyForUi,
-  LUCKY_CHANCE,
   LUCKY_CHANCE_WIN_MULTIPLIER,
-  TOTAL_LOSS_PCT,
-  lossPercentInclusiveRange,
-  luckyChanceSuccessProfitGoldRange,
-  successProfitGoldRange,
-  winPercentInclusiveRange,
+  lossGold,
+  luckyChanceSuccessProfitGold,
+  successProfitGold,
 } from "@/game/rules/investmentHallTables";
 import type { InvestmentDurationMin } from "@/game/rules/investmentHallTables";
 import { gameActionOutlineButtonClassName } from "@/components/CooldownButton";
@@ -39,42 +35,27 @@ function termMinutesLabel(
   return t("invest.minutes", { count: durationMin });
 }
 
-function formatLuckSuccessLine(luck: number, t: TFunction<"ui">): string {
-  const bonus = getLuckWinChanceBonus(luck);
-  const pct = Number.isInteger(bonus) ? String(bonus) : bonus.toFixed(1);
-  return t("invest.luckBonus", { pct });
-}
-
-/** Matches `investmentHallLuckyChanceBonusPct`: Treasury → 2, Bank → 1; coinhouse-only → null (no line). */
-function formatInvestmentHallLuckyLine(
-  bonusPct: number,
-  t: TFunction<"ui">,
-): string | null {
-  if (bonusPct >= 2) {
-    return t("invest.buildingLuckyBonus2");
-  }
-  if (bonusPct >= 1) {
-    return t("invest.buildingLuckyBonus1");
-  }
-  return null;
-}
-
 function formatPercentDisplay(p: number): string {
   return Number.isInteger(p) ? String(p) : p.toFixed(1);
 }
 
-/** Single trailing percent, en dash between values (e.g. `10–20 %`). */
-function formatPercentRange(from: number, to: number): string {
-  return `${formatPercentDisplay(from)}–${formatPercentDisplay(to)} %`;
+function formatLuckyChanceTopLine(
+  luckyChancePct: number,
+  luck: number,
+  t: TFunction<"ui">,
+): string {
+  return t("invest.luckyChanceTop", {
+    percent: formatPercentDisplay(luckyChancePct),
+    fromLuck: formatPercentDisplay(getLuckWinChanceBonus(luck)),
+  });
 }
 
-function formatGoldRange(
-  from: number,
-  to: number,
+function formatGoldAmount(
+  amount: number,
   t: TFunction<["ui", "common"]>,
 ): string {
   return t("common:currency.goldAmount", {
-    amount: `${formatNumber(from)}–${formatNumber(to)}`,
+    amount: formatNumber(amount),
   });
 }
 
@@ -108,13 +89,14 @@ export default function InvestDialog({ open, onOpenChange }: Props) {
     return 100;
   }, [buildings.treasury, buildings.bank]);
 
-  const luckyBonusPct = useMemo(
+  const luckyChancePct = useMemo(
     () =>
-      investmentHallLuckyChanceBonusPct({
+      getLuckyChancePercent({
+        coinhouse: buildings.coinhouse,
         bank: buildings.bank,
         treasury: buildings.treasury,
       }),
-    [buildings.bank, buildings.treasury],
+    [buildings.coinhouse, buildings.bank, buildings.treasury],
   );
 
   const amounts = [100, 500, 1000] as const;
@@ -128,24 +110,11 @@ export default function InvestDialog({ open, onOpenChange }: Props) {
     [playTime, investmentHallState],
   );
 
-  const potentialProfitGold = useMemo(() => {
-    const idx = Number(strategy);
-    const offer = offers[idx];
+  const luckyProfitGold = useMemo(() => {
+    const offer = offers[Number(strategy)];
     const stake = Number(amountStr);
-    if (!offer || !Number.isFinite(stake) || stake <= 0) {
-      return {
-        normal: { from: 0, to: 0 },
-        luckyChance: { from: 0, to: 0 },
-      };
-    }
-    return {
-      normal: successProfitGoldRange(stake, offer.tier, offer.durationMin),
-      luckyChance: luckyChanceSuccessProfitGoldRange(
-        stake,
-        offer.tier,
-        offer.durationMin,
-      ),
-    };
+    if (!offer || !Number.isFinite(stake) || stake <= 0) return 0;
+    return luckyChanceSuccessProfitGold(stake, offer.tier, offer.durationMin);
   }, [offers, strategy, amountStr]);
 
   useEffect(() => {
@@ -163,11 +132,6 @@ export default function InvestDialog({ open, onOpenChange }: Props) {
     }
   }, [open, canInvestUi, onOpenChange]);
 
-  const investmentHallLuckyTooltipLine = formatInvestmentHallLuckyLine(
-    luckyBonusPct,
-    t,
-  );
-
   const handleCommit = () => {
     const idx = Number(strategy);
     const amt = Number(amountStr);
@@ -180,11 +144,8 @@ export default function InvestDialog({ open, onOpenChange }: Props) {
     <div className="text-xs space-y-2 max-w-[280px]">
       <div className="space-y-1.5 border-b border-border pb-2 mb-0.5">
         <p className="font-medium text-foreground">
-          {formatLuckSuccessLine(luck, t)}
+          {formatLuckyChanceTopLine(luckyChancePct, luck, t)}
         </p>
-        {investmentHallLuckyTooltipLine ? (
-          <p className="font-medium text-foreground">{investmentHallLuckyTooltipLine}</p>
-        ) : null}
       </div>
       <ul className="space-y-1.5 pl-0 list-none text-muted-foreground">
         <li>
@@ -220,20 +181,6 @@ export default function InvestDialog({ open, onOpenChange }: Props) {
           </span>
           : {t("invest.tooltip.loss")}
         </li>
-        <li>
-          <span className="text-foreground font-medium">
-            {t("invest.headers.wipeout")}
-          </span>
-          : {t("invest.tooltip.wipeout")}
-        </li>
-        <li>
-          <span className="text-foreground font-medium">
-            {t("invest.potentialProfit")}
-          </span>{" "}
-          {t("invest.tooltip.potentialProfit", {
-            multiplier: LUCKY_CHANCE_WIN_MULTIPLIER,
-          })}
-        </li>
       </ul>
       <p className="text-muted-foreground">{t("invest.tooltip.wait")}</p>
     </div>
@@ -241,10 +188,7 @@ export default function InvestDialog({ open, onOpenChange }: Props) {
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent
-        skipViewportWidthClamp
-        className="w-max max-w-[calc(100vw-2rem)] max-h-[90dvh] overflow-y-auto min-w-0"
-      >
+      <DialogContent className="[--adc-dialog-max-w:22rem] max-h-[90dvh] overflow-y-auto min-w-0">
         <DialogHeader className="min-w-0">
           <div className="flex items-center gap-1 pr-10">
             <DialogTitle className="m-0 pr-0 leading-none">
@@ -288,12 +232,19 @@ export default function InvestDialog({ open, onOpenChange }: Props) {
                     INVEST_SECTION_INSET,
                   )}
                 >
-                  <table className="w-max border-collapse border-0 text-foreground">
+                  <table className="w-full table-fixed border-collapse border-0 text-left text-foreground">
+                    <colgroup>
+                      <col className={INVEST_RADIO_COLUMN_CLASS} />
+                      <col />
+                      <col />
+                      <col />
+                      <col />
+                    </colgroup>
                     <thead>
-                      <tr className="text-left text-xs leading-tight">
+                      <tr className="text-xs leading-tight">
                         <th
                           className={cn(
-                            "border-b py-2 pr-0 align-bottom",
+                            "border-b py-2 pl-0 pr-0 text-left align-bottom",
                             INVEST_RADIO_COLUMN_CLASS,
                             INVEST_TABLE_LINE,
                           )}
@@ -301,7 +252,7 @@ export default function InvestDialog({ open, onOpenChange }: Props) {
                         />
                         <th
                           className={cn(
-                            "border-b py-2 pl-0 pr-2 font-medium align-bottom",
+                            "border-b py-2 pl-0 pr-2 text-left font-medium align-bottom",
                             INVEST_TABLE_LINE,
                           )}
                         >
@@ -309,7 +260,7 @@ export default function InvestDialog({ open, onOpenChange }: Props) {
                         </th>
                         <th
                           className={cn(
-                            "border-b py-2 pr-2 font-medium align-bottom",
+                            "border-b py-2 pl-0 pr-2 text-left font-medium align-bottom",
                             INVEST_TABLE_LINE,
                           )}
                         >
@@ -317,7 +268,7 @@ export default function InvestDialog({ open, onOpenChange }: Props) {
                         </th>
                         <th
                           className={cn(
-                            "border-b py-2 pr-2 font-medium align-bottom",
+                            "border-b py-2 pl-0 pr-2 text-left font-medium align-bottom",
                             INVEST_TABLE_LINE,
                           )}
                         >
@@ -325,49 +276,33 @@ export default function InvestDialog({ open, onOpenChange }: Props) {
                         </th>
                         <th
                           className={cn(
-                            "border-b py-2 pr-2 font-medium align-bottom",
-                            INVEST_TABLE_LINE,
-                          )}
-                        >
-                          {t("invest.headers.lucky")}
-                        </th>
-                        <th
-                          className={cn(
-                            "border-b py-2 pr-2 font-medium align-bottom",
+                            "border-b py-2 pl-0 pr-0 text-left font-medium align-bottom",
                             INVEST_TABLE_LINE,
                           )}
                         >
                           {t("invest.headers.loss")}
                         </th>
-                        <th
-                          className={cn(
-                            "border-b py-2 pr-0 font-medium align-bottom",
-                            INVEST_TABLE_LINE,
-                          )}
-                        >
-                          {t("invest.headers.wipeout")}
-                        </th>
                       </tr>
                     </thead>
-                    <tbody className="text-xxs leading-snug">
+                    <tbody className="text-xs leading-snug">
                       {offers.map((offer, i) => {
+                        const stake = Number(amountStr);
                         const finalSuccess = getSuccessChancePercent(
                           offer.tier,
                           offer.durationMin,
                           luck,
                           cruelMode,
                         );
-                        const winR = winPercentInclusiveRange(
-                          offer.tier,
-                          offer.durationMin,
-                        );
-                        const [lcChance] = LUCKY_CHANCE[offer.tier];
-                        const lcDisplay = getEffectiveLuckyChancePercent(
-                          lcChance,
-                          luckyBonusPct,
-                        );
-                        const lossR = lossPercentInclusiveRange(offer.tier);
-                        const tl = TOTAL_LOSS_PCT[offer.tier];
+                        const profit = Number.isFinite(stake)
+                          ? successProfitGold(
+                            stake,
+                            offer.tier,
+                            offer.durationMin,
+                          )
+                          : 0;
+                        const loss = Number.isFinite(stake)
+                          ? lossGold(stake, offer.tier)
+                          : 0;
                         const selected = strategy === String(i);
                         return (
                           <tr
@@ -380,7 +315,7 @@ export default function InvestDialog({ open, onOpenChange }: Props) {
                           >
                             <td
                               className={cn(
-                                "py-2 pr-0 align-middle",
+                                "py-2 pl-0 pr-0 text-left align-middle",
                                 INVEST_RADIO_COLUMN_CLASS,
                                 i > 0 && "border-t",
                                 INVEST_TABLE_LINE,
@@ -394,7 +329,7 @@ export default function InvestDialog({ open, onOpenChange }: Props) {
                             </td>
                             <td
                               className={cn(
-                                "py-2 pl-0 pr-2 align-middle text-xs font-medium whitespace-nowrap",
+                                "py-2 pl-0 pr-2 text-left align-middle font-medium whitespace-nowrap",
                                 i > 0 && "border-t",
                                 INVEST_TABLE_LINE,
                               )}
@@ -403,7 +338,7 @@ export default function InvestDialog({ open, onOpenChange }: Props) {
                             </td>
                             <td
                               className={cn(
-                                "py-2 pr-2 align-middle tabular-nums whitespace-nowrap",
+                                "py-2 pl-0 pr-2 text-left align-middle tabular-nums whitespace-nowrap",
                                 i > 0 && "border-t",
                                 INVEST_TABLE_LINE,
                               )}
@@ -412,39 +347,21 @@ export default function InvestDialog({ open, onOpenChange }: Props) {
                             </td>
                             <td
                               className={cn(
-                                "py-2 pr-2 align-middle tabular-nums whitespace-nowrap",
+                                "py-2 pl-0 pr-2 text-left align-middle tabular-nums whitespace-nowrap",
                                 i > 0 && "border-t",
                                 INVEST_TABLE_LINE,
                               )}
                             >
-                              {formatPercentRange(winR.from, winR.to)}
+                              {formatGoldAmount(profit, t)}
                             </td>
                             <td
                               className={cn(
-                                "py-2 pr-2 align-middle tabular-nums whitespace-nowrap",
+                                "py-2 pl-0 pr-0 text-left align-middle tabular-nums whitespace-nowrap",
                                 i > 0 && "border-t",
                                 INVEST_TABLE_LINE,
                               )}
                             >
-                              {formatPercentDisplay(lcDisplay)} %
-                            </td>
-                            <td
-                              className={cn(
-                                "py-2 pr-2 align-middle tabular-nums whitespace-nowrap",
-                                i > 0 && "border-t",
-                                INVEST_TABLE_LINE,
-                              )}
-                            >
-                              {formatPercentRange(lossR.from, lossR.to)}
-                            </td>
-                            <td
-                              className={cn(
-                                "py-2 pr-0 align-middle tabular-nums whitespace-nowrap",
-                                i > 0 && "border-t",
-                                INVEST_TABLE_LINE,
-                              )}
-                            >
-                              {tl} %
+                              {formatGoldAmount(loss, t)}
                             </td>
                           </tr>
                         );
@@ -453,6 +370,17 @@ export default function InvestDialog({ open, onOpenChange }: Props) {
                   </table>
                 </div>
               </RadioGroup>
+              <p
+                className={cn(
+                  "text-xs tabular-nums text-foreground",
+                  INVEST_SECTION_INSET,
+                )}
+              >
+                {t("invest.luckyChanceLine", {
+                  percent: formatPercentDisplay(luckyChancePct),
+                  gold: formatGoldAmount(luckyProfitGold, t),
+                })}
+              </p>
             </div>
 
             <div className="space-y-2">
@@ -523,25 +451,7 @@ export default function InvestDialog({ open, onOpenChange }: Props) {
               </RadioGroup>
             </div>
 
-            <div className="flex flex-col items-center gap-4 pt-1">
-              <p className="text-center text-xs text-muted-foreground tabular-nums">
-                {t("invest.potentialProfit")}{" "}
-                <span className="text-xs text-foreground font-medium tabular-nums">
-                  {formatGoldRange(
-                    potentialProfitGold.normal.from,
-                    potentialProfitGold.normal.to,
-                    t,
-                  )}
-                </span>
-                {" / "}
-                <span className="text-xs text-foreground font-medium tabular-nums">
-                  {formatGoldRange(
-                    potentialProfitGold.luckyChance.from,
-                    potentialProfitGold.luckyChance.to,
-                    t,
-                  )}
-                </span>
-              </p>
+            <div className="flex justify-center pt-1">
               <Button
                 onClick={handleCommit}
                 variant="outline"

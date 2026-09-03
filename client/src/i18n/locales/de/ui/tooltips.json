@@ -148,7 +148,7 @@
       "defenseBonus": "+{{amount}} Verteidigung", //x1.3
       "attackBonus": "+{{amount}} Angriff",
       "integrityBonus": "+{{amount}} Integrität",
-      "luckyChance": "+{{percent}} % Glückschance",
+      "luckyChance": "+{{percent}} % Glückstreffer-Chance",
       "investUpToGold": "Bis zu {{amount}} Gold investieren",
       "higherTradeAmounts": "Höhere Handelsmengen",
       "tradesAtMerchant_one": "+{{count}} Handel beim reisenden Händler",

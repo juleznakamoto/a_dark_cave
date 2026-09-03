@@ -352,7 +352,6 @@ export type OutcomeDialogIconId =
   | "madness"
   | "insight"
   | "investLucky"
-  | "investWipeout"
   | "investPartialLoss"
   | "investSuccess";
 
@@ -436,15 +435,6 @@ export const OUTCOME_DIALOG_ICONS: OutcomeDialogIcon[] = [
     uiIconSizeClassName: "w-9 h-9",
     ringClassName: "text-white",
   },
-  {
-    id: "investWipeout",
-    label: "Invest wipeout",
-    iconRing: "border-red-500/85 bg-red-500/30",
-    glyphClassName: `${DG} text-4xl text-red-500 translate-y-[-0.1em] rotate-180`,
-    symbol: "\u21EE",
-    uiIconSizeClassName: "w-9 h-9",
-    ringClassName: "text-white",
-  }
 ];
 
 const OUTCOME_BY_ID = new Map(

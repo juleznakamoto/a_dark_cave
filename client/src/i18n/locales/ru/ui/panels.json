@@ -207,6 +207,7 @@
     "statEffectMaxSeconds": "макс. {{value}} с", //x1.2
     "statLuckEffectCrit": "+{{percent}} % шанс критического удара в бою",
     "statLuckEffectGambling": "Макс. ставка {{amount}} зол. у Игрока",
+    "statLuckEffectInvest": "+{{percent}} % к шансу успеха инвестиций",
     "statStrengthEffectBastion": "+{{value}} атака бастиона (½ силы)",
     "statKnowledgeEffectMerchant": "{{percent}} % скидка у странствующего торговца",
     "statKnowledgeEffectDecisionTime": "+{{seconds}} с на принятие решения в событиях на время",

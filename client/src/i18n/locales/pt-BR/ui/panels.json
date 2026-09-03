@@ -207,6 +207,7 @@
     "statEffectMaxSeconds": "{{value}}s máx.",
     "statLuckEffectCrit": "+{{percent}}% chance de golpe crítico em combate",
     "statLuckEffectGambling": "Aposta máx. de {{amount}} Ouro no Jogador",
+    "statLuckEffectInvest": "+{{percent}}% de chance de sucesso em investimentos",
     "statStrengthEffectBastion": "+{{value}} ataque da Bastilha (½ Força)",
     "statKnowledgeEffectMerchant": "{{percent}}% desconto no mercador viajante",
     "statKnowledgeEffectDecisionTime": "+{{seconds}}s tempo de decisão em eventos cronometrados",

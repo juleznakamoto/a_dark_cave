@@ -78,31 +78,26 @@
     "title": "Investi",
     "strategy": "Strategia d'Investimento",
     "amount": "Importo dell'Investimento",
-    "potentialProfit": "Profitto Potenziale:",
     "startInvestment": "Avvia Investimento",
     "infoAriaLabel": "Spiega gli investimenti e la tabella delle strategie",
     "unlockTooltip": "Si sblocca a un livello di edificio più alto",
     "minutes": "{{count}} min",
-    "luckBonus": "+{{pct}} % di Probabilità di Successo dalla Fortuna (inclusa nella tabella).",
-    "buildingLuckyBonus2": "+2 % di Probabilità Fortunata dal livello dell'edificio (inclusa nella tabella).",
-    "buildingLuckyBonus1": "+1 % di Probabilità Fortunata dal livello dell'edificio (inclusa nella tabella).",
+    "luckyChanceTop": "Colpo di fortuna {{percent}} % ({{fromLuck}} % dalla Fortuna)",
+    "luckyChanceLine": "{{percent}} % Colpo di fortuna: {{gold}}",
     "headers": {
       "time": "Tempo",
       "success": "Successo",
       "profit": "Profitto",
-      "lucky": "Fortuna",
-      "loss": "Perdita",
-      "wipeout": "Azzeramento"
+      "lucky": "Colpo di fortuna",
+      "loss": "Perdita"
     },
     "tooltip": {
       "time": "Per quanto tempo dura l'investimento.",
       "success": "Probabilità di un investimento riuscito.",
       "profit": "Il profitto che ottieni in caso di successo.",
       "lucky": "Probabilità in caso di successo di moltiplicare il tuo profitto per {{multiplier}}.",
-      "loss": "La parte del tuo investimento che perdi in caso di fallimento.",
-      "wipeout": "Probabilità di perdere l'intero investimento in caso di fallimento.",
-      "potentialProfit": "Intervallo di profitto in caso di successo. Il secondo intervallo è se scatta la Probabilità Fortunata (profitto × {{multiplier}}).",
-      "wait": "Dopo ogni investimento, servono 30 minuti perché appaiano nuove offerte."
+      "loss": "L'oro che perdi in caso di fallimento.",
+      "wait": "Dopo ogni investimento, servono 20 minuti perché appaiano nuove offerte."
     }
   },
   "gambler": {
@@ -192,8 +187,7 @@
   "investmentResult": {
     "title": "Risultato dell'Investimento",
     "success": "Il tuo investimento di {{amount}} Oro ha avuto successo.",
-    "luckyChance": "Probabilità Fortunata. I guadagni del tuo investimento di {{amount}} Oro sono moltiplicati per {{multiplier}}.",
-    "wipeout": "Azzeramento. Hai perso l'intero investimento di {{amount}} Oro.",
+    "luckyChance": "Colpo di fortuna. I guadagni del tuo investimento di {{amount}} Oro sono moltiplicati per {{multiplier}}.",
     "partialLoss": "Il tuo investimento di {{amount}} Oro è fallito."
   },
   "cube": {

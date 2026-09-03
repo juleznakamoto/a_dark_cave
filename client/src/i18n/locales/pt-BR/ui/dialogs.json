@@ -78,31 +78,26 @@
     "title": "Investir",
     "strategy": "Estratégia de Investimento",
     "amount": "Valor do Investimento",
-    "potentialProfit": "Lucro Potencial:",
     "startInvestment": "Iniciar Investimento",
     "infoAriaLabel": "Explicar os investimentos e a tabela de estratégia",
     "unlockTooltip": "Desbloqueia em um nível de edifício mais alto",
     "minutes": "{{count}} min",
-    "luckBonus": "+{{pct}} % de Chance de Sucesso por Sorte (incluído na tabela).",
-    "buildingLuckyBonus2": "+2 % de Golpe de Sorte pelo nível do edifício (incluído na tabela).",
-    "buildingLuckyBonus1": "+1 % de Golpe de Sorte pelo nível do edifício (incluído na tabela).",
+    "luckyChanceTop": "Golpe de Sorte {{percent}} % ({{fromLuck}} % por Sorte)",
+    "luckyChanceLine": "{{percent}} % Golpe de Sorte: {{gold}}",
     "headers": {
       "time": "Tempo",
       "success": "Sucesso",
       "profit": "Lucro",
-      "lucky": "Sorte",
-      "loss": "Perda",
-      "wipeout": "Perda Total"
+      "lucky": "Golpe de Sorte",
+      "loss": "Perda"
     },
     "tooltip": {
       "time": "Quanto tempo o investimento dura.",
       "success": "Chance de um investimento bem-sucedido.",
       "profit": "O lucro que você obtém em caso de sucesso.",
       "lucky": "Chance, em caso de sucesso, de multiplicar seu lucro por {{multiplier}}.",
-      "loss": "A parte do seu investimento que você perde em caso de fracasso.",
-      "wipeout": "Chance de perder todo o seu investimento em caso de fracasso.",
-      "potentialProfit": "Faixa de lucro em um investimento bem-sucedido. A segunda faixa é caso o Golpe de Sorte ocorra (lucro × {{multiplier}}).",
-      "wait": "Depois de cada investimento, leva 30 minutos para novas ofertas aparecerem."
+      "loss": "O ouro que você perde em caso de fracasso.",
+      "wait": "Depois de cada investimento, leva 20 minutos para novas ofertas aparecerem."
     }
   },
   "gambler": {
@@ -193,7 +188,6 @@
     "title": "Resultado do Investimento",
     "success": "Seu investimento de {{amount}} de Ouro foi bem-sucedido.",
     "luckyChance": "Golpe de Sorte. Os ganhos do seu investimento de {{amount}} de Ouro são multiplicados por {{multiplier}}.",
-    "wipeout": "Perda Total. Você perdeu todo o seu investimento de {{amount}} de Ouro.",
     "partialLoss": "Seu investimento de {{amount}} de Ouro fracassou."
   },
   "cube": {

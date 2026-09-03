@@ -83,31 +83,26 @@
     "title": "Invest",
     "strategy": "Investment Strategy",
     "amount": "Investment Amount",
-    "potentialProfit": "Potential Profit:",
     "startInvestment": "Start Investment",
     "infoAriaLabel": "Explain investments and the strategy table",
     "unlockTooltip": "Unlocks at higher building level",
     "minutes": "{{count}} min",
-    "luckBonus": "+{{pct}} % Success Chance from Luck (included in table).",
-    "buildingLuckyBonus2": "+2 % Lucky Chance from building level (included in table).",
-    "buildingLuckyBonus1": "+1 % Lucky Chance from building level (included in table).",
+    "luckyChanceTop": "Lucky Chance {{percent}} % ({{fromLuck}} % From Luck)",
+    "luckyChanceLine": "{{percent}} % Lucky Chance: {{gold}}",
     "headers": {
       "time": "Time",
       "success": "Success",
       "profit": "Profit",
-      "lucky": "Lucky",
-      "loss": "Loss",
-      "wipeout": "Wipeout"
+      "lucky": "Lucky Chance",
+      "loss": "Loss"
     },
     "tooltip": {
       "time": "How long the investment runs.",
       "success": "Chance of a successful investment.",
       "profit": "The profit you gain in case of success.",
       "lucky": "Chance on success to multiply your profit by {{multiplier}}.",
-      "loss": "The portion of your investment you lose in case of failure.",
-      "wipeout": "Chance to lose your entire investment in case of failure.",
-      "potentialProfit": "Profit range on a successful investment. The second range is if Lucky Chance hits (profit × {{multiplier}}).",
-      "wait": "After each investment, it takes 30 minutes for new offers to appear."
+      "loss": "The gold you lose in case of failure.",
+      "wait": "After each investment, it takes 20 minutes for new offers to appear."
     }
   },
   "gambler": {
@@ -198,7 +193,6 @@
     "title": "Investment Result",
     "success": "Your {{amount}} Gold investment was successful.",
     "luckyChance": "Lucky Chance. The gains on your {{amount}} Gold investment are multiplied by {{multiplier}}.",
-    "wipeout": "Wipeout. You lost your full {{amount}} Gold investment.",
     "partialLoss": "Your {{amount}} Gold investment failed."
   },
   "cube": {

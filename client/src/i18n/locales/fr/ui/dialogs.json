@@ -83,31 +83,26 @@
     "title": "Investir",
     "strategy": "Stratégie d'investissement", //x1.4
     "amount": "Montant de l'investissement", //x1.6
-    "potentialProfit": "Profit potentiel :",
     "startInvestment": "Lancer l'investissement", //x1.4
     "infoAriaLabel": "Expliquer les investissements et le tableau des stratégies", //x1.4
     "unlockTooltip": "Se débloque à un niveau de bâtiment plus élevé", //x1.4
     "minutes": "{{count}} min",
-    "luckBonus": "+{{pct}} % de chance de succès grâce à la Chance (inclus dans le tableau).",
-    "buildingLuckyBonus2": "+2 % de chance supplémentaire grâce au niveau du bâtiment (inclus dans le tableau).", //x1.4
-    "buildingLuckyBonus1": "+1 % de chance supplémentaire grâce au niveau du bâtiment (inclus dans le tableau).", //x1.4
+    "luckyChanceTop": "Coup de chance {{percent}} % ({{fromLuck}} % grâce à la Chance)",
+    "luckyChanceLine": "{{percent}} % Coup de chance : {{gold}}",
     "headers": {
       "time": "Durée",
       "success": "Succès",
       "profit": "Profit",
-      "lucky": "Chance",
-      "loss": "Perte",
-      "wipeout": "Perte totale" //x1.7
+      "lucky": "Coup de chance",
+      "loss": "Perte"
     },
     "tooltip": {
       "time": "Durée de l'investissement.",
       "success": "Probabilité d'un investissement réussi.",
       "profit": "Le profit obtenu en cas de succès.",
       "lucky": "Probabilité en cas de succès de multiplier votre profit par {{multiplier}}.",
-      "loss": "La part de votre investissement perdue en cas d'échec.",
-      "wipeout": "Probabilité de perdre la totalité de votre investissement en cas d'échec.",
-      "potentialProfit": "Fourchette de profit en cas de succès. La seconde fourchette s'applique si la chance supplémentaire se déclenche (profit × {{multiplier}}).",
-      "wait": "Après chaque investissement, il faut 30 minutes pour que de nouvelles offres apparaissent."
+      "loss": "L'or que vous perdez en cas d'échec.",
+      "wait": "Après chaque investissement, il faut 20 minutes pour que de nouvelles offres apparaissent."
     }
   },
   "gambler": {
@@ -197,8 +192,7 @@
   "investmentResult": {
     "title": "Résultat de l'investissement", //x1.6
     "success": "Votre investissement de {{amount}} or a réussi.",
-    "luckyChance": "Chance. Les gains de votre investissement de {{amount}} or sont multipliés par {{multiplier}}.",
-    "wipeout": "Perte totale. Vous avez perdu la totalité de votre investissement de {{amount}} or.", //x1.5
+    "luckyChance": "Coup de chance. Les gains de votre investissement de {{amount}} or sont multipliés par {{multiplier}}.",
     "partialLoss": "Votre investissement de {{amount}} or a échoué."
   },
   "cube": {

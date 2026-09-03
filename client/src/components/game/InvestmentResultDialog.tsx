@@ -17,7 +17,6 @@ interface InvestmentResultDialogProps {
 
 const INVEST_ICON_ID = {
   lucky_chance: "investLucky",
-  wipeout: "investWipeout",
   partial_loss: "investPartialLoss",
   success: "investSuccess",
 } as const;
@@ -43,7 +42,7 @@ export default function InvestmentResultDialog({
   if (!data) return null;
 
   const { kind, goldDelta } = data;
-  const isLoss = kind === "partial_loss" || kind === "wipeout";
+  const isLoss = kind === "partial_loss";
   const { bodyKey, bodyVars } = getInvestmentResultDialogBodyMeta(data);
   const bodyText = t(`ui:${bodyKey}`, bodyVars);
 

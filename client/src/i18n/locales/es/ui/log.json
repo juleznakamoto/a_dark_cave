@@ -15,7 +15,7 @@
     "boostApplied": "Impulso aplicado.",
     "investmentComplete": {
       "success": "Inversión de {{amount}} de oro completada: Éxito. Has ganado {{payout}} de oro.",
-      "successLucky": "Inversión de {{amount}} de oro completada: ¡Suerte! Has ganado {{payout}} de oro.",
+      "successLucky": "Inversión de {{amount}} de oro completada: ¡Golpe de suerte! Has ganado {{payout}} de oro.",
       "wipeout": "Inversión de {{amount}} de oro completada: Pérdida total. Perdiste toda tu inversión de {{amount}} de oro.",
       "failure": "Inversión de {{amount}} de oro completada: Fracaso. Perdiste {{loss}} de oro."
     },

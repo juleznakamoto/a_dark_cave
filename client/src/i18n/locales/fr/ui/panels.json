@@ -207,6 +207,7 @@
     "statEffectMaxSeconds": "{{value}} s max.",
     "statLuckEffectCrit": "+{{percent}} % de chances de coup critique au combat",
     "statLuckEffectGambling": "Mise max. de {{amount}} d'or chez le Joueur",
+    "statLuckEffectInvest": "+{{percent}} % de chance de succès des investissements",
     "statStrengthEffectBastion": "+{{value}} d'attaque de la Bastion (½ de Force)",
     "statKnowledgeEffectMerchant": "{{percent}} % de réduction chez le marchand itinérant",
     "statKnowledgeEffectDecisionTime": "+{{seconds}} s de temps de décision dans les événements chronométrés", //x1.6

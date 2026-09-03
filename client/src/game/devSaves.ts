@@ -109,8 +109,8 @@ function withInvestHall(base: GameState): GameState {
     investmentHallState: {
       offers: [
         { durationMin: 5, tier: "A" },
-        { durationMin: 15, tier: "B" },
-        { durationMin: 30, tier: "D" },
+        { durationMin: 10, tier: "B" },
+        { durationMin: 15, tier: "D" },
       ],
       active: null,
       nextWavePlayTime: 0,

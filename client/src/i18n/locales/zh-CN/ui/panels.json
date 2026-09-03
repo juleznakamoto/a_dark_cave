@@ -207,6 +207,7 @@
     "statEffectMaxSeconds": "最高 {{value}} 秒",
     "statLuckEffectCrit": "战斗中 +{{percent}}% 暴击几率",
     "statLuckEffectGambling": "赌徒处最高下注 {{amount}} 金币",
+    "statLuckEffectInvest": "投资成功率 +{{percent}}%",
     "statStrengthEffectBastion": "+{{value}} 堡垒攻击（力量的一半）",
     "statKnowledgeEffectMerchant": "旅行商人 {{percent}}% 折扣",
     "statKnowledgeEffectDecisionTime": "限时事件 +{{seconds}} 秒决策时间",

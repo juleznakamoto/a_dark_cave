@@ -207,6 +207,7 @@
     "statEffectMaxSeconds": "{{value}} s max",
     "statLuckEffectCrit": "+{{percent}} % probabilità di colpo critico in combattimento",
     "statLuckEffectGambling": "Puntata massima di {{amount}} Oro dal Giocatore d'azzardo",
+    "statLuckEffectInvest": "+{{percent}} % di probabilità di successo negli investimenti",
     "statStrengthEffectBastion": "+{{value}} attacco Bastione (½ Forza)",
     "statKnowledgeEffectMerchant": "{{percent}} % sconto dal mercante viaggiatore",
     "statKnowledgeEffectDecisionTime": "+{{seconds}} s tempo di decisione negli eventi a tempo",

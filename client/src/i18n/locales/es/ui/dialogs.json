@@ -83,31 +83,26 @@
     "title": "Invertir",
     "strategy": "Estrategia de inversión", //x1.2
     "amount": "Importe de la inversión", //x1.4
-    "potentialProfit": "Beneficio potencial:",
     "startInvestment": "Iniciar inversión",
     "infoAriaLabel": "Explicar inversiones y la tabla de estrategias",
     "unlockTooltip": "Se desbloquea con un nivel de edificio más alto", //x1.5
     "minutes": "{{count}} min",
-    "luckBonus": "+{{pct}} % de probabilidad de éxito por Suerte (incluido en la tabla).",
-    "buildingLuckyBonus2": "+2 % de probabilidad de suerte por nivel de edificio (incluido en la tabla).",
-    "buildingLuckyBonus1": "+1 % de probabilidad de suerte por nivel de edificio (incluido en la tabla).",
+    "luckyChanceTop": "Golpe de suerte {{percent}} % ({{fromLuck}} % por Suerte)",
+    "luckyChanceLine": "{{percent}} % Golpe de suerte: {{gold}}",
     "headers": {
       "time": "Tiempo",
       "success": "Éxito",
       "profit": "Beneficio",
-      "lucky": "Suerte",
-      "loss": "Pérdida",
-      "wipeout": "Pérdida total" //x1.9
+      "lucky": "Golpe de suerte",
+      "loss": "Pérdida"
     },
     "tooltip": {
       "time": "Cuánto dura la inversión.",
       "success": "Probabilidad de una inversión exitosa.",
       "profit": "El beneficio obtenido en caso de éxito.",
       "lucky": "Probabilidad en caso de éxito de multiplicar tu beneficio por {{multiplier}}.",
-      "loss": "La parte de tu inversión que pierdes en caso de fracaso.",
-      "wipeout": "Probabilidad de perder toda tu inversión en caso de fracaso.",
-      "potentialProfit": "Rango de beneficio si la inversión tiene éxito. El segundo rango aplica si se activa la probabilidad de suerte (beneficio × {{multiplier}}).",
-      "wait": "Después de cada inversión, tardan 30 minutos en aparecer nuevas ofertas."
+      "loss": "El oro que pierdes en caso de fracaso.",
+      "wait": "Después de cada inversión, tardan 20 minutos en aparecer nuevas ofertas."
     }
   },
   "gambler": {
@@ -197,8 +192,7 @@
   "investmentResult": {
     "title": "Resultado de la inversión", //x1.5
     "success": "Tu inversión de {{amount}} oro fue exitosa.",
-    "luckyChance": "¡Suerte! Las ganancias de tu inversión de {{amount}} oro se multiplican por {{multiplier}}.",
-    "wipeout": "Pérdida total. Perdiste toda tu inversión de {{amount}} oro.",
+    "luckyChance": "¡Golpe de suerte! Las ganancias de tu inversión de {{amount}} oro se multiplican por {{multiplier}}.",
     "partialLoss": "Tu inversión de {{amount}} oro falló."
   },
   "cube": {

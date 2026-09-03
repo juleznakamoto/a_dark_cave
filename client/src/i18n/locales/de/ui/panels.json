@@ -207,6 +207,7 @@
     "statEffectMaxSeconds": "max. {{value}} s",
     "statLuckEffectCrit": "+{{percent}} % kritische Trefferchance im Kampf",
     "statLuckEffectGambling": "Max. {{amount}} Gold Einsatz beim Spieler",
+    "statLuckEffectInvest": "+{{percent}} % Erfolgschance bei Investitionen",
     "statStrengthEffectBastion": "+{{value}} Bastion-Angriff (½ Stärke)",
     "statKnowledgeEffectMerchant": "{{percent}} % Rabatt beim reisenden Händler",
     "statKnowledgeEffectDecisionTime": "+{{seconds}} s Entscheidungszeit bei zeitlich begrenzten Ereignissen", //x1.6

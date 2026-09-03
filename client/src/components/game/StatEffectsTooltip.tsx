@@ -24,6 +24,7 @@ import {
 import { getMadnessProductionMultiplier } from "@/game/population";
 import { WAGER_TIERS, WAGER_LUCK_THRESHOLDS } from "@/game/diceFifteenGame";
 import { hasGamblerAppearedOnce } from "@/game/gamblerSession";
+import { getLuckWinChanceBonus } from "@/game/rules/investmentHallTables";
 import { bombKnowledgeDamageBonus } from "@/game/rules/skillUpgrades";
 
 export type TooltipStatKey = "luck" | "strength" | "knowledge" | "madness";
@@ -33,6 +34,7 @@ const POISON_ARROW_DAMAGE_PER_KNOWLEDGE = 5;
 
 /** Caps for stepped/clamped stat bonuses (shown on a muted secondary line). */
 const LUCK_CRIT_MAX_PERCENT = 25;
+const LUCK_INVEST_MAX_PERCENT = 10;
 const KNOWLEDGE_MERCHANT_MAX_PERCENT = 25;
 const KNOWLEDGE_DECISION_MAX_SEC = 25;
 const MADNESS_COMBAT_FAIL_MAX_PERCENT = 15;
@@ -119,6 +121,26 @@ function getLuckEffectRows(
     });
   } else {
     rows.push(lockedRow("gambling", lockedLabel));
+  }
+
+  if ((state.buildings?.coinhouse ?? 0) >= 1) {
+    const investBonus = getLuckWinChanceBonus(luck);
+    const percent = Number.isInteger(investBonus)
+      ? String(investBonus)
+      : investBonus.toFixed(1);
+    rows.push({
+      key: "invest",
+      unlocked: true,
+      primary: t("sidePanel.statLuckEffectInvest", { percent }),
+      secondary:
+        investBonus < LUCK_INVEST_MAX_PERCENT
+          ? t("sidePanel.statEffectMaxPercent", {
+            value: LUCK_INVEST_MAX_PERCENT,
+          })
+          : undefined,
+    });
+  } else {
+    rows.push(lockedRow("invest", lockedLabel));
   }
 
   return rows;

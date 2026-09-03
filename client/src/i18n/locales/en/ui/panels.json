@@ -207,6 +207,7 @@
     "statEffectMaxSeconds": "{{value}}s max",
     "statLuckEffectCrit": "+{{percent}}% critical strike chance in combat",
     "statLuckEffectGambling": "{{amount}} Gold max wager at Gambler",
+    "statLuckEffectInvest": "+{{percent}}% Success Chance on investments",
     "statStrengthEffectBastion": "+{{value}} Bastion attack (½ of Strength)",
     "statKnowledgeEffectMerchant": "{{percent}}% discount at travelling merchant",
     "statKnowledgeEffectDecisionTime": "+{{seconds}}s decision time in timed events",

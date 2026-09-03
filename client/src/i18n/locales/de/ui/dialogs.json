@@ -83,31 +83,26 @@
     "title": "Investieren", //x1.8
     "strategy": "Investitionsstrategie",
     "amount": "Investitionsbetrag",
-    "potentialProfit": "Möglicher Gewinn:",
     "startInvestment": "Investition starten",
     "infoAriaLabel": "Investitionen und Strategietabelle erklären",
     "unlockTooltip": "Wird bei höherer Gebäudestufe freigeschaltet", //x1.4
     "minutes": "{{count}} Min.",
-    "luckBonus": "+{{pct}} % Erfolgschance durch Glück (in Tabelle enthalten).",
-    "buildingLuckyBonus2": "+2 % Glückschance durch Gebäudestufe (in Tabelle enthalten).",
-    "buildingLuckyBonus1": "+1 % Glückschance durch Gebäudestufe (in Tabelle enthalten).",
+    "luckyChanceTop": "Glückstreffer-Chance {{percent}} % ({{fromLuck}} % durch Glück)",
+    "luckyChanceLine": "{{percent}} % Glückstreffer-Chance: {{gold}}",
     "headers": {
       "time": "Zeit",
       "success": "Erfolg",
       "profit": "Gewinn",
-      "lucky": "Glück",
-      "loss": "Verlust",
-      "wipeout": "Totalverlust" //x1.7
+      "lucky": "Glückstreffer-Chance",
+      "loss": "Verlust"
     },
     "tooltip": {
       "time": "Wie lange die Investition läuft.",
       "success": "Chance auf eine erfolgreiche Investition.",
       "profit": "Der Gewinn bei Erfolg.",
       "lucky": "Chance bei Erfolg, den Gewinn mit {{multiplier}} zu multiplizieren.",
-      "loss": "Der Anteil deiner Investition, den du bei Misserfolg verlierst.",
-      "wipeout": "Chance, bei Misserfolg die gesamte Investition zu verlieren.",
-      "potentialProfit": "Gewinnspanne bei erfolgreicher Investition. Die zweite Spanne gilt, wenn Glückschance eintritt (Gewinn × {{multiplier}}).",
-      "wait": "Nach jeder Investition dauert es 30 Minuten, bis neue Angebote erscheinen."
+      "loss": "Das Gold, das du bei Misserfolg verlierst.",
+      "wait": "Nach jeder Investition dauert es 20 Minuten, bis neue Angebote erscheinen."
     }
   },
   "gambler": {
@@ -198,7 +193,6 @@
     "title": "Investitionsergebnis",
     "success": "Deine {{amount}} Gold-Investition war erfolgreich.",
     "luckyChance": "Glückstreffer. Der Gewinn deiner {{amount}} Gold-Investition wird mit {{multiplier}} multipliziert.",
-    "wipeout": "Totalverlust. Du hast deine gesamte {{amount}} Gold-Investition verloren.",
     "partialLoss": "Deine {{amount}} Gold-Investition ist fehlgeschlagen." //x1.4
   },
   "cube": {

@@ -5,6 +5,7 @@ import {
   GAMBLER_EVENT_SEEN_KEY,
   hasGamblerAppearedOnce,
 } from "@/game/gamblerSession";
+import { getStatEffectLinesSignature } from "./StatEffectsTooltip";
 
 function stateWith(overrides: Partial<GameState>): GameState {
   return { ...createInitialState(), ...overrides };
@@ -27,5 +28,21 @@ describe("hasGamblerAppearedOnce", () => {
       },
     });
     expect(hasGamblerAppearedOnce(state)).toBe(true);
+  });
+});
+
+describe("luck tooltip invest line", () => {
+  it("stays locked until coinhouse exists", () => {
+    const state = createInitialState();
+    expect(getStatEffectLinesSignature("luck", state)).not.toContain("invest");
+  });
+
+  it("unlocks after coinhouse", () => {
+    const base = createInitialState();
+    const state = {
+      ...base,
+      buildings: { ...base.buildings, coinhouse: 1 },
+    };
+    expect(getStatEffectLinesSignature("luck", state)).toContain("invest");
   });
 });

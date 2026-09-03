@@ -2,12 +2,14 @@ import type { GameState } from "@shared/schema";
 import { CRUEL_MODE } from "../cruelMode";
 
 export type InvestmentTier = "A" | "B" | "C" | "D";
-export type InvestmentDurationMin = 5 | 15 | 30;
+/** `30` is legacy (old long slot). New offers are 5 / 10 / 15. */
+export type InvestmentDurationMin = 5 | 10 | 15 | 30;
 
-const DURATION_ORDER: InvestmentDurationMin[] = [5, 15, 30];
+const DURATION_ORDER: InvestmentDurationMin[] = [5, 10, 15];
 
-/** Index 0..2 for duration slots `5` / `15` / `30` minutes. */
+/** Index 0..2 for duration slots `5` / `10` / `15` minutes. Legacy `30` maps to the long slot. */
 export function durationIndex(durationMin: number): number {
+  if (durationMin === 30) return 2;
   const i = DURATION_ORDER.indexOf(durationMin as InvestmentDurationMin);
   return i !== -1 ? i : 0;
 }
@@ -23,61 +25,64 @@ export const SUCCESS_PCT: Record<
   D: [45, 50, 55],
 };
 
-/** Win % min/max on success; [tier][durationIndex] for 5 / 15 / 30 min */
-export const WIN_PCT_RANGE: Record<
-  InvestmentTier,
-  [readonly [number, number], readonly [number, number], readonly [number, number]]
-> = {
-  A: [
-    [1, 10],
-    [5, 15],
-    [10, 20],
-  ],
-  B: [
-    [10, 20],
-    [15, 25],
-    [20, 30],
-  ],
-  C: [
-    [20, 40],
-    [25, 45],
-    [30, 50],
-  ],
-  D: [
-    [40, 60],
-    [45, 65],
-    [50, 70],
-  ],
+/** Win % on success (fixed, not a range); [tier][durationIndex] for 5 / 10 / 15 min */
+export const WIN_PCT: Record<InvestmentTier, [number, number, number]> = {
+  A: [10, 15, 20],
+  B: [20, 25, 30],
+  C: [35, 40, 45],
+  D: [50, 55, 60],
 };
 
-/** Loss % range on failure (not total loss); [min, max] inclusive int */
-export const LOSS_PCT_RANGE: Record<InvestmentTier, readonly [number, number]> =
-{
-  A: [1, 10],
-  B: [10, 20],
-  C: [20, 30],
-  D: [30, 40],
+/** Loss % on failure (fixed, not a range). */
+export const LOSS_PCT: Record<InvestmentTier, number> = {
+  A: 5,
+  B: 15,
+  C: 25,
+  D: 35,
 };
 
 /** On Lucky Chance hit, rolled win % is multiplied by this factor (fixed for all tiers). */
 export const LUCKY_CHANCE_WIN_MULTIPLIER = 4 as const;
 
-/** Lucky Chance: [base chance % before hall bonus, multiplier — always {@link LUCKY_CHANCE_WIN_MULTIPLIER}]. */
-export const LUCKY_CHANCE: Record<InvestmentTier, readonly [number, number]> = {
-  A: [1, LUCKY_CHANCE_WIN_MULTIPLIER],
-  B: [2, LUCKY_CHANCE_WIN_MULTIPLIER],
-  C: [3, LUCKY_CHANCE_WIN_MULTIPLIER],
-  D: [4, LUCKY_CHANCE_WIN_MULTIPLIER],
-};
+/** Same Lucky Chance % on every offer (Coinhouse). Bank and Treasury each add {@link LUCKY_CHANCE_PER_HALL_LEVEL_PCT}. */
+export const LUCKY_CHANCE_BASE_PCT = 2;
 
-/** Extra Lucky Chance % from investment hall: Bank +1%, Treasury +2% (overrides Bank). Coinhouse only → 0. */
-export function investmentHallLuckyChanceBonusPct(buildings: {
+/** Extra Lucky Chance % per hall upgrade after Coinhouse (Bank → 4%, Treasury → 6%). */
+export const LUCKY_CHANCE_PER_HALL_LEVEL_PCT = 2;
+
+export function investmentHallLevel(buildings: {
+  coinhouse?: number;
+  bank?: number;
+  treasury?: number;
+}): 0 | 1 | 2 | 3 {
+  if ((buildings.treasury ?? 0) > 0) return 3;
+  if ((buildings.bank ?? 0) > 0) return 2;
+  if ((buildings.coinhouse ?? 0) > 0) return 1;
+  return 0;
+}
+
+/** Total Lucky Chance %: 2 Coinhouse / 4 Bank / 6 Treasury. Same for every offer. */
+export function getLuckyChancePercent(buildings: {
+  coinhouse?: number;
   bank?: number;
   treasury?: number;
 }): number {
-  if ((buildings.treasury ?? 0) > 0) return 2;
-  if ((buildings.bank ?? 0) > 0) return 1;
-  return 0;
+  const level = investmentHallLevel(buildings);
+  if (level <= 0) return 0;
+  return Math.min(
+    100,
+    LUCKY_CHANCE_BASE_PCT + (level - 1) * LUCKY_CHANCE_PER_HALL_LEVEL_PCT,
+  );
+}
+
+/** Extra Lucky Chance % above Coinhouse base: Bank +2, Treasury +4. Coinhouse only → 0. */
+export function investmentHallLuckyChanceBonusPct(buildings: {
+  coinhouse?: number;
+  bank?: number;
+  treasury?: number;
+}): number {
+  const total = getLuckyChancePercent(buildings);
+  return total > 0 ? total - LUCKY_CHANCE_BASE_PCT : 0;
 }
 
 export function getEffectiveLuckyChancePercent(
@@ -86,14 +91,6 @@ export function getEffectiveLuckyChancePercent(
 ): number {
   return Math.min(100, baseChance + luckyBonusPct);
 }
-
-/** Total loss chance % on failure */
-export const TOTAL_LOSS_PCT: Record<InvestmentTier, number> = {
-  A: 0,
-  B: 1,
-  C: 2,
-  D: 3,
-};
 
 export function getLuckWinChanceBonus(luck: number): number {
   if (luck >= 50) return 10;
@@ -104,84 +101,51 @@ export function getLuckWinChanceBonus(luck: number): number {
   return 0;
 }
 
-/** Inclusive integer range from fractional min/max (at least one value). */
-export function winPercentInclusiveRange(
+export function getWinPercent(
   tier: InvestmentTier,
   durationMin: number,
-): { from: number; to: number } {
+): number {
   const idx = durationIndex(durationMin);
-  const row = WIN_PCT_RANGE[tier][idx] ?? WIN_PCT_RANGE[tier][0];
-  const [min, max] = row;
-  const from = Math.ceil(min);
-  const to = Math.floor(max);
-  if (from <= to) return { from, to };
-  return { from: Math.round(min), to: Math.round(max) };
+  return WIN_PCT[tier][idx] ?? WIN_PCT[tier][0];
 }
 
-function profitGoldFromWinPercent(
+export function getLossPercent(tier: InvestmentTier): number {
+  return LOSS_PCT[tier];
+}
+
+function goldFromPercent(
   amountGold: number,
-  winPercent: number,
+  percent: number,
   multiplier = 1,
 ): number {
-  return Math.floor((amountGold * winPercent * multiplier) / 100);
+  return Math.floor((amountGold * percent * multiplier) / 100);
 }
 
-/** Gold profit band on success (no lucky multiplier). */
-export function successProfitGoldRange(
-  amountGold: number,
-  tier: InvestmentTier,
-  durationMin: number,
-): { from: number; to: number } {
-  const { from, to } = winPercentInclusiveRange(tier, durationMin);
-  return {
-    from: profitGoldFromWinPercent(amountGold, from),
-    to: profitGoldFromWinPercent(amountGold, to),
-  };
-}
-
-/** Gold profit band on success if Lucky Chance multiplies the rolled win %. */
-export function luckyChanceSuccessProfitGoldRange(
-  amountGold: number,
-  tier: InvestmentTier,
-  durationMin: number,
-): { from: number; to: number } {
-  const { from, to } = winPercentInclusiveRange(tier, durationMin);
-  return {
-    from: profitGoldFromWinPercent(
-      amountGold,
-      from,
-      LUCKY_CHANCE_WIN_MULTIPLIER,
-    ),
-    to: profitGoldFromWinPercent(amountGold, to, LUCKY_CHANCE_WIN_MULTIPLIER),
-  };
-}
-
-/** Max gold profit on success using highest win % roll (no lucky multiplier). */
-export function maxSuccessProfitGold(
+/** Gold profit on success (no lucky multiplier). */
+export function successProfitGold(
   amountGold: number,
   tier: InvestmentTier,
   durationMin: number,
 ): number {
-  return successProfitGoldRange(amountGold, tier, durationMin).to;
+  return goldFromPercent(amountGold, getWinPercent(tier, durationMin));
 }
 
-/** Max gold profit on success if highest win % roll gets the Lucky Chance multiplier. */
-export function maxLuckyChanceSuccessProfitGold(
+/** Gold profit on success if Lucky Chance multiplies the win %. */
+export function luckyChanceSuccessProfitGold(
   amountGold: number,
   tier: InvestmentTier,
   durationMin: number,
 ): number {
-  return luckyChanceSuccessProfitGoldRange(amountGold, tier, durationMin).to;
+  return goldFromPercent(
+    amountGold,
+    getWinPercent(tier, durationMin),
+    LUCKY_CHANCE_WIN_MULTIPLIER,
+  );
 }
 
-export function lossPercentInclusiveRange(
-  tier: InvestmentTier,
-): { from: number; to: number } {
-  const [min, max] = LOSS_PCT_RANGE[tier];
-  const from = Math.ceil(min);
-  const to = Math.floor(max);
-  if (from <= to) return { from, to };
-  return { from: Math.round(min), to: Math.round(max) };
+/** Gold lost on failure. */
+export function lossGold(amountGold: number, tier: InvestmentTier): number {
+  return goldFromPercent(amountGold, getLossPercent(tier));
 }
 
 /** Uniform int in [from, to] inclusive; rng in [0,1) */
@@ -219,25 +183,25 @@ export function getInvestmentDurationScale(): number {
   return import.meta.env.DEV ? 1 / 40 : 1;
 }
 
-/** Wall-clock length of a nominal duration in minutes (5 / 15 / 30). */
+/** Wall-clock length of a nominal duration in minutes (5 / 10 / 15). */
 export function nominalDurationToPlayTimeMs(durationMin: number): number {
   return durationMin * 60 * 1000 * getInvestmentDurationScale();
 }
 
-/** Production: 30 min between waves after an investment completes. Dev: 30 s. */
+/** Production: 20 min between waves after an investment completes. Dev: 20 s. */
 export function getInvestmentWaveGapMs(): number {
-  return import.meta.env.DEV ? 30 * 1000 : 30 * 60 * 1000;
+  return import.meta.env.DEV ? 20 * 1000 : 20 * 60 * 1000;
 }
 
 /** Production wave gap; persisted `nextWavePlayTime` uses {@link getInvestmentWaveGapMs} at schedule time. */
-export const INVESTMENT_WAVE_GAP_MS = 30 * 60 * 1000;
+export const INVESTMENT_WAVE_GAP_MS = 20 * 60 * 1000;
 
 export type InvestmentOffer = {
   durationMin: InvestmentDurationMin;
   tier: InvestmentTier;
 };
 
-/** One random tier per duration slot (5 / 15 / 30 min). */
+/** One random tier per duration slot (5 / 10 / 15 min). */
 export function generateInvestmentOffers(rng: () => number): InvestmentOffer[] {
   const tiers: InvestmentTier[] = ["A", "B", "C", "D"];
   return DURATION_ORDER.map((durationMin) => ({
@@ -267,7 +231,7 @@ export type CommitInvestmentInput = {
   amountGold: number;
   offer: InvestmentOffer;
   luck: number;
-  /** 0 coinhouse-only, 1 Bank, 2 Treasury — see `investmentHallLuckyChanceBonusPct`. */
+  /** Extra % above {@link LUCKY_CHANCE_BASE_PCT}: 0 Coinhouse / 2 Bank / 4 Treasury. */
   luckyChanceBonusPct: number;
   rng: () => number;
   cruelMode?: boolean;
@@ -296,13 +260,6 @@ export function getInvestmentCompletionLogMeta(active: InvestmentActive): {
       logVars: { amount: amountGold, payout: payoutGold },
     };
   }
-  if (active.totalLoss) {
-    return {
-      message: `${amountGold} Gold investment complete: Wipeout. You lost your full investment of ${amountGold} Gold.`,
-      logKey: "investmentComplete.wipeout",
-      logVars: { amount: amountGold },
-    };
-  }
   const loss = amountGold - payoutGold;
   return {
     message: `${amountGold} Gold investment complete: Failure. You lost ${loss} Gold.`,
@@ -311,12 +268,11 @@ export function getInvestmentCompletionLogMeta(active: InvestmentActive): {
   };
 }
 
-/** UI outcome for the post-maturity result dialog (maps to ⇧ / ⇮ / rotated ⇮ / ⇩). */
+/** Post-maturity result dialog: success, lucky chance, or partial loss. */
 export type InvestmentOutcomeUiKind =
   | "success"
   | "lucky_chance"
-  | "partial_loss"
-  | "wipeout";
+  | "partial_loss";
 
 export type InvestmentResultDialogPayload = {
   kind: InvestmentOutcomeUiKind;
@@ -329,7 +285,6 @@ const INVESTMENT_RESULT_BODY_KEYS: Record<InvestmentOutcomeUiKind, string> = {
   success: "investmentResult.success",
   lucky_chance: "investmentResult.luckyChance",
   partial_loss: "investmentResult.partialLoss",
-  wipeout: "investmentResult.wipeout",
 };
 
 export function getInvestmentResultDialogBodyMeta(
@@ -366,13 +321,6 @@ export function buildInvestmentResultDialogPayload(
     return {
       kind: "success",
       goldDelta: profit,
-      amountGold,
-    };
-  }
-  if (active.totalLoss) {
-    return {
-      kind: "wipeout",
-      goldDelta: -amountGold,
       amountGold,
     };
   }
@@ -418,11 +366,9 @@ export function commitInvestmentRolls(
     playTime + nominalDurationToPlayTimeMs(durationMin);
 
   if (success) {
-    const { from, to } = winPercentInclusiveRange(tier, durationMin);
-    const winPercentInt = randomIntInclusive(from, to, rng);
-    const [lcChance] = LUCKY_CHANCE[tier];
+    const winPercentInt = getWinPercent(tier, durationMin);
     const effectiveLuckyChancePct = getEffectiveLuckyChancePercent(
-      lcChance,
+      LUCKY_CHANCE_BASE_PCT,
       luckyChanceBonusPct,
     );
     const luckyChanceHit = rng() * 100 < effectiveLuckyChancePct;
@@ -449,29 +395,8 @@ export function commitInvestmentRolls(
     };
   }
 
-  const totalLossPct = TOTAL_LOSS_PCT[tier];
-  const totalLossRoll = rng() * 100;
-  const totalLoss = totalLossRoll < totalLossPct;
-
-  if (totalLoss) {
-    return {
-      ok: true,
-      active: {
-        startPlayTime: playTime,
-        endPlayTime,
-        amountGold,
-        durationMin,
-        tier,
-        success: false,
-        totalLoss: true,
-        payoutGold: 0,
-      },
-    };
-  }
-
-  const { from, to } = lossPercentInclusiveRange(tier);
-  const lossPercentInt = randomIntInclusive(from, to, rng);
-  const payoutGold = Math.floor((amountGold * (100 - lossPercentInt)) / 100);
+  const lossPercentInt = getLossPercent(tier);
+  const payoutGold = amountGold - goldFromPercent(amountGold, lossPercentInt);
 
   return {
     ok: true,
@@ -482,7 +407,6 @@ export function commitInvestmentRolls(
       durationMin,
       tier,
       success: false,
-      totalLoss: false,
       lossPercentInt,
       payoutGold,
     },

@@ -15,7 +15,7 @@
     "boostApplied": "加速已应用。",
     "investmentComplete": {
       "success": "{{amount}} 金币投资完成：成功。你获得了 {{payout}} 金币。",
-      "successLucky": "{{amount}} 金币投资完成：幸运！你获得了 {{payout}} 金币。",
+      "successLucky": "{{amount}} 金币投资完成：幸运一击！你获得了 {{payout}} 金币。",
       "wipeout": "{{amount}} 金币投资完成：血本无归。你失去了全部 {{amount}} 金币的投资。",
       "failure": "{{amount}} 金币投资完成：失败。你失去了 {{loss}} 金币。"
     },
