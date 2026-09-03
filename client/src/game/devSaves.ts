@@ -95,6 +95,29 @@ function withVillage(base: GameState): GameState {
   );
 }
 
+function withInvestHall(base: GameState): GameState {
+  return {
+    ...base,
+    buildings: {
+      ...base.buildings,
+      coinhouse: 1,
+    },
+    resources: {
+      ...base.resources,
+      gold: Math.max(base.resources.gold ?? 0, 250),
+    },
+    investmentHallState: {
+      offers: [
+        { durationMin: 5, tier: "A" },
+        { durationMin: 15, tier: "B" },
+        { durationMin: 30, tier: "D" },
+      ],
+      active: null,
+      nextWavePlayTime: 0,
+    },
+  };
+}
+
 function withEstate(base: GameState): GameState {
   return withSeenTabBlinks(
     {
@@ -188,6 +211,13 @@ const BUILDERS: Record<DevSaveId, () => GameState> = {
     finalize(
       withVillage(withStartedRun(createInitialState(), 20 * 60_000)),
       "village",
+    ),
+  invest: () =>
+    finalize(
+      withInvestHall(
+        withVillage(withStartedRun(createInitialState(), 20 * 60_000)),
+      ),
+      "invest",
     ),
   "sleep-unlocked": () =>
     finalize(

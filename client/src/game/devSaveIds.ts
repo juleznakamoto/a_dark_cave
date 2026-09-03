@@ -8,6 +8,7 @@ import type { GameTab } from "@/game/types";
 export const DEV_SAVE_IDS = [
   "fresh-start",
   "village",
+  "invest",
   "sleep-unlocked",
   "sleep-active",
   "bastion",
@@ -34,6 +35,12 @@ export const DEV_SAVE_CATALOG: Record<DevSaveId, DevSaveMeta> = {
     id: "village",
     label: "Village",
     useWhen: "Village tab, huts, jobs, or production",
+    activeTab: "village",
+  },
+  invest: {
+    id: "invest",
+    label: "Invest",
+    useWhen: "Invest button or Invest dialog (Coinhouse, offers ready)",
     activeTab: "village",
   },
   "sleep-unlocked": {

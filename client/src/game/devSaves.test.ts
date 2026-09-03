@@ -18,8 +18,8 @@ function canActivateSleep(state: ReturnType<typeof buildDevSave>): boolean {
 }
 
 describe("dev save catalog", () => {
-  it("starts with five named milestones", () => {
-    expect(DEV_SAVE_IDS).toHaveLength(5);
+  it("starts with six named milestones", () => {
+    expect(DEV_SAVE_IDS).toHaveLength(6);
     expect(Object.keys(DEV_SAVE_CATALOG)).toEqual([...DEV_SAVE_IDS]);
   });
 
@@ -56,6 +56,18 @@ describe("dev save catalog", () => {
     expect(state.buildings.woodenHut).toBeGreaterThan(0);
     expect(canActivateSleep(state)).toBe(true);
     expect(state.buildings.darkEstate).toBe(0);
+  });
+
+  it("invest has Coinhouse, gold, and ready offers", () => {
+    const state = buildDevSave("invest");
+    expect(isVillageTabVisible(state)).toBe(true);
+    expect(state.buildings.coinhouse).toBe(1);
+    expect(state.resources.gold).toBeGreaterThanOrEqual(100);
+    expect(state.investmentHallState.offers).toHaveLength(3);
+    expect(state.investmentHallState.active).toBeNull();
+    expect(state.playTime).toBeGreaterThanOrEqual(
+      state.investmentHallState.nextWavePlayTime,
+    );
   });
 
   it("sleep-unlocked has Estate and a clickable Sleep button", () => {
