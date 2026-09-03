@@ -54,7 +54,7 @@ export const DEMO_END_STAT_IDS = [
   "knowledge",
   "madness",
 ] as const;
-/** Estate skill tracks, in panel order. Includes Crow's Eye (premium). */
+/** Estate skill tracks, in panel order. Includes Crow's Eye. */
 export const DEMO_END_ESTATE_SKILL_IDS = [
   "hunting",
   "crushingStrike",

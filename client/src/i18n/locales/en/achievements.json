@@ -268,7 +268,7 @@
     },
     "3-fellowship": {
       "label": "Good Company",
-      "description": "Recruit all five fellowship companions."
+      "description": "Recruit all six fellowship companions."
     },
     "4-blacksteel_equipment": {
       "label": "Dark War Equipment",
@@ -298,7 +298,7 @@
     },
     "0-upgradeMaxer": {
       "label": "Upgrade Maxer",
-      "description": "Max every non-premium upgrade in the Estate tab."
+      "description": "Max every upgrade in the Estate tab."
     },
     "0-speedrunner": {
       "label": "Speedrunner",

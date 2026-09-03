@@ -128,7 +128,7 @@ export const overallChartConfig: AchievementChartConfig = {
         segmentId: "0-upgradeMaxer",
         maxCount: getEstateUpgradeMaxerTotal(),
         label: "Upgrade Maxer",
-        // Keep ring ticks aligned with estate upgrade tracks (currently 8; Crow's Eye excluded).
+        // Keep ring ticks aligned with estate upgrade tracks.
         segments: getEstateUpgradeMaxerTotal(),
         getCount: (state: GameState) =>
           Math.min(

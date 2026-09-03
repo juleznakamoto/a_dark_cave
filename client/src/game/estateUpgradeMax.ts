@@ -2,6 +2,7 @@ import type { GameState } from "@shared/schema";
 import {
   BLOODFLAME_SPHERE_UPGRADES,
   CHAINMASTER_UPGRADES,
+  CROWS_EYE_UPGRADES,
   CRUSHING_STRIKE_UPGRADES,
   DISGRACED_PRIOR_UPGRADES,
   FERAL_HOWL_UPGRADES,
@@ -12,8 +13,7 @@ import {
 
 /**
  * Estate-tab upgrade tracks that count toward Upgrade Maxer.
- * Crow's Eye is excluded (premium / real-money unlock).
- * Order is stable for progress display.
+ * Order matches the Estate panel (stable for progress display).
  */
 export const ESTATE_UPGRADE_MAXER_KEYS = [
   "sleepLength",
@@ -22,6 +22,7 @@ export const ESTATE_UPGRADE_MAXER_KEYS = [
   "crushingStrike",
   "bloodflameSphere",
   "feralHowl",
+  "crowsEye",
   "disgracedPrior",
   "chainmaster",
 ] as const;
@@ -36,6 +37,7 @@ const ESTATE_UPGRADE_MAX_LEVEL: Record<EstateUpgradeMaxerKey, number> = {
   crushingStrike: CRUSHING_STRIKE_UPGRADES.length - 1,
   bloodflameSphere: BLOODFLAME_SPHERE_UPGRADES.length - 1,
   feralHowl: FERAL_HOWL_UPGRADES.length - 1,
+  crowsEye: CROWS_EYE_UPGRADES.length - 1,
   disgracedPrior: DISGRACED_PRIOR_UPGRADES.length - 1,
   chainmaster: CHAINMASTER_UPGRADES.length - 1,
 };
@@ -57,6 +59,8 @@ function getEstateUpgradeLevel(
       return state.combatSkills?.bloodflameSphereLevel ?? 0;
     case "feralHowl":
       return state.combatSkills?.feralHowlLevel ?? 0;
+    case "crowsEye":
+      return state.crowsEyeSkills?.level ?? 0;
     case "disgracedPrior":
       return state.disgracedPriorSkills?.level ?? 0;
     case "chainmaster":

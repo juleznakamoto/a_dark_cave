@@ -9,6 +9,7 @@ import {
 import {
   BLOODFLAME_SPHERE_UPGRADES,
   CHAINMASTER_UPGRADES,
+  CROWS_EYE_UPGRADES,
   CRUSHING_STRIKE_UPGRADES,
   DISGRACED_PRIOR_UPGRADES,
   FERAL_HOWL_UPGRADES,
@@ -18,12 +19,12 @@ import {
 } from "@/game/rules/skillUpgrades";
 
 describe("estateUpgradeMax", () => {
-  it("exposes one key per non-premium estate-tab upgrade track", () => {
+  it("exposes one key per estate-tab upgrade track, including Crow's Eye", () => {
     expect(getEstateUpgradeMaxerTotal()).toBe(
       ESTATE_UPGRADE_MAXER_KEYS.length,
     );
-    expect(getEstateUpgradeMaxerTotal()).toBe(8);
-    expect(ESTATE_UPGRADE_MAXER_KEYS).not.toContain("crowsEye");
+    expect(getEstateUpgradeMaxerTotal()).toBe(9);
+    expect(ESTATE_UPGRADE_MAXER_KEYS).toContain("crowsEye");
   });
 
   it("records hits when an upgrade track reaches max", () => {
@@ -52,6 +53,7 @@ describe("estateUpgradeMax", () => {
     state.combatSkills.bloodflameSphereLevel =
       BLOODFLAME_SPHERE_UPGRADES.length - 1;
     state.combatSkills.feralHowlLevel = FERAL_HOWL_UPGRADES.length - 1;
+    state.crowsEyeSkills.level = CROWS_EYE_UPGRADES.length - 1;
     state.disgracedPriorSkills = {
       level: DISGRACED_PRIOR_UPGRADES.length - 1,
     };

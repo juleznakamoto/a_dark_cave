@@ -1,6 +1,6 @@
 import { useGameStore } from "@/game/state";
 import type { AchievementChartConfig } from "../achievementTypes";
-import type { GameState } from "@shared/schema";
+import { FELLOWSHIP_MEMBER_ORDER, type GameState } from "@shared/schema";
 
 function getItemCount(itemKeys: string[]): number {
   const state = useGameStore.getState();
@@ -154,17 +154,11 @@ export const itemChartConfig: AchievementChartConfig = {
       },
       {
         segmentId: "3-fellowship",
-        maxCount: 5,
+        maxCount: FELLOWSHIP_MEMBER_ORDER.length,
         label: "Good Company",
         reward: 250,
         getCount: (_state: GameState) =>
-          getItemCount([
-            "elder_wizard",
-            "restless_knight",
-            "ashwraith_huntress",
-            "disgraced_prior",
-            "the_hound",
-          ]),
+          getItemCount([...FELLOWSHIP_MEMBER_ORDER]),
       },
     ],
     // Fifth ring: Blacksteel

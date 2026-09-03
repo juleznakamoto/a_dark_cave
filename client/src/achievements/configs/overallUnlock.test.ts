@@ -4,6 +4,7 @@ import type { GameState } from "@shared/schema";
 import {
   BLOODFLAME_SPHERE_UPGRADES,
   CHAINMASTER_UPGRADES,
+  CROWS_EYE_UPGRADES,
   CRUSHING_STRIKE_UPGRADES,
   DISGRACED_PRIOR_UPGRADES,
   FERAL_HOWL_UPGRADES,
@@ -120,6 +121,7 @@ describe("overall achievement tab unlock", () => {
     state.combatSkills.bloodflameSphereLevel =
       BLOODFLAME_SPHERE_UPGRADES.length - 1;
     state.combatSkills.feralHowlLevel = FERAL_HOWL_UPGRADES.length - 1;
+    state.crowsEyeSkills.level = CROWS_EYE_UPGRADES.length - 1;
     state.disgracedPriorSkills = {
       level: DISGRACED_PRIOR_UPGRADES.length - 1,
     };
