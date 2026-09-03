@@ -91,6 +91,17 @@ interface TrafficTabProps {
   environment: "dev" | "prod";
 }
 
+/** Hide 1–5 landing noise on the source / medium bars. */
+const MIN_BAR_LANDINGS = 5;
+
+function landingBarsOverMin<T extends { landings: number }>(rows: T[]): T[] {
+  return rows.filter((row) => Number(row.landings) > MIN_BAR_LANDINGS);
+}
+
+function landingBarChartHeight(rowCount: number): number {
+  return Math.max(300, rowCount * 28);
+}
+
 const PIE_COLORS = [
   "#8884d8",
   "#82ca9d",
@@ -264,6 +275,15 @@ export default function TrafficTab({ environment }: TrafficTabProps) {
         label: format(parseISO(row.day), "MMM dd"),
       }));
   }, [data]);
+
+  const sourceBarData = useMemo(
+    () => landingBarsOverMin(data?.by_source ?? []),
+    [data],
+  );
+  const mediumBarData = useMemo(
+    () => landingBarsOverMin(data?.by_medium ?? []),
+    [data],
+  );
 
   const campaignPieData = useMemo(() => {
     const rows = data?.by_campaign ?? [];
@@ -473,12 +493,18 @@ export default function TrafficTab({ environment }: TrafficTabProps) {
         <Card>
           <CardHeader>
             <CardTitle>By source</CardTitle>
-            <CardDescription>UTM landing counts in range</CardDescription>
+            <CardDescription>
+              UTM landing counts in range (more than {MIN_BAR_LANDINGS})
+            </CardDescription>
           </CardHeader>
           <CardContent>
-            <ChartContainer config={{}} className="h-[300px] w-full">
+            <ChartContainer
+              config={{}}
+              className="w-full"
+              style={{ height: landingBarChartHeight(sourceBarData.length) }}
+            >
               <BarChart
-                data={dashboard.by_source}
+                data={sourceBarData}
                 layout="vertical"
                 margin={{ left: 24 }}
               >
@@ -488,6 +514,7 @@ export default function TrafficTab({ environment }: TrafficTabProps) {
                   type="category"
                   dataKey="label"
                   width={100}
+                  interval={0}
                   tick={{ fontSize: 11 }}
                 />
                 <ChartTooltip content={<ChartTooltipContent />} />
@@ -500,12 +527,18 @@ export default function TrafficTab({ environment }: TrafficTabProps) {
         <Card>
           <CardHeader>
             <CardTitle>By medium</CardTitle>
-            <CardDescription>UTM landing counts in range</CardDescription>
+            <CardDescription>
+              UTM landing counts in range (more than {MIN_BAR_LANDINGS})
+            </CardDescription>
           </CardHeader>
           <CardContent>
-            <ChartContainer config={{}} className="h-[300px] w-full">
+            <ChartContainer
+              config={{}}
+              className="w-full"
+              style={{ height: landingBarChartHeight(mediumBarData.length) }}
+            >
               <BarChart
-                data={dashboard.by_medium}
+                data={mediumBarData}
                 layout="vertical"
                 margin={{ left: 24 }}
               >
@@ -515,6 +548,7 @@ export default function TrafficTab({ environment }: TrafficTabProps) {
                   type="category"
                   dataKey="label"
                   width={100}
+                  interval={0}
                   tick={{ fontSize: 11 }}
                 />
                 <ChartTooltip content={<ChartTooltipContent />} />
