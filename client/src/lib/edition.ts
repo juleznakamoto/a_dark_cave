@@ -7,7 +7,8 @@
  * `electron:package:demo`). Everything Steam-specific (no online services, no real-money
  * shop, merchant-sold artifacts, local + Steam Cloud saves)
  * keys off `isSteamBuild`; the demo cap keys off `isSteamDemoBuild` / `isDemoEdition()`.
- * Steam partner achievements are full/playtest only ({@link shouldSyncSteamAchievements}).
+ * Steam partner achievements sync on full, playtest, and demo
+ * ({@link shouldSyncSteamAchievements}); the demo only pushes basic IDs.
  * Playtest uses `VITE_STEAM_PLAYTEST=1` for an isolated save namespace (full game, no cap).
  * CrazyGames uses `VITE_CRAZYGAMES=1` (`build:crazygames`) or the `/crazygames` path.
  *
@@ -40,12 +41,13 @@ export const isSteamFullBuild =
   isSteamBuild && !isSteamDemoBuild && !isSteamPlaytestBuild;
 
 /**
- * Steam partner achievements live on the full and playtest apps, not the demo.
- * Demo progress is stored in the shared save; the full game backfills unlocks
- * on load (and during play) from that save.
+ * Steamworks unlocks on every Steam desktop build, including the demo.
+ * The demo only defines basic ACH_* names; steamAchievements.ts filters to
+ * those IDs. Loading a demo save in the full game backfills the same
+ * progress onto the full-game achievement set.
  */
 export function shouldSyncSteamAchievements(): boolean {
-  return isSteamBuild && !isSteamDemoRuntime();
+  return isSteamBuild;
 }
 
 /** Convenience inverse for readability at web-only call sites. */

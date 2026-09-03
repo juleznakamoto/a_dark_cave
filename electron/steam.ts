@@ -122,11 +122,14 @@ export function activateOverlayToStore(
   }
 }
 
+/** Demo Steamworks only defines basic ACH_* names (see steamAchievements.ts). */
+const STEAM_DEMO_ACHIEVEMENT_PREFIX = "ACH_BASIC_";
+
 /** Activate an achievement by API name. Returns true if the call succeeded. */
 export function activateAchievement(apiName: string): boolean {
-  // Demo Steamworks app has no partner achievements. Full-game backfill
-  // unlocks earned progress when a demo save is loaded there.
-  if (isSteamDemoBuild) return false;
+  if (isSteamDemoBuild && !apiName.startsWith(STEAM_DEMO_ACHIEVEMENT_PREFIX)) {
+    return false;
+  }
   try {
     if (!client) return false;
     if (client.achievement.isActivated(apiName)) return true;

@@ -7,6 +7,7 @@ import {
 } from "./achievementEdition";
 import {
   listSteamAchievementMappings,
+  listSteamDemoAchievementMappings,
   toSteamApiName,
 } from "./steamAchievements";
 import { setDevGameModeOverride } from "@/lib/edition";
@@ -51,6 +52,17 @@ describe("web-only achievements (Steam)", () => {
       false,
     );
     expect(mappings.some((m) => m.apiName === supporterApi)).toBe(false);
+  });
+
+  it("lists only basic IDs for the Steam demo partner set", () => {
+    const demo = listSteamDemoAchievementMappings();
+    expect(demo.length).toBeGreaterThan(0);
+    expect(demo.every((m) => m.canonicalId.startsWith("basic-"))).toBe(true);
+    expect(demo.some((m) => m.canonicalId === "basic-0-woodGatherer")).toBe(
+      true,
+    );
+    expect(demo.some((m) => m.canonicalId.startsWith("building-"))).toBe(false);
+    expect(demo.some((m) => m.canonicalId.startsWith("overall-"))).toBe(false);
   });
 
   it("hides web-only rows in Steam Game Mode even if the module override is Normal", () => {
