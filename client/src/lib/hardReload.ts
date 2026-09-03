@@ -1,5 +1,6 @@
 import { logger } from "@/lib/logger";
 import { mountFatalErrorScreen } from "@/lib/fatalErrorScreen";
+import { setResumeGame } from "@/game/startupBootSurface";
 
 /** Query param added to force a fresh index.html fetch after deploy. */
 export const HARD_RELOAD_CACHE_BUST_PARAM = "_cb";
@@ -195,6 +196,8 @@ export function bootstrapAfterHardReload(): void {
  * Force the browser to load a fresh HTML/JS bundle after a deploy.
  * Navigates with a cache-bust query param; stale caches are cleared after the
  * new page loads so we do not delete assets the current session still needs.
+ * Marks resume so a started web save reopens Game instead of Make Fire
+ * (same flag as the version-update reload).
  */
 export async function hardReload(): Promise<void> {
   try {
@@ -202,6 +205,7 @@ export async function hardReload(): Promise<void> {
   } catch {
     // ignore
   }
+  setResumeGame();
 
   const url = new URL(window.location.href);
   url.searchParams.set(HARD_RELOAD_CACHE_BUST_PARAM, Date.now().toString());

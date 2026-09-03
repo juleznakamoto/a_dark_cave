@@ -1,5 +1,6 @@
 /** @vitest-environment jsdom */
 import { describe, expect, it, beforeEach, afterEach, vi } from "vitest";
+import { peekResumeGame } from "@/game/startupBootSurface";
 import {
   HARD_RELOAD_CACHE_BUST_PARAM,
   MODULE_LOAD_RETRY_KEY,
@@ -96,6 +97,7 @@ describe("recoverFromStaleChunkLoad", () => {
     expect(window.location.replace).toHaveBeenCalled();
     const url = String(vi.mocked(window.location.replace).mock.calls[0][0]);
     expect(url).toContain(`${HARD_RELOAD_CACHE_BUST_PARAM}=`);
+    expect(peekResumeGame()).toBe(true);
   });
 
   it("does not reload for unrelated errors", () => {
@@ -145,6 +147,7 @@ describe("tryOneModuleLoadRecovery", () => {
   it("reloads once for a stuck spinner", () => {
     expect(tryOneModuleLoadRecovery(new Error("spinner stuck"))).toBe(true);
     expect(window.location.replace).toHaveBeenCalled();
+    expect(peekResumeGame()).toBe(true);
     expect(tryOneModuleLoadRecovery(new Error("spinner stuck again"))).toBe(
       false,
     );

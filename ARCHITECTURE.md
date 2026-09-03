@@ -400,6 +400,7 @@ App ID **4882240** in `steam_appid.txt`. Full and demo share the folder (Shared 
 | `scripts/steam-upload-demo.ps1` | `npm run steam:demo:upload` â€” build (optional) + SteamPipe upload. |
 | `scripts/UploadDemoToSteam.cmd` | Double-click / desktop shortcut wrapper for `steam-upload-demo.ps1`. |
 | `steam/config.demo.example.json` | Demo `appId` / `depotId` template for upload script. |
+| `steam/demo-achievements.md` | Steamworks partner pack for the 12 demo `ACH_BASIC_*` achievements (API names, copy, locales, icon notes). |
 
 Demo saves: IndexedDB key `steamDemoSave` under `%APPDATA%\A Dark Cave Demo\` + Steam Cloud file `%APPDATA%\A Dark Cave\adc-steam-demo-save.dat`. The full game writes `%APPDATA%\A Dark Cave\adc-steam-save.dat` only. Legacy file `%APPDATA%\A Dark Cave Demo\adc-steam-demo-save.dat` is still read as fallback and dual-written by the demo. Keep a second Auto-Cloud row for that legacy path until the transition is done. Each save is stamped with `saveOriginEdition`. First full-game launch with no full save and a Demo save shows the start-screen Continue dialog once (`steamDemoContinueResolved`). The Steam demo syncs basic partner achievements (`ACH_BASIC_*`). Loading a demo save in the full game backfills those same unlocks from save progress (`shouldSyncSteamAchievements` + `syncSteamAchievements`).
 

@@ -117,7 +117,7 @@ export function peekResumeGame(): boolean {
   }
 }
 
-/** Call immediately before an in-game reload that should skip Make Fire. */
+/** Call immediately before a reload that should skip Make Fire. */
 export function setResumeGame(): void {
   try {
     sessionStorage.setItem(RESUME_GAME_KEY, "1");
