@@ -161,12 +161,12 @@
   /* Same traveling conic as the share frame, red, and blurred so it is a sheen. */
   filter: blur(2px);
   background: conic-gradient(from 0deg,
-      #ff3434 0deg,
-      #ff6464 300deg,
+      #b91c1c 0deg,
+      #ff4e4e 300deg,
       hsl(0, 100%, 84%) 322deg,
       hsl(0, 100%, 88%) 338deg,
-      hsl(0, 100%, 84%) 352deg,
-      #ff3838 360deg);
+      hsl(0, 100%, 70%) 352deg,
+      #b91c1c 360deg);
 }
 
 /* Original used-mark size (inset 3px of the 18px queue box) + 2px share rim */
