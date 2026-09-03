@@ -1297,6 +1297,43 @@ describe("deferred dialog scheduling", () => {
     expect(afterHandoff.villageEffectDialog.data?.themeId).toBe("solstice");
   });
 
+  it("uses the event title on the madness-only outcome after sending the last survivor away", async () => {
+    await ensureGameplayLocalesLoaded();
+    useGameStore.setState({
+      stats: {
+        ...useGameStore.getState().stats,
+        madnessFromEvents: 0,
+      },
+      eventDialog: {
+        isOpen: true,
+        currentEvent: {
+          id: "lastSurvivor-test",
+          eventId: "lastSurvivor",
+          message: "A stranger arrives.",
+          timestamp: Date.now(),
+          type: "event",
+          title: "The Last Survivor",
+          choices: [
+            { id: "sendHimAway", label: "Send him away", effect: () => ({}) },
+          ],
+        },
+        lastEndedAt: 0,
+      },
+    });
+
+    useGameStore.getState().applyEventChoice("sendHimAway", "lastSurvivor");
+
+    expect(useGameStore.getState().madnessDialog.isOpen).toBe(false);
+
+    vi.advanceTimersByTime(200);
+
+    const afterHandoff = useGameStore.getState();
+    expect(afterHandoff.rewardDialog.isOpen).toBe(false);
+    expect(afterHandoff.madnessDialog.isOpen).toBe(true);
+    expect(afterHandoff.madnessDialog.data?.title).toBe("The Last Survivor");
+    expect(afterHandoff.madnessDialog.data?.madnessChange).toBe(1);
+  });
+
   it("stamps lastEndedAt for no-choice log events so a second event cannot spawn immediately", () => {
     const checkSpy = vi.spyOn(EventManager, "checkEvents").mockReturnValue({
       newLogEntries: [

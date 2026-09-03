@@ -1030,6 +1030,24 @@ const detectMadnessChange = (
   return 0;
 };
 
+function resolveEventOutcomeTitle(
+  catalogId: string,
+  eventDef: (typeof gameEvents)[string] | undefined,
+  state: GameState,
+  i18nVars: Record<string, string | number>,
+  logEntry?: { title?: string } | null,
+): string {
+  const storedTitle =
+    logEntry?.title && !isI18nReturnedObjectError(logEntry.title)
+      ? logEntry.title
+      : undefined;
+  return (
+    resolveEventTitle(catalogId, eventDef?.title, state, i18nVars) ||
+    storedTitle ||
+    tWithFallback("ui", "event.fallbackTitle", "Event")
+  );
+}
+
 function scheduleMadnessDialogWhenClear(
   get: () => GameStore,
   data: NonNullable<GameStore["madnessDialog"]["data"]>,
@@ -1073,6 +1091,7 @@ function scheduleMadnessDialogAfterCombat(
   get: () => GameStore,
   madnessChange: number,
   combatSummary?: CombatResultSummary,
+  title?: string,
 ): void {
   if (madnessChange === 0) return;
   // Attack-wave defeat overlay already shows madness via _combatSummary.madnessGain.
@@ -1080,7 +1099,11 @@ function scheduleMadnessDialogAfterCombat(
   scheduleWhenDialogClear(
     get,
     (store) => store.combatDialog.isOpen,
-    () => get().setMadnessDialog(true, { madnessChange }),
+    () =>
+      get().setMadnessDialog(true, {
+        madnessChange,
+        ...(title?.trim() ? { title } : {}),
+      }),
     DIALOG_HANDOFF_DELAY_MS,
   );
 }
@@ -3704,6 +3727,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
               get,
               madnessChange,
               combatSummary,
+              combatData.eventTitle,
             );
             return combatSummary;
           },
@@ -3843,6 +3867,14 @@ export const useGameStore = create<GameStore>((set, get) => ({
       delete updatedChanges._logMessage;
     }
 
+    const outcomeTitle = resolveEventOutcomeTitle(
+      catalogId,
+      eventDef,
+      state,
+      { ...i18nVars, ...logMessageVars },
+      logEntry,
+    );
+
     const madnessChange = detectMadnessChange(updatedChanges, state);
     let shouldShowRewardDialog = false;
     let rewardDialogData: {
@@ -3856,6 +3888,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
       rewards?: any;
       successLog?: string;
       madnessChange: number;
+      title?: string;
     } | null = null;
 
     if (!combatData) {
@@ -3911,20 +3944,11 @@ export const useGameStore = create<GameStore>((set, get) => ({
           | undefined,
           rewards,
         );
-        const rewardTitle =
-          resolveEventTitle(catalogId, eventDef?.title, state as any, {
-            ...i18nVars,
-            ...logMessageVars,
-          }) ||
-          (logEntry?.title && !isI18nReturnedObjectError(logEntry.title)
-            ? logEntry.title
-            : undefined) ||
-          tWithFallback("ui", "event.fallbackTitle", "Event");
         rewardDialogData = {
           rewards: mergedRewards,
           successLog,
           variant: "success",
-          title: rewardTitle,
+          title: outcomeTitle,
           ...(madnessChange !== 0 ? { madnessChange } : {}),
         };
         shouldShowRewardDialog = true;
@@ -3936,20 +3960,11 @@ export const useGameStore = create<GameStore>((set, get) => ({
         !villageTheme &&
         !isCollectorTrade
       ) {
-        const rewardTitle =
-          resolveEventTitle(catalogId, eventDef?.title, state as any, {
-            ...i18nVars,
-            ...logMessageVars,
-          }) ||
-          (logEntry?.title && !isI18nReturnedObjectError(logEntry.title)
-            ? logEntry.title
-            : undefined) ||
-          tWithFallback("ui", "event.fallbackTitle", "Event");
         rewardDialogData = {
           rewards,
           successLog,
           variant: "success",
-          title: rewardTitle,
+          title: outcomeTitle,
           ...(madnessChange !== 0 ? { madnessChange } : {}),
         };
         shouldShowRewardDialog = true;
@@ -3961,6 +3976,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
           rewards: hasRewards ? rewards : undefined,
           successLog,
           madnessChange,
+          title: outcomeTitle,
         };
         shouldShowMadnessDialog = true;
       }
@@ -4056,17 +4072,6 @@ export const useGameStore = create<GameStore>((set, get) => ({
     ) {
       beginDialogHandoff(set);
       get().setEventDialog(false);
-      const storedTitle =
-        logEntry?.title && !isI18nReturnedObjectError(logEntry.title)
-          ? logEntry.title
-          : undefined;
-      const outcomeTitle =
-        resolveEventTitle(catalogId, eventDef?.title, state, {
-          ...i18nVars,
-          ...logMessageVars,
-        }) ||
-        storedTitle ||
-        tWithFallback("ui", "event.fallbackTitle", "Event");
       const villageTheme = resolveVillageEffectAnnouncementTheme(
         eventId,
         updatedChanges,
@@ -4168,6 +4173,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
             get,
             madnessChange,
             combatSummary,
+            combatData.eventTitle,
           );
           return combatSummary;
         },
