@@ -6,6 +6,7 @@ import {
 } from "@/pages/animations-demo/sectionEstate";
 import {
   ButtonParticlesSection,
+  CooldownWashSection,
   HoverParticlesSection,
 } from "@/pages/animations-demo/sectionParticles";
 import { ProgressBarsSection } from "@/pages/animations-demo/sectionProgress";
@@ -40,6 +41,7 @@ export const ANIMATION_DEMO_SECTIONS: AnimationDemoSection[] = [
     Section: AttackWavesBarSection,
   },
   { id: "improve-button", label: "Improve button", Section: ImproveButtonSection },
+  { id: "cooldown-wash", label: "Cooldown wash", Section: CooldownWashSection },
   { id: "insight-badge", label: "Insight badge", Section: InsightBadgeSection },
   {
     id: "button-particles",

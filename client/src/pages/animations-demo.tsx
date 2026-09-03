@@ -1,8 +1,17 @@
+import { useEffect } from "react";
 import { Redirect } from "wouter";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import { ANIMATION_DEMO_SECTIONS } from "@/pages/animations-demo/catalog";
 
 export default function AnimationsDemo() {
+  useEffect(() => {
+    if (!import.meta.env.DEV) return;
+    const id = window.location.hash.replace(/^#/, "");
+    if (!id) return;
+    const el = document.getElementById(id);
+    el?.scrollIntoView({ block: "start" });
+  }, []);
+
   if (!import.meta.env.DEV) {
     return <Redirect to="/" />;
   }

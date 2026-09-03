@@ -53,9 +53,12 @@ export function gameActionDisabledLabelClassName(disabled = false): string {
 
 /** Cooldown / execution wash. Same token and alpha as the blocked outline border. */
 export const GAME_ACTION_COOLDOWN_WASH_CLASS = "bg-orange-950/50";
-/** Short brighter fade on the moving wipe edge. */
+/** Short brighter fade on a filling wipe (execution / play-time progress). */
 export const GAME_ACTION_COOLDOWN_WASH_EDGE_CLASS =
-  "absolute inset-y-0 right-0 w-3 bg-gradient-to-r from-transparent to-orange-900/50";
+  "absolute inset-y-0 right-0 w-3 bg-gradient-to-r from-transparent to-orange-900/40";
+/** Darker fade on a receding wipe (action cooldown / play-time cooldown). */
+export const GAME_ACTION_COOLDOWN_WASH_EDGE_RECEDING_CLASS =
+  "absolute inset-y-0 right-0 w-3 bg-gradient-to-r from-transparent to-black/40";
 
 interface CooldownButtonProps {
   children: React.ReactNode;
@@ -90,6 +93,8 @@ interface CooldownButtonProps {
   } | null;
   /** When unaffordable (not cooling down / executing), click runs this instead. */
   onDisabledClick?: () => void;
+  /** Demo: force a wash without store cooldown or execution. */
+  previewOverlay?: { widthPercent: number; mode: "fill" | "recede" } | null;
 }
 
 const CooldownButton = forwardRef<HTMLButtonElement, CooldownButtonProps>(
@@ -111,6 +116,7 @@ const CooldownButton = forwardRef<HTMLButtonElement, CooldownButtonProps>(
       style,
       playTimeCooldown,
       onDisabledClick,
+      previewOverlay,
       ...props
     },
     ref
@@ -208,8 +214,9 @@ const CooldownButton = forwardRef<HTMLButtonElement, CooldownButtonProps>(
     }, []);
 
     // Track first render for transition
+    const hasPreviewOverlay = previewOverlay != null;
     useEffect(() => {
-      if (isCoolingDown || isExecuting || isPlayTimeOverlayActive) {
+      if (isCoolingDown || isExecuting || isPlayTimeOverlayActive || hasPreviewOverlay) {
         isFirstRenderRef.current = true;
         // Allow transition after initial render (next frame)
         requestAnimationFrame(() => {
@@ -218,16 +225,23 @@ const CooldownButton = forwardRef<HTMLButtonElement, CooldownButtonProps>(
       } else {
         isFirstRenderRef.current = true;
       }
-    }, [isCoolingDown, isExecuting, isPlayTimeOverlayActive]);
+    }, [isCoolingDown, isExecuting, isPlayTimeOverlayActive, hasPreviewOverlay]);
 
     // Calculate width percentage: cooldown = shrinks 100→0, execution = grows 0→100
-    const overlayWidth = isPlayTimeOverlayActive
-      ? playTimeOverlayWidth
-      : isExecuting
-        ? executionProgress * 100
-        : isCoolingDown && initialCooldown > 0
-          ? (currentCooldown / initialCooldown) * 100
-          : 0;
+    const overlayWidth = previewOverlay
+      ? previewOverlay.widthPercent
+      : isPlayTimeOverlayActive
+        ? playTimeOverlayWidth
+        : isExecuting
+          ? executionProgress * 100
+          : isCoolingDown && initialCooldown > 0
+            ? (currentCooldown / initialCooldown) * 100
+            : 0;
+    const isFillWipe = previewOverlay
+      ? previewOverlay.mode === "fill"
+      : isPlayTimeOverlayActive
+        ? playTimeRange?.mode === "progress"
+        : isExecuting;
 
     const actionExecutedRef = useRef<boolean>(false);
     const { triggerParticles, portal } = useInlineButtonParticles(particleConfig);
@@ -246,7 +260,10 @@ const CooldownButton = forwardRef<HTMLButtonElement, CooldownButtonProps>(
     };
 
     const isOverlayBlocked =
-      isCoolingDown || isExecuting || isPlayTimeOverlayActive;
+      previewOverlay != null ||
+      isCoolingDown ||
+      isExecuting ||
+      isPlayTimeOverlayActive;
     const allowDisabledClick = Boolean(disabled && onDisabledClick && !isOverlayBlocked);
 
     const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
@@ -325,7 +342,13 @@ const CooldownButton = forwardRef<HTMLButtonElement, CooldownButtonProps>(
             }}
             aria-hidden
           >
-            <div className={GAME_ACTION_COOLDOWN_WASH_EDGE_CLASS} />
+            <div
+              className={
+                isFillWipe
+                  ? GAME_ACTION_COOLDOWN_WASH_EDGE_CLASS
+                  : GAME_ACTION_COOLDOWN_WASH_EDGE_RECEDING_CLASS
+              }
+            />
           </div>
         )}
 
