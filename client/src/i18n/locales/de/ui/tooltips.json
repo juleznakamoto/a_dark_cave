@@ -141,7 +141,6 @@
       "addsVillagerPreset_other": "Macht {{count}} Job-Vorlagen-Slots für Einsicht verfügbar",
       "scholarInsight": "Gelehrter: +{{amount}} Einsicht",
       "insightRevealCost": "{{cost}} Einsicht",
-      "insightRevealSeeEffects": "Effekte für {{cost}} {{resource}} anzeigen",
       "insightRevealEffects": "Effekte",
       "abortActions": "Aktionen abbrechen", //x1.4
       "madnessReduction": "-{{amount}} Wahnsinn",

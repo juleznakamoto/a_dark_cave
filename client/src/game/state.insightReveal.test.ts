@@ -11,26 +11,9 @@ import {
 } from "./rules/insightReveal";
 import { createInitialState, useGameStore } from "./state";
 
-describe("revealBuildingDescriptions", () => {
+describe("legacy buildingDescriptions insight keys", () => {
   beforeEach(() => {
     useGameStore.getState().initialize();
-  });
-
-  it("does nothing (descriptions are always unlocked)", () => {
-    useGameStore.setState({
-      buildings: {
-        ...useGameStore.getState().buildings,
-        clerksHut: 1,
-        buildersLodge: 1,
-      },
-      resources: {
-        ...useGameStore.getState().resources,
-        insight: 3000,
-      },
-    });
-
-    expect(useGameStore.getState().revealBuildingDescriptions()).toBe(false);
-    expect(useGameStore.getState().resources.insight).toBe(3000);
   });
 
   it("clears expired buildingDescriptions reveal animation keys", () => {
@@ -49,26 +32,9 @@ describe("revealBuildingDescriptions", () => {
   });
 });
 
-describe("revealCraftDescriptions", () => {
+describe("legacy craftDescriptions insight keys", () => {
   beforeEach(() => {
     useGameStore.getState().initialize();
-  });
-
-  it("does nothing (descriptions are always unlocked)", () => {
-    useGameStore.setState({
-      buildings: {
-        ...useGameStore.getState().buildings,
-        clerksHut: 1,
-        blacksmith: 1,
-      },
-      resources: {
-        ...useGameStore.getState().resources,
-        insight: 3000,
-      },
-    });
-
-    expect(useGameStore.getState().revealCraftDescriptions()).toBe(false);
-    expect(useGameStore.getState().resources.insight).toBe(3000);
   });
 
   it("clears expired craftDescriptions reveal animation keys", () => {

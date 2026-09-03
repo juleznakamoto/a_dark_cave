@@ -149,7 +149,6 @@
       "addsVillagerPreset_other": "Makes {{count}} villager job preset slots available for Insight",
       "scholarInsight": "Scholar: +{{amount}} Insight",
       "insightRevealCost": "{{cost}} Insight",
-      "insightRevealSeeEffects": "See effects for {{cost}} {{resource}}",
       "insightRevealEffects": "Effects",
       "abortActions": "Abort actions",
       "madnessReduction": "-{{amount}} Madness",

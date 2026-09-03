@@ -141,7 +141,6 @@
       "addsVillagerPreset_other": "Hace disponibles {{count}} espacios de preset de trabajos por Perspicacia",
       "scholarInsight": "Erudito: +{{amount}} perspicacia",
       "insightRevealCost": "{{cost}} perspicacia", //x1.3
-      "insightRevealSeeEffects": "Ver efectos por {{cost}} {{resource}}",
       "insightRevealEffects": "Efectos",
       "abortActions": "Cancelar acciones", //x1.3
       "madnessReduction": "-{{amount}} locura",

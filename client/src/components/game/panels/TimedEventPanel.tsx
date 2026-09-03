@@ -826,10 +826,7 @@ export default function TimedEventPanel() {
             >
               {formatTime(timeRemaining)}
             </span>
-            <ActionInsightBadge
-              target="timedEvent"
-              timeRemainingMs={timeRemaining}
-            />
+            <ActionInsightBadge timeRemainingMs={timeRemaining} />
           </div>
         </h2>
       )}

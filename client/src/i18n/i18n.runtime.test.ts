@@ -67,20 +67,6 @@ describe("i18n runtime", () => {
     expect(tWithFallback("ui", "estate.improve", "Improve")).toBe("Improve");
   });
 
-  it("resolves insight reveal badge tooltip in German", async () => {
-    await i18n.changeLanguage("de");
-    expect(
-      i18n.exists("badges.insightRevealSeeEffects", { ns: "ui" }),
-    ).toBe(true);
-    expect(i18n.getResource("de", "ui", "badges.insightRevealSeeEffects")).toBe(
-      "Effekte für {{cost}} {{resource}} anzeigen",
-    );
-    const opts = { cost: 50, resource: "Einsicht" };
-    const viaBadgeKey = i18n.t("ui:badges.insightRevealSeeEffects", opts);
-    expect(viaBadgeKey).toBe("Effekte für 50 Einsicht anzeigen");
-    expect(viaBadgeKey).not.toContain("See effects");
-  });
-
   it("resolves timed event prolong tooltip in ui namespace", () => {
     const opts = { minutes: 5, cost: 250, resource: "Insight" };
     expect(i18n.exists("timedEvent.prolongForInsight", { ns: "ui" })).toBe(true);

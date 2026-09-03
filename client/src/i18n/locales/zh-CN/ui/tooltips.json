@@ -141,7 +141,6 @@
       "addsVillagerPreset_other": "使 {{count}} 个村民工作预设槽位可用洞见购买",
       "scholarInsight": "学者：+{{amount}} 洞察",
       "insightRevealCost": "{{cost}} 洞察",
-      "insightRevealSeeEffects": "消耗 {{cost}} {{resource}} 查看效果",
       "insightRevealEffects": "效果",
       "abortActions": "中止行动",
       "madnessReduction": "-{{amount}} 疯狂",

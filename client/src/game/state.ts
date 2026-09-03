@@ -71,21 +71,12 @@ import {
 import { computePersistedSocialTasksGold } from "@/game/socialTasksGold";
 import { getLifetimeGamesWonFromSave } from "@/game/winAchievements";
 import {
-  canRevealEffects,
-  canRevealStatEffects,
-  canRevealBuildingDescriptions,
-  canRevealCraftDescriptions,
   canRevealAchievementTitle,
   getInsightAmount,
-  getInsightRevealCost,
   getAchievementTitleInsightCost,
   getAchievementTitleInsightKey,
   parseAchievementTitleInsightKey,
-  INSIGHT_REVEAL_ACTION_COOLDOWN_SEC,
   INSIGHT_REVEAL_DURATION_MS,
-  STAT_EFFECTS_INSIGHT_COST,
-  BUILDING_DESCRIPTIONS_INSIGHT_COST,
-  CRAFT_DESCRIPTIONS_INSIGHT_COST,
   STAT_INSIGHT_REVEAL_KEY,
   BUILDING_DESCRIPTIONS_INSIGHT_KEY,
   CRAFT_DESCRIPTIONS_INSIGHT_KEY,
@@ -646,10 +637,6 @@ interface GameStore extends GameState {
   ) => void;
   /** Session-only: actionId → reveal animation end timestamp (ms). */
   insightRevealing: Record<string, number>;
-  revealActionEffects: (actionId: string) => boolean;
-  revealStatEffects: () => boolean;
-  revealBuildingDescriptions: () => boolean;
-  revealCraftDescriptions: () => boolean;
   prolongTimedEventTab: () => boolean;
 }
 
@@ -2762,94 +2749,6 @@ export const useGameStore = create<GameStore>((set, get) => ({
     resourceChangeAmounts.forEach((amount, resource) => {
       get().emitResourceChange(resource, amount);
     });
-  },
-
-  revealActionEffects: (actionId: string) => {
-    const state = get();
-    if (!canRevealEffects(actionId, state)) return false;
-    const cost = getInsightRevealCost(actionId, state);
-    if (cost == null || getInsightAmount(state) < cost) return false;
-
-    const resourceUpdates = updateResource(state, "insight", -cost);
-    set({
-      ...resourceUpdates,
-      insightRevealing: {
-        ...state.insightRevealing,
-        [actionId]: Date.now() + INSIGHT_REVEAL_DURATION_MS,
-      },
-      cooldowns: {
-        ...state.cooldowns,
-        [actionId]: INSIGHT_REVEAL_ACTION_COOLDOWN_SEC,
-      },
-      initialCooldowns: {
-        ...state.initialCooldowns,
-        [actionId]: INSIGHT_REVEAL_ACTION_COOLDOWN_SEC,
-      },
-    });
-    return true;
-  },
-
-  revealStatEffects: () => {
-    const state = get();
-    if (!canRevealStatEffects(state, state.insightRevealing)) return false;
-
-    const resourceUpdates = updateResource(
-      state,
-      "insight",
-      -STAT_EFFECTS_INSIGHT_COST,
-    );
-    set({
-      ...resourceUpdates,
-      insightRevealing: {
-        ...(state.insightRevealing ?? {}),
-        [STAT_INSIGHT_REVEAL_KEY]: Date.now() + INSIGHT_REVEAL_DURATION_MS,
-      },
-    });
-    return true;
-  },
-
-  revealBuildingDescriptions: () => {
-    const state = get();
-    if (!canRevealBuildingDescriptions(state, state.insightRevealing)) {
-      return false;
-    }
-
-    const resourceUpdates = updateResource(
-      state,
-      "insight",
-      -BUILDING_DESCRIPTIONS_INSIGHT_COST,
-    );
-    set({
-      ...resourceUpdates,
-      insightRevealing: {
-        ...(state.insightRevealing ?? {}),
-        [BUILDING_DESCRIPTIONS_INSIGHT_KEY]:
-          Date.now() + INSIGHT_REVEAL_DURATION_MS,
-      },
-    });
-    return true;
-  },
-
-  revealCraftDescriptions: () => {
-    const state = get();
-    if (!canRevealCraftDescriptions(state, state.insightRevealing)) {
-      return false;
-    }
-
-    const resourceUpdates = updateResource(
-      state,
-      "insight",
-      -CRAFT_DESCRIPTIONS_INSIGHT_COST,
-    );
-    set({
-      ...resourceUpdates,
-      insightRevealing: {
-        ...(state.insightRevealing ?? {}),
-        [CRAFT_DESCRIPTIONS_INSIGHT_KEY]:
-          Date.now() + INSIGHT_REVEAL_DURATION_MS,
-      },
-    });
-    return true;
   },
 
   prolongTimedEventTab: () => {

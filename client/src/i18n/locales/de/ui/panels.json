@@ -160,10 +160,6 @@
     "priorUpgradeRequired": "Verbessere den Gefallenen Prior, um mehr Aktionen zuzuweisen",
     "priorRemove": "Klicken, um den Gefallenen Prior zu entfernen", //x1.5
     "priorAssign": "Klicken, um den Gefallenen Prior zuzuweisen", //x1.4
-    "insightRevealSeeEffects": "Effekte für {{cost}} {{resource}} anzeigen",
-    "insightRevealSeeStatEffects": "Stat-Effekte für {{cost}} {{resource}} anzeigen",
-    "insightRevealBuildingDescriptions": "Gebäudebeschreibungen für {{cost}} {{resource}} freischalten",
-    "insightRevealCraftDescriptions": "Herstellungsbeschreibungen für {{cost}} {{resource}} freischalten",
     "bonus": "Bonus:",
     "nextBonus": "Nächster Bonus:", //x1.4
     "craftMultiplier": "Herstellung x{{amount}}", //x1.4

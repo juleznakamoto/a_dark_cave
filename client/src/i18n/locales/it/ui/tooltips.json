@@ -137,7 +137,6 @@
       "addsVillagerPreset_other": "Rende disponibili {{count}} slot preset di lavori per Intuizione",
       "scholarInsight": "Studioso: +{{amount}} Intuizione",
       "insightRevealCost": "{{cost}} Intuizione",
-      "insightRevealSeeEffects": "Vedi gli effetti per {{cost}} {{resource}}",
       "insightRevealEffects": "Effetti",
       "abortActions": "Annulla azioni",
       "madnessReduction": "-{{amount}} Follia",

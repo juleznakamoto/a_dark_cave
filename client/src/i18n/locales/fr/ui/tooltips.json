@@ -141,7 +141,6 @@
       "addsVillagerPreset_other": "Rend {{count}} emplacements de préréglage de métiers disponibles contre de la Perspicacité", //x1.4
       "scholarInsight": "Érudit : +{{amount}} perspicacité",
       "insightRevealCost": "{{cost}} perspicacité", //x1.3
-      "insightRevealSeeEffects": "Voir les effets pour {{cost}} {{resource}}",
       "insightRevealEffects": "Effets",
       "abortActions": "Interrompre les actions", //x1.8
       "madnessReduction": "-{{amount}} folie",

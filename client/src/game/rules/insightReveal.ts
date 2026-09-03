@@ -2,24 +2,7 @@ import type { GameState } from "@shared/schema";
 import { getGameActions } from "./actionsRegistry";
 import type { Action } from "@shared/schema";
 
-export const INSIGHT_REVEAL_BUILDING_COST_EARLY = 50;
-export const INSIGHT_REVEAL_BUILDING_COST = 100;
-export const INSIGHT_REVEAL_STONE_HUT_COST_MID = 150;
-export const INSIGHT_REVEAL_STONE_HUT_COST_HIGH = 200;
-export const INSIGHT_REVEAL_FORTIFICATION_COST = 200;
-/** Building/craft reveal costs stay at the wooden early tier while wooden huts are at or below this count. */
-export const INSIGHT_REVEAL_WOODEN_HUT_EARLY_THRESHOLD = 5;
-/** Stone-hut tier uses the mid cost while stone huts are at or below this count. */
-export const INSIGHT_REVEAL_STONE_HUT_MID_THRESHOLD = 5;
 export const INSIGHT_REVEAL_DURATION_MS = 3_000;
-/** Action button cooldown (seconds); ticks subtract 0.25 every 250ms → 1s per unit. */
-export const INSIGHT_REVEAL_ACTION_COOLDOWN_SEC = 3;
-/** @deprecated Stat effect tooltips are always visible. */
-export const STAT_EFFECTS_INSIGHT_COST = 1000;
-/** @deprecated Building descriptions are always visible. */
-export const BUILDING_DESCRIPTIONS_INSIGHT_COST = 1000;
-/** @deprecated Craft descriptions are always visible. */
-export const CRAFT_DESCRIPTIONS_INSIGHT_COST = 1000;
 /** Insight cost to unveil a first-ring (tier 0 / leftmost) achievement title. */
 export const ACHIEVEMENT_TITLE_INSIGHT_COST_TIER_0 = 250;
 /** Insight cost to unveil achievement titles on outer rings (tier 1+). */
@@ -55,36 +38,16 @@ export const TIMED_EVENT_TAB_PROLONG_MS = 2 * 60 * 1000;
 export function isInsightUnlocked(state: GameState): boolean {
   return (state.buildings.clerksHut ?? 0) >= 1;
 }
-/** `insightRevealing` key while the Stats header badge plays its reveal animation. */
+/** Legacy `insightRevealing` key; tickCooldowns still expires leftover save sessions. */
 export const STAT_INSIGHT_REVEAL_KEY = "stats";
-/** `insightRevealing` key while the Build header description-unlock badge animates. */
+/** Legacy `insightRevealing` key; tickCooldowns still expires leftover save sessions. */
 export const BUILDING_DESCRIPTIONS_INSIGHT_KEY = "buildingDescriptions";
-/** `insightRevealing` key while the Craft header description-unlock badge animates. */
+/** Legacy `insightRevealing` key; tickCooldowns still expires leftover save sessions. */
 export const CRAFT_DESCRIPTIONS_INSIGHT_KEY = "craftDescriptions";
 /** `insightRevealing` key while the timed-event tab prolong badge plays its animation. */
 export const TIMED_EVENT_INSIGHT_PROLONG_KEY = "timedEventProlong";
 /** `insightRevealing` key while a villager preset slot unlock animates. */
 export const PRESET_UNLOCK_INSIGHT_KEY = "villagerPresetUnlock";
-
-export function isStatEffectsRevealed(_state: GameState): boolean {
-  return true;
-}
-
-/** @deprecated Stat effect tooltips are always visible; always false. */
-export function canRevealStatEffects(
-  _state: GameState,
-  _insightRevealing?: Record<string, number>,
-): boolean {
-  return false;
-}
-
-const FORTIFICATION_BUILDING_KEYS = new Set([
-  "bastion",
-  "watchtower",
-  "palisades",
-  "fortifiedMoat",
-  "chitinPlating",
-]);
 
 const OWNABLE_EFFECT_PREFIXES = ["tools.", "weapons.", "clothing.", "relics."];
 
@@ -117,63 +80,6 @@ export function isBuildingAction(actionId: string): boolean {
   return Boolean(action?.building);
 }
 
-export function isFortificationBuildAction(actionId: string): boolean {
-  if (!actionId.startsWith("build")) return false;
-  const buildingKey =
-    actionId.slice(5, 6).toLowerCase() + actionId.slice(6);
-  return FORTIFICATION_BUILDING_KEYS.has(buildingKey);
-}
-
-function getBuildingCraftInsightRevealCost(
-  state: Pick<GameState, "buildings">,
-): number {
-  const stoneHuts = state.buildings.stoneHut ?? 0;
-  if (stoneHuts >= 1) {
-    return stoneHuts <= INSIGHT_REVEAL_STONE_HUT_MID_THRESHOLD
-      ? INSIGHT_REVEAL_STONE_HUT_COST_MID
-      : INSIGHT_REVEAL_STONE_HUT_COST_HIGH;
-  }
-
-  const woodenHuts = state.buildings.woodenHut ?? 0;
-  return woodenHuts <= INSIGHT_REVEAL_WOODEN_HUT_EARLY_THRESHOLD
-    ? INSIGHT_REVEAL_BUILDING_COST_EARLY
-    : INSIGHT_REVEAL_BUILDING_COST;
-}
-
-export function getInsightRevealCost(
-  actionId: string,
-  state: Pick<GameState, "buildings">,
-): number | null {
-  if (isCraftOnceAction(actionId)) {
-    return getBuildingCraftInsightRevealCost(state);
-  }
-  if (isFortificationBuildAction(actionId)) return INSIGHT_REVEAL_FORTIFICATION_COST;
-  if (isBuildingAction(actionId)) return getBuildingCraftInsightRevealCost(state);
-  return null;
-}
-
-export function isBuildingDescriptionsRevealed(_state: GameState): boolean {
-  return true;
-}
-
-export function isCraftDescriptionsRevealed(_state: GameState): boolean {
-  return true;
-}
-
-/** @deprecated Building descriptions are always visible; always false. */
-export function isBuildingDescriptionsUnlockAvailable(
-  _state: Pick<GameState, "buildings">,
-): boolean {
-  return false;
-}
-
-/** @deprecated Craft descriptions are always visible; always false. */
-export function isCraftDescriptionsUnlockAvailable(
-  _state: Pick<GameState, "buildings">,
-): boolean {
-  return false;
-}
-
 export function isBuildingDescriptionVisible(
   _state: GameState,
   _actionId: string,
@@ -186,27 +92,6 @@ export function isCraftDescriptionVisible(
   _actionId: string,
 ): boolean {
   return true;
-}
-
-/** @deprecated Building descriptions are always visible; always false. */
-export function canRevealBuildingDescriptions(
-  _state: GameState,
-  _insightRevealing?: Record<string, number>,
-): boolean {
-  return false;
-}
-
-/** @deprecated Craft descriptions are always visible; always false. */
-export function canRevealCraftDescriptions(
-  _state: GameState,
-  _insightRevealing?: Record<string, number>,
-): boolean {
-  return false;
-}
-
-/** @deprecated Per-action build/craft insight reveal removed; always false. */
-export function canRevealEffects(_actionId: string, _state: GameState): boolean {
-  return false;
 }
 
 export function isInsightRevealInProgress(

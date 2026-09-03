@@ -4,7 +4,6 @@ import { useGameStore } from "@/game/state";
 import { TooltipWrapper } from "@/components/game/TooltipWrapper";
 import { X } from "lucide-react";
 import { GAME_CONSTANTS } from "@/game/constants";
-import { INSIGHT_REVEAL_DURATION_MS } from "@/game/rules/insightReveal";
 import { tWithFallback } from "@/i18n/resolveGameText";
 import { cn, formatCompactDuration } from "@/lib/utils";
 import { useInlineButtonParticles } from "@/components/ui/bubbly-button";
@@ -47,10 +46,16 @@ export function gameActionOutlineButtonClassName(
 /** Label fade for disabled game action buttons (pairs with gameActionOutlineButtonClassName). */
 export function gameActionDisabledLabelClassName(disabled = false): string {
   return cn(
-    "relative transition-opacity duration-200",
+    "relative z-10 transition-opacity duration-200",
     disabled && "opacity-60",
   );
 }
+
+/** Cooldown / execution wash. Same token and alpha as the blocked outline border. */
+export const GAME_ACTION_COOLDOWN_WASH_CLASS = "bg-orange-950/50";
+/** Short brighter fade on the moving wipe edge. */
+export const GAME_ACTION_COOLDOWN_WASH_EDGE_CLASS =
+  "absolute inset-y-0 right-0 w-3 bg-gradient-to-r from-transparent to-orange-900/50";
 
 interface CooldownButtonProps {
   children: React.ReactNode;
@@ -123,7 +128,6 @@ const CooldownButton = forwardRef<HTMLButtonElement, CooldownButtonProps>(
     const storedInitialCooldown = useGameStore((s) => s.initialCooldowns[actionIdFromProps] || 0);
     const executionStart = useGameStore((s) => s.executionStartTimes?.[actionIdFromProps] || 0);
     const executionDurationSec = useGameStore((s) => s.executionDurations?.[actionIdFromProps] || 0);
-    const insightRevealEnd = useGameStore((s) => s.insightRevealing?.[actionIdFromProps]);
     const isCompassGlowing = useGameStore((s) => s.compassGlowButton === actionIdFromProps);
     // Only subscribe to the 4 Hz playTime clock when this button has a play-time overlay.
     const currentPlayTime = useGameStore((s) =>
@@ -136,8 +140,6 @@ const CooldownButton = forwardRef<HTMLButtonElement, CooldownButtonProps>(
     const abortActionExecution = useGameStore((s) => s.abortActionExecution);
 
     const isCoolingDown = currentCooldown > 0;
-    const isInsightRevealing =
-      typeof insightRevealEnd === "number" && insightRevealEnd > Date.now();
 
     const playTimeRange = playTimeCooldown;
     const isPlayTimeOverlayActive = !!(
@@ -163,17 +165,16 @@ const CooldownButton = forwardRef<HTMLButtonElement, CooldownButtonProps>(
           : (1 - playTimeElapsedFraction) * 100
         : 0;
 
-    // Force re-renders during execution / insight reveal so overlay updates.
+    // Force re-renders during execution so the overlay updates.
     const isExecutingCheck = executionStart > 0;
     useEffect(() => {
-      if (!isExecutingCheck && !isInsightRevealing && !isPlayTimeOverlayActive) {
+      if (!isExecutingCheck && !isPlayTimeOverlayActive) {
         return;
       }
       const id = setInterval(() => forceUpdate((n) => n + 1), 100);
       return () => clearInterval(id);
     }, [
       isExecutingCheck,
-      isInsightRevealing,
       isPlayTimeOverlayActive,
       actionIdFromProps,
     ]);
@@ -208,7 +209,7 @@ const CooldownButton = forwardRef<HTMLButtonElement, CooldownButtonProps>(
 
     // Track first render for transition
     useEffect(() => {
-      if (isCoolingDown || isExecuting || isInsightRevealing || isPlayTimeOverlayActive) {
+      if (isCoolingDown || isExecuting || isPlayTimeOverlayActive) {
         isFirstRenderRef.current = true;
         // Allow transition after initial render (next frame)
         requestAnimationFrame(() => {
@@ -217,18 +218,7 @@ const CooldownButton = forwardRef<HTMLButtonElement, CooldownButtonProps>(
       } else {
         isFirstRenderRef.current = true;
       }
-    }, [isCoolingDown, isExecuting, isInsightRevealing, isPlayTimeOverlayActive]);
-
-    const insightRevealWidth =
-      isInsightRevealing && typeof insightRevealEnd === "number"
-        ? Math.max(
-          0,
-          Math.min(
-            100,
-            ((insightRevealEnd - Date.now()) / INSIGHT_REVEAL_DURATION_MS) * 100,
-          ),
-        )
-        : 0;
+    }, [isCoolingDown, isExecuting, isPlayTimeOverlayActive]);
 
     // Calculate width percentage: cooldown = shrinks 100→0, execution = grows 0→100
     const overlayWidth = isPlayTimeOverlayActive
@@ -237,7 +227,7 @@ const CooldownButton = forwardRef<HTMLButtonElement, CooldownButtonProps>(
         ? executionProgress * 100
         : isCoolingDown && initialCooldown > 0
           ? (currentCooldown / initialCooldown) * 100
-          : insightRevealWidth;
+          : 0;
 
     const actionExecutedRef = useRef<boolean>(false);
     const { triggerParticles, portal } = useInlineButtonParticles(particleConfig);
@@ -256,7 +246,7 @@ const CooldownButton = forwardRef<HTMLButtonElement, CooldownButtonProps>(
     };
 
     const isOverlayBlocked =
-      isCoolingDown || isExecuting || isInsightRevealing || isPlayTimeOverlayActive;
+      isCoolingDown || isExecuting || isPlayTimeOverlayActive;
     const allowDisabledClick = Boolean(disabled && onDisabledClick && !isOverlayBlocked);
 
     const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
@@ -276,8 +266,7 @@ const CooldownButton = forwardRef<HTMLButtonElement, CooldownButtonProps>(
       }, 100);
     };
 
-    const isButtonDisabled =
-      disabled || isCoolingDown || isExecuting || isInsightRevealing || isPlayTimeOverlayActive;
+    const isButtonDisabled = disabled || isOverlayBlocked;
 
     const buttonId = testId || generatedButtonId;
 
@@ -322,31 +311,30 @@ const CooldownButton = forwardRef<HTMLButtonElement, CooldownButtonProps>(
           />
         )}
 
-        {/* Fade label only — keep chrome/backdrop-blur opaque so particles stay behind */}
-        <span
-          className={gameActionDisabledLabelClassName(
-            isCoolingDown ||
-            isExecuting ||
-            isInsightRevealing ||
-            isPlayTimeOverlayActive ||
-            disabled,
-          )}
-        >
-          {children}
-        </span>
-
-        {/* Cooldown, execution, or insight-reveal progress overlay */}
-        {(isCoolingDown || isExecuting || isInsightRevealing || isPlayTimeOverlayActive) && (
+        {/* Wash first so it stays behind the label. */}
+        {isOverlayBlocked && (
           <div
-            className={`absolute inset-0 transition-opacity duration-200 ${isInsightRevealing ? "bg-blue-400/25" : "bg-white/15"
-              }`}
+            className={cn(
+              "pointer-events-none absolute inset-0 z-0 overflow-hidden transition-opacity duration-200",
+              GAME_ACTION_COOLDOWN_WASH_CLASS,
+            )}
             style={{
               width: `${overlayWidth}%`,
               left: 0,
               transition: isFirstRenderRef.current || skipAnimationRef.current ? "none" : "width 0.3s ease-out",
             }}
-          />
+            aria-hidden
+          >
+            <div className={GAME_ACTION_COOLDOWN_WASH_EDGE_CLASS} />
+          </div>
         )}
+
+        {/* Fade label only — keep chrome/backdrop-blur opaque so particles stay behind */}
+        <span
+          className={gameActionDisabledLabelClassName(isOverlayBlocked || disabled)}
+        >
+          {children}
+        </span>
 
         {/* "2x" text indicator for compass glow */}
         {isCompassGlowing && (
