@@ -297,7 +297,7 @@ run ad hoc for locale maintenance.
 
 Support modules (not always npm-wired): `write-build-meta.mjs` (git HEAD â†’ `dist/build-meta.json` after client build), `generate-logo-assets.py` (resize `build-resources/logo-source.png` â†’ favicons, PWA, OG, Electron icons), `build-press-kit-assets.mjs` (zip `client/public/press-kit` for `/press`), `build-noto-symbol-compat.py` (rebuild `client/public/fonts/noto-symbol-compat.woff2` from Noto Math/Symbols/Sans), `locale-catalog.mjs`, `parse-locale-json.mjs`,
 `i18n-ui-shards.mjs`, `audit-locale-translations.mjs`, `audit-timed-tab-i18n.mjs`,
-`apply-*-fix-translations.mjs`, `apply-cube-translations.mjs`, `restore-ok-comments.mjs`,
+`generate-steam-achievement-loc.mjs` (rebuild `steam/4882240_loc_all.vdf` from locale JSON), `apply-*-fix-translations.mjs`, `apply-cube-translations.mjs`, `restore-ok-comments.mjs`,
 `fix-es-locale-encoding.mjs`, `sync-resend-marketing-contacts.mjs` (ad hoc Resend import from MCP SQL export),
 `resendScriptEnv.ts` (shared Supabase + Resend key resolution for the Resend CLI scripts),
 plus `*-fix-translations.json` / `cube-events-translations.json`
@@ -400,7 +400,8 @@ App ID **4882240** in `steam_appid.txt`. Full and demo share the folder (Shared 
 | `scripts/steam-upload-demo.ps1` | `npm run steam:demo:upload` â€” build (optional) + SteamPipe upload. |
 | `scripts/UploadDemoToSteam.cmd` | Double-click / desktop shortcut wrapper for `steam-upload-demo.ps1`. |
 | `steam/config.demo.example.json` | Demo `appId` / `depotId` template for upload script. |
-| `steam/demo-achievements.md` | Steamworks partner pack for the 12 demo `ACH_BASIC_*` achievements (API names, copy, locales, icon notes). |
+| `steam/achievements.md` | Steamworks partner pack for the 76 full-game achievements (API names, English copy, create order, VDF upload). |
+| `steam/4882240_loc_all.vdf` | Steamworks loc file for those 76 achievements (en / de / fr / it / es / zh-CN / ru / pt-BR). |
 
 Demo saves: IndexedDB key `steamDemoSave` under `%APPDATA%\A Dark Cave Demo\` + Steam Cloud file `%APPDATA%\A Dark Cave\adc-steam-demo-save.dat`. The full game writes `%APPDATA%\A Dark Cave\adc-steam-save.dat` only. Legacy file `%APPDATA%\A Dark Cave Demo\adc-steam-demo-save.dat` is still read as fallback and dual-written by the demo. Keep a second Auto-Cloud row for that legacy path until the transition is done. Each save is stamped with `saveOriginEdition`. First full-game launch with no full save and a Demo save shows the start-screen Continue dialog once (`steamDemoContinueResolved`). The Steam demo syncs basic partner achievements (`ACH_BASIC_*`). Loading a demo save in the full game backfills those same unlocks from save progress (`shouldSyncSteamAchievements` + `syncSteamAchievements`).
 
