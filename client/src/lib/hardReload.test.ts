@@ -8,6 +8,7 @@ import {
   clearStaleChunkReloadGuard,
   isStaleChunkLoadFailure,
   recoverFromStaleChunkLoad,
+  shouldMarkResumeOnHardReload,
   stripHardReloadCacheBustParam,
   tryOneModuleLoadRecovery,
 } from "./hardReload";
@@ -124,6 +125,63 @@ describe("recoverFromStaleChunkLoad", () => {
       ),
     ).toBe(true);
     expect(window.location.replace).toHaveBeenCalled();
+  });
+});
+
+describe("shouldMarkResumeOnHardReload", () => {
+  it("marks resume on play routes only", () => {
+    expect(shouldMarkResumeOnHardReload("https://a-dark-cave.com/")).toBe(true);
+    expect(shouldMarkResumeOnHardReload("https://a-dark-cave.com/boost")).toBe(
+      true,
+    );
+    expect(
+      shouldMarkResumeOnHardReload("https://a-dark-cave.com/end-screen"),
+    ).toBe(false);
+    expect(shouldMarkResumeOnHardReload("https://a-dark-cave.com/faq")).toBe(
+      false,
+    );
+  });
+
+  it("uses the hash route on CrazyGames-style URLs", () => {
+    expect(
+      shouldMarkResumeOnHardReload(
+        "https://files.example/index.html#/end-screen",
+      ),
+    ).toBe(false);
+    expect(
+      shouldMarkResumeOnHardReload("https://files.example/index.html#/"),
+    ).toBe(true);
+  });
+});
+
+describe("hardReload path", () => {
+  const originalLocation = window.location;
+
+  beforeEach(() => {
+    sessionStorage.clear();
+    vi.stubGlobal("location", {
+      ...originalLocation,
+      href: "https://a-dark-cave.com/end-screen",
+      replace: vi.fn(),
+    });
+  });
+
+  afterEach(() => {
+    sessionStorage.clear();
+    vi.unstubAllGlobals();
+  });
+
+  it("keeps /end-screen and does not set resume", () => {
+    expect(
+      recoverFromStaleChunkLoad(
+        new Error("Failed to fetch dynamically imported module: /assets/x.js"),
+      ),
+    ).toBe(true);
+    expect(peekResumeGame()).toBe(false);
+    const url = String(vi.mocked(window.location.replace).mock.calls[0][0]);
+    expect(url).toContain("/end-screen");
+    expect(url).toContain(`${HARD_RELOAD_CACHE_BUST_PARAM}=`);
+    expect(url).not.toMatch(/https:\/\/a-dark-cave\.com\/\?/);
   });
 });
 

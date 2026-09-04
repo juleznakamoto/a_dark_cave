@@ -192,12 +192,29 @@ export function bootstrapAfterHardReload(): void {
   }
 }
 
+const PLAY_RESUME_PATHS = new Set(["/", "/galaxy", "/crazygames", "/boost"]);
+
+/** Resume only on play URLs. `/end-screen` and other routes keep their path. */
+export function shouldMarkResumeOnHardReload(
+  href: string = typeof window !== "undefined" ? window.location.href : "",
+): boolean {
+  try {
+    const url = new URL(href, "https://a-dark-cave.com");
+    const hashPath = url.hash.startsWith("#/")
+      ? url.hash.slice(1).split("?")[0] || "/"
+      : "";
+    return PLAY_RESUME_PATHS.has(hashPath || url.pathname);
+  } catch {
+    return false;
+  }
+}
+
 /**
  * Force the browser to load a fresh HTML/JS bundle after a deploy.
  * Navigates with a cache-bust query param; stale caches are cleared after the
  * new page loads so we do not delete assets the current session still needs.
- * Marks resume so a started web save reopens Game instead of Make Fire
- * (same flag as the version-update reload).
+ * On a play route, marks resume so a started web save reopens Game instead of
+ * Make Fire (same flag as the version-update reload).
  */
 export async function hardReload(): Promise<void> {
   try {
@@ -205,7 +222,9 @@ export async function hardReload(): Promise<void> {
   } catch {
     // ignore
   }
-  setResumeGame();
+  if (shouldMarkResumeOnHardReload()) {
+    setResumeGame();
+  }
 
   const url = new URL(window.location.href);
   url.searchParams.set(HARD_RELOAD_CACHE_BUST_PARAM, Date.now().toString());
