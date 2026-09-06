@@ -436,8 +436,8 @@ body {
 /* Action-button corner badges (level / prior / insight / boost hosts). */
 .button-level-badge {
   position: absolute;
-  top: calc(-7px * var(--adc-control-scale, 1));
-  right: calc(-7px * var(--adc-control-scale, 1));
+  top: calc(-0.5rem * var(--adc-control-scale, 1));
+  right: calc(-0.5rem * var(--adc-control-scale, 1));
   width: calc(1rem * var(--adc-control-scale, 1));
   height: calc(1rem * var(--adc-control-scale, 1));
 }
@@ -445,11 +445,19 @@ body {
 .button-prior-badge {
   --adc-prior-badge-size: 12px;
   position: absolute;
-  /* Offset tracks size: half the disc, minus 1px, so it sits on the rounded corner. */
-  bottom: calc((var(--adc-prior-badge-size) / -2 + 1px) * var(--adc-control-scale, 1));
-  right: calc((var(--adc-prior-badge-size) / -2 + 1px) * var(--adc-control-scale, 1));
+  bottom: calc(var(--adc-prior-badge-size) / -2 * var(--adc-control-scale, 1));
+  right: calc(var(--adc-prior-badge-size) / -2 * var(--adc-control-scale, 1));
   width: calc(var(--adc-prior-badge-size) * var(--adc-control-scale, 1));
   height: calc(var(--adc-prior-badge-size) * var(--adc-control-scale, 1));
+}
+
+/* Abort / Buy Gold: 16px disc, half-offset so the center sits on the corner. */
+.button-corner-badge-16 {
+  position: absolute;
+  bottom: -8px;
+  right: -8px;
+  z-index: 30;
+  pointer-events: auto;
 }
 
 .action-button-corner-badge {

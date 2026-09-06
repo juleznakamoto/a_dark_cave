@@ -51,7 +51,7 @@ export function GoldShopBadge({
   const label = t("timedEvent.buyGold", { defaultValue: "Buy Gold" });
 
   return (
-    <div className="absolute bottom-[-10px] right-[-7px] z-[30] pointer-events-auto">
+    <div className="button-corner-badge-16">
       <button
         type="button"
         className="flex h-4 w-4 items-center justify-center rounded-full bg-yellow-700 text-white shadow-sm border border-yellow-500/60 hover:bg-yellow-600 transition-colors cursor-pointer"
