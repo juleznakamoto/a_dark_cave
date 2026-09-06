@@ -444,9 +444,9 @@ body {
 
 .button-prior-badge {
   position: absolute;
-  /* Half of 12px so the disc center sits on the button's bottom-right corner. */
-  bottom: calc(-6px * var(--adc-control-scale, 1));
-  right: calc(-6px * var(--adc-control-scale, 1));
+  /* 12px disc. Same optical inset as the old 10px / -4px (half minus 1px). */
+  bottom: calc(-5px * var(--adc-control-scale, 1));
+  right: calc(-5px * var(--adc-control-scale, 1));
   width: calc(12px * var(--adc-control-scale, 1));
   height: calc(12px * var(--adc-control-scale, 1));
 }
