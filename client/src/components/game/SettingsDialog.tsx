@@ -526,9 +526,10 @@ export default function SettingsDialog({
               <Button
                 type="button"
                 variant="ghost"
+                size="xs"
                 onClick={onDeleteAccount}
                 button_id="settings-delete-account"
-                className={`${ROW} rounded-md text-muted-foreground hover:bg-muted/40 hover:text-foreground transition-colors`}
+                className={`${ROW} w-full justify-start px-0 rounded-md text-muted-foreground hover:bg-muted/40 hover:text-foreground transition-colors`}
               >
                 <span className={ICON_SLOT}>
                   <GameUiIcon name="deleteAccount" sizeClassName="w-5 h-5" />
