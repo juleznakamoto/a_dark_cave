@@ -441,7 +441,8 @@ const CooldownButton = forwardRef<HTMLButtonElement, CooldownButtonProps>(
             <TooltipWrapper
               tooltip={abortTooltip}
               tooltipId={`${buttonId}-abort`}
-              className="inline-flex"
+              className="flex h-full w-full"
+              tooltipTriggerAsChild
             >
               <button
                 type="button"

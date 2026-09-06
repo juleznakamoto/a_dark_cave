@@ -451,11 +451,17 @@ body {
   height: calc(var(--adc-prior-badge-size) * var(--adc-control-scale, 1));
 }
 
-/* Abort / Buy Gold: 16px disc, half-offset so the center sits on the corner. */
+/* Abort / Buy Gold: fixed 16px host so tooltip wrappers cannot shift the disc. */
 .button-corner-badge-16 {
   position: absolute;
   bottom: -8px;
   right: -8px;
+  width: 16px;
+  height: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 0;
   z-index: 30;
   pointer-events: auto;
 }
