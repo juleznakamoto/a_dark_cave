@@ -298,15 +298,11 @@ function CubeWhisperIcon({ hoverable = false }: { hoverable?: boolean }) {
   return (
     <span
       className={cn(
-        "w-6 h-6 shrink-0 bg-neutral-900 border border-neutral-800 rounded-md flex items-center justify-center relative",
-        hoverable &&
-        "group-hover:bg-neutral-800 group-hover:border-neutral-500 transition-all",
+        "w-6 h-6 shrink-0 bg-neutral-900 border border-neutral-800 rounded-md flex items-center justify-center",
+        hoverable && "group-hover:border-neutral-500 transition-colors",
       )}
     >
       <span className="text-md">▣</span>
-      {hoverable ? (
-        <span className="absolute inset-0 cube-dialog-glow opacity-0 group-hover:opacity-30 transition-opacity pointer-events-none rounded" />
-      ) : null}
     </span>
   );
 }
@@ -487,7 +483,7 @@ export default function EstatePanel({
         key={event.id}
         type="button"
         onClick={openCubeEvent}
-        className="flex items-center gap-2 w-full text-left hover:opacity-80 transition-opacity cursor-pointer group"
+        className="flex items-center gap-2 w-full text-left cursor-pointer group"
       >
         <CubeWhisperIcon hoverable />
         <span className="text-xs text-foreground">{cubeTitle}</span>

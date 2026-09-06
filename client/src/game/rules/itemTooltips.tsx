@@ -14,10 +14,7 @@ import {
   getMaxBombLimit,
   getMaxVeinfireElixirLimit,
 } from "@/game/resourceLimits";
-import {
-  getBuildingHierarchyChain,
-  getBuildingHierarchyTooltipLevel,
-} from "../buildingHierarchy";
+import { getBuildingHierarchyChain } from "../buildingHierarchy";
 import {
   villageBuildActions,
   getPalisadesTooltipEffectsForLevel,
@@ -29,7 +26,6 @@ import {
   getBuildingTooltipEffectLines,
   getUpgradeChainCurrentEffectLines,
   getUpgradeChainLevelEffectSections,
-  type LeveledEffectSection,
 } from "./buildingTooltipSections";
 import { ActionTooltipSeparator } from "./actionTooltipLayout";
 import {
@@ -43,6 +39,10 @@ import {
   getEffectDescription,
   getEffectName,
 } from "@/i18n/resolveGameText";
+import {
+  getPalisadesTierLabel,
+  getWatchtowerTierLabel,
+} from "@/i18n/fortificationLabels";
 import {
   formatTooltipResourceName,
   getUiTooltip,
@@ -168,8 +168,18 @@ type TooltipEffectLine = string | React.ReactNode;
 
 type FortificationLeveledEffectSection = {
   level: number;
+  label: string;
   effects: TooltipEffectLine[];
 };
+
+function getFortificationTierLabel(
+  itemId: "watchtower" | "palisades",
+  level: number,
+): string {
+  return itemId === "watchtower"
+    ? getWatchtowerTierLabel(level)
+    : getPalisadesTierLabel(level);
+}
 
 function formatFortificationStat(
   key: FortificationStatKey,
@@ -274,7 +284,11 @@ function getFortificationLevelEffectSections(
   for (let level = currentLevel - 1; level >= 1; level--) {
     const effects = getFortificationLevelEffectLines(itemId, level);
     if (effects.length > 0) {
-      sections.push({ level, effects });
+      sections.push({
+        level,
+        label: getFortificationTierLabel(itemId, level),
+        effects,
+      });
     }
   }
   return sections;
@@ -282,7 +296,7 @@ function getFortificationLevelEffectSections(
 
 function renderLeveledEffectsBlock(
   currentEffects: TooltipEffectLine[],
-  levelSections: Array<{ level: number; effects: TooltipEffectLine[] }>,
+  levelSections: Array<{ level: number; label: string; effects: TooltipEffectLine[] }>,
 ): React.ReactNode | null {
   const hasCurrent = currentEffects.length > 0;
   const visibleSections = levelSections.filter(
@@ -301,11 +315,7 @@ function renderLeveledEffectsBlock(
           {(hasCurrent || idx > 0) && (
             <ActionTooltipSeparator />
           )}
-          <div>
-            {getUiTooltip("level", "Level {{level}}", {
-              level: section.level,
-            })}
-          </div>
+          <div>{section.label}</div>
           {section.effects.map((effect, effectIdx) => (
             <div key={effectIdx}>{effect}</div>
           ))}
@@ -447,12 +457,10 @@ function renderBuildingItemTooltip(
     effectsBlock = renderLeveledEffectsBlock(effectsList, []);
   }
 
-  const hierarchyLevel = getBuildingHierarchyTooltipLevel(itemId);
   const titleLabel =
     displayLabel ?? getActionLabel(actionId, buildAction.label);
 
-  const hasMetaRow =
-    showTitle || hierarchyLevel != null || isDamaged;
+  const hasMetaRow = showTitle || isDamaged;
 
   return (
     <div className="text-xs">
@@ -460,20 +468,6 @@ function renderBuildingItemTooltip(
         <div className="flex flex-wrap items-baseline gap-x-2 gap-y-0">
           <span>
             {showTitle && <span className="font-bold">{titleLabel}</span>}
-            {hierarchyLevel != null && (
-              <span
-                className={
-                  showTitle
-                    ? "font-normal text-muted-foreground"
-                    : "font-normal text-foreground"
-                }
-              >
-                {showTitle ? " " : ""}
-                {getUiTooltip("level", "Level {{level}}", {
-                  level: hierarchyLevel,
-                })}
-              </span>
-            )}
             {isDamaged && (
               <span className="font-normal text-muted-foreground">
                 {" "}
@@ -542,7 +536,7 @@ export function renderFortificationTooltip(
     levelSections,
   );
 
-  const hasMetaRow = showTitle || upgradeLevel != null || isDamaged;
+  const hasMetaRow = showTitle || isDamaged;
 
   return (
     <div className="text-xs">
@@ -550,20 +544,6 @@ export function renderFortificationTooltip(
         <div className="flex flex-wrap items-center gap-x-2 gap-y-0 leading-none">
           <span>
             {showTitle && <span className="font-bold">{titleLabel}</span>}
-            {upgradeLevel != null && (
-              <span
-                className={
-                  showTitle
-                    ? "font-normal text-muted-foreground"
-                    : "font-normal text-foreground"
-                }
-              >
-                {showTitle ? " " : ""}
-                {getUiTooltip("level", "Level {{level}}", {
-                  level: upgradeLevel,
-                })}
-              </span>
-            )}
             {isDamaged && (
               <span className="font-normal text-muted-foreground">
                 {" "}

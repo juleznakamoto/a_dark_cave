@@ -192,15 +192,3 @@ export function getBuildingHierarchyChain(
   }
   return null;
 }
-
-/**
- * 1-based tier in an upgrade chain (`BUILDING_HIERARCHIES`) for tooltip labels.
- * Returns null if not in a chain or excluded.
- */
-export function getBuildingHierarchyTooltipLevel(
-  buildingKey: string,
-): number | null {
-  const chain = getBuildingHierarchyChain(buildingKey);
-  if (!chain) return null;
-  return chain.indexOf(buildingKey) + 1;
-}

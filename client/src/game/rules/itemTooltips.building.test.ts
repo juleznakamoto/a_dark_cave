@@ -299,6 +299,18 @@ describe("building tooltip audit at max tier", () => {
       grandBlacksmith.levelSections.flatMap((s) => s.effects),
     ).not.toEqual(expect.arrayContaining(grandBlacksmith.current));
   });
+
+  it("labels prior upgrade-chain sections with building names", () => {
+    const grandBlacksmith = getBuildingTooltipSnapshot(
+      "grandBlacksmith",
+      getBuildingHierarchyChain("grandBlacksmith")!,
+      gameState,
+    );
+    expect(grandBlacksmith.levelSections.map((s) => s.label)).toEqual([
+      "Advanced Blacksmith",
+      "Blacksmith",
+    ]);
+  });
 });
 
 describe("fortification tooltip audit at max internal level", () => {

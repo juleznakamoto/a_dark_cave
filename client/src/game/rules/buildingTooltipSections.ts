@@ -7,6 +7,7 @@ import {
   getUiTooltip,
   resolveBuildingTooltipEffect,
 } from "@/i18n/tooltipLabels";
+import { getActionLabel } from "@/i18n/resolveGameText";
 import { getBuildingHierarchyChain } from "../buildingHierarchy";
 import type { BuildingTooltipEffect } from "./buildingTooltipEffects";
 import { villageBuildActions } from "./villageBuildActions";
@@ -15,6 +16,7 @@ export type TooltipEffectEntry = string | BuildingTooltipEffect;
 
 export type LeveledEffectSection = {
   level: number;
+  label: string;
   effects: string[];
 };
 
@@ -252,7 +254,11 @@ export function getUpgradeChainLevelEffectSections(
     prevEntries = entries;
 
     if (effects.length > 0) {
-      sections.push({ level: index + 1, effects });
+      sections.push({
+        level: index + 1,
+        label: getActionLabel(buildingKeyToActionId(buildingKey), buildAction.label),
+        effects,
+      });
     }
   }
 
