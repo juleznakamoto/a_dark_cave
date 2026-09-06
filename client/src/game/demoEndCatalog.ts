@@ -28,11 +28,43 @@ export const DEMO_END_WEAPON_IDS = Object.keys(defaultGameState.weapons);
 
 const weaponKeySet = new Set(DEMO_END_WEAPON_IDS);
 
+/** Tools that are not also weapons. */
+export const DEMO_END_TOOL_IDS = Object.keys(defaultGameState.tools).filter(
+  (key) => !weaponKeySet.has(key),
+);
+
 export const DEMO_END_CLOTHING_IDS = Object.keys(defaultGameState.clothing);
 export const DEMO_END_RELIC_IDS = Object.keys(defaultGameState.relics);
 export const DEMO_END_BOOK_IDS = Object.keys(defaultGameState.books);
 export const DEMO_END_FELLOWSHIP_IDS = [...FELLOWSHIP_MEMBER_ORDER];
 export const DEMO_END_SCHEMATIC_IDS = Object.keys(defaultGameState.schematics);
+
+/** Crafted resource items shown in the stash, not the Combat Items section. */
+const DEMO_END_CONSUMABLE_ITEM_IDS = [
+  "torch",
+  "bone_totem",
+  "leather_totem",
+] as const;
+
+/**
+ * Unique inventory items you can craft or find.
+ * Includes tools, weapons, clothing, relics, books, schematics, combat items,
+ * and craft consumables. Clothing/relic overlaps count once.
+ * `blacksteel_armor` is crafted but omitted from the Zod clothing object.
+ */
+export const DEMO_END_ITEM_IDS = [
+  ...new Set([
+    ...DEMO_END_TOOL_IDS,
+    ...DEMO_END_WEAPON_IDS,
+    ...DEMO_END_CLOTHING_IDS,
+    "blacksteel_armor",
+    ...DEMO_END_RELIC_IDS,
+    ...DEMO_END_BOOK_IDS,
+    ...DEMO_END_SCHEMATIC_IDS,
+    ...DEMO_END_COMBAT_ITEM_IDS,
+    ...DEMO_END_CONSUMABLE_ITEM_IDS,
+  ]),
+];
 export const DEMO_END_BLESSING_IDS = Object.keys(
   defaultGameState.blessings,
 ).filter((key) => !key.endsWith("_enhanced"));
@@ -317,9 +349,7 @@ export const DEMO_END_EXTRA_BONUS_IDS = [
 ] as const;
 
 export function getDemoEndToolCatalogIds(state: GameState): string[] {
-  return Object.keys(defaultGameState.tools).filter(
-    (key) => !weaponKeySet.has(key) && shouldShowDisplayTool(key, state),
-  );
+  return DEMO_END_TOOL_IDS.filter((key) => shouldShowDisplayTool(key, state));
 }
 
 export function getDemoEndBuildingCatalogIds(state: GameState): string[] {

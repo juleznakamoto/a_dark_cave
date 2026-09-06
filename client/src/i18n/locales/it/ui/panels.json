@@ -16,6 +16,7 @@
     "craftingBoostFinish": "Completa la fabbricazione per {{cost}} {{resource}}"
   },
   "forest": {
+    "sectionExplore": "Esplora",
     "sectionSacrifice": "Sacrifica",
     "sectionBuy": "Compra",
     "sectionSell": "Vendi"
@@ -253,5 +254,17 @@
     "getUp": "Alzati",
     "focusGainedLog": "Hai guadagnato {{count}} Concentrazione dal tuo riposo.",
     "villagersProducedLog": "Risorse prodotte dagli abitanti: {{resources}}"
+  },
+  "demoEnd": {
+    "craftUpTo": "Crea o trova {{count}} oggetti",
+    "constructUpTo": "Costruisci {{count}} edifici",
+    "unlockJobs": "Sblocca {{count}} lavori",
+    "unlockSkills": "Sblocca {{count}} abilità",
+    "whisperedMemories": "Esplora una storia oscura e ricca di lore",
+    "explore": "Esplora un mondo crudele",
+    "attackWaves": "Combatti creature indicibili",
+    "heal": "Forma una potente compagnia",
+    "repair": "Costruisci una potente fortezza",
+    "unlockAchievements": "Sblocca {{count}} obiettivi in {{categories}} categorie"
   }
 }

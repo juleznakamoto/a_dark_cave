@@ -16,6 +16,7 @@
     "craftingBoostFinish": "Terminer l'artisanat pour {{cost}} {{resource}}"
   },
   "forest": {
+    "sectionExplore": "Explorer",
     "sectionSacrifice": "Sacrifier",
     "sectionBuy": "Acheter",
     "sectionSell": "Vendre"
@@ -253,5 +254,17 @@
     "getUp": "Se lever",
     "focusGainedLog": "Vous avez gagné {{count}} de concentration grâce à votre repos.", //x1.5
     "villagersProducedLog": "Les villageois ont produit : {{resources}}"
+  },
+  "demoEnd": {
+    "craftUpTo": "Fabriquez ou trouvez {{count}} objets",
+    "constructUpTo": "Construisez {{count}} bâtiments",
+    "unlockJobs": "Débloquez {{count}} métiers",
+    "unlockSkills": "Débloquez {{count}} compétences",
+    "whisperedMemories": "Explorez une histoire sombre et riche en lore",
+    "explore": "Explorez un monde cruel",
+    "attackWaves": "Affrontez des créatures innommables",
+    "heal": "Assemblez une puissante compagnie",
+    "repair": "Construisez une forteresse puissante",
+    "unlockAchievements": "Débloquez {{count}} succès dans {{categories}} catégories"
   }
 }

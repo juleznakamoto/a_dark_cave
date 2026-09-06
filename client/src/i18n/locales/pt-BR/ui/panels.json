@@ -16,6 +16,7 @@
     "craftingBoostFinish": "Concluir fabricação por {{cost}} {{resource}}"
   },
   "forest": {
+    "sectionExplore": "Explorar",
     "sectionSacrifice": "Sacrificar",
     "sectionBuy": "Comprar",
     "sectionSell": "Vender"
@@ -253,5 +254,17 @@
     "getUp": "Levantar",
     "focusGainedLog": "Você ganhou {{count}} de Foco com seu descanso.",
     "villagersProducedLog": "Os aldeões produziram: {{resources}}"
+  },
+  "demoEnd": {
+    "craftUpTo": "Crie ou encontre {{count}} itens",
+    "constructUpTo": "Construa {{count}} construções",
+    "unlockJobs": "Desbloqueie {{count}} trabalhos",
+    "unlockSkills": "Desbloqueie {{count}} habilidades",
+    "whisperedMemories": "Explore uma história sombria e rica em lore",
+    "explore": "Explore um mundo cruel",
+    "attackWaves": "Lute contra criaturas indizíveis",
+    "heal": "Forme uma poderosa irmandade",
+    "repair": "Construa uma fortaleza poderosa",
+    "unlockAchievements": "Desbloqueie {{count}} conquistas em {{categories}} categorias"
   }
 }

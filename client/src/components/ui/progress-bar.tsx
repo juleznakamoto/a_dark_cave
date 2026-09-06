@@ -247,7 +247,7 @@ export function SegmentedProgress({
                   className={cn(
                     "font-medium text-muted-foreground tracking-wide whitespace-nowrap",
                     compact
-                      ? "text-2xs leading-none text-neutral-400"
+                      ? "text-xs leading-none text-neutral-400"
                       : "text-sm",
                   )}
                 >

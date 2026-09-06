@@ -12,9 +12,15 @@ export default function DemoEndScreenDemo() {
 
   useEffect(() => {
     if (!isDev) return;
-    useGameStore.setState({ galaxyTimeUpDialogOpen: true });
+    useGameStore.setState({
+      galaxyTimeUpDialogOpen: true,
+      demoEndDialogDismissed: false,
+    });
     return () => {
-      useGameStore.setState({ galaxyTimeUpDialogOpen: false });
+      useGameStore.setState({
+        galaxyTimeUpDialogOpen: false,
+        demoEndDialogDismissed: false,
+      });
     };
   }, [isDev]);
 

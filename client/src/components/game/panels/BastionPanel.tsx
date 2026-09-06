@@ -13,6 +13,7 @@ import {
 } from "@/game/demoEndCatalog";
 import AttackWavesChart from "./AttackWavesChart";
 import CooldownButton, { gameActionButtonGridClassName } from "@/components/CooldownButton";
+import { DemoEndPromoBadge } from "@/components/game/DemoEndPromoBadge";
 import { RedactedLockedHint } from "@/components/game/RedactedHint";
 import { useDemoEndCatalogActive } from "@/hooks/useSteamEditionActive";
 import { useTranslation } from "react-i18next";
@@ -83,7 +84,7 @@ export default function BastionPanel({
 
       {showHealSection && (
         <div className="space-y-2">
-          <h3 className="text-xs font-medium text-foreground">
+          <h3 className="inline-flex flex-wrap items-center gap-1.5 text-xs font-medium text-foreground">
             {redactHealHeader ? (
               <RedactedLockedHint
                 label={t("bastion.heal")}
@@ -92,6 +93,7 @@ export default function BastionPanel({
             ) : (
               t("bastion.heal")
             )}
+            {catalogActive ? <DemoEndPromoBadge kind="heal" /> : null}
           </h3>
           <div className={gameActionButtonGridClassName()}>
             {showHealKnight ? (
@@ -205,7 +207,7 @@ export default function BastionPanel({
 
       {showRepairSection && (
         <div className="space-y-2">
-          <h3 className="text-xs font-medium text-foreground">
+          <h3 className="inline-flex flex-wrap items-center gap-1.5 text-xs font-medium text-foreground">
             {redactRepairHeader ? (
               <RedactedLockedHint
                 label={t("bastion.repair")}
@@ -214,6 +216,7 @@ export default function BastionPanel({
             ) : (
               t("bastion.repair")
             )}
+            {catalogActive ? <DemoEndPromoBadge kind="repair" /> : null}
           </h3>
           <div className={gameActionButtonGridClassName()}>
             {showRepairBastion ? (

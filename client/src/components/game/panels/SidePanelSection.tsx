@@ -280,8 +280,6 @@ interface SidePanelSectionProps {
   onResourceChange?: (change: ResourceChange) => void;
   titleExtra?: React.ReactNode;
   activeTab?: string;
-  /** Demo-end: keep the section icon, redact the header label. */
-  titleRedacted?: boolean;
 }
 import { logger } from "@/lib/logger";
 import { abbreviateNumber, formatNumber } from "@/lib/utils";
@@ -541,12 +539,8 @@ export default function SidePanelSection({
   onResourceChange,
   titleExtra,
   activeTab,
-  titleRedacted = false,
 }: SidePanelSectionProps) {
   const { t } = useUiTranslation();
-  const notYetUnlocked = t("demoTabs.notYetUnlocked", {
-    defaultValue: "Not yet unlocked.",
-  });
   const visibleItems = (items || []).filter((item) => item.visible !== false);
   const [animatedItems, setAnimatedItems] = useState<Set<string>>(new Set());
   const [decreaseAnimatedItems, setDecreaseAnimatedItems] = useState<
@@ -899,7 +893,7 @@ export default function SidePanelSection({
     });
   }, [resourceChanges, visibleItems]);
 
-  if (visibleItems.length === 0 && !titleRedacted) {
+  if (visibleItems.length === 0) {
     return null;
   }
 
@@ -923,22 +917,14 @@ export default function SidePanelSection({
     if (item.redacted) {
       const labelText = typeof item.label === "string" ? item.label : item.id;
       return (
-        <TooltipWrapper
-          tooltip={<div className="text-xs">{notYetUnlocked}</div>}
-          disabled={true}
-          tooltipId={`side-panel-redacted-${sectionId ?? "item"}-${item.id}`}
-          className="inline-flex w-full"
+        <div
+          className="py-0.5"
+          data-testid={
+            item.testId ? `${item.testId}-redacted` : undefined
+          }
         >
-          <div
-            className="py-0.5"
-            aria-label={notYetUnlocked}
-            data-testid={
-              item.testId ? `${item.testId}-redacted` : undefined
-            }
-          >
-            <RedactedBar widthCh={getRedactedWidthCh(labelText)} />
-          </div>
-        </TooltipWrapper>
+          <RedactedBar widthCh={getRedactedWidthCh(labelText)} />
+        </div>
       );
     }
 
@@ -1475,37 +1461,16 @@ export default function SidePanelSection({
 
   const titleHeading = (
     <h3 className="font-medium tracking-wide text-gray-300">
-      {titleRedacted ? (
-        <TooltipWrapper
-          tooltip={<div className="text-xs">{notYetUnlocked}</div>}
-          disabled={true}
-          tooltipId={`side-panel-section-redacted-${sectionId ?? "section"}`}
-          className="inline-flex"
-        >
-          <span
-            className={cn(GAME_PANEL_HEADER_BAND, "gap-1")}
-            aria-label={notYetUnlocked}
-          >
-            {sectionId ? <SidePanelSectionIcon sectionId={sectionId} /> : null}
-            <RedactedBar
-              widthCh={getRedactedWidthCh(
-                typeof title === "string" ? title : sectionId ?? "section",
-              )}
-            />
-          </span>
-        </TooltipWrapper>
-      ) : (
-        <span
-          className={cn(
-            GAME_PANEL_HEADER_BAND,
-            titleExtra ? "gap-1.5" : "gap-1",
-          )}
-        >
-          {sectionId ? <SidePanelSectionIcon sectionId={sectionId} /> : null}
-          {title}
-          {titleExtra}
-        </span>
-      )}
+      <span
+        className={cn(
+          GAME_PANEL_HEADER_BAND,
+          titleExtra ? "gap-1.5" : "gap-1",
+        )}
+      >
+        {sectionId ? <SidePanelSectionIcon sectionId={sectionId} /> : null}
+        {title}
+        {titleExtra}
+      </span>
     </h3>
   );
 

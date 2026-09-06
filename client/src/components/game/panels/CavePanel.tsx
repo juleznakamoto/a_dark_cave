@@ -29,6 +29,7 @@ import {
   RedactedLockedHint,
   RedactedMoreHint,
 } from "@/components/game/RedactedHint";
+import { DemoEndPromoBadge } from "@/components/game/DemoEndPromoBadge";
 import { getDemoEndHiddenActionTeasers } from "@/game/demoEndCatalog";
 import { useDemoEndCatalogActive } from "@/hooks/useSteamEditionActive";
 import {
@@ -541,8 +542,11 @@ export default function CavePanel() {
               return (
                 <div key={groupIndex} className="space-y-2">
                   {group.title && (
-                    <h3 className="inline-flex items-center gap-1.5 text-xs font-medium text-foreground">
+                    <h3 className="inline-flex flex-wrap items-center gap-1.5 text-xs font-medium text-foreground">
                       {group.title}
+                      {catalogActive && isCraftSection ? (
+                        <DemoEndPromoBadge kind="craft" />
+                      ) : null}
                     </h3>
                   )}
                   <div className={gameActionButtonRowsClassName("w-full")}>

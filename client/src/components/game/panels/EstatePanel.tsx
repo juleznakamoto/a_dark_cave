@@ -46,6 +46,7 @@ import { formatTooltipCostLine } from "@/i18n/tooltipLabels";
 import { getResourceName } from "@/i18n/resolveGameText";
 import { useDemoEndCatalogActive, useSteamEditionActive } from "@/hooks/useSteamEditionActive";
 import { isDemoPlayFrozen } from "@/game/demoLimit";
+import { DemoEndPromoBadge } from "@/components/game/DemoEndPromoBadge";
 import { RedactedLockedHint } from "@/components/game/RedactedHint";
 import {
   DEMO_END_CUBE_EVENT_IDS,
@@ -957,7 +958,7 @@ export default function EstatePanel({
               fellowship.disgraced_prior ||
               books.book_of_chainmaster) && (
                 <div className="space-y-1 pt-2">
-                  <h3 className="text-xs font-medium text-foreground">
+                  <h3 className="inline-flex flex-wrap items-center gap-1.5 text-xs font-medium text-foreground">
                     {catalogActive &&
                       !DEMO_END_ESTATE_SKILL_IDS.some((id) =>
                         isDemoEndEstateSkillUnlocked(state, id),
@@ -969,6 +970,7 @@ export default function EstatePanel({
                     ) : (
                       t("estate.skills")
                     )}
+                    {catalogActive ? <DemoEndPromoBadge kind="skills" /> : null}
                   </h3>
 
                   {/* Huntress Training */}
@@ -1274,7 +1276,7 @@ export default function EstatePanel({
         {/* Cube Section — unlocked whispers, plus redacted catalog at demo end */}
         {(catalogActive || completedCubeEvents.length > 0) && (
           <div className="w-full space-y-2 pt-1 pb-4">
-            <h3 className="text-xs font-medium text-foreground">
+            <h3 className="inline-flex flex-wrap items-center gap-1.5 text-xs font-medium text-foreground">
               {catalogActive && completedCubeEvents.length === 0 ? (
                 <RedactedLockedHint
                   label={t("estate.cubeWhispers")}
@@ -1283,6 +1285,7 @@ export default function EstatePanel({
               ) : (
                 t("estate.cubeWhispers")
               )}
+              {catalogActive ? <DemoEndPromoBadge kind="whispers" /> : null}
             </h3>
 
             <div

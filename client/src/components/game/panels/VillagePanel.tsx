@@ -104,6 +104,7 @@ import {
   RedactedLockedHint,
   RedactedMoreHint,
 } from "@/components/game/RedactedHint";
+import { DemoEndPromoBadge } from "@/components/game/DemoEndPromoBadge";
 import { TooltipWrapper } from "@/components/game/TooltipWrapper";
 import { useDemoEndCatalogActive } from "@/hooks/useSteamEditionActive";
 import {
@@ -1546,8 +1547,9 @@ export default function VillagePanel() {
               <div key={groupIndex} className="space-y-2">
                 {group.title === "Build" ? (
                   <div className="flex w-full items-center gap-2">
-                    <h3 className="inline-flex shrink-0 items-center gap-1.5 text-xs font-medium text-foreground leading-none">
+                    <h3 className="inline-flex min-w-0 flex-wrap items-center gap-1.5 text-xs font-medium text-foreground leading-none">
                       {t("village.sectionBuild")}
+                      {catalogActive ? <DemoEndPromoBadge kind="build" /> : null}
                     </h3>
                     {(() => {
                       const nextUnlockCost = getNextQueueSlotUnlockCost(state);
@@ -1741,7 +1743,7 @@ export default function VillagePanel() {
             (story.seen?.hasVillagers && visiblePopulationJobs.length > 0)) && (
               <div className="space-y-2">
                 <div className="flex w-full items-center gap-2">
-                  <h3 className="inline-flex shrink-0 items-center text-xs font-medium text-foreground leading-none">
+                  <h3 className="inline-flex min-w-0 flex-wrap items-center gap-1.5 text-xs font-medium text-foreground leading-none">
                     {catalogActive && !story.seen?.hasVillagers ? (
                       <RedactedLockedHint
                         label={t("village.sectionProduce")}
@@ -1750,6 +1752,7 @@ export default function VillagePanel() {
                     ) : (
                       t("village.sectionProduce")
                     )}
+                    {catalogActive ? <DemoEndPromoBadge kind="produce" /> : null}
                   </h3>
                   {story.seen?.hasVillagers && (
                     <VillageProductionCycleIndicator

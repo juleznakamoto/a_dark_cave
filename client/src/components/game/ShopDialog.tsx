@@ -22,6 +22,7 @@ import {
 } from "@/components/ui/card";
 import { ScrollAreaWithIndicator } from "@/components/ui/scroll-area-with-indicator";
 import { TooltipWrapper } from "@/components/game/TooltipWrapper";
+import { PROMO_TAG_CLASS } from "@/components/game/promoTag";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useGameStore } from "@/game/state";
 import {
@@ -121,11 +122,7 @@ const getSupabaseClient = async () => {
   return supabase;
 };
 
-/** Small pill on shop cards (green border / tint); featured and value labels. */
-const SHOP_CARD_PROMO_TAG_CLASS =
-  "ml-1 px-1 py-[1px] leading-tight text-xs text-green-500 font-medium border border-green-500/40 rounded bg-green-500/5";
-
-/** Same promo-pill shape as `SHOP_CARD_PROMO_TAG_CLASS`, Insight / blue variant. */
+/** Same promo-pill shape as `PROMO_TAG_CLASS`, Insight / blue variant. */
 const SHOP_INSIGHT_PROMO_TAG_CLASS =
   "inline-flex shrink-0 items-center gap-x-1 px-1.5 py-1 leading-none text-sm font-normal border border-blue-800 rounded bg-blue-950/60";
 
@@ -2495,7 +2492,7 @@ function ShopDialogOpen({ isOpen, onClose, onOpen }: ShopDialogProps) {
                                         })()}
                                         {item.id === "advanced_bundle" && (
                                           <span
-                                            className={SHOP_CARD_PROMO_TAG_CLASS}
+                                            className={PROMO_TAG_CLASS}
                                           >
                                             {t("ui:shop.mostPopular")}
                                           </span>
@@ -2503,7 +2500,7 @@ function ShopDialogOpen({ isOpen, onClose, onOpen }: ShopDialogProps) {
                                         {(item.id === "gold_15000" ||
                                           item.id === "gold_30000") && (
                                             <span
-                                              className={SHOP_CARD_PROMO_TAG_CLASS}
+                                              className={PROMO_TAG_CLASS}
                                             >
                                               {item.id === "gold_30000"
                                                 ? "3x"

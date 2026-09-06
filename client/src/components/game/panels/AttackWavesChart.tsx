@@ -2,6 +2,7 @@ import type { GameState } from "@shared/schema";
 import { useGameStore } from "@/game/state";
 import AttackWavesProgressBar from "@/components/ui/attack-waves-progress";
 import { useEffect, useState } from "react";
+import { DemoEndPromoBadge } from "@/components/game/DemoEndPromoBadge";
 import { RedactedLockedHint } from "@/components/game/RedactedHint";
 import {
   getAttackWavesChartRows,
@@ -108,6 +109,7 @@ export default function AttackWavesChart({
             label={`${0}/${TOTAL_ATTACK_WAVES}`}
             tooltipId="attack-waves-count-redacted"
           />
+          {catalogActive ? <DemoEndPromoBadge kind="attackWaves" /> : null}
         </div>
         <AttackWavesProgressBar
           value={0}
@@ -148,6 +150,7 @@ export default function AttackWavesChart({
         <span className="text-xs text-muted-foreground">
           {completedWaves}/{totalWaves}
         </span>
+        {catalogActive ? <DemoEndPromoBadge kind="attackWaves" /> : null}
       </div>
       <AttackWavesProgressBar
         value={currentWavePercentage}

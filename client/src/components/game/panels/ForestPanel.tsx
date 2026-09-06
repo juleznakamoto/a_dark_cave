@@ -15,6 +15,7 @@ import { FOCUS_ELIGIBLE_ACTIONS } from "@/game/rules/actionEffects";
 import { getFocusTooltipHeaderTrailing } from "@/game/rules/focusTooltipIndicator";
 import { getResourceLimit, isResourceLimited } from "@/game/resourceLimits";
 import CooldownButton, { gameActionButtonGridClassName } from "@/components/CooldownButton";
+import { DemoEndPromoBadge } from "@/components/game/DemoEndPromoBadge";
 import { RedactedLockedHint, RedactedMoreHint } from "@/components/game/RedactedHint";
 import { getDemoEndHiddenActionTeasers } from "@/game/demoEndCatalog";
 import { useDemoEndCatalogActive, useSteamEditionActive } from "@/hooks/useSteamEditionActive";
@@ -152,7 +153,7 @@ export default function ForestPanel() {
   // Define action groups with their actions
   const actionGroups = [
     {
-      title: "",
+      title: "Explore",
       actions: [
         { id: "chopWood", label: "Chop Wood" },
         { id: "hunt", label: "Hunt" },
@@ -573,75 +574,86 @@ export default function ForestPanel() {
             const visibleActions = group.actions.filter((action) =>
               shouldShowAction(action.id, state) || !!state.executionStartTimes?.[action.id],
             );
-            const isExploreGroup = group.title === "";
+            const isExploreGroup = group.title === "Explore";
             const isTradeGroup =
               group.title === "Buy" || group.title === "Sell";
             const isSacrificeGroup = group.title === "Sacrifice";
             const visibleIds = new Set(visibleActions.map((action) => action.id));
-            const showExploreEllipsis =
-              catalogActive &&
-              isExploreGroup &&
-              visibleActions.length < group.actions.length;
+            const { teasers: exploreTeasers, showEllipsis: showExploreEllipsis } =
+              catalogActive && isExploreGroup
+                ? getDemoEndHiddenActionTeasers(group.actions, visibleIds)
+                : { teasers: [], showEllipsis: false };
             const { teasers: sacrificeTeasers, showEllipsis: showSacrificeEllipsis } =
               catalogActive && isSacrificeGroup
+                ? getDemoEndHiddenActionTeasers(group.actions, visibleIds)
+                : { teasers: [], showEllipsis: false };
+            const { teasers: tradeTeasers, showEllipsis: showTradeEllipsis } =
+              catalogActive && isTradeGroup
                 ? getDemoEndHiddenActionTeasers(group.actions, visibleIds)
                 : { teasers: [], showEllipsis: false };
             const showSacrificeMore =
               catalogActive &&
               isSacrificeGroup &&
               (showSacrificeEllipsis || sacrificeTeasers.length > 0);
+            const showTradeMore =
+              catalogActive &&
+              isTradeGroup &&
+              (showTradeEllipsis || tradeTeasers.length > 0);
             const showGroup =
               visibleActions.length > 0 ||
-              (catalogActive && isTradeGroup) ||
-              (catalogActive && isSacrificeGroup && showSacrificeMore);
+              (catalogActive && isExploreGroup) ||
+              showTradeMore ||
+              showSacrificeMore;
 
             if (!showGroup) return null;
 
             const sectionTitle =
-              group.title === "Sacrifice"
-                ? t("forest.sectionSacrifice")
-                : group.title === "Buy"
-                  ? t("forest.sectionBuy")
-                  : group.title === "Sell"
-                    ? t("forest.sectionSell")
-                    : group.title;
-            const redactHeader =
-              catalogActive &&
-              (isTradeGroup || isSacrificeGroup) &&
-              visibleActions.length === 0;
+              group.title === "Explore"
+                ? t("forest.sectionExplore")
+                : group.title === "Sacrifice"
+                  ? t("forest.sectionSacrifice")
+                  : group.title === "Buy"
+                    ? t("forest.sectionBuy")
+                    : group.title === "Sell"
+                      ? t("forest.sectionSell")
+                      : group.title;
 
             return (
               <div key={groupIndex} className="space-y-2">
                 {group.title && (
-                  <h3 className="text-xs font-medium text-foreground">
-                    {redactHeader ? (
-                      <RedactedLockedHint
-                        label={sectionTitle}
-                        tooltipId={`forest-${group.title.toLowerCase()}-header-redacted`}
-                      />
-                    ) : (
-                      sectionTitle
-                    )}
+                  <h3 className="inline-flex flex-wrap items-center gap-1.5 text-xs font-medium text-foreground">
+                    {sectionTitle}
+                    {catalogActive && isExploreGroup ? (
+                      <DemoEndPromoBadge kind="explore" />
+                    ) : null}
                   </h3>
                 )}
                 <div className={gameActionButtonGridClassName("w-full justify-start")}>
                   {visibleActions.map((action) =>
                     renderButton(action.id, action.label),
                   )}
+                  {exploreTeasers.map((action) => (
+                    <RedactedLockedHint
+                      key={action.id}
+                      label={resolveActionLabel(action.id, action.label)}
+                      tooltipId={`forest-${action.id}-redacted`}
+                    />
+                  ))}
                   {showExploreEllipsis ? (
                     <RedactedMoreHint tooltipId="forest-explore-more-redacted" />
                   ) : null}
-                  {catalogActive &&
-                    isTradeGroup &&
-                    group.actions
-                      .filter((action) => !visibleIds.has(action.id))
-                      .map((action) => (
-                        <RedactedLockedHint
-                          key={action.id}
-                          label={action.label}
-                          tooltipId={`forest-${action.id}-redacted`}
-                        />
-                      ))}
+                  {tradeTeasers.map((action) => (
+                    <RedactedLockedHint
+                      key={action.id}
+                      label={resolveActionLabel(action.id, action.label)}
+                      tooltipId={`forest-${action.id}-redacted`}
+                    />
+                  ))}
+                  {showTradeEllipsis ? (
+                    <RedactedMoreHint
+                      tooltipId={`forest-${group.title.toLowerCase()}-more-redacted`}
+                    />
+                  ) : null}
                   {sacrificeTeasers.map((action) => (
                     <RedactedLockedHint
                       key={action.id}
@@ -649,7 +661,7 @@ export default function ForestPanel() {
                       tooltipId={`forest-${action.id}-redacted`}
                     />
                   ))}
-                  {showSacrificeMore ? (
+                  {showSacrificeEllipsis ? (
                     <RedactedMoreHint tooltipId="forest-sacrifice-more-redacted" />
                   ) : null}
                 </div>

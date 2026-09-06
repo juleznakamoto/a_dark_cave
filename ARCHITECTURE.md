@@ -387,6 +387,9 @@ App ID **4882240** in `steam_appid.txt`. Full and demo share the folder (Shared 
 | `client/src/game/demoLimit.ts` | Shared wooden-hut demo limit + `processDemoLimit()` + `isDemoPlayFrozen()` (loop and actions stay frozen after the cap) + `shouldDismissEventWithoutApplying()` (cube reread / demo-end event close). |
 | `client/src/game/demoTeaserTabs.ts` | Demo tab-bar teases: locked Village/Forest/Estate/Bastion render as redacted bars. |
 | `client/src/game/demoEndCatalog.ts` | Full side-panel catalog ids, estate skill / attack-wave / cube-event / bastion heal-repair / village job, preset-slot, and utility / forest trade ids, village Build / cave Craft / forest Sacrifice action teasers (5 + ellipsis), and redacted merge for demo-end / DEV Demo End. |
+| `client/src/game/demoEndPromoCounts.ts` | Live Craft / Build / job / skill / achievement totals for demo-end header promo badges (craft count is unique inventory items from `DEMO_END_ITEM_IDS`). |
+| `client/src/components/game/promoTag.ts` | Green promo-pill class for shop cards. |
+| `client/src/components/game/DemoEndPromoBadge.tsx` | Highlighter-style tease on demo-end Craft / Build / Produce / Skills / Whispered Memories / Explore / Attack Waves / Heal / Repair / Achievements headers. |
 | `client/src/components/game/RedactedHint.tsx` | Shared redacted bar used by demo tabs, panels, and demo-end side-panel rows; `RedactedMoreHint` is the trailing "..." after Build / Craft / Sacrifice teasers. |
 | `client/src/components/game/DemoLockedTabButton.tsx` | Redacted location-tab button + "Not yet unlocked" tooltip. |
 | `client/src/game/demoActionRewards.ts` | Demo editions raise Gather Wood / Hunt / cave-explore / mine base grants by 25% (bonuses apply after; not a bonus source). |
@@ -434,7 +437,7 @@ Web demo for [galaxy.click](https://galaxy.click) at **`https://a-dark-cave.com/
 shell as the Steam edition (no shop, Playlight, leaderboard, auth, or Supabase cloud saves) with the
 full game unlocked locally until the cap. Saves use IndexedDB key `galaxySave` (isolated from `mainSave`). The demo
 ends when the player builds their **8th wooden hut**. `isDemoPlayFrozen()` then stops the loop and
-actions for good (including after **See what's next**). `DemoTimeUpDialog` still opens and links to the
+actions for good (including after **See what's coming**). `DemoTimeUpDialog` still opens and links to the
 Steam store via `openFullGameStore("demo_time_up")` (Steam Overlay on desktop; store URL on web).
 
 | Path | Responsibility |

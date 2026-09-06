@@ -16,6 +16,7 @@
     "craftingBoostFinish": "Herstellung für {{cost}} {{resource}} abschließen"
   },
   "forest": {
+    "sectionExplore": "Erkunden",
     "sectionSacrifice": "Opfer",
     "sectionBuy": "Kaufen",
     "sectionSell": "Verkaufen"
@@ -253,5 +254,17 @@
     "getUp": "Aufstehen",
     "focusGainedLog": "Du hast durch deine Ruhe {{count}} Fokus erhalten.",
     "villagersProducedLog": "Dorfbewohner haben produziert: {{resources}}" //x1.3
+  },
+  "demoEnd": {
+    "craftUpTo": "Fertige oder finde {{count}} Gegenstände",
+    "constructUpTo": "Errichte {{count}} Gebäude",
+    "unlockJobs": "Schalte {{count}} Berufe frei",
+    "unlockSkills": "Schalte {{count}} Fähigkeiten frei",
+    "whisperedMemories": "Erkunde eine dunkle Geschichte voller Geheimnisse",
+    "explore": "Erkunde eine grausame Welt",
+    "attackWaves": "Kämpfe gegen unsagbare Kreaturen",
+    "heal": "Stelle eine mächtige Gefolgschaft zusammen",
+    "repair": "Errichte eine mächtige Festung",
+    "unlockAchievements": "Schalte {{count}} Erfolge in {{categories}} Kategorien frei"
   }
 }

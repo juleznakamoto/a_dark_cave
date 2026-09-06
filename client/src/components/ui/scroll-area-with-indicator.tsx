@@ -122,7 +122,7 @@ const ScrollAreaWithIndicator = React.forwardRef<
             className="absolute bottom-1 left-0 right-0 pointer-events-none flex justify-center z-10"
             aria-hidden
           >
-            <ChevronDown className="h-4 w-4 text-muted-foreground/70 animate-bounce" />
+            <ChevronDown className="h-6 w-6 text-muted-foreground/70 animate-bounce" />
           </div>
         )}
       </ScrollAreaPrimitive.Root>

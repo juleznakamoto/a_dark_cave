@@ -16,6 +16,7 @@
     "craftingBoostFinish": "花费 {{cost}} {{resource}} 完成制作"
   },
   "forest": {
+    "sectionExplore": "探索",
     "sectionSacrifice": "献祭",
     "sectionBuy": "购买",
     "sectionSell": "出售"
@@ -253,5 +254,17 @@
     "getUp": "起床",
     "focusGainedLog": "你通过休息获得了 {{count}} 点专注。",
     "villagersProducedLog": "村民生产了：{{resources}}"
+  },
+  "demoEnd": {
+    "craftUpTo": "可制作或发现 {{count}} 种物品",
+    "constructUpTo": "可建造 {{count}} 座建筑",
+    "unlockJobs": "可解锁 {{count}} 种职业",
+    "unlockSkills": "可解锁 {{count}} 项技能",
+    "whisperedMemories": "探索一段黑暗而丰富的故事",
+    "explore": "探索残酷的世界",
+    "attackWaves": "对抗不可名状的生物",
+    "heal": "集结一支强大的同伴",
+    "repair": "建造一座强大的堡垒",
+    "unlockAchievements": "在 {{categories}} 个分类中解锁 {{count}} 项成就"
   }
 }

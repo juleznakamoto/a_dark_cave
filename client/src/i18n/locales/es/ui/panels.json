@@ -16,6 +16,7 @@
     "craftingBoostFinish": "Terminar artesanía por {{cost}} {{resource}}"
   },
   "forest": {
+    "sectionExplore": "Explorar",
     "sectionSacrifice": "Sacrificio",
     "sectionBuy": "Comprar",
     "sectionSell": "Vender"
@@ -253,5 +254,17 @@
     "getUp": "Levantarse",
     "focusGainedLog": "Has ganado {{count}} de concentración con tu descanso.",
     "villagersProducedLog": "Los aldeanos produjeron: {{resources}}"
+  },
+  "demoEnd": {
+    "craftUpTo": "Fabrica o encuentra {{count}} objetos",
+    "constructUpTo": "Construye {{count}} edificios",
+    "unlockJobs": "Desbloquea {{count}} oficios",
+    "unlockSkills": "Desbloquea {{count}} habilidades",
+    "whisperedMemories": "Explora una historia oscura y rica en lore",
+    "explore": "Explora un mundo cruel",
+    "attackWaves": "Lucha contra criaturas inenarrables",
+    "heal": "Forma una poderosa hermandad",
+    "repair": "Construye una fortaleza poderosa",
+    "unlockAchievements": "Desbloquea {{count}} logros en {{categories}} categorías"
   }
 }

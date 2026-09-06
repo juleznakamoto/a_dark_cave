@@ -16,6 +16,7 @@
     "craftingBoostFinish": "Завершить создание за {{cost}} {{resource}}"
   },
   "forest": {
+    "sectionExplore": "Исследовать",
     "sectionSacrifice": "Жертва",
     "sectionBuy": "Купить",
     "sectionSell": "Продать"
@@ -253,5 +254,17 @@
     "getUp": "Встать",
     "focusGainedLog": "Вы получили {{count}} фокуса за отдых.",
     "villagersProducedLog": "Жители произвели: {{resources}}"
+  },
+  "demoEnd": {
+    "craftUpTo": "Создайте или найдите {{count}} предметов",
+    "constructUpTo": "Постройте {{count}} зданий",
+    "unlockJobs": "Откройте {{count}} работ",
+    "unlockSkills": "Откройте {{count}} навыков",
+    "whisperedMemories": "Исследуйте тёмную историю, богатую лором",
+    "explore": "Исследуйте жестокий мир",
+    "attackWaves": "Сражайтесь с невыразимыми существами",
+    "heal": "Соберите могучее братство",
+    "repair": "Возведите могучую крепость",
+    "unlockAchievements": "Откройте {{count}} достижений в {{categories}} категориях"
   }
 }

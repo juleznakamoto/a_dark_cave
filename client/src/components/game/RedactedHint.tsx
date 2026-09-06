@@ -1,5 +1,3 @@
-import { TooltipWrapper } from "@/components/game/TooltipWrapper";
-import { useUiTranslation } from "@/i18n/useUiTranslation";
 import { cn } from "@/lib/utils";
 
 /** Bar width in `ch` from the hidden label. Always the real character count. */
@@ -40,7 +38,7 @@ export function RedactedBar({
   );
 }
 
-/** Redacted bar with the shared "Not yet unlocked" tooltip. */
+/** Redacted bar sized from the hidden label. No tooltip. */
 export function RedactedLockedHint({
   label,
   tooltipId,
@@ -55,48 +53,33 @@ export function RedactedLockedHint({
   fill?: boolean;
   className?: string;
 }) {
-  const { t } = useUiTranslation();
-  const hint = t("demoTabs.notYetUnlocked", {
-    defaultValue: "Not yet unlocked.",
-  });
   return (
-    <TooltipWrapper
-      tooltip={<div className="text-xs">{hint}</div>}
-      disabled={true}
-      tooltipId={tooltipId}
+    <span
+      data-testid={tooltipId}
       className={cn(
         "inline-flex min-w-0 max-w-full items-center self-center",
         fill && "w-full",
         className,
       )}
     >
-      <span aria-label={hint} className={fill ? "block w-full" : undefined}>
-        <RedactedBar
-          widthCh={
-            fill ? undefined : (widthCh ?? getRedactedWidthCh(label ?? "locked"))
-          }
-        />
-      </span>
-    </TooltipWrapper>
+      <RedactedBar
+        widthCh={
+          fill ? undefined : (widthCh ?? getRedactedWidthCh(label ?? "locked"))
+        }
+      />
+    </span>
   );
 }
 
 /** Trailing "..." after a short demo-end action teaser list. */
 export function RedactedMoreHint({ tooltipId }: { tooltipId: string }) {
-  const { t } = useUiTranslation();
-  const hint = t("demoTabs.notYetUnlocked", {
-    defaultValue: "Not yet unlocked.",
-  });
   return (
-    <TooltipWrapper
-      tooltip={<div className="text-xs">{hint}</div>}
-      disabled={true}
-      tooltipId={tooltipId}
-      className="inline-flex items-center self-center"
+    <span
+      data-testid={tooltipId}
+      className="inline-flex items-center self-center text-xs text-muted-foreground"
+      aria-hidden
     >
-      <span className="text-xs text-muted-foreground" aria-label={hint}>
-        ...
-      </span>
-    </TooltipWrapper>
+      ...
+    </span>
   );
 }

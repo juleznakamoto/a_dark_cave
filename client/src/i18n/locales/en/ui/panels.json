@@ -16,6 +16,7 @@
     "craftingBoostFinish": "Finish crafting for {{cost}} {{resource}}"
   },
   "forest": {
+    "sectionExplore": "Explore",
     "sectionSacrifice": "Sacrifice",
     "sectionBuy": "Buy",
     "sectionSell": "Sell"
@@ -253,5 +254,17 @@
     "getUp": "Get Up",
     "focusGainedLog": "You gained {{count}} Focus from your rest.",
     "villagersProducedLog": "Villagers produced: {{resources}}"
+  },
+  "demoEnd": {
+    "craftUpTo": "Craft or find {{count}} items",
+    "constructUpTo": "Construct {{count}} buildings",
+    "unlockJobs": "Unlock {{count}} jobs",
+    "unlockSkills": "Unlock {{count}} skills",
+    "whisperedMemories": "Explore a dark and lore-rich story",
+    "explore": "Explore a cruel world",
+    "attackWaves": "Fight against unspeakable creatures",
+    "heal": "Assemble a powerful fellowship",
+    "repair": "Build a mighty fortress",
+    "unlockAchievements": "Unlock {{count}} achievements in {{categories}} categories"
   }
 }

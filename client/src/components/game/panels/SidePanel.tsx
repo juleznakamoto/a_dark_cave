@@ -15,7 +15,7 @@ import { ActionTooltipSeparator } from "@/game/rules/actionTooltipLayout";
 import { ResourceCoinIcon } from "@/components/ui/resource-coin-icon";
 import { ResourceInsightIcon } from "@/components/ui/resource-insight-icon";
 import { clothingEffects } from "@/game/rules/effects";
-import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
+import { ScrollAreaWithIndicator } from "@/components/ui/scroll-area-with-indicator";
 import { logger } from "@/lib/logger";
 import { villageBuildActions } from "@/game/rules/villageBuildActions";
 import { capitalizeWords, cn, formatSignedNumber } from "@/lib/utils";
@@ -829,13 +829,17 @@ export default function SidePanel() {
       onPointerLeave={handleSidePanelPointerLeave}
       onWheel={clearSidePanelActiveTooltipHover}
     >
-      <ScrollArea className="h-full w-full pb-1.5 pr-2">
+      <ScrollAreaWithIndicator
+        key={activeTab}
+        className="h-full w-full pb-1.5 pr-2"
+        viewportClassName="pl-0"
+        scrollAreaId={`side-panel-${activeTab}`}
+      >
         <div className={cn("pb-1", SIDE_PANEL_GRID_CLASS)}>
           <div className={cn(SIDE_PANEL_SECTION_SPACING_CLASS)}>
             {panelResourceItems.length > 0 && shouldShowSection("resources") && (
               <SidePanelSection
                 sectionId="resources"
-                titleRedacted={catalogActive && model.resourceRows.length === 0}
                 title={
                   <span className="font-medium">
                     {t("sidePanel.resources")}
@@ -865,7 +869,6 @@ export default function SidePanel() {
             {panelToolItems.length > 0 && shouldShowSection("tools") && (
               <SidePanelSection
                 sectionId="tools"
-                titleRedacted={catalogActive && model.toolIds.length === 0}
                 title={t("sidePanel.tools")}
                 items={panelToolItems}
               />
@@ -873,7 +876,6 @@ export default function SidePanel() {
             {panelWeaponItems.length > 0 && shouldShowSection("weapons") && (
               <SidePanelSection
                 sectionId="weapons"
-                titleRedacted={catalogActive && model.weaponIds.length === 0}
                 title={t("sidePanel.weapons")}
                 items={panelWeaponItems}
               />
@@ -882,7 +884,6 @@ export default function SidePanel() {
               shouldShowSection("bastion") && (
                 <SidePanelSection
                   sectionId="bastion"
-                  titleRedacted={catalogActive && !model.bastionUnlocked}
                   title={
                     model.hasFortress
                       ? t("sidePanel.fortress")
@@ -895,9 +896,6 @@ export default function SidePanel() {
               shouldShowSection("fortifications") && (
                 <SidePanelSection
                   sectionId="fortifications"
-                  titleRedacted={
-                    catalogActive && model.fortificationRows.length === 0
-                  }
                   title={t("sidePanel.fortifications")}
                   items={panelFortificationItems}
                 />
@@ -906,9 +904,6 @@ export default function SidePanel() {
               shouldShowSection("combatItems") && (
                 <SidePanelSection
                   sectionId="combatItems"
-                  titleRedacted={
-                    catalogActive && model.combatItemRows.length === 0
-                  }
                   title={t("sidePanel.combatItems")}
                   items={panelCombatItems}
                 />
@@ -916,7 +911,6 @@ export default function SidePanel() {
             {panelClothingItems.length > 0 && shouldShowSection("clothing") && (
               <SidePanelSection
                 sectionId="clothing"
-                titleRedacted={catalogActive && model.clothingIds.length === 0}
                 title={t("sidePanel.clothing")}
                 items={panelClothingItems}
               />
@@ -924,7 +918,6 @@ export default function SidePanel() {
             {panelRelicItems.length > 0 && shouldShowSection("relics") && (
               <SidePanelSection
                 sectionId="relics"
-                titleRedacted={catalogActive && model.relicIds.length === 0}
                 title={t("sidePanel.relics")}
                 items={panelRelicItems}
               />
@@ -933,9 +926,6 @@ export default function SidePanel() {
               shouldShowSection("schematics") && (
                 <SidePanelSection
                   sectionId="schematics"
-                  titleRedacted={
-                    catalogActive && model.schematicIds.length === 0
-                  }
                   title={t("sidePanel.schematics")}
                   items={panelSchematicItems}
                 />
@@ -943,7 +933,6 @@ export default function SidePanel() {
             {panelBlessingItems.length > 0 && shouldShowSection("blessings") && (
               <SidePanelSection
                 sectionId="blessings"
-                titleRedacted={catalogActive && model.blessingIds.length === 0}
                 title={t("sidePanel.blessings")}
                 items={panelBlessingItems}
               />
@@ -951,9 +940,6 @@ export default function SidePanel() {
             {panelBuildingItems.length > 0 && shouldShowSection("buildings") && (
               <SidePanelSection
                 sectionId="buildings"
-                titleRedacted={
-                  catalogActive && model.buildingRows.length === 0
-                }
                 title={t("sidePanel.buildings")}
                 items={panelBuildingItems}
               />
@@ -962,7 +948,6 @@ export default function SidePanel() {
               shouldShowSection("stats") && (
                 <SidePanelSection
                   sectionId="stats"
-                  titleRedacted={catalogActive && !anyPlayerStatPositive}
                   title={t("sidePanel.stats")}
                   items={panelStatsItems}
                 />
@@ -970,7 +955,6 @@ export default function SidePanel() {
             {panelBonusItems.length > 0 && shouldShowSection("bonuses") && (
               <SidePanelSection
                 sectionId="bonuses"
-                titleRedacted={catalogActive && bonusItems.length === 0}
                 title={t("sidePanel.bonuses")}
                 items={panelBonusItems}
               />
@@ -978,7 +962,6 @@ export default function SidePanel() {
             {panelBookItems.length > 0 && shouldShowSection("books") && (
               <SidePanelSection
                 sectionId="books"
-                titleRedacted={catalogActive && model.bookIds.length === 0}
                 title={t("sidePanel.books")}
                 items={panelBookItems}
               />
@@ -987,17 +970,13 @@ export default function SidePanel() {
               shouldShowSection("fellowship") && (
                 <SidePanelSection
                   sectionId="fellowship"
-                  titleRedacted={
-                    catalogActive && model.fellowshipIds.length === 0
-                  }
                   title={t("sidePanel.fellowship")}
                   items={panelFellowshipItems}
                 />
               )}
           </div>
         </div>
-        <ScrollBar orientation="vertical" />
-      </ScrollArea>
+      </ScrollAreaWithIndicator>
     </div>
   );
 }

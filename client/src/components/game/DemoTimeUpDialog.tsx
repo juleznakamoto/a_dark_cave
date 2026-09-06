@@ -24,7 +24,7 @@ export default function DemoTimeUpDialog({
   const { t } = useUiTranslation();
   const storeOpen = useGameStore((state) => state.galaxyTimeUpDialogOpen);
   const dismissDemoEndDialog = useGameStore((state) => state.dismissDemoEndDialog);
-  const open = preview || storeOpen;
+  const open = storeOpen;
 
   const handleStartNewGame = () => {
     if (preview) return;
@@ -48,8 +48,8 @@ export default function DemoTimeUpDialog({
             <EndScreenShaderBackground
               className={
                 preview
-                  ? "fixed inset-0 z-[69] h-full w-full object-cover touch-none pointer-events-none"
-                  : "fixed inset-0 z-[45] h-full w-full object-cover touch-none pointer-events-none"
+                  ? "fixed inset-0 z-[69] h-full w-full object-cover touch-none pointer-events-none opacity-90"
+                  : "fixed inset-0 z-[45] h-full w-full object-cover touch-none pointer-events-none opacity-90"
               }
             />
           ) : null
@@ -62,6 +62,24 @@ export default function DemoTimeUpDialog({
         </DialogHeader>
         <div className="flex flex-col gap-3 pt-2">
           <SteamDemoEndStoreCta />
+          <Button
+            variant="outline"
+            type="button"
+            onClick={() => {
+              dismissDemoEndDialog();
+            }}
+            data-testid="button-demo-end-see-whats-next"
+            className="inline-flex items-center gap-1.5"
+          >
+            <GameUiIcon
+              name="unlockedPadlock"
+              sizeClassName="w-4 h-4"
+              className="opacity-100"
+            />
+            {t("galaxy.seeWhatsNextButton", {
+              defaultValue: "See what's coming",
+            })}
+          </Button>
           <Button
             variant="outline"
             type="button"
@@ -89,25 +107,6 @@ export default function DemoTimeUpDialog({
               className="opacity-100"
             />
             {t("galaxy.startNewGameButton")}
-          </Button>
-          <Button
-            variant="outline"
-            type="button"
-            onClick={() => {
-              if (preview) return;
-              dismissDemoEndDialog();
-            }}
-            data-testid="button-demo-end-see-whats-next"
-            className="inline-flex items-center gap-1.5"
-          >
-            <GameUiIcon
-              name="unlockedPadlock"
-              sizeClassName="w-4 h-4"
-              className="opacity-100"
-            />
-            {t("galaxy.seeWhatsNextButton", {
-              defaultValue: "See what's next",
-            })}
           </Button>
         </div>
       </DialogContent>

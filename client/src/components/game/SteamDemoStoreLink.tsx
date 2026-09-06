@@ -4,6 +4,7 @@ import { TooltipWrapper } from "@/components/game/TooltipWrapper";
 import {
   useCrazyGamesEditionActive,
   useDemoEditionActive,
+  useDemoEndCatalogActive,
 } from "@/hooks/useSteamEditionActive";
 import { useUiTranslation } from "@/i18n/useUiTranslation";
 import { STEAM_STORE_UTM_CONTENT } from "@/lib/gameFooterSocialLinks";
@@ -14,6 +15,7 @@ import { GAME_CHROME_NO_BG_HOVER } from "./gameChrome";
 export function SteamDemoHeaderStoreLink() {
   const demoEditionActive = useDemoEditionActive();
   const crazyGamesEditionActive = useCrazyGamesEditionActive();
+  const demoEndCatalogActive = useDemoEndCatalogActive();
   const { t } = useUiTranslation();
 
   if (!demoEditionActive || crazyGamesEditionActive) return null;
@@ -39,14 +41,23 @@ export function SteamDemoHeaderStoreLink() {
         onClick={() => {
           void openFullGameStore(STEAM_STORE_UTM_CONTENT.gameHeader);
         }}
-        className={`group flex h-7 shrink-0 items-center gap-1 px-1 ${GAME_CHROME_NO_BG_HOVER}`}
+        className={`group flex h-7 shrink-0 items-center gap-1 ${demoEndCatalogActive
+            ? `rounded-full border border-white px-2 text-white ${GAME_CHROME_NO_BG_HOVER}`
+            : `px-1 ${GAME_CHROME_NO_BG_HOVER}`
+          }`}
         aria-label={tooltip}
       >
         <FooterSocialIcon
           platform="steam"
           className="h-3.5 w-3.5 text-[#66c0f4]"
         />
-        <span className="text-xs font-medium tracking-wide text-neutral-300 opacity-80 transition-opacity group-hover:opacity-100">
+        <span
+          className={
+            demoEndCatalogActive
+              ? "text-xs font-medium tracking-wide text-white"
+              : "text-xs font-medium tracking-wide text-neutral-300 opacity-80 transition-opacity group-hover:opacity-100"
+          }
+        >
           {label}
         </span>
       </Button>

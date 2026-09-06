@@ -42,6 +42,7 @@ import { getAchievementSegmentWeight } from "@/achievements/achievementTypes";
 import AchievementMiniRingChart from "@/achievements/AchievementMiniRingChart";
 import { useTranslation } from "react-i18next";
 import { useUiTranslation } from "@/i18n/useUiTranslation";
+import { DemoEndPromoBadge } from "@/components/game/DemoEndPromoBadge";
 import { getRedactedWidthCh, RedactedBar, RedactedLockedHint } from "@/components/game/RedactedHint";
 import { useDemoEndCatalogActive } from "@/hooks/useSteamEditionActive";
 import type { GameState } from "@shared/schema";
@@ -363,7 +364,7 @@ function AchievementTabContent({
         scrollAreaId={`achievements-${tabId}`}
       >
         <div className="min-w-0 space-y-1 pb-6">
-          <h3 className="pt-1 pb-1 text-sm font-medium text-foreground">
+          <h3 className="inline-flex flex-wrap items-center gap-1.5 pt-1 pb-1 text-sm font-medium text-foreground">
             {forceRedacted ? (
               <RedactedLockedHint
                 label={categoryHeader}
@@ -372,6 +373,7 @@ function AchievementTabContent({
             ) : (
               categoryHeader
             )}
+            {catalogActive ? <DemoEndPromoBadge kind="achievements" /> : null}
           </h3>
           {rows.map((row) => (
             <AchievementRowComponent
