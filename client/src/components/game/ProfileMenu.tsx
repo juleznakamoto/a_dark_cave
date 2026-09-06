@@ -650,7 +650,7 @@ export function GameHeaderControls() {
           align="end"
           side="bottom"
           sideOffset={8}
-          className="text-xs !max-h-none w-auto"
+          className="text-sm !max-h-none w-auto [&_[role=menuitem]]:text-sm"
           style={{ zIndex: Z_INDEX.dropdown }}
         >
           {currentUser && (

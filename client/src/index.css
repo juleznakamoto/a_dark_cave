@@ -136,7 +136,7 @@ body {
   }
 
   .text-xs {
-    font-size: calc(0.75rem + var(--adc-text-delta, 0px));
+    font-size: calc(0.8125rem + var(--adc-text-delta, 0px));
   }
 
   :where(.text-xs) {
@@ -194,9 +194,9 @@ body {
   /* Sleep dialog digit reel. Do not set font-family here — IdleModeDialog
    * applies font-mono on its number cells only. */
   .adc-counter-text {
-    font-size: calc(0.75rem + var(--adc-text-delta, 0px));
+    font-size: calc(0.8125rem + var(--adc-text-delta, 0px));
     line-height: 1.15;
-    height: calc(0.8625rem + var(--adc-text-delta, 0px));
+    height: calc(0.934375rem + var(--adc-text-delta, 0px));
   }
 
   /*
