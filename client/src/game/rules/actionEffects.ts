@@ -766,13 +766,15 @@ export function applyActionEffects(
   }
 
   if (state.devMode && updates.resources) {
+    const devResourceMultiplier = rollResourceGain(51, 99);
     for (const [resource, amount] of Object.entries(updates.resources)) {
       if (typeof amount === "number") {
         const currentAmount =
           state.resources[resource as keyof typeof state.resources] || 0;
         const addedAmount = amount - currentAmount;
         if (addedAmount > 0) {
-          updates.resources[resource] = currentAmount + addedAmount * 100;
+          updates.resources[resource] =
+            currentAmount + addedAmount * devResourceMultiplier;
         }
       }
     }

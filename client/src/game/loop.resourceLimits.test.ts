@@ -353,8 +353,8 @@ describe('Game Loop - Resource Limits Integration', () => {
         useGameStore.getState(),
       );
       const woodProd = production.find((p) => p.resource === 'wood');
-      // 5×10 wood, +10% solstice → 55; dev test env applies 10× production multiplier → 550
-      expect(woodProd?.totalAmount).toBe(550);
+      // 5×10 wood, +10% solstice → 55; dev test env applies 9× production multiplier → 495
+      expect(woodProd?.totalAmount).toBe(495);
     });
   });
 

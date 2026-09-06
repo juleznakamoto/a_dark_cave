@@ -1,6 +1,6 @@
 import { useGameStore } from "@/game/state";
 import { updateResource } from "@/game/stateHelpers";
-import { FIRST_PURCHASE_INSIGHT_BONUS } from "@shared/firstPurchaseInsightBonus";
+import { getFirstPurchaseInsightBonus } from "@shared/firstPurchaseInsightBonus";
 import {
   consumeShopDiscountsInGameState,
   shopDiscountFlagsFromPaymentMetadata,
@@ -10,15 +10,18 @@ import {
 export type PaidShopPurchaseResult = {
   /** True when this call granted the one-time first-purchase Insight bonus. */
   grantedFirstPurchaseInsight: boolean;
+  /** Insight granted on this call (0 when the bonus was already claimed). */
+  firstPurchaseInsightAmount: number;
 };
 
 /**
  * Mark a real-money shop purchase complete: set `hasMadeNonFreePurchase`, clear
- * Playlight first-purchase discount eligibility, and grant the one-time Insight
+ * Playlight first-purchase bonus eligibility, and grant the one-time Insight
  * bonus on the first paid purchase. Idempotent if already purchased before.
  */
 export function completePaidShopPurchaseInStore(): PaidShopPurchaseResult {
   let grantedFirstPurchaseInsight = false;
+  let firstPurchaseInsightAmount = 0;
 
   useGameStore.setState((state) => {
     const clearPlaylightSeen = {
@@ -36,11 +39,12 @@ export function completePaidShopPurchaseInStore(): PaidShopPurchaseResult {
       };
     }
 
+    firstPurchaseInsightAmount = getFirstPurchaseInsightBonus(state);
     grantedFirstPurchaseInsight = true;
     const resourceUpdates = updateResource(
       state,
       "insight",
-      FIRST_PURCHASE_INSIGHT_BONUS,
+      firstPurchaseInsightAmount,
     );
     const baseStory = resourceUpdates.story ?? state.story;
 
@@ -57,7 +61,7 @@ export function completePaidShopPurchaseInStore(): PaidShopPurchaseResult {
     };
   });
 
-  return { grantedFirstPurchaseInsight };
+  return { grantedFirstPurchaseInsight, firstPurchaseInsightAmount };
 }
 
 /** Apply shop event-discount consumption to the local game store after a paid purchase. */

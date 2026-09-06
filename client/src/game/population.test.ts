@@ -861,7 +861,7 @@ describe('Scholar insight production', () => {
       villagers: { ...createTestState().villagers, scholar: 2, free: 0 },
     });
     const prod = getPopulationProduction('scholar', 2, state);
-    expect(prod.find((p) => p.resource === 'insight')?.totalAmount).toBe(20);
+    expect(prod.find((p) => p.resource === 'insight')?.totalAmount).toBe(18);
   });
 
   it('includes scholar insight and upkeep in getTotalPopulationEffects', () => {

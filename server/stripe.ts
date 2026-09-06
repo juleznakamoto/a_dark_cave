@@ -145,7 +145,7 @@ export async function createPaymentIntent(
   currency?: string,
   tradersGratitudeDiscount?: boolean,
   cruelMode?: boolean,
-  playlightFirstPurchaseDiscount?: boolean,
+  _playlightFirstPurchaseDiscount?: boolean,
   tradersSonGratitudeDiscount?: boolean,
   cruelModeJourneyCompleteDiscount?: boolean,
   supabase?: Parameters<typeof assertCanPurchaseShopItem>[0],
@@ -175,8 +175,6 @@ export async function createPaymentIntent(
   const appliedDiscounts =
     supabase && userId
       ? await resolveServerShopDiscountOptions(supabase, userId, itemId, {
-        playlightFirstPurchase:
-          playlightFirstPurchaseDiscount === true ? true : undefined,
         tradersGratitude:
           tradersGratitudeDiscount === true ? true : undefined,
         tradersSonGratitude:
@@ -185,10 +183,6 @@ export async function createPaymentIntent(
           cruelModeJourneyCompleteDiscount === true ? true : undefined,
       })
       : {
-        playlightFirstPurchase:
-          item.price > 0 && playlightFirstPurchaseDiscount === true
-            ? true
-            : undefined,
         tradersGratitude:
           item.price > 0 && tradersGratitudeDiscount === true
             ? true
@@ -211,7 +205,6 @@ export async function createPaymentIntent(
     itemId,
   );
   const tradersApplied = appliedDiscounts.tradersGratitude === true;
-  const playlightApplied = appliedDiscounts.playlightFirstPurchase === true;
   const sonApplied = appliedDiscounts.tradersSonGratitude === true;
   const journeyCompleteApplied =
     appliedDiscounts.cruelModeJourneyComplete === true;
@@ -232,9 +225,6 @@ export async function createPaymentIntent(
       itemName: item.name,
       priceInCents: amount.toString(),
       currency: validCurrency,
-      ...(playlightApplied && {
-        playlightFirstPurchaseDiscountApplied: 'true',
-      }),
       ...(tradersApplied && { tradersGratitudeDiscountApplied: 'true' }),
       ...(sonApplied && { tradersSonGratitudeDiscountApplied: 'true' }),
       ...(journeyCompleteApplied && {

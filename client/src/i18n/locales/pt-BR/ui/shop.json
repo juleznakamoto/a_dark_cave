@@ -106,6 +106,7 @@
     "securePurchaseSignUp": "Cadastrar-se",
     "securePurchaseLater": "Talvez depois",
     "firstPurchaseInsightBannerBefore": "Ganhe",
+    "firstPurchaseInsightBannerBeforePlaylight": "Como usuário do Playlight você recebe",
     "firstPurchaseInsightBannerInsight": "Perspicácia",
     "firstPurchaseInsightBannerAfter": "de graça com a sua primeira compra",
     "firstPurchaseInsightGranted": "Presente da primeira compra: +{{amount}} {{glyph}} Perspicácia",

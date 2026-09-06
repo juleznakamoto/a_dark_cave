@@ -130,13 +130,6 @@ export const GAME_DIALOG_REGISTRY: readonly DialogRegistryEntry[] = [
     resetOnLoad: false,
   },
   {
-    id: "playlightWelcome",
-    storeKey: "playlightWelcomeDialogOpen",
-    kind: "boolean",
-    blocking: true,
-    resetOnLoad: false,
-  },
-  {
     id: "feedback",
     storeKey: "feedbackDialogOpen",
     kind: "boolean",

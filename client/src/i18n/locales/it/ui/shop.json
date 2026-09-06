@@ -106,6 +106,7 @@
     "securePurchaseSignUp": "Registrati",
     "securePurchaseLater": "Forse più tardi",
     "firstPurchaseInsightBannerBefore": "Ottieni",
+    "firstPurchaseInsightBannerBeforePlaylight": "Come utente Playlight ricevi",
     "firstPurchaseInsightBannerInsight": "Intuizione",
     "firstPurchaseInsightBannerAfter": "gratis con il tuo primo acquisto",
     "firstPurchaseInsightGranted": "Regalo del primo acquisto: +{{amount}} {{glyph}} Intuizione",

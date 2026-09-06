@@ -30,6 +30,7 @@
     "feastAvailable": "{{name}} ({{remaining}}/{{total}} доступно)",
     "cruelModeActivateHint": "(активируйте и начните новую игру)",
     "firstPurchaseInsightBannerBefore": "Получи",
+    "firstPurchaseInsightBannerBeforePlaylight": "Как игрок Playlight вы получаете",
     "firstPurchaseInsightBannerInsight": "Прозрение",
     "firstPurchaseInsightBannerAfter": "бесплатно с первой покупкой",
     "firstPurchaseInsightCheckoutFree": "бесплатно",

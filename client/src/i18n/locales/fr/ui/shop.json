@@ -30,6 +30,7 @@
     "feastAvailable": "{{name}} ({{remaining}}/{{total}} disponibles)",
     "cruelModeActivateHint": "(activez et démarrez une nouvelle partie pour jouer)",
     "firstPurchaseInsightBannerBefore": "Obtenez",
+    "firstPurchaseInsightBannerBeforePlaylight": "En tant qu'utilisateur Playlight, vous recevez",
     "firstPurchaseInsightBannerInsight": "Perspicacité", //x1.7
     "firstPurchaseInsightBannerAfter": "gratuitement avec votre premier achat",
     "firstPurchaseInsightCheckoutFree": "gratuitement", //x1.5

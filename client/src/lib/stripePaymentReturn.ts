@@ -8,7 +8,6 @@ import { rehydratePurchasesFromSupabase } from "@/game/shopPurchases";
 import { toast } from "@/hooks/use-toast";
 import { useGameStore } from "@/game/state";
 import { SHOP_ITEMS } from "../../../shared/shopItems";
-import { FIRST_PURCHASE_INSIGHT_BONUS } from "@shared/firstPurchaseInsightBonus";
 import { INSIGHT_GLYPH } from "@/game/villagerCapUpgrades";
 import { formatNumber } from "@/lib/utils";
 import { logger } from "@/lib/logger";
@@ -84,9 +83,12 @@ export async function processStripePaymentReturn(): Promise<void> {
     if (result.success && result.itemId) {
       const item = SHOP_ITEMS[result.itemId];
       let grantedFirstPurchaseInsight = false;
+      let firstPurchaseInsightAmount = 0;
       if (item && item.price > 0) {
+        const purchaseResult = completePaidShopPurchaseInStore();
         grantedFirstPurchaseInsight =
-          completePaidShopPurchaseInStore().grantedFirstPurchaseInsight;
+          purchaseResult.grantedFirstPurchaseInsight;
+        firstPurchaseInsightAmount = purchaseResult.firstPurchaseInsightAmount;
       }
       applyShopDiscountConsumptionFromPaymentMetadata(result.discountMetadata);
       await rehydratePurchasesFromSupabase();
@@ -103,7 +105,7 @@ export async function processStripePaymentReturn(): Promise<void> {
         : "Thank you for your purchase.";
       const insightBonusMessage = grantedFirstPurchaseInsight
         ? i18n.t("ui:shop.firstPurchaseInsightGranted", {
-          amount: formatNumber(FIRST_PURCHASE_INSIGHT_BONUS),
+          amount: formatNumber(firstPurchaseInsightAmount),
           glyph: INSIGHT_GLYPH,
           defaultValue: "First purchase gift: +{{amount}} {{glyph}} Insight",
         })

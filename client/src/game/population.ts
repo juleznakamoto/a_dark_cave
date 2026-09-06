@@ -491,10 +491,10 @@ export const getPopulationProduction = (
     });
   }
 
-  // Apply 10x multiplier in dev mode
+  // Apply 9x multiplier in dev mode
   if (state && state.devMode) {
     baseProduction.forEach((prod) => {
-      prod.totalAmount *= 10;
+      prod.totalAmount *= 9;
     });
   }
 

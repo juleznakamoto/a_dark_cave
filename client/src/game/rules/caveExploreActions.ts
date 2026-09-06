@@ -5,7 +5,6 @@ import type { LogEntry } from "./eventTypes";
 import { gameEvents } from "./events";
 import { logger } from "../../lib/logger";
 import { isPlaylightReferralUrl } from "@/lib/playlight";
-import { isSteamEditionActive } from "@/lib/edition";
 import { PLAYLIGHT_WELCOME_GOLD } from "@/game/playlightRewards";
 import { btpLootAmount } from "@/game/btpLoot";
 import { buildLocalizedEventLogEntry } from "@/i18n/buildEventLogEntry";
@@ -906,14 +905,6 @@ export function handleMakeFire(
         ...seenExtra,
       },
     };
-
-    if (!isSteamEditionActive()) {
-      result.delayedEffects!.push(() => {
-        void import("@/game/state").then(({ useGameStore }) => {
-          useGameStore.setState({ playlightWelcomeDialogOpen: true });
-        });
-      });
-    }
   }
 
   pushFirstVisitLog(

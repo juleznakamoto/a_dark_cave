@@ -2,13 +2,14 @@
  * Final Stripe amount in cents for shop checkout.
  *
  * Discounts apply to catalog `item.price` in cents.
- * **Playlight** first purchase: 10% off, same shape as **Trader's Gratitude** (20% off).
+ * **Playlight** first purchase is no longer a price discount (Insight bonus instead).
+ * The multiplier stays so older in-flight PaymentIntents still verify.
  * If multiple %-off apply, the lowest amount (best for the player) is used.
  * **Journey complete** (Cruel Mode card only): caps price at `CRUEL_MODE_JOURNEY_COMPLETE_PRICE_CENTS`
  * after %-off (see end-screen → shop flow).
  */
 
-/** 10% off catalog `item.price` for Playlight first real-money purchase. */
+/** Legacy 10% off for older Playlight PaymentIntents. New checkouts do not request this. */
 const PLAYLIGHT_FIRST_PURCHASE_MULTIPLIER = 0.9;
 /** 20% off catalog `item.price` for Trader's Gratitude. */
 const TRADERS_GRATITUDE_MULTIPLIER = 0.8;

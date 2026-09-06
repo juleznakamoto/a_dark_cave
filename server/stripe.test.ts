@@ -393,7 +393,7 @@ describe('Stripe Shop Integration', () => {
     });
 
     describe('Playlight first-purchase discount', () => {
-      it('should apply 10% off catalog price when playlightFirstPurchaseDiscount is true', async () => {
+      it('should ignore Playlight price discount on new payment intents', async () => {
         mockPaymentIntents.create.mockResolvedValue({
           client_secret: 'test_secret',
         } as any);
@@ -409,18 +409,17 @@ describe('Stripe Shop Integration', () => {
           true,
         );
 
-        // gold_250 price 149; floor(149 * 0.9) = 134
         expect(mockPaymentIntents.create).toHaveBeenCalledWith(
           expect.objectContaining({
-            amount: 134,
-            metadata: expect.objectContaining({
+            amount: 149,
+            metadata: expect.not.objectContaining({
               playlightFirstPurchaseDiscountApplied: 'true',
             }),
           }),
         );
       });
 
-      it('should use the better price when both Trader and Playlight flags are set', async () => {
+      it('should still apply Trader discount when Playlight flag is also sent', async () => {
         mockPaymentIntents.create.mockResolvedValue({
           client_secret: 'test_secret',
         } as any);
@@ -436,13 +435,11 @@ describe('Stripe Shop Integration', () => {
           true,
         );
 
-        // Trader's Gratitude (20% off) beats Playlight (10% off) on the same base price
         expect(mockPaymentIntents.create).toHaveBeenCalledWith(
           expect.objectContaining({
             amount: 119,
             metadata: expect.objectContaining({
               tradersGratitudeDiscountApplied: 'true',
-              playlightFirstPurchaseDiscountApplied: 'true',
             }),
           }),
         );

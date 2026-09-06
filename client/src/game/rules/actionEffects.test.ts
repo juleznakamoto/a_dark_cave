@@ -1,4 +1,4 @@
-import { describe, it, expect, beforeEach } from 'vitest';
+import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
 import { GameState } from '@shared/schema';
 import { createInitialState } from '../state';
 
@@ -604,6 +604,35 @@ describe('Cost Reduction Edge Cases', () => {
       expect(updates.resources!.wood).toBeDefined();
       expect(updates.resources!.stone).toBeDefined();
     }
+  });
+});
+
+describe("dev resource multiplier", () => {
+  afterEach(() => {
+    vi.restoreAllMocks();
+  });
+
+  it("multiplies action resource gains by a random integer from 51 to 99", () => {
+    vi.spyOn(Math, "random").mockReturnValue(0.5);
+
+    const buildings = { greatVault: 1 };
+    const baseState = createMockState({
+      devMode: false,
+      buildings,
+      resources: { wood: 0 },
+    });
+    const baseWood = applyActionEffects("chopWood", baseState).resources!.wood!;
+
+    const devState = createMockState({
+      devMode: true,
+      buildings,
+      resources: { wood: 0 },
+    });
+    const devWood = applyActionEffects("chopWood", devState).resources!.wood!;
+
+    // rollResourceGain(51, 99) with Math.random === 0.5 → 51 + floor(0.5 * 49) = 75
+    expect(devWood).toBe(baseWood * 75);
+    expect(devWood).not.toBe(baseWood * 100);
   });
 });
 

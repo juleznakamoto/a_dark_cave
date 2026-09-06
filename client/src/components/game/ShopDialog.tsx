@@ -50,7 +50,10 @@ import {
   applyShopDiscountConsumptionFromPaymentMetadata,
   completePaidShopPurchaseInStore,
 } from "@/game/shopPostPurchaseState";
-import { FIRST_PURCHASE_INSIGHT_BONUS } from "@shared/firstPurchaseInsightBonus";
+import {
+  getFirstPurchaseInsightBonus,
+  isPlaylightFirstPurchaseBonusActive,
+} from "@shared/firstPurchaseInsightBonus";
 import { INSIGHT_GLYPH, INSIGHT_TEXT_CLASS } from "@/game/villagerCapUpgrades";
 import { userOwnsShopItemFromPurchaseRows } from "@shared/shopPurchaseEligibility";
 import {
@@ -67,7 +70,6 @@ import {
   TRADERS_GRATITUDE_DISCOUNT_PERCENT,
   TRADERS_SON_DISCOUNT_PERCENT,
 } from "../../../../shared/shopCheckoutPrice";
-import { PLAYLIGHT_FIRST_PURCHASE_DISCOUNT_PERCENT } from "@/game/playlightRewards";
 import { tailwindToHex } from "@/lib/tailwindColors";
 import { getShopGlyphHoverParticleConfig, CHECKOUT_SUCCESS_PARTICLE_CONFIG, CHECKOUT_SUCCESS_HOLD_MS } from "@/components/ui/bubbly-button.particles";
 import { getStripeReturnUrlForConfirm } from "@/lib/stripePaymentReturn";
@@ -119,13 +121,9 @@ const getSupabaseClient = async () => {
   return supabase;
 };
 
-/** Small pill on shop cards (green border / tint); e.g. featured labels. */
+/** Small pill on shop cards (green border / tint); featured and value labels. */
 const SHOP_CARD_PROMO_TAG_CLASS =
   "ml-1 px-1 py-[1px] leading-tight text-xs text-green-500 font-medium border border-green-500/40 rounded bg-green-500/5";
-
-/** Same promo-pill shape as `SHOP_CARD_PROMO_TAG_CLASS`, red gold-value variant. */
-const SHOP_CARD_VALUE_TAG_CLASS =
-  "ml-1 px-1 py-[1px] leading-tight text-xs text-red-500 font-medium border border-red-500/40 rounded bg-red-500/5";
 
 /** Same promo-pill shape as `SHOP_CARD_PROMO_TAG_CLASS`, Insight / blue variant. */
 const SHOP_INSIGHT_PROMO_TAG_CLASS =
@@ -224,7 +222,6 @@ function isShopItemPurchaseDisabled(
 }
 
 type ShopCheckoutDiscountOpts = {
-  playlightFirstPurchase?: boolean;
   tradersGratitude?: boolean;
   tradersSonGratitude?: boolean;
   cruelModeJourneyComplete?: boolean;
@@ -234,7 +231,6 @@ function getShopCheckoutDiscountOptions(
   item: ShopItem | undefined,
   gameState: {
     story?: { seen?: Record<string, boolean | number | undefined> };
-    hasMadeNonFreePurchase?: boolean;
     tradersGratitudeState?: { accepted?: boolean };
     tradersSonGratitudeState?: { accepted?: boolean };
   },
@@ -243,11 +239,6 @@ function getShopCheckoutDiscountOptions(
   const journeySeen = gameState.story?.seen?.cruelModeJourneyCompleteDiscount;
   const journeyEligible = item.id === "cruel_mode" && journeySeen === true;
   return {
-    playlightFirstPurchase: !!(
-      item.price > 0 &&
-      gameState.story?.seen?.playlightFirstPurchaseDiscountActive === true &&
-      !gameState.hasMadeNonFreePurchase
-    ),
     tradersGratitude: !!(
       item.price > 0 && gameState.tradersGratitudeState?.accepted === true
     ),
@@ -709,7 +700,10 @@ interface CheckoutFormProps {
   itemId: string;
   onSuccess: (
     discountMetadata?: Record<string, string | undefined>,
-    extras?: { grantedFirstPurchaseInsight?: boolean },
+    extras?: {
+      grantedFirstPurchaseInsight?: boolean;
+      firstPurchaseInsightAmount?: number;
+    },
   ) => void;
   currency: "EUR" | "USD";
   onCancel: () => void;
@@ -784,15 +778,22 @@ function CheckoutForm({
           const item = SHOP_ITEMS[result.itemId];
 
           let grantedFirstPurchaseInsight = false;
+          let firstPurchaseInsightAmount = 0;
           // Set hasMadeNonFreePurchase + first-purchase Insight before discount consumption
           if (item.price > 0) {
+            const purchaseResult = completePaidShopPurchaseInStore();
             grantedFirstPurchaseInsight =
-              completePaidShopPurchaseInStore().grantedFirstPurchaseInsight;
+              purchaseResult.grantedFirstPurchaseInsight;
+            firstPurchaseInsightAmount =
+              purchaseResult.firstPurchaseInsightAmount;
           }
 
           // Keep processing glow + success label until the dialog unmounts.
           setIsPurchaseSuccess(true);
-          onSuccess(result.discountMetadata, { grantedFirstPurchaseInsight });
+          onSuccess(result.discountMetadata, {
+            grantedFirstPurchaseInsight,
+            firstPurchaseInsightAmount,
+          });
         } else {
           // Payment succeeded on Stripe but server verification failed (e.g. DB error).
           // Do NOT release discount reservation - user was charged; requires manual intervention.
@@ -913,6 +914,9 @@ function ShopDialogOpen({ isOpen, onClose, onOpen }: ShopDialogProps) {
   );
   const [isDetectingCurrency, setIsDetectingCurrency] = useState(false);
   const gameState = useGameStore();
+  const playlightFirstPurchaseBonusActive =
+    isPlaylightFirstPurchaseBonusActive(gameState);
+  const firstPurchaseInsightAmount = getFirstPurchaseInsightBonus(gameState);
   const setAuthDialogOpen = useGameStore((state) => state.setAuthDialogOpen);
   const setSignUpPromptEligibleForGold = useGameStore(
     (state) => state.setSignUpPromptEligibleForGold,
@@ -1363,9 +1367,6 @@ function ShopDialogOpen({ isOpen, onClose, onOpen }: ShopDialogProps) {
       gameState.tradersGratitudeState?.accepted === true;
     const tradersSonGratitudeDiscount =
       gameState.tradersSonGratitudeState?.accepted === true;
-    const playlightFirstPurchaseDiscount =
-      gameState.story?.seen?.playlightFirstPurchaseDiscountActive === true &&
-      !gameState.hasMadeNonFreePurchase;
     const cruelModeJourneyCompleteDiscount =
       itemId === "cruel_mode" &&
       gameState.story?.seen?.cruelModeJourneyCompleteDiscount === true;
@@ -1380,9 +1381,6 @@ function ShopDialogOpen({ isOpen, onClose, onOpen }: ShopDialogProps) {
         tradersGratitudeDiscount: tradersGratitudeDiscount || undefined,
         tradersSonGratitudeDiscount: tradersSonGratitudeDiscount || undefined,
         cruelMode: gameState.cruelMode ?? false,
-        playlightFirstPurchaseDiscount: playlightFirstPurchaseDiscount
-          ? true
-          : undefined,
         cruelModeJourneyCompleteDiscount: cruelModeJourneyCompleteDiscount
           ? true
           : undefined,
@@ -1453,7 +1451,10 @@ function ShopDialogOpen({ isOpen, onClose, onOpen }: ShopDialogProps) {
 
   const handlePurchaseSuccess = async (
     discountMetadata?: Record<string, string | undefined>,
-    extras?: { grantedFirstPurchaseInsight?: boolean },
+    extras?: {
+      grantedFirstPurchaseInsight?: boolean;
+      firstPurchaseInsightAmount?: number;
+    },
   ) => {
     const purchasedItemId = selectedItem!;
     const item = SHOP_ITEMS[purchasedItemId];
@@ -1483,9 +1484,11 @@ function ShopDialogOpen({ isOpen, onClose, onOpen }: ShopDialogProps) {
     // fallback when payment success skipped that path.
     let grantedFirstPurchaseInsight =
       extras?.grantedFirstPurchaseInsight === true;
+    let firstPurchaseInsightAmount = extras?.firstPurchaseInsightAmount ?? 0;
     if (item.price > 0 && !grantedFirstPurchaseInsight) {
-      grantedFirstPurchaseInsight =
-        completePaidShopPurchaseInStore().grantedFirstPurchaseInsight;
+      const purchaseResult = completePaidShopPurchaseInStore();
+      grantedFirstPurchaseInsight = purchaseResult.grantedFirstPurchaseInsight;
+      firstPurchaseInsightAmount = purchaseResult.firstPurchaseInsightAmount;
     } else if (item.price > 0) {
       completePaidShopPurchaseInStore();
     }
@@ -1599,7 +1602,7 @@ function ShopDialogOpen({ isOpen, onClose, onOpen }: ShopDialogProps) {
         : t("ui:shop.purchaseAddedSingle", { name: resolvedPurchaseName }));
     const insightBonusMessage = grantedFirstPurchaseInsight
       ? t("ui:shop.firstPurchaseInsightGranted", {
-        amount: formatNumber(FIRST_PURCHASE_INSIGHT_BONUS),
+        amount: formatNumber(firstPurchaseInsightAmount),
         glyph: INSIGHT_GLYPH,
         defaultValue: "First purchase gift: +{{amount}} {{glyph}} Insight",
       })
@@ -2070,11 +2073,19 @@ function ShopDialogOpen({ isOpen, onClose, onOpen }: ShopDialogProps) {
                           aria-hidden
                         />
                         <div className="relative z-10 px-2 py-2 text-center text-sm font-semibold text-white sm:text-base">
-                          {t("ui:shop.firstPurchaseInsightBannerBefore", {
-                            defaultValue: "Get",
-                          })}{" "}
+                          {playlightFirstPurchaseBonusActive
+                            ? t(
+                              "ui:shop.firstPurchaseInsightBannerBeforePlaylight",
+                              {
+                                defaultValue:
+                                  "As a Playlight user you receive",
+                              },
+                            )
+                            : t("ui:shop.firstPurchaseInsightBannerBefore", {
+                              defaultValue: "Get",
+                            })}{" "}
                           <span className="tabular-nums">
-                            {formatNumber(FIRST_PURCHASE_INSIGHT_BONUS)}
+                            {formatNumber(firstPurchaseInsightAmount)}
                           </span>{" "}
                           <span
                             className={cn(
@@ -2315,14 +2326,7 @@ function ShopDialogOpen({ isOpen, onClose, onOpen }: ShopDialogProps) {
                                           const tradersSonGratitudeActive =
                                             gameState.tradersSonGratitudeState
                                               ?.accepted === true;
-                                          const playlightFirstPurchaseActive =
-                                            gameState.story?.seen
-                                              ?.playlightFirstPurchaseDiscountActive ===
-                                            true &&
-                                            !gameState.hasMadeNonFreePurchase;
                                           const pctOpts = {
-                                            playlightFirstPurchase:
-                                              playlightFirstPurchaseActive,
                                             tradersGratitude:
                                               tradersGratitudeActive,
                                             tradersSonGratitude:
@@ -2377,16 +2381,6 @@ function ShopDialogOpen({ isOpen, onClose, onOpen }: ShopDialogProps) {
                                                 item.id,
                                               )
                                               : item.price;
-                                          const playlightOnlyCents =
-                                            item.price > 0
-                                              ? getDiscountedShopPriceCents(
-                                                item.price,
-                                                {
-                                                  playlightFirstPurchase: true,
-                                                },
-                                                item.id,
-                                              )
-                                              : item.price;
                                           const discounted =
                                             item.price > 0 &&
                                             displayPrice < item.price;
@@ -2402,11 +2396,6 @@ function ShopDialogOpen({ isOpen, onClose, onOpen }: ShopDialogProps) {
                                             item.price > 0 &&
                                             tradersSonGratitudeActive &&
                                             displayPrice === sonOnlyCents &&
-                                            displayPrice < item.price;
-                                          const showPlaylightInfo =
-                                            item.price > 0 &&
-                                            playlightFirstPurchaseActive &&
-                                            displayPrice === playlightOnlyCents &&
                                             displayPrice < item.price;
                                           const showJourneyCompleteInfo =
                                             item.price > 0 &&
@@ -2479,32 +2468,6 @@ function ShopDialogOpen({ isOpen, onClose, onOpen }: ShopDialogProps) {
                                                   </span>
                                                 </TooltipWrapper>
                                               )}
-                                              {showPlaylightInfo && (
-                                                <TooltipWrapper
-                                                  tooltip={
-                                                    <div className="text-xs">
-                                                      {t(
-                                                        "ui:shop.playlightDiscount",
-                                                        {
-                                                          percent:
-                                                            PLAYLIGHT_FIRST_PURCHASE_DISCOUNT_PERCENT,
-                                                        },
-                                                      )}
-                                                    </div>
-                                                  }
-                                                  tooltipId={`playlight-discount-${item.id}`}
-                                                  disabled
-                                                  tooltipContentClassName="max-w-xs border border-amber-600"
-                                                  className={`inline-flex items-center justify-center ${SHOP_INFO_HIT_SIZE_CLASS} rounded-full text-muted-foreground hover:text-foreground cursor-pointer motion-safe:animate-shop-info-pulse`}
-                                                >
-                                                  <span
-                                                    className={SHOP_INFO_GLYPH_CLASS}
-                                                    aria-hidden
-                                                  >
-                                                    🛈
-                                                  </span>
-                                                </TooltipWrapper>
-                                              )}
                                               {showJourneyCompleteInfo && (
                                                 <TooltipWrapper
                                                   tooltip={
@@ -2540,7 +2503,7 @@ function ShopDialogOpen({ isOpen, onClose, onOpen }: ShopDialogProps) {
                                         {(item.id === "gold_15000" ||
                                           item.id === "gold_30000") && (
                                             <span
-                                              className={SHOP_CARD_VALUE_TAG_CLASS}
+                                              className={SHOP_CARD_PROMO_TAG_CLASS}
                                             >
                                               {item.id === "gold_30000"
                                                 ? "3x"
@@ -2819,7 +2782,7 @@ function ShopDialogOpen({ isOpen, onClose, onOpen }: ShopDialogProps) {
                       <span>
                         +
                         <span className="tabular-nums">
-                          {formatNumber(FIRST_PURCHASE_INSIGHT_BONUS)}
+                          {formatNumber(firstPurchaseInsightAmount)}
                         </span>
                       </span>
                       <span

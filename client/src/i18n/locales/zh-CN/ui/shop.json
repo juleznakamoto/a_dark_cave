@@ -30,6 +30,7 @@
     "feastAvailable": "{{name}}（{{remaining}}/{{total}} 可用）",
     "cruelModeActivateHint": "（激活并开始新游戏以游玩）",
     "firstPurchaseInsightBannerBefore": "获得",
+    "firstPurchaseInsightBannerBeforePlaylight": "作为 Playlight 用户，你将获得",
     "firstPurchaseInsightBannerInsight": "洞见",
     "firstPurchaseInsightBannerAfter": "首次购买免费赠送",
     "firstPurchaseInsightCheckoutFree": "免费",

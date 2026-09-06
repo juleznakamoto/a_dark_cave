@@ -308,7 +308,6 @@ interface GameStore extends GameState {
   restartGameDialogOpen: boolean;
   deleteAccountDialogOpen: boolean;
   settingsDialogOpen: boolean;
-  playlightWelcomeDialogOpen: boolean;
   feedbackDialogOpen: boolean;
   /** Persisted: one-time feedback dialog at 105m play time has been shown or skipped. */
   feedbackPromptShown: boolean;
@@ -2010,7 +2009,6 @@ export const useGameStore = create<GameStore>((set, get) => ({
   restartGameDialogOpen: false,
   deleteAccountDialogOpen: false,
   settingsDialogOpen: false,
-  playlightWelcomeDialogOpen: false,
   feedbackDialogOpen: false,
   feedbackPromptShown: false,
   villageHotkeyTutorialShown: false,

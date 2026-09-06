@@ -21,9 +21,6 @@ type GameProps = {
 const EmailConfirmedDialog = lazy(
   () => import("@/components/game/EmailConfirmedDialog"),
 );
-const PlaylightWelcomeDialog = lazy(
-  () => import("@/components/game/PlaylightWelcomeDialog"),
-);
 const FeedbackDialog = lazy(() => import("@/components/game/FeedbackDialog"));
 
 export default function Game({
@@ -105,7 +102,6 @@ export default function Game({
             isOpen={emailConfirmedDialogOpen}
             onClose={() => setEmailConfirmedDialogOpen(false)}
           />
-          <PlaylightWelcomeDialog />
           <FeedbackDialog />
         </Suspense>
       )}
