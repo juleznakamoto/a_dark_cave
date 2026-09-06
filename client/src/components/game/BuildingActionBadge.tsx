@@ -9,11 +9,13 @@ export const INSIGHT_BADGE_TOOLTIP_TRIGGER_CLASS =
 export const INSIGHT_BADGE_TOOLTIP_TRIGGER_OVERLAY_CLASS =
   "flex h-full w-full items-center leading-none";
 /**
- * Side-panel row badges (cap upgrade, enchant). Sized in CSS so Large text
- * (`--adc-control-scale`) grows the hit target + embedded animation together.
+ * Side-panel row badges (cap upgrade, enchant). Fixed px in CSS; Large text
+ * does not grow the hit target or glyph.
  */
 export const INSIGHT_BADGE_SIDE_PANEL_SIZE_CLASS =
   "insight-action-badge-trigger--side-panel";
+/** Village jobs, timed-tab, achievements. Fixed px; Large text does not grow. */
+export const INSIGHT_BADGE_LG_SIZE_CLASS = "insight-action-badge-trigger--lg";
 
 /** Shared insight badge button: single-layer opacity (no nested badge opacity). */
 export function getInsightBadgeTriggerClassName({

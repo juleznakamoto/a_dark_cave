@@ -66,6 +66,7 @@ import {
 import {
   BuildingActionBadge,
   getInsightBadgeTriggerClassName,
+  INSIGHT_BADGE_LG_SIZE_CLASS,
   INSIGHT_BADGE_TOOLTIP_TRIGGER_CLASS,
 } from "@/components/game/BuildingActionBadge";
 import { VillagerCapUpgradeBadge } from "@/components/game/VillagerCapUpgradeBadge";
@@ -210,9 +211,11 @@ const VILLAGER_COUNT_ROW_CLASS =
 /** − / count / + only; /cap + optional Insight badge sit as grid siblings after. */
 const VILLAGER_COUNT_CONTROL_GRID_CLASS =
   "grid shrink-0 grid-cols-[auto_3.5ch_auto] items-center";
-/** Same size as timed-tab ActionInsightBadge (`h-5 w-5` + lg blob). */
-const VILLAGER_COUNT_CAP_UPGRADE_SLOT_CLASS =
-  "mx-1 inline-flex h-5 w-5 shrink-0 items-center justify-center self-center";
+/** Same size as timed-tab ActionInsightBadge (lg trigger + lg blob). */
+const VILLAGER_COUNT_CAP_UPGRADE_SLOT_CLASS = cn(
+  "mx-1 inline-flex shrink-0 items-center justify-center self-center",
+  INSIGHT_BADGE_LG_SIZE_CLASS,
+);
 const VILLAGER_COUNT_BUTTON_CLASS = cn(
   VILLAGER_COUNT_BUTTON_SIZE_CLASS,
   "min-h-0 shrink-0 p-0 inline-flex items-center justify-center leading-none font-normal appearance-none [-webkit-appearance:none] disabled:opacity-100",

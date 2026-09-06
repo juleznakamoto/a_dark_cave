@@ -7,6 +7,7 @@ import GameButton from "@/components/game/GameButton";
 import {
   BuildingActionBadge,
   getInsightBadgeTriggerClassName,
+  INSIGHT_BADGE_LG_SIZE_CLASS,
   INSIGHT_BADGE_TOOLTIP_TRIGGER_CLASS,
 } from "@/components/game/BuildingActionBadge";
 import { useGameStore } from "@/game/state";
@@ -158,7 +159,7 @@ function AchievementTitleInsightBadge({
       onMouseLeave={() => {
         if (!playing) setHighlightedResources([]);
       }}
-      className="inline-flex size-5 shrink-0 items-center justify-center self-center"
+      className={`inline-flex shrink-0 items-center justify-center self-center ${INSIGHT_BADGE_LG_SIZE_CLASS}`}
       tooltipTriggerAsChild
     >
       <button
@@ -174,7 +175,7 @@ function AchievementTitleInsightBadge({
         className={getInsightBadgeTriggerClassName({
           canAfford: affordable || playing,
           playing,
-          className: "h-5 w-5",
+          className: INSIGHT_BADGE_LG_SIZE_CLASS,
         })}
       >
         <BuildingActionBadge embedded size="lg" />

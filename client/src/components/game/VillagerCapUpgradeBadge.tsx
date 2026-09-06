@@ -2,6 +2,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import {
   BuildingActionBadge,
   getInsightBadgeTriggerClassName,
+  INSIGHT_BADGE_LG_SIZE_CLASS,
   INSIGHT_BADGE_TOOLTIP_TRIGGER_CLASS,
 } from "@/components/game/BuildingActionBadge";
 import { TooltipWrapper } from "@/components/game/TooltipWrapper";
@@ -59,7 +60,7 @@ type VillagerCapUpgradeBadgeProps = {
 };
 
 /**
- * Villager-cap upgrade badge (timed-tab Insight size: h-5 w-5 + lg blob).
+ * Villager-cap upgrade badge (timed-tab Insight size: lg trigger + lg blob).
  * Playing state is shared per group via `insightRevealing` so every job in the
  * group animates and stays locked together.
  */
@@ -161,7 +162,7 @@ export function VillagerCapUpgradeBadge({
           canAfford: affordable,
           playing: isPlaying,
           suppressHover,
-          className: cn(pulseClassName, "h-5 w-5 leading-none"),
+          className: cn(pulseClassName, INSIGHT_BADGE_LG_SIZE_CLASS, "leading-none"),
         })}
       >
         <BuildingActionBadge embedded size="lg" playing={isPlaying} />

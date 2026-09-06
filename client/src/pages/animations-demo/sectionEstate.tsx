@@ -4,6 +4,8 @@ import { Button } from "@/components/ui/button";
 import {
   BuildingActionBadge,
   getInsightBadgeTriggerClassName,
+  INSIGHT_BADGE_LG_SIZE_CLASS,
+  INSIGHT_BADGE_SIDE_PANEL_SIZE_CLASS,
 } from "@/components/game/BuildingActionBadge";
 import {
   EstateStyleProgress,
@@ -136,7 +138,10 @@ export function InsightBadgeSection() {
             className={getInsightBadgeTriggerClassName({
               canAfford,
               playing,
-              className: size === "sm" ? "h-3.5 w-3.5" : "h-5 w-5",
+              className:
+                size === "sm"
+                  ? INSIGHT_BADGE_SIDE_PANEL_SIZE_CLASS
+                  : INSIGHT_BADGE_LG_SIZE_CLASS,
             })}
           >
             <BuildingActionBadge
@@ -154,16 +159,7 @@ export function InsightBadgeSection() {
             <Button size="sm" variant="outline" className="h-7">
               Build Cabin
             </Button>
-            <div
-              className="absolute"
-              style={{
-                bottom: -9,
-                right: -9,
-                width: 20,
-                height: 20,
-                zIndex: 30,
-              }}
-            >
+            <div className="action-button-corner-badge action-button-corner-badge--insight">
               <button
                 type="button"
                 className={getInsightBadgeTriggerClassName({

@@ -417,13 +417,13 @@ body {
 }
 
 .building-action-badge--sm {
-  width: calc(24px * var(--adc-control-scale, 1));
-  height: calc(24px * var(--adc-control-scale, 1));
+  width: 26px;
+  height: 26px;
 }
 
 .building-action-badge--lg {
-  width: calc(28px * var(--adc-control-scale, 1));
-  height: calc(28px * var(--adc-control-scale, 1));
+  width: 30px;
+  height: 30px;
 }
 
 /* Locked digit on corner chips (level number, Focus points). Does not grow in Large. */
@@ -454,27 +454,33 @@ body {
 
 .action-button-corner-badge {
   position: absolute;
-  width: calc(20px * var(--adc-control-scale, 1));
-  height: calc(20px * var(--adc-control-scale, 1));
+  width: 22px;
+  height: 22px;
   z-index: 30;
   pointer-events: auto;
 }
 
 .action-button-corner-badge--insight {
-  bottom: calc(-9px * var(--adc-control-scale, 1));
-  right: calc(-9px * var(--adc-control-scale, 1));
+  bottom: -11px;
+  right: -11px;
 }
 
 .action-button-corner-badge--boost {
-  top: calc(-9px * var(--adc-control-scale, 1));
-  right: calc(-9px * var(--adc-control-scale, 1));
+  top: -11px;
+  right: -11px;
 }
 
-/* Side-panel insight hit target; scales with Settings → Large text. */
+/* Side-panel insight hit target. Locked; Large text does not grow it. */
 .insight-action-badge-trigger--side-panel {
-  width: calc(14px * var(--adc-control-scale, 1));
-  height: calc(14px * var(--adc-control-scale, 1));
-  font-size: calc(14px * var(--adc-control-scale, 1));
+  width: 16px;
+  height: 16px;
+  font-size: 16px;
+}
+
+/* Village jobs / timed-tab / achievement insight buttons. Locked. */
+.insight-action-badge-trigger--lg {
+  width: 22px;
+  height: 22px;
 }
 
 /* Village header slots (construction queue, job presets, insight unlocks). */
@@ -636,11 +642,11 @@ html.adc-text-large .game-panel-header-indicator-row {
 }
 
 .building-action-badge--sm .building-action-badge__glyph {
-  font-size: calc(14px * var(--adc-control-scale, 1));
+  font-size: 16px;
 }
 
 .building-action-badge--lg .building-action-badge__glyph {
-  font-size: calc(17px * var(--adc-control-scale, 1));
+  font-size: 19px;
 }
 
 .building-action-badge__svg {
