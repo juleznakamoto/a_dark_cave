@@ -444,12 +444,11 @@ body {
 
 .button-prior-badge {
   position: absolute;
-  /* Center the disc on the button's bottom-right corner. */
-  bottom: 0;
-  right: 0;
+  /* Half of 12px so the disc center sits on the button's bottom-right corner. */
+  bottom: calc(-6px * var(--adc-control-scale, 1));
+  right: calc(-6px * var(--adc-control-scale, 1));
   width: calc(12px * var(--adc-control-scale, 1));
   height: calc(12px * var(--adc-control-scale, 1));
-  transform: translate(50%, 50%);
 }
 
 .action-button-corner-badge {

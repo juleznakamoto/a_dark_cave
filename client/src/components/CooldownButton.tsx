@@ -10,8 +10,8 @@ import { useInlineButtonParticles } from "@/components/ui/bubbly-button";
 import type { ParticleConfig } from "@/components/ui/bubbly-button.particles";
 import { ActionTooltipSeparator } from "@/game/rules/actionTooltipLayout";
 
-/** Relative wrapper for action buttons and badges. */
-export const GAME_ACTION_BUTTON_STACK_CLASS = "relative inline-block";
+/** Relative wrapper for action buttons and badges. inline-flex avoids baseline gap so corner badges sit on the button. */
+export const GAME_ACTION_BUTTON_STACK_CLASS = "relative inline-flex";
 
 /** Uniform gap between game action buttons (horizontal, wrapped rows, stacked row groups). */
 export const GAME_ACTION_BUTTON_GRID_GAP_CLASS = "gap-4";
@@ -427,6 +427,7 @@ const CooldownButton = forwardRef<HTMLButtonElement, CooldownButtonProps>(
         <TooltipWrapper
           tooltip={resolvedTooltip}
           tooltipId={buttonId}
+          className="relative inline-flex"
           disabled={isButtonDisabled && !allowDisabledClick}
           onMouseEnter={onMouseEnter}
           onMouseLeave={onMouseLeave}
