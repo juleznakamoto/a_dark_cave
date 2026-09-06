@@ -426,6 +426,13 @@ body {
   height: calc(28px * var(--adc-control-scale, 1));
 }
 
+/* Locked digit on corner chips (level number, Focus points). Does not grow in Large. */
+.game-corner-badge-digit {
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 1;
+}
+
 /* Action-button corner badges (level / prior / insight / boost hosts). */
 .button-level-badge {
   position: absolute;
@@ -433,9 +440,6 @@ body {
   right: calc(-7px * var(--adc-control-scale, 1));
   width: calc(1rem * var(--adc-control-scale, 1));
   height: calc(1rem * var(--adc-control-scale, 1));
-  /* Control scale only — avoid stacking --adc-text-delta from .text-2xs. */
-  font-size: calc(0.625rem * var(--adc-control-scale, 1));
-  line-height: 1;
 }
 
 .button-prior-badge {

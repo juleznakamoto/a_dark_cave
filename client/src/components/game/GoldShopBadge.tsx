@@ -64,7 +64,7 @@ export function GoldShopBadge({
           onOpen();
         }}
       >
-        <Plus className="h-2.5 w-2.5 stroke-[3]" />
+        <Plus className="h-3 w-3 stroke-[3]" />
       </button>
     </div>
   );
