@@ -22,8 +22,8 @@ const CALLOUT_CHROME =
   "flex appearance-none [-webkit-appearance:none] rounded-md font-semibold leading-none tracking-wide text-primary-foreground shadow-md transition-opacity duration-300";
 
 const CALLOUT_SIZE = {
-  sm: "px-2 py-1.5 text-2xs",
-  /** Footer Playlight / Steam: same type size as footer labels, slightly roomier padding. */
+  sm: "px-2 py-1.5 text-xs",
+  /** Footer Playlight / Steam: same 13px type, slightly roomier padding. */
   md: "px-2.5 py-1.5 text-xs",
 } as const;
 

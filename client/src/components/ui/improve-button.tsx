@@ -33,7 +33,7 @@ export function ImproveButton({
   };
 
   return (
-    <div className="inline-block text-xs font-medium text-foreground">
+    <div className="inline-block text-xs font-normal text-foreground">
       <div className="relative inline-block">
         <Button
           onClick={handleClick}
