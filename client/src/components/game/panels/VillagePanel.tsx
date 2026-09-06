@@ -99,7 +99,6 @@ import {
 import { CircularProgress } from "@/components/ui/circular-progress";
 import { useState, useEffect, useRef, useCallback } from "react";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
-import { ANIMATED_COUNTER_TEXT_CLASS } from "@/components/ui/animated-counter";
 import {
   RedactedLockedHint,
   RedactedMoreHint,
@@ -157,6 +156,7 @@ import {
   GAME_PANEL_HEADER_INDICATOR_SIZE_PX,
   GAME_PANEL_HEADER_INDICATOR_TRIGGER_CLASS,
   GAME_PANEL_HEADER_INSIGHT_BADGE_CLASS,
+  GAME_TAB_SECTION_HEADER,
 } from "@/components/game/gameChrome";
 import {
   headerIndicatorIcon,
@@ -224,14 +224,10 @@ const villagerCountButtonClassName = (isDisabled: boolean) =>
     // Tiny −/+ keep full chrome; only the glyph dims (see spans below).
     "opacity-100 disabled:opacity-100",
   );
-const VILLAGER_COUNT_CAP_CLASS = cn(
-  "notranslate ml-1.5 inline-flex shrink-0 items-center justify-start self-center leading-tight",
-  ANIMATED_COUNTER_TEXT_CLASS,
-);
-const VILLAGER_COUNT_VALUE_CLASS = cn(
-  "notranslate inline-flex w-full items-center justify-center self-center leading-tight",
-  ANIMATED_COUNTER_TEXT_CLASS,
-);
+const VILLAGER_COUNT_CAP_CLASS =
+  "notranslate ml-1.5 inline-flex shrink-0 items-center justify-start self-center text-sm leading-tight tabular-nums";
+const VILLAGER_COUNT_VALUE_CLASS =
+  "notranslate inline-flex w-full items-center justify-center self-center text-sm leading-tight tabular-nums";
 const VILLAGER_COUNT_LABEL_CLASS =
   "ml-1 min-w-0 text-left text-sm leading-tight";
 /** Label margin comes from badge `mx-1` while the upgrade slot is reserved. */
@@ -1547,7 +1543,7 @@ export default function VillagePanel() {
               <div key={groupIndex} className="space-y-2">
                 {group.title === "Build" ? (
                   <div className="flex w-full items-center gap-2">
-                    <h3 className="inline-flex min-w-0 flex-wrap items-center gap-1.5 text-xs font-medium text-foreground leading-none">
+                    <h3 className={`inline-flex min-w-0 flex-wrap items-center gap-1.5 ${GAME_TAB_SECTION_HEADER}`}>
                       {t("village.sectionBuild")}
                       {catalogActive ? <DemoEndPromoBadge kind="build" /> : null}
                     </h3>
@@ -1698,7 +1694,7 @@ export default function VillagePanel() {
                   </div>
                 ) : (
                   group.title && (
-                    <h3 className="text-xs font-medium text-foreground ">
+                    <h3 className={GAME_TAB_SECTION_HEADER}>
                       {group.title}
                     </h3>
                   )
@@ -1743,7 +1739,7 @@ export default function VillagePanel() {
             (story.seen?.hasVillagers && visiblePopulationJobs.length > 0)) && (
               <div className="space-y-2">
                 <div className="flex w-full items-center gap-2">
-                  <h3 className="inline-flex min-w-0 flex-wrap items-center gap-1.5 text-xs font-medium text-foreground leading-none">
+                  <h3 className={`inline-flex min-w-0 flex-wrap items-center gap-1.5 ${GAME_TAB_SECTION_HEADER}`}>
                     {catalogActive && !story.seen?.hasVillagers ? (
                       <RedactedLockedHint
                         label={t("village.sectionProduce")}

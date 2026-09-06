@@ -28,8 +28,8 @@ body {
 :root {
   --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
   --font-mono: 'Courier New', monospace;
-  --adc-text-scale: 1;
-  /* Button chrome only; milder than --adc-text-scale (see textScale.ts). */
+  --adc-text-delta: 0px;
+  /* Button chrome only; milder than the +2px text bump (see textScale.ts). */
   --adc-control-scale: 1;
 }
 
@@ -98,13 +98,13 @@ body {
   }
 
   /*
-   * Readable UI text scales with Settings → Text size (Large).
+   * Readable UI text grows +2px with Settings → Text size (Large).
    * Pixel-fixed symbol overlays are excluded — they keep arbitrary text-[Npx].
    * Default line-heights live in :where() so explicit leading-* (e.g. DialogTitle
    * leading-none) still wins — otherwise header chrome looks misaligned vs the X.
    */
   .text-3xs {
-    font-size: calc(0.5625rem * var(--adc-text-scale, 1));
+    font-size: calc(0.5625rem + var(--adc-text-delta, 0px));
   }
 
   :where(.text-3xs) {
@@ -112,7 +112,7 @@ body {
   }
 
   .text-2xs {
-    font-size: calc(0.625rem * var(--adc-text-scale, 1));
+    font-size: calc(0.625rem + var(--adc-text-delta, 0px));
   }
 
   :where(.text-2xs) {
@@ -120,7 +120,7 @@ body {
   }
 
   .text-xxs {
-    font-size: calc(0.6875rem * var(--adc-text-scale, 1));
+    font-size: calc(0.6875rem + var(--adc-text-delta, 0px));
   }
 
   :where(.text-xxs) {
@@ -128,7 +128,7 @@ body {
   }
 
   .text-xs-plus {
-    font-size: calc(0.8125rem * var(--adc-text-scale, 1));
+    font-size: calc(0.8125rem + var(--adc-text-delta, 0px));
   }
 
   :where(.text-xs-plus) {
@@ -136,68 +136,67 @@ body {
   }
 
   .text-xs {
-    font-size: calc(0.75rem * var(--adc-text-scale, 1));
+    font-size: calc(0.75rem + var(--adc-text-delta, 0px));
   }
 
   :where(.text-xs) {
-    line-height: calc(1rem * var(--adc-text-scale, 1));
+    line-height: calc(1rem + var(--adc-text-delta, 0px));
   }
 
   .text-sm {
-    font-size: calc(0.875rem * var(--adc-text-scale, 1));
+    font-size: calc(0.875rem + var(--adc-text-delta, 0px));
   }
 
   :where(.text-sm) {
-    line-height: calc(1.25rem * var(--adc-text-scale, 1));
+    line-height: calc(1.25rem + var(--adc-text-delta, 0px));
   }
 
   .text-base {
-    font-size: calc(1rem * var(--adc-text-scale, 1));
+    font-size: calc(1rem + var(--adc-text-delta, 0px));
   }
 
   :where(.text-base) {
-    line-height: calc(1.5rem * var(--adc-text-scale, 1));
+    line-height: calc(1.5rem + var(--adc-text-delta, 0px));
   }
 
   .text-lg {
-    font-size: calc(1.125rem * var(--adc-text-scale, 1));
+    font-size: calc(1.125rem + var(--adc-text-delta, 0px));
   }
 
   :where(.text-lg) {
-    line-height: calc(1.75rem * var(--adc-text-scale, 1));
+    line-height: calc(1.75rem + var(--adc-text-delta, 0px));
   }
 
   .text-xl {
-    font-size: calc(1.25rem * var(--adc-text-scale, 1));
+    font-size: calc(1.25rem + var(--adc-text-delta, 0px));
   }
 
   :where(.text-xl) {
-    line-height: calc(1.75rem * var(--adc-text-scale, 1));
+    line-height: calc(1.75rem + var(--adc-text-delta, 0px));
   }
 
   .text-2xl {
-    font-size: calc(1.5rem * var(--adc-text-scale, 1));
+    font-size: calc(1.5rem + var(--adc-text-delta, 0px));
   }
 
   :where(.text-2xl) {
-    line-height: calc(2rem * var(--adc-text-scale, 1));
+    line-height: calc(2rem + var(--adc-text-delta, 0px));
   }
 
   .text-3xl {
-    font-size: calc(1.875rem * var(--adc-text-scale, 1));
+    font-size: calc(1.875rem + var(--adc-text-delta, 0px));
   }
 
   :where(.text-3xl) {
-    line-height: calc(2.25rem * var(--adc-text-scale, 1));
+    line-height: calc(2.25rem + var(--adc-text-delta, 0px));
   }
 
-  /* Shared counter metrics (Village + sleep). Do not set font-family here —
-   * Village villager counts reuse this class and should stay on the UI sans.
-   * Sleep dialog applies font-mono on its number cells only. */
+  /* Sleep dialog digit reel. Do not set font-family here — IdleModeDialog
+   * applies font-mono on its number cells only. */
   .adc-counter-text {
-    font-size: calc(0.75rem * var(--adc-text-scale, 1));
+    font-size: calc(0.75rem + var(--adc-text-delta, 0px));
     line-height: 1.15;
-    height: calc(0.8625rem * var(--adc-text-scale, 1));
+    height: calc(0.8625rem + var(--adc-text-delta, 0px));
   }
 
   /*
@@ -434,7 +433,7 @@ body {
   right: calc(-7px * var(--adc-control-scale, 1));
   width: calc(1rem * var(--adc-control-scale, 1));
   height: calc(1rem * var(--adc-control-scale, 1));
-  /* Control scale only — avoid stacking --adc-text-scale from .text-2xs. */
+  /* Control scale only — avoid stacking --adc-text-delta from .text-2xs. */
   font-size: calc(0.625rem * var(--adc-control-scale, 1));
   line-height: 1;
 }
@@ -485,15 +484,15 @@ body {
   height: calc(18px * var(--adc-control-scale, 1));
 }
 
-/* Produce / Focus circular indicators — 18px normal, 22px in Large text only. */
+/* Produce / Focus circular indicators — 18px normal, 20px in Large text only. */
 .game-panel-header-indicator {
   width: 18px;
   height: 18px;
 }
 
 html.adc-text-large .game-panel-header-indicator {
-  width: 22px;
-  height: 22px;
+  width: 20px;
+  height: 20px;
 }
 
 /* Side-panel resource/building rows: slightly more vertical room when Large. */
@@ -516,7 +515,7 @@ html.adc-text-large .side-panel-item-list {
 }
 
 html.adc-text-large .game-panel-header-indicator-glyph--md {
-  font-size: 15px;
+  font-size: 14px;
 }
 
 html.adc-text-large .game-panel-header-indicator-glyph--sm {
@@ -533,7 +532,7 @@ html.adc-text-large .game-panel-header-indicator-glyph--xs {
 }
 
 html.adc-text-large .game-panel-header-indicator-row {
-  height: 22px;
+  height: 20px;
 }
 
 /* Profile header accent mask icons (rewards / exclusive) inside w-7 buttons. */
@@ -544,8 +543,8 @@ html.adc-text-large .game-panel-header-indicator-row {
 
 /* Main tab + side-panel section mask icons (~14px); track text scale with labels. */
 .game-tab-icon {
-  width: calc(0.875rem * var(--adc-text-scale, 1));
-  height: calc(0.875rem * var(--adc-text-scale, 1));
+  width: calc(0.875rem + var(--adc-text-delta, 0px));
+  height: calc(0.875rem + var(--adc-text-delta, 0px));
 }
 
 /* Village − / + assignment hit targets.
@@ -556,7 +555,7 @@ html.adc-text-large .game-panel-header-indicator-row {
 }
 
 .villager-count-button>span {
-  font-size: calc(1rem * var(--adc-text-scale, 1));
+  font-size: calc(1rem + var(--adc-text-delta, 0px));
   /* 14px @ Normal (was text-xs 12px) */
 }
 

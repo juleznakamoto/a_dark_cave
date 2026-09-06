@@ -6,12 +6,12 @@ export type TextScale = (typeof TEXT_SCALE_OPTIONS)[number];
 
 export const DEFAULT_TEXT_SCALE: TextScale = "normal";
 
-/** Readable UI text multiplier when Large is selected (symbols stay px-fixed). */
-export const LARGE_TEXT_SCALE_FACTOR = 1.125;
+/** Extra pixels added to readable UI text when Large is selected. */
+export const LARGE_TEXT_DELTA_PX = 2;
 
 /**
  * Milder multiplier for button chrome (height/padding) when Large is selected.
- * Kept below text scale so labeled actions breathe without blowing up header/footer layout.
+ * Kept milder than the +2px text bump so labeled actions breathe without blowing up header/footer layout.
  */
 export const LARGE_CONTROL_SCALE_FACTOR = 1.06;
 
@@ -28,8 +28,8 @@ export function normalizeTextScale(
   return isTextScale(value) ? value : DEFAULT_TEXT_SCALE;
 }
 
-export function getTextScaleFactor(scale: TextScale): number {
-  return scale === "large" ? LARGE_TEXT_SCALE_FACTOR : 1;
+export function getTextScaleDeltaPx(scale: TextScale): number {
+  return scale === "large" ? LARGE_TEXT_DELTA_PX : 0;
 }
 
 export function getControlScaleFactor(scale: TextScale): number {
@@ -57,7 +57,11 @@ export function setStoredTextScale(scale: TextScale): void {
 export function applyTextScaleToDocument(scale: TextScale): void {
   if (typeof document === "undefined") return;
   const root = document.documentElement;
-  root.style.setProperty("--adc-text-scale", String(getTextScaleFactor(scale)));
+  root.style.setProperty(
+    "--adc-text-delta",
+    `${getTextScaleDeltaPx(scale)}px`,
+  );
+  root.style.removeProperty("--adc-text-scale");
   root.style.setProperty(
     "--adc-control-scale",
     String(getControlScaleFactor(scale)),

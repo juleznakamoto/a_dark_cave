@@ -14,6 +14,7 @@ import {
 import AttackWavesChart from "./AttackWavesChart";
 import CooldownButton, { gameActionButtonGridClassName } from "@/components/CooldownButton";
 import { DemoEndPromoBadge } from "@/components/game/DemoEndPromoBadge";
+import { GAME_TAB_SECTION_HEADER } from "@/components/game/gameChrome";
 import { RedactedLockedHint } from "@/components/game/RedactedHint";
 import { useDemoEndCatalogActive } from "@/hooks/useSteamEditionActive";
 import { useTranslation } from "react-i18next";
@@ -84,7 +85,7 @@ export default function BastionPanel({
 
       {showHealSection && (
         <div className="space-y-2">
-          <h3 className="inline-flex flex-wrap items-center gap-1.5 text-xs font-medium text-foreground">
+          <h3 className={`inline-flex flex-wrap items-center gap-1.5 ${GAME_TAB_SECTION_HEADER}`}>
             {redactHealHeader ? (
               <RedactedLockedHint
                 label={t("bastion.heal")}
@@ -207,7 +208,7 @@ export default function BastionPanel({
 
       {showRepairSection && (
         <div className="space-y-2">
-          <h3 className="inline-flex flex-wrap items-center gap-1.5 text-xs font-medium text-foreground">
+          <h3 className={`inline-flex flex-wrap items-center gap-1.5 ${GAME_TAB_SECTION_HEADER}`}>
             {redactRepairHeader ? (
               <RedactedLockedHint
                 label={t("bastion.repair")}

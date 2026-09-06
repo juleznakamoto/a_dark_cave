@@ -30,6 +30,7 @@ import {
   RedactedMoreHint,
 } from "@/components/game/RedactedHint";
 import { DemoEndPromoBadge } from "@/components/game/DemoEndPromoBadge";
+import { GAME_TAB_SECTION_HEADER } from "@/components/game/gameChrome";
 import { getDemoEndHiddenActionTeasers } from "@/game/demoEndCatalog";
 import { useDemoEndCatalogActive } from "@/hooks/useSteamEditionActive";
 import {
@@ -542,7 +543,7 @@ export default function CavePanel() {
               return (
                 <div key={groupIndex} className="space-y-2">
                   {group.title && (
-                    <h3 className="inline-flex flex-wrap items-center gap-1.5 text-xs font-medium text-foreground">
+                    <h3 className={`inline-flex flex-wrap items-center gap-1.5 ${GAME_TAB_SECTION_HEADER}`}>
                       {group.title}
                       {catalogActive && isCraftSection ? (
                         <DemoEndPromoBadge kind="craft" />
@@ -624,7 +625,7 @@ export default function CavePanel() {
             return (
               <div key={groupIndex} className="space-y-2">
                 {group.title && (
-                  <h3 className="text-xs font-medium text-foreground">
+                  <h3 className={GAME_TAB_SECTION_HEADER}>
                     {catalogActive && visibleActions.length === 0 ? (
                       <RedactedLockedHint
                         label={group.title}

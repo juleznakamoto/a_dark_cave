@@ -574,7 +574,7 @@ export default function StartScreen({
     if (makeFireDisabled || executedRef.current) return;
     executedRef.current = true;
 
-    // Match canvas type to the live DOM line (includes --adc-text-scale).
+    // Match canvas type to the live DOM line (includes Large text size).
     const sampleLine = introLineRefs.current.find(Boolean);
     if (sampleLine) {
       const style = window.getComputedStyle(sampleLine);
@@ -913,7 +913,7 @@ export default function StartScreen({
       )}
 
       <main className="relative z-10 flex-1 flex flex-col items-center justify-center min-h-screen">
-        <div className="text-center mb-4 w-full max-w-xl px-4">
+        <div className="text-center mb-4 w-full max-w-xl px-4 space-y-1.5">
           {(isCruelMode
             ? [
               t("startScreen.titleCruel", { defaultValue: "A very dark cave." }),

@@ -3,12 +3,12 @@ import { describe, expect, it, beforeEach, afterEach } from "vitest";
 import {
   DEFAULT_TEXT_SCALE,
   LARGE_CONTROL_SCALE_FACTOR,
-  LARGE_TEXT_SCALE_FACTOR,
+  LARGE_TEXT_DELTA_PX,
   TEXT_SCALE_STORAGE_KEY,
   applyTextScaleToDocument,
   getControlScaleFactor,
   getStoredTextScale,
-  getTextScaleFactor,
+  getTextScaleDeltaPx,
   normalizeTextScale,
   setStoredTextScale,
   setTextScale,
@@ -18,14 +18,14 @@ describe("textScale", () => {
   beforeEach(() => {
     localStorage.clear();
     document.documentElement.classList.remove("adc-text-large");
-    document.documentElement.style.removeProperty("--adc-text-scale");
+    document.documentElement.style.removeProperty("--adc-text-delta");
     document.documentElement.style.removeProperty("--adc-control-scale");
   });
 
   afterEach(() => {
     localStorage.clear();
     document.documentElement.classList.remove("adc-text-large");
-    document.documentElement.style.removeProperty("--adc-text-scale");
+    document.documentElement.style.removeProperty("--adc-text-delta");
     document.documentElement.style.removeProperty("--adc-control-scale");
   });
 
@@ -46,8 +46,8 @@ describe("textScale", () => {
       true,
     );
     expect(
-      document.documentElement.style.getPropertyValue("--adc-text-scale"),
-    ).toBe(String(LARGE_TEXT_SCALE_FACTOR));
+      document.documentElement.style.getPropertyValue("--adc-text-delta"),
+    ).toBe(`${LARGE_TEXT_DELTA_PX}px`);
     expect(
       document.documentElement.style.getPropertyValue("--adc-control-scale"),
     ).toBe(String(LARGE_CONTROL_SCALE_FACTOR));
@@ -56,7 +56,7 @@ describe("textScale", () => {
   it("setTextScale updates storage and document", () => {
     setTextScale("large");
     expect(getStoredTextScale()).toBe("large");
-    expect(getTextScaleFactor("large")).toBe(LARGE_TEXT_SCALE_FACTOR);
+    expect(getTextScaleDeltaPx("large")).toBe(LARGE_TEXT_DELTA_PX);
     expect(getControlScaleFactor("large")).toBe(LARGE_CONTROL_SCALE_FACTOR);
 
     setTextScale("normal");
@@ -65,8 +65,8 @@ describe("textScale", () => {
       false,
     );
     expect(
-      document.documentElement.style.getPropertyValue("--adc-text-scale"),
-    ).toBe("1");
+      document.documentElement.style.getPropertyValue("--adc-text-delta"),
+    ).toBe("0px");
     expect(
       document.documentElement.style.getPropertyValue("--adc-control-scale"),
     ).toBe("1");

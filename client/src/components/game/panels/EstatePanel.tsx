@@ -36,6 +36,7 @@ import {
   GAME_PANEL_HEADER_INDICATOR_INNER_CLASS,
   GAME_PANEL_HEADER_INDICATOR_SIZE_PX,
   GAME_PANEL_HEADER_INDICATOR_TRIGGER_CLASS,
+  GAME_TAB_SECTION_HEADER,
 } from "@/components/game/gameChrome";
 import { headerIndicatorIcon } from "@/game/headerIndicatorIcons";
 import { formatNumber, formatSignedNumber } from "@/lib/utils";
@@ -693,7 +694,7 @@ export default function EstatePanel({
           {/* Indicator-height band matches Produce rings so Sleep/Focus below don't jump */}
           <div className="pb-2">
             <div className="game-panel-header-indicator-row flex w-full items-center gap-2">
-              <h3 className="inline-flex shrink-0 items-center text-xs font-medium text-foreground leading-none">
+              <h3 className={`inline-flex shrink-0 items-center ${GAME_TAB_SECTION_HEADER}`}>
                 {t("estate.rest")}
               </h3>
               {focusState?.isActive && focusState.endTime > Date.now() && (
@@ -958,7 +959,7 @@ export default function EstatePanel({
               fellowship.disgraced_prior ||
               books.book_of_chainmaster) && (
                 <div className="space-y-1 pt-2">
-                  <h3 className="inline-flex flex-wrap items-center gap-1.5 text-xs font-medium text-foreground">
+                  <h3 className={`inline-flex flex-wrap items-center gap-1.5 ${GAME_TAB_SECTION_HEADER}`}>
                     {catalogActive &&
                       !DEMO_END_ESTATE_SKILL_IDS.some((id) =>
                         isDemoEndEstateSkillUnlocked(state, id),
@@ -1276,7 +1277,7 @@ export default function EstatePanel({
         {/* Cube Section — unlocked whispers, plus redacted catalog at demo end */}
         {(catalogActive || completedCubeEvents.length > 0) && (
           <div className="w-full space-y-2 pt-1 pb-4">
-            <h3 className="inline-flex flex-wrap items-center gap-1.5 text-xs font-medium text-foreground">
+            <h3 className={`inline-flex flex-wrap items-center gap-1.5 ${GAME_TAB_SECTION_HEADER}`}>
               {catalogActive && completedCubeEvents.length === 0 ? (
                 <RedactedLockedHint
                   label={t("estate.cubeWhispers")}

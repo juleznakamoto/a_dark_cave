@@ -22,6 +22,7 @@ import {
 } from "@/components/CooldownButton";
 import { cn } from "@/lib/utils";
 import { TooltipWrapper } from "@/components/game/TooltipWrapper";
+import { GAME_TAB_SECTION_HEADER } from "@/components/game/gameChrome";
 import {
   GoldShopBadge,
   openGoldShopFilter,
@@ -802,7 +803,7 @@ export default function TimedEventPanel() {
     if (choices.length === 0) return null;
     return (
       <div className="space-y-2">
-        <h3 className="text-xs font-medium inline-flex items-center gap-1.5">
+        <h3 className={`${GAME_TAB_SECTION_HEADER} inline-flex items-center gap-1.5`}>
           <span className="leading-none">{title}</span>
           {titleExtra}
         </h3>
@@ -817,7 +818,7 @@ export default function TimedEventPanel() {
     <div className="w-full space-y-1 pt-2 md:pt-0 mt-0 md:mt-2 mb-2 pl-2 pr-2">
       {/* Event Title */}
       {displayTitle && (
-        <h2 className="text-xs flex items-center justify-between">
+        <h2 className="text-sm flex items-center justify-between">
           <div className="flex items-center min-w-0 flex-wrap gap-x-1">
             <span className="font-semibold">{displayTitle}</span>
             <span
@@ -832,7 +833,7 @@ export default function TimedEventPanel() {
       )}
       {/* Event Message */}
       {displayMessage && (
-        <div className="text-xs text-muted-foreground">{displayMessage}</div>
+        <div className="text-sm text-muted-foreground">{displayMessage}</div>
       )}
 
       {/* Choices */}
@@ -871,7 +872,7 @@ export default function TimedEventPanel() {
         ) : (
           <>
             {isMerchantEvent && (
-              <h3 className="text-xs font-medium inline-flex items-center gap-1.5">
+              <h3 className={`${GAME_TAB_SECTION_HEADER} inline-flex items-center gap-1.5`}>
                 <span className="leading-none">{t("ui:timedEvent.buy")}</span>
                 {merchantDiscountBadge}
               </h3>

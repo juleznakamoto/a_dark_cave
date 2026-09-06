@@ -12,11 +12,15 @@ export const GAME_CHROME_NO_BG_HOVER = "hover:bg-transparent active:scale-100";
 /** Fixed overlay between header/footer; click particles portal here (below action buttons). */
 export const GAME_PARTICLE_LAYER_ID = "adc-game-particle-layer";
 
-/** Shared bottom-aligned header label band (tabs + side-panel section titles). */
+/** Shared bottom-aligned header label band (location tabs + side-panel section titles). */
 export const GAME_PANEL_HEADER_BAND =
   // !leading-none: scaled .text-sm line-height must not inflate this band or
   // icon tabs (quest book) sit below the text baselines.
   "inline-flex h-9 items-end pb-2 text-sm !leading-none";
+
+/** Section titles inside location tabs (Build, Produce, Rest, …). Same size as side-panel headers. */
+export const GAME_TAB_SECTION_HEADER =
+  "text-sm font-medium text-foreground leading-none";
 
 /**
  * Insight unlock blobs + construction/preset slot chrome in panel headers.
@@ -55,7 +59,7 @@ export const TAB_ICON_MASK_BOTTOM =
  */
 export const TAB_ICON_ALIGN_CLASS = `${TAB_ICON_MASK_BOTTOM} -translate-y-[3px]`;
 
-/** Default size for Cave/City/… tab mask icons (scales with `--adc-text-scale`). */
+/** Default size for Cave/City/… tab mask icons (grows +2px with Large text). */
 export const TAB_ICON_SIZE_CLASS = "game-tab-icon";
 
 /** Timed-event hourglass tab icon alignment (same baseline as other tab icons). */

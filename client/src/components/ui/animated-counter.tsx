@@ -11,10 +11,10 @@ export function getAnimatedCounterHeightPx(): number {
   if (typeof document === "undefined") return 14; // ~0.8625rem at 16px root
   const root = document.documentElement;
   const rootPx = parseFloat(getComputedStyle(root).fontSize) || 16;
-  const scale =
-    parseFloat(getComputedStyle(root).getPropertyValue("--adc-text-scale")) || 1;
-  // Digit reel height: text-xs (0.75rem) × line-height 1.15
-  return rootPx * 0.8625 * scale;
+  const deltaPx =
+    parseFloat(getComputedStyle(root).getPropertyValue("--adc-text-delta")) || 0;
+  // Digit reel height: text-xs (0.75rem) × line-height 1.15, plus Large +2px
+  return rootPx * 0.8625 + deltaPx;
 }
 
 export const ANIMATED_COUNTER_TEXT_CLASS = "adc-counter-text tabular-nums";
