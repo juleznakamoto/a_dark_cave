@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useLayoutEffect, useRef } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 import { useGameStore } from "@/game/state";
 import { audioManager } from "@/lib/audio";
 import { SOUND_VOLUME } from "@/lib/soundVolumes";
@@ -117,6 +117,95 @@ function formatCombatStatusRoundsRemaining(rounds: number): string {
   );
 }
 
+type CombatResultLine = { key: string; text: string; className: string };
+
+const DEFEAT_LINES_START = 1.8;
+const DEFEAT_LINE_STAGGER = 1.0;
+const VICTORY_LINES_START = 1.8;
+const VICTORY_LINE_STAGGER = 0.3;
+
+/** Compact win/lose screen. Sizes the dialog to the title, result lines, and Continue. */
+function CombatResultScreen({
+  kind,
+  title,
+  lines,
+  onContinue,
+  continueLabel,
+}: {
+  kind: "victory" | "defeat";
+  title: string;
+  lines: CombatResultLine[];
+  onContinue: () => void;
+  continueLabel: string;
+}) {
+  const isDefeat = kind === "defeat";
+  const linesStart = isDefeat ? DEFEAT_LINES_START : VICTORY_LINES_START;
+  const lineStagger = isDefeat ? DEFEAT_LINE_STAGGER : VICTORY_LINE_STAGGER;
+  const buttonDelay =
+    linesStart + Math.max(0, lines.length - 1) * lineStagger + 0.4 + 0.5;
+
+  return (
+    <div className="flex flex-col items-center">
+      <DialogTitle className="sr-only">{title}</DialogTitle>
+      <motion.span
+        className={
+          isDefeat
+            ? "font-sans text-red-700 text-xl tracking-[0.25em] uppercase select-none defeat-text-pulse"
+            : "font-sans text-white text-xl tracking-[0.25em] uppercase select-none"
+        }
+        initial={{ opacity: 0 }}
+        animate={isDefeat ? { opacity: [0, 1, 0.8] } : { opacity: 1 }}
+        transition={{
+          duration: isDefeat ? 2 : 1.2,
+          delay: 0.3,
+          ease: "easeInOut",
+        }}
+      >
+        {title}
+      </motion.span>
+
+      <div className="mt-5 flex flex-col items-center gap-1 text-center">
+        {lines.map((line, i) => (
+          <motion.p
+            key={line.key}
+            className={line.className}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{
+              duration: 0.4,
+              delay: linesStart + i * lineStagger,
+            }}
+          >
+            {line.text}
+          </motion.p>
+        ))}
+      </div>
+
+      <motion.div
+        className="mt-6 w-full"
+        initial={{ opacity: 0, pointerEvents: "none" }}
+        animate={{
+          opacity: 1,
+          transitionEnd: { pointerEvents: "auto" },
+        }}
+        transition={{
+          duration: 0.5,
+          delay: buttonDelay,
+        }}
+      >
+        <Button
+          onClick={onContinue}
+          className="w-full"
+          variant="outline"
+          button_id="combat-end-fight"
+        >
+          {continueLabel}
+        </Button>
+      </motion.div>
+    </div>
+  );
+}
+
 interface CombatDialogProps {
   isOpen: boolean;
   onClose: () => void;
@@ -158,7 +247,6 @@ export default function CombatDialog({
   );
   const [usedItemsInCombat, setUsedItemsInCombat] = useState<string[]>([]);
   const [isProcessingRound, setIsProcessingRound] = useState(false);
-  const [combatEnded, setCombatEnded] = useState(false);
   const [combatResult, setCombatResult] = useState<"victory" | "defeat" | null>(
     null,
   );
@@ -390,7 +478,6 @@ export default function CombatDialog({
       setUsedItemsInRound(new Set());
       setUsedItemsInCombat([]);
       setIsProcessingRound(false);
-      setCombatEnded(false);
       setCombatResult(null);
       setEnemyDamageIndicator({ amount: 0, visible: false });
       setEnemyHealIndicator({ amount: 0, visible: false });
@@ -422,7 +509,7 @@ export default function CombatDialog({
     // eslint-disable-next-line react-hooks/exhaustive-deps -- Only reset when the dialog opens, not when bastion stats recalculate mid-combat
   }, [isOpen, enemy]);
 
-  // Apply combat outcome as soon as the fight ends so the result overlay can show summaries.
+  // Apply combat outcome as soon as the fight ends so the result screen can show summaries.
   useLayoutEffect(() => {
     if (
       (combatResult !== "victory" && combatResult !== "defeat") ||
@@ -563,7 +650,6 @@ export default function CombatDialog({
 
     // Check if enemy is defeated
     if (newEnemyHealth <= 0) {
-      setCombatEnded(true);
       setCombatResult("victory");
     }
   };
@@ -583,7 +669,6 @@ export default function CombatDialog({
 
     // Check if integrity is depleted
     if (newIntegrityValue <= 0) {
-      setCombatEnded(true);
       setCombatResult("defeat");
       return;
     }
@@ -612,7 +697,6 @@ export default function CombatDialog({
 
     // Check if enemy is defeated
     if (newEnemyHealth <= 0) {
-      setCombatEnded(true);
       setCombatResult("victory");
     }
   };
@@ -708,7 +792,6 @@ export default function CombatDialog({
       showEnemyDamage(dmg);
 
       if (newEnemyHealth <= 0) {
-        setCombatEnded(true);
         setCombatResult("victory");
       }
     } else {
@@ -736,7 +819,6 @@ export default function CombatDialog({
         setCurrentIntegrity(newIntegrityValue);
         showIntegrityDamage(finalDamage);
         if (newIntegrityValue <= 0) {
-          setCombatEnded(true);
           setCombatResult("defeat");
           return;
         }
@@ -744,7 +826,6 @@ export default function CombatDialog({
 
       // Check if enemy is defeated by bombs
       if (newEnemyHealth <= 0) {
-        setCombatEnded(true);
         setCombatResult("victory");
       }
     }
@@ -782,7 +863,6 @@ export default function CombatDialog({
       setCurrentIntegrity(newIntegrityValue);
       showIntegrityDamage(integrityDamage, isEnemyCritical);
       if (newIntegrityValue <= 0) {
-        setCombatEnded(true);
         setCombatResult("defeat");
         setPlayerStunned(false);
         setIsProcessingRound(false);
@@ -913,7 +993,6 @@ export default function CombatDialog({
         setPlayerStrikeFailed(false);
 
         if (newHealth <= 0) {
-          setCombatEnded(true);
           setCombatResult("victory");
           setPlayerStunned(false);
           setIsProcessingRound(false);
@@ -966,7 +1045,6 @@ export default function CombatDialog({
 
     // Check battle outcome
     if (newHealth <= 0) {
-      setCombatEnded(true);
       setCombatResult("victory");
       setIsProcessingRound(false);
     } else {
@@ -987,9 +1065,7 @@ export default function CombatDialog({
     ? (currentIntegrity / maxIntegrityForCombat) * 100
     : 0;
 
-  const DEFEAT_LINES_START = 3.4;
-  const DEFEAT_LINE_STAGGER = 1.0;
-  const defeatResultLines: { key: string; text: string; className: string }[] =
+  const defeatResultLines: CombatResultLine[] =
     combatSummary
       ? [
         {
@@ -1033,15 +1109,7 @@ export default function CombatDialog({
           : []),
       ]
       : [];
-  const defeatButtonDelay =
-    DEFEAT_LINES_START +
-    Math.max(0, defeatResultLines.length - 1) * DEFEAT_LINE_STAGGER +
-    0.4 +
-    0.5;
-
-  const VICTORY_LINES_START = 1.8;
-  const VICTORY_LINE_STAGGER = 0.3;
-  const victoryResultLines: { key: string; text: string; className: string }[] =
+  const victoryResultLines: CombatResultLine[] =
     combatSummary
       ? [
         ...(combatSummary.silverReward !== undefined &&
@@ -1083,11 +1151,6 @@ export default function CombatDialog({
           : []),
       ]
       : [];
-  const victoryButtonDelay =
-    VICTORY_LINES_START +
-    Math.max(0, victoryResultLines.length - 1) * VICTORY_LINE_STAGGER +
-    0.4 +
-    0.5;
 
   const luckCrit = calculateCriticalStrikeChance(getTotalLuck(gameState));
   const itemCrit = getTotalCriticalChance(gameState);
@@ -1187,6 +1250,22 @@ export default function CombatDialog({
                 </Button>
               </div>
             </>
+          ) : combatResult && combatSummary !== null ? (
+            <CombatResultScreen
+              kind={combatResult}
+              title={
+                combatResult === "defeat"
+                  ? t("ui:combat.youLost")
+                  : t("ui:combat.youWin")
+              }
+              lines={
+                combatResult === "defeat"
+                  ? defeatResultLines
+                  : victoryResultLines
+              }
+              onContinue={handleEndFight}
+              continueLabel={t("common:buttons.continue")}
+            />
           ) : (
             // Combat interface
             <>
@@ -1824,175 +1903,39 @@ export default function CombatDialog({
                   )}
                 </div>
 
-                {/* Fight Button — overlays replace this once combat ends */}
                 <div className="pt-3">
-                  {!combatEnded ? (
-                    <TooltipWrapper
-                      tooltip={fightTooltip}
-                      tooltipId="combat-fight"
-                      tooltipContentClassName="max-w-xs"
+                  <TooltipWrapper
+                    tooltip={fightTooltip}
+                    tooltipId="combat-fight"
+                    tooltipContentClassName="max-w-xs"
+                    disabled={
+                      isProcessingRound ||
+                      (currentEnemy?.currentHealth || 0) <= 0
+                    }
+                    className="w-full"
+                  >
+                    <Button
+                      onClick={handleFight}
                       disabled={
                         isProcessingRound ||
                         (currentEnemy?.currentHealth || 0) <= 0
                       }
-                      className="w-full"
-                    >
-                      <Button
-                        onClick={handleFight}
-                        disabled={
+                      className={cn(
+                        "w-full",
+                        gameActionOutlineButtonClassName(
                           isProcessingRound ||
-                          (currentEnemy?.currentHealth || 0) <= 0
-                        }
-                        className={cn(
-                          "w-full",
-                          gameActionOutlineButtonClassName(
-                            isProcessingRound ||
-                            (currentEnemy?.currentHealth || 0) <= 0,
-                          ),
-                        )}
-                        variant="outline"
-                        button_id="combat-fight"
-                      >
-                        {isProcessingRound
-                          ? t("ui:combat.fighting")
-                          : t("ui:combat.fight")}
-                      </Button>
-                    </TooltipWrapper>
-                  ) : null}
+                          (currentEnemy?.currentHealth || 0) <= 0,
+                        ),
+                      )}
+                      variant="outline"
+                      button_id="combat-fight"
+                    >
+                      {isProcessingRound
+                        ? t("ui:combat.fighting")
+                        : t("ui:combat.fight")}
+                    </Button>
+                  </TooltipWrapper>
                 </div>
-
-                <AnimatePresence>
-                  {combatResult === "defeat" && combatSummary !== null && (
-                    <motion.div
-                      className="absolute inset-0 z-50 flex flex-col items-center justify-center bg-black px-6"
-                      initial={{ backgroundColor: "rgba(0, 0, 0, 0)" }}
-                      animate={{ backgroundColor: "rgba(0, 0, 0, 1)" }}
-                      transition={{ duration: 1.5, ease: "easeIn" }}
-                    >
-                      <div className="-mt-16 flex flex-col items-center">
-                        <motion.span
-                          className="font-sans text-red-700 text-xl tracking-[0.25em] uppercase select-none defeat-text-pulse"
-                          initial={{ opacity: 0 }}
-                          animate={{ opacity: [0, 1, 0.8] }}
-                          transition={{
-                            duration: 2,
-                            delay: 1.5,
-                            ease: "easeInOut",
-                          }}
-                        >
-                          {t("ui:combat.youLost")}
-                        </motion.span>
-
-                        <div className="mt-5 flex flex-col items-center gap-1 text-center">
-                          {defeatResultLines.map((line, i) => (
-                            <motion.p
-                              key={line.key}
-                              className={line.className}
-                              initial={{ opacity: 0 }}
-                              animate={{ opacity: 1 }}
-                              transition={{
-                                duration: 0.4,
-                                delay:
-                                  DEFEAT_LINES_START + i * DEFEAT_LINE_STAGGER,
-                              }}
-                            >
-                              {line.text}
-                            </motion.p>
-                          ))}
-                        </div>
-                      </div>
-
-                      <motion.div
-                        className="absolute bottom-6 left-6 right-6"
-                        initial={{ opacity: 0, pointerEvents: "none" }}
-                        animate={{
-                          opacity: 1,
-                          transitionEnd: { pointerEvents: "auto" },
-                        }}
-                        transition={{
-                          duration: 0.5,
-                          delay: defeatButtonDelay,
-                        }}
-                      >
-                        <Button
-                          onClick={handleEndFight}
-                          className="w-full"
-                          variant="outline"
-                          button_id="combat-end-fight"
-                        >
-                          {t("common:buttons.continue")}
-                        </Button>
-                      </motion.div>
-                    </motion.div>
-                  )}
-                </AnimatePresence>
-
-                <AnimatePresence>
-                  {combatResult === "victory" && combatSummary !== null && (
-                    <motion.div
-                      className="absolute inset-0 z-50 flex flex-col items-center justify-center bg-black px-6"
-                      initial={{ opacity: 0 }}
-                      animate={{ opacity: 1 }}
-                      transition={{ duration: 0.8, ease: "easeIn" }}
-                    >
-                      <div className="-mt-16 flex flex-col items-center">
-                        <motion.span
-                          className="font-sans text-white text-xl tracking-[0.25em] uppercase select-none"
-                          initial={{ opacity: 0 }}
-                          animate={{ opacity: 1 }}
-                          transition={{
-                            duration: 1.2,
-                            delay: 0.3,
-                            ease: "easeInOut",
-                          }}
-                        >
-                          {t("ui:combat.youWin")}
-                        </motion.span>
-
-                        <div className="mt-5 flex flex-col items-center gap-1 text-center">
-                          {victoryResultLines.map((line, i) => (
-                            <motion.p
-                              key={line.key}
-                              className={line.className}
-                              initial={{ opacity: 0 }}
-                              animate={{ opacity: 1 }}
-                              transition={{
-                                duration: 0.4,
-                                delay:
-                                  VICTORY_LINES_START +
-                                  i * VICTORY_LINE_STAGGER,
-                              }}
-                            >
-                              {line.text}
-                            </motion.p>
-                          ))}
-                        </div>
-                      </div>
-
-                      <motion.div
-                        className="absolute bottom-6 left-6 right-6"
-                        initial={{ opacity: 0, pointerEvents: "none" }}
-                        animate={{
-                          opacity: 1,
-                          transitionEnd: { pointerEvents: "auto" },
-                        }}
-                        transition={{
-                          duration: 0.5,
-                          delay: victoryButtonDelay,
-                        }}
-                      >
-                        <Button
-                          onClick={handleEndFight}
-                          className="w-full"
-                          variant="outline"
-                          button_id="combat-end-fight"
-                        >
-                          {t("common:buttons.continue")}
-                        </Button>
-                      </motion.div>
-                    </motion.div>
-                  )}
-                </AnimatePresence>
               </div>
             </>
           )}

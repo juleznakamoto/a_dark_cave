@@ -1213,7 +1213,7 @@ export default function StartScreen({
             </>
           )}
           {!steamEditionActive && (
-            <div className="flex flex-row items-center gap-x-3 leading-tight">
+            <div className="flex flex-col items-end leading-tight sm:flex-row sm:items-center sm:gap-x-3">
               <a
                 href="/privacy"
                 target="_blank"

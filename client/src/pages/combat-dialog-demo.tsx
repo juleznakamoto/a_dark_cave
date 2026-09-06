@@ -48,37 +48,28 @@ function applyDemoConfigToStore(config: CombatDemoConfig) {
   updateBastionStats();
 }
 
-function patchDemoConfigOnStore(config: CombatDemoConfig) {
-  useGameStore.setState((state) => ({
-    ...state,
-    flags: {
-      ...state.flags,
-      hasFortress: config.hasFortress,
-    },
-    clothing: {
-      ...state.clothing,
-      grenadier_bag: config.grenadierBag,
-      flask_harness: config.flaskHarness,
-    },
-    combatSkills: {
-      crushingStrikeLevel: config.crushingStrikeLevel,
-      bloodflameSphereLevel: config.bloodflameSphereLevel,
-      feralHowlLevel: config.feralHowlLevel,
-    },
-    fellowship: {
-      ...state.fellowship,
-      the_hound: true,
-    },
-    story: {
-      ...state.story,
-      seen: {
-        ...state.story?.seen,
-        restlessKnightWounded: config.restlessKnightWounded,
-        elderWizardWounded: config.elderWizardWounded,
-      },
-    },
-  }));
-  useGameStore.getState().updateBastionStats();
+function DemoToggle({
+  label,
+  checked,
+  onChange,
+  disabled = false,
+}: {
+  label: string;
+  checked: boolean;
+  onChange: (checked: boolean) => void;
+  disabled?: boolean;
+}) {
+  return (
+    <label className="flex items-center gap-2 text-sm">
+      <input
+        type="checkbox"
+        checked={checked}
+        disabled={disabled}
+        onChange={(e) => onChange(e.target.checked)}
+      />
+      {label}
+    </label>
+  );
 }
 
 export default function CombatDialogDemo() {
@@ -113,14 +104,7 @@ export default function CombatDialogDemo() {
   }, [enemyPreset]);
 
   const openCombatDialog = useCallback(() => {
-    patchDemoConfigOnStore(config);
-    useGameStore.setState((state) => ({
-      ...state,
-      resources: {
-        ...state.resources,
-        ...combatDemoResourceStock(),
-      },
-    }));
+    applyDemoConfigToStore(config);
     setDialogKey((key) => key + 1);
     setDialogOpen(true);
   }, [config]);
@@ -130,10 +114,10 @@ export default function CombatDialogDemo() {
       ...state,
       resources: {
         ...state.resources,
-        ...combatDemoResourceStock(),
+        ...combatDemoResourceStock(config),
       },
     }));
-  }, []);
+  }, [config]);
 
   const resetDemoState = useCallback(() => {
     setConfig(COMBAT_DEMO_DEFAULT_CONFIG);
@@ -181,132 +165,179 @@ export default function CombatDialogDemo() {
           </p>
         </section>
 
+        <section className="space-y-3 rounded-lg border border-neutral-800 bg-neutral-950/80 p-4">
+          <h2 className="text-sm font-medium">Combat items</h2>
+          <p className="text-xs text-muted-foreground">
+            All on by default. Uncheck to hide that button in the fight.
+          </p>
+          <div className="flex flex-wrap gap-4">
+            <DemoToggle
+              label="Ember Bomb"
+              checked={config.emberBomb}
+              onChange={(emberBomb) =>
+                setConfig((prev) => ({ ...prev, emberBomb }))
+              }
+            />
+            <DemoToggle
+              label="Ashfire Bomb"
+              checked={config.ashfireBomb}
+              onChange={(ashfireBomb) =>
+                setConfig((prev) => ({ ...prev, ashfireBomb }))
+              }
+            />
+            <DemoToggle
+              label="Void Bomb"
+              checked={config.voidBomb}
+              onChange={(voidBomb) =>
+                setConfig((prev) => ({ ...prev, voidBomb }))
+              }
+            />
+            <DemoToggle
+              label="Veinfire Elixir"
+              checked={config.veinfireElixir}
+              onChange={(veinfireElixir) =>
+                setConfig((prev) => ({ ...prev, veinfireElixir }))
+              }
+            />
+            <DemoToggle
+              label="Poison Arrows"
+              checked={config.poisonArrows}
+              onChange={(poisonArrows) =>
+                setConfig((prev) => ({ ...prev, poisonArrows }))
+              }
+            />
+          </div>
+        </section>
+
         <section className="space-y-4 rounded-lg border border-neutral-800 bg-neutral-950/80 p-4">
           <h2 className="text-sm font-medium">Fellowship skills</h2>
+          <p className="text-xs text-muted-foreground">
+            All on by default. Uncheck to hide that skill.
+          </p>
           <div className="grid gap-4 sm:grid-cols-2">
-            <label className="space-y-2 text-sm">
-              <span>Crushing Strike level ({config.crushingStrikeLevel})</span>
-              <input
-                type="range"
-                min={0}
-                max={MAX_CRUSHING_LEVEL}
-                value={config.crushingStrikeLevel}
-                onChange={(e) =>
-                  setConfig((prev) => ({
-                    ...prev,
-                    crushingStrikeLevel: Number(e.target.value),
-                  }))
+            <div className="space-y-2">
+              <DemoToggle
+                label="Crushing Strike"
+                checked={config.crushingStrike}
+                onChange={(crushingStrike) =>
+                  setConfig((prev) => ({ ...prev, crushingStrike }))
                 }
-                className="w-full"
               />
-            </label>
-            <label className="space-y-2 text-sm">
-              <span>
-                Bloodflame Sphere level ({config.bloodflameSphereLevel})
-              </span>
-              <input
-                type="range"
-                min={0}
-                max={MAX_BLOODFLAME_LEVEL}
-                value={config.bloodflameSphereLevel}
-                onChange={(e) =>
-                  setConfig((prev) => ({
-                    ...prev,
-                    bloodflameSphereLevel: Number(e.target.value),
-                  }))
+              <label className="space-y-2 text-sm">
+                <span>Level ({config.crushingStrikeLevel})</span>
+                <input
+                  type="range"
+                  min={0}
+                  max={MAX_CRUSHING_LEVEL}
+                  value={config.crushingStrikeLevel}
+                  disabled={!config.crushingStrike}
+                  onChange={(e) =>
+                    setConfig((prev) => ({
+                      ...prev,
+                      crushingStrikeLevel: Number(e.target.value),
+                    }))
+                  }
+                  className="w-full"
+                />
+              </label>
+            </div>
+            <div className="space-y-2">
+              <DemoToggle
+                label="Bloodflame Sphere"
+                checked={config.bloodflameSphere}
+                onChange={(bloodflameSphere) =>
+                  setConfig((prev) => ({ ...prev, bloodflameSphere }))
                 }
-                className="w-full"
               />
-            </label>
-            <label className="space-y-2 text-sm">
-              <span>Feral Howl level ({config.feralHowlLevel})</span>
-              <input
-                type="range"
-                min={0}
-                max={MAX_FERAL_HOWL_LEVEL}
-                value={config.feralHowlLevel}
-                onChange={(e) =>
-                  setConfig((prev) => ({
-                    ...prev,
-                    feralHowlLevel: Number(e.target.value),
-                  }))
+              <label className="space-y-2 text-sm">
+                <span>Level ({config.bloodflameSphereLevel})</span>
+                <input
+                  type="range"
+                  min={0}
+                  max={MAX_BLOODFLAME_LEVEL}
+                  value={config.bloodflameSphereLevel}
+                  disabled={!config.bloodflameSphere}
+                  onChange={(e) =>
+                    setConfig((prev) => ({
+                      ...prev,
+                      bloodflameSphereLevel: Number(e.target.value),
+                    }))
+                  }
+                  className="w-full"
+                />
+              </label>
+            </div>
+            <div className="space-y-2">
+              <DemoToggle
+                label="Feral Howl"
+                checked={config.feralHowl}
+                onChange={(feralHowl) =>
+                  setConfig((prev) => ({ ...prev, feralHowl }))
                 }
-                className="w-full"
               />
-            </label>
+              <label className="space-y-2 text-sm">
+                <span>Level ({config.feralHowlLevel})</span>
+                <input
+                  type="range"
+                  min={0}
+                  max={MAX_FERAL_HOWL_LEVEL}
+                  value={config.feralHowlLevel}
+                  disabled={!config.feralHowl}
+                  onChange={(e) =>
+                    setConfig((prev) => ({
+                      ...prev,
+                      feralHowlLevel: Number(e.target.value),
+                    }))
+                  }
+                  className="w-full"
+                />
+              </label>
+            </div>
           </div>
-          <div className="flex flex-wrap gap-4 text-sm">
-            <label className="flex items-center gap-2">
-              <input
-                type="checkbox"
-                checked={config.restlessKnightWounded}
-                onChange={(e) =>
-                  setConfig((prev) => ({
-                    ...prev,
-                    restlessKnightWounded: e.target.checked,
-                  }))
-                }
-              />
-              Restless Knight wounded
-            </label>
-            <label className="flex items-center gap-2">
-              <input
-                type="checkbox"
-                checked={config.elderWizardWounded}
-                onChange={(e) =>
-                  setConfig((prev) => ({
-                    ...prev,
-                    elderWizardWounded: e.target.checked,
-                  }))
-                }
-              />
-              Elder Wizard wounded
-            </label>
+          <div className="flex flex-wrap gap-4">
+            <DemoToggle
+              label="Restless Knight wounded"
+              checked={config.restlessKnightWounded}
+              disabled={!config.crushingStrike}
+              onChange={(restlessKnightWounded) =>
+                setConfig((prev) => ({ ...prev, restlessKnightWounded }))
+              }
+            />
+            <DemoToggle
+              label="Elder Wizard wounded"
+              checked={config.elderWizardWounded}
+              disabled={!config.bloodflameSphere}
+              onChange={(elderWizardWounded) =>
+                setConfig((prev) => ({ ...prev, elderWizardWounded }))
+              }
+            />
           </div>
         </section>
 
         <section className="space-y-3 rounded-lg border border-neutral-800 bg-neutral-950/80 p-4">
           <h2 className="text-sm font-medium">Loadout toggles</h2>
-          <div className="flex flex-wrap gap-4 text-sm">
-            <label className="flex items-center gap-2">
-              <input
-                type="checkbox"
-                checked={config.grenadierBag}
-                onChange={(e) =>
-                  setConfig((prev) => ({
-                    ...prev,
-                    grenadierBag: e.target.checked,
-                  }))
-                }
-              />
-              Grenadier&apos;s Bag
-            </label>
-            <label className="flex items-center gap-2">
-              <input
-                type="checkbox"
-                checked={config.flaskHarness}
-                onChange={(e) =>
-                  setConfig((prev) => ({
-                    ...prev,
-                    flaskHarness: e.target.checked,
-                  }))
-                }
-              />
-              Flask Harness
-            </label>
-            <label className="flex items-center gap-2">
-              <input
-                type="checkbox"
-                checked={config.hasFortress}
-                onChange={(e) =>
-                  setConfig((prev) => ({
-                    ...prev,
-                    hasFortress: e.target.checked,
-                  }))
-                }
-              />
-              Fortress label
-            </label>
+          <div className="flex flex-wrap gap-4">
+            <DemoToggle
+              label="Grenadier's Bag"
+              checked={config.grenadierBag}
+              onChange={(grenadierBag) =>
+                setConfig((prev) => ({ ...prev, grenadierBag }))
+              }
+            />
+            <DemoToggle
+              label="Flask Harness"
+              checked={config.flaskHarness}
+              onChange={(flaskHarness) =>
+                setConfig((prev) => ({ ...prev, flaskHarness }))
+              }
+            />
+            <DemoToggle
+              label="Fortress label"
+              checked={config.hasFortress}
+              onChange={(hasFortress) =>
+                setConfig((prev) => ({ ...prev, hasFortress }))
+              }
+            />
           </div>
         </section>
 

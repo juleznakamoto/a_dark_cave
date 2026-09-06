@@ -7,6 +7,14 @@ import {
 } from "@/game/rules/skillUpgrades";
 
 export type CombatDemoConfig = {
+  emberBomb: boolean;
+  ashfireBomb: boolean;
+  voidBomb: boolean;
+  veinfireElixir: boolean;
+  poisonArrows: boolean;
+  crushingStrike: boolean;
+  bloodflameSphere: boolean;
+  feralHowl: boolean;
   crushingStrikeLevel: number;
   bloodflameSphereLevel: number;
   feralHowlLevel: number;
@@ -18,6 +26,14 @@ export type CombatDemoConfig = {
 };
 
 export const COMBAT_DEMO_DEFAULT_CONFIG: CombatDemoConfig = {
+  emberBomb: true,
+  ashfireBomb: true,
+  voidBomb: true,
+  veinfireElixir: true,
+  poisonArrows: true,
+  crushingStrike: true,
+  bloodflameSphere: true,
+  feralHowl: true,
   crushingStrikeLevel: CRUSHING_STRIKE_UPGRADES.length - 1,
   bloodflameSphereLevel: BLOODFLAME_SPHERE_UPGRADES.length - 1,
   feralHowlLevel: FERAL_HOWL_UPGRADES.length - 1,
@@ -69,25 +85,27 @@ export function buildCombatDemoEnemy(presetId: EnemyPresetId) {
     waveNumber: preset.waveNumber,
     ...(preset.isBoss
       ? {
-          isBoss: true as const,
-          healChancePercent: preset.healChancePercent,
-          healAmount: preset.healAmount,
-          stunChancePercent: preset.stunChancePercent,
-        }
+        isBoss: true as const,
+        healChancePercent: preset.healChancePercent,
+        healAmount: preset.healAmount,
+        stunChancePercent: preset.stunChancePercent,
+      }
       : {}),
   };
 }
 
-/** Full combat stash: max bombs + elixirs for repeated test runs. */
-export function combatDemoResourceStock(): Pick<
+/** Combat stash for enabled items. Disabled items stay at 0. */
+export function combatDemoResourceStock(
+  config: CombatDemoConfig = COMBAT_DEMO_DEFAULT_CONFIG,
+): Pick<
   GameState["resources"],
   "ember_bomb" | "ashfire_bomb" | "void_bomb" | "veinfire_elixir"
 > {
   return {
-    ember_bomb: 20,
-    ashfire_bomb: 20,
-    void_bomb: 20,
-    veinfire_elixir: 10,
+    ember_bomb: config.emberBomb ? 20 : 0,
+    ashfire_bomb: config.ashfireBomb ? 20 : 0,
+    void_bomb: config.voidBomb ? 20 : 0,
+    veinfire_elixir: config.veinfireElixir ? 10 : 0,
   };
 }
 
@@ -120,7 +138,7 @@ export function buildCombatDemoGameState(
     weapons: {
       ...base.weapons,
       blacksteel_sword: true,
-      nightshade_bow: true,
+      nightshade_bow: config.poisonArrows,
       blacksteel_bow: true,
       ashen_dagger: true,
     },
@@ -157,12 +175,12 @@ export function buildCombatDemoGameState(
       survivors_last_words: true,
     },
     fellowship: {
-      restless_knight: true,
-      elder_wizard: true,
+      restless_knight: config.crushingStrike,
+      elder_wizard: config.bloodflameSphere,
       ashwraith_huntress: true,
       one_eyed_crow: true,
       disgraced_prior: true,
-      the_hound: true,
+      the_hound: config.feralHowl,
     },
     combatSkills: {
       crushingStrikeLevel: config.crushingStrikeLevel,
@@ -177,7 +195,7 @@ export function buildCombatDemoGameState(
     },
     resources: {
       ...base.resources,
-      ...combatDemoResourceStock(),
+      ...combatDemoResourceStock(config),
       gold: 5000,
       silver: 500,
     },
