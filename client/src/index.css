@@ -440,17 +440,12 @@ body {
 
 .button-prior-badge {
   position: absolute;
-  bottom: calc(-4px * var(--adc-control-scale, 1));
-  right: calc(-4px * var(--adc-control-scale, 1));
-  width: calc(10px * var(--adc-control-scale, 1));
-  height: calc(10px * var(--adc-control-scale, 1));
-}
-
-.button-prior-badge--assigned {
-  bottom: calc(-3px * var(--adc-control-scale, 1));
-  right: calc(-3px * var(--adc-control-scale, 1));
-  width: calc(8px * var(--adc-control-scale, 1));
-  height: calc(8px * var(--adc-control-scale, 1));
+  /* Center the disc on the button's bottom-right corner. */
+  bottom: 0;
+  right: 0;
+  width: calc(12px * var(--adc-control-scale, 1));
+  height: calc(12px * var(--adc-control-scale, 1));
+  transform: translate(50%, 50%);
 }
 
 .action-button-corner-badge {
@@ -541,10 +536,16 @@ html.adc-text-large .game-panel-header-indicator-row {
   height: calc(18px * var(--adc-control-scale, 1));
 }
 
-/* Main tab + side-panel section mask icons (~14px); track text scale with labels. */
+/* Main tab + footer mask icons (~14px); track text scale with labels. */
 .game-tab-icon {
   width: calc(0.875rem + var(--adc-text-delta, 0px));
   height: calc(0.875rem + var(--adc-text-delta, 0px));
+}
+
+/* Side-panel section masks + header Rewards diamond (~16px). */
+.game-side-panel-icon {
+  width: calc(1rem + var(--adc-text-delta, 0px));
+  height: calc(1rem + var(--adc-text-delta, 0px));
 }
 
 /* Village − / + assignment hit targets.

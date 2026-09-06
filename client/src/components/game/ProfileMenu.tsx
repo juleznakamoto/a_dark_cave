@@ -57,7 +57,7 @@ import { REWARDS_TASKS_PARTICLE_CONFIG } from "@/components/ui/bubbly-button.par
 import {
   GAME_CHROME_NO_BG_HOVER,
   LIME_ACCENT_MASK_ICON_CLASS,
-  TAB_ICON_SIZE_CLASS,
+  SIDE_PANEL_ICON_SIZE_CLASS,
 } from "./gameChrome";
 import { Z_INDEX } from "@/lib/z-index";
 
@@ -573,7 +573,7 @@ export function GameHeaderRewardsShortcut() {
           />
           <GameUiIcon
             name="socialReward"
-            sizeClassName={TAB_ICON_SIZE_CLASS}
+            sizeClassName={SIDE_PANEL_ICON_SIZE_CLASS}
             className={`text-lime-500 ${LIME_ACCENT_MASK_ICON_CLASS}`}
           />
         </span>

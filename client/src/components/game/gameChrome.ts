@@ -62,6 +62,9 @@ export const TAB_ICON_ALIGN_CLASS = `${TAB_ICON_MASK_BOTTOM} -translate-y-[3px]`
 /** Default size for Cave/City/… tab mask icons (grows +2px with Large text). */
 export const TAB_ICON_SIZE_CLASS = "game-tab-icon";
 
+/** Side-panel section masks + header Rewards diamond (16px Normal, +2 vs tabs). */
+export const SIDE_PANEL_ICON_SIZE_CLASS = "game-side-panel-icon";
+
 /** Timed-event hourglass tab icon alignment (same baseline as other tab icons). */
 export const TAB_TIMED_EVENT_ICON_CLASS = TAB_ICON_ALIGN_CLASS;
 

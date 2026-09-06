@@ -805,7 +805,7 @@ export default function EstatePanel({
               </CooldownButton>
               {focusState && focusState.points > 0 && (
                 <div
-                  className="absolute -top-[9px] right-[-9px] flex items-center justify-center w-5 h-5 bg-teal-950 rounded-full text-[10px] font-medium z-[20] pointer-events-none"
+                  className="absolute -top-[9px] right-[-9px] flex items-center justify-center w-5 h-5 bg-teal-950 rounded-full text-[12px] font-medium z-[20] pointer-events-none"
                 >
                   {focusState.points}
                 </div>

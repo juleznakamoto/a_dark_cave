@@ -20,7 +20,7 @@ import { useTranslation } from "react-i18next";
 import { isGameTabHidden, subscribeGameTabHidden } from "@/lib/tabVisibility";
 
 /** Base diameter; CSS `.button-prior-badge` scales with `--adc-control-scale`. */
-const BADGE_SIZE = 10;
+const BADGE_SIZE = 12;
 
 interface ButtonPriorBadgeProps {
   actionId: string;

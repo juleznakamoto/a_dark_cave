@@ -1,3 +1,4 @@
+import { SIDE_PANEL_ICON_SIZE_CLASS } from "@/components/game/gameChrome";
 import { publicUrl } from "@/lib/publicUrl";
 import cn from "clsx";
 import type { SidePanelSectionId } from "./SidePanelSection";
@@ -27,7 +28,7 @@ const DEFAULT_CLASS =
 export function SidePanelSectionIcon({
   sectionId,
   className,
-  sizeClassName = "game-tab-icon",
+  sizeClassName = SIDE_PANEL_ICON_SIZE_CLASS,
 }: {
   sectionId: SidePanelSectionId;
   className?: string;
