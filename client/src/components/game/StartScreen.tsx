@@ -56,17 +56,20 @@ const EYES_EASTER_EGG_ASSET_LOAD_MS = 90_000;
 /** Hot-zone is armed only after this idle time on the start screen. */
 const EYES_EASTER_EGG_ARM_MS = 120_000;
 
+const START_FOOTER_TEXT = "text-2xs sm:text-xs md:text-sm";
 const START_FOOTER_LINK_BASE =
   "inline-flex items-center gap-0 sm:gap-1 font-normal text-muted-foreground hover:text-foreground transition-opacity";
-const START_FOOTER_SOCIAL_LINK = `${START_FOOTER_LINK_BASE} text-2xs sm:text-xs opacity-70 hover:opacity-100`;
-const START_FOOTER_LEGAL_LINK = `${START_FOOTER_LINK_BASE} opacity-40 hover:opacity-100 text-3xs sm:text-2xs`;
+const START_FOOTER_SOCIAL_LINK = `${START_FOOTER_LINK_BASE} ${START_FOOTER_TEXT} opacity-70 hover:opacity-100`;
+const START_FOOTER_LEGAL_LINK = `${START_FOOTER_LINK_BASE} opacity-40 hover:opacity-100 text-3xs sm:text-2xs md:text-xs`;
 /** Icon controls (language / music / sfx): same color/opacity as social text links; kill ghost Button accent hover. */
 const START_FOOTER_ICON_BTN = `${START_FOOTER_SOCIAL_LINK} shrink-0 p-0 w-7 h-7 justify-center bg-transparent ${GAME_CHROME_NO_BG_HOVER} shadow-none`;
 const START_FOOTER_ICON = "size-4 shrink-0";
 const START_FULLSCREEN_BTN = `group shrink-0 p-0 w-7 h-7 flex items-center justify-center ${GAME_CHROME_NO_BG_HOVER}`;
 
 const MAKE_FIRE_BUTTON_CLASS =
-  "bg-transparent border-none text-gray-300/90 hover:bg-transparent text-lg px-8 py-4 fire-hover z-[10000]";
+  "bg-transparent border-none text-gray-300/90 hover:bg-transparent text-lg md:text-xl px-8 py-4 fire-hover z-[10000]";
+const START_INTRO_LINE_CLASS =
+  "text-lg md:text-xl leading-relaxed text-gray-300/90 font-normal";
 
 function isNoindexStartPath(): boolean {
   if (typeof window === "undefined") return false;
@@ -787,9 +790,9 @@ export default function StartScreen({
         )}
       </Helmet>
       {!steamEditionActive && (
-        <div className="absolute bottom-12 right-4 z-20 animate-fade-in-featured">
+        <div className="absolute bottom-16 right-4 z-20 animate-fade-in-featured">
           <div className="bg-white/25 backdrop-blur-sm rounded-lg px-2 pt-2 pb-2.5 border border-white/25 flex flex-col items-end">
-            <p className="text-xs text-gray-300/80 font-medium">
+            <p className="text-xs md:text-sm text-gray-300/80 font-medium">
               {t("startScreen.recommendedBy")}
             </p>
             <img
@@ -848,8 +851,8 @@ export default function StartScreen({
             filter: drop-shadow(0 0 0 transparent);
           }
           50% {
-            filter: drop-shadow(0 0 6px rgba(255, 255, 255, 0.45))
-                    drop-shadow(0 0 14px rgba(255, 255, 255, 0.2));
+            filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.7))
+                    drop-shadow(0 0 22px rgba(255, 255, 255, 0.38));
           }
         }
 
@@ -935,7 +938,7 @@ export default function StartScreen({
             return (
               <div
                 key={`${index}-${line}`}
-                className="relative mx-auto w-fit text-lg leading-relaxed text-gray-300/90 font-normal"
+                className={`relative mx-auto w-fit ${START_INTRO_LINE_CLASS}`}
               >
                 {showParticles && VaporizeTextCycleCmp && (
                   <div className="pointer-events-none absolute inset-0 z-10">
@@ -965,7 +968,7 @@ export default function StartScreen({
                   ) => {
                     introLineClipRefs.current[index] = el;
                   }}
-                  className={`relative z-0 m-0 text-lg leading-relaxed font-normal ${introFadeInDone ? "" : "animate-fade-in-text"
+                  className={`relative z-0 m-0 ${START_INTRO_LINE_CLASS} ${introFadeInDone ? "" : "animate-fade-in-text"
                     }`}
                 >
                   <span
@@ -1017,7 +1020,7 @@ export default function StartScreen({
       </main>
 
       <nav
-        className="absolute bottom-4 left-4 right-4 z-10 flex flex-wrap items-center justify-between gap-x-3 gap-y-1.5 text-2xs sm:text-xs text-muted-foreground"
+        className={`absolute bottom-4 left-4 right-4 z-10 flex flex-wrap items-center justify-between gap-x-3 gap-y-1.5 ${START_FOOTER_TEXT} text-muted-foreground`}
         aria-label="Site links"
       >
         <div className="flex flex-wrap items-center gap-x-2 gap-y-1.5">
@@ -1029,6 +1032,7 @@ export default function StartScreen({
               iconVariant="globe"
               menuAlign="start"
               showTooltip={false}
+              menuTextClassName={START_FOOTER_TEXT}
               defaultOpen={languageDefaultOpen}
             />
           ) : (
@@ -1152,6 +1156,8 @@ export default function StartScreen({
                 side="top"
                 align="end"
                 unstyledTrigger
+                hidePressKit
+                menuTextClassName={START_FOOTER_TEXT}
                 triggerClassName={START_FOOTER_SOCIAL_LINK}
                 iconClassName="opacity-100"
                 iconSizeClassName="w-3.5 h-3.5"
@@ -1207,7 +1213,7 @@ export default function StartScreen({
             </>
           )}
           {!steamEditionActive && (
-            <div className="flex flex-col items-end leading-tight">
+            <div className="flex flex-row items-center gap-x-3 leading-tight">
               <a
                 href="/privacy"
                 target="_blank"

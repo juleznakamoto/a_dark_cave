@@ -72,9 +72,11 @@ export function shouldShowInviteFriendsMenuItem(): boolean {
 export function InviteFriendsMenuItem({
   referralCount = 0,
   onSelect,
+  className,
 }: {
   referralCount?: number;
   onSelect?: () => void;
+  className?: string;
 }) {
   const { toast } = useToast();
   if (!shouldShowInviteFriendsMenuItem()) return null;
@@ -89,6 +91,7 @@ export function InviteFriendsMenuItem({
         tooltipContentClassName="max-w-xs"
         tooltipSide="top"
         tooltipAvoidCollisions={false}
+        className={className}
         data-testid="button-footer-invite-friends"
         onSelect={() => {
           onSelect?.();

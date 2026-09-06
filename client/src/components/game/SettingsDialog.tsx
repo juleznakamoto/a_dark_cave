@@ -53,11 +53,11 @@ interface SettingsDialogProps {
 }
 
 /** Shared row layout so every settings row lines up its icon column and label. */
-const ROW = "flex items-center gap-2 px-2 min-h-9";
+const ROW = "flex items-center gap-2 pr-2 min-h-9";
 const ICON_SLOT = "w-7 shrink-0 flex items-center justify-center";
 /** Both volume rows share one grid so the label column is as wide as the longer name. */
 const AUDIO_GRID =
-  "grid grid-cols-[1.75rem_auto_minmax(0,1fr)] items-center gap-x-2 gap-y-2 px-2";
+  "grid grid-cols-[1.75rem_auto_minmax(0,1fr)] items-center gap-x-2 gap-y-2 pr-2";
 /** Dark unfilled track; filled portion stays red (WebKit gradient + Firefox progress). */
 const VOLUME_SLIDER =
   "w-full h-4 cursor-pointer appearance-none bg-transparent " +
@@ -538,6 +538,27 @@ export default function SettingsDialog({
                 </span>
               </Button>
             </>
+          )}
+
+          {!steamEditionActive && (
+            <div className="flex items-center justify-center gap-3 pt-1">
+              <a
+                href="/privacy"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-xs text-muted-foreground opacity-60 hover:opacity-100 hover:text-foreground transition-opacity"
+              >
+                {t("footer.privacy")}
+              </a>
+              <a
+                href="/imprint"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-xs text-muted-foreground opacity-60 hover:opacity-100 hover:text-foreground transition-opacity"
+              >
+                {t("footer.imprint")}
+              </a>
+            </div>
           )}
         </div>
       </DialogContent>

@@ -32,6 +32,7 @@ export default function LanguageSelector({
   inDialog = false,
   menuPortalContainer = null,
   defaultOpen = false,
+  menuTextClassName,
 }: {
   buttonClassName?: string;
   iconClassName?: string;
@@ -48,6 +49,8 @@ export default function LanguageSelector({
   menuPortalContainer?: HTMLElement | null;
   /** Open on mount (start-screen click-to-load). */
   defaultOpen?: boolean;
+  /** Start-screen footer menus match the footer link size. */
+  menuTextClassName?: string;
 } = {}) {
   const { locale, setLocale, locales, localeLabels } = useLocale();
   const { t } = useTranslation("ui");
@@ -58,6 +61,8 @@ export default function LanguageSelector({
       ? localeLabels[locale as SupportedLocale]
       : t("languageSelector.label");
 
+  const menuTextSizeClass =
+    menuTextClassName ?? (inDialog ? "text-sm" : "text-xs");
   const dialogPortalReady = !inDialog || menuPortalContainer != null;
 
   const handleOpenChange = (next: boolean) => {
@@ -132,7 +137,7 @@ export default function LanguageSelector({
           }
           className={cn(
             "w-max min-w-0",
-            inDialog ? "text-sm" : "text-xs",
+            menuTextSizeClass,
             inDialog && "z-[60]",
           )}
           onCloseAutoFocus={inDialog ? (e) => e.preventDefault() : undefined}
@@ -146,7 +151,7 @@ export default function LanguageSelector({
               }}
               className={cn(
                 locale === code && "font-semibold",
-                inDialog && "text-sm",
+                menuTextSizeClass,
               )}
             >
               {localeLabels[code as SupportedLocale]}

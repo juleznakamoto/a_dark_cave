@@ -40,6 +40,10 @@ type FooterNetworkMenuProps = {
    */
   unstyledTrigger?: boolean;
   referralCount?: number;
+  /** Start screen already has a footer Press link. */
+  hidePressKit?: boolean;
+  /** Start-screen footer menus match the footer link size. */
+  menuTextClassName?: string;
 };
 
 export default function FooterNetworkMenu({
@@ -52,11 +56,15 @@ export default function FooterNetworkMenu({
   defaultOpen = false,
   unstyledTrigger = false,
   referralCount = 0,
+  hidePressKit: hidePressKitProp = false,
+  menuTextClassName,
 }: FooterNetworkMenuProps) {
   const [open, setOpen] = useState(defaultOpen);
   const socialLabel = tWithFallback("ui", "footer.social", "Social");
   const hidePressKit =
-    useSteamEditionActive() || useCrazyGamesEditionActive();
+    hidePressKitProp ||
+    useSteamEditionActive() ||
+    useCrazyGamesEditionActive();
 
   const triggerInner = (
     <>
@@ -102,11 +110,12 @@ export default function FooterNetworkMenu({
         align={align}
         side={side}
         sideOffset={8}
-        className="text-xs !max-h-none w-auto"
+        className={cn("text-xs !max-h-none w-auto", menuTextClassName)}
         style={{ zIndex: Z_INDEX.dropdown }}
       >
         {!hidePressKit && (
           <DropdownMenuItem
+            className={menuTextClassName}
             onSelect={() => {
               setOpen(false);
               window.open("/press", "_blank", "noopener,noreferrer");
@@ -129,6 +138,7 @@ export default function FooterNetworkMenu({
           return (
             <DropdownMenuItem
               key={platform}
+              className={menuTextClassName}
               onSelect={() => {
                 setOpen(false);
                 if (isExternal) {
@@ -150,6 +160,7 @@ export default function FooterNetworkMenu({
         })}
         <InviteFriendsMenuItem
           referralCount={referralCount}
+          className={menuTextClassName}
           onSelect={() => setOpen(false)}
         />
       </DropdownMenuContent>

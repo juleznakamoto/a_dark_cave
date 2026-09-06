@@ -56,8 +56,6 @@ const FOOTER_CONTROL_TEXT =
   `${FOOTER_CONTROL_BTN_FADE} text-neutral-300 group-hover:!text-neutral-300`;
 const FOOTER_SOCIAL_LABEL =
   `${FOOTER_CONTROL_TEXT} hidden sm:inline`;
-const FOOTER_LEGAL_LINK =
-  "text-2xs text-neutral-300 opacity-40 hover:opacity-100 transition-opacity";
 /** Heart stays red; opacity-only transition so scale pump is not overridden. */
 const DONATE_HEART =
   "donate-heart text-base leading-none text-red-600 opacity-80 group-hover:opacity-100 transition-opacity";
@@ -434,26 +432,6 @@ export default function GameFooter() {
 
               return cloneElement(socialLink, { key: platform });
             })}
-            {!steamEditionActive && (
-              <div className="flex flex-col items-end leading-tight sm:flex-row sm:items-center sm:gap-1">
-                <a
-                  href="/privacy"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className={FOOTER_LEGAL_LINK}
-                >
-                  {t("footer.privacy")}
-                </a>
-                <a
-                  href="/imprint"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className={FOOTER_LEGAL_LINK}
-                >
-                  {t("footer.imprint")}
-                </a>
-              </div>
-            )}
           </div>
         </div>
       </footer>
