@@ -64,15 +64,14 @@ export function SteamDemoEndStoreCta() {
   return (
     <Button
       type="button"
-      size="lg"
       button_id="demo-end-wishlist"
       data-testid="button-demo-end-wishlist"
       onClick={() => {
         void openFullGameStore(STEAM_STORE_UTM_CONTENT.demoTimeUp);
       }}
-      className="h-12 w-full text-sm"
+      className="inline-flex items-center gap-1.5"
     >
-      <FooterSocialIcon platform="steam" className="h-5 w-5 shrink-0" />
+      <FooterSocialIcon platform="steam" className="h-4 w-4 shrink-0" />
       {buttonLabel}
     </Button>
   );
