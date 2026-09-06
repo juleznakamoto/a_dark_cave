@@ -443,12 +443,13 @@ body {
 }
 
 .button-prior-badge {
+  --adc-prior-badge-size: 12px;
   position: absolute;
-  /* 12px disc. Same optical inset as the old 10px / -4px (half minus 1px). */
-  bottom: calc(-5px * var(--adc-control-scale, 1));
-  right: calc(-5px * var(--adc-control-scale, 1));
-  width: calc(12px * var(--adc-control-scale, 1));
-  height: calc(12px * var(--adc-control-scale, 1));
+  /* Offset tracks size: half the disc, minus 1px, so it sits on the rounded corner. */
+  bottom: calc((var(--adc-prior-badge-size) / -2 + 1px) * var(--adc-control-scale, 1));
+  right: calc((var(--adc-prior-badge-size) / -2 + 1px) * var(--adc-control-scale, 1));
+  width: calc(var(--adc-prior-badge-size) * var(--adc-control-scale, 1));
+  height: calc(var(--adc-prior-badge-size) * var(--adc-control-scale, 1));
 }
 
 .action-button-corner-badge {
