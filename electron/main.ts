@@ -36,6 +36,16 @@ app.setName(APP_USER_DATA_NAME);
 
 const DEV_SERVER_URL = process.env.ADC_DEV_SERVER_URL; // set by electron:dev to use Vite dev server
 
+/** Locked 1920x1080 frameless window for OBS (high-DPI / non-16:9 displays). */
+const TRAILER_WIDTH = 1920;
+const TRAILER_HEIGHT = 1080;
+
+function isTrailerCaptureMode(): boolean {
+  return (
+    process.env.ADC_TRAILER === "1" || process.argv.includes("--trailer")
+  );
+}
+
 let mainWindow: BrowserWindow | null = null;
 let loopback: LoopbackServer | null = null;
 /** After the renderer acks an exit save (or the timeout fires), window close may proceed. */
@@ -174,13 +184,32 @@ function resolveWindowIcon(): string | undefined {
 
 async function createWindow(): Promise<void> {
   const iconPath = resolveWindowIcon();
+  const trailer = isTrailerCaptureMode();
+  if (trailer) {
+    // eslint-disable-next-line no-console
+    console.log("[TRAILER] 1920x1080 frameless capture window (1x scale)");
+  }
   mainWindow = new BrowserWindow({
     title: APP_WINDOW_TITLE,
     ...(iconPath ? { icon: iconPath } : {}),
-    width: 1280,
-    height: 800,
-    minWidth: 800,
-    minHeight: 600,
+    ...(trailer
+      ? {
+        width: TRAILER_WIDTH,
+        height: TRAILER_HEIGHT,
+        minWidth: TRAILER_WIDTH,
+        minHeight: TRAILER_HEIGHT,
+        frame: false,
+        resizable: false,
+        fullscreenable: false,
+        useContentSize: true,
+        center: true,
+      }
+      : {
+        width: 1280,
+        height: 800,
+        minWidth: 800,
+        minHeight: 600,
+      }),
     backgroundColor: "#000000",
     show: false,
     autoHideMenuBar: true,
@@ -295,6 +324,8 @@ function registerIpc(): void {
 
   ipcMain.handle("window:toggle-fullscreen", () => {
     if (!mainWindow) return false;
+    // Trailer capture must stay 16:9 windowed; fullscreen on a 3:2 panel ruins the frame.
+    if (isTrailerCaptureMode()) return false;
     const currently =
       fullscreenIntent !== null ? fullscreenIntent : mainWindow.isFullScreen();
     const next = !currently;
@@ -318,6 +349,12 @@ if (!app.requestSingleInstanceLock()) {
 } else {
   // Steam overlay + API must run before `app.whenReady()` / BrowserWindow creation.
   // `enableSteamOverlay` appends Chromium switches that are ignored once ready.
+  // Trailer DPI lock must also be set before ready, or Windows 200% scale
+  // turns 1920x1080 into a window larger than the panel.
+  if (isTrailerCaptureMode()) {
+    app.commandLine.appendSwitch("high-dpi-support", "1");
+    app.commandLine.appendSwitch("force-device-scale-factor", "1");
+  }
   enableSteamOverlay();
   initSteam(resolveAppId());
 

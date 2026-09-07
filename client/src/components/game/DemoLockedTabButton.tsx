@@ -63,7 +63,7 @@ export function DemoLockedTabButton({
   );
 }
 
-/** Unlocked location tab, or a demo redacted placeholder while locked. */
+/** Unlocked location tab, or a demo-end redacted placeholder while locked. */
 export function GameLocationTabButton({
   tabId,
   unlocked,
@@ -100,7 +100,7 @@ export function GameLocationTabButton({
     );
   }
 
-  if (shouldShowDemoLockedTab({ demoEditionActive: demoTease, unlocked })) {
+  if (shouldShowDemoLockedTab({ demoEndCatalogActive: demoTease, unlocked })) {
     return (
       <DemoLockedTabButton
         tabId={tabId}

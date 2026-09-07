@@ -293,6 +293,9 @@ run ad hoc for locale maintenance.
 | `import:resend-batches` | `import-resend-contact-batches.ts` | Split non-unsubscribed contacts into 10 Resend batches (1000-contact cap), wipe, upload `--batch N`. |
 | `test:gender` | `test-gender-service.js` | Smoke-test `services/gender-service/`. |
 | `press:assets` | `build-press-kit-assets.mjs` | Copy logos and zip `client/public/press-kit`. |
+| `trailer` | `launch-trailer-window.mjs` | Chrome app window locked to 1920x1080 at 1x scale for OBS (high-DPI / non-16:9 displays). |
+| `trailer:steam` | `electron/main.ts` `--trailer` | Frameless Steam Electron window at 1920x1080, 1x scale. Requires a prior `build:steam` + `electron:build`. |
+| *(desktop)* | `LaunchTrailer.cmd` | Double-click / desktop shortcut: start the dev server if needed, then open the 1920x1080 trailer window. |
 | `build:crazygames` / `package:crazygames` | `package-crazygames.mjs` | CrazyGames HTML5 demo folder (`VITE_CRAZYGAMES=1`, relative base). |
 
 Support modules (not always npm-wired): `write-build-meta.mjs` (git HEAD â†’ `dist/build-meta.json` after client build), `generate-logo-assets.py` (resize `build-resources/logo-source.png` â†’ favicons, PWA, OG, Electron icons), `build-press-kit-assets.mjs` (zip `client/public/press-kit` for `/press`), `build-noto-symbol-compat.py` (rebuild `client/public/fonts/noto-symbol-compat.woff2` from Noto Math/Symbols/Sans), `locale-catalog.mjs`, `parse-locale-json.mjs`,
@@ -315,7 +318,7 @@ shop, the whole game unlocked, merchant-sold dark artifacts, and local + Steam C
 
 | Path | Responsibility |
 |------|----------------|
-| `electron/main.ts` | Electron main process: Steamworks init + overlay, loopback server, save-file IPC (edition-specific Cloud files + demo-read / leftover-clear), quit-save handshake (`app:will-quit` / `app:save-complete`, 8s timeout), full-screen/layout IPC, overlay-to-store IPC, window icon/title, single-instance, external-link handling. |
+| `electron/main.ts` | Electron main process: Steamworks init + overlay, loopback server, save-file IPC (edition-specific Cloud files + demo-read / leftover-clear), quit-save handshake (`app:will-quit` / `app:save-complete`, 8s timeout), full-screen/layout IPC, overlay-to-store IPC, window icon/title, single-instance, external-link handling, `--trailer` / `ADC_TRAILER=1` 1920x1080 frameless capture window. |
 | `electron/paths.ts` | Electron `APP_USER_DATA_NAME` (IndexedDB) + Auto-Cloud folder `STEAM_CLOUD_DIR_NAME`; full file `adc-steam-save.dat`, demo file `adc-steam-demo-save.dat`; demo userdata stays `A Dark Cave Demo`; legacy demo path read/dual-write in `main.ts`. |
 | `electron/preload.ts` | `contextBridge` exposing `window.steamBridge` (achievements, Cloud save, quit-save events, full-screen toggle/events, overlay-to-store) to the sandboxed renderer. |
 | `electron/loopbackServer.ts` | Serves built `dist/public` over `http://127.0.0.1:<port>` (absolute-path routing needs HTTP, not `file://`). |
@@ -385,7 +388,7 @@ App ID **4882240** in `steam_appid.txt`. Full and demo share the folder (Shared 
 |------|----------------|
 | `client/src/lib/edition.ts` | `isSteamDemoBuild` (`VITE_STEAM_DEMO=1`), `isDemoEdition()`, `isSteamFullBuild`. DEV Game Mode includes `demoEnd`. |
 | `client/src/game/demoLimit.ts` | Shared wooden-hut demo limit + `processDemoLimit()` + `isDemoPlayFrozen()` (loop and actions stay frozen after the cap) + `shouldDismissEventWithoutApplying()` (cube reread / demo-end event close). |
-| `client/src/game/demoTeaserTabs.ts` | Demo tab-bar teases: locked Village/Forest/Estate/Bastion render as redacted bars. |
+| `client/src/game/demoTeaserTabs.ts` | Demo-end tab-bar teases: locked Village/Forest/Estate/Bastion render as redacted bars (hidden during live demo play). |
 | `client/src/game/demoEndCatalog.ts` | Full side-panel catalog ids, estate skill / attack-wave / cube-event / bastion heal-repair / village job, preset-slot, and utility / forest trade ids, village Build / cave Craft / forest Sacrifice action teasers (5 + ellipsis), and redacted merge for demo-end / DEV Demo End. |
 | `client/src/game/demoEndPromoCounts.ts` | Live Craft / Build / job / skill / achievement totals for demo-end header promo badges (craft count is unique inventory items from `DEMO_END_ITEM_IDS`). |
 | `client/src/components/game/promoTag.ts` | Green promo-pill class for shop cards. |

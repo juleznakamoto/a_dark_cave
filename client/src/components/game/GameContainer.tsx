@@ -906,7 +906,7 @@ export default function GameContainer() {
         darkEstate: buildings.darkEstate ?? 0,
         achievementsUnlocked: showAchievementsTab,
         timedEventActive: timedEventTab.isActive,
-        includeDemoTeaserTabs: demoEditionActive,
+        includeDemoTeaserTabs: demoEndCatalogActive,
       }),
     [
       villageTabVisible,
@@ -915,7 +915,7 @@ export default function GameContainer() {
       buildings.darkEstate,
       showAchievementsTab,
       timedEventTab.isActive,
-      demoEditionActive,
+      demoEndCatalogActive,
     ],
   );
 
@@ -1426,7 +1426,7 @@ export default function GameContainer() {
                         <GameLocationTabButton
                           tabId="village"
                           unlocked={villageTabVisible}
-                          demoTease={demoEditionActive}
+                          demoTease={demoEndCatalogActive}
                           label={
                             buildings.stoneHut >= 5
                               ? t("tabs.city", { ns: "common" })
@@ -1457,7 +1457,7 @@ export default function GameContainer() {
                         <GameLocationTabButton
                           tabId="forest"
                           unlocked={forestTabVisible}
-                          demoTease={demoEditionActive}
+                          demoTease={demoEndCatalogActive}
                           label={t("tabs.forest", { ns: "common" })}
                           tabButtonClass={tabButtonClass}
                           tabInactiveTextClass={tabInactiveTextClass}
@@ -1482,7 +1482,7 @@ export default function GameContainer() {
                         <GameLocationTabButton
                           tabId="estate"
                           unlocked={estateUnlocked || buildings.darkEstate >= 1}
-                          demoTease={demoEditionActive}
+                          demoTease={demoEndCatalogActive}
                           label={t("tabs.estate", { ns: "common" })}
                           tabButtonClass={tabButtonClass}
                           tabInactiveTextClass={tabInactiveTextClass}
@@ -1512,7 +1512,7 @@ export default function GameContainer() {
                         <GameLocationTabButton
                           tabId="bastion"
                           unlocked={bastionTabVisible}
-                          demoTease={demoEditionActive}
+                          demoTease={demoEndCatalogActive}
                           label={
                             flags.hasFortress
                               ? t("tabs.fortress", { ns: "common" })

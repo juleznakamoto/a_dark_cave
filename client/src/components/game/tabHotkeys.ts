@@ -16,7 +16,7 @@ export type VisibleHotkeyTabsParams = {
   darkEstate: number;
   achievementsUnlocked: boolean;
   timedEventActive: boolean;
-  /** Demo teaser tabs are on-screen and clickable even while still locked. */
+  /** Demo-end teaser tabs are on-screen and clickable even while still locked. */
   includeDemoTeaserTabs?: boolean;
 };
 

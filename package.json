@@ -17,6 +17,8 @@
     "package:crazygames": "node scripts/package-crazygames.mjs",
     "electron:build": "node scripts/build-electron.mjs",
     "electron:start": "electron .",
+    "trailer": "node scripts/launch-trailer-window.mjs",
+    "trailer:steam": "cross-env ADC_TRAILER=1 electron . --trailer",
     "electron:dev": "npm run build:steam && npm run electron:build && electron .",
     "electron:package": "npm run build:steam && npm run electron:build && electron-builder --win",
     "electron:package:demo": "node scripts/package-steam-demo.mjs",

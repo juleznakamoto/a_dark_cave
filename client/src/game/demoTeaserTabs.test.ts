@@ -15,15 +15,24 @@ describe("demoTeaserTabs", () => {
     expect(isDemoTeaserTab("achievements")).toBe(false);
   });
 
-  it("shows a locked placeholder only in the demo", () => {
+  it("shows a locked placeholder only at demo end", () => {
     expect(
-      shouldShowDemoLockedTab({ demoEditionActive: true, unlocked: false }),
+      shouldShowDemoLockedTab({
+        demoEndCatalogActive: true,
+        unlocked: false,
+      }),
     ).toBe(true);
     expect(
-      shouldShowDemoLockedTab({ demoEditionActive: true, unlocked: true }),
+      shouldShowDemoLockedTab({
+        demoEndCatalogActive: true,
+        unlocked: true,
+      }),
     ).toBe(false);
     expect(
-      shouldShowDemoLockedTab({ demoEditionActive: false, unlocked: false }),
+      shouldShowDemoLockedTab({
+        demoEndCatalogActive: false,
+        unlocked: false,
+      }),
     ).toBe(false);
   });
 
