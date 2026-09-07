@@ -260,7 +260,7 @@ portal started saves; web revisits stay on Make Fire),
   `locales/*/ui/*.json` via **`loadLocaleResources.ts`** (StartScreen also loads those shards for
   the selected locale in the background; `pages/game.tsx` loads complete catalogs before
   gameplay; language changes load the startup subset or full catalog based on the active phase).
-  UI namespace is assembled from shards under `locales/{lang}/ui/` (`publicPages.json` is FAQ/About body copy; loaded with the full catalog on `/faq` and `/about`). Press kit body copy stays English in `shared/pressKit.ts`.
+  UI namespace is assembled from shards under `locales/{lang}/ui/` (`publicPages.json` is FAQ/About body copy). Direct visits to `/faq`, `/about`, `/press`, and legal routes load only `shell`/`seo`/`publicPages`, not the gameplay catalogs. Press kit body copy stays English in `shared/pressKit.ts`.
 - **`locales.ts`** â€” supported: **en, de, fr, es, it, pt-BR, zh-CN, ru**. Namespaces: `common`, `ui`,
   `shop`, `actions`, `effects`, `events`, `achievements`.
 - **Resolution:** `resolveGameText.ts` (`tWithFallback`, resource/log names), `useUiTranslation.ts`

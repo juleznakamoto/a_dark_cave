@@ -4,6 +4,7 @@ import { I18nextProvider } from "react-i18next";
 import i18n from "./i18n";
 import {
   ensureInitialLocalesLoaded,
+  isPublicDocPath,
   isStartupSurfacePath,
 } from "./i18n/loadLocaleResources";
 import App from "./App";
@@ -154,8 +155,11 @@ void withTimeout(
   "Initial locale load",
 ).catch((error) => {
   logger.error("[boot] Failed to load initial locales:", error);
-  // Start surfaces already have English shell/seo seeded in i18n.init.
-  if (!isStartupSurfacePath(window.location.pathname)) {
+  // Start surfaces and public docs already have English fallbacks.
+  if (
+    !isStartupSurfacePath(window.location.pathname) &&
+    !isPublicDocPath(window.location.pathname)
+  ) {
     mountFatalErrorScreen(error);
   }
 });

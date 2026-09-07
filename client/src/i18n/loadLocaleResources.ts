@@ -12,18 +12,43 @@ const localeModules = import.meta.glob<string>(
 );
 
 const STARTUP_UI_SHARDS = new Set(["shell", "seo"]);
+const PUBLIC_DOC_UI_SHARDS = new Set(["shell", "seo", "publicPages"]);
+const PUBLIC_DOC_PATHS = new Set([
+  "/faq",
+  "/about",
+  "/press",
+  "/privacy",
+  "/terms",
+  "/imprint",
+  "/withdrawal",
+]);
 const loadedModulePaths = new Set<string>();
 const loadingModulePaths = new Map<string, Promise<string>>();
 const fullyLoadedLocales = new Set<SupportedLocale>();
 const loadingFullLocales = new Map<SupportedLocale, Promise<void>>();
 let gameplayResourcesRequested = false;
 
+function uiShardMatches(
+  path: string,
+  locale: SupportedLocale,
+  shards: Set<string>,
+): boolean {
+  const match = path.match(/\.\/locales\/([^/]+)\/ui\/([^/]+)\.json$/);
+  return match?.[1] === locale && shards.has(match[2]);
+}
+
 export function isStartupLocaleModulePath(
   path: string,
   locale: SupportedLocale,
 ): boolean {
-  const match = path.match(/\.\/locales\/([^/]+)\/ui\/([^/]+)\.json$/);
-  return match?.[1] === locale && STARTUP_UI_SHARDS.has(match[2]);
+  return uiShardMatches(path, locale, STARTUP_UI_SHARDS);
+}
+
+export function isPublicDocLocaleModulePath(
+  path: string,
+  locale: SupportedLocale,
+): boolean {
+  return uiShardMatches(path, locale, PUBLIC_DOC_UI_SHARDS);
 }
 
 function mergeLocalePath(
@@ -151,22 +176,58 @@ export function isStartupSurfacePath(path: string): boolean {
   );
 }
 
-/** Load StartScreen shell + SEO strings (or full catalogs on other routes). */
+export function isPublicDocPath(path: string): boolean {
+  const bare = (path.split("?")[0] ?? "/").trim() || "/";
+  const withLeading = bare.startsWith("/") ? bare : `/${bare}`;
+  const normalized =
+    withLeading !== "/" && withLeading.endsWith("/")
+      ? withLeading.slice(0, -1)
+      : withLeading;
+  return PUBLIC_DOC_PATHS.has(normalized);
+}
+
+export function initialLocaleLoadMode(
+  path: string,
+): "startup" | "publicDoc" | "gameplay" {
+  if (isStartupSurfacePath(path)) return "startup";
+  if (isPublicDocPath(path)) return "publicDoc";
+  return "gameplay";
+}
+
+export async function loadPublicDocLocaleResources(
+  locale: SupportedLocale,
+): Promise<void> {
+  const resources = await fetchLocaleResources(locale, (path) =>
+    isPublicDocLocaleModulePath(path, locale),
+  );
+  installLocaleResources(locale, resources);
+}
+
+async function loadBootLocaleResources(
+  loader: (locale: SupportedLocale) => Promise<void>,
+): Promise<void> {
+  const initial = getInitialLocale();
+  await Promise.all([
+    loader(DEFAULT_LOCALE),
+    initial === DEFAULT_LOCALE ? Promise.resolve() : loader(initial),
+  ]);
+}
+
+/** Load StartScreen shell + SEO strings (or public-doc / full catalogs). */
 export async function ensureInitialLocalesLoaded(): Promise<void> {
   const path =
     typeof window === "undefined" ? "/" : window.location.pathname;
-  if (!isStartupSurfacePath(path)) {
-    await ensureGameplayLocalesLoaded();
+  const mode = initialLocaleLoadMode(path);
+  if (mode === "startup") {
+    await loadBootLocaleResources(loadStartupLocaleResources);
+    return;
+  }
+  if (mode === "publicDoc") {
+    await loadBootLocaleResources(loadPublicDocLocaleResources);
     return;
   }
 
-  const initial = getInitialLocale();
-  await Promise.all([
-    loadStartupLocaleResources(DEFAULT_LOCALE),
-    initial === DEFAULT_LOCALE
-      ? Promise.resolve()
-      : loadStartupLocaleResources(initial),
-  ]);
+  await ensureGameplayLocalesLoaded();
 }
 
 /** Load complete catalogs before gameplay becomes visible. */
@@ -187,6 +248,12 @@ export async function loadResourcesForLanguageChange(
 ): Promise<void> {
   if (gameplayResourcesRequested) {
     await loadLocaleResources(locale);
+    return;
+  }
+  const path =
+    typeof window === "undefined" ? "/" : window.location.pathname;
+  if (isPublicDocPath(path)) {
+    await loadPublicDocLocaleResources(locale);
     return;
   }
   await loadStartupLocaleResources(locale);
