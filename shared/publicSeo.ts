@@ -7,9 +7,6 @@ import {
   getPublicPageExtraJsonLd,
   STATIC_PAGE_HIDE_AFTER_HYDRATE,
 } from "./publicPages";
-import { isStaticDocumentPath } from "./staticDocumentPath";
-
-export { STATIC_DOCUMENT_PATHS, isStaticDocumentPath } from "./staticDocumentPath";
 
 export const SITE_ORIGIN = "https://a-dark-cave.com";
 
@@ -297,37 +294,6 @@ function replaceTag(html: string, pattern: RegExp, replacement: string): string 
   return html.replace(pattern, replacement);
 }
 
-const STATIC_DOCUMENT_TYPE_STYLE = `<style id="adc-static-document-type">html[data-adc-static-document] #seo-fallback a{color:inherit}html[data-adc-static-document] #seo-fallback h1,html[data-adc-static-document] #seo-fallback h2,html[data-adc-static-document] #seo-fallback h3{color:#fff}</style>`;
-
-/**
- * FAQ / About / Press / legal: show first-HTML immediately and skip the game SPA.
- * Keep in sync with `boot.js` pathname fallback.
- */
-export function applyStaticDocumentShell(html: string): string {
-  let out = html.replace(/<html\b([^>]*)>/i, (full, attrs: string) => {
-    if (/\sdata-adc-static-document\b/.test(full)) return full;
-    return `<html${attrs} data-adc-static-document>`;
-  });
-
-  out = out.replace(
-    /<!-- adc:boot-spinner -->[\s\S]*?<!-- \/adc:boot-spinner -->/,
-    "",
-  );
-  out = out.replace(
-    /<script\b[^>]*\btype=["']module["'][^>]*>[\s\S]*?<\/script>/gi,
-    "",
-  );
-  out = out.replace(/<link\b[^>]*\brel=["']modulepreload["'][^>]*>/gi, "");
-  out = out.replace(/<link\b[^>]*\brel=["']stylesheet["'][^>]*>/gi, (tag) =>
-    /href=["'][^"']*\/assets\//i.test(tag) ? "" : tag,
-  );
-
-  if (!out.includes('id="adc-static-document-type"')) {
-    out = out.replace("</head>", `  ${STATIC_DOCUMENT_TYPE_STYLE}\n</head>`);
-  }
-  return out;
-}
-
 /**
  * Patch the SPA index.html shell for a public route before sending to crawlers.
  * @param notFound When true, apply 404 metadata (still boots the SPA for UX).
@@ -429,20 +395,13 @@ export function customizeSpaIndexHtml(
   }
 
   const pageBody = getPublicPageBodyHtml(path, { notFound: options?.notFound });
-  const staticDocument = !options?.notFound && isStaticDocumentPath(path);
   if (pageBody) {
-    if (!staticDocument) {
-      out = out.replace("</head>", `  ${STATIC_PAGE_HIDE_AFTER_HYDRATE}\n</head>`);
-    }
+    out = out.replace("</head>", `  ${STATIC_PAGE_HIDE_AFTER_HYDRATE}\n</head>`);
     if (/<main id="seo-fallback"[\s\S]*?<\/main>/.test(out)) {
       out = out.replace(/<main id="seo-fallback"[\s\S]*?<\/main>/, pageBody);
     } else {
       out = out.replace("</body>", `${pageBody}\n</body>`);
     }
-  }
-
-  if (staticDocument) {
-    out = applyStaticDocumentShell(out);
   }
 
   return out;

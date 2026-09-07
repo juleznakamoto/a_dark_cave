@@ -84,8 +84,6 @@ describe("sendSpaIndexHtml catch-all", () => {
     expect(res.text).toContain("What is A Dark Cave?");
     expect(res.text).toContain("FAQPage");
     expect(res.text).not.toContain("VideoGame");
-    expect(res.text).toContain("data-adc-static-document");
-    expect(res.text).not.toContain("adc-static-page-hide");
   });
 
   it("returns a real 404 for unknown paths", async () => {
