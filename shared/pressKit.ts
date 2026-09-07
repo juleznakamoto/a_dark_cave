@@ -155,37 +155,40 @@ export const PRESS_LOGOS: readonly PressAsset[] = [
 ];
 
 export const PRESS_SCREENSHOTS: readonly PressAsset[] = [
-  asset("screenshot", "a_dark_cave_screenshot_01.jpg", "Forest", {
+  asset("screenshot", "a_dark_cave_screenshot_01.jpg", "Village", {
     sizeHint: "1024 × 576",
   }),
-  asset("screenshot", "a_dark_cave_screenshot_02.jpg", "Bastion", {
+  asset("screenshot", "a_dark_cave_screenshot_02.jpg", "Forest", {
     sizeHint: "1024 × 576",
   }),
-  asset("screenshot", "a_dark_cave_screenshot_03.jpg", "Village", {
+  asset("screenshot", "a_dark_cave_screenshot_03.jpg", "Bastion", {
     sizeHint: "1024 × 576",
   }),
-  asset("screenshot", "a_dark_cave_screenshot_04.jpg", "Estate", {
+  asset("screenshot", "a_dark_cave_screenshot_04.jpg", "City", {
     sizeHint: "1024 × 576",
   }),
-  asset("screenshot", "a_dark_cave_screenshot_05.jpg", "Book of Trials", {
+  asset("screenshot", "a_dark_cave_screenshot_05.jpg", "Estate", {
     sizeHint: "1024 × 576",
   }),
-  asset("screenshot", "a_dark_cave_screenshot_06.jpg", "Sleeping", {
+  asset("screenshot", "a_dark_cave_screenshot_06.jpg", "Book of Trials", {
     sizeHint: "1024 × 576",
   }),
-  asset("screenshot", "a_dark_cave_screenshot_07.jpg", "Combat", {
+  asset("screenshot", "a_dark_cave_screenshot_07.jpg", "Sleeping", {
     sizeHint: "1024 × 576",
   }),
-  asset("screenshot", "a_dark_cave_screenshot_08.jpg", "The Witch's Curse", {
+  asset("screenshot", "a_dark_cave_screenshot_08.jpg", "Combat", {
     sizeHint: "1024 × 576",
   }),
-  asset("screenshot", "a_dark_cave_screenshot_09.jpg", "The Hollow King Scepter", {
+  asset("screenshot", "a_dark_cave_screenshot_09.jpg", "The Witch's Curse", {
     sizeHint: "1024 × 576",
   }),
-  asset("screenshot", "a_dark_cave_screenshot_10.jpg", "Ring of the Drowned", {
+  asset("screenshot", "a_dark_cave_screenshot_10.jpg", "The Hollow King Scepter", {
     sizeHint: "1024 × 576",
   }),
-  asset("screenshot", "a_dark_cave_screenshot_11.jpg", "The Exiled Scholar", {
+  asset("screenshot", "a_dark_cave_screenshot_11.jpg", "Ring of the Drowned", {
+    sizeHint: "1024 × 576",
+  }),
+  asset("screenshot", "a_dark_cave_screenshot_12.jpg", "The Exiled Scholar", {
     sizeHint: "1024 × 576",
   }),
 ];

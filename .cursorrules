@@ -12,13 +12,15 @@ Preferred communication style: Simple, everyday language.
 
 ## Architecture & Code Map
 
-The authoritative map of this codebase — directory layout, tech stack, key files, the
-game-engine data flow, persistence, i18n, server routes, and path aliases — lives in
-[`ARCHITECTURE.md`](./ARCHITECTURE.md). **Read it first to locate code**, and keep it updated
-when you change the file structure (a `stop` hook nudges you if you forget).
+The authoritative map of this codebase (directory layout, tech stack, key files,
+game-engine data flow, persistence, i18n, server routes, path aliases) lives in
+[`ARCHITECTURE.md`](./ARCHITECTURE.md). **Read it first to locate code.** Update
+it only when the project shape changes (new/removed directory, new subsystem,
+moved core file, or a real change to loop / save / routing / i18n bootstrap).
+A `stop` hook nags only on those structural changes. Do not inventory every helper.
 
 This file (`.cursorrules`) is intentionally limited to behavior, conventions, and coding
-standards below — it does not duplicate the architecture map.
+standards below. It does not duplicate the architecture map.
 
 ## Development Rules
 

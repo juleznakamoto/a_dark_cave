@@ -1,16 +1,21 @@
-﻿# ARCHITECTURE â€” A Dark Cave
+﻿# ARCHITECTURE - A Dark Cave
 
-> **Purpose:** This is the code map. Read it FIRST to locate code quickly instead of
-> searching blindly. It is kept current automatically: a `stop` hook
-> (`.cursor/hooks/architecture-update-check.mjs`) detects when files are added,
-> removed, or renamed under `client/`, `server/`, `shared/`, `supabase/`, `scripts/`,
-> or `services/` and asks the agent to refresh the relevant section here.
+> **Purpose:** This is the code map. Read it first to locate code, then search.
+> It is a map of *shape*, not an inventory of every helper.
 >
-> If you change the project structure, update the matching table below in the same change.
+> **Update this file only when the project shape changes:** a new or removed
+> directory, a new subsystem, a rename/move of a file in [Most important
+> files](#most-important-files-start-here), or a real change to the loop, save
+> path, routing, or i18n bootstrap. Do not add leaf helpers, event files,
+> migrations, or one-off scripts.
+>
+> A `stop` hook (`.cursor/hooks/architecture-update-check.mjs`) nags only on
+> those structural changes. Style and coding rules live in `.cursorrules`.
 
-A Dark Cave is a text-based incremental browser game (inspired by *A Dark Room*). It is a
-single Node package serving an **Express API + Vite React SPA**. Almost all game logic lives
-in the client; **Supabase** handles auth/cloud saves and **Stripe** handles payments.
+A Dark Cave is a text-based incremental browser game (inspired by *A Dark Room*).
+It is a single Node package serving an **Express API + Vite React SPA**. Almost
+all game logic lives in the client. **Supabase** handles auth/cloud saves.
+**Stripe** handles payments.
 
 ---
 
@@ -19,39 +24,37 @@ in the client; **Supabase** handles auth/cloud saves and **Stripe** handles paym
 | Path | What lives here |
 |------|-----------------|
 | `client/` | React SPA: UI, game engine, i18n, assets. Vite root. |
-| `electron/` | Steam desktop shell (Electron `main`/`preload` + loopback static server + steamworks.js). See [Steam edition](#steam-edition-electron) below. |
-| `server/` | Express server: API routes, Stripe/referral/marketing, dev Vite middleware, prod static serving. |
-| `shared/` | Cross-cutting TypeScript shared by client + server: Zod schemas, shop/referral pricing, referral list union-merge (`referralMerge.ts`), `claim_referral` result types (`referralClaim.ts`), invitee gold grant (`referralReward.ts`), UTM first-touch helpers (`utmAttribution.ts`, zod-free) + save schema (`utmAttributionSchema.ts`), admin dashboard aggregates (`gameCompletionAdminStats.ts`, `socialPromptAdminStats.ts`, `hutLadderAdminStats.ts`), save integrity + client-build version checks (`saveGameAnalysis.ts`), tool rebuild from story flags (`rebuildToolsFromStorySeen.ts`), tab-unlock flag repair from progression evidence (`repairUnlockFlags.ts`), boss-wave insert migration for `story.seen` / attack timers (`bossWaveMigration.ts`), public SEO route metadata (`publicSeo.ts`; homepage title/description must match `CANONICAL_FACTS.md`), first-HTML FAQ/About copy + JSON-LD (`publicPages.ts`), first-HTML legal/404 bodies (`publicLegalPages.ts`), press kit copy + fact sheet + asset manifest (`pressKit.ts`). |
-| `supabase/` | SQL migrations + edge function (`functions/save-game/`) for Postgres/RLS. Notable: `024` deep-merge saves, `025` permanent tools/weapons/books protection, `030` flagged full-document replace on V1 (`p_full_replace`; old clients keep deep-merge), `034` admin session intra-day stats RPC, `035` drop abandoned `game_state_v2` dual-write sidecar (historical `028`/`029`), `036` raise per-save gold/silver delta caps (5000 / 10000), `037` referral union-merge + row lock on full-replace (prevents wiping server-written invite rewards), `038` intraday session RPC excludes 24h duration-capped rows (avoids left-edge spike from `updated_at - duration`), `039` OR-preserve invitee `referralProcessed` / keep `referralCode` on full-replace (stops client allowlist wipes), `040` anonymous `utm_landings` + `admin_utm_dashboard` RPC for Traffic tab, `041` Traffic RPC timeout fix (partial UTM index) + session vs UTM coverage, `042` cloud save allows event resource overcap (sanity ceiling replaces hard storage reject), `043` OR-preserve Book of Absolution `absolvedItems` on full-replace (spent Insight without the rite flags), `044` `referrals` ledger + `claim_referral` (no full-save rewrite), `045` admin daily/hourly sign-ups count `auth.users.created_at` (not first cloud save). |
-| `scripts/` | Build & i18n tooling â€” see [Scripts](#scripts-scripts) below. |
-| `services/` | Internal auxiliary services (currently `gender-service/` â€” first-name gender inference, localhost only). |
-| `CANONICAL_FACTS.md` | Source of truth for first-party marketing/SEO claims (price, genre, platforms, comps, dates). |
-| `public/`, `attached_assets/` | Static assets (`@assets` alias â†’ `attached_assets`). |
+| `electron/` | Steam desktop shell (main/preload, loopback static server, steamworks.js). |
+| `server/` | Express API, Stripe/referral/marketing, Vite middleware, prod static serving. |
+| `shared/` | Zod schemas and other TS shared by client + server. |
+| `supabase/` | SQL migrations + `functions/save-game/` edge function. |
+| `scripts/` | Build, i18n, Steam, and marketing tooling. |
+| `services/` | Aux services (`gender-service/`, localhost only). |
+| `steam/` | Steamworks partner pack, achievement loc, upload config templates. |
+| `CANONICAL_FACTS.md` | First-party marketing/SEO claims (price, genre, platforms). |
+| `public/`, `attached_assets/` | Static assets (`@assets` → `attached_assets`). |
 | `dist/` | Build output (`dist/public` client, `dist/index.js` server). |
-| `build-resources/` | Electron/Windows packaging assets (`logo-source.png` master, `icon.ico`/`icon.png` for taskbar/installer). |
+| `build-resources/` | Electron/Windows packaging icons. |
 | `.cursor/` | Agent config: `rules/`, `hooks.json`, `hooks/`. |
 
-**Root config:** `package.json` (scripts/deps), `vite.config.ts` (client build, aliases; `vite.vendorChunks.ts` only isolates React so `/` does not pull a framer/radix/supabase vendor blob; HTML `modulePreload` still skips those names),
-`tsconfig.json` (includes `client/src`, `shared`, `server`), `vitest.config.ts` + `vitest.setup.ts`,
-`tailwind.config.ts`, `components.json` (shadcn/ui), `drizzle.config.ts`,
-`electron-builder.yml` (Steam Windows packaging), `electron-builder.demo.yml` (Steam demo packaging),
-`electron-builder.playtest.yml` (Steam playtest packaging),
-`steam_appid.txt` (full game App ID **4882240**), `steam_appid_demo.txt` (demo App ID **4971800**),
-`steam_appid_playtest.txt` (playtest App ID **4972040**). CrazyGames HTML5 demo: `build:crazygames` /
-`package:crazygames` (`VITE_CRAZYGAMES=1`, relative `base`, folder in `release/`).
+**Root config:** `package.json`, `vite.config.ts` (+ `vite.vendorChunks.ts`),
+`tsconfig.json`, `vitest.config.ts`, `tailwind.config.ts`, `components.json`,
+`drizzle.config.ts`, `electron-builder.yml` (+ `.demo.yml` / `.playtest.yml`),
+`steam_appid.txt` (full **4882240**), `steam_appid_demo.txt` (**4971800**),
+`steam_appid_playtest.txt` (**4972040**).
 
-**Path aliases:** `@/*` â†’ `client/src/*`, `@shared/*` â†’ `shared/*`, `@assets` â†’ `attached_assets`.
+**Path aliases:** `@/*` → `client/src/*`, `@shared/*` → `shared/*`, `@assets` → `attached_assets`.
 
 ---
 
 ## Tech stack (quick facts)
 
-- **Language:** TypeScript 5.6 (strict), Node â‰¥22.
-- **Frontend:** React 18, Wouter (routing), TanStack React Query, Framer Motion, Howler (audio), Recharts (admin), WebGL2 shader backgrounds (`cloud-shader.tsx`, `starship-shader.tsx`, `spooky-smoke-animation.tsx`).
-- **State:** **Zustand 5** â€” single store in `client/src/game/state.ts`.
-- **Styling:** Tailwind CSS 3 + shadcn/ui (Radix primitives) + `class-variance-authority`.
-- **Build:** Vite 5 (client), esbuild (server bundle), terser.
-- **Validation:** Zod (`shared/schema.ts` is the schema source of truth).
+- **Language:** TypeScript 5.6 (strict), Node ≥22.
+- **Frontend:** React 18, Wouter, TanStack React Query, Framer Motion, Howler, Recharts (admin), WebGL2 shader backgrounds.
+- **State:** Zustand 5, single store in `client/src/game/state.ts`.
+- **Styling:** Tailwind CSS 3 + shadcn/ui (Radix) + `class-variance-authority`.
+- **Build:** Vite 5 (client), esbuild (server), terser.
+- **Validation:** Zod (`shared/schema.ts` is the persisted-shape source of truth).
 - **i18n:** i18next + react-i18next, JSON locale shards.
 - **Auth/DB:** Supabase. **Payments:** Stripe. **Local saves:** IndexedDB via `idb`.
 - **Server:** Express 4. **Tests:** Vitest 4 + Testing Library.
@@ -62,484 +65,196 @@ in the client; **Supabase** handles auth/cloud saves and **Stripe** handles paym
 
 | Path | One-liner |
 |------|-----------|
-| `client/src/game/state.ts` | Zustand store: game state + UI slice + all gameplay actions. Largest, central file. |
-| `client/src/game/loop.ts` | rAF simulation loop (~4 FPS): production, events, autosave, timers, pause gates. |
-| `client/src/game/actions.ts` | Action execution dispatch â€” maps action IDs to handlers, applies costs/effects. |
-| `client/src/game/rules/index.ts` | Action visibility/affordability (`shouldShowAction`, `canExecuteAction`). |
-| `client/src/game/rules/actionsRegistry.ts` | Central `gameActions` map; action modules register via `registerActions()`. |
-| `client/src/game/rules/executionTime.ts` | `getExecutionTime()` â€” action duration lookup without importing `rules/index` (avoids registration cycles). |
-| `client/src/game/gameStoreHolder.ts` | Late-bound `useGameStore` access so event modules do not import `state.ts` (avoids `attackWaveEvents` TDZ). |
-| `client/src/game/save.ts` | Load/save orchestration: IndexedDB + Supabase cloud diff sync (`LoadGameResult` distinguishes loaded / not-found / error; `SaveGameResult` reports local/cloud writes; restart overwrite cleared only after cloud accepts). CrazyGames also mirrors to the SDK Data module + localStorage. |
-| `client/src/game/saveConflict.ts` | Pure local-vs-cloud preference (`pickPreferredSave`: explicit restart overwrite, else newer cloud run, else playTime) + playtime-overwrite helpers (`isNewGame` alone does not grant overwrite). |
-| `client/src/game/stateHelpers.ts` | Pure state mutations; `buildGameState()` / `UI_ONLY_PROPERTIES` / dialog reset-on-load delegate to `persistedStateBoundary.ts`. |
-| `client/src/game/dialogRegistry.ts` | SSOT for transient dialog store keys: blocking pause, save exclusion, reset-on-load. |
-| `client/src/game/persistedStateBoundary.ts` | Schema-driven allowlist for save blobs; strips runtime/dialog keys via `dialogRegistry.ts`. |
+| `client/src/main.tsx` | React boot: text scale, tab-hidden CSS, save-on-exit, locale seed, root mount. |
+| `client/src/App.tsx` | Routes. `/` paints the start screen first; Game mounts after Make Fire (unless `shouldBootGameSurface`). |
+| `client/src/game/state.ts` | Zustand store: persisted game state + UI slice + gameplay actions. |
+| `client/src/game/loop.ts` | rAF simulation (~4 FPS): production, events, autosave, timers, pause gates. |
+| `client/src/game/actions.ts` | Action dispatch: ID → handler, costs/effects. |
+| `client/src/game/rules/index.ts` | Action visibility/affordability. |
+| `client/src/game/rules/actionsRegistry.ts` | Central `gameActions` map; modules register via `registerActions()`. |
+| `client/src/game/gameStoreHolder.ts` | Late-bound store access so event modules do not import `state.ts`. |
+| `client/src/game/save.ts` | IndexedDB + Supabase cloud sync (full-document replace by default). |
+| `client/src/game/saveConflict.ts` | Local-vs-cloud preference. |
+| `client/src/game/dialogRegistry.ts` | Transient dialog SSOT: blocking pause, save exclusion, reset-on-load. |
+| `client/src/game/persistedStateBoundary.ts` | Schema-driven save allowlist; strips runtime/dialog keys. |
+| `client/src/game/gameplayInitOrchestrator.ts` | Local hydrate + loop, then auth/cloud/Stripe/audio in background. |
+| `client/src/i18n/index.ts` | i18next bootstrap (English `ui/shell` + `ui/seo` seeded at init). |
+| `client/src/i18n/loadLocaleResources.ts` | Lazy locale shard loading by surface (start / public docs / gameplay). |
+| `client/src/lib/edition.ts` | Steam / Galaxy / CrazyGames / demo flags (plus DEV Game Mode). |
+| `client/src/components/game/GameContainer.tsx` | Game UI shell: tabs, panels, dialogs, hotkeys. |
+| `client/src/pages/game.tsx` | Thin game route; paints after local hydrate; stops the loop on unmount. |
 | `shared/schema.ts` | Zod `gameStateSchema` / `SaveData` + shared shop constants. |
-| `client/src/components/game/GameContainer.tsx` | Main game UI shell: tabs, panel switching, mounts all dialogs, hotkeys; wraps started gameplay in `GameTooltipProvider`. Estate/Bastion stay mounted after first visit so the shared progress shader can park and reuse one WebGL context. |
-| `client/src/pages/game.tsx` | Thin game route shell; paints after local hydrate via `gameplayInitOrchestrator.ts`, loop stop on unmount. Make Fire handoff can suppress the spinner until the cave is ready to paint. |
-| `client/src/i18n/index.ts` | i18next bootstrap (English `ui/shell`+`ui/seo` seeded at init; remaining shards via `loadLocaleResources.ts`). |
-| `server/index.ts` | Express API + static hosting entry point. |
+| `server/index.ts` | Express API + static hosting. |
 
 ---
 
 ## Client structure (`client/src/`)
 
-| Directory | Role | Key files |
-|-----------|------|-----------|
-| entry | React root â†’ router | `main.tsx` (bootstraps text scale from `lib/textScale.ts`, tab-hidden CSS flag from `lib/tabVisibility.ts`, `installFlushSaveOnExit()`; creates root immediately with English `ui/shell`+`ui/seo` seeded; `BOOT_LOCALE_TIMEOUT_MS` (20s) fatal only off `/` play routes), `App.tsx` (`PlayRoute` lazy-loads Game when `shouldBootGameSurface` is true), `components/AppErrorBoundary.tsx` (root React error boundary; auto `hardReload` on stale lazy chunks, else dig-deeper screen), `components/DeferredAppChrome.tsx` (loads Radix `TooltipProvider` + `Toaster` on first gesture as siblings so `/` does not download `vendor-radix` or remount the start screen), `index.html` (black boot shell + visible `#adc-boot-spinner` + SEO fallback; deferred `/boot.js` watchdog matching `FATAL_UI_TIMEOUT_MS` (45s) / exhausted script-retry → fatal error markup), `public/boot.js` (cache-bust `_cb` strip, module-load retry, spinner/watchdog), `index.css` (`--adc-text-delta` +2px Large text utilities + `--adc-control-scale` button size chrome) |
-| `pages/` | Route-level components (lazy-loaded) | `start-screen-page.tsx` (web `/` title + Make Fire, including returning saves; paints immediately; after Make Fire holds the last title frame until Game can paint, then spinner only if that wait exceeds 250ms; Steam full game may show a one-time Demo Continue dialog; `forceGame` / portal resume / in-game reload skip this chunk via `App.tsx` `PlayRoute`), `game.tsx`, `end-screen.tsx`, `reset-password.tsx`, `withdrawal.tsx`, `not-found.tsx`, `privacy.tsx` / `terms.tsx` / `imprint.tsx` (legal docs; crawler first-HTML via `publicLegalPages.ts`), `faq.tsx` / `about.tsx` (public docs; crawler HTML stays English via `publicPages.ts`, in-app copy from `ui/publicPages.json`), `press.tsx` (public `/press` kit; copy + assets from `pressKit.ts`), `publicDocPage.tsx` / `publicPageI18n.tsx` (shared chrome + link tags), `admin/dashboard.tsx` (+ `admin/tabs/TrafficTab.tsx` sessions vs UTM landings + attribution charts + copyable campaign URLs), `starship-shader-demo.tsx` (dev-only `/dev/starship-shader` preview), `animations-demo.tsx` (dev-only `/dev/animations` shell), `animations-demo/catalog.ts` (SSOT nav + section list), `animations-demo/DemoSection.tsx` (shared section/row chrome), `animations-demo/cssEffects.ts` (CSS class effect catalog), `animations-demo/section*.tsx` (split playground sections mounting real game components; click/hover particle galleries driven by `CLICK_PARTICLE_DEMO_PRESETS` / `HOVER_PARTICLE_DEMO_PRESETS` in `bubbly-button.particles.ts`; `sectionEstate.tsx` estate bars use `EstateStyleProgress` + shared smoke host; `sectionSharedProgressShader.tsx` = one shared red progress shader + 5 bars + Bastion attack-waves bar from `attackWavesProgressStyle.ts`), `animations-demo/useDemoShaderVisible.ts` (nav-hash / in-view host so the shader singleton can move between demo sections), `combat-dialog-demo.tsx` + `combat-dialog-demo/seedState.ts` (dev-only `/dev/combat-dialog` â€” full combat loadout sandbox; item/skill availability toggles, all on by default), `demo-end-screen-demo.tsx` (dev-only `/dev/demo-end` â€” Steam / Galaxy `DemoTimeUpDialog` preview), `sounds-demo.tsx` (dev-only `/dev/sounds` all-SFX + stackable ambience playground), `production-icons-demo.tsx` (dev-only `/dev/production-icons` header and dialog rings from `headerIndicatorIcons.ts`) |
-| `game/` | **Game engine** (see below) | `state.ts`, `useGameStoreWithoutTickClock.ts` (panel subscriptions skip 4 Hz playTime / loopProgress / attack-wave timer / in-flight cooldown remaining-time writes; `useDerivedGameState` selects helper results so badges/tooltips do not subscribe to the full store), `sidePanelModel.ts` (serializable side-panel list snapshot + equality so the always-on side panel does not subscribe to the full store), `loop.ts`, `playTimeAutoPrompts.ts` (play-time rewards/feedback auto-open; one blocking modal per tick), `actions.ts`, `save.ts` (cloud full-replace by default; kill switch `VITE_SAVE_FULL_REPLACE=0`), `flushSaveOnExit.ts` (force-save live game on `pagehide` / Steam will-quit), `saveKeys.ts` (edition save + startup-header localStorage keys, no IndexedDB), `saveOrigin.ts` (stamped `saveOriginEdition` on each write), `steamDemoContinue.ts` (one-time Steam Demo → full import on the start screen), `saveStorage.ts` (IndexedDB open + re-exports `saveKeys.ts`), `crazyGamesSaveAdapter.ts` (CrazyGames Data module + localStorage persist), `startupSaveHeader.ts` (small localStorage routing/preferences header with existing-save backfill), `startupBootSurface.ts` (sync header peek + `shouldBootGameSurface`; web revisits stay on Make Fire; `forceGame` / `adc-resume-game` / portal started saves skip to Game; `preferStartScreen` after a title click), `startScreenGamePrefetch.ts` (LCP + first move before Game-chunk prefetch), `makeFireHandoff.ts` (hold last Make Fire frame until Game can paint; spinner only after 250ms), `startupGameLoader.ts` (isolated full-store/game-loop bridge dynamically imported by the start page), `startupUrlCleanup.ts` (strip auth/campaign/stripe/boost/shop/`ref` query params after consume; `ref` is persisted first), `gameplayInitOrchestrator.ts` (local hydrate + loop, then auth/cloud/Stripe/audio/fonts in background; DEV `?devSave=` hydrates a fixture and skips cloud), `devSaveIds.ts` (DEV milestone ids + labels for `?devSave=`), `devSaves.ts` (milestone builders from `createInitialState()` + store hydrate; never persisted), `dialogRegistry.ts` (transient dialog metadata SSOT), `gameStoreHolder.ts` (late-bound store access for event modules; avoids `state.ts` ↔ `events.ts` TDZ), `persistedStateBoundary.ts` (save allowlist + runtime-key strip), `saveConflict.ts` (local/cloud restart reconciliation), `saveCodec.ts`, `stateHelpers.ts`, `sleepBonusTimers.ts` (freeze feast/heartfire/etc. wall-clock timers across sleep; applied on wake in `IdleModeDialog`), `timedEffects.ts` (`processTimedEffects()` feast/curse/focus/etc. expiry from `loop.ts`), `sleepGainDisplay.ts` (cap sleep total-gain column / deltas to storage room; whole-number sleep cycle rates), `winAchievements.ts` (Normal/Cruel/Speedrunner/Cave Veteran Epic win flags + `lifetimeGamesWon` from cube endings), `resourceStorageMax.ts, resourceOvercapGrants.ts (SSOT: which grant paths may exceed warehouse storage)` (Great Vault cap-hit tracking for Overall Resource Maxer; `lifetimeStorageMaxHits` persists across restarts), `estateUpgradeMax.ts` (Estate-tab upgrade max tracking for Overall Upgrade Maxer; `lifetimeEstateUpgradeMaxHits` persists across restarts), `demoLimit.ts` (Galaxy + Steam demo wooden-hut cap + footer progress segments; `processDemoLimit()` from `loop.ts`), `demoTeaserTabs.ts` (demo tab-bar redacted placeholders for locked location tabs), `demoEndCatalog.ts` (demo-end side-panel full catalog + redacted merge), `demoActionRewards.ts` (demo editions raise Gather Wood / Hunt / cave-explore / mine *base* grants by 25%; bonuses apply after), `boost.ts`, `btpLoot.ts` (Steam/BTP 2x silver/gold on one-shot loot), `villagerCapUpgrades.ts`, `villagerJobPresets.ts`, `constructionQueueSlots.ts`, `weaponEnchantments.ts`, `itemAbsolution.ts`, `headerIndicatorIcons.ts` (Village Produce + Estate Focus + Heartfire header rings + OutcomeDialog village-effect rings; `/dev/production-icons` reads this list), `attackWavesProgressStyle.ts` (Bastion attack-waves bar chrome SSOT; `AttackWavesProgressBar` + `/dev/animations#attack-waves-bar` read this), `villageEffectThemes.ts` (event-to-theme resolver for village timed-effect announcements; visuals in headerIndicatorIcons.ts), `auth.ts`, `copyInviteLink.ts` (mint `?ref=` short code + `copy-invite-{rewards|share|floating|social}` button_clicks), `referralLanding.ts` (first-touch `?ref=` in localStorage; survives OAuth / later signup), `referralCloudRefresh.ts` (merge referral-owned cloud fields into live state without full gameplay replace), `shopPurchases.ts`, `shopOpenSource.ts`, `shareCardStats.ts` (share-card combat-stat reveal: first wave unlocked or fought), `socialTaskRewards.ts`, `socialTasksGold.ts`, `playlightExitIntent.ts`, `tabUnlockBlink.ts`, `achievementTabPulse.ts`, `bloodMoonOverlay.ts` (blood moon background/smoke overlay visibility + dev preview flag), `versionCheck.ts` (polls `/api/version` vs baked `__BUILD_SHA__`; triggers update toast in `GameContainer`), `constants.ts`, `rules/` |
-| `components/game/` | Game-specific UI | `GameContainer.tsx`, `GameActionButtonStack.tsx` (in-flow wrapper for action buttons + badges), `GameHeader.tsx` (title returns to start screen after save; demo header store link + profile/playlight/leaderboard shortcuts; footer-matched chrome), `SteamDemoStoreLink.tsx` (demo header store link + demo-end wishlist button; Steam Overlay on desktop), `profileMenuContext.ts` (stable header menu context so HMR cannot split Provider vs controls), `FullscreenButton.tsx` (Steam shell full-screen toggle in header; start screen uses a lightweight local control), `CrazyGamesMenuLinks.tsx` (CrazyGames-only Steam + social items in the upper-right menu), `startScreenDeferredMenu.ts` (apply hover/click-to-load start menus only for the winning request), `startScreenEyesEasterEgg.ts` (random left/right start-screen eyes hot zone + image position), `gameChrome.ts` (header/footer inset constant), `panelResize.ts` (`usePanelResize` â€” drag limits, refs/styles, persists `panelSizes` desktop/mobile), `PanelResizeHandle.tsx` (separator grab handle on side-panel/log dividers), `TraderTabButton.tsx` (shop tab â—¬ + gold hover particles; periodic 15m hover hint), `DemoLockedTabButton.tsx` (demo redacted location-tab placeholders), `GameTabs.tsx`, `GameButton.tsx`, `GameUiIcon.tsx` (CSS-mask white icons from `public/icons/` for profile/settings/footer/tab menus; header menu = option bars; discover/playlight = directional pad; trader = coin stack; social = user group; leaderboard = award medal; reward dialog = award star), `FooterNetworkMenu.tsx` (footer Social dropdown: Reddit / Instagram / YouTube / itch.io / Email / Invite Friends on web only; hidden on CrazyGames), `InviteFriendsMenuItem.tsx` (shared invite copy row + tooltip for social menus, floating button, and share dialog; omitted on Steam / Galaxy / CrazyGames), `SidePanelSectionIcon.tsx` (CSS-mask section headers from `public/icons/side-panel/`), `panels/`, `*Dialog.tsx`, `DemoTimeUpDialog.tsx` (blocking Galaxy/Steam demo end modal â†’ larger Steam store overlay CTA; flame background via `EndScreenShaderBackground`), `SteamDemoContinueDialog.tsx` (start-screen Demo → full Continue / Start New), `VillageEffectDialog.tsx` (themed feast/curse/frostfall/etc. announcement modal via `OutcomeDialog`), `BlessingOfferDialog.tsx` (Insight blessing 3-card picker from timed tab), `GoldShopBadge.tsx` (yellow buy-gold + on unaffordable gold costs; TimedEventPanel choices + Forest bombs/elixirs), `ConstructionBoostBadge.tsx` (â© Insight badge on in-progress builds â€” one-time 50% time skip via Builder's Lodge tier 2+), `ConstructionQueueSlot.tsx` (Village Build header queue marks; used = red share-card spinning rim, no hover), `VillagerCapUpgradeBadge.tsx` (Insight villager-cap upgrade badge on VillagePanel job rows, one per cap group), `ShareDialog.tsx` (1080Ã—1350 social share image: title + resource column + 2Ã—2 achievement rings + overall % via `html-to-image`; silver `GlowingShadow` on CTA; profile menu Progress opens it on web and Steam; Steam omits play-for-free CTA and invite copy; killed-creatures / highest-wave hidden until first attack wave), `GameFooter.tsx` (pause/shop/donate + Connect menu + Steam wishlist; Steam desktop Feedback → Google Form + Steam demo centered green progress bar), `FeedbackDialog.tsx` (play-time feedback prompt; form CTA + social/email links), `SettingsDialog.tsx` (Profileâ†’Settings: music/sfx volume sliders + mute, text size + language selectors, DEV Game Mode dropdown, DEV save fixture loader, and web-only email opt-in + delete-account; non-blocking, opened from `ProfileMenu`), `TextScaleSelector.tsx` (Normal/Large text size dropdown for Settings; persists via `lib/textScale.ts`), `EndScreen.tsx`, `StatEffectsTooltip.tsx` (per-stat luck/strength/knowledge/madness effect breakdown in side-panel tooltips), `BonusCompositionTooltip.tsx` (per-source bonus breakdown for side-panel Bonuses rows), `ResourceFlowTooltip.tsx` (per-job production/consumption for side-panel resource rows), `StripePoweredBy.tsx` (checkout Stripe + payment-methods footer), `paymentMethodLogos.tsx` (Visa/MC/PayPal/Apple Pay/Google Pay SVG marks) |
-| `components/ui/` | shadcn/ui design system + game visuals | `button.tsx`, `card.tsx`, `dialog` (`DialogContent` swallows leftover clicks for 800ms via `useDialogOpenClickLock`), `toast.tsx`, `progress-bar.tsx` (`SegmentedProgress` — Steam demo footer, AchievementsPanel, EstatePanel upgrade bars, animations demo), `progressGrowSparks.tsx` (shared grow-spark canvas for `Progress` + `SegmentedProgress`), `text-shimmer.tsx` (loading button label shimmer), `bubbly-button.components.tsx` (inline click particles in `CooldownButton`; `BubblyButtonGlobalPortal` for coin/hover bursts), `bubbly-button.particles.ts` (craft/mine/explore burst presets; `FIRE_LOAD_PARTICLE_CONFIG` for animations-demo fire load; `CHECKOUT_SUCCESS_PARTICLE_CONFIG` for shop purchase close), `page-load-spinner.tsx` (black loading screen + CSS fire spinner, no Framer; visible immediately; hands off `#adc-boot-spinner` after paint; escalates via `FATAL_UI_TIMEOUT_MS`), `page-error-screen.tsx` (thin React wrapper â†’ `mountFatalErrorScreen()`), `mist-background.tsx`, `cloud-shader.tsx`, `starship-shader.tsx` (WebGL2 fullscreen starship fragment shader), `smoke-shader.tsx` (WebGL1 Smoke flow shader; shop first-purchase Insight banner; exports flow shader sources for reuse), `shared-progress-shader.tsx` (one Smoke-flow context, parked when Estate/Bastion are hidden; host can override palette/rim; `EstateStyleProgress` for EstatePanel + `/dev/animations`), `attack-waves-progress.tsx` (`AttackWavesProgressBar` — Bastion chart + demo; chrome from `attackWavesProgressStyle.ts`), `spooky-smoke-animation.tsx` (WebGL2 blood moon smoke overlay), `vapour-text-effect.tsx` (canvas particle text vaporize cycle; start-screen intro dissolve after Make Fire), `glowing-shadow.tsx` + `glowing-shadow.css` (animated glowing border shell; silver/frame wraps share-image card; red/slot is the used construction-queue mark), `limelight-nav.tsx` |
-| `hooks/` | React hooks | `use-toast.ts`, `useCooldown.ts`, `use-mobile.tsx`, `useFullscreen.ts` (Steam `steamBridge` full-screen state + toggle), `useSteamEditionActive.ts` (reactive Steam / Galaxy / CrazyGames / DEV Game Mode; also `useDemoEditionActive` / `useSteamDemoActive`), `useIOSChromeViewportShell.ts` (CriOS: pin `GameContainer` shell to `visualViewport`), `useNewItemPulseTooltip.ts` (first-time `new-item-pulse` on tooltip triggers until hover/open; persisted in `hoveredTooltips`; `VillagePanel` indicators), `usePeriodicPlayTimeTooltip.ts` (footer Playlight after 75m / Steam after 60m, then every 30m of play), `useDialogOpenClickLock.ts` (800ms leftover-click lock on `DialogContent` after a modal appears) |
-| `i18n/` | Localization (see below) | `index.ts`, `locales.ts`, `useTextScale.ts` (text size hook; `localStorage` + DOM sync), `resolveGameText.ts`, `logDisplay.ts`, `locales/` |
-| `lib/` | Cross-cutting utilities | `publicUrl.ts` (Vite `BASE_URL` prefix for CrazyGames subdirectory assets), `crazyGames.ts` (HTML5 SDK v3 init + Data module), `logger.ts` (always use instead of `console.*`), `fatalErrorScreen.ts` (`mountFatalErrorScreen()` dig-deeper DOM fallback; `BOOT_LOCALE_TIMEOUT_MS` / `FATAL_UI_TIMEOUT_MS`; soft i18n upgrade), `hardReload.ts` (cache-busting reload after deploy — navigates with `_cb`, strips param at boot in `public/boot.js` + `main.tsx`, purges Cache Storage/SW after load; `recoverFromStaleChunkLoad` from `AppErrorBoundary` because React.lazy swallows unhandledrejection; retry guard cleared only after StartScreen/Game mount, not App shell), `queryClient.ts`, `authStorageKey.ts` (localStorage key only; start screen must not import `supabase.ts`), `sessionTracker.ts` (`st_sid` shared analytics session id; start-screen + game), `utmLanding.ts` (anonymous once-per-tab UTM landing beacon → `/api/utm/landing`, same `st_sid`), `textScale.ts` (Normal/Large readable text preference; `--adc-text-delta` +2px + milder `--adc-control-scale` on `<html>`, `localStorage`), `tabVisibility.ts` (`data-tab-hidden` on `<html>` while tab backgrounded — pauses decorative CSS animations; `isGameTabHidden()` gates timed-tab spawns and freezes the visit countdown), `viewportSize.ts` (layout viewport size + resize/full-screen subscriptions for shader canvases), `particlePortal.ts` (`getGameParticlePortalTarget()`, `resolveParticlePortalTarget()` — game-layer vs body portal mount for click bursts), `tailwindColors.ts`, Supabase client; `audio.ts` (Howler; start screen dynamic-imports after Make Fire is up; wind/Make Fire URLs register then, fetch/decode on gesture / Make Fire / SFX unmute); `playlight.ts` (Playlight SDK + CSS loaded on demand after Make Fire / game mount — not on start screen; exit-intent sync from store, discovery pause); `playlightExitIntentClose.ts` (injected red close on SDK exit-intent bar); `firaSansFontFace.ts` (same-origin Fira Sans `@font-face` loader; start screen mounts 400/500 only, gameplay upgrades to full weights); `public/fonts/inter-heart.woff2` (tiny Inter subset for donate ❤ glyph only); `notoSansSymbols2FontFace.ts` (same-origin Noto symbols `@font-face` loader + `Noto Symbol Compat` for glyphs Symbols 2 omits); `shareImageFonts.ts` (base64-inlined `@font-face` CSS for the share-image PNG export); `exclusivePromoShockwave.ts` (CSS class toggles for rewards-task shockwave hover/ping + donate-heart pump); `gameFeedbackForm.ts` (hosted Google Form URL + `feedback-open-{source}` button_clicks and persisted last-open stamp; StartScreen-safe, no static store import) + `openFeedbackDialog.ts` (sync store write; game-path only); `gameFooterSocialLinks.ts` (footer/social URLs + `steamStoreUrl(utm_content)` / `gameLandingUrl()` / `xGameLandingUrl()` + `UTM_CAMPAIGN_LINKS` catalog for Traffic-tab copy), `openFullGameStore.ts` (Steam Overlay store page on desktop, store URL fallback on web) |
-| `achievements/` | Achievement configs, charts, claim logic | `AchievementMiniRingChart.tsx` (sizeable ring donut), `achievementProgress.ts` (overall/per-category % complete), `achievementEdition.ts` (`webOnly` filter for Steam UI/sync), `steamAchievements.ts` (Steam unlocks from save progress; demo syncs basic IDs only, full/playtest backfill the rest on import), `nonOverallCompletion.ts` (Achievement Maxer: all non-overall complete), `configs/` (basic/building/item/action + `basic.demoReachable.ts` for Steam-demo completion fixtures + non-claimable `overall` with Resource Maxer / Upgrade Maxer / Achievement Maxer / Cave Veteran; Supporter is `webOnly`). Demo-end (`AchievementsPanel`) enables every category tab; locked category titles and rows stay redacted. |
+| Directory | Role |
+|-----------|------|
+| entry | `main.tsx`, `App.tsx`, `index.css`. Boot chrome: `index.html` + `public/boot.js`. |
+| `pages/` | Route-level screens (lazy). `pages/admin/` is the dashboard. `/dev/*` playgrounds sit beside them. |
+| `game/` | Game engine (see below). `game/rules/` is actions + events. |
+| `components/game/` | Game UI: shell, panels, dialogs, header/footer. |
+| `components/ui/` | shadcn/ui + shared visuals (shaders, progress, buttons). |
+| `hooks/` | React hooks. |
+| `i18n/` | Bootstrap, resolvers, `locales/{lang}/`. |
+| `lib/` | Cross-cutting: logger, edition, audio, Supabase, fonts, reload. |
+| `achievements/` | Ring configs, progress, Steam unlock mapping. |
+| `stubs/steam/` | Vite aliases that drop web-only chunks from the Steam build. |
 
-**Lazy-loading:** the web `/` play route always paints the start screen first (including
-returning saves) so CrUX LCP is the title card. Howler, framer-motion (`ParticleButton`),
-`CloudShader`, and the vaporize effect load after Make Fire is painted. The full `Game`
-chunk prefetches after LCP plus the first pointer/key move, and mounts after Make Fire.
-The last Make Fire frame stays up until Game can paint; the load spinner appears only if
-that wait exceeds 250ms (`makeFireHandoff.ts`). Returning-player boots do not hold the title.
-`shouldBootGameSurface` still skips the start-screen chunk for `forceGame` (Stripe, email
-confirm, `/?game=true`, `/boost`), an in-game `adc-resume-game` reload, and Steam / Galaxy /
-CrazyGames started saves (unless `preferStartScreen` is set).
+**Boot:** web `/` always paints the start screen first (including returning
+saves). The Game chunk prefetches after first paint + first input, then mounts
+after Make Fire. `shouldBootGameSurface` skips the start-screen chunk for
+`forceGame`, in-game resume reloads, and Steam / Galaxy / CrazyGames started
+saves.
 
 ---
 
 ## Game engine (`client/src/game/`)
 
-Data-flow mental model:
-
 ```
-startupIntent.ts + startupUrlCleanup.ts + startupCoordinator.ts
-  â†’ parse intent, consume OAuth before URL cleanup, resolve StartScreen or Game
-startupGameLoader.ts + gameplayInitOrchestrator.ts
-  â†’ prepared-store handoff; state.loadGame() hydrates once; ordered post-load tasks
+startupIntent / startupCoordinator / startupBootSurface
+  → StartScreen or Game
+gameplayInitOrchestrator
+  → loadGame() hydrates once; background auth/cloud/audio
 UI (GameContainer, panels, dialogs)
-  â†• useGameStore (Zustand)
-state.ts        â€” GameStore = persisted GameState + UI slice + store methods
-  â†•
-loop.ts         â€” rAF ~4 FPS: production cycle, events, autosave, timers, pause gates
-  â†•
-rules/          â€” declarative actions + events (data-driven, not a runtime VM)
-actions.ts      â€” dispatch action ID â†’ handler, deduct costs, run effects
+  ↔ useGameStore (Zustand)
+state.ts        - persisted GameState + UI slice + store methods
+  ↔
+loop.ts         - rAF ~4 FPS: production, events, autosave, pause gates
+  ↔
+rules/          - declarative actions + events
+actions.ts      - dispatch action ID → handler
 dialogRegistry.ts + persistedStateBoundary.ts
-  â€” dialog pause/reset SSOT + schema-driven save allowlist
-stateHelpers.ts â€” pure mutations + buildGameState() wrapper
-save.ts         â€” IndexedDB + Supabase cloud sync
-shared/schema.tsâ€” Zod GameState schema (source of truth for persisted shape)
+  - dialog pause/reset + save allowlist
+save.ts         - IndexedDB + Supabase
+shared/schema.ts - Zod persisted shape
 ```
 
-- **`state.ts`** â€” central Zustand store. Exports `useGameStore`, `createInitialState()`,
-  `StateManager` (batched derived-stat recompute), `isModalDialogOpen()` (sim freeze gate, including `dialogHandoffPending` between event close and reward/outcome),
-  `shouldBlockGameHotkeys()`, `detectRewards()`. Binds the store into `gameStoreHolder.ts` after
-  create so event files can read/write without importing this module. Its `loadGame()` method is the single startup
-  hydration path and reports whether persisted state was found.
-- **`startupIntent.ts` / `startupUrlCleanup.ts` / `startupCoordinator.ts` / `startupBootSurface.ts` /
-  `startupGameLoader.ts` / `gameplayInitOrchestrator.ts`** — parse callback and campaign intent once
-  (UTM + legacy `?c=` → `utmAttribution` / `googleAdsSource`), fire anonymous UTM landing beacon,
-  first-touch save attribution, consume OAuth before URL cleanup, resolve StartScreen vs Game
-(`App.tsx` skips the start-screen chunk for `forceGame`, in-game resume reloads, and
-portal started saves; web revisits stay on Make Fire),
-  transfer any store prepared during auth/Steam checks or Make Fire, and paint Game after
-  local hydrate (`loadGame({ cloud: false })`). DEV `?devSave=<id>` hydrates a named
-  milestone instead and skips cloud reconcile. Auth, cloud merge, Stripe, audio, and fonts
-  continue in the returned `background` promise.
-- **`dialogRegistry.ts` / `persistedStateBoundary.ts`** â€” single dialog metadata source for blocking
-  pause, reset-on-load, and runtime-only keys; schema-derived allowlist for `buildGameState()`.
-- **`loop.ts`** â€” `TARGET_FPS = 4`. ~15s production cycle (`PRODUCTION_INTERVAL`), fixed tick
-  (`TICK_INTERVAL` from `constants.ts`), pause gates (manual pause, idle, inactivity,
-  `isModalDialogOpen`, `isDemoPlayFrozen` at the demo hut cap), autosave (15s local / 60s signed-in cloud; Steam quit handshake + `pagehide` flush in `flushSaveOnExit.ts`),
-  attack-wave timer, play-time accumulation. Timed-tab countdown freezes while the page is hidden (`visibilitychange` + `isGameTabHidden()`). Village/estate timed-buff expiry is `processTimedEffects()` in `timedEffects.ts` (called from `processActionTicks`). Started from `gameplayInitOrchestrator.ts`; stopped on `pages/game.tsx` unmount via
-  `stopGameLoop()`.
-- **`rules/`** â€” `actionsRegistry.ts` (central `gameActions`), per-area action modules
-  (`caveLogFallbacks.ts`, `caveExploreActions.ts`, `villageBuildActions.ts`, `forestSacrificeActions.ts`,
-  `forestResearchActions.ts`, `financeExpedition.ts` (tier/cost helpers leaf; avoids buttonUpgrades/rules init cycles), `bastionActions.ts`, â€¦), `index.ts` (visibility/affordability), effects
-  (`actionEffects.ts`, `effectsCalculation.ts`, `bonusComposition.ts` (side-panel bonus source breakdown), `costCalculation.ts`, `skillUpgrades.ts` (Estate/combat skill tiers incl. Crushing Strike, Bloodflame Sphere, Feral Howl), `executionTime.ts`), events (`eventTypes.ts` / `eventSuccessChance.ts` for types + chance helper without the aggregator; `events.ts`
-  â†’ `EventManager`, `gameEvents`, re-exports; plus topic files `events*.ts` incl. `eventsLadyMountains.ts` â€” DEV-only Lady/Liquid Death/Man/night attack + The Hound fellowship (Feral Howl); `eventsWanderingCollector.ts` / `collectorRejectedItems.ts` â€” wandering collector buy/sell timed tab + rejected-item tracking; `eventsChainmaster.ts` â€” Leatherbound Book discovery + collector timed tab; `eventsInsightBlessings.ts` / `insightBlessings.ts` â€” Insight-paid blessing timed tab + 3-card offer; `eventsStaringDeer.ts` / `eventsStaringDeer.test.ts` â€” staring-deer Continue dialog (2x food production, once per hut stage); `eventsForestFear.ts` â€” forest-attack Continue dialog (hunter/gatherer -25%); `eventsBrimstoneFlux.ts` - three foundry-smith visits (timed +2 steel, then Brimstone Infusion blessing)), `insightReveal.ts` /
-  `insightRevealTooltip.tsx` (building/craft/stat descriptions always visible;
-  leftover per-action / description-unlock purchase paths removed), `actionTooltipLayout.tsx` (`composeActionTooltip` â€” cost,
-  effects, description), `focusTooltipIndicator.tsx` (focus `â˜©` icon on eligible action
-  tooltips while focus is active), `buildingUpgradeTooltipIndicator.tsx` (upgrade `ðŸ •` icon on
-  construction tooltips for buildings that replace earlier tiers), `tooltips.tsx` / `itemTooltips.tsx`,
-  `eventsMerchantTooltip.tsx` (merchant special-item tooltips: cost, effects, description).
-- **Action path:** UI â†’ `useGameStore.executeAction(id)` â†’ `actions.ts` maps ID â†’ `handle*`
-  function in a rule module â†’ `StateManager.scheduleEffectsUpdate()` recomputes derived stats.
-  Action modules import `ActionResult` from `types.ts`, not `actions.ts` (avoids Vite TDZ on `caveExploreActions`).
-- **Event path:** `loop.ts`/store â†’ `checkEvents()` â†’ `EventManager` evaluates `gameEvents`
-  â†’ opens `EventDialog`, `VillageEffectDialog` (themed village timed-effect outcomes), or `timedEventTab`. Timed-tab events do not spawn while the game tab is hidden (Steam, web, all editions).
-  Unresolved `EventDialog` prompts persist as `pendingModalEvent` and reopen on load (refresh cannot dismiss a choice or forced Continue). Timed visits already persist via `timedEventTab`; load also returns to that tab while a visit is active.
-- **`headerIndicatorIcons.ts`** - Village Produce, Estate Focus, Heartfire header-ring glyphs, village-effect OutcomeDialog rings, and Reward / Madness / Insight / Investment outcome rings. `VillagePanel` / `EstatePanel` / `VillageEffectDialog` / `RewardDialog` and `/dev/production-icons` share this list.
-- **`villageEffectThemes.ts`** â€” event-to-theme resolver for village timed-effect announcements (`resolveVillageEffectAnnouncementTheme()` in `applyEventChoice`); visuals live in `headerIndicatorIcons.ts`.
-- **`playlightExitIntent.ts`** â€” play-time exit-intent milestones (90m/150m/210m/270m/330m);
-  skips 150m and 270m when Playlight discover social task is fulfilled;
-  `getActivePlaylightExitMilestone()`; consumed count persisted as `playlightExitIntentMilestoneIndex`
-  in save (read/written by `lib/playlight.ts` on SDK `exitIntent`).
-- **`versionCheck.ts`** â€” polls `/api/version` against compile-time `__BUILD_SHA__` (focus/visibility + 5m interval); on mismatch saves game and shows a sticky update toast in `GameContainer` with a live `M:SS` countdown, then force `hardReload` after 5 minutes (or via toast action / tab-return after grace). Counts real hardReload navigations per server SHA (max 3); after that, sticky manual refresh only (no auto-reload loop). Skips Steam / Galaxy / CrazyGames (`isLocalOnlyEdition`, no Express host) and when `__BUILD_SHA__` is `"dev"` (Vite non-production); local `npm run dev` also omits leftover `dist/build-meta.json` from `/api/version`.
-- **`boost.ts`** â€” one-time `/boost` URL resource bonus for started saves; gated by persisted
-  `boostApplied` (`shared/schema.ts`, migrated from legacy `boostMode`); applied on load in
-  `gameplayInitOrchestrator.ts` via `canApplySaveBoost` / `applySaveBoost`.
-- **`tabUnlockBlink.ts`** â€” one-time tab unlock blink (`story.seen` `tabUnlockBlinkSeen_*`);
-- **`achievementTabPulse.ts`** â€” achievements tab pulse until opened (`story.seen` `achievementTabPulseSeen_*`, including Book of Trials);
-- **`villagerCapUpgrades.ts`** â€” per-profession villager caps via Insight upgrades (group/building mapping,
-  cap/cost tables, `flags.villagerCapsEnabled` new-games gate + `import.meta.env.DEV` until shipped); enforced in
-  `assignVillagerToJob`, `upgradeVillagerCap` in `state.ts`, UI in `VillagePanel` / `SidePanelSection` /
-  `itemTooltips.tsx`.
-- **`villagerJobPresets.ts`** â€” villager job presets unlocked by the Scribe's Office â†’ Records Hall â†’ Grand Archive
-  building chain (2 + 1 + 2 slots = 5 max). Snapshot/apply helpers (proportional shrink, surplus â†’
-  free, cap-clamped); persisted in `villagerJobPresets` / `activePresetSlot` (`shared/schema.ts`). Store methods
-  `saveVillagerJobPreset` / `applyVillagerJobPreset` / `setActivePresetSlot` (`state.ts`); UI row in the
-  `VillagePanel` "Produce" header.
-- **`constructionQueueSlots.ts`** â€” parallel construction queue (base 1 slot; Builder's Lodge/Guild
-  unlock 2 extra slots purchasable with Insight = 3 max), build-time/cost reductions from Builder building tiers,
-  and Construction Boost (Insight skip 50% of build time). Same boost logic applies to crafting (Insight skip 50%
-  of craft time) when Advanced Blacksmith is built; enforced in `canExecuteAction`, `getExecutionTime`,
-  `getTotalBuildingCostReduction`; persisted in `constructionQueueSlotsPurchased` / `constructionBoostsUsed`
-  (`shared/schema.ts`); store methods `purchaseConstructionQueueSlot` / `boostConstruction` (`state.ts`); UI queue
-  indicators (`ConstructionQueueSlot` — used mark uses red share-card spinning rim) + `ConstructionBoostBadge` on build buttons in `VillagePanel` and craft buttons in `CavePanel`.
-- **`weaponEnchantments.ts`** â€” weapon enchantment via Insight, unlocked by Tomewarden Academy
-  (`buildings.inkwardenAcademy`). Tiered bow/sword chains: only `blacksteel_bow` / `blacksteel_sword` are
-  enchantable; other weapons enchant once (+`1 + floor(stat/10)` Strength/Knowledge each, cost `(added) Ã— 250`);
-  Nightshade Bow has a 2-level table (+base/enchant Strength, +1 poison DoT round).
-  Levels persist in `weaponEnchantments` (`shared/schema.ts`); bonuses applied in `calculateTotalEffects`,
-  spent via `enchantWeapon` (`state.ts`), UI badge + blue tooltip stats in `SidePanelSection` / `itemTooltips.tsx`,
-  combat poison rounds via `getPoisonArrowsDotFightRounds` (`CombatDialog`, `tooltips.tsx`).
-- **`itemAbsolution.ts`** - Book of Absolution: once per item, reduce madness by 1 for 250 Insight
-  (Feeding Ring excluded). Merchant special after Clerk's Hut (250 Gold). Levels persist in
-  `absolvedItems` (`shared/schema.ts`); spent via `absolveItem` (`state.ts`); Insight badge in
-  `SidePanelSection` / blue `-1` on item tooltips. Local/cloud load union-merges true keys
-  (`mergeAbsolvedItemsFromSaves` in `save.ts`) so a full-replace cannot drop rites while
-  keeping spent Insight.
+- **Store:** `state.ts` exports `useGameStore`, `createInitialState()`,
+  `isModalDialogOpen()` (sim freeze, including `dialogHandoffPending`).
+- **Loop:** ~4 FPS. Production cycle, attack-wave timer, play-time, autosave
+  (15s local / 60s cloud). Pause gates: manual pause, idle, inactivity, modal
+  dialogs, demo-hut freeze. Started from `gameplayInitOrchestrator.ts`;
+  stopped on `pages/game.tsx` unmount.
+- **Actions:** UI → `useGameStore.executeAction(id)` → `actions.ts` → `handle*`
+  in a `rules/` module → derived-stat recompute.
+- **Events:** `loop.ts` / store → `checkEvents()` → `EventManager`. Timed-tab
+  events do not spawn while the tab is hidden. Unresolved `EventDialog`s persist
+  as `pendingModalEvent`.
+- **DEV fixtures:** `/?devSave=<id>` hydrates from `devSaves.ts` and skips cloud.
 
 ---
 
 ## State persistence
 
-- **`stateHelpers.ts` / `persistedStateBoundary.ts`** â€” `buildGameState(state)` builds saves from a
-  schema-derived allowlist plus documented store extensions (execution timers, timed visits, audio
-  prefs). Dialog/runtime keys come from `dialogRegistry.ts`. Forces `isPaused: false` on save.
-  `pendingModalEvent` is a schema field (not a dialog key) so unresolved EventDialogs survive refresh.
-- **`save.ts`** â€” IndexedDB (`ADarkCaveDB`); `prepareLocalSaveEnvelope()` stringifies
-  once, then `saveCodec.ts` XOR+Base64 (`ADC2:` prefix) reuses that JSON.
-  Signed-in cloud save (V1 edge `save-game`):
-  **full-document replace by default** (`fullReplace: true` â†’ SQL `p_full_replace`,
-  migration 030); kill switch `VITE_SAVE_FULL_REPLACE=0` restores diff + deep-merge
-  against `lastCloudState` (legacy clients omit the flag and keep merge).
-  Migration `037` union-merges `referrals` on save (with row lock) so server-written
-  invite rewards survive stale full-replace payloads; `shared/referralMerge.ts` mirrors
-  that merge on load. Load also grants invitee gold once when `referralProcessed` flips
-  (`shared/referralReward.ts`), unless the invitee log is already present (flag repair).
-  Load applies migrations (e.g. `migrateTraderShopUnlockOnLoad`).
-- **`flushSaveOnExit.ts`** — force-saves the live game on `pagehide` (best-effort web / Galaxy / CrazyGames) and Steam will-quit (ack before Electron exits). CrazyGames also writes the SDK Data module + localStorage on each save so iframe IndexedDB wipes do not drop progress.
-- **`crazyGamesSaveAdapter.ts`** — CrazyGames persist: SDK `data` + `adc-cg-save` localStorage; load picks the newer of IndexedDB vs Data/localStorage.
-- **`auth.ts`** â€” Supabase auth (incl. anonymous guest-checkout via `ensureAnonymousSession`),
-  `saveGameToSupabase`/`loadGameFromSupabase`, referral metadata; authenticated
-  `POST /api/referral/process` claim/sync (session user only) via `referralCloudRefresh.ts`.
-- **`referralLanding.ts`** — first-touch `?ref=` in localStorage (`adc_landing_referral_code`); survives OAuth redirects and later signup.
-- **`referralCloudRefresh.ts`** - `applyReferralCloudRefreshPatch()` merges referral-owned cloud fields (lists, codes, one-time gold via `shared/referralReward.ts`) into the live store without replacing gameplay.
-- **`shopPurchases.ts`** â€” Supabase `purchases` fetch/rehydrate, feast-activation merge, purchase ID helpers (used by `ShopDialog`, payment return).
-- **`shopPostPurchaseState.ts`** â€” After paid checkout: discount consumption + first-purchase Insight bonus (`shared/firstPurchaseInsightBonus.ts`).
-- **`shopOpenSource.ts`** — Trader shop open entry sources → `shop-open-{source}` button_clicks IDs (tab/footer/gratitude/url); `traderDialogOpens` remains for events. Feedback form opens (`lib/gameFeedbackForm.ts`) write `feedback-open-{source}` (end screen keeps `end-screen-feedback`) plus persisted `lastFeedbackOpenedAt` / `lastFeedbackOpenedSource` for player lookup.
-- **`shared/schema.ts`** â€” Zod schema = source of truth; `createInitialState()` derives defaults from it.
-  Playlight exit-intent quota: `playlightExitIntentMilestoneIndex` (load floor from `playTime` in `state.ts` `loadGame`, same pattern as `socialPromptMilestoneIndex`).
-- **`socialTaskRewards.ts`** â€” `isSocialRewardFulfilled()` / `isSocialRewardClaimed()`: shared helpers for rewards-dialog tasks where action completion (`fulfilled`) and gold grant (`claimed`) are separate (legacy saves treat `claimed` as fulfilled).
-- **`socialTasksGold.ts`** â€” `computePersistedSocialTasksGold()`: re-applies one-time rewards-task gold on `restartGame()` when claim flags persist (sign-up welcome, email, social follows, Playlight discover, claimed referrals).
-
-> **Modal-pause convention:** add blocking dialogs to `GAME_DIALOG_REGISTRY` in
-> `dialogRegistry.ts` (drives pause, reset-on-load, and save exclusion). See
-> `.cursor/rules/modal-dialog-pause.mdc`.
+- **Allowlist:** `persistedStateBoundary.ts` + `dialogRegistry.ts`. Dialog and
+  runtime keys are stripped. `pendingModalEvent` is a schema field so a refresh
+  cannot dismiss a choice.
+- **Local:** IndexedDB (`save.ts` + `saveCodec.ts`). `flushSaveOnExit.ts` writes
+  on `pagehide` and Steam will-quit.
+- **Cloud:** signed-in V1 `save-game` edge function. **Full-document replace**
+  by default (`p_full_replace`). Kill switch: `VITE_SAVE_FULL_REPLACE=0`.
+  Referral / Book of Absolution fields are union-merged so a stale client cannot
+  wipe server-written progress. Schema: `shared/schema.ts`.
+- **Editions:** Steam Cloud files via `steamSaveAdapter.ts`. CrazyGames also
+  mirrors to the SDK Data module + `localStorage`. Isolated IndexedDB keys per
+  edition (`mainSave`, `steamDemoSave`, `galaxySave`, `crazyGamesSave`, …).
 
 ---
 
 ## i18n (`client/src/i18n/`)
 
-- **`index.ts`**: i18next bootstrap; English `ui/shell` + `ui/seo` are seeded at init so React
-  can paint before shards load. Lazy `import.meta.glob` of `locales/*/*.json` and
-  `locales/*/ui/*.json` via **`loadLocaleResources.ts`** (StartScreen also loads those shards for
-  the selected locale in the background; `pages/game.tsx` loads complete catalogs before
-  gameplay; language changes load the startup subset or full catalog based on the active phase).
-  UI namespace is assembled from shards under `locales/{lang}/ui/` (`publicPages.json` is FAQ/About body copy). Direct visits to `/faq`, `/about`, `/press`, and legal routes load only `shell`/`seo`/`publicPages`, not the gameplay catalogs. Press kit body copy stays English in `shared/pressKit.ts`.
-- **`locales.ts`** â€” supported: **en, de, fr, es, it, pt-BR, zh-CN, ru**. Namespaces: `common`, `ui`,
-  `shop`, `actions`, `effects`, `events`, `achievements`.
-- **Resolution:** `resolveGameText.ts` (`tWithFallback`, resource/log names), `useUiTranslation.ts`
-  (panel hooks with English catalog fallback), `useTextScale.ts` (Settings text size state),
-  `enUiCatalog.ts` (eager `en/ui/*.json` lookup for dev HMR),
-  `eventText.ts`,
-  `eventDisplay.ts`, `logDisplay.ts`, `actionLabels.ts`, `tooltipLabels.ts`.
-- **Pattern:** game logic stores English fallback + optional `logKey`/`i18nKey`; UI resolves at
-  display time. Parity maintained by `scripts/` (`i18n:verify`, `sync-locale-keys.mjs`).
+- **Locales:** en, de, fr, es, it, pt-BR, zh-CN, ru.
+- **Namespaces:** `common`, `ui`, `shop`, `actions`, `effects`, `events`, `achievements`.
+  UI is sharded under `locales/{lang}/ui/`.
+- **Load:** English `ui/shell` + `ui/seo` seed at init. `loadLocaleResources.ts`
+  pulls the rest by surface (start screen, public docs, full gameplay).
+- **Pattern:** logic stores English fallback + `logKey` / `i18nKey`; UI resolves
+  at display time (`resolveGameText.ts`, `logDisplay.ts`). Parity: `npm run i18n:verify`.
 
 ---
 
 ## Scripts (`scripts/`)
 
-Node `.mjs` / `.ts` utilities (not imported at runtime). Invoked via `package.json` npm scripts or
-run ad hoc for locale maintenance.
-
-| npm script | Key files | Purpose |
-|------------|-----------|---------|
-| `build` | Vite + `write-build-meta.mjs` + esbuild | Client bundle (`__BUILD_SHA__` baked in), server bundle, `dist/build-meta.json` for `/api/version`. |
-| `i18n:extract` | `extract-i18n.mjs` | Scan client strings â†’ locale JSON. |
-| `i18n:translate` | `translate-locales.mjs` | Machine-translate missing locale keys. |
-| `i18n:events:extract` / `i18n:events:migrate` | `extract-events-i18n.mjs`, `migrate-events-i18n.mjs` | Events namespace extraction + migration. |
-| `i18n:verify` | `list-unmigrated-events.mjs`, `check-event-coverage.mjs`, `audit-i18n-ui.mjs`, `audit-locale-length.mjs` | CI-style i18n parity checks (+ Vitest i18n tests). |
-| `i18n:sync` | `sync-locale-keys.mjs`, `fill-identical-locale-strings.mjs` | Align locale key sets across languages (`sync-locale-keys.test.ts` covers insert/prune). |
-| `export:resend-csvs` | `export-resend-contact-csvs.ts` | Marketing contact CSV export (uses gender proxy). |
-| `sync:resend-marketing` | `sync-resend-marketing-contacts.ts` | Push marketing opt-in contacts to Resend via Contacts Import API (with `unsubscribe_url` tokens). |
-| `import:resend-legacy-segments` | `import-legacy-resend-segments.ts` | One-time import of two legacy cohorts into Resend **Segments** (oldestâ†’newest): pre-consent users (no `marketing_preferences` row) and currently-subscribed users. Shares env with `resendScriptEnv.ts`. |
-| `rebuild:resend-marketing` | `rebuild-resend-marketing-contacts.ts` | Wipe all Resend contacts, then re-import pre-consent + subscribed cohorts (excludes opt-outs; `--dry-run` / `--skip-delete`). |
-| `import:resend-batches` | `import-resend-contact-batches.ts` | Split non-unsubscribed contacts into 10 Resend batches (1000-contact cap), wipe, upload `--batch N`. |
-| `test:gender` | `test-gender-service.js` | Smoke-test `services/gender-service/`. |
-| `press:assets` | `build-press-kit-assets.mjs` | Copy logos and zip `client/public/press-kit`. |
-| `trailer` | `launch-trailer-window.mjs` | Chrome app window locked to 1920x1080 at 1x scale for OBS (high-DPI / non-16:9 displays). `--devSave=` applies to a constructed or explicit URL (`launch-trailer-window.test.ts`). |
-| `trailer:steam` | `electron/main.ts` `--trailer` | Frameless Steam Electron window at 1920x1080, 1x scale. Requires a prior `build:steam` + `electron:build`. |
-| *(desktop)* | `LaunchTrailer.cmd` | Double-click / desktop shortcut: start the dev server if needed, then open the 1920x1080 trailer window. |
-| `build:crazygames` / `package:crazygames` | `package-crazygames.mjs` | CrazyGames HTML5 demo folder (`VITE_CRAZYGAMES=1`, relative base). |
-
-Support modules (not always npm-wired): `write-build-meta.mjs` (git HEAD â†’ `dist/build-meta.json` after client build), `generate-logo-assets.py` (resize `build-resources/logo-source.png` â†’ favicons, PWA, OG, Electron icons), `build-press-kit-assets.mjs` (zip `client/public/press-kit` for `/press`), `build-noto-symbol-compat.py` (rebuild `client/public/fonts/noto-symbol-compat.woff2` from Noto Math/Symbols/Sans), `locale-catalog.mjs`, `parse-locale-json.mjs`,
-`i18n-ui-shards.mjs`, `audit-locale-translations.mjs`, `audit-timed-tab-i18n.mjs`,
-`generate-steam-achievement-loc.mjs` (rebuild `steam/4882240_loc_all.vdf` from locale JSON), `apply-*-fix-translations.mjs`, `apply-cube-translations.mjs`, `restore-ok-comments.mjs`,
-`fix-es-locale-encoding.mjs`, `sync-resend-marketing-contacts.mjs` (ad hoc Resend import from MCP SQL export),
-`resendScriptEnv.ts` (shared Supabase + Resend key resolution for the Resend CLI scripts),
-plus `*-fix-translations.json` / `cube-events-translations.json`
-data files for batch locale fixes.
+| Area | Where to look |
+|------|----------------|
+| Client/server build | `write-build-meta.mjs` (`__BUILD_SHA__` / `/api/version`) |
+| i18n | `i18n:*` npm scripts (`extract`, `sync`, `verify`, `translate`) |
+| Steam package/upload | `package-steam-*.mjs`, `steam-upload*.ps1`, `build-electron.mjs` |
+| CrazyGames folder | `package-crazygames.mjs` |
+| Press / icons / fonts | `build-press-kit-assets.mjs`, `generate-logo-assets.py` |
+| Marketing CSVs | `*resend*` + `resendScriptEnv.ts` |
 
 ---
 
-## Steam edition (`electron/`)
+## Editions
 
-The same client codebase ships two editions, switched by the build-time flag
-**`isSteamBuild`** (`client/src/lib/edition.ts`, reads `import.meta.env.VITE_STEAM_BUILD === "1"`).
-The Steam build is a Windows desktop app with no online services (Supabase, Stripe,
-leaderboard, social, referral, marketing, Playlight, session pings), no real-money
-shop, the whole game unlocked, merchant-sold dark artifacts, and local + Steam Cloud saves.
+Same client, switched by build/URL flags in `client/src/lib/edition.ts`.
+Steam/Galaxy/CrazyGames are local-only (no Supabase, Stripe, shop, Playlight,
+leaderboard, or marketing). Demo editions cap at 8 wooden huts
+(`client/src/game/demoLimit.ts`) and share demo-end chrome.
 
-| Path | Responsibility |
-|------|----------------|
-| `electron/main.ts` | Electron main process: Steamworks init + overlay, loopback server, save-file IPC (edition-specific Cloud files + demo-read / leftover-clear), quit-save handshake (`app:will-quit` / `app:save-complete`, 8s timeout), full-screen/layout IPC, overlay-to-store IPC, window icon/title, single-instance, external-link handling, `--trailer` / `ADC_TRAILER=1` 1920x1080 frameless capture window. |
-| `electron/paths.ts` | Electron `APP_USER_DATA_NAME` (IndexedDB) + Auto-Cloud folder `STEAM_CLOUD_DIR_NAME`; full file `adc-steam-save.dat`, demo file `adc-steam-demo-save.dat`; demo userdata stays `A Dark Cave Demo`; legacy demo path read/dual-write in `main.ts`. |
-| `electron/preload.ts` | `contextBridge` exposing `window.steamBridge` (achievements, Cloud save, quit-save events, full-screen toggle/events, overlay-to-store) to the sandboxed renderer. |
-| `electron/loopbackServer.ts` | Serves built `dist/public` over `http://127.0.0.1:<port>` (absolute-path routing needs HTTP, not `file://`). |
-| `electron/steam.ts` | Defensive `steamworks.js` wrapper; `enableSteamOverlay` + `initSteam` must run before `app.whenReady()` (Chromium overlay switches). `activateOverlayToStore` opens full game App ID **4882240**. |
-| `client/src/lib/edition.ts` | `isSteamBuild`, `isSteamDemoBuild`, `isSteamPlaytestBuild`, `isCrazyGamesBuild`, `isDemoEdition()`, `isSteamDemoActive()`, `isSteamEditionActive()`, `shouldSyncSteamAchievements()` (+ DEV Settings → Game Mode: Normal / Steam Game / Playtest / Demo / CrazyGames Demo). |
-| `client/src/lib/crazyGames.ts` | CrazyGames SDK v3 init + Data module access (no-op when the script is absent). |
-| `client/src/lib/steam.ts` | Renderer-side safe wrapper over `window.steamBridge` (achievements, saves, quit-save, full-screen, overlay-to-store; no-ops on web). |
-| `client/src/game/steamSaveAdapter.ts` | Mirrors the encoded `ADC2:` save blob to this edition's Steam Cloud file; reconciles with IndexedDB by `playTime`; full game can read the Demo file for a one-time import. |
-| `client/src/game/flushSaveOnExit.ts` | Steam will-quit: one live-save flush, detach `pagehide`, then ack so Electron can exit; web `pagehide` is best-effort. |
-| `client/src/achievements/steamAchievements.ts` | Maps ring achievements to Steam API names (`ACH_*`), skipping `webOnly` (e.g. Supporter); unlocks on criteria-met (loop + load backfill). Steam demo syncs basic IDs only. |
-| `scripts/build-electron.mjs` | esbuild bundles `main`/`preload` to `dist-electron/*.cjs` (`ADC_STEAM_DEMO=1` / `ADC_STEAM_PLAYTEST=1` for variants). |
-| `scripts/package-steam-demo.mjs` | `npm run electron:package:demo` â€” Vite demo build + Electron bundle + `electron-builder.demo.yml`. |
-| `scripts/package-steam-playtest.mjs` | `npm run electron:package:playtest` â€” Vite playtest build + Electron bundle + `electron-builder.playtest.yml`. |
-| `scripts/steam-upload.ps1` | Uploads `release/win-unpacked` to SteamPipe via `steamcmd` (`npm run steam:upload`). |
-| `scripts/steam-upload-demo.ps1` | Demo SteamPipe upload (`npm run steam:demo:upload`). |
-| `scripts/steam-upload-playtest.ps1` | Playtest SteamPipe upload (`npm run steam:playtest:upload`). |
-| `scripts/UploadToSteam.cmd` | Desktop wrapper for `steam-upload.ps1`. |
-| `scripts/UploadDemoToSteam.cmd` | Desktop wrapper for `steam-upload-demo.ps1`. |
-| `scripts/UploadPlaytestToSteam.cmd` | Desktop wrapper for `steam-upload-playtest.ps1`. |
-| `scripts/steam-upload-all.ps1` | Build/stage/upload full + demo + playtest in one SteamCMD session (`npm run steam:upload-all`). Stages under `%LOCALAPPDATA%\a-dark-cave-steam\` (outside the repo). |
-| `scripts/UploadAllToSteam.cmd` | Desktop wrapper for `steam-upload-all.ps1`. |
+| Edition | How it is selected | Save isolation | Package |
+|---------|--------------------|----------------|---------|
+| Web (full) | default | `mainSave` + optional Supabase | `npm run build` |
+| Steam full | `VITE_STEAM_BUILD=1` | IndexedDB + `%APPDATA%\A Dark Cave\adc-steam-save.dat` | `electron:package` |
+| Steam demo | `VITE_STEAM_DEMO=1` | Demo IndexedDB + `adc-steam-demo-save.dat` (shared folder, different file) | `electron:package:demo` |
+| Steam playtest | `VITE_STEAM_PLAYTEST=1` | Playtest IndexedDB + `adc-steam-playtest-save.dat` | `electron:package:playtest` |
+| Galaxy | URL `/galaxy` | `galaxySave` | hosted at `/galaxy` |
+| CrazyGames | `VITE_CRAZYGAMES=1` or `/crazygames` | `crazyGamesSave` + SDK Data + `localStorage` | `package:crazygames` |
 
-**Edition seams (guarded by `isSteamBuild`):** Supabase short-circuits in `lib/supabase.ts`;
-`pages/game.tsx` skips Playlight init, session tracker, auth, purchase rehydrate,
-and Stripe return; `game/save.ts` takes the local-only path + Steam Cloud mirror; `game/loop.ts`
-syncs Steam achievements (demo: basic IDs only; full/playtest: full set); `state.ts` `createInitialState`/`restartGame`
-set `BTP=1` and grant `activatedPurchases.full_game` as an entitlement sentinel (merchant
-artifacts + BTP economy; web no longer sells a Full Game SKU — MTX shop only);
-`GameContainer`/`ProfileMenu` hide shop/leaderboard/invite/auth; `pages/end-screen.tsx`
-unlocks Cruel Mode free once `hasWonAnyGame` is set and opens the hosted feedback form
-(`lib/gameFeedbackForm.ts`) from the Feedback button (same helper as the Steam footer).
+**Steam shell:** `electron/main.ts`, `preload.ts`, `loopbackServer.ts`, `steam.ts`,
+`paths.ts`. Renderer talks through `client/src/lib/steam.ts`. Steam Vite build
+aliases web-only modules to `client/src/stubs/steam/`.
 
-**Scripts:** `build:steam` (Vite client build with the flag), `electron:build` (bundle shell),
-`electron:dev` (build + run), `electron:package` (electron-builder Windows installer â†’ `release/`).
-
-The Steam Vite build omits web-only chunks (Stripe, Supabase, admin dashboard, shop/leaderboard
-dialogs, legal pages) via `vite.config.ts` aliases to `client/src/stubs/steam/` and build-time
-lazy-import guards in `App.tsx` / `WebOnlyDialogs.tsx`.
-
-**Steamworks Auto-Cloud** (partner backend â†’ app â†’ Technical Settings â†’ Steam Cloud): enable
-Steam Cloud, then add one Auto-Cloud row (Windows-only build):
-
-| Field (DE / EN) | Value |
-|-----------------|-------|
-| Stammverzeichnis / Root | `WinAppDataRoaming` |
-| Unterverzeichnis / Subdirectory | `A Dark Cave` (`electron/paths.ts` â†’ `STEAM_CLOUD_DIR_NAME`) |
-| Muster / Pattern | `adc-steam-save.dat` (full) and `adc-steam-demo-save.dat` (demo) |
-| Betriebssystem / OS | Windows |
-| Rekursiv / Recursive | off |
-
-On disk: `%APPDATA%\A Dark Cave\adc-steam-save.dat` (full game) and `adc-steam-demo-save.dat` (demo). Root overrides empty (Windows-only).
-App ID **4882240** in `steam_appid.txt`. Full and demo share the folder (Shared cloud APP ID on the demo at full release) but **not** the filename, so launching the demo cannot overwrite a purchased save. The full game may copy the demo file once from the start-screen Continue dialog.
-
-**SteamPipe upload** (partner backend â†’ SteamPipe â†’ Builds):
-
-1. **Depot anlegen** (falls noch keiner da): SteamPipe â†’ *Depots* â†’ Windows-Depot. Depot-ID in `steam/config.local.json` eintragen (Vorlage: `steam/config.example.json`).
-2. **Lokal bauen:** `npm run electron:package` â†’ erzeugt `release/win-unpacked/` (Spieldateien) und `release/A Dark Cave-*-setup.exe` (Installer, **nicht** zu Steam hochladen).
-3. **Steamworks SDK** von der Partner-Seite laden, Pfad in `config.local.json` â†’ `steamworksSdk`.
-4. **Hochladen:** `npm run steam:upload` (baut bei Bedarf, lÃ¤dt `release/win-unpacked/` direkt hoch). `SetLive` bleibt leer â€” Steam erlaubt kein automatisches Setzen von Branch `default` per steamcmd; Build danach manuell in SteamPipe â†’ Builds auf `default` setzen (optional `setLiveBranch` in `config.local.json` fÃ¼r Beta-Branches).
-5. **Installation** (SteamPipe â†’ Installation / Launch Options): Startprogramm = `A Dark Cave.exe` (demo build sets `executableName: A Dark Cave` in `electron-builder.demo.yml`).
-6. **Testen:** Paket *developer comp* muss das Depot enthalten â†’ Build-Branch `default` in der Steam-Bibliothek testen.
-7. **VerÃ¶ffentlichen** (Tab *VerÃ¶ffentlichen*): Cloud-, Build- und Store-Ã„nderungen live schalten.
-
-**Steam demo** (separate Steamworks child app, capped at 8 wooden huts):
-
-| Path | Responsibility |
-|------|----------------|
-| `client/src/lib/edition.ts` | `isSteamDemoBuild` (`VITE_STEAM_DEMO=1`), `isDemoEdition()`, `isSteamFullBuild`. DEV Game Mode includes `demoEnd`. |
-| `client/src/game/demoLimit.ts` | Shared wooden-hut demo limit + `processDemoLimit()` + `isDemoPlayFrozen()` (loop and actions stay frozen after the cap) + `shouldDismissEventWithoutApplying()` (cube reread / demo-end event close). |
-| `client/src/game/demoTeaserTabs.ts` | Demo-end tab-bar teases: locked Village/Forest/Estate/Bastion render as redacted bars (hidden during live demo play). |
-| `client/src/game/demoEndCatalog.ts` | Full side-panel catalog ids, estate skill / attack-wave / cube-event / bastion heal-repair / village job, preset-slot, and utility / forest trade ids, village Build / cave Craft / forest Sacrifice action teasers (5 + ellipsis), and redacted merge for demo-end / DEV Demo End. |
-| `client/src/game/demoEndPromoCounts.ts` | Live Craft / Build / job / skill / achievement totals for demo-end header promo badges (craft count is unique inventory items from `DEMO_END_ITEM_IDS`). |
-| `client/src/components/game/promoTag.ts` | Green promo-pill class for shop cards. |
-| `client/src/components/game/DemoEndPromoBadge.tsx` | Highlighter-style tease on demo-end Craft / Build / Produce / Skills / Whispered Memories / Explore / Attack Waves / Heal / Repair / Achievements headers. |
-| `client/src/components/game/RedactedHint.tsx` | Shared redacted bar used by demo tabs, panels, and demo-end side-panel rows; `RedactedMoreHint` is the trailing "..." after Build / Craft / Sacrifice teasers. |
-| `client/src/components/game/DemoLockedTabButton.tsx` | Redacted location-tab button + "Not yet unlocked" tooltip. |
-| `client/src/game/demoActionRewards.ts` | Demo editions raise Gather Wood / Hunt / cave-explore / mine base grants by 25% (bonuses apply after; not a bonus source). |
-| `client/src/game/galaxyDemo.ts` | Deprecated re-exports from `demoLimit.ts`. |
-| `client/src/components/game/DemoTimeUpDialog.tsx` | Blocking end-of-demo modal â†’ Steam wishlist (Overlay on desktop). |
-| `electron/paths.ts` | Demo keeps Electron userdata `A Dark Cave Demo` (IndexedDB) when `ADC_STEAM_DEMO_BUILD=1`; Cloud file is `adc-steam-demo-save.dat` in the shared `A Dark Cave` folder. |
-| `client/src/game/steamDemoContinue.ts` | One-time full-game start-screen offer: detect a Demo save, Continue (copy into the full slot) or Start New (leave the Demo file alone). |
-| `client/src/components/game/SteamDemoContinueDialog.tsx` | Start-screen Continue / Start New dialog (not a game-loop modal). |
-| `steam_appid_demo.txt` | Demo App ID **4971800** baked into demo packages. |
-| `scripts/package-steam-demo.mjs` | `npm run electron:package:demo` â€” build + package demo. |
-| `scripts/steam-upload-demo.ps1` | `npm run steam:demo:upload` â€” build (optional) + SteamPipe upload. |
-| `scripts/UploadDemoToSteam.cmd` | Double-click / desktop shortcut wrapper for `steam-upload-demo.ps1`. |
-| `steam/config.demo.example.json` | Demo `appId` / `depotId` template for upload script. |
-| `steam/achievements.md` | Steamworks partner pack for the 76 full-game achievements (API names, English copy, create order, VDF upload). |
-| `steam/achievement-icon-ideas.md` | Unlocked-icon subject picks plus the **style lock** (Dürer study, parchment/paper exception, gather-wood color, Reinhard, lock workflow). Generate art only after picks; follow that Style lock. |
-| `steam/achievement-icon-concepts/` | Locked unlocked-icon art. Filenames are Steam canonical ids (`{category}-{segmentId}.png`). Color/contrast authority: `basic-0-woodGatherer.png`. Style recipe: `steam/achievement-icon-ideas.md` (Style lock). Basic set: `basic-0-woodGatherer.png`, `basic-0-stoneMiner.png`, `basic-0-coalMiner.png`, `basic-0-ironMiner.png`, `basic-0-steelForger.png`, `basic-1-explorer.png` (paper-sheet still-life), `basic-0-hunter.png`, `basic-0-tanner.png`, `basic-1-torchCrafter.png`, `basic-1-toolCrafter.png`, `basic-1-builder.png`, `basic-1-communityBuilder.png`. |
-| `steam/achievement-icon-concepts/review/` | Temporary version picks per achievement. Delete that achievement’s review folders after a lock. |
-| `steam/4882240_loc_all.vdf` | Steamworks loc file for those 76 achievements (en / de / fr / it / es / zh-CN / ru / pt-BR). |
-
-Demo saves: IndexedDB key `steamDemoSave` under `%APPDATA%\A Dark Cave Demo\` + Steam Cloud file `%APPDATA%\A Dark Cave\adc-steam-demo-save.dat`. The full game writes `%APPDATA%\A Dark Cave\adc-steam-save.dat` only. Legacy file `%APPDATA%\A Dark Cave Demo\adc-steam-demo-save.dat` is still read as fallback and dual-written by the demo. Keep a second Auto-Cloud row for that legacy path until the transition is done. Each save is stamped with `saveOriginEdition`. First full-game launch with no full save and a Demo save shows the start-screen Continue dialog once (`steamDemoContinueResolved`). The Steam demo syncs basic partner achievements (`ACH_BASIC_*`). Loading a demo save in the full game backfills those same unlocks from save progress (`shouldSyncSteamAchievements` + `syncSteamAchievements`).
-
-**Scripts:** `build:steam-demo`, `electron:package:demo`, `steam:demo:upload` / `steam:demo:upload-only` / `steam:demo:stage`.
-
-**Steam playtest** (separate Steamworks child app, **full game**, gated signups on main store page):
-
-| Path | Responsibility |
-|------|----------------|
-| `client/src/lib/edition.ts` | `isSteamPlaytestBuild` (`VITE_STEAM_PLAYTEST=1`), `isSteamFullBuild`. |
-| `electron/paths.ts` | Playtest userdata subdirectory + cloud filename when `ADC_STEAM_PLAYTEST_BUILD=1`. |
-| `steam_appid_playtest.txt` | Playtest App ID **4972040** baked into playtest packages. |
-| `scripts/package-steam-playtest.mjs` | `npm run electron:package:playtest` â€” build + package playtest. |
-| `scripts/steam-upload-playtest.ps1` | `npm run steam:playtest:upload` â€” build (optional) + SteamPipe upload. |
-| `scripts/UploadPlaytestToSteam.cmd` | Double-click / desktop shortcut wrapper for `steam-upload-playtest.ps1`. |
-| `steam/config.playtest.example.json` | Playtest `appId` / `depotId` template for upload script. |
-
-Playtest saves: IndexedDB key `steamPlaytestSave` + `%APPDATA%\A Dark Cave Playtest\adc-steam-playtest-save.dat` (matching Auto-Cloud row on the **playtest** app). No wooden-hut cap â€” same full-game content as release.
-
-**Scripts:** `build:steam-playtest`, `electron:package:playtest`, `steam:playtest:upload` / `steam:playtest:upload-only` / `steam:playtest:stage`.
-
----
-
-## Galaxy demo (`/galaxy`)
-
-Web demo for [galaxy.click](https://galaxy.click) at **`https://a-dark-cave.com/galaxy`**. Same gameplay
-shell as the Steam edition (no shop, Playlight, leaderboard, auth, or Supabase cloud saves) with the
-full game unlocked locally until the cap. Saves use IndexedDB key `galaxySave` (isolated from `mainSave`). The demo
-ends when the player builds their **8th wooden hut**. `isDemoPlayFrozen()` then stops the loop and
-actions for good (including after **See what's coming**). `DemoTimeUpDialog` still opens and links to the
-Steam store via `openFullGameStore("demo_time_up")` (Steam Overlay on desktop; store URL on web).
-
-| Path | Responsibility |
-|------|----------------|
-| `client/src/lib/edition.ts` | `isGalaxyEdition()` (URL prefix `/galaxy`), `isCrazyGamesEdition()`, `isDemoEdition()`, `isLocalOnlyEdition()`, `isFullGameUnlockedEdition()`. |
-| `client/src/game/demoLimit.ts` | Wooden-hut demo limit + `processDemoLimit()` + `isDemoPlayFrozen()` (called from `loop.ts`). |
-| `client/src/game/demoActionRewards.ts` | Demo editions raise Gather Wood / Hunt / cave-explore / mine base grants by 25% (bonuses apply after). |
-| `client/src/game/galaxyDemo.ts` | Deprecated re-exports from `demoLimit.ts`. |
-| `client/src/components/game/DemoTimeUpDialog.tsx` | Blocking end-of-demo modal â†’ Steam wishlist (Overlay on desktop). |
-| `client/src/App.tsx` | Route `/galaxy` → `StartScreenPage`. |
-
-Edition behavior reuses `isSteamEditionActive()` / `useSteamEditionActive()` for UI (shop hidden, etc.).
-
----
-
-## CrazyGames demo (`/crazygames` + upload folder)
-
-HTML5 demo for [CrazyGames](https://docs.crazygames.com/). Same Steam-demo chrome: 8 wooden-hut
-cap, footer progress bar, no shop / donate / Playlight / auth, isolated IndexedDB key
-`crazyGamesSave`. Saves also go to the CrazyGames SDK Data module + `localStorage`
-(`adc-cg-save`) because the iframe often wipes IndexedDB and CrazyGames APS only
-restores localStorage for HTML5. Boot `getItem`s then `setItem`s any existing
-save so the Data module (and CrazyGames QA) records a write, not only a read. Steam wishlist is in the upper-right menu and on
-`DemoTimeUpDialog`. Dedicated upload build uses relative asset paths (`base: "./"`)
-and hash routing so CrazyGames can host the folder in a subdirectory. Submission
-must enable "Yes, using the Data Module from the CrazyGames SDK" or Data writes
-are disabled (`dataModuleDisabled`); localStorage remains the APS fallback.
-
-| Path | Responsibility |
-|------|----------------|
-| `client/src/lib/edition.ts` | `isCrazyGamesBuild` (`VITE_CRAZYGAMES=1`), `isCrazyGamesEdition()` (build or `/crazygames`), `isSteamDemoActive()`. |
-| `client/src/lib/crazyGames.ts` | SDK v3 init + Data module wrapper (`window.CrazyGames.SDK`). |
-| `client/src/lib/publicUrl.ts` | Prefix `/sounds` `/icons` `/fonts` with Vite `BASE_URL` for subdirectory hosting. |
-| `client/src/lib/spaNavigate.ts` | In-app jumps (`/end-screen`, `/?game=true`) stay on the hash + subdirectory URL. |
-| `client/src/game/demoLimit.ts` | Shared wooden-hut cap + play freeze after the cap (Galaxy + Steam demo + CrazyGames). |
-| `client/src/game/demoActionRewards.ts` | Demo editions raise Gather Wood / Hunt / cave-explore / mine base grants by 25% (bonuses apply after). |
-| `client/src/game/saveStorage.ts` | IndexedDB key `crazyGamesSave`. |
-| `client/src/game/crazyGamesSaveAdapter.ts` | Mirror encoded save + startup header to Data module and localStorage; migrate IndexedDB-only saves. |
-| `client/src/App.tsx` | Route `/crazygames`; CrazyGames folder uses `useHashLocation`. |
-| `client/src/components/game/CrazyGamesMenuLinks.tsx` | Steam + Reddit / Instagram / YouTube / itch.io / Email in the header menu (footer hides those on CrazyGames). |
-| `scripts/package-crazygames.mjs` | `npm run package:crazygames` — Vite build + copy `dist/public` → `release/a-dark-cave-crazygames/`. |
-| `scripts/PackageCrazyGames.cmd` | Double-click / desktop shortcut wrapper for `package:crazygames`. |
-
-DEV Settings → Game Mode includes **CrazyGames Demo**. Scripts: `build:crazygames`, `package:crazygames`.
+**Steam Cloud (Auto-Cloud, Windows):** root `WinAppDataRoaming`, subdirectory
+`A Dark Cave`, files `adc-steam-save.dat` / `adc-steam-demo-save.dat`. Full and
+demo share the folder but not the filename. Upload scripts live under `scripts/`.
 
 ---
 
 ## Server (`server/`)
 
-`server/index.ts` serves the SPA (Vite dev middleware or precompressed static in prod) and
-rate-limited `/api/*` routes.
+`server/index.ts` serves the SPA (Vite in dev, precompressed static in prod)
+and rate-limited `/api/*`. HTML head + first-HTML body come from
+`server/spaHtml.ts` + `shared/publicSeo.ts` / `publicPages.ts`.
 
 | Route group | Module | Purpose |
 |-------------|--------|---------|
-| `/api/payment/*` | `stripe.ts`, `stripeWebhook.ts`, `paymentVerifyAuth.ts` | Stripe checkout intents + verification; `payment_intent.succeeded` webhook fulfills via same `verifyPayment()` as client; guest PayPal email backfilled to PaymentIntent `metadata.userEmail` from charge |
-| `/api/referral/*` | `referral.ts`, `referralCodes.ts` | Invite codes; authenticated `claim_referral` ledger claim/sync |
+| `/api/payment/*` | `stripe.ts`, `stripeWebhook.ts` | Checkout + webhook fulfill |
+| `/api/referral/*` | `referral.ts` | Invite codes; `claim_referral` |
 | `/api/marketing/*` | `marketing.ts` | Email prefs, unsubscribe |
-| `/api/leaderboard/*`, `/api/account/*`, `/api/session/ping`, `/api/utm/landing` | inline + Supabase | Leaderboard, account deletion, session heartbeat, anonymous UTM landing beacon |
-| `/api/gender` | proxies `services/gender-service/app.py` | First-name gender from Google display name only (no email) |
-| `/api/admin/*` | inline + `server/adminDashboardData.ts` | Admin dashboard: split endpoints (`metrics`, `dau`, `saves`, `save-analysis`, `clicks`, `purchases`, `sessions`, `sessions/intraday`, `utm`); Resend marketing CSV download + sync; saves return slim `game_state` projection (PostgREST ~1000-row page); `save-analysis` deep-scans last 100 full saves via `shared/saveGameAnalysis.ts` (wipes, slice shape, craft/unlock mismatches, population, `clientBuildSha` vs published build via `server/publishedBuildSha.ts` — prod fetches `a-dark-cave.com/api/version`; lazy-loaded tab) |
+| `/api/leaderboard/*`, `/api/account/*`, `/api/session/ping`, `/api/utm/landing` | inline + Supabase | Leaderboard, account, session, UTM |
+| `/api/gender` | `services/gender-service/` | First-name gender proxy |
+| `/api/admin/*` | `adminDashboardData.ts` | Admin metrics, saves, UTM, Resend |
 | `/api/config` | inline | Public Supabase keys |
-| `/api/version` | inline | Deploy build sha + semver (`no-store`; client compares against `__BUILD_SHA__`) |
+| `/api/version` | inline | Deploy sha + semver (`no-store`) |
 
-Support: `server/vite.ts` (dev/prod hosting + SPA fallback with route allowlist/404 and per-route HTML head + first-HTML body patching via `server/spaHtml.ts` + `shared/publicSeo.ts` / `publicPages.ts`; catch-all reads `originalUrl` via `publicPathFromRequest` because Express `app.use("*")` sets `req.path` to `/`; `boot.js` served with no-cache like `index.html`; static extensions never fall through to `index.html`), GEO static `llms.txt` / `llms-full.txt` / `robots.txt` / `sitemap.xml` plus `/.well-known/llms.txt` in `server/index.ts` (before SPA fallback), `server/apexRedirect.ts` (301 `www.a-dark-cave.com` → apex), `server/securityHeaders.ts` (`X-Content-Type-Options`, CSP `frame-ancestors` for self + SlowDen, `Referrer-Policy`), `server/supabaseServerClient.ts` (service-role client),
-`server/paymentVerifyAuth.ts` (payment-verify session/body user match), `server/stripeFxQuote.ts`,
-`server/stripeWebhook.ts` (`POST /api/payment/webhook`, raw body + `STRIPE_WEBHOOK_SECRET_DEV` / `_PROD`),
-`server/resendContactCsv.ts` (marketing CSV rows + `unsubscribe_url` tokens; `loadResendLegacyCohorts` splits confirmed users into pre-consent / subscribed cohorts, oldestâ†’newest),
-`server/resendContactSync.ts` (Resend Contacts Import API upload for admin sync / CLI; Segment create/list/find-or-create + per-segment import helpers).
+Also: `server/vite.ts` (hosting + SPA fallback), `apexRedirect.ts`,
+`securityHeaders.ts`, `supabaseServerClient.ts`. GEO files (`llms.txt`,
+`robots.txt`, `sitemap.xml`) are served before the SPA fallback.
 
 ---
 
 ## Testing
 
-- **Runner:** Vitest 4 (`vitest.config.ts`, env `node`, aliases `@`/`@shared`; `vitest.setup.ts`
-  adds jest-dom + `ResizeObserver` polyfill).
-- **Layout:** `*.test.ts` / `*.test.tsx` co-located with source.
-- **Coverage:** engine (`state.test.ts`, `loop.test.ts`, `save*.test.ts`, `demoLimit.test.ts`, `rules/*.test.ts`),
-  i18n (`i18n/*.test.ts`), server (`stripe*.test.ts`, `referral*.test.ts`), shared, components.
-- **Run:** `npm test` (watch) or `npm run i18n:verify` (i18n subset + audits).
+- **Runner:** Vitest 4 (`vitest.config.ts`). Tests sit next to source as `*.test.ts`.
+- **Run:** `npm test` (watch) or `npm run i18n:verify`.
+- **DEV saves:** browser `/?devSave=<id>`; unit tests `buildDevSave()` from `devSaves.ts`.
 
 ---
 
 ## Conventions
 
-1. **Single game store** â€” all gameplay reads/writes go through `useGameStore`; UI state is mixed
-   in but stripped on save via `persistedStateBoundary.ts` (`UI_ONLY_PROPERTIES` alias).
-2. **Declarative actions/events** â€” actions are objects (`show_when`, `cost`, `effects`,
-   optional `executionTime`); events are records merged into `gameEvents`.
-3. **Handler dispatch table** â€” `actions.ts` maps action IDs to `handle*` functions in rule modules.
-4. **Modal-pause SSOT** - `dialogRegistry.ts` → `isModalDialogOpen` in `state.ts` (visible modals plus `dialogHandoffPending`).
-5. **Log entries carry i18n keys** â€” `{ logKey, logVars }` resolved by `i18n/logDisplay.ts`.
-6. **Shared Zod schema** â€” `shared/schema.ts` is authoritative; defaults flow into `createInitialState()`.
-7. **Logging** â€” use `client/src/lib/logger.ts`, never `console.*`.
-8. **Backward-compatible saves** â€” add new fields with `z.default()`; don't rename stored IDs.
-9. **Tooltips** - `TooltipWrapper` + `useGlobalTooltip` (stable handlers) + `useGlobalTooltipOpen(id)` (per-id subscribe) on item/action triggers; one `GameTooltipProvider` on the started game tree; side-panel
-   section titles are plain labels (no separate info-glyph component). Panel action buttons
-   compose layout via `rules/actionTooltipLayout.tsx` (`composeActionTooltip`); focus glow
-   actions add `â˜©` via `rules/focusTooltipIndicator.tsx` while focus is active; building
-   upgrade construction tooltips add `ðŸ •` via `rules/buildingUpgradeTooltipIndicator.tsx`.
-10. **Dual persistence** â€” IndexedDB always; Supabase when authenticated (optimistic diff saves).
-
-> See `.cursorrules` for the full coding-style/philosophy guide; this file is the navigational map.
+1. **Single game store** - gameplay reads/writes go through `useGameStore`.
+2. **Declarative actions/events** - data in `rules/`, not a runtime VM.
+3. **Handler dispatch** - `actions.ts` maps IDs to `handle*` in rule modules.
+4. **Modal-pause SSOT** - `dialogRegistry.ts` → `isModalDialogOpen` in `state.ts`.
+5. **Log entries carry i18n keys** - resolved by `i18n/logDisplay.ts`.
+6. **Shared Zod schema** - `shared/schema.ts`; defaults flow into `createInitialState()`.
+7. **Logging** - `client/src/lib/logger.ts`, never `console.*`.
+8. **Backward-compatible saves** - new fields get `z.default()`; do not rename stored IDs.
+9. **Tooltips** - `TooltipWrapper` + `useGlobalTooltip`. See `.cursorrules`.
+10. **Dual persistence** - IndexedDB always; Supabase when authenticated (web).
