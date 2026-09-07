@@ -86,10 +86,32 @@
     }
   }
 
+  function isStaticDocument() {
+    try {
+      if (document.documentElement.hasAttribute("data-adc-static-document")) {
+        return true;
+      }
+    } catch (e) { }
+    // Keep in sync with shared/staticDocumentPath.ts
+    var path = (location.pathname || "/").replace(/\/+$/, "") || "/";
+    return (
+      path === "/faq" ||
+      path === "/about" ||
+      path === "/press" ||
+      path === "/privacy" ||
+      path === "/terms" ||
+      path === "/imprint" ||
+      path === "/withdrawal"
+    );
+  }
+
   // Must match FATAL_UI_TIMEOUT_MS in client/src/lib/fatalErrorScreen.ts (45000).
-  window.__ADC_BOOT_WATCHDOG = setTimeout(function () {
-    window.__ADC_BOOT_WATCHDOG = undefined;
-    if (window.__ADC_APP_MOUNTED || window.__ADC_FATAL_ERROR_SHOWN) return;
-    showBootFatalError();
-  }, 45000);
+  // Document routes never mount the game app; the first-HTML is the page.
+  if (!isStaticDocument()) {
+    window.__ADC_BOOT_WATCHDOG = setTimeout(function () {
+      window.__ADC_BOOT_WATCHDOG = undefined;
+      if (window.__ADC_APP_MOUNTED || window.__ADC_FATAL_ERROR_SHOWN) return;
+      showBootFatalError();
+    }, 45000);
+  }
 })();

@@ -23,6 +23,7 @@ const TRAILER_WIDTH = 1920;
 const TRAILER_HEIGHT = 1080;
 const DEBUG_PORT = 9333;
 const DEFAULT_PORT = Number(process.env.PORT) || 5000;
+const FALLBACK_PORTS = [5000, 5173, 5174];
 
 const CHROME_CANDIDATES = [
   process.env.CHROME_PATH,
@@ -48,15 +49,43 @@ export function parseArgs(argv) {
       devSave = arg.slice("--devSave=".length);
     }
   }
+  const explicitUrl = Boolean(url);
   if (!url) {
-    url = `http://localhost:${port}/`;
+    url = `http://127.0.0.1:${port}/`;
   }
   if (devSave) {
     const target = new URL(url);
     target.searchParams.set("devSave", devSave);
     url = target.href;
   }
-  return { url };
+  return { url, port, explicitUrl, devSave };
+}
+
+/** First local origin that answers HTTP 200. Port 5000 times out when empty on this Windows box. */
+export async function resolveLiveOrigin(preferredPort, timeoutMs = 800) {
+  const ports = [];
+  for (const port of [preferredPort, ...FALLBACK_PORTS]) {
+    if (!ports.includes(port)) ports.push(port);
+  }
+  for (const port of ports) {
+    const origin = `http://127.0.0.1:${port}/`;
+    try {
+      const response = await fetch(origin, {
+        signal: AbortSignal.timeout(timeoutMs),
+      });
+      if (response.ok) return origin;
+    } catch {
+      // try the next candidate
+    }
+  }
+  return null;
+}
+
+export function applyDevSave(url, devSave) {
+  if (!devSave) return url;
+  const target = new URL(url);
+  target.searchParams.set("devSave", devSave);
+  return target.href;
 }
 
 function findChrome() {
@@ -169,14 +198,17 @@ async function sizeContentArea(page) {
 
 async function warnIfServerDown(url) {
   try {
-    const response = await fetch(url, { method: "GET" });
+    const response = await fetch(url, {
+      method: "GET",
+      signal: AbortSignal.timeout(1500),
+    });
     if (!response.ok) {
       console.warn(
-        `[trailer] ${url} returned ${response.status}. Is npm run dev running?`,
+        `[trailer] ${url} returned ${response.status}. Is the game running locally?`,
       );
     }
   } catch {
-    console.warn(`[trailer] Could not reach ${url}. Start the game with npm run dev first.`);
+    console.warn(`[trailer] Could not reach ${url}. Start the game locally first.`);
   }
 }
 
@@ -185,7 +217,14 @@ const invokedDirectly =
   fileURLToPath(import.meta.url) === resolve(process.argv[1]);
 
 async function launchTrailerWindow() {
-  const { url } = parseArgs(process.argv.slice(2));
+  const parsed = parseArgs(process.argv.slice(2));
+  let url = parsed.url;
+  if (!parsed.explicitUrl) {
+    const live = await resolveLiveOrigin(parsed.port);
+    if (live) {
+      url = applyDevSave(live, parsed.devSave);
+    }
+  }
   const chromePath = findChrome();
   const profileDir = join(
     process.env.LOCALAPPDATA || join(homedir(), "AppData", "Local"),

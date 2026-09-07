@@ -122,9 +122,23 @@ describe("start-screen first-load imports", () => {
     const html = readFileSync(join(dir, "../../../index.html"), "utf8");
     const boot = readFileSync(join(dir, "../../../public/boot.js"), "utf8");
     expect(html).toContain('id="adc-boot-spinner"');
+    expect(html).toContain("<!-- adc:boot-spinner -->");
+    expect(html).toContain("<!-- /adc:boot-spinner -->");
     expect(html).not.toMatch(/#adc-boot-spinner\s*\{[^}]*opacity:\s*0/);
     expect(boot).not.toMatch(/adc-boot-spinner--visible/);
     expect(boot).not.toMatch(/500\);/);
+    expect(boot).toContain("isStaticDocument");
+    expect(boot).toContain("data-adc-static-document");
+  });
+
+  it("main.tsx does not statically import the game app", () => {
+    const src = readFileSync(join(dir, "../../main.tsx"), "utf8");
+    expect(staticValueFrom(src, "./App")).toBe(false);
+    expect(staticValueFrom(src, "./i18n")).toBe(false);
+    expect(staticValueFrom(src, "./bootApp")).toBe(false);
+    expect(staticValueFrom(src, "@/game/flushSaveOnExit")).toBe(false);
+    expect(src).toContain('import("./bootApp")');
+    expect(src).toContain("isStaticDocumentPath");
   });
 
   it("audio does not auto-preload start-screen sounds", () => {
@@ -176,20 +190,20 @@ function firstLoadChunkNames(html: string, assetsDir: string): string[] {
   }
   const seen = new Set<string>();
   const queue = [entryHref];
-  const entrySrc = readFileSync(join(assetsDir, entryHref), "utf8");
-  for (const match of entrySrc.matchAll(
-    /import\s*\(\s*["']\.\/(start-screen-page-[^"']+\.js)["']\s*\)/g,
-  )) {
-    queue.push(match[1]);
-  }
   while (queue.length) {
     const name = queue.pop();
     if (!name || seen.has(name)) continue;
     seen.add(name);
     const file = join(assetsDir, name);
     if (!existsSync(file)) continue;
-    for (const spec of staticChunkImports(readFileSync(file, "utf8"))) {
+    const src = readFileSync(file, "utf8");
+    for (const spec of staticChunkImports(src)) {
       queue.push(spec);
+    }
+    for (const match of src.matchAll(
+      /import\s*\(\s*["']\.\/((?:start-screen-page|bootApp)-[^"']+\.js)["']\s*\)/g,
+    )) {
+      queue.push(match[1]);
     }
   }
   return [...seen];

@@ -464,6 +464,7 @@
 <body>
   <!-- Deferred: cache-bust retry + load watchdog (see public/boot.js) -->
   <script src="/boot.js" defer></script>
+  <!-- adc:boot-spinner -->
   <!-- Decorative boot loader: aria-hidden, outside #seo-fallback, no indexable copy -->
   <div id="adc-boot-spinner" aria-hidden="true">
     <span class="adc-page-load-spinner">
@@ -498,6 +499,7 @@
         style="--adc-ember-ex: -22px; --adc-ember-ey: -21px; --adc-ember-delay: 0.8s; --adc-ember-color: #ffb000"></span>
     </span>
   </div>
+  <!-- /adc:boot-spinner -->
   <div id="root"></div>
   <main id="seo-fallback" aria-hidden="true" style="display: none">
     <h1 style="color: #444444">

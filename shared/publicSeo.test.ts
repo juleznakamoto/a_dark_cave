@@ -290,6 +290,54 @@ describe("publicSeo", () => {
     expect(about).not.toContain("adc:jsonld-home");
   });
 
+  it("serves FAQ, About, Press, and legal as first-HTML documents without the game SPA", () => {
+    const builtShell = REAL_INDEX_HTML.replace(
+      '<script type="module" src="/src/main.tsx"></script>',
+      [
+        '<link rel="modulepreload" crossorigin href="/assets/vendor-react-def456.js">',
+        '<link rel="stylesheet" crossorigin href="/assets/index-abc123.css">',
+        '<script type="module" crossorigin src="/assets/index-abc123.js"></script>',
+      ].join("\n  "),
+    );
+
+    for (const path of [
+      "/faq",
+      "/about",
+      "/press",
+      "/privacy",
+      "/terms",
+      "/imprint",
+      "/withdrawal",
+    ] as const) {
+      const html = customizeSpaIndexHtml(builtShell, path);
+      expect(html).toContain("data-adc-static-document");
+      expect(html).toContain('id="adc-static-document-type"');
+      expect(html).not.toContain('id="adc-boot-spinner"');
+      expect(html).not.toContain('src="/src/main.tsx"');
+      expect(html).not.toContain("/assets/index-abc123.js");
+      expect(html).not.toContain("/assets/vendor-react-def456.js");
+      expect(html).not.toContain("/assets/index-abc123.css");
+      expect(html).not.toContain('type="module"');
+      expect(html).not.toContain("adc-static-page-hide");
+      expect(html).toContain('id="seo-fallback"');
+    }
+
+    const home = customizeSpaIndexHtml(builtShell, "/");
+    expect(home).not.toContain("data-adc-static-document");
+    expect(home).toContain('id="adc-boot-spinner"');
+    expect(home).toContain("/assets/index-abc123.js");
+    expect(home).toContain('rel="modulepreload"');
+    expect(home).toContain("/assets/index-abc123.css");
+
+    const missing = customizeSpaIndexHtml(builtShell, "/missing", {
+      notFound: true,
+    });
+    expect(missing).not.toContain("data-adc-static-document");
+    expect(missing).toContain('id="adc-boot-spinner"');
+    expect(missing).toContain("/assets/index-abc123.js");
+    expect(missing).toContain("adc-static-page-hide");
+  });
+
   it("gives /press unique raw HTML with press-kit copy and assets", () => {
     const press = customizeSpaIndexHtml(REAL_INDEX_HTML, "/press");
     expect(press).toContain("<title>Press Kit - A Dark Cave</title>");

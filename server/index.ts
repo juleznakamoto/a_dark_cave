@@ -1682,14 +1682,15 @@ app.post("/api/leaderboard/update-username", leaderboardUpdateLimiter, async (re
     log("Supabase public config is present (production)");
   }
 
-  server.listen(
-    {
-      port,
-      host: "0.0.0.0",
-      reusePort: true,
-    },
-    () => {
-      log(`serving on port ${port}`);
-    },
-  );
+  // SO_REUSEPORT is a Unix/Replit option. On Windows it throws ENOTSUP.
+  const listenOptions: { port: number; host: string; reusePort?: boolean } = {
+    port,
+    host: "0.0.0.0",
+  };
+  if (process.platform !== "win32") {
+    listenOptions.reusePort = true;
+  }
+  server.listen(listenOptions, () => {
+    log(`serving on port ${port}`);
+  });
 })();
