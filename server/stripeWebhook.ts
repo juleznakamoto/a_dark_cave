@@ -27,7 +27,12 @@ export async function handleStripePaymentWebhook(
     return { status: 400, body: { error: "Missing stripe-signature header" } };
   }
 
-  const stripe = getStripeClient();
+  let stripe: Stripe;
+  try {
+    stripe = getStripeClient();
+  } catch {
+    return { status: 400, body: { error: "Stripe is not configured" } };
+  }
   let event: Stripe.Event;
   try {
     event = stripe.webhooks.constructEvent(rawBody, signature, webhookSecret);

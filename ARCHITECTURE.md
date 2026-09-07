@@ -293,7 +293,7 @@ run ad hoc for locale maintenance.
 | `import:resend-batches` | `import-resend-contact-batches.ts` | Split non-unsubscribed contacts into 10 Resend batches (1000-contact cap), wipe, upload `--batch N`. |
 | `test:gender` | `test-gender-service.js` | Smoke-test `services/gender-service/`. |
 | `press:assets` | `build-press-kit-assets.mjs` | Copy logos and zip `client/public/press-kit`. |
-| `trailer` | `launch-trailer-window.mjs` | Chrome app window locked to 1920x1080 at 1x scale for OBS (high-DPI / non-16:9 displays). |
+| `trailer` | `launch-trailer-window.mjs` | Chrome app window locked to 1920x1080 at 1x scale for OBS (high-DPI / non-16:9 displays). `--devSave=` applies to a constructed or explicit URL (`launch-trailer-window.test.ts`). |
 | `trailer:steam` | `electron/main.ts` `--trailer` | Frameless Steam Electron window at 1920x1080, 1x scale. Requires a prior `build:steam` + `electron:build`. |
 | *(desktop)* | `LaunchTrailer.cmd` | Double-click / desktop shortcut: start the dev server if needed, then open the 1920x1080 trailer window. |
 | `build:crazygames` / `package:crazygames` | `package-crazygames.mjs` | CrazyGames HTML5 demo folder (`VITE_CRAZYGAMES=1`, relative base). |

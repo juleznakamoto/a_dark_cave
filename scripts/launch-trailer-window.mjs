@@ -10,12 +10,14 @@
  *   npm run trailer -- http://localhost:5000/?devSave=village
  *   npm run trailer -- --devSave=bastion
  *   npm run trailer -- --port=5000 --devSave=sleep-active
+ *   npm run trailer -- http://localhost:6000 --devSave=sleep-active
  */
 
 import { spawn } from "node:child_process";
 import { existsSync, mkdirSync } from "node:fs";
-import { join } from "node:path";
+import { join, resolve } from "node:path";
 import { homedir } from "node:os";
+import { fileURLToPath } from "node:url";
 
 const TRAILER_WIDTH = 1920;
 const TRAILER_HEIGHT = 1080;
@@ -29,7 +31,7 @@ const CHROME_CANDIDATES = [
   join(homedir(), "AppData\\Local\\Google\\Chrome\\Application\\chrome.exe"),
 ].filter(Boolean);
 
-function parseArgs(argv) {
+export function parseArgs(argv) {
   let url = null;
   let port = DEFAULT_PORT;
   let devSave = null;
@@ -47,8 +49,11 @@ function parseArgs(argv) {
     }
   }
   if (!url) {
-    const target = new URL(`http://localhost:${port}/`);
-    if (devSave) target.searchParams.set("devSave", devSave);
+    url = `http://localhost:${port}/`;
+  }
+  if (devSave) {
+    const target = new URL(url);
+    target.searchParams.set("devSave", devSave);
     url = target.href;
   }
   return { url };
@@ -175,91 +180,101 @@ async function warnIfServerDown(url) {
   }
 }
 
-const { url } = parseArgs(process.argv.slice(2));
-const chromePath = findChrome();
-const profileDir = join(
-  process.env.LOCALAPPDATA || join(homedir(), "AppData", "Local"),
-  "a-dark-cave-trailer-chrome",
-);
-mkdirSync(profileDir, { recursive: true });
+const invokedDirectly =
+  process.argv[1] &&
+  fileURLToPath(import.meta.url) === resolve(process.argv[1]);
 
-await warnIfServerDown(url);
-
-console.log(`[trailer] Opening ${url}`);
-console.log(`[trailer] Chrome: ${chromePath}`);
-console.log(`[trailer] Profile: ${profileDir}`);
-
-const child = spawn(
-  chromePath,
-  [
-    `--app=${url}`,
-    `--user-data-dir=${profileDir}`,
-    `--remote-debugging-port=${DEBUG_PORT}`,
-    `--remote-debugging-address=127.0.0.1`,
-    `--window-size=${TRAILER_WIDTH},${TRAILER_HEIGHT}`,
-    "--window-position=80,40",
-    "--force-device-scale-factor=1",
-    "--high-dpi-support=1",
-    "--no-first-run",
-    "--no-default-browser-check",
-    "--disable-infobars",
-    "--disable-session-crashed-bubble",
-    "--hide-crash-restore-bubble",
-    "--disable-features=TranslateUI,MediaRouter",
-    "--disable-sync",
-  ],
-  { detached: true, stdio: "ignore" },
-);
-child.unref();
-
-let targets;
-try {
-  targets = await waitForJson(
-    `http://127.0.0.1:${DEBUG_PORT}/json/list`,
-    20000,
+async function launchTrailerWindow() {
+  const { url } = parseArgs(process.argv.slice(2));
+  const chromePath = findChrome();
+  const profileDir = join(
+    process.env.LOCALAPPDATA || join(homedir(), "AppData", "Local"),
+    "a-dark-cave-trailer-chrome",
   );
-} catch (error) {
-  console.warn(`[trailer] ${error.message}`);
-  console.warn(
-    "[trailer] Window launched, but it could not be resized. In OBS, crop the title bar.",
-  );
-  process.exit(0);
-}
+  mkdirSync(profileDir, { recursive: true });
 
-const page = targets.find(
-  (target) =>
-    target.type === "page" &&
-    typeof target.url === "string" &&
-    (target.url.startsWith("http://") || target.url.startsWith("https://")),
-);
-if (!page?.webSocketDebuggerUrl) {
-  console.warn("[trailer] No page target yet. Size the window in OBS if needed.");
-  process.exit(0);
-}
+  await warnIfServerDown(url);
 
-try {
-  const metrics = await sizeContentArea(page);
-  const titleBar = Math.max(0, metrics.outerHeight - metrics.innerHeight);
-  console.log(
-    `[trailer] Content ${metrics.innerWidth}x${metrics.innerHeight} @ ${metrics.devicePixelRatio}x`,
+  console.log(`[trailer] Opening ${url}`);
+  console.log(`[trailer] Chrome: ${chromePath}`);
+  console.log(`[trailer] Profile: ${profileDir}`);
+
+  const child = spawn(
+    chromePath,
+    [
+      `--app=${url}`,
+      `--user-data-dir=${profileDir}`,
+      `--remote-debugging-port=${DEBUG_PORT}`,
+      `--remote-debugging-address=127.0.0.1`,
+      `--window-size=${TRAILER_WIDTH},${TRAILER_HEIGHT}`,
+      "--window-position=80,40",
+      "--force-device-scale-factor=1",
+      "--high-dpi-support=1",
+      "--no-first-run",
+      "--no-default-browser-check",
+      "--disable-infobars",
+      "--disable-session-crashed-bubble",
+      "--hide-crash-restore-bubble",
+      "--disable-features=TranslateUI,MediaRouter",
+      "--disable-sync",
+    ],
+    { detached: true, stdio: "ignore" },
   );
-  if (
-    metrics.innerWidth !== TRAILER_WIDTH ||
-    metrics.innerHeight !== TRAILER_HEIGHT ||
-    metrics.devicePixelRatio !== 1
-  ) {
+  child.unref();
+
+  let targets;
+  try {
+    targets = await waitForJson(
+      `http://127.0.0.1:${DEBUG_PORT}/json/list`,
+      20000,
+    );
+  } catch (error) {
+    console.warn(`[trailer] ${error.message}`);
     console.warn(
-      "[trailer] Could not lock an exact 1920x1080 content area. Check the window is fully on-screen.",
+      "[trailer] Window launched, but it could not be resized. In OBS, crop the title bar.",
     );
+    process.exit(0);
   }
-  if (titleBar > 0) {
+
+  const page = targets.find(
+    (target) =>
+      target.type === "page" &&
+      typeof target.url === "string" &&
+      (target.url.startsWith("http://") || target.url.startsWith("https://")),
+  );
+  if (!page?.webSocketDebuggerUrl) {
+    console.warn("[trailer] No page target yet. Size the window in OBS if needed.");
+    process.exit(0);
+  }
+
+  try {
+    const metrics = await sizeContentArea(page);
+    const titleBar = Math.max(0, metrics.outerHeight - metrics.innerHeight);
     console.log(
-      `[trailer] Chrome title bar is ${titleBar}px. In OBS Window Capture, add a Crop/Pad filter and crop Top ${titleBar}.`,
+      `[trailer] Content ${metrics.innerWidth}x${metrics.innerHeight} @ ${metrics.devicePixelRatio}x`,
     );
+    if (
+      metrics.innerWidth !== TRAILER_WIDTH ||
+      metrics.innerHeight !== TRAILER_HEIGHT ||
+      metrics.devicePixelRatio !== 1
+    ) {
+      console.warn(
+        "[trailer] Could not lock an exact 1920x1080 content area. Check the window is fully on-screen.",
+      );
+    }
+    if (titleBar > 0) {
+      console.log(
+        `[trailer] Chrome title bar is ${titleBar}px. In OBS Window Capture, add a Crop/Pad filter and crop Top ${titleBar}.`,
+      );
+    }
+  } catch (error) {
+    console.warn(`[trailer] Resize failed: ${error.message}`);
+    console.warn("[trailer] Capture the window in OBS and crop the title bar.");
   }
-} catch (error) {
-  console.warn(`[trailer] Resize failed: ${error.message}`);
-  console.warn("[trailer] Capture the window in OBS and crop the title bar.");
+
+  console.log("[trailer] OBS: canvas and output 1920x1080, Window Capture this Chrome app window.");
 }
 
-console.log("[trailer] OBS: canvas and output 1920x1080, Window Capture this Chrome app window.");
+if (invokedDirectly) {
+  await launchTrailerWindow();
+}

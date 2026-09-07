@@ -28,11 +28,20 @@ if (!stripeSecretKey) {
   logger.error('⚠️ STRIPE SECRET KEY NOT CONFIGURED - Payment features will not work');
 }
 
-const stripe = new Stripe(stripeSecretKey, {
-  apiVersion: '2024-12-18.acacia',
-});
+let stripe: Stripe | null = null;
 
+/** Stripe 19+ throws if constructed with an empty apiKey. Skip until a key exists. */
 export function getStripeClient(): Stripe {
+  if (stripe) return stripe;
+  const key = resolveStripeSecretKey();
+  // Vitest mocks `stripe`; a dummy key constructs the mock without setting
+  // STRIPE_SECRET_KEY_* (that env would also make FX-quote helpers hit the network).
+  if (!key && !process.env.VITEST) {
+    throw new Error('Stripe is not configured');
+  }
+  stripe = new Stripe(key || 'sk_test_vitest_placeholder', {
+    apiVersion: '2024-12-18.acacia',
+  });
   return stripe;
 }
 
@@ -249,7 +258,7 @@ export async function createPaymentIntent(
     paymentIntentData.metadata.cruelMode = cruelMode ? 'true' : 'false';
   }
 
-  const paymentIntent = await stripe.paymentIntents.create(paymentIntentData);
+  const paymentIntent = await getStripeClient().paymentIntents.create(paymentIntentData);
 
   return {
     clientSecret: paymentIntent.client_secret,
@@ -258,7 +267,7 @@ export async function createPaymentIntent(
 }
 
 export async function verifyPayment(paymentIntentId: string, userId: string, supabase: any) {
-  const paymentIntent = await stripe.paymentIntents.retrieve(paymentIntentId, {
+  const paymentIntent = await getStripeClient().paymentIntents.retrieve(paymentIntentId, {
     expand: ['latest_charge'],
   });
 
@@ -421,7 +430,7 @@ export async function verifyPayment(paymentIntentId: string, userId: string, sup
 
     // Guest / PayPal: email is only on the charge — backfill Stripe metadata for support.
     if (buyer.email && !trimOrNull(paymentIntent.metadata?.userEmail)) {
-      stripe.paymentIntents
+      getStripeClient().paymentIntents
         .update(paymentIntentId, {
           metadata: { userEmail: buyer.email },
         })
