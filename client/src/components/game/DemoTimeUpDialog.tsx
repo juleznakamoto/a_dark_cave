@@ -39,7 +39,7 @@ export default function DemoTimeUpDialog({
   return (
     <Dialog open={open} onOpenChange={handleOpenChange}>
       <DialogContent
-        className="max-w-md bg-background/90 backdrop-blur-sm"
+        className="max-w-md bg-black/90 backdrop-blur-sm"
         hideClose
         hideOverlay
         layerZIndex={preview ? 70 : 50}
