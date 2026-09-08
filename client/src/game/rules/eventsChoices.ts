@@ -396,9 +396,11 @@ export const choiceEvents: Record<string, GameEvent> = {
 
             return {
               ...deathResult,
-              _logMessageKey:
-                actualDisappearances === 1 ? "outcome4_one" : "outcome4_other",
-              _logMessageVars: { actualDisappearances },
+              _logMessageKey: "outcome4",
+              _logMessageVars: {
+                count: actualDisappearances,
+                actualDisappearances,
+              },
             };
           }
         },

@@ -119,12 +119,14 @@
     "skillHealthCost": "+{{amount}} coste de salud",
     "bloodflameSummary": "{{damage}} de daño durante {{rounds}} rondas, {{health}} coste de salud",
     "bloodflameSummary_one": "{{damage}} de daño durante {{rounds}} ronda, {{health}} coste de salud",
+    "bloodflameSummary_other": "{{damage}} de daño durante {{rounds}} rondas, {{health}} coste de salud",
     "skillEnemyDamageReduction": "-{{amount}}% daño enemigo",
     "skillDebuffRound_one": "+{{amount}} ronda de debilitamiento",
     "skillDebuffRound_other": "+{{amount}} rondas de debilitamiento",
     "skillCritDamageBonus": "+{{amount}}% daño crítico",
     "feralHowlSummary": "{{success}}% éxito, -{{reduction}}% daño enemigo durante {{rounds}} rondas, +{{crit}}% daño crítico",
     "feralHowlSummary_one": "{{success}}% éxito, -{{reduction}}% daño enemigo durante {{rounds}} ronda, +{{crit}}% daño crítico",
+    "feralHowlSummary_other": "{{success}}% éxito, -{{reduction}}% daño enemigo durante {{rounds}} rondas, +{{crit}}% daño crítico",
     "skillDoubleGain": "+{{amount}} % de probabilidad de ganancia doble", //ok
     "crowsEyeSummary": "{{percent}} % de probabilidad de duplicar las ganancias de acciones", //ok
     "priorConcurrentAction_one": "+{{count}} acción simultánea",

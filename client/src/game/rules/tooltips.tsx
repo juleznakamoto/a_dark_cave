@@ -44,6 +44,7 @@ import {
 export { formatExecutionDuration };
 import type { TooltipConfig } from "@/game/types";
 import {
+  englishCountFallback,
   formatTooltipResourceName,
   getUiTooltip,
 } from "@/i18n/tooltipLabels";
@@ -971,16 +972,16 @@ export const combatItemTooltips: Record<string, TooltipConfig> = {
     getContent: (state) => {
       const level = state.combatSkills.crushingStrikeLevel ?? 0;
       const config = CRUSHING_STRIKE_UPGRADES[level];
-      const stunKey =
-        config.stunRounds === 1 ? "stunDuration_one" : "stunDuration_other";
       return [
         getUiTooltip("damage", "Damage: {{value}}", { value: config.damage }),
         getUiTooltip(
-          stunKey,
-          config.stunRounds === 1
-            ? "Stun Duration: {{rounds}} round"
-            : "Stun Duration: {{rounds}} rounds",
-          { rounds: config.stunRounds },
+          "stunDuration",
+          englishCountFallback(
+            config.stunRounds,
+            "Stun Duration: {{rounds}} round",
+            "Stun Duration: {{rounds}} rounds",
+          ),
+          { count: config.stunRounds, rounds: config.stunRounds },
         ),
         getUiTooltip("successChance", "Success chance: {{percent}}%", {
           percent: config.successChance,
@@ -993,14 +994,15 @@ export const combatItemTooltips: Record<string, TooltipConfig> = {
       const level = state.combatSkills.bloodflameSphereLevel ?? 0;
       const config = BLOODFLAME_SPHERE_UPGRADES[level];
       const n = config.burnRounds;
-      const burnKey = n === 1 ? "burnDamage_one" : "burnDamage_other";
       return [
         getUiTooltip(
-          burnKey,
-          n === 1
-            ? "{{damage}} damage for {{rounds}} round"
-            : "{{damage}} damage for {{rounds}} rounds",
-          { damage: config.burnDamage, rounds: n },
+          "burnDamage",
+          englishCountFallback(
+            n,
+            "{{damage}} damage for {{rounds}} round",
+            "{{damage}} damage for {{rounds}} rounds",
+          ),
+          { count: n, damage: config.burnDamage, rounds: n },
         ),
         getUiTooltip("healthCost", "Health Cost: {{value}}", {
           value: config.healthCost,
@@ -1013,18 +1015,18 @@ export const combatItemTooltips: Record<string, TooltipConfig> = {
       const level = state.combatSkills.feralHowlLevel ?? 0;
       const config = FERAL_HOWL_UPGRADES[level];
       const n = config.debuffRounds;
-      const roundKey =
-        n === 1 ? "enemyDamageReduction_one" : "enemyDamageReduction_other";
       return [
         getUiTooltip("successChance", "Success chance: {{percent}}%", {
           percent: config.successChance,
         }),
         getUiTooltip(
-          roundKey,
-          n === 1
-            ? "Enemy damage: -{{percent}}% for {{rounds}} round"
-            : "Enemy damage: -{{percent}}% for {{rounds}} rounds",
-          { percent: config.enemyDamageReduction, rounds: n },
+          "enemyDamageReduction",
+          englishCountFallback(
+            n,
+            "Enemy damage: -{{percent}}% for {{rounds}} round",
+            "Enemy damage: -{{percent}}% for {{rounds}} rounds",
+          ),
+          { count: n, percent: config.enemyDamageReduction, rounds: n },
         ),
       ].join("\n");
     },

@@ -10,6 +10,8 @@ import {
   readLandingReferralCode,
 } from './referralLanding';
 import type { LogEntry } from '@/game/rules/events';
+import { fetchAccountDevMultipliersEnabled } from '@/game/devMultipliers';
+import { isLocalOnlyEdition } from '@/lib/edition';
 
 function buildSignupWelcomeLogEntry(): LogEntry {
   const fallback = `You received ${SIGN_UP_WELCOME_GOLD} Gold as a welcome bonus for creating an account!`;
@@ -803,6 +805,50 @@ export async function ensureAnonymousSession(): Promise<AuthUser> {
  * Single writer for the gameplay signed-in flag (confirmed email required).
  * Anonymous checkout sessions do not flip the flag.
  */
+let lastDevMultiplierUserId: string | null = null;
+
+export async function syncAccountDevMultipliers(): Promise<void> {
+  const { useGameStore } = await import("./state");
+  const apply = (enabled: boolean) => {
+    useGameStore.getState().setDevMultipliers(enabled);
+  };
+
+  try {
+    if (isLocalOnlyEdition()) {
+      lastDevMultiplierUserId = null;
+      apply(false);
+      return;
+    }
+
+    const user = await getCurrentUser();
+    if (!user) {
+      lastDevMultiplierUserId = null;
+      apply(false);
+      return;
+    }
+    if (lastDevMultiplierUserId === user.id) {
+      return;
+    }
+
+    const { getCachedAuthUser } = await import("@/lib/supabase");
+    const cached = getCachedAuthUser();
+    if (cached?.app_metadata?.dev_multipliers === true) {
+      apply(true);
+    }
+
+    const token = await getSessionAccessToken();
+    if (!token) {
+      return;
+    }
+
+    const enabled = await fetchAccountDevMultipliersEnabled(token);
+    lastDevMultiplierUserId = user.id;
+    apply(enabled);
+  } catch (error) {
+    logger.warn("[AUTH] Failed to sync DEV multipliers:", error);
+  }
+}
+
 export async function syncStoreAuthFromSession(): Promise<boolean> {
   const { useGameStore } = await import("./state");
   try {
@@ -810,6 +856,12 @@ export async function syncStoreAuthFromSession(): Promise<boolean> {
     const signedIn = !!user;
     if (useGameStore.getState().isUserSignedIn !== signedIn) {
       useGameStore.getState().setIsUserSignedIn(signedIn);
+    }
+    if (signedIn) {
+      void syncAccountDevMultipliers();
+    } else {
+      lastDevMultiplierUserId = null;
+      useGameStore.getState().setDevMultipliers(false);
     }
     return signedIn;
   } catch {

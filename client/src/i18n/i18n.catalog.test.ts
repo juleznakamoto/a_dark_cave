@@ -84,11 +84,28 @@ describe("i18n catalog parity", () => {
 
   for (const ns of enNamespaces) {
     const enKeys = flattenKeys(loadNamespace(SOURCE_LOCALE, ns)).sort();
+    const enKeySet = new Set(enKeys);
 
     for (const locale of TARGET_LOCALES) {
       it(`${locale}/${ns} matches en key structure`, () => {
         const targetKeys = flattenKeys(loadNamespace(locale, ns)).sort();
-        expect(targetKeys).toEqual(enKeys);
+        const extraPlural = targetKeys.filter(
+          (key) =>
+            !enKeySet.has(key) && /_(few|many|zero)$/.test(key),
+        );
+        const targetWithoutExtraPlural = targetKeys.filter(
+          (key) => !extraPlural.includes(key),
+        );
+        expect(targetWithoutExtraPlural).toEqual(enKeys);
+        for (const key of extraPlural) {
+          const base = key.replace(/_(few|many|zero)$/, "");
+          expect(
+            enKeySet.has(`${base}_one`) ||
+              enKeySet.has(`${base}_other`) ||
+              enKeySet.has(base),
+            `${locale} extra plural ${key} has no English base`,
+          ).toBe(true);
+        }
       });
     }
   }

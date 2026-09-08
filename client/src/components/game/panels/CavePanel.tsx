@@ -199,22 +199,10 @@ export default function CavePanel() {
     },
   ];
 
-  const CRAFT_BUTTON_LABELS: Record<
-    string,
-    { singularKey: string; pluralKey: string }
-  > = {
-    craftTorches: {
-      singularKey: "cave.craftTorch_one",
-      pluralKey: "cave.craftTorch_other",
-    },
-    craftBoneTotems: {
-      singularKey: "cave.craftBoneTotem_one",
-      pluralKey: "cave.craftBoneTotem_other",
-    },
-    craftLeatherTotems: {
-      singularKey: "cave.craftLeatherTotem_one",
-      pluralKey: "cave.craftLeatherTotem_other",
-    },
+  const CRAFT_BUTTON_LABELS: Record<string, string> = {
+    craftTorches: "cave.craftTorch",
+    craftBoneTotems: "cave.craftBoneTotem",
+    craftLeatherTotems: "cave.craftLeatherTotem",
   };
 
   /** Bombs / Veinfire: cost & gain tooltip only; skip item flavour text */
@@ -231,13 +219,11 @@ export default function CavePanel() {
 
     // Use singular/plural for craft upgrade buttons based on produce amount
     let displayLabel = resolveActionLabel(actionId, label);
-    const craftLabels = CRAFT_BUTTON_LABELS[actionId];
-    if (craftLabels) {
-      const produceAmount = getCraftProduceAmount(actionId, state);
-      displayLabel =
-        produceAmount === 1
-          ? t(craftLabels.singularKey, { count: 1 })
-          : t(craftLabels.pluralKey, { count: produceAmount });
+    const craftLabelKey = CRAFT_BUTTON_LABELS[actionId];
+    if (craftLabelKey) {
+      displayLabel = t(craftLabelKey, {
+        count: getCraftProduceAmount(actionId, state),
+      });
     }
 
     const canExecute = canExecuteAction(actionId, state);

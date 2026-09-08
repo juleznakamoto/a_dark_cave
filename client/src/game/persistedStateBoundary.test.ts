@@ -22,6 +22,7 @@ describe("persistedStateBoundary", () => {
       lastFeedbackOpenedAt: 1_700_000_100_000,
       lastFeedbackOpenedSource: "footer",
       activeDevSaveId: "sleep-unlocked",
+      devMultipliers: true,
       shopDialogOpen: true,
       shopCruelModeHighlight: true,
       compassGlowButton: "explore",
@@ -43,6 +44,7 @@ describe("persistedStateBoundary", () => {
     });
 
     expect(persisted).not.toHaveProperty("activeDevSaveId");
+    expect(persisted).not.toHaveProperty("devMultipliers");
     expect(persisted).not.toHaveProperty("shopDialogOpen");
     expect(persisted).not.toHaveProperty("shopCruelModeHighlight");
     expect(persisted).not.toHaveProperty("compassGlowButton");

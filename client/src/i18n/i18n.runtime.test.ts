@@ -11,9 +11,10 @@ import {
   getCatalogString,
   getEffectName,
   getEventMessage,
+  resolveEventLogMessage,
   tWithFallback,
 } from "./resolveGameText";
-import { getUiTooltip } from "./tooltipLabels";
+import { englishCountFallback, getUiTooltip } from "./tooltipLabels";
 import { resolveEventMessage, resolveEventTitle } from "./eventText";
 import { gameStateSchema } from "@shared/schema";
 import { getActionCostBreakdown } from "@/game/rules/index";
@@ -218,6 +219,55 @@ describe("i18n runtime", () => {
     expect(deOne).not.toContain("fallen");
   });
 
+  it("uses Russian one/few/many forms for villager counts", async () => {
+    await i18n.changeLanguage("ru");
+    expect(getUiTooltip("villagerCost", "-{{count}} Villager", { count: 1 })).toBe(
+      "-1 житель",
+    );
+    expect(getUiTooltip("villagerCost", "-{{count}} Villager", { count: 2 })).toBe(
+      "-2 жителя",
+    );
+    expect(getUiTooltip("villagerCost", "-{{count}} Villager", { count: 5 })).toBe(
+      "-5 жителей",
+    );
+    expect(getUiTooltip("villagerCost", "-{{count}} Villager", { count: 21 })).toBe(
+      "-21 житель",
+    );
+    expect(getUiTooltip("villagerCost", "-{{count}} Villager", { count: 22 })).toBe(
+      "-22 жителя",
+    );
+
+    expect(
+      getActionLogMessage(
+        "layTrap",
+        "trapSuccessWithDeaths",
+        "{{count}} villager falls",
+        { count: 2 },
+      ),
+    ).toContain("2 жителя погибают");
+    expect(
+      getActionLogMessage(
+        "layTrap",
+        "trapSuccessWithDeaths",
+        "{{count}} villager falls",
+        { count: 5 },
+      ),
+    ).toContain("5 жителей погибают");
+
+    expect(
+      resolveEventLogMessage("offerToTheForestGods", "outcome4", {
+        count: 2,
+        actualDisappearances: 2,
+      }),
+    ).toContain("2 жителя");
+    expect(
+      resolveEventLogMessage("offerToTheForestGods", "outcome4", {
+        count: 5,
+        actualDisappearances: 5,
+      }),
+    ).toContain("5 жителей");
+  });
+
   it("resolves villagerCost plural tooltip in English and German", async () => {
     expect(getUiTooltip("villagerCost", "-{{count}} Villager", { count: 1 })).toBe(
       "-1 Villager",
@@ -229,6 +279,34 @@ describe("i18n runtime", () => {
     expect(getUiTooltip("villagerCost", "-{{count}} Villager", { count: 1 })).toBe(
       "-1 Dorfbewohner",
     );
+  });
+
+  it("resolves roundsRemaining from _one/_other catalog keys via count", async () => {
+    expect(
+      getUiTooltip("roundsRemaining", "{{count}} round remaining", { count: 1 }),
+    ).toBe("1 round remaining");
+    expect(
+      getUiTooltip("roundsRemaining", "{{count}} rounds remaining", { count: 2 }),
+    ).toBe("2 rounds remaining");
+
+    await i18n.changeLanguage("de");
+    expect(
+      getUiTooltip("roundsRemaining", "{{count}} round remaining", { count: 1 }),
+    ).toBe("Noch 1 Runde");
+    expect(
+      getUiTooltip("roundsRemaining", "{{count}} rounds remaining", { count: 2 }),
+    ).toBe("Noch 2 Runden");
+
+    await i18n.changeLanguage("ru");
+    expect(
+      getUiTooltip("roundsRemaining", "{{count}} round remaining", { count: 1 }),
+    ).toBe("Остался 1 раунд");
+    expect(
+      getUiTooltip("roundsRemaining", "{{count}} rounds remaining", { count: 2 }),
+    ).toBe("Осталось 2 раунда");
+    expect(
+      getUiTooltip("roundsRemaining", "{{count}} rounds remaining", { count: 5 }),
+    ).toBe("Осталось 5 раундов");
   });
 
   it("getActionCostBreakdown humans sacrifice shows translated villager cost", async () => {
@@ -249,6 +327,31 @@ describe("i18n runtime", () => {
     expect(getActionLabel("unknownAction", "Fallback Label")).toBe(
       "Fallback Label",
     );
+  });
+
+  it("uses a plural-aware English fallback when a tooltip key is missing", () => {
+    expect(
+      getUiTooltip(
+        "missingRoundsRemaining",
+        englishCountFallback(
+          1,
+          "{{count}} round remaining",
+          "{{count}} rounds remaining",
+        ),
+        { count: 1 },
+      ),
+    ).toBe("1 round remaining");
+    expect(
+      getUiTooltip(
+        "missingRoundsRemaining",
+        englishCountFallback(
+          2,
+          "{{count}} round remaining",
+          "{{count}} rounds remaining",
+        ),
+        { count: 2 },
+      ),
+    ).toBe("2 rounds remaining");
   });
 
   it("translates known action labels in German", async () => {

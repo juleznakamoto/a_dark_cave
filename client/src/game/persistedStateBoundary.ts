@@ -38,6 +38,7 @@ export const PERSISTED_STORE_EXTENSION_KEYS = [
 export const RUNTIME_ONLY_NON_DIALOG_KEYS = [
   "activeTab",
   "devMode",
+  "devMultipliers",
   "devGameMode",
   "activeDevSaveId",
   // save.ts stamps lastSaved onto the sanitized blob after buildGameState.

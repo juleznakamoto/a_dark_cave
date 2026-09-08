@@ -143,8 +143,9 @@ export function resolveEventLogMessage(
   options?: TranslateOptions,
 ): string {
   const fullKey = nsKey("events", `${eventId}.log.${logKey}`);
-  if (i18n.exists(fullKey)) {
-    return i18n.t(fullKey, options as Record<string, unknown>);
+  const translateOpts = options as Record<string, unknown> | undefined;
+  if (i18n.exists(fullKey, translateOpts)) {
+    return i18n.t(fullKey, translateOpts);
   }
   return "";
 }

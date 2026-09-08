@@ -13,6 +13,7 @@ import {
   type DevGameMode,
 } from "@/lib/edition";
 import type { DevSaveId } from "@/game/devSaveIds";
+import { resolveDevMode } from "@/game/devMultipliers";
 import { isDemoPlayFrozen } from "@/game/demoLimit";
 import { gameActions, shouldShowAction, canExecuteAction } from "@/game/rules";
 import {
@@ -232,6 +233,11 @@ interface GameStore extends GameState {
   | "achievements"
   | "timedevent";
   devMode: boolean;
+  /**
+   * Live-env account entitlement for the same multipliers as local DEV.
+   * Runtime-only; never persisted. `devMode` is `import.meta.env.DEV || this`.
+   */
+  devMultipliers: boolean;
   /**
    * Dev-only: simulate Normal / Steam Game / Steam Playtest / Steam Demo /
    * CrazyGames Demo without a Steam build (Settings → Game Mode).
@@ -512,6 +518,7 @@ interface GameStore extends GameState {
   setHighlightedResources: (resources: string[]) => void;
   emitResourceChange: (resource: string, amount: number) => void;
   setIsUserSignedIn: (signedIn: boolean) => void;
+  setDevMultipliers: (enabled: boolean) => void;
   setDetectedCurrency: (currency: "EUR" | "USD") => void;
   updateResource: (
     resource: keyof GameState["resources"],
@@ -1946,7 +1953,8 @@ const villagerCapUpgradeTimers = new Map<
 export const useGameStore = create<GameStore>((set, get) => ({
   ...defaultGameState,
   activeTab: "cave",
-  devMode: import.meta.env.DEV,
+  devMode: resolveDevMode(false),
+  devMultipliers: false,
   devGameMode: "normal",
   activeDevSaveId: null,
   lastSaved: "Never",
@@ -2132,6 +2140,11 @@ export const useGameStore = create<GameStore>((set, get) => ({
     }));
   },
   setIsUserSignedIn: (signedIn: boolean) => set({ isUserSignedIn: signedIn }),
+  setDevMultipliers: (enabled: boolean) =>
+    set({
+      devMultipliers: enabled,
+      devMode: resolveDevMode(enabled),
+    }),
   setDetectedCurrency: (currency: "EUR" | "USD") =>
     set({ detectedCurrency: currency }),
 
@@ -3010,7 +3023,8 @@ export const useGameStore = create<GameStore>((set, get) => ({
 
       // UI state
       activeTab: "cave",
-      devMode: import.meta.env.DEV,
+      devMultipliers: get().devMultipliers,
+      devMode: resolveDevMode(get().devMultipliers),
       idleModeDialog: { isOpen: false }, // Explicitly ensure idle mode dialog is closed
       ...getTimedEventTabCleanupPatch(get().activeTab),
       investDialogOpen: false,
@@ -3283,7 +3297,8 @@ export const useGameStore = create<GameStore>((set, get) => ({
         attackWaveTimers: savedState.attackWaveTimers || {},
         log: savedState.log || [],
         events: savedState.events || defaultGameState.events,
-        devMode: import.meta.env.DEV,
+        devMultipliers: get().devMultipliers,
+        devMode: resolveDevMode(get().devMultipliers),
         // Keep session Game Mode; do not restore from save (UI-only).
         devGameMode: get().devGameMode,
         activeDevSaveId: null,
@@ -3546,7 +3561,8 @@ export const useGameStore = create<GameStore>((set, get) => ({
         executionDurations: {},
         expeditionVillagers: {},
         log: [],
-        devMode: import.meta.env.DEV,
+        devMultipliers: get().devMultipliers,
+        devMode: resolveDevMode(get().devMultipliers),
         activeDevSaveId: null,
         effects: calculateTotalEffects(defaultGameState),
         bastion_stats: calculateBastionStats(defaultGameState),

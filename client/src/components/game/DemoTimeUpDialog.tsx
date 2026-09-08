@@ -39,7 +39,7 @@ export default function DemoTimeUpDialog({
   return (
     <Dialog open={open} onOpenChange={handleOpenChange}>
       <DialogContent
-        className="max-w-md"
+        className="max-w-md bg-background/90 backdrop-blur-sm"
         hideClose
         hideOverlay
         layerZIndex={preview ? 70 : 50}
@@ -48,8 +48,8 @@ export default function DemoTimeUpDialog({
             <EndScreenShaderBackground
               className={
                 preview
-                  ? "fixed inset-0 z-[69] h-full w-full object-cover touch-none pointer-events-none opacity-90"
-                  : "fixed inset-0 z-[45] h-full w-full object-cover touch-none pointer-events-none opacity-90"
+                  ? "fixed inset-0 z-[69] h-full w-full object-cover touch-none pointer-events-none"
+                  : "fixed inset-0 z-[45] h-full w-full object-cover touch-none pointer-events-none"
               }
             />
           ) : null

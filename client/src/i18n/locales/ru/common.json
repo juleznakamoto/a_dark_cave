@@ -82,6 +82,8 @@
   },
   "population": {
     "villager_one": "{{count}} житель",
+    "villager_few": "{{count}} жителя",
+    "villager_many": "{{count}} жителей",
     "villager_other": "{{count}} жителей",
     "maxPopulation": "+{{count}} к максимуму населения"
   },

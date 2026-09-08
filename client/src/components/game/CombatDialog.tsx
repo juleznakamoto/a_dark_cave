@@ -52,7 +52,7 @@ import {
   getDamagedBuildingDisplayName,
   getFellowshipDisplayName,
 } from "@/i18n/combatLabels";
-import { getUiTooltip } from "@/i18n/tooltipLabels";
+import { englishCountFallback, getUiTooltip } from "@/i18n/tooltipLabels";
 import { useTranslation } from "react-i18next";
 
 const COMBAT_BAR_CHANGE_MS = 500;
@@ -109,10 +109,12 @@ const COMBAT_BUTTON_ICON_CLASS =
 
 function formatCombatStatusRoundsRemaining(rounds: number): string {
   return getUiTooltip(
-    rounds === 1 ? "roundsRemaining_one" : "roundsRemaining_other",
-    rounds === 1
-      ? "{{count}} round remaining"
-      : "{{count}} rounds remaining",
+    "roundsRemaining",
+    englishCountFallback(
+      rounds,
+      "{{count}} round remaining",
+      "{{count}} rounds remaining",
+    ),
     { count: rounds },
   );
 }

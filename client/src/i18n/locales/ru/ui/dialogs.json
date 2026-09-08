@@ -46,7 +46,9 @@
     "inviteDesc": "Вы можете пригласить до {{cap}} друзей. Каждый раз вы оба получаете {{amount}} золота ({{count}}/{{cap}} приглашено).",
     "copyInviteLink": "Копировать ссылку-приглашение", //x1.8
     "progressComplete": "Вы выполнили все задачи. Скоро получите награду.",
-    "tasksRemaining_one": "Осталась 1 задача",
+    "tasksRemaining_one": "Осталась {{count}} задача",
+    "tasksRemaining_few": "Осталось {{count}} задачи",
+    "tasksRemaining_many": "Осталось {{count}} задач",
     "tasksRemaining_other": "Осталось {{count}} задач",
     "progressToward": "Эксклюзивная награда:", //x1.2
     "exclusiveRewardEffect": "{{percent}} % к удвоению наград за действия",

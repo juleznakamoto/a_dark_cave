@@ -44,6 +44,7 @@ import {
   getWatchtowerTierLabel,
 } from "@/i18n/fortificationLabels";
 import {
+  englishCountFallback,
   formatTooltipResourceName,
   getUiTooltip,
   resolveBuildingTooltipEffect,
@@ -123,12 +124,12 @@ function renderNightshadePoisonTooltip(gameState: GameState) {
           <span className={INSIGHT_TEXT_CLASS}>
             {" "}
             {getUiTooltip(
-              poisonEnchantRounds === 1
-                ? "poisonEnchantRound_one"
-                : "poisonEnchantRound_other",
-              poisonEnchantRounds === 1
-                ? "+{{count}} round"
-                : "+{{count}} rounds",
+              "poisonEnchantRound",
+              englishCountFallback(
+                poisonEnchantRounds,
+                "+{{count}} round",
+                "+{{count}} rounds",
+              ),
               { count: poisonEnchantRounds },
             )}
           </span>

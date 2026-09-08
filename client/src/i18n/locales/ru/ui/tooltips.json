@@ -13,8 +13,12 @@
     "costLine": "-{{amount}} {{resource}}",
     "duration": "{{duration}}",
     "villagerCost_one": "-{{count}} житель",
+    "villagerCost_few": "-{{count}} жителя",
+    "villagerCost_many": "-{{count}} жителей",
     "villagerCost_other": "-{{count}} жителей",
     "freeVillagerCost_one": "-{{count}} свободный житель",
+    "freeVillagerCost_few": "-{{count}} свободных жителя",
+    "freeVillagerCost_many": "-{{count}} свободных жителей",
     "freeVillagerCost_other": "-{{count}} свободных жителей",
     "mapFragmentProgress": "{{count}} из {{total}} фрагментов карты",
     "defense": "Защита: {{value}}",
@@ -54,15 +58,23 @@
     "restoreIntegrity": "Восстанавливает до {{amount}} целостности", //x1.2
     "damage": "Урон: {{value}}",
     "stunDuration_one": "Оглушение: {{rounds}} раунд",
+    "stunDuration_few": "Оглушение: {{rounds}} раунда",
+    "stunDuration_many": "Оглушение: {{rounds}} раундов",
     "stunDuration_other": "Оглушение: {{rounds}} раундов",
     "successChance": "Шанс успеха: {{percent}} %",
     "enemyDamageReduction_one": "Урон врага: -{{percent}}% на {{rounds}} раунд",
-    "enemyDamageReduction_other": "Урон врага: -{{percent}}% на {{rounds}} раунда",
-    "burnDamage_one": "{{damage}} урона в течение {{rounds}} раунда",
+    "enemyDamageReduction_few": "Урон врага: -{{percent}}% на {{rounds}} раунда",
+    "enemyDamageReduction_many": "Урон врага: -{{percent}}% на {{rounds}} раундов",
+    "enemyDamageReduction_other": "Урон врага: -{{percent}}% на {{rounds}} раундов",
+    "burnDamage_one": "{{damage}} урона в течение {{rounds}} раунд",
+    "burnDamage_few": "{{damage}} урона в течение {{rounds}} раунда",
+    "burnDamage_many": "{{damage}} урона в течение {{rounds}} раундов",
     "burnDamage_other": "{{damage}} урона в течение {{rounds}} раундов",
     "enemyDamageReductionActive": "Урон врага: -{{percent}}%",
     "roundsRemaining_one": "Остался {{count}} раунд",
-    "roundsRemaining_other": "Осталось {{count}} раунда",
+    "roundsRemaining_few": "Осталось {{count}} раунда",
+    "roundsRemaining_many": "Осталось {{count}} раундов",
+    "roundsRemaining_other": "Осталось {{count}} раундов",
     "healthCost": "Стоимость здоровья: {{value}}", //x1.3
     "currentResource": "Сейчас: {{amount}} {{resource}}",
     "damaged": "(повреждено)", //x1.3
@@ -98,7 +110,9 @@
     "durationReduction": "{{action}}: -{{seconds}}с длительности",
     "poisonArrowsAvailable": "Доступно: 1/1 за бой",
     "poisonEnchantRound_one": "+{{count}} раунд",
-    "poisonEnchantRound_other": "+{{count}} раунда",
+    "poisonEnchantRound_few": "+{{count}} раунда",
+    "poisonEnchantRound_many": "+{{count}} раундов",
+    "poisonEnchantRound_other": "+{{count}} раундов",
     "statBonus": "{{sign}}{{value}} {{stat}}",
     "productionBonusLine": "+{{amount}} {{resource}} ({{job}})",
     "secRemaining": "Осталось {{count}} сек",
@@ -138,7 +152,9 @@
       "resourceHighlighting": "Подсветка ресурсов",
       "unlocksScholar": "Разблокирует учёных", //x1.3
       "addsVillagerPreset_one": "Делает доступным {{count}} слот пресета работ жителей за прозрение",
-      "addsVillagerPreset_other": "Делает доступными {{count}} слота пресетов работ жителей за прозрение",
+      "addsVillagerPreset_few": "Делает доступными {{count}} слота пресетов работ жителей за прозрение",
+      "addsVillagerPreset_many": "Делает доступными {{count}} слотов пресетов работ жителей за прозрение",
+      "addsVillagerPreset_other": "Делает доступными {{count}} слотов пресетов работ жителей за прозрение",
       "scholarInsight": "Учёный: +{{amount}} проницательности", //x1.3
       "insightRevealCost": "{{cost}} проницательности", //x1.6
       "insightRevealEffects": "Эффекты",
@@ -152,6 +168,8 @@
       "investUpToGold": "Инвестировать до {{amount}} золота", //x1.2
       "higherTradeAmounts": "Большие объёмы торговли",
       "tradesAtMerchant_one": "+{{count}} сделка у странствующего торговца",
+      "tradesAtMerchant_few": "+{{count}} сделки у странствующего торговца",
+      "tradesAtMerchant_many": "+{{count}} сделок у странствующего торговца",
       "tradesAtMerchant_other": "+{{count}} сделок у странствующего торговца",
       "trapWinChance10": "+10 % шанс победы против атакующих врагов",
       "trapWinChance20": "+20 % шанс победы против атакующих врагов",
@@ -178,7 +196,9 @@
       "buildTimeReduction": "-{{percent}}% времени строительства", //x1.5
       "buildingCostReduction": "-{{percent}}% стоимости строительства", //x1.3
       "addsConstructionQueueSlot_one": "Делает доступным {{count}} слот очереди строительства за прозрение",
-      "addsConstructionQueueSlot_other": "Делает доступными {{count}} слота очереди строительства за прозрение",
+      "addsConstructionQueueSlot_few": "Делает доступными {{count}} слота очереди строительства за прозрение",
+      "addsConstructionQueueSlot_many": "Делает доступными {{count}} слотов очереди строительства за прозрение",
+      "addsConstructionQueueSlot_other": "Делает доступными {{count}} слотов очереди строительства за прозрение",
       "constructionBoost": "Ускорение строительства: потратьте прозрение, чтобы пропустить 50% времени строительства (один раз за постройку)", //x1.5
       "craftingBoost": "Ускорение создания: потратьте прозрение, чтобы пропустить 50% времени создания (один раз за создание)", //x1.4
       "weaponEnchantment": "Зачарование оружия"

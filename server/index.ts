@@ -26,6 +26,13 @@ import {
 } from "./resendContactCsv";
 import { syncMarketingContactsToResend } from "./resendContactSync";
 import { Filter } from "bad-words";
+import {
+  buildDevMultiplierAccount,
+  findAuthUserByEmail,
+  findAuthUserById,
+  nextDevMultipliersAppMetadata,
+  sessionHasDevMultipliers,
+} from "./devMultipliers";
 
 // Supabase config endpoint for production
 const getSupabaseConfig = () => {
@@ -421,7 +428,11 @@ app.use(express.json());
 
 async function getSessionUserFromBearer(
   req: Request,
-): Promise<{ id: string; email: string | undefined } | null> {
+): Promise<{
+  id: string;
+  email: string | undefined;
+  app_metadata?: unknown;
+} | null> {
   const authHeader = req.headers.authorization;
   if (!authHeader?.startsWith("Bearer ")) {
     return null;
@@ -442,7 +453,11 @@ async function getSessionUserFromBearer(
   if (error || !user?.id || !user.email_confirmed_at) {
     return null;
   }
-  return { id: user.id, email: user.email ?? undefined };
+  return {
+    id: user.id,
+    email: user.email ?? undefined,
+    app_metadata: user.app_metadata,
+  };
 }
 
 /** Comma-separated admin emails (same list as client `VITE_ADMIN_EMAILS`; optional `ADMIN_EMAILS` on server). */
@@ -683,54 +698,96 @@ app.get("/api/admin/user-lookup", async (req, res) => {
       return res.status(400).json({ error: "userId or email is required" });
     }
 
-    let save;
-    let error;
+    const authUser = userId
+      ? await findAuthUserById(adminClient, userId)
+      : await findAuthUserByEmail(adminClient, email);
 
-    if (email) {
-      // Lookup by email - need to join with auth.users
-      const { data: authUser, error: authError } =
-        await adminClient.auth.admin.listUsers();
-
-      if (authError) {
-        return res
-          .status(500)
-          .json({ error: "Failed to lookup user by email" });
-      }
-
-      const matchingUser = authUser.users.find((u: any) => u.email === email);
-
-      if (!matchingUser) {
-        return res.status(404).json({ error: "No user found with this email" });
-      }
-
-      const { data: saveData, error: saveError } = await adminClient
-        .from("game_saves")
-        .select("user_id, game_state, updated_at, created_at")
-        .eq("user_id", matchingUser.id)
-        .single();
-
-      save = saveData;
-      error = saveError;
-    } else {
-      // Lookup by user ID
-      const { data: saveData, error: saveError } = await adminClient
-        .from("game_saves")
-        .select("user_id, game_state, updated_at, created_at")
-        .eq("user_id", userId)
-        .single();
-
-      save = saveData;
-      error = saveError;
+    if (!authUser) {
+      return res.status(404).json({ error: "No user found" });
     }
 
-    if (error) {
-      if (error.code === "PGRST116") {
-        return res.json({ save: null });
-      }
-      throw error;
+    const account = buildDevMultiplierAccount(authUser);
+    const { data: saveData, error: saveError } = await adminClient
+      .from("game_saves")
+      .select("user_id, game_state, updated_at, created_at")
+      .eq("user_id", authUser.id)
+      .maybeSingle();
+
+    if (saveError && saveError.code !== "PGRST116") {
+      throw saveError;
     }
 
-    res.json({ save });
+    res.json({ save: saveData ?? null, account });
+  } catch (error: any) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+app.get("/api/account/dev-multipliers", async (req, res) => {
+  try {
+    const user = await getSessionUserFromBearer(req);
+    if (!user) {
+      return res.status(401).json({ error: "Authorization required" });
+    }
+    res.set("Cache-Control", "no-store");
+    res.json({ enabled: sessionHasDevMultipliers(user) });
+  } catch (error: any) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+app.post("/api/admin/dev-multipliers", async (req, res) => {
+  try {
+    const sessionUser = await getSessionUserFromBearer(req);
+    if (!sessionUser?.email) {
+      return res.status(401).json({ error: "Authorization required" });
+    }
+    if (!isConfiguredAdminEmail(sessionUser.email)) {
+      return res.status(403).json({ error: "Forbidden" });
+    }
+
+    const env = (req.body?.env as "dev" | "prod") || parseAdminEnv(req);
+    const userId =
+      typeof req.body?.userId === "string" ? req.body.userId.trim() : "";
+    const email =
+      typeof req.body?.email === "string" ? req.body.email.trim() : "";
+    const enabled = req.body?.enabled === true;
+
+    if (!userId && !email) {
+      return res.status(400).json({ error: "userId or email is required" });
+    }
+
+    const adminClient = getAdminClient(env);
+    const authUser = userId
+      ? await findAuthUserById(adminClient, userId)
+      : await findAuthUserByEmail(adminClient, email);
+
+    if (!authUser) {
+      return res.status(404).json({ error: "No user found" });
+    }
+
+    const account = buildDevMultiplierAccount(authUser);
+    if (account.devMultipliersLockedByEnv) {
+      return res.json({ account });
+    }
+
+    const { data, error } = await adminClient.auth.admin.updateUserById(
+      authUser.id,
+      {
+        app_metadata: nextDevMultipliersAppMetadata(
+          authUser.app_metadata,
+          enabled,
+        ),
+      },
+    );
+    if (error || !data.user) {
+      throw new Error(error?.message || "Failed to update user");
+    }
+
+    log(
+      `DEV multipliers ${enabled ? "enabled" : "disabled"} for ${authUser.id} (${env}) by ${sessionUser.email}`,
+    );
+    res.json({ account: buildDevMultiplierAccount(data.user) });
   } catch (error: any) {
     res.status(500).json({ error: error.message });
   }

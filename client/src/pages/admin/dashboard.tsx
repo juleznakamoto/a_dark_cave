@@ -49,7 +49,7 @@ import ChurnTab from "./tabs/ChurnTab";
 import SleepTab from "./tabs/SleepTab";
 import ResourcesTab from "./tabs/ResourcesTab";
 import UpgradesTab from "./tabs/UpgradesTab";
-import LookupTab from "./tabs/LookupTab";
+import LookupTab, { type LookupAccount } from "./tabs/LookupTab";
 import SessionsTab from "./tabs/SessionsTab";
 import SocialPromptTab from "./tabs/SocialPromptTab";
 import LogsTab from "./tabs/LogsTab";
@@ -107,6 +107,7 @@ interface AuthSignupData {
   id: string;
   created_at: string;
 }
+
 
 // Admin emails from environment variable (comma-separated)
 const getAdminEmails = (): string[] => {
@@ -204,6 +205,7 @@ export default function AdminDashboard() {
   const [lookupUserId, setLookupUserId] = useState<string>("");
   const [lookupType, setLookupType] = useState<"id" | "email">("id");
   const [lookupResult, setLookupResult] = useState<GameSaveData | null>(null);
+  const [lookupAccount, setLookupAccount] = useState<LookupAccount | null>(null);
   const [lookupLoading, setLookupLoading] = useState<boolean>(false);
   const [lookupError, setLookupError] = useState<string>("");
 
@@ -1161,6 +1163,7 @@ export default function AdminDashboard() {
     setLookupLoading(true);
     setLookupError("");
     setLookupResult(null);
+    setLookupAccount(null);
 
     try {
       const queryParam = lookupType === "id" ? "userId" : "email";
@@ -1175,9 +1178,13 @@ export default function AdminDashboard() {
 
       const data = await response.json();
 
-      if (!data.save) {
-        setLookupError(`No save game found for this ${lookupType === "id" ? "user ID" : "email"}`);
-      } else {
+      if (!data.account) {
+        setLookupError(`No user found for this ${lookupType === "id" ? "user ID" : "email"}`);
+        return;
+      }
+
+      setLookupAccount(data.account);
+      if (data.save) {
         setLookupResult(data.save);
       }
     } catch (error: any) {
@@ -1197,13 +1204,15 @@ export default function AdminDashboard() {
 
   // Get clicks and purchases for looked up user
   const getLookupUserClicks = () => {
-    if (!lookupResult) return [];
-    return clickData.filter((c) => c.user_id === lookupResult.user_id);
+    const userId = lookupAccount?.user_id ?? lookupResult?.user_id;
+    if (!userId) return [];
+    return clickData.filter((c) => c.user_id === userId);
   };
 
   const getLookupUserPurchases = () => {
-    if (!lookupResult) return [];
-    return purchases.filter((p) => p.user_id === lookupResult.user_id);
+    const userId = lookupAccount?.user_id ?? lookupResult?.user_id;
+    if (!userId) return [];
+    return purchases.filter((p) => p.user_id === userId);
   };
 
   if (loading) {
@@ -1691,6 +1700,10 @@ export default function AdminDashboard() {
                   lookupLoading={lookupLoading}
                   lookupError={lookupError}
                   lookupResult={lookupResult}
+                  lookupAccount={lookupAccount}
+                  setLookupAccount={setLookupAccount}
+                  setLookupResult={setLookupResult}
+                  setLookupError={setLookupError}
                   handleLookupUser={handleLookupUser}
                   getLookupUserClicks={getLookupUserClicks}
                   getLookupUserPurchases={getLookupUserPurchases}

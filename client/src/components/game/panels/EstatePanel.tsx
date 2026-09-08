@@ -208,30 +208,22 @@ function getEstateSkillLevelZeroDescription(
     }
     case "bloodflameSphere": {
       const cur = BLOODFLAME_SPHERE_UPGRADES[0];
-      return t(
-        cur.burnRounds === 1
-          ? "estate.bloodflameSummary_one"
-          : "estate.bloodflameSummary",
-        {
-          damage: cur.burnDamage,
-          rounds: cur.burnRounds,
-          health: cur.healthCost,
-        },
-      );
+      return t("estate.bloodflameSummary", {
+        count: cur.burnRounds,
+        damage: cur.burnDamage,
+        rounds: cur.burnRounds,
+        health: cur.healthCost,
+      });
     }
     case "feralHowl": {
       const cur = FERAL_HOWL_UPGRADES[0];
-      return t(
-        cur.debuffRounds === 1
-          ? "estate.feralHowlSummary_one"
-          : "estate.feralHowlSummary",
-        {
-          success: cur.successChance,
-          reduction: cur.enemyDamageReduction,
-          rounds: cur.debuffRounds,
-          crit: cur.critDamageBonus,
-        },
-      );
+      return t("estate.feralHowlSummary", {
+        count: cur.debuffRounds,
+        success: cur.successChance,
+        reduction: cur.enemyDamageReduction,
+        rounds: cur.debuffRounds,
+        crit: cur.critDamageBonus,
+      });
     }
     case "crowsEye":
       return t("estate.crowsEyeSummary", {
@@ -1072,7 +1064,8 @@ export default function EstatePanel({
                           })()}
                           {nxt?.healthCost > cur?.healthCost && <div>{t("estate.skillHealthCost", { amount: nxt.healthCost - cur.healthCost })}</div>}
                         </>}
-                        description={t(cur.burnRounds === 1 ? "estate.bloodflameSummary_one" : "estate.bloodflameSummary", {
+                        description={t("estate.bloodflameSummary", {
+                          count: cur.burnRounds,
                           damage: cur.burnDamage,
                           rounds: cur.burnRounds,
                           health: cur.healthCost,
@@ -1119,17 +1112,13 @@ export default function EstatePanel({
                             <div>{t("estate.skillCritDamageBonus", { amount: nxt.critDamageBonus - cur.critDamageBonus })}</div>
                           )}
                         </>}
-                        description={t(
-                          cur.debuffRounds === 1
-                            ? "estate.feralHowlSummary_one"
-                            : "estate.feralHowlSummary",
-                          {
-                            success: cur.successChance,
-                            reduction: cur.enemyDamageReduction,
-                            rounds: cur.debuffRounds,
-                            crit: cur.critDamageBonus,
-                          },
-                        )}
+                        description={t("estate.feralHowlSummary", {
+                          count: cur.debuffRounds,
+                          success: cur.successChance,
+                          reduction: cur.enemyDamageReduction,
+                          rounds: cur.debuffRounds,
+                          crit: cur.critDamageBonus,
+                        })}
                       />
                     );
                   })() : (

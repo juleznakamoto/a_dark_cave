@@ -5,6 +5,15 @@ import { formatNumber } from "@/lib/utils";
 
 type TranslateOptions = Record<string, string | number | boolean | undefined>;
 
+/** English one/other fallback for missing plural catalog keys. */
+export function englishCountFallback(
+  count: number,
+  one: string,
+  other: string,
+): string {
+  return count === 1 ? one : other;
+}
+
 /** Translate UI tooltip catalog keys (ui.tooltips.*). */
 export function getUiTooltip(
   key: string,

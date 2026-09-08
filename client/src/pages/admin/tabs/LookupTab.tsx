@@ -1,8 +1,21 @@
+import { useState } from "react";
 import { formatAdminUnifiedRevenueEur } from "@shared/purchaseRevenueEur";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Switch } from "@/components/ui/switch";
+import { Label } from "@/components/ui/label";
+import { getSupabaseClient } from "@/lib/supabase";
+import { logger } from "@/lib/logger";
+
+export interface LookupAccount {
+  user_id: string;
+  email: string | null;
+  devMultipliers: boolean;
+  devMultipliersLockedByEnv: boolean;
+}
 
 interface LookupTabProps {
+  environment: "dev" | "prod";
   lookupType: "id" | "email";
   setLookupType: (value: "id" | "email") => void;
   lookupUserId: string;
@@ -10,16 +23,19 @@ interface LookupTabProps {
   lookupLoading: boolean;
   lookupError: string;
   lookupResult: any | null;
+  lookupAccount: LookupAccount | null;
+  setLookupAccount: (value: LookupAccount | null) => void;
+  setLookupResult: (value: any | null) => void;
+  setLookupError: (value: string) => void;
   handleLookupUser: () => void;
   getLookupUserClicks: () => any[];
   getLookupUserPurchases: () => any[];
   formatTime: (minutes: number) => string;
-  setLookupResult: (value: any | null) => void;
-  setLookupError: (value: string) => void;
 }
 
 export default function LookupTab(props: LookupTabProps) {
   const {
+    environment,
     lookupType,
     setLookupType,
     lookupUserId,
@@ -27,13 +43,58 @@ export default function LookupTab(props: LookupTabProps) {
     lookupLoading,
     lookupError,
     lookupResult,
+    lookupAccount,
+    setLookupAccount,
+    setLookupResult,
+    setLookupError,
     handleLookupUser,
     getLookupUserClicks,
     getLookupUserPurchases,
     formatTime,
-    setLookupResult,
-    setLookupError,
   } = props;
+  const [toggleBusy, setToggleBusy] = useState(false);
+  const [toggleError, setToggleError] = useState("");
+
+  const handleToggleDevMultipliers = async (enabled: boolean) => {
+    if (!lookupAccount || lookupAccount.devMultipliersLockedByEnv) return;
+    setToggleBusy(true);
+    setToggleError("");
+    try {
+      const supabase = await getSupabaseClient();
+      const {
+        data: { session },
+      } = await supabase.auth.getSession();
+      if (!session?.access_token) {
+        throw new Error("No active admin session.");
+      }
+      const response = await fetch("/api/admin/dev-multipliers", {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${session.access_token}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          env: environment,
+          userId: lookupAccount.user_id,
+          enabled,
+        }),
+      });
+      const data = await response.json();
+      if (!response.ok) {
+        throw new Error(data.error || "Failed to update DEV multipliers");
+      }
+      if (data.account) {
+        setLookupAccount(data.account);
+      }
+    } catch (error: unknown) {
+      const message =
+        error instanceof Error ? error.message : "Failed to update DEV multipliers";
+      logger.error("DEV multipliers toggle failed:", error);
+      setToggleError(message);
+    } finally {
+      setToggleBusy(false);
+    }
+  };
 
   return (
     <div className="space-y-4">
@@ -51,8 +112,10 @@ export default function LookupTab(props: LookupTabProps) {
               onValueChange={(value: "id" | "email") => {
                 setLookupType(value);
                 setLookupUserId("");
+                setLookupAccount(null);
                 setLookupResult(null);
                 setLookupError("");
+                setToggleError("");
               }}
             >
               <SelectTrigger className="w-[140px]">
@@ -85,8 +148,49 @@ export default function LookupTab(props: LookupTabProps) {
             </div>
           )}
 
-          {lookupResult && (
+          {(lookupAccount || lookupResult) && (
             <div className="space-y-4">
+              <Card>
+                <CardHeader>
+                  <CardTitle>Dev multipliers</CardTitle>
+                  <CardDescription>
+                    Same resource, production, cooldown, and build-time
+                    multipliers as local DEV. Takes effect the next time this
+                    account loads the game on a-dark-cave.com.
+                  </CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-3">
+                  <div className="flex items-center justify-between gap-4">
+                    <Label htmlFor="dev-multipliers-toggle" className="text-sm">
+                      Enable DEV multipliers
+                    </Label>
+                    <Switch
+                      id="dev-multipliers-toggle"
+                      checked={lookupAccount?.devMultipliers === true}
+                      disabled={
+                        !lookupAccount ||
+                        toggleBusy ||
+                        lookupAccount.devMultipliersLockedByEnv
+                      }
+                      onCheckedChange={handleToggleDevMultipliers}
+                    />
+                  </div>
+                  {lookupAccount?.email ? (
+                    <p className="text-xs text-muted-foreground">
+                      {lookupAccount.email}
+                    </p>
+                  ) : null}
+                  {lookupAccount?.devMultipliersLockedByEnv ? (
+                    <p className="text-xs text-muted-foreground">
+                      Locked on by DEV_MULTIPLIER_EMAILS. Remove the email from
+                      that env var to turn this off.
+                    </p>
+                  ) : null}
+                  {toggleError ? (
+                    <p className="text-sm text-destructive">{toggleError}</p>
+                  ) : null}
+                </CardContent>
+              </Card>
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                 <Card>
                   <CardHeader>
@@ -94,7 +198,7 @@ export default function LookupTab(props: LookupTabProps) {
                   </CardHeader>
                   <CardContent>
                     <p className="text-sm break-all">
-                      {lookupResult.user_id}
+                      {lookupAccount?.user_id ?? lookupResult?.user_id}
                     </p>
                   </CardContent>
                 </Card>
@@ -104,7 +208,9 @@ export default function LookupTab(props: LookupTabProps) {
                   </CardHeader>
                   <CardContent>
                     <p className="text-sm">
-                      {new Date(lookupResult.updated_at).toLocaleString()}
+                      {lookupResult?.updated_at
+                        ? new Date(lookupResult.updated_at).toLocaleString()
+                        : "No save"}
                     </p>
                   </CardContent>
                 </Card>
@@ -114,7 +220,7 @@ export default function LookupTab(props: LookupTabProps) {
                   </CardHeader>
                   <CardContent>
                     <p className="text-sm">
-                      {lookupResult.game_state?.playTime
+                      {lookupResult?.game_state?.playTime
                         ? formatTime(
                           Math.round(
                             lookupResult.game_state.playTime / 1000 / 60,
@@ -130,13 +236,13 @@ export default function LookupTab(props: LookupTabProps) {
                   </CardHeader>
                   <CardContent>
                     <p className="text-sm">
-                      {lookupResult.game_state?.lastFeedbackOpenedAt
+                      {lookupResult?.game_state?.lastFeedbackOpenedAt
                         ? new Date(
                           lookupResult.game_state.lastFeedbackOpenedAt,
                         ).toLocaleString()
                         : "Never"}
                     </p>
-                    {lookupResult.game_state?.lastFeedbackOpenedSource ? (
+                    {lookupResult?.game_state?.lastFeedbackOpenedSource ? (
                       <p className="text-xs text-muted-foreground mt-1">
                         Source: {lookupResult.game_state.lastFeedbackOpenedSource}
                       </p>
@@ -239,7 +345,9 @@ export default function LookupTab(props: LookupTabProps) {
                 </CardHeader>
                 <CardContent>
                   <pre className="p-4 bg-muted rounded-md overflow-auto max-h-[600px] text-xs">
-                    {JSON.stringify(lookupResult.game_state, null, 2)}
+                    {lookupResult?.game_state
+                      ? JSON.stringify(lookupResult.game_state, null, 2)
+                      : "No save game"}
                   </pre>
                 </CardContent>
               </Card>
