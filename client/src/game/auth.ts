@@ -10,7 +10,13 @@ import {
   readLandingReferralCode,
 } from './referralLanding';
 import type { LogEntry } from '@/game/rules/events';
-import { fetchAccountDevMultipliersEnabled } from '@/game/devMultipliers';
+import { fetchAccountPrivileges } from '@/game/devMultipliers';
+import {
+  accountHasDevMultipliers,
+  accountHasSteamMode,
+  BUILT_IN_DEV_MULTIPLIER_EMAILS,
+  BUILT_IN_STEAM_MODE_EMAILS,
+} from '@shared/devMultipliers';
 import { isLocalOnlyEdition } from '@/lib/edition';
 
 function buildSignupWelcomeLogEntry(): LogEntry {
@@ -697,6 +703,8 @@ export async function deleteAccount(): Promise<void> {
   }
 }
 
+let lastAccountPrivilegeUserId: string | null = null;
+
 export async function signOut() {
   logger.log('[AUTH] 🚪 Signing out user...');
 
@@ -732,6 +740,15 @@ export async function signOut() {
 
   // Note: No reload needed - the calling component will reset game state
   logger.log('[AUTH] ✅ Sign out complete - ready for state reset');
+
+  lastAccountPrivilegeUserId = null;
+  try {
+    const { useGameStore } = await import("./state");
+    useGameStore.getState().setDevMultipliers(false);
+    useGameStore.getState().applyAccountSteamMode(false);
+  } catch {
+    /* store may not be bound yet */
+  }
 }
 
 /** Access token for the current session (anonymous or registered). */
@@ -805,35 +822,61 @@ export async function ensureAnonymousSession(): Promise<AuthUser> {
  * Single writer for the gameplay signed-in flag (confirmed email required).
  * Anonymous checkout sessions do not flip the flag.
  */
-let lastDevMultiplierUserId: string | null = null;
+function applyAccountPrivileges(
+  store: {
+    setDevMultipliers: (enabled: boolean) => void;
+    applyAccountSteamMode: (enabled: boolean) => void;
+  },
+  enabled: boolean,
+  steamMode: boolean,
+) {
+  store.setDevMultipliers(enabled);
+  store.applyAccountSteamMode(steamMode);
+}
 
 export async function syncAccountDevMultipliers(): Promise<void> {
   const { useGameStore } = await import("./state");
-  const apply = (enabled: boolean) => {
-    useGameStore.getState().setDevMultipliers(enabled);
+  const apply = (enabled: boolean, steamMode: boolean) => {
+    applyAccountPrivileges(useGameStore.getState(), enabled, steamMode);
   };
 
   try {
     if (isLocalOnlyEdition()) {
-      lastDevMultiplierUserId = null;
-      apply(false);
+      lastAccountPrivilegeUserId = null;
+      apply(false, false);
       return;
     }
 
     const user = await getCurrentUser();
     if (!user) {
-      lastDevMultiplierUserId = null;
-      apply(false);
+      lastAccountPrivilegeUserId = null;
+      apply(false, false);
       return;
     }
-    if (lastDevMultiplierUserId === user.id) {
+    if (lastAccountPrivilegeUserId === user.id) {
       return;
     }
 
     const { getCachedAuthUser } = await import("@/lib/supabase");
     const cached = getCachedAuthUser();
-    if (cached?.app_metadata?.dev_multipliers === true) {
-      apply(true);
+    const builtInMultiplierEmails = new Set(
+      BUILT_IN_DEV_MULTIPLIER_EMAILS.map((email) => email.toLowerCase()),
+    );
+    const builtInSteamEmails = new Set(
+      BUILT_IN_STEAM_MODE_EMAILS.map((email) => email.toLowerCase()),
+    );
+    const email = user.email ?? cached?.email ?? null;
+    const earlyEnabled = accountHasDevMultipliers({
+      email,
+      appMetadata: cached?.app_metadata,
+      allowlist: builtInMultiplierEmails,
+    });
+    const earlySteamMode = accountHasSteamMode({
+      email,
+      allowlist: builtInSteamEmails,
+    });
+    if (earlyEnabled || earlySteamMode) {
+      apply(earlyEnabled, earlySteamMode);
     }
 
     const token = await getSessionAccessToken();
@@ -841,9 +884,12 @@ export async function syncAccountDevMultipliers(): Promise<void> {
       return;
     }
 
-    const enabled = await fetchAccountDevMultipliersEnabled(token);
-    lastDevMultiplierUserId = user.id;
-    apply(enabled);
+    const privileges = await fetchAccountPrivileges(token);
+    lastAccountPrivilegeUserId = user.id;
+    apply(
+      privileges.enabled || earlyEnabled,
+      privileges.steamMode || earlySteamMode,
+    );
   } catch (error) {
     logger.warn("[AUTH] Failed to sync DEV multipliers:", error);
   }
@@ -860,8 +906,8 @@ export async function syncStoreAuthFromSession(): Promise<boolean> {
     if (signedIn) {
       void syncAccountDevMultipliers();
     } else {
-      lastDevMultiplierUserId = null;
-      useGameStore.getState().setDevMultipliers(false);
+      lastAccountPrivilegeUserId = null;
+      applyAccountPrivileges(useGameStore.getState(), false, false);
     }
     return signedIn;
   } catch {

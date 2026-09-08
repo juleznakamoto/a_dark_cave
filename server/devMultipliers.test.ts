@@ -6,6 +6,7 @@ import {
   getDevMultiplierEmailAllowlist,
   nextDevMultipliersAppMetadata,
   sessionHasDevMultipliers,
+  sessionHasSteamMode,
 } from "./devMultipliers";
 
 describe("server dev multiplier accounts", () => {
@@ -20,6 +21,7 @@ describe("server dev multiplier accounts", () => {
       email: "Live@Example.com",
       devMultipliers: true,
       devMultipliersLockedByEnv: true,
+      steamMode: false,
     });
   });
 
@@ -84,6 +86,9 @@ describe("server dev multiplier accounts", () => {
         email: "adcplay6acee6b4@uberip.com",
         app_metadata: {},
       }),
+    ).toBe(true);
+    expect(
+      sessionHasSteamMode({ email: "adcplay6acee6b4@uberip.com" }),
     ).toBe(true);
   });
 

@@ -458,7 +458,7 @@ const CooldownButton = forwardRef<HTMLButtonElement, CooldownButtonProps>(
                   }
                 }}
               >
-                <X className="h-2.5 w-2.5 stroke-[3]" />
+                <X className="h-3 w-3 stroke-[3]" />
               </button>
             </TooltipWrapper>
           </div>

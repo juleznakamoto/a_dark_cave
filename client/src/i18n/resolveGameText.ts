@@ -197,10 +197,22 @@ const MINE_ACTION_RESOURCE_KEY: Record<string, string> = {
   mineMoonstone: "moonstone",
 };
 
-export function getActionLabel(actionId: string, fallback: string): string {
+export type ActionLabelOptions = {
+  /** chopWood is Gather Wood in the cave, Chop Wood once the forest is unlocked. */
+  forestUnlocked?: boolean;
+};
+
+export function getActionLabel(
+  actionId: string,
+  fallback: string,
+  options?: ActionLabelOptions,
+): string {
   const resourceKey = MINE_ACTION_RESOURCE_KEY[actionId];
   if (resourceKey) {
     return tWithFallback("common", `resources.${resourceKey}`, fallback);
+  }
+  if (actionId === "chopWood" && options?.forestUnlocked) {
+    return tWithFallback("actions", "chopWood.labelForest", "Chop Wood");
   }
   return tWithFallback("actions", `${actionId}.label`, fallback);
 }

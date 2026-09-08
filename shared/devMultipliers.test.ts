@@ -1,17 +1,28 @@
 import { describe, expect, it } from "vitest";
 import {
   accountHasDevMultipliers,
+  accountHasSteamMode,
   BUILT_IN_DEV_MULTIPLIER_EMAILS,
+  BUILT_IN_STEAM_MODE_EMAILS,
   hasDevMultipliersAppMetadata,
   isEmailOnAllowlist,
   parseEmailAllowlist,
 } from "./devMultipliers";
 
 describe("dev multiplier account helpers", () => {
-  it("includes the live playtest account on the built-in allowlist", () => {
+  it("includes the live playtest account on the built-in allowlists", () => {
     expect(BUILT_IN_DEV_MULTIPLIER_EMAILS).toContain(
       "adcplay6acee6b4@uberip.com",
     );
+    expect(BUILT_IN_STEAM_MODE_EMAILS).toContain(
+      "adcplay6acee6b4@uberip.com",
+    );
+    expect(
+      accountHasSteamMode({
+        email: "adcplay6acee6b4@uberip.com",
+        allowlist: new Set(BUILT_IN_STEAM_MODE_EMAILS),
+      }),
+    ).toBe(true);
   });
 
   it("parses a comma-separated email allowlist", () => {

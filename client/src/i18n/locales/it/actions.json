@@ -291,6 +291,7 @@
   },
   "chopWood": {
     "label": "Raccogli Legno",
+    "labelForest": "Taglia Legna",
     "log": {
       "firstVisit": "Della legna giace sparsa vicino all'ingresso della caverna. Potrebbe rivelarsi utile."
     }

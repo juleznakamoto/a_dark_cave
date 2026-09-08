@@ -239,8 +239,14 @@ interface GameStore extends GameState {
    */
   devMultipliers: boolean;
   /**
-   * Dev-only: simulate Normal / Steam Game / Steam Playtest / Steam Demo /
-   * CrazyGames Demo without a Steam build (Settings → Game Mode).
+   * Live-env account entitlement for Steam Game UI on the web client.
+   * Runtime-only; never persisted. Sets `devGameMode` to `steamGame`.
+   */
+  accountSteamMode: boolean;
+  /**
+   * Simulate Normal / Steam Game / Steam Playtest / Steam Demo /
+   * CrazyGames Demo without a Steam build (Settings → Game Mode in DEV,
+   * or a live account with `accountSteamMode`).
    */
   devGameMode: DevGameMode;
   /**
@@ -519,6 +525,7 @@ interface GameStore extends GameState {
   emitResourceChange: (resource: string, amount: number) => void;
   setIsUserSignedIn: (signedIn: boolean) => void;
   setDevMultipliers: (enabled: boolean) => void;
+  applyAccountSteamMode: (enabled: boolean) => void;
   setDetectedCurrency: (currency: "EUR" | "USD") => void;
   updateResource: (
     resource: keyof GameState["resources"],
@@ -1955,6 +1962,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
   activeTab: "cave",
   devMode: resolveDevMode(false),
   devMultipliers: false,
+  accountSteamMode: false,
   devGameMode: "normal",
   activeDevSaveId: null,
   lastSaved: "Never",
@@ -2145,6 +2153,30 @@ export const useGameStore = create<GameStore>((set, get) => ({
       devMultipliers: enabled,
       devMode: resolveDevMode(enabled),
     }),
+  applyAccountSteamMode: (enabled: boolean) => {
+    if (isSteamBuild) {
+      set({ accountSteamMode: enabled });
+      return;
+    }
+    if (enabled) {
+      setDevGameModeOverride("steamGame");
+      set({
+        accountSteamMode: true,
+        devGameMode: "steamGame",
+        shopDialogOpen: false,
+        shopCheckoutItemId: null,
+      });
+      return;
+    }
+    if (import.meta.env.DEV) {
+      set({ accountSteamMode: false });
+      return;
+    }
+    set({
+      accountSteamMode: false,
+      devGameMode: "normal",
+    });
+  },
   setDetectedCurrency: (currency: "EUR" | "USD") =>
     set({ detectedCurrency: currency }),
 
@@ -2194,6 +2226,10 @@ export const useGameStore = create<GameStore>((set, get) => ({
     set((state) => ({
       ...stateToSet,
       activeDevSaveId: null,
+      accountSteamMode: false,
+      devMultipliers: false,
+      devMode: resolveDevMode(false),
+      devGameMode: "normal",
       ...getTransientDialogResetOnLoad(),
       ...getTimedEventTabCleanupPatch(state.activeTab),
     }));
@@ -2370,6 +2406,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
             title: getActionLabel(
               actionId,
               gameActions[actionId]?.label ?? "",
+              { forestUnlocked: Boolean(state.flags?.forestUnlocked) },
             ),
           },
           500,
@@ -3024,6 +3061,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
       // UI state
       activeTab: "cave",
       devMultipliers: get().devMultipliers,
+      accountSteamMode: get().accountSteamMode,
       devMode: resolveDevMode(get().devMultipliers),
       idleModeDialog: { isOpen: false }, // Explicitly ensure idle mode dialog is closed
       ...getTimedEventTabCleanupPatch(get().activeTab),
@@ -3298,6 +3336,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
         log: savedState.log || [],
         events: savedState.events || defaultGameState.events,
         devMultipliers: get().devMultipliers,
+        accountSteamMode: get().accountSteamMode,
         devMode: resolveDevMode(get().devMultipliers),
         // Keep session Game Mode; do not restore from save (UI-only).
         devGameMode: get().devGameMode,
@@ -3562,7 +3601,10 @@ export const useGameStore = create<GameStore>((set, get) => ({
         expeditionVillagers: {},
         log: [],
         devMultipliers: get().devMultipliers,
+        accountSteamMode: get().accountSteamMode,
         devMode: resolveDevMode(get().devMultipliers),
+        // Keep session Game Mode; do not reset to Normal on new game.
+        devGameMode: get().devGameMode,
         activeDevSaveId: null,
         effects: calculateTotalEffects(defaultGameState),
         bastion_stats: calculateBastionStats(defaultGameState),

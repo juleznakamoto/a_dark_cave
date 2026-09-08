@@ -363,6 +363,20 @@ describe("i18n runtime", () => {
     expect(label).not.toBe("Wooden Hut");
   });
 
+  it("uses Gather Wood until forest unlock, then Chop Wood", async () => {
+    await i18n.changeLanguage("en");
+    expect(getActionLabel("chopWood", "Gather Wood")).toBe("Gather Wood");
+    expect(
+      getActionLabel("chopWood", "Gather Wood", { forestUnlocked: true }),
+    ).toBe("Chop Wood");
+
+    await i18n.changeLanguage("de");
+    expect(getActionLabel("chopWood", "Gather Wood")).toBe("Holz sammeln");
+    expect(
+      getActionLabel("chopWood", "Gather Wood", { forestUnlocked: true }),
+    ).toBe("Holz hacken");
+  });
+
   it("resolves first attack wave combat intro text", async () => {
     await i18n.changeLanguage("de");
     const state = gameStateSchema.parse({});

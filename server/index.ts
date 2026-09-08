@@ -32,6 +32,7 @@ import {
   findAuthUserById,
   nextDevMultipliersAppMetadata,
   sessionHasDevMultipliers,
+  sessionHasSteamMode,
 } from "./devMultipliers";
 
 // Supabase config endpoint for production
@@ -730,7 +731,10 @@ app.get("/api/account/dev-multipliers", async (req, res) => {
       return res.status(401).json({ error: "Authorization required" });
     }
     res.set("Cache-Control", "no-store");
-    res.json({ enabled: sessionHasDevMultipliers(user) });
+    res.json({
+      enabled: sessionHasDevMultipliers(user),
+      steamMode: sessionHasSteamMode(user),
+    });
   } catch (error: any) {
     res.status(500).json({ error: error.message });
   }

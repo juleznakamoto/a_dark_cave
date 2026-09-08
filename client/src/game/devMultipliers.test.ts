@@ -1,5 +1,5 @@
 import { describe, expect, it, vi } from "vitest";
-import { fetchAccountDevMultipliersEnabled, resolveDevMode } from "./devMultipliers";
+import { fetchAccountPrivileges, resolveDevMode } from "./devMultipliers";
 
 describe("dev multipliers", () => {
   it("enables DEV mode for allowlisted live accounts", () => {
@@ -9,11 +9,14 @@ describe("dev multipliers", () => {
   it("reads the account privilege endpoint", async () => {
     const fetchMock = vi.fn().mockResolvedValue({
       ok: true,
-      json: async () => ({ enabled: true }),
+      json: async () => ({ enabled: true, steamMode: true }),
     });
     vi.stubGlobal("fetch", fetchMock);
 
-    await expect(fetchAccountDevMultipliersEnabled("token")).resolves.toBe(true);
+    await expect(fetchAccountPrivileges("token")).resolves.toEqual({
+      enabled: true,
+      steamMode: true,
+    });
     expect(fetchMock).toHaveBeenCalledWith("/api/account/dev-multipliers", {
       headers: { Authorization: "Bearer token" },
     });
@@ -26,7 +29,10 @@ describe("dev multipliers", () => {
       "fetch",
       vi.fn().mockResolvedValue({ ok: false, json: async () => ({}) }),
     );
-    await expect(fetchAccountDevMultipliersEnabled("token")).resolves.toBe(false);
+    await expect(fetchAccountPrivileges("token")).resolves.toEqual({
+      enabled: false,
+      steamMode: false,
+    });
     vi.unstubAllGlobals();
   });
 });

@@ -307,6 +307,7 @@
   },
   "chopWood": {
     "label": "Gather Wood",
+    "labelForest": "Chop Wood",
     "log": {
       "firstVisit": "Some wood lies scattered near the cave's entrance. It might prove useful."
     }

@@ -59,7 +59,7 @@ export const isCrazyGamesBuild = import.meta.env.VITE_CRAZYGAMES === "1";
 const GALAXY_PATH_PREFIX = "/galaxy";
 const CRAZYGAMES_PATH_PREFIX = "/crazygames";
 
-/** Dev Settings → Game Mode values (web DEV only; ignored in Steam / prod builds). */
+/** Settings → Game Mode (web DEV) or a live account Steam Game simulation. */
 export type DevGameMode =
   | "normal"
   | "steamGame"
@@ -85,6 +85,13 @@ function isPathPrefix(prefix: string): boolean {
 
 function isDevGameMode(mode: DevGameMode): boolean {
   return import.meta.env.DEV && !isSteamBuild && devGameModeOverride === mode;
+}
+
+/** Full Steam Game / Playtest simulation on the web client (DEV or live account). */
+export function isSimulatedSteamGameMode(
+  mode: DevGameMode | undefined,
+): boolean {
+  return mode === "steamGame" || mode === "steamPlaytest";
 }
 
 /** Galaxy.click demo hosted at https://a-dark-cave.com/galaxy */
@@ -172,13 +179,9 @@ export function shouldHideSteamStoreLink(
   devGameMode: DevGameMode = "normal",
 ): boolean {
   if (isSteamBuild) return true;
+  if (isSimulatedSteamGameMode(devGameMode)) return true;
   if (import.meta.env.DEV && !isSteamBuild) {
-    return (
-      devGameMode === "steamGame" ||
-      devGameMode === "steamPlaytest" ||
-      devGameMode === "steamDemo" ||
-      devGameMode === "demoEnd"
-    );
+    return devGameMode === "steamDemo" || devGameMode === "demoEnd";
   }
   return false;
 }
@@ -192,17 +195,15 @@ function isKnownDevGameMode(value: unknown): value is DevGameMode {
 
 /** Live Settings → Game Mode when the store is bound; else the module override. */
 function resolveDevGameMode(explicit?: DevGameMode): DevGameMode {
-  if (explicit) return explicit;
-  if (import.meta.env.DEV && !isSteamBuild) {
-    const mode = tryGetBoundGameStore()?.getState()?.devGameMode;
-    if (isKnownDevGameMode(mode)) return mode;
-  }
+  if (explicit && isKnownDevGameMode(explicit)) return explicit;
+  const storeMode = tryGetBoundGameStore()?.getState()?.devGameMode;
+  if (isKnownDevGameMode(storeMode)) return storeMode;
   return import.meta.env.DEV ? devGameModeOverride : "normal";
 }
 
 /**
  * Runtime Steam-like edition check — compile-time Steam / CrazyGames / Galaxy,
- * or DEV Game Mode (Steam Game / Playtest / Demo / CrazyGames Demo). Use for UI
+ * DEV Game Mode, or a live account Steam Game simulation. Use for UI
  * and shop-slot behavior; keep `isSteamBuild` for build-time stubs, save
  * backends, and Steam API bridges.
  *
@@ -210,12 +211,8 @@ function resolveDevGameMode(explicit?: DevGameMode): DevGameMode {
  * source of truth (the module override can reset on HMR).
  */
 export function isSteamEditionActive(devGameMode?: DevGameMode): boolean {
-  return (
-    isSteamBuild ||
-    isGalaxyEdition() ||
-    isCrazyGamesEdition() ||
-    (import.meta.env.DEV &&
-      !isSteamBuild &&
-      resolveDevGameMode(devGameMode) !== "normal")
-  );
+  if (isSteamBuild || isGalaxyEdition() || isCrazyGamesEdition()) return true;
+  const mode = resolveDevGameMode(devGameMode);
+  if (isSimulatedSteamGameMode(mode)) return true;
+  return import.meta.env.DEV && !isSteamBuild && mode !== "normal";
 }

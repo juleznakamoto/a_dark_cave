@@ -34,7 +34,7 @@ import {
   ACTION_TO_UPGRADE_KEY,
   isPriorActionEligible,
 } from "@/game/buttonUpgrades";
-import { resolveActionLabel } from "@/i18n/actionLabels";
+import { resolveActionLabel as resolveActionLabelBase } from "@/i18n/actionLabels";
 import { getResourceName } from "@/i18n/resolveGameText";
 import { resolveActionTooltipEffects } from "@/i18n/tooltipLabels";
 import { useTranslation } from "react-i18next";
@@ -48,6 +48,10 @@ import {
 } from "@/components/ui/bubbly-button.particles";
 import type { Action, GameState } from "@shared/schema";
 import { formatNumber } from "@/lib/utils";
+
+function resolveActionLabel(actionId: string, fallback: string): string {
+  return resolveActionLabelBase(actionId, fallback, { forestUnlocked: true });
+}
 
 function isTieredNumericRecord(r: unknown): r is Record<number, unknown> {
   if (!r || typeof r !== "object") return false;

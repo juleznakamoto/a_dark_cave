@@ -1,6 +1,8 @@
 import {
   accountHasDevMultipliers,
+  accountHasSteamMode,
   BUILT_IN_DEV_MULTIPLIER_EMAILS,
+  BUILT_IN_STEAM_MODE_EMAILS,
   DEV_MULTIPLIERS_APP_METADATA_KEY,
   isEmailOnAllowlist,
   parseEmailAllowlist,
@@ -11,6 +13,7 @@ export type DevMultiplierAccount = {
   email: string | null;
   devMultipliers: boolean;
   devMultipliersLockedByEnv: boolean;
+  steamMode: boolean;
 };
 
 type AuthUserLike = {
@@ -33,9 +36,14 @@ export function getDevMultiplierEmailAllowlist(
   ]);
 }
 
+export function getSteamModeEmailAllowlist(): Set<string> {
+  return new Set(BUILT_IN_STEAM_MODE_EMAILS.map((email) => email.toLowerCase()));
+}
+
 export function buildDevMultiplierAccount(
   user: AuthUserLike,
   allowlist: Set<string> = getDevMultiplierEmailAllowlist(),
+  steamAllowlist: Set<string> = getSteamModeEmailAllowlist(),
 ): DevMultiplierAccount {
   const email = user.email?.trim() ? user.email : null;
   const fromEnv = isEmailOnAllowlist(email, allowlist);
@@ -48,6 +56,7 @@ export function buildDevMultiplierAccount(
       allowlist,
     }),
     devMultipliersLockedByEnv: fromEnv,
+    steamMode: accountHasSteamMode({ email, allowlist: steamAllowlist }),
   };
 }
 
@@ -59,6 +68,15 @@ export function sessionHasDevMultipliers(user: {
     email: user.email,
     appMetadata: user.app_metadata,
     allowlist: getDevMultiplierEmailAllowlist(),
+  });
+}
+
+export function sessionHasSteamMode(user: {
+  email?: string | null;
+}): boolean {
+  return accountHasSteamMode({
+    email: user.email,
+    allowlist: getSteamModeEmailAllowlist(),
   });
 }
 

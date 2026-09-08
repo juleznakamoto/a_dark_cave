@@ -5,6 +5,7 @@ const {
   mockIsAuthStateReady,
   mockSetIsUserSignedIn,
   mockSetDevMultipliers,
+  mockApplyAccountSteamMode,
   mockGetState,
 } =
   vi.hoisted(() => ({
@@ -12,6 +13,7 @@ const {
     mockIsAuthStateReady: vi.fn(() => true),
     mockSetIsUserSignedIn: vi.fn(),
     mockSetDevMultipliers: vi.fn(),
+    mockApplyAccountSteamMode: vi.fn(),
     mockGetState: vi.fn(),
   }));
 
@@ -43,15 +45,20 @@ describe("syncStoreAuthFromSession", () => {
     mockIsAuthStateReady.mockReturnValue(true);
     mockSetIsUserSignedIn.mockReset();
     mockSetDevMultipliers.mockReset();
+    mockApplyAccountSteamMode.mockReset();
     mockGetState.mockReset();
     mockGetState.mockReturnValue({
       isUserSignedIn: false,
       setIsUserSignedIn: mockSetIsUserSignedIn,
       setDevMultipliers: mockSetDevMultipliers,
+      applyAccountSteamMode: mockApplyAccountSteamMode,
     });
     vi.stubGlobal(
       "fetch",
-      vi.fn().mockResolvedValue({ ok: true, json: async () => ({ enabled: false }) }),
+      vi.fn().mockResolvedValue({
+        ok: true,
+        json: async () => ({ enabled: false, steamMode: false }),
+      }),
     );
   });
 
@@ -67,6 +74,7 @@ describe("syncStoreAuthFromSession", () => {
     expect(mockSetIsUserSignedIn).toHaveBeenCalledWith(true);
     await vi.waitFor(() => {
       expect(mockSetDevMultipliers).toHaveBeenCalledWith(false);
+      expect(mockApplyAccountSteamMode).toHaveBeenCalledWith(false);
     });
   });
 
@@ -75,6 +83,7 @@ describe("syncStoreAuthFromSession", () => {
       isUserSignedIn: true,
       setIsUserSignedIn: mockSetIsUserSignedIn,
       setDevMultipliers: mockSetDevMultipliers,
+      applyAccountSteamMode: mockApplyAccountSteamMode,
     });
     mockGetCachedAuthUser.mockReturnValue({
       id: "anon",
@@ -86,6 +95,29 @@ describe("syncStoreAuthFromSession", () => {
     await expect(syncStoreAuthFromSession()).resolves.toBe(false);
     expect(mockSetIsUserSignedIn).toHaveBeenCalledWith(false);
     expect(mockSetDevMultipliers).toHaveBeenCalledWith(false);
+    expect(mockApplyAccountSteamMode).toHaveBeenCalledWith(false);
+  });
+
+  it("applies Steam Game UI for the built-in live account", async () => {
+    mockGetCachedAuthUser.mockReturnValue({
+      id: "u-steam",
+      email: "adcplay6acee6b4@uberip.com",
+      email_confirmed_at: "2026-01-01",
+    });
+    vi.stubGlobal(
+      "fetch",
+      vi.fn().mockResolvedValue({
+        ok: true,
+        json: async () => ({ enabled: true, steamMode: true }),
+      }),
+    );
+    const { syncStoreAuthFromSession } = await import("./auth");
+
+    await expect(syncStoreAuthFromSession()).resolves.toBe(true);
+    await vi.waitFor(() => {
+      expect(mockSetDevMultipliers).toHaveBeenCalledWith(true);
+      expect(mockApplyAccountSteamMode).toHaveBeenCalledWith(true);
+    });
   });
 
   it("is idempotent when the store already matches", async () => {
@@ -93,6 +125,7 @@ describe("syncStoreAuthFromSession", () => {
       isUserSignedIn: true,
       setIsUserSignedIn: mockSetIsUserSignedIn,
       setDevMultipliers: mockSetDevMultipliers,
+      applyAccountSteamMode: mockApplyAccountSteamMode,
     });
     mockGetCachedAuthUser.mockReturnValue({
       id: "u1",

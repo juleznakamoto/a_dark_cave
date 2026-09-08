@@ -28,4 +28,12 @@ describe("setDevGameMode", () => {
     expect(state.settingsDialogOpen).toBe(true);
     expect(state.galaxyTimeUpDialogOpen).toBe(false);
   });
+
+  it("applies Steam Game UI from a live account entitlement", () => {
+    useGameStore.getState().applyAccountSteamMode(true);
+
+    const state = useGameStore.getState();
+    expect(state.accountSteamMode).toBe(true);
+    expect(state.devGameMode).toBe("steamGame");
+  });
 });

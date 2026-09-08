@@ -12,6 +12,7 @@ export interface LookupAccount {
   email: string | null;
   devMultipliers: boolean;
   devMultipliersLockedByEnv: boolean;
+  steamMode?: boolean;
 }
 
 interface LookupTabProps {
@@ -184,6 +185,11 @@ export default function LookupTab(props: LookupTabProps) {
                     <p className="text-xs text-muted-foreground">
                       Locked on by DEV_MULTIPLIER_EMAILS. Remove the email from
                       that env var to turn this off.
+                    </p>
+                  ) : null}
+                  {lookupAccount?.steamMode ? (
+                    <p className="text-xs text-muted-foreground">
+                      This account also uses Steam Game UI on the live site.
                     </p>
                   ) : null}
                   {toggleError ? (

@@ -307,6 +307,7 @@
   },
   "chopWood": {
     "label": "Reunir madera",
+    "labelForest": "Cortar madera",
     "log": {
       "firstVisit": "Hay madera esparcida cerca de la entrada de la cueva. Podría resultar útil."
     }

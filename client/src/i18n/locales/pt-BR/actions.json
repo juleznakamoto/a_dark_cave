@@ -291,6 +291,7 @@
   },
   "chopWood": {
     "label": "Coletar Madeira",
+    "labelForest": "Cortar Madeira",
     "log": {
       "firstVisit": "Um pouco de madeira está espalhada perto da entrada da caverna. Pode ser útil."
     }

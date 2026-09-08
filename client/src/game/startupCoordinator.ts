@@ -74,7 +74,9 @@ function createStartResolution(
   devGameMode: DevGameMode,
 ): Extract<StartupResolution, { surface: "start" }> {
   const devSteamMode =
-    import.meta.env.DEV && !isSteamBuild && devGameMode !== "normal";
+    (!isSteamBuild &&
+      (devGameMode === "steamGame" || devGameMode === "steamPlaytest")) ||
+    (import.meta.env.DEV && !isSteamBuild && devGameMode !== "normal");
   return {
     surface: "start",
     preferences,

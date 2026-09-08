@@ -1,11 +1,16 @@
-import { getActionLabel, getActionDescription } from "./resolveGameText";
+import {
+  getActionLabel,
+  getActionDescription,
+  type ActionLabelOptions,
+} from "./resolveGameText";
 
 /** Resolve localized action button label (falls back to rules definition). */
 export function resolveActionLabel(
   actionId: string,
   fallback: string,
+  options?: ActionLabelOptions,
 ): string {
-  return getActionLabel(actionId, fallback);
+  return getActionLabel(actionId, fallback, options);
 }
 
 /** Resolve localized action description for tooltips. */

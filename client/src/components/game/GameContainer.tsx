@@ -1289,7 +1289,7 @@ export default function GameContainer() {
                         data-testid="village-hotkey-tutorial-dismiss"
                         onClick={closeVillageHotkeyTutorial}
                       >
-                        <X className="h-2.5 w-2.5 stroke-[3]" />
+                        <X className="h-3.5 w-3.5 stroke-[3]" />
                       </button>
                     )}
                   </div>

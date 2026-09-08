@@ -307,6 +307,7 @@
   },
   "chopWood": {
     "label": "采集木材",
+    "labelForest": "砍伐木材",
     "log": {
       "firstVisit": "洞口附近散落着一些木材，或许能派上用场。"
     }
