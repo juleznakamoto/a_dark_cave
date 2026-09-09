@@ -626,12 +626,14 @@ export default function ForestPanel() {
             return (
               <div key={groupIndex} className="space-y-2">
                 {group.title && (
-                  <h3 className={`inline-flex flex-wrap items-center gap-1.5 ${GAME_TAB_SECTION_HEADER}`}>
-                    {sectionTitle}
-                    {catalogActive && isExploreGroup ? (
-                      <DemoEndPromoBadge kind="explore" />
-                    ) : null}
-                  </h3>
+                  <div className="game-panel-header-indicator-row flex w-full items-center gap-2">
+                    <h3 className={`inline-flex min-w-0 flex-wrap items-center gap-1.5 ${GAME_TAB_SECTION_HEADER}`}>
+                      {sectionTitle}
+                      {catalogActive && isExploreGroup ? (
+                        <DemoEndPromoBadge kind="explore" />
+                      ) : null}
+                    </h3>
+                  </div>
                 )}
                 <div className={gameActionButtonGridClassName("w-full justify-start")}>
                   {visibleActions.map((action) =>
