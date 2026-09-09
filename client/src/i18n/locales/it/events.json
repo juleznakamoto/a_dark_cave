@@ -2170,7 +2170,7 @@
     },
     "log": {
       "outcome1": "Il veggente tace. Il suo sguardo si perde oltre di te. \"Grandi sfide ti attendono{{name}},\" dice sommessamente. \"Credi che questo mondo sia tuo da plasmare. Ma sei plasmato a tua volta. Quando la verità finale emergerà, vedrai i fili. E allora, potrebbe essere troppo tardi.\"",
-      "outcome2": "Il veggente annuisce. {{farewell}}"
+      "outcome2": "Il veggente annuisce. \"Addio, allora{{name}},\" dice, e scompare nella nebbia senza un'altra parola."
     },
     "message": "Una figura incappucciata appare al crepuscolo. I suoi occhi brillano da sotto il velo. 'Ho intravisto ciò che ti attende,' gracchia. '50 Oro, e ti dirò cosa ti aspetta.'",
     "title": "Il Veggente Velato"

@@ -2321,7 +2321,7 @@
     },
     "log": {
       "outcome1": "Der Seher verstummt. Sein Blick driftet an dir vorbei. \"Große Prüfungen erwarten dich{{name}}\", sagt er leise. \"Du glaubst, diese Welt sei deine zu formen. Doch auch du wirst geformt. Wenn die letzte Wahrheit an die Oberfläche kommt, wirst du die Fäden sehen. Und dann könnte es zu spät sein.\"",
-      "outcome2": "Der Seher nickt. {{farewell}}"
+      "outcome2": "Der Seher nickt. \"Dann leb wohl{{name}},\" sagt er und verschwindet wortlos im Nebel."
     },
     "message": "Eine verhüllte Gestalt erscheint in der Dämmerung. Seine Augen glimmen unter dem Schleier. 'Ich habe erblickt, was vor dir liegt', krächzt er. '50 Gold, und ich sage dir, was dich erwartet.'",
     "title": "Der verschleierte Seher"

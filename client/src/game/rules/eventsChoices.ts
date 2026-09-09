@@ -1549,12 +1549,10 @@ export const choiceEvents: Record<string, GameEvent> = {
       {
         id: "decline",
         effect: (state: GameState) => {
-          const farewell = state.fn
-            ? `"Farewell then, ${state.fn}," he says, and disappears into the mist without another word.`
-            : "'Farewell then,' he says, and disappears into the mist without another word.";
+          const name = state.fn ? `, ${state.fn}` : "";
           return {
             _logMessageKey: "outcome2",
-            _logMessageVars: { farewell },
+            _logMessageVars: { name },
           };
         },
       },

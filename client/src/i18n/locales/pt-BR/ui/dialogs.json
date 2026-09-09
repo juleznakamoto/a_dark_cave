@@ -252,8 +252,8 @@
     "storeHeaderTooltip": "Adicionar o jogo completo à lista de desejos da Steam"
   },
   "blessingOffer": {
-    "title": "Choose a Blessing",
-    "srDescription": "Select one of the offered blessings",
-    "chooseBlessing": "Choose"
+    "title": "Escolha uma bênção",
+    "srDescription": "Selecione uma das bênçãos oferecidas",
+    "chooseBlessing": "Escolher"
   }
 }

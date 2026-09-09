@@ -4,11 +4,11 @@
     "music": "环境音",
     "sound": "音效",
     "emails": "邮件",
-    "gameMode": "Game Mode",
-    "gameModeNormal": "Normal Mode",
-    "gameModeSteamGame": "Steam Game",
-    "gameModeSteamPlaytest": "Steam Playtest",
-    "gameModeSteamDemo": "Steam Demo",
+    "gameMode": "游戏模式",
+    "gameModeNormal": "普通模式",
+    "gameModeSteamGame": "Steam 游戏",
+    "gameModeSteamPlaytest": "Steam 测试版",
+    "gameModeSteamDemo": "Steam 试玩",
     "gameModeDemoEnd": "试玩结束",
     "gameModeCrazyGamesDemo": "CrazyGames 试玩"
   },
@@ -37,8 +37,8 @@
     "recommendedBy": "推荐来源"
   },
   "errorScreen": {
-    "message": "We are digging deeper. Please check back soon.",
-    "reload": "Reload game"
+    "message": "我们还在往深处挖。请稍后再来。",
+    "reload": "重新加载游戏"
   },
   "footer": {
     "fullGame": "完整版",
@@ -52,8 +52,8 @@
     "pressKit": "媒体",
     "imprint": "法律信息",
     "contact": "联系",
-    "feedback": "Feedback",
-    "openFeedback": "Open feedback form",
+    "feedback": "反馈",
+    "openFeedback": "打开反馈表单",
     "pauseGame": "暂停游戏",
     "resumeGame": "继续游戏",
     "muteMusic": "静音环境音",
@@ -62,7 +62,7 @@
     "unmuteSfx": "取消音效静音",
     "cruelModeActive": "残酷模式生效中",
     "wishlistOnSteam": "加入 Steam 愿望单",
-    "demoProgress": "Demo Progress",
+    "demoProgress": "试玩进度",
     "progress": "进度",
     "social": "社交",
     "email": "邮箱",
@@ -88,8 +88,8 @@
     "autoSaveSignedIn": "游戏每分钟自动保存",
     "autoSaveGuest": "游戏每 15 秒自动保存",
     "signUpCloudSave": "注册以将游戏保存到云端",
-    "autoSaveSteam": "Game auto-saves every 15 seconds",
-    "steamCloudSave": "Progress syncs to Steam Cloud when you save.",
+    "autoSaveSteam": "游戏每 15 秒自动保存",
+    "steamCloudSave": "保存时进度会同步到 Steam 云存档。",
     "lastSave": "上次保存：{{time}}",
     "signedOut": "已成功退出登录",
     "signOutError": "退出登录时出错",
@@ -106,8 +106,8 @@
     "subscribedDesc": "我们会偶尔通过邮件向你发送更新和优惠。",
     "unsubscribedDesc": "你将不会收到我们的营销邮件。",
     "preferenceUpdateFailed": "无法更新偏好设置",
-    "enterFullscreen": "Full screen",
-    "exitFullscreen": "Exit full screen"
+    "enterFullscreen": "全屏",
+    "exitFullscreen": "退出全屏"
   },
   "pauseHotkey": {
     "hintPrefix": "使用 ",

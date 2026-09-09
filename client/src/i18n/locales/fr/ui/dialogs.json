@@ -26,9 +26,9 @@
     "message": "Vous buvez l'élixir de perspicacité. La compréhension éclot dans votre esprit."
   },
   "blessingOffer": {
-    "title": "Choose a Blessing",
-    "srDescription": "Select one of the offered blessings",
-    "chooseBlessing": "Choose"
+    "title": "Choisissez une bénédiction",
+    "srDescription": "Sélectionnez l'une des bénédictions proposées",
+    "chooseBlessing": "Choisir"
   },
   "socialPrompt": {
     "title": "Restez connecté et gagnez des récompenses",
@@ -243,13 +243,13 @@
     "reddit": "Reddit",
     "instagram": "Instagram",
     "steam": "Steam",
-    "email": "Email"
+    "email": "E-mail"
   },
   "galaxy": {
     "title": "La démo s'arrête ici", //x1.4
     "description": "Ajoutez le jeu complet à votre liste de souhaits Steam pour poursuivre l'aventure à sa sortie.",
     "wishlistButton": "Ajouter à la liste de souhaits Steam", //x2.1
-    "feedbackButton": "Feedback",
+    "feedbackButton": "Commentaires",
     "startNewGameButton": "Nouvelle partie",
     "seeWhatsNextButton": "Voir ce qui vient",
     "releaseNote": "Sortie prévue : 27 octobre 2026",

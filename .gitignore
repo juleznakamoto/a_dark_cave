@@ -59,6 +59,10 @@ client/public/email/*
 # One-shot local helper scripts (never commit)
 _tmp_*
 
+# Python bytecode
+**/__pycache__/
+*.pyc
+
 # Cursor IDE — local only (MCP keys, rules, hooks, settings)
 .cursor/
 

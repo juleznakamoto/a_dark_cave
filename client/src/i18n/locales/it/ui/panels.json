@@ -197,7 +197,7 @@
     "productionBonus": "Bonus di Produzione",
     "doubleGainChance": "Probabilità Guadagno Doppio",
     "populationTooltip": "Ogni abitante consuma 1 Cibo e 1 Legno",
-    "resourceLimitMax": "max {{limit}}",
+    "resourceLimitMax": "max. {{limit}}",
     "resourceLimitTooltip": "nessun limite su Argento, Oro e Intuizione",
     "statsTooltip": "Le statistiche influenzano l'esito degli eventi e conferiscono effetti specifici che si rivelano man mano che avanzi.",
     "statLuckTooltip": "Piega il destino a tuo favore",

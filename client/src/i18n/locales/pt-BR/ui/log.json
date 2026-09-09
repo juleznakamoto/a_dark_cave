@@ -87,7 +87,7 @@
     "sacrifice": {
       "ringOfClarity": "Entre as oferendas de sacrifício, você descobre um anel cristalino.",
       "moonBracelet": "Entre as oferendas de sacrifício, você descobre um bracelete de pedra branca.",
-      "animalsMaxed": "The blind druid from the woods appears: 'The Black Monolith has taken all the blood it will accept. Animal sacrifice can go no further.'"
+      "animalsMaxed": "O druida cego da floresta aparece: 'O Monólito Negro tomou todo o sangue que aceitará. O sacrifício de animais não pode ir além.'"
     },
     "gambler": {
       "win": "Você ganhou {{amount}} de ouro do apostador obcecado.",

@@ -2320,11 +2320,11 @@
       }
     },
     "log": {
-      "outcome1": "Le voyant se tait. Son regard glisse au-delà de vous. \"De grandes épreuves vous attendent{{name}},\" dit-il doucement. \"Vous croyez que ce monde vous appartient et que vous pouvez le façonner. Mais vous êtes façonné à votre tour. Quand la vérité finale remontera à la surface, vous verrez les fils. Et alors, il sera peut-être trop tard.\"",
-      "outcome2": "Le voyant hoche la tête. {{farewell}}"
+      "outcome1": "L'oracle se tait. Son regard glisse au-delà de vous. \"De grandes épreuves vous attendent{{name}},\" dit-il doucement. \"Vous croyez que ce monde vous appartient et que vous pouvez le façonner. Mais vous êtes façonné à votre tour. Quand la vérité finale remontera à la surface, vous verrez les fils. Et alors, il sera peut-être trop tard.\"",
+      "outcome2": "L'oracle hoche la tête. \"Adieu donc{{name}},\" dit-il, et disparaît dans la brume sans un mot de plus."
     },
     "message": "Une silhouette encapuchonnée apparaît au crépuscule. Ses yeux brillent sous le voile. 'J'ai entrevu ce qui vous attend,' râpe-t-il. '50 pièces d'or, et je vous dirai ce qui approche.'",
-    "title": "Le Voyant voilé"
+    "title": "L'Oracle voilé"
   },
   "veinrootIntroduction": {
     "choices": {

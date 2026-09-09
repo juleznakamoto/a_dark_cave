@@ -26,7 +26,7 @@
     "poisonArrows": "Frecce Avvelenate",
     "critChance": "{{percent}}% di probabilità di colpo critico",
     "critFromLuck": "{{percent}}% da {{stat}}{{maxSuffix}}",
-    "critFromLuckMaxSuffix": " (max)",
+    "critFromLuckMaxSuffix": " (max.)",
     "critFromItems": "{{percent}}% dagli Oggetti",
     "critDamage": "+{{percent}}% di danno da colpo critico",
     "missChance": "{{percent}}% di probabilità di mancare (basata su {{stat}})",

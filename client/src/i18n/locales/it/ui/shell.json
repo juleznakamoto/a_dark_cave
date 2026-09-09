@@ -4,11 +4,11 @@
     "music": "Ambiente",
     "sound": "Suono",
     "emails": "Email",
-    "gameMode": "Game Mode",
-    "gameModeNormal": "Normal Mode",
-    "gameModeSteamGame": "Steam Game",
-    "gameModeSteamPlaytest": "Steam Playtest",
-    "gameModeSteamDemo": "Steam Demo",
+    "gameMode": "Modalità di gioco",
+    "gameModeNormal": "Modalità normale",
+    "gameModeSteamGame": "Gioco Steam",
+    "gameModeSteamPlaytest": "Playtest Steam",
+    "gameModeSteamDemo": "Demo Steam",
     "gameModeDemoEnd": "Fine demo",
     "gameModeCrazyGamesDemo": "Demo CrazyGames"
   },
@@ -56,9 +56,9 @@
     "unmuteSfx": "Riattiva effetti sonori",
     "cruelModeActive": "Modalità Crudele attiva",
     "wishlistOnSteam": "Aggiungi alla lista dei desideri su Steam",
-    "demoProgress": "Demo Progress",
+    "demoProgress": "Progressi della demo",
     "feedback": "Feedback",
-    "openFeedback": "Open feedback form",
+    "openFeedback": "Apri il modulo di feedback",
     "progress": "Progressi",
     "social": "Social",
     "email": "Email",
@@ -99,10 +99,10 @@
     "subscribedDesc": "Ti invieremo aggiornamenti e offerte occasionali via email.",
     "unsubscribedDesc": "Non riceverai più email di marketing da noi.",
     "preferenceUpdateFailed": "Impossibile aggiornare la preferenza",
-    "enterFullscreen": "Full screen",
-    "exitFullscreen": "Exit full screen",
-    "autoSaveSteam": "Game auto-saves every 15 seconds",
-    "steamCloudSave": "Progress syncs to Steam Cloud when you save.",
+    "enterFullscreen": "Schermo intero",
+    "exitFullscreen": "Esci dallo schermo intero",
+    "autoSaveSteam": "Il gioco si salva automaticamente ogni 15 secondi",
+    "steamCloudSave": "I progressi si sincronizzano con Steam Cloud quando salvi.",
     "cloudSaveFailed": "Salvato su questo dispositivo, ma la sync cloud non è riuscita. L'autosave riproverà."
   },
   "pauseHotkey": {
@@ -118,7 +118,7 @@
   },
   "never": "Mai",
   "errorScreen": {
-    "message": "We are digging deeper. Please check back soon.",
-    "reload": "Reload game"
+    "message": "Stiamo scavando più a fondo. Torna presto.",
+    "reload": "Ricarica il gioco"
   }
 }

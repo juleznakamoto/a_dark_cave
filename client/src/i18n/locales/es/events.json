@@ -2320,11 +2320,11 @@
       }
     },
     "log": {
-      "outcome1": "El vidente queda en silencio. Su mirada se pierde más allá de ti. \"Te esperan grandes desafíos{{name}}\", dice suavemente. \"Crees que este mundo es tuyo para moldearlo. Pero tú también eres moldeado. Cuando la verdad final salga a la superficie, verás los hilos. Y para entonces quizá sea demasiado tarde\".",
-      "outcome2": "El vidente asiente. {{farewell}}"
+      "outcome1": "El oráculo queda en silencio. Su mirada se pierde más allá de ti. \"Te esperan grandes desafíos{{name}}\", dice suavemente. \"Crees que este mundo es tuyo para moldearlo. Pero tú también eres moldeado. Cuando la verdad final salga a la superficie, verás los hilos. Y para entonces quizá sea demasiado tarde\".",
+      "outcome2": "El oráculo asiente. \"Adiós, entonces{{name}},\" dice, y desaparece en la niebla sin otra palabra."
     },
     "message": "Una figura encapuchada aparece al anochecer. Sus ojos brillan bajo el velo. 'He vislumbrado lo que viene', raspa. '50 de oro, y te diré lo que te aguarda'.",
-    "title": "El vidente velado"
+    "title": "El oráculo velado"
   },
   "veinrootIntroduction": {
     "choices": {

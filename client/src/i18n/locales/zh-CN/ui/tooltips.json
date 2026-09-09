@@ -78,7 +78,7 @@
     "strength": "力量：+{{value}}",
     "knowledge": "知识：+{{value}}",
     "madnessStat": "疯狂：{{sign}}{{value}}",
-    "insightPerCycle": "生产s {{amount}} Insight per cycle",
+    "insightPerCycle": "每周期生产 {{amount}} 洞见",
     "craftDiscount": "制作折扣：-{{percent}}%",
     "buildDiscount": "建造折扣：-{{percent}}%",
     "merchantDiscount": "商人折扣：+{{percent}}%",
@@ -188,7 +188,7 @@
     "forestFear": "林中恐惧",
     "hunterProduction": "猎人生产：{{value}}",
     "gathererProduction": "采集者生产：{{value}}",
-    "clarityElixirDescription": "A draught that eases the grip of madness.",
+    "clarityElixirDescription": "一剂能松动疯狂束缚的药水。",
     "brimstoneFlux": "硫磺助熔",
     "steelForgerSteelBonus": "炼钢工：+{{amount}} 钢"
   }

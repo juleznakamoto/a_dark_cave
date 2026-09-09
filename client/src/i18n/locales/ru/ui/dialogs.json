@@ -26,9 +26,9 @@
     "message": "Вы пьёте Эликсир прозрения. Понимание расцветает в вашем разуме."
   },
   "blessingOffer": {
-    "title": "Choose a Blessing",
-    "srDescription": "Select one of the offered blessings",
-    "chooseBlessing": "Choose"
+    "title": "Выберите благословение",
+    "srDescription": "Выберите одно из предложенных благословений",
+    "chooseBlessing": "Выбрать"
   },
   "socialPrompt": {
     "title": "Оставайтесь на связи и получайте награды",
@@ -245,13 +245,13 @@
     "reddit": "Reddit",
     "instagram": "Instagram",
     "steam": "Steam",
-    "email": "Email"
+    "email": "Почта"
   },
   "galaxy": {
     "title": "Демо заканчивается здесь", //x1.7
     "description": "Добавьте полную игру в список желаемого Steam, чтобы продолжить путешествие после выхода.",
     "wishlistButton": "Добавить в список желаемого Steam", //x1.9
-    "feedbackButton": "Feedback",
+    "feedbackButton": "Отзыв",
     "startNewGameButton": "Начать новую игру", //x1.2
     "seeWhatsNextButton": "Что дальше",
     "releaseNote": "Планируемый релиз: 27 октября 2026",

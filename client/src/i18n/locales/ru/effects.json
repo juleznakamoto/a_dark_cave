@@ -99,8 +99,8 @@
       "name": "Дар Дагона"
     },
     "depths_gift": {
-      "description": "Пещера exploration yields more",
-      "name": "Depths' Gift"
+      "description": "Исследование пещеры приносит больше",
+      "name": "Дар глубин"
     },
     "dagons_gift_enhanced": {
       "description": "Ваше умение охотиться значительно улучшено",
@@ -147,16 +147,16 @@
       "name": "Милость леса"
     },
     "fresh_blood": {
-      "description": "Strangers approach the village more often",
-      "name": "Fresh Blood"
+      "description": "Чужаки чаще подходят к деревне",
+      "name": "Свежая кровь"
     },
     "frostglass": {
       "description": "Кристаллический материал, источающий холод",
       "name": "Морозное стекло"
     },
     "keen_builder": {
-      "description": "Построитьing costs are reduced",
-      "name": "Keen Построитьer"
+      "description": "Стоимость строительства снижена",
+      "name": "Умелый строитель"
     },
     "gifted_ring": {
       "description": "Простое кольцо, которое кто-то оставил вам на находку",
@@ -243,8 +243,8 @@
       "name": "Знак ворона"
     },
     "rich_veins": {
-      "description": "Your ability to mine is improved",
-      "name": "Rich Veins"
+      "description": "Ваше умение добывать руду улучшено",
+      "name": "Богатые жилы"
     },
     "ravens_mark_enhanced": {
       "description": "Чужаки подходят к деревне намного чаще",
@@ -295,12 +295,12 @@
       "name": "Острый глаз"
     },
     "skilled_hands": {
-      "description": "Crafting costs are reduced",
-      "name": "Skilled Hands"
+      "description": "Затраты на крафт снижены",
+      "name": "Умелые руки"
     },
     "skeleton_key_schematic": {
-      "description": "Blueprint for crafting a skeleton key",
-      "name": "Skeleton Key"
+      "description": "Чертеж для создания отмычки-скелета",
+      "name": "Отмычка-скелет"
     },
     "stonebinders_codex": {
       "description": "Том из скрытой библиотеки, раскрывающий тайны эффективного строительства",
@@ -327,8 +327,8 @@
       "name": "Потускневший компас"
     },
     "trail_sense": {
-      "description": "Your hunters bring back more food",
-      "name": "Trail Sense"
+      "description": "Ваши охотники приносят больше еды",
+      "name": "Чутьё тропы"
     },
     "unnamed_book": {
       "description": "Книга в переплете из человеческой кожи, полная запретного знания",

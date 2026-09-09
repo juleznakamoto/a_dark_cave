@@ -279,8 +279,8 @@
       "name": "Mira Apurada"
     },
     "skeleton_key_schematic": {
-      "description": "Blueprint for crafting a skeleton key",
-      "name": "Skeleton Key"
+      "description": "Esquema para fabricar uma chave-mestra",
+      "name": "Chave-Mestra"
     },
     "stonebinders_codex": {
       "description": "Tomo da biblioteca oculta que revela segredos de construção eficiente",
@@ -323,28 +323,28 @@
       "name": "Figura de Madeira"
     },
     "depths_gift": {
-      "description": "Cave exploration yields more",
-      "name": "Depths' Gift"
+      "description": "A exploração da caverna rende mais",
+      "name": "Dádiva das Profundezas"
     },
     "fresh_blood": {
-      "description": "Strangers approach the village more often",
-      "name": "Fresh Blood"
+      "description": "Estranhos se aproximam da aldeia com mais frequência",
+      "name": "Sangue Fresco"
     },
     "keen_builder": {
-      "description": "Building costs are reduced",
-      "name": "Keen Builder"
+      "description": "Os custos de construção são reduzidos",
+      "name": "Construtor hábil"
     },
     "rich_veins": {
-      "description": "Your ability to mine is improved",
-      "name": "Rich Veins"
+      "description": "Sua capacidade de minerar é aprimorada",
+      "name": "Veios Ricos"
     },
     "skilled_hands": {
-      "description": "Crafting costs are reduced",
-      "name": "Skilled Hands"
+      "description": "Os custos de fabricação são reduzidos",
+      "name": "Mãos Hábeis"
     },
     "trail_sense": {
-      "description": "Your hunters bring back more food",
-      "name": "Trail Sense"
+      "description": "Seus caçadores trazem mais comida",
+      "name": "Faro da Trilha"
     },
     "fang_charm": {
       "description": "Cordão de presas pretas de uma criatura enorme",

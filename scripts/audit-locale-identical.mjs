@@ -1,11 +1,24 @@
 /**
- * Fail if a non-English locale gains new strings that still match English.
- * Existing leftovers are allowlisted in scripts/i18n-identical-baseline.json.
+ * Check every non-English i18n string against English.
  *
- * Proper nouns that should stay English belong in SKIP_IDENTICAL.
+ * A leftover is a locale value that is still exactly the English string.
+ * Brands and interpolation-only templates are skipped (not leftover English).
+ *
+ * --check (default, used by i18n:verify):
+ *   Print every leftover. Fail only if a NEW leftover appears
+ *   (not already in scripts/i18n-identical-baseline.json).
+ *
+ * --strict:
+ *   Fail if any leftover remains. Use this when you want a hard "no English" gate.
+ *
+ * --write:
+ *   Refresh the new-leak baseline from the current leftover set.
+ *
+ * Intentional same-as-English keys belong in SKIP_IDENTICAL.
  *
  * Run:
  *   node scripts/audit-locale-identical.mjs --check
+ *   node scripts/audit-locale-identical.mjs --strict
  *   node scripts/audit-locale-identical.mjs --write
  */
 import fs from "node:fs";
@@ -17,7 +30,7 @@ import { readLocaleJson } from "./parse-locale-json.mjs";
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const EN_DIR = path.join(ROOT, "client/src/i18n/locales/en");
 const BASELINE_PATH = path.join(ROOT, "scripts/i18n-identical-baseline.json");
-const TARGET_LOCALES = ["de", "fr", "es", "it", "pt-BR", "zh-CN", "ru"];
+export const TARGET_LOCALES = ["de", "fr", "es", "it", "pt-BR", "zh-CN", "ru"];
 
 /** Keys that are the same as English on purpose (names, gold packs, placeholders). */
 const SKIP_IDENTICAL = new Set([
@@ -41,6 +54,58 @@ const SKIP_IDENTICAL = new Set([
   "ui.auth.emailPlaceholder",
 ]);
 
+/** Whole-string brands / proper nouns that stay English in every locale. */
+const BRAND_VALUES = new Set([
+  "Steam",
+  "Instagram",
+  "Reddit",
+  "FAQ",
+  "Scriptorium",
+]);
+
+/**
+ * Values that are the same word in the target language (not leftover English).
+ * Gold amounts are handled separately via leftoverLatinWords().
+ */
+const IDENTICAL_OK_VALUES = new Set([
+  "Adamant",
+  "Obsidian",
+  "Bastion",
+  "Investor",
+  "Wolf",
+  "Hand",
+  "Wind",
+  "Gold",
+  "Poison",
+  "Pause",
+  "Bonus:",
+  "Feedback",
+  "Temple",
+  "Village",
+  "Actions",
+  "Torches",
+  "Mine",
+  "Combat",
+  "Social",
+  "Profit",
+  "Menu",
+  "Total",
+  "Normal",
+  "Cycle",
+  "Fortifications",
+  "Population",
+  "Error",
+  "Email",
+  "Password",
+  "Privacy",
+  "Dev",
+  "Prod",
+  "{{count}} min",
+  "Base: {{percent}}%",
+  "100+ structures",
+  "Use ",
+]);
+
 function flatten(obj, prefix = "") {
   const rows = [];
   for (const [key, value] of Object.entries(obj || {})) {
@@ -58,19 +123,38 @@ function catalogNamespace(rel) {
   return norm.startsWith("ui/") ? "ui" : norm.replace(/\.json$/, "");
 }
 
-function isLeftoverEnglish(enVal, locVal, fullKey) {
-  return (
-    typeof enVal === "string" &&
-    enVal === locVal &&
-    !SKIP_IDENTICAL.has(fullKey) &&
-    locVal.length > 2 &&
-    /[a-zA-Z]/.test(locVal)
-  );
+/** Latin words left after stripping {{placeholders}}. */
+export function leftoverLatinWords(val) {
+  const stripped = String(val).replace(/\{\{[^}]+\}\}/g, " ");
+  return stripped.match(/[A-Za-z]{2,}/g) ?? [];
 }
 
-export function collectIdenticalKeys(locale) {
+export function isInterpolationOnly(val) {
+  return leftoverLatinWords(val).length === 0;
+}
+
+function isSameWordAsEnglish(val) {
+  if (IDENTICAL_OK_VALUES.has(val) || IDENTICAL_OK_VALUES.has(val.trim())) {
+    return true;
+  }
+  const words = leftoverLatinWords(val);
+  return words.length === 1 && words[0] === "Gold";
+}
+
+export function isLeftoverEnglish(enVal, locVal, fullKey) {
+  if (typeof enVal !== "string" || enVal !== locVal) return false;
+  if (SKIP_IDENTICAL.has(fullKey)) return false;
+  if (locVal.length <= 2) return false;
+  if (isInterpolationOnly(locVal)) return false;
+  if (BRAND_VALUES.has(locVal.trim())) return false;
+  if (isSameWordAsEnglish(locVal)) return false;
+  return /[a-zA-Z]/.test(locVal);
+}
+
+export function collectIdenticalEntries(locale) {
   const locDir = path.join(ROOT, "client/src/i18n/locales", locale);
-  const keys = [];
+  const rows = [];
+  const seen = new Set();
   for (const rel of listCatalogPaths(EN_DIR)) {
     const locPath = path.join(locDir, rel);
     if (!fs.existsSync(locPath)) continue;
@@ -80,16 +164,60 @@ export function collectIdenticalKeys(locale) {
     const enMap = Object.fromEntries(flatten(en));
     for (const [key, locVal] of flatten(loc)) {
       const fullKey = `${ns}.${key}`;
-      if (isLeftoverEnglish(enMap[key], locVal, fullKey)) keys.push(fullKey);
+      if (seen.has(fullKey)) continue;
+      if (!isLeftoverEnglish(enMap[key], locVal, fullKey)) continue;
+      seen.add(fullKey);
+      rows.push({ key: fullKey, value: locVal });
     }
   }
-  return [...new Set(keys)].sort();
+  rows.sort((a, b) => a.key.localeCompare(b.key));
+  return rows;
 }
 
-function collectAllIdenticalKeys() {
+export function collectIdenticalKeys(locale) {
+  return collectIdenticalEntries(locale).map((row) => row.key);
+}
+
+export function collectAllIdenticalEntries() {
   return Object.fromEntries(
-    TARGET_LOCALES.map((locale) => [locale, collectIdenticalKeys(locale)]),
+    TARGET_LOCALES.map((locale) => [locale, collectIdenticalEntries(locale)]),
   );
+}
+
+function collectAllIdenticalKeys(allEntries = collectAllIdenticalEntries()) {
+  return Object.fromEntries(
+    TARGET_LOCALES.map((locale) => [
+      locale,
+      (allEntries[locale] ?? []).map((row) => row.key),
+    ]),
+  );
+}
+
+function leftoverCount(allEntries) {
+  return TARGET_LOCALES.reduce(
+    (sum, locale) => sum + (allEntries[locale]?.length ?? 0),
+    0,
+  );
+}
+
+function printLeftoverReport(allEntries) {
+  const total = leftoverCount(allEntries);
+  console.log(
+    "Leftover English (locale value still equals English, brands/templates skipped):",
+  );
+  if (total === 0) {
+    console.log("  none");
+    return;
+  }
+  for (const locale of TARGET_LOCALES) {
+    const rows = allEntries[locale] ?? [];
+    if (rows.length === 0) continue;
+    console.log(`\n  ${locale} (${rows.length})`);
+    for (const { key, value } of rows) {
+      console.log(`    ${key}\t${JSON.stringify(value)}`);
+    }
+  }
+  console.log(`\nTotal leftover-English hits: ${total}`);
 }
 
 function readBaseline() {
@@ -123,35 +251,43 @@ export function findNewLeaks(current, baseline) {
   return leaks;
 }
 
-function runCli(argv = process.argv.slice(2)) {
+export function runCli(argv = process.argv.slice(2)) {
   if (argv.includes("--help") || argv.includes("-h")) {
     console.log(
-      "Usage: node scripts/audit-locale-identical.mjs [--check|--write]",
+      "Usage: node scripts/audit-locale-identical.mjs [--check|--strict|--write]",
     );
     return 0;
   }
 
   const write = argv.includes("--write");
-  const current = collectAllIdenticalKeys();
+  const strict = argv.includes("--strict");
+  const allEntries = collectAllIdenticalEntries();
+  const current = collectAllIdenticalKeys(allEntries);
 
   if (write) {
     writeBaseline(current);
-    const total = TARGET_LOCALES.reduce(
-      (sum, locale) => sum + current[locale].length,
-      0,
-    );
     console.log(
-      `Wrote ${path.relative(ROOT, BASELINE_PATH)} (${total} leftover English keys)`,
+      `Wrote ${path.relative(ROOT, BASELINE_PATH)} (${leftoverCount(allEntries)} leftover English keys)`,
     );
+    return 0;
+  }
+
+  printLeftoverReport(allEntries);
+
+  if (strict) {
+    const total = leftoverCount(allEntries);
+    if (total > 0) {
+      console.error(
+        `\n--strict: ${total} leftover-English keys. Translate them, or add a proper noun to SKIP_IDENTICAL / BRAND_VALUES.`,
+      );
+      return 1;
+    }
+    console.log("No leftover-English keys");
     return 0;
   }
 
   const baseline = readBaseline();
   const newLeaks = findNewLeaks(current, baseline);
-  const totals = TARGET_LOCALES.map(
-    (locale) => `${locale}:${current[locale].length}`,
-  ).join(" ");
-  console.log(`Leftover English (allowlisted): ${totals}`);
 
   if (newLeaks.length > 0) {
     console.error(
@@ -161,7 +297,7 @@ function runCli(argv = process.argv.slice(2)) {
     return 1;
   }
 
-  console.log("No new leftover-English keys");
+  console.log("\nNo new leftover-English keys");
   return 0;
 }
 

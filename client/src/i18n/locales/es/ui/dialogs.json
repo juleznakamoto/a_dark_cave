@@ -26,9 +26,9 @@
     "message": "Bebes el Elixir de perspicacia. La comprensión florece en tu mente."
   },
   "blessingOffer": {
-    "title": "Choose a Blessing",
-    "srDescription": "Select one of the offered blessings",
-    "chooseBlessing": "Choose"
+    "title": "Elige una bendición",
+    "srDescription": "Selecciona una de las bendiciones ofrecidas",
+    "chooseBlessing": "Elegir"
   },
   "socialPrompt": {
     "title": "Mantente conectado y gana recompensas",
@@ -243,13 +243,13 @@
     "reddit": "Reddit",
     "instagram": "Instagram",
     "steam": "Steam",
-    "email": "Email"
+    "email": "Correo"
   },
   "galaxy": {
     "title": "La demo termina aquí", //x1.4
     "description": "Añade el juego completo a tu lista de deseados de Steam para continuar el viaje cuando se publique.",
     "wishlistButton": "Añadir a la lista de deseados en Steam", //x2.2
-    "feedbackButton": "Feedback",
+    "feedbackButton": "Comentarios",
     "startNewGameButton": "Empezar partida nueva", //x1.5
     "seeWhatsNextButton": "Ver qué viene",
     "releaseNote": "Lanzamiento previsto: 27 de octubre de 2026", //x1.2

@@ -8,7 +8,7 @@
     "choose": "Scegli un'opzione",
     "timeRemaining": "Tempo rimanente: {{seconds}}s",
     "knowledgeTimeBonus": "+{{seconds}}s di Tempo di Decisione grazie alla Conoscenza{{maxSuffix}}",
-    "knowledgeTimeBonusMax": " (max)",
+    "knowledgeTimeBonusMax": " (max.)",
     "successChance": "Probabilità di Successo: {{percent}}%",
     "influencedBy": "Influenzata da:",
     "successChanceBase": "Base: {{percent}}%",
@@ -203,7 +203,7 @@
     "successChance": "Probabilità di Successo: {{percent}}",
     "discount": "{{percent}}% di sconto",
     "discountFromKnowledge": "{{percent}}% dalla Conoscenza{{max}}",
-    "knowledgeMax": " (max)",
+    "knowledgeMax": " (max.)",
     "discountFromRing": "5% dall'Anello dell'Obbedienza",
     "prolongForInsight": "Estendi il tempo di {{minutes}} min per {{cost}} {{resource}}",
     "buyGold": "Compra oro"
@@ -252,8 +252,8 @@
     "storeHeaderTooltip": "Aggiungi il gioco completo alla lista dei desideri di Steam"
   },
   "blessingOffer": {
-    "title": "Choose a Blessing",
-    "srDescription": "Select one of the offered blessings",
-    "chooseBlessing": "Choose"
+    "title": "Scegli una benedizione",
+    "srDescription": "Seleziona una delle benedizioni offerte",
+    "chooseBlessing": "Scegli"
   }
 }

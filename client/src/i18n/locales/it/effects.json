@@ -279,8 +279,8 @@
       "name": "Mira Acuta"
     },
     "skeleton_key_schematic": {
-      "description": "Blueprint for crafting a skeleton key",
-      "name": "Skeleton Key"
+      "description": "Progetto per fabbricare una chiave scheletro",
+      "name": "Chiave Scheletro"
     },
     "stonebinders_codex": {
       "description": "Tomo della biblioteca nascosta che rivela i segreti di una costruzione efficiente",
@@ -323,28 +323,28 @@
       "name": "Figura di Legno"
     },
     "depths_gift": {
-      "description": "Cave exploration yields more",
-      "name": "Depths' Gift"
+      "description": "L'esplorazione delle caverne rende di più",
+      "name": "Dono delle Profondità"
     },
     "fresh_blood": {
-      "description": "Strangers approach the village more often",
-      "name": "Fresh Blood"
+      "description": "Gli stranieri si avvicinano al villaggio più spesso",
+      "name": "Sangue Fresco"
     },
     "keen_builder": {
-      "description": "Building costs are reduced",
-      "name": "Keen Builder"
+      "description": "I costi di costruzione sono ridotti",
+      "name": "Costruttore abile"
     },
     "rich_veins": {
-      "description": "Your ability to mine is improved",
-      "name": "Rich Veins"
+      "description": "La tua capacità di estrarre è migliorata",
+      "name": "Vene Ricche"
     },
     "skilled_hands": {
-      "description": "Crafting costs are reduced",
-      "name": "Skilled Hands"
+      "description": "I costi di fabbricazione sono ridotti",
+      "name": "Mani Abili"
     },
     "trail_sense": {
-      "description": "Your hunters bring back more food",
-      "name": "Trail Sense"
+      "description": "I tuoi cacciatori riportano più cibo",
+      "name": "Senso della Traccia"
     },
     "fang_charm": {
       "description": "Cordino di zanne nere di una creatura enorme",

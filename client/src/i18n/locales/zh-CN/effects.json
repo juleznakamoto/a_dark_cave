@@ -99,8 +99,8 @@
       "name": "达贡的馈赠"
     },
     "depths_gift": {
-      "description": "洞穴 exploration yields more",
-      "name": "Depths' Gift"
+      "description": "洞穴探索收获更多",
+      "name": "深渊馈赠"
     },
     "dagons_gift_enhanced": {
       "description": "你的狩猎能力大幅提升",
@@ -147,16 +147,16 @@
       "name": "森林恩典"
     },
     "fresh_blood": {
-      "description": "Strangers approach the village more often",
-      "name": "Fresh Blood"
+      "description": "陌生人更常接近村庄",
+      "name": "新鲜血液"
     },
     "frostglass": {
       "description": "散发寒意的晶体材料",
       "name": "霜晶"
     },
     "keen_builder": {
-      "description": "建造ing costs are reduced",
-      "name": "Keen 建造er"
+      "description": "建造成本降低",
+      "name": "巧匠"
     },
     "gifted_ring": {
       "description": "某人留下、等你发现的朴素戒指",
@@ -243,8 +243,8 @@
       "name": "渡鸦印记"
     },
     "rich_veins": {
-      "description": "Your ability to mine is improved",
-      "name": "Rich Veins"
+      "description": "你的采矿能力提升",
+      "name": "富矿脉"
     },
     "ravens_mark_enhanced": {
       "description": "陌生人更频繁地接近村庄",
@@ -295,12 +295,12 @@
       "name": "精准瞄准"
     },
     "skilled_hands": {
-      "description": "Crafting costs are reduced",
-      "name": "Skilled Hands"
+      "description": "制作成本降低",
+      "name": "巧手"
     },
     "skeleton_key_schematic": {
-      "description": "Blueprint for crafting a skeleton key",
-      "name": "Skeleton Key"
+      "description": "用于制作万能钥匙的蓝图",
+      "name": "万能钥匙"
     },
     "stonebinders_codex": {
       "description": "来自隐秘图书馆的典籍，揭示高效建造的秘密",
@@ -327,8 +327,8 @@
       "name": "晦暗罗盘"
     },
     "trail_sense": {
-      "description": "Your hunters bring back more food",
-      "name": "Trail Sense"
+      "description": "猎人带回更多食物",
+      "name": "觅踪直觉"
     },
     "unnamed_book": {
       "description": "以人皮装订、写满禁忌知识的书",

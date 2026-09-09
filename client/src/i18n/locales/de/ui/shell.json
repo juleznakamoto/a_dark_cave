@@ -2,7 +2,7 @@
   "settings": {
     "title": "Einstellungen", //x1.6
     "music": "Atmosphäre",
-    "sound": "Sound",
+    "sound": "Ton",
     "emails": "E-Mails",
     "gameMode": "Spielmodus",
     "gameModeNormal": "Normaler Modus", //x1.3
@@ -53,7 +53,7 @@
     "imprint": "Impressum",
     "contact": "Kontakt",
     "feedback": "Feedback",
-    "openFeedback": "Open feedback form",
+    "openFeedback": "Feedback-Formular öffnen",
     "pauseGame": "Spiel pausieren", //x1.5
     "resumeGame": "Spiel fortsetzen", //x1.5
     "muteMusic": "Atmosphäre ausschalten", //x1.7
@@ -64,7 +64,7 @@
     "wishlistOnSteam": "Auf Steam wünschen",
     "demoProgress": "Demo-Fortschritt", //x1.2
     "progress": "Fortschritt",
-    "social": "Social",
+    "social": "Soziale Medien",
     "email": "E-Mail",
     "inviteFriends": "Freunde einladen"
   },
@@ -88,8 +88,8 @@
     "autoSaveSignedIn": "Spiel wird jede Minute automatisch gespeichert", //x1.6
     "autoSaveGuest": "Spiel wird alle 15 Sekunden automatisch gespeichert", //x1.6
     "signUpCloudSave": "Registriere dich, um in der Cloud zu speichern", //x1.4
-    "autoSaveSteam": "Game auto-saves every 15 seconds",
-    "steamCloudSave": "Progress syncs to Steam Cloud when you save.",
+    "autoSaveSteam": "Spiel wird alle 15 Sekunden automatisch gespeichert",
+    "steamCloudSave": "Der Fortschritt wird beim Speichern mit Steam Cloud synchronisiert.",
     "lastSave": "Letztes Speichern: {{time}}", //x1.4
     "signedOut": "Erfolgreich abgemeldet",
     "signOutError": "Fehler beim Abmelden",
@@ -106,8 +106,8 @@
     "subscribedDesc": "Wir senden dir gelegentlich Updates und Angebote per E-Mail.",
     "unsubscribedDesc": "Du erhältst keine Marketing-E-Mails von uns.",
     "preferenceUpdateFailed": "Einstellung konnte nicht aktualisiert werden", //x1.6
-    "enterFullscreen": "Full screen",
-    "exitFullscreen": "Exit full screen"
+    "enterFullscreen": "Vollbild",
+    "exitFullscreen": "Vollbild beenden"
   },
   "pauseHotkey": {
     "hintPrefix": "Nutze ",

@@ -99,8 +99,8 @@
       "name": "Don de Dagon"
     },
     "depths_gift": {
-      "description": "Cueva exploration yields more",
-      "name": "Depths' Gift"
+      "description": "La exploración de cuevas rinde más",
+      "name": "Don de las profundidades"
     },
     "dagons_gift_enhanced": {
       "description": "Tu capacidad para cazar mejora enormemente",
@@ -147,16 +147,16 @@
       "name": "Gracia del bosque"
     },
     "fresh_blood": {
-      "description": "Strangers approach the village more often",
-      "name": "Fresh Blood"
+      "description": "Los desconocidos se acercan a la aldea con más frecuencia",
+      "name": "Sangre fresca"
     },
     "frostglass": {
       "description": "Material cristalino que irradia frío",
       "name": "Cristal de escarcha"
     },
     "keen_builder": {
-      "description": "Construiring costs are reduced",
-      "name": "Keen Construirer"
+      "description": "Los costos de construcción se reducen",
+      "name": "Constructor hábil"
     },
     "gifted_ring": {
       "description": "Anillo sencillo que alguien dejó para que lo encontraras",
@@ -243,8 +243,8 @@
       "name": "Marca del cuervo"
     },
     "rich_veins": {
-      "description": "Your ability to mine is improved",
-      "name": "Rich Veins"
+      "description": "Tu capacidad para minar mejora",
+      "name": "Vetas ricas"
     },
     "ravens_mark_enhanced": {
       "description": "Los desconocidos se acercan a la aldea con mucha más frecuencia",
@@ -295,12 +295,12 @@
       "name": "Puntería afilada"
     },
     "skilled_hands": {
-      "description": "Crafting costs are reduced",
-      "name": "Skilled Hands"
+      "description": "Los costos de artesanía se reducen",
+      "name": "Manos hábiles"
     },
     "skeleton_key_schematic": {
-      "description": "Blueprint for crafting a skeleton key",
-      "name": "Skeleton Key"
+      "description": "Plano para fabricar una llave maestra",
+      "name": "Llave maestra"
     },
     "stonebinders_codex": {
       "description": "Tomo de la biblioteca oculta que revela secretos de construcción eficiente",
@@ -327,8 +327,8 @@
       "name": "Brújula deslustrada"
     },
     "trail_sense": {
-      "description": "Your hunters bring back more food",
-      "name": "Trail Sense"
+      "description": "Tus cazadores traen más comida",
+      "name": "Sentido del rastro"
     },
     "unnamed_book": {
       "description": "Libro encuadernado en piel humana y lleno de conocimiento prohibido",

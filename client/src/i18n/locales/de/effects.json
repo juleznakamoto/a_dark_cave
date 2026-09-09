@@ -99,8 +99,8 @@
       "name": "Dagons Gabe"
     },
     "depths_gift": {
-      "description": "Höhle exploration yields more",
-      "name": "Depths' Gift"
+      "description": "Höhlenerkundung bringt mehr ein",
+      "name": "Gabe der Tiefen"
     },
     "dagons_gift_enhanced": {
       "description": "Deine Jagdfähigkeit ist stark verbessert",
@@ -147,16 +147,16 @@
       "name": "Gnade des Waldes"
     },
     "fresh_blood": {
-      "description": "Strangers approach the village more often",
-      "name": "Fresh Blood"
+      "description": "Fremde nähern sich dem Dorf häufiger",
+      "name": "Frisches Blut"
     },
     "frostglass": {
       "description": "Kristallines Material, das Kälte ausstrahlt",
       "name": "Frostglas"
     },
     "keen_builder": {
-      "description": "Baueing costs are reduced",
-      "name": "Keen Baueer"
+      "description": "Baukosten sind reduziert",
+      "name": "Geschickter Baumeister"
     },
     "gifted_ring": {
       "description": "Schlichter Ring, den jemand für dich zurückgelassen hat",
@@ -243,8 +243,8 @@
       "name": "Mal des Raben"
     },
     "rich_veins": {
-      "description": "Your ability to mine is improved",
-      "name": "Rich Veins"
+      "description": "Deine Bergbaufähigkeit ist verbessert",
+      "name": "Reiche Adern"
     },
     "ravens_mark_enhanced": {
       "description": "Fremde nähern sich dem Dorf sehr viel häufiger",
@@ -295,12 +295,12 @@
       "name": "Scharfes Ziel"
     },
     "skilled_hands": {
-      "description": "Crafting costs are reduced",
-      "name": "Skilled Hands"
+      "description": "Herstellungskosten sind reduziert",
+      "name": "Geschickte Hände"
     },
     "skeleton_key_schematic": {
-      "description": "Blueprint for crafting a skeleton key",
-      "name": "Skeleton Key"
+      "description": "Bauplan zur Herstellung eines Skelettschlüssels",
+      "name": "Skelettschlüssel"
     },
     "stonebinders_codex": {
       "description": "Foliant aus der verborgenen Bibliothek, der Geheimnisse effizienten Bauens offenbart",
@@ -327,8 +327,8 @@
       "name": "Angelaufener Kompass"
     },
     "trail_sense": {
-      "description": "Your hunters bring back more food",
-      "name": "Trail Sense"
+      "description": "Deine Jäger bringen mehr Nahrung zurück",
+      "name": "Pfadsinn"
     },
     "unnamed_book": {
       "description": "In Menschenhaut gebundenes Buch voller verbotenem Wissen",

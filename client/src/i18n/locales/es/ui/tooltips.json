@@ -78,7 +78,7 @@
     "strength": "Fuerza: +{{value}}",
     "knowledge": "Conocimiento: +{{value}}",
     "madnessStat": "Locura:{{sign}}{{value}}",
-    "insightPerCycle": "Producirs {{amount}} Insight per cycle",
+    "insightPerCycle": "Produce {{amount}} Perspicacia por ciclo",
     "craftDiscount": "Descuento de artesanía: -{{percent}} %",
     "buildDiscount": "Descuento de construcción: -{{percent}} %", //x1.4
     "merchantDiscount": "Descuento mercante: +{{percent}} %",
@@ -188,7 +188,7 @@
     "forestFear": "Miedo del bosque",
     "hunterProduction": "Producción de cazadores: {{value}}",
     "gathererProduction": "Producción de recolectores: {{value}}",
-    "clarityElixirDescription": "A draught that eases the grip of madness.",
+    "clarityElixirDescription": "Un brebaje que afloja el dominio de la locura.",
     "brimstoneFlux": "Flujo de azufre",
     "steelForgerSteelBonus": "Forjadores de acero: +{{amount}} Acero"
   }

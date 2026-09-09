@@ -26,9 +26,9 @@
     "message": "你饮下洞见灵药，领悟在心中绽放。"
   },
   "blessingOffer": {
-    "title": "Choose a Blessing",
-    "srDescription": "Select one of the offered blessings",
-    "chooseBlessing": "Choose"
+    "title": "选择一项祝福",
+    "srDescription": "从提供的祝福中选择一项",
+    "chooseBlessing": "选择"
   },
   "socialPrompt": {
     "title": "保持联系，赢取奖励",
@@ -243,13 +243,13 @@
     "reddit": "Reddit",
     "instagram": "Instagram",
     "steam": "Steam",
-    "email": "Email"
+    "email": "邮箱"
   },
   "galaxy": {
     "title": "试玩到此为止",
     "description": "请将完整版加入 Steam 愿望单，以便在发布后继续旅程。",
     "wishlistButton": "加入 Steam 愿望单",
-    "feedbackButton": "Feedback",
+    "feedbackButton": "反馈",
     "startNewGameButton": "开始新游戏",
     "seeWhatsNextButton": "看看即将到来的内容",
     "releaseNote": "计划发售：2026 年 10 月 27 日",

@@ -4,11 +4,11 @@
     "music": "Атмосфера",
     "sound": "Звук",
     "emails": "Эл. почта",
-    "gameMode": "Game Mode",
-    "gameModeNormal": "Normal Mode",
-    "gameModeSteamGame": "Steam Game",
-    "gameModeSteamPlaytest": "Steam Playtest",
-    "gameModeSteamDemo": "Steam Demo",
+    "gameMode": "Режим игры",
+    "gameModeNormal": "Обычный режим",
+    "gameModeSteamGame": "Игра Steam",
+    "gameModeSteamPlaytest": "Playtest Steam",
+    "gameModeSteamDemo": "Демо Steam",
     "gameModeDemoEnd": "Конец демо",
     "gameModeCrazyGamesDemo": "Демо CrazyGames"
   },
@@ -37,8 +37,8 @@
     "recommendedBy": "Рекомендует"
   },
   "errorScreen": {
-    "message": "We are digging deeper. Please check back soon.",
-    "reload": "Reload game"
+    "message": "Мы копаем глубже. Загляните позже.",
+    "reload": "Перезагрузить игру"
   },
   "footer": {
     "fullGame": "Полная версия", //x1.4
@@ -52,8 +52,8 @@
     "pressKit": "Пресса",
     "imprint": "Правовая информация", //x2.7
     "contact": "Контакты",
-    "feedback": "Feedback",
-    "openFeedback": "Open feedback form",
+    "feedback": "Отзыв",
+    "openFeedback": "Открыть форму отзыва",
     "pauseGame": "Приостановить игру", //x1.8
     "resumeGame": "Продолжить игру", //x1.4
     "muteMusic": "Выключить атмосферу", //x1.5
@@ -62,10 +62,10 @@
     "unmuteSfx": "Включить звуки",
     "cruelModeActive": "Жестокий режим активен",
     "wishlistOnSteam": "Добавить в список желаемого Steam", //x1.9
-    "demoProgress": "Demo Progress",
+    "demoProgress": "Прогресс демо",
     "progress": "Прогресс",
     "social": "Соцсети",
-    "email": "Email",
+    "email": "Почта",
     "inviteFriends": "Пригласить друзей"
   },
   "profile": {
@@ -88,8 +88,8 @@
     "autoSaveSignedIn": "Игра автосохраняется каждую минуту", //x1.2
     "autoSaveGuest": "Игра автосохраняется каждые 15 секунд",
     "signUpCloudSave": "Зарегистрируйтесь, чтобы сохранять игру в облаке", //x1.5
-    "autoSaveSteam": "Game auto-saves every 15 seconds",
-    "steamCloudSave": "Progress syncs to Steam Cloud when you save.",
+    "autoSaveSteam": "Игра автосохраняется каждые 15 секунд",
+    "steamCloudSave": "Прогресс синхронизируется со Steam Cloud при сохранении.",
     "lastSave": "Последнее сохранение: {{time}}", //x1.6
     "signedOut": "Вы успешно вышли",
     "signOutError": "Ошибка выхода",
@@ -106,8 +106,8 @@
     "subscribedDesc": "Мы будем иногда присылать обновления и предложения на вашу почту.",
     "unsubscribedDesc": "Вы не будете получать от нас рекламные письма.",
     "preferenceUpdateFailed": "Не удалось обновить настройку",
-    "enterFullscreen": "Full screen",
-    "exitFullscreen": "Exit full screen"
+    "enterFullscreen": "Полный экран",
+    "exitFullscreen": "Выйти из полного экрана"
   },
   "pauseHotkey": {
     "hintPrefix": "Используйте ", //x3.0

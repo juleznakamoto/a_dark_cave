@@ -78,4 +78,20 @@ describe("tWithFallback", () => {
     expect(msg).toContain("Aldric");
     expect(msg).not.toMatch(/\{name\}|\$\{name\}/);
   });
+
+  it("localizes veiledSeer decline farewell instead of injecting English", async () => {
+    await i18n.changeLanguage("fr");
+    const { resolveEventLogMessage } = await import("./resolveGameText");
+    const withName = resolveEventLogMessage("veiledSeer", "outcome2", {
+      name: ", Aldric",
+    });
+    const withoutName = resolveEventLogMessage("veiledSeer", "outcome2", {
+      name: "",
+    });
+    expect(withName).toContain("Aldric");
+    expect(withName).toContain("Adieu donc");
+    expect(withName).not.toMatch(/Farewell|\{name\}|\{farewell\}/);
+    expect(withoutName).toContain("Adieu donc");
+    expect(withoutName).not.toMatch(/Farewell|\{name\}|\{farewell\}/);
+  });
 });

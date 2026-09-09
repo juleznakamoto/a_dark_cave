@@ -4,11 +4,11 @@
     "music": "Ambiente",
     "sound": "Sonido",
     "emails": "Correos",
-    "gameMode": "Game Mode",
-    "gameModeNormal": "Normal Mode",
-    "gameModeSteamGame": "Steam Game",
-    "gameModeSteamPlaytest": "Steam Playtest",
-    "gameModeSteamDemo": "Steam Demo",
+    "gameMode": "Modo de juego",
+    "gameModeNormal": "Modo normal",
+    "gameModeSteamGame": "Juego de Steam",
+    "gameModeSteamPlaytest": "Playtest de Steam",
+    "gameModeSteamDemo": "Demo de Steam",
     "gameModeDemoEnd": "Fin de la demo",
     "gameModeCrazyGamesDemo": "Demo de CrazyGames"
   },
@@ -37,8 +37,8 @@
     "recommendedBy": "Recomendado por"
   },
   "errorScreen": {
-    "message": "We are digging deeper. Please check back soon.",
-    "reload": "Reload game"
+    "message": "Estamos cavando más hondo. Vuelve pronto.",
+    "reload": "Recargar el juego"
   },
   "footer": {
     "fullGame": "Juego completo", //x1.6
@@ -52,8 +52,8 @@
     "pressKit": "Prensa",
     "imprint": "Aviso legal", //x1.6
     "contact": "Contacto",
-    "feedback": "Feedback",
-    "openFeedback": "Open feedback form",
+    "feedback": "Comentarios",
+    "openFeedback": "Abrir el formulario de comentarios",
     "pauseGame": "Pausar juego", //x1.2
     "resumeGame": "Reanudar juego", //x1.3
     "muteMusic": "Silenciar ambiente", //x1.4
@@ -62,7 +62,7 @@
     "unmuteSfx": "Activar efectos",
     "cruelModeActive": "Modo cruel activo",
     "wishlistOnSteam": "Añadir a la lista de deseados en Steam", //x2.2
-    "demoProgress": "Demo Progress",
+    "demoProgress": "Progreso de la demo",
     "progress": "Progreso",
     "social": "Social",
     "email": "Correo",
@@ -88,8 +88,8 @@
     "autoSaveSignedIn": "La partida se guarda cada minuto",
     "autoSaveGuest": "La partida se guarda cada 15 segundos",
     "signUpCloudSave": "Regístrate para guardar en la nube",
-    "autoSaveSteam": "Game auto-saves every 15 seconds",
-    "steamCloudSave": "Progress syncs to Steam Cloud when you save.",
+    "autoSaveSteam": "La partida se guarda cada 15 segundos",
+    "steamCloudSave": "El progreso se sincroniza con Steam Cloud al guardar.",
     "lastSave": "Último guardado: {{time}}", //x1.3
     "signedOut": "Sesión cerrada correctamente", //x1.2
     "signOutError": "Error al cerrar sesión", //x1.3
@@ -106,8 +106,8 @@
     "subscribedDesc": "Te enviaremos actualizaciones y ofertas ocasionales por correo electrónico.",
     "unsubscribedDesc": "No recibirás correos de marketing nuestros.",
     "preferenceUpdateFailed": "No se pudo actualizar la preferencia",
-    "enterFullscreen": "Full screen",
-    "exitFullscreen": "Exit full screen"
+    "enterFullscreen": "Pantalla completa",
+    "exitFullscreen": "Salir de pantalla completa"
   },
   "pauseHotkey": {
     "hintPrefix": "Usa ",

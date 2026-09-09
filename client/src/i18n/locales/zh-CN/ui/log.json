@@ -87,7 +87,7 @@
     "sacrifice": {
       "ringOfClarity": "在祭品中，你发现了一枚晶莹剔透的戒指。",
       "moonBracelet": "在祭品中，你发现了一只白石手镯。",
-      "animalsMaxed": "The blind druid from the woods appears: 'The Black Monolith has taken all the blood it will accept. Animal sacrifice can go no further.'"
+      "animalsMaxed": "林中的盲眼德鲁伊现身：“黑色方尖碑已收下它愿接受的全部鲜血。动物献祭无法再继续。”"
     },
     "gambler": {
       "win": "你从痴迷赌徒那里赢得了 {{amount}} 黄金。",

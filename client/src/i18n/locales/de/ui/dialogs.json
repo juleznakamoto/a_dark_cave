@@ -26,9 +26,9 @@
     "message": "Du trinkst das Einsicht-Elixier. Verständnis erblüht in deinem Geist."
   },
   "blessingOffer": {
-    "title": "Choose a Blessing",
-    "srDescription": "Select one of the offered blessings",
-    "chooseBlessing": "Choose"
+    "title": "Wähle einen Segen",
+    "srDescription": "Wähle einen der angebotenen Segen",
+    "chooseBlessing": "Wählen"
   },
   "socialPrompt": {
     "title": "Bleib in Verbindung und verdiene Belohnungen", //x1.4

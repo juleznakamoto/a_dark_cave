@@ -99,8 +99,8 @@
       "name": "Don de Dagon"
     },
     "depths_gift": {
-      "description": "Grotte exploration yields more",
-      "name": "Depths' Gift"
+      "description": "L'exploration de grotte rapporte davantage",
+      "name": "Don des profondeurs"
     },
     "dagons_gift_enhanced": {
       "description": "Votre aptitude à chasser est grandement améliorée",
@@ -147,16 +147,16 @@
       "name": "Grâce de la forêt"
     },
     "fresh_blood": {
-      "description": "Strangers approach the village more often",
-      "name": "Fresh Blood"
+      "description": "Les étrangers approchent le village plus souvent",
+      "name": "Sang frais"
     },
     "frostglass": {
       "description": "Matériau cristallin irradiant le froid",
       "name": "Verre-givre"
     },
     "keen_builder": {
-      "description": "Construireing costs are reduced",
-      "name": "Keen Construireer"
+      "description": "Les coûts de construction sont réduits",
+      "name": "Bâtisseur habile"
     },
     "gifted_ring": {
       "description": "Anneau simple que quelqu'un vous a laissé trouver",
@@ -243,8 +243,8 @@
       "name": "Marque du corbeau"
     },
     "rich_veins": {
-      "description": "Your ability to mine is improved",
-      "name": "Rich Veins"
+      "description": "Votre aptitude à miner est améliorée",
+      "name": "Veines riches"
     },
     "ravens_mark_enhanced": {
       "description": "Les étrangers approchent le village beaucoup plus souvent",
@@ -295,12 +295,12 @@
       "name": "Visée sûre"
     },
     "skilled_hands": {
-      "description": "Crafting costs are reduced",
-      "name": "Skilled Hands"
+      "description": "Les coûts d'artisanat sont réduits",
+      "name": "Mains habiles"
     },
     "skeleton_key_schematic": {
-      "description": "Blueprint for crafting a skeleton key",
-      "name": "Skeleton Key"
+      "description": "Plan pour fabriquer un passe-partout",
+      "name": "Passe-partout"
     },
     "stonebinders_codex": {
       "description": "Tome de la bibliothèque cachée révélant les secrets d'une construction efficace",
@@ -327,8 +327,8 @@
       "name": "Boussole ternie"
     },
     "trail_sense": {
-      "description": "Your hunters bring back more food",
-      "name": "Trail Sense"
+      "description": "Vos chasseurs rapportent plus de nourriture",
+      "name": "Sens de la piste"
     },
     "unnamed_book": {
       "description": "Livre relié de peau humaine, rempli de savoir interdit",

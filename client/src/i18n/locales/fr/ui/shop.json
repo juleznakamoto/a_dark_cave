@@ -7,7 +7,7 @@
     "forSale": "À vendre",
     "forSalePlaythroughNote": "Les achats peuvent être réutilisés à chaque partie.",
     "purchases": "Achats",
-    "srDescription": "Boutique d'or, d'artefacts, de boosts et de packs",
+    "srDescription": "Boutique d'or, d'artefacts, d'améliorations et de packs",
     "betaDiscountTitle": "Des remises bêta jusqu'à {{percent}} % sont actuellement actives.",
     "betaDiscountNote": "Tous les achats restent disponibles lors des prochaines parties et après la sortie complète.",
     "noPurchasesTitle": "Aucun achat pour l'instant.", //x1.6
@@ -17,7 +17,7 @@
     "highlights": "À la une",
     "gold": "Or",
     "artifacts": "Artefacts",
-    "boosts": "Boosts",
+    "boosts": "Améliorations",
     "bundles": "Packs",
     "mostPopular": "Le plus populaire", //x1.4
     "threeXValue": "Valeur",

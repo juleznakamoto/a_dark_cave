@@ -4,11 +4,11 @@
     "music": "Ambiente",
     "sound": "Som",
     "emails": "E-mails",
-    "gameMode": "Game Mode",
-    "gameModeNormal": "Normal Mode",
-    "gameModeSteamGame": "Steam Game",
-    "gameModeSteamPlaytest": "Steam Playtest",
-    "gameModeSteamDemo": "Steam Demo",
+    "gameMode": "Modo de jogo",
+    "gameModeNormal": "Modo normal",
+    "gameModeSteamGame": "Jogo Steam",
+    "gameModeSteamPlaytest": "Playtest Steam",
+    "gameModeSteamDemo": "Demo Steam",
     "gameModeDemoEnd": "Fim da demo",
     "gameModeCrazyGamesDemo": "Demo CrazyGames"
   },
@@ -56,9 +56,9 @@
     "unmuteSfx": "Ativar efeitos sonoros",
     "cruelModeActive": "Modo Cruel ativo",
     "wishlistOnSteam": "Adicionar à lista de desejos na Steam",
-    "demoProgress": "Demo Progress",
+    "demoProgress": "Progresso da demo",
     "feedback": "Feedback",
-    "openFeedback": "Open feedback form",
+    "openFeedback": "Abrir o formulário de feedback",
     "progress": "Progresso",
     "social": "Social",
     "email": "E-mail",
@@ -99,10 +99,10 @@
     "subscribedDesc": "Enviaremos novidades e ofertas ocasionais para o seu e-mail.",
     "unsubscribedDesc": "Você não receberá mais e-mails de marketing nossos.",
     "preferenceUpdateFailed": "Não foi possível atualizar a preferência",
-    "enterFullscreen": "Full screen",
-    "exitFullscreen": "Exit full screen",
-    "autoSaveSteam": "Game auto-saves every 15 seconds",
-    "steamCloudSave": "Progress syncs to Steam Cloud when you save.",
+    "enterFullscreen": "Tela cheia",
+    "exitFullscreen": "Sair da tela cheia",
+    "autoSaveSteam": "O jogo salva automaticamente a cada 15 segundos",
+    "steamCloudSave": "O progresso sincroniza com a Steam Cloud quando você salva.",
     "cloudSaveFailed": "Salvo neste dispositivo, mas a sync na nuvem falhou. O autosalvamento tentará de novo."
   },
   "pauseHotkey": {
@@ -118,7 +118,7 @@
   },
   "never": "Nunca",
   "errorScreen": {
-    "message": "We are digging deeper. Please check back soon.",
-    "reload": "Reload game"
+    "message": "Estamos cavando mais fundo. Volte em breve.",
+    "reload": "Recarregar o jogo"
   }
 }

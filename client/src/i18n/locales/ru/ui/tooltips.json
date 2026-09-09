@@ -90,7 +90,7 @@
     "strength": "Сила: +{{value}}",
     "knowledge": "Знания: +{{value}}",
     "madnessStat": "Безумие:{{sign}}{{value}}",
-    "insightPerCycle": "Производитьs {{amount}} Insight per cycle",
+    "insightPerCycle": "Производит {{amount}} Прозрение за цикл",
     "craftDiscount": "Скидка на крафт: -{{percent}} %",
     "buildDiscount": "Скидка на строительство: -{{percent}} %",
     "merchantDiscount": "Скидка у торговца: +{{percent}} %",
@@ -208,7 +208,7 @@
     "forestFear": "Страх леса",
     "hunterProduction": "Производство охотников: {{value}}",
     "gathererProduction": "Производство собирателей: {{value}}",
-    "clarityElixirDescription": "A draught that eases the grip of madness.",
+    "clarityElixirDescription": "Зелье, ослабляющее хватку безумия.",
     "brimstoneFlux": "Серный флюс",
     "steelForgerSteelBonus": "Стальщики: +{{amount}} стали"
   }
