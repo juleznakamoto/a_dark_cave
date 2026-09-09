@@ -158,6 +158,7 @@ import {
   GAME_PANEL_HEADER_INDICATOR_TRIGGER_CLASS,
   GAME_PANEL_HEADER_INSIGHT_BADGE_CLASS,
   GAME_TAB_SECTION_HEADER,
+  GAME_TAB_SECTION_HEADER_ROW,
 } from "@/components/game/gameChrome";
 import {
   headerIndicatorIcon,
@@ -1545,8 +1546,8 @@ export default function VillagePanel() {
             return (
               <div key={groupIndex} className="space-y-2">
                 {group.title === "Build" ? (
-                  <div className="flex w-full items-center gap-2">
-                    <h3 className={`inline-flex min-w-0 flex-wrap items-center gap-1.5 ${GAME_TAB_SECTION_HEADER}`}>
+                  <div className={GAME_TAB_SECTION_HEADER_ROW}>
+                    <h3 className={GAME_TAB_SECTION_HEADER}>
                       {t("village.sectionBuild")}
                       {catalogActive ? <DemoEndPromoBadge kind="build" /> : null}
                     </h3>
@@ -1697,9 +1698,11 @@ export default function VillagePanel() {
                   </div>
                 ) : (
                   group.title && (
-                    <h3 className={GAME_TAB_SECTION_HEADER}>
-                      {group.title}
-                    </h3>
+                    <div className={GAME_TAB_SECTION_HEADER_ROW}>
+                      <h3 className={GAME_TAB_SECTION_HEADER}>
+                        {group.title}
+                      </h3>
+                    </div>
                   )
                 )}
                 <div className={gameActionButtonGridClassName("w-full")}>
@@ -1741,8 +1744,8 @@ export default function VillagePanel() {
           {(catalogActive ||
             (story.seen?.hasVillagers && visiblePopulationJobs.length > 0)) && (
               <div className="space-y-2">
-                <div className="flex w-full items-center gap-2">
-                  <h3 className={`inline-flex min-w-0 flex-wrap items-center gap-1.5 ${GAME_TAB_SECTION_HEADER}`}>
+                <div className={GAME_TAB_SECTION_HEADER_ROW}>
+                  <h3 className={GAME_TAB_SECTION_HEADER}>
                     {catalogActive && !story.seen?.hasVillagers ? (
                       <RedactedLockedHint
                         label={t("village.sectionProduce")}

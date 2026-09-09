@@ -22,7 +22,10 @@ import {
 } from "@/components/CooldownButton";
 import { cn } from "@/lib/utils";
 import { TooltipWrapper } from "@/components/game/TooltipWrapper";
-import { GAME_TAB_SECTION_HEADER } from "@/components/game/gameChrome";
+import {
+  GAME_TAB_SECTION_HEADER,
+  GAME_TAB_SECTION_HEADER_ROW,
+} from "@/components/game/gameChrome";
 import {
   GoldShopBadge,
   openGoldShopFilter,
@@ -803,10 +806,12 @@ export default function TimedEventPanel() {
     if (choices.length === 0) return null;
     return (
       <div className="space-y-2">
-        <h3 className={`${GAME_TAB_SECTION_HEADER} inline-flex items-center gap-1.5`}>
-          <span className="leading-none">{title}</span>
-          {titleExtra}
-        </h3>
+        <div className={GAME_TAB_SECTION_HEADER_ROW}>
+          <h3 className={GAME_TAB_SECTION_HEADER}>
+            <span className="leading-none">{title}</span>
+            {titleExtra}
+          </h3>
+        </div>
         <div className={gameActionButtonGridClassName("mt-2")}>
           {choices.map((choice) => renderChoiceButton(choice))}
         </div>
@@ -872,10 +877,12 @@ export default function TimedEventPanel() {
         ) : (
           <>
             {isMerchantEvent && (
-              <h3 className={`${GAME_TAB_SECTION_HEADER} inline-flex items-center gap-1.5`}>
-                <span className="leading-none">{t("ui:timedEvent.buy")}</span>
-                {merchantDiscountBadge}
-              </h3>
+              <div className={GAME_TAB_SECTION_HEADER_ROW}>
+                <h3 className={GAME_TAB_SECTION_HEADER}>
+                  <span className="leading-none">{t("ui:timedEvent.buy")}</span>
+                  {merchantDiscountBadge}
+                </h3>
+              </div>
             )}
             <div className={gameActionButtonGridClassName("mt-2")}>
               {Array.isArray(eventChoices) &&

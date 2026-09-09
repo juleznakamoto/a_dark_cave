@@ -44,7 +44,10 @@ import AchievementMiniRingChart from "@/achievements/AchievementMiniRingChart";
 import { useTranslation } from "react-i18next";
 import { useUiTranslation } from "@/i18n/useUiTranslation";
 import { DemoEndPromoBadge } from "@/components/game/DemoEndPromoBadge";
-import { GAME_TAB_SECTION_HEADER } from "@/components/game/gameChrome";
+import {
+  GAME_TAB_SECTION_HEADER,
+  GAME_TAB_SECTION_HEADER_ROW,
+} from "@/components/game/gameChrome";
 import { getRedactedWidthCh, RedactedBar, RedactedLockedHint } from "@/components/game/RedactedHint";
 import { useDemoEndCatalogActive } from "@/hooks/useSteamEditionActive";
 import type { GameState } from "@shared/schema";
@@ -366,17 +369,19 @@ function AchievementTabContent({
         scrollAreaId={`achievements-${tabId}`}
       >
         <div className="min-w-0 space-y-1 pb-6">
-          <h3 className={`inline-flex flex-wrap items-center gap-1.5 pt-1 pb-1 ${GAME_TAB_SECTION_HEADER}`}>
-            {forceRedacted ? (
-              <RedactedLockedHint
-                label={categoryHeader}
-                tooltipId={`achievement-category-${tabId}-redacted`}
-              />
-            ) : (
-              categoryHeader
-            )}
-            {catalogActive ? <DemoEndPromoBadge kind="achievements" /> : null}
-          </h3>
+          <div className={GAME_TAB_SECTION_HEADER_ROW}>
+            <h3 className={GAME_TAB_SECTION_HEADER}>
+              {forceRedacted ? (
+                <RedactedLockedHint
+                  label={categoryHeader}
+                  tooltipId={`achievement-category-${tabId}-redacted`}
+                />
+              ) : (
+                categoryHeader
+              )}
+              {catalogActive ? <DemoEndPromoBadge kind="achievements" /> : null}
+            </h3>
+          </div>
           {rows.map((row) => (
             <AchievementRowComponent
               key={row.achievementId}

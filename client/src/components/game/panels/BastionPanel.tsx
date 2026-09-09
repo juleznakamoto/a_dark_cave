@@ -14,7 +14,10 @@ import {
 import AttackWavesChart from "./AttackWavesChart";
 import CooldownButton, { gameActionButtonGridClassName } from "@/components/CooldownButton";
 import { DemoEndPromoBadge } from "@/components/game/DemoEndPromoBadge";
-import { GAME_TAB_SECTION_HEADER } from "@/components/game/gameChrome";
+import {
+  GAME_TAB_SECTION_HEADER,
+  GAME_TAB_SECTION_HEADER_ROW,
+} from "@/components/game/gameChrome";
 import { RedactedLockedHint } from "@/components/game/RedactedHint";
 import { useDemoEndCatalogActive } from "@/hooks/useSteamEditionActive";
 import { useTranslation } from "react-i18next";
@@ -85,17 +88,19 @@ export default function BastionPanel({
 
       {showHealSection && (
         <div className="space-y-2">
-          <h3 className={`inline-flex flex-wrap items-center gap-1.5 ${GAME_TAB_SECTION_HEADER}`}>
-            {redactHealHeader ? (
-              <RedactedLockedHint
-                label={t("bastion.heal")}
-                tooltipId="bastion-heal-header-redacted"
-              />
-            ) : (
-              t("bastion.heal")
-            )}
-            {catalogActive ? <DemoEndPromoBadge kind="heal" /> : null}
-          </h3>
+          <div className={GAME_TAB_SECTION_HEADER_ROW}>
+            <h3 className={GAME_TAB_SECTION_HEADER}>
+              {redactHealHeader ? (
+                <RedactedLockedHint
+                  label={t("bastion.heal")}
+                  tooltipId="bastion-heal-header-redacted"
+                />
+              ) : (
+                t("bastion.heal")
+              )}
+              {catalogActive ? <DemoEndPromoBadge kind="heal" /> : null}
+            </h3>
+          </div>
           <div className={gameActionButtonGridClassName()}>
             {showHealKnight ? (
               <CooldownButton
@@ -208,17 +213,19 @@ export default function BastionPanel({
 
       {showRepairSection && (
         <div className="space-y-2">
-          <h3 className={`inline-flex flex-wrap items-center gap-1.5 ${GAME_TAB_SECTION_HEADER}`}>
-            {redactRepairHeader ? (
-              <RedactedLockedHint
-                label={t("bastion.repair")}
-                tooltipId="bastion-repair-header-redacted"
-              />
-            ) : (
-              t("bastion.repair")
-            )}
-            {catalogActive ? <DemoEndPromoBadge kind="repair" /> : null}
-          </h3>
+          <div className={GAME_TAB_SECTION_HEADER_ROW}>
+            <h3 className={GAME_TAB_SECTION_HEADER}>
+              {redactRepairHeader ? (
+                <RedactedLockedHint
+                  label={t("bastion.repair")}
+                  tooltipId="bastion-repair-header-redacted"
+                />
+              ) : (
+                t("bastion.repair")
+              )}
+              {catalogActive ? <DemoEndPromoBadge kind="repair" /> : null}
+            </h3>
+          </div>
           <div className={gameActionButtonGridClassName()}>
             {showRepairBastion ? (
               <CooldownButton

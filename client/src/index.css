@@ -589,7 +589,7 @@ html.adc-text-large .game-panel-header-indicator-glyph--xs {
   font-size: 9px;
 }
 
-/* Estate "Rest" title row — matches indicator height so Sleep/Focus don't jump. */
+/* Tab section title row (Build, Explore, Rest, …). Matches Produce / Focus rings. */
 .game-panel-header-indicator-row {
   height: 18px;
 }

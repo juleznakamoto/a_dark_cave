@@ -16,7 +16,10 @@ import { getFocusTooltipHeaderTrailing } from "@/game/rules/focusTooltipIndicato
 import { getResourceLimit, isResourceLimited } from "@/game/resourceLimits";
 import CooldownButton, { gameActionButtonGridClassName } from "@/components/CooldownButton";
 import { DemoEndPromoBadge } from "@/components/game/DemoEndPromoBadge";
-import { GAME_TAB_SECTION_HEADER } from "@/components/game/gameChrome";
+import {
+  GAME_TAB_SECTION_HEADER,
+  GAME_TAB_SECTION_HEADER_ROW,
+} from "@/components/game/gameChrome";
 import { RedactedLockedHint, RedactedMoreHint } from "@/components/game/RedactedHint";
 import { getDemoEndHiddenActionTeasers } from "@/game/demoEndCatalog";
 import { useDemoEndCatalogActive, useSteamEditionActive } from "@/hooks/useSteamEditionActive";
@@ -626,8 +629,8 @@ export default function ForestPanel() {
             return (
               <div key={groupIndex} className="space-y-2">
                 {group.title && (
-                  <div className="game-panel-header-indicator-row flex w-full items-center gap-2">
-                    <h3 className={`inline-flex min-w-0 flex-wrap items-center gap-1.5 ${GAME_TAB_SECTION_HEADER}`}>
+                  <div className={GAME_TAB_SECTION_HEADER_ROW}>
+                    <h3 className={GAME_TAB_SECTION_HEADER}>
                       {sectionTitle}
                       {catalogActive && isExploreGroup ? (
                         <DemoEndPromoBadge kind="explore" />

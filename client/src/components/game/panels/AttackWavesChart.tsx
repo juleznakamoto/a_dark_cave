@@ -3,7 +3,10 @@ import { useGameStore } from "@/game/state";
 import AttackWavesProgressBar from "@/components/ui/attack-waves-progress";
 import { useEffect, useState } from "react";
 import { DemoEndPromoBadge } from "@/components/game/DemoEndPromoBadge";
-import { GAME_TAB_SECTION_HEADER } from "@/components/game/gameChrome";
+import {
+  GAME_TAB_SECTION_HEADER,
+  GAME_TAB_SECTION_HEADER_ROW,
+} from "@/components/game/gameChrome";
 import { RedactedLockedHint } from "@/components/game/RedactedHint";
 import {
   getAttackWavesChartRows,
@@ -144,10 +147,10 @@ export default function AttackWavesChart({
 
   return (
     <div className="space-y-3">
-      <div className="flex items-center gap-2 flex-wrap">
-        <span className={GAME_TAB_SECTION_HEADER}>
+      <div className={GAME_TAB_SECTION_HEADER_ROW}>
+        <h3 className={GAME_TAB_SECTION_HEADER}>
           {t("attackWaves.title")}
-        </span>
+        </h3>
         <span className="text-xs text-muted-foreground">
           {completedWaves}/{totalWaves}
         </span>

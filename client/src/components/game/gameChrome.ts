@@ -22,9 +22,13 @@ export const GAME_PANEL_HEADER_BAND =
   // icon tabs (quest book) sit below the text baselines.
   "inline-flex h-9 items-end pb-2 text-sm !leading-none";
 
-/** Section titles inside location tabs (Build, Produce, Rest, …). Same size as side-panel headers. */
+/** 18px row for section titles inside location tabs (Build, Explore, Rest, …). */
+export const GAME_TAB_SECTION_HEADER_ROW =
+  "game-panel-header-indicator-row flex w-full items-center gap-2";
+
+/** Title inside GAME_TAB_SECTION_HEADER_ROW. Same size as side-panel headers. */
 export const GAME_TAB_SECTION_HEADER =
-  "text-sm font-medium text-foreground leading-none";
+  "inline-flex min-w-0 flex-wrap items-center gap-1.5 text-sm font-medium text-foreground leading-none";
 
 /**
  * Insight unlock blobs + construction/preset slot chrome in panel headers.

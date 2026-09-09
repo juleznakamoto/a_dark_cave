@@ -37,6 +37,7 @@ import {
   GAME_PANEL_HEADER_INDICATOR_SIZE_PX,
   GAME_PANEL_HEADER_INDICATOR_TRIGGER_CLASS,
   GAME_TAB_SECTION_HEADER,
+  GAME_TAB_SECTION_HEADER_ROW,
 } from "@/components/game/gameChrome";
 import { headerIndicatorIcon } from "@/game/headerIndicatorIcons";
 import { formatNumber, formatSignedNumber } from "@/lib/utils";
@@ -679,10 +680,10 @@ export default function EstatePanel({
       <div className="w-full space-y-2 pt-2 md:pt-0 mt-0 md:mt-2 mb-2 pr-2 pb-2">
         {/* Sleep Mode Section */}
         <div className="space-y-">
-          {/* Indicator-height band matches Produce rings so Sleep/Focus below don't jump */}
+          {/* Extra pb-2 keeps Sleep/Focus from jumping when the focus ring appears */}
           <div className="pb-2">
-            <div className="game-panel-header-indicator-row flex w-full items-center gap-2">
-              <h3 className={`inline-flex shrink-0 items-center ${GAME_TAB_SECTION_HEADER}`}>
+            <div className={GAME_TAB_SECTION_HEADER_ROW}>
+              <h3 className={GAME_TAB_SECTION_HEADER}>
                 {t("estate.rest")}
               </h3>
               {focusState?.isActive && focusState.endTime > Date.now() && (
@@ -949,20 +950,22 @@ export default function EstatePanel({
               fellowship.disgraced_prior ||
               books.book_of_chainmaster) && (
                 <div className="space-y-1 pt-2">
-                  <h3 className={`inline-flex flex-wrap items-center gap-1.5 ${GAME_TAB_SECTION_HEADER}`}>
-                    {catalogActive &&
-                      !DEMO_END_ESTATE_SKILL_IDS.some((id) =>
-                        isDemoEndEstateSkillUnlocked(state, id),
-                      ) ? (
-                      <RedactedLockedHint
-                        label={t("estate.skills")}
-                        tooltipId="estate-skills-header-redacted"
-                      />
-                    ) : (
-                      t("estate.skills")
-                    )}
-                    {catalogActive ? <DemoEndPromoBadge kind="skills" /> : null}
-                  </h3>
+                  <div className={GAME_TAB_SECTION_HEADER_ROW}>
+                    <h3 className={GAME_TAB_SECTION_HEADER}>
+                      {catalogActive &&
+                        !DEMO_END_ESTATE_SKILL_IDS.some((id) =>
+                          isDemoEndEstateSkillUnlocked(state, id),
+                        ) ? (
+                        <RedactedLockedHint
+                          label={t("estate.skills")}
+                          tooltipId="estate-skills-header-redacted"
+                        />
+                      ) : (
+                        t("estate.skills")
+                      )}
+                      {catalogActive ? <DemoEndPromoBadge kind="skills" /> : null}
+                    </h3>
+                  </div>
 
                   {/* Huntress Training */}
                   {fellowship.ashwraith_huntress ? (
@@ -1264,17 +1267,19 @@ export default function EstatePanel({
         {/* Cube Section — unlocked whispers, plus redacted catalog at demo end */}
         {(catalogActive || completedCubeEvents.length > 0) && (
           <div className="w-full space-y-2 pt-1 pb-4">
-            <h3 className={`inline-flex flex-wrap items-center gap-1.5 ${GAME_TAB_SECTION_HEADER}`}>
-              {catalogActive && completedCubeEvents.length === 0 ? (
-                <RedactedLockedHint
-                  label={t("estate.cubeWhispers")}
-                  tooltipId="estate-cube-header-redacted"
-                />
-              ) : (
-                t("estate.cubeWhispers")
-              )}
-              {catalogActive ? <DemoEndPromoBadge kind="whispers" /> : null}
-            </h3>
+            <div className={GAME_TAB_SECTION_HEADER_ROW}>
+              <h3 className={GAME_TAB_SECTION_HEADER}>
+                {catalogActive && completedCubeEvents.length === 0 ? (
+                  <RedactedLockedHint
+                    label={t("estate.cubeWhispers")}
+                    tooltipId="estate-cube-header-redacted"
+                  />
+                ) : (
+                  t("estate.cubeWhispers")
+                )}
+                {catalogActive ? <DemoEndPromoBadge kind="whispers" /> : null}
+              </h3>
+            </div>
 
             <div
               className={cn(

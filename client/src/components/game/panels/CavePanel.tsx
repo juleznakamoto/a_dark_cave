@@ -30,7 +30,10 @@ import {
   RedactedMoreHint,
 } from "@/components/game/RedactedHint";
 import { DemoEndPromoBadge } from "@/components/game/DemoEndPromoBadge";
-import { GAME_TAB_SECTION_HEADER } from "@/components/game/gameChrome";
+import {
+  GAME_TAB_SECTION_HEADER,
+  GAME_TAB_SECTION_HEADER_ROW,
+} from "@/components/game/gameChrome";
 import { getDemoEndHiddenActionTeasers } from "@/game/demoEndCatalog";
 import { useDemoEndCatalogActive } from "@/hooks/useSteamEditionActive";
 import {
@@ -529,12 +532,14 @@ export default function CavePanel() {
               return (
                 <div key={groupIndex} className="space-y-2">
                   {group.title && (
-                    <h3 className={`inline-flex flex-wrap items-center gap-1.5 ${GAME_TAB_SECTION_HEADER}`}>
-                      {group.title}
-                      {catalogActive && isCraftSection ? (
-                        <DemoEndPromoBadge kind="craft" />
-                      ) : null}
-                    </h3>
+                    <div className={GAME_TAB_SECTION_HEADER_ROW}>
+                      <h3 className={GAME_TAB_SECTION_HEADER}>
+                        {group.title}
+                        {catalogActive && isCraftSection ? (
+                          <DemoEndPromoBadge kind="craft" />
+                        ) : null}
+                      </h3>
+                    </div>
                   )}
                   <div className={gameActionButtonRowsClassName("w-full")}>
                     {group.subGroups.map((subGroup, subGroupIndex) => {
@@ -611,16 +616,18 @@ export default function CavePanel() {
             return (
               <div key={groupIndex} className="space-y-2">
                 {group.title && (
-                  <h3 className={GAME_TAB_SECTION_HEADER}>
-                    {catalogActive && visibleActions.length === 0 ? (
-                      <RedactedLockedHint
-                        label={group.title}
-                        tooltipId="cave-mine-header-redacted"
-                      />
-                    ) : (
-                      group.title
-                    )}
-                  </h3>
+                  <div className={GAME_TAB_SECTION_HEADER_ROW}>
+                    <h3 className={GAME_TAB_SECTION_HEADER}>
+                      {catalogActive && visibleActions.length === 0 ? (
+                        <RedactedLockedHint
+                          label={group.title}
+                          tooltipId="cave-mine-header-redacted"
+                        />
+                      ) : (
+                        group.title
+                      )}
+                    </h3>
+                  </div>
                 )}
                 <div className={gameActionButtonGridClassName("w-full")}>
                   {visibleActions.map((action) =>
