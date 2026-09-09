@@ -289,6 +289,10 @@ describe("publicSeo", () => {
     expect(about).toContain('target="_blank"');
     expect(about).toContain('"@type":"Organization"');
     expect(about).not.toContain("adc:jsonld-home");
+    expect(faq).toContain(">Start</a>");
+    expect(faq).toContain(">FAQ</a>");
+    expect(faq).toContain(">About</a>");
+    expect(about).toContain(">Start</a>");
   });
 
   it("gives /press unique raw HTML with press-kit copy and assets", () => {
@@ -303,6 +307,9 @@ describe("publicSeo", () => {
     expect(press).toContain("Short boilerplate");
     expect(press).toContain("a_dark_cave_press_kit.zip");
     expect(press).toContain("support@a-dark-cave.com");
+    expect(press).toContain(">Start</a>");
+    expect(press).toContain(">FAQ</a>");
+    expect(press).toContain(">About</a>");
     expect(press).not.toContain("adc:jsonld-home");
   });
 

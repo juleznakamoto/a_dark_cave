@@ -1,319 +1,298 @@
-import { Helmet } from "react-helmet-async";
-import { getPublicRouteSeo } from "@shared/publicSeo";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
-
-const privacySeo = getPublicRouteSeo("/privacy")!;
+import PublicDocPage from "@/pages/publicDocPage";
 
 export default function Privacy() {
   return (
-    <ScrollArea className="h-screen w-full bg-black">
-      <Helmet>
-        <title>{privacySeo.title}</title>
-        <meta name="description" content={privacySeo.description} />
-        <link rel="canonical" href="https://a-dark-cave.com/privacy" />
-      </Helmet>
-      <div className="py-12 px-4">
-        <div className="max-w-4xl mx-auto">
-          <Card className="bg-gray-900 border-gray-800">
-            <CardHeader>
-              <CardTitle className="text-3xl text-white">
-                Privacy Policy
-              </CardTitle>
-              <p className="text-sm text-gray-400">Last Updated: 31.07.2026</p>
-            </CardHeader>
-            <CardContent className="prose prose-sm prose-invert max-w-none text-white legal-content">
-              <h3>1. General Information</h3>
-              <p>
-                This Privacy Policy informs you about the nature, scope, and
-                purpose of the processing of personal data (hereinafter "data")
-                within our online game "A Dark Cave" and its associated
-                websites, functions, and content.
-              </p>
-              <p>
-                <strong>Data Controller:</strong>
-                <br />
-                Julian Bauer
-                <br />
-                Königsberger Straße 1<br />
-                97072 Deutschland
-                <br />
-                Email: support@a-dark-cave.com
-              </p>
+    <PublicDocPage
+      path="/privacy"
+      heading="Privacy Policy"
+      description="Last Updated: 31.07.2026"
+    >
+      <h3>1. General Information</h3>
+      <p>
+        This Privacy Policy informs you about the nature, scope, and
+        purpose of the processing of personal data (hereinafter "data")
+        within our online game "A Dark Cave" and its associated
+        websites, functions, and content.
+      </p>
+      <p>
+        <strong>Data Controller:</strong>
+        <br />
+        Julian Bauer
+        <br />
+        Königsberger Straße 1<br />
+        97072 Deutschland
+        <br />
+        Email: support@a-dark-cave.com
+      </p>
 
-              <h3>2. Your Rights as a Data Subject</h3>
-              <p>You have the right:</p>
-              <ul>
-                <li>
-                  to request information about your personal data processed by
-                  us in accordance with Art. 15 GDPR.
-                </li>
-                <li>
-                  to demand the immediate correction of incorrect or incomplete
-                  personal data stored by us in accordance with Art. 16 GDPR.
-                </li>
-                <li>
-                  to request the deletion of your personal data stored by us in
-                  accordance with Art. 17 GDPR, unless the processing is
-                  necessary for exercising the right to freedom of expression
-                  and information, for fulfilling a legal obligation, for
-                  reasons of public interest, or for asserting, exercising, or
-                  defending legal claims.
-                </li>
-                <li>
-                  to demand the restriction of the processing of your personal
-                  data in accordance with Art. 18 GDPR.
-                </li>
-                <li>
-                  to receive your personal data that you have provided to us in
-                  a structured, common, and machine-readable format or to
-                  request its transfer to another controller in accordance with
-                  Art. 20 GDPR.
-                </li>
-                <li>
-                  to revoke your consent given to us at any time in accordance
-                  with Art. 7 (3) GDPR. This means that we may no longer
-                  continue the data processing based on this consent in the
-                  future.
-                </li>
-                <li>
-                  to complain to a supervisory authority in accordance with Art.
-                  77 GDPR.
-                </li>
-              </ul>
+      <h3>2. Your Rights as a Data Subject</h3>
+      <p>You have the right:</p>
+      <ul>
+        <li>
+          to request information about your personal data processed by
+          us in accordance with Art. 15 GDPR.
+        </li>
+        <li>
+          to demand the immediate correction of incorrect or incomplete
+          personal data stored by us in accordance with Art. 16 GDPR.
+        </li>
+        <li>
+          to request the deletion of your personal data stored by us in
+          accordance with Art. 17 GDPR, unless the processing is
+          necessary for exercising the right to freedom of expression
+          and information, for fulfilling a legal obligation, for
+          reasons of public interest, or for asserting, exercising, or
+          defending legal claims.
+        </li>
+        <li>
+          to demand the restriction of the processing of your personal
+          data in accordance with Art. 18 GDPR.
+        </li>
+        <li>
+          to receive your personal data that you have provided to us in
+          a structured, common, and machine-readable format or to
+          request its transfer to another controller in accordance with
+          Art. 20 GDPR.
+        </li>
+        <li>
+          to revoke your consent given to us at any time in accordance
+          with Art. 7 (3) GDPR. This means that we may no longer
+          continue the data processing based on this consent in the
+          future.
+        </li>
+        <li>
+          to complain to a supervisory authority in accordance with Art.
+          77 GDPR.
+        </li>
+      </ul>
 
-              <h3>3. Data Processing Details</h3>
+      <h3>3. Data Processing Details</h3>
 
-              <h4>a) When visiting the website:</h4>
-              <p>
-                When you access our website, our server automatically stores
-                information in server log files that your browser transmits.
-                These are: browser type/version, operating system used, referrer
-                URL, hostname of the accessing computer, and time of the server
-                request. This data is not merged with other data sources. The
-                basis for this data processing is Art. 6(1)(f) GDPR, our
-                legitimate interest in the technically flawless presentation and
-                security of our website.
-              </p>
+      <h4>a) When visiting the website:</h4>
+      <p>
+        When you access our website, our server automatically stores
+        information in server log files that your browser transmits.
+        These are: browser type/version, operating system used, referrer
+        URL, hostname of the accessing computer, and time of the server
+        request. This data is not merged with other data sources. The
+        basis for this data processing is Art. 6(1)(f) GDPR, our
+        legitimate interest in the technically flawless presentation and
+        security of our website.
+      </p>
 
-              <h4>b) Account Creation (Cloud Save):</h4>
-              <p>
-                If you choose to create an account, we collect your email
-                address and a password hash. This data is necessary to create
-                and manage your account and to provide the cloud save
-                functionality. The legal basis is Art. 6(1)(b) GDPR (performance
-                of a contract).
-              </p>
+      <h4>b) Account Creation (Cloud Save):</h4>
+      <p>
+        If you choose to create an account, we collect your email
+        address and a password hash. This data is necessary to create
+        and manage your account and to provide the cloud save
+        functionality. The legal basis is Art. 6(1)(b) GDPR (performance
+        of a contract).
+      </p>
 
-              <h4>c) Game State Storage:</h4>
-              <p>
-                For authenticated users, your complete game state is stored in
-                our database to allow you to continue your game across different
-                devices. This may include progress, settings, play statistics,
-                and related gameplay data. We may also store limited internal
-                product analytics linked to your account (for example aggregated
-                in-game button-click counts, and first-touch campaign or UTM
-                parameters from the link you used to arrive, if any). The legal
-                basis is Art. 6(1)(b) GDPR (performance of a contract) and, for
-                limited analytics, Art. 6(1)(f) GDPR (legitimate interest in
-                improving the game and measuring marketing effectiveness).
-              </p>
+      <h4>c) Game State Storage:</h4>
+      <p>
+        For authenticated users, your complete game state is stored in
+        our database to allow you to continue your game across different
+        devices. This may include progress, settings, play statistics,
+        and related gameplay data. We may also store limited internal
+        product analytics linked to your account (for example aggregated
+        in-game button-click counts, and first-touch campaign or UTM
+        parameters from the link you used to arrive, if any). The legal
+        basis is Art. 6(1)(b) GDPR (performance of a contract) and, for
+        limited analytics, Art. 6(1)(f) GDPR (legitimate interest in
+        improving the game and measuring marketing effectiveness).
+      </p>
 
-              <h4>d) Leaderboard:</h4>
-              <p>
-                If you complete the game, we may store a leaderboard entry
-                linked to your account (for example play time, completion time,
-                game mode, and email address used for the account). Public
-                leaderboard displays use a username you choose or a masked form
-                of your email, not your full email address. The legal basis is
-                Art. 6(1)(b) GDPR (performance of a contract) and Art. 6(1)(f)
-                GDPR (legitimate interest in operating the leaderboard).
-              </p>
+      <h4>d) Leaderboard:</h4>
+      <p>
+        If you complete the game, we may store a leaderboard entry
+        linked to your account (for example play time, completion time,
+        game mode, and email address used for the account). Public
+        leaderboard displays use a username you choose or a masked form
+        of your email, not your full email address. The legal basis is
+        Art. 6(1)(b) GDPR (performance of a contract) and Art. 6(1)(f)
+        GDPR (legitimate interest in operating the leaderboard).
+      </p>
 
-              <h4>e) In-Game Purchases:</h4>
-              <p>
-                When you make a purchase, we store a record of the transaction
-                (user ID, item, price, timestamp). This is necessary for
-                contract fulfillment and for support purposes. We do not store
-                any financial data like credit card numbers. The legal basis is
-                Art. 6(1)(b) GDPR (performance of a contract).
-              </p>
+      <h4>e) In-Game Purchases:</h4>
+      <p>
+        When you make a purchase, we store a record of the transaction
+        (user ID, item, price, timestamp). This is necessary for
+        contract fulfillment and for support purposes. We do not store
+        any financial data like credit card numbers. The legal basis is
+        Art. 6(1)(b) GDPR (performance of a contract).
+      </p>
 
-              <h4>f) Optional marketing emails:</h4>
-              <p>
-                We may send promotional emails (updates, discounts, rewards)
-                <strong> only if you opt in</strong> via a separate optional
-                checkbox at sign-up or later in your profile. The legal basis
-                is <strong>Art. 6(1)(a) GDPR (consent)</strong>. You can withdraw
-                consent at any time without affecting your account or cloud
-                save: use the unsubscribe link in any marketing email, or use
-                the subscribe / unsubscribe control in the in-game profile
-                menu.
-              </p>
-              <p>
-                To demonstrate consent and withdrawals, we store a marketing
-                preference record for your account, including: email (as
-                provided), whether you opted in, how the choice was recorded
-                (e.g. sign-up, Google sign-up, settings, or unsubscribe link),
-                consent text and prompt version numbers, and timestamps for when
-                you consented or withdrew. Unsubscribe links use a
-                single-use token (we store only a cryptographic hash of the
-                token until it is used or expires).
-              </p>
+      <h4>f) Optional marketing emails:</h4>
+      <p>
+        We may send promotional emails (updates, discounts, rewards)
+        <strong> only if you opt in</strong> via a separate optional
+        checkbox at sign-up or later in your profile. The legal basis
+        is <strong>Art. 6(1)(a) GDPR (consent)</strong>. You can withdraw
+        consent at any time without affecting your account or cloud
+        save: use the unsubscribe link in any marketing email, or use
+        the subscribe / unsubscribe control in the in-game profile
+        menu.
+      </p>
+      <p>
+        To demonstrate consent and withdrawals, we store a marketing
+        preference record for your account, including: email (as
+        provided), whether you opted in, how the choice was recorded
+        (e.g. sign-up, Google sign-up, settings, or unsubscribe link),
+        consent text and prompt version numbers, and timestamps for when
+        you consented or withdrew. Unsubscribe links use a
+        single-use token (we store only a cryptographic hash of the
+        token until it is used or expires).
+      </p>
 
-              <h4>g) Anonymous session and campaign metrics:</h4>
-              <p>
-                Independently of whether you create an account, we may store
-                anonymous first-party product metrics: a random session
-                identifier with approximate session duration, and (when you
-                arrive via a campaign link) UTM or similar campaign parameters
-                (for example source, medium, campaign). These records are not
-                linked to your email or account. We retain them for about one
-                year. The legal basis is Art. 6(1)(f) GDPR (legitimate interest
-                in understanding how the game is used and which campaigns bring
-                visitors).
-              </p>
+      <h4>g) Anonymous session and campaign metrics:</h4>
+      <p>
+        Independently of whether you create an account, we may store
+        anonymous first-party product metrics: a random session
+        identifier with approximate session duration, and (when you
+        arrive via a campaign link) UTM or similar campaign parameters
+        (for example source, medium, campaign). These records are not
+        linked to your email or account. We retain them for about one
+        year. The legal basis is Art. 6(1)(f) GDPR (legitimate interest
+        in understanding how the game is used and which campaigns bring
+        visitors).
+      </p>
 
-              <h3>4. Cookies and Local Storage</h3>
-              <p>
-                We use session storage on your device to maintain your
-                authentication state and for short-lived first-party session /
-                campaign identifiers used for the anonymous metrics described in
-                section 3g. This is a technically necessary function for
-                operating and measuring the service. The legal basis is § 25(2)
-                No. 2 TDDDG.
-              </p>
-              <p>
-                For users playing without an account, we use IndexedDB in your
-                browser to save your game progress locally. This is essential
-                for the game's functionality. The legal basis is § 25(2) No. 2
-                TDDDG.
-              </p>
-              <p>
-                We do not use advertising or third-party tracking{" "}
-                <em>cookies</em>. We do use limited first-party product
-                analytics as described above (session duration and campaign /
-                UTM landing metrics). Optional marketing <em>emails</em> are
-                only sent with your separate consent (see section 3f).
-              </p>
+      <h3>4. Cookies and Local Storage</h3>
+      <p>
+        We use session storage on your device to maintain your
+        authentication state and for short-lived first-party session /
+        campaign identifiers used for the anonymous metrics described in
+        section 3g. This is a technically necessary function for
+        operating and measuring the service. The legal basis is § 25(2)
+        No. 2 TDDDG.
+      </p>
+      <p>
+        For users playing without an account, we use IndexedDB in your
+        browser to save your game progress locally. This is essential
+        for the game's functionality. The legal basis is § 25(2) No. 2
+        TDDDG.
+      </p>
+      <p>
+        We do not use advertising or third-party tracking{" "}
+        <em>cookies</em>. We do use limited first-party product
+        analytics as described above (session duration and campaign /
+        UTM landing metrics). Optional marketing <em>emails</em> are
+        only sent with your separate consent (see section 3f).
+      </p>
 
-              <h3>5. Third-Party Services</h3>
-              <p>
-                We use third-party services to provide and improve our Game. We
-                have concluded Data Processing Addendums (DPAs) with these
-                providers where required.
-              </p>
+      <h3>5. Third-Party Services</h3>
+      <p>
+        We use third-party services to provide and improve our Game. We
+        have concluded Data Processing Addendums (DPAs) with these
+        providers where required.
+      </p>
 
-              <h4>a) Supabase:</h4>
-              <p>
-                We use Supabase Inc. (USA) for our backend infrastructure,
-                including authentication and database hosting. Supabase
-                processes your email address, password hash, and game data on
-                our behalf. We have configured our Supabase project to store all
-                data within the EU (Frankfurt region). The legal basis for this
-                is Art. 6(1)(b) and Art. 6(1)(f) GDPR. We have entered into a
-                DPA with Supabase to ensure that your data is handled in
-                compliance with the GDPR.
-              </p>
+      <h4>a) Supabase:</h4>
+      <p>
+        We use Supabase Inc. (USA) for our backend infrastructure,
+        including authentication and database hosting. Supabase
+        processes your email address, password hash, and game data on
+        our behalf. We have configured our Supabase project to store all
+        data within the EU (Frankfurt region). The legal basis for this
+        is Art. 6(1)(b) and Art. 6(1)(f) GDPR. We have entered into a
+        DPA with Supabase to ensure that your data is handled in
+        compliance with the GDPR.
+      </p>
 
-              <h4>b) Stripe:</h4>
-              <p>
-                For processing payments, we use Stripe Payments Europe, Ltd.
-                (Ireland). When you make a purchase, you are redirected to
-                Stripe's payment interface. Stripe collects payment information
-                (e.g., credit card details) directly. We do not receive or store
-                this sensitive financial data. Stripe is responsible for the
-                secure processing of your payment data. The legal basis for
-                using Stripe is Art. 6(1)(b) GDPR (performance of a contract).
-              </p>
+      <h4>b) Stripe:</h4>
+      <p>
+        For processing payments, we use Stripe Payments Europe, Ltd.
+        (Ireland). When you make a purchase, you are redirected to
+        Stripe's payment interface. Stripe collects payment information
+        (e.g., credit card details) directly. We do not receive or store
+        this sensitive financial data. Stripe is responsible for the
+        secure processing of your payment data. The legal basis for
+        using Stripe is Art. 6(1)(b) GDPR (performance of a contract).
+      </p>
 
-              <h4>c) Resend:</h4>
-              <p>
-                We use Resend Inc. (USA) to send email on our behalf, including
-                account-related messages (e.g. sign-up or password reset, where
-                applicable) and, if you have opted in, promotional emails as
-                described in section 3f. Resend processes the recipient address
-                and the content needed to deliver each message. The legal basis
-                is Art. 6(1)(b) GDPR for emails necessary to provide the
-                service, and Art. 6(1)(a) GDPR for marketing emails (consent).
-                We have entered into a DPA with Resend where required for
-                processor relationships.
-              </p>
+      <h4>c) Resend:</h4>
+      <p>
+        We use Resend Inc. (USA) to send email on our behalf, including
+        account-related messages (e.g. sign-up or password reset, where
+        applicable) and, if you have opted in, promotional emails as
+        described in section 3f. Resend processes the recipient address
+        and the content needed to deliver each message. The legal basis
+        is Art. 6(1)(b) GDPR for emails necessary to provide the
+        service, and Art. 6(1)(a) GDPR for marketing emails (consent).
+        We have entered into a DPA with Resend where required for
+        processor relationships.
+      </p>
 
-              <h4>d) Replit:</h4>
-              <p>
-                We host the A Dark Cave website and application backend via
-                Replit, Inc. Replit processes technical data necessary to
-                deliver the service (for example connection and server log
-                data). Replit runs published apps on Google Cloud
-                infrastructure. The legal basis is Art. 6(1)(b) and Art.
-                6(1)(f) GDPR. We use Replit under its terms and data processing
-                terms applicable to our account.
-              </p>
+      <h4>d) Replit:</h4>
+      <p>
+        We host the A Dark Cave website and application backend via
+        Replit, Inc. Replit processes technical data necessary to
+        deliver the service (for example connection and server log
+        data). Replit runs published apps on Google Cloud
+        infrastructure. The legal basis is Art. 6(1)(b) and Art.
+        6(1)(f) GDPR. We use Replit under its terms and data processing
+        terms applicable to our account.
+      </p>
 
-              <h4>e) Playlight:</h4>
-              <p>
-                We integrate the Playlight game discovery SDK in the browser.
-                When the SDK loads, Playlight may collect technical information
-                such as IP address, browser type/version, pages visited, and
-                access times, as described in Playlight&apos;s own privacy
-                policy. We do not send your account email address to Playlight.
-                The legal basis is Art. 6(1)(f) GDPR (legitimate interest in
-                offering optional game discovery features). Playlight acts as an
-                independent service with its own privacy practices for data it
-                collects through the SDK.
-              </p>
+      <h4>e) Playlight:</h4>
+      <p>
+        We integrate the Playlight game discovery SDK in the browser.
+        When the SDK loads, Playlight may collect technical information
+        such as IP address, browser type/version, pages visited, and
+        access times, as described in Playlight&apos;s own privacy
+        policy. We do not send your account email address to Playlight.
+        The legal basis is Art. 6(1)(f) GDPR (legitimate interest in
+        offering optional game discovery features). Playlight acts as an
+        independent service with its own privacy practices for data it
+        collects through the SDK.
+      </p>
 
-              <h3>6. International Data Transfers</h3>
-              <p>
-                Your core account and cloud game save data are stored with
-                Supabase in the EU (Frankfurt region). Some providers process
-                data outside the European Economic Area (for example Resend in
-                the United States, and hosting infrastructure used by Replit).
-                Where a transfer to a third country requires safeguards under
-                Art. 46 GDPR, we rely on appropriate mechanisms such as
-                Standard Contractual Clauses in the provider&apos;s Data
-                Processing Addendum, and any additional frameworks those
-                providers lawfully rely on.
-              </p>
+      <h3>6. International Data Transfers</h3>
+      <p>
+        Your core account and cloud game save data are stored with
+        Supabase in the EU (Frankfurt region). Some providers process
+        data outside the European Economic Area (for example Resend in
+        the United States, and hosting infrastructure used by Replit).
+        Where a transfer to a third country requires safeguards under
+        Art. 46 GDPR, we rely on appropriate mechanisms such as
+        Standard Contractual Clauses in the provider&apos;s Data
+        Processing Addendum, and any additional frameworks those
+        providers lawfully rely on.
+      </p>
 
-              <h3>7. Data Retention</h3>
-              <p>We store your data for the following periods:</p>
-              <ul>
-                <li>
-                  <strong>Account Data & Game Saves:</strong> Indefinitely,
-                  until you delete your account. Upon account deletion, all
-                  associated data is permanently removed.
-                </li>
-                <li>
-                  <strong>Purchase History:</strong> For legal and accounting
-                  reasons, we are required to retain purchase data for up to 10
-                  years (according to German commercial and tax law).
-                </li>
-                <li>
-                  <strong>Marketing preferences:</strong> Kept for as long as
-                  your account exists so we can honor opt-in/opt-out and
-                  demonstrate consent; deleted when your account is deleted.
-                </li>
-                <li>
-                  <strong>Leaderboard entries:</strong> Kept while relevant to
-                  the leaderboard feature; removed when associated account data
-                  is deleted or as otherwise required for operating the
-                  leaderboard.
-                </li>
-              </ul>
+      <h3>7. Data Retention</h3>
+      <p>We store your data for the following periods:</p>
+      <ul>
+        <li>
+          <strong>Account Data & Game Saves:</strong> Indefinitely,
+          until you delete your account. Upon account deletion, all
+          associated data is permanently removed.
+        </li>
+        <li>
+          <strong>Purchase History:</strong> For legal and accounting
+          reasons, we are required to retain purchase data for up to 10
+          years (according to German commercial and tax law).
+        </li>
+        <li>
+          <strong>Marketing preferences:</strong> Kept for as long as
+          your account exists so we can honor opt-in/opt-out and
+          demonstrate consent; deleted when your account is deleted.
+        </li>
+        <li>
+          <strong>Leaderboard entries:</strong> Kept while relevant to
+          the leaderboard feature; removed when associated account data
+          is deleted or as otherwise required for operating the
+          leaderboard.
+        </li>
+      </ul>
 
-              <h3>8. Data Security</h3>
-              <p>
-                We take appropriate technical and organizational measures to
-                protect your data from unauthorized access, loss, or alteration.
-                Communication with our servers is encrypted via SSL/TLS.
-              </p>
-            </CardContent>
-          </Card>
-        </div>
-      </div>
-      <ScrollBar orientation="vertical" />
-    </ScrollArea>
+      <h3>8. Data Security</h3>
+      <p>
+        We take appropriate technical and organizational measures to
+        protect your data from unauthorized access, loss, or alteration.
+        Communication with our servers is encrypted via SSL/TLS.
+      </p>
+    </PublicDocPage>
   );
 }

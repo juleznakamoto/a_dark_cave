@@ -161,6 +161,13 @@ export const ABOUT_NAV_LINKS = [
   { id: "reddit", href: REDDIT_URL, label: "Reddit", external: true },
 ] as const;
 
+/** Footer on every public subpage (press, about, FAQ, legal). */
+export const PUBLIC_PAGE_FOOTER_LINKS = [
+  { id: "start", href: "/", label: "Start" },
+  { id: "faq", href: "/faq", label: "FAQ" },
+  { id: "about", href: "/about", label: "About" },
+] as const;
+
 export type AboutNavLinkId = (typeof ABOUT_NAV_LINKS)[number]["id"];
 
 const aboutSiteLink = htmlAnchor(SITE, "a-dark-cave.com");
@@ -266,7 +273,16 @@ export function getPublicPageBodyHtml(
           ? getPressPageInnerHtml()
           : getLegalPageInnerHtml(path);
   if (!inner) return null;
-  return `<main id="seo-fallback" style="${STATIC_PAGE_STYLE}">${inner}</main>`;
+  const footer = options?.notFound ? "" : getPublicPageFooterHtml();
+  return `<main id="seo-fallback" style="${STATIC_PAGE_STYLE}">${inner}${footer}</main>`;
+}
+
+export function getPublicPageFooterHtml(): string {
+  const links = PUBLIC_PAGE_FOOTER_LINKS.map((link, index) => {
+    const sep = index > 0 ? " · " : "";
+    return `${sep}${htmlAnchor(link.href, escapeHtml(link.label))}`;
+  }).join("");
+  return `<nav>${links}</nav>`;
 }
 
 export function getPublicPageExtraJsonLd(path: string): string | null {

@@ -1,6 +1,4 @@
 import { useEffect, useState } from "react";
-import { Helmet } from "react-helmet-async";
-import { getPublicRouteSeo } from "@shared/publicSeo";
 import {
   PRESS_BOILERPLATE_LONG,
   PRESS_BOILERPLATE_SHORT,
@@ -23,13 +21,11 @@ import {
   type PressAsset,
   type PressLink,
 } from "@shared/pressKit";
-import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
+import PublicDocPage from "@/pages/publicDocPage";
+import { publicPageLinkClassName } from "@/pages/publicPageI18n";
 import { Z_INDEX } from "@/lib/z-index";
 
-const pressSeo = getPublicRouteSeo(PRESS_PATH)!;
-
-const linkClassName =
-  "underline decoration-neutral-600 underline-offset-2 hover:decoration-neutral-300";
+const linkClassName = publicPageLinkClassName;
 
 function groupLinks(group: PressLink["group"]): PressLink[] {
   return PRESS_LINKS.filter((link) => link.group === group);
@@ -224,171 +220,150 @@ export default function Press() {
 
   return (
     <>
-      <ScrollArea className="h-screen w-full bg-black">
-        <Helmet>
-          <title>{pressSeo.title}</title>
-          <meta name="description" content={pressSeo.description} />
-          <link rel="canonical" href={`https://a-dark-cave.com${PRESS_PATH}`} />
-        </Helmet>
-        <div className="px-4 py-12">
-          <article className="legal-content mx-auto max-w-5xl space-y-10 text-sm leading-relaxed text-neutral-200">
-            <header className="space-y-4">
-              <p className="m-0 text-xs uppercase tracking-wide text-neutral-500">
-                Press kit
-              </p>
-              <h1 className="m-0 text-3xl text-white sm:text-4xl">{PRESS_HEADING}</h1>
-              <div className="flex flex-wrap items-start justify-between gap-3">
-                <p className="m-0 text-base text-white">{PRESS_LOCKED_LINE}</p>
-                <CopyButton text={PRESS_LOCKED_LINE} label="locked-line" />
-              </div>
-              <div className="flex flex-wrap gap-3">
-                <a
-                  href={PRESS_ZIP_HREF}
-                  download="a_dark_cave_press_kit.zip"
-                  className="rounded border border-neutral-500 bg-neutral-100 px-3 py-2 text-sm text-black hover:bg-white"
-                  data-testid="button-download-press-zip"
-                >
-                  Download all assets (ZIP)
-                </a>
-                <a
-                  href={PRESS_CONTACT_MAILTO}
-                  className="rounded border border-neutral-700 px-3 py-2 text-sm text-neutral-200 hover:border-neutral-500"
-                >
-                  Email {PRESS_CONTACT_EMAIL}
-                </a>
-              </div>
-            </header>
-
-            <CopyBlock
-              title="Short boilerplate (~50 words)"
-              text={PRESS_BOILERPLATE_SHORT}
-              testId="boilerplate-short"
-            />
-            <CopyBlock
-              title="Long boilerplate (~150 words)"
-              text={PRESS_BOILERPLATE_LONG}
-              testId="boilerplate-long"
-            />
-
-            <section className="space-y-3">
-              <div className="flex items-center justify-between gap-3">
-                <h2 className="m-0 text-lg text-white">Fact sheet</h2>
-                <CopyButton
-                  text={PRESS_FACTS.map((fact) => `${fact.label}: ${fact.value}`).join(
-                    "\n",
-                  )}
-                  label="fact-sheet"
-                />
-              </div>
-              <dl className="m-0 grid grid-cols-1 gap-x-6 gap-y-3 sm:grid-cols-[12rem_1fr]">
-                {PRESS_FACTS.map((fact) => (
-                  <div key={fact.label} className="contents">
-                    <dt className="m-0 text-neutral-500">{fact.label}</dt>
-                    <dd className="m-0">
-                      {fact.href ? (
-                        <a
-                          href={fact.href}
-                          className={linkClassName}
-                          {...(fact.href.startsWith("http")
-                            ? { target: "_blank", rel: "noopener noreferrer" }
-                            : {})}
-                        >
-                          {fact.value}
-                        </a>
-                      ) : (
-                        fact.value
-                      )}
-                    </dd>
-                  </div>
-                ))}
-              </dl>
-            </section>
-
-            <section className="space-y-3">
-              <h2 className="m-0 text-lg text-white">Gameplay trailer</h2>
-              <div className="aspect-video overflow-hidden rounded border border-neutral-800 bg-black">
-                <iframe
-                  title="A Dark Cave gameplay trailer"
-                  src={PRESS_TRAILER_EMBED_URL}
-                  className="h-full w-full"
-                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                  allowFullScreen
-                />
-              </div>
-              <p className="m-0">
-                <a
-                  href={PRESS_TRAILER_YOUTUBE_URL}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className={linkClassName}
-                >
-                  YouTube
-                </a>
-                {" · "}
-                <a
-                  href={PRESS_TRAILER_FILE_HREF}
-                  download={PRESS_VIDEOS[0]?.fileName}
-                  className={linkClassName}
-                >
-                  Download MP4
-                </a>
-              </p>
-            </section>
-
-            <AssetGrid
-              title="Logos"
-              assets={PRESS_LOGOS}
-              onPreview={setPreview}
-            />
-            <AssetGrid
-              title="Steam capsules"
-              assets={PRESS_CAPSULES}
-              onPreview={setPreview}
-            />
-            <AssetGrid
-              title="Screenshots"
-              assets={PRESS_SCREENSHOTS}
-              onPreview={setPreview}
-            />
-
-            <div className="grid grid-cols-1 gap-8 sm:grid-cols-3 sm:gap-6">
-              <LinkList title="Play and store" links={groupLinks("play")} />
-              <LinkList title="Social" links={groupLinks("social")} />
-              <LinkList title="Directories" links={groupLinks("directory")} />
+      <PublicDocPage
+        path={PRESS_PATH}
+        eyebrow="Press kit"
+        heading={PRESS_HEADING}
+        bodyClassName="space-y-10"
+        headerExtra={
+          <>
+            <div className="flex flex-wrap items-start justify-between gap-3">
+              <p className="m-0 text-base text-white">{PRESS_LOCKED_LINE}</p>
+              <CopyButton text={PRESS_LOCKED_LINE} label="locked-line" />
             </div>
-
-            <section className="space-y-2">
-              <h2 className="m-0 text-lg text-white">Permissions</h2>
-              <p className="m-0">{PRESS_PERMISSIONS}</p>
-            </section>
-
-            <section className="space-y-2">
-              <h2 className="m-0 text-lg text-white">Contact</h2>
-              <p className="m-0">
-                Julian Bauer, solo developer.{" "}
-                <a href={PRESS_CONTACT_MAILTO} className={linkClassName}>
-                  {PRESS_CONTACT_EMAIL}
-                </a>
-              </p>
-            </section>
-
-            <nav className="border-t border-neutral-800 pt-6 text-neutral-400">
-              <a href="/" className={linkClassName}>
-                Play
+            <div className="flex flex-wrap gap-3">
+              <a
+                href={PRESS_ZIP_HREF}
+                download="a_dark_cave_press_kit.zip"
+                className="rounded border border-neutral-500 bg-neutral-100 px-3 py-2 text-sm text-black no-underline hover:bg-white"
+                data-testid="button-download-press-zip"
+              >
+                Download all assets (ZIP)
               </a>
-              {" · "}
-              <a href="/about" className={linkClassName}>
-                About
+              <a
+                href={PRESS_CONTACT_MAILTO}
+                className="rounded border border-neutral-700 px-3 py-2 text-sm text-neutral-200 no-underline hover:border-neutral-500"
+              >
+                Email {PRESS_CONTACT_EMAIL}
               </a>
-              {" · "}
-              <a href="/faq" className={linkClassName}>
-                FAQ
-              </a>
-            </nav>
-          </article>
+            </div>
+          </>
+        }
+      >
+        <CopyBlock
+          title="Short boilerplate (~50 words)"
+          text={PRESS_BOILERPLATE_SHORT}
+          testId="boilerplate-short"
+        />
+        <CopyBlock
+          title="Long boilerplate (~150 words)"
+          text={PRESS_BOILERPLATE_LONG}
+          testId="boilerplate-long"
+        />
+
+        <section className="space-y-3">
+          <div className="flex items-center justify-between gap-3">
+            <h2 className="m-0 text-lg text-white">Fact sheet</h2>
+            <CopyButton
+              text={PRESS_FACTS.map((fact) => `${fact.label}: ${fact.value}`).join(
+                "\n",
+              )}
+              label="fact-sheet"
+            />
+          </div>
+          <dl className="m-0 grid grid-cols-1 gap-x-6 gap-y-3 sm:grid-cols-[12rem_1fr]">
+            {PRESS_FACTS.map((fact) => (
+              <div key={fact.label} className="contents">
+                <dt className="m-0 text-neutral-500">{fact.label}</dt>
+                <dd className="m-0">
+                  {fact.href ? (
+                    <a
+                      href={fact.href}
+                      className={linkClassName}
+                      {...(fact.href.startsWith("http")
+                        ? { target: "_blank", rel: "noopener noreferrer" }
+                        : {})}
+                    >
+                      {fact.value}
+                    </a>
+                  ) : (
+                    fact.value
+                  )}
+                </dd>
+              </div>
+            ))}
+          </dl>
+        </section>
+
+        <section className="space-y-3">
+          <h2 className="m-0 text-lg text-white">Gameplay trailer</h2>
+          <div className="aspect-video overflow-hidden rounded border border-neutral-800 bg-black">
+            <iframe
+              title="A Dark Cave gameplay trailer"
+              src={PRESS_TRAILER_EMBED_URL}
+              className="h-full w-full"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allowFullScreen
+            />
+          </div>
+          <p className="m-0">
+            <a
+              href={PRESS_TRAILER_YOUTUBE_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              className={linkClassName}
+            >
+              YouTube
+            </a>
+            {" · "}
+            <a
+              href={PRESS_TRAILER_FILE_HREF}
+              download={PRESS_VIDEOS[0]?.fileName}
+              className={linkClassName}
+            >
+              Download MP4
+            </a>
+          </p>
+        </section>
+
+        <AssetGrid
+          title="Logos"
+          assets={PRESS_LOGOS}
+          onPreview={setPreview}
+        />
+        <AssetGrid
+          title="Steam capsules"
+          assets={PRESS_CAPSULES}
+          onPreview={setPreview}
+        />
+        <AssetGrid
+          title="Screenshots"
+          assets={PRESS_SCREENSHOTS}
+          onPreview={setPreview}
+        />
+
+        <div className="grid grid-cols-1 gap-8 sm:grid-cols-3 sm:gap-6">
+          <LinkList title="Play and store" links={groupLinks("play")} />
+          <LinkList title="Social" links={groupLinks("social")} />
+          <LinkList title="Directories" links={groupLinks("directory")} />
         </div>
-        <ScrollBar orientation="vertical" />
-      </ScrollArea>
+
+        <section className="space-y-2">
+          <h2 className="m-0 text-lg text-white">Permissions</h2>
+          <p className="m-0">{PRESS_PERMISSIONS}</p>
+        </section>
+
+        <section className="space-y-2">
+          <h2 className="m-0 text-lg text-white">Contact</h2>
+          <p className="m-0">
+            Julian Bauer, solo developer.{" "}
+            <a href={PRESS_CONTACT_MAILTO} className={linkClassName}>
+              {PRESS_CONTACT_EMAIL}
+            </a>
+          </p>
+        </section>
+
+      </PublicDocPage>
       {preview ? (
         <AssetLightbox asset={preview} onClose={() => setPreview(null)} />
       ) : null}

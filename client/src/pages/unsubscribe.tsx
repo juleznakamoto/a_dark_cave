@@ -1,16 +1,12 @@
 import { useEffect, useRef, useState } from "react";
 import { apiUrl } from "@/lib/apiUrl";
-import { Helmet } from "react-helmet-async";
-import { getPublicRouteSeo, NOT_FOUND_SEO } from "@shared/publicSeo";
-import { Card, CardContent, CardDescription, CardHeader } from "@/components/ui/card";
+import PublicDocPage from "@/pages/publicDocPage";
 
 // "confirm" waits for an explicit click before hitting the server. This is
 // deliberate: email link scanners/prefetchers (Outlook & Defender Safe Links,
 // antivirus, etc.) load the page automatically, so auto-unsubscribing on mount
 // would let them silently unsubscribe people and burn one-time links.
 type UnsubStatus = "confirm" | "loading" | "ok" | "message";
-
-const unsubscribeSeo = getPublicRouteSeo("/unsubscribe")!;
 
 export default function UnsubscribePage() {
   const [status, setStatus] = useState<UnsubStatus>("confirm");
@@ -70,53 +66,25 @@ export default function UnsubscribePage() {
         : "Unsubscribe from Email Updates";
 
   return (
-    <>
-      <Helmet>
-        <title>{unsubscribeSeo.title}</title>
-        <meta name="robots" content={unsubscribeSeo.robots} />
-      </Helmet>
-      <div className="min-h-screen bg-black text-gray-300 flex flex-col items-center justify-center p-4">
-        <Card className="w-full max-w-md bg-gray-900 border-gray-800">
-          <CardHeader>
-            <CardDescription className="text-2xl font-light text-gray-100">
-              {description}
-            </CardDescription>
-          </CardHeader>
-          <CardContent className="space-y-6">
-            {status === "confirm" ? (
-              <>
-                <p className="text-sm text-gray-400">
-                  Click below to stop receiving marketing emails from A Dark
-                  Cave.
-                </p>
-                <button
-                  type="button"
-                  onClick={handleUnsubscribe}
-                  className="block w-fit rounded border border-gray-700 bg-gray-800 px-4 py-2 text-sm text-gray-100 hover:bg-gray-700 transition-colors"
-                >
-                  Unsubscribe
-                </button>
-              </>
-            ) : status === "loading" ? (
-              <p className="text-sm text-gray-500">Please wait…</p>
-            ) : (
-              <p
-                className={
-                  status === "ok" ? "text-sm text-gray-300" : "text-sm text-gray-400"
-                }
-              >
-                {message}
-              </p>
-            )}
-            <a
-              href="/"
-              className="inline-block text-sm text-gray-400 hover:text-gray-200 transition-colors underline underline-offset-4"
-            >
-              Return to the cave
-            </a>
-          </CardContent>
-        </Card>
-      </div>
-    </>
+    <PublicDocPage path="/unsubscribe" heading={description}>
+      {status === "confirm" ? (
+        <>
+          <p>
+            Click below to stop receiving marketing emails from A Dark Cave.
+          </p>
+          <button
+            type="button"
+            onClick={handleUnsubscribe}
+            className="rounded border border-neutral-700 px-3 py-2 text-sm text-neutral-200 hover:border-neutral-500"
+          >
+            Unsubscribe
+          </button>
+        </>
+      ) : status === "loading" ? (
+        <p className="text-neutral-500">Please wait…</p>
+      ) : (
+        <p>{message}</p>
+      )}
+    </PublicDocPage>
   );
 }

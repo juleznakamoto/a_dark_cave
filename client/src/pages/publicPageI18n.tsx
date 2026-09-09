@@ -6,7 +6,8 @@ import {
   SITE,
 } from "@shared/publicPages";
 
-export const publicPageLinkClassName = "underline";
+export const publicPageLinkClassName =
+  "underline decoration-neutral-600 underline-offset-2 hover:decoration-neutral-300";
 
 const externalLinkProps = {
   className: publicPageLinkClassName,
