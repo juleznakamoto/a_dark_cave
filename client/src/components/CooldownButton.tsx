@@ -15,7 +15,7 @@ import { ActionTooltipSeparator } from "@/game/rules/actionTooltipLayout";
 export const GAME_ACTION_BUTTON_STACK_CLASS = "relative inline-flex";
 
 /** Uniform gap between game action buttons (horizontal, wrapped rows, stacked row groups). */
-export const GAME_ACTION_BUTTON_GRID_GAP_CLASS = "gap-4";
+export const GAME_ACTION_BUTTON_GRID_GAP_CLASS = "gap-4.5";
 
 /** Flex-wrap layout for grids of game action buttons (panels, timed events, dialogs). */
 export function gameActionButtonGridClassName(className?: string): string {
