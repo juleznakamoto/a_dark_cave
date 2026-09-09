@@ -97,7 +97,7 @@ describe("resolveLogPanelMessage", () => {
     const text = resolveLogPanelMessage(
       systemEntry("A newcomer arrives and makes themselves at home."),
     );
-    expect(text).toBe("Ein Neuankömmling trifft ein und richtet sich ein.");
+    expect(text).toBe("Ein Neuankömmling kommt an und richtet sich ein.");
   });
 
   it("matches English dark estate build log in German saves", async () => {

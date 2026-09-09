@@ -624,8 +624,8 @@ html.adc-text-large .game-panel-header-indicator-row {
 }
 
 .villager-count-button>span {
-  font-size: calc(1rem + var(--adc-text-delta, 0px));
-  /* 14px @ Normal (was text-xs 12px) */
+  font-size: calc(1.125rem + var(--adc-text-delta, 0px));
+  /* 18px @ Normal */
 }
 
 /* Open click lock: controls look disabled so a swallowed click is not surprising. */

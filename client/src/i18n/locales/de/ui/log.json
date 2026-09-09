@@ -25,7 +25,7 @@
       "variant2": "Ein Wanderer erscheint und wird Teil der Gemeinschaft.",
       "variant3": "Jemand nähert sich dem Dorf und lässt sich nieder.",
       "variant4": "Ein Fremder schließt sich der Gemeinschaft an.", //ok
-      "variant5": "Ein Neuankömmling trifft ein und richtet sich ein.",
+      "variant5": "Ein Neuankömmling kommt an und richtet sich ein.",
       "multiple0": "{{count}} Fremde treten dem Dorf bei.",
       "multiple1": "{{count}} Reisende kommen an und beschließen zu bleiben.",
       "multiple2": "{{count}} Wanderer kommen an und lassen sich nieder." //ok
