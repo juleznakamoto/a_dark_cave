@@ -461,7 +461,7 @@ body {
 }
 
 .button-prior-badge {
-  --adc-prior-badge-size: 14px;
+  --adc-prior-badge-size: 12px;
   position: absolute;
   bottom: calc(var(--adc-prior-badge-size) / -2 * var(--adc-control-scale, 1));
   right: calc(var(--adc-prior-badge-size) / -2 * var(--adc-control-scale, 1));

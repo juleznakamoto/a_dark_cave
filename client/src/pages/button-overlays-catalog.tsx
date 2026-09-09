@@ -65,15 +65,15 @@ export const BUTTON_OVERLAY_CATALOG: ButtonOverlayCatalogEntry[] = [
   {
     id: "prior",
     label: "Prior assign",
-    size: "14×14",
-    position: "bottom-right (-7px)",
+    size: "12×12",
+    position: "bottom-right (-6px)",
     where: "Eligible action buttons. .button-prior-badge",
   },
   {
     id: "prior-on",
     label: "Prior assigned",
-    size: "14×14",
-    position: "bottom-right (-7px)",
+    size: "12×12",
+    position: "bottom-right (-6px)",
     where: "Same disc, filled / assigned state",
   },
   {
