@@ -682,7 +682,7 @@ export default function EstatePanel({
         {/* Sleep Mode Section */}
         <div className="space-y-">
           {/* Extra bottom padding keeps Sleep/Focus from jumping when the focus ring appears */}
-          <div className="pb-2.5">
+          <div className="pb-3">
             <div className={GAME_TAB_SECTION_HEADER_ROW}>
               <h3 className={GAME_TAB_SECTION_HEADER}>
                 {t("estate.rest")}

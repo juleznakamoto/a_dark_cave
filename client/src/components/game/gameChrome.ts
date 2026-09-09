@@ -22,8 +22,8 @@ export const GAME_PANEL_HEADER_BAND =
   // icon tabs (quest book) sit below the text baselines.
   "inline-flex h-9 items-end pb-2 text-sm !leading-none";
 
-/** 10px gap from a tab section title row to the buttons or list below. */
-export const GAME_TAB_SECTION_STACK = "space-y-2.5";
+/** 12px gap from a tab section title row to the buttons or list below. */
+export const GAME_TAB_SECTION_STACK = "space-y-3";
 
 /** 18px row for section titles inside location tabs (Build, Explore, Rest, …). */
 export const GAME_TAB_SECTION_HEADER_ROW =
