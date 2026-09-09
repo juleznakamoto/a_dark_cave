@@ -33,6 +33,7 @@ import { DemoEndPromoBadge } from "@/components/game/DemoEndPromoBadge";
 import {
   GAME_TAB_SECTION_HEADER,
   GAME_TAB_SECTION_HEADER_ROW,
+  GAME_TAB_SECTION_STACK,
 } from "@/components/game/gameChrome";
 import { getDemoEndHiddenActionTeasers } from "@/game/demoEndCatalog";
 import { useDemoEndCatalogActive } from "@/hooks/useSteamEditionActive";
@@ -530,7 +531,7 @@ export default function CavePanel() {
               if (!hasAnyVisibleActions && craftTeasers.length === 0) return null;
 
               return (
-                <div key={groupIndex} className="space-y-2">
+                <div key={groupIndex} className={GAME_TAB_SECTION_STACK}>
                   {group.title && (
                     <div className={GAME_TAB_SECTION_HEADER_ROW}>
                       <h3 className={GAME_TAB_SECTION_HEADER}>
@@ -614,7 +615,7 @@ export default function CavePanel() {
             }
 
             return (
-              <div key={groupIndex} className="space-y-2">
+              <div key={groupIndex} className={GAME_TAB_SECTION_STACK}>
                 {group.title && (
                   <div className={GAME_TAB_SECTION_HEADER_ROW}>
                     <h3 className={GAME_TAB_SECTION_HEADER}>

@@ -159,6 +159,7 @@ import {
   GAME_PANEL_HEADER_INSIGHT_BADGE_CLASS,
   GAME_TAB_SECTION_HEADER,
   GAME_TAB_SECTION_HEADER_ROW,
+  GAME_TAB_SECTION_STACK,
 } from "@/components/game/gameChrome";
 import {
   headerIndicatorIcon,
@@ -1544,7 +1545,7 @@ export default function VillagePanel() {
             }
 
             return (
-              <div key={groupIndex} className="space-y-2">
+              <div key={groupIndex} className={GAME_TAB_SECTION_STACK}>
                 {group.title === "Build" ? (
                   <div className={GAME_TAB_SECTION_HEADER_ROW}>
                     <h3 className={GAME_TAB_SECTION_HEADER}>
@@ -1743,7 +1744,7 @@ export default function VillagePanel() {
           {/* Rule Section */}
           {(catalogActive ||
             (story.seen?.hasVillagers && visiblePopulationJobs.length > 0)) && (
-              <div className="space-y-2">
+              <div className={GAME_TAB_SECTION_STACK}>
                 <div className={GAME_TAB_SECTION_HEADER_ROW}>
                   <h3 className={GAME_TAB_SECTION_HEADER}>
                     {catalogActive && !story.seen?.hasVillagers ? (

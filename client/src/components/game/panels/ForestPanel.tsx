@@ -19,6 +19,7 @@ import { DemoEndPromoBadge } from "@/components/game/DemoEndPromoBadge";
 import {
   GAME_TAB_SECTION_HEADER,
   GAME_TAB_SECTION_HEADER_ROW,
+  GAME_TAB_SECTION_STACK,
 } from "@/components/game/gameChrome";
 import { RedactedLockedHint, RedactedMoreHint } from "@/components/game/RedactedHint";
 import { getDemoEndHiddenActionTeasers } from "@/game/demoEndCatalog";
@@ -627,7 +628,7 @@ export default function ForestPanel() {
                       : group.title;
 
             return (
-              <div key={groupIndex} className="space-y-2">
+              <div key={groupIndex} className={GAME_TAB_SECTION_STACK}>
                 {group.title && (
                   <div className={GAME_TAB_SECTION_HEADER_ROW}>
                     <h3 className={GAME_TAB_SECTION_HEADER}>

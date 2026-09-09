@@ -17,6 +17,7 @@ import { DemoEndPromoBadge } from "@/components/game/DemoEndPromoBadge";
 import {
   GAME_TAB_SECTION_HEADER,
   GAME_TAB_SECTION_HEADER_ROW,
+  GAME_TAB_SECTION_STACK,
 } from "@/components/game/gameChrome";
 import { RedactedLockedHint } from "@/components/game/RedactedHint";
 import { useDemoEndCatalogActive } from "@/hooks/useSteamEditionActive";
@@ -87,7 +88,7 @@ export default function BastionPanel({
       <AttackWavesChart visible={active} />
 
       {showHealSection && (
-        <div className="space-y-2">
+        <div className={GAME_TAB_SECTION_STACK}>
           <div className={GAME_TAB_SECTION_HEADER_ROW}>
             <h3 className={GAME_TAB_SECTION_HEADER}>
               {redactHealHeader ? (
@@ -212,7 +213,7 @@ export default function BastionPanel({
       )}
 
       {showRepairSection && (
-        <div className="space-y-2">
+        <div className={GAME_TAB_SECTION_STACK}>
           <div className={GAME_TAB_SECTION_HEADER_ROW}>
             <h3 className={GAME_TAB_SECTION_HEADER}>
               {redactRepairHeader ? (

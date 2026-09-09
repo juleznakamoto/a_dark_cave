@@ -38,6 +38,7 @@ import {
   GAME_PANEL_HEADER_INDICATOR_TRIGGER_CLASS,
   GAME_TAB_SECTION_HEADER,
   GAME_TAB_SECTION_HEADER_ROW,
+  GAME_TAB_SECTION_STACK,
 } from "@/components/game/gameChrome";
 import { headerIndicatorIcon } from "@/game/headerIndicatorIcons";
 import { formatNumber, formatSignedNumber } from "@/lib/utils";
@@ -680,8 +681,8 @@ export default function EstatePanel({
       <div className="w-full space-y-2 pt-2 md:pt-0 mt-0 md:mt-2 mb-2 pr-2 pb-2">
         {/* Sleep Mode Section */}
         <div className="space-y-">
-          {/* Extra pb-2 keeps Sleep/Focus from jumping when the focus ring appears */}
-          <div className="pb-2">
+          {/* Extra bottom padding keeps Sleep/Focus from jumping when the focus ring appears */}
+          <div className="pb-2.5">
             <div className={GAME_TAB_SECTION_HEADER_ROW}>
               <h3 className={GAME_TAB_SECTION_HEADER}>
                 {t("estate.rest")}
@@ -1266,7 +1267,7 @@ export default function EstatePanel({
 
         {/* Cube Section — unlocked whispers, plus redacted catalog at demo end */}
         {(catalogActive || completedCubeEvents.length > 0) && (
-          <div className="w-full space-y-2 pt-1 pb-4">
+          <div className={cn("w-full pt-1 pb-4", GAME_TAB_SECTION_STACK)}>
             <div className={GAME_TAB_SECTION_HEADER_ROW}>
               <h3 className={GAME_TAB_SECTION_HEADER}>
                 {catalogActive && completedCubeEvents.length === 0 ? (
