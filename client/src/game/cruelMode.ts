@@ -56,6 +56,8 @@ export const CRUEL_MODE = {
     baseSacrificeCruel: 10,
     perOccurrence: 5,
     cap: 30,
+    /** After the first moon, need strictly more than this many villagers. */
+    subsequentMinPopulation: { normal: 20, cruel: 15 },
   },
 
   fireStorm: {
@@ -306,6 +308,11 @@ export function disgustDurationMs(cruelMode: boolean): number {
 export function riddleFogDurationMs(cruelTier: number): number {
   const base = CRUEL_MODE.durations.riddleFogBaseMin * MS_PER_MIN;
   return base + base * cruelTier;
+}
+
+export function bloodMoonSubsequentMinPopulation(cruelMode: boolean): number {
+  const { normal, cruel } = CRUEL_MODE.bloodMoon.subsequentMinPopulation;
+  return cruelMode ? cruel : normal;
 }
 
 export function bloodMoonSacrificeAmount(

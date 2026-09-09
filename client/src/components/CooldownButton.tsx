@@ -2,6 +2,7 @@ import React, { useRef, useEffect, useId, useState, forwardRef } from "react";
 import { Button } from "@/components/ui/button";
 import { useGameStore } from "@/game/state";
 import { TooltipWrapper } from "@/components/game/TooltipWrapper";
+import { YELLOW_CORNER_DISC_CLASS } from "@/components/game/gameChrome";
 import { X } from "lucide-react";
 import { GAME_CONSTANTS } from "@/game/constants";
 import { tWithFallback } from "@/i18n/resolveGameText";
@@ -362,7 +363,12 @@ const CooldownButton = forwardRef<HTMLButtonElement, CooldownButtonProps>(
         {/* "2x" text indicator for compass glow */}
         {isCompassGlowing && (
           <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-20">
-            <div className="bg-yellow-800 text-white text-[12px] leading-none rounded-full w-4 h-4 flex items-center justify-center animate-fade-out-up shadow-sm border border-yellow-600/50">
+            <div
+              className={cn(
+                "button-compass-2x game-corner-badge-digit animate-fade-out-up",
+                YELLOW_CORNER_DISC_CLASS,
+              )}
+            >
               2x
             </div>
           </div>

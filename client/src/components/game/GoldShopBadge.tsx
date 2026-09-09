@@ -1,8 +1,10 @@
 import React from "react";
 import { Plus } from "lucide-react";
 import { useTranslation } from "react-i18next";
+import { YELLOW_CORNER_DISC_CLASS } from "@/components/game/gameChrome";
 import { useGameStore } from "@/game/state";
 import type { ShopOpenSource } from "@/game/shopOpenSource";
+import { cn } from "@/lib/utils";
 
 /** Forest Buy row: special gold sinks only, not bulk food/wood/stone/… */
 export const FOREST_GOLD_SHOP_ACTION_IDS = [
@@ -51,10 +53,13 @@ export function GoldShopBadge({
   const label = t("timedEvent.buyGold", { defaultValue: "Buy Gold" });
 
   return (
-    <div className="button-corner-badge-16">
+    <div className="button-corner-badge-18">
       <button
         type="button"
-        className="flex h-4 w-4 items-center justify-center rounded-full bg-yellow-700 text-white shadow-sm border border-yellow-500/60 hover:bg-yellow-600 transition-colors cursor-pointer"
+        className={cn(
+          YELLOW_CORNER_DISC_CLASS,
+          "h-full w-full hover:bg-yellow-600 transition-colors cursor-pointer",
+        )}
         data-testid={testId}
         aria-label={label}
         onPointerDown={(e) => e.stopPropagation()}

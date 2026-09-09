@@ -9,6 +9,10 @@ export const GAME_FOOTER_INSET = "36px";
  */
 export const GAME_CHROME_NO_BG_HOVER = "hover:bg-transparent active:scale-100";
 
+/** Yellow 18px disc: Buy Gold and Compass 2x. */
+export const YELLOW_CORNER_DISC_CLASS =
+  "flex items-center justify-center rounded-full bg-yellow-700 text-white shadow-sm border border-yellow-500/60";
+
 /** Fixed overlay between header/footer; click particles portal here (below action buttons). */
 export const GAME_PARTICLE_LAYER_ID = "adc-game-particle-layer";
 

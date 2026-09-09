@@ -55,6 +55,7 @@ export const KNOWN_SPA_PATHS = new Set([
   "/dev/estate-bar-upgrade",
   "/dev/demo-end",
   "/dev/sounds",
+  "/dev/production-icons",
 ]);
 
 const HOME_ROUTE_SEO: PublicRouteSeo = {
@@ -194,6 +195,13 @@ const ROUTE_SEO: Record<string, PublicRouteSeo> = {
     includeHomeJsonLd: false,
     robots: "noindex, nofollow",
     pageName: "Sounds Demo",
+  },
+  "/dev/production-icons": {
+    title: "Production Icons Demo - A Dark Cave",
+    description: "Development preview for A Dark Cave production icons and button overlays.",
+    includeHomeJsonLd: false,
+    robots: "noindex, nofollow",
+    pageName: "Production Icons Demo",
   },
 };
 

@@ -18,6 +18,7 @@ import {
   getHeaderIndicatorIconsVersion,
   subscribeHeaderIndicatorIcons,
 } from "@/game/headerIndicatorIcons";
+import { ButtonOverlaysCatalog } from "@/pages/button-overlays-catalog";
 
 function HeaderIndicator({
   ringClassName,
@@ -181,7 +182,8 @@ export default function ProductionIconsDemo() {
             (CircularProgress + GAME_PANEL_HEADER_*). Dialog rings copy
             OutcomeDialog + DIALOG_INDICATOR_ICONS /
             OUTCOME_DIALOG_ICONS. Red cross marks the
-            geometric center of each ring.
+            geometric center of each ring. Button overlays below are 1:1
+            copies of the chips we pin onto other buttons.
           </p>
         </header>
 
@@ -282,6 +284,8 @@ export default function ProductionIconsDemo() {
             ))}
           </div>
         </section>
+
+        <ButtonOverlaysCatalog />
       </div>
       <ScrollBar orientation="vertical" />
     </ScrollArea>

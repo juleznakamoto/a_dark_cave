@@ -20,7 +20,8 @@ import { useDerivedGameState } from "@/game/useGameStoreWithoutTickClock";
 import { formatTooltipResourceName } from "@/i18n/tooltipLabels";
 import { cn, formatCompactDuration } from "@/lib/utils";
 
-const BOOST_GLYPH = "\u23E9";
+/** Noto text double-triangle (U+23E9 + text VS). Do not use the ⏩ emoji form. */
+export const CONSTRUCTION_BOOST_GLYPH = "\u23E9\uFE0E";
 
 interface ConstructionBoostBadgeProps {
   actionId: string;
@@ -140,7 +141,7 @@ export function ConstructionBoostBadge({ actionId }: ConstructionBoostBadgeProps
           }}
         >
           <BuildingActionBadge
-            glyph={BOOST_GLYPH}
+            glyph={CONSTRUCTION_BOOST_GLYPH}
             embedded
             size="lg"
           />

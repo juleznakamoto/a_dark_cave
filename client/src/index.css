@@ -95,6 +95,9 @@ body {
      overrides match Symbols 2 so × / ↦ fallbacks stay centered on mobile. */
   .font-noto-symbols-2 {
     font-family: "Noto Symbol Compat", "Noto Sans Symbols 2", sans-serif;
+    /* U+23E9 (construction boost) is emoji-default; without this, Chrome
+       paints Segoe ⏩ instead of the Noto text double-triangle. */
+    font-variant-emoji: text;
   }
 
   /*
@@ -433,17 +436,32 @@ body {
   line-height: 1;
 }
 
-/* Action-button corner badges (level / prior / insight / boost hosts). */
+/* Compass 2x chip (centered on the action button). */
+.button-compass-2x {
+  width: 18px;
+  height: 18px;
+}
+
+/* Action-button corner badges. Offset is always half the disc so the
+   center sits on the host corner. */
 .button-level-badge {
   position: absolute;
-  top: calc(-0.5rem * var(--adc-control-scale, 1));
-  right: calc(-0.5rem * var(--adc-control-scale, 1));
-  width: calc(1rem * var(--adc-control-scale, 1));
-  height: calc(1rem * var(--adc-control-scale, 1));
+  top: calc(-9px * var(--adc-control-scale, 1));
+  right: calc(-9px * var(--adc-control-scale, 1));
+  width: calc(18px * var(--adc-control-scale, 1));
+  height: calc(18px * var(--adc-control-scale, 1));
+}
+
+.button-focus-badge {
+  position: absolute;
+  top: calc(-10px * var(--adc-control-scale, 1));
+  right: calc(-10px * var(--adc-control-scale, 1));
+  width: calc(20px * var(--adc-control-scale, 1));
+  height: calc(20px * var(--adc-control-scale, 1));
 }
 
 .button-prior-badge {
-  --adc-prior-badge-size: 12px;
+  --adc-prior-badge-size: 14px;
   position: absolute;
   bottom: calc(var(--adc-prior-badge-size) / -2 * var(--adc-control-scale, 1));
   right: calc(var(--adc-prior-badge-size) / -2 * var(--adc-control-scale, 1));
@@ -451,7 +469,7 @@ body {
   height: calc(var(--adc-prior-badge-size) * var(--adc-control-scale, 1));
 }
 
-/* Abort / Buy Gold: fixed 16px host so tooltip wrappers cannot shift the disc. */
+/* Abort: fixed 16px host so tooltip wrappers cannot shift the disc. */
 .button-corner-badge-16 {
   position: absolute;
   bottom: -8px;
@@ -466,22 +484,48 @@ body {
   pointer-events: auto;
 }
 
+/* Buy Gold: 18px host, center on the corner. */
+.button-corner-badge-18 {
+  position: absolute;
+  bottom: -9px;
+  right: -9px;
+  width: 18px;
+  height: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 0;
+  z-index: 30;
+  pointer-events: auto;
+}
+
 .action-button-corner-badge {
   position: absolute;
-  width: 22px;
-  height: 22px;
   z-index: 30;
   pointer-events: auto;
 }
 
 .action-button-corner-badge--insight {
+  width: 22px;
+  height: 22px;
   bottom: -11px;
   right: -11px;
 }
 
 .action-button-corner-badge--boost {
-  top: -11px;
-  right: -11px;
+  width: 24px;
+  height: 24px;
+  top: -12px;
+  right: -12px;
+}
+
+/* Village hotkey tutorial dismiss. 20px, center on the box corner. */
+.button-hotkey-dismiss {
+  position: absolute;
+  top: -10px;
+  right: -10px;
+  width: 20px;
+  height: 20px;
 }
 
 /* Side-panel insight hit target. Locked; Large text does not grow it. */

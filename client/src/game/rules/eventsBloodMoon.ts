@@ -2,9 +2,13 @@ import { GameState } from "@shared/schema";
 import { killVillagers } from "@/game/stateHelpers";
 import type { GameEvent } from "./eventTypes";
 import { calculateSuccessChance, defineSuccessChance } from "./eventSuccessChance";
-import { bloodMoonSacrificeAmount } from "../cruelMode";
+import {
+  bloodMoonSacrificeAmount,
+  bloodMoonSubsequentMinPopulation,
+} from "../cruelMode";
 import { btpLootAmount } from "@/game/btpLoot";
 import { getTrapWinChanceBonus } from "@/game/buildingHierarchy";
+import { getCurrentPopulation } from "../population";
 
 function bloodMoonI18nVars(state: GameState) {
   return {
@@ -18,8 +22,16 @@ function bloodMoonI18nVars(state: GameState) {
 export const bloodMoonEvents: Record<string, GameEvent> = {
   bloodMoonAttack: {
     id: "bloodMoonAttack",
-    condition: (state: GameState) =>
-      state.buildings.woodenHut >= 8 && !state.bloodMoonState.hasWon,
+    condition: (state: GameState) => {
+      if (state.buildings.woodenHut < 8 || state.bloodMoonState.hasWon) {
+        return false;
+      }
+      const occurrenceCount = state.bloodMoonState?.occurrenceCount ?? 0;
+      if (occurrenceCount === 0) return true;
+      return (
+        getCurrentPopulation(state) > bloodMoonSubsequentMinPopulation(state.cruelMode)
+      );
+    },
     timeProbability: (state: GameState) =>
       (state.bloodMoonState?.occurrenceCount ?? 0) === 0 ? 45 : 75,
     cooldownPercent: 0.6,

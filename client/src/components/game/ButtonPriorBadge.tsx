@@ -19,8 +19,8 @@ import {
 import { useTranslation } from "react-i18next";
 import { isGameTabHidden, subscribeGameTabHidden } from "@/lib/tabVisibility";
 
-/** Base diameter; CSS `.button-prior-badge` scales with `--adc-control-scale`. */
-const BADGE_SIZE = 12;
+/** Idle / assigned diameter. CSS `.button-prior-badge` scales with `--adc-control-scale`. */
+export const PRIOR_BADGE_SIZE_PX = 14;
 
 interface ButtonPriorBadgeProps {
   actionId: string;
@@ -43,8 +43,12 @@ export function ButtonPriorBadge({ actionId }: ButtonPriorBadgeProps) {
       if (hidden) setHovered(false);
     });
   }, []);
+  const isAssigned = priorAssignedActions?.includes(actionId) ?? false;
   const badgeFillMetrics = useMemo(
-    () => getPriorDiscFillMetrics(BADGE_SIZE * getControlScaleFactor(textScale)),
+    () =>
+      getPriorDiscFillMetrics(
+        PRIOR_BADGE_SIZE_PX * getControlScaleFactor(textScale),
+      ),
     [textScale],
   );
 
@@ -52,7 +56,6 @@ export function ButtonPriorBadge({ actionId }: ButtonPriorBadgeProps) {
 
   const level = disgracedPriorSkills?.level ?? 0;
   const maxActions = DISGRACED_PRIOR_UPGRADES[level]?.maxActions ?? 1;
-  const isAssigned = priorAssignedActions?.includes(actionId) ?? false;
   const atCapacity =
     !isAssigned && (priorAssignedActions?.length ?? 0) >= maxActions;
 

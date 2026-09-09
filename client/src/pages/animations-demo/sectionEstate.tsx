@@ -11,10 +11,9 @@ import {
   EstateStyleProgress,
   SharedProgressShaderHost,
 } from "@/components/ui/shared-progress-shader";
+import { CONSTRUCTION_BOOST_GLYPH } from "@/components/game/ConstructionBoostBadge";
 import { DemoRow, DemoSection } from "@/pages/animations-demo/DemoSection";
 import { useDemoShaderVisible } from "@/pages/animations-demo/useDemoShaderVisible";
-
-const BOOST_GLYPH = "\u23E9";
 
 export function EstateBarsSection() {
   const [level, setLevel] = useState(0);
@@ -148,7 +147,7 @@ export function InsightBadgeSection() {
               playing={playing}
               embedded
               size={size}
-              glyph={glyph === "boost" ? BOOST_GLYPH : undefined}
+              glyph={glyph === "boost" ? CONSTRUCTION_BOOST_GLYPH : undefined}
             />
           </button>
         </div>
@@ -172,7 +171,7 @@ export function InsightBadgeSection() {
                   playing={playing}
                   embedded
                   size="lg"
-                  glyph={glyph === "boost" ? BOOST_GLYPH : undefined}
+                  glyph={glyph === "boost" ? CONSTRUCTION_BOOST_GLYPH : undefined}
                 />
               </button>
             </div>

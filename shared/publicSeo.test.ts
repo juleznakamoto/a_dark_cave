@@ -115,6 +115,7 @@ describe("publicSeo", () => {
     expect(resolveSpaHtmlResponse("/about").status).toBe(200);
     expect(resolveSpaHtmlResponse("/press").status).toBe(200);
     expect(resolveSpaHtmlResponse("/dev/sounds").status).toBe(200);
+    expect(resolveSpaHtmlResponse("/dev/production-icons").status).toBe(200);
   });
 
   it("customizes legal page metadata and strips home JSON-LD", () => {

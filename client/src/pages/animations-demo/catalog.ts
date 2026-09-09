@@ -4,6 +4,7 @@ import {
   ImproveButtonSection,
   InsightBadgeSection,
 } from "@/pages/animations-demo/sectionEstate";
+import { ButtonOverlaysSection } from "@/pages/animations-demo/sectionButtonOverlays";
 import { QueueSlotsSection } from "@/pages/animations-demo/sectionVillage";
 import {
   ButtonParticlesSection,
@@ -45,6 +46,11 @@ export const ANIMATION_DEMO_SECTIONS: AnimationDemoSection[] = [
   { id: "cooldown-wash", label: "Cooldown wash", Section: CooldownWashSection },
   { id: "queue-slots", label: "Build queue slots", Section: QueueSlotsSection },
   { id: "insight-badge", label: "Insight badge", Section: InsightBadgeSection },
+  {
+    id: "button-overlays",
+    label: "Button overlays",
+    Section: ButtonOverlaysSection,
+  },
   {
     id: "button-particles",
     label: "Click particles",

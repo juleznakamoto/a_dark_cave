@@ -799,7 +799,7 @@ export default function EstatePanel({
               </CooldownButton>
               {focusState && focusState.points > 0 && (
                 <div
-                  className="game-corner-badge-digit absolute -top-[10px] right-[-10px] flex items-center justify-center w-5 h-5 bg-teal-950 rounded-full z-[20] pointer-events-none"
+                  className="button-focus-badge game-corner-badge-digit flex items-center justify-center bg-teal-950 rounded-full z-[20] pointer-events-none"
                 >
                   {focusState.points}
                 </div>
