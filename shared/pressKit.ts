@@ -150,7 +150,7 @@ function asset(
 
 export const PRESS_LOGOS: readonly PressAsset[] = [
   asset("logo", "a_dark_cave_logo.png", "Logo (square)", {
-    sizeHint: "Source icon",
+    sizeHint: "512 × 512",
   }),
 ];
 

@@ -132,7 +132,7 @@ function AssetCard({
 }) {
   const isVideo = asset.kind === "video";
   return (
-    <figure className="m-0 overflow-hidden rounded border border-neutral-800 bg-neutral-950">
+    <figure className="m-0 flex h-full flex-col overflow-hidden rounded border border-neutral-800 bg-neutral-950">
       <button
         type="button"
         className="block w-full cursor-zoom-in border-0 bg-transparent p-0"
@@ -151,7 +151,7 @@ function AssetCard({
           />
         )}
       </button>
-      <figcaption className="space-y-1 p-3 text-xs text-neutral-300">
+      <figcaption className="mt-auto space-y-1 p-3 text-xs text-neutral-300">
         <div className="font-medium text-neutral-100">{asset.label}</div>
         <div className="break-all text-neutral-500">{asset.fileName}</div>
         {asset.sizeHint ? (
