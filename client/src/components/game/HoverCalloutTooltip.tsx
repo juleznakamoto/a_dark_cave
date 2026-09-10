@@ -12,141 +12,27 @@ import { createPortal } from "react-dom";
 import { cn } from "@/lib/utils";
 import { Z_INDEX } from "@/lib/z-index";
 import { isGameTabHidden, subscribeGameTabHidden } from "@/lib/tabVisibility";
+import {
+  calloutArrowCss,
+  placeCalloutInViewport,
+  type HoverCalloutArrowAlign,
+  type HoverCalloutSide,
+} from "./hoverCalloutPlacement";
 
-export type HoverCalloutSide = "top" | "left" | "right" | "bottom";
-
-/** Arrow anchor along the callout edge facing the trigger (1/4, 1/2, or 3/4). */
-export type HoverCalloutArrowAlign = "start" | "center" | "end";
+export type { HoverCalloutArrowAlign, HoverCalloutSide };
 
 const CALLOUT_CHROME =
-  "flex appearance-none [-webkit-appearance:none] rounded-md font-semibold leading-none tracking-wide text-primary-foreground shadow-md transition-opacity duration-300";
+  "flex appearance-none [-webkit-appearance:none] rounded-md font-semibold leading-none tracking-wide text-primary-foreground shadow-md transition-opacity duration-300 text-[length:calc(0.75rem+var(--adc-text-delta,0px))]";
 
 const CALLOUT_SIZE = {
-  sm: "px-2 py-1.5 text-xs",
-  /** Footer Playlight / Steam: same 13px type, slightly roomier padding. */
-  md: "px-2.5 py-1.5 text-xs",
+  sm: "px-2 py-1.5",
+  /** Footer Playlight / Steam: same 12px type, slightly roomier padding. */
+  md: "px-2.5 py-1.5",
 } as const;
-
-/** Matches `mb-1.5` / `mt-1.5` on in-flow callouts. */
-const PORTAL_GAP_PX = 6;
-/** Matches `-left-2` / `-right-2` on in-flow side callouts. */
-const PORTAL_SIDE_GAP_PX = 8;
 
 /** Touch taps synthesize mouseenter; only fine pointers should drive hover tooltips. */
 function isHoverCapablePointer(pointerType: string): boolean {
   return pointerType === "mouse" || pointerType === "pen";
-}
-
-const SIDE_LAYOUT: Record<
-  HoverCalloutSide,
-  Record<HoverCalloutArrowAlign, { callout: string; arrow: string }>
-> = {
-  top: {
-    center: {
-      callout: "left-1/2 bottom-full mb-1.5 -translate-x-1/2",
-      arrow: "bottom-0 left-1/2 -translate-x-1/2 translate-y-1/2",
-    },
-    start: {
-      callout: "left-1/2 bottom-full mb-1.5 -translate-x-1/4",
-      arrow: "bottom-0 left-1/4 -translate-x-1/2 translate-y-1/2",
-    },
-    end: {
-      callout: "left-1/2 bottom-full mb-1.5 -translate-x-3/4",
-      arrow: "bottom-0 left-3/4 -translate-x-1/2 translate-y-1/2",
-    },
-  },
-  bottom: {
-    center: {
-      callout: "left-1/2 top-full mt-1.5 -translate-x-1/2",
-      arrow: "top-0 left-1/2 -translate-x-1/2 -translate-y-1/2",
-    },
-    start: {
-      callout: "left-1/2 top-full mt-1.5 -translate-x-1/4",
-      arrow: "top-0 left-1/4 -translate-x-1/2 -translate-y-1/2",
-    },
-    end: {
-      callout: "left-1/2 top-full mt-1.5 -translate-x-3/4",
-      arrow: "top-0 left-3/4 -translate-x-1/2 -translate-y-1/2",
-    },
-  },
-  left: {
-    center: {
-      callout: "top-1/2 -left-2 -translate-x-full -translate-y-1/2",
-      arrow: "top-1/2 right-0 translate-x-1/2 -translate-y-1/2",
-    },
-    start: {
-      callout: "top-1/2 -left-2 -translate-x-full -translate-y-1/4",
-      arrow: "top-1/4 right-0 translate-x-1/2 -translate-y-1/2",
-    },
-    end: {
-      callout: "top-1/2 -left-2 -translate-x-full -translate-y-3/4",
-      arrow: "top-3/4 right-0 translate-x-1/2 -translate-y-1/2",
-    },
-  },
-  right: {
-    center: {
-      callout: "top-1/2 -right-2 translate-x-full -translate-y-1/2",
-      arrow: "top-1/2 left-0 -translate-x-1/2 -translate-y-1/2",
-    },
-    start: {
-      callout: "top-1/2 -right-2 translate-x-full -translate-y-1/4",
-      arrow: "top-1/4 left-0 -translate-x-1/2 -translate-y-1/2",
-    },
-    end: {
-      callout: "top-1/2 -right-2 translate-x-full -translate-y-3/4",
-      arrow: "top-3/4 left-0 -translate-x-1/2 -translate-y-1/2",
-    },
-  },
-};
-
-function alignRatio(align: HoverCalloutArrowAlign): number {
-  if (align === "start") return 0.25;
-  if (align === "end") return 0.75;
-  return 0.5;
-}
-
-function portalCalloutStyle(
-  side: HoverCalloutSide,
-  arrowAlign: HoverCalloutArrowAlign,
-  rect: DOMRect,
-): CSSProperties {
-  const ratio = alignRatio(arrowAlign);
-  const zIndex = Z_INDEX.tooltip;
-
-  switch (side) {
-    case "top":
-      return {
-        position: "fixed",
-        zIndex,
-        left: rect.left + rect.width * ratio,
-        top: rect.top - PORTAL_GAP_PX,
-        transform: "translate(-50%, -100%)",
-      };
-    case "bottom":
-      return {
-        position: "fixed",
-        zIndex,
-        left: rect.left + rect.width * ratio,
-        top: rect.bottom + PORTAL_GAP_PX,
-        transform: "translate(-50%, 0)",
-      };
-    case "left":
-      return {
-        position: "fixed",
-        zIndex,
-        left: rect.left - PORTAL_SIDE_GAP_PX,
-        top: rect.top + rect.height * ratio,
-        transform: "translate(-100%, -50%)",
-      };
-    case "right":
-      return {
-        position: "fixed",
-        zIndex,
-        left: rect.right + PORTAL_SIDE_GAP_PX,
-        top: rect.top + rect.height * ratio,
-        transform: "translate(0, -50%)",
-      };
-  }
 }
 
 export interface HoverCalloutTooltipProps {
@@ -168,9 +54,10 @@ export interface HoverCalloutTooltipProps {
   /**
    * Render the callout on `document.body` so it can paint above other layers
    * (e.g. the floating invite button over the footer Steam wishlist hint).
+   * Visible callouts are always portaled so they can stay inside the viewport.
    */
   portal?: boolean;
-  /** `sm` is header chrome. `md` matches footer label size (`text-xs`). */
+  /** `sm` is header chrome. `md` matches footer label size (12px). */
   size?: keyof typeof CALLOUT_SIZE;
 }
 
@@ -190,16 +77,21 @@ export function HoverCalloutTooltip({
   size = "sm",
 }: HoverCalloutTooltipProps) {
   const wrapRef = useRef<HTMLDivElement>(null);
+  const calloutRef = useRef<HTMLElement | null>(null);
   const [isHovered, setIsHovered] = useState(false);
   const [triggerRect, setTriggerRect] = useState<DOMRect | null>(null);
+  const [calloutSize, setCalloutSize] = useState<{
+    width: number;
+    height: number;
+  } | null>(null);
   const visible = forceVisible || (hoverEnabled && isHovered);
+  const usePortal = portal || visible;
 
   useEffect(() => {
     return subscribeGameTabHidden(() => {
       if (isGameTabHidden()) setIsHovered(false);
     });
   }, []);
-  const layout = SIDE_LAYOUT[side][arrowAlign];
   const calloutClickable = !!onCalloutClick;
 
   const updateTriggerRect = useCallback(() => {
@@ -209,7 +101,7 @@ export function HoverCalloutTooltip({
   }, []);
 
   useLayoutEffect(() => {
-    if (!portal) return;
+    if (!usePortal) return;
     updateTriggerRect();
     window.addEventListener("resize", updateTriggerRect);
     window.addEventListener("scroll", updateTriggerRect, true);
@@ -217,20 +109,60 @@ export function HoverCalloutTooltip({
       window.removeEventListener("resize", updateTriggerRect);
       window.removeEventListener("scroll", updateTriggerRect, true);
     };
-  }, [portal, updateTriggerRect, visible]);
+  }, [usePortal, updateTriggerRect, visible]);
 
-  const calloutInner = (
-    <>
-      <span className="whitespace-nowrap">{label}</span>
-      <div
-        className={cn(
-          "absolute rotate-45 bg-inherit p-1",
-          layout.arrow,
-        )}
-        aria-hidden
-      />
-    </>
-  );
+  useLayoutEffect(() => {
+    if (!visible) {
+      setCalloutSize(null);
+      return;
+    }
+    const node = calloutRef.current;
+    if (!node) return;
+    const rect = node.getBoundingClientRect();
+    setCalloutSize((prev) => {
+      if (
+        prev &&
+        Math.abs(prev.width - rect.width) < 0.5 &&
+        Math.abs(prev.height - rect.height) < 0.5
+      ) {
+        return prev;
+      }
+      return { width: rect.width, height: rect.height };
+    });
+  }, [visible, label, size, triggerRect]);
+
+  const fadeStyle: CSSProperties | undefined =
+    fadeDurationMs === undefined
+      ? undefined
+      : { transitionDuration: `${fadeDurationMs}ms` };
+
+  const placement =
+    triggerRect && calloutSize
+      ? placeCalloutInViewport({
+        side,
+        arrowAlign,
+        trigger: triggerRect,
+        width: calloutSize.width,
+        height: calloutSize.height,
+        viewportWidth: window.innerWidth,
+        viewportHeight: window.innerHeight,
+      })
+      : null;
+
+  const placed = visible && placement !== null;
+
+  const portalStyle: CSSProperties | undefined = triggerRect
+    ? {
+      position: "fixed",
+      zIndex: Z_INDEX.tooltip,
+      left: placement?.left ?? triggerRect.left,
+      top: placement?.top ?? triggerRect.bottom,
+      maxWidth: placement?.maxWidth,
+      transform: undefined,
+      visibility: placed ? "visible" : "hidden",
+      ...fadeStyle,
+    }
+    : fadeStyle;
 
   const showHoverTooltip = (e: PointerEvent) => {
     if (!hoverEnabled) return;
@@ -247,36 +179,45 @@ export function HoverCalloutTooltip({
     }
   };
 
-  const fadeStyle: CSSProperties | undefined =
-    fadeDurationMs === undefined
-      ? undefined
-      : { transitionDuration: `${fadeDurationMs}ms` };
+  const setCalloutNode = (node: HTMLElement | null) => {
+    calloutRef.current = node;
+  };
 
-  const portalStyle: CSSProperties | undefined =
-    portal && triggerRect
-      ? { ...portalCalloutStyle(side, arrowAlign, triggerRect), ...fadeStyle }
-      : fadeStyle;
+  const arrowCss = calloutArrowCss(side, arrowAlign, placement);
+  const calloutInner = (
+    <>
+      <span className="whitespace-nowrap">{label}</span>
+      <div
+        className="absolute bg-inherit p-1"
+        style={{
+          left: arrowCss.left,
+          top: arrowCss.top,
+          transform: "translate(-50%, -50%) rotate(45deg)",
+        }}
+        aria-hidden
+      />
+    </>
+  );
 
   const calloutClassName = cn(
     CALLOUT_CHROME,
     "bg-primary",
     CALLOUT_SIZE[size],
-    portal ? "fixed" : "absolute z-[1]",
-    !portal && layout.callout,
-    calloutClickable
-      ? visible
-        ? "pointer-events-auto cursor-pointer opacity-100 hover:bg-primary/90"
-        : "pointer-events-none opacity-0"
-      : cn("pointer-events-none", visible ? "opacity-100" : "opacity-0"),
+    usePortal ? "fixed" : "absolute z-[1]",
+    placed ? "opacity-100" : "opacity-0",
+    calloutClickable && placed
+      ? "pointer-events-auto cursor-pointer hover:bg-primary/90"
+      : "pointer-events-none",
   );
 
   const calloutEl = calloutClickable ? (
     <button
       type="button"
+      ref={setCalloutNode}
       onClick={onCalloutClick}
       onPointerEnter={showHoverTooltip}
-      tabIndex={visible ? 0 : -1}
-      aria-hidden={!visible}
+      tabIndex={placed ? 0 : -1}
+      aria-hidden={!placed}
       className={calloutClassName}
       style={portalStyle}
     >
@@ -284,16 +225,17 @@ export function HoverCalloutTooltip({
     </button>
   ) : (
     <div
+      ref={setCalloutNode}
       className={calloutClassName}
       style={portalStyle}
-      aria-hidden={!visible}
+      aria-hidden={!placed}
     >
       {calloutInner}
     </div>
   );
 
   const portaledCallout =
-    portal && typeof document !== "undefined"
+    usePortal && typeof document !== "undefined"
       ? triggerRect
         ? createPortal(calloutEl, document.body)
         : null
