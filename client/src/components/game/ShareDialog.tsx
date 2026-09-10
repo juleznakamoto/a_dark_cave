@@ -3,7 +3,6 @@ import {
   useLayoutEffect,
   useRef,
   useState,
-  type CSSProperties,
 } from "react";
 import type { AchievementChartConfig } from "@/achievements/achievementTypes";
 import { useTranslation } from "react-i18next";
@@ -28,13 +27,10 @@ import { ResourceCoinIcon } from "@/components/ui/resource-coin-icon";
 import { ResourceInsightIcon } from "@/components/ui/resource-insight-icon";
 import AchievementMiniRingChart from "@/achievements/AchievementMiniRingChart";
 import {
-  basicChartConfig,
-  buildingChartConfig,
-  itemChartConfig,
-  actionChartConfig,
-  isOverallAchievementCategoryEnabled,
-  overallChartConfig,
-} from "@/achievements";
+  ACHIEVEMENT_RING_ICONS,
+  ACHIEVEMENT_RING_SHARE_SIZE,
+} from "@/achievements/achievementRingIcons";
+import { isOverallAchievementCategoryEnabled } from "@/achievements";
 import { getOverallAchievementPercent } from "@/achievements/achievementProgress";
 import { COMBAT_ITEM_RESOURCES } from "@/game/resourceLimits";
 import { getResourceName } from "@/i18n/resolveGameText";
@@ -79,12 +75,10 @@ const PRECIOUS_RESOURCE_ORDER = ["gold", "silver", "insight"] as const;
 /** Share card: resource rows at or above this amount count toward the header %. */
 const SHARE_RESOURCE_MILESTONE = 50_000;
 
-const RING_CHART_SIZE = 208;
+const RING_CHART_SIZE = ACHIEVEMENT_RING_SHARE_SIZE;
 const RING_GRID_GAP = 40;
 const RING_LABEL_FONT_SIZE = 30;
 const RING_LABEL_GAP = 8;
-/** Matches `pt-1` on the 58px tab icon, scaled to the share ring size. */
-const RING_SYMBOL_NUDGE_PX = 4 * (RING_CHART_SIZE / 58);
 
 const CATEGORY_HEADER_KEYS: Record<
   AchievementChartConfig["idPrefix"],
@@ -108,34 +102,9 @@ const CATEGORY_HEADER_DEFAULTS: Record<
   overall: "Epic",
 };
 
-type ShareRingEntry = {
-  config: AchievementChartConfig;
-  centerSymbolStyle?: CSSProperties;
-};
-
-const RING_ENTRIES: ShareRingEntry[] = [
-  { config: basicChartConfig },
-  {
-    config: buildingChartConfig,
-    centerSymbolStyle: { paddingTop: RING_SYMBOL_NUDGE_PX },
-  },
-  {
-    config: itemChartConfig,
-    centerSymbolStyle: { paddingTop: RING_SYMBOL_NUDGE_PX },
-  },
-  {
-    config: actionChartConfig,
-    centerSymbolStyle: { paddingTop: RING_SYMBOL_NUDGE_PX },
-  },
-  ...(isOverallAchievementCategoryEnabled
-    ? [
-      {
-        config: overallChartConfig,
-        centerSymbolStyle: { paddingTop: RING_SYMBOL_NUDGE_PX * 0.5 },
-      },
-    ]
-    : []),
-];
+const RING_ENTRIES = ACHIEVEMENT_RING_ICONS.filter(
+  (icon) => icon.id !== "overall" || isOverallAchievementCategoryEnabled,
+);
 
 /** Shared size for the "Resources" and "Achievements: X %" headings. */
 const SECTION_HEADING_FONT_SIZE = 36;
@@ -441,9 +410,9 @@ function ShareCard({
                   rowGap: SECTION_RING_ROW_GAP,
                 }}
               >
-                {RING_ENTRIES.map(({ config, centerSymbolStyle }) => (
+                {RING_ENTRIES.map((icon) => (
                   <div
-                    key={config.idPrefix}
+                    key={icon.id}
                     className="flex flex-col items-center"
                     style={{ gap: RING_LABEL_GAP }}
                   >
@@ -451,13 +420,12 @@ function ShareCard({
                       className="font-medium leading-none tracking-wide text-gray-400"
                       style={{ fontSize: RING_LABEL_FONT_SIZE }}
                     >
-                      {ringLabels[config.idPrefix]}
+                      {ringLabels[icon.id]}
                     </div>
                     <AchievementMiniRingChart
-                      config={config}
+                      config={icon.config}
                       isActive
                       size={RING_CHART_SIZE}
-                      centerSymbolStyle={centerSymbolStyle}
                     />
                   </div>
                 ))}

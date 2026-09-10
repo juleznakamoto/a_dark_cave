@@ -10,6 +10,12 @@ import {
   GAME_PANEL_HEADER_INDICATOR_SIZE_PX,
 } from "@/components/game/gameChrome";
 import { GameUiIcon } from "@/components/game/GameUiIcon";
+import AchievementMiniRingChart from "@/achievements/AchievementMiniRingChart";
+import {
+  ACHIEVEMENT_RING_ICONS,
+  ACHIEVEMENT_RING_SHARE_SIZE,
+  ACHIEVEMENT_RING_TAB_SIZE,
+} from "@/achievements/achievementRingIcons";
 import {
   DIALOG_INDICATOR_ICONS,
   HEADER_INDICATOR_ICONS,
@@ -113,6 +119,31 @@ function DialogIconCell({
   );
 }
 
+function AchievementRingCell({
+  icon,
+  size,
+}: {
+  icon: (typeof ACHIEVEMENT_RING_ICONS)[number];
+  size: number;
+}) {
+  return (
+    <div className="flex flex-col items-center gap-2">
+      <div className="relative" style={{ width: size, height: size }}>
+        <AchievementMiniRingChart
+          config={icon.config}
+          isActive
+          hideProgress
+          size={size}
+        />
+        <CenterCross />
+      </div>
+      <div className="text-center text-xs text-muted-foreground">
+        {icon.label}
+      </div>
+    </div>
+  );
+}
+
 function HeaderIconCell({
   label,
   ringClassName,
@@ -178,14 +209,44 @@ export default function ProductionIconsDemo() {
         <header className="space-y-1">
           <h1 className="text-lg font-semibold">Production effect icons</h1>
           <p className="text-sm text-muted-foreground">
-            Dev-only. Header rings copy VillagePanel / EstatePanel markup
-            (CircularProgress + GAME_PANEL_HEADER_*). Dialog rings copy
-            OutcomeDialog + DIALOG_INDICATOR_ICONS /
-            OUTCOME_DIALOG_ICONS. Red cross marks the
-            geometric center of each ring. Button overlays below are 1:1
-            copies of the chips we pin onto other buttons.
+            Dev-only. Achievement rings copy the Achievements tab and
+            share card. Nudge them in ACHIEVEMENT_RING_ICONS
+            (paddingTopPx). Header rings copy VillagePanel / EstatePanel.
+            Dialog rings copy OutcomeDialog. Red cross marks the
+            geometric center. Button overlays below are 1:1 copies of
+            the chips we pin onto other buttons.
           </p>
         </header>
+
+        <section className="space-y-3">
+          <h2 className="text-sm font-medium">
+            Achievement rings (58px, Achievements tab)
+          </h2>
+          <div className="flex flex-wrap items-end gap-x-8 gap-y-6">
+            {ACHIEVEMENT_RING_ICONS.map((icon) => (
+              <AchievementRingCell
+                key={icon.id}
+                icon={icon}
+                size={ACHIEVEMENT_RING_TAB_SIZE}
+              />
+            ))}
+          </div>
+        </section>
+
+        <section className="space-y-3">
+          <h2 className="text-sm font-medium">
+            Achievement rings (208px, share card)
+          </h2>
+          <div className="flex flex-wrap items-end gap-x-10 gap-y-8">
+            {ACHIEVEMENT_RING_ICONS.map((icon) => (
+              <AchievementRingCell
+                key={`share-${icon.id}`}
+                icon={icon}
+                size={ACHIEVEMENT_RING_SHARE_SIZE}
+              />
+            ))}
+          </div>
+        </section>
 
         <section className="space-y-3">
           <h2 className="text-sm font-medium">

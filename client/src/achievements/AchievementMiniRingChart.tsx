@@ -18,6 +18,7 @@ import {
   BACKGROUND_SELECTED_COLOR_HEX,
 } from "./achievementColors";
 import { isCategoryFullyComplete } from "./achievementProgress";
+import { achievementRingSymbolPaddingTop } from "./achievementRingIcons";
 
 interface Props {
   config: AchievementChartConfig;
@@ -181,6 +182,7 @@ export default function AchievementMiniRingChart({
         style={{
           opacity: iconOpacity,
           fontSize: 10 * scale,
+          paddingTop: achievementRingSymbolPaddingTop(config.idPrefix, size),
           ...(centerIconColor ? { color: centerIconColor } : {}),
           ...centerSymbolStyle,
         }}

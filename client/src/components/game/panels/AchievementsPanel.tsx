@@ -410,7 +410,6 @@ function TabTriggerWithTooltipWhenLocked({
   hideProgress,
   lockedTooltip,
   chartUnavailable,
-  centerSymbolClassName,
 }: {
   value: string;
   config: AchievementChartConfig;
@@ -419,7 +418,6 @@ function TabTriggerWithTooltipWhenLocked({
   hideProgress?: boolean;
   lockedTooltip: string;
   chartUnavailable: string;
-  centerSymbolClassName?: string;
 }) {
   const trigger = (
     <TabsTrigger
@@ -436,7 +434,6 @@ function TabTriggerWithTooltipWhenLocked({
           config={config}
           isActive={isActive}
           hideProgress={hideProgress ?? disabled}
-          centerSymbolClassName={centerSymbolClassName}
         />
       </ChartErrorBoundary>
     </TabsTrigger>
@@ -508,7 +505,6 @@ export default function AchievementsPanel() {
             hideProgress={!basicUnlocked}
             lockedTooltip={lockedTooltip}
             chartUnavailable={chartUnavailable}
-            centerSymbolClassName="pt-0.5"
           />
           <TabTriggerWithTooltipWhenLocked
             value="building"
@@ -518,7 +514,6 @@ export default function AchievementsPanel() {
             hideProgress={!bookOfTrials}
             lockedTooltip={lockedTooltip}
             chartUnavailable={chartUnavailable}
-            centerSymbolClassName="pt-1"
           />
           <TabTriggerWithTooltipWhenLocked
             value="item"
@@ -528,7 +523,6 @@ export default function AchievementsPanel() {
             hideProgress={!bookOfTrials}
             lockedTooltip={lockedTooltip}
             chartUnavailable={chartUnavailable}
-            centerSymbolClassName="pt-1"
           />
           <TabTriggerWithTooltipWhenLocked
             value="action"
@@ -538,7 +532,6 @@ export default function AchievementsPanel() {
             hideProgress={!bookOfTrials}
             lockedTooltip={lockedTooltip}
             chartUnavailable={chartUnavailable}
-            centerSymbolClassName="pt-1"
           />
           {showOverallTab && (
             <TabTriggerWithTooltipWhenLocked
@@ -549,7 +542,6 @@ export default function AchievementsPanel() {
               hideProgress={!overallUnlocked}
               lockedTooltip={lockedTooltip}
               chartUnavailable={chartUnavailable}
-              centerSymbolClassName="pt-0.5"
             />
           )}
         </TabsList>
