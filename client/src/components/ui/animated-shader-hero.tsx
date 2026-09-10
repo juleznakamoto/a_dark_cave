@@ -685,12 +685,12 @@ const Hero: React.FC<HeroProps> = ({
               <div
                 className={
                   buttons.primary.disabled
-                    ? "relative inline-block opacity-60"
+                    ? "relative inline-block"
                     : "group relative inline-block transition-all duration-300 hover:scale-105 hover:drop-shadow-[0_10px_25px_rgba(239,68,68,0.25)]"
                 }
               >
                 {buttons.primary.badge && (
-                  <span className="pointer-events-none absolute -top-2.5 -right-2 z-10 max-w-[min(12rem,calc(100vw-4rem))] rounded border border-emerald-500/90 bg-emerald-950/95 px-2 py-0.5 text-center text-2xs font-semibold uppercase leading-tight tracking-wide text-emerald-300 shadow-md sm:text-xs">
+                  <span className="pointer-events-none absolute -top-2.5 -right-2 z-10 max-w-[min(12rem,calc(100vw-4rem))] rounded border border-emerald-500/90 bg-emerald-950/95 px-2 py-0.5 text-center text-2xs font-semibold uppercase leading-tight tracking-wide text-emerald-300 shadow-md sm:text-xs opacity-100">
                     {buttons.primary.badge}
                   </span>
                 )}
@@ -705,7 +705,7 @@ const Hero: React.FC<HeroProps> = ({
                   button_id={buttons.primary.buttonId}
                   className={
                     buttons.primary.disabled
-                      ? `${END_SCREEN_CTA_BUTTON_GROUP_CLASS} cursor-not-allowed group-hover:from-red-800 group-hover:to-red-700`
+                      ? `${END_SCREEN_CTA_BUTTON_GROUP_CLASS} cursor-not-allowed opacity-60 group-hover:from-red-800 group-hover:to-red-700`
                       : END_SCREEN_CTA_BUTTON_GROUP_CLASS
                   }
                 >

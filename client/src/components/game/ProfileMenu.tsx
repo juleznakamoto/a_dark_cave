@@ -250,11 +250,11 @@ function useProfileMenuState() {
     setRestartGameDialogOpen(true);
   };
 
-  const handleConfirmRestart = async () => {
+  const handleConfirmRestart = async (options?: { cruelMode?: boolean }) => {
     // Keep the dialog open (sim paused) until restart + save finish, then
     // restartGame clears restartGameDialogOpen itself.
     await deleteSave(); // Local IndexedDB only; cloud is replaced by restart save
-    await restartGame();
+    await restartGame(options);
   };
 
   const handleManualSave = async () => {

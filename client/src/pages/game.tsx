@@ -59,6 +59,11 @@ export default function Game({
           }
           setShopDialogOpen(true, "url");
         }
+        if (result.openNewGame) {
+          useGameStore.getState().setRestartGameDialogOpen(true, {
+            preferCruelMode: result.preferCruelMode,
+          });
+        }
         if (result.showEmailConfirmedDialog) {
           setEmailConfirmedDialogOpen(true);
         }

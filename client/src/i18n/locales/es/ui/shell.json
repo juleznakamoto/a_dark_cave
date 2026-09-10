@@ -10,7 +10,8 @@
     "gameModeSteamPlaytest": "Playtest de Steam",
     "gameModeSteamDemo": "Demo de Steam",
     "gameModeDemoEnd": "Fin de la demo",
-    "gameModeSteamEndScreen": "Pantalla final de Steam",
+    "gameModeSteamEndCruelOn": "Final Steam (Cruel activado)",
+    "gameModeSteamEndCruelOff": "Final Steam (Cruel desactivado)",
     "gameModeCrazyGamesDemo": "Demo de CrazyGames"
   },
   "textScale": {

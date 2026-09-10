@@ -12,6 +12,7 @@ import { audioManager } from "@/lib/audio";
 import {
   DEV_GAME_MODE_OPTIONS,
   isSteamBuild,
+  isSteamEndScreenDevMode,
   type DevGameMode,
 } from "@/lib/edition";
 import {
@@ -79,7 +80,8 @@ const GAME_MODE_LABEL_KEYS: Record<
   | "settings.gameModeSteamPlaytest"
   | "settings.gameModeSteamDemo"
   | "settings.gameModeDemoEnd"
-  | "settings.gameModeSteamEndScreen"
+  | "settings.gameModeSteamEndCruelOn"
+  | "settings.gameModeSteamEndCruelOff"
   | "settings.gameModeCrazyGamesDemo"
 > = {
   normal: "settings.gameModeNormal",
@@ -87,7 +89,8 @@ const GAME_MODE_LABEL_KEYS: Record<
   steamPlaytest: "settings.gameModeSteamPlaytest",
   steamDemo: "settings.gameModeSteamDemo",
   demoEnd: "settings.gameModeDemoEnd",
-  steamEndScreen: "settings.gameModeSteamEndScreen",
+  steamEndCruelOn: "settings.gameModeSteamEndCruelOn",
+  steamEndCruelOff: "settings.gameModeSteamEndCruelOff",
   crazyGamesDemo: "settings.gameModeCrazyGamesDemo",
 };
 
@@ -97,7 +100,8 @@ const GAME_MODE_DEFAULTS: Record<DevGameMode, string> = {
   steamPlaytest: "Steam Playtest",
   steamDemo: "Steam Demo",
   demoEnd: "Demo End",
-  steamEndScreen: "Steam End Screen",
+  steamEndCruelOn: "Steam End (Cruel On)",
+  steamEndCruelOff: "Steam End (Cruel Off)",
   crazyGamesDemo: "CrazyGames Demo",
 };
 
@@ -491,7 +495,7 @@ export default function SettingsDialog({
                   value={devGameMode}
                   onChange={(mode) => {
                     setDevGameMode(mode);
-                    if (mode === "steamEndScreen") {
+                    if (isSteamEndScreenDevMode(mode)) {
                       setLocation("/end-screen");
                     }
                   }}

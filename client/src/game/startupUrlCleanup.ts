@@ -17,6 +17,7 @@ export type StartupUrlCleanupScope =
   | "boost-path"
   | "hard-reload-bust"
   | "shop"
+  | "new-game"
   | "referral";
 
 export interface StartupUrlCleanupPlan {
@@ -39,6 +40,7 @@ export function planStartupUrlCleanup(
     scopes.push("campaign");
   }
   if (intent.openShop || intent.cruelShopHighlight) scopes.push("shop");
+  if (intent.openNewGame || intent.preferCruelMode) scopes.push("new-game");
   if (intent.paymentReturn) scopes.push("stripe-return");
   if (intent.boost) scopes.push("boost-path");
   if (intent.hardReloadCacheBust) scopes.push("hard-reload-bust");
@@ -128,6 +130,10 @@ function stripSearchParams(
   if (scopes.includes("shop")) {
     search.delete("openShop");
     search.delete("cruelHighlight");
+  }
+  if (scopes.includes("new-game")) {
+    search.delete("openNewGame");
+    search.delete("cruelMode");
   }
   if (scopes.includes("stripe-return")) {
     search.delete("payment_intent");

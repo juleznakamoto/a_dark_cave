@@ -19,9 +19,13 @@ vi.mock("@/lib/supabase", () => ({
   getSupabaseClient: mockGetSupabaseClient,
 }));
 
-vi.mock("@/lib/edition", () => ({
-  isLocalOnlyEdition: () => false,
-}));
+vi.mock("@/lib/edition", async (importOriginal) => {
+  const actual = await importOriginal<typeof import("@/lib/edition")>();
+  return {
+    ...actual,
+    isLocalOnlyEdition: () => false,
+  };
+});
 
 describe("startupUrlCleanup", () => {
   beforeEach(() => {
@@ -79,6 +83,19 @@ describe("startupUrlCleanup", () => {
     await consumeStartupAuthCallback(window.location);
     expect(mockGetSupabaseClient).toHaveBeenCalled();
     expect(mockGetSession).toHaveBeenCalled();
+  });
+
+  it("strips new-game handoff params while preserving unrelated query", () => {
+    window.history.replaceState(
+      {},
+      "",
+      "/?game=true&openNewGame=true&cruelMode=true&keep=1",
+    );
+    expect(
+      planStartupUrlCleanup(window.location).scopes,
+    ).toContain("new-game");
+    applyStartupUrlCleanup(window.location, ["new-game"]);
+    expect(window.location.search).toBe("?game=true&keep=1");
   });
 
   it("strips campaign and shop params while preserving unrelated query", () => {

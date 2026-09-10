@@ -94,10 +94,39 @@ describe("parseStartupIntent", () => {
       boost: false,
       forceGame: false,
       openShop: false,
+      openNewGame: false,
+      preferCruelMode: false,
       hardReloadCacheBust: false,
       utmAttribution: null,
       referralCode: null,
       devSave: null,
+    });
+  });
+
+  it("recognizes new-game handoff from the Steam end screen", () => {
+    expect(
+      parseStartupIntent({
+        pathname: "/",
+        search: "?game=true&openNewGame=true&cruelMode=true",
+        hash: "",
+      }),
+    ).toMatchObject({
+      forceGame: true,
+      openNewGame: true,
+      preferCruelMode: true,
+    });
+  });
+
+  it("does not prefill Cruel Mode unless openNewGame is set", () => {
+    expect(
+      parseStartupIntent({
+        pathname: "/",
+        search: "?cruelMode=true",
+        hash: "",
+      }),
+    ).toMatchObject({
+      openNewGame: false,
+      preferCruelMode: false,
     });
   });
 

@@ -26,6 +26,10 @@ export interface StartupIntent {
   forceGame: boolean;
   openShop: boolean;
   cruelShopHighlight: boolean;
+  /** Steam end-screen Cruel Mode CTA: open the new-game dialog after landing in Game. */
+  openNewGame: boolean;
+  /** Pre-check Cruel Mode on that new-game dialog. */
+  preferCruelMode: boolean;
   googleAdsSource: string | null;
   /** First-touch campaign params from the landing URL (UTM + legacy `c`). */
   utmAttribution: UtmAttribution | null;
@@ -59,6 +63,9 @@ export function parseStartupIntent(location: StartupLocation): StartupIntent {
     search.get("payment_intent") && search.get("redirect_status"),
   );
   const openShop = search.get("openShop") === "true";
+  const openNewGame = search.get("openNewGame") === "true";
+  const preferCruelMode =
+    openNewGame && search.get("cruelMode") === "true";
   const accessToken = hash.get("access_token") || search.get("access_token");
   const oauthCallback = hasOauthCallbackMaterial(search, hash);
   const utmAttribution = utmAttributionFromSearchParams(search);
@@ -81,6 +88,8 @@ export function parseStartupIntent(location: StartupLocation): StartupIntent {
     openShop,
     cruelShopHighlight:
       openShop && search.get("cruelHighlight") === "true",
+    openNewGame,
+    preferCruelMode,
     googleAdsSource: search.get("c"),
     utmAttribution,
     referralCode: parseRefParam(search.get("ref")),

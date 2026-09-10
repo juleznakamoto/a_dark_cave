@@ -398,6 +398,26 @@ export function shopGlyphHoverParticleColors(
   return (GOLD_COIN_PARTICLE_CONFIG.colors ?? []) as string[];
 }
 
+/** Short red ember burst from a Cruel Mode control (new-game checkbox). */
+export const CRUEL_MODE_ACTIVATE_PARTICLE_CONFIG: Partial<ParticleConfig> = {
+  colors: [
+    tailwindToHex("red-600"),
+    tailwindToHex("red-700"),
+    tailwindToHex("red-800"),
+    tailwindToHex("orange-700"),
+    tailwindToHex("orange-800"),
+    tailwindToHex("amber-600"),
+    tailwindToHex("amber-700"),
+  ],
+  count: 50,
+  durationMin: 0.4,
+  durationMax: 1,
+  distanceMin: 20,
+  distanceMax: 50,
+  sizeMin: 1,
+  sizeMax: 4,
+};
+
 /** Same timing/size as coin hover; colors follow the shop item glyph (`symbolColor`). */
 export function getShopGlyphHoverParticleConfig(
   symbolColorClass?: string,

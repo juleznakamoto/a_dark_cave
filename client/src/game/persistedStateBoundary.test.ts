@@ -148,6 +148,7 @@ describe("persistedStateBoundary", () => {
     expect(reset.signUpPromptEligibleForGold).toBe(false);
     expect(reset.inactivityReason).toBeNull();
     expect(reset.shopCruelModeHighlight).toBe(false);
+    expect(reset.restartGamePreferCruelMode).toBe(false);
   });
 
   it("matches blocking dialog semantics from the registry", () => {

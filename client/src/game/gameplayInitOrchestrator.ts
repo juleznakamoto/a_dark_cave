@@ -41,6 +41,8 @@ export interface GameplayInitResult {
   showEmailConfirmedDialog: boolean;
   openShop: boolean;
   cruelShopHighlight: boolean;
+  openNewGame: boolean;
+  preferCruelMode: boolean;
   /** Auth, cloud merge, Stripe, audio, and fonts. Does not block first paint. */
   background: Promise<void>;
 }
@@ -153,6 +155,8 @@ export async function runGameplayInitialization(
       intent.emailConfirmed && !isLocalOnlyEdition(),
     openShop: intent.openShop,
     cruelShopHighlight: intent.cruelShopHighlight,
+    openNewGame: intent.openNewGame,
+    preferCruelMode: intent.preferCruelMode,
     background: Promise.resolve().then(() =>
       finishGameplayInitialization(location, {
         didLocalLoad,
@@ -237,6 +241,7 @@ async function finishGameplayInitialization(
   applyStartupUrlCleanup(location, [
     "campaign",
     "shop",
+    "new-game",
     ...(intent.boost ? (["boost-path"] as const) : []),
   ]);
 

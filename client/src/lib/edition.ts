@@ -13,7 +13,8 @@
  * CrazyGames uses `VITE_CRAZYGAMES=1` (`build:crazygames`) or the `/crazygames` path.
  *
  * In DEV (non-Steam builds), Settings → Game Mode can simulate Steam Game / Playtest /
- * Demo / Demo End / Steam End Screen / CrazyGames Demo via {@link setDevGameModeOverride}.
+ * Demo / Demo End / Steam End (Cruel On/Off) / CrazyGames Demo via
+ * {@link setDevGameModeOverride}.
  */
 import { tryGetBoundGameStore } from "@/game/gameStoreHolder";
 
@@ -66,7 +67,8 @@ export type DevGameMode =
   | "steamPlaytest"
   | "steamDemo"
   | "demoEnd"
-  | "steamEndScreen"
+  | "steamEndCruelOn"
+  | "steamEndCruelOff"
   | "crazyGamesDemo";
 
 export const DEV_GAME_MODE_OPTIONS: readonly DevGameMode[] = [
@@ -75,9 +77,17 @@ export const DEV_GAME_MODE_OPTIONS: readonly DevGameMode[] = [
   "steamPlaytest",
   "steamDemo",
   "demoEnd",
-  "steamEndScreen",
+  "steamEndCruelOn",
+  "steamEndCruelOff",
   "crazyGamesDemo",
 ] as const;
+
+/** DEV Settings → Steam End (Cruel On) or Steam End (Cruel Off). */
+export function isSteamEndScreenDevMode(
+  mode: DevGameMode | undefined,
+): boolean {
+  return mode === "steamEndCruelOn" || mode === "steamEndCruelOff";
+}
 
 function isPathPrefix(prefix: string): boolean {
   if (typeof window === "undefined") return false;
@@ -96,7 +106,7 @@ export function isSimulatedSteamGameMode(
   return (
     mode === "steamGame" ||
     mode === "steamPlaytest" ||
-    mode === "steamEndScreen"
+    isSteamEndScreenDevMode(mode)
   );
 }
 
@@ -154,13 +164,48 @@ export function isFullGameUnlockedEdition(): boolean {
   return isSteamBuild || isGalaxyEdition() || isCrazyGamesEdition();
 }
 
+const DEV_GAME_MODE_STORAGE_KEY = "adc-dev-game-mode";
+
 /** Dev-only Game Mode override synced from the game store Settings dropdown. */
 let devGameModeOverride: DevGameMode = "normal";
+let didHydrateDevGameMode = false;
+
+function readStoredDevGameMode(): DevGameMode {
+  if (!import.meta.env.DEV || typeof sessionStorage === "undefined") {
+    return "normal";
+  }
+  try {
+    const raw = sessionStorage.getItem(DEV_GAME_MODE_STORAGE_KEY);
+    if (
+      typeof raw === "string" &&
+      (DEV_GAME_MODE_OPTIONS as readonly string[]).includes(raw)
+    ) {
+      return raw as DevGameMode;
+    }
+  } catch {
+    // private mode / quota
+  }
+  return "normal";
+}
+
+function hydrateDevGameModeOverride(): DevGameMode {
+  if (!didHydrateDevGameMode) {
+    didHydrateDevGameMode = true;
+    devGameModeOverride = readStoredDevGameMode();
+  }
+  return devGameModeOverride;
+}
 
 /** Called by the store when Settings → Game Mode changes. No-op in production. */
 export function setDevGameModeOverride(mode: DevGameMode): void {
   if (import.meta.env.DEV) {
+    didHydrateDevGameMode = true;
     devGameModeOverride = mode;
+    try {
+      sessionStorage.setItem(DEV_GAME_MODE_STORAGE_KEY, mode);
+    } catch {
+      // private mode / quota
+    }
   }
 }
 
@@ -173,7 +218,7 @@ export function setDevSteamModeOverride(enabled: boolean): void {
 }
 
 export function getDevGameModeOverride(): DevGameMode {
-  return import.meta.env.DEV ? devGameModeOverride : "normal";
+  return import.meta.env.DEV ? hydrateDevGameModeOverride() : "normal";
 }
 
 /**
@@ -204,7 +249,7 @@ function resolveDevGameMode(explicit?: DevGameMode): DevGameMode {
   if (explicit && isKnownDevGameMode(explicit)) return explicit;
   const storeMode = tryGetBoundGameStore()?.getState()?.devGameMode;
   if (isKnownDevGameMode(storeMode)) return storeMode;
-  return import.meta.env.DEV ? devGameModeOverride : "normal";
+  return import.meta.env.DEV ? hydrateDevGameModeOverride() : "normal";
 }
 
 /**

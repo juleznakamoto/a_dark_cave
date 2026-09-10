@@ -10,6 +10,7 @@ import {
   isSteamDemoRuntime,
   isSteamPlaytestBuild,
   getDevGameModeOverride,
+  isSteamEndScreenDevMode,
 } from "@/lib/edition";
 
 export { SAVE_ORIGIN_EDITIONS, type SaveOriginEdition };
@@ -25,7 +26,9 @@ export function getSaveOriginEdition(): SaveOriginEdition {
     const mode = getDevGameModeOverride();
     if (mode === "steamPlaytest") return "steam-playtest";
     if (mode === "steamDemo" || mode === "demoEnd") return "steam-demo";
-    if (mode === "steamGame" || mode === "steamEndScreen") return "steam-full";
+    if (mode === "steamGame" || isSteamEndScreenDevMode(mode)) {
+      return "steam-full";
+    }
     if (mode === "crazyGamesDemo") return "crazygames";
   }
   return "web";

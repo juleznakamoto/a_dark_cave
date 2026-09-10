@@ -52,6 +52,7 @@ export const RUNTIME_ONLY_NON_DIALOG_KEYS = [
   "compassGlowButton",
   "isPausedPreviously",
   "demoEndDialogDismissed",
+  "restartGamePreferCruelMode",
 ] as const;
 
 const TIMED_EVENT_TAB_PERSISTED_KEYS = [
@@ -136,6 +137,7 @@ export function getTransientDialogResetOnLoad(): Record<string, unknown> {
     ...getTransientDialogResetFromRegistry(),
     signUpPromptEligibleForGold: false,
     inactivityReason: null,
+    restartGamePreferCruelMode: false,
   };
 }
 

@@ -9,6 +9,8 @@ import {
   isLocalOnlyEdition,
   isSteamBuild,
   isSteamEditionActive,
+  isSteamEndScreenDevMode,
+  getDevGameModeOverride,
   setDevGameModeOverride,
   type DevGameMode,
 } from "@/lib/edition";
@@ -245,7 +247,7 @@ interface GameStore extends GameState {
   accountSteamMode: boolean;
   /**
    * Simulate Normal / Steam Game / Steam Playtest / Steam Demo /
-   * Demo End / Steam End Screen / CrazyGames Demo without a Steam build
+   * Demo End / Steam End (Cruel On/Off) / CrazyGames Demo without a Steam build
    * (Settings → Game Mode in DEV, or a live account with `accountSteamMode`).
    */
   devGameMode: DevGameMode;
@@ -318,6 +320,11 @@ interface GameStore extends GameState {
   inactivityDialogOpen: boolean;
   inactivityReason: "timeout" | "multitab" | null;
   restartGameDialogOpen: boolean;
+  /**
+   * Transient: pre-check Cruel Mode on the new-game dialog (end-screen CTA).
+   * Cleared when the dialog closes. Runtime-only.
+   */
+  restartGamePreferCruelMode: boolean;
   deleteAccountDialogOpen: boolean;
   settingsDialogOpen: boolean;
   feedbackDialogOpen: boolean;
@@ -536,7 +543,7 @@ interface GameStore extends GameState {
   setHoveredTooltip: (tooltipId: string, value: boolean) => void;
   setScrollIndicatorSeen: (scrollAreaId: string) => void;
   initialize: (state: GameState) => void;
-  restartGame: () => void;
+  restartGame: (options?: { cruelMode?: boolean }) => void;
   /** Hydrate the store once; returns true when a persisted save was loaded. */
   loadGame: (options?: { cloud?: boolean }) => Promise<boolean>;
   toggleDevMode: () => void;
@@ -621,7 +628,10 @@ interface GameStore extends GameState {
   /** Grandfather legacy `additional_construction_queue_slot` shop purchases. */
   grantAdditionalConstructionQueueSlot: () => void;
   setIdleModeDialog: (isOpen: boolean) => void;
-  setRestartGameDialogOpen: (isOpen: boolean) => void;
+  setRestartGameDialogOpen: (
+    isOpen: boolean,
+    options?: { preferCruelMode?: boolean },
+  ) => void;
   setSettingsDialogOpen: (isOpen: boolean) => void;
   setDevGameMode: (mode: DevGameMode) => void;
   setDeleteAccountDialogOpen: (isOpen: boolean) => void;
@@ -1963,7 +1973,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
   devMode: resolveDevMode(false),
   devMultipliers: false,
   accountSteamMode: false,
-  devGameMode: "normal",
+  devGameMode: getDevGameModeOverride(),
   activeDevSaveId: null,
   lastSaved: "Never",
   cooldowns: {},
@@ -2023,6 +2033,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
   inactivityDialogOpen: false,
   inactivityReason: null,
   restartGameDialogOpen: false,
+  restartGamePreferCruelMode: false,
   deleteAccountDialogOpen: false,
   settingsDialogOpen: false,
   feedbackDialogOpen: false,
@@ -2955,7 +2966,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
     });
   },
 
-  restartGame: async () => {
+  restartGame: async (options?: { cruelMode?: boolean }) => {
     const state = get();
 
     // In-place restart returns to StartScreen (gameStarted false) without a full
@@ -2969,15 +2980,18 @@ export const useGameStore = create<GameStore>((set, get) => ({
     }
 
     // Check if cruel mode is activated (support both old and new purchase ID formats)
+    const explicitCruelMode = options?.cruelMode;
+    const isCruelModePurchaseActive = Object.entries(
+      state.activatedPurchases || {},
+    ).some(
+      ([key, value]) =>
+        (key === "cruel_mode" || key.startsWith("purchase-cruel_mode-")) &&
+        value === true,
+    );
     const isCruelModeActive =
-      Object.keys(state.activatedPurchases || {}).some(
-        (key) => key === "cruel_mode" || key.startsWith("purchase-cruel_mode-"),
-      ) &&
-      Object.entries(state.activatedPurchases || {}).some(
-        ([key, value]) =>
-          (key === "cruel_mode" || key.startsWith("purchase-cruel_mode-")) &&
-          value === true,
-      );
+      explicitCruelMode !== undefined
+        ? explicitCruelMode
+        : isCruelModePurchaseActive;
 
     // Find the cruel mode purchase key to preserve
     const cruelModePurchaseKey = Object.keys(
@@ -2992,12 +3006,14 @@ export const useGameStore = create<GameStore>((set, get) => ({
       // Steam/Galaxy: keep the `full_game` entitlement sentinel across restarts.
       activatedPurchases: {
         ...(isFullGameUnlockedEdition() ? { full_game: true } : {}),
-        ...(cruelModePurchaseKey
-          ? {
-            [cruelModePurchaseKey]:
-              state.activatedPurchases?.[cruelModePurchaseKey] || false,
-          }
-          : {}),
+        ...(isCruelModeActive
+          ? { [cruelModePurchaseKey ?? "cruel_mode"]: true }
+          : explicitCruelMode === undefined && cruelModePurchaseKey
+            ? {
+              [cruelModePurchaseKey]:
+                state.activatedPurchases?.[cruelModePurchaseKey] || false,
+            }
+            : {}),
       },
       // Feast activations are reset (cleared) on new game
       feastActivations: {},
@@ -3067,6 +3083,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
       ...getTimedEventTabCleanupPatch(get().activeTab),
       investDialogOpen: false,
       restartGameDialogOpen: false,
+      restartGamePreferCruelMode: false,
       deleteAccountDialogOpen: false,
       settingsDialogOpen: false,
       resourceChangeEvents: [],
@@ -5116,8 +5133,16 @@ export const useGameStore = create<GameStore>((set, get) => ({
     }));
   },
 
-  setRestartGameDialogOpen: (isOpen: boolean) => {
-    set({ restartGameDialogOpen: isOpen });
+  setRestartGameDialogOpen: (
+    isOpen: boolean,
+    options?: { preferCruelMode?: boolean },
+  ) => {
+    set({
+      restartGameDialogOpen: isOpen,
+      restartGamePreferCruelMode: isOpen
+        ? options?.preferCruelMode === true
+        : false,
+    });
   },
 
   setDeleteAccountDialogOpen: (isOpen: boolean) => {
@@ -5143,7 +5168,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
         socialPromptDialogOpen: false,
         galaxyTimeUpDialogOpen: mode === "demoEnd",
         demoEndDialogDismissed: false,
-        ...(mode === "demoEnd" || mode === "steamEndScreen"
+        ...(mode === "demoEnd" || isSteamEndScreenDevMode(mode)
           ? { settingsDialogOpen: false }
           : {}),
       });

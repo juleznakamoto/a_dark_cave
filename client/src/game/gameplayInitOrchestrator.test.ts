@@ -75,12 +75,16 @@ vi.mock("@/game/boost", () => ({
 vi.mock("@/game/demoLimit", () => ({
   isDemoLimitReachedFromState: () => false,
 }));
-vi.mock("@/lib/edition", () => ({
-  isLocalOnlyEdition: () => false,
-  isDemoEdition: () => false,
-  isSteamBuild: false,
-  shouldSyncSteamAchievements: () => false,
-}));
+vi.mock("@/lib/edition", async (importOriginal) => {
+  const actual = await importOriginal<typeof import("@/lib/edition")>();
+  return {
+    ...actual,
+    isLocalOnlyEdition: () => false,
+    isDemoEdition: () => false,
+    isSteamBuild: false,
+    shouldSyncSteamAchievements: () => false,
+  };
+});
 vi.mock("@/game/devSaves", () => ({
   applyDevSaveToStore: (...args: unknown[]) => mocks.applyDevSave(...args),
 }));

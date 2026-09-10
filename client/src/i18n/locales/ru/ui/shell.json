@@ -10,7 +10,8 @@
     "gameModeSteamPlaytest": "Playtest Steam",
     "gameModeSteamDemo": "Демо Steam",
     "gameModeDemoEnd": "Конец демо",
-    "gameModeSteamEndScreen": "Финальный экран Steam",
+    "gameModeSteamEndCruelOn": "Финал Steam (Жестокий вкл.)",
+    "gameModeSteamEndCruelOff": "Финал Steam (Жестокий выкл.)",
     "gameModeCrazyGamesDemo": "Демо CrazyGames"
   },
   "textScale": {

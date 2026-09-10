@@ -54,6 +54,9 @@ export const SOUND_VOLUME = {
   achievement: 0.05,
 } as const;
 
+/** Same Make Fire one-shot; ~30% quieter than {@link SOUND_VOLUME.makeFire} (0.8). */
+export const CRUEL_MODE_ACTIVATE_VOLUME = 0.56;
+
 export function feedFireVolume(heartfireLevel: number): number {
   return (
     SOUND_VOLUME.feedFire.base +

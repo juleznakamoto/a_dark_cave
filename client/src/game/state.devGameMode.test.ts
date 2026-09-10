@@ -20,11 +20,20 @@ describe("setDevGameMode", () => {
     expect(state.galaxyTimeUpDialogOpen).toBe(true);
   });
 
-  it("closes settings when Steam End Screen is chosen", () => {
-    useGameStore.getState().setDevGameMode("steamEndScreen");
+  it("closes settings when Steam End (Cruel On) is chosen", () => {
+    useGameStore.getState().setDevGameMode("steamEndCruelOn");
 
     const state = useGameStore.getState();
-    expect(state.devGameMode).toBe("steamEndScreen");
+    expect(state.devGameMode).toBe("steamEndCruelOn");
+    expect(state.settingsDialogOpen).toBe(false);
+    expect(state.galaxyTimeUpDialogOpen).toBe(false);
+  });
+
+  it("closes settings when Steam End (Cruel Off) is chosen", () => {
+    useGameStore.getState().setDevGameMode("steamEndCruelOff");
+
+    const state = useGameStore.getState();
+    expect(state.devGameMode).toBe("steamEndCruelOff");
     expect(state.settingsDialogOpen).toBe(false);
     expect(state.galaxyTimeUpDialogOpen).toBe(false);
   });

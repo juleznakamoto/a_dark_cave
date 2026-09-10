@@ -5,6 +5,7 @@ import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import {
   audioManager,
   caveExploreVolume,
+  CRUEL_MODE_ACTIVATE_VOLUME,
   feedFireVolume,
   SOUND_VOLUME,
 } from "@/lib/audio";
@@ -39,6 +40,12 @@ const AMBIENCE: DemoCue[] = [
 
 const SFX: DemoCue[] = [
   { id: "makeFire", label: "Make Fire", volume: SOUND_VOLUME.makeFire },
+  {
+    id: "cruelModeActivate",
+    sound: "makeFire",
+    label: "Cruel Mode checkbox",
+    volume: CRUEL_MODE_ACTIVATE_VOLUME,
+  },
   {
     id: "monsterStart",
     label: "Start-screen eyes",

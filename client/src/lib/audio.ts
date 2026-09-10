@@ -27,6 +27,7 @@ export {
   EVENT_AMBIENCE_FADE_SECONDS,
   EVENT_DIALOG_AMBIENCE_FADE_SECONDS,
   SOUND_VOLUME,
+  CRUEL_MODE_ACTIVATE_VOLUME,
   caveExploreVolume,
   feedFireVolume,
 } from './soundVolumes';

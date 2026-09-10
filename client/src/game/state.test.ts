@@ -886,6 +886,50 @@ describe("Timed event tab cleanup on new game", () => {
     );
   });
 
+  it("restartGame honors an explicit Cruel Mode choice", async () => {
+    mockSaveGame.mockClear();
+
+    useGameStore.setState({
+      cruelMode: false,
+      activatedPurchases: {},
+      flags: { ...useGameStore.getState().flags, gameStarted: true },
+    });
+
+    await useGameStore.getState().restartGame({ cruelMode: true });
+
+    const state = useGameStore.getState();
+    expect(state.cruelMode).toBe(true);
+    expect(state.activatedPurchases.cruel_mode).toBe(true);
+  });
+
+  it("restartGame can start a normal run even if Cruel Mode was active", async () => {
+    mockSaveGame.mockClear();
+
+    useGameStore.setState({
+      cruelMode: true,
+      activatedPurchases: { cruel_mode: true },
+      flags: { ...useGameStore.getState().flags, gameStarted: true },
+    });
+
+    await useGameStore.getState().restartGame({ cruelMode: false });
+
+    const state = useGameStore.getState();
+    expect(state.cruelMode).toBe(false);
+    expect(state.activatedPurchases.cruel_mode).toBeUndefined();
+  });
+
+  it("setRestartGameDialogOpen stores the Cruel Mode prefill only while open", () => {
+    useGameStore.getState().setRestartGameDialogOpen(true, {
+      preferCruelMode: true,
+    });
+    expect(useGameStore.getState().restartGameDialogOpen).toBe(true);
+    expect(useGameStore.getState().restartGamePreferCruelMode).toBe(true);
+
+    useGameStore.getState().setRestartGameDialogOpen(false);
+    expect(useGameStore.getState().restartGameDialogOpen).toBe(false);
+    expect(useGameStore.getState().restartGamePreferCruelMode).toBe(false);
+  });
+
   it("restartGame re-applies gold from already-claimed social tasks", async () => {
     mockSaveGame.mockClear();
 

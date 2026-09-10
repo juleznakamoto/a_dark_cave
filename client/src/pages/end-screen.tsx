@@ -4,9 +4,10 @@ import Hero from "@/components/ui/animated-shader-hero";
 import { initPlaylight, markPlaylightDiscoveryUserInitiated } from "@/lib/playlight";
 import { mountNotoSansSymbols2FontFace } from "@/lib/notoSansSymbols2FontFace";
 import { useGameStore } from "@/game/state";
+import { isSteamCruelModeUnlockAvailable } from "@/game/steamCruelModeUnlock";
 import { useUiTranslation } from "@/i18n/useUiTranslation";
 import { ensureGameplayLocalesLoaded } from "@/i18n/loadLocaleResources";
-import { isSteamBuild } from "@/lib/edition";
+import { isSteamBuild, isSteamEndScreenDevMode } from "@/lib/edition";
 import {
   useSteamDesktopEditionActive,
   useSteamEditionActive,
@@ -21,6 +22,9 @@ export default function EndScreenPage() {
   const steamEditionActive = useSteamEditionActive();
   const steamDesktopEditionActive = useSteamDesktopEditionActive();
   const [isCruelModeRun, setIsCruelModeRun] = useState<boolean | null>(null);
+  const [steamCruelUnlockAvailable, setSteamCruelUnlockAvailable] =
+    useState(false);
+  const [previewNormalSteamEnd, setPreviewNormalSteamEnd] = useState(false);
 
   useEffect(() => {
     mountNotoSansSymbols2FontFace();
@@ -33,20 +37,37 @@ export default function EndScreenPage() {
           ensureGameplayLocalesLoaded(),
           useGameStore.getState().loadGame(),
         ]);
-        setIsCruelModeRun(Boolean(useGameStore.getState().cruelMode));
+        const state = useGameStore.getState();
+        setIsCruelModeRun(Boolean(state.cruelMode));
+        setPreviewNormalSteamEnd(isSteamEndScreenDevMode(state.devGameMode));
+        setSteamCruelUnlockAvailable(
+          isSteamCruelModeUnlockAvailable({
+            devGameMode: state.devGameMode,
+            hasWonNormalGame: state.hasWonNormalGame,
+          }),
+        );
       } catch {
         setIsCruelModeRun(false);
+        setPreviewNormalSteamEnd(false);
+        setSteamCruelUnlockAvailable(false);
       }
     })();
   }, []);
 
-  const isCruelModeCompletion = isCruelModeRun === true;
+  const isCruelModeCompletion =
+    isCruelModeRun === true && !previewNormalSteamEnd;
+  const showSteamCruelComingSoon =
+    steamDesktopEditionActive && !steamCruelUnlockAvailable;
 
   const handleMainMenu = async () => {
     navigateSpa("/?game=true");
   };
 
   const handleCruelMode = async () => {
+    if (steamCruelUnlockAvailable) {
+      navigateSpa("/?game=true&openNewGame=true&cruelMode=true");
+      return;
+    }
     if (isSteamBuild || steamEditionActive) {
       try {
         const store = useGameStore.getState();
@@ -126,14 +147,16 @@ export default function EndScreenPage() {
             ? {
               primary: {
                 text: t("endScreen.cruelMode"),
-                onClick: steamDesktopEditionActive
+                onClick: showSteamCruelComingSoon
                   ? undefined
                   : handleCruelMode,
                 buttonId: "end-screen-cruel-mode",
-                badge: steamDesktopEditionActive
+                badge: showSteamCruelComingSoon
                   ? t("endScreen.cruelModeComingSoon")
-                  : t("endScreen.cruelModeBadge"),
-                disabled: steamDesktopEditionActive,
+                  : steamDesktopEditionActive
+                    ? undefined
+                    : t("endScreen.cruelModeBadge"),
+                disabled: showSteamCruelComingSoon,
               },
             }
             : {}),
