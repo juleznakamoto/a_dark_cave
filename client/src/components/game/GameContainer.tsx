@@ -1368,7 +1368,7 @@ export default function GameContainer() {
               handle on its bottom edge (mobile) / right edge (desktop). */}
             <div
               ref={panelResize.sidePanelRef}
-              className="order-2 md:order-1 relative h-[36vh] md:h-auto min-h-[36vh] md:min-h-0 w-full pr-0 border-t md:border-t-0 md:border-r border-border overflow-hidden"
+              className="side-panel-overflow-glow order-2 md:order-1 relative h-[36vh] md:h-auto min-h-[36vh] md:min-h-0 w-full pr-0 border-t md:border-t-0 md:border-r border-border overflow-hidden"
               style={panelResize.sidePanelStyle}
             >
               <GameTabs />

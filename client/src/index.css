@@ -1082,15 +1082,15 @@ html.adc-text-large .game-panel-header-indicator-row {
   0%,
   100% {
     text-shadow:
-      0 0 var(--p-s1) var(--p-core),
-      0 0 var(--p-s2) var(--p-c),
-      0 0 var(--p-rest-bloom) var(--p-c);
+      0 0 calc(var(--p-rest) * 0.35) var(--p-core),
+      0 0 calc(var(--p-rest) * 0.7) var(--p-c),
+      0 0 var(--p-rest) var(--p-c);
   }
 
   50% {
     text-shadow:
-      0 0 var(--p-s3) var(--p-core),
-      0 0 var(--p-s4) var(--p-c),
+      0 0 calc(var(--p-bloom) * 0.3) var(--p-core),
+      0 0 calc(var(--p-bloom) * 0.75) var(--p-c),
       0 0 var(--p-bloom) var(--p-c);
   }
 }
@@ -1099,49 +1099,42 @@ html.adc-text-large .game-panel-header-indicator-row {
 .madness-pulse-light {
   --p-core: #ffd4d4;
   --p-c: #ff8a8a;
-  --p-s1: 1px;
-  --p-s2: 2px;
-  --p-rest-bloom: 2px;
-  --p-s3: 2px;
-  --p-s4: 3px;
+  --p-rest: 0px;
   --p-bloom: 4px;
-  animation: madness-pulse 2.5s ease-in-out infinite;
+  animation: madness-pulse 3s ease-in-out infinite;
 }
 
 .madness-pulse-medium {
   --p-core: #ffe2e2;
   --p-c: #ff6e6e;
-  --p-s1: 2px;
-  --p-s2: 5px;
-  --p-rest-bloom: 6px;
-  --p-s3: 3px;
-  --p-s4: 7px;
-  --p-bloom: 8px;
-  animation: madness-pulse 2s ease-in-out infinite;
+  --p-rest: 0px;
+  --p-bloom: 6px;
+  animation: madness-pulse 2.5s ease-in-out infinite;
 }
 
 .madness-pulse-intense {
   --p-core: #fff2f2;
   --p-c: #ff6e6e;
-  --p-s1: 3px;
-  --p-s2: 8px;
-  --p-rest-bloom: 11px;
-  --p-s3: 6px;
-  --p-s4: 13px;
-  --p-bloom: 14px;
-  animation: madness-pulse 1.5s ease-in-out infinite;
+  --p-rest: 0px;
+  --p-bloom: 8px;
+  animation: madness-pulse 2s ease-in-out infinite;
 }
 
 .madness-pulse-extreme {
   --p-core: #ffffff;
   --p-c: #ff6e6e;
-  --p-s1: 5px;
-  --p-s2: 13px;
-  --p-rest-bloom: 18px;
-  --p-s3: 7px;
-  --p-s4: 20px;
-  --p-bloom: 24px;
-  animation: madness-pulse 1s ease-in-out infinite;
+  --p-rest: 0px;
+  --p-bloom: 12px;
+  animation: madness-pulse 1.5s ease-in-out infinite;
+}
+
+/* Madness text-shadow blooms past the number. Let it paint outside the side
+ * panel without adding layout padding (overflow-clip-margin only applies to clip). */
+.side-panel-overflow-glow,
+.side-panel-overflow-glow .overflow-hidden,
+.side-panel-overflow-glow [data-radix-scroll-area-viewport] {
+  overflow-x: clip !important;
+  overflow-clip-margin: 18px;
 }
 
 /* Shadow-only lub-dub at ~0.33 beat/sec (dialog stays still). */

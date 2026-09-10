@@ -832,6 +832,7 @@ export default function SidePanel() {
       <ScrollAreaWithIndicator
         key={activeTab}
         className="h-full w-full pb-1.5 pr-2"
+        viewportClassName="!overflow-x-clip"
         scrollAreaId={`side-panel-${activeTab}`}
       >
         <div className={cn("pb-1", SIDE_PANEL_GRID_CLASS)}>
