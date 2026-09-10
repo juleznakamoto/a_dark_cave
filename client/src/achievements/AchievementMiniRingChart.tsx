@@ -1,4 +1,4 @@
-import type { CSSProperties } from "react";
+import { useSyncExternalStore, type CSSProperties } from "react";
 import type { GameState } from "@shared/schema";
 import { useGameStore } from "@/game/state";
 import { PieChart, Pie, Cell, ResponsiveContainer } from "recharts";
@@ -18,7 +18,11 @@ import {
   BACKGROUND_SELECTED_COLOR_HEX,
 } from "./achievementColors";
 import { isCategoryFullyComplete } from "./achievementProgress";
-import { achievementRingSymbolPaddingTop } from "./achievementRingIcons";
+import {
+  achievementRingSymbolPaddingTop,
+  getAchievementRingIconsVersion,
+  subscribeAchievementRingIcons,
+} from "./achievementRingIcons";
 
 interface Props {
   config: AchievementChartConfig;
@@ -43,6 +47,11 @@ export default function AchievementMiniRingChart({
   size = BASE_SIZE,
   centerSymbolStyle,
 }: Props) {
+  useSyncExternalStore(
+    subscribeAchievementRingIcons,
+    getAchievementRingIconsVersion,
+    getAchievementRingIconsVersion,
+  );
   // Full store subscription — ring fill uses many slices (buildings, tools,
   // story, meta wins, …); getState() + a sleeper-only selector left charts stale.
   const state = useGameStore((s) => s);

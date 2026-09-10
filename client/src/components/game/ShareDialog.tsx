@@ -102,9 +102,11 @@ const CATEGORY_HEADER_DEFAULTS: Record<
   overall: "Epic",
 };
 
-const RING_ENTRIES = ACHIEVEMENT_RING_ICONS.filter(
-  (icon) => icon.id !== "overall" || isOverallAchievementCategoryEnabled,
-);
+function getShareRingEntries() {
+  return ACHIEVEMENT_RING_ICONS.filter(
+    (icon) => icon.id !== "overall" || isOverallAchievementCategoryEnabled,
+  );
+}
 
 /** Shared size for the "Resources" and "Achievements: X %" headings. */
 const SECTION_HEADING_FONT_SIZE = 36;
@@ -410,7 +412,7 @@ function ShareCard({
                   rowGap: SECTION_RING_ROW_GAP,
                 }}
               >
-                {RING_ENTRIES.map((icon) => (
+                {getShareRingEntries().map((icon) => (
                   <div
                     key={icon.id}
                     className="flex flex-col items-center"

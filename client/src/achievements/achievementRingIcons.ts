@@ -59,6 +59,38 @@ const RING_BY_ID = new Map(
   ACHIEVEMENT_RING_ICONS.map((icon) => [icon.id, icon]),
 );
 
+function rebuildLookups() {
+  RING_BY_ID.clear();
+  for (const icon of ACHIEVEMENT_RING_ICONS) {
+    RING_BY_ID.set(icon.id, icon);
+  }
+}
+
+type RingHotData = {
+  icons: AchievementRingIcon[];
+  version: number;
+  listeners: Set<() => void>;
+};
+
+const achievementRingIconsListeners = new Set<() => void>();
+
+function getRingHotData(): RingHotData | undefined {
+  return import.meta.hot?.data.achievementRings as RingHotData | undefined;
+}
+
+export function subscribeAchievementRingIcons(onStoreChange: () => void) {
+  const listeners =
+    getRingHotData()?.listeners ?? achievementRingIconsListeners;
+  listeners.add(onStoreChange);
+  return () => {
+    listeners.delete(onStoreChange);
+  };
+}
+
+export function getAchievementRingIconsVersion() {
+  return getRingHotData()?.version ?? 0;
+}
+
 export function achievementRingIcon(
   id: AchievementChartConfig["idPrefix"],
 ): AchievementRingIcon {
@@ -76,4 +108,21 @@ export function achievementRingSymbolPaddingTop(
   return (
     achievementRingIcon(id).paddingTopPx * (size / ACHIEVEMENT_RING_TAB_SIZE)
   );
+}
+
+if (import.meta.hot) {
+  const prev = getRingHotData();
+  if (prev) {
+    prev.icons.splice(0, prev.icons.length, ...ACHIEVEMENT_RING_ICONS);
+    rebuildLookups();
+    prev.version += 1;
+    prev.listeners.forEach((listener) => listener());
+  } else {
+    import.meta.hot.data.achievementRings = {
+      icons: ACHIEVEMENT_RING_ICONS,
+      version: 0,
+      listeners: achievementRingIconsListeners,
+    } satisfies RingHotData;
+  }
+  import.meta.hot.accept();
 }
