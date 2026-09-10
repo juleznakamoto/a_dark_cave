@@ -2,12 +2,14 @@
   "endScreen": {
     "pageTitle": "Reise abgeschlossen – A Dark Cave",
     "trustBadge": "Gratulation!", //ok
-    "headline1": "Deine Reise",
-    "headline2": "endet hier",
+    "headline1": "Deine Reise endet hier",
+    "headline2": "",
     "subtitle1": "Zumindest vorerst…",
-    "subtitle2": "Der Grausame Modus wartet, länger und härter. Das Beenden des Spiels hat einen Rabatt freigeschaltet.",
+    "subtitle2": "Der Grausame Modus wartet mit einem längeren und härteren Spielverlauf.",
+    "subtitle2Discount": "Das Beenden des Spiels hat einen Rabatt freigeschaltet.",
     "cruelMode": "⛤ Grausamer Modus", //ok
     "cruelModeBadge": "Sonderrabatt",
+    "cruelModeComingSoon": "Demnächst",
     "feedback": "Feedback",
     "feedbackBlurb": "Wenn du Bugs, Übersetzungsprobleme oder Ideen hast, freue ich mich sehr über dein Feedback.",
     "wishlistOnSteam": "Auf Steam wünschen",

@@ -43,7 +43,7 @@ export default function EndScreenPage() {
   const isCruelModeCompletion = isCruelModeRun === true;
 
   const handleMainMenu = async () => {
-    navigateSpa("/");
+    navigateSpa("/?game=true");
   };
 
   const handleCruelMode = async () => {
@@ -106,6 +106,7 @@ export default function EndScreenPage() {
       <Hero
         backgroundVariant={isCruelModeCompletion ? "starship" : "default"}
         hideSteamWishlist={steamDesktopEditionActive}
+        hideSupport={steamDesktopEditionActive}
         trustBadge={{
           text: t("endScreen.trustBadge"),
         }}
@@ -115,15 +116,24 @@ export default function EndScreenPage() {
         }}
         subtitle1={isCruelModeCompletion ? "" : t("endScreen.subtitle1")}
         subtitle2={isCruelModeCompletion ? "" : t("endScreen.subtitle2")}
-        subtitle3=""
+        subtitle3={
+          isCruelModeCompletion || steamDesktopEditionActive
+            ? ""
+            : t("endScreen.subtitle2Discount")
+        }
         buttons={{
           ...(!isCruelModeCompletion
             ? {
               primary: {
                 text: t("endScreen.cruelMode"),
-                onClick: handleCruelMode,
+                onClick: steamDesktopEditionActive
+                  ? undefined
+                  : handleCruelMode,
                 buttonId: "end-screen-cruel-mode",
-                badge: t("endScreen.cruelModeBadge"),
+                badge: steamDesktopEditionActive
+                  ? t("endScreen.cruelModeComingSoon")
+                  : t("endScreen.cruelModeBadge"),
+                disabled: steamDesktopEditionActive,
               },
             }
             : {}),

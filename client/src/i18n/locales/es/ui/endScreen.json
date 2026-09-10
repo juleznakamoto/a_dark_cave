@@ -2,12 +2,14 @@
   "endScreen": {
     "pageTitle": "Viaje completado - A Dark Cave",
     "trustBadge": "¡Bien hecho!",
-    "headline1": "Tu viaje",
-    "headline2": "termina aquí", //ok
+    "headline1": "Tu viaje termina aquí",
+    "headline2": "",
     "subtitle1": "Al menos por ahora…",
-    "subtitle2": "El modo cruel espera, más largo y más difícil. Terminar el juego desbloqueó un descuento.",
+    "subtitle2": "El modo cruel espera con una jugabilidad más larga y más difícil.",
+    "subtitle2Discount": "Terminar el juego desbloqueó un descuento.",
     "cruelMode": "⛤ Modo cruel",
     "cruelModeBadge": "Descuento especial",
+    "cruelModeComingSoon": "Próximamente",
     "feedback": "Comentarios",
     "feedbackBlurb": "Si encuentras errores, problemas de traducción o tienes ideas, me encantaría escuchar tu feedback.",
     "wishlistOnSteam": "Añadir a la lista de deseados en Steam", //x2.2

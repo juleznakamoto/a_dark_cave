@@ -94,6 +94,7 @@ interface HeroProps {
       buttonId?: string;
       /** Small pill at the upper-right of the primary CTA (e.g. end screen promo). */
       badge?: string;
+      disabled?: boolean;
     };
     secondary?: {
       text: string;
@@ -120,8 +121,10 @@ interface HeroProps {
   };
   /** Default flame shader; `starship` for Cruel Mode completion end screen. */
   backgroundVariant?: EndScreenBackgroundVariant;
-  /** Hide Steam wishlist CTA (Steam desktop editions — already on Steam). */
+  /** Hide Steam wishlist CTA (Steam desktop editions, already on Steam). */
   hideSteamWishlist?: boolean;
+  /** Hide the Support / Buy Me a Coffee link (Steam desktop end screen). */
+  hideSupport?: boolean;
   className?: string;
 }
 
@@ -497,6 +500,7 @@ const Hero: React.FC<HeroProps> = ({
   buttons,
   backgroundVariant = "default",
   hideSteamWishlist = false,
+  hideSupport = false,
   className = "",
 }) => {
   const { t } = useUiTranslation();
@@ -644,12 +648,14 @@ const Hero: React.FC<HeroProps> = ({
         <div className="text-center space-y-4 w-full max-w-[min(100vw,64rem)] mx-auto px-6 sm:px-8 min-w-0 box-border py-6 sm:py-0">
           {/* Main Heading with Animation */}
           <div className="space-y-2 min-w-0">
-            <h1 className="pb-2 text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold bg-gradient-to-r from-red-800 via-red-700 to-orange-600 bg-clip-text text-transparent animate-fade-in-up animation-delay-600 break-words">
+            <h1 className="pb-2 text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold bg-gradient-to-r from-red-800 via-red-700 to-orange-600 bg-clip-text text-transparent animate-fade-in-up animation-delay-600 break-words">
               {headline.line1}
             </h1>
-            <h1 className="pb-2 text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold bg-gradient-to-r from-yellow-700 via-red-600 to-orange-700 bg-clip-text text-transparent animate-fade-in-up animation-delay-800 break-words">
-              {headline.line2}
-            </h1>
+            {headline.line2 ? (
+              <h1 className="pb-2 text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold bg-gradient-to-r from-yellow-700 via-red-600 to-orange-700 bg-clip-text text-transparent animate-fade-in-up animation-delay-800 break-words">
+                {headline.line2}
+              </h1>
+            ) : null}
           </div>
 
           {/* Subtitle with Animation */}
@@ -676,16 +682,32 @@ const Hero: React.FC<HeroProps> = ({
           {/* CTA Buttons with Animation */}
           {buttons && buttons.primary && (
             <div className="flex flex-wrap justify-center gap-4 mt-10 animate-fade-in-up animation-delay-3000">
-              <div className="group relative inline-block transition-all duration-300 hover:scale-105 hover:drop-shadow-[0_10px_25px_rgba(239,68,68,0.25)]">
+              <div
+                className={
+                  buttons.primary.disabled
+                    ? "relative inline-block opacity-60"
+                    : "group relative inline-block transition-all duration-300 hover:scale-105 hover:drop-shadow-[0_10px_25px_rgba(239,68,68,0.25)]"
+                }
+              >
                 {buttons.primary.badge && (
                   <span className="pointer-events-none absolute -top-2.5 -right-2 z-10 max-w-[min(12rem,calc(100vw-4rem))] rounded border border-emerald-500/90 bg-emerald-950/95 px-2 py-0.5 text-center text-2xs font-semibold uppercase leading-tight tracking-wide text-emerald-300 shadow-md sm:text-xs">
                     {buttons.primary.badge}
                   </span>
                 )}
                 <button
-                  onClick={buttons.primary.onClick}
+                  type="button"
+                  disabled={buttons.primary.disabled}
+                  onClick={
+                    buttons.primary.disabled
+                      ? undefined
+                      : buttons.primary.onClick
+                  }
                   button_id={buttons.primary.buttonId}
-                  className={END_SCREEN_CTA_BUTTON_GROUP_CLASS}
+                  className={
+                    buttons.primary.disabled
+                      ? `${END_SCREEN_CTA_BUTTON_GROUP_CLASS} cursor-not-allowed group-hover:from-red-800 group-hover:to-red-700`
+                      : END_SCREEN_CTA_BUTTON_GROUP_CLASS
+                  }
                 >
                   {renderSymbolLabelButtonContent(buttons.primary.text)}
                 </button>
@@ -696,7 +718,7 @@ const Hero: React.FC<HeroProps> = ({
           {/* Feedback CTA */}
           {buttons?.feedback && (
             <div className="py-3 flex flex-col items-center gap-3 mt-14 animate-fade-in-up animation-delay-4000 w-full min-w-0">
-              <p className="text-sm sm:text-base font-medium text-grey-200 text-center max-w-md px-2 sm:px-4 break-words">
+              <p className="text-base sm:text-lg lg:text-xl font-medium text-grey-200 text-center leading-relaxed max-w-md sm:max-w-3xl px-2 sm:px-4 break-words">
                 {t("endScreen.feedbackBlurb")}
               </p>
               <button
@@ -759,27 +781,29 @@ const Hero: React.FC<HeroProps> = ({
                         <span>{buttons.rateItch.text}</span>
                       </button>
                     )}
-                    <button
-                      type="button"
-                      onClick={() =>
-                        window.open(
-                          "https://buymeacoffee.com/julez.b",
-                          "_blank",
-                          "noopener,noreferrer",
-                        )
-                      }
-                      className={END_SCREEN_LINK_BUTTON_CLASS}
-                    >
-                      <span
-                        className="donate-heart inline-flex h-3.5 w-3.5 shrink-0 items-center justify-center text-sm leading-none text-red-600"
-                        aria-hidden
+                    {!hideSupport && (
+                      <button
+                        type="button"
+                        onClick={() =>
+                          window.open(
+                            "https://buymeacoffee.com/julez.b",
+                            "_blank",
+                            "noopener,noreferrer",
+                          )
+                        }
+                        className={END_SCREEN_LINK_BUTTON_CLASS}
                       >
-                        ❤︎⁠
-                      </span>
-                      <span>
-                        {t("endScreen.buyMeACoffee")}
-                      </span>
-                    </button>
+                        <span
+                          className="donate-heart inline-flex h-3.5 w-3.5 shrink-0 items-center justify-center text-sm leading-none text-red-600"
+                          aria-hidden
+                        >
+                          ❤︎⁠
+                        </span>
+                        <span>
+                          {t("endScreen.buyMeACoffee")}
+                        </span>
+                      </button>
+                    )}
                     {buttons?.secondary && (
                       <button
                         type="button"
@@ -827,6 +851,7 @@ uniform float time;
 // Lower values = clouds stay closer to BACKGROUND_TINT color (default: 1.0)
 // 0.0 = no variation (pure BACKGROUND_TINT), 1.0 = normal variation, 2.0 = high variation
 #define CLOUD_COLOR_DEVIATION 1.75
+#define GLOW_OPACITY 0.6
 
 // Returns a pseudo random number for a given point (white noise)
 float rnd(vec2 p) {
@@ -885,9 +910,9 @@ void main(void) {
 		uv+=.1*cos(i*vec2(.1+.01*i, .8)+i*i+T*.5+.1*uv.x);
 		vec2 p=uv;
 		float d=length(p);
-		col+=.0012/d*(cos(sin(i))+1.0);
+		col+=.0012/d*(cos(sin(i))+1.0)*GLOW_OPACITY;
 		float b=noise(i+p+bg*2.5);
-		col+=.0007*MAX_COLOR_DEVIATION*b/length(max(p,vec2(b*p.x*.02,p.y)));
+		col+=.0007*MAX_COLOR_DEVIATION*b/length(max(p,vec2(b*p.x*.02,p.y)))*GLOW_OPACITY;
 		vec3 cloudColor = BACKGROUND_TINT * (1.0 + (bg - 0.5) * CLOUD_COLOR_DEVIATION);
 		col=mix(col,cloudColor,d);
 	}
