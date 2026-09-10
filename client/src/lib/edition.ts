@@ -13,7 +13,7 @@
  * CrazyGames uses `VITE_CRAZYGAMES=1` (`build:crazygames`) or the `/crazygames` path.
  *
  * In DEV (non-Steam builds), Settings → Game Mode can simulate Steam Game / Playtest /
- * Demo / Demo End / CrazyGames Demo via {@link setDevGameModeOverride}.
+ * Demo / Demo End / Steam End Screen / CrazyGames Demo via {@link setDevGameModeOverride}.
  */
 import { tryGetBoundGameStore } from "@/game/gameStoreHolder";
 
@@ -66,6 +66,7 @@ export type DevGameMode =
   | "steamPlaytest"
   | "steamDemo"
   | "demoEnd"
+  | "steamEndScreen"
   | "crazyGamesDemo";
 
 export const DEV_GAME_MODE_OPTIONS: readonly DevGameMode[] = [
@@ -74,6 +75,7 @@ export const DEV_GAME_MODE_OPTIONS: readonly DevGameMode[] = [
   "steamPlaytest",
   "steamDemo",
   "demoEnd",
+  "steamEndScreen",
   "crazyGamesDemo",
 ] as const;
 
@@ -91,7 +93,11 @@ function isDevGameMode(mode: DevGameMode): boolean {
 export function isSimulatedSteamGameMode(
   mode: DevGameMode | undefined,
 ): boolean {
-  return mode === "steamGame" || mode === "steamPlaytest";
+  return (
+    mode === "steamGame" ||
+    mode === "steamPlaytest" ||
+    mode === "steamEndScreen"
+  );
 }
 
 /** Galaxy.click demo hosted at https://a-dark-cave.com/galaxy */

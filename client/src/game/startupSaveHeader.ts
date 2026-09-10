@@ -1,5 +1,5 @@
 import type { SaveData } from "@shared/schema";
-import { type DevGameMode } from "@/lib/edition";
+import { DEV_GAME_MODE_OPTIONS, type DevGameMode } from "@/lib/edition";
 import { logger } from "@/lib/logger";
 import {
   readCrazyGamesHeaderJson,
@@ -47,14 +47,7 @@ type StartupStateFields = {
   devGameMode?: DevGameMode;
 };
 
-const DEV_GAME_MODES = new Set<DevGameMode>([
-  "normal",
-  "steamGame",
-  "steamPlaytest",
-  "steamDemo",
-  "demoEnd",
-  "crazyGamesDemo",
-]);
+const DEV_GAME_MODES = new Set<DevGameMode>(DEV_GAME_MODE_OPTIONS);
 
 class InvalidStartupSaveError extends Error {
   constructor() {

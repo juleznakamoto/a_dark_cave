@@ -25,7 +25,7 @@ export function getSaveOriginEdition(): SaveOriginEdition {
     const mode = getDevGameModeOverride();
     if (mode === "steamPlaytest") return "steam-playtest";
     if (mode === "steamDemo" || mode === "demoEnd") return "steam-demo";
-    if (mode === "steamGame") return "steam-full";
+    if (mode === "steamGame" || mode === "steamEndScreen") return "steam-full";
     if (mode === "crazyGamesDemo") return "crazygames";
   }
   return "web";

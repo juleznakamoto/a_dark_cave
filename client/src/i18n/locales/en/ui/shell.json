@@ -10,6 +10,7 @@
     "gameModeSteamPlaytest": "Steam Playtest",
     "gameModeSteamDemo": "Steam Demo",
     "gameModeDemoEnd": "Demo End",
+    "gameModeSteamEndScreen": "Steam End Screen",
     "gameModeCrazyGamesDemo": "CrazyGames Demo"
   },
   "textScale": {

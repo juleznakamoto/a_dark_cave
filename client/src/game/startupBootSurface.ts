@@ -1,4 +1,5 @@
 import {
+  DEV_GAME_MODE_OPTIONS,
   isCrazyGamesEdition,
   isGalaxyEdition,
   isSteamBuild,
@@ -12,14 +13,7 @@ const PREFER_START_SCREEN_KEY = "adc-prefer-start-screen";
 /** Session-only: in-game update / inactivity reload should resume Game. */
 const RESUME_GAME_KEY = "adc-resume-game";
 
-const DEV_GAME_MODES = new Set<DevGameMode>([
-  "normal",
-  "steamGame",
-  "steamPlaytest",
-  "steamDemo",
-  "demoEnd",
-  "crazyGamesDemo",
-]);
+const DEV_GAME_MODES = new Set<DevGameMode>(DEV_GAME_MODE_OPTIONS);
 
 export interface StartupBootHeader {
   gameStarted: boolean;

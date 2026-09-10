@@ -245,8 +245,8 @@ interface GameStore extends GameState {
   accountSteamMode: boolean;
   /**
    * Simulate Normal / Steam Game / Steam Playtest / Steam Demo /
-   * CrazyGames Demo without a Steam build (Settings → Game Mode in DEV,
-   * or a live account with `accountSteamMode`).
+   * Demo End / Steam End Screen / CrazyGames Demo without a Steam build
+   * (Settings → Game Mode in DEV, or a live account with `accountSteamMode`).
    */
   devGameMode: DevGameMode;
   /**
@@ -5143,7 +5143,9 @@ export const useGameStore = create<GameStore>((set, get) => ({
         socialPromptDialogOpen: false,
         galaxyTimeUpDialogOpen: mode === "demoEnd",
         demoEndDialogDismissed: false,
-        ...(mode === "demoEnd" ? { settingsDialogOpen: false } : {}),
+        ...(mode === "demoEnd" || mode === "steamEndScreen"
+          ? { settingsDialogOpen: false }
+          : {}),
       });
     } else {
       set({

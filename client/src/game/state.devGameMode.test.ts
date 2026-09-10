@@ -20,6 +20,15 @@ describe("setDevGameMode", () => {
     expect(state.galaxyTimeUpDialogOpen).toBe(true);
   });
 
+  it("closes settings when Steam End Screen is chosen", () => {
+    useGameStore.getState().setDevGameMode("steamEndScreen");
+
+    const state = useGameStore.getState();
+    expect(state.devGameMode).toBe("steamEndScreen");
+    expect(state.settingsDialogOpen).toBe(false);
+    expect(state.galaxyTimeUpDialogOpen).toBe(false);
+  });
+
   it("leaves settings open for other game modes", () => {
     useGameStore.getState().setDevGameMode("steamDemo");
 

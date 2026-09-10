@@ -24,6 +24,7 @@ import { useSteamEditionActive } from "@/hooks/useSteamEditionActive";
 import { AudioGlyphIcon, GameUiIcon } from "@/components/game/GameUiIcon";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
+import { useLocation } from "wouter";
 import LanguageSelector from "./LanguageSelector";
 import TextScaleSelector, {
   TextScaleSettingsIcon,
@@ -78,6 +79,7 @@ const GAME_MODE_LABEL_KEYS: Record<
   | "settings.gameModeSteamPlaytest"
   | "settings.gameModeSteamDemo"
   | "settings.gameModeDemoEnd"
+  | "settings.gameModeSteamEndScreen"
   | "settings.gameModeCrazyGamesDemo"
 > = {
   normal: "settings.gameModeNormal",
@@ -85,6 +87,7 @@ const GAME_MODE_LABEL_KEYS: Record<
   steamPlaytest: "settings.gameModeSteamPlaytest",
   steamDemo: "settings.gameModeSteamDemo",
   demoEnd: "settings.gameModeDemoEnd",
+  steamEndScreen: "settings.gameModeSteamEndScreen",
   crazyGamesDemo: "settings.gameModeCrazyGamesDemo",
 };
 
@@ -94,6 +97,7 @@ const GAME_MODE_DEFAULTS: Record<DevGameMode, string> = {
   steamPlaytest: "Steam Playtest",
   steamDemo: "Steam Demo",
   demoEnd: "Demo End",
+  steamEndScreen: "Steam End Screen",
   crazyGamesDemo: "CrazyGames Demo",
 };
 
@@ -339,6 +343,7 @@ export default function SettingsDialog({
   onDeleteAccount,
 }: SettingsDialogProps) {
   const { t } = useTranslation("ui");
+  const [, setLocation] = useLocation();
   const {
     musicMuted,
     sfxMuted,
@@ -484,7 +489,12 @@ export default function SettingsDialog({
                 </span>
                 <GameModeSelector
                   value={devGameMode}
-                  onChange={setDevGameMode}
+                  onChange={(mode) => {
+                    setDevGameMode(mode);
+                    if (mode === "steamEndScreen") {
+                      setLocation("/end-screen");
+                    }
+                  }}
                   menuPortalContainer={menuPortalContainer}
                 />
               </div>

@@ -10,6 +10,7 @@
     "gameModeSteamPlaytest": "Steam 测试版",
     "gameModeSteamDemo": "Steam 试玩",
     "gameModeDemoEnd": "试玩结束",
+    "gameModeSteamEndScreen": "Steam 结束画面",
     "gameModeCrazyGamesDemo": "CrazyGames 试玩"
   },
   "textScale": {
