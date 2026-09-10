@@ -270,21 +270,6 @@ body {
   --sidebar-border: hsl(0, 15.79%, 26.08%);
   --sidebar-ring: hsl(0, 89.12%, 53.14%);
   --radius: 4px;
-  --shadow-2xs: 0px 2px 0px 0px hsla(0, 89%, 53%, 0);
-  --shadow-xs: 0px 2px 0px 0px hsla(0, 89%, 53%, 0);
-  --shadow-sm: 0px 2px 0px 0px hsla(0, 89%, 53%, 0), 0px 1px 2px -1px hsla(0, 89%, 53%, 0);
-  --shadow: 0px 2px 0px 0px hsla(0, 89%, 53%, 0), 0px 1px 2px -1px hsla(0, 89%, 53%, 0);
-  --shadow-md: 0px 2px 0px 0px hsla(0, 89%, 53%, 0), 0px 2px 4px -1px hsla(0, 89%, 53%, 0);
-  --shadow-lg: 0px 2px 0px 0px hsla(0, 89%, 53%, 0), 0px 4px 6px -1px hsla(0, 89%, 53%, 0);
-  --shadow-xl: 0px 2px 0px 0px hsla(0, 89%, 53%, 0), 0px 8px 10px -1px hsla(0, 89%, 53%, 0);
-  --shadow-2xl: 0px 2px 0px 0px hsla(0, 89%, 53%, 0);
-  --context-card-border: hsla(0, 0%, 18%, 1);
-  --ds-gray-200: hsla(0, 0%, 12%, 1);
-  --ds-gray-500: hsla(0, 0%, 27%, 1);
-  --ds-gray-700: hsla(0, 0%, 56%, 1);
-  --ds-gray-900: hsla(0, 0%, 63%, 1);
-  --ds-gray-1000: hsla(0, 0%, 93%, 1);
-  --ds-background-100: hsla(0, 0%, 4%, 1);
 }
 
 .legal-content,
@@ -993,13 +978,6 @@ html.adc-text-large .game-panel-header-indicator-row {
   animation: flame-text 5s ease-in-out infinite;
 }
 
-.no-hover:hover {
-  background-color: inherit !important;
-  color: inherit !important;
-  opacity: inherit !important;
-  transform: none !important;
-}
-
 .timer-progress .bg-primary {
   background-color: #8b0000 !important;
 }
@@ -1100,7 +1078,7 @@ html.adc-text-large .game-panel-header-indicator-row {
   --p-core: #ffd4d4;
   --p-c: #ff8a8a;
   --p-rest: 0px;
-  --p-bloom: 4px;
+  --p-bloom: 3px;
   animation: madness-pulse 3s ease-in-out infinite;
 }
 
@@ -1108,7 +1086,7 @@ html.adc-text-large .game-panel-header-indicator-row {
   --p-core: #ffe2e2;
   --p-c: #ff6e6e;
   --p-rest: 0px;
-  --p-bloom: 6px;
+  --p-bloom: 5px;
   animation: madness-pulse 2.5s ease-in-out infinite;
 }
 
@@ -1116,7 +1094,7 @@ html.adc-text-large .game-panel-header-indicator-row {
   --p-core: #fff2f2;
   --p-c: #ff6e6e;
   --p-rest: 0px;
-  --p-bloom: 8px;
+  --p-bloom: 7px;
   animation: madness-pulse 2s ease-in-out infinite;
 }
 
@@ -1124,17 +1102,8 @@ html.adc-text-large .game-panel-header-indicator-row {
   --p-core: #ffffff;
   --p-c: #ff6e6e;
   --p-rest: 0px;
-  --p-bloom: 12px;
+  --p-bloom: 10px;
   animation: madness-pulse 1.5s ease-in-out infinite;
-}
-
-/* Madness text-shadow blooms past the number. Let it paint outside the side
- * panel without adding layout padding (overflow-clip-margin only applies to clip). */
-.side-panel-overflow-glow,
-.side-panel-overflow-glow .overflow-hidden,
-.side-panel-overflow-glow [data-radix-scroll-area-viewport] {
-  overflow-x: clip !important;
-  overflow-clip-margin: 18px;
 }
 
 /* Shadow-only lub-dub at ~0.33 beat/sec (dialog stays still). */
@@ -1514,12 +1483,6 @@ html[data-tab-hidden] .exclusive-promo-shockwave-ring:not(.exclusive-promo-shock
   .donate-heart-pump-once {
     animation: none;
   }
-}
-
-/* Pause: help line + [1]… tab badges (desktop md+) — fully opaque, no fade */
-.pause-hotkey-hint-animated,
-.pause-hotkey-badge-animated {
-  opacity: 1;
 }
 
 @keyframes focus-glow {

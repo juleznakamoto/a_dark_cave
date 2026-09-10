@@ -1297,7 +1297,7 @@ export default function GameContainer() {
                 {pauseHotkeyBadges.map((b) => (
                   <span
                     key={b.key}
-                    className="pause-hotkey-badge-animated absolute z-[1] text-xs font-semibold leading-none text-foreground drop-shadow"
+                    className="absolute z-[1] text-xs font-semibold leading-none text-foreground drop-shadow"
                     style={{
                       left: b.left,
                       top: b.top,
@@ -1310,7 +1310,7 @@ export default function GameContainer() {
                 {pauseHotkeyHint != null && (
                   <div
                     data-testid="tab-hotkey-hint"
-                    className="pause-hotkey-hint-animated absolute z-[2] w-max max-w-[calc(100vw-1rem)] whitespace-nowrap px-1 text-center text-xs leading-none text-foreground drop-shadow"
+                    className="absolute z-[2] w-max max-w-[calc(100vw-1rem)] whitespace-nowrap px-1 text-center text-xs leading-none text-foreground drop-shadow"
                     style={{
                       top: pauseHotkeyHint.top,
                       left: pauseHotkeyHint.left,
@@ -1368,7 +1368,7 @@ export default function GameContainer() {
               handle on its bottom edge (mobile) / right edge (desktop). */}
             <div
               ref={panelResize.sidePanelRef}
-              className="side-panel-overflow-glow order-2 md:order-1 relative h-[36vh] md:h-auto min-h-[36vh] md:min-h-0 w-full pr-0 border-t md:border-t-0 md:border-r border-border overflow-hidden"
+              className="order-2 md:order-1 relative h-[36vh] md:h-auto min-h-[36vh] md:min-h-0 w-full pr-0 border-t md:border-t-0 md:border-r border-border overflow-hidden"
               style={panelResize.sidePanelStyle}
             >
               <GameTabs />
