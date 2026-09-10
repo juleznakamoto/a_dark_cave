@@ -13,6 +13,16 @@ const LATE_MATERIALS = [
   "blacksteel",
 ] as const;
 
+describe("basic achievement ring layout", () => {
+  it("groups the twelve basics into Cave, Village, and Industry rings", () => {
+    expect(basicChartConfig.rings.map((ring) => ring.map((s) => s.segmentId))).toEqual([
+      ["0-woodGatherer", "0-stoneMiner", "1-explorer", "1-torchCrafter"],
+      ["0-hunter", "1-toolCrafter", "1-builder", "1-communityBuilder"],
+      ["0-ironMiner", "0-coalMiner", "0-steelForger", "0-tanner"],
+    ]);
+  });
+});
+
 describe("basic achievement rewards", () => {
   it("gifts era-relevant materials instead of later-age discoveries", () => {
     const segments = basicChartConfig.rings.flat();

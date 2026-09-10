@@ -28,6 +28,7 @@ export const basicChartConfig: AchievementChartConfig = {
   idPrefix: "basic",
   centerSymbol: "⟁",
   rings: [
+    // Innermost: Cave
     [
       {
         segmentId: "0-woodGatherer",
@@ -48,53 +49,6 @@ export const basicChartConfig: AchievementChartConfig = {
         segments: 10,
       },
       {
-        segmentId: "0-ironMiner",
-        maxCount: 500,
-        label: "Gather Iron",
-        rewards: { torch: 50 },
-        getCount: (state: GameState) =>
-          Number(state.story?.seen?.totalIronGathered) || 0,
-        segments: 10,
-      },
-      {
-        segmentId: "0-coalMiner",
-        maxCount: 500,
-        label: "Gather Coal",
-        rewards: { torch: 100 },
-        getCount: (state: GameState) =>
-          Number(state.story?.seen?.totalCoalGathered) || 0,
-        segments: 10,
-      },
-      {
-        segmentId: "0-steelForger",
-        maxCount: 250,
-        label: "Forge Steel",
-        rewards: { coal: 100 },
-        getCount: (state: GameState) =>
-          Number(state.story?.seen?.steelForgedTotal) || 0,
-        segments: 10,
-      },
-      {
-        segmentId: "0-hunter",
-        maxCount: 500,
-        label: "Hunter",
-        rewards: { wood: 500 },
-        getCount: (state: GameState) =>
-          Number(state.story?.seen?.totalFoodGathered) || 0,
-        segments: 10,
-      },
-      {
-        segmentId: "0-tanner",
-        maxCount: 250,
-        label: "Tanner",
-        rewards: { food: 250 },
-        getCount: (state: GameState) =>
-          Number(state.story?.seen?.totalLeatherGathered) || 0,
-        segments: 10,
-      },
-    ],
-    [
-      {
         segmentId: "1-explorer",
         maxCount: 20,
         label: "Explore Cave",
@@ -109,6 +63,18 @@ export const basicChartConfig: AchievementChartConfig = {
         rewards: { wood: 250 },
         getCount: (state: GameState) =>
           Number(state.story?.seen?.torchesCraftedTotal) || 0,
+        segments: 10,
+      },
+    ],
+    // Middle: Village
+    [
+      {
+        segmentId: "0-hunter",
+        maxCount: 500,
+        label: "Hunter",
+        rewards: { wood: 500 },
+        getCount: (state: GameState) =>
+          Number(state.story?.seen?.totalFoodGathered) || 0,
         segments: 10,
       },
       {
@@ -141,6 +107,45 @@ export const basicChartConfig: AchievementChartConfig = {
         rewards: { food: 250 },
         getCount: (state: GameState) =>
           Number(state.story?.seen?.maxPopulationReached) || 0,
+      },
+    ],
+    // Outermost: Industry
+    [
+      {
+        segmentId: "0-ironMiner",
+        maxCount: 500,
+        label: "Gather Iron",
+        rewards: { torch: 50 },
+        getCount: (state: GameState) =>
+          Number(state.story?.seen?.totalIronGathered) || 0,
+        segments: 10,
+      },
+      {
+        segmentId: "0-coalMiner",
+        maxCount: 500,
+        label: "Gather Coal",
+        rewards: { torch: 100 },
+        getCount: (state: GameState) =>
+          Number(state.story?.seen?.totalCoalGathered) || 0,
+        segments: 10,
+      },
+      {
+        segmentId: "0-steelForger",
+        maxCount: 250,
+        label: "Forge Steel",
+        rewards: { coal: 100 },
+        getCount: (state: GameState) =>
+          Number(state.story?.seen?.steelForgedTotal) || 0,
+        segments: 10,
+      },
+      {
+        segmentId: "0-tanner",
+        maxCount: 250,
+        label: "Tanner",
+        rewards: { food: 250 },
+        getCount: (state: GameState) =>
+          Number(state.story?.seen?.totalLeatherGathered) || 0,
+        segments: 10,
       },
     ],
   ],
