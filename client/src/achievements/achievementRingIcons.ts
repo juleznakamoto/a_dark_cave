@@ -5,7 +5,7 @@ import { buildingChartConfig } from "./configs/building";
 import { itemChartConfig } from "./configs/item";
 import { overallChartConfig } from "./configs/overall";
 
-/** Compact tab-trigger size. Share card scales from this. */
+/** Compact tab-trigger size. Share and other sizes scale from this. */
 export const ACHIEVEMENT_RING_TAB_SIZE = 58;
 /** Share-card ring size. Keep in sync with ShareDialog. */
 export const ACHIEVEMENT_RING_SHARE_SIZE = 208;
@@ -55,74 +55,17 @@ export const ACHIEVEMENT_RING_ICONS: AchievementRingIcon[] = [
   },
 ];
 
-const RING_BY_ID = new Map(
-  ACHIEVEMENT_RING_ICONS.map((icon) => [icon.id, icon]),
-);
-
-function rebuildLookups() {
-  RING_BY_ID.clear();
-  for (const icon of ACHIEVEMENT_RING_ICONS) {
-    RING_BY_ID.set(icon.id, icon);
-  }
-}
-
-type RingHotData = {
-  icons: AchievementRingIcon[];
-  version: number;
-  listeners: Set<() => void>;
-};
-
-const achievementRingIconsListeners = new Set<() => void>();
-
-function getRingHotData(): RingHotData | undefined {
-  return import.meta.hot?.data.achievementRings as RingHotData | undefined;
-}
-
-export function subscribeAchievementRingIcons(onStoreChange: () => void) {
-  const listeners =
-    getRingHotData()?.listeners ?? achievementRingIconsListeners;
-  listeners.add(onStoreChange);
-  return () => {
-    listeners.delete(onStoreChange);
-  };
-}
-
-export function getAchievementRingIconsVersion() {
-  return getRingHotData()?.version ?? 0;
-}
-
 export function achievementRingIcon(
   id: AchievementChartConfig["idPrefix"],
-): AchievementRingIcon {
-  const icon = RING_BY_ID.get(id);
-  if (!icon) {
-    throw new Error(`Unknown achievement ring icon: ${id}`);
-  }
-  return icon;
+): AchievementRingIcon | undefined {
+  return ACHIEVEMENT_RING_ICONS.find((icon) => icon.id === id);
 }
 
 export function achievementRingSymbolPaddingTop(
   id: AchievementChartConfig["idPrefix"],
   size: number,
 ): number {
-  return (
-    achievementRingIcon(id).paddingTopPx * (size / ACHIEVEMENT_RING_TAB_SIZE)
-  );
-}
-
-if (import.meta.hot) {
-  const prev = getRingHotData();
-  if (prev) {
-    prev.icons.splice(0, prev.icons.length, ...ACHIEVEMENT_RING_ICONS);
-    rebuildLookups();
-    prev.version += 1;
-    prev.listeners.forEach((listener) => listener());
-  } else {
-    import.meta.hot.data.achievementRings = {
-      icons: ACHIEVEMENT_RING_ICONS,
-      version: 0,
-      listeners: achievementRingIconsListeners,
-    } satisfies RingHotData;
-  }
-  import.meta.hot.accept();
+  const icon = achievementRingIcon(id);
+  if (!icon) return 0;
+  return icon.paddingTopPx * (size / ACHIEVEMENT_RING_TAB_SIZE);
 }

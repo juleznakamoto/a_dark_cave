@@ -47,17 +47,8 @@ export {
   isAchievementsGameTabUnlocked,
 };
 
-export {
-  ACHIEVEMENT_RING_ICONS,
-  ACHIEVEMENT_RING_SHARE_SIZE,
-  ACHIEVEMENT_RING_TAB_SIZE,
-  achievementRingIcon,
-  achievementRingSymbolPaddingTop,
-} from "./achievementRingIcons";
-
 // Re-export types
 export type { AchievementChartConfig, AchievementSegment } from "./achievementTypes";
-export type { AchievementRingIcon } from "./achievementRingIcons";
 
 export {
   filterWebOnlyAchievements,
