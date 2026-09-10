@@ -55,36 +55,8 @@ export const overallChartConfig: AchievementChartConfig = {
   centerSymbol: "✦",
   claimable: false,
   rings: [
+    // Innermost: lifetime / completion tracks. Keep 0-* IDs so Steam + i18n stay stable.
     [
-      {
-        segmentId: "0-winNormal",
-        maxCount: 1,
-        label: "Normal Victory",
-        getCount: (state: GameState) => (state.hasWonNormalGame ? 1 : 0),
-      },
-      {
-        segmentId: "0-winCruel",
-        maxCount: 1,
-        label: "Cruel Victory",
-        getCount: (state: GameState) => (state.hasWonCruelGame ? 1 : 0),
-      },
-      {
-        segmentId: "0-caveVeteran",
-        maxCount: CAVE_VETERAN_WINS,
-        label: "Cave Veteran",
-        getCount: (state: GameState) =>
-          Math.min(
-            CAVE_VETERAN_WINS,
-            Math.max(0, Math.floor(Number(state.lifetimeGamesWon) || 0)),
-          ),
-      },
-      {
-        segmentId: "0-speedrunner",
-        maxCount: 1,
-        label: "Speedrunner",
-        detailLabel: `<${SPEEDRUN_WIN_MAX_MS / MS_PER_HOUR} hours`,
-        getCount: (state: GameState) => (state.hasSpeedrunWin ? 1 : 0),
-      },
       {
         segmentId: "0-endurant",
         maxCount: ENDURANT_HOURS,
@@ -149,6 +121,38 @@ export const overallChartConfig: AchievementChartConfig = {
             total,
           );
         },
+      },
+    ],
+    // Outermost: run / victory challenges.
+    [
+      {
+        segmentId: "0-winNormal",
+        maxCount: 1,
+        label: "Normal Victory",
+        getCount: (state: GameState) => (state.hasWonNormalGame ? 1 : 0),
+      },
+      {
+        segmentId: "0-winCruel",
+        maxCount: 1,
+        label: "Cruel Victory",
+        getCount: (state: GameState) => (state.hasWonCruelGame ? 1 : 0),
+      },
+      {
+        segmentId: "0-caveVeteran",
+        maxCount: CAVE_VETERAN_WINS,
+        label: "Cave Veteran",
+        getCount: (state: GameState) =>
+          Math.min(
+            CAVE_VETERAN_WINS,
+            Math.max(0, Math.floor(Number(state.lifetimeGamesWon) || 0)),
+          ),
+      },
+      {
+        segmentId: "0-speedrunner",
+        maxCount: 1,
+        label: "Speedrunner",
+        detailLabel: `<${SPEEDRUN_WIN_MAX_MS / MS_PER_HOUR} hours`,
+        getCount: (state: GameState) => (state.hasSpeedrunWin ? 1 : 0),
       },
     ],
   ],

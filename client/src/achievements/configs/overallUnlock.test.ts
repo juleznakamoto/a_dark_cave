@@ -18,7 +18,23 @@ import {
   isBasicAchievementTabUnlocked,
   isOverallAchievementCategoryEnabled,
   isOverallAchievementTabUnlocked,
+  overallChartConfig,
 } from "./overall";
+
+describe("overall achievement rings", () => {
+  it("splits victories outside and lifetime maxers inside", () => {
+    expect(overallChartConfig.rings.map((ring) => ring.map((s) => s.segmentId))).toEqual([
+      [
+        "0-endurant",
+        "0-supporter",
+        "0-resourceMaxer",
+        "0-upgradeMaxer",
+        "0-achievementMaxer",
+      ],
+      ["0-winNormal", "0-winCruel", "0-caveVeteran", "0-speedrunner"],
+    ]);
+  });
+});
 
 describe("overall achievement tab unlock", () => {
   it("unlocks overall tab with Book of Trials", () => {
