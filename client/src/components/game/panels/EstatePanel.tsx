@@ -480,7 +480,9 @@ export default function EstatePanel({
         className="flex items-center gap-2 w-full text-left cursor-pointer group"
       >
         <CubeWhisperIcon hoverable />
-        <span className="text-xs text-foreground">{cubeTitle}</span>
+        <span className="text-xs text-foreground opacity-90 transition-opacity group-hover:opacity-100">
+          {cubeTitle}
+        </span>
       </button>
     );
   };
