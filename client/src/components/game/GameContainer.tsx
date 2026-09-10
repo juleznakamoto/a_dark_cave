@@ -1197,7 +1197,7 @@ export default function GameContainer() {
     ? "opacity-100 text-foreground"
     : "opacity-100";
   const tabButtonClass =
-    `${GAME_PANEL_HEADER_BAND} bg-transparent font-medium tracking-wide outline-none focus:outline-none focus-visible:outline-none`;
+    `${GAME_PANEL_HEADER_BAND} shrink-0 bg-transparent font-medium tracking-wide outline-none focus:outline-none focus-visible:outline-none`;
 
   const tabHotkeyCount = visibleHotkeyTabs.length;
   const pauseHotkeyHintContent = (
@@ -1329,7 +1329,7 @@ export default function GameContainer() {
           Mobile (stacked top → bottom): event log, side panel, tabs/actions. */}
           <main
             ref={panelResize.mainRef}
-            className="relative flex-1 pb-0 flex flex-col md:grid md:w-full md:grid-cols-[minmax(20rem,28rem)_minmax(24rem,1fr)_minmax(14rem,26rem)] min-h-0 overflow-hidden"
+            className="relative flex-1 pb-0 flex flex-col md:grid md:w-full md:grid-cols-[minmax(20rem,28rem)_minmax(32rem,1fr)_minmax(14rem,26rem)] min-h-0 overflow-hidden"
             style={panelResize.mainStyle}
           >
             {/* Click-particle portal — above side panel, tabs, log; below action buttons (z-50).

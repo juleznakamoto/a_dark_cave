@@ -19,15 +19,18 @@ type PanelId = "sidePanel" | "log";
  * panel (the center "game" column on desktop, the bottom game area on mobile) is
  * never resized directly — it absorbs the remaining space — so we only persist the
  * two outer panels and clamp against the flexible panel's minimum.
+ *
+ * Middle min fits the late-game tab row: location labels, achievements, timed
+ * event, and the merchant/trader control.
  */
 export const PANEL_RESIZE = {
   desktop: {
-    middleMinPx: 320,
+    middleMinPx: 512,
     sidePanel: { minPx: 240, maxPx: 600 },
     logPanel: { minPx: 200, maxPx: 560 },
     defaultSidePanelTemplate: "minmax(20rem, 28rem)",
     defaultLogPanelTemplate: "minmax(14rem, 26rem)",
-    middleTemplate: "minmax(20rem, 1fr)",
+    middleTemplate: "minmax(32rem, 1fr)",
   },
   mobile: {
     gameMinPx: 160,
@@ -201,24 +204,24 @@ export function usePanelResize(): UsePanelResizeResult {
   const mainStyle: CSSProperties = isMobile
     ? {}
     : {
-        gridTemplateColumns: `${col1} ${PANEL_RESIZE.desktop.middleTemplate} ${col3}`,
-      };
+      gridTemplateColumns: `${col1} ${PANEL_RESIZE.desktop.middleTemplate} ${col3}`,
+    };
 
   const sidePanelStyle: CSSProperties =
     isMobile && panelSizes.mobileSidePanelPx != null
       ? {
-          height: `${panelSizes.mobileSidePanelPx}px`,
-          minHeight: 0,
-          maxHeight: "none",
-        }
+        height: `${panelSizes.mobileSidePanelPx}px`,
+        minHeight: 0,
+        maxHeight: "none",
+      }
       : {};
   const logStyle: CSSProperties =
     isMobile && panelSizes.mobileLogPanelPx != null
       ? {
-          height: `${panelSizes.mobileLogPanelPx}px`,
-          minHeight: 0,
-          maxHeight: "none",
-        }
+        height: `${panelSizes.mobileLogPanelPx}px`,
+        minHeight: 0,
+        maxHeight: "none",
+      }
       : {};
 
   return {
