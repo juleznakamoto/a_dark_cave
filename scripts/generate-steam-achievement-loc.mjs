@@ -98,6 +98,8 @@ const STEAM_LANGS = [
   ["schinese", "zh-CN"],
   ["russian", "ru"],
   ["brazilian", "pt-BR"],
+  ["japanese", "ja"],
+  ["polish", "pl"],
 ];
 
 function escapeVdf(value) {
@@ -107,10 +109,14 @@ function escapeVdf(value) {
 function loadLocales() {
   const locales = {};
   for (const [, folder] of STEAM_LANGS) {
-    locales[folder] = readLocaleJson(
-      path.join(root, "client/src/i18n/locales", folder, "achievements.json"),
-      fs,
+    const locPath = path.join(
+      root,
+      "client/src/i18n/locales",
+      folder,
+      "achievements.json",
     );
+    if (!fs.existsSync(locPath)) continue;
+    locales[folder] = readLocaleJson(locPath, fs);
   }
   return locales;
 }
@@ -126,6 +132,7 @@ function copyFor(locales, langFolder, category, segmentId) {
 function writeVdf(locales, outPath) {
   const chunks = ['"lang"', "{"];
   for (const [steamLang, folder] of STEAM_LANGS) {
+    if (!locales[folder]) continue;
     chunks.push(`\t"${steamLang}"`, "\t{", '\t\t"Tokens"', "\t\t{");
     CATALOG.forEach(([category, segmentId], index) => {
       const { label, description } = copyFor(locales, folder, category, segmentId);

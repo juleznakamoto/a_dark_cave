@@ -30,7 +30,7 @@ import { readLocaleJson } from "./parse-locale-json.mjs";
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const EN_DIR = path.join(ROOT, "client/src/i18n/locales/en");
 const BASELINE_PATH = path.join(ROOT, "scripts/i18n-identical-baseline.json");
-export const TARGET_LOCALES = ["de", "fr", "es", "it", "pt-BR", "zh-CN", "ru"];
+export const TARGET_LOCALES = ["de", "fr", "es", "it", "pt-BR", "zh-CN", "ja", "pl", "ru"];
 
 /** Keys that are the same as English on purpose (names, gold packs, placeholders). */
 const SKIP_IDENTICAL = new Set([

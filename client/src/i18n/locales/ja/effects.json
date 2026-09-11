@@ -1,0 +1,600 @@
+{
+  "books": {
+    "book_of_ascension": {
+      "description": "自己を高める書。務めを繰り返すことで上達できるようになる。",
+      "name": "昇華の書"
+    },
+    "book_of_absolution": {
+      "description": "呪われた品を鎮める儀式の書。その負の効果を弱められる。",
+      "name": "赦しの書"
+    },
+    "book_of_chainmaster": {
+      "description": "とうに死んだ鎖の主の書。労働者を限界の先へ追い立てる苛烈な法が記されている。",
+      "name": "鎖の主の書"
+    },
+    "book_of_trials": {
+      "description": "人生の難所を越える書。功績で自らを示した者に報酬を解放する。",
+      "name": "試練の書"
+    }
+  },
+  "clothing": {
+    "alphas_hide": {
+      "description": "狼の群れの頭領の皮。原初の力が染み込んでいる",
+      "name": "首領の皮"
+    },
+    "ancient_scrolls": {
+      "description": "未知の言語で書かれた神秘の巻物。解読を待っている",
+      "name": "古代の巻物"
+    },
+    "arbalest_schematic": {
+      "description": "強力な弩を作るための設計図",
+      "name": "アーバレスト"
+    },
+    "ashen_embrace": {
+      "description": "採掘の腕前が上がる",
+      "name": "灰の抱擁"
+    },
+    "ashen_embrace_enhanced": {
+      "description": "採掘の腕前が大きく上がる",
+      "name": "深き灰の抱擁"
+    },
+    "bell_blessing": {
+      "description": "前腕に浮かぶ謎の鐘の印。睡眠中に得る集中ポイントが倍になる。",
+      "name": "鐘の祝福"
+    },
+    "black_bear_fur": {
+      "description": "異界の巨熊から剥いだ、呪われた黒い毛皮",
+      "name": "黒熊の毛皮"
+    },
+    "black_wood": {
+      "description": "聖域の木から得た、光を飲むほど密な材。",
+      "name": "黒材"
+    },
+    "blackened_mirror": {
+      "description": "黒い鉄枠の高いひび割れた鏡。冷たい気配を放つ",
+      "name": "黒ずんだ鏡"
+    },
+    "blacksteel_armor": {
+      "description": "致命的な棘で飾られた重い鎧",
+      "name": "黒鋼の鎧"
+    },
+    "blood_baptized": {
+      "description": "強大な生物の血に浸ったあとに得る",
+      "name": "血の洗礼"
+    },
+    "bloodstained_belt": {
+      "description": "古い血に染まった皮革の帯",
+      "name": "血に染まった帯"
+    },
+    "bloodstone": {
+      "description": "暗いエネルギーを脈打たせる真紅の宝石",
+      "name": "血石"
+    },
+    "bone_devourer_blood": {
+      "description": "骨喰らいから採った蒼白い血の小瓶。効果は不明。",
+      "name": "骨喰らいの血"
+    },
+    "bone_dice": {
+      "description": "骨を削った骰子。柔らかく、落ち着かないほど滑らかに磨かれている。賭博師で、もう1局遊べるようになる。",
+      "name": "骨の骰子"
+    },
+    "bone_necklace": {
+      "description": "人骨で作られた原始的な首飾り",
+      "name": "骨の首飾り"
+    },
+    "chitin_plates": {
+      "description": "沼の巨獣から得た強力なキチン板。防壁にキチン装甲を加えるのに使える。",
+      "name": "キチン板"
+    },
+    "cracked_crown": {
+      "description": "謎の力を放つ古代の金の王冠",
+      "name": "ひび割れた王冠"
+    },
+    "creatures_bones": {
+      "description": "地下湖の生物の巨大な骨。鍛冶場で大盾に鍛えられる。",
+      "name": "怪物の骨"
+    },
+    "dagons_gift": {
+      "description": "狩猟の腕前が上がる",
+      "name": "ダゴンの贈り物"
+    },
+    "depths_gift": {
+      "description": "洞窟探索の収穫が増す",
+      "name": "深淵の贈り物"
+    },
+    "dagons_gift_enhanced": {
+      "description": "狩猟の腕前が大きく上がる",
+      "name": "ダゴンの大いなる贈り物"
+    },
+    "devourer_crown": {
+      "description": "骨喰らいの王冠。骨で作られている",
+      "name": "骨喰らいの王冠"
+    },
+    "ebon_grace": {
+      "description": "黒い木から授かった暗い祝福",
+      "name": "黒檀の恩寵"
+    },
+    "ebony_ring": {
+      "description": "森の神々が贈り物として残した黒い指輪",
+      "name": "黒檀の指輪"
+    },
+    "elder_scroll": {
+      "description": "禁忌の知識を記した古代の巻物",
+      "name": "古の巻物"
+    },
+    "explorer_pack": {
+      "description": "肩の重荷を軽くする、よく作られた皮革の背袋",
+      "name": "探検者の鞄"
+    },
+    "fang_charm": {
+      "description": "巨大な生物の黒い牙を紐で通したもの",
+      "name": "牙の護符"
+    },
+    "feeding_ring": {
+      "description": "ある朝、指に融けついたように現れた指輪",
+      "name": "飢餓の指輪"
+    },
+    "fishers_hand": {
+      "description": "岸の漁師が魚の罠を組む、古い技",
+      "name": "漁夫の手"
+    },
+    "flames_touch": {
+      "description": "製作の消費が減る",
+      "name": "炎の感触"
+    },
+    "flames_touch_enhanced": {
+      "description": "製作の消費が大きく減る",
+      "name": "強き炎の感触"
+    },
+    "forests_grace": {
+      "description": "森の鹿が、こちらに気づきにくくなる",
+      "name": "森の恩寵"
+    },
+    "brimstone_infusion": {
+      "description": "製鋼工の鋼産出が+1される",
+      "name": "硫黄の注入"
+    },
+    "fresh_blood": {
+      "description": "見知らぬ者がより頻繁に村へ近づく",
+      "name": "新しい血"
+    },
+    "frostglass": {
+      "description": "冷気を放つ結晶の材",
+      "name": "霜晶"
+    },
+    "keen_builder": {
+      "description": "建築の消費が減る",
+      "name": "鋭き建築士"
+    },
+    "gifted_ring": {
+      "description": "誰かが残していった、見つけよと置かれた質素な指輪",
+      "name": "幸運の指輪"
+    },
+    "flask_harness": {
+      "description": "脈火の霊薬を余分に収める、柔らかい槽のついた皮革のハーネス",
+      "name": "薬瓶のハーネス"
+    },
+    "grenadier_bag": {
+      "description": "より多くの爆弾を運ぶための補強皮革の袋",
+      "name": "擲弾兵の袋"
+    },
+    "highpriest_robe": {
+      "description": "金糸で飾られた聖なるローブ",
+      "name": "大祭司のローブ"
+    },
+    "hollow_king_scepter": {
+      "description": "失われた王の笏。力と狂気を放つ。採掘行動に、報酬が倍になる5%の機会がある。",
+      "name": "虚ろ王の笏"
+    },
+    "hunter_cloak": {
+      "description": "あらゆる動きを黙らせる、しなやかな皮革の外套",
+      "name": "猟師の外套"
+    },
+    "knights_burden": {
+      "description": "騎士が分け与えた知識。心に重くのしかかる",
+      "name": "騎士の重荷"
+    },
+    "leatherbound_book": {
+      "description": "皮革で綴じた古代の書。表紙に鎖の焼き印がある",
+      "name": "革装の本"
+    },
+    "loggers_gloves": {
+      "description": "木材集めを助ける、頑丈な皮革の手袋",
+      "name": "樵の手袋"
+    },
+    "lycan_blood": {
+      "description": "人狼の首領から採った濃い血の小瓶。効果は不明。",
+      "name": "人狼の血"
+    },
+    "map_fragment": {
+      "description": "未知の地へ至る地図の断片。",
+      "name": "地図の断片"
+    },
+    "moon_bracelet": {
+      "description": "永続する白い石でできた、重さを感じない繊細な腕輪",
+      "name": "月の腕輪"
+    },
+    "muttering_amulet": {
+      "description": "奇妙な音を立てる神秘の護符",
+      "name": "呟く護符"
+    },
+    "necromancer_blood": {
+      "description": "死霊術師から採った暗い血の小瓶。効果は不明。",
+      "name": "死霊術師の血"
+    },
+    "nightshade_bow_schematic": {
+      "description": "毒を帯びた弓を作るための設計図",
+      "name": "夜陰の弓"
+    },
+    "obsidian_orb": {
+      "description": "精神の力を与える、火山ガラスの強力な宝珠",
+      "name": "黒曜石の宝珠"
+    },
+    "obsidian_orb_schematic": {
+      "description": "強力な黒曜石の宝珠を作るための設計図",
+      "name": "黒曜石の宝珠"
+    },
+    "occultist_grimoire": {
+      "description": "異端の秘術師の不浄な知識を収めた魔導書",
+      "name": "秘術師の魔導書"
+    },
+    "odd_trinket": {
+      "description": "木を伐っているときに見つけた、琥珀に光る霊薬",
+      "name": "奇妙な霊薬"
+    },
+    "ravenfeather_mantle": {
+      "description": "きらめく鴉の羽で織られた神秘のマント",
+      "name": "鴉羽のマント"
+    },
+    "ravens_mark": {
+      "description": "見知らぬ者がより頻繁に村へ近づく",
+      "name": "鴉の印"
+    },
+    "rich_veins": {
+      "description": "採掘の腕前が上がる",
+      "name": "豊かな鉱脈"
+    },
+    "ravens_mark_enhanced": {
+      "description": "見知らぬ者がはるかに頻繁に村へ近づく",
+      "name": "鴉の大いなる印"
+    },
+    "rootseeker_charm": {
+      "description": "野で集める者のもとへ脈根を引き寄せる、彫られた護符。",
+      "name": "根探しの護符"
+    },
+    "ravens_orb": {
+      "description": "鴉に祝福され、古い知識を宿す暗い宝珠",
+      "name": "鴉の宝珠"
+    },
+    "red_mask": {
+      "description": "深い真紅の皮革で作られた、忌まわしい仮面",
+      "name": "赤い仮面"
+    },
+    "ring_of_clarity": {
+      "description": "非常に澄んだ水晶から削り出した指輪",
+      "name": "澄明の指輪"
+    },
+    "ring_of_drowned": {
+      "description": "常に濡れ、冷たいくすんだ指輪",
+      "name": "溺死者の指輪"
+    },
+    "ring_of_obedience": {
+      "description": "喜ぶ女が贈った指輪。さらに小さな輪がついている",
+      "name": "服従の指輪"
+    },
+    "sacrificial_tunic": {
+      "description": "旧き神々への捧げ物を強める聖なる衣",
+      "name": "生贄のチュニック"
+    },
+    "sealed_chest": {
+      "description": "非常に頑丈で、開けられない箱",
+      "name": "封印の箱"
+    },
+    "shadow_boots": {
+      "description": "いかなる地も影のように速く越える",
+      "name": "影の靴"
+    },
+    "shadow_flute": {
+      "description": "影を不自然に動かす骨の笛",
+      "name": "影の笛"
+    },
+    "sharp_aim": {
+      "description": "猟師の狙いが鋭くなる",
+      "name": "鋭い狙い"
+    },
+    "skilled_hands": {
+      "description": "製作の消費が減る",
+      "name": "熟練の手"
+    },
+    "skeleton_key_schematic": {
+      "description": "骸骨鍵を作るための設計図",
+      "name": "骸骨鍵"
+    },
+    "stonebinders_codex": {
+      "description": "隠された書庫の写本。効率よい建築の秘密を明かす",
+      "name": "石縛りの写本"
+    },
+    "stormglass_halberd_schematic": {
+      "description": "恐るべき斧槍を作るための設計図",
+      "name": "嵐晶の斧槍"
+    },
+    "survivors_last_words": {
+      "description": "死にゆく見知らぬ者が残した最期の祝福",
+      "name": "生存者の最期の言葉"
+    },
+    "survivors_notes": {
+      "description": "とうにここで生きた者が残した、実用の助言で満ちた古い巻物。基本の功績を解放する。",
+      "name": "生存者の覚書"
+    },
+    "tarnished_amulet": {
+      "description": "幸運をもたらす古い護符",
+      "name": "くすんだ護符"
+    },
+    "tarnished_compass": {
+      "description": "導きを求める者のための古代の遺物。",
+      "name": "くすんだ羅針盤"
+    },
+    "trail_sense": {
+      "description": "猟師がより多くの食料を持ち帰る",
+      "name": "獣道の勘"
+    },
+    "unnamed_book": {
+      "description": "人皮で綴じ、禁忌の知識で満ちた書",
+      "name": "名もなき書"
+    },
+    "whisperers_mark": {
+      "description": "闇の中の囁き手の印",
+      "name": "囁き手の印"
+    },
+    "whispering_cube": {
+      "description": "由来不明の、完璧に磨かれた金属の立方体。消えた文明の歴史の断片を囁く。",
+      "name": "囁く立方体"
+    },
+    "wooden_figure": {
+      "description": "触手を持つ落ち着かない生物を彫った木の像",
+      "name": "木の像"
+    }
+  },
+  "fellowship": {
+    "ashwraith_huntress": {
+      "description": "血の誓いと結びついた、森の部族の野生の女狩人。狩猟技能の強化と猟師の生産強化を解放する。",
+      "name": "灰霊の女狩人"
+    },
+    "disgraced_prior": {
+      "description": "教団から追放された元修道院長。果てしない労働で贖う。技能「休まぬ労働者」を解放する。",
+      "name": "堕ちた修道院長"
+    },
+    "elder_wizard": {
+      "description": "最期の日々を生きる老魔術師。とうに秘術の炎を極めた。戦闘技能「血炎球」を解放する。",
+      "name": "老魔術師"
+    },
+    "one_eyed_crow": {
+      "description": "鋭い片目を持つ神秘の鴉。鴉のハーネスで馴らした。技能「鴉の眼」と伝言の送信を解放する。",
+      "name": "片目の鴉"
+    },
+    "restless_knight": {
+      "description": "旧世界の残骸を見た、戦いの古参。戦闘技能「砕撃」を解放する。",
+      "name": "眠れぬ騎士"
+    },
+    "the_hound": {
+      "description": "毒された山村から来た、筋骨隆々で毀れた生存者。戦闘技能「野性の咆哮」を解放する。",
+      "name": "蛮犬"
+    }
+  },
+  "tools": {
+    "adamant_axe": {
+      "description": "最も硬い金属から鍛えられた、折れない斧",
+      "name": "アダマント斧"
+    },
+    "adamant_lantern": {
+      "description": "あらゆる道を照らす、究極の光源",
+      "name": "アダマントランタン"
+    },
+    "adamant_pickaxe": {
+      "description": "採掘道具の頂点。折れず、精確",
+      "name": "アダマントの鶴嘴"
+    },
+    "blacksmith_hammer": {
+      "description": "偉大な鍛冶師がかつて持った、伝説の鍛冶槌",
+      "name": "鍛冶槌"
+    },
+    "blacksteel_axe": {
+      "description": "稀少な黒鋼から鍛えた斧",
+      "name": "黒鋼斧"
+    },
+    "blacksteel_lantern": {
+      "description": "稀少な黒鋼から鍛えたランタン",
+      "name": "黒鋼ランタン"
+    },
+    "blacksteel_pickaxe": {
+      "description": "稀少な黒鋼から鍛えた鶴嘴",
+      "name": "黒鋼の鶴嘴"
+    },
+    "bone_saw": {
+      "description": "死霊術師の道具。解体の効率が不自然に高い",
+      "name": "骨鋸"
+    },
+    "crow_harness": {
+      "description": "鴉を捕らえるために作られた専用のハーネス。黒境峡谷で鴉を捕らえるのに使える。",
+      "name": "鴉のハーネス"
+    },
+    "giant_trap": {
+      "description": "森の巨大な生物を捕らえられる巨大な罠",
+      "name": "巨大な罠"
+    },
+    "hidden_library_map": {
+      "description": "修道院の地図。洞窟の奥の隠された書庫の場所を示す",
+      "name": "隠された書庫の地図"
+    },
+    "iron_axe": {
+      "description": "重い伐採のための鋭い斧",
+      "name": "鉄斧"
+    },
+    "iron_lantern": {
+      "description": "頼りになる光を与える簡素なランタン",
+      "name": "鉄ランタン"
+    },
+    "iron_pickaxe": {
+      "description": "効率よく採掘できる耐久性の高い鶴嘴",
+      "name": "鉄の鶴嘴"
+    },
+    "mastermason_chisel": {
+      "description": "とうに忘れられた建築の達人が残した、精巧な道具",
+      "name": "石工頭の鑿"
+    },
+    "natharit_pickaxe": {
+      "description": "未知の材でできた極めて頑丈な鶴嘴。品質は並外れている",
+      "name": "ナサリットの鶴嘴"
+    },
+    "obsidian_axe": {
+      "description": "剃刀のように鋭い火山の刃を持つ伝説の斧",
+      "name": "黒曜石斧"
+    },
+    "obsidian_lantern": {
+      "description": "強く、揺るがない光を落とす強力なランタン",
+      "name": "黒曜石ランタン"
+    },
+    "obsidian_pickaxe": {
+      "description": "火山ガラスで作られた、採掘のための名器",
+      "name": "黒曜石の鶴嘴"
+    },
+    "occultist_map": {
+      "description": "洞窟にある秘術師の間を示す、古い地図",
+      "name": "秘術師の地図"
+    },
+    "mountain_village_map": {
+      "description": "高い峠を越え、山村へ至る道が記された粗雑な地図。",
+      "name": "山村の地図"
+    },
+    "reinforced_rope": {
+      "description": "より深い洞窟の石室へ降りられる強い縄",
+      "name": "強化された縄"
+    },
+    "skeleton_key": {
+      "description": "いかなる錠も開けると言われる神秘の鍵",
+      "name": "骸骨鍵"
+    },
+    "skull_lantern": {
+      "description": "呪われた骨から鍛えられ、最深の闇を照らす",
+      "name": "髑髏のランタン"
+    },
+    "steel_axe": {
+      "description": "焼き入れた鋼から鍛えた精巧な斧",
+      "name": "鋼斧"
+    },
+    "steel_lantern": {
+      "description": "最も暗い場所を照らす明るいランタン",
+      "name": "鋼ランタン"
+    },
+    "steel_pickaxe": {
+      "description": "粘り強い鋼で作られた、非常に頑丈な採掘道具",
+      "name": "鋼の鶴嘴"
+    },
+    "stone_axe": {
+      "description": "木材を伐るための基本の斧",
+      "name": "石斧"
+    },
+    "stone_pickaxe": {
+      "description": "採掘のための粗雑な鶴嘴",
+      "name": "石の鶴嘴"
+    }
+  },
+  "weapons": {
+    "adamant_sword": {
+      "description": "比類ない強さを持つ伝説の刃",
+      "name": "アダマント剣"
+    },
+    "arbalest": {
+      "description": "優れた技師が設計した、丹念に作られたアーバレスト",
+      "name": "アーバレスト"
+    },
+    "ashen_dagger": {
+      "description": "灰の運び手が授けた、火山灰から鍛えた短剣",
+      "name": "灰の短剣"
+    },
+    "ashen_greatshield": {
+      "description": "地下湖の生物の骨から鍛えた巨大な盾",
+      "name": "灰の大盾"
+    },
+    "ashfire_bomb": {
+      "description": "異界の火に輝く壊滅的な爆弾",
+      "name": "灰火爆弾"
+    },
+    "blacksteel_bow": {
+      "description": "稀少な黒鋼から鍛えた弓",
+      "name": "黒鋼弓"
+    },
+    "blacksteel_sword": {
+      "description": "稀少な黒鋼から鍛えた剣",
+      "name": "黒鋼剣"
+    },
+    "bloodstone_staff": {
+      "description": "血石を頂に据え、暗いエネルギーを脈打たせる杖",
+      "name": "血石の杖"
+    },
+    "compound_bow": {
+      "description": "消えた文明の高精度の武器",
+      "name": "複合弓"
+    },
+    "crude_bow": {
+      "description": "いかなる試練にも耐える簡素な弓",
+      "name": "粗末な弓"
+    },
+    "ember_bomb": {
+      "description": "灼熱を生む光る核を持つ強力な爆弾",
+      "name": "残火爆弾"
+    },
+    "frostglass_sword": {
+      "description": "霜晶から鍛えた刃。冷たい力を放つ",
+      "name": "霜晶の剣"
+    },
+    "huntsman_bow": {
+      "description": "改良された弓。均衡が取れ、精確",
+      "name": "猟師の弓"
+    },
+    "iron_sword": {
+      "description": "戦闘の力を高める頑丈な鉄の刃",
+      "name": "鉄剣"
+    },
+    "long_bow": {
+      "description": "より長い射程と精度を持つ優れた弓",
+      "name": "長弓"
+    },
+    "master_bow": {
+      "description": "力と制御において比類ない、究極の弓",
+      "name": "達人の弓"
+    },
+    "nightshade_bow": {
+      "description": "暗い木で作られた弓。矢は毒を帯びる",
+      "name": "夜陰の弓"
+    },
+    "nordic_war_axe": {
+      "description": "北境の達人鍛冶が鍛えた伝説の戦斧",
+      "name": "北境の戦斧"
+    },
+    "obsidian_sword": {
+      "description": "火山ガラスから鍛えた、剃刀のように鋭い刃",
+      "name": "黒曜石剣"
+    },
+    "steel_sword": {
+      "description": "均衡に優れた、精巧な鋼の刃",
+      "name": "鋼剣"
+    },
+    "stormglass_halberd": {
+      "description": "巧みに精錬したアダマントから鍛えた最高の斧槍",
+      "name": "嵐晶の斧槍"
+    },
+    "veinfire_elixir": {
+      "description": "稀少な脈根から蒸留した、錬金の治癒の霊薬",
+      "name": "脈火の霊薬"
+    },
+    "void_bomb": {
+      "description": "周囲の空間を歪めるかのような恐ろしい爆弾",
+      "name": "虚空爆弾"
+    },
+    "war_bow": {
+      "description": "力と精度のために作られた、非常に強力な弓",
+      "name": "戦弓"
+    }
+  }
+}

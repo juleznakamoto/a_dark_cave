@@ -1,0 +1,103 @@
+{
+  "additional_preset_slots": {
+    "activationMessage": "村人の仕事プリセット枠を2つ追加した。",
+    "description": "村人の仕事プリセット枠がさらに2つ増える",
+    "name": "プリセット枠を2つ追加"
+  },
+  "additional_construction_queue_slot": {
+    "activationMessage": "建設キュー枠を2つ追加した。",
+    "description": "同時に進められる建設枠がさらに2つ増える",
+    "name": "建設キュー枠を2つ追加"
+  },
+  "advanced_bundle": {
+    "activationMessage": "セットの内容を購入品に加えた！",
+    "name": "蒼白王セット"
+  },
+  "artifact_bundle": {
+    "activationMessage": "セットの内容を購入品に加えた！",
+    "name": "闇の遺物セット"
+  },
+  "ashen_throne_bundle": {
+    "activationMessage": "セットの内容を購入品に加えた！",
+    "name": "灰の玉座セット"
+  },
+  "basic_survival_bundle": {
+    "activationMessage": "セットの内容を購入品に加えた！",
+    "name": "消えゆく放浪者セット"
+  },
+  "crow_harness": {
+    "activationMessage": "鴉のハーネスを道具に加えた。次は、ハーネスに繋ぐ鴉を探さねばならない。",
+    "description": "伝書鴉のために作られた装具。鴉の物語を解放する。仲間が1人増える。",
+    "name": "鴉のハーネス"
+  },
+  "cruel_mode": {
+    "activationMessage": "残酷モードを発動した。新しいゲームを始め、究極の試練に臨め。",
+    "description": "より残酷な世界でもう一度遊ぶ。物語が広がり、品物が増え、敵はより致命的になり、さらに多くの内容がある。",
+    "name": "残酷モード"
+  },
+  "full_game": {
+    "activationMessage": "製品版を解除し、発動した。旅に制限はなくなった。",
+    "description": "製品版を解除し、旅を続ける。",
+    "name": "製品版"
+  },
+  "gold_1000": {
+    "activationMessage": "1'000金貨を所持品に加えた。",
+    "description": "そこそこの量の金貨",
+    "name": "1'000金貨"
+  },
+  "gold_100_free": {
+    "activationMessage": "100金貨を贈り物として所持品に加えた！",
+    "description": "寒い世界における日々の慈悲",
+    "name": "100金貨の贈り物"
+  },
+  "gold_15000": {
+    "activationMessage": "15'000金貨を所持品に加えた。",
+    "description": "不敬な量の金貨",
+    "name": "15'000金貨"
+  },
+  "gold_20000": {
+    "activationMessage": "20'000金貨を所持品に加えた。",
+    "description": "不敬な量の金貨",
+    "name": "20'000金貨"
+  },
+  "gold_30000": {
+    "activationMessage": "30'000金貨を所持品に加えた。",
+    "description": "冒涜的な量の金貨",
+    "name": "30'000金貨"
+  },
+  "gold_250": {
+    "activationMessage": "1'000金貨を所持品に加えた。",
+    "description": "そこそこの量の金貨",
+    "name": "1'000金貨"
+  },
+  "gold_2500": {
+    "activationMessage": "2'500金貨を所持品に加えた。",
+    "description": "かなりの財宝",
+    "name": "2'500金貨"
+  },
+  "gold_5000": {
+    "activationMessage": "5'000金貨を所持品に加えた。",
+    "description": "金貨の富",
+    "name": "5'000金貨"
+  },
+  "great_feast_1": {
+    "activationMessage": "大宴会が始まった！",
+    "description": "30分間：\n• 村の生産が5倍\n• 新しい村人の確率が+25 %",
+    "name": "大宴会1回"
+  },
+  "great_feast_3": {
+    "activationMessage": "大宴会が始まった！",
+    "description": "30分間：\n• 村の生産が5倍\n• 新しい村人の確率が+25 %",
+    "name": "大宴会3回"
+  },
+  "skull_lantern": {
+    "activationMessage": "髑髏のランタンを道具に加えた。不気味な光が深層を照らす。",
+    "description": "呪われた骨から鍛えられ、最深の闇を照らす。髑髏のランタンの物語を解放する。",
+    "name": "髑髏のランタン"
+  },
+  "tarnished_compass": {
+    "activationMessage": "くすんだ羅針盤を所持品に加えた。古の魔力が、行いを助けるかもしれない。",
+    "description": "滅びた文明の遺物。針は隠された場所を指す。羅針盤の物語を解放する。",
+    "name": "くすんだ羅針盤"
+  }
+}

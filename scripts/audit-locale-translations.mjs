@@ -2,7 +2,7 @@
 
  * Audit locale files for strings identical to English and cross-locale contamination.
 
- * Run: node scripts/audit-locale-translations.mjs [ru|zh-CN|fr|es|de]
+ * Run: node scripts/audit-locale-translations.mjs [ru|zh-CN|ja|pl|fr|es|de]
 
  */
 
@@ -21,7 +21,7 @@ const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 
 const EN_DIR = path.join(ROOT, "client/src/i18n/locales/en");
 
-const SUPPORTED_LOCALES = ["de", "fr", "es", "it", "pt-BR", "zh-CN", "ru"];
+const SUPPORTED_LOCALES = ["de", "fr", "es", "it", "pt-BR", "zh-CN", "ja", "pl", "ru"];
 
 const localeArg = process.argv[2];
 

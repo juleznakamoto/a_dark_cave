@@ -1,0 +1,21 @@
+{
+  "endScreen": {
+    "pageTitle": "旅の完了 - A Dark Cave",
+    "trustBadge": "よくやった！",
+    "headline1": "旅はここで終わる",
+    "headline2": "",
+    "subtitle1": "少なくとも、今のところは…",
+    "subtitle2": "残酷モードが、より長く厳しいプレイで待っている。",
+    "subtitle2Discount": "ゲームを終えたことで、割引が解除された。",
+    "cruelMode": "⛤ 残酷モード",
+    "cruelModeBadge": "特別割引",
+    "cruelModeComingSoon": "近日公開",
+    "feedback": "フィードバック",
+    "feedbackBlurb": "バグや翻訳の不具合、提案があれば聞かせてください。",
+    "wishlistOnSteam": "Steamのウィッシュリストに追加",
+    "buyMeACoffee": "支援",
+    "continuePlaying": "プレイを続ける",
+    "moreGames": "ほかのゲーム",
+    "rateOnItch": "itch.ioで評価"
+  }
+}

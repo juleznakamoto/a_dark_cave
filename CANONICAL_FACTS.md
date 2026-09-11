@@ -117,7 +117,7 @@ Do not write a single "released on" date that collapses web and Steam.
 ## Languages
 
 Site UI languages: English, German, French, Spanish, Italian, Portuguese
-(Brazil), Simplified Chinese, Russian.
+(Brazil), Simplified Chinese, Japanese, Polish, Russian.
 
 `html lang` stays `en` for the default document unless the app already switches
 it per locale. Do not add hreflang unless a later SEO pass asks for it.
@@ -179,4 +179,4 @@ Organization `logo` may keep `/og-image.png` until a real wordmark exists.
   Steam movie id `257368796`. Downloadable MP4 lives in
   `client/public/press-kit/video/a_dark_cave_gameplay_trailer.mp4`.
 - UI locales live under `client/src/i18n/locales/` as `en`, `de`, `fr`, `es`,
-  `it`, `pt-BR`, `zh-CN`, `ru`.
+  `it`, `pt-BR`, `zh-CN`, `ja`, `pl`, `ru`.

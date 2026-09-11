@@ -1,0 +1,600 @@
+{
+  "books": {
+    "book_of_ascension": {
+      "description": "Księga o wznoszeniu siebie. Daje zdolność doskonalenia się w zadaniach przez praktykę.",
+      "name": "Księga wzniesienia"
+    },
+    "book_of_absolution": {
+      "description": "Księga obrzędów uspokajania przeklętych przedmiotów. Pozwala osłabić ich złe skutki.",
+      "name": "Księga rozgrzeszenia"
+    },
+    "book_of_chainmaster": {
+      "description": "Księga dawno zmarłego Mistrza Łańcuchów, pełna surowych metod pędzenia robotników poza ich granice.",
+      "name": "Księga Mistrza Łańcuchów"
+    },
+    "book_of_trials": {
+      "description": "Księga o zmaganiu się z próbami życia. Odblokowuje nagrody dla tych, którzy dowiodą swej wartości osiągnięciami.",
+      "name": "Księga prób"
+    }
+  },
+  "clothing": {
+    "alphas_hide": {
+      "description": "Skóra wodza watahy wilków, przesiąknięta pierwotną mocą",
+      "name": "Skóra alfy"
+    },
+    "ancient_scrolls": {
+      "description": "Tajemnicze zwoje spisane nieznanym językiem, czekające na odcyfrowanie",
+      "name": "Starożytne zwoje"
+    },
+    "arbalest_schematic": {
+      "description": "Plan budowy potężnej kuszy",
+      "name": "Arbalet"
+    },
+    "ashen_embrace": {
+      "description": "Twoja zdolność górnicza jest ulepszona",
+      "name": "Popiołowy uścisk"
+    },
+    "ashen_embrace_enhanced": {
+      "description": "Twoja zdolność górnicza jest znacznie ulepszona",
+      "name": "Głęboki popiołowy uścisk"
+    },
+    "bell_blessing": {
+      "description": "Tajemniczy znak dzwonu na przedramieniu. Podwaja punkty skupienia zdobywane podczas Snu.",
+      "name": "Błogosławieństwo dzwonu"
+    },
+    "black_bear_fur": {
+      "description": "Przeklęte czarne futro olbrzymiego niedźwiedzia z innego świata",
+      "name": "Futro czarnego niedźwiedzia"
+    },
+    "black_wood": {
+      "description": "Płyta gęstego, pijącego światło drewna z drzewa sanktuarium.",
+      "name": "Czarne drewno"
+    },
+    "blackened_mirror": {
+      "description": "Wysokie pęknięte lustro w ramie z czarnego żelaza, promieniujące zimną aurą",
+      "name": "Poczerniałe lustro"
+    },
+    "blacksteel_armor": {
+      "description": "Ciężki pancerz najeżony śmiercionośnymi kolcami",
+      "name": "Czarnostalowy pancerz"
+    },
+    "blood_baptized": {
+      "description": "Otrzymane po kąpieli we krwi potężnych stworzeń",
+      "name": "Ochrzczony krwią"
+    },
+    "bloodstained_belt": {
+      "description": "Skórzany pas poplamiony starą krwią",
+      "name": "Krwawy pas"
+    },
+    "bloodstone": {
+      "description": "Karmazynowy klejnot pulsujący mroczną energią",
+      "name": "Krwawy kamień"
+    },
+    "bone_devourer_blood": {
+      "description": "Fiolka bladej krwi zebranej z Kościożercy. Jej skutki są nieznane.",
+      "name": "Krew Kościożercy"
+    },
+    "bone_dice": {
+      "description": "Kości do gry wycięte z kości, wypolerowane do miękkiej, niepokojącej gładkości. Dają jedną dodatkową grę u Hazardzisty.",
+      "name": "Kości do gry"
+    },
+    "bone_necklace": {
+      "description": "Prymitywny naszyjnik z ludzkich kości",
+      "name": "Kościany naszyjnik"
+    },
+    "chitin_plates": {
+      "description": "Potężne płyty z chityny z olbrzymich bagiennych stworzeń. Można nimi dodać pancerz z chityny do umocnień.",
+      "name": "Płyty z chityny"
+    },
+    "cracked_crown": {
+      "description": "Starożytna złota korona promieniująca tajemniczą mocą",
+      "name": "Pęknięta korona"
+    },
+    "creatures_bones": {
+      "description": "Ogromne kości stworzenia z podziemnego jeziora. Kowal może wykuć z nich wielką tarczę.",
+      "name": "Kości stworzenia"
+    },
+    "dagons_gift": {
+      "description": "Twoja zdolność łowiecka jest ulepszona",
+      "name": "Dar Dagona"
+    },
+    "depths_gift": {
+      "description": "Badanie jaskini przynosi więcej",
+      "name": "Dar głębin"
+    },
+    "dagons_gift_enhanced": {
+      "description": "Twoja zdolność łowiecka jest znacznie ulepszona",
+      "name": "Wielki dar Dagona"
+    },
+    "devourer_crown": {
+      "description": "Korona Kościożercy, uczyniona z kości",
+      "name": "Korona Kościożercy"
+    },
+    "ebon_grace": {
+      "description": "Mroczne błogosławieństwo czarnego drzewa",
+      "name": "Hebanowa łaska"
+    },
+    "ebony_ring": {
+      "description": "Ciemny pierścień zostawiony w darze przez leśnych bogów",
+      "name": "Hebanowy pierścień"
+    },
+    "elder_scroll": {
+      "description": "Starożytny zwój zawierający zakazaną wiedzę",
+      "name": "Stary zwój"
+    },
+    "explorer_pack": {
+      "description": "Solidny skórzany plecak, który ulży barkom",
+      "name": "Plecak odkrywcy"
+    },
+    "fang_charm": {
+      "description": "Sznur czarnych kłów z ogromnej istoty",
+      "name": "Talizman z kłów"
+    },
+    "feeding_ring": {
+      "description": "Pierścień, który pojawił się pewnego poranka, jakby zrośnięty z palcem",
+      "name": "Pierścień karmienia"
+    },
+    "fishers_hand": {
+      "description": "Starożytne techniki nadbrzeżnych rybaków do budowy pułapek na ryby",
+      "name": "Ręka rybaka"
+    },
+    "flames_touch": {
+      "description": "Koszty rzemiosła są obniżone",
+      "name": "Dotyk płomienia"
+    },
+    "flames_touch_enhanced": {
+      "description": "Koszty rzemiosła są znacznie obniżone",
+      "name": "Silny dotyk płomienia"
+    },
+    "forests_grace": {
+      "description": "Jelenie lasu zdają się cię mniej dostrzegać",
+      "name": "Łaska lasu"
+    },
+    "brimstone_infusion": {
+      "description": "Wytapiacze stali produkują +1 stali",
+      "name": "Nasiąknięcie siarką"
+    },
+    "fresh_blood": {
+      "description": "Obcy częściej zbliżają się do wioski",
+      "name": "Świeża krew"
+    },
+    "frostglass": {
+      "description": "Krystaliczny materiał promieniujący zimnem",
+      "name": "Mrozoszkło"
+    },
+    "keen_builder": {
+      "description": "Koszty budowy są obniżone",
+      "name": "Sprawny budowniczy"
+    },
+    "gifted_ring": {
+      "description": "Zwykły pierścień, który ktoś zostawił, byś go znalazł",
+      "name": "Pierścień fortuny"
+    },
+    "flask_harness": {
+      "description": "Skórzane szelki z wyściełanymi gniazdami na dodatkowe eliksiry żyłognia",
+      "name": "Szelki na fiolki"
+    },
+    "grenadier_bag": {
+      "description": "Wzmocniona skórzana torba na więcej ładunków wybuchowych",
+      "name": "Torba grenadiera"
+    },
+    "highpriest_robe": {
+      "description": "Święta szata zdobiona złotą nicią",
+      "name": "Szata arcykapłana"
+    },
+    "hollow_king_scepter": {
+      "description": "Berło zaginionego króla, promieniujące mocą i szaleństwem. Działania górnicze mają 5% szans na podwojenie nagrody.",
+      "name": "Berło Pustego Króla"
+    },
+    "hunter_cloak": {
+      "description": "Gibki skórzany płaszcz, który ucisza każdy ruch",
+      "name": "Płaszcz myśliwego"
+    },
+    "knights_burden": {
+      "description": "Wiedza, którą rycerz ci przekazał, ciężko ciąży na umyśle",
+      "name": "Brzemię rycerza"
+    },
+    "leatherbound_book": {
+      "description": "Starożytna księga w skórzanej oprawie, z piętnem łańcucha na okładce",
+      "name": "Księga w skórze"
+    },
+    "loggers_gloves": {
+      "description": "Solidne skórzane rękawice, które pomagają w zbieraniu drewna",
+      "name": "Rękawice drwala"
+    },
+    "lycan_blood": {
+      "description": "Fiolka gęstej krwi alfy likantropa. Jej skutki są nieznane.",
+      "name": "Krew likana"
+    },
+    "map_fragment": {
+      "description": "Fragmenty mapy prowadzącej w nieznane miejsce.",
+      "name": "Fragment mapy"
+    },
+    "moon_bracelet": {
+      "description": "Delikatna, nieważka bransoleta z trwałego białego kamienia",
+      "name": "Księżycowa bransoleta"
+    },
+    "muttering_amulet": {
+      "description": "Tajemniczy amulet wydający dziwne dźwięki",
+      "name": "Mamroczący amulet"
+    },
+    "necromancer_blood": {
+      "description": "Fiolka ciemnej krwi zebranej z nekromanty. Jej skutki są nieznane.",
+      "name": "Krew nekromanty"
+    },
+    "nightshade_bow_schematic": {
+      "description": "Plan budowy trującego łuku",
+      "name": "Łuk z wilczej jagody"
+    },
+    "obsidian_orb": {
+      "description": "Potężna kula z wulkanicznego szkła, dająca siłę umysłu",
+      "name": "Obsydianowa kula"
+    },
+    "obsidian_orb_schematic": {
+      "description": "Plan budowy potężnej obsydianowej kuli",
+      "name": "Obsydianowa kula"
+    },
+    "occultist_grimoire": {
+      "description": "Grymuar zawierający nieświętą wiedzę heretyckiego okultysty",
+      "name": "Grymuar okultysty"
+    },
+    "odd_trinket": {
+      "description": "Świecący bursztynowy eliksir znaleziony przy rąbaniu drewna",
+      "name": "Dziwny eliksir"
+    },
+    "ravenfeather_mantle": {
+      "description": "Mistyczna mantia utkana z lśniących kruczych piór",
+      "name": "Mantia z kruczych piór"
+    },
+    "ravens_mark": {
+      "description": "Obcy częściej zbliżają się do wioski",
+      "name": "Znak kruka"
+    },
+    "rich_veins": {
+      "description": "Twoja zdolność górnicza jest ulepszona",
+      "name": "Bogate żyły"
+    },
+    "ravens_mark_enhanced": {
+      "description": "Obcy znacznie częściej zbliżają się do wioski",
+      "name": "Wielki znak kruka"
+    },
+    "rootseeker_charm": {
+      "description": "Rzeźbiony talizman, który przyciąga żyłokorzeń do zbierających w dziczy.",
+      "name": "Talizman szukacza korzeni"
+    },
+    "ravens_orb": {
+      "description": "Ciemna kula pobłogosławiona przez kruki starożytną wiedzą",
+      "name": "Kula kruka"
+    },
+    "red_mask": {
+      "description": "Odrażająca maska z głęboko szkarłatnej skóry",
+      "name": "Czerwona maska"
+    },
+    "ring_of_clarity": {
+      "description": "Pierścień wycięty z bardzo czystego kryształu",
+      "name": "Pierścień jasności"
+    },
+    "ring_of_drowned": {
+      "description": "Zmatowiony pierścień, zawsze mokry i zimny",
+      "name": "Pierścień utoniętych"
+    },
+    "ring_of_obedience": {
+      "description": "Pierścień z mniejszym pierścieniem u boku, dar radosnej kobiety",
+      "name": "Pierścień posłuszeństwa"
+    },
+    "sacrificial_tunic": {
+      "description": "Święte odzienie, które wzmacnia ofiary składane starym bogom",
+      "name": "Tunika ofiarna"
+    },
+    "sealed_chest": {
+      "description": "Bardzo solidna skrzynia, której nie potrafisz otworzyć",
+      "name": "Zapieczętowana skrzynia"
+    },
+    "shadow_boots": {
+      "description": "Poruszaj się po każdym gruncie tak szybko jak cień",
+      "name": "Buty cienia"
+    },
+    "shadow_flute": {
+      "description": "Kościana fletnia, od której cienie poruszają się nienaturalnie",
+      "name": "Flet cienia"
+    },
+    "sharp_aim": {
+      "description": "Celność twoich myśliwych jest ulepszona",
+      "name": "Celne oko"
+    },
+    "skilled_hands": {
+      "description": "Koszty rzemiosła są obniżone",
+      "name": "Zręczne ręce"
+    },
+    "skeleton_key_schematic": {
+      "description": "Plan budowy klucza szkieletowego",
+      "name": "Klucz szkieletowy"
+    },
+    "stonebinders_codex": {
+      "description": "Tom z ukrytej biblioteki, odsłaniający sekrety sprawnego budowania",
+      "name": "Kodeks Spajacza Kamienia"
+    },
+    "stormglass_halberd_schematic": {
+      "description": "Plan budowy potężnej halabardy",
+      "name": "Halabarda z burzoszkła"
+    },
+    "survivors_last_words": {
+      "description": "Ostatnie błogosławieństwo umierającego obcego",
+      "name": "Ostatnie słowa ocalałego"
+    },
+    "survivors_notes": {
+      "description": "Zniszczony zwój pełen praktycznych rad, zostawiony przez kogoś, kto dawno tu żył. Odblokowuje podstawowe osiągnięcia.",
+      "name": "Zapiski ocalałego"
+    },
+    "tarnished_amulet": {
+      "description": "Zniszczony amulet przynoszący szczęście",
+      "name": "Zmatowiony amulet"
+    },
+    "tarnished_compass": {
+      "description": "Starożytna relikwia dla tych, którzy szukają drogi.",
+      "name": "Zmatowiony kompas"
+    },
+    "trail_sense": {
+      "description": "Twoi myśliwi przynoszą więcej żywności",
+      "name": "Wyczucie szlaku"
+    },
+    "unnamed_book": {
+      "description": "Księga oprawiona w ludzką skórę, pełna zakazanej wiedzy",
+      "name": "Bezimienna księga"
+    },
+    "whisperers_mark": {
+      "description": "Znak szeptacza w ciemności",
+      "name": "Znak Szeptacza"
+    },
+    "whispering_cube": {
+      "description": "Doskonale wypolerowana metalowa kostka nieznanego pochodzenia, szepcząca okruchy dziejów znikłej cywilizacji.",
+      "name": "Szeptająca kostka"
+    },
+    "wooden_figure": {
+      "description": "Rzeźbiona drewniana figurka niepokojącej istoty z mackami",
+      "name": "Drewniana figurka"
+    }
+  },
+  "fellowship": {
+    "ashwraith_huntress": {
+      "description": "Dzika łowczyni z leśnego plemienia, związana przysięgą krwi. Odblokowuje ulepszenia umiejętności łowieckich i produkcji myśliwych.",
+      "name": "Łowczyni Popiołowego Widma"
+    },
+    "disgraced_prior": {
+      "description": "Dawny przeor wygnany ze swego zakonu. Okupuje się nieustanną pracą. Odblokowuje umiejętność Niestrudzony robotnik.",
+      "name": "Splamiony Przeor"
+    },
+    "elder_wizard": {
+      "description": "Stary czarodziej u kresu dni, który dawno opanował sztuki arkanicznego ognia. Odblokowuje umiejętność bojową Sfera krwawego płomienia.",
+      "name": "Stary czarodziej"
+    },
+    "one_eyed_crow": {
+      "description": "Mistyczny kruk z jednym przenikliwym okiem, oswojony uprzążą kruka. Odblokowuje umiejętność Oko kruka i wysyłanie wiadomości.",
+      "name": "Jednooki kruk"
+    },
+    "restless_knight": {
+      "description": "Weteran walk, który widział szczątki starego świata. Odblokowuje umiejętność bojową Miażdżące uderzenie.",
+      "name": "Niespokojny rycerz"
+    },
+    "the_hound": {
+      "description": "Muskularny, zniekształcony ocalały z zatrutej górskiej wioski. Odblokowuje umiejętność bojową Dziki ryk.",
+      "name": "Brutalny Ogar"
+    }
+  },
+  "tools": {
+    "adamant_axe": {
+      "description": "Niezniszczalny topór, wykuty z najtwardszego metalu",
+      "name": "Adamantowy topór"
+    },
+    "adamant_lantern": {
+      "description": "Ostateczne źródło światła, oświetlające każdą ścieżkę",
+      "name": "Adamantowa latarnia"
+    },
+    "adamant_pickaxe": {
+      "description": "Szczyt narzędzi górniczych, nieugięty i precyzyjny",
+      "name": "Adamantowy kilof"
+    },
+    "blacksmith_hammer": {
+      "description": "Legendarny młot kowalski, niegdyś należący do wielkiego kowala",
+      "name": "Młot kowalski"
+    },
+    "blacksteel_axe": {
+      "description": "Topór wykuty z rzadkiej czarnostali",
+      "name": "Czarnostalowy topór"
+    },
+    "blacksteel_lantern": {
+      "description": "Latarnia wykuta z rzadkiej czarnostali",
+      "name": "Czarnostalowa latarnia"
+    },
+    "blacksteel_pickaxe": {
+      "description": "Kilof wykuty z rzadkiej czarnostali",
+      "name": "Czarnostalowy kilof"
+    },
+    "bone_saw": {
+      "description": "Narzędzie nekromanty, nienaturalnie sprawne w ćwiartowaniu",
+      "name": "Piła kostna"
+    },
+    "crow_harness": {
+      "description": "Specjalnie wykonana uprząż do chwytania kruków. Można nią schwytać kruka w Kanionie Czarnodolu.",
+      "name": "Uprząż kruka"
+    },
+    "giant_trap": {
+      "description": "Ogromna pułapka zdolna schwytać olbrzymie leśne stworzenia",
+      "name": "Olbrzymia pułapka"
+    },
+    "hidden_library_map": {
+      "description": "Mapa z klasztoru wskazująca miejsce ukrytej biblioteki głęboko w jaskini",
+      "name": "Mapa ukrytej biblioteki"
+    },
+    "iron_axe": {
+      "description": "Ostry topór do ciężkiego rąbania",
+      "name": "Żelazny topór"
+    },
+    "iron_lantern": {
+      "description": "Prosta latarnia dająca pewne światło",
+      "name": "Żelazna latarnia"
+    },
+    "iron_pickaxe": {
+      "description": "Wytrzymały kilof do sprawnego górnictwa",
+      "name": "Żelazny kilof"
+    },
+    "mastermason_chisel": {
+      "description": "Wybornie wykonane narzędzie dawno zapomnianego mistrza budownictwa",
+      "name": "Dłuto mistrza murarskiego"
+    },
+    "natharit_pickaxe": {
+      "description": "Niezmiernie wytrzymały kilof z nieznanego materiału, o wyjątkowej jakości",
+      "name": "Kilof Natharit"
+    },
+    "obsidian_axe": {
+      "description": "Legendarny topór o wulkanicznych krawędziach ostrych jak brzytwa",
+      "name": "Obsydianowy topór"
+    },
+    "obsidian_lantern": {
+      "description": "Potężna latarnia rzucająca silne, niewzruszone światło",
+      "name": "Obsydianowa latarnia"
+    },
+    "obsidian_pickaxe": {
+      "description": "Mistrzowskie narzędzie górnicze z wulkanicznego szkła",
+      "name": "Obsydianowy kilof"
+    },
+    "occultist_map": {
+      "description": "Zniszczona mapa odsłaniająca komnatę okultysty w jaskini",
+      "name": "Mapa okultysty"
+    },
+    "mountain_village_map": {
+      "description": "Prosta mapa ze szlakiem w wysokie przełęcze, ku górskiej wiosce.",
+      "name": "Mapa górskiej wioski"
+    },
+    "reinforced_rope": {
+      "description": "Mocna lina umożliwiająca dostęp do głębszych komór jaskini",
+      "name": "Wzmocniona lina"
+    },
+    "skeleton_key": {
+      "description": "Tajemniczy klucz, o którym mówi się, że otwiera każdy zamek",
+      "name": "Klucz szkieletowy"
+    },
+    "skull_lantern": {
+      "description": "Wykuta z przeklętej kości, oświetla najgłębsze otchłanie",
+      "name": "Latarnia czaszkowa"
+    },
+    "steel_axe": {
+      "description": "Finezyjnie wykuty topór z hartowanej stali",
+      "name": "Stalowy topór"
+    },
+    "steel_lantern": {
+      "description": "Jasna latarnia oświetlająca najciemniejsze miejsca",
+      "name": "Stalowa latarnia"
+    },
+    "steel_pickaxe": {
+      "description": "Bardzo wytrzymałe narzędzie górnicze z odpornej stali",
+      "name": "Stalowy kilof"
+    },
+    "stone_axe": {
+      "description": "Prosty topór do rąbania drewna",
+      "name": "Kamienny topór"
+    },
+    "stone_pickaxe": {
+      "description": "Prymitywny kilof do górnictwa",
+      "name": "Kamienny kilof"
+    }
+  },
+  "weapons": {
+    "adamant_sword": {
+      "description": "Legendarne ostrze o niezrównanej sile",
+      "name": "Adamantowy miecz"
+    },
+    "arbalest": {
+      "description": "Starannie wykonany arbalet zaprojektowany przez genialnego inżyniera",
+      "name": "Arbalet"
+    },
+    "ashen_dagger": {
+      "description": "Sztylet wykuty z wulkanicznego popiołu, dar Niosącego Popiół",
+      "name": "Popiołowy sztylet"
+    },
+    "ashen_greatshield": {
+      "description": "Ogromna tarcza wykuta z kości stworzenia z podziemnego jeziora",
+      "name": "Popiołowa wielka tarcza"
+    },
+    "ashfire_bomb": {
+      "description": "Niszczycielska bomba jarząca się ogniem z innego świata",
+      "name": "Bomba popiołognia"
+    },
+    "blacksteel_bow": {
+      "description": "Łuk wykuty z rzadkiej czarnostali",
+      "name": "Czarnostalowy łuk"
+    },
+    "blacksteel_sword": {
+      "description": "Miecz wykuty z rzadkiej czarnostali",
+      "name": "Czarnostalowy miecz"
+    },
+    "bloodstone_staff": {
+      "description": "Kostur zwieńczony krwawym kamieniem, pulsujący mroczną energią",
+      "name": "Kostur krwawego kamienia"
+    },
+    "compound_bow": {
+      "description": "Broń o wysokiej precyzji znikłej cywilizacji",
+      "name": "Łuk bloczkowy"
+    },
+    "crude_bow": {
+      "description": "Prosty łuk, pewny w każdej próbie",
+      "name": "Prosty łuk"
+    },
+    "ember_bomb": {
+      "description": "Potężna bomba z żarzącym się jądrem, tworząca ogromny żar",
+      "name": "Bomba żaru"
+    },
+    "frostglass_sword": {
+      "description": "Ostrze wykute z mrozoszkła, promieniujące zimną mocą",
+      "name": "Miecz z mrozoszkła"
+    },
+    "huntsman_bow": {
+      "description": "Ulepszony łuk, finezyjnie wyważony i celny",
+      "name": "Łuk łowcy"
+    },
+    "iron_sword": {
+      "description": "Solidne żelazne ostrze wzmacniające sprawność bojową",
+      "name": "Żelazny miecz"
+    },
+    "long_bow": {
+      "description": "Doskonały łuk o większym zasięgu i celności",
+      "name": "Długi łuk"
+    },
+    "master_bow": {
+      "description": "Ostateczny łuk, niezrównany w mocy i panowaniu",
+      "name": "Mistrzowski łuk"
+    },
+    "nightshade_bow": {
+      "description": "Łuk z ciemnego drewna, którego strzały niosą truciznę",
+      "name": "Łuk z wilczej jagody"
+    },
+    "nordic_war_axe": {
+      "description": "Legendarny topór wojenny wykuty przez wikińskiego mistrza kowalskiego",
+      "name": "Nordycki topór wojenny"
+    },
+    "obsidian_sword": {
+      "description": "Ostrze ostre jak brzytwa, wykute z wulkanicznego szkła",
+      "name": "Obsydianowy miecz"
+    },
+    "steel_sword": {
+      "description": "Finezyjnie wykute stalowe ostrze o znakomitym wyważeniu",
+      "name": "Stalowy miecz"
+    },
+    "stormglass_halberd": {
+      "description": "Najwyższa halabarda wykuta z mistrzowsko oczyszczonego adamantu",
+      "name": "Halabarda z burzoszkła"
+    },
+    "veinfire_elixir": {
+      "description": "Alchemiczny eliksir leczniczy destylowany z rzadkiego żyłokorzenia",
+      "name": "Eliksir żyłognia"
+    },
+    "void_bomb": {
+      "description": "Przerażająca bomba, jakby zniekształcająca przestrzeń wokół siebie",
+      "name": "Bomba pustki"
+    },
+    "war_bow": {
+      "description": "Bardzo potężny łuk, wykuty dla siły i precyzji",
+      "name": "Łuk wojenny"
+    }
+  }
+}

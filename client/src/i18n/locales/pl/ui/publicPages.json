@@ -1,0 +1,83 @@
+{
+  "publicPages": {
+    "faqHeading": "Najczęstsze pytania",
+    "aboutHeading": "O A Dark Cave",
+    "faq": {
+      "whatIs": {
+        "q": "Czym jest A Dark Cave?",
+        "a": "A Dark Cave to tekstowa, przyrostowa gra o przetrwaniu i budowaniu osady. Budzisz się w jaskini bez pamięci, rozpalasz ogień, zbierasz surowce, budujesz wioskę i schodzisz w ciemność."
+      },
+      "free": {
+        "q": "Czy A Dark Cave jest za darmo?",
+        "a": "Tak. Możesz grać za darmo w przeglądarce na <site>a-dark-cave.com</site>. Zakupy są w pełni opcjonalne."
+      },
+      "idle": {
+        "q": "Czy to gra bezczynna albo kliker?",
+        "a": "Nie. To gra przyrostowa: częściowo toczy się sama, częściowo wymaga twoich decyzji. Zarządzasz osadą. To nie jest kliker na drugi ekran."
+      },
+      "like": {
+        "q": "Do jakich gier jest podobna?",
+        "a": "Jeśli lubisz A Dark Room, Kittens Game, The Ensign, Universal Paperclips, Candy Box, Level 13 albo KEROS-9, to jest ta szkoła. Gra nie jest z nimi powiązana."
+      },
+      "phone": {
+        "q": "Czy mogę grać na telefonie?",
+        "a": "Tak, w przeglądarce mobilnej. Nie ma aplikacji w App Store ani Google Play."
+      },
+      "steam": {
+        "q": "Czy jest wersja na Steam?",
+        "a": "Tak. A Dark Cave ukaże się na <steam>Steam</steam> 27 października 2026. <demo>Darmowe demo</demo> jest już dostępne. Edycja Steam to gra płatna."
+      },
+      "download": {
+        "q": "Czy muszę pobierać grę przeglądarkową?",
+        "a": "Nie. Graj w przeglądarce."
+      },
+      "save": {
+        "q": "Czy postęp się zapisuje?",
+        "a": "Tak. Postęp zapisuje się automatycznie w przeglądarce. Opcjonalne konto dodaje zapis w chmurze."
+      },
+      "account": {
+        "q": "Czy potrzebuję konta?",
+        "a": "Nie. Możesz grać bez konta. Konto jest tylko do zapisu w chmurze."
+      },
+      "singlePlayer": {
+        "q": "Czy to gra jednoosobowa?",
+        "a": "Tak. A Dark Cave to gra jednoosobowa."
+      },
+      "ending": {
+        "q": "Czy gra ma zakończenie?",
+        "a": "Tak. Jest fabuła, wiele sekretów i historii świata, i więcej niż jedno zakończenie."
+      },
+      "languages": {
+        "q": "Jakie języki są obsługiwane?",
+        "a": "W przeglądarce: angielski, niemiecki, francuski, hiszpański, włoski, portugalski (Brazylia), chiński uproszczony, japoński, rosyjski i polski."
+      },
+      "help": {
+        "q": "Gdzie dostać pomoc?",
+        "a": "Napisz na <email>support@a-dark-cave.com</email> albo zapytaj na <reddit>subreddicie A Dark Cave</reddit>."
+      }
+    },
+    "about": {
+      "intro1": "Zrobiłem tę grę, bo wiele lat temu zagrałem w A Dark Room i to mnie zainspirowało, żeby kiedyś stworzyć własną. Ten dzień nadszedł.",
+      "intro2": "Budzisz się u wejścia do ciemnej jaskini. Bez pamięci. Bez rzeczy. Rozpalasz ogień, zbierasz trochę drewna, robisz pochodnię, budujesz pierwszy schron. Przychodzą obcy. Osada rośnie. Zaczynasz badać to, co leży głęboko w jaskini. Przeszłość twojej cywilizacji. Twoją przeszłość. To jest A Dark Cave: tekstowa gra przyrostowa o przetrwaniu, budowaniu i odkrywaniu, co naprawdę jest na dole, i może dokąd zmierzamy jako ludzkość.",
+      "intro3": "W przeglądarce jest za darmo: <site>a-dark-cave.com</site>. Żeby wesprzeć grę, są w pełni opcjonalne zakupy. Jest też <demo>demo na Steam</demo>, jeśli wolisz grać tak. Pełna wersja na Steam jest planowana na 27 października 2026.",
+      "howHeading": "Jak się gra",
+      "how1": "Zaczynasz od niczego. Stopniowo odblokowujesz przedmioty, budynki, umiejętności, zajęcia, towarzyszy i wiele więcej. Rozwija się historia, bogata w tło świata, o przeszłości cywilizacji, która żyła wcześniej. Im głębiej schodzisz do jaskini, tym więcej się dowiadujesz. Ale niebezpieczeństwo też rośnie.",
+      "how2": "Rozgrywka jest aktywna. Podejmujesz decyzje, które wpływają na grę. Jest też tryb bezczynny, żeby gra mogła iść naprzód, gdy cię nie ma. Gra ma zakończenie, a może więcej niż jedno.",
+      "likedHeading": "Jeśli lubisz starsze gry przyrostowe",
+      "liked1": "Ludzie zwykle trafiają tu od A Dark Room, Kittens Game, Universal Paperclips, Candy Box i podobnych gier. Część mechanik z tych gier znajdziesz też w A Dark Cave. A Dark Cave jest minimalistyczne w grafice, ale animacje robiłem ręcznie, dodałem dużo dźwięków i sprawiłem, że działa na komputerze i telefonie, żeby pasowało do tego, jak gramy dziś.",
+      "whoHeading": "Dla kogo to jest",
+      "who1": "Dla osób, które lubią gry zaczynające się prosto i celowo robiące się trudniejsze. Nie dlatego, że samouczek w pierwszej minucie zrzuca dwadzieścia systemów, tylko dlatego, że kolejne trzeba sobie wypracować.",
+      "who2": "Jeśli chcesz krzykliwej grafiki, to zła gra. Większość to tekst, z kilkoma (mam nadzieję) satysfakcjonującymi animacjami po drodze. Poświęciłem dużo czasu na ciekawą historię, głęboko związaną z naszą historią i przyszłością.",
+      "platformsHeading": "Platformy",
+      "platforms1": "Graj w przeglądarce na komputerze albo telefonie. Nie ma aplikacji w App Store ani Google Play. Postęp zapisuje się na twoim urządzeniu. Możesz założyć konto, jeśli chcesz zapis w chmurze.",
+      "platforms2": "<steam>Steam</steam> (Windows) to gra płatna z <demo>darmowym demo</demo>. Gra przeglądarkowa zostaje za darmo.",
+      "platforms3": "Gra jest po angielsku, niemiecku, francusku, hiszpańsku, włosku, portugalsku (Brazylia), chińsku uproszczonym, japońsku, rosyjsku i polsku.",
+      "meHeading": "Kim jestem",
+      "me1": "Jestem Julian Bauer. A Dark Cave zrobiłem sam. Jeśli coś nie działa albo po prostu chcesz napisać, pisz na <email>support@a-dark-cave.com</email>.",
+      "play": "Graj",
+      "faq": "FAQ",
+      "steam": "Steam",
+      "reddit": "Reddit"
+    }
+  }
+}

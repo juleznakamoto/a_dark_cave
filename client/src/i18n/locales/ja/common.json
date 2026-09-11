@@ -1,0 +1,91 @@
+{
+  "buttons": {
+    "close": "閉じる",
+    "continue": "続ける",
+    "confirm": "確認",
+    "cancel": "キャンセル",
+    "save": "保存",
+    "refresh": "更新",
+    "dismiss": "閉じる",
+    "fight": "戦う",
+    "refuse": "拒む",
+    "accept": "受ける",
+    "back": "戻る",
+    "claim": "受け取る",
+    "activate": "発動",
+    "deactivate": "無効化"
+  },
+  "status": {
+    "loading": "読み込み中...",
+    "processing": "処理中...",
+    "free": "無料",
+    "error": "エラー",
+    "success": "成功！",
+    "active": "発動中",
+    "activated": "発動済み"
+  },
+  "tabs": {
+    "cave": "洞窟",
+    "village": "村",
+    "city": "都市",
+    "forest": "森",
+    "estate": "屋敷",
+    "bastion": "バスティオン",
+    "fortress": "要塞",
+    "trader": "商人",
+    "achievements": "実績",
+    "timedEvent": "時限出来事"
+  },
+  "resources": {
+    "wood": "木材",
+    "stone": "石",
+    "food": "食料",
+    "veinroot": "脈根",
+    "bones": "骨",
+    "fur": "毛皮",
+    "leather": "皮革",
+    "bone_totem": "骨のトーテム",
+    "leather_totem": "皮革のトーテム",
+    "iron": "鉄",
+    "coal": "石炭",
+    "sulfur": "硫黄",
+    "obsidian": "黒曜石",
+    "adamant": "アダマント",
+    "steel": "鋼",
+    "blacksteel": "黒鋼",
+    "moonstone": "月長石",
+    "black_powder": "黒色火薬",
+    "ember_bomb": "残火爆弾",
+    "ashfire_dust": "灰火塵",
+    "ashfire_bomb": "灰火爆弾",
+    "void_bomb": "虚空爆弾",
+    "veinfire_elixir": "脈火の霊薬",
+    "poison_arrows": "毒矢",
+    "torch": "松明",
+    "silver": "銀貨",
+    "gold": "金貨",
+    "insight": "洞察"
+  },
+  "stats": {
+    "strength": "筋力",
+    "knowledge": "知識",
+    "luck": "運",
+    "madness": "狂気",
+    "attack": "攻撃",
+    "defense": "防御",
+    "integrity": "耐久"
+  },
+  "time": {
+    "never": "なし",
+    "hoursMinutes": "{{hours}}時間 {{minutes}}分",
+    "minutesSeconds": "{{minutes}}分 {{seconds}}秒"
+  },
+  "population": {
+    "villager_one": "{{count}}人の村人",
+    "villager_other": "{{count}}人の村人",
+    "maxPopulation": "人口上限 +{{count}}"
+  },
+  "currency": {
+    "goldAmount": "{{amount}}金貨"
+  }
+}

@@ -137,7 +137,7 @@ export const FAQ_ITEMS: FaqItem[] = [
   {
     question: "What languages are supported?",
     answerText:
-      "English, German, French, Spanish, Italian, Portuguese (Brazil), Simplified Chinese, and Russian in the browser. Steam also lists Japanese.",
+      "English, German, French, Spanish, Italian, Portuguese (Brazil), Simplified Chinese, Japanese, Polish, and Russian in the browser.",
     answerHtml: "",
   },
   {

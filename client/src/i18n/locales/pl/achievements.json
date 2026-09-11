@@ -1,0 +1,321 @@
+{
+  "action": {
+    "0-chopWood": {
+      "label": "Drwal",
+      "description": "Ulepsz „Zbieraj drewno” do poziomu 10."
+    },
+    "0-craftTorches": {
+      "label": "Wytwórca pochodni",
+      "description": "Ulepsz „Pochodnie” do poziomu 10."
+    },
+    "0-exploreCave": {
+      "label": "Badacz jaskiń",
+      "description": "Ulepsz „Badaj jaskinię” do poziomu 10."
+    },
+    "0-gamblerWins": {
+      "label": "Doświadczony hazardzista",
+      "description": "Wygraj 10 razy z hazardzistą."
+    },
+    "0-hunt": {
+      "label": "Myśliwy",
+      "description": "Ulepsz „Poluj” do poziomu 10."
+    },
+    "1-mineAdamant": {
+      "label": "Górnik adamantu",
+      "description": "Ulepsz „Adamant” do poziomu 10."
+    },
+    "1-mineCoal": {
+      "label": "Górnik węgla",
+      "description": "Ulepsz „Węgiel” do poziomu 10."
+    },
+    "1-mineIron": {
+      "label": "Górnik żelaza",
+      "description": "Ulepsz „Żelazo” do poziomu 10."
+    },
+    "1-mineMoonstone": {
+      "label": "Górnik kamienia księżycowego",
+      "description": "Ulepsz „Kamień księżycowy” do poziomu 10."
+    },
+    "1-mineObsidian": {
+      "label": "Górnik obsydianu",
+      "description": "Ulepsz „Obsydian” do poziomu 10."
+    },
+    "1-mineStone": {
+      "label": "Górnik kamienia",
+      "description": "Ulepsz „Kamień” do poziomu 10."
+    },
+    "1-mineSulfur": {
+      "label": "Górnik siarki",
+      "description": "Ulepsz „Siarka” do poziomu 10."
+    },
+    "2-animals": {
+      "label": "Ofiarnik zwierząt",
+      "description": "Złóż zwierzęta w ofierze 10 razy."
+    },
+    "2-boneTotems": {
+      "label": "Ofiarnik kości",
+      "description": "Złóż kościane totemy w ofierze 20 razy."
+    },
+    "2-craftBoneTotems": {
+      "label": "Twórca kościanych totemów",
+      "description": "Ulepsz „Kościane totemy” do poziomu 10."
+    },
+    "2-craftLeatherTotems": {
+      "label": "Twórca skórzanych totemów",
+      "description": "Ulepsz „Skórzane totemy” do poziomu 10."
+    },
+    "2-leatherTotems": {
+      "label": "Ofiarnik skóry",
+      "description": "Złóż skórzane totemy w ofierze 20 razy."
+    },
+    "3-ashfireBombs": {
+      "label": "Twórca bomb popiołognia",
+      "description": "Wytwórz 20 bomb popiołognia."
+    },
+    "3-burningVeins": {
+      "label": "Płonące żyły",
+      "description": "Użyj 10 eliksirów żyłognia."
+    },
+    "3-emberBombs": {
+      "label": "Twórca bomb żaru",
+      "description": "Wytwórz 20 bomb żaru."
+    },
+    "3-veinfireElixir": {
+      "label": "Twórca eliksiru żyłognia",
+      "description": "Wytwórz 10 eliksirów żyłognia."
+    },
+    "4-feedFire": {
+      "label": "Karmiciel ognia",
+      "description": "Nakarm ogień 100 razy."
+    },
+    "4-insightful": {
+      "label": "Wnikliwy",
+      "description": "Wydaj łącznie 10'000 wglądu."
+    },
+    "4-investor": {
+      "label": "Inwestor",
+      "description": "Zainwestuj łącznie 2'500 złota."
+    },
+    "4-luckyInvestor": {
+      "label": "Szczęśliwy inwestor",
+      "description": "Zakończ sukcesem 10 inwestycji."
+    },
+    "4-mentalClarity": {
+      "label": "Jasność umysłu",
+      "description": "Użyj 5 eliksirów jasności."
+    },
+    "4-merchantPurchases": {
+      "label": "Negocjator",
+      "description": "Dokonaj 100 zakupów u kupca."
+    },
+    "4-pileOfDead": {
+      "label": "Stos umarłych",
+      "description": "Strać łącznie 250 wieśniaków."
+    },
+    "4-solsticeGatherings": {
+      "label": "Uczestnik przesilenia",
+      "description": "Zorganizuj 10 zgromadzeń przesilenia."
+    },
+    "4-wellRested": {
+      "label": "Twardy śpioch",
+      "description": "Odpoczywaj łącznie 20 godzin."
+    }
+  },
+  "basic": {
+    "0-coalMiner": {
+      "label": "Zbieraj węgiel",
+      "description": "Zbierz łącznie 500 węgla."
+    },
+    "0-hunter": {
+      "label": "Myśliwy",
+      "description": "Zbierz łącznie 500 żywności."
+    },
+    "0-ironMiner": {
+      "label": "Zbieraj żelazo",
+      "description": "Zbierz łącznie 500 żelaza."
+    },
+    "0-steelForger": {
+      "label": "Kuj stal",
+      "description": "Wykuj łącznie 250 stali."
+    },
+    "0-stoneMiner": {
+      "label": "Zbieraj kamień",
+      "description": "Zbierz łącznie 500 kamienia."
+    },
+    "0-tanner": {
+      "label": "Garbarz",
+      "description": "Zbierz łącznie 250 skóry."
+    },
+    "0-woodGatherer": {
+      "label": "Zbieraj drewno",
+      "description": "Zbierz łącznie 500 drewna."
+    },
+    "1-builder": {
+      "label": "Wznoszenie budynków",
+      "description": "Posiadaj co najmniej 5 budynków."
+    },
+    "1-communityBuilder": {
+      "label": "Buduj społeczność",
+      "description": "Osiągnij populację 10."
+    },
+    "1-explorer": {
+      "label": "Badaj jaskinię",
+      "description": "Badaj jaskinię 20 razy."
+    },
+    "1-toolCrafter": {
+      "label": "Wytwarzaj narzędzia",
+      "description": "Posiadaj 5 różnych narzędzi."
+    },
+    "1-torchCrafter": {
+      "label": "Wytwarzaj pochodnie",
+      "description": "Wytwórz łącznie 50 pochodni."
+    }
+  },
+  "building": {
+    "0-0": {
+      "label": "Proste schronienie",
+      "description": "Zbuduj 10 drewnianych chat."
+    },
+    "0-1": {
+      "label": "Solidne schronienie",
+      "description": "Zbuduj 10 kamiennych chat."
+    },
+    "0-2": {
+      "label": "Nordyckie schronienie",
+      "description": "Zbuduj 5 długich domów."
+    },
+    "0-3": {
+      "label": "Koczownicze schronienie",
+      "description": "Zbuduj 5 futrzanych namiotów."
+    },
+    "1-0": {
+      "label": "Myśliwi",
+      "description": "Zbuduj Chatę myśliwego i wszystkie ulepszenia."
+    },
+    "1-1": {
+      "label": "Kowale",
+      "description": "Zbuduj Kuźnię i wszystkie ulepszenia."
+    },
+    "1-2": {
+      "label": "Hutnicy",
+      "description": "Zbuduj Hutę i wszystkie ulepszenia."
+    },
+    "1-3": {
+      "label": "Garbarze",
+      "description": "Zbuduj Garbarnię i wszystkie ulepszenia."
+    },
+    "2-0": {
+      "label": "Górnicy",
+      "description": "Zbuduj Płytki szyb i wszystkie ulepszenia."
+    },
+    "3-0": {
+      "label": "Handlarze",
+      "description": "Zbuduj Posterunek handlowy i wszystkie ulepszenia."
+    },
+    "3-1": {
+      "label": "Zaopatrzeniowcy",
+      "description": "Zbuduj Chatę zapasów i wszystkie ulepszenia."
+    },
+    "3-2": {
+      "label": "Uczeni",
+      "description": "Zbuduj Chatę pisarza i wszystkie ulepszenia."
+    },
+    "3-3": {
+      "label": "Kapłani",
+      "description": "Zbuduj Ołtarz i wszystkie ulepszenia."
+    },
+    "4-0": {
+      "label": "Mury grodu",
+      "description": "Zbuduj Palisady i wszystkie ulepszenia."
+    },
+    "4-1": {
+      "label": "Strażnica",
+      "description": "Zbuduj Strażnicę i wszystkie ulepszenia."
+    }
+  },
+  "item": {
+    "0-axes": {
+      "label": "Topory",
+      "description": "Wytwórz każdy topór od kamiennego po adamantowy."
+    },
+    "0-lanterns": {
+      "label": "Latarnie",
+      "description": "Wytwórz każdą latarnię od żelaznej po adamantową."
+    },
+    "0-pickaxes": {
+      "label": "Kilofy",
+      "description": "Wytwórz każdy kilof od kamiennego po adamantowy."
+    },
+    "1-bows": {
+      "label": "Łuki",
+      "description": "Wytwórz każdy łuk od prymitywnego po mistrzowski."
+    },
+    "1-swords": {
+      "label": "Miecze",
+      "description": "Wytwórz każdy miecz od żelaznego po adamantowy."
+    },
+    "2-explorer_pack": {
+      "label": "Wyroby skórzane",
+      "description": "Wytwórz wszystkie siedem wyrobów skórzanych."
+    },
+    "2-schematic_weapons": {
+      "label": "Schematy",
+      "description": "Wytwórz trzy bronie ze schematów."
+    },
+    "3-ancient_books": {
+      "label": "Starożytna mądrość",
+      "description": "Zbierz wszystkie trzy starożytne księgi."
+    },
+    "3-fellowship": {
+      "label": "Dobre towarzystwo",
+      "description": "Zwerbuj wszystkich sześciu towarzyszy drużyny."
+    },
+    "4-blacksteel_equipment": {
+      "label": "Mroczny ekwipunek wojenny",
+      "description": "Wytwórz wszystkie trzy wojenne przedmioty z czarnostali."
+    },
+    "4-blacksteel_tools": {
+      "label": "Mroczne narzędzia",
+      "description": "Wytwórz wszystkie trzy narzędzia z czarnostali."
+    }
+  },
+  "overall": {
+    "0-achievementMaxer": {
+      "label": "Mistrz osiągnięć",
+      "description": "Ukończ każde nieepickie osiągnięcie."
+    },
+    "0-caveVeteran": {
+      "label": "Weteran jaskini",
+      "description": "Wygraj 3 gry."
+    },
+    "0-endurant": {
+      "label": "Wytrwały",
+      "description": "Graj łącznie 30 godzin we wszystkich grach."
+    },
+    "0-resourceMaxer": {
+      "label": "Mistrz zasobów",
+      "description": "Osiągnij pojemność Wielkiego skarbca dla każdego ograniczonego zasobu."
+    },
+    "0-upgradeMaxer": {
+      "label": "Mistrz ulepszeń",
+      "description": "Maksymalnie ulepsz wszystko w zakładce Posiadłość."
+    },
+    "0-speedrunner": {
+      "label": "Błyskawiczny",
+      "detail": "<5 godzin",
+      "description": "Wygraj grę w mniej niż 5 godzin."
+    },
+    "0-supporter": {
+      "label": "Wspierający",
+      "description": "Ukończ ścieżkę nagród wspierającego."
+    },
+    "0-winCruel": {
+      "label": "Okrutne zwycięstwo",
+      "description": "Wygraj grę w trybie okrutnym."
+    },
+    "0-winNormal": {
+      "label": "Normalne zwycięstwo",
+      "description": "Wygraj grę w trybie normalnym."
+    }
+  }
+}

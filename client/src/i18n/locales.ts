@@ -7,6 +7,8 @@ export const SUPPORTED_LOCALES = [
   "it",
   "pt-BR",
   "zh-CN",
+  "ja",
+  "pl",
   "ru",
 ] as const;
 
@@ -24,6 +26,8 @@ export const LOCALE_LABELS: Record<SupportedLocale, string> = {
   it: "Italiano",
   "pt-BR": "Português (Brasil)",
   "zh-CN": "简体中文",
+  ja: "日本語",
+  pl: "Polski",
   ru: "Русский",
 };
 
@@ -41,6 +45,8 @@ export const OG_LOCALE_TAGS: Record<SupportedLocale, string> = {
   it: "it_IT",
   "pt-BR": "pt_BR",
   "zh-CN": "zh_CN",
+  ja: "ja_JP",
+  pl: "pl_PL",
   ru: "ru_RU",
 };
 
@@ -70,6 +76,8 @@ export function normalizeLocale(value: string | null | undefined): SupportedLoca
   if (lower.startsWith("it")) return "it";
   if (lower.startsWith("pt")) return "pt-BR";
   if (lower.startsWith("zh")) return "zh-CN";
+  if (lower.startsWith("ja")) return "ja";
+  if (lower.startsWith("pl")) return "pl";
   if (lower.startsWith("ru")) return "ru";
   return DEFAULT_LOCALE;
 }

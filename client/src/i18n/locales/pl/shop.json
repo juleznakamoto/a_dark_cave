@@ -1,0 +1,103 @@
+{
+  "additional_preset_slots": {
+    "activationMessage": "Dodano dwa dodatkowe sloty zestawów pracy wieśniaków.",
+    "description": "Dwa dodatkowe sloty zestawów pracy wieśniaków",
+    "name": "2 dodatkowe sloty zestawów"
+  },
+  "additional_construction_queue_slot": {
+    "activationMessage": "Dodano dwa dodatkowe sloty kolejki budowy.",
+    "description": "Dwa dodatkowe równoległe sloty budowy",
+    "name": "2 dodatkowe sloty kolejki budowy"
+  },
+  "advanced_bundle": {
+    "activationMessage": "Składniki zestawu zostały dodane do twoich zakupów!",
+    "name": "Zestaw Bladego Króla"
+  },
+  "artifact_bundle": {
+    "activationMessage": "Składniki zestawu zostały dodane do twoich zakupów!",
+    "name": "Zestaw Mrocznych Artefaktów"
+  },
+  "ashen_throne_bundle": {
+    "activationMessage": "Składniki zestawu zostały dodane do twoich zakupów!",
+    "name": "Zestaw Popielnego Tronu"
+  },
+  "basic_survival_bundle": {
+    "activationMessage": "Składniki zestawu zostały dodane do twoich zakupów!",
+    "name": "Zestaw Gasnącego Wędrowca"
+  },
+  "crow_harness": {
+    "activationMessage": "Uprząż kruka została dodana do twoich narzędzi! Teraz musisz odnaleźć kruka i przywiązać go do uprzęży.",
+    "description": "Specjalnie wykonana uprząż dla kruków-posłańców. Odblokowuje wątek Kruka. Dodaje towarzysza drużyny.",
+    "name": "Uprząż kruka"
+  },
+  "cruel_mode": {
+    "activationMessage": "Tryb okrutny aktywowany! Rozpocznij nową grę, by stawić czoła ostatecznemu wyzwaniu.",
+    "description": "Zagraj ponownie w okrutniejszym świecie: rozbudowana historia, więcej przedmiotów, groźniejsi wrogowie i znacznie więcej.",
+    "name": "Tryb okrutny"
+  },
+  "full_game": {
+    "activationMessage": "Pełna wersja odblokowana i aktywowana! Podróż trwa dalej bez ograniczeń.",
+    "description": "Odblokuj pełną wersję i kontynuuj podróż.",
+    "name": "Pełna wersja"
+  },
+  "gold_1000": {
+    "activationMessage": "Dodano 1'000 złota do twojego ekwipunku.",
+    "description": "Porządna ilość złota",
+    "name": "1'000 złota"
+  },
+  "gold_100_free": {
+    "activationMessage": "Dodano 100 złota do twojego ekwipunku w prezencie!",
+    "description": "Codzienna litość w zimnym świecie",
+    "name": "Prezent: 100 złota"
+  },
+  "gold_15000": {
+    "activationMessage": "Dodano 15'000 złota do twojego ekwipunku.",
+    "description": "Nieświęte ilości złota",
+    "name": "15'000 złota"
+  },
+  "gold_20000": {
+    "activationMessage": "Dodano 20'000 złota do twojego ekwipunku.",
+    "description": "Nieświęte ilości złota",
+    "name": "20'000 złota"
+  },
+  "gold_30000": {
+    "activationMessage": "Dodano 30'000 złota do twojego ekwipunku.",
+    "description": "Bluźniercze ilości złota",
+    "name": "30'000 złota"
+  },
+  "gold_250": {
+    "activationMessage": "Dodano 1'000 złota do twojego ekwipunku.",
+    "description": "Porządna ilość złota",
+    "name": "1'000 złota"
+  },
+  "gold_2500": {
+    "activationMessage": "Dodano 2'500 złota do twojego ekwipunku.",
+    "description": "Pokaźny skarb",
+    "name": "2'500 złota"
+  },
+  "gold_5000": {
+    "activationMessage": "Dodano 5'000 złota do twojego ekwipunku.",
+    "description": "Fortuna w złocie",
+    "name": "5'000 złota"
+  },
+  "great_feast_1": {
+    "activationMessage": "Rozpoczęła się Wielka uczta!",
+    "description": "Przez 30 minut:\n• 5× produkcja wioski\n• +25 % szansy na nowego wieśniaka",
+    "name": "1 Wielka uczta"
+  },
+  "great_feast_3": {
+    "activationMessage": "Rozpoczęła się Wielka uczta!",
+    "description": "Przez 30 minut:\n• 5× produkcja wioski\n• +25 % szansy na nowego wieśniaka",
+    "name": "3 Wielkie uczty"
+  },
+  "skull_lantern": {
+    "activationMessage": "Latarnia czaszkowa została dodana do twoich narzędzi! Jej złowieszcze światło poprowadzi cię przez głębiny.",
+    "description": "Wykuta z przeklętej kości, rozświetla najgłębsze otchłanie. Odblokowuje wątek Latarni czaszkowej.",
+    "name": "Latarnia czaszkowa"
+  },
+  "tarnished_compass": {
+    "activationMessage": "Zmatowiony kompas został dodany do twojego ekwipunku! Jego starożytna magia może przynieść szczęście twoim poczynaniom.",
+    "description": "Artefakt zaginionej cywilizacji; jego igła wskazuje ukryte miejsca. Odblokowuje wątek Kompasu.",
+    "name": "Zmatowiony kompas"
+  }
+}

@@ -1,0 +1,321 @@
+{
+  "action": {
+    "0-chopWood": {
+      "label": "樵",
+      "description": "「木材を集める」をレベル10まで強化する。"
+    },
+    "0-craftTorches": {
+      "label": "松明職人",
+      "description": "「松明」をレベル10まで強化する。"
+    },
+    "0-exploreCave": {
+      "label": "洞窟探検家",
+      "description": "「洞窟を探る」をレベル10まで強化する。"
+    },
+    "0-gamblerWins": {
+      "label": "熟練の賭博師",
+      "description": "賭博師に10回勝つ。"
+    },
+    "0-hunt": {
+      "label": "狩人",
+      "description": "「狩猟」をレベル10まで強化する。"
+    },
+    "1-mineAdamant": {
+      "label": "アダマント鉱夫",
+      "description": "「アダマントを採掘」をレベル10まで強化する。"
+    },
+    "1-mineCoal": {
+      "label": "石炭鉱夫",
+      "description": "「石炭を採掘」をレベル10まで強化する。"
+    },
+    "1-mineIron": {
+      "label": "鉄鉱夫",
+      "description": "「鉄を採掘」をレベル10まで強化する。"
+    },
+    "1-mineMoonstone": {
+      "label": "月長石鉱夫",
+      "description": "「月長石を採掘」をレベル10まで強化する。"
+    },
+    "1-mineObsidian": {
+      "label": "黒曜石鉱夫",
+      "description": "「黒曜石を採掘」をレベル10まで強化する。"
+    },
+    "1-mineStone": {
+      "label": "石工",
+      "description": "「石を採掘」をレベル10まで強化する。"
+    },
+    "1-mineSulfur": {
+      "label": "硫黄鉱夫",
+      "description": "「硫黄を採掘」をレベル10まで強化する。"
+    },
+    "2-animals": {
+      "label": "獣の贄",
+      "description": "獣を10回生贄に捧げる。"
+    },
+    "2-boneTotems": {
+      "label": "骨の贄",
+      "description": "骨のトーテムを20回生贄に捧げる。"
+    },
+    "2-craftBoneTotems": {
+      "label": "骨トーテム職人",
+      "description": "「骨のトーテム」をレベル10まで強化する。"
+    },
+    "2-craftLeatherTotems": {
+      "label": "皮革トーテム職人",
+      "description": "「皮革のトーテム」をレベル10まで強化する。"
+    },
+    "2-leatherTotems": {
+      "label": "皮革の贄",
+      "description": "皮革のトーテムを20回生贄に捧げる。"
+    },
+    "3-ashfireBombs": {
+      "label": "灰火爆弾職人",
+      "description": "灰火爆弾を20個作る。"
+    },
+    "3-burningVeins": {
+      "label": "燃える血脈",
+      "description": "脈火の霊薬を10回使う。"
+    },
+    "3-emberBombs": {
+      "label": "残火爆弾職人",
+      "description": "残火爆弾を20個作る。"
+    },
+    "3-veinfireElixir": {
+      "label": "脈火の調合師",
+      "description": "脈火の霊薬を10個作る。"
+    },
+    "4-feedFire": {
+      "label": "薪くべ",
+      "description": "薪を100回くべる。"
+    },
+    "4-insightful": {
+      "label": "洞察者",
+      "description": "洞察を合計10'000消費する。"
+    },
+    "4-investor": {
+      "label": "投資家",
+      "description": "金貨を合計2'500投資する。"
+    },
+    "4-luckyInvestor": {
+      "label": "幸運な投資家",
+      "description": "投資を10回成功させる。"
+    },
+    "4-mentalClarity": {
+      "label": "心の澄明",
+      "description": "澄明の霊薬を5回使う。"
+    },
+    "4-merchantPurchases": {
+      "label": "取引上手",
+      "description": "商人から100回購入する。"
+    },
+    "4-pileOfDead": {
+      "label": "死者の山",
+      "description": "村人を合計250人失う。"
+    },
+    "4-solsticeGatherings": {
+      "label": "冬至の祝者",
+      "description": "冬至の集いを10回開く。"
+    },
+    "4-wellRested": {
+      "label": "熟睡者",
+      "description": "合計20時間休む。"
+    }
+  },
+  "basic": {
+    "0-coalMiner": {
+      "label": "石炭を集める",
+      "description": "石炭を合計500集める。"
+    },
+    "0-hunter": {
+      "label": "狩人",
+      "description": "食料を合計500集める。"
+    },
+    "0-ironMiner": {
+      "label": "鉄を集める",
+      "description": "鉄を合計500集める。"
+    },
+    "0-steelForger": {
+      "label": "鋼を鍛える",
+      "description": "鋼を合計250鍛える。"
+    },
+    "0-stoneMiner": {
+      "label": "石を集める",
+      "description": "石を合計500集める。"
+    },
+    "0-tanner": {
+      "label": "皮職人",
+      "description": "皮革を合計250集める。"
+    },
+    "0-woodGatherer": {
+      "label": "木材を集める",
+      "description": "木材を合計500集める。"
+    },
+    "1-builder": {
+      "label": "建物を建てる",
+      "description": "建物を5棟以上所有する。"
+    },
+    "1-communityBuilder": {
+      "label": "共同体を築く",
+      "description": "人口を10にする。"
+    },
+    "1-explorer": {
+      "label": "洞窟を探る",
+      "description": "洞窟を20回探る。"
+    },
+    "1-toolCrafter": {
+      "label": "道具を作る",
+      "description": "異なる道具を5種所有する。"
+    },
+    "1-torchCrafter": {
+      "label": "松明を作る",
+      "description": "松明を合計50本作る。"
+    }
+  },
+  "building": {
+    "0-0": {
+      "label": "簡素な住居",
+      "description": "木の小屋を10棟建てる。"
+    },
+    "0-1": {
+      "label": "堅牢な住居",
+      "description": "石の小屋を10棟建てる。"
+    },
+    "0-2": {
+      "label": "北境の住居",
+      "description": "長屋を5棟建てる。"
+    },
+    "0-3": {
+      "label": "遊牧の住居",
+      "description": "毛皮のテントを5張り建てる。"
+    },
+    "1-0": {
+      "label": "猟師たち",
+      "description": "猟師小屋とその強化をすべて建てる。"
+    },
+    "1-1": {
+      "label": "鍛冶師たち",
+      "description": "鍛冶場とその強化をすべて建てる。"
+    },
+    "1-2": {
+      "label": "鋳造師たち",
+      "description": "鋳造所とその強化をすべて建てる。"
+    },
+    "1-3": {
+      "label": "皮職人たち",
+      "description": "皮なめし場とその強化をすべて建てる。"
+    },
+    "2-0": {
+      "label": "鉱夫たち",
+      "description": "浅坑とその強化をすべて建てる。"
+    },
+    "3-0": {
+      "label": "商人たち",
+      "description": "交易所とその強化をすべて建てる。"
+    },
+    "3-1": {
+      "label": "物資係",
+      "description": "物資小屋とその強化をすべて建てる。"
+    },
+    "3-2": {
+      "label": "学者たち",
+      "description": "書記の小屋とその強化をすべて建てる。"
+    },
+    "3-3": {
+      "label": "祭司たち",
+      "description": "祭壇とその強化をすべて建てる。"
+    },
+    "4-0": {
+      "label": "城塞の壁",
+      "description": "柵壁とその強化をすべて建てる。"
+    },
+    "4-1": {
+      "label": "物見",
+      "description": "見張り塔とその強化をすべて建てる。"
+    }
+  },
+  "item": {
+    "0-axes": {
+      "label": "斧",
+      "description": "石からアダマントまで、すべての斧を作る。"
+    },
+    "0-lanterns": {
+      "label": "ランタン",
+      "description": "鉄からアダマントまで、すべてのランタンを作る。"
+    },
+    "0-pickaxes": {
+      "label": "つるはし",
+      "description": "石からアダマントまで、すべてのつるはしを作る。"
+    },
+    "1-bows": {
+      "label": "弓",
+      "description": "粗末から達人まで、すべての弓を作る。"
+    },
+    "1-swords": {
+      "label": "剣",
+      "description": "鉄からアダマントまで、すべての剣を作る。"
+    },
+    "2-explorer_pack": {
+      "label": "皮革細工",
+      "description": "皮革細工を7種すべて作る。"
+    },
+    "2-schematic_weapons": {
+      "label": "設計図",
+      "description": "設計図の武器を3種作る。"
+    },
+    "3-ancient_books": {
+      "label": "古の知恵",
+      "description": "古書を3冊すべて集める。"
+    },
+    "3-fellowship": {
+      "label": "良き仲間",
+      "description": "仲間を6人すべて迎える。"
+    },
+    "4-blacksteel_equipment": {
+      "label": "闇の戦具",
+      "description": "黒鋼の戦具を3種すべて作る。"
+    },
+    "4-blacksteel_tools": {
+      "label": "闇の道具",
+      "description": "黒鋼の道具を3種すべて作る。"
+    }
+  },
+  "overall": {
+    "0-achievementMaxer": {
+      "label": "実績の極み",
+      "description": "叙事以外の実績をすべて達成する。"
+    },
+    "0-caveVeteran": {
+      "label": "洞窟の古参",
+      "description": "ゲームに3回勝利する。"
+    },
+    "0-endurant": {
+      "label": "忍耐者",
+      "description": "全プレイを通じて30時間遊ぶ。"
+    },
+    "0-resourceMaxer": {
+      "label": "資源の極み",
+      "description": "上限のある資源をすべて、大金庫の容量まで貯める。"
+    },
+    "0-upgradeMaxer": {
+      "label": "強化の極み",
+      "description": "屋敷タブの強化をすべて最大にする。"
+    },
+    "0-speedrunner": {
+      "label": "最速走者",
+      "detail": "5時間未満",
+      "description": "5時間以内にゲームに勝利する。"
+    },
+    "0-supporter": {
+      "label": "支援者",
+      "description": "支援者報酬の道のりを完了する。"
+    },
+    "0-winCruel": {
+      "label": "残酷な勝利",
+      "description": "残酷モードでゲームに勝利する。"
+    },
+    "0-winNormal": {
+      "label": "通常の勝利",
+      "description": "通常モードでゲームに勝利する。"
+    }
+  }
+}

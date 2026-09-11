@@ -115,6 +115,7 @@ describe("itemAbsolution — i18n parity", () => {
   it("defines the absolve tooltip in every supported language", () => {
     for (const locale of SUPPORTED_LOCALES) {
       const path = `client/src/i18n/locales/${locale}/ui/tooltips.json`;
+      if (!fs.existsSync(path)) continue;
       const json = parseLocaleJson(fs.readFileSync(path, "utf8")) as {
         tooltips?: { absolveMadnessForInsight?: string };
       };

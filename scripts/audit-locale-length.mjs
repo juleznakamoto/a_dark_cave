@@ -41,7 +41,7 @@ import {
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const EN_DIR = path.join(ROOT, "client/src/i18n/locales/en");
-const LOCALES = ["de", "fr", "es", "zh-CN", "ru"];
+const LOCALES = ["de", "fr", "es", "zh-CN", "ja", "pl", "ru"];
 const MIN_TEXT_LENGTH = 10;
 const MIN_RATIO = 1.2;
 const MIN_RATIO_LONG_TEXT = 1.35;

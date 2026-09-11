@@ -11,7 +11,7 @@ import { listCatalogPaths } from "./locale-catalog.mjs";
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.resolve(__dirname, "..");
 const EN_DIR = path.join(ROOT, "client/src/i18n/locales/en");
-const TARGETS = ["de", "fr", "es", "it", "pt-BR", "zh-CN", "ru"];
+const TARGETS = ["de", "fr", "es", "it", "pt-BR", "zh-CN", "ja", "pl", "ru"];
 
 /** Phrase-level replacements applied before per-locale overrides. */
 const PHRASE_MAPS = {

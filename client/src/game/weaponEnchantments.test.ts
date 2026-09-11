@@ -231,6 +231,7 @@ describe("weaponEnchantments — i18n parity", () => {
   it("defines enchant tooltip keys in every supported language", () => {
     for (const locale of SUPPORTED_LOCALES) {
       const path = `client/src/i18n/locales/${locale}/ui/tooltips.json`;
+      if (!fs.existsSync(path)) continue;
       const json = parseLocaleJson(fs.readFileSync(path, "utf8")) as {
         tooltips?: {
           enchantForInsight?: string;

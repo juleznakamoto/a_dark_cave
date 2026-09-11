@@ -1,0 +1,91 @@
+{
+  "buttons": {
+    "close": "Zamknij",
+    "continue": "Kontynuuj",
+    "confirm": "Potwierdź",
+    "cancel": "Anuluj",
+    "save": "Zapisz",
+    "refresh": "Odśwież",
+    "dismiss": "Odrzuć",
+    "fight": "Walcz",
+    "refuse": "Odmów",
+    "accept": "Przyjmij",
+    "back": "Wróć",
+    "claim": "Odbierz",
+    "activate": "Aktywuj",
+    "deactivate": "Dezaktywuj"
+  },
+  "status": {
+    "loading": "Ładowanie...",
+    "processing": "Przetwarzanie...",
+    "free": "Darmowe",
+    "error": "Błąd",
+    "success": "Sukces!",
+    "active": "Aktywne",
+    "activated": "Aktywowano"
+  },
+  "tabs": {
+    "cave": "Jaskinia",
+    "village": "Wioska",
+    "city": "Miasto",
+    "forest": "Las",
+    "estate": "Posiadłość",
+    "bastion": "Bastion",
+    "fortress": "Twierdza",
+    "trader": "Handlarz",
+    "achievements": "Osiągnięcia",
+    "timedEvent": "Wydarzenie czasowe"
+  },
+  "resources": {
+    "wood": "Drewno",
+    "stone": "Kamień",
+    "food": "Żywność",
+    "veinroot": "Żyłokorzeń",
+    "bones": "Kości",
+    "fur": "Futro",
+    "leather": "Skóra",
+    "bone_totem": "Kościany totem",
+    "leather_totem": "Skórzany totem",
+    "iron": "Żelazo",
+    "coal": "Węgiel",
+    "sulfur": "Siarka",
+    "obsidian": "Obsydian",
+    "adamant": "Adamant",
+    "steel": "Stal",
+    "blacksteel": "Czarnostal",
+    "moonstone": "Kamień księżycowy",
+    "black_powder": "Czarny proch",
+    "ember_bomb": "Bomba żaru",
+    "ashfire_dust": "Pył popiołognia",
+    "ashfire_bomb": "Bomba popiołognia",
+    "void_bomb": "Bomba pustki",
+    "veinfire_elixir": "Eliksir żyłognia",
+    "poison_arrows": "Zatrute strzały",
+    "torch": "Pochodnia",
+    "silver": "Srebro",
+    "gold": "Złoto",
+    "insight": "Wgląd"
+  },
+  "stats": {
+    "strength": "Siła",
+    "knowledge": "Wiedza",
+    "luck": "Szczęście",
+    "madness": "Szaleństwo",
+    "attack": "Atak",
+    "defense": "Obrona",
+    "integrity": "Integralność"
+  },
+  "time": {
+    "never": "Nigdy",
+    "hoursMinutes": "{{hours}} godz. {{minutes}} min",
+    "minutesSeconds": "{{minutes}} min {{seconds}} s"
+  },
+  "population": {
+    "villager_one": "{{count}} wieśniak",
+    "villager_other": "{{count}} wieśniaków",
+    "maxPopulation": "+{{count}} maks. populacji"
+  },
+  "currency": {
+    "goldAmount": "{{amount}} złota"
+  }
+}

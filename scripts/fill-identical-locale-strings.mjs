@@ -11,7 +11,7 @@ import { readLocaleJson } from "./parse-locale-json.mjs";
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.resolve(__dirname, "..");
 const EN_DIR = path.join(ROOT, "client/src/i18n/locales/en");
-const TARGETS = ["de", "fr", "es", "zh-CN", "ru"];
+const TARGETS = ["de", "fr", "es", "zh-CN", "ja", "pl", "ru"];
 
 const PHRASE_MAPS = {
   de: [
@@ -216,6 +216,7 @@ for (const locale of TARGETS) {
   for (const rel of catalogPaths) {
     const en = JSON.parse(fs.readFileSync(path.join(EN_DIR, rel), "utf8"));
     const locPath = path.join(ROOT, "client/src/i18n/locales", locale, rel);
+    if (!fs.existsSync(locPath)) continue;
     const loc = readLocaleJson(locPath, fs);
     const before = JSON.stringify(loc);
     const filled = fillIdentical(en, loc, locale);

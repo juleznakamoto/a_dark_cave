@@ -1,0 +1,757 @@
+{
+  "animals": {
+    "label": "獣"
+  },
+  "banditLair": {
+    "label": "盗賊の巣",
+    "log": {
+      "success": "一行は盗賊を追って、崩れかけた巣穴へたどり着く。奴を圧倒し、商人の短剣を取り戻し、略奪品の中から銀貨250を見つけた。",
+      "failure": "村人たちは丘を探したが、盗賊を追い詰められない。足跡は途絶え、短剣はなお奴の手にある。"
+    }
+  },
+  "blackreachCanyon": {
+    "label": "黒境峡谷",
+    "log": {
+      "success": "黒境峡谷の奥深くまで踏み入る。石柱の上に、見事な片目の鴉が止まっていた。ハーネスを使い、慎重に近づいて絆を結ぶ。片目の鴉が仲間に加わった。"
+    }
+  },
+  "blastPortal": {
+    "label": "門を爆破",
+    "log": {
+      "complete": "残火爆弾が閃光と炎とともに爆発する。古い門は裂け、崩れ落ちる。中に封じられていたものが、いま解き放たれた。"
+    }
+  },
+  "boneTotems": {
+    "label": "骨のトーテム"
+  },
+  "buildAdvancedBlacksmith": {
+    "description": "より良い道具と技を備えた改良鍛冶場",
+    "label": "上級鍛冶場"
+  },
+  "buildAlchemistHall": {
+    "description": "錬金術師が火薬と爆弾を作る広間",
+    "label": "錬金広間"
+  },
+  "buildAltar": {
+    "description": "礼拝と生贄のための場所",
+    "label": "祭壇"
+  },
+  "buildBank": {
+    "description": "より大きな投資ができる勘定所",
+    "label": "銀行"
+  },
+  "buildBastion": {
+    "description": "最後の防衛線となる巨大な要塞",
+    "label": "バスティオン"
+  },
+  "buildBlackEstate": {
+    "description": "黒材と石で築かれた高い邸宅。都市を見下ろす。",
+    "label": "黒の邸宅"
+  },
+  "buildBlackMonolith": {
+    "description": "生きた生贄のために建てられた暗い記念碑",
+    "label": "黒の巨石"
+  },
+  "buildBlacksmith": {
+    "description": "製作のための基本的な道具を備えた鍛冶場",
+    "label": "鍛冶場"
+  },
+  "buildBoneTemple": {
+    "description": "骨で築かれた異形の建物。旧き神々を祀る",
+    "label": "骨の神殿"
+  },
+  "buildBoneyard": {
+    "description": "死者を眠らせる地。村人の悲しみを和らげる。",
+    "label": "埋葬地"
+  },
+  "buildHerbGarden": {
+    "description": "役立つ草木を丁寧に育てる畑。用途は多い。",
+    "label": "薬草園"
+  },
+  "buildBottomlessPit": {
+    "description": "最も稀少な鉱物に届く、途方もなく深い坑",
+    "label": "底なし坑"
+  },
+  "buildBuildersLodge": {
+    "description": "建築の達人が村全体の工事を取り仕切る詰所",
+    "label": "建築士の詰所"
+  },
+  "buildBuildersHall": {
+    "description": "熟練の建築士が工事を整え、材料の値を引き下げる広間",
+    "label": "建築士の広間"
+  },
+  "buildBuildersGuild": {
+    "description": "村の建築力を統べる、達人たちのギルド",
+    "label": "建築士ギルド"
+  },
+  "buildCabin": {
+    "description": "猟師のための道具を備えた簡素な小屋",
+    "label": "猟師小屋"
+  },
+  "buildChitinPlating": {
+    "description": "貫通不能のキチン板で防壁を補強する",
+    "label": "キチン装甲"
+  },
+  "buildClerksHut": {
+    "description": "学者が世界を学び、洞察を得る小屋",
+    "label": "書記の小屋"
+  },
+  "buildCoinhouse": {
+    "description": "小さな投資ができる質素な勘定所",
+    "label": "貨幣館"
+  },
+  "buildConsecratedPaleCross": {
+    "description": "漂白された骨の高い記念碑。骨のトーテムの生贄を大きく強める。",
+    "label": "聖別された蒼白の十字架"
+  },
+  "buildDarkEstate": {
+    "description": "世から離れ、隠れ家となる隠遁の邸宅",
+    "label": "闇の邸宅"
+  },
+  "buildDeepPit": {
+    "description": "貴重な鉱脈を露出させる、非常に深い坑",
+    "label": "深坑"
+  },
+  "buildDeepeningPit": {
+    "description": "さらに深い地の資源に届く坑",
+    "label": "深掘り坑"
+  },
+  "buildFortifiedMoat": {
+    "description": "襲う者を遅らせ、弱める防衛の濠",
+    "label": "要塞濠"
+  },
+  "buildFortifiedStorehouse": {
+    "description": "容量を高めた補強済みの貯蔵建物",
+    "label": "要塞倉庫"
+  },
+  "buildFoundry": {
+    "description": "鋼の生産に特化した建物",
+    "label": "鋳造所"
+  },
+  "buildFurTents": {
+    "description": "放浪の部族が使う、暖かい毛皮の住まい",
+    "label": "毛皮のテント"
+  },
+  "buildGrandArchive": {
+    "description": "村が歩んだすべてを収める巻物の大庫。名も労も、すべてが刻まれている",
+    "label": "大文書庫"
+  },
+  "buildGrandBazaar": {
+    "description": "より多くの商人を惹きつける広大な市場",
+    "label": "大バザール"
+  },
+  "buildGrandBlacksmith": {
+    "description": "最上の品を生み出せる高度な鍛冶場",
+    "label": "大鍛冶場"
+  },
+  "buildGrandHunterLodge": {
+    "description": "達人の猟師のための最高の猟館",
+    "label": "大猟師館"
+  },
+  "buildGrandRepository": {
+    "description": "並外れた容量を持つ巨大な貯蔵庫",
+    "label": "大貯蔵庫"
+  },
+  "buildGreatCabin": {
+    "description": "猟師の収穫を増やす、広げた猟小屋",
+    "label": "大猟師小屋"
+  },
+  "buildGreatVault": {
+    "description": "莫大な資源を収められる最高の金庫",
+    "label": "大金庫"
+  },
+  "buildHeartfire": {
+    "description": "安らぎと守りの気配を与える聖なる火",
+    "label": "心火"
+  },
+  "buildHighTannery": {
+    "description": "熟練の皮職人のための最高の皮なめし場",
+    "label": "最高皮なめし場"
+  },
+  "buildImprovedTraps": {
+    "description": "より強い仕掛けと広い範囲を持つ、改良された外周の罠",
+    "label": "改良罠"
+  },
+  "buildInkwardenAcademy": {
+    "description": "達人の学者が深い知識を煎じ出す大書院",
+    "label": "書衛学院"
+  },
+  "buildLonghouse": {
+    "description": "多くの村人を住まわせる、北境の巨大な共同の館",
+    "label": "長屋"
+  },
+  "buildMasterTannery": {
+    "description": "皮革の生産を高める上級の皮なめし場",
+    "label": "達人皮なめし場"
+  },
+  "buildMasterworkFoundry": {
+    "description": "鋼の生産に優れた鋳造所",
+    "label": "名工鋳造所"
+  },
+  "buildMerchantsGuild": {
+    "description": "最上の取引と商人をもたらす強大なギルド",
+    "label": "商人ギルド"
+  },
+  "buildPaleCross": {
+    "description": "漂白された骨の高い記念碑。骨のトーテムの生贄を強める。",
+    "label": "蒼白の十字架"
+  },
+  "buildPalisades": {
+    "description": "集落を守る防衛の壁",
+    "label": "柵壁"
+  },
+  "buildPillarOfClarity": {
+    "description": "心の闇を洗い流す、純白の方尖碑",
+    "label": "澄明の柱"
+  },
+  "buildPrimeFoundry": {
+    "description": "鋼の生産を高めた上級鋳造所",
+    "label": "上級鋳造所"
+  },
+  "buildQuarry": {
+    "description": "採集者の石の収穫を増やす採石場",
+    "label": "採石場"
+  },
+  "buildRecordsHall": {
+    "description": "風化した帳簿と名簿の棚が並ぶ広間。村の記憶が墨で記され、整えられている",
+    "label": "記録の広間"
+  },
+  "buildSanctum": {
+    "description": "闇に対する最大の守りを与える聖域",
+    "label": "聖域"
+  },
+  "buildScribesOffice": {
+    "description": "書記が働く手のすべてを丹念に記す静かな部屋。いかなる労も忘れさせない",
+    "label": "書記の執務室"
+  },
+  "buildScriptorium": {
+    "description": "学者が知識を集める知恵の拠点",
+    "label": "写字室"
+  },
+  "buildShallowPit": {
+    "description": "鉱物を採れる小さな採掘坑",
+    "label": "浅坑"
+  },
+  "buildShrine": {
+    "description": "狂気へのより強い守りを与える聖なる祠",
+    "label": "祠"
+  },
+  "buildStoneHut": {
+    "description": "より優れた庇護を与える、耐久性の高い石の住まい",
+    "label": "石の小屋"
+  },
+  "buildStorehouse": {
+    "description": "より多くの資源を収める、広げた貯蔵施設",
+    "label": "倉庫"
+  },
+  "buildSupplyHut": {
+    "description": "資源を収める小さな小屋",
+    "label": "物資小屋"
+  },
+  "buildTannery": {
+    "description": "毛皮を皮革へ変える工房",
+    "label": "皮なめし場"
+  },
+  "buildTemple": {
+    "description": "狂気への強い抵抗を与える大いなる神殿",
+    "label": "神殿"
+  },
+  "buildTimberMill": {
+    "description": "木材をより効率よく加工する製材所",
+    "label": "製材所"
+  },
+  "buildTradePost": {
+    "description": "品を売る商人を惹きつける交易所",
+    "label": "交易所"
+  },
+  "buildTraps": {
+    "description": "村の周囲に仕掛け、襲う者すべてを弱める罠",
+    "label": "罠"
+  },
+  "buildTreasury": {
+    "description": "はるかに大きな額を賭けることができる金庫",
+    "label": "宝庫"
+  },
+  "buildVillageWarehouse": {
+    "description": "膨大な量を収められる大きな倉庫",
+    "label": "村の倉庫"
+  },
+  "buildWatchtower": {
+    "description": "脅威をいち早く知らせる高い塔",
+    "label": "見張り塔"
+  },
+  "buildWizardTower": {
+    "description": "魔術師が秘術の研究を行う神秘の塔",
+    "label": "魔導塔"
+  },
+  "buildWoodenHut": {
+    "description": "最低限の庇護を与える簡素な木の小屋",
+    "label": "木の小屋"
+  },
+  "exploreMountainVillage": {
+    "label": "山村を探る"
+  },
+  "canyonBridge": {
+    "label": "峡谷の橋",
+    "log": {
+      "complete": "峡谷の橋が完成した。灰霊の商人が集落へ届くようになり、取り決めた値で品を売れる。"
+    }
+  },
+  "castleRuins": {
+    "label": "城の廃墟",
+    "log": {
+      "success": "死した死霊術師の城の廃墟への遠征は成功した！奥深くで、暗い絹に包まれた古代の巻物を見つける。洞窟の深奥に封じられたものを倒す、暗号めいた知識が記されていた。",
+      "minorFailure": "遠征隊は、死霊術師が残した異形の不死実験体に襲われる。生き残りが退くまでに、村人{{count}}人が不死者の手に落ちた。",
+      "majorFailure": "呪われた城の廃墟に入った直後、数十の不死者が隠れた部屋から溢れ出す。絶望の戦いの末、村人{{count}}人が超常の群れに呑まれる。生き残りは恐怖に追われて逃げる。"
+    }
+  },
+  "chopWood": {
+    "label": "木材を集める",
+    "labelForest": "木を伐る",
+    "log": {
+      "firstVisit": "洞窟の入り口近くに、木材が散らばっている。役に立つかもしれない。"
+    }
+  },
+  "callMerchant": {
+    "label": "商人を呼ぶ"
+  },
+  "collapsedTower": {
+    "label": "崩れた塔",
+    "log": {
+      "success": "塔の中で死霊術師とその従者を見つける。周囲には薬液の瓶と粗雑な注射器。村人の血を、暗い実験のために搾っていた。部下たちがその汚れた業を終わらせ、奴の血を一瓶取る。道具の中に、強力な骨鋸があった。",
+      "failure": "遠征隊は崩れた塔に着くが、外でフードの者たちに襲われる。黒いローブの背の高い男が立ち、威圧を放っている。村人{{count}}人が倒れ、残りは安全な場所へ逃げる。"
+    }
+  },
+  "craftAdamantAxe": {
+    "label": "アダマント斧"
+  },
+  "craftAdamantLantern": {
+    "label": "アダマントランタン"
+  },
+  "craftAdamantPickaxe": {
+    "label": "アダマントの鶴嘴"
+  },
+  "craftAdamantSword": {
+    "label": "アダマント剣"
+  },
+  "craftArbalest": {
+    "label": "アーバレスト"
+  },
+  "craftAshenGreatshield": {
+    "label": "灰の大盾"
+  },
+  "craftAshfireBomb": {
+    "label": "灰火爆弾"
+  },
+  "craftBlacksteelArmor": {
+    "label": "黒鋼の鎧"
+  },
+  "craftBlacksteelAxe": {
+    "label": "黒鋼斧"
+  },
+  "craftBlacksteelBow": {
+    "label": "黒鋼弓"
+  },
+  "craftBlacksteelLantern": {
+    "label": "黒鋼ランタン"
+  },
+  "craftBlacksteelPickaxe": {
+    "label": "黒鋼の鶴嘴"
+  },
+  "craftBlacksteelSword": {
+    "label": "黒鋼剣"
+  },
+  "craftBloodstoneStaff": {
+    "label": "血石の杖"
+  },
+  "craftBoneTotems": {
+    "label": "骨のトーテム"
+  },
+  "craftCrudeBow": {
+    "label": "粗末な弓"
+  },
+  "craftEmberBomb": {
+    "label": "残火爆弾"
+  },
+  "craftExplorerPack": {
+    "label": "探検者の鞄"
+  },
+  "craftFrostglassSword": {
+    "label": "霜晶の剣"
+  },
+  "craftFlaskHarness": {
+    "label": "薬瓶のハーネス"
+  },
+  "craftGrenadierBag": {
+    "label": "擲弾兵の袋"
+  },
+  "craftHighpriestRobe": {
+    "label": "大祭司のローブ"
+  },
+  "craftHunterCloak": {
+    "label": "猟師の外套"
+  },
+  "craftHuntsmanBow": {
+    "label": "猟師の弓"
+  },
+  "craftIronAxe": {
+    "label": "鉄斧"
+  },
+  "craftIronLantern": {
+    "label": "鉄ランタン"
+  },
+  "craftIronPickaxe": {
+    "label": "鉄の鶴嘴"
+  },
+  "craftIronSword": {
+    "label": "鉄剣"
+  },
+  "craftLeatherTotems": {
+    "label": "皮革のトーテム"
+  },
+  "craftLoggersGloves": {
+    "label": "樵の手袋"
+  },
+  "craftLongBow": {
+    "label": "長弓"
+  },
+  "craftMasterBow": {
+    "label": "達人の弓"
+  },
+  "craftNightshadeBow": {
+    "label": "夜陰の弓"
+  },
+  "craftObsidianAxe": {
+    "label": "黒曜石斧"
+  },
+  "craftObsidianLantern": {
+    "label": "黒曜石ランタン"
+  },
+  "craftObsidianPickaxe": {
+    "label": "黒曜石の鶴嘴"
+  },
+  "craftObsidianSword": {
+    "label": "黒曜石剣"
+  },
+  "craftSacrificialTunic": {
+    "label": "生贄のチュニック"
+  },
+  "craftShadowBoots": {
+    "label": "影の靴"
+  },
+  "craftSkeletonKey": {
+    "label": "骸骨鍵"
+  },
+  "craftSteelAxe": {
+    "label": "鋼斧"
+  },
+  "craftSteelLantern": {
+    "label": "鋼ランタン"
+  },
+  "craftSteelPickaxe": {
+    "label": "鋼の鶴嘴"
+  },
+  "craftSteelSword": {
+    "label": "鋼剣"
+  },
+  "craftStoneAxe": {
+    "label": "石斧"
+  },
+  "craftStonePickaxe": {
+    "label": "石の鶴嘴"
+  },
+  "craftStormglassHalberd": {
+    "label": "嵐晶の斧槍"
+  },
+  "craftTorches": {
+    "label": "松明"
+  },
+  "craftVeinfireElixir": {
+    "label": "脈火の霊薬"
+  },
+  "craftVoidBomb": {
+    "label": "虚空爆弾"
+  },
+  "craftWarBow": {
+    "label": "戦弓"
+  },
+  "descendFurther": {
+    "label": "さらに降りる",
+    "log": {
+      "firstVisit": "ランタンが安定した光を落とし、さらに深く降りていく。突然、足が人の手で削られた石段に触れる。歳月に摩耗していた。"
+    }
+  },
+  "encounterBeyondPortal": {
+    "label": "門の先へ"
+  },
+  "exploreCave": {
+    "label": "洞窟を探る",
+    "log": {
+      "debrisScroll": "瓦礫の中から、この苛烈な世界を生き抜く知恵を記した古い巻物を見つける。",
+      "torchBag": "洞窟で、埃をかぶった古い袋を見つける。中には松明が25本入っていた。",
+      "firstVisit": "松明の光が洞窟の壁を照らす。揺れる光の中、さらに奥へ続く道が見える。"
+    }
+  },
+  "exploreCitadel": {
+    "label": "城塞を探る",
+    "log": {
+      "firstVisit": "都市の最深部に、巨大な城塞が立ちはだかる。その規模は、強大な力か、あるいは大いなる危険を宿していることを示唆する。"
+    }
+  },
+  "exploreRuins": {
+    "label": "遺跡を探る",
+    "log": {
+      "firstVisit": "階段の果てに、広大な洞窟が開ける。闇の中に失われた都市の廃墟がある。とうに消えた文明の名残だ。"
+    }
+  },
+  "exploreTemple": {
+    "label": "神殿を探る",
+    "log": {
+      "firstVisit": "地下都市の廃墟をさらに進むと、洞窟の床から大いなる神殿が姿を現す。ほとんど無傷で、その影は忘れられた都市の残骸に伸びている。"
+    }
+  },
+  "exploreUndergroundLake": {
+    "label": "地下湖",
+    "log": {
+      "complete": "髑髏のランタンの陰気な光を頼りに地下湖へ降り、小舟を組む。暗い湖の中央の小島に、忘れられた宝が影の中で眠っている。永いあいだ、誰の手にも触れていない。"
+    }
+  },
+  "feedFire": {
+    "label": "薪をくべる"
+  },
+  "financeExpedition": {
+    "description": "学者が率いる、森の神殿と遺跡への遠征に資金を出す",
+    "label": "遠征を出資",
+    "log": {
+      "complete": "研究の遠征隊が森から戻る。学者たちは何日もかけて、碑文、風化した遺物、忘れられた知識の断片を分類する。"
+    }
+  },
+  "forestCave": {
+    "label": "森の洞窟",
+    "log": {
+      "success": "村人が洞窟を降りると、凶暴な犬の群れが闇から噴き出す。叫びが響き、爪が裂き、牙が噛みつく。最後の一匹が倒れたとき、村人はみな生きていた。だが見たものに、中身を掏られている。",
+      "failure": "遠征隊が洞窟に入ると、残忍な犬の群れに呑まれる。生き残りが退くまでに、村人{{count}}人が野蛮な顎に引き裂かれた。"
+    }
+  },
+  "healElderWizard": {
+    "label": "老魔術師を癒す"
+  },
+  "healRestlessKnight": {
+    "label": "眠れぬ騎士を癒す"
+  },
+  "hiddenLibrary": {
+    "label": "隠された書庫",
+    "log": {
+      "complete": "修道院の地図に導かれ、洞窟の奥の隠された書庫へ至る。そこで写本を見つける。"
+    }
+  },
+  "hillGrave": {
+    "label": "丘の墓",
+    "log": {
+      "success": "遠征隊は丘の墓の険しい罠を慎重に越える。村人たちは古い仕掛けを解除し、埋葬室に達する。王の宝の中に、虚空そのもののように冷たい純正の霜晶を見つける。",
+      "failure": "遠征隊は丘の墓に入るが、致命的な罠を越える技が足りない。村人{{count}}人が王の最期の守りに倒れ、生き残りは恐怖のうちに退く。仲間の遺体は呪われた墓に残された。"
+    }
+  },
+  "humans": {
+    "label": "人間"
+  },
+  "hunt": {
+    "label": "狩猟",
+    "log": {
+      "mapFragmentHunt": "狩猟の最中、泥の中の何かが目を引く。水に濡れた切れ端。地図の一部かもしれない。"
+    }
+  },
+  "invest": {
+    "label": "投資"
+  },
+  "layTrap": {
+    "label": "罠を仕掛ける",
+    "log": {
+      "trapSuccessNoDeaths": "巨大な罠は完璧に働いた！赤く光る眼を持つ巨大な黒熊が捕まる。村人たちはその超常の獣を殺し、呪われた黒い毛皮を戦利品とする。",
+      "trapSuccessWithDeaths_one": "巨大な罠が、燃える赤い眼の巨大な黒熊を捕らえる！獣がついに倒されるまでに、村人{{count}}人がその超常の爪に落ちる。呪われた黒い毛皮を、苦労の末の戦利品として得る。",
+      "trapSuccessWithDeaths_other": "巨大な罠が、燃える赤い眼の巨大な黒熊を捕らえる！獣がついに倒されるまでに、村人{{count}}人がその超常の爪に落ちる。呪われた黒い毛皮を、苦労の末の戦利品として得る。",
+      "trapSuccessHeavy": "巨大な罠が、燃える炭のような眼の巨大な黒熊を捕らえる。獣がついに制圧されるまでに、村人{{count}}人がその超常の怒りに落ちる。呪われた黒い毛皮を得る。",
+      "trapFailed": "巨大な罠は仕掛けてあるが、見に行くと巨大な爪痕があるばかり。この森を徘徊するものは、罠より狡猾だった…今回は。"
+    }
+  },
+  "leatherTotems": {
+    "label": "皮革のトーテム"
+  },
+  "makeFire": {
+    "label": "火を起こす",
+    "log": {
+      "firstVisit": "火が静かに爆ぜ、洞窟の壁に影を躍らせる。その温もりは心を安らげる。"
+    }
+  },
+  "lowChamber": {
+    "label": "低い石室",
+    "log": {
+      "complete": "強化された縄を使い、低い石室へ降りる。宝の中に石工頭の鑿を見つける。伝説の技を宿した道具だ。"
+    }
+  },
+  "lureLakeCreature": {
+    "label": "罠を置く",
+    "log": {
+      "complete": "地下湖の縁に巨大な罠を置き、肉の山を餌にする。何時間も経ったのち、黒い水が噴き上がり、触手を持つ巨大な恐怖が深みから昇って罠へ這い入る。"
+    }
+  },
+  "mineAdamant": {
+    "label": "アダマント",
+    "log": {
+      "natharitSilverVein": "ナサリットの鶴嘴が銀の鉱脈を見つけた！+{{amount}} {{resource}}"
+    }
+  },
+  "mineMoonstone": {
+    "label": "月長石",
+    "log": {
+      "natharitSilverVein": "ナサリットの鶴嘴が銀の鉱脈を見つけた！+{{amount}} {{resource}}"
+    }
+  },
+  "mineCoal": {
+    "label": "石炭",
+    "log": {
+      "natharitSilverVein": "ナサリットの鶴嘴が銀の鉱脈を見つけた！+{{amount}} {{resource}}"
+    }
+  },
+  "mineIron": {
+    "label": "鉄",
+    "log": {
+      "natharitSilverVein": "ナサリットの鶴嘴が銀の鉱脈を見つけた！+{{amount}} {{resource}}"
+    }
+  },
+  "mineObsidian": {
+    "label": "黒曜石",
+    "log": {
+      "natharitSilverVein": "ナサリットの鶴嘴が銀の鉱脈を見つけた！+{{amount}} {{resource}}"
+    }
+  },
+  "mineStone": {
+    "label": "石",
+    "log": {
+      "natharitSilverVein": "ナサリットの鶴嘴が銀の鉱脈を見つけた！+{{amount}} {{resource}}"
+    }
+  },
+  "mineSulfur": {
+    "label": "硫黄",
+    "log": {
+      "natharitSilverVein": "ナサリットの鶴嘴が銀の鉱脈を見つけた！+{{amount}} {{resource}}"
+    }
+  },
+  "mining": {
+    "label": "採掘"
+  },
+  "occultistChamber": {
+    "label": "秘術師の間",
+    "log": {
+      "complete": "秘術師の地図に従い、宝を収めた部屋を見つける。その中に魔導書がある。禁忌の知識と秘術の秘密で満ちている。"
+    }
+  },
+  "provokeAttackWave": {
+    "label": "襲撃を誘発"
+  },
+  "repairBastion": {
+    "label": "バスティオンを修繕"
+  },
+  "repairPalisades": {
+    "label": "柵壁を修繕"
+  },
+  "repairWatchtower": {
+    "label": "見張り塔を修繕"
+  },
+  "risingSmoke": {
+    "label": "立ち上る煙",
+    "log": {
+      "success": "遠征隊は無法者の野営を見つける。戦いは凄惨だが、勝ち取る。箱の中に金貨500があった。",
+      "successKeyBonus": " 骸骨鍵で隠し区画を開け、さらに金貨250を見つける。",
+      "captiveOne": " 野営の捕虜1人が、村に加わることを選んだ。",
+      "captivesOther": " 野営の捕虜{{count}}人が、村に加わることを選んだ。",
+      "failure": "遠征隊は無法者の野営に着くが、戦いは惨敗する。村人{{count}}人が倒れ、生き残りは村へ逃げる。"
+    }
+  },
+  "sellBlacksteelBatch": {
+    "label": "黒鋼を売る"
+  },
+  "sellLeatherBatch": {
+    "label": "皮革を売る"
+  },
+  "sellSteelBatch": {
+    "label": "鋼を売る"
+  },
+  "searchMountainLady": {
+    "label": "山の女を探す"
+  },
+  "steelDelivery": {
+    "label": "鋼の運搬",
+    "log": {
+      "success": "隊商は約束どおり、沼の部族へ鋼を届ける。返礼として、沼の生物から採ったキチン板を贈られる。強力な防壁の建造に使える。"
+    }
+  },
+  "sunkenTemple": {
+    "label": "沈んだ神殿",
+    "log": {
+      "success": "遠征隊は沼の水を渉り、半分沈んだ古代の神殿へ至る。暗い水に潜む危険にもかかわらず、村人たちは水没した広間を慎重に進み、神殿の内陣で血石を見つける。",
+      "failure": "遠征隊は沼へ入り、沈んだ神殿を探す。濁った水の下に、言い表せぬ恐怖が潜む。古い魔から生まれた忌まわしい生物が深みから昇り、生き残りが逃げるまでに村人{{count}}人を水面下へ引きずり込む。"
+    }
+  },
+  "swampSanctuary": {
+    "label": "沼の聖域"
+  },
+  "tradeGoldForAdamant": {
+    "label": "アダマントを買う"
+  },
+  "tradeGoldForAshfireBomb": {
+    "label": "灰火爆弾を買う"
+  },
+  "tradeGoldForBlacksteel": {
+    "label": "黒鋼を買う"
+  },
+  "tradeGoldForEmberBomb": {
+    "label": "残火爆弾を買う"
+  },
+  "tradeGoldForFood": {
+    "label": "食料を買う"
+  },
+  "tradeGoldForIron": {
+    "label": "鉄を買う"
+  },
+  "tradeGoldForLeather": {
+    "label": "皮革を買う"
+  },
+  "tradeGoldForObsidian": {
+    "label": "黒曜石を買う"
+  },
+  "tradeGoldForSteel": {
+    "label": "鋼を買う"
+  },
+  "tradeGoldForStone": {
+    "label": "石を買う"
+  },
+  "tradeGoldForTorch": {
+    "label": "松明を買う"
+  },
+  "tradeGoldForVoidBomb": {
+    "label": "虚空爆弾を買う"
+  },
+  "tradeGoldForInsightPotion": {
+    "label": "洞察の霊薬"
+  },
+  "tradeGoldForVeinfireElixir": {
+    "label": "脈火の霊薬を買う"
+  },
+  "tradeGoldForWood": {
+    "label": "木材を買う"
+  },
+  "tradeSilverForGold": {
+    "label": "金貨を買う"
+  },
+  "ventureDeeper": {
+    "label": "さらに進む",
+    "log": {
+      "tarnishedAmulet": "洞窟の影で何かが光る。くすんだ護符を見つける。",
+      "fangCharm": "壁の裂け目に挟まった、黒い牙の護符を見つける。ここで生きているはずのない大きさだ。",
+      "silverSack": "小さな革袋を見つける。中には銀貨50が入っていた。",
+      "mapFragment": "洞窟の床に、ぼろぼろの地図の断片を見つける。",
+      "firstVisit": "道をさらに洞窟の奥へ降りると、空気が冷たくなる。周囲の壁は不自然なほど滑らかで、誰かの手で整えられたかのようだ。"
+    }
+  }
+}

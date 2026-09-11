@@ -166,7 +166,7 @@ shared/schema.ts - Zod persisted shape
 
 ## i18n (`client/src/i18n/`)
 
-- **Locales:** en, de, fr, es, it, pt-BR, zh-CN, ru.
+- **Locales:** en, de, fr, es, it, pt-BR, zh-CN, ja, pl, ru.
 - **Namespaces:** `common`, `ui`, `shop`, `actions`, `effects`, `events`, `achievements`.
   UI is sharded under `locales/{lang}/ui/`.
 - **Load:** English `ui/shell` + `ui/seo` seed at init. `loadLocaleResources.ts`

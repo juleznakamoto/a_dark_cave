@@ -81,7 +81,7 @@ export const PRESS_FACTS: readonly PressFact[] = [
   {
     label: "Languages",
     value:
-      "English, German, French, Spanish, Italian, Portuguese (Brazil), Simplified Chinese, Russian. Steam also lists Japanese.",
+      "English, German, French, Spanish, Italian, Portuguese (Brazil), Simplified Chinese, Japanese, Polish, Russian.",
   },
   { label: "Similar to", value: PRESS_COMPS_LINE },
   {

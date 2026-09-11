@@ -1,0 +1,11 @@
+{
+  "playlight": {
+    "welcomeTitle": "ようこそ、Playlightプレイヤー",
+    "welcomeGift": "Playlightを使ってくれてありがとう。歓迎の贈り物として、{{reward}}を所持品に加えた。",
+    "welcomeDiscount": "店での初回購入がさらに{{percent}}%引きになる。割引は自動で適用される。",
+    "moreGames": "ほかのゲーム",
+    "more": "もっと",
+    "tryMoreGames": "ほかのゲームを試す",
+    "discoveryAria": "発見"
+  }
+}

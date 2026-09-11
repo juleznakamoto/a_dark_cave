@@ -1,0 +1,21 @@
+{
+  "endScreen": {
+    "pageTitle": "Podróż zakończona - A Dark Cave",
+    "trustBadge": "Świetna robota!",
+    "headline1": "Twoja podróż kończy się tutaj",
+    "headline2": "",
+    "subtitle1": "Przynajmniej na razie...",
+    "subtitle2": "Tryb okrutny czeka z dłuższą i trudniejszą rozgrywką.",
+    "subtitle2Discount": "Ukończenie gry odblokowało zniżkę.",
+    "cruelMode": "⛤ Tryb okrutny",
+    "cruelModeBadge": "Specjalna zniżka",
+    "cruelModeComingSoon": "Wkrótce",
+    "feedback": "Opinia",
+    "feedbackBlurb": "Masz uwagi do błędów, tłumaczenia albo sugestie? Chętnie je przyjmę.",
+    "wishlistOnSteam": "Dodaj do listy życzeń na Steam",
+    "buyMeACoffee": "Wesprzyj",
+    "continuePlaying": "Kontynuuj grę",
+    "moreGames": "Więcej gier",
+    "rateOnItch": "Oceń na itch.io"
+  }
+}

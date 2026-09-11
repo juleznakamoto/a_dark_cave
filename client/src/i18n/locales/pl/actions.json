@@ -1,0 +1,757 @@
+{
+  "animals": {
+    "label": "Zwierzęta"
+  },
+  "banditLair": {
+    "label": "Legowisko bandyty",
+    "log": {
+      "success": "Twoja drużyna tropi bandytę do rozpadającego się legowiska. Pokonujecie go, odzyskujecie sztylet handlarza i znajdujecie 250 srebra ukryte wśród łupów.",
+      "failure": "Wieśniacy przeszukują wzgórza, lecz nie udaje im się osaczyć bandyty. Ślad stygnie, a sztylet wciąż jest w jego rękach."
+    }
+  },
+  "blackreachCanyon": {
+    "label": "Kanion Czarnodolu",
+    "log": {
+      "success": "Zapuszczasz się głęboko w Kanion Czarnodolu. Tam, na kamiennym filarze, siedzi wspaniały jednooki kruk. Z pomocą uprzęży ostrożnie się zbliżasz i zawierasz więź z istotą. Jednooki kruk dołączył do twojej wspólnoty."
+    }
+  },
+  "blastPortal": {
+    "label": "Wysadź wrota",
+    "log": {
+      "complete": "Bomby żaru wybuchają w jaskrawym błysku ognia i światła. Starożytne wrota pękają i kruszeją. Cokolwiek było w nich zamknięte, jest teraz wolne."
+    }
+  },
+  "boneTotems": {
+    "label": "Kościane totemy"
+  },
+  "buildAdvancedBlacksmith": {
+    "description": "Lepsza kuźnia ze sprawniejszymi narzędziami i technikami",
+    "label": "Lepsza kuźnia"
+  },
+  "buildAlchemistHall": {
+    "description": "Sala, w której alchemik wytwarza proszki i materiały wybuchowe",
+    "label": "Sala alchemika"
+  },
+  "buildAltar": {
+    "description": "Miejsce kultu i ofiar",
+    "label": "Ołtarz"
+  },
+  "buildBank": {
+    "description": "Dom obrachunkowy, który pozwala na większe inwestycje",
+    "label": "Bank"
+  },
+  "buildBastion": {
+    "description": "Potężne umocnienie stanowiące ostatnią linię obrony",
+    "label": "Bastion"
+  },
+  "buildBlackEstate": {
+    "description": "Wysoka posiadłość z czarnego drewna i kamienia, górująca nad miastem.",
+    "label": "Czarna posiadłość"
+  },
+  "buildBlackMonolith": {
+    "description": "Mroczny pomnik wzniesiony dla żywych ofiar",
+    "label": "Czarny monolit"
+  },
+  "buildBlacksmith": {
+    "description": "Kuźnia z prostymi narzędziami do rzemiosła",
+    "label": "Kuźnia"
+  },
+  "buildBoneTemple": {
+    "description": "Potworna budowla z kości, wzniesiona ku czci starych bogów",
+    "label": "Świątynia kości"
+  },
+  "buildBoneyard": {
+    "description": "Ziemia, na której składa się zmarłych, łagodząc żal wieśniaków.",
+    "label": "Cmentarzysko"
+  },
+  "buildHerbGarden": {
+    "description": "Uprawne grządki pożytecznych roślin, pieczołowicie pielęgnowane ze względu na ich liczne zastosowania.",
+    "label": "Ogród ziół"
+  },
+  "buildBottomlessPit": {
+    "description": "Niezmiernie głęboka jama, sięgająca najrzadszych materiałów",
+    "label": "Bezdenna jama"
+  },
+  "buildBuildersLodge": {
+    "description": "Chata, w której mistrzowie budownictwa koordynują prace w całej wiosce",
+    "label": "Chata budowniczych"
+  },
+  "buildBuildersHall": {
+    "description": "Sala, w której starsi budowniczowie usprawniają prace i wynegocjowują lepsze ceny materiałów",
+    "label": "Sala budowniczych"
+  },
+  "buildBuildersGuild": {
+    "description": "Gildia mistrzów budownictwa, która rozporządza pełną mocą budowlaną wioski",
+    "label": "Gildia budowniczych"
+  },
+  "buildCabin": {
+    "description": "Prosta chata myśliwska z narzędziami dla myśliwych",
+    "label": "Chata myśliwego"
+  },
+  "buildChitinPlating": {
+    "description": "Umocnienia wzmocnione nieprzebitymi płytami z chityny",
+    "label": "Pancerz z chityny"
+  },
+  "buildClerksHut": {
+    "description": "Chata, w której uczeni zgłębiają świat, by zyskać Wgląd",
+    "label": "Chata skryby"
+  },
+  "buildCoinhouse": {
+    "description": "Skromny dom obrachunkowy, który pozwala na niewielkie inwestycje",
+    "label": "Dom monet"
+  },
+  "buildConsecratedPaleCross": {
+    "description": "Wysoki pomnik z wybielonych kości, mocno wzmacniający ofiary z kościanych totemów.",
+    "label": "Poświęcony blady krzyż"
+  },
+  "buildDarkEstate": {
+    "description": "Odcięta posiadłość dająca schronienie przed światem",
+    "label": "Mroczna posiadłość"
+  },
+  "buildDeepPit": {
+    "description": "Bardzo głęboka jama odsłaniająca cenne żyły minerałów",
+    "label": "Głęboka jama"
+  },
+  "buildDeepeningPit": {
+    "description": "Głębsza jama, sięgająca dalszych zasobów ziemi",
+    "label": "Pogłębiana jama"
+  },
+  "buildFortifiedMoat": {
+    "description": "Obronna fosa spowalniająca i osłabiająca napastników",
+    "label": "Wzmocniona fosa"
+  },
+  "buildFortifiedStorehouse": {
+    "description": "Wzmocniony budynek magazynowy o zwiększonej pojemności",
+    "label": "Wzmocniony magazyn"
+  },
+  "buildFoundry": {
+    "description": "Budynek przeznaczony do wytopu stali",
+    "label": "Odlewnia"
+  },
+  "buildFurTents": {
+    "description": "Ciepłe futrzane schronienie wędrownego plemienia",
+    "label": "Futrzany namiot"
+  },
+  "buildGrandArchive": {
+    "description": "Ogromny skarbiec zwojów, który przechowuje wszystko, czym była wioska: każde imię i każdy trud wyryte na zawsze",
+    "label": "Wielkie archiwum"
+  },
+  "buildGrandBazaar": {
+    "description": "Rozległy targ przyciągający więcej handlarzy",
+    "label": "Wielki bazar"
+  },
+  "buildGrandBlacksmith": {
+    "description": "Zaawansowana kuźnia zdolna tworzyć najwytworniejsze wyroby",
+    "label": "Wielka kuźnia"
+  },
+  "buildGrandHunterLodge": {
+    "description": "Najwyższa chata myśliwska dla mistrzów łowów",
+    "label": "Wielka chata myśliwych"
+  },
+  "buildGrandRepository": {
+    "description": "Ogromne składowisko o wyjątkowej pojemności",
+    "label": "Wielkie składowisko"
+  },
+  "buildGreatCabin": {
+    "description": "Powiększona chata myśliwska zwiększająca plon myśliwych",
+    "label": "Duża chata myśliwego"
+  },
+  "buildGreatVault": {
+    "description": "Najwyższy skarbiec, zdolny pomieścić ogromne zasoby",
+    "label": "Wielki skarbiec"
+  },
+  "buildHeartfire": {
+    "description": "Święty ogień dający ukojenie i poczucie ochrony",
+    "label": "Ogień serca"
+  },
+  "buildHighTannery": {
+    "description": "Najwyższa garbarnia dla biegłych rzemieślników skóry",
+    "label": "Wysoka garbarnia"
+  },
+  "buildImprovedTraps": {
+    "description": "Ulepszone pułapki na obwodzie, o mocniejszych mechanizmach i szerszym zasięgu",
+    "label": "Ulepszone pułapki"
+  },
+  "buildInkwardenAcademy": {
+    "description": "Wielka akademia, w której mistrzowie uczeni destylują głęboką Wiedzę",
+    "label": "Akademia Strażników Tomów"
+  },
+  "buildLonghouse": {
+    "description": "Ogromna nordycka sala wspólna, dająca dach wielu wieśniakom",
+    "label": "Długi dom"
+  },
+  "buildMasterTannery": {
+    "description": "Zaawansowana garbarnia zwiększająca wytwarzanie skóry",
+    "label": "Mistrzowska garbarnia"
+  },
+  "buildMasterworkFoundry": {
+    "description": "Odlewnia o lepszym wytopie stali",
+    "label": "Mistrzowska odlewnia"
+  },
+  "buildMerchantsGuild": {
+    "description": "Potężna gildia sprowadzająca najlepsze transakcje i handlarzy",
+    "label": "Gildia handlarzy"
+  },
+  "buildPaleCross": {
+    "description": "Wysoki pomnik z wybielonych kości, wzmacniający ofiary z kościanych totemów.",
+    "label": "Blady krzyż"
+  },
+  "buildPalisades": {
+    "description": "Obronne palisady chroniące osadę",
+    "label": "Palisady"
+  },
+  "buildPillarOfClarity": {
+    "description": "Czysty, biały obelisk, który oczyszcza umysły z ciemności",
+    "label": "Filar jasności"
+  },
+  "buildPrimeFoundry": {
+    "description": "Zaawansowana odlewnia o ulepszonym wytopie stali",
+    "label": "Główna odlewnia"
+  },
+  "buildQuarry": {
+    "description": "Kamieniołom zwiększający zbiór kamienia przez zbieraczy",
+    "label": "Kamieniołom"
+  },
+  "buildRecordsHall": {
+    "description": "Sala pełna półek ze zniszczonymi księgami i spisami, pamięć wioski spisana atramentem i utrzymana w ładzie",
+    "label": "Sala akt"
+  },
+  "buildSanctum": {
+    "description": "Boskie sanktuarium dające największą ochronę przed ciemnością",
+    "label": "Sanktuarium"
+  },
+  "buildScribesOffice": {
+    "description": "Cicha izba, w której skrybowie starannie spisują każdą pracującą dłoń, by żaden trud nie poszedł w zapomnienie",
+    "label": "Kancelaria skryby"
+  },
+  "buildScriptorium": {
+    "description": "Ośrodek mądrości, w którym uczeni gromadzą Wiedzę",
+    "label": "Skryptorium"
+  },
+  "buildShallowPit": {
+    "description": "Mała jama górnicza pozwalająca wydobywać minerały",
+    "label": "Płytka jama"
+  },
+  "buildShrine": {
+    "description": "Święta kapliczka dająca większą ochronę przed szaleństwem",
+    "label": "Kapliczka"
+  },
+  "buildStoneHut": {
+    "description": "Trwałe kamienne mieszkanie dające lepsze schronienie",
+    "label": "Kamienna chata"
+  },
+  "buildStorehouse": {
+    "description": "Powiększony magazyn na więcej zasobów",
+    "label": "Magazyn"
+  },
+  "buildSupplyHut": {
+    "description": "Mała chata do składowania zasobów",
+    "label": "Chata zapasów"
+  },
+  "buildTannery": {
+    "description": "Warsztat, w którym futra przerabia się na skórę",
+    "label": "Garbarnia"
+  },
+  "buildTemple": {
+    "description": "Wielka świątynia dająca silny opór wobec szaleństwa",
+    "label": "Świątynia"
+  },
+  "buildTimberMill": {
+    "description": "Młyn obrabiający drewno sprawniej",
+    "label": "Tartak"
+  },
+  "buildTradePost": {
+    "description": "Faktoria przyciągająca handlarzy z towarem",
+    "label": "Faktoria"
+  },
+  "buildTraps": {
+    "description": "Pułapki wokół wioski osłabiające wszystkich napastników",
+    "label": "Pułapki"
+  },
+  "buildTreasury": {
+    "description": "Skarbiec, w którym możesz ryzykować znacznie większe sumy",
+    "label": "Skarbnica"
+  },
+  "buildVillageWarehouse": {
+    "description": "Duży magazyn zdolny pomieścić ogromne ilości",
+    "label": "Magazyn wioski"
+  },
+  "buildWatchtower": {
+    "description": "Wysoka wieża dająca wczesne ostrzeżenie przed zagrożeniem",
+    "label": "Strażnica"
+  },
+  "buildWizardTower": {
+    "description": "Mistyczna wieża, w której czarodziej prowadzi arkaniczne badania",
+    "label": "Wieża czarodzieja"
+  },
+  "buildWoodenHut": {
+    "description": "Prosta drewniana chata dająca podstawowe schronienie",
+    "label": "Drewniana chata"
+  },
+  "exploreMountainVillage": {
+    "label": "Zbadaj górską wioskę"
+  },
+  "canyonBridge": {
+    "label": "Most przez kanion",
+    "log": {
+      "complete": "Most przez kanion stoi gotowy. Handlarze Popiołowych Widm mogą teraz dotrzeć do twojej osady, a ty możesz sprzedawać im towary po ustalonych stawkach."
+    }
+  },
+  "castleRuins": {
+    "label": "Ruiny zamku",
+    "log": {
+      "success": "Wyprawa do ruin zamku martwego nekromanty kończy się powodzeniem! W ich głębi znajdujesz starożytne zwoje owinięte w ciemny jedwab, odsłaniające zagadkową wiedzę o tym, jak pokonać to, co zamknięto głęboko w jaskini.",
+      "minorFailure": "Wyprawę napadają z zasadzki groteskowe nieumarłe eksperymenty pozostawione przez nekromantę. {{count}} wieśniaków pada ofiarą nieumarłych, zanim ocalałym udaje się wycofać.",
+      "majorFailure": "Wkrótce po tym, jak wyprawa wkracza do przeklętych ruin zamku, z ukrytych komór wylewają się dziesiątki nieumarłych. W rozpaczliwej walce, która następuje, {{count}} wieśniaków ginie pod naporem nadprzyrodzonej hordy. Ocalali uciekają w trwodze."
+    }
+  },
+  "chopWood": {
+    "label": "Zbierz drewno",
+    "labelForest": "Rąb drewno",
+    "log": {
+      "firstVisit": "Przy wejściu do jaskini leży porozrzucane drewno. Może się przydać."
+    }
+  },
+  "callMerchant": {
+    "label": "Wezwij handlarza"
+  },
+  "collapsedTower": {
+    "label": "Zawalona wieża",
+    "log": {
+      "success": "W wieży zastajesz nekromantę i jego wyznawców, otoczonych fiolkami z płynami i prymitywnymi strzykawkami. Zbierał krew wieśniaków do mrocznych doświadczeń. Twoi ludzie kładą kres jego plugawemu dziełu i zabierają fiolkę jego krwi. Wśród narzędzi znajdujecie jego potężną piłę kostną.",
+      "failure": "Wyprawa dociera do Zawalonej wieży, lecz na zewnątrz atakują was zakapturzone postacie. Wśród nich stoi wysoki człowiek w ciemnej szacie, roztaczając aurę grozy. {{count}} wieśniaków pada, zanim reszta uchodzi w bezpieczne miejsce."
+    }
+  },
+  "craftAdamantAxe": {
+    "label": "Adamantowy topór"
+  },
+  "craftAdamantLantern": {
+    "label": "Adamantowa latarnia"
+  },
+  "craftAdamantPickaxe": {
+    "label": "Adamantowy kilof"
+  },
+  "craftAdamantSword": {
+    "label": "Adamantowy miecz"
+  },
+  "craftArbalest": {
+    "label": "Arbalet"
+  },
+  "craftAshenGreatshield": {
+    "label": "Popiołowa wielka tarcza"
+  },
+  "craftAshfireBomb": {
+    "label": "Bomba popiołognia"
+  },
+  "craftBlacksteelArmor": {
+    "label": "Czarnostalowy pancerz"
+  },
+  "craftBlacksteelAxe": {
+    "label": "Czarnostalowy topór"
+  },
+  "craftBlacksteelBow": {
+    "label": "Czarnostalowy łuk"
+  },
+  "craftBlacksteelLantern": {
+    "label": "Czarnostalowa latarnia"
+  },
+  "craftBlacksteelPickaxe": {
+    "label": "Czarnostalowy kilof"
+  },
+  "craftBlacksteelSword": {
+    "label": "Czarnostalowy miecz"
+  },
+  "craftBloodstoneStaff": {
+    "label": "Kostur krwawego kamienia"
+  },
+  "craftBoneTotems": {
+    "label": "Kościane totemy"
+  },
+  "craftCrudeBow": {
+    "label": "Prosty łuk"
+  },
+  "craftEmberBomb": {
+    "label": "Bomba żaru"
+  },
+  "craftExplorerPack": {
+    "label": "Plecak odkrywcy"
+  },
+  "craftFrostglassSword": {
+    "label": "Miecz z mrozoszkła"
+  },
+  "craftFlaskHarness": {
+    "label": "Szelki na fiolki"
+  },
+  "craftGrenadierBag": {
+    "label": "Torba grenadiera"
+  },
+  "craftHighpriestRobe": {
+    "label": "Szata arcykapłana"
+  },
+  "craftHunterCloak": {
+    "label": "Płaszcz myśliwego"
+  },
+  "craftHuntsmanBow": {
+    "label": "Łuk łowcy"
+  },
+  "craftIronAxe": {
+    "label": "Żelazny topór"
+  },
+  "craftIronLantern": {
+    "label": "Żelazna latarnia"
+  },
+  "craftIronPickaxe": {
+    "label": "Żelazny kilof"
+  },
+  "craftIronSword": {
+    "label": "Żelazny miecz"
+  },
+  "craftLeatherTotems": {
+    "label": "Skórzane totemy"
+  },
+  "craftLoggersGloves": {
+    "label": "Rękawice drwala"
+  },
+  "craftLongBow": {
+    "label": "Długi łuk"
+  },
+  "craftMasterBow": {
+    "label": "Mistrzowski łuk"
+  },
+  "craftNightshadeBow": {
+    "label": "Łuk z wilczej jagody"
+  },
+  "craftObsidianAxe": {
+    "label": "Obsydianowy topór"
+  },
+  "craftObsidianLantern": {
+    "label": "Obsydianowa latarnia"
+  },
+  "craftObsidianPickaxe": {
+    "label": "Obsydianowy kilof"
+  },
+  "craftObsidianSword": {
+    "label": "Obsydianowy miecz"
+  },
+  "craftSacrificialTunic": {
+    "label": "Tunika ofiarna"
+  },
+  "craftShadowBoots": {
+    "label": "Buty cienia"
+  },
+  "craftSkeletonKey": {
+    "label": "Klucz szkieletowy"
+  },
+  "craftSteelAxe": {
+    "label": "Stalowy topór"
+  },
+  "craftSteelLantern": {
+    "label": "Stalowa latarnia"
+  },
+  "craftSteelPickaxe": {
+    "label": "Stalowy kilof"
+  },
+  "craftSteelSword": {
+    "label": "Stalowy miecz"
+  },
+  "craftStoneAxe": {
+    "label": "Kamienny topór"
+  },
+  "craftStonePickaxe": {
+    "label": "Kamienny kilof"
+  },
+  "craftStormglassHalberd": {
+    "label": "Halabarda z burzoszkła"
+  },
+  "craftTorches": {
+    "label": "Pochodnie"
+  },
+  "craftVeinfireElixir": {
+    "label": "Eliksir żyłognia"
+  },
+  "craftVoidBomb": {
+    "label": "Bomba pustki"
+  },
+  "craftWarBow": {
+    "label": "Łuk wojenny"
+  },
+  "descendFurther": {
+    "label": "Zejdź głębiej",
+    "log": {
+      "firstVisit": "Latarnia rzuca równe światło, gdy schodzisz jeszcze głębiej. Nagle stopy stają na wykutych przez człowieka kamiennych stopniach, startych przez czas."
+    }
+  },
+  "encounterBeyondPortal": {
+    "label": "Wyjdź za wrota"
+  },
+  "exploreCave": {
+    "label": "Zbadaj jaskinię",
+    "log": {
+      "debrisScroll": "Wśród gruzu odnajdujesz zniszczony zwój z mądrością, jak przetrwać w tym bezlitosnym świecie.",
+      "torchBag": "W jaskini znajdujesz stary, zakurzony worek z 25 pochodniami.",
+      "firstVisit": "Światło pochodni oświetla ściany jaskini. W migotliwym blasku dostrzegasz ścieżkę prowadzącą głębiej w jaskinie."
+    }
+  },
+  "exploreCitadel": {
+    "label": "Zbadaj cytadelę",
+    "log": {
+      "firstVisit": "W najgłębszej części miasta wznosi się przed tobą potężna cytadela. Jej rozmiar wskazuje, że kryje coś o wielkiej mocy albo o wielkim niebezpieczeństwie."
+    }
+  },
+  "exploreRuins": {
+    "label": "Zbadaj ruiny",
+    "log": {
+      "firstVisit": "Na końcu schodów otwiera się przed tobą ogromna komora. W mroku leżą ruiny zaginionego miasta, szczątki dawno minionej cywilizacji."
+    }
+  },
+  "exploreTemple": {
+    "label": "Zbadaj świątynię",
+    "log": {
+      "firstVisit": "Gdy zapuszczasz się głębiej w ruiny podziemnego miasta, z dna jaskini wyłania się wielka świątynia, w większości nietknięta, a jej cień kładzie się na zapomnianych resztkach miasta."
+    }
+  },
+  "exploreUndergroundLake": {
+    "label": "Podziemne jezioro",
+    "log": {
+      "complete": "W ponurym blasku latarni czaszkowej schodzisz nad podziemne jezioro i budujesz małą łódź. Na maleńkiej wyspie pośrodku ciemnej toni, nietknięte od wieków, leżą w cieniu zapomniane skarby."
+    }
+  },
+  "feedFire": {
+    "label": "Nakarm ogień"
+  },
+  "financeExpedition": {
+    "description": "Sfinansuj wyprawę uczonych do świątyń i ruin w lesie",
+    "label": "Sfinansuj wyprawę",
+    "log": {
+      "complete": "Wyprawa badawcza wraca z lasu. Uczeni spędzają dni, katalogując napisy, zniszczone relikty i okruchy zapomnianej wiedzy."
+    }
+  },
+  "forestCave": {
+    "label": "Leśna jaskinia",
+    "log": {
+      "success": "Gdy wieśniacy schodzą w jaskinię, z mroku wyrywają się dzikie ogary w nieustępliwych watahach. Krzyki odbijają się echem, gdy szarpią pazury i kłapią zęby. Gdy pada ostatnia istota, każdy wieśniak żyje, wydrążony tym, co ujrzał.",
+      "failure": "Gdy wyprawa wkracza do jaskini, zalewa ją wataha okrutnych ogarów. {{count}} wieśniaków rozszarpują dzikie paszcze, zanim ocalałym udaje się wycofać."
+    }
+  },
+  "healElderWizard": {
+    "label": "Ulecz starego czarodzieja"
+  },
+  "healRestlessKnight": {
+    "label": "Ulecz niespokojnego rycerza"
+  },
+  "hiddenLibrary": {
+    "label": "Ukryta biblioteka",
+    "log": {
+      "complete": "Mapa z klasztoru prowadzi cię głęboko w jaskinię, do ukrytej biblioteki, gdzie znajdujesz kodeks."
+    }
+  },
+  "hillGrave": {
+    "label": "Kurhan",
+    "log": {
+      "success": "Wyprawa ostrożnie pokonuje zdradliwe pułapki kurhanu. Wieśniacy rozbrajają starożytne mechanizmy i docierają do komory grobowej. Wśród skarbów króla odkrywacie czyste mrozoszkło, zimne jak sama pustka.",
+      "failure": "Wyprawa wkracza do kurhanu, lecz brakuje jej wprawy, by ominąć śmiertelne pułapki. {{count}} wieśniaków pada ofiarą ostatnich strażników króla, zanim ocalali uchodzą w zgrozie, zostawiając ciała towarzyszy w przeklętym grobowcu."
+    }
+  },
+  "humans": {
+    "label": "Ludzie"
+  },
+  "hunt": {
+    "label": "Poluj",
+    "log": {
+      "mapFragmentHunt": "Podczas polowania coś przykuwa wzrok w błocie. Przesiąknięty wodą strzęp, być może część mapy."
+    }
+  },
+  "invest": {
+    "label": "Zainwestuj"
+  },
+  "layTrap": {
+    "label": "Zastaw pułapkę",
+    "log": {
+      "trapSuccessNoDeaths": "Olbrzymia pułapka działa bezbłędnie! W sidłach tkwi ogromny czarny niedźwiedź o żarzących się czerwonych oczach. Wieśniacy zabijają nadprzyrodzoną bestię i biorą jej przeklęte czarne futro jako trofeum.",
+      "trapSuccessWithDeaths_one": "Olbrzymia pułapka łapie kolosalnego czarnego niedźwiedzia o palących się czerwonych oczach! {{count}} wieśniak pada pod jego nadprzyrodzonymi pazurami, zanim bestia zostaje wreszcie zabita. Bierzecie jej przeklęte czarne futro jako drogo okupione trofeum.",
+      "trapSuccessWithDeaths_other": "Olbrzymia pułapka łapie kolosalnego czarnego niedźwiedzia o palących się czerwonych oczach! {{count}} wieśniaków pada pod jego nadprzyrodzonymi pazurami, zanim bestia zostaje wreszcie zabita. Bierzecie jej przeklęte czarne futro jako drogo okupione trofeum.",
+      "trapSuccessHeavy": "Olbrzymia pułapka łapie kolosalnego czarnego niedźwiedzia o oczach jak żarzące się węgle. {{count}} wieśniaków pada pod jego nadprzyrodzonym szałem, zanim bestia zostaje wreszcie pokonana. Bierzecie jej przeklęte czarne futro.",
+      "trapFailed": "Olbrzymia pułapka jest zastawiona, lecz przy sprawdzeniu obok niej widać tylko wielkie ślady pazurów. Cokolwiek krąży po tych lasach, jest zbyt przebiegłe na waszą pułapkę... tym razem."
+    }
+  },
+  "leatherTotems": {
+    "label": "Skórzane totemy"
+  },
+  "makeFire": {
+    "label": "Rozpal ogień",
+    "log": {
+      "firstVisit": "Ogień cicho trzaska, rzucając tańczące cienie na ściany jaskini. Ciepło koi."
+    }
+  },
+  "lowChamber": {
+    "label": "Niska komnata",
+    "log": {
+      "complete": "Na wzmocnionej linie schodzisz do niskiej komnaty. Wśród skarbów znajdujesz dłuto mistrza murarskiego, narzędzie legendarnego rzemiosła."
+    }
+  },
+  "lureLakeCreature": {
+    "label": "Ustaw pułapkę",
+    "log": {
+      "complete": "Na brzegu podziemnego jeziora ustawiasz ogromną pułapkę, przynętą stosami mięsa. Mijają godziny, nim czarne wody wybuchają, a tytaniczna, mackowata zgroza wynurza się z głębin i wpełza w sidła."
+    }
+  },
+  "mineAdamant": {
+    "label": "Adamant",
+    "log": {
+      "natharitSilverVein": "Kilof Natharit odsłania żyłę srebra! +{{amount}} {{resource}}"
+    }
+  },
+  "mineMoonstone": {
+    "label": "Kamień księżycowy",
+    "log": {
+      "natharitSilverVein": "Kilof Natharit odsłania żyłę srebra! +{{amount}} {{resource}}"
+    }
+  },
+  "mineCoal": {
+    "label": "Węgiel",
+    "log": {
+      "natharitSilverVein": "Kilof Natharit odsłania żyłę srebra! +{{amount}} {{resource}}"
+    }
+  },
+  "mineIron": {
+    "label": "Żelazo",
+    "log": {
+      "natharitSilverVein": "Kilof Natharit odsłania żyłę srebra! +{{amount}} {{resource}}"
+    }
+  },
+  "mineObsidian": {
+    "label": "Obsydian",
+    "log": {
+      "natharitSilverVein": "Kilof Natharit odsłania żyłę srebra! +{{amount}} {{resource}}"
+    }
+  },
+  "mineStone": {
+    "label": "Kamień",
+    "log": {
+      "natharitSilverVein": "Kilof Natharit odsłania żyłę srebra! +{{amount}} {{resource}}"
+    }
+  },
+  "mineSulfur": {
+    "label": "Siarka",
+    "log": {
+      "natharitSilverVein": "Kilof Natharit odsłania żyłę srebra! +{{amount}} {{resource}}"
+    }
+  },
+  "mining": {
+    "label": "Górnictwo"
+  },
+  "occultistChamber": {
+    "label": "Komnata okultysty",
+    "log": {
+      "complete": "Idąc za mapą okultysty, znajdujesz komnatę z jego skarbami. Wśród nich jest jego grymuar, pełen zakazanej wiedzy i arkanicznych tajemnic."
+    }
+  },
+  "provokeAttackWave": {
+    "label": "Sprowokuj falę ataku"
+  },
+  "repairBastion": {
+    "label": "Napraw bastion"
+  },
+  "repairPalisades": {
+    "label": "Napraw palisady"
+  },
+  "repairWatchtower": {
+    "label": "Napraw strażnicę"
+  },
+  "risingSmoke": {
+    "label": "Wschodzący dym",
+    "log": {
+      "success": "Wyprawa odnajduje obóz banitów. Walka jest okrutna, lecz zwyciężacie. W skrzyni znajdujecie 500 złota.",
+      "successKeyBonus": " Kluczem szkieletowym otwieracie ukrytą przegródkę i znajdujecie kolejne 250 złota.",
+      "captiveOne": " 1 jeniec z obozu postanawia dołączyć do wioski.",
+      "captivesOther": " {{count}} jeńców z obozu postanawia dołączyć do wioski.",
+      "failure": "Wyprawa dociera do obozu banitów, lecz walka idzie fatalnie. {{count}} wieśniaków pada, zanim ocalali uciekają z powrotem do wioski."
+    }
+  },
+  "sellBlacksteelBatch": {
+    "label": "Sprzedaj czarnostal"
+  },
+  "sellLeatherBatch": {
+    "label": "Sprzedaj skórę"
+  },
+  "sellSteelBatch": {
+    "label": "Sprzedaj stal"
+  },
+  "searchMountainLady": {
+    "label": "Szukaj Górskiej Pani"
+  },
+  "steelDelivery": {
+    "label": "Dostawa stali",
+    "log": {
+      "success": "Wasza karawana dostarcza stal Plemieniu Bagien, jak obiecano. W zamian plemię ofiarowuje wam płyty z chityny, zebrane z bagiennych stworzeń. Można z nich wznieść potężne umocnienia."
+    }
+  },
+  "sunkenTemple": {
+    "label": "Zatopiona świątynia",
+    "log": {
+      "success": "Wyprawa brnie przez bagienne wody do starożytnej, wpół zatopionej świątyni. Mimo niebezpieczeństw czających się w mrocznej toni wieśniacy ostrożnie przechodzą przez zalane sale i znajdują krwawe kamienie w wewnętrznym sanktuarium świątyni.",
+      "failure": "Wyprawa zapuszcza się na bagno, szukając zatopionej świątyni. Mętne wody kryją niewypowiedziane zgrozy. Ohydne istoty zrodzone ze starożytnej magii wynurzają się z głębin i wciągają {{count}} wieśniaków pod powierzchnię, zanim ocalali uciekają."
+    }
+  },
+  "swampSanctuary": {
+    "label": "Bagienne sanktuarium"
+  },
+  "tradeGoldForAdamant": {
+    "label": "Kup adamant"
+  },
+  "tradeGoldForAshfireBomb": {
+    "label": "Kup bombę popiołognia"
+  },
+  "tradeGoldForBlacksteel": {
+    "label": "Kup czarnostal"
+  },
+  "tradeGoldForEmberBomb": {
+    "label": "Kup bombę żaru"
+  },
+  "tradeGoldForFood": {
+    "label": "Kup żywność"
+  },
+  "tradeGoldForIron": {
+    "label": "Kup żelazo"
+  },
+  "tradeGoldForLeather": {
+    "label": "Kup skórę"
+  },
+  "tradeGoldForObsidian": {
+    "label": "Kup obsydian"
+  },
+  "tradeGoldForSteel": {
+    "label": "Kup stal"
+  },
+  "tradeGoldForStone": {
+    "label": "Kup kamień"
+  },
+  "tradeGoldForTorch": {
+    "label": "Kup pochodnię"
+  },
+  "tradeGoldForVoidBomb": {
+    "label": "Kup bombę pustki"
+  },
+  "tradeGoldForInsightPotion": {
+    "label": "Eliksir wglądu"
+  },
+  "tradeGoldForVeinfireElixir": {
+    "label": "Kup eliksir żyłognia"
+  },
+  "tradeGoldForWood": {
+    "label": "Kup drewno"
+  },
+  "tradeSilverForGold": {
+    "label": "Kup złoto"
+  },
+  "ventureDeeper": {
+    "label": "Idź głębiej",
+    "log": {
+      "tarnishedAmulet": "W cieniach jaskini coś błyska. Znajdujesz zmatowiony amulet.",
+      "fangCharm": "W szczelinie ściany znajdujesz talizman z czarnych kłów. Są o wiele za duże na cokolwiek, co powinno tu żyć.",
+      "silverSack": "Znajdujesz mały skórzany woreczek z 50 srebra.",
+      "mapFragment": "Na dnie jaskini znajdujesz postrzępiony fragment mapy.",
+      "firstVisit": "Powietrze staje się zimniejsze, gdy schodzisz ścieżką głębiej w jaskinię. Ściany wokół ciebie wydają się nienaturalnie gładkie, jakby ktoś je ukształtował."
+    }
+  }
+}

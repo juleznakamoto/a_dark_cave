@@ -1,0 +1,116 @@
+{
+  "log": {
+    "freezingDeath": {
+      "one": "Jeden wieśniak zamarza na śmierć z zimna.",
+      "other": "{{count}} wieśniaków zamarza na śmierć z zimna."
+    },
+    "madnessDeath": {
+      "one": "Jeden wieśniak ulega szaleństwu i odbiera sobie życie.",
+      "other": "{{count}} wieśniaków ulega szaleństwu i odbiera sobie życie."
+    },
+    "starvationDeath": {
+      "one": "Jeden wieśniak umiera z głodu.",
+      "other": "{{count}} wieśniaków umiera z głodu."
+    },
+    "boostApplied": "Zastosowano wzmocnienie.",
+    "investmentComplete": {
+      "success": "Inwestycja {{amount}} złota zakończona: sukces. Zyskujesz {{payout}} złota.",
+      "successLucky": "Inwestycja {{amount}} złota zakończona: szczęśliwy traf! Zyskujesz {{payout}} złota.",
+      "wipeout": "Inwestycja {{amount}} złota zakończona: totalna strata. Tracisz całą inwestycję {{amount}} złota.",
+      "failure": "Inwestycja {{amount}} złota zakończona: porażka. Tracisz {{loss}} złota."
+    },
+    "stranger": {
+      "variant0": "Zbliża się obcy i dołącza do wioski.",
+      "variant1": "Przybywa podróżny i postanawia zostać.",
+      "variant2": "Pojawia się wędrowiec i staje się częścią społeczności.",
+      "variant3": "Ktoś zbliża się do wioski i się osiedla.",
+      "variant4": "Obcy dołącza do społeczności.",
+      "variant5": "Przybywa nowy i urządza się jak u siebie.",
+      "multiple0": "{{count}} obcych dołącza do wioski.",
+      "multiple1": "{{count}} podróżnych przybywa i postanawia zostać.",
+      "multiple2": "{{count}} wędrowców przybywa i dołącza do społeczności."
+    },
+    "building": {
+      "darkEstate": "Mroczna posiadłość stoi na małym wzgórzu koło wioski i daje samotność oraz schronienie.",
+      "blacksmith": "Kuźnia kowala budzi się do życia. Serce rzemiosła bije teraz w wiosce.",
+      "firstWoodenHut": "Pierwsza drewniana chata stoi gotowa, to może być początek czegoś wielkiego.",
+      "villageGrowthSuggestion": "Wioska rośnie szybko. Może kamienne domy schroniłyby więcej wieśniaków.",
+      "cityGrowthMilestone": "Miasto urosło do tętniącej metropolii, pełnej handlu, rzemiosła i obietnicy jaśniejszych dni.",
+      "moonstoneDiscovered": "Głęboko w wyrobisku robotnicy odkrywają żyły kamienia księżycowego, świecącego minerału pełnego energii.",
+      "foundry": "Odlewnia ryczy, gdy ogień i żar spajają surowe materiały.",
+      "masterworkFoundry": "Mistrzowska odlewnia stoi gotowa, pomnik najwyższego kunsztu hutniczego. W jej ogniu można kuć czarnostal, niemal niezniszczalną, ale bardzo trudną w produkcji.",
+      "altar": "Na skraju lasu wznosi się ołtarz, postawiony, by przebłagać to, co w nim mieszka.",
+      "grandHunterLodge": "Wielka chata myśliwych jest gotowa, wspaniała budowla, w której zbierają się mistrzowie łowów.",
+      "clerksHut": "Chata skryby stoi gotowa. Uczeni zbierają się w niej, by badać świat i ostrzyć wiedzę.",
+      "scriptorium": "Skryptorium jest skończone. Ośrodek mądrości, w którym uczeni pogłębiają wiedzę.",
+      "inkwardenAcademy": "Wznosi się Akademia Strażników Tomów, wielka hala, w której mistrzowie nauki destylują najgłębszą wiedzę.",
+      "tannery": "Garbarnia jest gotowa. Zapach wyprawianej skóry wypełnia powietrze, gdy rzemieślnicy biorą się do pracy.",
+      "highTannery": "Wzniesiono Wysoką garbarnię, wielki warsztat, w którym wprawni rzemieślnicy zamieniają skóry w najprzedniejszą skórę.",
+      "longhouse": "Wznosi się pierwszy długi dom, ogromna drewniana hala z grubymi belkami i mnóstwem miejsca.",
+      "furTents": "Na skraju wioski stawiają pierwsze futrzane namioty, dając więcej ludziom ciepłe schronienie.",
+      "shrine": "Obok ołtarza wznosi się święta kapliczka. Jej obecność przynosi spokój i skupienie niespokojnym umysłom.",
+      "temple": "Wspaniała świątynia stoi gotowa. W jej świętych halach echo szeptanych modlitw koi udręczoną duszę.",
+      "sanctum": "Sanktuarium wznosi się jak latarnia boskiej ochrony. Jego błogosławiona aura odpędza najciemniejsze myśli i lęki.",
+      "alchemistHall": "Sala alchemika wznosi się wysoko. Jej komnaty wypełniają bulgoczące tygle i lśniące narzędzia zapomnianego rzemiosła.",
+      "tradePost": "Przy lesie powstaje faktoria. Handlarze przychodzą sprzedawać towary za złoto.",
+      "grandBazaar": "Wznosi się Wielki bazar, rozległy rynek, na którym kupcy z dalekich krain schodzą się na handel.",
+      "merchantsGuild": "Gildia handlarzy stoi gotowa, potężna organizacja, która kontroluje wszystkie szlaki handlowe i przynosi osadzie niespotykany majątek.",
+      "bastion": "Bastion wznosi się jak góra z kamienia, mury grube i nieustępliwe. Obietnica ochrony przed tym, co porusza się w głębinach.",
+      "wizardTower": "Wieża czarodzieja wije się w niebo, trzaskając magiczną energią. Czarodziej wprowadza się ze zbiorem starych tomów i tajemniczych artefaktów.",
+      "fortifiedMoat": "Głęboka fosa otacza teraz osadę, woda ciemna i zdradliwa. Żaden wróg nie przekroczy jej łatwo.",
+      "traps": "Wokół wioski rozstawiono pułapki. Ukryte doły, sidła i zaostrzone paliki czekają na każdego, kto odważy się zaatakować.",
+      "improvedTraps": "Obwód wioski wzmocniono przykrytymi dołami, sprężynowymi sidłami i stalowymi mechanizmami. Napastników czeka o wiele groźniejsze powitanie.",
+      "blackMonolith": "Czarny monolit wznosi się na środku wioski, wysoki pomnik z ciemnego adamantu. Jego powierzchnia zdaje się pić światło, a wieśniacy zbierają się wokół niego z czcią i lękiem.",
+      "blackEstate": "Czarna posiadłość wznosi się ze wzgórza, otoczona welonem mgły.",
+      "chitinPlating": "Umocnienia wzmocniono teraz pancerzem z chityny. Obrona wioski wyraźnie wzrosła.",
+      "pillarOfClarity": "Wznosi się Filar jasności, lśniący obelisk, który zdaje się brzęczeć starożytną mocą. Jego obecność daje spokój i skupienie tym, którzy są blisko.",
+      "boneTemple": "Świątynia kości wznosi się z tysięcy starannie ułożonych kości, pomnik starych bogów. Promieniuje z niej mroczna moc, a wieśniacy podchodzą z czcią i lękiem.",
+      "heartfire": "Ogień serca zapłonął. Jego ciepło i światło dają wiosce nowy sens."
+    },
+    "gameplay": {
+      "forestUnlocked": "Wioskę otacza gęsty, ciemny las. W powietrzu czai się niebezpieczeństwo, ale to też dobre miejsce na wyrąb drewna i polowanie.",
+      "villageUnlocked": "Za jaskinią otwiera się polana. Wygląda na dobre miejsce na schronienie.",
+      "villageBegins": "Zaczyna kształtować się mała wioska. Wieśniakom trzeba żywności i drewna, żeby przetrwać."
+    },
+    "crafting": {
+      "emberBombFirst": "Wiedza alchemika okazuje się bezcenna. Tworzysz potężną bombę żaru, której rdzeń żarzy się od intensywnego ciepła i niszczycielskiej siły.",
+      "ashfireBombFirst": "Z mistycznego pyłu popiołognia tworzysz niezwykłą bombę, pulsującą pozaziemskim ogniem. Jej płomienie palą się barwami nie z tego świata.",
+      "voidBombFirst": "Łącząc pył popiołognia z obsydianem i czarnym prochem, tworzysz broń przerażającej mocy. Bomba pustki zdaje się wypaczać przestrzeń wokół siebie, a sama rzeczywistość się od niej cofa.",
+      "veinfireElixirFirst": "Alchemik destyluje świecącą esencję z włókien żyłokorzenia. Trzymasz teraz Eliksir żyłognia, miksturę, która ma wzmacniać bastion, gdy wszystko wydaje się stracone.",
+      "frostglassSword": "Kuźnia kowala pali się eterycznym błękitnym płomieniem, gdy mrozoszkło formuje się w wspaniały miecz. Ostrze lśni pozaziemskim zimnym światłem i promieniuje ogromną mocą.",
+      "arbalest": "Według schematu tworzysz misternie zdobiony arbalet. Mechanika jest bez zarzutu, zaprojektowana przez mistrza rzemiosła.",
+      "nightshadeBow": "Wytwarzasz łuk z wilczej jagody. Jego strzały poniosą truciznę w twoich wrogów.",
+      "bloodstoneStaff": "Czarodziej kieruje magiczną moc w kamienie krwi i spaja je ze starym drewnem. Kostur z kamienia krwi pulsuje szkarłatną energią, promieniując siłą i zakazaną wiedzą.",
+      "stormglassHalberd": "Kujesz Halabardę z burzoszkła, jej ostrze lśni eterycznym światłem. Czujesz się wyraźnie silniejszy, dzierżąc tę legendarną broń.",
+      "ashenGreatshield": "Kowal wykuwa z potężnych kości stworzenia z jeziora nieprzebytą tarczę. Popiołowa wielka tarcza to bastion niezrównanej siły, zdolny chronić twoje siły nawet przed najgroźniejszymi zagrożeniami."
+    },
+    "sacrifice": {
+      "ringOfClarity": "Wśród ofiar odkrywasz krystalicznie czysty pierścień.",
+      "moonBracelet": "Wśród ofiar odkrywasz bransoletę z białego kamienia.",
+      "animalsMaxed": "Pojawia się ślepy druid z lasu: „Czarny monolit wziął już całą krew, jaką przyjmie. Ofiar ze zwierząt nie da się pójść dalej.”"
+    },
+    "gambler": {
+      "win": "Wygrałeś {{amount}} złota od opętanego hazardzisty.",
+      "lose": "Przegrałeś {{amount}} złota na rzecz opętanego hazardzisty.",
+      "forfeit": "Opętany hazardzista wziął twoje milczenie za rezygnację."
+    },
+    "buttonUpgrade": {
+      "deepens": "Twoje mistrzostwo w {{skill}} się pogłębia.",
+      "skills": {
+        "caveExplore": "Eksploracja jaskini",
+        "mineStone": "Wydobycie kamienia",
+        "mineIron": "Wydobycie żelaza",
+        "mineCoal": "Wydobycie węgla",
+        "mineSulfur": "Wydobycie siarki",
+        "mineObsidian": "Wydobycie obsydianu",
+        "mineAdamant": "Wydobycie adamantu",
+        "mineMoonstone": "Wydobycie kamienia księżycowego",
+        "hunt": "Polowanie",
+        "chopWood": "Wyrąb drewna",
+        "craftTorches": "Wytwarzanie pochodni",
+        "craftBoneTotems": "Wytwarzanie kościanych totemów",
+        "craftLeatherTotems": "Wytwarzanie skórzanych totemów"
+      }
+    }
+  }
+}

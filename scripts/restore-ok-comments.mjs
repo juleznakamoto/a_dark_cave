@@ -3,7 +3,7 @@
  * Matches by exact stripped line and by JSON pointer path (not bare key name).
  *
  * Usage: node scripts/restore-ok-comments.mjs [locale...]
- * Default locales: de, fr, es, zh-CN, ru
+ * Default locales: de, fr, es, zh-CN, ja, pl, ru
  *
  * Env: OK_COMMENTS_GIT_REF (default HEAD)
  */
@@ -22,7 +22,7 @@ import {
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.resolve(__dirname, "..");
-const DEFAULT_LOCALES = ["de", "fr", "es", "zh-CN", "ru"];
+const DEFAULT_LOCALES = ["de", "fr", "es", "zh-CN", "ja", "pl", "ru"];
 const GIT_REF = process.env.OK_COMMENTS_GIT_REF || "HEAD";
 const PATH_SEP = "\0";
 
