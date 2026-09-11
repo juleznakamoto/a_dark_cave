@@ -53,7 +53,7 @@
     "fromEvents": "{{percent}}% z wydarzeń",
     "fromHeartfire": "{{percent}}% z Ognia serca",
     "fromGreatFeast": "{{percent}}% z Wielkiej uczty",
-    "merchantBlocked": "Nie można wezwać kupca, gdy trwa inne wydarzenie",
+    "merchantBlocked": "Nie można wezwać handlarza, gdy trwa inne wydarzenie",
     "merchantAvailableIn": "Dostępny za {{time}}",
     "merchantAbortCall": "Anuluj wezwanie",
     "investCompleteIn": "Inwestycja skończy się za {{time}}",

@@ -106,7 +106,7 @@
     },
     "4-merchantPurchases": {
       "label": "Negocjator",
-      "description": "Dokonaj 100 zakupów u kupca."
+      "description": "Dokonaj 100 zakupów u wędrownego kupca."
     },
     "4-pileOfDead": {
       "label": "Stos umarłych",
@@ -198,7 +198,7 @@
     },
     "1-2": {
       "label": "Hutnicy",
-      "description": "Zbuduj Hutę i wszystkie ulepszenia."
+      "description": "Zbuduj Odlewnię i wszystkie ulepszenia."
     },
     "1-3": {
       "label": "Garbarze",
@@ -206,11 +206,11 @@
     },
     "2-0": {
       "label": "Górnicy",
-      "description": "Zbuduj Płytki szyb i wszystkie ulepszenia."
+      "description": "Zbuduj Płytką jamę i wszystkie ulepszenia."
     },
     "3-0": {
       "label": "Handlarze",
-      "description": "Zbuduj Posterunek handlowy i wszystkie ulepszenia."
+      "description": "Zbuduj Faktorię i wszystkie ulepszenia."
     },
     "3-1": {
       "label": "Zaopatrzeniowcy",
@@ -218,7 +218,7 @@
     },
     "3-2": {
       "label": "Uczeni",
-      "description": "Zbuduj Chatę pisarza i wszystkie ulepszenia."
+      "description": "Zbuduj Chatę skryby i wszystkie ulepszenia."
     },
     "3-3": {
       "label": "Kapłani",
