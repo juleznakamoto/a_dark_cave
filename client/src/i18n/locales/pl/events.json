@@ -135,9 +135,9 @@
     },
     "log": {
       "outcome0": "Wieśniacy zostają ofiarowani likantropom. Gdy krwawy księżyc blednie, do wioski wraca spokój. Przynajmniej na razie.",
-      "outcome1": "Likantropy atakują, ale twoje obrony wytrzymują. Ich wódz pada, a z jego zwłok zbierasz Krew Likantropa, jeszcze ciepłą i kipiącą mocą.",
+      "outcome1": "Likantropy atakują, ale twoje obrony wytrzymują. Ich wódz pada, a z jego zwłok zbierasz Krew likana, jeszcze ciepłą i kipiącą mocą.",
       "outcome2": "Likantropy przełamują obronę i zalewają osadę! Krwawy księżyc blednie, ale zagrożenie zostaje.",
-      "outcome3": "Likantropy atakują, ale twoje obrony wytrzymują. Ich wódz pada, a z jego zwłok zbierasz Krew Likantropa, jeszcze ciepłą i kipiącą mocą.",
+      "outcome3": "Likantropy atakują, ale twoje obrony wytrzymują. Ich wódz pada, a z jego zwłok zbierasz Krew likana, jeszcze ciepłą i kipiącą mocą.",
       "outcome4": "Likantropy przełamują obronę i zalewają osadę! Krwawy księżyc blednie, ale zagrożenie zostaje."
     },
     "message": {
@@ -298,10 +298,10 @@
       }
     },
     "log": {
-      "outcome0": "W jaskini znajdujesz Eliksir Jasności. Gdy go pijesz, umysł staje się lżejszy."
+      "outcome0": "W jaskini znajdujesz Eliksir jasności. Gdy go pijesz, umysł staje się lżejszy."
     },
-    "message": "W jaskini znajdujesz Eliksir Jasności. Gdy go pijesz, umysł staje się lżejszy.",
-    "title": "Eliksir Jasności"
+    "message": "W jaskini znajdujesz Eliksir jasności. Gdy go pijesz, umysł staje się lżejszy.",
+    "title": "Eliksir jasności"
   },
   "caveWallMarkings": {
     "choices": {
@@ -378,8 +378,8 @@
     "log": {
       "fallback": "Kolekcjoner wzrusza ramionami i znika w leśnej mgle. Mamrocze, że może wrócić.",
       "fallbackLast": "Kolekcjoner odchodzi bez słowa. Czujesz, że już go nie zobaczysz.",
-      "learnOutcome": "Płacisz kolekcjonerowi, a on czyta z księgi cichym głosem. Należała do dawno zmarłego handlarza niewolników, który zwał się Łańcuchmistrzem. Piętnował niewolników znakiem łańcucha. Wiedza ciąży na twoim umyśle.",
-      "sellOutcome": "Kolekcjoner odlicza złoto i zabiera księgę. 'Należała do handlarza niewolników, który zwał się Łańcuchmistrzem,' mówi. 'Piętnował niewolników znakiem łańcucha.'"
+      "learnOutcome": "Płacisz kolekcjonerowi, a on czyta z księgi cichym głosem. Należała do dawno zmarłego handlarza niewolników, który zwał się Mistrzem Łańcuchów. Piętnował niewolników znakiem łańcucha. Wiedza ciąży na twoim umyśle.",
+      "sellOutcome": "Kolekcjoner odlicza złoto i zabiera księgę. 'Należała do handlarza niewolników, który zwał się Mistrzem Łańcuchów,' mówi. 'Piętnował niewolników znakiem łańcucha.'"
     },
     "message": {
       "lastChance": "Wędrowny kolekcjoner pojawia się znów. Jego oczy zatrzymują się na księdze w skórzanej oprawie. 'To moja ostatnia oferta,' mówi cicho. 'Sprzedaj ją za {{sellGold}} złota albo zapłać {{teachCost}} złota, a nauczę cię, co w niej napisano.'",
@@ -809,13 +809,13 @@
       }
     },
     "log": {
-      "outcome0": "Płacisz kobiecie, a ona zdradza sekret Obsydianowej Kuli.",
+      "outcome0": "Płacisz kobiecie, a ona zdradza sekret Obsydianowej kuli.",
       "outcome1": "Dwudziestu wieśniaków zostaje wywleczonych w łańcuchach. Kobieta dzieli się wiedzą, ale wioskę ogarnia wstręt wobec tego, co się stało.",
       "outcome2": "Odsyłasz ją. Mówi, że może wrócić, gdy będziesz gotów.",
       "outcome3": "Czas mija. Odchodzi, mówiąc, że może wrócić, gdy będziesz gotów."
     },
-    "message": "Bogato przystrojona kobieta o wschodnim wyglądzie przybywa z dwoma muskularnymi sługami. Oferuje wiedzę, jak wytworzyć potężną Obsydianową Kulę, w zamian za złoto albo wieśniaków.",
-    "title": "Obsydianowa Kula"
+    "message": "Bogato przystrojona kobieta o wschodnim wyglądzie przybywa z dwoma muskularnymi sługami. Oferuje wiedzę, jak wytworzyć potężną Obsydianową kulę, w zamian za złoto albo wieśniaków.",
+    "title": "Obsydianowa kula"
   },
   "facesInWalls": {
     "choices": {
@@ -1210,7 +1210,7 @@
   "mercenaryDemand": {
     "choices": {
       "giveRing": {
-        "label": "Oddaj Pierścień Żerowania"
+        "label": "Oddaj Pierścień karmienia"
       },
       "payGold": {
         "cost": "100 złota",
@@ -1224,7 +1224,7 @@
       "outcome0": "Oddajesz złoto. Najemnik liczy je powoli, okrutny uśmiech na twarzy. 'Miło robić interesy,' mówi, zanim zniknie.",
       "outcome1": "Najemnik daje znak swoim ludziom do ataku. Bitwa jest zacięta, ale wieśniacy zwyciężają. Najemnicy uciekają do lasu, zostawiając broń i rannych.",
       "outcome2": "Najemnik daje znak swoim ludziom do ataku. Mimo wszelkich starań zostajesz przytłoczony. {{deaths}} wieśniaków pada, zanim najemnicy wreszcie się wycofają, zadowoleni z rzezi.",
-      "outcome3": "Oferujesz mu Pierścień Żerowania, który wciąż trzymałeś w zamkniętej skrzyni. Najemnik ogląda go z zainteresowaniem, wsuwając na własny palec. 'Ładny pierścień,' mówi, 'ale za mało. Wrócę jutro po złoto.'"
+      "outcome3": "Oferujesz mu Pierścień karmienia, który wciąż trzymałeś w zamkniętej skrzyni. Najemnik ogląda go z zainteresowaniem, wsuwając na własny palec. 'Ładny pierścień,' mówi, 'ale za mało. Wrócę jutro po złoto.'"
     },
     "message": "Do wioski przybywa oszpecony najemnik, dłoń na głowni. 'Nie przyszedłem siać zamętu. Zapłać mi 100 złota, a zachowam spokój. Odmów, a moi ludzie spalą to miejsce do cna.'",
     "title": "Najemnik"
@@ -1232,7 +1232,7 @@
   "mercenaryReturnDemand": {
     "choices": {
       "giveRing": {
-        "label": "Oddaj Pierścień Żerowania"
+        "label": "Oddaj Pierścień karmienia"
       },
       "payGold": {
         "cost": "200 złota",
@@ -1246,7 +1246,7 @@
       "outcome0": "Płacisz złoto, ręce drżą ze wściekłości. Najemnik się śmieje. 'Mądry wybór. Już cię nie będę niepokoił... pewnie.' Znika w lesie ze swoimi ludźmi.",
       "outcome1": "Odmawiasz. Najemnicy atakują, ale tym razem jesteś gotów. Po brutalnej walce rozpraszają się w dziczy, zostawiając swoich martwych.",
       "outcome2": "Twój opór drogo cię kosztuje. Najemnicy szaleją przez wioskę, zabijając {{deaths}}, zanim wreszcie odejdą, śmiejąc się z zniszczenia, które zostawili.",
-      "outcome3": "Oferujesz mu Pierścień Żerowania, który wciąż trzymałeś w zamkniętej skrzyni. Najemnik ogląda go z zainteresowaniem, wsuwając na własny palec. 'Ładny pierścień,' mówi, 'ale za mało. Wrócę jutro po złoto.'"
+      "outcome3": "Oferujesz mu Pierścień karmienia, który wciąż trzymałeś w zamkniętej skrzyni. Najemnik ogląda go z zainteresowaniem, wsuwając na własny palec. 'Ładny pierścień,' mówi, 'ale za mało. Wrócę jutro po złoto.'"
     },
     "message": "Najemnik wrócił, a tym razem przyprowadza więcej ludzi. 'Czasy są ciężkie,' mówi z uśmiechem. 'Cena poszła w górę. 200 złota, albo zrobi się nieprzyjemnie.'",
     "title": "Najemnik wraca"
@@ -1264,20 +1264,20 @@
     "title": "Wędrowny kupiec",
     "toolTrades": {
       "trade_nightshade_bow_schematic": {
-        "label": "Schemat Łuku Wilczej Jagody",
-        "message": "Kupujesz schemat łuku wilczej jagody. Kupiec uśmiecha się mrocznie: 'Konstrukcja tego łuku jest okrutna. Jego strzały zatrują wrogów.'"
+        "label": "Schemat Łuku z wilczej jagody",
+        "message": "Kupujesz schemat Łuku z wilczej jagody. Kupiec uśmiecha się mrocznie: 'Konstrukcja tego łuku jest okrutna. Jego strzały zatrują wrogów.'"
       },
       "trade_skull_lantern": {
-        "label": "Latarnia z Czaszki",
-        "message": "Kupujesz latarnię z czaszki. Wykuta z przeklętej kości, jej złowieszcze światło poprowadzi cię przez najgłębsze czeluście."
+        "label": "Latarnia czaszkowa",
+        "message": "Kupujesz Latarnię czaszkową. Wykuta z przeklętej kości, jej złowieszcze światło poprowadzi cię przez najgłębsze czeluście."
       },
       "trade_tarnished_compass": {
-        "label": "Zmatowiony Kompas",
+        "label": "Zmatowiony kompas",
         "message": "Kupujesz zmatowiony kompas. Artefakt zaginionej cywilizacji, jego igła wskazuje ukryte miejsca."
       },
       "trade_rootseeker_charm": {
-        "label": "Amulet Poszukiwacza Korzeni",
-        "message": "Kupujesz Amulet Poszukiwacza Korzeni. Kupiec mamrocze coś o roślinach ludożerczych, które mają rosnąć głęboko w starożytnych lasach."
+        "label": "Talizman szukacza korzeni",
+        "message": "Kupujesz Talizman szukacza korzeni. Kupiec mamrocze coś o roślinach ludożerczych, które mają rosnąć głęboko w starożytnych lasach."
       },
       "trade_map_fragment_wooden": {
         "label": "Fragment mapy",
@@ -1288,24 +1288,24 @@
         "message": "Kupujesz postrzępiony fragment mapy."
       },
       "trade_crow_harness": {
-        "label": "Uprząż Kruka",
+        "label": "Uprząż kruka",
         "message": "Kupujesz uprząż kruka. Specjalnie wykonana uprząż dla kruków posłańców."
       },
       "trade_clarity_elixir": {
-        "label": "Eliksir Jasności",
-        "message": "Pijesz Eliksir Jasności. Umysł staje się lżejszy."
+        "label": "Eliksir jasności",
+        "message": "Pijesz Eliksir jasności. Umysł staje się lżejszy."
       },
       "trade_veinfire_elixir": {
-        "label": "Eliksir Żyłognia",
-        "message": "Kupujesz butelkę Eliksiru Żyłognia."
+        "label": "Eliksir żyłognia",
+        "message": "Kupujesz butelkę Eliksiru żyłognia."
       },
       "trade_book_of_trials": {
-        "message": "Kupujesz Księgę Prób. Kupiec uśmiecha się ze znajomością: 'Przewodnik dla tych, co chcą śledzić swoją drogę.'",
-        "label": "Księga Prób"
+        "message": "Kupujesz Księgę prób. Kupiec uśmiecha się ze znajomością: 'Przewodnik dla tych, co chcą śledzić swoją drogę.'",
+        "label": "Księga prób"
       },
       "trade_book_of_absolution": {
-        "message": "Kupujesz Księgę Rozgrzeszenia. Kupiec ścisza głos: 'Obrzęd dla tych, co zatrzymują to, czego nie powinni. Wgląd może zmyć trochę tej plamy.'",
-        "label": "Księga Rozgrzeszenia"
+        "message": "Kupujesz Księgę rozgrzeszenia. Kupiec ścisza głos: 'Obrzęd dla tych, co zatrzymują to, czego nie powinni. Wgląd może zmyć trochę tej plamy.'",
+        "label": "Księga rozgrzeszenia"
       },
       "trade_reinforced_rope": {
         "message": "Kupujesz wzmocnioną linę. Ta lina wytrzyma ogromne obciążenie i sięgnie miejsc w najgłębszych komorach jaskini.",
@@ -1316,8 +1316,8 @@
         "label": "Mapa okultysty"
       },
       "trade_giant_trap": {
-        "message": "Gdy kupujesz gigantyczną pułapkę, kupiec uśmiecha się: 'To może złapać coś ogromnego w lesie. Używaj mądrze.'",
-        "label": "Gigantyczna pułapka"
+        "message": "Gdy kupujesz olbrzymią pułapkę, kupiec uśmiecha się: 'To może złapać coś ogromnego w lesie. Używaj mądrze.'",
+        "label": "Olbrzymia pułapka"
       },
       "trade_arbalest_schematic": {
         "message": "Kupujesz schemat arbaletu. Kupiec rozwija misterny plan: 'Projekt mistrza inżyniera. Dzięki niemu wykuć możesz potężną broń.'",
@@ -1328,8 +1328,8 @@
         "label": "Łuk bloczkowy"
       },
       "trade_stormglass_halberd_schematic": {
-        "message": "Kupujesz schemat halabardy burzoszkła. Kupiec odsłania wyblakłe plany: 'Z tym projektem wykuć możesz halabardę ogromnej mocy.'",
-        "label": "Schemat Halabardy Burzoszkła"
+        "message": "Kupujesz schemat Halabardy z burzoszkła. Kupiec odsłania wyblakłe plany: 'Z tym projektem wykuć możesz halabardę ogromnej mocy.'",
+        "label": "Schemat Halabardy z burzoszkła"
       },
       "trade_natharit_pickaxe": {
         "message": "Kupujesz kilof natharit. Kupiec podaje ci solidne narzędzie: 'Niezwykle trwały kilof z nieznanego materiału. Jego jakość jest wyjątkowa.'",
@@ -1379,8 +1379,8 @@
     },
     "log": {
       "outcome0": "Odrzucasz ofertę mnicha. Kłania się z szacunkiem i wyrusza z powrotem w góry.",
-      "outcome2": "Mnich przyjmuje daninę z uroczystym skinieniem i odsłania szczegółowe plany wytrycha. 'Ten klucz ma otwierać każdy zamek,' mówi, zanim odejdzie.",
-      "outcome4": "Oczy mnicha rozszerzają się na widok złota. 'To bardzo pomoże klasztorowi,' mówi, wyciągając szczegółowe plany wytrycha. 'Ten klucz ma otwierać każdy zamek,' mówi, zanim odejdzie.",
+      "outcome2": "Mnich przyjmuje daninę z uroczystym skinieniem i odsłania szczegółowe plany klucza szkieletowego. 'Ten klucz ma otwierać każdy zamek,' mówi, zanim odejdzie.",
+      "outcome4": "Oczy mnicha rozszerzają się na widok złota. 'To bardzo pomoże klasztorowi,' mówi, wyciągając szczegółowe plany klucza szkieletowego. 'Ten klucz ma otwierać każdy zamek,' mówi, zanim odejdzie.",
       "outcome5": "Odrzucasz ofertę mnicha. Kłania się z szacunkiem i wyrusza z powrotem w góry."
     },
     "message": "Do wioski przybywa mnich z górskiego klasztoru. 'Słyszałem, że znaleźliście tajemniczą skrzynię,' mówi cicho. 'Klasztor wie, jak ją otworzyć. Złóż daninę, a podzielę się sekretem.'",
@@ -1422,7 +1422,7 @@
       "outcome0": "W chwili, gdy słyszysz pierwsze uderzenie, ciemność pożera cię całego. Śnisz o ogromnym mieście ze szkła i stali, pełnym dziwnych świateł i ludzi, którzy poruszają się z celem, którego nie rozumiesz. Gdy się budzisz, dzwonek zniknął, ale na przedramieniu pali się znak w kształcie dzwonka.",
       "outcome1": "Ryzyko jest zbyt wielkie. Tego samego dnia przybywa handlarz i oferuje 500 złota za dzwonek. Przyjmujesz natychmiast, ulżony, że pozbyłeś się przeklętego przedmiotu. Handlarz odchodzi ze świadomym uśmiechem."
     },
-    "message": "Otwierasz zapieczętowaną skrzynię wytrychem. W środku, na wyblakłym aksamcie, leży złoty dzwonek pokryty groteskowymi rytami i dziwnymi symbolami na powierzchni.",
+    "message": "Otwierasz zapieczętowaną skrzynię kluczem szkieletowym. W środku, na wyblakłym aksamcie, leży złoty dzwonek pokryty groteskowymi rytami i dziwnymi symbolami na powierzchni.",
     "title": "Tajemniczy dzwonek"
   },
   "mysteriousBook": {
@@ -1500,7 +1500,7 @@
       "declineForced": "Odrzucasz ofertę. Wiking pluje na ziemię, mamrocząc klątwy, gdy odchodzi z toporem bojowym. 'Powinieneś był zapłacić, gdy miałeś szansę,' warczy.",
       "declineNormal": "Odrzucasz ofertę. Wiking kiwa głową z szacunkiem i odchodzi z toporem bojowym."
     },
-    "message": "Wiking-budowniczy wraca do twojej wioski, niosąc wspaniały topór bojowy. 'Wykułem ten Nordycki Topór Bojowy w ojczyźnie. Będzie twój... za cenę.'",
+    "message": "Wiking-budowniczy wraca do twojej wioski, niosąc wspaniały topór wojenny. 'Wykułem ten Nordycki topór wojenny w ojczyźnie. Będzie twój... za cenę.'",
     "title": "Wiking wraca"
   },
   "oddTrinket": {
@@ -1598,7 +1598,7 @@
       }
     },
     "log": {
-      "outcome0": "Gdy wieśniacy się zbliżają, postać znika. Na jej miejscu leży płaszcz z kruczych piór, mieniący się pozaziemską mocą.",
+      "outcome0": "Gdy wieśniacy się zbliżają, postać znika. Na jej miejscu leży mantia z kruczych piór, mieniący się pozaziemską mocą.",
       "outcome1": "Dochodzenie idzie źle. Jeden z wieśniaków krzyczy we mgle i nikt go więcej nie widzi. Reszta ucieka w przerażeniu.",
       "outcome2": "Smukła postać porusza się z nieludzką prędkością. {{actualDeaths}} wieśniaków znika we mgle, ich krzyki niosą się wśród drzew.",
       "outcome3": "Wieśniacy zostają blisko wioski. Do wieczora postać znika.",
@@ -1999,7 +1999,7 @@
       "outcome2": "Twoje wahanie okazuje się śmiertelne. Jeden z twoich ludzi, nie mogąc oprzeć się tajemniczemu pierścieniowi, podnosi go. Natychmiast z ust zaczyna lać się woda w niekończącym się potoku. Tonie na suchym lądzie."
     },
     "message": "Głęboko w zapomnianym mieście znajdujesz dziwny pierścień, z którego bez przerwy kapie woda. Zatrzymujesz go?",
-    "title": "Pierścień Utopionych"
+    "title": "Pierścień utoniętych"
   },
   "risingSmokeRumor": {
     "choices": {
@@ -2023,8 +2023,8 @@
       "outcome0": "Sanktuarium zmienia się w węzeł boskiej mocy. Wszyscy bogowie odpowiadają na twoje wezwanie, ich dary są twoje.",
       "dedicate_dagon": "Błogosławieństwo Dagona płynie silniej niż wcześniej.",
       "dedicate_flame": "Pierwszy Płomień pali się jaśniej niż wcześniej.",
-      "dedicate_raven": "Znak Kruka rośnie silniej niż wcześniej.",
-      "dedicate_ash": "Popielny Uścisk jest silniejszy niż wcześniej.",
+      "dedicate_raven": "Znak kruka rośnie silniej niż wcześniej.",
+      "dedicate_ash": "Popiołowy uścisk jest silniejszy niż wcześniej.",
       "dedicate_unknown": ""
     },
     "message": "Ślepy druid wyłania się: 'Sanktuarium stoi ukończone,' mówi, głos niosący ciężar starożytnej mądrości. 'Teraz musisz wybrać: pogłębić oddanie ścieżce, którą obrałeś, albo objąć wszystkich bogów i ich dary. Wybierz mądrze.'",
@@ -2065,7 +2065,7 @@
       "outcome2": "Twoje wahanie drogo cię kosztuje. Cienie stają się głodne i gwałtowne, wijąc się nienaturalnym życiem. Rzucają się naprzód i pożerają {{actualDevoured}} członków twojej drużyny. Ich krzyki niosą się krótko, zanim pochłonie je cisza."
     },
     "message": "Głęboko w jaskini odkrywasz flet z kości o niepokojącym kunszcie. Gdy na nim grasz, cienie wokół zaczynają poruszać się w nienaturalny sposób, jakby tańczyły do melodii. Zatrzymujesz go?",
-    "title": "Flet cieni"
+    "title": "Flet cienia"
   },
   "shadowsMove": {
     "choices": {
@@ -2204,7 +2204,7 @@
       "outcome0": "Przyjmujesz ofertę Plemienia Bagien i przygotowujesz dostawę stali na bagna.",
       "outcome1": "Odrzucasz ofertę Plemienia Bagien. Okazja przepada."
     },
-    "message": "Jednooki kruk wraca od Plemienia Bagien z kruszącym się listem. Plemię oferuje potężne Płyty Chitynowe w zamian za 1000 stali dostarczonej do ich wioski.",
+    "message": "Jednooki kruk wraca od Plemienia Bagien z kruszącym się listem. Plemię oferuje potężne Płyty z chityny w zamian za 1000 stali dostarczonej do ich wioski.",
     "title": "Wieść od Plemienia Bagien"
   },
   "templeDedication": {
@@ -2216,7 +2216,7 @@
         "label": "Kult Krukorodnych"
       },
       "order_of_ashbringer": {
-        "label": "Zakon Popiołonoścy"
+        "label": "Zakon Niosącego Popiół"
       },
       "way_of_first_flame": {
         "label": "Ścieżka Pierwszego Płomienia"
@@ -2226,7 +2226,7 @@
       "outcome0": "Poświęcasz świątynię Dagonowi, starożytnemu i tajemniczemu bogu głębin.",
       "outcome1": "Poświęcasz świątynię Ścieżce Pierwszego Płomienia, starożytnej drodze ognia i odrodzenia.",
       "outcome2": "Poświęcasz świątynię Kultowi Krukorodnych, enigmatycznemu i ocienionemu zakonowi.",
-      "outcome3": "Poświęcasz świątynię Zakonowi Popiołonoścy, uroczystemu bractwu związanemu z ogniem."
+      "outcome3": "Poświęcasz świątynię Zakonowi Niosącego Popiół, uroczystemu bractwu związanemu z ogniem."
     },
     "message": "Wkrótce po wzniesieniu świątyni pojawia się ślepy druid. Jego mleczne oczy zdają się widzieć przez twoją duszę, gdy mówi: 'Świątynia musi być poświęcona bogu. Wybierz mądrze.'",
     "title": "Ślepy druid wraca"
@@ -2370,7 +2370,7 @@
     "log": {
       "outcome0": "Zgadzasz się zbadać, ale najpierw trzeba poczynić potrzebne przygotowania do zejścia nad jezioro."
     },
-    "message": "Po ostatniej wyprawie do jaskini dwóch ludzi twierdzi, że widziało podziemne jezioro. Ciemność była zbyt gęsta, by widzieć wyraźnie. Być może Latarnia z Czaszki odsłoniłaby te czarne wody.",
+    "message": "Po ostatniej wyprawie do jaskini dwóch ludzi twierdzi, że widziało podziemne jezioro. Ciemność była zbyt gęsta, by widzieć wyraźnie. Być może Latarnia czaszkowa odsłoniłaby te czarne wody.",
     "title": "Podziemne jezioro"
   },
   "unnamedWanderer": {
@@ -2716,15 +2716,15 @@
     "title": "Zatopiona Świątynia"
   },
   "wizardBloodstoneStaff": {
-    "message": "Czarodziej ogląda klejnoty krwawego kamienia, które wydobyłeś z Zatopionej Świątyni. 'Z tymi krwawymi kamieniami mamy już wszystko, czego potrzeba. Teraz możemy wykuć Kostur Krwawego Kamienia. Razem z Mieczem z Mrozoszkła będziemy mieli środki, by stawić czoła ciemności, która czai się poniżej.'",
-    "title": "Kostur Krwawego Kamienia"
+    "message": "Czarodziej ogląda klejnoty krwawego kamienia, które wydobyłeś z Zatopionej Świątyni. 'Z tymi krwawymi kamieniami mamy już wszystko, czego potrzeba. Teraz możemy wykuć Kostur krwawego kamienia. Razem z Mieczem z mrozoszkła będziemy mieli środki, by stawić czoła ciemności, która czai się poniżej.'",
+    "title": "Kostur krwawego kamienia"
   },
   "wizardDecryptsScrolls": {
     "message": "Czarodziej wychodzi z wieży. 'Odszyfrowałem starożytne zwoje,' mówi. 'Stwory poniżej można zabić tylko bronią wielkiej mocy: mieczem z mrozoszkła i kosturem zwieńczonym krwawym kamieniem. Głęboko w lesie leży grób starożytnego króla, którego skarby mogą kryć mrozoszkło, którego potrzebujemy.'",
     "title": "Starożytna wiedza"
   },
   "wizardFrostglassSword": {
-    "message": "Czarodziej ogląda mrozoszkło, zimne światło tańczy po jego powierzchni. 'Znalazłeś je. Teraz można wykuć Miecz z Mrozoszkła.'"
+    "message": "Czarodziej ogląda mrozoszkło, zimne światło tańczy po jego powierzchni. 'Znalazłeś je. Teraz można wykuć Miecz z mrozoszkła.'"
   },
   "wizardNecromancerCastle": {
     "message": "Czarodziej wzywa cię do swojej wieży: 'Dowiedziałem się o zamku głęboko w dziczy, dawnej siedzibie dawno zmarłego nekromanty. W jego murach leżą starożytne zwoje, które mówią, jak pokonać to, co mieszka w głębinach jaskini.'",
@@ -2742,7 +2742,7 @@
     },
     "log": {
       "outcome0": "Twoje wahanie drażni czarodzieja. Kręci głową. 'Zostanę więc w swojej wieży. Może nasze drogi zetkną się znów, gdy potrzeba będzie większa,' mówi, zanim odejdzie.",
-      "outcome2": "Czarodziej kiwa głową z zadowoleniem. 'Uczciwa cena za moje usługi. Będę bronił twoich ludzi arkanicznym ogniem.' Zdejmuje wytarty kaptur, odsłaniając starożytne oczy, które świecą gasnącą mocą. Starszy Czarodziej dołączył do twojej drużyny.",
+      "outcome2": "Czarodziej kiwa głową z zadowoleniem. 'Uczciwa cena za moje usługi. Będę bronił twoich ludzi arkanicznym ogniem.' Zdejmuje wytarty kaptur, odsłaniając starożytne oczy, które świecą gasnącą mocą. Stary czarodziej dołączył do twojej drużyny.",
       "outcome3": "Odrzucasz ofertę czarodzieja. Kiwa głową ze zrozumieniem. 'Zostanę więc w swojej wieży. Może nasze drogi zetkną się znów, gdy potrzeba będzie większa,' mówi, zanim odejdzie."
     },
     "message": {
