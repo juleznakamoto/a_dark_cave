@@ -237,7 +237,7 @@
   },
   "feedback": {
     "title": "反馈",
-    "message": "如果你遇到错误、翻译问题，或有想法和建议，我很乐意听取你的意见。",
+    "message": "发现了 bug 或翻译问题，或者有建议？我很乐意听取你的意见。",
     "openForm": "提供反馈",
     "contactVia": "你也可以通过以下方式联系我：",
     "reddit": "Reddit",

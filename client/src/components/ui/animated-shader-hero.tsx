@@ -145,11 +145,45 @@ function renderSymbolLabelButtonContent(text: string) {
   );
 }
 
+const END_SCREEN_TITLE_BASE_CLASS =
+  "pb-2 text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold break-words";
+
+const END_SCREEN_BODY_BASE_CLASS =
+  "text-base sm:text-lg lg:text-xl font-medium leading-relaxed break-words";
+
+/** Soft halo behind the glyphs so the fill color stays unchanged. */
+function EndScreenHaloCopy({
+  as: Tag,
+  text,
+  className,
+  fillClassName,
+}: {
+  as: "h1" | "p";
+  text: string;
+  className: string;
+  fillClassName: string;
+}) {
+  return (
+    <Tag className={`relative ${className}`}>
+      <span
+        aria-hidden
+        className="pointer-events-none absolute inset-x-0 top-0 origin-center scale-[1.06] text-black opacity-55 blur-[8px]"
+      >
+        {text}
+      </span>
+      <span className={`relative ${fillClassName}`}>{text}</span>
+    </Tag>
+  );
+}
+
+const END_SCREEN_CTA_BUTTON_BASE_CLASS =
+  "px-4 sm:px-5 py-2.5 sm:py-3 bg-primary text-primary-foreground rounded-md font-semibold text-base sm:text-lg transition-all duration-300 inline-flex items-center justify-center gap-1.5 sm:gap-2 whitespace-nowrap";
+
 const END_SCREEN_CTA_BUTTON_CLASS =
-  "px-4 sm:px-5 py-2.5 sm:py-3 bg-gradient-to-r from-red-800 to-red-700 hover:from-red-700 hover:to-red-600 text-slate-200 rounded-md font-semibold text-base sm:text-lg transition-all duration-300 hover:scale-105 hover:shadow-xl hover:shadow-red-500/25 inline-flex items-center justify-center gap-1.5 sm:gap-2 whitespace-nowrap";
+  `${END_SCREEN_CTA_BUTTON_BASE_CLASS} hover:bg-primary/90 hover:scale-105 hover:shadow-xl hover:shadow-red-500/25`;
 
 const END_SCREEN_CTA_BUTTON_GROUP_CLASS =
-  "px-4 sm:px-5 py-2.5 sm:py-3 bg-gradient-to-r from-red-800 to-red-700 group-hover:from-red-700 group-hover:to-red-600 text-slate-200 rounded-md font-semibold text-base sm:text-lg transition-all duration-300 inline-flex items-center justify-center gap-1.5 sm:gap-2 whitespace-nowrap";
+  `${END_SCREEN_CTA_BUTTON_BASE_CLASS} group-hover:bg-primary/90`;
 
 const END_SCREEN_LINK_BUTTON_CLASS =
   "px-2.5 sm:px-3 py-1.5 sm:py-1.5 bg-orange-500/10 hover:bg-red-500/20 border border-red-300/30 hover:border-red-300/50 text-slate-200 rounded-md font-normal text-xs sm:text-sm transition-all duration-300 hover:scale-105 backdrop-blur-sm flex items-center gap-1 sm:gap-1.5 min-w-0";
@@ -626,7 +660,7 @@ const Hero: React.FC<HeroProps> = ({
       )}
 
       {/* Hero Content Overlay */}
-      <div className="absolute inset-0 z-10 flex flex-col items-center justify-center text-white w-full min-w-0 overflow-x-hidden">
+      <div className="absolute inset-0 z-10 flex flex-col items-center justify-center font-sans text-white w-full min-w-0 overflow-x-hidden">
         {/* Trust Badge */}
         {/* {trustBadge && (
           <div className="mb-8 animate-fade-in-down">
@@ -645,43 +679,58 @@ const Hero: React.FC<HeroProps> = ({
           </div>
         )} */}
 
-        <div className="text-center space-y-4 w-full max-w-[min(100vw,64rem)] mx-auto px-6 sm:px-8 min-w-0 box-border py-6 sm:py-0">
+        <div className="text-center space-y-4 md:space-y-7 w-full max-w-[min(100vw,64rem)] mx-auto px-6 sm:px-8 min-w-0 box-border py-6 sm:py-0">
           {/* Main Heading with Animation */}
           <div className="space-y-2 min-w-0">
-            <h1 className="pb-2 text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold bg-gradient-to-r from-red-800 via-red-700 to-orange-600 bg-clip-text text-transparent animate-fade-in-up animation-delay-600 break-words">
-              {headline.line1}
-            </h1>
+            <EndScreenHaloCopy
+              as="h1"
+              text={headline.line1}
+              className={`${END_SCREEN_TITLE_BASE_CLASS} animate-fade-in-up animation-delay-600`}
+              fillClassName="text-primary"
+            />
             {headline.line2 ? (
-              <h1 className="pb-2 text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold bg-gradient-to-r from-yellow-700 via-red-600 to-orange-700 bg-clip-text text-transparent animate-fade-in-up animation-delay-800 break-words">
-                {headline.line2}
-              </h1>
+              <EndScreenHaloCopy
+                as="h1"
+                text={headline.line2}
+                className={`${END_SCREEN_TITLE_BASE_CLASS} animate-fade-in-up animation-delay-800`}
+                fillClassName="text-primary"
+              />
             ) : null}
           </div>
 
           {/* Subtitle with Animation */}
           {(subtitle1 || subtitle2 || subtitle3) && (
-            <div className="w-full max-w-3xl mx-auto animate-fade-in-up animation-delay-2400 min-w-0">
+            <div className="w-full max-w-3xl mx-auto space-y-1 md:space-y-2 animate-fade-in-up animation-delay-2400 min-w-0">
               {subtitle1 ? (
-                <p className="mt-4 text-base sm:text-lg lg:text-xl text-grey-200 font-medium leading-relaxed break-words">
-                  {subtitle1}
-                </p>
+                <EndScreenHaloCopy
+                  as="p"
+                  text={subtitle1}
+                  className={`mt-4 md:mt-6 ${END_SCREEN_BODY_BASE_CLASS}`}
+                  fillClassName="text-grey-200"
+                />
               ) : null}
               {subtitle2 ? (
-                <p className="text-base sm:text-lg lg:text-xl text-grey-200 font-medium leading-relaxed break-words">
-                  {subtitle2}
-                </p>
+                <EndScreenHaloCopy
+                  as="p"
+                  text={subtitle2}
+                  className={END_SCREEN_BODY_BASE_CLASS}
+                  fillClassName="text-grey-200"
+                />
               ) : null}
               {subtitle3 ? (
-                <p className="mb-6 text-base sm:text-lg lg:text-xl text-grey-200 font-medium leading-relaxed break-words">
-                  {subtitle3}
-                </p>
+                <EndScreenHaloCopy
+                  as="p"
+                  text={subtitle3}
+                  className={`mb-6 md:mb-8 ${END_SCREEN_BODY_BASE_CLASS}`}
+                  fillClassName="text-grey-200"
+                />
               ) : null}
             </div>
           )}
 
           {/* CTA Buttons with Animation */}
           {buttons && buttons.primary && (
-            <div className="flex flex-wrap justify-center gap-4 mt-10 animate-fade-in-up animation-delay-3000">
+            <div className="flex flex-wrap justify-center gap-4 mt-10 md:mt-14 animate-fade-in-up animation-delay-3000">
               <div
                 className={
                   buttons.primary.disabled
@@ -705,7 +754,7 @@ const Hero: React.FC<HeroProps> = ({
                   button_id={buttons.primary.buttonId}
                   className={
                     buttons.primary.disabled
-                      ? `${END_SCREEN_CTA_BUTTON_GROUP_CLASS} cursor-not-allowed opacity-60 group-hover:from-red-800 group-hover:to-red-700`
+                      ? `${END_SCREEN_CTA_BUTTON_BASE_CLASS} cursor-not-allowed opacity-60`
                       : END_SCREEN_CTA_BUTTON_GROUP_CLASS
                   }
                 >
@@ -717,10 +766,13 @@ const Hero: React.FC<HeroProps> = ({
 
           {/* Feedback CTA */}
           {buttons?.feedback && (
-            <div className="py-3 flex flex-col items-center gap-3 mt-14 animate-fade-in-up animation-delay-4000 w-full min-w-0">
-              <p className="text-base sm:text-lg lg:text-xl font-medium text-grey-200 text-center leading-relaxed max-w-md sm:max-w-3xl px-2 sm:px-4 break-words">
-                {t("endScreen.feedbackBlurb")}
-              </p>
+            <div className="py-3 md:py-5 flex flex-col items-center gap-3 md:gap-5 mt-14 md:mt-20 animate-fade-in-up animation-delay-4000 w-full min-w-0">
+              <EndScreenHaloCopy
+                as="p"
+                text={t("endScreen.feedbackBlurb")}
+                className={`${END_SCREEN_BODY_BASE_CLASS} text-center max-w-md sm:max-w-3xl px-2 sm:px-4`}
+                fillClassName="text-grey-200"
+              />
               <button
                 type="button"
                 onClick={buttons.feedback.onClick}
@@ -739,7 +791,7 @@ const Hero: React.FC<HeroProps> = ({
 
           {/* Steam Wishlist Section — hidden on Steam desktop (already on Steam). */}
           {!hideSteamWishlist && (
-            <div className="pt-3 flex flex-col items-center gap-3 mt-8 animate-fade-in-up animation-delay-4500 w-full min-w-0">
+            <div className="pt-3 md:pt-5 flex flex-col items-center gap-3 mt-8 md:mt-12 animate-fade-in-up animation-delay-4500 w-full min-w-0">
               <SteamStoreWidget />
             </div>
           )}
