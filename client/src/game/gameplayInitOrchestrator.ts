@@ -35,6 +35,7 @@ import { hasUtmAttribution } from "@shared/utmAttribution";
 import { pickPreferredSave } from "@/game/saveConflict";
 import { applyReferralCloudRefreshPatch } from "@/game/referralCloudRefresh";
 import { applyDevSaveToStore } from "@/game/devSaves";
+import { installDevSaveEditApi } from "@/game/devSaveEditApi";
 import type { GameState, SaveData } from "@shared/schema";
 
 export interface GameplayInitResult {
@@ -61,6 +62,7 @@ export async function runGameplayInitialization(
   location: StartupLocation = window.location,
 ): Promise<GameplayInitResult> {
   const gameplayLocalesPromise = ensureGameplayLocalesLoaded();
+  installDevSaveEditApi();
   clearPreferStartScreen();
   clearResumeGame();
 

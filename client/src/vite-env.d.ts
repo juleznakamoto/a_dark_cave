@@ -49,4 +49,6 @@ interface Window {
   CrazyGames?: {
     SDK?: import("./lib/crazyGames").CrazyGamesSdk;
   };
+  /** DEV only. Live fixture editor for agents (see trailer-save-guide). */
+  __adcDevSave?: import("./game/devSaveEditApi").DevSaveEditApi;
 }
