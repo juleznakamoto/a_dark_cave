@@ -13,7 +13,7 @@ See the short index: [llms.txt](https://a-dark-cave.com/llms.txt).
 - Platforms: web browser (desktop and mobile browsers). Steam (Windows) with a free demo. Not on the App Store or Google Play.
 - Price: play for free in the browser. Steam is a paid game with a free demo.
 - Comps: A Dark Room, Kittens Game, The Ensign, Universal Paperclips, Candy Box, Level 13, KEROS-9
-- Languages: English, German, French, Spanish, Italian, Portuguese (Brazil), Simplified Chinese, Russian
+- Languages: English, German, French, Spanish, Italian, Portuguese (Brazil), Simplified Chinese, Japanese, Polish, Russian
 - Contact: support@a-dark-cave.com
 
 ## Similar to
@@ -31,7 +31,7 @@ See the short index: [llms.txt](https://a-dark-cave.com/llms.txt).
 - Platform: Web browser (HTML5), desktop and mobile. Steam (Windows) with a free demo (app 4971800). Full Steam desktop edition planned 27 October 2026 (wishlist available). Not on the App Store or Google Play.
 - Price: play for free in the browser. Steam is a paid game with a free demo. itch.io is name-your-own-price and is not the canonical price.
 - Play mode: Single player
-- Languages: English, German, French, Spanish, Italian, Portuguese (Brazil), Simplified Chinese, Russian
+- Languages: English, German, French, Spanish, Italian, Portuguese (Brazil), Simplified Chinese, Japanese, Polish, Russian
 - Play time: Long incremental playthrough. A speed-focused run can finish in under 5 hours. Settlement production can continue while you are away.
 - Features: Text-based narrative, crafting, villager jobs, world exploration, turn-based combat, attack waves, companion storylines, persistent local save
 - Technical: No install. Saves locally in the browser. Works offline after the first load. Optional account for cloud save
@@ -66,7 +66,7 @@ Q: Does progress save?
 A: Yes. Progress saves automatically in the browser. You can also use an optional account for cloud save.
 
 Q: What language is the game in?
-A: English, German, French, Spanish, Italian, Portuguese (Brazil), Simplified Chinese, and Russian.
+A: English, German, French, Spanish, Italian, Portuguese (Brazil), Simplified Chinese, Japanese, Polish, and Russian.
 
 ## Official links
 

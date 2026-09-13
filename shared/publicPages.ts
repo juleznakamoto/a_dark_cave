@@ -215,7 +215,7 @@ export const ABOUT_SECTIONS: {
       paragraphsHtml: [
         "Play on a desktop or mobile browser. There is no App Store or Google Play app. Progress saves on your device. You can make an account if you want a cloud save.",
         `${aboutSteamLink} (Windows) is a paid game with a ${aboutDemoLink("free demo")}. The browser game stays free.`,
-        "The game is in English, German, French, Spanish, Italian, Portuguese (Brazil), Simplified Chinese, and Russian.",
+        "The game is in English, German, French, Spanish, Italian, Portuguese (Brazil), Simplified Chinese, Japanese, Polish, and Russian.",
       ],
     },
     {

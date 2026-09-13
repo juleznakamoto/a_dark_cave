@@ -2,7 +2,7 @@
 
 > A text-based survival and settlement-building incremental. Play for free in your browser on desktop or mobile. Steam demo available; full Steam release planned 27 October 2026.
 
-Developer: Julian Bauer. Incremental, text-based survival, and settlement builder (semi-idle plus active; not a clicker, not a second-screen idle). Play for free in the browser on desktop or mobile. Steam (Windows) is a paid game with a free demo. Not on the App Store or Google Play. Similar to A Dark Room, Kittens Game, The Ensign, Universal Paperclips, Candy Box, Level 13, and KEROS-9. Languages: English, German, French, Spanish, Italian, Portuguese (Brazil), Simplified Chinese, and Russian.
+Developer: Julian Bauer. Incremental, text-based survival, and settlement builder (semi-idle plus active; not a clicker, not a second-screen idle). Play for free in the browser on desktop or mobile. Steam (Windows) is a paid game with a free demo. Not on the App Store or Google Play. Similar to A Dark Room, Kittens Game, The Ensign, Universal Paperclips, Candy Box, Level 13, and KEROS-9. Languages: English, German, French, Spanish, Italian, Portuguese (Brazil), Simplified Chinese, Japanese, Polish, and Russian.
 
 ## Docs
 
