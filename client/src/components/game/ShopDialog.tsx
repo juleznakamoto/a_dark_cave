@@ -1944,13 +1944,8 @@ function ShopDialogOpen({ isOpen, onClose, onOpen }: ShopDialogProps) {
             onPointerDownOutside={(e) => e.preventDefault()}
             onInteractOutside={(e) => e.preventDefault()}
           >
-            <DialogHeader
-              className={cn(
-                "shrink-0",
-                showSecurePurchasePrompt ? "space-y-1 pb-0" : "space-y-1.5",
-              )}
-            >
-              <DialogTitle>{t("ui:shop.title")}</DialogTitle>
+            <DialogHeader className="h-6 shrink-0 -mb-3">
+              <DialogTitle className="sr-only">{t("ui:shop.title")}</DialogTitle>
               <DialogDescription className="sr-only">
                 {t("ui:shop.srDescription")}
               </DialogDescription>
@@ -2018,35 +2013,18 @@ function ShopDialogOpen({ isOpen, onClose, onOpen }: ShopDialogProps) {
                   <TabsList className="grid h-10 w-full grid-cols-2 items-stretch gap-0 overflow-hidden rounded-md border-2 border-foreground/55 bg-muted p-1 shadow-sm dark:border-foreground/65">
                     <TabsTrigger
                       value="shop"
-                      className="flex h-full min-h-0 min-w-0 w-full items-center justify-center rounded-sm border border-transparent py-0 data-[state=active]:border-foreground/60 data-[state=active]:shadow-md dark:data-[state=active]:border-foreground/70"
+                      className="flex h-full min-h-0 min-w-0 w-full items-center justify-center rounded-sm border border-transparent py-0 text-base data-[state=active]:border-foreground/60 data-[state=active]:shadow-md dark:data-[state=active]:border-foreground/70"
                     >
                       {t("ui:shop.forSale")}
                     </TabsTrigger>
                     <TabsTrigger
                       value="purchases"
                       disabled={!sessionUser}
-                      className="flex h-full min-h-0 min-w-0 w-full items-center justify-center rounded-sm border border-transparent py-0 data-[state=active]:border-foreground/60 data-[state=active]:shadow-md dark:data-[state=active]:border-foreground/70"
+                      className="flex h-full min-h-0 min-w-0 w-full items-center justify-center rounded-sm border border-transparent py-0 text-base data-[state=active]:border-foreground/60 data-[state=active]:shadow-md dark:data-[state=active]:border-foreground/70"
                     >
                       {t("ui:shop.purchases")}
                     </TabsTrigger>
                   </TabsList>
-                  {activeTab === "shop" && (
-                    <div className="mt-3 flex items-center gap-1.5 text-xs font-normal leading-none text-foreground sm:text-sm">
-                      <span
-                        className={`inline-flex ${SHOP_INFO_HIT_SIZE_CLASS} shrink-0 items-center justify-center text-muted-foreground`}
-                      >
-                        <span
-                          className={`${SHOP_INFO_GLYPH_CLASS} translate-y-[0.12em]`}
-                          aria-hidden
-                        >
-                          🛈
-                        </span>
-                      </span>
-                      <span className="min-w-0 flex-1 leading-none">
-                        {t("ui:shop.forSalePlaythroughNote")}
-                      </span>
-                    </div>
-                  )}
                 </div>
 
                 <TabsContent
@@ -2236,7 +2214,7 @@ function ShopDialogOpen({ isOpen, onClose, onOpen }: ShopDialogProps) {
                                       }
                                       handleShopItemPurchaseClick(item.id);
                                     }}
-                                    className={`border-neutral-500 flex flex-col relative transition-[outline-color] duration-400 hover:outline hover:outline-2 hover:outline-offset-[-2px] ${purchaseDisabled ? "" : "cursor-pointer"} ${item.category === "bundle"
+                                    className={`border-neutral-500 flex h-52 min-h-0 max-h-52 flex-col relative transition-[outline-color] duration-400 hover:outline hover:outline-2 hover:outline-offset-[-2px] ${purchaseDisabled ? "" : "cursor-pointer"} ${item.category === "bundle"
                                       ? "border border-amber-600 outline-amber-500"
                                       : item.id === "cruel_mode" &&
                                         shopCruelModeHighlight
@@ -2244,9 +2222,11 @@ function ShopDialogOpen({ isOpen, onClose, onOpen }: ShopDialogProps) {
                                         : "outline-neutral-400"
                                       }`}
                                   >
-                                    <CardHeader className="relative space-y-1 px-4 pb-1 pt-3 leading-snug">
-                                      <div className="flex items-center gap-2">
-                                        <CardTitle className="!m-0 flex min-w-0 flex-1 items-center gap-1 text-md leading-none">
+                                    <CardHeader className="relative space-y-0 gap-1 px-4 pb-2 pt-3 leading-snug">
+                                      <div
+                                        className={`flex items-start gap-2${item.symbol ? " pr-8" : ""}`}
+                                      >
+                                        <CardTitle className="!m-0 flex min-w-0 flex-1 items-start gap-1 text-md leading-snug">
                                           <span className="min-w-0">
                                             {resolveShopItemName(item)}
                                           </span>
@@ -2292,7 +2272,7 @@ function ShopDialogOpen({ isOpen, onClose, onOpen }: ShopDialogProps) {
                                           <ShopCardCornerGlyph
                                             item={item}
                                             glyphOriginRef={glyphOriginRef}
-                                            glyphWrapperClassName={`text-base leading-none shrink-0 inline-flex items-center justify-center self-center${isShopPaidGoldPackItem(item.id)
+                                            glyphWrapperClassName={`absolute right-4 top-3 text-[20px] leading-none inline-flex items-center justify-center${isShopPaidGoldPackItem(item.id)
                                               ? " cursor-default"
                                               : ""
                                               }`}
@@ -2510,14 +2490,14 @@ function ShopDialogOpen({ isOpen, onClose, onOpen }: ShopDialogProps) {
                                           )}
                                       </CardDescription>
                                     </CardHeader>
-                                    <CardContent className="min-h-16 pl-4 pr-4 pb-2 flex-1">
+                                    <CardContent className="min-h-0 pl-4 pr-4 pb-2 flex-1">
                                       <div className="leading-tight text-sm opacity-80">
                                         <ShopItemDescriptionParagraph
                                           item={item}
                                         />
                                       </div>
                                     </CardContent>
-                                    <CardFooter className="pl-4 pr-4 pb-4 flex-col gap-2">
+                                    <CardFooter className="mt-auto pl-4 pr-4 pb-4 flex-col gap-2">
                                       <div className="relative z-0 w-full overflow-visible pt-1">
                                         <Button
                                           onClick={() =>
@@ -2749,6 +2729,23 @@ function ShopDialogOpen({ isOpen, onClose, onOpen }: ShopDialogProps) {
                     </ScrollAreaWithIndicator>
                   ) : null}
                 </TabsContent>
+                {activeTab === "shop" && (
+                  <div className="mt-3 flex shrink-0 items-center gap-1.5 text-xs font-normal leading-none text-foreground sm:text-sm">
+                    <span
+                      className={`inline-flex ${SHOP_INFO_HIT_SIZE_CLASS} shrink-0 items-center justify-center text-muted-foreground`}
+                    >
+                      <span
+                        className={`${SHOP_INFO_GLYPH_CLASS} translate-y-[0.12em]`}
+                        aria-hidden
+                      >
+                        🛈
+                      </span>
+                    </span>
+                    <span className="min-w-0 flex-1 leading-none">
+                      {t("ui:shop.forSalePlaythroughNote")}
+                    </span>
+                  </div>
+                )}
               </Tabs>
             )}
           </DialogContent>
