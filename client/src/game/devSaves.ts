@@ -2,6 +2,10 @@ import type { GameState } from "@shared/schema";
 import { createInitialState, StateManager, useGameStore } from "@/game/state";
 import { applyGameStateLoadMigrations } from "@/game/stateHelpers";
 import { calculateTotalEffects } from "@/game/rules/effectsCalculation";
+import {
+  HUNTING_SKILL_UPGRADES,
+  SLEEP_LENGTH_UPGRADES,
+} from "@/game/rules/skillUpgrades";
 import { calculateBastionStats } from "@/game/bastionStats";
 import { scheduleSleepDialogRestore } from "@/game/loop";
 import {
@@ -131,6 +135,42 @@ function withEstate(base: GameState): GameState {
   );
 }
 
+/**
+ * Estate Skills filming fixture. EstateStyleProgress fills `level / max` pips,
+ * so state 1/2/3 is what the bars show as one, two, and three segments.
+ * Skills-section rows need fellowship (Sleep Length / Intensity do not).
+ * Shorts 02/03 Improves: Sleep Length 1→2 and Huntress Training 3→4.
+ */
+function withEstateSkills(base: GameState): GameState {
+  const sleepLengthImproveCost = SLEEP_LENGTH_UPGRADES[2].cost;
+  const huntressImproveCost = HUNTING_SKILL_UPGRADES[4].cost;
+  return {
+    ...base,
+    fellowship: {
+      ...base.fellowship,
+      ashwraith_huntress: true,
+      disgraced_prior: true,
+      one_eyed_crow: true,
+    },
+    sleepUpgrades: {
+      ...base.sleepUpgrades,
+      lengthLevel: 1,
+      intensityLevel: 2,
+    },
+    huntingSkills: {
+      ...base.huntingSkills,
+      level: 3,
+    },
+    resources: {
+      ...base.resources,
+      gold: Math.max(
+        base.resources.gold ?? 0,
+        sleepLengthImproveCost + huntressImproveCost + 500,
+      ),
+    },
+  };
+}
+
 function withForest(base: GameState): GameState {
   return withSeenTabBlinks(
     {
@@ -234,6 +274,15 @@ const BUILDERS: Record<DevSaveId, () => GameState> = {
         ),
       ),
       "sleep-active",
+    ),
+  "estate-skills": () =>
+    finalize(
+      withEstateSkills(
+        withEstate(
+          withVillage(withStartedRun(createInitialState(), 90 * 60_000)),
+        ),
+      ),
+      "estate-skills",
     ),
   bastion: () =>
     finalize(

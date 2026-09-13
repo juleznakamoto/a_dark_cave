@@ -11,6 +11,7 @@ export const DEV_SAVE_IDS = [
   "invest",
   "sleep-unlocked",
   "sleep-active",
+  "estate-skills",
   "bastion",
 ] as const;
 
@@ -53,6 +54,13 @@ export const DEV_SAVE_CATALOG: Record<DevSaveId, DevSaveMeta> = {
     id: "sleep-active",
     label: "Sleep active",
     useWhen: "Already sleeping: fog, wake, header clicks, sleep restore",
+    activeTab: "estate",
+  },
+  "estate-skills": {
+    id: "estate-skills",
+    label: "Estate Skills",
+    useWhen:
+      "Estate Skills panel: lv1/lv2/lv3 bars and Improve fill animations (Shorts)",
     activeTab: "estate",
   },
   bastion: {
