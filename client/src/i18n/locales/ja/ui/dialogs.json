@@ -31,7 +31,7 @@
     "chooseBlessing": "選ぶ"
   },
   "socialPrompt": {
-    "title": "つながって報酬を得る",
+    "title": "報酬を得る",
     "description": "下の課題を完了するとボーナスがもらえる。すべて完了すると限定アイテムがもらえる。",
     "signUpRequiresSignInTooltip": "この課題を完了するにはログインしてください",
     "signUpTitle": "登録",
@@ -40,8 +40,8 @@
     "emailUpdatesTitle": "メールのお知らせ",
     "subscribe": "購読する",
     "claim": "受け取る",
-    "playlightTitle": "ゲームを1つ見つける",
-    "discoverGames": "ゲームを見つける",
+    "playlightTitle": "ゲームを1つ試す",
+    "discoverGames": "試す",
     "inviteTitle": "友人を1人招待",
     "inviteDesc": "招待できるのは最大{{cap}}人。双方がそれぞれ{{amount}}金貨を得る（招待済み{{count}}/{{cap}}）。",
     "copyInviteLink": "招待リンクをコピー",
@@ -52,7 +52,7 @@
     "exclusiveRewardEffect": "行動の獲得が倍になる確率{{percent}}%",
     "progressAriaLabel": "限定報酬",
     "alreadyClaimedReward": "この報酬はすでに受け取っています！",
-    "playlightDiscoverRewardLog": "ゲームを見つけて{{amount}}金貨を得た！",
+    "playlightDiscoverRewardLog": "ゲームを試して{{amount}}金貨を得た！",
     "marketingSubscribeLog": "メールのお知らせを購読して{{amount}}金貨を得た！",
     "followRewardLog": "{{platform}}をフォローして{{amount}}金貨を得た！",
     "subscribeRewardLog": "{{platform}}をチャンネル登録して{{amount}}金貨を得た！",

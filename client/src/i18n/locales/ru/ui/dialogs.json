@@ -31,7 +31,7 @@
     "chooseBlessing": "Выбрать"
   },
   "socialPrompt": {
-    "title": "Оставайтесь на связи и получайте награды",
+    "title": "Получайте награды",
     "description": "Выполните задачи ниже, чтобы получить бонусы. Выполните все - получите эксклюзивный предмет.",
     "signUpRequiresSignInTooltip": "Войдите, чтобы выполнить эту задачу", //x1.6
     "signUpTitle": "Регистрация", //x1.6
@@ -40,8 +40,8 @@
     "emailUpdatesTitle": "Рассылка по электронной почте", //x2.2
     "subscribe": "Подписаться", //x1.2
     "claim": "Забрать",
-    "playlightTitle": "Открыть 1 игру",
-    "discoverGames": "Открыть игры",
+    "playlightTitle": "Попробовать 1 игру",
+    "discoverGames": "Попробовать",
     "inviteTitle": "Пригласить 1 друга", //x1.2
     "inviteDesc": "Вы можете пригласить до {{cap}} друзей. Каждый раз вы оба получаете {{amount}} золота ({{count}}/{{cap}} приглашено).",
     "copyInviteLink": "Копировать ссылку-приглашение", //x1.8
@@ -51,10 +51,10 @@
     "tasksRemaining_many": "Осталось {{count}} задач",
     "tasksRemaining_other": "Осталось {{count}} задач",
     "progressToward": "Эксклюзивная награда:", //x1.2
-    "exclusiveRewardEffect": "{{percent}} % к удвоению наград за действия",
+    "exclusiveRewardEffect": "{{percent}}% шанс удвоить награды за действия",
     "progressAriaLabel": "Эксклюзивная награда", //x1.3
     "alreadyClaimedReward": "Вы уже получили эту награду!",
-    "playlightDiscoverRewardLog": "Вы получили {{amount}} золота за открытие игр!",
+    "playlightDiscoverRewardLog": "Вы получили {{amount}} золота за то, что попробовали игру!",
     "marketingSubscribeLog": "Вы получили {{amount}} золота за подписку на рассылку по электронной почте!",
     "followRewardLog": "Вы получили {{amount}} золота за подписку на нас в {{platform}}!",
     "subscribeRewardLog": "Вы получили {{amount}} золота за подписку на нас в {{platform}}!",

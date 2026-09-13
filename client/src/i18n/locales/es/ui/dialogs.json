@@ -31,7 +31,7 @@
     "chooseBlessing": "Elegir"
   },
   "socialPrompt": {
-    "title": "Mantente conectado y gana recompensas",
+    "title": "Gana recompensas",
     "description": "Completa las tareas siguientes para recibir bonificaciones. Completa todas las tareas para recibir un objeto exclusivo.",
     "signUpRequiresSignInTooltip": "Inicia sesión para completar esta tarea", //x1.4
     "signUpTitle": "Registrarse", //x1.6
@@ -40,8 +40,8 @@
     "emailUpdatesTitle": "Actualizaciones por correo electrónico", //x2.0
     "subscribe": "Suscribirse", //x1.2
     "claim": "Reclamar",
-    "playlightTitle": "Descubrir 1 juego",
-    "discoverGames": "Descubrir juegos",
+    "playlightTitle": "Probar 1 juego",
+    "discoverGames": "Probar",
     "inviteTitle": "Invitar a 1 amigo",
     "inviteDesc": "Puedes invitar hasta {{cap}} amigos. Cada vez, ambos recibiréis {{amount}} de oro ({{count}}/{{cap}} invitados).",
     "copyInviteLink": "Copiar enlace de invitación", //x1.7
@@ -49,10 +49,10 @@
     "tasksRemaining_one": "1 tarea restante",
     "tasksRemaining_other": "{{count}} tareas restantes",
     "progressToward": "Recompensa exclusiva:", //x1.2
-    "exclusiveRewardEffect": "{{percent}} % para duplicar las ganancias de acciones",
+    "exclusiveRewardEffect": "{{percent}} % de probabilidad de duplicar las ganancias de acciones",
     "progressAriaLabel": "Recompensa exclusiva", //x1.3
     "alreadyClaimedReward": "¡Ya has reclamado esta recompensa!",
-    "playlightDiscoverRewardLog": "¡Has recibido {{amount}} de oro por descubrir juegos!",
+    "playlightDiscoverRewardLog": "¡Has recibido {{amount}} de oro por probar un juego!",
     "marketingSubscribeLog": "¡Has recibido {{amount}} de oro por suscribirte a las actualizaciones por correo electrónico!",
     "followRewardLog": "Has recibido {{amount}} de oro por seguirnos en {{platform}}.",
     "subscribeRewardLog": "Has recibido {{amount}} de oro por suscribirte en {{platform}}.",
