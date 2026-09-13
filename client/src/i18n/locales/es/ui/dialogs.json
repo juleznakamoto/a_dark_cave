@@ -55,7 +55,12 @@
     "playlightDiscoverRewardLog": "¡Has recibido {{amount}} de oro por descubrir juegos!",
     "marketingSubscribeLog": "¡Has recibido {{amount}} de oro por suscribirte a las actualizaciones por correo electrónico!",
     "followRewardLog": "Has recibido {{amount}} de oro por seguirnos en {{platform}}.",
+    "subscribeRewardLog": "Has recibido {{amount}} de oro por suscribirte en {{platform}}.",
     "platforms": {
+      "youtube": {
+        "title": "YouTube",
+        "actionSubscribe": "Suscribirse"
+      },
       "instagram": {
         "title": "Instagram",
         "actionFollow": "Seguir"

@@ -55,7 +55,12 @@
     "playlightDiscoverRewardLog": "发现游戏奖励：获得 {{amount}} 金币！",
     "marketingSubscribeLog": "订阅邮件更新奖励：获得 {{amount}} 金币！",
     "followRewardLog": "关注 {{platform}} 获得 {{amount}} 黄金！",
+    "subscribeRewardLog": "订阅 {{platform}} 获得 {{amount}} 黄金！",
     "platforms": {
+      "youtube": {
+        "title": "YouTube",
+        "actionSubscribe": "订阅"
+      },
       "instagram": {
         "title": "照片墙",
         "actionFollow": "关注"

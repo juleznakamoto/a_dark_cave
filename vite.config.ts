@@ -2,7 +2,6 @@ import { defineConfig, type Plugin } from "vite";
 import react from "@vitejs/plugin-react";
 import path from "path";
 import { execSync } from "node:child_process";
-import runtimeErrorOverlay from "@replit/vite-plugin-runtime-error-modal";
 import { compression } from "vite-plugin-compression2";
 import { vendorManualChunk } from "./vite.vendorChunks";
 
@@ -54,7 +53,6 @@ export default defineConfig(async ({ mode }) => ({
     react(),
     crazyGamesRelativeHtmlPlugin(),
     compression(),
-    runtimeErrorOverlay(),
     ...(process.env.NODE_ENV !== "production" &&
       process.env.REPL_ID !== undefined
       ? [

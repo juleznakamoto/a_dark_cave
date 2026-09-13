@@ -58,6 +58,7 @@ vi.mock('@/lib/logger', () => ({
 }));
 
 vi.mock('@/lib/supabase', () => ({
+  canUseSupabase: () => true,
   getSupabaseClient: vi.fn().mockResolvedValue({
     auth: {
       getSession: vi.fn().mockResolvedValue({ data: { session: null } }),

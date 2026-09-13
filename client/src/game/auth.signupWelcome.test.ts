@@ -15,6 +15,7 @@ import {
 const NOW = Date.parse("2024-06-01T12:00:00.000Z");
 
 vi.mock("@/lib/supabase", () => ({
+  canUseSupabase: () => true,
   getSupabaseClient: vi.fn(),
   isAuthStateReady: vi.fn(),
   getCachedAuthUser: vi.fn(),

@@ -1,13 +1,16 @@
 import type { GameState } from "@shared/schema";
 import { MARKETING_EMAIL_REWARD_KEY } from "@/game/marketingEmailReward";
 import { PLAYLIGHT_DISCOVER_REWARD_KEY } from "@/game/playlightDiscoverReward";
-import { SOCIAL_PLATFORMS } from "@/game/socialPlatforms";
-import { isSocialRewardFulfilled } from "@/game/socialTaskRewards";
+import { ACTIVE_SOCIAL_PLATFORMS } from "@/game/socialPlatforms";
+import {
+  getSocialPlatformRewardEntry,
+  isSocialRewardFulfilled,
+} from "@/game/socialTaskRewards";
 import { SOCIAL_PROMPT_REFERRAL_CAP } from "@/game/socialPromptAuto";
 import { useGameStore } from "@/game/state";
 import { logger } from "@/lib/logger";
 
-/** Steps: signed in, email reward, Instagram, Reddit, Playlight discover, at least one invite (exclusive item track). */
+/** Steps: signed in, email reward, YouTube, Reddit, Playlight discover, at least one invite (exclusive item track). */
 export const SOCIAL_PROMO_EXCLUSIVE_STEP_TOTAL = 6;
 
 export type SocialPromoExclusiveSlice = {
@@ -44,7 +47,11 @@ export function areInviteFriendsPrereqsDone(
   if (!isSignUpRewardsStepDone(state)) return false;
   const rewards = state.social_media_rewards ?? {};
   if (!isSocialRewardFulfilled(rewards[MARKETING_EMAIL_REWARD_KEY])) return false;
-  if (!SOCIAL_PLATFORMS.every((p) => isSocialRewardFulfilled(rewards[p.id])))
+  if (
+    !ACTIVE_SOCIAL_PLATFORMS.every((p) =>
+      isSocialRewardFulfilled(getSocialPlatformRewardEntry(rewards, p.id)),
+    )
+  )
     return false;
   if (!isSocialRewardFulfilled(rewards[PLAYLIGHT_DISCOVER_REWARD_KEY]))
     return false;
@@ -67,8 +74,9 @@ export function socialPromoExclusiveStepsCompleted(
   let n = 0;
   if (isSignUpRewardsStepDone(state)) n++;
   if (isSocialRewardFulfilled(rewards[MARKETING_EMAIL_REWARD_KEY])) n++;
-  for (const p of SOCIAL_PLATFORMS) {
-    if (isSocialRewardFulfilled(rewards[p.id])) n++;
+  for (const p of ACTIVE_SOCIAL_PLATFORMS) {
+    if (isSocialRewardFulfilled(getSocialPlatformRewardEntry(rewards, p.id)))
+      n++;
   }
   if (isSocialRewardFulfilled(rewards[PLAYLIGHT_DISCOVER_REWARD_KEY])) n++;
   if (isExclusiveInviteStepDone(state)) n++;

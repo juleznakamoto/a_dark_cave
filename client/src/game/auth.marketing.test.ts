@@ -6,6 +6,7 @@ import {
 } from "./auth";
 
 vi.mock("@/lib/supabase", () => ({
+  canUseSupabase: () => true,
   getSupabaseClient: vi.fn(),
   isAuthStateReady: vi.fn(),
   getCachedAuthUser: vi.fn(),

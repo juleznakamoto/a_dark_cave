@@ -17,11 +17,11 @@ export type FooterSocialPlatformId =
 export const OFFICIAL_REDDIT_URL =
   "https://www.reddit.com/r/aDarkCave/" as const;
 
-/** Official Instagram URL (footer, start screen, social rewards). */
+/** Official Instagram URL (footer, start screen). */
 export const OFFICIAL_INSTAGRAM_URL =
   "https://www.instagram.com/a_dark_cave/" as const;
 
-/** Official YouTube channel URL. */
+/** Official YouTube channel URL (footer, start screen, social rewards). */
 export const OFFICIAL_YOUTUBE_URL =
   "https://www.youtube.com/channel/UCdQDWTJe_Bno7xyjnO1aC-w" as const;
 

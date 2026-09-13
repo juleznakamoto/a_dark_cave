@@ -10,6 +10,7 @@ import {
 } from "@/game/socialPlatforms";
 import { syncSocialPromoExclusiveRewardPending } from "./socialPromoExclusiveReward";
 import {
+  getSocialPlatformRewardEntry,
   isSocialRewardClaimed,
   isSocialRewardFulfilled,
 } from "@/game/socialTaskRewards";
@@ -37,7 +38,10 @@ export function fulfillSocialFollowReward(
   url: string,
 ): boolean {
   const store = useGameStore.getState();
-  const entry = store.social_media_rewards[platformId];
+  const entry = getSocialPlatformRewardEntry(
+    store.social_media_rewards,
+    platformId,
+  );
 
   if (isSocialRewardClaimed(entry)) {
     const alreadyClaimedLog: LogEntry = {
@@ -81,7 +85,10 @@ export function claimSocialFollowGoldReward(
   reward: number,
 ): boolean {
   const store = useGameStore.getState();
-  const entry = store.social_media_rewards[platformId];
+  const entry = getSocialPlatformRewardEntry(
+    store.social_media_rewards,
+    platformId,
+  );
 
   if (isSocialRewardClaimed(entry)) {
     return false;
@@ -105,12 +112,17 @@ export function claimSocialFollowGoldReward(
   useGameStore.getState().updateResource("gold", reward);
 
   const platformName = getSocialPlatformName(platformId);
+  const subscribeLog = platformId === "youtube";
   const rewardLog: LogEntry = {
     id: `social-reward-claimed-${platformId}-${Date.now()}`,
     message: tWithFallback(
       "ui",
-      "socialPrompt.followRewardLog",
-      `You received ${reward} Gold for following us on ${platformName}!`,
+      subscribeLog
+        ? "socialPrompt.subscribeRewardLog"
+        : "socialPrompt.followRewardLog",
+      subscribeLog
+        ? `You received ${reward} Gold for subscribing to us on ${platformName}!`
+        : `You received ${reward} Gold for following us on ${platformName}!`,
       { amount: reward, platform: platformName },
     ),
     timestamp: Date.now(),

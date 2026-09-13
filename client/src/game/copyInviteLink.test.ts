@@ -21,6 +21,7 @@ vi.mock("@/game/state", () => ({
 }));
 
 vi.mock("@/lib/supabase", () => ({
+  canUseSupabase: () => true,
   getSupabaseClient: vi.fn(async () => ({
     auth: { getSession },
   })),

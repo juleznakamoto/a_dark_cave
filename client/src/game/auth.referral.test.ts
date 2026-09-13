@@ -8,6 +8,7 @@ const { mockGetCachedAuthUser, mockIsAuthStateReady, mockGetSupabaseClient } =
   }));
 
 vi.mock("@/lib/supabase", () => ({
+  canUseSupabase: () => true,
   AUTH_STORAGE_KEY: "a-dark-cave-auth",
   getSupabaseClient: () => mockGetSupabaseClient(),
   getCachedAuthUser: () => mockGetCachedAuthUser(),

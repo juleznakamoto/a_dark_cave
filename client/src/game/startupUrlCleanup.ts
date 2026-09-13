@@ -61,6 +61,8 @@ export async function consumeStartupAuthCallback(
 ): Promise<void> {
   const intent = parseStartupIntent(location);
   if (isLocalOnlyEdition()) return;
+  const { canUseSupabase } = await import("@/lib/supabase");
+  if (!canUseSupabase()) return;
   if (!intent.oauthCallback && !intent.emailConfirmed) return;
 
   try {

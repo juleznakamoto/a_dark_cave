@@ -1,5 +1,9 @@
 /** Steam build stub — no Supabase client or network. */
 
+export function canUseSupabase(): boolean {
+  return false;
+}
+
 export async function getSupabaseClient(): Promise<never> {
   throw new Error("Supabase is disabled in the Steam build");
 }

@@ -1,4 +1,4 @@
-import { getSupabaseClient, primeCachedAuthUser } from '@/lib/supabase';
+import { canUseSupabase, getSupabaseClient, primeCachedAuthUser } from '@/lib/supabase';
 import { apiUrl } from '@/lib/apiUrl';
 import { GameState, SaveData, SIGN_UP_WELCOME_GOLD } from '@shared/schema';
 import { logger } from '@/lib/logger';
@@ -762,6 +762,7 @@ export async function getSessionAccessToken(): Promise<string | null> {
 
 /** Any signed-in Supabase user, including anonymous (no confirmed email required). */
 export async function getSessionUser(): Promise<AuthUser | null> {
+  if (typeof canUseSupabase === "function" && !canUseSupabase()) return null;
   try {
     const supabase = await getSupabaseClient();
     const {
@@ -916,6 +917,7 @@ export async function syncStoreAuthFromSession(): Promise<boolean> {
 }
 
 export async function getCurrentUser(): Promise<AuthUser | null> {
+  if (typeof canUseSupabase === "function" && !canUseSupabase()) return null;
   try {
     const { getCachedAuthUser, isAuthStateReady } = await import('@/lib/supabase');
 
@@ -961,6 +963,7 @@ export async function getCurrentUser(): Promise<AuthUser | null> {
  * session/config read failure is thrown so startup cannot report "no save".
  */
 export async function getCurrentUserForLoad(): Promise<AuthUser | null> {
+  if (typeof canUseSupabase === "function" && !canUseSupabase()) return null;
   const { getCachedAuthUser, isAuthStateReady } = await import('@/lib/supabase');
 
   if (isAuthStateReady()) {

@@ -8,6 +8,58 @@ export { AUTH_STORAGE_KEY } from '@/lib/authStorageKey';
 
 const isDev = import.meta.env.MODE === 'development';
 
+function hasDevSupabaseEnv(): boolean {
+  return Boolean(
+    import.meta.env.VITE_SUPABASE_URL_DEV &&
+    import.meta.env.VITE_SUPABASE_ANON_KEY_DEV,
+  );
+}
+
+/** Steam/Galaxy have no backend; local Vite without DEV keys also has no cloud. */
+export function canUseSupabase(): boolean {
+  if (isLocalOnlyEdition()) return false;
+  if (isDev) return hasDevSupabaseEnv();
+  return true;
+}
+
+let loggedMissingDevConfig = false;
+function logMissingDevSupabaseConfig(): void {
+  if (loggedMissingDevConfig) return;
+  loggedMissingDevConfig = true;
+  logger.warn(
+    "Supabase configuration is missing in development. Cloud auth is disabled.",
+  );
+}
+
+/** No-throw stand-in so Vite's runtime overlay never covers local testing. */
+function createOfflineSupabaseClient(): SupabaseClient {
+  const empty = async () => ({ data: { user: null, session: null }, error: null });
+  return {
+    auth: {
+      getUser: empty,
+      getSession: empty,
+      refreshSession: empty,
+      onAuthStateChange: () => ({
+        data: { subscription: { unsubscribe() { } } },
+      }),
+      signUp: empty,
+      signInWithPassword: empty,
+      signOut: empty,
+      resetPasswordForEmail: empty,
+      updateUser: empty,
+      verifyOtp: empty,
+      signInWithOAuth: empty,
+    },
+    from: () => ({
+      select: () => ({
+        eq: async () => ({ data: null, error: null }),
+      }),
+      insert: async () => ({ data: null, error: null }),
+      upsert: async () => ({ data: null, error: null }),
+    }),
+  } as unknown as SupabaseClient;
+}
+
 let supabaseClient: SupabaseClient | null = null;
 let initPromise: Promise<SupabaseClient> | null = null;
 let authStateListenerSetup = false;
@@ -24,7 +76,8 @@ async function initializeSupabase(): Promise<SupabaseClient> {
     const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY_DEV;
 
     if (!supabaseUrl || !supabaseAnonKey) {
-      throw new Error('Supabase configuration is missing in development.');
+      logMissingDevSupabaseConfig();
+      return createOfflineSupabaseClient();
     }
 
     return createClient(supabaseUrl, supabaseAnonKey, {
@@ -109,6 +162,11 @@ export async function getSupabaseClient(): Promise<SupabaseClient> {
   // fast here keeps the desktop edition fully offline.
   if (isLocalOnlyEdition()) {
     throw new Error('Supabase is disabled in the Steam and Galaxy builds');
+  }
+
+  if (!canUseSupabase()) {
+    logMissingDevSupabaseConfig();
+    return createOfflineSupabaseClient();
   }
 
   if (supabaseClient) {

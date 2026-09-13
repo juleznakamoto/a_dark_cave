@@ -68,7 +68,12 @@ export default function SocialPromptTab(props: {
                   aggregate.taskCounts.emailClaimed,
                 ],
                 [
-                  "Instagram claimed",
+                  "YouTube claimed",
+                  aggregate.taskPct.youtube,
+                  aggregate.taskCounts.youtube,
+                ],
+                [
+                  "Instagram claimed (inactive)",
                   aggregate.taskPct.instagram,
                   aggregate.taskCounts.instagram,
                 ],

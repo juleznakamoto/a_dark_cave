@@ -57,7 +57,12 @@
     "playlightDiscoverRewardLog": "Вы получили {{amount}} золота за открытие игр!",
     "marketingSubscribeLog": "Вы получили {{amount}} золота за подписку на рассылку по электронной почте!",
     "followRewardLog": "Вы получили {{amount}} золота за подписку на нас в {{platform}}!",
+    "subscribeRewardLog": "Вы получили {{amount}} золота за подписку на нас в {{platform}}!",
     "platforms": {
+      "youtube": {
+        "title": "YouTube",
+        "actionSubscribe": "Подписаться" //x1.8
+      },
       "instagram": {
         "title": "Instagram",
         "actionFollow": "Подписаться" //x1.8

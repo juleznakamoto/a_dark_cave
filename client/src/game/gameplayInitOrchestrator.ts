@@ -1,5 +1,6 @@
 import { logger } from "@/lib/logger";
 import { isDemoEdition, isLocalOnlyEdition, shouldSyncSteamAchievements } from "@/lib/edition";
+import { canUseSupabase } from "@/lib/supabase";
 import { ensureGameplayLocalesLoaded } from "@/i18n/loadLocaleResources";
 import { mountNotoSansSymbols2FontFace } from "@/lib/notoSansSymbols2FontFace";
 import { processStripePaymentReturn } from "@/lib/stripePaymentReturn";
@@ -179,7 +180,9 @@ async function finishGameplayInitialization(
     "referral",
   ]);
 
-  const user = isLocalOnlyEdition() ? null : await getCurrentUser();
+  const skipCloud =
+    isLocalOnlyEdition() || Boolean(intent.devSave) || !canUseSupabase();
+  const user = skipCloud ? null : await getCurrentUser();
   if (user) {
     logger.log("[GAME] User authenticated, loading game");
     await syncStoreAuthFromSession();
@@ -230,7 +233,7 @@ async function finishGameplayInitialization(
     }
   }
 
-  if (!isLocalOnlyEdition()) {
+  if (!skipCloud) {
     await rehydratePurchasesOnStartup({
       paymentReturn: intent.paymentReturn,
       skipIfPaymentReturn: true,

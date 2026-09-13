@@ -4,7 +4,7 @@ import {
   PLAYLIGHT_DISCOVER_REWARD_GOLD,
   PLAYLIGHT_DISCOVER_REWARD_KEY,
 } from "@/game/playlightRewards";
-import { SOCIAL_PLATFORMS } from "@/game/socialPlatforms";
+import { ACTIVE_SOCIAL_PLATFORMS, SOCIAL_PLATFORMS } from "@/game/socialPlatforms";
 import {
   MARKETING_SUBSCRIBE_GOLD,
   MARKETING_EMAIL_REWARD_KEY,
@@ -21,7 +21,7 @@ describe("computePersistedSocialTasksGold", () => {
       signupWelcomeGoldClaimed: true,
       social_media_rewards: {
         [MARKETING_EMAIL_REWARD_KEY]: { claimed: true, timestamp: 1 },
-        instagram: { claimed: true, timestamp: 1 },
+        youtube: { claimed: true, timestamp: 1 },
         reddit: { claimed: true, timestamp: 1 },
         [PLAYLIGHT_DISCOVER_REWARD_KEY]: { claimed: true, timestamp: 1 },
       },
@@ -31,7 +31,7 @@ describe("computePersistedSocialTasksGold", () => {
       ],
     });
 
-    const claimedSocialPlatformGold = SOCIAL_PLATFORMS.reduce(
+    const claimedSocialPlatformGold = ACTIVE_SOCIAL_PLATFORMS.reduce(
       (sum, platform) => sum + platform.reward,
       0,
     );
@@ -43,5 +43,18 @@ describe("computePersistedSocialTasksGold", () => {
       PLAYLIGHT_DISCOVER_REWARD_GOLD +
       REFERRAL_REWARD_GOLD,
     );
+  });
+
+  it("still counts a claimed Instagram follow while that task is inactive", () => {
+    const instagramReward =
+      SOCIAL_PLATFORMS.find((platform) => platform.id === "instagram")?.reward ??
+      0;
+    expect(
+      computePersistedSocialTasksGold({
+        social_media_rewards: {
+          instagram: { claimed: true, timestamp: 1 },
+        },
+      }),
+    ).toBe(instagramReward);
   });
 });

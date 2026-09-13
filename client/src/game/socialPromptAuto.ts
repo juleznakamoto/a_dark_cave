@@ -4,8 +4,11 @@ import {
 } from "@shared/schema";
 import { isMarketingEmailRewardClaimedForPrompt } from "@/game/marketingEmailReward";
 import { PLAYLIGHT_DISCOVER_REWARD_KEY } from "@/game/playlightDiscoverReward";
-import { SOCIAL_PLATFORMS } from "@/game/socialPlatforms";
-import { isSocialRewardFulfilled } from "@/game/socialTaskRewards";
+import { ACTIVE_SOCIAL_PLATFORMS } from "@/game/socialPlatforms";
+import {
+  getSocialPlatformRewardEntry,
+  isSocialRewardFulfilled,
+} from "@/game/socialTaskRewards";
 
 /**
  * Active-play milestones (ms) at which the rewards dialog auto-opens once each, * for both guests and signed-in players.
@@ -116,7 +119,9 @@ export { REFERRAL_REWARD_GOLD } from "@shared/schema";
 function socialPlatformsRewardDone(
   rewards: GameState["social_media_rewards"],
 ): boolean {
-  return SOCIAL_PLATFORMS.every((p) => isSocialRewardFulfilled(rewards[p.id]));
+  return ACTIVE_SOCIAL_PLATFORMS.every((p) =>
+    isSocialRewardFulfilled(getSocialPlatformRewardEntry(rewards, p.id)),
+  );
 }
 
 function playlightDiscoverRewardDone(

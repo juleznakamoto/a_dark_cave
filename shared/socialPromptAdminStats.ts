@@ -6,7 +6,7 @@
 export const MARKETING_EMAIL_REWARD_KEY = "marketing_email";
 export const PLAYLIGHT_DISCOVER_REWARD_KEY = "playlight_discover";
 
-export const SOCIAL_PROMO_PLATFORM_IDS = ["instagram", "reddit"] as const;
+export const SOCIAL_PROMO_PLATFORM_IDS = ["youtube", "reddit"] as const;
 export const SOCIAL_PROMO_EXCLUSIVE_STEP_TOTAL = 6;
 
 export type LooseGameState = Record<string, unknown>;
@@ -15,6 +15,12 @@ function isTruthyClaimed(rewards: unknown, key: string): boolean {
   if (!rewards || typeof rewards !== "object") return false;
   const row = (rewards as Record<string, { claimed?: boolean }>)[key];
   return row?.claimed === true;
+}
+
+/** YouTube follow task, including the legacy Instagram claim key. */
+function isSocialPromoPlatformClaimed(rewards: unknown, id: string): boolean {
+  if (isTruthyClaimed(rewards, id)) return true;
+  return id === "youtube" && isTruthyClaimed(rewards, "instagram");
 }
 
 export function isSignUpRewardsStepDoneFromSave(gs: LooseGameState): boolean {
@@ -36,7 +42,7 @@ export function socialPromoExclusiveStepsCompletedFromSave(
   if (isSignUpRewardsStepDoneFromSave(gs)) n++;
   if (isTruthyClaimed(rewards, MARKETING_EMAIL_REWARD_KEY)) n++;
   for (const id of SOCIAL_PROMO_PLATFORM_IDS) {
-    if (isTruthyClaimed(rewards, id)) n++;
+    if (isSocialPromoPlatformClaimed(rewards, id)) n++;
   }
   if (isTruthyClaimed(rewards, PLAYLIGHT_DISCOVER_REWARD_KEY)) n++;
   if (isExclusiveInviteStepDoneFromSave(gs)) n++;
@@ -61,6 +67,7 @@ export type SocialPromptAdminAggregate = {
   taskCounts: {
     signUp: number;
     emailClaimed: number;
+    youtube: number;
     instagram: number;
     reddit: number;
     bothSocial: number;
@@ -72,6 +79,7 @@ export type SocialPromptAdminAggregate = {
   taskPct: Record<
     | "signUp"
     | "emailClaimed"
+    | "youtube"
     | "instagram"
     | "reddit"
     | "bothSocial"
@@ -111,6 +119,7 @@ export function aggregateSocialPromptFromSaves(
   const taskCounts = {
     signUp: 0,
     emailClaimed: 0,
+    youtube: 0,
     instagram: 0,
     reddit: 0,
     bothSocial: 0,
@@ -135,12 +144,14 @@ export function aggregateSocialPromptFromSaves(
     if (isTruthyClaimed(gs.social_media_rewards, MARKETING_EMAIL_REWARD_KEY)) {
       taskCounts.emailClaimed++;
     }
+    const yt = isSocialPromoPlatformClaimed(gs.social_media_rewards, "youtube");
     const ig = isTruthyClaimed(gs.social_media_rewards, "instagram");
     const rd = isTruthyClaimed(gs.social_media_rewards, "reddit");
+    if (yt) taskCounts.youtube++;
     if (ig) taskCounts.instagram++;
     if (rd) taskCounts.reddit++;
-    if (ig && rd) taskCounts.bothSocial++;
-    if (ig || rd) taskCounts.eitherSocial++;
+    if (yt && rd) taskCounts.bothSocial++;
+    if (yt || rd) taskCounts.eitherSocial++;
     if (
       isTruthyClaimed(gs.social_media_rewards, PLAYLIGHT_DISCOVER_REWARD_KEY)
     ) {
@@ -168,6 +179,7 @@ export function aggregateSocialPromptFromSaves(
   const taskPct = {
     signUp: pct(taskCounts.signUp, n),
     emailClaimed: pct(taskCounts.emailClaimed, n),
+    youtube: pct(taskCounts.youtube, n),
     instagram: pct(taskCounts.instagram, n),
     reddit: pct(taskCounts.reddit, n),
     bothSocial: pct(taskCounts.bothSocial, n),

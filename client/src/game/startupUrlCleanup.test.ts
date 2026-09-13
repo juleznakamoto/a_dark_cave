@@ -16,6 +16,7 @@ const { mockGetSession, mockGetSupabaseClient } = vi.hoisted(() => {
 });
 
 vi.mock("@/lib/supabase", () => ({
+  canUseSupabase: () => true,
   getSupabaseClient: mockGetSupabaseClient,
 }));
 

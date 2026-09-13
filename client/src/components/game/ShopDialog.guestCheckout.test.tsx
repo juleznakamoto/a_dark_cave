@@ -58,6 +58,7 @@ vi.mock('@/game/auth', () => ({
 }));
 
 vi.mock('@/lib/supabase', () => ({
+  canUseSupabase: () => true,
   supabase: mockSupabaseClient,
   getSupabaseClient: vi.fn(() => Promise.resolve(mockSupabaseClient)),
   getCachedAuthUser: vi.fn(() => null),

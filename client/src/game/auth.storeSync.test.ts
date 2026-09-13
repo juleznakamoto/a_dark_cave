@@ -18,6 +18,7 @@ const {
   }));
 
 vi.mock("@/lib/supabase", () => ({
+  canUseSupabase: () => true,
   AUTH_STORAGE_KEY: "a-dark-cave-auth",
   getSupabaseClient: vi.fn(async () => ({
     auth: {

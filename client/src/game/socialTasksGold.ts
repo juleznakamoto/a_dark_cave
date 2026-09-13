@@ -9,6 +9,7 @@ import {
   PLAYLIGHT_DISCOVER_REWARD_KEY,
 } from "@/game/playlightRewards";
 import { SOCIAL_PLATFORMS } from "@/game/socialPlatforms";
+import { isSocialRewardClaimed } from "@/game/socialTaskRewards";
 
 /** Slice needed to re-apply one-time social / rewards-task gold after a new game. */
 export type PersistedSocialTasksGoldSlice = {
@@ -36,7 +37,7 @@ export function computePersistedSocialTasksGold(
   }
 
   for (const platform of SOCIAL_PLATFORMS) {
-    if (rewards[platform.id]?.claimed) {
+    if (isSocialRewardClaimed(rewards[platform.id])) {
       total += platform.reward;
     }
   }

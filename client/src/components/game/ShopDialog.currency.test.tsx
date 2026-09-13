@@ -63,6 +63,7 @@ vi.mock("@/game/auth", () => ({
     shopAuthMocks.mockIsAnonymousSession(...args),
 }));
 vi.mock("@/lib/supabase", () => ({
+  canUseSupabase: () => true,
   supabase: shopAuthMocks.mockSupabaseClient,
   getSupabaseClient: vi.fn(() =>
     Promise.resolve(shopAuthMocks.mockSupabaseClient),

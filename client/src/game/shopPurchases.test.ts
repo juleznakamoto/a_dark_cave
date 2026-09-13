@@ -13,6 +13,7 @@ vi.mock('@/game/auth', () => ({
 }));
 
 vi.mock('@/lib/supabase', () => ({
+  canUseSupabase: () => true,
   getSupabaseClient: vi.fn(),
 }));
 

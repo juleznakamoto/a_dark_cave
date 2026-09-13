@@ -55,7 +55,12 @@
     "playlightDiscoverRewardLog": "ゲームを見つけて{{amount}}金貨を得た！",
     "marketingSubscribeLog": "メールのお知らせを購読して{{amount}}金貨を得た！",
     "followRewardLog": "{{platform}}をフォローして{{amount}}金貨を得た！",
+    "subscribeRewardLog": "{{platform}}をチャンネル登録して{{amount}}金貨を得た！",
     "platforms": {
+      "youtube": {
+        "title": "YouTube",
+        "actionSubscribe": "チャンネル登録" //x1.8
+      },
       "instagram": {
         "title": "Instagram",
         "actionFollow": "フォロー"

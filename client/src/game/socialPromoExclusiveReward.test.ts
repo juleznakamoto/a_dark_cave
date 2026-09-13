@@ -6,6 +6,10 @@ import {
   socialPromoExclusiveStepsCompleted,
 } from "@/game/socialPromoExclusiveReward";
 import { PLAYLIGHT_DISCOVER_REWARD_KEY } from "@/game/playlightDiscoverReward";
+import {
+  ACTIVE_SOCIAL_PLATFORMS,
+  SOCIAL_PLATFORMS,
+} from "@/game/socialPlatforms";
 
 describe("socialPromoExclusiveReward", () => {
   const empty = {
@@ -27,7 +31,7 @@ describe("socialPromoExclusiveReward", () => {
         ...empty,
         social_media_rewards: {
           marketing_email: { claimed: true, timestamp: 1 },
-          instagram: { claimed: true, timestamp: 1 },
+          youtube: { claimed: true, timestamp: 1 },
         },
       }),
     ).toBe(2);
@@ -64,7 +68,7 @@ describe("socialPromoExclusiveReward", () => {
       isUserSignedIn: true,
       social_media_rewards: {
         marketing_email: { claimed: true, timestamp: 1 },
-        instagram: { claimed: true, timestamp: 1 },
+        youtube: { claimed: true, timestamp: 1 },
         reddit: { claimed: true, timestamp: 1 },
         [PLAYLIGHT_DISCOVER_REWARD_KEY]: { claimed: true, timestamp: 1 },
       },
@@ -75,5 +79,27 @@ describe("socialPromoExclusiveReward", () => {
     const p = getSocialPromoExclusiveProgress(full);
     expect(p.completed).toBe(6);
     expect(p.percent).toBe(100);
+  });
+
+  it("keeps Instagram configured but off the exclusive track", () => {
+    expect(
+      SOCIAL_PLATFORMS.some(
+        (platform) => platform.id === "instagram" && platform.active === false,
+      ),
+    ).toBe(true);
+    expect(
+      ACTIVE_SOCIAL_PLATFORMS.some((platform) => platform.id === "instagram"),
+    ).toBe(false);
+  });
+
+  it("counts a legacy Instagram claim as the YouTube follow step", () => {
+    expect(
+      socialPromoExclusiveStepsCompleted({
+        ...empty,
+        social_media_rewards: {
+          instagram: { claimed: true, timestamp: 1 },
+        },
+      }),
+    ).toBe(1);
   });
 });

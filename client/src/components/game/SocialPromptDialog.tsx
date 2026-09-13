@@ -25,7 +25,7 @@ import {
   postMarketingPreference,
 } from "@/game/marketingEmailReward";
 import {
-  SOCIAL_PLATFORMS,
+  ACTIVE_SOCIAL_PLATFORMS,
   getSocialPlatformActionLabel,
   getSocialPlatformTitle,
 } from "@/game/socialPlatforms";
@@ -68,6 +68,7 @@ import {
   processReferralAfterConfirmation,
 } from "@/game/auth";
 import {
+  getSocialPlatformRewardEntry,
   isSocialRewardClaimed,
   isSocialRewardFulfilled,
 } from "@/game/socialTaskRewards";
@@ -509,8 +510,11 @@ export default function SocialPromptDialog({
         </DialogHeader>
 
         <div className="mt-2 flex flex-col gap-3">
-          {SOCIAL_PLATFORMS.map((platform) => {
-            const entry = social_media_rewards[platform.id];
+          {ACTIVE_SOCIAL_PLATFORMS.map((platform) => {
+            const entry = getSocialPlatformRewardEntry(
+              social_media_rewards,
+              platform.id,
+            );
             const claimed = isSocialRewardClaimed(entry);
             const fulfilled = isSocialRewardFulfilled(entry);
             return (

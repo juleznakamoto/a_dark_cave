@@ -858,7 +858,7 @@ export const gameStateSchema = z.object({
         timestamp: z.number().optional(),
       }),
     )
-    .default({}), // Track social media follow rewards by platform (e.g., 'instagram', 'twitter', etc.)
+    .default({}), // Track social media follow rewards by platform (e.g., 'youtube', 'reddit'; 'instagram' remains stored while that task is off)
   sleepUpgrades: z
     .object({
       lengthLevel: z.number().default(0), // 0-5
