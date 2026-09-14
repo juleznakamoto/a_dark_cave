@@ -63,7 +63,7 @@ export const GAME_ACTION_COOLDOWN_WASH_EDGE_RECEDING_CLASS =
 
 interface CooldownButtonProps {
   children: React.ReactNode;
-  onClick: () => void;
+  onClick: (event: React.MouseEvent<HTMLButtonElement>) => void;
   cooldownMs: number;
   disabled?: boolean;
   className?: string;
@@ -277,7 +277,7 @@ const CooldownButton = forwardRef<HTMLButtonElement, CooldownButtonProps>(
 
       emitClickParticles(e.currentTarget);
 
-      onClick();
+      onClick(e);
       // Reset the flag after a short delay
       setTimeout(() => {
         actionExecutedRef.current = false;

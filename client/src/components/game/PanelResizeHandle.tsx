@@ -24,8 +24,8 @@ export default function PanelResizeHandle({
 }: PanelResizeHandleProps) {
   const positionClasses =
     edge === "sidePanel"
-      ? "left-0 right-0 bottom-0 h-3 cursor-row-resize md:left-auto md:top-0 md:bottom-0 md:right-0 md:h-auto md:w-3 md:cursor-col-resize"
-      : "left-0 right-0 bottom-0 h-3 cursor-row-resize md:right-auto md:top-0 md:bottom-0 md:left-0 md:h-auto md:w-3 md:cursor-col-resize";
+      ? "left-0 right-0 bottom-0 h-4 cursor-row-resize md:left-auto md:top-0 md:bottom-0 md:right-0 md:h-auto md:w-4 md:cursor-col-resize"
+      : "left-0 right-0 bottom-0 h-4 cursor-row-resize md:right-auto md:top-0 md:bottom-0 md:left-0 md:h-auto md:w-4 md:cursor-col-resize";
 
   return (
     <div

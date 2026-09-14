@@ -24,7 +24,7 @@ import { getRevealedEffectsForActionTooltip } from "@/game/rules/insightRevealTo
 import { composeActionTooltip } from "@/game/rules/actionTooltipLayout";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import { useExplosionEffect } from "@/components/ui/explosion-effect";
-import { useRef, type ReactNode } from "react";
+import { useEffect, useRef, useState, type ReactNode } from "react";
 import {
   RedactedLockedHint,
   RedactedMoreHint,
@@ -73,6 +73,13 @@ export default function CavePanel() {
 
   // Separate refs for each explosion button
   const blastPortalRef = useRef<HTMLButtonElement>(null);
+  const [blastPortalConsumed, setBlastPortalConsumed] = useState(false);
+
+  useEffect(() => {
+    if (!story.seen.portalBlasted) {
+      setBlastPortalConsumed(false);
+    }
+  }, [story.seen.portalBlasted]);
 
   // Define action groups with their actions
   const actionGroups = [
@@ -271,16 +278,22 @@ export default function CavePanel() {
 
     // Special handling for Blast Gate button
     const isBlastPortal = actionId === "blastPortal";
-    const handleClick = () => {
+    if (isBlastPortal && blastPortalConsumed) {
+      return null;
+    }
+    const handleClick = (event?: { currentTarget: HTMLElement }) => {
       if (isBlastPortal) {
-        // Capture button position before it's potentially removed
-        const buttonElement = blastPortalRef.current;
+        const buttonElement = event?.currentTarget ?? blastPortalRef.current;
         if (buttonElement) {
           const rect = buttonElement.getBoundingClientRect();
           const centerX = rect.left + rect.width / 2;
           const centerY = rect.top + rect.height / 2;
           explosionEffect.triggerExplosion(centerX, centerY);
         }
+        setBlastPortalConsumed(true);
+        // Let the explode VFX commit before the store unmounts this button.
+        queueMicrotask(() => executeAction(actionId));
+        return;
       }
       executeAction(actionId);
     };

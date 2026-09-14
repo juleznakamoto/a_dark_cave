@@ -256,6 +256,31 @@ export function isDevSaveFixtureGameId(gameId: string | undefined): boolean {
   return typeof gameId === "string" && gameId.startsWith(DEV_SAVE_GAME_ID_PREFIX);
 }
 
+/** DEV URL `?blastGate=1` (with a fixture) shows Blast Gate on the Cave tab. */
+export function isBlastGateDevPreviewQuery(search: string): boolean {
+  return new URLSearchParams(search).get("blastGate") === "1";
+}
+
+export function applyBlastGateDevPreviewToStore(): void {
+  const state = useGameStore.getState();
+  useGameStore.setState({
+    resources: {
+      ...state.resources,
+      ember_bomb: Math.max(10, state.resources.ember_bomb ?? 0),
+    },
+    story: {
+      ...state.story,
+      seen: {
+        ...state.story.seen,
+        portalDiscovered: true,
+        portalBlasted: false,
+      },
+    },
+    activeTab: "cave",
+    isPaused: true,
+  });
+}
+
 /** Hydrate the live store from a named fixture. Does not persist. */
 export function applyDevSaveToStore(id: DevSaveId): void {
   const built = buildDevSave(id);
@@ -264,6 +289,12 @@ export function applyDevSaveToStore(id: DevSaveId): void {
     activeDevSaveId: id,
     activeTab: DEV_SAVE_CATALOG[id].activeTab,
   });
+  if (
+    typeof window !== "undefined" &&
+    isBlastGateDevPreviewQuery(window.location.search)
+  ) {
+    applyBlastGateDevPreviewToStore();
+  }
   StateManager.scheduleEffectsUpdate(useGameStore.getState);
   scheduleSleepDialogRestore();
   syncDevSaveQueryParam(id);

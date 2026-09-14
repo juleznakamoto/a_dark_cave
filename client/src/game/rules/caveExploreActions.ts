@@ -832,7 +832,7 @@ export const caveExploreActions: Record<string, Action> = {
       "resources.ember_bomb": -10,
       "story.seen.portalBlasted": true,
     },
-    executionTime: 1,
+    executionTime: 0,
     cooldown: 0,
   },
 

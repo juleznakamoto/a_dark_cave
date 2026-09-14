@@ -7,7 +7,13 @@ import {
 import { getTotalPopulationEffects } from "@/game/population";
 import { useGameStore } from "./state";
 import { DEV_SAVE_CATALOG, DEV_SAVE_IDS, parseDevSaveId } from "./devSaveIds";
-import { buildDevSave, isDevSaveFixtureGameId } from "./devSaves";
+import {
+  applyBlastGateDevPreviewToStore,
+  applyDevSaveToStore,
+  buildDevSave,
+  isBlastGateDevPreviewQuery,
+  isDevSaveFixtureGameId,
+} from "./devSaves";
 import { SOCIAL_PROMPT_AUTO_OPEN_COUNT } from "./socialPromptAuto";
 
 function canActivateSleep(state: ReturnType<typeof buildDevSave>): boolean {
@@ -83,6 +89,20 @@ describe("dev save catalog", () => {
     expect(state.idleModeState.needsDisplay).toBe(true);
     expect(state.idleModeState.startTime).toBeGreaterThan(0);
     expect(canActivateSleep(state)).toBe(true);
+  });
+
+  it("blastGate=1 query unlocks Blast Gate on the Cave tab", () => {
+    expect(isBlastGateDevPreviewQuery("?devSave=village")).toBe(false);
+    expect(isBlastGateDevPreviewQuery("?devSave=village&blastGate=1")).toBe(
+      true,
+    );
+    applyDevSaveToStore("village");
+    applyBlastGateDevPreviewToStore();
+    const state = useGameStore.getState();
+    expect(state.story.seen.portalDiscovered).toBe(true);
+    expect(state.story.seen.portalBlasted).toBe(false);
+    expect(state.resources.ember_bomb).toBeGreaterThanOrEqual(10);
+    expect(state.activeTab).toBe("cave");
   });
 
   it("bastion opens Village, Forest, Estate, and Bastion", () => {

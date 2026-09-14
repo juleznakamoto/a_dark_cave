@@ -88,7 +88,7 @@ export function usePanelResize(): UsePanelResizeResult {
 
   const startResize = useCallback(
     (panel: PanelId, e: ReactPointerEvent) => {
-      if (e.button !== 0) return;
+      if (e.pointerType === "mouse" && e.button !== 0) return;
       const mobile = isMobile;
       const el = panel === "sidePanel" ? sidePanelRef.current : logRef.current;
       const otherEl =
@@ -96,6 +96,14 @@ export function usePanelResize(): UsePanelResizeResult {
       const main = mainRef.current;
       if (!el || !main) return;
       e.preventDefault();
+
+      const handle = e.currentTarget as HTMLElement;
+      const pointerId = e.pointerId;
+      try {
+        handle.setPointerCapture(pointerId);
+      } catch {
+        // Some WebViews expose the API but reject capture; window listeners still run.
+      }
 
       const key = panelKey(panel, mobile);
       const startRect = el.getBoundingClientRect();
@@ -120,6 +128,7 @@ export function usePanelResize(): UsePanelResizeResult {
       };
 
       const onMove = (ev: PointerEvent) => {
+        if (ev.pointerId !== pointerId) return;
         const coord = mobile ? ev.clientY : ev.clientX;
         const delta = coord - startCoord;
         // The log panel sits on the far side of the center column on desktop, so its
@@ -151,10 +160,20 @@ export function usePanelResize(): UsePanelResizeResult {
         apply(next);
       };
 
-      const onUp = () => {
+      let ended = false;
+      const onUp = (ev: PointerEvent) => {
+        if (ev.pointerId !== pointerId || ended) return;
+        ended = true;
         setIsResizing(false);
         document.body.style.userSelect = "";
         document.body.style.cursor = "";
+        try {
+          if (handle.hasPointerCapture(pointerId)) {
+            handle.releasePointerCapture(pointerId);
+          }
+        } catch {
+          // Capture may already have been released by the browser.
+        }
         if (rafRef.current != null) {
           cancelAnimationFrame(rafRef.current);
           rafRef.current = null;
@@ -163,11 +182,24 @@ export function usePanelResize(): UsePanelResizeResult {
           setPanelSize(pendingRef.current.key, pendingRef.current.size);
           pendingRef.current = null;
         }
+        handle.removeEventListener("pointermove", onMove);
+        handle.removeEventListener("pointerup", onUp);
+        handle.removeEventListener("pointercancel", onUp);
+        handle.removeEventListener("lostpointercapture", onLostCapture);
         window.removeEventListener("pointermove", onMove);
         window.removeEventListener("pointerup", onUp);
         window.removeEventListener("pointercancel", onUp);
       };
 
+      const onLostCapture = (ev: PointerEvent) => {
+        if (ev.pointerId !== pointerId) return;
+        onUp(ev);
+      };
+
+      handle.addEventListener("pointermove", onMove);
+      handle.addEventListener("pointerup", onUp);
+      handle.addEventListener("pointercancel", onUp);
+      handle.addEventListener("lostpointercapture", onLostCapture);
       window.addEventListener("pointermove", onMove);
       window.addEventListener("pointerup", onUp);
       window.addEventListener("pointercancel", onUp);
