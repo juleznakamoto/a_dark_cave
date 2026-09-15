@@ -15,6 +15,10 @@
         "q": "这是挂机或点击游戏吗？",
         "a": "不是。这是一款半挂机、需要操作的增量游戏。你要做选择、管理定居点。它不是用来放在第二块屏幕上点的点击游戏。"
       },
+      "sleepMode": {
+        "q": "什么是睡眠模式？",
+        "a": "睡眠模式让村民在你不玩的时候继续产出资源，类似挂机模式。睡眠时长决定你可以待在睡眠模式多久，睡眠强度决定你能获得多少正常产出（不含增益）。"
+      },
       "like": {
         "q": "它像哪些游戏？",
         "a": "如果你喜欢 A Dark Room、Kittens Game、The Ensign、Universal Paperclips、Candy Box、Level 13 或 KEROS-9，就是这个路子。本作与它们没有从属关系。"
@@ -25,7 +29,7 @@
       },
       "steam": {
         "q": "有 Steam 版吗？",
-        "a": "有。A Dark Cave 计划于 2026 年 10 月 27 日登陆 <steam>Steam</steam>。现在已有<demo>免费试玩</demo>。Steam 版是付费游戏。"
+        "a": "有。A Dark Cave 计划于 2026 年 10 月 27 日登陆 <steam>Steam</steam>。现在已有<demo>免费试玩</demo>。"
       },
       "download": {
         "q": "浏览器版需要下载吗？",

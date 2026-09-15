@@ -15,6 +15,10 @@
         "q": "É um jogo idle ou um clicker?",
         "a": "Não. É um jogo incremental, semi-idle e ativo. Você faz escolhas e gerencia um assentamento. Não é um clicker de segunda tela."
       },
+      "sleepMode": {
+        "q": "O que é o Modo de Sono?",
+        "a": "O Modo de Sono faz seus aldeões produzirem recursos enquanto você não está jogando, parecido com um modo idle. A Duração do Sono define por quanto tempo você pode ficar no Modo de Sono, e a Intensidade do Sono define quanto da produção normal você recebe (excluindo bônus)."
+      },
       "like": {
         "q": "A que jogos ele se parece?",
         "a": "Se você gosta de A Dark Room, Kittens Game, The Ensign, Universal Paperclips, Candy Box, Level 13 ou KEROS-9, é esse o gosto. Ele não é afiliado a esses jogos."
@@ -25,7 +29,7 @@
       },
       "steam": {
         "q": "Existe versão para Steam?",
-        "a": "Sim. A Dark Cave chega à <steam>Steam</steam> em 27 de outubro de 2026. Já existe uma <demo>demo grátis</demo>. A edição da Steam é um jogo pago."
+        "a": "Sim. A Dark Cave chega à <steam>Steam</steam> em 27 de outubro de 2026. Já existe uma <demo>demo grátis</demo>."
       },
       "download": {
         "q": "Preciso baixar o jogo do navegador?",

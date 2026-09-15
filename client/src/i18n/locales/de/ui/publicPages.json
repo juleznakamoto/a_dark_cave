@@ -15,6 +15,10 @@
         "q": "Ist es ein Idle- oder Clicker-Spiel?",
         "a": "Nein. Es ist ein Incremental-Spiel, halb idle und aktiv. Du triffst Entscheidungen und verwaltest eine Siedlung. Es ist kein Clicker für den Zweitbildschirm."
       },
+      "sleepMode": {
+        "q": "Was ist der Schlafmodus?",
+        "a": "Im Schlafmodus produzieren deine Dorfbewohner Ressourcen, während du nicht spielst, ähnlich einem Idle-Modus. Die Schlaflänge bestimmt, wie lange du im Schlafmodus bleiben kannst, und die Schlafintensität, wie viel deiner normalen Produktion du bekommst (ohne Boni)."
+      },
       "like": {
         "q": "Welchen Spielen ähnelt es?",
         "a": "Wenn dir A Dark Room, Kittens Game, The Ensign, Universal Paperclips, Candy Box, Level 13 oder KEROS-9 gefallen, zielt das auf diesen Geschmack. Es ist nicht mit ihnen verbunden."
@@ -25,7 +29,7 @@
       },
       "steam": {
         "q": "Gibt es eine Steam-Version?",
-        "a": "Ja. A Dark Cave erscheint am 27. Oktober 2026 auf <steam>Steam</steam>. Eine <demo>kostenlose Demo</demo> ist jetzt verfügbar. Die Steam-Ausgabe ist ein kostenpflichtiges Spiel."
+        "a": "Ja. A Dark Cave erscheint am 27. Oktober 2026 auf <steam>Steam</steam>. Eine <demo>kostenlose Demo</demo> ist jetzt verfügbar."
       },
       "download": {
         "q": "Muss ich das Browserspiel herunterladen?",

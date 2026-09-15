@@ -39,6 +39,7 @@ export const FAQ_ITEM_IDS = [
   "whatIs",
   "free",
   "idle",
+  "sleepMode",
   "like",
   "phone",
   "steam",
@@ -89,6 +90,12 @@ export const FAQ_ITEMS: FaqItem[] = [
     answerHtml: "",
   },
   {
+    question: "What is Sleep Mode?",
+    answerText:
+      "Sleep Mode lets your villagers produce resources while you are not playing, similar to idle mode. Sleep Length defines how long you can stay in Sleep Mode, and Sleep Intensity defines how much of your normal production you get (excluding buffs).",
+    answerHtml: "",
+  },
+  {
     question: "What games is it like?",
     answerText:
       "If you like A Dark Room, Kittens Game, The Ensign, Universal Paperclips, Candy Box, Level 13, or KEROS-9, this is aimed at that taste. It is not affiliated with them.",
@@ -103,8 +110,8 @@ export const FAQ_ITEMS: FaqItem[] = [
   {
     question: "Is there a Steam version?",
     answerText:
-      "Yes. A Dark Cave is coming to Steam on 27 October 2026. A free demo is available now. The Steam edition is a paid game.",
-    answerHtml: `Yes. A Dark Cave is coming to ${htmlAnchor(PUBLIC_STEAM_URL, "Steam", { external: true })} on 27 October 2026. A ${htmlAnchor(PUBLIC_STEAM_DEMO_URL, "free demo", { external: true })} is available now. The Steam edition is a paid game.`,
+      "Yes. A Dark Cave is coming to Steam on 27 October 2026. A free demo is available now.",
+    answerHtml: `Yes. A Dark Cave is coming to ${htmlAnchor(PUBLIC_STEAM_URL, "Steam", { external: true })} on 27 October 2026. A ${htmlAnchor(PUBLIC_STEAM_DEMO_URL, "free demo", { external: true })} is available now.`,
   },
   {
     question: "Do I need to download the browser game?",

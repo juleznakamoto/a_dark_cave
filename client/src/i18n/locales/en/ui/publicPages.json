@@ -15,6 +15,10 @@
         "q": "Is it an idle or clicker game?",
         "a": "No. It is an incremental game that is semi-idle and active. You make choices and manage a settlement. It is not a second-screen clicker."
       },
+      "sleepMode": {
+        "q": "What is Sleep Mode?",
+        "a": "Sleep Mode lets your villagers produce resources while you are not playing, similar to idle mode. Sleep Length defines how long you can stay in Sleep Mode, and Sleep Intensity defines how much of your normal production you get (excluding buffs)."
+      },
       "like": {
         "q": "What games is it like?",
         "a": "If you like A Dark Room, Kittens Game, The Ensign, Universal Paperclips, Candy Box, Level 13, or KEROS-9, this is aimed at that taste. It is not affiliated with them."
@@ -25,7 +29,7 @@
       },
       "steam": {
         "q": "Is there a Steam version?",
-        "a": "Yes. A Dark Cave is coming to <steam>Steam</steam> on 27 October 2026. A <demo>free demo</demo> is available now. The Steam edition is a paid game."
+        "a": "Yes. A Dark Cave is coming to <steam>Steam</steam> on 27 October 2026. A <demo>free demo</demo> is available now."
       },
       "download": {
         "q": "Do I need to download the browser game?",

@@ -15,6 +15,10 @@
         "q": "¿Es un juego idle o un clicker?",
         "a": "No. Es un juego incremental, semi-idle y activo. Tomas decisiones y gestionas un asentamiento. No es un clicker de segunda pantalla."
       },
+      "sleepMode": {
+        "q": "¿Qué es el modo sueño?",
+        "a": "El modo sueño hace que tus aldeanos produzcan recursos mientras no juegas, parecido a un modo idle. La duración del sueño define cuánto tiempo puedes quedarte en modo sueño, y la intensidad del sueño define qué parte de tu producción normal recibes (sin bonus)."
+      },
       "like": {
         "q": "¿A qué juegos se parece?",
         "a": "Si te gustan A Dark Room, Kittens Game, The Ensign, Universal Paperclips, Candy Box, Level 13 o KEROS-9, va en ese gusto. No está afiliado a ellos."
@@ -25,7 +29,7 @@
       },
       "steam": {
         "q": "¿Hay versión de Steam?",
-        "a": "Sí. A Dark Cave llega a <steam>Steam</steam> el 27 de octubre de 2026. Ya hay una <demo>demo gratuita</demo>. La edición de Steam es un juego de pago."
+        "a": "Sí. A Dark Cave llega a <steam>Steam</steam> el 27 de octubre de 2026. Ya hay una <demo>demo gratuita</demo>."
       },
       "download": {
         "q": "¿Tengo que descargar el juego del navegador?",

@@ -15,6 +15,10 @@
         "q": "Est-ce un jeu idle ou un clicker ?",
         "a": "Non. C'est un jeu incremental, à la fois semi-idle et actif. Tu fais des choix et tu gères une colonie. Ce n'est pas un clicker pour le second écran."
       },
+      "sleepMode": {
+        "q": "Qu'est-ce que le mode sommeil ?",
+        "a": "Le mode sommeil permet à tes villageois de produire des ressources quand tu ne joues pas, comme un mode idle. La durée du sommeil définit combien de temps tu peux rester en mode sommeil, et l'intensité du sommeil définit quelle part de ta production normale tu reçois (hors bonus)."
+      },
       "like": {
         "q": "À quels jeux ressemble-t-il ?",
         "a": "Si tu aimes A Dark Room, Kittens Game, The Ensign, Universal Paperclips, Candy Box, Level 13 ou KEROS-9, c'est ce goût-là. Il n'est pas affilié à ces jeux."
@@ -25,7 +29,7 @@
       },
       "steam": {
         "q": "Y a-t-il une version Steam ?",
-        "a": "Oui. A Dark Cave arrive sur <steam>Steam</steam> le 27 octobre 2026. Une <demo>démo gratuite</demo> est déjà disponible. L'édition Steam est un jeu payant."
+        "a": "Oui. A Dark Cave arrive sur <steam>Steam</steam> le 27 octobre 2026. Une <demo>démo gratuite</demo> est déjà disponible."
       },
       "download": {
         "q": "Faut-il télécharger le jeu navigateur ?",

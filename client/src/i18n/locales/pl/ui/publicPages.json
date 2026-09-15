@@ -15,6 +15,10 @@
         "q": "Czy to gra bezczynna albo kliker?",
         "a": "Nie. To gra przyrostowa: częściowo toczy się sama, częściowo wymaga twoich decyzji. Zarządzasz osadą. To nie jest kliker na drugi ekran."
       },
+      "sleepMode": {
+        "q": "Czym jest tryb snu?",
+        "a": "Tryb snu sprawia, że wieśniacy produkują surowce, gdy nie grasz, podobnie jak tryb idle. Długość snu określa, jak długo możesz zostać w trybie snu, a intensywność snu, jaką część zwykłej produkcji dostajesz (bez bonusów)."
+      },
       "like": {
         "q": "Do jakich gier jest podobna?",
         "a": "Jeśli lubisz A Dark Room, Kittens Game, The Ensign, Universal Paperclips, Candy Box, Level 13 albo KEROS-9, to jest ta szkoła. Gra nie jest z nimi powiązana."
@@ -25,7 +29,7 @@
       },
       "steam": {
         "q": "Czy jest wersja na Steam?",
-        "a": "Tak. A Dark Cave ukaże się na <steam>Steam</steam> 27 października 2026. <demo>Darmowe demo</demo> jest już dostępne. Edycja Steam to gra płatna."
+        "a": "Tak. A Dark Cave ukaże się na <steam>Steam</steam> 27 października 2026. <demo>Darmowe demo</demo> jest już dostępne."
       },
       "download": {
         "q": "Czy muszę pobierać grę przeglądarkową?",
