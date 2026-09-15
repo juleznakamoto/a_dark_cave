@@ -1,5 +1,5 @@
 /**
- * Copy the square logo, then zip client/public/press-kit.
+ * Copy square and round logos, then zip client/public/press-kit.
  * Capsules, screenshots, and the gameplay trailer are authored locally.
  * Run: node scripts/build-press-kit-assets.mjs
  */
@@ -23,6 +23,10 @@ function main() {
   copyFileSync(
     join(ROOT, "build-resources", "logo-source.png"),
     join(DIRS.logos, "a_dark_cave_logo.png"),
+  );
+  copyFileSync(
+    join(ROOT, "build-resources", "logo-round-source.png"),
+    join(DIRS.logos, "a_dark_cave_logo_round.png"),
   );
 
   const trailerDest = join(DIRS.video, "a_dark_cave_gameplay_trailer.mp4");

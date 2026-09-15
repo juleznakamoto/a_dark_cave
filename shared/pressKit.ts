@@ -152,6 +152,9 @@ export const PRESS_LOGOS: readonly PressAsset[] = [
   asset("logo", "a_dark_cave_logo.png", "Logo (square)", {
     sizeHint: "512 × 512",
   }),
+  asset("logo", "a_dark_cave_logo_round.png", "Logo (round)", {
+    sizeHint: "1024 × 1024",
+  }),
 ];
 
 export const PRESS_SCREENSHOTS: readonly PressAsset[] = [

@@ -7,6 +7,7 @@ import {
   PRESS_BOILERPLATE_SHORT,
   PRESS_CAPSULES,
   PRESS_LOCKED_LINE,
+  PRESS_LOGOS,
   PRESS_PERMISSIONS,
   PRESS_SCREENSHOTS,
   countWords,
@@ -80,6 +81,13 @@ describe("press kit copy", () => {
     });
   });
 
+  it("includes square and round logos", () => {
+    expect(PRESS_LOGOS.map((asset) => asset.fileName)).toEqual([
+      "a_dark_cave_logo.png",
+      "a_dark_cave_logo_round.png",
+    ]);
+  });
+
   it("includes wide, square, and library capsules", () => {
     const names = PRESS_CAPSULES.map((asset) => asset.fileName);
     expect(names).toEqual([
@@ -106,6 +114,12 @@ describe("press kit files", () => {
     expect(
       statSync(join(PRESS_KIT_DIR, "a_dark_cave_press_kit.zip")).size,
     ).toBeGreaterThan(1000);
+    expect(
+      existsSync(join(PRESS_KIT_DIR, "logos", "a_dark_cave_logo.png")),
+    ).toBe(true);
+    expect(
+      existsSync(join(PRESS_KIT_DIR, "logos", "a_dark_cave_logo_round.png")),
+    ).toBe(true);
     expect(
       existsSync(
         join(PRESS_KIT_DIR, "screenshots", "a_dark_cave_screenshot_01.jpg"),
