@@ -290,6 +290,16 @@ export function getMaxHutLevelForBuildAction(
   return null;
 }
 
+/** True when completing this hut would pass the current-mode cap. */
+export function isHutBuildOverCap(
+  actionId: string,
+  state: { cruelMode: boolean },
+  nextLevel: number,
+): boolean {
+  const maxHutLevel = getMaxHutLevelForBuildAction(actionId, state);
+  return maxHutLevel !== null && nextLevel > maxHutLevel;
+}
+
 const MS_PER_MIN = 60 * 1000;
 
 export function curseLikeDurationMs(cruelTier: number): number {

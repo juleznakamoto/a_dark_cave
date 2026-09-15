@@ -1,5 +1,6 @@
 import { GameState } from "@shared/schema";
 import type { ActionResult } from "@/game/types";
+import { isHutBuildOverCap } from "@/game/cruelMode";
 import { logger } from "@/lib/logger";
 import { villageBuildActions } from "./villageBuildActions";
 import { calculateAdjustedCost } from "./costCalculation";
@@ -17,6 +18,13 @@ function handleBuildingConstruction(
   const action = villageBuildActions[actionId];
   const actionCosts = action?.cost?.[level];
   const actionEffects = action?.effects?.[level];
+
+  if (isHutBuildOverCap(actionId, state, level)) {
+    logger.warn(
+      `[BUILD] Refuse ${actionId} over hut cap (next=${level} cruelMode=${state.cruelMode})`,
+    );
+    return result;
+  }
 
   if (!actionEffects) {
     return result;
@@ -118,6 +126,13 @@ export function handleBuildWoodenHut(
   const action = villageBuildActions.buildWoodenHut;
   const actionCosts = action?.cost?.[level];
   const actionEffects = action?.effects?.[level];
+
+  if (isHutBuildOverCap("buildWoodenHut", state, level)) {
+    logger.warn(
+      `[BUILD] Refuse buildWoodenHut over hut cap (next=${level} cruelMode=${state.cruelMode})`,
+    );
+    return result;
+  }
 
   if (!actionEffects) {
     logger.warn(`No effects found for buildWoodenHut at level ${level}`);
