@@ -41,7 +41,7 @@ import { FOOTER_TRADER_PARTICLE_CONFIG } from "@/components/ui/bubbly-button.par
 
 const FOOTER_CONTROL_BTN_BASE =
   `group shrink-0 px-1 py-1 text-xs font-medium text-neutral-300 hover ${GAME_CHROME_NO_BG_HOVER}`;
-/** Default chrome: opacity only. Color accents are reserved for trader / more games / donate. */
+/** Default chrome: opacity only. Trader stays yellow; more games / donate color on hover. */
 const FOOTER_CONTROL_BTN = FOOTER_CONTROL_BTN_BASE;
 const FOOTER_CONTROL_BTN_FADE =
   "opacity-80 transition-[opacity,color] group-hover:opacity-100";
@@ -54,9 +54,9 @@ const FOOTER_CONTROL_TEXT =
   `${FOOTER_CONTROL_BTN_FADE} text-neutral-300 group-hover:!text-neutral-300`;
 const FOOTER_SOCIAL_LABEL =
   `${FOOTER_CONTROL_TEXT} hidden sm:inline`;
-/** Heart stays red; opacity-only transition so scale pump is not overridden. */
+/** Heart is gray at rest, red on hover. Color/opacity only so scale pump is not overridden. */
 const DONATE_HEART =
-  "donate-heart text-base leading-none text-red-600 opacity-80 group-hover:opacity-100 transition-opacity";
+  "donate-heart text-base leading-none text-neutral-300 opacity-80 group-hover:opacity-100 group-hover:!text-red-600 transition-[opacity,color]";
 const FOOTER_DONATE_TEXT =
   `${FOOTER_CONTROL_BTN_FADE} group-hover:!text-red-600`;
 const FOOTER_TRADER_TEXT =
