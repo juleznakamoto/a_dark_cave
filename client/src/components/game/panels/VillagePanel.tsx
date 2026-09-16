@@ -901,7 +901,10 @@ export default function VillagePanel() {
 
       const currentLevel = state.heartfireState?.level || 0;
       const woodCost = 50 * (currentLevel + 1);
-      const canExecute = state.resources.wood >= woodCost && currentLevel < 5;
+      const canExecute =
+        !catalogActive &&
+        state.resources.wood >= woodCost &&
+        currentLevel < 5;
 
       const tooltipContent =
         currentLevel < 5 ? (
