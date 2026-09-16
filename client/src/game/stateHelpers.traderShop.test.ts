@@ -37,39 +37,16 @@ describe("isTraderShopUnlocked", () => {
 });
 
 describe("isTraderFooterShopVisible", () => {
-  it("is true in dev mode before traderSettled", () => {
+  it("is false before a purchase and before the trader tab", () => {
     expect(
       isTraderFooterShopVisible({
-        story: { seen: {} },
-        traderDialogOpens: 0,
-        devMode: true,
-      }),
-    ).toBe(true);
-    expect(
-      isTraderShopUnlocked({
         story: { seen: {} },
         traderDialogOpens: 0,
       }),
     ).toBe(false);
   });
 
-  it("is true in cruel mode before traderSettled (tabs stay locked)", () => {
-    expect(
-      isTraderFooterShopVisible({
-        story: { seen: {} },
-        traderDialogOpens: 0,
-        cruelMode: true,
-      }),
-    ).toBe(true);
-    expect(
-      isTraderShopUnlocked({
-        story: { seen: {} },
-        traderDialogOpens: 0,
-      }),
-    ).toBe(false);
-  });
-
-  it("is true after any non-free shop purchase (tabs stay locked)", () => {
+  it("is true after any non-free shop purchase while the tab is still locked", () => {
     expect(
       isTraderFooterShopVisible({
         story: { seen: {} },
@@ -85,7 +62,7 @@ describe("isTraderFooterShopVisible", () => {
     ).toBe(false);
   });
 
-  it("is true when an owned purchase has been activated", () => {
+  it("is true when an owned purchase has been activated and the tab is locked", () => {
     expect(
       isTraderFooterShopVisible({
         story: { seen: {} },
@@ -95,13 +72,14 @@ describe("isTraderFooterShopVisible", () => {
     ).toBe(true);
   });
 
-  it("follows tab unlock after traderSettled", () => {
+  it("is false once the trader is shown as a game tab", () => {
     expect(
       isTraderFooterShopVisible({
         story: { seen: { traderSettled: true } },
         traderDialogOpens: 0,
+        hasMadeNonFreePurchase: true,
       }),
-    ).toBe(true);
+    ).toBe(false);
   });
 });
 

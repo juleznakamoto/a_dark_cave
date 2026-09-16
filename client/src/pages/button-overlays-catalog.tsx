@@ -1,5 +1,5 @@
 import { useEffect, useState, type ReactNode } from "react";
-import { Plus, X } from "lucide-react";
+import { X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   BuildingActionBadge,
@@ -82,13 +82,6 @@ export const BUTTON_OVERLAY_CATALOG: ButtonOverlayCatalogEntry[] = [
     size: "16×16 host, 16×16 disc",
     position: "bottom-right (-8px)",
     where: "CooldownButton craft / build / Call Merchant. .button-corner-badge-16",
-  },
-  {
-    id: "gold",
-    label: "Buy Gold (+)",
-    size: "18×18 host, 18×18 disc",
-    position: "bottom-right (-9px)",
-    where: "Forest gold sinks + timed-event buys. GoldShopBadge",
   },
   {
     id: "playlight-dot",
@@ -311,20 +304,6 @@ export function ButtonOverlaysCatalog() {
                   aria-label="Abort"
                 >
                   <X className="h-3 w-3 stroke-[3]" />
-                </button>
-              </div>
-            </SampleActionButton>
-          </OverlayCell>
-
-          <OverlayCell entry={overlayById("gold")}>
-            <SampleActionButton label="Buy Ember Bomb">
-              <div className="button-corner-badge-18">
-                <button
-                  type="button"
-                  className={cn(YELLOW_CORNER_DISC_CLASS, "h-full w-full")}
-                  aria-label="Buy Gold"
-                >
-                  <Plus className="h-3 w-3 stroke-[3]" />
                 </button>
               </div>
             </SampleActionButton>

@@ -5,7 +5,7 @@ const MIN = 60 * 1000;
 
 describe("getLatestTooltipMilestonePlayMs", () => {
   const firstShow = 75 * MIN;
-  const interval = 30 * MIN;
+  const interval = 45 * MIN;
 
   it("returns 0 before the first show", () => {
     expect(getLatestTooltipMilestonePlayMs(firstShow - 1, firstShow, interval)).toBe(

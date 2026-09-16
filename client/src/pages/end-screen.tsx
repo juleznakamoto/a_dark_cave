@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Helmet } from "react-helmet-async";
 import Hero from "@/components/ui/animated-shader-hero";
-import { initPlaylight, markPlaylightDiscoveryUserInitiated } from "@/lib/playlight";
+import { initPlaylight } from "@/lib/playlight";
 import { mountFiraSansFontFace } from "@/lib/firaSansFontFace";
 import { mountNotoSansSymbols2FontFace } from "@/lib/notoSansSymbols2FontFace";
 import { useGameStore } from "@/game/state";
@@ -111,7 +111,6 @@ export default function EndScreenPage() {
       playlightSDK = (window as typeof window & { playlightSDK?: typeof playlightSDK }).playlightSDK;
     }
     if (playlightSDK && typeof playlightSDK.setDiscovery === "function") {
-      markPlaylightDiscoveryUserInitiated();
       playlightSDK.setDiscovery();
     }
   };

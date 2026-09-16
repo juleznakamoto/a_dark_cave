@@ -1167,19 +1167,15 @@ export function applyGameStateLoadMigrations(state: GameState): GameState {
   return migrated;
 }
 
-/** Footer Trader button: normal tab unlock, or cruel mode, or any prior shop purchase. */
+/** Footer Trader: paying players who do not yet have the shop as a game tab. */
 export function isTraderFooterShopVisible(state: {
   story?: { seen?: Record<string, unknown> };
   traderDialogOpens?: number;
-  cruelMode?: boolean;
-  devMode?: boolean;
   hasMadeNonFreePurchase?: boolean;
   activatedPurchases?: Record<string, boolean>;
 }): boolean {
-  if (state.devMode) return true;
-  if (state.cruelMode) return true;
-  if (hasAnyShopPurchase(state)) return true;
-  return isTraderShopUnlocked(state);
+  if (isTraderShopUnlocked(state)) return false;
+  return hasAnyShopPurchase(state);
 }
 
 /** Slice of a timed debuff stored on game state (disgust, fog, etc.). */

@@ -219,7 +219,7 @@ export const UTM_CAMPAIGN_LINKS: readonly UtmCampaignLink[] = [
   {
     id: "playlight-exit",
     label: "Playlight",
-    description: "Discovery / exit-intent landing",
+    description: "Discovery landing",
     group: "inbound",
     url: gameLandingUrl({
       source: "playlight",

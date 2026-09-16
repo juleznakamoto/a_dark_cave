@@ -4,9 +4,7 @@ export const SHOP_OPEN_SOURCES = [
   "footer",
   "gratitude",
   "url",
-  "timedevent-buy-gold",
   "estate-buy-gold",
-  "forest-buy-gold",
   "event",
 ] as const;
 

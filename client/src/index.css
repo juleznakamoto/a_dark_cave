@@ -469,21 +469,6 @@ body {
   pointer-events: auto;
 }
 
-/* Buy Gold: 18px host, center on the corner. */
-.button-corner-badge-18 {
-  position: absolute;
-  bottom: -9px;
-  right: -9px;
-  width: 18px;
-  height: 18px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  line-height: 0;
-  z-index: 30;
-  pointer-events: auto;
-}
-
 .action-button-corner-badge {
   position: absolute;
   z-index: 30;
@@ -1223,50 +1208,6 @@ html.adc-text-large .game-panel-header-indicator-row {
 
 .notification-pulse {
   animation: notification-pulse .8s ease-in-out infinite;
-}
-
-/* Playlight exit-intent banner: abort-style dismiss in the top-right (fully inside — parents clip overflow). */
-.playlight-sdk .adc-playlight-exit-intent-bar {
-  padding-right: 2.25rem;
-}
-
-.playlight-sdk .adc-playlight-exit-intent-close {
-  position: absolute;
-  top: 0.35rem;
-  right: 0.35rem;
-  z-index: 40;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 1.35rem;
-  height: 1.35rem;
-  padding: 0;
-  border-radius: 9999px;
-  border: 1px solid rgb(153 27 27 / 0.5);
-  background: rgb(69 10 10);
-  color: rgb(255 255 255);
-  box-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05);
-  cursor: pointer;
-  transition: background-color 0.15s ease;
-}
-
-.playlight-sdk .adc-playlight-exit-intent-close:hover {
-  background: rgb(127 29 29);
-}
-
-.playlight-sdk .adc-playlight-exit-intent-close svg {
-  width: 0.8rem;
-  height: 0.8rem;
-}
-
-.playlight-sdk .adc-playlight-exit-intent-close:focus-visible {
-  outline: 2px solid rgb(220 38 38);
-  outline-offset: 2px;
-}
-
-.playlight-sdk .adc-playlight-exit-intent-hidden {
-  display: none !important;
-  pointer-events: none !important;
 }
 
 /* Playlight discovery: cue next to controller button when paused / after sleep dialog delay */

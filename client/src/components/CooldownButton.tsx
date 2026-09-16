@@ -92,8 +92,6 @@ interface CooldownButtonProps {
     endPlayTime: number;
     mode?: "cooldown" | "progress";
   } | null;
-  /** When unaffordable (not cooling down / executing), click runs this instead. */
-  onDisabledClick?: () => void;
   /** Demo: force a wash without store cooldown or execution. */
   previewOverlay?: { widthPercent: number; mode: "fill" | "recede" } | null;
 }
@@ -116,7 +114,6 @@ const CooldownButton = forwardRef<HTMLButtonElement, CooldownButtonProps>(
       onMouseLeave,
       style,
       playTimeCooldown,
-      onDisabledClick,
       previewOverlay,
       ...props
     },
@@ -265,14 +262,8 @@ const CooldownButton = forwardRef<HTMLButtonElement, CooldownButtonProps>(
       isCoolingDown ||
       isExecuting ||
       isPlayTimeOverlayActive;
-    const allowDisabledClick = Boolean(disabled && onDisabledClick && !isOverlayBlocked);
-
     const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
-      if (isOverlayBlocked) return;
-      if (disabled) {
-        onDisabledClick?.();
-        return;
-      }
+      if (isOverlayBlocked || disabled) return;
       actionExecutedRef.current = true;
 
       emitClickParticles(e.currentTarget);
@@ -305,7 +296,7 @@ const CooldownButton = forwardRef<HTMLButtonElement, CooldownButtonProps>(
           // through and makes the dark outline buttons look flat/grey.
           "relative select-none appearance-none [-webkit-appearance:none]",
           particleConfig ? "overflow-visible" : "overflow-hidden",
-          isButtonDisabled && !allowDisabledClick && "pointer-events-none",
+          isButtonDisabled && "pointer-events-none",
           // aria-disabled (not native disabled) so outline variant hover styles still apply — reset them.
           isButtonDisabled &&
           "!bg-transparent hover:!bg-transparent hover:!text-foreground",
@@ -434,7 +425,7 @@ const CooldownButton = forwardRef<HTMLButtonElement, CooldownButtonProps>(
           tooltip={resolvedTooltip}
           tooltipId={buttonId}
           className="relative inline-flex"
-          disabled={isButtonDisabled && !allowDisabledClick}
+          disabled={isButtonDisabled}
           onMouseEnter={onMouseEnter}
           onMouseLeave={onMouseLeave}
         >

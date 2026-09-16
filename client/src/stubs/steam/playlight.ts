@@ -5,5 +5,3 @@ export function isPlaylightReferralUrl(): boolean {
 }
 
 export async function initPlaylight(): Promise<void> { }
-
-export function markPlaylightDiscoveryUserInitiated(): void { }

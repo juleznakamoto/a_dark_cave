@@ -1,4 +1,4 @@
-import { initPlaylight, markPlaylightDiscoveryUserInitiated } from "@/lib/playlight";
+import { initPlaylight } from "@/lib/playlight";
 import { useGameStore } from "@/game/state";
 import { saveGame } from "@/game/save";
 import { buildGameState } from "@/game/stateHelpers";
@@ -87,7 +87,6 @@ export async function fulfillPlaylightDiscoverReward(): Promise<boolean> {
         }
       ).playlightSDK;
       if (playlightSDK && typeof playlightSDK.setDiscovery === "function") {
-        markPlaylightDiscoveryUserInitiated();
         playlightSDK.setDiscovery();
       }
     } catch (error) {

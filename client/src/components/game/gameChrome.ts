@@ -9,7 +9,7 @@ export const GAME_FOOTER_INSET = "36px";
  */
 export const GAME_CHROME_NO_BG_HOVER = "hover:bg-transparent active:scale-100";
 
-/** Yellow 18px disc: Buy Gold and Compass 2x. */
+/** Yellow 18px disc: Compass 2x chip. */
 export const YELLOW_CORNER_DISC_CLASS =
   "flex items-center justify-center rounded-full bg-yellow-700 text-white shadow-sm border border-yellow-500/60";
 

@@ -109,10 +109,6 @@ import { getCurrentPopulation, getMaxPopulation } from "@/game/population";
 import { audioManager, SOUND_VOLUME, caveExploreVolume } from "@/lib/audio";
 import { BLOOD_MOON_EVENT_ID } from "@/game/bloodMoonOverlay";
 import { GAME_CONSTANTS, getCallMerchantGoldCost } from "@/game/constants";
-import {
-  isPlaylightDiscoverSocialTaskFulfilled,
-  playlightExitIntentMilestoneFloorFromPlayTime,
-} from "@/game/playlightExitIntent";
 import { socialPromptMilestoneFloorFromPlayTime } from "@/game/socialPromptAuto";
 import { socialPromoExclusiveStepsCompleted } from "@/game/socialPromoExclusiveReward";
 import {
@@ -3412,16 +3408,9 @@ export const useGameStore = create<GameStore>((set, get) => ({
             }),
           ),
         ),
-        playlightExitIntentMilestoneIndex: Math.max(
+        playlightExitIntentMilestoneIndex:
           (savedState as { playlightExitIntentMilestoneIndex?: number })
             .playlightExitIntentMilestoneIndex ?? 0,
-          playlightExitIntentMilestoneFloorFromPlayTime(
-            loadedPlayTime,
-            isPlaylightDiscoverSocialTaskFulfilled(
-              savedState.social_media_rewards,
-            ),
-          ),
-        ),
         feedbackPromptShown:
           (savedState as { feedbackPromptShown?: boolean }).feedbackPromptShown ===
           true,

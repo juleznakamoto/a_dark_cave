@@ -9,9 +9,10 @@ import { GAME_CHROME_NO_BG_HOVER } from "./gameChrome";
 
 const PLAYLIGHT_FOOTER_BUTTON_ID = "footer-playlight";
 
-/** First auto-show after 75 min active play, then every 30 min. */
+/** First auto-show after 75 min active play, then every 45 min. */
 const FIRST_SHOW_PLAY_MS = 75 * 60 * 1000;
-const INTERVAL_MS = 30 * 60 * 1000;
+const INTERVAL_MS = 45 * 60 * 1000;
+const SHOW_MS = 10 * 1000;
 
 type PlaylightDiscoveryButtonProps = {
   onClick: () => void;
@@ -34,6 +35,7 @@ export default function PlaylightDiscoveryButton({
   const showDiscoveryTooltip = usePeriodicPlayTimeTooltip({
     firstShowPlayMs: FIRST_SHOW_PLAY_MS,
     intervalMs: INTERVAL_MS,
+    showMs: SHOW_MS,
   });
 
   const handleCalloutClick = () => {

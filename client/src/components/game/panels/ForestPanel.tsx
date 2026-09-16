@@ -23,14 +23,8 @@ import {
 } from "@/components/game/gameChrome";
 import { RedactedLockedHint, RedactedMoreHint } from "@/components/game/RedactedHint";
 import { getDemoEndHiddenActionTeasers } from "@/game/demoEndCatalog";
-import { useDemoEndCatalogActive, useSteamEditionActive } from "@/hooks/useSteamEditionActive";
+import { useDemoEndCatalogActive } from "@/hooks/useSteamEditionActive";
 import { ActionButtonSlot } from "@/components/game/GameActionButtonStack";
-import {
-  GoldShopBadge,
-  openGoldShopFilter,
-  shouldShowForestGoldShopPlus,
-} from "@/components/game/GoldShopBadge";
-import { isTraderShopUnlocked } from "@/game/stateHelpers";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import { ButtonLevelBadge } from "@/components/game/ButtonLevelBadge";
 import { ButtonPriorBadge } from "@/components/game/ButtonPriorBadge";
@@ -155,7 +149,6 @@ function resolveForestPanelTradeCost(
 export default function ForestPanel() {
   const { t } = useTranslation("ui");
   const catalogActive = useDemoEndCatalogActive();
-  const steamEditionActive = useSteamEditionActive();
   const state = useGameStoreWithoutTickClock();
   const { executeAction, setHighlightedResources } = state;
 
@@ -288,17 +281,6 @@ export default function ForestPanel() {
     ].includes(actionId);
     const isVeinfireElixirTradeAction =
       actionId === "tradeGoldForVeinfireElixir";
-    const buyGoldCost = resolveForestPanelTradeCost(action, state)?.["resources.gold"];
-    const showForestGoldShop = shouldShowForestGoldShopPlus(actionId, {
-      goldUnaffordable:
-        typeof buyGoldCost === "number" &&
-        (state.resources?.gold ?? 0) < buyGoldCost,
-      traderUnlocked: isTraderShopUnlocked(state),
-      steamEditionActive,
-    });
-    const openForestGoldShop = showForestGoldShop
-      ? () => openGoldShopFilter("forest-buy-gold")
-      : undefined;
     const focusTrailing = getFocusTooltipHeaderTrailing(actionId, state);
     const resourceGainTooltip =
       isChopWood ||
@@ -459,7 +441,6 @@ export default function ForestPanel() {
           actionId={actionId}
           size="xs"
           disabled={!canExecute}
-          onDisabledClick={openForestGoldShop}
           variant="outline"
           className={`${isTradeButton ? "flex-[0_0_calc(25%-0.375rem)]" : ""} ${shouldGlow ? "focus-glow" : ""}`}
           tooltip={tooltipContent}
@@ -506,22 +487,11 @@ export default function ForestPanel() {
       );
 
       const isPriorEligible = isPriorActionEligible(actionId, state);
-      const needsWrapper = upgradeKey || isPriorEligible || showForestGoldShop;
-      return needsWrapper ? (
+      return (
         <ActionButtonSlot key={actionId}>
           {button}
           {upgradeKey && <ButtonLevelBadge upgradeKey={upgradeKey} />}
           {isPriorEligible && <ButtonPriorBadge actionId={actionId} />}
-          {showForestGoldShop && openForestGoldShop && (
-            <GoldShopBadge
-              testId={`forest-${actionId}-buy-gold`}
-              onOpen={openForestGoldShop}
-            />
-          )}
-        </ActionButtonSlot>
-      ) : (
-        <ActionButtonSlot key={actionId}>
-          {button}
         </ActionButtonSlot>
       );
     }

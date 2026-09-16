@@ -32,7 +32,6 @@ function withStartedRun(base: GameState, playTimeMs: number): GameState {
     // Skip play-time auto prompts so browser tests land on the fixture, not a modal.
     feedbackPromptShown: true,
     socialPromptMilestoneIndex: SOCIAL_PROMPT_AUTO_OPEN_COUNT,
-    playlightExitIntentMilestoneIndex: 8,
   };
 }
 

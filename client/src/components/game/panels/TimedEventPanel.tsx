@@ -26,13 +26,7 @@ import {
   GAME_TAB_SECTION_HEADER,
   GAME_TAB_SECTION_HEADER_ROW,
 } from "@/components/game/gameChrome";
-import {
-  GoldShopBadge,
-  openGoldShopFilter,
-  shouldShowGoldShopPlus,
-} from "@/components/game/GoldShopBadge";
 import { isDemoPlayFrozen } from "@/game/demoLimit";
-import { isTraderShopUnlocked } from "@/game/stateHelpers";
 import { composeMerchantSpecialItemTooltip } from "@/game/rules/eventsMerchantTooltip";
 import { EventChoice, type LogEntry } from "@/game/rules/events";
 import { logger } from "@/lib/logger";
@@ -74,11 +68,9 @@ import {
   RelevantStatIcon,
 } from "@/components/game/EventChoiceSuccessTooltip";
 import { ActionInsightBadge } from "@/components/game/ActionInsightBadge";
-import { useSteamEditionActive } from "@/hooks/useSteamEditionActive";
 
 export default function TimedEventPanel() {
   const { t } = useTranslation(["ui", "common"]);
-  const steamEditionActive = useSteamEditionActive();
   const {
     timedEventTab,
     applyEventChoice,
@@ -532,21 +524,6 @@ export default function TimedEventPanel() {
       isPurchased ||
       collectorSectionLocked;
 
-    const showGoldShopBadge =
-      !isPurchased &&
-      timeRemaining > 0 &&
-      shouldShowGoldShopPlus({
-        goldUnaffordable:
-          affordance.costs.some((c) => c.resource === "gold") &&
-          affordance.individualAffordance.gold === false,
-        traderUnlocked: isTraderShopUnlocked(gameState),
-        steamEditionActive,
-      });
-
-    const openGoldShop = () => {
-      openGoldShopFilter("timedevent-buy-gold");
-    };
-
     let successPercentage: string | null = null;
     if (hasDefinedSuccessChance(choice.success_chance)) {
       const successPercent = getEventChoiceSuccessPercent(choice, gameState);
@@ -564,11 +541,6 @@ export default function TimedEventPanel() {
     const buttonContent = (
       <Button
         onClick={(e) => {
-          if (showGoldShopBadge) {
-            e.stopPropagation();
-            openGoldShop();
-            return;
-          }
           if (isDisabled) return;
           e.stopPropagation();
           handleChoice(choice.id);
@@ -576,10 +548,10 @@ export default function TimedEventPanel() {
         variant="outline"
         size="xs"
         aria-disabled={isDisabled || undefined}
-        button_id={showGoldShopBadge ? undefined : `timedevent-${choice.id}`}
+        button_id={`timedevent-${choice.id}`}
         className={cn(
           "h-auto adc-btn-min-h-xs w-fit max-w-full gap-2 py-1 text-left justify-start whitespace-normal",
-          isDisabled && !showGoldShopBadge && "pointer-events-none",
+          isDisabled && "pointer-events-none",
           gameActionOutlineButtonClassName(isDisabled),
         )}
       >
@@ -688,13 +660,6 @@ export default function TimedEventPanel() {
       }
     };
 
-    const goldShopBadge = showGoldShopBadge ? (
-      <GoldShopBadge
-        testId={`timedevent-${choice.id}-buy-gold`}
-        onOpen={openGoldShop}
-      />
-    ) : null;
-
     return (
       <div
         key={choice.id}
@@ -706,13 +671,11 @@ export default function TimedEventPanel() {
             tooltipTriggerClassName="inline-block w-fit max-w-full"
             tooltip={tooltipContent}
             tooltipId={`timedevent-${choice.id}`}
-            disabled={isDisabled && !showGoldShopBadge}
+            disabled={isDisabled}
             onClick={
-              showGoldShopBadge
-                ? openGoldShop
-                : isDisabled
-                  ? undefined
-                  : () => handleChoice(choice.id)
+              isDisabled
+                ? undefined
+                : () => handleChoice(choice.id)
             }
             onMouseEnter={
               costText || costBreakdown.length > 0
@@ -730,7 +693,6 @@ export default function TimedEventPanel() {
         ) : (
           buttonContent
         )}
-        {goldShopBadge}
       </div>
     );
   };

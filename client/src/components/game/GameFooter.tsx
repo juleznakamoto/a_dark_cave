@@ -1,5 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { useGameStore } from "@/game/state";
+import { isTraderFooterShopVisible } from "@/game/stateHelpers";
 import { FooterSocialIcon } from "@/components/game/FooterSocialIcon";
 import { HoverCalloutTooltip } from "@/components/game/HoverCalloutTooltip";
 import {
@@ -30,10 +31,7 @@ import {
   getDemoProgressSegmentCount,
 } from "@/game/demoLimit";
 import { openGameFeedbackForm } from "@/lib/gameFeedbackForm";
-import {
-  initPlaylight,
-  markPlaylightDiscoveryUserInitiated,
-} from "@/lib/playlight";
+import { initPlaylight } from "@/lib/playlight";
 import PlaylightDiscoveryButton from "./PlaylightDiscoveryButton";
 import FooterNetworkMenu from "./FooterNetworkMenu";
 import { usePeriodicPlayTimeTooltip } from "@/hooks/usePeriodicPlayTimeTooltip";
@@ -173,6 +171,7 @@ function SteamDemoProgressBar() {
 
 export default function GameFooter() {
   const setShopDialogOpen = useGameStore((s) => s.setShopDialogOpen);
+  const showFooterTrader = useGameStore((s) => isTraderFooterShopVisible(s));
   const referralCount = useGameStore((s) => s.referralCount ?? 0);
   const isPaused = useGameStore((s) => s.isPaused);
   const togglePause = useGameStore((s) => s.togglePause);
@@ -230,7 +229,6 @@ export default function GameFooter() {
       }
     }
     if (playlightSDK && typeof playlightSDK.setDiscovery === "function") {
-      markPlaylightDiscoveryUserInitiated();
       playlightSDK.setDiscovery();
     }
   };
@@ -295,13 +293,15 @@ export default function GameFooter() {
               />
             </Button>
 
-            {/* Shop is web-only (Stripe). Donate is web + Galaxy (external tip jar). */}
-            {!steamEditionActive && (
+            {/* Shop is web-only (Stripe). Donate is web + Galaxy (external tip jar).
+                Footer Trader is only for paying players who do not yet have the tab. */}
+            {!steamEditionActive && showFooterTrader && (
               <Button
                 variant="ghost"
                 size="xs"
                 onClick={() => setShopDialogOpen(true, "footer")}
                 aria-label={t("footer.openShop")}
+                data-testid="button-footer-trader"
                 className={`${FOOTER_CONTROL_BTN_BASE} hover:!text-yellow-500 flex items-center gap-1`}
                 {...footerTraderHoverHandlers}
               >
@@ -317,7 +317,7 @@ export default function GameFooter() {
                 </span>
               </Button>
             )}
-            {footerTraderParticlesPortal}
+            {!steamEditionActive && showFooterTrader && footerTraderParticlesPortal}
             {/* Full / playtest / web: left. Steam demo: right (clear of progress bar). */}
             {!steamDemoActive && playlightButton}
             {showFooterDonate && (
