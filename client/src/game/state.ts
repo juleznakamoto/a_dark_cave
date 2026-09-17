@@ -5355,6 +5355,7 @@ bindGameStore({
   setState: (partial) => {
     useGameStore.setState(partial as Parameters<typeof useGameStore.setState>[0]);
   },
+  subscribe: (listener) => useGameStore.subscribe(listener),
   isModalDialogOpen: (state) => isModalDialogOpen(state as GameStore),
 });
 

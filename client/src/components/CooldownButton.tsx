@@ -10,6 +10,7 @@ import { cn, formatCompactDuration } from "@/lib/utils";
 import { useInlineButtonParticles } from "@/components/ui/bubbly-button";
 import type { ParticleConfig } from "@/components/ui/bubbly-button.particles";
 import { ActionTooltipSeparator } from "@/game/rules/actionTooltipLayout";
+import { trackCooldownUiPoll } from "@/lib/perfProbe";
 
 /** Relative wrapper for action buttons and badges. inline-flex avoids baseline gap so corner badges sit on the button. */
 export const GAME_ACTION_BUTTON_STACK_CLASS = "relative inline-flex";
@@ -175,8 +176,12 @@ const CooldownButton = forwardRef<HTMLButtonElement, CooldownButtonProps>(
       if (!isExecutingCheck && !isPlayTimeOverlayActive) {
         return;
       }
+      const untrackPoll = trackCooldownUiPoll();
       const id = setInterval(() => forceUpdate((n) => n + 1), 100);
-      return () => clearInterval(id);
+      return () => {
+        clearInterval(id);
+        untrackPoll();
+      };
     }, [
       isExecutingCheck,
       isPlayTimeOverlayActive,

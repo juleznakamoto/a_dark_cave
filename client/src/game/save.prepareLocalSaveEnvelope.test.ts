@@ -87,6 +87,18 @@ describe("prepareLocalSaveEnvelope", () => {
     expect(decoded?.playTime).toBe(90_000);
   });
 
+  it("still stringifies once when the perf probe is recording marks", async () => {
+    const { setPerfProbeEnabledForTests, resetPerfProbeForTests } =
+      await import("@/lib/perfProbe");
+    setPerfProbeEnabledForTests(true);
+    const stringifySpy = vi.spyOn(JSON, "stringify");
+    const { json } = prepareLocalSaveEnvelope(sampleState());
+    expect(stringifySpy).toHaveBeenCalledTimes(1);
+    expect(stringifySpy.mock.results[0]?.value).toBe(json);
+    stringifySpy.mockRestore();
+    resetPerfProbeForTests();
+  });
+
   it("round-trips the same payload as encodeLocalSave of the parsed clone", () => {
     const { json, data } = prepareLocalSaveEnvelope(sampleState());
     expect(decodeLocalSave(encodeLocalSaveJson(json))).toEqual(
