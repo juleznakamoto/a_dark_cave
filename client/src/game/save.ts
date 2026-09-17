@@ -10,6 +10,14 @@ import {
   processReferralAfterConfirmation,
 } from "./auth";
 import { logger } from "@/lib/logger";
+import {
+  ADC_SAVE_MEASURE,
+  ADC_SAVE_STRINGIFY_MEASURE,
+  beginPerfMeasure,
+  endPerfMeasure,
+  recordSaveEncode,
+  recordSaveStringify,
+} from "@/lib/perfProbe";
 import { getSupabaseClient } from "@/lib/supabase";
 import {
   encodeLocalGameState,
@@ -142,7 +150,10 @@ export function prepareLocalSaveEnvelope(gameState: GameState): {
     timestamp: now,
     playTime: playTimeForEnvelope,
   };
+  // Probe-only timing; stringify still runs exactly once (save semantics unchanged).
+  const stringifyMeasure = beginPerfMeasure(ADC_SAVE_STRINGIFY_MEASURE);
   const json = JSON.stringify(stamped);
+  recordSaveStringify(endPerfMeasure(stringifyMeasure), json.length);
   return { json, data: JSON.parse(json) as SaveData };
 }
 
@@ -373,7 +384,10 @@ async function putLocalSave(
   data: SaveData,
   json?: string,
 ): Promise<void> {
+  // Probe-only: mark stringify/encode CPU (not IDB I/O). No-op when off.
+  const encodeMeasure = beginPerfMeasure(ADC_SAVE_MEASURE);
   const encoded = json ? encodeLocalSaveJson(json) : encodeLocalSave(data);
+  recordSaveEncode(endPerfMeasure(encodeMeasure), encoded.length);
   if (db) {
     await db.put("saves", encoded, getSaveKey());
   }

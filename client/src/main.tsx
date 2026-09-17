@@ -21,6 +21,7 @@ import {
   recoverFromStaleChunkLoad,
 } from "./lib/hardReload";
 import { logger } from "./lib/logger";
+import { installPerfProbe } from "./lib/perfProbe";
 import { BOOT_LOCALE_TIMEOUT_MS } from "./lib/fatalErrorScreen";
 import { isCrazyGamesBuild } from "./lib/edition";
 import { hasCrazyGamesSdk } from "./lib/crazyGames";
@@ -30,6 +31,7 @@ import { persistLandingReferralCode } from "./game/referralLanding";
 bootstrapAfterHardReload();
 installStaleChunkAutoReload();
 persistLandingReferralCode();
+installPerfProbe();
 
 installSuppressReplitFragmentWarnings();
 initTextScaleFromStorage();
