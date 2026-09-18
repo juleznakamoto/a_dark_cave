@@ -71,3 +71,25 @@ describe("TooltipWrapper - mobile long-press vs action", () => {
     expect(onAction).toHaveBeenCalledTimes(1);
   });
 });
+
+describe("TooltipWrapper - forced open", () => {
+  beforeEach(() => {
+    setGlobalTooltipIsMobile(false);
+    setGlobalTooltipsSuppressed(false);
+  });
+
+  afterEach(() => {
+    setGlobalTooltipsSuppressed(false);
+    closeAllGlobalTooltips();
+  });
+
+  it("keeps tooltip content visible when open is true", async () => {
+    render(
+      <TooltipWrapper tooltip="Wood: 12 / 50" tooltipId="forced-wood" open>
+        <span>Wood</span>
+      </TooltipWrapper>,
+    );
+
+    expect((await screen.findAllByText("Wood: 12 / 50")).length).toBeGreaterThan(0);
+  });
+});

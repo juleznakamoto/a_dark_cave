@@ -27,6 +27,13 @@ export interface TooltipWrapperProps {
    */
   tooltipTriggerAsChild?: boolean;
   tooltipContentClassName?: string;
+  /** Placement relative to the trigger. Defaults to Radix `top`. */
+  side?: React.ComponentPropsWithoutRef<typeof TooltipContent>["side"];
+  /**
+   * Force this tooltip open or closed. Dev samples use `open` to keep a
+   * specimen visible. Omit it for normal hover / long-press.
+   */
+  open?: boolean;
   /**
    * When true (default), enabled controls use the browser's native click on short
    * tap/press. Set false only for non-button triggers that rely on wrapper onClick.
@@ -53,6 +60,8 @@ export function TooltipWrapper({
   tooltipTriggerClassName,
   tooltipTriggerAsChild = false,
   tooltipContentClassName,
+  side,
+  open,
   preferNativeClick = true,
   onMouseEnter,
   onMouseLeave,
@@ -69,6 +78,7 @@ export function TooltipWrapper({
   const generatedTooltipId = useId();
   const finalTooltipId = tooltipId || generatedTooltipId;
   const tooltipOpen = useGlobalTooltipOpen(finalTooltipId);
+  const resolvedOpen = open !== undefined ? open : tooltipOpen;
   const isLongPressTooltipOpen = tooltipOpen === true;
   const insideGameProvider = useInsideGameTooltipProvider();
 
@@ -105,8 +115,8 @@ export function TooltipWrapper({
   const tooltipTriggerCursorClass = disabled ? "cursor-default" : undefined;
   const tooltipTree = (
     <Tooltip
-      open={tooltipOpen}
-      delayDuration={300}
+      open={resolvedOpen}
+      delayDuration={open !== undefined ? 0 : 300}
     >
       <TooltipTrigger asChild>
         {tooltipTriggerAsChild && React.isValidElement(children) ? (
@@ -136,7 +146,9 @@ export function TooltipWrapper({
           </span>
         )}
       </TooltipTrigger>
-      <TooltipContent className={tooltipContentClassName}>{tooltip}</TooltipContent>
+      <TooltipContent className={tooltipContentClassName} side={side}>
+        {tooltip}
+      </TooltipContent>
     </Tooltip>
   );
 

@@ -11,14 +11,9 @@ import {
   gameChromeDialogClassName,
   useDestroyedChrome,
 } from "@/components/game/gameChrome";
+import { TooltipWrapper } from "@/components/game/TooltipWrapper";
 import { Button } from "@/components/ui/button";
 import { ImproveButton } from "@/components/ui/improve-button";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
 import { cn } from "@/lib/utils";
 import {
   MADNESS_VISUAL_STAGE_LABELS,
@@ -161,19 +156,22 @@ export function ChromeRulesSection() {
             sample stays open.
           </p>
           <div className="relative min-h-[5.5rem] pt-2">
-            <TooltipProvider delayDuration={0}>
-              <Tooltip open>
-                <TooltipTrigger asChild>
-                  <span className="inline-block text-xs text-muted-foreground">
-                    Wood
-                  </span>
-                </TooltipTrigger>
-                <TooltipContent side="bottom">
+            <TooltipWrapper
+              tooltip={
+                <>
                   <p>Wood: 12 / 50</p>
                   <p className="text-muted-foreground">Gathered from the cave.</p>
-                </TooltipContent>
-              </Tooltip>
-            </TooltipProvider>
+                </>
+              }
+              tooltipId="chrome-demo-tooltip-sample"
+              open
+              side="bottom"
+              tooltipTriggerAsChild
+            >
+              <span className="inline-block text-xs text-muted-foreground">
+                Wood
+              </span>
+            </TooltipWrapper>
           </div>
         </div>
 
