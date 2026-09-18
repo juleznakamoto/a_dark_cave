@@ -24,6 +24,7 @@ export default function VillageEffectDialog({
   const theme = getVillageEffectTheme(data.themeId);
   const effectTheme: OutcomeDialogEffectTheme = {
     border: theme.border,
+    chromeColor: theme.chromeColor,
     iconRing: theme.iconRing,
     glowRgb: theme.glowRgb,
   };

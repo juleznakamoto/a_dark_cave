@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="4" height="720" viewBox="3 0 4 720">
+  <path
+    fill="none"
+    stroke="#fff"
+    stroke-width="1"
+    stroke-linecap="butt"
+    stroke-linejoin="round"
+    d="M5 0L5 25.75M5 33.25L5 94.5M5 107.5L5 188M5 196L5 245.5M5 256.5L5 324M5 336L5 400M5 412L5 483.5M5 494.5L5 578.5M5 591.5L5 664.75M5 672.25L5 720M5 720L5 720.02M3.6 25.4L3.6 32.2M3.6 244.2L3.6 256.4M6.4 322.4L6.4 336.2M3.6 404.2L3.6 408.6M6.4 482.4L6.4 494.2M6.35 663.2L6.4 672.4M6.4 95L6.4 108M3.6 580L3.6 592"
+  />
+</svg>

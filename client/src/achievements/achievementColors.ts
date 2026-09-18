@@ -72,15 +72,15 @@ export const INDICATOR_CLASS_COMPLETE: Record<string, string> = {
 /** Claim button styling per tab (matches bar color). */
 export const CLAIM_BUTTON_CLASS: Record<string, string> = {
   building:
-    "bg-blue-950/30 hover:bg-blue-950/70 hover:text-foreground border border-border border-blue-800/50 rounded-xl",
+    "bg-blue-950/30 hover:bg-blue-950/70 hover:text-foreground border border-border border-blue-800/50 rounded-md",
   item:
-    "bg-red-950/30 hover:bg-red-950/70 hover:text-foreground border border-border border-red-800/50 rounded-xl",
+    "bg-red-950/30 hover:bg-red-950/70 hover:text-foreground border border-border border-red-800/50 rounded-md",
   action:
-    "bg-green-950/30 hover:bg-green-950/70 hover:text-foreground border border-border border-green-800/50 rounded-xl",
+    "bg-green-950/30 hover:bg-green-950/70 hover:text-foreground border border-border border-green-800/50 rounded-md",
   basic:
-    "bg-amber-950/30 hover:bg-amber-950/70 hover:text-foreground border border-border border-amber-800/50 rounded-xl",
+    "bg-amber-950/30 hover:bg-amber-950/70 hover:text-foreground border border-border border-amber-800/50 rounded-md",
   overall:
-    "bg-violet-950/30 hover:bg-violet-950/70 hover:text-foreground border border-border border-violet-800/50 rounded-xl",
+    "bg-violet-950/30 hover:bg-violet-950/70 hover:text-foreground border border-border border-violet-800/50 rounded-md",
 };
 
 /** Hex/rgba colors for Recharts (circle charts). Derived from ACHIEVEMENT_COLORS. */

@@ -6,6 +6,11 @@ import { X } from "lucide-react"
 
 import { cn } from "@/lib/utils"
 import {
+  destroyedChromeMaskStyle,
+  gameChromeDialogClassName,
+  useDestroyedChrome,
+} from "@/components/game/gameChrome"
+import {
   DIALOG_OPEN_CLICK_LOCK_MS,
   useDialogOpenClickLock,
 } from "@/hooks/useDialogOpenClickLock"
@@ -50,6 +55,10 @@ type DialogContentProps = React.ComponentPropsWithoutRef<typeof DialogPrimitive.
   openClickLockMs?: number;
   /** Changing this restarts the open click lock (e.g. a new event in the same dialog). */
   openClickLockKey?: string | number;
+  /** Skip destroyed chrome (frameless dialogs such as the share card). */
+  destroyedChrome?: boolean;
+  /** Move vertical scrolling onto an inner pane so the destroyed hairline is not clipped. */
+  scrollBody?: boolean;
 };
 
 const defaultOpenClickLockMs =
@@ -80,8 +89,12 @@ const DialogContent = React.forwardRef<
   onFocusOutside,
   onEscapeKeyDown,
   onOpenAutoFocus,
+  destroyedChrome = true,
+  scrollBody,
   ...props
 }, ref) => {
+  const chromeSeed = React.useId();
+  const chromeOn = useDestroyedChrome() && destroyedChrome;
   const {
     lockActive,
     onActivationCapture,
@@ -151,7 +164,10 @@ const DialogContent = React.forwardRef<
           // cannot override our modal sizing via conflicting utility classes.
           "fixed left-[50%] top-[50%] z-50 grid translate-x-[-50%] translate-y-[-50%] gap-1 border bg-background p-6 shadow-lg duration-200 data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[state=closed]:slide-out-to-left-1/2 data-[state=closed]:slide-out-to-top-[48%] data-[state=open]:slide-in-from-left-1/2 data-[state=open]:slide-in-from-top-[48%] sm:rounded-lg",
           lockActive && "adc-dialog-open-click-lock",
-          className
+          scrollBody && "flex flex-col",
+          chromeOn && gameChromeDialogClassName(),
+          className,
+          chromeOn && "overflow-visible border",
         )}
         style={{
           ...(skipViewportWidthClamp
@@ -162,11 +178,16 @@ const DialogContent = React.forwardRef<
               maxWidth: "min(95vw, var(--adc-dialog-max-w, 32rem))",
             }),
           ...(layerZIndex != null ? { zIndex: layerZIndex } : {}),
+          ...(chromeOn ? destroyedChromeMaskStyle(chromeSeed) : {}),
           ...style,
         }}
         {...props}
       >
-        {children}
+        {scrollBody ? (
+          <div className="min-h-0 flex-1 overflow-y-auto">{children}</div>
+        ) : (
+          children
+        )}
         {!hideClose && (
           <DialogPrimitive.Close className="adc-dialog-close absolute right-3 top-3 flex items-center justify-center rounded-sm p-0 opacity-70 ring-offset-background transition-opacity hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:pointer-events-none data-[state=open]:bg-accent data-[state=open]:text-muted-foreground">
             <X className="adc-dialog-close-icon" aria-hidden="true" />

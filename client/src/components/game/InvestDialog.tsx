@@ -188,7 +188,10 @@ export default function InvestDialog({ open, onOpenChange }: Props) {
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="[--adc-dialog-max-w:22rem] max-h-[90dvh] overflow-y-auto min-w-0">
+      <DialogContent
+        scrollBody
+        className="[--adc-dialog-max-w:22rem] max-h-[90dvh] min-w-0"
+      >
         <DialogHeader className="min-w-0">
           <div className="flex items-center gap-1 pr-10">
             <DialogTitle className="m-0 pr-0 leading-none">

@@ -5,6 +5,7 @@ import React, { useState } from "react";
 import { act, fireEvent, render, screen } from "@testing-library/react";
 import { describe, expect, it, vi } from "vitest";
 import { DIALOG_OPEN_CLICK_LOCK_MS } from "@/hooks/useDialogOpenClickLock";
+import { chromeRuleColorStyle } from "@/components/game/gameChrome";
 import { Dialog, DialogContent, DialogTitle } from "./dialog";
 
 function LockedDialog() {
@@ -51,5 +52,27 @@ describe("DialogContent open click lock", () => {
     clickThrough(button);
     expect(button.textContent).toBe("1");
     vi.useRealTimers();
+  });
+});
+
+describe("DialogContent destroyed chrome", () => {
+  it("keeps themed color tokens without a 2px solid edge", () => {
+    render(
+      <Dialog open>
+        <DialogContent
+          hideClose
+          className="border-2 border-gray-400"
+          style={chromeRuleColorStyle("#9ca3af")}
+          aria-describedby={undefined}
+        >
+          <DialogTitle>Cube</DialogTitle>
+        </DialogContent>
+      </Dialog>,
+    );
+    const dialog = screen.getByRole("dialog");
+    expect(dialog.className).toContain("game-chrome-rule--dialog");
+    expect(dialog.className).toContain("border-gray-400");
+    expect(dialog.style.getPropertyValue("--adc-chrome-rule-color")).toBe("#9ca3af");
+    expect(dialog.className).not.toMatch(/(^|\s)border-2(\s|$)/);
   });
 });

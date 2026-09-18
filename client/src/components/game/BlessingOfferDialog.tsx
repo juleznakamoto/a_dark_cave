@@ -12,6 +12,11 @@ import {
 import { getEffectName } from "@/i18n/resolveGameText";
 import { useUiTranslation } from "@/i18n/useUiTranslation";
 import { SidePanelSectionIcon } from "@/components/game/panels/SidePanelSectionIcon";
+import {
+  destroyedChromeMaskStyle,
+  gameChromeDialogClassName,
+  useDestroyedChrome,
+} from "@/components/game/gameChrome";
 
 export default function BlessingOfferDialog() {
   const isOpen = useGameStore((s) => s.blessingOfferDialogOpen);
@@ -21,6 +26,7 @@ export default function BlessingOfferDialog() {
 
 function BlessingOfferDialogOpen() {
   const { t } = useUiTranslation();
+  const chromeOn = useDestroyedChrome();
   const chooseInsightBlessing = useGameStore((s) => s.chooseInsightBlessing);
   const insight = useGameStore((s) => s.resources.insight ?? 0);
   const gameState = useGameStore.getState() as unknown as GameState;
@@ -65,9 +71,16 @@ function BlessingOfferDialogOpen() {
               <div
                 key={blessingId}
                 className={cn(
-                  "group relative z-0 flex w-[13.5rem] flex-col overflow-visible rounded-lg border border-border bg-background p-3 shadow-2xl sm:w-[16rem] sm:p-5",
-                  "transition-colors duration-500 hover:border-blue-600 focus-within:border-blue-600",
+                  "blessing-offer-card group relative z-0 flex w-[13.5rem] flex-col overflow-visible rounded-lg bg-background p-3 shadow-2xl sm:w-[16rem] sm:p-5",
+                  chromeOn
+                    ? `${gameChromeDialogClassName()} game-chrome-rule--round hover:[--adc-chrome-rule-color:#2563eb] focus-within:[--adc-chrome-rule-color:#2563eb]`
+                    : "border border-border transition-colors duration-500 hover:border-blue-600 focus-within:border-blue-600",
                 )}
+                style={
+                  chromeOn
+                    ? destroyedChromeMaskStyle(`blessing-offer-${blessingId}`)
+                    : undefined
+                }
                 data-testid={`blessing-offer-card-${blessingId}`}
               >
                 <div className="pointer-events-none absolute inset-0 -z-10 rounded-lg opacity-0 transition-opacity duration-500 group-hover:opacity-100 group-focus-within:opacity-100 blessing-offer-card-glow" />
@@ -99,10 +112,10 @@ function BlessingOfferDialogOpen() {
                   disabled={!canAfford}
                   button_id={`blessing-offer-choose-${blessingId}`}
                   className={cn(
-                    "mt-auto w-full border-blue-600 bg-blue-600/10 text-foreground",
+                    "mt-auto w-full [--adc-chrome-rule-color:#2563eb] border-blue-600 bg-blue-600/10 text-foreground",
                     "hover:bg-blue-600/20 hover:text-foreground",
                     !canAfford &&
-                    "border-blue-950 opacity-60 disabled:opacity-60 hover:bg-transparent",
+                    "[--adc-chrome-rule-color:#172554] border-blue-950 opacity-60 disabled:opacity-60 hover:bg-transparent",
                   )}
                   onClick={() => chooseInsightBlessing(blessingId)}
                 >

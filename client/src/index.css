@@ -1,3 +1,5 @@
+@import "./assets/chrome/chrome-mask-stages.css";
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -272,6 +274,521 @@ body {
   --radius: 4px;
 }
 
+/*
+ * Destroyed chrome rules (header, footer, column seams).
+ * Chamfered SVG stroke with a few gaps; some gaps hold a speck or shard.
+ * Hairlines sit on the element seam so header/footer cross the columns
+ * instead of leaving a hole at every T-junction.
+ * Transparent 1px border keeps the old layout gap.
+ *
+ * Madness stage changes crossfade tiles for 1000ms (old out, new in).
+ * mask-image cannot interpolate; JS drives --adc-chrome-from / --adc-chrome-to.
+ * Each rule paints the previous tile at `from` and the current tile at `to`
+ * (two layers, two opacities). Stage 0 is a solid CSS border mixed with
+ * --adc-chrome-solid. Stage mask URLs: chrome-mask-stages.css.
+ */
+@property --adc-chrome-solid {
+  syntax: "<number>";
+  inherits: true;
+  initial-value: 0;
+}
+
+@property --adc-chrome-from {
+  syntax: "<number>";
+  inherits: true;
+  initial-value: 0;
+}
+
+@property --adc-chrome-to {
+  syntax: "<number>";
+  inherits: true;
+  initial-value: 1;
+}
+
+@property --adc-chrome-c-from {
+  syntax: "<number>";
+  inherits: true;
+  initial-value: 0;
+}
+
+@property --adc-chrome-c-to {
+  syntax: "<number>";
+  inherits: true;
+  initial-value: 0;
+}
+
+html[data-adc-chrome-stage="0"] {
+  --adc-chrome-solid: 1;
+  --adc-chrome-to: 0;
+}
+
+.game-chrome-rule {
+  /* Follow the current tile at rest. Hardcoding stage 4 here flashed Extreme
+   * for a frame when a fade to a lower stage dropped the prev-stage attr. */
+  --adc-chrome-mask-h-prev: var(--adc-chrome-mask-h);
+  --adc-chrome-mask-h2-prev: var(--adc-chrome-mask-h2);
+  --adc-chrome-mask-v-prev: var(--adc-chrome-mask-v);
+  --adc-chrome-mask-v2-prev: var(--adc-chrome-mask-v2);
+  --adc-chrome-rule-thickness: 10px;
+  --adc-chrome-rule-tile: 3840px;
+  /* Center the mask on the outer 1px border so the stroke sits on the seam.
+   * Absolute pseudos are padding-box; the layout border sits 1px outside. */
+  --adc-chrome-rule-seam: calc(-1px - var(--adc-chrome-rule-thickness) / 2);
+  --adc-chrome-fill-alpha: calc(var(--adc-chrome-solid) * 100%);
+  --adc-chrome-fill-line: 1px solid color-mix(in srgb,
+      var(--border) var(--adc-chrome-fill-alpha),
+      transparent);
+  --adc-chrome-seam-h-size: var(--adc-chrome-rule-tile) var(--adc-chrome-rule-thickness);
+  --adc-chrome-seam-v-size: var(--adc-chrome-rule-thickness) var(--adc-chrome-rule-tile);
+  --adc-chrome-crack-opacity: min(1, var(--adc-chrome-from) + var(--adc-chrome-to));
+}
+
+.game-chrome-rule--bottom {
+  border-bottom: var(--adc-chrome-fill-line);
+  --adc-chrome-seam: var(--adc-chrome-mask-h);
+  --adc-chrome-seam-prev: var(--adc-chrome-mask-h-prev);
+}
+
+.game-chrome-rule--top {
+  border-top: var(--adc-chrome-fill-line);
+  --adc-chrome-seam: var(--adc-chrome-mask-h2);
+  --adc-chrome-seam-prev: var(--adc-chrome-mask-h2-prev);
+}
+
+.game-chrome-rule--left {
+  border-left: var(--adc-chrome-fill-line);
+  --adc-chrome-seam: var(--adc-chrome-mask-v);
+  --adc-chrome-seam-prev: var(--adc-chrome-mask-v-prev);
+}
+
+.game-chrome-rule--right {
+  border-right: var(--adc-chrome-fill-line);
+  --adc-chrome-seam: var(--adc-chrome-mask-v2);
+  --adc-chrome-seam-prev: var(--adc-chrome-mask-v2-prev);
+}
+
+.game-chrome-rule--bottom::before,
+.game-chrome-rule--bottom::after,
+.game-chrome-rule--top::before,
+.game-chrome-rule--top::after,
+.game-chrome-rule--left::before,
+.game-chrome-rule--left::after,
+.game-chrome-rule--right::before,
+.game-chrome-rule--right::after,
+.md\:game-chrome-rule--left::before,
+.md\:game-chrome-rule--left::after,
+.md\:game-chrome-rule--right::before,
+.md\:game-chrome-rule--right::after {
+  position: absolute;
+  pointer-events: none;
+  z-index: 20;
+  background-color: var(--border);
+}
+
+.game-chrome-rule--bottom::before,
+.game-chrome-rule--bottom::after,
+.game-chrome-rule--top::before,
+.game-chrome-rule--top::after,
+.game-chrome-rule--left::before,
+.game-chrome-rule--left::after,
+.game-chrome-rule--right::before,
+.game-chrome-rule--right::after {
+  content: "";
+}
+
+.game-chrome-rule--bottom::before,
+.game-chrome-rule--top::before,
+.game-chrome-rule--left::before,
+.game-chrome-rule--right::before,
+.md\:game-chrome-rule--left::before,
+.md\:game-chrome-rule--right::before {
+  opacity: var(--adc-chrome-from);
+  -webkit-mask-image: var(--adc-chrome-seam-prev);
+  mask-image: var(--adc-chrome-seam-prev);
+}
+
+.game-chrome-rule--bottom::after,
+.game-chrome-rule--top::after,
+.game-chrome-rule--left::after,
+.game-chrome-rule--right::after,
+.md\:game-chrome-rule--left::after,
+.md\:game-chrome-rule--right::after {
+  opacity: var(--adc-chrome-to);
+  -webkit-mask-image: var(--adc-chrome-seam);
+  mask-image: var(--adc-chrome-seam);
+}
+
+.game-chrome-rule--bottom::before,
+.game-chrome-rule--bottom::after,
+.game-chrome-rule--top::before,
+.game-chrome-rule--top::after {
+  left: 0;
+  right: 0;
+  height: var(--adc-chrome-rule-thickness);
+  -webkit-mask-repeat: repeat-x;
+  mask-repeat: repeat-x;
+  -webkit-mask-size: var(--adc-chrome-seam-h-size);
+  mask-size: var(--adc-chrome-seam-h-size);
+}
+
+.game-chrome-rule--bottom::before,
+.game-chrome-rule--bottom::after {
+  bottom: var(--adc-chrome-rule-seam);
+  -webkit-mask-position: 0 50%;
+  mask-position: 0 50%;
+}
+
+.game-chrome-rule--top::before,
+.game-chrome-rule--top::after {
+  top: var(--adc-chrome-rule-seam);
+  -webkit-mask-position: 187px 50%;
+  mask-position: 187px 50%;
+}
+
+.game-chrome-rule--left::before,
+.game-chrome-rule--left::after {
+  top: 0;
+  bottom: 0;
+  left: var(--adc-chrome-rule-seam);
+  width: var(--adc-chrome-rule-thickness);
+  -webkit-mask-repeat: repeat-y;
+  mask-repeat: repeat-y;
+  -webkit-mask-size: var(--adc-chrome-seam-v-size);
+  mask-size: var(--adc-chrome-seam-v-size);
+  -webkit-mask-position: 50% 311px;
+  mask-position: 50% 311px;
+}
+
+.game-chrome-rule--right::before,
+.game-chrome-rule--right::after {
+  top: 0;
+  bottom: 0;
+  right: var(--adc-chrome-rule-seam);
+  width: var(--adc-chrome-rule-thickness);
+  -webkit-mask-repeat: repeat-y;
+  mask-repeat: repeat-y;
+  -webkit-mask-size: var(--adc-chrome-seam-v-size);
+  mask-size: var(--adc-chrome-seam-v-size);
+  -webkit-mask-position: 50% 503px;
+  mask-position: 50% 503px;
+}
+
+/* Four-sided destroyed outline (buttons, dialogs, tooltips, slots).
+ * Same seam tiles and 10px mask strip as header/footer/columns, so
+ * push-outs, shards, and dots stay 1px thick. H strips and corner
+ * quarter-arcs paint on overflowing ::before; V strips on ::after,
+ * inset so they stop before the rounded corners. Hairline sits on
+ * the outer border-box edge (same place as stage-0 `border`).
+ * Corners are stage-gated: drawn at low madness, missing at high.
+ * Stage 0 uses the CSS border for the full rounded rect. */
+.game-chrome-rule--box {
+  overflow: visible;
+  --adc-chrome-rule-color: #431407;
+  --adc-chrome-box-outset: -1px;
+  /* Default matches `rounded-md`. Tailwind rounded-* overrides below. */
+  --adc-chrome-radius: calc(var(--radius) - 2px);
+  /* Cap vs 30% so short pills (Improve) keep a vertical strip. */
+  --adc-chrome-end-inset: min(var(--adc-chrome-radius), 30%);
+  --adc-chrome-corner-tile: calc(var(--adc-chrome-radius) + 1px);
+  --adc-chrome-corner-shift: calc(var(--adc-chrome-rule-thickness) / 2 - 1px);
+  --adc-chrome-corner-in: calc(var(--adc-chrome-radius) - 0.5px);
+  --adc-chrome-corner-out: calc(var(--adc-chrome-radius) + 0.5px);
+  --adc-chrome-box-edge: calc(var(--adc-chrome-box-outset) - var(--adc-chrome-rule-thickness) / 2);
+  --adc-chrome-corner-size: var(--adc-chrome-corner-tile) var(--adc-chrome-corner-tile);
+  /* 4-bit mask per stage (--adc-chrome-c-1…4): bit0=tl, 1=tr, 2=bl, 3=br. */
+  --adc-chrome-c-from: 0;
+  --adc-chrome-c-to: 0;
+  --adc-chrome-corner-tl-from: mod(var(--adc-chrome-c-from), 2);
+  --adc-chrome-corner-tr-from: mod(round(down, calc(var(--adc-chrome-c-from) / 2), 1), 2);
+  --adc-chrome-corner-bl-from: mod(round(down, calc(var(--adc-chrome-c-from) / 4), 1), 2);
+  --adc-chrome-corner-br-from: mod(round(down, calc(var(--adc-chrome-c-from) / 8), 1), 2);
+  --adc-chrome-corner-tl-to: mod(var(--adc-chrome-c-to), 2);
+  --adc-chrome-corner-tr-to: mod(round(down, calc(var(--adc-chrome-c-to) / 2), 1), 2);
+  --adc-chrome-corner-bl-to: mod(round(down, calc(var(--adc-chrome-c-to) / 4), 1), 2);
+  --adc-chrome-corner-br-to: mod(round(down, calc(var(--adc-chrome-c-to) / 8), 1), 2);
+  --adc-chrome-corner-tl: calc(var(--adc-chrome-from) * var(--adc-chrome-corner-tl-from) + var(--adc-chrome-to) * var(--adc-chrome-corner-tl-to));
+  --adc-chrome-corner-tr: calc(var(--adc-chrome-from) * var(--adc-chrome-corner-tr-from) + var(--adc-chrome-to) * var(--adc-chrome-corner-tr-to));
+  --adc-chrome-corner-bl: calc(var(--adc-chrome-from) * var(--adc-chrome-corner-bl-from) + var(--adc-chrome-to) * var(--adc-chrome-corner-bl-to));
+  --adc-chrome-corner-br: calc(var(--adc-chrome-from) * var(--adc-chrome-corner-br-from) + var(--adc-chrome-to) * var(--adc-chrome-corner-br-to));
+  --adc-chrome-corner-mask-tl: radial-gradient(circle at right bottom,
+      transparent var(--adc-chrome-corner-in),
+      rgb(255 255 255 / var(--adc-chrome-corner-tl)) var(--adc-chrome-corner-in),
+      rgb(255 255 255 / var(--adc-chrome-corner-tl)) var(--adc-chrome-corner-out),
+      transparent var(--adc-chrome-corner-out));
+  --adc-chrome-corner-mask-tr: radial-gradient(circle at left bottom,
+      transparent var(--adc-chrome-corner-in),
+      rgb(255 255 255 / var(--adc-chrome-corner-tr)) var(--adc-chrome-corner-in),
+      rgb(255 255 255 / var(--adc-chrome-corner-tr)) var(--adc-chrome-corner-out),
+      transparent var(--adc-chrome-corner-out));
+  --adc-chrome-corner-mask-bl: radial-gradient(circle at right top,
+      transparent var(--adc-chrome-corner-in),
+      rgb(255 255 255 / var(--adc-chrome-corner-bl)) var(--adc-chrome-corner-in),
+      rgb(255 255 255 / var(--adc-chrome-corner-bl)) var(--adc-chrome-corner-out),
+      transparent var(--adc-chrome-corner-out));
+  --adc-chrome-corner-mask-br: radial-gradient(circle at left top,
+      transparent var(--adc-chrome-corner-in),
+      rgb(255 255 255 / var(--adc-chrome-corner-br)) var(--adc-chrome-corner-in),
+      rgb(255 255 255 / var(--adc-chrome-corner-br)) var(--adc-chrome-corner-out),
+      transparent var(--adc-chrome-corner-out));
+}
+
+.game-chrome-rule--box.rounded-none,
+.game-chrome-rule--box.rounded-full {
+  --adc-chrome-corner-tile: 0px;
+}
+
+.game-chrome-rule--box.rounded-none {
+  --adc-chrome-radius: 0px;
+}
+
+.game-chrome-rule--box.rounded-md {
+  --adc-chrome-radius: calc(var(--radius) - 2px);
+}
+
+.game-chrome-rule--box.rounded-lg {
+  --adc-chrome-radius: var(--radius);
+}
+
+.game-chrome-rule--box.rounded-xl {
+  --adc-chrome-radius: 0.75rem;
+}
+
+.game-chrome-rule--box.rounded-full {
+  --adc-chrome-radius: 9999px;
+}
+
+/* Buttons/slots need a containing block for the hairlines. Do not set
+ * `position: relative` on `.fixed` dialogs: that override shoved them
+ * one viewport below the game. */
+.game-chrome-rule--box:not(.fixed) {
+  position: relative;
+}
+
+/* Neutralize leftover Tailwind `border-*` colors so they cannot paint a
+ * solid edge over the cracked hairline. Hairline color is --adc-chrome-rule-color. */
+.game-chrome-rule.game-chrome-rule--box {
+  border-color: color-mix(in srgb,
+      var(--adc-chrome-rule-color, #431407) var(--adc-chrome-fill-alpha),
+      transparent);
+}
+
+.game-chrome-rule--box:not(.border-2) {
+  border-width: 1px;
+  border-style: solid;
+}
+
+.game-chrome-rule--box::before,
+.game-chrome-rule--box::after {
+  content: "";
+  position: absolute;
+  pointer-events: none;
+  z-index: 20;
+  background-color: var(--adc-chrome-rule-color, var(--border));
+  opacity: var(--adc-chrome-crack-opacity);
+}
+
+.game-chrome-rule--box::before {
+  box-sizing: border-box;
+  top: var(--adc-chrome-box-edge);
+  bottom: var(--adc-chrome-box-edge);
+  left: var(--adc-chrome-box-edge);
+  right: var(--adc-chrome-box-edge);
+  /* Keep the straight H tile out of the rounded corners. */
+  padding-left: calc(var(--adc-chrome-radius) + var(--adc-chrome-rule-thickness) / 2);
+  padding-right: calc(var(--adc-chrome-radius) + var(--adc-chrome-rule-thickness) / 2);
+  -webkit-mask-image: var(--adc-chrome-mask-h), var(--adc-chrome-mask-h2),
+    var(--adc-chrome-corner-mask-tl), var(--adc-chrome-corner-mask-tr),
+    var(--adc-chrome-corner-mask-bl), var(--adc-chrome-corner-mask-br);
+  mask-image: var(--adc-chrome-mask-h), var(--adc-chrome-mask-h2),
+    var(--adc-chrome-corner-mask-tl), var(--adc-chrome-corner-mask-tr),
+    var(--adc-chrome-corner-mask-bl), var(--adc-chrome-corner-mask-br);
+  -webkit-mask-repeat: repeat-x, repeat-x, no-repeat, no-repeat, no-repeat,
+    no-repeat;
+  mask-repeat: repeat-x, repeat-x, no-repeat, no-repeat, no-repeat, no-repeat;
+  -webkit-mask-size: var(--adc-chrome-seam-h-size), var(--adc-chrome-seam-h-size),
+    var(--adc-chrome-corner-size), var(--adc-chrome-corner-size),
+    var(--adc-chrome-corner-size), var(--adc-chrome-corner-size);
+  mask-size: var(--adc-chrome-seam-h-size), var(--adc-chrome-seam-h-size),
+    var(--adc-chrome-corner-size), var(--adc-chrome-corner-size),
+    var(--adc-chrome-corner-size), var(--adc-chrome-corner-size);
+  -webkit-mask-position: var(--adc-chrome-mask-x, 0) 0,
+    var(--adc-chrome-mask-x2, 187px) 100%,
+    left var(--adc-chrome-corner-shift) top var(--adc-chrome-corner-shift),
+    right var(--adc-chrome-corner-shift) top var(--adc-chrome-corner-shift),
+    left var(--adc-chrome-corner-shift) bottom var(--adc-chrome-corner-shift),
+    right var(--adc-chrome-corner-shift) bottom var(--adc-chrome-corner-shift);
+  mask-position: var(--adc-chrome-mask-x, 0) 0,
+    var(--adc-chrome-mask-x2, 187px) 100%,
+    left var(--adc-chrome-corner-shift) top var(--adc-chrome-corner-shift),
+    right var(--adc-chrome-corner-shift) top var(--adc-chrome-corner-shift),
+    left var(--adc-chrome-corner-shift) bottom var(--adc-chrome-corner-shift),
+    right var(--adc-chrome-corner-shift) bottom var(--adc-chrome-corner-shift);
+  -webkit-mask-origin: border-box;
+  mask-origin: border-box;
+  -webkit-mask-clip: content-box, content-box, border-box, border-box, border-box,
+    border-box;
+  mask-clip: content-box, content-box, border-box, border-box, border-box,
+    border-box;
+}
+
+.game-chrome-rule--box::after {
+  left: var(--adc-chrome-box-edge);
+  right: var(--adc-chrome-box-edge);
+  top: calc(var(--adc-chrome-end-inset) + var(--adc-chrome-box-outset));
+  bottom: calc(var(--adc-chrome-end-inset) + var(--adc-chrome-box-outset));
+  -webkit-mask-image: var(--adc-chrome-mask-v), var(--adc-chrome-mask-v2);
+  mask-image: var(--adc-chrome-mask-v), var(--adc-chrome-mask-v2);
+  -webkit-mask-repeat: repeat-y, repeat-y;
+  mask-repeat: repeat-y, repeat-y;
+  -webkit-mask-size: var(--adc-chrome-seam-v-size), var(--adc-chrome-seam-v-size);
+  mask-size: var(--adc-chrome-seam-v-size), var(--adc-chrome-seam-v-size);
+  -webkit-mask-position: 0 var(--adc-chrome-mask-y, 311px),
+    100% var(--adc-chrome-mask-y2, 503px);
+  mask-position: 0 var(--adc-chrome-mask-y, 311px),
+    100% var(--adc-chrome-mask-y2, 503px);
+}
+
+.game-chrome-rule--box:disabled,
+.game-chrome-rule--box[aria-disabled] {
+  --adc-chrome-rule-color: rgb(67 20 7 / 0.5);
+}
+
+.game-chrome-rule--tooltip {
+  --adc-chrome-rule-color: #262626;
+}
+
+/* Dialog frames: `--border` hairline. Match theme `rounded-lg` (`--radius`, 4px)
+ * from `sm` up (square on mobile). Do not use 0.5rem: that is not this theme. */
+.game-chrome-rule--dialog {
+  --adc-chrome-rule-color: var(--border);
+  --adc-chrome-radius: 0px;
+}
+
+@media (min-width: 640px) {
+  .game-chrome-rule--dialog {
+    --adc-chrome-radius: var(--radius);
+  }
+
+  .game-chrome-rule--box.game-chrome-rule--dialog {
+    border-radius: var(--radius);
+  }
+}
+
+/* Always-rounded dialog-like cards (blessing offers). */
+.game-chrome-rule--round {
+  --adc-chrome-radius: var(--radius);
+}
+
+.game-chrome-rule--box.game-chrome-rule--round {
+  border-radius: var(--radius);
+}
+
+/* Tiny 18–20px squares (−/+, queue, presets): same tiles as buttons, cropped so cracks stick out less. */
+.game-chrome-rule--compact {
+  --adc-chrome-rule-tile: 720px;
+  --adc-chrome-rule-thickness: 4px;
+  --adc-chrome-end-inset: var(--adc-chrome-radius);
+}
+
+.game-chrome-rule--slot {
+  /* Opaque: overlapping H/V/arc with alpha reads as bright blobs. */
+  --adc-chrome-rule-color: #585858;
+}
+
+/* Box corners per control: Light 0 missing, Medium 0-1, Intense 0-2,
+ * Extreme 0-3. Never all four empty. Fallback 15 = all arcs on. */
+[data-adc-chrome-stage="1"] .game-chrome-rule--box {
+  --adc-chrome-c-to: var(--adc-chrome-c-1, 15);
+}
+
+[data-adc-chrome-prev-stage="1"] .game-chrome-rule--box {
+  --adc-chrome-c-from: var(--adc-chrome-c-1, 15);
+}
+
+[data-adc-chrome-stage="2"] .game-chrome-rule--box {
+  --adc-chrome-c-to: var(--adc-chrome-c-2, 15);
+}
+
+[data-adc-chrome-prev-stage="2"] .game-chrome-rule--box {
+  --adc-chrome-c-from: var(--adc-chrome-c-2, 15);
+}
+
+[data-adc-chrome-stage="3"] .game-chrome-rule--box {
+  --adc-chrome-c-to: var(--adc-chrome-c-3, 15);
+}
+
+[data-adc-chrome-prev-stage="3"] .game-chrome-rule--box {
+  --adc-chrome-c-from: var(--adc-chrome-c-3, 15);
+}
+
+[data-adc-chrome-stage="4"] .game-chrome-rule--box {
+  --adc-chrome-c-to: var(--adc-chrome-c-4, 15);
+}
+
+[data-adc-chrome-prev-stage="4"] .game-chrome-rule--box {
+  --adc-chrome-c-from: var(--adc-chrome-c-4, 15);
+}
+
+@media (min-width: 768px) {
+  .md\:game-chrome-rule--none {
+    border-top-width: 0;
+  }
+
+  .md\:game-chrome-rule--none::before,
+  .md\:game-chrome-rule--none::after {
+    content: none;
+  }
+
+  .md\:game-chrome-rule--left {
+    border-left: var(--adc-chrome-fill-line);
+    --adc-chrome-seam: var(--adc-chrome-mask-v);
+    --adc-chrome-seam-prev: var(--adc-chrome-mask-v-prev);
+  }
+
+  .md\:game-chrome-rule--left::before,
+  .md\:game-chrome-rule--left::after {
+    content: "";
+    top: 0;
+    bottom: 0;
+    left: var(--adc-chrome-rule-seam);
+    right: auto;
+    width: var(--adc-chrome-rule-thickness);
+    height: auto;
+    -webkit-mask-repeat: repeat-y;
+    mask-repeat: repeat-y;
+    -webkit-mask-size: var(--adc-chrome-seam-v-size);
+    mask-size: var(--adc-chrome-seam-v-size);
+    -webkit-mask-position: 50% 311px;
+    mask-position: 50% 311px;
+  }
+
+  .md\:game-chrome-rule--right {
+    border-top-width: 0;
+    border-right: var(--adc-chrome-fill-line);
+    --adc-chrome-seam: var(--adc-chrome-mask-v2);
+    --adc-chrome-seam-prev: var(--adc-chrome-mask-v2-prev);
+  }
+
+  /* Side panel is --top + md:--right. Reset leftover H box so the
+   * vertical seam can run the full column instead of a 10px square. */
+  .md\:game-chrome-rule--right::before,
+  .md\:game-chrome-rule--right::after {
+    content: "";
+    top: 0;
+    bottom: 0;
+    right: var(--adc-chrome-rule-seam);
+    left: auto;
+    width: var(--adc-chrome-rule-thickness);
+    height: auto;
+    -webkit-mask-repeat: repeat-y;
+    mask-repeat: repeat-y;
+    -webkit-mask-size: var(--adc-chrome-seam-v-size);
+    mask-size: var(--adc-chrome-seam-v-size);
+    -webkit-mask-position: 50% 503px;
+    mask-position: 50% 503px;
+  }
+}
+
 .legal-content,
 .legal-content * {
   user-select: text !important;
@@ -280,18 +797,19 @@ body {
 
 @keyframes fade-in {
   0% {
-    background: transparent;
+    opacity: 0;
     backdrop-filter: blur(0);
   }
 
   100% {
-    background: #000;
+    opacity: 1;
     backdrop-filter: blur(10px);
   }
 }
 
 .animate-fade-in {
-  animation: fade-in 8s ease-in-out forwards;
+  animation: fade-in 0.35s ease-out forwards;
+  opacity: 0;
 }
 
 /* Share dialog: card fades up in place; actions follow after. */
@@ -515,6 +1033,10 @@ body {
 .game-panel-header-slot {
   width: calc(18px * var(--adc-control-scale, 1));
   height: calc(18px * var(--adc-control-scale, 1));
+}
+
+.game-panel-header-slot-row {
+  gap: 6px;
 }
 
 /* Produce / Focus circular indicators — 18px normal, 20px in Large text only. */

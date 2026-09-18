@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="720" height="4" viewBox="0 3 720 4">
+  <path
+    fill="none"
+    stroke="#fff"
+    stroke-width="1"
+    stroke-linecap="butt"
+    stroke-linejoin="round"
+    d="M0 5L52 5M64 5L176 5M188 5L305.5 5M320.5 5L442.5 5M451.5 5L584 5M600 5L720 5M720 5L720.02 5M52 3.6L64 3.62M180 5L180.02 5M582 3.6L600 3.6M306 6.4L318 6.4"
+  />
+  <path fill="none" stroke="#fff" stroke-width="1" stroke-linecap="round" d="M445.47 5.01L445.49 5.01"/>
+</svg>

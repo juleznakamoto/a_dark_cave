@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="10" height="3840" viewBox="0 0 10 3840">
+  <path
+    fill="none"
+    stroke="#fff"
+    stroke-width="1"
+    stroke-linecap="butt"
+    stroke-linejoin="round"
+    d="M5 0 L5 248 M5 274 L5 520 M5 548 L5 720 M5 720 L5 753.73 M5 778.54 L5 930.32 M5 947.48 L5 1214.02 M5 1229.48 L5 1490.45 M5 1513.96 L5 1720.55 M5 1732.87 L5 1898.72 M5 1915.09 L5 2083.83 M5 2104.25 L5 2354.46 M5 2367.8 L5 2525.16 M5 2539.01 L5 2733.47 M5 2752.97 L5 2923.42 M5 2943.15 L5 3177.55 M5 3191.7 L5 3353.83 M5 3370.81 L5 3557.47 M5 3576.01 L5 3840 M3.78 254 L3.88 268 M6.4 528 L6.28 542 M3.99 1215.71 L4.1 1221.32 M3.79 1722.15 L3.88 1727.79 M3.57 1902.77 L3.69 1908.01 M6.17 2527.71 L6.13 2534.76 M6.38 2736.78 L6.29 2744.15 M6.43 3180.83 L6.6 3187.42 M6.36 3356.04 L6.6 3360.3"
+  />
+  <path fill="none" stroke="#fff" stroke-width="1" stroke-linecap="butt" d="M5.01 757.14 L5.12 760.77"/>
+  <path fill="none" stroke="#fff" stroke-width="1" stroke-linecap="butt" d="M4.9 771.72 L5.05 777.54"/>
+  <path fill="none" stroke="#fff" stroke-width="1" stroke-linecap="butt" d="M4.93 937.45 L4.81 943.19"/>
+  <path fill="none" stroke="#fff" stroke-width="1" stroke-linecap="round" d="M5.08 765.48"/>
+  <path fill="none" stroke="#fff" stroke-width="1" stroke-linecap="round" d="M4.93 2361.95"/>
+  <path fill="none" stroke="#fff" stroke-width="1" stroke-linecap="round" d="M5 3566.33"/>
+</svg>

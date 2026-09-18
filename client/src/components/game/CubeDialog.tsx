@@ -7,6 +7,7 @@ import {
   DialogTitle,
   DialogDescription,
 } from "@/components/ui/dialog";
+import { chromeRuleColorStyle, useDestroyedChrome } from "@/components/game/gameChrome";
 import { Button } from "@/components/ui/button";
 import { audioManager, SOUND_VOLUME } from "@/lib/audio";
 import { shouldDismissEventWithoutApplying } from "@/game/demoLimit";
@@ -34,6 +35,7 @@ export default function CubeDialog({
   fallbackExecutedRef,
 }: CubeDialogProps) {
   const { t } = useTranslation("ui");
+  const chromeOn = useDestroyedChrome();
   // Guard against null/undefined event
   if (!event) {
     return null;
@@ -137,8 +139,9 @@ export default function CubeDialog({
       <DialogContent
         openClickLockKey={event.id}
         className="[&>button]:hidden border-2 border-gray-400 shadow-2xl p-6 [--adc-dialog-max-w:22rem] h-[21rem] max-h-[21rem] flex flex-col overflow-visible z-[100]"
+        style={chromeRuleColorStyle("#9ca3af")}
       >
-        <div className="absolute inset-0 -z-10 cube-dialog-glow pointer-events-none"></div>
+        <div className="absolute inset-0 -z-10 cube-dialog-glow pointer-events-none rounded-[inherit]"></div>
         <DialogHeader className="flex-shrink-0">
           <DialogTitle className="pr-0 text-lg font-semibold">
             {resolvedTitle}
@@ -153,7 +156,11 @@ export default function CubeDialog({
             onClick={handleClose}
             variant="outline"
             size="sm"
-            className="px-8 border-2 border-gray-700 rounded-lg hover:bg-black/0 hover:text-gray-100 hover:border-gray-400"
+            className={
+              chromeOn
+                ? "px-8 rounded-lg [--adc-chrome-rule-color:#374151] hover:bg-black/0 hover:text-gray-100 hover:[--adc-chrome-rule-color:#9ca3af]"
+                : "px-8 rounded-lg border-2 border-gray-700 hover:bg-black/0 hover:text-gray-100 hover:border-gray-400"
+            }
             disabled={fallbackExecutedRef.current}
             button_id={`cube-close-${event?.id || 'unknown'}`}
           >

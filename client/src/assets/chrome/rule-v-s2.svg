@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="10" height="3840" viewBox="0 0 10 3840">
+  <path
+    fill="none"
+    stroke="#fff"
+    stroke-width="1"
+    stroke-linecap="butt"
+    stroke-linejoin="round"
+    d="M5 0 L5 88 M5 114 L5 240 M5 246 L5 318 M5 340 L5 500 M5 528 L5 620 M5 626 L5 720 M5 720 L5 771.91 M5 790.41 L5 876.01 M5 891.71 L5 977.45 M5 1007.11 L5 1095.39 M5 1109.66 L5 1222.6 M5 1251.72 L5 1361.43 M5 1379.9 L5 1472.81 M5 1484.86 L5 1582.63 M5 1606.64 L5 1625.13 L6.49 1641.38 L6.09 1649.82 L5 1680.14 M5 1709.05 L5 1751.32 L7.07 1764.56 L6.37 1791.98 L5 1826.58 M5 1842.99 L5 1934.54 M5 1962.49 L5 2031.68 M5 2046.71 L5 2137.03 M5 2156.84 L5 2243.4 M5 2266.99 L5 2369.04 M5 2390.29 L5 2478.4 M5 2493.7 L5 2521.49 L3.49 2536.3 L4.01 2553.33 L5 2597.45 M5 2619.06 L5 2722.61 M5 2744.77 L5 2842.78 M5 2872.24 L5 2894.44 L3.48 2920.67 L3.82 2940.78 L5 2968.51 M5 2980.46 L5 3089.46 M5 3117.57 L5 3197.47 M5 3224.99 L5 3313.96 M5 3330.75 L5 3438.19 M5 3462.05 L5 3558.63 M5 3577.56 L5 3690.88 M5 3710.92 L5 3777.36 M5 3790.62 L5 3840 M3.55 94.2 L3.68 108.4 M3.35 508.4 L3.48 522.2 M6.3 322 L6.2 334 M3.24 879.2 L3.29 890.51 M3.05 1098.48 L3 1104.76 M3.28 1225.13 L3.23 1231.92 M3.32 1363.42 L3.23 1377.28 M3.3 1685.09 L3.12 1695.48 M7.08 2035.31 L6.9 2040.67 M6.92 2141.31 L6.92 2147.88 M6.8 2724.67 L6.68 2737.95 M6.22 2844.37 L6.05 2854.37 M7.04 3316.52 L6.99 3328.11 M3.49 3560.43 L3.69 3568.46 M3.77 3693.36 L3.84 3704.99 M3.15 3780.18 L3.06 3788.85"
+  />
+  <path fill="none" stroke="#fff" stroke-width="1" stroke-linecap="butt" d="M5.09 982.28 L5.26 988.65"/>
+  <path fill="none" stroke="#fff" stroke-width="1" stroke-linecap="butt" d="M4.92 1001.16 L4.91 1006.11"/>
+  <path fill="none" stroke="#fff" stroke-width="1" stroke-linecap="butt" d="M5.06 2374.79 L5.06 2379.49"/>
+  <path fill="none" stroke="#fff" stroke-width="1" stroke-linecap="butt" d="M5.02 3210.62 L4.97 3215.92"/>
+  <path fill="none" stroke="#fff" stroke-width="1" stroke-linecap="round" d="M5.02 779.46"/>
+  <path fill="none" stroke="#fff" stroke-width="1" stroke-linecap="round" d="M5.07 995.67"/>
+  <path fill="none" stroke="#fff" stroke-width="1" stroke-linecap="round" d="M4.99 1834.82"/>
+  <path fill="none" stroke="#fff" stroke-width="1" stroke-linecap="round" d="M5 2257.95"/>
+  <path fill="none" stroke="#fff" stroke-width="1" stroke-linecap="round" d="M4.97 2976.31"/>
+  <path fill="none" stroke="#fff" stroke-width="1" stroke-linecap="round" d="M4.92 3442.66"/>
+  <path fill="none" stroke="#fff" stroke-width="1" stroke-linecap="round" d="M5.02 3451.25"/>
+</svg>

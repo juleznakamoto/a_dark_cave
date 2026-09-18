@@ -1,6 +1,7 @@
 import { ShopDialog } from "./ShopDialog";
 import LeaderboardDialog from "./LeaderboardDialog";
 import InviteFriendsFloatingButton from "./InviteFriendsFloatingButton";
+import { DestroyedChromeScope } from "@/components/game/gameChrome";
 import type { ShopOpenSource } from "@/game/shopOpenSource";
 
 export interface WebOnlyDialogsProps {
@@ -18,7 +19,7 @@ export default function WebOnlyDialogs({
   setLeaderboardDialogOpen,
 }: WebOnlyDialogsProps) {
   return (
-    <>
+    <DestroyedChromeScope allow={false}>
       {shopDialogOpen && (
         <ShopDialog
           isOpen={shopDialogOpen}
@@ -33,6 +34,6 @@ export default function WebOnlyDialogs({
         />
       )}
       <InviteFriendsFloatingButton />
-    </>
+    </DestroyedChromeScope>
   );
 }

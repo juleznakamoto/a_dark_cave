@@ -42,7 +42,7 @@ export function ImproveButton({
           size="xs"
           variant="outline"
           className={cn(
-            "h-5 px-2 bg-red-950/30 hover:bg-red-950/70 hover:text-foreground relative overflow-visible border border-border border-red-800/50 rounded-xl",
+            "h-5 px-2 rounded-md bg-red-950/30 hover:bg-red-950/70 hover:text-foreground relative overflow-visible border border-border border-red-800/50",
             isPulsing && "improve-text-flash",
             allowUnaffordableClick && "opacity-50",
           )}

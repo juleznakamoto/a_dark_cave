@@ -13,6 +13,7 @@ import {
   DialogTitle,
   DialogDescription,
 } from "@/components/ui/dialog";
+import { chromeRuleColorStyle } from "@/components/game/gameChrome";
 import { Button } from "@/components/ui/button";
 import {
   gameActionButtonGridClassName,
@@ -345,9 +346,10 @@ function EventDialogOpen({
           <DialogContent
             openClickLockKey={event.id}
             className={`z-[60] gap-4 [--adc-dialog-max-w:28rem] [&>button]:hidden ${isMadnessEvent ? 'border-2 border-violet-600 shadow-2xl p-6  max-h-[19rem] flex flex-col overflow-visible' : ''}`}
+            style={isMadnessEvent ? chromeRuleColorStyle("#7c3aed") : undefined}
           >
             {isMadnessEvent && (
-              <div className="absolute inset-0 -z-10 madness-dialog-glow pointer-events-none"></div>
+              <div className="absolute inset-0 -z-10 madness-dialog-glow pointer-events-none rounded-[inherit]"></div>
             )}
             <DialogHeader>
               <div className="flex items-center justify-between gap-2">

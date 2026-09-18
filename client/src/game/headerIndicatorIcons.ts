@@ -199,6 +199,7 @@ export type DialogIndicatorIcon = {
   id: VillageEffectThemeId;
   label: string;
   border: string;
+  chromeColor: string;
   iconRing: string;
   glowRgb: string;
   glyphClassName: string;
@@ -214,6 +215,7 @@ export const DIALOG_INDICATOR_ICONS: DialogIndicatorIcon[] = [
     id: "feast",
     label: "Feast",
     border: "border-yellow-600",
+    chromeColor: "#ca8a04",
     iconRing: "border-yellow-500/45 bg-yellow-950/35",
     glowRgb: "202, 138, 4",
     glyphClassName: `${DG} text-4xl text-yellow-500 translate-y-[0.06em]`,
@@ -223,6 +225,7 @@ export const DIALOG_INDICATOR_ICONS: DialogIndicatorIcon[] = [
     id: "solstice",
     label: "Solstice",
     border: "border-orange-500",
+    chromeColor: "#f97316",
     iconRing: "border-orange-500/45 bg-orange-950/35",
     glowRgb: "249, 115, 22",
     glyphClassName: `${DG} text-3xl text-orange-500 translate-y-[0.155em]`,
@@ -232,6 +235,7 @@ export const DIALOG_INDICATOR_ICONS: DialogIndicatorIcon[] = [
     id: "curse",
     label: "Curse",
     border: "border-purple-500",
+    chromeColor: "#a855f7",
     iconRing: "border-purple-500/45 bg-purple-950/35",
     glowRgb: "147, 51, 234",
     glyphClassName: `${DG} text-4xl text-purple-500 translate-y-[0.145em]`,
@@ -241,6 +245,7 @@ export const DIALOG_INDICATOR_ICONS: DialogIndicatorIcon[] = [
     id: "disgust",
     label: "Disgust",
     border: "border-green-600",
+    chromeColor: "#16a34a",
     iconRing: "border-green-600/60 bg-green-950/35",
     glowRgb: "22, 101, 52",
     glyphClassName: `${DG} text-4xl text-green-600 translate-y-[0.15em] font-normal`,
@@ -250,6 +255,7 @@ export const DIALOG_INDICATOR_ICONS: DialogIndicatorIcon[] = [
     id: "miningBoost",
     label: "Mining",
     border: "border-amber-500",
+    chromeColor: "#f59e0b",
     iconRing: "border-amber-500/60 bg-amber-950/35",
     glowRgb: "217, 119, 6",
     glyphClassName: `${DG} text-3xl text-amber-500 translate-y-[0.1em]`,
@@ -259,6 +265,7 @@ export const DIALOG_INDICATOR_ICONS: DialogIndicatorIcon[] = [
     id: "brimstoneFlux",
     label: "Brimstone",
     border: "border-yellow-500",
+    chromeColor: "#eab308",
     iconRing: "border-yellow-500/45 bg-yellow-950/35",
     glowRgb: "234, 179, 8",
     glyphClassName: `${DG} text-3xl text-yellow-500 translate-y-[0.15em]`,
@@ -268,6 +275,7 @@ export const DIALOG_INDICATOR_ICONS: DialogIndicatorIcon[] = [
     id: "frostfall",
     label: "Frostfall",
     border: "border-blue-500",
+    chromeColor: "#3b82f6",
     iconRing: "border-blue-500/60 bg-blue-950/35",
     glowRgb: "37, 99, 235",
     glyphClassName: `${DG} text-4xl text-blue-500 translate-y-[0.1em]`,
@@ -277,6 +285,7 @@ export const DIALOG_INDICATOR_ICONS: DialogIndicatorIcon[] = [
     id: "fog",
     label: "Fog",
     border: "border-gray-500",
+    chromeColor: "#6b7280",
     iconRing: "border-gray-500/60 bg-gray-950/35",
     glowRgb: "107, 114, 128",
     glyphClassName: `${DG} text-4xl text-gray-500 translate-y-[0.06em]`,
@@ -286,6 +295,7 @@ export const DIALOG_INDICATOR_ICONS: DialogIndicatorIcon[] = [
     id: "staringDeer",
     label: "Deer",
     border: "border-green-700",
+    chromeColor: "#15803d",
     iconRing: "border-green-700/60 bg-green-950/35",
     glowRgb: "22, 101, 52",
     glyphClassName: `${DG} text-4xl text-green-700 translate-y-[0.08em]`,
@@ -295,6 +305,7 @@ export const DIALOG_INDICATOR_ICONS: DialogIndicatorIcon[] = [
     id: "forestFear",
     label: "Fear",
     border: "border-red-700",
+    chromeColor: "#b91c1c",
     iconRing: "border-red-700/60 bg-red-950/35",
     glowRgb: "153, 27, 27",
     glyphClassName: `${DG} text-4xl text-red-700 translate-y-[0.1em]`,
@@ -306,6 +317,7 @@ export type VillageEffectTheme = {
   id: VillageEffectThemeId;
   symbol: string;
   border: string;
+  chromeColor: string;
   iconRing: string;
   glowRgb: string;
   iconClassName: string;
@@ -321,6 +333,7 @@ export const VILLAGE_EFFECT_THEMES: Record<
       id: icon.id,
       symbol: icon.symbol,
       border: icon.border,
+      chromeColor: icon.chromeColor,
       iconRing: icon.iconRing,
       glowRgb: icon.glowRgb,
       iconClassName: icon.glyphClassName,

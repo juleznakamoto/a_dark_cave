@@ -1,12 +1,14 @@
 import React from "react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
+import { chromeRuleColorStyle } from "@/components/game/gameChrome";
 import { cn } from "@/lib/utils";
 
 export type OutcomeDialogVariant = "success" | "loss" | "madness" | "insight";
 
 export interface OutcomeDialogEffectTheme {
   border: string;
+  chromeColor: string;
   iconRing: string;
   glowRgb: string;
 }
@@ -30,21 +32,25 @@ interface OutcomeDialogProps {
 const variantStyles = {
   success: {
     border: "border-amber-600",
+    chromeColor: "#d97706",
     glow: "reward-dialog-glow-success",
     iconRing: "border-amber-500/45 bg-amber-950/35",
   },
   loss: {
     border: "border-orange-800",
+    chromeColor: "#9a3412",
     glow: "reward-dialog-glow-loss",
     iconRing: "border-orange-700/45 bg-orange-950/25",
   },
   madness: {
     border: "border-violet-600",
+    chromeColor: "#7c3aed",
     glow: "madness-dialog-glow",
     iconRing: "border-violet-500/45 bg-violet-950/35",
   },
   insight: {
     border: "border-blue-600",
+    chromeColor: "#2563eb",
     glow: "insight-dialog-glow",
     iconRing: "border-blue-500/45 bg-blue-950/35",
   },
@@ -65,6 +71,7 @@ export default function OutcomeDialog({
 }: OutcomeDialogProps) {
   const variantStyle = variantStyles[variant];
   const border = effectTheme?.border ?? variantStyle.border;
+  const chromeColor = effectTheme?.chromeColor ?? variantStyle.chromeColor;
   const iconRing = effectTheme?.iconRing ?? variantStyle.iconRing;
   const glowClass = effectTheme
     ? "outcome-dialog-effect-glow"
@@ -117,9 +124,10 @@ export default function OutcomeDialog({
         <DialogContent
           openClickLockKey={`${title}-${buttonId}`}
           className={`[--adc-dialog-max-w:24rem] z-[70] gap-4 [&>button]:hidden border-2 shadow-2xl ${border}`}
+          style={chromeRuleColorStyle(chromeColor)}
         >
           <div
-            className={`absolute inset-0 -z-10 pointer-events-none ${glowClass}`}
+            className={`absolute inset-0 -z-10 pointer-events-none rounded-[inherit] ${glowClass}`}
             style={
               effectTheme
                 ? ({

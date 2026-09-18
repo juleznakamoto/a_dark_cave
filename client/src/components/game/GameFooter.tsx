@@ -35,7 +35,7 @@ import { initPlaylight } from "@/lib/playlight";
 import PlaylightDiscoveryButton from "./PlaylightDiscoveryButton";
 import FooterNetworkMenu from "./FooterNetworkMenu";
 import { usePeriodicPlayTimeTooltip } from "@/hooks/usePeriodicPlayTimeTooltip";
-import { GAME_CHROME_NO_BG_HOVER } from "./gameChrome";
+import { GAME_CHROME_NO_BG_HOVER, GAME_CHROME_RULE_TOP } from "./gameChrome";
 import { useCoinHoverParticles } from "@/components/ui/coin-hover-particles";
 import { FOOTER_TRADER_PARTICLE_CONFIG } from "@/components/ui/bubbly-button.particles";
 
@@ -270,7 +270,7 @@ export default function GameFooter() {
 
   return (
     <>
-      <footer className="relative flex min-h-9 items-center border-t border-border px-4 py-1 text-xs text-muted-foreground pointer-events-auto overflow-visible md:px-2">
+      <footer className={`relative z-50 flex min-h-9 items-center ${GAME_CHROME_RULE_TOP} px-4 py-1 text-xs text-muted-foreground pointer-events-auto overflow-visible md:px-2`}>
         {steamDemoActive && <SteamDemoProgressBar />}
         <div className="relative z-10 flex w-full items-center justify-between">
           <div className="flex items-center gap-0.5 shrink-0">

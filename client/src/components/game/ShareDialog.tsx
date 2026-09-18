@@ -790,6 +790,7 @@ export default function ShareDialog() {
       <DialogContent
         hideClose
         skipViewportWidthClamp
+        destroyedChrome={false}
         layerZIndex={70}
         style={{ animation: "none" }}
         className="flex w-max max-w-[min(95vw,28rem)] max-h-[95vh] flex-col items-center gap-4 overflow-visible border-0 bg-transparent p-0 shadow-none duration-0 data-[state=open]:!animate-none data-[state=closed]:!animate-none sm:rounded-none"

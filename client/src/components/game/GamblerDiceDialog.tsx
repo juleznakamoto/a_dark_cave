@@ -35,6 +35,7 @@ import {
   resolveGamblerSessionForHydrate,
   type GamblerDiceSession,
 } from "@/game/gamblerSession";
+import { chromeRuleColorStyle } from "@/components/game/gameChrome";
 import { gameActionButtonGridClassName, gameActionOutlineButtonClassName } from "@/components/CooldownButton";
 import { cn, formatNumber } from "@/lib/utils";
 import { useTranslation } from "react-i18next";
@@ -549,15 +550,16 @@ export default function GamblerDiceDialog({
             ? "z-[70] flex max-h-[85vh] flex-col gap-0 overflow-hidden border-2 border-amber-900/50 shadow-2xl [&>button]:hidden [--adc-dialog-max-w:24rem] duration-0 data-[state=open]:animate-none data-[state=closed]:animate-none"
             : "z-[70] flex flex-col gap-0 overflow-hidden border-2 border-amber-900/50 shadow-2xl [&>button]:hidden [--adc-dialog-max-w:24rem] max-h-[85vh] duration-0 data-[state=open]:animate-none data-[state=closed]:animate-none"
         }
-        style={
-          dialogLocked
+        style={{
+          ...chromeRuleColorStyle("rgb(120 53 15 / 0.5)"),
+          ...(dialogLocked
             ? {
               width: lockedDialogSize.width,
               maxWidth: lockedDialogSize.width,
               minHeight: lockedDialogSize.height,
             }
-            : undefined
-        }
+            : {}),
+        }}
         onPointerDownOutside={(e) => e.preventDefault()}
         onEscapeKeyDown={(e) => e.preventDefault()}
       >
@@ -659,7 +661,7 @@ export default function GamblerDiceDialog({
                   variant="outline"
                   size="xs"
                   onClick={onClose}
-                  className="text-xs font-medium text-foreground border-amber-900/50 hover:bg-amber-950/30 hover:text-foreground"
+                  className="text-xs font-medium text-foreground [--adc-chrome-rule-color:rgb(120_53_15_/_0.5)] border-amber-900/50 hover:bg-amber-950/30 hover:text-foreground"
                   button_id="gambler-close-wager"
                 >
                   {t("common:buttons.close")}

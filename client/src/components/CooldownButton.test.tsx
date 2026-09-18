@@ -4,7 +4,9 @@
 import { cleanup, render, screen } from "@testing-library/react";
 import React from "react";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
-import CooldownButton from "./CooldownButton";
+import CooldownButton, {
+  gameActionOutlineButtonClassName,
+} from "./CooldownButton";
 import { useGameStore } from "@/game/state";
 import { ADC_PROGRESS_WIPE_FILL_CLASS } from "@/lib/uiClock";
 
@@ -115,5 +117,31 @@ describe("CooldownButton execution wash", () => {
     const wash = button.querySelector("div.pointer-events-none.absolute");
     expect(wash).toBeTruthy();
     expect((wash as HTMLElement).style.width).toBe("0%");
+  });
+
+  it("puts cracked outline on Button, not the action helper", () => {
+    const helper = gameActionOutlineButtonClassName(false);
+    expect(helper).toContain("border-orange-950");
+    expect(helper).not.toContain("game-chrome-rule--box");
+
+    render(
+      <CooldownButton
+        variant="outline"
+        button_id="gatherWood"
+        cooldownMs={0}
+        onClick={() => {}}
+        data-testid="button-gather-wood"
+      >
+        Gather Wood
+      </CooldownButton>,
+    );
+
+    const button = screen.getByTestId("button-gather-wood");
+    expect(button.className).toContain("game-chrome-rule--box");
+    expect(button.className).toContain("border-transparent");
+    expect(button.className).not.toContain("border-orange-950");
+    expect(button.style.getPropertyValue("--adc-chrome-mask-x")).toMatch(
+      /^\d+px$/,
+    );
   });
 });

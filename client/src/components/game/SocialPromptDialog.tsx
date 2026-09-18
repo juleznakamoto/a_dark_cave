@@ -508,7 +508,10 @@ export default function SocialPromptDialog({
       open={isOpen}
       onOpenChange={(open) => !open && setSocialPromptDialogOpen(false)}
     >
-      <DialogContent className="[--adc-dialog-max-w:32rem] z-[70] max-h-[90vh] overflow-y-auto">
+      <DialogContent
+        scrollBody
+        className="[--adc-dialog-max-w:32rem] z-[70] max-h-[90vh]"
+      >
         <DialogHeader>
           <DialogTitle>{t("socialPrompt.title")}</DialogTitle>
           <DialogDescription className="text-left pt-1 space-y-2">

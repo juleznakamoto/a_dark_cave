@@ -1929,7 +1929,7 @@ function ShopDialogOpen({ isOpen, onClose, onOpen }: ShopDialogProps) {
             className={cn(
               showSecurePurchasePrompt
                 ? "[--adc-dialog-max-w:28rem] max-h-[80vh] z-[70] gap-2"
-                : "[--adc-dialog-max-w:56rem] flex max-h-[82vh] min-h-0 flex-col gap-3 overflow-hidden z-[70] p-6",
+                : "[--adc-dialog-max-w:56rem] flex max-h-[82vh] min-h-0 flex-col gap-3 overflow-visible z-[70] p-6",
               isPaymentMode && "hidden",
             )}
             style={

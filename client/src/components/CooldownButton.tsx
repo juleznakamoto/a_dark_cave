@@ -39,8 +39,14 @@ export function gameActionOutlineButtonClassName(
     disabled
       ? // Fade via border alpha + gameActionDisabledLabelClassName — never whole-button
       // opacity (that lets portaled click particles show through the chrome).
-      "border-orange-950/50 !bg-transparent hover:!bg-transparent"
-      : "border-orange-950 text-foreground",
+      cn(
+        "border-orange-950/50",
+        "!bg-transparent hover:!bg-transparent",
+      )
+      : cn(
+        "border-orange-950",
+        "text-foreground",
+      ),
     !disabled &&
     `${hoverPrefix}bg-accent ${hoverPrefix}text-accent-foreground bg-neutral-600/10`,
   );
@@ -332,7 +338,11 @@ const CooldownButton = forwardRef<HTMLButtonElement, CooldownButtonProps>(
         // opacity: 1 is load-bearing — whole-button opacity lets portaled particles
         // (z behind the button) show through and look like they are in front.
         // Keep it last so a caller `style.opacity` cannot undo the particle fix.
-        style={{ position: "relative", ...style, opacity: 1 }}
+        style={{
+          position: "relative",
+          ...style,
+          opacity: 1,
+        }}
       >
         {particleConfig && (
           <div
@@ -350,7 +360,7 @@ const CooldownButton = forwardRef<HTMLButtonElement, CooldownButtonProps>(
                 : "static-wash"
             }
             className={cn(
-              "pointer-events-none absolute inset-y-0 left-0 z-0 overflow-hidden transition-opacity duration-200",
+              "pointer-events-none absolute inset-y-0 left-0 z-0 overflow-hidden rounded-md transition-opacity duration-200",
               GAME_ACTION_COOLDOWN_WASH_CLASS,
               executionWipe?.className,
             )}

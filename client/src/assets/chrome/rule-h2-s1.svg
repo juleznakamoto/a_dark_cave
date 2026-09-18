@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="3840" height="10" viewBox="0 0 3840 10">
+  <path
+    fill="none"
+    stroke="#fff"
+    stroke-width="1"
+    stroke-linecap="butt"
+    stroke-linejoin="round"
+    d="M0 5 L152 5 M176 5 L392 5 M422 5 L720 5 M720 5 L754.45 5 M772.65 5 L821.58 5 L867.51 4.05 L904.11 4.33 L990.38 5 M1003.21 5 L1160.31 5 M1186.21 5 L1394.35 5 M1412.81 5 L1610.75 5 M1635.74 5 L1904.55 5 M1926.09 5 L2000.16 5 L2019.37 6.28 L2062.31 5.75 L2157.68 5 M2176.76 5 L2354 5 M2370.39 5 L2563.24 5 M2580.88 5 L2754.33 5 M2778.61 5 L3015.08 5 M3035.61 5 L3311.63 5 M3337.29 5 L3412.78 5 L3451.44 5.97 L3468.04 5.77 L3558.27 5 M3580.32 5 L3737.5 5 M3761.77 5 L3840 5 M158 3.85 L170 3.92 M402 6.35 L414 6.2 M758.88 6.16 L771.45 6.26 M2160.45 3.7 L2172.24 3.61 M2567.63 6 L2577.96 6.2 M2759.44 6.42 L2769.07 6.66 M3563.3 3.72 L3567.5 3.58"
+  />
+  <path fill="none" stroke="#fff" stroke-width="1" stroke-linecap="butt" d="M2358.2 5.1 L2364.56 4.94"/>
+  <path fill="none" stroke="#fff" stroke-width="1" stroke-linecap="round" d="M1406.17 4.98"/>
+  <path fill="none" stroke="#fff" stroke-width="1" stroke-linecap="round" d="M3023.1 5.04"/>
+</svg>

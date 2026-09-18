@@ -2,14 +2,22 @@ import * as React from "react"
 import { Slot } from "@radix-ui/react-slot"
 import { type VariantProps } from "class-variance-authority"
 
+import {
+  destroyedChromeMaskStyle,
+  gameChromeBoxClassName,
+  gameChromeTinyClassName,
+  useDestroyedChrome,
+} from "@/components/game/gameChrome"
 import { cn } from "@/lib/utils"
 import { buttonVariants } from "./button-variants"
 
 export interface ButtonProps
   extends React.ButtonHTMLAttributes<HTMLButtonElement>,
-  VariantProps<typeof buttonVariants> {
+    VariantProps<typeof buttonVariants> {
   asChild?: boolean
   button_id?: string
+  /** Tiny −/+/preset squares: cropped tiles, less push-out, Extreme keeps ≥2 corners. */
+  compactChrome?: boolean
 }
 
 const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
@@ -21,11 +29,16 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
       asChild = false,
       onClick,
       button_id,
+      compactChrome = false,
+      style,
       ...props
     },
     ref,
   ) => {
     const Comp = asChild ? Slot : "button"
+    const chromeSeed = React.useId()
+    const destroyedOutline = useDestroyedChrome() && variant === "outline"
+    const tiny = destroyedOutline && compactChrome
 
     const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
       // Read from the prop, not the DOM. `asChild` renders a Slot and the
@@ -45,11 +58,26 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
 
     return (
       <Comp
-        className={cn(buttonVariants({ variant, size }), className)}
+        className={cn(
+          buttonVariants({ variant, size }),
+          destroyedOutline && gameChromeBoxClassName(),
+          tiny && gameChromeTinyClassName(),
+          className,
+          destroyedOutline && "border-transparent",
+        )}
         ref={ref}
         onClick={handleClick}
         button_id={button_id}
         {...props}
+        style={{
+          ...(destroyedOutline
+            ? destroyedChromeMaskStyle(
+                button_id ?? chromeSeed,
+                tiny ? { small: true } : undefined,
+              )
+            : {}),
+          ...style,
+        }}
       />
     )
   }

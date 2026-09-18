@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import { Redirect } from "wouter";
 import DemoTimeUpDialog from "@/components/game/DemoTimeUpDialog";
+import { DestroyedChromeScope } from "@/components/game/gameChrome";
 import { useGameStore } from "@/game/state";
 
 /**
@@ -34,7 +35,9 @@ export default function DemoEndScreenDemo() {
       <div className="absolute left-3 top-3 z-[80] rounded bg-neutral-900/90 px-2 py-1 text-2xs text-neutral-400">
         /dev/demo-end | Steam / Galaxy demo end dialog
       </div>
-      <DemoTimeUpDialog preview />
+      <DestroyedChromeScope allow={false}>
+        <DemoTimeUpDialog preview />
+      </DestroyedChromeScope>
     </div>
   );
 }

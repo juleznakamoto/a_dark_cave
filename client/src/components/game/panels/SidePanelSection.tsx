@@ -22,6 +22,10 @@ import { SidePanelSectionIcon } from "./SidePanelSectionIcon";
 import { useGameStore } from "@/game/state";
 import { useDerivedGameState } from "@/game/useGameStoreWithoutTickClock";
 import { useOpenGlobalTooltipId } from "@/hooks/useGlobalTooltip";
+import {
+  getMadnessVisualStage,
+  MADNESS_STAGE_TEXT_CLASS,
+} from "@/game/madnessVisualStage";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { useNewItemPulseTooltips } from "@/hooks/useNewItemPulseTooltip";
 import { cn } from "@/lib/utils";
@@ -956,20 +960,6 @@ export default function SidePanelSection({
       item.tooltip !== false &&
       (typeof item.tooltip !== "string" || item.tooltip.length > 0);
 
-    // Determine madness intensity classes
-    const getMadnessClasses = (value: number) => {
-      if (value >= 40) {
-        return "madness-extreme madness-pulse-extreme text-red-500";
-      } else if (value >= 30) {
-        return "madness-intense madness-pulse-intense text-red-400";
-      } else if (value >= 20) {
-        return "madness-medium madness-pulse-medium text-red-300";
-      } else if (value >= 10) {
-        return "madness-light madness-pulse-light text-red-200";
-      }
-      return "";
-    };
-
     // Check if the item is 'madness' and if there's any madness from events to display
     const isMadnessTooltip =
       item.id === "madness" && madnessTooltipContent.length > 0;
@@ -977,7 +967,9 @@ export default function SidePanelSection({
     const isMadness = item.id === "madness";
     const madnessForStyle =
       isMadness && typeof item.value === "number" ? Math.max(0, item.value) : 0;
-    const madnessClasses = isMadness ? getMadnessClasses(madnessForStyle) : "";
+    const madnessClasses = isMadness
+      ? MADNESS_STAGE_TEXT_CLASS[getMadnessVisualStage(madnessForStyle)]
+      : "";
 
     const statPulseKey = STAT_EFFECT_PULSE_STAT_IDS.includes(
       item.id as TooltipStatKey,

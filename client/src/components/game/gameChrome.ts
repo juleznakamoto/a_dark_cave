@@ -1,3 +1,24 @@
+export {
+  DESTROYED_CHROME_ENABLED,
+  GAME_CHROME_RULE_BOTTOM,
+  GAME_CHROME_RULE_TOP,
+  GAME_CHROME_RULE_LEFT,
+  GAME_CHROME_RULE_RIGHT,
+  GAME_CHROME_RULE_SIDE_PANEL,
+  GAME_CHROME_RULE_LOG,
+  GAME_CHROME_RULE_TABS_NAV,
+  gameChromeBoxClassName,
+  gameChromeTooltipClassName,
+  gameChromeDialogClassName,
+  chromeRuleColorStyle,
+  gameChromeTinyClassName,
+  gameChromeSlotClassName,
+  destroyedChromeTinyMaskStyle,
+  destroyedChromeMaskStyle,
+  DestroyedChromeScope,
+  useDestroyedChrome,
+} from "./destroyedChrome";
+
 /** Pause overlay insets — keep in sync with header/footer padding + control height. */
 export const GAME_HEADER_INSET = "36px";
 export const GAME_FOOTER_INSET = "36px";
@@ -39,6 +60,10 @@ export const GAME_TAB_SECTION_HEADER =
  */
 export const GAME_PANEL_HEADER_INSIGHT_BADGE_CLASS =
   "game-panel-header-slot min-h-0 shrink-0";
+
+/** Queue / preset header row. */
+export const GAME_PANEL_HEADER_SLOT_ROW_CLASS =
+  "game-panel-header-slot-row ml-auto flex shrink-0 items-center";
 
 /**
  * Circular progress indicators next to section titles (Produce effects, Focus).

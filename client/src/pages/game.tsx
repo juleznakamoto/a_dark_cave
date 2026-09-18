@@ -10,6 +10,7 @@ import PageLoadSpinner from "@/components/ui/page-load-spinner";
 import PageErrorScreen from "@/components/ui/page-error-screen";
 import { clearStaleChunkReloadGuard } from "@/lib/hardReload";
 import { runGameplayInitialization } from "@/game/gameplayInitOrchestrator";
+import { DestroyedChromeScope } from "@/components/game/gameChrome";
 
 type GameProps = {
   /** Parent cover (Make Fire frame) can stay up until this fires. */
@@ -102,13 +103,15 @@ export default function Game({
       <GameContainer />
 
       {!steamEditionActive && (
-        <Suspense fallback={null}>
-          <EmailConfirmedDialog
-            isOpen={emailConfirmedDialogOpen}
-            onClose={() => setEmailConfirmedDialogOpen(false)}
-          />
-          <FeedbackDialog />
-        </Suspense>
+        <DestroyedChromeScope allow={false}>
+          <Suspense fallback={null}>
+            <EmailConfirmedDialog
+              isOpen={emailConfirmedDialogOpen}
+              onClose={() => setEmailConfirmedDialogOpen(false)}
+            />
+            <FeedbackDialog />
+          </Suspense>
+        </DestroyedChromeScope>
       )}
     </div>
   );

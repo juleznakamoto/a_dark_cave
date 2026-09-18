@@ -1,5 +1,10 @@
 import { cn } from "@/lib/utils";
-import { GAME_PANEL_HEADER_INSIGHT_BADGE_CLASS } from "@/components/game/gameChrome";
+import {
+  destroyedChromeTinyMaskStyle,
+  GAME_PANEL_HEADER_INSIGHT_BADGE_CLASS,
+  gameChromeSlotClassName,
+  useDestroyedChrome,
+} from "@/components/game/gameChrome";
 import { GlowingShadow } from "@/components/ui/glowing-shadow";
 
 export type ConstructionQueueSlotKind = "free" | "used" | "locked" | "plus";
@@ -20,12 +25,19 @@ export function ConstructionQueueSlot({
   testId?: string;
   className?: string;
 }) {
+  const destroyed = useDestroyedChrome();
   return (
     <span
       data-testid={testId}
+      style={
+        destroyed
+          ? destroyedChromeTinyMaskStyle(testId ?? kind)
+          : undefined
+      }
       className={cn(
         GAME_PANEL_HEADER_INSIGHT_BADGE_CLASS,
-        "relative inline-flex items-center justify-center rounded-md border border-neutral-400/50 box-border",
+        "relative inline-flex items-center justify-center rounded-md box-border",
+        destroyed ? gameChromeSlotClassName() : "border border-neutral-400/50",
         kind === "locked" && "opacity-70",
         className,
       )}

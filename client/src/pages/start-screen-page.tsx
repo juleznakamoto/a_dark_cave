@@ -22,6 +22,7 @@ import { isLocalOnlyEdition } from "@/lib/edition";
 import { initSessionTracker } from "@/lib/sessionTracker";
 import { Z_INDEX } from "@/lib/z-index";
 import SteamDemoContinueDialog from "@/components/game/SteamDemoContinueDialog";
+import { DestroyedChromeScope } from "@/components/game/gameChrome";
 import type { SaveData } from "@shared/schema";
 
 const Game = lazy(() => import("@/pages/game"));
@@ -228,6 +229,7 @@ export default function StartScreenPage() {
         </AppErrorBoundary>
       ) : null}
       {showStartScreen ? (
+        <DestroyedChromeScope allow={false}>
         <div
           className={`fixed inset-0${holdMakeFireFrame ? " pointer-events-none" : ""}`}
           style={holdMakeFireFrame ? { zIndex: Z_INDEX.topLayer } : undefined}
@@ -258,6 +260,7 @@ export default function StartScreenPage() {
             onStartNew={() => void handleDemoStartNew()}
           />
         </div>
+        </DestroyedChromeScope>
       ) : null}
     </>
   );

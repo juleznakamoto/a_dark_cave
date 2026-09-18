@@ -14,7 +14,15 @@ import { useShallow } from "zustand/react/shallow";
 import GameTabs from "./GameTabs";
 import GameFooter from "./GameFooter";
 import GameHeader from "./GameHeader";
+import { useDocumentChromeVisualStage } from "@/game/chromeStageTransition";
 import {
+  getMadnessVisualStage,
+  parseChromeDistortionQuery,
+} from "@/game/madnessVisualStage";
+import {
+  GAME_CHROME_RULE_LOG,
+  GAME_CHROME_RULE_SIDE_PANEL,
+  GAME_CHROME_RULE_TABS_NAV,
   GAME_FOOTER_INSET,
   GAME_HEADER_INSET,
   GAME_PANEL_HEADER_BAND,
@@ -22,6 +30,7 @@ import {
   TAB_ICON_ALIGN_CLASS,
   TAB_ICON_SIZE_CLASS,
   TAB_TIMED_EVENT_ICON_CLASS,
+  DestroyedChromeScope,
 } from "./gameChrome";
 import CavePanel from "./panels/CavePanel";
 import VillagePanel from "./panels/VillagePanel";
@@ -208,6 +217,16 @@ export default function GameContainer() {
   const setInvestmentResultDialog = useGameStore(
     (state) => state.setInvestmentResultDialog,
   );
+  const madness = useGameStore((state) => state.stats.madness);
+  const chromeStageOverride = useMemo(
+    () =>
+      import.meta.env.DEV
+        ? parseChromeDistortionQuery(window.location.search)
+        : null,
+    [],
+  );
+  const chromeStage =
+    chromeStageOverride ?? getMadnessVisualStage(madness ?? 0);
   const madnessDialog = useGameStore((state) => state.madnessDialog);
   const setMadnessDialog = useGameStore((state) => state.setMadnessDialog);
   const insightPotionDialog = useGameStore(
@@ -244,6 +263,8 @@ export default function GameContainer() {
     setGlobalTooltipsSuppressed(modalDialogOpen);
     return () => setGlobalTooltipsSuppressed(false);
   }, [modalDialogOpen]);
+
+  useDocumentChromeVisualStage(chromeStage);
 
   const [animatingTabs, setAnimatingTabs] = useState<Set<string>>(new Set());
   const [fadePhaseTabs, setFadePhaseTabs] = useState<Set<string>>(new Set());
@@ -1169,7 +1190,7 @@ export default function GameContainer() {
   // Show start screen if game hasn't started yet (e.g. after sign-out reset).
   if (!flags.gameStarted) {
     return (
-      <>
+      <DestroyedChromeScope allow={false}>
         <StartScreen
           initialPreferences={{
             cruelMode,
@@ -1185,7 +1206,7 @@ export default function GameContainer() {
           onMakeFire={handleStartScreenMakeFire}
         />
         {demoEditionActive && <DemoTimeUpDialog />}
-      </>
+      </DestroyedChromeScope>
     );
   }
 
@@ -1350,10 +1371,12 @@ export default function GameContainer() {
               its bottom edge (mobile) / left edge (desktop). */}
             <div
               ref={panelResize.logRef}
-              className="order-1 md:order-3 relative w-full h-[18vh] md:h-auto min-h-[6rem] md:min-h-0 overflow-hidden pt-1 md:pt-2 pr-2 pb-0 pl-1 md:border-l border-border"
+              className={`order-1 md:order-3 relative w-full h-[18vh] md:h-auto min-h-[6rem] md:min-h-0 pt-1 md:pt-2 pr-2 pb-0 pl-1 ${GAME_CHROME_RULE_LOG}`}
               style={panelResize.logStyle}
             >
-              <LogPanel />
+              <div className="h-full min-h-0 overflow-hidden">
+                <LogPanel />
+              </div>
               <PanelResizeHandle
                 edge="log"
                 onPointerDown={panelResize.startLogResize}
@@ -1368,10 +1391,12 @@ export default function GameContainer() {
               handle on its bottom edge (mobile) / right edge (desktop). */}
             <div
               ref={panelResize.sidePanelRef}
-              className="order-2 md:order-1 relative h-[36vh] md:h-auto min-h-[36vh] md:min-h-0 w-full pr-0 border-t md:border-t-0 md:border-r border-border overflow-hidden"
+              className={`order-2 md:order-1 relative h-[36vh] md:h-auto min-h-[36vh] md:min-h-0 w-full pr-0 ${GAME_CHROME_RULE_SIDE_PANEL}`}
               style={panelResize.sidePanelStyle}
             >
-              <GameTabs />
+              <div className="h-full min-h-0 overflow-hidden">
+                <GameTabs />
+              </div>
               <PanelResizeHandle
                 edge="sidePanel"
                 onPointerDown={panelResize.startSidePanelResize}
@@ -1385,7 +1410,7 @@ export default function GameContainer() {
               instead of growing with the active tab's content. (Ignored on desktop grid.) */}
             <section className="order-3 md:order-2 flex-1 min-w-0 flex flex-col min-h-0 overflow-hidden md:pl-0">
               {/* Horizontal Game Tabs */}
-              <nav className="relative border-t md:border-t-0 border-border pl-2 pr-2 flex-shrink-0">
+              <nav className={`relative pl-2 pr-2 flex-shrink-0 ${GAME_CHROME_RULE_TABS_NAV}`}>
                 {useLimelightNav ? (
                   // Alternative LimelightNav design
                   <LimelightNav
@@ -1687,9 +1712,11 @@ export default function GameContainer() {
 
           {/* Idle Mode Dialog */}
           <IdleModeDialog />
-          <Suspense fallback={null}>
-            <ShareDialog />
-          </Suspense>
+          <DestroyedChromeScope allow={false}>
+            <Suspense fallback={null}>
+              <ShareDialog />
+            </Suspense>
+          </DestroyedChromeScope>
           {WebOnlyDialogs && !steamEditionActive && (
             <Suspense fallback={null}>
               <WebOnlyDialogs
@@ -1700,7 +1727,9 @@ export default function GameContainer() {
               />
             </Suspense>
           )}
-          {inactivityDialogOpen && <InactivityDialog />}
+          <DestroyedChromeScope allow={false}>
+            {inactivityDialogOpen && <InactivityDialog />}
+          </DestroyedChromeScope>
 
           {/* Reward Dialog */}
           <RewardDialog
@@ -1729,7 +1758,9 @@ export default function GameContainer() {
             onClose={() => setVillageEffectDialog(false)}
           />
           <BlessingOfferDialog />
-          {demoEditionActive && <DemoTimeUpDialog />}
+          <DestroyedChromeScope allow={false}>
+            {demoEditionActive && <DemoTimeUpDialog />}
+          </DestroyedChromeScope>
         </div>
       </ProfileMenuProvider>
     </GameTooltipProvider>

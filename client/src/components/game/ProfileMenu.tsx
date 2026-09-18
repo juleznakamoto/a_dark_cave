@@ -48,6 +48,7 @@ import {
   postMarketingPreference,
 } from "@/game/marketingEmailReward";
 import { isRewardsTasksShortcutVisible } from "@/game/socialPromoExclusiveReward";
+import { DestroyedChromeScope } from "@/components/game/gameChrome";
 import { useTranslation } from "react-i18next";
 import { FullscreenButton } from "./FullscreenButton";
 import { CrazyGamesMenuItems } from "./CrazyGamesMenuLinks";
@@ -457,7 +458,7 @@ function ProfileMenuDialogs() {
   }, [deleteAccountDialogOpen, setDeleteAccountDialogOpen, steamEditionActive]);
 
   return (
-    <>
+    <DestroyedChromeScope allow={false}>
       {settingsDialogOpen && (
         <SettingsDialog
           isOpen={settingsDialogOpen}
@@ -502,7 +503,7 @@ function ProfileMenuDialogs() {
           isDeleting={deleteAccountInProgress}
         />
       )}
-    </>
+    </DestroyedChromeScope>
   );
 }
 

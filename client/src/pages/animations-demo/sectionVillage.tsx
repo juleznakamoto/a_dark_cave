@@ -19,7 +19,7 @@ export function QueueSlotsSection() {
       description="Village Build header marks. The used square uses the share-card spinning rim in red, with no hover."
     >
       <DemoRow label="Header row">
-        <div className="flex items-center gap-1">
+        <div className="game-panel-header-slot-row flex items-center">
           <ConstructionQueueSlot kind="used" testId="demo-queue-slot-used" />
           <ConstructionQueueSlot kind="free" testId="demo-queue-slot-free" />
           <ConstructionQueueSlot kind="plus" testId="demo-queue-slot-plus" />

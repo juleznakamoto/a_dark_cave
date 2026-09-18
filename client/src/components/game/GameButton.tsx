@@ -29,6 +29,7 @@ const GameButton = forwardRef<HTMLButtonElement, GameButtonProps>(
       onMouseEnter,
       onMouseLeave,
       variant,
+      style,
       ...props
     },
     ref
@@ -57,6 +58,7 @@ const GameButton = forwardRef<HTMLButtonElement, GameButtonProps>(
           variant === "outline" && gameActionOutlineButtonClassName(disabled),
           className,
         )}
+        style={style}
         {...props}
       >
         {children}

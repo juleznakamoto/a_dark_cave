@@ -157,6 +157,7 @@ import {
   GAME_PANEL_HEADER_INDICATOR_SIZE_PX,
   GAME_PANEL_HEADER_INDICATOR_TRIGGER_CLASS,
   GAME_PANEL_HEADER_INSIGHT_BADGE_CLASS,
+  GAME_PANEL_HEADER_SLOT_ROW_CLASS,
   GAME_TAB_SECTION_HEADER,
   GAME_TAB_SECTION_HEADER_ROW,
   GAME_TAB_SECTION_STACK,
@@ -226,7 +227,7 @@ const villagerCountButtonClassName = (isDisabled: boolean) =>
   cn(
     VILLAGER_COUNT_BUTTON_CLASS,
     gameActionOutlineButtonClassName(isDisabled),
-    // Tiny −/+ keep full chrome; only the glyph dims (see spans below).
+    // Tiny −/+ share queue/preset chrome; only the glyph dims (see spans below).
     "opacity-100 disabled:opacity-100",
   );
 const VILLAGER_COUNT_CAP_CLASS =
@@ -1380,10 +1381,13 @@ export default function VillagePanel() {
             disabled={catalogActive || currentCount === 0}
             variant="outline"
             size="xs"
+            compactChrome
             className={villagerCountButtonClassName(
               catalogActive || currentCount === 0,
             )}
-            style={{ touchAction: "manipulation" }}
+            style={{
+              touchAction: "manipulation",
+            }}
             button_id={`unassign-${jobId}`}
           >
             <span
@@ -1425,8 +1429,11 @@ export default function VillagePanel() {
             disabled={!canAssignMore}
             variant="outline"
             size="xs"
+            compactChrome
             className={villagerCountButtonClassName(!canAssignMore)}
-            style={{ touchAction: "manipulation" }}
+            style={{
+              touchAction: "manipulation",
+            }}
             button_id={`assign-${jobId}`}
           >
             <span
@@ -1551,7 +1558,7 @@ export default function VillagePanel() {
                         queueSlotUnlockRevealStartedRef.current &&
                         !isQueueSlotUnlockAnimating;
                       return (
-                        <div className="ml-auto flex shrink-0 items-center gap-1">
+                        <div className={GAME_PANEL_HEADER_SLOT_ROW_CLASS}>
                           {showQueueSlotUnlock &&
                             !hideQueueSlotUnlockAfterReveal && (
                               <TooltipWrapper
@@ -2358,7 +2365,7 @@ export default function VillagePanel() {
                         presetUnlockRevealStartedRef.current &&
                         !isPresetUnlockAnimating;
                       return (
-                        <div className="ml-auto flex shrink-0 items-center gap-1">
+                        <div className={GAME_PANEL_HEADER_SLOT_ROW_CLASS}>
                           {showPresetUnlock && !hidePresetUnlockAfterReveal && (
                             <TooltipWrapper
                               tooltipId="preset-unlock"
@@ -2452,20 +2459,10 @@ export default function VillagePanel() {
                                   tooltipTriggerClassName="inline-flex items-center leading-none"
                                   className="inline-flex items-center"
                                 >
-                                  <span
-                                    data-testid={presetTooltipId}
-                                    className={cn(
-                                      HEADER_SLOT_SIZE_CLASS,
-                                      "relative inline-flex items-center justify-center rounded-md border border-neutral-400/50 box-border opacity-70",
-                                    )}
-                                  >
-                                    <span
-                                      aria-hidden
-                                      className="font-noto-symbols-2 text-[12px] translate-y-[2px] font-extrabold leading-none text-muted-foreground/45 select-none"
-                                    >
-                                      ×
-                                    </span>
-                                  </span>
+                                  <ConstructionQueueSlot
+                                    testId={presetTooltipId}
+                                    kind="locked"
+                                  />
                                 </TooltipWrapper>
                               );
                             }
@@ -2502,29 +2499,12 @@ export default function VillagePanel() {
                                   tooltipTriggerClassName="inline-flex items-center leading-none"
                                   className="inline-flex items-center"
                                 >
-                                  <span
-                                    data-testid={presetTooltipId}
-                                    className={cn(
-                                      HEADER_SLOT_SIZE_CLASS,
-                                      "relative inline-flex items-center justify-center rounded-md border border-neutral-400/50 box-border",
-                                    )}
-                                  >
-                                    {isInsightPurchaseLocked ? (
-                                      <span
-                                        aria-hidden
-                                        className="font-noto-symbols-2 text-[12px] translate-y-[2px] font-extrabold leading-none text-muted-foreground/45 select-none"
-                                      >
-                                        +
-                                      </span>
-                                    ) : (
-                                      <span
-                                        aria-hidden
-                                        className="font-noto-symbols-2 text-[12px] translate-y-[2px] font-extrabold leading-none text-muted-foreground/45 select-none"
-                                      >
-                                        ×
-                                      </span>
-                                    )}
-                                  </span>
+                                  <ConstructionQueueSlot
+                                    testId={presetTooltipId}
+                                    kind={
+                                      isInsightPurchaseLocked ? "plus" : "locked"
+                                    }
+                                  />
                                 </TooltipWrapper>
                               );
                             }
@@ -2547,6 +2527,7 @@ export default function VillagePanel() {
                                 <Button
                                   size="xs"
                                   variant={isActive ? "default" : "outline"}
+                                  compactChrome
                                   data-testid={`preset-slot-${slot}`}
                                   button_id={`preset-slot-${slot}`}
                                   className={cn(
@@ -2558,7 +2539,9 @@ export default function VillagePanel() {
                                         groupHover: true,
                                       }),
                                   )}
-                                  style={{ touchAction: "manipulation" }}
+                                  style={{
+                                    touchAction: "manipulation",
+                                  }}
                                   disabled={catalogActive}
                                   onClick={() => applyVillagerJobPreset(slot)}
                                 >
@@ -2587,6 +2570,7 @@ export default function VillagePanel() {
                               <Button
                                 size="xs"
                                 variant="outline"
+                                compactChrome
                                 data-testid="preset-save"
                                 button_id="preset-save"
                                 className={cn(
@@ -2595,7 +2579,9 @@ export default function VillagePanel() {
                                     groupHover: true,
                                   }),
                                 )}
-                                style={{ touchAction: "manipulation" }}
+                                style={{
+                                  touchAction: "manipulation",
+                                }}
                                 disabled={catalogActive}
                                 onClick={handlePresetSave}
                               >

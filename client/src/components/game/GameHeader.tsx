@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { GameHeaderControls, GameHeaderRewardsShortcut } from "./ProfileMenu";
 import { SteamDemoHeaderStoreLink } from "./SteamDemoStoreLink";
-import { GAME_CHROME_NO_BG_HOVER } from "./gameChrome";
+import { GAME_CHROME_NO_BG_HOVER, GAME_CHROME_RULE_BOTTOM } from "./gameChrome";
 import { logger } from "@/lib/logger";
 
 async function saveAndReturnToStartScreen(): Promise<void> {
@@ -40,7 +40,7 @@ export default function GameHeader() {
   };
 
   return (
-    <header className="relative z-50 flex min-h-9 flex-shrink-0 items-center border-b border-border px-4 py-1 text-xs text-muted-foreground pointer-events-auto overflow-visible md:pl-4 md:pr-2">
+    <header className={`relative z-50 flex min-h-9 flex-shrink-0 items-center ${GAME_CHROME_RULE_BOTTOM} px-4 py-1 text-xs text-muted-foreground pointer-events-auto overflow-visible md:pl-4 md:pr-2`}>
       <div className="relative flex w-full items-center justify-between gap-2">
         <button
           type="button"
