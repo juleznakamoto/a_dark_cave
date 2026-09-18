@@ -67,7 +67,7 @@ type Props = {
 /** Narrow column: disc is 8px; keeps Time column close without clipping the ring. */
 const INVEST_RADIO_COLUMN_CLASS = "w-6 min-w-6 shrink-0";
 
-/** Same horizontal inset for strategy scroller and amount row; pl-2 limits clip while sitting a bit left of pl-3. */
+/** Same horizontal inset for strategy table and amount row; pl-1 sits a bit left of pl-3 without clipping radios. */
 const INVEST_SECTION_INSET = "pl-1 pr-0";
 
 /** Horizontal rules only (no vertical lines, no table outer frame). */
@@ -188,10 +188,7 @@ export default function InvestDialog({ open, onOpenChange }: Props) {
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent
-        scrollBody
-        className="[--adc-dialog-max-w:22rem] max-h-[90dvh] min-w-0"
-      >
+      <DialogContent className="[--adc-dialog-max-w:22rem] min-w-0">
         <DialogHeader className="min-w-0">
           <div className="flex items-center gap-1 pr-10">
             <DialogTitle className="m-0 pr-0 leading-none">
@@ -231,7 +228,7 @@ export default function InvestDialog({ open, onOpenChange }: Props) {
               >
                 <div
                   className={cn(
-                    "max-w-full min-w-0 w-full overflow-x-auto overflow-y-visible overscroll-x-contain",
+                    "max-w-full min-w-0 w-full",
                     INVEST_SECTION_INSET,
                   )}
                 >
