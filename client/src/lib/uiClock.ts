@@ -122,6 +122,10 @@ export function getCssTimedWipeStyle(opts: {
     };
   }
 
+  const progress = elapsedMs / durationMs;
+  const fromPercent =
+    opts.mode === "fill" ? progress * 100 : (1 - progress) * 100;
+
   return {
     className: `${ADC_PROGRESS_WIPE_CLASS} ${
       opts.mode === "fill"
@@ -129,6 +133,9 @@ export function getCssTimedWipeStyle(opts: {
         : ADC_PROGRESS_WIPE_RECEDE_CLASS
     }`,
     style: {
+      // `right: auto` so width actually shrinks — `inset-0` would pin both edges.
+      right: "auto",
+      width: `${fromPercent}%`,
       animationDuration: `${durationMs}ms`,
       animationDelay: `-${elapsedMs}ms`,
     },

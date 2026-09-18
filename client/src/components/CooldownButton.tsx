@@ -350,7 +350,7 @@ const CooldownButton = forwardRef<HTMLButtonElement, CooldownButtonProps>(
                 : "static-wash"
             }
             className={cn(
-              "pointer-events-none absolute inset-0 z-0 overflow-hidden transition-opacity duration-200",
+              "pointer-events-none absolute inset-y-0 left-0 z-0 overflow-hidden transition-opacity duration-200",
               GAME_ACTION_COOLDOWN_WASH_CLASS,
               executionWipe?.className,
             )}

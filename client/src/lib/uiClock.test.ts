@@ -24,6 +24,8 @@ describe("getCssTimedWipeStyle", () => {
     expect(wipe.className).toContain("adc-progress-wipe--fill");
     expect(wipe.style.animationDuration).toBe("10000ms");
     expect(wipe.style.animationDelay).toBe("-5000ms");
+    expect(wipe.style.width).toBe("50%");
+    expect(wipe.style.right).toBe("auto");
   });
 
   it("seeks a recede wipe from the same elapsed fraction", () => {

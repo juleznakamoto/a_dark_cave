@@ -47,6 +47,9 @@ describe("CooldownButton execution wash", () => {
     );
     expect(delayMs).toBeLessThanOrEqual(-5000);
     expect(delayMs).toBeGreaterThan(-5500);
+    const widthPct = Number.parseFloat((wash as HTMLElement).style.width);
+    expect(widthPct).toBeGreaterThan(8);
+    expect(widthPct).toBeLessThan(10);
 
     expect(
       setIntervalSpy.mock.calls.filter(([, ms]) => ms === 100),
@@ -109,7 +112,7 @@ describe("CooldownButton execution wash", () => {
 
     const button = screen.getByTestId("button-call-merchant");
     expect(button.querySelector(`.${ADC_PROGRESS_WIPE_FILL_CLASS}`)).toBeNull();
-    const wash = button.querySelector("div.pointer-events-none.absolute.inset-0");
+    const wash = button.querySelector("div.pointer-events-none.absolute");
     expect(wash).toBeTruthy();
     expect((wash as HTMLElement).style.width).toBe("0%");
   });
