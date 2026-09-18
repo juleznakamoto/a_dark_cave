@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import {
   BuildingActionBadge,
@@ -10,7 +10,6 @@ import {
 import { TooltipWrapper } from "@/components/game/TooltipWrapper";
 import {
   canBoostConstruction,
-  constructionBoostWillFinishBuild,
   getConstructionBoostCost,
   getConstructionBoostReductionSeconds,
   isConstructionBoostAvailable,
@@ -19,6 +18,7 @@ import { useGameStore } from "@/game/state";
 import { useDerivedGameState } from "@/game/useGameStoreWithoutTickClock";
 import { formatTooltipResourceName } from "@/i18n/tooltipLabels";
 import { cn, formatCompactDuration } from "@/lib/utils";
+import { useUntilTimestamp } from "@/lib/uiClock";
 
 /** Noto text double-triangle (U+23E9 + text VS). Do not use the ⏩ emoji form. */
 export const CONSTRUCTION_BOOST_GLYPH = "\u23E9\uFE0E";
@@ -63,24 +63,16 @@ export function ConstructionBoostBadge({ actionId }: ConstructionBoostBadgeProps
   const canAfford = useDerivedGameState((s) =>
     canBoostConstruction(s, actionId),
   );
-  const [now, setNow] = useState(() => Date.now());
-
-  useEffect(() => {
-    if (!executionStart || !executionDuration) return;
-    const id = setInterval(() => setNow(Date.now()), 500);
-    return () => clearInterval(id);
-  }, [executionStart, executionDuration, actionId]);
+  const isExecuting = executionStart > 0 && executionDuration > 0;
+  const finishTooltipAt =
+    isExecuting && reductionSeconds > 0
+      ? executionStart + (executionDuration - reductionSeconds) * 1000
+      : null;
+  const beforeFinishTooltip = useUntilTimestamp(finishTooltipAt);
+  const finishesBuild = isExecuting && !beforeFinishTooltip;
 
   const savedTime = formatCompactDuration(reductionSeconds, "round");
   const insightResource = formatTooltipResourceName("insight");
-  const finishesBuild = constructionBoostWillFinishBuild(
-    {
-      executionStartTimes: { [actionId]: executionStart },
-      executionDurations: { [actionId]: executionDuration },
-    },
-    actionId,
-    now,
-  );
 
   const isCraftAction = actionId.startsWith("craft");
   const costTooltip = useMemo(

@@ -51,4 +51,9 @@ interface Window {
   };
   /** DEV only. Live fixture editor for agents (see trailer-save-guide). */
   __adcDevSave?: import("./game/devSaveEditApi").DevSaveEditApi;
+  /**
+   * Long-session lag probe. Present when `?perf=1` or Vite DEV.
+   * See `client/src/lib/perfProbe.md`.
+   */
+  __adcPerf?: import("./lib/perfProbe").AdcPerfApi;
 }

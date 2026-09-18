@@ -18,6 +18,7 @@ import {
   type VillagerCapGroupId,
 } from "@/game/villagerCapUpgrades";
 import { getUiTooltip } from "@/i18n/tooltipLabels";
+import { useUntilTimestamp } from "@/lib/uiClock";
 
 /** New-item pulse + insight highlight for villager-cap upgrade badges. */
 function useInsightBadgeTooltipPulse(tooltipId: string) {
@@ -88,22 +89,14 @@ export function VillagerCapUpgradeBadge({
     (s) => s.setHighlightedResources,
   );
   const [suppressHover, setSuppressHover] = useState(false);
-  const [, forceUpdate] = useState(0);
   const revealStartedRef = useRef(false);
 
-  // Subscribed end time so every badge in the group re-renders together.
-  const isPlaying =
-    typeof insightRevealEnd === "number" && insightRevealEnd > Date.now();
+  // One timeout at the store deadline — not a 10 Hz poll per job badge.
+  const isPlaying = useUntilTimestamp(insightRevealEnd);
 
   useEffect(() => {
     if (isPlaying) revealStartedRef.current = true;
   }, [isPlaying]);
-
-  useEffect(() => {
-    if (!isPlaying) return;
-    const interval = setInterval(() => forceUpdate((n) => n + 1), 100);
-    return () => clearInterval(interval);
-  }, [isPlaying, insightRevealEnd]);
 
   useEffect(() => {
     if (!isPlaying) return;

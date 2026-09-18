@@ -9,6 +9,7 @@ import {
   resolveLogPanelMessage,
 } from "@/i18n/logDisplay";
 import { isStartScreenNarrativeLogEntry } from "@/i18n/resolveGameText";
+import { setPerfUiCounter } from "@/lib/perfProbe";
 
 // Extended log entry type to support "production" type if it exists in the data
 type ExtendedLogEntry =
@@ -40,6 +41,10 @@ function LogPanel() {
       markReadTimeoutsRef.current.clear();
     };
   }, []);
+
+  useEffect(() => {
+    setPerfUiCounter("logReadEntries", readEntries.size);
+  }, [readEntries]);
 
   // Get only the last entries and reverse them so latest is at top
   const recentEntries = useMemo(

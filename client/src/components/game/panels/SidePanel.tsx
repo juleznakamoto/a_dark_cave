@@ -17,6 +17,7 @@ import { ResourceInsightIcon } from "@/components/ui/resource-insight-icon";
 import { clothingEffects } from "@/game/rules/effects";
 import { ScrollAreaWithIndicator } from "@/components/ui/scroll-area-with-indicator";
 import { logger } from "@/lib/logger";
+import { setPerfUiCounter } from "@/lib/perfProbe";
 import { villageBuildActions } from "@/game/rules/villageBuildActions";
 import { capitalizeWords, cn, formatSignedNumber } from "@/lib/utils";
 import {
@@ -159,6 +160,11 @@ export default function SidePanel() {
       consumedResourceChangeEventIdsRef.current.add(event.id);
       return true;
     });
+
+    setPerfUiCounter(
+      "consumedResourceChangeIds",
+      consumedResourceChangeEventIdsRef.current.size,
+    );
 
     if (newEvents.length === 0) return;
 

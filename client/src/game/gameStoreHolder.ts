@@ -21,6 +21,8 @@ type GameStoreSetState = (
 export type BoundGameStore = {
   getState: () => GameStoreSnapshot;
   setState: GameStoreSetState;
+  /** Zustand subscribe; optional so test fakes can omit it. */
+  subscribe?: (listener: () => void) => () => void;
   isModalDialogOpen: (state: GameStoreSnapshot) => boolean;
 };
 
