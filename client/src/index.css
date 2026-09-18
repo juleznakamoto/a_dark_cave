@@ -1180,6 +1180,41 @@ html.adc-text-large .game-panel-header-indicator-row {
   animation: compass-glow 1s linear;
 }
 
+/* Shared action-button progress wipe (execution fill / cooldown recede).
+   Seek with animation-delay: -elapsed so N buttons share no 10 Hz React ticks. */
+@keyframes adc-progress-wipe-fill {
+  from {
+    width: 0%;
+  }
+
+  to {
+    width: 100%;
+  }
+}
+
+@keyframes adc-progress-wipe-recede {
+  from {
+    width: 100%;
+  }
+
+  to {
+    width: 0%;
+  }
+}
+
+.adc-progress-wipe {
+  animation-timing-function: linear;
+  animation-fill-mode: both;
+}
+
+.adc-progress-wipe--fill {
+  animation-name: adc-progress-wipe-fill;
+}
+
+.adc-progress-wipe--recede {
+  animation-name: adc-progress-wipe-recede;
+}
+
 @keyframes fade-out-up {
   0% {
     transform: translateY(2px);

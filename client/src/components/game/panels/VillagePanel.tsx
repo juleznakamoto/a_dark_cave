@@ -118,9 +118,9 @@ import { getRevealedEffectsForActionTooltip } from "@/game/rules/insightRevealTo
 import { composeActionTooltip } from "@/game/rules/actionTooltipLayout";
 import {
   isBuildingDescriptionVisible,
-  isInsightRevealInProgress,
   PRESET_UNLOCK_INSIGHT_KEY,
 } from "@/game/rules/insightReveal";
+import { useUntilTimestamp } from "@/lib/uiClock";
 import {
   SuccessParticles,
   useFeedFireParticles,
@@ -600,22 +600,14 @@ export default function VillagePanel() {
     return mask;
   });
   const insightRevealing = useGameStore((s) => s.insightRevealing);
-  const isPresetUnlockAnimating = isInsightRevealInProgress(
-    PRESET_UNLOCK_INSIGHT_KEY,
-    insightRevealing,
-  );
   const presetUnlockRevealEnd = useGameStore(
     (s) => s.insightRevealing?.[PRESET_UNLOCK_INSIGHT_KEY],
-  );
-  const isQueueSlotUnlockAnimating = isInsightRevealInProgress(
-    QUEUE_SLOT_UNLOCK_INSIGHT_KEY,
-    insightRevealing,
   );
   const queueSlotUnlockRevealEnd = useGameStore(
     (s) => s.insightRevealing?.[QUEUE_SLOT_UNLOCK_INSIGHT_KEY],
   );
-  const [, forcePresetUnlockUpdate] = useState(0);
-  const [, forceQueueSlotUnlockUpdate] = useState(0);
+  const isPresetUnlockAnimating = useUntilTimestamp(presetUnlockRevealEnd);
+  const isQueueSlotUnlockAnimating = useUntilTimestamp(queueSlotUnlockRevealEnd);
   const presetUnlockRevealStartedRef = useRef(false);
   const queueSlotUnlockRevealStartedRef = useRef(false);
 
@@ -635,18 +627,6 @@ export default function VillagePanel() {
   useEffect(() => {
     queueSlotUnlockRevealStartedRef.current = false;
   }, [constructionQueueSlotsPurchased]);
-
-  useEffect(() => {
-    if (!isPresetUnlockAnimating) return;
-    const id = setInterval(() => forcePresetUnlockUpdate((n) => n + 1), 100);
-    return () => clearInterval(id);
-  }, [isPresetUnlockAnimating, presetUnlockRevealEnd]);
-
-  useEffect(() => {
-    if (!isQueueSlotUnlockAnimating) return;
-    const id = setInterval(() => forceQueueSlotUnlockUpdate((n) => n + 1), 100);
-    return () => clearInterval(id);
-  }, [isQueueSlotUnlockAnimating, queueSlotUnlockRevealEnd]);
 
   useEffect(
     () => () => {

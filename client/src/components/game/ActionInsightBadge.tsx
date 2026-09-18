@@ -19,6 +19,7 @@ import {
   useGameStore,
 } from "@/game/state";
 import { formatTooltipResourceName } from "@/i18n/tooltipLabels";
+import { useUntilTimestamp } from "@/lib/uiClock";
 
 const PROLONG_MINUTES = TIMED_EVENT_TAB_PROLONG_MS / 60_000;
 
@@ -41,8 +42,7 @@ export function ActionInsightBadge({ timeRemainingMs }: ActionInsightBadgeProps)
   const setHighlightedResources = useGameStore((s) => s.setHighlightedResources);
   const [, forceUpdate] = useState(0);
 
-  const isInsightRevealAnimating =
-    typeof insightRevealEnd === "number" && insightRevealEnd > Date.now();
+  const isInsightRevealAnimating = useUntilTimestamp(insightRevealEnd);
 
   const effectiveTimedRemaining =
     getTimedEventTabEffectiveRemainingMs(useGameStore.getState());
@@ -66,12 +66,6 @@ export function ActionInsightBadge({ timeRemainingMs }: ActionInsightBadgeProps)
   useEffect(() => {
     if (isInsightRevealAnimating) revealStartedRef.current = true;
   }, [isInsightRevealAnimating]);
-
-  useEffect(() => {
-    if (!isInsightRevealAnimating) return;
-    const id = setInterval(() => forceUpdate((n) => n + 1), 100);
-    return () => clearInterval(id);
-  }, [isInsightRevealAnimating, insightRevealEnd]);
 
   useEffect(() => {
     if (!playing) return;

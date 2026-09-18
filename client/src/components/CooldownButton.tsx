@@ -2,6 +2,7 @@ import React, { useRef, useEffect, useId, useState, forwardRef } from "react";
 import { Button } from "@/components/ui/button";
 import { useGameStore } from "@/game/state";
 import { TooltipWrapper } from "@/components/game/TooltipWrapper";
+import { useGlobalTooltipOpen } from "@/hooks/useGlobalTooltip";
 import { YELLOW_CORNER_DISC_CLASS } from "@/components/game/gameChrome";
 import { X } from "lucide-react";
 import { GAME_CONSTANTS } from "@/game/constants";
@@ -10,7 +11,7 @@ import { cn, formatCompactDuration } from "@/lib/utils";
 import { useInlineButtonParticles } from "@/components/ui/bubbly-button";
 import type { ParticleConfig } from "@/components/ui/bubbly-button.particles";
 import { ActionTooltipSeparator } from "@/game/rules/actionTooltipLayout";
-import { trackCooldownUiPoll } from "@/lib/perfProbe";
+import { getCssTimedWipeStyle, useUiNow } from "@/lib/uiClock";
 
 /** Relative wrapper for action buttons and badges. inline-flex avoids baseline gap so corner badges sit on the button. */
 export const GAME_ACTION_BUTTON_STACK_CLASS = "relative inline-flex";
@@ -97,6 +98,31 @@ interface CooldownButtonProps {
   previewOverlay?: { widthPercent: number; mode: "fill" | "recede" } | null;
 }
 
+/** Ticks once a second only while this button's tooltip is open. */
+function ExecutionRemainingLabel({
+  tooltipId,
+  startMs,
+  durationSec,
+}: {
+  tooltipId: string;
+  startMs: number;
+  durationSec: number;
+}) {
+  const tooltipOpen = useGlobalTooltipOpen(tooltipId) === true;
+  const now = useUiNow(tooltipOpen);
+  const remainingSec = Math.max(0, durationSec - (now - startMs) / 1000);
+  return (
+    <>
+      {tWithFallback(
+        "ui",
+        "tooltips.executionRemaining",
+        "{{duration}} left until finished",
+        { duration: formatCompactDuration(remainingSec) },
+      )}
+    </>
+  );
+}
+
 const CooldownButton = forwardRef<HTMLButtonElement, CooldownButtonProps>(
   function CooldownButton(
     {
@@ -121,7 +147,7 @@ const CooldownButton = forwardRef<HTMLButtonElement, CooldownButtonProps>(
     ref
   ) {
     const isFirstRenderRef = useRef<boolean>(true);
-    const [, forceUpdate] = useState(0);
+    const [wipeRevision, setWipeRevision] = useState(0);
     const generatedButtonId = useId();
 
     // Get the action ID from the test ID or generate one
@@ -170,28 +196,9 @@ const CooldownButton = forwardRef<HTMLButtonElement, CooldownButtonProps>(
           : (1 - playTimeElapsedFraction) * 100
         : 0;
 
-    // Force re-renders during execution so the overlay updates.
-    const isExecutingCheck = executionStart > 0;
-    useEffect(() => {
-      if (!isExecutingCheck && !isPlayTimeOverlayActive) {
-        return;
-      }
-      const untrackPoll = trackCooldownUiPoll();
-      const id = setInterval(() => forceUpdate((n) => n + 1), 100);
-      return () => {
-        clearInterval(id);
-        untrackPoll();
-      };
-    }, [
-      isExecutingCheck,
-      isPlayTimeOverlayActive,
-      actionIdFromProps,
-    ]);
-
-    // Execution state (reverse cooldown - fills as time passes)
+    // Execution wash is CSS-driven (no per-button 100ms forceUpdate).
+    // Play-time overlays already follow the 4 Hz store clock.
     const isExecuting = executionStart > 0 && executionDurationSec > 0;
-    const executionElapsed = isExecuting ? (Date.now() - executionStart) / 1000 : 0;
-    const executionProgress = executionDurationSec > 0 ? Math.min(1, executionElapsed / executionDurationSec) : 0;
 
     // Use the stored initial cooldown if available, otherwise fall back to the action's defined cooldown
     const initialCooldown = storedInitialCooldown > 0
@@ -205,6 +212,7 @@ const CooldownButton = forwardRef<HTMLButtonElement, CooldownButtonProps>(
       const handleVisibilityChange = () => {
         if (document.visibilityState === 'visible') {
           skipAnimationRef.current = true;
+          setWipeRevision((n) => n + 1);
           // Re-enable animation after the jump
           setTimeout(() => {
             skipAnimationRef.current = false;
@@ -230,16 +238,24 @@ const CooldownButton = forwardRef<HTMLButtonElement, CooldownButtonProps>(
       }
     }, [isCoolingDown, isExecuting, isPlayTimeOverlayActive, hasPreviewOverlay]);
 
-    // Calculate width percentage: cooldown = shrinks 100→0, execution = grows 0→100
+    const executionWipe =
+      !previewOverlay && !isPlayTimeOverlayActive && isExecuting
+        ? getCssTimedWipeStyle({
+            startMs: executionStart,
+            durationMs: executionDurationSec * 1000,
+            mode: "fill",
+          })
+        : null;
+
+    // Store-driven overlays (cooldown / play-time) still set width in React.
+    // Execution uses CSS keyframes so N Prior jobs do not poll.
     const overlayWidth = previewOverlay
       ? previewOverlay.widthPercent
       : isPlayTimeOverlayActive
         ? playTimeOverlayWidth
-        : isExecuting
-          ? executionProgress * 100
-          : isCoolingDown && initialCooldown > 0
-            ? (currentCooldown / initialCooldown) * 100
-            : 0;
+        : isCoolingDown && initialCooldown > 0
+          ? (currentCooldown / initialCooldown) * 100
+          : 0;
     const isFillWipe = previewOverlay
       ? previewOverlay.mode === "fill"
       : isPlayTimeOverlayActive
@@ -328,15 +344,28 @@ const CooldownButton = forwardRef<HTMLButtonElement, CooldownButtonProps>(
         {/* Wash first so it stays behind the label. */}
         {isOverlayBlocked && (
           <div
+            key={
+              executionWipe
+                ? `exec-${executionStart}-${executionDurationSec}-${wipeRevision}`
+                : "static-wash"
+            }
             className={cn(
               "pointer-events-none absolute inset-0 z-0 overflow-hidden transition-opacity duration-200",
               GAME_ACTION_COOLDOWN_WASH_CLASS,
+              executionWipe?.className,
             )}
-            style={{
-              width: `${overlayWidth}%`,
-              left: 0,
-              transition: isFirstRenderRef.current || skipAnimationRef.current ? "none" : "width 0.3s ease-out",
-            }}
+            style={
+              executionWipe
+                ? { left: 0, ...executionWipe.style }
+                : {
+                    width: `${overlayWidth}%`,
+                    left: 0,
+                    transition:
+                      isFirstRenderRef.current || skipAnimationRef.current
+                        ? "none"
+                        : "width 0.3s ease-out",
+                  }
+            }
             aria-hidden
           >
             <div
@@ -402,9 +431,6 @@ const CooldownButton = forwardRef<HTMLButtonElement, CooldownButtonProps>(
         { amount: GAME_CONSTANTS.ACTION_ABORT_GOLD_COST },
       );
 
-    const executionRemainingSec = isExecuting
-      ? Math.max(0, executionDurationSec - executionElapsed)
-      : 0;
     const hasBaseTooltip = tooltip != null && tooltip !== false && tooltip !== "";
     const resolvedTooltip = isExecuting
       ? (
@@ -412,12 +438,11 @@ const CooldownButton = forwardRef<HTMLButtonElement, CooldownButtonProps>(
           {hasBaseTooltip ? tooltip : null}
           {hasBaseTooltip ? <ActionTooltipSeparator /> : null}
           <div className="text-muted-foreground">
-            {tWithFallback(
-              "ui",
-              "tooltips.executionRemaining",
-              "{{duration}} left until finished",
-              { duration: formatCompactDuration(executionRemainingSec) },
-            )}
+            <ExecutionRemainingLabel
+              tooltipId={buttonId}
+              startMs={executionStart}
+              durationSec={executionDurationSec}
+            />
           </div>
         </div>
       )

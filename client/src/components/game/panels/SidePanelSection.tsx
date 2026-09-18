@@ -25,6 +25,7 @@ import { useOpenGlobalTooltipId } from "@/hooks/useGlobalTooltip";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { useNewItemPulseTooltips } from "@/hooks/useNewItemPulseTooltip";
 import { cn } from "@/lib/utils";
+import { useUntilTimestamp } from "@/lib/uiClock";
 import { getResourceLimit, isResourceLimited } from "@/game/resourceLimits";
 import {
   isVillagerFoodUpkeepActive,
@@ -344,16 +345,9 @@ function WeaponEnchantBadge({ weaponId }: { weaponId: string }) {
   const affordable = useDerivedGameState((s) => canEnchantWeapon(s, weaponId));
   const [playingUntil, setPlayingUntil] = useState(0);
   const [suppressHover, setSuppressHover] = useState(false);
-  const [, forceUpdate] = useState(0);
   const enchantTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-  const playing = playingUntil > 0 && playingUntil > Date.now();
-
-  useEffect(() => {
-    if (!playingUntil) return;
-    const interval = setInterval(() => forceUpdate((n) => n + 1), 100);
-    return () => clearInterval(interval);
-  }, [playingUntil]);
+  const playing = useUntilTimestamp(playingUntil || null);
 
   useEffect(
     () => () => {
@@ -447,16 +441,9 @@ function ItemAbsolveBadge({ itemId }: { itemId: string }) {
   const affordable = useDerivedGameState((s) => canAbsolveItem(s, itemId));
   const [playingUntil, setPlayingUntil] = useState(0);
   const [suppressHover, setSuppressHover] = useState(false);
-  const [, forceUpdate] = useState(0);
   const absolveTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-  const playing = playingUntil > 0 && playingUntil > Date.now();
-
-  useEffect(() => {
-    if (!playingUntil) return;
-    const interval = setInterval(() => forceUpdate((n) => n + 1), 100);
-    return () => clearInterval(interval);
-  }, [playingUntil]);
+  const playing = useUntilTimestamp(playingUntil || null);
 
   useEffect(
     () => () => {
