@@ -822,19 +822,18 @@ html[data-adc-chrome-stage="0"] {
 
 @keyframes fade-in {
   0% {
-    opacity: 0;
+    background: transparent;
     backdrop-filter: blur(0);
   }
 
   100% {
-    opacity: 1;
+    background: #000;
     backdrop-filter: blur(10px);
   }
 }
 
 .animate-fade-in {
-  animation: fade-in 0.35s ease-out forwards;
-  opacity: 0;
+  animation: fade-in 8s ease-in-out forwards;
 }
 
 /* Share dialog: card fades up in place; actions follow after. */
