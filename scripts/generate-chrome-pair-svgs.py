@@ -5,12 +5,14 @@ Madness stages stack: each one keeps the previous features and adds one more.
   0 solid hairline (CSS, no tile)
   1 empty spaces between line runs
   2 + distortion at 50% of max lateral distance, plus a few new gaps
-  3 + distortion at 100% or 150% per run, gap debris, plus a few new gaps
-  4 + short ticks (2-10px, 1-5 per cluster, 4-10px apart) one full line of
-    space away, plus a few new gaps
+  3 + distortion at 125% or 187.5% per run (+25% vs the old 100/150 step),
+    gap debris, plus 25% more new gaps than the usual stage step
+  4 + a few slightly larger gaps with 1-5 on-spine ticks (2-10px, 4-10px
+    apart) sitting in those holes, plus a few new gaps
 No unbroken run longer than 15% of that file's own tile length
 (576px on 3840 tiles, 108px on 720 slot tiles).
-Gaps between runs are 22-25px so breaks stay visible.
+Gaps between runs are 22-25px so breaks stay visible, except the stage-4
+holes that grow just enough to hold a tick cluster.
 
 Rebuild SVGs + mask CSS with no args; `--css-only` skips tiles.
 """
@@ -84,6 +86,7 @@ class Motif:
     spine: list[list[tuple[float, float]]] = field(default_factory=list)
     chips: list[list[tuple[float, float]]] = field(default_factory=list)
     specks: list[Poly] = field(default_factory=list)
+    stage4_seed: int | None = None
 
 
 def fmt(n: float) -> str:
@@ -146,6 +149,7 @@ def clone_motif(motif: Motif) -> Motif:
         spine=[list(run) for run in motif.spine],
         chips=[list(chip) for chip in motif.chips],
         specks=[Poly(list(speck.pts), cap=speck.cap) for speck in motif.specks],
+        stage4_seed=motif.stage4_seed,
     )
 
 
@@ -234,6 +238,12 @@ def emit_svg(
         motif.spine = enforce_max_run(motif.spine, LENGTH)
         motif.spine = fill_along_gaps(motif.spine, LENGTH)
     end = COMPACT_LENGTH if compact else LENGTH
+    if motif.stage4_seed is not None:
+        add_gap_tick_clusters(
+            motif,
+            end,
+            Rng(motif.stage4_seed ^ (0xC0FFEE if compact else 0x51A2)),
+        )
     main: list[str] = []
     specks_butt: list[str] = []
     specks_round: list[str] = []
@@ -301,14 +311,8 @@ def shard(a0: float, a1: float, lat0: float, lat1: float | None = None) -> Poly:
 
 
 # 100% lateral distance from the 1px hairline. Stage 2 uses half of this.
-# Stage 3 picks 100% or 150% per run.
+# Stage 3 picks 125% or 187.5% per run (25% above the old 100/150 step).
 DISTORT_MAX = 2.8
-LINE_THICKNESS = 1.0
-# Clear space between tick and hairline. One extra SVG px so the gap still
-# reads as a full 1px line after centered strokes, AA, and the 0.5x demo.
-SIDE_TICK_GAP = LINE_THICKNESS * 2
-SIDE_TICK_OFFSET = LINE_THICKNESS / 2 + SIDE_TICK_GAP + LINE_THICKNESS / 2
-
 # Unique dash rhythm per family. Three length bands so holes are not a beat.
 # Longest band stops at 15% of the 3840 tile (576px). Slot files recap at 108px.
 RHYTHM = {
@@ -686,6 +690,9 @@ def _holes_overlap(h0: float, h1: float, used: list[tuple[float, float]]) -> boo
 
 
 GAPS_PER_STAGE = 4
+# Stage 2→3 is a bigger step: +25% holes and +25% warp vs the usual stage add.
+GAPS_STAGE_3 = max(1, round(GAPS_PER_STAGE * 1.25))
+STAGE3_DISTORT_MUL = 1.25
 
 
 def plan_extra_gaps(
@@ -875,51 +882,78 @@ def lat_on_run(run: list[tuple[float, float]], along: float) -> float:
     return run[0][1]
 
 
-def side_tick_lat(line_lat: float, sign: float) -> float:
-    """Center of a tick one full line of clear space away from the hairline."""
-    lat = line_lat + sign * SIDE_TICK_OFFSET
-    if 0.7 <= lat <= 9.3:
-        return lat
-    lat = line_lat - sign * SIDE_TICK_OFFSET
-    return min(9.3, max(0.7, lat))
+MIN_RUN_AFTER_TRIM = 16.0
 
 
-def add_side_points(motif: Motif, runs: list[list[tuple[float, float]]], rng: Rng) -> None:
-    """Stage 4: clusters of 1-5 ticks (2-10px), 4-10px apart, one line of space off the hairline."""
+def _cluster_need(n: int, lens: list[float], holes: list[float], pad_lo: float, pad_hi: float) -> float:
+    return pad_lo + sum(lens[:n]) + sum(holes[: max(0, n - 1)]) + pad_hi
+
+
+def add_gap_tick_clusters(motif: Motif, tile_len: float, rng: Rng) -> None:
+    """Widen some 22-25px holes and drop 1-5 on-spine ticks into them."""
+    runs = coalesce_along([run for run in motif.spine if len(run) >= 2])
+    runs.sort(key=_run_min)
+    if len(runs) < 2:
+        return
+    compact = tile_len <= COMPACT_LENGTH + 1e-6
+    max_groups = 4 if compact else 8
+    chance = 0.45 if compact else 0.3
+    ticks: list[list[tuple[float, float]]] = []
+    last_pick = -99
     groups = 0
-    for run in runs:
-        a0, a1 = _run_min(run), _run_max(run)
-        span = a1 - a0
-        if span < 20:
+    for i in range(len(runs) - 1):
+        if groups >= max_groups:
+            break
+        if i - last_pick <= 1:
             continue
-        along = a0 + rng.spanned(8, min(70, max(10, span * 0.2)))
-        while along < a1 - 12 and groups < 8:
-            if rng.chance(0.22):
-                along += rng.spanned(140, 340)
-                continue
-            n = int(rng.spanned(1.0, 5.999))
-            lens = [rng.spanned(2.0, 10.0) for _ in range(n)]
-            gaps = [rng.spanned(4.0, 10.0) for _ in range(max(0, n - 1))]
-            total = sum(lens) + sum(gaps)
-            while n > 1 and along + total > a1 - 2:
-                n -= 1
-                lens = lens[:n]
-                gaps = gaps[: max(0, n - 1)]
-                total = sum(lens) + sum(gaps)
-            if along < a0 + 2 or along + total > a1 - 2:
-                along += rng.spanned(80, 180)
-                continue
-            sign = rng.sign()
-            cursor = along
-            for i, tick_len in enumerate(lens):
-                mid = cursor + tick_len / 2
-                lat = side_tick_lat(lat_on_run(run, mid), sign)
-                motif.chips.append([(cursor, lat), (cursor + tick_len, lat)])
-                cursor += tick_len
-                if i < len(gaps):
-                    cursor += gaps[i]
-            groups += 1
-            along = cursor + rng.spanned(190, 460)
+        g0, g1 = _run_max(runs[i]), _run_min(runs[i + 1])
+        have = g1 - g0
+        if have < MIN_GAP - 1:
+            continue
+        if groups > 0 and not rng.chance(chance):
+            continue
+        n = int(rng.spanned(1.0, 5.999))
+        lens = [rng.spanned(2.0, 10.0) for _ in range(n)]
+        holes = [rng.spanned(4.0, 10.0) for _ in range(max(0, n - 1))]
+        pad_lo = rng.spanned(4.0, 8.0)
+        pad_hi = rng.spanned(4.0, 8.0)
+        left_span = _run_max(runs[i]) - _run_min(runs[i])
+        right_span = _run_max(runs[i + 1]) - _run_min(runs[i + 1])
+        room = max(0.0, left_span - MIN_RUN_AFTER_TRIM) + max(
+            0.0, right_span - MIN_RUN_AFTER_TRIM
+        )
+        while n > 1 and _cluster_need(n, lens, holes, pad_lo, pad_hi) > have + room + 1e-6:
+            n -= 1
+        need = _cluster_need(n, lens, holes, pad_lo, pad_hi)
+        extra = max(0.0, need - have)
+        take_l = min(extra / 2, max(0.0, left_span - MIN_RUN_AFTER_TRIM))
+        take_r = min(extra - take_l, max(0.0, right_span - MIN_RUN_AFTER_TRIM))
+        take_l = min(extra - take_r, max(0.0, left_span - MIN_RUN_AFTER_TRIM))
+        if take_l + take_r + have < need - 0.5:
+            continue
+        new_g0 = g0 - take_l
+        new_g1 = g1 + take_r
+        trimmed_l = keep_along(runs[i], None, new_g0)
+        trimmed_r = keep_along(runs[i + 1], new_g1, None)
+        if not trimmed_l or not trimmed_r:
+            continue
+        runs[i] = trimmed_l
+        runs[i + 1] = trimmed_r
+        lat0 = lat_on_run(trimmed_l, _run_max(trimmed_l))
+        lat1 = lat_on_run(trimmed_r, _run_min(trimmed_r))
+        cursor = new_g0 + pad_lo
+        span = max(1e-6, new_g1 - new_g0)
+        for k, tick_len in enumerate(lens[:n]):
+            mid = cursor + tick_len / 2
+            t = (mid - new_g0) / span
+            lat = lat0 + (lat1 - lat0) * t
+            ticks.append([(cursor, lat), (cursor + tick_len, lat)])
+            cursor += tick_len
+            if k < n - 1:
+                cursor += holes[k]
+        last_pick = i
+        groups += 1
+    motif.spine = sorted(runs + ticks, key=_run_min)
 
 
 def build_family_stages(key: str, seed: int) -> dict[str, Motif]:
@@ -939,7 +973,7 @@ def build_family_stages(key: str, seed: int) -> dict[str, Motif]:
     extra3 = plan_extra_gaps(
         punch_runs(gapped.spine, extra2),
         Rng(seed ^ 0x22BADF00),
-        count=GAPS_PER_STAGE,
+        count=GAPS_STAGE_3,
         used=used,
     )
     used = used + extra3
@@ -953,7 +987,9 @@ def build_family_stages(key: str, seed: int) -> dict[str, Motif]:
     s1 = clone_motif(gapped)
     s1.spine = enforce_max_run(s1.spine, LENGTH)
     s2_scales = [0.5 for _ in warps]
-    s3_scales = [1.5 if scale_rng.chance(0.5) else 1.0 for _ in warps]
+    s3_scales = [
+        (1.5 if scale_rng.chance(0.5) else 1.0) * STAGE3_DISTORT_MUL for _ in warps
+    ]
     s2 = Motif(
         spine=enforce_max_run(
             punch_runs(apply_warp(warps, links, s2_scales), extra2), LENGTH
@@ -967,7 +1003,7 @@ def build_family_stages(key: str, seed: int) -> dict[str, Motif]:
     add_gap_debris(s3, gaps, Rng(seed ^ 0x51A2C0D))
     s4 = clone_motif(s3)
     s4.spine = enforce_max_run(punch_runs(s4.spine, extra4), LENGTH)
-    add_side_points(s4, s4.spine, Rng(seed ^ 0x7B10E33))
+    s4.stage4_seed = seed ^ 0x7B10E33
     return {"s1": s1, "s2": s2, "s3": s3, "s4": s4}
 
 
