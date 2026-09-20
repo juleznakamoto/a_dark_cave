@@ -10,10 +10,12 @@ Madness stages stack: each one keeps the previous features and adds one more.
   4 + a few slightly larger gaps with 1-5 on-spine ticks (2-10px, 4-10px
     apart) sitting in those holes, plus a few new gaps
 No unbroken run longer than 15% of that file's own tile length
-(576px on 3840 tiles, 108px on 720 slot tiles).
+(576px on 3840 tiles, 108px on 720 slot tiles), except the two long
+horizontal families (h / h2 at 3840) which cap at 10% (384px).
 Gaps between runs are 22-25px so breaks stay visible, except the stage-4
 holes that grow just enough to hold a tick cluster.
 Slot and preset (720) tiles cap distortion at 50% of DISTORT_MAX.
+Button / dialog / tooltip boxes use 50% then 100% (never the 150% step).
 
 Rebuild SVGs + mask CSS with no args; `--css-only` skips tiles.
 """
@@ -32,6 +34,7 @@ MASK_CSS = ROOT / "chrome-mask-stages.css"
 LENGTH = 3840
 COMPACT_LENGTH = 720
 MAX_RUN_FRAC = 0.15
+MAX_RUN_FRAC_LONG_H = 0.10
 MAX_GAP = 25.0
 MIN_GAP = 22.0
 MASK_KEYS = ("h", "h2", "v", "v2")
@@ -88,6 +91,7 @@ class Motif:
     chips: list[list[tuple[float, float]]] = field(default_factory=list)
     specks: list[Poly] = field(default_factory=list)
     stage4_seed: int | None = None
+    run_frac: float = MAX_RUN_FRAC
 
 
 def fmt(n: float) -> str:
@@ -178,6 +182,7 @@ def clone_motif(motif: Motif) -> Motif:
         chips=[list(chip) for chip in motif.chips],
         specks=[Poly(list(speck.pts), cap=speck.cap) for speck in motif.specks],
         stage4_seed=motif.stage4_seed,
+        run_frac=motif.run_frac,
     )
 
 
@@ -244,10 +249,10 @@ def emit_svg(
             clipped = crop_poly(run, COMPACT_LENGTH)
             if clipped:
                 cropped.append(clipped)
-        motif.spine = fill_along_gaps(cropped, COMPACT_LENGTH, short=True)
-        motif.spine = enforce_max_run(motif.spine, COMPACT_LENGTH)
-        motif.spine = fill_along_gaps(motif.spine, COMPACT_LENGTH, short=True)
-        motif.spine = shorten_visible_runs(motif.spine, COMPACT_LENGTH, 70.0)
+        motif.spine = fill_along_gaps(cropped, COMPACT_LENGTH, short=True, frac=MAX_RUN_FRAC)
+        motif.spine = enforce_max_run(motif.spine, COMPACT_LENGTH, frac=MAX_RUN_FRAC)
+        motif.spine = fill_along_gaps(motif.spine, COMPACT_LENGTH, short=True, frac=MAX_RUN_FRAC)
+        motif.spine = shorten_visible_runs(motif.spine, COMPACT_LENGTH, 70.0, frac=MAX_RUN_FRAC)
         chips: list[list[tuple[float, float]]] = []
         for chip in motif.chips:
             clipped = crop_poly(chip, COMPACT_LENGTH)
@@ -262,9 +267,10 @@ def emit_svg(
         motif.specks = specks
     else:
         motif = clone_motif(motif)
-        motif.spine = fill_along_gaps(motif.spine, LENGTH)
-        motif.spine = enforce_max_run(motif.spine, LENGTH)
-        motif.spine = fill_along_gaps(motif.spine, LENGTH)
+        frac = motif.run_frac
+        motif.spine = fill_along_gaps(motif.spine, LENGTH, frac=frac)
+        motif.spine = enforce_max_run(motif.spine, LENGTH, frac=frac)
+        motif.spine = fill_along_gaps(motif.spine, LENGTH, frac=frac)
     end = COMPACT_LENGTH if compact else LENGTH
     if motif.stage4_seed is not None:
         add_gap_tick_clusters(
@@ -343,19 +349,22 @@ def shard(a0: float, a1: float, lat0: float, lat1: float | None = None) -> Poly:
 # 100% lateral distance from the 1px hairline. Stage 2 uses half of this.
 # Stage 3 picks 125% or 187.5% per run (25% above the old 100/150 step).
 # Slot / preset tiles never exceed 50% of this, even on stages 3-4.
+# Button boxes use 50% (stage 2) and 100% (stages 3-4), never 150%.
 DISTORT_MAX = 2.8
 COMPACT_DISTORT_FRAC = 0.5
+BOX_DISTORT_FRAC = 1.0
 # Unique dash rhythm per family. Three length bands so holes are not a beat.
-# Longest band stops at 15% of the 3840 tile (576px). Slot files recap at 108px.
+# Longest band stops at 10% of the 3840 h/h2 tiles (384px) and 15% on v/v2.
+# Slot files recap at 15% of 720 (108px).
 RHYTHM = {
     "h": dict(
-        run_bands=((48, 95), (130, 280), (320, 576)),
+        run_bands=((48, 95), (130, 280), (240, 384)),
         run_w=(0.28, 0.47, 0.25),
         gap_bands=((22, 23), (23, 24), (24, 25)),
         gap_w=(0.32, 0.48, 0.20),
     ),
     "h2": dict(
-        run_bands=((36, 80), (100, 240), (280, 540)),
+        run_bands=((36, 80), (100, 240), (240, 384)),
         run_w=(0.34, 0.42, 0.24),
         gap_bands=((22, 23), (23, 24), (24, 25)),
         gap_w=(0.30, 0.46, 0.24),
@@ -375,8 +384,8 @@ RHYTHM = {
 }
 
 
-def max_run_len(tile_len: float) -> float:
-    return tile_len * MAX_RUN_FRAC
+def max_run_len(tile_len: float, frac: float = MAX_RUN_FRAC) -> float:
+    return tile_len * frac
 
 
 JOIN_EPS = 1.25
@@ -420,9 +429,10 @@ def enforce_max_run(
     runs: list[list[tuple[float, float]]],
     tile_len: float,
     hole: float = SPLIT_HOLE,
+    frac: float = MAX_RUN_FRAC,
 ) -> list[list[tuple[float, float]]]:
-    """Split any visual stretch longer than 15% of this file's tile length."""
-    cap = max_run_len(tile_len)
+    """Split any visual stretch longer than frac of this file's tile length."""
+    cap = max_run_len(tile_len, frac)
     out: list[list[tuple[float, float]]] = []
     for run in coalesce_along(runs):
         a0, a1 = _run_min(run), _run_max(run)
@@ -473,12 +483,13 @@ def fill_along_gaps(
     runs: list[list[tuple[float, float]]],
     tile_len: float,
     short: bool = False,
+    frac: float = MAX_RUN_FRAC,
 ) -> list[list[tuple[float, float]]]:
     """Insert short hairline chunks so no along-axis hole is wider than MAX_GAP."""
     ordered = sorted((run for run in runs if len(run) >= 2), key=_run_min)
     out: list[list[tuple[float, float]]] = []
     cursor = 0.0
-    cap = max_run_len(tile_len)
+    cap = max_run_len(tile_len, frac)
     leave = SPLIT_HOLE
 
     def emit_fill(start: float, end: float) -> None:
@@ -519,17 +530,18 @@ def fill_along_gaps(
                 out.insert(0, [(max(0.0, lo - cover), CENTER), (lo, CENTER)])
             elif lo >= extra and extra > 0:
                 out.insert(0, [(max(0.0, lo - extra), CENTER), (lo, CENTER)])
-    return ensure_min_parts(out, tile_len)
+    return ensure_min_parts(out, tile_len, frac)
 
 
 def shorten_visible_runs(
     runs: list[list[tuple[float, float]]],
     tile_len: float,
     visual_cap: float,
+    frac: float = MAX_RUN_FRAC,
 ) -> list[list[tuple[float, float]]]:
-    """15% is the hard cap. On short tiles, near-cap dashes with 22px holes
-    still read as one stroke, so keep typical dashes under visual_cap."""
-    cap = min(max_run_len(tile_len), visual_cap)
+    """On short tiles, near-cap dashes with 22px holes still read as one
+    stroke, so keep typical dashes under visual_cap."""
+    cap = min(max_run_len(tile_len, frac), visual_cap)
     out = coalesce_along(runs)
     guard = 0
     while guard < 24:
@@ -552,15 +564,16 @@ def shorten_visible_runs(
         if len(nxt) <= len(out):
             break
         out = nxt
-    return ensure_min_parts(out, tile_len)
+    return ensure_min_parts(out, tile_len, frac)
 
 
 def ensure_min_parts(
     runs: list[list[tuple[float, float]]],
     tile_len: float,
+    frac: float = MAX_RUN_FRAC,
 ) -> list[list[tuple[float, float]]]:
-    """15% cap means at least 7 separate runs on that tile."""
-    need = math.ceil(1.0 / MAX_RUN_FRAC)
+    """A 15% cap needs 7 parts; a 10% cap needs 10."""
+    need = math.ceil(1.0 / frac)
     out = [run for run in runs if len(run) >= 2]
     guard = 0
     while len(out) < need and guard < 24:
@@ -584,9 +597,9 @@ def ensure_min_parts(
     return sorted(out, key=_run_min)
 
 
-def gapped_spine(rng: Rng, rhythm: dict) -> Motif:
+def gapped_spine(rng: Rng, rhythm: dict, frac: float = MAX_RUN_FRAC) -> Motif:
     """Stage 1: straight hairline with empty spaces. Always starts at 0."""
-    cap = max_run_len(LENGTH)
+    cap = max_run_len(LENGTH, frac)
     spine: list[list[tuple[float, float]]] = []
     x = 0.0
     streak_start = 0.0
@@ -638,7 +651,10 @@ def gapped_spine(rng: Rng, rhythm: dict) -> Motif:
                 spine.append([(start, CENTER), (end, CENTER)])
     if not spine:
         spine.append([(0.0, CENTER), (min(LENGTH, cap), CENTER)])
-    return Motif(spine=enforce_max_run(fill_along_gaps(spine, LENGTH), LENGTH))
+    return Motif(
+        spine=enforce_max_run(fill_along_gaps(spine, LENGTH, frac=frac), LENGTH, frac=frac),
+        run_frac=frac,
+    )
 
 
 def spine_gaps(spine: list[list[tuple[float, float]]]) -> list[tuple[float, float]]:
@@ -990,7 +1006,8 @@ def add_gap_tick_clusters(motif: Motif, tile_len: float, rng: Rng) -> None:
 
 def build_family_stages(key: str, seed: int) -> dict[str, Motif]:
     rhythm = RHYTHM[key]
-    gapped = gapped_spine(Rng(seed), rhythm)
+    frac = MAX_RUN_FRAC_LONG_H if key in ("h", "h2") else MAX_RUN_FRAC
+    gapped = gapped_spine(Rng(seed), rhythm, frac=frac)
     gaps = spine_gaps(gapped.spine)
     warp_rng = Rng(seed ^ 0xA5C3E91)
     warps = [plan_run_warp(run, warp_rng) for run in gapped.spine]
@@ -1017,32 +1034,69 @@ def build_family_stages(key: str, seed: int) -> dict[str, Motif]:
     )
 
     s1 = clone_motif(gapped)
-    s1.spine = enforce_max_run(s1.spine, LENGTH)
+    s1.spine = enforce_max_run(s1.spine, LENGTH, frac=frac)
     s2_scales = [0.5 for _ in warps]
     s3_scales = [
         (1.5 if scale_rng.chance(0.5) else 1.0) * STAGE3_DISTORT_MUL for _ in warps
     ]
     s2 = Motif(
         spine=enforce_max_run(
-            punch_runs(apply_warp(warps, links, s2_scales), extra2), LENGTH
-        )
+            punch_runs(apply_warp(warps, links, s2_scales), extra2), LENGTH, frac=frac
+        ),
+        run_frac=frac,
     )
     s3 = Motif(
         spine=enforce_max_run(
-            punch_runs(apply_warp(warps, links, s3_scales), extra2 + extra3), LENGTH
-        )
+            punch_runs(apply_warp(warps, links, s3_scales), extra2 + extra3), LENGTH, frac=frac
+        ),
+        run_frac=frac,
     )
     add_gap_debris(s3, gaps, Rng(seed ^ 0x51A2C0D))
     s4 = clone_motif(s3)
-    s4.spine = enforce_max_run(punch_runs(s4.spine, extra4), LENGTH)
+    s4.spine = enforce_max_run(punch_runs(s4.spine, extra4), LENGTH, frac=frac)
     s4.stage4_seed = seed ^ 0x7B10E33
-    return {"s1": s1, "s2": s2, "s3": s3, "s4": s4}
+    # Buttons: same holes / debris / ticks, but warp stops at 100% (no 150%).
+    s3_box = Motif(
+        spine=enforce_max_run(
+            punch_runs(
+                apply_warp(warps, links, [BOX_DISTORT_FRAC for _ in warps]),
+                extra2 + extra3,
+            ),
+            LENGTH,
+            frac=frac,
+        ),
+        run_frac=frac,
+    )
+    add_gap_debris(s3_box, gaps, Rng(seed ^ 0x51A2C0D))
+    s4_box = clone_motif(s3_box)
+    s4_box.spine = enforce_max_run(punch_runs(s4_box.spine, extra4), LENGTH, frac=frac)
+    s4_box.stage4_seed = seed ^ 0x7B10E33
+    return {
+        "s1": s1,
+        "s2": s2,
+        "s3": s3,
+        "s4": s4,
+        "box_s3": s3_box,
+        "box_s4": s4_box,
+    }
 
 
-def mask_stem(key: str, stage: int, compact: bool) -> str:
-    slot = "-slot" if compact else ""
-    suffix = f"-s{stage}"
-    return f"{key}{slot}{suffix}"
+MASK_KINDS = ("full", "box", "compact")
+KIND_SELECTOR = {
+    "full": ".game-chrome-rule",
+    "box": ".game-chrome-rule--box",
+    "compact": ".game-chrome-rule--compact",
+}
+
+
+def mask_stem(key: str, stage: int, kind: str) -> str:
+    if kind == "compact":
+        infix = "-slot"
+    elif kind == "box" and stage >= 3:
+        infix = "-box"
+    else:
+        infix = ""
+    return f"{key}{infix}-s{stage}"
 
 
 def svg_cache_token(stem: str) -> str:
@@ -1054,74 +1108,55 @@ def mask_url(stem: str) -> str:
     return f'url("./rule-{stem}.svg?v={svg_cache_token(stem)}")'
 
 
-def mask_decls(stage: int, compact: bool, *, prev: bool) -> str:
+def mask_decls(stage: int, kind: str, *, prev: bool) -> str:
     suffix = "-prev" if prev else ""
     lines = [
-        f"  --adc-chrome-mask-{key}{suffix}: {mask_url(mask_stem(key, stage, compact))};"
+        f"  --adc-chrome-mask-{key}{suffix}: {mask_url(mask_stem(key, stage, kind))};"
         for key in MASK_KEYS
     ]
     return "\n".join(lines)
 
 
+def emit_kind_block(selector: str, stage: int, kind: str, *, prev: bool) -> list[str]:
+    return [f"{selector} {{", mask_decls(stage, kind, prev=prev), "}", ""]
+
+
 def emit_mask_css() -> None:
-    """One table → all stage / prev / compact mask URLs. Do not copy-paste in index.css."""
+    """One table → all stage / prev / box / compact mask URLs. Do not copy-paste in index.css."""
     chunks = [
         "/* Generated by scripts/generate-chrome-pair-svgs.py. Mask URL SSOT. */",
         "",
-        ".game-chrome-rule {",
-        mask_decls(4, False, prev=False),
-        "}",
-        "",
-        ".game-chrome-rule--compact {",
-        mask_decls(4, True, prev=False),
-        "}",
-        "",
     ]
+    for kind in MASK_KINDS:
+        chunks.extend(emit_kind_block(KIND_SELECTOR[kind], 4, kind, prev=False))
     for stage in (1, 2, 3, 4):
-        chunks.extend(
-            [
-                f'[data-adc-chrome-stage="{stage}"] .game-chrome-rule {{',
-                mask_decls(stage, False, prev=False),
-                "}",
-                "",
-                f'[data-adc-chrome-stage="{stage}"] .game-chrome-rule--compact {{',
-                mask_decls(stage, True, prev=False),
-                "}",
-                "",
-            ]
-        )
+        for kind in MASK_KINDS:
+            chunks.extend(
+                emit_kind_block(
+                    f'[data-adc-chrome-stage="{stage}"] {KIND_SELECTOR[kind]}',
+                    stage,
+                    kind,
+                    prev=False,
+                )
+            )
     for stage in (1, 2, 3, 4):
-        chunks.extend(
-            [
-                f'[data-adc-chrome-prev-stage="{stage}"] .game-chrome-rule {{',
-                mask_decls(stage, False, prev=True),
-                "}",
-                "",
-                f'[data-adc-chrome-prev-stage="{stage}"] .game-chrome-rule--compact {{',
-                mask_decls(stage, True, prev=True),
-                "}",
-                "",
-            ]
-        )
+        for kind in MASK_KINDS:
+            chunks.extend(
+                emit_kind_block(
+                    f'[data-adc-chrome-prev-stage="{stage}"] {KIND_SELECTOR[kind]}',
+                    stage,
+                    kind,
+                    prev=True,
+                )
+            )
     chunks.append(
         "/* Nested /dev/animations columns beat document-level stage selectors. */"
     )
     chunks.append("")
     for stage in (1, 2, 3, 4):
-        chunks.extend(
-            [
-                f'.adc-chrome-stage-preview[data-adc-chrome-stage="{stage}"] .game-chrome-rule {{',
-                mask_decls(stage, False, prev=False),
-                mask_decls(stage, False, prev=True),
-                "}",
-                "",
-                f'.adc-chrome-stage-preview[data-adc-chrome-stage="{stage}"] .game-chrome-rule--compact {{',
-                mask_decls(stage, True, prev=False),
-                mask_decls(stage, True, prev=True),
-                "}",
-                "",
-            ]
-        )
+        for kind in MASK_KINDS:
+            sel = f'.adc-chrome-stage-preview[data-adc-chrome-stage="{stage}"] {KIND_SELECTOR[kind]}'
+            chunks.extend([f"{sel} {{", mask_decls(stage, kind, prev=False), mask_decls(stage, kind, prev=True), "}", ""])
     MASK_CSS.write_text("\n".join(chunks).rstrip() + "\n", encoding="utf-8", newline="\n")
     print(f"wrote {MASK_CSS.relative_to(MASK_CSS.parents[3])}")
 
@@ -1157,6 +1192,11 @@ def main() -> None:
                 f"rule-{key}-slot{suffix}.svg",
                 emit_svg(stages[stage], horizontal=horizontal, compact=True),
             )
+            if stage in ("s3", "s4"):
+                write(
+                    f"rule-{key}-box{suffix}.svg",
+                    emit_svg(stages[f"box_{stage}"], horizontal=horizontal, compact=False),
+                )
 
     emit_mask_css()
     for stale in (
@@ -1182,6 +1222,8 @@ def main() -> None:
     assert v_open != v2_open
     assert "M5 " in v_open
     assert "M5 " in v2_open
+    box_s3 = (ROOT / "rule-h-box-s3.svg").read_text(encoding="utf-8")
+    assert box_s3 != (ROOT / "rule-h-s3.svg").read_text(encoding="utf-8")
     print("unique vs h/v (not reverse copies)")
 
 
