@@ -5,14 +5,19 @@ Madness stages stack: each one keeps the previous features and adds one more.
   0 solid hairline (CSS, no tile)
   1 empty spaces between line runs
   2 + distortion at 50% of max lateral distance, plus a few new gaps
-  3 + distortion at 100%, gap debris, plus a few new gaps
-  4 + short ticks one line-thickness away from the runs, plus a few new gaps
+  3 + distortion at 100% or 150% per run, gap debris, plus a few new gaps
+  4 + short ticks (2-10px, 1-5 per cluster, 4-10px apart) one full line of
+    space away, plus a few new gaps
+No unbroken run longer than 15% of that file's own tile length
+(576px on 3840 tiles, 108px on 720 slot tiles).
+Gaps between runs are 22-25px so breaks stay visible.
 
 Rebuild SVGs + mask CSS with no args; `--css-only` skips tiles.
 """
 
 from __future__ import annotations
 
+import hashlib
 import math
 import sys
 from dataclasses import dataclass, field
@@ -22,45 +27,13 @@ ROOT = Path(__file__).resolve().parents[1] / "client" / "src" / "assets" / "chro
 MASK_CSS = ROOT / "chrome-mask-stages.css"
 
 LENGTH = 3840
+COMPACT_LENGTH = 720
+MAX_RUN_FRAC = 0.15
+MAX_GAP = 25.0
+MIN_GAP = 22.0
 MASK_KEYS = ("h", "h2", "v", "v2")
-# Stage 4 = unsuffixed extreme tiles. Cache tokens stay per-family so a
-# unique h2/v2 rebuild does not bust unchanged h/v.
-MASK_CACHE = {
-    "h": 28,
-    "v": 28,
-    "h2": 13,
-    "v2": 13,
-    "h-slot": 15,
-    "v-slot": 15,
-    "h2-slot": 14,
-    "v2-slot": 14,
-    "h-s1": 10,
-    "h-s2": 11,
-    "h-s3": 11,
-    "v-s1": 10,
-    "v-s2": 11,
-    "v-s3": 11,
-    "h2-s1": 9,
-    "h2-s2": 10,
-    "h2-s3": 10,
-    "v2-s1": 9,
-    "v2-s2": 10,
-    "v2-s3": 10,
-    "h-slot-s1": 11,
-    "h-slot-s2": 12,
-    "h-slot-s3": 12,
-    "v-slot-s1": 11,
-    "v-slot-s2": 12,
-    "v-slot-s3": 12,
-    "h2-slot-s1": 10,
-    "h2-slot-s2": 11,
-    "h2-slot-s3": 11,
-    "v2-slot-s1": 10,
-    "v2-slot-s2": 11,
-    "v2-slot-s3": 11,
-}
 CENTER = 5.0
-# Compact crop is y=3..7. Side ticks sit one stroke-gap off the hairline (lat 3 / 7).
+# Compact crop is y=3..7. Full-tile ticks sit farther out; slot clamps to this window.
 SLOT_LAT_MIN = 3.0
 SLOT_LAT_MAX = 7.0
 
@@ -191,8 +164,8 @@ def _set_run_along(run: list[tuple[float, float]], *, want_min: bool, along: flo
     run[idx] = (along, run[idx][1])
 
 
-# Compact 18–20px controls: holes bigger than this eat a whole edge.
-COMPACT_LARGE_GAP = 14.0
+# Compact 18–20px controls: only shrink holes bigger than the 15% gap cap.
+COMPACT_LARGE_GAP = 26.0
 
 
 def tighten_compact_spine_gaps(motif: Motif, end: float = 720.0) -> Motif:
@@ -234,7 +207,33 @@ def emit_svg(
 ) -> str:
     if compact:
         motif = tighten_compact_spine_gaps(clone_motif(motif))
-    end = 720 if compact else LENGTH
+        cropped: list[list[tuple[float, float]]] = []
+        for run in motif.spine:
+            clipped = crop_poly(run, COMPACT_LENGTH)
+            if clipped:
+                cropped.append(clipped)
+        motif.spine = fill_along_gaps(cropped, COMPACT_LENGTH, short=True)
+        motif.spine = enforce_max_run(motif.spine, COMPACT_LENGTH)
+        motif.spine = fill_along_gaps(motif.spine, COMPACT_LENGTH, short=True)
+        motif.spine = shorten_visible_runs(motif.spine, COMPACT_LENGTH, 70.0)
+        chips: list[list[tuple[float, float]]] = []
+        for chip in motif.chips:
+            clipped = crop_poly(chip, COMPACT_LENGTH)
+            if clipped:
+                chips.append(clipped)
+        motif.chips = chips
+        specks: list[Poly] = []
+        for speck in motif.specks:
+            clipped = crop_poly(speck.pts, COMPACT_LENGTH)
+            if clipped:
+                specks.append(Poly(clipped, cap=speck.cap))
+        motif.specks = specks
+    else:
+        motif = clone_motif(motif)
+        motif.spine = fill_along_gaps(motif.spine, LENGTH)
+        motif.spine = enforce_max_run(motif.spine, LENGTH)
+        motif.spine = fill_along_gaps(motif.spine, LENGTH)
+    end = COMPACT_LENGTH if compact else LENGTH
     main: list[str] = []
     specks_butt: list[str] = []
     specks_round: list[str] = []
@@ -302,49 +301,275 @@ def shard(a0: float, a1: float, lat0: float, lat1: float | None = None) -> Poly:
 
 
 # 100% lateral distance from the 1px hairline. Stage 2 uses half of this.
+# Stage 3 picks 100% or 150% per run.
 DISTORT_MAX = 2.8
 LINE_THICKNESS = 1.0
-# Empty space between a stage-4 tick and the hairline it sits beside.
-SIDE_TICK_GAP = LINE_THICKNESS
+# Clear space between tick and hairline. One extra SVG px so the gap still
+# reads as a full 1px line after centered strokes, AA, and the 0.5x demo.
+SIDE_TICK_GAP = LINE_THICKNESS * 2
 SIDE_TICK_OFFSET = LINE_THICKNESS / 2 + SIDE_TICK_GAP + LINE_THICKNESS / 2
 
 # Unique dash rhythm per family. Three length bands so holes are not a beat.
+# Longest band stops at 15% of the 3840 tile (576px). Slot files recap at 108px.
 RHYTHM = {
     "h": dict(
-        run_bands=((48, 95), (130, 250), (310, 580)),
+        run_bands=((48, 95), (130, 280), (320, 576)),
         run_w=(0.28, 0.47, 0.25),
-        gap_bands=((8, 18), (26, 52), (68, 130)),
+        gap_bands=((22, 23), (23, 24), (24, 25)),
         gap_w=(0.32, 0.48, 0.20),
     ),
     "h2": dict(
-        run_bands=((36, 80), (100, 200), (250, 480)),
+        run_bands=((36, 80), (100, 240), (280, 540)),
         run_w=(0.34, 0.42, 0.24),
-        gap_bands=((10, 22), (30, 58), (74, 140)),
+        gap_bands=((22, 23), (23, 24), (24, 25)),
         gap_w=(0.30, 0.46, 0.24),
     ),
     "v": dict(
-        run_bands=((55, 110), (150, 280), (340, 620)),
+        run_bands=((55, 110), (150, 300), (320, 576)),
         run_w=(0.26, 0.50, 0.24),
-        gap_bands=((7, 16), (24, 46), (60, 118)),
+        gap_bands=((22, 23), (23, 24), (24, 25)),
         gap_w=(0.34, 0.46, 0.20),
     ),
     "v2": dict(
-        run_bands=((28, 70), (88, 170), (210, 400)),
+        run_bands=((28, 70), (88, 220), (260, 540)),
         run_w=(0.36, 0.40, 0.24),
-        gap_bands=((9, 20), (28, 54), (70, 125)),
+        gap_bands=((22, 23), (23, 24), (24, 25)),
         gap_w=(0.30, 0.48, 0.22),
     ),
 }
 
 
+def max_run_len(tile_len: float) -> float:
+    return tile_len * MAX_RUN_FRAC
+
+
+JOIN_EPS = 1.25
+SPLIT_HOLE = 24.0
+
+
+def coalesce_along(
+    runs: list[list[tuple[float, float]]],
+    join: float = JOIN_EPS,
+) -> list[list[tuple[float, float]]]:
+    """Merge pieces that touch so the cap measures visual length, not path cmds."""
+    items: list[tuple[float, float, list[tuple[float, float]]]] = []
+    for run in runs:
+        if len(run) < 2:
+            continue
+        items.append((_run_min(run), _run_max(run), run))
+    items.sort(key=lambda t: t[0])
+    merged: list[tuple[float, float, list[tuple[float, float]]]] = []
+    for a0, a1, run in items:
+        if merged and a0 <= merged[-1][1] + join:
+            pa0, pa1, prev = merged[-1]
+            hi = max(pa1, a1)
+            straight = (
+                len(prev) == 2
+                and len(run) == 2
+                and abs(prev[0][1] - prev[1][1]) < 0.05
+                and abs(run[0][1] - run[1][1]) < 0.05
+                and abs(prev[0][1] - run[0][1]) < 0.05
+            )
+            if straight:
+                lat = prev[0][1]
+                merged[-1] = (pa0, hi, [(pa0, lat), (hi, lat)])
+            else:
+                merged[-1] = (pa0, hi, prev + run)
+        else:
+            merged.append((a0, a1, run))
+    return [run for _, _, run in merged]
+
+
+def enforce_max_run(
+    runs: list[list[tuple[float, float]]],
+    tile_len: float,
+    hole: float = SPLIT_HOLE,
+) -> list[list[tuple[float, float]]]:
+    """Split any visual stretch longer than 15% of this file's tile length."""
+    cap = max_run_len(tile_len)
+    out: list[list[tuple[float, float]]] = []
+    for run in coalesce_along(runs):
+        a0, a1 = _run_min(run), _run_max(run)
+        start = a0
+        while start < a1 - 2:
+            remain = a1 - start
+            if remain <= cap + 1e-6:
+                kept = keep_along(run, start, a1)
+                if kept:
+                    out.append(kept)
+                break
+            end = start + cap
+            kept = keep_along(run, start, end)
+            if kept:
+                out.append(kept)
+            start = end + hole
+    return cap_tile_wrap(out, tile_len, cap, hole)
+
+
+def cap_tile_wrap(
+    runs: list[list[tuple[float, float]]],
+    tile_len: float,
+    cap: float,
+    hole: float,
+) -> list[list[tuple[float, float]]]:
+    """A run at 0 plus a run at tile_len fuse across CSS mask-repeat."""
+    if len(runs) < 2:
+        return runs
+    ordered = sorted(runs, key=_run_min)
+    first, last = ordered[0], ordered[-1]
+    if _run_min(first) > 0.5 or _run_max(last) < tile_len - 0.5:
+        return ordered
+    wrap = (_run_max(first) - 0.0) + (tile_len - _run_min(last))
+    if wrap <= cap + 1e-6:
+        return ordered
+    # Open a visible seam hole so mask-repeat does not fuse two max runs.
+    # Never bigger than MAX_GAP.
+    seam = min(MAX_GAP, max(hole, MIN_GAP))
+    trimmed = keep_along(first, _run_min(first) + seam, None)
+    if trimmed:
+        ordered[0] = trimmed
+    else:
+        ordered.pop(0)
+    return ordered
+
+
+def fill_along_gaps(
+    runs: list[list[tuple[float, float]]],
+    tile_len: float,
+    short: bool = False,
+) -> list[list[tuple[float, float]]]:
+    """Insert short hairline chunks so no along-axis hole is wider than MAX_GAP."""
+    ordered = sorted((run for run in runs if len(run) >= 2), key=_run_min)
+    out: list[list[tuple[float, float]]] = []
+    cursor = 0.0
+    cap = max_run_len(tile_len)
+    leave = SPLIT_HOLE
+
+    def emit_fill(start: float, end: float) -> None:
+        hole = end - start
+        if hole <= MAX_GAP + 1e-6:
+            return
+        x = start
+        limit = end - leave
+        if limit - x < 8:
+            limit = start + max(8.0, hole - MAX_GAP)
+        while limit - x >= 8:
+            # Slot tiles sit near the 15% cap and fuse; keep those dashes shorter.
+            t = (x * 0.6180339887) % 1.0
+            frac = (0.28 + 0.40 * t) if short else (0.45 + 0.55 * t)
+            chunk = min(cap, limit - x, cap * frac)
+            if chunk < 8:
+                break
+            out.append([(x, CENTER), (x + chunk, CENTER)])
+            x += chunk
+            if limit - x < 8:
+                break
+            x += MIN_GAP + (MAX_GAP - MIN_GAP) * ((x * 0.3819660113) % 1.0)
+
+    for run in ordered:
+        a = _run_min(run)
+        emit_fill(cursor, a)
+        out.append(run)
+        cursor = max(cursor, _run_max(run))
+    emit_fill(cursor, tile_len)
+    if len(out) >= 2:
+        out.sort(key=_run_min)
+        wrap_gap = _run_min(out[0]) + (tile_len - _run_max(out[-1]))
+        if wrap_gap > MAX_GAP + 1e-6:
+            extra = wrap_gap - MAX_GAP
+            lo = _run_min(out[0])
+            cover = min(lo, extra)
+            if cover >= 8:
+                out.insert(0, [(max(0.0, lo - cover), CENTER), (lo, CENTER)])
+            elif lo >= extra and extra > 0:
+                out.insert(0, [(max(0.0, lo - extra), CENTER), (lo, CENTER)])
+    return ensure_min_parts(out, tile_len)
+
+
+def shorten_visible_runs(
+    runs: list[list[tuple[float, float]]],
+    tile_len: float,
+    visual_cap: float,
+) -> list[list[tuple[float, float]]]:
+    """15% is the hard cap. On short tiles, near-cap dashes with 22px holes
+    still read as one stroke, so keep typical dashes under visual_cap."""
+    cap = min(max_run_len(tile_len), visual_cap)
+    out = coalesce_along(runs)
+    guard = 0
+    while guard < 24:
+        guard += 1
+        long = [run for run in out if _run_max(run) - _run_min(run) > cap + 1e-6]
+        if not long:
+            break
+        run = max(long, key=lambda item: _run_max(item) - _run_min(item))
+        a0, a1 = _run_min(run), _run_max(run)
+        if a1 - a0 < MIN_GAP + 24:
+            break
+        mid = (a0 + a1) / 2
+        left = keep_along(run, None, mid - MIN_GAP / 2)
+        right = keep_along(run, mid + MIN_GAP / 2, None)
+        nxt = [item for item in out if item is not run]
+        if left:
+            nxt.append(left)
+        if right:
+            nxt.append(right)
+        if len(nxt) <= len(out):
+            break
+        out = nxt
+    return ensure_min_parts(out, tile_len)
+
+
+def ensure_min_parts(
+    runs: list[list[tuple[float, float]]],
+    tile_len: float,
+) -> list[list[tuple[float, float]]]:
+    """15% cap means at least 7 separate runs on that tile."""
+    need = math.ceil(1.0 / MAX_RUN_FRAC)
+    out = [run for run in runs if len(run) >= 2]
+    guard = 0
+    while len(out) < need and guard < 24:
+        guard += 1
+        idx = max(range(len(out)), key=lambda i: _run_max(out[i]) - _run_min(out[i]))
+        run = out[idx]
+        a0, a1 = _run_min(run), _run_max(run)
+        if a1 - a0 < MIN_GAP + 20:
+            break
+        mid = (a0 + a1) / 2
+        left = keep_along(run, None, mid - MIN_GAP / 2)
+        right = keep_along(run, mid + MIN_GAP / 2, None)
+        nxt = [item for i, item in enumerate(out) if i != idx]
+        if left:
+            nxt.append(left)
+        if right:
+            nxt.append(right)
+        if len(nxt) <= len(out):
+            break
+        out = nxt
+    return sorted(out, key=_run_min)
+
+
 def gapped_spine(rng: Rng, rhythm: dict) -> Motif:
     """Stage 1: straight hairline with empty spaces. Always starts at 0."""
+    cap = max_run_len(LENGTH)
     spine: list[list[tuple[float, float]]] = []
     x = 0.0
+    streak_start = 0.0
     while x < LENGTH - 8:
+        room = min(LENGTH - x, cap - (x - streak_start))
+        if room < 8:
+            gap = min(
+                MAX_GAP,
+                rng.pick_span(rhythm["gap_bands"], rhythm["gap_w"]),
+                LENGTH - x,
+            )
+            if gap < 4:
+                break
+            x += gap
+            streak_start = x
+            continue
         run = min(
             rng.pick_span(rhythm["run_bands"], rhythm["run_w"]),
-            LENGTH - x,
+            room,
         )
         if run < 8:
             break
@@ -352,28 +577,32 @@ def gapped_spine(rng: Rng, rhythm: dict) -> Motif:
         x += run
         if x >= LENGTH - 8:
             break
-        # Most runs leave a hole. Skip some so two lengths fuse and the beat breaks.
-        if rng.chance(0.14):
-            continue
+        # Always leave a visible hole. A skipped gap paints as one longer line.
         gap = min(
+            MAX_GAP,
             rng.pick_span(rhythm["gap_bands"], rhythm["gap_w"]),
             LENGTH - x,
         )
-        if gap < 4:
+        if rng.chance(0.14):
+            gap = min(gap, rng.spanned(MIN_GAP, MAX_GAP))
+        if gap < MIN_GAP:
             break
         x += gap
+        streak_start = x
     if spine and spine[-1][-1][0] < LENGTH - 20:
         tail = LENGTH - spine[-1][-1][0]
         if tail >= 28:
             start = spine[-1][-1][0] + min(
+                MAX_GAP,
                 rng.pick_span(rhythm["gap_bands"], rhythm["gap_w"]),
                 tail * 0.4,
             )
             if LENGTH - start >= 12:
-                spine.append([(start, CENTER), (LENGTH, CENTER)])
+                end = min(LENGTH, start + cap)
+                spine.append([(start, CENTER), (end, CENTER)])
     if not spine:
-        spine.append([(0.0, CENTER), (LENGTH, CENTER)])
-    return Motif(spine=spine)
+        spine.append([(0.0, CENTER), (min(LENGTH, cap), CENTER)])
+    return Motif(spine=enforce_max_run(fill_along_gaps(spine, LENGTH), LENGTH))
 
 
 def spine_gaps(spine: list[list[tuple[float, float]]]) -> list[tuple[float, float]]:
@@ -476,8 +705,8 @@ def plan_extra_gaps(
 
     def try_cut(a0: float, a1: float) -> tuple[float, float] | None:
         span = a1 - a0
-        hole = rng.pick_span(((10, 18), (22, 38), (44, 70)), (0.34, 0.46, 0.20))
-        pad = 16.0
+        hole = rng.pick_span(((22, 23), (23, 24), (24, 25)), (0.34, 0.46, 0.20))
+        pad = MIN_GAP
         if span < hole + pad * 2:
             return None
         t = rng.spanned(0.22, 0.78)
@@ -585,13 +814,16 @@ def split_warped_run(
 
 def apply_warp(
     warps: list[list[tuple[float, float]]],
-    scale: float,
     links: list[list[bool]],
+    scales: list[float],
 ) -> list[list[tuple[float, float]]]:
-    amp = DISTORT_MAX * scale
     out: list[list[tuple[float, float]]] = []
-    for warp, keep in zip(warps, links):
-        pts = [(along, CENTER + unit * amp) for along, unit in warp]
+    for warp, keep, scale in zip(warps, links, scales):
+        amp = DISTORT_MAX * scale
+        pts = [
+            (along, min(9.3, max(0.7, CENTER + unit * amp)))
+            for along, unit in warp
+        ]
         out.extend(split_warped_run(pts, keep))
     return out
 
@@ -625,20 +857,26 @@ def add_gap_debris(motif: Motif, gaps: list[tuple[float, float]], rng: Rng) -> N
 
 
 def lat_on_run(run: list[tuple[float, float]], along: float) -> float:
+    """Lateral value at `along`, independent of whether the segment is stored forward or back."""
     for i in range(len(run) - 1):
         a0, l0 = run[i]
         a1, l1 = run[i + 1]
-        lo, hi = (a0, a1) if a0 <= a1 else (a1, a0)
-        if lo - 1e-6 <= along <= hi + 1e-6:
-            if abs(a1 - a0) < 1e-9:
-                return l0
-            t = (along - a0) / (a1 - a0)
-            return l0 + (l1 - l0) * t
+        if a0 <= a1:
+            lo, hi, lat_lo, lat_hi = a0, a1, l0, l1
+        else:
+            lo, hi, lat_lo, lat_hi = a1, a0, l1, l0
+        if along < lo - 1e-6 or along > hi + 1e-6:
+            continue
+        span = hi - lo
+        if span < 1e-9:
+            return lat_lo
+        t = (along - lo) / span
+        return lat_lo + (lat_hi - lat_lo) * t
     return run[0][1]
 
 
 def side_tick_lat(line_lat: float, sign: float) -> float:
-    """Center of a tick one line-thickness away from the hairline stroke."""
+    """Center of a tick one full line of clear space away from the hairline."""
     lat = line_lat + sign * SIDE_TICK_OFFSET
     if 0.7 <= lat <= 9.3:
         return lat
@@ -647,25 +885,41 @@ def side_tick_lat(line_lat: float, sign: float) -> float:
 
 
 def add_side_points(motif: Motif, runs: list[list[tuple[float, float]]], rng: Rng) -> None:
-    """Stage 4: short ticks beside runs, gap equal to hairline thickness."""
-    placed = 0
+    """Stage 4: clusters of 1-5 ticks (2-10px), 4-10px apart, one line of space off the hairline."""
+    groups = 0
     for run in runs:
         a0, a1 = _run_min(run), _run_max(run)
         span = a1 - a0
-        if span < 28:
+        if span < 20:
             continue
-        along = a0 + rng.spanned(10, min(90, max(12, span * 0.22)))
-        while along < a1 - 12 and placed < 20:
+        along = a0 + rng.spanned(8, min(70, max(10, span * 0.2)))
+        while along < a1 - 12 and groups < 8:
             if rng.chance(0.22):
-                along += rng.spanned(70, 170)
+                along += rng.spanned(140, 340)
                 continue
-            lat = side_tick_lat(lat_on_run(run, along), rng.sign())
-            half = rng.spanned(5.5, 9.0)
-            if along - half >= a0 + 2 and along + half <= a1 - 2:
-                # Main path, not a separate speck, so the CSS mask always paints them.
-                motif.chips.append([(along - half, lat), (along + half, lat)])
-                placed += 1
-            along += rng.spanned(95, 230)
+            n = int(rng.spanned(1.0, 5.999))
+            lens = [rng.spanned(2.0, 10.0) for _ in range(n)]
+            gaps = [rng.spanned(4.0, 10.0) for _ in range(max(0, n - 1))]
+            total = sum(lens) + sum(gaps)
+            while n > 1 and along + total > a1 - 2:
+                n -= 1
+                lens = lens[:n]
+                gaps = gaps[: max(0, n - 1)]
+                total = sum(lens) + sum(gaps)
+            if along < a0 + 2 or along + total > a1 - 2:
+                along += rng.spanned(80, 180)
+                continue
+            sign = rng.sign()
+            cursor = along
+            for i, tick_len in enumerate(lens):
+                mid = cursor + tick_len / 2
+                lat = side_tick_lat(lat_on_run(run, mid), sign)
+                motif.chips.append([(cursor, lat), (cursor + tick_len, lat)])
+                cursor += tick_len
+                if i < len(gaps):
+                    cursor += gaps[i]
+            groups += 1
+            along = cursor + rng.spanned(190, 460)
 
 
 def build_family_stages(key: str, seed: int) -> dict[str, Motif]:
@@ -675,6 +929,7 @@ def build_family_stages(key: str, seed: int) -> dict[str, Motif]:
     warp_rng = Rng(seed ^ 0xA5C3E91)
     warps = [plan_run_warp(run, warp_rng) for run in gapped.spine]
     links = plan_warp_links(warps, Rng(seed ^ 0x2F4A91C))
+    scale_rng = Rng(seed ^ 0x15D15D)
 
     used = list(gaps)
     extra2 = plan_extra_gaps(
@@ -696,23 +951,39 @@ def build_family_stages(key: str, seed: int) -> dict[str, Motif]:
     )
 
     s1 = clone_motif(gapped)
-    s2 = Motif(spine=punch_runs(apply_warp(warps, 0.5, links), extra2))
-    s3 = Motif(spine=punch_runs(apply_warp(warps, 1.0, links), extra2 + extra3))
+    s1.spine = enforce_max_run(s1.spine, LENGTH)
+    s2_scales = [0.5 for _ in warps]
+    s3_scales = [1.5 if scale_rng.chance(0.5) else 1.0 for _ in warps]
+    s2 = Motif(
+        spine=enforce_max_run(
+            punch_runs(apply_warp(warps, links, s2_scales), extra2), LENGTH
+        )
+    )
+    s3 = Motif(
+        spine=enforce_max_run(
+            punch_runs(apply_warp(warps, links, s3_scales), extra2 + extra3), LENGTH
+        )
+    )
     add_gap_debris(s3, gaps, Rng(seed ^ 0x51A2C0D))
     s4 = clone_motif(s3)
-    s4.spine = punch_runs(s4.spine, extra4)
+    s4.spine = enforce_max_run(punch_runs(s4.spine, extra4), LENGTH)
     add_side_points(s4, s4.spine, Rng(seed ^ 0x7B10E33))
-    return {"s1": s1, "s2": s2, "s3": s3, "extreme": s4}
+    return {"s1": s1, "s2": s2, "s3": s3, "s4": s4}
 
 
 def mask_stem(key: str, stage: int, compact: bool) -> str:
     slot = "-slot" if compact else ""
-    suffix = "" if stage == 4 else f"-s{stage}"
+    suffix = f"-s{stage}"
     return f"{key}{slot}{suffix}"
 
 
+def svg_cache_token(stem: str) -> str:
+    data = (ROOT / f"rule-{stem}.svg").read_bytes()
+    return hashlib.md5(data).hexdigest()[:8]
+
+
 def mask_url(stem: str) -> str:
-    return f'url("./rule-{stem}.svg?v={MASK_CACHE[stem]}")'
+    return f'url("./rule-{stem}.svg?v={svg_cache_token(stem)}")'
 
 
 def mask_decls(stage: int, compact: bool, *, prev: bool) -> str:
@@ -738,7 +1009,7 @@ def emit_mask_css() -> None:
         "}",
         "",
     ]
-    for stage in (1, 2, 3):
+    for stage in (1, 2, 3, 4):
         chunks.extend(
             [
                 f'[data-adc-chrome-stage="{stage}"] .game-chrome-rule {{',
@@ -794,10 +1065,10 @@ def write(name: str, body: str) -> None:
 
 
 STAGE_FILES = {
-    "extreme": "",
     "s1": "-s1",
     "s2": "-s2",
     "s3": "-s3",
+    "s4": "-s4",
 }
 
 
@@ -820,16 +1091,29 @@ def main() -> None:
             )
 
     emit_mask_css()
-    h_open = (ROOT / "rule-h.svg").read_text(encoding="utf-8")
-    h2_open = (ROOT / "rule-h2.svg").read_text(encoding="utf-8")
-    v_open = (ROOT / "rule-v.svg").read_text(encoding="utf-8")
-    v2_open = (ROOT / "rule-v2.svg").read_text(encoding="utf-8")
+    for stale in (
+        "rule-h.svg",
+        "rule-h2.svg",
+        "rule-v.svg",
+        "rule-v2.svg",
+        "rule-h-slot.svg",
+        "rule-h2-slot.svg",
+        "rule-v-slot.svg",
+        "rule-v2-slot.svg",
+    ):
+        path = ROOT / stale
+        if path.exists():
+            path.unlink()
+            print(f"removed {path.relative_to(ROOT.parent.parent.parent)}")
+    h_open = (ROOT / "rule-h-s4.svg").read_text(encoding="utf-8")
+    h2_open = (ROOT / "rule-h2-s4.svg").read_text(encoding="utf-8")
+    v_open = (ROOT / "rule-v-s4.svg").read_text(encoding="utf-8")
+    v2_open = (ROOT / "rule-v2-s4.svg").read_text(encoding="utf-8")
     assert "M0 5" in h_open
-    assert "M0 5" in h2_open
     assert h_open != h2_open
     assert v_open != v2_open
-    assert "M5 0" in v_open
-    assert "M5 0" in v2_open
+    assert "M5 " in v_open
+    assert "M5 " in v2_open
     print("unique vs h/v (not reverse copies)")
 
 

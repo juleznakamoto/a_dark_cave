@@ -29,8 +29,160 @@ import {
   type MadnessVisualStage,
 } from "@/game/madnessVisualStage";
 import { DemoSection } from "@/pages/animations-demo/DemoSection";
+import chromeMaskStagesCss from "../../assets/chrome/chrome-mask-stages.css?raw";
 
 const STAGES: MadnessVisualStage[] = [0, 1, 2, 3, 4];
+
+const CHROME_TILE_URLS = import.meta.glob<string>(
+  "../../assets/chrome/rule-*.svg",
+  { eager: true, query: "?url", import: "default" },
+);
+
+const CHROME_TILE_FAMILIES = ["h", "h2", "v", "v2"] as const;
+
+function chromeTileFileName(
+  family: (typeof CHROME_TILE_FAMILIES)[number],
+  stage: MadnessVisualStage,
+  slot: boolean,
+): string {
+  const slotPart = slot ? "-slot" : "";
+  const suffix = `-s${stage}`;
+  return `rule-${family}${slotPart}${suffix}.svg`;
+}
+
+function chromeTileVersion(fileName: string): string {
+  const escaped = fileName.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+  return chromeMaskStagesCss.match(new RegExp(`${escaped}\\?v=([0-9a-f]+)`))?.[1] ?? "0";
+}
+
+function chromeTileUrl(fileName: string): string | undefined {
+  const hit = Object.entries(CHROME_TILE_URLS).find(([path]) =>
+    path.endsWith(`/${fileName}`),
+  );
+  if (!hit) {
+    return undefined;
+  }
+  const version = chromeTileVersion(fileName);
+  const sep = hit[1].includes("?") ? "&" : "?";
+  return `${hit[1]}${sep}v=${version}`;
+}
+
+function ChromeTileStrip({
+  fileName,
+  horizontal,
+  slot,
+  scaleAlong = 0.5,
+  scaleThick = 1,
+  caption,
+}: {
+  fileName: string;
+  horizontal: boolean;
+  slot: boolean;
+  scaleAlong?: number;
+  scaleThick?: number;
+  caption?: string;
+}) {
+  const url = chromeTileUrl(fileName);
+  const along = slot ? 720 : 3840;
+  const thick = slot ? 4 : 10;
+  const nativeW = horizontal ? along : thick;
+  const nativeH = horizontal ? thick : along;
+  const width = (horizontal ? along : thick) * (horizontal ? scaleAlong : scaleThick);
+  const height = (horizontal ? thick : along) * (horizontal ? scaleThick : scaleAlong);
+
+  if (!url) {
+    return (
+      <p className="text-[11px] text-muted-foreground">Missing {fileName}</p>
+    );
+  }
+
+  return (
+    <div className="space-y-1">
+      <p className="font-mono text-[10px] text-muted-foreground">
+        {caption ?? `${fileName} · v${chromeTileVersion(fileName)}`}
+      </p>
+      <div className="bg-neutral-900 py-2">
+        <img
+          src={url}
+          alt={caption ?? fileName}
+          width={nativeW}
+          height={nativeH}
+          className="max-h-none max-w-none"
+          style={{
+            width,
+            height,
+            objectFit: "fill",
+            objectPosition: "0 0",
+          }}
+        />
+      </div>
+    </div>
+  );
+}
+
+const TILE_STAGES: MadnessVisualStage[] = [1, 2, 3, 4];
+
+function ChromeFamilyTiles({
+  family,
+  slot,
+}: {
+  family: (typeof CHROME_TILE_FAMILIES)[number];
+  slot: boolean;
+}) {
+  const horizontal = family.startsWith("h");
+  const strips = TILE_STAGES.map((stage) => (
+    <ChromeTileStrip
+      key={stage}
+      fileName={chromeTileFileName(family, stage, slot)}
+      horizontal={horizontal}
+      slot={slot}
+      scaleAlong={slot ? 1 : 0.5}
+    />
+  ));
+
+  return (
+    <div className="space-y-2">
+      <p className="text-[11px] font-medium text-foreground">
+        {chromeTileFileName(family, 4, slot).replace(".svg", "")} · stages 1–4
+      </p>
+      <div className={horizontal ? "space-y-2" : "flex flex-wrap items-start gap-4"}>
+        {strips}
+      </div>
+    </div>
+  );
+}
+
+function ChromeAllStageTiles() {
+  return (
+    <div className="space-y-6 rounded-md border border-border/40 bg-neutral-950 p-6">
+      <p className="text-[11px] text-muted-foreground">
+        Full mask tiles: 3840px families at 0.5× length, 720px slot families at
+        1:1. Real 10px / 4px thickness. One family per block, stages 1–4
+        together. Stage 0 has no SVG.
+      </p>
+      {CHROME_TILE_FAMILIES.filter((family) => family.startsWith("h")).map(
+        (family) => (
+          <ChromeFamilyTiles key={family} family={family} slot={false} />
+        ),
+      )}
+      {CHROME_TILE_FAMILIES.filter((family) => family.startsWith("h")).map(
+        (family) => (
+          <ChromeFamilyTiles key={`${family}-slot`} family={family} slot />
+        ),
+      )}
+      {CHROME_TILE_FAMILIES.filter((family) => family.startsWith("v")).map(
+        (family) => (
+          <ChromeFamilyTiles key={family} family={family} slot={false} />
+        ),
+      )}
+      {CHROME_TILE_FAMILIES.filter((family) => family.startsWith("v")).map(
+        (family) => (
+          <ChromeFamilyTiles key={`${family}-slot`} family={family} slot />
+        ),
+      )}
+    </div>
+  );
+}
 
 function chromeStagePreviewStyle(stage: MadnessVisualStage): CSSProperties {
   const solid = stage === 0;
@@ -48,7 +200,7 @@ function ChromeStageColumn({ stage }: { stage: MadnessVisualStage }) {
     <div
       className={cn(
         ADC_CHROME_STAGE_PREVIEW_CLASS,
-        "flex w-full flex-col gap-4 rounded-md border border-border/40 bg-neutral-950 p-6",
+        "flex w-full min-w-0 flex-col gap-4 rounded-md border border-border/40 bg-neutral-950 p-6",
       )}
       data-adc-chrome-stage={stage}
       style={chromeStagePreviewStyle(stage)}
@@ -120,12 +272,13 @@ export function ChromeStagesCompareSection() {
     <DemoSection
       id="chrome-stages"
       title="All madness stages"
-      description="Same horizontal rule, vertical rule, two outline buttons, queue slot, and dialog frame at every madness band."
+      description="Same horizontal rule, vertical rule, two outline buttons, queue slot, and dialog frame at every madness band. Full mask SVGs sit below at 0.5× length (real thickness)."
     >
       <div className="flex flex-col gap-6">
         {STAGES.map((stage) => (
           <ChromeStageColumn key={stage} stage={stage} />
         ))}
+        <ChromeAllStageTiles />
       </div>
     </DemoSection>
   );

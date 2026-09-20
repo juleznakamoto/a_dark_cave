@@ -5,6 +5,8 @@
     stroke-width="1"
     stroke-linecap="butt"
     stroke-linejoin="round"
-    d="M5 0L5 77.79M6.44 80.99L6.44 158.78L6.44 177.07M6.44 189.96L6.44 196.58M5 199.78L5 237.58M5 237.58L5 321.39M6.68 348.3L6.68 417.41L6.68 453.82M5 457.02L5 497.09M5 504.41L3.44 622.25L4.04 720"
+    d="M5 24L5 50.14M5 72.14L5 98.27M7 101.47L7 144.47M7 166.47L7 175.74L7 209.47M5 215L5 251.05M5 273.34L5 340.93M3 344.13L3 370.24M3 392.6L3 411.72L3 414.6M3 438.98L3 493.05M7 496.25L7 539.25M7 561.25L7 577.58L6.75 604.25M6.17 628.25L5 676.99M5 701.84L4.86 720"
   />
+  <path fill="none" stroke="#fff" stroke-width="1" stroke-linecap="butt" d="M4.68 9.39L4.86 15.79"/>
+  <path fill="none" stroke="#fff" stroke-width="1" stroke-linecap="round" d="M5.67 261.72L5.67 261.74"/>
 </svg>
