@@ -26,7 +26,11 @@ export type SocialPromoExclusiveSlice = {
 
 export type RewardsTasksUiSlice = SocialPromoExclusiveSlice & {
   clothing?: GameState["clothing"];
+  playTime?: number;
 };
+
+/** Header Rewards shortcut stays hidden until this much active play time. */
+export const REWARDS_TASKS_SHORTCUT_VISIBLE_AFTER_MS = 15 * 60 * 1000;
 
 /** First rewards row: done when gameplay session is active or welcome bonus was already granted. */
 export function isSignUpRewardsStepDone(
@@ -104,6 +108,9 @@ export function isSocialPromoExclusiveRewardComplete(
 export function isRewardsTasksShortcutVisible(
   state: RewardsTasksUiSlice,
 ): boolean {
+  if ((state.playTime ?? 0) < REWARDS_TASKS_SHORTCUT_VISIBLE_AFTER_MS) {
+    return false;
+  }
   return (
     !isSocialPromoExclusiveRewardComplete(state) ||
     state.clothing?.gifted_ring !== true

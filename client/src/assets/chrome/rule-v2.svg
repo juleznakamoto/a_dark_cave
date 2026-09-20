@@ -5,68 +5,39 @@
     stroke-width="1"
     stroke-linecap="butt"
     stroke-linejoin="round"
-    d="M5 0 L5 26 M5 36 L5 88 M5 102 L5 132 M5 158 L5 168 M5 214 L5 248 M5 256 L5 282 M5 290 L5 295 M5 304 L5 318 M5 326 L5 378 M5 392 L5 430 L2.28 438 L2.62 450 L5 458 L5 470 M5 518 L5 578 M5 586 L5 590 M5 598 L5 655 M5 688 L5 692 M5 702 L5 720 M5 720 L5 757.83 M5 784.72 L5 805.66 M5 846.01 L5 900.89 M5 930.15 L5 954.7 M5 969.46 L5 1011.5 M5 1024.65 L5 1088.93 M5 1098.04 L5 1156.56 M5 1185.01 L5 1248.85 M5 1296.07 L5 1322.8 M5 1371.16 L5 1404.73 M5 1451.01 L5 1489.22 M5 1507.71 L5 1575.34 M5 1586.71 L5 1634.15 M5 1662.72 L5 1713.23 M5 1721.23 L5 1787.91 M5 1799.49 L5 1858.8 M5 1894.09 L5 1921.15 M5 1956.82 L5 1993.76 M5 2002.08 L5 2034.21 M5 2060.65 L5 2112.57 M5 2162.06 L5 2170.25 L2.35 2176.75 L3.39 2185.62 L5 2195.02 M5 2210.71 L5 2252.16 M5 2260.1 L5 2321.33 M5 2352.41 L5 2395.9 M5 2415.01 L5 2465.27 M5 2506.63 L5 2572.75 M5 2599.56 L5 2612.41 L2.62 2618.86 L3.52 2627.69 L5 2639.55 M5 2662.25 L5 2686.93 L2.08 2692.29 L2.72 2708.77 L5 2728.02 M5 2773.42 L5 2838.64 M5 2853.71 L5 2875.53 M5 2912.74 L5 2972.82 M5 3002.84 L5 3057.01 M5 3064.17 L5 3089.04 M5 3139.01 L5 3177.52 M5 3183.65 L5 3199.16 L7.93 3205.32 L6.68 3215.2 L5 3231.38 M5 3262.43 L5 3320.87 M5 3366.36 L5 3410.19 M5 3432.92 L5 3504.31 M5 3553.19 L5 3622.57 M5 3628.98 L5 3659.5 M5 3666.13 L5 3692.17 M5 3707.47 L5 3775.32 M5 3781.57 L5 3803.46 M5 3814.18 L5 3840 M2.42 29.4 L2.58 33.8 M6.88 92.2 L6.7 98.6 M2.55 250.4 L2.7 254.8 M7.15 284.2 L6.98 288.6 M2.42 320.2 L2.58 324.6 M7.28 381.5 L7.05 388.4 M6.82 580.4 L6.66 584.8 M7.62 140 L7.18 150 M7.64 908.03 L7.69 920.94 M7.62 956.98 L7.74 968.26 M2.95 1091.1 L3.07 1095.89 M2.97 1162.76 L2.97 1171.9 M2.76 1493.44 L2.68 1506.51 M2.26 1577.94 L2.4 1585.51 M3.13 1714.74 L3.34 1719.09 M7.55 1995.78 L7.5 2000.25 M7.62 2118.17 L7.57 2130.41 M7.72 2197.13 L7.75 2203.4 M3.18 2327.91 L3.11 2335.69 M7.26 2472.17 L7.31 2481.22 M7.92 2574.27 L7.96 2584.66 M8.22 2643.89 L8.14 2653.74 M7.29 2729.69 L7.24 2738.82 M7.66 2841.97 L7.74 2850.9 M2.85 2974.7 L2.64 2984.95 M3.03 3058.67 L2.94 3062.97 M7.96 3324.45 L7.93 3338.24 M7.06 3415.49 L7.13 3428.49 M7.3 3513.02 L7.21 3517.08 M7.62 3624.19 L7.83 3627.78 M7.21 3661.3 L7.32 3664.93 M7.05 3693.68 L6.82 3706.08 M7.88 3777.17 L8.06 3780.37 M2.8 3805.8 L2.82 3812.94"
+    d="M5 0 L5 16.31 M3.04 19.51 L3.04 35.82 L6.53 69.25 L6.53 85.7 M5 88.9 L5 105.35 M5 132.72 L5 148.33 M6.77 151.53 L6.77 167.15 L6.77 180.8 M5 184 L5 197.65 M5 241.78 L5 251.75 M3.04 254.47 L3.04 264.45 L3.04 274.94 M5 277.8 L5 288.29 M5 322.64 L5 333.95 M7.21 337.04 L7.21 348.35 L7.21 360.46 M2.88 363.66 L2.88 375.76 L2.88 389.63 M5 392.83 L5 406.69 M5 438 L5 447.81 M3.16 450.48 L3.16 460.29 L3.16 473.29 M7.02 476.49 L7.02 489.5 L7.02 500.18 M5 503.09 L5 513.76 M5 555.56 L5 567.11 M7.26 570.26 L7.26 581.81 L7.26 595.08 M5 598.28 L5 611.55 M5 635.6 L5 653.07 M3.33 656.27 L3.33 673.75 L3.33 689 M6.46 692.2 L6.46 707.46 L6.46 724.04 M5 727.24 L5 743.81 M5 773.88 L5 787.77 M6.96 790.97 L6.96 804.85 L6.96 816.99 M3.34 820.19 L3.34 832.33 L3.34 844 M5 847.19 L5 858.86 M5 904.36 L5 914.24 M3.31 916.93 L3.31 926.81 L5 951.49 M5 995.34 L5 1010.48 M6.81 1013.68 L6.81 1028.81 L6.81 1043.88 M5 1047.08 L5 1062.16 M5 1086.46 L5 1102.36 M2.89 1105.56 L2.89 1121.46 L2.89 1135.76 M6.81 1138.96 L6.81 1153.27 L6.81 1170.3 M5 1173.5 L5 1190.54 M5 1222.65 L5 1238.66 M6.49 1241.86 L6.49 1257.88 L6.49 1272.62 M3.47 1275.82 L3.47 1290.56 L3.47 1304 M5 1307.2 L5 1320.64 M5 1358.74 L5 1367.86 M2.25 1370.35 L2.25 1379.46 L2.25 1389.05 M5 1391.66 L5 1401.25 M5 1427.04 L5 1439.73 M6.9 1442.93 L6.9 1455.62 L2.63 1481.12 L2.63 1491.08 M5 1493.8 L5 1503.75 M5 1545.68 L3.21 1572.15 L3.21 1583.12 M5 1586.11 L5 1597.07 M5 1623.76 L5 1637.48 M6.51 1640.68 L6.51 1654.4 L6.51 1669.83 M2.63 1673.03 L2.63 1688.46 L2.63 1705.68 M5 1708.88 L5 1726.1 M5 1756.37 L5 1768.69 M3.25 1771.89 L3.25 1784.2 L3.25 1795.83 M5 1799 L5 1810.62 M5 1852.8 L7.17 1874.39 L7.17 1883.07 M5 1885.44 L5 1894.12 M5 1919.87 L5 1930.57 M2.87 1933.49 L2.87 1944.19 L2.87 1955.19 M5 1958.19 L5 1969.19 M5 1993.45 L5 2005.63 M6.55 2008.83 L6.55 2021.01 L6.55 2031.34 M5 2034.16 L5 2044.49 M5 2084.63 L5 2098.93 M2.85 2102.13 L2.85 2116.44 L2.85 2132.98 M7.41 2136.18 L7.41 2152.71 L7.41 2166.66 M5 2169.86 L5 2183.8 M5 2210.55 L5 2223.26 M7.34 2226.46 L7.34 2239.18 L7.34 2255.47 M3.11 2258.67 L3.11 2274.95 L3.11 2289.56 M5 2292.76 L5 2307.37 M5 2335.02 L5 2349.14 M3.43 2352.34 L3.43 2366.46 L3.43 2376.58 M6.85 2379.33 L6.85 2389.45 L6.85 2403.9 M5 2407.1 L5 2421.55 M5 2463.51 L5 2477.7 M6.77 2480.9 L6.77 2495.09 L6.77 2511.81 M5 2515.01 L5 2531.73 M5 2563.07 L5 2571.89 M3.31 2574.3 L3.31 2583.12 L3.31 2590.87 M5 2592.98 L5 2600.73 M5 2640.34 L5 2651.03 M7.16 2653.95 L7.16 2664.64 L7.16 2674.74 M5 2677.5 L5 2687.6 M5 2712.93 L5 2724.74 M2.76 2727.94 L2.76 2739.76 L2.76 2753.2 M5 2756.4 L5 2769.85 M5 2802.39 L5 2813.24 M6.45 2816.19 L6.45 2827.04 L6.45 2840.12 M3.27 2843.32 L3.27 2856.4 L3.27 2866.7 M5 2869.52 L5 2879.82 M5 2918.72 L5 2929.09 M3.28 2931.91 L3.28 2942.28 L3.28 2951.72 M5 2954.3 L5 2963.74 M5 3006.54 L5 3020.41 M6.93 3023.61 L6.93 3037.48 L6.93 3049.95 M5 3053.15 L5 3065.63 M5 3097.83 L5 3110.42 M3.08 3113.62 L3.08 3126.21 L3.08 3139.17 M5 3142.37 L5 3155.34 M5 3200.98 L5 3211.43 M6.62 3214.28 L6.62 3224.73 L6.62 3234.21 M5 3236.8 L5 3246.28 M5 3278.64 L5 3292.92 M2.94 3296.12 L2.94 3310.4 L2.94 3329.04 M6.66 3332.24 L6.66 3350.88 L6.66 3366.64 M5 3369.84 L5 3385.59 M5 3425.82 L6.99 3450.11 L6.99 3459.96 M5 3462.64 L5 3472.5 M5 3505.44 L5 3517.46 M3.23 3520.66 L3.23 3532.69 L3.23 3544.85 M6.4 3548.05 L6.4 3560.22 L6.4 3571.52 M5 3574.6 L5 3585.91 M5 3613.27 L5 3627.77 M6.44 3630.97 L6.44 3645.48 L6.44 3660.1 M2.73 3663.3 L2.73 3677.91 L2.73 3694.04 M5 3697.24 L5 3713.37 M5 3757.89 L5 3770.95 M3.48 3774.15 L3.48 3787.2 L7.09 3813.67 L7.09 3825.26 M5 3828.42 L5 3840"
   />
-  <path fill="none" stroke="#fff" stroke-width="1" stroke-linecap="butt" d="M5.08 174.2 L4.9 178.6"/>
-  <path fill="none" stroke="#fff" stroke-width="1" stroke-linecap="butt" d="M4.94 190.8 L5.1 196.2"/>
-  <path fill="none" stroke="#fff" stroke-width="1" stroke-linecap="butt" d="M5 208 L5.06 210.4"/>
-  <path fill="none" stroke="#fff" stroke-width="1" stroke-linecap="butt" d="M4.88 476.4 L5.12 480.8"/>
-  <path fill="none" stroke="#fff" stroke-width="1" stroke-linecap="butt" d="M5.06 496.2 L4.92 501.8"/>
-  <path fill="none" stroke="#fff" stroke-width="1" stroke-linecap="butt" d="M5.12 666.8 L4.86 672.4"/>
-  <path fill="none" stroke="#fff" stroke-width="1" stroke-linecap="butt" d="M5 682.8 L5.04 684.6"/>
-  <path fill="none" stroke="#fff" stroke-width="1" stroke-linecap="butt" d="M5.01 773.41 L5.07 778.58"/>
-  <path fill="none" stroke="#fff" stroke-width="1" stroke-linecap="butt" d="M5.06 809.41 L5.07 813.15"/>
-  <path fill="none" stroke="#fff" stroke-width="1" stroke-linecap="butt" d="M5.01 818.3 L5.01 823"/>
-  <path fill="none" stroke="#fff" stroke-width="1" stroke-linecap="butt" d="M5 840.45 L5.14 845.01"/>
-  <path fill="none" stroke="#fff" stroke-width="1" stroke-linecap="butt" d="M5.1 1017.31 L5.1 1021.08"/>
-  <path fill="none" stroke="#fff" stroke-width="1" stroke-linecap="butt" d="M4.99 1253.77 L4.92 1256.2"/>
-  <path fill="none" stroke="#fff" stroke-width="1" stroke-linecap="butt" d="M4.99 1262.64 L5.12 1266.08"/>
-  <path fill="none" stroke="#fff" stroke-width="1" stroke-linecap="butt" d="M4.88 1270.94 L4.75 1276.01"/>
-  <path fill="none" stroke="#fff" stroke-width="1" stroke-linecap="butt" d="M5.06 1324.89 L5.04 1329.43"/>
-  <path fill="none" stroke="#fff" stroke-width="1" stroke-linecap="butt" d="M4.94 1335.17 L4.91 1338.96"/>
-  <path fill="none" stroke="#fff" stroke-width="1" stroke-linecap="butt" d="M5.02 1343.68 L5.02 1347.75"/>
-  <path fill="none" stroke="#fff" stroke-width="1" stroke-linecap="butt" d="M4.98 1354.75 L5.07 1359.36"/>
-  <path fill="none" stroke="#fff" stroke-width="1" stroke-linecap="butt" d="M5.01 1409.05 L5.14 1415.49"/>
-  <path fill="none" stroke="#fff" stroke-width="1" stroke-linecap="butt" d="M4.88 1420.47 L4.86 1423.44"/>
-  <path fill="none" stroke="#fff" stroke-width="1" stroke-linecap="butt" d="M5.02 1657.01 L4.92 1661.72"/>
-  <path fill="none" stroke="#fff" stroke-width="1" stroke-linecap="butt" d="M4.92 1867.61 L5.07 1870.4"/>
-  <path fill="none" stroke="#fff" stroke-width="1" stroke-linecap="butt" d="M4.91 1877.31 L4.99 1880.43"/>
-  <path fill="none" stroke="#fff" stroke-width="1" stroke-linecap="butt" d="M5 1932.93 L5.09 1938.5"/>
-  <path fill="none" stroke="#fff" stroke-width="1" stroke-linecap="butt" d="M4.9 1952.93 L4.74 1955.58"/>
-  <path fill="none" stroke="#fff" stroke-width="1" stroke-linecap="butt" d="M4.88 2038.22 L4.85 2041.84"/>
-  <path fill="none" stroke="#fff" stroke-width="1" stroke-linecap="butt" d="M5.1 2046.03 L5.08 2051.36"/>
-  <path fill="none" stroke="#fff" stroke-width="1" stroke-linecap="butt" d="M5 2885.35 L4.92 2888.1"/>
-  <path fill="none" stroke="#fff" stroke-width="1" stroke-linecap="butt" d="M4.87 2896.45 L4.85 2901.78"/>
-  <path fill="none" stroke="#fff" stroke-width="1" stroke-linecap="butt" d="M4.91 3092.65 L5.02 3096.18"/>
-  <path fill="none" stroke="#fff" stroke-width="1" stroke-linecap="butt" d="M5 3102.39 L5.14 3105.43"/>
-  <path fill="none" stroke="#fff" stroke-width="1" stroke-linecap="butt" d="M5.13 3112.02 L5.13 3115.24"/>
-  <path fill="none" stroke="#fff" stroke-width="1" stroke-linecap="butt" d="M5.09 3121.38 L5.11 3127.03"/>
-  <path fill="none" stroke="#fff" stroke-width="1" stroke-linecap="butt" d="M5.03 3240.53 L4.93 3245.23"/>
-  <path fill="none" stroke="#fff" stroke-width="1" stroke-linecap="round" d="M5 184.4"/>
-  <path fill="none" stroke="#fff" stroke-width="1" stroke-linecap="round" d="M5.02 202.5"/>
-  <path fill="none" stroke="#fff" stroke-width="1" stroke-linecap="round" d="M5 488.6"/>
-  <path fill="none" stroke="#fff" stroke-width="1" stroke-linecap="round" d="M4.98 508.4"/>
-  <path fill="none" stroke="#fff" stroke-width="1" stroke-linecap="round" d="M5 594.2"/>
-  <path fill="none" stroke="#fff" stroke-width="1" stroke-linecap="round" d="M5 660.4"/>
-  <path fill="none" stroke="#fff" stroke-width="1" stroke-linecap="round" d="M5 678.6"/>
-  <path fill="none" stroke="#fff" stroke-width="1" stroke-linecap="round" d="M5 696.2"/>
-  <path fill="none" stroke="#fff" stroke-width="1" stroke-linecap="round" d="M5.01 195.5"/>
-  <path fill="none" stroke="#fff" stroke-width="1" stroke-linecap="round" d="M5 666.01"/>
-  <path fill="none" stroke="#fff" stroke-width="1" stroke-linecap="round" d="M4.93 761.01"/>
-  <path fill="none" stroke="#fff" stroke-width="1" stroke-linecap="round" d="M5.06 767.01"/>
-  <path fill="none" stroke="#fff" stroke-width="1" stroke-linecap="round" d="M5.04 829.95"/>
-  <path fill="none" stroke="#fff" stroke-width="1" stroke-linecap="round" d="M5.04 1285.51"/>
-  <path fill="none" stroke="#fff" stroke-width="1" stroke-linecap="round" d="M4.94 1428.03"/>
-  <path fill="none" stroke="#fff" stroke-width="1" stroke-linecap="round" d="M5.03 1435.97"/>
-  <path fill="none" stroke="#fff" stroke-width="1" stroke-linecap="round" d="M5.03 1444.73"/>
-  <path fill="none" stroke="#fff" stroke-width="1" stroke-linecap="round" d="M5.04 1638.73"/>
-  <path fill="none" stroke="#fff" stroke-width="1" stroke-linecap="round" d="M5.04 1647.5"/>
-  <path fill="none" stroke="#fff" stroke-width="1" stroke-linecap="round" d="M4.94 1794.69"/>
-  <path fill="none" stroke="#fff" stroke-width="1" stroke-linecap="round" d="M5.05 1862.11"/>
-  <path fill="none" stroke="#fff" stroke-width="1" stroke-linecap="round" d="M5.05 1886.91"/>
-  <path fill="none" stroke="#fff" stroke-width="1" stroke-linecap="round" d="M4.99 1925.06"/>
-  <path fill="none" stroke="#fff" stroke-width="1" stroke-linecap="round" d="M4.95 1945.56"/>
-  <path fill="none" stroke="#fff" stroke-width="1" stroke-linecap="round" d="M5 2055.58"/>
-  <path fill="none" stroke="#fff" stroke-width="1" stroke-linecap="round" d="M4.97 2405.19"/>
-  <path fill="none" stroke="#fff" stroke-width="1" stroke-linecap="round" d="M5.01 2880.14"/>
+  <path fill="none" stroke="#fff" stroke-width="1" stroke-linecap="butt" d="M5.11 118.89 L5.13 125.04"/>
+  <path fill="none" stroke="#fff" stroke-width="1" stroke-linecap="butt" d="M4.89 297.12 L4.99 309.79"/>
+  <path fill="none" stroke="#fff" stroke-width="1" stroke-linecap="butt" d="M5.07 614.17 L5.21 629.49"/>
+  <path fill="none" stroke="#fff" stroke-width="1" stroke-linecap="butt" d="M4.98 1601.83 L4.97 1616.15"/>
+  <path fill="none" stroke="#fff" stroke-width="1" stroke-linecap="butt" d="M4.82 2986.03 L4.73 2996.59"/>
+  <path fill="none" stroke="#fff" stroke-width="1" stroke-linecap="butt" d="M4.87 3168.03 L4.95 3183.88"/>
+  <path fill="none" stroke="#fff" stroke-width="1" stroke-linecap="butt" d="M4.79 3481.64 L4.65 3491.41"/>
+  <path fill="none" stroke="#fff" stroke-width="1" stroke-linecap="butt" d="M5.08 3589.58 L5.15 3601.77"/>
+  <path fill="none" stroke="#fff" stroke-width="1" stroke-linecap="round" d="M4.78 214.25 L4.78 214.27"/>
+  <path fill="none" stroke="#fff" stroke-width="1" stroke-linecap="round" d="M4.73 426.34 L4.73 426.36"/>
+  <path fill="none" stroke="#fff" stroke-width="1" stroke-linecap="round" d="M5 1202.46 L5 1202.48"/>
+  <path fill="none" stroke="#fff" stroke-width="1" stroke-linecap="round" d="M5 2616.91 L5 2616.93"/>
+  <path fill="none" stroke="#fff" stroke-width="1" stroke-linecap="round" d="M5.14 3742.79 L5.14 3742.81"/>
+  <path fill="none" stroke="#fff" stroke-width="1" stroke-linecap="round" d="M5.59 46.85 L5.59 46.87"/>
+  <path fill="none" stroke="#fff" stroke-width="1" stroke-linecap="round" d="M8.17 164.33 L8.17 164.35"/>
+  <path fill="none" stroke="#fff" stroke-width="1" stroke-linecap="round" d="M1.76 460.73 L1.76 460.75"/>
+  <path fill="none" stroke="#fff" stroke-width="1" stroke-linecap="round" d="M8.42 493.34 L8.42 493.36"/>
+  <path fill="none" stroke="#fff" stroke-width="1" stroke-linecap="round" d="M5.86 588 L5.86 588.02"/>
+  <path fill="none" stroke="#fff" stroke-width="1" stroke-linecap="round" d="M5.06 702.17 L5.06 702.19"/>
+  <path fill="none" stroke="#fff" stroke-width="1" stroke-linecap="round" d="M5.41 1021.77 L5.41 1021.79"/>
+  <path fill="none" stroke="#fff" stroke-width="1" stroke-linecap="round" d="M4.29 1122.44 L4.29 1122.46"/>
+  <path fill="none" stroke="#fff" stroke-width="1" stroke-linecap="round" d="M5.41 1151.48 L5.41 1151.5"/>
+  <path fill="none" stroke="#fff" stroke-width="1" stroke-linecap="round" d="M5.65 1471.47 L5.65 1471.49"/>
+  <path fill="none" stroke="#fff" stroke-width="1" stroke-linecap="round" d="M7.91 1659 L7.91 1659.02"/>
+  <path fill="none" stroke="#fff" stroke-width="1" stroke-linecap="round" d="M4.65 1782.02 L4.65 1782.04"/>
+  <path fill="none" stroke="#fff" stroke-width="1" stroke-linecap="round" d="M7.95 2016.06 L7.95 2016.08"/>
+  <path fill="none" stroke="#fff" stroke-width="1" stroke-linecap="round" d="M5.94 2244.19 L5.94 2244.21"/>
+  <path fill="none" stroke="#fff" stroke-width="1" stroke-linecap="round" d="M4.16 2742.97 L4.16 2742.99"/>
+  <path fill="none" stroke="#fff" stroke-width="1" stroke-linecap="round" d="M5.53 3043.35 L5.53 3043.37"/>
+  <path fill="none" stroke="#fff" stroke-width="1" stroke-linecap="round" d="M8.06 3355.61 L8.06 3355.63"/>
+  <path fill="none" stroke="#fff" stroke-width="1" stroke-linecap="round" d="M4.63 3533.59 L4.63 3533.61"/>
+  <path fill="none" stroke="#fff" stroke-width="1" stroke-linecap="round" d="M5 3556.55 L5 3556.57"/>
+  <path fill="none" stroke="#fff" stroke-width="1" stroke-linecap="round" d="M7.84 3648.59 L7.84 3648.61"/>
 </svg>

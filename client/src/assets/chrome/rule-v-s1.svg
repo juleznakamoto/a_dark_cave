@@ -5,14 +5,6 @@
     stroke-width="1"
     stroke-linecap="butt"
     stroke-linejoin="round"
-    d="M5 0 L5 190 M5 220 L5 470 M5 500 L5 720 M5 720 L5 745.74 M5 761.86 L5 1039.59 M5 1061.99 L5 1308.58 M5 1330.42 L5 1551.97 M5 1569.48 L5 1733.79 M5 1757.78 L5 2004.14 M5 2026.52 L5 2288.44 M5 2304.36 L5 2521.23 M5 2546.56 L5 2790.23 M5 2806.06 L5 3024.21 M5 3043.57 L5 3134.39 L5.99 3155.43 L5.8 3209.61 L5 3292.52 M5 3305.89 L5 3375.32 L5.97 3430.33 L5.66 3466.82 L5 3560.24 M5 3581.69 L5 3659.4 L6.21 3687 L5.77 3731.39 L5 3826.31 M5 3832 L5 3840 M4.2 198 L4.22 214 M5.7 478 L5.65 494 M6.21 1555.24 L6.12 1562.86 M5.96 2793.63 L6.13 2803.3 M3.97 3294.27 L3.95 3301.89 M3.62 3565.35 L3.76 3579.05"
+    d="M5 0 L5 145.88 M5 181.36 L5 283.84 M5 311.71 L5 483.14 M5 524.35 L5 647.03 M5 685.98 L5 860.96 M5 884.46 L5 1072.72 M5 1102.38 L5 1266.62 M5 1293.94 L5 1420.6 M5 1452.39 L5 1621.14 M5 1655.22 L5 1766.36 M5 1803.22 L5 1941.19 M5 1977.24 L5 2131.81 M5 2166.26 L5 2333.47 M5 2366.48 L5 2473.43 M5 2503.31 L5 2637.46 M5 2664.18 L5 2815.94 M5 2845.17 L5 2999.01 M5 3032.36 L5 3153.85 M5 3178.05 L5 3363.1 M5 3402.23 L5 3580.11 M5 3615.09 L5 3760.66 M5 3790.31 L5 3840"
   />
-  <path fill="none" stroke="#fff" stroke-width="1" stroke-linecap="butt" d="M4.95 1742.45 L4.89 1747.22"/>
-  <path fill="none" stroke="#fff" stroke-width="1" stroke-linecap="butt" d="M4.97 2008.54 L4.83 2013.31"/>
-  <path fill="none" stroke="#fff" stroke-width="1" stroke-linecap="butt" d="M5.03 2018.91 L5.02 2024.65"/>
-  <path fill="none" stroke="#fff" stroke-width="1" stroke-linecap="butt" d="M5.01 2295.41 L4.98 2300.9"/>
-  <path fill="none" stroke="#fff" stroke-width="1" stroke-linecap="round" d="M4.93 756.18"/>
-  <path fill="none" stroke="#fff" stroke-width="1" stroke-linecap="round" d="M4.95 1052.17"/>
-  <path fill="none" stroke="#fff" stroke-width="1" stroke-linecap="round" d="M4.98 2536.62"/>
-  <path fill="none" stroke="#fff" stroke-width="1" stroke-linecap="round" d="M4.97 3037.71"/>
 </svg>

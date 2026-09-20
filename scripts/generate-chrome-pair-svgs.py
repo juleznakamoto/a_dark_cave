@@ -1,12 +1,19 @@
 #!/usr/bin/env python3
 """Chrome seam tiles. Unique h/h2/v/v2 vocabularies, not reverse/flip copies.
 
-Prefer disconnected chips, shards, and dots over ramps that stay glued to
-the hairline. Rebuild SVGs + mask CSS with no args; `--css-only` skips tiles.
+Madness stages stack: each one keeps the previous features and adds one more.
+  0 solid hairline (CSS, no tile)
+  1 empty spaces between line runs
+  2 + distortion at 50% of max lateral distance
+  3 + distortion at 100%, plus a few points and short lines in the gaps
+  4 + a few points at 50% distance next to the line runs
+
+Rebuild SVGs + mask CSS with no args; `--css-only` skips tiles.
 """
 
 from __future__ import annotations
 
+import math
 import sys
 from dataclasses import dataclass, field
 from pathlib import Path
@@ -19,38 +26,38 @@ MASK_KEYS = ("h", "h2", "v", "v2")
 # Stage 4 = unsuffixed extreme tiles. Cache tokens stay per-family so a
 # unique h2/v2 rebuild does not bust unchanged h/v.
 MASK_CACHE = {
-    "h": 19,
-    "v": 19,
-    "h2": 4,
-    "v2": 4,
-    "h-slot": 6,
-    "v-slot": 6,
-    "h2-slot": 5,
-    "v2-slot": 5,
-    "h-s1": 5,
-    "h-s2": 5,
-    "h-s3": 5,
-    "v-s1": 5,
-    "v-s2": 5,
-    "v-s3": 5,
-    "h2-s1": 4,
-    "h2-s2": 4,
-    "h2-s3": 4,
-    "v2-s1": 4,
-    "v2-s2": 4,
-    "v2-s3": 4,
-    "h-slot-s1": 6,
-    "h-slot-s2": 6,
-    "h-slot-s3": 6,
-    "v-slot-s1": 6,
-    "v-slot-s2": 6,
-    "v-slot-s3": 6,
-    "h2-slot-s1": 5,
-    "h2-slot-s2": 5,
-    "h2-slot-s3": 5,
-    "v2-slot-s1": 5,
-    "v2-slot-s2": 5,
-    "v2-slot-s3": 5,
+    "h": 22,
+    "v": 22,
+    "h2": 7,
+    "v2": 7,
+    "h-slot": 9,
+    "v-slot": 9,
+    "h2-slot": 8,
+    "v2-slot": 8,
+    "h-s1": 8,
+    "h-s2": 8,
+    "h-s3": 8,
+    "v-s1": 8,
+    "v-s2": 8,
+    "v-s3": 8,
+    "h2-s1": 7,
+    "h2-s2": 7,
+    "h2-s3": 7,
+    "v2-s1": 7,
+    "v2-s2": 7,
+    "v2-s3": 7,
+    "h-slot-s1": 9,
+    "h-slot-s2": 9,
+    "h-slot-s3": 9,
+    "v-slot-s1": 9,
+    "v-slot-s2": 9,
+    "v-slot-s3": 9,
+    "h2-slot-s1": 8,
+    "h2-slot-s2": 8,
+    "h2-slot-s3": 8,
+    "v2-slot-s1": 8,
+    "v2-slot-s2": 8,
+    "v2-slot-s3": 8,
 }
 CENTER = 5.0
 SLOT_LAT_MIN = 3.6
@@ -222,6 +229,9 @@ def emit_svg(
         if not clipped:
             return
         clipped = [(a, clamp_lat(lat, compact)) for a, lat in clipped]
+        if len(clipped) == 1:
+            along, lat = clipped[0]
+            clipped = [(along, lat), (along + 0.02, lat)]
         d = poly_d(clipped, horizontal=horizontal, compact=compact)
         if cap == "round":
             specks_round.append(d)
@@ -268,560 +278,223 @@ def emit_svg(
 
 
 def dot(along: float, lat: float = CENTER) -> Poly:
-    return Poly([(along, lat)], cap="round")
+    # Tiny segment so a round cap paints. A lone moveto does not stroke.
+    return Poly([(along, lat), (along + 0.02, lat)], cap="round")
 
 
 def shard(a0: float, a1: float, lat0: float, lat1: float | None = None) -> Poly:
     return Poly([(a0, lat0), (a1, lat1 if lat1 is not None else lat0)], cap="speck")
 
 
-# Authored 720 vocabularies (h/v parsed from the pre-disconnect tiles).
-H_720: dict[str, Motif] = {
-    "s1": Motif(
-        spine=[
-            [(0, 5), (210, 5)],
-            [(231, 5), (480, 5), (488, 5.7), (502, 5.65), (508, 5), (720, 5)],
-        ],
-        chips=[
-            [(214.6, 4.12), (226.4, 4.16)],
-        ],
-    ),
-    "s2": Motif(
-        spine=[
-            [(0, 5), (88, 5)],
-            [(114, 5), (240, 5)],
-            [(246, 5), (318, 5), (322, 6.3), (334, 6.2), (340, 5), (500, 5)],
-            [(528, 5), (620, 5)],
-            [(626, 5), (720, 5)],
-        ],
-        chips=[
-            [(94.2, 3.55), (108.4, 3.68)],
-            [(508.4, 3.35), (522.2, 3.48)],
-        ],
-    ),
-    "s3": Motif(
-        spine=[
-            [(0, 5), (22, 5)],
-            [(37, 5), (88, 5), (95, 7.4), (108, 7.3), (114, 5), (188, 5)],
-            [(196, 5), (240, 5)],
-            [(262, 5), (318, 5)],
-            [(342, 5), (400, 5)],
-            [(412, 5), (478, 5)],
-            [(500, 5), (572, 5), (580, 3.3), (592, 3.4), (598, 5), (661, 5)],
-            [(676, 5), (720, 5)],
-        ],
-        chips=[
-            [(25.4, 3.15), (32.2, 3.25)],
-            [(244.2, 3.05), (256.4, 3.18)],
-            [(322.4, 6.75), (336.2, 6.55)],
-            [(404.2, 3.4), (408.6, 3.55)],
-            [(482.4, 7.05), (494.2, 7.15)],
-            [(663.2, 6.35), (672.4, 6.48)],
-        ],
-    ),
-    "extreme": Motif(
-        spine=[
-            [(0, 5), (22, 5)],
-            [(33.5, 5), (88, 5), (95.2, 8.1), (104.5, 7.55), (107.3, 5), (131, 5)],
-            [(136.95, 5), (188, 5)],
-            [(193, 5), (201, 5), (206, 5)],
-            [(212.2, 5), (213.8, 5), (228, 5)],
-            [(232, 5), (277, 5)],
-            [(296.4, 5), (318, 5)],
-            [(324.2, 5), (401, 5)],
-            [(451, 5), (478, 5)],
-            [(490.6, 5), (511, 5)],
-            [(515, 5), (572, 5), (579.4, 5)],
-            [(588.2, 5), (593, 5), (661, 5), (662.45, 6.3), (666.2, 7.25), (668.7, 5), (672, 5)],
-            [(708, 5), (720, 5)],
-        ],
-        chips=[
-            [(24.7, 2.6), (29.4, 2.9)],
-            [(131.85, 3.4), (135.8, 2.9)],
-            [(207.4, 6.95), (211, 6.4)],
-            [(280.8, 1.7), (289.6, 2.45)],
-            [(319.4, 7.42), (322.1, 7.28)],
-            [(406.9, 2.65), (412.6, 2.05)],
-            [(481.2, 6.8), (487.5, 7.75)],
-            [(580.5, 2.9), (586.2, 3.5)],
-        ],
-        specks=[
-            shard(418.6, 421.4, 4.96, 5.08),
-            dot(424.9),
-            shard(429.2, 431.5, 5.06, 4.92),
-            dot(435.4),
-            shard(440.1, 441.2, 5, 5.04),
-            dot(446.8, 5.05),
-            dot(675.2),
-            shard(679.6, 684, 4.9, 5.1),
-            dot(689.4, 5.04),
-            shard(694.8, 696.1, 5, 4.94),
-            dot(701.7, 4.97),
-            shard(705.2, 706.4, 5.08, 5),
-            dot(513.1),
-        ],
-    ),
+# 100% lateral distance from the 1px hairline. Stage 2 uses half of this.
+DISTORT_MAX = 2.8
+
+# Unique dash rhythm per family so header/footer/columns are not copies.
+RHYTHM = {
+    "h": dict(run=(80, 170), gap=(24, 44)),
+    "h2": dict(run=(50, 130), gap=(26, 48)),
+    "v": dict(run=(90, 190), gap=(22, 42)),
+    "v2": dict(run=(36, 110), gap=(24, 46)),
 }
 
-V_720: dict[str, Motif] = {
-    "s1": Motif(
-        spine=[
-            [(0, 5), (190, 5)],
-            [(220, 5), (470, 5), (478, 5.7), (494, 5.65), (500, 5), (720, 5)],
-        ],
-        chips=[
-            [(198, 4.2), (214, 4.22)],
-        ],
-    ),
-    "s2": Motif(
-        spine=[
-            [(0, 5), (88, 5)],
-            [(114, 5), (240, 5)],
-            [(246, 5), (318, 5), (322, 6.3), (334, 6.2), (340, 5), (500, 5)],
-            [(528, 5), (620, 5)],
-            [(626, 5), (720, 5)],
-        ],
-        chips=[
-            [(94.2, 3.55), (108.4, 3.68)],
-            [(508.4, 3.35), (522.2, 3.48)],
-        ],
-    ),
-    "s3": Motif(
-        spine=[
-            [(0, 5), (22, 5)],
-            [(37, 5), (88, 5), (95, 7.4), (108, 7.3), (114, 5), (188, 5)],
-            [(196, 5), (240, 5)],
-            [(262, 5), (318, 5)],
-            [(342, 5), (400, 5)],
-            [(412, 5), (478, 5)],
-            [(500, 5), (572, 5), (580, 3.3), (592, 3.4), (598, 5), (661, 5)],
-            [(676, 5), (720, 5)],
-        ],
-        chips=[
-            [(25.4, 3.15), (32.2, 3.25)],
-            [(244.2, 3.05), (256.4, 3.18)],
-            [(322.4, 6.75), (336.2, 6.55)],
-            [(404.2, 3.4), (408.6, 3.55)],
-            [(482.4, 7.05), (494.2, 7.15)],
-            [(663.2, 6.35), (672.4, 6.48)],
-        ],
-    ),
-    "extreme": Motif(
-        spine=[
-            [(0, 5), (19, 5)],
-            [(30.5, 5), (38, 5)],
-            [(44, 5), (95, 5), (97.7, 7.4), (111.5, 8.2), (115.1, 5), (141, 5)],
-            [(150.2, 5), (228, 5)],
-            [(235.8, 5), (305, 5)],
-            [(309, 5), (318, 5)],
-            [(352, 5), (360, 5)],
-            [(370.8, 5), (430, 5), (436.2, 5)],
-            [(440.4, 5), (442.1, 5), (468, 5)],
-            [(506, 5), (522, 5)],
-            [(533.8, 5), (590, 5)],
-            [(594, 5), (618, 5), (626.2, 5)],
-            [(635.8, 5), (638.5, 5), (670, 5)],
-            [(676.4, 5), (720, 5)],
-        ],
-        chips=[
-            [(26.4, 2.45), (28.8, 3.15)],
-            [(147.1, 2.08), (149, 2.18)],
-            [(230.8, 6.75), (232.2, 7.6)],
-            [(363.8, 8.2), (367.4, 7.3)],
-            [(437.5, 3), (439, 2.2)],
-            [(525.4, 7.85), (530.4, 6.95)],
-            [(627.5, 2.35), (634, 3.4)],
-            [(671.85, 6.65), (673.2, 7.5)],
-        ],
-        specks=[
-            shard(321.2, 323.8, 4.92, 5.1),
-            dot(327.4),
-            dot(331.6, 5.04),
-            shard(336.5, 340.2, 4.88, 5.08),
-            shard(347.1, 348.4, 5, 5.06),
-            dot(471.3),
-            shard(476.2, 479, 4.94, 5.1),
-            dot(484.8),
-            shard(490.4, 494.6, 4.9, 5.06),
-            dot(499.1, 5.05),
-            shard(503.2, 504, 5, 5),
-            dot(592.2),
-        ],
-    ),
-}
 
-# Unique 720 vocabularies. Gap centers sit away from rule-h / rule-v.
-H2_720: dict[str, Motif] = {
-    "s1": Motif(
-        spine=[
-            [(0, 5), (152, 5)],
-            [(176, 5), (392, 5), (402, 6.35), (414, 6.2), (422, 5), (720, 5)],
-        ],
-        chips=[[(158, 3.85), (170, 3.92)]],
-    ),
-    "s2": Motif(
-        spine=[
-            [(0, 5), (46, 5)],
-            [(70, 5), (176, 5)],
-            [(188, 5), (298, 5), (306, 6.55), (318, 6.4), (328, 5), (438, 5)],
-            [(456, 5), (576, 5)],
-            [(608, 5), (720, 5)],
-        ],
-        chips=[
-            [(52, 3.55), (64, 3.62)],
-            [(180, 5), (180.02, 5)],
-            [(582, 3.48), (600, 3.6)],
-        ],
-    ),
-    "s3": Motif(
-        spine=[
-            [(0, 5), (18, 5)],
-            [(34, 5), (86, 5), (94, 7.15), (108, 6.95), (116, 5), (168, 5)],
-            [(184, 5), (236, 5)],
-            [(292, 5), (348, 5)],
-            [(368, 5), (428, 5)],
-            [(444, 5), (476, 5)],
-            [(540, 5), (604, 5), (612, 3.35), (624, 3.5), (632, 5), (668, 5)],
-            [(686, 5), (720, 5)],
-        ],
-        chips=[
-            [(22, 3.4), (30, 3.52)],
-            [(174, 5), (174.02, 5)],
-            [(244, 3.25), (258, 3.4)],
-            [(352, 6.85), (364, 6.7)],
-            [(432, 3.45), (440, 3.55)],
-            [(482, 6.9), (496, 7.05)],
-            [(672, 6.45), (682, 6.58)],
-        ],
-    ),
-    "extreme": Motif(
-        spine=[
-            [(0, 5), (44, 5)],
-            [(58, 5), (96, 5), (104, 7.85), (112, 7.4), (118, 5), (130, 5)],
-            [(138, 5), (142, 5)],
-            [(149, 5), (200, 5)],
-            [(208, 5), (236, 5)],
-            [(288, 5), (316, 5)],
-            [(324, 5), (350, 5)],
-            [(366, 5), (430, 5), (438, 2.15), (448, 2.55), (455, 5), (478, 5)],
-            [(536, 5), (578, 5)],
-            [(586, 5), (605, 5)],
-            [(614, 5), (648, 5)],
-            [(682, 5), (694, 5)],
-            [(700, 5), (720, 5)],
-        ],
-        chips=[
-            [(47.2, 2.32), (54.6, 2.55)],
-            [(132.4, 6.72), (137.8, 6.55)],
-            [(202.2, 2.48), (206.6, 2.62)],
-            [(318.5, 7.08), (322.4, 6.92)],
-            [(353.4, 7.22), (363.1, 6.95)],
-            [(580.2, 2.38), (584.6, 2.52)],
-        ],
-        specks=[
-            shard(242.4, 246.8, 4.94, 5.12),
-            dot(252.1),
-            shard(258.5, 262.1, 5.08, 4.9),
-            dot(268.6, 4.97),
-            shard(273.2, 274.8, 5.0, 5.05),
-            dot(282.4, 5.04),
-            shard(486.2, 490.6, 5.1, 4.88),
-            dot(498.4),
-            shard(506.8, 511.4, 4.92, 5.06),
-            dot(518.2, 5.03),
-            shard(524.0, 526.2, 5.0, 4.96),
-            dot(532.5),
-            dot(145.8),
-            dot(609.4),
-            dot(652.2),
-            shard(658.5, 664.2, 4.88, 5.12),
-            dot(670.8),
-            shard(675.4, 677.0, 5.1, 5.0),
-            dot(696.6),
-            shard(694.8, 698.4, 5.08, 4.9),
-        ],
-    ),
-}
-
-# Vertical pair uses a shorter-dash rhythm, not a rotate of H2.
-V2_720: dict[str, Motif] = {
-    "s1": Motif(
-        spine=[
-            [(0, 5), (248, 5)],
-            [(274, 5), (520, 5), (528, 6.4), (542, 6.28), (548, 5), (720, 5)],
-        ],
-        chips=[[(254, 3.78), (268, 3.88)]],
-    ),
-    "s2": Motif(
-        spine=[
-            [(0, 5), (72, 5)],
-            [(98, 5), (210, 5)],
-            [(218, 5), (340, 5), (348, 3.5), (360, 3.62), (368, 5), (488, 5)],
-            [(516, 5), (628, 5)],
-            [(640, 5), (720, 5)],
-        ],
-        chips=[
-            [(78, 6.42), (92, 6.3)],
-            [(214, 5), (214.02, 5)],
-            [(494, 6.55), (510, 6.42)],
-        ],
-    ),
-    "s3": Motif(
-        spine=[
-            [(0, 5), (28, 5)],
-            [(44, 5), (102, 5)],
-            [(118, 5), (176, 5), (184, 7.05), (196, 6.88), (204, 5), (248, 5)],
-            [(268, 5), (332, 5)],
-            [(348, 5), (412, 5)],
-            [(428, 5), (492, 5)],
-            [(548, 5), (610, 5), (618, 3.28), (630, 3.42), (638, 5), (676, 5)],
-            [(694, 5), (720, 5)],
-        ],
-        chips=[
-            [(32, 6.55), (40, 6.4)],
-            [(108, 3.38), (114, 3.48)],
-            [(254, 3.3), (262, 3.42)],
-            [(336, 6.8), (344, 6.68)],
-            [(416, 3.5), (424, 3.6)],
-            [(500, 6.95), (514, 7.1)],
-            [(680, 6.4), (690, 6.52)],
-        ],
-    ),
-    "extreme": Motif(
-        spine=[
-            [(0, 5), (26, 5)],
-            [(36, 5), (88, 5)],
-            [(102, 5), (132, 5), (140, 7.62), (150, 7.18), (158, 5), (168, 5)],
-            [(214, 5), (248, 5)],
-            [(256, 5), (282, 5)],
-            [(290, 5), (295, 5)],
-            [(304, 5), (318, 5)],
-            [(326, 5), (378, 5)],
-            [(392, 5), (430, 5), (438, 2.28), (450, 2.62), (458, 5), (470, 5)],
-            [(518, 5), (578, 5)],
-            [(586, 5), (590, 5)],
-            [(598, 5), (655, 5)],
-            [(688, 5), (692, 5)],
-            [(702, 5), (720, 5)],
-        ],
-        chips=[
-            [(29.4, 2.42), (33.8, 2.58)],
-            [(92.2, 6.88), (98.6, 6.7)],
-            [(250.4, 2.55), (254.8, 2.7)],
-            [(284.2, 7.15), (288.6, 6.98)],
-            [(320.2, 2.42), (324.6, 2.58)],
-            [(381.5, 7.28), (388.4, 7.05)],
-            [(580.4, 6.82), (584.8, 6.66)],
-        ],
-        specks=[
-            shard(174.2, 178.6, 5.08, 4.9),
-            dot(184.4),
-            shard(190.8, 196.2, 4.94, 5.1),
-            dot(202.5, 5.02),
-            shard(208.0, 210.4, 5.0, 5.06),
-            shard(476.4, 480.8, 4.88, 5.12),
-            dot(488.6),
-            shard(496.2, 501.8, 5.06, 4.92),
-            dot(508.4, 4.98),
-            dot(594.2),
-            dot(660.4),
-            shard(666.8, 672.4, 5.12, 4.86),
-            dot(678.6),
-            shard(682.8, 684.6, 5.0, 5.04),
-            dot(696.2),
-        ],
-    ),
-}
-
-WANDER = {
-    "s1": dict(run=(150, 280), gap=(12, 26), ramp_p=0.07, disc_p=0.34, wide_p=0.16, amp=(0.9, 1.45)),
-    "s2": dict(run=(58, 128), gap=(8, 30), ramp_p=0.10, disc_p=0.46, wide_p=0.26, amp=(1.2, 2.15)),
-    "s3": dict(run=(30, 88), gap=(8, 38), ramp_p=0.12, disc_p=0.64, wide_p=0.36, amp=(1.5, 2.7)),
-    "extreme": dict(run=(20, 72), gap=(6, 50), ramp_p=0.08, disc_p=0.76, wide_p=0.44, amp=(1.8, 3.25)),
-}
-
-# Keep this share of existing 720 ramps glued to the hairline; the rest break off.
-KEEP_RAMP = {"s1": 0.38, "s2": 0.20, "s3": 0.12, "extreme": 0.08}
-EXTRA_DISC = {"s1": 1, "s2": 2, "s3": 3, "extreme": 2}
-ON_CENTER = 0.22
-
-
-def disconnect_run(
-    run: list[tuple[float, float]],
-    rng: Rng,
-    keep_p: float,
-) -> tuple[list[list[tuple[float, float]]], list[list[tuple[float, float]]]]:
-    groups: list[tuple[bool, list[tuple[float, float]]]] = []
-    for pt in run:
-        on = abs(pt[1] - CENTER) <= ON_CENTER
-        if not groups or groups[-1][0] != on:
-            groups.append((on, [pt]))
-        else:
-            groups[-1][1].append(pt)
-
-    spines: list[list[tuple[float, float]]] = []
-    chips: list[list[tuple[float, float]]] = []
-    buf: list[tuple[float, float]] = []
-
-    def flush() -> None:
-        if len(buf) >= 2:
-            spines.append([(a, CENTER) if abs(lat - CENTER) <= ON_CENTER else (a, lat) for a, lat in buf])
-        buf.clear()
-
-    for is_on, pts in groups:
-        if is_on:
-            buf.extend((a, CENTER) for a, _ in pts)
-            continue
-        if rng.chance(keep_p):
-            buf.extend(pts)
-            continue
-        flush()
-        if len(pts) == 1:
-            along, lat = pts[0]
-            chips.append([(along, lat), (along + 4.2, lat + rng.spanned(-0.12, 0.12))])
-        else:
-            chips.append(pts)
-    flush()
-    return spines, chips
-
-
-def disconnect_motif(base: Motif, stage: str, rng: Rng) -> Motif:
-    keep_p = KEEP_RAMP[stage]
+def gapped_spine(rng: Rng, *, run_range: tuple[float, float], gap_range: tuple[float, float]) -> Motif:
+    """Stage 1: straight hairline with empty spaces. Always starts at 0."""
     spine: list[list[tuple[float, float]]] = []
-    chips = [list(chip) for chip in base.chips]
-    for run in base.spine:
-        more_spine, more_chips = disconnect_run(run, rng, keep_p)
-        spine.extend(more_spine)
-        chips.extend(more_chips)
-    return Motif(spine=spine, chips=chips, specks=list(base.specks))
+    x = 0.0
+    while x < LENGTH - 8:
+        run = min(rng.spanned(*run_range), LENGTH - x)
+        if run < 8:
+            break
+        spine.append([(x, CENTER), (x + run, CENTER)])
+        x += run
+        if x >= LENGTH - 8:
+            break
+        gap = min(rng.spanned(*gap_range), LENGTH - x)
+        if gap < 4:
+            break
+        x += gap
+    if spine and spine[-1][-1][0] < LENGTH - 20:
+        tail = LENGTH - spine[-1][-1][0]
+        if tail >= 28:
+            start = spine[-1][-1][0] + min(rng.spanned(*gap_range), tail * 0.4)
+            if LENGTH - start >= 12:
+                spine.append([(start, CENTER), (LENGTH, CENTER)])
+    if not spine:
+        spine.append([(0.0, CENTER), (LENGTH, CENTER)])
+    return Motif(spine=spine)
 
 
-def extra_disconnected(motif: Motif, stage: str, rng: Rng) -> Motif:
-    n = EXTRA_DISC[stage]
-    amp = WANDER[stage]["amp"]
-    covered: list[tuple[float, float]] = []
-    for run in motif.spine:
-        if len(run) >= 2:
-            covered.append((run[0][0], run[-1][0]))
-    covered.sort()
+def spine_gaps(spine: list[list[tuple[float, float]]]) -> list[tuple[float, float]]:
+    runs = sorted((run for run in spine if len(run) >= 2), key=_run_min)
     gaps: list[tuple[float, float]] = []
     cursor = 0.0
-    for a, b in covered:
-        if a - cursor >= 10:
+    for run in runs:
+        a, b = _run_min(run), _run_max(run)
+        if a - cursor >= 8:
             gaps.append((cursor, a))
         cursor = max(cursor, b)
-    if 720 - cursor >= 10:
-        gaps.append((cursor, 720.0))
-    rng_gaps = list(gaps)
-    for i in range(len(rng_gaps) - 1, 0, -1):
-        j = rng.u32() % (i + 1)
-        rng_gaps[i], rng_gaps[j] = rng_gaps[j], rng_gaps[i]
-    added = 0
-    for g0, g1 in rng_gaps:
-        if added >= n:
-            break
-        span = g1 - g0
-        if span < 8:
+    if LENGTH - cursor >= 8:
+        gaps.append((cursor, float(LENGTH)))
+    return gaps
+
+
+def plan_run_warp(run: list[tuple[float, float]], rng: Rng) -> list[tuple[float, float]]:
+    """(along, unit offset -1..1). Endpoints stay on the hairline."""
+    a0, a1 = run[0][0], run[-1][0]
+    span = a1 - a0
+    if span < 28:
+        return [(a0, 0.0), (a1, 0.0)]
+    n_mid = 1 if span < 70 else 2 if span < 140 else 3
+    sign = rng.sign()
+    pts: list[tuple[float, float]] = [(a0, 0.0)]
+    for i in range(1, n_mid + 1):
+        t = i / (n_mid + 1)
+        along = a0 + span * (t + rng.spanned(-0.04, 0.04))
+        along = min(a1 - 6.0, max(a0 + 6.0, along))
+        env = math.sin(math.pi * t)
+        unit = sign * env * rng.spanned(0.55, 1.0)
+        pts.append((along, unit))
+        if n_mid > 1:
+            sign = -sign
+    pts.append((a1, 0.0))
+    return pts
+
+
+# Distortion joints stay one polyline only this often. The rest split.
+WARP_CONNECT_CHANCE = 0.10
+
+
+def plan_warp_links(
+    warps: list[list[tuple[float, float]]], rng: Rng
+) -> list[list[bool]]:
+    return [
+        [rng.chance(WARP_CONNECT_CHANCE) for _ in range(max(0, len(warp) - 1))]
+        for warp in warps
+    ]
+
+
+def split_warped_run(
+    pts: list[tuple[float, float]], keep: list[bool]
+) -> list[list[tuple[float, float]]]:
+    """Break offset joints so warped pieces usually float apart."""
+    if len(pts) < 2:
+        return []
+    runs: list[list[tuple[float, float]]] = []
+    current: list[tuple[float, float]] = [pts[0]]
+    for i in range(len(pts) - 1):
+        a0, l0 = pts[i]
+        a1, l1 = pts[i + 1]
+        span = a1 - a0
+        lat_change = abs(l1 - l0) >= 0.08
+        connected = (not lat_change) or (i < len(keep) and keep[i])
+        if connected:
+            current.append(pts[i + 1])
             continue
-        occupied = False
-        for chip in motif.chips:
-            mid = (chip[0][0] + chip[-1][0]) / 2
-            if g0 <= mid <= g1:
-                occupied = True
-                break
-        if occupied:
+        gap = min(3.2, max(1.6, span * 0.12))
+        if span <= gap * 2 + 4:
+            if len(current) >= 2:
+                runs.append(current)
+            current = [pts[i + 1]]
             continue
-        if rng.chance(0.55):
-            a = g0 + rng.spanned(1.2, span * 0.45)
-            b = min(g1 - 1.0, a + rng.spanned(3.5, min(12.0, span - 2.5)))
-            lat = CENTER + rng.sign() * rng.spanned(*amp)
-            motif.chips.append([(a, lat), (b, lat + rng.spanned(-0.2, 0.2))])
-        else:
-            motif.specks.append(
-                dot(g0 + span * rng.spanned(0.3, 0.7), CENTER + rng.spanned(-0.08, 0.08))
-            )
-        added += 1
-    return motif
+        mid = (a0 + a1) / 2.0
+        current.append((mid - gap / 2.0, l0))
+        if len(current) >= 2:
+            runs.append(current)
+        current = [(mid + gap / 2.0, l1), pts[i + 1]]
+    if len(current) >= 2:
+        runs.append(current)
+    return runs if runs else [pts]
 
 
-def prepare_720(base: Motif, stage: str, rng: Rng) -> Motif:
-    return extra_disconnected(disconnect_motif(base, stage, rng), stage, rng)
-
-
-def wander(base: Motif, stage: str, rng: Rng) -> Motif:
-    cfg = WANDER[stage]
-    out = Motif(
-        spine=[list(run) for run in base.spine],
-        chips=[list(chip) for chip in base.chips],
-        specks=list(base.specks),
-    )
-    x = 720.0
-    join = min(rng.spanned(22, 52), LENGTH - x - 24)
-    out.spine.append([(x, CENTER), (x + join, CENTER)])
-    x += join
-    while x < LENGTH - 12:
-        gap = min(cfg["gap"][0] + rng.unit() * (cfg["gap"][1] - cfg["gap"][0]), LENGTH - 8 - x)
-        wide = rng.chance(cfg["wide_p"]) and gap > 22
-        if wide:
-            fill_wide_gap(out, x, x + gap, rng, stage)
-        elif rng.chance(cfg["disc_p"]):
-            chip_a = x + rng.spanned(1.5, max(2.0, gap * 0.25))
-            chip_b = min(x + gap - 1.2, chip_a + rng.spanned(4.0, min(14.0, gap - 2.5)))
-            if chip_b > chip_a + 2:
-                lat = CENTER + rng.sign() * rng.spanned(*cfg["amp"])
-                out.chips.append([(chip_a, lat), (chip_b, lat + rng.spanned(-0.25, 0.25))])
-        elif gap > 8 and rng.chance(0.72):
-            if rng.chance(0.4) and gap > 12:
-                a = x + gap * rng.spanned(0.25, 0.55)
-                b = min(x + gap - 1.0, a + rng.spanned(2.4, 6.5))
-                lat0 = CENTER + rng.spanned(-0.12, 0.12)
-                out.specks.append(shard(a, b, lat0, lat0 + rng.spanned(-0.16, 0.16)))
-            else:
-                out.specks.append(dot(x + gap * rng.spanned(0.35, 0.7), CENTER + rng.spanned(-0.08, 0.08)))
-        x += gap
-        if x >= LENGTH - 10:
-            break
-        run = min(rng.spanned(*cfg["run"]), LENGTH - x)
-        a0 = x
-        a1 = x + run
-        if run >= 22 and rng.chance(cfg["ramp_p"]):
-            amp = rng.sign() * rng.spanned(*cfg["amp"])
-            mid0 = a0 + run * rng.spanned(0.22, 0.38)
-            mid1 = a0 + run * rng.spanned(0.55, 0.72)
-            peak = a0 + run * rng.spanned(0.4, 0.52)
-            out.spine.append(
-                [
-                    (a0, CENTER),
-                    (mid0, CENTER),
-                    (peak, CENTER + amp),
-                    (mid1, CENTER + amp * rng.spanned(0.55, 0.85)),
-                    (a1, CENTER),
-                ]
-            )
-        else:
-            out.spine.append([(a0, CENTER), (a1, CENTER)])
-        x = a1
-    if x < LENGTH:
-        out.spine.append([(x, CENTER), (LENGTH, CENTER)])
+def apply_warp(
+    warps: list[list[tuple[float, float]]],
+    scale: float,
+    links: list[list[bool]],
+) -> list[list[tuple[float, float]]]:
+    amp = DISTORT_MAX * scale
+    out: list[list[tuple[float, float]]] = []
+    for warp, keep in zip(warps, links):
+        pts = [(along, CENTER + unit * amp) for along, unit in warp]
+        out.extend(split_warped_run(pts, keep))
     return out
 
 
-def fill_wide_gap(out: Motif, a0: float, a1: float, rng: Rng, stage: str) -> None:
-    span = a1 - a0
-    n = 3 if stage == "s1" else 4 if stage == "s2" else 5 if stage == "s3" else 6
-    cursor = a0 + rng.spanned(2.0, 5.0)
-    for i in range(n):
-        if cursor >= a1 - 3:
-            break
-        if rng.chance(0.38):
-            out.specks.append(dot(cursor, CENTER + rng.spanned(-0.08, 0.08)))
-            cursor += rng.spanned(4.5, 9.0)
-        else:
-            b = min(a1 - 1.0, cursor + rng.spanned(2.2, 6.5))
-            lat0 = CENTER + rng.spanned(-0.14, 0.14)
-            out.specks.append(shard(cursor, b, lat0, lat0 + rng.spanned(-0.18, 0.18)))
-            cursor = b + rng.spanned(3.5, 8.0)
-        cursor += span * 0.02 * i
+def lat_at(run: list[tuple[float, float]], along: float) -> float:
+    if along <= run[0][0]:
+        return run[0][1]
+    for i in range(1, len(run)):
+        a0, l0 = run[i - 1]
+        a1, l1 = run[i]
+        if along <= a1:
+            if a1 == a0:
+                return l1
+            t = (along - a0) / (a1 - a0)
+            return l0 + (l1 - l0) * t
+    return run[-1][1]
+
+
+def add_gap_debris(motif: Motif, gaps: list[tuple[float, float]], rng: Rng) -> None:
+    """Stage 3: a few points and short lines sitting in the empty spaces."""
+    eligible = [(g0, g1) for g0, g1 in gaps if g1 - g0 >= 12]
+    for i, (g0, g1) in enumerate(eligible):
+        span = g1 - g0
+        # First two wide gaps always get debris so a short viewport still shows it.
+        if i >= 2 and not rng.chance(0.38):
+            continue
+        use_line = i == 0 if i < 2 else rng.chance(0.55)
+        if use_line:
+            half = rng.spanned(2.4, min(8.0, span * 0.32))
+            mid = g0 + span * rng.spanned(0.35, 0.65)
+            a = max(g0 + 1.2, mid - half)
+            b = min(g1 - 1.2, mid + half)
+            if b > a + 2.2:
+                lat = CENTER + rng.spanned(-0.25, 0.25)
+                motif.specks.append(shard(a, b, lat, lat + rng.spanned(-0.15, 0.15)))
+                continue
+        motif.specks.append(
+            dot(g0 + span * rng.spanned(0.28, 0.72), CENTER + rng.spanned(-0.3, 0.3))
+        )
+
+
+def add_side_points(motif: Motif, runs: list[list[tuple[float, float]]], rng: Rng) -> None:
+    """Stage 4: a few points at 50% distance next to the warped line runs."""
+    amp = DISTORT_MAX * 0.5
+    placed = 0
+    for run in runs:
+        a0, a1 = run[0][0], run[-1][0]
+        span = a1 - a0
+        if span < 22:
+            continue
+        if placed >= 2 and not rng.chance(0.4):
+            continue
+        along = a0 + span * rng.spanned(0.18, 0.82)
+        motif.specks.append(dot(along, lat_at(run, along) + rng.sign() * amp))
+        placed += 1
+        if span > 90 and rng.chance(0.28):
+            along2 = a0 + span * rng.spanned(0.18, 0.82)
+            motif.specks.append(dot(along2, lat_at(run, along2) + rng.sign() * amp))
+
+
+def build_family_stages(key: str, seed: int) -> dict[str, Motif]:
+    rhythm = RHYTHM[key]
+    gapped = gapped_spine(
+        Rng(seed),
+        run_range=rhythm["run"],
+        gap_range=rhythm["gap"],
+    )
+    gaps = spine_gaps(gapped.spine)
+    warp_rng = Rng(seed ^ 0xA5C3E91)
+    warps = [plan_run_warp(run, warp_rng) for run in gapped.spine]
+    links = plan_warp_links(warps, Rng(seed ^ 0x2F4A91C))
+
+    s1 = clone_motif(gapped)
+    s2 = Motif(spine=apply_warp(warps, 0.5, links))
+    s3 = Motif(spine=apply_warp(warps, 1.0, links))
+    add_gap_debris(s3, gaps, Rng(seed ^ 0x51A2C0D))
+    s4 = clone_motif(s3)
+    add_side_points(s4, s4.spine, Rng(seed ^ 0x7B10E33))
+    return {"s1": s1, "s2": s2, "s3": s3, "extreme": s4}
 
 
 def mask_stem(key: str, stage: int, compact: bool) -> str:
@@ -921,21 +594,10 @@ STAGE_FILES = {
 
 
 def main() -> None:
-    authored = {
-        "h": H_720,
-        "v": V_720,
-        "h2": H2_720,
-        "v2": V2_720,
-    }
     seeds = {"h": 0x51A2C0D, "h2": 0xA5C3E91, "v": 0x7B10E33, "v2": 0x3D17B4F}
-    step = {"h": 13, "h2": 17, "v": 19, "v2": 29}
     built: dict[str, dict[str, Motif]] = {}
-    for key, motifs in authored.items():
-        built[key] = {}
-        for i, (stage, motif) in enumerate(motifs.items()):
-            rng = Rng(seeds[key] + i * step[key])
-            prepared = prepare_720(motif, stage, rng)
-            built[key][stage] = wander(prepared, stage, rng)
+    for key, seed in seeds.items():
+        built[key] = build_family_stages(key, seed)
 
     for key, stages in built.items():
         horizontal = key in ("h", "h2")
@@ -954,12 +616,12 @@ def main() -> None:
     h2_open = (ROOT / "rule-h2.svg").read_text(encoding="utf-8")
     v_open = (ROOT / "rule-v.svg").read_text(encoding="utf-8")
     v2_open = (ROOT / "rule-v2.svg").read_text(encoding="utf-8")
-    assert "M0 5 L22 5" in h_open
-    assert "M0 5 L22 5" not in h2_open
-    assert "M5 0 L5 19" in v_open
-    assert "M5 0 L5 19" not in v2_open
-    assert "M3840 5 L3818 5" not in h2_open
-    assert "M5 3840 L5 3821" not in v2_open
+    assert "M0 5" in h_open
+    assert "M0 5" in h2_open
+    assert h_open != h2_open
+    assert v_open != v2_open
+    assert "M5 0" in v_open
+    assert "M5 0" in v2_open
     print("unique vs h/v (not reverse copies)")
 
 

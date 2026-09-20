@@ -48,60 +48,64 @@ function ChromeStageColumn({ stage }: { stage: MadnessVisualStage }) {
     <div
       className={cn(
         ADC_CHROME_STAGE_PREVIEW_CLASS,
-        "flex min-w-0 flex-col gap-2.5 rounded-md border border-border/40 bg-neutral-950 p-2.5",
+        "flex min-w-[24rem] flex-col gap-6 rounded-md border border-border/40 bg-neutral-950 p-6",
       )}
       data-adc-chrome-stage={stage}
       style={chromeStagePreviewStyle(stage)}
     >
-      <p className="text-[11px] font-medium text-foreground">
+      <p className="text-sm font-medium text-foreground">
         {MADNESS_VISUAL_STAGE_LABELS[stage]} · {MADNESS_VISUAL_STAGE_RANGES[stage]}
       </p>
       <div
         className={cn(
-          "relative flex h-7 w-full items-center overflow-visible bg-background/80 px-1.5",
+          "relative flex h-24 w-full items-center overflow-visible bg-background/80 px-4",
           GAME_CHROME_RULE_BOTTOM,
         )}
         aria-label="Horizontal chrome rule"
       >
-        <span className="text-[10px] text-muted-foreground">H</span>
+        <span className="text-xs text-muted-foreground">H</span>
       </div>
       <div
         className={cn(
-          "relative flex h-14 w-7 items-center justify-center overflow-visible bg-background/80",
+          "relative flex h-72 w-20 items-center justify-center overflow-visible bg-background/80",
           GAME_CHROME_RULE_LEFT,
         )}
         aria-label="Vertical chrome rule"
       >
-        <span className="text-[10px] text-muted-foreground">V</span>
+        <span className="text-xs text-muted-foreground">V</span>
       </div>
-      <div className="flex flex-col items-start gap-1.5">
+      <div className="flex flex-col items-start gap-3">
         <GameButton
           variant="outline"
-          size="xs"
+          size="lg"
           button_id="chrome-compare-gather"
         >
           Gather Wood
         </GameButton>
         <GameButton
           variant="outline"
-          size="xs"
+          size="lg"
           button_id="chrome-compare-hut"
         >
           Wooden Hut
         </GameButton>
       </div>
-      <ConstructionQueueSlot kind="free" testId="chrome-compare-slot" />
+      <ConstructionQueueSlot
+        kind="free"
+        testId="chrome-compare-slot"
+        className="!h-10 !w-10"
+      />
       <div
         className={cn(
-          "relative bg-background p-3 shadow-lg sm:rounded-lg",
+          "relative min-h-[14rem] bg-background p-8 shadow-lg sm:rounded-lg",
           chromeOn ? gameChromeDialogClassName() : "border border-border",
         )}
         style={
           chromeOn ? destroyedChromeMaskStyle("chrome-compare-dialog") : undefined
         }
       >
-        <p className="text-xs font-semibold leading-none">A stranger arrives</p>
-        <p className="mt-1.5 text-[11px] text-muted-foreground">
+        <p className="text-base font-semibold leading-none">A stranger arrives</p>
+        <p className="mt-3 text-sm text-muted-foreground">
           The cave mouth is no longer empty.
         </p>
       </div>
@@ -116,10 +120,12 @@ export function ChromeStagesCompareSection() {
       title="All madness stages"
       description="Same horizontal rule, vertical rule, two outline buttons, queue slot, and dialog frame at every madness band."
     >
-      <div className="grid grid-cols-5 gap-2">
-        {STAGES.map((stage) => (
-          <ChromeStageColumn key={stage} stage={stage} />
-        ))}
+      <div className="overflow-x-auto">
+        <div className="grid min-w-[128rem] grid-cols-5 gap-6">
+          {STAGES.map((stage) => (
+            <ChromeStageColumn key={stage} stage={stage} />
+          ))}
+        </div>
       </div>
     </DemoSection>
   );

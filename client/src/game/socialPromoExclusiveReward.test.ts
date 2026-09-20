@@ -2,7 +2,9 @@ import { describe, it, expect } from "vitest";
 import {
   getSocialPromoExclusiveProgress,
   isExclusiveInviteStepDone,
+  isRewardsTasksShortcutVisible,
   isSocialPromoExclusiveRewardComplete,
+  REWARDS_TASKS_SHORTCUT_VISIBLE_AFTER_MS,
   socialPromoExclusiveStepsCompleted,
 } from "@/game/socialPromoExclusiveReward";
 import { PLAYLIGHT_DISCOVER_REWARD_KEY } from "@/game/playlightDiscoverReward";
@@ -101,5 +103,43 @@ describe("socialPromoExclusiveReward", () => {
         },
       }),
     ).toBe(1);
+  });
+
+  it("hides the header Rewards shortcut until 15 minutes of play time", () => {
+    expect(isRewardsTasksShortcutVisible({ ...empty, playTime: 0 })).toBe(false);
+    expect(
+      isRewardsTasksShortcutVisible({
+        ...empty,
+        playTime: REWARDS_TASKS_SHORTCUT_VISIBLE_AFTER_MS - 1,
+      }),
+    ).toBe(false);
+    expect(
+      isRewardsTasksShortcutVisible({
+        ...empty,
+        playTime: REWARDS_TASKS_SHORTCUT_VISIBLE_AFTER_MS,
+      }),
+    ).toBe(true);
+  });
+
+  it("hides the header Rewards shortcut after exclusive tasks and gifted ring", () => {
+    const complete = {
+      isUserSignedIn: true,
+      social_media_rewards: {
+        marketing_email: { claimed: true, timestamp: 1 },
+        youtube: { claimed: true, timestamp: 1 },
+        reddit: { claimed: true, timestamp: 1 },
+        [PLAYLIGHT_DISCOVER_REWARD_KEY]: { claimed: true, timestamp: 1 },
+      },
+      referralCount: 1,
+      referrals: [] as { userId: string; claimed: boolean; timestamp: number }[],
+      playTime: REWARDS_TASKS_SHORTCUT_VISIBLE_AFTER_MS,
+    };
+    expect(isRewardsTasksShortcutVisible(complete)).toBe(true);
+    expect(
+      isRewardsTasksShortcutVisible({
+        ...complete,
+        clothing: { gifted_ring: true } as { gifted_ring: true },
+      }),
+    ).toBe(false);
   });
 });

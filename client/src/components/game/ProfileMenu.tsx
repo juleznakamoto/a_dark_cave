@@ -47,7 +47,10 @@ import {
   fetchMarketingOptInPreference,
   postMarketingPreference,
 } from "@/game/marketingEmailReward";
-import { isRewardsTasksShortcutVisible } from "@/game/socialPromoExclusiveReward";
+import {
+  isRewardsTasksShortcutVisible,
+  REWARDS_TASKS_SHORTCUT_VISIBLE_AFTER_MS,
+} from "@/game/socialPromoExclusiveReward";
 import { DestroyedChromeScope } from "@/components/game/gameChrome";
 import { useTranslation } from "react-i18next";
 import { FullscreenButton } from "./FullscreenButton";
@@ -146,6 +149,10 @@ function useProfileMenuState() {
     })),
   );
 
+  const rewardsShortcutPlayTimeReached = useGameStore(
+    (s) => (s.playTime ?? 0) >= REWARDS_TASKS_SHORTCUT_VISIBLE_AFTER_MS,
+  );
+
   const signupWelcomeGoldClaimedBool = signupWelcomeGoldClaimed === true;
 
   const [accountDropdownOpen, setAccountDropdownOpen] = useState(false);
@@ -167,6 +174,9 @@ function useProfileMenuState() {
     isUserSignedIn,
     signupWelcomeGoldClaimed: signupWelcomeGoldClaimedBool,
     clothing,
+    playTime: rewardsShortcutPlayTimeReached
+      ? REWARDS_TASKS_SHORTCUT_VISIBLE_AFTER_MS
+      : 0,
   });
 
   useEffect(() => {
