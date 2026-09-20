@@ -1728,28 +1728,31 @@ html.adc-text-large .game-panel-header-indicator-row {
 }
 
 /* Shared action-button progress wipe (execution fill / cooldown recede).
-   Seek with animation-delay: -elapsed so N buttons share no 10 Hz React ticks. */
+ Seek with animation-delay: -elapsed so N buttons share no 10 Hz React ticks.
+ Animate scaleX (compositor) instead of width (layout) so many bars stay cheap. */
 @keyframes adc-progress-wipe-fill {
   from {
-    width: 0%;
+    transform: scaleX(0);
   }
 
   to {
-    width: 100%;
+    transform: scaleX(1);
   }
 }
 
 @keyframes adc-progress-wipe-recede {
   from {
-    width: 100%;
+    transform: scaleX(1);
   }
 
   to {
-    width: 0%;
+    transform: scaleX(0);
   }
 }
 
 .adc-progress-wipe {
+  width: 100%;
+  transform-origin: left center;
   animation-timing-function: linear;
   animation-fill-mode: both;
 }

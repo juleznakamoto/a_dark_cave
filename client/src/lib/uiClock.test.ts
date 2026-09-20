@@ -24,8 +24,9 @@ describe("getCssTimedWipeStyle", () => {
     expect(wipe.className).toContain("adc-progress-wipe--fill");
     expect(wipe.style.animationDuration).toBe("10000ms");
     expect(wipe.style.animationDelay).toBe("-5000ms");
-    expect(wipe.style.width).toBe("50%");
-    expect(wipe.style.right).toBe("auto");
+    expect(wipe.style.width).toBe("100%");
+    expect(wipe.style.transform).toBe("scaleX(0.5)");
+    expect(wipe.style.transformOrigin).toBe("left center");
   });
 
   it("seeks a recede wipe from the same elapsed fraction", () => {
@@ -38,9 +39,11 @@ describe("getCssTimedWipeStyle", () => {
     expect(wipe.className).toContain("adc-progress-wipe--recede");
     expect(wipe.style.animationDuration).toBe("4000ms");
     expect(wipe.style.animationDelay).toBe("-1000ms");
+    expect(wipe.style.width).toBe("100%");
+    expect(wipe.style.transform).toBe("scaleX(0.75)");
   });
 
-  it("snaps to the finished width when time is up", () => {
+  it("snaps to the finished scale when time is up", () => {
     const fill = getCssTimedWipeStyle({
       startMs: 0,
       durationMs: 1_000,
@@ -49,6 +52,7 @@ describe("getCssTimedWipeStyle", () => {
     });
     expect(fill.className).toBe("");
     expect(fill.style.width).toBe("100%");
+    expect(fill.style.transform).toBe("scaleX(1)");
 
     const recede = getCssTimedWipeStyle({
       startMs: 0,
@@ -56,7 +60,8 @@ describe("getCssTimedWipeStyle", () => {
       mode: "recede",
       nowMs: 2_000,
     });
-    expect(recede.style.width).toBe("0%");
+    expect(recede.style.width).toBe("100%");
+    expect(recede.style.transform).toBe("scaleX(0)");
   });
 });
 

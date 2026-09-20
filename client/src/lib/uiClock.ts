@@ -101,10 +101,20 @@ export const ADC_PROGRESS_WIPE_FILL_CLASS = "adc-progress-wipe--fill";
 export const ADC_PROGRESS_WIPE_RECEDE_CLASS = "adc-progress-wipe--recede";
 export const ADC_PROGRESS_WIPE_PAUSED_CLASS = "adc-progress-wipe--paused";
 
+function wipeScaleX(scale: number): CSSProperties {
+  return {
+    // Full-size box + scaleX: transform does not trigger layout the way
+    // animating `width` does when many bars run at once.
+    width: "100%",
+    transformOrigin: "left center",
+    transform: `scaleX(${scale})`,
+  };
+}
+
 /**
- * CSS keyframe seek: full-duration animation + negative delay so a remount
- * (tab visible, duration boost) continues from the current elapsed fraction
- * without a 10 Hz React width update.
+ * CSS keyframe seek: full-duration `scaleX` animation + negative delay so a
+ * remount (tab visible, duration boost) continues from the current elapsed
+ * fraction without a 10 Hz React update.
  *
  * Memoize the result and remount via a key when you need to re-seek. Writing a
  * new `animation-delay` on an in-flight wipe restarts it in Chromium.
@@ -122,24 +132,20 @@ export function getCssTimedWipeStyle(opts: {
   if (durationMs <= 0 || elapsedMs >= durationMs) {
     return {
       className: "",
-      style: { width: opts.mode === "fill" ? "100%" : "0%" },
+      style: wipeScaleX(opts.mode === "fill" ? 1 : 0),
     };
   }
 
   const progress = elapsedMs / durationMs;
-  const fromPercent =
-    opts.mode === "fill" ? progress * 100 : (1 - progress) * 100;
+  const fromScale = opts.mode === "fill" ? progress : 1 - progress;
 
   return {
-    className: `${ADC_PROGRESS_WIPE_CLASS} ${
-      opts.mode === "fill"
+    className: `${ADC_PROGRESS_WIPE_CLASS} ${opts.mode === "fill"
         ? ADC_PROGRESS_WIPE_FILL_CLASS
         : ADC_PROGRESS_WIPE_RECEDE_CLASS
-    }`,
+      }`,
     style: {
-      // `right: auto` so width actually shrinks — `inset-0` would pin both edges.
-      right: "auto",
-      width: `${fromPercent}%`,
+      ...wipeScaleX(fromScale),
       animationDuration: `${durationMs}ms`,
       animationDelay: `-${elapsedMs}ms`,
     },

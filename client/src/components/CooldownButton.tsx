@@ -342,7 +342,7 @@ const CooldownButton = forwardRef<HTMLButtonElement, CooldownButtonProps>(
     const timedWipe = executionWipe ?? cooldownWipe;
 
     // Preview / play-time still set width in React. Execution and action
-    // cooldown use CSS keyframes so remaining-time ticks do not restart them.
+    // cooldown use CSS scaleX so remaining-time ticks do not restart them.
     const overlayWidth = previewOverlay
       ? previewOverlay.widthPercent
       : isPlayTimeOverlayActive
@@ -447,6 +447,7 @@ const CooldownButton = forwardRef<HTMLButtonElement, CooldownButtonProps>(
             }
             className={cn(
               "pointer-events-none absolute inset-y-0 left-0 z-0 overflow-hidden rounded-md transition-opacity duration-200",
+              timedWipe && "right-0 origin-left",
               GAME_ACTION_COOLDOWN_WASH_CLASS,
               timedWipe?.className,
               isTimedWipePaused && timedWipe?.className && ADC_PROGRESS_WIPE_PAUSED_CLASS,
