@@ -4,9 +4,9 @@
 Madness stages stack: each one keeps the previous features and adds one more.
   0 solid hairline (CSS, no tile)
   1 empty spaces between line runs
-  2 + distortion at 50% of max lateral distance
-  3 + distortion at 100%, plus a few points and short lines in the gaps
-  4 + a few points at 50% distance next to the line runs
+  2 + distortion at 50% of max lateral distance, plus a few new gaps
+  3 + distortion at 100%, gap debris, plus a few new gaps
+  4 + short ticks one line-thickness away from the runs, plus a few new gaps
 
 Rebuild SVGs + mask CSS with no args; `--css-only` skips tiles.
 """
@@ -26,42 +26,43 @@ MASK_KEYS = ("h", "h2", "v", "v2")
 # Stage 4 = unsuffixed extreme tiles. Cache tokens stay per-family so a
 # unique h2/v2 rebuild does not bust unchanged h/v.
 MASK_CACHE = {
-    "h": 22,
-    "v": 22,
-    "h2": 7,
-    "v2": 7,
-    "h-slot": 9,
-    "v-slot": 9,
-    "h2-slot": 8,
-    "v2-slot": 8,
-    "h-s1": 8,
-    "h-s2": 8,
-    "h-s3": 8,
-    "v-s1": 8,
-    "v-s2": 8,
-    "v-s3": 8,
-    "h2-s1": 7,
-    "h2-s2": 7,
-    "h2-s3": 7,
-    "v2-s1": 7,
-    "v2-s2": 7,
-    "v2-s3": 7,
-    "h-slot-s1": 9,
-    "h-slot-s2": 9,
-    "h-slot-s3": 9,
-    "v-slot-s1": 9,
-    "v-slot-s2": 9,
-    "v-slot-s3": 9,
-    "h2-slot-s1": 8,
-    "h2-slot-s2": 8,
-    "h2-slot-s3": 8,
-    "v2-slot-s1": 8,
-    "v2-slot-s2": 8,
-    "v2-slot-s3": 8,
+    "h": 28,
+    "v": 28,
+    "h2": 13,
+    "v2": 13,
+    "h-slot": 15,
+    "v-slot": 15,
+    "h2-slot": 14,
+    "v2-slot": 14,
+    "h-s1": 10,
+    "h-s2": 11,
+    "h-s3": 11,
+    "v-s1": 10,
+    "v-s2": 11,
+    "v-s3": 11,
+    "h2-s1": 9,
+    "h2-s2": 10,
+    "h2-s3": 10,
+    "v2-s1": 9,
+    "v2-s2": 10,
+    "v2-s3": 10,
+    "h-slot-s1": 11,
+    "h-slot-s2": 12,
+    "h-slot-s3": 12,
+    "v-slot-s1": 11,
+    "v-slot-s2": 12,
+    "v-slot-s3": 12,
+    "h2-slot-s1": 10,
+    "h2-slot-s2": 11,
+    "h2-slot-s3": 11,
+    "v2-slot-s1": 10,
+    "v2-slot-s2": 11,
+    "v2-slot-s3": 11,
 }
 CENTER = 5.0
-SLOT_LAT_MIN = 3.6
-SLOT_LAT_MAX = 6.4
+# Compact crop is y=3..7. Side ticks sit one stroke-gap off the hairline (lat 3 / 7).
+SLOT_LAT_MIN = 3.0
+SLOT_LAT_MAX = 7.0
 
 
 class Rng:
@@ -83,6 +84,20 @@ class Rng:
 
     def sign(self) -> float:
         return -1.0 if self.u32() & 1 else 1.0
+
+    def pick_span(
+        self,
+        bands: tuple[tuple[float, float], ...],
+        weights: tuple[float, ...],
+    ) -> float:
+        u = self.unit()
+        acc = 0.0
+        for (lo, hi), weight in zip(bands, weights):
+            acc += weight
+            if u < acc:
+                return self.spanned(lo, hi)
+        lo, hi = bands[-1]
+        return self.spanned(lo, hi)
 
 
 @dataclass
@@ -288,36 +303,72 @@ def shard(a0: float, a1: float, lat0: float, lat1: float | None = None) -> Poly:
 
 # 100% lateral distance from the 1px hairline. Stage 2 uses half of this.
 DISTORT_MAX = 2.8
+LINE_THICKNESS = 1.0
+# Empty space between a stage-4 tick and the hairline it sits beside.
+SIDE_TICK_GAP = LINE_THICKNESS
+SIDE_TICK_OFFSET = LINE_THICKNESS / 2 + SIDE_TICK_GAP + LINE_THICKNESS / 2
 
-# Unique dash rhythm per family so header/footer/columns are not copies.
+# Unique dash rhythm per family. Three length bands so holes are not a beat.
 RHYTHM = {
-    "h": dict(run=(80, 170), gap=(24, 44)),
-    "h2": dict(run=(50, 130), gap=(26, 48)),
-    "v": dict(run=(90, 190), gap=(22, 42)),
-    "v2": dict(run=(36, 110), gap=(24, 46)),
+    "h": dict(
+        run_bands=((48, 95), (130, 250), (310, 580)),
+        run_w=(0.28, 0.47, 0.25),
+        gap_bands=((8, 18), (26, 52), (68, 130)),
+        gap_w=(0.32, 0.48, 0.20),
+    ),
+    "h2": dict(
+        run_bands=((36, 80), (100, 200), (250, 480)),
+        run_w=(0.34, 0.42, 0.24),
+        gap_bands=((10, 22), (30, 58), (74, 140)),
+        gap_w=(0.30, 0.46, 0.24),
+    ),
+    "v": dict(
+        run_bands=((55, 110), (150, 280), (340, 620)),
+        run_w=(0.26, 0.50, 0.24),
+        gap_bands=((7, 16), (24, 46), (60, 118)),
+        gap_w=(0.34, 0.46, 0.20),
+    ),
+    "v2": dict(
+        run_bands=((28, 70), (88, 170), (210, 400)),
+        run_w=(0.36, 0.40, 0.24),
+        gap_bands=((9, 20), (28, 54), (70, 125)),
+        gap_w=(0.30, 0.48, 0.22),
+    ),
 }
 
 
-def gapped_spine(rng: Rng, *, run_range: tuple[float, float], gap_range: tuple[float, float]) -> Motif:
+def gapped_spine(rng: Rng, rhythm: dict) -> Motif:
     """Stage 1: straight hairline with empty spaces. Always starts at 0."""
     spine: list[list[tuple[float, float]]] = []
     x = 0.0
     while x < LENGTH - 8:
-        run = min(rng.spanned(*run_range), LENGTH - x)
+        run = min(
+            rng.pick_span(rhythm["run_bands"], rhythm["run_w"]),
+            LENGTH - x,
+        )
         if run < 8:
             break
         spine.append([(x, CENTER), (x + run, CENTER)])
         x += run
         if x >= LENGTH - 8:
             break
-        gap = min(rng.spanned(*gap_range), LENGTH - x)
+        # Most runs leave a hole. Skip some so two lengths fuse and the beat breaks.
+        if rng.chance(0.14):
+            continue
+        gap = min(
+            rng.pick_span(rhythm["gap_bands"], rhythm["gap_w"]),
+            LENGTH - x,
+        )
         if gap < 4:
             break
         x += gap
     if spine and spine[-1][-1][0] < LENGTH - 20:
         tail = LENGTH - spine[-1][-1][0]
         if tail >= 28:
-            start = spine[-1][-1][0] + min(rng.spanned(*gap_range), tail * 0.4)
+            start = spine[-1][-1][0] + min(
+                rng.pick_span(rhythm["gap_bands"], rhythm["gap_w"]),
+                tail * 0.4,
+            )
             if LENGTH - start >= 12:
                 spine.append([(start, CENTER), (LENGTH, CENTER)])
     if not spine:
@@ -339,21 +390,146 @@ def spine_gaps(spine: list[list[tuple[float, float]]]) -> list[tuple[float, floa
     return gaps
 
 
+def _along_in(along: float, lo: float | None, hi: float | None) -> bool:
+    if lo is not None and along < lo - 1e-9:
+        return False
+    if hi is not None and along > hi + 1e-9:
+        return False
+    return True
+
+
+def keep_along(
+    pts: list[tuple[float, float]], lo: float | None, hi: float | None
+) -> list[tuple[float, float]] | None:
+    """Keep the polyline where lo <= along <= hi. None bound is open."""
+    if not pts:
+        return None
+    kept: list[tuple[float, float]] = []
+    prev: tuple[float, float] | None = None
+    for along, lat in pts:
+        if prev is None:
+            if _along_in(along, lo, hi):
+                kept.append((along, lat))
+            prev = (along, lat)
+            continue
+        a0, l0 = prev
+        a1, l1 = along, lat
+        prev = (along, lat)
+        for edge in (lo, hi):
+            if edge is None:
+                continue
+            if (a0 < edge < a1) or (a1 < edge < a0):
+                t = (edge - a0) / (a1 - a0)
+                pt = (edge, l0 + (l1 - l0) * t)
+                if _along_in(edge, lo, hi) and (not kept or kept[-1] != pt):
+                    kept.append(pt)
+        if _along_in(along, lo, hi) and (not kept or kept[-1] != (along, lat)):
+            kept.append((along, lat))
+    if len(kept) == 1:
+        along, lat = kept[0]
+        kept = [(along, lat), (along + 0.02, lat)]
+    return kept if len(kept) >= 2 else None
+
+
+def punch_runs(
+    runs: list[list[tuple[float, float]]], holes: list[tuple[float, float]]
+) -> list[list[tuple[float, float]]]:
+    """Cut along-axis holes out of existing runs. Previous gaps stay."""
+    out = [list(run) for run in runs if len(run) >= 2]
+    for h0, h1 in holes:
+        nxt: list[list[tuple[float, float]]] = []
+        for run in out:
+            left = keep_along(run, None, h0)
+            right = keep_along(run, h1, None)
+            if left:
+                nxt.append(left)
+            if right:
+                nxt.append(right)
+        out = nxt
+    return out
+
+
+def _holes_overlap(h0: float, h1: float, used: list[tuple[float, float]]) -> bool:
+    for u0, u1 in used:
+        if not (h1 < u0 or h0 > u1):
+            return True
+    return False
+
+
+GAPS_PER_STAGE = 4
+
+
+def plan_extra_gaps(
+    runs: list[list[tuple[float, float]]],
+    rng: Rng,
+    *,
+    count: int,
+    used: list[tuple[float, float]],
+) -> list[tuple[float, float]]:
+    """A few new holes in leftover long runs, not on top of existing gaps."""
+    candidates = [
+        (_run_min(run), _run_max(run))
+        for run in runs
+        if _run_max(run) - _run_min(run) >= 88
+    ]
+    holes: list[tuple[float, float]] = []
+
+    def try_cut(a0: float, a1: float) -> tuple[float, float] | None:
+        span = a1 - a0
+        hole = rng.pick_span(((10, 18), (22, 38), (44, 70)), (0.34, 0.46, 0.20))
+        pad = 16.0
+        if span < hole + pad * 2:
+            return None
+        t = rng.spanned(0.22, 0.78)
+        mid = a0 + span * t
+        h0, h1 = mid - hole / 2, mid + hole / 2
+        if h0 < a0 + pad:
+            h0 = a0 + pad
+            h1 = h0 + hole
+        if h1 > a1 - pad:
+            h1 = a1 - pad
+            h0 = h1 - hole
+        if h1 - h0 < 8 or _holes_overlap(h0, h1, used + holes):
+            return None
+        return (h0, h1)
+
+    # One cut in the compact/slot window when a long run lives there.
+    early = [(a0, a1) for a0, a1 in candidates if a0 < 720 and a1 - max(a0, 0) >= 88]
+    if early and count > 0:
+        a0, a1 = early[int(rng.unit() * len(early))]
+        cut = try_cut(a0, a1)
+        if cut:
+            holes.append(cut)
+
+    order = list(range(len(candidates)))
+    for i in range(len(order) - 1, 0, -1):
+        j = int(rng.unit() * (i + 1))
+        order[i], order[j] = order[j], order[i]
+    for idx in order:
+        if len(holes) >= count:
+            break
+        cut = try_cut(*candidates[idx])
+        if cut:
+            holes.append(cut)
+    return holes
+
+
 def plan_run_warp(run: list[tuple[float, float]], rng: Rng) -> list[tuple[float, float]]:
     """(along, unit offset -1..1). Endpoints stay on the hairline."""
     a0, a1 = run[0][0], run[-1][0]
     span = a1 - a0
-    if span < 28:
+    if span < 36 or rng.chance(0.16):
         return [(a0, 0.0), (a1, 0.0)]
-    n_mid = 1 if span < 70 else 2 if span < 140 else 3
+    n_mid = 2 if span >= 280 and rng.chance(0.4) else 1
     sign = rng.sign()
     pts: list[tuple[float, float]] = [(a0, 0.0)]
     for i in range(1, n_mid + 1):
-        t = i / (n_mid + 1)
-        along = a0 + span * (t + rng.spanned(-0.04, 0.04))
+        t = rng.spanned(0.22, 0.78) if n_mid == 1 else (i / (n_mid + 1) + rng.spanned(-0.12, 0.12))
+        t = min(0.82, max(0.18, t))
+        along = a0 + span * t
         along = min(a1 - 6.0, max(a0 + 6.0, along))
         env = math.sin(math.pi * t)
-        unit = sign * env * rng.spanned(0.55, 1.0)
+        unit = sign * max(0.35, env) * rng.spanned(0.45, 1.0)
         pts.append((along, unit))
         if n_mid > 1:
             sign = -sign
@@ -420,79 +596,111 @@ def apply_warp(
     return out
 
 
-def lat_at(run: list[tuple[float, float]], along: float) -> float:
-    if along <= run[0][0]:
-        return run[0][1]
-    for i in range(1, len(run)):
-        a0, l0 = run[i - 1]
-        a1, l1 = run[i]
-        if along <= a1:
-            if a1 == a0:
-                return l1
-            t = (along - a0) / (a1 - a0)
-            return l0 + (l1 - l0) * t
-    return run[-1][1]
-
-
 def add_gap_debris(motif: Motif, gaps: list[tuple[float, float]], rng: Rng) -> None:
-    """Stage 3: a few points and short lines sitting in the empty spaces."""
-    eligible = [(g0, g1) for g0, g1 in gaps if g1 - g0 >= 12]
+    """Stage 3: a few points and short lines sitting in the original empty spaces."""
+    eligible = [(g0, g1) for g0, g1 in gaps if g1 - g0 >= 16]
+    n_line = 0
+    n_dot = 0
     for i, (g0, g1) in enumerate(eligible):
         span = g1 - g0
-        # First two wide gaps always get debris so a short viewport still shows it.
-        if i >= 2 and not rng.chance(0.38):
+        force_line = n_line == 0
+        force_dot = n_line > 0 and n_dot == 0
+        if not force_line and not force_dot and (i > 8 or not rng.chance(0.22)):
             continue
-        use_line = i == 0 if i < 2 else rng.chance(0.55)
-        if use_line:
-            half = rng.spanned(2.4, min(8.0, span * 0.32))
-            mid = g0 + span * rng.spanned(0.35, 0.65)
-            a = max(g0 + 1.2, mid - half)
-            b = min(g1 - 1.2, mid + half)
-            if b > a + 2.2:
-                lat = CENTER + rng.spanned(-0.25, 0.25)
-                motif.specks.append(shard(a, b, lat, lat + rng.spanned(-0.15, 0.15)))
+        want_line = force_line or (not force_dot and n_line < 5 and rng.chance(0.55))
+        if want_line:
+            length = rng.spanned(3.5, min(9.0, span * 0.28))
+            mid = g0 + span * rng.spanned(0.38, 0.62)
+            a = mid - length / 2
+            b = mid + length / 2
+            if a > g0 + 4 and b < g1 - 4:
+                lat = CENTER + rng.spanned(-0.55, 0.55)
+                motif.specks.append(shard(a, b, lat, lat + rng.spanned(-0.2, 0.2)))
+                n_line += 1
                 continue
-        motif.specks.append(
-            dot(g0 + span * rng.spanned(0.28, 0.72), CENTER + rng.spanned(-0.3, 0.3))
-        )
+        along = g0 + span * rng.spanned(0.32, 0.68)
+        if along > g0 + 3 and along < g1 - 3:
+            motif.specks.append(dot(along, CENTER + rng.spanned(-0.7, 0.7)))
+            n_dot += 1
+
+
+def lat_on_run(run: list[tuple[float, float]], along: float) -> float:
+    for i in range(len(run) - 1):
+        a0, l0 = run[i]
+        a1, l1 = run[i + 1]
+        lo, hi = (a0, a1) if a0 <= a1 else (a1, a0)
+        if lo - 1e-6 <= along <= hi + 1e-6:
+            if abs(a1 - a0) < 1e-9:
+                return l0
+            t = (along - a0) / (a1 - a0)
+            return l0 + (l1 - l0) * t
+    return run[0][1]
+
+
+def side_tick_lat(line_lat: float, sign: float) -> float:
+    """Center of a tick one line-thickness away from the hairline stroke."""
+    lat = line_lat + sign * SIDE_TICK_OFFSET
+    if 0.7 <= lat <= 9.3:
+        return lat
+    lat = line_lat - sign * SIDE_TICK_OFFSET
+    return min(9.3, max(0.7, lat))
 
 
 def add_side_points(motif: Motif, runs: list[list[tuple[float, float]]], rng: Rng) -> None:
-    """Stage 4: a few points at 50% distance next to the warped line runs."""
-    amp = DISTORT_MAX * 0.5
+    """Stage 4: short ticks beside runs, gap equal to hairline thickness."""
     placed = 0
     for run in runs:
-        a0, a1 = run[0][0], run[-1][0]
+        a0, a1 = _run_min(run), _run_max(run)
         span = a1 - a0
-        if span < 22:
+        if span < 28:
             continue
-        if placed >= 2 and not rng.chance(0.4):
-            continue
-        along = a0 + span * rng.spanned(0.18, 0.82)
-        motif.specks.append(dot(along, lat_at(run, along) + rng.sign() * amp))
-        placed += 1
-        if span > 90 and rng.chance(0.28):
-            along2 = a0 + span * rng.spanned(0.18, 0.82)
-            motif.specks.append(dot(along2, lat_at(run, along2) + rng.sign() * amp))
+        along = a0 + rng.spanned(10, min(90, max(12, span * 0.22)))
+        while along < a1 - 12 and placed < 20:
+            if rng.chance(0.22):
+                along += rng.spanned(70, 170)
+                continue
+            lat = side_tick_lat(lat_on_run(run, along), rng.sign())
+            half = rng.spanned(5.5, 9.0)
+            if along - half >= a0 + 2 and along + half <= a1 - 2:
+                # Main path, not a separate speck, so the CSS mask always paints them.
+                motif.chips.append([(along - half, lat), (along + half, lat)])
+                placed += 1
+            along += rng.spanned(95, 230)
 
 
 def build_family_stages(key: str, seed: int) -> dict[str, Motif]:
     rhythm = RHYTHM[key]
-    gapped = gapped_spine(
-        Rng(seed),
-        run_range=rhythm["run"],
-        gap_range=rhythm["gap"],
-    )
+    gapped = gapped_spine(Rng(seed), rhythm)
     gaps = spine_gaps(gapped.spine)
     warp_rng = Rng(seed ^ 0xA5C3E91)
     warps = [plan_run_warp(run, warp_rng) for run in gapped.spine]
     links = plan_warp_links(warps, Rng(seed ^ 0x2F4A91C))
 
+    used = list(gaps)
+    extra2 = plan_extra_gaps(
+        gapped.spine, Rng(seed ^ 0x11C0FFEE), count=GAPS_PER_STAGE, used=used
+    )
+    used = used + extra2
+    extra3 = plan_extra_gaps(
+        punch_runs(gapped.spine, extra2),
+        Rng(seed ^ 0x22BADF00),
+        count=GAPS_PER_STAGE,
+        used=used,
+    )
+    used = used + extra3
+    extra4 = plan_extra_gaps(
+        punch_runs(gapped.spine, extra2 + extra3),
+        Rng(seed ^ 0x33DECADE),
+        count=GAPS_PER_STAGE,
+        used=used,
+    )
+
     s1 = clone_motif(gapped)
-    s2 = Motif(spine=apply_warp(warps, 0.5, links))
-    s3 = Motif(spine=apply_warp(warps, 1.0, links))
+    s2 = Motif(spine=punch_runs(apply_warp(warps, 0.5, links), extra2))
+    s3 = Motif(spine=punch_runs(apply_warp(warps, 1.0, links), extra2 + extra3))
     add_gap_debris(s3, gaps, Rng(seed ^ 0x51A2C0D))
     s4 = clone_motif(s3)
+    s4.spine = punch_runs(s4.spine, extra4)
     add_side_points(s4, s4.spine, Rng(seed ^ 0x7B10E33))
     return {"s1": s1, "s2": s2, "s3": s3, "extreme": s4}
 
