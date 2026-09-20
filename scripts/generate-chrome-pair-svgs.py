@@ -5,8 +5,8 @@ Madness stages stack: each one keeps the previous features and adds one more.
   0 solid hairline (CSS, no tile)
   1 empty spaces between line runs
   2 + distortion at 50% of max lateral distance, plus a few new gaps
-  3 + distortion at 125% or 187.5% per run (+25% vs the old 100/150 step),
-    gap debris, plus 25% more new gaps than the usual stage step
+  3 + distortion at 100% or 125% per run, gap debris, plus 25% more new
+    gaps than the usual stage step
   4 + a few slightly larger gaps with 1-5 on-spine ticks (2-10px, 4-10px
     apart) sitting in those holes, plus a few new gaps
 No unbroken run longer than 15% of that file's own tile length
@@ -15,7 +15,7 @@ horizontal families (h / h2 at 3840) which cap at 10% (384px).
 Gaps between runs are 22-25px so breaks stay visible, except the stage-4
 holes that grow just enough to hold a tick cluster.
 Slot and preset (720) tiles cap distortion at 50% of DISTORT_MAX.
-Button / dialog / tooltip boxes use 50% then 100% (never the 150% step).
+Button / dialog / tooltip boxes use 50% then 100% (never the 125% panel max).
 
 Rebuild SVGs + mask CSS with no args; `--css-only` skips tiles.
 """
@@ -127,7 +127,7 @@ def _scale_lat(pts: list[tuple[float, float]], factor: float) -> list[tuple[floa
 
 
 def limit_compact_distort(motif: Motif) -> None:
-    """Slots and presets cap warp at 50% of DISTORT_MAX. Full tiles keep 100/150+."""
+    """Slots and presets cap warp at 50% of DISTORT_MAX. Full tiles keep 100/125."""
     cap = DISTORT_MAX * COMPACT_DISTORT_FRAC
     peak = 0.0
     for run in motif.spine:
@@ -347,9 +347,9 @@ def shard(a0: float, a1: float, lat0: float, lat1: float | None = None) -> Poly:
 
 
 # 100% lateral distance from the 1px hairline. Stage 2 uses half of this.
-# Stage 3 picks 125% or 187.5% per run (25% above the old 100/150 step).
+# Stage 3 picks 100% or 125% per run. Panel max is 125%, not 150%.
 # Slot / preset tiles never exceed 50% of this, even on stages 3-4.
-# Button boxes use 50% (stage 2) and 100% (stages 3-4), never 150%.
+# Button boxes use 50% (stage 2) and 100% (stages 3-4), never 125%.
 DISTORT_MAX = 2.8
 COMPACT_DISTORT_FRAC = 0.5
 BOX_DISTORT_FRAC = 1.0
@@ -738,9 +738,9 @@ def _holes_overlap(h0: float, h1: float, used: list[tuple[float, float]]) -> boo
 
 
 GAPS_PER_STAGE = 4
-# Stage 2→3 is a bigger step: +25% holes and +25% warp vs the usual stage add.
+# Stage 2→3 adds 25% more holes. Warp on those stages is 100% or 125%.
 GAPS_STAGE_3 = max(1, round(GAPS_PER_STAGE * 1.25))
-STAGE3_DISTORT_MUL = 1.25
+STAGE3_DISTORT_MAX = 1.25
 
 
 def plan_extra_gaps(
@@ -1037,7 +1037,7 @@ def build_family_stages(key: str, seed: int) -> dict[str, Motif]:
     s1.spine = enforce_max_run(s1.spine, LENGTH, frac=frac)
     s2_scales = [0.5 for _ in warps]
     s3_scales = [
-        (1.5 if scale_rng.chance(0.5) else 1.0) * STAGE3_DISTORT_MUL for _ in warps
+        STAGE3_DISTORT_MAX if scale_rng.chance(0.5) else 1.0 for _ in warps
     ]
     s2 = Motif(
         spine=enforce_max_run(
@@ -1055,7 +1055,7 @@ def build_family_stages(key: str, seed: int) -> dict[str, Motif]:
     s4 = clone_motif(s3)
     s4.spine = enforce_max_run(punch_runs(s4.spine, extra4), LENGTH, frac=frac)
     s4.stage4_seed = seed ^ 0x7B10E33
-    # Buttons: same holes / debris / ticks, but warp stops at 100% (no 150%).
+    # Buttons: same holes / debris / ticks, but warp stops at 100% (no 125%).
     s3_box = Motif(
         spine=enforce_max_run(
             punch_runs(

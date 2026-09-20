@@ -7,8 +7,8 @@
     stroke-linejoin="round"
     d="M5 24L5 81.85M6.4 106.75L6.4 149.75M6.4 171.75L6.4 175.67L5.97 214.75M5.71 238.75L5 302.87M5 326.79L5 367.21M5.93 390.22L5.93 455.16M5 469.77L5 500.5M5 524.04L5 552.13M5 576.4L5 621.93M4.05 625.13L4.05 659.82M4.05 682.16L4.05 720"
   />
-  <path fill="none" stroke="#fff" stroke-width="1" stroke-linecap="butt" d="M5.1 12.11L5.11 16"/>
-  <path fill="none" stroke="#fff" stroke-width="1" stroke-linecap="butt" d="M4.9 508.33L4.95 514"/>
-  <path fill="none" stroke="#fff" stroke-width="1" stroke-linecap="round" d="M4.79 312.41L4.79 312.43"/>
-  <path fill="none" stroke="#fff" stroke-width="1" stroke-linecap="round" d="M4.74 566.8L4.74 566.82"/>
+  <path fill="none" stroke="#fff" stroke-width="1" stroke-linecap="butt" d="M5.15 12.11L5.16 16"/>
+  <path fill="none" stroke="#fff" stroke-width="1" stroke-linecap="butt" d="M4.85 508.33L4.93 514"/>
+  <path fill="none" stroke="#fff" stroke-width="1" stroke-linecap="round" d="M4.69 312.41L4.69 312.43"/>
+  <path fill="none" stroke="#fff" stroke-width="1" stroke-linecap="round" d="M4.61 566.8L4.61 566.82"/>
 </svg>
