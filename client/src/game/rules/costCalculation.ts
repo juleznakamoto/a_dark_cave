@@ -1,6 +1,10 @@
 
 import { GameState } from "@shared/schema";
 import {
+  FULL_DARK_ESTATE_RESOURCE_COST,
+  getDarkEstateResourceCost,
+} from "@/game/demoLimit";
+import {
   getTotalCraftingCostReduction,
   getTotalBuildingCostReduction,
 } from "./effectsCalculation";
@@ -44,6 +48,13 @@ export function calculateAdjustedCost(
 ): number {
   if (!isResourceCost) {
     return baseCost;
+  }
+
+  if (
+    actionId === "buildDarkEstate" &&
+    baseCost === FULL_DARK_ESTATE_RESOURCE_COST
+  ) {
+    baseCost = getDarkEstateResourceCost();
   }
 
   // Determine if this is a crafting or building action

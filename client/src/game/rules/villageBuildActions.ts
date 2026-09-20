@@ -1,5 +1,6 @@
 import { Action, GameState } from "@shared/schema";
 import { formatNumber } from "@/lib/utils";
+import { FULL_DARK_ESTATE_RESOURCE_COST } from "@/game/demoLimit";
 import { PRESET_SLOTS_BY_BUILDING_TIER } from "@/game/villagerJobPresets";
 import { getBoneyardBurialMadnessReduction } from "./boneyardMadness";
 import { bt, type BuildingTooltipEffect } from "./buildingTooltipEffects";
@@ -1375,8 +1376,8 @@ export const villageBuildActions: Record<string, Action> = {
     },
     cost: {
       1: {
-        "resources.wood": 500,
-        "resources.stone": 500,
+        "resources.wood": FULL_DARK_ESTATE_RESOURCE_COST,
+        "resources.stone": FULL_DARK_ESTATE_RESOURCE_COST,
       },
     },
     effects: {

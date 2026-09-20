@@ -4,6 +4,32 @@ import { isDemoEdition, isDemoEndDevMode } from "@/lib/edition";
 /** Demo ends after this many wooden huts have been built. */
 export const DEMO_WOODEN_HUT_LIMIT = 8;
 
+/** Full-game Dark Estate wood/stone cost. Demo uses {@link DEMO_DARK_ESTATE_RESOURCE_COST}. */
+export const FULL_DARK_ESTATE_RESOURCE_COST = 500;
+
+/** Steam / Galaxy / CrazyGames demo Dark Estate wood/stone cost. */
+export const DEMO_DARK_ESTATE_RESOURCE_COST = 250;
+
+/** Full-game Prior offer: 6 wooden huts, or 5 in Cruel Mode. */
+export const FULL_DISGRACED_PRIOR_MIN_WOODEN_HUTS = 6;
+export const CRUEL_DISGRACED_PRIOR_MIN_WOODEN_HUTS = 5;
+
+/** Demo Prior offer: 4 wooden huts (regardless of Cruel Mode). */
+export const DEMO_DISGRACED_PRIOR_MIN_WOODEN_HUTS = 4;
+
+export function getDarkEstateResourceCost(): number {
+  return isDemoEdition()
+    ? DEMO_DARK_ESTATE_RESOURCE_COST
+    : FULL_DARK_ESTATE_RESOURCE_COST;
+}
+
+export function getDisgracedPriorMinWoodenHuts(cruelMode = false): number {
+  if (isDemoEdition()) return DEMO_DISGRACED_PRIOR_MIN_WOODEN_HUTS;
+  return cruelMode
+    ? CRUEL_DISGRACED_PRIOR_MIN_WOODEN_HUTS
+    : FULL_DISGRACED_PRIOR_MIN_WOODEN_HUTS;
+}
+
 /** @deprecated Use {@link DEMO_WOODEN_HUT_LIMIT}. */
 export const DEMO_STONE_HUT_LIMIT = DEMO_WOODEN_HUT_LIMIT;
 

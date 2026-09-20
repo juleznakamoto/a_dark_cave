@@ -61,9 +61,16 @@ vi.mock("@/game/gameStoreHolder", () => ({
 }));
 
 import {
+  DEMO_DARK_ESTATE_RESOURCE_COST,
+  DEMO_DISGRACED_PRIOR_MIN_WOODEN_HUTS,
   DEMO_WOODEN_HUT_LIMIT,
+  FULL_DARK_ESTATE_RESOURCE_COST,
+  FULL_DISGRACED_PRIOR_MIN_WOODEN_HUTS,
+  CRUEL_DISGRACED_PRIOR_MIN_WOODEN_HUTS,
+  getDarkEstateResourceCost,
   getDemoProgressCompleted,
   getDemoProgressSegmentCount,
+  getDisgracedPriorMinWoodenHuts,
   isDemoLimitReached,
   isDemoLimitReachedFromState,
   isDemoPlayFrozen,
@@ -71,7 +78,9 @@ import {
   processDemoLimit,
   startNewDemoGame,
 } from "./demoLimit";
-import { setDevGameModeOverride } from "@/lib/edition";
+import { isDemoEdition, setDevGameModeOverride } from "@/lib/edition";
+
+const isDemoEditionMock = vi.mocked(isDemoEdition);
 
 describe("demoLimit", () => {
   beforeEach(() => {
@@ -83,6 +92,28 @@ describe("demoLimit", () => {
     setGalaxyTimeUpDialogOpenMock.mockClear();
     setStateMock.mockClear();
     setDevGameModeOverride("normal");
+    isDemoEditionMock.mockReturnValue(true);
+  });
+
+  it("halves Dark Estate cost and lowers the Prior hut gate in demo", () => {
+    expect(getDarkEstateResourceCost()).toBe(DEMO_DARK_ESTATE_RESOURCE_COST);
+    expect(getDisgracedPriorMinWoodenHuts(false)).toBe(
+      DEMO_DISGRACED_PRIOR_MIN_WOODEN_HUTS,
+    );
+    expect(getDisgracedPriorMinWoodenHuts(true)).toBe(
+      DEMO_DISGRACED_PRIOR_MIN_WOODEN_HUTS,
+    );
+  });
+
+  it("keeps full-game Dark Estate cost and Prior hut gates outside demo", () => {
+    isDemoEditionMock.mockReturnValue(false);
+    expect(getDarkEstateResourceCost()).toBe(FULL_DARK_ESTATE_RESOURCE_COST);
+    expect(getDisgracedPriorMinWoodenHuts(false)).toBe(
+      FULL_DISGRACED_PRIOR_MIN_WOODEN_HUTS,
+    );
+    expect(getDisgracedPriorMinWoodenHuts(true)).toBe(
+      CRUEL_DISGRACED_PRIOR_MIN_WOODEN_HUTS,
+    );
   });
 
   it("detects when the wooden hut limit is reached", () => {

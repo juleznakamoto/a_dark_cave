@@ -1,11 +1,12 @@
 import type { GameEvent } from "./eventTypes";
 import { GameState } from "@shared/schema";
+import { getDisgracedPriorMinWoodenHuts } from "@/game/demoLimit";
 
 export const disgracedPriorEvents: Record<string, GameEvent> = {
   disgracedPriorOffer: {
     id: "disgracedPriorOffer",
     condition: (state: GameState) => {
-      const minWoodenHuts = state.cruelMode ? 5 : 6;
+      const minWoodenHuts = getDisgracedPriorMinWoodenHuts(state.cruelMode);
       return (
         state.buildings.woodenHut >= minWoodenHuts &&
         state.buildings.darkEstate >= 1 &&
