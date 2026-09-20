@@ -8,10 +8,10 @@
 }
 
 .game-chrome-rule--compact {
-  --adc-chrome-mask-h: url("./rule-h-slot-s4.svg?v=e2a741ca");
-  --adc-chrome-mask-h2: url("./rule-h2-slot-s4.svg?v=407cb026");
-  --adc-chrome-mask-v: url("./rule-v-slot-s4.svg?v=a194250e");
-  --adc-chrome-mask-v2: url("./rule-v2-slot-s4.svg?v=58b325ca");
+  --adc-chrome-mask-h: url("./rule-h-slot-s4.svg?v=4c6b89c7");
+  --adc-chrome-mask-h2: url("./rule-h2-slot-s4.svg?v=454c8a88");
+  --adc-chrome-mask-v: url("./rule-v-slot-s4.svg?v=3a909f4d");
+  --adc-chrome-mask-v2: url("./rule-v2-slot-s4.svg?v=c9c07770");
 }
 
 [data-adc-chrome-stage="1"] .game-chrome-rule {
@@ -50,10 +50,10 @@
 }
 
 [data-adc-chrome-stage="3"] .game-chrome-rule--compact {
-  --adc-chrome-mask-h: url("./rule-h-slot-s3.svg?v=d4b568f5");
-  --adc-chrome-mask-h2: url("./rule-h2-slot-s3.svg?v=4e1a6883");
-  --adc-chrome-mask-v: url("./rule-v-slot-s3.svg?v=0d59bee1");
-  --adc-chrome-mask-v2: url("./rule-v2-slot-s3.svg?v=2e1dcbc8");
+  --adc-chrome-mask-h: url("./rule-h-slot-s3.svg?v=853687a5");
+  --adc-chrome-mask-h2: url("./rule-h2-slot-s3.svg?v=28ec188e");
+  --adc-chrome-mask-v: url("./rule-v-slot-s3.svg?v=802faa38");
+  --adc-chrome-mask-v2: url("./rule-v2-slot-s3.svg?v=9f54e139");
 }
 
 [data-adc-chrome-stage="4"] .game-chrome-rule {
@@ -64,10 +64,10 @@
 }
 
 [data-adc-chrome-stage="4"] .game-chrome-rule--compact {
-  --adc-chrome-mask-h: url("./rule-h-slot-s4.svg?v=e2a741ca");
-  --adc-chrome-mask-h2: url("./rule-h2-slot-s4.svg?v=407cb026");
-  --adc-chrome-mask-v: url("./rule-v-slot-s4.svg?v=a194250e");
-  --adc-chrome-mask-v2: url("./rule-v2-slot-s4.svg?v=58b325ca");
+  --adc-chrome-mask-h: url("./rule-h-slot-s4.svg?v=4c6b89c7");
+  --adc-chrome-mask-h2: url("./rule-h2-slot-s4.svg?v=454c8a88");
+  --adc-chrome-mask-v: url("./rule-v-slot-s4.svg?v=3a909f4d");
+  --adc-chrome-mask-v2: url("./rule-v2-slot-s4.svg?v=c9c07770");
 }
 
 [data-adc-chrome-prev-stage="1"] .game-chrome-rule {
@@ -106,10 +106,10 @@
 }
 
 [data-adc-chrome-prev-stage="3"] .game-chrome-rule--compact {
-  --adc-chrome-mask-h-prev: url("./rule-h-slot-s3.svg?v=d4b568f5");
-  --adc-chrome-mask-h2-prev: url("./rule-h2-slot-s3.svg?v=4e1a6883");
-  --adc-chrome-mask-v-prev: url("./rule-v-slot-s3.svg?v=0d59bee1");
-  --adc-chrome-mask-v2-prev: url("./rule-v2-slot-s3.svg?v=2e1dcbc8");
+  --adc-chrome-mask-h-prev: url("./rule-h-slot-s3.svg?v=853687a5");
+  --adc-chrome-mask-h2-prev: url("./rule-h2-slot-s3.svg?v=28ec188e");
+  --adc-chrome-mask-v-prev: url("./rule-v-slot-s3.svg?v=802faa38");
+  --adc-chrome-mask-v2-prev: url("./rule-v2-slot-s3.svg?v=9f54e139");
 }
 
 [data-adc-chrome-prev-stage="4"] .game-chrome-rule {
@@ -120,10 +120,10 @@
 }
 
 [data-adc-chrome-prev-stage="4"] .game-chrome-rule--compact {
-  --adc-chrome-mask-h-prev: url("./rule-h-slot-s4.svg?v=e2a741ca");
-  --adc-chrome-mask-h2-prev: url("./rule-h2-slot-s4.svg?v=407cb026");
-  --adc-chrome-mask-v-prev: url("./rule-v-slot-s4.svg?v=a194250e");
-  --adc-chrome-mask-v2-prev: url("./rule-v2-slot-s4.svg?v=58b325ca");
+  --adc-chrome-mask-h-prev: url("./rule-h-slot-s4.svg?v=4c6b89c7");
+  --adc-chrome-mask-h2-prev: url("./rule-h2-slot-s4.svg?v=454c8a88");
+  --adc-chrome-mask-v-prev: url("./rule-v-slot-s4.svg?v=3a909f4d");
+  --adc-chrome-mask-v2-prev: url("./rule-v2-slot-s4.svg?v=c9c07770");
 }
 
 /* Nested /dev/animations columns beat document-level stage selectors. */
@@ -184,14 +184,14 @@
 }
 
 .adc-chrome-stage-preview[data-adc-chrome-stage="3"] .game-chrome-rule--compact {
-  --adc-chrome-mask-h: url("./rule-h-slot-s3.svg?v=d4b568f5");
-  --adc-chrome-mask-h2: url("./rule-h2-slot-s3.svg?v=4e1a6883");
-  --adc-chrome-mask-v: url("./rule-v-slot-s3.svg?v=0d59bee1");
-  --adc-chrome-mask-v2: url("./rule-v2-slot-s3.svg?v=2e1dcbc8");
-  --adc-chrome-mask-h-prev: url("./rule-h-slot-s3.svg?v=d4b568f5");
-  --adc-chrome-mask-h2-prev: url("./rule-h2-slot-s3.svg?v=4e1a6883");
-  --adc-chrome-mask-v-prev: url("./rule-v-slot-s3.svg?v=0d59bee1");
-  --adc-chrome-mask-v2-prev: url("./rule-v2-slot-s3.svg?v=2e1dcbc8");
+  --adc-chrome-mask-h: url("./rule-h-slot-s3.svg?v=853687a5");
+  --adc-chrome-mask-h2: url("./rule-h2-slot-s3.svg?v=28ec188e");
+  --adc-chrome-mask-v: url("./rule-v-slot-s3.svg?v=802faa38");
+  --adc-chrome-mask-v2: url("./rule-v2-slot-s3.svg?v=9f54e139");
+  --adc-chrome-mask-h-prev: url("./rule-h-slot-s3.svg?v=853687a5");
+  --adc-chrome-mask-h2-prev: url("./rule-h2-slot-s3.svg?v=28ec188e");
+  --adc-chrome-mask-v-prev: url("./rule-v-slot-s3.svg?v=802faa38");
+  --adc-chrome-mask-v2-prev: url("./rule-v2-slot-s3.svg?v=9f54e139");
 }
 
 .adc-chrome-stage-preview[data-adc-chrome-stage="4"] .game-chrome-rule {
@@ -206,12 +206,12 @@
 }
 
 .adc-chrome-stage-preview[data-adc-chrome-stage="4"] .game-chrome-rule--compact {
-  --adc-chrome-mask-h: url("./rule-h-slot-s4.svg?v=e2a741ca");
-  --adc-chrome-mask-h2: url("./rule-h2-slot-s4.svg?v=407cb026");
-  --adc-chrome-mask-v: url("./rule-v-slot-s4.svg?v=a194250e");
-  --adc-chrome-mask-v2: url("./rule-v2-slot-s4.svg?v=58b325ca");
-  --adc-chrome-mask-h-prev: url("./rule-h-slot-s4.svg?v=e2a741ca");
-  --adc-chrome-mask-h2-prev: url("./rule-h2-slot-s4.svg?v=407cb026");
-  --adc-chrome-mask-v-prev: url("./rule-v-slot-s4.svg?v=a194250e");
-  --adc-chrome-mask-v2-prev: url("./rule-v2-slot-s4.svg?v=58b325ca");
+  --adc-chrome-mask-h: url("./rule-h-slot-s4.svg?v=4c6b89c7");
+  --adc-chrome-mask-h2: url("./rule-h2-slot-s4.svg?v=454c8a88");
+  --adc-chrome-mask-v: url("./rule-v-slot-s4.svg?v=3a909f4d");
+  --adc-chrome-mask-v2: url("./rule-v2-slot-s4.svg?v=c9c07770");
+  --adc-chrome-mask-h-prev: url("./rule-h-slot-s4.svg?v=4c6b89c7");
+  --adc-chrome-mask-h2-prev: url("./rule-h2-slot-s4.svg?v=454c8a88");
+  --adc-chrome-mask-v-prev: url("./rule-v-slot-s4.svg?v=3a909f4d");
+  --adc-chrome-mask-v2-prev: url("./rule-v2-slot-s4.svg?v=c9c07770");
 }

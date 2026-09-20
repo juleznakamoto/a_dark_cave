@@ -5,8 +5,8 @@
     stroke-width="1"
     stroke-linecap="butt"
     stroke-linejoin="round"
-    d="M5 24L5 50.14M5 56.03L5 62.05M5 72.14L5 98.27M7 101.47L7 120.16M7 125.15L7 127.74M7 144.06L7 175.74L7 211.8M5 215L5 251.05M5 273.34L5 340.93M3 344.13L3 370.24M3 392.6L3 411.72L3 414.6M3 438.98L3 493.05M7 496.25L7 563.75M7 587.62L6.67 621.3M6.01 643.3L5.11 673.26M5.08 679.69L5.08 682.02M5.02 691.41L5.02 696.51M4.98 704L4.82 720"
+    d="M5 24L5 50.14M5 56.03L5 62.05M5 72.14L5 98.27M6.1 101.47L6.1 120.16M6.1 125.15L6.1 127.74M6.1 144.06L6.1 175.74L6.1 211.8M5 215L5 251.05M5 273.34L5 340.93M3.6 344.13L3.6 370.24M3.6 392.6L3.6 411.72L3.6 414.6M3.6 438.98L3.6 493.05M6.22 496.25L6.22 563.75M6.1 587.62L5.68 621.3M5.41 643.3L5.05 673.26M5.03 679.69L5.03 682.02M5.01 691.41L5.01 696.51M4.99 704L4.93 720"
   />
-  <path fill="none" stroke="#fff" stroke-width="1" stroke-linecap="butt" d="M4.68 9.39L4.86 15.79"/>
-  <path fill="none" stroke="#fff" stroke-width="1" stroke-linecap="round" d="M5.67 261.72L5.67 261.74"/>
+  <path fill="none" stroke="#fff" stroke-width="1" stroke-linecap="butt" d="M4.87 9.39L4.94 15.79"/>
+  <path fill="none" stroke="#fff" stroke-width="1" stroke-linecap="round" d="M5.27 261.72L5.27 261.74"/>
 </svg>

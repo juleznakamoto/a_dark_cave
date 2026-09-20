@@ -33,9 +33,9 @@ import chromeMaskStagesCss from "../../assets/chrome/chrome-mask-stages.css?raw"
 
 const STAGES: MadnessVisualStage[] = [0, 1, 2, 3, 4];
 
-const CHROME_TILE_URLS = import.meta.glob<string>(
+const CHROME_TILE_RAW = import.meta.glob<string>(
   "../../assets/chrome/rule-*.svg",
-  { eager: true, query: "?url", import: "default" },
+  { eager: true, query: "?raw", import: "default" },
 );
 
 const CHROME_TILE_FAMILIES = ["h", "h2", "v", "v2"] as const;
@@ -56,15 +56,13 @@ function chromeTileVersion(fileName: string): string {
 }
 
 function chromeTileUrl(fileName: string): string | undefined {
-  const hit = Object.entries(CHROME_TILE_URLS).find(([path]) =>
+  const hit = Object.entries(CHROME_TILE_RAW).find(([path]) =>
     path.endsWith(`/${fileName}`),
   );
   if (!hit) {
     return undefined;
   }
-  const version = chromeTileVersion(fileName);
-  const sep = hit[1].includes("?") ? "&" : "?";
-  return `${hit[1]}${sep}v=${version}`;
+  return `data:image/svg+xml;charset=utf-8,${encodeURIComponent(hit[1])}`;
 }
 
 function ChromeTileStrip({
@@ -154,7 +152,10 @@ function ChromeFamilyTiles({
 
 function ChromeAllStageTiles() {
   return (
-    <div className="space-y-6 rounded-md border border-border/40 bg-neutral-950 p-6">
+    <div
+      key={chromeTileVersion("rule-h-s4.svg") + chromeTileVersion("rule-h-slot-s3.svg")}
+      className="space-y-6 rounded-md border border-border/40 bg-neutral-950 p-6"
+    >
       <p className="text-[11px] text-muted-foreground">
         Full mask tiles: 3840px families at 0.5× length, 720px slot families at
         1:1. Real 10px / 4px thickness. One family per block, stages 1–4

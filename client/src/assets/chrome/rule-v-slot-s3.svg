@@ -5,8 +5,8 @@
     stroke-width="1"
     stroke-linecap="butt"
     stroke-linejoin="round"
-    d="M5 24L5 50.14M5 72.14L5 98.27M7 101.47L7 144.47M7 166.47L7 175.74L7 209.47M5 215L5 251.05M5 273.34L5 340.93M3 344.13L3 370.24M3 392.6L3 411.72L3 414.6M3 438.98L3 493.05M7 496.25L7 539.25M7 561.25L7 577.58L7 604.25M6.46 628.25L5 676.99M5 701.84L4.82 720"
+    d="M5 24L5 50.14M5 72.14L5 98.27M6.1 101.47L6.1 144.47M6.1 166.47L6.1 175.74L6.1 209.47M5 215L5 251.05M5 273.34L5 340.93M3.6 344.13L3.6 370.24M3.6 392.6L3.6 411.72L3.6 414.6M3.6 438.98L3.6 493.05M6.22 496.25L6.22 539.25M6.22 561.25L6.22 577.58L5.89 604.25M5.6 628.25L5 676.99M5 701.84L4.93 720"
   />
-  <path fill="none" stroke="#fff" stroke-width="1" stroke-linecap="butt" d="M4.68 9.39L4.86 15.79"/>
-  <path fill="none" stroke="#fff" stroke-width="1" stroke-linecap="round" d="M5.67 261.72L5.67 261.74"/>
+  <path fill="none" stroke="#fff" stroke-width="1" stroke-linecap="butt" d="M4.87 9.39L4.94 15.79"/>
+  <path fill="none" stroke="#fff" stroke-width="1" stroke-linecap="round" d="M5.27 261.72L5.27 261.74"/>
 </svg>

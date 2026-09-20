@@ -13,6 +13,7 @@ No unbroken run longer than 15% of that file's own tile length
 (576px on 3840 tiles, 108px on 720 slot tiles).
 Gaps between runs are 22-25px so breaks stay visible, except the stage-4
 holes that grow just enough to hold a tick cluster.
+Slot and preset (720) tiles cap distortion at 50% of DISTORT_MAX.
 
 Rebuild SVGs + mask CSS with no args; `--css-only` skips tiles.
 """
@@ -115,6 +116,33 @@ def clamp_lat(lat: float, compact: bool) -> float:
     if not compact:
         return lat
     return min(SLOT_LAT_MAX, max(SLOT_LAT_MIN, lat))
+
+
+def _scale_lat(pts: list[tuple[float, float]], factor: float) -> list[tuple[float, float]]:
+    return [(along, CENTER + (lat - CENTER) * factor) for along, lat in pts]
+
+
+def limit_compact_distort(motif: Motif) -> None:
+    """Slots and presets cap warp at 50% of DISTORT_MAX. Full tiles keep 100/150+."""
+    cap = DISTORT_MAX * COMPACT_DISTORT_FRAC
+    peak = 0.0
+    for run in motif.spine:
+        for _, lat in run:
+            peak = max(peak, abs(lat - CENTER))
+    for chip in motif.chips:
+        for _, lat in chip:
+            peak = max(peak, abs(lat - CENTER))
+    for speck in motif.specks:
+        for _, lat in speck.pts:
+            peak = max(peak, abs(lat - CENTER))
+    if peak <= cap + 1e-6:
+        return
+    factor = cap / peak
+    motif.spine = [_scale_lat(run, factor) for run in motif.spine]
+    motif.chips = [_scale_lat(chip, factor) for chip in motif.chips]
+    motif.specks = [
+        Poly(_scale_lat(speck.pts, factor), cap=speck.cap) for speck in motif.specks
+    ]
 
 
 def crop_poly(pts: list[tuple[float, float]], end: float) -> list[tuple[float, float]] | None:
@@ -244,6 +272,8 @@ def emit_svg(
             end,
             Rng(motif.stage4_seed ^ (0xC0FFEE if compact else 0x51A2)),
         )
+    if compact:
+        limit_compact_distort(motif)
     main: list[str] = []
     specks_butt: list[str] = []
     specks_round: list[str] = []
@@ -312,7 +342,9 @@ def shard(a0: float, a1: float, lat0: float, lat1: float | None = None) -> Poly:
 
 # 100% lateral distance from the 1px hairline. Stage 2 uses half of this.
 # Stage 3 picks 125% or 187.5% per run (25% above the old 100/150 step).
+# Slot / preset tiles never exceed 50% of this, even on stages 3-4.
 DISTORT_MAX = 2.8
+COMPACT_DISTORT_FRAC = 0.5
 # Unique dash rhythm per family. Three length bands so holes are not a beat.
 # Longest band stops at 15% of the 3840 tile (576px). Slot files recap at 108px.
 RHYTHM = {
