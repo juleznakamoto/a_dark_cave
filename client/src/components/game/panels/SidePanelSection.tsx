@@ -158,9 +158,11 @@ function getSidePanelItemTooltipType(
 /** Shared layout for resource name + amount + production delta / change hint. */
 const RESOURCE_ROW_GRID_CLASS =
   "grid w-fit min-w-[calc(5.5rem+4rem+3rem+0.5rem+0.25rem)] max-w-full pr-1 grid-cols-[5.5rem_4rem_3rem] items-baseline gap-x-1";
-/** Label + amount — fills column width; value sits at the right edge. */
+/** Cap so values stay near labels when the side panel is dragged wide. */
+const LABEL_VALUE_ROW_MAX_WIDTH_CLASS = "max-w-[18rem]";
+/** Label + amount — grows with the column, then stops so numbers do not hug the panel edge. */
 const LABEL_VALUE_ROW_GRID_CLASS =
-  "grid w-full min-w-0 grid-cols-[minmax(0,1fr)_auto] items-baseline gap-x-2";
+  `grid w-full min-w-0 ${LABEL_VALUE_ROW_MAX_WIDTH_CLASS} grid-cols-[minmax(0,1fr)_auto] items-baseline gap-x-2`;
 /** Uniform vertical gap between side-panel sections (applied on column parents). */
 export const SIDE_PANEL_SECTION_SPACING_CLASS = "space-y-0";
 /** Resources column sizes to content; second column fills remaining side-panel width. */
@@ -1182,7 +1184,9 @@ export default function SidePanelSection({
           className={cn(
             isResourcesSection
               ? "min-w-0 w-fit max-w-full"
-              : sidePanelTooltipTriggerClass,
+              : usesLabelValueGridLayout
+                ? cn("min-w-0 w-full", LABEL_VALUE_ROW_MAX_WIDTH_CLASS)
+                : sidePanelTooltipTriggerClass,
             isMobile && "cursor-pointer",
           )}
         >

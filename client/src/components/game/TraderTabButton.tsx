@@ -12,6 +12,7 @@ import {
   TAB_ICON_ALIGN_CLASS,
   TAB_ICON_SIZE_CLASS,
 } from "./gameChrome";
+import { getTabUnlockAttentionClass } from "@/game/tabUnlockBlink";
 
 const TRADER_TAB_HINT_INTERVAL_MS = 15 * 60 * 1000;
 const TRADER_TAB_HINT_DURATION_MS = 10 * 1000;
@@ -22,6 +23,7 @@ interface TraderTabButtonProps {
   isPaused: boolean;
   isAnimating: boolean;
   isFadePhase: boolean;
+  isGreenPulse: boolean;
   onClick: () => void;
 }
 
@@ -31,6 +33,7 @@ export function TraderTabButton({
   isPaused,
   isAnimating,
   isFadePhase,
+  isGreenPulse,
   onClick,
 }: TraderTabButtonProps) {
   const { t } = useTranslation();
@@ -83,7 +86,11 @@ export function TraderTabButton({
         className={cn(
           tabButtonClass,
           "group shrink-0 gap-1.5",
-          isAnimating ? (isFadePhase ? "tab-fade-in" : "tab-blink-new") : "",
+          getTabUnlockAttentionClass({
+            isAnimating,
+            isFadePhase,
+            isGreenPulse,
+          }),
         )}
         onClick={onClick}
         data-testid="tab-trader"

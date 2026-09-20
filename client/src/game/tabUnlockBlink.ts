@@ -19,6 +19,22 @@ export const TAB_UNLOCK_BLINK_SEEN_KEYS = {
 
 export type TabUnlockBlinkId = keyof typeof TAB_UNLOCK_BLINK_SEEN_KEYS;
 
+/** Fade-in length when a location tab first appears. */
+export const TAB_UNLOCK_FADE_MS = 3000;
+/** After the new-tab glow has run this long without a click, switch to the timed-event green pulse. */
+export const TAB_UNLOCK_GREEN_PULSE_MS = 15_000;
+
+export function getTabUnlockAttentionClass(options: {
+  isAnimating: boolean;
+  isFadePhase: boolean;
+  isGreenPulse: boolean;
+}): string {
+  if (!options.isAnimating) return "";
+  if (options.isFadePhase) return "tab-fade-in";
+  if (options.isGreenPulse) return "timer-tab-pulse-green";
+  return "tab-blink-new";
+}
+
 export type TabUnlockSnapshot = {
   villageUnlocked: boolean;
   forestUnlocked: boolean;

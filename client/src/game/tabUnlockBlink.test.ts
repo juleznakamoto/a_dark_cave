@@ -3,6 +3,7 @@ import { isOverallAchievementCategoryEnabled } from "@/achievements/configs/over
 import {
   buildTabUnlockSnapshot,
   getNewlyUnlockedTabsForBlink,
+  getTabUnlockAttentionClass,
   isTabUnlockBlinkSeen,
   TAB_UNLOCK_BLINK_SEEN_KEYS,
 } from "./tabUnlockBlink";
@@ -59,6 +60,37 @@ describe("tabUnlockBlink", () => {
         "bastion",
       ),
     ).toBe(true);
+  });
+
+  it("getTabUnlockAttentionClass fades, then glows, then escalates to green", () => {
+    expect(
+      getTabUnlockAttentionClass({
+        isAnimating: true,
+        isFadePhase: true,
+        isGreenPulse: false,
+      }),
+    ).toBe("tab-fade-in");
+    expect(
+      getTabUnlockAttentionClass({
+        isAnimating: true,
+        isFadePhase: false,
+        isGreenPulse: false,
+      }),
+    ).toBe("tab-blink-new");
+    expect(
+      getTabUnlockAttentionClass({
+        isAnimating: true,
+        isFadePhase: false,
+        isGreenPulse: true,
+      }),
+    ).toBe("timer-tab-pulse-green");
+    expect(
+      getTabUnlockAttentionClass({
+        isAnimating: false,
+        isFadePhase: false,
+        isGreenPulse: true,
+      }),
+    ).toBe("");
   });
 
   it("unlocks achievements from social promo fields on the full state", () => {

@@ -95,6 +95,9 @@ import {
 import {
   buildTabUnlockSnapshot,
   getNewlyUnlockedTabsForBlink,
+  getTabUnlockAttentionClass,
+  TAB_UNLOCK_FADE_MS,
+  TAB_UNLOCK_GREEN_PULSE_MS,
   withTabUnlockBlinkSeen,
   type TabUnlockBlinkId,
 } from "@/game/tabUnlockBlink";
@@ -268,6 +271,9 @@ export default function GameContainer() {
 
   const [animatingTabs, setAnimatingTabs] = useState<Set<string>>(new Set());
   const [fadePhaseTabs, setFadePhaseTabs] = useState<Set<string>>(new Set());
+  const [greenPulseTabs, setGreenPulseTabs] = useState<Set<string>>(new Set());
+  const animatingTabsRef = useRef(animatingTabs);
+  animatingTabsRef.current = animatingTabs;
   // Keep Estate / Bastion mounted after the first visit so the shared
   // progress shader is not compiled again every time those tabs open.
   const [estatePanelKept, setEstatePanelKept] = useState(
@@ -382,7 +388,9 @@ export default function GameContainer() {
   const tabUnlockFadeTimeoutsRef = useRef<
     Map<TabUnlockBlinkId, ReturnType<typeof setTimeout>>
   >(new Map());
-  const TAB_UNLOCK_FADE_MS = 3000;
+  const tabUnlockGreenTimeoutsRef = useRef<
+    Map<TabUnlockBlinkId, ReturnType<typeof setTimeout>>
+  >(new Map());
 
   const markTabUnlockBlinkDismissed = useCallback((tabId: TabUnlockBlinkId) => {
     const state = useGameStore.getState();
@@ -718,6 +726,34 @@ export default function GameContainer() {
     }
   }, []);
 
+  const clearTabUnlockGreenTimeout = useCallback((tabId: TabUnlockBlinkId) => {
+    const existing = tabUnlockGreenTimeoutsRef.current.get(tabId);
+    if (existing !== undefined) {
+      clearTimeout(existing);
+      tabUnlockGreenTimeoutsRef.current.delete(tabId);
+    }
+  }, []);
+
+  const scheduleTabUnlockGreenPulse = useCallback(
+    (tabId: TabUnlockBlinkId) => {
+      clearTabUnlockGreenTimeout(tabId);
+      tabUnlockGreenTimeoutsRef.current.set(
+        tabId,
+        setTimeout(() => {
+          tabUnlockGreenTimeoutsRef.current.delete(tabId);
+          if (!animatingTabsRef.current.has(tabId)) return;
+          setGreenPulseTabs((prev) => {
+            if (prev.has(tabId)) return prev;
+            const next = new Set(prev);
+            next.add(tabId);
+            return next;
+          });
+        }, TAB_UNLOCK_GREEN_PULSE_MS),
+      );
+    },
+    [clearTabUnlockGreenTimeout],
+  );
+
   const finishTabUnlockFadeForTab = useCallback(
     (tabId: TabUnlockBlinkId) => {
       clearTabUnlockFadeTimeout(tabId);
@@ -731,11 +767,13 @@ export default function GameContainer() {
       });
       markTabUnlockBlinkDismissed(tabId);
       maybeAdvancePrevTabUnlockRef();
+      scheduleTabUnlockGreenPulse(tabId);
     },
     [
       clearTabUnlockFadeTimeout,
       markTabUnlockBlinkDismissed,
       maybeAdvancePrevTabUnlockRef,
+      scheduleTabUnlockGreenPulse,
     ],
   );
 
@@ -761,6 +799,10 @@ export default function GameContainer() {
         clearTimeout(timeoutId);
       }
       tabUnlockFadeTimeoutsRef.current.clear();
+      for (const timeoutId of tabUnlockGreenTimeoutsRef.current.values()) {
+        clearTimeout(timeoutId);
+      }
+      tabUnlockGreenTimeoutsRef.current.clear();
     };
   }, []);
 
@@ -943,6 +985,7 @@ export default function GameContainer() {
   const clearTabAnimation = useCallback(
     (tabId: TabUnlockBlinkId) => {
       clearTabUnlockFadeTimeout(tabId);
+      clearTabUnlockGreenTimeout(tabId);
       tabUnlockBlinkPendingRef.current.delete(tabId);
       maybeAdvancePrevTabUnlockRef();
       setAnimatingTabs((prev) => {
@@ -955,10 +998,17 @@ export default function GameContainer() {
         next.delete(tabId);
         return next;
       });
+      setGreenPulseTabs((prev) => {
+        if (!prev.has(tabId)) return prev;
+        const next = new Set(prev);
+        next.delete(tabId);
+        return next;
+      });
       markTabUnlockBlinkDismissed(tabId);
     },
     [
       clearTabUnlockFadeTimeout,
+      clearTabUnlockGreenTimeout,
       maybeAdvancePrevTabUnlockRef,
       markTabUnlockBlinkDismissed,
     ],
@@ -1219,6 +1269,12 @@ export default function GameContainer() {
     : "opacity-100";
   const tabButtonClass =
     `${GAME_PANEL_HEADER_BAND} shrink-0 bg-transparent font-medium tracking-wide outline-none focus:outline-none focus-visible:outline-none`;
+  const tabUnlockClassName = (tabId: TabUnlockBlinkId, isActive: boolean) =>
+    getTabUnlockAttentionClass({
+      isAnimating: animatingTabs.has(tabId),
+      isFadePhase: fadePhaseTabs.has(tabId),
+      isGreenPulse: greenPulseTabs.has(tabId),
+    }) || (isActive ? tabActiveTextClass : tabInactiveTextClass);
 
   const tabHotkeyCount = visibleHotkeyTabs.length;
   const pauseHotkeyHintContent = (
@@ -1459,15 +1515,10 @@ export default function GameContainer() {
                           }
                           tabButtonClass={tabButtonClass}
                           tabInactiveTextClass={tabInactiveTextClass}
-                          className={
-                            animatingTabs.has("village")
-                              ? fadePhaseTabs.has("village")
-                                ? "tab-fade-in"
-                                : "tab-blink-new"
-                              : activeTab === "village"
-                                ? tabActiveTextClass
-                                : tabInactiveTextClass
-                          }
+                          className={tabUnlockClassName(
+                            "village",
+                            activeTab === "village",
+                          )}
                           onClick={() => {
                             useGameStore.getState().trackButtonClick("tab-village");
                             clearTabAnimation("village");
@@ -1486,15 +1537,10 @@ export default function GameContainer() {
                           label={t("tabs.forest", { ns: "common" })}
                           tabButtonClass={tabButtonClass}
                           tabInactiveTextClass={tabInactiveTextClass}
-                          className={
-                            animatingTabs.has("forest")
-                              ? fadePhaseTabs.has("forest")
-                                ? "tab-fade-in"
-                                : "tab-blink-new"
-                              : activeTab === "forest"
-                                ? tabActiveTextClass
-                                : tabInactiveTextClass
-                          }
+                          className={tabUnlockClassName(
+                            "forest",
+                            activeTab === "forest",
+                          )}
                           onClick={() => {
                             useGameStore.getState().trackButtonClick("tab-forest");
                             clearTabAnimation("forest");
@@ -1511,15 +1557,10 @@ export default function GameContainer() {
                           label={t("tabs.estate", { ns: "common" })}
                           tabButtonClass={tabButtonClass}
                           tabInactiveTextClass={tabInactiveTextClass}
-                          className={
-                            animatingTabs.has("estate")
-                              ? fadePhaseTabs.has("estate")
-                                ? "tab-fade-in"
-                                : "tab-blink-new"
-                              : activeTab === "estate"
-                                ? tabActiveTextClass
-                                : tabInactiveTextClass
-                          }
+                          className={tabUnlockClassName(
+                            "estate",
+                            activeTab === "estate",
+                          )}
                           onPointerEnter={() => {
                             scheduleSharedProgressShaderPrewarm({
                               immediate: true,
@@ -1545,15 +1586,10 @@ export default function GameContainer() {
                           }
                           tabButtonClass={tabButtonClass}
                           tabInactiveTextClass={tabInactiveTextClass}
-                          className={
-                            animatingTabs.has("bastion")
-                              ? fadePhaseTabs.has("bastion")
-                                ? "tab-fade-in"
-                                : "tab-blink-new"
-                              : activeTab === "bastion"
-                                ? tabActiveTextClass
-                                : tabInactiveTextClass
-                          }
+                          className={tabUnlockClassName(
+                            "bastion",
+                            activeTab === "bastion",
+                          )}
                           onPointerEnter={() => {
                             scheduleSharedProgressShaderPrewarm({
                               immediate: true,
@@ -1573,14 +1609,10 @@ export default function GameContainer() {
                         {/* Achievements Tab Button */}
                         {showAchievementsTab && (
                           <button
-                            className={`${tabButtonClass} ${animatingTabs.has("achievements")
-                              ? fadePhaseTabs.has("achievements")
-                                ? "tab-fade-in"
-                                : "tab-blink-new"
-                              : activeTab === "achievements"
-                                ? tabActiveTextClass
-                                : tabInactiveTextClass
-                              }`}
+                            className={`${tabButtonClass} ${tabUnlockClassName(
+                              "achievements",
+                              activeTab === "achievements",
+                            )}`}
                             onClick={() => {
                               useGameStore.getState().trackButtonClick("tab-achievements");
                               clearTabAnimation("achievements");
@@ -1629,6 +1661,7 @@ export default function GameContainer() {
                           isPaused={isPaused}
                           isAnimating={animatingTabs.has("trader")}
                           isFadePhase={fadePhaseTabs.has("trader")}
+                          isGreenPulse={greenPulseTabs.has("trader")}
                           onClick={() => {
                             clearTabAnimation("trader");
                             setShopDialogOpen(true, "tab");
