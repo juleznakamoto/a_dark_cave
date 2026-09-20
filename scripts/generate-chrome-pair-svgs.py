@@ -5,8 +5,8 @@ Madness stages stack: each one keeps the previous features and adds one more.
   0 solid hairline (CSS, no tile)
   1 empty spaces between line runs
   2 + distortion at 50% of max lateral distance, plus a few new gaps
-  3 + distortion at 100% or 125% per run, gap debris, plus 25% more new
-    gaps than the usual stage step
+  3 + distortion at 100% of max lateral distance, gap debris, plus 25% more
+    new gaps than the usual stage step
   4 + a few slightly larger gaps with 1-5 on-spine ticks (2-10px, 4-10px
     apart) sitting in those holes, plus a few new gaps
 No unbroken run longer than 15% of that file's own tile length
@@ -15,7 +15,7 @@ horizontal families (h / h2 at 3840) which cap at 10% (384px).
 Gaps between runs are 22-25px so breaks stay visible, except the stage-4
 holes that grow just enough to hold a tick cluster.
 Slot and preset (720) tiles cap distortion at 50% of DISTORT_MAX.
-Button / dialog / tooltip boxes use 50% then 100% (never the 125% panel max).
+Panels, buttons, dialogs, and tooltips use 50% then 100%.
 
 Rebuild SVGs + mask CSS with no args; `--css-only` skips tiles.
 """
@@ -127,7 +127,7 @@ def _scale_lat(pts: list[tuple[float, float]], factor: float) -> list[tuple[floa
 
 
 def limit_compact_distort(motif: Motif) -> None:
-    """Slots and presets cap warp at 50% of DISTORT_MAX. Full tiles keep 100/125."""
+    """Slots and presets cap warp at 50% of DISTORT_MAX. Full tiles keep 50 then 100."""
     cap = DISTORT_MAX * COMPACT_DISTORT_FRAC
     peak = 0.0
     for run in motif.spine:
@@ -347,12 +347,9 @@ def shard(a0: float, a1: float, lat0: float, lat1: float | None = None) -> Poly:
 
 
 # 100% lateral distance from the 1px hairline. Stage 2 uses half of this.
-# Stage 3 picks 100% or 125% per run. Panel max is 125%, not 150%.
-# Slot / preset tiles never exceed 50% of this, even on stages 3-4.
-# Button boxes use 50% (stage 2) and 100% (stages 3-4), never 125%.
+# Stage 3+ uses 100%. Slot / preset tiles never exceed 50% of this.
 DISTORT_MAX = 2.8
 COMPACT_DISTORT_FRAC = 0.5
-BOX_DISTORT_FRAC = 1.0
 # Unique dash rhythm per family. Three length bands so holes are not a beat.
 # Longest band stops at 10% of the 3840 h/h2 tiles (384px) and 15% on v/v2.
 # Slot files recap at 15% of 720 (108px).
@@ -738,9 +735,8 @@ def _holes_overlap(h0: float, h1: float, used: list[tuple[float, float]]) -> boo
 
 
 GAPS_PER_STAGE = 4
-# Stage 2→3 adds 25% more holes. Warp on those stages is 100% or 125%.
+# Stage 2→3 adds 25% more holes. Warp on those stages is 100%.
 GAPS_STAGE_3 = max(1, round(GAPS_PER_STAGE * 1.25))
-STAGE3_DISTORT_MAX = 1.25
 
 
 def plan_extra_gaps(
@@ -1012,7 +1008,6 @@ def build_family_stages(key: str, seed: int) -> dict[str, Motif]:
     warp_rng = Rng(seed ^ 0xA5C3E91)
     warps = [plan_run_warp(run, warp_rng) for run in gapped.spine]
     links = plan_warp_links(warps, Rng(seed ^ 0x2F4A91C))
-    scale_rng = Rng(seed ^ 0x15D15D)
 
     used = list(gaps)
     extra2 = plan_extra_gaps(
@@ -1036,9 +1031,7 @@ def build_family_stages(key: str, seed: int) -> dict[str, Motif]:
     s1 = clone_motif(gapped)
     s1.spine = enforce_max_run(s1.spine, LENGTH, frac=frac)
     s2_scales = [0.5 for _ in warps]
-    s3_scales = [
-        STAGE3_DISTORT_MAX if scale_rng.chance(0.5) else 1.0 for _ in warps
-    ]
+    s3_scales = [1.0 for _ in warps]
     s2 = Motif(
         spine=enforce_max_run(
             punch_runs(apply_warp(warps, links, s2_scales), extra2), LENGTH, frac=frac
@@ -1055,29 +1048,11 @@ def build_family_stages(key: str, seed: int) -> dict[str, Motif]:
     s4 = clone_motif(s3)
     s4.spine = enforce_max_run(punch_runs(s4.spine, extra4), LENGTH, frac=frac)
     s4.stage4_seed = seed ^ 0x7B10E33
-    # Buttons: same holes / debris / ticks, but warp stops at 100% (no 125%).
-    s3_box = Motif(
-        spine=enforce_max_run(
-            punch_runs(
-                apply_warp(warps, links, [BOX_DISTORT_FRAC for _ in warps]),
-                extra2 + extra3,
-            ),
-            LENGTH,
-            frac=frac,
-        ),
-        run_frac=frac,
-    )
-    add_gap_debris(s3_box, gaps, Rng(seed ^ 0x51A2C0D))
-    s4_box = clone_motif(s3_box)
-    s4_box.spine = enforce_max_run(punch_runs(s4_box.spine, extra4), LENGTH, frac=frac)
-    s4_box.stage4_seed = seed ^ 0x7B10E33
     return {
         "s1": s1,
         "s2": s2,
         "s3": s3,
         "s4": s4,
-        "box_s3": s3_box,
-        "box_s4": s4_box,
     }
 
 
@@ -1195,7 +1170,7 @@ def main() -> None:
             if stage in ("s3", "s4"):
                 write(
                     f"rule-{key}-box{suffix}.svg",
-                    emit_svg(stages[f"box_{stage}"], horizontal=horizontal, compact=False),
+                    emit_svg(stages[stage], horizontal=horizontal, compact=False),
                 )
 
     emit_mask_css()
@@ -1223,7 +1198,7 @@ def main() -> None:
     assert "M5 " in v_open
     assert "M5 " in v2_open
     box_s3 = (ROOT / "rule-h-box-s3.svg").read_text(encoding="utf-8")
-    assert box_s3 != (ROOT / "rule-h-s3.svg").read_text(encoding="utf-8")
+    assert box_s3 == (ROOT / "rule-h-s3.svg").read_text(encoding="utf-8")
     print("unique vs h/v (not reverse copies)")
 
 
