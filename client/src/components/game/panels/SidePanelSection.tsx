@@ -159,7 +159,7 @@ function getSidePanelItemTooltipType(
 const RESOURCE_ROW_GRID_CLASS =
   "grid w-fit min-w-[calc(5.5rem+4rem+3rem+0.5rem+0.25rem)] max-w-full pr-1 grid-cols-[5.5rem_4rem_3rem] items-baseline gap-x-1";
 /** Cap so values stay near labels when the side panel is dragged wide. */
-const LABEL_VALUE_ROW_MAX_WIDTH_CLASS = "max-w-[18rem]";
+const LABEL_VALUE_ROW_MAX_WIDTH_CLASS = "max-w-[12rem]";
 /** Label + amount — grows with the column, then stops so numbers do not hug the panel edge. */
 const LABEL_VALUE_ROW_GRID_CLASS =
   `grid w-full min-w-0 ${LABEL_VALUE_ROW_MAX_WIDTH_CLASS} grid-cols-[minmax(0,1fr)_auto] items-baseline gap-x-2`;
