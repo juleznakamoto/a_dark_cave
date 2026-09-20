@@ -13,9 +13,9 @@ export const GAME_STORE_TICK_CLOCK_KEYS = [
 ] as const;
 
 /**
- * Remaining-time writes from `tickCooldowns`. Panels only need to know which
- * actions are cooling, not the 0.25s remaining. CooldownButton still
- * subscribes to the per-action number.
+ * Remaining-time writes from `tickCooldowns`. Panels and CooldownButton only
+ * need to know which actions are cooling, not the 0.25s remaining. The wipe
+ * is CSS-driven from the start snapshot.
  */
 export const GAME_STORE_COOLDOWN_CLOCK_KEYS = [
   "cooldowns",

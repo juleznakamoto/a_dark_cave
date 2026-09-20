@@ -1,6 +1,11 @@
-import React, { useRef, useEffect, useId, useState, forwardRef } from "react";
+import React, { useRef, useEffect, useId, useMemo, useState, forwardRef } from "react";
 import { Button } from "@/components/ui/button";
-import { useGameStore } from "@/game/state";
+import { isDemoPlayFrozen } from "@/game/demoLimit";
+import {
+  isModalDialogOpen,
+  isVisibleModalDialogOpen,
+  useGameStore,
+} from "@/game/state";
 import { TooltipWrapper } from "@/components/game/TooltipWrapper";
 import { useGlobalTooltipOpen } from "@/hooks/useGlobalTooltip";
 import { YELLOW_CORNER_DISC_CLASS } from "@/components/game/gameChrome";
@@ -11,7 +16,12 @@ import { cn, formatCompactDuration } from "@/lib/utils";
 import { useInlineButtonParticles } from "@/components/ui/bubbly-button";
 import type { ParticleConfig } from "@/components/ui/bubbly-button.particles";
 import { ActionTooltipSeparator } from "@/game/rules/actionTooltipLayout";
-import { getCssTimedWipeStyle, useUiNow } from "@/lib/uiClock";
+import {
+  ADC_PROGRESS_WIPE_PAUSED_CLASS,
+  getCssTimedWipeStyle,
+  useUiNow,
+  useUntilTimestamp,
+} from "@/lib/uiClock";
 
 /** Relative wrapper for action buttons and badges. inline-flex avoids baseline gap so corner badges sit on the button. */
 export const GAME_ACTION_BUTTON_STACK_CLASS = "relative inline-flex";
@@ -161,7 +171,10 @@ const CooldownButton = forwardRef<HTMLButtonElement, CooldownButtonProps>(
       ?.replace("button-", "")
       .replace(/-([a-z])/g, (_, letter) => letter.toUpperCase()) || "unknown";
 
-    const currentCooldown = useGameStore((s) => s.cooldowns[actionIdFromProps] || 0);
+    // Boolean only: remaining-time ticks must not rewrite animation-delay.
+    const isCoolingDown = useGameStore(
+      (s) => (s.cooldowns[actionIdFromProps] || 0) > 0,
+    );
     const storedInitialCooldown = useGameStore((s) => s.initialCooldowns[actionIdFromProps] || 0);
     const executionStart = useGameStore((s) => s.executionStartTimes?.[actionIdFromProps] || 0);
     const executionDurationSec = useGameStore((s) => s.executionDurations?.[actionIdFromProps] || 0);
@@ -175,8 +188,25 @@ const CooldownButton = forwardRef<HTMLButtonElement, CooldownButtonProps>(
     const hasClerksHut = useGameStore((s) => (s.buildings.clerksHut ?? 0) > 0);
     const gold = useGameStore((s) => s.resources.gold ?? 0);
     const abortActionExecution = useGameStore((s) => s.abortActionExecution);
-
-    const isCoolingDown = currentCooldown > 0;
+    // Visible freeze: pause button, sleep, on-screen modal, demo-end.
+    // Execution is wall-clock, so the bar may keep running during the 3s
+    // post-dialog handoff and complete there (same as the game loop).
+    const isVisibleFreeze = useGameStore(
+      (s) =>
+        s.isPaused ||
+        Boolean(s.idleModeState?.isActive) ||
+        isVisibleModalDialogOpen(s) ||
+        isDemoPlayFrozen(s),
+    );
+    // Cooldown remaining only ticks while the sim runs. Handoff must pause
+    // that wipe too, or the bar empties ~3s early and sits locked.
+    const isSimFrozen = useGameStore(
+      (s) =>
+        s.isPaused ||
+        Boolean(s.idleModeState?.isActive) ||
+        isModalDialogOpen(s) ||
+        isDemoPlayFrozen(s),
+    );
 
     const playTimeRange = playTimeCooldown;
     const isPlayTimeOverlayActive = !!(
@@ -202,9 +232,14 @@ const CooldownButton = forwardRef<HTMLButtonElement, CooldownButtonProps>(
           : (1 - playTimeElapsedFraction) * 100
         : 0;
 
-    // Execution wash is CSS-driven (no per-button 100ms forceUpdate).
+    // Execution / cooldown washes are CSS-driven (no per-button remaining-time poll).
     // Play-time overlays already follow the 4 Hz store clock.
     const isExecuting = executionStart > 0 && executionDurationSec > 0;
+    const isTimedWipePaused = isExecuting ? isVisibleFreeze : isSimFrozen;
+    const executionEndMs = isExecuting
+      ? executionStart + executionDurationSec * 1000
+      : null;
+    const executionStillRunning = useUntilTimestamp(executionEndMs);
 
     // Use the stored initial cooldown if available, otherwise fall back to the action's defined cooldown
     const initialCooldown = storedInitialCooldown > 0
@@ -213,6 +248,7 @@ const CooldownButton = forwardRef<HTMLButtonElement, CooldownButtonProps>(
 
     // Use a ref to track if we should animate the width
     const skipAnimationRef = useRef(false);
+    const wasWipePausedRef = useRef(isTimedWipePaused);
 
     useEffect(() => {
       const handleVisibilityChange = () => {
@@ -230,6 +266,18 @@ const CooldownButton = forwardRef<HTMLButtonElement, CooldownButtonProps>(
       return () => document.removeEventListener('visibilitychange', handleVisibilityChange);
     }, []);
 
+    useEffect(() => {
+      if (wasWipePausedRef.current && !isTimedWipePaused) {
+        setWipeRevision((n) => n + 1);
+      }
+      wasWipePausedRef.current = isTimedWipePaused;
+    }, [isTimedWipePaused]);
+
+    useEffect(() => {
+      if (!isExecuting || executionStillRunning || isVisibleFreeze) return;
+      useGameStore.getState().completeActionExecution(actionIdFromProps);
+    }, [actionIdFromProps, executionStillRunning, isExecuting, isVisibleFreeze]);
+
     // Track first render for transition
     const hasPreviewOverlay = previewOverlay != null;
     useEffect(() => {
@@ -244,24 +292,61 @@ const CooldownButton = forwardRef<HTMLButtonElement, CooldownButtonProps>(
       }
     }, [isCoolingDown, isExecuting, isPlayTimeOverlayActive, hasPreviewOverlay]);
 
-    const executionWipe =
-      !previewOverlay && !isPlayTimeOverlayActive && isExecuting
-        ? getCssTimedWipeStyle({
+    const executionWipe = useMemo(
+      () =>
+        !previewOverlay && !isPlayTimeOverlayActive && isExecuting
+          ? getCssTimedWipeStyle({
             startMs: executionStart,
             durationMs: executionDurationSec * 1000,
             mode: "fill",
           })
-        : null;
+          : null,
+      [
+        executionDurationSec,
+        executionStart,
+        isExecuting,
+        isPlayTimeOverlayActive,
+        previewOverlay,
+        wipeRevision,
+      ],
+    );
 
-    // Store-driven overlays (cooldown / play-time) still set width in React.
-    // Execution uses CSS keyframes so N Prior jobs do not poll.
+    // Snapshot remaining once (or on wipeRevision remount). The CSS recede
+    // then runs on its own. Do not put the ticking remaining number in deps:
+    // rewriting animation-delay mid-wipe restarts it in Chromium.
+    const cooldownWipe = useMemo(() => {
+      if (previewOverlay || isPlayTimeOverlayActive || isExecuting || !isCoolingDown) {
+        return null;
+      }
+      if (initialCooldown <= 0) return null;
+      const remaining =
+        useGameStore.getState().cooldowns[actionIdFromProps] || 0;
+      if (remaining <= 0) return null;
+      const elapsedMs = Math.max(0, (initialCooldown - remaining) * 1000);
+      return getCssTimedWipeStyle({
+        startMs: Date.now() - elapsedMs,
+        durationMs: initialCooldown * 1000,
+        mode: "recede",
+      });
+    }, [
+      actionIdFromProps,
+      initialCooldown,
+      isCoolingDown,
+      isExecuting,
+      isPlayTimeOverlayActive,
+      previewOverlay,
+      wipeRevision,
+    ]);
+
+    const timedWipe = executionWipe ?? cooldownWipe;
+
+    // Preview / play-time still set width in React. Execution and action
+    // cooldown use CSS keyframes so remaining-time ticks do not restart them.
     const overlayWidth = previewOverlay
       ? previewOverlay.widthPercent
       : isPlayTimeOverlayActive
         ? playTimeOverlayWidth
-        : isCoolingDown && initialCooldown > 0
-          ? (currentCooldown / initialCooldown) * 100
-          : 0;
+        : 0;
     const isFillWipe = previewOverlay
       ? previewOverlay.mode === "fill"
       : isPlayTimeOverlayActive
@@ -355,26 +440,27 @@ const CooldownButton = forwardRef<HTMLButtonElement, CooldownButtonProps>(
         {isOverlayBlocked && (
           <div
             key={
-              executionWipe
-                ? `exec-${executionStart}-${executionDurationSec}-${wipeRevision}`
+              timedWipe
+                ? `wipe-${executionStart}-${executionDurationSec}-${wipeRevision}`
                 : "static-wash"
             }
             className={cn(
               "pointer-events-none absolute inset-y-0 left-0 z-0 overflow-hidden rounded-md transition-opacity duration-200",
               GAME_ACTION_COOLDOWN_WASH_CLASS,
-              executionWipe?.className,
+              timedWipe?.className,
+              isTimedWipePaused && timedWipe?.className && ADC_PROGRESS_WIPE_PAUSED_CLASS,
             )}
             style={
-              executionWipe
-                ? { left: 0, ...executionWipe.style }
+              timedWipe
+                ? { left: 0, ...timedWipe.style }
                 : {
-                    width: `${overlayWidth}%`,
-                    left: 0,
-                    transition:
-                      isFirstRenderRef.current || skipAnimationRef.current
-                        ? "none"
-                        : "width 0.3s ease-out",
-                  }
+                  width: `${overlayWidth}%`,
+                  left: 0,
+                  transition:
+                    isFirstRenderRef.current || skipAnimationRef.current
+                      ? "none"
+                      : "width 0.25s linear",
+                }
             }
             aria-hidden
           >

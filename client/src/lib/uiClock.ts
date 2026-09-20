@@ -99,11 +99,15 @@ export type TimedWipeMode = "fill" | "recede";
 export const ADC_PROGRESS_WIPE_CLASS = "adc-progress-wipe";
 export const ADC_PROGRESS_WIPE_FILL_CLASS = "adc-progress-wipe--fill";
 export const ADC_PROGRESS_WIPE_RECEDE_CLASS = "adc-progress-wipe--recede";
+export const ADC_PROGRESS_WIPE_PAUSED_CLASS = "adc-progress-wipe--paused";
 
 /**
  * CSS keyframe seek: full-duration animation + negative delay so a remount
  * (tab visible, duration boost) continues from the current elapsed fraction
  * without a 10 Hz React width update.
+ *
+ * Memoize the result and remount via a key when you need to re-seek. Writing a
+ * new `animation-delay` on an in-flight wipe restarts it in Chromium.
  */
 export function getCssTimedWipeStyle(opts: {
   startMs: number;

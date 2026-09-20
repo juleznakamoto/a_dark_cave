@@ -1762,6 +1762,10 @@ html.adc-text-large .game-panel-header-indicator-row {
   animation-name: adc-progress-wipe-recede;
 }
 
+.adc-progress-wipe--paused {
+  animation-play-state: paused;
+}
+
 @keyframes fade-out-up {
   0% {
     transform: translateY(2px);

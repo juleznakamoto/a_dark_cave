@@ -1,14 +1,18 @@
 /**
  * @vitest-environment jsdom
  */
-import { cleanup, render, screen } from "@testing-library/react";
+import { act, cleanup, render, screen } from "@testing-library/react";
 import React from "react";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import CooldownButton, {
   gameActionOutlineButtonClassName,
 } from "./CooldownButton";
 import { useGameStore } from "@/game/state";
-import { ADC_PROGRESS_WIPE_FILL_CLASS } from "@/lib/uiClock";
+import {
+  ADC_PROGRESS_WIPE_FILL_CLASS,
+  ADC_PROGRESS_WIPE_PAUSED_CLASS,
+  ADC_PROGRESS_WIPE_RECEDE_CLASS,
+} from "@/lib/uiClock";
 
 describe("CooldownButton execution wash", () => {
   beforeEach(() => {
@@ -33,7 +37,7 @@ describe("CooldownButton execution wash", () => {
       <CooldownButton
         button_id="gatherWood"
         cooldownMs={0}
-        onClick={() => {}}
+        onClick={() => { }}
         data-testid="button-gather-wood"
       >
         Gather Wood
@@ -78,7 +82,7 @@ describe("CooldownButton execution wash", () => {
             key={id}
             button_id={id}
             cooldownMs={0}
-            onClick={() => {}}
+            onClick={() => { }}
             data-testid={`button-${id}`}
           >
             Craft
@@ -100,7 +104,7 @@ describe("CooldownButton execution wash", () => {
       <CooldownButton
         button_id="callMerchant"
         cooldownMs={0}
-        onClick={() => {}}
+        onClick={() => { }}
         data-testid="button-call-merchant"
         playTimeCooldown={{
           startPlayTime: 0,
@@ -129,7 +133,7 @@ describe("CooldownButton execution wash", () => {
         variant="outline"
         button_id="gatherWood"
         cooldownMs={0}
-        onClick={() => {}}
+        onClick={() => { }}
         data-testid="button-gather-wood"
       >
         Gather Wood
@@ -143,5 +147,258 @@ describe("CooldownButton execution wash", () => {
     expect(button.style.getPropertyValue("--adc-chrome-mask-x")).toMatch(
       /^\d+px$/,
     );
+  });
+
+  it("does not rewrite execution animation-delay when unrelated store fields change", () => {
+    const start = Date.now() - 5_000;
+    useGameStore.setState({
+      executionStartTimes: { gatherWood: start },
+      executionDurations: { gatherWood: 60 },
+    });
+
+    render(
+      <CooldownButton
+        button_id="gatherWood"
+        cooldownMs={0}
+        onClick={() => { }}
+        data-testid="button-gather-wood"
+      >
+        Gather Wood
+      </CooldownButton>,
+    );
+
+    const wash = document.querySelector(`.${ADC_PROGRESS_WIPE_FILL_CLASS}`);
+    expect(wash).toBeTruthy();
+    const delayBefore = (wash as HTMLElement).style.animationDelay;
+
+    act(() => {
+      useGameStore.setState({
+        resources: { ...useGameStore.getState().resources, gold: 99 },
+      });
+    });
+
+    const washAfter = document.querySelector(`.${ADC_PROGRESS_WIPE_FILL_CLASS}`);
+    expect(washAfter).toBeTruthy();
+    expect((washAfter as HTMLElement).style.animationDelay).toBe(delayBefore);
+  });
+
+  it("uses a CSS recede wipe for action cooldown instead of remaining-time width ticks", () => {
+    useGameStore.setState({
+      cooldowns: { gatherWood: 3 },
+      initialCooldowns: { gatherWood: 4 },
+    });
+
+    render(
+      <CooldownButton
+        button_id="gatherWood"
+        cooldownMs={4000}
+        onClick={() => { }}
+        data-testid="button-gather-wood"
+      >
+        Gather Wood
+      </CooldownButton>,
+    );
+
+    const wash = document.querySelector(`.${ADC_PROGRESS_WIPE_RECEDE_CLASS}`);
+    expect(wash).toBeTruthy();
+    expect((wash as HTMLElement).style.animationDuration).toBe("4000ms");
+    const delayMs = Number.parseInt((wash as HTMLElement).style.animationDelay, 10);
+    expect(delayMs).toBeLessThanOrEqual(-1000);
+    expect(delayMs).toBeGreaterThan(-1400);
+    const durationMs = Number.parseInt((wash as HTMLElement).style.animationDuration, 10);
+    expect(durationMs + delayMs).toBeGreaterThanOrEqual(2600);
+    expect(durationMs + delayMs).toBeLessThanOrEqual(3000);
+
+    act(() => {
+      useGameStore.setState({
+        cooldowns: { gatherWood: 2 },
+        initialCooldowns: { gatherWood: 4 },
+      });
+    });
+
+    const washAfterTick = document.querySelector(`.${ADC_PROGRESS_WIPE_RECEDE_CLASS}`);
+    expect(washAfterTick).toBeTruthy();
+    expect((washAfterTick as HTMLElement).style.animationDelay).toBe(
+      (wash as HTMLElement).style.animationDelay,
+    );
+  });
+
+  it("pauses the CSS wipe while the player has the game paused", () => {
+    const start = Date.now() - 1_000;
+    useGameStore.setState({
+      isPaused: true,
+      executionStartTimes: { gatherWood: start },
+      executionDurations: { gatherWood: 60 },
+    });
+
+    render(
+      <CooldownButton
+        button_id="gatherWood"
+        cooldownMs={0}
+        onClick={() => { }}
+        data-testid="button-gather-wood"
+      >
+        Gather Wood
+      </CooldownButton>,
+    );
+
+    const wash = document.querySelector(`.${ADC_PROGRESS_WIPE_FILL_CLASS}`);
+    expect(wash).toBeTruthy();
+    expect((wash as HTMLElement).className).toContain(
+      ADC_PROGRESS_WIPE_PAUSED_CLASS,
+    );
+  });
+
+  it("completes an overdue execution without waiting for the 4 Hz loop", () => {
+    const now = Date.now();
+    useGameStore.setState({
+      flags: { ...useGameStore.getState().flags, gameStarted: true },
+      executionStartTimes: { chopWood: now - 10_000 },
+      executionDurations: { chopWood: 4 },
+      resources: { ...useGameStore.getState().resources, wood: 0 },
+    });
+
+    render(
+      <CooldownButton
+        button_id="chopWood"
+        cooldownMs={0}
+        onClick={() => { }}
+        data-testid="button-chop-wood"
+      >
+        Chop Wood
+      </CooldownButton>,
+    );
+
+    expect(useGameStore.getState().executionStartTimes?.chopWood).toBeUndefined();
+    expect(useGameStore.getState().resources.wood).toBeGreaterThan(0);
+  });
+
+  it("does not complete an overdue execution while a visible modal is open", () => {
+    const start = Date.now() - 10_000;
+    useGameStore.setState({
+      flags: { ...useGameStore.getState().flags, gameStarted: true },
+      eventDialog: {
+        isOpen: true,
+        currentEvent: {
+          id: "test-event",
+          message: "Test",
+          timestamp: Date.now(),
+          type: "event",
+          skipSound: true,
+        },
+        lastEndedAt: 0,
+      },
+      executionStartTimes: { chopWood: start },
+      executionDurations: { chopWood: 4 },
+      resources: { ...useGameStore.getState().resources, wood: 0 },
+    });
+
+    render(
+      <CooldownButton
+        button_id="chopWood"
+        cooldownMs={0}
+        onClick={() => { }}
+        data-testid="button-chop-wood"
+      >
+        Chop Wood
+      </CooldownButton>,
+    );
+
+    expect(useGameStore.getState().executionStartTimes?.chopWood).toBe(start);
+    expect(useGameStore.getState().resources.wood).toBe(0);
+  });
+
+  it("completes an overdue execution during dialog handoff", () => {
+    const now = Date.now();
+    useGameStore.setState({
+      flags: { ...useGameStore.getState().flags, gameStarted: true },
+      dialogHandoffPending: true,
+      executionStartTimes: { chopWood: now - 10_000 },
+      executionDurations: { chopWood: 4 },
+      resources: { ...useGameStore.getState().resources, wood: 0 },
+    });
+
+    render(
+      <CooldownButton
+        button_id="chopWood"
+        cooldownMs={0}
+        onClick={() => { }}
+        data-testid="button-chop-wood"
+      >
+        Chop Wood
+      </CooldownButton>,
+    );
+
+    expect(useGameStore.getState().executionStartTimes?.chopWood).toBeUndefined();
+    expect(useGameStore.getState().resources.wood).toBeGreaterThan(0);
+  });
+
+  it("does not pause an in-flight execution wipe during dialog handoff", () => {
+    const start = Date.now() - 1_000;
+    useGameStore.setState({
+      dialogHandoffPending: true,
+      executionStartTimes: { gatherWood: start },
+      executionDurations: { gatherWood: 60 },
+    });
+
+    render(
+      <CooldownButton
+        button_id="gatherWood"
+        cooldownMs={0}
+        onClick={() => { }}
+        data-testid="button-gather-wood"
+      >
+        Gather Wood
+      </CooldownButton>,
+    );
+
+    const wash = document.querySelector(`.${ADC_PROGRESS_WIPE_FILL_CLASS}`);
+    expect(wash).toBeTruthy();
+    expect((wash as HTMLElement).className).not.toContain(
+      ADC_PROGRESS_WIPE_PAUSED_CLASS,
+    );
+  });
+
+  it("pauses a cooldown wipe during dialog handoff so it cannot run ahead of ticks", () => {
+    useGameStore.setState({
+      dialogHandoffPending: true,
+      cooldowns: { gatherWood: 3 },
+      initialCooldowns: { gatherWood: 4 },
+    });
+
+    render(
+      <CooldownButton
+        button_id="gatherWood"
+        cooldownMs={4000}
+        onClick={() => { }}
+        data-testid="button-gather-wood"
+      >
+        Gather Wood
+      </CooldownButton>,
+    );
+
+    const wash = document.querySelector(`.${ADC_PROGRESS_WIPE_RECEDE_CLASS}`);
+    expect(wash).toBeTruthy();
+    expect((wash as HTMLElement).className).toContain(
+      ADC_PROGRESS_WIPE_PAUSED_CLASS,
+    );
+    const delayBefore = (wash as HTMLElement).style.animationDelay;
+
+    act(() => {
+      useGameStore.setState({ dialogHandoffPending: false });
+    });
+
+    const washAfter = document.querySelector(`.${ADC_PROGRESS_WIPE_RECEDE_CLASS}`);
+    expect(washAfter).toBeTruthy();
+    expect((washAfter as HTMLElement).className).not.toContain(
+      ADC_PROGRESS_WIPE_PAUSED_CLASS,
+    );
+    const delayAfter = Number.parseInt(
+      (washAfter as HTMLElement).style.animationDelay,
+      10,
+    );
+    const delayBeforeMs = Number.parseInt(delayBefore, 10);
+    expect(delayAfter).toBeGreaterThan(delayBeforeMs - 200);
+    expect(delayAfter).toBeLessThanOrEqual(-1000);
   });
 });
