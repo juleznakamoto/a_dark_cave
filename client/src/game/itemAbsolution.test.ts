@@ -5,6 +5,7 @@ import { calculateTotalEffects } from "@/game/rules/effectsCalculation";
 import { buildGameState, hydrateLoadedGameState } from "@/game/stateHelpers";
 import { SUPPORTED_LOCALES } from "@/i18n/locales";
 import { parseLocaleJson } from "../../../scripts/parse-locale-json.mjs";
+import { getItemAbsolveInsightKey } from "./rules/insightReveal";
 import {
   ABSOLUTION_INSIGHT_COST,
   canAbsolveItem,
@@ -89,7 +90,26 @@ describe("itemAbsolution", () => {
     const next = useGameStore.getState();
     expect(next.absolvedItems.unnamed_book).toBe(true);
     expect(next.resources.insight).toBe(0);
+    expect(next.insightRevealing[getItemAbsolveInsightKey("unnamed_book")]).toBeGreaterThan(
+      Date.now(),
+    );
     expect(useGameStore.getState().absolveItem("unnamed_book")).toBe(false);
+  });
+
+  it("keeps the cleanse when the reveal animation finishes", () => {
+    useGameStore.getState().initialize(withBookAndRelic("unnamed_book"));
+    expect(useGameStore.getState().absolveItem("unnamed_book")).toBe(true);
+
+    const revealKey = getItemAbsolveInsightKey("unnamed_book");
+    useGameStore.setState({
+      insightRevealing: { [revealKey]: Date.now() - 1 },
+    });
+    useGameStore.getState().tickCooldowns();
+
+    const after = useGameStore.getState();
+    expect(after.absolvedItems.unnamed_book).toBe(true);
+    expect(after.insightRevealing[revealKey]).toBeUndefined();
+    expect(after.revealedEffects).not.toContain(revealKey);
   });
 
   it("keeps the rite through save allowlist + load hydrate", () => {

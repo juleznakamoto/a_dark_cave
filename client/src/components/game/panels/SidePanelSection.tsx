@@ -29,7 +29,6 @@ import {
 import { useIsMobile } from "@/hooks/use-mobile";
 import { useNewItemPulseTooltips } from "@/hooks/useNewItemPulseTooltip";
 import { cn } from "@/lib/utils";
-import { useUntilTimestamp } from "@/lib/uiClock";
 import { getResourceLimit, isResourceLimited } from "@/game/resourceLimits";
 import {
   isVillagerFoodUpkeepActive,
@@ -40,7 +39,8 @@ import {
   type TooltipStatKey,
 } from "@/components/game/StatEffectsTooltip";
 import {
-  INSIGHT_REVEAL_DURATION_MS,
+  getItemAbsolveInsightKey,
+  getWeaponEnchantInsightKey,
   isInsightUnlocked,
 } from "@/game/rules/insightReveal";
 import type { GameState } from "@shared/schema";
@@ -327,11 +327,12 @@ function useInsightBadgeTooltipPulse(tooltipId: string) {
 
 /**
  * Enchant badge shown next to an owned weapon once the Tomewarden Academy is built.
- * Clicking plays the blob animation for INSIGHT_REVEAL_DURATION_MS; the enchantment
- * is applied when the animation resolves.
+ * The enchant applies immediately; `insightRevealing` keeps the animation if the
+ * side panel unmounts (tab switch) before the blob finishes.
  */
 function WeaponEnchantBadge({ weaponId }: { weaponId: string }) {
   const tooltipId = `weapon-enchant-${weaponId}`;
+  const revealKey = getWeaponEnchantInsightKey(weaponId);
   const {
     pulseClassName,
     dismissPulse,
@@ -341,6 +342,8 @@ function WeaponEnchantBadge({ weaponId }: { weaponId: string }) {
   const setHighlightedResources = useGameStore(
     (s) => s.setHighlightedResources,
   );
+  const insightRevealEnd = useGameStore((s) => s.insightRevealing?.[revealKey]);
+  const isRevealing = typeof insightRevealEnd === "number";
   const canShow = useDerivedGameState((s) => {
     if (!isWeaponEnchantUnlocked(s)) return false;
     if (!isInsightUnlocked(s)) return false;
@@ -349,40 +352,42 @@ function WeaponEnchantBadge({ weaponId }: { weaponId: string }) {
   });
   const cost = useDerivedGameState((s) => getNextEnchantCost(s, weaponId));
   const affordable = useDerivedGameState((s) => canEnchantWeapon(s, weaponId));
-  const [playingUntil, setPlayingUntil] = useState(0);
   const [suppressHover, setSuppressHover] = useState(false);
-  const enchantTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const revealStartedRef = useRef(false);
+  const lastCostRef = useRef(cost);
+  if (cost != null) lastCostRef.current = cost;
 
-  const playing = useUntilTimestamp(playingUntil || null);
+  const playing = isRevealing;
 
-  useEffect(
-    () => () => {
-      if (enchantTimerRef.current) clearTimeout(enchantTimerRef.current);
-    },
-    [],
-  );
+  useEffect(() => {
+    if (isRevealing) revealStartedRef.current = true;
+  }, [isRevealing]);
 
-  if (!canShow || cost == null) return null;
+  useEffect(() => {
+    if (!isRevealing) return;
+    setHighlightedResources(["insight"]);
+    return () => setHighlightedResources([]);
+  }, [isRevealing, setHighlightedResources]);
+
+  useEffect(() => {
+    if (revealStartedRef.current && !isRevealing) {
+      setSuppressHover(true);
+    }
+  }, [isRevealing]);
+
+  if (!canShow && !isRevealing) return null;
   const isDisabled = !affordable || playing;
   const enchantTooltip = getUiTooltip(
     "enchantForInsight",
     "Enchant for {{cost}} Insight",
-    { cost },
+    { cost: cost ?? lastCostRef.current ?? 0 },
   );
 
   const handleClick = () => {
     if (isDisabled) return;
     dismissPulse();
     setSuppressHover(false);
-    setPlayingUntil(Date.now() + INSIGHT_REVEAL_DURATION_MS);
-    setHighlightedResources(["insight"]);
-    if (enchantTimerRef.current) clearTimeout(enchantTimerRef.current);
-    enchantTimerRef.current = setTimeout(() => {
-      useGameStore.getState().enchantWeapon(weaponId);
-      setHighlightedResources([]);
-      setPlayingUntil(0);
-      setSuppressHover(true);
-    }, INSIGHT_REVEAL_DURATION_MS);
+    useGameStore.getState().enchantWeapon(weaponId);
   };
 
   return (
@@ -406,6 +411,7 @@ function WeaponEnchantBadge({ weaponId }: { weaponId: string }) {
     >
       <button
         type="button"
+        data-testid={`button-enchant-${weaponId}`}
         aria-label={enchantTooltip}
         aria-busy={playing}
         disabled={isDisabled}
@@ -414,7 +420,7 @@ function WeaponEnchantBadge({ weaponId }: { weaponId: string }) {
           handleClick();
         }}
         className={getInsightBadgeTriggerClassName({
-          canAfford: affordable,
+          canAfford: affordable || playing,
           playing,
           suppressHover,
           className: cn(
@@ -432,6 +438,7 @@ function WeaponEnchantBadge({ weaponId }: { weaponId: string }) {
 
 function ItemAbsolveBadge({ itemId }: { itemId: string }) {
   const tooltipId = `item-absolve-${itemId}`;
+  const revealKey = getItemAbsolveInsightKey(itemId);
   const {
     pulseClassName,
     dismissPulse,
@@ -441,24 +448,34 @@ function ItemAbsolveBadge({ itemId }: { itemId: string }) {
   const setHighlightedResources = useGameStore(
     (s) => s.setHighlightedResources,
   );
+  const insightRevealEnd = useGameStore((s) => s.insightRevealing?.[revealKey]);
+  const isRevealing = typeof insightRevealEnd === "number";
   const canShow = useDerivedGameState((s) =>
     shouldShowAbsolveBadge(s, itemId),
   );
   const affordable = useDerivedGameState((s) => canAbsolveItem(s, itemId));
-  const [playingUntil, setPlayingUntil] = useState(0);
   const [suppressHover, setSuppressHover] = useState(false);
-  const absolveTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const revealStartedRef = useRef(false);
 
-  const playing = useUntilTimestamp(playingUntil || null);
+  const playing = isRevealing;
 
-  useEffect(
-    () => () => {
-      if (absolveTimerRef.current) clearTimeout(absolveTimerRef.current);
-    },
-    [],
-  );
+  useEffect(() => {
+    if (isRevealing) revealStartedRef.current = true;
+  }, [isRevealing]);
 
-  if (!canShow) return null;
+  useEffect(() => {
+    if (!isRevealing) return;
+    setHighlightedResources(["insight"]);
+    return () => setHighlightedResources([]);
+  }, [isRevealing, setHighlightedResources]);
+
+  useEffect(() => {
+    if (revealStartedRef.current && !isRevealing) {
+      setSuppressHover(true);
+    }
+  }, [isRevealing]);
+
+  if (!canShow && !isRevealing) return null;
   const isDisabled = !affordable || playing;
   const absolveTooltip = getUiTooltip(
     "absolveMadnessForInsight",
@@ -470,15 +487,7 @@ function ItemAbsolveBadge({ itemId }: { itemId: string }) {
     if (isDisabled) return;
     dismissPulse();
     setSuppressHover(false);
-    setPlayingUntil(Date.now() + INSIGHT_REVEAL_DURATION_MS);
-    setHighlightedResources(["insight"]);
-    if (absolveTimerRef.current) clearTimeout(absolveTimerRef.current);
-    absolveTimerRef.current = setTimeout(() => {
-      useGameStore.getState().absolveItem(itemId);
-      setHighlightedResources([]);
-      setPlayingUntil(0);
-      setSuppressHover(true);
-    }, INSIGHT_REVEAL_DURATION_MS);
+    useGameStore.getState().absolveItem(itemId);
   };
 
   return (
@@ -507,7 +516,7 @@ function ItemAbsolveBadge({ itemId }: { itemId: string }) {
           handleClick();
         }}
         className={getInsightBadgeTriggerClassName({
-          canAfford: affordable,
+          canAfford: affordable || playing,
           playing,
           suppressHover,
           className: cn(

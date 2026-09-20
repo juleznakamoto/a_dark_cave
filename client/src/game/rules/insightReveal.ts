@@ -48,6 +48,18 @@ export const CRAFT_DESCRIPTIONS_INSIGHT_KEY = "craftDescriptions";
 export const TIMED_EVENT_INSIGHT_PROLONG_KEY = "timedEventProlong";
 /** `insightRevealing` key while a villager preset slot unlock animates. */
 export const PRESET_UNLOCK_INSIGHT_KEY = "villagerPresetUnlock";
+/** Prefix for `insightRevealing` keys while an item Absolution badge animates. */
+export const ITEM_ABSOLVE_INSIGHT_KEY_PREFIX = "itemAbsolve:";
+/** Prefix for `insightRevealing` keys while a weapon enchant badge animates. */
+export const WEAPON_ENCHANT_INSIGHT_KEY_PREFIX = "weaponEnchant:";
+
+export function getItemAbsolveInsightKey(itemId: string): string {
+  return `${ITEM_ABSOLVE_INSIGHT_KEY_PREFIX}${itemId}`;
+}
+
+export function getWeaponEnchantInsightKey(weaponId: string): string {
+  return `${WEAPON_ENCHANT_INSIGHT_KEY_PREFIX}${weaponId}`;
+}
 
 const OWNABLE_EFFECT_PREFIXES = ["tools.", "weapons.", "clothing.", "relics."];
 

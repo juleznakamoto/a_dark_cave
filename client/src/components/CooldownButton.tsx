@@ -7,7 +7,6 @@ import {
   useGameStore,
 } from "@/game/state";
 import { TooltipWrapper } from "@/components/game/TooltipWrapper";
-import { useGlobalTooltipOpen } from "@/hooks/useGlobalTooltip";
 import { YELLOW_CORNER_DISC_CLASS } from "@/components/game/gameChrome";
 import { X } from "lucide-react";
 import { GAME_CONSTANTS } from "@/game/constants";
@@ -114,18 +113,20 @@ interface CooldownButtonProps {
   previewOverlay?: { widthPercent: number; mode: "fill" | "recede" } | null;
 }
 
-/** Ticks once a second only while this button's tooltip is open. */
+/**
+ * Ticks once a second while mounted. Tooltip content unmounts when closed, so
+ * this stays idle unless the player is actually looking at the remaining time.
+ * Do not gate on `useGlobalTooltipOpen` — that is only true for long-press,
+ * and desktop hover would freeze the countdown.
+ */
 function ExecutionRemainingLabel({
-  tooltipId,
   startMs,
   durationSec,
 }: {
-  tooltipId: string;
   startMs: number;
   durationSec: number;
 }) {
-  const tooltipOpen = useGlobalTooltipOpen(tooltipId) === true;
-  const now = useUiNow(tooltipOpen);
+  const now = useUiNow(true);
   const remainingSec = Math.max(0, durationSec - (now - startMs) / 1000);
   return (
     <>
@@ -535,7 +536,6 @@ const CooldownButton = forwardRef<HTMLButtonElement, CooldownButtonProps>(
           {hasBaseTooltip ? <ActionTooltipSeparator /> : null}
           <div className="text-muted-foreground">
             <ExecutionRemainingLabel
-              tooltipId={buttonId}
               startMs={executionStart}
               durationSec={executionDurationSec}
             />

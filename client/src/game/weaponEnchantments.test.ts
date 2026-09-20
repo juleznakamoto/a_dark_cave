@@ -6,6 +6,7 @@ import { calculateTotalEffects } from "@/game/rules/effectsCalculation";
 import { villageBuildActions } from "@/game/rules/villageBuildActions";
 import { SUPPORTED_LOCALES } from "@/i18n/locales";
 import { parseLocaleJson } from "../../../scripts/parse-locale-json.mjs";
+import { getWeaponEnchantInsightKey } from "./rules/insightReveal";
 import {
   canEnchantWeapon,
   getMaxEnchantLevel,
@@ -183,6 +184,31 @@ describe("weaponEnchantments", () => {
     const next = useGameStore.getState();
     expect(next.weaponEnchantments?.nightshade_bow).toBe(1);
     expect(next.resources.insight).toBe(3500); // 5000 - 1500
+    expect(
+      next.insightRevealing[getWeaponEnchantInsightKey("nightshade_bow")],
+    ).toBeGreaterThan(Date.now());
+    expect(useGameStore.getState().enchantWeapon("nightshade_bow")).toBe(false);
+  });
+
+  it("keeps the enchant when the reveal animation finishes", () => {
+    useGameStore.getState().initialize(
+      baseState({
+        weaponEnchantments: {},
+        resources: { insight: 5000 } as GameState["resources"],
+      }) as Partial<GameState>,
+    );
+    expect(useGameStore.getState().enchantWeapon("nightshade_bow")).toBe(true);
+
+    const revealKey = getWeaponEnchantInsightKey("nightshade_bow");
+    useGameStore.setState({
+      insightRevealing: { [revealKey]: Date.now() - 1 },
+    });
+    useGameStore.getState().tickCooldowns();
+
+    const after = useGameStore.getState();
+    expect(after.weaponEnchantments?.nightshade_bow).toBe(1);
+    expect(after.insightRevealing[revealKey]).toBeUndefined();
+    expect(after.revealedEffects).not.toContain(revealKey);
   });
 });
 

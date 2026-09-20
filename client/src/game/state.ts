@@ -79,6 +79,10 @@ import {
   getAchievementTitleInsightCost,
   getAchievementTitleInsightKey,
   parseAchievementTitleInsightKey,
+  getItemAbsolveInsightKey,
+  getWeaponEnchantInsightKey,
+  ITEM_ABSOLVE_INSIGHT_KEY_PREFIX,
+  WEAPON_ENCHANT_INSIGHT_KEY_PREFIX,
   INSIGHT_REVEAL_DURATION_MS,
   STAT_INSIGHT_REVEAL_KEY,
   BUILDING_DESCRIPTIONS_INSIGHT_KEY,
@@ -2900,9 +2904,11 @@ export const useGameStore = create<GameStore>((set, get) => ({
           } else if (
             actionId === TIMED_EVENT_INSIGHT_PROLONG_KEY ||
             actionId === PRESET_UNLOCK_INSIGHT_KEY ||
-            actionId === QUEUE_SLOT_UNLOCK_INSIGHT_KEY
+            actionId === QUEUE_SLOT_UNLOCK_INSIGHT_KEY ||
+            actionId.startsWith(ITEM_ABSOLVE_INSIGHT_KEY_PREFIX) ||
+            actionId.startsWith(WEAPON_ENCHANT_INSIGHT_KEY_PREFIX)
           ) {
-            // Animation-only keys: purchase/prolong already applied the effect.
+            // Animation-only keys: purchase/prolong/absolve/enchant already applied.
           } else {
             const achievementId = parseAchievementTitleInsightKey(actionId);
             if (achievementId) {
@@ -4450,6 +4456,10 @@ export const useGameStore = create<GameStore>((set, get) => ({
 
   enchantWeapon: (weaponId: string) => {
     const state = get();
+    const revealKey = getWeaponEnchantInsightKey(weaponId);
+    if (isInsightRevealInProgress(revealKey, state.insightRevealing)) {
+      return false;
+    }
     if (!canEnchantWeapon(state, weaponId)) return false;
 
     const cost = getNextEnchantCost(state, weaponId);
@@ -4457,11 +4467,17 @@ export const useGameStore = create<GameStore>((set, get) => ({
     const level = getWeaponEnchantLevel(state, weaponId);
     const resourceUpdates = updateResource(state, "insight", -cost);
 
+    // Grant immediately: insightRevealing is UI-only and would lose the
+    // enchant on reload or if the side-panel badge unmounts mid-animation.
     set({
       ...resourceUpdates,
       weaponEnchantments: {
         ...(state.weaponEnchantments ?? {}),
         [weaponId]: level + 1,
+      },
+      insightRevealing: {
+        ...(state.insightRevealing ?? {}),
+        [revealKey]: Date.now() + INSIGHT_REVEAL_DURATION_MS,
       },
     });
     StateManager.scheduleEffectsUpdate(get);
@@ -4470,6 +4486,10 @@ export const useGameStore = create<GameStore>((set, get) => ({
 
   absolveItem: (itemId: string) => {
     const state = get();
+    const revealKey = getItemAbsolveInsightKey(itemId);
+    if (isInsightRevealInProgress(revealKey, state.insightRevealing)) {
+      return false;
+    }
     if (!canAbsolveItem(state, itemId)) return false;
 
     const resourceUpdates = updateResource(
@@ -4478,11 +4498,17 @@ export const useGameStore = create<GameStore>((set, get) => ({
       -ABSOLUTION_INSIGHT_COST,
     );
 
+    // Grant immediately: insightRevealing is UI-only and would lose the
+    // cleanse on reload or if the side-panel badge unmounts mid-animation.
     set({
       ...resourceUpdates,
       absolvedItems: {
         ...(state.absolvedItems ?? {}),
         [itemId]: true,
+      },
+      insightRevealing: {
+        ...(state.insightRevealing ?? {}),
+        [revealKey]: Date.now() + INSIGHT_REVEAL_DURATION_MS,
       },
     });
     StateManager.scheduleEffectsUpdate(get);

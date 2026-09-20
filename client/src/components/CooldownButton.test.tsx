@@ -9,9 +9,16 @@ import CooldownButton, {
 } from "./CooldownButton";
 import { useGameStore } from "@/game/state";
 import {
+  closeAllGlobalTooltips,
+  useGlobalTooltip,
+} from "@/hooks/useGlobalTooltip";
+import {
   ADC_PROGRESS_WIPE_FILL_CLASS,
   ADC_PROGRESS_WIPE_PAUSED_CLASS,
   ADC_PROGRESS_WIPE_RECEDE_CLASS,
+  getUiClockSubscriberCount,
+  resetUiClockForTests,
+  UI_CLOCK_PERIOD_MS,
 } from "@/lib/uiClock";
 
 describe("CooldownButton execution wash", () => {
@@ -400,5 +407,88 @@ describe("CooldownButton execution wash", () => {
     const delayBeforeMs = Number.parseInt(delayBefore, 10);
     expect(delayAfter).toBeGreaterThan(delayBeforeMs - 200);
     expect(delayAfter).toBeLessThanOrEqual(-1000);
+  });
+});
+
+function OpenButtonTooltip({ id }: { id: string }) {
+  const { setOpenTooltip } = useGlobalTooltip();
+  React.useEffect(() => {
+    setOpenTooltip(id);
+    return () => setOpenTooltip(null);
+  }, [id, setOpenTooltip]);
+  return null;
+}
+
+describe("CooldownButton execution remaining tooltip", () => {
+  beforeEach(() => {
+    useGameStore.getState().initialize();
+    resetUiClockForTests();
+    closeAllGlobalTooltips();
+    vi.useFakeTimers();
+    vi.setSystemTime(new Date("2026-01-01T00:00:00.000Z"));
+  });
+
+  afterEach(() => {
+    cleanup();
+    closeAllGlobalTooltips();
+    vi.useRealTimers();
+    resetUiClockForTests();
+    vi.restoreAllMocks();
+  });
+
+  it("does not arm the remaining-time clock while the tooltip is closed", () => {
+    const start = Date.now();
+    useGameStore.setState({
+      executionStartTimes: { gatherWood: start },
+      executionDurations: { gatherWood: 90 },
+    });
+
+    render(
+      <CooldownButton
+        button_id="gatherWood"
+        cooldownMs={0}
+        onClick={() => { }}
+        tooltip="Gather wood"
+        data-testid="button-gather-wood"
+      >
+        Gather Wood
+      </CooldownButton>,
+    );
+
+    expect(screen.queryByText(/left until finished/)).toBeNull();
+    expect(getUiClockSubscriberCount()).toBe(0);
+  });
+
+  it("ticks remaining time once a second while the tooltip stays open", async () => {
+    const start = Date.now();
+    useGameStore.setState({
+      executionStartTimes: { gatherWood: start },
+      executionDurations: { gatherWood: 90 },
+    });
+
+    render(
+      <>
+        <OpenButtonTooltip id="button-gather-wood" />
+        <CooldownButton
+          button_id="gatherWood"
+          cooldownMs={0}
+          onClick={() => { }}
+          tooltip="Gather wood"
+          data-testid="button-gather-wood"
+        >
+          Gather Wood
+        </CooldownButton>
+      </>,
+    );
+
+    expect(screen.getAllByText(/1m 30s left until finished/).length).toBeGreaterThan(0);
+    expect(getUiClockSubscriberCount()).toBeGreaterThan(0);
+
+    act(() => {
+      vi.advanceTimersByTime(UI_CLOCK_PERIOD_MS);
+    });
+
+    expect(screen.queryByText(/1m 30s left until finished/)).toBeNull();
+    expect(screen.getAllByText(/1m \d+s left until finished/).length).toBeGreaterThan(0);
   });
 });
