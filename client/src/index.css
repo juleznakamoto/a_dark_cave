@@ -729,6 +729,31 @@ html[data-adc-chrome-stage="0"] {
   --adc-chrome-c-from: var(--adc-chrome-c-4, 15);
 }
 
+.adc-chrome-stage-preview[data-adc-chrome-stage="0"] .game-chrome-rule--box {
+  --adc-chrome-c-from: 0;
+  --adc-chrome-c-to: 0;
+}
+
+.adc-chrome-stage-preview[data-adc-chrome-stage="1"] .game-chrome-rule--box {
+  --adc-chrome-c-from: var(--adc-chrome-c-1, 15);
+  --adc-chrome-c-to: var(--adc-chrome-c-1, 15);
+}
+
+.adc-chrome-stage-preview[data-adc-chrome-stage="2"] .game-chrome-rule--box {
+  --adc-chrome-c-from: var(--adc-chrome-c-2, 15);
+  --adc-chrome-c-to: var(--adc-chrome-c-2, 15);
+}
+
+.adc-chrome-stage-preview[data-adc-chrome-stage="3"] .game-chrome-rule--box {
+  --adc-chrome-c-from: var(--adc-chrome-c-3, 15);
+  --adc-chrome-c-to: var(--adc-chrome-c-3, 15);
+}
+
+.adc-chrome-stage-preview[data-adc-chrome-stage="4"] .game-chrome-rule--box {
+  --adc-chrome-c-from: var(--adc-chrome-c-4, 15);
+  --adc-chrome-c-to: var(--adc-chrome-c-4, 15);
+}
+
 @media (min-width: 768px) {
   .md\:game-chrome-rule--none {
     border-top-width: 0;

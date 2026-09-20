@@ -33,6 +33,8 @@ export const MADNESS_STAGE_TEXT_CLASS: Record<MadnessVisualStage, string> = {
 
 export const ADC_CHROME_STAGE_ATTR = "data-adc-chrome-stage";
 export const ADC_CHROME_PREV_STAGE_ATTR = "data-adc-chrome-prev-stage";
+/** Nested `/dev/animations` columns. Beats document-level stage selectors. */
+export const ADC_CHROME_STAGE_PREVIEW_CLASS = "adc-chrome-stage-preview";
 /** Previous-stage crack mix (0–1). Keep in sync with `index.css`. */
 export const ADC_CHROME_FROM_PROP = "--adc-chrome-from";
 /** Current-stage crack mix (0–1). Keep in sync with `index.css`. */

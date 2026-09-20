@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, type CSSProperties } from "react";
 import { useDocumentChromeVisualStage } from "@/game/chromeStageTransition";
 import { gameActionOutlineButtonClassName } from "@/components/CooldownButton";
 import { ConstructionQueueSlot } from "@/components/game/ConstructionQueueSlot";
@@ -7,6 +7,8 @@ import { CLAIM_BUTTON_CLASS } from "@/achievements/achievementColors";
 import {
   DESTROYED_CHROME_ENABLED,
   destroyedChromeMaskStyle,
+  GAME_CHROME_RULE_BOTTOM,
+  GAME_CHROME_RULE_LEFT,
   GAME_PANEL_HEADER_INSIGHT_BADGE_CLASS,
   gameChromeDialogClassName,
   useDestroyedChrome,
@@ -16,6 +18,10 @@ import { Button } from "@/components/ui/button";
 import { ImproveButton } from "@/components/ui/improve-button";
 import { cn } from "@/lib/utils";
 import {
+  ADC_CHROME_FROM_PROP,
+  ADC_CHROME_SOLID_PROP,
+  ADC_CHROME_STAGE_PREVIEW_CLASS,
+  ADC_CHROME_TO_PROP,
   MADNESS_VISUAL_STAGE_LABELS,
   MADNESS_VISUAL_STAGE_MIN,
   MADNESS_VISUAL_STAGE_RANGES,
@@ -25,6 +31,99 @@ import {
 import { DemoSection } from "@/pages/animations-demo/DemoSection";
 
 const STAGES: MadnessVisualStage[] = [0, 1, 2, 3, 4];
+
+function chromeStagePreviewStyle(stage: MadnessVisualStage): CSSProperties {
+  const solid = stage === 0;
+  return {
+    [ADC_CHROME_FROM_PROP]: "0",
+    [ADC_CHROME_TO_PROP]: solid ? "0" : "1",
+    [ADC_CHROME_SOLID_PROP]: solid ? "1" : "0",
+  } as CSSProperties;
+}
+
+function ChromeStageColumn({ stage }: { stage: MadnessVisualStage }) {
+  const chromeOn = useDestroyedChrome();
+
+  return (
+    <div
+      className={cn(
+        ADC_CHROME_STAGE_PREVIEW_CLASS,
+        "flex min-w-0 flex-col gap-2.5 rounded-md border border-border/40 bg-neutral-950 p-2.5",
+      )}
+      data-adc-chrome-stage={stage}
+      style={chromeStagePreviewStyle(stage)}
+    >
+      <p className="text-[11px] font-medium text-foreground">
+        {MADNESS_VISUAL_STAGE_LABELS[stage]} · {MADNESS_VISUAL_STAGE_RANGES[stage]}
+      </p>
+      <div
+        className={cn(
+          "relative flex h-7 w-full items-center overflow-visible bg-background/80 px-1.5",
+          GAME_CHROME_RULE_BOTTOM,
+        )}
+        aria-label="Horizontal chrome rule"
+      >
+        <span className="text-[10px] text-muted-foreground">H</span>
+      </div>
+      <div
+        className={cn(
+          "relative flex h-14 w-7 items-center justify-center overflow-visible bg-background/80",
+          GAME_CHROME_RULE_LEFT,
+        )}
+        aria-label="Vertical chrome rule"
+      >
+        <span className="text-[10px] text-muted-foreground">V</span>
+      </div>
+      <div className="flex flex-col items-start gap-1.5">
+        <GameButton
+          variant="outline"
+          size="xs"
+          button_id="chrome-compare-gather"
+        >
+          Gather Wood
+        </GameButton>
+        <GameButton
+          variant="outline"
+          size="xs"
+          button_id="chrome-compare-hut"
+        >
+          Wooden Hut
+        </GameButton>
+      </div>
+      <ConstructionQueueSlot kind="free" testId="chrome-compare-slot" />
+      <div
+        className={cn(
+          "relative bg-background p-3 shadow-lg sm:rounded-lg",
+          chromeOn ? gameChromeDialogClassName() : "border border-border",
+        )}
+        style={
+          chromeOn ? destroyedChromeMaskStyle("chrome-compare-dialog") : undefined
+        }
+      >
+        <p className="text-xs font-semibold leading-none">A stranger arrives</p>
+        <p className="mt-1.5 text-[11px] text-muted-foreground">
+          The cave mouth is no longer empty.
+        </p>
+      </div>
+    </div>
+  );
+}
+
+export function ChromeStagesCompareSection() {
+  return (
+    <DemoSection
+      id="chrome-stages"
+      title="All madness stages"
+      description="Same horizontal rule, vertical rule, two outline buttons, queue slot, and dialog frame at every madness band."
+    >
+      <div className="grid grid-cols-5 gap-2">
+        {STAGES.map((stage) => (
+          <ChromeStageColumn key={stage} stage={stage} />
+        ))}
+      </div>
+    </DemoSection>
+  );
+}
 
 export function ChromeRulesSection() {
   const [stage, setStage] = useState<MadnessVisualStage>(

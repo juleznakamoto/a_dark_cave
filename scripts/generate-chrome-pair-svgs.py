@@ -883,6 +883,25 @@ def emit_mask_css() -> None:
                 "",
             ]
         )
+    chunks.append(
+        "/* Nested /dev/animations columns beat document-level stage selectors. */"
+    )
+    chunks.append("")
+    for stage in (1, 2, 3, 4):
+        chunks.extend(
+            [
+                f'.adc-chrome-stage-preview[data-adc-chrome-stage="{stage}"] .game-chrome-rule {{',
+                mask_decls(stage, False, prev=False),
+                mask_decls(stage, False, prev=True),
+                "}",
+                "",
+                f'.adc-chrome-stage-preview[data-adc-chrome-stage="{stage}"] .game-chrome-rule--compact {{',
+                mask_decls(stage, True, prev=False),
+                mask_decls(stage, True, prev=True),
+                "}",
+                "",
+            ]
+        )
     MASK_CSS.write_text("\n".join(chunks).rstrip() + "\n", encoding="utf-8", newline="\n")
     print(f"wrote {MASK_CSS.relative_to(MASK_CSS.parents[3])}")
 

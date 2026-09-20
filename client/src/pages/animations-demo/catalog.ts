@@ -16,7 +16,10 @@ import {
   AttackWavesBarSection,
   SharedProgressShaderSection,
 } from "@/pages/animations-demo/sectionSharedProgressShader";
-import { ChromeRulesSection } from "@/pages/animations-demo/sectionChromeRules";
+import {
+  ChromeRulesSection,
+  ChromeStagesCompareSection,
+} from "@/pages/animations-demo/sectionChromeRules";
 import { CssEffectsSection } from "@/pages/animations-demo/sectionCssEffects";
 import {
   ExplosionSection,
@@ -76,6 +79,11 @@ export const ANIMATION_DEMO_SECTIONS: AnimationDemoSection[] = [
   },
   { id: "feed-fire", label: "Feed fire", Section: FeedFireSection },
   { id: "explosion", label: "Explosion", Section: ExplosionSection },
+  {
+    id: "chrome-stages",
+    label: "All madness stages",
+    Section: ChromeStagesCompareSection,
+  },
   { id: "chrome-rules", label: "Destroyed chrome", Section: ChromeRulesSection },
   { id: "css-effects", label: "CSS effects", Section: CssEffectsSection },
   { id: "shaders", label: "Shaders", Section: ShadersSection },
