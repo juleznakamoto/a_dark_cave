@@ -5,7 +5,7 @@
     "faq": {
       "whatIs": {
         "q": "Qu'est-ce qu'A Dark Cave ?",
-        "a": "A Dark Cave est un jeu incremental de survie et de colonie en texte. Tu te réveilles dans une grotte sans mémoire, tu allumes un feu, tu ramasses des ressources, tu construis un village et tu descends dans le noir."
+        "a": "A Dark Cave est un jeu incrémental de survie et de colonie en texte. Tu te réveilles dans une grotte sans mémoire, tu allumes un feu, tu ramasses des ressources, tu construis un village et tu descends dans le noir."
       },
       "free": {
         "q": "A Dark Cave est-il gratuit ?",
@@ -13,11 +13,11 @@
       },
       "idle": {
         "q": "Est-ce un jeu idle ou un clicker ?",
-        "a": "Non. C'est un jeu incremental, à la fois semi-idle et actif. Tu fais des choix et tu gères une colonie. Ce n'est pas un clicker pour le second écran."
+        "a": "Non. C'est un jeu incrémental, à la fois semi-idle et actif. Tu fais des choix et tu gères une colonie. Ce n'est pas un clicker pour le second écran."
       },
       "sleepMode": {
         "q": "Qu'est-ce que le mode sommeil ?",
-        "a": "Le mode sommeil permet à tes villageois de produire des ressources quand tu ne joues pas, comme un mode idle. La durée du sommeil définit combien de temps tu peux rester en mode sommeil, et l'intensité du sommeil définit quelle part de ta production normale tu reçois (hors bonus)."
+        "a": "Le mode sommeil permet aux villageois de produire des ressources quand tu ne joues pas, comme un mode idle. La durée du sommeil définit combien de temps tu peux rester en mode sommeil, et l'intensité du sommeil définit quelle part de ta production normale tu reçois (hors bonus)."
       },
       "like": {
         "q": "À quels jeux ressemble-t-il ?",
@@ -62,12 +62,12 @@
     },
     "about": {
       "intro1": "J'ai fait ce jeu parce qu'il y a de nombreuses années j'ai joué à A Dark Room, qui m'a inspiré à créer mon propre jeu un jour. Ce jour est venu.",
-      "intro2": "Tu te réveilles à l'entrée d'une grotte sombre. Pas de mémoire. Pas de possessions. Tu fais un feu, puis tu ramasses du bois, tu fabriques une torche, tu construis ton premier abri. Des inconnus arrivent. Le village grandit. Tu commences à explorer ce qui se trouve au fond de la grotte. Le passé de ta civilisation. Ton passé. Voilà A Dark Cave : un incremental textuel sur survivre, construire, et découvrir ce qu'il y a vraiment là-dessous, et peut-être où nous allons en tant qu'humanité.",
+      "intro2": "Tu te réveilles à l'entrée d'une grotte sombre. Pas de mémoire. Pas de possessions. Tu fais un feu, puis tu ramasses du bois, tu fabriques une torche, tu construis ton premier abri. Des inconnus arrivent. Le village grandit. Tu commences à explorer ce qui se trouve au fond de la grotte. Le passé de ta civilisation. Ton passé. Voilà A Dark Cave : un incrémental textuel sur survivre, construire, et découvrir ce qu'il y a vraiment là-dessous, et peut-être où nous allons en tant qu'humanité.",
       "intro3": "C'est gratuit dans ton navigateur : <site>a-dark-cave.com</site>. Pour soutenir le jeu, il y a des achats entièrement optionnels. Il y a une <demo>démo Steam</demo> si tu préfères jouer comme ça. La version Steam complète est prévue pour le 27 octobre 2026.",
       "howHeading": "Comment on joue",
       "how1": "Tu commences avec rien. Tu débloques progressivement des objets, des bâtiments, des compétences, des métiers, des membres de la compagnie, et bien plus. Une histoire se déploie, riche en lore, sur le passé d'une civilisation qui a vécu avant. Tu en apprends davantage à mesure que tu descends dans la grotte. Mais le danger grandit aussi.",
       "how2": "Le gameplay est actif. Tu prends des décisions qui influencent le jeu. Il y a aussi un mode idle pour que le jeu avance pendant que tu es absent. Le jeu a une fin, ou peut-être plus d'une.",
-      "likedHeading": "Si tu aimais les anciens jeux incrementals",
+      "likedHeading": "Si tu aimais les anciens jeux incrémentaux",
       "liked1": "Les gens arrivent souvent ici via A Dark Room, Kittens Game, Universal Paperclips, Candy Box, et des jeux comme ceux-là. Tu retrouveras certaines mécaniques de ces jeux dans A Dark Cave. A Dark Cave est minimaliste dans ses graphismes, mais j'ai fait les animations à la main, ajouté beaucoup de sons, et l'ai fait marcher sur ordinateur et mobile pour qu'il corresponde à notre époque.",
       "whoHeading": "Pour qui c'est",
       "who1": "C'est pour les gens qui aiment les jeux qui commencent simple et deviennent plus compliqués exprès. Pas parce qu'un tutoriel déverse vingt systèmes dès la première minute, mais parce que tu as mérité le suivant.",

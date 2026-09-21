@@ -113,7 +113,7 @@
       },
       "sacrificeVillagers": {
         "cost": "{{sacrificeAmount}} Villageois",
-        "label": "Se préparer à l'attaque"
+        "label": "Sacrifier des villageois"
       }
     },
     "log": {
@@ -533,7 +533,7 @@
       }
     },
     "message": "« Peu après l'explosion, un homme proche commença à se dématérialiser ; sa forme vacillait, demi-transparente pendant quelques secondes. Terrifié et rendu fou par ce qui s'était passé, il se donna la mort quelques instants plus tard. »",
-    "title": "Le minerai inconnu"
+    "title": "L'homme vacillant"
   },
   "cube14d": {
     "choices": {
@@ -541,7 +541,7 @@
         "label": "Fermer"
       }
     },
-    "message": "« Dépérés, les survivants supposèrent que le minerai pourrait les aider à passer la porte. Avec ses derniers fragments, ils construisirent une bombe plus petite et placèrent leur homme le plus sain devant la porte. Dès l'explosion, il devint spectral, translucide, puis disparut de l'autre côté. »",
+    "message": "« Désespérés, les survivants supposèrent que le minerai pourrait les aider à passer la porte. Avec ses derniers fragments, ils construisirent une bombe plus petite et placèrent leur homme le plus sain devant la porte. Dès l'explosion, il devint spectral, translucide, puis disparut de l'autre côté. »",
     "title": "À travers la porte"
   },
   "cube15a": {
@@ -550,7 +550,7 @@
         "label": "Fermer"
       }
     },
-    "message": "C'est alors que vous comprenez que les créatures n'ont pas attaqué parce qu'elles vous ont reconnue comme l'un des leurs. Vous êtes l'homme qui a disparu à travers la porte.",
+    "message": "C'est alors que vous comprenez que les créatures n'ont pas attaqué parce qu'elles vous ont reconnu comme l'un des leurs. Vous êtes l'homme qui a disparu à travers la porte.",
     "title": "La reconnaissance"
   },
   "cube15b": {
@@ -2828,9 +2828,9 @@
       }
     },
     "log": {
-      "outcome0": "Vous acceptez de mettre fin à la pratique du sacrifice humain. La femme propose de détruire le Monolithe Noir et de bâtir à sa place un obélisque d'un blanc pur, afin de purifier les ténèbres des esprits du peuple.",
-      "outcome1": "Vous bannissez la jeune femme du village. Elle convainc {{actualLeavers}} villageois sympathisants de partir avec elle, abandonnant votre colonie pour toujours.",
-      "outcome2": "Peu après que le sacrifice a été accompli au Monolithe Noir, {{actualLeavers}} villageois horrifiés rassemblent leurs affaires et partent avec dégoût."
+      "outcome0": "Vous bannissez la jeune femme du village. Elle convainc {{actualLeavers}} villageois sympathisants de partir avec elle, abandonnant votre colonie pour toujours.",
+      "outcome1": "Peu après que le sacrifice a été accompli au Monolithe Noir, {{actualLeavers}} villageois horrifiés rassemblent leurs affaires et partent avec dégoût.",
+      "outcome2": "Vous acceptez de mettre fin à la pratique du sacrifice humain. La femme propose de détruire le Monolithe Noir et de bâtir à sa place un obélisque d'un blanc pur, afin de purifier les ténèbres des esprits du peuple."
     },
     "message": "Une jeune femme s'approche de vous, les larmes ruisselant sur son visage. 'Mes deux parents ont été sacrifiés à ce monolithe maudit,' crie-t-elle. 'Ce comportement barbare doit cesser !'",
     "title": "La Supplication de la jeune femme"

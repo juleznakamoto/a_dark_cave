@@ -17,7 +17,7 @@
       },
       "sleepMode": {
         "q": "¿Qué es el modo sueño?",
-        "a": "El modo sueño hace que tus aldeanos produzcan recursos mientras no juegas, parecido a un modo idle. La duración del sueño define cuánto tiempo puedes quedarte en modo sueño, y la intensidad del sueño define qué parte de tu producción normal recibes (sin bonus)."
+        "a": "El modo sueño hace que los aldeanos produzcan recursos mientras no juegas, parecido a un modo idle. La duración del sueño define cuánto tiempo puedes quedarte en modo sueño, y la intensidad del sueño define qué parte de tu producción normal recibes (sin bonus)."
       },
       "like": {
         "q": "¿A qué juegos se parece?",

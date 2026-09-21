@@ -233,7 +233,7 @@
     "label": "浅矿坑"
   },
   "buildShrine": {
-    "description": "神圣祭坛，提供更强的抗疯癫庇护",
+    "description": "神圣祭坛，提供更强的抗疯狂庇护",
     "label": "神龛"
   },
   "buildStoneHut": {
@@ -253,7 +253,7 @@
     "label": "制革坊"
   },
   "buildTemple": {
-    "description": "宏伟神殿，提供强大的疯癫抗性",
+    "description": "宏伟神殿，提供强大的疯狂抗性",
     "label": "神殿"
   },
   "buildTimberMill": {
@@ -513,7 +513,7 @@
   "exploreUndergroundLake": {
     "label": "地下湖",
     "log": {
-      "complete": "借助颅灯笼的幽光，你下降至地下湖并造了一艘小船。在黑暗湖心的一座小岛上，尘封已久的宝藏静静躺在阴影中，无人触动。"
+      "complete": "借助骷髅灯笼的幽光，你下降至地下湖并造了一艘小船。在黑暗湖心的一座小岛上，尘封已久的宝藏静静躺在阴影中，无人触动。"
     }
   },
   "feedFire": {
@@ -661,8 +661,8 @@
   "risingSmoke": {
     "label": "升起的浓烟",
     "log": {
-      "success": "远征队发现一处亡命之徒营地。战斗残酷，但你们获胜。在箱子里找到500金币。",
-      "successKeyBonus": " 用骷髅钥匙打开隐藏隔层，又找到250金币。",
+      "success": "远征队发现一处亡命之徒营地。战斗残酷，但你们获胜。在箱子里找到500黄金。",
+      "successKeyBonus": " 用骷髅钥匙打开隐藏隔层，又找到250黄金。",
       "captiveOne": " 营地的1名俘虏选择加入村庄。",
       "captivesOther": " 营地的{{count}}名俘虏选择加入村庄。",
       "failure": "远征队抵达亡命之徒营地，但战斗惨败。{{count}} 名村民倒下，幸存者逃回村庄。"

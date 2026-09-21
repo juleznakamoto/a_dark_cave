@@ -1420,7 +1420,7 @@
     },
     "log": {
       "outcome0": "W chwili, gdy słyszysz pierwsze uderzenie, ciemność pożera cię całego. Śnisz o ogromnym mieście ze szkła i stali, pełnym dziwnych świateł i ludzi, którzy poruszają się z celem, którego nie rozumiesz. Gdy się budzisz, dzwonek zniknął, ale na przedramieniu pali się znak w kształcie dzwonka.",
-      "outcome1": "Ryzyko jest zbyt wielkie. Tego samego dnia przybywa handlarz i oferuje 500 złota za dzwonek. Przyjmujesz natychmiast, ulżony, że pozbyłeś się przeklętego przedmiotu. Handlarz odchodzi ze świadomym uśmiechem."
+      "outcome1": "Ryzyko jest zbyt wielkie. Tego samego dnia przybywa handlarz i oferuje 500 złota za dzwonek. Przyjmujesz natychmiast, z ulgą, że pozbyłeś się przeklętego przedmiotu. Handlarz odchodzi ze świadomym uśmiechem."
     },
     "message": "Otwierasz zapieczętowaną skrzynię kluczem szkieletowym. W środku, na wyblakłym aksamcie, leży złoty dzwonek pokryty groteskowymi rytami i dziwnymi symbolami na powierzchni.",
     "title": "Tajemniczy dzwonek"
@@ -2342,8 +2342,8 @@
       }
     },
     "log": {
-      "outcome0": "Odrzucasz ofertę. Młody handlarz kiwa głową, może ulżony, że nie zostaje żaden dług.",
-      "outcome1": "Odrzucasz ofertę. Młody handlarz kiwa głową, może ulżony, że nie zostaje żaden dług."
+      "outcome0": "Odrzucasz ofertę. Młody handlarz kiwa głową, może z ulgą, że nie zostaje żaden dług.",
+      "outcome1": "Odrzucasz ofertę. Młody handlarz kiwa głową, może z ulgą, że nie zostaje żaden dług."
     },
     "message": "Syn handlarza wraca, trzymając sztylet ojca. Jest pełen wdzięczności i oferuje wielką zniżkę przy następnym zakupie towarów ojca.",
     "title": "Wdzięczność syna handlarza"

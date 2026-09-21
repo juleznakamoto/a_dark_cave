@@ -467,8 +467,8 @@
         "label": "Fechar"
       }
     },
-    "message": "'O conhecimento fluía instantaneamente, e a sociedade prosperava. Por trás do progresso, os dispositivos cranianos orquestravam os pensamentos da humanidade, conectando mentes em uma teia silenciosa e inescapável.''",
-    "title": "O Grande Colapso"
+    "message": "'O conhecimento fluía instantaneamente, e a sociedade prosperava. Por trás do progresso, os dispositivos cranianos orquestravam os pensamentos da humanidade, conectando mentes em uma teia silenciosa e inescapável.'",
+    "title": "A Mente Coletiva"
   },
   "cube11": {
     "choices": {
@@ -476,8 +476,8 @@
         "label": "Fechar"
       }
     },
-    "message": "'Um dia, sem aviso, um inimaginável pulso magneto-elétrico varreu o globo. Todo dispositivo da civilização, incluindo os incorporados aos crânios, foi aniquilado.'",
-    "title": "A Mente Coletiva"
+    "message": "'Um dia, sem aviso, um inimaginável pulso eletromagnético varreu o globo. Todo dispositivo da civilização, incluindo os incorporados aos crânios, foi aniquilado.'",
+    "title": "O Grande Colapso"
   },
   "cube12": {
     "choices": {
@@ -522,7 +522,7 @@
       }
     },
     "message": "'Logo após a explosão, um homem ali perto começou a se desmaterializar, sua forma tremeluzindo, semitransparente por alguns segundos. Aterrorizado e enlouquecido pelo que havia acontecido, ele tirou a própria vida momentos depois.'",
-    "title": "O Minério Desconhecido"
+    "title": "O Homem Tremeluzente"
   },
   "cube14d": {
     "choices": {
@@ -831,13 +831,13 @@
         "label": "Recusar"
       }
     },
-    "leaveAfterGames": "O jogador guarda seus dados no bolso, dá um último sorriso torto e desaparece na escuridão da mata.",
+    "leaveAfterGames": "O apostador guarda seus dados no bolso, dá um último sorriso torto e desaparece na escuridão da mata.",
     "log": {
-      "outcome0": "O jogador dá de ombros, guarda os dados no bolso e some no escuro sem mais uma palavra.",
-      "outcome1": "O jogador dá de ombros, guarda os dados no bolso e some no escuro sem mais uma palavra."
+      "outcome0": "O apostador dá de ombros, guarda os dados no bolso e some no escuro sem mais uma palavra.",
+      "outcome1": "O apostador dá de ombros, guarda os dados no bolso e some no escuro sem mais uma palavra."
     },
-    "message": "O jogador está sentado de pernas cruzadas junto ao fogo, os olhos fixos nos dados. 'Faça sua aposta,' ele sussurra com um sorriso torto, 'e vamos descobrir quem resiste.'",
-    "title": "O Jogador Obcecado"
+    "message": "O apostador está sentado de pernas cruzadas junto ao fogo, os olhos fixos nos dados. 'Faça sua aposta,' ele sussurra com um sorriso torto, 'e vamos descobrir quem resiste.'",
+    "title": "O Apostador Obcecado"
   },
   "giftedRingDiscovery": {
     "choices": {

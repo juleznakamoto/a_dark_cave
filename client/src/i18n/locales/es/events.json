@@ -118,9 +118,9 @@
     },
     "log": {
       "outcome0": "Los aldeanos son entregados a los licántropos. Cuando la luna de sangre se desvanece, la paz vuelve a la aldea. Al menos por ahora.",
-      "outcome1": "Los licántropos atacan, pero tus defensas resisten. Su líder cae y de su cadáver extraes sangre de licano, aún caliente y rebosante de poder.",
+      "outcome1": "Los licántropos atacan, pero tus defensas resisten. Su líder cae y de su cadáver extraes Sangre de licántropo, aún caliente y rebosante de poder.",
       "outcome2": "¡Los licántropos arrollan tus defensas y arrasan el asentamiento! La luna de sangre se desvanece, pero la amenaza permanece.",
-      "outcome3": "Los licántropos atacan, pero tus defensas resisten. Su líder cae y de su cadáver extraes sangre de licano, aún caliente y rebosante de poder.",
+      "outcome3": "Los licántropos atacan, pero tus defensas resisten. Su líder cae y de su cadáver extraes Sangre de licántropo, aún caliente y rebosante de poder.",
       "outcome4": "¡Los licántropos arrollan tus defensas y arrasan el asentamiento! La luna de sangre se desvanece, pero la amenaza permanece."
     },
     "message": {
@@ -1133,7 +1133,7 @@
   "mercenaryDemand": {
     "choices": {
       "giveRing": {
-        "label": "Dar el anillo de alimentación"
+        "label": "Dar el anillo hambriento"
       },
       "payGold": {
         "cost": "100 oro",
@@ -1155,7 +1155,7 @@
   "mercenaryReturnDemand": {
     "choices": {
       "giveRing": {
-        "label": "Dar el anillo de alimentación"
+        "label": "Dar el anillo hambriento"
       },
       "payGold": {
         "cost": "200 oro",
@@ -2828,9 +2828,9 @@
       }
     },
     "log": {
-      "outcome0": "Aceptas poner fin a la práctica del sacrificio humano. La mujer propone destruir el Monolito Negro y construir en su lugar un obelisco blanco puro que limpie la oscuridad de las mentes del pueblo.",
-      "outcome1": "Destierras a la joven de la aldea. Convence a {{actualLeavers}} aldeanos compasivos para marcharse con ella, abandonando tu asentamiento para siempre.",
-      "outcome2": "Poco después de realizarse el sacrificio en el Monolito Negro, {{actualLeavers}} aldeanos horrorizados recogen sus pertenencias y se marchan asqueados."
+      "outcome0": "Destierras a la joven de la aldea. Convence a {{actualLeavers}} aldeanos compasivos para marcharse con ella, abandonando tu asentamiento para siempre.",
+      "outcome1": "Poco después de realizarse el sacrificio en el Monolito Negro, {{actualLeavers}} aldeanos horrorizados recogen sus pertenencias y se marchan asqueados.",
+      "outcome2": "Aceptas poner fin a la práctica del sacrificio humano. La mujer propone destruir el Monolito Negro y construir en su lugar un obelisco blanco puro que limpie la oscuridad de las mentes del pueblo."
     },
     "message": "Una joven se acerca a ti con lágrimas corriendo por su rostro. 'Mis dos padres fueron sacrificados a ese monolito maldito', llora. '¡Este comportamiento bárbaro tiene que terminar!'",
     "title": "La súplica de la joven"

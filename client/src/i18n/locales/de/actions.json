@@ -26,7 +26,7 @@
   },
   "buildAdvancedBlacksmith": {
     "description": "Verbesserte Schmiede mit besseren Werkzeugen und Techniken",
-    "label": "Fortgeschrittene Schmiede" //x1.3
+    "label": "Fortgeschrittene Schmiede"
   },
   "buildAlchemistHall": {
     "description": "Halle, in der der Alchemist Pulver und Sprengstoffe herstellt",
@@ -133,7 +133,7 @@
     "label": "Fellzelt"
   },
   "buildGrandArchive": {
-    "description": "Ein riesiges Gewölbe voller Schriftrollen, das alles bewahrt, was das Dorf je war – jeder Name und jede Mühe in Tinte verewigt", //x1.4
+    "description": "Ein riesiges Gewölbe voller Schriftrollen, das alles bewahrt, was das Dorf je war – jeder Name und jede Mühe in Tinte verewigt",
     "label": "Großes Archiv"
   },
   "buildGrandBazaar": {
@@ -174,14 +174,14 @@
   },
   "buildInkwardenAcademy": {
     "description": "Große Akademie, in der Meistergelehrte tiefes Wissen destillieren",
-    "label": "Schriftenwächterakademie" //x1.3
+    "label": "Schriftenwächterakademie"
   },
   "buildLonghouse": {
     "description": "Massive nordische Hütte, die viele Dorfbewohner beherbergt",
     "label": "Langhaus"
   },
   "buildMasterTannery": {
-    "description": "Fortgeschrittene Gerberei, die die Lederproduktion verbessert", //x1.4
+    "description": "Fortgeschrittene Gerberei, die die Lederproduktion verbessert",
     "label": "Meistergerberei"
   },
   "buildMasterworkFoundry": {
@@ -294,7 +294,7 @@
   "canyonBridge": {
     "label": "Canyonbrücke",
     "log": {
-      "complete": "Die Canyonbrücke is errichtet. Ashwraith-Händler können eure Siedlung nun erreichen – und ihr könnt ihnen Waren zu vereinbarten Preisen verkaufen."
+      "complete": "Die Canyonbrücke ist errichtet. Ashwraith-Händler können deine Siedlung nun erreichen, und du kannst ihnen Waren zu vereinbarten Preisen verkaufen."
     }
   },
   "castleRuins": {
@@ -478,7 +478,7 @@
   "descendFurther": {
     "label": "Tiefer hinabsteigen",
     "log": {
-      "firstVisit": "Die Laterne wirft ein gleichmäßiges Licht, während du noch tiefer hinabsteigst. Plötzlich berühren deine Füße von Menschenhand gemeißelte Steinstufen, vom Alter abgenutzt." //x1.4
+      "firstVisit": "Die Laterne wirft ein gleichmäßiges Licht, während du noch tiefer hinabsteigst. Plötzlich berühren deine Füße von Menschenhand gemeißelte Steinstufen, vom Alter abgenutzt."
     }
   },
   "encounterBeyondPortal": {
@@ -647,7 +647,7 @@
     }
   },
   "provokeAttackWave": {
-    "label": "Angriffswelle provozieren" //x1.3
+    "label": "Angriffswelle provozieren"
   },
   "repairBastion": {
     "label": "Bastion reparieren"
@@ -736,7 +736,7 @@
     "label": "Einsicht-Elixier"
   },
   "tradeGoldForVeinfireElixir": {
-    "label": "Aderfeuer-Elixier kaufen" //x1.3
+    "label": "Aderfeuer-Elixier kaufen"
   },
   "tradeGoldForWood": {
     "label": "Holz kaufen"

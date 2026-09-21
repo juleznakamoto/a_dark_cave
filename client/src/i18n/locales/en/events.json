@@ -1222,7 +1222,7 @@
     },
     "log": {
       "outcome0": "You hand over the gold. The mercenary counts it slowly, a cruel smile on his face. 'Pleasure doing business,' he says, before disappearing.",
-      "outcome1": "The mercenary signals his men to attack. The battle is fierce, but your the villagers prevails. The mercenaries flee into the forest, leaving behind their weapons and wounded.",
+      "outcome1": "The mercenary signals his men to attack. The battle is fierce, but the villagers prevail. The mercenaries flee into the forest, leaving behind their weapons and wounded.",
       "outcome2": "The mercenary signals his men to attack. Despite your best efforts, you are overwhelmed. {{deaths}} villagers fall before the mercenaries finally retreat, satisfied with the carnage.",
       "outcome3": "You offer him the feeding ring you still kept in a locked chest. The mercenary examines it with interest, slipping it onto his own finger. 'A nice ring,' he says, 'but not enough. I'll return tomorrow to collect the gold.'"
     },
@@ -1261,7 +1261,7 @@
       "outcome0": "You bid the merchant farewell. He tips his hat and mutters about the road ahead."
     },
     "message": "A weathered merchant arrives, his cart overflowing with wares. His eyes glint with avarice as he murmurs 'I have rare items for sale'.",
-    "title": "Traveling Merchant",
+    "title": "Travelling Merchant",
     "toolTrades": {
       "trade_nightshade_bow_schematic": {
         "label": "Nightshade Bow Schematic",
@@ -1423,7 +1423,7 @@
       "outcome1": "The risk is too great. That same day, a tradesman arrives and offers 500 Gold for the bell. You accept immediately, relieved to be rid of the cursed object. The tradesman departs with a knowing smile."
     },
     "message": "You open the sealed chest with the skeleton key. Inside, resting on faded velvet, lies a golden bell covered in grotesque engravings and strange symbols written across its surface.",
-    "title": "The mysterious Bell"
+    "title": "The Mysterious Bell"
   },
   "mysteriousBook": {
     "choices": {
@@ -1679,7 +1679,7 @@
       "outcome2": "You refuse. His face tightens, he gives a short nod and says nothing. The weight continues to stay on him alone."
     },
     "message": "The restless knight comes to you. 'There is one thing I never spoke of,' he says. 'I meant to spare everyone. But you might want to know it.'",
-    "title": "The unspeakable Burden"
+    "title": "The Unspeakable Burden"
   },
   "restlessKnightCoast": {
     "choices": {
@@ -2702,11 +2702,11 @@
     "log": {
       "outcome1": "You hand over the gold. The witch cackles, pockets the coins, and disappears into the mist without another word.",
       "outcome2": "You refuse to pay. The witch spits and curses, but nothing happens. She hobbles away, muttering threats into the wind. It seems you got lucky.",
-      "outcome3": "As you refuse to pay the witch raises her gnarled hands and speaks words in a forgotten tongue. When she leaves the villagers start to feel weak, as if their strength was sapped by an unseen force.",
-      "outcome4": "The villagers strike her down before she can finish her curse. Before the witch falls her body dissolves into black smoke, leaving only a foul stench.",
+      "outcome3": "As you refuse to pay, the witch raises her gnarled hands and speaks words in a forgotten tongue. When she leaves, the villagers start to feel weak, as if their strength was sapped by an unseen force.",
+      "outcome4": "The villagers strike her down before she can finish her curse. Before the witch falls, her body dissolves into black smoke, leaving only a foul stench.",
       "outcome5": "The men attack, but the witch is too quick. With a final cackle, she curses the village before vanishing into the woods. An intense weakness falls over your people, sapping their strength and will.",
       "outcome6": "You speak ancient words of power, learned from old texts. The witch recoils in fear and flees, her curse broken before it could take hold.",
-      "outcome7": "Your threats only anger the witch. She laughs and curses you with dark magic. When she leaves the villagers start to feel weak, as if their strength was sapped by an unseen force."
+      "outcome7": "Your threats only anger the witch. She laughs and curses you with dark magic. When she leaves, the villagers start to feel weak, as if their strength was sapped by an unseen force."
     },
     "message": "A hunched old woman in tattered robes arrives at the gates. With malice in her voice she demands, 'Pay me 50 Gold, or I shall curse you with misfortune.'",
     "title": "The Witch's Curse"
@@ -2898,7 +2898,7 @@
       "outcome1": "As you confront them, they laugh and confess they are thieves who came to rob the village. They overpower you and make off with 250 Silver before vanishing into the woods.",
       "outcome2": "You keep your distance and watch them from afar. After several days they are simply gone, as if they were never there. You have no idea who they were."
     },
-    "message": "You count the villagers and find three more than there should be. Strangers have appeared among your people, working and eating as if they belong to your commmunity.",
+    "message": "You count the villagers and find three more than there should be. Strangers have appeared among your people, working and eating as if they belong to your community.",
     "title": "Wrong Villagers"
   },
   "youngWomanProtest": {

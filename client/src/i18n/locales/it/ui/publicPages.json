@@ -5,7 +5,7 @@
     "faq": {
       "whatIs": {
         "q": "Che cos'è A Dark Cave?",
-        "a": "A Dark Cave è un gioco incremental testuale di sopravvivenza e insediamento. Ti svegli in una caverna senza memoria, accendi un fuoco, raccogli risorse, costruisci un villaggio e scendi nel buio."
+        "a": "A Dark Cave è un gioco incrementale testuale di sopravvivenza e insediamento. Ti svegli in una caverna senza memoria, accendi un fuoco, raccogli risorse, costruisci un villaggio e scendi nel buio."
       },
       "free": {
         "q": "A Dark Cave è gratis?",
@@ -13,11 +13,11 @@
       },
       "idle": {
         "q": "È un idle o un clicker?",
-        "a": "No. È un gioco incremental, semi-idle e attivo. Fai scelte e gestisci un insediamento. Non è un clicker da secondo schermo."
+        "a": "No. È un gioco incrementale, semi-idle e attivo. Fai scelte e gestisci un insediamento. Non è un clicker da secondo schermo."
       },
       "sleepMode": {
         "q": "Che cos'è la Modalità Sonno?",
-        "a": "La Modalità Sonno fa produrre risorse ai tuoi abitanti mentre non stai giocando, simile a una modalità idle. La Durata del Sonno definisce quanto puoi restare in Modalità Sonno, e l'Intensità del Sonno definisce quanta parte della produzione normale ottieni (esclusi i bonus)."
+        "a": "La Modalità Sonno fa produrre risorse agli abitanti mentre non stai giocando, simile a una modalità idle. La Durata del Sonno definisce quanto puoi restare in Modalità Sonno, e l'Intensità del Sonno definisce quanta parte della produzione normale ottieni (esclusi i bonus)."
       },
       "like": {
         "q": "A quali giochi somiglia?",
@@ -62,12 +62,12 @@
     },
     "about": {
       "intro1": "Ho fatto questo gioco perché molti anni fa ho giocato ad A Dark Room, che mi ha ispirato a creare un giorno un gioco mio. Quel giorno è arrivato.",
-      "intro2": "Ti svegli all'ingresso di una caverna buia. Niente memoria. Niente possessi. Accendi un fuoco, poi raccogli un po' di legno, costruisci una torcia, il tuo primo riparo. Arrivano degli sconosciuti. L'insediamento cresce. Inizi a esplorare cosa c'è in fondo alla caverna. Il passato della tua civiltà. Il tuo passato. Questo è A Dark Cave: un incremental testuale su sopravvivere, costruire e scoprire cosa c'è davvero là sotto, e forse dove stiamo andando come umanità.",
+      "intro2": "Ti svegli all'ingresso di una caverna buia. Niente memoria. Niente possessi. Accendi un fuoco, poi raccogli un po' di legno, costruisci una torcia, il tuo primo riparo. Arrivano degli sconosciuti. L'insediamento cresce. Inizi a esplorare cosa c'è in fondo alla caverna. Il passato della tua civiltà. Il tuo passato. Questo è A Dark Cave: un gioco incrementale testuale su sopravvivere, costruire e scoprire cosa c'è davvero là sotto, e forse dove stiamo andando come umanità.",
       "intro3": "È gratis nel browser: <site>a-dark-cave.com</site>. Per sostenere il gioco ci sono acquisti del tutto opzionali. C'è una <demo>demo Steam</demo> se preferisci giocare così. La versione Steam completa è prevista per il 27 ottobre 2026.",
       "howHeading": "Come si gioca",
       "how1": "Parti da zero. Sblocchi poco a poco oggetti, edifici, abilità, lavori, membri della compagnia e molto altro. Si apre una storia, ricca di lore, sul passato di una civiltà che ha vissuto prima. Più scendi nella caverna, più impari. Ma cresce anche il pericolo.",
       "how2": "Il gameplay è attivo. Prendi decisioni che influenzano il gioco. C'è anche una modalità idle, così il gioco può andare avanti mentre sei via. Il gioco ha un finale, o forse più di uno.",
-      "likedHeading": "Se ti piacevano i vecchi giochi incremental",
+      "likedHeading": "Se ti piacevano i vecchi giochi incrementali",
       "liked1": "Di solito si arriva qui da A Dark Room, Kittens Game, Universal Paperclips, Candy Box e giochi così. Troverai alcune meccaniche di quei giochi anche in A Dark Cave. A Dark Cave è minimalista nella grafica, ma ho fatto animazioni a mano, aggiunto tanti suoni e l'ho fatto funzionare su desktop e mobile, così sta nel nostro tempo.",
       "whoHeading": "Per chi è",
       "who1": "È per chi ama i giochi che partono semplici e diventano più complicati di proposito. Non perché un tutorial ti scarica venti sistemi al minuto uno, ma perché ti sei guadagnato il successivo.",

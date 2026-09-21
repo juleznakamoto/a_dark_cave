@@ -28,11 +28,11 @@
       "variant1": "Ein Reisender kommt an und beschließt zu bleiben.",
       "variant2": "Ein Wanderer erscheint und wird Teil der Gemeinschaft.",
       "variant3": "Jemand nähert sich dem Dorf und lässt sich nieder.",
-      "variant4": "Ein Fremder schließt sich der Gemeinschaft an.", //ok
+      "variant4": "Ein Fremder schließt sich der Gemeinschaft an.",
       "variant5": "Ein Neuankömmling kommt an und richtet sich ein.",
       "multiple0": "{{count}} Fremde treten dem Dorf bei.",
       "multiple1": "{{count}} Reisende kommen an und beschließen zu bleiben.",
-      "multiple2": "{{count}} Wanderer kommen an und lassen sich nieder." //ok
+      "multiple2": "{{count}} Wanderer kommen an und lassen sich nieder."
     },
     "building": {
       "darkEstate": "Das Dunkle Anwesen steht auf einem kleinen Hügel nahe dem Dorf und bietet Einsamkeit und Zuflucht.",
@@ -41,24 +41,24 @@
       "villageGrowthSuggestion": "Das Dorf wächst schnell. Vielleicht könnten Steinhäuser mehr Dorfbewohner beherbergen.",
       "cityGrowthMilestone": "Die Stadt ist zu einer pulsierenden Metropole gewachsen, erfüllt von Handel, Industrie und der Hoffnung auf bessere Tage.",
       "moonstoneDiscovered": "Tief in der Grube entdecken Arbeiter Mondsteinvorkommen, ein leuchtendes Mineral voller Energie.",
-      "foundry": "Die Gießerei erwacht zum Leben, um mithilfe von Feuer und Hitze Erze zu verschmelzen.", //ok
-      "masterworkFoundry": "Die Meistergießerei is fertiggestellt, ein Denkmal höchster metallurgischer Kunst. In ihren Flammen kann Schwarzstahl geschmiedet werden – nahezu unzerstörbar, aber sehr schwer herzustellen.",
+      "foundry": "Die Gießerei erwacht zum Leben, um mithilfe von Feuer und Hitze Erze zu verschmelzen.",
+      "masterworkFoundry": "Die Meistergießerei ist fertiggestellt, ein Denkmal höchster metallurgischer Kunst. In ihren Flammen kann Schwarzstahl geschmiedet werden, nahezu unzerstörbar, aber sehr schwer herzustellen.",
       "altar": "Am Waldrand erhebt sich ein Altar, errichtet, um zu besänftigen, was darin wohnt.",
-      "grandHunterLodge": "Die Große Jägerhütte is fertiggestellt, ein prächtiges Bauwerk, in dem sich Meisterjäger versammeln.",
+      "grandHunterLodge": "Die Große Jägerhütte ist fertiggestellt, ein prächtiges Bauwerk, in dem sich Meisterjäger versammeln.",
       "clerksHut": "Die Schreiberhütte steht fertig. Gelehrte versammeln sich darin, um die Welt zu studieren und ihr Wissen zu schärfen.",
       "scriptorium": "Das Skriptorium ist fertiggestellt. Ein Zentrum der Weisheit, in dem Gelehrte ihr Wissen vertiefen.",
       "inkwardenAcademy": "Die Schriftenwächterakademie erhebt sich, eine große Halle, in der Meistergelehrte das tiefste Wissen destillieren.",
       "tannery": "Die Gerberei ist fertig. Der Geruch gegerbten Leders liegt in der Luft, während Handwerker ihre Arbeit beginnen.",
       "highTannery": "Die Hohe Gerberei steht, eine große Werkstatt, in der erfahrene Handwerker Häute zum feinsten Leder verarbeiten.",
       "longhouse": "Das erste Langhaus erhebt sich, eine riesige Holzhalle mit dicken Balken und viel Platz.",
-      "furTents": "Die ersten Pelzzelte werden am Dorfrand errichtet und geben mehr Menschen warmes Obdach.",
+      "furTents": "Die ersten Fellzelte werden am Dorfrand errichtet und geben mehr Menschen warmes Obdach.",
       "shrine": "Neben dem Altar erhebt sich ein heiliger Schrein, dessen Präsenz ruhelose Geister beruhigt.",
-      "temple": "Ein prächtiger Tempel is fertiggestellt, seine heiligen Hallen erfüllt von leisen Gebeten, die gequälte Seelen beruhigen.",
+      "temple": "Ein prächtiger Tempel ist fertiggestellt, seine heiligen Hallen erfüllt von leisen Gebeten, die gequälte Seelen beruhigen.",
       "sanctum": "Das Heiligtum erhebt sich als Leuchtfeuer göttlichen Schutzes, dessen gesegnete Aura die dunkelsten Gedanken und Ängste vertreibt.",
       "alchemistHall": "Die Hallen des Alchemisten ragen empor, ihre Kammern gefüllt mit brodelnden Tiegeln und funkelnden Instrumenten vergessener Handwerkskunst.",
       "tradePost": "Nahe dem Wald entsteht ein Handelsposten, der Händler anzieht, die ihre Waren gegen Gold verkaufen wollen.",
       "grandBazaar": "Der Große Basar erhebt sich, ein weitläufiger Marktplatz, an dem Händler aus fernen Ländern ihre Waren tauschen.",
-      "merchantsGuild": "Die Kaufmannsgilde is fertiggestellt, eine mächtige Organisation, die alle Handelsrouten kontrolliert und beispiellosen Reichtum in die Siedlung bringt.",
+      "merchantsGuild": "Die Kaufmannsgilde ist fertiggestellt, eine mächtige Organisation, die alle Handelsrouten kontrolliert und beispiellosen Reichtum in die Siedlung bringt.",
       "bastion": "Die Bastion erhebt sich wie ein Berg aus Stein, ihre Mauern dick und unnachgiebig. Ein Versprechen des Schutzes gegen alles, was in den Tiefen unten lauert.",
       "wizardTower": "Der Zauberturm windet sich in den Himmel, knisternd vor arkaner Energie. Der Zauberer zieht mit seiner Sammlung uralter Folianten und mysteriöser Artefakte ein.",
       "fortifiedMoat": "Ein tiefer Graben umgibt nun die Siedlung, sein Wasser dunkel und tückisch. Kein Feind wird ihn leicht überschreiten.",
@@ -78,8 +78,8 @@
     },
     "crafting": {
       "emberBombFirst": "Das Wissen des Alchemisten erweist sich als unschätzbar. Du stellst eine mächtige Glutbombe her, deren Kern vor intensiver Hitze und zerstörerischem Potenzial glüht.",
-      "ashfireBombFirst": "Mit dem mystischen Aschenfeuerstaub stellst du eine außergewöhnliche Bombe her, die von anderweltlichem Feuer pulsiert. Ihre Flammen brennen in Farben, die nicht von dieser Welt stammen.",
-      "voidBombFirst": "Indem du Aschenfeuerstaub mit Obsidian und Schwarzpulver kombinierst, erschaffst du eine Waffe von erschreckender Macht. Die Leerebombe scheint den Raum um sich herum zu verzerren, die Realität selbst weicht ihrer Präsenz aus.",
+      "ashfireBombFirst": "Mit dem mystischen Aschfeuerstaub stellst du eine außergewöhnliche Bombe her, die von anderweltlichem Feuer pulsiert. Ihre Flammen brennen in Farben, die nicht von dieser Welt stammen.",
+      "voidBombFirst": "Indem du Aschfeuerstaub mit Obsidian und Schwarzpulver kombinierst, erschaffst du eine Waffe von erschreckender Macht. Die Leerebombe scheint den Raum um sich herum zu verzerren, die Realität selbst weicht ihrer Präsenz aus.",
       "veinfireElixirFirst": "Der Alchemist destilliert leuchtende Essenz aus Aderwurzfasern. Du hältst nun ein Aderfeuer-Elixier - ein Trank, von dem man munkelt, er stärke die Bastion, wenn alles verloren scheint.",
       "frostglassSword": "Die Schmiede brennt mit ätherischen blauen Flammen, während das Frostglas zu einem prächtigen Schwert geformt wird. Die Klinge leuchtet mit anderweltlichem kaltem Licht und strahlt immense Macht aus.",
       "arbalest": "Dem Schema folgend stellst du eine sorgfältig verzierte Armbrust her. Ihre Mechanik ist makellos, entworfen von einem Meisterhandwerker.",
@@ -99,7 +99,7 @@
       "forfeit": "Der besessene Spieler wertete dein Schweigen als Aufgabe."
     },
     "buttonUpgrade": {
-      "deepens": "Deine Meisterschaft in {{skill}} vertieft sich.", //ok
+      "deepens": "Deine Meisterschaft in {{skill}} vertieft sich.",
       "skills": {
         "caveExplore": "Höhlenforschung",
         "mineStone": "Steinabbau",
@@ -111,8 +111,8 @@
         "mineMoonstone": "Mondsteinabbau",
         "hunt": "Jagen",
         "chopWood": "Holzschlag",
-        "craftTorches": "Fackelherstellung", //ok
-        "craftBoneTotems": "Knochentotemherstellung", //ok
+        "craftTorches": "Fackelherstellung",
+        "craftBoneTotems": "Knochentotemherstellung",
         "craftLeatherTotems": "Ledertotemherstellung"
       }
     }

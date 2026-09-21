@@ -467,7 +467,7 @@
         "label": "Chiudi"
       }
     },
-    "message": "'La conoscenza fluiva all'istante, e la società prosperava. Dietro il progresso, i dispositivi cranici orchestravano i pensieri dell'umanità, collegando le menti in una rete silenziosa e inevitabile.''",
+    "message": "'La conoscenza fluiva all'istante, e la società prosperava. Dietro il progresso, i dispositivi cranici orchestravano i pensieri dell'umanità, collegando le menti in una rete silenziosa e inevitabile.'",
     "title": "Il Grande Collasso"
   },
   "cube11": {
@@ -1047,7 +1047,7 @@
     },
     "log": {
       "outcome0": "Consegni l'oro. Il mercenario lo conta lentamente, un sorriso crudele sul volto. 'Un piacere fare affari,' dice, prima di sparire.",
-      "outcome1": "Il mercenario fa segno ai suoi uomini di attaccare. La battaglia è feroce, ma i tuoi abitanti prevalgono. I mercenari fuggono nella foresta, lasciando dietro di sé le loro armi e i feriti.",
+      "outcome1": "Il mercenario fa segno ai suoi uomini di attaccare. La battaglia è feroce, ma gli abitanti prevalgono. I mercenari fuggono nella foresta, lasciando dietro di sé le loro armi e i feriti.",
       "outcome2": "Il mercenario fa segno ai suoi uomini di attaccare. Nonostante i tuoi sforzi, vieni sopraffatto. {{deaths}} abitanti cadono prima che i mercenari si ritirino finalmente, soddisfatti del massacro.",
       "outcome3": "Gli offri l'anello vorace che ancora conservavi in un baule chiuso a chiave. Il mercenario lo esamina con interesse, infilandolo al proprio dito. 'Un bell'anello,' dice, 'ma non basta. Tornerò domani a ritirare l'oro.'"
     },
@@ -1936,7 +1936,7 @@
       "outcome2": "I tuoi uomini attaccano lo schiavista, ma lui è preparato! Reagisce ferocemente. {{actualDeaths}} abitanti cadono nella lotta. Il mercante fugge con i suoi prigionieri, lasciandosi dietro solo morte.",
       "outcome3": "Rifiuti la vile offerta dello schiavista. Sputa a terra disgustato e se ne va a cavallo con i suoi prigionieri."
     },
-    "message": "Un uomo su un carro trainato da due cavalli si avvicina al villaggio. Una gabbia di ferro sul carro tiene tre schiavi miserabili. Il mercante ghigna malvagio: 'Ti pago 100 Acciaio per due dei tuoi abitanti. Che ne dici?'",
+    "message": "Un uomo su un carro trainato da due cavalli si avvicina al villaggio. Una gabbia di ferro sul carro tiene tre schiavi miserabili. Il mercante ghigna malvagio: 'Ti pago 100 Acciaio per due degli abitanti. Che ne dici?'",
     "title": "Il Mercante di Schiavi"
   },
   "solsticeGathering": {

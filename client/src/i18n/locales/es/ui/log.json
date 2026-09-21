@@ -67,7 +67,7 @@
       "blackMonolith": "El Monolito negro se alza en el centro de la aldea, un monumento elevado de adamantita oscura. Su superficie parece beber la luz, y los aldeanos se reúnen a su alrededor con reverencia y temor.",
       "blackEstate": "La Finca negra se alza desde la colina, rodeada por un velo de niebla.",
       "chitinPlating": "Las fortificaciones estón ahora reforzadas con blindaje de quitina. La defensa de la aldea aumenta notablemente.",
-      "pillarOfClarity": "El Pilar de claridad se alza, un obelisco reluciente que parece vibrar con poder antiguo. Su presencia aporta calma y enfoque a quienes estón cerca.",
+      "pillarOfClarity": "El Pilar de claridad se alza, un obelisco reluciente que parece vibrar con poder antiguo. Su presencia aporta calma y enfoque a quienes están cerca.",
       "boneTemple": "El Templo de hueso se alza a partir de miles de huesos cuidadosamente dispuestos, un monumento a los dioses antiguos. Su presencia emana poder oscuro, y los aldeanos se acercan a él con reverencia y miedo.",
       "heartfire": "El Fuego del corazón está encendido. Su calor y su luz dan a la aldea un nuevo sentido de propósito."
     },
@@ -101,19 +101,19 @@
     "buttonUpgrade": {
       "deepens": "Tu dominio de {{skill}} se profundiza.",
       "skills": {
-        "caveExplore": "exploración de cuevas", //x1.5
-        "mineStone": "extracción de piedra", //x1.7
-        "mineIron": "extracción de hierro", //x1.8
-        "mineCoal": "extracción de carbón", //x1.8
-        "mineSulfur": "extracción de azufre", //x1.5
-        "mineObsidian": "extracción de obsidiana", //x1.5
-        "mineAdamant": "extracción de adamantio", //x1.6
-        "mineMoonstone": "extracción de Piedra lunar", //x1.6
+        "caveExplore": "exploración de cuevas",
+        "mineStone": "extracción de piedra",
+        "mineIron": "extracción de hierro",
+        "mineCoal": "extracción de carbón",
+        "mineSulfur": "extracción de azufre",
+        "mineObsidian": "extracción de obsidiana",
+        "mineAdamant": "extracción de adamantita",
+        "mineMoonstone": "extracción de Piedra lunar",
         "hunt": "caza",
-        "chopWood": "tala de madera", //x1.3
+        "chopWood": "tala de madera",
         "craftTorches": "fabricación de antorchas",
         "craftBoneTotems": "fabricación de tótems de hueso",
-        "craftLeatherTotems": "fabricación de tótems de cuero" //x1.4
+        "craftLeatherTotems": "fabricación de tótems de cuero"
       }
     }
   }
