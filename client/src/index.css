@@ -979,6 +979,14 @@ html[data-adc-chrome-stage="0"] {
   height: calc(18px * var(--adc-control-scale, 1));
 }
 
+/* Location-tab body top inset. Padding (not margin) so ScrollArea cannot
+   clip hanging corner badges. Same class on every location tab so first
+   titles and buttons stay aligned when switching. Sized to half of
+   .button-focus-badge (largest top hang) plus 2px. */
+.game-tab-panel-body {
+  padding-top: calc(10px * var(--adc-control-scale, 1) + 2px);
+}
+
 .button-focus-badge {
   position: absolute;
   top: calc(-10px * var(--adc-control-scale, 1));

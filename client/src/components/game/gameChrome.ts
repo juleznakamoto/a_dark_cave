@@ -46,6 +46,13 @@ export const GAME_PANEL_HEADER_BAND =
 /** 12px gap from a tab section title row to the buttons or list below. */
 export const GAME_TAB_SECTION_STACK = "space-y-3";
 
+/**
+ * Shared top/bottom inset for location-tab scroll bodies (Cave, Village, Forest,
+ * Estate, Bastion, Timed Event). Padding, not margin: hanging corner badges must
+ * stay inside the ScrollArea, and every tab must start on the same line.
+ */
+export const GAME_TAB_PANEL_BODY = "game-tab-panel-body mb-2";
+
 /** 18px row for section titles inside location tabs (Build, Explore, Rest, …). */
 export const GAME_TAB_SECTION_HEADER_ROW =
   "game-panel-header-indicator-row flex w-full items-center gap-2";

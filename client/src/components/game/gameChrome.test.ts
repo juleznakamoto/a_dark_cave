@@ -5,6 +5,7 @@ import {
   DESTROYED_CHROME_ENABLED,
   destroyedChromeMaskStyle,
   GAME_CHROME_RULE_BOTTOM,
+  GAME_TAB_PANEL_BODY,
   gameChromeBoxClassName,
   gameChromeDialogClassName,
   destroyedChromeTinyMaskStyle,
@@ -16,6 +17,11 @@ import {
 describe("destroyed chrome switch", () => {
   it("is a code flag, not hardcoded per surface", () => {
     expect(typeof DESTROYED_CHROME_ENABLED).toBe("boolean");
+  });
+
+  it("uses one padded inset for every location-tab body", () => {
+    expect(GAME_TAB_PANEL_BODY).toContain("game-tab-panel-body");
+    expect(GAME_TAB_PANEL_BODY).not.toMatch(/md:pt-0|mt-2/);
   });
 
   it("keeps seams and outline buttons in sync with the flag", () => {

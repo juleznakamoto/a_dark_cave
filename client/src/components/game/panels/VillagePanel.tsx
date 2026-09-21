@@ -158,6 +158,7 @@ import {
   GAME_PANEL_HEADER_INDICATOR_TRIGGER_CLASS,
   GAME_PANEL_HEADER_INSIGHT_BADGE_CLASS,
   GAME_PANEL_HEADER_SLOT_ROW_CLASS,
+  GAME_TAB_PANEL_BODY,
   GAME_TAB_SECTION_HEADER,
   GAME_TAB_SECTION_HEADER_ROW,
   GAME_TAB_SECTION_STACK,
@@ -1479,7 +1480,7 @@ export default function VillagePanel() {
     <>
       <SuccessParticles buttonRef={feedFireButtonRef} sparks={sparks} />
       <ScrollArea className="h-full w-full">
-        <div className="w-full space-y-4 pt-2 md:pt-0 mt-0 md:mt-2 mb-2 pr-2 pb-2">
+        <div className={`w-full space-y-4 pr-2 pb-2 ${GAME_TAB_PANEL_BODY}`}>
           {actionGroups.map((group, groupIndex) => {
             const visibleActions = group.actions.filter((action) => {
               const actionWithShow = action as {

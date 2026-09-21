@@ -15,6 +15,7 @@ import AttackWavesChart from "./AttackWavesChart";
 import CooldownButton, { gameActionButtonGridClassName } from "@/components/CooldownButton";
 import { DemoEndPromoBadge } from "@/components/game/DemoEndPromoBadge";
 import {
+  GAME_TAB_PANEL_BODY,
   GAME_TAB_SECTION_HEADER,
   GAME_TAB_SECTION_HEADER_ROW,
   GAME_TAB_SECTION_STACK,
@@ -84,7 +85,7 @@ export default function BastionPanel({
   };
 
   return (
-    <div className="w-full space-y-4 pt-2 md:pt-0 mt-0 md:mt-2 mb-2 pl-2 pr-2">
+    <div className={`w-full space-y-4 pl-2 pr-2 ${GAME_TAB_PANEL_BODY}`}>
       <AttackWavesChart visible={active} />
 
       {showHealSection && (

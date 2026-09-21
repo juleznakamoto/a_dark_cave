@@ -36,6 +36,7 @@ import {
   GAME_PANEL_HEADER_INDICATOR_INNER_CLASS,
   GAME_PANEL_HEADER_INDICATOR_SIZE_PX,
   GAME_PANEL_HEADER_INDICATOR_TRIGGER_CLASS,
+  GAME_TAB_PANEL_BODY,
   GAME_TAB_SECTION_HEADER,
   GAME_TAB_SECTION_HEADER_ROW,
   GAME_TAB_SECTION_STACK,
@@ -680,7 +681,7 @@ export default function EstatePanel({
 
   return (
     <ScrollArea className="h-full w-full">
-      <div className="w-full space-y-2 pt-2 md:pt-0 mt-0 md:mt-2 mb-2 pr-2 pb-2">
+      <div className={cn("w-full space-y-2 pr-2 pb-2", GAME_TAB_PANEL_BODY)}>
         {/* Sleep Mode Section */}
         <div className="space-y-">
           {/* Extra bottom padding keeps Sleep/Focus from jumping when the focus ring appears */}

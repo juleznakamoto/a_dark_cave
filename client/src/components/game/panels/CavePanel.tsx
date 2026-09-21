@@ -31,6 +31,7 @@ import {
 } from "@/components/game/RedactedHint";
 import { DemoEndPromoBadge } from "@/components/game/DemoEndPromoBadge";
 import {
+  GAME_TAB_PANEL_BODY,
   GAME_TAB_SECTION_HEADER,
   GAME_TAB_SECTION_HEADER_ROW,
   GAME_TAB_SECTION_STACK,
@@ -507,7 +508,7 @@ export default function CavePanel() {
     <>
       <ScrollArea className="h-full w-full">
         {explosionEffect.ExplosionEffectRenderer()}
-        <div className="w-full space-y-4 pt-2 md:pt-0 mt-0 md:mt-2 mb-2 pr-2 pb-2">
+        <div className={`w-full space-y-4 pr-2 pb-2 ${GAME_TAB_PANEL_BODY}`}>
           {actionGroups.map((group, groupIndex) => {
             // Handle groups with subGroups (like Craft)
             if (group.subGroups) {
