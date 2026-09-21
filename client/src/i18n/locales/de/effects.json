@@ -27,8 +27,8 @@
       "name": "Alte Schriftrollen"
     },
     "arbalest_schematic": {
-      "description": "Bauplan zur Herstellung einer mächtigen Armbrust",
-      "name": "Armbrust-Bauplan"
+      "description": "Bauplan zur Herstellung einer mächtigen Arbalest",
+      "name": "Arbalest"
     },
     "ashen_embrace": {
       "description": "Deine Bergbaufähigkeit ist verbessert",
@@ -505,8 +505,8 @@
       "name": "Adamantschwert"
     },
     "arbalest": {
-      "description": "Sorgfältig gefertigte Armbrust, entworfen von einem brillanten Ingenieur",
-      "name": "Armbrust"
+      "description": "Sorgfältig gefertigte Arbalest, entworfen von einem brillanten Ingenieur",
+      "name": "Arbalest"
     },
     "ashen_dagger": {
       "description": "Dolch aus Vulkanasche, übergeben vom Aschenbringer",
