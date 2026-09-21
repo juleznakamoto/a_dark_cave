@@ -67,9 +67,7 @@ function FireParticles({
               backgroundColor: [
                 "hsl(0, 0%, 13%)", // almost pure black
                 "hsl(270, 70%, 14%)", // dark violet glow
-                "hsl(255, 75%, 11%)", // deeper violet-blue
                 "hsl(230, 75%, 10%)", // dark blue
-                "hsl(220, 65%, 8%)", // very dark blue
                 "hsl(0, 0%, 5%)", // almost pure black
               ],
 
@@ -123,7 +121,7 @@ function ExplosionParticles({
         return (
           <motion.div
             key={particle.id}
-            className="fixed rounded-full shadow-md"
+            className="fixed rounded-full"
             style={{
               width: `${particle.size}px`,
               height: `${particle.size}px`,
@@ -132,7 +130,6 @@ function ExplosionParticles({
               top: startY,
               zIndex: Z_INDEX.particlesForeground,
               pointerEvents: "none",
-              boxShadow: `0 0 ${particle.size * 0.25}px ${"#FFFFFF"}`,
             }}
             initial={{
               opacity: 1,
@@ -207,7 +204,7 @@ export function useExplosionEffect() {
     setExplosionCenter({ x: centerX, y: centerY });
 
     // Generate fire particles
-    const fireCount = 100;
+    const fireCount = 20;
     const newFireParticles: FireParticle[] = Array.from({
       length: fireCount,
     }).map(() => {
@@ -236,7 +233,7 @@ export function useExplosionEffect() {
     });
 
     // Generate explosion particles
-    const particleCount = 350;
+    const particleCount = 150;
     const newParticles: Particle[] = Array.from({ length: particleCount }).map(
       () => ({
         id: idRef.current++,

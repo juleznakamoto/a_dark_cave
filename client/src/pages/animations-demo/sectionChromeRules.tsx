@@ -100,7 +100,7 @@ function ChromeTileStrip({
       <p className="font-mono text-[10px] text-muted-foreground">
         {caption ?? `${fileName} · v${chromeTileVersion(fileName)}`}
       </p>
-      <div className="bg-neutral-900 py-2">
+      <div className="max-w-full overflow-x-auto bg-neutral-900 py-2">
         <img
           src={url}
           alt={caption ?? fileName}
@@ -155,7 +155,7 @@ function ChromeAllStageTiles() {
   return (
     <div
       key={chromeTileVersion("rule-h-s4.svg") + chromeTileVersion("rule-h-slot-s3.svg")}
-      className="space-y-6 rounded-md border border-border/40 bg-neutral-950 p-6"
+      className="min-w-0 max-w-full space-y-6 overflow-x-hidden rounded-md border border-border/40 bg-neutral-950 p-6"
     >
       <p className="text-[11px] text-muted-foreground">
         Full mask tiles: 3840px families at 0.5× length, 720px slot families at

@@ -1,5 +1,6 @@
 import { useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
+import CooldownButton from "@/components/CooldownButton";
 import { TextShimmer } from "@/components/ui/text-shimmer";
 import { AnimatedCounter } from "@/components/ui/animated-counter";
 import { ParticleButton } from "@/components/ui/particle-button";
@@ -9,6 +10,7 @@ import {
 } from "@/components/ui/feed-fire-particles";
 import { useExplosionEffect } from "@/components/ui/explosion-effect";
 import VaporizeTextCycle from "@/components/ui/vapour-text-effect";
+import { resolveActionLabel } from "@/i18n/actionLabels";
 import { DemoRow, DemoSection } from "@/pages/animations-demo/DemoSection";
 
 export function TextMotionSection() {
@@ -133,9 +135,27 @@ export function ExplosionSection() {
     <DemoSection
       id="explosion"
       title="Cave explosion"
-      description="Real useExplosionEffect (cave collapse / dig deeper)."
+      description="Real Blast Gate CooldownButton and useExplosionEffect. No event dialog."
     >
-      <DemoRow label="Trigger">
+      <DemoRow label="Blast Gate">
+        <CooldownButton
+          onClick={(event) => {
+            const rect = event.currentTarget.getBoundingClientRect();
+            triggerExplosion(
+              rect.left + rect.width / 2,
+              rect.top + rect.height / 2,
+            );
+          }}
+          cooldownMs={0}
+          button_id="demoBlastGate"
+          data-testid="demo-button-blast-portal"
+          size="xs"
+          variant="outline"
+        >
+          {resolveActionLabel("blastPortal", "Blast Gate")}
+        </CooldownButton>
+      </DemoRow>
+      <DemoRow label="Raw VFX">
         <Button
           ref={buttonRef}
           size="sm"

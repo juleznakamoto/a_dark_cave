@@ -67,7 +67,9 @@ export function useDemoShaderVisible(sectionId: string): boolean {
 
     const el = document.getElementById(sectionId);
     const scrollRoot =
-      el?.closest("[data-radix-scroll-area-viewport]") ?? null;
+      el?.closest(
+        "[data-animations-demo-scroll], [data-radix-scroll-area-viewport]",
+      ) ?? null;
     const io =
       el && typeof IntersectionObserver !== "undefined"
         ? new IntersectionObserver(
