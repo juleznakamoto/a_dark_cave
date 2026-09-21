@@ -1302,8 +1302,8 @@
     },
     "log": {
       "outcome0": "Vous déclinez l'offre du moine. Il s'incline avec respect et reprend le chemin des montagnes.",
-      "outcome2": "Le moine accepte votre tribut d'un hochement solennel et révèle des plans détaillés pour un passe-partout. “On dit que cette clé ouvre n'importe quelle serrure,” dit-il avant de partir.",
-      "outcome4": "Les yeux du moine s'écarquillent à la vue de l'or. 'Cela aidera grandement le monastère,' dit-il en sortant des plans détaillés pour un passe-partout. “On dit que cette clé ouvre n'importe quelle serrure,” dit-il avant de partir.",
+      "outcome2": "Le moine accepte votre tribut d'un hochement solennel et révèle des plans détaillés pour une clé squelette. “On dit que cette clé ouvre n'importe quelle serrure,” dit-il avant de partir.",
+      "outcome4": "Les yeux du moine s'écarquillent à la vue de l'or. 'Cela aidera grandement le monastère,' dit-il en sortant des plans détaillés pour une clé squelette. “On dit que cette clé ouvre n'importe quelle serrure,” dit-il avant de partir.",
       "outcome5": "Vous déclinez l'offre du moine. Il s'incline avec respect et reprend le chemin des montagnes."
     },
     "message": "Un moine venu d'un monastère de montagne arrive au village. 'J'ai appris que vous aviez trouvé un coffre mystérieux,' dit-il doucement. 'Le monastère sait comment l'ouvrir. Offrez un tribut, et je partagerai le secret.'",
@@ -1345,7 +1345,7 @@
       "outcome0": "Au moment où vous entendez le premier tintement, les ténèbres vous avalent tout entier. Vous rêvez d'une vaste cité de verre et d'acier, pleine de lumières étranges et de gens qui se déplacent avec un but que vous ne comprenez pas. À votre réveil, la cloche a disparu, mais une marque en forme de cloche brûle sur votre avant-bras.",
       "outcome1": "Le risque est trop grand. Ce même jour, un marchand arrive et offre 500 pièces d'or pour la cloche. Vous acceptez aussitôt, soulagé d'être débarrassé de l'objet maudit. Le marchand repart avec un sourire entendu."
     },
-    "message": "Vous ouvrez le coffre scellé avec le passe-partout. À l'intérieur, posée sur un velours fané, repose une cloche d'or couverte de gravures grotesques et de symboles étranges inscrits sur toute sa surface.",
+    "message": "Vous ouvrez le coffre scellé avec la clé squelette. À l'intérieur, posée sur un velours fané, repose une cloche d'or couverte de gravures grotesques et de symboles étranges inscrits sur toute sa surface.",
     "title": "La Cloche mystérieuse"
   },
   "mysteriousBook": {
@@ -1581,7 +1581,7 @@
       "outcome4": "Le chevalier écoute vos paroles, mais secoue la tête. 'Vos mots sont sincères, mais mon savoir a de la valeur. Peut-être nos chemins se croiseront-ils encore.' Il repart sans partager son récit.",
       "outcome5": "Vous déclinez l'offre du chevalier. Il hoche la tête avec respect. 'Peut-être nos chemins se croiseront-ils encore,' dit-il avant de poursuivre sa route."
     },
-    "title": "Le Chevalier tourmenté",
+    "title": "Le Chevalier sans repos",
     "message": {
       "firstTime": "Un chevalier en armure usée arrive au village. 'J'ai vu beaucoup du monde,' dit-il d'une voix caverneuse. 'Pour un peu d'or, je partagerai ce que j'ai vu lors de mes voyages.'",
       "repeat": "À nouveau, le chevalier en armure usée arrive au village. 'J'ai vu beaucoup du monde,' dit-il d'une voix caverneuse. 'Pour un peu d'or, je partagerai ce que j'ai vu lors de mes voyages.'"
@@ -1601,7 +1601,7 @@
       "outcome1": "Il parle du collectionneur de dispositifs crâniens dans le désert. Il capturait des humains pour leur implanter les appareils, sans pitié et sans succès. Le chevalier a trouvé une tranchée remplie de centaines de morts.",
       "outcome2": "Vous refusez. Son visage se crispe, il fait un bref signe de tête et ne dit rien. Le poids continue de reposer sur lui seul."
     },
-    "message": "Le chevalier tourmenté vient à vous. 'Il y a une chose dont je n'ai jamais parlé,' dit-il. 'Je voulais épargner tout le monde. Mais vous pourriez vouloir la savoir.'",
+    "message": "Le chevalier sans repos vient à vous. 'Il y a une chose dont je n'ai jamais parlé,' dit-il. 'Je voulais épargner tout le monde. Mais vous pourriez vouloir la savoir.'",
     "title": "Le Fardeau indicible"
   },
   "restlessKnightCoast": {
@@ -1651,9 +1651,9 @@
     },
     "log": {
       "outcome0": "Le chevalier a attendu, mais vous n'avez pas répondu. 'Peut-être une autre fois,' dit-il avant de poursuivre sa route.",
-      "outcome2": "Le chevalier hoche la tête avec satisfaction. 'Un prix équitable. Je défendrai votre peuple de ma vie.' Il retire son heaume usé, révélant un visage balafré mais déterminé. Le chevalier tourmenté a rejoint votre compagnie.",
-      "outcome4": "Le chevalier accepte l'argent avec une révérence solennelle. 'Je défendrai votre peuple de ma vie.' Il retire son heaume usé, révélant un visage balafré mais déterminé. Le chevalier tourmenté a rejoint votre compagnie.",
-      "outcome5": "'Votre but semble noble,' les yeux du chevalier s'illuminent. 'Ce serait un honneur de me tenir à vos côtés.' Il retire son heaume usé, révélant un visage balafré mais déterminé. Le chevalier tourmenté a rejoint votre compagnie.",
+      "outcome2": "Le chevalier hoche la tête avec satisfaction. 'Un prix équitable. Je défendrai votre peuple de ma vie.' Il retire son heaume usé, révélant un visage balafré mais déterminé. Le chevalier sans repos a rejoint votre compagnie.",
+      "outcome4": "Le chevalier accepte l'argent avec une révérence solennelle. 'Je défendrai votre peuple de ma vie.' Il retire son heaume usé, révélant un visage balafré mais déterminé. Le chevalier sans repos a rejoint votre compagnie.",
+      "outcome5": "'Votre but semble noble,' les yeux du chevalier s'illuminent. 'Ce serait un honneur de me tenir à vos côtés.' Il retire son heaume usé, révélant un visage balafré mais déterminé. Le chevalier sans repos a rejoint votre compagnie.",
       "outcome6": "Le chevalier écoute, mais secoue la tête. 'Les mots seuls ne peuvent nourrir un guerrier. Je dois donc poursuivre ma route, pour l'instant,' dit-il en se détournant et en partant.",
       "outcome7": "Vous déclinez son offre. Le chevalier hoche la tête avec compréhension. 'Je respecte votre décision. Je dois donc poursuivre ma route, pour l'instant,' dit-il en se détournant et en partant."
     },

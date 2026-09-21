@@ -270,7 +270,7 @@
   },
   "buildTreasury": {
     "description": "Coffre-fort qui permet de risquer des sommes bien plus importantes",
-    "label": "Trésorerie"
+    "label": "Trésor"
   },
   "buildVillageWarehouse": {
     "description": "Grand entrepôt capable de stocker de vastes quantités",
@@ -440,7 +440,7 @@
     "label": "Bottes d'ombre"
   },
   "craftSkeletonKey": {
-    "label": "Passe-partout"
+    "label": "Clé squelette"
   },
   "craftSteelAxe": {
     "label": "Hache d'acier"
@@ -537,7 +537,7 @@
     "label": "Soigner le vieux mage"
   },
   "healRestlessKnight": {
-    "label": "Soigner le chevalier tourmenté"
+    "label": "Soigner le chevalier sans repos"
   },
   "hiddenLibrary": {
     "label": "Bibliothèque cachée",
@@ -662,7 +662,7 @@
     "label": "Fumée montante",
     "log": {
       "success": "Votre expédition trouve un camp de hors-la-loi. Le combat est brutal, mais vous l'emportez. Dans un coffre, vous trouvez 500 or.",
-      "successKeyBonus": " Avec votre passe-partout, vous ouvrez un compartiment caché et trouvez 250 or supplémentaires.",
+      "successKeyBonus": " Avec votre clé squelette, vous ouvrez un compartiment caché et trouvez 250 or supplémentaires.",
       "captiveOne": " 1 captif du camp choisit de rejoindre le village.",
       "captivesOther": " {{count}} captifs du camp choisissent de rejoindre le village.",
       "failure": "Votre expédition atteint un camp de hors-la-loi, mais le combat tourne terriblement mal. {{count}} villageois tombent avant que les survivants ne fuient vers le village."

@@ -1243,8 +1243,8 @@
         "label": "Trampa gigante"
       },
       "trade_arbalest_schematic": {
-        "message": "Compras el esquema de ballesta. El mercader despliega un plano intrincado: «Un diseño de un ingeniero maestro. Con esto puedes fabricar un arma poderosa.»",
-        "label": "Esquema de ballesta"
+        "message": "Compras el esquema de arbalesta. El mercader despliega un plano intrincado: «Un diseño de un ingeniero maestro. Con esto puedes fabricar un arma poderosa.»",
+        "label": "Esquema de arbalesta"
       },
       "trade_compound_bow": {
         "message": "Compras el arco compuesto. El mercader asiente con aprobación: «Arma de alta precisión de la civilización desaparecida. Te servirá bien.»",

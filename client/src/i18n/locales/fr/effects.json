@@ -299,8 +299,8 @@
       "name": "Mains habiles"
     },
     "skeleton_key_schematic": {
-      "description": "Plan pour fabriquer un passe-partout",
-      "name": "Passe-partout"
+      "description": "Plan pour fabriquer une clé squelette",
+      "name": "Clé squelette"
     },
     "stonebinders_codex": {
       "description": "Tome de la bibliothèque cachée révélant les secrets d'une construction efficace",
@@ -374,7 +374,7 @@
     },
     "restless_knight": {
       "description": "Vétéran du combat qui a vu les vestiges de l'ancien monde. Débloque la compétence de combat Frappe écrasante.",
-      "name": "Chevalier tourmenté"
+      "name": "Chevalier sans repos"
     },
     "the_hound": {
       "description": "Survivant musclé et défiguré d'un village de montagne empoisonné. Débloque la compétence de combat Hurlement sauvage.",
@@ -472,7 +472,7 @@
     },
     "skeleton_key": {
       "description": "Clé mystérieuse censée ouvrir n'importe quelle serrure",
-      "name": "Passe-partout"
+      "name": "Clé squelette"
     },
     "skull_lantern": {
       "description": "Forgée dans un os maudit, elle éclaire les profondeurs les plus noires",
