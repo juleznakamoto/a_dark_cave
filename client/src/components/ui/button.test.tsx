@@ -3,7 +3,10 @@ import { beforeEach, describe, expect, it, vi } from "vitest";
 import { fireEvent, render, screen } from "@testing-library/react";
 import React from "react";
 import { Button } from "./button";
-import { DestroyedChromeScope } from "@/components/game/gameChrome";
+import {
+  DestroyedChromeScope,
+  chromeRuleColorStyle,
+} from "@/components/game/gameChrome";
 
 const { trackButtonClick } = vi.hoisted(() => ({
   trackButtonClick: vi.fn(),
@@ -84,12 +87,13 @@ describe("Button destroyed outline chrome", () => {
     expect(btn.style.getPropertyValue("--adc-chrome-mask-x")).toBe("");
   });
 
-  it("keeps cube-close radius and gray tint without a 2px solid edge", () => {
+  it("keeps cube-close radius and silver hairline without a 2px solid edge", () => {
     render(
       <Button
         variant="outline"
         size="sm"
-        className="px-8 rounded-lg [--adc-chrome-rule-color:#374151]"
+        className="px-8 rounded-lg"
+        style={chromeRuleColorStyle("#9ca3af")}
         button_id="cube-close-test"
       >
         Close
@@ -98,7 +102,7 @@ describe("Button destroyed outline chrome", () => {
     const btn = screen.getByRole("button", { name: "Close" });
     expect(btn.className).toContain("game-chrome-rule--box");
     expect(btn.className).toContain("rounded-lg");
-    expect(btn.className).toContain("[--adc-chrome-rule-color:#374151]");
+    expect(btn.style.getPropertyValue("--adc-chrome-rule-color")).toBe("#9ca3af");
     expect(btn.className).not.toMatch(/(^|\s)border-2(\s|$)/);
   });
 

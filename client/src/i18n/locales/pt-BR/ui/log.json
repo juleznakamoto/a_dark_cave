@@ -8,6 +8,10 @@
       "one": "Um aldeão sucumbe à loucura e tira a própria vida.",
       "other": "{{count}} aldeões sucumbem à loucura e tiram as próprias vidas."
     },
+    "madnessLevel": {
+      "increased": "Você afunda mais fundo na loucura.",
+      "decreased": "Sua loucura se acalma."
+    },
     "starvationDeath": {
       "one": "Um aldeão sucumbe à fome.",
       "other": "{{count}} aldeões morrem de fome."

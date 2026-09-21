@@ -83,6 +83,15 @@ export const CLAIM_BUTTON_CLASS: Record<string, string> = {
     "bg-violet-950/30 hover:bg-violet-950/70 hover:text-foreground border border-border border-violet-800/50 rounded-md",
 };
 
+/** Cracked hairline for claim buttons. Tailwind `border-*` cannot retint `.game-chrome-rule--box`. */
+export const CLAIM_BUTTON_CHROME_COLOR: Record<string, string> = {
+  building: tailwindToHex("blue-800"),
+  item: tailwindToHex("red-800"),
+  action: tailwindToHex("green-800"),
+  basic: tailwindToHex("amber-800"),
+  overall: tailwindToHex("violet-800"),
+};
+
 /** Hex/rgba colors for Recharts (circle charts). Derived from ACHIEVEMENT_COLORS. */
 const tailwindColor = (tw: string) => tw.replace(/^bg-/, "");
 export const INCOMPLETE_COLOR: Record<string, string> = {

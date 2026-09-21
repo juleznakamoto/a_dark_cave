@@ -135,6 +135,7 @@ import {
   type ShopOpenSource,
 } from "@/game/shopOpenSource";
 import { madnessEvents } from "@/game/rules/eventsMadness";
+import { resetMadnessLevelLogBaseline } from "@/game/madnessLevelLog";
 import { DISGRACED_PRIOR_UPGRADES } from "@/game/rules/skillUpgrades";
 import {
   canUpgradeVillagerCap,
@@ -3117,6 +3118,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
       };
     }
 
+    resetMadnessLevelLogBaseline();
     set(resetState);
     StateManager.scheduleEffectsUpdate(get);
 
@@ -3579,6 +3581,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
       };
 
       const migrated = applyGameStateLoadMigrations(loadedState);
+      resetMadnessLevelLogBaseline();
       set({
         ...migrated,
         ...getPendingModalEventDialogResume(migrated),
@@ -3627,6 +3630,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
         ...getTimedEventTabCleanupPatch(get().activeTab),
       };
 
+      resetMadnessLevelLogBaseline();
       set(newGameState);
     }
 

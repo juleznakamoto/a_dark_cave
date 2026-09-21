@@ -3,9 +3,10 @@ import { useDocumentChromeVisualStage } from "@/game/chromeStageTransition";
 import { gameActionOutlineButtonClassName } from "@/components/CooldownButton";
 import { ConstructionQueueSlot } from "@/components/game/ConstructionQueueSlot";
 import GameButton from "@/components/game/GameButton";
-import { CLAIM_BUTTON_CLASS } from "@/achievements/achievementColors";
+import { CLAIM_BUTTON_CLASS, CLAIM_BUTTON_CHROME_COLOR } from "@/achievements/achievementColors";
 import {
   DESTROYED_CHROME_ENABLED,
+  chromeRuleColorStyle,
   destroyedChromeMaskStyle,
   GAME_CHROME_RULE_BOTTOM,
   GAME_CHROME_RULE_LEFT,
@@ -389,6 +390,7 @@ export function ChromeRulesSection() {
               variant="outline"
               size="xs"
               className={`h-5 px-2 ${CLAIM_BUTTON_CLASS.item}`}
+              style={chromeOn ? chromeRuleColorStyle(CLAIM_BUTTON_CHROME_COLOR.item) : undefined}
               button_id="chrome-demo-claim"
             >
               Claim
@@ -398,9 +400,10 @@ export function ChromeRulesSection() {
               size="sm"
               className={
                 chromeOn
-                  ? "px-8 rounded-lg [--adc-chrome-rule-color:#374151] hover:bg-black/0 hover:text-gray-100 hover:[--adc-chrome-rule-color:#9ca3af]"
-                  : "px-8 rounded-lg border-2 border-gray-700 hover:bg-black/0 hover:text-gray-100 hover:border-gray-400"
+                  ? "px-8 rounded-lg hover:bg-black/0 hover:text-gray-100"
+                  : "px-8 rounded-lg border-2 border-gray-400 hover:bg-black/0 hover:text-gray-100 hover:border-gray-300"
               }
+              style={chromeOn ? chromeRuleColorStyle("#9ca3af") : undefined}
               button_id="chrome-demo-cube-close"
             >
               Close

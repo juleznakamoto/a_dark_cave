@@ -1,4 +1,10 @@
-import { createContext, createElement, useContext, type ReactNode } from "react";
+import {
+  createContext,
+  createElement,
+  useContext,
+  type CSSProperties,
+  type ReactNode,
+} from "react";
 
 /**
  * Destroyed hairline chrome (header, footer, columns, outline action buttons,
@@ -84,10 +90,8 @@ export function gameChromeDialogClassName(): string {
 }
 
 /** Cracked hairline color. Set this on the control; do not map Tailwind `border-*` in CSS. */
-export function chromeRuleColorStyle(color: string): {
-  "--adc-chrome-rule-color": string;
-} {
-  return { "--adc-chrome-rule-color": color };
+export function chromeRuleColorStyle(color: string): CSSProperties {
+  return { "--adc-chrome-rule-color": color } as CSSProperties;
 }
 
 /**

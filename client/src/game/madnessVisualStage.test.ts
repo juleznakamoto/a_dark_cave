@@ -89,10 +89,10 @@ describe("chromeStageFadeWeights", () => {
 describe("MADNESS_STAGE_TEXT_CLASS", () => {
   it("only uses pulse classes that exist in CSS", () => {
     expect(MADNESS_STAGE_TEXT_CLASS[1]).toBe(
-      "madness-pulse-light text-red-200",
+      "madness-pulse-light text-violet-200",
     );
     expect(MADNESS_STAGE_TEXT_CLASS[4]).toBe(
-      "madness-pulse-extreme text-red-500",
+      "madness-pulse-extreme text-violet-500",
     );
     expect(Object.values(MADNESS_STAGE_TEXT_CLASS).join(" ")).not.toMatch(
       /madness-light|madness-medium|madness-intense|madness-extreme(?!-)/,

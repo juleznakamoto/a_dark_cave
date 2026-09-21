@@ -35,6 +35,7 @@ import {
   INDICATOR_CLASS_INCOMPLETE,
   INDICATOR_CLASS_COMPLETE,
   CLAIM_BUTTON_CLASS,
+  CLAIM_BUTTON_CHROME_COLOR,
   PROGRESS_BAR_BG_CLASS,
 } from "@/achievements/achievementColors";
 import type { AchievementRow } from "@/achievements/achievementHelpers";
@@ -45,6 +46,7 @@ import { useTranslation } from "react-i18next";
 import { useUiTranslation } from "@/i18n/useUiTranslation";
 import { DemoEndPromoBadge } from "@/components/game/DemoEndPromoBadge";
 import {
+  chromeRuleColorStyle,
   GAME_TAB_SECTION_HEADER,
   GAME_TAB_SECTION_HEADER_ROW,
 } from "@/components/game/gameChrome";
@@ -192,6 +194,7 @@ function AchievementRowComponent({
   indicatorClassIncomplete,
   indicatorClassComplete,
   claimButtonClass,
+  claimChromeColor,
   forceRedacted,
   catalogActive,
 }: {
@@ -199,6 +202,7 @@ function AchievementRowComponent({
   indicatorClassIncomplete: string;
   indicatorClassComplete: string;
   claimButtonClass: string;
+  claimChromeColor: string;
   forceRedacted?: boolean;
   catalogActive?: boolean;
 }) {
@@ -295,6 +299,7 @@ function AchievementRowComponent({
               variant="outline"
               size="xs"
               className={`h-5 px-2 ${claimButtonClass}`}
+              style={chromeRuleColorStyle(claimChromeColor)}
               onClick={handleClaim}
               button_id={`achievement-claim-${row.achievementId}`}
               tooltip={tooltipText}
@@ -357,6 +362,8 @@ function AchievementTabContent({
   const indicatorClassIncomplete = INDICATOR_CLASS_INCOMPLETE[config.idPrefix] ?? "bg-red-500/60";
   const indicatorClassComplete = INDICATOR_CLASS_COMPLETE[config.idPrefix] ?? "bg-red-800";
   const claimButtonClass = CLAIM_BUTTON_CLASS[config.idPrefix] ?? CLAIM_BUTTON_CLASS.item;
+  const claimChromeColor =
+    CLAIM_BUTTON_CHROME_COLOR[config.idPrefix] ?? CLAIM_BUTTON_CHROME_COLOR.item;
   const categoryHeader = t(CATEGORY_HEADER_KEYS[config.idPrefix], {
     defaultValue: CATEGORY_HEADER_DEFAULTS[config.idPrefix],
   });
@@ -389,6 +396,7 @@ function AchievementTabContent({
               indicatorClassIncomplete={indicatorClassIncomplete}
               indicatorClassComplete={indicatorClassComplete}
               claimButtonClass={claimButtonClass}
+              claimChromeColor={claimChromeColor}
               forceRedacted={forceRedacted}
               catalogActive={catalogActive}
             />

@@ -8,6 +8,10 @@
       "one": "Un villageois succombe à la folie et se donne la mort.",
       "other": "{{count}} villageois succombent à la folie et se donnent la mort."
     },
+    "madnessLevel": {
+      "increased": "Vous sombrez plus profondément dans la folie.",
+      "decreased": "Votre folie s'apaise."
+    },
     "starvationDeath": {
       "one": "Un villageois succombe à la famine.",
       "other": "{{count}} villageois meurent de faim."

@@ -8,6 +8,10 @@
       "one": "Un abitante cede alla follia e si toglie la vita.",
       "other": "{{count}} abitanti cedono alla follia e si tolgono la vita."
     },
+    "madnessLevel": {
+      "increased": "Affondi più a fondo nella follia.",
+      "decreased": "La tua follia si placa."
+    },
     "starvationDeath": {
       "one": "Un abitante muore di fame.",
       "other": "{{count}} abitanti muoiono di fame."

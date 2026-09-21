@@ -1604,26 +1604,27 @@ html.adc-text-large .game-panel-header-indicator-row {
   }
 }
 
-/* Ranges do not overlap, so any pulse frame still reads light < medium < intense < extreme. */
+/* Ranges do not overlap, so any pulse frame still reads light < medium < intense < extreme.
+   Bloom matches madness-dialog-glow (violet-500 / #8b5cf6). */
 .madness-pulse-light {
-  --p-core: #ffd4d4;
-  --p-c: #ff8a8a;
+  --p-core: #ddd6fe;
+  --p-c: #a78bfa;
   --p-rest: 0px;
   --p-bloom: 3px;
   animation: madness-pulse 3s ease-in-out infinite;
 }
 
 .madness-pulse-medium {
-  --p-core: #ffe2e2;
-  --p-c: #ff6e6e;
+  --p-core: #ede9fe;
+  --p-c: #8b5cf6;
   --p-rest: 0px;
   --p-bloom: 5px;
   animation: madness-pulse 2.5s ease-in-out infinite;
 }
 
 .madness-pulse-intense {
-  --p-core: #fff2f2;
-  --p-c: #ff6e6e;
+  --p-core: #f5f3ff;
+  --p-c: #8b5cf6;
   --p-rest: 0px;
   --p-bloom: 7px;
   animation: madness-pulse 2s ease-in-out infinite;
@@ -1631,7 +1632,7 @@ html.adc-text-large .game-panel-header-indicator-row {
 
 .madness-pulse-extreme {
   --p-core: #ffffff;
-  --p-c: #ff6e6e;
+  --p-c: #8b5cf6;
   --p-rest: 0px;
   --p-bloom: 10px;
   animation: madness-pulse 1.5s ease-in-out infinite;

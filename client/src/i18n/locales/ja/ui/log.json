@@ -8,6 +8,10 @@
       "one": "村人1人が狂気に屈し、自ら命を絶った。",
       "other": "村人{{count}}人が狂気に屈し、自ら命を絶った。"
     },
+    "madnessLevel": {
+      "increased": "狂気の底へ、さらに沈んでいく。",
+      "decreased": "狂気が和らいだ。"
+    },
     "starvationDeath": {
       "one": "村人1人が飢えに屈した。",
       "other": "村人{{count}}人が飢え死にした。"

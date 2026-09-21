@@ -25,10 +25,10 @@ export const MADNESS_VISUAL_STAGE_RANGES: Record<MadnessVisualStage, string> = {
 
 export const MADNESS_STAGE_TEXT_CLASS: Record<MadnessVisualStage, string> = {
   0: "",
-  1: "madness-pulse-light text-red-200",
-  2: "madness-pulse-medium text-red-300",
-  3: "madness-pulse-intense text-red-400",
-  4: "madness-pulse-extreme text-red-500",
+  1: "madness-pulse-light text-violet-200",
+  2: "madness-pulse-medium text-violet-300",
+  3: "madness-pulse-intense text-violet-400",
+  4: "madness-pulse-extreme text-violet-500",
 };
 
 export const ADC_CHROME_STAGE_ATTR = "data-adc-chrome-stage";

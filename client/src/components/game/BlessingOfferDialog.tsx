@@ -15,6 +15,7 @@ import { SidePanelSectionIcon } from "@/components/game/panels/SidePanelSectionI
 import {
   destroyedChromeMaskStyle,
   gameChromeDialogClassName,
+  chromeRuleColorStyle,
   useDestroyedChrome,
 } from "@/components/game/gameChrome";
 
@@ -112,10 +113,13 @@ function BlessingOfferDialogOpen() {
                   disabled={!canAfford}
                   button_id={`blessing-offer-choose-${blessingId}`}
                   className={cn(
-                    "mt-auto w-full [--adc-chrome-rule-color:#2563eb] border-blue-600 bg-blue-600/10 text-foreground",
+                    "mt-auto w-full border-blue-600 bg-blue-600/10 text-foreground",
                     "hover:bg-blue-600/20 hover:text-foreground",
                     !canAfford &&
-                    "[--adc-chrome-rule-color:#172554] border-blue-950 opacity-60 disabled:opacity-60 hover:bg-transparent",
+                    "border-blue-950 opacity-60 disabled:opacity-60 hover:bg-transparent",
+                  )}
+                  style={chromeRuleColorStyle(
+                    canAfford ? "#2563eb" : "#172554",
                   )}
                   onClick={() => chooseInsightBlessing(blessingId)}
                 >

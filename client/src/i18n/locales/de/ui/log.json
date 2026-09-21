@@ -8,6 +8,10 @@
       "one": "Ein Dorfbewohner erliegt dem Wahnsinn und nimmt sich das Leben.",
       "other": "{{count}} Dorfbewohner erliegen dem Wahnsinn und nehmen sich das Leben."
     },
+    "madnessLevel": {
+      "increased": "Du sinkst tiefer in den Wahnsinn.",
+      "decreased": "Dein Wahnsinn lässt nach."
+    },
     "starvationDeath": {
       "one": "Ein Dorfbewohner erliegt dem Hunger.",
       "other": "{{count}} Dorfbewohner verhungern."

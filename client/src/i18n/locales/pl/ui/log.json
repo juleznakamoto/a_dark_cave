@@ -8,6 +8,10 @@
       "one": "Jeden wieśniak ulega szaleństwu i odbiera sobie życie.",
       "other": "{{count}} wieśniaków ulega szaleństwu i odbiera sobie życie."
     },
+    "madnessLevel": {
+      "increased": "Zapadasz coraz głębiej w szaleństwo.",
+      "decreased": "Twoje szaleństwo słabnie."
+    },
     "starvationDeath": {
       "one": "Jeden wieśniak umiera z głodu.",
       "other": "{{count}} wieśniaków umiera z głodu."

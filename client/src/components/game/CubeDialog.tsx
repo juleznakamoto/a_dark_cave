@@ -158,9 +158,10 @@ export default function CubeDialog({
             size="sm"
             className={
               chromeOn
-                ? "px-8 rounded-lg [--adc-chrome-rule-color:#374151] hover:bg-black/0 hover:text-gray-100 hover:[--adc-chrome-rule-color:#9ca3af]"
-                : "px-8 rounded-lg border-2 border-gray-700 hover:bg-black/0 hover:text-gray-100 hover:border-gray-400"
+                ? "px-8 rounded-lg hover:bg-black/0 hover:text-gray-100"
+                : "px-8 rounded-lg border-2 border-gray-400 hover:bg-black/0 hover:text-gray-100 hover:border-gray-300"
             }
+            style={chromeOn ? chromeRuleColorStyle("#9ca3af") : undefined}
             disabled={fallbackExecutedRef.current}
             button_id={`cube-close-${event?.id || 'unknown'}`}
           >

@@ -8,6 +8,10 @@
       "one": "一名村民陷入疯狂并结束了自己的生命。",
       "other": "{{count}} 名村民陷入疯狂并结束了自己的生命。"
     },
+    "madnessLevel": {
+      "increased": "你陷入了更深的疯狂。",
+      "decreased": "你的疯狂有所缓解。"
+    },
     "starvationDeath": {
       "one": "一名村民因饥饿而死亡。",
       "other": "{{count}} 名村民因饥饿而死亡。"

@@ -8,6 +8,10 @@
       "one": "Un aldeano sucumbe a la locura y se quita la vida.",
       "other": "{{count}} aldeanos sucumben a la locura y se quitan la vida."
     },
+    "madnessLevel": {
+      "increased": "Te hundes más en la locura.",
+      "decreased": "Tu locura se alivia."
+    },
     "starvationDeath": {
       "one": "Un aldeano sucumbe al hambre.",
       "other": "{{count}} aldeanos mueren de hambre."

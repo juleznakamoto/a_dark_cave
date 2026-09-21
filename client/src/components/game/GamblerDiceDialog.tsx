@@ -49,6 +49,7 @@ const SPIN_INTERVAL = 60;
 const PAUSE_MS_AFTER_PLAYER_ROLL = 500;
 /** Same duration after the gambler acts (roll settles or stand) before the player can roll again. */
 const PAUSE_MS_AFTER_NPC_ROLL = PAUSE_MS_AFTER_PLAYER_ROLL;
+const GAMBLER_CHROME_COLOR = "rgb(120 53 15 / 0.5)";
 
 function randomRollSpinDurationMs(): number {
   return (
@@ -551,7 +552,7 @@ export default function GamblerDiceDialog({
             : "z-[70] flex flex-col gap-0 overflow-hidden border-2 border-amber-900/50 shadow-2xl [&>button]:hidden [--adc-dialog-max-w:24rem] max-h-[85vh] duration-0 data-[state=open]:animate-none data-[state=closed]:animate-none"
         }
         style={{
-          ...chromeRuleColorStyle("rgb(120 53 15 / 0.5)"),
+          ...chromeRuleColorStyle(GAMBLER_CHROME_COLOR),
           ...(dialogLocked
             ? {
               width: lockedDialogSize.width,
@@ -661,7 +662,8 @@ export default function GamblerDiceDialog({
                   variant="outline"
                   size="xs"
                   onClick={onClose}
-                  className="text-xs font-medium text-foreground [--adc-chrome-rule-color:rgb(120_53_15_/_0.5)] border-amber-900/50 hover:bg-amber-950/30 hover:text-foreground"
+                  className="text-xs font-medium text-foreground border-amber-900/50 hover:bg-amber-950/30 hover:text-foreground"
+                  style={chromeRuleColorStyle(GAMBLER_CHROME_COLOR)}
                   button_id="gambler-close-wager"
                 >
                   {t("common:buttons.close")}

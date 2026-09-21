@@ -19,6 +19,7 @@ import {
   getMadnessVisualStage,
   parseChromeDistortionQuery,
 } from "@/game/madnessVisualStage";
+import { useMadnessLevelChangeLog } from "@/game/madnessLevelLog";
 import {
   GAME_CHROME_RULE_LOG,
   GAME_CHROME_RULE_SIDE_PANEL,
@@ -221,6 +222,8 @@ export default function GameContainer() {
     (state) => state.setInvestmentResultDialog,
   );
   const madness = useGameStore((state) => state.stats.madness);
+  const addLogEntry = useGameStore((state) => state.addLogEntry);
+  useMadnessLevelChangeLog(madness ?? 0, addLogEntry);
   const chromeStageOverride = useMemo(
     () =>
       import.meta.env.DEV

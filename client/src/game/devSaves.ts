@@ -13,6 +13,7 @@ import {
   type DevSaveId,
 } from "@/game/devSaveIds";
 import { SOCIAL_PROMPT_AUTO_OPEN_COUNT } from "@/game/socialPromptAuto";
+import { resetMadnessLevelLogBaseline } from "@/game/madnessLevelLog";
 
 const DEV_SAVE_GAME_ID_PREFIX = "dev-save-";
 
@@ -283,6 +284,7 @@ export function applyBlastGateDevPreviewToStore(): void {
 /** Hydrate the live store from a named fixture. Does not persist. */
 export function applyDevSaveToStore(id: DevSaveId): void {
   const built = buildDevSave(id);
+  resetMadnessLevelLogBaseline();
   useGameStore.setState({
     ...built,
     activeDevSaveId: id,

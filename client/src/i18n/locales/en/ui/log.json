@@ -8,6 +8,10 @@
       "one": "One villager succumbs to madness and takes his own life.",
       "other": "{{count}} villagers succumb to madness and take their own lives."
     },
+    "madnessLevel": {
+      "increased": "You sink deeper into madness.",
+      "decreased": "Your madness eases."
+    },
     "starvationDeath": {
       "one": "One villager succumbs to starvation.",
       "other": "{{count}} villagers starve to death."

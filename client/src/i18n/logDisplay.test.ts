@@ -92,6 +92,24 @@ describe("resolveLogPanelMessage", () => {
     );
   });
 
+  it("translates madness level logs via logKey in German", async () => {
+    await i18n.changeLanguage("de");
+    expect(
+      resolveLogPanelMessage(
+        systemEntry("You sink deeper into madness.", {
+          logKey: "madnessLevel.increased",
+        }),
+      ),
+    ).toBe("Du sinkst tiefer in den Wahnsinn.");
+    expect(
+      resolveLogPanelMessage(
+        systemEntry("Your madness eases.", {
+          logKey: "madnessLevel.decreased",
+        }),
+      ),
+    ).toBe("Dein Wahnsinn lässt nach.");
+  });
+
   it("matches legacy English newcomer logs in German saves", async () => {
     await i18n.changeLanguage("de");
     const text = resolveLogPanelMessage(

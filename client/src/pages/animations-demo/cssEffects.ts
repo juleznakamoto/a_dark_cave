@@ -1,3 +1,5 @@
+import { MADNESS_STAGE_TEXT_CLASS } from "@/game/madnessVisualStage";
+
 /**
  * CSS animation / effect classes used in the game UI.
  *
@@ -69,28 +71,28 @@ export const CSS_EFFECT_DEMOS: CssEffectDemo[] = [
   {
     id: "madness-light",
     label: "Madness light",
-    className: "madness-pulse-light text-red-200",
+    className: MADNESS_STAGE_TEXT_CLASS[1],
     mode: "loop",
     sample: "Madness",
   },
   {
     id: "madness-medium",
     label: "Madness medium",
-    className: "madness-pulse-medium text-red-300",
+    className: MADNESS_STAGE_TEXT_CLASS[2],
     mode: "loop",
     sample: "Madness",
   },
   {
     id: "madness-intense",
     label: "Madness intense",
-    className: "madness-pulse-intense text-red-400",
+    className: MADNESS_STAGE_TEXT_CLASS[3],
     mode: "loop",
     sample: "Madness",
   },
   {
     id: "madness-extreme",
     label: "Madness extreme",
-    className: "madness-pulse-extreme text-red-500",
+    className: MADNESS_STAGE_TEXT_CLASS[4],
     mode: "loop",
     sample: "Madness",
   },
