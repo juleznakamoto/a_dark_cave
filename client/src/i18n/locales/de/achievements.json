@@ -2,7 +2,7 @@
   "action": {
     "0-chopWood": {
       "label": "Holzfäller",
-      "description": "Verbessere Holz sammeln auf Stufe 10."
+      "description": "Verbessere Holz hacken auf Stufe 10."
     },
     "0-craftTorches": {
       "label": "Fackelmacher",
@@ -14,7 +14,7 @@
     },
     "0-gamblerWins": {
       "label": "Erfahrener Spieler",
-      "description": "Besiege den Spieler 10 Mal."
+      "description": "Besiege den besessenen Spieler 10 Mal."
     },
     "0-hunt": {
       "label": "Jäger",
@@ -301,7 +301,7 @@
       "description": "Bringe jedes Upgrade im Anwesen-Tab auf die Maximalstufe."
     },
     "0-speedrunner": {
-      "label": "Schnellläufer",
+      "label": "Speedrunner",
       "detail": "<5 Stunden",
       "description": "Gewinne ein Spiel in unter 5 Stunden."
     },
