@@ -6,11 +6,11 @@
     "save": "Speichern",
     "claim": "Abholen",
     "activate": "Aktivieren",
-    "deactivate": "Deaktivieren" //ok
+    "deactivate": "Deaktivieren"
   },
   "status": {
-    "loading": "Wird geladen...", //ok
-    "processing": "Wird verarbeitet...", //ok
+    "loading": "Wird geladen...",
+    "processing": "Wird verarbeitet...",
     "free": "Kostenlos",
     "error": "Fehler",
     "success": "Erfolg!",
@@ -36,7 +36,7 @@
     "bones": "Knochen",
     "fur": "Fell",
     "leather": "Leder",
-    "bone_totem": "Knochentotem", //ok
+    "bone_totem": "Knochentotem",
     "leather_totem": "Ledertotem",
     "iron": "Eisen",
     "coal": "Kohle",
@@ -44,13 +44,13 @@
     "obsidian": "Obsidian",
     "adamant": "Adamant",
     "steel": "Stahl",
-    "blacksteel": "Schwarzstahl", //ok
+    "blacksteel": "Schwarzstahl",
     "moonstone": "Mondstein",
     "black_powder": "Schwarzpulver",
     "ember_bomb": "Glutbombe",
     "ashfire_dust": "Aschfeuerstaub",
     "ashfire_bomb": "Aschfeuerbombe",
-    "void_bomb": "Leerenbombe", //ok
+    "void_bomb": "Leerenbombe",
     "veinfire_elixir": "Aderfeuer-Elixier",
     "poison_arrows": "Giftpfeile",
     "torch": "Fackel",
@@ -64,11 +64,11 @@
     "luck": "Glück",
     "madness": "Wahnsinn",
     "attack": "Angriff",
-    "defense": "Verteidigung", //ok
+    "defense": "Verteidigung",
     "integrity": "Integrität"
   },
   "population": {
-    "villager_one": "{{count}} Dorfbewohner", //ok
+    "villager_one": "{{count}} Dorfbewohner",
     "villager_other": "{{count}} Dorfbewohner"
   },
   "currency": {

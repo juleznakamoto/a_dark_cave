@@ -1486,7 +1486,10 @@
   "nordicWarAxe": {
     "choices": {
       "buyAxe": {
-        "label": "Decline"
+        "label": {
+          "Buy for 500 gold": "Buy for 500 gold",
+          "Buy for 750 gold": "Buy for 750 gold"
+        }
       },
       "decline": {
         "label": "Decline"

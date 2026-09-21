@@ -3,22 +3,22 @@
     "fallbackTitle": "Evento",
     "knowledgeTimeBonus": "+{{seconds}}s de tiempo de decisión por Conocimiento{{maxSuffix}}",
     "knowledgeTimeBonusMax": " (máx.)",
-    "successChance": "Probabilidad de éxito: {{percent}}%", //x1.3
+    "successChance": "Probabilidad de éxito: {{percent}}%",
     "successChanceBase": "Base: {{percent}}%",
     "successChanceStatLine": "{{statValue}} {{statName}} * {{percentPerPoint}}% = {{contribution}}%",
     "successChanceCruel": "Modo cruel: {{percent}}%",
     "influencedBy": "Influido por:"
   },
   "reward": {
-    "actionReward": "Recompensa de acción", //x1.5
-    "claimRewards": "Reclamar recompensas" //x1.5
+    "actionReward": "Recompensa de acción",
+    "claimRewards": "Reclamar recompensas"
   },
   "madness": {
-    "title": "Evento de locura", //x1.2
+    "title": "Evento de locura",
     "change": "{{sign}} {{amount}} Locura"
   },
   "insightPotion": {
-    "title": "Elixir de perspicacia", //x1.5
+    "title": "Elixir de perspicacia",
     "message": "Bebes el Elixir de perspicacia. La comprensión florece en tu mente."
   },
   "blessingOffer": {
@@ -28,23 +28,23 @@
   "socialPrompt": {
     "title": "Gana recompensas",
     "description": "Completa las tareas siguientes para recibir bonificaciones. Completa todas las tareas para recibir un objeto exclusivo.",
-    "signUpRequiresSignInTooltip": "Inicia sesión para completar esta tarea", //x1.4
-    "signUpTitle": "Registrarse", //x1.6
+    "signUpRequiresSignInTooltip": "Inicia sesión para completar esta tarea",
+    "signUpTitle": "Registrarse",
     "signUpDesc": "Crea una cuenta gratuita para sincronizar tu progreso entre dispositivos. Sin cuenta, tu progreso solo se guarda localmente y puede perderse.",
-    "signUpButton": "Registrarse", //x1.6
-    "emailUpdatesTitle": "Actualizaciones por correo electrónico", //x2.0
-    "subscribe": "Suscribirse", //x1.2
+    "signUpButton": "Registrarse",
+    "emailUpdatesTitle": "Actualizaciones por correo electrónico",
+    "subscribe": "Suscribirse",
     "claim": "Reclamar",
     "playlightTitle": "Probar 1 juego",
     "discoverGames": "Probar",
     "inviteTitle": "Invitar a 1 amigo",
     "inviteDesc": "Puedes invitar hasta {{cap}} amigos. Cada vez, ambos recibiréis {{amount}} de oro ({{count}}/{{cap}} invitados).",
-    "copyInviteLink": "Copiar enlace de invitación", //x1.7
+    "copyInviteLink": "Copiar enlace de invitación",
     "progressComplete": "Has completado todas las tareas. Pronto recibirás tu recompensa.",
     "tasksRemaining_one": "1 tarea restante",
     "tasksRemaining_other": "{{count}} tareas restantes",
     "exclusiveRewardEffect": "{{percent}} % de probabilidad de duplicar las ganancias de acciones",
-    "progressAriaLabel": "Recompensa exclusiva", //x1.3
+    "progressAriaLabel": "Recompensa exclusiva",
     "alreadyClaimedReward": "¡Ya has reclamado esta recompensa!",
     "playlightDiscoverRewardLog": "¡Has recibido {{amount}} de oro por probar un juego!",
     "marketingSubscribeLog": "¡Has recibido {{amount}} de oro por suscribirte a las actualizaciones por correo electrónico!",
@@ -70,21 +70,21 @@
   },
   "invite": {
     "button": "Invitar",
-    "copyInviteCode": "Copiar código de invitación", //x1.7
+    "copyInviteCode": "Copiar código de invitación",
     "goldBonus": "+{{amount}} oro",
-    "linkCopied": "¡Enlace de invitación copiado!", //x1.6
+    "linkCopied": "¡Enlace de invitación copiado!",
     "linkCopiedDesc": "Compártelo con amigos para ganar {{amount}} de oro cada uno.",
-    "copyFailed": "No se pudo copiar el enlace de invitación", //x1.6
-    "copyFailedNotSignedIn": "Inicia sesión para copiar tu enlace de invitación", //x1.5
+    "copyFailed": "No se pudo copiar el enlace de invitación",
+    "copyFailedNotSignedIn": "Inicia sesión para copiar tu enlace de invitación",
     "tooltip": "<bold>Invita a tus amigos</bold> - ambos recibiréis {{amount}} de oro. Puedes invitar hasta {{cap}} amigos. ({{count}}/{{cap}} invitados)."
   },
   "invest": {
     "title": "Invertir",
-    "strategy": "Estrategia de inversión", //x1.2
-    "amount": "Importe de la inversión", //x1.4
+    "strategy": "Estrategia de inversión",
+    "amount": "Importe de la inversión",
     "startInvestment": "Iniciar inversión",
     "infoAriaLabel": "Explicar inversiones y la tabla de estrategias",
-    "unlockTooltip": "Se desbloquea con un nivel de edificio más alto", //x1.5
+    "unlockTooltip": "Se desbloquea con un nivel de edificio más alto",
     "minutes": "{{count}} min",
     "luckyChanceTop": "Golpe de suerte {{percent}} % ({{fromLuck}} % por Suerte)",
     "luckyChanceLine": "{{percent}} % Golpe de suerte: {{gold}}",
@@ -107,10 +107,10 @@
   "gambler": {
     "title": "El jugador obsesionado",
     "srDescription": "Juego de dados contra el jugador obsesionado",
-    "rulesAriaLabel": "Reglas del juego de dados", //x1.7
+    "rulesAriaLabel": "Reglas del juego de dados",
     "rulesTurns": "Tú y el jugador tiráis el dado por turnos.",
     "rulesTotals": "Las tiradas de cada jugador se suman.",
-    "rulesGoal": "El objetivo está fijado en 15.", //x1.4
+    "rulesGoal": "El objetivo está fijado en 15.",
     "rulesWinLose": "Si un jugador alcanza exactamente el objetivo, gana. Si lo supera, pierde.",
     "rulesStand": "Si el jugador activo tiene más puntos que el oponente, puede elegir no tirar.",
     "tutorialIntro": "Para enseñarte el juego, el jugador ofrece jugar {{count}} veces sin apuesta.",
@@ -141,31 +141,31 @@
     "prod": "Prod.",
     "rank": "#",
     "player": "Jugador",
-    "completionTime": "Tiempo de finalización", //x1.5
-    "noEntries": "Aún no hay entradas", //x1.4
-    "lastUpdated": "Última actualización: {{time}}", //x1.4
+    "completionTime": "Tiempo de finalización",
+    "noEntries": "Aún no hay entradas",
+    "lastUpdated": "Última actualización: {{time}}",
     "recentCompletionsNote": "Solo se muestran completaciones de los últimos 6 meses.",
-    "username": "Nombre de usuario:", //x2.0
-    "notSet": "Sin definir", //x1.6
-    "currentPlaytime": "Tiempo de juego actual:", //x1.4
-    "enterName": "Introducir nombre", //x1.7
+    "username": "Nombre de usuario:",
+    "notSet": "Sin definir",
+    "currentPlaytime": "Tiempo de juego actual:",
+    "enterName": "Introducir nombre",
     "normalMode": "Modo normal",
     "cruelMode": "Modo cruel",
     "loadFailed": "Error al cargar la clasificación",
-    "invalidUsername": "Nombre de usuario no válido", //x1.7
-    "usernameEmpty": "El nombre de usuario no puede estar vacío", //x1.7
-    "usernameTooLong": "El nombre de usuario debe tener 20 caracteres o menos", //x1.4
-    "mustSignIn": "Debes iniciar sesión para establecer un nombre de usuario", //x1.5
-    "usernameNotAllowed": "Nombre de usuario no permitido", //x1.5
+    "invalidUsername": "Nombre de usuario no válido",
+    "usernameEmpty": "El nombre de usuario no puede estar vacío",
+    "usernameTooLong": "El nombre de usuario debe tener 20 caracteres o menos",
+    "mustSignIn": "Debes iniciar sesión para establecer un nombre de usuario",
+    "usernameNotAllowed": "Nombre de usuario no permitido",
     "usernameInappropriate": "Este nombre de usuario contiene lenguaje inapropiado. Elige otro.",
-    "usernameTaken": "Nombre de usuario ocupado", //x1.8
+    "usernameTaken": "Nombre de usuario ocupado",
     "usernameTakenDesc": "Este nombre de usuario ya está en uso. Elige otro.",
-    "usernameSaved": "Nombre de usuario guardado", //x1.9
+    "usernameSaved": "Nombre de usuario guardado",
     "usernameSavedDesc": "Tu nombre de usuario se ha actualizado",
-    "saveFailed": "Error al guardar el nombre de usuario" //x1.6
+    "saveFailed": "Error al guardar el nombre de usuario"
   },
   "investmentResult": {
-    "title": "Resultado de la inversión", //x1.5
+    "title": "Resultado de la inversión",
     "success": "Tu inversión de {{amount}} oro fue exitosa.",
     "luckyChance": "¡Golpe de suerte! Las ganancias de tu inversión de {{amount}} oro se multiplican por {{multiplier}}.",
     "partialLoss": "Tu inversión de {{amount}} oro falló."
@@ -180,7 +180,7 @@
     "buy": "Comprar",
     "sell": "Vender",
     "sayGoodbye": "Despedirse",
-    "discount": "{{percent}} % de descuento", //x1.2
+    "discount": "{{percent}} % de descuento",
     "discountFromKnowledge": "{{percent}} % por Conocimiento{{max}}",
     "knowledgeMax": " (máx.)",
     "discountFromRing": "5 % por Anillo de Obediencia",
@@ -190,17 +190,17 @@
     "title": "Mira tu progreso",
     "resources": "Recursos: {{percent}} %",
     "achievements": "Logros: {{percent}} %",
-    "killedCreatures": "Criaturas eliminadas", //x1.3
+    "killedCreatures": "Criaturas eliminadas",
     "highestAttackWave": "Oleada de ataque más alta",
     "cruelMode": "Modo cruel",
     "on": "Activado",
-    "off": "Desactivado", //x3.7
-    "playTime": "Tiempo de juego", //x1.7
+    "off": "Desactivado",
+    "playTime": "Tiempo de juego",
     "playForFreeAt": "Juega gratis en",
     "save": "Guardar",
     "copy": "Copiar",
-    "copiedTitle": "Copiado al portapapeles", //x1.2
-    "copyErrorTitle": "No se pudo copiar la imagen", //x1.4
+    "copiedTitle": "Copiado al portapapeles",
+    "copyErrorTitle": "No se pudo copiar la imagen",
     "copyErrorDesc": "Algo salió mal al copiar al portapapeles.",
     "share": "Compartir",
     "errorTitle": "No se pudo crear la imagen",
@@ -216,11 +216,11 @@
     "email": "Correo"
   },
   "galaxy": {
-    "title": "La demo termina aquí", //x1.4
+    "title": "La demo termina aquí",
     "description": "Añade el juego completo a tu lista de deseados de Steam para continuar el viaje cuando se publique.",
-    "wishlistButton": "Añadir a la lista de deseados en Steam", //x2.2
+    "wishlistButton": "Añadir a la lista de deseados en Steam",
     "feedbackButton": "Comentarios",
-    "startNewGameButton": "Empezar partida nueva", //x1.5
+    "startNewGameButton": "Empezar partida nueva",
     "seeWhatsNextButton": "Ver qué viene",
     "storeHeaderLink": "Lista de deseados",
     "storeHeaderTooltip": "Añadir el juego completo a la lista de deseados de Steam"

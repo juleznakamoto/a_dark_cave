@@ -15,8 +15,8 @@
     "gameModeCrazyGamesDemo": "Démo CrazyGames"
   },
   "textScale": {
-    "label": "Taille du texte", //x1.7
-    "ariaLabel": "Choisir la taille du texte", //x1.6
+    "label": "Taille du texte",
+    "ariaLabel": "Choisir la taille du texte",
     "normal": "Normal",
     "large": "Grand"
   },
@@ -25,13 +25,13 @@
     "ariaLabel": "Choisir la langue"
   },
   "startScreen": {
-    "titleNormal": "Une grotte sombre.", //x1.5
-    "titleCruel": "Une grotte très sombre.", //x1.4
+    "titleNormal": "Une grotte sombre.",
+    "titleCruel": "Une grotte très sombre.",
     "airNormal": "L'air est froid et humide.",
     "airCruel": "L'air est glacial et humide.",
-    "seeNormal": "Vous distinguez à peine les formes autour de vous.", //x1.4
+    "seeNormal": "Vous distinguez à peine les formes autour de vous.",
     "seeCruel": "Vous ne distinguez presque rien autour de vous.",
-    "makeFire": "Faire du feu", //x1.3
+    "makeFire": "Faire du feu",
     "demoContinueTitle": "Une sauvegarde de la démo a été trouvée.",
     "demoContinueDescription": "Voulez-vous continuer votre voyage, ou en commencer un nouveau ?",
     "demoContinueJourney": "Continuer votre voyage",
@@ -44,25 +44,25 @@
   },
   "footer": {
     "trader": "Marchand",
-    "openShop": "Ouvrir la boutique", //x2.0
+    "openShop": "Ouvrir la boutique",
     "donate": "Soutenir",
-    "supportGame": "Soutenir le jeu", //x1.3
-    "privacy": "Confidentialité", //x2.1
+    "supportGame": "Soutenir le jeu",
+    "privacy": "Confidentialité",
     "faq": "FAQ",
     "about": "À propos",
     "pressKit": "Presse",
-    "imprint": "Mentions légales", //x2.3
+    "imprint": "Mentions légales",
     "contact": "Contacts",
     "feedback": "Commentaires",
     "openFeedback": "Ouvrir le formulaire de retours",
-    "pauseGame": "Mettre le jeu en pause", //x2.2
-    "resumeGame": "Reprendre le jeu", //x1.5
-    "muteMusic": "Couper l'ambiance", //x1.3
-    "unmuteMusic": "Rétablir l'ambiance", //x1.3
-    "muteSfx": "Couper les effets sonores", //x1.4
-    "unmuteSfx": "Rétablir les effets sonores", //x1.4
+    "pauseGame": "Mettre le jeu en pause",
+    "resumeGame": "Reprendre le jeu",
+    "muteMusic": "Couper l'ambiance",
+    "unmuteMusic": "Rétablir l'ambiance",
+    "muteSfx": "Couper les effets sonores",
+    "unmuteSfx": "Rétablir les effets sonores",
     "cruelModeActive": "Mode cruel actif",
-    "wishlistOnSteam": "Ajouter à la liste de souhaits Steam", //x2.1
+    "wishlistOnSteam": "Ajouter à la liste de souhaits Steam",
     "demoProgress": "Progression de la démo",
     "progress": "Progression",
     "social": "Social",
@@ -71,39 +71,39 @@
   },
   "profile": {
     "title": "Menu",
-    "signInUp": "Connexion/Inscription", //x2.1
-    "save": "Sauvegarder", //x2.8
-    "newGame": "Nouvelle partie", //x1.9
-    "signOut": "Se déconnecter", //x1.8
+    "signInUp": "Connexion/Inscription",
+    "save": "Sauvegarder",
+    "newGame": "Nouvelle partie",
+    "signOut": "Se déconnecter",
     "leaderboard": "Classement",
-    "rewards": "Récompenses", //x1.6
-    "deleteAccount": "Supprimer le compte", //x1.4
-    "autoSaveSignedIn": "Sauvegarde automatique chaque minute", //x1.3
-    "autoSaveGuest": "Sauvegarde automatique toutes les 15 secondes", //x1.4
-    "signUpCloudSave": "Inscrivez-vous pour sauvegarder dans le cloud", //x1.4
-    "lastSave": "Dernière sauvegarde : {{time}}", //x1.6
+    "rewards": "Récompenses",
+    "deleteAccount": "Supprimer le compte",
+    "autoSaveSignedIn": "Sauvegarde automatique chaque minute",
+    "autoSaveGuest": "Sauvegarde automatique toutes les 15 secondes",
+    "signUpCloudSave": "Inscrivez-vous pour sauvegarder dans le cloud",
+    "lastSave": "Dernière sauvegarde : {{time}}",
     "signedOut": "Déconnexion réussie",
-    "signOutError": "Erreur de déconnexion", //x1.2
+    "signOutError": "Erreur de déconnexion",
     "gameSaved": "Partie sauvegardée",
     "cloudSaveFailed": "Sauvegardé sur cet appareil, mais la sync cloud a échoué. L'autosave réessaiera.",
     "saveFailed": "Échec de la sauvegarde",
     "accountDeleted": "Votre compte a été supprimé",
     "accountDeletedDesc": "Vous avez été déconnecté et la sauvegarde locale de cet appareil a été effacée.",
-    "deleteAccountFailed": "Impossible de supprimer le compte", //x1.4
-    "tryAgainLater": "Réessayez plus tard.", //x1.3
+    "deleteAccountFailed": "Impossible de supprimer le compte",
+    "tryAgainLater": "Réessayez plus tard.",
     "notSignedIn": "Non connecté",
     "subscribed": "Vous êtes abonné",
     "unsubscribed": "Vous êtes désabonné",
     "subscribedDesc": "Nous vous enverrons parfois des nouvelles et des offres par e-mail.",
     "unsubscribedDesc": "Vous ne recevrez pas d'e-mails marketing de notre part.",
-    "preferenceUpdateFailed": "Impossible de mettre à jour la préférence", //x1.5
+    "preferenceUpdateFailed": "Impossible de mettre à jour la préférence",
     "enterFullscreen": "Plein écran",
     "exitFullscreen": "Quitter le plein écran"
   },
   "pauseHotkey": {
     "hintPrefix": "Utilisez ",
-    "hintSelect": " pour sélectionner un onglet ou ", //x1.8
-    "hintSuffix": " pour changer d'onglet" //x1.5
+    "hintSelect": " pour sélectionner un onglet ou ",
+    "hintSuffix": " pour changer d'onglet"
   },
   "villageHotkeyTutorial": {
     "dismiss": "Fermer"

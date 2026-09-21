@@ -10,11 +10,11 @@
     "gold": "Золото",
     "boosts": "Усиления",
     "bundles": "Наборы",
-    "mostPopular": "Самое популярное", //x1.3
+    "mostPopular": "Самое популярное",
     "threeXValue": "Ценность",
     "availableInOneHour": "Доступно через 1 час",
     "availableInHours": "Доступно через {{hours}} ч",
-    "signInToClaim": "Войдите, чтобы получить", //x1.4
+    "signInToClaim": "Войдите, чтобы получить",
     "alreadyClaimed": "Уже получено",
     "alreadyPurchased": "Уже куплено",
     "continueCheckout": "Продолжить",
@@ -31,7 +31,7 @@
     "originalPrice": "Исходная цена",
     "saleDiscount": "Скидка по акции",
     "bundleDiscount": "Скидка на набор",
-    "eventDiscount": "Скидка за событие", //x1.2
+    "eventDiscount": "Скидка за событие",
     "total": "Итого",
     "legalConsent": "Мгновенный доступ к цифровому контенту после покупки.",
     "termsOfService": "Условия",
@@ -40,7 +40,7 @@
     "paymentFailed": "Ошибка оплаты",
     "tooManyPaymentRequests": "Слишком много запросов на оплату. Попробуйте позже.",
     "cruelModeDeactivatedLog": "Жестокий режим отключён. Новые игры будут с обычной сложностью.",
-    "notAuthenticated": "Вы не вошли", //x1.2
+    "notAuthenticated": "Вы не вошли",
     "verificationFailed": "Ошибка проверки платежа. Свяжитесь с поддержкой.",
     "unexpectedError": "Что-то пошло не так.",
     "purchaseSuccessful": "Покупка завершена.",
@@ -63,21 +63,21 @@
       "mining": "Добыча: +150% бонус, -3с перезарядки"
     },
     "artifactTarnishedCompass": {
-      "unlocksStoryline": "Открывает сюжетную линию компаса", //x1.3
+      "unlocksStoryline": "Открывает сюжетную линию компаса",
       "doubleGain": "5% шанс удвоить награды за действия",
       "luck": "+5 удачи"
     },
     "artifactCrowHarness": {
-      "unlocksStoryline": "Открывает сюжетную линию ворона", //x1.4
+      "unlocksStoryline": "Открывает сюжетную линию ворона",
       "doubleGain": "до 10% шанс удвоить награды за действия",
       "addsFellowshipMember": "Добавляет спутника"
     },
     "cruelMode": {
-      "moreEvents": "Больше событий", //x1.3
-      "moreItems": "Больше предметов", //x1.6
+      "moreEvents": "Больше событий",
+      "moreItems": "Больше предметов",
       "strongerEnemies": "Сильнее враги",
       "harderChallenges": "Сложнее испытания",
-      "reusePurchases": "Повторное использование покупок" //x1.3
+      "reusePurchases": "Повторное использование покупок"
     },
     "greatFeast": {
       "forMinutes": "На {{minutes}} минут:",
@@ -87,11 +87,11 @@
     "alreadyClaimedItemLog": "Вы уже получили {{name}}.",
     "claimFailedLog": "Не удалось получить {{name}}. Попробуйте снова.",
     "activatedDefaultLog": "Активировано: {{name}}! Награды добавлены в инвентарь.",
-    "securePaymentVia": "Безопасная оплата через", //x1.3
+    "securePaymentVia": "Безопасная оплата через",
     "securePaymentWith": "с",
     "securePurchaseTitle": "Защитите покупку",
     "securePurchaseBody": "Покупка сохранена только в этом браузере. Создайте аккаунт, чтобы сохранить покупки и прогресс при смене устройства или очистке данных браузера.",
-    "securePurchaseSignUp": "Зарегистрироваться", //x2.6
+    "securePurchaseSignUp": "Зарегистрироваться",
     "securePurchaseLater": "Позже"
   }
 }

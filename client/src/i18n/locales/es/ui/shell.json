@@ -15,23 +15,23 @@
     "gameModeCrazyGamesDemo": "Demo de CrazyGames"
   },
   "textScale": {
-    "label": "Tamaño del texto", //x1.8
-    "ariaLabel": "Seleccionar tamaño del texto", //x1.8
+    "label": "Tamaño del texto",
+    "ariaLabel": "Seleccionar tamaño del texto",
     "normal": "Normal",
     "large": "Grande"
   },
   "languageSelector": {
     "label": "Idioma",
-    "ariaLabel": "Seleccionar idioma" //x1.2
+    "ariaLabel": "Seleccionar idioma"
   },
   "startScreen": {
-    "titleNormal": "Una cueva oscura.", //x1.4
-    "titleCruel": "Una cueva muy oscura.", //x1.2
+    "titleNormal": "Una cueva oscura.",
+    "titleCruel": "Una cueva muy oscura.",
     "airNormal": "El aire es frío y húmedo.",
     "airCruel": "El aire es gélido y húmedo.",
     "seeNormal": "Apenas distingues las formas a tu alrededor.",
     "seeCruel": "Apenas ves nada a tu alrededor.",
-    "makeFire": "Encender fuego", //x1.6
+    "makeFire": "Encender fuego",
     "demoContinueTitle": "Se encontró una partida de la Demo.",
     "demoContinueDescription": "¿Quieres continuar tu viaje o empezar uno nuevo?",
     "demoContinueJourney": "Continuar tu viaje",
@@ -44,25 +44,25 @@
   },
   "footer": {
     "trader": "Mercader",
-    "openShop": "Abrir tienda", //x1.3
+    "openShop": "Abrir tienda",
     "donate": "Apoyar",
-    "supportGame": "Apoyar el juego", //x1.3
+    "supportGame": "Apoyar el juego",
     "privacy": "Privacidad",
     "faq": "FAQ",
     "about": "Acerca de",
     "pressKit": "Prensa",
-    "imprint": "Aviso legal", //x1.6
+    "imprint": "Aviso legal",
     "contact": "Contacto",
     "feedback": "Comentarios",
     "openFeedback": "Abrir el formulario de comentarios",
-    "pauseGame": "Pausar juego", //x1.2
-    "resumeGame": "Reanudar juego", //x1.3
-    "muteMusic": "Silenciar ambiente", //x1.4
+    "pauseGame": "Pausar juego",
+    "resumeGame": "Reanudar juego",
+    "muteMusic": "Silenciar ambiente",
     "unmuteMusic": "Activar ambiente",
     "muteSfx": "Silenciar efectos",
     "unmuteSfx": "Activar efectos",
     "cruelModeActive": "Modo cruel activo",
-    "wishlistOnSteam": "Añadir a la lista de deseados en Steam", //x2.2
+    "wishlistOnSteam": "Añadir a la lista de deseados en Steam",
     "demoProgress": "Progreso de la demo",
     "progress": "Progreso",
     "social": "Social",
@@ -71,27 +71,27 @@
   },
   "profile": {
     "title": "Menú",
-    "signInUp": "Iniciar sesión/Registrarse", //x2.6
+    "signInUp": "Iniciar sesión/Registrarse",
     "save": "Guardar",
-    "newGame": "Nueva partida", //x1.6
-    "signOut": "Cerrar sesión", //x1.6
+    "newGame": "Nueva partida",
+    "signOut": "Cerrar sesión",
     "leaderboard": "Clasificación",
-    "rewards": "Recompensas", //x1.6
+    "rewards": "Recompensas",
     "deleteAccount": "Eliminar cuenta",
     "autoSaveSignedIn": "La partida se guarda cada minuto",
     "autoSaveGuest": "La partida se guarda cada 15 segundos",
     "signUpCloudSave": "Regístrate para guardar en la nube",
-    "lastSave": "Último guardado: {{time}}", //x1.3
-    "signedOut": "Sesión cerrada correctamente", //x1.2
-    "signOutError": "Error al cerrar sesión", //x1.3
-    "gameSaved": "Partida guardada correctamente", //x1.3
-    "cloudSaveFailed": "Guardado en este dispositivo, pero falló la sincronización en la nube. El autoguardado lo reintentará.", //x1.4
-    "saveFailed": "No se pudo guardar la partida", //x1.5
+    "lastSave": "Último guardado: {{time}}",
+    "signedOut": "Sesión cerrada correctamente",
+    "signOutError": "Error al cerrar sesión",
+    "gameSaved": "Partida guardada correctamente",
+    "cloudSaveFailed": "Guardado en este dispositivo, pero falló la sincronización en la nube. El autoguardado lo reintentará.",
+    "saveFailed": "No se pudo guardar la partida",
     "accountDeleted": "Tu cuenta fue eliminada",
     "accountDeletedDesc": "Se cerró tu sesión y se borró el guardado local de este dispositivo.",
     "deleteAccountFailed": "No se pudo eliminar la cuenta",
-    "tryAgainLater": "Inténtalo más tarde.", //x1.3
-    "notSignedIn": "Sin sesión iniciada", //x1.5
+    "tryAgainLater": "Inténtalo más tarde.",
+    "notSignedIn": "Sin sesión iniciada",
     "subscribed": "Estás suscrito",
     "unsubscribed": "No estás suscrito",
     "subscribedDesc": "Te enviaremos actualizaciones y ofertas ocasionales por correo electrónico.",
@@ -102,8 +102,8 @@
   },
   "pauseHotkey": {
     "hintPrefix": "Usa ",
-    "hintSelect": " para seleccionar pestaña o ", //x1.6
-    "hintSuffix": " para cambiar de pestaña" //x1.6
+    "hintSelect": " para seleccionar pestaña o ",
+    "hintSuffix": " para cambiar de pestaña"
   },
   "villageHotkeyTutorial": {
     "dismiss": "Cerrar"

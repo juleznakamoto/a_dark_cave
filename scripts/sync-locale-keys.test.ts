@@ -8,13 +8,15 @@ import {
 
 describe("withTrailingComma", () => {
   it("adds a comma before a trailing // comment", () => {
-    expect(withTrailingComma('    "a": "b" //x1.5')).toBe(
-      '    "a": "b", //x1.5',
+    expect(withTrailingComma('    "a": "b" //note')).toBe(
+      '    "a": "b", //note',
     );
   });
 
   it("leaves lines that already have a comma alone", () => {
-    expect(withTrailingComma('    "a": "b", //ok')).toBe('    "a": "b", //ok');
+    expect(withTrailingComma('    "a": "b", //note')).toBe(
+      '    "a": "b", //note',
+    );
   });
 });
 
@@ -43,8 +45,8 @@ describe("insertMissingKeys", () => {
   it("inserts a nested leaf inside an existing object (not a duplicate root key)", () => {
     const existing = `{
   "shop": {
-    "paymentFailed": "Zahlung fehlgeschlagen", //x1.6
-    "notAuthenticated": "Benutzer nicht authentifiziert" //x1.4
+    "paymentFailed": "Zahlung fehlgeschlagen", //note
+    "notAuthenticated": "Benutzer nicht authentifiziert" //note
   }
 }
 `;
@@ -68,14 +70,13 @@ describe("insertMissingKeys", () => {
     });
     // Regression: must not append a second top-level "shop" after the object closed.
     expect(updated.match(/"shop"\s*:/g)?.length).toBe(1);
-    expect(updated).toContain("//x1.6");
-    expect(updated).toContain("//x1.4");
+    expect(updated).toContain("//note");
   });
 
   it("adds a top-level key without breaking JSON or stripping sibling comments", () => {
     const existing = `{
   "shop": {
-    "a": "1" //ok
+    "a": "1" //note
   }
 }
 `;
@@ -86,7 +87,7 @@ describe("insertMissingKeys", () => {
       shop: { a: "1" },
       other: { b: "2" },
     });
-    expect(updated).toContain("//ok");
+    expect(updated).toContain("//note");
   });
 
   it("preserves a sibling object when inserting into the first block", () => {
@@ -95,7 +96,7 @@ describe("insertMissingKeys", () => {
     "a": "1"
   },
   "other": {
-    "b": "2" //ok
+    "b": "2" //note
   }
 }
 `;
@@ -106,6 +107,6 @@ describe("insertMissingKeys", () => {
       shop: { a: "1", c: "3" },
       other: { b: "2" },
     });
-    expect(updated).toContain("//ok");
+    expect(updated).toContain("//note");
   });
 });

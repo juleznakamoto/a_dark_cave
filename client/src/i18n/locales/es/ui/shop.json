@@ -8,13 +8,13 @@
     "srDescription": "Tienda de oro, artefactos, potenciadores y paquetes",
     "highlights": "Destacados",
     "gold": "Oro",
-    "boosts": "Potenciadores", //x2.2
+    "boosts": "Potenciadores",
     "bundles": "Paquetes",
     "mostPopular": "Más popular",
     "threeXValue": "Valor",
     "availableInOneHour": "Disponible en 1 hora",
     "availableInHours": "Disponible en {{hours}} horas",
-    "signInToClaim": "Inicia sesión para reclamar", //x1.7
+    "signInToClaim": "Inicia sesión para reclamar",
     "alreadyClaimed": "Ya reclamado",
     "alreadyPurchased": "Ya comprado",
     "continueCheckout": "Continuar",
@@ -22,20 +22,20 @@
     "cruelModeActivateHint": "(activa e inicia una nueva partida para jugar)",
     "firstPurchaseInsightBannerBefore": "Consigue",
     "firstPurchaseInsightBannerBeforePlaylight": "Como usuario de Playlight recibes",
-    "firstPurchaseInsightBannerInsight": "Perspicacia", //x1.6
+    "firstPurchaseInsightBannerInsight": "Perspicacia",
     "firstPurchaseInsightBannerAfter": "gratis con tu primera compra",
     "firstPurchaseInsightCheckoutFree": "gratis",
     "firstPurchaseInsightGranted": "Regalo de primera compra: +{{amount}} {{glyph}} Perspicacia",
     "loadingPayment": "Cargando el sistema de pago...",
     "paymentSrDescription": "Completa tu pago de {{name}}",
     "originalPrice": "Precio original",
-    "saleDiscount": "Descuento de oferta", //x1.5
-    "bundleDiscount": "Descuento del paquete", //x1.4
-    "eventDiscount": "Descuento de evento", //x1.4
+    "saleDiscount": "Descuento de oferta",
+    "bundleDiscount": "Descuento del paquete",
+    "eventDiscount": "Descuento de evento",
     "total": "Total",
     "legalConsent": "Acceso instantáneo al contenido digital tras la compra.",
-    "termsOfService": "Condiciones", //x2.2
-    "rightOfWithdrawal": "Desistimiento", //x1.3
+    "termsOfService": "Condiciones",
+    "rightOfWithdrawal": "Desistimiento",
     "completePurchaseFor": "Completar compra por {{price}}",
     "paymentFailed": "Pago fallido",
     "tooManyPaymentRequests": "Demasiadas solicitudes de pago. Inténtalo de nuevo más tarde.",
@@ -56,26 +56,26 @@
     "tradersSonDiscount": "{{percent}} % de descuento adicional por el evento Hijo del mercader.",
     "journeyCompleteDiscount": "Descuento especial por completar el juego",
     "artifactSkullLantern": {
-      "unlocksStoryline": "Desbloquea la historia del farol de cráneo", //x1.4
+      "unlocksStoryline": "Desbloquea la historia del farol de cráneo",
       "caveExplore": "Exploración de cueva: +150 % de bonificación, -3 s de recarga",
       "mining": "Extracción: +150 % de bonificación, -3 s de recarga"
     },
     "artifactTarnishedCompass": {
-      "unlocksStoryline": "Desbloquea la historia de la brújula", //x1.4
-      "doubleGain": "5 % de probabilidad de duplicar las ganancias de acciones", //x1.7
+      "unlocksStoryline": "Desbloquea la historia de la brújula",
+      "doubleGain": "5 % de probabilidad de duplicar las ganancias de acciones",
       "luck": "+5 Suerte"
     },
     "artifactCrowHarness": {
-      "unlocksStoryline": "Desbloquea la historia del cuervo", //x1.5
-      "doubleGain": "Hasta un 10 % de probabilidad de duplicar las ganancias de acciones", //x1.7
+      "unlocksStoryline": "Desbloquea la historia del cuervo",
+      "doubleGain": "Hasta un 10 % de probabilidad de duplicar las ganancias de acciones",
       "addsFellowshipMember": "Añade un miembro de la compañía"
     },
     "cruelMode": {
       "moreEvents": "Más eventos",
       "moreItems": "Más objetos",
-      "strongerEnemies": "Enemigos más fuertes", //x1.3
-      "harderChallenges": "Desafíos más difíciles", //x1.3
-      "reusePurchases": "Reutilizar compras existentes" //x1.2
+      "strongerEnemies": "Enemigos más fuertes",
+      "harderChallenges": "Desafíos más difíciles",
+      "reusePurchases": "Reutilizar compras existentes"
     },
     "greatFeast": {
       "forMinutes": "Durante {{minutes}} minutos:",
@@ -89,7 +89,7 @@
     "securePaymentWith": "con",
     "securePurchaseTitle": "Protege tu compra",
     "securePurchaseBody": "Tu compra solo se guarda en este navegador. Crea una cuenta para conservar tus compras y tu progreso si cambias de dispositivo o borras los datos del navegador.",
-    "securePurchaseSignUp": "Registrarse", //x1.6
-    "securePurchaseLater": "Quizá más tarde" //x1.4
+    "securePurchaseSignUp": "Registrarse",
+    "securePurchaseLater": "Quizá más tarde"
   }
 }

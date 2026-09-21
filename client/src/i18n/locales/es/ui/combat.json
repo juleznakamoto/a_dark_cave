@@ -1,9 +1,9 @@
 {
   "combat": {
-    "skillsTitle": "Habilidades de combate",  //x1.7
+    "skillsTitle": "Habilidades de combate",
     "fight": "Luchar",
     "fighting": "Luchando…",
-    "startFight": "Iniciar combate",  //x1.4
+    "startFight": "Iniciar combate",
     "roundTitle": "Combate - Ronda {{round}}",
     "bossRoundTitle": "Combate de jefe - Ronda {{round}}",
     "youLost": "Has perdido",
@@ -14,18 +14,18 @@
     "integrity": "Integridad",
     "attack": "Ataque",
     "defense": "Defensa",
-    "healChance": "Probabilidad de curación",  //x2.2
-    "stunChance": "Probabilidad de aturdimiento",  //x2.5
+    "healChance": "Probabilidad de curación",
+    "stunChance": "Probabilidad de aturdimiento",
     "stunned": "Aturdido",
     "attackFailed": "Ataque fallido",
     "crushingStrikeFailed": "Golpe aplastante fallido",
-    "feralHowlFailed": "Aullido salvaje fallido",  //x1.4
+    "feralHowlFailed": "Aullido salvaje fallido",
     "critical": "crítico",
     "available": "Disponible: {{current}}/{{max}}",
     "crushingStrike": "Golpe aplastante",
-    "bloodflameSphere": "Esfera de llama sangrienta", //ok
-    "feralHowl": "Aullido salvaje",  //x1.5
-    "poisonArrows": "Flechas envenenadas", //ok
+    "bloodflameSphere": "Esfera de llama sangrienta",
+    "feralHowl": "Aullido salvaje",
+    "poisonArrows": "Flechas envenenadas",
     "critChance": "{{percent}} % de probabilidad de golpe crítico",
     "critFromLuck": "{{percent}} % por {{stat}}{{maxSuffix}}",
     "critFromLuckMaxSuffix": " (máx.)",
@@ -33,8 +33,8 @@
     "critDamage": "+{{percent}} % de daño de golpe crítico",
     "missChance": "{{percent}} % de probabilidad de fallo (según {{stat}})",
     "enemies": {
-      "paleCreatures": "Criaturas pálidas",  //x1.2
-      "paleBeasts": "Bestias pálidas"  //x1.4
+      "paleCreatures": "Criaturas pálidas",
+      "paleBeasts": "Bestias pálidas"
     },
     "restlessKnightWounded": "El Caballero inquieto está herido y no puede luchar",
     "elderWizardWounded": "El mago anciano está herido y no puede lanzar hechizos",
@@ -51,40 +51,40 @@
     "repair": "Reparar"
   },
   "attackWaves": {
-    "title": "Oleadas de ataque",  //x1.4
+    "title": "Oleadas de ataque",
     "calm": "Por ahora reina la calma…",
     "soon": "pronto",
     "provoke": "Provocar",
     "postCompletion": "Oleada {{waveNumber}}",
     "waves": {
-      "firstWave": "Primera oleada", //ok
-      "secondWave": "Segunda oleada", //ok
-      "thirdWave": "Tercera oleada",  //x1.4
+      "firstWave": "Primera oleada",
+      "secondWave": "Segunda oleada",
+      "thirdWave": "Tercera oleada",
       "fourthWave": "Cuarta oleada",
-      "fifthWave": "Quinta oleada",  //x1.3
-      "firstBossWave": "Oleada del jefe",  //x1.7
-      "sixthWave": "Sexta oleada",  //x1.2
+      "fifthWave": "Quinta oleada",
+      "firstBossWave": "Oleada del jefe",
+      "sixthWave": "Sexta oleada",
       "seventhWave": "Séptima oleada",
       "eighthWave": "Octava oleada",
-      "ninthWave": "Novena oleada",  //x1.3
-      "tenthWave": "Décima oleada",  //x1.3
-      "secondBossWave": "Oleada final del jefe"  //x1.4
+      "ninthWave": "Novena oleada",
+      "tenthWave": "Décima oleada",
+      "secondBossWave": "Oleada final del jefe"
     }
   },
   "fortifications": {
     "bastion": "Bastión",
     "fortifiedMoat": "Foso fortificado",
-    "chitinPlating": "Revestimiento de quitina", //ok
-    "watchtower1": "Torre de vigilancia",  //x1.9
-    "watchtower2": "Torre de guardia", //ok
+    "chitinPlating": "Revestimiento de quitina",
+    "watchtower1": "Torre de vigilancia",
+    "watchtower2": "Torre de guardia",
     "watchtower3": "Torre fortificada",
-    "watchtower4": "Torre de cañones", //ok
-    "palisades1": "Empalizadas de madera", //ok
-    "palisades2": "Empalizadas fortificadas", //ok
-    "palisades3": "Muro de piedra", //ok
+    "watchtower4": "Torre de cañones",
+    "palisades1": "Empalizadas de madera",
+    "palisades2": "Empalizadas fortificadas",
+    "palisades3": "Muro de piedra",
     "palisades4": "Muro reforzado",
-    "palisadesFallback": "Empalizadas", //ok
-    "watchtowerFallback": "Torre de vigilancia", //ok
+    "palisadesFallback": "Empalizadas",
+    "watchtowerFallback": "Torre de vigilancia",
     "damaged": "(dañado)",
     "attack": "+{{value}} Ataque",
     "defense": "+{{value}} Defensa",

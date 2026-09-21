@@ -1,8 +1,8 @@
 {
   "additional_preset_slots": {
     "activationMessage": "Zwei zusätzliche Vorlagen-Slots für Dorfbewohner wurden hinzugefügt.",
-    "description": "Zwei weitere Vorlagen-Slots für Dorfbewohner-Arbeit", //x1.5
-    "name": "2 zusätzliche Vorlagen-Slots" //x1.4
+    "description": "Zwei weitere Vorlagen-Slots für Dorfbewohner-Arbeit",
+    "name": "2 zusätzliche Vorlagen-Slots"
   },
   "additional_construction_queue_slot": {
     "activationMessage": "Zwei zusätzliche Bauwarteschlangen-Slots wurden hinzugefügt.",
@@ -11,7 +11,7 @@
   },
   "advanced_bundle": {
     "activationMessage": "Die Bestandteile des Bundles wurden deinen Käufen hinzugefügt!",
-    "name": "Bleicher König Bundle" //ok
+    "name": "Bleicher König Bundle"
   },
   "artifact_bundle": {
     "activationMessage": "Die Bestandteile des Bundles wurden deinen Käufen hinzugefügt!",
@@ -23,32 +23,32 @@
   },
   "basic_survival_bundle": {
     "activationMessage": "Die Bestandteile des Bundles wurden deinen Käufen hinzugefügt!",
-    "name": "Verblassender Wanderer Bundle" //ok
+    "name": "Verblassender Wanderer Bundle"
   },
   "crow_harness": {
     "activationMessage": "Das Krähengeschirr wurde deinen Werkzeugen hinzugefügt! Nun musst du eine Krähe finden, um sie an das Geschirr zu binden.",
     "description": "Speziell gefertigtes Geschirr für Botenkrähen. Schaltet die Krähenhandlung frei. Fügt einen Gefährten hinzu.",
-    "name": "Krähengeschirr" //ok
+    "name": "Krähengeschirr"
   },
   "cruel_mode": {
     "activationMessage": "Grausamer Modus aktiviert! Starte ein neues Spiel, um die ultimative Herausforderung zu erleben.",
     "description": "Spiele erneut in einer grausameren Welt, mit erweiterter Geschichte, mehr Gegenständen, tödlicheren Feinden und viel mehr.",
-    "name": "Grausamer Modus" //ok
+    "name": "Grausamer Modus"
   },
   "full_game": {
     "activationMessage": "Vollversion freigeschaltet und aktiviert! Die Reise geht ohne Einschränkungen weiter.",
     "description": "Schalte die Vollversion frei und setze deine Reise fort.",
-    "name": "Vollversion" //ok
+    "name": "Vollversion"
   },
   "gold_1000": {
     "activationMessage": "1'000 Gold wurden deinem Inventar hinzugefügt.",
-    "description": "Eine ordentliche Menge Gold", //ok
+    "description": "Eine ordentliche Menge Gold",
     "name": "1'000 Gold"
   },
   "gold_100_free": {
     "activationMessage": "100 Gold wurden deinem Inventar als Geschenk hinzugefügt!",
     "description": "Tägliche Gnade in einer kalten Welt",
-    "name": "100 Gold Geschenk" //ok
+    "name": "100 Gold Geschenk"
   },
   "gold_15000": {
     "activationMessage": "15'000 Gold wurden deinem Inventar hinzugefügt.",
@@ -67,7 +67,7 @@
   },
   "gold_250": {
     "activationMessage": "1'000 Gold wurden deinem Inventar hinzugefügt.",
-    "description": "Eine ordentliche Menge Gold", //ok
+    "description": "Eine ordentliche Menge Gold",
     "name": "1'000 Gold"
   },
   "gold_2500": {
@@ -77,7 +77,7 @@
   },
   "gold_5000": {
     "activationMessage": "5'000 Gold wurden deinem Inventar hinzugefügt.",
-    "description": "Ein Vermögen in Gold", //ok
+    "description": "Ein Vermögen in Gold",
     "name": "5'000 Gold"
   },
   "great_feast_1": {
@@ -98,6 +98,6 @@
   "tarnished_compass": {
     "activationMessage": "Der angelaufene Kompass wurde deinem Inventar hinzugefügt! Seine alte Magie kann deinen Unternehmungen Glück bringen.",
     "description": "Artefakt der verschwundenen Zivilisation; seine Nadel weist auf verborgene Orte. Schaltet die Kompasshandlung frei.",
-    "name": "Angelaufener Kompass" //ok
+    "name": "Angelaufener Kompass"
   }
 }

@@ -7,14 +7,14 @@
     "successChanceBase": "Basis: {{percent}}%",
     "successChanceStatLine": "{{statValue}} {{statName}} * {{percentPerPoint}}% = {{contribution}}%",
     "successChanceCruel": "Grausamer Modus: {{percent}}%",
-    "influencedBy": "Beeinflusst durch:" //x1.3
+    "influencedBy": "Beeinflusst durch:"
   },
   "reward": {
     "actionReward": "Belohnung",
-    "claimRewards": "Belohnungen nehmen" //x1.4
+    "claimRewards": "Belohnungen nehmen"
   },
   "madness": {
-    "title": "Wahnsinnsereignis", //x1.3
+    "title": "Wahnsinnsereignis",
     "change": "{{sign}} {{amount}} Wahnsinn"
   },
   "insightPotion": {
@@ -28,10 +28,10 @@
   "socialPrompt": {
     "title": "Verdiene Belohnungen",
     "description": "Schließe die Aufgaben unten ab, um Boni zu erhalten. Schließe alle Aufgaben ab, um einen exklusiven Gegenstand zu erhalten.",
-    "signUpRequiresSignInTooltip": "Melde dich an, um die Aufgabe abzuschließen", //x1.9
-    "signUpTitle": "Registrieren", //x1.7
+    "signUpRequiresSignInTooltip": "Melde dich an, um die Aufgabe abzuschließen",
+    "signUpTitle": "Registrieren",
     "signUpDesc": "Erstelle ein kostenloses Konto, um deinen Spielfortschritt geräteübergreifend zu synchronisieren. Ohne Konto wird dein Fortschritt nur lokal gespeichert und kann verloren gehen.",
-    "signUpButton": "Registrieren", //x1.7
+    "signUpButton": "Registrieren",
     "emailUpdatesTitle": "E-Mail-Updates",
     "subscribe": "Abonnieren",
     "claim": "Abholen",
@@ -70,21 +70,21 @@
   },
   "invite": {
     "button": "Einladen",
-    "copyInviteCode": "Einladungscode kopieren", //x1.4
+    "copyInviteCode": "Einladungscode kopieren",
     "goldBonus": "+{{amount}} Gold",
-    "linkCopied": "Einladungslink kopiert!", //x1.2
+    "linkCopied": "Einladungslink kopiert!",
     "linkCopiedDesc": "Teile ihn mit Freunden, um beide {{amount}} Gold zu verdienen.",
-    "copyFailed": "Einladungslink konnte nicht kopiert werden", //x1.6
-    "copyFailedNotSignedIn": "Melde dich an, um deinen Einladungslink zu kopieren", //x1.6
+    "copyFailed": "Einladungslink konnte nicht kopiert werden",
+    "copyFailedNotSignedIn": "Melde dich an, um deinen Einladungslink zu kopieren",
     "tooltip": "<bold>Lade deine Freunde ein</bold>, und ihr beide erhaltet {{amount}} Gold. Du kannst bis zu {{cap}} Freunde einladen. ({{count}}/{{cap}} eingeladen)."
   },
   "invest": {
-    "title": "Investieren", //x1.8
+    "title": "Investieren",
     "strategy": "Investitionsstrategie",
     "amount": "Investitionsbetrag",
     "startInvestment": "Investition starten",
     "infoAriaLabel": "Investitionen und Strategietabelle erklären",
-    "unlockTooltip": "Wird bei höherer Gebäudestufe freigeschaltet", //x1.4
+    "unlockTooltip": "Wird bei höherer Gebäudestufe freigeschaltet",
     "minutes": "{{count}} Min.",
     "luckyChanceTop": "Glückstreffer-Chance {{percent}} % ({{fromLuck}} % durch Glück)",
     "luckyChanceLine": "{{percent}} % Glückstreffer-Chance: {{gold}}",
@@ -115,7 +115,7 @@
     "rulesStand": "Hat der Spieler am Zug mehr Punkte als der Gegner, kann er wählen, nicht zu würfeln.",
     "tutorialIntro": "Um dir das Spiel beizubringen, bietet der Spieler an, {{count}} Mal ohne Einsatz zu spielen.",
     "boneDiceIntro": "Setze deinen Einsatz. Mit Knochenwürfeln kannst du zweimal gegen den Spieler antreten.",
-    "placeBet": "Setze deinen Einsatz.", //x1.4
+    "placeBet": "Setze deinen Einsatz.",
     "gamesRemaining": "Noch {{remaining}} von {{total}} Spielen übrig.",
     "requiresLuck": "Erfordert {{luck}} Glück zum Freischalten",
     "bet": "Einsatz:",
@@ -124,9 +124,9 @@
     "you": "Du",
     "gambler": "Spieler",
     "roll": "Würfeln",
-    "noRoll": "Nicht würfeln", //x1.9
-    "youWin": "Du gewinnst", //x1.6
-    "youLose": "Du verlierst", //x1.5
+    "noRoll": "Nicht würfeln",
+    "youWin": "Du gewinnst",
+    "youLose": "Du verlierst",
     "practiceOutcome": "Übungsrunde. Kein Gold gewonnen oder verloren.",
     "goldWon": "+{{amount}} Gold",
     "goldLost": "-{{amount}} Gold",
@@ -142,33 +142,33 @@
     "rank": "#",
     "player": "Spieler",
     "completionTime": "Abschlusszeit",
-    "noEntries": "Noch keine Einträge", //x1.4
-    "lastUpdated": "Zuletzt aktualisiert: {{time}}", //x1.4
+    "noEntries": "Noch keine Einträge",
+    "lastUpdated": "Zuletzt aktualisiert: {{time}}",
     "recentCompletionsNote": "Es werden nur Abschlüsse der letzten 6 Monate angezeigt.",
-    "username": "Benutzername:", //x1.4
-    "notSet": "Nicht festgelegt", //x2.3
+    "username": "Benutzername:",
+    "notSet": "Nicht festgelegt",
     "currentPlaytime": "Aktuelle Spielzeit:",
-    "enterName": "Namen eingeben", //x1.4
-    "normalMode": "Normaler Modus", //x1.3
-    "cruelMode": "Grausamer Modus", //x1.5
-    "loadFailed": "Bestenliste konnte nicht geladen werden", //x1.5
-    "invalidUsername": "Ungültiger Benutzername", //x1.4
-    "usernameEmpty": "Benutzername darf nicht leer sein", //x1.4
+    "enterName": "Namen eingeben",
+    "normalMode": "Normaler Modus",
+    "cruelMode": "Grausamer Modus",
+    "loadFailed": "Bestenliste konnte nicht geladen werden",
+    "invalidUsername": "Ungültiger Benutzername",
+    "usernameEmpty": "Benutzername darf nicht leer sein",
     "usernameTooLong": "Benutzername darf höchstens 20 Zeichen lang sein",
-    "mustSignIn": "Du musst angemeldet sein, um einen Benutzernamen festzulegen", //x1.5
-    "usernameNotAllowed": "Benutzername nicht erlaubt", //x1.3
+    "mustSignIn": "Du musst angemeldet sein, um einen Benutzernamen festzulegen",
+    "usernameNotAllowed": "Benutzername nicht erlaubt",
     "usernameInappropriate": "Dieser Benutzername enthält unangemessene Sprache. Bitte wähle einen anderen.",
-    "usernameTaken": "Benutzername vergeben", //x1.5
+    "usernameTaken": "Benutzername vergeben",
     "usernameTakenDesc": "Dieser Benutzername ist bereits vergeben. Bitte wähle einen anderen.",
-    "usernameSaved": "Benutzername gespeichert", //x1.7
-    "usernameSavedDesc": "Dein Benutzername wurde aktualisiert", //x1.2
-    "saveFailed": "Benutzername konnte nicht gespeichert werden" //x1.9
+    "usernameSaved": "Benutzername gespeichert",
+    "usernameSavedDesc": "Dein Benutzername wurde aktualisiert",
+    "saveFailed": "Benutzername konnte nicht gespeichert werden"
   },
   "investmentResult": {
     "title": "Investitionsergebnis",
     "success": "Deine {{amount}} Gold-Investition war erfolgreich.",
     "luckyChance": "Glückstreffer. Der Gewinn deiner {{amount}} Gold-Investition wird mit {{multiplier}} multipliziert.",
-    "partialLoss": "Deine {{amount}} Gold-Investition ist fehlgeschlagen." //x1.4
+    "partialLoss": "Deine {{amount}} Gold-Investition ist fehlgeschlagen."
   },
   "cube": {
     "fallbackTitle": "Der flüsternde Würfel",
@@ -192,18 +192,18 @@
     "achievements": "Erfolge: {{percent}} %",
     "killedCreatures": "Getötete Kreaturen",
     "highestAttackWave": "Höchste Angriffswelle",
-    "cruelMode": "Grausamer Modus", //x1.5
+    "cruelMode": "Grausamer Modus",
     "on": "An",
     "off": "Aus",
     "playTime": "Spielzeit",
-    "playForFreeAt": "Kostenlos spielen unter", //x1.4
+    "playForFreeAt": "Kostenlos spielen unter",
     "save": "Speichern",
     "copy": "Kopieren",
-    "copiedTitle": "In Zwischenablage kopiert", //x1.3
-    "copyErrorTitle": "Bild konnte nicht kopiert werden", //x1.6
+    "copiedTitle": "In Zwischenablage kopiert",
+    "copyErrorTitle": "Bild konnte nicht kopiert werden",
     "copyErrorDesc": "Beim Kopieren in die Zwischenablage ist etwas schiefgelaufen.",
     "share": "Teilen",
-    "errorTitle": "Bild konnte nicht erstellt werden", //x1.5
+    "errorTitle": "Bild konnte nicht erstellt werden",
     "errorDesc": "Beim Erstellen des Bildes ist etwas schiefgelaufen."
   },
   "feedback": {
@@ -216,11 +216,11 @@
     "email": "E-Mail"
   },
   "galaxy": {
-    "title": "Die Demo endet hier", //x1.4
-    "description": "Setze das vollständige Spiel auf deine Steam-Wunschliste, um die Reise nach der Veröffentlichung fortzusetzen.", //x1.5
+    "title": "Die Demo endet hier",
+    "description": "Setze das vollständige Spiel auf deine Steam-Wunschliste, um die Reise nach der Veröffentlichung fortzusetzen.",
     "wishlistButton": "Zur Wunschliste hinzufügen",
     "feedbackButton": "Feedback",
-    "startNewGameButton": "Neues Spiel starten", //x1.4
+    "startNewGameButton": "Neues Spiel starten",
     "seeWhatsNextButton": "Was kommt",
     "storeHeaderLink": "Zur Wunschliste",
     "storeHeaderTooltip": "Vollversion auf die Steam-Wunschliste setzen"

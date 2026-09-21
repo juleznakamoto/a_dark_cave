@@ -1287,7 +1287,10 @@
   "nordicWarAxe": {
     "choices": {
       "buyAxe": {
-        "label": "Rifiuta"
+        "label": {
+          "Buy for 500 gold": "Compra per 500 oro",
+          "Buy for 750 gold": "Compra per 750 oro"
+        }
       },
       "decline": {
         "label": "Rifiuta"

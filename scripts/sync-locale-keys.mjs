@@ -4,7 +4,6 @@
  */
 import fs from "node:fs";
 import path from "node:path";
-import { execSync } from "node:child_process";
 import { fileURLToPath } from "node:url";
 import { listCatalogPaths } from "./locale-catalog.mjs";
 import {
@@ -40,7 +39,7 @@ export function findClosingBraceLine(lines) {
 }
 
 /**
- * Insert missing leaf keys as new lines before closing `}`; preserves //ok comments.
+ * Insert missing leaf keys as new lines before closing `}`.
  * @param {string} existingText
  * @param {Record<string, unknown>} missingObj keys still missing at this level
  * @param {number} indent spaces before keys at this object level (root content = 2)
@@ -168,18 +167,7 @@ function syncLocaleKeys() {
     }
   }
 
-  console.log(
-    "Synced missing keys from en to target locales (preserved //ok comments).",
-  );
-
-  try {
-    execSync("node scripts/restore-ok-comments.mjs", {
-      cwd: ROOT,
-      stdio: "inherit",
-    });
-  } catch (err) {
-    console.warn("restore-ok-comments.mjs failed:", err.message);
-  }
+  console.log("Synced missing keys from en to target locales.");
 }
 
 const invokedDirectly =

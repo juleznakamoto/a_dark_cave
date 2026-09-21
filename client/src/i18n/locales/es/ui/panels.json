@@ -84,35 +84,35 @@
     "focusRewardTooltip_one": "Obtén recompensas x2 en acciones durante {{count}} minuto",
     "focusRewardTooltip_other": "Obtén recompensas x2 en acciones durante {{count}} minutos",
     "focusPointTooltip": "Gana 1 punto de enfoque por hora de sueño",
-    "sleepLength": "Duración del sueño", //ok
+    "sleepLength": "Duración del sueño",
     "sleepLengthDescription": "Máx. {{hours}} horas de sueño continuo",
-    "sleepIntensity": "Intensidad del sueño", //ok
+    "sleepIntensity": "Intensidad del sueño",
     "sleepIntensityDescription": "Recibe {{percent}}% de la producción de la aldea mientras duermes",
     "skills": "Habilidades",
     "cubeWhispers": "Recuerdos susurrados",
-    "huntressTraining": "Entrenamiento de cazadora", //ok
+    "huntressTraining": "Entrenamiento de cazadora",
     "crushingStrike": "Golpe aplastante",
-    "bloodflameSphere": "Esfera de llama sangrienta", //ok
+    "bloodflameSphere": "Esfera de llama sangrienta",
     "feralHowl": "Aullido salvaje",
     "tirelessWorker": "Trabajador incansable",
-    "crowsEye": "Ojo del cuervo", //ok
+    "crowsEye": "Ojo del cuervo",
     "maxLevel": "Nivel máx.",
     "improve": "Mejorar",
     "skillFoodPerHunter": "+{{amount}} comida por cazador",
     "skillFurPerHunter": "+{{amount}} piel por cazador",
     "skillBonesPerHunter": "+{{amount}} huesos por cazador",
-    "skillHuntBonus": "+{{amount}} % de bonificación de caza", //ok
+    "skillHuntBonus": "+{{amount}} % de bonificación de caza",
     "skillHunterFood": "Cazador: +{{amount}} comida",
     "skillFurBonus": "+{{amount}} piel",
     "skillBonesBonus": "+{{amount}} huesos",
     "skillDamageBonus": "+{{amount}} daño",
     "skillStunRound_one": "+{{amount}} ronda de aturdimiento",
     "skillStunRound_other": "+{{amount}} rondas de aturdimiento",
-    "skillSuccessChanceBonus": "+{{amount}} % de probabilidad de éxito", //ok
+    "skillSuccessChanceBonus": "+{{amount}} % de probabilidad de éxito",
     "crushingStrikeSummary": "{{damage}} daño, {{rounds}} aturdimiento, {{success}} % de éxito",
-    "skillBurnDamage": "+{{amount}} daño por quemadura", //ok
-    "skillBurnRound_one": "+{{amount}} ronda de quemadura", //ok
-    "skillBurnRound_other": "+{{amount}} rondas de quemadura", //ok
+    "skillBurnDamage": "+{{amount}} daño por quemadura",
+    "skillBurnRound_one": "+{{amount}} ronda de quemadura",
+    "skillBurnRound_other": "+{{amount}} rondas de quemadura",
     "skillHealthCost": "+{{amount}} coste de salud",
     "bloodflameSummary": "{{damage}} de daño durante {{rounds}} rondas, {{health}} coste de salud",
     "bloodflameSummary_one": "{{damage}} de daño durante {{rounds}} ronda, {{health}} coste de salud",
@@ -124,8 +124,8 @@
     "feralHowlSummary": "{{success}}% éxito, -{{reduction}}% daño enemigo durante {{rounds}} rondas, +{{crit}}% daño crítico",
     "feralHowlSummary_one": "{{success}}% éxito, -{{reduction}}% daño enemigo durante {{rounds}} ronda, +{{crit}}% daño crítico",
     "feralHowlSummary_other": "{{success}}% éxito, -{{reduction}}% daño enemigo durante {{rounds}} rondas, +{{crit}}% daño crítico",
-    "skillDoubleGain": "+{{amount}} % de probabilidad de ganancia doble", //ok
-    "crowsEyeSummary": "{{percent}} % de probabilidad de duplicar las ganancias de acciones", //ok
+    "skillDoubleGain": "+{{amount}} % de probabilidad de ganancia doble",
+    "crowsEyeSummary": "{{percent}} % de probabilidad de duplicar las ganancias de acciones",
     "priorConcurrentAction_one": "+{{count}} acción simultánea",
     "priorConcurrentAction_other": "+{{count}} acciones simultáneas",
     "priorActionBonus": "+{{percent}} % de bonificación en acciones asignadas",

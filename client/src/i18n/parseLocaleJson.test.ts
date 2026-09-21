@@ -10,8 +10,8 @@ describe("parseLocaleJson", () => {
   it("parses JSON with trailing line comments", () => {
     const raw = `{
   "combat": {
-    "fight": "Kämpfen",  //x1.2
-    "defense": "Verteidigung"  //ok fits dialog button
+    "fight": "Kämpfen",  // note
+    "defense": "Verteidigung"  // note fits dialog button
   }
 }`;
     expect(parseLocaleJson(raw)).toEqual({
@@ -23,15 +23,15 @@ describe("parseLocaleJson", () => {
   });
 
   it("does not strip // inside string values", () => {
-    const raw = `{ "hint": "Use //ok in comments only" }`;
+    const raw = `{ "hint": "Use // in comments only" }`;
     expect(parseLocaleJson(raw)).toEqual({
-      hint: "Use //ok in comments only",
+      hint: "Use // in comments only",
     });
   });
 
   it("stripTrailingLineComment preserves code portion", () => {
     expect(
-      stripTrailingLineComment('  "a": "b",  //x1.5'),
+      stripTrailingLineComment('  "a": "b",  // note'),
     ).toBe('  "a": "b",');
   });
 

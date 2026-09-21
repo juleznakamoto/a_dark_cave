@@ -53,7 +53,7 @@
     "platforms": {
       "youtube": {
         "title": "YouTube",
-        "actionSubscribe": "チャンネル登録" //x1.8
+        "actionSubscribe": "チャンネル登録"
       },
       "instagram": {
         "title": "Instagram",

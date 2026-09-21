@@ -4,17 +4,17 @@
     "trustBadge": "Bravo !",
     "headline1": "Votre voyage s'achève ici",
     "headline2": "",
-    "subtitle1": "Du moins pour l'instant…", //x1.3
+    "subtitle1": "Du moins pour l'instant…",
     "subtitle2": "Le mode cruel attend avec un gameplay plus long et plus difficile.",
     "subtitle2Discount": "Terminer le jeu a débloqué une réduction.",
     "cruelMode": "⛤ Mode cruel",
     "cruelModeBadge": "Réduction spéciale",
     "cruelModeComingSoon": "Bientôt",
-    "feedback": "Commentaires", //x1.5
+    "feedback": "Commentaires",
     "feedbackBlurb": "Avez-vous rencontré des bugs ou des problèmes de traduction, ou avez-vous des suggestions ? J'aimerais beaucoup avoir votre avis.",
     "buyMeACoffee": "Soutenir",
     "continuePlaying": "Continuer à jouer",
-    "moreGames": "Plus de jeux", //x1.2
+    "moreGames": "Plus de jeux",
     "rateOnItch": "Noter sur itch.io"
   }
 }

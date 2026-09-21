@@ -1486,7 +1486,10 @@
   "nordicWarAxe": {
     "choices": {
       "buyAxe": {
-        "label": "断る"
+        "label": {
+          "Buy for 500 gold": "500ゴールドで買う",
+          "Buy for 750 gold": "750ゴールドで買う"
+        }
       },
       "decline": {
         "label": "断る"

@@ -10,11 +10,11 @@
     "gold": "Or",
     "boosts": "Améliorations",
     "bundles": "Packs",
-    "mostPopular": "Le plus populaire", //x1.4
+    "mostPopular": "Le plus populaire",
     "threeXValue": "Valeur",
-    "availableInOneHour": "Disponible dans 1 heure", //x1.2
+    "availableInOneHour": "Disponible dans 1 heure",
     "availableInHours": "Disponible dans {{hours}} heures",
-    "signInToClaim": "Connectez-vous pour récupérer", //x1.8
+    "signInToClaim": "Connectez-vous pour récupérer",
     "alreadyClaimed": "Déjà récupéré",
     "alreadyPurchased": "Déjà acheté",
     "continueCheckout": "Continuer",
@@ -22,25 +22,25 @@
     "cruelModeActivateHint": "(activez et démarrez une nouvelle partie pour jouer)",
     "firstPurchaseInsightBannerBefore": "Obtenez",
     "firstPurchaseInsightBannerBeforePlaylight": "En tant qu'utilisateur Playlight, vous recevez",
-    "firstPurchaseInsightBannerInsight": "Perspicacité", //x1.7
+    "firstPurchaseInsightBannerInsight": "Perspicacité",
     "firstPurchaseInsightBannerAfter": "gratuitement avec votre premier achat",
-    "firstPurchaseInsightCheckoutFree": "gratuitement", //x1.5
+    "firstPurchaseInsightCheckoutFree": "gratuitement",
     "firstPurchaseInsightGranted": "Cadeau de premier achat : +{{amount}} {{glyph}} Perspicacité",
-    "loadingPayment": "Chargement du système de paiement...", //x1.4
+    "loadingPayment": "Chargement du système de paiement...",
     "paymentSrDescription": "Finalisez votre paiement pour {{name}}",
     "originalPrice": "Prix d'origine",
-    "saleDiscount": "Remise promotionnelle", //x1.6
+    "saleDiscount": "Remise promotionnelle",
     "bundleDiscount": "Remise pack",
-    "eventDiscount": "Remise d'événement", //x1.3
+    "eventDiscount": "Remise d'événement",
     "total": "Total",
     "legalConsent": "Accès immédiat au contenu numérique après l'achat.",
     "termsOfService": "Conditions",
-    "rightOfWithdrawal": "Rétractation", //x1.2
+    "rightOfWithdrawal": "Rétractation",
     "completePurchaseFor": "Finaliser l'achat pour {{price}}",
     "paymentFailed": "Paiement échoué",
     "tooManyPaymentRequests": "Trop de demandes de paiement. Veuillez réessayer plus tard.",
     "cruelModeDeactivatedLog": "Mode cruel désactivé. Les nouvelles parties utiliseront la difficulté normale.",
-    "notAuthenticated": "Vous n'êtes pas connecté", //x1.2
+    "notAuthenticated": "Vous n'êtes pas connecté",
     "verificationFailed": "La vérification du paiement a échoué. Veuillez contacter le support.",
     "unexpectedError": "Quelque chose s'est mal passé.",
     "purchaseSuccessful": "Achat terminé.",
@@ -61,21 +61,21 @@
       "mining": "Extraction : +150 % de bonus, -3 s de recharge"
     },
     "artifactTarnishedCompass": {
-      "unlocksStoryline": "Débloque l'histoire de la boussole", //x1.4
+      "unlocksStoryline": "Débloque l'histoire de la boussole",
       "doubleGain": "5 % de chance de doubler les gains d'actions",
       "luck": "+5 Chance"
     },
     "artifactCrowHarness": {
-      "unlocksStoryline": "Débloque l'histoire du corbeau", //x1.4
-      "doubleGain": "Jusqu'à 10 % de chance de doubler les gains d'actions", //x1.4
+      "unlocksStoryline": "Débloque l'histoire du corbeau",
+      "doubleGain": "Jusqu'à 10 % de chance de doubler les gains d'actions",
       "addsFellowshipMember": "Ajoute un membre de la compagnie"
     },
     "cruelMode": {
-      "moreEvents": "Plus d'événements", //x1.5
-      "moreItems": "Plus d'objets", //x1.3
-      "strongerEnemies": "Ennemis plus puissants", //x1.4
-      "harderChallenges": "Défis plus difficiles", //x1.2
-      "reusePurchases": "Réutiliser les achats existants" //x1.3
+      "moreEvents": "Plus d'événements",
+      "moreItems": "Plus d'objets",
+      "strongerEnemies": "Ennemis plus puissants",
+      "harderChallenges": "Défis plus difficiles",
+      "reusePurchases": "Réutiliser les achats existants"
     },
     "greatFeast": {
       "forMinutes": "Pendant {{minutes}} minutes :",
@@ -89,7 +89,7 @@
     "securePaymentWith": "avec",
     "securePurchaseTitle": "Sécurisez votre achat",
     "securePurchaseBody": "Votre achat n'est enregistré que sur ce navigateur. Créez un compte pour conserver vos achats et votre progression si vous changez d'appareil ou effacez les données du navigateur.",
-    "securePurchaseSignUp": "Créer un compte", //x2.1
+    "securePurchaseSignUp": "Créer un compte",
     "securePurchaseLater": "Plus tard"
   }
 }

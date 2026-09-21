@@ -1,48 +1,48 @@
 {
   "combat": {
-    "skillsTitle": "Kampffähigkeiten", //ok
+    "skillsTitle": "Kampffähigkeiten",
     "fight": "Kämpfen",
     "fighting": "Kämpft...",
-    "startFight": "Kampf starten", //ok
+    "startFight": "Kampf starten",
     "roundTitle": "Kampf - Runde {{round}}",
     "bossRoundTitle": "Bosskampf - Runde {{round}}",
-    "youLost": "Du verlierst", //ok
-    "youWin": "Du gewinnst", //ok
+    "youLost": "Du verlierst",
+    "youWin": "Du gewinnst",
     "bastion": "Bastion",
     "fortress": "Festung",
-    "items": "Gegenstände", //ok
+    "items": "Gegenstände",
     "integrity": "Integrität",
     "attack": "Angriff",
-    "defense": "Verteidigung", //ok
+    "defense": "Verteidigung",
     "healChance": "Heilchance",
-    "stunChance": "Betäubungschance", //x1.5
+    "stunChance": "Betäubungschance",
     "stunned": "Betäubt",
-    "attackFailed": "Angriff gescheitert", //ok
+    "attackFailed": "Angriff gescheitert",
     "crushingStrikeFailed": "Schmetterschlag fehlgeschlagen",
-    "feralHowlFailed": "Wildes Heulen fehlgeschlagen", //x1.6
+    "feralHowlFailed": "Wildes Heulen fehlgeschlagen",
     "critical": "kritisch",
     "available": "Verfügbar: {{current}}/{{max}}",
     "crushingStrike": "Schmetterschlag",
     "bloodflameSphere": "Blutflammensphäre",
-    "feralHowl": "Wildes Heulen", //x1.3
+    "feralHowl": "Wildes Heulen",
     "poisonArrows": "Giftpfeile",
     "critChance": "{{percent}} % kritische Trefferchance",
     "critFromLuck": "{{percent}} % durch {{stat}}{{maxSuffix}}",
     "critFromLuckMaxSuffix": " (max.)",
-    "critFromItems": "{{percent}} % durch Gegenstände", //ok
+    "critFromItems": "{{percent}} % durch Gegenstände",
     "critDamage": "+{{percent}} % kritischer Trefferschaden",
     "missChance": "{{percent}} % Fehlschlag-Chance (basierend auf {{stat}})",
     "enemies": {
-      "paleCreatures": "Bleiche Kreaturen", //ok
-      "paleBeasts": "Bleiche Bestien" //x1.4
+      "paleCreatures": "Bleiche Kreaturen",
+      "paleBeasts": "Bleiche Bestien"
     },
-    "restlessKnightWounded": "Der Ruhelose Ritter ist verwundet und kann nicht kämpfen", //ok
-    "elderWizardWounded": "Der Erzmagier ist verwundet und kann keine Zauber wirken", //ok
-    "noCasualties": "Kein Dorfbewohner starb.", //ok
-    "oneCasualty": "1 Dorfbewohner starb.", //ok
-    "manyCasualties": "{{count}} Dorfbewohner starben.", //ok
+    "restlessKnightWounded": "Der Ruhelose Ritter ist verwundet und kann nicht kämpfen",
+    "elderWizardWounded": "Der Erzmagier ist verwundet und kann keine Zauber wirken",
+    "noCasualties": "Kein Dorfbewohner starb.",
+    "oneCasualty": "1 Dorfbewohner starb.",
+    "manyCasualties": "{{count}} Dorfbewohner starben.",
     "fellowInjured": "{{name}} wurde verwundet.",
-    "buildingDamaged": "{{name}} wurde beschädigt.", //ok
+    "buildingDamaged": "{{name}} wurde beschädigt.",
     "silverClaimed": "{{amount}} Silber erhalten.",
     "goldClaimed": "{{amount}} Gold erhalten."
   },
@@ -51,31 +51,31 @@
     "repair": "Reparieren"
   },
   "attackWaves": {
-    "title": "Angriffswellen", //ok
+    "title": "Angriffswellen",
     "calm": "Es ist ruhig, vorerst…",
     "soon": "bald",
-    "provoke": "Provozieren", //ok
+    "provoke": "Provozieren",
     "postCompletion": "Welle {{waveNumber}}",
     "waves": {
       "firstWave": "Erste Welle",
       "secondWave": "Zweite Welle",
-      "thirdWave": "Dritte Welle", //ok
+      "thirdWave": "Dritte Welle",
       "fourthWave": "Vierte Welle",
-      "fifthWave": "Fünfte Welle", //ok
+      "fifthWave": "Fünfte Welle",
       "firstBossWave": "Bosswelle",
-      "sixthWave": "Sechste Welle", //ok
+      "sixthWave": "Sechste Welle",
       "seventhWave": "Siebte Welle",
       "eighthWave": "Achte Welle",
-      "ninthWave": "Neunte Welle", //ok
-      "tenthWave": "Zehnte Welle", //ok
+      "ninthWave": "Neunte Welle",
+      "tenthWave": "Zehnte Welle",
       "secondBossWave": "Letzte Bosswelle"
     }
   },
   "fortifications": {
     "bastion": "Bastion",
-    "fortifiedMoat": "Befestigter Graben", //ok
+    "fortifiedMoat": "Befestigter Graben",
     "chitinPlating": "Chitinpanzerung",
-    "watchtower1": "Aussichtsturm", //ok
+    "watchtower1": "Aussichtsturm",
     "watchtower2": "Wachturm",
     "watchtower3": "Befestigter Turm",
     "watchtower4": "Kanonenturm",
@@ -85,9 +85,9 @@
     "palisades4": "Verstärkte Mauer",
     "palisadesFallback": "Palisaden",
     "watchtowerFallback": "Wachturm",
-    "damaged": "(beschädigt)", //ok
+    "damaged": "(beschädigt)",
     "attack": "+{{value}} Angriff",
-    "defense": "+{{value}} Verteidigung", //ok
+    "defense": "+{{value}} Verteidigung",
     "integrity": "+{{value}} Integrität"
   }
 }

@@ -12,10 +12,10 @@
     "craftTorch_few": "Факела",
     "craftTorch_many": "Факелов",
     "craftTorch_other": "Факелы",
-    "craftBoneTotem_one": "Костяной тотем", //x1.4
-    "craftBoneTotem_few": "Костяных тотема", //x1.4
-    "craftBoneTotem_many": "Костяных тотемов", //x1.4
-    "craftBoneTotem_other": "Костяные тотемы", //x1.4
+    "craftBoneTotem_one": "Костяной тотем",
+    "craftBoneTotem_few": "Костяных тотема",
+    "craftBoneTotem_many": "Костяных тотемов",
+    "craftBoneTotem_other": "Костяные тотемы",
     "craftLeatherTotem_one": "Кожаный тотем",
     "craftLeatherTotem_few": "Кожаных тотема",
     "craftLeatherTotem_many": "Кожаных тотемов",
@@ -31,10 +31,10 @@
   },
   "village": {
     "sectionBuild": "Строить",
-    "sectionProduce": "Производство", //x1.7
+    "sectionProduce": "Производство",
     "villagers": "Жители",
     "villagersAvailable": "доступные",
-    "villagersOnMission": "в экспедиции", //x1.2
+    "villagersOnMission": "в экспедиции",
     "presetApply": "Применить пресет {{slot}}",
     "presetEmpty": "Пресет {{slot}} пуст: выберите его, затем сохраните текущие работы",
     "presetLocked": "Заблокировано: доступно для покупки",
@@ -45,8 +45,8 @@
     "queueSlotUsed": "Слот {{slot}}: строительство идёт",
     "queueSlotFree": "Слот {{slot}}: свободен",
     "queueSlotLocked": "Слот {{slot}}: заблокирован",
-    "slotInsightUnlockAvailable": "Можно разблокировать за {{cost}} Проницательности", //x1.4
-    "slotBuildingNeededToUnlock": "Для разблокировки требуется здание", //x1.3
+    "slotInsightUnlockAvailable": "Можно разблокировать за {{cost}} Проницательности",
+    "slotBuildingNeededToUnlock": "Для разблокировки требуется здание",
     "constructionBoost": "Ускорить строительство на {{time}} за {{cost}} {{resource}}",
     "constructionBoostFinish": "Завершить строительство за {{cost}} {{resource}}",
     "cycle": "Цикл",
@@ -61,23 +61,23 @@
     "fromGreatFeast": "{{percent}}% от Великого пира",
     "merchantBlocked": "Нельзя вызвать торговца, пока активно другое событие",
     "merchantAvailableIn": "Доступно через {{time}}",
-    "merchantAbortCall": "Отменить вызов", //x1.3
+    "merchantAbortCall": "Отменить вызов",
     "investCompleteIn": "Инвестиция завершится через {{time}}",
     "investAvailableIn": "Инвестиция завершена. Новые предложения через {{time}}.",
-    "investPreparing": "Подготовка инвестиционных предложений…", //x1.4
+    "investPreparing": "Подготовка инвестиционных предложений…",
     "jobs": {
       "gatherer": "Собиратель",
       "hunter": "Охотник",
-      "iron_miner": "Железный шахтёр", //x1.5
-      "coal_miner": "Угольный шахтёр", //x1.5
+      "iron_miner": "Железный шахтёр",
+      "coal_miner": "Угольный шахтёр",
       "steel_forger": "Стальщик",
       "blacksteel_forger": "Кузнец чёрной стали",
       "sulfur_miner": "Серосжигатель",
-      "obsidian_miner": "Обсидиановый шахтёр", //x1.4
+      "obsidian_miner": "Обсидиановый шахтёр",
       "adamant_miner": "Адамант-шахтёр",
-      "moonstone_miner": "Лунокаменный шахтёр", //x1.3
+      "moonstone_miner": "Лунокаменный шахтёр",
       "powder_maker": "Пороховник",
-      "ashfire_dust_maker": "Изготовитель пепельной пыли", //x1.5
+      "ashfire_dust_maker": "Изготовитель пепельной пыли",
       "tanner": "Дубильщик",
       "scholar": "Учёный"
     }
@@ -94,19 +94,19 @@
     "focusRewardTooltip_many": "Удвоенные награды за действия на {{count}} минут",
     "focusRewardTooltip_other": "Удвоенные награды за действия на {{count}} минут",
     "focusPointTooltip": "Получайте 1 очко фокуса за каждый час сна",
-    "sleepLength": "Длительность сна", //x1.3
+    "sleepLength": "Длительность сна",
     "sleepLengthDescription": "Макс. {{hours}} ч. непрерывного сна",
     "sleepIntensity": "Интенсивность сна",
     "sleepIntensityDescription": "Получайте {{percent}}% производства деревни во время сна",
     "skills": "Навыки",
-    "cubeWhispers": "Нашёптанные воспоминания", //x1.3
+    "cubeWhispers": "Нашёптанные воспоминания",
     "huntressTraining": "Обучение охотницы",
     "crushingStrike": "Сокрушающий удар",
-    "bloodflameSphere": "Сфера кровавого пламени", //x1.4
+    "bloodflameSphere": "Сфера кровавого пламени",
     "feralHowl": "Дикий вой",
-    "tirelessWorker": "Неутомимый труженик", //x1.3
+    "tirelessWorker": "Неутомимый труженик",
     "crowsEye": "Глаз ворона",
-    "maxLevel": "Макс. уровень", //x1.4
+    "maxLevel": "Макс. уровень",
     "improve": "Улучшить",
     "skillFoodPerHunter": "+{{amount}} еды за охотника",
     "skillFurPerHunter": "+{{amount}} меха за охотника",
@@ -116,18 +116,18 @@
     "skillFurBonus": "+{{amount}} Мех",
     "skillBonesBonus": "+{{amount}} Кости",
     "skillDamageBonus": "+{{amount}} Урон",
-    "skillStunRound_one": "+{{count}} раунд оглушения", //x1.2
+    "skillStunRound_one": "+{{count}} раунд оглушения",
     "skillStunRound_few": "+{{count}} раунда оглушения",
-    "skillStunRound_many": "+{{count}} раундов оглушения", //x1.3
-    "skillStunRound_other": "+{{count}} раундов оглушения", //x1.3
+    "skillStunRound_many": "+{{count}} раундов оглушения",
+    "skillStunRound_other": "+{{count}} раундов оглушения",
     "skillSuccessChanceBonus": "+{{amount}}% шанс успеха",
     "crushingStrikeSummary": "{{damage}} урона, {{rounds}} оглушение, {{success}}% успеха",
-    "skillBurnDamage": "+{{amount}} урона от горения", //x1.2
+    "skillBurnDamage": "+{{amount}} урона от горения",
     "skillBurnRound_one": "+{{count}} раунд горения",
     "skillBurnRound_few": "+{{count}} раунда горения",
     "skillBurnRound_many": "+{{count}} раундов горения",
     "skillBurnRound_other": "+{{count}} раундов горения",
-    "skillHealthCost": "+{{amount}} стоимости здоровья", //x1.3
+    "skillHealthCost": "+{{amount}} стоимости здоровья",
     "bloodflameSummary": "{{damage}} урона за {{rounds}} раундов, {{health}} стоимости здоровья",
     "bloodflameSummary_one": "{{damage}} урона за {{rounds}} раунд, {{health}} стоимости здоровья",
     "bloodflameSummary_few": "{{damage}} урона за {{rounds}} раунда, {{health}} стоимости здоровья",
@@ -157,27 +157,27 @@
     "priorSummaryNoBonus_few": "{{count}} одновременных действия, {{upkeep}}",
     "priorSummaryNoBonus_many": "{{count}} одновременных действий, {{upkeep}}",
     "priorSummaryNoBonus_other": "{{count}} одновременных действий, {{upkeep}}",
-    "chainmaster": "Властелин цепей", //x1.4
+    "chainmaster": "Властелин цепей",
     "chainmasterProductionBonus": "+{{percent}}% к производству жителей",
     "chainmasterDisgustDuration": "Отвращение жителей: {{minutes}} мин",
     "chainmasterSummary": "+{{percent}}% к производству жителей"
   },
   "bonuses": {
-    "caveExplore": "Исследование пещеры", //x1.6
-    "chopWood": "Рубка дерева", //x1.3
+    "caveExplore": "Исследование пещеры",
+    "chopWood": "Рубка дерева",
     "hunt": "Охота",
-    "mineAll": "Добыча (всё)", //x1.2
-    "mineStone": "Добыча камня", //x1.2
-    "mineIron": "Добыча железа", //x1.4
-    "mineCoal": "Добыча угля", //x1.2
+    "mineAll": "Добыча (всё)",
+    "mineStone": "Добыча камня",
+    "mineIron": "Добыча железа",
+    "mineCoal": "Добыча угля",
     "mineSulfur": "Добыча серы",
-    "mineObsidian": "Добыча обсидиана", //x1.2
-    "mineAdamant": "Добыча адаманта", //x1.3
-    "mineMoonstone": "Добыча лунного камня", //x1.4
-    "boneTotems": "Костяные тотемы", //x1.4
+    "mineObsidian": "Добыча обсидиана",
+    "mineAdamant": "Добыча адаманта",
+    "mineMoonstone": "Добыча лунного камня",
+    "boneTotems": "Костяные тотемы",
     "leatherTotems": "Кожаные тотемы",
-    "craftDiscount": "Скидка на создание", //x1.3
-    "buildDiscount": "Скидка на строительство", //x1.6
+    "craftDiscount": "Скидка на создание",
+    "buildDiscount": "Скидка на строительство",
     "doubleGainChance": "Шанс двойного урожая"
   },
   "badges": {
@@ -185,33 +185,33 @@
     "priorRemove": "Нажмите, чтобы снять Падшего приора",
     "priorAssign": "Нажмите, чтобы назначить Падшего приора",
     "bonus": "Бонус:",
-    "nextBonus": "Следующий бонус:", //x1.5
+    "nextBonus": "Следующий бонус:",
     "craftMultiplier": "Создание ×{{amount}}",
     "bonusPercent": "+{{percent}}%",
-    "maxLevel": "макс. уровень", //x1.4
-    "executionTimeReduction": "-50% времени выполнения" //x1.2
+    "maxLevel": "макс. уровень",
+    "executionTimeReduction": "-50% времени выполнения"
   },
   "sidePanel": {
     "bastion": "Бастион",
     "fortress": "Крепость",
     "freeVillagers": "Свободные",
     "resources": "Ресурсы",
-    "tools": "Инструменты", //x2.2
+    "tools": "Инструменты",
     "weapons": "Оружие",
     "clothing": "Одежда",
     "relics": "Реликвии",
     "schematics": "Чертежи",
-    "blessings": "Благословения", //x1.4
+    "blessings": "Благословения",
     "buildings": "Здания",
     "books": "Книги",
     "fellowship": "Спутники",
-    "stats": "Характеристики", //x2.8
+    "stats": "Характеристики",
     "bonuses": "Бонусы",
     "fortifications": "Укрепления",
-    "combatItems": "Боевые предметы", //x1.3
+    "combatItems": "Боевые предметы",
     "mapFragments": "Фрагменты карты",
-    "craftDiscount": "Скидка на создание", //x1.3
-    "buildDiscount": "Скидка на строительство", //x1.6
+    "craftDiscount": "Скидка на создание",
+    "buildDiscount": "Скидка на строительство",
     "constructionTime": "Время строительства",
     "productionBonus": "Бонус производства",
     "doubleGainChance": "Шанс двойного урожая",
@@ -219,10 +219,10 @@
     "statStrengthTooltip": "Помогает там, где слова бессильны",
     "statKnowledgeTooltip": "Влияет там, где помогает смекалка",
     "statMadnessTooltip": "Ведёт мысли на опасные пути",
-    "statEffectNotUnlockedYet": "Ещё не разблокировано", //x1.3
-    "statEffectMaxPercent": "макс. {{value}} %", //x1.2
+    "statEffectNotUnlockedYet": "Ещё не разблокировано",
+    "statEffectMaxPercent": "макс. {{value}} %",
     "statEffectMaxGold": "макс. {{value}} зол.",
-    "statEffectMaxSeconds": "макс. {{value}} с", //x1.2
+    "statEffectMaxSeconds": "макс. {{value}} с",
     "statLuckEffectCrit": "+{{percent}} % шанс критического удара в бою",
     "statLuckEffectGambling": "Макс. ставка {{amount}} зол. у Игрока",
     "statLuckEffectInvest": "+{{percent}} % к шансу успеха инвестиций",
@@ -248,7 +248,7 @@
     "notUnlocked": "Еще не открыто.",
     "chartUnavailable": "График недоступен",
     "claim": "Забрать",
-    "unlockTitleForInsight": "Открыть название за {{cost}} Проницательности", //x1.4
+    "unlockTitleForInsight": "Открыть название за {{cost}} Проницательности",
     "completeLog": "Достижение завершено: {{name}}: {{rewards}}",
     "categories": {
       "basic": "Базовые",
@@ -261,11 +261,11 @@
   "idleMode": {
     "sleeping": "Спит",
     "awake": "Вы проснулись!",
-    "wakingIn": "Пробуждение через: {{time}}", //x1.2
+    "wakingIn": "Пробуждение через: {{time}}",
     "villageProduction": "Производство деревни: {{percent}}%",
     "villageProductionTooltip": "Временные бонусы производства не действуют во время сна",
     "villageProductionInfoAriaLabel": "Сведения о производстве деревни",
-    "wake": "Проснуться сейчас", //x1.5
+    "wake": "Проснуться сейчас",
     "getUp": "Встать",
     "focusGainedLog": "Вы получили {{count}} фокуса за отдых.",
     "villagersProducedLog": "Жители произвели: {{resources}}"

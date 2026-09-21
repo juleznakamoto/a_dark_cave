@@ -1409,7 +1409,10 @@
   "nordicWarAxe": {
     "choices": {
       "buyAxe": {
-        "label": "拒绝"
+        "label": {
+          "Buy for 500 gold": "花 500 黄金购买",
+          "Buy for 750 gold": "花 750 黄金购买"
+        }
       },
       "decline": {
         "label": "拒绝"

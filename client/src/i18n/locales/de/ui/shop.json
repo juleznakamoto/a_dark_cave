@@ -10,11 +10,11 @@
     "gold": "Gold",
     "boosts": "Verstärkungen",
     "bundles": "Pakete",
-    "mostPopular": "Am beliebtesten", //x1.3
+    "mostPopular": "Am beliebtesten",
     "threeXValue": "Wert",
     "availableInOneHour": "Verfügbar in 1 Stunde",
     "availableInHours": "Verfügbar in {{hours}} Stunden",
-    "signInToClaim": "Zum Abholen anmelden", //x1.3
+    "signInToClaim": "Zum Abholen anmelden",
     "alreadyClaimed": "Bereits abgeholt",
     "alreadyPurchased": "Bereits gekauft",
     "continueCheckout": "Weiter",
@@ -26,7 +26,7 @@
     "firstPurchaseInsightBannerAfter": "gratis mit deinem ersten Kauf",
     "firstPurchaseInsightCheckoutFree": "gratis",
     "firstPurchaseInsightGranted": "Erstkauf-Geschenk: +{{amount}} {{glyph}} Einsicht",
-    "loadingPayment": "Zahlungssystem wird geladen...", //x1.2
+    "loadingPayment": "Zahlungssystem wird geladen...",
     "paymentSrDescription": "Schließe deine Zahlung für {{name}} ab",
     "originalPrice": "Originalpreis",
     "saleDiscount": "Sale-Rabatt",
@@ -37,12 +37,12 @@
     "termsOfService": "AGB",
     "rightOfWithdrawal": "Widerruf",
     "completePurchaseFor": "Kauf abschließen für {{price}}",
-    "paymentFailed": "Zahlung fehlgeschlagen", //x1.6
+    "paymentFailed": "Zahlung fehlgeschlagen",
     "tooManyPaymentRequests": "Zu viele Zahlungsanfragen. Bitte versuche es später erneut.",
-    "cruelModeDeactivatedLog": "Grausamer Modus deaktiviert. Neue Spiele verwenden den normalen Schwierigkeitsgrad.", //x1.4
-    "notAuthenticated": "Du bist nicht angemeldet", //x1.4
+    "cruelModeDeactivatedLog": "Grausamer Modus deaktiviert. Neue Spiele verwenden den normalen Schwierigkeitsgrad.",
+    "notAuthenticated": "Du bist nicht angemeldet",
     "verificationFailed": "Zahlungsüberprüfung fehlgeschlagen. Bitte kontaktiere den Support.",
-    "unexpectedError": "Etwas ist schiefgelaufen.", //x1.4
+    "unexpectedError": "Etwas ist schiefgelaufen.",
     "purchaseSuccessful": "Kauf abgeschlossen.",
     "purchaseSuccess": "Kauf erfolgreich",
     "purchaseAddedSingle": "{{name}} wurde deinen Käufen hinzugefügt. Prüfe den Tab „Käufe“, um es zu aktivieren.",
@@ -56,26 +56,26 @@
     "tradersSonDiscount": "{{percent}} % zusätzlicher Rabatt durch das Ereignis „Sohn des Händlers“.",
     "journeyCompleteDiscount": "Sonderrabatt für den Abschluss des Spiels",
     "artifactSkullLantern": {
-      "unlocksStoryline": "Schaltet die Schädellaternenhandlung frei", //x1.3
+      "unlocksStoryline": "Schaltet die Schädellaternenhandlung frei",
       "caveExplore": "Höhlenerkundung: +150 % Bonus, -3 s Abklingzeit",
       "mining": "Abbau: +150 % Bonus, -3s Abklingzeit"
     },
     "artifactTarnishedCompass": {
-      "unlocksStoryline": "Schaltet die Kompasshandlung frei", //x1.3
+      "unlocksStoryline": "Schaltet die Kompasshandlung frei",
       "doubleGain": "5 % Chance, Aktionsgewinne zu verdoppeln",
       "luck": "+5 Glück"
     },
     "artifactCrowHarness": {
-      "unlocksStoryline": "Schaltet die Krähenhandlung frei", //x1.5
+      "unlocksStoryline": "Schaltet die Krähenhandlung frei",
       "doubleGain": "bis zu 10 % Chance, Aktionsgewinne zu verdoppeln",
       "addsFellowshipMember": "Fügt einen Gefährten hinzu"
     },
     "cruelMode": {
-      "moreEvents": "Mehr Ereignisse", //x1.4
-      "moreItems": "Mehr Gegenstände", //x1.6
+      "moreEvents": "Mehr Ereignisse",
+      "moreItems": "Mehr Gegenstände",
       "strongerEnemies": "Stärkere Feinde",
-      "harderChallenges": "Härtere Herausforderungen", //x1.5
-      "reusePurchases": "Bestehende Käufe wiederverwenden" //x1.3
+      "harderChallenges": "Härtere Herausforderungen",
+      "reusePurchases": "Bestehende Käufe wiederverwenden"
     },
     "greatFeast": {
       "forMinutes": "Für {{minutes}} Minuten:",
@@ -83,13 +83,13 @@
       "newVillagerChance": "+25 % Chance auf neue Dorfbewohner"
     },
     "alreadyClaimedItemLog": "Du hast {{name}} bereits abgeholt.",
-    "claimFailedLog": "{{name}} konnte nicht abgeholt werden. Bitte versuche es erneut.", //x1.5
+    "claimFailedLog": "{{name}} konnte nicht abgeholt werden. Bitte versuche es erneut.",
     "activatedDefaultLog": "{{name}} aktiviert! Belohnungen wurden deinem Inventar hinzugefügt.",
     "securePaymentVia": "Sichere Zahlung über",
     "securePaymentWith": "mit",
     "securePurchaseTitle": "Kauf sichern",
     "securePurchaseBody": "Dein Kauf ist nur in diesem Browser gespeichert. Erstelle ein Konto, damit Käufe und Fortschritt erhalten bleiben, wenn du das Gerät wechselst oder Browserdaten löschst.",
-    "securePurchaseSignUp": "Registrieren", //x1.7
-    "securePurchaseLater": "Vielleicht später" //x1.5
+    "securePurchaseSignUp": "Registrieren",
+    "securePurchaseLater": "Vielleicht später"
   }
 }

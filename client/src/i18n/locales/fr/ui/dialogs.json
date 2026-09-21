@@ -10,15 +10,15 @@
     "influencedBy": "Influencé par :"
   },
   "reward": {
-    "actionReward": "Récompense d'action", //x1.5
-    "claimRewards": "Récupérer les récompenses" //x1.9
+    "actionReward": "Récompense d'action",
+    "claimRewards": "Récupérer les récompenses"
   },
   "madness": {
-    "title": "Événement de folie", //x1.4
+    "title": "Événement de folie",
     "change": "{{sign}} {{amount}} Folie"
   },
   "insightPotion": {
-    "title": "Élixir de perspicacité", //x1.6
+    "title": "Élixir de perspicacité",
     "message": "Vous buvez l'élixir de perspicacité. La compréhension éclot dans votre esprit."
   },
   "blessingOffer": {
@@ -28,26 +28,26 @@
   "socialPrompt": {
     "title": "Gagnez des récompenses",
     "description": "Accomplissez les tâches ci-dessous pour recevoir des bonus. Accomplissez toutes les tâches pour recevoir un objet exclusif.",
-    "signUpRequiresSignInTooltip": "Connectez-vous pour accomplir cette tâche", //x1.6
+    "signUpRequiresSignInTooltip": "Connectez-vous pour accomplir cette tâche",
     "signUpTitle": "S'inscrire",
     "signUpDesc": "Créez un compte gratuit pour synchroniser votre progression entre vos appareils. Sans compte, votre progression n'est enregistrée que localement et peut être perdue.",
     "signUpButton": "S'inscrire",
-    "emailUpdatesTitle": "Mises à jour par e-mail", //x1.8
+    "emailUpdatesTitle": "Mises à jour par e-mail",
     "subscribe": "S'abonner",
     "claim": "Récupérer",
     "playlightTitle": "Essayer 1 jeu",
     "discoverGames": "Essayer",
     "inviteTitle": "Inviter 1 ami",
     "inviteDesc": "Vous pouvez inviter jusqu'à {{cap}} amis. À chaque fois, vous recevrez tous les deux {{amount}} or ({{count}}/{{cap}} invités).",
-    "copyInviteLink": "Copier le lien d'invitation", //x1.7
+    "copyInviteLink": "Copier le lien d'invitation",
     "progressComplete": "Vous avez terminé toutes les tâches. Vous recevrez bientôt votre récompense.",
     "tasksRemaining_one": "1 tâche restante",
     "tasksRemaining_other": "{{count}} tâches restantes",
     "exclusiveRewardEffect": "{{percent}} % de chance de doubler les gains d'actions",
-    "progressAriaLabel": "Récompense exclusive", //x1.3
+    "progressAriaLabel": "Récompense exclusive",
     "alreadyClaimedReward": "Vous avez déjà récupéré cette récompense !",
-    "playlightDiscoverRewardLog": "Vous avez reçu {{amount}} pièces d'or pour avoir essayé un jeu !", //x1.4
-    "marketingSubscribeLog": "Vous avez reçu {{amount}} pièces d'or pour vous être abonné aux mises à jour par e-mail !", //x1.4
+    "playlightDiscoverRewardLog": "Vous avez reçu {{amount}} pièces d'or pour avoir essayé un jeu !",
+    "marketingSubscribeLog": "Vous avez reçu {{amount}} pièces d'or pour vous être abonné aux mises à jour par e-mail !",
     "followRewardLog": "Vous avez reçu {{amount}} or pour nous suivre sur {{platform}} !",
     "subscribeRewardLog": "Vous avez reçu {{amount}} or pour vous être abonné sur {{platform}} !",
     "platforms": {
@@ -66,25 +66,25 @@
     }
   },
   "referral": {
-    "invitedLog": "Vous avez invité quelqu'un de nouveau dans ce monde ! +{{amount}} pièces d'or" //x1.4
+    "invitedLog": "Vous avez invité quelqu'un de nouveau dans ce monde ! +{{amount}} pièces d'or"
   },
   "invite": {
     "button": "Inviter",
-    "copyInviteCode": "Copier le code d'invitation", //x1.7
+    "copyInviteCode": "Copier le code d'invitation",
     "goldBonus": "+{{amount}} or",
-    "linkCopied": "Lien d'invitation copié !", //x1.3
+    "linkCopied": "Lien d'invitation copié !",
     "linkCopiedDesc": "Partagez-le avec des amis pour gagner {{amount}} or chacun.",
-    "copyFailed": "Impossible de copier le lien d'invitation", //x1.6
-    "copyFailedNotSignedIn": "Connectez-vous pour copier votre lien d'invitation", //x1.4
+    "copyFailed": "Impossible de copier le lien d'invitation",
+    "copyFailedNotSignedIn": "Connectez-vous pour copier votre lien d'invitation",
     "tooltip": "<bold>Invitez vos amis</bold> - vous recevrez tous les deux {{amount}} or. Vous pouvez inviter jusqu'à {{cap}} amis. ({{count}}/{{cap}} invités)."
   },
   "invest": {
     "title": "Investir",
-    "strategy": "Stratégie d'investissement", //x1.4
-    "amount": "Montant de l'investissement", //x1.6
-    "startInvestment": "Lancer l'investissement", //x1.4
-    "infoAriaLabel": "Expliquer les investissements et le tableau des stratégies", //x1.4
-    "unlockTooltip": "Se débloque à un niveau de bâtiment plus élevé", //x1.4
+    "strategy": "Stratégie d'investissement",
+    "amount": "Montant de l'investissement",
+    "startInvestment": "Lancer l'investissement",
+    "infoAriaLabel": "Expliquer les investissements et le tableau des stratégies",
+    "unlockTooltip": "Se débloque à un niveau de bâtiment plus élevé",
     "minutes": "{{count}} min",
     "luckyChanceTop": "Coup de chance {{percent}} % ({{fromLuck}} % grâce à la Chance)",
     "luckyChanceLine": "{{percent}} % Coup de chance : {{gold}}",
@@ -115,7 +115,7 @@
     "rulesStand": "Si le joueur actif a plus de points que l'adversaire, il peut choisir de ne pas lancer.",
     "tutorialIntro": "Pour vous apprendre le jeu, le joueur propose de jouer {{count}} fois sans mise.",
     "boneDiceIntro": "Placez votre mise. Posséder des Dés d'os vous permet de jouer deux fois contre le joueur.",
-    "placeBet": "Placez votre mise.", //x1.2
+    "placeBet": "Placez votre mise.",
     "gamesRemaining": "{{remaining}} sur {{total}} parties restantes.",
     "requiresLuck": "Nécessite {{luck}} Chance pour débloquer",
     "bet": "Mise :",
@@ -124,8 +124,8 @@
     "you": "Vous",
     "gambler": "Joueur",
     "roll": "Lancer",
-    "noRoll": "Ne pas lancer", //x1.9
-    "youWin": "Vous gagnez", //x1.6
+    "noRoll": "Ne pas lancer",
+    "youWin": "Vous gagnez",
     "youLose": "Vous perdez",
     "practiceOutcome": "Manche d'entraînement. Aucun or gagné ou perdu.",
     "goldWon": "+{{amount}} or",
@@ -141,31 +141,31 @@
     "prod": "Prod",
     "rank": "#",
     "player": "Joueur",
-    "completionTime": "Temps de complétion", //x1.3
-    "noEntries": "Aucune entrée pour l'instant", //x2.0
-    "lastUpdated": "Dernière mise à jour : {{time}}", //x1.4
+    "completionTime": "Temps de complétion",
+    "noEntries": "Aucune entrée pour l'instant",
+    "lastUpdated": "Dernière mise à jour : {{time}}",
     "recentCompletionsNote": "Seules les complétions des 6 derniers mois sont affichées.",
-    "username": "Nom d'utilisateur :", //x2.1
+    "username": "Nom d'utilisateur :",
     "notSet": "Non défini",
     "currentPlaytime": "Temps de jeu actuel :",
-    "enterName": "Entrer un nom", //x1.3
+    "enterName": "Entrer un nom",
     "normalMode": "Mode normal",
     "cruelMode": "Mode cruel",
     "loadFailed": "Échec du chargement du classement",
-    "invalidUsername": "Nom d'utilisateur invalide", //x1.6
-    "usernameEmpty": "Le nom d'utilisateur ne peut pas être vide", //x1.8
-    "usernameTooLong": "Le nom d'utilisateur doit contenir 20 caractères ou moins", //x1.5
-    "mustSignIn": "Vous devez être connecté pour définir un nom d'utilisateur", //x1.5
-    "usernameNotAllowed": "Nom d'utilisateur non autorisé", //x1.5
+    "invalidUsername": "Nom d'utilisateur invalide",
+    "usernameEmpty": "Le nom d'utilisateur ne peut pas être vide",
+    "usernameTooLong": "Le nom d'utilisateur doit contenir 20 caractères ou moins",
+    "mustSignIn": "Vous devez être connecté pour définir un nom d'utilisateur",
+    "usernameNotAllowed": "Nom d'utilisateur non autorisé",
     "usernameInappropriate": "Ce nom d'utilisateur contient un langage inapproprié. Veuillez en choisir un autre.",
-    "usernameTaken": "Nom d'utilisateur pris", //x1.6
+    "usernameTaken": "Nom d'utilisateur pris",
     "usernameTakenDesc": "Ce nom d'utilisateur est déjà utilisé. Veuillez en choisir un autre.",
-    "usernameSaved": "Nom d'utilisateur enregistré", //x2.0
+    "usernameSaved": "Nom d'utilisateur enregistré",
     "usernameSavedDesc": "Votre nom d'utilisateur a été mis à jour",
-    "saveFailed": "Échec de l'enregistrement du nom d'utilisateur" //x2.0
+    "saveFailed": "Échec de l'enregistrement du nom d'utilisateur"
   },
   "investmentResult": {
-    "title": "Résultat de l'investissement", //x1.6
+    "title": "Résultat de l'investissement",
     "success": "Votre investissement de {{amount}} or a réussi.",
     "luckyChance": "Coup de chance. Les gains de votre investissement de {{amount}} or sont multipliés par {{multiplier}}.",
     "partialLoss": "Votre investissement de {{amount}} or a échoué."
@@ -179,31 +179,31 @@
   "timedEvent": {
     "buy": "Acheter",
     "sell": "Vendre",
-    "sayGoodbye": "Dire au revoir", //x1.3
-    "discount": "{{percent}} % de réduction", //x1.2
+    "sayGoodbye": "Dire au revoir",
+    "discount": "{{percent}} % de réduction",
     "discountFromKnowledge": "{{percent}} % grâce au Savoir{{max}}",
     "knowledgeMax": " (max.)",
     "discountFromRing": "5 % grâce à l'Anneau d'obéissance",
     "prolongForInsight": "Prolonger le temps de {{minutes}} min pour {{cost}} {{resource}}"
   },
   "share": {
-    "title": "Voir votre progression", //x1.5
+    "title": "Voir votre progression",
     "resources": "Ressources : {{percent}} %",
     "achievements": "Succès : {{percent}} %",
     "killedCreatures": "Créatures tuées",
-    "highestAttackWave": "Plus haute vague d'attaque", //x1.4
+    "highestAttackWave": "Plus haute vague d'attaque",
     "cruelMode": "Mode cruel",
     "on": "Activé",
     "off": "Désactivé",
-    "playTime": "Temps de jeu", //x1.3
-    "playForFreeAt": "Jouez gratuitement sur", //x1.4
-    "save": "Enregistrer", //x2.8
+    "playTime": "Temps de jeu",
+    "playForFreeAt": "Jouez gratuitement sur",
+    "save": "Enregistrer",
     "copy": "Copier",
-    "copiedTitle": "Copié dans le presse-papiers", //x1.5
-    "copyErrorTitle": "Impossible de copier l'image", //x1.4
+    "copiedTitle": "Copié dans le presse-papiers",
+    "copyErrorTitle": "Impossible de copier l'image",
     "copyErrorDesc": "Une erreur s'est produite lors de la copie dans le presse-papiers.",
     "share": "Partager",
-    "errorTitle": "Impossible de créer l'image", //x1.2
+    "errorTitle": "Impossible de créer l'image",
     "errorDesc": "Une erreur s'est produite lors de la génération de l'image."
   },
   "feedback": {
@@ -216,9 +216,9 @@
     "email": "E-mail"
   },
   "galaxy": {
-    "title": "La démo s'arrête ici", //x1.4
+    "title": "La démo s'arrête ici",
     "description": "Ajoutez le jeu complet à votre liste de souhaits Steam pour poursuivre l'aventure à sa sortie.",
-    "wishlistButton": "Ajouter à la liste de souhaits Steam", //x2.1
+    "wishlistButton": "Ajouter à la liste de souhaits Steam",
     "feedbackButton": "Commentaires",
     "startNewGameButton": "Nouvelle partie",
     "seeWhatsNextButton": "Voir ce qui vient",

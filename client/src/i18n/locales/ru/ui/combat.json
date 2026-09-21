@@ -6,26 +6,26 @@
     "startFight": "Начать бой",
     "roundTitle": "Бой - раунд {{round}}",
     "bossRoundTitle": "Бой с боссом - Раунд {{round}}",
-    "youLost": "Вы проиграли",  //x1.5
-    "youWin": "Вы победили",  //x1.6
+    "youLost": "Вы проиграли",
+    "youWin": "Вы победили",
     "bastion": "Бастион",
     "fortress": "Крепость",
     "items": "Предметы",
-    "integrity": "Целостность",  //x1.2
+    "integrity": "Целостность",
     "attack": "Атака",
     "defense": "Защита",
     "healChance": "Шанс лечения",
-    "stunChance": "Шанс оглушения",  //x1.3
+    "stunChance": "Шанс оглушения",
     "stunned": "Оглушён",
-    "attackFailed": "Атака не удалась",  //x1.2
+    "attackFailed": "Атака не удалась",
     "crushingStrikeFailed": "Сокрушающий удар не удался",
     "feralHowlFailed": "Дикий вой не удался",
     "critical": "критический",
     "available": "Доступно: {{current}}/{{max}}",
     "crushingStrike": "Сокрушающий удар",
-    "bloodflameSphere": "Сфера кровавого пламени",  //x1.4
+    "bloodflameSphere": "Сфера кровавого пламени",
     "feralHowl": "Дикий вой",
-    "poisonArrows": "Отравленные стрелы",  //x1.4
+    "poisonArrows": "Отравленные стрелы",
     "critChance": "{{percent}} % шанс критического удара",
     "critFromLuck": "{{percent}} % от {{stat}}{{maxSuffix}}",
     "critFromLuckMaxSuffix": " (макс.)",
@@ -54,40 +54,40 @@
     "title": "Волны атак",
     "calm": "Пока что спокойно…",
     "soon": "скоро",
-    "provoke": "Спровоцировать",  //x2.0
+    "provoke": "Спровоцировать",
     "postCompletion": "Волна {{waveNumber}}",
     "waves": {
-      "firstWave": "Первая волна",  //x1.2
+      "firstWave": "Первая волна",
       "secondWave": "Вторая волна",
-      "thirdWave": "Третья волна",  //x1.2
-      "fourthWave": "Четвёртая волна",  //x1.4
+      "thirdWave": "Третья волна",
+      "fourthWave": "Четвёртая волна",
       "fifthWave": "Пятая волна",
-      "firstBossWave": "Волна босса",  //x1.2
-      "sixthWave": "Шестая волна",  //x1.2
+      "firstBossWave": "Волна босса",
+      "sixthWave": "Шестая волна",
       "seventhWave": "Седьмая волна",
       "eighthWave": "Восьмая волна",
-      "ninthWave": "Девятая волна",  //x1.3
-      "tenthWave": "Десятая волна",  //x1.3
-      "secondBossWave": "Финальная волна босса"  //x1.4
+      "ninthWave": "Девятая волна",
+      "tenthWave": "Десятая волна",
+      "secondBossWave": "Финальная волна босса"
     }
   },
   "fortifications": {
     "bastion": "Бастион",
     "fortifiedMoat": "Укреплённый ров",
-    "chitinPlating": "Хитиновая обшивка",  //x1.2
-    "watchtower1": "Сторожевая башня",  //x1.6
-    "watchtower2": "Караульная башня",  //x1.5
+    "chitinPlating": "Хитиновая обшивка",
+    "watchtower1": "Сторожевая башня",
+    "watchtower2": "Караульная башня",
     "watchtower3": "Укреплённая башня",
     "watchtower4": "Пушечная башня",
-    "palisades1": "Деревянные частоколы",  //x1.3
+    "palisades1": "Деревянные частоколы",
     "palisades2": "Укреплённые частоколы",
-    "palisades3": "Каменная стена",  //x1.4
+    "palisades3": "Каменная стена",
     "palisades4": "Укреплённая стена",
     "palisadesFallback": "Частокол",
-    "watchtowerFallback": "Сторожевая башня",  //x1.6
-    "damaged": "(повреждено)",  //x1.3
+    "watchtowerFallback": "Сторожевая башня",
+    "damaged": "(повреждено)",
     "attack": "+{{value}} к атаке",
     "defense": "+{{value}} к защите",
-    "integrity": "+{{value}} к целостности"  //x1.2
+    "integrity": "+{{value}} к целостности"
   }
 }

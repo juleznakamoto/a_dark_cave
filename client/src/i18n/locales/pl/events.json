@@ -1486,7 +1486,10 @@
   "nordicWarAxe": {
     "choices": {
       "buyAxe": {
-        "label": "Odrzuć"
+        "label": {
+          "Buy for 500 gold": "Kup za 500 złota",
+          "Buy for 750 gold": "Kup za 750 złota"
+        }
       },
       "decline": {
         "label": "Odrzuć"
@@ -1542,7 +1545,9 @@
       "outcome3": "Odmawiasz ofiary. Las na razie milczy. Zagrożenie trwa.",
       "outcome5": "Twoje wahanie gniewa wieśniaków. {{actualDepartures}} wieśniaków, rozczarowanych brakiem przywództwa, pakuje dobytek i odchodzi ze wstrętem.",
       "outcome4_one": "Odmawiasz ofiary. W nocy {{actualDisappearances}} wieśniak wędruje w las jak lunatyk, ciągniony głosem, który tylko on słyszał. Nikt go więcej nie widzi.",
-      "outcome4_other": "Odmawiasz ofiary. W nocy {{actualDisappearances}} wieśniaków wędruje w las jak lunatycy, ciągnieni głosem, który tylko oni słyszeli. Nikt ich więcej nie widzi."
+      "outcome4_other": "Odmawiasz ofiary. W nocy {{actualDisappearances}} wieśniaków wędruje w las jak lunatycy, ciągnieni głosem, który tylko oni słyszeli. Nikt ich więcej nie widzi.",
+      "outcome4_few": "Odmawiasz ofiary. W nocy {{actualDisappearances}} wieśniacy wędrują w las jak lunatycy, ciągnieni głosem, który tylko oni słyszeli. Nikt ich więcej nie widzi.",
+      "outcome4_many": "Odmawiasz ofiary. W nocy {{actualDisappearances}} wieśniaków wędruje w las jak lunatycy, ciągnieni głosem, który tylko oni słyszeli. Nikt ich więcej nie widzi."
     },
     "message": "Na polowaniu wieśniacy donoszą o niepokojących postaciach w lesie. Są przerażeni. Starsi wioski mówią, że bogowie lasu żądają czterech wieśniaków jako ofiary.",
     "title": "Ofiara dla bogów lasu"
