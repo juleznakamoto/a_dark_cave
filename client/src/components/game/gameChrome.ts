@@ -108,6 +108,15 @@ export const TAB_ICON_SIZE_CLASS = "game-tab-icon";
 /** Side-panel section masks + header Rewards diamond (16px Normal, +2 vs tabs). */
 export const SIDE_PANEL_ICON_SIZE_CLASS = "game-side-panel-icon";
 
+/**
+ * Shared 🛈 info glyph (shop size is the SSOT).
+ * Glyph: former text-sm (0.875rem) + 20%. Hit target grew with the glyph.
+ */
+export const GAME_INFO_GLYPH_CLASS =
+  "inline-flex shrink-0 items-center justify-center font-noto-symbols-2 text-[1.05rem] font-normal leading-none";
+export const GAME_INFO_HIT_SIZE_CLASS = "w-5 h-5";
+export const GAME_INFO_TRIGGER_CLASS = `inline-flex items-center justify-center ${GAME_INFO_HIT_SIZE_CLASS} shrink-0 rounded-full text-muted-foreground hover:text-foreground cursor-pointer`;
+
 /** Timed-event hourglass tab icon alignment (same baseline as other tab icons). */
 export const TAB_TIMED_EVENT_ICON_CLASS = TAB_ICON_ALIGN_CLASS;
 

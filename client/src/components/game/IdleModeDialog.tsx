@@ -9,6 +9,10 @@ import {
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { TooltipWrapper } from "@/components/game/TooltipWrapper";
+import {
+  GAME_INFO_GLYPH_CLASS,
+  GAME_INFO_TRIGGER_CLASS,
+} from "@/components/game/gameChrome";
 import { useShallow } from "zustand/react/shallow";
 import { useGameStore } from "@/game/state";
 import { AnimatedCounter } from "@/components/ui/animated-counter";
@@ -636,10 +640,10 @@ function IdleModeDialogOpen() {
               tooltipId="idle-mode-village-production-info"
               disabled
               tooltipContentClassName="max-w-xs"
-              className="inline-flex items-center justify-center w-4 h-4 shrink-0 rounded-full text-muted-foreground hover:text-foreground cursor-pointer"
+              className={GAME_INFO_TRIGGER_CLASS}
             >
               <span
-                className="font-noto-symbols-2 inline-flex shrink-0 items-center justify-center text-sm font-normal leading-none"
+                className={GAME_INFO_GLYPH_CLASS}
                 aria-label={t("idleMode.villageProductionInfoAriaLabel", {
                   defaultValue: "Village production details",
                 })}

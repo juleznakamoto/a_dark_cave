@@ -44,11 +44,7 @@ function BlessingOfferDialogOpen() {
     <>
       <style>{`
         .blessing-offer-card-glow {
-          animation: insight-glow-pulse 2.5s ease-in-out infinite;
-        }
-        @keyframes insight-glow-pulse {
-          0%, 100% { box-shadow: 0 0 15px 5px rgba(37, 99, 235, 0.25); }
-          50% { box-shadow: 0 0 0px 0px rgba(37, 99, 235, 0.5); }
+          box-shadow: 0 0 15px 5px rgba(37, 99, 235, 0.25);
         }
       `}</style>
       <div

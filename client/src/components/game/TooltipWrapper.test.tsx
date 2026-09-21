@@ -7,9 +7,11 @@ import React from "react";
 import { TooltipWrapper } from "./TooltipWrapper";
 import {
   closeAllGlobalTooltips,
+  getTooltipOpenProp,
   setGlobalTooltipIsMobile,
   setGlobalTooltipsSuppressed,
 } from "@/hooks/useGlobalTooltip";
+import { setGameTabHiddenForTests } from "@/lib/tabVisibility";
 
 function MakeWoodButton({ onAction }: { onAction: () => void }) {
   return (
@@ -91,5 +93,46 @@ describe("TooltipWrapper - forced open", () => {
     );
 
     expect((await screen.findAllByText("Wood: 12 / 50")).length).toBeGreaterThan(0);
+  });
+});
+
+describe("TooltipWrapper - inactive tab", () => {
+  beforeEach(() => {
+    vi.useFakeTimers();
+    setGlobalTooltipIsMobile(true);
+    setGlobalTooltipsSuppressed(false);
+    setGameTabHiddenForTests(false);
+  });
+
+  afterEach(() => {
+    setGameTabHiddenForTests(null);
+    setGlobalTooltipsSuppressed(false);
+    closeAllGlobalTooltips();
+    vi.useRealTimers();
+  });
+
+  it("can open a long-press tooltip after the tab was hidden", async () => {
+    const onAction = vi.fn();
+    render(<MakeWoodButton onAction={onAction} />);
+
+    await act(async () => {
+      setGameTabHiddenForTests(true);
+    });
+    await act(async () => {
+      setGameTabHiddenForTests(false);
+    });
+
+    const button = screen.getByTestId("make-wood");
+    const wrapper = button.closest("[data-tooltip-trigger-id]")!;
+
+    await act(async () => {
+      fireEvent.touchStart(wrapper);
+    });
+    await act(async () => {
+      vi.advanceTimersByTime(250);
+    });
+
+    expect(onAction).not.toHaveBeenCalled();
+    expect(getTooltipOpenProp("chop-wood")).toBe(true);
   });
 });

@@ -122,7 +122,7 @@
     "tutorialIntro": "Um dir das Spiel beizubringen, bietet der Spieler an, {{count}} Mal ohne Einsatz zu spielen.",
     "boneDiceIntro": "Setze deinen Einsatz. Mit Knochenwürfeln kannst du zweimal gegen den Spieler antreten.",
     "placeBet": "Setze deinen Einsatz.", //x1.4
-    "gamesRemaining": "Noch {{remaining}} von {{total}} Spielen.",
+    "gamesRemaining": "Noch {{remaining}} von {{total}} Spielen übrig.",
     "requiresLuck": "Erfordert {{luck}} Glück zum Freischalten",
     "bet": "Einsatz:",
     "practiceBet": "Übung (0 Gold)",
@@ -136,8 +136,8 @@
     "practiceOutcome": "Übungsrunde. Kein Gold gewonnen oder verloren.",
     "goldWon": "+{{amount}} Gold",
     "goldLost": "-{{amount}} Gold",
-    "practiceWinRemaining": "Du hast die Übungsrunde gewonnen (kein Gold im Einsatz). Noch {{remaining}} von {{total}} Übungsspielen.",
-    "practiceLoseRemaining": "Du hast die Übungsrunde verloren (kein Gold im Einsatz). Noch {{remaining}} von {{total}} Übungsspielen.",
+    "practiceWinRemaining": "Du hast die Übungsrunde gewonnen (kein Gold im Einsatz). Noch {{remaining}} von {{total}} Übungsspielen übrig.",
+    "practiceLoseRemaining": "Du hast die Übungsrunde verloren (kein Gold im Einsatz). Noch {{remaining}} von {{total}} Übungsspielen übrig.",
     "practiceWinComplete": "Du hast die Übungsrunde gewonnen (kein Gold im Einsatz). Übung abgeschlossen - du kannst Gold setzen.",
     "practiceLoseComplete": "Du hast die Übungsrunde verloren (kein Gold im Einsatz). Übung abgeschlossen - du kannst Gold setzen."
   },

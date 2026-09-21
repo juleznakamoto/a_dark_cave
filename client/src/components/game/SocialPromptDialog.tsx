@@ -45,6 +45,10 @@ import { GameUiIcon } from "@/components/game/GameUiIcon";
 import { cn } from "@/lib/utils";
 import { TooltipWrapper } from "@/components/game/TooltipWrapper";
 import {
+  GAME_INFO_GLYPH_CLASS,
+  GAME_INFO_TRIGGER_CLASS,
+} from "@/components/game/gameChrome";
+import {
   SOCIAL_PROMPT_REFERRAL_CAP,
   REFERRAL_REWARD_GOLD,
 } from "@/game/socialPromptAuto";
@@ -108,12 +112,9 @@ function TaskInfoIcon({
       tooltipId={tooltipId}
       disabled
       tooltipContentClassName="max-w-xs"
-      className="inline-flex shrink-0 items-center justify-center w-6 h-6 rounded-full text-muted-foreground hover:text-foreground cursor-pointer align-text-bottom translate-y-[0.06em]"
+      className={`${GAME_INFO_TRIGGER_CLASS} align-text-bottom translate-y-[0.06em]`}
     >
-      <span
-        className="inline-flex shrink-0 items-center justify-center font-noto-symbols-2 text-base font-normal leading-none"
-        aria-hidden
-      >
+      <span className={GAME_INFO_GLYPH_CLASS} aria-hidden>
         🛈
       </span>
     </TooltipWrapper>

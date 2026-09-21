@@ -57,7 +57,13 @@ type DialogContentProps = React.ComponentPropsWithoutRef<typeof DialogPrimitive.
   openClickLockKey?: string | number;
   /** Skip destroyed chrome (frameless dialogs such as the share card). */
   destroyedChrome?: boolean;
-  /** Move vertical scrolling onto an inner pane so the destroyed hairline is not clipped. */
+  /**
+   * Inner scroll pane so long content can scroll without clipping the destroyed
+   * hairline (`overflow: visible` on the frame). Use only when the dialog must
+   * actually scroll on small screens. Compact dialogs that size to content should
+   * omit this: an `overflow-y-auto` pane shows a native scrollbar if content is
+   * even 1px taller than the pane (Invest and Gambler hit this).
+   */
   scrollBody?: boolean;
 };
 
@@ -184,7 +190,7 @@ const DialogContent = React.forwardRef<
         {...props}
       >
         {scrollBody ? (
-          <div className="min-h-0 flex-1 overflow-y-auto">{children}</div>
+          <div className="min-h-0 overflow-y-auto overscroll-contain">{children}</div>
         ) : (
           children
         )}

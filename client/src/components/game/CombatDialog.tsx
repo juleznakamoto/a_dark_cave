@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useLayoutEffect, useRef } from "react";
-import { motion } from "framer-motion";
 import { useGameStore } from "@/game/state";
 import { audioManager } from "@/lib/audio";
 import { SOUND_VOLUME } from "@/lib/soundVolumes";
@@ -54,6 +53,11 @@ import {
 } from "@/i18n/combatLabels";
 import { englishCountFallback, getUiTooltip } from "@/i18n/tooltipLabels";
 import { useTranslation } from "react-i18next";
+import {
+  WIN_LOSE_BOARD_HOLD_MS,
+  WinLoseResultScreen,
+  type WinLoseResultLine,
+} from "@/components/game/WinLoseResultScreen";
 
 const COMBAT_BAR_CHANGE_MS = 500;
 
@@ -116,95 +120,6 @@ function formatCombatStatusRoundsRemaining(rounds: number): string {
       "{{count}} rounds remaining",
     ),
     { count: rounds },
-  );
-}
-
-type CombatResultLine = { key: string; text: string; className: string };
-
-const DEFEAT_LINES_START = 1.8;
-const DEFEAT_LINE_STAGGER = 1.0;
-const VICTORY_LINES_START = 1.8;
-const VICTORY_LINE_STAGGER = 0.3;
-
-/** Compact win/lose screen. Sizes the dialog to the title, result lines, and Continue. */
-function CombatResultScreen({
-  kind,
-  title,
-  lines,
-  onContinue,
-  continueLabel,
-}: {
-  kind: "victory" | "defeat";
-  title: string;
-  lines: CombatResultLine[];
-  onContinue: () => void;
-  continueLabel: string;
-}) {
-  const isDefeat = kind === "defeat";
-  const linesStart = isDefeat ? DEFEAT_LINES_START : VICTORY_LINES_START;
-  const lineStagger = isDefeat ? DEFEAT_LINE_STAGGER : VICTORY_LINE_STAGGER;
-  const buttonDelay =
-    linesStart + Math.max(0, lines.length - 1) * lineStagger + 0.4 + 0.5;
-
-  return (
-    <div className="flex flex-col items-center">
-      <DialogTitle className="sr-only">{title}</DialogTitle>
-      <motion.span
-        className={
-          isDefeat
-            ? "font-sans text-red-700 text-xl tracking-[0.25em] uppercase select-none defeat-text-pulse"
-            : "font-sans text-white text-xl tracking-[0.25em] uppercase select-none"
-        }
-        initial={{ opacity: 0 }}
-        animate={isDefeat ? { opacity: [0, 1, 0.8] } : { opacity: 1 }}
-        transition={{
-          duration: isDefeat ? 2 : 1.2,
-          delay: 0.3,
-          ease: "easeInOut",
-        }}
-      >
-        {title}
-      </motion.span>
-
-      <div className="mt-5 flex flex-col items-center gap-1 text-center">
-        {lines.map((line, i) => (
-          <motion.p
-            key={line.key}
-            className={line.className}
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{
-              duration: 0.4,
-              delay: linesStart + i * lineStagger,
-            }}
-          >
-            {line.text}
-          </motion.p>
-        ))}
-      </div>
-
-      <motion.div
-        className="mt-6 w-full"
-        initial={{ opacity: 0, pointerEvents: "none" }}
-        animate={{
-          opacity: 1,
-          transitionEnd: { pointerEvents: "auto" },
-        }}
-        transition={{
-          duration: 0.5,
-          delay: buttonDelay,
-        }}
-      >
-        <Button
-          onClick={onContinue}
-          className="w-full"
-          variant="outline"
-          button_id="combat-end-fight"
-        >
-          {continueLabel}
-        </Button>
-      </motion.div>
-    </div>
   );
 }
 
@@ -292,6 +207,7 @@ export default function CombatDialog({
   const [feralHowlFailed, setFeralHowlFailed] = useState(false);
   const [combatSummary, setCombatSummary] =
     useState<CombatResultSummary | null>(null);
+  const [revealResultScreen, setRevealResultScreen] = useState(false);
   const consequencesAppliedRef = useRef(false);
   const integrityDamageIndicatorTimeoutRef = useRef<ReturnType<
     typeof setTimeout
@@ -481,6 +397,7 @@ export default function CombatDialog({
       setUsedItemsInCombat([]);
       setIsProcessingRound(false);
       setCombatResult(null);
+      setRevealResultScreen(false);
       setEnemyDamageIndicator({ amount: 0, visible: false });
       setEnemyHealIndicator({ amount: 0, visible: false });
       setPlayerDamageIndicator({ amount: 0, visible: false });
@@ -526,6 +443,22 @@ export default function CombatDialog({
       setCombatSummary(extractCombatResultSummary(onDefeat()));
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps -- run once per combat outcome; callbacks are stable from store
+  }, [combatResult]);
+
+  useEffect(() => {
+    if (combatResult !== "victory" && combatResult !== "defeat") {
+      setRevealResultScreen(false);
+      return;
+    }
+    if (playerStunTimeoutRef.current) {
+      clearTimeout(playerStunTimeoutRef.current);
+      playerStunTimeoutRef.current = null;
+    }
+    const id = window.setTimeout(
+      () => setRevealResultScreen(true),
+      WIN_LOSE_BOARD_HOLD_MS,
+    );
+    return () => window.clearTimeout(id);
   }, [combatResult]);
 
   // Available combat items with max limits
@@ -612,7 +545,7 @@ export default function CombatDialog({
   };
 
   const handleUseCrushingStrike = () => {
-    if (usedCrushingStrike || isProcessingRound || playerStunned) return;
+    if (usedCrushingStrike || isProcessingRound || playerStunned || combatResult) return;
 
     const level = crushingStrikeLevel || 0;
     const config = CRUSHING_STRIKE_UPGRADES[level];
@@ -657,7 +590,7 @@ export default function CombatDialog({
   };
 
   const handleUseBloodflameSphere = () => {
-    if (usedBloodflameSphere || isProcessingRound || playerStunned) return;
+    if (usedBloodflameSphere || isProcessingRound || playerStunned || combatResult) return;
 
     const level = bloodflameSphereLevel || 0;
     const config = BLOODFLAME_SPHERE_UPGRADES[level];
@@ -704,7 +637,7 @@ export default function CombatDialog({
   };
 
   const handleUseFeralHowl = () => {
-    if (usedFeralHowl || isProcessingRound || playerStunned) return;
+    if (usedFeralHowl || isProcessingRound || playerStunned || combatResult) return;
 
     const level = feralHowlLevel || 0;
     const config = FERAL_HOWL_UPGRADES[level];
@@ -729,7 +662,7 @@ export default function CombatDialog({
   };
 
   const handleUseItem = (item: CombatItem) => {
-    if (!currentEnemy || !item.available) return;
+    if (!currentEnemy || !item.available || combatResult) return;
 
     if (item.id === "veinfire_elixir") {
       const healAmount = Math.min(
@@ -878,7 +811,7 @@ export default function CombatDialog({
   };
 
   const handleFight = () => {
-    if (!currentEnemy || isProcessingRound || playerStunned) return;
+    if (!currentEnemy || isProcessingRound || playerStunned || combatResult) return;
 
     setIsProcessingRound(true);
 
@@ -1067,7 +1000,7 @@ export default function CombatDialog({
     ? (currentIntegrity / maxIntegrityForCombat) * 100
     : 0;
 
-  const defeatResultLines: CombatResultLine[] =
+  const defeatResultLines: WinLoseResultLine[] =
     combatSummary
       ? [
         {
@@ -1111,7 +1044,7 @@ export default function CombatDialog({
           : []),
       ]
       : [];
-  const victoryResultLines: CombatResultLine[] =
+  const victoryResultLines: WinLoseResultLine[] =
     combatSummary
       ? [
         ...(combatSummary.silverReward !== undefined &&
@@ -1220,7 +1153,11 @@ export default function CombatDialog({
     <>
       <Dialog open={isOpen} onOpenChange={() => { }}>
         <DialogContent
-          className="z-[60] overflow-visible [--adc-dialog-max-w:28rem] [&>button]:hidden"
+          className={
+            combatResult && combatSummary !== null && revealResultScreen
+              ? "z-[60] overflow-visible [--adc-dialog-max-w:28rem] [&>button]:hidden duration-0 data-[state=open]:!animate-none data-[state=closed]:!animate-none"
+              : "z-[60] overflow-visible [--adc-dialog-max-w:28rem] [&>button]:hidden"
+          }
           onPointerDownOutside={(e) => e.preventDefault()}
           onEscapeKeyDown={(e) => e.preventDefault()}
           hideOverlay={true}
@@ -1252,8 +1189,8 @@ export default function CombatDialog({
                 </Button>
               </div>
             </>
-          ) : combatResult && combatSummary !== null ? (
-            <CombatResultScreen
+          ) : combatResult && combatSummary !== null && revealResultScreen ? (
+            <WinLoseResultScreen
               kind={combatResult}
               title={
                 combatResult === "defeat"
@@ -1271,7 +1208,7 @@ export default function CombatDialog({
           ) : (
             // Combat interface
             <>
-              <div className="relative -m-6 p-6 min-h-full">
+              <div className={cn("relative -m-6 p-6 min-h-full", combatResult && "pointer-events-none")}>
                 <DialogHeader>
                   <DialogTitle className="pr-0 text-lg font-semibold">
                     {currentEnemy?.isBoss

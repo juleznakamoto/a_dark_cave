@@ -5,11 +5,14 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import { Info } from "lucide-react";
 import { RadioGroup } from "@/components/ui/radio";
 import { Button } from "@/components/ui/button";
 import { useGameStore } from "@/game/state";
 import { TooltipWrapper } from "@/components/game/TooltipWrapper";
+import {
+  GAME_INFO_GLYPH_CLASS,
+  GAME_INFO_TRIGGER_CLASS,
+} from "@/components/game/gameChrome";
 import {
   getLuckWinChanceBonus,
   getLuckyChancePercent,
@@ -199,20 +202,14 @@ export default function InvestDialog({ open, onOpenChange }: Props) {
               tooltipId="invest-dialog-info"
               disabled
               tooltipContentClassName="max-w-sm"
-              className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full text-muted-foreground hover:text-foreground cursor-pointer"
-              tooltipTriggerClassName="flex h-full w-full items-center justify-center"
+              className={GAME_INFO_TRIGGER_CLASS}
             >
-              <button
-                type="button"
-                className="flex h-full w-full items-center justify-center rounded-full border-0 bg-transparent p-0 cursor-pointer"
+              <span
+                className={GAME_INFO_GLYPH_CLASS}
                 aria-label={t("invest.infoAriaLabel")}
               >
-                <Info
-                  className="h-[15px] w-[15px] shrink-0 text-current"
-                  strokeWidth={2}
-                  aria-hidden
-                />
-              </button>
+                🛈
+              </span>
             </TooltipWrapper>
           </div>
         </DialogHeader>

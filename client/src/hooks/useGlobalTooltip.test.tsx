@@ -12,7 +12,10 @@ import {
   setGlobalTooltipIsMobile,
   setGlobalTooltipsSuppressed,
 } from "./useGlobalTooltip";
-import { setGameTabHiddenForTests } from "@/lib/tabVisibility";
+import {
+  getTabVisibleEpoch,
+  setGameTabHiddenForTests,
+} from "@/lib/tabVisibility";
 
 vi.mock("./use-mobile", () => ({
   useIsMobile: vi.fn(() => true),
@@ -587,5 +590,17 @@ describe("useGlobalTooltip - inactive tab", () => {
       "uncontrolled",
     );
     expect(getTooltipOpenProp("hover-tip")).toBeUndefined();
+  });
+
+  it("bumps the tooltip remount epoch when the tab is shown again", () => {
+    const epoch = getTabVisibleEpoch();
+    act(() => {
+      setGameTabHiddenForTests(true);
+    });
+    expect(getTabVisibleEpoch()).toBe(epoch);
+    act(() => {
+      setGameTabHiddenForTests(false);
+    });
+    expect(getTabVisibleEpoch()).toBe(epoch + 1);
   });
 });

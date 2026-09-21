@@ -84,15 +84,13 @@ import {
 import { useTranslation } from "react-i18next";
 import { cn, formatNumber } from "@/lib/utils";
 import {
+  GAME_INFO_GLYPH_CLASS,
+  GAME_INFO_HIT_SIZE_CLASS,
+} from "@/components/game/gameChrome";
+import {
   SmokeShader,
   SMOKE_SHADER_BANNER_SCALE,
 } from "@/components/ui/smoke-shader";
-
-/** Shop 🛈 glyph: former text-sm (0.875rem) + 20%. */
-const SHOP_INFO_GLYPH_CLASS =
-  "inline-flex shrink-0 items-center justify-center font-noto-symbols-2 text-[1.05rem] font-normal leading-none";
-/** Hit target around shop 🛈 (grew with the glyph). */
-const SHOP_INFO_HIT_SIZE_CLASS = "w-5 h-5";
 
 const stripePublishableKey = import.meta.env.PROD
   ? import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY_PROD
@@ -404,8 +402,8 @@ function ArtifactShopTooltipIcon({
 }) {
   const triggerClass =
     variant === "cardTitle"
-      ? `inline-flex shrink-0 items-center justify-center ${SHOP_INFO_HIT_SIZE_CLASS} rounded-full text-white-500 cursor-pointer motion-safe:animate-shop-info-pulse`
-      : `ml-0.5 inline-flex items-center justify-center ${SHOP_INFO_HIT_SIZE_CLASS} rounded-full text-white-500 cursor-pointer motion-safe:animate-shop-info-pulse align-text-bottom translate-y-[0.08em]`;
+      ? `inline-flex shrink-0 items-center justify-center ${GAME_INFO_HIT_SIZE_CLASS} rounded-full text-white-500 cursor-pointer motion-safe:animate-shop-info-pulse`
+      : `ml-0.5 inline-flex items-center justify-center ${GAME_INFO_HIT_SIZE_CLASS} rounded-full text-white-500 cursor-pointer motion-safe:animate-shop-info-pulse align-text-bottom translate-y-[0.08em]`;
 
   const shopItem = SHOP_ITEMS[artifact];
   // Card info: flavor description. Bundle row info: effects only (name is already on the row).
@@ -430,7 +428,7 @@ function ArtifactShopTooltipIcon({
       }
       className={triggerClass}
     >
-      <span className={SHOP_INFO_GLYPH_CLASS} aria-hidden>
+      <span className={GAME_INFO_GLYPH_CLASS} aria-hidden>
         🛈
       </span>
     </TooltipWrapper>
@@ -625,9 +623,9 @@ function ShopItemDescriptionParagraph({ item }: { item: ShopItem }) {
                     tooltipId={`cruel-mode-info-desc-${item.id}`}
                     disabled
                     tooltipContentClassName="max-w-xs border border-amber-600"
-                    className={`ml-0.5 inline-flex items-center justify-center ${SHOP_INFO_HIT_SIZE_CLASS} rounded-full text-white-500 cursor-pointer motion-safe:animate-shop-info-pulse align-text-bottom translate-y-[0.08em]`}
+                    className={`ml-0.5 inline-flex items-center justify-center ${GAME_INFO_HIT_SIZE_CLASS} rounded-full text-white-500 cursor-pointer motion-safe:animate-shop-info-pulse align-text-bottom translate-y-[0.08em]`}
                   >
-                    <span className={SHOP_INFO_GLYPH_CLASS} aria-hidden>
+                    <span className={GAME_INFO_GLYPH_CLASS} aria-hidden>
                       🛈
                     </span>
                   </TooltipWrapper>
@@ -2257,10 +2255,10 @@ function ShopDialogOpen({ isOpen, onClose, onOpen }: ShopDialogProps) {
                                               tooltipId="cruel-mode-info"
                                               disabled
                                               tooltipContentClassName="max-w-xs border border-amber-600"
-                                              className={`inline-flex items-center justify-center ${SHOP_INFO_HIT_SIZE_CLASS} rounded-full text-white-500 cursor-pointer motion-safe:animate-shop-info-pulse`}
+                                              className={`inline-flex items-center justify-center ${GAME_INFO_HIT_SIZE_CLASS} rounded-full text-white-500 cursor-pointer motion-safe:animate-shop-info-pulse`}
                                             >
                                               <span
-                                                className={SHOP_INFO_GLYPH_CLASS}
+                                                className={GAME_INFO_GLYPH_CLASS}
                                                 aria-hidden
                                               >
                                                 🛈
@@ -2409,10 +2407,10 @@ function ShopDialogOpen({ isOpen, onClose, onOpen }: ShopDialogProps) {
                                                   tooltipId={`traders-gratitude-${item.id}`}
                                                   disabled
                                                   tooltipContentClassName="max-w-xs border border-amber-600"
-                                                  className={`inline-flex items-center justify-center ${SHOP_INFO_HIT_SIZE_CLASS} rounded-full text-muted-foreground hover:text-foreground cursor-pointer motion-safe:animate-shop-info-pulse`}
+                                                  className={`inline-flex items-center justify-center ${GAME_INFO_HIT_SIZE_CLASS} rounded-full text-muted-foreground hover:text-foreground cursor-pointer motion-safe:animate-shop-info-pulse`}
                                                 >
                                                   <span
-                                                    className={SHOP_INFO_GLYPH_CLASS}
+                                                    className={GAME_INFO_GLYPH_CLASS}
                                                     aria-hidden
                                                   >
                                                     🛈
@@ -2435,10 +2433,10 @@ function ShopDialogOpen({ isOpen, onClose, onOpen }: ShopDialogProps) {
                                                   tooltipId={`traders-son-gratitude-${item.id}`}
                                                   disabled
                                                   tooltipContentClassName="max-w-xs border border-amber-600"
-                                                  className={`inline-flex items-center justify-center ${SHOP_INFO_HIT_SIZE_CLASS} rounded-full text-muted-foreground hover:text-foreground cursor-pointer motion-safe:animate-shop-info-pulse`}
+                                                  className={`inline-flex items-center justify-center ${GAME_INFO_HIT_SIZE_CLASS} rounded-full text-muted-foreground hover:text-foreground cursor-pointer motion-safe:animate-shop-info-pulse`}
                                                 >
                                                   <span
-                                                    className={SHOP_INFO_GLYPH_CLASS}
+                                                    className={GAME_INFO_GLYPH_CLASS}
                                                     aria-hidden
                                                   >
                                                     🛈
@@ -2457,10 +2455,10 @@ function ShopDialogOpen({ isOpen, onClose, onOpen }: ShopDialogProps) {
                                                   tooltipId={`journey-complete-cruel-${item.id}`}
                                                   disabled
                                                   tooltipContentClassName="max-w-xs border border-amber-600"
-                                                  className={`inline-flex items-center justify-center ${SHOP_INFO_HIT_SIZE_CLASS} rounded-full text-muted-foreground hover:text-foreground cursor-pointer motion-safe:animate-shop-info-pulse`}
+                                                  className={`inline-flex items-center justify-center ${GAME_INFO_HIT_SIZE_CLASS} rounded-full text-muted-foreground hover:text-foreground cursor-pointer motion-safe:animate-shop-info-pulse`}
                                                 >
                                                   <span
-                                                    className={SHOP_INFO_GLYPH_CLASS}
+                                                    className={GAME_INFO_GLYPH_CLASS}
                                                     aria-hidden
                                                   >
                                                     🛈
@@ -2732,10 +2730,10 @@ function ShopDialogOpen({ isOpen, onClose, onOpen }: ShopDialogProps) {
                 {activeTab === "shop" && (
                   <div className="mt-3 flex shrink-0 items-center gap-1.5 text-xs font-normal leading-none text-foreground sm:text-sm">
                     <span
-                      className={`inline-flex ${SHOP_INFO_HIT_SIZE_CLASS} shrink-0 items-center justify-center text-muted-foreground`}
+                      className={`inline-flex ${GAME_INFO_HIT_SIZE_CLASS} shrink-0 items-center justify-center text-muted-foreground`}
                     >
                       <span
-                        className={`${SHOP_INFO_GLYPH_CLASS} translate-y-[0.12em]`}
+                        className={`${GAME_INFO_GLYPH_CLASS} translate-y-[0.12em]`}
                         aria-hidden
                       >
                         🛈

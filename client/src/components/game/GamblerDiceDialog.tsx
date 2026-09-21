@@ -35,8 +35,17 @@ import {
   resolveGamblerSessionForHydrate,
   type GamblerDiceSession,
 } from "@/game/gamblerSession";
-import { chromeRuleColorStyle } from "@/components/game/gameChrome";
+import {
+  chromeRuleColorStyle,
+  GAME_INFO_GLYPH_CLASS,
+  GAME_INFO_TRIGGER_CLASS,
+} from "@/components/game/gameChrome";
 import { gameActionButtonGridClassName, gameActionOutlineButtonClassName } from "@/components/CooldownButton";
+import {
+  WIN_LOSE_BOARD_HOLD_MS,
+  WinLoseResultScreen,
+  type WinLoseResultLine,
+} from "@/components/game/WinLoseResultScreen";
 import { cn, formatNumber } from "@/lib/utils";
 import { useTranslation } from "react-i18next";
 
@@ -108,13 +117,13 @@ function DiceFace({
   }, [spinning]);
 
   if (value === null && !spinning) {
-    return <span className="text-3xl opacity-30">⚀</span>;
+    return <span className="text-6xl opacity-30">⚀</span>;
   }
 
   const face = spinning
     ? SPIN_FACES[displayFace]
     : DICE_FACES[(value ?? 1) - 1];
-  return <span className="text-3xl">{face}</span>;
+  return <span className="text-6xl">{face}</span>;
 }
 
 function RulesInfoButton() {
@@ -133,10 +142,10 @@ function RulesInfoButton() {
       tooltipId="gambler-rules"
       disabled
       tooltipContentClassName="max-w-xs"
-      className="inline-flex items-center justify-center w-4 h-4 shrink-0 rounded-full text-muted-foreground hover:text-foreground cursor-pointer"
+      className={GAME_INFO_TRIGGER_CLASS}
     >
       <span
-        className="font-noto-symbols-2 inline-flex shrink-0 items-center justify-center text-sm font-normal leading-none"
+        className={GAME_INFO_GLYPH_CLASS}
         aria-label={t("ui:gambler.rulesAriaLabel")}
       >
         🛈
@@ -381,7 +390,30 @@ export default function GamblerDiceDialog({
     onOutcomeResolved,
   ]);
 
+  useEffect(() => {
+    if (phase === "outcome") setLockedDialogSize(null);
+  }, [phase]);
+
   totalsRef.current = { playerTotal, npcTotal, goal };
+
+  const scheduleOutcomeReveal = (
+    result: "win" | "lose",
+    snapshot: { playerTotal: number; npcTotal: number; goal: number },
+  ) => {
+    if (!outcomeReportedRef.current) {
+      outcomeReportedRef.current = true;
+      onOutcomeResolved(result, wager, snapshot);
+    }
+    setPauseAfterPlayerRoll(true);
+    clearTimeoutRef(playerTimeoutRef);
+    clearTimeoutRef(npcTimeoutRef);
+    playerTimeoutRef.current = setTimeout(() => {
+      if (!isOpenRef.current) return;
+      setOutcome(result);
+      setPhase("outcome");
+      playerTimeoutRef.current = null;
+    }, WIN_LOSE_BOARD_HOLD_MS);
+  };
 
   const handleWager = (tier: GamblerWagerPick) => {
     const el = dialogContentRef.current;
@@ -417,13 +449,17 @@ export default function GamblerDiceDialog({
       setHasRolledThisRound(true);
 
       if (result.status === "bust") {
-        setOutcome("lose");
-        setPhase("outcome");
-        playerTimeoutRef.current = null;
+        scheduleOutcomeReveal("lose", {
+          playerTotal: result.newTotal,
+          npcTotal,
+          goal,
+        });
       } else if (result.status === "exactGoal") {
-        setOutcome("win");
-        setPhase("outcome");
-        playerTimeoutRef.current = null;
+        scheduleOutcomeReveal("win", {
+          playerTotal: result.newTotal,
+          npcTotal,
+          goal,
+        });
       } else {
         playerStoppedRef.current = false;
         setPauseAfterPlayerRoll(true);
@@ -482,13 +518,11 @@ export default function GamblerDiceDialog({
           return;
         }
         const showdown = resolveShowdown(p, n, g);
-        if (showdown === "playerWin") {
-          setOutcome("win");
-          setPhase("outcome");
-        } else {
-          setOutcome("lose");
-          setPhase("outcome");
-        }
+        scheduleOutcomeReveal(showdown === "playerWin" ? "win" : "lose", {
+          playerTotal: p,
+          npcTotal: n,
+          goal: g,
+        });
         return;
       }
 
@@ -507,13 +541,17 @@ export default function GamblerDiceDialog({
         setNpcTotal(step.newTotal);
 
         if (step.status === "bust") {
-          setOutcome("win");
-          setPhase("outcome");
-          npcTimeoutRef.current = null;
+          scheduleOutcomeReveal("win", {
+            playerTotal: p,
+            npcTotal: step.newTotal,
+            goal: g,
+          });
         } else if (step.status === "exactGoal") {
-          setOutcome("lose");
-          setPhase("outcome");
-          npcTimeoutRef.current = null;
+          scheduleOutcomeReveal("lose", {
+            playerTotal: p,
+            npcTotal: step.newTotal,
+            goal: g,
+          });
         } else {
           npcTimeoutRef.current = setTimeout(() => {
             if (
@@ -540,339 +578,310 @@ export default function GamblerDiceDialog({
     onClose();
   };
 
-  const dialogLocked = lockedDialogSize != null;
+  const isOutcome = phase === "outcome" && outcome != null;
+  const dialogLocked = !isOutcome && lockedDialogSize != null;
+  const outcomeLines: WinLoseResultLine[] =
+    isOutcome
+      ? wager === 0
+        ? [
+          {
+            key: "practice",
+            text: t("ui:gambler.practiceOutcome"),
+            className: "text-gray-400 text-sm",
+          },
+        ]
+        : [
+          {
+            key: "gold",
+            text:
+              outcome === "win"
+                ? t("ui:gambler.goldWon", { amount: formatNumber(wager) })
+                : t("ui:gambler.goldLost", { amount: formatNumber(wager) }),
+            className:
+              outcome === "win"
+                ? "text-slate-300 text-sm"
+                : "text-gray-400 text-sm",
+          },
+        ]
+      : [];
 
   return (
     <Dialog open={isOpen} onOpenChange={() => { }}>
       <DialogContent
         ref={dialogContentRef}
         className={
-          dialogLocked
-            ? "z-[70] flex max-h-[85vh] flex-col gap-0 overflow-hidden border-2 border-amber-900/50 shadow-2xl [&>button]:hidden [--adc-dialog-max-w:24rem] duration-0 data-[state=open]:animate-none data-[state=closed]:animate-none"
-            : "z-[70] flex flex-col gap-0 overflow-hidden border-2 border-amber-900/50 shadow-2xl [&>button]:hidden [--adc-dialog-max-w:24rem] max-h-[85vh] duration-0 data-[state=open]:animate-none data-[state=closed]:animate-none"
+          isOutcome
+            ? "z-[70] overflow-visible [--adc-dialog-max-w:28rem] [&>button]:hidden duration-0 data-[state=open]:!animate-none data-[state=closed]:!animate-none"
+            : dialogLocked
+              ? "z-[70] flex max-h-[85vh] flex-col gap-0 overflow-hidden border-2 border-amber-900/50 shadow-2xl [&>button]:hidden [--adc-dialog-max-w:24rem] duration-0 data-[state=open]:!animate-none data-[state=closed]:!animate-none"
+              : "z-[70] flex flex-col gap-0 overflow-hidden border-2 border-amber-900/50 shadow-2xl [&>button]:hidden [--adc-dialog-max-w:24rem] max-h-[85vh] duration-0 data-[state=open]:!animate-none data-[state=closed]:!animate-none"
         }
-        style={{
-          ...chromeRuleColorStyle(GAMBLER_CHROME_COLOR),
-          ...(dialogLocked
-            ? {
-              width: lockedDialogSize.width,
-              maxWidth: lockedDialogSize.width,
-              minHeight: lockedDialogSize.height,
+        style={
+          isOutcome
+            ? undefined
+            : {
+              ...chromeRuleColorStyle(GAMBLER_CHROME_COLOR),
+              ...(lockedDialogSize
+                ? {
+                  width: lockedDialogSize.width,
+                  maxWidth: lockedDialogSize.width,
+                  minHeight: lockedDialogSize.height,
+                }
+                : {}),
             }
-            : {}),
-        }}
+        }
         onPointerDownOutside={(e) => e.preventDefault()}
         onEscapeKeyDown={(e) => e.preventDefault()}
       >
-        <DialogHeader className="shrink-0 space-y-2 pb-3.5 mb-0.5">
-          <DialogTitle className="pr-0 text-sm flex items-center gap-2 leading-snug">
-            {t("ui:gambler.title")}
-            <RulesInfoButton />
-          </DialogTitle>
-          <DialogDescription className="sr-only">
-            {t("ui:gambler.srDescription")}
-          </DialogDescription>
-        </DialogHeader>
+        {isOutcome ? (
+          <WinLoseResultScreen
+            kind={outcome === "win" ? "victory" : "defeat"}
+            title={
+              outcome === "win"
+                ? t("ui:gambler.youWin")
+                : t("ui:gambler.youLose")
+            }
+            lines={outcomeLines}
+            onContinue={handleOutcomeClose}
+            continueLabel={t("common:buttons.continue")}
+            continueButtonId="gambler-outcome-close"
+          />
+        ) : (
+          <>
+            <DialogHeader className="shrink-0">
+              <DialogTitle className="pr-0 text-lg font-semibold flex items-center gap-2 leading-snug">
+                {t("ui:gambler.title")}
+                <RulesInfoButton />
+              </DialogTitle>
+              <DialogDescription className="sr-only">
+                {t("ui:gambler.srDescription")}
+              </DialogDescription>
+            </DialogHeader>
 
-        <div className="flex flex-1 flex-col min-h-0 overflow-y-auto">
-          {phase === "wager" && (
-            <div className="space-y-3">
-              <div className="text-xs text-muted-foreground space-y-1">
-                <p>
-                  {inGamblerTutorial
-                    ? t("ui:gambler.tutorialIntro", {
-                      count: GAMBLER_TUTORIAL_PLAYS,
-                    })
-                    : hasBoneDice
-                      ? t("ui:gambler.boneDiceIntro")
-                      : t("ui:gambler.placeBet")}
-                </p>
-                <p>
-                  {t("ui:gambler.gamesRemaining", {
-                    remaining: formatNumber(gamesRemainingDisplay),
-                    total: formatNumber(totalGamesThisVisit),
-                  })}
-                </p>
-              </div>
-              <div className={gameActionButtonGridClassName()}>
-                {inGamblerTutorial ? (
-                  <Button
-                    variant="outline"
-                    size="xs"
-                    onClick={() => handleWager(0)}
-                    className={cn(
-                      "text-xs",
-                      gameActionOutlineButtonClassName(false),
-                    )}
-                    button_id="gambler-wager-0"
-                  >
-                    {t("common:currency.goldAmount", { amount: 0 })}
-                  </Button>
-                ) : (
-                  WAGER_TIERS.map((tier) => {
-                    const requiredLuck = WAGER_LUCK_THRESHOLDS[tier];
-                    const isUnlocked = playerLuck >= requiredLuck;
-                    const canAfford = playerGold >= tier;
-                    const isDisabled = !isUnlocked || !canAfford;
-
-                    const button = (
+            <div className="flex flex-col">
+              {phase === "wager" && (
+                <div className="space-y-3">
+                  <div className="text-sm text-muted-foreground mt-2 space-y-1">
+                    <p>
+                      {inGamblerTutorial
+                        ? t("ui:gambler.tutorialIntro", {
+                          count: GAMBLER_TUTORIAL_PLAYS,
+                        })
+                        : hasBoneDice
+                          ? t("ui:gambler.boneDiceIntro")
+                          : t("ui:gambler.placeBet")}
+                    </p>
+                    <p>
+                      {t("ui:gambler.gamesRemaining", {
+                        remaining: formatNumber(gamesRemainingDisplay),
+                        total: formatNumber(totalGamesThisVisit),
+                      })}
+                    </p>
+                  </div>
+                  <div className={gameActionButtonGridClassName()}>
+                    {inGamblerTutorial ? (
                       <Button
-                        key={tier}
                         variant="outline"
                         size="xs"
-                        disabled={isDisabled}
-                        onClick={() => handleWager(tier)}
+                        onClick={() => handleWager(0)}
                         className={cn(
                           "text-xs",
-                          gameActionOutlineButtonClassName(isDisabled),
+                          gameActionOutlineButtonClassName(false),
                         )}
-                        button_id={`gambler-wager-${tier}`}
+                        button_id="gambler-wager-0"
                       >
-                        {t("common:currency.goldAmount", {
-                          amount: formatNumber(tier),
-                        })}
+                        {t("common:currency.goldAmount", { amount: 0 })}
                       </Button>
-                    );
+                    ) : (
+                      WAGER_TIERS.map((tier) => {
+                        const requiredLuck = WAGER_LUCK_THRESHOLDS[tier];
+                        const isUnlocked = playerLuck >= requiredLuck;
+                        const canAfford = playerGold >= tier;
+                        const isDisabled = !isUnlocked || !canAfford;
 
-                    if (!isUnlocked) {
-                      return (
-                        <TooltipWrapper
-                          key={tier}
-                          tooltip={
-                            <div className="text-xs">
-                              {t("ui:gambler.requiresLuck", {
-                                luck: requiredLuck,
-                              })}
-                            </div>
-                          }
-                          tooltipId={`gambler-wager-lock-${tier}`}
-                          disabled={true}
+                        const button = (
+                          <Button
+                            key={tier}
+                            variant="outline"
+                            size="xs"
+                            disabled={isDisabled}
+                            onClick={() => handleWager(tier)}
+                            className={cn(
+                              "text-xs",
+                              gameActionOutlineButtonClassName(isDisabled),
+                            )}
+                            button_id={`gambler-wager-${tier}`}
+                          >
+                            {t("common:currency.goldAmount", {
+                              amount: formatNumber(tier),
+                            })}
+                          </Button>
+                        );
+
+                        if (!isUnlocked) {
+                          return (
+                            <TooltipWrapper
+                              key={tier}
+                              tooltip={
+                                <div className="text-xs">
+                                  {t("ui:gambler.requiresLuck", {
+                                    luck: requiredLuck,
+                                  })}
+                                </div>
+                              }
+                              tooltipId={`gambler-wager-lock-${tier}`}
+                              disabled={true}
+                            >
+                              {button}
+                            </TooltipWrapper>
+                          );
+                        }
+
+                        return button;
+                      })
+                    )}
+                  </div>
+                  <div className="flex justify-end">
+                    <Button
+                      variant="outline"
+                      size="xs"
+                      onClick={onClose}
+                      className="text-xs font-medium text-foreground border-amber-900/50 hover:bg-amber-950/30 hover:text-foreground"
+                      style={chromeRuleColorStyle(GAMBLER_CHROME_COLOR)}
+                      button_id="gambler-close-wager"
+                    >
+                      {t("common:buttons.close")}
+                    </Button>
+                  </div>
+                </div>
+              )}
+
+              {(phase === "playerTurn" || phase === "npcTurn") && (
+                <div className="space-y-3 flex flex-col">
+                  <div className="flex flex-col gap-1 text-sm text-muted-foreground mt-2 shrink-0">
+                    <span>
+                      {t("ui:gambler.bet")}{" "}
+                      <span className="font-semibold text-foreground tabular-nums">
+                        {wager === 0
+                          ? t("ui:gambler.practiceBet")
+                          : t("common:currency.goldAmount", {
+                            amount: formatNumber(wager),
+                          })}
+                      </span>
+                    </span>
+                    <span>
+                      {t("ui:gambler.goal")}{" "}
+                      <span className="font-semibold text-foreground tabular-nums">
+                        {formatNumber(goal)}
+                      </span>
+                    </span>
+                  </div>
+
+                  <div className="flex flex-col gap-2">
+                    <div className="grid grid-cols-2 gap-4 content-start">
+                      <div className="text-center space-y-1">
+                        <div
+                          className={`text-sm ${phase === "playerTurn" ? "font-semibold text-foreground" : "text-muted-foreground"}`}
                         >
-                          {button}
-                        </TooltipWrapper>
-                      );
-                    }
+                          {t("ui:gambler.you")}
+                        </div>
+                        <div
+                          className="text-2xl font-bold tabular-nums"
+                          data-testid="player-running-total"
+                        >
+                          {formatNumber(playerTotal)}
+                        </div>
+                        <div className="h-20 flex items-center justify-center">
+                          <DiceFace value={playerLastRoll} spinning={spinning} />
+                        </div>
+                      </div>
+                      <div className="text-center space-y-1">
+                        <div
+                          className={`text-sm ${phase === "npcTurn" ? "font-semibold text-foreground" : "text-muted-foreground"}`}
+                        >
+                          {t("ui:gambler.gambler")}
+                        </div>
+                        <div
+                          className="text-2xl font-bold tabular-nums"
+                          data-testid="gambler-running-total"
+                        >
+                          {formatNumber(npcTotal)}
+                        </div>
+                        <div className="h-20 flex items-center justify-center">
+                          <DiceFace value={npcLastRoll} spinning={npcSpinning} />
+                        </div>
+                      </div>
+                    </div>
 
-                    return button;
-                  })
-                )}
-              </div>
-              <div className="flex justify-end">
-                <Button
-                  variant="outline"
-                  size="xs"
-                  onClick={onClose}
-                  className="text-xs font-medium text-foreground border-amber-900/50 hover:bg-amber-950/30 hover:text-foreground"
-                  style={chromeRuleColorStyle(GAMBLER_CHROME_COLOR)}
-                  button_id="gambler-close-wager"
-                >
-                  {t("common:buttons.close")}
-                </Button>
-              </div>
+                    {(phase === "playerTurn" || phase === "npcTurn") && (
+                      <div className="flex gap-2 justify-center min-h-[1.75rem] items-center">
+                        <Button
+                          variant="outline"
+                          size="xs"
+                          onClick={handlePlayerRoll}
+                          disabled={
+                            phase !== "playerTurn" ||
+                            spinning ||
+                            pauseAfterPlayerRoll ||
+                            playerTotal >= goal
+                          }
+                          className={cn(
+                            "text-xs",
+                            gameActionOutlineButtonClassName(
+                              phase !== "playerTurn" ||
+                              spinning ||
+                              pauseAfterPlayerRoll ||
+                              playerTotal >= goal,
+                            ),
+                          )}
+                          button_id="gambler-roll"
+                        >
+                          {t("ui:gambler.roll")}
+                        </Button>
+                        <Button
+                          variant="outline"
+                          size="xs"
+                          onClick={handleStand}
+                          disabled={
+                            phase !== "playerTurn" ||
+                            !hasRolledThisRound ||
+                            spinning ||
+                            pauseAfterPlayerRoll ||
+                            !canPlayerChooseNoRoll(playerTotal, npcTotal) ||
+                            isStopBlockedTiedFarUnderGoal(
+                              playerTotal,
+                              npcTotal,
+                              goal,
+                            )
+                          }
+                          className={cn(
+                            "text-xs",
+                            gameActionOutlineButtonClassName(
+                              phase !== "playerTurn" ||
+                              !hasRolledThisRound ||
+                              spinning ||
+                              pauseAfterPlayerRoll ||
+                              !canPlayerChooseNoRoll(playerTotal, npcTotal) ||
+                              isStopBlockedTiedFarUnderGoal(
+                                playerTotal,
+                                npcTotal,
+                                goal,
+                              ),
+                            ),
+                          )}
+                          button_id="gambler-stand"
+                        >
+                          {t("ui:gambler.noRoll")}
+                        </Button>
+                      </div>
+                    )}
+                  </div>
+
+                </div>
+              )}
             </div>
-          )}
-
-          {(phase === "playerTurn" || phase === "npcTurn") && (
-            <div className="space-y-3 flex flex-col flex-1 min-h-0">
-              <div className="flex flex-col gap-1 text-xs text-muted-foreground shrink-0">
-                <span>
-                  {t("ui:gambler.bet")}{" "}
-                  <span className="font-semibold text-foreground tabular-nums">
-                    {wager === 0
-                      ? t("ui:gambler.practiceBet")
-                      : t("common:currency.goldAmount", {
-                        amount: formatNumber(wager),
-                      })}
-                  </span>
-                </span>
-                <span>
-                  {t("ui:gambler.goal")}{" "}
-                  <span className="font-semibold text-foreground tabular-nums">
-                    {formatNumber(goal)}
-                  </span>
-                </span>
-              </div>
-
-              <div className="flex flex-col gap-2">
-                <div className="grid grid-cols-2 gap-4 content-start">
-                  <div className="text-center space-y-1">
-                    <div
-                      className={`text-xs ${phase === "playerTurn" ? "font-semibold text-foreground" : "text-muted-foreground"}`}
-                    >
-                      {t("ui:gambler.you")}
-                    </div>
-                    <div
-                      className="text-2xl font-bold tabular-nums"
-                      data-testid="player-running-total"
-                    >
-                      {formatNumber(playerTotal)}
-                    </div>
-                    <div className="h-10 flex items-center justify-center">
-                      <DiceFace value={playerLastRoll} spinning={spinning} />
-                    </div>
-                  </div>
-                  <div className="text-center space-y-1">
-                    <div
-                      className={`text-xs ${phase === "npcTurn" ? "font-semibold text-foreground" : "text-muted-foreground"}`}
-                    >
-                      {t("ui:gambler.gambler")}
-                    </div>
-                    <div
-                      className="text-2xl font-bold tabular-nums"
-                      data-testid="gambler-running-total"
-                    >
-                      {formatNumber(npcTotal)}
-                    </div>
-                    <div className="h-10 flex items-center justify-center">
-                      <DiceFace value={npcLastRoll} spinning={npcSpinning} />
-                    </div>
-                  </div>
-                </div>
-
-                {(phase === "playerTurn" || phase === "npcTurn") && (
-                  <div className="flex gap-2 justify-center min-h-[1.75rem] items-center">
-                    <Button
-                      variant="outline"
-                      size="xs"
-                      onClick={handlePlayerRoll}
-                      disabled={
-                        phase !== "playerTurn" ||
-                        spinning ||
-                        pauseAfterPlayerRoll ||
-                        playerTotal >= goal
-                      }
-                      className={cn(
-                        "text-xs",
-                        gameActionOutlineButtonClassName(
-                          phase !== "playerTurn" ||
-                          spinning ||
-                          pauseAfterPlayerRoll ||
-                          playerTotal >= goal,
-                        ),
-                      )}
-                      button_id="gambler-roll"
-                    >
-                      {t("ui:gambler.roll")}
-                    </Button>
-                    <Button
-                      variant="outline"
-                      size="xs"
-                      onClick={handleStand}
-                      disabled={
-                        phase !== "playerTurn" ||
-                        !hasRolledThisRound ||
-                        spinning ||
-                        pauseAfterPlayerRoll ||
-                        !canPlayerChooseNoRoll(playerTotal, npcTotal) ||
-                        isStopBlockedTiedFarUnderGoal(
-                          playerTotal,
-                          npcTotal,
-                          goal,
-                        )
-                      }
-                      className={cn(
-                        "text-xs",
-                        gameActionOutlineButtonClassName(
-                          phase !== "playerTurn" ||
-                          !hasRolledThisRound ||
-                          spinning ||
-                          pauseAfterPlayerRoll ||
-                          !canPlayerChooseNoRoll(playerTotal, npcTotal) ||
-                          isStopBlockedTiedFarUnderGoal(
-                            playerTotal,
-                            npcTotal,
-                            goal,
-                          ),
-                        ),
-                      )}
-                      button_id="gambler-stand"
-                    >
-                      {t("ui:gambler.noRoll")}
-                    </Button>
-                  </div>
-                )}
-              </div>
-
-            </div>
-          )}
-
-          {phase === "outcome" && outcome && (
-            <div className="space-y-4 flex flex-col flex-1 min-h-0">
-              <div className="flex flex-col gap-1 text-xs text-muted-foreground">
-                <span>
-                  {t("ui:gambler.bet")}{" "}
-                  <span className="font-semibold text-foreground tabular-nums">
-                    {wager === 0
-                      ? t("ui:gambler.practiceBet")
-                      : t("common:currency.goldAmount", {
-                        amount: formatNumber(wager),
-                      })}
-                  </span>
-                </span>
-                <span>
-                  {t("ui:gambler.goal")}{" "}
-                  <span className="font-semibold text-foreground tabular-nums">
-                    {formatNumber(goal)}
-                  </span>
-                </span>
-              </div>
-
-              <div className="grid grid-cols-2 gap-4">
-                <div className="text-center space-y-1">
-                  <div className="text-xs text-muted-foreground">{t("ui:gambler.you")}</div>
-                  <div
-                    className={`text-2xl font-bold ${playerTotal > goal ? "text-red-400" : ""}`}
-                  >
-                    {formatNumber(playerTotal)}
-                  </div>
-                </div>
-                <div className="text-center space-y-1">
-                  <div className="text-xs text-muted-foreground">{t("ui:gambler.gambler")}</div>
-                  <div
-                    className={`text-2xl font-bold ${npcTotal > goal ? "text-red-400" : ""}`}
-                  >
-                    {formatNumber(npcTotal)}
-                  </div>
-                </div>
-              </div>
-
-              <div className="text-center">
-                {outcome === "win" ? (
-                  <div className="text-sm font-semibold text-green-800 dark:text-green-400">
-                    {t("ui:gambler.youWin")}
-                  </div>
-                ) : (
-                  <div className="text-sm font-semibold text-red-900 dark:text-red-400">
-                    {t("ui:gambler.youLose")}
-                  </div>
-                )}
-              </div>
-
-              <div className="shrink-0">
-                <div className="h-px w-full bg-white/10" />
-                <div className="text-center text-xs text-foreground pt-4">
-                  {wager === 0
-                    ? t("ui:gambler.practiceOutcome")
-                    : outcome === "win"
-                      ? t("ui:gambler.goldWon", { amount: formatNumber(wager) })
-                      : t("ui:gambler.goldLost", { amount: formatNumber(wager) })}
-                </div>
-              </div>
-
-              <div className="flex justify-center">
-                <Button
-                  variant="outline"
-                  size="xs"
-                  onClick={handleOutcomeClose}
-                  className="text-xs"
-                  button_id="gambler-outcome-close"
-                >
-                  {t("common:buttons.close")}
-                </Button>
-              </div>
-            </div>
-          )}
-        </div>
+          </>
+        )}
       </DialogContent>
     </Dialog>
   );

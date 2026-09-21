@@ -8,6 +8,10 @@ import {
   gameChromeTooltipClassName,
   useDestroyedChrome,
 } from "@/components/game/gameChrome";
+import {
+  getTabVisibleEpoch,
+  subscribeGameTabHidden,
+} from "@/lib/tabVisibility";
 import { cn } from "@/lib/utils";
 
 const TooltipProvider = ({
@@ -27,9 +31,20 @@ const TooltipProvider = ({
 const Tooltip = React.forwardRef<
   React.ElementRef<typeof TooltipPrimitive.Root>,
   React.ComponentPropsWithoutRef<typeof TooltipPrimitive.Root>
->((props, ref) => (
-  <TooltipPrimitive.Root disableHoverableContent forceMount {...props} />
-));
+>((props, ref) => {
+  // Forced `open={false}` while the tab is hidden, then back to uncontrolled,
+  // leaves Radix hover dead until a full remount (same trap as modal suppression).
+  const hoverResetKey = React.useSyncExternalStore(
+    subscribeGameTabHidden,
+    getTabVisibleEpoch,
+    () => 0,
+  );
+  return (
+    <React.Fragment key={hoverResetKey}>
+      <TooltipPrimitive.Root disableHoverableContent forceMount {...props} />
+    </React.Fragment>
+  );
+});
 Tooltip.displayName = "Tooltip";
 
 const TooltipTrigger = TooltipPrimitive.Trigger;

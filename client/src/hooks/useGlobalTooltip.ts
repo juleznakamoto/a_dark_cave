@@ -297,9 +297,14 @@ const globalTooltipManager = new GlobalTooltipManager();
 if (typeof window !== "undefined") {
   globalTooltipManager.setMobile(window.innerWidth < MOBILE_BREAKPOINT);
   globalTooltipManager.setTabHidden(isGameTabHidden());
-  subscribeGameTabHidden(() => {
+  const unsubscribeTabHidden = subscribeGameTabHidden(() => {
     globalTooltipManager.setTabHidden(isGameTabHidden());
   });
+  if (import.meta.hot) {
+    import.meta.hot.dispose(() => {
+      unsubscribeTabHidden();
+    });
+  }
 }
 
 /** Close any open tooltip and cancel in-progress long-press timers. */
@@ -339,6 +344,13 @@ export function GameTooltipProvider({ children }: { children: ReactNode }) {
   useEffect(() => {
     setGlobalTooltipIsMobile(isMobile);
   }, [isMobile]);
+  useEffect(() => {
+    const sync = () => {
+      globalTooltipManager.setTabHidden(isGameTabHidden());
+    };
+    sync();
+    return subscribeGameTabHidden(sync);
+  }, []);
   return createElement(
     GameTooltipTreeContext.Provider,
     { value: true },
@@ -358,8 +370,12 @@ export function useOpenGlobalTooltipId(): string | null {
 /**
  * Radix `open` for one tooltip:
  * - `true` while this id is the long-press / tap tooltip
- * - `false` while a blocking modal suppresses behind-the-overlay triggers
+ * - `false` while the tab is hidden, or a blocking modal suppresses
+ *   behind-the-overlay triggers
  * - `undefined` otherwise so hover stays uncontrolled
+ *
+ * The same Root must not go `false` → `undefined`. `Tooltip` remounts on
+ * `getTabVisibleEpoch()` when the tab is shown again.
  */
 export function getTooltipOpenProp(id: string): boolean | undefined {
   if (globalTooltipManager.isTabHidden()) {
