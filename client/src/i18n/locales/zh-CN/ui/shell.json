@@ -43,7 +43,6 @@
     "reload": "重新加载游戏"
   },
   "footer": {
-    "fullGame": "完整版",
     "trader": "商人",
     "openShop": "打开商店",
     "donate": "支持",
@@ -73,25 +72,15 @@
   "profile": {
     "title": "菜单",
     "signInUp": "登录/注册",
-    "emailsOn": "邮件已开启",
-    "emailsOff": "邮件已关闭",
-    "marketingOnTooltip": "你正在接收更新、折扣与专属奖励邮件。点击关闭。",
-    "marketingOffTooltip": "你未接收更新邮件。点击开启。",
     "save": "保存",
     "newGame": "新游戏",
-    "restart": "重新开始",
-    "signIn": "登录",
     "signOut": "退出登录",
     "leaderboard": "排行榜",
     "rewards": "奖励",
     "deleteAccount": "删除账户",
-    "marketingSubscribe": "订阅邮件",
-    "marketingUnsubscribe": "取消邮件订阅",
     "autoSaveSignedIn": "游戏每分钟自动保存",
     "autoSaveGuest": "游戏每 15 秒自动保存",
     "signUpCloudSave": "注册以将游戏保存到云端",
-    "autoSaveSteam": "游戏每 15 秒自动保存",
-    "steamCloudSave": "保存时进度会同步到 Steam 云存档。",
     "lastSave": "上次保存：{{time}}",
     "signedOut": "已成功退出登录",
     "signOutError": "退出登录时出错",
@@ -118,9 +107,5 @@
   },
   "villageHotkeyTutorial": {
     "dismiss": "关闭"
-  },
-  "demoTabs": {
-    "notYetUnlocked": "尚未解锁。"
-  },
-  "never": "从未"
+  }
 }

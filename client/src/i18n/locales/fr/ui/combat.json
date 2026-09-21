@@ -1,13 +1,11 @@
 {
   "combat": {
-    "title": "Combat",
     "skillsTitle": "Compétences de combat", //x1.6
     "fight": "Combattre",
     "fighting": "Combat en cours…", //x1.5
     "startFight": "Lancer le combat", //x1.5
     "roundTitle": "Combat – Manche {{round}}",
     "bossRoundTitle": "Combat de boss – Manche {{round}}",
-    "bossTitle": "Combat de boss", //x1.4
     "youLost": "Vous perdez", //x1.9
     "youWin": "Vous gagnez", //x1.6
     "bastion": "Bastion",
@@ -19,12 +17,10 @@
     "healChance": "Chance de soin", //x1.3
     "stunChance": "Chance d'étourdissement", //x2.1
     "stunned": "Étourdi",
-    "enemyHealed": "Soigné",
     "attackFailed": "Attaque échouée",
     "crushingStrikeFailed": "Frappe écrasante échouée",
     "feralHowlFailed": "Hurlement sauvage échoué", //x1.4
     "critical": "critique",
-    "criticalParen": "({{label}})",
     "available": "Disponible : {{current}}/{{max}}",
     "crushingStrike": "Frappe écrasante",
     "bloodflameSphere": "Sphère de flamme sanglante", //x1.5
@@ -40,8 +36,8 @@
       "paleCreatures": "Créatures pâles",
       "paleBeasts": "Bêtes pâles"
     },
-    "restlessKnightWounded": "Le Chevalier sans repos est blessé et ne peut pas combattre", //x1.4
-    "elderWizardWounded": "Le mage ancien est blessé et ne peut pas lancer de sorts",
+    "restlessKnightWounded": "Le Chevalier tourmenté est blessé et ne peut pas combattre", //x1.4
+    "elderWizardWounded": "Le Vieux mage est blessé et ne peut pas lancer de sorts",
     "noCasualties": "Aucun villageois n'est mort.", //x1.6
     "oneCasualty": "1 villageois est mort.", //x1.4
     "manyCasualties": "{{count}} villageois sont morts.", //x1.3
@@ -58,9 +54,7 @@
     "title": "Vagues d'attaque", //x1.3
     "calm": "C'est calme, pour l'instant…", //x1.3
     "soon": "bientôt",
-    "provoke": "Provocation", //x1.6
-    "pause": "Pause",
-    "unpause": "Reprendre",
+    "provoke": "Provoquer", //x1.6
     "postCompletion": "Vague {{waveNumber}}",
     "waves": {
       "firstWave": "Première vague", //x1.4

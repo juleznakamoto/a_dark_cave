@@ -38,10 +38,8 @@
     "presetApply": "Применить пресет {{slot}}",
     "presetEmpty": "Пресет {{slot}} пуст: выберите его, затем сохраните текущие работы",
     "presetLocked": "Заблокировано: доступно для покупки",
-    "presetLockedBuilding": "Для разблокировки нужно: {{building}}", //x1.3
     "presetSave": "Сохранить текущие работы в пресет {{slot}}",
     "presetSlotsPurchase": "Добавить ещё 2 слота пресетов",
-    "queueSlotsPurchase": "Добавить ещё 2 слота очереди строительства",
     "presetUnlock": "Открыть пресет работ за {{cost}} прозрения",
     "queueSlotUnlock": "Открыть слот очереди строительства за {{cost}} прозрения",
     "queueSlotUsed": "Слот {{slot}}: строительство идёт",
@@ -110,7 +108,6 @@
     "crowsEye": "Глаз ворона",
     "maxLevel": "Макс. уровень", //x1.4
     "improve": "Улучшить",
-    "upkeepPerCycle": "{{amount}} еды на содержание за назначенное действие за цикл",
     "skillFoodPerHunter": "+{{amount}} еды за охотника",
     "skillFurPerHunter": "+{{amount}} меха за охотника",
     "skillBonesPerHunter": "+{{amount}} костей за охотника",
@@ -197,9 +194,7 @@
   "sidePanel": {
     "bastion": "Бастион",
     "fortress": "Крепость",
-    "population": "Население",
     "freeVillagers": "Свободные",
-    "onExpedition": "В экспедиции",
     "resources": "Ресурсы",
     "tools": "Инструменты", //x2.2
     "weapons": "Оружие",
@@ -220,10 +215,6 @@
     "constructionTime": "Время строительства",
     "productionBonus": "Бонус производства",
     "doubleGainChance": "Шанс двойного урожая",
-    "populationTooltip": "Каждый житель потребляет 1 еду и 1 древесину",
-    "resourceLimitMax": "макс. {{limit}}",
-    "resourceLimitTooltip": "без лимита для серебра, золота и проницательности", //x1.4
-    "statsTooltip": "Характеристики влияют на исход событий и дают особые эффекты, которые открываются по мере прогресса.",
     "statLuckTooltip": "Склоняет судьбу в вашу пользу",
     "statStrengthTooltip": "Помогает там, где слова бессильны",
     "statKnowledgeTooltip": "Влияет там, где помогает смекалка",
@@ -254,7 +245,6 @@
     "bastionAttackFromStrength": "{{value}} от силы (50%)"
   },
   "achievements": {
-    "title": "Записки выжившего",
     "notUnlocked": "Еще не открыто.",
     "chartUnavailable": "График недоступен",
     "claim": "Забрать",
@@ -269,7 +259,6 @@
     }
   },
   "idleMode": {
-    "title": "Режим сна",
     "sleeping": "Спит",
     "awake": "Вы проснулись!",
     "wakingIn": "Пробуждение через: {{time}}", //x1.2
@@ -289,7 +278,7 @@
     "whisperedMemories": "Исследуйте тёмную историю, богатую лором",
     "explore": "Исследуйте жестокий мир",
     "attackWaves": "Сражайтесь с невыразимыми существами",
-    "heal": "Соберите могучее братство",
+    "heal": "Соберите могучих спутников",
     "repair": "Возведите могучую крепость",
     "unlockAchievements": "Откройте {{count}} достижений в {{categories}} категориях"
   }

@@ -2,21 +2,12 @@
   "shop": {
     "title": "Marchand",
     "purchase": "Acheter",
-    "owned": "Possédé",
-    "notEnoughGold": "Vous n'avez pas assez d'or.",
     "forSale": "À vendre",
     "forSalePlaythroughNote": "Les achats peuvent être réutilisés à chaque partie.",
     "purchases": "Achats",
     "srDescription": "Boutique d'or, d'artefacts, d'améliorations et de packs",
-    "betaDiscountTitle": "Des remises bêta jusqu'à {{percent}} % sont actuellement actives.",
-    "betaDiscountNote": "Tous les achats restent disponibles lors des prochaines parties et après la sortie complète.",
-    "noPurchasesTitle": "Aucun achat pour l'instant.", //x1.6
-    "noPurchasesHint": "Consultez l'onglet « À vendre » pour acheter des objets.", //x1.6
-    "activatePurchasesTitle": "Activez vos achats pour recevoir des récompenses.",
-    "activatePurchasesNote": "Chaque achat peut être activé une fois par partie.",
     "highlights": "À la une",
     "gold": "Or",
-    "artifacts": "Artefacts",
     "boosts": "Améliorations",
     "bundles": "Packs",
     "mostPopular": "Le plus populaire", //x1.4
@@ -35,16 +26,11 @@
     "firstPurchaseInsightBannerAfter": "gratuitement avec votre premier achat",
     "firstPurchaseInsightCheckoutFree": "gratuitement", //x1.5
     "firstPurchaseInsightGranted": "Cadeau de premier achat : +{{amount}} {{glyph}} Perspicacité",
-    "cruelModeSteamDemoBannerBefore": "Le Mode cruel est actuellement gratuit pour célébrer le lancement de la démo sur",
-    "cruelModeSteamDemoBannerSteam": "Steam",
-    "cruelModeSteamDemoBannerAfter": ".",
     "loadingPayment": "Chargement du système de paiement...", //x1.4
     "paymentSrDescription": "Finalisez votre paiement pour {{name}}",
     "originalPrice": "Prix d'origine",
     "saleDiscount": "Remise promotionnelle", //x1.6
     "bundleDiscount": "Remise pack",
-    "betaDiscount": "Remise bêta",
-    "additionalDiscount": "Remise supplémentaire",
     "eventDiscount": "Remise d'événement", //x1.3
     "total": "Total",
     "legalConsent": "Accès immédiat au contenu numérique après l'achat.",
@@ -68,28 +54,23 @@
     "freeItemAdded": "{{name}} a été ajouté à vos achats. Consultez l'onglet « Achats » pour l'activer.",
     "tradersGratitudeDiscount": "{{percent}} % de remise supplémentaire grâce à l'événement Gratitude du marchand",
     "tradersSonDiscount": "{{percent}} % de remise supplémentaire grâce à l'événement Fils du marchand.",
-    "playlightDiscount": "{{percent}} % de remise supplémentaire sur votre premier achat en argent réel en tant que joueur Playlight.",
     "journeyCompleteDiscount": "Réduction spéciale pour avoir terminé le jeu",
     "artifactSkullLantern": {
-      "title": "Lanterne crânienne", //x1.4
       "unlocksStoryline": "Débloque l'histoire de la lanterne-crâne",
       "caveExplore": "Exploration de grotte : +150 % de bonus, -3 s de recharge",
       "mining": "Extraction : +150 % de bonus, -3 s de recharge"
     },
     "artifactTarnishedCompass": {
-      "title": "Boussole ternie",
       "unlocksStoryline": "Débloque l'histoire de la boussole", //x1.4
       "doubleGain": "5 % de chance de doubler les gains d'actions",
       "luck": "+5 Chance"
     },
     "artifactCrowHarness": {
-      "title": "Corbeau borgne",
       "unlocksStoryline": "Débloque l'histoire du corbeau", //x1.4
       "doubleGain": "Jusqu'à 10 % de chance de doubler les gains d'actions", //x1.4
       "addsFellowshipMember": "Ajoute un membre de la compagnie"
     },
     "cruelMode": {
-      "title": "Mode cruel",
       "moreEvents": "Plus d'événements", //x1.5
       "moreItems": "Plus d'objets", //x1.3
       "strongerEnemies": "Ennemis plus puissants", //x1.4
@@ -104,7 +85,6 @@
     "alreadyClaimedItemLog": "Vous avez déjà récupéré {{name}}.",
     "claimFailedLog": "Impossible de récupérer {{name}}. Veuillez réessayer.",
     "activatedDefaultLog": "{{name}} activé ! Les récompenses ont été ajoutées à votre inventaire.",
-    "noCardDataStored": "Aucune donnée de carte n'est stockée sur nos serveurs.", //x1.4
     "securePaymentVia": "Paiement sécurisé via",
     "securePaymentWith": "avec",
     "securePurchaseTitle": "Sécurisez votre achat",

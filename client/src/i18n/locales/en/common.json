@@ -2,15 +2,8 @@
   "buttons": {
     "close": "Close",
     "continue": "Continue",
-    "confirm": "Confirm",
     "cancel": "Cancel",
     "save": "Save",
-    "refresh": "Refresh",
-    "dismiss": "Dismiss",
-    "fight": "Fight",
-    "refuse": "Refuse",
-    "accept": "Accept",
-    "back": "Back",
     "claim": "Claim",
     "activate": "Activate",
     "deactivate": "Deactivate"
@@ -33,7 +26,6 @@
     "bastion": "Bastion",
     "fortress": "Fortress",
     "trader": "Trader",
-    "achievements": "Achievements",
     "timedEvent": "Timed Event"
   },
   "resources": {
@@ -75,15 +67,9 @@
     "defense": "Defense",
     "integrity": "Integrity"
   },
-  "time": {
-    "never": "Never",
-    "hoursMinutes": "{{hours}}h {{minutes}}m",
-    "minutesSeconds": "{{minutes}}m {{seconds}}s"
-  },
   "population": {
     "villager_one": "{{count}} Villager",
-    "villager_other": "{{count}} Villagers",
-    "maxPopulation": "+{{count}} Max Population"
+    "villager_other": "{{count}} Villagers"
   },
   "currency": {
     "goldAmount": "{{amount}} Gold"

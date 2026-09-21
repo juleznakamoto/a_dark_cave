@@ -2,15 +2,8 @@
   "buttons": {
     "close": "閉じる",
     "continue": "続ける",
-    "confirm": "確認",
     "cancel": "キャンセル",
     "save": "保存",
-    "refresh": "更新",
-    "dismiss": "閉じる",
-    "fight": "戦う",
-    "refuse": "拒む",
-    "accept": "受ける",
-    "back": "戻る",
     "claim": "受け取る",
     "activate": "発動",
     "deactivate": "無効化"
@@ -33,7 +26,6 @@
     "bastion": "バスティオン",
     "fortress": "要塞",
     "trader": "商人",
-    "achievements": "実績",
     "timedEvent": "時限出来事"
   },
   "resources": {
@@ -75,15 +67,9 @@
     "defense": "防御",
     "integrity": "耐久"
   },
-  "time": {
-    "never": "なし",
-    "hoursMinutes": "{{hours}}時間 {{minutes}}分",
-    "minutesSeconds": "{{minutes}}分 {{seconds}}秒"
-  },
   "population": {
     "villager_one": "{{count}}人の村人",
-    "villager_other": "{{count}}人の村人",
-    "maxPopulation": "人口上限 +{{count}}"
+    "villager_other": "{{count}}人の村人"
   },
   "currency": {
     "goldAmount": "{{amount}}金貨"

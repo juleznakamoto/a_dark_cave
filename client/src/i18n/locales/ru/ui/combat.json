@@ -1,13 +1,11 @@
 {
   "combat": {
-    "title": "Бой",
     "skillsTitle": "Боевые навыки",
     "fight": "Сражаться",
     "fighting": "Сражение...",
     "startFight": "Начать бой",
     "roundTitle": "Бой - раунд {{round}}",
-    "bossRoundTitle": "Бой с боссом – Раунд {{round}}",
-    "bossTitle": "Бой с боссом",  //x1.2
+    "bossRoundTitle": "Бой с боссом - Раунд {{round}}",
     "youLost": "Вы проиграли",  //x1.5
     "youWin": "Вы победили",  //x1.6
     "bastion": "Бастион",
@@ -19,12 +17,10 @@
     "healChance": "Шанс лечения",
     "stunChance": "Шанс оглушения",  //x1.3
     "stunned": "Оглушён",
-    "enemyHealed": "Исцелён",
     "attackFailed": "Атака не удалась",  //x1.2
     "crushingStrikeFailed": "Сокрушающий удар не удался",
     "feralHowlFailed": "Дикий вой не удался",
     "critical": "критический",
-    "criticalParen": "({{label}})",
     "available": "Доступно: {{current}}/{{max}}",
     "crushingStrike": "Сокрушающий удар",
     "bloodflameSphere": "Сфера кровавого пламени",  //x1.4
@@ -35,7 +31,7 @@
     "critFromLuckMaxSuffix": " (макс.)",
     "critFromItems": "{{percent}} % от предметов",
     "critDamage": "+{{percent}} % урона критического удара",
-    "missChance": "{{percent}} % шанс промаха (из‑за {{stat}})",
+    "missChance": "{{percent}} % шанс промаха (на основе {{stat}})",
     "enemies": {
       "paleCreatures": "Бледные твари",
       "paleBeasts": "Бледные звери"
@@ -59,8 +55,6 @@
     "calm": "Пока что спокойно…",
     "soon": "скоро",
     "provoke": "Спровоцировать",  //x2.0
-    "pause": "Пауза",
-    "unpause": "Продолжить",
     "postCompletion": "Волна {{waveNumber}}",
     "waves": {
       "firstWave": "Первая волна",  //x1.2

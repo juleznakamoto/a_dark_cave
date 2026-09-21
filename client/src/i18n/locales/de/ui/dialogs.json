@@ -1,8 +1,6 @@
 {
   "event": {
     "fallbackTitle": "Ereignis",
-    "choose": "Wähle eine Option",
-    "timeRemaining": "Verbleibende Zeit: {{seconds}}s",
     "knowledgeTimeBonus": "+{{seconds}}s Entscheidungszeit durch Wissen{{maxSuffix}}",
     "knowledgeTimeBonusMax": " (max.)",
     "successChance": "Erfolgschance: {{percent}}%",
@@ -12,8 +10,6 @@
     "influencedBy": "Beeinflusst durch:" //x1.3
   },
   "reward": {
-    "title": "Belohnung",
-    "loss": "Verlust",
     "actionReward": "Belohnung",
     "claimRewards": "Belohnungen nehmen" //x1.4
   },
@@ -27,7 +23,6 @@
   },
   "blessingOffer": {
     "title": "Wähle einen Segen",
-    "srDescription": "Wähle einen der angebotenen Segen",
     "chooseBlessing": "Wählen"
   },
   "socialPrompt": {
@@ -48,7 +43,6 @@
     "progressComplete": "Du hast alle Aufgaben abgeschlossen. Du erhältst bald deine Belohnung.",
     "tasksRemaining_one": "1 Aufgabe übrig",
     "tasksRemaining_other": "{{count}} Aufgaben übrig",
-    "progressToward": "Exklusive Belohnung:",
     "exclusiveRewardEffect": "{{percent}} % Chance, Aktionsgewinne zu verdoppeln",
     "progressAriaLabel": "Exklusive Belohnung",
     "alreadyClaimedReward": "Du hast diese Belohnung bereits abgeholt!",
@@ -82,7 +76,7 @@
     "linkCopiedDesc": "Teile ihn mit Freunden, um beide {{amount}} Gold zu verdienen.",
     "copyFailed": "Einladungslink konnte nicht kopiert werden", //x1.6
     "copyFailedNotSignedIn": "Melde dich an, um deinen Einladungslink zu kopieren", //x1.6
-    "tooltip": "<bold>Lade deine Freunde ein</bold> – ihr beide erhaltet {{amount}} Gold. Du kannst bis zu {{cap}} Freunde einladen. ({{count}}/{{cap}} eingeladen)."
+    "tooltip": "<bold>Lade deine Freunde ein</bold>, und ihr beide erhaltet {{amount}} Gold. Du kannst bis zu {{cap}} Freunde einladen. ({{count}}/{{cap}} eingeladen)."
   },
   "invest": {
     "title": "Investieren", //x1.8
@@ -141,30 +135,6 @@
     "practiceWinComplete": "Du hast die Übungsrunde gewonnen (kein Gold im Einsatz). Übung abgeschlossen - du kannst Gold setzen.",
     "practiceLoseComplete": "Du hast die Übungsrunde verloren (kein Gold im Einsatz). Übung abgeschlossen - du kannst Gold setzen."
   },
-  "fullGame": {
-    "titleTrial": "Die Reise geht weiter",
-    "titleCheckout": "Kauf abschließen",
-    "trialDesc": "Du hast das Ende der Testversion erreicht. Die vollständige Reise wartet jenseits dieses Punkts.",
-    "oneTimePurchase": "Einmaliger Kauf. Keine Abos. Keine Zusatzkosten.",
-    "featureHours": "14+ Stunden Spielzeit",
-    "featureStructures": "100+ Gebäude",
-    "featureItems": "250+ Gegenstände, Gefährten, Bücher, Segen…",
-    "featureAchievements": "50+ Erfolge",
-    "featureStory": "Düstere und herausfordernde Geschichte basierend auf deinen Entscheidungen", //x1.5
-    "signInRequired": "Bitte melde dich an, um die Vollversion zu kaufen.",
-    "continueJourney": "Reise fortsetzen",
-    "progressSaved": "Dein Fortschritt ist gespeichert. Du kannst jederzeit zurückkehren und dort weiterspielen, wo du aufgehört hast.",
-    "loadingPayment": "Zahlungssystem wird geladen…",
-    "purchaseSuccessful": "Kauf abgeschlossen.",
-    "purchaseSuccessfulDesc": "Vollversion freigeschaltet und aktiviert! Du kannst deine Reise nun ohne Einschränkungen fortsetzen.",
-    "legalConsent": "Sofortiger Zugang zu digitalen Inhalten nach dem Kauf.",
-    "termsOfService": "AGB",
-    "rightOfWithdrawal": "Widerruf",
-    "completePurchaseFor": "Kauf abschließen für {{price}}",
-    "paymentFailed": "Zahlung fehlgeschlagen", //x1.6
-    "notAuthenticated": "Du bist nicht angemeldet", //x1.4
-    "unexpectedError": "Etwas ist schiefgelaufen." //x1.4
-  },
   "leaderboard": {
     "title": "Bestenliste",
     "dev": "Entw.",
@@ -210,17 +180,14 @@
     "buy": "Kaufen",
     "sell": "Verkaufen",
     "sayGoodbye": "Verabschieden",
-    "successChance": "Erfolgschance: {{percent}}",
     "discount": "{{percent}} % Rabatt",
     "discountFromKnowledge": "{{percent}} % durch Wissen{{max}}",
     "knowledgeMax": " (max.)",
     "discountFromRing": "5 % durch Ring des Gehorsams",
-    "prolongForInsight": "Zeit um {{minutes}} Min. für {{cost}} {{resource}} verlängern",
-    "buyGold": "Gold kaufen"
+    "prolongForInsight": "Zeit um {{minutes}} Min. für {{cost}} {{resource}} verlängern"
   },
   "share": {
-    "title": "Fortschritt teilen",
-    "description": "Speichere oder teile ein Bild deines Spielfortschritts.",
+    "title": "Dein Fortschritt",
     "resources": "Ressourcen: {{percent}} %",
     "achievements": "Erfolge: {{percent}} %",
     "killedCreatures": "Getötete Kreaturen",
@@ -235,7 +202,6 @@
     "copiedTitle": "In Zwischenablage kopiert", //x1.3
     "copyErrorTitle": "Bild konnte nicht kopiert werden", //x1.6
     "copyErrorDesc": "Beim Kopieren in die Zwischenablage ist etwas schiefgelaufen.",
-    "generating": "Wird erstellt…", //x1.3
     "share": "Teilen",
     "errorTitle": "Bild konnte nicht erstellt werden", //x1.5
     "errorDesc": "Beim Erstellen des Bildes ist etwas schiefgelaufen."
@@ -247,7 +213,6 @@
     "contactVia": "Du erreichst mich auch über:",
     "reddit": "Reddit",
     "instagram": "Instagram",
-    "steam": "Steam",
     "email": "E-Mail"
   },
   "galaxy": {
@@ -257,7 +222,6 @@
     "feedbackButton": "Feedback",
     "startNewGameButton": "Neues Spiel starten", //x1.4
     "seeWhatsNextButton": "Was kommt",
-    "releaseNote": "Geplante Veröffentlichung: 27. Oktober 2026", //x1.4
     "storeHeaderLink": "Zur Wunschliste",
     "storeHeaderTooltip": "Vollversion auf die Steam-Wunschliste setzen"
   }

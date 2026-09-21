@@ -1,8 +1,6 @@
 {
   "event": {
     "fallbackTitle": "事件",
-    "choose": "请选择一个选项",
-    "timeRemaining": "剩余时间：{{seconds}} 秒",
     "knowledgeTimeBonus": "知识额外增加 {{seconds}} 秒决策时间{{maxSuffix}}",
     "knowledgeTimeBonusMax": "（上限）",
     "successChance": "成功几率：{{percent}}%",
@@ -12,8 +10,6 @@
     "influencedBy": "受以下影响："
   },
   "reward": {
-    "title": "奖励",
-    "loss": "损失",
     "actionReward": "行动奖励",
     "claimRewards": "领取奖励"
   },
@@ -27,7 +23,6 @@
   },
   "blessingOffer": {
     "title": "选择一项祝福",
-    "srDescription": "从提供的祝福中选择一项",
     "chooseBlessing": "选择"
   },
   "socialPrompt": {
@@ -48,12 +43,11 @@
     "progressComplete": "你已完成所有任务，奖励即将到来。",
     "tasksRemaining_one": "还剩 1 项任务",
     "tasksRemaining_other": "还剩 {{count}} 项任务",
-    "progressToward": "专属奖励：",
     "exclusiveRewardEffect": "{{percent}}% 几率使行动收益翻倍",
     "progressAriaLabel": "专属奖励",
     "alreadyClaimedReward": "你已领取此奖励！",
-    "playlightDiscoverRewardLog": "试玩游戏奖励：获得 {{amount}} 金币！",
-    "marketingSubscribeLog": "订阅邮件更新奖励：获得 {{amount}} 金币！",
+    "playlightDiscoverRewardLog": "试玩游戏奖励：获得 {{amount}} 黄金！",
+    "marketingSubscribeLog": "订阅邮件更新奖励：获得 {{amount}} 黄金！",
     "followRewardLog": "关注 {{platform}} 获得 {{amount}} 黄金！",
     "subscribeRewardLog": "订阅 {{platform}} 获得 {{amount}} 黄金！",
     "platforms": {
@@ -72,7 +66,7 @@
     }
   },
   "referral": {
-    "invitedLog": "你邀请了新朋友来到这个世界！+{{amount}} 金币"
+    "invitedLog": "你邀请了新朋友来到这个世界！+{{amount}} 黄金"
   },
   "invite": {
     "button": "邀请",
@@ -106,7 +100,7 @@
       "success": "投资成功几率。",
       "profit": "成功时的利润。",
       "lucky": "成功时利润乘以 {{multiplier}} 的几率。",
-      "loss": "失败时损失的金币。",
+      "loss": "失败时损失的黄金。",
       "wait": "每次投资后，需要 20 分钟才会出现新方案。"
     }
   },
@@ -133,37 +127,13 @@
     "noRoll": "不掷",
     "youWin": "你赢了",
     "youLose": "你输了",
-    "practiceOutcome": "练习局，不涉及金币输赢。",
+    "practiceOutcome": "练习局，不涉及黄金输赢。",
     "goldWon": "+{{amount}} 黄金",
     "goldLost": "-{{amount}} 黄金",
-    "practiceWinRemaining": "你赢得了练习局（不涉及金币）。剩余 {{remaining}}/{{total}} 局练习。",
-    "practiceLoseRemaining": "你输掉了练习局（不涉及金币）。剩余 {{remaining}}/{{total}} 局练习。",
-    "practiceWinComplete": "你赢得了练习局（不涉及金币）。练习完成，现在可以下注金币。",
-    "practiceLoseComplete": "你输掉了练习局（不涉及金币）。练习完成，现在可以下注金币。"
-  },
-  "fullGame": {
-    "titleTrial": "旅程继续",
-    "titleCheckout": "完成购买",
-    "trialDesc": "你已到达试玩版终点，完整旅程在前方等待。",
-    "oneTimePurchase": "一次性购买，无订阅，无额外收费。",
-    "featureHours": "14+ 小时游戏内容",
-    "featureStructures": "100+ 建筑",
-    "featureItems": "250+ 物品、同伴、书籍、祝福……",
-    "featureAchievements": "50+ 成就",
-    "featureStory": "基于你的选择的黑暗挑战故事",
-    "signInRequired": "请登录以购买完整版。",
-    "continueJourney": "继续旅程",
-    "progressSaved": "进度已保存，你可随时回来继续。",
-    "loadingPayment": "正在加载支付系统……",
-    "purchaseSuccessful": "购买完成。",
-    "purchaseSuccessfulDesc": "完整版已解锁并激活！你现在可以不受限制地继续旅程。",
-    "legalConsent": "购买后即可立即访问数字内容。",
-    "termsOfService": "条款",
-    "rightOfWithdrawal": "撤回",
-    "completePurchaseFor": "完成购买 {{price}}",
-    "paymentFailed": "支付失败",
-    "notAuthenticated": "你尚未登录",
-    "unexpectedError": "出了点问题。"
+    "practiceWinRemaining": "你赢得了练习局（不涉及黄金）。剩余 {{remaining}}/{{total}} 局练习。",
+    "practiceLoseRemaining": "你输掉了练习局（不涉及黄金）。剩余 {{remaining}}/{{total}} 局练习。",
+    "practiceWinComplete": "你赢得了练习局（不涉及黄金）。练习完成，现在可以下注黄金。",
+    "practiceLoseComplete": "你输掉了练习局（不涉及黄金）。练习完成，现在可以下注黄金。"
   },
   "leaderboard": {
     "title": "排行榜",
@@ -210,17 +180,14 @@
     "buy": "购买",
     "sell": "出售",
     "sayGoodbye": "告别",
-    "successChance": "成功几率：{{percent}}",
     "discount": "折扣 {{percent}}%",
     "discountFromKnowledge": "知识 {{percent}}%{{max}}",
     "knowledgeMax": "（上限）",
     "discountFromRing": "顺从之戒 5%",
-    "prolongForInsight": "消耗 {{cost}} {{resource}} 延长 {{minutes}} 分钟",
-    "buyGold": "购买金币"
+    "prolongForInsight": "消耗 {{cost}} {{resource}} 延长 {{minutes}} 分钟"
   },
   "share": {
-    "title": "分享进度",
-    "description": "保存或分享一张游戏进度图片。",
+    "title": "查看进度",
     "resources": "资源：{{percent}} %",
     "achievements": "成就：{{percent}} %",
     "killedCreatures": "击杀生物",
@@ -235,7 +202,6 @@
     "copiedTitle": "已复制到剪贴板",
     "copyErrorTitle": "无法复制图片",
     "copyErrorDesc": "复制到剪贴板时出现问题。",
-    "generating": "生成中…",
     "share": "分享",
     "errorTitle": "无法创建图片",
     "errorDesc": "生成图片时出现问题。"
@@ -247,7 +213,6 @@
     "contactVia": "你也可以通过以下方式联系我：",
     "reddit": "Reddit",
     "instagram": "Instagram",
-    "steam": "Steam",
     "email": "邮箱"
   },
   "galaxy": {
@@ -257,7 +222,6 @@
     "feedbackButton": "反馈",
     "startNewGameButton": "开始新游戏",
     "seeWhatsNextButton": "看看即将到来的内容",
-    "releaseNote": "计划发售：2026 年 10 月 27 日",
     "storeHeaderLink": "加入愿望单",
     "storeHeaderTooltip": "将完整版加入 Steam 愿望单"
   }

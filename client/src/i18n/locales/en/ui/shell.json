@@ -43,7 +43,6 @@
     "reload": "Reload game"
   },
   "footer": {
-    "fullGame": "Full Game",
     "trader": "Trader",
     "openShop": "Open Shop",
     "donate": "Support",
@@ -73,25 +72,15 @@
   "profile": {
     "title": "Menu",
     "signInUp": "Sign In/Up",
-    "emailsOn": "Emails On",
-    "emailsOff": "Emails Off",
-    "marketingOnTooltip": "You are currently receiving emails with updates, discounts, and exclusive rewards. Tap to turn off.",
-    "marketingOffTooltip": "You are currently not receiving emails with updates, discounts, and exclusive rewards. Tap to turn on.",
     "save": "Save",
     "newGame": "New Game",
-    "restart": "Restart",
-    "signIn": "Sign In",
     "signOut": "Sign Out",
     "leaderboard": "Leaderboard",
     "rewards": "Rewards",
     "deleteAccount": "Delete Account",
-    "marketingSubscribe": "Subscribe to emails",
-    "marketingUnsubscribe": "Unsubscribe from emails",
     "autoSaveSignedIn": "Game auto-saves every minute",
     "autoSaveGuest": "Game auto-saves every 15 seconds",
     "signUpCloudSave": "Sign up to save game in the cloud",
-    "autoSaveSteam": "Game auto-saves every 15 seconds",
-    "steamCloudSave": "Progress syncs to Steam Cloud when you save.",
     "lastSave": "Last Save: {{time}}",
     "signedOut": "Signed out successfully",
     "signOutError": "Error signing out",
@@ -118,9 +107,5 @@
   },
   "villageHotkeyTutorial": {
     "dismiss": "Dismiss"
-  },
-  "demoTabs": {
-    "notYetUnlocked": "Not yet unlocked."
-  },
-  "never": "Never"
+  }
 }

@@ -30,10 +30,8 @@
     "presetApply": "Vorlage {{slot}} anwenden",
     "presetEmpty": "Vorlage {{slot}} ist leer: wähle sie aus und speichere dann deine aktuellen Jobs",
     "presetLocked": "Gesperrt: zum Freischalten kaufbar",
-    "presetLockedBuilding": "{{building}} zum Freischalten erforderlich", //x1.4
     "presetSave": "Aktuelle Jobs in Vorlage {{slot}} speichern",
     "presetSlotsPurchase": "2 weitere Vorlagen-Slots hinzufügen", //x1.5
-    "queueSlotsPurchase": "2 weitere Bauwarteschlangen-Slots hinzufügen", //x1.3
     "presetUnlock": "Job-Vorlage für {{cost}} Einsicht freischalten",
     "queueSlotUnlock": "Bauwarteschlange für {{cost}} Einsicht freischalten",
     "queueSlotUsed": "Warteschlange {{slot}}: Bau in Arbeit",
@@ -55,7 +53,7 @@
     "fromGreatFeast": "{{percent}} % durch großes Fest",
     "merchantBlocked": "Der Händler kann nicht gerufen werden, solange ein anderes Ereignis aktiv ist", //x1.4
     "merchantAvailableIn": "Verfügbar in {{time}}",
-    "merchantAbortCall": "Anruf abbrechen", //x1.4
+    "merchantAbortCall": "Abruf abbrechen", //x1.4
     "investCompleteIn": "Investition abgeschlossen in {{time}}",
     "investAvailableIn": "Investition beendet. Nächste Angebote in {{time}}.",
     "investPreparing": "Investitionsangebote werden vorbereitet…", //x1.4
@@ -100,7 +98,6 @@
     "crowsEye": "Krähenauge",
     "maxLevel": "Max. Stufe",
     "improve": "Verbessern",
-    "upkeepPerCycle": "{{amount}} Nahrung Unterhalt pro zugewiesener Aktion pro Zyklus",
     "skillFoodPerHunter": "+{{amount}} Nahrung pro Jäger",
     "skillFurPerHunter": "+{{amount}} Fell pro Jäger",
     "skillBonesPerHunter": "+{{amount}} Knochen pro Jäger",
@@ -173,16 +170,14 @@
   "sidePanel": {
     "bastion": "Bastion",
     "fortress": "Festung",
-    "population": "Bevölkerung",
     "freeVillagers": "Frei",
-    "onExpedition": "Auf Expedition",
     "resources": "Ressourcen",
     "tools": "Werkzeuge",
     "weapons": "Waffen",
     "clothing": "Kleidung",
     "relics": "Relikte",
     "schematics": "Baupläne",
-    "blessings": "Segnungen",
+    "blessings": "Segen",
     "buildings": "Gebäude",
     "books": "Bücher",
     "fellowship": "Gefährten",
@@ -196,10 +191,6 @@
     "constructionTime": "Bauzeit",
     "productionBonus": "Produktionsbonus",
     "doubleGainChance": "Doppelgewinn-Chance",
-    "populationTooltip": "Jeder Dorfbewohner verbraucht 1 Nahrung und 1 Holz",
-    "resourceLimitMax": "max. {{limit}}",
-    "resourceLimitTooltip": "kein Limit für Silber, Gold und Einsicht",
-    "statsTooltip": "Werte beeinflussen den Ausgang von Ereignissen und gewähren spezifische Effekte, die sich im Verlauf enthüllen.",
     "statLuckTooltip": "Beugt das Schicksal zu deinen Gunsten", //x1.5
     "statStrengthTooltip": "Hilft dort, wo Worte an ihre Grenzen stoßen",
     "statKnowledgeTooltip": "Beeinflusst Dinge, bei denen Klugheit hilft",
@@ -230,7 +221,6 @@
     "bastionAttackFromStrength": "{{value}} durch Stärke (50 %)"
   },
   "achievements": {
-    "title": "Notizen des Überlebenden", //x1.5
     "notUnlocked": "Noch nicht freigeschaltet.", //x1.5
     "chartUnavailable": "Diagramm nicht verfügbar", //x1.4
     "claim": "Einfordern",
@@ -245,7 +235,6 @@
     }
   },
   "idleMode": {
-    "title": "Schlafmodus",
     "sleeping": "Schlafen",
     "awake": "Du bist wach!",
     "wakingIn": "Erwachen in: {{time}}",

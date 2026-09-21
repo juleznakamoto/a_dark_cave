@@ -39,7 +39,6 @@
     "recommendedBy": "Consigliato da"
   },
   "footer": {
-    "fullGame": "Gioco Completo",
     "trader": "Mercante",
     "openShop": "Apri Negozio",
     "donate": "Sostieni",
@@ -69,20 +68,12 @@
   "profile": {
     "title": "Menu",
     "signInUp": "Accedi/Registrati",
-    "emailsOn": "Email Attive",
-    "emailsOff": "Email Disattivate",
-    "marketingOnTooltip": "Attualmente ricevi email con aggiornamenti, sconti e ricompense esclusive. Tocca per disattivare.",
-    "marketingOffTooltip": "Attualmente non ricevi email con aggiornamenti, sconti e ricompense esclusive. Tocca per attivare.",
     "save": "Salva",
     "newGame": "Nuova Partita",
-    "restart": "Ricomincia",
-    "signIn": "Accedi",
     "signOut": "Esci",
     "leaderboard": "Classifica",
     "rewards": "Ricompense",
     "deleteAccount": "Elimina Account",
-    "marketingSubscribe": "Iscriviti alle email",
-    "marketingUnsubscribe": "Disiscriviti dalle email",
     "autoSaveSignedIn": "Il gioco si salva automaticamente ogni minuto",
     "autoSaveGuest": "Il gioco si salva automaticamente ogni 15 secondi",
     "signUpCloudSave": "Registrati per salvare la partita nel cloud",
@@ -103,9 +94,7 @@
     "preferenceUpdateFailed": "Impossibile aggiornare la preferenza",
     "enterFullscreen": "Schermo intero",
     "exitFullscreen": "Esci dallo schermo intero",
-    "autoSaveSteam": "Il gioco si salva automaticamente ogni 15 secondi",
-    "steamCloudSave": "I progressi si sincronizzano con Steam Cloud quando salvi.",
-    "cloudSaveFailed": "Salvato su questo dispositivo, ma la sync cloud non è riuscita. L'autosave riproverà."
+    "cloudSaveFailed": "Salvato su questo dispositivo, ma la sincronizzazione cloud non è riuscita. Il salvataggio automatico riproverà."
   },
   "pauseHotkey": {
     "hintPrefix": "Usa ",
@@ -115,10 +104,6 @@
   "villageHotkeyTutorial": {
     "dismiss": "Ignora"
   },
-  "demoTabs": {
-    "notYetUnlocked": "Non ancora sbloccato."
-  },
-  "never": "Mai",
   "errorScreen": {
     "message": "Stiamo scavando più a fondo. Torna presto.",
     "reload": "Ricarica il gioco"

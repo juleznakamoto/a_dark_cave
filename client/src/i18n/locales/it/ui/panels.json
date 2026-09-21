@@ -30,10 +30,8 @@
     "presetApply": "Applica preset {{slot}}",
     "presetEmpty": "Il preset {{slot}} è vuoto: selezionalo, poi salva i lavori attuali",
     "presetLocked": "Bloccato: disponibile per l'acquisto",
-    "presetLockedBuilding": "{{building}} necessario per sbloccare",
     "presetSave": "Salva i lavori attuali nel preset {{slot}}",
     "presetSlotsPurchase": "Aggiungi 2 slot preset in più",
-    "queueSlotsPurchase": "Aggiungi 2 slot coda di costruzione in più",
     "presetUnlock": "Sblocca preset di lavori per {{cost}} Intuizione",
     "queueSlotUnlock": "Sblocca slot coda di costruzione per {{cost}} Intuizione",
     "queueSlotUsed": "Slot {{slot}}: costruzione in corso",
@@ -100,7 +98,6 @@
     "crowsEye": "Occhio del Corvo",
     "maxLevel": "Livello massimo",
     "improve": "Migliora",
-    "upkeepPerCycle": "{{amount}} Cibo di mantenimento per ogni azione assegnata per ciclo",
     "skillFoodPerHunter": "+{{amount}} Cibo per Cacciatore",
     "skillFurPerHunter": "+{{amount}} Pelliccia per Cacciatore",
     "skillBonesPerHunter": "+{{amount}} Ossa per Cacciatore",
@@ -173,9 +170,7 @@
   "sidePanel": {
     "bastion": "Bastione",
     "fortress": "Fortezza",
-    "population": "Popolazione",
     "freeVillagers": "Liberi",
-    "onExpedition": "In Spedizione",
     "resources": "Risorse",
     "tools": "Strumenti",
     "weapons": "Armi",
@@ -196,10 +191,6 @@
     "constructionTime": "Tempo di costruzione",
     "productionBonus": "Bonus di Produzione",
     "doubleGainChance": "Probabilità Guadagno Doppio",
-    "populationTooltip": "Ogni abitante consuma 1 Cibo e 1 Legno",
-    "resourceLimitMax": "max. {{limit}}",
-    "resourceLimitTooltip": "nessun limite su Argento, Oro e Intuizione",
-    "statsTooltip": "Le statistiche influenzano l'esito degli eventi e conferiscono effetti specifici che si rivelano man mano che avanzi.",
     "statLuckTooltip": "Piega il destino a tuo favore",
     "statStrengthTooltip": "Aiuta dove le parole raggiungono il loro limite",
     "statKnowledgeTooltip": "Influenza le situazioni in cui l'astuzia è utile",
@@ -230,7 +221,6 @@
     "bastionAttackFromStrength": "{{value}} dalla Forza (50 %)"
   },
   "achievements": {
-    "title": "Note del Sopravvissuto",
     "notUnlocked": "Non ancora sbloccato.",
     "chartUnavailable": "Grafico non disponibile",
     "claim": "Riscatta",
@@ -245,7 +235,6 @@
     }
   },
   "idleMode": {
-    "title": "Modalità Sonno",
     "sleeping": "Dormendo",
     "awake": "Sei sveglio!",
     "wakingIn": "Risveglio tra: {{time}}",

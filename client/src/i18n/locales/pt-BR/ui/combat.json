@@ -1,6 +1,5 @@
 {
   "combat": {
-    "title": "Combate",
     "skillsTitle": "Habilidades de Combate",
     "fight": "Lutar",
     "fighting": "Lutando...",
@@ -18,7 +17,6 @@
     "crushingStrikeFailed": "Golpe Esmagador falhou",
     "feralHowlFailed": "Uivo Feral falhou",
     "critical": "crítico",
-    "criticalParen": "({{label}})",
     "available": "Disponível: {{current}}/{{max}}",
     "crushingStrike": "Golpe Esmagador",
     "bloodflameSphere": "Esfera de Chama Sangrenta",
@@ -32,7 +30,7 @@
     "missChance": "{{percent}}% de chance de errar (com base em {{stat}})",
     "enemies": {
       "paleCreatures": "Criaturas Pálidas",
-      "paleBeasts": "Bestas pálidas"
+      "paleBeasts": "Bestas Pálidas"
     },
     "restlessKnightWounded": "O Cavaleiro Inquieto está ferido e não pode lutar",
     "elderWizardWounded": "O Mago Ancião está ferido e não pode lançar feitiços",
@@ -44,11 +42,9 @@
     "silverClaimed": "{{amount}} Prata coletada.",
     "goldClaimed": "{{amount}} Ouro coletado.",
     "bossRoundTitle": "Luta de Chefe – Rodada {{round}}",
-    "bossTitle": "Luta de Chefe",
     "healChance": "Chance de cura",
     "stunChance": "Chance de atordoamento",
-    "stunned": "Atordoado",
-    "enemyHealed": "Curado"
+    "stunned": "Atordoado"
   },
   "bastion": {
     "heal": "Curar",
@@ -59,8 +55,6 @@
     "calm": "Está calmo, por enquanto...",
     "soon": "em breve",
     "provoke": "Provocar",
-    "pause": "Pausar",
-    "unpause": "Retomar",
     "postCompletion": "Onda {{waveNumber}}",
     "waves": {
       "firstWave": "Primeira Onda",

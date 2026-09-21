@@ -30,10 +30,8 @@
     "presetApply": "Appliquer le préréglage {{slot}}", //x1.5
     "presetEmpty": "Le préréglage {{slot}} est vide: sélectionnez-le, puis enregistrez vos tâches actuelles", //x1.4
     "presetLocked": "Verrouillé: disponible à l'achat",
-    "presetLockedBuilding": "{{building}} requis pour déverrouiller", //x1.3
     "presetSave": "Enregistrer les tâches actuelles dans le préréglage {{slot}}", //x1.7
     "presetSlotsPurchase": "Ajouter 2 emplacements de préréglage", //x1.6
-    "queueSlotsPurchase": "Ajouter 2 emplacements de file de construction",
     "presetUnlock": "Débloquer un préréglage de métiers pour {{cost}} Perspicacité", //x1.4
     "queueSlotUnlock": "Débloquer un emplacement de file de construction pour {{cost}} Perspicacité", //x1.5
     "queueSlotUsed": "Emplacement {{slot}}: construction en cours",
@@ -71,7 +69,7 @@
       "adamant_miner": "Mineur d'adamantine", //x1.5
       "moonstone_miner": "Mineur de pierre de lune", //x1.6
       "powder_maker": "Fabricant de poudre", //x1.6
-      "ashfire_dust_maker": "Fabricant de poussière de feu cendré", //x2.0
+      "ashfire_dust_maker": "Fabricant de poussière feu-cendre", //x2.0
       "tanner": "Tanneur",
       "scholar": "Érudit"
     }
@@ -100,7 +98,6 @@
     "crowsEye": "Œil du corbeau", //x1.4
     "maxLevel": "Niveau max.", //x1.2
     "improve": "Améliorer",
-    "upkeepPerCycle": "{{amount}} nourriture d'entretien par action assignée par cycle",
     "skillFoodPerHunter": "+{{amount}} nourriture par chasseur", //x1.3
     "skillFurPerHunter": "+{{amount}} fourrure par chasseur", //x1.3
     "skillBonesPerHunter": "+{{amount}} os par chasseur",
@@ -173,9 +170,7 @@
   "sidePanel": {
     "bastion": "Bastion",
     "fortress": "Forteresse",
-    "population": "Population",
     "freeVillagers": "Libres",
-    "onExpedition": "En expédition",
     "resources": "Ressources",
     "tools": "Outils",
     "weapons": "Armes",
@@ -196,10 +191,6 @@
     "constructionTime": "Temps de construction", //x1.2
     "productionBonus": "Bonus de production",
     "doubleGainChance": "Chance de gain double",
-    "populationTooltip": "Chaque villageois consomme 1 nourriture et 1 bois",
-    "resourceLimitMax": "max. {{limit}}",
-    "resourceLimitTooltip": "pas de limite pour l'argent, l'or et la perspicacité", //x1.5
-    "statsTooltip": "Les statistiques influencent l'issue des événements et confèrent des effets spécifiques qui se révèlent au fil de la progression.", //x1.4
     "statLuckTooltip": "Incline la fortune en votre faveur", //x1.4
     "statStrengthTooltip": "Aide là où les mots atteignent leurs limites",
     "statKnowledgeTooltip": "Influence les choses où l'astuce aide",
@@ -230,7 +221,6 @@
     "bastionAttackFromStrength": "{{value}} de la force (50 %)"
   },
   "achievements": {
-    "title": "Notes du survivant",
     "notUnlocked": "Pas encore débloqué.",
     "chartUnavailable": "Graphique indisponible", //x1.3
     "claim": "Récupérer",
@@ -245,7 +235,6 @@
     }
   },
   "idleMode": {
-    "title": "Mode sommeil", //x1.2
     "sleeping": "En train de dormir", //x2.3
     "awake": "Vous êtes réveillé !", //x1.4
     "wakingIn": "Réveil dans : {{time}}",

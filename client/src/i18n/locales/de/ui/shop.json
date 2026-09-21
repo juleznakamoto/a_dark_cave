@@ -2,21 +2,12 @@
   "shop": {
     "title": "Händler",
     "purchase": "Kaufen",
-    "owned": "Im Besitz",
-    "notEnoughGold": "Du hast nicht genug Gold.",
-    "forSale": "Kaufen",
+    "forSale": "Zum Verkauf",
     "forSalePlaythroughNote": "Käufe können in jedem Durchlauf erneut verwendet werden.",
     "purchases": "Käufe",
     "srDescription": "Shop für Gold, Artefakte, Verstärkungen und Pakete",
-    "betaDiscountTitle": "Beta-Rabatte von bis zu {{percent}} % sind derzeit aktiv.",
-    "betaDiscountNote": "Alle Käufe bleiben in zukünftigen Durchläufen und nach dem vollständigen Release verfügbar.",
-    "noPurchasesTitle": "Noch keine Käufe.",
-    "noPurchasesHint": "Besuche den Tab „Kaufen“, um Artikel zu kaufen.",
-    "activatePurchasesTitle": "Aktiviere deine Käufe, um Belohnungen zu erhalten.",
-    "activatePurchasesNote": "Jeder Kauf kann einmal pro Durchlauf aktiviert werden.",
     "highlights": "Empfehlungen",
     "gold": "Gold",
-    "artifacts": "Artefakte",
     "boosts": "Verstärkungen",
     "bundles": "Pakete",
     "mostPopular": "Am beliebtesten", //x1.3
@@ -35,16 +26,11 @@
     "firstPurchaseInsightBannerAfter": "gratis mit deinem ersten Kauf",
     "firstPurchaseInsightCheckoutFree": "gratis",
     "firstPurchaseInsightGranted": "Erstkauf-Geschenk: +{{amount}} {{glyph}} Einsicht",
-    "cruelModeSteamDemoBannerBefore": "Grausamer Modus ist derzeit kostenlos, um den Demo-Launch auf",
-    "cruelModeSteamDemoBannerSteam": "Steam",
-    "cruelModeSteamDemoBannerAfter": " zu feiern.", //x11.0
     "loadingPayment": "Zahlungssystem wird geladen...", //x1.2
     "paymentSrDescription": "Schließe deine Zahlung für {{name}} ab",
     "originalPrice": "Originalpreis",
     "saleDiscount": "Sale-Rabatt",
     "bundleDiscount": "Bundle-Rabatt",
-    "betaDiscount": "Beta-Rabatt",
-    "additionalDiscount": "Zusätzlicher Rabatt",
     "eventDiscount": "Event-Rabatt",
     "total": "Gesamt",
     "legalConsent": "Sofortiger Zugang zu digitalen Inhalten nach dem Kauf.",
@@ -66,30 +52,25 @@
     "freeGoldCooldownLog_one": "Du kannst in {{hours}} Stunde wieder kostenloses Gold abholen.",
     "freeGoldCooldownLog_other": "Du kannst in {{hours}} Stunden wieder kostenloses Gold abholen.",
     "freeItemAdded": "{{name}} wurde deinen Käufen hinzugefügt. Prüfe den Tab „Käufe“, um es zu aktivieren.",
-    "tradersGratitudeDiscount": "20 % zusätzlicher Rabatt durch das Ereignis „Dankbarkeit des Händlers“",
-    "tradersSonDiscount": "15 % zusätzlicher Rabatt durch das Ereignis „Sohn des Händlers“.",
-    "playlightDiscount": "10 % zusätzlicher Rabatt auf deinen ersten Echtgeld-Kauf als Playlight-Spieler.",
+    "tradersGratitudeDiscount": "{{percent}} % zusätzlicher Rabatt durch das Ereignis „Dankbarkeit des Händlers“",
+    "tradersSonDiscount": "{{percent}} % zusätzlicher Rabatt durch das Ereignis „Sohn des Händlers“.",
     "journeyCompleteDiscount": "Sonderrabatt für den Abschluss des Spiels",
     "artifactSkullLantern": {
-      "title": "Schädellaterne",
       "unlocksStoryline": "Schaltet die Schädellaternenhandlung frei", //x1.3
       "caveExplore": "Höhlenerkundung: +150 % Bonus, -3 s Abklingzeit",
       "mining": "Abbau: +150 % Bonus, -3s Abklingzeit"
     },
     "artifactTarnishedCompass": {
-      "title": "Angelaufener Kompass",
       "unlocksStoryline": "Schaltet die Kompasshandlung frei", //x1.3
       "doubleGain": "5 % Chance, Aktionsgewinne zu verdoppeln",
       "luck": "+5 Glück"
     },
     "artifactCrowHarness": {
-      "title": "Einäugige Krähe",
       "unlocksStoryline": "Schaltet die Krähenhandlung frei", //x1.5
       "doubleGain": "bis zu 10 % Chance, Aktionsgewinne zu verdoppeln",
       "addsFellowshipMember": "Fügt einen Gefährten hinzu"
     },
     "cruelMode": {
-      "title": "Grausamer Modus", //x1.5
       "moreEvents": "Mehr Ereignisse", //x1.4
       "moreItems": "Mehr Gegenstände", //x1.6
       "strongerEnemies": "Stärkere Feinde",
@@ -104,7 +85,6 @@
     "alreadyClaimedItemLog": "Du hast {{name}} bereits abgeholt.",
     "claimFailedLog": "{{name}} konnte nicht abgeholt werden. Bitte versuche es erneut.", //x1.5
     "activatedDefaultLog": "{{name}} aktiviert! Belohnungen wurden deinem Inventar hinzugefügt.",
-    "noCardDataStored": "Keine Kartendaten werden auf unseren Servern gespeichert.", //x1.5
     "securePaymentVia": "Sichere Zahlung über",
     "securePaymentWith": "mit",
     "securePurchaseTitle": "Kauf sichern",

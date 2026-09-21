@@ -2,15 +2,8 @@
   "buttons": {
     "close": "Fechar",
     "continue": "Continuar",
-    "confirm": "Confirmar",
     "cancel": "Cancelar",
     "save": "Salvar",
-    "refresh": "Atualizar",
-    "dismiss": "Dispensar",
-    "fight": "Lutar",
-    "refuse": "Recusar",
-    "accept": "Aceitar",
-    "back": "Voltar",
     "claim": "Resgatar",
     "activate": "Ativar",
     "deactivate": "Desativar"
@@ -33,7 +26,6 @@
     "bastion": "Bastião",
     "fortress": "Fortaleza",
     "trader": "Mercador",
-    "achievements": "Conquistas",
     "timedEvent": "Evento"
   },
   "resources": {
@@ -75,15 +67,9 @@
     "defense": "Defesa",
     "integrity": "Integridade"
   },
-  "time": {
-    "never": "Nunca",
-    "hoursMinutes": "{{hours}}h {{minutes}}m",
-    "minutesSeconds": "{{minutes}}m {{seconds}}s"
-  },
   "population": {
     "villager_one": "{{count}} Aldeão",
-    "villager_other": "{{count}} Aldeões",
-    "maxPopulation": "+{{count}} de População Máx."
+    "villager_other": "{{count}} Aldeões"
   },
   "currency": {
     "goldAmount": "{{amount}} Ouro"

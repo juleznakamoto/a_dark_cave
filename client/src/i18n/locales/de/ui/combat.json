@@ -1,13 +1,11 @@
 {
   "combat": {
-    "title": "Kampf",
     "skillsTitle": "Kampffähigkeiten", //ok
     "fight": "Kämpfen",
     "fighting": "Kämpft...",
     "startFight": "Kampf starten", //ok
-    "roundTitle": "Kampf – Runde {{round}}",
-    "bossRoundTitle": "Bosskampf – Runde {{round}}",
-    "bossTitle": "Bosskampf",
+    "roundTitle": "Kampf - Runde {{round}}",
+    "bossRoundTitle": "Bosskampf - Runde {{round}}",
     "youLost": "Du verlierst", //ok
     "youWin": "Du gewinnst", //ok
     "bastion": "Bastion",
@@ -19,12 +17,10 @@
     "healChance": "Heilchance",
     "stunChance": "Betäubungschance", //x1.5
     "stunned": "Betäubt",
-    "enemyHealed": "Geheilt",
     "attackFailed": "Angriff gescheitert", //ok
-    "crushingStrikeFailed": "Fähigkeit gescheitert",
+    "crushingStrikeFailed": "Schmetterschlag fehlgeschlagen",
     "feralHowlFailed": "Wildes Heulen fehlgeschlagen", //x1.6
     "critical": "kritisch",
-    "criticalParen": "({{label}})",
     "available": "Verfügbar: {{current}}/{{max}}",
     "crushingStrike": "Schmetterschlag",
     "bloodflameSphere": "Blutflammensphäre",
@@ -45,7 +41,7 @@
     "noCasualties": "Kein Dorfbewohner starb.", //ok
     "oneCasualty": "1 Dorfbewohner starb.", //ok
     "manyCasualties": "{{count}} Dorfbewohner starben.", //ok
-    "fellowInjured": "{{name}} wurde verletzt.",
+    "fellowInjured": "{{name}} wurde verwundet.",
     "buildingDamaged": "{{name}} wurde beschädigt.", //ok
     "silverClaimed": "{{amount}} Silber erhalten.",
     "goldClaimed": "{{amount}} Gold erhalten."
@@ -59,8 +55,6 @@
     "calm": "Es ist ruhig, vorerst…",
     "soon": "bald",
     "provoke": "Provozieren", //ok
-    "pause": "Pause",
-    "unpause": "Fortsetzen",
     "postCompletion": "Welle {{waveNumber}}",
     "waves": {
       "firstWave": "Erste Welle",

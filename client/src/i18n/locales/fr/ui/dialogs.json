@@ -1,8 +1,6 @@
 {
   "event": {
     "fallbackTitle": "Événement",
-    "choose": "Choisissez une option", //x1.3
-    "timeRemaining": "Temps restant : {{seconds}} s",
     "knowledgeTimeBonus": "+{{seconds}}s de temps de décision grâce au Savoir{{maxSuffix}}",
     "knowledgeTimeBonusMax": " (max.)",
     "successChance": "Chance de réussite : {{percent}}%",
@@ -12,8 +10,6 @@
     "influencedBy": "Influencé par :"
   },
   "reward": {
-    "title": "Récompense",
-    "loss": "Perte",
     "actionReward": "Récompense d'action", //x1.5
     "claimRewards": "Récupérer les récompenses" //x1.9
   },
@@ -27,7 +23,6 @@
   },
   "blessingOffer": {
     "title": "Choisissez une bénédiction",
-    "srDescription": "Sélectionnez l'une des bénédictions proposées",
     "chooseBlessing": "Choisir"
   },
   "socialPrompt": {
@@ -48,7 +43,6 @@
     "progressComplete": "Vous avez terminé toutes les tâches. Vous recevrez bientôt votre récompense.",
     "tasksRemaining_one": "1 tâche restante",
     "tasksRemaining_other": "{{count}} tâches restantes",
-    "progressToward": "Récompense exclusive :", //x1.3
     "exclusiveRewardEffect": "{{percent}} % de chance de doubler les gains d'actions",
     "progressAriaLabel": "Récompense exclusive", //x1.3
     "alreadyClaimedReward": "Vous avez déjà récupéré cette récompense !",
@@ -81,7 +75,7 @@
     "linkCopied": "Lien d'invitation copié !", //x1.3
     "linkCopiedDesc": "Partagez-le avec des amis pour gagner {{amount}} or chacun.",
     "copyFailed": "Impossible de copier le lien d'invitation", //x1.6
-    "copyFailedNotSignedIn": "Connecte-toi pour copier ton lien d'invitation", //x1.4
+    "copyFailedNotSignedIn": "Connectez-vous pour copier votre lien d'invitation", //x1.4
     "tooltip": "<bold>Invitez vos amis</bold> - vous recevrez tous les deux {{amount}} or. Vous pouvez inviter jusqu'à {{cap}} amis. ({{count}}/{{cap}} invités)."
   },
   "invest": {
@@ -141,30 +135,6 @@
     "practiceWinComplete": "Vous avez gagné la manche d'entraînement (sans mise d'or). Entraînement terminé - vous pouvez miser de l'or.",
     "practiceLoseComplete": "Vous avez perdu la manche d'entraînement (sans mise d'or). Entraînement terminé - vous pouvez miser de l'or."
   },
-  "fullGame": {
-    "titleTrial": "Le voyage continue",
-    "titleCheckout": "Finaliser votre achat",
-    "trialDesc": "Vous avez atteint la fin de la version d'essai. Le voyage complet vous attend au-delà de ce point.",
-    "oneTimePurchase": "Achat unique. Pas d'abonnement. Pas de frais supplémentaires.",
-    "featureHours": "14+ heures de jeu",
-    "featureStructures": "100+ structures",
-    "featureItems": "250+ objets, compagnons, livres, bénédictions…",
-    "featureAchievements": "50+ succès",
-    "featureStory": "Histoire sombre et exigeante selon vos choix",
-    "signInRequired": "Veuillez vous connecter pour acheter le jeu complet.",
-    "continueJourney": "Poursuivre le voyage",
-    "progressSaved": "Votre progression est sauvegardée. Vous pouvez revenir à tout moment et reprendre où vous vous êtes arrêté.",
-    "loadingPayment": "Chargement du système de paiement…", //x1.4
-    "purchaseSuccessful": "Achat terminé.",
-    "purchaseSuccessfulDesc": "Jeu complet débloqué et activé ! Vous pouvez poursuivre votre voyage sans restrictions.",
-    "legalConsent": "Accès immédiat au contenu numérique après l'achat.",
-    "termsOfService": "Conditions",
-    "rightOfWithdrawal": "Rétractation", //x1.2
-    "completePurchaseFor": "Finaliser l'achat pour {{price}}",
-    "paymentFailed": "Paiement échoué",
-    "notAuthenticated": "Vous n'êtes pas connecté", //x1.2
-    "unexpectedError": "Quelque chose s'est mal passé."
-  },
   "leaderboard": {
     "title": "Classement",
     "dev": "Dev",
@@ -210,17 +180,14 @@
     "buy": "Acheter",
     "sell": "Vendre",
     "sayGoodbye": "Dire au revoir", //x1.3
-    "successChance": "Chance de succès : {{percent}}",
     "discount": "{{percent}} % de réduction", //x1.2
     "discountFromKnowledge": "{{percent}} % grâce au Savoir{{max}}",
     "knowledgeMax": " (max.)",
     "discountFromRing": "5 % grâce à l'Anneau d'obéissance",
-    "prolongForInsight": "Prolonger le temps de {{minutes}} min pour {{cost}} {{resource}}",
-    "buyGold": "Acheter de l'or" //x1.9
+    "prolongForInsight": "Prolonger le temps de {{minutes}} min pour {{cost}} {{resource}}"
   },
   "share": {
-    "title": "Partager votre progression", //x1.5
-    "description": "Enregistrez ou partagez une image de votre progression dans le jeu.", //x1.5
+    "title": "Voir votre progression", //x1.5
     "resources": "Ressources : {{percent}} %",
     "achievements": "Succès : {{percent}} %",
     "killedCreatures": "Créatures tuées",
@@ -235,7 +202,6 @@
     "copiedTitle": "Copié dans le presse-papiers", //x1.5
     "copyErrorTitle": "Impossible de copier l'image", //x1.4
     "copyErrorDesc": "Une erreur s'est produite lors de la copie dans le presse-papiers.",
-    "generating": "Génération…",
     "share": "Partager",
     "errorTitle": "Impossible de créer l'image", //x1.2
     "errorDesc": "Une erreur s'est produite lors de la génération de l'image."
@@ -247,7 +213,6 @@
     "contactVia": "Vous pouvez aussi me contacter via :",
     "reddit": "Reddit",
     "instagram": "Instagram",
-    "steam": "Steam",
     "email": "E-mail"
   },
   "galaxy": {
@@ -257,7 +222,6 @@
     "feedbackButton": "Commentaires",
     "startNewGameButton": "Nouvelle partie",
     "seeWhatsNextButton": "Voir ce qui vient",
-    "releaseNote": "Sortie prévue : 27 octobre 2026",
     "storeHeaderLink": "Liste de souhaits",
     "storeHeaderTooltip": "Ajouter le jeu complet à la liste de souhaits Steam"
   }

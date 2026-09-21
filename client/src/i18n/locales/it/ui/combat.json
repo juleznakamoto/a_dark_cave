@@ -1,6 +1,5 @@
 {
   "combat": {
-    "title": "Combattimento",
     "skillsTitle": "Abilità di Combattimento",
     "fight": "Combatti",
     "fighting": "Combattimento...",
@@ -18,7 +17,6 @@
     "crushingStrikeFailed": "Colpo Devastante fallito",
     "feralHowlFailed": "Ululato ferale fallito",
     "critical": "critico",
-    "criticalParen": "({{label}})",
     "available": "Disponibili: {{current}}/{{max}}",
     "crushingStrike": "Colpo Devastante",
     "bloodflameSphere": "Sfera di Fiammasangue",
@@ -43,12 +41,10 @@
     "buildingDamaged": "{{name}} è stato danneggiato.",
     "silverClaimed": "{{amount}} Argento ottenuto.",
     "goldClaimed": "{{amount}} Oro ottenuto.",
-    "bossRoundTitle": "Scontro col Boss – Round {{round}}",
-    "bossTitle": "Scontro col Boss",
+    "bossRoundTitle": "Scontro col Boss - Round {{round}}",
     "healChance": "Probabilità di cura",
     "stunChance": "Probabilità di stordimento",
-    "stunned": "Stordito",
-    "enemyHealed": "Curato"
+    "stunned": "Stordito"
   },
   "bastion": {
     "heal": "Cura",
@@ -59,8 +55,6 @@
     "calm": "È tutto calmo, per ora...",
     "soon": "presto",
     "provoke": "Provoca",
-    "pause": "Pausa",
-    "unpause": "Riprendi",
     "postCompletion": "Ondata {{waveNumber}}",
     "waves": {
       "firstWave": "Prima Ondata",

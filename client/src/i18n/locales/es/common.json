@@ -2,15 +2,8 @@
   "buttons": {
     "close": "Cerrar",
     "continue": "Continuar",
-    "confirm": "Confirmar",
     "cancel": "Cancelar",
     "save": "Guardar",
-    "refresh": "Actualizar",
-    "dismiss": "Descartar",
-    "fight": "Luchar",
-    "refuse": "Rechazar",
-    "accept": "Aceptar",
-    "back": "Volver",
     "claim": "Reclamar",
     "activate": "Activar",
     "deactivate": "Desactivar"
@@ -33,7 +26,6 @@
     "bastion": "Bastión",
     "fortress": "Fortaleza",
     "trader": "Mercader",
-    "achievements": "Logros",
     "timedEvent": "Evento cronometrado"
   },
   "resources": {
@@ -75,15 +67,9 @@
     "defense": "Defensa",
     "integrity": "Integridad"
   },
-  "time": {
-    "never": "Nunca",
-    "hoursMinutes": "{{hours}} h {{minutes}} min",
-    "minutesSeconds": "{{minutes}} min {{seconds}} s"
-  },
   "population": {
     "villager_one": "{{count}} aldeano",
-    "villager_other": "{{count}} aldeanos",
-    "maxPopulation": "+{{count}} población máxima"
+    "villager_other": "{{count}} aldeanos"
   },
   "currency": {
     "goldAmount": "{{amount}} de oro"

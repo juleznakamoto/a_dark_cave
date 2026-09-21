@@ -1,6 +1,6 @@
 {
   "endScreen": {
-    "pageTitle": "Путешествие завершено - Тёмная пещера",
+    "pageTitle": "Путешествие завершено - A Dark Cave",
     "trustBadge": "Отлично!",
     "headline1": "Ваше путешествие заканчивается здесь",
     "headline2": "",
@@ -12,7 +12,6 @@
     "cruelModeComingSoon": "Скоро",
     "feedback": "Отзыв",
     "feedbackBlurb": "Заметили ошибки или проблемы с переводом, или есть предложения? Буду рад вашему отзыву.",
-    "wishlistOnSteam": "Добавить в список желаемого Steam", //x1.9
     "buyMeACoffee": "Поддержать",
     "continuePlaying": "Продолжить игру",
     "moreGames": "Больше игр",

@@ -1,8 +1,6 @@
 {
   "event": {
     "fallbackTitle": "Event",
-    "choose": "Choose an option",
-    "timeRemaining": "Time remaining: {{seconds}}s",
     "knowledgeTimeBonus": "+{{seconds}}s Decision Time due to Knowledge{{maxSuffix}}",
     "knowledgeTimeBonusMax": " (max)",
     "successChance": "Success Chance: {{percent}}%",
@@ -12,8 +10,6 @@
     "influencedBy": "Influenced by:"
   },
   "reward": {
-    "title": "Reward",
-    "loss": "Loss",
     "actionReward": "Action Reward",
     "claimRewards": "Claim Rewards"
   },
@@ -27,7 +23,6 @@
   },
   "blessingOffer": {
     "title": "Choose a Blessing",
-    "srDescription": "Select one of the offered blessings",
     "chooseBlessing": "Choose"
   },
   "socialPrompt": {
@@ -48,7 +43,6 @@
     "progressComplete": "You have finished all tasks. You will soon receive your reward.",
     "tasksRemaining_one": "1 task remaining",
     "tasksRemaining_other": "{{count}} tasks remaining",
-    "progressToward": "Exclusive Reward:",
     "exclusiveRewardEffect": "{{percent}}% chance to double action gains",
     "progressAriaLabel": "Exclusive reward",
     "alreadyClaimedReward": "You've already claimed this reward!",
@@ -141,30 +135,6 @@
     "practiceWinComplete": "You won the practice round (no Gold at stake). Practice complete. You may place a Gold wager.",
     "practiceLoseComplete": "You lost the practice round (no Gold at stake). Practice complete. You may place a Gold wager."
   },
-  "fullGame": {
-    "titleTrial": "The Journey Continues",
-    "titleCheckout": "Complete Your Purchase",
-    "trialDesc": "You have reached the end of the trial. The full journey awaits beyond this point.",
-    "oneTimePurchase": "One-time purchase. No subscriptions. No extra charges.",
-    "featureHours": "14+ hours of gameplay",
-    "featureStructures": "100+ structures",
-    "featureItems": "250+ items, fellowship members, books, blessings...",
-    "featureAchievements": "50+ achievements",
-    "featureStory": "Dark and challenging story based on your choices",
-    "signInRequired": "Please sign in to purchase the Full Game.",
-    "continueJourney": "Continue the Journey",
-    "progressSaved": "Your progress is saved. You can return at any time and continue where you left off.",
-    "loadingPayment": "Loading payment system...",
-    "purchaseSuccessful": "Purchase complete.",
-    "purchaseSuccessfulDesc": "Full Game unlocked and activated! You can now continue your journey without restrictions.",
-    "legalConsent": "Instant access to digital content after purchase.",
-    "termsOfService": "Terms",
-    "rightOfWithdrawal": "Withdrawal",
-    "completePurchaseFor": "Complete Purchase for {{price}}",
-    "paymentFailed": "Payment failed",
-    "notAuthenticated": "You are not signed in",
-    "unexpectedError": "Something went wrong."
-  },
   "leaderboard": {
     "title": "Leaderboard",
     "dev": "Dev",
@@ -210,17 +180,14 @@
     "buy": "Buy",
     "sell": "Sell",
     "sayGoodbye": "Say Goodbye",
-    "successChance": "Success Chance: {{percent}}",
     "discount": "{{percent}}% discount",
     "discountFromKnowledge": "{{percent}}% from Knowledge{{max}}",
     "knowledgeMax": " (max)",
     "discountFromRing": "5% from Ring of Obedience",
-    "prolongForInsight": "Extend time by {{minutes}} min for {{cost}} {{resource}}",
-    "buyGold": "Buy Gold"
+    "prolongForInsight": "Extend time by {{minutes}} min for {{cost}} {{resource}}"
   },
   "share": {
     "title": "See your progress",
-    "description": "Save or share an image of your game progress.",
     "resources": "Resources: {{percent}} %",
     "achievements": "Achievements: {{percent}} %",
     "killedCreatures": "Killed Creatures",
@@ -235,7 +202,6 @@
     "copiedTitle": "Copied to clipboard",
     "copyErrorTitle": "Could not copy image",
     "copyErrorDesc": "Something went wrong while copying to the clipboard.",
-    "generating": "Generating…",
     "share": "Share",
     "errorTitle": "Could not create image",
     "errorDesc": "Something went wrong while generating the image."
@@ -247,7 +213,6 @@
     "contactVia": "You can also contact me via:",
     "reddit": "Reddit",
     "instagram": "Instagram",
-    "steam": "Steam",
     "email": "Email"
   },
   "galaxy": {
@@ -258,7 +223,6 @@
     "wishlistButton": "Add to wishlist",
     "feedbackButton": "Feedback",
     "startNewGameButton": "Start New Game",
-    "seeWhatsNextButton": "See what's coming",
-    "releaseNote": "Planned release: 27 October 2026"
+    "seeWhatsNextButton": "See what's coming"
   }
 }

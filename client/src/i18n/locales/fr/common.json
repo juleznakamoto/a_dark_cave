@@ -2,15 +2,8 @@
   "buttons": {
     "close": "Fermer",
     "continue": "Continuer",
-    "confirm": "Confirmer",
     "cancel": "Annuler",
     "save": "Sauvegarder",
-    "refresh": "Actualiser",
-    "dismiss": "Ignorer",
-    "fight": "Combattre",
-    "refuse": "Refuser",
-    "accept": "Accepter",
-    "back": "Retour",
     "claim": "Récupérer",
     "activate": "Activer",
     "deactivate": "Désactiver"
@@ -33,7 +26,6 @@
     "bastion": "Bastion",
     "fortress": "Forteresse",
     "trader": "Marchand",
-    "achievements": "Succès",
     "timedEvent": "Événement chronométré"
   },
   "resources": {
@@ -57,9 +49,9 @@
     "black_powder": "Poudre noire",
     "ember_bomb": "Bombe de braise",
     "ashfire_dust": "Poussière feu-cendre",
-    "ashfire_bomb": "Bombe de feu cendré",
+    "ashfire_bomb": "Bombe feu-cendre",
     "void_bomb": "Bombe du néant",
-    "veinfire_elixir": "Élixir de feu-veine",
+    "veinfire_elixir": "Élixir feu-veine",
     "poison_arrows": "Flèches empoisonnées",
     "torch": "Torche",
     "silver": "Argent",
@@ -75,15 +67,9 @@
     "defense": "Défense",
     "integrity": "Intégrité"
   },
-  "time": {
-    "never": "Jamais",
-    "hoursMinutes": "{{hours}} h {{minutes}} min",
-    "minutesSeconds": "{{minutes}} min {{seconds}} s"
-  },
   "population": {
     "villager_one": "{{count}} villageois",
-    "villager_other": "{{count}} villageois",
-    "maxPopulation": "+{{count}} population max."
+    "villager_other": "{{count}} villageois"
   },
   "currency": {
     "goldAmount": "{{amount}} or"

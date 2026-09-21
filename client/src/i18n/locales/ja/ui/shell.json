@@ -43,7 +43,6 @@
     "reload": "ゲームを再読み込み"
   },
   "footer": {
-    "fullGame": "製品版",
     "trader": "商人",
     "openShop": "店を開く",
     "donate": "支援",
@@ -55,7 +54,7 @@
     "imprint": "運営者情報",
     "contact": "お問い合わせ",
     "feedback": "フィードバック",
-    "openFeedback": "フィードバック用紙を開く",
+    "openFeedback": "フィードバックフォームを開く",
     "pauseGame": "ゲームを一時停止",
     "resumeGame": "ゲームを再開",
     "muteMusic": "環境音を消す",
@@ -73,25 +72,15 @@
   "profile": {
     "title": "メニュー",
     "signInUp": "ログイン/登録",
-    "emailsOn": "メール受信中",
-    "emailsOff": "メール停止中",
-    "marketingOnTooltip": "更新、割引、限定報酬のメールを受け取っています。タップでオフにします。",
-    "marketingOffTooltip": "更新、割引、限定報酬のメールを受け取っていません。タップでオンにします。",
     "save": "保存",
     "newGame": "新しいゲーム",
-    "restart": "やり直す",
-    "signIn": "ログイン",
     "signOut": "ログアウト",
     "leaderboard": "ランキング",
     "rewards": "報酬",
     "deleteAccount": "アカウントを削除",
-    "marketingSubscribe": "メールを購読",
-    "marketingUnsubscribe": "メールの購読を解除",
     "autoSaveSignedIn": "ゲームは1分ごとに自動保存される",
     "autoSaveGuest": "ゲームは15秒ごとに自動保存される",
     "signUpCloudSave": "登録すると、ゲームをクラウドに保存できる",
-    "autoSaveSteam": "ゲームは15秒ごとに自動保存される",
-    "steamCloudSave": "保存すると、進捗はSteamクラウドに同期される。",
     "lastSave": "前回の保存：{{time}}",
     "signedOut": "ログアウトしました",
     "signOutError": "ログアウトに失敗しました",
@@ -118,9 +107,5 @@
   },
   "villageHotkeyTutorial": {
     "dismiss": "閉じる"
-  },
-  "demoTabs": {
-    "notYetUnlocked": "まだ解除されていない。"
-  },
-  "never": "未保存"
+  }
 }

@@ -32,14 +32,13 @@
     "seeNormal": "Você mal distingue as formas ao seu redor.",
     "seeCruel": "Você mal enxerga qualquer coisa ao seu redor.",
     "makeFire": "Acender Fogo",
-    "demoContinueTitle": "Um save da Demo foi encontrado.",
+    "demoContinueTitle": "Um salvamento da Demo foi encontrado.",
     "demoContinueDescription": "Quer continuar sua jornada ou começar uma nova?",
     "demoContinueJourney": "Continuar sua jornada",
     "demoStartNewJourney": "Começar uma nova jornada",
     "recommendedBy": "Recomendado por"
   },
   "footer": {
-    "fullGame": "Jogo Completo",
     "trader": "Mercador",
     "openShop": "Abrir Loja",
     "donate": "Apoiar",
@@ -69,20 +68,12 @@
   "profile": {
     "title": "Menu",
     "signInUp": "Entrar/Cadastrar",
-    "emailsOn": "E-mails Ativados",
-    "emailsOff": "E-mails Desativados",
-    "marketingOnTooltip": "Você está recebendo e-mails com novidades, descontos e recompensas exclusivas. Toque para desativar.",
-    "marketingOffTooltip": "Você não está recebendo e-mails com novidades, descontos e recompensas exclusivas. Toque para ativar.",
     "save": "Salvar",
     "newGame": "Novo Jogo",
-    "restart": "Reiniciar",
-    "signIn": "Entrar",
     "signOut": "Sair",
     "leaderboard": "Classificação",
     "rewards": "Recompensas",
     "deleteAccount": "Excluir Conta",
-    "marketingSubscribe": "Inscrever-se nos e-mails",
-    "marketingUnsubscribe": "Cancelar inscrição dos e-mails",
     "autoSaveSignedIn": "O jogo salva automaticamente a cada minuto",
     "autoSaveGuest": "O jogo salva automaticamente a cada 15 segundos",
     "signUpCloudSave": "Cadastre-se para salvar o jogo na nuvem",
@@ -103,9 +94,7 @@
     "preferenceUpdateFailed": "Não foi possível atualizar a preferência",
     "enterFullscreen": "Tela cheia",
     "exitFullscreen": "Sair da tela cheia",
-    "autoSaveSteam": "O jogo salva automaticamente a cada 15 segundos",
-    "steamCloudSave": "O progresso sincroniza com a Steam Cloud quando você salva.",
-    "cloudSaveFailed": "Salvo neste dispositivo, mas a sync na nuvem falhou. O autosalvamento tentará de novo."
+    "cloudSaveFailed": "Salvo neste dispositivo, mas a sincronização na nuvem falhou. O autosalvamento tentará de novo."
   },
   "pauseHotkey": {
     "hintPrefix": "Use ",
@@ -115,10 +104,6 @@
   "villageHotkeyTutorial": {
     "dismiss": "Dispensar"
   },
-  "demoTabs": {
-    "notYetUnlocked": "Ainda não desbloqueado."
-  },
-  "never": "Nunca",
   "errorScreen": {
     "message": "Estamos cavando mais fundo. Volte em breve.",
     "reload": "Recarregar o jogo"

@@ -43,7 +43,6 @@
     "reload": "Przeładuj grę"
   },
   "footer": {
-    "fullGame": "Pełna wersja",
     "trader": "Handlarz",
     "openShop": "Otwórz sklep",
     "donate": "Wesprzyj",
@@ -73,25 +72,15 @@
   "profile": {
     "title": "Menu",
     "signInUp": "Logowanie / rejestracja",
-    "emailsOn": "E-maile włączone",
-    "emailsOff": "E-maile wyłączone",
-    "marketingOnTooltip": "Dostajesz teraz e-maile z nowościami, zniżkami i ekskluzywnymi nagrodami. Dotknij, żeby wyłączyć.",
-    "marketingOffTooltip": "Nie dostajesz teraz e-maili z nowościami, zniżkami i ekskluzywnymi nagrodami. Dotknij, żeby włączyć.",
     "save": "Zapisz",
     "newGame": "Nowa gra",
-    "restart": "Od nowa",
-    "signIn": "Zaloguj się",
     "signOut": "Wyloguj się",
     "leaderboard": "Ranking",
     "rewards": "Nagrody",
     "deleteAccount": "Usuń konto",
-    "marketingSubscribe": "Zapisz się na e-maile",
-    "marketingUnsubscribe": "Wypisz się z e-maili",
     "autoSaveSignedIn": "Gra zapisuje się automatycznie co minutę",
     "autoSaveGuest": "Gra zapisuje się automatycznie co 15 sekund",
     "signUpCloudSave": "Zarejestruj się, żeby zapisać grę w chmurze",
-    "autoSaveSteam": "Gra zapisuje się automatycznie co 15 sekund",
-    "steamCloudSave": "Postęp synchronizuje się ze Steam Cloud przy zapisie.",
     "lastSave": "Ostatni zapis: {{time}}",
     "signedOut": "Wylogowano pomyślnie",
     "signOutError": "Błąd wylogowania",
@@ -118,9 +107,5 @@
   },
   "villageHotkeyTutorial": {
     "dismiss": "Odrzuć"
-  },
-  "demoTabs": {
-    "notYetUnlocked": "Jeszcze nie odblokowano."
-  },
-  "never": "Nigdy"
+  }
 }

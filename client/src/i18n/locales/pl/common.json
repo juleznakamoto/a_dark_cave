@@ -2,15 +2,8 @@
   "buttons": {
     "close": "Zamknij",
     "continue": "Kontynuuj",
-    "confirm": "Potwierdź",
     "cancel": "Anuluj",
     "save": "Zapisz",
-    "refresh": "Odśwież",
-    "dismiss": "Odrzuć",
-    "fight": "Walcz",
-    "refuse": "Odmów",
-    "accept": "Przyjmij",
-    "back": "Wróć",
     "claim": "Odbierz",
     "activate": "Aktywuj",
     "deactivate": "Dezaktywuj"
@@ -33,7 +26,6 @@
     "bastion": "Bastion",
     "fortress": "Twierdza",
     "trader": "Handlarz",
-    "achievements": "Osiągnięcia",
     "timedEvent": "Wydarzenie czasowe"
   },
   "resources": {
@@ -75,15 +67,11 @@
     "defense": "Obrona",
     "integrity": "Integralność"
   },
-  "time": {
-    "never": "Nigdy",
-    "hoursMinutes": "{{hours}} godz. {{minutes}} min",
-    "minutesSeconds": "{{minutes}} min {{seconds}} s"
-  },
   "population": {
     "villager_one": "{{count}} wieśniak",
     "villager_other": "{{count}} wieśniaków",
-    "maxPopulation": "+{{count}} maks. populacji"
+    "villager_few": "{{count}} wieśniacy",
+    "villager_many": "{{count}} wieśniaków"
   },
   "currency": {
     "goldAmount": "{{amount}} złota"

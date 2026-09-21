@@ -1,11 +1,7 @@
 {
   "playlight": {
-    "welcomeTitle": "Welcome, Playlight player",
-    "welcomeGift": "Thanks for using Playlight. {{reward}} has been added to your inventory as a welcome gift.",
-    "welcomeDiscount": "You also get {{percent}}% off your first purchase in the shop. The discount is applied automatically.",
     "moreGames": "More Games",
     "more": "More",
-    "tryMoreGames": "Try more games",
-    "discoveryAria": "Discovery"
+    "tryMoreGames": "Try more games"
   }
 }

@@ -2,15 +2,8 @@
   "buttons": {
     "close": "Schließen",
     "continue": "Weiter",
-    "confirm": "Bestätigen",
     "cancel": "Abbrechen",
     "save": "Speichern",
-    "refresh": "Aktualisieren", //ok
-    "dismiss": "Verwerfen",
-    "fight": "Kämpfen",
-    "refuse": "Ablehnen",
-    "accept": "Annehmen",
-    "back": "Zurück",
     "claim": "Abholen",
     "activate": "Aktivieren",
     "deactivate": "Deaktivieren" //ok
@@ -33,7 +26,6 @@
     "bastion": "Bastion",
     "fortress": "Festung",
     "trader": "Händler",
-    "achievements": "Erfolge",
     "timedEvent": "Ereignis"
   },
   "resources": {
@@ -75,15 +67,9 @@
     "defense": "Verteidigung", //ok
     "integrity": "Integrität"
   },
-  "time": {
-    "never": "Nie",
-    "hoursMinutes": "{{hours}} Std. {{minutes}} Min.", //ok
-    "minutesSeconds": "{{minutes}} Min. {{seconds}} Sek." //ok
-  },
   "population": {
     "villager_one": "{{count}} Dorfbewohner", //ok
-    "villager_other": "{{count}} Dorfbewohner",
-    "maxPopulation": "+{{count}} max. Bevölkerung"
+    "villager_other": "{{count}} Dorfbewohner"
   },
   "currency": {
     "goldAmount": "{{amount}} Gold"

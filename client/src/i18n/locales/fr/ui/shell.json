@@ -43,7 +43,6 @@
     "reload": "Recharger le jeu"
   },
   "footer": {
-    "fullGame": "Jeu complet", //x1.2
     "trader": "Marchand",
     "openShop": "Ouvrir la boutique", //x2.0
     "donate": "Soutenir",
@@ -73,25 +72,15 @@
   "profile": {
     "title": "Menu",
     "signInUp": "Connexion/Inscription", //x2.1
-    "emailsOn": "E-mails activés", //x1.7
-    "emailsOff": "E-mails désactivés", //x1.8
-    "marketingOnTooltip": "Vous recevez actuellement des e-mails avec des mises à jour, des réductions et des récompenses exclusives. Appuyez pour les désactiver.", //x1.4
-    "marketingOffTooltip": "Vous ne recevez actuellement pas d'e-mails avec des mises à jour, des réductions et des récompenses exclusives. Appuyez pour les activer.",
     "save": "Sauvegarder", //x2.8
     "newGame": "Nouvelle partie", //x1.9
-    "restart": "Recommencer", //x1.6
-    "signIn": "Se connecter", //x1.7
     "signOut": "Se déconnecter", //x1.8
     "leaderboard": "Classement",
     "rewards": "Récompenses", //x1.6
     "deleteAccount": "Supprimer le compte", //x1.4
-    "marketingSubscribe": "S'abonner aux e-mails",
-    "marketingUnsubscribe": "Se désabonner des e-mails",
     "autoSaveSignedIn": "Sauvegarde automatique chaque minute", //x1.3
     "autoSaveGuest": "Sauvegarde automatique toutes les 15 secondes", //x1.4
     "signUpCloudSave": "Inscrivez-vous pour sauvegarder dans le cloud", //x1.4
-    "autoSaveSteam": "Sauvegarde automatique toutes les 15 secondes",
-    "steamCloudSave": "La progression est synchronisée avec Steam Cloud lorsque vous sauvegardez.",
     "lastSave": "Dernière sauvegarde : {{time}}", //x1.6
     "signedOut": "Déconnexion réussie",
     "signOutError": "Erreur de déconnexion", //x1.2
@@ -118,9 +107,5 @@
   },
   "villageHotkeyTutorial": {
     "dismiss": "Fermer"
-  },
-  "demoTabs": {
-    "notYetUnlocked": "Pas encore débloqué."
-  },
-  "never": "Jamais"
+  }
 }

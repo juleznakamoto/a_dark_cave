@@ -30,10 +30,8 @@
     "presetApply": "Apply preset {{slot}}",
     "presetEmpty": "Preset {{slot}} is empty: select it, then save your current jobs",
     "presetLocked": "Locked: available for purchase",
-    "presetLockedBuilding": "{{building}} needed to unlock",
     "presetSave": "Save current jobs to preset {{slot}}",
     "presetSlotsPurchase": "Add 2 more preset slots",
-    "queueSlotsPurchase": "Add 2 more construction queue slots",
     "presetUnlock": "Unlock villager preset for {{cost}} Insight",
     "queueSlotUnlock": "Unlock construction queue slot for {{cost}} Insight",
     "queueSlotUsed": "Queue slot {{slot}}: building in progress",
@@ -100,7 +98,6 @@
     "crowsEye": "Crow's Eye",
     "maxLevel": "Max level",
     "improve": "Improve",
-    "upkeepPerCycle": "{{amount}} Food upkeep per assigned action per cycle",
     "skillFoodPerHunter": "+{{amount}} Food per Hunter",
     "skillFurPerHunter": "+{{amount}} Fur per Hunter",
     "skillBonesPerHunter": "+{{amount}} Bones per Hunter",
@@ -173,9 +170,7 @@
   "sidePanel": {
     "bastion": "Bastion",
     "fortress": "Fortress",
-    "population": "Population",
     "freeVillagers": "Free",
-    "onExpedition": "On Expedition",
     "resources": "Resources",
     "tools": "Tools",
     "weapons": "Weapons",
@@ -196,10 +191,6 @@
     "constructionTime": "Construction Time",
     "productionBonus": "Production Bonus",
     "doubleGainChance": "Double Gain Chance",
-    "populationTooltip": "Each villager consumes 1 Food and 1 Wood",
-    "resourceLimitMax": "max {{limit}}",
-    "resourceLimitTooltip": "no limit on Silver, Gold & Insight",
-    "statsTooltip": "Stats influence the outcome of events and grant specific effects that reveal as you progress.",
     "statLuckTooltip": "Bends fate in your favor",
     "statStrengthTooltip": "Helps where words reach their limit",
     "statKnowledgeTooltip": "Influences things where cleverness helps",
@@ -230,7 +221,6 @@
     "bastionAttackFromStrength": "{{value}} from Strength (50 %)"
   },
   "achievements": {
-    "title": "Survivor's Notes",
     "notUnlocked": "Not yet unlocked.",
     "chartUnavailable": "Chart unavailable",
     "claim": "Claim",
@@ -245,7 +235,6 @@
     }
   },
   "idleMode": {
-    "title": "Sleep Mode",
     "sleeping": "Sleeping",
     "awake": "You are awake!",
     "wakingIn": "Waking up in: {{time}}",

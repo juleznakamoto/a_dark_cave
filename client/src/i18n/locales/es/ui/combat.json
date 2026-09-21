@@ -1,13 +1,11 @@
 {
   "combat": {
-    "title": "Combate",
     "skillsTitle": "Habilidades de combate",  //x1.7
     "fight": "Luchar",
     "fighting": "Luchando…",
     "startFight": "Iniciar combate",  //x1.4
-    "roundTitle": "Combate – Ronda {{round}}",
-    "bossRoundTitle": "Combate de jefe – Ronda {{round}}",
-    "bossTitle": "Combate de jefe",  //x1.5
+    "roundTitle": "Combate - Ronda {{round}}",
+    "bossRoundTitle": "Combate de jefe - Ronda {{round}}",
     "youLost": "Has perdido",
     "youWin": "Has ganado",
     "bastion": "Bastión",
@@ -19,12 +17,10 @@
     "healChance": "Probabilidad de curación",  //x2.2
     "stunChance": "Probabilidad de aturdimiento",  //x2.5
     "stunned": "Aturdido",
-    "enemyHealed": "Curado",
     "attackFailed": "Ataque fallido",
     "crushingStrikeFailed": "Golpe aplastante fallido",
     "feralHowlFailed": "Aullido salvaje fallido",  //x1.4
     "critical": "crítico",
-    "criticalParen": "({{label}})",
     "available": "Disponible: {{current}}/{{max}}",
     "crushingStrike": "Golpe aplastante",
     "bloodflameSphere": "Esfera de llama sangrienta", //ok
@@ -59,8 +55,6 @@
     "calm": "Por ahora reina la calma…",
     "soon": "pronto",
     "provoke": "Provocar",
-    "pause": "Pausar",
-    "unpause": "Reanudar",
     "postCompletion": "Oleada {{waveNumber}}",
     "waves": {
       "firstWave": "Primera oleada", //ok
@@ -80,7 +74,7 @@
   "fortifications": {
     "bastion": "Bastión",
     "fortifiedMoat": "Foso fortificado",
-    "chitinPlating": "Blindaje de quitina", //ok
+    "chitinPlating": "Revestimiento de quitina", //ok
     "watchtower1": "Torre de vigilancia",  //x1.9
     "watchtower2": "Torre de guardia", //ok
     "watchtower3": "Torre fortificada",

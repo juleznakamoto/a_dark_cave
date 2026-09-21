@@ -43,7 +43,6 @@
     "reload": "Spiel neu laden" //x1.4
   },
   "footer": {
-    "fullGame": "Vollversion", //x1.2
     "trader": "Händler",
     "openShop": "Shop öffnen", //x1.2
     "donate": "Unterstützen", //x1.9
@@ -73,25 +72,15 @@
   "profile": {
     "title": "Menü",
     "signInUp": "Anmelden/Registrieren", //x2.1
-    "emailsOn": "E-Mails an",
-    "emailsOff": "E-Mails aus",
-    "marketingOnTooltip": "Du erhältst derzeit E-Mails mit Updates, Rabatten und exklusiven Belohnungen. Tippe, um sie abzustellen.",
-    "marketingOffTooltip": "Du erhältst derzeit keine E-Mails mit Updates, Rabatten und exklusiven Belohnungen. Tippe, um sie einzuschalten.",
     "save": "Speichern",
     "newGame": "Neues Spiel",
-    "restart": "Neu starten", //x1.6
-    "signIn": "Anmelden",
     "signOut": "Abmelden",
     "leaderboard": "Bestenliste",
     "rewards": "Belohnungen", //x1.6
     "deleteAccount": "Konto löschen",
-    "marketingSubscribe": "E-Mails abonnieren",
-    "marketingUnsubscribe": "E-Mails abbestellen",
     "autoSaveSignedIn": "Spiel wird jede Minute automatisch gespeichert", //x1.6
     "autoSaveGuest": "Spiel wird alle 15 Sekunden automatisch gespeichert", //x1.6
     "signUpCloudSave": "Registriere dich, um in der Cloud zu speichern", //x1.4
-    "autoSaveSteam": "Spiel wird alle 15 Sekunden automatisch gespeichert",
-    "steamCloudSave": "Der Fortschritt wird beim Speichern mit Steam Cloud synchronisiert.",
     "lastSave": "Letztes Speichern: {{time}}", //x1.4
     "signedOut": "Erfolgreich abgemeldet",
     "signOutError": "Fehler beim Abmelden",
@@ -104,7 +93,7 @@
     "tryAgainLater": "Versuche es später erneut.", //x1.6
     "notSignedIn": "Nicht angemeldet", //x1.2
     "subscribed": "Du bist abonniert",
-    "unsubscribed": "Du bist abgemeldet",
+    "unsubscribed": "Du hast abbestellt",
     "subscribedDesc": "Wir senden dir gelegentlich Updates und Angebote per E-Mail.",
     "unsubscribedDesc": "Du erhältst keine Marketing-E-Mails von uns.",
     "preferenceUpdateFailed": "Einstellung konnte nicht aktualisiert werden", //x1.6
@@ -118,9 +107,5 @@
   },
   "villageHotkeyTutorial": {
     "dismiss": "Schließen"
-  },
-  "demoTabs": {
-    "notYetUnlocked": "Noch nicht freigeschaltet."
-  },
-  "never": "Nie"
+  }
 }

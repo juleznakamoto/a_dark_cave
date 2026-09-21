@@ -5,8 +5,6 @@
   },
   "event": {
     "fallbackTitle": "Evento",
-    "choose": "Escolha uma opção",
-    "timeRemaining": "Tempo restante: {{seconds}}s",
     "knowledgeTimeBonus": "+{{seconds}}s de Tempo de Decisão por Conhecimento{{maxSuffix}}",
     "knowledgeTimeBonusMax": " (máx.)",
     "successChance": "Chance de Sucesso: {{percent}}%",
@@ -16,8 +14,6 @@
     "successChanceCruel": "Modo Cruel: {{percent}}%"
   },
   "reward": {
-    "title": "Recompensa",
-    "loss": "Perda",
     "actionReward": "Recompensa de Ação",
     "claimRewards": "Resgatar Recompensas"
   },
@@ -43,7 +39,6 @@
     "progressComplete": "Você concluiu todas as tarefas. Em breve receberá sua recompensa.",
     "tasksRemaining_one": "1 tarefa restante",
     "tasksRemaining_other": "{{count}} tarefas restantes",
-    "progressToward": "Recompensa exclusiva:",
     "exclusiveRewardEffect": "{{percent}}% de chance de dobrar os ganhos das ações",
     "progressAriaLabel": "Recompensa exclusiva",
     "alreadyClaimedReward": "Você já resgatou esta recompensa!",
@@ -136,30 +131,6 @@
     "practiceWinComplete": "Você venceu a rodada de treino (sem ouro em jogo). Treino concluído - você já pode fazer uma aposta de ouro.",
     "practiceLoseComplete": "Você perdeu a rodada de treino (sem ouro em jogo). Treino concluído - você já pode fazer uma aposta de ouro."
   },
-  "fullGame": {
-    "titleTrial": "A Jornada Continua",
-    "titleCheckout": "Conclua sua Compra",
-    "trialDesc": "Você chegou ao fim da versão de teste. A jornada completa o aguarda além deste ponto.",
-    "oneTimePurchase": "Compra única. Sem assinaturas. Sem taxas extras.",
-    "featureHours": "Mais de 14 horas de jogo",
-    "featureStructures": "Mais de 100 estruturas",
-    "featureItems": "Mais de 250 itens, membros da irmandade, livros, bênçãos...",
-    "featureAchievements": "Mais de 50 conquistas",
-    "featureStory": "História sombria e desafiadora baseada nas suas escolhas",
-    "signInRequired": "Entre para comprar o Jogo Completo.",
-    "continueJourney": "Continuar a Jornada",
-    "progressSaved": "Seu progresso está salvo. Você pode voltar a qualquer momento e continuar de onde parou.",
-    "loadingPayment": "Carregando o sistema de pagamento...",
-    "purchaseSuccessful": "Compra concluída.",
-    "purchaseSuccessfulDesc": "Jogo Completo desbloqueado e ativado! Agora você pode continuar sua jornada sem restrições.",
-    "legalConsent": "Acesso instantâneo ao conteúdo digital após a compra.",
-    "termsOfService": "Termos",
-    "rightOfWithdrawal": "Arrependimento",
-    "completePurchaseFor": "Concluir Compra por {{price}}",
-    "paymentFailed": "Pagamento falhou",
-    "notAuthenticated": "Você não está conectado",
-    "unexpectedError": "Algo deu errado."
-  },
   "leaderboard": {
     "title": "Classificação",
     "dev": "Dev",
@@ -205,17 +176,14 @@
     "buy": "Comprar",
     "sell": "Vender",
     "sayGoodbye": "Despedir-se",
-    "successChance": "Chance de Sucesso: {{percent}}",
     "discount": "{{percent}}% de desconto",
     "discountFromKnowledge": "{{percent}}% por Conhecimento{{max}}",
     "knowledgeMax": " (máx.)",
     "discountFromRing": "5% do Anel da Obediência",
-    "prolongForInsight": "Estender o tempo em {{minutes}} min por {{cost}} {{resource}}",
-    "buyGold": "Comprar ouro"
+    "prolongForInsight": "Estender o tempo em {{minutes}} min por {{cost}} {{resource}}"
   },
   "share": {
-    "title": "Compartilhar seu progresso",
-    "description": "Salve ou compartilhe uma imagem do seu progresso no jogo.",
+    "title": "Veja seu progresso",
     "resources": "Recursos: {{percent}} %",
     "achievements": "Conquistas: {{percent}} %",
     "killedCreatures": "Criaturas mortas",
@@ -229,7 +197,6 @@
     "copiedTitle": "Copiado para a área de transferência",
     "copyErrorTitle": "Não foi possível copiar a imagem",
     "copyErrorDesc": "Algo deu errado ao copiar para a área de transferência.",
-    "generating": "Gerando…",
     "share": "Compartilhar",
     "errorTitle": "Não foi possível criar a imagem",
     "errorDesc": "Algo deu errado ao gerar a imagem.",
@@ -241,7 +208,6 @@
     "contactVia": "Você também pode entrar em contato comigo por:",
     "reddit": "Reddit",
     "instagram": "Instagram",
-    "steam": "Steam",
     "email": "E-mail",
     "openForm": "Enviar feedback"
   },
@@ -251,14 +217,12 @@
     "wishlistButton": "Adicionar à lista de desejos na Steam",
     "startNewGameButton": "Iniciar novo jogo",
     "seeWhatsNextButton": "Ver o que vem",
-    "releaseNote": "Lançamento previsto: 27 de outubro de 2026",
     "feedbackButton": "Feedback",
     "storeHeaderLink": "Lista de desejos",
     "storeHeaderTooltip": "Adicionar o jogo completo à lista de desejos da Steam"
   },
   "blessingOffer": {
     "title": "Escolha uma bênção",
-    "srDescription": "Selecione uma das bênçãos oferecidas",
     "chooseBlessing": "Escolher"
   }
 }

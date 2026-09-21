@@ -1,8 +1,6 @@
 {
   "event": {
     "fallbackTitle": "Evento",
-    "choose": "Elige una opción",
-    "timeRemaining": "Tiempo restante: {{seconds}} s",
     "knowledgeTimeBonus": "+{{seconds}}s de tiempo de decisión por Conocimiento{{maxSuffix}}",
     "knowledgeTimeBonusMax": " (máx.)",
     "successChance": "Probabilidad de éxito: {{percent}}%", //x1.3
@@ -12,8 +10,6 @@
     "influencedBy": "Influido por:"
   },
   "reward": {
-    "title": "Recompensa",
-    "loss": "Pérdida",
     "actionReward": "Recompensa de acción", //x1.5
     "claimRewards": "Reclamar recompensas" //x1.5
   },
@@ -27,7 +23,6 @@
   },
   "blessingOffer": {
     "title": "Elige una bendición",
-    "srDescription": "Selecciona una de las bendiciones ofrecidas",
     "chooseBlessing": "Elegir"
   },
   "socialPrompt": {
@@ -48,7 +43,6 @@
     "progressComplete": "Has completado todas las tareas. Pronto recibirás tu recompensa.",
     "tasksRemaining_one": "1 tarea restante",
     "tasksRemaining_other": "{{count}} tareas restantes",
-    "progressToward": "Recompensa exclusiva:", //x1.2
     "exclusiveRewardEffect": "{{percent}} % de probabilidad de duplicar las ganancias de acciones",
     "progressAriaLabel": "Recompensa exclusiva", //x1.3
     "alreadyClaimedReward": "¡Ya has reclamado esta recompensa!",
@@ -141,30 +135,6 @@
     "practiceWinComplete": "Ganaste la ronda de práctica (sin oro en juego). Práctica completa - puedes apostar oro.",
     "practiceLoseComplete": "Perdiste la ronda de práctica (sin oro en juego). Práctica completa - puedes apostar oro."
   },
-  "fullGame": {
-    "titleTrial": "El viaje continúa",
-    "titleCheckout": "Completar tu compra",
-    "trialDesc": "Has llegado al final de la prueba. El viaje completo te espera más allá de este punto.",
-    "oneTimePurchase": "Compra única. Sin suscripciones. Sin cargos extra.",
-    "featureHours": "14+ horas de juego",
-    "featureStructures": "100+ estructuras",
-    "featureItems": "250+ objetos, compañeros, libros, bendiciones…",
-    "featureAchievements": "50+ logros",
-    "featureStory": "Historia oscura y desafiante según tus elecciones",
-    "signInRequired": "Inicia sesión para comprar el juego completo.",
-    "continueJourney": "Continuar el viaje",
-    "progressSaved": "Tu progreso está guardado. Puedes volver en cualquier momento y continuar donde lo dejaste.",
-    "loadingPayment": "Cargando sistema de pago…",
-    "purchaseSuccessful": "Compra completada.",
-    "purchaseSuccessfulDesc": "¡Juego completo desbloqueado y activado! Puedes continuar tu viaje sin restricciones.",
-    "legalConsent": "Acceso instantáneo al contenido digital tras la compra.",
-    "termsOfService": "Condiciones", //x2.2
-    "rightOfWithdrawal": "Desistimiento", //x1.3
-    "completePurchaseFor": "Completar compra por {{price}}",
-    "paymentFailed": "Pago fallido",
-    "notAuthenticated": "No has iniciado sesión",
-    "unexpectedError": "Algo salió mal."
-  },
   "leaderboard": {
     "title": "Clasificación",
     "dev": "Des.",
@@ -210,17 +180,14 @@
     "buy": "Comprar",
     "sell": "Vender",
     "sayGoodbye": "Despedirse",
-    "successChance": "Probabilidad de éxito: {{percent}}", //x1.3
     "discount": "{{percent}} % de descuento", //x1.2
     "discountFromKnowledge": "{{percent}} % por Conocimiento{{max}}",
     "knowledgeMax": " (máx.)",
     "discountFromRing": "5 % por Anillo de Obediencia",
-    "prolongForInsight": "Extender el tiempo {{minutes}} min por {{cost}} {{resource}}",
-    "buyGold": "Comprar oro"
+    "prolongForInsight": "Extender el tiempo {{minutes}} min por {{cost}} {{resource}}"
   },
   "share": {
-    "title": "Comparte tu progreso",
-    "description": "Guarda o comparte una imagen de tu progreso en el juego.",
+    "title": "Mira tu progreso",
     "resources": "Recursos: {{percent}} %",
     "achievements": "Logros: {{percent}} %",
     "killedCreatures": "Criaturas eliminadas", //x1.3
@@ -235,7 +202,6 @@
     "copiedTitle": "Copiado al portapapeles", //x1.2
     "copyErrorTitle": "No se pudo copiar la imagen", //x1.4
     "copyErrorDesc": "Algo salió mal al copiar al portapapeles.",
-    "generating": "Generando…",
     "share": "Compartir",
     "errorTitle": "No se pudo crear la imagen",
     "errorDesc": "Algo salió mal al generar la imagen."
@@ -247,7 +213,6 @@
     "contactVia": "También puedes contactarme en:",
     "reddit": "Reddit",
     "instagram": "Instagram",
-    "steam": "Steam",
     "email": "Correo"
   },
   "galaxy": {
@@ -257,7 +222,6 @@
     "feedbackButton": "Comentarios",
     "startNewGameButton": "Empezar partida nueva", //x1.5
     "seeWhatsNextButton": "Ver qué viene",
-    "releaseNote": "Lanzamiento previsto: 27 de octubre de 2026", //x1.2
     "storeHeaderLink": "Lista de deseados",
     "storeHeaderTooltip": "Añadir el juego completo a la lista de deseados de Steam"
   }

@@ -2,15 +2,8 @@
   "buttons": {
     "close": "Chiudi",
     "continue": "Continua",
-    "confirm": "Conferma",
     "cancel": "Annulla",
     "save": "Salva",
-    "refresh": "Aggiorna",
-    "dismiss": "Ignora",
-    "fight": "Combatti",
-    "refuse": "Rifiuta",
-    "accept": "Accetta",
-    "back": "Indietro",
     "claim": "Riscatta",
     "activate": "Attiva",
     "deactivate": "Disattiva"
@@ -33,7 +26,6 @@
     "bastion": "Bastione",
     "fortress": "Fortezza",
     "trader": "Mercante",
-    "achievements": "Obiettivi",
     "timedEvent": "Evento a Tempo"
   },
   "resources": {
@@ -75,15 +67,9 @@
     "defense": "Difesa",
     "integrity": "Integrità"
   },
-  "time": {
-    "never": "Mai",
-    "hoursMinutes": "{{hours}}h {{minutes}}m",
-    "minutesSeconds": "{{minutes}}m {{seconds}}s"
-  },
   "population": {
     "villager_one": "{{count}} Abitante",
-    "villager_other": "{{count}} Abitanti",
-    "maxPopulation": "+{{count}} Popolazione Max"
+    "villager_other": "{{count}} Abitanti"
   },
   "currency": {
     "goldAmount": "{{amount}} Oro"
