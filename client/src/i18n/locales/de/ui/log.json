@@ -16,7 +16,7 @@
       "one": "Ein Dorfbewohner erliegt dem Hunger.",
       "other": "{{count}} Dorfbewohner verhungern."
     },
-    "boostApplied": "Boost angewendet.",
+    "boostApplied": "Verstärkung angewendet.",
     "investmentComplete": {
       "success": "{{amount}} Gold-Investition abgeschlossen: Erfolg. Du hast {{payout}} Gold erhalten.",
       "successLucky": "{{amount}} Gold-Investition abgeschlossen: Glückstreffer! Du hast {{payout}} Gold erhalten.",
@@ -37,7 +37,7 @@
     "building": {
       "darkEstate": "Das Dunkle Anwesen steht auf einem kleinen Hügel nahe dem Dorf und bietet Einsamkeit und Zuflucht.",
       "blacksmith": "Die Schmiede des Dorfs erwacht zum Leben. Das Herz der Industrie schlägt nun im Dorf.",
-      "firstWoodenHut": "Die erste Holzhütte ist erbaut – vielleicht der Anfang von etwas Großem.",
+      "firstWoodenHut": "Die erste Holzhütte ist erbaut, vielleicht der Anfang von etwas Großem.",
       "villageGrowthSuggestion": "Das Dorf wächst schnell. Vielleicht könnten Steinhäuser mehr Dorfbewohner beherbergen.",
       "cityGrowthMilestone": "Die Stadt ist zu einer pulsierenden Metropole gewachsen, erfüllt von Handel, Industrie und der Hoffnung auf bessere Tage.",
       "moonstoneDiscovered": "Tief in der Grube entdecken Arbeiter Mondsteinvorkommen, ein leuchtendes Mineral voller Energie.",
@@ -52,7 +52,7 @@
       "highTannery": "Die Hohe Gerberei steht, eine große Werkstatt, in der erfahrene Handwerker Häute zum feinsten Leder verarbeiten.",
       "longhouse": "Das erste Langhaus erhebt sich, eine riesige Holzhalle mit dicken Balken und viel Platz.",
       "furTents": "Die ersten Fellzelte werden am Dorfrand errichtet und geben mehr Menschen warmes Obdach.",
-      "shrine": "Neben dem Altar erhebt sich ein heiliger Schrein, dessen Präsenz ruhelose Geister beruhigt.",
+      "shrine": "Neben dem Altar erhebt sich ein heiliger Schrein, dessen Präsenz gequälten Seelen Ruhe und Fokus schenkt.",
       "temple": "Ein prächtiger Tempel ist fertiggestellt, seine heiligen Hallen erfüllt von leisen Gebeten, die gequälte Seelen beruhigen.",
       "sanctum": "Das Heiligtum erhebt sich als Leuchtfeuer göttlichen Schutzes, dessen gesegnete Aura die dunkelsten Gedanken und Ängste vertreibt.",
       "alchemistHall": "Die Hallen des Alchemisten ragen empor, ihre Kammern gefüllt mit brodelnden Tiegeln und funkelnden Instrumenten vergessener Handwerkskunst.",
@@ -82,11 +82,11 @@
       "voidBombFirst": "Indem du Aschfeuerstaub mit Obsidian und Schwarzpulver kombinierst, erschaffst du eine Waffe von erschreckender Macht. Die Leerebombe scheint den Raum um sich herum zu verzerren, die Realität selbst weicht ihrer Präsenz aus.",
       "veinfireElixirFirst": "Der Alchemist destilliert leuchtende Essenz aus Aderwurzfasern. Du hältst nun ein Aderfeuer-Elixier - ein Trank, von dem man munkelt, er stärke die Bastion, wenn alles verloren scheint.",
       "frostglassSword": "Die Schmiede brennt mit ätherischen blauen Flammen, während das Frostglas zu einem prächtigen Schwert geformt wird. Die Klinge leuchtet mit anderweltlichem kaltem Licht und strahlt immense Macht aus.",
-      "arbalest": "Dem Schema folgend stellst du eine sorgfältig verzierte Armbrust her. Ihre Mechanik ist makellos, entworfen von einem Meisterhandwerker.",
+      "arbalest": "Dem Schema folgend stellst du eine sorgfältig verzierte Arbalest her. Ihre Mechanik ist makellos, entworfen von einem Meisterhandwerker.",
       "nightshadeBow": "Du fertigst einen Bogen aus dunklem Holz. Seine Pfeile werden Gift in deine Feinde tragen.",
       "bloodstoneStaff": "Der Zauberer kanalisiert seine arkane Kraft in die Blutsteine, verschmilzt sie mit uraltem Holz. Der Blutsteinstab pulsiert mit blutroter Energie und strahlt Stärke und verbotenes Wissen aus.",
       "stormglassHalberd": "Du schmiedest die Sturmglass-Halberde, deren Klinge mit ätherischem Licht glänzt. Du fühlst dich deutlich stärker, wenn du diese legendäre Waffe führst.",
-      "ashenGreatshield": "Der Schmied schmiedet die massiven Knochen der See-Kreatur zu einem undurchdringlichen Schild. Der Aschen-Großschild ist eine uneinnehmbare Bastion, die deine Streitkräfte selbst vor den tödlichsten Bedrohungen schützen kann."
+      "ashenGreatshield": "Der Schmied schmiedet die massiven Knochen der See-Kreatur zu einem undurchdringlichen Schild. Der Aschen-Großschild ist ein uneinnehmbares Bollwerk, das deine Streitkräfte selbst vor den tödlichsten Bedrohungen schützen kann."
     },
     "sacrifice": {
       "ringOfClarity": "Unter den Opfergaben entdeckst du einen kristallklaren Ring.",
