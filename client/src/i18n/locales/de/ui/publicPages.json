@@ -17,7 +17,7 @@
       },
       "sleepMode": {
         "q": "Was ist der Schlafmodus?",
-        "a": "Im Schlafmodus produzieren deine Dorfbewohner Ressourcen, während du nicht spielst, ähnlich einem Idle-Modus. Die Schlaflänge bestimmt, wie lange du im Schlafmodus bleiben kannst, und die Schlafintensität, wie viel deiner normalen Produktion du bekommst (ohne Boni)."
+        "a": "Im Schlafmodus produzieren die Dorfbewohner Ressourcen, während du nicht spielst, ähnlich einem Idle-Modus. Die Schlaflänge bestimmt, wie lange du im Schlafmodus bleiben kannst, und die Schlafintensität, wie viel deiner normalen Produktion du bekommst (ohne Boni)."
       },
       "like": {
         "q": "Welchen Spielen ähnelt es?",
