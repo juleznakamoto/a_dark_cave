@@ -133,7 +133,7 @@
     "label": "Fellzelt"
   },
   "buildGrandArchive": {
-    "description": "Ein riesiges Gewölbe voller Schriftrollen, das alles bewahrt, was das Dorf je war – jeder Name und jede Mühe in Tinte verewigt",
+    "description": "Ein riesiges Gewölbe voller Schriftrollen, das alles bewahrt, was das Dorf je war: jeder Name und jede Mühe in Tinte verewigt",
     "label": "Großes Archiv"
   },
   "buildGrandBazaar": {
@@ -213,7 +213,7 @@
     "label": "Steinbruch"
   },
   "buildRecordsHall": {
-    "description": "Eine Halle voller Regale mit verwitterten Registern und Verzeichnissen – das in Tinte festgehaltene und geordnete Gedächtnis des Dorfes",
+    "description": "Eine Halle voller Regale mit verwitterten Registern und Verzeichnissen: das in Tinte festgehaltene und geordnete Gedächtnis des Dorfes",
     "label": "Urkundenhalle"
   },
   "buildSanctum": {
@@ -335,7 +335,7 @@
     "label": "Adamantschwert"
   },
   "craftArbalest": {
-    "label": "Armbrust"
+    "label": "Arbalest"
   },
   "craftAshenGreatshield": {
     "label": "Aschener Großschild"
