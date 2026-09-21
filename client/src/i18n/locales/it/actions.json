@@ -19,7 +19,7 @@
     }
   },
   "blastPortal": {
-    "label": "Cancello da Far Saltare",
+    "label": "Fai Saltare il Cancello",
     "log": {
       "complete": "Le bombe di brace detonano in un lampo brillante di fuoco e luce. L'antico cancello si incrina e crolla. Qualunque cosa fosse sigillata all'interno ora è libera."
     }
@@ -424,7 +424,7 @@
     "label": "Stivali d'Ombra"
   },
   "craftSkeletonKey": {
-    "label": "Chiave Scheletro"
+    "label": "Chiave Scheletrica"
   },
   "craftSteelAxe": {
     "label": "Ascia d'Acciaio"
@@ -504,8 +504,8 @@
     "label": "Alimenta il Fuoco"
   },
   "financeExpedition": {
-    "description": "Finanziare una spedizione guidata da studiosi verso templi e rovine nella foresta",
-    "label": "Finanziare spedizione",
+    "description": "Finanzia una spedizione guidata da studiosi verso templi e rovine nella foresta",
+    "label": "Finanzia spedizione",
     "log": {
       "complete": "La spedizione di ricerca torna dalla foresta. Gli studiosi passano giorni a catalogare iscrizioni, reliquie erose e frammenti di conoscenza dimenticata."
     }
@@ -646,7 +646,7 @@
     "label": "Fumo che si Alza",
     "log": {
       "success": "La tua spedizione trova un accampamento di fuorilegge. Lo scontro è brutale, ma vinci. In un baule trovi 500 Oro.",
-      "successKeyBonus": " Con la tua chiave scheletro apri uno scomparto nascosto e trovi altri 250 Oro.",
+      "successKeyBonus": " Con la tua chiave scheletrica apri uno scomparto nascosto e trovi altri 250 Oro.",
       "captiveOne": " 1 prigioniero dell'accampamento sceglie di unirsi al villaggio.",
       "captivesOther": " {{count}} prigionieri dell'accampamento scelgono di unirsi al villaggio.",
       "failure": "La tua spedizione raggiunge un accampamento di fuorilegge, ma lo scontro va terribilmente storto. {{count}} abitanti cadono prima che i sopravvissuti fuggano al villaggio."

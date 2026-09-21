@@ -686,7 +686,7 @@
     },
     "title": "Establecer comercio",
     "message": {
-      "firstTime": "Un anciano del pueblo se acerca y recomienda enviar al cuervo con un mensaje para establecer comercio. ¿A dónde enviar un mensaje primero?",
+      "firstTime": "Un anciano de la aldea se acerca y recomienda enviar al cuervo con un mensaje para establecer comercio. ¿A dónde enviar un mensaje primero?",
       "repeat": "El anciano vuelve. «El cuervo ha demostrado ser útil. ¿Enviamos otro mensaje?»"
     }
   },
@@ -770,7 +770,7 @@
     "choices": {
       "makeFeast": {
         "cost": "{{foodCost}} comida",
-        "label": "Gastar {{foodCost}} comida"
+        "label": "{{foodCost}} comida"
       },
       "noFeast": {
         "label": "Rechazar el banquete"
@@ -1031,7 +1031,7 @@
         "label": "Quedarse con el libro"
       }
     },
-    "message": "En una ruina del bosque, vuestra expedición encuentra un antiguo libro encuadernado en cuero con un símbolo de cadena grabado en la cubierta. Las páginas están llenas de una escritura que no podéis leer.",
+    "message": "En una ruina del bosque, tu expedición encuentra un antiguo libro encuadernado en cuero con un símbolo de cadena grabado en la cubierta. Las páginas están llenas de una escritura que no puedes leer.",
     "title": "Libro encuadernado en cuero"
   },
   "leatherHarnessGratefulReturn": {
@@ -1223,8 +1223,8 @@
         "message": "Compras una botella de Elixir de fuego venoso."
       },
       "trade_book_of_trials": {
-        "message": "Compras el Libro de pruebas. El mercader sonríe con aire de saber: «Una guía para quienes buscan seguir el rastro de su viaje.»",
-        "label": "Libro de pruebas"
+        "message": "Compras el Libro de las pruebas. El mercader sonríe con aire de saber: «Una guía para quienes buscan seguir el rastro de su viaje.»",
+        "label": "Libro de las pruebas"
       },
       "trade_book_of_absolution": {
         "message": "Compras el Libro de la absolución. El mercader baja la voz: «Un rito para quienes guardan lo que no deberían. La Perspicacia puede lavar un poco de la mancha.»",
@@ -1281,9 +1281,9 @@
       }
     },
     "log": {
-      "outcome": "El hombre os lleva a lo profundo del bosque. Vuestros aldeanos caen en trampas. De pronto aparece la mujer pelirroja y juntos se lanzan sobre vuestros hombres. {{deaths}} aldeanos mueren antes de que los supervivientes maten a ambos atacantes. En el cuerpo del hombre encuentran un mapa hacia una aldea de montaña."
+      "outcome": "El hombre te lleva a lo profundo del bosque. Los aldeanos caen en trampas. De pronto aparece la mujer pelirroja y juntos se lanzan sobre tus hombres. {{deaths}} aldeanos mueren antes de que los supervivientes maten a ambos atacantes. En el cuerpo del hombre encuentran un mapa hacia una aldea de montaña."
     },
-    "message": "El hombre os lleva a lo profundo del bosque. Vuestros aldeanos caen en trampas. De pronto aparece la mujer pelirroja y juntos se lanzan sobre vuestros hombres. {{deaths}} aldeanos mueren antes de que los supervivientes maten a ambos atacantes. En el cuerpo del hombre encuentran un mapa hacia una aldea de montaña.",
+    "message": "El hombre te lleva a lo profundo del bosque. Los aldeanos caen en trampas. De pronto aparece la mujer pelirroja y juntos se lanzan sobre tus hombres. {{deaths}} aldeanos mueren antes de que los supervivientes maten a ambos atacantes. En el cuerpo del hombre encuentran un mapa hacia una aldea de montaña.",
     "title": "La emboscada"
   },
   "monasteryMonk": {
@@ -2173,7 +2173,7 @@
     "log": {
       "outcome": "Aceptas. Debilitado por el veneno pero aún respirando, el Sabueso Bruto se une a tu compañía."
     },
-    "message": "Tu expedición encuentra una aldea de montaña llena de muertos envenenados. Entre los cuerpos yace un hombre casi muerto, muy musculoso pero desfigurado, apenas capaz de hablar. Dice que solo lo llamaban el Sabueso Bruto. Parece haber resistido el veneno, aunque por poco. Quiere unirse a vosotros.",
+    "message": "Tu expedición encuentra una aldea de montaña llena de muertos envenenados. Entre los cuerpos yace un hombre casi muerto, muy musculoso pero desfigurado, apenas capaz de hablar. Dice que solo lo llamaban el Sabueso Bruto. Parece haber resistido el veneno, aunque por poco. Quiere unirse a ti.",
     "title": "Sabueso Bruto"
   },
   "theDamned": {

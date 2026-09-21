@@ -101,7 +101,7 @@
       "description": "Realize 10 celebrações do solstício."
     },
     "4-wellRested": {
-      "label": "Dorminhoco",
+      "label": "Sono Pesado",
       "description": "Descanse por 20 horas no total."
     },
     "3-burningVeins": {
@@ -174,7 +174,7 @@
   "building": {
     "0-0": {
       "label": "Abrigo Básico",
-      "description": "Construa 10 Casebres de madeira."
+      "description": "Construa 10 Casebres de Madeira."
     },
     "0-1": {
       "label": "Abrigo Resistente",
@@ -268,7 +268,7 @@
     },
     "3-fellowship": {
       "label": "Boa Companhia",
-      "description": "Recrute todos os seis companheiros."
+      "description": "Recrute todos os seis companheiros da irmandade."
     },
     "4-blacksteel_equipment": {
       "label": "Equipamento de Guerra Sombrio",
@@ -282,7 +282,7 @@
   "overall": {
     "0-endurant": {
       "label": "Resistente",
-      "description": "Jogue 30 horas em todos os jogos."
+      "description": "Jogue 30 horas no total, somando todas as partidas."
     },
     "0-speedrunner": {
       "label": "Velocista",

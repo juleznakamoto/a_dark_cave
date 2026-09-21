@@ -289,10 +289,10 @@
     "choices": {
       "learnSecrets": {
         "cost": "{{teachCost}} oro",
-        "label": "Imparare i segreti"
+        "label": "Impara i segreti"
       },
       "sellBook": {
-        "label": "Vendere il libro",
+        "label": "Vendi il libro",
         "reward": "+{{sellGold}} oro"
       }
     },
@@ -724,7 +724,7 @@
     "choices": {
       "makeFeast": {
         "cost": "{{foodCost}} cibo",
-        "label": "Spendi {{foodCost}} Cibo"
+        "label": "{{foodCost}} Cibo"
       },
       "noFeast": {
         "label": "Rifiuta il banchetto"
@@ -946,7 +946,7 @@
   "leatherboundBookFound": {
     "choices": {
       "keepBook": {
-        "label": "Tenere il libro"
+        "label": "Tieni il libro"
       }
     },
     "message": "In una rovina nella foresta, la vostra spedizione trova un antico libro rilegato in pelle con un simbolo a catena impresso sulla copertina. Le pagine sono piene di scritti che non sapete leggere.",
@@ -1180,8 +1180,8 @@
     },
     "log": {
       "outcome0": "Rifiuti l'offerta del monaco. Si inchina rispettosamente e inizia il suo viaggio di ritorno verso le montagne.",
-      "outcome2": "Il monaco accetta il tuo tributo con un cenno solenne e rivela i piani dettagliati per una chiave scheletro. “Si dice che questa chiave apra qualsiasi serratura,” afferma, prima di partire.",
-      "outcome4": "Gli occhi del monaco si spalancano alla vista dell'oro. 'Questo aiuterà molto il monastero,' dice, estraendo piani dettagliati per una chiave scheletro. “Si dice che questa chiave apra qualsiasi serratura,” afferma, prima di partire.",
+      "outcome2": "Il monaco accetta il tuo tributo con un cenno solenne e rivela i piani dettagliati per una chiave scheletrica. “Si dice che questa chiave apra qualsiasi serratura,” afferma, prima di partire.",
+      "outcome4": "Gli occhi del monaco si spalancano alla vista dell'oro. 'Questo aiuterà molto il monastero,' dice, estraendo piani dettagliati per una chiave scheletrica. “Si dice che questa chiave apra qualsiasi serratura,” afferma, prima di partire.",
       "outcome5": "Rifiuti l'offerta del monaco. Si inchina rispettosamente e inizia il suo viaggio di ritorno verso le montagne."
     },
     "message": "Un monaco di un monastero di montagna arriva al villaggio. 'Ho saputo che hai trovato un baule misterioso,' dice sommessamente. 'Il monastero sa come aprirlo. Offri un tributo, e condividerò il segreto.'",
@@ -1223,7 +1223,7 @@
       "outcome0": "Nell'istante in cui senti il primo rintocco, l'oscurità ti inghiotte del tutto. Sogni una vasta città di vetro e acciaio, piena di strane luci e di gente che si muove con uno scopo che non riesci a comprendere. Quando ti svegli, la campana è svanita, ma un marchio a forma di campana ti brucia sull'avambraccio.",
       "outcome1": "Il rischio è troppo grande. Quello stesso giorno, arriva un mercante e offre 500 Oro per la campana. Accetti immediatamente, sollevato di liberarti dell'oggetto maledetto. Il mercante se ne va con un sorriso d'intesa."
     },
-    "message": "Apri il baule sigillato con la chiave scheletro. Dentro, posata su velluto sbiadito, giace una campana d'oro coperta di incisioni grottesche e strani simboli scritti sulla sua superficie.",
+    "message": "Apri il baule sigillato con la chiave scheletrica. Dentro, posata su velluto sbiadito, giace una campana d'oro coperta di incisioni grottesche e strani simboli scritti sulla sua superficie.",
     "title": "La Campana Misteriosa"
   },
   "mysteriousBook": {
@@ -2691,7 +2691,7 @@
         "label": "Ricevi la Benedizione"
       },
       "sendAway": {
-        "label": "Mandare via"
+        "label": "Mandala via"
       }
     },
     "log": {
@@ -2705,10 +2705,10 @@
   "ladyFromTheMountains": {
     "choices": {
       "sendAway": {
-        "label": "Mandare via"
+        "label": "Mandala via"
       },
       "welcome": {
-        "label": "Accogliere"
+        "label": "Accogli"
       }
     },
     "log": {
@@ -2722,10 +2722,10 @@
     "choices": {
       "digWell": {
         "cost": "5000 cibo",
-        "label": "Scavare un altro pozzo"
+        "label": "Scava un altro pozzo"
       },
       "searchWoman": {
-        "label": "Cercare la donna"
+        "label": "Cerca la donna"
       }
     },
     "log": {
@@ -2741,10 +2741,10 @@
   "manFromTheMountains": {
     "choices": {
       "believeAndHelp": {
-        "label": "Credergli e aiutare"
+        "label": "Credigli e aiuta"
       },
       "sendAway": {
-        "label": "Mandare via"
+        "label": "Mandalo via"
       }
     },
     "log": {
@@ -2781,7 +2781,7 @@
   "theHoundFound": {
     "choices": {
       "accept": {
-        "label": "Accettare"
+        "label": "Accetta"
       }
     },
     "log": {

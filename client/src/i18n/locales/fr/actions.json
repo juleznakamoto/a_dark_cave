@@ -16,9 +16,9 @@
     }
   },
   "blastPortal": {
-    "label": "Porte de souffle",
+    "label": "Faire sauter la porte",
     "log": {
-      "complete": "Les bombes braise explosent dans un éclat de feu et de lumière. L'ancienne porte se fissure et s'effondre. Ce qui était scellé à l'intérieur est désormais libre."
+      "complete": "Les bombes de braise explosent dans un éclat de feu et de lumière. L'ancienne porte se fissure et s'effondre. Ce qui était scellé à l'intérieur est désormais libre."
     }
   },
   "boneTotems": {
@@ -217,8 +217,8 @@
     "label": "Salle des registres"
   },
   "buildSanctum": {
-    "description": "Sanctuaire divin offrant la plus grande protection contre les ténèbres",
-    "label": "Sanctuaire"
+    "description": "Sanctum divin offrant la plus grande protection contre les ténèbres",
+    "label": "Sanctum"
   },
   "buildScribesOffice": {
     "description": "Une pièce tranquille où les scribes tiennent un décompte minutieux de chaque bras au travail, afin qu'aucun labeur ne soit oublié",
@@ -270,7 +270,7 @@
   },
   "buildTreasury": {
     "description": "Coffre-fort qui permet de risquer des sommes bien plus importantes",
-    "label": "Trésor"
+    "label": "Trésorerie"
   },
   "buildVillageWarehouse": {
     "description": "Grand entrepôt capable de stocker de vastes quantités",
@@ -470,7 +470,7 @@
     "label": "Élixir feu-veine"
   },
   "craftVoidBomb": {
-    "label": "Bombe du Vide"
+    "label": "Bombe du néant"
   },
   "craftWarBow": {
     "label": "Arc de guerre"
@@ -662,7 +662,7 @@
     "label": "Fumée montante",
     "log": {
       "success": "Votre expédition trouve un camp de hors-la-loi. Le combat est brutal, mais vous l'emportez. Dans un coffre, vous trouvez 500 or.",
-      "successKeyBonus": " Avec votre clé squelette, vous ouvrez un compartiment caché et trouvez 250 or supplémentaires.",
+      "successKeyBonus": " Avec votre passe-partout, vous ouvrez un compartiment caché et trouvez 250 or supplémentaires.",
       "captiveOne": " 1 captif du camp choisit de rejoindre le village.",
       "captivesOther": " {{count}} captifs du camp choisissent de rejoindre le village.",
       "failure": "Votre expédition atteint un camp de hors-la-loi, mais le combat tourne terriblement mal. {{count}} villageois tombent avant que les survivants ne fuient vers le village."
@@ -730,7 +730,7 @@
     "label": "Acheter une torche"
   },
   "tradeGoldForVoidBomb": {
-    "label": "Acheter une bombe du Vide"
+    "label": "Acheter une bombe du néant"
   },
   "tradeGoldForInsightPotion": {
     "label": "Élixir de perspicacité"

@@ -1,12 +1,12 @@
 {
   "tooltips": {
-    "veinrootChanceChopWood": "0,5 % de chance d'obtenir une racine de veine", //x2.0
-    "veinrootChanceHunt": "1 % de chance d'obtenir une racine de veine", //x2.0
-    "veinrootChance": "{{percent}} % de chance d'obtenir une racine de veine", //x1.7
-    "veinrootChanceWood": "{{percent}} % de chance d'obtenir {{amount}} racines de veine", //x1.5
-    "veinrootFindMultiplier": "Double les chances de trouver une racine de veine", //x1.4
+    "veinrootChanceChopWood": "0,5 % de chance d'obtenir une racine-veine",
+    "veinrootChanceHunt": "1 % de chance d'obtenir une racine-veine",
+    "veinrootChance": "{{percent}} % de chance d'obtenir une racine-veine",
+    "veinrootChanceWood": "{{percent}} % de chance d'obtenir {{amount}} racines-veine",
+    "veinrootFindMultiplier": "Double les chances de trouver une racine-veine",
     "maxBombsReached": "Maximum de bombes atteint ({{limit}} par type)",
-    "maxVeinfireElixirReached": "Maximum d'élixir de veinefeu atteint ({{limit}})",
+    "maxVeinfireElixirReached": "Maximum d'élixir feu-veine atteint ({{limit}})",
     "gainExact": "+{{amount}} {{resource}}",
     "gainRange": "+{{min}}-{{max}} {{resource}}",
     "gainUnknown": "+? {{resource}}",
@@ -29,22 +29,22 @@
     "timeRemaining": "{{duration}} restantes",
     "executionRemaining": "{{duration}} restantes avant la fin",
     "minUntilDecrease": "{{time}} avant la baisse de niveau",
-    "greatVillageFeast": "Grand festin du village", //x1.2
-    "villageFeast": "Festin du village", //x1.3
-    "solsticeGathering": "Rassemblement du solstice", //x1.4
+    "greatVillageFeast": "Grand festin du village",
+    "villageFeast": "Festin du village",
+    "solsticeGathering": "Rassemblement du solstice",
     "newVillagerChanceBonus": "Chance de nouveau villageois +{{percent}} %",
-    "witchsCurse": "Malédiction de la sorcière", //x2.0
-    "villagerDisgust": "Dégoût des villageois", //x1.3
+    "witchsCurse": "Malédiction de la sorcière",
+    "villagerDisgust": "Dégoût des villageois",
     "miningBoost": "Boost minier",
     "miningBonus": "Bonus minier : {{percent}} %",
-    "heartfire": "Feu du cœur", //x1.2
+    "heartfire": "Feu du cœur",
     "newVillagerChance": "Chance de nouveau villageois : +{{percent}} %",
-    "frostfall": "Chute de givre", //x1.6
-    "chokingFog": "Brouillard étouffant", //x1.8
-    "focus": "Concentration", //x2.6
-    "obsidianOrbFocusRate": "Concentration : 1 toutes les 15 minutes", //x1.7
+    "frostfall": "Chute de givre",
+    "chokingFog": "Brouillard étouffant",
+    "focus": "Concentration",
+    "obsidianOrbFocusRate": "Concentration : 1 toutes les 15 minutes",
     "obsidianOrbFocusCountdown": "{{time}} avant le prochain point de concentration",
-    "obsidianOrbFocusCap": "Réserve de concentration pleine ({{max}})", //x1.5
+    "obsidianOrbFocusCap": "Réserve de concentration pleine ({{max}})",
     "actionBonus": "Bonus d'action : {{multiplier}}x",
     "baseDamage": "Dégâts de base : {{value}}",
     "knowledgeBonus": "Bonus de savoir : +{{value}}",
@@ -65,12 +65,12 @@
     "roundsRemaining_other": "{{count}} tours restants",
     "healthCost": "Coût en vie : {{value}}",
     "currentResource": "Actuel : {{amount}} {{resource}}",
-    "damaged": "(endommagé)", //x1.2
+    "damaged": "(endommagé)",
     "level": "Niveau {{level}}",
-    "improveForInsight": "Améliorer pour {{cost}} Perspicacité", //x1.3
+    "improveForInsight": "Améliorer pour {{cost}} Perspicacité",
     "unlockMoreJobsForInsight": "Augmenter la limite pour {{cost}} Perspicacité",
-    "villagerCapJobs": "{{count}} emplois", //x1.2
-    "enchantForInsight": "Enchanter pour {{cost}} Perspicacité", //x1.3
+    "villagerCapJobs": "{{count}} emplois",
+    "enchantForInsight": "Enchanter pour {{cost}} Perspicacité",
     "absolveMadnessForInsight": "Réduire la Folie de 1 pour {{cost}} Perspicacité",
     "maxHeld": "Max : {{value}}",
     "doubleActionChance": "{{percent}} % de chance de doubler les gains d'action",
@@ -80,14 +80,14 @@
     "madnessStat": "Folie :{{sign}}{{value}}",
     "insightPerCycle": "Produit {{amount}} Perspicacité par cycle",
     "craftDiscount": "Réduction artisanale : -{{percent}} %",
-    "buildDiscount": "Réduction de construction : -{{percent}} %", //x1.4
+    "buildDiscount": "Réduction de construction : -{{percent}} %",
     "merchantDiscount": "Réduction marchande : +{{percent}} %",
     "newVillagerChanceStat": "Chance de nouveau villageois : +{{percent}} %",
     "criticalStrike": "Chance de coup critique : +{{percent}} %",
     "villagerDeathReduction": "Morts de villageois au combat : -{{percent}} %",
-    "caveExploreBonus": "Exploration de grotte : +{{percent}} % de bonus", //x1.4
+    "caveExploreBonus": "Exploration de grotte : +{{percent}} % de bonus",
     "bombCapacityCombat": "+1 capacité pour toutes les bombes (combat)",
-    "elixirCapacityCombat": "+1 Élixir de feu-veine par combat",
+    "elixirCapacityCombat": "+1 Élixir feu-veine par combat",
     "maxBombsPerType": "Max {{count}} bombes par type",
     "boneDiceGambler": "Jouez deux manches contre le joueur par visite",
     "ebonGraceHeartfire": "Double le bonus de production du Feu du cœur",
@@ -103,54 +103,54 @@
     "productionBonusLine": "+{{amount}} {{resource}} ({{job}})",
     "secRemaining": "Encore {{count}} s",
     "buildings": {
-      "unlocksHunters": "Débloque les chasseurs", //x1.5
-      "unlocksCrafting": "Débloque l'artisanat", //x1.3
+      "unlocksHunters": "Débloque les chasseurs",
+      "unlocksCrafting": "Débloque l'artisanat",
       "unlocksSchematicCrafting": "Débloque l'artisanat de schémas",
-      "unlocksBlacksteelCrafting": "Débloque l'artisanat d'acier noir", //x1.2
+      "unlocksBlacksteelCrafting": "Débloque l'artisanat d'acier noir",
       "unlocksBlacksteelForgers": "Débloque les forgerons d'acier noir",
-      "unlocksIronMiners": "Débloque les mineurs de fer", //x1.4
-      "unlocksCoalMiners": "Débloque les mineurs de charbon", //x1.6
-      "unlocksSulfurMiners": "Débloque les mineurs de soufre", //x1.4
-      "unlocksObsidianMiners": "Débloque les mineurs d'obsidienne", //x1.4
-      "unlocksAdamantMiners": "Débloque les mineurs d'adamantine", //x1.5
-      "unlocksMoonstoneMiners": "Débloque les mineurs de pierre de lune", //x1.6
-      "unlocksSteelForgers": "Débloque les forgerons d'acier", //x1.4
-      "unlocksTanners": "Débloque les tanneurs", //x1.4
-      "unlocksInvestments": "Débloque les investissements", //x1.5
-      "unlocksPowderMakers": "Débloque les fabricants de poudre", //x1.6
-      "unlocksCallMerchant": "Débloque l'appel du marchand", //x1.3
-      "unlocksWizardStory": "Débloque l'histoire du mage", //x1.4
-      "unlocksEstateTab": "Débloque l'onglet domaine", //x1.4
+      "unlocksIronMiners": "Débloque les mineurs de fer",
+      "unlocksCoalMiners": "Débloque les mineurs de charbon",
+      "unlocksSulfurMiners": "Débloque les mineurs de soufre",
+      "unlocksObsidianMiners": "Débloque les mineurs d'obsidienne",
+      "unlocksAdamantMiners": "Débloque les mineurs d'adamantine",
+      "unlocksMoonstoneMiners": "Débloque les mineurs de pierre de lune",
+      "unlocksSteelForgers": "Débloque les forgerons d'acier",
+      "unlocksTanners": "Débloque les tanneurs",
+      "unlocksInvestments": "Débloque les investissements",
+      "unlocksPowderMakers": "Débloque les fabricants de poudre",
+      "unlocksCallMerchant": "Débloque l'appel du marchand",
+      "unlocksWizardStory": "Débloque l'histoire du mage",
+      "unlocksEstateTab": "Débloque l'onglet domaine",
       "unlocksFeedFireAction": "Débloque l'action nourrir le feu",
-      "craftDiscountSpaced": "2,5 % de réduction d'artisanat", //x1.5
-      "craftDiscountSpaced5": "5 % de réduction d'artisanat", //x1.6
-      "craftDiscount": "{{percent}} % de réduction d'artisanat", //x1.4
-      "buildDiscount": "{{percent}} % de réduction de construction", //x1.6
+      "craftDiscountSpaced": "2,5 % de réduction d'artisanat",
+      "craftDiscountSpaced5": "5 % de réduction d'artisanat",
+      "craftDiscount": "{{percent}} % de réduction d'artisanat",
+      "buildDiscount": "{{percent}} % de réduction de construction",
       "gathererWood": "Collecteur : +{{amount}} bois",
       "gathererStone": "Collecteur : +{{amount}} pierre",
-      "gathererVeinroot": "Cueilleur : +{{amount}} racine de veine",
-      "hunterFood": "Chasseur : +{{amount}} nourriture", //x1.4
-      "hunterFur": "Chasseur : +{{amount}} fourrure", //x1.3
+      "gathererVeinroot": "Cueilleur : +{{amount}} racine-veine",
+      "hunterFood": "Chasseur : +{{amount}} nourriture",
+      "hunterFur": "Chasseur : +{{amount}} fourrure",
       "hunterBones": "Chasseur : +{{amount}} os",
       "knowledgeBonus": "+{{amount}} savoir",
-      "resourceChangeHints": "Indications de changement de ressources", //x1.9
-      "improvedResourceChangeHints": "Indications améliorées de changement de ressources", //x1.7
-      "resourceHighlighting": "Mise en évidence des ressources", //x1.5
-      "unlocksScholar": "Débloque les érudits", //x1.3
-      "addsVillagerPreset_one": "Rend {{count}} emplacement de préréglage de métiers disponible contre de la Perspicacité", //x1.4
-      "addsVillagerPreset_other": "Rend {{count}} emplacements de préréglage de métiers disponibles contre de la Perspicacité", //x1.4
+      "resourceChangeHints": "Indications de changement de ressources",
+      "improvedResourceChangeHints": "Indications améliorées de changement de ressources",
+      "resourceHighlighting": "Mise en évidence des ressources",
+      "unlocksScholar": "Débloque les érudits",
+      "addsVillagerPreset_one": "Rend {{count}} emplacement de préréglage de métiers disponible contre de la Perspicacité",
+      "addsVillagerPreset_other": "Rend {{count}} emplacements de préréglage de métiers disponibles contre de la Perspicacité",
       "scholarInsight": "Érudit : +{{amount}} perspicacité",
-      "insightRevealCost": "{{cost}} perspicacité", //x1.3
+      "insightRevealCost": "{{cost}} perspicacité",
       "insightRevealEffects": "Effets",
-      "abortActions": "Interrompre les actions", //x1.8
+      "abortActions": "Interrompre les actions",
       "madnessReduction": "-{{amount}} folie",
       "madnessIncrease": "+{{amount}} folie",
       "defenseBonus": "+{{amount}} défense",
       "attackBonus": "+{{amount}} attaque",
       "integrityBonus": "+{{amount}} intégrité",
-      "luckyChance": "+{{percent}} % de chance supplémentaire", //x1.5
+      "luckyChance": "+{{percent}} % de chance supplémentaire",
       "investUpToGold": "Investir jusqu'à {{amount}} or",
-      "higherTradeAmounts": "Montants d'échange plus élevés", //x1.5
+      "higherTradeAmounts": "Montants d'échange plus élevés",
       "tradesAtMerchant_one": "+{{count}} échange chez le marchand itinérant",
       "tradesAtMerchant_other": "+{{count}} échanges chez le marchand itinérant",
       "trapWinChance10": "+10 % de chance de victoire contre les ennemis attaquants",
@@ -164,23 +164,23 @@
       "madnessPerHumanSacrifice": "-2 folie par sacrifice humain (max -20)",
       "totemSilverGain": "10-25 argent",
       "totemGoldGain": "10-25 or",
-      "insightGain": "+{{amount}} Perspicacité", //x1.3
+      "insightGain": "+{{amount}} Perspicacité",
       "boneTotemSacrificeBonus": "Bonus de sacrifice de totem d'os : 50–100 or",
       "totemSacrificesBonus": "Sacrifices de totem : +25 % de bonus",
       "sleepLengthHours": "Durée de sommeil +{{hours}} heures",
       "sleepIntensityPercent": "Intensité du sommeil +{{percent}} %",
       "maxVillagers": "+{{amount}} villageois max.",
-      "resourceLimit": "Limite de ressources : {{limit}} (pas de limite pour l'argent, l'or et la perspicacité)", //x1.4
+      "resourceLimit": "Limite de ressources : {{limit}} (pas de limite pour l'argent, l'or et la perspicacité)",
       "maxPopulation": "+{{amount}} population max.",
-      "newVillagerChancePercent": "+{{percent}} % de chance de nouveau villageois", //x1.4
+      "newVillagerChancePercent": "+{{percent}} % de chance de nouveau villageois",
       "steelForgerSteel": "Forgeron d'acier : +{{amount}} acier",
       "tannerLeather": "Tanneur : +{{amount}} cuir",
-      "buildTimeReduction": "-{{percent}} % de temps de construction", //x1.6
-      "buildingCostReduction": "-{{percent}} % de coûts de construction", //x1.4
-      "addsConstructionQueueSlot_one": "Rend {{count}} emplacement de file de construction disponible contre de la Perspicacité", //x1.4
-      "addsConstructionQueueSlot_other": "Rend {{count}} emplacements de file de construction disponibles contre de la Perspicacité", //x1.4
-      "constructionBoost": "Boost de construction : dépenser de la Perspicacité pour sauter 50 % du temps de construction (une fois par construction)", //x1.6
-      "craftingBoost": "Boost d'artisanat : dépenser de la Perspicacité pour sauter 50 % du temps d'artisanat (une fois par artisanat)", //x1.5
+      "buildTimeReduction": "-{{percent}} % de temps de construction",
+      "buildingCostReduction": "-{{percent}} % de coûts de construction",
+      "addsConstructionQueueSlot_one": "Rend {{count}} emplacement de file de construction disponible contre de la Perspicacité",
+      "addsConstructionQueueSlot_other": "Rend {{count}} emplacements de file de construction disponibles contre de la Perspicacité",
+      "constructionBoost": "Boost de construction : dépenser de la Perspicacité pour sauter 50 % du temps de construction (une fois par construction)",
+      "craftingBoost": "Boost d'artisanat : dépenser de la Perspicacité pour sauter 50 % du temps d'artisanat (une fois par artisanat)",
       "weaponEnchantment": "Enchantement d'armes"
     },
     "staringDeer": "Cerfs figés",

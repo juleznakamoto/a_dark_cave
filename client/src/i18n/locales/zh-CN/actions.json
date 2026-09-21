@@ -6,13 +6,13 @@
     "label": "强盗巢穴",
     "log": {
       "success": "你们追踪强盗来到一处破败的巢穴。你们压倒了他，找回了商人的匕首，并在赃物中发现了250银币。",
-      "failure": "村民搜遍山丘，却无法逼退强盗。线索断了，匕首仍在他手中。"
+      "failure": "村民搜遍山丘，却无法困住强盗。线索断了，匕首仍在他手中。"
     }
   },
   "blackreachCanyon": {
     "label": "黑境峡谷",
     "log": {
-      "success": "你深入黑境峡谷。在那里，一只雄伟的独眼乌鸦栖息在石柱上。你用挽具小心靠近，与牠建立了羁绊。独眼乌鸦加入了你的同伴。"
+      "success": "你深入黑境峡谷。在那里，一只雄伟的独眼乌鸦栖息在石柱上。你用挽具小心靠近，与它建立了羁绊。独眼乌鸦加入了你的同伴。"
     }
   },
   "blastPortal": {
@@ -407,7 +407,7 @@
     "label": "铁剑"
   },
   "craftLeatherTotems": {
-    "label": "皮革图腾"
+    "label": "皮图腾"
   },
   "craftLoggersGloves": {
     "label": "伐木手套"
@@ -575,7 +575,7 @@
     }
   },
   "leatherTotems": {
-    "label": "皮革图腾"
+    "label": "皮图腾"
   },
   "makeFire": {
     "label": "生火",
@@ -724,7 +724,7 @@
     "label": "购买钢"
   },
   "tradeGoldForStone": {
-    "label": "购买石料"
+    "label": "购买石头"
   },
   "tradeGoldForTorch": {
     "label": "购买火把"

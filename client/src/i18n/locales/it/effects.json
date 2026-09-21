@@ -279,8 +279,8 @@
       "name": "Mira Acuta"
     },
     "skeleton_key_schematic": {
-      "description": "Progetto per fabbricare una chiave scheletro",
-      "name": "Chiave Scheletro"
+      "description": "Progetto per fabbricare una chiave scheletrica",
+      "name": "Chiave Scheletrica"
     },
     "stonebinders_codex": {
       "description": "Tomo della biblioteca nascosta che rivela i segreti di una costruzione efficiente",
@@ -468,7 +468,7 @@
     },
     "skeleton_key": {
       "description": "Una misteriosa chiave che si dice apra qualsiasi serratura",
-      "name": "Chiave Scheletro"
+      "name": "Chiave Scheletrica"
     },
     "skull_lantern": {
       "description": "Forgiata da ossa maledette, illumina le profondità più oscure",

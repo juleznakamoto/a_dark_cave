@@ -49,11 +49,11 @@
       "description": "将硫磺升级到10级。"
     },
     "2-animals": {
-      "label": "牲祭执行者",
+      "label": "牲祭者",
       "description": "献祭动物10次。"
     },
     "2-boneTotems": {
-      "label": "骨祭执行者",
+      "label": "骨祭者",
       "description": "献祭骨图腾20次。"
     },
     "2-craftBoneTotems": {
@@ -61,11 +61,11 @@
       "description": "将骨图腾升级到10级。"
     },
     "2-craftLeatherTotems": {
-      "label": "皮革图腾工匠",
-      "description": "将皮革图腾升级到10级。"
+      "label": "皮图腾工匠",
+      "description": "将皮图腾升级到10级。"
     },
     "2-leatherTotems": {
-      "label": "皮革献祭者",
+      "label": "皮祭者",
       "description": "献祭皮图腾20次。"
     },
     "3-ashfireBombs": {

@@ -139,11 +139,11 @@
       "name": "Ręka rybaka"
     },
     "flames_touch": {
-      "description": "Koszty rzemiosła są obniżone",
+      "description": "Koszty wytwarzania są obniżone",
       "name": "Dotyk płomienia"
     },
     "flames_touch_enhanced": {
-      "description": "Koszty rzemiosła są znacznie obniżone",
+      "description": "Koszty wytwarzania są znacznie obniżone",
       "name": "Silny dotyk płomienia"
     },
     "forests_grace": {
@@ -303,7 +303,7 @@
       "name": "Celne oko"
     },
     "skilled_hands": {
-      "description": "Koszty rzemiosła są obniżone",
+      "description": "Koszty wytwarzania są obniżone",
       "name": "Zręczne ręce"
     },
     "skeleton_key_schematic": {

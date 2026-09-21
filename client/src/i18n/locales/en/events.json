@@ -838,7 +838,7 @@
     "choices": {
       "makeFeast": {
         "cost": "{{foodCost}} food",
-        "label": "Spend {{foodCost}} Food"
+        "label": "{{foodCost}} Food"
       },
       "noFeast": {
         "label": "Refuse feast"

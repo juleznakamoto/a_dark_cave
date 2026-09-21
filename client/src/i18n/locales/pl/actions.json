@@ -5,7 +5,7 @@
   "banditLair": {
     "label": "Legowisko bandyty",
     "log": {
-      "success": "Twoja drużyna tropi bandytę do rozpadającego się legowiska. Pokonujecie go, odzyskujecie sztylet handlarza i znajdujecie 250 srebra ukryte wśród łupów.",
+      "success": "Twoja drużyna tropi bandytę do rozpadającego się legowiska. Pokonujesz go, odzyskujesz sztylet handlarza i znajdujesz 250 srebra ukryte wśród łupów.",
       "failure": "Wieśniacy przeszukują wzgórza, lecz nie udaje im się osaczyć bandyty. Ślad stygnie, a sztylet wciąż jest w jego rękach."
     }
   },
@@ -53,7 +53,7 @@
     "label": "Czarny monolit"
   },
   "buildBlacksmith": {
-    "description": "Kuźnia z prostymi narzędziami do rzemiosła",
+    "description": "Kuźnia z prostymi narzędziami do wytwarzania",
     "label": "Kuźnia"
   },
   "buildBoneTemple": {
@@ -153,7 +153,7 @@
     "label": "Wielkie składowisko"
   },
   "buildGreatCabin": {
-    "description": "Powiększona chata myśliwska zwiększająca plon myśliwych",
+    "description": "Powiększona chata myśliwska zwiększająca produkcję myśliwych",
     "label": "Duża chata myśliwego"
   },
   "buildGreatVault": {
@@ -318,8 +318,8 @@
   "collapsedTower": {
     "label": "Zawalona wieża",
     "log": {
-      "success": "W wieży zastajesz nekromantę i jego wyznawców, otoczonych fiolkami z płynami i prymitywnymi strzykawkami. Zbierał krew wieśniaków do mrocznych doświadczeń. Twoi ludzie kładą kres jego plugawemu dziełu i zabierają fiolkę jego krwi. Wśród narzędzi znajdujecie jego potężną piłę kostną.",
-      "failure": "Wyprawa dociera do Zawalonej wieży, lecz na zewnątrz atakują was zakapturzone postacie. Wśród nich stoi wysoki człowiek w ciemnej szacie, roztaczając aurę grozy. {{count}} wieśniaków pada, zanim reszta uchodzi w bezpieczne miejsce."
+      "success": "W wieży zastajesz nekromantę i jego wyznawców, otoczonych fiolkami z płynami i prymitywnymi strzykawkami. Zbierał krew wieśniaków do mrocznych doświadczeń. Twoi ludzie kładą kres jego plugawemu dziełu i zabierają fiolkę jego krwi. Wśród narzędzi znajdujesz jego potężną piłę kostną.",
+      "failure": "Wyprawa dociera do Zawalonej wieży, lecz na zewnątrz atakują cię zakapturzone postacie. Wśród nich stoi wysoki człowiek w ciemnej szacie, roztaczając aurę grozy. {{count}} wieśniaków pada, zanim reszta uchodzi w bezpieczne miejsce."
     }
   },
   "craftAdamantAxe": {
@@ -568,12 +568,12 @@
     "label": "Zastaw pułapkę",
     "log": {
       "trapSuccessNoDeaths": "Olbrzymia pułapka działa bezbłędnie! W sidłach tkwi ogromny czarny niedźwiedź o żarzących się czerwonych oczach. Wieśniacy zabijają nadprzyrodzoną bestię i biorą jej przeklęte czarne futro jako trofeum.",
-      "trapSuccessWithDeaths_one": "Olbrzymia pułapka łapie kolosalnego czarnego niedźwiedzia o palących się czerwonych oczach! {{count}} wieśniak pada pod jego nadprzyrodzonymi pazurami, zanim bestia zostaje wreszcie zabita. Bierzecie jej przeklęte czarne futro jako drogo okupione trofeum.",
-      "trapSuccessWithDeaths_other": "Olbrzymia pułapka łapie kolosalnego czarnego niedźwiedzia o palących się czerwonych oczach! {{count}} wieśniaków pada pod jego nadprzyrodzonymi pazurami, zanim bestia zostaje wreszcie zabita. Bierzecie jej przeklęte czarne futro jako drogo okupione trofeum.",
+      "trapSuccessWithDeaths_one": "Olbrzymia pułapka łapie kolosalnego czarnego niedźwiedzia o palących się czerwonych oczach! {{count}} wieśniak pada pod jego nadprzyrodzonymi pazurami, zanim bestia zostaje wreszcie zabita. Bierzesz jej przeklęte czarne futro jako drogo okupione trofeum.",
+      "trapSuccessWithDeaths_other": "Olbrzymia pułapka łapie kolosalnego czarnego niedźwiedzia o palących się czerwonych oczach! {{count}} wieśniaków pada pod jego nadprzyrodzonymi pazurami, zanim bestia zostaje wreszcie zabita. Bierzesz jej przeklęte czarne futro jako drogo okupione trofeum.",
       "trapSuccessWithDeaths_few": "Olbrzymia pułapka łapie kolosalnego czarnego niedźwiedzia o palących się czerwonych oczach! {{count}} wieśniacy padają pod jego nadprzyrodzonymi pazurami, zanim bestia zostaje wreszcie zabita. Bierzesz jej przeklęte czarne futro jako drogo okupione trofeum.",
       "trapSuccessWithDeaths_many": "Olbrzymia pułapka łapie kolosalnego czarnego niedźwiedzia o palących się czerwonych oczach! {{count}} wieśniaków pada pod jego nadprzyrodzonymi pazurami, zanim bestia zostaje wreszcie zabita. Bierzesz jej przeklęte czarne futro jako drogo okupione trofeum.",
-      "trapSuccessHeavy": "Olbrzymia pułapka łapie kolosalnego czarnego niedźwiedzia o oczach jak żarzące się węgle. {{count}} wieśniaków pada pod jego nadprzyrodzonym szałem, zanim bestia zostaje wreszcie pokonana. Bierzecie jej przeklęte czarne futro.",
-      "trapFailed": "Olbrzymia pułapka jest zastawiona, lecz przy sprawdzeniu obok niej widać tylko wielkie ślady pazurów. Cokolwiek krąży po tych lasach, jest zbyt przebiegłe na waszą pułapkę... tym razem."
+      "trapSuccessHeavy": "Olbrzymia pułapka łapie kolosalnego czarnego niedźwiedzia o oczach jak żarzące się węgle. {{count}} wieśniaków pada pod jego nadprzyrodzonym szałem, zanim bestia zostaje wreszcie pokonana. Bierzesz jej przeklęte czarne futro.",
+      "trapFailed": "Olbrzymia pułapka jest zastawiona, lecz przy sprawdzeniu obok niej widać tylko wielkie ślady pazurów. Cokolwiek krąży po tych lasach, jest zbyt przebiegłe na twoją pułapkę... tym razem."
     }
   },
   "leatherTotems": {
@@ -663,8 +663,8 @@
   "risingSmoke": {
     "label": "Wschodzący dym",
     "log": {
-      "success": "Wyprawa odnajduje obóz banitów. Walka jest okrutna, lecz zwyciężacie. W skrzyni znajdujecie 500 złota.",
-      "successKeyBonus": " Kluczem szkieletowym otwieracie ukrytą przegródkę i znajdujecie kolejne 250 złota.",
+      "success": "Wyprawa odnajduje obóz banitów. Walka jest okrutna, lecz zwyciężasz. W skrzyni znajdujesz 500 złota.",
+      "successKeyBonus": " Kluczem szkieletowym otwierasz ukrytą przegródkę i znajdujesz kolejne 250 złota.",
       "captiveOne": " 1 jeniec z obozu postanawia dołączyć do wioski.",
       "captivesOther": " {{count}} jeńców z obozu postanawia dołączyć do wioski.",
       "failure": "Wyprawa dociera do obozu banitów, lecz walka idzie fatalnie. {{count}} wieśniaków pada, zanim ocalali uciekają z powrotem do wioski."
@@ -685,7 +685,7 @@
   "steelDelivery": {
     "label": "Dostawa stali",
     "log": {
-      "success": "Wasza karawana dostarcza stal Plemieniu Bagien, jak obiecano. W zamian plemię ofiarowuje wam płyty z chityny, zebrane z bagiennych stworzeń. Można z nich wznieść potężne umocnienia."
+      "success": "Twoja karawana dostarcza stal Plemieniu Bagien, jak obiecano. W zamian plemię ofiarowuje ci płyty z chityny, zebrane z bagiennych stworzeń. Można z nich wznieść potężne umocnienia."
     }
   },
   "sunkenTemple": {

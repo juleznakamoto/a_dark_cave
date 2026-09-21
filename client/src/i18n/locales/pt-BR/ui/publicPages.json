@@ -5,7 +5,7 @@
     "faq": {
       "whatIs": {
         "q": "O que é A Dark Cave?",
-        "a": "A Dark Cave é um jogo incremental de sobrevivência e assentamento em texto. Você acorda numa caverna sem memória, acende um fogo, junta recursos, constrói uma vila e desce para o escuro."
+        "a": "A Dark Cave é um jogo incremental de sobrevivência e assentamento em texto. Você acorda numa caverna sem memória, acende um fogo, junta recursos, constrói uma aldeia e desce para o escuro."
       },
       "free": {
         "q": "A Dark Cave é grátis?",
@@ -37,11 +37,11 @@
       },
       "save": {
         "q": "O progresso é salvo?",
-        "a": "Sim. O progresso é salvo sozinho no navegador. Uma conta opcional adiciona save na nuvem."
+        "a": "Sim. O progresso é salvo sozinho no navegador. Uma conta opcional adiciona salvamento na nuvem."
       },
       "account": {
         "q": "Preciso de uma conta?",
-        "a": "Não. Você pode jogar sem conta. A conta serve só para o save na nuvem."
+        "a": "Não. Você pode jogar sem conta. A conta serve só para o salvamento na nuvem."
       },
       "singlePlayer": {
         "q": "É um jogo para um jogador?",
@@ -49,7 +49,7 @@
       },
       "ending": {
         "q": "O jogo tem um final?",
-        "a": "Sim. Há uma história, muitos segredos e lore, e mais de um final."
+        "a": "Sim. Há uma história, muitos segredos e tradição, e mais de um final."
       },
       "languages": {
         "q": "Quais idiomas são suportados?",
@@ -62,10 +62,10 @@
     },
     "about": {
       "intro1": "Eu fiz este jogo porque, há muitos anos, joguei A Dark Room, que me inspirou a criar o meu próprio jogo um dia. Esse dia chegou.",
-      "intro2": "Você acorda na entrada de uma caverna escura. Sem memória. Sem posses. Você faz um fogo, depois junta um pouco de madeira, fabrica uma tocha, constrói o primeiro abrigo. Estranhos chegam. O assentamento cresce. Você começa a explorar o que há no fundo da caverna. O passado da sua civilização. O seu passado. Isso é A Dark Cave: um incremental em texto sobre sobreviver, construir e descobrir o que realmente tem lá embaixo, e talvez para onde estamos indo como humanidade.",
+      "intro2": "Você acorda na entrada de uma caverna escura. Sem memória. Sem posses. Você acende um fogo, depois junta um pouco de madeira, fabrica uma tocha, constrói o primeiro abrigo. Estranhos chegam. O assentamento cresce. Você começa a explorar o que há no fundo da caverna. O passado da sua civilização. O seu passado. Isso é A Dark Cave: um incremental em texto sobre sobreviver, construir e descobrir o que realmente tem lá embaixo, e talvez para onde estamos indo como humanidade.",
       "intro3": "É de graça no navegador: <site>a-dark-cave.com</site>. Para apoiar o jogo, há compras totalmente opcionais. Tem uma <demo>demo da Steam</demo> se você preferir jogar assim. A versão completa da Steam está prevista para 27 de outubro de 2026.",
       "howHeading": "Como se joga",
-      "how1": "Você começa sem nada. Vai desbloqueando aos poucos itens, construções, habilidades, trabalhos, membros da irmandade e muito mais. Uma história se desenrola, rica em lore, sobre o passado de uma civilização que viveu antes. Você aprende mais quanto mais fundo vai na caverna. Mas o perigo também cresce.",
+      "how1": "Você começa sem nada. Vai desbloqueando aos poucos itens, construções, habilidades, trabalhos, membros da irmandade e muito mais. Uma história se desenrola, rica em tradição, sobre o passado de uma civilização que viveu antes. Você aprende mais quanto mais fundo vai na caverna. Mas o perigo também cresce.",
       "how2": "A jogabilidade é ativa. Você toma decisões que influenciam o jogo. Também tem um modo idle para o jogo avançar enquanto você está longe. O jogo tem um final, ou talvez mais de um.",
       "likedHeading": "Se você gostava de incrementais antigos",
       "liked1": "As pessoas costumam chegar aqui por A Dark Room, Kittens Game, Universal Paperclips, Candy Box e jogos assim. Você vai encontrar algumas mecânicas desses jogos também em A Dark Cave. A Dark Cave é minimalista nos gráficos, mas eu fiz animações à mão, acrescentei muitos sons e fiz funcionar no desktop e no celular para caber no nosso tempo.",
@@ -73,7 +73,7 @@
       "who1": "É para quem gosta de jogos que começam simples e ficam mais complicados de propósito. Não porque um tutorial despeja vinte sistemas no primeiro minuto, mas porque você conquistou o próximo.",
       "who2": "Se você quer gráficos chamativos, este é o jogo errado. A maior parte do jogo é texto, com algumas animações (espero) recompensadoras no meio. Passei muito tempo em uma história interessante, profundamente ligada à nossa história e ao nosso futuro.",
       "platformsHeading": "Plataformas",
-      "platforms1": "Jogue no navegador no computador ou no celular. Não há app na App Store nem no Google Play. O progresso salva no seu dispositivo. Você pode criar uma conta se quiser um save na nuvem.",
+      "platforms1": "Jogue no navegador no computador ou no celular. Não há app na App Store nem no Google Play. O progresso salva no seu dispositivo. Você pode criar uma conta se quiser um salvamento na nuvem.",
       "platforms2": "<steam>Steam</steam> (Windows) é um jogo pago com uma <demo>demo grátis</demo>. O jogo no navegador continua de graça.",
       "platforms3": "O jogo está em inglês, alemão, francês, espanhol, italiano, português (Brasil), chinês simplificado, japonês, polonês e russo.",
       "meHeading": "Quem eu sou",

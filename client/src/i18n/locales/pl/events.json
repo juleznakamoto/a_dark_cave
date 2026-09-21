@@ -838,7 +838,7 @@
     "choices": {
       "makeFeast": {
         "cost": "{{foodCost}} żywności",
-        "label": "Wydaj {{foodCost}} żywności"
+        "label": "{{foodCost}} żywności"
       },
       "noFeast": {
         "label": "Odmów uczty"
@@ -919,9 +919,9 @@
       }
     },
     "log": {
-      "outcome0": "Oczy dzikuski rozświetlają się nadzieją. 'Jesteście naszą jedyną szansą,' mówi. 'Jaskinia bestii leży głęboko w lesie. Niech bogowie was strzegą.'"
+      "outcome0": "Oczy dzikuski rozświetlają się nadzieją. 'Jesteś naszą jedyną szansą,' mówi. 'Jaskinia bestii leży głęboko w lesie. Niech bogowie cię strzegą.'"
     },
-    "message": "Dzikuska wyłania się z lasu, blade ciało pokryte plemiennymi znakami i bliznami. 'Przychodzę z plemienia w lesie,' mówi pilnie. 'Brutalne bestie z jaskini w gęstwinie atakują nas bez wytchnienia. Grozi nam zagłada. Proszę, pomóżcie nam przetrwać.'",
+    "message": "Dzikuska wyłania się z lasu, blade ciało pokryte plemiennymi znakami i bliznami. 'Przychodzę z plemienia w lesie,' mówi pilnie. 'Brutalne bestie z jaskini w gęstwinie atakują nas bez wytchnienia. Grozi nam zagłada. Proszę, pomóż nam przetrwać.'",
     "title": "Rozpaczliwa prośba"
   },
   "fourthWave": {
@@ -1258,14 +1258,14 @@
       }
     },
     "log": {
-      "outcome0": "Żegnasz kupca. Unosi kapelusz i mamrocze o drodze przed sobą."
+      "outcome0": "Żegnasz handlarza. Unosi kapelusz i mamrocze o drodze przed sobą."
     },
-    "message": "Przybywa wiatrem ogorzały kupiec, wóz przepełniony towarem. Oczy błyszczą chciwością, gdy mruczy: 'Mam rzadkie przedmioty na sprzedaż'.",
-    "title": "Wędrowny kupiec",
+    "message": "Przybywa wiatrem ogorzały handlarz, wóz przepełniony towarem. Oczy błyszczą chciwością, gdy mruczy: 'Mam rzadkie przedmioty na sprzedaż'.",
+    "title": "Wędrowny handlarz",
     "toolTrades": {
       "trade_nightshade_bow_schematic": {
         "label": "Schemat Łuku z wilczej jagody",
-        "message": "Kupujesz schemat Łuku z wilczej jagody. Kupiec uśmiecha się mrocznie: 'Konstrukcja tego łuku jest okrutna. Jego strzały zatrują wrogów.'"
+        "message": "Kupujesz schemat Łuku z wilczej jagody. Handlarz uśmiecha się mrocznie: 'Konstrukcja tego łuku jest okrutna. Jego strzały zatrują wrogów.'"
       },
       "trade_skull_lantern": {
         "label": "Latarnia czaszkowa",
@@ -1277,7 +1277,7 @@
       },
       "trade_rootseeker_charm": {
         "label": "Talizman szukacza korzeni",
-        "message": "Kupujesz Talizman szukacza korzeni. Kupiec mamrocze coś o roślinach ludożerczych, które mają rosnąć głęboko w starożytnych lasach."
+        "message": "Kupujesz Talizman szukacza korzeni. Handlarz mamrocze coś o roślinach ludożerczych, które mają rosnąć głęboko w starożytnych lasach."
       },
       "trade_map_fragment_wooden": {
         "label": "Fragment mapy",
@@ -1300,11 +1300,11 @@
         "message": "Kupujesz butelkę Eliksiru żyłognia."
       },
       "trade_book_of_trials": {
-        "message": "Kupujesz Księgę prób. Kupiec uśmiecha się ze znajomością: 'Przewodnik dla tych, co chcą śledzić swoją drogę.'",
+        "message": "Kupujesz Księgę prób. Handlarz uśmiecha się ze znajomością: 'Przewodnik dla tych, co chcą śledzić swoją drogę.'",
         "label": "Księga prób"
       },
       "trade_book_of_absolution": {
-        "message": "Kupujesz Księgę rozgrzeszenia. Kupiec ścisza głos: 'Obrzęd dla tych, co zatrzymują to, czego nie powinni. Wgląd może zmyć trochę tej plamy.'",
+        "message": "Kupujesz Księgę rozgrzeszenia. Handlarz ścisza głos: 'Obrzęd dla tych, co zatrzymują to, czego nie powinni. Wgląd może zmyć trochę tej plamy.'",
         "label": "Księga rozgrzeszenia"
       },
       "trade_reinforced_rope": {
@@ -1312,27 +1312,27 @@
         "label": "Wzmocniona lina"
       },
       "trade_occultist_map": {
-        "message": "Gdy kupujesz mapę okultysty, kupiec szepcze: 'Stary okultysta ukrył sekrety w komorze głęboko w jaskini. Ta mapa cię poprowadzi.'",
+        "message": "Gdy kupujesz mapę okultysty, handlarz szepcze: 'Stary okultysta ukrył sekrety w komorze głęboko w jaskini. Ta mapa cię poprowadzi.'",
         "label": "Mapa okultysty"
       },
       "trade_giant_trap": {
-        "message": "Gdy kupujesz olbrzymią pułapkę, kupiec uśmiecha się: 'To może złapać coś ogromnego w lesie. Używaj mądrze.'",
+        "message": "Gdy kupujesz olbrzymią pułapkę, handlarz uśmiecha się: 'To może złapać coś ogromnego w lesie. Używaj mądrze.'",
         "label": "Olbrzymia pułapka"
       },
       "trade_arbalest_schematic": {
-        "message": "Kupujesz schemat arbaletu. Kupiec rozwija misterny plan: 'Projekt mistrza inżyniera. Dzięki niemu wykuć możesz potężną broń.'",
+        "message": "Kupujesz schemat arbaletu. Handlarz rozwija misterny plan: 'Projekt mistrza inżyniera. Dzięki niemu wykuć możesz potężną broń.'",
         "label": "Schemat arbaletu"
       },
       "trade_compound_bow": {
-        "message": "Kupujesz łuk bloczkowy. Kupiec kiwa głową z uznaniem: 'Broń wysokiej precyzji z zaginionej cywilizacji. Posłuży ci dobrze.'",
+        "message": "Kupujesz łuk bloczkowy. Handlarz kiwa głową z uznaniem: 'Broń wysokiej precyzji z zaginionej cywilizacji. Posłuży ci dobrze.'",
         "label": "Łuk bloczkowy"
       },
       "trade_stormglass_halberd_schematic": {
-        "message": "Kupujesz schemat Halabardy z burzoszkła. Kupiec odsłania wyblakłe plany: 'Z tym projektem wykuć możesz halabardę ogromnej mocy.'",
+        "message": "Kupujesz schemat Halabardy z burzoszkła. Handlarz odsłania wyblakłe plany: 'Z tym projektem wykuć możesz halabardę ogromnej mocy.'",
         "label": "Schemat Halabardy z burzoszkła"
       },
       "trade_natharit_pickaxe": {
-        "message": "Kupujesz kilof natharit. Kupiec podaje ci solidne narzędzie: 'Niezwykle trwały kilof z nieznanego materiału. Jego jakość jest wyjątkowa.'",
+        "message": "Kupujesz kilof natharit. Handlarz podaje ci solidne narzędzie: 'Niezwykle trwały kilof z nieznanego materiału. Jego jakość jest wyjątkowa.'",
         "label": "Kilof Natharit"
       }
     },
@@ -1383,7 +1383,7 @@
       "outcome4": "Oczy mnicha rozszerzają się na widok złota. 'To bardzo pomoże klasztorowi,' mówi, wyciągając szczegółowe plany klucza szkieletowego. 'Ten klucz ma otwierać każdy zamek,' mówi, zanim odejdzie.",
       "outcome5": "Odrzucasz ofertę mnicha. Kłania się z szacunkiem i wyrusza z powrotem w góry."
     },
-    "message": "Do wioski przybywa mnich z górskiego klasztoru. 'Słyszałem, że znaleźliście tajemniczą skrzynię,' mówi cicho. 'Klasztor wie, jak ją otworzyć. Złóż daninę, a podzielę się sekretem.'",
+    "message": "Do wioski przybywa mnich z górskiego klasztoru. 'Słyszałem, że znalazłeś tajemniczą skrzynię,' mówi cicho. 'Klasztor wie, jak ją otworzyć. Złóż daninę, a podzielę się sekretem.'",
     "title": "Górski mnich"
   },
   "monasteryResponse": {
@@ -1590,7 +1590,7 @@
       "outcome0": "Druid pochyla głowę. 'Niech więc zostanie wzniesiony.'",
       "outcome1": "'Może to była mądrość. Może to był strach,' mówi druid, zanim odejdzie w las."
     },
-    "message": "Ślepy druid wraca, mleczne oczy spoczywają na totemach z kości: 'Ofiarowaliście bogom wiele. Wznieście im znak, by dowieść oddania.'",
+    "message": "Ślepy druid wraca, mleczne oczy spoczywają na totemach z kości: 'Ofiarowałeś bogom wiele. Wznieś im znak, by dowieść oddania.'",
     "title": "Blady Krzyż"
   },
   "paleFigure": {
@@ -2397,7 +2397,7 @@
       "outcome2": "Wędrowiec krótko kiwa głową i odchodzi do wyrobiska, by zacząć pracę.",
       "outcome4": "Wędrowiec krótko kiwa głową i odchodzi do wyrobiska, by zacząć pracę."
     },
-    "message": "Człowiek w podartych szatach zbliża się do wioski, dłonie naznaczone latami ciężkiej pracy. 'Przychodzę z kolonii górniczej,' mówi szorstkim głosem. 'Mogę dla was pracować, by poprawić wydajność kopania.'",
+    "message": "Człowiek w podartych szatach zbliża się do wioski, dłonie naznaczone latami ciężkiej pracy. 'Przychodzę z kolonii górniczej,' mówi szorstkim głosem. 'Mogę dla ciebie pracować, by poprawić wydajność kopania.'",
     "title": "Bezimienny wędrowiec"
   },
   "veiledSeer": {
@@ -2568,7 +2568,7 @@
       "outcome0": "Witasz nomadów i oferujesz wsparcie. W zamian uczą twoich ludzi stawiać namioty z futra.",
       "outcome1": "Odmawiasz pomocy. Wódz plemienia kiwa głową z szacunkiem i prowadzi swój lud z powrotem w dzicz."
     },
-    "message": "Małe plemię nomadów zbliża się do wioski. Ich wódz mówi: 'Wędrowaliśmy daleko i szukamy miejsca, które nazwiemy domem. Pomóżcie nam się osiedlić, a nauczymy waszych ludzi stawiać namioty z futra.'",
+    "message": "Małe plemię nomadów zbliża się do wioski. Ich wódz mówi: 'Wędrowaliśmy daleko i szukamy miejsca, które nazwiemy domem. Pomóż nam się osiedlić, a nauczymy twoich ludzi stawiać namioty z futra.'",
     "title": "Wędrujące plemię"
   },
   "whispererInTheDark": {
@@ -2682,7 +2682,7 @@
     "log": {
       "outcome0": "Przyjmujesz krwawą przysięgę. Łowczyni nacina ci dłoń i przyciska ją do swojej, pieczętując przysięgę krwią. 'W moim plemieniu zwą mnie Łowczynią Popiołowego Widma,' mówi. 'Nauczę twoich myśliwych dróg dziczy.' Łowczyni Popiołowego Widma dołączyła do twojej drużyny."
     },
-    "message": "Dzika łowczyni wraca z lasu. 'Uratowaliście moje plemię od zagłady,' mówi, przecinając dłoń nożem z kości. Krew kapie na ziemię. 'Według starych zwyczajów mojego ludu oferuję wam krwawą przysięgę. Będę wam dłużna na zawsze.'",
+    "message": "Dzika łowczyni wraca z lasu. 'Uratowałeś moje plemię od zagłady,' mówi, przecinając dłoń nożem z kości. Krew kapie na ziemię. 'Według starych zwyczajów mojego ludu oferuję ci krwawą przysięgę. Będę ci dłużna na zawsze.'",
     "title": "Krwawa przysięga"
   },
   "witchsCurse": {
@@ -2710,11 +2710,11 @@
       "outcome6": "Wypowiadasz starożytne słowa mocy, poznane ze starych tekstów. Wiedźma cofa się ze strachu i ucieka, jej klątwa złamana, zanim zdążyła się przyjąć.",
       "outcome7": "Twoje groźby tylko gniewają wiedźmę. Śmieje się i klnie cię mroczną magią. Gdy odchodzi, wieśniacy zaczynają czuć się słabi, jakby ich siłę wyssała niewidzialna moc."
     },
-    "message": "Zgarbiona stara kobieta w postrzępionych szatach przybywa do bram. Ze złością w głosie żąda: 'Zapłać mi 50 złota, albo przeklnę was nieszczęściem.'",
+    "message": "Zgarbiona stara kobieta w postrzępionych szatach przybywa do bram. Ze złością w głosie żąda: 'Zapłać mi 50 złota, albo przeklnę cię nieszczęściem.'",
     "title": "Klątwa wiedźmy"
   },
   "wizardArrives": {
-    "message": "Niski stary człowiek z długą siwą brodą, w wytartym szarym płaszczu, zbliża się do osady. Jego oczy błyszczą starożytną mądrością i mocą. 'Jestem czarodziejem,' oświadcza głosem niosącym się z arkanicznym autorytetem. 'Zbudujcie mi wieżę, a wspomogę was mocami poza śmiertelnym pojęciem.'"
+    "message": "Niski stary człowiek z długą siwą brodą, w wytartym szarym płaszczu, zbliża się do osady. Jego oczy błyszczą starożytną mądrością i mocą. 'Jestem czarodziejem,' oświadcza głosem niosącym się z arkanicznym autorytetem. 'Zbuduj mi wieżę, a wspomogę cię mocami poza śmiertelnym pojęciem.'"
   },
   "wizardBloodstone": {
     "message": "Czarodziej wraca z podróży do lasu. 'Naradziłem się ze starym przyjacielem, czarodziejem-pustelnikiem, który mieszka głęboko w gęstwinie,' mówi poważnie. 'Mówił o krwawym kamieniu, którego potrzebujemy. Leży w Zatopionej Świątyni, starożytnej kapliczce, teraz na wpół zatopionej w bagnach lasu.'",
@@ -2854,11 +2854,11 @@
     },
     "message": {
       "level1": "Muskularny człowiek z wielką siekierą zbliża się do wioski. Napina ramiona. \"Potrafię rąbać drzewa jak nikt inny,\" chwali się. \"Daj mi {{foodCost}} żywności, a przyniosę {{woodReward}} drewna.\"",
-      "level2": "Drwal wraca, siekiera lśni w słońcu. \"W waszej wiosce więcej ust,\" zauważa. \"Mogę przynieść {{woodReward}} drewna. Wy dajecie mi {{foodCost}} żywności. Co powiecie?\"",
-      "level3": "Drwal zbliża się znów. \"Wasza wioska wciąż stoi,\" mówi z uśmiechem. \"Mogę przynieść {{woodReward}} drewna, jeśli zapłacicie {{foodCost}} żywności.\"",
-      "level4": "Drwal przybywa raz jeszcze. \"Chcecie znów skorzystać z moich usług? {{woodReward}} drewna za {{foodCost}} żywności,\" pyta.",
+      "level2": "Drwal wraca, siekiera lśni w słońcu. \"W twojej wiosce więcej ust,\" zauważa. \"Mogę przynieść {{woodReward}} drewna. Ty dajesz mi {{foodCost}} żywności. Co powiesz?\"",
+      "level3": "Drwal zbliża się znów. \"Twoja wioska wciąż stoi,\" mówi z uśmiechem. \"Mogę przynieść {{woodReward}} drewna, jeśli zapłacisz {{foodCost}} żywności.\"",
+      "level4": "Drwal przybywa raz jeszcze. \"Chcesz znów skorzystać z moich usług? {{woodReward}} drewna za {{foodCost}} żywności,\" pyta.",
       "level5": "Drwal zjawia się z pewnym uśmiechem. \"Może zrobimy jeszcze jeden układ? {{woodReward}} drewna za {{foodCost}} żywności.\"",
-      "level6": "Drwal wraca do wioski. \"Chcecie znów skorzystać z moich usług? Oferuję {{woodReward}} drewna za {{foodCost}} żywności,\" mówi."
+      "level6": "Drwal wraca do wioski. \"Chcesz znów skorzystać z moich usług? Oferuję {{woodReward}} drewna za {{foodCost}} żywności,\" mówi."
     },
     "title": {
       "level1": "Drwal",

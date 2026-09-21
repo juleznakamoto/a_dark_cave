@@ -56,7 +56,7 @@
       "temple": "Un gran templo está terminado; sus salones sagrados resuenan con plegarias susurradas que calman el alma atormentada.",
       "sanctum": "El santuario se alza como un faro de protección divina; su aura bendita aleja los pensamientos y temores más oscuros.",
       "alchemistHall": "Los salones del alquimista se alzan imponentes, con cámaras llenas de crisoles burbujeantes e instrumentos relucientes de un oficio olvidado.",
-      "tradePost": "Se construye un puesto comercial cerca del bosque, atrayendo comerciantes que buscan vender sus bienes por oro.",
+      "tradePost": "Se construye un puesto comercial cerca del bosque, atrayendo mercaderes que buscan vender sus bienes por oro.",
       "grandBazaar": "El Gran bazar se alza, un mercado extenso donde mercaderes de tierras lejanas se reúnen para comerciar.",
       "merchantsGuild": "El Gremio de mercaderes está terminado, una organización poderosa que controla todas las rutas comerciales y trae una riqueza sin precedentes a tu asentamiento.",
       "bastion": "El bastión se alza como una montaña de piedra, con muros gruesos e inflexibles. Una promesa de protección contra lo que se agita en las profundidades.",
@@ -66,7 +66,7 @@
       "improvedTraps": "El perímetro de la aldea se refuerza con fosos cubiertos, lazos de resorte y mecanismos de acero. Los atacantes reciben una bienvenida mucho más letal.",
       "blackMonolith": "El Monolito negro se alza en el centro de la aldea, un monumento elevado de adamantita oscura. Su superficie parece beber la luz, y los aldeanos se reúnen a su alrededor con reverencia y temor.",
       "blackEstate": "La Finca negra se alza desde la colina, rodeada por un velo de niebla.",
-      "chitinPlating": "Las fortificaciones estón ahora reforzadas con blindaje de quitina. La defensa de la aldea aumenta notablemente.",
+      "chitinPlating": "Las fortificaciones están ahora reforzadas con revestimiento de quitina. La defensa de la aldea aumenta notablemente.",
       "pillarOfClarity": "El Pilar de claridad se alza, un obelisco reluciente que parece vibrar con poder antiguo. Su presencia aporta calma y enfoque a quienes están cerca.",
       "boneTemple": "El Templo de hueso se alza a partir de miles de huesos cuidadosamente dispuestos, un monumento a los dioses antiguos. Su presencia emana poder oscuro, y los aldeanos se acercan a él con reverencia y miedo.",
       "heartfire": "El Fuego del corazón está encendido. Su calor y su luz dan a la aldea un nuevo sentido de propósito."
@@ -82,11 +82,11 @@
       "voidBombFirst": "Combinando polvo de fuego de ceniza con obsidiana y pólvora negra, creas un arma de aterradora potencia. La bomba del vacío parece distorsionar el espacio a su alrededor; la realidad misma retrocede ante su presencia.",
       "veinfireElixirFirst": "El alquimista destila esencia luminosa de fibras de raíz vena. Ahora tienes un elixir de fuego venoso - una poción de la que se rumorea que refuerza el bastión cuando todo parece perdido.",
       "frostglassSword": "La forja del herrero arde con llamas azules etéreas mientras el vidrio de escarcha se moldea en una magnífica espada. La hoja brilla con una luz fría de otro mundo, irradiando un inmenso poder.",
-      "arbalest": "Siguiendo el esquema, fabricas una ballesta meticulosamente decorada. Su ingeniería es impecable, diseñada por un maestro artesano.",
+      "arbalest": "Siguiendo el esquema, fabricas una arbalesta meticulosamente decorada. Su ingeniería es impecable, diseñada por un maestro artesano.",
       "nightshadeBow": "Fabricas un arco de madera oscura. Sus flechas llevarán veneno a tus enemigos.",
       "bloodstoneStaff": "El mago canaliza su poder arcano hacia las gemas de piedra de sangre, fusionándolas con madera antigua. El bastón de piedra de sangre pulsa con energía carmesí, irradiando fuerza y conocimiento prohibido.",
       "stormglassHalberd": "Forjas la alabarda de vidrio de tormenta, cuya hoja brilla con una luz etérea. Te sientes significativamente más fuerte empuñando esta arma legendaria.",
-      "ashenGreatshield": "El herrero forja los huesos masivos de la criatura del lago en un escudo impenetrable. El gran escudo cenizo es un baluarte de fuerza inigualable, capaz de proteger a tus fuerzas de las amenazas más mortales."
+      "ashenGreatshield": "El herrero forja los huesos masivos de la criatura del lago en un escudo impenetrable. El gran escudo ceniciento es un baluarte de fuerza inigualable, capaz de proteger a tus fuerzas de las amenazas más mortales."
     },
     "sacrifice": {
       "ringOfClarity": "Entre las ofrendas del sacrificio, descubres un anillo cristalino.",

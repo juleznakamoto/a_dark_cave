@@ -734,7 +734,7 @@
       },
       "payVillagers": {
         "cost": "20 Dorfbewohner",
-        "label": "20 Dorfbewohner anbieten"
+        "label": "20 Dorfbewohner"
       },
       "sendAway": {
         "label": "Sie wegschicken"
@@ -746,7 +746,7 @@
       "outcome2": "Du schickst sie fort. Sie sagt, sie könne zurückkehren, wenn du bereit seist.",
       "outcome3": "Die Zeit läuft ab. Sie geht und sagt, sie könne zurückkehren, wenn du bereit seist."
     },
-    "message": "Eine reich geschmückte, orientalisch wirkende Frau trifft mit zwei kräftigen Begleitern ein. Sie bietet an, das Wissen zur Herstellung einer mächtigen Obsidiankugel zu teilen – im Austausch gegen Gold oder Dorfbewohner.",
+    "message": "Eine reich geschmückte, orientalisch anmutende Frau trifft mit zwei kräftigen Begleitern ein. Sie bietet an, das Wissen zur Herstellung einer mächtigen Obsidiankugel zu teilen, im Austausch gegen Gold oder Dorfbewohner.",
     "title": "Die Obsidiankugel"
   },
   "facesInWalls": {
@@ -755,7 +755,7 @@
         "label": "Gesichter untersuchen"
       },
       "ignore": {
-        "label": "Sie ignorieren"
+        "label": "Ignorieren"
       }
     },
     "log": {
@@ -770,7 +770,7 @@
     "choices": {
       "makeFeast": {
         "cost": "{{foodCost}} Nahrung",
-        "label": "{{foodCost}} Nahrung ausgeben"
+        "label": "{{foodCost}} Nahrung"
       },
       "noFeast": {
         "label": "Fest ablehnen"
@@ -1196,7 +1196,7 @@
       },
       "trade_tarnished_compass": {
         "label": "Angelaufener Kompass",
-        "message": "Du kaufst den angelaufenen Kompass. Artefakt der verschwundenen Zivilisation – seine Nadel weist auf verborgene Orte."
+        "message": "Du kaufst den angelaufenen Kompass. Artefakt der verschwundenen Zivilisation; seine Nadel weist auf verborgene Orte."
       },
       "trade_rootseeker_charm": {
         "label": "Wurzelsucher-Talisman",
@@ -1243,8 +1243,8 @@
         "label": "Riesige Falle"
       },
       "trade_arbalest_schematic": {
-        "message": "Du kaufst den Armbrust-Bauplan. Der Händler entfaltet einen filigranen Entwurf: „Ein Design eines Meisteringenieurs. Damit kannst du eine mächtige Waffe herstellen.“",
-        "label": "Armbrust-Bauplan"
+        "message": "Du kaufst den Arbalest-Bauplan. Der Händler entfaltet einen filigranen Entwurf: „Ein Design eines Meisteringenieurs. Damit kannst du eine mächtige Waffe herstellen.“",
+        "label": "Arbalest-Bauplan"
       },
       "trade_compound_bow": {
         "message": "Du kaufst den Compoundbogen. Der Händler nickt anerkennend: „Präzisionswaffe der verschwundenen Zivilisation. Sie wird dir gute Dienste leisten.“",
@@ -1996,7 +1996,7 @@
   "shadowsMove": {
     "choices": {
       "ignore": {
-        "label": "Sie ignorieren"
+        "label": "Ignorieren"
       },
       "stare_at_shadows": {
         "label": "Schatten anstarren"

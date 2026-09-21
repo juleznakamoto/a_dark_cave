@@ -724,7 +724,7 @@
     "choices": {
       "makeFeast": {
         "cost": "{{foodCost}} comida",
-        "label": "Gastar {{foodCost}} Comida"
+        "label": "{{foodCost}} Comida"
       },
       "noFeast": {
         "label": "Recusar o banquete"
@@ -1815,15 +1815,15 @@
       }
     },
     "log": {
-      "outcome0": "O Sanctum se transforma num nexo de poder divino. Todos os deuses respondem ao seu chamado, seus dons são seus.",
+      "outcome0": "O Sacrário se transforma num nexo de poder divino. Todos os deuses respondem ao seu chamado, seus dons são seus.",
       "dedicate_dagon": "A Bênção de Dagon flui mais forte do que antes.",
       "dedicate_flame": "A Primeira Chama arde mais intensa do que antes.",
       "dedicate_raven": "A Marca do Corvo se fortalece mais do que antes.",
       "dedicate_ash": "O Abraço das Cinzas está mais forte do que antes.",
       "dedicate_unknown": ""
     },
-    "message": "O druida cego emerge: 'O Sanctum está completo,' diz ele, sua voz carregando o peso da sabedoria antiga. 'Agora você deve escolher: aprofundar sua devoção ao caminho que escolheu, ou abraçar todos os deuses e seus dons. Escolha com sabedoria.'",
-    "title": "A Dedicação do Sanctum"
+    "message": "O druida cego emerge: 'O Sacrário está completo,' diz ele, sua voz carregando o peso da sabedoria antiga. 'Agora você deve escolher: aprofundar sua devoção ao caminho que escolheu, ou abraçar todos os deuses e seus dons. Escolha com sabedoria.'",
+    "title": "A Dedicação do Sacrário"
   },
   "scholarResearchProposal": {
     "choices": {
@@ -2478,19 +2478,19 @@
     "message": "Um pequeno homem idoso de longa barba grisalha, num casaco cinza desgastado, se aproxima do assentamento. Seus olhos reluzem de antiga sabedoria e poder. 'Sou um mago,' declara ele com voz que ecoa autoridade arcana. 'Construa-me uma torre, e eu o auxiliarei com poderes além da compreensão mortal.'"
   },
   "wizardBloodstone": {
-    "message": "O mago retorna de uma jornada à floresta. 'Consultei um velho amigo, um mago eremita que habita nas profundezas da mata,' diz ele gravemente. 'Ele falou da pedra de sangue de que precisamos. Ela jaz no Templo Submerso, um antigo santuário agora meio afogado nos pântanos da floresta.'",
+    "message": "O mago retorna de uma jornada à floresta. 'Consultei um velho amigo, um mago eremita que habita nas profundezas da mata,' diz ele gravemente. 'Ele falou da pedra-de-sangue de que precisamos. Ela jaz no Templo Submerso, um antigo santuário agora meio afogado nos pântanos da floresta.'",
     "title": "O Templo Submerso"
   },
   "wizardBloodstoneStaff": {
-    "message": "O mago examina as gemas de pedra de sangue que você recuperou do Templo Submerso. 'Com estas pedras de sangue, agora temos tudo de que precisamos. Agora podemos criar o Cajado de Pedra de Sangue. Junto com a Espada de Vidro de Gelo, teremos os meios para enfrentar a escuridão que se esconde lá embaixo.'",
-    "title": "O Cajado de Pedra de Sangue"
+    "message": "O mago examina as gemas de pedra-de-sangue que você recuperou do Templo Submerso. 'Com estas pedras-de-sangue, agora temos tudo de que precisamos. Agora podemos criar o Cajado de Pedra-de-Sangue. Junto com a Espada de Vidro-de-Gelo, teremos os meios para enfrentar a escuridão que se esconde lá embaixo.'",
+    "title": "O Cajado de Pedra-de-Sangue"
   },
   "wizardDecryptsScrolls": {
-    "message": "O mago sai de sua torre, 'Decifrei os pergaminhos antigos,' diz ele. 'As criaturas lá embaixo só podem ser mortas com armas de grande poder: uma espada de vidro de gelo e um cajado coroado com pedra de sangue. Nas profundezas da floresta jaz o túmulo de um antigo rei cujos tesouros podem guardar o vidro de gelo de que precisamos.'",
+    "message": "O mago sai de sua torre, 'Decifrei os pergaminhos antigos,' diz ele. 'As criaturas lá embaixo só podem ser mortas com armas de grande poder: uma espada de vidro-de-gelo e um cajado coroado com pedra-de-sangue. Nas profundezas da floresta jaz o túmulo de um antigo rei cujos tesouros podem guardar o vidro-de-gelo de que precisamos.'",
     "title": "Conhecimento Antigo"
   },
   "wizardFrostglassSword": {
-    "message": "O mago examina o vidro de gelo, luz fria dançando por sua superfície. 'Você o encontrou. Agora, a Espada de Vidro de Gelo pode ser forjada.'"
+    "message": "O mago examina o vidro-de-gelo, luz fria dançando por sua superfície. 'Você o encontrou. Agora, a Espada de Vidro-de-Gelo pode ser forjada.'"
   },
   "wizardNecromancerCastle": {
     "message": "O mago o chama à sua torre: 'Soube de um castelo nas profundezas da selva, o antigo domínio de um necromante há muito morto. Dentro de suas paredes jazem pergaminhos antigos que falam de como podemos derrotar o que habita as profundezas da caverna.'",
@@ -2868,11 +2868,11 @@
       }
     },
     "message": "Os cervos se comportam de forma estranha. Não fogem. Parecem olhar fixamente para os caçadores. Caçar está fácil agora, mas os caçadores voltam abalados.",
-    "title": "Cervos que olham"
+    "title": "Cervos Observadores"
   },
   "brimstoneFlux1": {
     "title": "O Fluxo de Enxofre",
-    "message": "Um homem pequeno e barbudo, de braços enormes, chega à vila. Diz que conhece a fundição e pode melhorar sua produção de aço por um tempo. Precisa de enxofre e um pouco de ouro.",
+    "message": "Um homem pequeno e barbudo, de braços enormes, chega à aldeia. Diz que conhece a fundição e pode melhorar sua produção de aço por um tempo. Precisa de enxofre e um pouco de ouro.",
     "choices": {
       "accept": {
         "label": "Aceitar ajuda",

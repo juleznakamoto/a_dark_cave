@@ -27,7 +27,7 @@
   },
   "crow_harness": {
     "activationMessage": "鴉のハーネスを道具に加えた。次は、ハーネスに繋ぐ鴉を探さねばならない。",
-    "description": "伝書鴉のために作られた装具。鴉の物語を解放する。仲間が1人増える。",
+    "description": "伝書鴉のために作られたハーネス。鴉の物語を解放する。仲間が1人増える。",
     "name": "鴉のハーネス"
   },
   "cruel_mode": {
@@ -36,8 +36,8 @@
     "name": "残酷モード"
   },
   "full_game": {
-    "activationMessage": "製品版を解除し、発動した。旅に制限はなくなった。",
-    "description": "製品版を解除し、旅を続ける。",
+    "activationMessage": "製品版を解放し、発動した。旅に制限はなくなった。",
+    "description": "製品版を解放し、旅を続ける。",
     "name": "製品版"
   },
   "gold_1000": {
