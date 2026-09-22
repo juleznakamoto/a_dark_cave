@@ -12,106 +12,46 @@ import {
 } from "@/game/socialTaskRewards";
 
 /**
- * Active-play milestones (ms) at which the rewards dialog auto-opens once each, * for both guests and signed-in players.
+ * Active-play time (ms) at which the rewards dialog auto-opens once,
+ * for both guests and signed-in players.
  */
-export const SOCIAL_PROMPT_AUTO_OPEN_PLAY_MS = [
-  60 * 60 * 1000,
-  120 * 60 * 1000,
-  180 * 60 * 1000,
-  240 * 60 * 1000,
-  360 * 60 * 1000,
-] as const;
+export const SOCIAL_PROMPT_AUTO_OPEN_PLAY_MS = [60 * 60 * 1000] as const;
 
 export const SOCIAL_PROMPT_AUTO_OPEN_COUNT = SOCIAL_PROMPT_AUTO_OPEN_PLAY_MS.length;
 
-/** Milestone indices skipped when the player has already completed ≥3 exclusive-track tasks. */
-const SOCIAL_PROMPT_SKIP_MILESTONE_INDICES_WHEN_ENGAGED = new Set([1, 3]);
-
-export const SOCIAL_PROMPT_ENGAGED_TASK_SKIP_THRESHOLD = 3;
-
-export function shouldSkipSocialPromptMilestone(
-  index: number,
-  completedTasks: number,
-): boolean {
-  return (
-    completedTasks >= SOCIAL_PROMPT_ENGAGED_TASK_SKIP_THRESHOLD &&
-    SOCIAL_PROMPT_SKIP_MILESTONE_INDICES_WHEN_ENGAGED.has(index)
-  );
-}
-
-/** Advance past milestones that should not auto-open for engaged players. */
-export function normalizeSocialPromptMilestoneIndex(
-  index: number,
-  completedTasks: number,
-): number {
-  let i = Math.max(0, Math.min(index, SOCIAL_PROMPT_AUTO_OPEN_COUNT));
-  while (
-    i < SOCIAL_PROMPT_AUTO_OPEN_COUNT &&
-    shouldSkipSocialPromptMilestone(i, completedTasks)
-  ) {
-    i++;
-  }
-  return i;
+function clampSocialPromptMilestoneIndex(index: number): number {
+  return Math.max(0, Math.min(index, SOCIAL_PROMPT_AUTO_OPEN_COUNT));
 }
 
 /** How many {@link SOCIAL_PROMPT_AUTO_OPEN_PLAY_MS} thresholds `playTimeMs` has already passed (for save migration). */
-export function socialPromptMilestoneFloorFromPlayTime(
-  playTimeMs: number,
-  completedTasks = 0,
-): number {
+export function socialPromptMilestoneFloorFromPlayTime(playTimeMs: number): number {
   let passed = 0;
   for (let i = 0; i < SOCIAL_PROMPT_AUTO_OPEN_COUNT; i++) {
-    if (shouldSkipSocialPromptMilestone(i, completedTasks)) continue;
     if (playTimeMs >= SOCIAL_PROMPT_AUTO_OPEN_PLAY_MS[i]) {
       passed = i + 1;
     } else {
       break;
     }
   }
-  return normalizeSocialPromptMilestoneIndex(passed, completedTasks);
+  return passed;
 }
 
-/**
- * When `playTimeMs` has crossed several unreached milestones at once (e.g. after returning
- * with the tab open), returns the index of the highest threshold to show once; lower thresholds
- * are skipped.
- */
+/** The single unreached auto-open, or null once it has been shown or play time is still under an hour. */
 export function socialPromptHighestMilestoneIndexToOpen(
   playTimeMs: number,
   nextMilestoneIndex: number,
-  completedTasks = 0,
 ): number | null {
-  const start = normalizeSocialPromptMilestoneIndex(
-    nextMilestoneIndex,
-    completedTasks,
-  );
+  const start = clampSocialPromptMilestoneIndex(nextMilestoneIndex);
   if (start >= SOCIAL_PROMPT_AUTO_OPEN_COUNT) return null;
-
-  let target = start;
-  while (target + 1 < SOCIAL_PROMPT_AUTO_OPEN_COUNT) {
-    const nextIndex = target + 1;
-    if (playTimeMs < SOCIAL_PROMPT_AUTO_OPEN_PLAY_MS[nextIndex]) break;
-    target = nextIndex;
-  }
-
-  target = normalizeSocialPromptMilestoneIndex(target, completedTasks);
-  if (target >= SOCIAL_PROMPT_AUTO_OPEN_COUNT) return null;
-
-  if (playTimeMs >= SOCIAL_PROMPT_AUTO_OPEN_PLAY_MS[target]) {
-    return target;
-  }
+  if (playTimeMs >= SOCIAL_PROMPT_AUTO_OPEN_PLAY_MS[start]) return start;
   return null;
 }
 
-/** Index to persist after showing the milestone at `openedMilestoneIndex`. */
+/** Index to persist after showing the auto-open. */
 export function socialPromptMilestoneIndexAfterOpen(
   openedMilestoneIndex: number,
-  completedTasks: number,
 ): number {
-  return normalizeSocialPromptMilestoneIndex(
-    openedMilestoneIndex + 1,
-    completedTasks,
-  );
+  return clampSocialPromptMilestoneIndex(openedMilestoneIndex + 1);
 }
 
 export { SOCIAL_PROMPT_REFERRAL_CAP };

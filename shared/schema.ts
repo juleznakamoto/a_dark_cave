@@ -775,8 +775,9 @@ export const gameStateSchema = z.object({
   /** Legacy; lastSocialPromptPlayTime is no longer used to schedule auto-open. */
   lastSocialPromptPlayTime: z.number().default(0),
   /**
-   * Next rewards-dialog auto-open milestone index (0–5). When playTime reaches
-   * `socialPromptAuto`’s `SOCIAL_PROMPT_AUTO_OPEN_PLAY_MS[index]`, the dialog opens once and index increments.
+   * Rewards-dialog auto-open progress. 0 = not yet shown. Once playTime reaches
+   * one hour the dialog opens once and this becomes 1. Legacy saves may store
+   * 2-5 from the old multi-milestone schedule; any value >= 1 means already shown.
    */
   socialPromptMilestoneIndex: z.number().int().min(0).max(5).default(0),
   /** Legacy; Playlight exit-intent banners are no longer shown. */

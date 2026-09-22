@@ -48,10 +48,11 @@
     "exclusiveRewardEffect": "{{percent}}% шанс удвоить награды за действия",
     "progressAriaLabel": "Эксклюзивная награда",
     "alreadyClaimedReward": "Вы уже получили эту награду!",
-    "playlightDiscoverRewardLog": "Вы получили {{amount}} золота за то, что попробовали игру!",
+    "resourceBonus": "+{{amount}} {{resource}}",
+    "playlightDiscoverRewardLog": "Вы получили {{amount}} {{resource}} за то, что попробовали игру!",
     "marketingSubscribeLog": "Вы получили {{amount}} золота за подписку на рассылку по электронной почте!",
-    "followRewardLog": "Вы получили {{amount}} золота за подписку на нас в {{platform}}!",
-    "subscribeRewardLog": "Вы получили {{amount}} золота за подписку на нас в {{platform}}!",
+    "followRewardLog": "Вы получили {{amount}} {{resource}} за подписку на нас в {{platform}}!",
+    "subscribeRewardLog": "Вы получили {{amount}} {{resource}} за подписку на нас в {{platform}}!",
     "platforms": {
       "youtube": {
         "title": "YouTube",

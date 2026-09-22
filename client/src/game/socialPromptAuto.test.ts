@@ -7,7 +7,6 @@ import {
   socialPromptHighestMilestoneIndexToOpen,
   socialPromptMilestoneFloorFromPlayTime,
   socialPromptMilestoneIndexAfterOpen,
-  shouldSkipSocialPromptMilestone,
 } from "./socialPromptAuto";
 import { PLAYLIGHT_DISCOVER_REWARD_KEY } from "./playlightDiscoverReward";
 
@@ -24,52 +23,26 @@ const claimedPlaylightDiscover = {
 };
 
 describe("socialPromptMilestoneFloorFromPlayTime", () => {
-  it("counts thresholds strictly by active-play milestones", () => {
+  it("marks the one-hour auto-open as passed and stays there", () => {
     expect(socialPromptMilestoneFloorFromPlayTime(0)).toBe(0);
     expect(socialPromptMilestoneFloorFromPlayTime(59 * MIN)).toBe(0);
     expect(socialPromptMilestoneFloorFromPlayTime(60 * MIN)).toBe(1);
-    expect(socialPromptMilestoneFloorFromPlayTime(119 * MIN)).toBe(1);
-    expect(socialPromptMilestoneFloorFromPlayTime(120 * MIN)).toBe(2);
-    expect(socialPromptMilestoneFloorFromPlayTime(179 * MIN)).toBe(2);
-    expect(socialPromptMilestoneFloorFromPlayTime(180 * MIN)).toBe(3);
-    expect(socialPromptMilestoneFloorFromPlayTime(239 * MIN)).toBe(3);
-    expect(socialPromptMilestoneFloorFromPlayTime(240 * MIN)).toBe(4);
-    expect(socialPromptMilestoneFloorFromPlayTime(359 * MIN)).toBe(4);
-    expect(socialPromptMilestoneFloorFromPlayTime(360 * MIN)).toBe(5);
-    expect(socialPromptMilestoneFloorFromPlayTime(24 * 60 * MIN)).toBe(5);
+    expect(socialPromptMilestoneFloorFromPlayTime(24 * 60 * MIN)).toBe(1);
   });
 });
 
 describe("socialPromptHighestMilestoneIndexToOpen", () => {
-  it("returns null when all milestones were already shown", () => {
+  it("returns null once the auto-open was already shown", () => {
+    expect(socialPromptHighestMilestoneIndexToOpen(24 * 60 * MIN, 1)).toBe(null);
     expect(socialPromptHighestMilestoneIndexToOpen(24 * 60 * MIN, 5)).toBe(null);
   });
 
-  it("returns the next single milestone when only one threshold was crossed", () => {
-    expect(socialPromptHighestMilestoneIndexToOpen(70 * MIN, 0)).toBe(0);
-    expect(socialPromptHighestMilestoneIndexToOpen(70 * MIN, 1)).toBe(null);
-  });
-
-  it("skips lower thresholds and returns the highest crossed milestone", () => {
-    expect(socialPromptHighestMilestoneIndexToOpen(130 * MIN, 0)).toBe(1);
-    expect(socialPromptHighestMilestoneIndexToOpen(200 * MIN, 1)).toBe(2);
-  });
-
-  it("respects the next milestone index when play time is between thresholds", () => {
-    expect(socialPromptHighestMilestoneIndexToOpen(130 * MIN, 1)).toBe(1);
-    expect(socialPromptHighestMilestoneIndexToOpen(70 * MIN, 1)).toBe(null);
-  });
-
-  it("skips 120m and 240m milestones when ≥3 exclusive-track tasks are done", () => {
-    expect(shouldSkipSocialPromptMilestone(1, 3)).toBe(true);
-    expect(shouldSkipSocialPromptMilestone(3, 3)).toBe(true);
-    expect(shouldSkipSocialPromptMilestone(1, 2)).toBe(false);
-
-    expect(socialPromptHighestMilestoneIndexToOpen(130 * MIN, 0, 3)).toBe(null);
-    expect(socialPromptHighestMilestoneIndexToOpen(200 * MIN, 0, 3)).toBe(2);
-    expect(socialPromptMilestoneIndexAfterOpen(0, 3)).toBe(2);
-
-    expect(socialPromptMilestoneFloorFromPlayTime(120 * MIN, 3)).toBe(2);
+  it("opens once at one hour and not again", () => {
+    expect(socialPromptHighestMilestoneIndexToOpen(59 * MIN, 0)).toBe(null);
+    expect(socialPromptHighestMilestoneIndexToOpen(60 * MIN, 0)).toBe(0);
+    expect(socialPromptHighestMilestoneIndexToOpen(360 * MIN, 0)).toBe(0);
+    expect(socialPromptMilestoneIndexAfterOpen(0)).toBe(1);
+    expect(socialPromptHighestMilestoneIndexToOpen(360 * MIN, 1)).toBe(null);
   });
 });
 

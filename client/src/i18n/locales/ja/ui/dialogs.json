@@ -46,10 +46,11 @@
     "exclusiveRewardEffect": "行動の獲得が倍になる確率{{percent}}%",
     "progressAriaLabel": "限定報酬",
     "alreadyClaimedReward": "この報酬はすでに受け取っています！",
-    "playlightDiscoverRewardLog": "ゲームを試して{{amount}}金貨を得た！",
+    "resourceBonus": "+{{amount}}{{resource}}",
+    "playlightDiscoverRewardLog": "ゲームを試して{{amount}}{{resource}}を得た！",
     "marketingSubscribeLog": "メールのお知らせを購読して{{amount}}金貨を得た！",
-    "followRewardLog": "{{platform}}をフォローして{{amount}}金貨を得た！",
-    "subscribeRewardLog": "{{platform}}をチャンネル登録して{{amount}}金貨を得た！",
+    "followRewardLog": "{{platform}}をフォローして{{amount}}{{resource}}を得た！",
+    "subscribeRewardLog": "{{platform}}をチャンネル登録して{{amount}}{{resource}}を得た！",
     "platforms": {
       "youtube": {
         "title": "YouTube",

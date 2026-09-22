@@ -6,19 +6,20 @@ import { logger } from "@/lib/logger";
 import type { LogEntry } from "@/game/rules/events";
 import { tWithFallback } from "@/i18n/resolveGameText";
 import {
+  PLAYLIGHT_DISCOVER_REWARD,
   PLAYLIGHT_DISCOVER_REWARD_COMPLETE_DELAY_MS,
-  PLAYLIGHT_DISCOVER_REWARD_GOLD,
   PLAYLIGHT_DISCOVER_REWARD_KEY,
 } from "@/game/playlightRewards";
 import { syncSocialPromoExclusiveRewardPending } from "./socialPromoExclusiveReward";
 import {
+  getSocialTaskResourceLabel,
   isSocialRewardClaimed,
   isSocialRewardFulfilled,
 } from "@/game/socialTaskRewards";
 
 export {
+  PLAYLIGHT_DISCOVER_REWARD,
   PLAYLIGHT_DISCOVER_REWARD_COMPLETE_DELAY_MS,
-  PLAYLIGHT_DISCOVER_REWARD_GOLD,
   PLAYLIGHT_DISCOVER_REWARD_KEY,
 } from "@/game/playlightRewards";
 
@@ -48,7 +49,7 @@ function persistPlaylightDiscoverState(): void {
 }
 
 /**
- * Opens Playlight Discovery, waits {@link PLAYLIGHT_DISCOVER_REWARD_COMPLETE_DELAY_MS}, then marks fulfilled (no gold until Claim).
+ * Opens Playlight Discovery, waits {@link PLAYLIGHT_DISCOVER_REWARD_COMPLETE_DELAY_MS}, then marks fulfilled (no reward until Claim).
  */
 export async function fulfillPlaylightDiscoverReward(): Promise<boolean> {
   const store = useGameStore.getState();
@@ -122,8 +123,8 @@ export async function fulfillPlaylightDiscoverReward(): Promise<boolean> {
   }
 }
 
-/** Grants gold for a fulfilled Playlight discover task. */
-export async function claimPlaylightDiscoverGoldReward(): Promise<boolean> {
+/** Grants silver for a fulfilled Try 1 game task. */
+export async function claimPlaylightDiscoverTaskReward(): Promise<boolean> {
   const store = useGameStore.getState();
   const entry = store.social_media_rewards[PLAYLIGHT_DISCOVER_REWARD_KEY];
 
@@ -146,15 +147,26 @@ export async function claimPlaylightDiscoverGoldReward(): Promise<boolean> {
     },
   }));
 
-  useGameStore.getState().updateResource("gold", PLAYLIGHT_DISCOVER_REWARD_GOLD);
+  useGameStore
+    .getState()
+    .updateResource(
+      PLAYLIGHT_DISCOVER_REWARD.resource,
+      PLAYLIGHT_DISCOVER_REWARD.amount,
+    );
 
+  const resourceLabel = getSocialTaskResourceLabel(
+    PLAYLIGHT_DISCOVER_REWARD.resource,
+  );
   const rewardLog: LogEntry = {
     id: `playlight-discover-claimed-${Date.now()}`,
     message: tWithFallback(
       "ui",
       "socialPrompt.playlightDiscoverRewardLog",
-      `You received ${PLAYLIGHT_DISCOVER_REWARD_GOLD} Gold for discovering games!`,
-      { amount: PLAYLIGHT_DISCOVER_REWARD_GOLD },
+      `You received ${PLAYLIGHT_DISCOVER_REWARD.amount} ${resourceLabel} for trying a game!`,
+      {
+        amount: PLAYLIGHT_DISCOVER_REWARD.amount,
+        resource: resourceLabel,
+      },
     ),
     timestamp: Date.now(),
     type: "system",
@@ -168,5 +180,5 @@ export async function claimPlaylightDiscoverGoldReward(): Promise<boolean> {
 /** Legacy one-shot: fulfill then claim immediately. */
 export async function claimPlaylightDiscoverReward(): Promise<boolean> {
   await fulfillPlaylightDiscoverReward();
-  return claimPlaylightDiscoverGoldReward();
+  return claimPlaylightDiscoverTaskReward();
 }

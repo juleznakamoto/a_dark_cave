@@ -4,13 +4,14 @@ import {
   OFFICIAL_YOUTUBE_URL,
 } from "@/lib/gameFooterSocialLinks";
 import { tWithFallback } from "@/i18n/resolveGameText";
+import type { SocialTaskResourceReward } from "@/game/socialTaskRewards";
 
 export type SocialPlatformId = "youtube" | "instagram" | "reddit";
 
 export type SocialPlatformConfig = {
   id: SocialPlatformId;
   url: string;
-  reward: number;
+  reward: SocialTaskResourceReward;
   /** Hidden follow tasks stay in this list so they can be turned back on. */
   active: boolean;
   /**
@@ -23,19 +24,19 @@ export const SOCIAL_PLATFORMS: readonly SocialPlatformConfig[] = [
   {
     id: "youtube",
     url: OFFICIAL_YOUTUBE_URL,
-    reward: 100,
+    reward: { resource: "wood", amount: 250 },
     active: true,
   },
   {
     id: "instagram",
     url: OFFICIAL_INSTAGRAM_URL,
-    reward: 100,
+    reward: { resource: "food", amount: 250 },
     active: true,
   },
   {
     id: "reddit",
     url: OFFICIAL_REDDIT_URL,
-    reward: 100,
+    reward: { resource: "stone", amount: 250 },
     active: true,
   },
 ];

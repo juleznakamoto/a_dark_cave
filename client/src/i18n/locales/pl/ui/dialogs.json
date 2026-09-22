@@ -48,10 +48,11 @@
     "exclusiveRewardEffect": "{{percent}}% szansy na podwojenie zysków z akcji",
     "progressAriaLabel": "Ekskluzywna nagroda",
     "alreadyClaimedReward": "Już odebrałeś tę nagrodę!",
-    "playlightDiscoverRewardLog": "Dostajesz {{amount}} złota za wypróbowanie gry!",
+    "resourceBonus": "+{{amount}} {{resource}}",
+    "playlightDiscoverRewardLog": "Dostajesz {{amount}} {{resource}} za wypróbowanie gry!",
     "marketingSubscribeLog": "Dostajesz {{amount}} złota za zapis na nowości e-mailem!",
-    "followRewardLog": "Dostajesz {{amount}} złota za obserwowanie nas na {{platform}}!",
-    "subscribeRewardLog": "Dostajesz {{amount}} złota za zasubskrybowanie nas na {{platform}}!",
+    "followRewardLog": "Dostajesz {{amount}} {{resource}} za obserwowanie nas na {{platform}}!",
+    "subscribeRewardLog": "Dostajesz {{amount}} {{resource}} za zasubskrybowanie nas na {{platform}}!",
     "platforms": {
       "youtube": {
         "title": "YouTube",

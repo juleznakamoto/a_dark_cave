@@ -46,10 +46,11 @@
     "exclusiveRewardEffect": "{{percent}}% chance to double action gains",
     "progressAriaLabel": "Exclusive reward",
     "alreadyClaimedReward": "You've already claimed this reward!",
-    "playlightDiscoverRewardLog": "You received {{amount}} Gold for trying a game!",
+    "resourceBonus": "+{{amount}} {{resource}}",
+    "playlightDiscoverRewardLog": "You received {{amount}} {{resource}} for trying a game!",
     "marketingSubscribeLog": "You received {{amount}} Gold for subscribing to email updates!",
-    "followRewardLog": "You received {{amount}} Gold for following us on {{platform}}!",
-    "subscribeRewardLog": "You received {{amount}} Gold for subscribing to us on {{platform}}!",
+    "followRewardLog": "You received {{amount}} {{resource}} for following us on {{platform}}!",
+    "subscribeRewardLog": "You received {{amount}} {{resource}} for subscribing to us on {{platform}}!",
     "platforms": {
       "youtube": {
         "title": "YouTube",

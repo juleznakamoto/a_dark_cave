@@ -71,7 +71,10 @@ import {
   resolveVillageEffectAnnouncementTheme,
   type VillageEffectDialogData,
 } from "@/game/villageEffectThemes";
-import { computePersistedSocialTasksGold } from "@/game/socialTasksGold";
+import {
+  computePersistedSocialTaskResources,
+  computePersistedSocialTasksGold,
+} from "@/game/socialTasksGold";
 import { getLifetimeGamesWonFromSave } from "@/game/winAchievements";
 import {
   canRevealAchievementTitle,
@@ -114,7 +117,6 @@ import { audioManager, SOUND_VOLUME, caveExploreVolume } from "@/lib/audio";
 import { BLOOD_MOON_EVENT_ID } from "@/game/bloodMoonOverlay";
 import { GAME_CONSTANTS, getCallMerchantGoldCost } from "@/game/constants";
 import { socialPromptMilestoneFloorFromPlayTime } from "@/game/socialPromptAuto";
-import { socialPromoExclusiveStepsCompleted } from "@/game/socialPromoExclusiveReward";
 import {
   ACTION_TO_UPGRADE_KEY,
   incrementButtonUsage,
@@ -3111,11 +3113,24 @@ export const useGameStore = create<GameStore>((set, get) => ({
       signupWelcomeGoldClaimed: preserved.signupWelcomeGoldClaimed,
       referrals: preserved.referrals,
     });
-    if (socialTasksGold > 0) {
-      resetState.resources = {
-        ...resetState.resources,
-        gold: (resetState.resources?.gold ?? 0) + socialTasksGold,
-      };
+    const socialTaskResources = computePersistedSocialTaskResources({
+      social_media_rewards: preserved.social_media_rewards,
+    });
+    const hasSocialTaskResources = Object.values(socialTaskResources).some(
+      (amount) => (amount ?? 0) > 0,
+    );
+    if (socialTasksGold > 0 || hasSocialTaskResources) {
+      const resources = { ...resetState.resources };
+      if (socialTasksGold > 0) {
+        resources.gold = (resources.gold ?? 0) + socialTasksGold;
+      }
+      for (const resource of ["wood", "food", "stone", "silver"] as const) {
+        const amount = socialTaskResources[resource] ?? 0;
+        if (amount > 0) {
+          resources[resource] = (resources[resource] ?? 0) + amount;
+        }
+      }
+      resetState.resources = resources;
     }
 
     resetMadnessLevelLogBaseline();
@@ -3405,16 +3420,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
         socialPromptMilestoneIndex: Math.max(
           (savedState as { socialPromptMilestoneIndex?: number })
             .socialPromptMilestoneIndex ?? 0,
-          socialPromptMilestoneFloorFromPlayTime(
-            loadedPlayTime,
-            socialPromoExclusiveStepsCompleted({
-              social_media_rewards: savedState.social_media_rewards,
-              referralCount: savedState.referralCount,
-              referrals: savedState.referrals,
-              isUserSignedIn: savedState.isUserSignedIn,
-              signupWelcomeGoldClaimed: savedState.signupWelcomeGoldClaimed,
-            }),
-          ),
+          socialPromptMilestoneFloorFromPlayTime(loadedPlayTime),
         ),
         playlightExitIntentMilestoneIndex:
           (savedState as { playlightExitIntentMilestoneIndex?: number })

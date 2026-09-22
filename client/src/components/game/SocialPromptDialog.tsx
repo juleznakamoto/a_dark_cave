@@ -31,7 +31,7 @@ import {
 } from "@/game/socialPlatforms";
 import {
   fulfillSocialFollowReward,
-  claimSocialFollowGoldReward,
+  claimSocialFollowTaskReward,
 } from "@/game/claimSocialFollowReward";
 import { SocialPlatformGlyph } from "@/components/game/SocialPlatformGlyph";
 import { getCurrentUser } from "@/game/auth";
@@ -62,9 +62,9 @@ import {
 } from "@/game/socialPromoExclusiveReward";
 import {
   PLAYLIGHT_DISCOVER_REWARD_KEY,
-  PLAYLIGHT_DISCOVER_REWARD_GOLD,
+  PLAYLIGHT_DISCOVER_REWARD,
   fulfillPlaylightDiscoverReward,
-  claimPlaylightDiscoverGoldReward,
+  claimPlaylightDiscoverTaskReward,
 } from "@/game/playlightDiscoverReward";
 import {
   claimSignupWelcomeGold,
@@ -75,6 +75,7 @@ import {
   getSocialPlatformRewardEntry,
   isSocialRewardClaimed,
   isSocialRewardFulfilled,
+  type SocialTaskResourceReward,
 } from "@/game/socialTaskRewards";
 import { clothingEffects } from "@/game/rules/effects";
 import { getEffectName } from "@/i18n/resolveGameText";
@@ -215,16 +216,35 @@ function TaskGoldBadge({ amount }: { amount: number }) {
   );
 }
 
+function TaskResourceBadge({ reward }: { reward: SocialTaskResourceReward }) {
+  const { t } = useTranslation("ui");
+  const { t: tCommon } = useTranslation("common");
+  return (
+    <span className="inline-flex shrink-0 items-center rounded px-1 py-1 text-xxs font-semibold tabular-nums bg-muted text-foreground border border-border">
+      {t("socialPrompt.resourceBonus", {
+        amount: reward.amount,
+        resource: tCommon(`resources.${reward.resource}`),
+      })}
+    </span>
+  );
+}
+
 function TaskRowActions({
   amount,
+  reward,
   children,
 }: {
-  amount: number;
+  amount?: number;
+  reward?: SocialTaskResourceReward;
   children: ReactNode;
 }) {
   return (
     <>
-      <TaskGoldBadge amount={amount} />
+      {reward ? (
+        <TaskResourceBadge reward={reward} />
+      ) : (
+        <TaskGoldBadge amount={amount ?? 0} />
+      )}
       <div className="flex min-w-0 flex-col items-stretch">
         {children}
       </div>
@@ -553,13 +573,13 @@ export default function SocialPromptDialog({
                   </span>
                 </div>
                 {!claimed && (
-                  <TaskRowActions amount={platform.reward}>
+                  <TaskRowActions reward={platform.reward}>
                     {fulfilled ? (
                       <TaskClaimButton
                         button_id={`social-claim-${platform.id}`}
                         onClick={() =>
                           claimWithAnimation(platform.id, () =>
-                            claimSocialFollowGoldReward(
+                            claimSocialFollowTaskReward(
                               platform.id,
                               platform.reward,
                             ),
@@ -607,13 +627,13 @@ export default function SocialPromptDialog({
               </span>
             </div>
             {!playlightDiscoverRewardClaimed && (
-              <TaskRowActions amount={PLAYLIGHT_DISCOVER_REWARD_GOLD}>
+              <TaskRowActions reward={PLAYLIGHT_DISCOVER_REWARD}>
                 {playlightDiscoverRewardFulfilled ? (
                   <TaskClaimButton
                     button_id="social-claim-playlight"
                     onClick={() =>
                       claimWithAnimation(PLAYLIGHT_DISCOVER_REWARD_KEY, () =>
-                        claimPlaylightDiscoverGoldReward(),
+                        claimPlaylightDiscoverTaskReward(),
                       )
                     }
                   />

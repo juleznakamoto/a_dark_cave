@@ -46,10 +46,11 @@
     "exclusiveRewardEffect": "{{percent}}% 几率使行动收益翻倍",
     "progressAriaLabel": "专属奖励",
     "alreadyClaimedReward": "你已领取此奖励！",
-    "playlightDiscoverRewardLog": "试玩游戏奖励：获得 {{amount}} 黄金！",
+    "resourceBonus": "+{{amount}} {{resource}}",
+    "playlightDiscoverRewardLog": "试玩游戏奖励：获得 {{amount}} {{resource}}！",
     "marketingSubscribeLog": "订阅邮件更新奖励：获得 {{amount}} 黄金！",
-    "followRewardLog": "关注 {{platform}} 获得 {{amount}} 黄金！",
-    "subscribeRewardLog": "订阅 {{platform}} 获得 {{amount}} 黄金！",
+    "followRewardLog": "关注 {{platform}} 获得 {{amount}} {{resource}}！",
+    "subscribeRewardLog": "订阅 {{platform}} 获得 {{amount}} {{resource}}！",
     "platforms": {
       "youtube": {
         "title": "YouTube",

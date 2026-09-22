@@ -17,8 +17,8 @@ type PanelId = "sidePanel" | "log";
  * Layout sizing limits and responsive defaults for the three-panel game shell.
  * Desktop resizes column widths; mobile resizes stacked row heights. The flexible
  * panel (the center "game" column on desktop, the bottom game area on mobile) is
- * never resized directly — it absorbs the remaining space — so we only persist the
- * two outer panels and clamp against the flexible panel's minimum.
+ * never resized directly. It absorbs leftover space until its minimum, and on
+ * desktop a further drag then shrinks the opposite side panel.
  *
  * Middle min fits the late-game tab row: location labels, achievements, timed
  * event, and the merchant/trader control.
@@ -41,6 +41,70 @@ export const PANEL_RESIZE = {
 
 function clamp(value: number, min: number, max: number): number {
   return Math.min(Math.max(value, min), max);
+}
+
+export interface DesktopColumnResize {
+  /** Width to persist for the panel being dragged. */
+  draggedPx: number;
+  /**
+   * Width to persist for the opposite side once the middle column is at its
+   * minimum. Null while that side should keep its current width.
+   */
+  otherPx: number | null;
+}
+
+/**
+ * Clamp a desktop column drag. The middle column gives up space first. Once it
+ * is at its minimum, growing this side shrinks the opposite side down to that
+ * side's minimum. Shrinking this side does not give the width back.
+ */
+export function resolveDesktopColumnResize(args: {
+  panel: PanelId;
+  desiredPx: number;
+  mainWidthPx: number;
+  otherWidthPx: number;
+}): DesktopColumnResize {
+  const { panel, desiredPx, mainWidthPx, otherWidthPx } = args;
+  const draggedCfg =
+    panel === "sidePanel"
+      ? PANEL_RESIZE.desktop.sidePanel
+      : PANEL_RESIZE.desktop.logPanel;
+  const otherCfg =
+    panel === "sidePanel"
+      ? PANEL_RESIZE.desktop.logPanel
+      : PANEL_RESIZE.desktop.sidePanel;
+  const middleMin = PANEL_RESIZE.desktop.middleMinPx;
+
+  const ceiling = mainWidthPx - middleMin - otherCfg.minPx;
+  const draggedPx = Math.round(
+    clamp(
+      desiredPx,
+      draggedCfg.minPx,
+      Math.max(draggedCfg.minPx, Math.min(draggedCfg.maxPx, ceiling)),
+    ),
+  );
+
+  const roomForOther = mainWidthPx - draggedPx - middleMin;
+  if (roomForOther <= otherWidthPx - 1) {
+    return {
+      draggedPx,
+      otherPx: Math.round(clamp(roomForOther, otherCfg.minPx, otherCfg.maxPx)),
+    };
+  }
+
+  return { draggedPx, otherPx: null };
+}
+
+/**
+ * A later pointer move in the same drag can decide no further shrink is
+ * needed. The width already taken from the opposite side still has to be
+ * saved, or that move replaces the pending update and the shrink is lost.
+ */
+export function holdDesktopOtherWidth(
+  resolvedOtherPx: number | null,
+  heldOtherPx: number | null,
+): number | null {
+  return resolvedOtherPx ?? heldOtherPx;
 }
 
 export interface UsePanelResizeResult {
@@ -84,7 +148,12 @@ export function usePanelResize(): UsePanelResizeResult {
 
   // rAF-throttle store writes so a drag does not flood the store with updates.
   const rafRef = useRef<number | null>(null);
-  const pendingRef = useRef<{ key: PanelSizeKey; size: number } | null>(null);
+  const pendingRef = useRef<{
+    key: PanelSizeKey;
+    size: number;
+    otherKey?: PanelSizeKey;
+    otherSize?: number;
+  } | null>(null);
 
   const startResize = useCallback(
     (panel: PanelId, e: ReactPointerEvent) => {
@@ -109,19 +178,39 @@ export function usePanelResize(): UsePanelResizeResult {
       const startRect = el.getBoundingClientRect();
       const startCoord = mobile ? e.clientY : e.clientX;
       const startSize = mobile ? startRect.height : startRect.width;
+      // Track the opposite side ourselves. Reading it from the DOM mid-drag lags
+      // one frame behind the width we just persisted, which would keep shrinking
+      // it while the pointer moves back.
+      let trackedOtherWidth = otherEl?.getBoundingClientRect().width ?? 0;
+      let heldOtherPx: number | null = null;
 
       setIsResizing(true);
       document.body.style.userSelect = "none";
       document.body.style.cursor = mobile ? "row-resize" : "col-resize";
 
-      const flush = () => {
-        rafRef.current = null;
-        if (pendingRef.current) {
-          setPanelSize(pendingRef.current.key, pendingRef.current.size);
+      const commitPending = () => {
+        const pending = pendingRef.current;
+        if (!pending) return;
+        setPanelSize(pending.key, pending.size);
+        if (pending.otherKey != null && pending.otherSize != null) {
+          setPanelSize(pending.otherKey, pending.otherSize);
         }
       };
-      const apply = (size: number) => {
-        pendingRef.current = { key, size: Math.round(size) };
+      const flush = () => {
+        rafRef.current = null;
+        commitPending();
+      };
+      const apply = (
+        size: number,
+        other?: { key: PanelSizeKey; size: number },
+      ) => {
+        pendingRef.current = {
+          key,
+          size: Math.round(size),
+          ...(other
+            ? { otherKey: other.key, otherSize: Math.round(other.size) }
+            : {}),
+        };
         if (rafRef.current == null) {
           rafRef.current = requestAnimationFrame(flush);
         }
@@ -147,15 +236,42 @@ export function usePanelResize(): UsePanelResizeResult {
           const maxPx =
             mainRect.height - otherH - PANEL_RESIZE.mobile.gameMinPx;
           next = clamp(next, minPx, Math.max(minPx, maxPx));
+        } else if (otherEl) {
+          const resolved = resolveDesktopColumnResize({
+            panel,
+            desiredPx: next,
+            mainWidthPx: mainRect.width,
+            otherWidthPx: trackedOtherWidth,
+          });
+          if (resolved.otherPx != null) {
+            trackedOtherWidth = resolved.otherPx;
+            heldOtherPx = resolved.otherPx;
+          }
+          const otherPx = holdDesktopOtherWidth(resolved.otherPx, heldOtherPx);
+          apply(
+            resolved.draggedPx,
+            otherPx == null
+              ? undefined
+              : {
+                key: panelKey(
+                  panel === "sidePanel" ? "log" : "sidePanel",
+                  false,
+                ),
+                size: otherPx,
+              },
+          );
+          return;
         } else {
-          const otherW = otherRect?.width ?? 0;
           const cfg =
             panel === "sidePanel"
               ? PANEL_RESIZE.desktop.sidePanel
               : PANEL_RESIZE.desktop.logPanel;
-          const avail =
-            mainRect.width - otherW - PANEL_RESIZE.desktop.middleMinPx;
-          next = clamp(next, cfg.minPx, Math.max(cfg.minPx, Math.min(cfg.maxPx, avail)));
+          const avail = mainRect.width - PANEL_RESIZE.desktop.middleMinPx;
+          next = clamp(
+            next,
+            cfg.minPx,
+            Math.max(cfg.minPx, Math.min(cfg.maxPx, avail)),
+          );
         }
         apply(next);
       };
@@ -178,10 +294,8 @@ export function usePanelResize(): UsePanelResizeResult {
           cancelAnimationFrame(rafRef.current);
           rafRef.current = null;
         }
-        if (pendingRef.current) {
-          setPanelSize(pendingRef.current.key, pendingRef.current.size);
-          pendingRef.current = null;
-        }
+        commitPending();
+        pendingRef.current = null;
         handle.removeEventListener("pointermove", onMove);
         handle.removeEventListener("pointerup", onUp);
         handle.removeEventListener("pointercancel", onUp);

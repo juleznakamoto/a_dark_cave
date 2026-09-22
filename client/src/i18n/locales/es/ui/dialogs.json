@@ -46,10 +46,11 @@
     "exclusiveRewardEffect": "{{percent}} % de probabilidad de duplicar las ganancias de acciones",
     "progressAriaLabel": "Recompensa exclusiva",
     "alreadyClaimedReward": "¡Ya has reclamado esta recompensa!",
-    "playlightDiscoverRewardLog": "¡Has recibido {{amount}} de oro por probar un juego!",
+    "resourceBonus": "+{{amount}} {{resource}}",
+    "playlightDiscoverRewardLog": "¡Has recibido {{amount}} de {{resource}} por probar un juego!",
     "marketingSubscribeLog": "¡Has recibido {{amount}} de oro por suscribirte a las actualizaciones por correo electrónico!",
-    "followRewardLog": "Has recibido {{amount}} de oro por seguirnos en {{platform}}.",
-    "subscribeRewardLog": "Has recibido {{amount}} de oro por suscribirte en {{platform}}.",
+    "followRewardLog": "Has recibido {{amount}} de {{resource}} por seguirnos en {{platform}}.",
+    "subscribeRewardLog": "Has recibido {{amount}} de {{resource}} por suscribirte en {{platform}}.",
     "platforms": {
       "youtube": {
         "title": "YouTube",

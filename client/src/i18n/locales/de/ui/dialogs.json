@@ -46,10 +46,11 @@
     "exclusiveRewardEffect": "{{percent}} % Chance, Aktionsgewinne zu verdoppeln",
     "progressAriaLabel": "Exklusive Belohnung",
     "alreadyClaimedReward": "Du hast diese Belohnung bereits abgeholt!",
-    "playlightDiscoverRewardLog": "Du hast {{amount}} Gold für das Ausprobieren eines Spiels erhalten!",
+    "resourceBonus": "+{{amount}} {{resource}}",
+    "playlightDiscoverRewardLog": "Du hast {{amount}} {{resource}} für das Ausprobieren eines Spiels erhalten!",
     "marketingSubscribeLog": "Du hast {{amount}} Gold für die Anmeldung zu E-Mail-Updates erhalten!",
-    "followRewardLog": "Du hast {{amount}} Gold erhalten, weil du uns auf {{platform}} folgst!",
-    "subscribeRewardLog": "Du hast {{amount}} Gold erhalten, weil du uns auf {{platform}} abonniert hast!",
+    "followRewardLog": "Du hast {{amount}} {{resource}} erhalten, weil du uns auf {{platform}} folgst!",
+    "subscribeRewardLog": "Du hast {{amount}} {{resource}} erhalten, weil du uns auf {{platform}} abonniert hast!",
     "platforms": {
       "youtube": {
         "title": "YouTube",

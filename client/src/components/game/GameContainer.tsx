@@ -1430,7 +1430,7 @@ export default function GameContainer() {
               its bottom edge (mobile) / left edge (desktop). */}
             <div
               ref={panelResize.logRef}
-              className={`order-1 md:order-3 relative w-full h-[18vh] md:h-auto min-h-[6rem] md:min-h-0 pt-1 md:pt-2 pr-2 pb-0 pl-1 ${GAME_CHROME_RULE_LOG}`}
+              className={`order-1 md:order-3 relative w-full md:min-w-0 h-[18vh] md:h-auto min-h-[6rem] md:min-h-0 pt-1 md:pt-2 pr-2 pb-0 pl-1 ${GAME_CHROME_RULE_LOG}`}
               style={panelResize.logStyle}
             >
               <div className="h-full min-h-0 overflow-hidden">
@@ -1450,7 +1450,7 @@ export default function GameContainer() {
               handle on its bottom edge (mobile) / right edge (desktop). */}
             <div
               ref={panelResize.sidePanelRef}
-              className={`order-2 md:order-1 relative h-[36vh] md:h-auto min-h-[36vh] md:min-h-0 w-full pr-0 ${GAME_CHROME_RULE_SIDE_PANEL}`}
+              className={`order-2 md:order-1 relative h-[36vh] md:h-auto min-h-[36vh] md:min-h-0 md:min-w-0 w-full pr-0 ${GAME_CHROME_RULE_SIDE_PANEL}`}
               style={panelResize.sidePanelStyle}
             >
               <div className="h-full min-h-0 overflow-hidden">

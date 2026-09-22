@@ -5,11 +5,14 @@ import {
   MARKETING_SUBSCRIBE_GOLD,
 } from "@/game/marketingEmailReward";
 import {
-  PLAYLIGHT_DISCOVER_REWARD_GOLD,
+  PLAYLIGHT_DISCOVER_REWARD,
   PLAYLIGHT_DISCOVER_REWARD_KEY,
 } from "@/game/playlightRewards";
 import { SOCIAL_PLATFORMS } from "@/game/socialPlatforms";
-import { isSocialRewardClaimed } from "@/game/socialTaskRewards";
+import {
+  isSocialRewardClaimed,
+  type SocialTaskResourceId,
+} from "@/game/socialTaskRewards";
 
 /** Slice needed to re-apply one-time social / rewards-task gold after a new game. */
 export type PersistedSocialTasksGoldSlice = {
@@ -36,16 +39,6 @@ export function computePersistedSocialTasksGold(
     total += MARKETING_SUBSCRIBE_GOLD;
   }
 
-  for (const platform of SOCIAL_PLATFORMS) {
-    if (isSocialRewardClaimed(rewards[platform.id])) {
-      total += platform.reward;
-    }
-  }
-
-  if (rewards[PLAYLIGHT_DISCOVER_REWARD_KEY]?.claimed) {
-    total += PLAYLIGHT_DISCOVER_REWARD_GOLD;
-  }
-
   for (const referral of state.referrals ?? []) {
     if (referral.claimed) {
       total += REFERRAL_REWARD_GOLD;
@@ -53,4 +46,37 @@ export function computePersistedSocialTasksGold(
   }
 
   return total;
+}
+
+export type PersistedSocialTaskResourceTotals = Partial<
+  Record<SocialTaskResourceId, number>
+>;
+
+/**
+ * Resources already earned from claimed social tasks (follows and Try 1 game).
+ * Re-applied on a new game so the one-time claim flags do not drop the reward.
+ */
+export function computePersistedSocialTaskResources(
+  state: Pick<PersistedSocialTasksGoldSlice, "social_media_rewards">,
+): PersistedSocialTaskResourceTotals {
+  const totals: Record<SocialTaskResourceId, number> = {
+    wood: 0,
+    food: 0,
+    stone: 0,
+    silver: 0,
+  };
+  const rewards = state.social_media_rewards ?? {};
+
+  for (const platform of SOCIAL_PLATFORMS) {
+    if (isSocialRewardClaimed(rewards[platform.id])) {
+      totals[platform.reward.resource] += platform.reward.amount;
+    }
+  }
+
+  if (rewards[PLAYLIGHT_DISCOVER_REWARD_KEY]?.claimed) {
+    totals[PLAYLIGHT_DISCOVER_REWARD.resource] +=
+      PLAYLIGHT_DISCOVER_REWARD.amount;
+  }
+
+  return totals;
 }

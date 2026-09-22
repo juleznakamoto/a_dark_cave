@@ -15,7 +15,7 @@ import {
 import { useTranslation } from "react-i18next";
 
 export default function SocialMediaRewards() {
-  const { t } = useTranslation("common");
+  const { t } = useTranslation(["common", "ui"]);
   const [currentUser, setCurrentUser] = useState<{
     id: string;
     email: string;
@@ -70,8 +70,11 @@ export default function SocialMediaRewards() {
               </div>
               <div className="flex items-center gap-2">
                 <span className="font-semibold">
-                  &nbsp;+
-                  {t("currency.goldAmount", { amount: platform.reward })}
+                  &nbsp;
+                  {t("ui:socialPrompt.resourceBonus", {
+                    amount: platform.reward.amount,
+                    resource: t(`resources.${platform.reward.resource}`),
+                  })}
                 </span>
                 {isClaimed && <span className="text-xs text-muted-foreground">✓</span>}
 

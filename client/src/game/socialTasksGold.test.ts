@@ -1,10 +1,11 @@
 import { describe, it, expect } from "vitest";
-import { computePersistedSocialTasksGold } from "@/game/socialTasksGold";
 import {
-  PLAYLIGHT_DISCOVER_REWARD_GOLD,
+  computePersistedSocialTaskResources,
+  computePersistedSocialTasksGold,
+} from "@/game/socialTasksGold";
+import {
   PLAYLIGHT_DISCOVER_REWARD_KEY,
 } from "@/game/playlightRewards";
-import { ACTIVE_SOCIAL_PLATFORMS, SOCIAL_PLATFORMS } from "@/game/socialPlatforms";
 import {
   MARKETING_SUBSCRIBE_GOLD,
   MARKETING_EMAIL_REWARD_KEY,
@@ -32,30 +33,39 @@ describe("computePersistedSocialTasksGold", () => {
       ],
     });
 
-    const claimedSocialPlatformGold = ACTIVE_SOCIAL_PLATFORMS.reduce(
-      (sum, platform) => sum + platform.reward,
-      0,
-    );
-
     expect(total).toBe(
       SIGN_UP_WELCOME_GOLD +
       MARKETING_SUBSCRIBE_GOLD +
-      claimedSocialPlatformGold +
-      PLAYLIGHT_DISCOVER_REWARD_GOLD +
       REFERRAL_REWARD_GOLD,
     );
   });
 
-  it("counts a claimed Instagram follow", () => {
-    const instagramReward =
-      SOCIAL_PLATFORMS.find((platform) => platform.id === "instagram")?.reward ??
-      0;
+  it("does not count follow or try-a-game rewards as gold", () => {
     expect(
       computePersistedSocialTasksGold({
         social_media_rewards: {
           instagram: { claimed: true, timestamp: 1 },
+          [PLAYLIGHT_DISCOVER_REWARD_KEY]: { claimed: true, timestamp: 1 },
         },
       }),
-    ).toBe(instagramReward);
+    ).toBe(0);
+  });
+
+  it("restores claimed follow and try-a-game resources", () => {
+    expect(
+      computePersistedSocialTaskResources({
+        social_media_rewards: {
+          youtube: { claimed: true, timestamp: 1 },
+          instagram: { claimed: true, timestamp: 1 },
+          reddit: { claimed: true, timestamp: 1 },
+          [PLAYLIGHT_DISCOVER_REWARD_KEY]: { claimed: true, timestamp: 1 },
+        },
+      }),
+    ).toEqual({
+      wood: 250,
+      food: 250,
+      stone: 250,
+      silver: 100,
+    });
   });
 });

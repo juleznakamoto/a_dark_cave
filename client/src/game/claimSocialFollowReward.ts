@@ -11,8 +11,10 @@ import {
 import { syncSocialPromoExclusiveRewardPending } from "./socialPromoExclusiveReward";
 import {
   getSocialPlatformRewardEntry,
+  getSocialTaskResourceLabel,
   isSocialRewardClaimed,
   isSocialRewardFulfilled,
+  type SocialTaskResourceReward,
 } from "@/game/socialTaskRewards";
 
 function persistSocialRewardState(): void {
@@ -32,7 +34,7 @@ function persistSocialRewardState(): void {
   })();
 }
 
-/** Opens the platform link and marks the task fulfilled (no gold until Claim). */
+/** Opens the platform link and marks the task fulfilled (no reward until Claim). */
 export function fulfillSocialFollowReward(
   platformId: SocialPlatformConfig["id"],
   url: string,
@@ -79,10 +81,10 @@ export function fulfillSocialFollowReward(
   return true;
 }
 
-/** Grants gold for a fulfilled social follow task. Returns whether a new claim was made. */
-export function claimSocialFollowGoldReward(
+/** Grants the resource reward for a fulfilled social follow task. Returns whether a new claim was made. */
+export function claimSocialFollowTaskReward(
   platformId: SocialPlatformConfig["id"],
-  reward: number,
+  reward: SocialTaskResourceReward,
 ): boolean {
   const store = useGameStore.getState();
   const entry = getSocialPlatformRewardEntry(
@@ -109,9 +111,10 @@ export function claimSocialFollowGoldReward(
     },
   }));
 
-  useGameStore.getState().updateResource("gold", reward);
+  useGameStore.getState().updateResource(reward.resource, reward.amount);
 
   const platformName = getSocialPlatformName(platformId);
+  const resourceLabel = getSocialTaskResourceLabel(reward.resource);
   const subscribeLog = platformId === "youtube";
   const rewardLog: LogEntry = {
     id: `social-reward-claimed-${platformId}-${Date.now()}`,
@@ -121,9 +124,13 @@ export function claimSocialFollowGoldReward(
         ? "socialPrompt.subscribeRewardLog"
         : "socialPrompt.followRewardLog",
       subscribeLog
-        ? `You received ${reward} Gold for subscribing to us on ${platformName}!`
-        : `You received ${reward} Gold for following us on ${platformName}!`,
-      { amount: reward, platform: platformName },
+        ? `You received ${reward.amount} ${resourceLabel} for subscribing to us on ${platformName}!`
+        : `You received ${reward.amount} ${resourceLabel} for following us on ${platformName}!`,
+      {
+        amount: reward.amount,
+        platform: platformName,
+        resource: resourceLabel,
+      },
     ),
     timestamp: Date.now(),
     type: "system",
@@ -138,8 +145,8 @@ export function claimSocialFollowGoldReward(
 export function claimSocialFollowReward(
   platformId: SocialPlatformConfig["id"],
   url: string,
-  reward: number,
+  reward: SocialTaskResourceReward,
 ): boolean {
   fulfillSocialFollowReward(platformId, url);
-  return claimSocialFollowGoldReward(platformId, reward);
+  return claimSocialFollowTaskReward(platformId, reward);
 }

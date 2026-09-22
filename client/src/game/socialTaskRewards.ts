@@ -1,5 +1,37 @@
 import type { GameState } from "@shared/schema";
 import { getSocialPlatformConfig } from "@/game/socialPlatforms";
+import { getResourceName } from "@/i18n/resolveGameText";
+
+export const SOCIAL_TASK_RESOURCE_IDS = [
+  "wood",
+  "food",
+  "stone",
+  "silver",
+] as const;
+
+export type SocialTaskResourceId = (typeof SOCIAL_TASK_RESOURCE_IDS)[number];
+
+export type SocialTaskResourceReward = {
+  resource: SocialTaskResourceId;
+  amount: number;
+};
+
+const SOCIAL_TASK_RESOURCE_NAME_FALLBACK: Record<SocialTaskResourceId, string> =
+  {
+    wood: "Wood",
+    food: "Food",
+    stone: "Stone",
+    silver: "Silver",
+  };
+
+export function getSocialTaskResourceLabel(
+  resource: SocialTaskResourceId,
+): string {
+  return getResourceName(
+    resource,
+    SOCIAL_TASK_RESOURCE_NAME_FALLBACK[resource],
+  );
+}
 
 export type SocialRewardEntry = GameState["social_media_rewards"][string];
 
