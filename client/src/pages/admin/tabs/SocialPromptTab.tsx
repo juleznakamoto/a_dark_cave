@@ -73,7 +73,7 @@ export default function SocialPromptTab(props: {
                   aggregate.taskCounts.youtube,
                 ],
                 [
-                  "Instagram claimed (inactive)",
+                  "Instagram claimed",
                   aggregate.taskPct.instagram,
                   aggregate.taskCounts.instagram,
                 ],
@@ -83,12 +83,12 @@ export default function SocialPromptTab(props: {
                   aggregate.taskCounts.reddit,
                 ],
                 [
-                  "Both socials",
+                  "All social follows",
                   aggregate.taskPct.bothSocial,
                   aggregate.taskCounts.bothSocial,
                 ],
                 [
-                  "Either social",
+                  "Any social follow",
                   aggregate.taskPct.eitherSocial,
                   aggregate.taskCounts.eitherSocial,
                 ],

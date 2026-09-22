@@ -1,4 +1,5 @@
 import {
+  INVITE_FRIEND_TASK_ACTIVE,
   REFERRAL_LIMIT as SOCIAL_PROMPT_REFERRAL_CAP,
   type GameState,
 } from "@shared/schema";
@@ -139,21 +140,16 @@ export type SocialPromptRewardSlice = {
   isUserSignedIn?: boolean;
 };
 
-/** First wave: show if any of email, all platforms, Playlight discover, or invite cap is still incomplete. */
+/** First wave: email, platform follows, Playlight discover, and the invite cap while that task is on. */
 export function isSocialPromptFirstWaveEligible(
   state: SocialPromptRewardSlice,
 ): boolean {
-  if (!state.isUserSignedIn) return true;
-  const rewards = state.social_media_rewards ?? {};
-  const platformsDone = socialPlatformsRewardDone(rewards);
-  const emailDone = isMarketingEmailRewardClaimedForPrompt(rewards);
-  const discoverDone = playlightDiscoverRewardDone(rewards);
-  const invitesDone =
-    (state.referralCount ?? 0) >= SOCIAL_PROMPT_REFERRAL_CAP;
-  return !(platformsDone && emailDone && discoverDone && invitesDone);
+  if (isSocialPromptRepeatWaveEligible(state)) return true;
+  if (!INVITE_FRIEND_TASK_ACTIVE || !state.isUserSignedIn) return false;
+  return (state.referralCount ?? 0) < SOCIAL_PROMPT_REFERRAL_CAP;
 }
 
-/** Repeat wave: email + platform follows + Playlight discover (invite cap ignored). */
+/** Repeat wave: email + platform follows + Playlight discover. */
 export function isSocialPromptRepeatWaveEligible(
   state: SocialPromptRewardSlice,
 ): boolean {

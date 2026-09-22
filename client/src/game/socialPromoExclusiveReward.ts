@@ -9,9 +9,13 @@ import {
 import { SOCIAL_PROMPT_REFERRAL_CAP } from "@/game/socialPromptAuto";
 import { useGameStore } from "@/game/state";
 import { logger } from "@/lib/logger";
+import { INVITE_FRIEND_TASK_ACTIVE } from "@shared/schema";
 
-/** Steps: signed in, email reward, YouTube, Reddit, Playlight discover, at least one invite (exclusive item track). */
-export const SOCIAL_PROMO_EXCLUSIVE_STEP_TOTAL = 6;
+/** Signed in, email, YouTube, Instagram, Reddit, Playlight. Invite adds one step while that task is on. */
+const SOCIAL_PROMO_EXCLUSIVE_BASE_STEPS = 6;
+
+export const SOCIAL_PROMO_EXCLUSIVE_STEP_TOTAL =
+  SOCIAL_PROMO_EXCLUSIVE_BASE_STEPS + (INVITE_FRIEND_TASK_ACTIVE ? 1 : 0);
 
 export type SocialPromoExclusiveSlice = {
   social_media_rewards?: GameState["social_media_rewards"];
@@ -44,25 +48,7 @@ export function isSignUpRewardsStepDone(
   );
 }
 
-/** Signed in + email + social + Playlight discover — invite step may still be open. */
-export function areInviteFriendsPrereqsDone(
-  state: SocialPromoExclusiveSlice,
-): boolean {
-  if (!isSignUpRewardsStepDone(state)) return false;
-  const rewards = state.social_media_rewards ?? {};
-  if (!isSocialRewardFulfilled(rewards[MARKETING_EMAIL_REWARD_KEY])) return false;
-  if (
-    !ACTIVE_SOCIAL_PLATFORMS.every((p) =>
-      isSocialRewardFulfilled(getSocialPlatformRewardEntry(rewards, p.id)),
-    )
-  )
-    return false;
-  if (!isSocialRewardFulfilled(rewards[PLAYLIGHT_DISCOVER_REWARD_KEY]))
-    return false;
-  return true;
-}
-
-/** At least one successful invite for the exclusive-item track (gold rewards may still go up to 10). */
+/** At least one successful invite. Counts toward the exclusive track only while {@link INVITE_FRIEND_TASK_ACTIVE}. */
 export function isExclusiveInviteStepDone(
   state: SocialPromoExclusiveSlice,
 ): boolean {
@@ -83,7 +69,7 @@ export function socialPromoExclusiveStepsCompleted(
       n++;
   }
   if (isSocialRewardFulfilled(rewards[PLAYLIGHT_DISCOVER_REWARD_KEY])) n++;
-  if (isExclusiveInviteStepDone(state)) n++;
+  if (INVITE_FRIEND_TASK_ACTIVE && isExclusiveInviteStepDone(state)) n++;
   return n;
 }
 
@@ -118,7 +104,7 @@ export function isRewardsTasksShortcutVisible(
 }
 
 /**
- * Floating invite CTA: signed in and under referral cap (same gate as the rewards-dialog invite row).
+ * Floating invite CTA: signed in and under the referral cap.
  */
 export function isInviteFriendsFloatingButtonVisible(
   state: SocialPromoExclusiveSlice,

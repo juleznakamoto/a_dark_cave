@@ -48,11 +48,11 @@ import {
   GAME_INFO_GLYPH_CLASS,
   GAME_INFO_TRIGGER_CLASS,
 } from "@/components/game/gameChrome";
+import { SIGN_UP_WELCOME_GOLD, INVITE_FRIEND_TASK_ACTIVE } from "@shared/schema";
 import {
   SOCIAL_PROMPT_REFERRAL_CAP,
   REFERRAL_REWARD_GOLD,
 } from "@/game/socialPromptAuto";
-import { SIGN_UP_WELCOME_GOLD } from "@shared/schema";
 import {
   getSocialPromoExclusiveProgress,
   syncSocialPromoExclusiveRewardPending,
@@ -464,7 +464,6 @@ export default function SocialPromptDialog({
     }
   };
 
-  const referralsComplete = referralCount >= SOCIAL_PROMPT_REFERRAL_CAP;
   const emailRewardEntry = social_media_rewards[MARKETING_EMAIL_REWARD_KEY];
   const emailRewardClaimed = isSocialRewardClaimed(emailRewardEntry);
   const emailRewardFulfilled = isSocialRewardFulfilled(emailRewardEntry);
@@ -476,6 +475,7 @@ export default function SocialPromptDialog({
     isSocialRewardFulfilled(playlightRewardEntry);
   const signUpClaimed = signupWelcomeGoldClaimed;
   const signUpFulfilled = signUpClaimEligible;
+  const referralsComplete = referralCount >= SOCIAL_PROMPT_REFERRAL_CAP;
   const exclusiveInviteDone = isExclusiveInviteStepDone({
     referralCount,
     referrals,
@@ -740,48 +740,50 @@ export default function SocialPromptDialog({
             )}
           </div>
 
-          <div
-            className={cn(
-              SOCIAL_TASK_ROW_CLASS,
-              (referralsComplete || exclusiveInviteDone) &&
-              SOCIAL_TASK_HIGHLIGHT_BOX,
-            )}
-          >
-            <TaskRowStatusIcon
-              claimed={referralsComplete}
-              fulfilled={exclusiveInviteDone && !referralsComplete}
-            />
-            <div className="flex min-w-0 items-center gap-2">
-              <GameUiIcon
-                name="inviteUser"
-                sizeClassName={SOCIAL_TASK_ROW_ICON_SIZE}
+          {INVITE_FRIEND_TASK_ACTIVE && (
+            <div
+              className={cn(
+                SOCIAL_TASK_ROW_CLASS,
+                (referralsComplete || exclusiveInviteDone) &&
+                SOCIAL_TASK_HIGHLIGHT_BOX,
+              )}
+            >
+              <TaskRowStatusIcon
+                claimed={referralsComplete}
+                fulfilled={exclusiveInviteDone && !referralsComplete}
               />
-              <span className={SOCIAL_TASK_ROW_LABEL_CLASS}>
-                {t("socialPrompt.inviteTitle")}
-              </span>
-              <TaskInfoIcon
-                tooltipId="social-prompt-invite-info"
-                tooltipText={t("socialPrompt.inviteDesc", {
-                  cap: SOCIAL_PROMPT_REFERRAL_CAP,
-                  amount: REFERRAL_REWARD_GOLD,
-                  count: referralCount,
-                })}
-              />
+              <div className="flex min-w-0 items-center gap-2">
+                <GameUiIcon
+                  name="inviteUser"
+                  sizeClassName={SOCIAL_TASK_ROW_ICON_SIZE}
+                />
+                <span className={SOCIAL_TASK_ROW_LABEL_CLASS}>
+                  {t("socialPrompt.inviteTitle")}
+                </span>
+                <TaskInfoIcon
+                  tooltipId="social-prompt-invite-info"
+                  tooltipText={t("socialPrompt.inviteDesc", {
+                    cap: SOCIAL_PROMPT_REFERRAL_CAP,
+                    amount: REFERRAL_REWARD_GOLD,
+                    count: referralCount,
+                  })}
+                />
+              </div>
+              {!referralsComplete && (
+                <TaskRowActions amount={REFERRAL_REWARD_GOLD}>
+                  <LockedSocialButton
+                    locked={!isUserSignedIn}
+                    tooltipId="social-prompt-invite"
+                    tooltipText={t("socialPrompt.signUpRequiresSignInTooltip")}
+                    size="xs"
+                    onClick={() => void handleCopyInvite()}
+                  >
+                    {t("socialPrompt.copyInviteLink")}
+                  </LockedSocialButton>
+                </TaskRowActions>
+              )}
             </div>
-            {!referralsComplete && (
-              <TaskRowActions amount={REFERRAL_REWARD_GOLD}>
-                <LockedSocialButton
-                  locked={!isUserSignedIn}
-                  tooltipId="social-prompt-invite"
-                  tooltipText={t("socialPrompt.signUpRequiresSignInTooltip")}
-                  size="xs"
-                  onClick={() => void handleCopyInvite()}
-                >
-                  {t("socialPrompt.copyInviteLink")}
-                </LockedSocialButton>
-              </TaskRowActions>
-            )}
-          </div>
+          )}
         </div>
 
         <div

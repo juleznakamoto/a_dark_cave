@@ -42,6 +42,13 @@ export const REFERRAL_REWARD_GOLD = 200;
 /** Max successful invites per referrer (ledger + rewards UI). */
 export const REFERRAL_LIMIT = 10;
 
+/**
+ * Rewards-dialog "Invite 1 friend" task.
+ * Set to true to show that row again and count it on the exclusive track.
+ * The floating invite button, footer, and share-dialog invite actions stay available either way.
+ */
+export const INVITE_FRIEND_TASK_ACTIVE: boolean = false;
+
 /** One-time welcome gold when creating an account (email or Google). */
 export const SIGN_UP_WELCOME_GOLD = 200;
 
@@ -777,7 +784,7 @@ export const gameStateSchema = z.object({
   /** Legacy scheduler phase (retained for save compatibility; unused for auto-open). */
   socialPromptAutoPhase: z.number().int().min(0).max(2).default(0),
   /**
-   * Set true once signed in + email reward + both social follows + Playlight discover task + ≥1 invite are satisfied; future event can grant exclusive item then clear or consume this flag.
+   * Set true once signed in + email reward + YouTube, Instagram, and Reddit follows + Playlight discover task are satisfied (and the invite task, while that task is on); future event can grant exclusive item then clear or consume this flag.
    */
   socialPromoExclusiveRewardPending: z.boolean().default(false),
   /** Session-derived UI flag; stripped on save (UI_ONLY). Kept for legacy save reads. */
@@ -855,7 +862,7 @@ export const gameStateSchema = z.object({
         timestamp: z.number().optional(),
       }),
     )
-    .default({}), // Track social media follow rewards by platform (e.g., 'youtube', 'reddit'; 'instagram' remains stored while that task is off)
+    .default({}), // Track social media follow rewards by platform (e.g., 'youtube', 'instagram', 'reddit')
   sleepUpgrades: z
     .object({
       lengthLevel: z.number().default(0), // 0-5

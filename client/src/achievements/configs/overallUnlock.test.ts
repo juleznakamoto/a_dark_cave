@@ -113,6 +113,7 @@ describe("overall achievement tab unlock", () => {
       referralCount: 1,
       social_media_rewards: {
         marketing_email: { claimed: true },
+        youtube: { claimed: true },
         instagram: { claimed: true },
         reddit: { claimed: true },
         playlight_discover: { claimed: true },

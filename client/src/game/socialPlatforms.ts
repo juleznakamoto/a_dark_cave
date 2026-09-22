@@ -14,8 +14,7 @@ export type SocialPlatformConfig = {
   /** Hidden follow tasks stay in this list so they can be turned back on. */
   active: boolean;
   /**
-   * Older claim keys that still complete this task (Instagram claims count as
-   * YouTube while Instagram is off).
+   * Older claim keys that still complete this task when a follow is turned off.
    */
   legacyRewardKeys?: readonly string[];
 };
@@ -26,13 +25,12 @@ export const SOCIAL_PLATFORMS: readonly SocialPlatformConfig[] = [
     url: OFFICIAL_YOUTUBE_URL,
     reward: 100,
     active: true,
-    legacyRewardKeys: ["instagram"],
   },
   {
     id: "instagram",
     url: OFFICIAL_INSTAGRAM_URL,
     reward: 100,
-    active: false,
+    active: true,
   },
   {
     id: "reddit",

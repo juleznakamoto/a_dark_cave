@@ -22,6 +22,7 @@ describe("computePersistedSocialTasksGold", () => {
       social_media_rewards: {
         [MARKETING_EMAIL_REWARD_KEY]: { claimed: true, timestamp: 1 },
         youtube: { claimed: true, timestamp: 1 },
+        instagram: { claimed: true, timestamp: 1 },
         reddit: { claimed: true, timestamp: 1 },
         [PLAYLIGHT_DISCOVER_REWARD_KEY]: { claimed: true, timestamp: 1 },
       },
@@ -45,7 +46,7 @@ describe("computePersistedSocialTasksGold", () => {
     );
   });
 
-  it("still counts a claimed Instagram follow while that task is inactive", () => {
+  it("counts a claimed Instagram follow", () => {
     const instagramReward =
       SOCIAL_PLATFORMS.find((platform) => platform.id === "instagram")?.reward ??
       0;

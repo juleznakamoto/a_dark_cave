@@ -2,12 +2,15 @@
  * Admin aggregates for the social prompt dialog (plan A + B only).
  * Step logic mirrors `client/src/game/socialPromoExclusiveReward.ts` (pure, no store).
  */
+import { INVITE_FRIEND_TASK_ACTIVE } from "./schema";
 
 export const MARKETING_EMAIL_REWARD_KEY = "marketing_email";
 export const PLAYLIGHT_DISCOVER_REWARD_KEY = "playlight_discover";
 
-export const SOCIAL_PROMO_PLATFORM_IDS = ["youtube", "reddit"] as const;
-export const SOCIAL_PROMO_EXCLUSIVE_STEP_TOTAL = 6;
+export const SOCIAL_PROMO_PLATFORM_IDS = ["youtube", "instagram", "reddit"] as const;
+/** Signed in, email, three follows, Playlight. Invite adds one step while that task is on. */
+export const SOCIAL_PROMO_EXCLUSIVE_STEP_TOTAL =
+  6 + (INVITE_FRIEND_TASK_ACTIVE ? 1 : 0);
 
 export type LooseGameState = Record<string, unknown>;
 
@@ -17,10 +20,8 @@ function isTruthyClaimed(rewards: unknown, key: string): boolean {
   return row?.claimed === true;
 }
 
-/** YouTube follow task, including the legacy Instagram claim key. */
 function isSocialPromoPlatformClaimed(rewards: unknown, id: string): boolean {
-  if (isTruthyClaimed(rewards, id)) return true;
-  return id === "youtube" && isTruthyClaimed(rewards, "instagram");
+  return isTruthyClaimed(rewards, id);
 }
 
 export function isSignUpRewardsStepDoneFromSave(gs: LooseGameState): boolean {
@@ -45,7 +46,7 @@ export function socialPromoExclusiveStepsCompletedFromSave(
     if (isSocialPromoPlatformClaimed(rewards, id)) n++;
   }
   if (isTruthyClaimed(rewards, PLAYLIGHT_DISCOVER_REWARD_KEY)) n++;
-  if (isExclusiveInviteStepDoneFromSave(gs)) n++;
+  if (INVITE_FRIEND_TASK_ACTIVE && isExclusiveInviteStepDoneFromSave(gs)) n++;
   return n;
 }
 
@@ -145,13 +146,13 @@ export function aggregateSocialPromptFromSaves(
       taskCounts.emailClaimed++;
     }
     const yt = isSocialPromoPlatformClaimed(gs.social_media_rewards, "youtube");
-    const ig = isTruthyClaimed(gs.social_media_rewards, "instagram");
-    const rd = isTruthyClaimed(gs.social_media_rewards, "reddit");
+    const ig = isSocialPromoPlatformClaimed(gs.social_media_rewards, "instagram");
+    const rd = isSocialPromoPlatformClaimed(gs.social_media_rewards, "reddit");
     if (yt) taskCounts.youtube++;
     if (ig) taskCounts.instagram++;
     if (rd) taskCounts.reddit++;
-    if (yt && rd) taskCounts.bothSocial++;
-    if (yt || rd) taskCounts.eitherSocial++;
+    if (yt && ig && rd) taskCounts.bothSocial++;
+    if (yt || ig || rd) taskCounts.eitherSocial++;
     if (
       isTruthyClaimed(gs.social_media_rewards, PLAYLIGHT_DISCOVER_REWARD_KEY)
     ) {

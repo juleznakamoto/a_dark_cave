@@ -13,6 +13,12 @@ import { PLAYLIGHT_DISCOVER_REWARD_KEY } from "./playlightDiscoverReward";
 
 const MIN = 60 * 1000;
 
+const claimedSocialPlatforms = {
+  youtube: { claimed: true as const, timestamp: 1 },
+  instagram: { claimed: true as const, timestamp: 1 },
+  reddit: { claimed: true as const, timestamp: 1 },
+};
+
 const claimedPlaylightDiscover = {
   [PLAYLIGHT_DISCOVER_REWARD_KEY]: { claimed: true as const, timestamp: 1 },
 };
@@ -84,51 +90,49 @@ describe("socialPromptAuto eligibility", () => {
     expect(
       isSocialPromptFirstWaveEligible({
         social_media_rewards: {
-          instagram: { claimed: true, timestamp: 1 },
-          reddit: { claimed: true, timestamp: 1 },
+          ...claimedSocialPlatforms,
           marketing_email: { claimed: true, timestamp: 1 },
+          ...claimedPlaylightDiscover,
         },
-        referralCount: SOCIAL_PROMPT_REFERRAL_CAP,
+        referralCount: 0,
         isUserSignedIn: false,
       }),
     ).toBe(true);
   });
 
-  it("first wave: not eligible when platforms, email, Playlight discover, and referrals complete", () => {
+  it("first wave: not eligible when platforms, email, and Playlight discover are done", () => {
     expect(
       isSocialPromptFirstWaveEligible({
         social_media_rewards: {
-          instagram: { claimed: true, timestamp: 1 },
-          reddit: { claimed: true, timestamp: 1 },
+          ...claimedSocialPlatforms,
           marketing_email: { claimed: true, timestamp: 1 },
           ...claimedPlaylightDiscover,
         },
-        referralCount: SOCIAL_PROMPT_REFERRAL_CAP,
+        referralCount: 0,
         isUserSignedIn: true,
       }),
     ).toBe(false);
   });
 
-  it("first wave: eligible when referrals incomplete even if social+email done", () => {
+  it("first wave: ignores invites once the social tasks are done", () => {
     expect(
       isSocialPromptFirstWaveEligible({
         social_media_rewards: {
-          instagram: { claimed: true, timestamp: 1 },
-          reddit: { claimed: true, timestamp: 1 },
+          ...claimedSocialPlatforms,
           marketing_email: { claimed: true, timestamp: 1 },
+          ...claimedPlaylightDiscover,
         },
         referralCount: SOCIAL_PROMPT_REFERRAL_CAP - 1,
         isUserSignedIn: true,
       }),
-    ).toBe(true);
+    ).toBe(false);
   });
 
-  it("repeat wave: ignores referrals — not eligible when platforms + email + Playlight discover done", () => {
+  it("repeat wave: not eligible when platforms, email, and Playlight discover are done", () => {
     expect(
       isSocialPromptRepeatWaveEligible({
         social_media_rewards: {
-          instagram: { claimed: true, timestamp: 1 },
-          reddit: { claimed: true, timestamp: 1 },
+          ...claimedSocialPlatforms,
           marketing_email: { claimed: true, timestamp: 1 },
           ...claimedPlaylightDiscover,
         },
@@ -141,9 +145,9 @@ describe("socialPromptAuto eligibility", () => {
     expect(
       isSocialPromptRepeatWaveEligible({
         social_media_rewards: {
-          instagram: { claimed: true, timestamp: 1 },
-          reddit: { claimed: true, timestamp: 1 },
+          ...claimedSocialPlatforms,
           marketing_email: { claimed: true, timestamp: 1 },
+          ...claimedPlaylightDiscover,
         },
         isUserSignedIn: false,
       }),
@@ -154,6 +158,7 @@ describe("socialPromptAuto eligibility", () => {
     expect(
       isSocialPromptRepeatWaveEligible({
         social_media_rewards: {
+          youtube: { claimed: true, timestamp: 1 },
           instagram: { claimed: true, timestamp: 1 },
           marketing_email: { claimed: true, timestamp: 1 },
           ...claimedPlaylightDiscover,
@@ -167,8 +172,7 @@ describe("socialPromptAuto eligibility", () => {
     expect(
       isSocialPromptFirstWaveEligible({
         social_media_rewards: {
-          instagram: { claimed: true, timestamp: 1 },
-          reddit: { claimed: true, timestamp: 1 },
+          ...claimedSocialPlatforms,
           marketing_email: { claimed: true, timestamp: 1 },
         },
         referralCount: SOCIAL_PROMPT_REFERRAL_CAP,
@@ -181,8 +185,7 @@ describe("socialPromptAuto eligibility", () => {
     expect(
       isSocialPromptRepeatWaveEligible({
         social_media_rewards: {
-          instagram: { claimed: true, timestamp: 1 },
-          reddit: { claimed: true, timestamp: 1 },
+          ...claimedSocialPlatforms,
           marketing_email: { claimed: true, timestamp: 1 },
         },
         isUserSignedIn: true,
