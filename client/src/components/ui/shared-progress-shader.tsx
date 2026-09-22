@@ -12,6 +12,7 @@ import {
   type CSSProperties,
   type ReactNode,
 } from "react";
+import { createCappedPaintLoop } from "@/lib/cappedFrameLoop";
 import { cn } from "@/lib/utils";
 import { logger } from "@/lib/logger";
 import { tailwindToHex } from "@/lib/tailwindColors";
@@ -671,12 +672,12 @@ export function SharedProgressShaderHost({
   const rendererRef = useRef<SharedProgressShaderRenderer | null>(null);
   const shaderRef = useRef<ParkedSharedProgressShader | null>(null);
   const segmentsRef = useRef<Map<string, HTMLElement>>(new Map());
-  const rafRef = useRef(0);
   const activeRef = useRef(true);
   const visibleRef = useRef(visible);
   visibleRef.current = visible;
   const paintRef = useRef<(canvas: HTMLCanvasElement) => void>(() => { });
   const startLoopRef = useRef<() => void>(() => { });
+  const stopLoopRef = useRef<() => void>(() => { });
   // Resolve on the first commit so the holder exists in time to adopt a
   // prewarmed context before the browser paints the Estate tab.
   const [useShader, setUseShader] = useState(() => shouldAnimateSmokeShader());
@@ -709,8 +710,6 @@ export function SharedProgressShaderHost({
     if (!holder || !host) return;
 
     activeRef.current = true;
-    const FRAME_INTERVAL_MS = 1000 / 12;
-    let lastFrameTime = 0;
     let cancelled = false;
     let attachRaf = 0;
     let ro: ResizeObserver | null = null;
@@ -740,46 +739,22 @@ export function SharedProgressShaderHost({
     };
     paintRef.current = paintFrame;
 
-    const loop = (now: number) => {
+    let stopPaint = () => { };
+    const paintLoop = createCappedPaintLoop(1000 / 12, () => {
       const canvas = canvasRef.current;
-      if (
-        !activeRef.current ||
-        !visibleRef.current ||
-        !rendererRef.current ||
-        !canvas ||
-        document.hidden
-      ) {
-        return;
-      }
+      if (!rendererRef.current || !canvas) return;
       const box = canvas.getBoundingClientRect();
       if (box.width < 1 || box.height < 1) {
-        rafRef.current = 0;
+        stopPaint();
         return;
       }
-      rafRef.current = requestAnimationFrame(loop);
-      // 12fps wall-clock cap (not "every 4th rAF") so 120Hz stays at 12.
-      if (lastFrameTime > 0 && now - lastFrameTime < FRAME_INTERVAL_MS) {
-        return;
-      }
-      lastFrameTime = now;
       paintFrame(canvas);
-    };
-
-    const startLoop = () => {
-      if (!activeRef.current || !visibleRef.current || document.hidden) return;
-      if (rafRef.current) cancelAnimationFrame(rafRef.current);
-      rafRef.current = requestAnimationFrame(loop);
-    };
-    startLoopRef.current = startLoop;
-
-    const onVisibility = () => {
-      if (document.hidden) {
-        if (rafRef.current) cancelAnimationFrame(rafRef.current);
-        rafRef.current = 0;
-      } else {
-        startLoop();
-      }
-    };
+    }, {
+      isActive: () => activeRef.current && visibleRef.current,
+    });
+    stopPaint = () => paintLoop.stop();
+    startLoopRef.current = () => paintLoop.start();
+    stopLoopRef.current = () => paintLoop.stop();
 
     const attachShader = (shader: ParkedSharedProgressShader) => {
       shader.canvas.style.cssText = ACTIVE_CANVAS_STYLE;
@@ -791,19 +766,18 @@ export function SharedProgressShaderHost({
       // Children already registered in their layout effects. Paint now so
       // the first Estate frame includes smoke instead of a solid fill.
       paintFrame(shader.canvas);
-      startLoop();
+      paintLoop.start();
       ro =
         typeof ResizeObserver !== "undefined"
           ? new ResizeObserver(() => {
             const canvas = canvasRef.current;
             if (!canvas) return;
             paintFrame(canvas);
-            startLoop();
+            paintLoop.start();
           })
           : null;
       ro?.observe(host);
       window.addEventListener("resize", onResize);
-      document.addEventListener("visibilitychange", onVisibility);
     };
 
     const onResize = () => {
@@ -814,9 +788,7 @@ export function SharedProgressShaderHost({
     const detachShader = () => {
       ro?.disconnect();
       window.removeEventListener("resize", onResize);
-      document.removeEventListener("visibilitychange", onVisibility);
-      if (rafRef.current) cancelAnimationFrame(rafRef.current);
-      rafRef.current = 0;
+      paintLoop.stop();
       rendererRef.current = null;
       canvasRef.current = null;
       const shader = shaderRef.current;
@@ -856,8 +828,7 @@ export function SharedProgressShaderHost({
 
   useLayoutEffect(() => {
     if (!visible) {
-      if (rafRef.current) cancelAnimationFrame(rafRef.current);
-      rafRef.current = 0;
+      stopLoopRef.current();
       return;
     }
     const canvas = canvasRef.current;

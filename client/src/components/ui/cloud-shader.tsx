@@ -1,4 +1,5 @@
 import { useRef, useEffect, useState } from "react";
+import { createCappedPaintLoop } from "@/lib/cappedFrameLoop";
 import { logger } from "@/lib/logger";
 import { getViewportSize, subscribeViewportResize } from "@/lib/viewportSize";
 
@@ -232,7 +233,6 @@ interface CloudShaderProps {
 export default function CloudShader({ className = "" }: CloudShaderProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const rendererRef = useRef<WebGLRenderer | null>(null);
-  const animationFrameRef = useRef<number>();
   const [visible, setVisible] = useState(false); // for fade-in
   const isActiveRef = useRef(true);
 
@@ -244,6 +244,7 @@ export default function CloudShader({ className = "" }: CloudShaderProps) {
     let cancelled = false;
     let outerFrame = 0;
     let innerFrame = 0;
+    let stopPaint: (() => void) | null = null;
     isActiveRef.current = true;
 
     const startRenderer = () => {
@@ -267,19 +268,13 @@ export default function CloudShader({ className = "" }: CloudShaderProps) {
         rendererRef.current = renderer;
         setVisible(true);
 
-        const FRAME_INTERVAL_MS = 1000 / 24;
-        let lastFrameTime = 0;
-        const loop = (now: number) => {
-          if (cancelled || !isActiveRef.current || !rendererRef.current) return;
-          animationFrameRef.current = requestAnimationFrame(loop);
-          // 24fps wall-clock cap (not "every other rAF") so 120Hz stays at 24.
-          if (lastFrameTime > 0 && now - lastFrameTime < FRAME_INTERVAL_MS) {
-            return;
-          }
-          lastFrameTime = now;
-          rendererRef.current.render(now);
-        };
-        animationFrameRef.current = requestAnimationFrame(loop);
+        const paintLoop = createCappedPaintLoop(1000 / 24, (now) => {
+          rendererRef.current?.render(now);
+        }, {
+          isActive: () => !cancelled && isActiveRef.current && rendererRef.current != null,
+        });
+        stopPaint = () => paintLoop.stop();
+        paintLoop.start();
       } catch (err) {
         logger.warn("[CloudShader] WebGL execution failed:", err);
       }
@@ -333,8 +328,7 @@ export default function CloudShader({ className = "" }: CloudShaderProps) {
       unsubscribeViewport();
       window.removeEventListener("mousemove", handleMouseMove);
       window.removeEventListener("touchmove", handleTouchMove);
-      if (animationFrameRef.current)
-        cancelAnimationFrame(animationFrameRef.current);
+      stopPaint?.();
       if (rendererRef.current) {
         rendererRef.current.reset();
         rendererRef.current = null;

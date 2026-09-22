@@ -1,4 +1,5 @@
 import { useEffect, useRef } from "react";
+import { createCappedPaintLoop } from "@/lib/cappedFrameLoop";
 import { cn } from "@/lib/utils";
 import { logger } from "@/lib/logger";
 
@@ -225,43 +226,14 @@ export function SmokeBackground({
     handleResize();
     window.addEventListener("resize", handleResize);
 
-    const FRAME_INTERVAL_MS = 1000 / 24;
-    let animationFrameId: number | undefined;
-    let lastFrameTime = 0;
-    const loop = (now: number) => {
-      if (document.hidden) return;
-      animationFrameId = requestAnimationFrame(loop);
-      if (lastFrameTime > 0 && now - lastFrameTime < FRAME_INTERVAL_MS) {
-        return;
-      }
-      lastFrameTime = now;
+    const paintLoop = createCappedPaintLoop(1000 / 24, (now) => {
       renderer.render(now);
-    };
-
-    const startLoop = () => {
-      if (document.hidden) return;
-      if (animationFrameId) cancelAnimationFrame(animationFrameId);
-      animationFrameId = requestAnimationFrame(loop);
-    };
-
-    const onVisibilityChange = () => {
-      if (document.hidden) {
-        if (animationFrameId) {
-          cancelAnimationFrame(animationFrameId);
-          animationFrameId = undefined;
-        }
-      } else {
-        startLoop();
-      }
-    };
-
-    document.addEventListener("visibilitychange", onVisibilityChange);
-    startLoop();
+    });
+    paintLoop.start();
 
     return () => {
       window.removeEventListener("resize", handleResize);
-      document.removeEventListener("visibilitychange", onVisibilityChange);
-      if (animationFrameId) cancelAnimationFrame(animationFrameId);
+      paintLoop.stop();
       renderer.reset();
       rendererRef.current = null;
     };

@@ -47,8 +47,15 @@ export class AudioManager {
   private requestedVolumes: Map<string, number> = new Map();
   /** Looping event ambience (cube, future madness beds, etc.) currently owning the mix. */
   private activeEventAmbience: string | null = null;
+  /** True when we suspended a running context because the page was hidden. */
+  private suspendedForHide = false;
+  /** Bumps on every visibility change so a late suspend cannot win over show. */
+  private visibilityEpoch = 0;
+  private visibilityBound = false;
 
-  private constructor() { }
+  private constructor() {
+    this.bindPageVisibility();
+  }
 
   private clampVolume(value: number): number {
     if (!Number.isFinite(value)) return 1;
@@ -85,14 +92,50 @@ export class AudioManager {
     return AudioManager.instance;
   }
 
-  // Resume AudioContext if it's suspended (required for autoplay policy)
+  // Resume AudioContext if it's suspended (required for autoplay policy).
+  // A hidden page must stay suspended; the visibility handler resumes it.
   private resumeAudioContext(): void {
+    if (typeof document !== "undefined" && document.hidden) return;
     const ctx = Howler.ctx;
     if (ctx && ctx.state === 'suspended') {
       ctx.resume().catch(() => {
         // Silently ignore - will retry on next user interaction
       });
     }
+  }
+
+  private bindPageVisibility(): void {
+    if (this.visibilityBound || typeof document === "undefined") return;
+    this.visibilityBound = true;
+    document.addEventListener("visibilitychange", () => {
+      if (document.hidden) this.suspendForHiddenPage();
+      else this.resumeAfterVisiblePage();
+    });
+  }
+
+  /**
+   * Drop the audio thread while the tab is in the background. Howl keeps its
+   * playing flags; resume continues the same loops.
+   */
+  private suspendForHiddenPage(): void {
+    const ctx = Howler.ctx;
+    if (!ctx || ctx.state !== "running") return;
+    const epoch = ++this.visibilityEpoch;
+    this.suspendedForHide = true;
+    void ctx.suspend().then(() => {
+      if (epoch !== this.visibilityEpoch || document.hidden) return;
+      this.resumeAfterVisiblePage();
+    }).catch(() => {
+      if (epoch === this.visibilityEpoch) this.suspendedForHide = false;
+    });
+  }
+
+  private resumeAfterVisiblePage(): void {
+    if (!this.suspendedForHide) return;
+    if (typeof document !== "undefined" && document.hidden) return;
+    this.suspendedForHide = false;
+    this.visibilityEpoch += 1;
+    this.resumeAudioContext();
   }
 
   /** Resolves when Howl has finished loading (or failed); does not hang forever. */

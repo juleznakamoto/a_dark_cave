@@ -1,5 +1,6 @@
 import { useRef, useEffect } from "react";
 import { cn } from "@/lib/utils";
+import { createCappedPaintLoop } from "@/lib/cappedFrameLoop";
 import { logger } from "@/lib/logger";
 import { getViewportSize, subscribeViewportResize } from "@/lib/viewportSize";
 
@@ -231,7 +232,6 @@ interface StarshipShaderProps {
 export function StarshipShader({ className, onFatalError }: StarshipShaderProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const rendererRef = useRef<StarshipWebGLRenderer | null>(null);
-  const animationFrameRef = useRef<number>();
   const isActiveRef = useRef(true);
 
   useEffect(() => {
@@ -239,6 +239,7 @@ export function StarshipShader({ className, onFatalError }: StarshipShaderProps)
     if (!canvas) return;
 
     isActiveRef.current = true;
+    let stopPaint: (() => void) | null = null;
 
     try {
       const { width, height } = getViewportSize();
@@ -246,18 +247,13 @@ export function StarshipShader({ className, onFatalError }: StarshipShaderProps)
       renderer.resizeToDisplay(width, height);
       rendererRef.current = renderer;
 
-      const FRAME_INTERVAL_MS = 1000 / 24;
-      let lastFrameTime = 0;
-      const loop = (now: number) => {
-        if (!isActiveRef.current || !rendererRef.current) return;
-        animationFrameRef.current = requestAnimationFrame(loop);
-        if (lastFrameTime > 0 && now - lastFrameTime < FRAME_INTERVAL_MS) {
-          return;
-        }
-        lastFrameTime = now;
-        rendererRef.current.render(now);
-      };
-      animationFrameRef.current = requestAnimationFrame(loop);
+      const paintLoop = createCappedPaintLoop(1000 / 24, (now) => {
+        rendererRef.current?.render(now);
+      }, {
+        isActive: () => isActiveRef.current && rendererRef.current != null,
+      });
+      stopPaint = () => paintLoop.stop();
+      paintLoop.start();
     } catch (err) {
       const message = err instanceof Error ? err.message : String(err);
       logger.error("[StarshipShader] WebGL init failed:", message);
@@ -275,9 +271,7 @@ export function StarshipShader({ className, onFatalError }: StarshipShaderProps)
     return () => {
       isActiveRef.current = false;
       unsubscribeViewport();
-      if (animationFrameRef.current) {
-        cancelAnimationFrame(animationFrameRef.current);
-      }
+      stopPaint?.();
       if (rendererRef.current) {
         rendererRef.current.reset();
         rendererRef.current = null;

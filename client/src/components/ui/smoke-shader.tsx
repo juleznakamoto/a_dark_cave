@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
+import { createCappedPaintLoop } from "@/lib/cappedFrameLoop";
 import { cn } from "@/lib/utils";
 import { logger } from "@/lib/logger";
 import { tailwindToHex } from "@/lib/tailwindColors";
@@ -557,7 +558,6 @@ export function SmokeShader({
 }: SmokeShaderProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const rendererRef = useRef<SmokeWebGLRenderer | null>(null);
-  const animationFrameRef = useRef<number>();
   const isActiveRef = useRef(true);
   const scaleRef = useRef(scale);
   scaleRef.current = scale;
@@ -577,8 +577,6 @@ export function SmokeShader({
 
     isActiveRef.current = true;
     let resizeObserver: ResizeObserver | null = null;
-    const FRAME_INTERVAL_MS = 1000 / 12;
-    let lastFrameTime = 0;
 
     const resizeFromParent = () => {
       const parent = canvas.parentElement;
@@ -587,46 +585,19 @@ export function SmokeShader({
       rendererRef.current.resizeToDisplay(rect.width, rect.height);
     };
 
-    const loop = (now: number) => {
-      if (!isActiveRef.current || !rendererRef.current || document.hidden) {
-        return;
-      }
-      animationFrameRef.current = requestAnimationFrame(loop);
-      // 12fps wall-clock cap (not "every 4th rAF") so 120Hz stays at 12.
-      if (lastFrameTime > 0 && now - lastFrameTime < FRAME_INTERVAL_MS) {
-        return;
-      }
-      lastFrameTime = now;
+    const paintLoop = createCappedPaintLoop(1000 / 12, () => {
+      if (!rendererRef.current) return;
       rendererRef.current.setScale(scaleRef.current);
       rendererRef.current.render();
-    };
-
-    const startLoop = () => {
-      if (!isActiveRef.current || document.hidden || !rendererRef.current) {
-        return;
-      }
-      if (animationFrameRef.current) {
-        cancelAnimationFrame(animationFrameRef.current);
-      }
-      animationFrameRef.current = requestAnimationFrame(loop);
-    };
-
-    const onVisibilityChange = () => {
-      if (document.hidden) {
-        if (animationFrameRef.current) {
-          cancelAnimationFrame(animationFrameRef.current);
-          animationFrameRef.current = undefined;
-        }
-      } else {
-        startLoop();
-      }
-    };
+    }, {
+      isActive: () => isActiveRef.current && rendererRef.current != null,
+    });
 
     try {
       const renderer = new SmokeWebGLRenderer(canvas, scaleRef.current);
       rendererRef.current = renderer;
       resizeFromParent();
-      startLoop();
+      paintLoop.start();
     } catch (err) {
       const message = err instanceof Error ? err.message : String(err);
       logger.warn(
@@ -642,16 +613,12 @@ export function SmokeShader({
       resizeObserver.observe(parent);
     }
     window.addEventListener("resize", resizeFromParent);
-    document.addEventListener("visibilitychange", onVisibilityChange);
 
     return () => {
       isActiveRef.current = false;
       window.removeEventListener("resize", resizeFromParent);
-      document.removeEventListener("visibilitychange", onVisibilityChange);
       resizeObserver?.disconnect();
-      if (animationFrameRef.current) {
-        cancelAnimationFrame(animationFrameRef.current);
-      }
+      paintLoop.stop();
       if (rendererRef.current) {
         rendererRef.current.reset();
         rendererRef.current = null;

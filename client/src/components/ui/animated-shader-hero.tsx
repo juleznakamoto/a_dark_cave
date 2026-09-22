@@ -1,4 +1,5 @@
 import React, { useRef, useEffect, useState } from "react";
+import { createCappedPaintLoop } from "@/lib/cappedFrameLoop";
 import { logger } from "@/lib/logger";
 import { StarshipShader } from "@/components/ui/starship-shader";
 import { FooterSocialIcon } from "@/components/game/FooterSocialIcon";
@@ -191,7 +192,6 @@ const END_SCREEN_LINK_BUTTON_CLASS =
 // Reusable Shader Background Hook
 const useShaderBackground = (enabled: boolean) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const animationFrameRef = useRef<number>();
   const rendererRef = useRef<WebGLRenderer | null>(null);
   const pointersRef = useRef<PointerHandler | null>(null);
 
@@ -485,34 +485,24 @@ void main(){gl_Position=position;}`;
     }
 
     let isActive = true;
-    const FRAME_INTERVAL_MS = 1000 / 24;
-    let lastFrameTime = 0;
-    const loop = (now: number) => {
-      if (!isActive || !rendererRef.current || !pointersRef.current) return;
-      animationFrameRef.current = requestAnimationFrame(loop);
-      if (lastFrameTime > 0 && now - lastFrameTime < FRAME_INTERVAL_MS) {
-        return;
-      }
-      lastFrameTime = now;
-
+    const paintLoop = createCappedPaintLoop(1000 / 24, (now) => {
+      if (!rendererRef.current || !pointersRef.current) return;
       rendererRef.current.updateMouse(pointersRef.current.first);
       rendererRef.current.updatePointerCount(pointersRef.current.count);
       rendererRef.current.updatePointerCoords(pointersRef.current.coords);
       rendererRef.current.updateMove(pointersRef.current.move);
       rendererRef.current.render(now);
-    };
-
-    animationFrameRef.current = requestAnimationFrame(loop);
+    }, {
+      isActive: () => isActive && rendererRef.current != null && pointersRef.current != null,
+    });
+    paintLoop.start();
 
     window.addEventListener("resize", resize);
 
     return () => {
       isActive = false;
       window.removeEventListener("resize", resize);
-      if (animationFrameRef.current) {
-        cancelAnimationFrame(animationFrameRef.current);
-        animationFrameRef.current = undefined;
-      }
+      paintLoop.stop();
       if (rendererRef.current) {
         rendererRef.current.reset();
         rendererRef.current = null;

@@ -53,7 +53,10 @@ import { isDemoPlayFrozen, processDemoLimit } from "./demoLimit";
 import { processTimedEffects } from "./timedEffects";
 import { tickObsidianOrbFocus } from "@/game/obsidianOrb";
 import { isLocalOnlyEdition, shouldSyncSteamAchievements } from "@/lib/edition";
-let gameLoopId: number | null = null;
+let gameLoopRunning = false;
+let gameLoopTimer: ReturnType<typeof setTimeout> | null = null;
+/** Set while the loop is started so the timer can call the nested tick. */
+let pumpGameTick: ((timestamp: number) => void) | null = null;
 let lastFrameTime = 0;
 
 const PRIOR_EXECUTION_GAP_MS = 500;
@@ -292,14 +295,41 @@ function handleUserActivity() {
   lastUserActivity = Date.now();
 }
 
+function clearGameLoopTimer(): void {
+  if (gameLoopTimer != null) {
+    clearTimeout(gameLoopTimer);
+    gameLoopTimer = null;
+  }
+}
+
+/**
+ * Next simulation step. Sleeps until it is due. A hidden page does not arm
+ * a timer; becoming visible schedules the next step from the visibility handler.
+ */
+function scheduleGameTick(delayMs: number): void {
+  clearGameLoopTimer();
+  if (!gameLoopRunning || isGameTabHidden()) return;
+  gameLoopTimer = setTimeout(() => {
+    gameLoopTimer = null;
+    if (!gameLoopRunning || isGameTabHidden()) return;
+    pumpGameTick?.(performance.now());
+  }, Math.max(0, delayMs));
+}
+
 function handleActivityVisibilityChange() {
-  // Freeze or unfreeze the timed-tab countdown on hide/show. rAF often stops
-  // while hidden, so this must run on visibilitychange rather than the loop tick.
+  // Freeze or unfreeze the timed-tab countdown on hide/show. The simulation
+  // timer is cleared while hidden, so this cannot wait for the next tick.
   syncTimedEventTabPauseTracking();
-  if (!isGameTabHidden()) {
-    lastUserActivity = Date.now();
-    // After unfreeze, drop a visit only if its remaining time is actually gone.
-    clearExpiredTimedEventTab();
+  if (isGameTabHidden()) {
+    clearGameLoopTimer();
+    return;
+  }
+  lastUserActivity = Date.now();
+  // After unfreeze, drop a visit only if its remaining time is actually gone.
+  clearExpiredTimedEventTab();
+  if (gameLoopRunning) {
+    const elapsed = performance.now() - lastRenderTime;
+    scheduleGameTick(FRAME_DURATION - elapsed);
   }
 }
 
@@ -371,7 +401,7 @@ export function scheduleSleepDialogRestore(): void {
 }
 
 export function startGameLoop() {
-  if (gameLoopId) {
+  if (gameLoopRunning) {
     // Loop already running (cloud reconcile, remount). Still restore Sleep
     // if loadGame closed the dialog but left the session pending, and drop a
     // visit whose timer already ran out in the newly loaded save.
@@ -379,6 +409,7 @@ export function startGameLoop() {
     clearExpiredTimedEventTab();
     return;
   }
+  gameLoopRunning = true;
 
   // Clear any timed event that expired while the game was closed (stale saved state).
   clearExpiredTimedEventTab();
@@ -471,10 +502,9 @@ export function startGameLoop() {
   scheduleSleepDialogRestore();
 
   function tick(timestamp: number) {
-    // Limit to 10 FPS
     const timeSinceLastRender = timestamp - lastRenderTime;
     if (timeSinceLastRender < FRAME_DURATION) {
-      gameLoopId = requestAnimationFrame(tick);
+      scheduleGameTick(FRAME_DURATION - timeSinceLastRender);
       return;
     }
     lastRenderTime = timestamp;
@@ -521,7 +551,7 @@ export function startGameLoop() {
       } catch (error) {
         logger.error("[GAME LOOP] handoff flush failed:", error);
       }
-      gameLoopId = requestAnimationFrame(tick);
+      scheduleGameTick(FRAME_DURATION);
       return;
     }
 
@@ -678,10 +708,11 @@ export function startGameLoop() {
       }
     }
 
-    gameLoopId = requestAnimationFrame(tick);
+    scheduleGameTick(FRAME_DURATION);
   }
 
-  gameLoopId = requestAnimationFrame(tick);
+  pumpGameTick = tick;
+  scheduleGameTick(FRAME_DURATION);
 }
 
 export function clearExpiredTimedEventTab() {
@@ -722,10 +753,9 @@ async function handleInactivity() {
   isInactive = true;
 
   // Stop the game loop
-  if (gameLoopId) {
-    cancelAnimationFrame(gameLoopId);
-    gameLoopId = null;
-  }
+  gameLoopRunning = false;
+  pumpGameTick = null;
+  clearGameLoopTimer();
 
   // Stop inactivity checker
   if (inactivityCheckInterval) {
@@ -792,10 +822,9 @@ export function resetProductionCycle() {
 export function stopGameLoop() {
   commitFlushedAttackWaveTimers();
   resetAttackWaveElapsedClock();
-  if (gameLoopId) {
-    cancelAnimationFrame(gameLoopId);
-    gameLoopId = null;
-  }
+  gameLoopRunning = false;
+  pumpGameTick = null;
+  clearGameLoopTimer();
   if (loopProgressTimeoutId) {
     clearTimeout(loopProgressTimeoutId);
     loopProgressTimeoutId = null;

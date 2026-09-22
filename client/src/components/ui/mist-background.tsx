@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
+import { createCappedPaintLoop } from '@/lib/cappedFrameLoop';
 import { logger } from '@/lib/logger';
 
 function createWebGL1Context(canvas: HTMLCanvasElement): WebGLRenderingContext | null {
@@ -168,18 +169,7 @@ const MistBackground: React.FC = () => {
 
     window.addEventListener('mousemove', handleMouseMove);
 
-    const FRAME_INTERVAL_MS = 1000 / 24;
-    let animationFrameId: number | undefined;
-    let lastFrameTime = 0;
-    const render = (time: number) => {
-      if (document.hidden) return;
-      animationFrameId = requestAnimationFrame(render);
-
-      if (lastFrameTime > 0 && time - lastFrameTime < FRAME_INTERVAL_MS) {
-        return;
-      }
-      lastFrameTime = time;
-
+    const paintLoop = createCappedPaintLoop(1000 / 24, (time) => {
       if (canvas.width !== window.innerWidth || canvas.height !== window.innerHeight) {
         canvas.width = window.innerWidth;
         canvas.height = window.innerHeight;
@@ -191,32 +181,12 @@ const MistBackground: React.FC = () => {
       gl.uniform2f(mouseLoc, mouse.x, mouse.y);
 
       gl.drawArrays(gl.TRIANGLES, 0, 6);
-    };
-
-    const startLoop = () => {
-      if (document.hidden) return;
-      if (animationFrameId) cancelAnimationFrame(animationFrameId);
-      animationFrameId = requestAnimationFrame(render);
-    };
-
-    const onVisibilityChange = () => {
-      if (document.hidden) {
-        if (animationFrameId) {
-          cancelAnimationFrame(animationFrameId);
-          animationFrameId = undefined;
-        }
-      } else {
-        startLoop();
-      }
-    };
-
-    document.addEventListener('visibilitychange', onVisibilityChange);
-    startLoop();
+    });
+    paintLoop.start();
 
     return () => {
       window.removeEventListener('mousemove', handleMouseMove);
-      document.removeEventListener('visibilitychange', onVisibilityChange);
-      if (animationFrameId) cancelAnimationFrame(animationFrameId);
+      paintLoop.stop();
     };
   }, []);
 
