@@ -52,8 +52,8 @@ import {
   completePaidShopPurchaseInStore,
 } from "@/game/shopPostPurchaseState";
 import {
+  firstPurchaseInsightBannerBefore,
   getFirstPurchaseInsightBonus,
-  isPlaylightFirstPurchaseBonusActive,
 } from "@shared/firstPurchaseInsightBonus";
 import { INSIGHT_GLYPH, INSIGHT_TEXT_CLASS } from "@/game/villagerCapUpgrades";
 import { userOwnsShopItemFromPurchaseRows } from "@shared/shopPurchaseEligibility";
@@ -909,8 +909,7 @@ function ShopDialogOpen({ isOpen, onClose, onOpen }: ShopDialogProps) {
   );
   const [isDetectingCurrency, setIsDetectingCurrency] = useState(false);
   const gameState = useGameStore();
-  const playlightFirstPurchaseBonusActive =
-    isPlaylightFirstPurchaseBonusActive(gameState);
+  const insightBannerBefore = firstPurchaseInsightBannerBefore(gameState);
   const firstPurchaseInsightAmount = getFirstPurchaseInsightBonus(gameState);
   const setAuthDialogOpen = useGameStore((state) => state.setAuthDialogOpen);
   const setSignUpPromptEligibleForGold = useGameStore(
@@ -2046,17 +2045,9 @@ function ShopDialogOpen({ isOpen, onClose, onOpen }: ShopDialogProps) {
                           aria-hidden
                         />
                         <div className="relative z-10 px-2 py-2 text-center text-sm font-semibold text-white sm:text-base">
-                          {playlightFirstPurchaseBonusActive
-                            ? t(
-                              "ui:shop.firstPurchaseInsightBannerBeforePlaylight",
-                              {
-                                defaultValue:
-                                  "As a Playlight user you receive",
-                              },
-                            )
-                            : t("ui:shop.firstPurchaseInsightBannerBefore", {
-                              defaultValue: "Get",
-                            })}{" "}
+                          {t(insightBannerBefore.key, {
+                            defaultValue: insightBannerBefore.defaultValue,
+                          })}{" "}
                           <span className="tabular-nums">
                             {formatNumber(firstPurchaseInsightAmount)}
                           </span>{" "}

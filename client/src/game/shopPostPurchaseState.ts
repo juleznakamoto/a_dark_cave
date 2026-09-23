@@ -1,6 +1,7 @@
 import { useGameStore } from "@/game/state";
 import { updateResource } from "@/game/stateHelpers";
 import { getFirstPurchaseInsightBonus } from "@shared/firstPurchaseInsightBonus";
+import { clearedPartnerInsightSeenFlags } from "@shared/partnerInsightReferral";
 import {
   consumeShopDiscountsInGameState,
   shopDiscountFlagsFromPaymentMetadata,
@@ -16,7 +17,7 @@ export type PaidShopPurchaseResult = {
 
 /**
  * Mark a real-money shop purchase complete: set `hasMadeNonFreePurchase`, clear
- * Playlight first-purchase bonus eligibility, and grant the one-time Insight
+ * elevated first-purchase bonus eligibility, and grant the one-time Insight
  * bonus on the first paid purchase. Idempotent if already purchased before.
  */
 export function completePaidShopPurchaseInStore(): PaidShopPurchaseResult {
@@ -29,6 +30,7 @@ export function completePaidShopPurchaseInStore(): PaidShopPurchaseResult {
       seen: {
         ...state.story.seen,
         playlightFirstPurchaseDiscountActive: false,
+        ...clearedPartnerInsightSeenFlags(),
       },
     };
 
@@ -56,6 +58,7 @@ export function completePaidShopPurchaseInStore(): PaidShopPurchaseResult {
         seen: {
           ...baseStory.seen,
           playlightFirstPurchaseDiscountActive: false,
+          ...clearedPartnerInsightSeenFlags(),
         },
       },
     };

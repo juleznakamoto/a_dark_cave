@@ -5,7 +5,9 @@ import type { LogEntry } from "./eventTypes";
 import { gameEvents } from "./events";
 import { logger } from "../../lib/logger";
 import { isPlaylightReferralUrl } from "@/lib/playlight";
+import { readPartnerInsightReferral } from "@/lib/partnerInsightReferral";
 import { PLAYLIGHT_WELCOME_GOLD } from "@/game/playlightRewards";
+import { PARTNER_INSIGHT_SEEN_KEYS } from "@shared/partnerInsightReferral";
 import { btpLootAmount } from "@/game/btpLoot";
 import { buildLocalizedEventLogEntry } from "@/i18n/buildEventLogEntry";
 import {
@@ -881,6 +883,8 @@ export function handleMakeFire(
     isPlaylightReferralUrl() &&
     state.story.seen.playlightMemberGoldGranted !== true;
 
+  const seenExtra: Record<string, boolean | number> = {};
+
   if (playlightNewMember) {
     const mergedRes = result.stateUpdates.resources
       ? { ...state.resources, ...result.stateUpdates.resources }
@@ -891,13 +895,22 @@ export function handleMakeFire(
       gold: (mergedRes.gold ?? 0) + PLAYLIGHT_WELCOME_GOLD,
     };
 
-    const seenExtra: Record<string, boolean | number> = {
-      playlightMemberGoldGranted: true,
-    };
+    seenExtra.playlightMemberGoldGranted = true;
     if (!state.hasMadeNonFreePurchase) {
       seenExtra.playlightFirstPurchaseDiscountActive = true;
     }
+  }
 
+  const partnerSource = playlightNewMember ? null : readPartnerInsightReferral();
+  if (
+    partnerSource &&
+    state.story.seen[PARTNER_INSIGHT_SEEN_KEYS[partnerSource]] !== true &&
+    !state.hasMadeNonFreePurchase
+  ) {
+    seenExtra[PARTNER_INSIGHT_SEEN_KEYS[partnerSource]] = true;
+  }
+
+  if (Object.keys(seenExtra).length > 0) {
     result.stateUpdates.story = {
       ...(result.stateUpdates.story || state.story),
       seen: {

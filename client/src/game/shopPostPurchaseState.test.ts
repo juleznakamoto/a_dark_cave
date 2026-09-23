@@ -66,6 +66,26 @@ describe("completePaidShopPurchaseInStore", () => {
     ).toBe(false);
   });
 
+  it("grants partner Insight on the first paid purchase and clears the flag", () => {
+    useGameStore.setState({
+      story: {
+        ...useGameStore.getState().story,
+        seen: {
+          ...useGameStore.getState().story.seen,
+          itchFirstPurchaseInsightActive: true,
+        },
+      },
+    });
+
+    const first = completePaidShopPurchaseInStore();
+    expect(first.firstPurchaseInsightAmount).toBe(
+      PLAYLIGHT_FIRST_PURCHASE_INSIGHT_BONUS,
+    );
+    expect(
+      useGameStore.getState().story.seen.itchFirstPurchaseInsightActive,
+    ).toBe(false);
+  });
+
   it("does not grant Insight when the player already paid before", () => {
     useGameStore.setState({ hasMadeNonFreePurchase: true });
 
