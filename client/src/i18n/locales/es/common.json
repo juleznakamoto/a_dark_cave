@@ -26,7 +26,8 @@
     "bastion": "Bastión",
     "fortress": "Fortaleza",
     "trader": "Mercader",
-    "timedEvent": "Evento cronometrado"
+    "event": "Evento",
+    "merchant": "Mercader"
   },
   "resources": {
     "wood": "Madera",

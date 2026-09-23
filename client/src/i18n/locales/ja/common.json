@@ -26,7 +26,8 @@
     "bastion": "バスティオン",
     "fortress": "要塞",
     "trader": "商人",
-    "timedEvent": "時限出来事"
+    "event": "出来事",
+    "merchant": "商人"
   },
   "resources": {
     "wood": "木材",

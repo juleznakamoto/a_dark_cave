@@ -23,12 +23,22 @@ type ExtendedLogEntry =
 
 const MARK_READ_HOVER_MS = 300;
 
+/** 0-based index of 1-based line 36 in a full log. */
+const LOG_TAIL_FADE_START_INDEX = GAME_CONSTANTS.LOG_MAX_ENTRIES - 5;
+
+/** Lines 36–40. Unread drops 15 points per line from 100%. Read drops 7.5 from 50%. */
+function logLineOpacity(isUnread: boolean, index: number): number {
+  const basePercent = isUnread ? 100 : 50;
+  const step = isUnread ? 15 : 7.5;
+  const fadeSteps = index - LOG_TAIL_FADE_START_INDEX + 1;
+  const fadePercent = fadeSteps > 0 ? fadeSteps * step : 0;
+  return (basePercent - fadePercent) / 100;
+}
+
 function LogPanel() {
   const { i18n } = useTranslation("ui");
   const log = useGameStore((s) => s.log);
-  const [readEntries, setReadEntries] = useState<Set<string>>(
-    () => new Set(log.map((entry) => entry.id)),
-  );
+  const [readEntries, setReadEntries] = useState<Set<string>>(() => new Set());
   const topRef = useRef<HTMLDivElement>(null);
   const prevLogLengthRef = useRef(log.length);
   const markReadTimeoutsRef = useRef(
@@ -83,27 +93,14 @@ function LogPanel() {
               const typedEntry = entry as ExtendedLogEntry;
               const isUnread = !readEntries.has(typedEntry.id);
 
-              let opacity = "";
-              if (!isUnread) {
-                opacity = "opacity-60";
-              } else if (
-                recentEntries.length >= GAME_CONSTANTS.LOG_MAX_ENTRIES
-              ) {
-                if (index === recentEntries.length - 1) {
-                  opacity = "opacity-40";
-                } else if (index === recentEntries.length - 2) {
-                  opacity = "opacity-45";
-                } else if (index === recentEntries.length - 3) {
-                  opacity = "opacity-50";
-                } else if (index === recentEntries.length - 4) {
-                  opacity = "opacity-55";
-                }
-              }
+              const lineOpacity = logLineOpacity(isUnread, index);
+              const isTailLine = index >= LOG_TAIL_FADE_START_INDEX;
               const showNewIndicator = isUnread;
               const isNewVillager = isNewVillagerLogEntry(
                 typedEntry as LogEntry,
               );
-              const blinkClass = isUnread ? "animate-pulse" : "";
+              // Pulse sets opacity itself, which would hide the tail fade.
+              const blinkClass = isUnread && !isTailLine ? "animate-pulse" : "";
 
               const startMarkReadTimer = () => {
                 if (!isUnread) return;
@@ -159,7 +156,10 @@ function LogPanel() {
                     <span className="w-1 shrink-0" aria-hidden={true} />
                   )}
                   <span
-                    className={`flex-1 min-w-0 group-hover:opacity-100 group-hover:animate-none ${opacity} ${blinkClass}`}
+                    style={
+                      { "--log-line-opacity": lineOpacity } as React.CSSProperties
+                    }
+                    className={`flex-1 min-w-0 opacity-[var(--log-line-opacity)] group-hover:opacity-100 group-hover:animate-none ${blinkClass}`}
                   >
                     {resolveLogPanelMessage(typedEntry as LogEntry)}
                   </span>

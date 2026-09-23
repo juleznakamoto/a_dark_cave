@@ -117,9 +117,6 @@ export const GAME_INFO_GLYPH_CLASS =
 export const GAME_INFO_HIT_SIZE_CLASS = "w-5 h-5";
 export const GAME_INFO_TRIGGER_CLASS = `inline-flex items-center justify-center ${GAME_INFO_HIT_SIZE_CLASS} shrink-0 rounded-full text-muted-foreground hover:text-foreground cursor-pointer`;
 
-/** Timed-event hourglass tab icon alignment (same baseline as other tab icons). */
-export const TAB_TIMED_EVENT_ICON_CLASS = TAB_ICON_ALIGN_CLASS;
-
 /** Mask icons (rewards diamond) — glow via `.lime-accent-mask-icon` in index.css. */
 export const LIME_ACCENT_MASK_ICON_CLASS = "lime-accent-mask-icon";
 

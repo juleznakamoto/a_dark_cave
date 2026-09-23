@@ -30,7 +30,6 @@ import {
   GAME_PARTICLE_LAYER_ID,
   TAB_ICON_ALIGN_CLASS,
   TAB_ICON_SIZE_CLASS,
-  TAB_TIMED_EVENT_ICON_CLASS,
   DestroyedChromeScope,
 } from "./gameChrome";
 import CavePanel from "./panels/CavePanel";
@@ -121,8 +120,27 @@ import { useIOSChromeViewportShell } from "@/hooks/useIOSChromeViewportShell";
 import { usePanelResize } from "./panelResize";
 import PanelResizeHandle from "./PanelResizeHandle";
 import { GameUiIcon } from "@/components/game/GameUiIcon";
+import {
+  getTimedEventTabLabelKind,
+  TIMED_EVENT_TAB_LABEL_DEFAULTS,
+  TIMED_EVENT_TAB_LABEL_KEYS,
+} from "@/components/game/timedEventTabLabel";
 
 const TAB_ICON_SIZE = TAB_ICON_SIZE_CLASS;
+
+/** Hourglass sits just under the tab label size, on the text baseline. */
+function TimedEventTabTitle({ label }: { label: string }) {
+  return (
+    <span className="inline-flex items-baseline gap-1">
+      <GameUiIcon
+        name="timedEvent"
+        sizeClassName="h-[0.85em] w-[0.57em]"
+        className="timer-symbol opacity-100"
+      />
+      {label}
+    </span>
+  );
+}
 const steamBuild = import.meta.env.VITE_STEAM_BUILD === "1";
 const ShareDialog = lazy(() => import("./ShareDialog"));
 const WebOnlyDialogs = steamBuild
@@ -865,6 +883,11 @@ export default function GameContainer() {
 
   // Determine whether to use LimelightNav (always call this hook)
   const useLimelightNav = false;
+  const timedEventLabelKind = getTimedEventTabLabelKind(timedEventTab.event);
+  const timedEventTabLabel = t(TIMED_EVENT_TAB_LABEL_KEYS[timedEventLabelKind], {
+    ns: "common",
+    defaultValue: TIMED_EVENT_TAB_LABEL_DEFAULTS[timedEventLabelKind],
+  });
 
   // Build nav items (always call this hook)
   const limelightNavItems = useMemo(() => {
@@ -934,16 +957,8 @@ export default function GameContainer() {
     if (timedEventTab.isActive) {
       tabs.push({
         id: "timedevent",
-        icon: (
-          <GameUiIcon
-            name="timedEvent"
-            sizeClassName={TAB_ICON_SIZE}
-            className={`timer-symbol ${TAB_TIMED_EVENT_ICON_CLASS}`}
-          />
-        ),
-        label:
-          timedEventTab.event?.title ??
-          t("tabs.timedEvent", { ns: "common", defaultValue: "Timed Event" }),
+        icon: <TimedEventTabTitle label={timedEventTabLabel} />,
+        label: timedEventTabLabel,
         onClick: () => setActiveTab("timedevent"),
       });
     }
@@ -958,8 +973,7 @@ export default function GameContainer() {
     setActiveTab,
     showAchievementsTab,
     timedEventTab.isActive,
-    timedEventTab.event,
-    t,
+    timedEventTabLabel,
   ]);
 
   const visibleHotkeyTabs = useMemo(
@@ -1636,10 +1650,10 @@ export default function GameContainer() {
                         {/* Timed Event Tab Button */}
                         {timedEventTab.isActive && (
                           <button
-                            className={`${tabButtonClass} gap-1 ${activeTab === "timedevent" ||
-                              timedEventTabPulseClass
-                              ? tabActiveTextClass
-                              : tabInactiveTextClass
+                            className={`${tabButtonClass} ${timedEventTabPulseClass ||
+                              (activeTab === "timedevent"
+                                ? tabActiveTextClass
+                                : tabInactiveTextClass)
                               }`}
                             onClick={() => {
                               useGameStore.getState().trackButtonClick("tab-timedevent");
@@ -1647,11 +1661,7 @@ export default function GameContainer() {
                             }}
                             data-testid="tab-timedevent"
                           >
-                            <GameUiIcon
-                              name="timedEvent"
-                              sizeClassName={TAB_ICON_SIZE}
-                              className={`timer-symbol ${TAB_TIMED_EVENT_ICON_CLASS} ${timedEventTabPulseClass}`}
-                            />
+                            <TimedEventTabTitle label={timedEventTabLabel} />
                           </button>
                         )}
                       </div>

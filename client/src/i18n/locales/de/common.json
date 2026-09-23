@@ -26,7 +26,8 @@
     "bastion": "Bastion",
     "fortress": "Festung",
     "trader": "Händler",
-    "timedEvent": "Ereignis"
+    "event": "Ereignis",
+    "merchant": "Händler"
   },
   "resources": {
     "wood": "Holz",
