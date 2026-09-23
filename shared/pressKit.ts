@@ -95,7 +95,7 @@ export type PressLink = {
   id: string;
   label: string;
   href: string;
-  group: "play" | "social" | "directory";
+  group: "play" | "social" | "directory" | "coverage";
 };
 
 export const PRESS_LINKS: readonly PressLink[] = [
@@ -119,6 +119,18 @@ export const PRESS_LINKS: readonly PressLink[] = [
   { id: "almostidle", label: "Almost Idle", href: "https://almostidle.com/game/a-dark-cave", group: "directory" },
   { id: "producthunt", label: "Product Hunt", href: "https://www.producthunt.com/products/a-dark-cave", group: "directory" },
   { id: "fandom", label: "Wiki", href: "https://a-dark-cave.fandom.com/wiki/A_Dark_Cave_Wiki", group: "directory" },
+  {
+    id: "spielemagazin-interview",
+    label: "Spielemagazin (23 September 2026): A Dark Cave: Entwickler Julian im Interview",
+    href: "https://www.spielemagazin.de/spiele/interviews/a-dark-cave-entwickler-julian-im-interview/36788",
+    group: "coverage",
+  },
+  {
+    id: "spielemagazin-october",
+    label: "Spielemagazin (15 September 2026): A Dark Cave: Minimalistischer Village-Builder erscheint im Oktober",
+    href: "https://www.spielemagazin.de/spiele/news/a-dark-cave-minimalistischer-village-builder-erscheint-im-oktober/34702",
+    group: "coverage",
+  },
 ];
 
 export type PressAssetKind = "logo" | "screenshot" | "capsule" | "video";
@@ -243,9 +255,10 @@ export function getPressPageInnerHtml(): string {
       : escapeHtml(fact.value);
     return `<dt>${escapeHtml(fact.label)}</dt><dd>${value}</dd>`;
   }).join("");
-  const links = PRESS_LINKS.map((link) => `<li>${htmlAnchor(link.href, link.label)}</li>`).join(
-    "",
-  );
+  const linkItems = (group?: PressLink["group"]) =>
+    PRESS_LINKS.filter((link) => (group ? link.group === group : link.group !== "coverage"))
+      .map((link) => `<li>${htmlAnchor(link.href, link.label)}</li>`)
+      .join("");
   return [
     `<h1>${escapeHtml(PRESS_HEADING)}</h1>`,
     `<p><strong>${escapeHtml(PRESS_LOCKED_LINE)}</strong></p>`,
@@ -254,8 +267,9 @@ export function getPressPageInnerHtml(): string {
     `<h2>Fact sheet</h2><dl>${facts}</dl>`,
     `<h2>Gameplay trailer</h2><p>${htmlAnchor(PRESS_TRAILER_YOUTUBE_URL, "YouTube")} · ${htmlAnchor(PRESS_TRAILER_FILE_HREF, "Download MP4", false)}</p>`,
     `<h2>Assets</h2><p>${htmlAnchor(PRESS_ZIP_HREF, "Download all assets (ZIP)", false)}</p>`,
-    `<h2>Links</h2><ul>${links}</ul>`,
+    `<h2>Links</h2><ul>${linkItems()}</ul>`,
     `<h2>Permissions</h2><p>${escapeHtml(PRESS_PERMISSIONS)}</p>`,
     `<h2>Contact</h2><p>Julian Bauer. ${htmlAnchor(PRESS_CONTACT_MAILTO, PRESS_CONTACT_EMAIL, false)}</p>`,
+    `<h2>Press coverage</h2><ul>${linkItems("coverage")}</ul>`,
   ].join("");
 }

@@ -363,6 +363,8 @@ export default function Press() {
           </p>
         </section>
 
+        <LinkList title="Press coverage" links={groupLinks("coverage")} />
+
       </PublicDocPage>
       {preview ? (
         <AssetLightbox asset={preview} onClose={() => setPreview(null)} />
