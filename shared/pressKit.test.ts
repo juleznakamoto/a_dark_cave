@@ -88,12 +88,12 @@ describe("press kit copy", () => {
     ]);
   });
 
-  it("includes wide, square, and library capsules", () => {
+  it("includes wide, header, and small capsules", () => {
     const names = PRESS_CAPSULES.map((asset) => asset.fileName);
     expect(names).toEqual([
       "a_dark_cave_main_capsule.jpg",
-      "a_dark_cave_square_capsule.jpg",
-      "a_dark_cave_library_capsule.jpg",
+      "a_dark_cave_header_capsule.jpg",
+      "a_dark_cave_small_capsule.jpg",
     ]);
   });
 
@@ -130,5 +130,25 @@ describe("press kit files", () => {
         join(PRESS_KIT_DIR, "video", "a_dark_cave_gameplay_trailer.mp4"),
       ),
     ).toBe(true);
+    expect(
+      existsSync(
+        join(PRESS_KIT_DIR, "capsules", "a_dark_cave_header_capsule.jpg"),
+      ),
+    ).toBe(true);
+    expect(
+      existsSync(
+        join(PRESS_KIT_DIR, "capsules", "a_dark_cave_small_capsule.jpg"),
+      ),
+    ).toBe(true);
+    expect(
+      existsSync(
+        join(PRESS_KIT_DIR, "capsules", "a_dark_cave_square_capsule.jpg"),
+      ),
+    ).toBe(false);
+    expect(
+      existsSync(
+        join(PRESS_KIT_DIR, "capsules", "a_dark_cave_library_capsule.jpg"),
+      ),
+    ).toBe(false);
   });
 });

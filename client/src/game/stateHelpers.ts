@@ -640,14 +640,11 @@ export function hasAnyShopPurchase(state: {
   return Object.values(state.activatedPurchases ?? {}).some(Boolean);
 }
 
-/** Real-money Trader tab unlocks after `traderSettles` (or mid-session shop opens before that flag is saved). */
+/** Real-money Trader tab unlocks when the `traderSettles` event sets `traderSettled`. */
 export function isTraderShopUnlocked(state: {
   story?: { seen?: Record<string, unknown> };
-  traderDialogOpens?: number;
 }): boolean {
-  if (state.story?.seen?.traderSettled) return true;
-  if ((state.traderDialogOpens ?? 0) > 0) return true;
-  return false;
+  return state.story?.seen?.traderSettled === true;
 }
 
 type InFlightExecutionSlice = {
@@ -1167,10 +1164,9 @@ export function applyGameStateLoadMigrations(state: GameState): GameState {
   return migrated;
 }
 
-/** Footer Trader: paying players who do not yet have the shop as a game tab. */
+/** Footer Trader: paying players until the trader-arrives event moves the shop to a tab. */
 export function isTraderFooterShopVisible(state: {
   story?: { seen?: Record<string, unknown> };
-  traderDialogOpens?: number;
   hasMadeNonFreePurchase?: boolean;
   activatedPurchases?: Record<string, boolean>;
 }): boolean {

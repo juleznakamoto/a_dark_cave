@@ -66,12 +66,11 @@ function useEstateGoldShopClick(canAfford: boolean) {
   const setShopDialogOpen = useGameStore((s) => s.setShopDialogOpen);
   const setShopFilter = useGameStore((s) => s.setShopFilter);
   const story = useGameStore((s) => s.story);
-  const traderDialogOpens = useGameStore((s) => s.traderDialogOpens);
   const steamEditionActive = useSteamEditionActive();
   if (
     canAfford ||
     steamEditionActive ||
-    !isTraderShopUnlocked({ story, traderDialogOpens })
+    !isTraderShopUnlocked({ story })
   ) {
     return undefined;
   }

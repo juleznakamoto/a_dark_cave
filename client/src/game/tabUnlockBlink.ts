@@ -52,7 +52,6 @@ export function buildTabUnlockSnapshot(state: {
   relics?: GameState["relics"];
   books?: GameState["books"];
   story?: GameState["story"];
-  traderDialogOpens?: number;
   hasWonNormalGame?: boolean;
   hasWonCruelGame?: boolean;
   hasSpeedrunWin?: boolean;
@@ -76,7 +75,6 @@ export function buildTabUnlockSnapshot(state: {
     bastionUnlocked: isBastionTabVisible(state),
     traderUnlocked: isTraderShopUnlocked({
       story: state.story,
-      traderDialogOpens: state.traderDialogOpens,
     }),
     achievementsUnlocked: isAchievementsGameTabUnlocked(state as GameState),
   };

@@ -8,11 +8,10 @@ import {
 } from "./stateHelpers";
 
 describe("isTraderShopUnlocked", () => {
-  it("is false before the trader settles story beat", () => {
+  it("is false before the trader arrives", () => {
     expect(
       isTraderShopUnlocked({
         story: { seen: {} },
-        traderDialogOpens: 0,
       }),
     ).toBe(false);
   });
@@ -21,16 +20,6 @@ describe("isTraderShopUnlocked", () => {
     expect(
       isTraderShopUnlocked({
         story: { seen: { traderSettled: true } },
-        traderDialogOpens: 0,
-      }),
-    ).toBe(true);
-  });
-
-  it("is true when the shop was opened this session before traderSettled is saved", () => {
-    expect(
-      isTraderShopUnlocked({
-        story: { seen: {} },
-        traderDialogOpens: 1,
       }),
     ).toBe(true);
   });
@@ -41,7 +30,6 @@ describe("isTraderFooterShopVisible", () => {
     expect(
       isTraderFooterShopVisible({
         story: { seen: {} },
-        traderDialogOpens: 0,
       }),
     ).toBe(false);
   });
@@ -50,14 +38,12 @@ describe("isTraderFooterShopVisible", () => {
     expect(
       isTraderFooterShopVisible({
         story: { seen: {} },
-        traderDialogOpens: 0,
         hasMadeNonFreePurchase: true,
       }),
     ).toBe(true);
     expect(
       isTraderShopUnlocked({
         story: { seen: {} },
-        traderDialogOpens: 0,
       }),
     ).toBe(false);
   });
@@ -66,7 +52,6 @@ describe("isTraderFooterShopVisible", () => {
     expect(
       isTraderFooterShopVisible({
         story: { seen: {} },
-        traderDialogOpens: 0,
         activatedPurchases: { "purchase-gold_500-1": true },
       }),
     ).toBe(true);
@@ -76,7 +61,6 @@ describe("isTraderFooterShopVisible", () => {
     expect(
       isTraderFooterShopVisible({
         story: { seen: { traderSettled: true } },
-        traderDialogOpens: 0,
         hasMadeNonFreePurchase: true,
       }),
     ).toBe(false);
@@ -143,7 +127,6 @@ describe("migrateTraderShopUnlockOnLoad", () => {
     expect(
       isTraderShopUnlocked({
         story: firstLoad!.story,
-        traderDialogOpens: 0,
       }),
     ).toBe(false);
   });

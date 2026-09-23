@@ -248,7 +248,6 @@ export default function GameContainer() {
     (state) => state.setVillageEffectDialog,
   );
   const story = useGameStore((state) => state.story);
-  const traderDialogOpens = useGameStore((state) => state.traderDialogOpens);
   const modalDialogOpen = useGameStore(isModalDialogOpen);
   // Estate unlocks when Dark Estate is built
   const estateUnlocked = buildings.darkEstate >= 1;
@@ -368,7 +367,7 @@ export default function GameContainer() {
   }, [achievementPulseIds]);
 
   // Track unlocked tabs to trigger one-time blink until clicked (persisted in story.seen)
-  const traderUnlocked = isTraderShopUnlocked({ story, traderDialogOpens });
+  const traderUnlocked = isTraderShopUnlocked({ story });
   // Full-store selector (not a field-list memo): overall unlock can flip from
   // social_media_rewards, referralCount, live estate levels, or Achievement
   // Maxer tallies that a partial dep list would miss. useShallow keeps the

@@ -200,11 +200,11 @@ export const PRESS_CAPSULES: readonly PressAsset[] = [
   asset("capsule", "a_dark_cave_main_capsule.jpg", "Wide capsule", {
     sizeHint: "1024 × 576",
   }),
-  asset("capsule", "a_dark_cave_square_capsule.jpg", "Square capsule", {
-    sizeHint: "800 × 800",
+  asset("capsule", "a_dark_cave_header_capsule.jpg", "Header capsule", {
+    sizeHint: "920 × 430",
   }),
-  asset("capsule", "a_dark_cave_library_capsule.jpg", "Library capsule", {
-    sizeHint: "682 × 1024",
+  asset("capsule", "a_dark_cave_small_capsule.jpg", "Small capsule", {
+    sizeHint: "462 × 174",
   }),
 ];
 

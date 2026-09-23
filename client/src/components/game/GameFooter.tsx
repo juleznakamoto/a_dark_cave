@@ -41,7 +41,7 @@ import { FOOTER_TRADER_PARTICLE_CONFIG } from "@/components/ui/bubbly-button.par
 
 const FOOTER_CONTROL_BTN_BASE =
   `group shrink-0 px-1 py-1 text-xs font-medium text-neutral-300 hover ${GAME_CHROME_NO_BG_HOVER}`;
-/** Default chrome: opacity only. Trader stays yellow; more games / donate color on hover. */
+/** Default chrome: opacity only. Trader, more games, and donate color on hover. */
 const FOOTER_CONTROL_BTN = FOOTER_CONTROL_BTN_BASE;
 const FOOTER_CONTROL_BTN_FADE =
   "opacity-80 transition-[opacity,color] group-hover:opacity-100";
@@ -309,7 +309,7 @@ export default function GameFooter() {
                   <GameUiIcon
                     name="trader"
                     sizeClassName="game-tab-icon"
-                    className="text-yellow-500 opacity-80 transition-[opacity,color] group-hover:opacity-100 group-hover:!text-yellow-500"
+                    className="text-neutral-300 opacity-80 transition-[opacity,color] group-hover:opacity-100 group-hover:!text-yellow-500"
                   />
                 </span>
                 <span className={FOOTER_TRADER_TEXT}>
