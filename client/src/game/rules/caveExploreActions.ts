@@ -556,7 +556,7 @@ export const caveExploreActions: Record<string, Action> = {
       "story.seen.caveExplored": true,
     },
     cooldown: 0,
-    executionTime: 7.5, // 5 + 0*5 (exploreCave is first/level 0)
+    executionTime: 5, // 5 + 0*5 (exploreCave is first/level 0)
     upgrade_key: "exploreCave",
   },
 
