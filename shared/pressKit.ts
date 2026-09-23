@@ -197,9 +197,6 @@ export const PRESS_SCREENSHOTS: readonly PressAsset[] = [
 ];
 
 export const PRESS_CAPSULES: readonly PressAsset[] = [
-  asset("capsule", "a_dark_cave_main_capsule.jpg", "Wide capsule", {
-    sizeHint: "1024 × 576",
-  }),
   asset("capsule", "a_dark_cave_header_capsule.jpg", "Header capsule", {
     sizeHint: "920 × 430",
   }),
