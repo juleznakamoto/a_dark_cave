@@ -7,6 +7,8 @@ export const SITE = "https://a-dark-cave.com";
 export const STEAM_URL = "https://store.steampowered.com/app/4882240/A_Dark_Cave/";
 export const STEAM_DEMO_URL = "https://store.steampowered.com/app/4971800/";
 export const ITCH_URL = "https://a-dark-cave.itch.io/a-dark-cave";
+/** itch.io page where a player rates this project. */
+export const ITCH_RATE_URL = `${ITCH_URL}/rate`;
 export const REDDIT_URL = "https://www.reddit.com/r/aDarkCave/";
 
 /**

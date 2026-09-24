@@ -8,7 +8,11 @@ import { useGameStore } from "@/game/state";
 import { isSteamCruelModeUnlockAvailable } from "@/game/steamCruelModeUnlock";
 import { useUiTranslation } from "@/i18n/useUiTranslation";
 import { ensureGameplayLocalesLoaded } from "@/i18n/loadLocaleResources";
-import { isSteamBuild, isSteamEndScreenDevMode } from "@/lib/edition";
+import {
+  isItchEdition,
+  isSteamBuild,
+  isSteamEndScreenDevMode,
+} from "@/lib/edition";
 import {
   useSteamDesktopEditionActive,
   useSteamEditionActive,
@@ -16,7 +20,7 @@ import {
 import { logger } from "@/lib/logger";
 import { openGameFeedbackForm } from "@/lib/gameFeedbackForm";
 import { navigateSpa } from "@/lib/spaNavigate";
-import { ITCH_URL } from "@shared/publicPages";
+import { ITCH_RATE_URL } from "@shared/publicPages";
 
 export default function EndScreenPage() {
   const { t } = useUiTranslation();
@@ -96,7 +100,7 @@ export default function EndScreenPage() {
   };
 
   const handleRateItch = () => {
-    window.open(ITCH_URL, "_blank", "noopener,noreferrer");
+    window.open(ITCH_RATE_URL, "_blank", "noopener,noreferrer");
   };
 
   const handleMoreGames = async () => {
@@ -170,20 +174,24 @@ export default function EndScreenPage() {
             onClick: handleMainMenu,
             buttonId: "end-screen-close",
           },
-          ...(steamEditionActive
-            ? {}
-            : {
+          ...(!steamEditionActive
+            ? {
               secondaryTrailing: {
                 text: t("endScreen.moreGames"),
                 onClick: handleMoreGames,
                 buttonId: "end-screen-more-games",
               },
+            }
+            : {}),
+          ...(!steamEditionActive || isItchEdition()
+            ? {
               rateItch: {
                 text: t("endScreen.rateOnItch"),
                 onClick: handleRateItch,
                 buttonId: "end-screen-rate-itch",
               },
-            }),
+            }
+            : {}),
         }}
       />
     </div>

@@ -1,5 +1,5 @@
 import { afterEach, describe, expect, it, vi } from "vitest";
-import { ITCH_URL, PUBLIC_STEAM_URL } from "@shared/publicPages";
+import { ITCH_RATE_URL, ITCH_URL, PUBLIC_STEAM_URL } from "@shared/publicPages";
 import { SITE_ORIGIN } from "@shared/publicSeo";
 import {
   OFFICIAL_ITCH_URL,
@@ -84,6 +84,7 @@ describe("xGameLandingUrl", () => {
 describe("OFFICIAL_ITCH_URL", () => {
   it("matches the public-page itch.io URL used on /about and the end screen", () => {
     expect(OFFICIAL_ITCH_URL).toBe(ITCH_URL);
+    expect(ITCH_RATE_URL).toBe("https://a-dark-cave.itch.io/a-dark-cave/rate");
   });
 });
 

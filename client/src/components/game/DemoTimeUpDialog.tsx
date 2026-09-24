@@ -7,12 +7,15 @@ import {
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { SteamDemoEndStoreCta } from "@/components/game/SteamDemoStoreLink";
+import { FooterSocialIcon } from "@/components/game/FooterSocialIcon";
 import { GameUiIcon } from "@/components/game/GameUiIcon";
 import { EndScreenShaderBackground } from "@/components/ui/animated-shader-hero";
 import { useGameStore } from "@/game/state";
 import { startNewDemoGame } from "@/game/demoLimit";
 import { openGameFeedbackForm } from "@/lib/gameFeedbackForm";
+import { isItchEdition } from "@/lib/edition";
 import { useUiTranslation } from "@/i18n/useUiTranslation";
+import { ITCH_RATE_URL } from "@shared/publicPages";
 
 /** Blocking end-of-demo modal for Galaxy web demo and Steam desktop demo. */
 export default function DemoTimeUpDialog({
@@ -62,6 +65,24 @@ export default function DemoTimeUpDialog({
         </DialogHeader>
         <div className="flex flex-col gap-3 pt-2">
           <SteamDemoEndStoreCta />
+          {isItchEdition() && (
+            <Button
+              variant="outline"
+              type="button"
+              onClick={() => {
+                window.open(ITCH_RATE_URL, "_blank", "noopener,noreferrer");
+              }}
+              data-testid="button-demo-end-rate-itch"
+              className="inline-flex items-center gap-1.5"
+            >
+              <FooterSocialIcon
+                platform="itch"
+                variant="brand"
+                className="h-4 w-4 shrink-0"
+              />
+              {t("endScreen.rateOnItch", { defaultValue: "Rate on itch.io" })}
+            </Button>
+          )}
           <Button
             variant="outline"
             type="button"
