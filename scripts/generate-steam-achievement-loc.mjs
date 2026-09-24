@@ -1,6 +1,9 @@
 /**
- * Writes steam/4882240_loc_all.vdf from in-game achievement configs + locales.
+ * Writes the full-game Steam achievement files from in-game configs + locales.
  * Token order is create-order: basic, building, item, action, overall (no webOnly).
+ *
+ * - steam/4882240_loc_all.vdf: Steamworks localization upload (names + descriptions).
+ * - steam/4882240_achievements.csv: same rows, plus the API name to type when creating each achievement.
  */
 import fs from "node:fs";
 import path from "node:path";
@@ -106,6 +109,15 @@ function escapeVdf(value) {
   return String(value).replaceAll("\\", "\\\\").replaceAll('"', '\\"');
 }
 
+/** Same rule as client/src/achievements/steamAchievements.ts toSteamApiName. */
+function toSteamApiName(canonicalId) {
+  return "ACH_" + canonicalId.toUpperCase().replace(/[^A-Z0-9]+/g, "_");
+}
+
+function csvCell(value) {
+  return `"${String(value).replaceAll('"', '""')}"`;
+}
+
 function loadLocales() {
   const locales = {};
   for (const [, folder] of STEAM_LANGS) {
@@ -147,7 +159,30 @@ function writeVdf(locales, outPath) {
   fs.writeFileSync(outPath, chunks.join("\n"), "utf8");
 }
 
+function writeCsv(locales, outPath) {
+  const header = ["loc_index", "api_name", "canonical_id", "hidden"];
+  for (const [steamLang] of STEAM_LANGS) {
+    header.push(`${steamLang}_name`, `${steamLang}_description`);
+  }
+  const lines = [header.map(csvCell).join(",")];
+  CATALOG.forEach(([category, segmentId], index) => {
+    const canonicalId = `${category}-${segmentId}`;
+    const row = [index, toSteamApiName(canonicalId), canonicalId, "no"];
+    for (const [, folder] of STEAM_LANGS) {
+      const { label, description } = copyFor(locales, folder, category, segmentId);
+      row.push(label, description);
+    }
+    lines.push(row.map(csvCell).join(","));
+  });
+  // BOM + sep= so Excel on Windows opens UTF-8 and does not split on commas inside text.
+  const body = `\uFEFFsep=,\r\n${lines.join("\r\n")}\r\n`;
+  fs.writeFileSync(outPath, body, "utf8");
+}
+
 const locales = loadLocales();
 const vdfPath = path.join(root, "steam/4882240_loc_all.vdf");
+const csvPath = path.join(root, "steam/4882240_achievements.csv");
 writeVdf(locales, vdfPath);
+writeCsv(locales, csvPath);
 console.log(`Wrote ${CATALOG.length} achievements to ${vdfPath}`);
+console.log(`Wrote ${CATALOG.length} achievements to ${csvPath}`);
