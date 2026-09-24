@@ -1,4 +1,4 @@
-import { describe, expect, it } from "vitest";
+import { afterEach, describe, expect, it, vi } from "vitest";
 import { ITCH_URL, PUBLIC_STEAM_URL } from "@shared/publicPages";
 import { SITE_ORIGIN } from "@shared/publicSeo";
 import {
@@ -6,6 +6,7 @@ import {
   OFFICIAL_STEAM_URL,
   OFFICIAL_STEAM_WIDGET_URL,
   STEAM_STORE_UTM_CONTENT,
+  STEAM_STORE_UTM_SOURCE_ITCH,
   UTM_CAMPAIGN_LINKS,
   X_GAME_UTM_CONTENT,
   steamStoreUrl,
@@ -37,6 +38,20 @@ describe("steamStoreUrl", () => {
     );
     expect(new Set(contents).size).toBe(contents.length);
   });
+
+  it("tags itch demo Steam links with utm_source=itch", () => {
+    vi.stubGlobal("window", { location: { pathname: "/itch" } });
+    const href = steamStoreUrl(STEAM_STORE_UTM_CONTENT.demoTimeUp);
+    const url = new URL(href);
+    expect(url.searchParams.get("utm_source")).toBe(STEAM_STORE_UTM_SOURCE_ITCH);
+    expect(url.searchParams.get("utm_content")).toBe("demo_time_up");
+    expect(url.searchParams.get("utm_medium")).toBe("web_game");
+    expect(url.searchParams.get("utm_campaign")).toBe("steam_store");
+  });
+});
+
+afterEach(() => {
+  vi.unstubAllGlobals();
 });
 
 describe("steamWidgetUrl", () => {

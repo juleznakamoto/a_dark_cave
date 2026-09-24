@@ -136,7 +136,7 @@ describe("publicSeo", () => {
   });
 
   it("points homepage clones at the home canonical and noindexes them", () => {
-    for (const path of ["/galaxy", "/crazygames", "/boost"] as const) {
+    for (const path of ["/galaxy", "/crazygames", "/itch", "/boost"] as const) {
       const html = customizeSpaIndexHtml(SAMPLE_HTML, path);
       expect(resolveSpaHtmlResponse(path).status).toBe(200);
       expect(html).toContain(`<title>${HOME_SEO.title}</title>`);
@@ -323,6 +323,7 @@ describe("publicSeo", () => {
     expect(sitemap).toContain("<loc>https://a-dark-cave.com/press</loc>");
     expect(sitemap).not.toContain("a-dark-cave.com/galaxy");
     expect(sitemap).not.toContain("a-dark-cave.com/crazygames");
+    expect(sitemap).not.toContain("a-dark-cave.com/itch");
     expect(sitemap).not.toContain("a-dark-cave.com/boost");
   });
 });

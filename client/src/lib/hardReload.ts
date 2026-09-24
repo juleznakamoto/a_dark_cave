@@ -192,7 +192,13 @@ export function bootstrapAfterHardReload(): void {
   }
 }
 
-const PLAY_RESUME_PATHS = new Set(["/", "/galaxy", "/crazygames", "/boost"]);
+const PLAY_RESUME_PATHS = new Set([
+  "/",
+  "/galaxy",
+  "/crazygames",
+  "/itch",
+  "/boost",
+]);
 
 /** Resume only on play URLs. `/end-screen` and other routes keep their path. */
 export function shouldMarkResumeOnHardReload(

@@ -11,6 +11,7 @@
  * ({@link shouldSyncSteamAchievements}); the demo only pushes basic IDs.
  * Playtest uses `VITE_STEAM_PLAYTEST=1` for an isolated save namespace (full game, no cap).
  * CrazyGames uses `VITE_CRAZYGAMES=1` (`build:crazygames`) or the `/crazygames` path.
+ * itch.io uses `VITE_ITCH=1` (`package:itch`) or the `/itch` preview path.
  *
  * In DEV (non-Steam builds), Settings → Game Mode can simulate Steam Game / Playtest /
  * Demo / Demo End / Steam End (Cruel On/Off) / CrazyGames Demo via
@@ -57,8 +58,20 @@ export const isWebBuild = !isSteamBuild;
 /** CrazyGames HTML5 demo folder (`build:crazygames`). */
 export const isCrazyGamesBuild = import.meta.env.VITE_CRAZYGAMES === "1";
 
+/** itch.io HTML5 demo folder (`package:itch`). */
+export const isItchBuild = import.meta.env.VITE_ITCH === "1";
+
+/**
+ * Portal folders are hosted in a subdirectory (CrazyGames, itch.zone), so
+ * in-app routes live in the URL hash and assets use a relative base.
+ */
+export function isHashRoutedPortalBuild(): boolean {
+  return isCrazyGamesBuild || isItchBuild;
+}
+
 const GALAXY_PATH_PREFIX = "/galaxy";
 const CRAZYGAMES_PATH_PREFIX = "/crazygames";
+const ITCH_PATH_PREFIX = "/itch";
 
 /** Settings → Game Mode (web DEV) or a live account Steam Game simulation. */
 export type DevGameMode =
@@ -123,11 +136,20 @@ export function isCrazyGamesEdition(): boolean {
   return isCrazyGamesBuild || isPathPrefix(CRAZYGAMES_PATH_PREFIX);
 }
 
-/** Web Galaxy / CrazyGames demo or Steam desktop demo — capped at the wooden hut limit. */
+/**
+ * itch.io HTML demo: uploaded folder (`VITE_ITCH=1`) or `/itch` on the main
+ * site. Same hut cap and Steam wishlist ending as the other demos.
+ */
+export function isItchEdition(): boolean {
+  return isItchBuild || isPathPrefix(ITCH_PATH_PREFIX);
+}
+
+/** Web Galaxy / CrazyGames / itch demo or Steam desktop demo — capped at the wooden hut limit. */
 export function isDemoEdition(): boolean {
   return (
     isGalaxyEdition() ||
     isCrazyGamesEdition() ||
+    isItchEdition() ||
     isSteamDemoRuntime() ||
     isDevGameMode("steamDemo") ||
     isDevGameMode("demoEnd") ||
@@ -136,13 +158,15 @@ export function isDemoEdition(): boolean {
 }
 
 /**
- * Steam-demo chrome (footer progress bar, no donate). CrazyGames uses the same
- * chrome but keeps the Steam store footer link. Galaxy keeps Steam + donate.
+ * Steam-demo chrome (footer progress bar, no donate). CrazyGames and itch use
+ * the same chrome but keep the Steam store link. Galaxy keeps Steam + donate
+ * and does not show the progress bar.
  */
 export function isSteamDemoActive(): boolean {
   return (
     isSteamDemoRuntime() ||
     isCrazyGamesEdition() ||
+    isItchEdition() ||
     isDevGameMode("steamDemo") ||
     isDevGameMode("demoEnd") ||
     isDevGameMode("crazyGamesDemo")
@@ -154,14 +178,18 @@ export function isDemoEndDevMode(): boolean {
   return isDevGameMode("demoEnd");
 }
 
-/** Steam desktop, Galaxy, or CrazyGames — no Supabase cloud saves or online services. */
+/** Steam desktop, Galaxy, CrazyGames, or itch — no Supabase cloud saves or online services. */
 export function isLocalOnlyEdition(): boolean {
-  return isSteamBuild || isGalaxyEdition() || isCrazyGamesEdition();
+  return (
+    isSteamBuild || isGalaxyEdition() || isCrazyGamesEdition() || isItchEdition()
+  );
 }
 
-/** Steam desktop, Galaxy, or CrazyGames — buy-once editions (BTP economy; no web MTX paywall). */
+/** Steam desktop, Galaxy, CrazyGames, or itch — buy-once editions (BTP economy; no web MTX paywall). */
 export function isFullGameUnlockedEdition(): boolean {
-  return isSteamBuild || isGalaxyEdition() || isCrazyGamesEdition();
+  return (
+    isSteamBuild || isGalaxyEdition() || isCrazyGamesEdition() || isItchEdition()
+  );
 }
 
 const DEV_GAME_MODE_STORAGE_KEY = "adc-dev-game-mode";
@@ -223,8 +251,8 @@ export function getDevGameModeOverride(): DevGameMode {
 
 /**
  * Hide the Steam store / wishlist footer link. Steam desktop (and DEV Steam
- * Game / Playtest / Demo) already are on Steam. Web, Galaxy, and CrazyGames
- * keep the link. Store-free so the lightweight start screen can use it.
+ * Game / Playtest / Demo) already are on Steam. Web, Galaxy, CrazyGames, and
+ * itch keep the link. Store-free so the lightweight start screen can use it.
  */
 export function shouldHideSteamStoreLink(
   devGameMode: DevGameMode = "normal",
@@ -253,8 +281,8 @@ function resolveDevGameMode(explicit?: DevGameMode): DevGameMode {
 }
 
 /**
- * Runtime Steam-like edition check — compile-time Steam / CrazyGames / Galaxy,
- * DEV Game Mode, or a live account Steam Game simulation. Use for UI
+ * Runtime Steam-like edition check — compile-time Steam / CrazyGames / Galaxy /
+ * itch, DEV Game Mode, or a live account Steam Game simulation. Use for UI
  * and shop-slot behavior; keep `isSteamBuild` for build-time stubs, save
  * backends, and Steam API bridges.
  *
@@ -262,7 +290,14 @@ function resolveDevGameMode(explicit?: DevGameMode): DevGameMode {
  * source of truth (the module override can reset on HMR).
  */
 export function isSteamEditionActive(devGameMode?: DevGameMode): boolean {
-  if (isSteamBuild || isGalaxyEdition() || isCrazyGamesEdition()) return true;
+  if (
+    isSteamBuild ||
+    isGalaxyEdition() ||
+    isCrazyGamesEdition() ||
+    isItchEdition()
+  ) {
+    return true;
+  }
   const mode = resolveDevGameMode(devGameMode);
   if (isSimulatedSteamGameMode(mode)) return true;
   return import.meta.env.DEV && !isSteamBuild && mode !== "normal";

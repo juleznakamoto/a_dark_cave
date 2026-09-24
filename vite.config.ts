@@ -27,31 +27,40 @@ function resolveBuildSha(mode: string): string {
 
 const isSteamBuild = process.env.VITE_STEAM_BUILD === "1";
 const isCrazyGamesBuild = process.env.VITE_CRAZYGAMES === "1";
-const useOfflineStubs = isSteamBuild || isCrazyGamesBuild;
+const isItchBuild = process.env.VITE_ITCH === "1";
+const isRelativeHtmlBuild = isCrazyGamesBuild || isItchBuild;
+const useOfflineStubs = isSteamBuild || isRelativeHtmlBuild;
 const clientRoot = path.resolve(import.meta.dirname, "client");
 
-function crazyGamesRelativeHtmlPlugin(): Plugin {
+function relativePortalHtmlPlugin(): Plugin {
   return {
-    name: "crazygames-relative-html",
+    name: "relative-portal-html",
     transformIndexHtml(html) {
-      if (!isCrazyGamesBuild) return html;
-      // Absolute SDK URL first so the relative-path rewrite does not touch it.
-      const withSdk = html.replace(
-        "</head>",
-        '  <script src="https://sdk.crazygames.com/crazygames-sdk-v3.js"></script>\n</head>',
-      );
-      return withSdk
+      if (!isRelativeHtmlBuild) return html;
+      let next = html;
+      if (isCrazyGamesBuild) {
+        // Absolute SDK URL first so the relative-path rewrite does not touch it.
+        next = next.replace(
+          "</head>",
+          '  <script src="https://sdk.crazygames.com/crazygames-sdk-v3.js"></script>\n</head>',
+        );
+      }
+      next = next
         .replaceAll('href="/', 'href="./')
         .replaceAll('src="/', 'src="./');
+      if (isItchBuild) {
+        next = next.replaceAll("utm_source=a_dark_cave", "utm_source=itch");
+      }
+      return next;
     },
   };
 }
 
 export default defineConfig(async ({ mode }) => ({
-  base: isCrazyGamesBuild ? "./" : "/",
+  base: isRelativeHtmlBuild ? "./" : "/",
   plugins: [
     react(),
-    crazyGamesRelativeHtmlPlugin(),
+    relativePortalHtmlPlugin(),
     compression(),
     ...(process.env.NODE_ENV !== "production" &&
       process.env.REPL_ID !== undefined

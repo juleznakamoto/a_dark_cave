@@ -12,6 +12,7 @@ const editionMocks = vi.hoisted(() => ({
   isSteamBuild: false,
   isGalaxy: false,
   isCrazyGames: false,
+  isItch: false,
 }));
 
 vi.mock("@/lib/edition", async (importOriginal) => {
@@ -23,6 +24,7 @@ vi.mock("@/lib/edition", async (importOriginal) => {
     },
     isGalaxyEdition: () => editionMocks.isGalaxy,
     isCrazyGamesEdition: () => editionMocks.isCrazyGames,
+    isItchEdition: () => editionMocks.isItch,
   };
 });
 
@@ -36,6 +38,7 @@ describe("shouldBootGameSurface", () => {
     editionMocks.isSteamBuild = false;
     editionMocks.isGalaxy = false;
     editionMocks.isCrazyGames = false;
+    editionMocks.isItch = false;
     vi.stubGlobal("localStorage", {
       getItem: (key: string) => storage.get(key) ?? null,
       setItem: (key: string, value: string) => storage.set(key, value),
@@ -65,6 +68,17 @@ describe("shouldBootGameSurface", () => {
       shouldBootGameSurface({ pathname: "/", search: "", hash: "" }),
     ).toBe(false);
     expect(peekStartupGameStarted()).toBe(true);
+  });
+
+  it("boots Game for a started itch save", () => {
+    editionMocks.isItch = true;
+    storage.set(
+      getStartupSaveHeaderKey(),
+      JSON.stringify({ version: 1, gameStarted: true }),
+    );
+    expect(
+      shouldBootGameSurface({ pathname: "/itch", search: "", hash: "" }),
+    ).toBe(true);
   });
 
   it("boots Game for a started Steam / portal save", () => {

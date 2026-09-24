@@ -172,6 +172,7 @@ export function isStartupSurfacePath(path: string): boolean {
     path === "/" ||
     path === "/galaxy" ||
     path === "/crazygames" ||
+    path === "/itch" ||
     path === "/boost"
   );
 }

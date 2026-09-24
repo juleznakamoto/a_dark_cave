@@ -4,6 +4,7 @@
  */
 
 import { SITE_ORIGIN } from "@shared/publicSeo";
+import { isItchEdition } from "@/lib/edition";
 
 export type FooterSocialPlatformId =
   | "reddit"
@@ -63,11 +64,25 @@ export const STEAM_STORE_UTM_CONTENT = {
 export type SteamStoreUtmContent =
   (typeof STEAM_STORE_UTM_CONTENT)[keyof typeof STEAM_STORE_UTM_CONTENT];
 
+/** Default `utm_source` on Steam links. The itch demo uses {@link STEAM_STORE_UTM_SOURCE_ITCH}. */
+export const STEAM_STORE_UTM_SOURCE_WEB = "a_dark_cave";
+
+/** `utm_source` for Steam links opened from the itch.io HTML demo. */
+export const STEAM_STORE_UTM_SOURCE_ITCH = "itch";
+
+function resolveSteamStoreUtmSource(explicit?: string): string {
+  if (explicit) return explicit;
+  return isItchEdition()
+    ? STEAM_STORE_UTM_SOURCE_ITCH
+    : STEAM_STORE_UTM_SOURCE_WEB;
+}
+
 function applySteamStoreUtm(
   url: URL,
   utmContent: SteamStoreUtmContent,
+  utmSource?: string,
 ): string {
-  url.searchParams.set("utm_source", "a_dark_cave");
+  url.searchParams.set("utm_source", resolveSteamStoreUtmSource(utmSource));
   url.searchParams.set("utm_medium", "web_game");
   url.searchParams.set("utm_campaign", "steam_store");
   url.searchParams.set("utm_content", utmContent);
@@ -76,18 +91,28 @@ function applySteamStoreUtm(
 
 /**
  * Steam store URL with UTM so each button/source is identifiable:
- * `utm_source=a_dark_cave`, `utm_medium=web_game`, `utm_campaign=steam_store`,
- * `utm_content=<button id>`.
+ * `utm_source=a_dark_cave` (itch demo: `itch`), `utm_medium=web_game`,
+ * `utm_campaign=steam_store`, `utm_content=<button id>`.
  */
-export function steamStoreUrl(utmContent: SteamStoreUtmContent): string {
-  return applySteamStoreUtm(new URL(OFFICIAL_STEAM_URL), utmContent);
+export function steamStoreUrl(
+  utmContent: SteamStoreUtmContent,
+  utmSource?: string,
+): string {
+  return applySteamStoreUtm(new URL(OFFICIAL_STEAM_URL), utmContent, utmSource);
 }
 
 /**
  * Steam store widget iframe `src` with the same UTM scheme as {@link steamStoreUrl}.
  */
-export function steamWidgetUrl(utmContent: SteamStoreUtmContent): string {
-  return applySteamStoreUtm(new URL(OFFICIAL_STEAM_WIDGET_URL), utmContent);
+export function steamWidgetUrl(
+  utmContent: SteamStoreUtmContent,
+  utmSource?: string,
+): string {
+  return applySteamStoreUtm(
+    new URL(OFFICIAL_STEAM_WIDGET_URL),
+    utmContent,
+    utmSource,
+  );
 }
 
 export type GameLandingUtmParams = {
@@ -276,6 +301,36 @@ export const UTM_CAMPAIGN_LINKS: readonly UtmCampaignLink[] = [
     description: "Galaxy / Steam demo time-up dialog",
     group: "steam_store",
     url: steamStoreUrl(STEAM_STORE_UTM_CONTENT.demoTimeUp),
+  },
+  {
+    id: "steam-store-itch-game-header",
+    label: "Steam store · itch demo header",
+    description: "itch.io HTML demo header wishlist link",
+    group: "steam_store",
+    url: steamStoreUrl(
+      STEAM_STORE_UTM_CONTENT.gameHeader,
+      STEAM_STORE_UTM_SOURCE_ITCH,
+    ),
+  },
+  {
+    id: "steam-store-itch-game-footer",
+    label: "Steam store · itch demo footer",
+    description: "itch.io HTML demo footer Steam icon",
+    group: "steam_store",
+    url: steamStoreUrl(
+      STEAM_STORE_UTM_CONTENT.gameFooter,
+      STEAM_STORE_UTM_SOURCE_ITCH,
+    ),
+  },
+  {
+    id: "steam-store-itch-demo-time-up",
+    label: "Steam store · itch demo end",
+    description: "itch.io HTML demo time-up dialog",
+    group: "steam_store",
+    url: steamStoreUrl(
+      STEAM_STORE_UTM_CONTENT.demoTimeUp,
+      STEAM_STORE_UTM_SOURCE_ITCH,
+    ),
   },
   {
     id: "steam-store-html-noscript",

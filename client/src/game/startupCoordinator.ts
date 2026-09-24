@@ -2,6 +2,7 @@ import type { StartScreenPreferences } from "@/components/game/StartScreen";
 import {
   isCrazyGamesEdition,
   isGalaxyEdition,
+  isItchEdition,
   isSteamBuild,
   shouldHideSteamStoreLink,
   type DevGameMode,
@@ -85,6 +86,7 @@ function createStartResolution(
       isSteamBuild ||
       isGalaxyEdition() ||
       isCrazyGamesEdition() ||
+      isItchEdition() ||
       devSteamMode,
     steamDesktopEditionActive:
       isSteamBuild || isCrazyGamesEdition() || devSteamMode,

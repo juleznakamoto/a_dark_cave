@@ -25,7 +25,7 @@ export type PublicRouteSeo = {
   /** Short page label for WebPage / Breadcrumb JSON-LD on non-home routes. */
   pageName?: string;
   /**
-   * Canonical path. Homepage clones (`/galaxy`, `/crazygames`, `/boost`)
+   * Canonical path. Homepage clones (`/galaxy`, `/crazygames`, `/itch`, `/boost`)
    * must point at `/` so they do not compete with the real homepage.
    */
   canonicalPath?: string;
@@ -36,6 +36,7 @@ export const KNOWN_SPA_PATHS = new Set([
   "/",
   "/galaxy",
   "/crazygames",
+  "/itch",
   "/boost",
   "/game",
   "/end-screen",
@@ -75,6 +76,7 @@ const ROUTE_SEO: Record<string, PublicRouteSeo> = {
   "/": HOME_ROUTE_SEO,
   "/galaxy": HOME_CLONE_SEO,
   "/crazygames": HOME_CLONE_SEO,
+  "/itch": HOME_CLONE_SEO,
   "/boost": HOME_CLONE_SEO,
   "/game": HOME_ROUTE_SEO,
   "/privacy": {

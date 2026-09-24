@@ -60,6 +60,7 @@ export const SAVE_ORIGIN_EDITIONS = [
   "steam-playtest",
   "galaxy",
   "crazygames",
+  "itch",
 ] as const;
 
 export type SaveOriginEdition = (typeof SAVE_ORIGIN_EDITIONS)[number];

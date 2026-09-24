@@ -74,7 +74,12 @@ const START_INTRO_LINE_CLASS =
 function isNoindexStartPath(): boolean {
   if (typeof window === "undefined") return false;
   const path = window.location.pathname;
-  return path === "/galaxy" || path === "/crazygames" || path === "/boost";
+  return (
+    path === "/galaxy" ||
+    path === "/crazygames" ||
+    path === "/itch" ||
+    path === "/boost"
+  );
 }
 
 type AudioModule = typeof import("@/lib/audio");

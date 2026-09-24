@@ -2,6 +2,7 @@ import {
   DEV_GAME_MODE_OPTIONS,
   isCrazyGamesEdition,
   isGalaxyEdition,
+  isItchEdition,
   isSteamBuild,
   type DevGameMode,
 } from "@/lib/edition";
@@ -74,9 +75,11 @@ export function peekStartupGameStarted(): boolean {
   return peekStartupSaveHeader()?.gameStarted === true;
 }
 
-/** Steam / Galaxy / CrazyGames keep the old skip-to-Game resume. */
+/** Steam / Galaxy / CrazyGames / itch keep the old skip-to-Game resume. */
 export function isOfflinePortalBootEdition(): boolean {
-  return isSteamBuild || isGalaxyEdition() || isCrazyGamesEdition();
+  return (
+    isSteamBuild || isGalaxyEdition() || isCrazyGamesEdition() || isItchEdition()
+  );
 }
 
 export function peekPreferStartScreen(): boolean {
@@ -130,8 +133,8 @@ export function clearResumeGame(): void {
 
 /**
  * True when this visit should load the Game chunk instead of the start screen.
- * Web revisits stay on Make Fire. Steam / Galaxy / CrazyGames still resume a
- * started save. forceGame and an explicit in-game resume skip the title.
+ * Web revisits stay on Make Fire. Steam / Galaxy / CrazyGames / itch still
+ * resume a started save. forceGame and an explicit in-game resume skip the title.
  */
 export function shouldBootGameSurface(
   location: StartupLocation = typeof window !== "undefined"

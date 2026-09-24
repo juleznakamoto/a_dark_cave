@@ -12,6 +12,8 @@ interface ImportMetaEnv {
   readonly VITE_STEAM_PLAYTEST?: string;
   /** "1" only in the CrazyGames HTML5 demo folder (`build:crazygames`). */
   readonly VITE_CRAZYGAMES?: string;
+  /** "1" only in the itch.io HTML5 demo folder (`build:itch`). */
+  readonly VITE_ITCH?: string;
 }
 
 interface ImportMeta {

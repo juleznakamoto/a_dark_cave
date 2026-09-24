@@ -26,6 +26,14 @@ describe("shouldShowInviteFriendsMenuItem", () => {
     expect(shouldShowInviteFriendsMenuItem()).toBe(false);
   });
 
+  it("hides invite copy on the itch demo", async () => {
+    vi.stubGlobal("window", {
+      location: { pathname: "/itch" },
+    });
+    const { shouldShowInviteFriendsMenuItem } = await loadInviteFriendsMenuItem();
+    expect(shouldShowInviteFriendsMenuItem()).toBe(false);
+  });
+
   it("shows invite copy on the public web path", async () => {
     vi.stubGlobal("window", {
       location: { pathname: "/" },

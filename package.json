@@ -15,6 +15,8 @@
     "build:steam-playtest": "cross-env VITE_STEAM_BUILD=1 VITE_STEAM_PLAYTEST=1 vite build",
     "build:crazygames": "cross-env VITE_CRAZYGAMES=1 vite build",
     "package:crazygames": "node scripts/package-crazygames.mjs",
+    "build:itch": "cross-env VITE_ITCH=1 vite build",
+    "package:itch": "node scripts/package-itch.mjs",
     "electron:build": "node scripts/build-electron.mjs",
     "electron:start": "electron .",
     "trailer": "node scripts/launch-trailer-window.mjs",

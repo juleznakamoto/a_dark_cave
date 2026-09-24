@@ -80,7 +80,7 @@ all game logic lives in the client. **Supabase** handles auth/cloud saves.
 | `client/src/game/gameplayInitOrchestrator.ts` | Local hydrate + loop, then auth/cloud/Stripe/audio in background. |
 | `client/src/i18n/index.ts` | i18next bootstrap (English `ui/shell` + `ui/seo` seeded at init). |
 | `client/src/i18n/loadLocaleResources.ts` | Lazy locale shard loading by surface (start / public docs / gameplay). |
-| `client/src/lib/edition.ts` | Steam / Galaxy / CrazyGames / demo flags (plus DEV Game Mode). |
+| `client/src/lib/edition.ts` | Steam / Galaxy / CrazyGames / itch / demo flags (plus DEV Game Mode). |
 | `client/src/components/game/GameContainer.tsx` | Game UI shell: tabs, panels, dialogs, hotkeys. |
 | `client/src/pages/game.tsx` | Thin game route; paints after local hydrate; stops the loop on unmount. |
 | `shared/schema.ts` | Zod `gameStateSchema` / `SaveData` + shared shop constants. |
@@ -106,7 +106,7 @@ all game logic lives in the client. **Supabase** handles auth/cloud saves.
 **Boot:** web `/` always paints the start screen first (including returning
 saves). The Game chunk prefetches after first paint + first input, then mounts
 after Make Fire. `shouldBootGameSurface` skips the start-screen chunk for
-`forceGame`, in-game resume reloads, and Steam / Galaxy / CrazyGames started
+`forceGame`, in-game resume reloads, and Steam / Galaxy / CrazyGames / itch started
 saves.
 
 ---
@@ -160,7 +160,7 @@ shared/schema.ts - Zod persisted shape
   wipe server-written progress. Schema: `shared/schema.ts`.
 - **Editions:** Steam Cloud files via `steamSaveAdapter.ts`. CrazyGames also
   mirrors to the SDK Data module + `localStorage`. Isolated IndexedDB keys per
-  edition (`mainSave`, `steamDemoSave`, `galaxySave`, `crazyGamesSave`, …).
+  edition (`mainSave`, `steamDemoSave`, `galaxySave`, `crazyGamesSave`, `itchSave`, …).
 
 ---
 
@@ -184,6 +184,7 @@ shared/schema.ts - Zod persisted shape
 | i18n | `i18n:*` npm scripts (`extract`, `sync`, `verify`, `translate`) |
 | Steam package/upload | `package-steam-*.mjs`, `steam-upload*.ps1`, `build-electron.mjs` |
 | CrazyGames folder | `package-crazygames.mjs` |
+| itch.io HTML demo folder | `package-itch.mjs` |
 | Press / icons / fonts | `build-press-kit-assets.mjs`, `generate-logo-assets.py` |
 | Marketing CSVs | `*resend*` + `resendScriptEnv.ts` |
 
@@ -192,9 +193,9 @@ shared/schema.ts - Zod persisted shape
 ## Editions
 
 Same client, switched by build/URL flags in `client/src/lib/edition.ts`.
-Steam/Galaxy/CrazyGames are local-only (no Supabase, Stripe, shop, Playlight,
+Steam/Galaxy/CrazyGames/itch are local-only (no Supabase, Stripe, shop, Playlight,
 leaderboard, or marketing). Demo editions cap at 8 wooden huts
-(`client/src/game/demoLimit.ts`) and share demo-end chrome.
+(`client/src/game/demoLimit.ts`) and share demo-end chrome (Steam wishlist).
 
 | Edition | How it is selected | Save isolation | Package |
 |---------|--------------------|----------------|---------|
@@ -204,6 +205,7 @@ leaderboard, or marketing). Demo editions cap at 8 wooden huts
 | Steam playtest | `VITE_STEAM_PLAYTEST=1` | Playtest IndexedDB + `adc-steam-playtest-save.dat` | `electron:package:playtest` |
 | Galaxy | URL `/galaxy` | `galaxySave` | hosted at `/galaxy` |
 | CrazyGames | `VITE_CRAZYGAMES=1` or `/crazygames` | `crazyGamesSave` + SDK Data + `localStorage` | `package:crazygames` |
+| itch.io demo | `VITE_ITCH=1` or `/itch` | `itchSave` | `package:itch` (`release/a-dark-cave-itch/`) |
 
 **Steam shell:** `electron/main.ts`, `preload.ts`, `loopbackServer.ts`, `steam.ts`,
 `paths.ts`. Renderer talks through `client/src/lib/steam.ts`. Steam Vite build

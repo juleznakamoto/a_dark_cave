@@ -2,6 +2,7 @@ import { STEAM_CRUEL_MODE_UNLOCK } from "@/lib/featureFlags";
 import {
   isCrazyGamesEdition,
   isGalaxyEdition,
+  isItchEdition,
   isSimulatedSteamGameMode,
   isSteamDemoBuild,
   isSteamDemoRuntime,
@@ -31,7 +32,7 @@ export function isSteamCruelModeUnlockAvailable(
   if (!STEAM_CRUEL_MODE_UNLOCK) return false;
   if (input.hasWonNormalGame !== true) return false;
   if (isSteamDemoBuild || isSteamDemoRuntime()) return false;
-  if (isGalaxyEdition() || isCrazyGamesEdition()) return false;
+  if (isGalaxyEdition() || isCrazyGamesEdition() || isItchEdition()) return false;
   if (isSteamFullBuild || isSteamPlaytestBuild) return true;
   return isSimulatedSteamGameMode(mode);
 }

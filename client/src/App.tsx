@@ -12,7 +12,9 @@ import { shouldBootGameSurface } from "@/game/startupBootSurface";
 
 const steamBuild = import.meta.env.VITE_STEAM_BUILD === "1";
 const crazyGamesBuild = import.meta.env.VITE_CRAZYGAMES === "1";
-const offlinePortalBuild = steamBuild || crazyGamesBuild;
+const itchBuild = import.meta.env.VITE_ITCH === "1";
+const offlinePortalBuild = steamBuild || crazyGamesBuild || itchBuild;
+const hashRoutedPortalBuild = crazyGamesBuild || itchBuild;
 
 function redirectHome() {
   return Promise.resolve({ default: () => <Redirect to="/" /> });
@@ -81,6 +83,7 @@ function AppRoutes() {
         <Route path="/" component={PlayRoute} />
         <Route path="/galaxy" component={PlayRoute} />
         <Route path="/crazygames" component={PlayRoute} />
+        <Route path="/itch" component={PlayRoute} />
         <Route path="/boost" component={PlayRoute} />
         <Route path="/game">{() => <Redirect to="/" />}</Route>
         <Route path="/end-screen" component={EndScreenPage} />
@@ -122,7 +125,7 @@ function App() {
     <AppErrorBoundary>
       <QueryClientProvider client={queryClient}>
         <DeferredAppChrome>
-          {crazyGamesBuild ? (
+          {hashRoutedPortalBuild ? (
             <WouterRouter hook={useHashLocation}>
               <AppRoutes />
             </WouterRouter>

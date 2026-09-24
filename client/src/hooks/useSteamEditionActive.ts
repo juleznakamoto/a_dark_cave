@@ -2,6 +2,7 @@ import { useGameStore } from "@/game/state";
 import {
   isCrazyGamesEdition,
   isGalaxyEdition,
+  isItchEdition,
   isSteamBuild,
   isSteamDemoRuntime,
   isSteamEditionActive,
@@ -53,23 +54,25 @@ export function useHideSteamStoreLink(): boolean {
   return shouldHideSteamStoreLink(devGameMode);
 }
 
-/** Reactive Galaxy / CrazyGames / Steam demo / DEV capped demo — wooden-hut cap + demo-end dialog. */
+/** Reactive Galaxy / CrazyGames / itch / Steam demo / DEV capped demo — wooden-hut cap + demo-end dialog. */
 export function useDemoEditionActive(): boolean {
   const devGameMode = useGameStore((s) => s.devGameMode);
   return (
     isGalaxyEdition() ||
     isCrazyGamesEdition() ||
+    isItchEdition() ||
     isSteamDemoRuntime() ||
     isDevCappedDemoMode(devGameMode)
   );
 }
 
-/** Steam demo / CrazyGames chrome (build, path, or DEV Game Mode) — footer progress bar. */
+/** Steam demo / CrazyGames / itch chrome (build, path, or DEV Game Mode) — footer progress bar. */
 export function useSteamDemoActive(): boolean {
   const devGameMode = useGameStore((s) => s.devGameMode);
   return (
     isSteamDemoRuntime() ||
     isCrazyGamesEdition() ||
+    isItchEdition() ||
     isDevCappedDemoMode(devGameMode)
   );
 }

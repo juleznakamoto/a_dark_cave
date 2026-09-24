@@ -1,6 +1,7 @@
 import {
   isCrazyGamesEdition,
   isGalaxyEdition,
+  isItchEdition,
   isSteamDemoBuild,
   isSteamPlaytestBuild,
 } from "@/lib/edition";
@@ -8,12 +9,14 @@ import {
 const SAVE_KEY_MAIN = "mainSave";
 const SAVE_KEY_GALAXY = "galaxySave";
 const SAVE_KEY_CRAZYGAMES = "crazyGamesSave";
+const SAVE_KEY_ITCH = "itchSave";
 export const SAVE_KEY_STEAM_DEMO = "steamDemoSave";
 const SAVE_KEY_STEAM_PLAYTEST = "steamPlaytestSave";
 
 export function getSaveKey(): string {
   if (isSteamPlaytestBuild) return SAVE_KEY_STEAM_PLAYTEST;
   if (isSteamDemoBuild) return SAVE_KEY_STEAM_DEMO;
+  if (isItchEdition()) return SAVE_KEY_ITCH;
   if (isCrazyGamesEdition()) return SAVE_KEY_CRAZYGAMES;
   if (isGalaxyEdition()) return SAVE_KEY_GALAXY;
   return SAVE_KEY_MAIN;

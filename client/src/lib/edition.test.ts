@@ -49,6 +49,26 @@ describe("CrazyGames edition", () => {
     edition.setDevGameModeOverride("normal");
   });
 
+  it("treats /itch as a local-only capped demo that still links to Steam", async () => {
+    vi.stubGlobal("window", {
+      location: { pathname: "/itch" },
+    });
+    const edition = await loadEdition();
+    const { getSaveKey } = await import("@/game/saveKeys");
+    const { getSaveOriginEdition } = await import("@/game/saveOrigin");
+    expect(edition.isItchEdition()).toBe(true);
+    expect(edition.isCrazyGamesEdition()).toBe(false);
+    expect(edition.isGalaxyEdition()).toBe(false);
+    expect(edition.isDemoEdition()).toBe(true);
+    expect(edition.isSteamDemoActive()).toBe(true);
+    expect(edition.isLocalOnlyEdition()).toBe(true);
+    expect(edition.isFullGameUnlockedEdition()).toBe(true);
+    expect(edition.isSteamEditionActive()).toBe(true);
+    expect(edition.shouldHideSteamStoreLink("normal")).toBe(false);
+    expect(getSaveKey()).toBe("itchSave");
+    expect(getSaveOriginEdition()).toBe("itch");
+  });
+
   it("does not treat other paths as CrazyGames", async () => {
     vi.stubGlobal("window", {
       location: { pathname: "/galaxy" },

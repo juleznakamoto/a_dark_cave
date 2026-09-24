@@ -29,6 +29,7 @@ describe("startup locale module selection", () => {
   it("treats play routes as startup surfaces", () => {
     expect(isStartupSurfacePath("/")).toBe(true);
     expect(isStartupSurfacePath("/galaxy")).toBe(true);
+    expect(isStartupSurfacePath("/itch")).toBe(true);
     expect(isStartupSurfacePath("/faq")).toBe(false);
   });
 });
