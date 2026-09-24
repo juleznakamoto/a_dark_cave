@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useRef, useMemo } from "react";
 import { useTranslation } from "react-i18next";
-import { ThinkingOrb } from "thinking-orbs";
+import { MODE_FRAMES, ThinkingOrb, type ModeFrame } from "thinking-orbs";
 import { useGameStore } from "@/game/state";
 import { LogEntry } from "@/game/rules/events";
 import { ScrollAreaWithIndicator } from "@/components/ui/scroll-area-with-indicator";
@@ -26,17 +26,21 @@ const MARK_READ_HOVER_MS = 300;
 const NEW_VILLAGER_ORB_COLOR = "rgb(255, 255, 255)";
 // thinking-orbs only draws at 20, 32, or 64. Paint at 20 and show it smaller.
 const UNREAD_ORB_DRAW = 20;
-const UNREAD_ORB_PX = 16;
+const UNREAD_ORB_PX = 12;
+/** `hsl(0, 87.6%, 52.55%)`, the `--primary` token. ThinkingOrb only accepts rgb() or hex. */
+const UNREAD_ORB_COLOR = "rgb(240, 28, 28)";
 
-/** Canvas tint for the unread orb. Matches `bg-primary`. */
-function unreadOrbColor(): string {
-  const probe = document.createElement("span");
-  probe.style.color = "var(--primary)";
-  document.body.appendChild(probe);
-  const color = getComputedStyle(probe).color;
-  probe.remove();
-  return color;
-}
+/**
+ * Breathing ring at full ink. On a dark theme the library multiplies the tint
+ * by each dot's shade, which turns this red into a darker maroon.
+ */
+const unreadOrbFrame: ModeFrame = (size, t, opts) => {
+  const frame = MODE_FRAMES.ring(size, t, opts);
+  return {
+    dots: frame.dots.map((dot) => ({ ...dot, white: 0, a: 1 })),
+    lines: frame.lines,
+  };
+};
 
 /** 0-based index of 1-based line 36 in a full log. */
 const LOG_TAIL_FADE_START_INDEX = GAME_CONSTANTS.LOG_MAX_ENTRIES - 5;
@@ -62,7 +66,6 @@ function LogPanel() {
   // Touch ids whose pointerdown has not been consumed by click or cancelled.
   // A short tap ends before the dwell timer; click still fires for a tap, not a scroll.
   const pendingTouchReadIdsRef = useRef(new Set<string>());
-  const primaryOrbColor = useMemo(() => unreadOrbColor(), []);
 
   useEffect(() => {
     return () => {
@@ -196,13 +199,15 @@ function LogPanel() {
                       state="breathing"
                       size={UNREAD_ORB_DRAW}
                       theme="dark"
+                      frame={unreadOrbFrame}
                       color={
-                        isNewVillager
-                          ? NEW_VILLAGER_ORB_COLOR
-                          : primaryOrbColor
+                        isNewVillager ? NEW_VILLAGER_ORB_COLOR : UNREAD_ORB_COLOR
                       }
                       className="mt-1 shrink-0"
                       style={{ width: UNREAD_ORB_PX, height: UNREAD_ORB_PX }}
+                      dotSize={2.5}
+                      dots={0.4}
+                      speed={1.2}
                       aria-hidden={true}
                     />
                   ) : (
