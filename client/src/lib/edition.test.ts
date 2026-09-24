@@ -35,6 +35,48 @@ describe("CrazyGames edition", () => {
     expect(edition.shouldHideSteamStoreLink("steamEndCruelOff")).toBe(true);
   });
 
+  it("offers a Steam review on Steam demo and Steam end modes only", async () => {
+    const edition = await loadEdition();
+    expect(edition.shouldOfferSteamDemoReview("steamDemo")).toBe(true);
+    expect(edition.shouldOfferSteamDemoReview("demoEnd")).toBe(true);
+    expect(edition.shouldOfferSteamDemoReview("steamGame")).toBe(false);
+    expect(edition.shouldOfferSteamDemoReview("crazyGamesDemo")).toBe(false);
+    expect(edition.shouldOfferSteamDemoReview("normal")).toBe(false);
+
+    expect(edition.shouldOfferSteamGameReview("steamGame")).toBe(true);
+    expect(edition.shouldOfferSteamGameReview("steamPlaytest")).toBe(true);
+    expect(edition.shouldOfferSteamGameReview("steamEndCruelOn")).toBe(true);
+    expect(edition.shouldOfferSteamGameReview("steamEndCruelOff")).toBe(true);
+    expect(edition.shouldOfferSteamGameReview("steamDemo")).toBe(false);
+    expect(edition.shouldOfferSteamGameReview("demoEnd")).toBe(false);
+    expect(edition.shouldOfferSteamGameReview("crazyGamesDemo")).toBe(false);
+    expect(edition.shouldOfferSteamGameReview("normal")).toBe(false);
+  });
+
+  it("does not offer a Steam review on Galaxy, CrazyGames, or itch", async () => {
+    vi.stubGlobal("window", {
+      location: { pathname: "/galaxy" },
+    });
+    const galaxy = await loadEdition();
+    expect(galaxy.shouldOfferSteamDemoReview("demoEnd")).toBe(false);
+    expect(galaxy.shouldOfferSteamGameReview("steamEndCruelOff")).toBe(false);
+
+    vi.resetModules();
+    vi.stubGlobal("window", {
+      location: { pathname: "/crazygames" },
+    });
+    const crazy = await loadEdition();
+    expect(crazy.shouldOfferSteamDemoReview("demoEnd")).toBe(false);
+
+    vi.resetModules();
+    vi.stubGlobal("window", {
+      location: { pathname: "/itch" },
+    });
+    const itch = await loadEdition();
+    expect(itch.shouldOfferSteamDemoReview("demoEnd")).toBe(false);
+    expect(itch.shouldOfferSteamGameReview("steamGame")).toBe(false);
+  });
+
   it("does not sync Steam achievements on the web build", async () => {
     const edition = await loadEdition();
     expect(edition.shouldSyncSteamAchievements()).toBe(false);

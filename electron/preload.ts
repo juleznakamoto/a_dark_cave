@@ -6,7 +6,8 @@ import { contextBridge, ipcRenderer } from "electron";
  * gets Node/Electron internals (contextIsolation stays on, nodeIntegration off).
  *
  * Mirrors the `SteamBridge` interface declared in `client/src/vite-env.d.ts`
- * (achievements, Cloud save, quit-save, full-screen, overlay-to-store).
+ * (achievements, Cloud save, quit-save, full-screen, overlay-to-store,
+ * overlay-to-review).
  *
  * `isDemoBuild` is baked in by `scripts/build-electron.mjs` when packaging the
  * Steam demo (`ADC_STEAM_DEMO=1` → `ADC_STEAM_DEMO_BUILD`).
@@ -22,6 +23,8 @@ contextBridge.exposeInMainWorld("steamBridge", {
     ipcRenderer.invoke("steam:unlock-achievement", apiName),
   activateOverlayToStore: (): Promise<boolean> =>
     ipcRenderer.invoke("steam:overlay-to-store"),
+  activateOverlayToReview: (appId: number): Promise<boolean> =>
+    ipcRenderer.invoke("steam:overlay-to-review", appId),
   saveRead: (): Promise<string | null> => ipcRenderer.invoke("save:read"),
   saveReadDemo: (): Promise<string | null> => ipcRenderer.invoke("save:readDemo"),
   saveClear: (): Promise<boolean> => ipcRenderer.invoke("save:clear"),

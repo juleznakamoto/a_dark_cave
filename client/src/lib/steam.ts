@@ -34,6 +34,23 @@ export async function steamActivateOverlayToStore(): Promise<boolean> {
   }
 }
 
+/**
+ * Open the Steam "Write a review" form in the overlay
+ * (`ISteamFriends::ActivateGameOverlayToWebPage`). Returns false on web / failure.
+ */
+export async function steamActivateOverlayToReview(
+  appId: number,
+): Promise<boolean> {
+  const b = bridge();
+  if (!b?.available || !b.activateOverlayToReview) return false;
+  try {
+    return await b.activateOverlayToReview(appId);
+  } catch (error) {
+    logger.warn("[STEAM] Failed to open review overlay", error);
+    return false;
+  }
+}
+
 /** Unlock (activate) a Steam achievement by its configured API name. Safe no-op on web. */
 export async function steamUnlockAchievement(apiName: string): Promise<void> {
   const b = bridge();

@@ -11,6 +11,7 @@
  * ready, which is the usual cause of Shift+Tab doing nothing. Call `initSteam`
  * before `whenReady` as well so SteamAPI_Init hooks before the GPU starts.
  */
+import { steamReviewPageUrl } from "../shared/steamReview";
 import { isSteamDemoBuild } from "./paths";
 
 type SteamworksModule = {
@@ -29,6 +30,8 @@ type SteamClient = {
   overlay?: {
     /** ISteamFriends::ActivateGameOverlayToStore — StoreFlag.None = 0. */
     activateToStore: (appId: number, flag: number) => void;
+    /** ISteamFriends::ActivateGameOverlayToWebPage. */
+    activateToWebPage: (url: string) => void;
   };
 };
 
@@ -118,6 +121,24 @@ export function activateOverlayToStore(
   } catch (error) {
     // eslint-disable-next-line no-console
     console.warn("[STEAM] activateOverlayToStore failed:", error);
+    return false;
+  }
+}
+
+/**
+ * Open the Steam "Write a review" form in the overlay. Only known app ids
+ * (full game, demo, playtest) are accepted. Returns true if Steam accepted the call.
+ */
+export function activateOverlayToReview(appId: number): boolean {
+  const url = steamReviewPageUrl(appId);
+  if (!url) return false;
+  try {
+    if (!client?.overlay?.activateToWebPage) return false;
+    client.overlay.activateToWebPage(url);
+    return true;
+  } catch (error) {
+    // eslint-disable-next-line no-console
+    console.warn("[STEAM] activateOverlayToReview failed:", error);
     return false;
   }
 }

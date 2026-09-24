@@ -33,6 +33,8 @@ interface SteamBridge {
   unlockAchievement(apiName: string): Promise<boolean>;
   /** ISteamFriends::ActivateGameOverlayToStore for the full game App ID. */
   activateOverlayToStore(): Promise<boolean>;
+  /** ISteamFriends::ActivateGameOverlayToWebPage for a known review app id. */
+  activateOverlayToReview?(appId: number): Promise<boolean>;
   saveRead(): Promise<string | null>;
   saveReadDemo?(): Promise<string | null>;
   saveClear?(): Promise<boolean>;

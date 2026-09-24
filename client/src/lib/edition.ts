@@ -102,6 +102,42 @@ export function isSteamEndScreenDevMode(
   return mode === "steamEndCruelOn" || mode === "steamEndCruelOff";
 }
 
+/**
+ * Steam desktop demo (or DEV Steam Demo / Demo End): offer a Steam review.
+ * Galaxy, CrazyGames, and itch keep their own endings.
+ */
+export function shouldOfferSteamDemoReview(
+  devGameMode?: DevGameMode,
+): boolean {
+  if (isGalaxyEdition() || isCrazyGamesEdition() || isItchEdition()) {
+    return false;
+  }
+  if (isSteamDemoRuntime()) return true;
+  if (!import.meta.env.DEV || isSteamBuild) return false;
+  const mode = resolveDevGameMode(devGameMode);
+  return mode === "steamDemo" || mode === "demoEnd";
+}
+
+/**
+ * Full Steam game end screen (or DEV Steam Game / Playtest / Steam End):
+ * offer a Steam review. Includes Cruel Mode completion.
+ */
+export function shouldOfferSteamGameReview(
+  devGameMode?: DevGameMode,
+): boolean {
+  if (isGalaxyEdition() || isCrazyGamesEdition() || isItchEdition()) {
+    return false;
+  }
+  if (isSteamBuild && !isSteamDemoRuntime()) return true;
+  if (!import.meta.env.DEV || isSteamBuild) return false;
+  const mode = resolveDevGameMode(devGameMode);
+  return (
+    mode === "steamGame" ||
+    mode === "steamPlaytest" ||
+    isSteamEndScreenDevMode(mode)
+  );
+}
+
 function isPathPrefix(prefix: string): boolean {
   if (typeof window === "undefined") return false;
   const path = window.location?.pathname ?? "";

@@ -114,6 +114,12 @@ interface HeroProps {
       onClick?: () => void;
       buttonId?: string;
     };
+    /** Steam desktop end screen: Write a review (store review form). */
+    rateSteam?: {
+      text: string;
+      onClick?: () => void;
+      buttonId?: string;
+    };
     feedback?: {
       text: string;
       onClick?: () => void;
@@ -789,7 +795,8 @@ const Hero: React.FC<HeroProps> = ({
           {/* Buy Me a Coffee + Continue Playing (+ More Games / Rate on itch.io on web) */}
           {(buttons?.secondary ||
             buttons?.secondaryTrailing ||
-            buttons?.rateItch) && (
+            buttons?.rateItch ||
+            buttons?.rateSteam) && (
               <div className="flex flex-col items-center gap-4 animate-fade-in-up animation-delay-4500 px-2">
                 <div className="w-full flex justify-center">
                   <div className="flex flex-wrap justify-center gap-3 sm:gap-4 items-center">
@@ -806,6 +813,22 @@ const Hero: React.FC<HeroProps> = ({
                           className="text-blue-400 opacity-100"
                         />
                         <span>{buttons.secondaryTrailing.text}</span>
+                      </button>
+                    )}
+                    {buttons?.rateSteam && (
+                      <button
+                        type="button"
+                        onClick={buttons.rateSteam.onClick}
+                        button_id={buttons.rateSteam.buttonId}
+                        data-testid="button-end-screen-steam-review"
+                        className={END_SCREEN_LINK_BUTTON_CLASS}
+                      >
+                        <FooterSocialIcon
+                          platform="steam"
+                          variant="brand"
+                          className="h-3.5 w-3.5 shrink-0"
+                        />
+                        <span>{buttons.rateSteam.text}</span>
                       </button>
                     )}
                     {buttons?.rateItch && (

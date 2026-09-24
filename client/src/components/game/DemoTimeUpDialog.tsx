@@ -13,9 +13,11 @@ import { EndScreenShaderBackground } from "@/components/ui/animated-shader-hero"
 import { useGameStore } from "@/game/state";
 import { startNewDemoGame } from "@/game/demoLimit";
 import { openGameFeedbackForm } from "@/lib/gameFeedbackForm";
-import { isItchEdition } from "@/lib/edition";
+import { isItchEdition, shouldOfferSteamDemoReview } from "@/lib/edition";
+import { openSteamReview } from "@/lib/openSteamReview";
 import { useUiTranslation } from "@/i18n/useUiTranslation";
 import { ITCH_RATE_URL } from "@shared/publicPages";
+import { STEAM_DEMO_APP_ID } from "@shared/steamReview";
 
 /** Blocking end-of-demo modal for Galaxy web demo and Steam desktop demo. */
 export default function DemoTimeUpDialog({
@@ -26,6 +28,9 @@ export default function DemoTimeUpDialog({
 } = {}) {
   const { t } = useUiTranslation();
   const storeOpen = useGameStore((state) => state.galaxyTimeUpDialogOpen);
+  const devGameMode = useGameStore((state) => state.devGameMode);
+  // `/dev/demo-end` is the Steam demo ending preview, so the review button is always on.
+  const showSteamReview = preview || shouldOfferSteamDemoReview(devGameMode);
   const dismissDemoEndDialog = useGameStore((state) => state.dismissDemoEndDialog);
   const open = storeOpen;
 
@@ -65,6 +70,25 @@ export default function DemoTimeUpDialog({
         </DialogHeader>
         <div className="flex flex-col gap-3 pt-2">
           <SteamDemoEndStoreCta />
+          {showSteamReview && (
+            <Button
+              variant="outline"
+              type="button"
+              onClick={() => {
+                void openSteamReview(STEAM_DEMO_APP_ID);
+              }}
+              button_id="demo-end-steam-review"
+              data-testid="button-demo-end-steam-review"
+              className="inline-flex items-center gap-1.5"
+            >
+              <FooterSocialIcon
+                platform="steam"
+                variant="brand"
+                className="h-4 w-4 shrink-0"
+              />
+              {t("endScreen.writeReview", { defaultValue: "Write a review" })}
+            </Button>
+          )}
           {isItchEdition() && (
             <Button
               variant="outline"

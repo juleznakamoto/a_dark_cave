@@ -12,7 +12,9 @@ import {
   isItchEdition,
   isSteamBuild,
   isSteamEndScreenDevMode,
+  shouldOfferSteamGameReview,
 } from "@/lib/edition";
+import { openSteamReview, steamGameReviewAppId } from "@/lib/openSteamReview";
 import {
   useSteamDesktopEditionActive,
   useSteamEditionActive,
@@ -26,6 +28,8 @@ export default function EndScreenPage() {
   const { t } = useUiTranslation();
   const steamEditionActive = useSteamEditionActive();
   const steamDesktopEditionActive = useSteamDesktopEditionActive();
+  const devGameMode = useGameStore((state) => state.devGameMode);
+  const showSteamReview = shouldOfferSteamGameReview(devGameMode);
   const [isCruelModeRun, setIsCruelModeRun] = useState<boolean | null>(null);
   const [steamCruelUnlockAvailable, setSteamCruelUnlockAvailable] =
     useState(false);
@@ -101,6 +105,10 @@ export default function EndScreenPage() {
 
   const handleRateItch = () => {
     window.open(ITCH_RATE_URL, "_blank", "noopener,noreferrer");
+  };
+
+  const handleSteamReview = () => {
+    void openSteamReview(steamGameReviewAppId());
   };
 
   const handleMoreGames = async () => {
@@ -189,6 +197,17 @@ export default function EndScreenPage() {
                 text: t("endScreen.rateOnItch"),
                 onClick: handleRateItch,
                 buttonId: "end-screen-rate-itch",
+              },
+            }
+            : {}),
+          ...(showSteamReview
+            ? {
+              rateSteam: {
+                text: t("endScreen.writeReview", {
+                  defaultValue: "Write a review",
+                }),
+                onClick: handleSteamReview,
+                buttonId: "end-screen-steam-review",
               },
             }
             : {}),

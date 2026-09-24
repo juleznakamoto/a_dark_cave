@@ -9,6 +9,7 @@ import {
   getPlayerName,
   activateAchievement,
   activateOverlayToStore,
+  activateOverlayToReview,
   isSteamReady,
 } from "./steam";
 import {
@@ -303,6 +304,9 @@ function registerIpc(): void {
     activateAchievement(String(apiName)),
   );
   ipcMain.handle("steam:overlay-to-store", () => activateOverlayToStore());
+  ipcMain.handle("steam:overlay-to-review", (_event, appId: unknown) =>
+    activateOverlayToReview(Number(appId)),
+  );
 
   ipcMain.handle("save:read", async (): Promise<string | null> => readSavePayload());
   ipcMain.handle("save:readDemo", async (): Promise<string | null> =>
