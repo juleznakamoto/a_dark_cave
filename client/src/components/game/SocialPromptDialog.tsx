@@ -99,6 +99,9 @@ const SOCIAL_TASK_ROW_CLASS =
 /** Stretch every task-row action to the shared button column (widest label wins). */
 const SOCIAL_TASK_ACTION_BTN_CLASS =
   "w-full font-medium px-2 text-[length:calc(0.75rem+var(--adc-text-delta,0px))]";
+/** Every reward chip uses the gold treatment, including wood, food, stone, and silver. */
+const SOCIAL_TASK_REWARD_CHIP_CLASS =
+  "inline-flex w-fit shrink-0 items-center justify-self-end rounded px-1 py-1 text-xxs font-semibold tabular-nums bg-yellow-500/15 text-yellow-400 border border-yellow-500/35";
 
 function TaskInfoIcon({
   tooltipId,
@@ -210,7 +213,7 @@ function TaskRowStatusIcon({
 function TaskGoldBadge({ amount }: { amount: number }) {
   const { t } = useTranslation("ui");
   return (
-    <span className="inline-flex shrink-0 items-center rounded px-1 py-1 text-xxs font-semibold tabular-nums bg-yellow-500/15 text-yellow-400 border border-yellow-500/35">
+    <span className={SOCIAL_TASK_REWARD_CHIP_CLASS}>
       {t("invite.goldBonus", { amount })}
     </span>
   );
@@ -220,7 +223,7 @@ function TaskResourceBadge({ reward }: { reward: SocialTaskResourceReward }) {
   const { t } = useTranslation("ui");
   const { t: tCommon } = useTranslation("common");
   return (
-    <span className="inline-flex shrink-0 items-center rounded px-1 py-1 text-xxs font-semibold tabular-nums bg-muted text-foreground border border-border">
+    <span className={SOCIAL_TASK_REWARD_CHIP_CLASS}>
       {t("socialPrompt.resourceBonus", {
         amount: reward.amount,
         resource: tCommon(`resources.${reward.resource}`),
@@ -804,83 +807,87 @@ export default function SocialPromptDialog({
               )}
             </div>
           )}
-        </div>
 
-        <div
-          className={cn(
-            "mt-1 space-y-3 rounded-md border px-3 py-3",
-            SOCIAL_TASK_HIGHLIGHT_BOX,
-          )}
-        >
-          <div className="space-y-3">
-            <div className="flex justify-between gap-2 text-sm font-medium text-foreground">
-              <span className="min-w-0 leading-snug">
-                {exclusiveRewardComplete ? (
-                  t("socialPrompt.progressComplete")
-                ) : (
-                  <span className="flex flex-col items-start gap-0.5">
-                    <span className="font-bold">{exclusiveItemName}</span>
-                    <span className="font-normal">
-                      {t("socialPrompt.exclusiveRewardEffect", {
-                        percent: exclusiveRewardChancePercent,
-                      })}
+          <div
+            className={cn(
+              "col-span-full space-y-3 rounded-md border px-3 py-3",
+              SOCIAL_TASK_HIGHLIGHT_BOX,
+            )}
+          >
+            <div className="space-y-3">
+              <div className="flex justify-between gap-2 text-sm font-medium text-foreground">
+                <span className="min-w-0 leading-snug">
+                  {exclusiveRewardComplete ? (
+                    t("socialPrompt.progressComplete")
+                  ) : (
+                    <span className="flex flex-col items-start gap-0.5">
+                      <span className="font-bold">{exclusiveItemName}</span>
+                      <span className="font-normal">
+                        {t("socialPrompt.exclusiveRewardEffect", {
+                          percent: exclusiveRewardChancePercent,
+                        })}
+                      </span>
                     </span>
-                  </span>
-                )}
-              </span>
-              <span
-                className={cn(
-                  "shrink-0 tabular-nums",
-                  exclusiveRewardComplete ? "text-green-500" : "text-green-400",
-                )}
-              >
-                {!exclusiveRewardComplete &&
-                  t("socialPrompt.tasksRemaining", {
-                    count:
-                      exclusiveProgress.total - exclusiveProgress.completed,
-                  })}
-              </span>
-            </div>
-            <div className="flex items-center gap-2.5">
-              <div
-                className="relative h-3 min-w-0 flex-1 overflow-hidden rounded-full border border-border/60 bg-neutral-800/80"
-                role="progressbar"
-                aria-valuenow={exclusiveProgress.completed}
-                aria-valuemin={0}
-                aria-valuemax={exclusiveProgress.total}
-                aria-label={t("socialPrompt.progressAriaLabel")}
-              >
-                <div
-                  className={cn(
-                    "h-full rounded-full transition-all duration-300 ease-out",
-                    exclusiveRewardComplete
-                      ? "bg-green-500"
-                      : "bg-gradient-to-r from-green-600 to-green-400",
                   )}
-                  style={{ width: `${exclusiveProgress.percent}%` }}
-                />
-                {Array.from(
-                  { length: SOCIAL_PROMO_EXCLUSIVE_STEP_TOTAL - 1 },
-                  (_, i) => i + 1,
-                ).map((step) => (
-                  <div
-                    key={step}
-                    className="pointer-events-none absolute inset-y-0 z-[1] w-px bg-neutral-950/50"
-                    style={{
-                      left: `${(step / SOCIAL_PROMO_EXCLUSIVE_STEP_TOTAL) * 100}%`,
-                      transform: "translateX(-50%)",
-                    }}
-                  />
-                ))}
+                </span>
+                <span
+                  className={cn(
+                    "shrink-0 tabular-nums",
+                    exclusiveRewardComplete
+                      ? "text-green-500"
+                      : "text-green-400",
+                  )}
+                >
+                  {!exclusiveRewardComplete &&
+                    t("socialPrompt.tasksRemaining", {
+                      count:
+                        exclusiveProgress.total - exclusiveProgress.completed,
+                    })}
+                </span>
               </div>
-              <GameUiIcon
-                name="exclusiveReward"
-                sizeClassName={SOCIAL_EXCLUSIVE_REWARD_ICON_SIZE}
-                className={cn(
-                  "shrink-0",
-                  exclusiveRewardComplete ? "text-green-500" : "text-green-400",
-                )}
-              />
+              <div className="flex items-center gap-2.5">
+                <div
+                  className="relative h-3 min-w-0 flex-1 overflow-hidden rounded-full border border-border/60 bg-neutral-800/80"
+                  role="progressbar"
+                  aria-valuenow={exclusiveProgress.completed}
+                  aria-valuemin={0}
+                  aria-valuemax={exclusiveProgress.total}
+                  aria-label={t("socialPrompt.progressAriaLabel")}
+                >
+                  <div
+                    className={cn(
+                      "h-full rounded-full transition-all duration-300 ease-out",
+                      exclusiveRewardComplete
+                        ? "bg-green-500"
+                        : "bg-gradient-to-r from-green-600 to-green-400",
+                    )}
+                    style={{ width: `${exclusiveProgress.percent}%` }}
+                  />
+                  {Array.from(
+                    { length: SOCIAL_PROMO_EXCLUSIVE_STEP_TOTAL - 1 },
+                    (_, i) => i + 1,
+                  ).map((step) => (
+                    <div
+                      key={step}
+                      className="pointer-events-none absolute inset-y-0 z-[1] w-px bg-neutral-950/50"
+                      style={{
+                        left: `${(step / SOCIAL_PROMO_EXCLUSIVE_STEP_TOTAL) * 100}%`,
+                        transform: "translateX(-50%)",
+                      }}
+                    />
+                  ))}
+                </div>
+                <GameUiIcon
+                  name="exclusiveReward"
+                  sizeClassName={SOCIAL_EXCLUSIVE_REWARD_ICON_SIZE}
+                  className={cn(
+                    "shrink-0",
+                    exclusiveRewardComplete
+                      ? "text-green-500"
+                      : "text-green-400",
+                  )}
+                />
+              </div>
             </div>
           </div>
         </div>

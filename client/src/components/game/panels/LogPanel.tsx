@@ -44,11 +44,15 @@ function LogPanel() {
   const markReadTimeoutsRef = useRef(
     new Map<string, ReturnType<typeof setTimeout>>(),
   );
+  // Touch ids whose pointerdown has not been consumed by click or cancelled.
+  // A short tap ends before the dwell timer; click still fires for a tap, not a scroll.
+  const pendingTouchReadIdsRef = useRef(new Set<string>());
 
   useEffect(() => {
     return () => {
       markReadTimeoutsRef.current.forEach(clearTimeout);
       markReadTimeoutsRef.current.clear();
+      pendingTouchReadIdsRef.current.clear();
     };
   }, []);
 
@@ -102,6 +106,21 @@ function LogPanel() {
               // Pulse sets opacity itself, which would hide the tail fade.
               const blinkClass = isUnread && !isTailLine ? "animate-pulse" : "";
 
+              const markReadNow = () => {
+                const existing = markReadTimeoutsRef.current.get(typedEntry.id);
+                if (existing) {
+                  clearTimeout(existing);
+                  markReadTimeoutsRef.current.delete(typedEntry.id);
+                }
+                pendingTouchReadIdsRef.current.delete(typedEntry.id);
+                setReadEntries((prev) => {
+                  if (prev.has(typedEntry.id)) return prev;
+                  const next = new Set(prev);
+                  next.add(typedEntry.id);
+                  return next;
+                });
+              };
+
               const startMarkReadTimer = () => {
                 if (!isUnread) return;
 
@@ -109,8 +128,7 @@ function LogPanel() {
                 if (existing) clearTimeout(existing);
 
                 const timeout = setTimeout(() => {
-                  markReadTimeoutsRef.current.delete(typedEntry.id);
-                  setReadEntries((prev) => new Set(prev).add(typedEntry.id));
+                  markReadNow();
                 }, MARK_READ_HOVER_MS);
 
                 markReadTimeoutsRef.current.set(typedEntry.id, timeout);
@@ -122,6 +140,11 @@ function LogPanel() {
                   clearTimeout(timeout);
                   markReadTimeoutsRef.current.delete(typedEntry.id);
                 }
+              };
+
+              const cancelTouchRead = () => {
+                pendingTouchReadIdsRef.current.delete(typedEntry.id);
+                cancelMarkReadTimer();
               };
 
               return (
@@ -137,13 +160,19 @@ function LogPanel() {
                   }}
                   onPointerDown={(e) => {
                     if (e.pointerType !== "touch") return;
+                    pendingTouchReadIdsRef.current.add(typedEntry.id);
                     startMarkReadTimer();
                   }}
                   onPointerUp={(e) => {
                     if (e.pointerType !== "touch") return;
+                    // Release before the dwell timer. A tap still emits click.
                     cancelMarkReadTimer();
                   }}
-                  onPointerCancel={cancelMarkReadTimer}
+                  onPointerCancel={cancelTouchRead}
+                  onClick={() => {
+                    if (!pendingTouchReadIdsRef.current.has(typedEntry.id)) return;
+                    markReadNow();
+                  }}
                   className="group flex items-start gap-2 text-foreground leading-relaxed py-[calc(0.125rem*0.5)] md:py-0.5"
                 >
                   {showNewIndicator ? (
