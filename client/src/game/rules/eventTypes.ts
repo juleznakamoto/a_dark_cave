@@ -85,7 +85,7 @@ export interface LogEntry {
   skipEventLog?: boolean; // Skip adding to visible event log
   /** Estate cube reread: show the dialog, close without applying choice effects. */
   viewOnly?: boolean;
-  /** Event log panel: white unread dot instead of red. */
+  /** Event log panel: white unread marker instead of red. */
   newVillagers?: boolean;
   relevant_stats?: ("strength" | "knowledge" | "luck" | "madness")[]; // Stats relevant to event odds
   // Timed tab properties

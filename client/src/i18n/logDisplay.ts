@@ -423,7 +423,7 @@ function messageIndicatesNewVillagers(message: string): boolean {
   return /captives? from the camp choose? to join the village\.?$/.test(message);
 }
 
-/** True when a log row describes new villagers joining (white dot in event log). */
+/** True when a log row describes new villagers joining (white unread marker). */
 export function isNewVillagerLogEntry(entry: LogEntry): boolean {
   if (entry.newVillagers) return true;
   if (entry.logKey && isStrangerLogKey(entry.logKey)) return true;

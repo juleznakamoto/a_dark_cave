@@ -1,5 +1,6 @@
 import React, { useEffect, useState, useRef, useMemo } from "react";
 import { useTranslation } from "react-i18next";
+import { ThinkingOrb } from "thinking-orbs";
 import { useGameStore } from "@/game/state";
 import { LogEntry } from "@/game/rules/events";
 import { ScrollAreaWithIndicator } from "@/components/ui/scroll-area-with-indicator";
@@ -22,6 +23,20 @@ type ExtendedLogEntry =
   };
 
 const MARK_READ_HOVER_MS = 300;
+const NEW_VILLAGER_ORB_COLOR = "rgb(255, 255, 255)";
+// thinking-orbs only draws at 20, 32, or 64. Paint at 20 and show it smaller.
+const UNREAD_ORB_DRAW = 20;
+const UNREAD_ORB_PX = 16;
+
+/** Canvas tint for the unread orb. Matches `bg-primary`. */
+function unreadOrbColor(): string {
+  const probe = document.createElement("span");
+  probe.style.color = "var(--primary)";
+  document.body.appendChild(probe);
+  const color = getComputedStyle(probe).color;
+  probe.remove();
+  return color;
+}
 
 /** 0-based index of 1-based line 36 in a full log. */
 const LOG_TAIL_FADE_START_INDEX = GAME_CONSTANTS.LOG_MAX_ENTRIES - 5;
@@ -47,6 +62,7 @@ function LogPanel() {
   // Touch ids whose pointerdown has not been consumed by click or cancelled.
   // A short tap ends before the dwell timer; click still fires for a tap, not a scroll.
   const pendingTouchReadIdsRef = useRef(new Set<string>());
+  const primaryOrbColor = useMemo(() => unreadOrbColor(), []);
 
   useEffect(() => {
     return () => {
@@ -176,13 +192,25 @@ function LogPanel() {
                   className="group flex items-start gap-2 text-foreground leading-relaxed py-[calc(0.125rem*0.5)] md:py-0.5"
                 >
                   {showNewIndicator ? (
-                    <span
-                      className={`mt-2 h-1.5 w-1.5 shrink-0 rounded-full ${isNewVillager ? "bg-white" : "bg-primary"
-                        }`}
+                    <ThinkingOrb
+                      state="breathing"
+                      size={UNREAD_ORB_DRAW}
+                      theme="dark"
+                      color={
+                        isNewVillager
+                          ? NEW_VILLAGER_ORB_COLOR
+                          : primaryOrbColor
+                      }
+                      className="mt-1 shrink-0"
+                      style={{ width: UNREAD_ORB_PX, height: UNREAD_ORB_PX }}
                       aria-hidden={true}
                     />
                   ) : (
-                    <span className="w-1.5 shrink-0" aria-hidden={true} />
+                    <span
+                      className="shrink-0"
+                      style={{ width: UNREAD_ORB_PX }}
+                      aria-hidden={true}
+                    />
                   )}
                   <span
                     style={
