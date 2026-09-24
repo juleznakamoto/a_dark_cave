@@ -177,12 +177,12 @@ function LogPanel() {
                 >
                   {showNewIndicator ? (
                     <span
-                      className={`mt-2 h-1 w-1 shrink-0 rounded-full ${isNewVillager ? "bg-white" : "bg-primary"
+                      className={`mt-2 h-1.5 w-1.5 shrink-0 rounded-full ${isNewVillager ? "bg-white" : "bg-primary"
                         }`}
                       aria-hidden={true}
                     />
                   ) : (
-                    <span className="w-1 shrink-0" aria-hidden={true} />
+                    <span className="w-1.5 shrink-0" aria-hidden={true} />
                   )}
                   <span
                     style={
