@@ -18,7 +18,6 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import {
   subDays,
   startOfDay,
@@ -1228,10 +1227,10 @@ export default function AdminDashboard() {
   }
 
   return (
-    <div className="h-screen bg-background overflow-hidden">
-      <div className="max-w-7xl mx-auto h-full p-4 sm:p-6 lg:p-8">
-        <ScrollArea className="h-full">
-          <div className="space-y-6 pr-2 sm:space-y-8 sm:pr-4">
+    <div className="flex h-dvh w-full min-w-0 flex-col overflow-hidden bg-background">
+      <div className="flex h-full min-h-0 w-full min-w-0 flex-col p-4 sm:p-6 lg:p-8">
+        <div className="min-h-0 w-full min-w-0 flex-1 overflow-x-hidden overflow-y-auto">
+          <div className="w-full min-w-0 space-y-6 sm:space-y-8 [&_.grid>*]:min-w-0">
             <div className="flex flex-col gap-3 sm:flex-row sm:justify-between sm:items-center">
               <h1 className="text-2xl font-bold sm:text-3xl lg:text-4xl">Admin Dashboard</h1>
               <div className="flex gap-4">
@@ -1255,28 +1254,25 @@ export default function AdminDashboard() {
             <Tabs
               value={activeTab}
               onValueChange={(value) => setActiveTab(value as AdminTabId)}
-              className="space-y-4"
+              className="w-full min-w-0 space-y-4"
             >
-              <ScrollArea className="w-full whitespace-nowrap">
-                <TabsList className="inline-flex w-auto">
-                  <TabsTrigger value="overview">Overview</TabsTrigger>
-                  <TabsTrigger value="engagement">Engagement</TabsTrigger>
-                  <TabsTrigger value="clicks">Clicks</TabsTrigger>
-                  <TabsTrigger value="purchases">Purchases</TabsTrigger>
-                  <TabsTrigger value="referrals">Referrals</TabsTrigger>
-                  <TabsTrigger value="traffic">Traffic</TabsTrigger>
-                  <TabsTrigger value="socialPrompt">Social prompt</TabsTrigger>
-                  <TabsTrigger value="churn">Churn</TabsTrigger>
-                  <TabsTrigger value="sleep">Sleep</TabsTrigger>
-                  <TabsTrigger value="resources">Resources</TabsTrigger>
-                  <TabsTrigger value="upgrades">Upgrades</TabsTrigger>
-                  <TabsTrigger value="sessions">Sessions</TabsTrigger>
-                  <TabsTrigger value="logs">Logs</TabsTrigger>
-                  <TabsTrigger value="lookup">User Lookup</TabsTrigger>
-                  <TabsTrigger value="saveAnalysis">Save Analysis</TabsTrigger>
-                </TabsList>
-                <ScrollBar orientation="horizontal" />
-              </ScrollArea>
+              <TabsList className="flex h-auto w-full flex-wrap justify-start gap-1">
+                <TabsTrigger value="overview">Overview</TabsTrigger>
+                <TabsTrigger value="engagement">Engagement</TabsTrigger>
+                <TabsTrigger value="clicks">Clicks</TabsTrigger>
+                <TabsTrigger value="purchases">Purchases</TabsTrigger>
+                <TabsTrigger value="referrals">Referrals</TabsTrigger>
+                <TabsTrigger value="traffic">Traffic</TabsTrigger>
+                <TabsTrigger value="socialPrompt">Social prompt</TabsTrigger>
+                <TabsTrigger value="churn">Churn</TabsTrigger>
+                <TabsTrigger value="sleep">Sleep</TabsTrigger>
+                <TabsTrigger value="resources">Resources</TabsTrigger>
+                <TabsTrigger value="upgrades">Upgrades</TabsTrigger>
+                <TabsTrigger value="sessions">Sessions</TabsTrigger>
+                <TabsTrigger value="logs">Logs</TabsTrigger>
+                <TabsTrigger value="lookup">User Lookup</TabsTrigger>
+                <TabsTrigger value="saveAnalysis">Save Analysis</TabsTrigger>
+              </TabsList>
 
               <TabsContent value="overview">
                 {renderTabGate(
@@ -1716,8 +1712,7 @@ export default function AdminDashboard() {
               </TabsContent>
             </Tabs>
           </div>
-          <ScrollBar orientation="vertical" />
-        </ScrollArea>
+        </div>
       </div>
     </div>
   );
