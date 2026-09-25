@@ -255,6 +255,24 @@ describe("publicSeo", () => {
     expect(withdrawal).not.toContain("A Dark Room");
   });
 
+  it("exposes homepage /faq and /about links outside the hidden fallback", () => {
+    const home = customizeSpaIndexHtml(REAL_INDEX_HTML, "/");
+    const nav = home.match(/<nav id="adc-static-nav"[\s\S]*?<\/nav>/)?.[0];
+    expect(nav).toBeTruthy();
+    expect(nav).toContain('href="https://a-dark-cave.com/faq"');
+    expect(nav).toContain('href="https://a-dark-cave.com/about"');
+    expect(nav).not.toMatch(/display:\s*none/);
+    expect(nav).not.toContain("aria-hidden");
+
+    const hidden = home.match(/<main id="seo-fallback"[\s\S]*?<\/main>/)?.[0] ?? "";
+    expect(hidden).toMatch(/display:\s*none/);
+    expect(hidden).not.toContain('href="https://a-dark-cave.com/faq"');
+    expect(hidden).not.toContain('href="https://a-dark-cave.com/about"');
+
+    const faq = customizeSpaIndexHtml(REAL_INDEX_HTML, "/faq");
+    expect(faq).not.toContain('id="adc-static-nav"');
+  });
+
   it("gives /faq and /about unique raw HTML with visible body copy", () => {
     const home = customizeSpaIndexHtml(REAL_INDEX_HTML, "/");
     const faq = customizeSpaIndexHtml(REAL_INDEX_HTML, "/faq");

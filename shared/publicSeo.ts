@@ -406,6 +406,7 @@ export function customizeSpaIndexHtml(
 
   const pageBody = getPublicPageBodyHtml(path, { notFound: options?.notFound });
   if (pageBody) {
+    out = out.replace(/<nav id="adc-static-nav"[\s\S]*?<\/nav>\s*/, "");
     out = out.replace("</head>", `  ${STATIC_PAGE_HIDE_AFTER_HYDRATE}\n</head>`);
     if (/<main id="seo-fallback"[\s\S]*?<\/main>/.test(out)) {
       out = out.replace(/<main id="seo-fallback"[\s\S]*?<\/main>/, pageBody);
