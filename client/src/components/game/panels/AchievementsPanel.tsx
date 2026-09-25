@@ -1,4 +1,4 @@
-import { Component, type ReactNode, useState } from "react";
+import { Component, type CSSProperties, type ReactNode, useState } from "react";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { TooltipWrapper } from "@/components/game/TooltipWrapper";
 import { ScrollAreaWithIndicator } from "@/components/ui/scroll-area-with-indicator";
@@ -36,6 +36,7 @@ import {
   INDICATOR_CLASS_COMPLETE,
   CLAIM_BUTTON_CLASS,
   CLAIM_BUTTON_CHROME_COLOR,
+  COMPLETE_ICON_COLOR,
   PROGRESS_BAR_BG_CLASS,
 } from "@/achievements/achievementColors";
 import type { AchievementRow } from "@/achievements/achievementHelpers";
@@ -44,6 +45,7 @@ import { getAchievementSegmentWeight } from "@/achievements/achievementTypes";
 import AchievementMiniRingChart from "@/achievements/AchievementMiniRingChart";
 import { useTranslation } from "react-i18next";
 import { useUiTranslation } from "@/i18n/useUiTranslation";
+import { NEW_ITEM_PULSE_COLORED_CLASS } from "@/hooks/useNewItemPulseTooltip";
 import { DemoEndPromoBadge } from "@/components/game/DemoEndPromoBadge";
 import {
   chromeRuleColorStyle,
@@ -195,6 +197,7 @@ function AchievementRowComponent({
   indicatorClassComplete,
   claimButtonClass,
   claimChromeColor,
+  claimGlowColor,
   forceRedacted,
   catalogActive,
 }: {
@@ -203,6 +206,7 @@ function AchievementRowComponent({
   indicatorClassComplete: string;
   claimButtonClass: string;
   claimChromeColor: string;
+  claimGlowColor: string;
   forceRedacted?: boolean;
   catalogActive?: boolean;
 }) {
@@ -294,12 +298,16 @@ function AchievementRowComponent({
           ) : null}
         </div>
         {canClaim && (
-          <div className="h-5 flex items-center shrink-0">
+          <div className="mr-2.5 h-5 flex items-center shrink-0">
             <GameButton
               variant="outline"
               size="xs"
-              className={`h-5 px-2 ${claimButtonClass}`}
-              style={chromeRuleColorStyle(claimChromeColor)}
+              className={`h-5 px-2 ${claimButtonClass} ${NEW_ITEM_PULSE_COLORED_CLASS}`}
+              style={{
+                ...chromeRuleColorStyle(claimChromeColor),
+                "--new-item-pulse-color": claimGlowColor,
+                color: claimGlowColor,
+              } as CSSProperties}
               onClick={handleClaim}
               button_id={`achievement-claim-${row.achievementId}`}
               tooltip={tooltipText}
@@ -364,6 +372,8 @@ function AchievementTabContent({
   const claimButtonClass = CLAIM_BUTTON_CLASS[config.idPrefix] ?? CLAIM_BUTTON_CLASS.item;
   const claimChromeColor =
     CLAIM_BUTTON_CHROME_COLOR[config.idPrefix] ?? CLAIM_BUTTON_CHROME_COLOR.item;
+  const claimGlowColor =
+    COMPLETE_ICON_COLOR[config.idPrefix] ?? COMPLETE_ICON_COLOR.item;
   const categoryHeader = t(CATEGORY_HEADER_KEYS[config.idPrefix], {
     defaultValue: CATEGORY_HEADER_DEFAULTS[config.idPrefix],
   });
@@ -397,6 +407,7 @@ function AchievementTabContent({
               indicatorClassComplete={indicatorClassComplete}
               claimButtonClass={claimButtonClass}
               claimChromeColor={claimChromeColor}
+              claimGlowColor={claimGlowColor}
               forceRedacted={forceRedacted}
               catalogActive={catalogActive}
             />

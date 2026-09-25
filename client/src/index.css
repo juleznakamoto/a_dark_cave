@@ -1558,6 +1558,37 @@ html.adc-text-large .game-panel-header-indicator-row {
   animation: new-item-pulse-redacted 1s ease-in-out infinite;
 }
 
+/* Same tempo as new-item-pulse. Color comes from --new-item-pulse-color
+   (achievement claim buttons pass their category color). */
+@keyframes new-item-pulse-colored {
+
+  0%,
+  100% {
+    opacity: 0.72;
+    text-shadow:
+      0 0 2px color-mix(in srgb, var(--new-item-pulse-glow) 55%, transparent),
+      0 0 4px color-mix(in srgb, var(--new-item-pulse-glow) 35%, transparent);
+    box-shadow:
+      0 0 4px color-mix(in srgb, var(--new-item-pulse-glow) 50%, transparent);
+  }
+
+  50% {
+    opacity: 1;
+    text-shadow:
+      0 0 3px var(--new-item-pulse-glow),
+      0 0 8px color-mix(in srgb, var(--new-item-pulse-glow) 75%, transparent);
+    box-shadow:
+      0 0 6px 1px color-mix(in srgb, var(--new-item-pulse-glow) 85%, transparent),
+      0 0 12px color-mix(in srgb, var(--new-item-pulse-glow) 50%, transparent);
+  }
+}
+
+.new-item-pulse-colored {
+  --new-item-pulse-glow: var(--new-item-pulse-color, #fff);
+  color: var(--new-item-pulse-color, inherit);
+  animation: new-item-pulse-colored 1s ease-in-out infinite;
+}
+
 @keyframes resource-critical-blink {
 
   0%,

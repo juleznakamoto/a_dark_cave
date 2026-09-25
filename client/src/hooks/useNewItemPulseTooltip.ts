@@ -9,6 +9,11 @@ const HOVER_DISMISS_MS = 500;
 export const NEW_ITEM_PULSE_CLASS = "new-item-pulse";
 /** Bar glow for redacted game tabs (no text, so box-shadow instead of text-shadow). */
 export const NEW_ITEM_PULSE_REDACTED_CLASS = "new-item-pulse-redacted";
+/**
+ * Same pulse, tinted by `--new-item-pulse-color`. Claim buttons keep this until
+ * click (the button unmounts when claimed). Do not dismiss it on hover.
+ */
+export const NEW_ITEM_PULSE_COLORED_CLASS = "new-item-pulse-colored";
 
 /**
  * First-time "new item" pulse for tooltip triggers. Glow stops after hover (desktop:
