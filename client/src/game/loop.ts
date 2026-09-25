@@ -1554,15 +1554,19 @@ function handleStrangerApproach() {
 
     if (added <= 0) return;
 
+    const seen = {
+      ...state.story.seen,
+      ...(patch.story?.seen),
+      hasVillagers: true,
+    };
+    if (currentPopulation === 0 && state.story.seen?.firstVillagerTabGlow === undefined) {
+      seen.firstVillagerTabGlow = state.activeTab !== "village";
+    }
     useGameStore.setState({
       ...patch,
       story: {
         ...state.story,
-        seen: {
-          ...state.story.seen,
-          ...(patch.story?.seen),
-          hasVillagers: true,
-        },
+        seen,
       },
     });
 

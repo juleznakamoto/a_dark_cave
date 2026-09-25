@@ -881,6 +881,21 @@ export default function GameContainer() {
     achievementsUnlocked,
   ]);
 
+  const firstVillagerTabGlow = useGameStore(
+    (s) => s.story?.seen?.firstVillagerTabGlow === true,
+  );
+
+  useEffect(() => {
+    if (!firstVillagerTabGlow || activeTab !== "village") return;
+    const state = useGameStore.getState();
+    useGameStore.setState({
+      story: {
+        ...state.story,
+        seen: { ...state.story.seen, firstVillagerTabGlow: false },
+      },
+    });
+  }, [firstVillagerTabGlow, activeTab]);
+
   // Determine whether to use LimelightNav (always call this hook)
   const useLimelightNav = false;
   const timedEventLabelKind = getTimedEventTabLabelKind(timedEventTab.event);
@@ -1531,10 +1546,11 @@ export default function GameContainer() {
                           }
                           tabButtonClass={tabButtonClass}
                           tabInactiveTextClass={tabInactiveTextClass}
-                          className={tabUnlockClassName(
-                            "village",
-                            activeTab === "village",
-                          )}
+                          className={
+                            firstVillagerTabGlow && activeTab !== "village"
+                              ? "tab-blink-new"
+                              : tabUnlockClassName("village", activeTab === "village")
+                          }
                           onClick={() => {
                             useGameStore.getState().trackButtonClick("tab-village");
                             clearTabAnimation("village");
