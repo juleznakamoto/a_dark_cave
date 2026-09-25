@@ -13,7 +13,7 @@
       "name": "Buch des Kettenmeisters"
     },
     "book_of_trials": {
-      "description": "Buch über das Bestehen der Prüfungen des Lebens. Schaltet Belohnungen für jene frei, die sich durch Erfolge beweisen.",
+      "description": "Buch über das Bestehen der Prüfungen des Lebens.",
       "name": "Buch der Prüfungen"
     }
   },
@@ -315,7 +315,7 @@
       "name": "Worte des Überlebenden"
     },
     "survivors_notes": {
-      "description": "Alte Schriftrolle voller praktischer Ratschläge, hinterlassen von jemandem, der vor langer Zeit hier lebte. Schaltet einfache Erfolge frei.",
+      "description": "Alte Schriftrolle voller praktischer Ratschläge, hinterlassen von jemandem, der vor langer Zeit hier lebte.",
       "name": "Notizen des Überlebenden"
     },
     "tarnished_amulet": {
@@ -357,27 +357,27 @@
   },
   "fellowship": {
     "ashwraith_huntress": {
-      "description": "Wilde Jägerin eines Waldstammes, durch Blutschwur gebunden. Schaltet Verbesserungen der Jagdfähigkeit und der Jägerproduktion frei.",
+      "description": "Wilde Jägerin eines Waldstammes, durch Blutschwur gebunden.",
       "name": "Aschengeist-Jägerin"
     },
     "disgraced_prior": {
-      "description": "Ehemaliger Prior, aus seinem Orden verstoßen. Sühnt durch endlose Arbeit. Schaltet die Fähigkeit Unermüdlicher Arbeiter frei.",
+      "description": "Ehemaliger Prior, aus seinem Orden verstoßen. Sühnt durch endlose Arbeit.",
       "name": "Gefallener Prior"
     },
     "elder_wizard": {
-      "description": "Alter Zauberer in seinen letzten Tagen, der vor langer Zeit die Künste des arkanen Feuers meisterte. Schaltet die Kampffähigkeit Blutflammenkugel frei.",
+      "description": "Alter Zauberer in seinen letzten Tagen, der vor langer Zeit die Künste des arkanen Feuers meisterte.",
       "name": "Alter Zauberer"
     },
     "one_eyed_crow": {
-      "description": "Mystische Krähe mit einem einzigen durchdringenden Auge, mit dem Krähengeschirr gezähmt. Schaltet Krähenauge und das Senden von Nachrichten frei.",
+      "description": "Mystische Krähe mit einem einzigen durchdringenden Auge, mit dem Krähengeschirr gezähmt.",
       "name": "Einäugige Krähe"
     },
     "restless_knight": {
-      "description": "Kampferprobter Veteran, der die Überreste der alten Welt gesehen hat. Schaltet die Kampffähigkeit Schmetterschlag frei.",
+      "description": "Kampferprobter Veteran, der die Überreste der alten Welt gesehen hat.",
       "name": "Rastloser Ritter"
     },
     "the_hound": {
-      "description": "Muskulöser, entstellter Überlebender eines vergifteten Bergdorfs. Schaltet die Kampffähigkeit Wildes Heulen frei.",
+      "description": "Muskulöser, entstellter Überlebender eines vergifteten Bergdorfs.",
       "name": "Brutaler Hund"
     }
   },

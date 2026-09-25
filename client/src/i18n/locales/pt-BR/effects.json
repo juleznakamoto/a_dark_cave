@@ -13,7 +13,7 @@
       "name": "Livro do Mestre das Correntes"
     },
     "book_of_trials": {
-      "description": "Livro sobre superar os desafios da vida. Desbloqueia recompensas para quem se prova por meio de conquistas.",
+      "description": "Livro sobre superar os desafios da vida.",
       "name": "Livro das Provações"
     }
   },
@@ -295,7 +295,7 @@
       "name": "Últimas Palavras do Sobrevivente"
     },
     "survivors_notes": {
-      "description": "Pergaminho desgastado pelo tempo repleto de conselhos práticos deixados por alguém que viveu aqui há muito tempo. Desbloqueia conquistas básicas.",
+      "description": "Pergaminho desgastado pelo tempo repleto de conselhos práticos deixados por alguém que viveu aqui há muito tempo.",
       "name": "Notas do Sobrevivente"
     },
     "tarnished_amulet": {
@@ -357,27 +357,27 @@
   },
   "fellowship": {
     "ashwraith_huntress": {
-      "description": "Caçadora selvagem de uma tribo da floresta, ligada por juramento de sangue. Desbloqueia aprimoramentos da habilidade de caça e da produção dos caçadores.",
+      "description": "Caçadora selvagem de uma tribo da floresta, ligada por juramento de sangue.",
       "name": "Caçadora Espectro de Cinzas"
     },
     "disgraced_prior": {
-      "description": "Ex-prior expulso de sua ordem. Redime-se por meio de trabalho incessante. Desbloqueia a habilidade Trabalhador Incansável.",
+      "description": "Ex-prior expulso de sua ordem. Redime-se por meio de trabalho incessante.",
       "name": "Prior Desonrado"
     },
     "elder_wizard": {
-      "description": "Velho mago em seus últimos dias, que há muito dominou as artes do fogo arcano. Desbloqueia a habilidade de combate Esfera de Chama Sangrenta.",
+      "description": "Velho mago em seus últimos dias, que há muito dominou as artes do fogo arcano.",
       "name": "Mago Ancião"
     },
     "one_eyed_crow": {
-      "description": "Corvo místico de um único olho penetrante, domado com o arreio de corvo. Desbloqueia a habilidade Olho do Corvo e o envio de mensagens.",
+      "description": "Corvo místico de um único olho penetrante, domado com o arreio de corvo.",
       "name": "Corvo Caolho"
     },
     "restless_knight": {
-      "description": "Veterano de combate que viu os remanescentes do velho mundo. Desbloqueia a habilidade de combate Golpe Esmagador.",
+      "description": "Veterano de combate que viu os remanescentes do velho mundo.",
       "name": "Cavaleiro Inquieto"
     },
     "the_hound": {
-      "description": "Sobrevivente musculoso e desfigurado de uma aldeia na montanha envenenada. Desbloqueia a habilidade de combate Uivo Feral.",
+      "description": "Sobrevivente musculoso e desfigurado de uma aldeia na montanha envenenada.",
       "name": "Cão Bruto"
     }
   },

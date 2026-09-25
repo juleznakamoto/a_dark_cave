@@ -13,7 +13,7 @@
       "name": "Libro del Maestro de las cadenas"
     },
     "book_of_trials": {
-      "description": "Libro sobre cómo afrontar los desafíos de la vida. Desbloquea recompensas para quienes se prueban mediante logros.",
+      "description": "Libro sobre cómo afrontar los desafíos de la vida.",
       "name": "Libro de las pruebas"
     }
   },
@@ -315,7 +315,7 @@
       "name": "Últimas palabras del superviviente"
     },
     "survivors_notes": {
-      "description": "Pergamino gastado por el tiempo lleno de consejos prácticos dejados por alguien que vivió aquí hace mucho. Desbloquea logros básicos.",
+      "description": "Pergamino gastado por el tiempo lleno de consejos prácticos dejados por alguien que vivió aquí hace mucho.",
       "name": "Notas del superviviente"
     },
     "tarnished_amulet": {
@@ -357,27 +357,27 @@
   },
   "fellowship": {
     "ashwraith_huntress": {
-      "description": "Cazadora salvaje de una tribu del bosque, ligada por juramento de sangre. Desbloquea mejoras de habilidad de caza y de producción de cazadores.",
+      "description": "Cazadora salvaje de una tribu del bosque, ligada por juramento de sangre.",
       "name": "Cazadora espectroceniza"
     },
     "disgraced_prior": {
-      "description": "Antiguo prior expulsado de su orden. Se redime mediante un trabajo interminable. Desbloquea la habilidad Trabajador incansable.",
+      "description": "Antiguo prior expulsado de su orden. Se redime mediante un trabajo interminable.",
       "name": "Prior deshonrado"
     },
     "elder_wizard": {
-      "description": "Viejo mago en sus últimos días que dominó hace mucho las artes del fuego arcano. Desbloquea la habilidad de combate Esfera de llama sangrienta.",
+      "description": "Viejo mago en sus últimos días que dominó hace mucho las artes del fuego arcano.",
       "name": "Mago anciano"
     },
     "one_eyed_crow": {
-      "description": "Cuervo místico de un solo ojo penetrante, domado con el arnés para cuervos. Desbloquea la habilidad Ojo de cuervo y el envío de mensajes.",
+      "description": "Cuervo místico de un solo ojo penetrante, domado con el arnés para cuervos.",
       "name": "Cuervo tuerto"
     },
     "restless_knight": {
-      "description": "Veterano de combate que ha visto los restos del viejo mundo. Desbloquea la habilidad de combate Golpe aplastante.",
+      "description": "Veterano de combate que ha visto los restos del viejo mundo.",
       "name": "Caballero inquieto"
     },
     "the_hound": {
-      "description": "Superviviente musculoso y desfigurado de una aldea de montaña envenenada. Desbloquea la habilidad de combate Aullido salvaje.",
+      "description": "Superviviente musculoso y desfigurado de una aldea de montaña envenenada.",
       "name": "Sabueso Bruto"
     }
   },

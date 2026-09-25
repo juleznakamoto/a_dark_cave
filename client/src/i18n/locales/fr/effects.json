@@ -13,7 +13,7 @@
       "name": "Livre du Maître des chaînes"
     },
     "book_of_trials": {
-      "description": "Livre sur la traversée des épreuves de la vie. Débloque des récompenses pour ceux qui font leurs preuves par les succès.",
+      "description": "Livre sur la traversée des épreuves de la vie.",
       "name": "Livre des épreuves"
     }
   },
@@ -315,7 +315,7 @@
       "name": "Dernières paroles du survivant"
     },
     "survivors_notes": {
-      "description": "Parchemin usé par le temps, rempli de conseils pratiques laissés par quelqu'un qui vécut ici il y a longtemps. Débloque les succès de base.",
+      "description": "Parchemin usé par le temps, rempli de conseils pratiques laissés par quelqu'un qui vécut ici il y a longtemps.",
       "name": "Notes du survivant"
     },
     "tarnished_amulet": {
@@ -357,27 +357,27 @@
   },
   "fellowship": {
     "ashwraith_huntress": {
-      "description": "Chasseresse sauvage d'une tribu forestière liée par serment de sang. Débloque les améliorations de compétence de chasse et de production des chasseurs.",
+      "description": "Chasseresse sauvage d'une tribu forestière liée par serment de sang.",
       "name": "Chasseresse spectre-cendre"
     },
     "disgraced_prior": {
-      "description": "Ancien prieur rejeté par son ordre. Il se rachète par un labeur sans fin. Débloque la compétence Travailleur infatigable.",
+      "description": "Ancien prieur rejeté par son ordre. Il se rachète par un labeur sans fin.",
       "name": "Prieur déchu"
     },
     "elder_wizard": {
-      "description": "Vieux mage dans ses derniers jours, qui maîtrisa jadis les arts du feu arcanique. Débloque la compétence de combat Sphère de sang-flamme.",
+      "description": "Vieux mage dans ses derniers jours, qui maîtrisa jadis les arts du feu arcanique.",
       "name": "Vieux mage"
     },
     "one_eyed_crow": {
-      "description": "Corbeau mystique à l'œil unique et perçant, apprivoisé avec le harnais à corbeau. Débloque la compétence Œil du corbeau et l'envoi de messages.",
+      "description": "Corbeau mystique à l'œil unique et perçant, apprivoisé avec le harnais à corbeau.",
       "name": "Corbeau borgne"
     },
     "restless_knight": {
-      "description": "Vétéran du combat qui a vu les vestiges de l'ancien monde. Débloque la compétence de combat Frappe écrasante.",
+      "description": "Vétéran du combat qui a vu les vestiges de l'ancien monde.",
       "name": "Chevalier sans repos"
     },
     "the_hound": {
-      "description": "Survivant musclé et défiguré d'un village de montagne empoisonné. Débloque la compétence de combat Hurlement sauvage.",
+      "description": "Survivant musclé et défiguré d'un village de montagne empoisonné.",
       "name": "Chien Brutal"
     }
   },

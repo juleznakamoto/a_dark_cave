@@ -13,7 +13,7 @@
       "name": "链主之书"
     },
     "book_of_trials": {
-      "description": "讲述如何穿越人生试炼的书。为通过成就证明自己的人解锁奖励。",
+      "description": "讲述如何穿越人生试炼的书。",
       "name": "试炼之书"
     }
   },
@@ -315,7 +315,7 @@
       "name": "幸存者遗言"
     },
     "survivors_notes": {
-      "description": "一卷陈旧卷轴，写满很久以前在此生活之人留下的实用建议。解锁基础成就。",
+      "description": "一卷陈旧卷轴，写满很久以前在此生活之人留下的实用建议。",
       "name": "幸存者笔记"
     },
     "tarnished_amulet": {
@@ -357,27 +357,27 @@
   },
   "fellowship": {
     "ashwraith_huntress": {
-      "description": "来自森林部族的野民女猎手，以血誓相系。解锁狩猎技能升级与猎人生产升级。",
+      "description": "来自森林部族的野民女猎手，以血誓相系。",
       "name": "灰怨女猎手"
     },
     "disgraced_prior": {
-      "description": "被教团逐出的前任修院长。以无尽劳作赎罪。解锁技能不知疲倦的劳工。",
+      "description": "被教团逐出的前任修院长。以无尽劳作赎罪。",
       "name": "堕落修道院长"
     },
     "elder_wizard": {
-      "description": "生命将尽的老巫师，很久以前便掌握了奥术之火。解锁战斗技能血焰球。",
+      "description": "生命将尽的老巫师，很久以前便掌握了奥术之火。",
       "name": "老巫师"
     },
     "one_eyed_crow": {
-      "description": "只有一只锐利眼睛的神秘乌鸦，用乌鸦挽具驯服。解锁鸦眼技能与传信功能。",
+      "description": "只有一只锐利眼睛的神秘乌鸦，用乌鸦挽具驯服。",
       "name": "独眼乌鸦"
     },
     "restless_knight": {
-      "description": "久经战斗的老兵，见过旧世界的残骸。解锁战斗技能粉碎打击。",
+      "description": "久经战斗的老兵，见过旧世界的残骸。",
       "name": "不眠骑士"
     },
     "the_hound": {
-      "description": "来自中毒山村的健壮却毁容的幸存者。解锁战斗技能野性咆哮。",
+      "description": "来自中毒山村的健壮却毁容的幸存者。",
       "name": "蛮犬"
     }
   },

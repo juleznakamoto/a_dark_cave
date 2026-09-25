@@ -13,7 +13,7 @@
       "name": "Book of Chainmaster"
     },
     "book_of_trials": {
-      "description": "Book about navigating life's challenges. Unlocks rewards for those who prove themselves through achievements.",
+      "description": "Book about navigating life's challenges.",
       "name": "Book of Trials"
     }
   },
@@ -323,7 +323,7 @@
       "name": "Survivor's Last Words"
     },
     "survivors_notes": {
-      "description": "Timeworn scroll filled with practical advice left by one who had lived here long ago. Unlocks basic achievements.",
+      "description": "Timeworn scroll filled with practical advice left by one who had lived here long ago.",
       "name": "Survivor's Notes"
     },
     "tarnished_amulet": {
@@ -357,27 +357,27 @@
   },
   "fellowship": {
     "ashwraith_huntress": {
-      "description": "Wildling huntress from a forest tribe bound by blood oath. Unlocks hunting skill upgrades and hunter production upgrades.",
+      "description": "Wildling huntress from a forest tribe bound by blood oath.",
       "name": "Ashwraith Huntress"
     },
     "disgraced_prior": {
-      "description": "Former prior cast out of his order. Redeems himself through endless labor. Unlocks Tireless Worker skill.",
+      "description": "Former prior cast out of his order. Redeems himself through endless labor.",
       "name": "Disgraced Prior"
     },
     "elder_wizard": {
-      "description": "Old wizard in his final days who long ago mastered the arts of arcane fire. Unlocks combat skill Bloodflame Sphere.",
+      "description": "Old wizard in his final days who long ago mastered the arts of arcane fire.",
       "name": "Elder Wizard"
     },
     "one_eyed_crow": {
-      "description": "Mystical crow with a single piercing eye, tamed using the crow harness. Unlocks Crow's Eye skill and sending messages.",
+      "description": "Mystical crow with a single piercing eye, tamed using the crow harness.",
       "name": "One-eyed Crow"
     },
     "restless_knight": {
-      "description": "Veteran of combat who has seen the remnants of the old world. Unlocks combat skill Crushing Strike.",
+      "description": "Veteran of combat who has seen the remnants of the old world.",
       "name": "Restless Knight"
     },
     "the_hound": {
-      "description": "Muscular, disfigured survivor from a poisoned mountain village. Unlocks combat skill Feral Howl.",
+      "description": "Muscular, disfigured survivor from a poisoned mountain village.",
       "name": "Brute Hound"
     }
   },

@@ -13,7 +13,7 @@
       "name": "Libro del Maestro delle catene"
     },
     "book_of_trials": {
-      "description": "Libro su come affrontare le sfide della vita. Sblocca ricompense per chi si dimostra all'altezza attraverso gli obiettivi.",
+      "description": "Libro su come affrontare le sfide della vita.",
       "name": "Libro delle Prove"
     }
   },
@@ -295,7 +295,7 @@
       "name": "Ultime Parole del Sopravvissuto"
     },
     "survivors_notes": {
-      "description": "Pergamena logora dal tempo piena di consigli pratici lasciata da chi visse qui molto tempo fa. Sblocca gli obiettivi di base.",
+      "description": "Pergamena logora dal tempo piena di consigli pratici lasciata da chi visse qui molto tempo fa.",
       "name": "Note del Sopravvissuto"
     },
     "tarnished_amulet": {
@@ -357,27 +357,27 @@
   },
   "fellowship": {
     "ashwraith_huntress": {
-      "description": "Cacciatrice selvaggia di una tribù della foresta, legata da un giuramento di sangue. Sblocca i potenziamenti dell'abilità di caccia e della produzione dei cacciatori.",
+      "description": "Cacciatrice selvaggia di una tribù della foresta, legata da un giuramento di sangue.",
       "name": "Cacciatrice Spettro di Cenere"
     },
     "disgraced_prior": {
-      "description": "Ex priore espulso dal suo ordine. Si redime attraverso un lavoro senza fine. Sblocca l'abilità Lavoratore instancabile.",
+      "description": "Ex priore espulso dal suo ordine. Si redime attraverso un lavoro senza fine.",
       "name": "Priore Caduto in Disgrazia"
     },
     "elder_wizard": {
-      "description": "Vecchio mago nei suoi ultimi giorni che molto tempo fa padroneggiò le arti del fuoco arcano. Sblocca l'abilità di combattimento Sfera di Fiammasangue.",
+      "description": "Vecchio mago nei suoi ultimi giorni che molto tempo fa padroneggiò le arti del fuoco arcano.",
       "name": "Vecchio Mago"
     },
     "one_eyed_crow": {
-      "description": "Mistico corvo con un unico occhio penetrante, addomesticato con l'imbragatura del corvo. Sblocca l'abilità Occhio del Corvo e l'invio di messaggi.",
+      "description": "Mistico corvo con un unico occhio penetrante, addomesticato con l'imbragatura del corvo.",
       "name": "Corvo Guercio"
     },
     "restless_knight": {
-      "description": "Veterano del combattimento che ha visto i resti del vecchio mondo. Sblocca l'abilità di combattimento Colpo Devastante.",
+      "description": "Veterano del combattimento che ha visto i resti del vecchio mondo.",
       "name": "Cavaliere Inquieto"
     },
     "the_hound": {
-      "description": "Sopravvissuto muscoloso e sfigurato di un villaggio di montagna avvelenato. Sblocca l'abilità di combattimento Ululato ferale.",
+      "description": "Sopravvissuto muscoloso e sfigurato di un villaggio di montagna avvelenato.",
       "name": "Segugio Bruto"
     }
   },

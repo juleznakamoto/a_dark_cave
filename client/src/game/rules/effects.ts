@@ -1267,7 +1267,7 @@ export const clothingEffects: Record<string, EffectDefinition> = {
     id: "survivors_notes",
     name: "Survivor's Notes",
     description:
-      "Timeworn scroll filled with practical advice left by one who had lived here long ago. Unlocks basic achievements.",
+      "Timeworn scroll filled with practical advice left by one who had lived here long ago.",
     bonuses: {},
   },
 
@@ -1735,7 +1735,7 @@ export const bookEffects: Record<string, EffectDefinition> = {
     id: "book_of_trials",
     name: "Book of Trials",
     description:
-      "Book about navigating life’s challenges. Unlocks rewards for those who prove themselves through achievements.",
+      "Book about navigating life’s challenges.",
     bonuses: {},
   },
   book_of_chainmaster: {
@@ -1759,7 +1759,7 @@ export const fellowshipEffects: Record<string, EffectDefinition> = {
     id: "restless_knight",
     name: "Restless Knight",
     description:
-      "Veteran of combat who has seen the remnants of the old world. Unlocks combat skill Crushing Strike.",
+      "Veteran of combat who has seen the remnants of the old world.",
     bonuses: {
       generalBonuses: {},
     },
@@ -1768,7 +1768,7 @@ export const fellowshipEffects: Record<string, EffectDefinition> = {
     id: "elder_wizard",
     name: "Elder Wizard",
     description:
-      "Old wizard in his final days who long ago mastered the arts of arcane fire. Unlocks combat skill Bloodflame Sphere.",
+      "Old wizard in his final days who long ago mastered the arts of arcane fire.",
     bonuses: {
       generalBonuses: {},
     },
@@ -1777,7 +1777,7 @@ export const fellowshipEffects: Record<string, EffectDefinition> = {
     id: "ashwraith_huntress",
     name: "Ashwraith Huntress",
     description:
-      "Wildling huntress from a forest tribe bound by blood oath. Unlocks hunting skill upgrades and hunter production upgrades.",
+      "Wildling huntress from a forest tribe bound by blood oath.",
     bonuses: {
       generalBonuses: {},
     },
@@ -1786,7 +1786,7 @@ export const fellowshipEffects: Record<string, EffectDefinition> = {
     id: "one_eyed_crow",
     name: "One-eyed Crow",
     description:
-      "Mystical crow with a single piercing eye, tamed using the crow harness. Unlocks Crow's Eye skill and sending messages.",
+      "Mystical crow with a single piercing eye, tamed using the crow harness.",
     bonuses: {
       generalBonuses: {},
     },
@@ -1795,7 +1795,7 @@ export const fellowshipEffects: Record<string, EffectDefinition> = {
     id: "disgraced_prior",
     name: "Disgraced Prior",
     description:
-      "Former prior cast out of his order. Redeems himself through endless labor. Unlocks Tireless Worker skill.",
+      "Former prior cast out of his order. Redeems himself through endless labor.",
     bonuses: {
       generalBonuses: {},
     },
@@ -1804,7 +1804,7 @@ export const fellowshipEffects: Record<string, EffectDefinition> = {
     id: "the_hound",
     name: "Brute Hound",
     description:
-      "Muscular, disfigured survivor from a poisoned mountain village. Unlocks combat skill Feral Howl.",
+      "Muscular, disfigured survivor from a poisoned mountain village.",
     bonuses: {
       generalBonuses: {},
     },

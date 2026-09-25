@@ -13,7 +13,7 @@
       "name": "Księga Mistrza Łańcuchów"
     },
     "book_of_trials": {
-      "description": "Księga o zmaganiu się z próbami życia. Odblokowuje nagrody dla tych, którzy dowiodą swej wartości osiągnięciami.",
+      "description": "Księga o zmaganiu się z próbami życia.",
       "name": "Księga prób"
     }
   },
@@ -323,7 +323,7 @@
       "name": "Ostatnie słowa ocalałego"
     },
     "survivors_notes": {
-      "description": "Zniszczony zwój pełen praktycznych rad, zostawiony przez kogoś, kto dawno tu żył. Odblokowuje podstawowe osiągnięcia.",
+      "description": "Zniszczony zwój pełen praktycznych rad, zostawiony przez kogoś, kto dawno tu żył.",
       "name": "Zapiski ocalałego"
     },
     "tarnished_amulet": {
@@ -357,27 +357,27 @@
   },
   "fellowship": {
     "ashwraith_huntress": {
-      "description": "Dzika łowczyni z leśnego plemienia, związana przysięgą krwi. Odblokowuje ulepszenia umiejętności łowieckich i produkcji myśliwych.",
+      "description": "Dzika łowczyni z leśnego plemienia, związana przysięgą krwi.",
       "name": "Łowczyni Popiołowego Widma"
     },
     "disgraced_prior": {
-      "description": "Dawny przeor wygnany ze swego zakonu. Okupuje się nieustanną pracą. Odblokowuje umiejętność Niestrudzony robotnik.",
+      "description": "Dawny przeor wygnany ze swego zakonu. Okupuje się nieustanną pracą.",
       "name": "Splamiony Przeor"
     },
     "elder_wizard": {
-      "description": "Stary czarodziej u kresu dni, który dawno opanował sztuki arkanicznego ognia. Odblokowuje umiejętność bojową Sfera krwawego płomienia.",
+      "description": "Stary czarodziej u kresu dni, który dawno opanował sztuki arkanicznego ognia.",
       "name": "Stary czarodziej"
     },
     "one_eyed_crow": {
-      "description": "Mistyczny kruk z jednym przenikliwym okiem, oswojony uprzążą kruka. Odblokowuje umiejętność Oko kruka i wysyłanie wiadomości.",
+      "description": "Mistyczny kruk z jednym przenikliwym okiem, oswojony uprzążą kruka.",
       "name": "Jednooki kruk"
     },
     "restless_knight": {
-      "description": "Weteran walk, który widział szczątki starego świata. Odblokowuje umiejętność bojową Miażdżące uderzenie.",
+      "description": "Weteran walk, który widział szczątki starego świata.",
       "name": "Niespokojny rycerz"
     },
     "the_hound": {
-      "description": "Muskularny, zniekształcony ocalały z zatrutej górskiej wioski. Odblokowuje umiejętność bojową Dziki ryk.",
+      "description": "Muskularny, zniekształcony ocalały z zatrutej górskiej wioski.",
       "name": "Brutalny Ogar"
     }
   },

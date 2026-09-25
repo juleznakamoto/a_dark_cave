@@ -60,8 +60,13 @@ describe("composeMerchantSpecialItemTooltip", () => {
 
     expect(screen.getByTestId("cost")).toBeInTheDocument();
     expect(
-      screen.getByText(/Unlocks rewards for those who prove themselves/i),
+      screen.getByText(
+        "Unlocks advanced achievements",
+      ),
     ).toBeInTheDocument();
-    expect(document.querySelectorAll(".border-t").length).toBe(1);
+    expect(
+      screen.getByText(/Book about navigating life.s challenges\./),
+    ).toBeInTheDocument();
+    expect(document.querySelectorAll(".border-t").length).toBe(2);
   });
 });

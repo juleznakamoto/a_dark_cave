@@ -582,6 +582,50 @@ export const SIDE_PANEL_ITEM_TOOLTIP_DISPLAY: ItemTooltipDisplay = {
   showTitle: false,
 };
 
+/** Unlocks shown as effect lines, not flavour text. */
+const ITEM_UNLOCK_EFFECTS: Record<string, { key: string; fallback: string }> = {
+  stone_axe: { key: "unlocksVillage", fallback: "Unlocks Village" },
+  crude_bow: { key: "unlocksForest", fallback: "Unlocks Forest" },
+  survivors_notes: {
+    key: "unlocksBasicAchievements",
+    fallback: "Unlocks basic achievements",
+  },
+  book_of_trials: {
+    key: "unlocksAchievementRewards",
+    fallback: "Unlocks advanced achievements",
+  },
+  ashwraith_huntress: {
+    key: "unlocksHuntingUpgrades",
+    fallback: "Unlocks Huntress Training",
+  },
+  disgraced_prior: {
+    key: "unlocksTirelessWorker",
+    fallback: "Unlocks Tireless Worker skill",
+  },
+  elder_wizard: {
+    key: "unlocksBloodflameSphere",
+    fallback: "Unlocks combat skill Bloodflame Sphere",
+  },
+  one_eyed_crow: {
+    key: "unlocksCrowsEye",
+    fallback: "Unlocks Crow's Eye skill and sending messages",
+  },
+  restless_knight: {
+    key: "unlocksCrushingStrike",
+    fallback: "Unlocks combat skill Crushing Strike",
+  },
+  the_hound: {
+    key: "unlocksFeralHowl",
+    fallback: "Unlocks combat skill Feral Howl",
+  },
+};
+
+function getItemUnlockEffectLine(itemId: string): string | null {
+  const entry = ITEM_UNLOCK_EFFECTS[itemId];
+  if (!entry) return null;
+  return getUiTooltip(entry.key, entry.fallback);
+}
+
 /** Description-only tooltips stay normal; mute when effects/title sit above. */
 function itemTooltipDescriptionToneClass(hasContentAbove: boolean): string {
   return hasContentAbove ? "text-muted-foreground" : "text-foreground";
@@ -676,9 +720,19 @@ export function renderItemTooltip(
             ? "fellowship"
             : "clothing";
 
-  // For fellowship items, return simple name and description
+  // Fellowship has no stat bonuses; still show a one-time unlock as an effect line.
   if (itemType === "fellowship") {
+    const unlockEffectLine = showEffects ? getItemUnlockEffectLine(itemId) : null;
     const hasFellowshipTitle = Boolean(showTitle && effect.name);
+    const hasFellowshipDescription = Boolean(
+      showDescription && effect.description,
+    );
+    if (!hasFellowshipTitle && !hasFellowshipDescription && !unlockEffectLine) {
+      return null;
+    }
+    const descriptionHasContentAbove = Boolean(
+      hasFellowshipTitle || unlockEffectLine,
+    );
     return (
       <div className="text-xs">
         {hasFellowshipTitle && (
@@ -686,11 +740,19 @@ export function renderItemTooltip(
             {getEffectName(effectCategory, itemId, effect.name)}
           </div>
         )}
-        {showDescription && effect.description && (
+        {unlockEffectLine && (
           <>
             {hasFellowshipTitle && <ActionTooltipSeparator />}
+            <div>{unlockEffectLine}</div>
+          </>
+        )}
+        {hasFellowshipDescription && (
+          <>
+            {descriptionHasContentAbove && <ActionTooltipSeparator />}
             <div
-              className={itemTooltipDescriptionToneClass(hasFellowshipTitle)}
+              className={itemTooltipDescriptionToneClass(
+                descriptionHasContentAbove,
+              )}
             >
               {getEffectDescription(effectCategory, itemId, effect.description)}
             </div>
@@ -735,6 +797,7 @@ export function renderItemTooltip(
 
   const hasTitle = Boolean(showTitle && effect.name);
   const hasDescription = Boolean(showDescription && effect.description);
+  const unlockEffectLine = showEffects ? getItemUnlockEffectLine(itemId) : null;
   const hasGeneralBonusEffects = Boolean(
     effect.bonuses?.generalBonuses &&
     Object.keys(effect.bonuses.generalBonuses).length > 0,
@@ -752,7 +815,8 @@ export function renderItemTooltip(
         useGameStore.getState().relics?.obsidian_orb) ||
       itemId === "bone_dice" ||
       itemId === "ebon_grace" ||
-      (itemType === "weapon" && itemId === "nightshade_bow"),
+      (itemType === "weapon" && itemId === "nightshade_bow") ||
+      unlockEffectLine,
     );
 
   if (
@@ -1161,6 +1225,7 @@ export function renderItemTooltip(
         renderNightshadePoisonTooltip(
           useGameStore.getState() as unknown as GameState,
         )}
+      {unlockEffectLine && <div>{unlockEffectLine}</div>}
       {hasDescription && (
         <>
           {(hasTitle ||
