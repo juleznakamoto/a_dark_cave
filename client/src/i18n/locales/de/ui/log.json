@@ -73,7 +73,7 @@
     },
     "gameplay": {
       "forestUnlocked": "Das Dorf ist von einem dichten, dunklen Wald umgeben. Gefahr liegt in der Luft, doch es ist auch ein guter Ort zum Holzhacken und Jagen.",
-      "villageUnlocked": "Außerhalb der Höhle öffnet sich eine Lichtung. Das sieht nach einem guten Ort aus, um eine Unterkunft zu bauen.",
+      "villageUnlocked": "Du findest den Höhleneingang. Draußen öffnet sich eine Lichtung. Das sieht nach einem guten Ort aus, um eine Unterkunft zu bauen.",
       "villageBegins": "Ein kleines Dorf nimmt Gestalt an. Die Dorfbewohner brauchen Nahrung und Holz zum Überleben."
     },
     "crafting": {

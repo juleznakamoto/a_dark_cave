@@ -73,7 +73,7 @@
     },
     "gameplay": {
       "forestUnlocked": "Le village est encerclé par une forêt dense et sombre. Le danger flotte dans l'air, même si c'est aussi un bon endroit pour couper du bois et chasser.",
-      "villageUnlocked": "À l'extérieur de la grotte, une clairière s'ouvre. Cela semble être un bon endroit pour construire un abri.",
+      "villageUnlocked": "Vous trouvez l'entrée de la grotte. Dehors, une clairière s'ouvre. Cela semble être un bon endroit pour construire un abri.",
       "villageBegins": "Un petit village commence à prendre forme. Les villageois ont besoin de nourriture et de bois pour survivre."
     },
     "crafting": {

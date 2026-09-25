@@ -661,7 +661,7 @@ export function handleCraftStoneAxe(
       result,
       "village-unlocked",
       "gameplay.villageUnlocked",
-      "Outside the cave a clearing opens. This looks like a good place to build a shelter.",
+      "You find the cave entrance. Outside, a clearing opens. It looks like a good place to build a shelter.",
     );
   }
 
