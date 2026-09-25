@@ -69,12 +69,13 @@ export const CRUEL_MODE = {
     multiStrangerCruelPenalty: 0.25,
     starvationDeathPerVillager: { base: 0.05, whenCruel: 0.025 },
     freezingDeathPerVillager: { base: 0.05, whenCruel: 0.025 },
+    /** Cruel total = base + whenCruel. Bands 6–10 / 11–20 / 21–30 / 31–40 / 41+: 1% / 2% / 3% / 4% / 5%. 0–5 stays 0. */
     madnessDeath: {
-      tier2: { base: 0, whenCruel: 0.005 },
-      tier3: { base: 0.005, whenCruel: 0.01 },
-      tier4: { base: 0.01, whenCruel: 0.0125 },
-      tier5: { base: 0.015, whenCruel: 0.015 },
-      tier6: { base: 0.02, whenCruel: 0.02 },
+      tier2: { base: 0, whenCruel: 0.01 },
+      tier3: { base: 0.005, whenCruel: 0.015 },
+      tier4: { base: 0.01, whenCruel: 0.02 },
+      tier5: { base: 0.015, whenCruel: 0.025 },
+      tier6: { base: 0.02, whenCruel: 0.03 },
       deathRollBiasWhenCruel: 0.1,
     },
   },
