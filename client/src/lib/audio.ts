@@ -434,8 +434,9 @@ export class AudioManager {
   }
 
   /**
-   * Decode the Make Fire one-shot only (~22KB). Call on first gesture so
-   * click can play immediately. Does not fetch wind.mp3.
+   * Decode the Make Fire one-shot only (~22KB). The start screen calls this
+   * when audio loads, so the press does not wait on the network. Does not
+   * fetch wind.mp3.
    */
   preloadMakeFireCue(): void {
     const url = AudioManager.START_SCREEN_SOUNDS.makeFire;
@@ -659,6 +660,6 @@ export class AudioManager {
 }
 
 export const audioManager = AudioManager.getInstance();
-// URLs only. Do not fetch wind.mp3 (~1MB) until a gesture or sound-on action.
-// light_fire.mp3 is decoded on that same gesture so Make Fire can play at once.
+// URLs only. The start screen decodes light_fire.mp3 after this module loads.
+// wind.mp3 stays unfetched until a press or key starts it.
 audioManager.registerStartScreenSoundUrls();

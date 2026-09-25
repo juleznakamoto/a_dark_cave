@@ -58,6 +58,7 @@ client/public/email/*
 
 # One-shot local helper scripts (never commit)
 _tmp_*
+tmp-*
 
 # Python bytecode
 **/__pycache__/

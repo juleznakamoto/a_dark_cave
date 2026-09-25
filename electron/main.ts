@@ -34,6 +34,8 @@ import {
 
 // Must run before `app.whenReady()` so Electron userData (IndexedDB) is per-variant.
 app.setName(APP_USER_DATA_NAME);
+// Desktop launch may play title ambience before the first click.
+app.commandLine.appendSwitch("autoplay-policy", "no-user-gesture-required");
 
 const DEV_SERVER_URL = process.env.ADC_DEV_SERVER_URL; // set by electron:dev to use Vite dev server
 

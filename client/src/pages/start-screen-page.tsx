@@ -21,11 +21,13 @@ import {
 import { isLocalOnlyEdition } from "@/lib/edition";
 import { initSessionTracker } from "@/lib/sessionTracker";
 import { Z_INDEX } from "@/lib/z-index";
-import SteamDemoContinueDialog from "@/components/game/SteamDemoContinueDialog";
 import { DestroyedChromeScope } from "@/components/game/gameChrome";
 import type { SaveData } from "@shared/schema";
 
 const Game = lazy(() => import("@/pages/game"));
+const SteamDemoContinueDialog = lazy(
+  () => import("@/components/game/SteamDemoContinueDialog"),
+);
 
 /**
  * Standalone start screen page that doesn't load the heavy Game component.
@@ -230,36 +232,40 @@ export default function StartScreenPage() {
       ) : null}
       {showStartScreen ? (
         <DestroyedChromeScope allow={false}>
-        <div
-          className={`fixed inset-0${holdMakeFireFrame ? " pointer-events-none" : ""}`}
-          style={holdMakeFireFrame ? { zIndex: Z_INDEX.topLayer } : undefined}
-          aria-hidden={holdMakeFireFrame || undefined}
-          data-testid={holdMakeFireFrame ? "make-fire-handoff-frame" : undefined}
-        >
-          <StartScreen
-            initialPreferences={startResolution.preferences}
-            steamEditionActive={startResolution.steamEditionActive}
-            steamDesktopEditionActive={
-              startResolution.steamDesktopEditionActive
-            }
-            crazyGamesEditionActive={startResolution.crazyGamesEditionActive}
-            hideSteamStoreLink={startResolution.hideSteamStoreLink}
-            makeFireDisabled={demoContinueChecking || demoContinueOpen}
-            onPlayerActivity={
-              demoContinueChecking || demoContinueOpen
-                ? undefined
-                : prefetchGame
-            }
-            onMakeFireStart={handleMakeFireStart}
-            onMakeFire={handleMakeFire}
-          />
-          <SteamDemoContinueDialog
-            isOpen={demoContinueOpen}
-            busy={demoContinueBusy}
-            onContinue={() => void handleDemoContinue()}
-            onStartNew={() => void handleDemoStartNew()}
-          />
-        </div>
+          <div
+            className={`fixed inset-0${holdMakeFireFrame ? " pointer-events-none" : ""}`}
+            style={holdMakeFireFrame ? { zIndex: Z_INDEX.topLayer } : undefined}
+            aria-hidden={holdMakeFireFrame || undefined}
+            data-testid={holdMakeFireFrame ? "make-fire-handoff-frame" : undefined}
+          >
+            <StartScreen
+              initialPreferences={startResolution.preferences}
+              steamEditionActive={startResolution.steamEditionActive}
+              steamDesktopEditionActive={
+                startResolution.steamDesktopEditionActive
+              }
+              crazyGamesEditionActive={startResolution.crazyGamesEditionActive}
+              hideSteamStoreLink={startResolution.hideSteamStoreLink}
+              makeFireDisabled={demoContinueChecking || demoContinueOpen}
+              onPlayerActivity={
+                demoContinueChecking || demoContinueOpen
+                  ? undefined
+                  : prefetchGame
+              }
+              onMakeFireStart={handleMakeFireStart}
+              onMakeFire={handleMakeFire}
+            />
+            {demoContinueOpen ? (
+              <Suspense fallback={null}>
+                <SteamDemoContinueDialog
+                  isOpen={demoContinueOpen}
+                  busy={demoContinueBusy}
+                  onContinue={() => void handleDemoContinue()}
+                  onStartNew={() => void handleDemoStartNew()}
+                />
+              </Suspense>
+            ) : null}
+          </div>
         </DestroyedChromeScope>
       ) : null}
     </>

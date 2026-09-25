@@ -103,6 +103,12 @@ describe("start-screen first-load imports", () => {
     expect(src).toContain("shouldHoldMakeFireFrame");
     expect(src).toContain("make-fire-handoff-frame");
     expect(src).toContain('import("@/i18n/loadLocaleResources")');
+    expect(
+      staticValueFrom(src, "@/components/game/SteamDemoContinueDialog"),
+    ).toBe(false);
+    expect(src).toContain(
+      'import("@/components/game/SteamDemoContinueDialog")',
+    );
   });
 
   it("page-load spinner does not import Framer or Radix", () => {
@@ -125,6 +131,13 @@ describe("start-screen first-load imports", () => {
     expect(html).not.toMatch(/#adc-boot-spinner\s*\{[^}]*opacity:\s*0/);
     expect(boot).not.toMatch(/adc-boot-spinner--visible/);
     expect(boot).not.toMatch(/500\);/);
+  });
+
+  it("does not turn sound on from a page press or Make Fire", () => {
+    const src = source("StartScreen.tsx");
+    expect(src).not.toContain(
+      "rememberAudioChoice({ musicMuted: false, sfxMuted: false })",
+    );
   });
 
   it("audio does not auto-preload start-screen sounds", () => {

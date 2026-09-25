@@ -3,7 +3,7 @@ import { beforeEach, describe, expect, it, vi } from "vitest";
 const { mockReadHeader, mockLoadStore, editionMocks } = vi.hoisted(() => ({
   mockReadHeader: vi.fn(),
   mockLoadStore: vi.fn(),
-  editionMocks: { isCrazyGamesEdition: false },
+  editionMocks: { isCrazyGamesEdition: false, isSteamBuild: false },
 }));
 
 vi.mock("./startupSaveHeader", () => ({
@@ -20,7 +20,9 @@ vi.mock("@/lib/edition", async (importOriginal) => {
     ...actual,
     isGalaxyEdition: () => false,
     isCrazyGamesEdition: () => editionMocks.isCrazyGamesEdition,
-    isSteamBuild: false,
+    get isSteamBuild() {
+      return editionMocks.isSteamBuild;
+    },
   };
 });
 
@@ -34,6 +36,7 @@ describe("resolveStartupVisit", () => {
     mockReadHeader.mockReset();
     mockLoadStore.mockReset();
     editionMocks.isCrazyGamesEdition = false;
+    editionMocks.isSteamBuild = false;
     mockReadHeader.mockResolvedValue({ status: "not-found" });
     vi.stubGlobal("localStorage", {
       getItem: vi.fn(() => null),
@@ -54,11 +57,40 @@ describe("resolveStartupVisit", () => {
       surface: "start",
       preferences: {
         cruelMode: false,
-        musicMuted: false,
+        musicMuted: true,
+        sfxMuted: true,
       },
       steamEditionActive: false,
     });
     expect(mockLoadStore).not.toHaveBeenCalled();
+  });
+
+  it("starts a Steam first visit with music and sound effects on", async () => {
+    editionMocks.isSteamBuild = true;
+    const { peekStartScreenResolution } = await import("./startupCoordinator");
+
+    expect(peekStartScreenResolution()).toMatchObject({
+      surface: "start",
+      preferences: { musicMuted: false, sfxMuted: false },
+    });
+  });
+
+  it("keeps a stored audio choice for a visitor with no save", async () => {
+    vi.stubGlobal("localStorage", {
+      getItem: vi.fn((key: string) =>
+        key === "adc-start-audio"
+          ? JSON.stringify({ musicMuted: false, sfxMuted: true })
+          : null,
+      ),
+    });
+    const { resolveStartupVisit } = await import("./startupCoordinator");
+
+    await expect(
+      resolveStartupVisit({ pathname: "/", search: "", hash: "" }),
+    ).resolves.toMatchObject({
+      surface: "start",
+      preferences: { musicMuted: false, sfxMuted: true },
+    });
   });
 
   it("routes callback intent directly to Game", async () => {

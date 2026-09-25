@@ -17,6 +17,7 @@ import { GAME_CHROME_NO_BG_HOVER } from "@/components/game/gameChrome";
 import { useFullscreen } from "@/hooks/useFullscreen";
 import { clearStaleChunkReloadGuard } from "@/lib/hardReload";
 import { mountFiraSansFontFace } from "@/lib/firaSansFontFace";
+import { isSteamBuild } from "@/lib/edition";
 import { logger } from "@/lib/logger";
 import { publicUrl } from "@/lib/publicUrl";
 import type LanguageSelector from "@/components/game/LanguageSelector";
@@ -29,6 +30,12 @@ import {
   type DeferredStartMenuLoadKind,
 } from "@/components/game/startScreenDeferredMenu";
 import { subscribeStartScreenGamePrefetch } from "@/game/startScreenGamePrefetch";
+import {
+  isMakeFireTarget,
+  isStartAudioGesture,
+  isStartAudioToggleTarget,
+  writeStartAudioChoice,
+} from "@/game/startScreenAudioChoice";
 import {
   eyesEasterEggCenterFraction,
   isInEyesEasterEggHotZone,
@@ -56,14 +63,17 @@ const EYES_EASTER_EGG_ASSET_LOAD_MS = 90_000;
 /** Hot-zone is armed only after this idle time on the start screen. */
 const EYES_EASTER_EGG_ARM_MS = 120_000;
 
-const START_FOOTER_TEXT = "text-2xs sm:text-xs md:text-sm";
+const START_FOOTER_TEXT = "text-2xs sm:text-xs md:text-base";
 const START_FOOTER_LINK_BASE =
   "inline-flex items-center gap-0 sm:gap-1 font-normal text-muted-foreground hover:text-foreground transition-opacity";
 const START_FOOTER_SOCIAL_LINK = `${START_FOOTER_LINK_BASE} ${START_FOOTER_TEXT} opacity-70 hover:opacity-100`;
+/** Privacy and imprint stay small on desktop. */
 const START_FOOTER_LEGAL_LINK = `${START_FOOTER_LINK_BASE} opacity-40 hover:opacity-100 text-2xs md:text-xs`;
+const START_FOOTER_GLYPH = "w-3.5 h-3.5 shrink-0 md:w-4 md:h-4";
 /** Icon controls (language / music / sfx): same color/opacity as social text links; kill ghost Button accent hover. */
-const START_FOOTER_ICON_BTN = `${START_FOOTER_SOCIAL_LINK} shrink-0 p-0 w-7 h-7 justify-center bg-transparent ${GAME_CHROME_NO_BG_HOVER} shadow-none`;
-const START_FOOTER_ICON = "size-4 shrink-0";
+const START_FOOTER_ICON_BTN = `${START_FOOTER_SOCIAL_LINK} shrink-0 p-0 w-7 h-7 md:w-8 md:h-8 justify-center bg-transparent ${GAME_CHROME_NO_BG_HOVER} shadow-none`;
+/** `md:!size-5` beats the shared button rule that forces every svg to 16px on hover. */
+const START_FOOTER_ICON = "size-4 shrink-0 md:!size-5";
 const START_FULLSCREEN_BTN = `group shrink-0 p-0 w-7 h-7 flex items-center justify-center ${GAME_CHROME_NO_BG_HOVER}`;
 
 const MAKE_FIRE_BUTTON_CLASS =
@@ -189,6 +199,10 @@ export default function StartScreen({
   const [VaporizeTextCycleCmp, setVaporizeTextCycleCmp] =
     useState<VaporizeTextCycleComponent | null>(null);
   const audioRef = useRef<AudioModule | null>(null);
+  const playerChoseAudioRef = useRef(false);
+  const audioGestureHeardRef = useRef(false);
+  const windStartedRef = useRef(false);
+  const startWindIfAllowedRef = useRef<(mod: AudioModule) => void>(() => { });
   const [LanguageSelectorCmp, setLanguageSelectorCmp] = useState<
     typeof LanguageSelector | null
   >(null);
@@ -297,6 +311,12 @@ export default function StartScreen({
     sfxVolume,
   };
 
+  useEffect(() => {
+    if (playerChoseAudioRef.current) return;
+    setMusicMuted(initialPreferences.musicMuted);
+    setSfxMuted(initialPreferences.sfxMuted);
+  }, [initialPreferences.musicMuted, initialPreferences.sfxMuted]);
+
   const applyAudioPrefs = useCallback((mod: AudioModule) => {
     const prefs = audioPrefsRef.current;
     mod.audioManager.setMusicVolume(prefs.musicVolume ?? 1);
@@ -316,6 +336,8 @@ export default function StartScreen({
       // New Game / sign-out can show this screen in-place without a reload.
       mod.audioManager.stopAllSounds();
       applyAudioPrefs(mod);
+      mod.audioManager.preloadMakeFireCue();
+      startWindIfAllowedRef.current(mod);
     });
     void import("@/components/ui/particle-button").then((mod) => {
       if (!cancelled) setParticleButtonCmp(() => mod.ParticleButton);
@@ -337,56 +359,60 @@ export default function StartScreen({
     if (mod) applyAudioPrefs(mod);
   }, [applyAudioPrefs, musicMuted, sfxMuted, musicVolume, sfxVolume]);
 
+  const rememberAudioChoice = useCallback(
+    (next: { musicMuted: boolean; sfxMuted: boolean }) => {
+      playerChoseAudioRef.current = true;
+      audioPrefsRef.current = { ...audioPrefsRef.current, ...next };
+      activityPrefsRef.current = { ...activityPrefsRef.current, ...next };
+      setMusicMuted(next.musicMuted);
+      setSfxMuted(next.sfxMuted);
+      writeStartAudioChoice(next);
+      const audio = audioRef.current;
+      if (!audio) return;
+      audio.audioManager.musicMute(next.musicMuted, { resume: false });
+      audio.audioManager.sfxMute(next.sfxMuted);
+    },
+    [],
+  );
+
+  startWindIfAllowedRef.current = (mod) => {
+    if (windStartedRef.current || executedRef.current) return;
+    if (audioPrefsRef.current.sfxMuted) return;
+    // The website cannot play during load. Steam is a desktop app and can.
+    if (!isSteamBuild && !audioGestureHeardRef.current) return;
+    windStartedRef.current = true;
+    mod.audioManager.preloadMakeFireCue();
+    mod.audioManager.playLoopingSound("wind", mod.SOUND_VOLUME.wind, false, 1);
+  };
+
+  const onAudioGestureRef = useRef<(event: Event) => void>(() => { });
+  onAudioGestureRef.current = (event) => {
+    if (executedRef.current || !isStartAudioGesture(event)) return;
+    if (isStartAudioToggleTarget(event.target)) return;
+    if (isMakeFireTarget(event.target)) return;
+    // Switches stay off until the player uses them. A press only starts
+    // wind when sound effects are already on.
+    if (audioPrefsRef.current.sfxMuted) return;
+    audioGestureHeardRef.current = true;
+    const mod = audioRef.current;
+    if (mod) startWindIfAllowedRef.current(mod);
+  };
+
   useEffect(() => {
-    // Wind plays as soon as the user shows intent (mousemove on desktop, touchstart on mobile).
-    // Both events fire before the click event, so executedRef.current is still false
-    // even when the user's first action is clicking "Make Fire".
-    let cancelled = false;
-    let handleInitialGesture: (() => void) | undefined;
-
-    const attachGesture = (mod: AudioModule) => {
-      if (cancelled) return;
-      const playWind = () => {
-        mod.audioManager.playLoopingSound(
-          "wind",
-          mod.SOUND_VOLUME.wind,
-          false,
-          1,
-        );
-      };
-
-      handleInitialGesture = () => {
-        if (!executedRef.current) {
-          mod.audioManager.preloadMakeFireCue();
-          playWind();
-        }
-        document.removeEventListener("mousemove", handleInitialGesture!);
-        document.removeEventListener("touchstart", handleInitialGesture!);
-      };
-      document.addEventListener("mousemove", handleInitialGesture, {
-        once: true,
-      });
-      document.addEventListener("touchstart", handleInitialGesture, {
-        once: true,
-      });
+    // A mouse move does not unlock audio. Wind starts on a press, tap, or key
+    // only after the player has turned sound effects on.
+    const onGesture = (event: Event) => {
+      onAudioGestureRef.current(event);
     };
-
-    if (audioRef.current) {
-      attachGesture(audioRef.current);
-    } else {
-      void import("@/lib/audio").then((mod) => {
-        if (cancelled || executedRef.current) return;
-        audioRef.current = mod;
-        attachGesture(mod);
-      });
-    }
-
+    document.addEventListener("pointerdown", onGesture, true);
+    document.addEventListener("keydown", onGesture, true);
+    document.addEventListener("touchend", onGesture, true);
+    document.addEventListener("click", onGesture, true);
     return () => {
-      cancelled = true;
-      if (handleInitialGesture) {
-        document.removeEventListener("mousemove", handleInitialGesture);
-        document.removeEventListener("touchstart", handleInitialGesture);
-      }
+      document.removeEventListener("pointerdown", onGesture, true);
+      document.removeEventListener("keydown", onGesture, true);
+      document.removeEventListener("touchend", onGesture, true);
+      document.removeEventListener("click", onGesture, true);
       audioRef.current?.audioManager.stopLoopingSound("wind", 2);
     };
   }, []);
@@ -592,15 +618,17 @@ export default function StartScreen({
     }
 
     const playMakeFireAudio = (mod: AudioModule) => {
-      // Fire one-shot first so it is not delayed by the wind fade setup.
-      mod.audioManager.playSound("makeFire", mod.SOUND_VOLUME.makeFire);
+      // Cue was decoded when audio loaded. Play it in this press.
+      if (!audioPrefsRef.current.sfxMuted) {
+        mod.audioManager.playSound("makeFire", mod.SOUND_VOLUME.makeFire);
+      }
       mod.audioManager.stopLoopingSound("wind", 1);
 
       // After Make Fire one-shot: load core pack (BGM + early cave), start music,
       // then deferred sounds continue in the background.
       window.setTimeout(() => {
         void mod.audioManager.loadGameSounds().then(() => {
-          if (!musicMuted) {
+          if (!audioPrefsRef.current.musicMuted) {
             void mod.audioManager.startBackgroundMusic();
           }
         });
@@ -628,8 +656,8 @@ export default function StartScreen({
 
     const preferences = {
       cruelMode: isCruelMode,
-      musicMuted,
-      sfxMuted,
+      musicMuted: audioPrefsRef.current.musicMuted,
+      sfxMuted: audioPrefsRef.current.sfxMuted,
       musicVolume,
       sfxVolume,
     };
@@ -652,27 +680,30 @@ export default function StartScreen({
   };
 
   const toggleMusic = () => {
-    const next = !musicMuted;
-    setMusicMuted(next);
+    const next = !audioPrefsRef.current.musicMuted;
     // Start screen must not start BGM on unmute; Make Fire starts it explicitly.
-    audioRef.current?.audioManager.musicMute(next, { resume: false });
+    rememberAudioChoice({
+      musicMuted: next,
+      sfxMuted: audioPrefsRef.current.sfxMuted,
+    });
   };
 
   const toggleSfx = () => {
-    const next = !sfxMuted;
-    setSfxMuted(next);
+    const next = !audioPrefsRef.current.sfxMuted;
+    rememberAudioChoice({
+      musicMuted: audioPrefsRef.current.musicMuted,
+      sfxMuted: next,
+    });
+    if (next || executedRef.current) {
+      windStartedRef.current = false;
+      return;
+    }
     const audio = audioRef.current;
     if (!audio) return;
-    audio.audioManager.sfxMute(next);
-    if (!next && !executedRef.current) {
-      audio.audioManager.preloadMakeFireCue();
-      audio.audioManager.playLoopingSound(
-        "wind",
-        audio.SOUND_VOLUME.wind,
-        false,
-        1,
-      );
-    }
+    audioGestureHeardRef.current = true;
+    windStartedRef.current = true;
+    audio.audioManager.preloadMakeFireCue();
+    audio.audioManager.playLoopingSound("wind", audio.SOUND_VOLUME.wind, false, 1);
   };
 
   const finishDeferredMenuLoad = <T,>(
@@ -1094,7 +1125,7 @@ export default function StartScreen({
             >
               <GameUiIcon
                 name="feedback"
-                sizeClassName="w-3.5 h-3.5"
+                sizeClassName={START_FOOTER_GLYPH}
                 className="shrink-0 opacity-100"
               />
               <span className="sr-only sm:not-sr-only sm:inline">
@@ -1121,7 +1152,7 @@ export default function StartScreen({
                 <>
                   <FooterSocialIcon
                     platform={platform}
-                    className="w-3.5 h-3.5 shrink-0"
+                    className={START_FOOTER_GLYPH}
                   />
                   {showSocialLabel ? (
                     <span className="sr-only sm:not-sr-only sm:inline">
@@ -1162,10 +1193,11 @@ export default function StartScreen({
                 align="end"
                 unstyledTrigger
                 hidePressKit
+                hideInviteFriends
                 menuTextClassName={START_FOOTER_TEXT}
                 triggerClassName={START_FOOTER_SOCIAL_LINK}
                 iconClassName="opacity-100"
-                iconSizeClassName="w-3.5 h-3.5"
+                iconSizeClassName={START_FOOTER_GLYPH}
                 labelClassName="sr-only sm:not-sr-only sm:inline"
                 defaultOpen={networkDefaultOpen}
               />
@@ -1181,7 +1213,7 @@ export default function StartScreen({
               >
                 <GameUiIcon
                   name="network"
-                  sizeClassName="w-3.5 h-3.5"
+                  sizeClassName={START_FOOTER_GLYPH}
                   className="opacity-100"
                 />
                 <span className="sr-only sm:not-sr-only sm:inline">

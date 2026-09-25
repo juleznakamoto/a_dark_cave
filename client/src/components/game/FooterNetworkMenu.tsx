@@ -42,6 +42,8 @@ type FooterNetworkMenuProps = {
   referralCount?: number;
   /** Start screen already has a footer Press link. */
   hidePressKit?: boolean;
+  /** Title screen has no signed-in invite flow. */
+  hideInviteFriends?: boolean;
   /** Start-screen footer menus match the footer link size. */
   menuTextClassName?: string;
 };
@@ -57,6 +59,7 @@ export default function FooterNetworkMenu({
   unstyledTrigger = false,
   referralCount = 0,
   hidePressKit: hidePressKitProp = false,
+  hideInviteFriends = false,
   menuTextClassName,
 }: FooterNetworkMenuProps) {
   const [open, setOpen] = useState(defaultOpen);
@@ -158,11 +161,13 @@ export default function FooterNetworkMenu({
             </DropdownMenuItem>
           );
         })}
-        <InviteFriendsMenuItem
-          referralCount={referralCount}
-          className={menuTextClassName}
-          onSelect={() => setOpen(false)}
-        />
+        {hideInviteFriends ? null : (
+          <InviteFriendsMenuItem
+            referralCount={referralCount}
+            className={menuTextClassName}
+            onSelect={() => setOpen(false)}
+          />
+        )}
       </DropdownMenuContent>
     </DropdownMenu>
   );

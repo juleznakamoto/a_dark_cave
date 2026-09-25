@@ -18,6 +18,7 @@ import {
   shouldBootGameSurface,
 } from "./startupBootSurface";
 import { type StartupLocation } from "./startupIntent";
+import { startAudioForVisit } from "./startScreenAudioChoice";
 
 export type StartupResolution =
   | { surface: "game" }
@@ -47,6 +48,7 @@ export function peekStartScreenResolution(): Extract<
   return createStartResolution(
     preferencesFromHeader(header),
     header?.devGameMode ?? "normal",
+    header,
   );
 }
 
@@ -73,14 +75,26 @@ function preferencesFromHeader(
 function createStartResolution(
   preferences: StartScreenPreferences,
   devGameMode: DevGameMode,
+  savedAudio: { musicMuted: boolean; sfxMuted: boolean } | null,
 ): Extract<StartupResolution, { surface: "start" }> {
+  const audio = startAudioForVisit(
+    savedAudio,
+    isSteamBuild
+      ? { musicMuted: false, sfxMuted: false }
+      : { musicMuted: true, sfxMuted: true },
+  );
+  const resolvedPreferences: StartScreenPreferences = {
+    ...preferences,
+    musicMuted: audio.musicMuted,
+    sfxMuted: audio.sfxMuted,
+  };
   const devSteamMode =
     (!isSteamBuild &&
       (devGameMode === "steamGame" || devGameMode === "steamPlaytest")) ||
     (import.meta.env.DEV && !isSteamBuild && devGameMode !== "normal");
   return {
     surface: "start",
-    preferences,
+    preferences: resolvedPreferences,
     devGameMode,
     steamEditionActive:
       isSteamBuild ||
@@ -165,11 +179,16 @@ export async function resolveStartupVisit(
         sfxVolume: state.sfxVolume,
       },
       state.devGameMode,
+      {
+        musicMuted: state.musicMuted,
+        sfxMuted: state.sfxMuted,
+      },
     );
   }
 
   return createStartResolution(
     preferencesFromHeader(header),
     header?.devGameMode ?? "normal",
+    header,
   );
 }
