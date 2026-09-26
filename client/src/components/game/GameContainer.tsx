@@ -1517,11 +1517,12 @@ export default function GameContainer() {
                   <>
                     {/* Standard button design */}
                     <div className="flex w-full max-w-full flex-nowrap items-end gap-x-1.5 md:gap-x-2">
-                      {/* flex-1 at every width pins the trader to the right edge.
-                          Mobile used to size this row to its labels, so the trader sat beside the last tab. */}
+                      {/* flex, not inline-flex: this row is a block-level flex item.
+                          flex-1 fills leftover width so the trader stays on the right,
+                          and overflow scrolls inside the row. */}
                       <div
                         ref={tabButtonRowRef}
-                        className="inline-flex min-w-0 flex-1 flex-nowrap items-end gap-x-1.5 overflow-x-auto scrollbar-hide md:gap-x-2"
+                        className="flex min-w-0 flex-1 flex-nowrap items-end gap-x-1.5 overflow-x-auto scrollbar-hide md:gap-x-2"
                       >
                         <button
                           className={`${tabButtonClass} ${activeTab === "cave"
