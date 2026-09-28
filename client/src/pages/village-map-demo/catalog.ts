@@ -24,6 +24,11 @@ export type BuildingDef = {
   slots: readonly SlotSeed[];
 };
 
+/** One sanctum circle for each dedication. */
+export const SANCTUM_GODS = ["dagon", "flame", "raven", "ash"] as const;
+
+export type SanctumGod = (typeof SANCTUM_GODS)[number];
+
 export type BuildState = {
   counts: Record<string, number>;
   /** 0 hidden, 1-4 palisade level. */
@@ -32,18 +37,33 @@ export type BuildState = {
   traps: number;
   moat: boolean;
   chitin: boolean;
+  /** Heartfire border and the ring of short triangles. */
+  ebonGrace: boolean;
+  /** Two small half-circles on the outside of each foundry furnace. */
+  brimstoneInfusion: boolean;
+  /** Gods whose sign is drawn in their sanctum circle. */
+  dedication: SanctumGod[];
+  /** The one circle whose border is 1px thicker. Unused when every god is chosen. */
+  dedicationDeepened: SanctumGod | null;
 };
 
 export type Tuning = {
   squareSize: number;
-  /** Extra stroke on the consecrated Pale Cross. Other upgrades ignore this. */
-  borderWidth: number;
   fill: string;
-  borderColor: string;
   ground: string;
   interior: string;
   wallColor: string;
   trapColor: string;
+  /** Outline ink for buildings, the wall, and hatches. */
+  ink: string;
+  /** Moat hatch. */
+  water: string;
+  /** Moat band behind the hatch. */
+  waterFill: string;
+  /** Heartfire hatch. */
+  fire: string;
+  /** Outer rim on chitin plating. */
+  chitin: string;
   wallPadding: number;
   wallWobble: number;
   wallLobes: number;
@@ -372,13 +392,16 @@ export const BUILDING_BY_ID: Record<string, BuildingDef> = Object.fromEntries(
 
 export const DEFAULT_TUNING: Tuning = {
   squareSize: 28,
-  borderWidth: 1.75,
-  fill: "#e8e8e8",
-  borderColor: "#e4d8bc",
-  ground: "#0d0d0d",
-  interior: "#ffffff",
-  wallColor: "#bbbbbb",
-  trapColor: "#f4f1ea",
+  fill: "#f5f4f1",
+  ground: "#0e0e0e",
+  interior: "#dedcd8",
+  wallColor: "#cbc7c0",
+  trapColor: "#f5f4f1",
+  ink: "#242424",
+  water: "#4f7590",
+  waterFill: "#d3e0e8",
+  fire: "#8f433c",
+  chitin: "#f3f2ef",
   wallPadding: 0,
   wallWobble: 0.06,
   wallLobes: 3,
@@ -518,8 +541,75 @@ function clamp(value: number, min: number, max: number): number {
   return Math.min(max, Math.max(min, value));
 }
 
+/** Earlier map colors, including the unused sheet trials. Saved copies fall back to Ash. */
+const RETIRED_COLORS = new Set([
+  "#000000",
+  "#0c0b09",
+  "#0c1014",
+  "#0d0d0d",
+  "#0d100e",
+  "#110e0c",
+  "#12100c",
+  "#16130f",
+  "#1a1a1a",
+  "#1c1c1c",
+  "#1e2c38",
+  "#2f6284",
+  "#333333",
+  "#3a2e24",
+  "#3d3428",
+  "#4a3426",
+  "#4e7d90",
+  "#4f9bc4",
+  "#555555",
+  "#5b7d6e",
+  "#6a90a4",
+  "#777777",
+  "#8096a2",
+  "#8d4c44",
+  "#984436",
+  "#999999",
+  "#9a4032",
+  "#a04a3c",
+  "#a33c34",
+  "#bbbbbb",
+  "#c3d0d8",
+  "#c3d1ba",
+  "#c45454",
+  "#d0e2ee",
+  "#d2e3ea",
+  "#d5d1c8",
+  "#d5e2ea",
+  "#d5e3da",
+  "#d5e4cf",
+  "#dcc496",
+  "#dce8ee",
+  "#e0cfae",
+  "#e0e7ec",
+  "#e4d8bc",
+  "#e4e1da",
+  "#e8e8e8",
+  "#ead9bc",
+  "#edd9a8",
+  "#eef3f6",
+  "#efeae2",
+  "#f1f0ec",
+  "#f3e6d0",
+  "#f3efe4",
+  "#f3f7f8",
+  "#f4e6c4",
+  "#f4f1ea",
+  "#f6edd6",
+  "#f6f3ea",
+  "#f6f5f2",
+  "#f7f1e4",
+  "#ffffff",
+]);
+
 function color(value: unknown, fallback: string): string {
-  return typeof value === "string" && COLOR.test(value) ? value : fallback;
+  if (typeof value !== "string" || !COLOR.test(value)) return fallback;
+  if (RETIRED_COLORS.has(value.toLowerCase())) return fallback;
+  return value;
 }
 
 export function zeroCounts(): Record<string, number> {
@@ -533,6 +623,10 @@ export function emptyBuild(): BuildState {
     traps: 0,
     moat: false,
     chitin: false,
+    ebonGrace: false,
+    brimstoneInfusion: false,
+    dedication: [],
+    dedicationDeepened: null,
   };
 }
 
@@ -547,8 +641,21 @@ export function growthLabel(stage: number): string {
   return GROWTH_STEPS[Math.min(stage, GROWTH_STEPS.length) - 1]?.label ?? "Empty ground";
 }
 
+function sameGods(a: readonly SanctumGod[], b: readonly SanctumGod[]): boolean {
+  return a.length === b.length && a.every((god, index) => god === b[index]);
+}
+
 export function sameBuild(a: BuildState, b: BuildState): boolean {
-  if (a.wall !== b.wall || a.traps !== b.traps || a.moat !== b.moat || a.chitin !== b.chitin) {
+  if (
+    a.wall !== b.wall ||
+    a.traps !== b.traps ||
+    a.moat !== b.moat ||
+    a.chitin !== b.chitin ||
+    a.ebonGrace !== b.ebonGrace ||
+    a.brimstoneInfusion !== b.brimstoneInfusion ||
+    a.dedicationDeepened !== b.dedicationDeepened ||
+    !sameGods(a.dedication, b.dedication)
+  ) {
     return false;
   }
   return BUILDINGS.every(
@@ -597,6 +704,19 @@ export function sanitizeBuild(input: unknown): BuildState {
     traps: typeof source.traps === "number" ? Math.round(clamp(source.traps, 0, 2)) : 0,
     moat: source.moat === true,
     chitin: source.chitin === true,
+    brimstoneInfusion: source.brimstoneInfusion === true,
+    ...sanitizeDedication(source),
+  };
+}
+
+function sanitizeDedication(source: Partial<BuildState>): Pick<BuildState, "ebonGrace" | "dedication" | "dedicationDeepened"> {
+  const raw = Array.isArray(source.dedication) ? source.dedication : [];
+  const dedication = SANCTUM_GODS.filter((god) => raw.includes(god));
+  const deepened = SANCTUM_GODS.find((god) => god === source.dedicationDeepened) ?? null;
+  return {
+    ebonGrace: source.ebonGrace === true,
+    dedication,
+    dedicationDeepened: deepened && dedication.length === 1 && dedication[0] === deepened ? deepened : null,
   };
 }
 
@@ -604,31 +724,16 @@ export function sanitizeTuning(input: unknown): Tuning {
   const source = input && typeof input === "object" ? (input as Partial<Tuning>) : {};
   return {
     squareSize: clamp(source.squareSize ?? DEFAULT_TUNING.squareSize, 12, 48),
-    borderWidth: clamp(source.borderWidth ?? DEFAULT_TUNING.borderWidth, 0.5, 6),
-    fill: color(source.fill === "#f4f1ea" ? undefined : source.fill, DEFAULT_TUNING.fill),
-    borderColor: color(source.borderColor, DEFAULT_TUNING.borderColor),
-    ground: color(
-      source.ground === "#0c0b09" || source.ground === "#1a1a1a" ? undefined : source.ground,
-      DEFAULT_TUNING.ground,
-    ),
-    interior: color(
-      source.interior === "#16130f" ||
-        source.interior === "#333333" ||
-        source.interior === "#555555" ||
-        source.interior === "#777777" ||
-        source.interior === "#999999" ? undefined : source.interior,
-      DEFAULT_TUNING.interior,
-    ),
-    wallColor: color(
-      source.wallColor === "#efeae2" ||
-        source.wallColor === "#555555" ||
-        source.wallColor === "#777777" ||
-        source.wallColor === "#999999"
-        ? undefined
-        : source.wallColor,
-      DEFAULT_TUNING.wallColor,
-    ),
-    trapColor: color(source.trapColor, DEFAULT_TUNING.trapColor),
+    fill: color(source.fill, DEFAULT_TUNING.fill),
+    ground: color(source.ground, DEFAULT_TUNING.ground),
+    interior: color(source.interior, DEFAULT_TUNING.interior),
+    wallColor: color(source.wallColor, DEFAULT_TUNING.wallColor),
+    trapColor: color(source.trapColor === "#242424" ? undefined : source.trapColor, DEFAULT_TUNING.trapColor),
+    ink: color(source.ink, DEFAULT_TUNING.ink),
+    water: color(source.water, DEFAULT_TUNING.water),
+    waterFill: color(source.waterFill, DEFAULT_TUNING.waterFill),
+    fire: color(source.fire, DEFAULT_TUNING.fire),
+    chitin: color(source.chitin, DEFAULT_TUNING.chitin),
     wallPadding: clamp(source.wallPadding ?? DEFAULT_TUNING.wallPadding, 0, 80),
     wallWobble: clamp(source.wallWobble ?? DEFAULT_TUNING.wallWobble, 0, 0.22),
     wallLobes: Math.round(clamp(source.wallLobes ?? DEFAULT_TUNING.wallLobes, 2, 8)),

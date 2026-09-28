@@ -7,6 +7,7 @@ import {
   GROUP_ORDER,
   GROWTH_STEPS,
   MAP_PRESETS,
+  SANCTUM_GODS,
   applyGrowth,
   emptyBuild,
   growthLabel,
@@ -19,12 +20,31 @@ import {
   type BuildingDef,
   type DemoSnapshot,
   type PresetId,
+  type SanctumGod,
   type Tuning,
 } from "@/pages/village-map-demo/catalog";
 import type { Point } from "@/pages/village-map-demo/geometry";
 import { LookEvolutions, UpgradeRuleIcon, VillageMap } from "@/pages/village-map-demo/VillageMap";
 
 const STORAGE_KEY = VILLAGE_MAP_DEMO_STORAGE_KEY;
+
+function isSanctumGod(value: string): value is SanctumGod {
+  return (SANCTUM_GODS as readonly string[]).includes(value);
+}
+
+const GOD_LABELS: Record<SanctumGod, string> = {
+  dagon: "Dagon",
+  flame: "First Flame",
+  raven: "Ravenborn",
+  ash: "Ashbringer",
+};
+
+function dedicationChoice(build: BuildState): string {
+  if (build.dedication.length > 1) return "all";
+  const god = build.dedication[0];
+  if (!god) return "";
+  return build.dedicationDeepened === god ? `${god}-deep` : god;
+}
 
 type DemoState = {
   stage: number;
@@ -203,6 +223,24 @@ export default function VillageMapDemo() {
     }));
   };
 
+  const setDedication = (choice: string) => {
+    patchBuild((current) => {
+      if (choice === "all") {
+        return { ...current, dedication: [...SANCTUM_GODS], dedicationDeepened: null };
+      }
+      const deepened = choice.endsWith("-deep");
+      const god = deepened ? choice.slice(0, -"-deep".length) : choice;
+      if (isSanctumGod(god)) {
+        return {
+          ...current,
+          dedication: [god],
+          dedicationDeepened: deepened ? god : null,
+        };
+      }
+      return { ...current, dedication: [], dedicationDeepened: null };
+    });
+  };
+
   const patchTuning = (partial: Partial<Tuning>) => {
     setState((current) => ({ ...current, tuning: { ...current.tuning, ...partial } }));
   };
@@ -219,17 +257,31 @@ export default function VillageMapDemo() {
       const counts = zeroCounts();
       const existing = current.counts[building.id] ?? 0;
       counts[building.id] = existing > 0 ? existing : building.max;
-      return { counts, wall: 0, traps: 0, moat: false, chitin: false };
+      return {
+        counts,
+        wall: 0,
+        traps: 0,
+        moat: false,
+        chitin: false,
+        ebonGrace: current.ebonGrace,
+        brimstoneInfusion: current.brimstoneInfusion,
+        dedication: current.dedication,
+        dedicationDeepened: current.dedicationDeepened,
+      };
     });
   };
 
   const showAll = () => {
-    patchBuild(() => ({
+    patchBuild((current) => ({
       counts: Object.fromEntries(BUILDINGS.map((building) => [building.id, building.max])),
       wall: 4,
       traps: 2,
       moat: true,
       chitin: true,
+      ebonGrace: current.ebonGrace,
+      brimstoneInfusion: current.brimstoneInfusion,
+      dedication: current.dedication,
+      dedicationDeepened: current.dedicationDeepened,
     }));
   };
 
@@ -323,7 +375,7 @@ export default function VillageMapDemo() {
           <div>
             <h1 className="text-sm font-semibold text-stone-100">Village map</h1>
             <p className="mt-1 text-xs leading-relaxed text-stone-400">
-              Top-down preview. Buildings are white squares, the heartfire is a circle, the pale cross is a Christian cross, and the shallow pit is an irregular cut in the south. Each building draws its own upgrade. The palisade is a round wall, and traps are crosses between the wall and the moat. Saved in this browser.
+              Top-down plan on gray paper. Buildings are pale blocks, the heartfire is a circle, the pale cross is a Christian cross, and the shallow pit is an irregular cut in the south. Each building draws its own upgrade. The palisade is a round wall, and traps are crosses between the wall and the moat. Saved in this browser.
             </p>
           </div>
           <div className="flex flex-wrap gap-1.5">
@@ -485,6 +537,54 @@ export default function VillageMapDemo() {
                   }
                 />
               </label>
+              <label className="flex items-center justify-between gap-2 text-xs text-stone-300">
+                <span>Brimstone infusion</span>
+                <input
+                  type="checkbox"
+                  checked={build.brimstoneInfusion}
+                  onChange={(event) =>
+                    patchBuild((current) => ({
+                      ...current,
+                      brimstoneInfusion: event.target.checked,
+                    }))
+                  }
+                />
+              </label>
+              <label className="flex items-center justify-between gap-2 text-xs text-stone-300">
+                <span>Ebon Grace</span>
+                <input
+                  type="checkbox"
+                  checked={build.ebonGrace}
+                  onChange={(event) =>
+                    patchBuild((current) => ({
+                      ...current,
+                      ebonGrace: event.target.checked,
+                    }))
+                  }
+                />
+              </label>
+              <label className="block text-xs text-stone-200">
+                Dedication
+                <select
+                  aria-label="Dedication"
+                  value={dedicationChoice(build)}
+                  onChange={(event) => setDedication(event.target.value)}
+                  className="mt-1 w-full rounded border border-stone-700 bg-black px-1 py-0.5 text-xs text-stone-200"
+                >
+                  <option value="">None</option>
+                  {SANCTUM_GODS.map((god) => (
+                    <option key={god} value={god}>
+                      {GOD_LABELS[god]}
+                    </option>
+                  ))}
+                  {SANCTUM_GODS.map((god) => (
+                    <option key={`${god}-deep`} value={`${god}-deep`}>
+                      {GOD_LABELS[god]}, deepened
+                    </option>
+                  ))}
+                  <option value="all">All four</option>
+                </select>
+              </label>
             </section>
           </div>
         </details>
@@ -492,7 +592,12 @@ export default function VillageMapDemo() {
         <details open className="border-b border-stone-800 px-3 py-3">
           <summary className="cursor-pointer text-sm font-medium">Look</summary>
           <div className="mt-3 space-y-3">
-            <LookEvolutions tuning={tuning} />
+            <LookEvolutions
+              tuning={tuning}
+              dedication={build.dedication}
+              dedicationDeepened={build.dedicationDeepened}
+              brimstoneInfusion={build.brimstoneInfusion}
+            />
             <Slider
               label="Square size"
               min={14}
@@ -507,9 +612,14 @@ export default function VillageMapDemo() {
               onChange={(fill) => patchTuning({ fill })}
             />
             <ColorField
-              label="Border"
-              value={tuning.borderColor}
-              onChange={(borderColor) => patchTuning({ borderColor })}
+              label="Ink"
+              value={tuning.ink}
+              onChange={(ink) => patchTuning({ ink })}
+            />
+            <ColorField
+              label="Fire"
+              value={tuning.fire}
+              onChange={(fire) => patchTuning({ fire })}
             />
             <ColorField
               label="Ground"
@@ -581,6 +691,21 @@ export default function VillageMapDemo() {
               label="Wall"
               value={tuning.wallColor}
               onChange={(wallColor) => patchTuning({ wallColor })}
+            />
+            <ColorField
+              label="Moat wash"
+              value={tuning.waterFill}
+              onChange={(waterFill) => patchTuning({ waterFill })}
+            />
+            <ColorField
+              label="Moat lines"
+              value={tuning.water}
+              onChange={(water) => patchTuning({ water })}
+            />
+            <ColorField
+              label="Chitin"
+              value={tuning.chitin}
+              onChange={(chitin) => patchTuning({ chitin })}
             />
             <label className="flex items-center justify-between gap-2 text-xs text-stone-300">
               <span>Show wall guide when palisades are hidden</span>

@@ -791,8 +791,9 @@ export default function SidePanel() {
         return caveSections.includes(sectionName);
       }
       case "village":
-      case "map":
         return ["resources", "buildings"].includes(sectionName);
+      case "map":
+        return ["resources", "buildings", "fortifications"].includes(sectionName);
       case "forest":
         return ["resources", "relics", "blessings", "bonuses"].includes(
           sectionName,
@@ -816,6 +817,15 @@ export default function SidePanel() {
         return true;
     }
   };
+
+  const fortificationsSection =
+    panelFortificationItems.length > 0 && shouldShowSection("fortifications") ? (
+      <SidePanelSection
+        sectionId="fortifications"
+        title={t("sidePanel.fortifications")}
+        items={panelFortificationItems}
+      />
+    ) : null;
 
   const handleSidePanelPointerLeave = (
     event: React.PointerEvent<HTMLDivElement>,
@@ -898,14 +908,7 @@ export default function SidePanel() {
                   items={panelBastionStatsItems}
                 />
               )}
-            {panelFortificationItems.length > 0 &&
-              shouldShowSection("fortifications") && (
-                <SidePanelSection
-                  sectionId="fortifications"
-                  title={t("sidePanel.fortifications")}
-                  items={panelFortificationItems}
-                />
-              )}
+            {activeTab !== "map" && fortificationsSection}
             {panelCombatItems.length > 0 &&
               shouldShowSection("combatItems") && (
                 <SidePanelSection
@@ -950,6 +953,7 @@ export default function SidePanel() {
                 items={panelBuildingItems}
               />
             )}
+            {activeTab === "map" && fortificationsSection}
             {(anyPlayerStatPositive || catalogActive) &&
               shouldShowSection("stats") && (
                 <SidePanelSection

@@ -26,7 +26,7 @@ describe("village map highlight", () => {
     );
     expect(mapHighlightFromSidePanelHover("buildings:traps")).toBe("traps");
     expect(mapHighlightFromSidePanelHover("buildings:improvedTraps")).toBe("traps");
-    expect(mapHighlightFromSidePanelHover("fortifications:palisades")).toBeNull();
+    expect(mapHighlightFromSidePanelHover("fortifications:palisades")).toBe("palisades");
     expect(mapHighlightFromSidePanelHover("resources:wood")).toBeNull();
     expect(mapHighlightFromSidePanelHover(null)).toBeNull();
   });
@@ -41,6 +41,7 @@ describe("village map highlight", () => {
     expect(sidePanelRowFromMapBuilding("fortifiedMoat", { fortifiedMoat: 1 })).toBe(
       "fortifiedMoat",
     );
+    expect(sidePanelRowFromMapBuilding("palisades", { palisades: 2 })).toBe("palisades");
     expect(sidePanelRowFromMapBuilding("traps", { traps: 1 })).toBe("traps");
     expect(sidePanelRowFromMapBuilding("traps", { traps: 1, improvedTraps: 1 })).toBe(
       "improvedTraps",

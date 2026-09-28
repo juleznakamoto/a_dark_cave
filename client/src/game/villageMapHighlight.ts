@@ -34,6 +34,7 @@ const MAP_BUILDING_IDS = new Set([
   "wizardTower",
   "estate",
   "fortifiedMoat",
+  "palisades",
   "traps",
 ]);
 

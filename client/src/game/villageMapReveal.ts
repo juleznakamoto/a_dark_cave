@@ -1,4 +1,4 @@
-/** How long a new mark fades in. The thick border lasts the same time. */
+/** How long a new mark fades in. The thick border holds for the first 3s, then fades over the last 1s. */
 export const VILLAGE_MAP_FADE_IN_MS = 4000;
 
 export type VillageMapReveal = {

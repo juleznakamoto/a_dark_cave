@@ -2,9 +2,18 @@ import {
   BUILDING_HIERARCHIES,
   getTrapLevel,
 } from "@/game/buildingHierarchy";
-import { emptyBuild, type BuildState } from "@/pages/village-map-demo/catalog";
+import { emptyBuild, type BuildState, type SanctumGod } from "@/pages/village-map-demo/catalog";
 
 type BuildingCounts = Record<string, number | undefined>;
+
+/** Feed Fire tops out at this level. */
+export const HEARTFIRE_MAX_LEVEL = 5;
+
+/** Crossed lines on the heartfire. Level 5 is fully opaque. Each step below drops 10 points. */
+export function heartfireHatchOpacity(level: number): number {
+  const step = Math.min(HEARTFIRE_MAX_LEVEL, Math.max(0, Math.round(level)));
+  return Math.round((1 - (HEARTFIRE_MAX_LEVEL - step) * 0.1) * 10) / 10;
+}
 
 function owned(buildings: BuildingCounts, key: string): boolean {
   return (buildings[key] ?? 0) > 0;
@@ -20,7 +29,10 @@ function chainTier(buildings: BuildingCounts, keys: readonly string[]): number {
 }
 
 /** Map marks for the buildings this save actually has. */
-export function buildStateFromPlayer(buildings: BuildingCounts): BuildState {
+export function buildStateFromPlayer(
+  buildings: BuildingCounts,
+  blessings?: DedicationBlessings,
+): BuildState {
   const build = emptyBuild();
   const set = (id: string, count: number) => {
     if (count > 0) build.counts[id] = count;
@@ -62,5 +74,47 @@ export function buildStateFromPlayer(buildings: BuildingCounts): BuildState {
   build.traps = getTrapLevel(buildings);
   build.moat = owned(buildings, "fortifiedMoat");
   build.chitin = owned(buildings, "chitinPlating");
+  const dedication = sanctumDedicationFromBlessings(blessings);
+  build.ebonGrace = blessings?.ebon_grace === true;
+  build.brimstoneInfusion = blessings?.brimstone_infusion === true;
+  build.dedication = dedication.dedication;
+  build.dedicationDeepened = dedication.dedicationDeepened;
   return build;
+}
+
+type DedicationBlessings = {
+  ebon_grace?: boolean;
+  brimstone_infusion?: boolean;
+  dagons_gift?: boolean;
+  dagons_gift_enhanced?: boolean;
+  flames_touch?: boolean;
+  flames_touch_enhanced?: boolean;
+  ravens_mark?: boolean;
+  ravens_mark_enhanced?: boolean;
+  ashen_embrace?: boolean;
+  ashen_embrace_enhanced?: boolean;
+};
+
+/** Temple and sanctum dedication, as signs on the four sanctum circles. */
+export function sanctumDedicationFromBlessings(blessings?: DedicationBlessings): {
+  dedication: SanctumGod[];
+  dedicationDeepened: SanctumGod | null;
+} {
+  const rows: { god: SanctumGod; on: boolean; deep: boolean }[] = [
+    { god: "dagon", on: blessings?.dagons_gift === true, deep: blessings?.dagons_gift_enhanced === true },
+    { god: "flame", on: blessings?.flames_touch === true, deep: blessings?.flames_touch_enhanced === true },
+    { god: "raven", on: blessings?.ravens_mark === true, deep: blessings?.ravens_mark_enhanced === true },
+    { god: "ash", on: blessings?.ashen_embrace === true, deep: blessings?.ashen_embrace_enhanced === true },
+  ];
+  const active = rows.filter((row) => row.on || row.deep);
+  if (active.length > 1) {
+    return { dedication: active.map((row) => row.god), dedicationDeepened: null };
+  }
+  if (active.length === 1) {
+    return {
+      dedication: [active[0].god],
+      dedicationDeepened: active[0].deep ? active[0].god : null,
+    };
+  }
+  return { dedication: [], dedicationDeepened: null };
 }

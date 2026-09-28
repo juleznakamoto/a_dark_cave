@@ -862,6 +862,27 @@ html[data-adc-chrome-stage="0"] {
   animation-delay: 1.5s;
 }
 
+/* Extra outline stays thick for the first 3s of the 4s fade-in, then eases to the normal border. */
+@keyframes village-map-highlight-fade {
+
+  0%,
+  75% {
+    opacity: 1;
+  }
+
+  to {
+    opacity: 0;
+  }
+}
+
+.village-map-highlight-fade {
+  animation: village-map-highlight-fade 4s linear forwards;
+}
+
+.village-map-fade-in--after-out .village-map-highlight-fade {
+  animation-delay: 1.5s;
+}
+
 .village-map-fade-out {
   animation: village-map-fade-out 1.5s linear forwards;
   pointer-events: none;
@@ -874,6 +895,11 @@ html[data-adc-chrome-stage="0"] {
   }
 
   .village-map-fade-out {
+    animation: none;
+    opacity: 0;
+  }
+
+  .village-map-highlight-fade {
     animation: none;
     opacity: 0;
   }

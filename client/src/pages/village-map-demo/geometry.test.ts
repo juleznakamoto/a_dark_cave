@@ -48,7 +48,10 @@ import {
   boneTempleSpikes,
   boneTempleSpikedCorners,
   trapPoints,
+  trapArmLength,
+  trapHitRadius,
   trapMarkReach,
+  trapMarkScale,
   trapWallOutset,
   trapsClearOfBuildings,
   mapFramePoints,
@@ -65,6 +68,7 @@ import {
   wobbleAt,
   chitinSpikesAlongPolyline,
   circleChitinArcPath,
+  PALISADE_TOWER_STROKE,
   BASTION_DEPTH,
   BASTION_LENGTH,
   bastionChitinPaths,
@@ -74,6 +78,7 @@ import {
   watchtowerWidth,
   storageBorder,
   storageScale,
+  buildingHutSize,
   storageTowers,
   blacksmithFurnace,
   blacksmithOutline,
@@ -90,7 +95,10 @@ import {
   alchemistHall,
   clerksHut,
   archiveOutline,
+  foundryFurnaceDomes,
+  foundryFurnacePlates,
   foundryOutline,
+  foundryScale,
   coinhouseLayout,
   coinhouseScale,
   buildersOutline,
@@ -101,6 +109,10 @@ import {
   altarOutline,
   altarSpan,
   altarCircles,
+  sanctumCircles,
+  heartfireBorderTriangles,
+  templeKnightCross,
+  templeKnightCrossRays,
   LONGHOUSE_LENGTH,
   longhouseOutline,
 } from "@/pages/village-map-demo/geometry";
@@ -398,9 +410,9 @@ describe("village map geometry", () => {
     expect(large).toHaveLength(9);
     expect(wallStrokeWidth(1, DEFAULT_TUNING.wallThickness)).toBeCloseTo(DEFAULT_TUNING.wallThickness * 0.65 * 1.25);
     expect(wallStrokeWidth(4, DEFAULT_TUNING.wallThickness)).toBeCloseTo(DEFAULT_TUNING.wallThickness * 2.9 * 1.25);
-    expect(small[0].r).toBeCloseTo((DEFAULT_TUNING.squareSize * 0.825) / 2, 5);
-    expect(medium[0].r).toBeCloseTo((DEFAULT_TUNING.squareSize * 1.35) / 2, 5);
-    expect(large[0].r).toBeCloseTo((DEFAULT_TUNING.squareSize * 2.025) / 2, 5);
+    expect(small[0].r).toBeCloseTo((DEFAULT_TUNING.squareSize * 0.825 * 1.15) / 2, 5);
+    expect(medium[0].r).toBeCloseTo((DEFAULT_TUNING.squareSize * 1.35 * 1.15) / 2, 5);
+    expect(large[0].r).toBeCloseTo((DEFAULT_TUNING.squareSize * 2.025 * 1.15) / 2, 5);
     expect(small[0].r).toBeLessThan(medium[0].r);
     expect(medium[0].r).toBeLessThan(large[0].r);
     for (const tower of large) {
@@ -446,13 +458,58 @@ describe("village map geometry", () => {
       expect(
         hitsPalisadeTower(buildingId, moved, 1, towers, DEFAULT_TUNING.squareSize),
       ).toBe(false);
-      expect(Math.hypot(moved.x - target.x, moved.y - target.y)).toBeGreaterThan(8);
+      const shapes = buildingShapes(buildingId, moved, DEFAULT_TUNING.squareSize, 1);
+      let clearance = Infinity;
+      for (const shape of shapes) {
+        if (shape.kind === "circle") {
+          clearance = Math.min(
+            clearance,
+            Math.hypot(shape.c.x - target.x, shape.c.y - target.y) - shape.r - target.r,
+          );
+          continue;
+        }
+        for (let index = 0; index < shape.points.length; index++) {
+          const start = shape.points[index];
+          const end = shape.points[(index + 1) % shape.points.length];
+          const dx = end.x - start.x;
+          const dy = end.y - start.y;
+          const lengthSq = dx * dx + dy * dy || 1;
+          const t = Math.max(
+            0,
+            Math.min(1, ((target.x - start.x) * dx + (target.y - start.y) * dy) / lengthSq),
+          );
+          clearance = Math.min(
+            clearance,
+            Math.hypot(target.x - (start.x + dx * t), target.y - (start.y + dy * t)) - target.r,
+          );
+        }
+      }
+      // 20px of open ground, plus the 4px border and half of the tower's 2px stroke.
+      expect(clearance).toBeGreaterThanOrEqual(24);
     }
   });
 
   it("holds the moat 15% farther from the wall", () => {
     const stroke = wallStrokeWidth(4, DEFAULT_TUNING.wallThickness);
     expect(moatCenterRadius(200, stroke) - 200).toBeCloseTo((stroke * 0.65 + 16) * 2.5 * 1.25 * 1.15 * 1.2 * 1.15, 5);
+  });
+
+  it("draws trap arms 25% longer without thickening the stroke", () => {
+    const basic = trapMarkScale(1);
+    const improved = trapMarkScale(2);
+    expect(trapArmLength(DEFAULT_TUNING, 1)).toBeCloseTo(
+      DEFAULT_TUNING.trapSize * 0.5 * basic * 1.25,
+    );
+    expect(trapArmLength(DEFAULT_TUNING, 2)).toBeCloseTo(
+      DEFAULT_TUNING.trapSize * 0.5 * improved * 1.25,
+    );
+    expect(DEFAULT_TUNING.trapStroke * 0.5 * basic).toBeCloseTo(
+      DEFAULT_TUNING.trapStroke * 0.5 * 1.3,
+    );
+    const arm = trapArmLength(DEFAULT_TUNING, 1);
+    const stroke = DEFAULT_TUNING.trapStroke * 0.5 * basic;
+    const tip = arm * Math.SQRT2 + stroke / 2;
+    expect(trapHitRadius(DEFAULT_TUNING, 1)).toBeCloseTo(Math.hypot(tip, stroke / 2));
   });
 
   it("places 40 traps between the wall and the moat, without touching either", () => {
@@ -859,7 +916,7 @@ describe("village map geometry", () => {
 
     const towers = palisadeTowers(4, radius, DEFAULT_TUNING, DEFAULT_TUNING.squareSize);
     for (const tower of towers) {
-      const r = tower.r + 0.5 + chitinStroke / 2;
+      const r = tower.r + PALISADE_TOWER_STROKE / 2 + chitinStroke / 2;
       const path = circleChitinArcPath(tower, r, wall);
       expect(path).toBeTruthy();
       const { from, to } = parseArcEnds(path!);
@@ -1012,6 +1069,11 @@ describe("supply hut upgrades", () => {
     expect(storageBorder(3)).toBe(1);
     expect(storageBorder(5)).toBe(1);
     expect(storageBorder(6)).toBe(1);
+  });
+
+  it("grows every building by 5% once the great vault is built", () => {
+    expect(buildingHutSize(28, 5)).toBe(28);
+    expect(buildingHutSize(28, 6)).toBeCloseTo(28 * 1.05);
   });
 
   it("puts one outward tower, then corner octagons, then side rectangles", () => {
@@ -1287,6 +1349,19 @@ describe("builder's lodge", () => {
   });
 });
 
+function polygonContains(poly: { x: number; y: number }[], point: { x: number; y: number }): boolean {
+  let inside = false;
+  for (let index = 0, previous = poly.length - 1; index < poly.length; previous = index++) {
+    const a = poly[index];
+    const b = poly[previous];
+    const crosses = a.y > point.y !== b.y > point.y;
+    if (!crosses) continue;
+    const x = ((b.x - a.x) * (point.y - a.y)) / (b.y - a.y) + a.x;
+    if (point.x < x) inside = !inside;
+  }
+  return inside;
+}
+
 describe("foundry", () => {
   const size = 40;
 
@@ -1301,22 +1376,13 @@ describe("foundry", () => {
     expect(Math.max(...outline.map((point) => point.y))).toBeCloseTo(depth / 2);
   });
 
-  it("grows 15% and adds two half-squares on the outer edge", () => {
+  it("grows 15% and adds a furnace on the left and the right", () => {
     const depth = size * 1.15 * 0.9;
     const width = depth * 3;
     const side = width / 4;
     const cut = side * (0.45 / 4);
-    const top = depth / 2 + side / 2;
-    const rightEdge = width / 4 + side / 2;
-    const leftEdge = width / 4 - side / 2;
     const outline = foundryOutline(size, 2);
-    const bumps = outline.filter((point) => point.y > depth / 2 + 1);
-    expect(bumps).toHaveLength(8);
-    expect(Math.max(...bumps.map((point) => point.y))).toBeCloseTo(top);
-    expect(outline).toContainEqual({ x: rightEdge, y: top - cut });
-    expect(outline).toContainEqual({ x: rightEdge - cut, y: top });
-    expect(outline).toContainEqual({ x: leftEdge + cut, y: top });
-    expect(outline).toContainEqual({ x: leftEdge, y: top - cut });
+    expect(outline.filter((point) => point.y > depth / 2 + 1)).toEqual([]);
     const end = width / 2 + side / 2;
     const half = side / 2;
     expect(outline).toContainEqual({ x: end, y: -half + cut });
@@ -1325,7 +1391,57 @@ describe("foundry", () => {
     expect(outline).toContainEqual({ x: -end + cut, y: half });
     expect(Math.max(...outline.map((point) => point.x))).toBeCloseTo(end);
     expect(Math.min(...outline.map((point) => point.x))).toBeCloseTo(-end);
-    expect(foundryOutline(size, 3)).toEqual(foundryOutline(size, 2));
+  });
+
+  it("adds two furnaces on the outer edge at masterwork", () => {
+    const depth = size * 1.15 * 0.9;
+    const width = depth * 3;
+    const side = width / 4;
+    const cut = side * (0.45 / 4);
+    const top = depth / 2 + side / 2;
+    const rightEdge = width / 4 + side / 2;
+    const leftEdge = width / 4 - side / 2;
+    const outline = foundryOutline(size, 3);
+    const bumps = outline.filter((point) => point.y > depth / 2 + 1);
+    expect(bumps).toHaveLength(8);
+    expect(Math.max(...bumps.map((point) => point.y))).toBeCloseTo(top);
+    expect(outline).toContainEqual({ x: rightEdge, y: top - cut });
+    expect(outline).toContainEqual({ x: rightEdge - cut, y: top });
+    expect(outline).toContainEqual({ x: leftEdge + cut, y: top });
+    expect(outline).toContainEqual({ x: leftEdge, y: top - cut });
+    expect(Math.max(...outline.map((point) => point.x))).toBeCloseTo(width / 2 + side / 2);
+  });
+
+  it("puts two small half-circles on the outside of each furnace", () => {
+    expect(foundryFurnaceDomes(size, 1)).toEqual([]);
+    const prime = foundryFurnaceDomes(size, 2);
+    expect(prime.every((dome) => dome.ny === 0)).toBe(true);
+    expect(prime.filter((dome) => dome.nx === 1)).toHaveLength(2);
+    expect(prime.filter((dome) => dome.nx === -1)).toHaveLength(2);
+    const domes = foundryFurnaceDomes(size, 3);
+    expect(domes).toHaveLength(8);
+    const depth = size * foundryScale(2);
+    const width = depth * 3;
+    const side = width / 4;
+    for (const dome of domes) {
+      expect(dome.bulge).toBeCloseTo(dome.along);
+      expect(dome.along * 2).toBeCloseTo(side * 0.25);
+    }
+    const outward = domes.filter((dome) => dome.ny === 1 && dome.nx === 0);
+    const right = domes.filter((dome) => dome.nx === 1 && dome.ny === 0);
+    const left = domes.filter((dome) => dome.nx === -1 && dome.ny === 0);
+    expect(outward).toHaveLength(4);
+    expect(right).toHaveLength(2);
+    expect(left).toHaveLength(2);
+    const top = depth / 2 + side / 2;
+    for (const dome of outward) expect(dome.cy).toBeCloseTo(top);
+    const out = width / 2 + side / 2;
+    for (const dome of right) expect(dome.cx).toBeCloseTo(out);
+    for (const dome of left) expect(dome.cx).toBeCloseTo(-out);
+    const pair = outward.filter((dome) => dome.cx > 0).sort((a, b) => a.cx - b.cx);
+    expect(pair[1].cx - pair[0].cx).toBeGreaterThan(pair[0].along + pair[1].along);
+    expect(foundryFurnacePlates(size, 2)).toHaveLength(4);
+    expect(foundryFurnacePlates(size, 3)).toHaveLength(8);
   });
 });
 
@@ -1712,10 +1828,15 @@ describe("altar upgrades", () => {
     expect(outline).toContainEqual({ x: -shrine.width / 2 + cut, y: -shrine.depth / 2 });
     expect(outline).toContainEqual({ x: shrine.width / 2 - cut, y: shrine.depth / 2 });
     expect(Math.max(...outline.map((point) => point.y))).toBeCloseTo(shrine.depth / 2 + porchDepth);
+    expect(Math.min(...outline.map((point) => point.y))).toBeCloseTo(-(shrine.depth / 2 + porchDepth));
     expect(Math.max(...outline.map((point) => point.x))).toBeCloseTo(shrine.width / 2);
     expect(outline).toContainEqual({
       x: porchRight - porchDepth / 12,
       y: shrine.depth / 2 + porchDepth,
+    });
+    expect(outline).toContainEqual({
+      x: -(porchRight - porchDepth / 12),
+      y: -(shrine.depth / 2 + porchDepth),
     });
 
     const temple = altarOutline(size, 3);
@@ -1730,7 +1851,88 @@ describe("altar upgrades", () => {
     const sanctum = altarOutline(size, 4);
     const porchOuter = shrine.depth / 2 + shrine.width / 2;
     expect(Math.max(...sanctum.map((point) => point.y))).toBeCloseTo(porchOuter + octagon);
-    expect(altarCircles(size, 4)).toHaveLength(3 * 8);
+    expect(Math.min(...sanctum.map((point) => point.y))).toBeCloseTo(-(porchOuter + octagon));
+    expect(altarCircles(size, 4)).toHaveLength(4 * 8);
     expect(altarCircles(size, 4)[0]?.r).toBeCloseTo(wing * 0.5);
+    const lobes = sanctumCircles(size, 4);
+    expect(lobes.map((lobe) => lobe.god)).toEqual(["flame", "raven", "dagon", "ash"]);
+    expect(lobes[0]?.y).toBeGreaterThan(0);
+    expect(lobes[0]?.x).toBeCloseTo(0);
+    expect(lobes[1]?.x).toBeGreaterThan(0);
+    expect(lobes[2]?.y).toBeLessThan(0);
+    expect(lobes[3]?.x).toBeLessThan(0);
+    for (const lobe of lobes) {
+      expect(lobe.corners).toHaveLength(8);
+      expect(lobe.rim).toHaveLength(8);
+    }
+  });
+});
+
+describe("temple knight cross", () => {
+  it("is a symmetric cross pattée with flared ends", () => {
+    const cross = templeKnightCross(10);
+    expect(cross).toHaveLength(12);
+    const reach = Math.max(...cross.map((point) => Math.hypot(point.x, point.y)));
+    expect(reach).toBeCloseTo(Math.hypot(10, 4.6));
+    for (const point of cross) {
+      expect(cross.some((other) => other.x === -point.x && other.y === -point.y)).toBe(true);
+      expect(cross.some((other) => other.x === point.y && other.y === -point.x)).toBe(true);
+    }
+  });
+
+  it("puts a short tick outward from each arm", () => {
+    const size = 10;
+    const rays = templeKnightCrossRays(size, 1);
+    expect(rays).toHaveLength(4);
+    for (const [from, to] of rays) {
+      const along = Math.abs(from.x) > 0 ? "x" : "y";
+      expect(Math.abs(from[along])).toBeCloseTo(size + 1);
+      expect(Math.abs(to[along]) - Math.abs(from[along])).toBeCloseTo(size * 0.38);
+      expect(Math.sign(to[along])).toBe(Math.sign(from[along]));
+      expect(from[along === "x" ? "y" : "x"]).toBe(0);
+    }
+  });
+});
+describe("ebon grace", () => {
+  it("rings the heartfire with flatter triangles and a rounded outer tip", () => {
+    const radius = 20;
+    const border = 2;
+    const triangles = heartfireBorderTriangles(radius, border);
+    expect(triangles).toHaveLength(16);
+    const outer = radius + border;
+    const step = (2 * Math.PI) / 16;
+    const base = 2 * outer * Math.sin(step / 2);
+    const chordMid = (outer - 0.35) * Math.cos(step / 2);
+    const fullAltitude = outer + base * 0.36 - chordMid;
+    for (let index = 0; index < triangles.length; index++) {
+      const triangle = triangles[index];
+      const next = triangles[(index + 1) % triangles.length];
+      const right = triangle[triangle.length - 1];
+      expect(right.x).toBeCloseTo(next[0].x);
+      expect(right.y).toBeCloseTo(next[0].y);
+      const span = Math.hypot(right.x - triangle[0].x, right.y - triangle[0].y);
+      const farthest = Math.max(...triangle.map((point) => Math.hypot(point.x, point.y)));
+      const altitude = farthest - chordMid;
+      expect(altitude).toBeCloseTo(fullAltitude * 0.75, 5);
+      expect(altitude).toBeGreaterThan(0);
+      expect(altitude).toBeLessThan(span);
+      expect(triangle.length).toBeGreaterThan(3);
+    }
+    const tooth = triangles[0];
+    const radii = tooth.map((point) => Math.hypot(point.x, point.y));
+    const peak = Math.max(...radii);
+    expect(radii.filter((value) => peak - value < 0.2).length).toBeGreaterThan(1);
+    let rising = true;
+    for (let index = 1; index < radii.length; index++) {
+      if (rising && radii[index] < radii[index - 1] - 1e-6) rising = false;
+      if (!rising) expect(radii[index]).toBeLessThanOrEqual(radii[index - 1] + 1e-4);
+    }
+    const straight = Math.hypot(tooth[1].x - tooth[0].x, tooth[1].y - tooth[0].y);
+    const side = Math.hypot(tooth[0].x - peak, tooth[0].y);
+    const cap = Math.hypot(tooth[1].x - tooth[tooth.length - 2].x, tooth[1].y - tooth[tooth.length - 2].y);
+    const width = Math.hypot(tooth[tooth.length - 1].x - tooth[0].x, tooth[tooth.length - 1].y - tooth[0].y);
+    expect(straight / side).toBeGreaterThan(0.4);
+    expect(cap / width).toBeGreaterThan(0.35);
+    expect(cap / width).toBeLessThan(0.6);
   });
 });

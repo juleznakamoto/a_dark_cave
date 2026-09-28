@@ -41,6 +41,8 @@ export default function VillageMapOverlay() {
   const canMove = useGameStore((state) => state.hasWonAnyGame);
   const moved = useGameStore((state) => state.villageMapOverrides);
   const buildings = useGameStore((state) => state.buildings);
+  const blessings = useGameStore((state) => state.blessings);
+  const heartfireLevel = useGameStore((state) => state.heartfireState?.level ?? 0);
   const wasOpen = useRef(false);
   const demoRef = useRef<DemoSnapshot | null>(null);
   if (open !== wasOpen.current) {
@@ -48,7 +50,7 @@ export default function VillageMapOverlay() {
     demoRef.current = open ? readDemoSnapshot() : null;
   }
   const demo = demoRef.current;
-  const build = useMemo(() => buildStateFromPlayer(buildings), [buildings]);
+  const build = useMemo(() => buildStateFromPlayer(buildings, blessings), [buildings, blessings]);
   const overrides = useMemo(
     () => ({ ...VILLAGE_MAP_POSITIONS, ...(demo?.overrides ?? {}), ...(moved ?? {}) }),
     [demo, moved],
@@ -130,6 +132,7 @@ export default function VillageMapOverlay() {
           );
         }}
         readOnly={!canMove}
+        heartfireLevel={heartfireLevel}
       />
     </div>
   );

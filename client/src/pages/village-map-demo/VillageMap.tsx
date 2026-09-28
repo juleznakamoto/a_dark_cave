@@ -1,6 +1,7 @@
-import { cloneElement, createContext, isValidElement, useContext, useEffect, useId, useRef, useState, type PointerEvent as ReactPointerEvent, type ReactNode } from "react";
+import { cloneElement, createContext, isValidElement, useContext, useId, useRef, useState, type PointerEvent as ReactPointerEvent, type ReactNode } from "react";
+import { heartfireHatchOpacity } from "@/game/villageMapBuild";
 import type { VillageMapReveal } from "@/game/villageMapReveal";
-import { BUILDINGS, MAP_CENTER, type BuildState, type Tuning } from "@/pages/village-map-demo/catalog";
+import { BUILDINGS, MAP_CENTER, type BuildState, type SanctumGod, type Tuning } from "@/pages/village-map-demo/catalog";
 import {
   ringPoints,
   outsetFromCenter,
@@ -16,6 +17,8 @@ import {
   MOAT_STROKE,
   moatOuterOffset,
   TRAP_DRAW_SCALE,
+  trapArmLength,
+  trapHitRadius,
   trapMarkScale,
   mapFramePoints,
   fittedViewBox,
@@ -35,17 +38,23 @@ import {
   tradeOutline,
   tradeCircles,
   altarOutline,
-  altarCircles,
+  altarSpan,
+  sanctumCircles,
+  heartfireBorderTriangles,
+  templeKnightCross,
+  templeKnightCrossRays,
   alchemistHall,
   clerksHut,
   archiveOutline,
   buildersOutline,
+  foundryFurnacePlates,
   foundryOutline,
   coinhouseLayout,
   placedSlots,
   containSlots,
   constrainMove,
   staysPut,
+  buildingHutSize,
   markSize,
   watchtowerOutline,
   watchtowerWidth,
@@ -68,6 +77,7 @@ import {
   radialAngle,
   bastionTowers,
   estateCornerOctagons,
+  estateSideSemicircles,
   estateOuterOctagon,
   wizardTowerOutline,
   wallChitinPolygon,
@@ -76,6 +86,7 @@ import {
   chitinSpikesAlongPolyline,
   circleChitinArcPath,
   circleChitinArcPoints,
+  PALISADE_TOWER_STROKE,
   bastionChitinPaths,
   bastionChitinChains,
   watchtowerChitinPaths,
@@ -87,20 +98,28 @@ import {
   type WallChitinSpan,
 } from "@/pages/village-map-demo/geometry";
 
-type MarkTuning = Pick<Tuning, "fill" | "borderColor" | "borderWidth">;
+type MarkTuning = Pick<Tuning, "fill" | "ink" | "fire">;
 
 /** Extra stroke so a highlight grows 1px into the building and 1px past the border. */
 const MAP_HIGHLIGHT_BORDER = 2;
 const MapBorderExtraContext = createContext(0);
+/** Reveal fade: the extra outline stays thick, then eases off over the last second. */
+const MapHighlightFadeContext = createContext(false);
+const MapInkContext = createContext("#000000");
 
 function useMapBorderExtra(): number {
   return useContext(MapBorderExtraContext);
 }
 
+function useMapInk(): string {
+  return useContext(MapInkContext);
+}
+
 function useOutlineRing(stroke: number, strokeLinejoin: "miter" | "round" = "miter") {
+  const ink = useMapInk();
   return {
     fill: "none" as const,
-    stroke: "#000",
+    stroke: ink,
     strokeWidth: stroke,
     strokeLinejoin,
   };
@@ -120,21 +139,63 @@ function cloneMark(node: ReactNode, prefix: string): ReactNode {
 }
 
 /**
+ * Same shapes as a stroke. A filter ring disappears under the fade-in opacity
+ * animation, while a real stroke stays visible and can fade back to the normal border.
+ */
+function cloneMarkStroke(node: ReactNode, prefix: string, color: string, strokeWidth: number): ReactNode {
+  if (node == null || typeof node !== "object") return node;
+  if (Array.isArray(node)) {
+    return node.map((child, index) => cloneMarkStroke(child, `${prefix}-${index}`, color, strokeWidth));
+  }
+  if (!isValidElement(node)) return node;
+  const props = node.props as { children?: ReactNode };
+  const paintable = typeof node.type === "string" && node.type !== "g" && node.type !== "defs";
+  return cloneElement(
+    node,
+    {
+      key: `${prefix}-${String(node.key ?? "n")}`,
+      ...(paintable
+        ? { fill: "none", stroke: color, strokeWidth, strokeLinejoin: "miter" as const }
+        : {}),
+    },
+    props.children != null ? cloneMarkStroke(props.children, prefix, color, strokeWidth) : props.children,
+  );
+}
+
+/**
  * Black ring around the union of these fills: 1px into the shape and 1px past
  * its existing outline. Inner strokes are not part of the union, so they stay thin.
  */
 function SilhouetteHighlight({
   stroke,
   color = "#000",
+  hugsEdge = false,
   children,
 }: {
   stroke: number;
   color?: string;
+  /**
+   * Children are already the outer ink (the heartfire teeth). The ring only
+   * adds the highlight extra, instead of growing by the whole border again.
+   */
+  hugsEdge?: boolean;
   children: ReactNode;
 }) {
   const extra = useMapBorderExtra();
+  const fadeHighlight = useContext(MapHighlightFadeContext);
   const id = `map-hl-${useId().replace(/:/g, "")}`;
   if (extra <= 0) return null;
+  const grow = hugsEdge ? extra / 2 : stroke + extra / 2;
+  const shrink = extra / 2;
+  // The fade-in group animates opacity. An SVG filter inside that group does not
+  // paint, so the reveal uses a stroke of the same outer reach as the hover ring.
+  if (fadeHighlight) {
+    return (
+      <g className="village-map-highlight-fade" style={{ pointerEvents: "none" }}>
+        {cloneMarkStroke(children, "hl", color, 2 * grow)}
+      </g>
+    );
+  }
   return (
     <>
       <defs>
@@ -148,8 +209,8 @@ function SilhouetteHighlight({
           height="2.2"
           colorInterpolationFilters="sRGB"
         >
-          <feMorphology in="SourceAlpha" operator="dilate" radius={stroke + extra / 2} result="grow" />
-          <feMorphology in="SourceAlpha" operator="erode" radius={extra / 2} result="shrink" />
+          <feMorphology in="SourceAlpha" operator="dilate" radius={grow} result="grow" />
+          <feMorphology in="SourceAlpha" operator="erode" radius={shrink} result="shrink" />
           <feComposite in="grow" in2="shrink" operator="out" result="ring" />
           <feFlood floodColor={color} result="ink" />
           <feComposite in="ink" in2="ring" operator="in" />
@@ -198,17 +259,11 @@ type Footprint =
   | "estate"
   | "watchtower";
 
-/** Saturated red for the heartfire stripes. */
-const HEARTFIRE_FILL = "#c45454";
-/** Saturated blue for the moat stripes. */
-const MOAT_COLOR = "#4f9bc4";
 /** Gap between 45° hatch lines, in map units. */
 const HATCH_GAP = 6;
 const HATCH_WIDTH = 1.7;
 /** Pillar, monolith, and pale cross. Half the moat stripe width. */
 const CROSSED_HATCH_WIDTH = HATCH_WIDTH * 0.5;
-/** White rim on the outside edge of the palisade. */
-const CHITIN_COLOR = "#ffffff";
 /** Shared hand-drawn edge for the wall, moat, and traps. About two user units. */
 const OUTLINE_WOBBLE = "url(#building-outline-wobble)";
 /** Coarser than the building edge, so a long stroke still reads as a little bent. */
@@ -450,23 +505,45 @@ function HatchStripes({
   );
 }
 
-function HeartfireMark({ size, fill }: { size: number; fill: string }) {
-  const stroke = 1;
-  const ring = useOutlineRing(stroke);
+function HeartfireMark({
+  size,
+  fill,
+  fire,
+  level,
+  ebonGrace = false,
+}: {
+  size: number;
+  fill: string;
+  fire: string;
+  level: number;
+  ebonGrace?: boolean;
+}) {
+  const border = ebonGrace ? 2 : 1;
+  const ring = useOutlineRing(border);
   const radius = size / 2;
+  const ink = useMapInk();
+  const triangles = ebonGrace ? heartfireBorderTriangles(radius, border) : [];
+  const teeth = triangles.map((triangle, index) => (
+    <polygon key={index} points={formatPoints(triangle)} fill={ink} />
+  ));
   return (
     <g>
       <circle r={radius} fill={fill} />
       <HatchStripes
-        color={HEARTFIRE_FILL}
+        color={fire}
         reach={radius}
         clip={<circle r={radius} />}
         filter={outlineWobble("heartfire:0")}
         crossed
+        strokeOpacity={heartfireHatchOpacity(level)}
       />
-      <circle r={radius + stroke / 2} {...ring} />
-      <SilhouetteHighlight stroke={stroke}>
-        <circle r={radius} fill="#000" />
+      <circle r={radius + border / 2} {...ring} />
+      {teeth}
+      <SilhouetteHighlight stroke={border} hugsEdge={triangles.length > 0}>
+        <circle r={triangles.length > 0 ? radius + border : radius} fill="#000" />
+        {triangles.map((triangle, index) => (
+          <polygon key={index} points={formatPoints(triangle)} fill="#000" />
+        ))}
       </SilhouetteHighlight>
     </g>
   );
@@ -476,16 +553,20 @@ function outlineWobble(key: string): string {
   return `url(#${wobbleFilterId(key)})`;
 }
 const CHITIN_STROKE = WALL_CHITIN_STROKE;
-/** Black outline on each side of the palisade, the same weight as a building border. */
-const PALISADE_BORDER = 1;
+/** Black outline on both edges of the palisade. One pixel heavier than a building border. */
+const PALISADE_BORDER = 2;
+/** Black line between the village paper and the palisade. Same weight as the outer edge. */
+const VILLAGE_INK_GAP = PALISADE_BORDER;
 
-const chitinPaint = {
-  fill: "none" as const,
-  stroke: CHITIN_COLOR,
-  strokeWidth: CHITIN_STROKE,
-  strokeLinecap: "round" as const,
-  strokeLinejoin: "round" as const,
-};
+function chitinPaint(color: string) {
+  return {
+    fill: "none" as const,
+    stroke: color,
+    strokeWidth: CHITIN_STROKE,
+    strokeLinecap: "round" as const,
+    strokeLinejoin: "round" as const,
+  };
+}
 
 function markRotation(buildingId: string, at: Point): string | undefined {
   if (
@@ -505,6 +586,12 @@ function markRotation(buildingId: string, at: Point): string | undefined {
 
 function formatPoints(points: Point[]): string {
   return points.map((point) => `${point.x.toFixed(2)},${point.y.toFixed(2)}`).join(" ");
+}
+
+/** Open semicircle. The flat side sits on x = cx and the bulge points left or right. */
+function semicircleArc(cx: number, cy: number, r: number, side: "left" | "right"): string {
+  const sweep = side === "right" ? 1 : 0;
+  return `M ${cx.toFixed(2)} ${(cy - r).toFixed(2)} A ${r.toFixed(2)} ${r.toFixed(2)} 0 0 ${sweep} ${cx.toFixed(2)} ${(cy + r).toFixed(2)}`;
 }
 
 function footprintOf(buildingId: string): Footprint {
@@ -548,7 +635,7 @@ function BuildingFootprint({
   shape,
   fill,
   strokeWidth,
-  stroke = "#000",
+  stroke,
   outwardBorder = true,
   level = 1,
 }: {
@@ -560,7 +647,9 @@ function BuildingFootprint({
   outwardBorder?: boolean;
   level?: number;
 }) {
-  const ring = { fill: "none" as const, stroke, strokeWidth, strokeLinejoin: "miter" as const };
+  const ink = useMapInk();
+  const line = stroke ?? ink;
+  const ring = { fill: "none" as const, stroke: line, strokeWidth, strokeLinejoin: "miter" as const };
   const outset = outwardBorder ? strokeWidth / 2 : 0;
   if (shape === "tent") {
     const outline = tentOutline(size);
@@ -616,7 +705,7 @@ function BuildingFootprint({
           rings={<polygon points={formatPoints(ringPoints)} {...ring} />}
           fills={<polygon points={points} fill={fill} />}
         />
-        <HatchStripes color="#000" reach={hatchReach(outline)} clip={<polygon points={points} />} crossed strokeWidth={CROSSED_HATCH_WIDTH} strokeOpacity={0.6} />
+        <HatchStripes color={ink} reach={hatchReach(outline)} clip={<polygon points={points} />} crossed strokeWidth={CROSSED_HATCH_WIDTH} strokeOpacity={0.6} />
         <polygon points={formatPoints(ringPoints)} {...ring} />
       </g>
     );
@@ -662,6 +751,7 @@ function BuildingFootprint({
     const pad = strokeWidth / 2;
     const octagons = estateCornerOctagons(size);
     const outer = estateOuterOctagon(size);
+    const sides = level > 1 ? estateSideSemicircles(size) : [];
     return (
       <g>
         <BorderStack
@@ -679,6 +769,13 @@ function BuildingFootprint({
                 <polygon key={index} points={formatPoints(offsetPolygon(octagon, pad))} {...ring} />
               ))}
               <polygon points={formatPoints(offsetPolygon(outer, pad))} {...ring} />
+              {sides.map((side) => (
+                <path
+                  key={`side-ring-${side.x}`}
+                  d={semicircleArc(side.x, side.y, side.r + pad, side.x < 0 ? "left" : "right")}
+                  {...ring}
+                />
+              ))}
             </>
           }
           fills={
@@ -688,6 +785,13 @@ function BuildingFootprint({
                 <polygon key={`fill-${index}`} points={formatPoints(octagon)} fill={fill} />
               ))}
               <polygon points={formatPoints(outer)} fill={fill} />
+              {sides.map((side) => (
+                <path
+                  key={`side-fill-${side.x}`}
+                  d={`${semicircleArc(side.x, side.y, side.r, side.x < 0 ? "left" : "right")} Z`}
+                  fill={fill}
+                />
+              ))}
             </>
           }
         />
@@ -883,19 +987,36 @@ function FoundryMark({
   size,
   level,
   fill,
+  brimstone = false,
 }: {
   size: number;
   level: number;
   fill: string;
+  brimstone?: boolean;
 }) {
   const outline = foundryOutline(size, level);
+  const domes = brimstone ? foundryFurnacePlates(size, level) : [];
   const stroke = 1;
   const ring = useOutlineRing(stroke);
   return (
     <g>
       <BorderStack
-        rings={<polygon points={formatPoints(offsetPolygon(outline, stroke / 2))} {...ring} />}
-        fills={<polygon points={formatPoints(outline)} fill={fill} />}
+        rings={
+          <>
+            <polygon points={formatPoints(offsetPolygon(outline, stroke / 2))} {...ring} />
+            {domes.map((points, index) => (
+              <polygon key={index} points={formatPoints(offsetPolygon(points, stroke / 2))} {...ring} />
+            ))}
+          </>
+        }
+        fills={
+          <>
+            <polygon points={formatPoints(outline)} fill={fill} />
+            {domes.map((points, index) => (
+              <polygon key={index} points={formatPoints(points)} fill={fill} />
+            ))}
+          </>
+        }
       />
     </g>
   );
@@ -996,6 +1117,7 @@ function BoneTempleMark({ size, fill }: { size: number; fill: string }) {
 }
 
 function PillarMark({ size, fill }: { size: number; fill: string }) {
+  const ink = useMapInk();
   const outline = pillarOutline(size);
   const stroke = 1;
   const ring = useOutlineRing(stroke);
@@ -1007,7 +1129,7 @@ function PillarMark({ size, fill }: { size: number; fill: string }) {
         rings={<polygon points={ringPoints} {...ring} />}
         fills={<polygon points={points} fill={fill} />}
       />
-      <HatchStripes color="#000" reach={hatchReach(outline)} clip={<polygon points={points} />} crossed strokeWidth={CROSSED_HATCH_WIDTH} strokeOpacity={0.6} />
+      <HatchStripes color={ink} reach={hatchReach(outline)} clip={<polygon points={points} />} crossed strokeWidth={CROSSED_HATCH_WIDTH} strokeOpacity={0.6} />
       <polygon points={ringPoints} {...ring} />
     </g>
   );
@@ -1107,40 +1229,107 @@ function TradeMark({
   );
 }
 
+function TempleKnightCross({
+  x,
+  y,
+  size,
+  deepened,
+}: {
+  x: number;
+  y: number;
+  size: number;
+  deepened: boolean;
+}) {
+  const ink = useMapInk();
+  const stroke = 1;
+  const rays = deepened ? templeKnightCrossRays(size, stroke / 2) : [];
+  return (
+    <g>
+      <polygon
+        points={formatPoints(templeKnightCross(size).map((point) => ({ x: point.x + x, y: point.y + y })))}
+        fill="none"
+        stroke={ink}
+        strokeWidth={stroke}
+        strokeLinejoin="miter"
+        strokeMiterlimit={2}
+      />
+      {rays.map((ray, index) => (
+        <line
+          key={index}
+          x1={ray[0].x + x}
+          y1={ray[0].y + y}
+          x2={ray[1].x + x}
+          y2={ray[1].y + y}
+          stroke={ink}
+          strokeWidth={1}
+        />
+      ))}
+    </g>
+  );
+}
+
 function AltarMark({
   size,
   level,
   fill,
+  dedication = [],
+  dedicationDeepened = null,
 }: {
   size: number;
   level: number;
   fill: string;
+  dedication?: readonly SanctumGod[];
+  dedicationDeepened?: SanctumGod | null;
 }) {
   const outline = altarOutline(size, level);
-  const circles = altarCircles(size, level);
+  const lobes = sanctumCircles(size, level);
   const stroke = 1;
   const outset = stroke / 2;
   const ring = useOutlineRing(stroke);
+  const { depth } = altarSpan(size, level);
+  const sign = depth * 0.72 * 0.75;
+  const chosen = new Set(dedication);
   return (
     <g>
       <BorderStack
         rings={
           <>
             <polygon points={formatPoints(offsetPolygon(outline, outset))} {...ring} />
-            {circles.map((circle, index) => (
-              <circle key={index} cx={circle.x} cy={circle.y} r={circle.r + outset} {...ring} />
-            ))}
+            {lobes.flatMap((lobe) =>
+              lobe.corners.map((circle, index) => (
+                <circle
+                  key={`${lobe.god}-${index}`}
+                  cx={circle.x}
+                  cy={circle.y}
+                  r={circle.r + outset}
+                  {...ring}
+                />
+              )),
+            )}
           </>
         }
         fills={
           <>
             <polygon points={formatPoints(outline)} fill={fill} />
-            {circles.map((circle, index) => (
-              <circle key={`fill-${index}`} cx={circle.x} cy={circle.y} r={circle.r} fill={fill} />
-            ))}
+            {lobes.flatMap((lobe) =>
+              lobe.corners.map((circle, index) => (
+                <circle key={`${lobe.god}-fill-${index}`} cx={circle.x} cy={circle.y} r={circle.r} fill={fill} />
+              )),
+            )}
           </>
         }
       />
+      {lobes
+        .filter((lobe) => chosen.has(lobe.god))
+        .map((lobe) => (
+          <TempleKnightCross
+            key={lobe.god}
+            x={lobe.x}
+            y={lobe.y}
+            size={sign}
+            deepened={dedicationDeepened === lobe.god}
+          />
+        ))}
     </g>
   );
 }
@@ -1307,13 +1496,26 @@ export function BuildingMark({
   tuning,
   shape = "square",
   buildingId,
+  heartfireLevel = 5,
+  ebonGrace = false,
+  brimstoneInfusion = false,
+  dedication = [],
+  dedicationDeepened = null,
 }: {
   size: number;
   tier: number;
   tuning: MarkTuning;
   shape?: Footprint;
   buildingId?: string;
+  /** Live Feed Fire level. The demo leaves this at the full fire. */
+  heartfireLevel?: number;
+  ebonGrace?: boolean;
+  /** Two small half-circles on the outside of each furnace after Brimstone Infusion. */
+  brimstoneInfusion?: boolean;
+  dedication?: readonly SanctumGod[];
+  dedicationDeepened?: SanctumGod | null;
 }) {
+  const ink = useMapInk();
   const level = Math.max(1, tier);
   if (buildingId === "storage") {
     return <StorageMark size={size} level={level} fill={tuning.fill} />;
@@ -1348,8 +1550,8 @@ export function BuildingMark({
     return (
       <g>
         <BuildingFootprint size={size} shape="round" fill={tuning.fill} strokeWidth={stroke} />
-        <HatchStripes color="#000" reach={radius} clip={<circle r={radius} />} crossed strokeWidth={CROSSED_HATCH_WIDTH} strokeOpacity={0.6} />
-        <circle r={radius + stroke / 2} fill="none" stroke="#000" strokeWidth={stroke} />
+        <HatchStripes color={ink} reach={radius} clip={<circle r={radius} />} crossed strokeWidth={CROSSED_HATCH_WIDTH} strokeOpacity={0.6} />
+        <circle r={radius + stroke / 2} fill="none" stroke={ink} strokeWidth={stroke} />
       </g>
     );
   }
@@ -1360,7 +1562,15 @@ export function BuildingMark({
     return <TradeMark size={size} level={level} fill={tuning.fill} />;
   }
   if (buildingId === "altar") {
-    return <AltarMark size={size} level={level} fill={tuning.fill} />;
+    return (
+      <AltarMark
+        size={size}
+        level={level}
+        fill={tuning.fill}
+        dedication={dedication}
+        dedicationDeepened={dedicationDeepened}
+      />
+    );
   }
   if (buildingId === "alchemistHall") {
     return <AlchemistMark size={size} fill={tuning.fill} />;
@@ -1375,13 +1585,21 @@ export function BuildingMark({
     return <BuildersMark size={size} level={level} fill={tuning.fill} />;
   }
   if (buildingId === "foundry") {
-    return <FoundryMark size={size} level={level} fill={tuning.fill} />;
+    return <FoundryMark size={size} level={level} fill={tuning.fill} brimstone={brimstoneInfusion} />;
   }
   if (buildingId === "coinhouse") {
     return <CoinhouseMark size={size} level={level} fill={tuning.fill} />;
   }
   if (buildingId === "heartfire") {
-    return <HeartfireMark size={size} fill={tuning.fill} />;
+    return (
+      <HeartfireMark
+        size={size}
+        fill={tuning.fill}
+        fire={tuning.fire}
+        level={heartfireLevel}
+        ebonGrace={ebonGrace}
+      />
+    );
   }
   if (shape === "estate") {
     return (
@@ -1390,7 +1608,6 @@ export function BuildingMark({
         shape="estate"
         fill={tuning.fill}
         strokeWidth={level > 1 ? ESTATE_BORDER : 1}
-        stroke={level > 1 ? "#111" : "#000"}
         level={level}
       />
     );
@@ -1399,7 +1616,7 @@ export function BuildingMark({
     const grown = size * pitScale(level);
     return (
       <g>
-        <path d={smoothClosedPath(pitOutline(grown))} fill={tuning.fill} stroke="#000" strokeWidth={1} />
+        <path d={smoothClosedPath(pitOutline(grown))} fill={tuning.fill} stroke={ink} strokeWidth={1} />
         <SilhouetteHighlight stroke={1}>
           <path d={smoothClosedPath(pitOutline(grown))} fill="#000" />
         </SilhouetteHighlight>
@@ -1408,8 +1625,8 @@ export function BuildingMark({
             key={scale}
             d={smoothClosedPath(pitOutline(grown * scale))}
             fill="none"
-            stroke="#2c2824"
-            strokeOpacity={0.5}
+            stroke={ink}
+            strokeOpacity={0.45}
             strokeWidth={1.25}
             strokeLinejoin="round"
           />
@@ -1430,19 +1647,7 @@ export function BuildingMark({
     />
   );
   if (shape === "cross" && level > 1) {
-    const stroke = Math.min((level - 1) * tuning.borderWidth, size * 0.12);
-    return (
-      <g transform="rotate(180)">
-        <polygon
-          points={formatPoints(crossOutline(size))}
-          fill="none"
-          stroke={tuning.borderColor}
-          strokeWidth={stroke}
-          strokeLinejoin="miter"
-        />
-        {fill}
-      </g>
-    );
+    return <g transform="rotate(180)">{fill}</g>;
   }
   return fill;
 }
@@ -1483,24 +1688,26 @@ export function UpgradeRuleIcon({
   if (!UPGRADE_RULES.has(buildingId)) return null;
   const level = Math.max(1, tier);
   return (
-    <svg
-      width="20"
-      height="20"
-      viewBox="-34 -34 68 68"
-      aria-hidden
-      className="shrink-0"
-    >
-      <title>Upgrade drawing</title>
-      <g transform={upgradeIconTurn(buildingId)} filter={outlineWobble(`${buildingId}:${level - 1}`)}>
-        <BuildingMark
-          buildingId={buildingId}
-          size={UPGRADE_ICON_SIZE[buildingId] ?? 14}
-          tier={level}
-          tuning={tuning}
-          shape={footprintOf(buildingId)}
-        />
-      </g>
-    </svg>
+    <MapInkContext.Provider value={tuning.ink}>
+      <svg
+        width="20"
+        height="20"
+        viewBox="-34 -34 68 68"
+        aria-hidden
+        className="shrink-0"
+      >
+        <title>Upgrade drawing</title>
+        <g transform={upgradeIconTurn(buildingId)} filter={outlineWobble(`${buildingId}:${level - 1}`)}>
+          <BuildingMark
+            buildingId={buildingId}
+            size={UPGRADE_ICON_SIZE[buildingId] ?? 14}
+            tier={level}
+            tuning={tuning}
+            shape={footprintOf(buildingId)}
+          />
+        </g>
+      </svg>
+    </MapInkContext.Provider>
   );
 }
 
@@ -1529,41 +1736,56 @@ function upgradeIconTurn(buildingId: string): string | undefined {
 /** Row-icon sizes were fitted to ±34. The Look frame is ±40. */
 const LOOK_MARK_SCALE = 40 / 34;
 
-export function LookEvolutions({ tuning }: { tuning: MarkTuning }) {
+export function LookEvolutions({
+  tuning,
+  dedication = [],
+  dedicationDeepened = null,
+  brimstoneInfusion = false,
+}: {
+  tuning: MarkTuning;
+  dedication?: readonly SanctumGod[];
+  dedicationDeepened?: SanctumGod | null;
+  brimstoneInfusion?: boolean;
+}) {
   const buildings = BUILDINGS.filter(
     (building) => building.names.length > 1 || UPGRADE_RULES.has(building.id),
   );
   return (
-    <div className="space-y-4">
-      {buildings.map((building) => {
-        const size = (UPGRADE_ICON_SIZE[building.id] ?? 16) * LOOK_MARK_SCALE;
-        return (
-          <div key={building.id}>
-            <div className="mb-1 text-[10px] font-medium uppercase tracking-wide text-stone-400">
-              {building.names[0]}
+    <MapInkContext.Provider value={tuning.ink}>
+      <div className="space-y-4">
+        {buildings.map((building) => {
+          const size = (UPGRADE_ICON_SIZE[building.id] ?? 16) * LOOK_MARK_SCALE;
+          return (
+            <div key={building.id}>
+              <div className="mb-1 text-[10px] font-medium uppercase tracking-wide text-stone-400">
+                {building.names[0]}
+              </div>
+              <div className="grid grid-cols-3 gap-2">
+                {building.names.map((name, index) => (
+                  <div key={name} className="flex flex-col items-center gap-1">
+                    <svg width="72" height="72" viewBox="-40 -40 80 80" aria-hidden>
+                      <g transform={upgradeIconTurn(building.id)} filter={outlineWobble(`${building.id}:${index}`)}>
+                        <BuildingMark
+                          buildingId={building.id}
+                          size={size}
+                          tier={index + 1}
+                          tuning={tuning}
+                          shape={footprintOf(building.id)}
+                          dedication={dedication}
+                          dedicationDeepened={dedicationDeepened}
+                          brimstoneInfusion={brimstoneInfusion}
+                        />
+                      </g>
+                    </svg>
+                    <span className="text-center text-[10px] leading-tight text-stone-500">{name}</span>
+                  </div>
+                ))}
+              </div>
             </div>
-            <div className="grid grid-cols-3 gap-2">
-              {building.names.map((name, index) => (
-                <div key={name} className="flex flex-col items-center gap-1">
-                  <svg width="72" height="72" viewBox="-40 -40 80 80" aria-hidden>
-                    <g transform={upgradeIconTurn(building.id)} filter={outlineWobble(`${building.id}:${index}`)}>
-                      <BuildingMark
-                        buildingId={building.id}
-                        size={size}
-                        tier={index + 1}
-                        tuning={tuning}
-                        shape={footprintOf(building.id)}
-                      />
-                    </g>
-                  </svg>
-                  <span className="text-center text-[10px] leading-tight text-stone-500">{name}</span>
-                </div>
-              ))}
-            </div>
-          </div>
-        );
-      })}
-    </div>
+          );
+        })}
+      </div>
+    </MapInkContext.Provider>
   );
 }
 
@@ -1606,33 +1828,68 @@ function SlotMark({
   tier,
   tuning,
   highlighted = false,
+  fadeHighlight = false,
+  heartfireLevel = 5,
+  ebonGrace = false,
+  brimstoneInfusion = false,
+  dedication = [],
+  dedicationDeepened = null,
 }: {
   slot: PlacedSlot;
   tier: number;
   tuning: Tuning;
   highlighted?: boolean;
+  /** Extra outline stays thick for 3s, then fades to the normal border over the last 1s. */
+  fadeHighlight?: boolean;
+  heartfireLevel?: number;
+  ebonGrace?: boolean;
+  brimstoneInfusion?: boolean;
+  dedication?: readonly SanctumGod[];
+  dedicationDeepened?: SanctumGod | null;
 }) {
   return (
-    <MapBorderExtraContext.Provider value={highlighted ? MAP_HIGHLIGHT_BORDER : 0}>
-      <g
-        transform={markRotation(slot.buildingId, slot)}
-        // The heartfire circle stays smooth. Its stripes wobble on their own.
-        filter={slot.buildingId === "heartfire" ? undefined : outlineWobble(slot.id)}
-      >
-        <BuildingMark
-          buildingId={slot.buildingId}
-          size={
-            slot.buildingId === "watchtower"
-              ? watchtowerWidth(tuning.squareSize, tier)
-              : markSize(slot.buildingId, tuning.squareSize)
+    <MapHighlightFadeContext.Provider value={fadeHighlight}>
+      <MapBorderExtraContext.Provider value={highlighted ? MAP_HIGHLIGHT_BORDER : 0}>
+        <g
+          transform={markRotation(slot.buildingId, slot)}
+          // The heartfire circle stays smooth. Its stripes wobble on their own.
+          // A reveal stroke inside this filter does not paint while the parent fade
+          // animates opacity, so the wobble waits until that border has eased off.
+          filter={
+            slot.buildingId === "heartfire" || fadeHighlight ? undefined : outlineWobble(slot.id)
           }
-          tier={tier}
-          tuning={tuning}
-          shape={footprintOf(slot.buildingId)}
-        />
-      </g>
-    </MapBorderExtraContext.Provider>
+        >
+          <BuildingMark
+            buildingId={slot.buildingId}
+            size={
+              slot.buildingId === "watchtower"
+                ? watchtowerWidth(tuning.squareSize, tier)
+                : markSize(slot.buildingId, tuning.squareSize)
+            }
+            tier={tier}
+            tuning={tuning}
+            shape={footprintOf(slot.buildingId)}
+            heartfireLevel={heartfireLevel}
+            ebonGrace={ebonGrace}
+            brimstoneInfusion={brimstoneInfusion}
+            dedication={dedication}
+            dedicationDeepened={dedicationDeepened}
+          />
+        </g>
+      </MapBorderExtraContext.Provider>
+    </MapHighlightFadeContext.Provider>
   );
+}
+
+function prefersReducedMotion(): boolean {
+  return typeof window !== "undefined" && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+}
+
+/** A first appearance and an upgrade each get their own thick border. */
+function revealFadeSignature(reveal: VillageMapReveal | null, slotId: string): string | null {
+  if (reveal?.fadeIn[slotId] !== true) return null;
+  const previous = reveal.fadeOutTier[slotId];
+  return previous == null ? "in" : `up:${previous}`;
 }
 
 export function VillageMap({
@@ -1645,6 +1902,7 @@ export function VillageMap({
   onHoverBuilding,
   reveal = null,
   readOnly = false,
+  heartfireLevel = 5,
 }: {
   build: BuildState;
   tuning: Tuning;
@@ -1655,24 +1913,29 @@ export function VillageMap({
   onHoverBuilding?: (buildingId: string | null) => void;
   reveal?: VillageMapReveal | null;
   readOnly?: boolean;
+  /** Current Feed Fire level, 0 through 5. */
+  heartfireLevel?: number;
 }) {
   const svgRef = useRef<SVGSVGElement>(null);
   const dragRef = useRef<{ id: string; dx: number; dy: number } | null>(null);
   const [hoveredBuildingId, setHoveredBuildingId] = useState<string | null>(null);
-  const [revealHighlight, setRevealHighlight] = useState(
-    () => reveal != null && Object.keys(reveal.fadeIn).length > 0,
-  );
-  useEffect(() => {
-    if (!revealHighlight) return;
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-      setRevealHighlight(false);
-    }
-  }, [revealHighlight]);
+  // Per slot, the fade signature whose thick border has already eased off.
+  // A shared flag was cleared by whichever animation ended first, so some fades lost the border.
+  const [easedBorder, setEasedBorder] = useState<Record<string, string>>({});
   const moatClipId = `moat-clip-${useId().replace(/:/g, "")}`;
   const wallMaskId = `wall-hatch-${useId().replace(/:/g, "")}`;
   const radius = layoutWallRadius(tuning);
   const thickness = wallStrokeWidth(build.wall, tuning.wallThickness);
-  const slots = containSlots(placedSlots(build, tuning, overrides), radius, tuning, thickness, build.wall);
+  const hutSize = buildingHutSize(tuning.squareSize, build.counts.storage ?? 0);
+  const markTuning = hutSize === tuning.squareSize ? tuning : { ...tuning, squareSize: hutSize };
+  const slots = containSlots(
+    placedSlots(build, tuning, overrides),
+    radius,
+    tuning,
+    thickness,
+    build.wall,
+    hutSize,
+  );
   const showWall = build.wall > 0 || tuning.showWallGuide;
   const outline = ringPoints(radius, tuning);
   const outlinePath = smoothClosedPath(outline);
@@ -1705,7 +1968,7 @@ export function VillageMap({
         slot.buildingId === "bastion"
           ? bastionChitinChains(
             slot,
-            markSize("bastion", tuning.squareSize),
+            markSize("bastion", hutSize),
             Math.max(1, slot.tier) * 4,
             CHITIN_STROKE,
             chitinBoundary,
@@ -1728,7 +1991,7 @@ export function VillageMap({
       ? []
       : slots.flatMap((slot) => {
         if (slot.buildingId === "watchtower") {
-          const width = watchtowerWidth(tuning.squareSize, slot.tier);
+          const width = watchtowerWidth(hutSize, slot.tier);
           const stroke = 4;
           return [
             {
@@ -1749,7 +2012,7 @@ export function VillageMap({
           kind: "circle" as const,
           x: tower.x,
           y: tower.y,
-          r: tower.r + 0.5 + CHITIN_STROKE / 2,
+          r: tower.r + PALISADE_TOWER_STROKE / 2 + CHITIN_STROKE / 2,
         })),
         ...fortBlockers,
       ];
@@ -1764,7 +2027,7 @@ export function VillageMap({
         if (slot.buildingId === "bastion") {
           return bastionChitinPaths(
             slot,
-            markSize("bastion", tuning.squareSize),
+            markSize("bastion", hutSize),
             Math.max(1, slot.tier) * 4,
             CHITIN_STROKE,
             chitinBoundary,
@@ -1773,7 +2036,7 @@ export function VillageMap({
         if (slot.buildingId === "watchtower") {
           return watchtowerChitinPaths(
             slot,
-            watchtowerWidth(tuning.squareSize, slot.tier),
+            watchtowerWidth(hutSize, slot.tier),
             Math.max(1, slot.tier),
             4,
             CHITIN_STROKE,
@@ -1791,7 +2054,7 @@ export function VillageMap({
         ),
         ...towers.flatMap((tower) =>
           chitinSpikesAlongPolyline(
-            circleChitinArcPoints(tower, tower.r + 0.5 + CHITIN_STROKE / 2, chitinBoundary),
+            circleChitinArcPoints(tower, tower.r + PALISADE_TOWER_STROKE / 2 + CHITIN_STROKE / 2, chitinBoundary),
             CHITIN_STROKE,
             { closed: false },
           ),
@@ -1800,7 +2063,7 @@ export function VillageMap({
           if (slot.buildingId === "bastion") {
             return bastionChitinChains(
               slot,
-              markSize("bastion", tuning.squareSize),
+              markSize("bastion", hutSize),
               Math.max(1, slot.tier) * 4,
               CHITIN_STROKE,
               chitinBoundary,
@@ -1811,7 +2074,7 @@ export function VillageMap({
           if (slot.buildingId === "watchtower") {
             return watchtowerChitinChains(
               slot,
-              watchtowerWidth(tuning.squareSize, slot.tier),
+              watchtowerWidth(hutSize, slot.tier),
               Math.max(1, slot.tier),
               4,
               CHITIN_STROKE,
@@ -1838,12 +2101,14 @@ export function VillageMap({
         build.wall,
         radius,
         slots,
+        hutSize,
       )
       : [];
   const improved = build.traps >= 2;
   const trapScale = trapMarkScale(build.traps);
-  const trapSize = tuning.trapSize * TRAP_DRAW_SCALE * trapScale;
+  const trapSize = trapArmLength(tuning, build.traps);
   const trapStroke = tuning.trapStroke * TRAP_DRAW_SCALE * trapScale;
+  const trapTarget = trapHitRadius(tuning, build.traps);
   const cityEdge = (build.counts.bastion ?? 0) <= 0 && build.traps <= 0;
   const viewBox = tuning.fitView
     ? fittedViewBox(mapFramePoints(build, tuning, slots), cityEdge ? tuning.squareSize + 16 : tuning.squareSize + 20)
@@ -1881,7 +2146,7 @@ export function VillageMap({
     const moving = slots.find((slot) => slot.id === drag.id);
     if (!moving) return;
     const desired = { x: point.x + drag.dx, y: point.y + drag.dy };
-    onOverride(drag.id, constrainMove(moving, desired, slots, radius, tuning, build.wall));
+    onOverride(drag.id, constrainMove(moving, desired, slots, radius, tuning, build.wall, hutSize));
   };
 
   const onPointerUp = () => {
@@ -1891,310 +2156,368 @@ export function VillageMap({
   const moatHighlighted =
     highlightId === "fortifiedMoat" || hoveredBuildingId === "fortifiedMoat";
   const trapsHighlighted = highlightId === "traps" || hoveredBuildingId === "traps";
+  const palisadesHighlighted =
+    build.wall > 0 && (highlightId === "palisades" || hoveredBuildingId === "palisades");
+  const onPalisadeEnter = () => {
+    setHoveredBuildingId("palisades");
+    onHoverBuilding?.("palisades");
+  };
+  const onPalisadeLeave = () => {
+    setHoveredBuildingId((current) => (current === "palisades" ? null : current));
+    onHoverBuilding?.(null);
+  };
+  const innerInk = VILLAGE_INK_GAP + (palisadesHighlighted ? MAP_HIGHLIGHT_BORDER : 0);
+  const outerInk = PALISADE_BORDER + (palisadesHighlighted ? MAP_HIGHLIGHT_BORDER : 0);
+  const palisadeInkPath =
+    build.wall > 0
+      ? smoothClosedPath(outsetFromCenter(outline, (outerInk - innerInk) / 2))
+      : outlinePath;
+  const palisadeInkWidth = thickness + innerInk + outerInk;
+
+  const paint = chitinPaint(tuning.chitin);
 
   return (
-    <svg
-      ref={svgRef}
-      data-testid="village-map"
-      viewBox={viewBox}
-      className="h-full w-full touch-none select-none"
-      role="img"
-      aria-label="Top-down village"
-    >
-      <defs>
-        <OutlineWobbleFilter />
-        {build.wall > 0 ? (
-          <mask
-            id={wallMaskId}
-            maskUnits="userSpaceOnUse"
-            maskContentUnits="userSpaceOnUse"
-            x={frameX}
-            y={frameY}
-            width={frameSize}
-            height={frameSize}
-          >
-            <path
-              d={outlinePath}
-              fill="none"
-              stroke="#fff"
-              strokeWidth={thickness}
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            />
-          </mask>
-        ) : null}
-      </defs>
-      <rect x={frameX} y={frameY} width={frameSize} height={frameSize} fill={tuning.ground} />
-
-      <path d={outlinePath} fill={tuning.interior} />
-
-      {moatBand && moatPoints ? (
-        <MapBorderExtraContext.Provider value={moatHighlighted ? MAP_HIGHLIGHT_BORDER : 0}>
-          <g
-            data-building="fortifiedMoat"
-            style={{ cursor: "default" }}
-            onPointerEnter={() => {
-              setHoveredBuildingId("fortifiedMoat");
-              onHoverBuilding?.("fortifiedMoat");
-            }}
-            onPointerLeave={() => {
-              setHoveredBuildingId((current) =>
-                current === "fortifiedMoat" ? null : current,
-              );
-              onHoverBuilding?.(null);
-            }}
-          >
-            <defs>
-              <clipPath id={moatClipId}>
-                <path d={moatBand} clipRule="evenodd" />
-              </clipPath>
-            </defs>
-            <path d={moatBand} fill={tuning.fill} fillRule="evenodd" />
-            <g
-              clipPath={`url(#${moatClipId})`}
-              filter={VILLAGE_STROKE_WOBBLE}
-              fill="none"
-              stroke={MOAT_COLOR}
-              strokeWidth={HATCH_WIDTH}
-              strokeLinecap="round"
-              strokeLinejoin="round"
+    <MapInkContext.Provider value={tuning.ink}>
+      <svg
+        ref={svgRef}
+        data-testid="village-map"
+        viewBox={viewBox}
+        className="h-full w-full touch-none select-none"
+        role="img"
+        aria-label="Top-down village"
+      >
+        <defs>
+          <OutlineWobbleFilter />
+          {build.wall > 0 ? (
+            <mask
+              id={wallMaskId}
+              maskUnits="userSpaceOnUse"
+              maskContentUnits="userSpaceOnUse"
+              x={frameX}
+              y={frameY}
+              width={frameSize}
+              height={frameSize}
             >
-              {moatHatchPaths(moatPoints, tuning.wallOval).map((d, index) => (
-                <path key={index} d={d} />
-              ))}
-            </g>
-            <SilhouetteHighlight stroke={1} color="#fff">
-              <path d={moatBand} fill="#000" fillRule="evenodd" />
-            </SilhouetteHighlight>
-          </g>
-        </MapBorderExtraContext.Provider>
-      ) : null}
-
-      {wallChitinPaths.length > 0 ? (
-        <g data-testid="chitin-plating" filter={OUTLINE_WOBBLE}>
-          {wallChitinPaths.map((d, index) => (
-            <path key={`wall-chitin-${index}`} d={d} {...chitinPaint} />
-          ))}
-        </g>
-      ) : null}
-
-      {chitinBoundary
-        ? (
-          <g data-testid="palisade-chitin" filter={OUTLINE_WOBBLE}>
-            {towers.map((tower, index) => {
-              const d = circleChitinArcPath(
-                tower,
-                tower.r + 0.5 + CHITIN_STROKE / 2,
-                chitinBoundary,
-              );
-              return d ? (
-                <path key={`palisade-chitin-${index}`} d={d} {...chitinPaint} />
-              ) : null;
-            })}
-          </g>
-        )
-        : null}
-
-      {fortChitin.length > 0 ? (
-        <g data-testid="fort-chitin" filter={OUTLINE_WOBBLE}>
-          {fortChitin.map((path) => (
-            <path key={path.key} d={path.d} {...chitinPaint} />
-          ))}
-        </g>
-      ) : null}
-
-      {chitinSpikes.length > 0 ? (
-        <g data-testid="chitin-spikes" filter={OUTLINE_WOBBLE}>
-          {chitinSpikes.map((spike, index) => (
-            <polygon
-              key={`chitin-spike-${index}`}
-              points={`${spike.left.x.toFixed(2)},${spike.left.y.toFixed(2)} ${spike.right.x.toFixed(2)},${spike.right.y.toFixed(2)} ${spike.tip.x.toFixed(2)},${spike.tip.y.toFixed(2)}`}
-              fill={CHITIN_COLOR}
-            />
-          ))}
-        </g>
-      ) : null}
-
-      {showWall ? (
-        <g filter={VILLAGE_STROKE_WOBBLE} opacity={build.wall === 0 ? 0.35 : 1}>
-          {build.wall > 0 ? (
-            <path
-              d={outlinePath}
-              fill="none"
-              stroke="#000"
-              strokeWidth={thickness + PALISADE_BORDER * 2}
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            />
-          ) : null}
-          <path
-            d={outlinePath}
-            fill="none"
-            stroke={tuning.fill}
-            strokeWidth={thickness}
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeDasharray={build.wall === 0 ? "7 8" : undefined}
-          />
-          {build.wall > 0 ? (
-            <g mask={`url(#${wallMaskId})`} style={{ pointerEvents: "none" }}>
-              <g
-                transform={`translate(${MAP_CENTER} ${MAP_CENTER})`}
+              <path
+                d={outlinePath}
                 fill="none"
-                stroke="#000"
-                strokeWidth={CROSSED_HATCH_WIDTH}
-                strokeOpacity={0.6}
+                stroke="#fff"
+                strokeWidth={thickness}
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+            </mask>
+          ) : null}
+        </defs>
+        <rect x={frameX} y={frameY} width={frameSize} height={frameSize} fill={tuning.ground} />
+
+        <path d={outlinePath} fill={tuning.interior} />
+
+        {moatBand && moatPoints ? (
+          <MapBorderExtraContext.Provider value={moatHighlighted ? MAP_HIGHLIGHT_BORDER : 0}>
+            <g
+              data-building="fortifiedMoat"
+              style={{ cursor: "default" }}
+              onPointerEnter={() => {
+                setHoveredBuildingId("fortifiedMoat");
+                onHoverBuilding?.("fortifiedMoat");
+              }}
+              onPointerLeave={() => {
+                setHoveredBuildingId((current) =>
+                  current === "fortifiedMoat" ? null : current,
+                );
+                onHoverBuilding?.(null);
+              }}
+            >
+              <defs>
+                <clipPath id={moatClipId}>
+                  <path d={moatBand} clipRule="evenodd" />
+                </clipPath>
+              </defs>
+              <path d={moatBand} fill={tuning.waterFill} fillRule="evenodd" />
+              <g
+                clipPath={`url(#${moatClipId})`}
+                filter={VILLAGE_STROKE_WOBBLE}
+                fill="none"
+                stroke={tuning.water}
+                strokeWidth={HATCH_WIDTH}
+                strokeOpacity={0.8}
                 strokeLinecap="round"
                 strokeLinejoin="round"
               >
-                {wallHatch.map((d, index) => (
+                {moatHatchPaths(moatPoints, tuning.wallOval).map((d, index) => (
                   <path key={index} d={d} />
                 ))}
-                {wallHatch.map((d, index) => (
-                  <path key={`cross-${index}`} d={d} transform="rotate(90)" />
-                ))}
               </g>
+              <SilhouetteHighlight stroke={1} color="#fff">
+                <path d={moatBand} fill="#000" fillRule="evenodd" />
+              </SilhouetteHighlight>
             </g>
-          ) : null}
-        </g>
-      ) : null}
+          </MapBorderExtraContext.Provider>
+        ) : null}
 
-      <g data-testid="palisade-towers" filter={OUTLINE_WOBBLE}>
-        {towers.map((tower, index) => (
-          <g key={`palisade-tower-${index}`}>
-            <circle cx={tower.x} cy={tower.y} r={tower.r} fill={tuning.fill} />
-            <HatchStripes
-              color="#000"
-              reach={tower.r}
-              origin={{ x: tower.x, y: tower.y }}
-              clip={<circle cx={tower.x} cy={tower.y} r={tower.r} />}
-              crossed
-              strokeWidth={CROSSED_HATCH_WIDTH}
-              strokeOpacity={0.6}
-            />
-            <circle cx={tower.x} cy={tower.y} r={tower.r} fill="none" stroke="#000" strokeWidth={1} />
-          </g>
-        ))}
-      </g>
-
-      {slots.map((slot) => {
-        const highlighted =
-          (highlightId !== null && highlightId === slot.buildingId) ||
-          hoveredBuildingId === slot.buildingId;
-        const fixed = readOnly || staysPut(slot.buildingId);
-        return (
-          <g
-            key={slot.id}
-            data-building={slot.buildingId}
-            transform={`translate(${slot.x} ${slot.y})`}
-            style={{ cursor: fixed ? "default" : "grab" }}
-            onPointerDown={
-              fixed
-                ? undefined
-                : (event) => {
-                  setHoveredBuildingId(null);
-                  onHoverBuilding?.(null);
-                  onPointerDown(event, slot);
-                }
-            }
-            onPointerMove={readOnly ? undefined : onPointerMove}
-            onPointerUp={readOnly ? undefined : onPointerUp}
-            onPointerCancel={readOnly ? undefined : onPointerUp}
-            onDoubleClick={
-              readOnly
-                ? undefined
-                : (event) => {
-                  event.stopPropagation();
-                  event.preventDefault();
-                  onOverride(slot.id, null);
-                }
-            }
-            onPointerEnter={() => {
-              setHoveredBuildingId(slot.buildingId);
-              onActiveLabel(slot.label);
-              onHoverBuilding?.(slot.buildingId);
-            }}
-            onPointerLeave={() => {
-              setHoveredBuildingId(null);
-              onActiveLabel(null);
-              onHoverBuilding?.(null);
-            }}
-          >
-            {onHoverBuilding ? null : <title>{slot.label}</title>}
-            {reveal?.fadeOutTier[slot.id] != null ? (
-              <g className="village-map-fade-out">
-                <SlotMark slot={slot} tier={reveal.fadeOutTier[slot.id]} tuning={tuning} highlighted={highlighted} />
-              </g>
-            ) : null}
-            <g
-              className={
-                reveal?.fadeIn[slot.id]
-                  ? reveal.fadeOutTier[slot.id] != null
-                    ? "village-map-fade-in village-map-fade-in--after-out"
-                    : "village-map-fade-in"
-                  : undefined
-              }
-              onAnimationEnd={(event) => {
-                if (event.animationName !== "village-map-fade-in") return;
-                setRevealHighlight(false);
-              }}
-            >
-              <SlotMark
-                slot={slot}
-                tier={slot.tier}
-                tuning={tuning}
-                highlighted={highlighted || (revealHighlight && reveal?.fadeIn[slot.id] === true)}
-              />
-            </g>
-            {tuning.showNames ? (
-              <text
-                y={tuning.squareSize / 2 + 12}
-                textAnchor="middle"
-                fill="#b7b1a6"
-                fontSize="11"
-                fontFamily="Fira Sans, sans-serif"
-                style={{ pointerEvents: "none" }}
-              >
-                {slot.label}
-              </text>
-            ) : null}
-          </g>
-        );
-      })}
-
-      {traps.length > 0 ? (
-        <MapBorderExtraContext.Provider value={trapsHighlighted ? MAP_HIGHLIGHT_BORDER : 0}>
-          <g
-            data-building="traps"
-            style={{ cursor: "default" }}
-            onPointerEnter={() => {
-              setHoveredBuildingId("traps");
-              onHoverBuilding?.("traps");
-            }}
-            onPointerLeave={() => {
-              setHoveredBuildingId((current) => (current === "traps" ? null : current));
-              onHoverBuilding?.(null);
-            }}
-          >
-            {traps.map((trap, index) => (
-              <g
-                key={`trap-${index}`}
-                transform={`translate(${trap.x} ${trap.y}) rotate(${(Math.sin(index * 2.17) * 10).toFixed(1)})`}
-              >
-                <circle r={trapSize * Math.SQRT2 + trapStroke} fill="transparent" />
-                <g filter={OUTLINE_WOBBLE}>
-                  <TrapMark
-                    size={trapSize}
-                    stroke={trapStroke}
-                    color={tuning.trapColor}
-                    improved={improved}
-                  />
-                </g>
-              </g>
+        {wallChitinPaths.length > 0 ? (
+          <g data-testid="chitin-plating" filter={OUTLINE_WOBBLE}>
+            {wallChitinPaths.map((d, index) => (
+              <path key={`wall-chitin-${index}`} d={d} {...paint} />
             ))}
           </g>
-        </MapBorderExtraContext.Provider>
-      ) : null}
-    </svg>
+        ) : null}
+
+        {chitinBoundary
+          ? (
+            <g data-testid="palisade-chitin" filter={OUTLINE_WOBBLE}>
+              {towers.map((tower, index) => {
+                const d = circleChitinArcPath(
+                  tower,
+                  tower.r + PALISADE_TOWER_STROKE / 2 + CHITIN_STROKE / 2,
+                  chitinBoundary,
+                );
+                return d ? (
+                  <path key={`palisade-chitin-${index}`} d={d} {...paint} />
+                ) : null;
+              })}
+            </g>
+          )
+          : null}
+
+        {fortChitin.length > 0 ? (
+          <g data-testid="fort-chitin" filter={OUTLINE_WOBBLE}>
+            {fortChitin.map((path) => (
+              <path key={path.key} d={path.d} {...paint} />
+            ))}
+          </g>
+        ) : null}
+
+        {chitinSpikes.length > 0 ? (
+          <g data-testid="chitin-spikes" filter={OUTLINE_WOBBLE}>
+            {chitinSpikes.map((spike, index) => (
+              <polygon
+                key={`chitin-spike-${index}`}
+                points={`${spike.left.x.toFixed(2)},${spike.left.y.toFixed(2)} ${spike.right.x.toFixed(2)},${spike.right.y.toFixed(2)} ${spike.tip.x.toFixed(2)},${spike.tip.y.toFixed(2)}`}
+                fill={tuning.chitin}
+              />
+            ))}
+          </g>
+        ) : null}
+
+        {showWall ? (
+          <g
+            filter={VILLAGE_STROKE_WOBBLE}
+            opacity={build.wall === 0 ? 0.35 : 1}
+            data-building={build.wall > 0 ? "palisades" : undefined}
+            style={build.wall > 0 ? { cursor: "default" } : undefined}
+            onPointerEnter={build.wall > 0 ? onPalisadeEnter : undefined}
+            onPointerLeave={build.wall > 0 ? onPalisadeLeave : undefined}
+          >
+            {build.wall > 0 ? (
+              <path
+                d={palisadeInkPath}
+                fill="none"
+                stroke={tuning.ink}
+                strokeWidth={palisadeInkWidth}
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+            ) : null}
+            <path
+              d={outlinePath}
+              fill="none"
+              stroke={tuning.wallColor}
+              strokeWidth={thickness}
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeDasharray={build.wall === 0 ? "7 8" : undefined}
+            />
+            {build.wall > 0 ? (
+              <g mask={`url(#${wallMaskId})`} style={{ pointerEvents: "none" }}>
+                <g
+                  transform={`translate(${MAP_CENTER} ${MAP_CENTER})`}
+                  fill="none"
+                  stroke={tuning.ink}
+                  strokeWidth={CROSSED_HATCH_WIDTH}
+                  strokeOpacity={0.6}
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                >
+                  {wallHatch.map((d, index) => (
+                    <path key={index} d={d} />
+                  ))}
+                </g>
+              </g>
+            ) : null}
+          </g>
+        ) : null}
+
+        <g
+          data-testid="palisade-towers"
+          filter={OUTLINE_WOBBLE}
+          onPointerEnter={towers.length > 0 ? onPalisadeEnter : undefined}
+          onPointerLeave={towers.length > 0 ? onPalisadeLeave : undefined}
+        >
+          {towers.map((tower, index) => (
+            <g key={`palisade-tower-${index}`}>
+              <circle cx={tower.x} cy={tower.y} r={tower.r} fill={tuning.fill} />
+              <circle
+                cx={tower.x}
+                cy={tower.y}
+                r={tower.r}
+                fill="none"
+                stroke={tuning.ink}
+                strokeWidth={
+                  palisadesHighlighted
+                    ? PALISADE_TOWER_STROKE + MAP_HIGHLIGHT_BORDER
+                    : PALISADE_TOWER_STROKE
+                }
+              />
+            </g>
+          ))}
+        </g>
+
+        {slots.map((slot) => {
+          const hovered =
+            (highlightId !== null && highlightId === slot.buildingId) ||
+            hoveredBuildingId === slot.buildingId;
+          const fadeSignature = revealFadeSignature(reveal, slot.id);
+          const fading =
+            fadeSignature != null &&
+            easedBorder[slot.id] !== fadeSignature &&
+            !prefersReducedMotion();
+          const highlighted = hovered || fading;
+          const fixed = readOnly || staysPut(slot.buildingId);
+          return (
+            <g
+              key={slot.id}
+              data-building={slot.buildingId}
+              transform={`translate(${slot.x} ${slot.y})`}
+              style={{ cursor: fixed ? "default" : "grab" }}
+              onPointerDown={
+                fixed
+                  ? undefined
+                  : (event) => {
+                    setHoveredBuildingId(null);
+                    onHoverBuilding?.(null);
+                    onPointerDown(event, slot);
+                  }
+              }
+              onPointerMove={readOnly ? undefined : onPointerMove}
+              onPointerUp={readOnly ? undefined : onPointerUp}
+              onPointerCancel={readOnly ? undefined : onPointerUp}
+              onDoubleClick={
+                readOnly
+                  ? undefined
+                  : (event) => {
+                    event.stopPropagation();
+                    event.preventDefault();
+                    onOverride(slot.id, null);
+                  }
+              }
+              onPointerEnter={() => {
+                setHoveredBuildingId(slot.buildingId);
+                onActiveLabel(slot.label);
+                onHoverBuilding?.(slot.buildingId);
+              }}
+              onPointerLeave={() => {
+                setHoveredBuildingId(null);
+                onActiveLabel(null);
+                onHoverBuilding?.(null);
+              }}
+            >
+              {onHoverBuilding ? null : <title>{slot.label}</title>}
+              {reveal?.fadeOutTier[slot.id] != null ? (
+                <g className="village-map-fade-out">
+                  <SlotMark
+                    slot={slot}
+                    tier={reveal.fadeOutTier[slot.id]}
+                    tuning={markTuning}
+                    highlighted={hovered}
+                    heartfireLevel={heartfireLevel}
+                    ebonGrace={build.ebonGrace}
+                    brimstoneInfusion={build.brimstoneInfusion}
+                    dedication={build.dedication}
+                    dedicationDeepened={build.dedicationDeepened}
+                  />
+                </g>
+              ) : null}
+              <g
+                className={
+                  reveal?.fadeIn[slot.id]
+                    ? reveal.fadeOutTier[slot.id] != null
+                      ? "village-map-fade-in village-map-fade-in--after-out"
+                      : "village-map-fade-in"
+                    : undefined
+                }
+                onAnimationEnd={(event) => {
+                  if (event.animationName !== "village-map-highlight-fade") return;
+                  if (event.elapsedTime < 3 || fadeSignature == null) return;
+                  setEasedBorder((current) =>
+                    current[slot.id] === fadeSignature ? current : { ...current, [slot.id]: fadeSignature },
+                  );
+                }}
+              >
+                <SlotMark
+                  slot={slot}
+                  tier={slot.tier}
+                  tuning={markTuning}
+                  highlighted={highlighted}
+                  fadeHighlight={fading}
+                  heartfireLevel={heartfireLevel}
+                  ebonGrace={build.ebonGrace}
+                  brimstoneInfusion={build.brimstoneInfusion}
+                  dedication={build.dedication}
+                  dedicationDeepened={build.dedicationDeepened}
+                />
+              </g>
+              {tuning.showNames ? (
+                <text
+                  y={tuning.squareSize / 2 + 12}
+                  textAnchor="middle"
+                  fill="#b7b1a6"
+                  fontSize="11"
+                  fontFamily="Fira Sans, sans-serif"
+                  style={{ pointerEvents: "none" }}
+                >
+                  {slot.label}
+                </text>
+              ) : null}
+            </g>
+          );
+        })}
+
+        {traps.length > 0 ? (
+          <MapBorderExtraContext.Provider value={trapsHighlighted ? MAP_HIGHLIGHT_BORDER : 0}>
+            <g
+              data-building="traps"
+              style={{ cursor: "default" }}
+              onPointerEnter={() => {
+                setHoveredBuildingId("traps");
+                onHoverBuilding?.("traps");
+              }}
+              onPointerLeave={() => {
+                setHoveredBuildingId((current) => (current === "traps" ? null : current));
+                onHoverBuilding?.(null);
+              }}
+            >
+              {traps.map((trap, index) => (
+                <g
+                  key={`trap-${index}`}
+                  transform={`translate(${trap.x} ${trap.y}) rotate(${(Math.sin(index * 2.17) * 10).toFixed(1)})`}
+                >
+                  <g filter={OUTLINE_WOBBLE} style={{ pointerEvents: "none" }}>
+                    <TrapMark
+                      size={trapSize}
+                      stroke={trapStroke}
+                      color={tuning.trapColor}
+                      improved={improved}
+                    />
+                  </g>
+                  <circle r={trapTarget} fill="#000" fillOpacity={0} pointerEvents="all" />
+                </g>
+              ))}
+            </g>
+          </MapBorderExtraContext.Provider>
+        ) : null}
+      </svg>
+    </MapInkContext.Provider>
   );
 }
