@@ -125,9 +125,11 @@ function cloneMark(node: ReactNode, prefix: string): ReactNode {
  */
 function SilhouetteHighlight({
   stroke,
+  color = "#000",
   children,
 }: {
   stroke: number;
+  color?: string;
   children: ReactNode;
 }) {
   const extra = useMapBorderExtra();
@@ -149,7 +151,7 @@ function SilhouetteHighlight({
           <feMorphology in="SourceAlpha" operator="dilate" radius={stroke + extra / 2} result="grow" />
           <feMorphology in="SourceAlpha" operator="erode" radius={extra / 2} result="shrink" />
           <feComposite in="grow" in2="shrink" operator="out" result="ring" />
-          <feFlood floodColor="#000" result="ink" />
+          <feFlood floodColor={color} result="ink" />
           <feComposite in="ink" in2="ring" operator="in" />
         </filter>
       </defs>
@@ -1586,9 +1588,9 @@ function TrapMark({
   return (
     <g strokeLinecap="square">
       {highlighted ? (
-        <g fill="none" stroke="#000" strokeWidth={stroke + MAP_HIGHLIGHT_BORDER}>
+        <g fill="none" stroke="#fff" strokeWidth={stroke + MAP_HIGHLIGHT_BORDER}>
           {arms()}
-          {improved ? <circle r={0.85 + MAP_HIGHLIGHT_BORDER / 2} fill="#000" stroke="none" /> : null}
+          {improved ? <circle r={0.85 + MAP_HIGHLIGHT_BORDER / 2} fill="#fff" stroke="none" /> : null}
         </g>
       ) : null}
       <g fill="none" stroke={color} strokeWidth={stroke}>
@@ -1961,7 +1963,7 @@ export function VillageMap({
                 <path key={index} d={d} />
               ))}
             </g>
-            <SilhouetteHighlight stroke={1}>
+            <SilhouetteHighlight stroke={1} color="#fff">
               <path d={moatBand} fill="#000" fillRule="evenodd" />
             </SilhouetteHighlight>
           </g>

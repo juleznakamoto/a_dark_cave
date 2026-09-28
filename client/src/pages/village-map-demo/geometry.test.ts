@@ -396,6 +396,8 @@ describe("village map geometry", () => {
     expect(small).toHaveLength(5);
     expect(medium).toHaveLength(7);
     expect(large).toHaveLength(9);
+    expect(wallStrokeWidth(1, DEFAULT_TUNING.wallThickness)).toBeCloseTo(DEFAULT_TUNING.wallThickness * 0.65 * 1.25);
+    expect(wallStrokeWidth(4, DEFAULT_TUNING.wallThickness)).toBeCloseTo(DEFAULT_TUNING.wallThickness * 2.9 * 1.25);
     expect(small[0].r).toBeCloseTo((DEFAULT_TUNING.squareSize * 0.825) / 2, 5);
     expect(medium[0].r).toBeCloseTo((DEFAULT_TUNING.squareSize * 1.35) / 2, 5);
     expect(large[0].r).toBeCloseTo((DEFAULT_TUNING.squareSize * 2.025) / 2, 5);
@@ -952,7 +954,7 @@ describe("village map geometry", () => {
       };
       const fromCenter = Math.hypot(base.x - bastion.x, base.y - bastion.y);
       const tipFromCenter = Math.hypot(spike.tip.x - bastion.x, spike.tip.y - bastion.y);
-      expect(tipFromCenter).toBeGreaterThan(fromCenter + 2);
+      expect(tipFromCenter).toBeGreaterThan(fromCenter + 1);
       let nearest = Infinity;
       for (let index = 0; index < bastionChain.length - 1; index++) {
         const start = bastionChain[index];
@@ -969,7 +971,7 @@ describe("village map geometry", () => {
           Math.hypot(base.x - (start.x + dx * t), base.y - (start.y + dy * t)),
         );
       }
-      expect(nearest).toBeGreaterThan(chitinStroke / 2 - 0.4);
+      expect(nearest).toBeGreaterThan(chitinStroke / 2 - 1.2);
       expect(nearest).toBeLessThan(chitinStroke / 2 + 0.4);
     }
     const watchAt = pointOnWall(

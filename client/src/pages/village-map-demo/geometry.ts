@@ -2101,7 +2101,7 @@ export function trapWallOutset(
 export function wallStrokeWidth(level: number, base: number): number {
   if (level <= 0) return 1.5;
   const scale = [0, 0.65, 1.25, 2, 2.9][Math.min(level, 4)] ?? 0.65;
-  return base * scale;
+  return base * scale * 1.25;
 }
 
 /** Gap from the palisade out to the moat centerline. */
