@@ -120,6 +120,7 @@ export type GameTab =
   | "forest"
   | "bastion"
   | "estate"
+  | "map"
   | "achievements"
   | "timedevent";
 

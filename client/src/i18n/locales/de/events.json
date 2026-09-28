@@ -1,4 +1,16 @@
 {
+  "cartographer": {
+    "title": "Der Kartograph",
+    "message": "Ein junger Mann kommt ins Dorf. Sein Rucksack ist voller Karten und seltsamer Instrumente. Er sagt, er wolle die Welt kartieren, und bietet an, dir das Zeichnen detaillierter Karten beizubringen.",
+    "choices": {
+      "accept": {
+        "label": "Annehmen"
+      }
+    },
+    "log": {
+      "outcome0": "Er bleibt und bringt es dir bei. Von nun an kannst du das Dorf selbst kartieren."
+    }
+  },
   "alchemistArrives": {
     "message": "Der Alchemist tritt aus seiner Halle: 'Ich habe Tag und Nacht Experimente durchgeführt', sagt er und hält eine Phiole mit schimmerndem Staub hoch. 'Ich habe etwas Außergewöhnliches und furchtbar Gefährliches erschaffen.'",
     "title": "Die Entdeckung des Alchemisten"

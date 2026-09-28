@@ -832,6 +832,53 @@ html[data-adc-chrome-stage="0"] {
   }
 }
 
+@keyframes village-map-fade-in {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes village-map-fade-out {
+  from {
+    opacity: 1;
+  }
+
+  to {
+    opacity: 0;
+  }
+}
+
+.village-map-fade-in {
+  opacity: 0;
+  animation: village-map-fade-in 4s linear forwards;
+}
+
+/* Upgrade: the old mark finishes fading out before the new one starts. */
+.village-map-fade-in--after-out {
+  animation-delay: 1.5s;
+}
+
+.village-map-fade-out {
+  animation: village-map-fade-out 1.5s linear forwards;
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .village-map-fade-in {
+    animation: none;
+    opacity: 1;
+  }
+
+  .village-map-fade-out {
+    animation: none;
+    opacity: 0;
+  }
+}
+
 .animate-fade-in {
   animation: fade-in 8s ease-in-out forwards;
 }

@@ -37,6 +37,29 @@ describe("getVisibleHotkeyTabs", () => {
     ]);
   });
 
+  it("places the map tab immediately left of achievements", () => {
+    expect(
+      getVisibleHotkeyTabs({
+        villageUnlocked: true,
+        forestUnlocked: true,
+        bastionUnlocked: true,
+        darkEstate: 1,
+        achievementsUnlocked: true,
+        timedEventActive: true,
+        mapTab: true,
+      }),
+    ).toEqual([
+      "cave",
+      "village",
+      "forest",
+      "estate",
+      "bastion",
+      "map",
+      "achievements",
+      "timedevent",
+    ]);
+  });
+
   it("includes locked demo teaser tabs when asked", () => {
     expect(
       getVisibleHotkeyTabs({

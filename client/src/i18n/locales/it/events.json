@@ -1,4 +1,16 @@
 {
+  "cartographer": {
+    "title": "Il cartografo",
+    "message": "Un giovane arriva al villaggio. Il suo zaino è pieno di mappe e strani strumenti. Dice di voler mappare il mondo e si offre di insegnarti a disegnare mappe dettagliate.",
+    "choices": {
+      "accept": {
+        "label": "Accetta"
+      }
+    },
+    "log": {
+      "outcome0": "Resta e te lo insegna. Ora puoi disegnare mappe dettagliate del villaggio."
+    }
+  },
   "alchemistArrives": {
     "message": "L'alchimista emerge dalla sua sala: 'Ho condotto esperimenti giorno e notte.' Solleva una fiala di polvere scintillante. 'Ho creato qualcosa di straordinario e terribilmente pericoloso.'",
     "title": "La Scoperta dell'Alchimista"

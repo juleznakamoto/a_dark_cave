@@ -16,6 +16,18 @@
     "message": "At the forest's edge, villagers find an abandoned cart with food. What should they do?",
     "title": "The Abandoned Cart"
   },
+  "cartographer": {
+    "title": "The Cartographer",
+    "message": "A young man arrives at the village. His backpack is full of maps and strange instruments. He says he wants to map the world, and offers to teach you how to draw detailed maps.",
+    "choices": {
+      "accept": {
+        "label": "Accept"
+      }
+    },
+    "log": {
+      "outcome0": "He stays and teaches you. You can draw detailed maps of the village now."
+    }
+  },
   "alchemistArrives": {
     "message": "The alchemist emerges from his hall: 'I have been conducting experiments day and night.' He holds up a vial of shimmering dust. 'I've created something extraordinary and terribly dangerous.'",
     "title": "The Alchemist's Discovery"

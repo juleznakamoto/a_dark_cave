@@ -2,6 +2,7 @@ import type { GameState } from "@shared/schema";
 import {
   isBastionTabVisible,
   isForestTabVisible,
+  isMapTabVisible,
   isVillageTabVisible,
 } from "@shared/repairUnlockFlags";
 import { isTraderShopUnlocked } from "@/game/stateHelpers";
@@ -15,6 +16,7 @@ export const TAB_UNLOCK_BLINK_SEEN_KEYS = {
   bastion: "tabUnlockBlinkSeen_bastion",
   trader: "tabUnlockBlinkSeen_trader",
   achievements: "tabUnlockBlinkSeen_achievements",
+  map: "tabUnlockBlinkSeen_map",
 } as const;
 
 export type TabUnlockBlinkId = keyof typeof TAB_UNLOCK_BLINK_SEEN_KEYS;
@@ -42,6 +44,7 @@ export type TabUnlockSnapshot = {
   bastionUnlocked: boolean;
   traderUnlocked: boolean;
   achievementsUnlocked: boolean;
+  mapUnlocked: boolean;
 };
 
 export function buildTabUnlockSnapshot(state: {
@@ -77,6 +80,7 @@ export function buildTabUnlockSnapshot(state: {
       story: state.story,
     }),
     achievementsUnlocked: isAchievementsGameTabUnlocked(state as GameState),
+    mapUnlocked: isMapTabVisible(state),
   };
 }
 
@@ -115,6 +119,7 @@ export function getNewlyUnlockedTabsForBlink(
     ["bastion", "bastionUnlocked"],
     ["trader", "traderUnlocked"],
     ["achievements", "achievementsUnlocked"],
+    ["map", "mapUnlocked"],
   ];
 
   for (const [tabId, field] of checks) {

@@ -16,6 +16,8 @@ export type VisibleHotkeyTabsParams = {
   darkEstate: number;
   achievementsUnlocked: boolean;
   timedEventActive: boolean;
+  /** Map tab, after the cartographer. Sits just left of Achievements. */
+  mapTab?: boolean;
   /** Demo-end teaser tabs are on-screen and clickable even while still locked. */
   includeDemoTeaserTabs?: boolean;
 };
@@ -27,6 +29,7 @@ export function getVisibleHotkeyTabs(p: VisibleHotkeyTabsParams): GameTab[] {
   if (p.forestUnlocked || p.includeDemoTeaserTabs) tabs.push("forest");
   if (p.darkEstate >= 1 || p.includeDemoTeaserTabs) tabs.push("estate");
   if (p.bastionUnlocked || p.includeDemoTeaserTabs) tabs.push("bastion");
+  if (p.mapTab) tabs.push("map");
   if (p.achievementsUnlocked) tabs.push("achievements");
   if (p.timedEventActive) tabs.push("timedevent");
   return tabs;

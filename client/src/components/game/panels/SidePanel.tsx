@@ -791,6 +791,7 @@ export default function SidePanel() {
         return caveSections.includes(sectionName);
       }
       case "village":
+      case "map":
         return ["resources", "buildings"].includes(sectionName);
       case "forest":
         return ["resources", "relics", "blessings", "bonuses"].includes(

@@ -57,6 +57,7 @@ export const KNOWN_SPA_PATHS = new Set([
   "/dev/demo-end",
   "/dev/sounds",
   "/dev/production-icons",
+  "/dev/village-map",
 ]);
 
 const HOME_ROUTE_SEO: PublicRouteSeo = {
@@ -204,6 +205,13 @@ const ROUTE_SEO: Record<string, PublicRouteSeo> = {
     includeHomeJsonLd: false,
     robots: "noindex, nofollow",
     pageName: "Production Icons Demo",
+  },
+  "/dev/village-map": {
+    title: "Village Map Demo - A Dark Cave",
+    description: "Development preview for the A Dark Cave top-down village map.",
+    includeHomeJsonLd: false,
+    robots: "noindex, nofollow",
+    pageName: "Village Map Demo",
   },
 };
 

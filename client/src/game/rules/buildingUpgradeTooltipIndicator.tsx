@@ -8,7 +8,7 @@ export function BuildingUpgradeTooltipIcon({ className }: { className?: string }
   return (
     <span
       className={cn(
-        "font-noto-symbols-2 text-sm text-green-700 leading-none shrink-0",
+        "font-noto-symbols-2 text-[1.3125rem] text-green-700 leading-none shrink-0",
         className,
       )}
       aria-hidden

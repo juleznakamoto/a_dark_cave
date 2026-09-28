@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 import {
   hasForestUnlockEvidence,
+  hasMapUnlockEvidence,
   hasVillageUnlockEvidence,
   isVillageTabVisible,
   repairUnlockFlags,
@@ -77,6 +78,20 @@ describe("repairUnlockFlags", () => {
         flags: { forestUnlocked: false },
       }),
     ).toBe(true);
+  });
+
+  it("restores mapUnlocked after the cartographer visit when flags were wiped", () => {
+    const repaired = repairUnlockFlags(
+      {
+        flags: { gameStarted: true },
+        story: { seen: { cartographerAccepted: true } },
+      },
+      defaults,
+    );
+    expect(repaired.flags.mapUnlocked).toBe(true);
+    expect(hasMapUnlockEvidence({ triggeredEvents: { cartographer: true } })).toBe(
+      true,
+    );
   });
 
   it("does not treat village Hunter Cabin as forest unlock evidence", () => {

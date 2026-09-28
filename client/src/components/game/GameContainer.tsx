@@ -34,6 +34,7 @@ import {
 } from "./gameChrome";
 import CavePanel from "./panels/CavePanel";
 import VillagePanel from "./panels/VillagePanel";
+import VillageMapOverlay from "./VillageMapOverlay";
 import ForestPanel from "./panels/ForestPanel";
 import EstatePanel from "./panels/EstatePanel";
 import BastionPanel from "./panels/BastionPanel";
@@ -101,6 +102,13 @@ import {
   withTabUnlockBlinkSeen,
   type TabUnlockBlinkId,
 } from "@/game/tabUnlockBlink";
+import { buildStateFromPlayer } from "@/game/villageMapBuild";
+import {
+  hasUnseenVillageMapMarks,
+  villageMapFeatureMarks,
+} from "@/game/villageMapReveal";
+import { DEFAULT_TUNING } from "@/pages/village-map-demo/catalog";
+import { placedSlots } from "@/pages/village-map-demo/geometry";
 import { TraderTabButton } from "@/components/game/TraderTabButton";
 import { GameLocationTabButton } from "@/components/game/DemoLockedTabButton";
 import {
@@ -119,7 +127,7 @@ import { useTranslation } from "react-i18next";
 import { useIOSChromeViewportShell } from "@/hooks/useIOSChromeViewportShell";
 import { usePanelResize } from "./panelResize";
 import PanelResizeHandle from "./PanelResizeHandle";
-import { GameUiIcon } from "@/components/game/GameUiIcon";
+import { GameUiIcon, MapTabIcon } from "@/components/game/GameUiIcon";
 import {
   getTimedEventTabLabelKind,
   TIMED_EVENT_TAB_LABEL_DEFAULTS,
@@ -176,6 +184,7 @@ export default function GameContainer() {
     sfxMuted,
     musicVolume,
     sfxVolume,
+    villageMapSeenTiers,
   } = useGameStore(
     useShallow((state) => ({
       activeTab: state.activeTab,
@@ -197,8 +206,21 @@ export default function GameContainer() {
       sfxMuted: state.sfxMuted,
       musicVolume: state.musicVolume,
       sfxVolume: state.sfxVolume,
+      villageMapSeenTiers: state.villageMapSeenTiers,
     })),
   );
+
+  const mapTabVisible = Boolean(flags.mapUnlocked) || import.meta.env.DEV;
+
+  const mapTabGlow = useMemo(() => {
+    if (!mapTabVisible || activeTab === "map") return false;
+    const build = buildStateFromPlayer(buildings);
+    const marks = [
+      ...placedSlots(build, DEFAULT_TUNING, {}),
+      ...villageMapFeatureMarks(build),
+    ];
+    return hasUnseenVillageMapMarks(marks, villageMapSeenTiers);
+  }, [activeTab, buildings, villageMapSeenTiers, mapTabVisible]);
 
   const handleStartScreenMakeFire = useCallback(
     async (preferences: StartScreenPreferences) => {
@@ -592,6 +614,7 @@ export default function GameContainer() {
       "forest",
       "estate",
       "bastion",
+      ...(mapTabVisible ? ["map" as const] : []),
       "achievements",
       "timedevent",
     ];
@@ -604,7 +627,7 @@ export default function GameContainer() {
     ) {
       setActiveTab("cave");
     }
-  }, [activeTab, setActiveTab, timedEventTab.isActive]);
+  }, [activeTab, setActiveTab, timedEventTab.isActive, mapTabVisible]);
 
   const [timedEventTabPulseClass, setTimedEventTabPulseClass] = useState("");
   const [timedEventTabViewedEventId, setTimedEventTabViewedEventId] = useState<
@@ -952,6 +975,15 @@ export default function GameContainer() {
       });
     }
 
+    if (mapTabVisible) {
+      tabs.push({
+        id: "map",
+        icon: <MapTabIcon />,
+        label: "Map",
+        onClick: () => setActiveTab("map"),
+      });
+    }
+
     // Add Achievements tab if Survivor's Notes, Book of Trials, or general progress
     if (showAchievementsTab) {
       tabs.push({
@@ -989,6 +1021,7 @@ export default function GameContainer() {
     showAchievementsTab,
     timedEventTab.isActive,
     timedEventTabLabel,
+    mapTabVisible,
   ]);
 
   const visibleHotkeyTabs = useMemo(
@@ -1000,6 +1033,7 @@ export default function GameContainer() {
         darkEstate: buildings.darkEstate ?? 0,
         achievementsUnlocked: showAchievementsTab,
         timedEventActive: timedEventTab.isActive,
+        mapTab: mapTabVisible,
         includeDemoTeaserTabs: demoEndCatalogActive,
       }),
     [
@@ -1010,6 +1044,7 @@ export default function GameContainer() {
       showAchievementsTab,
       timedEventTab.isActive,
       demoEndCatalogActive,
+      mapTabVisible,
     ],
   );
 
@@ -1641,6 +1676,24 @@ export default function GameContainer() {
                             : t("tabs.bastion", { ns: "common" })}
                         </GameLocationTabButton>
 
+                        {mapTabVisible && (
+                          <button
+                            className={`${tabButtonClass} ${tabUnlockClassName(
+                              "map",
+                              activeTab === "map",
+                            )}${mapTabGlow ? " new-item-pulse" : ""}`}
+                            onClick={() => {
+                              useGameStore.getState().trackButtonClick("tab-map");
+                              clearTabAnimation("map");
+                              setActiveTab("map");
+                            }}
+                            data-testid="tab-map"
+                            aria-label={t("tabs.map", { ns: "common" })}
+                          >
+                            <MapTabIcon />
+                          </button>
+                        )}
+
                         {/* Achievements Tab Button */}
                         {showAchievementsTab && (
                           <button
@@ -1705,12 +1758,10 @@ export default function GameContainer() {
               </nav>
 
               {/* Action Panels — above particle layer so bursts stay behind buttons.
-                Clear z-index while paused/sleeping so the overlay (z-40) blocks clicks. */}
+                Clear z-index while paused/sleeping so the overlay (z-40) blocks clicks.
+                The Map tab fills this column only, so the side panels stay usable. */}
               <div
-                className={`relative flex-1 overflow-x-hidden min-h-0 ${activeTab === "achievements"
-                  ? "overflow-hidden"
-                  : "overflow-y-auto scrollbar-hide"
-                  }`}
+                className="relative flex-1 min-h-0"
                 style={{
                   zIndex:
                     idleModeDialog.isOpen || isPaused
@@ -1718,21 +1769,29 @@ export default function GameContainer() {
                       : Z_INDEX.gameActionButtons,
                 }}
               >
-                {activeTab === "cave" && <CavePanel />}
-                {activeTab === "village" && <VillagePanel />}
-                {activeTab === "forest" && <ForestPanel />}
-                {(activeTab === "estate" || estatePanelKept) && (
-                  <div hidden={activeTab !== "estate"}>
-                    <EstatePanel active={activeTab === "estate"} />
-                  </div>
-                )}
-                {(activeTab === "bastion" || bastionPanelKept) && (
-                  <div hidden={activeTab !== "bastion"}>
-                    <BastionPanel active={activeTab === "bastion"} />
-                  </div>
-                )}
-                {activeTab === "achievements" && <AchievementsPanel />}
-                {activeTab === "timedevent" && <TimedEventPanel />}
+                <div
+                  className={`h-full overflow-x-hidden min-h-0 ${activeTab === "achievements"
+                    ? "overflow-hidden"
+                    : "overflow-y-auto scrollbar-hide"
+                    }`}
+                >
+                  {activeTab === "cave" && <CavePanel />}
+                  {activeTab === "village" && <VillagePanel />}
+                  {activeTab === "forest" && <ForestPanel />}
+                  {(activeTab === "estate" || estatePanelKept) && (
+                    <div hidden={activeTab !== "estate"}>
+                      <EstatePanel active={activeTab === "estate"} />
+                    </div>
+                  )}
+                  {(activeTab === "bastion" || bastionPanelKept) && (
+                    <div hidden={activeTab !== "bastion"}>
+                      <BastionPanel active={activeTab === "bastion"} />
+                    </div>
+                  )}
+                  {activeTab === "achievements" && <AchievementsPanel />}
+                  {activeTab === "timedevent" && <TimedEventPanel />}
+                </div>
+                <VillageMapOverlay />
               </div>
             </section>
           </main>

@@ -16,6 +16,18 @@
     "message": "Na skraju lasu wieśniacy znajdują porzucony wóz z żywnością. Co mają zrobić?",
     "title": "Porzucony wóz"
   },
+  "cartographer": {
+    "title": "Kartograf",
+    "message": "Do wioski przybywa młody mężczyzna. Jego plecak jest pełen map i dziwnych przyrządów. Mówi, że chce nanieść świat na mapę, i proponuje, że nauczy cię rysować szczegółowe mapy.",
+    "choices": {
+      "accept": {
+        "label": "Przyjmij"
+      }
+    },
+    "log": {
+      "outcome0": "Zostaje i uczy cię. Od teraz potrafisz rysować szczegółowe mapy tej wioski."
+    }
+  },
   "alchemistArrives": {
     "message": "Alchemik wychodzi ze swojej hali: 'Prowadziłem eksperymenty dniem i nocą.' Unosi fiolkę mieniącego się pyłu. 'Stworzyłem coś niezwykłego i straszliwie niebezpiecznego.'",
     "title": "Odkrycie alchemika"

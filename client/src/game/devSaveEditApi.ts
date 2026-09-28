@@ -13,6 +13,7 @@ const GAME_TABS = [
   "forest",
   "bastion",
   "estate",
+  "map",
   "achievements",
   "timedevent",
 ] as const satisfies readonly GameTab[];

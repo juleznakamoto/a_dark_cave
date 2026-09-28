@@ -116,6 +116,8 @@ export const gameStateSchema = z.object({
       villageUnlocked: z.boolean().default(false),
       forestUnlocked: z.boolean().default(false),
       bastionUnlocked: z.boolean().default(false),
+      /** True after The Cartographer teaches map-drawing. Shows the Map tab. */
+      mapUnlocked: z.boolean().default(false),
       gameStarted: z.boolean().default(false),
       starvationActive: z.boolean().default(false),
       firstWolfAttack: z.boolean().default(false),
@@ -1169,6 +1171,13 @@ export const gameStateSchema = z.object({
       mobileSidePanelPx: z.number().positive().nullable().default(null),
     })
     .default({}),
+
+  /** Building positions the player moved on the village map after finishing a game. */
+  villageMapOverrides: z
+    .record(z.string(), z.object({ x: z.number(), y: z.number() }))
+    .default({}),
+  /** Map slot tiers already shown, so a new building fades in only once. */
+  villageMapSeenTiers: z.record(z.string(), z.number()).default({}),
 });
 
 export type GameState = z.infer<typeof gameStateSchema>;

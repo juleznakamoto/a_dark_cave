@@ -1,4 +1,16 @@
 {
+  "cartographer": {
+    "title": "Le cartographe",
+    "message": "Un jeune homme arrive au village. Son sac à dos est plein de cartes et d'étranges instruments. Il dit vouloir cartographier le monde et propose de t'apprendre à dessiner des cartes détaillées.",
+    "choices": {
+      "accept": {
+        "label": "Accepter"
+      }
+    },
+    "log": {
+      "outcome0": "Il reste et te l'apprend. Tu peux désormais dessiner des cartes détaillées du village."
+    }
+  },
   "alchemistArrives": {
     "message": "L'alchimiste surgit de son hall : 'J'ai mené des expériences nuit et jour,' dit-il en tenant une fiole de poussière miroitante. 'J'ai créé quelque chose d'extraordinaire et de terriblement dangereux.'",
     "title": "La Découverte de l'alchimiste"

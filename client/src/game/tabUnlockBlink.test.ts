@@ -43,6 +43,19 @@ describe("tabUnlockBlink", () => {
     ).toEqual([]);
   });
 
+  it("getNewlyUnlockedTabsForBlink returns the map when the cartographer unlocks it", () => {
+    const prev = buildTabUnlockSnapshot(minimalState());
+    const next = buildTabUnlockSnapshot(
+      minimalState({
+        flags: { ...minimalState().flags, mapUnlocked: true },
+        story: { seen: { cartographerAccepted: true }, merchantPurchases: 0, heavySleeperHours: 0 },
+      }),
+    );
+    expect(getNewlyUnlockedTabsForBlink(prev, next, minimalState().story)).toEqual([
+      "map",
+    ]);
+  });
+
   it("getNewlyUnlockedTabsForBlink returns village when newly unlocked", () => {
     const prev = buildTabUnlockSnapshot(minimalState());
     const next = buildTabUnlockSnapshot(

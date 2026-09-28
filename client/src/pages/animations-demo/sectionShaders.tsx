@@ -76,6 +76,9 @@ export function ShadersSection() {
         <Button size="xs" variant="outline" asChild>
           <a href="/dev/production-icons">Production icons</a>
         </Button>
+        <Button size="xs" variant="outline" asChild>
+          <a href="/dev/village-map">Village map</a>
+        </Button>
       </div>
 
       <div className="grid gap-3 md:grid-cols-2">

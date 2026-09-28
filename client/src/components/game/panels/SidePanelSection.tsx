@@ -58,6 +58,7 @@ import { getUiTooltip } from "@/i18n/tooltipLabels";
 import { GAME_PANEL_HEADER_BAND } from "@/components/game/gameChrome";
 import { getRedactedWidthCh, RedactedBar } from "@/components/game/RedactedHint";
 import { useUiTranslation } from "@/i18n/useUiTranslation";
+import { useVillageMapHoveredBuildingId } from "@/game/villageMapHighlight";
 
 const STAT_EFFECT_PULSE_STAT_IDS: TooltipStatKey[] = [
   "luck",
@@ -222,7 +223,7 @@ export function clearSidePanelActiveTooltipHover() {
   setSidePanelActiveTooltipHoverId(null);
 }
 
-function useSidePanelActiveTooltipHoverId(): string | null {
+export function useSidePanelActiveTooltipHoverId(): string | null {
   const [, bump] = useState(0);
   useEffect(() => {
     const listener = () => bump((n) => n + 1);
@@ -549,6 +550,7 @@ export default function SidePanelSection({
     Set<string>
   >(new Set());
   const activeTooltipHoverId = useSidePanelActiveTooltipHoverId();
+  const mapHoveredBuildingId = useVillageMapHoveredBuildingId();
   const prevValuesRef = useRef<Map<string, number>>(new Map());
   const isInitialRender = useRef(true);
   const storageLimit = useDerivedGameState((s) => getResourceLimit(s));
@@ -1005,7 +1007,9 @@ export default function SidePanelSection({
 
     // Check if this resource is highlighted (external cost hover or tooltip hover)
     const isHighlighted =
-      highlightedResources.has(item.id) || isItemTooltipHovered(item.id);
+      highlightedResources.has(item.id) ||
+      isItemTooltipHovered(item.id) ||
+      (mapHoveredBuildingId !== null && mapHoveredBuildingId === item.id);
 
     const isResourcesSection = sectionId === "resources";
     const tabForProductionColors = activeTab ?? storeActiveTab;

@@ -75,6 +75,7 @@ const SoundsDemo = lazy(() => import("@/pages/sounds-demo"));
 const ProductionIconsDemo = lazy(
   () => import("@/pages/production-icons-demo"),
 );
+const VillageMapDemo = lazy(() => import("@/pages/village-map-demo"));
 
 function AppRoutes() {
   return (
@@ -106,6 +107,7 @@ function AppRoutes() {
           path="/dev/production-icons"
           component={ProductionIconsDemo}
         />
+        <Route path="/dev/village-map" component={VillageMapDemo} />
         <Route path="/dev/estate-bar-upgrade">
           {() => <Redirect to="/dev/animations#estate-bars" />}
         </Route>

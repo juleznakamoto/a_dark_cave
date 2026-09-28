@@ -12,6 +12,7 @@ export type UnlockFlagSlice = {
   villageUnlocked?: boolean;
   forestUnlocked?: boolean;
   bastionUnlocked?: boolean;
+  mapUnlocked?: boolean;
   gameStarted?: boolean;
   hasFortress?: boolean;
 };
@@ -22,6 +23,7 @@ export type UnlockProgressEvidence = {
   weapons?: Record<string, boolean | undefined> | null;
   buildings?: Record<string, number | undefined> | null;
   story?: { seen?: Record<string, unknown> | null } | null;
+  triggeredEvents?: Record<string, boolean | undefined> | null;
 };
 
 function seenTrue(
@@ -103,6 +105,18 @@ export function isBastionTabVisible(state: UnlockProgressEvidence): boolean {
   return hasBastionUnlockEvidence(state);
 }
 
+/** Progress that proves the Map tab was unlocked (cartographer accepted). */
+export function hasMapUnlockEvidence(state: UnlockProgressEvidence): boolean {
+  if (state.flags?.mapUnlocked) return true;
+  if (seenTrue(state.story?.seen, "cartographerAccepted")) return true;
+  if (state.triggeredEvents?.cartographer === true) return true;
+  return false;
+}
+
+export function isMapTabVisible(state: UnlockProgressEvidence): boolean {
+  return hasMapUnlockEvidence(state);
+}
+
 /**
  * Merge schema defaults + saved flags, then set unlock flags true when progress proves them.
  */
@@ -124,9 +138,15 @@ export function repairUnlockFlags<T extends UnlockProgressEvidence>(
   if (hasBastionUnlockEvidence({ ...state, flags: next })) {
     next.bastionUnlocked = true;
   }
+  if (hasMapUnlockEvidence({ ...state, flags: next })) {
+    next.mapUnlocked = true;
+  }
   if (
     !next.gameStarted &&
-    (next.villageUnlocked || next.forestUnlocked || next.bastionUnlocked)
+    (next.villageUnlocked ||
+      next.forestUnlocked ||
+      next.bastionUnlocked ||
+      next.mapUnlocked)
   ) {
     next.gameStarted = true;
   }

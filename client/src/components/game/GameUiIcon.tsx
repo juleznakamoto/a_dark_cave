@@ -59,6 +59,18 @@ export function GameUiIcon({
   );
 }
 
+/** Map tab mark. A real image so the paper stays white and the ink stays black. */
+export function MapTabIcon({ className }: { className?: string }) {
+  return (
+    <img
+      src={publicUrl("/icons/map_tab.svg")}
+      alt=""
+      draggable={false}
+      className={cn("inline-block h-3 w-auto shrink-0 self-end -translate-y-[3px]", className)}
+    />
+  );
+}
+
 /** Dark-on-transparent PNG glyphs. Use alpha masks, not GameUiIcon luminance masks. */
 const AUDIO_GLYPH_SRC = {
   music: "/music_on.png",
