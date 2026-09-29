@@ -74,7 +74,7 @@ describe("press kit copy", () => {
   });
 
   it("names screenshots a_dark_cave_screenshot_01…", () => {
-    expect(PRESS_SCREENSHOTS).toHaveLength(12);
+    expect(PRESS_SCREENSHOTS).toHaveLength(11);
     PRESS_SCREENSHOTS.forEach((asset, index) => {
       const n = String(index + 1).padStart(2, "0");
       expect(asset.fileName).toBe(`a_dark_cave_screenshot_${n}.jpg`);
