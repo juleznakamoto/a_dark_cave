@@ -8,7 +8,7 @@ import {
   type Point,
 } from "../client/src/pages/village-map-demo/geometry";
 
-type MapTree = { id: string; variant: string; x: number; y: number; turn: number };
+type MapTree = { id: string; variant: string; x: number; y: number; turn: number; size?: number };
 
 const overridesPath = process.argv[2];
 const raw: {
@@ -71,12 +71,12 @@ ${Object.entries(pathOverrides)
   : kept("VILLAGE_MAP_PATH_OVERRIDES");
 const treeBlock = includeTrees
   ? `/** Crowns from the same arrangement. */
-export const VILLAGE_MAP_TREES: { id: string; variant: string; x: number; y: number; turn: number }[] = [
+export const VILLAGE_MAP_TREES: { id: string; variant: string; x: number; y: number; turn: number; size?: number }[] = [
 ${trees
-    .map(
-      (tree) =>
-        `  { id: "${tree.id}", variant: "${tree.variant}", x: ${Math.round(tree.x)}, y: ${Math.round(tree.y)}, turn: ${Math.round(tree.turn)} },`,
-    )
+    .map((tree) => {
+      const size = typeof tree.size === "number" ? `, size: ${Math.round(tree.size)}` : "";
+      return `  { id: "${tree.id}", variant: "${tree.variant}", x: ${Math.round(tree.x)}, y: ${Math.round(tree.y)}, turn: ${Math.round(tree.turn)}${size} },`;
+    })
     .join("\n")}
 ];`
   : kept("VILLAGE_MAP_TREES");

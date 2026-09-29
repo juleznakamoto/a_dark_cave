@@ -15,7 +15,9 @@ import {
   sanitizeSnapshot,
   stageForPreset,
   VILLAGE_MAP_DEMO_STORAGE_KEY,
+  randomTreeSize,
   randomTreeTurn,
+  TREE_CAP,
   zeroCounts,
   type BuildState,
   type BuildingDef,
@@ -216,9 +218,12 @@ function ColorField({
         <span>{label}</span>
         <span className="flex items-center gap-2">
           <span className="font-mono tabular-nums text-stone-500">{value}</span>
-          <span
-            className="inline-block h-4 w-4 border border-stone-600"
-            style={{ backgroundColor: value }}
+          <input
+            type="color"
+            aria-label={`${label} color`}
+            value={value}
+            onChange={(event) => onChange(event.target.value)}
+            className="h-5 w-7 cursor-pointer border border-stone-600 bg-transparent p-0"
           />
         </span>
       </div>
@@ -419,12 +424,19 @@ export default function VillageMapDemo() {
     if (!placingTree || !treeVariant(placingTree)) return;
     const variant = placingTree;
     setState((current) => {
-      if (current.trees.length >= 80) return current;
+      if (current.trees.length >= TREE_CAP) return current;
       return {
         ...current,
         trees: [
           ...current.trees,
-          { id: `tree-${crypto.randomUUID()}`, variant, x: point.x, y: point.y, turn: randomTreeTurn() },
+          {
+            id: `tree-${crypto.randomUUID()}`,
+            variant,
+            x: point.x,
+            y: point.y,
+            turn: randomTreeTurn(),
+            size: randomTreeSize(),
+          },
         ],
       };
     });
@@ -506,44 +518,41 @@ export default function VillageMapDemo() {
           <TreeSheet tuning={tuning} />
         ) : (
           <>
-            <VillageMap
-              build={build}
-              tuning={tuning}
-              overrides={overrides}
-              pathOverrides={pathOverrides}
-              highlightId={highlightId}
-              trees={trees}
-              placingTree={placingTree}
-              onPlaceTree={placeTree}
-              onMoveTree={moveTree}
-              onRemoveTree={removeTree}
-              onOverride={(id, point) => {
-                stopPlay();
-                setState((current) => {
-                  const next = { ...current.overrides };
-                  if (point) next[id] = point;
-                  else delete next[id];
-                  return { ...current, overrides: next };
-                });
-              }}
-              onPathOverride={(id, point) => {
-                stopPlay();
-                setState((current) => {
-                  const next = { ...current.pathOverrides };
-                  if (point) next[id] = point;
-                  else delete next[id];
-                  return { ...current, pathOverrides: next };
-                });
-              }}
-              onActiveLabel={onActiveLabel}
-            />
-            <div className="pointer-events-none absolute bottom-3 left-3 right-3 flex items-end justify-between gap-3 text-xs text-stone-400">
+            <div className="absolute inset-x-0 top-[20px] bottom-[20px]">
+              <VillageMap
+                build={build}
+                tuning={tuning}
+                overrides={overrides}
+                pathOverrides={pathOverrides}
+                highlightId={highlightId}
+                trees={trees}
+                placingTree={placingTree}
+                onPlaceTree={placeTree}
+                onMoveTree={moveTree}
+                onRemoveTree={removeTree}
+                onOverride={(id, point) => {
+                  stopPlay();
+                  setState((current) => {
+                    const next = { ...current.overrides };
+                    if (point) next[id] = point;
+                    else delete next[id];
+                    return { ...current, overrides: next };
+                  });
+                }}
+                onPathOverride={(id, point) => {
+                  stopPlay();
+                  setState((current) => {
+                    const next = { ...current.pathOverrides };
+                    if (point) next[id] = point;
+                    else delete next[id];
+                    return { ...current, pathOverrides: next };
+                  });
+                }}
+                onActiveLabel={onActiveLabel}
+              />
+            </div>
+            <div className="pointer-events-none absolute bottom-3 left-3 text-xs text-stone-400">
               <span ref={captionRef}>{idleCaption}</span>
-              <span className="hidden sm:inline">
-                {placingTree
-                  ? "Click the crown again to stop planting. Drag a tree to move it. Double-click removes it."
-                  : "Drag a building, a path, or a tree. Double-click resets a building or a path, and removes a tree."}
-              </span>
             </div>
           </>
         )}
@@ -620,6 +629,41 @@ export default function VillageMapDemo() {
           <p className="text-[11px] text-stone-500">
             The slider sets the village to that moment of growth.
           </p>
+          <div className="space-y-2 border-t border-stone-800 pt-2">
+            <div className="flex items-center justify-between gap-2 text-xs text-stone-300">
+              <span>Map background</span>
+              <span className="flex items-center gap-2">
+                <span className="font-mono tabular-nums text-stone-500">{tuning.interior}</span>
+                <input
+                  type="color"
+                  aria-label="Map background color"
+                  value={tuning.interior}
+                  onChange={(event) => patchTuning({ interior: event.target.value })}
+                  className="h-5 w-7 cursor-pointer border border-stone-600 bg-transparent p-0"
+                />
+                <Button
+                  size="xs"
+                  variant="outline"
+                  onClick={() =>
+                    patchTuning({
+                      interior: DEFAULT_TUNING.interior,
+                      interiorOpacity: DEFAULT_TUNING.interiorOpacity,
+                    })
+                  }
+                >
+                  Reset
+                </Button>
+              </span>
+            </div>
+            <Slider
+              label="Opacity"
+              min={0}
+              max={100}
+              step={1}
+              value={Math.round(tuning.interiorOpacity * 100)}
+              onChange={(percent) => patchTuning({ interiorOpacity: percent / 100 })}
+            />
+          </div>
         </div>
 
         <details open className="border-b border-stone-800 px-3 py-3">

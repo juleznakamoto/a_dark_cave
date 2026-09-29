@@ -332,7 +332,7 @@ interface GameStore extends GameState {
   deleteAccountDialogOpen: boolean;
   settingsDialogOpen: boolean;
   feedbackDialogOpen: boolean;
-  /** Persisted: one-time feedback dialog at 105m play time has been shown or skipped. */
+  /** Persisted: one-time feedback dialog at 135m play time has been shown or skipped. */
   feedbackPromptShown: boolean;
   /** Persisted: village tab hotkey tutorial (boxed overlay) was dismissed or timed out. */
   villageHotkeyTutorialShown: boolean;

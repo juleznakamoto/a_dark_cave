@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { sanitizeSnapshot } from "@/pages/village-map-demo/catalog";
+import { sanitizeSnapshot, treeDrawScale } from "@/pages/village-map-demo/catalog";
 import { TREE_VARIANTS, drawTree, treeReach, treeVariant } from "@/pages/village-map-demo/trees";
 
 describe("tree sketches", () => {
@@ -34,11 +34,15 @@ describe("tree sketches", () => {
     expect(snapshot?.trees[0]).toMatchObject({ id: "tree-1", variant: "puff", x: 12, y: 40 });
     expect(snapshot?.trees[0].turn).toBeGreaterThanOrEqual(-30);
     expect(snapshot?.trees[0].turn).toBeLessThanOrEqual(30);
+    expect(snapshot?.trees[0].size).toBeGreaterThanOrEqual(-15);
+    expect(snapshot?.trees[0].size).toBeLessThanOrEqual(15);
     const again = sanitizeSnapshot({
       version: 1,
       trees: [{ id: "tree-1", variant: "puff", x: 12.4, y: 40 }],
     });
     expect(again?.trees[0].turn).toBe(snapshot?.trees[0].turn);
+    expect(again?.trees[0].size).toBe(snapshot?.trees[0].size);
+    expect(treeDrawScale({ id: "tree-1" })).toBe(1 + (snapshot?.trees[0].size ?? 0) / 100);
     const kept = sanitizeSnapshot({
       version: 1,
       trees: [{ id: "tree-1", variant: "puff", x: 12, y: 40, turn: 12.4 }],
@@ -49,6 +53,17 @@ describe("tree sketches", () => {
       trees: [{ id: "tree-1", variant: "puff", x: 12, y: 40, turn: 90 }],
     });
     expect(clamped?.trees[0].turn).toBe(30);
+    const sized = sanitizeSnapshot({
+      version: 1,
+      trees: [{ id: "tree-1", variant: "puff", x: 12, y: 40, size: 12.4 }],
+    });
+    expect(sized?.trees[0].size).toBe(12);
+    const huge = sanitizeSnapshot({
+      version: 1,
+      trees: [{ id: "tree-1", variant: "puff", x: 12, y: 40, size: 40 }],
+    });
+    expect(huge?.trees[0].size).toBe(15);
+    expect(treeDrawScale(huge!.trees[0])).toBe(1.15);
     expect(treeVariant("puff")?.label).toBe("Small puff");
     expect(treeReach(treeVariant("hedge")!)).toBeGreaterThan(treeReach(treeVariant("puff")!));
   });

@@ -2421,7 +2421,7 @@ export const WALL_CHITIN_STROKE = 5;
 /** Base width across the wall tangent. */
 export const CHITIN_SPIKE_BASE = 6;
 /** Arc spacing along the outer chitin rim. */
-export const CHITIN_SPIKE_SPACING = 22;
+export const CHITIN_SPIKE_SPACING = 16.5;
 
 type SpikeOptions = {
   length?: number;

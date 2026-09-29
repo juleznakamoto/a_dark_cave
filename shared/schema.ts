@@ -821,7 +821,7 @@ export const gameStateSchema = z.object({
   lastResourceSnapshotTime: z.number().default(0).optional(),
   /** Resource keys that have appeared in the side panel (persisted once amount > 0). */
   seenResources: z.array(z.string()).default([]),
-  /** One-time feedback dialog at 105m play time has been shown or skipped. */
+  /** One-time feedback dialog at 135m play time has been shown or skipped. */
   feedbackPromptShown: z.boolean().default(false),
   /** Wall-clock ms of the last hosted feedback-form open (0 = never). Survives restarts. */
   lastFeedbackOpenedAt: z.number().default(0),

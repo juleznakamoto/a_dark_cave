@@ -52,6 +52,8 @@ export type Tuning = {
   fill: string;
   ground: string;
   interior: string;
+  /** 0 to 1. How solid the village paper is over the outside ground. */
+  interiorOpacity: number;
   wallColor: string;
   trapColor: string;
   /** Outline ink for buildings, the wall, and hatches. */
@@ -398,6 +400,7 @@ export const DEFAULT_TUNING: Tuning = {
   fill: "#f5f4f1",
   ground: "#0e0e0e",
   interior: "#dedcd8",
+  interiorOpacity: 1,
   wallColor: "#cbc7c0",
   trapColor: "#000",
   ink: "#242424",
@@ -736,6 +739,7 @@ export function sanitizeTuning(input: unknown): Tuning {
     fill: color(source.fill, DEFAULT_TUNING.fill),
     ground: color(source.ground, DEFAULT_TUNING.ground),
     interior: color(source.interior, DEFAULT_TUNING.interior),
+    interiorOpacity: clamp(source.interiorOpacity ?? DEFAULT_TUNING.interiorOpacity, 0, 1),
     wallColor: color(source.wallColor, DEFAULT_TUNING.wallColor),
     trapColor: color(
       source.trapColor === "#242424" || source.trapColor === "#f5f4f1" ? undefined : source.trapColor,
@@ -768,20 +772,37 @@ export function sanitizeTuning(input: unknown): Tuning {
 /** Same key the village-map demo uses for its saved arrangement. */
 export const VILLAGE_MAP_DEMO_STORAGE_KEY = "adc-village-map-demo-v1";
 
-/** A crown planted on the demo map. `variant` is a tree sketch id. `turn` is degrees, from -30 to 30. */
+/** A crown planted on the demo map. `variant` is a tree sketch id. `turn` is degrees, from -30 to 30. `size` is percent, from -15 to 15. */
 export type MapTree = {
   id: string;
   variant: string;
   x: number;
   y: number;
   turn: number;
+  /** Missing on crowns saved before size varied. Drawn from the id. */
+  size?: number;
 };
 
 const TREE_TURN_LIMIT = 30;
+const TREE_SIZE_PERCENT = 15;
 
 /** A new crown's tilt. Inclusive on both ends. */
 export function randomTreeTurn(): number {
   return Math.floor(Math.random() * (TREE_TURN_LIMIT * 2 + 1)) - TREE_TURN_LIMIT;
+}
+
+/** A new crown's size, as a percent of the sketch. Inclusive on both ends. */
+export function randomTreeSize(): number {
+  return Math.floor(Math.random() * (TREE_SIZE_PERCENT * 2 + 1)) - TREE_SIZE_PERCENT;
+}
+
+/** How large to draw this crown. 1 is the sketch. A crown saved before size varied keeps a stable size from its id. */
+export function treeDrawScale(tree: { id: string; size?: number }): number {
+  const percent =
+    typeof tree.size === "number" && Number.isFinite(tree.size)
+      ? clampTreeSize(tree.size)
+      : sizeFromId(tree.id);
+  return 1 + percent / 100;
 }
 
 /** Same tilt every time for a crown saved before turns existed. */
@@ -792,6 +813,20 @@ function turnFromId(id: string): number {
   }
   const span = TREE_TURN_LIMIT * 2 + 1;
   return ((hash % span) + span) % span - TREE_TURN_LIMIT;
+}
+
+/** Same size every time for a crown saved before sizes existed. */
+function sizeFromId(id: string): number {
+  let hash = 0;
+  for (let index = 0; index < id.length; index++) {
+    hash = (hash * 33 + id.charCodeAt(index)) | 0;
+  }
+  const span = TREE_SIZE_PERCENT * 2 + 1;
+  return ((hash % span) + span) % span - TREE_SIZE_PERCENT;
+}
+
+function clampTreeSize(size: number): number {
+  return Math.round(Math.max(-TREE_SIZE_PERCENT, Math.min(TREE_SIZE_PERCENT, size)));
 }
 
 export type DemoSnapshot = {
@@ -819,7 +854,8 @@ function readPointMap(source: unknown, cap: number): Record<string, { x: number;
   return points;
 }
 
-const TREE_CAP = 80;
+/** Crowns the demo will keep. Past this, another click does nothing. */
+export const TREE_CAP = 400;
 
 function readMapTrees(source: unknown): MapTree[] {
   if (!Array.isArray(source)) return [];
@@ -831,6 +867,7 @@ function readMapTrees(source: unknown): MapTree[] {
     const x = (entry as { x?: unknown }).x;
     const y = (entry as { y?: unknown }).y;
     const turn = (entry as { turn?: unknown }).turn;
+    const size = (entry as { size?: unknown }).size;
     if (typeof id !== "string" || id.length === 0 || id.length > 80) continue;
     if (typeof variant !== "string" || variant.length === 0 || variant.length > 40) continue;
     if (typeof x !== "number" || typeof y !== "number") continue;
@@ -839,7 +876,9 @@ function readMapTrees(source: unknown): MapTree[] {
       typeof turn === "number" && Number.isFinite(turn)
         ? Math.round(Math.max(-TREE_TURN_LIMIT, Math.min(TREE_TURN_LIMIT, turn)))
         : turnFromId(id);
-    trees.push({ id, variant, x: Math.round(x), y: Math.round(y), turn: degrees });
+    const percent =
+      typeof size === "number" && Number.isFinite(size) ? clampTreeSize(size) : sizeFromId(id);
+    trees.push({ id, variant, x: Math.round(x), y: Math.round(y), turn: degrees, size: percent });
     if (trees.length >= TREE_CAP) break;
   }
   return trees;

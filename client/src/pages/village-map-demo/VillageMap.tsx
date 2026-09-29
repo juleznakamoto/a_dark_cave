@@ -1,7 +1,8 @@
 import { cloneElement, createContext, isValidElement, memo, useContext, useId, useLayoutEffect, useMemo, useRef, useState, type PointerEvent as ReactPointerEvent, type ReactNode, type RefObject } from "react";
+import { createPortal } from "react-dom";
 import { heartfireHatchOpacity } from "@/game/villageMapBuild";
 import type { VillageMapReveal } from "@/game/villageMapReveal";
-import { BUILDINGS, MAP_CENTER, type BuildState, type MapTree, type SanctumGod, type Tuning } from "@/pages/village-map-demo/catalog";
+import { BUILDINGS, MAP_CENTER, treeDrawScale, type BuildState, type MapTree, type SanctumGod, type Tuning } from "@/pages/village-map-demo/catalog";
 import { TreeMark } from "@/pages/village-map-demo/TreeMark";
 import { treeReach, treeVariant } from "@/pages/village-map-demo/trees";
 import {
@@ -144,6 +145,13 @@ const MapInkContext = createContext("#000000");
  * Icons leave this off, so they do not carry a second copy of every shape.
  */
 const MapHoverRingContext = createContext(false);
+/**
+ * Fade masks are portaled here, outside the building's opacity animation.
+ * A mask inside that animation is faded too, so the inner half of the stroke shows through.
+ */
+const MapMaskHostContext = createContext<SVGDefsElement | null>(null);
+/** Mask stroke width. Half of this reaches past the fill and covers the stroke's soft inner edge. */
+const FADE_STROKE_CUT = 1;
 
 function useMapBorderExtra(): number {
   return useContext(MapBorderExtraContext);
@@ -214,6 +222,32 @@ function cloneMarkStroke(
   );
 }
 
+/** Black copy of these shapes. The fade mask uses it to hide the stroke inside the building. */
+function cloneMarkSolid(node: ReactNode, prefix: string): ReactNode {
+  if (node == null || typeof node !== "object") return node;
+  if (Array.isArray(node)) {
+    return node.map((child, index) => cloneMarkSolid(child, `${prefix}-${index}`));
+  }
+  if (!isValidElement(node)) return node;
+  const props = node.props as { children?: ReactNode };
+  const paintable = typeof node.type === "string" && node.type !== "g" && node.type !== "defs";
+  return cloneElement(
+    node,
+    {
+      key: `${prefix}-${String(node.key ?? "n")}`,
+      ...(paintable
+        ? {
+          fill: "#000",
+          stroke: "#000",
+          strokeWidth: FADE_STROKE_CUT,
+          strokeLinejoin: "round" as const,
+        }
+        : {}),
+    },
+    props.children != null ? cloneMarkSolid(props.children, prefix) : props.children,
+  );
+}
+
 /**
  * Black ring around the union of these fills: 1px into the shape and 1px past
  * its existing outline. Inner strokes are not part of the union, so they stay thin.
@@ -240,6 +274,7 @@ function SilhouetteHighlight({
   const fadeHighlight = useContext(MapHighlightFadeContext);
   const hoverRing = useContext(MapHoverRingContext);
   const id = `map-hl-${useId().replace(/:/g, "")}`;
+  const maskHost = useContext(MapMaskHostContext);
   const ringExtra = hoverRing && !fadeHighlight ? MAP_HIGHLIGHT_BORDER : extra;
   if (ringExtra <= 0) return null;
   const outside = ringExtra / 2;
@@ -247,11 +282,44 @@ function SilhouetteHighlight({
   const shrink = outsideOnly ? 0 : outside;
   // The fade-in group animates opacity. An SVG filter inside that group does not
   // paint, so the reveal uses a stroke of the same outer reach as the hover ring.
+  // The stroke is centered on each shape, which would draw a line inside the
+  // building and along every overlapping part. A mask of the union hides that.
   if (fadeHighlight) {
-    return (
-      <g className="village-map-highlight-fade" style={{ pointerEvents: "none" }}>
-        {cloneMarkStroke(children, "hl", color, outsideOnly ? ringExtra : 2 * grow, outsideOnly)}
+    const strokes = cloneMarkStroke(children, "hl", color, outsideOnly ? ringExtra : 2 * grow, outsideOnly);
+    if (outsideOnly) {
+      return (
+        <g className="village-map-highlight-fade" style={{ pointerEvents: "none" }}>
+          {strokes}
+        </g>
+      );
+    }
+    const maskId = `${id}-cut`;
+    const reach = 4000;
+    const mask = (
+      <mask
+        id={maskId}
+        maskUnits="userSpaceOnUse"
+        maskContentUnits="userSpaceOnUse"
+        x={-reach}
+        y={-reach}
+        width={reach * 2}
+        height={reach * 2}
+      >
+        <rect x={-reach} y={-reach} width={reach * 2} height={reach * 2} fill="#fff" />
+        {cloneMarkSolid(children, "cut")}
+      </mask>
+    );
+    const painted = (
+      <g className="village-map-highlight-fade" mask={`url(#${maskId})`} style={{ pointerEvents: "none" }}>
+        {strokes}
       </g>
+    );
+    if (maskHost) return <>{createPortal(mask, maskHost)}{painted}</>;
+    return (
+      <>
+        {mask}
+        {painted}
+      </>
     );
   }
   const ring = (
@@ -2150,7 +2218,7 @@ function openChain(points: Point[]): string {
 /** Dilated ring around each track. The door mask has to cover this, not only the fill. */
 const PATH_OUTLINE_RADIUS = 0.75;
 /** Gravel fill and stones. The outline is a sibling, so this does not tint the ring. */
-const PATH_GRAVEL_OPACITY = 0.65;
+const PATH_GRAVEL_OPACITY = 0.7;
 /** Painted ring. Kept off the gravel group so this is the opacity on the page. */
 const PATH_OUTLINE_OPACITY = 0.3;
 /** Hand-drawn bend of the ring, in map units. */
@@ -2280,6 +2348,7 @@ type VillageMapProps = {
 type VillageMapSvgProps = Omit<VillageMapProps, "highlightId"> & {
   svgRef: RefObject<SVGSVGElement>;
   highlightRef: { current: string | null };
+  setMaskHost: (node: SVGDefsElement | null) => void;
 };
 
 const VillageMapSvg = memo(function VillageMapSvg({
@@ -2301,6 +2370,7 @@ const VillageMapSvg = memo(function VillageMapSvg({
   onRemoveTree,
   svgRef,
   highlightRef,
+  setMaskHost,
 }: VillageMapSvgProps) {
   const dragRef = useRef<{ id: string; dx: number; dy: number; buildingId: string } | null>(null);
   const pathDragRef = useRef<{ id: string; dx: number; dy: number } | null>(null);
@@ -2376,7 +2446,7 @@ const VillageMapSvg = memo(function VillageMapSvg({
       const variant = treeVariant(tree.variant);
       if (!variant) continue;
       const center = { x: tree.x, y: tree.y };
-      const reach = treeReach(variant);
+      const reach = treeReach(variant) * treeDrawScale(tree);
       const onPath = paths.some((path) => pathMeetsCircle(path.points, center, reach));
       const onPalisade =
         wallOn && circleMeetsPalisade(center, reach, wallLine, wallHalf, wallTowers, towerPad);
@@ -2602,11 +2672,12 @@ const VillageMapSvg = memo(function VillageMapSvg({
       concealedTrees.add(tree.id);
       continue;
     }
-    if (moatEdges && treeMeetsMoat(center, treeReach(variant), moatEdges)) {
+    const reach = treeReach(variant) * treeDrawScale(tree);
+    if (moatEdges && treeMeetsMoat(center, reach, moatEdges)) {
       concealedTrees.add(tree.id);
       continue;
     }
-    if (onPaper && trapReach > 0 && treeMeetsTrap(center, treeReach(variant), traps, trapReach)) {
+    if (onPaper && trapReach > 0 && treeMeetsTrap(center, reach, traps, trapReach)) {
       concealedTrees.add(tree.id);
     }
   }
@@ -2620,7 +2691,7 @@ const VillageMapSvg = memo(function VillageMapSvg({
   for (const tree of trees) {
     if (concealedTrees.has(tree.id)) continue;
     const variant = treeVariant(tree.variant);
-    const reach = variant ? treeReach(variant) : 16;
+    const reach = variant ? treeReach(variant) * treeDrawScale(tree) : 16;
     framePoints.push(
       { x: tree.x - reach, y: tree.y - reach },
       { x: tree.x + reach, y: tree.y + reach },
@@ -2839,6 +2910,8 @@ const VillageMapSvg = memo(function VillageMapSvg({
           onPointerDown={onMapPointerDown}
         >
           <defs>
+            {/* Empty on purpose. Fade masks portal here so the building opacity does not fade the mask. */}
+            <defs ref={setMaskHost} />
             <OutlineWobbleFilter />
             <filter
               id={treeWobbleId}
@@ -2880,6 +2953,7 @@ const VillageMapSvg = memo(function VillageMapSvg({
             data-ground="interior"
             d={groundPath}
             fill={tuning.interior}
+            fillOpacity={tuning.interiorOpacity}
             filter={VILLAGE_OUTLINE_WOBBLE}
           />
 
@@ -3139,7 +3213,7 @@ const VillageMapSvg = memo(function VillageMapSvg({
                   <g
                     key={tree.id}
                     data-testid={`map-tree-${tree.variant}`}
-                    transform={`translate(${tree.x} ${tree.y}) rotate(${tree.turn})`}
+                    transform={`translate(${tree.x} ${tree.y}) rotate(${tree.turn}) scale(${treeDrawScale(tree)})`}
                     style={{ cursor: movable ? "grab" : "default" }}
                     onPointerDown={movable ? (event) => onTreePointerDown(event, tree) : undefined}
                     onPointerMove={movable ? onTreePointerMove : undefined}
@@ -3465,10 +3539,11 @@ export function VillageMap({ highlightId, ...props }: VillageMapProps) {
   const svgRef = useRef<SVGSVGElement>(null);
   const highlightRef = useRef<string | null>(highlightId);
   highlightRef.current = highlightId;
+  const [maskHost, setMaskHost] = useState<SVGDefsElement | null>(null);
   return (
-    <>
-      <VillageMapSvg {...props} svgRef={svgRef} highlightRef={highlightRef} />
+    <MapMaskHostContext.Provider value={maskHost}>
+      <VillageMapSvg {...props} svgRef={svgRef} highlightRef={highlightRef} setMaskHost={setMaskHost} />
       <VillageMapHighlight svgRef={svgRef} highlightId={highlightId} />
-    </>
+    </MapMaskHostContext.Provider>
   );
 }

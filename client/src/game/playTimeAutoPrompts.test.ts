@@ -15,8 +15,6 @@ vi.mock("@/lib/edition", async (importOriginal) => {
   };
 });
 
-const MIN = 60 * 1000;
-
 describe("processPlayTimeAutoPrompts", () => {
   beforeEach(() => {
     vi.useRealTimers();
@@ -34,7 +32,7 @@ describe("processPlayTimeAutoPrompts", () => {
 
   it("opens at most one auto prompt per tick when both thresholds are due", () => {
     useGameStore.setState({
-      playTime: 120 * MIN,
+      playTime: FEEDBACK_PROMPT_PLAY_MS,
       socialPromptMilestoneIndex: 0,
       feedbackPromptShown: false,
     });
@@ -52,7 +50,7 @@ describe("processPlayTimeAutoPrompts", () => {
     vi.setSystemTime(new Date("2026-01-01T12:00:00Z"));
 
     useGameStore.setState({
-      playTime: 120 * MIN,
+      playTime: FEEDBACK_PROMPT_PLAY_MS,
       socialPromptMilestoneIndex: 0,
       feedbackPromptShown: false,
     });
