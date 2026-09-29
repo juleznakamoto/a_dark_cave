@@ -640,6 +640,7 @@ interface GameStore extends GameState {
   setDevGameMode: (mode: DevGameMode) => void;
   setDeleteAccountDialogOpen: (isOpen: boolean) => void;
   setVillageMapOverride: (id: string, point: { x: number; y: number } | null) => void;
+  setVillageMapPathOverride: (id: string, point: { x: number; y: number } | null) => void;
   setVillageMapSeenTiers: (tiers: Record<string, number>) => void;
   updateEffects: () => void;
   updateBastionStats: () => void;
@@ -1732,6 +1733,7 @@ export const createInitialState = (): GameState => ({
     data: null,
   },
   villageMapOverrides: {},
+  villageMapPathOverrides: {},
   villageMapSeenTiers: {},
 });
 
@@ -3059,6 +3061,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
       hasSpeedrunWin: state.hasSpeedrunWin || false,
       lifetimeGamesWon: state.lifetimeGamesWon || 0,
       villageMapOverrides: state.villageMapOverrides ?? {},
+      villageMapPathOverrides: state.villageMapPathOverrides ?? {},
       lifetimePlayTimeMs: state.lifetimePlayTimeMs || 0,
       lifetimeStorageMaxHits: state.lifetimeStorageMaxHits || [],
       lifetimeEstateUpgradeMaxHits: state.lifetimeEstateUpgradeMaxHits || [],
@@ -5180,22 +5183,9 @@ export const useGameStore = create<GameStore>((set, get) => ({
     set({ deleteAccountDialogOpen: isOpen });
   },
 
-  setVillageMapOverride: (id: string, point: { x: number; y: number } | null) => {
-    const current = get().villageMapOverrides ?? {};
-    if (!point) {
-      if (!(id in current)) return;
-      const next = { ...current };
-      delete next[id];
-      set({ villageMapOverrides: next });
-      return;
-    }
-    set({
-      villageMapOverrides: {
-        ...current,
-        [id]: { x: point.x, y: point.y },
-      },
-    });
-  },
+  setVillageMapOverride: () => { },
+
+  setVillageMapPathOverride: () => { },
 
   setVillageMapSeenTiers: (tiers: Record<string, number>) => {
     set({ villageMapSeenTiers: tiers });

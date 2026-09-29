@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { Redirect } from "wouter";
 import { Button } from "@/components/ui/button";
 import {
@@ -15,16 +15,21 @@ import {
   sanitizeSnapshot,
   stageForPreset,
   VILLAGE_MAP_DEMO_STORAGE_KEY,
+  randomTreeTurn,
   zeroCounts,
   type BuildState,
   type BuildingDef,
   type DemoSnapshot,
+  type MapTree,
   type PresetId,
   type SanctumGod,
   type Tuning,
 } from "@/pages/village-map-demo/catalog";
 import type { Point } from "@/pages/village-map-demo/geometry";
-import { LookEvolutions, UpgradeRuleIcon, VillageMap } from "@/pages/village-map-demo/VillageMap";
+import { TreeMark } from "@/pages/village-map-demo/TreeMark";
+import { TREE_VARIANTS, treeVariant } from "@/pages/village-map-demo/trees";
+import { UpgradeRuleIcon, VillageMap } from "@/pages/village-map-demo/VillageMap";
+import TreeSheet from "@/pages/village-map-demo/TreeSheet";
 
 const STORAGE_KEY = VILLAGE_MAP_DEMO_STORAGE_KEY;
 
@@ -51,8 +56,33 @@ type DemoState = {
   build: BuildState;
   tuning: Tuning;
   overrides: Record<string, Point>;
+  pathOverrides: Record<string, Point>;
+  trees: MapTree[];
   presetId: PresetId | null;
 };
+
+/** Fills from the removed shade sheets. A saved copy of one of those returns to the current colors. */
+const SHADE_FILLS = new Set(["#ebeae7", "#e4e3e0", "#dddcd9", "#d5d4d2", "#cecdca", "#c6c6c3"]);
+
+const SHEET_COLOR_KEYS = [
+  "fill",
+  "ground",
+  "interior",
+  "wallColor",
+  "trapColor",
+  "ink",
+  "water",
+  "waterFill",
+  "fire",
+  "chitin",
+] as const;
+
+function currentSheet(tuning: Tuning): Tuning {
+  if (!SHADE_FILLS.has(tuning.fill.toLowerCase())) return tuning;
+  const next = { ...tuning };
+  for (const key of SHEET_COLOR_KEYS) next[key] = DEFAULT_TUNING[key];
+  return next;
+}
 
 function readSaved(): DemoState | null {
   try {
@@ -60,7 +90,13 @@ function readSaved(): DemoState | null {
     if (!raw) return null;
     const snapshot = sanitizeSnapshot(JSON.parse(raw));
     if (!snapshot) return null;
-    return { ...snapshot, presetId: null };
+    return {
+      ...snapshot,
+      tuning: currentSheet(snapshot.tuning),
+      pathOverrides: snapshot.pathOverrides ?? {},
+      trees: snapshot.trees ?? [],
+      presetId: null,
+    };
   } catch {
     return null;
   }
@@ -73,6 +109,8 @@ function freshState(): DemoState {
     build: applyGrowth(stage),
     tuning: DEFAULT_TUNING,
     overrides: {},
+    pathOverrides: {},
+    trees: [],
     presetId: "village",
   };
 }
@@ -118,6 +156,47 @@ function Slider({
   );
 }
 
+function hexToHsl(hex: string): { h: number; s: number; l: number } {
+  const n = Number.parseInt(hex.slice(1), 16);
+  const r = ((n >> 16) & 255) / 255;
+  const g = ((n >> 8) & 255) / 255;
+  const b = (n & 255) / 255;
+  const max = Math.max(r, g, b);
+  const min = Math.min(r, g, b);
+  const l = (max + min) / 2;
+  if (max === min) return { h: 0, s: 0, l: Math.round(l * 100) };
+  const d = max - min;
+  const s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
+  let h = 0;
+  if (max === r) h = (g - b) / d + (g < b ? 6 : 0);
+  else if (max === g) h = (b - r) / d + 2;
+  else h = (r - g) / d + 4;
+  return { h: Math.round((h / 6) * 360), s: Math.round(s * 100), l: Math.round(l * 100) };
+}
+
+function hslToHex(h: number, s: number, l: number): string {
+  const sat = s / 100;
+  const lig = l / 100;
+  const c = (1 - Math.abs(2 * lig - 1)) * sat;
+  const hp = (((h % 360) + 360) % 360) / 60;
+  const x = c * (1 - Math.abs((hp % 2) - 1));
+  let r = 0;
+  let g = 0;
+  let b = 0;
+  if (hp < 1) [r, g, b] = [c, x, 0];
+  else if (hp < 2) [r, g, b] = [x, c, 0];
+  else if (hp < 3) [r, g, b] = [0, c, x];
+  else if (hp < 4) [r, g, b] = [0, x, c];
+  else if (hp < 5) [r, g, b] = [x, 0, c];
+  else[r, g, b] = [c, 0, x];
+  const m = lig - c / 2;
+  const channel = (value: number) =>
+    Math.max(0, Math.min(255, Math.round((value + m) * 255)))
+      .toString(16)
+      .padStart(2, "0");
+  return `#${channel(r)}${channel(g)}${channel(b)}`;
+}
+
 function ColorField({
   label,
   value,
@@ -127,29 +206,57 @@ function ColorField({
   value: string;
   onChange: (value: string) => void;
 }) {
+  const hsl = hexToHsl(value);
+  const update = (part: Partial<typeof hsl>) => {
+    onChange(hslToHex(part.h ?? hsl.h, part.s ?? hsl.s, part.l ?? hsl.l));
+  };
   return (
-    <label className="flex items-center justify-between gap-3 text-xs text-stone-400">
-      {label}
-      <input
-        type="color"
-        value={value}
-        onChange={(event) => onChange(event.target.value)}
-        className="h-6 w-10 cursor-pointer border border-stone-700 bg-transparent"
+    <div className="space-y-2 border-t border-stone-800 pt-2">
+      <div className="flex items-center justify-between gap-2 text-xs text-stone-300">
+        <span>{label}</span>
+        <span className="flex items-center gap-2">
+          <span className="font-mono tabular-nums text-stone-500">{value}</span>
+          <span
+            className="inline-block h-4 w-4 border border-stone-600"
+            style={{ backgroundColor: value }}
+          />
+        </span>
+      </div>
+      <Slider label="Hue" min={0} max={360} step={1} value={hsl.h} onChange={(h) => update({ h })} />
+      <Slider
+        label="Saturation"
+        min={0}
+        max={100}
+        step={1}
+        value={hsl.s}
+        onChange={(s) => update({ s })}
       />
-    </label>
+      <Slider
+        label="Lightness"
+        min={0}
+        max={100}
+        step={1}
+        value={hsl.l}
+        onChange={(l) => update({ l })}
+      />
+    </div>
   );
 }
 
 export default function VillageMapDemo() {
   const [state, setState] = useState<DemoState>(() => readSaved() ?? freshState());
   const [playing, setPlaying] = useState(false);
-  const [query, setQuery] = useState("");
-  const [highlightId, setHighlightId] = useState<string | null>(null);
   const [caption, setCaption] = useState<string | null>(null);
+  const captionRef = useRef<HTMLSpanElement>(null);
+  const captionTextRef = useRef("");
   const [jsonText, setJsonText] = useState("");
   const [jsonNote, setJsonNote] = useState<string | null>(null);
+  const [showTrees, setShowTrees] = useState(false);
+  const [query, setQuery] = useState("");
+  const [highlightId, setHighlightId] = useState<string | null>(null);
+  const [placingTree, setPlacingTree] = useState<string | null>(null);
 
-  const { stage, build, tuning, overrides, presetId } = state;
+  const { stage, build, tuning, overrides, pathOverrides, trees, presetId } = state;
 
   useEffect(() => {
     const snapshot: DemoSnapshot = {
@@ -158,9 +265,11 @@ export default function VillageMapDemo() {
       build,
       tuning,
       overrides,
+      pathOverrides,
+      trees,
     };
     localStorage.setItem(STORAGE_KEY, JSON.stringify(snapshot));
-  }, [stage, build, tuning, overrides]);
+  }, [stage, build, tuning, overrides, pathOverrides, trees]);
 
   useEffect(() => {
     if (!playing) return;
@@ -190,6 +299,12 @@ export default function VillageMapDemo() {
       return sum + (building.kind === "stack" ? Math.min(count, building.slots.length) : 1);
     }, 0);
   }, [build]);
+
+  const onActiveLabel = useCallback((label: string | null) => {
+    const node = captionRef.current;
+    if (!node) return;
+    node.textContent = label ?? captionTextRef.current;
+  }, []);
 
   if (!import.meta.env.DEV) {
     return <Redirect to="/" />;
@@ -221,28 +336,6 @@ export default function VillageMapDemo() {
       build: updater(current.build),
       presetId: null,
     }));
-  };
-
-  const setDedication = (choice: string) => {
-    patchBuild((current) => {
-      if (choice === "all") {
-        return { ...current, dedication: [...SANCTUM_GODS], dedicationDeepened: null };
-      }
-      const deepened = choice.endsWith("-deep");
-      const god = deepened ? choice.slice(0, -"-deep".length) : choice;
-      if (isSanctumGod(god)) {
-        return {
-          ...current,
-          dedication: [god],
-          dedicationDeepened: deepened ? god : null,
-        };
-      }
-      return { ...current, dedication: [], dedicationDeepened: null };
-    });
-  };
-
-  const patchTuning = (partial: Partial<Tuning>) => {
-    setState((current) => ({ ...current, tuning: { ...current.tuning, ...partial } }));
   };
 
   const setCount = (id: string, value: number) => {
@@ -300,9 +393,60 @@ export default function VillageMapDemo() {
     }),
   })).filter((entry) => entry.buildings.length > 0);
 
+  const setDedication = (choice: string) => {
+    patchBuild((current) => {
+      if (choice === "all") {
+        return { ...current, dedication: [...SANCTUM_GODS], dedicationDeepened: null };
+      }
+      const deepened = choice.endsWith("-deep");
+      const god = deepened ? choice.slice(0, -"-deep".length) : choice;
+      if (isSanctumGod(god)) {
+        return {
+          ...current,
+          dedication: [god],
+          dedicationDeepened: deepened ? god : null,
+        };
+      }
+      return { ...current, dedication: [], dedicationDeepened: null };
+    });
+  };
+
+  const patchTuning = (partial: Partial<Tuning>) => {
+    setState((current) => ({ ...current, tuning: { ...current.tuning, ...partial } }));
+  };
+
+  const placeTree = (point: Point) => {
+    if (!placingTree || !treeVariant(placingTree)) return;
+    const variant = placingTree;
+    setState((current) => {
+      if (current.trees.length >= 80) return current;
+      return {
+        ...current,
+        trees: [
+          ...current.trees,
+          { id: `tree-${crypto.randomUUID()}`, variant, x: point.x, y: point.y, turn: randomTreeTurn() },
+        ],
+      };
+    });
+  };
+
+  const moveTree = (id: string, point: Point) => {
+    setState((current) => ({
+      ...current,
+      trees: current.trees.map((tree) => (tree.id === id ? { ...tree, x: point.x, y: point.y } : tree)),
+    }));
+  };
+
+  const removeTree = (id: string) => {
+    setState((current) => ({
+      ...current,
+      trees: current.trees.filter((tree) => tree.id !== id),
+    }));
+  };
+
   const copyLayout = async () => {
     const text = JSON.stringify(
-      { version: 1, stage, build, tuning, overrides },
+      { version: 1, stage, build, tuning, overrides, pathOverrides, trees },
       null,
       2,
     );
@@ -328,6 +472,8 @@ export default function VillageMapDemo() {
         build: snapshot.build,
         tuning: snapshot.tuning,
         overrides: snapshot.overrides,
+        pathOverrides: snapshot.pathOverrides ?? {},
+        trees: snapshot.trees ?? [],
         presetId: null,
       });
       setJsonNote("Applied.");
@@ -336,38 +482,71 @@ export default function VillageMapDemo() {
     }
   };
 
+  const idleCaption = placingTree
+    ? `Click ground to plant ${treeVariant(placingTree)?.label ?? "a tree"}. It appears when that ground is drawn.`
+    : (caption ?? `${visibleSquares} ${visibleSquares === 1 ? "building" : "buildings"}`);
+  captionTextRef.current = idleCaption;
+
   return (
     <div
       className="flex h-[100dvh] flex-col text-stone-200 md:flex-row"
       style={{ background: tuning.ground }}
     >
       <div className="relative h-[52dvh] shrink-0 md:h-auto md:min-h-0 md:flex-1">
-        <VillageMap
-          build={build}
-          tuning={tuning}
-          overrides={overrides}
-          highlightId={highlightId}
-          onOverride={(id, point) => {
-            stopPlay();
-            setState((current) => {
-              const next = { ...current.overrides };
-              if (point) next[id] = point;
-              else delete next[id];
-              return { ...current, overrides: next };
-            });
-          }}
-          onActiveLabel={setCaption}
-        />
-        <div className="pointer-events-none absolute bottom-3 left-3 right-3 flex items-end justify-between gap-3 text-xs text-stone-400">
-          <span>
-            {caption ??
-              `${visibleSquares} ${visibleSquares === 1 ? "building" : "buildings"}`}
-          </span>
-          <span className="hidden sm:inline">
-            Drag a building. Double-click resets it. Watchtower and bastion stay on the wall.
-            Other buildings stay inside and cannot cover each other.
-          </span>
-        </div>
+        <Button
+          size="xs"
+          variant="outline"
+          className="absolute left-3 top-3 z-10 bg-[#0c0b09] text-stone-100"
+          data-testid="toggle-trees"
+          onClick={() => setShowTrees((current) => !current)}
+        >
+          {showTrees ? "Back to the map" : "Tree sketches"}
+        </Button>
+        {showTrees ? (
+          <TreeSheet tuning={tuning} />
+        ) : (
+          <>
+            <VillageMap
+              build={build}
+              tuning={tuning}
+              overrides={overrides}
+              pathOverrides={pathOverrides}
+              highlightId={highlightId}
+              trees={trees}
+              placingTree={placingTree}
+              onPlaceTree={placeTree}
+              onMoveTree={moveTree}
+              onRemoveTree={removeTree}
+              onOverride={(id, point) => {
+                stopPlay();
+                setState((current) => {
+                  const next = { ...current.overrides };
+                  if (point) next[id] = point;
+                  else delete next[id];
+                  return { ...current, overrides: next };
+                });
+              }}
+              onPathOverride={(id, point) => {
+                stopPlay();
+                setState((current) => {
+                  const next = { ...current.pathOverrides };
+                  if (point) next[id] = point;
+                  else delete next[id];
+                  return { ...current, pathOverrides: next };
+                });
+              }}
+              onActiveLabel={onActiveLabel}
+            />
+            <div className="pointer-events-none absolute bottom-3 left-3 right-3 flex items-end justify-between gap-3 text-xs text-stone-400">
+              <span ref={captionRef}>{idleCaption}</span>
+              <span className="hidden sm:inline">
+                {placingTree
+                  ? "Click the crown again to stop planting. Drag a tree to move it. Double-click removes it."
+                  : "Drag a building, a path, or a tree. Double-click resets a building or a path, and removes a tree."}
+              </span>
+            </div>
+          </>
+        )}
       </div>
 
       <aside className="min-h-0 flex-1 overflow-y-auto border-t border-stone-800 md:w-[390px] md:flex-none md:border-l md:border-t-0">
@@ -375,8 +554,14 @@ export default function VillageMapDemo() {
           <div>
             <h1 className="text-sm font-semibold text-stone-100">Village map</h1>
             <p className="mt-1 text-xs leading-relaxed text-stone-400">
-              Top-down plan on gray paper. Buildings are pale blocks, the heartfire is a circle, the pale cross is a Christian cross, and the shallow pit is an irregular cut in the south. Each building draws its own upgrade. The palisade is a round wall, and traps are crosses between the wall and the moat. Saved in this browser.
+              Top-down plan on gray paper. Buildings are pale blocks, the heartfire is a circle, the pale cross is a Christian cross, and the shallow pit is an irregular cut in the south. Each building draws its own upgrade. Stone paths run from each door to the heartfire, joining instead of crossing. The pale cross, monolith, and pillar have none. The palisade is a round wall, and traps are crosses between the wall and the moat. Saved in this browser.
             </p>
+            <a
+              href="/dev/building-shapes"
+              className="mt-2 inline-block text-xs text-stone-300 underline decoration-stone-600 underline-offset-2"
+            >
+              Compare building shapes
+            </a>
           </div>
           <div className="flex flex-wrap gap-1.5">
             {MAP_PRESETS.map((preset) => (
@@ -433,7 +618,7 @@ export default function VillageMapDemo() {
             className="w-full accent-stone-200"
           />
           <p className="text-[11px] text-stone-500">
-            The slider replaces the building list with that moment of growth.
+            The slider sets the village to that moment of growth.
           </p>
         </div>
 
@@ -485,11 +670,52 @@ export default function VillageMapDemo() {
                 ))}
               </section>
             ))}
+          </div>
+        </details>
 
-            <section className="space-y-2 pt-1">
-              <h2 className="text-[11px] uppercase tracking-wide text-stone-500">
-                Defense
-              </h2>
+        <details open className="border-b border-stone-800 px-3 py-3">
+          <summary className="cursor-pointer text-sm font-medium">Trees</summary>
+          <div className="mt-3 space-y-3">
+            <p className="text-[11px] leading-relaxed text-stone-500">
+              Pick a crown, then click ground, including ground that is not drawn yet. The tree appears when that ground is drawn. A trap hides a tree it covers. Click that crown again to stop. Drag a tree to move it. Double-click removes it.
+            </p>
+            <div className="grid grid-cols-5 gap-1.5" data-testid="tree-palette">
+              {TREE_VARIANTS.map((variant) => {
+                const armed = placingTree === variant.id;
+                return (
+                  <button
+                    key={variant.id}
+                    type="button"
+                    title={variant.label}
+                    aria-label={variant.label}
+                    aria-pressed={armed}
+                    data-testid={`place-tree-${variant.id}`}
+                    className={`rounded bg-[#dedcd8] p-0.5 ${armed ? "ring-2 ring-stone-100" : "ring-1 ring-stone-700"}`}
+                    onClick={() => setPlacingTree((current) => (current === variant.id ? null : variant.id))}
+                  >
+                    <svg viewBox="-62 -48 124 96" className="h-12 w-full" aria-hidden>
+                      <TreeMark variant={variant} ink={tuning.ink} fill={tuning.fill} />
+                    </svg>
+                  </button>
+                );
+              })}
+            </div>
+            {trees.length > 0 ? (
+              <Button
+                size="xs"
+                variant="outline"
+                onClick={() => setState((current) => ({ ...current, trees: [] }))}
+              >
+                Clear trees
+              </Button>
+            ) : null}
+          </div>
+        </details>
+
+        <details open className="border-b border-stone-800 px-3 py-3">
+          <summary className="cursor-pointer text-sm font-medium">Defense</summary>
+          <div className="mt-3 space-y-3">
+            <section className="space-y-2">
               <DefenseSelect
                 label="Palisades"
                 value={build.wall}
@@ -586,58 +812,6 @@ export default function VillageMapDemo() {
                 </select>
               </label>
             </section>
-          </div>
-        </details>
-
-        <details open className="border-b border-stone-800 px-3 py-3">
-          <summary className="cursor-pointer text-sm font-medium">Look</summary>
-          <div className="mt-3 space-y-3">
-            <LookEvolutions
-              tuning={tuning}
-              dedication={build.dedication}
-              dedicationDeepened={build.dedicationDeepened}
-              brimstoneInfusion={build.brimstoneInfusion}
-            />
-            <Slider
-              label="Square size"
-              min={14}
-              max={44}
-              step={1}
-              value={tuning.squareSize}
-              onChange={(squareSize) => patchTuning({ squareSize })}
-            />
-            <ColorField
-              label="Square"
-              value={tuning.fill}
-              onChange={(fill) => patchTuning({ fill })}
-            />
-            <ColorField
-              label="Ink"
-              value={tuning.ink}
-              onChange={(ink) => patchTuning({ ink })}
-            />
-            <ColorField
-              label="Fire"
-              value={tuning.fire}
-              onChange={(fire) => patchTuning({ fire })}
-            />
-            <ColorField
-              label="Ground"
-              value={tuning.ground}
-              onChange={(ground) => patchTuning({ ground })}
-            />
-            <ColorField
-              label="Inside the wall"
-              value={tuning.interior}
-              onChange={(interior) => patchTuning({ interior })}
-            />
-            <Button
-              size="xs"
-              variant="outline"
-              onClick={() => patchTuning(DEFAULT_TUNING)}
-            >
-              Reset look
-            </Button>
           </div>
         </details>
 
@@ -791,9 +965,11 @@ export default function VillageMapDemo() {
             <Button
               size="xs"
               variant="outline"
-              onClick={() => setState((current) => ({ ...current, overrides: {} }))}
+              onClick={() =>
+                setState((current) => ({ ...current, overrides: {}, pathOverrides: {} }))
+              }
             >
-              Reset dragged squares
+              Reset dragged positions
             </Button>
             <label className="flex items-center justify-between gap-2 text-xs text-stone-300">
               <span>Fit the frame to what is built</span>

@@ -76,6 +76,8 @@ const ProductionIconsDemo = lazy(
   () => import("@/pages/production-icons-demo"),
 );
 const VillageMapDemo = lazy(() => import("@/pages/village-map-demo"));
+const BuildingShapeDemo = lazy(() => import("@/pages/building-shape-demo"));
+const DevDashboard = lazy(() => import("@/pages/dev-dashboard"));
 
 function AppRoutes() {
   return (
@@ -98,6 +100,7 @@ function AppRoutes() {
         <Route path="/unsubscribe" component={Unsubscribe} />
         <Route path="/reset-password" component={ResetPassword} />
         <Route path="/admin/dashboard" component={AdminDashboard} />
+        <Route path="/dev" component={DevDashboard} />
         <Route path="/dev/starship-shader" component={StarshipShaderDemo} />
         <Route path="/dev/animations" component={AnimationsDemo} />
         <Route path="/dev/combat-dialog" component={CombatDialogDemo} />
@@ -108,6 +111,7 @@ function AppRoutes() {
           component={ProductionIconsDemo}
         />
         <Route path="/dev/village-map" component={VillageMapDemo} />
+        <Route path="/dev/building-shapes" component={BuildingShapeDemo} />
         <Route path="/dev/estate-bar-upgrade">
           {() => <Redirect to="/dev/animations#estate-bars" />}
         </Route>

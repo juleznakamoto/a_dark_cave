@@ -122,8 +122,8 @@ export function staysPut(buildingId: string): boolean {
 }
 
 export const LONGHOUSE_LENGTH = 1.65;
-/** Side-to-side size, 25% wider than the first longhouse. */
-const LONGHOUSE_WIDTH_SCALE = 1.25;
+/** Side-to-side size, 25% wider than the first longhouse, then another 15%. */
+const LONGHOUSE_WIDTH_SCALE = 1.25 * 1.15;
 /** Toward-and-away size, 20% shorter than the first longhouse. */
 const LONGHOUSE_DEPTH_SCALE = 0.8;
 /** End rectangle length, as a fraction of the longhouse's length (toward and away). */
@@ -162,12 +162,25 @@ export function longhouseOutline(size: number): Point[] {
     { x: endLeft, y: inner },
   ];
 }
+
+/** Middle of the right wall. Local +x is the longhouse's right; the front faces the village. */
+export function longhouseDoor(at: Point, hutSize: number): Point {
+  const size = markSize("longhouse", hutSize);
+  const width = size * LONGHOUSE_LENGTH * LONGHOUSE_WIDTH_SCALE;
+  return placePoints([{ x: width / 2, y: 0 }], at, tangentAngle(at))[0];
+}
+
 export const ESTATE_LENGTH = 4;
 export const ESTATE_DEPTH = 3;
 /** Black Estate outline. One pixel heavier than the Dark Estate's 1px line. */
 export const ESTATE_BORDER = 2;
 export const BASTION_LENGTH = 4.4;
 export const BASTION_DEPTH = 3;
+
+/** Black rim around the bastion. The drawbridge rails use the same width, outside the deck. */
+export function bastionOutlineWidth(tier: number): number {
+  return Math.max(1, tier) * 4;
+}
 /** Huts are half again as long as they are wide. The long side runs across the line to the center. */
 export const HUT_LENGTH = 1.5;
 
@@ -193,14 +206,162 @@ export function estateCornerOctagons(size: number, outset = 0): Point[][] {
   );
 }
 
-/** Half-circles on the left and right of the Black Estate, at mid-height. Radius is half a corner tower. */
-export function estateSideSemicircles(size: number): Array<{ x: number; y: number; r: number }> {
+/**
+ * Half-octagons on the left and right of the Black Estate, at mid-height.
+ * A vertex points outward. The flat sits on the wall.
+ * Half again as large as the semicircles they replace (those were half a corner tower).
+ */
+export function estateSideHalfOctagons(size: number): Point[][] {
   const length = size * ESTATE_LENGTH;
-  const radius = size / 4;
+  const radius = (size / 4) * 1.5;
+  const mid = radius * Math.SQRT1_2;
+  const edge = length / 2;
   return [
-    { x: -length / 2, y: 0, r: radius },
-    { x: length / 2, y: 0, r: radius },
+    [
+      { x: -edge, y: -radius },
+      { x: -edge - mid, y: -mid },
+      { x: -edge - radius, y: 0 },
+      { x: -edge - mid, y: mid },
+      { x: -edge, y: radius },
+    ],
+    [
+      { x: edge, y: -radius },
+      { x: edge + mid, y: -mid },
+      { x: edge + radius, y: 0 },
+      { x: edge + mid, y: mid },
+      { x: edge, y: radius },
+    ],
   ];
+}
+
+/**
+ * Small rectangle on the village-facing edge of the Dark Estate and the Black Estate.
+ * Width along the wall is 2/5 of the estate. How far it sticks out is a quarter
+ * of the estate depth, then 45% shorter. All four corners are cut at 45°,
+ * only a short nick, as a fraction of how far the porch sticks out.
+ */
+const ESTATE_PORCH_WIDTH = 2 / 5;
+const ESTATE_PORCH_DEPTH = (1 / 4) * 0.55;
+const ESTATE_PORCH_CORNER = 0.28;
+
+export function estateBottomRect(size: number): { x: number; y: number; w: number; h: number } {
+  const length = size * ESTATE_LENGTH;
+  const depth = size * ESTATE_DEPTH;
+  const w = length * ESTATE_PORCH_WIDTH;
+  const h = depth * ESTATE_PORCH_DEPTH;
+  return { x: -w / 2, y: depth / 2, w, h };
+}
+
+/** Path between the nine herb garden beds, as a fraction of the whole garden. */
+const HERB_GARDEN_GAP = 0.05 * 1.25;
+/** Corner radius of one bed, as a fraction of that bed. Tighter than the old 0.22 garden. */
+const HERB_GARDEN_CORNER = 0.16;
+
+/** Nine beds in a 3 by 3. Together they fill the same square as the old garden. */
+export function herbGardenBeds(size: number): Array<{ x: number; y: number; w: number; h: number; r: number }> {
+  const gap = size * HERB_GARDEN_GAP;
+  const cell = (size - 2 * gap) / 3;
+  const radius = cell * HERB_GARDEN_CORNER;
+  const origin = -size / 2;
+  const beds: Array<{ x: number; y: number; w: number; h: number; r: number }> = [];
+  for (let row = 0; row < 3; row++) {
+    for (let col = 0; col < 3; col++) {
+      beds.push({
+        x: origin + col * (cell + gap),
+        y: origin + row * (cell + gap),
+        w: cell,
+        h: cell,
+        r: radius,
+      });
+    }
+  }
+  return beds;
+}
+
+/**
+ * One closed outline for the estate. Corner towers, the outer octagon, the
+ * side half-octagons, and the bottom rectangle are part of the same edge, so
+ * nothing is drawn where those pieces meet the hall.
+ * Local +y is the bottom of the unrotated mark.
+ */
+export function estateOutline(size: number, level: number): Point[] {
+  const hx = (size * ESTATE_LENGTH) / 2;
+  const hy = (size * ESTATE_DEPTH) / 2;
+  const radius = size / 2;
+  const mid = radius * Math.SQRT1_2;
+  const outerRadius = radius * 1.25;
+  const outerMid = outerRadius * Math.SQRT1_2;
+  const porchHalf = (size * ESTATE_LENGTH * ESTATE_PORCH_WIDTH) / 2;
+  const porchDepth = size * ESTATE_DEPTH * ESTATE_PORCH_DEPTH;
+  const porchCut = porchDepth * ESTATE_PORCH_CORNER;
+  const points: Point[] = [
+    { x: -hx, y: -hy + radius },
+    { x: -hx - mid, y: -hy + mid },
+    { x: -hx - radius, y: -hy },
+    { x: -hx - mid, y: -hy - mid },
+    { x: -hx, y: -hy - radius },
+    { x: -hx + mid, y: -hy - mid },
+    { x: -hx + radius, y: -hy },
+    { x: -outerRadius, y: -hy },
+    { x: -outerMid, y: -hy - outerMid },
+    { x: 0, y: -hy - outerRadius },
+    { x: outerMid, y: -hy - outerMid },
+    { x: outerRadius, y: -hy },
+    { x: hx - radius, y: -hy },
+    { x: hx - mid, y: -hy - mid },
+    { x: hx, y: -hy - radius },
+    { x: hx + mid, y: -hy - mid },
+    { x: hx + radius, y: -hy },
+    { x: hx + mid, y: -hy + mid },
+    { x: hx, y: -hy + radius },
+  ];
+  if (level > 1) {
+    const sideRadius = (size / 4) * 1.5;
+    const sideMid = sideRadius * Math.SQRT1_2;
+    points.push(
+      { x: hx, y: -sideRadius },
+      { x: hx + sideMid, y: -sideMid },
+      { x: hx + sideRadius, y: 0 },
+      { x: hx + sideMid, y: sideMid },
+      { x: hx, y: sideRadius },
+    );
+  }
+  points.push(
+    { x: hx, y: hy - radius },
+    { x: hx + mid, y: hy - mid },
+    { x: hx + radius, y: hy },
+    { x: hx + mid, y: hy + mid },
+    { x: hx, y: hy + radius },
+    { x: hx - mid, y: hy + mid },
+    { x: hx - radius, y: hy },
+    { x: porchHalf + porchCut, y: hy },
+    { x: porchHalf, y: hy + porchCut },
+    { x: porchHalf, y: hy + porchDepth - porchCut },
+    { x: porchHalf - porchCut, y: hy + porchDepth },
+    { x: -porchHalf + porchCut, y: hy + porchDepth },
+    { x: -porchHalf, y: hy + porchDepth - porchCut },
+    { x: -porchHalf, y: hy + porchCut },
+    { x: -porchHalf - porchCut, y: hy },
+    { x: -hx + radius, y: hy },
+    { x: -hx + mid, y: hy + mid },
+    { x: -hx, y: hy + radius },
+    { x: -hx - mid, y: hy + mid },
+    { x: -hx - radius, y: hy },
+    { x: -hx - mid, y: hy - mid },
+    { x: -hx, y: hy - radius },
+  );
+  if (level > 1) {
+    const sideRadius = (size / 4) * 1.5;
+    const sideMid = sideRadius * Math.SQRT1_2;
+    points.push(
+      { x: -hx, y: sideRadius },
+      { x: -hx - sideMid, y: sideMid },
+      { x: -hx - sideRadius, y: 0 },
+      { x: -hx - sideMid, y: -sideMid },
+      { x: -hx, y: -sideRadius },
+    );
+  }
+  return points;
 }
 
 /** Octagon on the middle of the estate's outer edge, a quarter larger than the corner towers. */
@@ -315,10 +476,15 @@ export function wizardTowerOutline(towerRadius: number, arcSteps = 10): Point[] 
   return points;
 }
 
-/** Flat-to-flat width. The first watchtower is 2 huts across; each level adds 20% of that. */
+/** Each later watchtower is 10% larger than the one before it. */
+export function watchtowerLevelScale(level: number): number {
+  const step = Math.max(1, Math.round(level));
+  return 1.1 ** (step - 1);
+}
+
+/** Flat-to-flat width. The first watchtower is two huts across. */
 export function watchtowerWidth(hutSize: number, level: number): number {
-  const step = Math.max(0, Math.round(level) - 1);
-  return hutSize * 2 * (1 + step * 0.2);
+  return hutSize * 2 * watchtowerLevelScale(level);
 }
 
 const WATCHTOWER_SIDES = [4, 6, 8, 10];
@@ -345,8 +511,8 @@ export function boneTempleCorners(size: number): Point[][] {
 
 /** Spike length past the outer vertex, as a fraction of the pentagon circumradius. */
 const BONE_TEMPLE_SPIKE = 0.7;
-/** How far back along each flank the spike base sits. */
-const BONE_TEMPLE_SPIKE_BASE = 0.36;
+/** How far back along each flank the spike base sits. Further back is a wider, less pointed tip. */
+const BONE_TEMPLE_SPIKE_BASE = 0.36 * 1.3;
 
 /** One short triangle on each corner pentagon, continuing the outward vertex. */
 export function boneTempleSpikes(size: number): Point[][] {
@@ -467,11 +633,13 @@ const PIT_SHAPE: Point[] = Array.from({ length: 14 }, (_, index) => {
 const BONEYARD_WOBBLE = 0.06 * 0.7;
 
 /**
- * Boneyard. A square with a quieter rim wobble than the pit, so the
- * sides stay uneven without turning it into a circle.
+ * Boneyard. A square with a quieter rim wobble than the pit, stretched 20%
+ * along the line to the village. The sides stay uneven without turning it
+ * into a circle. Local +y is away from the village.
  */
 export function boneyardOutline(size: number): Point[] {
   const half = size / 2;
+  const longHalf = half * 1.2;
   const perSide = 4;
   const points: Point[] = [];
   for (let side = 0; side < 4; side++) {
@@ -483,16 +651,16 @@ export function boneyardOutline(size: number): Point[] {
       let y = 0;
       if (side === 0) {
         x = along * half;
-        y = -half;
+        y = -longHalf;
       } else if (side === 1) {
         x = half;
-        y = along * half;
+        y = along * longHalf;
       } else if (side === 2) {
         x = -along * half;
-        y = half;
+        y = longHalf;
       } else {
         x = -half;
-        y = -along * half;
+        y = -along * longHalf;
       }
       points.push({ x: x * wobble, y: y * wobble });
     }
@@ -567,9 +735,9 @@ export function pitOutline(hutSize: number): Point[] {
   return PIT_SHAPE.map((point) => ({ x: point.x * scale, y: point.y * scale }));
 }
 
-/** Each deeper pit is another 10% of the first pit larger. */
-export function pitScale(level: number): number {
-  return 1 + Math.max(0, level - 1) * 0.1;
+/** Deeper pits add inner contours. The outline stays the size of the first pit. */
+export function pitScale(_level: number): number {
+  return 1;
 }
 
 /**
@@ -583,16 +751,14 @@ export function pitContourScales(level: number): number[] {
 }
 
 const STORAGE_BORDER = 1;
-/** Round and octagon turrets, as a fraction of the current square side. */
+/** Octagon turrets, as a fraction of the current square side. */
 const STORAGE_TOWER = 0.22;
 const STORAGE_RECT_ALONG = 0.36 * 0.8;
 const STORAGE_RECT_DEPTH = 0.22;
 
-/** Each level adds 10% of the first supply hut's size. The vault is 15% larger than the repository. */
-export function storageScale(level: number): number {
-  const step = Math.max(0, Math.round(level) - 1);
-  const scale = 1 + Math.min(step, 4) * 0.1;
-  return step >= 5 ? scale * 1.15 : scale;
+/** Every supply hut is 25% larger, then 10%, then another 10%. Later levels add towers and wings at that size. */
+export function storageScale(_level: number): number {
+  return 1.25 * 1.1 * 1.1;
 }
 
 /** Storage count at which the Great Vault is the building on the map. */
@@ -611,7 +777,6 @@ export function storageBorder(_level: number): number {
 }
 
 export type StorageTower =
-  | { kind: "round"; x: number; y: number; r: number }
   | { kind: "octagon"; points: Point[] }
   | { kind: "rect"; x: number; y: number; w: number; h: number };
 
@@ -633,11 +798,11 @@ function regularPolygon(
 
 /**
  * Supply hut turrets, in local space. +y points away from the village center.
- * Level 2 is one octagon on the outer edge. Level 3 adds round towers on the
- * two corners that face the center. Corner octagons replace those rounds from
- * level 4. Side rectangles sit on the left and right edges from level 5.
- * The Great Vault adds a circle on the outer face of each side rectangle.
- * Each circle is half again the rectangle's length.
+ * Level 2 is one octagon on the outer edge. Level 3 adds octagons on the
+ * two corners that face the center. Level 4 adds the other two corners.
+ * Side rectangles sit on the left and right edges from level 5.
+ * The Great Vault adds an octagon on the outer face of each side rectangle.
+ * Each octagon is half again the rectangle's length, with a vertex pointing out.
  */
 export function storageTowers(size: number, level: number): StorageTower[] {
   const step = Math.max(1, Math.round(level));
@@ -650,8 +815,8 @@ export function storageTowers(size: number, level: number): StorageTower[] {
   });
   if (step === 3) {
     towers.push(
-      { kind: "round", x: size / 2, y: -size / 2, r: radius },
-      { kind: "round", x: -size / 2, y: -size / 2, r: radius },
+      { kind: "octagon", points: regularPolygon(-size / 2, -size / 2, radius, 8, (-Math.PI * 3) / 4) },
+      { kind: "octagon", points: regularPolygon(size / 2, -size / 2, radius, 8, -Math.PI / 4) },
     );
   }
   if (step >= 4) {
@@ -677,21 +842,19 @@ export function storageTowers(size: number, level: number): StorageTower[] {
     );
     if (step >= 6) {
       const outward = size / 2 + depth / 2;
+      const sideRadius = (along / 2) * 1.5;
       towers.push(
-        { kind: "round", x: -outward, y: 0, r: (along / 2) * 1.5 },
-        { kind: "round", x: outward, y: 0, r: (along / 2) * 1.5 },
+        { kind: "octagon", points: regularPolygon(-outward, 0, sideRadius, 8, Math.PI) },
+        { kind: "octagon", points: regularPolygon(outward, 0, sideRadius, 8, 0) },
       );
     }
   }
   return towers;
 }
 
-/** Coinhouse grows 15%, then 10%, then 10%. */
-export function coinhouseScale(level: number): number {
-  const step = Math.max(1, Math.round(level));
-  const grown = step >= 2 ? 1.1 : 1;
-  const again = step >= 3 ? 1.1 : 1;
-  return 1.15 * grown * again;
+/** Coinhouse is 15% larger than a normal square at every level. Later levels add courts, not size. */
+export function coinhouseScale(_level: number): number {
+  return 1.15;
 }
 
 /** Octagon width across, as a fraction of the current building side. */
@@ -705,14 +868,28 @@ const COINHOUSE_WALL_THICK = 0.07 * 1.5;
 const COINHOUSE_WALL_GROW = 1.25;
 /** Gate length along the village-facing wall, as a fraction of the side. Thickness stays put. */
 const COINHOUSE_GATE = 0.6;
+/** Outer corner radius of the courtyard wall, in wall thicknesses, before it is eased off. */
+const COINHOUSE_WALL_CORNER = 2.6;
+/** 70% less curve than that radius, on the outside and on the courtyard side. */
+const COINHOUSE_CORNER_EASE = 0.3;
 
 export type CoinhouseRect = { x: number; y: number; w: number; h: number };
+
+/** Courtyard wall. `inn` and `out` are half the inner and outer squares. */
+export type CoinhouseWall = {
+  inn: number;
+  out: number;
+  innerRadius: number;
+  outerRadius: number;
+};
 
 export type CoinhouseLayout = {
   side: number;
   house: CoinhouseRect;
   octagons: Point[][];
   walls: CoinhouseRect[];
+  /** Rounded corners of the wall around the building. Null before the wall exists. */
+  wallCorner: CoinhouseWall | null;
   gate: CoinhouseRect | null;
 };
 
@@ -736,7 +913,8 @@ const COINHOUSE_HOUSE = 0.9;
  * with a long rectangle for the gate on the village side. The house inside
  * that wall is 10% smaller and keeps the corner octagons. Level 3 is another
  * 10% larger, the wall is a bit bigger, and octagons sit on the wall corners
- * too. Local +y is away from the village.
+ * too. The wall corners are rounded on the outside and on the courtyard side.
+ * Local +y is away from the village.
  */
 export function coinhouseLayout(size: number, level: number): CoinhouseLayout {
   const step = Math.max(1, Math.round(level));
@@ -753,7 +931,7 @@ export function coinhouseLayout(size: number, level: number): CoinhouseLayout {
     (houseSide * COINHOUSE_OCT) / 2,
   );
   if (step < 2) {
-    return { side, house, octagons: houseOctagons, walls: [], gate: null };
+    return { side, house, octagons: houseOctagons, walls: [], wallCorner: null, gate: null };
   }
   const grow = step >= 3 ? COINHOUSE_WALL_GROW : 1;
   const gap = side * COINHOUSE_WALL_GAP * grow;
@@ -772,6 +950,12 @@ export function coinhouseLayout(size: number, level: number): CoinhouseLayout {
     { x: (out + gateHalf) / 2, y: frontY, w: frontPiece, h: thick },
   ];
   const gate: CoinhouseRect = { x: 0, y: frontY, w: gateLen, h: thick * 1.8 };
+  const wallCorner: CoinhouseWall = {
+    inn,
+    out,
+    outerRadius: thick * COINHOUSE_WALL_CORNER * COINHOUSE_CORNER_EASE,
+    innerRadius: thick * (COINHOUSE_WALL_CORNER - 1) * COINHOUSE_CORNER_EASE,
+  };
   const wallOctagons =
     step >= 3
       ? coinhouseOctagons(
@@ -779,7 +963,7 @@ export function coinhouseLayout(size: number, level: number): CoinhouseLayout {
         (side * COINHOUSE_OCT) / 2,
       )
       : [];
-  return { side, house, octagons: [...houseOctagons, ...wallOctagons], walls, gate };
+  return { side, house, octagons: [...houseOctagons, ...wallOctagons], walls, wallCorner, gate };
 }
 
 /** How far the coinhouse mark reaches from its slot. */
@@ -801,25 +985,22 @@ export function coinhouseReach(size: number, level: number): number {
   return reach;
 }
 
-/**
- * Each level is 15% larger than the one before. The Merchants Guild is then
- * 15% smaller than that grown size.
- */
-export function tradeScale(level: number): number {
-  const step = Math.max(0, Math.round(level) - 1);
-  const scale = 1.15 ** step;
-  return step >= 2 ? scale * 0.85 : scale;
+/** The trade post stays the first size. Later levels add wings. */
+export function tradeScale(_level: number): number {
+  return 1;
 }
 
 const TRADE_CORNER = 1 / 12;
+/** Merchants Guild corners are a quarter less cut than the earlier trade posts. */
+const TRADE_GUILD_CORNER = TRADE_CORNER * 0.75;
 /** Side square, as a fraction of the trade post's current length. */
 const TRADE_WING = 1.5;
 
 /**
  * Trade post. All four corners are cut at 45°, each leg 1/12 of that piece's width.
  * Level 2 adds a square on the left, 150% of the post's length, with the same cuts.
- * Level 3 adds the same square on the right, with a circle on the inner and
- * outer end of each square. A side that has a square keeps a straight edge on
+ * Level 3 adds the same square on the right, with a tighter corner cut, and a
+ * circle on the inner and outer end of each square. A side that has a square keeps a straight edge on
  * the middle. Local +y is away from the village.
  */
 export function tradeOutline(size: number, level: number): Point[] {
@@ -843,7 +1024,7 @@ export function tradeOutline(size: number, level: number): Point[] {
     ];
   }
   const wing = span * TRADE_WING;
-  const wingCut = wing * TRADE_CORNER;
+  const wingCut = wing * (step >= 3 ? TRADE_GUILD_CORNER : TRADE_CORNER);
   const wingLeft = left - wing;
   const wingInner = -wing / 2;
   const wingOuter = wing / 2;
@@ -906,7 +1087,6 @@ export function tradeCircles(
 }
 
 const ALTAR_LENGTH = 0.5;
-const ALTAR_GROWTH = 1.35;
 const ALTAR_CORNER = 1 / 12;
 /** Porch rectangle on the inner and outer edges, as a fraction of the shrine's width. Its length is half that width. */
 const ALTAR_PORCH_WIDTH = 0.7;
@@ -915,10 +1095,12 @@ const ALTAR_PORCH_DEPTH = 0.5;
 const ALTAR_WING_WIDTH = 0.4;
 const ALTAR_OCTAGON = 3;
 
-/** Level 1 is half as long as a square. Level 2 is 35% larger than that. */
-export function altarSpan(size: number, level: number): { width: number; depth: number } {
-  const scale = Math.max(1, Math.round(level)) >= 2 ? ALTAR_GROWTH : 1;
-  return { width: size * scale, depth: size * ALTAR_LENGTH * scale };
+/** The altar is 10% larger at every stage. Later levels add porches and wings at that size. */
+const ALTAR_SCALE = 1.1;
+
+/** Level 1 is half as long as a square, then 10% larger. Later levels add porches and wings at that size. */
+export function altarSpan(size: number, _level: number): { width: number; depth: number } {
+  return { width: size * ALTAR_SCALE, depth: size * ALTAR_LENGTH * ALTAR_SCALE };
 }
 
 /** The long way around an octagon, skipping the flat that touches the square. */
@@ -1221,16 +1403,14 @@ export function heartfireBorderTriangles(radius: number, border: number): Point[
   });
 }
 
-/** Each level is 20% larger than the one before, in both directions. */
-export function blacksmithScale(level: number): number {
-  const step = Math.max(0, Math.round(level) - 1);
-  return 1.2 ** step;
+/** The smithy stays the first size. Later levels add the forge and the wing. */
+export function blacksmithScale(_level: number): number {
+  return 1;
 }
 
-/** Each upgrade adds 20% of the first hunter lodge's width (side to side). */
-export function cabinWidthScale(level: number): number {
-  const step = Math.max(0, Math.round(level) - 1);
-  return 1 + step * 0.2;
+/** The lodge stays the first width. Later levels add a tower and a wing. */
+export function cabinWidthScale(_level: number): number {
+  return 1;
 }
 
 /** Main square only. The side wing keeps the width from before this. */
@@ -1243,17 +1423,16 @@ function cabinMainSize(size: number, level: number): { width: number; depth: num
   };
 }
 
-/** Each upgrade adds 10% of the first hunter lodge's length (toward and away from the village). */
-export function cabinLengthScale(level: number): number {
-  const step = Math.max(0, Math.round(level) - 1);
-  return 1 + step * 0.1;
+/** The lodge stays the first length. Later levels add a tower and a wing. */
+export function cabinLengthScale(_level: number): number {
+  return 1;
 }
 
 /** Round tower on the outer right corner, as a fraction of the first lodge. */
 const CABIN_TOWER = 0.22;
 
 /**
- * Round tower on the outer right corner from level 2. Level 3 makes it 50% larger.
+ * Round tower on the outer right corner from level 2. It stays the first size.
  * Local +y is away from the village center, and +x is to the right from outside.
  */
 export function cabinTower(
@@ -1266,7 +1445,7 @@ export function cabinTower(
   return {
     x: width / 2,
     y: depth / 2,
-    r: size * CABIN_TOWER * (step >= 3 ? 1.5 : 1),
+    r: size * CABIN_TOWER,
   };
 }
 
@@ -1310,66 +1489,85 @@ export function cabinOutline(size: number, level: number): Point[] {
   ];
 }
 
-/** Each upgrade adds 20% of the first tannery's size. Level 3 is also 25% longer. */
-export function tanneryWidthScale(level: number): number {
-  const step = Math.max(0, Math.round(level) - 1);
-  return 1 + step * 0.2;
+/** The tannery hall stays the first size. Later levels add wings. */
+export function tanneryWidthScale(_level: number): number {
+  return 1;
 }
 
-/** Length toward and away from the village. Level 3 adds 25% on top of the width growth. */
-export function tanneryLengthScale(level: number): number {
-  const step = Math.max(0, Math.round(level) - 1);
-  const scale = 1 + step * 0.2;
-  return step >= 2 ? scale * 1.25 : scale;
+/** The tannery hall stays the first size. Later levels add wings. */
+export function tanneryLengthScale(_level: number): number {
+  return 1;
 }
 
-/** Side pieces are half the tannery's current width. */
-const TANNERY_PIECE = 0.5;
+/** Wide hall, matching the tanning yard: the bar is 40 long and 12 deep. */
+const TANNERY_WIDE = 1.7;
+const TANNERY_YARD_WIDTH = 40;
+const TANNERY_YARD_BAR = 12;
+const TANNERY_YARD_WING = 12;
+/** How far each wing reaches past the inner edge of the bar, in yard units. */
+const TANNERY_YARD_REACH = 26;
+/** Hall depth, toward and away from the village. */
+const TANNERY_DEEP = TANNERY_WIDE * (TANNERY_YARD_BAR / TANNERY_YARD_WIDTH);
+/** Wing thickness, same as the bar in the tanning yard. */
+const TANNERY_WING = TANNERY_WIDE * (TANNERY_YARD_WING / TANNERY_YARD_WIDTH);
+/** How far each wing reaches past the hall toward the village center. */
+const TANNERY_WING_REACH = TANNERY_WIDE * (TANNERY_YARD_REACH / TANNERY_YARD_WIDTH);
 
 /**
- * Tannery outline. Level 1 adds a square on the left, half the width, flush
- * with the village-facing edge. Level 2 grows the building, adds a rectangle
- * on the right, and a square in the middle of the outer edge. Level 3 grows
- * it again, stretches the length, and adds a square on the right that mirrors
- * the one on the left. Local +y is away from the village center,
- * and +x is to the right from outside.
+ * Tannery, in the proportions of the tanning yard: a bar 40 by 12, and wings
+ * 12 thick that reach 26 past the inner edge. Level 1 is the bar. Level 2
+ * adds the left wing. Level 3 adds the right wing, a U open toward the center.
+ * Local +y is away from the village center, and +x is to the right from outside.
  */
 export function tanneryOutline(size: number, level: number): Point[] {
   const step = Math.max(1, Math.round(level));
-  const width = size * tanneryWidthScale(step);
-  const depth = size * tanneryLengthScale(step);
-  const piece = width * TANNERY_PIECE;
-  const left = -width / 2 - piece;
-  const right = width / 2 + (step >= 2 ? piece : 0);
-  const inner = -depth / 2;
-  const outer = depth / 2;
+  const halfW = (size * TANNERY_WIDE) / 2;
+  const halfD = (size * TANNERY_DEEP) / 2;
+  const inner = -halfD;
+  const outer = halfD;
+  if (step < 2) {
+    return [
+      { x: -halfW, y: inner },
+      { x: halfW, y: inner },
+      { x: halfW, y: outer },
+      { x: -halfW, y: outer },
+    ];
+  }
+  const wing = size * TANNERY_WING;
+  const tip = inner - size * TANNERY_WING_REACH;
+  const leftInner = -halfW + wing;
   const points: Point[] = [
-    { x: left, y: inner },
-    { x: right, y: inner },
+    { x: -halfW, y: tip },
+    { x: leftInner, y: tip },
+    { x: leftInner, y: inner },
   ];
   if (step >= 3) {
+    const rightInner = halfW - wing;
     points.push(
-      { x: right + piece, y: inner },
-      { x: right + piece, y: inner + piece },
-      { x: right, y: inner + piece },
+      { x: rightInner, y: inner },
+      { x: rightInner, y: tip },
+      { x: halfW, y: tip },
     );
+  } else {
+    points.push({ x: halfW, y: inner });
   }
-  points.push({ x: right, y: outer });
-  if (step >= 2) {
-    const mid = piece / 2;
-    points.push(
-      { x: mid, y: outer },
-      { x: mid, y: outer + piece },
-      { x: -mid, y: outer + piece },
-      { x: -mid, y: outer },
-    );
-  }
-  points.push(
-    { x: -width / 2, y: outer },
-    { x: -width / 2, y: inner + piece },
-    { x: left, y: inner + piece },
-  );
+  points.push({ x: halfW, y: outer }, { x: -halfW, y: outer });
   return points;
+}
+
+/** Open court of the U. Paths stop at the mouth instead of crossing it. */
+function tanneryCourt(size: number, level: number): Point[] | null {
+  if (Math.max(1, Math.round(level)) < 3) return null;
+  const halfW = (size * TANNERY_WIDE) / 2;
+  const inner = -(size * TANNERY_DEEP) / 2;
+  const tip = inner - size * TANNERY_WING_REACH;
+  const wing = size * TANNERY_WING;
+  return [
+    { x: -halfW + wing, y: tip },
+    { x: halfW - wing, y: tip },
+    { x: halfW - wing, y: inner },
+    { x: -halfW + wing, y: inner },
+  ];
 }
 
 /**
@@ -1389,24 +1587,31 @@ export function alchemistHall(size: number): { width: number; depth: number; tow
   };
 }
 
+/** Middle of the right wall. The decagon sits on the left. */
+export function alchemistHallDoor(at: Point, hutSize: number): Point {
+  const hall = alchemistHall(markSize("alchemistHall", hutSize));
+  return placePoints([{ x: hall.width / 2, y: 0 }], at, tangentAngle(at))[0];
+}
+
 /** Each outward corner is cut by this fraction of the building's width. */
 const CLERK_CORNER_CUT = 0.1;
 
 /**
- * Scribe hut size. Level 1 is 50% larger than a normal square, then 10% smaller.
- * Each later level is 20% larger than the one before, and another 20% wider.
+ * Clerk's hut size. Level 1 is 50% larger than a normal square, then 10% smaller,
+ * then 15% larger. The Scriptorium is 25% wider than that. The Tomewarden Academy
+ * is 50% wider.
  */
 function clerksHutSize(size: number, level: number): { width: number; depth: number } {
-  const step = Math.max(0, Math.round(level) - 1);
-  const depth = size * 1.5 * 0.9 * 1.2 ** step;
-  return { width: depth * 1.2 ** step, depth };
+  const step = Math.round(level);
+  const depth = size * 1.5 * 0.9 * 1.15;
+  const width = step >= 3 ? depth * 1.5 : step >= 2 ? depth * 1.25 : depth;
+  return { width, depth };
 }
 
 /**
  * Clerk's Hut, the scribe hut. The two corners that face away from the village
- * are cut off. Level 2 puts a circle on the outer edge, a third of the width
- * across. Level 3 adds circles on the left and right, and the outer circle
- * grows to two fifths of the width. Local +y is away from the center, and +x
+ * are cut off. Level 2 puts a circle on the outer edge, twice a third of the
+ * hut's depth across. Level 3 adds circles on the left and right. Local +y is away from the center, and +x
  * is to the right from outside.
  */
 export function clerksHut(
@@ -1428,7 +1633,7 @@ export function clerksHut(
   ];
   const circles: { x: number; y: number; r: number }[] = [];
   if (step >= 2) {
-    const across = step >= 3 ? width * 0.4 : width / 3;
+    const across = step === 2 ? (depth / 3) * 2 : width / 3;
     circles.push({ x: 0, y: hy, r: across / 2 });
   }
   if (step >= 3) {
@@ -1438,21 +1643,19 @@ export function clerksHut(
   return { body, circles };
 }
 
-const ARCHIVE_GROWTH = 1.15;
-/** Side square, as a fraction of the current building width. */
+/** Side square, as a fraction of the building width. */
 const ARCHIVE_WING = 0.5;
 
-/** Each later scribe's office is 15% larger than the one before. */
-export function archiveScale(level: number): number {
-  const step = Math.max(0, Math.round(level) - 1);
-  return ARCHIVE_GROWTH ** step;
+/** Every scribe's office is 15% larger, then another 10%. Later levels add wings and a cap at that size. */
+export function archiveScale(_level: number): number {
+  return 1.15 * 1.1;
 }
 
 /**
  * Outer half of the circle that used to sit on the scribe's office.
  * Diameter is the building's outer edge. The dome bulges away from the village.
  */
-function archiveOuterCap(span: number): Point[] {
+function archiveOuterCap(span: number, base: number): Point[] {
   const radius = span / 2;
   const steps = 12;
   const points: Point[] = [];
@@ -1460,7 +1663,7 @@ function archiveOuterCap(span: number): Point[] {
     const angle = (step / steps) * Math.PI;
     points.push({
       x: Math.cos(angle) * radius,
-      y: radius + Math.sin(angle) * radius,
+      y: base + Math.sin(angle) * radius,
     });
   }
   return points;
@@ -1470,21 +1673,22 @@ function archiveOuterCap(span: number): Point[] {
  * Scribe's Office. Level 1 is half a U: the building plus a square on the
  * left, half as wide as the building, sticking toward the village. The open
  * end faces the middle. Level 2 mirrors that square, closing the U, still
- * open toward the middle. Level 3 replaces the outer edge with a half circle
- * of the building's width, dome away from the village. Local +y is away.
+ * open toward the middle. Level 3 makes the middle square 50% longer, away
+ * from the village, and replaces that outer edge with a half circle of the
+ * building's width. Local +y is away.
  */
 export function archiveOutline(size: number, level: number): Point[] {
   const span = size * archiveScale(level);
   const half = span / 2;
   const arm = span * ARCHIVE_WING;
   const inner = -half;
-  const outer = half;
   const left = -half;
   const right = half;
   const tip = inner - arm;
   const join = inner + arm;
   const step = Math.round(level);
   const mirrored = step >= 2;
+  const outer = half + (step >= 3 ? span * 0.5 : 0);
   return [
     { x: left - arm, y: tip },
     { x: left, y: tip },
@@ -1499,103 +1703,138 @@ export function archiveOutline(size: number, level: number): Point[] {
       ]
       : []),
     { x: right, y: outer },
-    ...(step >= 3 ? archiveOuterCap(span) : []),
+    ...(step >= 3 ? archiveOuterCap(span, outer) : []),
     { x: left, y: outer },
     { x: left, y: join },
     { x: left - arm, y: join },
   ];
 }
 
-const BUILDERS_GROWTH = 1.15;
 const BUILDERS_SHRINK = 0.85 ** 2 * 0.9 * 0.9;
-/** The middle block is this much of a square across. Depth stays the full side. */
-const BUILDERS_MIDDLE = 0.8;
-/** Small 45° nick, a quarter of 45% of the middle square. */
-const BUILDERS_CORNER_CUT = 0.45 / 4;
+/** Short side of the L, in spans. Two of these L's are the hall. */
+const BUILDERS_LONG = 1.7;
+/** Hall and the I beside it are 50% longer than that short side. */
+const BUILDERS_LENGTH = 1.5;
+/** Court wall, in spans. Lodge legs use this same thickness. */
+const BUILDERS_WALL = 0.28;
+/** Thick court wall, eased back a little so the opening inside is roomier. */
+const BUILDERS_WALL_SCALE = 1.3 * 1.75 * 0.85;
+/** I beside the hall. Its length matches the hall. */
+const BUILDERS_WING_W = 0.55;
+/** Gap between the hall and that I, in spans. */
+const BUILDERS_WING_GAP = 0.18 * 3;
 
-/** Replaces each outer square corner with a short 45° edge. Inside corners stay. */
-function chamferOuterCorners(points: Point[], cut: number): Point[] {
-  const count = points.length;
-  const chamfered: Point[] = [];
-  for (let index = 0; index < count; index++) {
-    const prev = points[(index + count - 1) % count];
-    const curr = points[index];
-    const next = points[(index + 1) % count];
-    const vx1 = curr.x - prev.x;
-    const vy1 = curr.y - prev.y;
-    const vx2 = next.x - curr.x;
-    const vy2 = next.y - curr.y;
-    const inLen = Math.hypot(vx1, vy1);
-    const outLen = Math.hypot(vx2, vy2);
-    const turnsOut = vx1 * vy2 - vy1 * vx2 > 1e-6;
-    const nick = Math.min(cut, inLen * 0.45, outLen * 0.45);
-    if (!turnsOut || nick <= 0 || inLen === 0 || outLen === 0) {
-      chamfered.push(curr);
-      continue;
-    }
-    chamfered.push({ x: curr.x - (vx1 / inLen) * nick, y: curr.y - (vy1 / inLen) * nick });
-    chamfered.push({ x: curr.x + (vx2 / outLen) * nick, y: curr.y + (vy2 / outLen) * nick });
-  }
-  return chamfered;
+/** Every builder's building is smaller by 15%, 15%, 10%, then 10%, then half again as large. */
+export function buildersScale(_level: number): number {
+  return BUILDERS_SHRINK * 1.5;
 }
 
-/** Every builder's building is smaller by 15%, 15%, 10%, then 10%. Level 2 and 3 are also 15% larger than the lodge. */
-export function buildersScale(level: number): number {
-  const growth = Math.round(level) >= 2 ? BUILDERS_GROWTH : 1;
-  return growth * BUILDERS_SHRINK;
+/** Shared wall thickness for the lodge legs and the hall they form. */
+function buildersWall(span: number): number {
+  return span * BUILDERS_WALL * BUILDERS_WALL_SCALE;
+}
+
+/** The L's box. The hall is this same box, open inside. */
+function buildersBox(span: number): {
+  wide: number;
+  deep: number;
+  thick: number;
+  left: number;
+  top: number;
+  right: number;
+  bottom: number;
+} {
+  const wide = span * BUILDERS_LONG;
+  const deep = wide * BUILDERS_LENGTH;
+  const thick = buildersWall(span);
+  return {
+    wide,
+    deep,
+    thick,
+    left: -wide / 2,
+    top: -deep / 2,
+    right: wide / 2,
+    bottom: deep / 2,
+  };
 }
 
 /**
- * Builder's Lodge. The middle is a square. Level 1 adds a square twice that
- * side on the left, fully outside, with its village-facing edge flush with
- * the middle. Level 2 grows 15% and mirrors that square onto the right.
- * Level 3 is the same size as level 2 and inserts a square the size of the middle on
- * each side, between the middle and the double squares. The middle block is 20%
- * less wide than that square. Every outer corner is
- * cut at 45°, only a small nick. Local +y is away.
+ * Builder's Lodge. Level 1 is an L, open toward the upper right, with the
+ * foot on the side away from the village. Level 2 is that L plus the
+ * opposite L, together one open rectangle of the same outer size. Level 3
+ * keeps that rectangle and sets an I beside it, as long as the rectangle,
+ * with a small gap. The rectangle and the I are 50% longer than the L's
+ * short side. Local +y is away from the village.
  */
-export function buildersOutline(size: number, level: number): Point[] {
+export function buildersParts(
+  size: number,
+  level: number,
+): { outer: Point[]; hole: Point[] | null; wing: Point[] | null } {
   const step = Math.max(1, Math.round(level));
-  const span = size * buildersScale(step);
-  const half = span / 2;
-  const midHalf = (span * BUILDERS_MIDDLE) / 2;
-  const inner = -half;
-  const outer = half;
-  const wing = span * 2;
-  const wingOuter = inner + wing;
-  const side = step >= 3 ? span : 0;
-  const leftMid = -midHalf - side;
-  const rightMid = midHalf + side;
-  const leftWing = leftMid - wing;
-  const rightWing = step >= 2 ? rightMid + wing : midHalf;
-  return chamferOuterCorners(
-    [
-      { x: leftWing, y: inner },
-      { x: rightWing, y: inner },
-      ...(step >= 2
-        ? [
-          { x: rightWing, y: wingOuter },
-          { x: rightMid, y: wingOuter },
-          { x: rightMid, y: outer },
-        ]
-        : [{ x: midHalf, y: outer }]),
-      { x: leftMid, y: outer },
-      { x: leftMid, y: wingOuter },
-      { x: leftWing, y: wingOuter },
+  const box = buildersBox(size * buildersScale(step));
+  const { thick, left, top, right, bottom } = box;
+  if (step < 2) {
+    return {
+      outer: [
+        { x: left, y: bottom },
+        { x: right, y: bottom },
+        { x: right, y: bottom - thick },
+        { x: left + thick, y: bottom - thick },
+        { x: left + thick, y: top },
+        { x: left, y: top },
+      ],
+      hole: null,
+      wing: null,
+    };
+  }
+  const wingLeft = right + size * buildersScale(step) * BUILDERS_WING_GAP;
+  const wingW = size * buildersScale(step) * BUILDERS_WING_W;
+  return {
+    outer: [
+      { x: left, y: top },
+      { x: right, y: top },
+      { x: right, y: bottom },
+      { x: left, y: bottom },
     ],
-    span * BUILDERS_CORNER_CUT,
-  );
+    hole: [
+      { x: left + thick, y: top + thick },
+      { x: right - thick, y: top + thick },
+      { x: right - thick, y: bottom - thick },
+      { x: left + thick, y: bottom - thick },
+    ],
+    wing: step >= 3
+      ? [
+        { x: wingLeft, y: top },
+        { x: wingLeft + wingW, y: top },
+        { x: wingLeft + wingW, y: bottom },
+        { x: wingLeft, y: bottom },
+      ]
+      : null,
+  };
 }
 
-const FOUNDRY_GROWTH = 1.15;
+/** Outer edge of the builder's lodge. */
+export function buildersOutline(size: number, level: number): Point[] {
+  return buildersParts(size, level).outer;
+}
+
+/** Courtyard hole. Level 1 has none. */
+export function buildersHole(size: number, level: number): Point[] | null {
+  return buildersParts(size, level).hole;
+}
+
+/** Detached room beside the court. Levels 1 and 2 have none. */
+export function buildersWing(size: number, level: number): Point[] | null {
+  return buildersParts(size, level).wing;
+}
+
 const FOUNDRY_SHRINK = 0.9;
 /** Corner cut, a quarter of the original 45% of the short edge. */
 const FOUNDRY_END_CUT = 0.45 / 4;
 
-/** Every foundry is 10% smaller. Level 2 and 3 are also 15% larger than the first. */
-export function foundryScale(level: number): number {
-  const growth = Math.round(level) >= 2 ? FOUNDRY_GROWTH : 1;
-  return growth * FOUNDRY_SHRINK;
+/** Every foundry is 10% smaller. Later levels add squares at that size. */
+export function foundryScale(_level: number): number {
+  return FOUNDRY_SHRINK;
 }
 
 /** Half-square bumps on the outer edge. Each is a quarter of the foundry's width. */
@@ -1811,16 +2050,44 @@ export function blacksmithFurnace(
   };
 }
 
-/** Grand blacksmith wing is this much longer than the building, and one third as wide. */
+/** Detached square at the upper right, as a fraction of the hall. */
+const BLACKSMITH_ANNEX = 0.42;
+/** Gap between the hall's upper-right corner and that square. */
+const BLACKSMITH_ANNEX_GAP = 0.14;
+
+/**
+ * Square off the upper-right corner, from the Advanced Blacksmith on.
+ * A gap keeps it separate from the hall. In the comparison cell the top is
+ * toward the village, and +x is to the right.
+ */
+export function blacksmithAnnex(
+  width: number,
+  depth: number,
+  level: number,
+): { x: number; y: number; w: number; h: number } | null {
+  if (Math.round(level) < 2 || width <= 0 || depth <= 0) return null;
+  const side = width * BLACKSMITH_ANNEX;
+  const gap = width * BLACKSMITH_ANNEX_GAP;
+  return {
+    x: width / 2 + gap + side / 2,
+    y: -depth / 2 - gap - side / 2,
+    w: side,
+    h: side,
+  };
+}
+
+/** Grand blacksmith wing is longer than the building. Its width is two thirds of the hall. */
 const BLACKSMITH_WING_LENGTH = 1.15;
 const BLACKSMITH_WING_WIDTH = 1 / 3;
-/** Level 2 is half of that rectangle. Level 3 is the full one. */
+/** Level 2 is half of the original rectangle. Level 3 is twice that full width. */
 const BLACKSMITH_WING_SMALL = 0.5;
+const BLACKSMITH_WING_GRAND = 2;
 
 /**
  * Rectangle on the left, opposite the furnace, flush with the edge that faces
- * the village. Level 2 is the small one. Level 3 grows it to a bit longer than
- * the building and one third of the width. Local +y is away from the center.
+ * the village. Level 2 is the small one. The Grand Blacksmith makes it a bit
+ * longer than the building and twice as wide as the full rectangle.
+ * Local +y is away from the center.
  */
 export function blacksmithWing(
   width: number,
@@ -1830,7 +2097,8 @@ export function blacksmithWing(
   const step = Math.round(level);
   if (step < 2 || width <= 0 || depth <= 0) return null;
   const grown = step >= 3 ? 1 : BLACKSMITH_WING_SMALL;
-  const w = width * BLACKSMITH_WING_WIDTH * grown;
+  const wide = step >= 3 ? BLACKSMITH_WING_GRAND : 1;
+  const w = width * BLACKSMITH_WING_WIDTH * grown * wide;
   const h = depth * BLACKSMITH_WING_LENGTH * grown;
   return {
     x: -width / 2 - w / 2,
@@ -1868,7 +2136,12 @@ export function buildingClearance(buildingId: string, hutSize: number, level = 1
   }
   if (buildingId === "estate") {
     const border = level > 1 ? ESTATE_BORDER : 1;
-    return (hutSize * ESTATE_DEPTH) / 2 + (hutSize / 2) * 1.25 + border / 2;
+    const outerReach = (hutSize * ESTATE_DEPTH) / 2 + (hutSize / 2) * 1.25;
+    const sideReach = level > 1 ? (hutSize * ESTATE_LENGTH) / 2 + (hutSize / 4) * 1.5 : 0;
+    const porchHalfW = (hutSize * ESTATE_LENGTH * ESTATE_PORCH_WIDTH) / 2;
+    const porchTip = (hutSize * ESTATE_DEPTH) / 2 + hutSize * ESTATE_DEPTH * ESTATE_PORCH_DEPTH;
+    const porchReach = Math.hypot(porchHalfW, porchTip);
+    return Math.max(outerReach, sideReach, porchReach) + border / 2;
   }
   if (buildingId === "wizardTower") {
     const towerRadius = markSize(buildingId, hutSize) / 2;
@@ -1879,9 +2152,7 @@ export function buildingClearance(buildingId: string, hutSize: number, level = 1
     const pad = storageBorder(level) / 2;
     let reach = body / 2 + pad;
     for (const tower of storageTowers(body, level)) {
-      if (tower.kind === "round") {
-        reach = Math.max(reach, Math.hypot(tower.x, tower.y) + tower.r + pad);
-      } else if (tower.kind === "octagon") {
+      if (tower.kind === "octagon") {
         for (const point of tower.points) {
           reach = Math.max(reach, Math.hypot(point.x, point.y) + pad);
         }
@@ -1931,7 +2202,9 @@ export function buildingClearance(buildingId: string, hutSize: number, level = 1
   }
   if (buildingId === "builders") {
     const size = markSize(buildingId, hutSize);
-    return Math.max(...buildersOutline(size, level).map((point) => Math.hypot(point.x, point.y)));
+    const parts = buildersParts(size, level);
+    const points = [...parts.outer, ...(parts.wing ?? [])];
+    return Math.max(...points.map((point) => Math.hypot(point.x, point.y)));
   }
   if (buildingId === "foundry") {
     const size = markSize(buildingId, hutSize);
@@ -1987,14 +2260,21 @@ export function buildingClearance(buildingId: string, hutSize: number, level = 1
   if (buildingId === "blacksmith") {
     const span = markSize(buildingId, hutSize) * blacksmithScale(level);
     const furnace = blacksmithFurnace(span, span);
-    const hx = furnace.w / 2;
-    const hy = furnace.h / 2;
+    const annex = blacksmithAnnex(span, span, level);
+    const corners = (box: { x: number; y: number; w: number; h: number }) => {
+      const hx = box.w / 2;
+      const hy = box.h / 2;
+      return [
+        Math.hypot(box.x + hx, box.y + hy),
+        Math.hypot(box.x - hx, box.y - hy),
+        Math.hypot(box.x + hx, box.y - hy),
+        Math.hypot(box.x - hx, box.y + hy),
+      ];
+    };
     return Math.max(
       ...blacksmithOutline(span, span, level).map((point) => Math.hypot(point.x, point.y)),
-      Math.hypot(furnace.x + hx, furnace.y + hy),
-      Math.hypot(furnace.x - hx, furnace.y - hy),
-      Math.hypot(furnace.x + hx, furnace.y - hy),
-      Math.hypot(furnace.x - hx, furnace.y + hy),
+      ...corners(furnace),
+      ...(annex ? corners(annex) : []),
     );
   }
   return markSize(buildingId, hutSize) / 2;
@@ -2098,14 +2378,15 @@ export function innerWallPolygon(radius: number, tuning: Tuning, wallStroke: num
 }
 
 /** Push ring points outward along the ray from the map center. */
-export function outsetFromCenter(points: Point[], outset: number): Point[] {
+export function outsetFromCenter(points: Point[], outset: number | ((point: Point) => number)): Point[] {
   return points.map((point) => {
     const dx = point.x - MAP_CENTER;
     const dy = point.y - MAP_CENTER;
     const length = Math.hypot(dx, dy) || 1;
+    const reach = typeof outset === "function" ? outset(point) : outset;
     return {
-      x: point.x + (dx / length) * outset,
-      y: point.y + (dy / length) * outset,
+      x: point.x + (dx / length) * reach,
+      y: point.y + (dy / length) * reach,
     };
   });
 }
@@ -2133,6 +2414,8 @@ export type ChitinSpike = {
 
 /** Default spike length in SVG units (short triangles on the rim). */
 export const CHITIN_SPIKE_LENGTH = 8;
+/** Black edge on each side of a chitin plate. */
+export const CHITIN_OUTLINE = 1;
 /** White plating stroke on the outside of the palisade. */
 export const WALL_CHITIN_STROKE = 5;
 /** Base width across the wall tangent. */
@@ -2343,9 +2626,66 @@ export const MOAT_STROKE = 21;
 /** The moat's outer edge sits this much farther out. The inner edge stays put. */
 export const MOAT_OUTER_STRETCH = 0.5;
 
-/** How far the moat's outer edge sits past its centerline. */
+/** How far the moat's outer edge sits past its centerline at its thinnest. */
 export function moatOuterOffset(): number {
   return MOAT_STROKE / 2 + MOAT_STROKE * MOAT_OUTER_STRETCH;
+}
+
+/** Full band at the thin spots: outer stretch plus the inner half. */
+export function moatBandThickness(): number {
+  return moatOuterOffset() + MOAT_STROKE / 2;
+}
+
+/** Thick stretches are this much wider than the thin ones. */
+const MOAT_THICKNESS_VARY = 0.35;
+
+function moatThicknessRaw(angle: number): number {
+  const lumps = 0.5 - 0.5 * Math.cos(angle * 5 + 0.8);
+  const slow = 0.5 + 0.5 * Math.sin(angle * 2 + 0.2);
+  return lumps * 0.8 + slow * 0.2;
+}
+
+const MOAT_WAVE_EXTENT = (() => {
+  let min = Infinity;
+  let max = -Infinity;
+  for (let step = 0; step < 720; step++) {
+    const value = moatThicknessRaw((step / 720) * Math.PI * 2);
+    min = Math.min(min, value);
+    max = Math.max(max, value);
+  }
+  return { min, max };
+})();
+
+/** 0 on the thinnest stretch of the moat, 1 on the thickest. */
+export function moatThicknessWave(angle: number): number {
+  const span = MOAT_WAVE_EXTENT.max - MOAT_WAVE_EXTENT.min;
+  const wave = (moatThicknessRaw(angle) - MOAT_WAVE_EXTENT.min) / span;
+  return Math.max(0, Math.min(1, wave));
+}
+
+/**
+ * Outer edge past the centerline. The inner edge stays put, and the band
+ * grows by up to 35% along the ring.
+ */
+export function moatOuterOffsetAt(angle: number): number {
+  return moatOuterOffset() + moatBandThickness() * MOAT_THICKNESS_VARY * moatThicknessWave(angle);
+}
+
+/** Farthest the outer edge sits past the centerline. */
+export function moatOuterOffsetMax(): number {
+  return moatOuterOffset() + moatBandThickness() * MOAT_THICKNESS_VARY;
+}
+/** Extra space past the touch circle before the next trap. */
+const TRAP_TOUCH_GAP = 5;
+
+/** Drop a cross whose touch circle comes within 5px of another. */
+function spreadTraps(traps: Point[], gap: number): Point[] {
+  const kept: Point[] = [];
+  for (const trap of traps) {
+    const clear = kept.every((other) => Math.hypot(trap.x - other.x, trap.y - other.y) >= gap);
+    if (clear) kept.push(trap);
+  }
+  return kept;
 }
 /** Air that must remain between a trap and the wall, and between a trap and the moat. */
 const TRAP_CLEARANCE = 4;
@@ -2384,9 +2724,15 @@ export function trapMarkReach(tuning: Tuning, trapLevel: number): number {
   return Math.hypot(tip, stroke / 2) + TRAP_WOBBLE_PAD;
 }
 
+/** Plates, the ink on their outer edge, and the spikes, past the stroke's outer edge. */
+function chitinBeyondStroke(chitinStroke: number): number {
+  if (chitinStroke <= 0) return 0;
+  return chitinStroke + CHITIN_OUTLINE + CHITIN_SPIKE_LENGTH;
+}
+
 /**
  * Distance from the palisade centerline that traps must stay outside.
- * Towers and chitin spikes stick out past the stroke.
+ * Includes the wall ink, tower stroke, and chitin plates with their spikes.
  */
 export function trapWallOutset(
   wallLevel: number,
@@ -2396,8 +2742,9 @@ export function trapWallOutset(
 ): number {
   const step = PALISADE_TOWERS[Math.min(Math.max(wallLevel, 0), 4)] ?? null;
   const towerR = step ? (hutSize * step.diameter * PALISADE_TOWER_SCALE) / 2 : 0;
-  const chitinOuter = chitinStroke > 0 ? wallStroke / 2 + chitinStroke + CHITIN_SPIKE_LENGTH : 0;
-  return Math.max(wallStroke / 2, towerR, chitinOuter);
+  const towerEdge = towerR > 0 ? towerR + PALISADE_TOWER_STROKE / 2 : 0;
+  const wallEdge = wallStroke / 2 + PALISADE_BORDER;
+  return Math.max(wallEdge, towerEdge) + chitinBeyondStroke(chitinStroke);
 }
 
 export function wallStrokeWidth(level: number, base: number): number {
@@ -2442,19 +2789,135 @@ export function moatRingPoints(radius: number, tuning: Tuning): Point[] {
   return points;
 }
 
-/** Oval-radius of the moat's outer edge at this direction, including its stroke. */
-export function moatOuterRadius(
+/** Outer and inner edges, sampled finely so the thick and thin stretches stay. */
+export function moatBandEdges(radius: number, tuning: Tuning): { outer: Point[]; inner: Point[] } {
+  const count = 72;
+  const outer: Point[] = [];
+  const inner: Point[] = [];
+  for (let index = 0; index < count; index++) {
+    const angle = (index / count) * Math.PI * 2;
+    const local = moatRadiusAt(radius, angle, tuning);
+    const point = {
+      x: MAP_CENTER + Math.cos(angle) * local,
+      y: MAP_CENTER + Math.sin(angle) * local * tuning.wallOval,
+    };
+    const dx = point.x - MAP_CENTER;
+    const dy = point.y - MAP_CENTER;
+    const length = Math.hypot(dx, dy) || 1;
+    const ux = dx / length;
+    const uy = dy / length;
+    const out = moatOuterOffsetAt(angle);
+    outer.push({ x: point.x + ux * out, y: point.y + uy * out });
+    inner.push({ x: point.x - ux * (MOAT_STROKE / 2), y: point.y - uy * (MOAT_STROKE / 2) });
+  }
+  return { outer, inner };
+}
+
+/** Deck width as a fraction of the bastion mark. Narrower than the gap between the outer towers. */
+const DRAWBRIDGE_WIDTH = 1.5 * 1.15;
+/** How far the fill slides under the outer wall. The bastion outline stays on top of this tuck. */
+const DRAWBRIDGE_TUCK = 1.5;
+/** How far the far end rests on the bank past the moat's outer edge. */
+const DRAWBRIDGE_LANDING = 12;
+
+export type BastionDrawbridge = {
+  /** Local y where the fill starts, tucked into the outer wall. */
+  near: number;
+  /** Local y of the outer wall, where the side rails meet the gate. */
+  mouth: number;
+  /** Local y of the far bank. */
+  far: number;
+  /** Half the deck width, in local x. */
+  half: number;
+  /**
+   * Deck corners in map space: near-left, near-right, far-right, far-left.
+   * Keeps traps off the deck and lets the map frame include the far bank.
+   */
+  deck: Point[];
+};
+
+/** Extra local half-width so chitin and its spikes stop beside the deck, past its outline. */
+export function drawbridgeChitinGap(half: number, outline = 0): number {
+  return half + outline + WALL_CHITIN_STROKE / 2 + CHITIN_SPIKE_BASE / 2;
+}
+
+function raySegmentDistance(
+  ox: number,
+  oy: number,
+  ux: number,
+  uy: number,
+  a: Point,
+  b: Point,
+): number | null {
+  const sx = b.x - a.x;
+  const sy = b.y - a.y;
+  const den = ux * sy - uy * sx;
+  if (Math.abs(den) < 1e-9) return null;
+  const qx = a.x - ox;
+  const qy = a.y - oy;
+  const t = (qx * sy - qy * sx) / den;
+  const u = (qx * uy - qy * ux) / den;
+  if (t <= 0 || u < 0 || u > 1) return null;
+  return t;
+}
+
+/** Distance from the village center to where this outward ray meets a closed ring. */
+function outwardRingDistance(at: Point, ring: Point[]): number | null {
+  const dx = at.x - MAP_CENTER;
+  const dy = at.y - MAP_CENTER;
+  const len = Math.hypot(dx, dy);
+  if (len < 1e-6) return null;
+  const ux = dx / len;
+  const uy = dy / len;
+  let best: number | null = null;
+  for (let index = 0; index < ring.length; index++) {
+    const hit = raySegmentDistance(
+      MAP_CENTER,
+      MAP_CENTER,
+      ux,
+      uy,
+      ring[index],
+      ring[(index + 1) % ring.length],
+    );
+    if (hit == null) continue;
+    if (best == null || hit > best) best = hit;
+  }
+  return best;
+}
+
+/**
+ * Lowered drawbridge from the bastion's outer gate to the far bank of the moat.
+ * Local +y points away from the village. Null when the ditch cannot be measured.
+ */
+export function bastionDrawbridge(
+  at: Point,
+  hutSize: number,
   wallRadius: number,
   wallStroke: number,
-  angle: number,
   tuning: Tuning,
-): number {
+): BastionDrawbridge | null {
+  const size = markSize("bastion", hutSize);
+  const mouth = (size * BASTION_DEPTH) / 2;
   const center = moatCenterRadius(wallRadius, wallStroke);
-  let outer = 0;
-  for (let step = -3; step <= 3; step++) {
-    outer = Math.max(outer, moatRadiusAt(center, angle + step * 0.05, tuning));
-  }
-  return outer + moatOuterOffset();
+  // The painted ditch is the smoothed curve, which bows past the sample points.
+  const hit = outwardRingDistance(at, densifyClosed(moatBandEdges(center, tuning).outer, 8));
+  if (hit == null) return null;
+  const centerDist = Math.hypot(at.x - MAP_CENTER, at.y - MAP_CENTER);
+  const far = hit + DRAWBRIDGE_LANDING - centerDist;
+  if (far < mouth + 16) return null;
+  const half = (size * DRAWBRIDGE_WIDTH) / 2;
+  const near = mouth - DRAWBRIDGE_TUCK;
+  const deck = placePoints(
+    [
+      { x: -half, y: near },
+      { x: half, y: near },
+      { x: half, y: far },
+      { x: -half, y: far },
+    ],
+    at,
+    tangentAngle(at),
+  );
+  return { near, mouth, far, half, deck };
 }
 
 /** Wall centerline at this angle, in the oval the palisade uses. */
@@ -2531,10 +2994,14 @@ export function trapPoints(
       });
     }
   }
-  return points;
+  return spreadTraps(points, 2 * trapHitRadius(tuning, trapLevel) + TRAP_TOUCH_GAP);
 }
 
-/** Drop crosses that would sit on the bastion, a watchtower, or a palisade tower. */
+/**
+ * Drop crosses that would touch the bastion, a watchtower, a palisade tower,
+ * their chitin, or a drawbridge. `chitinStroke` is the plate width when plating is drawn.
+ * `blockedPad` is outline drawn outside a deck, so crosses stay off the rails.
+ */
 export function trapsClearOfBuildings(
   traps: Point[],
   tuning: Tuning,
@@ -2543,19 +3010,37 @@ export function trapsClearOfBuildings(
   wallRadius: number,
   slots: PlacedSlot[],
   hutSize = tuning.squareSize,
+  blocked: Point[][] = [],
+  chitinStroke = 0,
+  blockedPad = 0,
 ): Point[] {
-  const reach = trapMarkReach(tuning, trapLevel);
-  const obstacles: Shape[] = palisadeTowers(wallLevel, wallRadius, tuning, tuning.squareSize).map(
-    (tower) => ({ kind: "circle" as const, c: tower, r: tower.r }),
-  );
+  const reach = trapMarkReach(tuning, trapLevel) + TRAP_CLEARANCE;
+  const plating = chitinBeyondStroke(chitinStroke);
+  const obstacles: Array<{ shape: Shape; pad: number }> = palisadeTowers(
+    wallLevel,
+    wallRadius,
+    tuning,
+    tuning.squareSize,
+  ).map((tower) => ({
+    shape: { kind: "circle" as const, c: tower, r: tower.r },
+    pad: PALISADE_TOWER_STROKE / 2 + plating,
+  }));
   for (const slot of slots) {
     if (!sitsOnWall(slot.buildingId)) continue;
-    obstacles.push(...buildingShapes(slot.buildingId, slot, hutSize, slot.tier));
+    const pad = fortBorderPad(slot.buildingId, slot.tier) + plating;
+    for (const shape of buildingShapes(slot.buildingId, slot, hutSize, slot.tier)) {
+      obstacles.push({ shape, pad });
+    }
   }
-  return traps.filter((trap) => {
-    const mark: Shape = { kind: "circle", c: trap, r: reach };
-    return obstacles.every((shape) => !shapesOverlap(mark, shape));
-  });
+  for (const poly of blocked) {
+    if (poly.length >= 3) obstacles.push({ shape: { kind: "poly", points: poly }, pad: blockedPad });
+  }
+  return traps.filter((trap) =>
+    obstacles.every((obstacle) => {
+      const mark: Shape = { kind: "circle", c: trap, r: reach + obstacle.pad };
+      return !shapesOverlap(mark, obstacle.shape);
+    }),
+  );
 }
 
 export function closestSlotGap(slots: PlacedSlot[]): number {
@@ -2570,6 +3055,71 @@ export function closestSlotGap(slots: PlacedSlot[]): number {
   return gap;
 }
 
+/** Paper stays this far past the outermost trap mark. */
+const TRAP_GROUND_PAD = 16;
+/** Improved traps push the paper out again, past the second row. */
+const TRAP_UPGRADE_GROUND_PAD = 14;
+/** Paper past the moat's outer edge. */
+export const MOAT_GROUND_PAD = 25;
+
+/**
+ * Village paper. It follows the palisade until traps or the moat exist, then
+ * sits just outside those. The moat wins when both are present.
+ */
+export function villageGroundPoints(
+  wallRadius: number,
+  tuning: Tuning,
+  build: Pick<BuildState, "traps" | "moat" | "wall">,
+  traps: Point[],
+): Point[] {
+  const wall = ringPoints(wallRadius, tuning);
+  if (build.moat && build.wall > 0) {
+    const anchor = tuning.wallThickness * 1.52;
+    const center = moatCenterRadius(wallRadius, anchor);
+    return outsetFromCenter(moatBandEdges(center, tuning).outer, MOAT_GROUND_PAD);
+  }
+  if (build.traps > 0 && traps.length > 0) {
+    const reach = trapMarkReach(tuning, build.traps);
+    const pad = TRAP_GROUND_PAD + (build.traps >= 2 ? TRAP_UPGRADE_GROUND_PAD : 0);
+    let extra = 0;
+    for (const trap of traps) {
+      const angle = Math.atan2((trap.y - MAP_CENTER) / (tuning.wallOval || 1), trap.x - MAP_CENTER);
+      const wallReach = wallRadius * wobbleAt(angle, tuning.wallWobble, tuning.wallLobes);
+      extra = Math.max(extra, ovalRadius(trap, tuning.wallOval) + reach + pad - wallReach);
+    }
+    if (extra > 0) return outsetFromCenter(wall, extra);
+  }
+  return wall;
+}
+
+/** Largest village paper: just past the moat, even before that ditch is drawn. */
+export function furthestVillageGround(wallRadius: number, tuning: Tuning): Point[] {
+  const anchor = tuning.wallThickness * 1.52;
+  const center = moatCenterRadius(wallRadius, anchor);
+  return outsetFromCenter(moatBandEdges(center, tuning).outer, MOAT_GROUND_PAD);
+}
+
+/** A crown overlaps a trap mark. */
+export function treeMeetsTrap(center: Point, reach: number, traps: Point[], markReach: number): boolean {
+  const limit = reach + markReach;
+  return traps.some((trap) => Math.hypot(trap.x - center.x, trap.y - center.y) < limit);
+}
+
+/** A crown overlaps the moat, including its black outline. */
+export function treeMeetsMoat(
+  center: Point,
+  reach: number,
+  edges: { outer: Point[]; inner: Point[] },
+  outline = 0.5,
+): boolean {
+  const limit = reach + outline;
+  const insideOuter = pointInPolygon(center, edges.outer);
+  const insideInner = pointInPolygon(center, edges.inner);
+  if (insideOuter && !insideInner) return true;
+  if (insideInner) return distanceToPolygon(center, edges.inner) <= limit;
+  return distanceToPolygon(center, edges.outer) <= limit;
+}
+
 /**
  * Points that set the map frame. Before the bastion or traps exist, the frame
  * stops at the city edge (and the moat, when that ditch is already there).
@@ -2577,23 +3127,40 @@ export function closestSlotGap(slots: PlacedSlot[]): number {
 export function mapFramePoints(build: BuildState, tuning: Tuning, slots: PlacedSlot[]): Point[] {
   const radius = layoutWallRadius(tuning);
   const anchor = tuning.wallThickness * 1.52;
+  const groundTraps =
+    build.traps > 0
+      ? trapPoints(
+        radius,
+        tuning,
+        build.traps,
+        anchor,
+        trapWallOutset(
+          build.wall,
+          wallStrokeWidth(build.wall, tuning.wallThickness),
+          tuning.squareSize,
+          build.chitin ? WALL_CHITIN_STROKE : 0,
+        ),
+      )
+      : [];
   const points: Point[] = [
     ...slots.map((slot) => ({ x: slot.x, y: slot.y })),
     ...ringPoints(radius, tuning),
+    ...villageGroundPoints(radius, tuning, build, groundTraps),
   ];
   const cityOnly = (build.counts.bastion ?? 0) <= 0 && build.traps <= 0;
   if (build.moat && build.wall > 0) {
     const center = moatCenterRadius(radius, anchor);
     points.push(...moatRingPoints(center, tuning));
   }
-  if (!cityOnly && build.traps > 0) {
-    const outset = trapWallOutset(
-      build.wall,
-      wallStrokeWidth(build.wall, tuning.wallThickness),
-      tuning.squareSize,
-      build.chitin ? WALL_CHITIN_STROKE : 0,
-    );
-    points.push(...trapPoints(radius, tuning, build.traps, anchor, outset));
+  if (!cityOnly && groundTraps.length > 0) {
+    points.push(...groundTraps);
+  }
+  if (build.moat && build.wall > 0) {
+    for (const slot of slots) {
+      if (slot.buildingId !== "bastion") continue;
+      const bridge = bastionDrawbridge(slot, tuning.squareSize, radius, anchor, tuning);
+      if (bridge) points.push(...bridge.deck);
+    }
   }
   for (const slot of slots) {
     if (!sitsOnWall(slot.buildingId)) continue;
@@ -2733,6 +3300,67 @@ function placePoints(local: Point[], at: Point, angle: number): Point[] {
   }));
 }
 
+/**
+ * Middle of the village-facing edge, in map coordinates.
+ * Local +y points away from the village, so the inner edge is local -y.
+ * Null for buildings whose door is just the nearest point on the silhouette.
+ */
+export function innerSidePoint(
+  buildingId: string,
+  at: Point,
+  hutSize: number,
+  level: number,
+): Point | null {
+  const size = markSize(buildingId, hutSize);
+  let local: Point | null = null;
+  if (buildingId === "bastion") {
+    local = { x: 0, y: -(size * BASTION_DEPTH) / 2 };
+  } else if (buildingId === "watchtower") {
+    local = { x: 0, y: -watchtowerWidth(hutSize, level) / 2 };
+  } else if (buildingId === "storage") {
+    local = { x: 0, y: -(size * storageScale(level)) / 2 };
+  } else if (buildingId === "clerksHut") {
+    local = { x: 0, y: clerksHut(size, level).body[0].y };
+  } else if (buildingId === "coinhouse") {
+    const layout = coinhouseLayout(size, level);
+    local = layout.gate
+      ? { x: 0, y: layout.gate.y - layout.gate.h / 2 }
+      : { x: 0, y: -layout.house.h / 2 };
+  } else if (buildingId === "tannery") {
+    const inner = -(size * TANNERY_DEEP) / 2;
+    // High Tannery is a U open toward the village. Meet the mouth.
+    // Master Tannery is an L. Meet the hall's village-facing wall.
+    local = level >= 3 ? { x: 0, y: inner - size * TANNERY_WING_REACH } : { x: 0, y: inner };
+  } else if (buildingId === "trade") {
+    local = { x: 0, y: -(size * tradeScale(level)) / 2 };
+  } else if (buildingId === "quarry") {
+    local = { x: 0, y: -size / 2 };
+  } else if (buildingId === "boneyard") {
+    local = { x: 0, y: -(size / 2) * 1.2 };
+  } else if (buildingId === "blacksmith") {
+    local = { x: 0, y: -(size * blacksmithScale(level)) / 2 };
+  } else if (buildingId === "archive") {
+    const span = size * archiveScale(level);
+    const inner = -span / 2;
+    // The U is open toward the village. Records Hall and the Grand Archive
+    // continue to the hall face. The approach fades over its last stretch,
+    // so the solid track reaches the middle of the court.
+    local = level >= 2 ? { x: 0, y: inner - 1.5 } : { x: 0, y: inner };
+  } else if (buildingId === "altar") {
+    const { width, depth } = altarSpan(size, level);
+    const inner = -depth / 2;
+    const porchInner = inner - width * ALTAR_PORCH_DEPTH;
+    // The Sanctum's inner octagon faces the village. Meet the middle of that flat.
+    local = level >= 4
+      ? { x: 0, y: porchInner - depth * ALTAR_OCTAGON }
+      : level >= 2
+        ? { x: 0, y: porchInner }
+        : { x: 0, y: inner };
+  }
+  if (!local) return null;
+  return placePoints([local], at, tangentAngle(at))[0];
+}
+
 function isRound(buildingId: string): boolean {
   return buildingId === "heartfire" || buildingId === "blackMonolith";
 }
@@ -2776,6 +3404,21 @@ export function buildingShapes(
   if (isRound(buildingId)) return [{ kind: "circle", c: at, r: size / 2 }];
   const facing = tangentAngle(at);
   if (buildingId === "furTents") return [{ kind: "poly", points: placePoints(tentOutline(size), at, facing) }];
+  if (buildingId === "herbGarden") {
+    return herbGardenBeds(size).map((bed) => ({
+      kind: "poly" as const,
+      points: placePoints(
+        [
+          { x: bed.x, y: bed.y },
+          { x: bed.x + bed.w, y: bed.y },
+          { x: bed.x + bed.w, y: bed.y + bed.h },
+          { x: bed.x, y: bed.y + bed.h },
+        ],
+        at,
+        facing,
+      ),
+    }));
+  }
   if (buildingId === "pit") {
     const grown = size * pitScale(level);
     // Match the smoothed path drawn on the map, not just the control points.
@@ -2818,10 +3461,7 @@ export function buildingShapes(
       { kind: "poly", points: placePoints(rectLocal(body, body), at, facing) },
     ];
     for (const tower of storageTowers(body, level)) {
-      if (tower.kind === "round") {
-        const [center] = placePoints([{ x: tower.x, y: tower.y }], at, facing);
-        shapes.push({ kind: "circle", c: center, r: tower.r });
-      } else if (tower.kind === "octagon") {
+      if (tower.kind === "octagon") {
         shapes.push({ kind: "poly", points: placePoints(tower.points, at, facing) });
       } else {
         const rect = rectLocal(tower.w, tower.h).map((point) => ({
@@ -2845,7 +3485,10 @@ export function buildingShapes(
     return shapes;
   }
   if (buildingId === "tannery") {
-    return [{ kind: "poly", points: placePoints(tanneryOutline(size, level), at, facing) }];
+    const court = tanneryCourt(size, level);
+    const outline = { kind: "poly" as const, points: placePoints(tanneryOutline(size, level), at, facing) };
+    if (!court) return [outline];
+    return [outline, { kind: "poly", points: placePoints(court, at, facing) }];
   }
   if (buildingId === "alchemistHall") {
     const hall = alchemistHall(size);
@@ -2868,7 +3511,12 @@ export function buildingShapes(
     return [{ kind: "poly", points: placePoints(archiveOutline(size, level), at, facing) }];
   }
   if (buildingId === "builders") {
-    return [{ kind: "poly", points: placePoints(buildersOutline(size, level), at, facing + Math.PI) }];
+    const parts = buildersParts(size, level);
+    const turned = facing + Math.PI;
+    return [
+      { kind: "poly", points: placePoints(parts.outer, at, turned) },
+      ...(parts.wing ? [{ kind: "poly" as const, points: placePoints(parts.wing, at, turned) }] : []),
+    ];
   }
   if (buildingId === "foundry") {
     return [{ kind: "poly", points: placePoints(foundryOutline(size, level), at, facing) }];
@@ -2913,13 +3561,17 @@ export function buildingShapes(
   if (buildingId === "blacksmith") {
     const span = size * blacksmithScale(level);
     const furnace = blacksmithFurnace(span, span);
-    const forge = rectLocal(furnace.w, furnace.h).map((point) => ({
-      x: point.x + furnace.x,
-      y: point.y + furnace.y,
-    }));
+    const annex = blacksmithAnnex(span, span, level);
+    const placedRect = (box: { x: number; y: number; w: number; h: number }) =>
+      placePoints(
+        rectLocal(box.w, box.h).map((point) => ({ x: point.x + box.x, y: point.y + box.y })),
+        at,
+        facing,
+      );
     return [
       { kind: "poly", points: placePoints(blacksmithOutline(span, span, level), at, facing) },
-      { kind: "poly", points: placePoints(forge, at, facing) },
+      { kind: "poly", points: placedRect(furnace) },
+      ...(annex ? [{ kind: "poly" as const, points: placedRect(annex) }] : []),
     ];
   }
   if (buildingId === "estate") {
@@ -2935,12 +3587,32 @@ export function buildingShapes(
     }));
     const sides =
       level > 1
-        ? estateSideSemicircles(size).map((semicircle) => {
-          const [center] = placePoints([{ x: semicircle.x, y: semicircle.y }], at, facingOut);
-          return { kind: "circle" as const, c: center, r: semicircle.r };
-        })
+        ? estateSideHalfOctagons(size).map((half) => ({
+          kind: "poly" as const,
+          points: placePoints(half, at, facingOut),
+        }))
         : [];
-    return [{ kind: "poly", points: body }, ...octagons, ...sides];
+    const porch = estateBottomRect(size);
+    const porchCut = porch.h * ESTATE_PORCH_CORNER;
+    const porchLeft = porch.x;
+    const porchRight = porch.x + porch.w;
+    const porchNear = porch.y;
+    const porchFar = porch.y + porch.h;
+    const porchPoly = placePoints(
+      [
+        { x: porchRight - porchCut, y: porchNear },
+        { x: porchRight, y: porchNear + porchCut },
+        { x: porchRight, y: porchFar - porchCut },
+        { x: porchRight - porchCut, y: porchFar },
+        { x: porchLeft + porchCut, y: porchFar },
+        { x: porchLeft, y: porchFar - porchCut },
+        { x: porchLeft, y: porchNear + porchCut },
+        { x: porchLeft + porchCut, y: porchNear },
+      ],
+      at,
+      facingOut,
+    );
+    return [{ kind: "poly", points: body }, ...octagons, ...sides, { kind: "poly", points: porchPoly }];
   }
   return [{ kind: "poly", points: placePoints(rectLocal(size, size), at, facing) }];
 }
@@ -3061,6 +3733,10 @@ export function pointOnWall(angle: number, radius: number, tuning: Tuning): Poin
 
 /** Palisade towers are drawn this much larger than their base diameter. */
 const PALISADE_TOWER_SCALE = 1.15;
+/** Palisade tower outline is a 2px stroke centered on the circle. */
+export const PALISADE_TOWER_STROKE = 2;
+/** Black edge outside the palisade stroke. */
+export const PALISADE_BORDER = 2;
 
 /** Towers spaced around the palisade. Diameter is in hut-widths, before the scale above. */
 const PALISADE_TOWERS: Array<{ count: number; diameter: number } | null> = [
@@ -3087,7 +3763,86 @@ export function palisadeTowers(
   });
 }
 
-function pointInPolygon(point: Point, poly: Point[]): boolean {
+/** Sides on the sampled rim. Enough that chitin along it reads as a circle. */
+const PALISADE_TOWER_RIM_STEPS = 48;
+
+/**
+ * Closed rim of a round palisade tower. `outset` grows the radius past `r`
+ * (ink stroke and chitin sit outside the fill).
+ */
+export function palisadeTowerRim(tower: Point & { r: number }, outset = 0): Point[] {
+  const radius = Math.max(0, tower.r + outset);
+  // Seam faces the village, so the outside arc is one run and its ends land on the wall.
+  const inward = Math.atan2(MAP_CENTER - tower.y, MAP_CENTER - tower.x);
+  const points: Point[] = [];
+  for (let index = 0; index < PALISADE_TOWER_RIM_STEPS; index++) {
+    const angle = inward + (index / PALISADE_TOWER_RIM_STEPS) * Math.PI * 2;
+    points.push({
+      x: tower.x + Math.cos(angle) * radius,
+      y: tower.y + Math.sin(angle) * radius,
+    });
+  }
+  return points;
+}
+
+/** How far the chitin centerline sits outside the tower fill. */
+export function palisadeTowerChitinOutset(chitinStroke: number): number {
+  return PALISADE_TOWER_STROKE / 2 + chitinStroke / 2;
+}
+
+/**
+ * A crown overlaps the palisade stroke or a round tower on that stroke.
+ * `halfStroke` is how far the drawn wall reaches past its centerline.
+ * `towerPad` is the ink (and plating) past each tower's fill radius.
+ */
+export function circleMeetsPalisade(
+  center: Point,
+  reach: number,
+  wall: readonly Point[],
+  halfStroke: number,
+  towers: ReadonlyArray<Point & { r: number }>,
+  towerPad = PALISADE_TOWER_STROKE / 2,
+): boolean {
+  if (wall.length >= 2 && distanceToPolygon(center, wall) <= reach + halfStroke) return true;
+  for (const tower of towers) {
+    if (Math.hypot(center.x - tower.x, center.y - tower.y) <= reach + tower.r + towerPad) return true;
+  }
+  return false;
+}
+
+/** How far a mark reaches from its slot, including the border outside the fill. */
+export function buildingReach(buildingId: string, hutSize: number, level = 1): number {
+  let reach = 0;
+  for (const shape of buildingShapes(buildingId, { x: 0, y: 0 }, hutSize, level)) {
+    if (shape.kind === "circle") {
+      reach = Math.max(reach, Math.hypot(shape.c.x, shape.c.y) + shape.r);
+      continue;
+    }
+    for (const point of shape.points) {
+      reach = Math.max(reach, Math.hypot(point.x, point.y));
+    }
+  }
+  return reach + fortBorderPad(buildingId, level);
+}
+
+/** A crown overlaps a building mark, including the border drawn outside the fill. */
+export function circleMeetsBuilding(
+  center: Point,
+  reach: number,
+  buildingId: string,
+  at: Point,
+  hutSize: number,
+  level: number,
+): boolean {
+  const crown: CircleShape = {
+    kind: "circle",
+    c: center,
+    r: reach + fortBorderPad(buildingId, level),
+  };
+  return buildingShapes(buildingId, at, hutSize, level).some((shape) => shapesOverlap(shape, crown));
+}
+
+export function pointInPolygon(point: Point, poly: Point[]): boolean {
   let inside = false;
   for (let index = 0, previous = poly.length - 1; index < poly.length; previous = index++) {
     const current = poly[index];
@@ -3123,131 +3878,8 @@ function circleSegmentHits(center: Point, radius: number, start: Point, end: Poi
   return hits;
 }
 
-function dedupePoints(points: Point[], eps = 0.08): Point[] {
-  const unique: Point[] = [];
-  for (const point of points) {
-    if (unique.every((other) => Math.hypot(other.x - point.x, other.y - point.y) > eps)) {
-      unique.push(point);
-    }
-  }
-  return unique;
-}
-
 function pointOutsideBoundary(point: Point, boundary: Point[]): boolean {
   return !pointInPolygon(point, boundary);
-}
-
-function circleWallHits(center: Point, radius: number, wallBoundary: Point[]): Point[] {
-  const hits: Point[] = [];
-  for (let index = 0; index < wallBoundary.length; index++) {
-    hits.push(
-      ...circleSegmentHits(
-        center,
-        radius,
-        wallBoundary[index],
-        wallBoundary[(index + 1) % wallBoundary.length],
-      ),
-    );
-  }
-  // Near-tangency: closest point on each wall segment, if it lands on the circle.
-  for (let index = 0; index < wallBoundary.length; index++) {
-    const start = wallBoundary[index];
-    const end = wallBoundary[(index + 1) % wallBoundary.length];
-    const dx = end.x - start.x;
-    const dy = end.y - start.y;
-    const lengthSq = dx * dx + dy * dy || 1;
-    const t = Math.max(
-      0,
-      Math.min(1, ((center.x - start.x) * dx + (center.y - start.y) * dy) / lengthSq),
-    );
-    const closest = { x: start.x + dx * t, y: start.y + dy * t };
-    const gap = Math.hypot(closest.x - center.x, closest.y - center.y);
-    if (Math.abs(gap - radius) > 1.25) continue;
-    const scale = radius / (gap || 1);
-    hits.push({
-      x: center.x + (closest.x - center.x) * scale,
-      y: center.y + (closest.y - center.y) * scale,
-    });
-  }
-  return dedupePoints(hits);
-}
-
-type CircleArc = { from: Point; to: Point; mid: Point; delta: number };
-
-/** Best single outward arc on a circle where it crosses the wall chitin rim. */
-export function circleChitinArc(
-  center: Point,
-  radius: number,
-  wallBoundary: Point[],
-): CircleArc | null {
-  if (radius <= 0) return null;
-  const unique = circleWallHits(center, radius, wallBoundary);
-  const angleOf = (point: Point) => Math.atan2(point.y - center.y, point.x - center.x);
-  if (unique.length < 2) return null;
-
-  const sorted = [...unique].sort((a, b) => angleOf(a) - angleOf(b));
-  let best: CircleArc | null = null;
-  let bestScore = -Infinity;
-  for (let index = 0; index < sorted.length; index++) {
-    const from = sorted[index];
-    const to = sorted[(index + 1) % sorted.length];
-    let a0 = angleOf(from);
-    let a1 = angleOf(to);
-    let delta = a1 - a0;
-    if (delta <= 0) delta += Math.PI * 2;
-    // A full (or near-full) wrap means the tower sits outside the wall; skip it.
-    if (delta > Math.PI * 1.35) continue;
-    const midAngle = a0 + delta / 2;
-    const mid = {
-      x: center.x + Math.cos(midAngle) * radius,
-      y: center.y + Math.sin(midAngle) * radius,
-    };
-    if (!pointOutsideBoundary(mid, wallBoundary)) continue;
-    const score = Math.hypot(mid.x - MAP_CENTER, mid.y - MAP_CENTER);
-    if (score > bestScore) {
-      bestScore = score;
-      best = { from, to, mid, delta };
-    }
-  }
-  return best;
-}
-
-/**
- * White chitin arc on a circle: only the outward part that meets the wall's
- * outer chitin centerline. Never a full circle. Empty when nothing sticks out.
- */
-export function circleChitinArcPath(
-  center: Point,
-  radius: number,
-  wallBoundary: Point[],
-): string | null {
-  const arc = circleChitinArc(center, radius, wallBoundary);
-  if (!arc) return null;
-  const large = arc.delta > Math.PI ? 1 : 0;
-  const r = radius.toFixed(2);
-  return `M ${arc.from.x.toFixed(2)} ${arc.from.y.toFixed(2)} A ${r} ${r} 0 ${large} 1 ${arc.to.x.toFixed(2)} ${arc.to.y.toFixed(2)}`;
-}
-
-/** Dense polyline along the outward chitin arc (for spikes). */
-export function circleChitinArcPoints(
-  center: Point,
-  radius: number,
-  wallBoundary: Point[],
-  samples = 12,
-): Point[] {
-  const arc = circleChitinArc(center, radius, wallBoundary);
-  if (!arc) return [];
-  const a0 = Math.atan2(arc.from.y - center.y, arc.from.x - center.x);
-  const count = Math.max(2, samples);
-  const points: Point[] = [];
-  for (let index = 0; index <= count; index++) {
-    const angle = a0 + (arc.delta * index) / count;
-    points.push({
-      x: center.x + Math.cos(angle) * radius,
-      y: center.y + Math.sin(angle) * radius,
-    });
-  }
-  return points;
 }
 
 export type ChitinBlocker =
@@ -3660,9 +4292,82 @@ function bastionOuterCapChain(
   return farthestOutsideChain(world, wallBoundary);
 }
 
+function localAxis(point: Point, at: Point, cos: number, sin: number): Point {
+  const dx = point.x - at.x;
+  const dy = point.y - at.y;
+  return { x: dx * cos + dy * sin, y: -dx * sin + dy * cos };
+}
+
+/** Parts of a segment that stay outside a vertical local strip. */
+function clipOutsideLocalStrip(
+  a: Point,
+  b: Point,
+  ax: number,
+  bx: number,
+  half: number,
+): Array<[Point, Point]> {
+  const dx = bx - ax;
+  const cuts = [0, 1];
+  if (Math.abs(dx) > 1e-9) {
+    for (const edge of [-half, half]) {
+      const t = (edge - ax) / dx;
+      if (t > 1e-4 && t < 1 - 1e-4) cuts.push(t);
+    }
+  }
+  cuts.sort((left, right) => left - right);
+  const pointAt = (t: number): Point => ({
+    x: a.x + (b.x - a.x) * t,
+    y: a.y + (b.y - a.y) * t,
+  });
+  const pieces: Array<[Point, Point]> = [];
+  for (let index = 0; index < cuts.length - 1; index++) {
+    const t0 = cuts[index];
+    const t1 = cuts[index + 1];
+    if (t1 - t0 < 1e-4) continue;
+    if (Math.abs(ax + dx * ((t0 + t1) / 2)) < half) continue;
+    pieces.push([pointAt(t0), pointAt(t1)]);
+  }
+  return pieces;
+}
+
+/** Drops the outer-wall run that crosses the drawbridge. Side walls stay. */
+function splitChainAroundGate(chain: Point[], at: Point, half: number): Point[][] {
+  const angle = tangentAngle(at);
+  const cos = Math.cos(angle);
+  const sin = Math.sin(angle);
+  const chains: Point[][] = [];
+  let current: Point[] = [];
+  const pushCurrent = () => {
+    if (current.length >= 2) chains.push(current);
+    current = [];
+  };
+  for (let index = 0; index < chain.length - 1; index++) {
+    const a = chain[index];
+    const b = chain[index + 1];
+    const aLocal = localAxis(a, at, cos, sin);
+    const bLocal = localAxis(b, at, cos, sin);
+    const pieces =
+      aLocal.y > 0 || bLocal.y > 0
+        ? clipOutsideLocalStrip(a, b, aLocal.x, bLocal.x, half)
+        : ([[a, b]] as Array<[Point, Point]>);
+    for (const [from, to] of pieces) {
+      const last = current[current.length - 1];
+      if (last && Math.hypot(last.x - from.x, last.y - from.y) < 0.15) {
+        current.push(to);
+      } else {
+        pushCurrent();
+        current = [from, to];
+      }
+    }
+    if (pieces.length === 0) pushCurrent();
+  }
+  pushCurrent();
+  return chains;
+}
+
 /**
  * World-space chitin for a bastion. Follows the towers and walls, and stops
- * at the city wall.
+ * at the city wall. `gapHalf` opens the outer gate for the drawbridge.
  */
 export function bastionChitinPaths(
   at: Point,
@@ -3670,23 +4375,30 @@ export function bastionChitinPaths(
   strokeWidth: number,
   chitinStroke: number,
   wallBoundary: Point[],
+  gapHalf = 0,
 ): string[] {
   const chain = bastionOuterCapChain(at, size, strokeWidth, chitinStroke, wallBoundary);
   if (!chain) return [];
-  const path = pathFromOpenChain(chain);
-  return path ? [path] : [];
+  const chains = gapHalf > 0 ? splitChainAroundGate(chain, at, gapHalf) : [chain];
+  return chains.flatMap((part) => {
+    const path = pathFromOpenChain(part);
+    return path ? [path] : [];
+  });
 }
 
-/** Polylines for bastion chitin spikes. */
+/** Polylines for bastion chitin spikes. `gapHalf` leaves the drawbridge gate clear. */
 export function bastionChitinChains(
   at: Point,
   size: number,
   strokeWidth: number,
   chitinStroke: number,
   wallBoundary: Point[],
+  gapHalf = 0,
 ): Point[][] {
   const chain = bastionOuterCapChain(at, size, strokeWidth, chitinStroke, wallBoundary);
-  return chain ? [chain] : [];
+  if (!chain) return [];
+  if (gapHalf <= 0) return [chain];
+  return splitChainAroundGate(chain, at, gapHalf);
 }
 
 /** World-space chitin strokes for a watchtower that sits on the palisade. */
@@ -3898,12 +4610,10 @@ function lerpAngle(from: number, to: number, t: number): number {
 
 /** Open ground between a palisade tower and the watchtower or bastion border. */
 const FORT_TOWER_GAP = 20;
-/** Palisade tower outline is a 2px stroke centered on the circle. */
-export const PALISADE_TOWER_STROKE = 2;
 
 /** How far the drawn border sits outside the collision shape. */
 function fortBorderPad(buildingId: string, tier: number): number {
-  if (buildingId === "bastion") return Math.max(1, tier) * 4;
+  if (buildingId === "bastion") return bastionOutlineWidth(tier);
   if (buildingId === "watchtower") return 4;
   return 0;
 }
@@ -3921,7 +4631,11 @@ export function hitsPalisadeTower(
   const pad = border > 0 ? FORT_TOWER_GAP + border + PALISADE_TOWER_STROKE / 2 + TOUCH_PX : 0;
   const shapes = buildingShapes(buildingId, at, hutSize, tier);
   return towers.some((tower) => {
-    const circle: CircleShape = { kind: "circle", c: tower, r: tower.r + pad };
+    const circle: CircleShape = {
+      kind: "circle",
+      c: tower,
+      r: tower.r + pad,
+    };
     return shapes.some((shape) => shapesOverlap(shape, circle));
   });
 }

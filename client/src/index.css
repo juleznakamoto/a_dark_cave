@@ -879,6 +879,21 @@ html[data-adc-chrome-stage="0"] {
   animation: village-map-highlight-fade 4s linear forwards;
 }
 
+/* Shown by :hover or .is-highlighted. No map render. */
+.village-map-hover-ring {
+  display: none;
+  pointer-events: none;
+}
+
+[data-building]:hover .village-map-hover-ring,
+[data-building].is-highlighted .village-map-hover-ring {
+  display: inline;
+}
+
+[data-building].is-dragging .village-map-hover-ring {
+  display: none;
+}
+
 .village-map-fade-in--after-out .village-map-highlight-fade {
   animation-delay: 1.5s;
 }
@@ -886,6 +901,22 @@ html[data-adc-chrome-stage="0"] {
 .village-map-fade-out {
   animation: village-map-fade-out 1.5s linear forwards;
   pointer-events: none;
+}
+
+@keyframes village-map-path-in {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+/* Tracks show up once the building fade (4s) has finished. */
+.village-map-path-after-building {
+  opacity: 0;
+  animation: village-map-path-in 1.25s linear 4s forwards;
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -902,6 +933,11 @@ html[data-adc-chrome-stage="0"] {
   .village-map-highlight-fade {
     animation: none;
     opacity: 0;
+  }
+
+  .village-map-path-after-building {
+    animation: none;
+    opacity: 1;
   }
 }
 

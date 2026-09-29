@@ -1176,6 +1176,10 @@ export const gameStateSchema = z.object({
   villageMapOverrides: z
     .record(z.string(), z.object({ x: z.number(), y: z.number() }))
     .default({}),
+  /** Path bends the player moved on the village map after finishing a game. */
+  villageMapPathOverrides: z
+    .record(z.string(), z.object({ x: z.number(), y: z.number() }))
+    .default({}),
   /** Map slot tiers already shown, so a new building fades in only once. */
   villageMapSeenTiers: z.record(z.string(), z.number()).default({}),
 });

@@ -50,6 +50,7 @@ export const KNOWN_SPA_PATHS = new Set([
   "/unsubscribe",
   "/reset-password",
   "/admin/dashboard",
+  "/dev",
   "/dev/starship-shader",
   "/dev/animations",
   "/dev/combat-dialog",
@@ -58,6 +59,7 @@ export const KNOWN_SPA_PATHS = new Set([
   "/dev/sounds",
   "/dev/production-icons",
   "/dev/village-map",
+  "/dev/building-shapes",
 ]);
 
 const HOME_ROUTE_SEO: PublicRouteSeo = {
@@ -157,6 +159,13 @@ const ROUTE_SEO: Record<string, PublicRouteSeo> = {
     robots: "noindex, nofollow",
     pageName: "Admin Dashboard",
   },
+  "/dev": {
+    title: "Dev Pages - A Dark Cave",
+    description: "Development index of A Dark Cave playground pages.",
+    includeHomeJsonLd: false,
+    robots: "noindex, nofollow",
+    pageName: "Dev Pages",
+  },
   "/dev/starship-shader": {
     title: "Starship Shader Demo - A Dark Cave",
     description: "Development preview for A Dark Cave visual effects.",
@@ -212,6 +221,13 @@ const ROUTE_SEO: Record<string, PublicRouteSeo> = {
     includeHomeJsonLd: false,
     robots: "noindex, nofollow",
     pageName: "Village Map Demo",
+  },
+  "/dev/building-shapes": {
+    title: "Building Shapes - A Dark Cave",
+    description: "Development preview comparing village map building shapes with top-down plans.",
+    includeHomeJsonLd: false,
+    robots: "noindex, nofollow",
+    pageName: "Building Shapes",
   },
 };
 

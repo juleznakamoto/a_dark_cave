@@ -1,6 +1,10 @@
 import { useEffect, useMemo, useRef } from "react";
 import { useGameStore } from "@/game/state";
-import { VILLAGE_MAP_POSITIONS } from "@/game/villageMapLayout";
+import {
+  VILLAGE_MAP_PATH_OVERRIDES,
+  VILLAGE_MAP_POSITIONS,
+  VILLAGE_MAP_TREES,
+} from "@/game/villageMapLayout";
 import {
   DEFAULT_TUNING,
   sanitizeSnapshot,
@@ -38,8 +42,8 @@ function readDemoSnapshot(): DemoSnapshot | null {
 export default function VillageMapOverlay() {
   const open = useGameStore((state) => state.activeTab === "map");
   const sidePanelHover = useSidePanelActiveTooltipHoverId();
-  const canMove = useGameStore((state) => state.hasWonAnyGame);
   const moved = useGameStore((state) => state.villageMapOverrides);
+  const pathMoved = useGameStore((state) => state.villageMapPathOverrides);
   const buildings = useGameStore((state) => state.buildings);
   const blessings = useGameStore((state) => state.blessings);
   const heartfireLevel = useGameStore((state) => state.heartfireState?.level ?? 0);
@@ -54,6 +58,10 @@ export default function VillageMapOverlay() {
   const overrides = useMemo(
     () => ({ ...VILLAGE_MAP_POSITIONS, ...(demo?.overrides ?? {}), ...(moved ?? {}) }),
     [demo, moved],
+  );
+  const pathOverrides = useMemo(
+    () => ({ ...VILLAGE_MAP_PATH_OVERRIDES, ...(demo?.pathOverrides ?? {}), ...(pathMoved ?? {}) }),
+    [demo, pathMoved],
   );
   const highlightId = open ? mapHighlightFromSidePanelHover(sidePanelHover) : null;
   const slotMarks = useMemo(
@@ -119,19 +127,19 @@ export default function VillageMapOverlay() {
         build={build}
         tuning={DEFAULT_TUNING}
         overrides={overrides}
+        pathOverrides={pathOverrides}
+        trees={demo?.trees ?? VILLAGE_MAP_TREES}
         highlightId={highlightId}
         reveal={revealRef.current}
-        onOverride={(id, point) => {
-          if (!canMove) return;
-          useGameStore.getState().setVillageMapOverride(id, point);
-        }}
+        onOverride={() => { }}
+        onPathOverride={() => { }}
         onActiveLabel={() => { }}
         onHoverBuilding={(buildingId) => {
           setVillageMapHoveredBuilding(
             buildingId ? sidePanelRowFromMapBuilding(buildingId, buildings) : null,
           );
         }}
-        readOnly={!canMove}
+        readOnly
         heartfireLevel={heartfireLevel}
       />
     </div>

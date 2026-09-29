@@ -396,7 +396,7 @@ export const DEFAULT_TUNING: Tuning = {
   ground: "#0e0e0e",
   interior: "#dedcd8",
   wallColor: "#cbc7c0",
-  trapColor: "#f5f4f1",
+  trapColor: "#000",
   ink: "#242424",
   water: "#4f7590",
   waterFill: "#d3e0e8",
@@ -728,7 +728,10 @@ export function sanitizeTuning(input: unknown): Tuning {
     ground: color(source.ground, DEFAULT_TUNING.ground),
     interior: color(source.interior, DEFAULT_TUNING.interior),
     wallColor: color(source.wallColor, DEFAULT_TUNING.wallColor),
-    trapColor: color(source.trapColor === "#242424" ? undefined : source.trapColor, DEFAULT_TUNING.trapColor),
+    trapColor: color(
+      source.trapColor === "#242424" || source.trapColor === "#f5f4f1" ? undefined : source.trapColor,
+      DEFAULT_TUNING.trapColor,
+    ),
     ink: color(source.ink, DEFAULT_TUNING.ink),
     water: color(source.water, DEFAULT_TUNING.water),
     waterFill: color(source.waterFill, DEFAULT_TUNING.waterFill),
@@ -756,35 +759,94 @@ export function sanitizeTuning(input: unknown): Tuning {
 /** Same key the village-map demo uses for its saved arrangement. */
 export const VILLAGE_MAP_DEMO_STORAGE_KEY = "adc-village-map-demo-v1";
 
+/** A crown planted on the demo map. `variant` is a tree sketch id. `turn` is degrees, from -30 to 30. */
+export type MapTree = {
+  id: string;
+  variant: string;
+  x: number;
+  y: number;
+  turn: number;
+};
+
+const TREE_TURN_LIMIT = 30;
+
+/** A new crown's tilt. Inclusive on both ends. */
+export function randomTreeTurn(): number {
+  return Math.floor(Math.random() * (TREE_TURN_LIMIT * 2 + 1)) - TREE_TURN_LIMIT;
+}
+
+/** Same tilt every time for a crown saved before turns existed. */
+function turnFromId(id: string): number {
+  let hash = 0;
+  for (let index = 0; index < id.length; index++) {
+    hash = (hash * 31 + id.charCodeAt(index)) | 0;
+  }
+  const span = TREE_TURN_LIMIT * 2 + 1;
+  return ((hash % span) + span) % span - TREE_TURN_LIMIT;
+}
+
 export type DemoSnapshot = {
   version: 1;
   stage: number;
   build: BuildState;
   tuning: Tuning;
   overrides: Record<string, { x: number; y: number }>;
+  pathOverrides: Record<string, { x: number; y: number }>;
+  trees: MapTree[];
 };
+
+function readPointMap(source: unknown, cap: number): Record<string, { x: number; y: number }> {
+  const points: Record<string, { x: number; y: number }> = {};
+  if (!source || typeof source !== "object") return points;
+  for (const [id, point] of Object.entries(source)) {
+    if (!point || typeof point !== "object") continue;
+    const x = (point as { x?: unknown }).x;
+    const y = (point as { y?: unknown }).y;
+    if (typeof x !== "number" || typeof y !== "number") continue;
+    if (!Number.isFinite(x) || !Number.isFinite(y)) continue;
+    points[id] = { x: Math.round(x), y: Math.round(y) };
+    if (Object.keys(points).length >= cap) break;
+  }
+  return points;
+}
+
+const TREE_CAP = 80;
+
+function readMapTrees(source: unknown): MapTree[] {
+  if (!Array.isArray(source)) return [];
+  const trees: MapTree[] = [];
+  for (const entry of source) {
+    if (!entry || typeof entry !== "object") continue;
+    const id = (entry as { id?: unknown }).id;
+    const variant = (entry as { variant?: unknown }).variant;
+    const x = (entry as { x?: unknown }).x;
+    const y = (entry as { y?: unknown }).y;
+    const turn = (entry as { turn?: unknown }).turn;
+    if (typeof id !== "string" || id.length === 0 || id.length > 80) continue;
+    if (typeof variant !== "string" || variant.length === 0 || variant.length > 40) continue;
+    if (typeof x !== "number" || typeof y !== "number") continue;
+    if (!Number.isFinite(x) || !Number.isFinite(y)) continue;
+    const degrees =
+      typeof turn === "number" && Number.isFinite(turn)
+        ? Math.round(Math.max(-TREE_TURN_LIMIT, Math.min(TREE_TURN_LIMIT, turn)))
+        : turnFromId(id);
+    trees.push({ id, variant, x: Math.round(x), y: Math.round(y), turn: degrees });
+    if (trees.length >= TREE_CAP) break;
+  }
+  return trees;
+}
 
 export function sanitizeSnapshot(input: unknown): DemoSnapshot | null {
   if (!input || typeof input !== "object") return null;
   const source = input as Partial<DemoSnapshot>;
   if (source.version !== 1) return null;
-  const overrides: DemoSnapshot["overrides"] = {};
-  if (source.overrides && typeof source.overrides === "object") {
-    for (const [id, point] of Object.entries(source.overrides)) {
-      if (!point || typeof point !== "object") continue;
-      const x = (point as { x?: unknown }).x;
-      const y = (point as { y?: unknown }).y;
-      if (typeof x !== "number" || typeof y !== "number") continue;
-      if (!Number.isFinite(x) || !Number.isFinite(y)) continue;
-      overrides[id] = { x: Math.round(x), y: Math.round(y) };
-      if (Object.keys(overrides).length >= 200) break;
-    }
-  }
   return {
     version: 1,
     stage: Math.round(clamp(source.stage ?? 0, 0, GROWTH_STEPS.length)),
     build: sanitizeBuild(source.build),
     tuning: sanitizeTuning(source.tuning),
-    overrides,
+    overrides: readPointMap(source.overrides, 200),
+    pathOverrides: readPointMap(source.pathOverrides, 200),
+    trees: readMapTrees(source.trees),
   };
 }
