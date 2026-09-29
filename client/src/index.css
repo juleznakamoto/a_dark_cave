@@ -558,9 +558,9 @@ html[data-adc-chrome-stage="0"] {
 }
 
 /* Buttons/slots need a containing block for the hairlines. Do not set
- * `position: relative` on `.fixed` dialogs: that override shoved them
- * one viewport below the game. */
-.game-chrome-rule--box:not(.fixed) {
+ * `position: relative` on `.fixed` dialogs or `.absolute` controls: that
+ * override puts them back in the flow and shoves the content below. */
+.game-chrome-rule--box:not(.fixed):not(.absolute) {
   position: relative;
 }
 

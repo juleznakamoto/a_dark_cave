@@ -179,23 +179,37 @@ function cloneMark(node: ReactNode, prefix: string): ReactNode {
  * Same shapes as a stroke. A filter ring disappears under the fade-in opacity
  * animation, while a real stroke stays visible and can fade back to the normal border.
  */
-function cloneMarkStroke(node: ReactNode, prefix: string, color: string, strokeWidth: number): ReactNode {
+function cloneMarkStroke(
+  node: ReactNode,
+  prefix: string,
+  color: string,
+  strokeWidth: number,
+  addToStroke = false,
+): ReactNode {
   if (node == null || typeof node !== "object") return node;
   if (Array.isArray(node)) {
-    return node.map((child, index) => cloneMarkStroke(child, `${prefix}-${index}`, color, strokeWidth));
+    return node.map((child, index) =>
+      cloneMarkStroke(child, `${prefix}-${index}`, color, strokeWidth, addToStroke),
+    );
   }
   if (!isValidElement(node)) return node;
-  const props = node.props as { children?: ReactNode };
+  const props = node.props as { children?: ReactNode; strokeWidth?: number };
   const paintable = typeof node.type === "string" && node.type !== "g" && node.type !== "defs";
+  const existing = Number(props.strokeWidth);
+  // A fill has no stroke to thicken. Skip it so the fade does not draw a new line on the inner edge.
+  if (addToStroke && paintable && !Number.isFinite(existing)) return null;
+  const width = addToStroke && Number.isFinite(existing) ? existing + strokeWidth : strokeWidth;
   return cloneElement(
     node,
     {
       key: `${prefix}-${String(node.key ?? "n")}`,
       ...(paintable
-        ? { fill: "none", stroke: color, strokeWidth, strokeLinejoin: "miter" as const }
+        ? { fill: "none", stroke: color, strokeWidth: width, strokeLinejoin: "miter" as const }
         : {}),
     },
-    props.children != null ? cloneMarkStroke(props.children, prefix, color, strokeWidth) : props.children,
+    props.children != null
+      ? cloneMarkStroke(props.children, prefix, color, strokeWidth, addToStroke)
+      : props.children,
   );
 }
 
@@ -235,7 +249,7 @@ function SilhouetteHighlight({
   if (fadeHighlight) {
     return (
       <g className="village-map-highlight-fade" style={{ pointerEvents: "none" }}>
-        {cloneMarkStroke(children, "hl", color, 2 * grow)}
+        {cloneMarkStroke(children, "hl", color, outsideOnly ? ringExtra : 2 * grow, outsideOnly)}
       </g>
     );
   }
@@ -276,18 +290,27 @@ function BorderStack({
   fills,
   outline,
   stroke = 1,
+  outsideOnly = false,
 }: {
   rings: ReactNode;
   fills: ReactNode;
   /** Fills that form the outer silhouette. Defaults to every fill. */
   outline?: ReactNode;
   stroke?: number;
+  /** Add 1px outside the painted border. The ring does not step into the fill. */
+  outsideOnly?: boolean;
 }) {
+  const fadeHighlight = useContext(MapHighlightFadeContext);
+  // The fade is a real stroke, so it thickens the border that is already drawn.
+  // The hover ring is a filter, and it needs the fills too or the hole inside the stroke grows inward.
+  const highlight = outsideOnly ? (fadeHighlight ? rings : <>{rings}{fills}</>) : (outline ?? fills);
   return (
     <g>
       {rings}
       {fills}
-      <SilhouetteHighlight stroke={stroke}>{outline ?? fills}</SilhouetteHighlight>
+      <SilhouetteHighlight stroke={stroke} outsideOnly={outsideOnly}>
+        {highlight}
+      </SilhouetteHighlight>
     </g>
   );
 }
@@ -675,6 +698,8 @@ const EBON_GRACE = "#3a0c0c";
 const BRIMSTONE_INFUSION = "#5c2206";
 /** Black line between the village paper and the palisade. Same weight as the outer edge. */
 const VILLAGE_INK_GAP = PALISADE_BORDER;
+/** Hair of room past the ink. The game chrome around the panel is the margin. */
+const MAP_VIEW_PAD = 6;
 
 function chitinPaint(color: string) {
   return {
@@ -812,6 +837,7 @@ function BuildingFootprint({
     return (
       <BorderStack
         stroke={strokeWidth}
+        outsideOnly
         rings={<polygon points={formatPoints(ringPoints)} {...ring} />}
         fills={<polygon points={formatPoints(outline)} fill={fill} />}
       />
@@ -858,6 +884,7 @@ function BuildingFootprint({
       <g>
         <BorderStack
           stroke={strokeWidth}
+          outsideOnly
           rings={
             <>
               <rect
@@ -2014,8 +2041,16 @@ function DrawbridgeMark({
         strokeLinejoin="miter"
         strokeLinecap="butt"
       />
-      <SilhouetteHighlight stroke={stroke}>
+      <SilhouetteHighlight stroke={stroke} outsideOnly>
         <polygon points={deck} fill={fill} />
+        <path
+          d={rail}
+          fill="none"
+          stroke={ink}
+          strokeWidth={stroke}
+          strokeLinejoin="miter"
+          strokeLinecap="butt"
+        />
       </SilhouetteHighlight>
     </g>
   );
@@ -2580,7 +2615,6 @@ const VillageMapSvg = memo(function VillageMapSvg({
   const trapSize = trapArmLength(tuning, build.traps);
   const trapStroke = tuning.trapStroke * TRAP_DRAW_SCALE * trapScale;
   const trapTarget = trapHitRadius(tuning, build.traps);
-  const cityEdge = (build.counts.bastion ?? 0) <= 0 && build.traps <= 0;
   const framePoints = mapFramePoints(build, tuning, slots);
   if (placingTree && onPlaceTree) framePoints.push(...placeableGround);
   for (const tree of trees) {
@@ -2592,8 +2626,27 @@ const VillageMapSvg = memo(function VillageMapSvg({
       { x: tree.x + reach, y: tree.y + reach },
     );
   }
+  if (build.wall > 0) {
+    const wallInk = Math.max(
+      (thickness + VILLAGE_INK_GAP + PALISADE_BORDER) / 2,
+      build.chitin ? thickness / 2 + CHITIN_STROKE + CHITIN_SPIKE_LENGTH : 0,
+    );
+    framePoints.push(...outsetFromCenter(outline, wallInk));
+    const towerInk = build.chitin
+      ? palisadeTowerChitinOutset(CHITIN_STROKE) + CHITIN_STROKE / 2 + CHITIN_SPIKE_LENGTH
+      : PALISADE_TOWER_STROKE / 2;
+    for (const tower of towers) {
+      const reach = tower.r + towerInk;
+      framePoints.push(
+        { x: tower.x - reach, y: tower.y },
+        { x: tower.x + reach, y: tower.y },
+        { x: tower.x, y: tower.y - reach },
+        { x: tower.x, y: tower.y + reach },
+      );
+    }
+  }
   const viewBox = tuning.fitView
-    ? fittedViewBox(framePoints, cityEdge ? tuning.squareSize + 16 : tuning.squareSize + 20)
+    ? fittedViewBox(framePoints, MAP_VIEW_PAD)
     : "0 0 1000 1000";
   const [frameX, frameY, frameSize] = viewBox.split(" ").map(Number);
 
@@ -3049,7 +3102,7 @@ const VillageMapSvg = memo(function VillageMapSvg({
               <path
                 d={moatBand}
                 fill={tuning.waterFill}
-                fillOpacity={0.7}
+                fillOpacity={0.65}
                 fillRule="evenodd"
                 stroke="#000"
                 strokeWidth={1}
@@ -3061,7 +3114,7 @@ const VillageMapSvg = memo(function VillageMapSvg({
                 fill="none"
                 stroke={tuning.water}
                 strokeWidth={HATCH_WIDTH}
-                strokeOpacity={0.8}
+                strokeOpacity={0.75}
                 strokeLinecap="round"
                 strokeLinejoin="round"
               >

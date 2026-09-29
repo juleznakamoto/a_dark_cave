@@ -4712,8 +4712,11 @@ export function constrainMove(
   if (sitsOnWall(moving.buildingId)) {
     const snapped = pointOnWall(wallAngle(desired, tuning.wallOval), radius, tuning);
     if (legal(snapped)) return snapToLegalPixel(snapped, legal);
-    if (!legal(here)) return snapToPixel(here);
-    const from = wallAngle(here, tuning.wallOval);
+    // The fitted palisade can sit off a seed point. Walk from the line itself.
+    const origin = pointOnWall(wallAngle(here, tuning.wallOval), radius, tuning);
+    const start = legal(origin) ? origin : here;
+    if (!legal(start)) return snapToPixel(here);
+    const from = wallAngle(start, tuning.wallOval);
     const to = wallAngle(desired, tuning.wallOval);
     let lo = 0;
     let hi = 1;

@@ -46,7 +46,7 @@ describe("village map layout", () => {
     }
     expect(VILLAGE_MAP_PATH_OVERRIDES["cabin:0"]).toEqual({ x: 274, y: 605 });
     expect(VILLAGE_MAP_PATH_OVERRIDES["woodenHut:10+woodenHut:5"]).toEqual({ x: 461, y: 504 });
-    expect(VILLAGE_MAP_TREES).toHaveLength(68);
+    expect(VILLAGE_MAP_TREES).toHaveLength(73);
     expect(VILLAGE_MAP_TREES[0]).toEqual({
       id: "tree-c6a0c205-34e6-4fa2-aa3b-80d50064a7ff",
       variant: "puff",
