@@ -2150,7 +2150,7 @@ function openChain(points: Point[]): string {
 /** Dilated ring around each track. The door mask has to cover this, not only the fill. */
 const PATH_OUTLINE_RADIUS = 0.75;
 /** Gravel fill and stones. The outline is a sibling, so this does not tint the ring. */
-const PATH_GRAVEL_OPACITY = 0.6;
+const PATH_GRAVEL_OPACITY = 0.65;
 /** Painted ring. Kept off the gravel group so this is the opacity on the page. */
 const PATH_OUTLINE_OPACITY = 0.3;
 /** Hand-drawn bend of the ring, in map units. */
@@ -3114,7 +3114,7 @@ const VillageMapSvg = memo(function VillageMapSvg({
                 fill="none"
                 stroke={tuning.water}
                 strokeWidth={HATCH_WIDTH}
-                strokeOpacity={0.75}
+                strokeOpacity={0.7}
                 strokeLinecap="round"
                 strokeLinejoin="round"
               >

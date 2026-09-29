@@ -90,6 +90,9 @@ export type GrowthStep = {
   traps?: number;
   moat?: boolean;
   chitin?: boolean;
+  ebonGrace?: boolean;
+  brimstoneInfusion?: boolean;
+  dedication?: readonly SanctumGod[];
 };
 
 export const GROUP_ORDER = [
@@ -522,7 +525,10 @@ export const GROWTH_STEPS: GrowthStep[] = [
   { label: "Masterwork Foundry", counts: { foundry: 3 } },
   { label: "Bank", counts: { coinhouse: 2 } },
   { label: "Black Estate", counts: { estate: 2 } },
-  { label: "Treasury", mark: "full", counts: { coinhouse: 3 } },
+  { label: "Treasury", counts: { coinhouse: 3 } },
+  { label: "Brimstone infusion", brimstoneInfusion: true },
+  { label: "Ebon Grace", ebonGrace: true },
+  { label: "Dedication", mark: "full", dedication: [...SANCTUM_GODS] },
 ];
 
 export const MAP_PRESETS = [
@@ -677,6 +683,9 @@ export function applyGrowth(stage: number): BuildState {
     if (step.traps !== undefined) state.traps = step.traps;
     if (step.moat) state.moat = true;
     if (step.chitin) state.chitin = true;
+    if (step.ebonGrace) state.ebonGrace = true;
+    if (step.brimstoneInfusion) state.brimstoneInfusion = true;
+    if (step.dedication) state.dedication = [...step.dedication];
   }
   return state;
 }

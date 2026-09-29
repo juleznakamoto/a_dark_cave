@@ -128,26 +128,29 @@ export default function VillageMapOverlay() {
 
   return (
     // px-2 matches the location-tab row (pl-2 pr-2) so the map clears the column walls.
+    // pb-4 matches the other location tabs (pb-2 plus mb-2) so the drawing clears the footer.
     <div
-      className="absolute inset-0 z-30 px-2"
+      className="absolute inset-0 z-30 flex flex-col px-2 pb-4"
       style={{ backgroundColor: DEFAULT_TUNING.ground }}
       data-testid="village-map-overlay"
     >
-      <VillageMap
-        build={build}
-        tuning={DEFAULT_TUNING}
-        overrides={overrides}
-        pathOverrides={pathOverrides}
-        trees={demo?.trees ?? VILLAGE_MAP_TREES}
-        highlightId={highlightId}
-        reveal={revealRef.current}
-        onOverride={ignoreMapEdit}
-        onPathOverride={ignoreMapEdit}
-        onActiveLabel={ignoreMapEdit}
-        onHoverBuilding={onHoverBuilding}
-        readOnly
-        heartfireLevel={heartfireLevel}
-      />
+      <div className="min-h-0 min-w-0 flex-1">
+        <VillageMap
+          build={build}
+          tuning={DEFAULT_TUNING}
+          overrides={overrides}
+          pathOverrides={pathOverrides}
+          trees={demo?.trees ?? VILLAGE_MAP_TREES}
+          highlightId={highlightId}
+          reveal={revealRef.current}
+          onOverride={ignoreMapEdit}
+          onPathOverride={ignoreMapEdit}
+          onActiveLabel={ignoreMapEdit}
+          onHoverBuilding={onHoverBuilding}
+          readOnly
+          heartfireLevel={heartfireLevel}
+        />
+      </div>
     </div>
   );
 }

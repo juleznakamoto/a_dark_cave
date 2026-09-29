@@ -169,6 +169,9 @@ describe("village map growth", () => {
     expect(full.traps).toBe(2);
     expect(full.moat).toBe(true);
     expect(full.chitin).toBe(true);
+    expect(full.brimstoneInfusion).toBe(true);
+    expect(full.ebonGrace).toBe(true);
+    expect(full.dedication).toEqual(["dagon", "flame", "raven", "ash"]);
   });
 
   it("only references real buildings in growth steps", () => {
@@ -205,6 +208,20 @@ describe("village map growth", () => {
       }
       if (next.chitin !== previous.chitin) {
         expect(next.chitin, label).toBe(true);
+        changes += 1;
+      }
+      if (next.ebonGrace !== previous.ebonGrace) {
+        expect(next.ebonGrace, label).toBe(true);
+        changes += 1;
+      }
+      if (next.brimstoneInfusion !== previous.brimstoneInfusion) {
+        expect(next.brimstoneInfusion, label).toBe(true);
+        changes += 1;
+      }
+      if (
+        next.dedication.length !== previous.dedication.length ||
+        next.dedication.some((god, index) => god !== previous.dedication[index])
+      ) {
         changes += 1;
       }
       expect(changes, label).toBe(1);
