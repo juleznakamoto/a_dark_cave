@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef } from "react";
+import { useCallback, useEffect, useMemo, useRef } from "react";
 import { useGameStore } from "@/game/state";
 import {
   VILLAGE_MAP_PATH_OVERRIDES,
@@ -38,6 +38,8 @@ function readDemoSnapshot(): DemoSnapshot | null {
   }
 }
 
+const ignoreMapEdit = () => { };
+
 /** Village map, shown in the middle panel while the Map tab is open. */
 export default function VillageMapOverlay() {
   const open = useGameStore((state) => state.activeTab === "map");
@@ -45,7 +47,14 @@ export default function VillageMapOverlay() {
   const moved = useGameStore((state) => state.villageMapOverrides);
   const pathMoved = useGameStore((state) => state.villageMapPathOverrides);
   const buildings = useGameStore((state) => state.buildings);
+  const buildingsRef = useRef(buildings);
+  buildingsRef.current = buildings;
   const blessings = useGameStore((state) => state.blessings);
+  const onHoverBuilding = useCallback((buildingId: string | null) => {
+    setVillageMapHoveredBuilding(
+      buildingId ? sidePanelRowFromMapBuilding(buildingId, buildingsRef.current) : null,
+    );
+  }, []);
   const heartfireLevel = useGameStore((state) => state.heartfireState?.level ?? 0);
   const wasOpen = useRef(false);
   const demoRef = useRef<DemoSnapshot | null>(null);
@@ -118,8 +127,9 @@ export default function VillageMapOverlay() {
   if (!open) return null;
 
   return (
+    // px-2 matches the location-tab row (pl-2 pr-2) so the map clears the column walls.
     <div
-      className="absolute inset-0 z-30"
+      className="absolute inset-0 z-30 px-2"
       style={{ backgroundColor: DEFAULT_TUNING.ground }}
       data-testid="village-map-overlay"
     >
@@ -131,14 +141,10 @@ export default function VillageMapOverlay() {
         trees={demo?.trees ?? VILLAGE_MAP_TREES}
         highlightId={highlightId}
         reveal={revealRef.current}
-        onOverride={() => { }}
-        onPathOverride={() => { }}
-        onActiveLabel={() => { }}
-        onHoverBuilding={(buildingId) => {
-          setVillageMapHoveredBuilding(
-            buildingId ? sidePanelRowFromMapBuilding(buildingId, buildings) : null,
-          );
-        }}
+        onOverride={ignoreMapEdit}
+        onPathOverride={ignoreMapEdit}
+        onActiveLabel={ignoreMapEdit}
+        onHoverBuilding={onHoverBuilding}
         readOnly
         heartfireLevel={heartfireLevel}
       />

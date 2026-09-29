@@ -23,6 +23,7 @@ import {
   PATH_DOOR_FADE,
   PATH_RIBBON_REACH,
   buildVillagePathField,
+  clearVillagePathFieldCache,
   constrainVillagePath,
   pathCenterlinesCross,
   pathClearanceViolation,
@@ -207,6 +208,17 @@ describe("village pathways", () => {
   it("draws no tracks before the heartfire exists", () => {
     const { paths } = fieldFor("camp");
     expect(paths).toEqual([]);
+  });
+
+  it("remembers the routed field until the layout changes", () => {
+    clearVillagePathFieldCache();
+    const camp = fieldFor("camp").field;
+    expect(fieldFor("camp").field).toBe(camp);
+    const village = fieldFor("village").field;
+    expect(village).not.toBe(camp);
+    expect(fieldFor("village").field).toBe(village);
+    // One remembered layout. Opening an older village routes again.
+    expect(fieldFor("camp").field).not.toBe(camp);
   });
 
   it("lets branches stop short of the heartfire, and those branches split further out", () => {

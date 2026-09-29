@@ -608,8 +608,8 @@ describe("village map geometry", () => {
           );
         }
       }
-      // 20px of open ground, plus the 4px border and half of the tower's 2px stroke.
-      expect(clearance).toBeGreaterThanOrEqual(24);
+      // 20px of open ground, plus the 2px border and half of the tower's 2px stroke.
+      expect(clearance).toBeGreaterThanOrEqual(22);
     }
   });
 
@@ -750,7 +750,7 @@ describe("village map geometry", () => {
       }
       for (const slot of placed) {
         if (slot.buildingId !== "bastion" && slot.buildingId !== "watchtower") continue;
-        const border = slot.buildingId === "bastion" ? Math.max(1, slot.tier) * 4 : 4;
+        const border = 2;
         for (const shape of buildingShapes(slot.buildingId, slot, DEFAULT_TUNING.squareSize, slot.tier)) {
           const limit = reach + border + plating + air;
           if (shape.kind === "circle") {
@@ -870,6 +870,32 @@ describe("village map geometry", () => {
     expect(tight).toBeLessThan(wide);
     expect(village.traps).toBe(0);
     expect(village.counts.bastion ?? 0).toBe(0);
+    expect(village.wall).toBe(0);
+    expect(village.counts.watchtower ?? 0).toBe(0);
+  });
+
+  it("reserves the trap band once palisades, the watchtower, or the bastion exist", () => {
+    const village = applyGrowth(stageForPreset("village"));
+    const pad = 40;
+    const span = (build: typeof village) =>
+      Number(
+        fittedViewBox(mapFramePoints(build, DEFAULT_TUNING, placedSlots(build, DEFAULT_TUNING, {})), pad).split(
+          " ",
+        )[2],
+      );
+    const tight = span(village);
+    const traps = span({ ...village, traps: 1 });
+    expect(traps).toBeGreaterThan(tight);
+
+    const palisades = { ...village, wall: 1 };
+    const watchtower = { ...village, counts: { ...village.counts, watchtower: 1 } };
+    const bastion = { ...village, counts: { ...village.counts, bastion: 1 } };
+    expect(span(palisades)).toBeCloseTo(span({ ...palisades, traps: 1 }), 0);
+    expect(span(watchtower)).toBeCloseTo(span({ ...watchtower, traps: 1 }), 0);
+    expect(span(bastion)).toBeCloseTo(span({ ...bastion, traps: 1 }), 0);
+    expect(span(palisades)).toBeGreaterThan(tight);
+    expect(span(watchtower)).toBeGreaterThan(tight);
+    expect(span(bastion)).toBeGreaterThan(tight);
   });
 
   it("keeps the watchtower and bastion on the wall, and other buildings inside it", () => {

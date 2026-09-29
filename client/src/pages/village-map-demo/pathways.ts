@@ -195,7 +195,32 @@ export type PathFieldInput = {
   tuning: Tuning;
 };
 
+/** Last routed village. The map unmounts when its tab closes, so this is what the next open reuses. */
+let pathFieldCache: { key: string; field: PathField } | null = null;
+
+function pathFieldCacheKey(input: PathFieldInput): string {
+  let key = JSON.stringify(input.tuning);
+  key += `\0${input.hutSize}\0${input.wallLevel}\0${input.radius}\0${input.wallStroke}`;
+  for (const slot of input.slots) {
+    key += `\0${slot.id}\0${slot.buildingId}\0${slot.tier}\0${slot.x}\0${slot.y}`;
+  }
+  return key;
+}
+
+/** Drop the remembered roads. Tests use this so a timed build is always a cold route. */
+export function clearVillagePathFieldCache(): void {
+  pathFieldCache = null;
+}
+
 export function buildVillagePathField(input: PathFieldInput): PathField {
+  const key = pathFieldCacheKey(input);
+  if (pathFieldCache?.key === key) return pathFieldCache.field;
+  const field = routeVillagePathField(input);
+  pathFieldCache = { key, field };
+  return field;
+}
+
+function routeVillagePathField(input: PathFieldInput): PathField {
   const heart = input.slots.find((slot) => slot.buildingId === "heartfire");
   const heartRadius = heart ? markSize("heartfire", input.hutSize) / 2 : 0;
   if (!heart || heartRadius <= 0) return { edges: [], grid: null, heartRadius: 0 };

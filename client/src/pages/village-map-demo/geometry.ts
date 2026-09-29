@@ -177,9 +177,9 @@ export const ESTATE_BORDER = 2;
 export const BASTION_LENGTH = 4.4;
 export const BASTION_DEPTH = 3;
 
-/** Black rim around the bastion. The drawbridge rails use the same width, outside the deck. */
-export function bastionOutlineWidth(tier: number): number {
-  return Math.max(1, tier) * 4;
+/** Black rim outside the fill. The drawbridge rails use the same width. */
+export function bastionOutlineWidth(_tier: number): number {
+  return 2;
 }
 /** Huts are half again as long as they are wide. The long side runs across the line to the center. */
 export const HUT_LENGTH = 1.5;
@@ -2769,8 +2769,8 @@ export function moatRadiusAt(center: number, angle: number, tuning: Tuning): num
   const lobes = tuning.wallLobes;
   const wall = wobbleAt(angle, tuning.wallWobble, lobes);
   const ripple =
-    Math.sin(angle * (lobes + 4) + 0.8) * 0.02 +
-    Math.sin(angle * (lobes + 1) + 2.2) * 0.013;
+    Math.sin(angle * (lobes + 4) + 0.8) * 0.008 +
+    Math.sin(angle * (lobes + 1) + 2.2) * 0.004;
   return center * (wall + ripple);
 }
 
@@ -2950,6 +2950,16 @@ function moatInnerReach(
 }
 
 /**
+ * Trap band to reserve on the paper. Built traps use their own level.
+ * Palisades, the watchtower, or the bastion reserve the basic band first.
+ */
+export function trapAreaLevel(build: Pick<BuildState, "traps" | "wall" | "counts">): number {
+  if (build.traps > 0) return build.traps;
+  if (build.wall > 0 || (build.counts.watchtower ?? 0) > 0 || (build.counts.bastion ?? 0) > 0) return 1;
+  return 0;
+}
+
+/**
  * Trap centers in the band between the palisade and the moat.
  * `moatStroke` is the anchor the ditch is drawn from. `wallOutset` is how far
  * the wall, its towers, or chitin already reach past that centerline.
@@ -3063,8 +3073,9 @@ const TRAP_UPGRADE_GROUND_PAD = 14;
 export const MOAT_GROUND_PAD = 25;
 
 /**
- * Village paper. It follows the palisade until traps or the moat exist, then
- * sits just outside those. The moat wins when both are present.
+ * Village paper. It follows the palisade until the trap band or the moat exist,
+ * then sits just outside those. The moat wins when both are present. Palisades,
+ * the watchtower, and the bastion pass a basic trap level before traps are built.
  */
 export function villageGroundPoints(
   wallRadius: number,
@@ -3121,18 +3132,20 @@ export function treeMeetsMoat(
 }
 
 /**
- * Points that set the map frame. Before the bastion or traps exist, the frame
- * stops at the city edge (and the moat, when that ditch is already there).
+ * Points that set the map frame. Before palisades, the watchtower, the bastion,
+ * or traps exist, the frame stops at the city edge (and the moat, when that
+ * ditch is already there). Those fortifications reserve the trap band.
  */
 export function mapFramePoints(build: BuildState, tuning: Tuning, slots: PlacedSlot[]): Point[] {
   const radius = layoutWallRadius(tuning);
   const anchor = tuning.wallThickness * 1.52;
+  const areaLevel = trapAreaLevel(build);
   const groundTraps =
-    build.traps > 0
+    areaLevel > 0
       ? trapPoints(
         radius,
         tuning,
-        build.traps,
+        areaLevel,
         anchor,
         trapWallOutset(
           build.wall,
@@ -3145,14 +3158,14 @@ export function mapFramePoints(build: BuildState, tuning: Tuning, slots: PlacedS
   const points: Point[] = [
     ...slots.map((slot) => ({ x: slot.x, y: slot.y })),
     ...ringPoints(radius, tuning),
-    ...villageGroundPoints(radius, tuning, build, groundTraps),
+    ...villageGroundPoints(radius, tuning, { ...build, traps: areaLevel }, groundTraps),
   ];
   const cityOnly = (build.counts.bastion ?? 0) <= 0 && build.traps <= 0;
   if (build.moat && build.wall > 0) {
     const center = moatCenterRadius(radius, anchor);
     points.push(...moatRingPoints(center, tuning));
   }
-  if (!cityOnly && groundTraps.length > 0) {
+  if (groundTraps.length > 0) {
     points.push(...groundTraps);
   }
   if (build.moat && build.wall > 0) {
@@ -4613,8 +4626,7 @@ const FORT_TOWER_GAP = 20;
 
 /** How far the drawn border sits outside the collision shape. */
 function fortBorderPad(buildingId: string, tier: number): number {
-  if (buildingId === "bastion") return bastionOutlineWidth(tier);
-  if (buildingId === "watchtower") return 4;
+  if (buildingId === "bastion" || buildingId === "watchtower") return bastionOutlineWidth(tier);
   return 0;
 }
 

@@ -404,7 +404,7 @@ export const DEFAULT_TUNING: Tuning = {
   chitin: "#f3f2ef",
   wallPadding: 0,
   wallWobble: 0.01,
-  wallLobes: 3,
+  wallLobes: 7,
   wallSides: 20,
   wallThickness: 7,
   wallOval: 1.01,

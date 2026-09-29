@@ -14,6 +14,7 @@ import {
   outsetFromCenter,
   smoothClosedPath,
   trapPoints,
+  trapAreaLevel,
   trapWallOutset,
   trapsClearOfBuildings,
   layoutWallRadius,
@@ -837,7 +838,6 @@ function BuildingFootprint({
     return (
       <BorderStack
         stroke={strokeWidth}
-        outsideOnly
         rings={<polygon points={formatPoints(ringPoints)} {...ring} />}
         fills={<polygon points={formatPoints(outline)} fill={fill} />}
       />
@@ -884,7 +884,6 @@ function BuildingFootprint({
       <g>
         <BorderStack
           stroke={strokeWidth}
-          outsideOnly
           rings={
             <>
               <rect
@@ -1857,7 +1856,7 @@ export function BuildingMark({
       size={size}
       shape={shape}
       fill={tuning.fill}
-      strokeWidth={shape === "bastion" ? bastionOutlineWidth(level) : shape === "watchtower" ? 4 : 1}
+      strokeWidth={shape === "bastion" || shape === "watchtower" ? bastionOutlineWidth(level) : 1}
       outwardBorder={!special}
       level={level}
     />
@@ -2041,16 +2040,8 @@ function DrawbridgeMark({
         strokeLinejoin="miter"
         strokeLinecap="butt"
       />
-      <SilhouetteHighlight stroke={stroke} outsideOnly>
+      <SilhouetteHighlight stroke={stroke}>
         <polygon points={deck} fill={fill} />
-        <path
-          d={rail}
-          fill="none"
-          stroke={ink}
-          strokeWidth={stroke}
-          strokeLinejoin="miter"
-          strokeLinecap="butt"
-        />
       </SilhouetteHighlight>
     </g>
   );
@@ -2286,7 +2277,7 @@ type VillageMapProps = {
   onRemoveTree?: (id: string) => void;
 };
 
-type VillageMapSvgProps = VillageMapProps & {
+type VillageMapSvgProps = Omit<VillageMapProps, "highlightId"> & {
   svgRef: RefObject<SVGSVGElement>;
   highlightRef: { current: string | null };
 };
@@ -2321,6 +2312,8 @@ const VillageMapSvg = memo(function VillageMapSvg({
   const pathNodesRef = useRef<Map<string, { ribbon: Element | null; hit: Element | null }> | null>(null);
   pathNodesRef.current = null;
   const treeWobbleId = `tree-wobble-${useId().replace(/:/g, "")}`;
+  // After a real commit only. Highlight changes are applied by VillageMapHighlight
+  // and must not rebuild this svg.
   useLayoutEffect(() => {
     const svg = svgRef.current;
     applyBuildingHighlight(svg, highlightRef.current);
@@ -2461,7 +2454,7 @@ const VillageMapSvg = memo(function VillageMapSvg({
       : slots.flatMap((slot) => {
         if (slot.buildingId === "watchtower") {
           const width = watchtowerWidth(hutSize, slot.tier);
-          const stroke = 4;
+          const stroke = bastionOutlineWidth(slot.tier);
           return [
             {
               kind: "circle" as const,
@@ -2509,7 +2502,7 @@ const VillageMapSvg = memo(function VillageMapSvg({
             slot,
             watchtowerWidth(hutSize, slot.tier),
             Math.max(1, slot.tier),
-            4,
+            bastionOutlineWidth(slot.tier),
             CHITIN_STROKE,
             chitinBoundary,
           ).map((d, index) => ({ key: `${slot.id}-chitin-${index}`, d }));
@@ -2548,7 +2541,7 @@ const VillageMapSvg = memo(function VillageMapSvg({
               slot,
               watchtowerWidth(hutSize, slot.tier),
               Math.max(1, slot.tier),
-              4,
+              bastionOutlineWidth(slot.tier),
               CHITIN_STROKE,
               chitinBoundary,
             ).flatMap((chain) =>
@@ -2558,18 +2551,19 @@ const VillageMapSvg = memo(function VillageMapSvg({
           return [];
         }),
       ];
-  const traps =
-    build.traps > 0
+  const areaLevel = trapAreaLevel(build);
+  const laidTraps =
+    areaLevel > 0
       ? trapsClearOfBuildings(
         trapPoints(
           radius,
           tuning,
-          build.traps,
+          areaLevel,
           anchor,
           trapWallOutset(build.wall, thickness, tuning.squareSize, build.chitin ? CHITIN_STROKE : 0),
         ),
         tuning,
-        build.traps,
+        areaLevel,
         build.wall,
         radius,
         slots,
@@ -2583,7 +2577,13 @@ const VillageMapSvg = memo(function VillageMapSvg({
         ),
       )
       : [];
-  const ground = villageGroundPoints(radius, tuning, build, traps);
+  const traps = build.traps > 0 ? laidTraps : [];
+  const ground = villageGroundPoints(
+    radius,
+    tuning,
+    { traps: areaLevel, moat: build.moat, wall: build.wall },
+    laidTraps,
+  );
   const groundPath = smoothClosedPath(ground);
   const placeableGround = furthestVillageGround(radius, tuning);
   const concealedTrees = new Set(hiddenTrees);
@@ -3461,14 +3461,14 @@ function VillageMapHighlight({
   return null;
 }
 
-export function VillageMap(props: VillageMapProps) {
+export function VillageMap({ highlightId, ...props }: VillageMapProps) {
   const svgRef = useRef<SVGSVGElement>(null);
-  const highlightRef = useRef<string | null>(props.highlightId);
-  highlightRef.current = props.highlightId;
+  const highlightRef = useRef<string | null>(highlightId);
+  highlightRef.current = highlightId;
   return (
     <>
       <VillageMapSvg {...props} svgRef={svgRef} highlightRef={highlightRef} />
-      <VillageMapHighlight svgRef={svgRef} highlightId={props.highlightId} />
+      <VillageMapHighlight svgRef={svgRef} highlightId={highlightId} />
     </>
   );
 }

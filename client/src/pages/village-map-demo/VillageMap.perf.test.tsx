@@ -21,7 +21,11 @@ import {
   placedSlots,
   wallStrokeWidth,
 } from "@/pages/village-map-demo/geometry";
-import { buildVillagePathField, villagePathDrawings } from "@/pages/village-map-demo/pathways";
+import {
+  buildVillagePathField,
+  clearVillagePathFieldCache,
+  villagePathDrawings,
+} from "@/pages/village-map-demo/pathways";
 import { VillageMap } from "@/pages/village-map-demo/VillageMap";
 
 if (typeof window.matchMedia !== "function") {
@@ -96,16 +100,22 @@ function timePathBuild(build: typeof FULL_BUILD) {
   mark = stamp();
   const slots = containSlots(rawSlots, radius, tuning, thickness, build.wall, hutSize);
   const containMs = stamp() - mark;
-  mark = stamp();
-  const field = buildVillagePathField({
+  const fieldInput = {
     slots,
     hutSize,
     wallLevel: build.wall,
     radius,
     wallStroke: thickness,
     tuning,
-  });
+  };
+  clearVillagePathFieldCache();
+  mark = stamp();
+  const field = buildVillagePathField(fieldInput);
   const fieldMs = stamp() - mark;
+  mark = stamp();
+  const cached = buildVillagePathField(fieldInput);
+  const hitMs = stamp() - mark;
+  if (cached !== field) throw new Error("path field cache returned a new route");
   mark = stamp();
   const paths = villagePathDrawings(field, VILLAGE_MAP_PATH_OVERRIDES);
   const drawMs = stamp() - mark;
@@ -121,6 +131,7 @@ function timePathBuild(build: typeof FULL_BUILD) {
     placedMs: Math.round(placedMs),
     containMs: Math.round(containMs),
     fieldMs: Math.round(fieldMs),
+    hitMs: Math.round(hitMs),
     drawMs: Math.round(drawMs),
   };
 }
@@ -135,7 +146,9 @@ describe("village map weight", () => {
     expect(full.stones).toBeGreaterThan(100);
     expect(full.cells).toBeGreaterThan(5_000);
     // Measured about 1.0 to 1.7s on a dev machine. Placing the same huts is ~1ms.
+    // The second call with the same layout is the remembered field.
     expect(full.fieldMs).toBeGreaterThan(100);
+    expect(full.hitMs).toBeLessThan(20);
     expect(full.fieldMs).toBeGreaterThan(camp.fieldMs * 5);
   });
 
@@ -209,16 +222,16 @@ describe("village map rebuilds", () => {
     expect(rebuildMs).toBeLessThan(25_000);
   }, 30_000);
 
-  it("rebuilds the svg when only the highlight id changes", () => {
+  it("keeps the svg when only the highlight id changes", () => {
     const queries = vi.spyOn(Element.prototype, "querySelectorAll");
     const view = render(<MapHarness nonce={0} highlightId={null} />);
-    const afterMount = queries.mock.calls.length;
+    const afterMount = queries.mock.calls.filter((args) => String(args[0]).includes("is-dragging")).length;
 
     view.rerender(<MapHarness nonce={0} highlightId="woodenHut" />);
-    const afterHighlight = queries.mock.calls.length;
+    const afterHighlight = queries.mock.calls.filter((args) => String(args[0]).includes("is-dragging")).length;
 
     queries.mockRestore();
-    expect(afterHighlight).toBeGreaterThan(afterMount);
+    expect(afterHighlight).toBe(afterMount);
     expect(view.container.querySelector("[data-building='woodenHut'].is-highlighted")).not.toBeNull();
   }, 30_000);
 });
