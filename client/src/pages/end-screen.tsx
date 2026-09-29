@@ -23,6 +23,7 @@ import { logger } from "@/lib/logger";
 import { openGameFeedbackForm } from "@/lib/gameFeedbackForm";
 import { navigateSpa } from "@/lib/spaNavigate";
 import { ITCH_RATE_URL } from "@shared/publicPages";
+import { Z_INDEX } from "@/lib/z-index";
 
 export default function EndScreenPage() {
   const { t } = useUiTranslation();
@@ -128,11 +129,20 @@ export default function EndScreenPage() {
   };
 
   if (isCruelModeRun === null) {
-    return <div className="fixed inset-0 z-[10000] bg-black" aria-busy="true" />;
+    return (
+      <div
+        className="fixed inset-0 bg-black"
+        style={{ zIndex: Z_INDEX.topLayer }}
+        aria-busy="true"
+      />
+    );
   }
 
   return (
-    <div className="fixed inset-0 z-[10000] overflow-x-hidden">
+    <div
+      className="fixed inset-0 overflow-x-hidden"
+      style={{ zIndex: Z_INDEX.topLayer }}
+    >
       <Helmet>
         <title>{t("endScreen.pageTitle")}</title>
         <meta name="robots" content="noindex" />
