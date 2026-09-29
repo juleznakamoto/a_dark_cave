@@ -225,13 +225,20 @@ describe("village map rebuilds", () => {
   it("keeps the svg when only the highlight id changes", () => {
     const queries = vi.spyOn(Element.prototype, "querySelectorAll");
     const view = render(<MapHarness nonce={0} highlightId={null} />);
-    const afterMount = queries.mock.calls.filter((args) => String(args[0]).includes("is-dragging")).length;
+    const svg = view.container.querySelector("svg");
+    const afterMount = queries.mock.calls.length;
 
     view.rerender(<MapHarness nonce={0} highlightId="woodenHut" />);
-    const afterHighlight = queries.mock.calls.filter((args) => String(args[0]).includes("is-dragging")).length;
+    const added = queries.mock.calls.slice(afterMount).map((args) => String(args[0]));
 
     queries.mockRestore();
-    expect(afterHighlight).toBe(afterMount);
+    // The highlight effect may retarget classes. A VillageMapSvg commit would
+    // also run its layout effect, which queries the drag class and more.
+    expect(view.container.querySelector("svg")).toBe(svg);
+    expect(added).toEqual([
+      "[data-building].is-highlighted",
+      '[data-building="woodenHut"]',
+    ]);
     expect(view.container.querySelector("[data-building='woodenHut'].is-highlighted")).not.toBeNull();
   }, 30_000);
 });
