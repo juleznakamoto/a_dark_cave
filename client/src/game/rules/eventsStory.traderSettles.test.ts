@@ -15,7 +15,7 @@ import { isSteamEditionActive } from "@/lib/edition";
 function createMinimalState(overrides: Partial<GameState> = {}): GameState {
   return {
     resources: {},
-    buildings: { woodenHut: 5 },
+    buildings: { woodenHut: 7 },
     flags: {},
     villagers: { free: 0, gatherer: 0, hunter: 0 },
     events: {},
@@ -47,7 +47,16 @@ describe("traderSettles", () => {
     vi.mocked(isSteamEditionActive).mockReturnValue(false);
   });
 
-  it("triggers on web when woodenHut >= 5 and not yet settled", () => {
+  it("does not trigger with fewer than 7 wooden huts", () => {
+    vi.mocked(isSteamEditionActive).mockReturnValue(false);
+    expect(
+      storyEvents.traderSettles.condition!(
+        createMinimalState({ buildings: { woodenHut: 6 } }),
+      ),
+    ).toBe(false);
+  });
+
+  it("triggers on web when woodenHut >= 7 and not yet settled", () => {
     vi.mocked(isSteamEditionActive).mockReturnValue(false);
     expect(storyEvents.traderSettles.condition!(createMinimalState())).toBe(
       true,

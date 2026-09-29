@@ -184,7 +184,7 @@ export const storyEvents: Record<string, GameEvent> = {
     id: "traderSettles",
     condition: (state: GameState) =>
       !isSteamEditionActive() &&
-      (state.buildings.woodenHut ?? 0) >= 5 &&
+      (state.buildings.woodenHut ?? 0) >= 7 &&
       !state.story.seen.traderSettled,
     timeProbability: 5,
     priority: 5,
