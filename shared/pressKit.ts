@@ -120,6 +120,12 @@ export const PRESS_LINKS: readonly PressLink[] = [
   { id: "producthunt", label: "Product Hunt", href: "https://www.producthunt.com/products/a-dark-cave", group: "directory" },
   { id: "fandom", label: "Wiki", href: "https://a-dark-cave.fandom.com/wiki/A_Dark_Cave_Wiki", group: "directory" },
   {
+    id: "indistation",
+    label: "Indistation (28 September 2026): A Dark Cave",
+    href: "https://indistation.com/a-dark-cave/",
+    group: "coverage",
+  },
+  {
     id: "spielemagazin-interview",
     label: "Spielemagazin (23 September 2026): A Dark Cave: Entwickler Julian im Interview",
     href: "https://www.spielemagazin.de/spiele/interviews/a-dark-cave-entwickler-julian-im-interview/36788",
