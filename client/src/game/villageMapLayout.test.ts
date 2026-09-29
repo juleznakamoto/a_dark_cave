@@ -37,7 +37,7 @@ describe("village map layout", () => {
       expect(saved.y).toBeCloseTo(slot.y, 3);
     }
     expect(VILLAGE_MAP_POSITIONS["bastion:0"]).toEqual({ x: 41, y: 316 });
-    expect(VILLAGE_MAP_POSITIONS["quarry:0"]).toEqual({ x: 192, y: 826 });
+    expect(VILLAGE_MAP_POSITIONS["quarry:0"]).toEqual({ x: 211, y: 829 });
     expect(VILLAGE_MAP_POSITIONS["alchemistHall:0"]).toEqual({ x: 779, y: 583 });
     expect(VILLAGE_MAP_POSITIONS["boneTemple:0"]).toEqual({ x: 917, y: 592 });
     for (const saved of Object.values(VILLAGE_MAP_POSITIONS)) {
