@@ -1,7 +1,6 @@
-import { cloneElement, createContext, isValidElement, memo, useContext, useId, useLayoutEffect, useMemo, useRef, useState, type PointerEvent as ReactPointerEvent, type ReactNode, type RefObject } from "react";
-import { createPortal } from "react-dom";
+import { cloneElement, createContext, isValidElement, memo, useContext, useId, useLayoutEffect, useMemo, useRef, useState, type CSSProperties, type PointerEvent as ReactPointerEvent, type ReactNode, type RefObject } from "react";
 import { heartfireHatchOpacity } from "@/game/villageMapBuild";
-import type { VillageMapReveal } from "@/game/villageMapReveal";
+import { VILLAGE_MAP_OPEN_FADE_DELAY_MS, type VillageMapReveal } from "@/game/villageMapReveal";
 import { BUILDINGS, MAP_CENTER, treeDrawScale, type BuildState, type MapTree, type SanctumGod, type Tuning } from "@/pages/village-map-demo/catalog";
 import { TreeMark } from "@/pages/village-map-demo/TreeMark";
 import { treeReach, treeVariant } from "@/pages/village-map-demo/trees";
@@ -145,13 +144,6 @@ const MapInkContext = createContext("#000000");
  * Icons leave this off, so they do not carry a second copy of every shape.
  */
 const MapHoverRingContext = createContext(false);
-/**
- * Fade masks are portaled here, outside the building's opacity animation.
- * A mask inside that animation is faded too, so the inner half of the stroke shows through.
- */
-const MapMaskHostContext = createContext<SVGDefsElement | null>(null);
-/** Mask stroke width. Half of this reaches past the fill and covers the stroke's soft inner edge. */
-const FADE_STROKE_CUT = 1;
 
 function useMapBorderExtra(): number {
   return useContext(MapBorderExtraContext);
@@ -184,67 +176,42 @@ function cloneMark(node: ReactNode, prefix: string): ReactNode {
   );
 }
 
-/**
- * Same shapes as a stroke. A filter ring disappears under the fade-in opacity
- * animation, while a real stroke stays visible and can fade back to the normal border.
- */
-function cloneMarkStroke(
-  node: ReactNode,
-  prefix: string,
-  color: string,
-  strokeWidth: number,
-  addToStroke = false,
-): ReactNode {
-  if (node == null || typeof node !== "object") return node;
-  if (Array.isArray(node)) {
-    return node.map((child, index) =>
-      cloneMarkStroke(child, `${prefix}-${index}`, color, strokeWidth, addToStroke),
-    );
-  }
-  if (!isValidElement(node)) return node;
-  const props = node.props as { children?: ReactNode; strokeWidth?: number };
-  const paintable = typeof node.type === "string" && node.type !== "g" && node.type !== "defs";
-  const existing = Number(props.strokeWidth);
-  // A fill has no stroke to thicken. Skip it so the fade does not draw a new line on the inner edge.
-  if (addToStroke && paintable && !Number.isFinite(existing)) return null;
-  const width = addToStroke && Number.isFinite(existing) ? existing + strokeWidth : strokeWidth;
-  return cloneElement(
-    node,
-    {
-      key: `${prefix}-${String(node.key ?? "n")}`,
-      ...(paintable
-        ? { fill: "none", stroke: color, strokeWidth: width, strokeLinejoin: "miter" as const }
-        : {}),
-    },
-    props.children != null
-      ? cloneMarkStroke(props.children, prefix, color, strokeWidth, addToStroke)
-      : props.children,
-  );
-}
-
-/** Black copy of these shapes. The fade mask uses it to hide the stroke inside the building. */
-function cloneMarkSolid(node: ReactNode, prefix: string): ReactNode {
-  if (node == null || typeof node !== "object") return node;
-  if (Array.isArray(node)) {
-    return node.map((child, index) => cloneMarkSolid(child, `${prefix}-${index}`));
-  }
-  if (!isValidElement(node)) return node;
-  const props = node.props as { children?: ReactNode };
-  const paintable = typeof node.type === "string" && node.type !== "g" && node.type !== "defs";
-  return cloneElement(
-    node,
-    {
-      key: `${prefix}-${String(node.key ?? "n")}`,
-      ...(paintable
-        ? {
-          fill: "#000",
-          stroke: "#000",
-          strokeWidth: FADE_STROKE_CUT,
-          strokeLinejoin: "round" as const,
-        }
-        : {}),
-    },
-    props.children != null ? cloneMarkSolid(props.children, prefix) : props.children,
+/** A colored ring from these shapes. Children must leave the ring mask in `ring`. */
+function SilhouetteRing({
+  id,
+  color,
+  className,
+  source,
+  children,
+}: {
+  id: string;
+  color: string;
+  className?: string;
+  source: ReactNode;
+  children: ReactNode;
+}) {
+  return (
+    <>
+      <defs>
+        <filter
+          id={id}
+          filterUnits="objectBoundingBox"
+          primitiveUnits="userSpaceOnUse"
+          x="-0.6"
+          y="-0.6"
+          width="2.2"
+          height="2.2"
+          colorInterpolationFilters="sRGB"
+        >
+          {children}
+          <feFlood floodColor={color} result="ink" />
+          <feComposite in="ink" in2="ring" operator="in" />
+        </filter>
+      </defs>
+      <g className={className} filter={`url(#${id})`} style={{ pointerEvents: "none" }}>
+        {cloneMark(source, id)}
+      </g>
+    </>
   );
 }
 
@@ -274,81 +241,23 @@ function SilhouetteHighlight({
   const fadeHighlight = useContext(MapHighlightFadeContext);
   const hoverRing = useContext(MapHoverRingContext);
   const id = `map-hl-${useId().replace(/:/g, "")}`;
-  const maskHost = useContext(MapMaskHostContext);
   const ringExtra = hoverRing && !fadeHighlight ? MAP_HIGHLIGHT_BORDER : extra;
   if (ringExtra <= 0) return null;
   const outside = ringExtra / 2;
   const grow = hugsEdge || outsideOnly ? outside : stroke + outside;
   const shrink = outsideOnly ? 0 : outside;
-  // The fade-in group animates opacity. An SVG filter inside that group does not
-  // paint, so the reveal uses a stroke of the same outer reach as the hover ring.
-  // The stroke is centered on each shape, which would draw a line inside the
-  // building and along every overlapping part. A mask of the union hides that.
-  if (fadeHighlight) {
-    const strokes = cloneMarkStroke(children, "hl", color, outsideOnly ? ringExtra : 2 * grow, outsideOnly);
-    if (outsideOnly) {
-      return (
-        <g className="village-map-highlight-fade" style={{ pointerEvents: "none" }}>
-          {strokes}
-        </g>
-      );
-    }
-    const maskId = `${id}-cut`;
-    const reach = 4000;
-    const mask = (
-      <mask
-        id={maskId}
-        maskUnits="userSpaceOnUse"
-        maskContentUnits="userSpaceOnUse"
-        x={-reach}
-        y={-reach}
-        width={reach * 2}
-        height={reach * 2}
-      >
-        <rect x={-reach} y={-reach} width={reach * 2} height={reach * 2} fill="#fff" />
-        {cloneMarkSolid(children, "cut")}
-      </mask>
-    );
-    const painted = (
-      <g className="village-map-highlight-fade" mask={`url(#${maskId})`} style={{ pointerEvents: "none" }}>
-        {strokes}
-      </g>
-    );
-    if (maskHost) return <>{createPortal(mask, maskHost)}{painted}</>;
-    return (
-      <>
-        {mask}
-        {painted}
-      </>
-    );
-  }
+  const fadeClass = fadeHighlight ? "village-map-highlight-fade" : undefined;
+  // The fade class has to sit on the filtered element. A filter inside the opacity group does not paint.
   const ring = (
-    <>
-      <defs>
-        <filter
-          id={id}
-          filterUnits="objectBoundingBox"
-          primitiveUnits="userSpaceOnUse"
-          x="-0.6"
-          y="-0.6"
-          width="2.2"
-          height="2.2"
-          colorInterpolationFilters="sRGB"
-        >
-          <feMorphology in="SourceAlpha" operator="dilate" radius={grow} result="grow" />
-          {shrink > 0 ? (
-            <feMorphology in="SourceAlpha" operator="erode" radius={shrink} result="shrink" />
-          ) : null}
-          <feComposite in="grow" in2={shrink > 0 ? "shrink" : "SourceAlpha"} operator="out" result="ring" />
-          <feFlood floodColor={color} result="ink" />
-          <feComposite in="ink" in2="ring" operator="in" />
-        </filter>
-      </defs>
-      <g filter={`url(#${id})`} style={{ pointerEvents: "none" }}>
-        {cloneMark(children, "hl")}
-      </g>
-    </>
+    <SilhouetteRing id={id} color={color} className={fadeClass} source={children}>
+      <feMorphology in="SourceAlpha" operator="dilate" radius={grow} result="grown" />
+      {shrink > 0 ? (
+        <feMorphology in="SourceAlpha" operator="erode" radius={shrink} result="shrunk" />
+      ) : null}
+      <feComposite in="grown" in2={shrink > 0 ? "shrunk" : "SourceAlpha"} operator="out" result="ring" />
+    </SilhouetteRing>
   );
+  if (fadeHighlight) return ring;
   if (!hoverRing) return ring;
   return <g className="village-map-hover-ring">{ring}</g>;
 }
@@ -369,10 +278,8 @@ function BorderStack({
   /** Add 1px outside the painted border. The ring does not step into the fill. */
   outsideOnly?: boolean;
 }) {
-  const fadeHighlight = useContext(MapHighlightFadeContext);
-  // The fade is a real stroke, so it thickens the border that is already drawn.
-  // The hover ring is a filter, and it needs the fills too or the hole inside the stroke grows inward.
-  const highlight = outsideOnly ? (fadeHighlight ? rings : <>{rings}{fills}</>) : (outline ?? fills);
+  // The ring needs the fills too, or the hole inside a stroke grows inward.
+  const highlight = outsideOnly ? <>{rings}{fills}</> : (outline ?? fills);
   return (
     <g>
       {rings}
@@ -2121,6 +2028,8 @@ function SlotMark({
   tuning,
   highlighted = false,
   fadeHighlight = false,
+  fadeClassName,
+  fadeStyle,
   heartfireLevel = 5,
   ebonGrace = false,
   brimstoneInfusion = false,
@@ -2133,8 +2042,14 @@ function SlotMark({
   tier: number;
   tuning: Tuning;
   highlighted?: boolean;
-  /** Extra outline stays thick for 3s, then fades to the normal border over the last 1s. */
+  /** Extra outline stays thick for 0.5s, then fades to the normal border over the last 1s. */
   fadeHighlight?: boolean;
+  /**
+   * Opacity animation. It shares the wobble's element, so the drawing fades and stays wobbly.
+   * A fade-in scales the drawing from 1.15 to 1, bounces to 0.95, and settles at 1, with a slight black shadow.
+   */
+  fadeClassName?: string;
+  fadeStyle?: CSSProperties;
   heartfireLevel?: number;
   ebonGrace?: boolean;
   brimstoneInfusion?: boolean;
@@ -2144,44 +2059,48 @@ function SlotMark({
   /** How far the wall hatch reaches, so a drawbridge can reuse those lines. */
   hatchReach?: number;
 }) {
+  const enterScale = fadeClassName?.includes("village-map-fade-in") === true;
+  const mark = (
+    <>
+      {drawbridge ? (
+        <DrawbridgeMark
+          bridge={drawbridge}
+          fill={tuning.fill}
+          at={slot}
+          hatchReach={hatchReach}
+          stroke={bastionOutlineWidth(tier)}
+        />
+      ) : null}
+      <BuildingMark
+        buildingId={slot.buildingId}
+        size={
+          slot.buildingId === "watchtower"
+            ? watchtowerWidth(tuning.squareSize, 1)
+            : markSize(slot.buildingId, tuning.squareSize)
+        }
+        tier={tier}
+        tuning={tuning}
+        shape={footprintOf(slot.buildingId)}
+        heartfireLevel={heartfireLevel}
+        ebonGrace={ebonGrace}
+        brimstoneInfusion={brimstoneInfusion}
+        dedication={dedication}
+        dedicationDeepened={dedicationDeepened}
+      />
+    </>
+  );
   return (
     <MapHighlightFadeContext.Provider value={fadeHighlight}>
       <MapBorderExtraContext.Provider value={highlighted ? MAP_HIGHLIGHT_BORDER : 0}>
+        {/* Fade and wobble share this element. Opacity on a child of the filter does not fade the drawing. */}
         <g
           data-facing=""
           transform={markRotation(slot.buildingId, slot)}
-          // The heartfire circle stays smooth. Its stripes wobble on their own.
-          // A reveal stroke inside this filter does not paint while the parent fade
-          // animates opacity, so the wobble waits until that border has eased off.
-          filter={
-            slot.buildingId === "heartfire" || fadeHighlight ? undefined : outlineWobble(slot.id)
-          }
+          className={fadeClassName}
+          style={fadeStyle}
+          filter={slot.buildingId === "heartfire" ? undefined : outlineWobble(slot.id)}
         >
-          {drawbridge ? (
-            <DrawbridgeMark
-              bridge={drawbridge}
-              fill={tuning.fill}
-              at={slot}
-              hatchReach={hatchReach}
-              stroke={bastionOutlineWidth(tier)}
-            />
-          ) : null}
-          <BuildingMark
-            buildingId={slot.buildingId}
-            size={
-              slot.buildingId === "watchtower"
-                ? watchtowerWidth(tuning.squareSize, 1)
-                : markSize(slot.buildingId, tuning.squareSize)
-            }
-            tier={tier}
-            tuning={tuning}
-            shape={footprintOf(slot.buildingId)}
-            heartfireLevel={heartfireLevel}
-            ebonGrace={ebonGrace}
-            brimstoneInfusion={brimstoneInfusion}
-            dedication={dedication}
-            dedicationDeepened={dedicationDeepened}
-          />
+          {enterScale ? <g className="village-map-enter-scale">{mark}</g> : mark}
         </g>
       </MapBorderExtraContext.Provider>
     </MapHighlightFadeContext.Provider>
@@ -2284,11 +2203,49 @@ function pathWaitsForBuilding(path: VillagePath, reveal: VillageMapReveal | null
   return served.every(firstTime);
 }
 
-/** A first appearance and an upgrade each get their own thick border. */
-function revealFadeSignature(reveal: VillageMapReveal | null, slotId: string): string | null {
+/** A first appearance and an upgrade each get their own thick border. Epoch replays the demo fade. */
+function revealFadeSignature(
+  reveal: VillageMapReveal | null,
+  slotId: string,
+  epoch: number,
+): string | null {
   if (reveal?.fadeIn[slotId] !== true) return null;
   const previous = reveal.fadeOutTier[slotId];
-  return previous == null ? "in" : `up:${previous}`;
+  const kind = previous == null ? "in" : `up:${previous}`;
+  return `${epoch}:${kind}`;
+}
+
+const OPEN_WAIT_STYLE = {
+  "--village-map-open-delay": `${VILLAGE_MAP_OPEN_FADE_DELAY_MS}ms`,
+} as CSSProperties;
+
+function slotOpensWithWait(reveal: VillageMapReveal | null, slotId: string): boolean {
+  return reveal?.openWait?.[slotId] === true;
+}
+
+function fadeInClass(reveal: VillageMapReveal | null, slotId: string): string | undefined {
+  if (reveal?.fadeIn[slotId] !== true) return undefined;
+  const upgrade = reveal.fadeOutTier[slotId] != null;
+  const wait = slotOpensWithWait(reveal, slotId);
+  return [
+    "village-map-fade-in",
+    upgrade ? "village-map-fade-in--after-out" : "",
+    wait ? "village-map-fade--open-wait" : "",
+  ].filter(Boolean).join(" ");
+}
+
+function pathOpensWithWait(path: VillagePath, reveal: VillageMapReveal | null): boolean {
+  if (!reveal?.openWait) return false;
+  const held = (id: string) =>
+    reveal.fadeIn[id] === true && reveal.fadeOutTier[id] == null && reveal.openWait?.[id] === true;
+  if (held("heartfire:0")) return true;
+  return path.slotIds.some(held);
+}
+
+function pathFadeClass(path: VillagePath, reveal: VillageMapReveal | null): string | undefined {
+  if (!pathWaitsForBuilding(path, reveal)) return undefined;
+  if (!pathOpensWithWait(path, reveal)) return "village-map-path-after-building";
+  return "village-map-path-after-building village-map-path--open-wait";
 }
 
 const NO_TREES: MapTree[] = [];
@@ -2345,6 +2302,8 @@ type VillageMapProps = {
   onActiveLabel: (label: string | null) => void;
   onHoverBuilding?: (buildingId: string | null) => void;
   reveal?: VillageMapReveal | null;
+  /** Bumps to replay the same reveal. The game leaves this at 0. */
+  revealEpoch?: number;
   readOnly?: boolean;
   /** Current Feed Fire level, 0 through 5. */
   heartfireLevel?: number;
@@ -2360,7 +2319,6 @@ type VillageMapProps = {
 type VillageMapSvgProps = Omit<VillageMapProps, "highlightId"> & {
   svgRef: RefObject<SVGSVGElement>;
   highlightRef: { current: string | null };
-  setMaskHost: (node: SVGDefsElement | null) => void;
 };
 
 const VillageMapSvg = memo(function VillageMapSvg({
@@ -2373,6 +2331,7 @@ const VillageMapSvg = memo(function VillageMapSvg({
   onActiveLabel,
   onHoverBuilding,
   reveal = null,
+  revealEpoch = 0,
   readOnly = false,
   heartfireLevel = 5,
   trees = NO_TREES,
@@ -2382,7 +2341,6 @@ const VillageMapSvg = memo(function VillageMapSvg({
   onRemoveTree,
   svgRef,
   highlightRef,
-  setMaskHost,
 }: VillageMapSvgProps) {
   const dragRef = useRef<{ id: string; dx: number; dy: number; buildingId: string } | null>(null);
   const pathDragRef = useRef<{ id: string; dx: number; dy: number } | null>(null);
@@ -2412,6 +2370,11 @@ const VillageMapSvg = memo(function VillageMapSvg({
   // A shared flag was cleared by whichever animation ended first, so some fades lost the border.
   const [easedBorder, setEasedBorder] = useState<Record<string, string>>({});
   const [pathReady, setPathReady] = useState<Record<string, true>>({});
+  const [pathEpoch, setPathEpoch] = useState(revealEpoch);
+  if (pathEpoch !== revealEpoch) {
+    setPathEpoch(revealEpoch);
+    setPathReady({});
+  }
   const moatClipId = `moat-clip-${useId().replace(/:/g, "")}`;
   const wallMaskId = `wall-hatch-${useId().replace(/:/g, "")}`;
   const pathClipId = `path-clip-${useId().replace(/:/g, "")}`;
@@ -2931,8 +2894,6 @@ const VillageMapSvg = memo(function VillageMapSvg({
           onPointerDown={onMapPointerDown}
         >
           <defs>
-            {/* Empty on purpose. Fade masks portal here so the building opacity does not fade the mask. */}
-            <defs ref={setMaskHost} />
             <OutlineWobbleFilter />
             <filter
               id={treeWobbleId}
@@ -3097,9 +3058,10 @@ const VillageMapSvg = memo(function VillageMapSvg({
                   const fades = [path.doorFade, path.heartFade].filter((fade): fade is PathFade => fade != null);
                   return (
                     <g
-                      key={path.id}
+                      key={`${path.id}-${revealEpoch}`}
                       data-path={path.id}
-                      className={waiting ? "village-map-path-after-building" : undefined}
+                      className={pathFadeClass(path, reveal)}
+                      style={waiting && pathOpensWithWait(path, reveal) ? OPEN_WAIT_STYLE : undefined}
                       onAnimationEnd={(event) => {
                         if (event.animationName !== "village-map-path-in") return;
                         setPathReady((current) =>
@@ -3134,10 +3096,11 @@ const VillageMapSvg = memo(function VillageMapSvg({
                       const waiting = pathWaitsForBuilding(path, reveal);
                       return (
                         <path
-                          key={`outline-${path.id}`}
+                          key={`outline-${path.id}-${revealEpoch}`}
                           d={path.ribbon}
                           fill="#000"
-                          className={waiting ? "village-map-path-after-building" : undefined}
+                          className={pathFadeClass(path, reveal)}
+                          style={waiting && pathOpensWithWait(path, reveal) ? OPEN_WAIT_STYLE : undefined}
                         />
                       );
                     })}
@@ -3404,7 +3367,7 @@ const VillageMapSvg = memo(function VillageMapSvg({
           ) : null}
 
           {slots.map((slot) => {
-            const fadeSignature = revealFadeSignature(reveal, slot.id);
+            const fadeSignature = revealFadeSignature(reveal, slot.id, revealEpoch);
             const fading =
               fadeSignature != null &&
               easedBorder[slot.id] !== fadeSignature &&
@@ -3453,11 +3416,17 @@ const VillageMapSvg = memo(function VillageMapSvg({
               >
                 {onHoverBuilding ? null : <title>{slot.label}</title>}
                 {reveal?.fadeOutTier[slot.id] != null ? (
-                  <g className="village-map-fade-out">
+                  <g key={`fade-out-${revealEpoch}`}>
                     <SlotMark
                       slot={slot}
                       tier={reveal.fadeOutTier[slot.id]}
                       tuning={markTuning}
+                      fadeClassName={
+                        slotOpensWithWait(reveal, slot.id)
+                          ? "village-map-fade-out village-map-fade--open-wait"
+                          : "village-map-fade-out"
+                      }
+                      fadeStyle={slotOpensWithWait(reveal, slot.id) ? OPEN_WAIT_STYLE : undefined}
                       heartfireLevel={heartfireLevel}
                       ebonGrace={build.ebonGrace}
                       brimstoneInfusion={build.brimstoneInfusion}
@@ -3467,16 +3436,10 @@ const VillageMapSvg = memo(function VillageMapSvg({
                   </g>
                 ) : null}
                 <g
-                  className={
-                    reveal?.fadeIn[slot.id]
-                      ? reveal.fadeOutTier[slot.id] != null
-                        ? "village-map-fade-in village-map-fade-in--after-out"
-                        : "village-map-fade-in"
-                      : undefined
-                  }
+                  key={`fade-in-${revealEpoch}`}
                   onAnimationEnd={(event) => {
                     if (event.animationName !== "village-map-highlight-fade") return;
-                    if (event.elapsedTime < 3 || fadeSignature == null) return;
+                    if (event.elapsedTime < 0.5 || fadeSignature == null) return;
                     setEasedBorder((current) =>
                       current[slot.id] === fadeSignature ? current : { ...current, [slot.id]: fadeSignature },
                     );
@@ -3488,6 +3451,8 @@ const VillageMapSvg = memo(function VillageMapSvg({
                     tuning={markTuning}
                     highlighted={fading}
                     fadeHighlight={fading}
+                    fadeClassName={fadeInClass(reveal, slot.id)}
+                    fadeStyle={slotOpensWithWait(reveal, slot.id) ? OPEN_WAIT_STYLE : undefined}
                     heartfireLevel={heartfireLevel}
                     ebonGrace={build.ebonGrace}
                     brimstoneInfusion={build.brimstoneInfusion}
@@ -3567,11 +3532,10 @@ export function VillageMap({ highlightId, ...props }: VillageMapProps) {
   const svgRef = useRef<SVGSVGElement>(null);
   const highlightRef = useRef<string | null>(highlightId);
   highlightRef.current = highlightId;
-  const [maskHost, setMaskHost] = useState<SVGDefsElement | null>(null);
   return (
-    <MapMaskHostContext.Provider value={maskHost}>
-      <VillageMapSvg {...props} svgRef={svgRef} highlightRef={highlightRef} setMaskHost={setMaskHost} />
+    <>
+      <VillageMapSvg {...props} svgRef={svgRef} highlightRef={highlightRef} />
       <VillageMapHighlight svgRef={svgRef} highlightId={highlightId} />
-    </MapMaskHostContext.Provider>
+    </>
   );
 }

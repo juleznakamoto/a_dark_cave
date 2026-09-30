@@ -10,6 +10,7 @@ import {
 } from "react";
 import { createPortal } from "react-dom";
 import { cn } from "@/lib/utils";
+import { useGameStore, isModalDialogOpen } from "@/game/state";
 import { Z_INDEX } from "@/lib/z-index";
 import { isGameTabHidden, subscribeGameTabHidden } from "@/lib/tabVisibility";
 import {
@@ -55,6 +56,7 @@ export interface HoverCalloutTooltipProps {
    * Render the callout on `document.body` so it can paint above other layers
    * (e.g. the floating invite button over the footer Steam wishlist hint).
    * Visible callouts are always portaled so they can stay inside the viewport.
+   * While a modal is open the callout drops below the backdrop.
    */
   portal?: boolean;
   /** `sm` is header chrome. `md` matches footer label size (12px). */
@@ -86,6 +88,10 @@ export function HoverCalloutTooltip({
   } | null>(null);
   const visible = forceVisible || (hoverEnabled && isHovered);
   const usePortal = portal || visible;
+  const modalCovered = useGameStore(isModalDialogOpen);
+  const calloutZIndex = modalCovered
+    ? Z_INDEX.hoverCalloutUnderModal
+    : Z_INDEX.hoverCallout;
 
   useEffect(() => {
     return subscribeGameTabHidden(() => {
@@ -154,7 +160,7 @@ export function HoverCalloutTooltip({
   const portalStyle: CSSProperties | undefined = triggerRect
     ? {
       position: "fixed",
-      zIndex: Z_INDEX.tooltip,
+      zIndex: calloutZIndex,
       left: placement?.left ?? triggerRect.left,
       top: placement?.top ?? triggerRect.bottom,
       maxWidth: placement?.maxWidth,

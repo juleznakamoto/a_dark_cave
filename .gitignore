@@ -59,6 +59,8 @@ client/public/email/*
 # One-shot local helper scripts (never commit)
 _tmp_*
 tmp-*
+# Root-level underscore scripts (local investigations; e.g. _extract_queries.py)
+/_*.py
 
 # Python bytecode
 **/__pycache__/

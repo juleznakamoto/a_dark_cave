@@ -2,7 +2,9 @@ import { describe, expect, it } from "vitest";
 import {
   diffVillageMapReveal,
   hasUnseenVillageMapMarks,
+  holdRevealForMapOpen,
   revealForMapChange,
+  revealForSimulatedOpen,
   villageMapFeatureMarks,
 } from "@/game/villageMapReveal";
 
@@ -64,6 +66,33 @@ describe("village map reveal", () => {
     });
     expect(finished.reveal.fadeOutTier).toEqual({});
     expect(finished.shown["blacksmith:0"]).toBe(1);
+  });
+
+  it("waits on the marks revealed by opening the map, and not on a mark that finishes later", () => {
+    const opened = holdRevealForMapOpen(
+      revealForMapChange(null, [{ id: "woodenHut:0", tier: 1 }], {}).reveal,
+    );
+    expect(opened.openWait).toEqual({ "woodenHut:0": true });
+    const finished = revealForMapChange(
+      opened,
+      [
+        { id: "woodenHut:0", tier: 1 },
+        { id: "blacksmith:0", tier: 1 },
+      ],
+      { "woodenHut:0": 1 },
+    );
+    expect(finished.reveal.fadeIn["blacksmith:0"]).toBe(true);
+    expect(finished.reveal.openWait).toEqual({ "woodenHut:0": true });
+  });
+
+  it("simulates an open-map fade, and fades the previous tier out on an upgrade", () => {
+    const reveal = revealForSimulatedOpen([
+      { id: "woodenHut:0", tier: 1 },
+      { id: "coinhouse:0", tier: 3 },
+    ]);
+    expect(reveal.fadeIn).toEqual({ "woodenHut:0": true, "coinhouse:0": true });
+    expect(reveal.fadeOutTier).toEqual({ "coinhouse:0": 2 });
+    expect(reveal.openWait).toEqual(reveal.fadeIn);
   });
 
   it("fades out the old tier when an upgrade finishes on an open map", () => {

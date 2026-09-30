@@ -40,6 +40,10 @@ const PATH_CLEARANCE = PATH_GAP + ROUTE_PAD * 1.22;
 export const PATH_DOOR_CLEAR = 2;
 /** Fully solid this far from a door or the heartfire. The fade runs from here in to the clear distance. */
 export const PATH_DOOR_FADE = 8;
+/** The routed door sits this far outside the wall. */
+const DOOR_OUTSET = 1.5;
+/** Solid gravel continues this far under the wall, so the road meets the building. */
+const DOOR_TUCK = 5;
 /** Straight run out from a door, perpendicular to the wall, before the path may turn. */
 const DOOR_APPROACH = 18;
 /**
@@ -248,7 +252,9 @@ export function villagePathDrawings(
   return resolved.map((edge) => {
     const handle = overrides[edge.id] ?? midpoint(edge.points);
     const seed = mixSeed(edge.id);
-    const drawn = softenCenterline(ribbons.get(edge.id) ?? edge.points, seed);
+    const route = ribbons.get(edge.id) ?? edge.points;
+    const met = edge.slotIds.length === 1 ? extendThroughDoor(route) : route;
+    const drawn = softenCenterline(met, seed);
     return {
       id: edge.id,
       slotIds: edge.slotIds,
@@ -256,7 +262,7 @@ export function villagePathDrawings(
       ribbon: ribbonPath(drawn, seed),
       stones: stonesAlong(drawn, seed),
       handle,
-      doorFade: doorFade(edge.slotIds, edge.points),
+      doorFade: doorFade(edge.slotIds, met),
       heartFade: heartFade(edge.points, field.heartRadius),
     };
   });
@@ -402,7 +408,7 @@ function buildingDoor(slot: PlacedSlot, hutSize: number): Point | null {
   if (slot.buildingId === "longhouse") return doorPastWall(slot, longhouseDoor(slot, hutSize));
   if (slot.buildingId === "alchemistHall") return doorPastWall(slot, alchemistHallDoor(slot, hutSize));
   const inner = innerSidePoint(slot.buildingId, slot, hutSize, slot.tier);
-  if (inner) return nudgeToward(inner, heart, 1.5);
+  if (inner) return nudgeToward(inner, heart, DOOR_OUTSET);
   const shapes = slotShapes(slot, hutSize);
   let best: Point | null = null;
   let bestDist = Infinity;
@@ -415,7 +421,30 @@ function buildingDoor(slot: PlacedSlot, hutSize: number): Point | null {
     }
   }
   if (!best) return null;
-  return nudgeToward(best, heart, 1.5);
+  return nudgeToward(best, heart, DOOR_OUTSET);
+}
+
+/**
+ * The route starts just outside the wall, and the fade then hides the first
+ * stretch of it. Drawn as-is, that leaves open ground between the gravel and
+ * the building. Pull the drawn start back through the wall so the fade is
+ * solid under the wall, so the gravel meets the building.
+ */
+function extendThroughDoor(points: readonly Point[]): Point[] {
+  const start = points[0];
+  const line = points as Point[];
+  const ahead = pointAt(line, Math.min(PATH_DOOR_FADE, polylineLength(line)));
+  if (!start || !ahead) return points.slice();
+  const span = Math.hypot(ahead.x - start.x, ahead.y - start.y);
+  if (span < 1) return points.slice();
+  const back = PATH_DOOR_FADE + DOOR_OUTSET + DOOR_TUCK;
+  return [
+    {
+      x: start.x - ((ahead.x - start.x) / span) * back,
+      y: start.y - ((ahead.y - start.y) / span) * back,
+    },
+    ...points,
+  ];
 }
 
 /** Private spur only. Shared trunks stay solid at the building end. */
@@ -809,6 +838,8 @@ function traceEdges(
   separateCrowdedForks(grid, edges);
   liftShallowForks(grid, edges);
   leanSomeForksInward(grid, edges);
+  bundleParallelSpans(grid, edges);
+  collapseRejoins(grid, edges);
   edges.sort((a, b) => (a.id < b.id ? -1 : a.id > b.id ? 1 : 0));
   return edges;
 }
@@ -974,6 +1005,260 @@ function hooksInOpening(points: Point[]): boolean {
     if ((ax * bx + ay * by) / (ar * br) < 0.15) return true;
   }
   return false;
+}
+
+/**
+ * A shallow split can leave two tracks side by side long after they should
+ * have joined. The heart-side pass never sees that, because it starts at the
+ * fire and gives up when the roads have already fanned apart.
+ * The lesser road stops where the shared stretch begins. The greater one
+ * already draws the rest. The door stays put.
+ */
+const SPAN_GAP = 18;
+const SPAN_ALIGN = 0.9;
+const SPAN_RUN = 36;
+const SPAN_BLEND = 16;
+/** One grid kink may sit in an otherwise straight shared stretch. */
+const SPAN_SKIP = 10;
+
+/**
+ * Two roads that share an end should not meet, split apart, and meet again.
+ * That draws a loop. The lesser one stops at the first meeting. The greater
+ * one already continues to the shared end.
+ */
+const REJOIN_CLOSE = 6;
+const REJOIN_APART = 12;
+const REJOIN_LENS = 70;
+
+function collapseRejoins(grid: Grid, edges: PathEdgeBase[]): void {
+  const rank = (edge: PathEdgeBase) => edge.slotIds.length * 100000 + polylineLength(edge.points);
+  for (let pass = 0; pass < 3; pass++) {
+    let changed = false;
+    const order = edges.slice().sort((a, b) => rank(a) - rank(b));
+    for (const spur of order) {
+      const spurEnd = spur.points[spur.points.length - 1];
+      if (!spurEnd) continue;
+      let best: { points: Point[]; run: number } | null = null;
+      for (const host of edges) {
+        if (host === spur || rank(host) <= rank(spur)) continue;
+        const hostEnd = host.points[host.points.length - 1];
+        if (!hostEnd || !samePoint(hostEnd, spurEnd)) continue;
+        const cut = rejoinCut(grid, spur, host, edges);
+        if (!cut || (best && cut.run <= best.run)) continue;
+        best = cut;
+      }
+      if (!best) continue;
+      spur.points = best.points;
+      changed = true;
+    }
+    if (!changed) break;
+  }
+}
+
+function rejoinCut(
+  grid: Grid,
+  spur: PathEdgeBase,
+  host: PathEdgeBase,
+  edges: readonly PathEdgeBase[],
+): { points: Point[]; run: number } | null {
+  const points = spur.points;
+  const hostPoints = host.points;
+  if (points.length < 2 || hostPoints.length < 2) return null;
+  const total = polylineLength(points);
+  if (total < DOOR_APPROACH + 24) return null;
+  let walked = 0;
+  let closeAt = -1;
+  let apartAt = -1;
+  for (let index = 1; index < points.length; index++) {
+    const prev = points[index - 1];
+    const here = points[index];
+    const span = Math.hypot(here.x - prev.x, here.y - prev.y);
+    if (span < 1e-6) continue;
+    const steps = Math.max(1, Math.ceil(span / 4));
+    for (let step = 1; step <= steps; step++) {
+      const along = walked + (span * step) / steps;
+      if (along < DOOR_APPROACH || total - along < 24) continue;
+      const point = lerp(prev, here, step / steps);
+      const hit = projectOnto(point, hostPoints);
+      if (closeAt < 0) {
+        if (hit.dist <= REJOIN_CLOSE) closeAt = along;
+      } else if (apartAt < 0 && hit.dist >= REJOIN_APART) {
+        apartAt = along;
+        break;
+      }
+    }
+    walked += span;
+    if (apartAt >= 0) break;
+  }
+  if (closeAt < 0 || apartAt < 0 || total - apartAt > REJOIN_LENS) return null;
+  const stitched = cutOnto(points, hostPoints, closeAt);
+  if (!stitched || stitched.length < 2 || reverses(stitched) || hooksInOpening(stitched)) return null;
+  if (!samePoint(stitched[0], points[0])) return null;
+  if (!blendOpen(grid, stitched, closeAt)) return null;
+  const others = edges.filter((edge) => edge !== spur && edge !== host);
+  if (polylinesCrossAny(stitched, others.map((edge) => ({ points: edge.points })))) return null;
+  return { points: stitched, run: apartAt - closeAt };
+}
+
+function bundleParallelSpans(grid: Grid, edges: PathEdgeBase[]): void {
+  const rank = (edge: PathEdgeBase) => edge.slotIds.length * 100000 + polylineLength(edge.points);
+  for (let pass = 0; pass < 4; pass++) {
+    let changed = false;
+    const order = edges.slice().sort((a, b) => rank(a) - rank(b));
+    for (const spur of order) {
+      let best: { points: Point[]; run: number } | null = null;
+      for (const host of edges) {
+        if (host === spur || rank(host) <= rank(spur)) continue;
+        const ridden = rideSpan(grid, spur, host, edges);
+        if (!ridden || (best && ridden.run <= best.run)) continue;
+        best = ridden;
+      }
+      if (!best) continue;
+      spur.points = best.points;
+      changed = true;
+    }
+    if (!changed) break;
+  }
+}
+
+function rideSpan(
+  grid: Grid,
+  spur: PathEdgeBase,
+  host: PathEdgeBase,
+  edges: readonly PathEdgeBase[],
+): { points: Point[]; run: number } | null {
+  const points = spur.points;
+  const hostPoints = host.points;
+  if (points.length < 2 || hostPoints.length < 2) return null;
+  const total = polylineLength(points);
+  if (total < SPAN_RUN + DOOR_APPROACH || polylineLength(hostPoints) < SPAN_RUN) return null;
+  if (!hostCarriesOn(points, hostPoints, grid.heartRadius)) return null;
+  const spurEnd = points[points.length - 1];
+  const hostEnd = hostPoints[hostPoints.length - 1];
+  const bothHearts =
+    spurEnd != null &&
+    hostEnd != null &&
+    Math.abs(Math.hypot(spurEnd.x - MAP_CENTER, spurEnd.y - MAP_CENTER) - grid.heartRadius) <= 1.5 &&
+    Math.abs(Math.hypot(hostEnd.x - MAP_CENTER, hostEnd.y - MAP_CENTER) - grid.heartRadius) <= 1.5;
+
+  let bestStart = 0;
+  let bestEnd = 0;
+  let bestRun = 0;
+  let start = -1;
+  let skipped = 0;
+  let walked = 0;
+  const finish = (along: number) => {
+    const end = along - skipped;
+    const run = start < 0 ? 0 : end - start;
+    if (run > bestRun) {
+      bestRun = run;
+      bestStart = start;
+      bestEnd = end;
+    }
+  };
+  for (let index = 1; index < points.length; index++) {
+    const prev = points[index - 1];
+    const here = points[index];
+    const span = Math.hypot(here.x - prev.x, here.y - prev.y);
+    if (span < 1e-6) continue;
+    const dir = unitVector(here.x - prev.x, here.y - prev.y);
+    const steps = Math.max(1, Math.ceil(span / 4));
+    for (let step = 1; step <= steps; step++) {
+      const along = walked + (span * step) / steps;
+      const point = lerp(prev, here, step / steps);
+      if (along < DOOR_APPROACH) continue;
+      const hit = projectOnto(point, hostPoints);
+      const hostDir = directionAt(hostPoints, hit.along);
+      const aligned = Math.abs(dir.x * hostDir.x + dir.y * hostDir.y) >= SPAN_ALIGN;
+      const beside = hit.dist <= SPAN_GAP && hit.dist > 1.5 && aligned;
+      if (beside) {
+        if (start < 0) start = along;
+        skipped = 0;
+      } else if (start >= 0 && skipped + span / steps <= SPAN_SKIP) {
+        skipped += span / steps;
+      } else {
+        finish(along);
+        start = -1;
+        skipped = 0;
+      }
+    }
+    walked += span;
+  }
+  finish(walked);
+  const tail = total - bestEnd;
+  if (bestRun < SPAN_RUN || tail > (bothHearts ? 56 : SPAN_BLEND)) return null;
+  const oldEnd = points[points.length - 1];
+  const carried = edges.find(
+    (edge) => edge !== spur && edge.points[0] != null && oldEnd != null && samePoint(edge.points[0], oldEnd),
+  );
+  if (
+    carried &&
+    carried !== host &&
+    hostEnd != null &&
+    !samePoint(hostEnd, oldEnd) &&
+    projectOnto(oldEnd, hostPoints).dist > 4
+  ) {
+    return null;
+  }
+  const stitched = cutOnto(points, hostPoints, bestStart);
+  if (!stitched || stitched.length < 2 || reverses(stitched) || hooksInOpening(stitched)) return null;
+  if (!samePoint(stitched[0], points[0])) return null;
+  const door = points[0];
+  const tip = stitched[stitched.length - 1];
+  const meet = pointAt(points, bestStart);
+  if (!door || !tip || !meet) return null;
+  if (Math.hypot(tip.x - door.x, tip.y - door.y) + 1 < Math.hypot(meet.x - door.x, meet.y - door.y)) return null;
+  if (!blendOpen(grid, stitched, bestStart)) return null;
+  const others = edges.filter((edge) => edge !== spur && edge !== host);
+  if (polylinesCrossAny(stitched, others.map((edge) => ({ points: edge.points })))) return null;
+  return { points: stitched, run: bestRun };
+}
+
+/** The host already reaches this road's far end, or both of them reach the heartfire. */
+function hostCarriesOn(spur: Point[], host: Point[], heartRadius: number): boolean {
+  const spurEnd = spur[spur.length - 1];
+  const hostEnd = host[host.length - 1];
+  if (!spurEnd || !hostEnd) return false;
+  if (projectOnto(spurEnd, host).dist <= SPAN_GAP) return true;
+  const spurHeart = Math.abs(Math.hypot(spurEnd.x - MAP_CENTER, spurEnd.y - MAP_CENTER) - heartRadius) <= 1.5;
+  const hostHeart = Math.abs(Math.hypot(hostEnd.x - MAP_CENTER, hostEnd.y - MAP_CENTER) - heartRadius) <= 1.5;
+  return spurHeart && hostHeart;
+}
+
+/**
+ * Keep the private approach and end on the host where the shared stretch begins.
+ * The host already draws the rest, so this road does not copy it.
+ */
+function cutOnto(spur: Point[], host: Point[], fromAlong: number): Point[] | null {
+  const out = prefixTo(spur, fromAlong);
+  const total = polylineLength(spur);
+  const blendEnd = Math.min(total, fromAlong + SPAN_BLEND);
+  let walked = 0;
+  let joined: Point | null = null;
+  for (let index = 1; index < spur.length; index++) {
+    const prev = spur[index - 1];
+    const here = spur[index];
+    const span = Math.hypot(here.x - prev.x, here.y - prev.y);
+    if (span < 1e-6) continue;
+    const steps = Math.max(1, Math.ceil(span / 4));
+    for (let step = 1; step <= steps; step++) {
+      const along = walked + (span * step) / steps;
+      if (along < fromAlong - 0.01) continue;
+      if (along > blendEnd) break;
+      const point = lerp(prev, here, step / steps);
+      const hit = projectOnto(point, host);
+      const mix = Math.max(0, Math.min(1, (along - fromAlong) / SPAN_BLEND));
+      joined = lerp(point, hit.at, mix);
+      out.push(joined);
+    }
+    walked += span;
+    if (walked > blendEnd) break;
+  }
+  if (!joined) return null;
+  const landed = projectOnto(joined, host);
+  if (landed.dist > 1.25) return null;
+  out.push(landed.at);
+  return dedupePoints(out);
 }
 
 function blendOpen(grid: Grid, points: Point[], fromAlong: number): boolean {
@@ -4012,7 +4297,7 @@ function pointInPolygon(point: Point, poly: Point[]): boolean {
 
 /** A step past the wall point, along the line from the building center. */
 function doorPastWall(slot: PlacedSlot, onWall: Point): Point {
-  const out = Math.hypot(onWall.x - slot.x, onWall.y - slot.y) + 1.5;
+  const out = Math.hypot(onWall.x - slot.x, onWall.y - slot.y) + DOOR_OUTSET;
   return nudgeToward(slot, onWall, out);
 }
 

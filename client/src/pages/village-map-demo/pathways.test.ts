@@ -1,4 +1,5 @@
 import { describe, expect, it } from "vitest";
+import { VILLAGE_MAP_POSITIONS } from "@/game/villageMapLayout";
 import {
   DEFAULT_TUNING,
   MAP_CENTER,
@@ -32,8 +33,12 @@ import {
   villagePathDrawings,
 } from "@/pages/village-map-demo/pathways";
 
-function fieldFor(preset: "camp" | "village" | "full", overrides: Record<string, { x: number; y: number }> = {}) {
-  const build = applyGrowth(stageForPreset(preset));
+function fieldFor(
+  preset: "camp" | "village" | "full",
+  overrides: Record<string, { x: number; y: number }> = {},
+  stage = stageForPreset(preset),
+) {
+  const build = applyGrowth(stage);
   const tuning = DEFAULT_TUNING;
   const radius = layoutWallRadius(tuning);
   const thickness = wallStrokeWidth(build.wall, tuning.wallThickness);
@@ -110,6 +115,151 @@ const MONUMENT_LAYOUT: Record<string, { x: number; y: number }> = {
   "woodenHut:4": { x: 545, y: 386 },
   "boneyard:0": { x: 934, y: 514 },
 };
+
+/** Centerlines that stay within a road-width of each other, heading the same way, for a long stretch. */
+function longParallelRuns(paths: Array<{ id: string; points: Array<{ x: number; y: number }> }>): string[] {
+  const project = (point: { x: number; y: number }, poly: Array<{ x: number; y: number }>) => {
+    let best = Infinity;
+    let along = 0;
+    let walked = 0;
+    for (let index = 1; index < poly.length; index++) {
+      const start = poly[index - 1];
+      const end = poly[index];
+      const dx = end.x - start.x;
+      const dy = end.y - start.y;
+      const lenSq = dx * dx + dy * dy || 1;
+      const span = Math.hypot(dx, dy);
+      const t = Math.max(0, Math.min(1, ((point.x - start.x) * dx + (point.y - start.y) * dy) / lenSq));
+      const dist = Math.hypot(point.x - (start.x + dx * t), point.y - (start.y + dy * t));
+      if (dist < best) {
+        best = dist;
+        along = walked + span * t;
+      }
+      walked += span;
+    }
+    return { dist: best, along };
+  };
+  const directionAt = (poly: Array<{ x: number; y: number }>, along: number) => {
+    let walked = 0;
+    for (let index = 1; index < poly.length; index++) {
+      const start = poly[index - 1];
+      const end = poly[index];
+      const span = Math.hypot(end.x - start.x, end.y - start.y);
+      if (walked + span >= along || index === poly.length - 1) {
+        const dx = end.x - start.x;
+        const dy = end.y - start.y;
+        const len = Math.hypot(dx, dy) || 1;
+        return { x: dx / len, y: dy / len };
+      }
+      walked += span;
+    }
+    return { x: 1, y: 0 };
+  };
+  const found: string[] = [];
+  for (let i = 0; i < paths.length; i++) {
+    for (let j = i + 1; j < paths.length; j++) {
+      const a = paths[i].points;
+      const b = paths[j].points;
+      let run = 0;
+      let best = 0;
+      let skipped = 0;
+      for (let index = 1; index < a.length; index++) {
+        const prev = a[index - 1];
+        const here = a[index];
+        const span = Math.hypot(here.x - prev.x, here.y - prev.y);
+        const steps = Math.max(1, Math.ceil(span / 6));
+        const dx = here.x - prev.x;
+        const dy = here.y - prev.y;
+        const len = Math.hypot(dx, dy) || 1;
+        for (let step = 1; step <= steps; step++) {
+          const t = step / steps;
+          const point = { x: prev.x + dx * t, y: prev.y + dy * t };
+          const hit = project(point, b);
+          const host = directionAt(b, hit.along);
+          const aligned = Math.abs((dx / len) * host.x + (dy / len) * host.y) >= 0.9;
+          const beside = hit.dist <= 16 && hit.dist > 1.5 && aligned;
+          if (beside) {
+            run += span / steps;
+            skipped = 0;
+          } else if (run > 0 && skipped + span / steps <= 10) {
+            skipped += span / steps;
+          } else {
+            best = Math.max(best, run);
+            run = 0;
+            skipped = 0;
+          }
+        }
+      }
+      best = Math.max(best, run);
+      if (best >= 36) found.push(`${paths[i].id} || ${paths[j].id} (${Math.round(best)})`);
+    }
+  }
+  return found;
+}
+
+function rejoinLenses(paths: Array<{ id: string; points: Array<{ x: number; y: number }> }>): string[] {
+  const project = (point: { x: number; y: number }, poly: Array<{ x: number; y: number }>) => {
+    let best = Infinity;
+    for (let index = 1; index < poly.length; index++) {
+      const start = poly[index - 1];
+      const end = poly[index];
+      const dx = end.x - start.x;
+      const dy = end.y - start.y;
+      const lenSq = dx * dx + dy * dy || 1;
+      const t = Math.max(0, Math.min(1, ((point.x - start.x) * dx + (point.y - start.y) * dy) / lenSq));
+      best = Math.min(best, Math.hypot(point.x - (start.x + dx * t), point.y - (start.y + dy * t)));
+    }
+    return best;
+  };
+  const lensOn = (
+    spur: Array<{ x: number; y: number }>,
+    host: Array<{ x: number; y: number }>,
+  ) => {
+    let total = 0;
+    for (let index = 1; index < spur.length; index++) {
+      total += Math.hypot(spur[index].x - spur[index - 1].x, spur[index].y - spur[index - 1].y);
+    }
+    let walked = 0;
+    let closeAt = -1;
+    let apartAt = -1;
+    for (let index = 1; index < spur.length; index++) {
+      const prev = spur[index - 1];
+      const here = spur[index];
+      const span = Math.hypot(here.x - prev.x, here.y - prev.y);
+      const steps = Math.max(1, Math.ceil(span / 4));
+      for (let step = 1; step <= steps; step++) {
+        const along = walked + (span * step) / steps;
+        if (along < 18 || total - along < 24) continue;
+        const t = step / steps;
+        const dist = project(
+          { x: prev.x + (here.x - prev.x) * t, y: prev.y + (here.y - prev.y) * t },
+          host,
+        );
+        if (closeAt < 0) {
+          if (dist <= 6) closeAt = along;
+        } else if (apartAt < 0 && dist >= 12) {
+          apartAt = along;
+        }
+      }
+      walked += span;
+      if (apartAt >= 0) break;
+    }
+    return closeAt >= 0 && apartAt >= 0 && total - apartAt <= 70;
+  };
+  const found: string[] = [];
+  for (let i = 0; i < paths.length; i++) {
+    for (let j = i + 1; j < paths.length; j++) {
+      const a = paths[i].points;
+      const b = paths[j].points;
+      const aEnd = a[a.length - 1];
+      const bEnd = b[b.length - 1];
+      if (!aEnd || !bEnd || Math.hypot(aEnd.x - bEnd.x, aEnd.y - bEnd.y) > 0.75) continue;
+      if (lensOn(a, b)) found.push(`${paths[i].id} || ${paths[j].id}`);
+      if (lensOn(b, a)) found.push(`${paths[j].id} || ${paths[i].id}`);
+    }
+  }
+  return found;
+}
 
 function nearbyBranchOffs(paths: Array<{ id: string; points: Array<{ x: number; y: number }> }>): string[] {
   const same = (a: { x: number; y: number }, b: { x: number; y: number }) => Math.hypot(a.x - b.x, a.y - b.y) < 0.75;
@@ -349,6 +499,17 @@ describe("village pathways", () => {
     expect(shared.length).toBeGreaterThan(0);
   });
 
+  it("does not leave two roads side by side for a long stretch", () => {
+    expect(longParallelRuns(fieldFor("village").paths)).toEqual([]);
+    // Some full-village pairs still cannot join: the merge would cross a third road.
+    expect(longParallelRuns(fieldFor("full").paths).length).toBeLessThan(9);
+  });
+
+  it("does not split two roads apart again after they have met", () => {
+    expect(rejoinLenses(fieldFor("village", VILLAGE_MAP_POSITIONS, 9).paths)).toEqual([]);
+    expect(rejoinLenses(fieldFor("full", VILLAGE_MAP_POSITIONS).paths)).toEqual([]);
+  });
+
   it("keeps the pale cross, pillar, and monolith clear, the same as other buildings", () => {
     const { slots, hutSize, paths } = fieldFor("full", MONUMENT_LAYOUT);
     const monuments = slots.filter((slot) =>
@@ -564,7 +725,12 @@ describe("village pathways", () => {
     for (const path of spurs) {
       expect(path.doorFade, path.id).toBeTruthy();
       if (!path.doorFade) continue;
-      expect(Math.hypot(path.doorFade.from.x - path.points[0].x, path.doorFade.from.y - path.points[0].y)).toBeLessThan(0.01);
+      // The fade is already solid before the routed door, under the wall.
+      const fromDoor = Math.hypot(path.doorFade.from.x - path.points[0].x, path.doorFade.from.y - path.points[0].y);
+      const solidToDoor = Math.hypot(path.doorFade.to.x - path.points[0].x, path.doorFade.to.y - path.points[0].y);
+      expect(fromDoor).toBeGreaterThan(PATH_DOOR_FADE);
+      expect(solidToDoor).toBeGreaterThan(4);
+      expect(solidToDoor).toBeLessThan(fromDoor);
       const span = Math.hypot(path.doorFade.to.x - path.doorFade.from.x, path.doorFade.to.y - path.doorFade.from.y);
       expect(span).toBeGreaterThan(PATH_DOOR_CLEAR);
       expect(span).toBeLessThanOrEqual(PATH_DOOR_FADE + 0.01);

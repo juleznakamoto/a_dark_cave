@@ -832,13 +832,53 @@ html[data-adc-chrome-stage="0"] {
   }
 }
 
+@property --village-map-enter-scale {
+  syntax: "<number>";
+  inherits: true;
+  initial-value: 1;
+}
+
+@property --village-map-enter-shadow {
+  syntax: "<number>";
+  inherits: true;
+  initial-value: 0;
+}
+
+@property --village-map-enter-shadow-y {
+  syntax: "<length>";
+  inherits: true;
+  initial-value: 0px;
+}
+
+@property --village-map-enter-shadow-blur {
+  syntax: "<length>";
+  inherits: true;
+  initial-value: 0px;
+}
+
 @keyframes village-map-fade-in {
   from {
     opacity: 0;
+    --village-map-enter-scale: 1.15;
+    --village-map-enter-shadow: 0.55;
+    --village-map-enter-shadow-y: 2.25px;
+    --village-map-enter-shadow-blur: 3px;
+  }
+
+  80% {
+    --village-map-enter-scale: 1;
+  }
+
+  90% {
+    --village-map-enter-scale: 0.95;
   }
 
   to {
     opacity: 1;
+    --village-map-enter-scale: 1;
+    --village-map-enter-shadow: 0.55;
+    --village-map-enter-shadow-y: 0px;
+    --village-map-enter-shadow-blur: 0px;
   }
 }
 
@@ -854,19 +894,43 @@ html[data-adc-chrome-stage="0"] {
 
 .village-map-fade-in {
   opacity: 0;
-  animation: village-map-fade-in 4s linear forwards;
+  --village-map-enter-scale: 1.15;
+  --village-map-enter-shadow: 0.55;
+  --village-map-enter-shadow-y: 2.25px;
+  --village-map-enter-shadow-blur: 3px;
+  animation: village-map-fade-in 1.5s linear forwards;
+}
+
+/* Child of the fading mark. Inherits the scale and the shrinking shadow so the drawing settles in place. */
+.village-map-enter-scale {
+  transform-box: fill-box;
+  transform-origin: center;
+  transform: scale(var(--village-map-enter-scale));
+  filter: drop-shadow(0 var(--village-map-enter-shadow-y) var(--village-map-enter-shadow-blur) rgb(0 0 0 / var(--village-map-enter-shadow)));
 }
 
 /* Upgrade: the old mark finishes fading out before the new one starts. */
 .village-map-fade-in--after-out {
-  animation-delay: 1.5s;
+  animation-delay: 1s;
 }
 
-/* Extra outline stays thick for the first 3s of the 4s fade-in, then eases to the normal border. */
+/* Map tab just opened. --village-map-open-delay is VILLAGE_MAP_OPEN_FADE_DELAY_MS. */
+.village-map-fade--open-wait.village-map-fade-in,
+.village-map-fade--open-wait.village-map-fade-out,
+.village-map-fade--open-wait .village-map-highlight-fade {
+  animation-delay: var(--village-map-open-delay, 1s);
+}
+
+.village-map-fade--open-wait.village-map-fade-in--after-out,
+.village-map-fade--open-wait.village-map-fade-in--after-out .village-map-highlight-fade {
+  animation-delay: calc(1s + var(--village-map-open-delay, 1s));
+}
+
+/* Extra outline stays thick for the first 0.5s of the 1.5s fade-in, then eases to the normal border. */
 @keyframes village-map-highlight-fade {
 
   0%,
-  75% {
+  33.333% {
     opacity: 1;
   }
 
@@ -876,7 +940,7 @@ html[data-adc-chrome-stage="0"] {
 }
 
 .village-map-highlight-fade {
-  animation: village-map-highlight-fade 4s linear forwards;
+  animation: village-map-highlight-fade 1.5s linear forwards;
 }
 
 /* Shown by :hover, .is-hovered, or .is-highlighted. No map render. */
@@ -896,11 +960,11 @@ html[data-adc-chrome-stage="0"] {
 }
 
 .village-map-fade-in--after-out .village-map-highlight-fade {
-  animation-delay: 1.5s;
+  animation-delay: 1s;
 }
 
 .village-map-fade-out {
-  animation: village-map-fade-out 1.5s linear forwards;
+  animation: village-map-fade-out 1s linear forwards;
   pointer-events: none;
 }
 
@@ -914,16 +978,25 @@ html[data-adc-chrome-stage="0"] {
   }
 }
 
-/* Tracks show up once the building fade (4s) has finished. */
+/* Tracks show up once the building fade (1.5s) has finished. */
 .village-map-path-after-building {
   opacity: 0;
-  animation: village-map-path-in 1.25s linear 4s forwards;
+  animation: village-map-path-in 1.25s linear 1.5s forwards;
+}
+
+/* Same wait as the marks that appeared when the Map tab opened. */
+.village-map-path--open-wait.village-map-path-after-building {
+  animation-delay: calc(1.5s + var(--village-map-open-delay, 1s));
 }
 
 @media (prefers-reduced-motion: reduce) {
   .village-map-fade-in {
     animation: none;
     opacity: 1;
+    --village-map-enter-scale: 1;
+    --village-map-enter-shadow: 0;
+    --village-map-enter-shadow-y: 0px;
+    --village-map-enter-shadow-blur: 0px;
   }
 
   .village-map-fade-out {

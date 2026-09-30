@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { Redirect } from "wouter";
 import { Button } from "@/components/ui/button";
+import { revealForSimulatedOpen, type VillageMapReveal } from "@/game/villageMapReveal";
 import {
   BUILDINGS,
   DEFAULT_TUNING,
@@ -27,7 +28,7 @@ import {
   type SanctumGod,
   type Tuning,
 } from "@/pages/village-map-demo/catalog";
-import type { Point } from "@/pages/village-map-demo/geometry";
+import { placedSlots, type Point } from "@/pages/village-map-demo/geometry";
 import { TreeMark } from "@/pages/village-map-demo/TreeMark";
 import { TREE_VARIANTS, treeVariant } from "@/pages/village-map-demo/trees";
 import { UpgradeRuleIcon, VillageMap } from "@/pages/village-map-demo/VillageMap";
@@ -261,6 +262,8 @@ export default function VillageMapDemo() {
   const [query, setQuery] = useState("");
   const [highlightId, setHighlightId] = useState<string | null>(null);
   const [placingTree, setPlacingTree] = useState<string | null>(null);
+  const [reveal, setReveal] = useState<VillageMapReveal | null>(null);
+  const [revealEpoch, setRevealEpoch] = useState(0);
 
   const { stage, build, tuning, overrides, pathOverrides, trees, presetId } = state;
 
@@ -339,6 +342,16 @@ export default function VillageMapDemo() {
   }
 
   const stopPlay = () => setPlaying(false);
+
+  const simulateFade = () => {
+    setPlaying(false);
+    const slots = placedSlots(build, tuning, overrides).map((slot) => ({
+      id: slot.id,
+      tier: slot.tier,
+    }));
+    setReveal(revealForSimulatedOpen(slots));
+    setRevealEpoch((current) => current + 1);
+  };
 
   const applyStage = (next: number) => {
     const stageValue = Math.max(0, Math.min(GROWTH_STEPS.length, next));
@@ -548,6 +561,8 @@ export default function VillageMapDemo() {
                 overrides={overrides}
                 pathOverrides={pathOverrides}
                 highlightId={highlightId}
+                reveal={reveal}
+                revealEpoch={revealEpoch}
                 trees={trees}
                 placingTree={placingTree}
                 onPlaceTree={placeTree}
@@ -624,6 +639,8 @@ export default function VillageMapDemo() {
                   setPlaying(false);
                   return;
                 }
+                // Growth only adds the next marks. A simulated open-map fade must not ride along.
+                setReveal(null);
                 if (stage >= GROWTH_STEPS.length) {
                   setState((current) => ({
                     ...current,
@@ -652,6 +669,20 @@ export default function VillageMapDemo() {
           <p className="text-[11px] text-stone-500">
             The slider sets the village to that moment of growth.
           </p>
+          <div className="flex items-center justify-between gap-2 border-t border-stone-800 pt-2">
+            <p className="text-[11px] leading-relaxed text-stone-500">
+              Plays the map-open fade. It waits 1s, then fades marks in. A higher tier fades the previous mark out first.
+            </p>
+            <Button
+              size="xs"
+              variant="outline"
+              className="shrink-0"
+              data-testid="simulate-map-fade"
+              onClick={simulateFade}
+            >
+              Simulate fade
+            </Button>
+          </div>
           <div className="space-y-2 border-t border-stone-800 pt-2">
             <div className="flex items-center justify-between gap-2 text-xs text-stone-300">
               <span>Map background</span>

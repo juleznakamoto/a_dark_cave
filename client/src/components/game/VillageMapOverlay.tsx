@@ -20,9 +20,11 @@ import {
   sidePanelRowFromMapBuilding,
 } from "@/game/villageMapHighlight";
 import {
+  holdRevealForMapOpen,
   revealForMapChange,
   villageMapFeatureMarks,
   VILLAGE_MAP_FADE_IN_MS,
+  VILLAGE_MAP_OPEN_FADE_DELAY_MS,
   type VillageMapReveal,
 } from "@/game/villageMapReveal";
 import { useSidePanelActiveTooltipHoverId } from "./panels/SidePanelSection";
@@ -97,7 +99,7 @@ export default function VillageMapOverlay() {
     sessionRef.current = true;
     const seen = useGameStore.getState().villageMapSeenTiers ?? {};
     const next = applyMarks(null, seen);
-    revealRef.current = next.reveal;
+    revealRef.current = holdRevealForMapOpen(next.reveal);
     shownRef.current = next.shown;
     markKeyRef.current = markKey;
   } else if (open && markKey !== markKeyRef.current) {
@@ -118,9 +120,12 @@ export default function VillageMapOverlay() {
       setVillageMapHoveredBuilding(null);
       return;
     }
+    const openWait = revealRef.current?.openWait;
+    const openDelay =
+      openWait && Object.keys(openWait).length > 0 ? VILLAGE_MAP_OPEN_FADE_DELAY_MS : 0;
     const timer = window.setTimeout(() => {
       useGameStore.getState().setVillageMapSeenTiers({ ...shownRef.current });
-    }, VILLAGE_MAP_FADE_IN_MS);
+    }, VILLAGE_MAP_FADE_IN_MS + openDelay);
     return () => window.clearTimeout(timer);
   }, [open, markKey]);
 
