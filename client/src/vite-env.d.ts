@@ -55,6 +55,8 @@ interface Window {
   };
   /** DEV only. Live fixture editor for agents (see trailer-save-guide). */
   __adcDevSave?: import("./game/devSaveEditApi").DevSaveEditApi;
+  /** DEV only. On /dev/village-map, freeze the open arrangement into the game layout. */
+  __adcSaveVillageMapLayout?: () => Promise<import("./pages/village-map-demo/saveLayout").SavedVillageMapLayout>;
   /**
    * Long-session lag probe. Present when `?perf=1` or Vite DEV.
    * See `client/src/lib/perfProbe.md`.

@@ -879,13 +879,14 @@ html[data-adc-chrome-stage="0"] {
   animation: village-map-highlight-fade 4s linear forwards;
 }
 
-/* Shown by :hover or .is-highlighted. No map render. */
+/* Shown by :hover, .is-hovered, or .is-highlighted. No map render. */
 .village-map-hover-ring {
   display: none;
   pointer-events: none;
 }
 
 [data-building]:hover .village-map-hover-ring,
+[data-building].is-hovered .village-map-hover-ring,
 [data-building].is-highlighted .village-map-hover-ring {
   display: inline;
 }

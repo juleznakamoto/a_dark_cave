@@ -32,6 +32,7 @@ import { TreeMark } from "@/pages/village-map-demo/TreeMark";
 import { TREE_VARIANTS, treeVariant } from "@/pages/village-map-demo/trees";
 import { UpgradeRuleIcon, VillageMap } from "@/pages/village-map-demo/VillageMap";
 import TreeSheet from "@/pages/village-map-demo/TreeSheet";
+import { saveVillageMapToGame } from "@/pages/village-map-demo/saveLayout";
 
 const STORAGE_KEY = VILLAGE_MAP_DEMO_STORAGE_KEY;
 
@@ -310,6 +311,28 @@ export default function VillageMapDemo() {
     if (!node) return;
     node.textContent = label ?? captionTextRef.current;
   }, []);
+
+  const saveLayoutToGame = useCallback(async () => {
+    const snapshot: DemoSnapshot = { version: 1, stage, build, tuning, overrides, pathOverrides, trees };
+    try {
+      const saved = await saveVillageMapToGame(snapshot);
+      const bends = saved.pathBends === "kept" ? "kept path bends" : `${saved.pathBends} path bends`;
+      const crowns = saved.trees === "kept" ? "kept trees" : `${saved.trees} trees`;
+      setJsonNote(`Saved ${saved.positions} positions, ${bends}, ${crowns}.`);
+      return saved;
+    } catch (error) {
+      const message = error instanceof Error ? error.message : "Could not save the layout.";
+      setJsonNote(message);
+      throw error;
+    }
+  }, [stage, build, tuning, overrides, pathOverrides, trees]);
+
+  useEffect(() => {
+    window.__adcSaveVillageMapLayout = saveLayoutToGame;
+    return () => {
+      delete window.__adcSaveVillageMapLayout;
+    };
+  }, [saveLayoutToGame]);
 
   if (!import.meta.env.DEV) {
     return <Redirect to="/" />;
@@ -1026,6 +1049,14 @@ export default function VillageMapDemo() {
             <div className="flex flex-wrap gap-1.5">
               <Button size="xs" variant="outline" onClick={() => void copyLayout()}>
                 Copy JSON
+              </Button>
+              <Button
+                size="xs"
+                variant="outline"
+                data-testid="save-village-map-layout"
+                onClick={() => void saveLayoutToGame()}
+              >
+                Save to game
               </Button>
               <Button size="xs" variant="outline" onClick={applyJson}>
                 Apply JSON

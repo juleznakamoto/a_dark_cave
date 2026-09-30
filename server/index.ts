@@ -6,6 +6,7 @@ import fs from "fs";
 import { spawn, spawnSync } from "child_process";
 import { fileURLToPath } from "url";
 import { setupVite, serveStatic, log, getRecentLogs, type LogLevel } from "./vite";
+import { registerDevVillageMapLayout } from "./devVillageMapLayout";
 import { securityHeadersMiddleware } from "./securityHeaders";
 import { apexRedirectMiddleware } from "./apexRedirect";
 
@@ -1709,6 +1710,8 @@ app.post("/api/leaderboard/update-username", leaderboardUpdateLimiter, async (re
       res.status(500).json({ error: error?.message ?? "Failed to load logs" });
     }
   });
+
+  registerDevVillageMapLayout(app);
 
   // Setup Vite middleware AFTER all API routes to prevent catch-all interference
   if (process.env.NODE_ENV !== "production") {

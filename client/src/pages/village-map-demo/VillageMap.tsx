@@ -2304,6 +2304,18 @@ function applyBuildingHighlight(svg: SVGSVGElement | null, highlightId: string |
   }
 }
 
+/** Hover lights every mark of that building. :hover alone only reaches the one under the pointer. */
+function applyBuildingHover(svg: SVGSVGElement | null, buildingId: string | null) {
+  if (!svg) return;
+  for (const el of svg.querySelectorAll("[data-building].is-hovered")) {
+    el.classList.remove("is-hovered");
+  }
+  if (!buildingId) return;
+  for (const el of svg.querySelectorAll(`[data-building="${CSS.escape(buildingId)}"]`)) {
+    el.classList.add("is-hovered");
+  }
+}
+
 function moveSlotElement(el: SVGGElement, buildingId: string, at: Point) {
   el.setAttribute("transform", `translate(${at.x} ${at.y})`);
   const rotation = markRotation(buildingId, at);
@@ -2379,6 +2391,12 @@ const VillageMapSvg = memo(function VillageMapSvg({
   const pendingPathRef = useRef<Point | null>(null);
   const pendingTreeRef = useRef<Point | null>(null);
   const draggingSlotRef = useRef<string | null>(null);
+  const hoveredBuildingRef = useRef<string | null>(null);
+  const setHoveredBuilding = (buildingId: string | null) => {
+    if (hoveredBuildingRef.current === buildingId) return;
+    hoveredBuildingRef.current = buildingId;
+    applyBuildingHover(svgRef.current, buildingId);
+  };
   const pathNodesRef = useRef<Map<string, { ribbon: Element | null; hit: Element | null }> | null>(null);
   pathNodesRef.current = null;
   const treeWobbleId = `tree-wobble-${useId().replace(/:/g, "")}`;
@@ -2388,6 +2406,7 @@ const VillageMapSvg = memo(function VillageMapSvg({
     const svg = svgRef.current;
     applyBuildingHighlight(svg, highlightRef.current);
     applyDraggingSlot(svg, draggingSlotRef.current);
+    applyBuildingHover(svg, hoveredBuildingRef.current);
   });
   // Per slot, the fade signature whose thick border has already eased off.
   // A shared flag was cleared by whichever animation ended first, so some fades lost the border.
@@ -2882,9 +2901,11 @@ const VillageMapSvg = memo(function VillageMapSvg({
   };
 
   const onPalisadeEnter = () => {
+    setHoveredBuilding("palisades");
     onHoverBuilding?.("palisades");
   };
   const onPalisadeLeave = () => {
+    setHoveredBuilding(null);
     onHoverBuilding?.(null);
   };
   const innerInk = VILLAGE_INK_GAP;
@@ -3162,9 +3183,11 @@ const VillageMapSvg = memo(function VillageMapSvg({
               data-building="fortifiedMoat"
               style={{ cursor: "default" }}
               onPointerEnter={() => {
+                setHoveredBuilding("fortifiedMoat");
                 onHoverBuilding?.("fortifiedMoat");
               }}
               onPointerLeave={() => {
+                setHoveredBuilding(null);
                 onHoverBuilding?.(null);
               }}
             >
@@ -3400,6 +3423,7 @@ const VillageMapSvg = memo(function VillageMapSvg({
                     : (event) => {
                       draggingSlotRef.current = slot.id;
                       event.currentTarget.classList.add("is-dragging");
+                      setHoveredBuilding(null);
                       onHoverBuilding?.(null);
                       onPointerDown(event, slot);
                     }
@@ -3417,10 +3441,12 @@ const VillageMapSvg = memo(function VillageMapSvg({
                     }
                 }
                 onPointerEnter={() => {
+                  setHoveredBuilding(slot.buildingId);
                   onActiveLabel(slot.label);
                   onHoverBuilding?.(slot.buildingId);
                 }}
                 onPointerLeave={() => {
+                  setHoveredBuilding(null);
                   onActiveLabel(null);
                   onHoverBuilding?.(null);
                 }}
@@ -3492,9 +3518,11 @@ const VillageMapSvg = memo(function VillageMapSvg({
               data-building="traps"
               style={{ cursor: "default" }}
               onPointerEnter={() => {
+                setHoveredBuilding("traps");
                 onHoverBuilding?.("traps");
               }}
               onPointerLeave={() => {
+                setHoveredBuilding(null);
                 onHoverBuilding?.(null);
               }}
             >
