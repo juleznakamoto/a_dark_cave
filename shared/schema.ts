@@ -519,6 +519,8 @@ export const gameStateSchema = z.object({
     })
     .default({}),
   log: z.array(logEntrySchema).default([]),
+  /** Event-log line ids the player has read. Pruned to ids still in `log`. */
+  readLogIds: z.array(z.string()).default([]),
   current_population: z.number().min(0).default(0),
   total_population: z.number().min(0).default(0),
   templeDedicated: z.boolean().default(false),

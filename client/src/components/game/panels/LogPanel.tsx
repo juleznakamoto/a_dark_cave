@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef, useMemo } from "react";
+import React, { useEffect, useRef, useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { MODE_FRAMES, ThinkingOrb, type ModeFrame } from "thinking-orbs";
 import { useGameStore } from "@/game/state";
@@ -57,7 +57,9 @@ function logLineOpacity(isUnread: boolean, index: number): number {
 function LogPanel() {
   const { i18n } = useTranslation("ui");
   const log = useGameStore((s) => s.log);
-  const [readEntries, setReadEntries] = useState<Set<string>>(() => new Set());
+  const readLogIds = useGameStore((s) => s.readLogIds);
+  const markLogEntryRead = useGameStore((s) => s.markLogEntryRead);
+  const readEntries = useMemo(() => new Set(readLogIds), [readLogIds]);
   const topRef = useRef<HTMLDivElement>(null);
   const prevLogLengthRef = useRef(log.length);
   const markReadTimeoutsRef = useRef(
@@ -76,8 +78,8 @@ function LogPanel() {
   }, []);
 
   useEffect(() => {
-    setPerfUiCounter("logReadEntries", readEntries.size);
-  }, [readEntries]);
+    setPerfUiCounter("logReadEntries", readLogIds.length);
+  }, [readLogIds]);
 
   // Get only the last entries and reverse them so latest is at top
   const recentEntries = useMemo(
@@ -132,12 +134,7 @@ function LogPanel() {
                   markReadTimeoutsRef.current.delete(typedEntry.id);
                 }
                 pendingTouchReadIdsRef.current.delete(typedEntry.id);
-                setReadEntries((prev) => {
-                  if (prev.has(typedEntry.id)) return prev;
-                  const next = new Set(prev);
-                  next.add(typedEntry.id);
-                  return next;
-                });
+                markLogEntryRead(typedEntry.id);
               };
 
               const startMarkReadTimer = () => {

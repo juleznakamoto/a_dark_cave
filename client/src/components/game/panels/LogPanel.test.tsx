@@ -38,12 +38,13 @@ describe("LogPanel mark read", () => {
           type: "system",
         },
       ],
+      readLogIds: [],
     });
   });
 
   afterEach(() => {
     vi.useRealTimers();
-    useGameStore.setState({ log: [] });
+    useGameStore.setState({ log: [], readLogIds: [] });
   });
 
   it("marks a log line read on a short touch tap", async () => {
@@ -81,6 +82,31 @@ describe("LogPanel mark read", () => {
       touchPointer(row, "pointerDown");
       vi.advanceTimersByTime(300);
     });
+
+    expect(lineRow().text.className).not.toContain("animate-pulse");
+  });
+
+  it("drops read ids for lines that are no longer in the log", () => {
+    useGameStore.setState({
+      readLogIds: ["old-line", "log-short-tap"],
+    });
+    useGameStore.getState().markLogEntryRead("log-short-tap");
+    expect(useGameStore.getState().readLogIds).toEqual(["log-short-tap"]);
+  });
+
+  it("keeps a log line read after the panel remounts", async () => {
+    const view = render(<LogPanel />);
+    const { row } = lineRow();
+
+    await act(async () => {
+      touchPointer(row, "pointerDown");
+      touchPointer(row, "pointerUp");
+      fireEvent.click(row);
+    });
+
+    expect(useGameStore.getState().readLogIds).toEqual(["log-short-tap"]);
+    view.unmount();
+    render(<LogPanel />);
 
     expect(lineRow().text.className).not.toContain("animate-pulse");
   });

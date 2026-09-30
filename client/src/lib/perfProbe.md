@@ -87,8 +87,9 @@ Look for ~15s cadence on guest/local and ~60s when signed in.
 ## What not to expect
 
 - No per-frame console spam.
-- Event log length should stay near **40** (already capped). Growing
-  `logReadEntries` / `consumedResourceChangeIds` are session Sets (H4).
+- Event log length should stay near **40** (already capped). `logReadEntries`
+  counts saved read lines and stays within that cap. `consumedResourceChangeIds`
+  is a session Set (H4).
 - `cooldownUiPolls` is live 100ms CooldownButton/badge overlay polls. After
   the CSS wipe + `useUntilTimestamp` fix this should stay **0** under Prior
   (H1). A rising count again means a 10 Hz `forceUpdate` poll came back.

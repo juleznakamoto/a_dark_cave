@@ -89,6 +89,39 @@ export function getPersistedStoreKeys(): readonly string[] {
   return [...new Set([...schemaKeys, ...PERSISTED_STORE_EXTENSION_KEYS])];
 }
 
+/**
+ * Keep read-log ids that still appear in `log`. Drop ids for lines that
+ * scrolled off, and ignore anything that is not a current log line.
+ */
+export function pruneReadLogIds(
+  log: unknown,
+  readLogIds: unknown,
+  extraId?: string,
+): string[] {
+  const live = new Set<string>();
+  if (Array.isArray(log)) {
+    for (const entry of log) {
+      if (!entry || typeof entry !== "object" || !("id" in entry)) continue;
+      const id = (entry as { id: unknown }).id;
+      if (typeof id === "string" && id.length > 0) live.add(id);
+    }
+  }
+
+  const next: string[] = [];
+  const seen = new Set<string>();
+  if (Array.isArray(readLogIds)) {
+    for (const id of readLogIds) {
+      if (typeof id !== "string" || !live.has(id) || seen.has(id)) continue;
+      seen.add(id);
+      next.push(id);
+    }
+  }
+  if (extraId && live.has(extraId) && !seen.has(extraId)) {
+    next.push(extraId);
+  }
+  return next;
+}
+
 export function serializeTimedEventTabForSave(
   tab: Record<string, unknown> | null | undefined,
 ): Record<string, unknown> | undefined {
@@ -119,6 +152,11 @@ export function buildPersistedGameState(state: Record<string, unknown>): GameSta
         value as Record<string, unknown>,
       );
       if (serialized) cleaned[key] = serialized;
+      continue;
+    }
+
+    if (key === "readLogIds") {
+      cleaned[key] = pruneReadLogIds(state.log, value);
       continue;
     }
 

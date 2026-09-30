@@ -8,6 +8,7 @@ import {
   buildPersistedGameState,
   getRuntimeOnlyStoreKeys,
   getTransientDialogResetOnLoad,
+  pruneReadLogIds,
   serializeTimedEventTabForSave,
 } from "./persistedStateBoundary";
 
@@ -172,6 +173,18 @@ describe("persistedStateBoundary", () => {
     expect(
       isBlockingDialogOpenFromRegistry({ shopDialogOpen: true }),
     ).toBe(true);
+  });
+
+  it("persists read log ids that are still in the log", () => {
+    const persisted = buildPersistedGameState({
+      log: [
+        { id: "keep", message: "Still here.", timestamp: 1, type: "system" },
+      ],
+      readLogIds: ["keep", "gone", "keep"],
+    });
+
+    expect(persisted.readLogIds).toEqual(["keep"]);
+    expect(pruneReadLogIds([], ["keep"])).toEqual([]);
   });
 
   it("keeps dialog keys in the runtime-only set", () => {

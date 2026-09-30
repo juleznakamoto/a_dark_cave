@@ -3,6 +3,7 @@ import { create } from "zustand";
 import { GameState, gameStateSchema, Referral } from "@shared/schema";
 import type { UtmAttribution } from "@shared/utmAttribution";
 import { isBlockingDialogOpenFromRegistry } from "./dialogRegistry";
+import { pruneReadLogIds } from "./persistedStateBoundary";
 import { bindGameStore } from "./gameStoreHolder";
 import {
   isFullGameUnlockedEdition,
@@ -564,6 +565,8 @@ interface GameStore extends GameState {
   togglePriorAction: (actionId: string) => void;
   setCompassGlow: (actionId: string | null) => void;
   addLogEntry: (entry: LogEntry) => void;
+  /** Remember an event-log line as read so a refresh does not mark it new again. */
+  markLogEntryRead: (entryId: string) => void;
   checkEvents: () => void;
   applyEventChoice: (
     choiceId: string,
@@ -3379,6 +3382,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
         cooldowns: savedState.cooldowns || {},
         attackWaveTimers: savedState.attackWaveTimers || {},
         log: savedState.log || [],
+        readLogIds: pruneReadLogIds(savedState.log, savedState.readLogIds),
         events: savedState.events || defaultGameState.events,
         devMultipliers: get().devMultipliers,
         accountSteamMode: get().accountSteamMode,
@@ -3630,6 +3634,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
         executionDurations: {},
         expeditionVillagers: {},
         log: [],
+        readLogIds: [],
         devMultipliers: get().devMultipliers,
         accountSteamMode: get().accountSteamMode,
         devMode: resolveDevMode(get().devMultipliers),
@@ -3676,6 +3681,20 @@ export const useGameStore = create<GameStore>((set, get) => ({
     set((state) => ({
       log: [...state.log, entry].slice(-GAME_CONSTANTS.LOG_MAX_ENTRIES),
     }));
+  },
+
+  markLogEntryRead: (entryId: string) => {
+    set((state) => {
+      const current = state.readLogIds ?? [];
+      const next = pruneReadLogIds(state.log, current, entryId);
+      if (
+        next.length === current.length &&
+        next.every((id, index) => id === current[index])
+      ) {
+        return state;
+      }
+      return { readLogIds: next };
+    });
   },
 
   checkEvents: () => {
