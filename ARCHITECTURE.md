@@ -51,7 +51,7 @@ all game logic lives in the client. **Supabase** handles auth/cloud saves.
 
 - **Language:** TypeScript 5.6 (strict), Node ≥22.
 - **Frontend:** React 18, Wouter, TanStack React Query, Framer Motion, Howler, Recharts (admin), WebGL2 shader backgrounds.
-- **State:** Zustand 5, single store in `client/src/game/state.ts`.
+- **State:** Zustand 5, store in `client/src/game/state.ts` with pure helpers under `client/src/game/store/`.
 - **Styling:** Tailwind CSS 3 + shadcn/ui (Radix) + `class-variance-authority`.
 - **Build:** Vite 5 (client), esbuild (server), terser.
 - **Validation:** Zod (`shared/schema.ts` is the persisted-shape source of truth).
@@ -67,7 +67,8 @@ all game logic lives in the client. **Supabase** handles auth/cloud saves.
 |------|-----------|
 | `client/src/main.tsx` | React boot: text scale, tab-hidden CSS, save-on-exit, locale seed, root mount. |
 | `client/src/App.tsx` | Routes. `/` paints the start screen first; Game mounts after Make Fire (unless `shouldBootGameSurface`). |
-| `client/src/game/state.ts` | Zustand store: persisted game state + UI slice + gameplay actions. |
+| `client/src/game/state.ts` | Thin barrel: re-exports `useGameStore` + public helpers. |
+| `client/src/game/store/` | Store helpers + Zustand slices (`createGameStore`, `slices/`). |
 | `client/src/game/loop.ts` | Timer simulation (~4 Hz): production, events, autosave, timers, pause gates. |
 | `client/src/game/actions.ts` | Action dispatch: ID → handler, costs/effects. |
 | `client/src/game/rules/index.ts` | Action visibility/affordability. |
@@ -120,7 +121,8 @@ gameplayInitOrchestrator
   → loadGame() hydrates once; background auth/cloud/audio
 UI (GameContainer, panels, dialogs)
   ↔ useGameStore (Zustand)
-state.ts        - persisted GameState + UI slice + store methods
+state.ts        - thin barrel re-exports
+store/          - createGameStore + slices + pure helpers (rewards, dialogs, …)
   ↔
 loop.ts         - timer ~4 Hz: production, events, autosave, pause gates
   ↔
@@ -132,8 +134,10 @@ save.ts         - IndexedDB + Supabase
 shared/schema.ts - Zod persisted shape
 ```
 
-- **Store:** `state.ts` exports `useGameStore`, `createInitialState()`,
-  `isModalDialogOpen()` (sim freeze, including `dialogHandoffPending`).
+- **Store:** `state.ts` is a thin barrel (`useGameStore`, `createInitialState()`,
+  `isModalDialogOpen()`, timed-tab helpers). Implementation lives in
+  `store/createGameStore.ts` + `store/slices/`. Pure helpers must not import
+  `useGameStore` (see `gameStoreHolder.ts` for late-bound access).
 - **Loop:** ~4 FPS. Production cycle, attack-wave timer, play-time, autosave
   (15s local / 60s cloud). Pause gates: manual pause, idle, inactivity, modal
   dialogs, demo-hut freeze. Started from `gameplayInitOrchestrator.ts`;

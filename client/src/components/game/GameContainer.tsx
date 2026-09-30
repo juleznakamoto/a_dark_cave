@@ -338,6 +338,9 @@ export default function GameContainer() {
   >([]);
   const [villageHotkeyTutorialOpen, setVillageHotkeyTutorialOpen] =
     useState(false);
+  /** Session-only. Pause hotkey hints return on refresh. */
+  const [pauseHotkeyHintsDismissed, setPauseHotkeyHintsDismissed] =
+    useState(false);
   const [villageHotkeyBoxLayout, setVillageHotkeyBoxLayout] = useState<{
     top: number;
     left: number;
@@ -1121,6 +1124,10 @@ export default function GameContainer() {
     useGameStore.setState({ villageHotkeyTutorialShown: true });
   }, []);
 
+  const dismissPauseHotkeyHints = useCallback(() => {
+    setPauseHotkeyHintsDismissed(true);
+  }, []);
+
   useEffect(() => {
     if (!villageHotkeyTutorialOpen) return;
     const id = window.setTimeout(closeVillageHotkeyTutorial, 60_000);
@@ -1129,10 +1136,11 @@ export default function GameContainer() {
 
   // Tab hotkey hint/badges only make sense once Village + Forest exist to switch between.
   const tabHotkeysUnlocked = villageTabVisible && forestTabVisible;
-  const showTabHotkeyOverlay =
-    ((isPaused && tabHotkeysUnlocked) || villageHotkeyTutorialOpen) &&
-    !useLimelightNav;
+  const showPauseHotkeyHints =
+    isPaused && tabHotkeysUnlocked && !pauseHotkeyHintsDismissed;
   const showVillageHotkeyBox = villageHotkeyTutorialOpen && !isPaused;
+  const showTabHotkeyOverlay =
+    (showPauseHotkeyHints || showVillageHotkeyBox) && !useLimelightNav;
 
   const measureTabHotkeyOverlay = useCallback(() => {
     if (!showTabHotkeyOverlay) {
@@ -1389,7 +1397,7 @@ export default function GameContainer() {
           {/* Pause Overlay - covers panels; header and footer stay above */}
           {isPaused && (
             <div
-              className="fixed inset-0 bg-black/80 pointer-events-auto overlay-fade-in"
+              className="fixed inset-0 bg-black/50 pointer-events-auto overlay-fade-in"
               style={{
                 top: GAME_HEADER_INSET,
                 bottom: GAME_FOOTER_INSET,
@@ -1408,7 +1416,7 @@ export default function GameContainer() {
               >
                 {villageHotkeyBoxLayout != null && (
                   <div
-                    className={`absolute z-0 rounded border border-red-500 bg-neutral-950${showVillageHotkeyBox ? " pointer-events-auto" : " pointer-events-none"}`}
+                    className="pointer-events-auto absolute z-0 rounded border border-red-500 bg-neutral-950"
                     style={{
                       top: villageHotkeyBoxLayout.top,
                       left: villageHotkeyBoxLayout.left,
@@ -1421,20 +1429,26 @@ export default function GameContainer() {
                         : "pause-hotkey-callout-box"
                     }
                   >
-                    {showVillageHotkeyBox && (
-                      <button
-                        type="button"
-                        className="button-hotkey-dismiss flex items-center justify-center rounded-full bg-red-950 text-white shadow-sm border border-red-800/50 hover:bg-red-900 transition-colors cursor-pointer"
-                        aria-label={t("villageHotkeyTutorial.dismiss", {
-                          ns: "ui",
-                          defaultValue: "Dismiss",
-                        })}
-                        data-testid="village-hotkey-tutorial-dismiss"
-                        onClick={closeVillageHotkeyTutorial}
-                      >
-                        <X className="h-4 w-4 stroke-[3]" />
-                      </button>
-                    )}
+                    <button
+                      type="button"
+                      className="button-hotkey-dismiss flex items-center justify-center rounded-full bg-red-950 text-white shadow-sm border border-red-800/50 hover:bg-red-900 transition-colors cursor-pointer"
+                      aria-label={t("villageHotkeyTutorial.dismiss", {
+                        ns: "ui",
+                        defaultValue: "Dismiss",
+                      })}
+                      data-testid={
+                        showVillageHotkeyBox
+                          ? "village-hotkey-tutorial-dismiss"
+                          : "pause-hotkey-dismiss"
+                      }
+                      onClick={
+                        showVillageHotkeyBox
+                          ? closeVillageHotkeyTutorial
+                          : dismissPauseHotkeyHints
+                      }
+                    >
+                      <X className="h-4 w-4 stroke-[3]" />
+                    </button>
                   </div>
                 )}
                 {pauseHotkeyBadges.map((b) => (

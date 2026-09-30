@@ -11,9 +11,12 @@ import {
 } from "./state";
 import { EventManager } from "./rules/events";
 import { gameActions } from "./rules";
-import { GameState } from "@shared/schema";
+import { GameState, REFERRAL_REWARD_GOLD, SIGN_UP_WELCOME_GOLD } from "@shared/schema";
 import { ensureGameplayLocalesLoaded } from "@/i18n/loadLocaleResources";
 import { getActionLabel } from "@/i18n/resolveGameText";
+import { getCallMerchantGoldCost } from "@/game/constants";
+import { MARKETING_SUBSCRIBE_GOLD } from "@/game/marketingEmailReward";
+import { computePersistedSocialTasksGold } from "@/game/socialTasksGold";
 
 const {
   mockLoadGame,
@@ -947,7 +950,19 @@ describe("Timed event tab cleanup on new game", () => {
     await useGameStore.getState().restartGame();
 
     const state = useGameStore.getState();
-    expect(state.resources.gold).toBe(600);
+    expect(state.resources.gold).toBe(
+      computePersistedSocialTasksGold({
+        signupWelcomeGoldClaimed: true,
+        social_media_rewards: {
+          marketing_email: { claimed: true, timestamp: 1 },
+          instagram: { claimed: true, timestamp: 1 },
+        },
+        referrals: [{ userId: "friend", claimed: true, timestamp: 1 }],
+      }),
+    );
+    expect(state.resources.gold).toBe(
+      SIGN_UP_WELCOME_GOLD + MARKETING_SUBSCRIBE_GOLD + REFERRAL_REWARD_GOLD,
+    );
     expect(state.social_media_rewards.marketing_email?.claimed).toBe(true);
     expect(state.social_media_rewards.instagram?.claimed).toBe(true);
     expect(state.signupWelcomeGoldClaimed).toBe(true);
@@ -1437,7 +1452,7 @@ describe("callMerchant execution", () => {
     const state = useGameStore.getState();
     expect(state.executionStartTimes?.callMerchant).toBeGreaterThan(0);
     expect(state.executionDurations?.callMerchant).toBe(5);
-    expect(state.resources.gold).toBe(150);
+    expect(state.resources.gold).toBe(200 - getCallMerchantGoldCost(0));
     expect(state.timedEventTab.isActive).toBe(false);
     expect(state.story.seen.callMerchantUsageCount).toBeUndefined();
   });
