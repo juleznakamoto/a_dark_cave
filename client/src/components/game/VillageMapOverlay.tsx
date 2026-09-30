@@ -29,22 +29,40 @@ import {
 } from "@/game/villageMapReveal";
 import { useSidePanelActiveTooltipHoverId } from "./panels/SidePanelSection";
 
-/** The arrangement currently saved by /dev/village-map, if this browser has one. */
-function readDemoSnapshot(): DemoSnapshot | null {
+function readDemoSnapshotRaw(): string | null {
   try {
-    const raw = localStorage.getItem(VILLAGE_MAP_DEMO_STORAGE_KEY);
-    if (!raw) return null;
+    return localStorage.getItem(VILLAGE_MAP_DEMO_STORAGE_KEY);
+  } catch {
+    return null;
+  }
+}
+
+/** The arrangement currently saved by /dev/village-map, if this browser has one. */
+function parseDemoSnapshot(raw: string | null): DemoSnapshot | null {
+  if (!raw) return null;
+  try {
     return sanitizeSnapshot(JSON.parse(raw));
   } catch {
     return null;
   }
 }
 
+/** An empty reveal would still be a new object and force the SVG to rebuild. */
+function revealIfFading(reveal: VillageMapReveal): VillageMapReveal | null {
+  return Object.keys(reveal.fadeIn).length > 0 ? reveal : null;
+}
+
 const ignoreMapEdit = () => { };
 
-/** Village map, shown in the middle panel while the Map tab is open. */
+/**
+ * Village map, shown in the middle panel while the Map tab is open.
+ * Kept after the first visit. Closing the tab used to destroy the SVG, and
+ * opening it rebuilt every path and wobble filter.
+ */
 export default function VillageMapOverlay() {
   const open = useGameStore((state) => state.activeTab === "map");
+  const keptRef = useRef(open);
+  if (open) keptRef.current = true;
   const sidePanelHover = useSidePanelActiveTooltipHoverId();
   const moved = useGameStore((state) => state.villageMapOverrides);
   const pathMoved = useGameStore((state) => state.villageMapPathOverrides);
@@ -59,10 +77,17 @@ export default function VillageMapOverlay() {
   }, []);
   const heartfireLevel = useGameStore((state) => state.heartfireState?.level ?? 0);
   const wasOpen = useRef(false);
+  const demoRawRef = useRef<string | null>(null);
   const demoRef = useRef<DemoSnapshot | null>(null);
-  if (open !== wasOpen.current) {
-    wasOpen.current = open;
-    demoRef.current = open ? readDemoSnapshot() : null;
+  if (open && !wasOpen.current) {
+    wasOpen.current = true;
+    const raw = readDemoSnapshotRaw();
+    if (raw !== demoRawRef.current) {
+      demoRawRef.current = raw;
+      demoRef.current = parseDemoSnapshot(raw);
+    }
+  } else if (!open) {
+    wasOpen.current = false;
   }
   const demo = demoRef.current;
   const build = useMemo(() => buildStateFromPlayer(buildings, blessings), [buildings, blessings]);
@@ -99,12 +124,12 @@ export default function VillageMapOverlay() {
     sessionRef.current = true;
     const seen = useGameStore.getState().villageMapSeenTiers ?? {};
     const next = applyMarks(null, seen);
-    revealRef.current = holdRevealForMapOpen(next.reveal);
+    revealRef.current = revealIfFading(holdRevealForMapOpen(next.reveal));
     shownRef.current = next.shown;
     markKeyRef.current = markKey;
   } else if (open && markKey !== markKeyRef.current) {
     const next = applyMarks(revealRef.current, shownRef.current);
-    revealRef.current = next.reveal;
+    revealRef.current = revealIfFading(next.reveal);
     shownRef.current = next.shown;
     markKeyRef.current = markKey;
   }
@@ -129,14 +154,21 @@ export default function VillageMapOverlay() {
     return () => window.clearTimeout(timer);
   }, [open, markKey]);
 
-  if (!open) return null;
+  if (!keptRef.current) return null;
 
   return (
     // px-2 matches the location-tab row (pl-2 pr-2) so the map clears the column walls.
     // pb-4 matches the other location tabs (pb-2 plus mb-2) so the drawing clears the footer.
+    // Kept in the DOM so the next open does not rebuild the SVG.
+    // display is inline because the flex class would override the hidden attribute.
+    // Reveal is cleared while hidden so a later fade can start again.
     <div
+      hidden={!open}
       className="absolute inset-0 z-30 flex flex-col px-2 pb-4"
-      style={{ backgroundColor: DEFAULT_TUNING.ground }}
+      style={{
+        backgroundColor: DEFAULT_TUNING.ground,
+        display: open ? undefined : "none",
+      }}
       data-testid="village-map-overlay"
     >
       <div className="min-h-0 min-w-0 flex-1">
@@ -147,7 +179,7 @@ export default function VillageMapOverlay() {
           pathOverrides={pathOverrides}
           trees={demo?.trees ?? VILLAGE_MAP_TREES}
           highlightId={highlightId}
-          reveal={revealRef.current}
+          reveal={open ? revealRef.current : null}
           onOverride={ignoreMapEdit}
           onPathOverride={ignoreMapEdit}
           onActiveLabel={ignoreMapEdit}
