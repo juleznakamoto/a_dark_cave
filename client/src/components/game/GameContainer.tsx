@@ -1,14 +1,12 @@
 import {
   useState,
   useEffect,
-  useLayoutEffect,
   useMemo,
   useRef,
   useCallback,
   lazy,
   Suspense,
 } from "react";
-import { createPortal } from "react-dom";
 import { Helmet } from "react-helmet-async";
 import { useShallow } from "zustand/react/shallow";
 import GameTabs from "./GameTabs";
@@ -68,7 +66,7 @@ import InsightPotionDialog from "./InsightPotionDialog";
 import VillageEffectDialog from "./VillageEffectDialog";
 import BlessingOfferDialog from "./BlessingOfferDialog";
 import { LimelightNav, NavItem } from "@/components/ui/limelight-nav";
-import { Mountain, Trees, Castle, Landmark, X } from "lucide-react";
+import { Mountain, Trees, Castle, Landmark } from "lucide-react";
 import { ProfileMenuProvider } from "./ProfileMenu";
 import { logger } from "@/lib/logger";
 import { Z_INDEX } from "@/lib/z-index";
@@ -87,6 +85,7 @@ import { isBloodMoonOverlayVisible, BLOOD_MOON_OVERLAY_FADE_MS } from "@/game/bl
 import { audioManager, SOUND_VOLUME } from "@/lib/audio";
 import { getUnclaimedAchievementIds } from "@/achievements";
 import { getVisibleHotkeyTabs, isEditableKeyboardTarget } from "./tabHotkeys";
+import TabHotkeyCallout from "./TabHotkeyCallout";
 import { isTraderShopUnlocked } from "@/game/stateHelpers";
 import {
   achievementTabPulseIds,
@@ -329,25 +328,11 @@ export default function GameContainer() {
     if (activeTab === "bastion") setBastionPanelKept(true);
   }, [activeTab]);
   const tabButtonRowRef = useRef<HTMLDivElement | null>(null);
-  const [pauseHotkeyHint, setPauseHotkeyHint] = useState<{
-    top: number;
-    left: number;
-  } | null>(null);
-  const [pauseHotkeyBadges, setPauseHotkeyBadges] = useState<
-    { key: string; left: number; top: number; label: string }[]
-  >([]);
   const [villageHotkeyTutorialOpen, setVillageHotkeyTutorialOpen] =
     useState(false);
   /** Session-only. Pause hotkey hints return on refresh. */
   const [pauseHotkeyHintsDismissed, setPauseHotkeyHintsDismissed] =
     useState(false);
-  const [villageHotkeyBoxLayout, setVillageHotkeyBoxLayout] = useState<{
-    top: number;
-    left: number;
-    width: number;
-    height: number;
-  } | null>(null);
-  const rafIdsRef = useRef<number[]>([]);
 
   // Compute unclaimed achievements for tab blink.
   // Subscribe to the specific slices that affect achievement progress so the memo re-runs.
@@ -1134,139 +1119,12 @@ export default function GameContainer() {
     return () => window.clearTimeout(id);
   }, [villageHotkeyTutorialOpen, closeVillageHotkeyTutorial]);
 
-  // Tab hotkey hint/badges only make sense once Village + Forest exist to switch between.
-  const tabHotkeysUnlocked = villageTabVisible && forestTabVisible;
+  // Pause hint covers whatever tabs are on screen, including Cave alone.
   const showPauseHotkeyHints =
-    isPaused && tabHotkeysUnlocked && !pauseHotkeyHintsDismissed;
+    isPaused && visibleHotkeyTabs.length > 0 && !pauseHotkeyHintsDismissed;
   const showVillageHotkeyBox = villageHotkeyTutorialOpen && !isPaused;
   const showTabHotkeyOverlay =
     (showPauseHotkeyHints || showVillageHotkeyBox) && !useLimelightNav;
-
-  const measureTabHotkeyOverlay = useCallback(() => {
-    if (!showTabHotkeyOverlay) {
-      setPauseHotkeyHint(null);
-      setPauseHotkeyBadges([]);
-      setVillageHotkeyBoxLayout(null);
-      return;
-    }
-    // Match Tailwind `md:` — do not show hotkey hint/badges on small viewports
-    if (
-      typeof window !== "undefined" &&
-      !window.matchMedia("(min-width: 768px)").matches
-    ) {
-      setPauseHotkeyHint(null);
-      setPauseHotkeyBadges([]);
-      setVillageHotkeyBoxLayout(null);
-      return;
-    }
-    const row = tabButtonRowRef.current;
-    if (!row) {
-      setPauseHotkeyHint(null);
-      setPauseHotkeyBadges([]);
-      setVillageHotkeyBoxLayout(null);
-      return;
-    }
-    const rowRect = row.getBoundingClientRect();
-    const nav = row.closest("nav");
-    const navRect = nav?.getBoundingClientRect() ?? rowRect;
-    const queryTabButton = (testId: string) =>
-      row.querySelector<HTMLElement>(`[data-testid="${testId}"]`) ??
-      document.querySelector<HTMLElement>(`[data-testid="${testId}"]`);
-    // Single-line text heights (text-xs, leading-none). Kept as constants so the
-    // layout is deterministic and never reads back already-positioned overlay nodes.
-    const TAB_HOTKEY_GAP = 2; // tabs → badges
-    const BADGE_LINE_H = 14; // [1] … row
-    const HINT_GAP = 2; // badges → hint
-    const HINT_LINE_H = 14; // hint row
-    const badgeRowTop = navRect.bottom + TAB_HOTKEY_GAP;
-    const next: { key: string; left: number; top: number; label: string }[] =
-      [];
-    visibleHotkeyTabs.forEach((tab, i) => {
-      const el = queryTabButton(`tab-${tab}`);
-      if (!el) return;
-      const r = el.getBoundingClientRect();
-      next.push({
-        key: `hotkey-${tab}`,
-        left: r.left + r.width / 2,
-        top: badgeRowTop,
-        label: `[${i + 1}]`,
-      });
-    });
-    setPauseHotkeyBadges(next);
-
-    // [1]… badges on the first line below the tab row; hint text on the second.
-    const hintTop = badgeRowTop + BADGE_LINE_H + HINT_GAP;
-    const hintLeft =
-      next.length > 0
-        ? (Math.min(...next.map((b) => b.left)) +
-          Math.max(...next.map((b) => b.left))) /
-        2
-        : rowRect.left + rowRect.width / 2;
-    setPauseHotkeyHint({
-      top: hintTop,
-      left: hintLeft,
-    });
-
-    if (next.length > 0) {
-      // Hint must be mounted before sizing the callout. A badges-only pass paints a
-      // narrower box for a frame when pausing (two-pass measure), which looks like the
-      // red border jumps between containers.
-      const hintEl = document.querySelector<HTMLElement>(
-        '[data-testid="tab-hotkey-hint"]',
-      );
-      if (!hintEl) {
-        return;
-      }
-      const hr = hintEl.getBoundingClientRect();
-      let minLeft = Math.min(hr.left, ...next.map((b) => b.left - 20));
-      let maxRight = Math.max(hr.right, ...next.map((b) => b.left + 20));
-      const padX = 20;
-      const padY = 8;
-      const boxLeft = minLeft - padX;
-      const boxWidth = maxRight - minLeft + padX * 2;
-      // Frame badges + hint only (tab labels stay above, outside the callout).
-      const boxTop = badgeRowTop - padY;
-      const boxBottom = hintTop + HINT_LINE_H + padY;
-      const boxHeight = Math.max(0, boxBottom - boxTop);
-      setVillageHotkeyBoxLayout({
-        top: boxTop,
-        left: boxLeft,
-        width: boxWidth,
-        height: boxHeight,
-      });
-    } else {
-      setVillageHotkeyBoxLayout(null);
-    }
-  }, [showTabHotkeyOverlay, useLimelightNav, visibleHotkeyTabs]);
-
-  useLayoutEffect(() => {
-    if (!showTabHotkeyOverlay) {
-      measureTabHotkeyOverlay();
-      return;
-    }
-    // Two passes: the first mounts the hint; the second measures it and sizes the callout.
-    // (Callout is not applied until the hint exists — see measureTabHotkeyOverlay.)
-    const id1 = requestAnimationFrame(() => {
-      measureTabHotkeyOverlay();
-      const id2 = requestAnimationFrame(() => measureTabHotkeyOverlay());
-      rafIdsRef.current.push(id2);
-    });
-    rafIdsRef.current.push(id1);
-    const ids = rafIdsRef.current;
-    return () => {
-      ids.forEach((id) => cancelAnimationFrame(id));
-      rafIdsRef.current = [];
-    };
-  }, [showTabHotkeyOverlay, measureTabHotkeyOverlay]);
-
-  useEffect(() => {
-    if (!showTabHotkeyOverlay) return;
-    const onResize = () => {
-      measureTabHotkeyOverlay();
-    };
-    window.addEventListener("resize", onResize);
-    return () => window.removeEventListener("resize", onResize);
-  }, [showTabHotkeyOverlay, measureTabHotkeyOverlay]);
 
   useEffect(() => {
     if (!flags.gameStarted) return;
@@ -1354,7 +1212,9 @@ export default function GameContainer() {
   const pauseHotkeyHintContent = (
     <span className="inline-flex flex-nowrap items-baseline justify-center gap-x-1">
       <span>{t("pauseHotkey.hintPrefix", { ns: "ui" })}</span>
-      <span className="text-sm font-medium">{`1-${tabHotkeyCount}`}</span>
+      <span className="text-sm font-medium">
+        {tabHotkeyCount <= 1 ? "1" : `1-${tabHotkeyCount}`}
+      </span>
       <span>{t("pauseHotkey.hintSelect", { ns: "ui" })}</span>
       <span className="text-sm font-medium">{"← →"}</span>
       <span>/</span>
@@ -1406,80 +1266,33 @@ export default function GameContainer() {
             />
           )}
 
-          {showTabHotkeyOverlay &&
-            typeof document !== "undefined" &&
-            createPortal(
-              <div
-                className="pointer-events-none fixed inset-0 hidden md:block"
-                style={{ zIndex: Z_INDEX.tabHotkeyOverlay }}
-                aria-hidden={false}
-              >
-                {villageHotkeyBoxLayout != null && (
-                  <div
-                    className="pointer-events-auto absolute z-0 rounded border border-red-500 bg-neutral-950"
-                    style={{
-                      top: villageHotkeyBoxLayout.top,
-                      left: villageHotkeyBoxLayout.left,
-                      width: villageHotkeyBoxLayout.width,
-                      height: villageHotkeyBoxLayout.height,
-                    }}
-                    data-testid={
-                      showVillageHotkeyBox
-                        ? "village-hotkey-tutorial-box"
-                        : "pause-hotkey-callout-box"
-                    }
-                  >
-                    <button
-                      type="button"
-                      className="button-hotkey-dismiss flex items-center justify-center rounded-full bg-red-950 text-white shadow-sm border border-red-800/50 hover:bg-red-900 transition-colors cursor-pointer"
-                      aria-label={t("villageHotkeyTutorial.dismiss", {
-                        ns: "ui",
-                        defaultValue: "Dismiss",
-                      })}
-                      data-testid={
-                        showVillageHotkeyBox
-                          ? "village-hotkey-tutorial-dismiss"
-                          : "pause-hotkey-dismiss"
-                      }
-                      onClick={
-                        showVillageHotkeyBox
-                          ? closeVillageHotkeyTutorial
-                          : dismissPauseHotkeyHints
-                      }
-                    >
-                      <X className="h-4 w-4 stroke-[3]" />
-                    </button>
-                  </div>
-                )}
-                {pauseHotkeyBadges.map((b) => (
-                  <span
-                    key={b.key}
-                    className="absolute z-[1] text-xs font-semibold leading-none text-foreground drop-shadow"
-                    style={{
-                      left: b.left,
-                      top: b.top,
-                      transform: "translate(-50%, 0)",
-                    }}
-                  >
-                    {b.label}
-                  </span>
-                ))}
-                {pauseHotkeyHint != null && (
-                  <div
-                    data-testid="tab-hotkey-hint"
-                    className="absolute z-[2] w-max max-w-[calc(100vw-1rem)] whitespace-nowrap px-1 text-center text-xs leading-none text-foreground drop-shadow"
-                    style={{
-                      top: pauseHotkeyHint.top,
-                      left: pauseHotkeyHint.left,
-                      transform: "translateX(-50%)",
-                    }}
-                  >
-                    {pauseHotkeyHintContent}
-                  </div>
-                )}
-              </div>,
-              document.body,
-            )}
+          {showTabHotkeyOverlay && (
+            <TabHotkeyCallout
+              tabRowRef={tabButtonRowRef}
+              tabs={visibleHotkeyTabs}
+              testId={
+                showVillageHotkeyBox
+                  ? "village-hotkey-tutorial-box"
+                  : "pause-hotkey-callout-box"
+              }
+              dismissTestId={
+                showVillageHotkeyBox
+                  ? "village-hotkey-tutorial-dismiss"
+                  : "pause-hotkey-dismiss"
+              }
+              dismissLabel={t("villageHotkeyTutorial.dismiss", {
+                ns: "ui",
+                defaultValue: "Dismiss",
+              })}
+              onDismiss={
+                showVillageHotkeyBox
+                  ? closeVillageHotkeyTutorial
+                  : dismissPauseHotkeyHints
+              }
+            >
+              {pauseHotkeyHintContent}
+            </TabHotkeyCallout>
+          )}
 
           {/* Main Content Area - Fills remaining space.
           Desktop (left → right): resources side panel, tabs/actions, event log.
