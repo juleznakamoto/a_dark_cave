@@ -12,6 +12,7 @@ import {
   PRESS_SCREENSHOTS,
   countWords,
   getPressPageInnerHtml,
+  pressLinksInGroup,
 } from "./pressKit";
 
 const PRESS_KIT_DIR = join(
@@ -94,6 +95,20 @@ describe("press kit copy", () => {
       "a_dark_cave_header_capsule.jpg",
       "a_dark_cave_small_capsule.jpg",
     ]);
+  });
+
+  it("lists press coverage newest first", () => {
+    expect(pressLinksInGroup("coverage").map((link) => link.publishedOn)).toEqual([
+      "2026-10-01",
+      "2026-09-28",
+      "2026-09-23",
+      "2026-09-15",
+    ]);
+    const html = getPressPageInnerHtml();
+    const gamersAt = html.indexOf("gamers.at");
+    const indistation = html.indexOf("indistation.com");
+    expect(gamersAt).toBeGreaterThan(-1);
+    expect(indistation).toBeGreaterThan(gamersAt);
   });
 
   it("ships first-HTML with boilerplate and the zip link", () => {

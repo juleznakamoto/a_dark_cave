@@ -7,7 +7,6 @@ import {
   PRESS_CONTACT_MAILTO,
   PRESS_FACTS,
   PRESS_HEADING,
-  PRESS_LINKS,
   PRESS_LOCKED_LINE,
   PRESS_LOGOS,
   PRESS_PATH,
@@ -18,6 +17,7 @@ import {
   PRESS_TRAILER_YOUTUBE_URL,
   PRESS_VIDEOS,
   PRESS_ZIP_HREF,
+  pressLinksInGroup,
   type PressAsset,
   type PressLink,
 } from "@shared/pressKit";
@@ -26,10 +26,6 @@ import { publicPageLinkClassName } from "@/pages/publicPageI18n";
 import { Z_INDEX } from "@/lib/z-index";
 
 const linkClassName = publicPageLinkClassName;
-
-function groupLinks(group: PressLink["group"]): PressLink[] {
-  return PRESS_LINKS.filter((link) => link.group === group);
-}
 
 async function copyText(text: string): Promise<boolean> {
   try {
@@ -343,9 +339,9 @@ export default function Press() {
         />
 
         <div className="grid grid-cols-1 gap-8 sm:grid-cols-3 sm:gap-6">
-          <LinkList title="Play and store" links={groupLinks("play")} />
-          <LinkList title="Social" links={groupLinks("social")} />
-          <LinkList title="Directories" links={groupLinks("directory")} />
+          <LinkList title="Play and store" links={pressLinksInGroup("play")} />
+          <LinkList title="Social" links={pressLinksInGroup("social")} />
+          <LinkList title="Directories" links={pressLinksInGroup("directory")} />
         </div>
 
         <section className="space-y-2">
@@ -363,7 +359,7 @@ export default function Press() {
           </p>
         </section>
 
-        <LinkList title="Press coverage" links={groupLinks("coverage")} />
+        <LinkList title="Press coverage" links={pressLinksInGroup("coverage")} />
 
       </PublicDocPage>
       {preview ? (

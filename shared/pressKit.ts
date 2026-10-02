@@ -96,6 +96,8 @@ export type PressLink = {
   label: string;
   href: string;
   group: "play" | "social" | "directory" | "coverage";
+  /** Coverage only. ISO date (YYYY-MM-DD) used to list newest first. */
+  publishedOn?: string;
 };
 
 export const PRESS_LINKS: readonly PressLink[] = [
@@ -124,26 +126,36 @@ export const PRESS_LINKS: readonly PressLink[] = [
     label: "Indistation (28 September 2026): A Dark Cave",
     href: "https://indistation.com/a-dark-cave/",
     group: "coverage",
+    publishedOn: "2026-09-28",
   },
   {
     id: "spielemagazin-interview",
     label: "Spielemagazin (23 September 2026): A Dark Cave: Entwickler Julian im Interview",
     href: "https://www.spielemagazin.de/spiele/interviews/a-dark-cave-entwickler-julian-im-interview/36788",
     group: "coverage",
+    publishedOn: "2026-09-23",
   },
   {
     id: "spielemagazin-october",
     label: "Spielemagazin (15 September 2026): A Dark Cave: Minimalistischer Village-Builder erscheint im Oktober",
     href: "https://www.spielemagazin.de/spiele/news/a-dark-cave-minimalistischer-village-builder-erscheint-im-oktober/34702",
     group: "coverage",
+    publishedOn: "2026-09-15",
   },
   {
     id: "gamers-at-indie-roundup-week-40",
     label: "Gamers.at (1 October 2026): Indie Roundup Week 40: Demos, Playtests und neue Spiele im Oktober",
     href: "https://www.gamers.at/indie-roundup-week-40-demos-playtests-und-neue-spiele-im-oktober/",
     group: "coverage",
+    publishedOn: "2026-10-01",
   },
 ];
+
+export function pressLinksInGroup(group: PressLink["group"]): PressLink[] {
+  const links = PRESS_LINKS.filter((link) => link.group === group);
+  if (group !== "coverage") return [...links];
+  return [...links].sort((a, b) => (b.publishedOn ?? "").localeCompare(a.publishedOn ?? ""));
+}
 
 export type PressAssetKind = "logo" | "screenshot" | "capsule" | "video";
 
@@ -265,7 +277,7 @@ export function getPressPageInnerHtml(): string {
     return `<dt>${escapeHtml(fact.label)}</dt><dd>${value}</dd>`;
   }).join("");
   const linkItems = (group?: PressLink["group"]) =>
-    PRESS_LINKS.filter((link) => (group ? link.group === group : link.group !== "coverage"))
+    (group ? pressLinksInGroup(group) : PRESS_LINKS.filter((link) => link.group !== "coverage"))
       .map((link) => `<li>${htmlAnchor(link.href, link.label)}</li>`)
       .join("");
   return [
