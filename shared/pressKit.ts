@@ -183,37 +183,37 @@ export const PRESS_LOGOS: readonly PressAsset[] = [
 
 export const PRESS_SCREENSHOTS: readonly PressAsset[] = [
   asset("screenshot", "a_dark_cave_screenshot_01.jpg", "Village", {
-    sizeHint: "1024 × 576",
+    sizeHint: "1920 × 1080",
   }),
   asset("screenshot", "a_dark_cave_screenshot_02.jpg", "City", {
-    sizeHint: "1024 × 576",
+    sizeHint: "1920 × 1080",
   }),
   asset("screenshot", "a_dark_cave_screenshot_03.jpg", "Estate", {
-    sizeHint: "1024 × 576",
+    sizeHint: "1920 × 1080",
   }),
   asset("screenshot", "a_dark_cave_screenshot_04.jpg", "City map", {
-    sizeHint: "1024 × 576",
+    sizeHint: "1920 × 1080",
   }),
   asset("screenshot", "a_dark_cave_screenshot_05.jpg", "Combat", {
-    sizeHint: "1024 × 576",
+    sizeHint: "1920 × 1080",
   }),
   asset("screenshot", "a_dark_cave_screenshot_06.jpg", "Faces in the Walls", {
-    sizeHint: "1024 × 576",
+    sizeHint: "1920 × 1080",
   }),
   asset("screenshot", "a_dark_cave_screenshot_07.jpg", "Achievements", {
-    sizeHint: "1024 × 576",
+    sizeHint: "1920 × 1080",
   }),
   asset("screenshot", "a_dark_cave_screenshot_08.jpg", "The Exiled Scholar", {
-    sizeHint: "1024 × 576",
+    sizeHint: "1920 × 1080",
   }),
   asset("screenshot", "a_dark_cave_screenshot_09.jpg", "Fortress", {
-    sizeHint: "1024 × 576",
+    sizeHint: "1920 × 1080",
   }),
   asset("screenshot", "a_dark_cave_screenshot_10.jpg", "Tools", {
-    sizeHint: "1024 × 576",
+    sizeHint: "1920 × 1080",
   }),
   asset("screenshot", "a_dark_cave_screenshot_11.jpg", "Sleeping", {
-    sizeHint: "1024 × 576",
+    sizeHint: "1920 × 1080",
   }),
 ];
 
