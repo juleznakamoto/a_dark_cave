@@ -137,6 +137,12 @@ export const PRESS_LINKS: readonly PressLink[] = [
     href: "https://www.spielemagazin.de/spiele/news/a-dark-cave-minimalistischer-village-builder-erscheint-im-oktober/34702",
     group: "coverage",
   },
+  {
+    id: "gamers-at-indie-roundup-week-40",
+    label: "Gamers.at (1 October 2026): Indie Roundup Week 40: Demos, Playtests und neue Spiele im Oktober",
+    href: "https://www.gamers.at/indie-roundup-week-40-demos-playtests-und-neue-spiele-im-oktober/",
+    group: "coverage",
+  },
 ];
 
 export type PressAssetKind = "logo" | "screenshot" | "capsule" | "video";
