@@ -57,6 +57,19 @@ export const GAME_TAB_PANEL_BODY = "game-tab-panel-body mb-2";
 export const GAME_TAB_SECTION_HEADER_ROW =
   "game-panel-header-indicator-row flex w-full items-center gap-2";
 
+/**
+ * Produce heading. Title and preset slots stay on the first line.
+ * Effect rings wrap onto the next line (see GAME_PANEL_PRODUCE_EFFECT_ROW).
+ */
+export const GAME_TAB_PRODUCE_HEADER_ROW = `${GAME_TAB_SECTION_HEADER_ROW} game-panel-produce-header`;
+
+/**
+ * Production-effect rings under the Produce title.
+ * 22px normal, 26px in Large text, via `--adc-indicator-scale`.
+ */
+export const GAME_PANEL_PRODUCE_EFFECT_ROW =
+  "game-panel-produce-effects order-last flex w-full basis-full flex-wrap items-center gap-x-3 gap-y-1.5";
+
 /** Title inside GAME_TAB_SECTION_HEADER_ROW. Same size as side-panel headers. */
 export const GAME_TAB_SECTION_HEADER =
   "inline-flex min-w-0 flex-wrap items-center gap-1.5 text-sm font-medium text-foreground leading-none";
@@ -73,8 +86,9 @@ export const GAME_PANEL_HEADER_SLOT_ROW_CLASS =
   "game-panel-header-slot-row ml-auto flex shrink-0 items-center";
 
 /**
- * Circular progress indicators next to section titles (Produce effects, Focus).
- * Normal: 18px. Large text: 22px (see `.game-panel-header-indicator` in CSS).
+ * Circular progress indicators next to section titles (Focus) and under Produce.
+ * Base: 18px. Large text: 20px. Produce row is 22px, 26px in Large text
+ * (see `.game-panel-header-indicator` in CSS).
  * Pair with `CircularProgress fill` + `GAME_PANEL_HEADER_INDICATOR_GLYPH_CLASS`.
  */
 export const GAME_PANEL_HEADER_INDICATOR_SIZE_PX = 18;

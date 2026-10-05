@@ -1257,15 +1257,16 @@ html[data-adc-chrome-stage="0"] {
   gap: 6px;
 }
 
-/* Produce / Focus circular indicators — 18px normal, 20px in Large text only. */
+/* Produce / Focus circular indicators — 18px normal, 20px in Large text only.
+   Produce rings: 22px normal, 26px in Large text. */
 .game-panel-header-indicator {
-  width: 18px;
-  height: 18px;
+  width: calc(18px * var(--adc-indicator-scale, 1));
+  height: calc(18px * var(--adc-indicator-scale, 1));
 }
 
 html.adc-text-large .game-panel-header-indicator {
-  width: 20px;
-  height: 20px;
+  width: calc(20px * var(--adc-indicator-scale, 1));
+  height: calc(20px * var(--adc-indicator-scale, 1));
 }
 
 /* Side-panel resource/building rows: slightly more vertical room when Large. */
@@ -1276,36 +1277,75 @@ html.adc-text-large .side-panel-item-list {
 }
 
 .game-panel-header-indicator-glyph--md {
-  font-size: 12px;
+  font-size: calc(12px * var(--adc-indicator-scale, 1));
 }
 
 .game-panel-header-indicator-glyph--sm {
-  font-size: 10px;
+  font-size: calc(10px * var(--adc-indicator-scale, 1));
 }
 
 .game-panel-header-indicator-glyph--xs {
-  font-size: 7px;
+  font-size: calc(7px * var(--adc-indicator-scale, 1));
+}
+
+/* Heartfire glyphs. Fixed px at scale 1 so Large text does not restyle them. */
+.game-panel-header-indicator-glyph--hf16 {
+  font-size: calc(16px * var(--adc-indicator-scale, 1));
+}
+
+.game-panel-header-indicator-glyph--hf14 {
+  font-size: calc(14px * var(--adc-indicator-scale, 1));
+}
+
+.game-panel-header-indicator-glyph--hf12 {
+  font-size: calc(12px * var(--adc-indicator-scale, 1));
+}
+
+.game-panel-header-indicator-glyph--hf9 {
+  font-size: calc(9px * var(--adc-indicator-scale, 1));
 }
 
 html.adc-text-large .game-panel-header-indicator-glyph--md {
-  font-size: 14px;
+  font-size: calc(14px * var(--adc-indicator-scale, 1));
 }
 
 html.adc-text-large .game-panel-header-indicator-glyph--sm {
-  font-size: 12px;
+  font-size: calc(12px * var(--adc-indicator-scale, 1));
 }
 
 html.adc-text-large .game-panel-header-indicator-glyph--xs {
-  font-size: 9px;
+  font-size: calc(9px * var(--adc-indicator-scale, 1));
 }
 
-/* Tab section title row (Build, Explore, Rest, …). Matches Produce / Focus rings. */
+/* Tab section title row (Build, Explore, Rest, …). Matches Focus rings. */
 .game-panel-header-indicator-row {
   height: 18px;
 }
 
 html.adc-text-large .game-panel-header-indicator-row {
   height: 20px;
+}
+
+/* Produce: title line stays short; effect rings wrap underneath (22px, 26px Large).
+   Row gap matches the 12px section stack under the rings. */
+.game-panel-produce-header.game-panel-header-indicator-row,
+html.adc-text-large .game-panel-produce-header.game-panel-header-indicator-row {
+  height: auto;
+  flex-wrap: wrap;
+  align-items: center;
+  row-gap: 0.75rem;
+}
+
+.game-panel-produce-effects {
+  --adc-indicator-scale: calc(22 / 18);
+}
+
+html.adc-text-large .game-panel-produce-effects {
+  --adc-indicator-scale: calc(26 / 20);
+}
+
+.game-panel-produce-effects:empty {
+  display: none;
 }
 
 /* Profile header accent mask icons (rewards / exclusive) inside w-7 buttons. */

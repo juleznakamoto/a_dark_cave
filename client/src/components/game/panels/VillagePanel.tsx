@@ -161,6 +161,8 @@ import {
   GAME_PANEL_HEADER_INSIGHT_BADGE_CLASS,
   GAME_PANEL_HEADER_SLOT_ROW_CLASS,
   GAME_TAB_PANEL_BODY,
+  GAME_PANEL_PRODUCE_EFFECT_ROW,
+  GAME_TAB_PRODUCE_HEADER_ROW,
   GAME_TAB_SECTION_HEADER,
   GAME_TAB_SECTION_HEADER_ROW,
   GAME_TAB_SECTION_STACK,
@@ -1738,7 +1740,7 @@ export default function VillagePanel() {
           {(catalogActive ||
             (story.seen?.hasVillagers && visiblePopulationJobs.length > 0)) && (
               <div className={GAME_TAB_SECTION_STACK}>
-                <div className={GAME_TAB_SECTION_HEADER_ROW}>
+                <div className={GAME_TAB_PRODUCE_HEADER_ROW}>
                   <h3 className={GAME_TAB_SECTION_HEADER}>
                     {catalogActive && !story.seen?.hasVillagers ? (
                       <RedactedLockedHint
@@ -1750,6 +1752,7 @@ export default function VillagePanel() {
                     )}
                     {catalogActive ? <DemoEndPromoBadge kind="produce" /> : null}
                   </h3>
+                  <div className={GAME_PANEL_PRODUCE_EFFECT_ROW}>
                   {story.seen?.hasVillagers && (
                     <VillageProductionCycleIndicator
                       pulseClassName={pulseClassName}
@@ -2343,6 +2346,7 @@ export default function VillagePanel() {
                       </>
                     );
                   })()}
+                  </div>
                   {(arePresetsVisible(state) || catalogActive) &&
                     (() => {
                       const presetState = {

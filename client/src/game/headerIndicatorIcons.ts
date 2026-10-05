@@ -122,7 +122,7 @@ export const HEARTFIRE_INDICATOR_ICONS: HeaderIndicatorIcon[] = [
     ringClassName: "text-red-700",
     glyphClassName: cn(
       GLYPH,
-      "text-red-700 text-[16px] font-normal translate-y-[0.13em]",
+      "text-red-700 game-panel-header-indicator-glyph--hf16 font-normal translate-y-[0.13em]",
     ),
     symbol: "\u00B7",
   },
@@ -132,7 +132,7 @@ export const HEARTFIRE_INDICATOR_ICONS: HeaderIndicatorIcon[] = [
     ringClassName: "text-red-700",
     glyphClassName: cn(
       GLYPH,
-      "text-red-700 text-[12px] font-extrabold translate-y-[0.06em]",
+      "text-red-700 game-panel-header-indicator-glyph--hf12 font-extrabold translate-y-[0.06em]",
     ),
     symbol: ":",
   },
@@ -142,7 +142,7 @@ export const HEARTFIRE_INDICATOR_ICONS: HeaderIndicatorIcon[] = [
     ringClassName: "text-red-700",
     glyphClassName: cn(
       GLYPH,
-      "text-red-700 text-[14px] font-black translate-y-[0.03em]",
+      "text-red-700 game-panel-header-indicator-glyph--hf14 font-black translate-y-[0.03em]",
     ),
     symbol: "\u2234",
   },
@@ -152,7 +152,7 @@ export const HEARTFIRE_INDICATOR_ICONS: HeaderIndicatorIcon[] = [
     ringClassName: "text-red-700",
     glyphClassName: cn(
       GLYPH,
-      "text-red-700 text-[12px] font-black translate-y-[0.14em]",
+      "text-red-700 game-panel-header-indicator-glyph--hf12 font-black translate-y-[0.14em]",
     ),
     symbol: "\u2058",
   },
@@ -160,7 +160,10 @@ export const HEARTFIRE_INDICATOR_ICONS: HeaderIndicatorIcon[] = [
     id: "heartfire5",
     label: "Heartfire 5",
     ringClassName: "text-red-700",
-    glyphClassName: cn(GLYPH, "text-red-700 text-[9px] font-black translate-y-[0.145em]"),
+    glyphClassName: cn(
+      GLYPH,
+      "text-red-700 game-panel-header-indicator-glyph--hf9 font-black translate-y-[0.145em]",
+    ),
     symbol: "\u2059",
   },
 ];
