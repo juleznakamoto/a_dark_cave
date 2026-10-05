@@ -32,8 +32,6 @@ export const PRESS_COMPS_LINE = "A Dark Room, Kittens Game, Universal Paperclips
 export const PRESS_TRAILER_YOUTUBE_ID = "G8Gm7o4cZfQ";
 export const PRESS_TRAILER_YOUTUBE_URL =
   `https://www.youtube.com/watch?v=${PRESS_TRAILER_YOUTUBE_ID}` as const;
-export const PRESS_TRAILER_EMBED_URL =
-  `https://www.youtube.com/embed/${PRESS_TRAILER_YOUTUBE_ID}` as const;
 export const PRESS_TRAILER_FILE_HREF =
   `${PRESS_ASSET_DIR}/video/a_dark_cave_gameplay_trailer.mp4` as const;
 
