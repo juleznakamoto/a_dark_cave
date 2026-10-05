@@ -837,7 +837,26 @@ export default function GameContainer() {
     };
   }, []);
 
-  // Track when new tabs are unlocked and trigger one-time animations
+  // Start the fade in this render so the first paint already has `tab-fade-in`.
+  // An effect runs after paint, which flashes the normal label, then hides it
+  // and fades in.
+  const tabsEnteringFade = getNewlyUnlockedTabsForBlink(
+    prevTabUnlockRef.current,
+    tabUnlockSnapshot,
+    story,
+  ).filter((id) => !fadePhaseTabs.has(id) && !animatingTabs.has(id));
+  if (tabsEnteringFade.length > 0) {
+    const nextAnimating = new Set(animatingTabs);
+    const nextFade = new Set(fadePhaseTabs);
+    for (const id of tabsEnteringFade) {
+      nextAnimating.add(id);
+      nextFade.add(id);
+    }
+    setAnimatingTabs(nextAnimating);
+    setFadePhaseTabs(nextFade);
+  }
+
+  // Sound and the fade timer wait until after paint. The class is already set.
   useEffect(() => {
     const prev = prevTabUnlockRef.current;
     const current = tabUnlockSnapshot;
@@ -849,7 +868,9 @@ export default function GameContainer() {
     ).filter((id) => !tabUnlockBlinkPendingRef.current.has(id));
 
     if (newlyUnlocked.length === 0) {
-      prevTabUnlockRef.current = current;
+      if (tabUnlockBlinkPendingRef.current.size === 0) {
+        prevTabUnlockRef.current = current;
+      }
       return;
     }
 
@@ -865,16 +886,6 @@ export default function GameContainer() {
     for (const id of newlyUnlocked) {
       tabUnlockBlinkPendingRef.current.add(id);
     }
-
-    const newAnimations = new Set(newlyUnlocked);
-    setAnimatingTabs(
-      (prevAnim) =>
-        new Set([...Array.from(prevAnim), ...Array.from(newAnimations)]),
-    );
-    setFadePhaseTabs(
-      (prevFade) =>
-        new Set([...Array.from(prevFade), ...Array.from(newAnimations)]),
-    );
 
     // One cue per unlock batch (matches the shared 3s tab-fade-in animation).
     audioManager.playSound("tabFadeIn", SOUND_VOLUME.tabFadeIn);
