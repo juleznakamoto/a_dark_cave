@@ -87,7 +87,7 @@
     "amount": "Kwota inwestycji",
     "startInvestment": "Rozpocznij inwestycję",
     "infoAriaLabel": "Wyjaśnij inwestycje i tabelę strategii",
-    "unlockTooltip": "Odblokowuje się na wyższym poziomie budynku",
+    "unlockTooltip": "Odblokowuje się po zbudowaniu: {{building}}",
     "minutes": "{{count}} min",
     "luckyChanceTop": "Szczęśliwy traf {{percent}} % ({{fromLuck}} % z Szczęścia)",
     "luckyChanceLine": "{{percent}} % szczęśliwego trafu: {{gold}}",

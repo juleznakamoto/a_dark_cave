@@ -17,6 +17,7 @@ import {
   getLuckWinChanceBonus,
   getLuckyChancePercent,
   getSuccessChancePercent,
+  getInvestmentStakeUnlockBuilding,
   isInvestmentWaveReadyForUi,
   LUCKY_CHANCE_WIN_MULTIPLIER,
   lossGold,
@@ -25,6 +26,7 @@ import {
 } from "@/game/rules/investmentHallTables";
 import type { InvestmentDurationMin } from "@/game/rules/investmentHallTables";
 import { gameActionOutlineButtonClassName } from "@/components/CooldownButton";
+import { getBuildingDisplayName } from "@/game/rules/buildingTooltipSections";
 import { formatNumber, cn } from "@/lib/utils";
 import { useTranslation } from "react-i18next";
 import type { TFunction } from "i18next";
@@ -395,6 +397,7 @@ export default function InvestDialog({ open, onOpenChange }: Props) {
                 >
                   {amounts.map((a) => {
                     const disabled = a > maxStake;
+                    const unlockBuilding = getInvestmentStakeUnlockBuilding(a);
                     const labelClass = disabled
                       ? "text-muted-foreground"
                       : "text-foreground";
@@ -404,7 +407,11 @@ export default function InvestDialog({ open, onOpenChange }: Props) {
                           <TooltipWrapper
                             tooltip={
                               <div className="text-xs">
-                                {t("invest.unlockTooltip")}
+                                {t("invest.unlockTooltip", {
+                                  building: unlockBuilding
+                                    ? getBuildingDisplayName(unlockBuilding)
+                                    : "",
+                                })}
                               </div>
                             }
                             tooltipId={`invest-amount-${a}`}

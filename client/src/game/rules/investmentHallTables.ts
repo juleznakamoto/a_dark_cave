@@ -344,6 +344,15 @@ export function getMaxInvestmentStake(state: {
   return 0;
 }
 
+/** Building that raises the stake cap to this amount. Null for the Coinhouse cap (100). */
+export function getInvestmentStakeUnlockBuilding(
+  amountGold: number,
+): "bank" | "treasury" | null {
+  if (amountGold >= 1000) return "treasury";
+  if (amountGold >= 500) return "bank";
+  return null;
+}
+
 /**
  * Build active investment from rolls at commit. Stake already deducted by caller.
  */

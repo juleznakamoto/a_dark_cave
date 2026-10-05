@@ -16,6 +16,7 @@ import {
   getNextPurchasableUiSlotIndex,
   getNextQueueSlotUnlockCost,
   getPurchasedQueueSlots,
+  getQueueSlotUnlockBuildingKey,
   getShopQueueSlotCount,
   getTotalQueueSlots,
   getVisibleQueueSlotCount,
@@ -170,6 +171,9 @@ describe("constructionQueueSlots", () => {
     expect(isQueueSlotLockedForUi(noBuilder, 1)).toBe(true);
     expect(isQueueSlotBuildingLocked(noBuilder, 1)).toBe(true);
     expect(isQueueSlotBuildingLocked(noBuilder, 2)).toBe(true);
+    expect(getQueueSlotUnlockBuildingKey(0)).toBeNull();
+    expect(getQueueSlotUnlockBuildingKey(1)).toBe("buildersLodge");
+    expect(getQueueSlotUnlockBuildingKey(2)).toBe("buildersGuild");
 
     const lodgeOnly = baseState({
       buildings: {

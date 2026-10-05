@@ -85,7 +85,7 @@
     "amount": "投资金额",
     "startInvestment": "开始投资",
     "infoAriaLabel": "说明投资与策略表",
-    "unlockTooltip": "更高建筑等级解锁",
+    "unlockTooltip": "建造{{building}}后解锁",
     "minutes": "{{count}} 分钟",
     "luckyChanceTop": "幸运一击 {{percent}}%（{{fromLuck}}% 来自幸运）",
     "luckyChanceLine": "{{percent}}% 幸运一击：{{gold}}",

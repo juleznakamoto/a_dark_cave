@@ -85,7 +85,7 @@
     "amount": "Investitionsbetrag",
     "startInvestment": "Investition starten",
     "infoAriaLabel": "Investitionen und Strategietabelle erklären",
-    "unlockTooltip": "Wird bei höherer Gebäudestufe freigeschaltet",
+    "unlockTooltip": "Freigeschaltet durch {{building}}",
     "minutes": "{{count}} Min.",
     "luckyChanceTop": "Glückstreffer-Chance {{percent}} % ({{fromLuck}} % durch Glück)",
     "luckyChanceLine": "{{percent}} % Glückstreffer-Chance: {{gold}}",

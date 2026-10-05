@@ -85,7 +85,7 @@
     "amount": "投資額",
     "startInvestment": "投資を始める",
     "infoAriaLabel": "投資と方針表の説明",
-    "unlockTooltip": "建物のレベルが上がると解放される",
+    "unlockTooltip": "{{building}}を建てると解放される",
     "minutes": "{{count}}分",
     "luckyChanceTop": "幸運チャンス{{percent}}%（運から{{fromLuck}}%）",
     "luckyChanceLine": "幸運チャンス{{percent}}%：{{gold}}",

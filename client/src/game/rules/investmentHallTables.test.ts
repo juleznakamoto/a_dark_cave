@@ -6,6 +6,7 @@ import {
   clampSuccessChance,
   commitInvestmentRolls,
   formatInvestmentCompletionLog,
+  getInvestmentStakeUnlockBuilding,
   getLuckWinChanceBonus,
   getLuckyChancePercent,
   getSuccessChancePercent,
@@ -18,6 +19,14 @@ import {
   randomIntInclusive,
   successProfitGold,
 } from "./investmentHallTables";
+
+describe("getInvestmentStakeUnlockBuilding", () => {
+  it("names the building that unlocks each stake", () => {
+    expect(getInvestmentStakeUnlockBuilding(100)).toBeNull();
+    expect(getInvestmentStakeUnlockBuilding(500)).toBe("bank");
+    expect(getInvestmentStakeUnlockBuilding(1000)).toBe("treasury");
+  });
+});
 
 describe("getLuckWinChanceBonus", () => {
   it("returns highest tier only", () => {

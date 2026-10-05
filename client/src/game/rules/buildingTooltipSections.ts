@@ -29,6 +29,13 @@ export function buildingKeyToActionId(buildingKey: string): string {
   return `build${buildingKey.charAt(0).toUpperCase()}${buildingKey.slice(1)}`;
 }
 
+/** Localized building name for tooltips that name a specific unlock requirement. */
+export function getBuildingDisplayName(buildingKey: string): string {
+  const actionId = buildingKeyToActionId(buildingKey);
+  const fallback = villageBuildActions[actionId]?.label ?? buildingKey;
+  return getActionLabel(actionId, fallback);
+}
+
 export function getBuildingTooltipEffectEntries(
   buildAction: Action,
   gameState: GameState,

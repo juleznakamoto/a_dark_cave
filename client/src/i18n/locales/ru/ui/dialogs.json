@@ -87,7 +87,7 @@
     "amount": "Сумма инвестиции",
     "startInvestment": "Начать инвестицию",
     "infoAriaLabel": "Объяснение инвестиций и таблицы стратегий",
-    "unlockTooltip": "Открывается на более высоком уровне здания",
+    "unlockTooltip": "Открывается после постройки: {{building}}",
     "minutes": "{{count}} мин",
     "luckyChanceTop": "Удачный удар {{percent}} % ({{fromLuck}} % от удачи)",
     "luckyChanceLine": "{{percent}} % Удачный удар: {{gold}}",

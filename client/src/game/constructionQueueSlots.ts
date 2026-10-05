@@ -107,16 +107,24 @@ export function getPurchasedQueueSlots(
   return Math.min(Math.max(0, Math.floor(raw)), MAX_PURCHASABLE_QUEUE_SLOTS);
 }
 
+/** Building that must exist before this 0-based extra slot can be bought. */
+export function getQueueSlotUnlockBuildingKey(
+  slotIndex: number,
+): "buildersLodge" | "buildersGuild" | null {
+  if (slotIndex === 1) return "buildersLodge";
+  if (slotIndex === 2) return "buildersGuild";
+  return null;
+}
+
 /** 0-based slot index: building tier allows buying this extra slot. */
 export function isQueueSlotBuildingUnlocked(
   state: Pick<GameState, "buildings">,
   slotIndex: number,
 ): boolean {
   if (slotIndex === 0) return true;
-  const buildings = state.buildings ?? {};
-  if (slotIndex === 1) return (buildings.buildersLodge ?? 0) >= 1;
-  if (slotIndex === 2) return (buildings.buildersGuild ?? 0) >= 1;
-  return false;
+  const buildingKey = getQueueSlotUnlockBuildingKey(slotIndex);
+  if (!buildingKey) return false;
+  return (state.buildings?.[buildingKey] ?? 0) >= 1;
 }
 
 /** 0-based slot index: Insight purchase completed for this extra slot. */

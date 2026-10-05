@@ -26,6 +26,7 @@ import {
   forestFearTooltip,
   getActionDurationLine,
 } from "@/game/rules/tooltips";
+import { getBuildingDisplayName } from "@/game/rules/buildingTooltipSections";
 import {
   getTotalMadness,
   getStrangerApproachProbability,
@@ -79,6 +80,7 @@ import {
   getNextPresetUnlockCost,
   getNextPurchasablePresetSlotIndex,
   getPresetSlot,
+  getPresetSlotUnlockBuildingKey,
   getVisiblePresetSlotCount,
   hasAnyUnlockedPresetSlot,
   isPresetSlotBuildingLocked,
@@ -91,6 +93,7 @@ import {
   isQueueSlotInUse,
   getNextPurchasableQueueSlotIndex,
   getNextQueueSlotUnlockCost,
+  getQueueSlotUnlockBuildingKey,
   getVisibleQueueSlotCount,
   isConstructionBoostAvailable,
   isQueueSlotBuildingLocked,
@@ -1632,6 +1635,8 @@ export default function VillagePanel() {
                               state,
                               i,
                             );
+                            const unlockBuildingKey =
+                              getQueueSlotUnlockBuildingKey(i);
                             const isLocked = isQueueSlotLockedForUi(state, i);
                             const isInsightPurchaseLocked =
                               isQueueSlotInsightPurchaseLocked(state, i);
@@ -1651,8 +1656,13 @@ export default function VillagePanel() {
                                       ? t(
                                         "village.slotBuildingNeededToUnlock",
                                         {
+                                          building: unlockBuildingKey
+                                            ? getBuildingDisplayName(
+                                              unlockBuildingKey,
+                                            )
+                                            : "",
                                           defaultValue:
-                                            "Building required to unlock",
+                                            "{{building}} required to unlock",
                                         },
                                       )
                                       : insightUnlockCost !== null
@@ -2430,6 +2440,8 @@ export default function VillagePanel() {
                               presetState,
                               i,
                             );
+                            const unlockBuildingKey =
+                              getPresetSlotUnlockBuildingKey(i);
                             const isUnlocked = isPresetSlotUnlocked(
                               presetState,
                               i,
@@ -2458,8 +2470,13 @@ export default function VillagePanel() {
                                   tooltip={
                                     <div className="text-xs">
                                       {t("village.slotBuildingNeededToUnlock", {
+                                        building: unlockBuildingKey
+                                          ? getBuildingDisplayName(
+                                            unlockBuildingKey,
+                                          )
+                                          : "",
                                         defaultValue:
-                                          "Building required to unlock",
+                                          "{{building}} required to unlock",
                                       })}
                                     </div>
                                   }

@@ -85,7 +85,7 @@
     "amount": "Investment Amount",
     "startInvestment": "Start Investment",
     "infoAriaLabel": "Explain investments and the strategy table",
-    "unlockTooltip": "Unlocks at higher building level",
+    "unlockTooltip": "Unlocks with {{building}}",
     "minutes": "{{count}} min",
     "luckyChanceTop": "Lucky Chance {{percent}} % ({{fromLuck}} % From Luck)",
     "luckyChanceLine": "{{percent}} % Lucky Chance: {{gold}}",

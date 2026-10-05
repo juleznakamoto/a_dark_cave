@@ -85,7 +85,7 @@
     "amount": "Importe de la inversión",
     "startInvestment": "Iniciar inversión",
     "infoAriaLabel": "Explicar inversiones y la tabla de estrategias",
-    "unlockTooltip": "Se desbloquea con un nivel de edificio más alto",
+    "unlockTooltip": "Se desbloquea con {{building}}",
     "minutes": "{{count}} min",
     "luckyChanceTop": "Golpe de suerte {{percent}} % ({{fromLuck}} % por Suerte)",
     "luckyChanceLine": "{{percent}} % Golpe de suerte: {{gold}}",
