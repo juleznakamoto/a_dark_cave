@@ -1184,6 +1184,11 @@ export const gameStateSchema = z.object({
     .default({}),
   /** Map slot tiers already shown, so a new building fades in only once. */
   villageMapSeenTiers: z.record(z.string(), z.number()).default({}),
+  /**
+   * Action and job ids in the order the player first saw them.
+   * New unlocks append, so a late button does not jump up the list.
+   */
+  actionUnlockOrder: z.array(z.string()).default([]),
 });
 
 export type GameState = z.infer<typeof gameStateSchema>;

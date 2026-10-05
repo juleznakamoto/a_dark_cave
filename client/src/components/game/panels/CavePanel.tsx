@@ -18,7 +18,7 @@ import CooldownButton, {
 import { ActionButtonSlot } from "@/components/game/GameActionButtonStack";
 import { ConstructionBoostBadge } from "@/components/game/ConstructionBoostBadge";
 import { isConstructionBoostAvailable } from "@/game/constructionQueueSlots";
-import { isCraftDescriptionVisible } from "@/game/rules/insightReveal";
+import { isCraftDescriptionVisible, isCraftOnceAction } from "@/game/rules/insightReveal";
 import { getCraftItemDescription } from "@/game/rules/craftItemDescription";
 import { getRevealedEffectsForActionTooltip } from "@/game/rules/insightRevealTooltip";
 import { composeActionTooltip } from "@/game/rules/actionTooltipLayout";
@@ -53,6 +53,8 @@ import {
   type UpgradeKey,
 } from "@/game/buttonUpgrades";
 import { getCraftProduceAmount } from "@/game/craftUpgradeUtils";
+import { useActionUnlockOrder } from "@/game/useActionUnlockOrder";
+import { orderCraftOnceRow } from "@/game/actionUnlockOrder";
 import { FOCUS_ELIGIBLE_ACTIONS } from "@/game/rules/actionEffects";
 import { getFocusTooltipHeaderTrailing } from "@/game/rules/focusTooltipIndicator";
 import { resolveActionLabel } from "@/i18n/actionLabels";
@@ -81,6 +83,8 @@ export default function CavePanel() {
       setBlastPortalConsumed(false);
     }
   }, [story.seen.portalBlasted]);
+
+  const actionUnlock = useActionUnlockOrder();
 
   // Define action groups with their actions
   const actionGroups = [
@@ -572,6 +576,15 @@ export default function CavePanel() {
 
                       if (visibleActions.length === 0) return null;
 
+                      const orderedActions = isCraftSection
+                        ? orderCraftOnceRow(
+                            visibleActions,
+                            isCraftOnceAction,
+                            (once) =>
+                              actionUnlock.order(once, (action) => action.id),
+                          )
+                        : visibleActions;
+
                       const teaseableCount = subGroup.actions.filter(
                         (action) => action.showWhen === undefined || action.showWhen,
                       ).length;
@@ -583,7 +596,7 @@ export default function CavePanel() {
 
                       return (
                         <div key={subGroupIndex} className={gameActionButtonGridClassName("w-full")}>
-                          {visibleActions.map((action) =>
+                          {orderedActions.map((action) =>
                             renderButton(action.id, action.label),
                           )}
                           {showExploreEllipsis ? (

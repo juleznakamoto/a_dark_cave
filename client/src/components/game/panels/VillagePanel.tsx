@@ -1,4 +1,6 @@
 import React from "react";
+import { BUILD_ACTION_APPEND_LAST_IDS } from "@/game/actionUnlockOrder";
+import { useActionUnlockOrder } from "@/game/useActionUnlockOrder";
 import { useGameStore } from "@/game/state";
 import { useGameStoreWithoutTickClock } from "@/game/useGameStoreWithoutTickClock";
 import {
@@ -1120,6 +1122,8 @@ export default function VillagePanel() {
   );
   const freeVillagers = villagers.free ?? 0;
 
+  const actionUnlock = useActionUnlockOrder();
+
   // Filter visible population jobs
   const visiblePopulationJobs = populationJobs.filter((job) => {
     if (job.alwaysShow) return true;
@@ -1527,8 +1531,15 @@ export default function VillagePanel() {
                 )
                 : { teasers: [], showEllipsis: false };
 
+            const orderedVisibleActions =
+              group.title === "Build" && visibleActions.length > 0
+                ? actionUnlock.order(visibleActions, (action) => action.id, {
+                    appendLastIds: BUILD_ACTION_APPEND_LAST_IDS,
+                  })
+                : visibleActions;
+
             if (
-              visibleActions.length === 0 &&
+              orderedVisibleActions.length === 0 &&
               redactedUtilityActions.length === 0 &&
               buildTeasers.length === 0
             ) {
@@ -1698,25 +1709,16 @@ export default function VillagePanel() {
                   )
                 )}
                 <div className={gameActionButtonGridClassName("w-full")}>
-                  {group.actions.map((action) => {
-                    if (visibleActions.some((visible) => visible.id === action.id)) {
-                      return renderButton(action.id, action.label);
-                    }
-                    if (
-                      redactedUtilityActions.some(
-                        (redacted) => redacted.id === action.id,
-                      )
-                    ) {
-                      return (
-                        <RedactedLockedHint
-                          key={action.id}
-                          label={resolveActionLabel(action.id, action.label)}
-                          tooltipId={`village-${action.id}-redacted`}
-                        />
-                      );
-                    }
-                    return null;
-                  })}
+                  {orderedVisibleActions.map((action) =>
+                    renderButton(action.id, action.label),
+                  )}
+                  {redactedUtilityActions.map((action) => (
+                    <RedactedLockedHint
+                      key={action.id}
+                      label={resolveActionLabel(action.id, action.label)}
+                      tooltipId={`village-${action.id}-redacted`}
+                    />
+                  ))}
                   {buildTeasers.map((action) => (
                     <RedactedLockedHint
                       key={action.id}

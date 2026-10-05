@@ -1,6 +1,7 @@
 import type { GameStore } from "../types";
 import type { GameStoreCreator } from "./types";
 import { GameState } from "@shared/schema";
+import { sanitizeActionUnlockOrder } from "@/game/actionUnlockOrder";
 import { pruneReadLogIds } from "@/game/persistedStateBoundary";
 import {
   isFullGameUnlockedEdition,
@@ -561,6 +562,7 @@ export const createLifecycleSlice: GameStoreCreator<Partial<GameStore>> = (set, 
           ...savedState.fellowship,
         },
         revealedEffects: savedState.revealedEffects ?? [],
+        actionUnlockOrder: sanitizeActionUnlockOrder(savedState.actionUnlockOrder),
         buildingDescriptionsRevealed:
           savedState.buildingDescriptionsRevealed ?? false,
         craftDescriptionsRevealed: savedState.craftDescriptionsRevealed ?? false,
