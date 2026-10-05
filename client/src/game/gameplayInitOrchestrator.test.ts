@@ -74,6 +74,7 @@ vi.mock("@/game/boost", () => ({
 }));
 vi.mock("@/game/demoLimit", () => ({
   isDemoLimitReachedFromState: () => false,
+  isDemoEndBlockedByOngoingEvent: () => false,
 }));
 vi.mock("@/lib/edition", async (importOriginal) => {
   const actual = await importOriginal<typeof import("@/lib/edition")>();

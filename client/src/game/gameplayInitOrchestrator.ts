@@ -5,7 +5,10 @@ import { ensureGameplayLocalesLoaded } from "@/i18n/loadLocaleResources";
 import { mountNotoSansSymbols2FontFace } from "@/lib/notoSansSymbols2FontFace";
 import { processStripePaymentReturn } from "@/lib/stripePaymentReturn";
 import { syncSocialPromoExclusiveRewardPending } from "@/game/socialPromoExclusiveReward";
-import { isDemoLimitReachedFromState } from "@/game/demoLimit";
+import {
+  isDemoEndBlockedByOngoingEvent,
+  isDemoLimitReachedFromState,
+} from "@/game/demoLimit";
 import { applySaveBoost, canApplySaveBoost } from "@/game/boost";
 import { getTransientDialogResetOnLoad } from "@/game/stateHelpers";
 import { StateManager, useGameStore } from "@/game/state";
@@ -144,7 +147,8 @@ export async function runGameplayInitialization(
     const loadedState = useGameStore.getState();
     if (
       isDemoLimitReachedFromState(loadedState) &&
-      !loadedState.demoEndDialogDismissed
+      !loadedState.demoEndDialogDismissed &&
+      !isDemoEndBlockedByOngoingEvent(loadedState)
     ) {
       useGameStore.setState({ galaxyTimeUpDialogOpen: true });
     }

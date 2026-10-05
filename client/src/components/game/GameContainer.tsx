@@ -119,7 +119,10 @@ import {
   useSteamEditionActive,
 } from "@/hooks/useSteamEditionActive";
 import { isDemoEdition } from "@/lib/edition";
-import { isDemoLimitReachedFromState } from "@/game/demoLimit";
+import {
+  isDemoEndBlockedByOngoingEvent,
+  isDemoLimitReachedFromState,
+} from "@/game/demoLimit";
 import DemoTimeUpDialog from "./DemoTimeUpDialog";
 import i18n from "@/i18n";
 import { useTranslation } from "react-i18next";
@@ -227,7 +230,8 @@ export default function GameContainer() {
         const state = useGameStore.getState();
         if (
           isDemoLimitReachedFromState(state) &&
-          !state.demoEndDialogDismissed
+          !state.demoEndDialogDismissed &&
+          !isDemoEndBlockedByOngoingEvent(state)
         ) {
           useGameStore.setState({ galaxyTimeUpDialogOpen: true });
           return;

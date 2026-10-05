@@ -267,6 +267,9 @@ export default function CavePanel() {
       ? action.expeditionVillagersRequired(state)
       : 0;
     const hasExpeditionRequirement = expeditionVillagersRequired > 0;
+    const villagerRequirementNotMet =
+      hasExpeditionRequirement &&
+      (state.villagers?.free ?? 0) < expeditionVillagersRequired;
     const focusTrailing = getFocusTooltipHeaderTrailing(actionId, state);
     const resourceGainTooltip =
       isChopWood || isMineAction || isCaveExploreAction || isCraftAction
@@ -304,7 +307,9 @@ export default function CavePanel() {
 
     if (showCost || resourceGainTooltip || hasExpeditionRequirement) {
       const villagerRequirementLine = hasExpeditionRequirement ? (
-        <div>
+        <div
+          className={villagerRequirementNotMet ? "text-muted-foreground" : ""}
+        >
           {t("cave.requiresFreeVillagers", {
             count: expeditionVillagersRequired,
           })}

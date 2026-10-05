@@ -109,12 +109,69 @@ export function isDemoPlayFrozen(state: {
   return isDemoLimitReachedFromState(state);
 }
 
+type DemoEndDialogFlags = {
+  galaxyTimeUpDialogOpen?: boolean;
+  demoEndDialogDismissed?: boolean;
+  eventDialog?: { isOpen?: boolean; currentEvent?: unknown | null };
+  dialogHandoffPending?: boolean;
+  combatDialog?: { isOpen?: boolean };
+  rewardDialog?: { isOpen?: boolean };
+  madnessDialog?: { isOpen?: boolean };
+  villageEffectDialog?: { isOpen?: boolean };
+  insightPotionDialog?: { isOpen?: boolean };
+};
+
+function isOpenDialog(dialog?: { isOpen?: boolean }): boolean {
+  return Boolean(dialog?.isOpen);
+}
+
+/**
+ * Hut cap is reached, but an event the player is already in (or its
+ * conclusion) is still on screen. The end screen waits for that to finish
+ * so a follow-up dialog cannot open on top of it.
+ */
+export function isDemoEndBlockedByOngoingEvent(
+  state: DemoEndDialogFlags,
+): boolean {
+  if (state.dialogHandoffPending) return true;
+  if (state.eventDialog?.isOpen && state.eventDialog.currentEvent != null) {
+    return true;
+  }
+  return (
+    isOpenDialog(state.combatDialog) ||
+    isOpenDialog(state.rewardDialog) ||
+    isOpenDialog(state.madnessDialog) ||
+    isOpenDialog(state.villageEffectDialog) ||
+    isOpenDialog(state.insightPotionDialog)
+  );
+}
+
+/**
+ * A choice on the event already open should still apply after the hut cap,
+ * until the end screen is up. New events do not start (`checkEvents` stays
+ * frozen). DEV Demo End and a dismissed end screen do not apply choices.
+ */
+export function canResolveOpenEventDuringDemoEnd(
+  state: Parameters<typeof isDemoPlayFrozen>[0] & DemoEndDialogFlags,
+): boolean {
+  if (!isDemoPlayFrozen(state)) return true;
+  if (isDemoEndDevMode()) return false;
+  if (state.galaxyTimeUpDialogOpen || state.demoEndDialogDismissed) {
+    return false;
+  }
+  return Boolean(
+    state.eventDialog?.isOpen && state.eventDialog.currentEvent != null,
+  );
+}
+
 /** Reread / demo-end event dialogs close without applying choice effects. */
 export function shouldDismissEventWithoutApplying(
-  state: Parameters<typeof isDemoPlayFrozen>[0],
+  state: Parameters<typeof canResolveOpenEventDuringDemoEnd>[0],
   event?: { viewOnly?: boolean } | null,
 ): boolean {
-  return Boolean(event?.viewOnly) || isDemoPlayFrozen(state);
+  if (event?.viewOnly) return true;
+  if (!isDemoPlayFrozen(state)) return false;
+  return !canResolveOpenEventDuringDemoEnd(state);
 }
 
 export function processDemoLimit(): void {
@@ -124,12 +181,12 @@ export function processDemoLimit(): void {
     galaxyTimeUpDialogOpen?: boolean;
     demoEndDialogDismissed?: boolean;
     buildings?: { woodenHut?: number };
-  };
+  } & DemoEndDialogFlags;
   if (state.galaxyTimeUpDialogOpen || state.demoEndDialogDismissed) return;
+  if (!isDemoLimitReachedFromState(state)) return;
+  if (isDemoEndBlockedByOngoingEvent(state)) return;
 
-  if (isDemoLimitReachedFromState(state)) {
-    store.setState({ galaxyTimeUpDialogOpen: true });
-  }
+  store.setState({ galaxyTimeUpDialogOpen: true });
 }
 
 /** @deprecated Use {@link processDemoLimit}. */

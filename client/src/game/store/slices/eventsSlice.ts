@@ -13,7 +13,10 @@ import {
   type DevGameMode,
 } from "@/lib/edition";
 import { resolveDevMode } from "@/game/devMultipliers";
-import { isDemoPlayFrozen } from "@/game/demoLimit";
+import {
+  canResolveOpenEventDuringDemoEnd,
+  isDemoPlayFrozen,
+} from "@/game/demoLimit";
 import { gameActions, shouldShowAction, canExecuteAction } from "@/game/rules";
 import {
   EventManager,
@@ -444,7 +447,7 @@ export const createEventsSlice: GameStoreCreator<Partial<GameStore>> = (set, get
     const state = get();
     // If the game is paused, do not apply event choices
     if (state.isPaused) return false;
-    if (isDemoPlayFrozen(state)) return false;
+    if (!canResolveOpenEventDuringDemoEnd(state)) return false;
 
     // Use passed currentLogEntry or fall back to eventDialog.currentEvent
     const logEntry = currentLogEntry || get().eventDialog.currentEvent;

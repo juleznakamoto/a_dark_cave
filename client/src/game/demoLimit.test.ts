@@ -8,10 +8,22 @@ const {
   woodenHutCountRef,
   galaxyTimeUpDialogOpenRef,
   demoEndDialogDismissedRef,
+  eventGateRef,
 } = vi.hoisted(() => {
   const woodenHutCountRef = { current: 0 };
   const galaxyTimeUpDialogOpenRef = { current: false };
   const demoEndDialogDismissedRef = { current: false };
+  const eventGateRef = {
+    current: {
+      dialogHandoffPending: false,
+      eventDialog: { isOpen: false, currentEvent: null as unknown },
+      combatDialog: { isOpen: false },
+      rewardDialog: { isOpen: false },
+      madnessDialog: { isOpen: false },
+      villageEffectDialog: { isOpen: false },
+      insightPotionDialog: { isOpen: false },
+    },
+  };
 
   return {
     deleteSaveMock: vi.fn(async () => { }),
@@ -21,6 +33,7 @@ const {
     woodenHutCountRef,
     galaxyTimeUpDialogOpenRef,
     demoEndDialogDismissedRef,
+    eventGateRef,
   };
 });
 
@@ -42,6 +55,7 @@ vi.mock("@/game/state", () => ({
       buildings: { woodenHut: woodenHutCountRef.current },
       galaxyTimeUpDialogOpen: galaxyTimeUpDialogOpenRef.current,
       demoEndDialogDismissed: demoEndDialogDismissedRef.current,
+      ...eventGateRef.current,
       setGalaxyTimeUpDialogOpen: setGalaxyTimeUpDialogOpenMock,
       restartGame: restartGameMock,
     }),
@@ -55,6 +69,7 @@ vi.mock("@/game/gameStoreHolder", () => ({
       buildings: { woodenHut: woodenHutCountRef.current },
       galaxyTimeUpDialogOpen: galaxyTimeUpDialogOpenRef.current,
       demoEndDialogDismissed: demoEndDialogDismissedRef.current,
+      ...eventGateRef.current,
     }),
     setState: setStateMock,
   }),
@@ -73,7 +88,9 @@ import {
   getDisgracedPriorMinWoodenHuts,
   isDemoLimitReached,
   isDemoLimitReachedFromState,
+  isDemoEndBlockedByOngoingEvent,
   isDemoPlayFrozen,
+  canResolveOpenEventDuringDemoEnd,
   shouldDismissEventWithoutApplying,
   processDemoLimit,
   startNewDemoGame,
@@ -87,6 +104,15 @@ describe("demoLimit", () => {
     woodenHutCountRef.current = 0;
     galaxyTimeUpDialogOpenRef.current = false;
     demoEndDialogDismissedRef.current = false;
+    eventGateRef.current = {
+      dialogHandoffPending: false,
+      eventDialog: { isOpen: false, currentEvent: null },
+      combatDialog: { isOpen: false },
+      rewardDialog: { isOpen: false },
+      madnessDialog: { isOpen: false },
+      villageEffectDialog: { isOpen: false },
+      insightPotionDialog: { isOpen: false },
+    };
     deleteSaveMock.mockClear();
     restartGameMock.mockClear();
     setGalaxyTimeUpDialogOpenMock.mockClear();
@@ -147,6 +173,37 @@ describe("demoLimit", () => {
     });
   });
 
+  it("waits to open the demo-end dialog while an event is still resolving", () => {
+    woodenHutCountRef.current = DEMO_WOODEN_HUT_LIMIT;
+    eventGateRef.current.eventDialog = {
+      isOpen: true,
+      currentEvent: { id: "hiddenLake" },
+    };
+
+    processDemoLimit();
+
+    expect(setStateMock).not.toHaveBeenCalled();
+    expect(isDemoEndBlockedByOngoingEvent(eventGateRef.current)).toBe(true);
+  });
+
+  it("waits to open the demo-end dialog during the conclusion handoff", () => {
+    woodenHutCountRef.current = DEMO_WOODEN_HUT_LIMIT;
+    eventGateRef.current.dialogHandoffPending = true;
+
+    processDemoLimit();
+
+    expect(setStateMock).not.toHaveBeenCalled();
+  });
+
+  it("waits to open the demo-end dialog while an outcome dialog is open", () => {
+    woodenHutCountRef.current = DEMO_WOODEN_HUT_LIMIT;
+    eventGateRef.current.rewardDialog = { isOpen: true };
+
+    processDemoLimit();
+
+    expect(setStateMock).not.toHaveBeenCalled();
+  });
+
   it("does not reopen the dialog after the player closes it", () => {
     woodenHutCountRef.current = DEMO_WOODEN_HUT_LIMIT;
     demoEndDialogDismissedRef.current = true;
@@ -194,6 +251,26 @@ describe("demoLimit", () => {
         { buildings: { woodenHut: 0 } },
         { viewOnly: false },
       ),
+    ).toBe(true);
+  });
+
+  it("lets an open event resolve after the hut cap, until the end screen is up", () => {
+    const openLake = {
+      buildings: { woodenHut: DEMO_WOODEN_HUT_LIMIT },
+      eventDialog: { isOpen: true, currentEvent: { id: "hiddenLake" } },
+    };
+    expect(canResolveOpenEventDuringDemoEnd(openLake)).toBe(true);
+    expect(shouldDismissEventWithoutApplying(openLake, { viewOnly: false })).toBe(
+      false,
+    );
+
+    const endScreenUp = {
+      ...openLake,
+      galaxyTimeUpDialogOpen: true,
+    };
+    expect(canResolveOpenEventDuringDemoEnd(endScreenUp)).toBe(false);
+    expect(
+      shouldDismissEventWithoutApplying(endScreenUp, { viewOnly: false }),
     ).toBe(true);
   });
 
