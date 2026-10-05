@@ -354,6 +354,11 @@ export class AudioManager {
     this.playLoopingSound(name, volume, false, fadeSeconds);
   }
 
+  /** True while an event bed still owns the mix. React cleanup can lag the store. */
+  isEventAmbienceActive(): boolean {
+    return this.activeEventAmbience !== null;
+  }
+
   /**
    * Fade out event ambience. Background music is restored by {@link resumeSounds}
    * when the simulation unpauses (typically when the event dialog closes).
@@ -546,10 +551,23 @@ export class AudioManager {
     }
   }
 
+  /**
+   * Crossfade background music back in after a simulation pause.
+   * Returns false when an event bed still owns the mix so the caller can retry
+   * after the dialog unmounts. The store closes before that cleanup runs.
+   */
+  tryResumeAfterSimulationPause(
+    musicFadeInSeconds: number = EVENT_AMBIENCE_FADE_SECONDS,
+  ): boolean {
+    if (this.activeEventAmbience) return false;
+    void this.resumeSounds(musicFadeInSeconds);
+    return true;
+  }
+
   async resumeSounds(
     musicFadeInSeconds: number = EVENT_AMBIENCE_FADE_SECONDS,
   ): Promise<void> {
-    // Event dialog still owns the mix — do not pull BGM back underneath it
+    // Event dialog still owns the mix. Do not pull BGM back underneath it.
     if (this.activeEventAmbience) return;
 
     // Only resume background music if it was playing AND music is not muted

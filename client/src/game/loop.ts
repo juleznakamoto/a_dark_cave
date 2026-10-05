@@ -562,10 +562,17 @@ export function startGameLoop() {
       productionPauseStartedAt = null;
     }
 
-    // Resume sounds when exiting pause state (crossfade BGM back in)
+    // Resume sounds when exiting pause state (crossfade BGM back in).
+    // Keep the flag when the event bed is still active: the dialog store flag
+    // clears before React stops ambience, and a follow-up close (wooden figure
+    // discard, other log-message dialogs) would otherwise drop the resume.
     if (state.isPausedPreviously) {
-      audioManager.resumeSounds(EVENT_AMBIENCE_FADE_SECONDS);
-      useGameStore.setState({ isPausedPreviously: false });
+      const resumed = audioManager.tryResumeAfterSimulationPause(
+        EVENT_AMBIENCE_FADE_SECONDS,
+      );
+      if (resumed) {
+        useGameStore.setState({ isPausedPreviously: false });
+      }
     }
 
     if (!IsDialogOpen) {
