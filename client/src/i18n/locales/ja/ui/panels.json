@@ -214,6 +214,7 @@
     "madnessFromEvents": "出来事から{{value}}",
     "bonusSourceEffect": "{{source}}：{{effect}}",
     "resourceFlowLine": "{{source}} {{amount}}",
+    "atCapacity": "上限に達した（{{limit}}）",
     "bastionDefenseTooltip": "戦闘中に受けるダメージを減らす",
     "bastionIntegrityTooltip": "耐久が0になると敗北する",
     "bastionAttackTooltip": "戦闘の各ラウンドで敵に与えるダメージ",

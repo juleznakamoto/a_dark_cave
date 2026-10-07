@@ -209,7 +209,7 @@ export default function SidePanel() {
     value: row.value,
     productionDelta:
       row.productionDelta === 0 ? undefined : row.productionDelta,
-    tooltip: row.hasFlow ? (
+    tooltip: row.hasFlow || row.atCapacity ? (
       <ResourceFlowTooltip resourceId={row.id} />
     ) : undefined,
     testId: `resource-${row.id}`,

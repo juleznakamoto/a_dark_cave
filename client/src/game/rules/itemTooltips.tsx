@@ -13,6 +13,7 @@ import {
   type CombatItemResourceKey,
   getMaxBombLimit,
   getMaxVeinfireElixirLimit,
+  isResourceAmountAtCap,
 } from "@/game/resourceLimits";
 import { getBuildingHierarchyChain } from "../buildingHierarchy";
 import {
@@ -32,12 +33,13 @@ import {
   getFortificationMarginalStats,
   type FortificationBuildingKey,
 } from "@/game/bastionStats";
-import { capitalizeWords } from "@/lib/utils";
+import { capitalizeWords, formatNumber } from "@/lib/utils";
 import {
   getActionDescription,
   getActionLabel,
   getEffectDescription,
   getEffectName,
+  tWithFallback,
 } from "@/i18n/resolveGameText";
 import {
   getPalisadesTierLabel,
@@ -661,8 +663,25 @@ export function renderItemTooltip(
       )
         ? getMaxBombLimit(gameState)
         : getMaxVeinfireElixirLimit();
+      const held =
+        (gameState.resources as Record<string, number | undefined>)[itemId] ??
+        0;
+      const atCapacity = isResourceAmountAtCap(itemId, held, gameState);
       return (
         <div className="text-xs">
+          {atCapacity && (
+            <div
+              className="mb-1"
+              data-testid="resource-at-capacity"
+            >
+              {tWithFallback(
+                "ui",
+                "sidePanel.atCapacity",
+                "At capacity ({{limit}})",
+                { limit: formatNumber(maxHeld) },
+              )}
+            </div>
+          )}
           {showTitle && (
             <div className="font-bold">
               {getEffectName("weapons", itemId, effect?.name ?? itemId)}

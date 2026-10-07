@@ -238,6 +238,7 @@
     "madnessFromEvents": "{{value}} z wydarzeń",
     "bonusSourceEffect": "{{source}}: {{effect}}",
     "resourceFlowLine": "{{source}} {{amount}}",
+    "atCapacity": "Pełna pojemność ({{limit}})",
     "bastionDefenseTooltip": "Zmniejsza otrzymywane obrażenia w walce",
     "bastionIntegrityTooltip": "Gdy integralność spadnie do 0, przegrywasz bitwę",
     "bastionAttackTooltip": "Obrażenia zadawane wrogom w każdej rundzie walki",

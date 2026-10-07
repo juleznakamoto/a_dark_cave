@@ -8,6 +8,7 @@ import {
   isResourceLimited,
   getStorageBuildingName,
   getMaxVeinfireElixirLimit,
+  isResourceAmountAtCap,
   isVeinfireElixirAtLimit,
 } from './resourceLimits';
 import { updateResource } from './stateHelpers';
@@ -568,6 +569,32 @@ describe('Resource Limits - Integration with Game Components', () => {
       expect(isVeinfireElixirAtLimit(state)).toBe(true);
       state.resources = { ...state.resources, veinfire_elixir: 9 };
       expect(isVeinfireElixirAtLimit(state)).toBe(false);
+    });
+  });
+
+  describe('isResourceAmountAtCap', () => {
+    it('is false for unlimited currencies', () => {
+      expect(isResourceAmountAtCap('gold', 999999, state)).toBe(false);
+    });
+
+    it('is true at the warehouse cap and false below it', () => {
+      const limit = getResourceLimit(state);
+      expect(isResourceAmountAtCap('wood', limit, state)).toBe(true);
+      expect(isResourceAmountAtCap('wood', limit - 1, state)).toBe(false);
+      expect(isResourceAmountAtCap('wood', limit + 50, state)).toBe(true);
+    });
+
+    it('uses the bomb cap instead of warehouse storage', () => {
+      expect(isResourceAmountAtCap('ember_bomb', 10, state)).toBe(true);
+      expect(isResourceAmountAtCap('ember_bomb', 9, state)).toBe(false);
+      state.clothing = { ...state.clothing, grenadier_bag: true };
+      expect(isResourceAmountAtCap('ember_bomb', 10, state)).toBe(false);
+      expect(isResourceAmountAtCap('ember_bomb', 20, state)).toBe(true);
+    });
+
+    it('uses the Veinfire cap', () => {
+      expect(isResourceAmountAtCap('veinfire_elixir', 10, state)).toBe(true);
+      expect(isResourceAmountAtCap('veinfire_elixir', 9, state)).toBe(false);
     });
   });
 });

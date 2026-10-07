@@ -14,7 +14,11 @@ import {
   tWithFallback,
 } from "@/i18n/resolveGameText";
 import { useUiTranslation } from "@/i18n/useUiTranslation";
-import { capitalizeWords, formatSignedNumber } from "@/lib/utils";
+import {
+  getResourceAmountCap,
+  isResourceAmountAtCap,
+} from "@/game/resourceLimits";
+import { capitalizeWords, formatNumber, formatSignedNumber } from "@/lib/utils";
 
 function getResourceFlowSourceLabel(sourceId: string): string {
   if (sourceId === VILLAGER_UPKEEP_SOURCE_ID) {
@@ -40,9 +44,26 @@ export default function ResourceFlowTooltip({
     (s) => getResourceProductionBreakdown(s, resourceId),
     derivedListEqual,
   );
-  if (lines.length === 0) return null;
+  const capacityLimit = useDerivedGameState((s) => {
+    const amount =
+      (s.resources as Record<string, number | undefined>)[resourceId] ?? 0;
+    if (!isResourceAmountAtCap(resourceId, amount, s)) return null;
+    return getResourceAmountCap(resourceId, s);
+  });
+  if (lines.length === 0 && capacityLimit == null) return null;
   return (
     <div className="flex min-w-[7rem] flex-col text-xs">
+      {capacityLimit != null ? (
+        <div
+          className={lines.length > 0 ? "mb-0.5" : undefined}
+          data-testid="resource-at-capacity"
+        >
+          {t("sidePanel.atCapacity", {
+            limit: formatNumber(capacityLimit),
+            defaultValue: "At capacity ({{limit}})",
+          })}
+        </div>
+      ) : null}
       {lines.map((line) => {
         const source = getResourceFlowSourceLabel(line.sourceId);
         const amount = formatSignedNumber(Math.round(line.amount));

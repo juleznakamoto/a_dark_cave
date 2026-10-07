@@ -214,6 +214,7 @@
     "madnessFromEvents": "{{value}} de Eventos",
     "bonusSourceEffect": "{{source}}: {{effect}}",
     "resourceFlowLine": "{{source}} {{amount}}",
+    "atCapacity": "Capacidade atingida ({{limit}})",
     "bastionDefenseTooltip": "Reduz o dano recebido durante o combate",
     "bastionIntegrityTooltip": "Se a integridade chegar a 0, você perde a batalha",
     "bastionAttackTooltip": "Dano que você causa aos inimigos a cada rodada de combate",

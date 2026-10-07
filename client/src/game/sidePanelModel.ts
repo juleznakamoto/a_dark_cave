@@ -30,6 +30,7 @@ import { getSeenResourceKeys } from "@/game/stateHelpers";
 import {
   COMBAT_ITEM_RESOURCES,
   getResourceLimit,
+  isResourceAmountAtCap,
   isResourceLimited,
   type CombatItemResourceKey,
 } from "@/game/resourceLimits";
@@ -57,6 +58,8 @@ export type SidePanelResourceRow = {
   isPrecious: boolean;
   hasSpacingAfter: boolean;
   hasFlow: boolean;
+  /** Displayed amount is at this resource's cap (warehouse, bomb, or elixir). */
+  atCapacity: boolean;
 };
 
 export type SidePanelIdValueRow = {
@@ -224,6 +227,7 @@ export function getSidePanelModel(state: GameState): SidePanelModel {
 
   const assignedJobIds = getAssignedPopulationJobIds(state);
   const productionDeltas = getTotalPopulationEffects(state, assignedJobIds);
+  const limit = getResourceLimit(state);
 
   const resourceRows: SidePanelResourceRow[] = [
     ...orderedPrecious.map((key, index) => ({
@@ -234,6 +238,11 @@ export function getSidePanelModel(state: GameState): SidePanelModel {
       hasSpacingAfter:
         index === orderedPrecious.length - 1 && otherResources.length > 0,
       hasFlow: hasResourceProductionBreakdown(state, key),
+      atCapacity: isResourceAmountAtCap(
+        key,
+        resources[key as keyof typeof resources] ?? 0,
+        state,
+      ),
     })),
     ...otherResources.map((key) => ({
       id: key,
@@ -242,6 +251,11 @@ export function getSidePanelModel(state: GameState): SidePanelModel {
       isPrecious: false,
       hasSpacingAfter: false,
       hasFlow: hasResourceProductionBreakdown(state, key),
+      atCapacity: isResourceAmountAtCap(
+        key,
+        resources[key as keyof typeof resources] ?? 0,
+        state,
+      ),
     })),
   ];
 
@@ -380,7 +394,6 @@ export function getSidePanelModel(state: GameState): SidePanelModel {
     });
   }
 
-  const limit = getResourceLimit(state);
   const hasResourceAtLimit = SIDE_PANEL_RESOURCE_ORDER.some((key) => {
     const amount = resources[key as keyof typeof resources] ?? 0;
     return isResourceLimited(key, state) && amount >= limit;

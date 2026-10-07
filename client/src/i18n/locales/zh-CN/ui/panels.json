@@ -214,6 +214,7 @@
     "madnessFromEvents": "事件 {{value}}",
     "bonusSourceEffect": "{{source}}: {{effect}}",
     "resourceFlowLine": "{{source}} {{amount}}",
+    "atCapacity": "已达上限（{{limit}}）",
     "bastionDefenseTooltip": "战斗时减少受到的伤害",
     "bastionIntegrityTooltip": "完整度归零则战败",
     "bastionAttackTooltip": "每回合对敌人造成的伤害",

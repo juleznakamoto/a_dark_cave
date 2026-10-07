@@ -29,7 +29,14 @@ import {
 import { useIsMobile } from "@/hooks/use-mobile";
 import { useNewItemPulseTooltips } from "@/hooks/useNewItemPulseTooltip";
 import { cn } from "@/lib/utils";
-import { getResourceLimit, isResourceLimited } from "@/game/resourceLimits";
+import {
+  getMaxBombLimit,
+  getMaxVeinfireElixirLimit,
+  getResourceLimit,
+  isBombResource,
+  isResourceLimited,
+  isVeinfireElixirResource,
+} from "@/game/resourceLimits";
 import {
   isVillagerFoodUpkeepActive,
   isVillagerWoodUpkeepActive,
@@ -239,6 +246,31 @@ const RESOURCE_ROW_TEXT_CLASS = "text-xs leading-tight";
 /** Third column: production rate and change popup share one right-aligned slot. */
 const RESOURCE_DELTA_SLOT_CLASS =
   "block w-full min-w-[3rem] text-right font-mono tabular-nums whitespace-nowrap";
+
+/** "!" reserved on every capped-resource row so digits stay aligned. Yellow on the Village tab. */
+function ResourceCapacityMark({
+  show,
+  yellow,
+  resourceId,
+}: {
+  show: boolean;
+  yellow: boolean;
+  resourceId: string;
+}) {
+  return (
+    <span
+      className={cn(
+        "ml-0.5 inline-block w-[1ch] shrink-0 text-center font-semibold",
+        yellow && "text-yellow-500",
+        !show && "invisible",
+      )}
+      data-testid={show ? `capacity-mark-${resourceId}` : undefined}
+      aria-hidden={!show}
+    >
+      !
+    </span>
+  );
+}
 
 function ResourceDeltaSlot({
   resourceId,
@@ -554,6 +586,7 @@ export default function SidePanelSection({
   const prevValuesRef = useRef<Map<string, number>>(new Map());
   const isInitialRender = useRef(true);
   const storageLimit = useDerivedGameState((s) => getResourceLimit(s));
+  const bombLimit = useDerivedGameState((s) => getMaxBombLimit(s));
   const limitedResourceKeySig = useDerivedGameState((s) =>
     Object.keys(s.resources)
       .filter((key) => isResourceLimited(key, s))
@@ -946,6 +979,17 @@ export default function SidePanelSection({
       limit !== null &&
       typeof item.value === "number" &&
       item.value >= limit;
+    const showCapacitySlot =
+      sectionId === "resources" || sectionId === "combatItems";
+    const combatItemAtCapacity =
+      sectionId === "combatItems" &&
+      typeof item.value === "number" &&
+      (isBombResource(item.id)
+        ? item.value >= bombLimit
+        : isVeinfireElixirResource(item.id) &&
+          item.value >= getMaxVeinfireElixirLimit());
+    const showCapacityMark =
+      (sectionId === "resources" && isAtMax) || combatItemAtCapacity;
 
     // Check if this is a relic, weapon, tool, blessing, or schematic that has effect information
     const relicEffect = clothingEffects[item.id];
@@ -1171,7 +1215,22 @@ export default function SidePanelSection({
 
     const labelValueCells = usesLabelValueGridLayout ? (
       <>
-        <span className={valueCellClassName}>{displayValue}</span>
+        <span
+          className={cn(
+            valueCellClassName,
+            showCapacitySlot &&
+              "inline-flex w-full items-baseline justify-end",
+          )}
+        >
+          <span>{displayValue}</span>
+          {showCapacitySlot ? (
+            <ResourceCapacityMark
+              show={showCapacityMark}
+              yellow={isVillageTab}
+              resourceId={item.id}
+            />
+          ) : null}
+        </span>
         {resourceThirdColumn}
       </>
     ) : null;

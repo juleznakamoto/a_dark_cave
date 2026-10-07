@@ -86,6 +86,31 @@ export function isResourceLimited(resourceKey: string, state: GameState): boolea
   return !UNLIMITED_RESOURCES.includes(resourceKey);
 }
 
+/** Warehouse, bomb-bag, or Veinfire cap. Null for uncapped currencies. */
+export function getResourceAmountCap(
+  resourceKey: string,
+  state: GameState,
+): number | null {
+  if (isBombResource(resourceKey)) return getMaxBombLimit(state);
+  if (isVeinfireElixirResource(resourceKey)) return getMaxVeinfireElixirLimit();
+  if (!isResourceLimited(resourceKey, state)) return null;
+  return getResourceLimit(state);
+}
+
+/**
+ * True when this stack cannot grow: warehouse storage, bomb bag, or Veinfire cap.
+ * Amount is passed in so callers can use a displayed value without re-reading state.
+ */
+export function isResourceAmountAtCap(
+  resourceKey: string,
+  amount: number,
+  state: GameState,
+): boolean {
+  const cap = getResourceAmountCap(resourceKey, state);
+  if (cap == null) return false;
+  return amount >= cap;
+}
+
 export type ConstrainResourceOptions = {
   /** Amount before this write. Used to preserve existing overcap on production/action paths. */
   previousAmount?: number;

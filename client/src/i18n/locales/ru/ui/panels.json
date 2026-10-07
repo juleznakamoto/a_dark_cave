@@ -238,6 +238,7 @@
     "madnessFromEvents": "{{value}} от событий",
     "bonusSourceEffect": "{{source}}: {{effect}}",
     "resourceFlowLine": "{{source}} {{amount}}",
+    "atCapacity": "Лимит достигнут ({{limit}})",
     "bastionDefenseTooltip": "Снижает входящий урон в бою",
     "bastionIntegrityTooltip": "При нулевой целостности вы проиграете бой",
     "bastionAttackTooltip": "Урон врагам каждый боевой раунд",
