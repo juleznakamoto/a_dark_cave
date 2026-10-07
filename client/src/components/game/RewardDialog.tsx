@@ -321,7 +321,11 @@ export default function RewardDialog({
       successLog={resolveOutcomeLogMessage(successLog)}
       title={title?.trim() ? title : t("ui:reward.actionReward")}
       variant="success"
-      buttonText={t("ui:reward.claimRewards")}
+      buttonText={
+        hasRewardItems && !hasLosses
+          ? t("ui:reward.claimRewards")
+          : t("common:buttons.continue")
+      }
       buttonId="reward-dialog-continue"
     >
       {content}
