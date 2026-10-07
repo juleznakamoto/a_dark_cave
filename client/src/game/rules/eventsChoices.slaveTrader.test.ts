@@ -1,5 +1,7 @@
-import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
+import { describe, it, expect, vi, beforeAll, beforeEach, afterEach } from "vitest";
 import { gameStateSchema } from "@shared/schema";
+import i18n from "@/i18n";
+import { ensureGameplayLocalesLoaded } from "@/i18n/loadLocaleResources";
 import { choiceEvents } from "./eventsChoices";
 import { resolveEventLogMessage } from "@/i18n/resolveGameText";
 
@@ -38,6 +40,11 @@ describe("slaveTrader condition", () => {
 });
 
 describe("slaveTrader freeSlaves", () => {
+  beforeAll(async () => {
+    await ensureGameplayLocalesLoaded();
+    await i18n.changeLanguage("en");
+  });
+
   beforeEach(() => {
     vi.spyOn(Math, "random").mockReturnValue(0);
   });
@@ -81,6 +88,19 @@ describe("slaveTrader freeSlaves", () => {
     expect(result.villagers?.free).toBe(8);
     expect(result.stats?.madnessFromEvents).toBe(1);
     expect(result.story?.seen?.slaveTraderEvent).toBe(true);
+  });
+
+  it("subtracts 1 from a negative event-madness total", () => {
+    const choice = choiceEvents.slaveTrader.choices!.find(
+      (c) => c.id === "freeSlaves",
+    )!;
+    const state = {
+      ...baseState(),
+      stats: { ...baseState().stats, madnessFromEvents: -19 },
+    };
+    const result = choice.effect(state);
+
+    expect(result.stats?.madnessFromEvents).toBe(-20);
   });
 
   it("reports 100% success chance", () => {

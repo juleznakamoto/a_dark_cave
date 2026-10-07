@@ -1194,10 +1194,7 @@ export const choiceEvents: Record<string, GameEvent> = {
             },
             stats: {
               ...state.stats,
-              madnessFromEvents: Math.max(
-                0,
-                (state.stats.madnessFromEvents || 0) - 1,
-              ),
+              madnessFromEvents: (state.stats.madnessFromEvents || 0) - 1,
             },
             story: {
               ...state.story,
