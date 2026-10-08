@@ -53,8 +53,10 @@ client/public/email/*
 !client/public/email/steam-launch-header.jpg
 !client/public/email/icons/
 !client/public/email/icons/steam.png
+!client/public/email/icons/youtube.png
 !client/public/email/icons/reddit.png
 !client/public/email/icons/instagram.png
+!client/public/email/light-fire.gif
 
 # One-shot local helper scripts (never commit)
 _tmp_*
