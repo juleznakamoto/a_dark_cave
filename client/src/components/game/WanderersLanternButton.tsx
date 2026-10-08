@@ -102,7 +102,7 @@ export function WanderersLanternButton() {
           onClick={() => {
             const state = useGameStore.getState();
             if (!isWanderersLanternReady(state)) return;
-            spawnParticles(50, buttonRef, { fromCenter: true });
+            spawnParticles(30, buttonRef, { fromCenter: true });
             setBurst(true);
             useGameStore.setState(activateWanderersLantern(state));
           }}

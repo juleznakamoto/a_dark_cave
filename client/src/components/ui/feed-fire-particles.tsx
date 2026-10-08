@@ -101,7 +101,7 @@ export function useFeedFireParticles() {
     const newSparks: Spark[] = Array.from({ length: count }).map(() => ({
       id: idRef.current++,
       angle: (Math.random() * 120 - 150) * (Math.PI / 180),
-      distance: Math.random() * 180 + 40,
+      distance: (Math.random() * 180 + 40) * (fromCenter ? 0.3 : 1),
       color: palette[Math.floor(Math.random() * palette.length)],
       lifetime: 0.8 + Math.random() * 1.2,
       offsetX: fromCenter
