@@ -1,6 +1,6 @@
 import { useStoreWithEqualityFn } from "zustand/traditional";
-import type { GameState } from "@shared/schema";
 import { useGameStore } from "@/game/state";
+import type { VillagerBlockingState } from "@/game/rules/villagerBlockingActions";
 
 export type GameStoreSnapshot = ReturnType<typeof useGameStore.getState>;
 
@@ -101,17 +101,25 @@ export function derivedListEqual<T extends object>(
 }
 
 /**
+ * Saved state plus store-only execution timers. Selectors that need to see
+ * an action already running must take this, not a bare `GameState`.
+ */
+export type DerivedGameState = VillagerBlockingState;
+
+/**
  * Subscribe to a derived helper result. Helpers may still take GameState
  * inside the selector; the component only re-renders when the result
  * changes (`Object.is`, or a custom equality fn for new-array returns).
+ * The store is passed as `DerivedGameState` because `executionStartTimes`
+ * lives on the store and is not part of the persisted schema.
  */
 export function useDerivedGameState<T>(
-  selector: (state: GameState) => T,
+  selector: (state: DerivedGameState) => T,
   equalityFn: (a: T, b: T) => boolean = Object.is,
 ): T {
   return useStoreWithEqualityFn(
     useGameStore,
-    (s) => selector(s as unknown as GameState),
+    (s) => selector(s as unknown as DerivedGameState),
     equalityFn,
   );
 }

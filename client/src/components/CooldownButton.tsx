@@ -71,12 +71,16 @@ export function gameActionDisabledLabelClassName(disabled = false): string {
 
 /** Cooldown / execution wash. Same token and alpha as the blocked outline border. */
 export const GAME_ACTION_COOLDOWN_WASH_CLASS = "bg-orange-950/50";
+const GAME_ACTION_COOLDOWN_WASH_EDGE_FILL_GRADIENT =
+  "bg-gradient-to-r from-transparent to-orange-900/40";
+const GAME_ACTION_COOLDOWN_WASH_EDGE_RECEDE_GRADIENT =
+  "bg-gradient-to-r from-transparent to-black/40";
 /** Short brighter fade on a filling wipe (execution / play-time progress). */
 export const GAME_ACTION_COOLDOWN_WASH_EDGE_CLASS =
-  "absolute inset-y-0 right-0 w-3 bg-gradient-to-r from-transparent to-orange-900/40";
+  `absolute inset-y-0 right-0 w-3 ${GAME_ACTION_COOLDOWN_WASH_EDGE_FILL_GRADIENT}`;
 /** Darker fade on a receding wipe (action cooldown / play-time cooldown). */
 export const GAME_ACTION_COOLDOWN_WASH_EDGE_RECEDING_CLASS =
-  "absolute inset-y-0 right-0 w-3 bg-gradient-to-r from-transparent to-black/40";
+  `absolute inset-y-0 right-0 w-3 ${GAME_ACTION_COOLDOWN_WASH_EDGE_RECEDE_GRADIENT}`;
 
 interface CooldownButtonProps {
   children: React.ReactNode;
@@ -342,7 +346,8 @@ const CooldownButton = forwardRef<HTMLButtonElement, CooldownButtonProps>(
     const timedWipe = executionWipe ?? cooldownWipe;
 
     // Preview / play-time still set width in React. Execution and action
-    // cooldown use CSS scaleX so remaining-time ticks do not restart them.
+    // cooldown use a CSS clip-path wipe so remaining-time ticks do not restart
+    // them, and so the corner radius stays constant (scaleX would squash it).
     const overlayWidth = previewOverlay
       ? previewOverlay.widthPercent
       : isPlayTimeOverlayActive
@@ -446,8 +451,8 @@ const CooldownButton = forwardRef<HTMLButtonElement, CooldownButtonProps>(
                 : "static-wash"
             }
             className={cn(
-              "pointer-events-none absolute inset-y-0 left-0 z-0 overflow-hidden rounded-md transition-opacity duration-200",
-              timedWipe && "right-0 origin-left",
+              "adc-cooldown-wash pointer-events-none absolute inset-y-0 left-0 z-0 overflow-hidden transition-opacity duration-200",
+              timedWipe && "right-0",
               GAME_ACTION_COOLDOWN_WASH_CLASS,
               timedWipe?.className,
               isTimedWipePaused && timedWipe?.className && ADC_PROGRESS_WIPE_PAUSED_CLASS,
@@ -466,13 +471,29 @@ const CooldownButton = forwardRef<HTMLButtonElement, CooldownButtonProps>(
             }
             aria-hidden
           >
-            <div
-              className={
-                isFillWipe
-                  ? GAME_ACTION_COOLDOWN_WASH_EDGE_CLASS
-                  : GAME_ACTION_COOLDOWN_WASH_EDGE_RECEDING_CLASS
-              }
-            />
+            {timedWipe ? (
+              <div
+                className={cn(
+                  "absolute inset-y-0 w-3",
+                  isFillWipe
+                    ? GAME_ACTION_COOLDOWN_WASH_EDGE_FILL_GRADIENT
+                    : GAME_ACTION_COOLDOWN_WASH_EDGE_RECEDE_GRADIENT,
+                  timedWipe.edgeClassName,
+                  isTimedWipePaused &&
+                    timedWipe.edgeClassName &&
+                    ADC_PROGRESS_WIPE_PAUSED_CLASS,
+                )}
+                style={timedWipe.edgeStyle}
+              />
+            ) : (
+              <div
+                className={
+                  isFillWipe
+                    ? GAME_ACTION_COOLDOWN_WASH_EDGE_CLASS
+                    : GAME_ACTION_COOLDOWN_WASH_EDGE_RECEDING_CLASS
+                }
+              />
+            )}
           </div>
         )}
 

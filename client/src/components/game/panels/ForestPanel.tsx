@@ -9,7 +9,8 @@ import {
 } from "@/game/rules";
 import {
   getResourceGainTooltip,
-  getActionDurationLine,
+  ActionTooltipResourceRows,
+  actionTooltipHasResourceSection,
 } from "@/game/rules/tooltips";
 import { FOCUS_ELIGIBLE_ACTIONS } from "@/game/rules/actionEffects";
 import { getFocusTooltipHeaderTrailing } from "@/game/rules/focusTooltipIndicator";
@@ -259,13 +260,8 @@ export default function ForestPanel() {
     );
 
     // Expedition actions require free villagers during execution
-    const expeditionVillagersRequired = action.expeditionVillagersRequired
-      ? action.expeditionVillagersRequired(state)
-      : 0;
-    const hasExpeditionRequirement = expeditionVillagersRequired > 0;
-    const villagerRequirementNotMet =
-      hasExpeditionRequirement &&
-      (state.villagers?.free ?? 0) < expeditionVillagersRequired;
+    const hasExpeditionRequirement =
+      (action.expeditionVillagersRequired?.(state) ?? 0) > 0;
 
     // Check if this is chopWood, hunt, sacrifice, or bomb trade action
     const isChopWood = actionId === "chopWood";
@@ -327,16 +323,7 @@ export default function ForestPanel() {
     ) {
       let tooltipContent;
 
-      const villagerMessage = hasExpeditionRequirement ? (
-        <div className={villagerRequirementNotMet ? "text-muted-foreground" : ""}>
-          {t("cave.requiresFreeVillagers", {
-            count: expeditionVillagersRequired,
-          })}
-        </div>
-      ) : null;
-
-      if (resourceGainTooltip && !villagerRequirementNotMet) {
-        // chopWood or hunt: show resource gains only
+      if (resourceGainTooltip) {
         tooltipContent = resourceGainTooltip;
       } else if (
         (isAnimalsSacrifice || isHumansSacrifice || isFinanceExpedition) &&
@@ -344,43 +331,38 @@ export default function ForestPanel() {
       ) {
         // Animals/Humans sacrifice / Finance Expedition: show effect + cost
         const costBreakdown = getActionCostBreakdown(actionId, state);
-        const durationLine = getActionDurationLine(actionId, state);
         const effectLines = resolveActionTooltipEffects(
           action.tooltipEffects,
           state,
         );
+        const hasResourceSection = actionTooltipHasResourceSection(
+          actionId,
+          state,
+          costBreakdown.length,
+        );
         tooltipContent = (
           <div className="text-xs whitespace-nowrap">
-            {isFinanceExpedition && villagerMessage}
-            {isFinanceExpedition &&
-              villagerMessage &&
-              (effectLines.length > 0 ||
-                costBreakdown.length > 0 ||
-                durationLine != null) && (
-                <div className="border-t border-border my-1" />
-              )}
+            <ActionTooltipResourceRows
+              actionId={actionId}
+              state={state}
+              costs={costBreakdown}
+            />
+            {hasResourceSection && effectLines.length > 0 && (
+              <div className="border-t border-border my-1" />
+            )}
             {effectLines.map((effect, index) => (
               <div key={`effect-${index}`}>{effect}</div>
             ))}
-            {(costBreakdown.length > 0 || durationLine != null) &&
-              effectLines.length > 0 && (
-                <div className="border-t border-border my-1" />
-              )}
-            {costBreakdown.map((costItem, index) => (
-              <div
-                key={index}
-                className={costItem.satisfied ? "" : "text-muted-foreground"}
-              >
-                {costItem.text}
-              </div>
-            ))}
-            {durationLine}
           </div>
         );
       } else {
         // Other actions with costs and/or success chance
         const costBreakdown = getActionCostBreakdown(actionId, state);
-        const durationLine = getActionDurationLine(actionId, state);
+        const hasResourceSection = actionTooltipHasResourceSection(
+          actionId,
+          state,
+          costBreakdown.length,
+        );
         const forestTradeGainLine =
           isTradeButton && action.effects
             ? formatForestPanelResourceGainLine(
@@ -389,25 +371,14 @@ export default function ForestPanel() {
             : null;
         tooltipContent = (
           <div className="text-xs whitespace-nowrap">
-            {villagerMessage}
-            {villagerMessage &&
-              (costBreakdown.length > 0 ||
-                showSuccessTooltip ||
-                durationLine != null) && (
-                <div className="border-t border-border my-1" />
-              )}
-            {costBreakdown.map((costItem, index) => (
-              <div
-                key={index}
-                className={costItem.satisfied ? "" : "text-muted-foreground"}
-              >
-                {costItem.text}
-              </div>
-            ))}
-            {durationLine}
+            <ActionTooltipResourceRows
+              actionId={actionId}
+              state={state}
+              costs={costBreakdown}
+            />
             {forestTradeGainLine != null && (
               <>
-                {(villagerMessage || costBreakdown.length > 0) && (
+                {hasResourceSection && (
                   <div className="border-t border-border my-1" />
                 )}
                 <div>{forestTradeGainLine}</div>
@@ -415,11 +386,9 @@ export default function ForestPanel() {
             )}
             {showSuccessTooltip && (
               <>
-                {(villagerMessage ||
-                  costBreakdown.length > 0 ||
-                  forestTradeGainLine != null) && (
-                    <div className="border-t border-border my-1" />
-                  )}
+                {(hasResourceSection || forestTradeGainLine != null) && (
+                  <div className="border-t border-border my-1" />
+                )}
                 <SuccessChanceTooltipContent
                   gameState={state}
                   successChance={action.success_chance}

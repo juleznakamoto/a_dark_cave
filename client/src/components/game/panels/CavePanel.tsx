@@ -9,7 +9,7 @@ import {
 import { getActionBonuses } from "@/game/rules/effectsCalculation";
 import {
   getResourceGainTooltip,
-  getActionDurationLine,
+  ActionTooltipResourceRows,
 } from "@/game/rules/tooltips";
 import CooldownButton, {
   gameActionButtonGridClassName,
@@ -267,13 +267,8 @@ export default function CavePanel() {
     const isCaveExploreAction = caveExploreActions.includes(actionId);
     const isChopWood = actionId === "chopWood";
     const isCraftAction = actionId.startsWith("craft");
-    const expeditionVillagersRequired = action.expeditionVillagersRequired
-      ? action.expeditionVillagersRequired(state)
-      : 0;
-    const hasExpeditionRequirement = expeditionVillagersRequired > 0;
-    const villagerRequirementNotMet =
-      hasExpeditionRequirement &&
-      (state.villagers?.free ?? 0) < expeditionVillagersRequired;
+    const hasExpeditionRequirement =
+      (action.expeditionVillagersRequired?.(state) ?? 0) > 0;
     const focusTrailing = getFocusTooltipHeaderTrailing(actionId, state);
     const resourceGainTooltip =
       isChopWood || isMineAction || isCaveExploreAction || isCraftAction
@@ -310,51 +305,21 @@ export default function CavePanel() {
     const upgradeKey = ACTION_TO_UPGRADE_KEY[actionId];
 
     if (showCost || resourceGainTooltip || hasExpeditionRequirement) {
-      const villagerRequirementLine = hasExpeditionRequirement ? (
-        <div
-          className={villagerRequirementNotMet ? "text-muted-foreground" : ""}
-        >
-          {t("cave.requiresFreeVillagers", {
-            count: expeditionVillagersRequired,
-          })}
-        </div>
-      ) : null;
-
       let tooltipHeader: ReactNode;
       if (resourceGainTooltip) {
-        tooltipHeader = villagerRequirementLine ? (
-          <div className="whitespace-nowrap">
-            {villagerRequirementLine}
-            <div className="border-t border-border my-1" />
-            {resourceGainTooltip}
-          </div>
-        ) : (
-          resourceGainTooltip
-        );
+        tooltipHeader = resourceGainTooltip;
       } else {
         const costBreakdown = getActionCostBreakdown(actionId, state);
         const bonuses = state.activeEffects?.actionBonuses?.[actionId];
         const cooldownReduction = bonuses?.cooldownReduction || 0;
 
-        const durationLine = getActionDurationLine(actionId, state);
         tooltipHeader = (
           <div className="whitespace-nowrap">
-            {villagerRequirementLine}
-            {villagerRequirementLine &&
-              (costBreakdown.length > 0 ||
-                cooldownReduction > 0 ||
-                durationLine != null) && (
-                <div className="border-t border-border my-1" />
-              )}
-            {costBreakdown.map((costItem, index) => (
-              <div
-                key={index}
-                className={costItem.satisfied ? "" : "text-muted-foreground"}
-              >
-                {costItem.text}
-              </div>
-            ))}
-            {durationLine}
+            <ActionTooltipResourceRows
+              actionId={actionId}
+              state={state}
+              costs={costBreakdown}
+            />
             {cooldownReduction > 0 && (
               <div>
                 {t("cave.cooldownReduction", { seconds: cooldownReduction })}

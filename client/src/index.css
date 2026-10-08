@@ -1992,32 +1992,60 @@ html.adc-text-large .game-panel-produce-effects {
   animation: compass-glow 1s linear;
 }
 
+/* Fill sits inside the 1px outline. Outer button radius is rounded-md
+ (`var(--radius) - 2px`); the matching inner radius is 1px smaller so the
+ wash meets the stroke instead of leaving a corner gap. */
+.adc-cooldown-wash {
+  border-radius: max(0px, calc(var(--radius) - 3px));
+}
+
 /* Shared action-button progress wipe (execution fill / cooldown recede).
  Seek with animation-delay: -elapsed so N buttons share no 10 Hz React ticks.
- Animate scaleX (compositor) instead of width (layout) so many bars stay cheap. */
+ clip-path keeps that inner radius constant. scaleX would squash it into an
+ ellipse. The edge highlight moves with `left` so its width stays 0.75rem
+ instead of shrinking with the bar. */
 @keyframes adc-progress-wipe-fill {
   from {
-    transform: scaleX(0);
+    clip-path: inset(0 100% 0 0 round max(0px, calc(var(--radius) - 3px)));
   }
 
   to {
-    transform: scaleX(1);
+    clip-path: inset(0 0% 0 0 round max(0px, calc(var(--radius) - 3px)));
   }
 }
 
 @keyframes adc-progress-wipe-recede {
   from {
-    transform: scaleX(1);
+    clip-path: inset(0 0% 0 0 round max(0px, calc(var(--radius) - 3px)));
   }
 
   to {
-    transform: scaleX(0);
+    clip-path: inset(0 100% 0 0 round max(0px, calc(var(--radius) - 3px)));
+  }
+}
+
+@keyframes adc-progress-edge-fill {
+  from {
+    left: 0%;
+  }
+
+  to {
+    left: 100%;
+  }
+}
+
+@keyframes adc-progress-edge-recede {
+  from {
+    left: 100%;
+  }
+
+  to {
+    left: 0%;
   }
 }
 
 .adc-progress-wipe {
   width: 100%;
-  transform-origin: left center;
   animation-timing-function: linear;
   animation-fill-mode: both;
 }
@@ -2028,6 +2056,20 @@ html.adc-text-large .game-panel-produce-effects {
 
 .adc-progress-wipe--recede {
   animation-name: adc-progress-wipe-recede;
+}
+
+.adc-progress-wipe-edge {
+  transform: translateX(-100%);
+  animation-timing-function: linear;
+  animation-fill-mode: both;
+}
+
+.adc-progress-wipe-edge--fill {
+  animation-name: adc-progress-edge-fill;
+}
+
+.adc-progress-wipe-edge--recede {
+  animation-name: adc-progress-edge-recede;
 }
 
 .adc-progress-wipe--paused {

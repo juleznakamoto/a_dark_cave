@@ -61,11 +61,16 @@ describe("CooldownButton execution wash", () => {
     expect(delayMs).toBeLessThanOrEqual(-5000);
     expect(delayMs).toBeGreaterThan(-5500);
     expect((wash as HTMLElement).style.width).toBe("100%");
-    const scaleX = Number.parseFloat(
-      ((wash as HTMLElement).style.transform.match(/scaleX\(([^)]+)\)/) ?? [])[1] ?? "",
+    const clip = (wash as HTMLElement).style.clipPath;
+    const hidden = Number.parseFloat(
+      (clip.match(/inset\(0 ([0-9.]+)%/) ?? [])[1] ?? "",
     );
-    expect(scaleX).toBeGreaterThan(0.08);
-    expect(scaleX).toBeLessThan(0.10);
+    const shown = 1 - hidden / 100;
+    expect(shown).toBeGreaterThan(0.08);
+    expect(shown).toBeLessThan(0.10);
+    expect(clip).toContain("round");
+    expect((wash as HTMLElement).style.transform).toBe("");
+    expect(wash?.querySelector(".adc-progress-wipe-edge--fill")).toBeTruthy();
 
     expect(
       setIntervalSpy.mock.calls.filter(([, ms]) => ms === 100),

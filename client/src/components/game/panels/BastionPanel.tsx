@@ -6,7 +6,7 @@ import {
   getBastionRepairTooltipRows,
   getResourcesFromActionCost,
 } from "@/game/rules";
-import { getActionDurationLine } from "@/game/rules/tooltips";
+import { ActionTooltipResourceRows } from "@/game/rules/tooltips";
 import {
   isDemoEndBastionHealRevealed,
   isDemoEndBastionRepairRevealed,
@@ -71,15 +71,11 @@ export default function BastionPanel({
     if (rows.length === 0) return undefined;
     return (
       <div className="text-xs whitespace-nowrap">
-        {rows.map((cost, index) => (
-          <div
-            key={index}
-            className={cost.satisfied ? "" : "text-muted-foreground"}
-          >
-            {cost.text}
-          </div>
-        ))}
-        {getActionDurationLine(repairActionId, state)}
+        <ActionTooltipResourceRows
+          actionId={repairActionId}
+          state={state}
+          costs={rows}
+        />
       </div>
     );
   };
@@ -118,19 +114,11 @@ export default function BastionPanel({
                 className=""
                 tooltip={
                   <div className="text-xs whitespace-nowrap">
-                    {getActionCostBreakdown("healRestlessKnight", state).map(
-                      (row, index) => (
-                        <div
-                          key={index}
-                          className={
-                            row.satisfied ? "" : "text-muted-foreground"
-                          }
-                        >
-                          {row.text}
-                        </div>
-                      ),
-                    )}
-                    {getActionDurationLine("healRestlessKnight", state)}
+                    <ActionTooltipResourceRows
+                      actionId="healRestlessKnight"
+                      state={state}
+                      costs={getActionCostBreakdown("healRestlessKnight", state)}
+                    />
                   </div>
                 }
                 onMouseEnter={() => {
@@ -171,19 +159,11 @@ export default function BastionPanel({
                 className=""
                 tooltip={
                   <div className="text-xs whitespace-nowrap">
-                    {getActionCostBreakdown("healElderWizard", state).map(
-                      (row, index) => (
-                        <div
-                          key={index}
-                          className={
-                            row.satisfied ? "" : "text-muted-foreground"
-                          }
-                        >
-                          {row.text}
-                        </div>
-                      ),
-                    )}
-                    {getActionDurationLine("healElderWizard", state)}
+                    <ActionTooltipResourceRows
+                      actionId="healElderWizard"
+                      state={state}
+                      costs={getActionCostBreakdown("healElderWizard", state)}
+                    />
                   </div>
                 }
                 onMouseEnter={() => {

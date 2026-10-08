@@ -25,8 +25,14 @@ describe("getCssTimedWipeStyle", () => {
     expect(wipe.style.animationDuration).toBe("10000ms");
     expect(wipe.style.animationDelay).toBe("-5000ms");
     expect(wipe.style.width).toBe("100%");
-    expect(wipe.style.transform).toBe("scaleX(0.5)");
-    expect(wipe.style.transformOrigin).toBe("left center");
+    expect(wipe.style.clipPath).toBe(
+      "inset(0 50% 0 0 round max(0px, calc(var(--radius) - 3px)))",
+    );
+    expect(wipe.style.transform).toBeUndefined();
+    expect(wipe.edgeClassName).toContain("adc-progress-wipe-edge--fill");
+    expect(wipe.edgeStyle.animationDelay).toBe("-5000ms");
+    expect(wipe.edgeStyle.left).toBe("50%");
+    expect(wipe.edgeStyle.transform).toBe("translateX(-100%)");
   });
 
   it("seeks a recede wipe from the same elapsed fraction", () => {
@@ -40,7 +46,11 @@ describe("getCssTimedWipeStyle", () => {
     expect(wipe.style.animationDuration).toBe("4000ms");
     expect(wipe.style.animationDelay).toBe("-1000ms");
     expect(wipe.style.width).toBe("100%");
-    expect(wipe.style.transform).toBe("scaleX(0.75)");
+    expect(wipe.style.clipPath).toBe(
+      "inset(0 25% 0 0 round max(0px, calc(var(--radius) - 3px)))",
+    );
+    expect(wipe.edgeClassName).toContain("adc-progress-wipe-edge--recede");
+    expect(wipe.edgeStyle.left).toBe("75%");
   });
 
   it("snaps to the finished scale when time is up", () => {
@@ -51,8 +61,12 @@ describe("getCssTimedWipeStyle", () => {
       nowMs: 1_000,
     });
     expect(fill.className).toBe("");
+    expect(fill.edgeClassName).toBe("");
     expect(fill.style.width).toBe("100%");
-    expect(fill.style.transform).toBe("scaleX(1)");
+    expect(fill.style.clipPath).toBe(
+      "inset(0 0% 0 0 round max(0px, calc(var(--radius) - 3px)))",
+    );
+    expect(fill.edgeStyle.left).toBe("100%");
 
     const recede = getCssTimedWipeStyle({
       startMs: 0,
@@ -61,7 +75,10 @@ describe("getCssTimedWipeStyle", () => {
       nowMs: 2_000,
     });
     expect(recede.style.width).toBe("100%");
-    expect(recede.style.transform).toBe("scaleX(0)");
+    expect(recede.style.clipPath).toBe(
+      "inset(0 100% 0 0 round max(0px, calc(var(--radius) - 3px)))",
+    );
+    expect(recede.edgeStyle.left).toBe("0%");
   });
 });
 

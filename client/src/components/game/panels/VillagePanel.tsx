@@ -2,7 +2,10 @@ import React from "react";
 import { BUILD_ACTION_APPEND_LAST_IDS } from "@/game/actionUnlockOrder";
 import { useActionUnlockOrder } from "@/game/useActionUnlockOrder";
 import { useGameStore } from "@/game/state";
-import { useGameStoreWithoutTickClock } from "@/game/useGameStoreWithoutTickClock";
+import {
+  useDerivedGameState,
+  useGameStoreWithoutTickClock,
+} from "@/game/useGameStoreWithoutTickClock";
 import {
   gameActions,
   shouldShowAction,
@@ -10,6 +13,7 @@ import {
   getActionCostBreakdown,
   getResourcesFromActionCost,
 } from "@/game/rules";
+import { hasVisibleVillagerBlockingAction } from "@/game/rules/villagerBlockingActions";
 import { BRIMSTONE_FLUX_DURATION_MS } from "@/game/rules/eventsBrimstoneFlux";
 import {
   feastTooltip,
@@ -24,7 +28,7 @@ import {
   madnessProductionTooltip,
   staringDeerTooltip,
   forestFearTooltip,
-  getActionDurationLine,
+  ActionTooltipResourceRows,
 } from "@/game/rules/tooltips";
 import { getBuildingDisplayName } from "@/game/rules/buildingTooltipSections";
 import {
@@ -972,21 +976,14 @@ export default function VillagePanel() {
       : null;
     const isUpgrade = buildingKey ? isBuildingUpgrade(buildingKey) : false;
     const revealedEffects = getRevealedEffectsForActionTooltip(actionId, state);
-    const durationLine = getActionDurationLine(actionId, state);
     const tooltipContent = composeActionTooltip({
       header: (
         <div className="flex-1 min-w-0 whitespace-nowrap">
-          {costBreakdown.map((cost, index) => (
-            <div
-              key={index}
-              className={
-                cost.satisfied ? "text-foreground" : "text-muted-foreground"
-              }
-            >
-              {cost.text}
-            </div>
-          ))}
-          {durationLine}
+          <ActionTooltipResourceRows
+            actionId={actionId}
+            state={state}
+            costs={costBreakdown}
+          />
         </div>
       ),
       headerTrailing: isUpgrade ? <BuildingUpgradeTooltipIcon /> : undefined,
@@ -1122,6 +1119,9 @@ export default function VillagePanel() {
   const totalPopulation = useGameStore((s) => getCurrentPopulation(s));
   const maxPopulation = useGameStore((s) => s.total_population);
   const onMissionCount = useGameStore((s) => getExpeditionVillagerCount(s));
+  const showVillagerMissionRows = useDerivedGameState(
+    hasVisibleVillagerBlockingAction,
+  );
   const priorFoodUpkeep = useGameStore((s) =>
     getDisgracedPriorFoodUpkeepPerCycle(s),
   );
@@ -2629,15 +2629,19 @@ export default function VillagePanel() {
                   {story.seen?.hasVillagers && (
                     <>
                       {renderVillagersSummaryRow()}
-                      {renderVillagerStatRow(
-                        "villagers-available",
-                        t("village.villagersAvailable"),
-                        freeVillagers,
-                      )}
-                      {renderVillagerStatRow(
-                        "villagers-on-mission",
-                        t("village.villagersOnMission"),
-                        onMissionCount,
+                      {showVillagerMissionRows && (
+                        <>
+                          {renderVillagerStatRow(
+                            "villagers-available",
+                            t("village.villagersAvailable"),
+                            freeVillagers,
+                          )}
+                          {renderVillagerStatRow(
+                            "villagers-on-mission",
+                            t("village.villagersOnMission"),
+                            onMissionCount,
+                          )}
+                        </>
                       )}
                       {visiblePopulationJobs.map((job) =>
                         renderPopulationControl(

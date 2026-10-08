@@ -100,19 +100,50 @@ export const ADC_PROGRESS_WIPE_CLASS = "adc-progress-wipe";
 export const ADC_PROGRESS_WIPE_FILL_CLASS = "adc-progress-wipe--fill";
 export const ADC_PROGRESS_WIPE_RECEDE_CLASS = "adc-progress-wipe--recede";
 export const ADC_PROGRESS_WIPE_PAUSED_CLASS = "adc-progress-wipe--paused";
+export const ADC_PROGRESS_WIPE_EDGE_CLASS = "adc-progress-wipe-edge";
+export const ADC_PROGRESS_WIPE_EDGE_FILL_CLASS = "adc-progress-wipe-edge--fill";
+export const ADC_PROGRESS_WIPE_EDGE_RECEDE_CLASS = "adc-progress-wipe-edge--recede";
 
-function wipeScaleX(scale: number): CSSProperties {
+/**
+ * Inner corner of a `rounded-md` button (outer radius minus the 1px border).
+ * The wash sits on the padding edge, so this radius meets the outline.
+ * Keep in sync with `.adc-cooldown-wash` in index.css.
+ */
+const WIPE_CORNER_RADIUS = "max(0px, calc(var(--radius) - 3px))";
+
+export type TimedWipeStyle = {
+  className: string;
+  style: CSSProperties;
+  edgeClassName: string;
+  edgeStyle: CSSProperties;
+};
+
+function wipeProgressStyle(
+  visibleFraction: number,
+  timing?: Pick<CSSProperties, "animationDuration" | "animationDelay">,
+): Pick<TimedWipeStyle, "style" | "edgeStyle"> {
+  const visible = Math.min(1, Math.max(0, visibleFraction));
+  const hidden = (1 - visible) * 100;
   return {
-    // Full-size box + scaleX: transform does not trigger layout the way
-    // animating `width` does when many bars run at once.
-    width: "100%",
-    transformOrigin: "left center",
-    transform: `scaleX(${scale})`,
+    style: {
+      // Full-size box + clip-path. scaleX would squash border-radius into an
+      // ellipse; inset() keeps the corner radius in px.
+      width: "100%",
+      clipPath: `inset(0 ${hidden}% 0 0 round ${WIPE_CORNER_RADIUS})`,
+      ...timing,
+    },
+    edgeStyle: {
+      // `left` is the leading edge. translateX(-100%) parks the highlight
+      // just inside that edge so its width stays 0.75rem.
+      left: `${visible * 100}%`,
+      transform: "translateX(-100%)",
+      ...timing,
+    },
   };
 }
 
 /**
- * CSS keyframe seek: full-duration `scaleX` animation + negative delay so a
+ * CSS keyframe seek: full-duration clip animation + negative delay so a
  * remount (tab visible, duration boost) continues from the current elapsed
  * fraction without a 10 Hz React update.
  *
@@ -124,30 +155,37 @@ export function getCssTimedWipeStyle(opts: {
   durationMs: number;
   mode: TimedWipeMode;
   nowMs?: number;
-}): { className: string; style: CSSProperties } {
+}): TimedWipeStyle {
   const nowMs = opts.nowMs ?? Date.now();
   const durationMs = Math.max(0, opts.durationMs);
   const elapsedMs = Math.max(0, nowMs - opts.startMs);
 
   if (durationMs <= 0 || elapsedMs >= durationMs) {
+    const visual = wipeProgressStyle(opts.mode === "fill" ? 1 : 0);
     return {
       className: "",
-      style: wipeScaleX(opts.mode === "fill" ? 1 : 0),
+      edgeClassName: "",
+      ...visual,
     };
   }
 
   const progress = elapsedMs / durationMs;
-  const fromScale = opts.mode === "fill" ? progress : 1 - progress;
+  const visible = opts.mode === "fill" ? progress : 1 - progress;
+  const timing = {
+    animationDuration: `${durationMs}ms`,
+    animationDelay: `-${elapsedMs}ms`,
+  };
+  const visual = wipeProgressStyle(visible, timing);
 
   return {
     className: `${ADC_PROGRESS_WIPE_CLASS} ${opts.mode === "fill"
         ? ADC_PROGRESS_WIPE_FILL_CLASS
         : ADC_PROGRESS_WIPE_RECEDE_CLASS
       }`,
-    style: {
-      ...wipeScaleX(fromScale),
-      animationDuration: `${durationMs}ms`,
-      animationDelay: `-${elapsedMs}ms`,
-    },
+    edgeClassName: `${ADC_PROGRESS_WIPE_EDGE_CLASS} ${opts.mode === "fill"
+        ? ADC_PROGRESS_WIPE_EDGE_FILL_CLASS
+        : ADC_PROGRESS_WIPE_EDGE_RECEDE_CLASS
+      }`,
+    ...visual,
   };
 }

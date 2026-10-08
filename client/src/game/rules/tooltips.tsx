@@ -63,10 +63,50 @@ import { getExecutionTime } from "./executionTime";
 
 /** Noto Sans Symbols 2 — white circle with upper-right quadrant for time costs. */
 const DURATION_COST_GLYPH = "\u25F7";
+/** Advance of the clock glyph at text-[1.2em] (720/1000 of that em). */
+const COST_MARK_SLOT = "inline-flex w-[0.864em] shrink-0 items-center justify-center";
+
+function VillagerCostGlyph() {
+  return (
+    <svg
+      viewBox="0 0 188 227"
+      aria-hidden
+      className="block h-[0.8em] w-[0.66em] -translate-y-[1px]"
+      fill="currentColor"
+    >
+      <path
+        fillRule="evenodd"
+        d="M86 1L107 2L123 8L141 23L151 40L155 67L150 87L135 108L113 121L148 134L159 142L173 159L179 171L185 193L186 221L182 225L174 224L171 219L168 186L155 160L143 149L132 143L116 138L95 136L63 140L40 152L29 164L21 180L17 195L16 219L14 223L5 225L1 221L3 188L8 171L18 153L39 134L74 121L53 109L43 98L36 85L32 69L32 55L35 42L42 28L55 14L68 6Z M100 17L83 17L66 25L54 38L47 59L49 76L57 91L71 103L85 108L106 107L123 98L134 85L140 66L138 49L131 35L115 21Z"
+      />
+    </svg>
+  );
+}
+
+function IconCostLine({
+  icon,
+  children,
+  className,
+}: {
+  icon: React.ReactNode;
+  children: React.ReactNode;
+  className?: string;
+}) {
+  return (
+    <div className={className ? `flex items-center ${className}` : "flex items-center"}>
+      <span className={COST_MARK_SLOT}>{icon}</span>
+      <span className="ml-[0.25em]">{children}</span>
+    </div>
+  );
+}
+
+/** The person mark replaces the leading minus on action villager costs. */
+function villagerCostLabel(text: string): string {
+  return text.replace(/^[-−]\s*/, "");
+}
 
 /**
- * Tooltip line showing an action's execution duration. Rendered as the last
- * line of the cost section. Returns null for instant (no execution time) actions.
+ * Tooltip line showing an action's execution duration. Sits in the resource
+ * section, immediately before any villager cost. Returns null for instant actions.
  */
 export const getActionDurationLine = (
   actionId: string,
@@ -75,16 +115,110 @@ export const getActionDurationLine = (
   const seconds = getExecutionTime(actionId, state);
   if (seconds <= 0) return null;
   return (
-    <div>
-      <span className="font-noto-symbols-2 text-[1.2em] leading-none" aria-hidden>
-        {DURATION_COST_GLYPH}
-      </span>{" "}
+    <IconCostLine
+      icon={
+        <span className="inline-block translate-y-[0.105em] font-noto-symbols-2 text-[1.2em] leading-none" aria-hidden>
+          {DURATION_COST_GLYPH}
+        </span>
+      }
+    >
       {getUiTooltip("duration", "{{duration}}", {
         duration: formatExecutionDuration(seconds),
       })}
-    </div>
+    </IconCostLine>
   );
 };
+
+export type ActionTooltipCostRow = {
+  text: string;
+  satisfied: boolean;
+  /** Villager spend. Rendered after the time cost, not with other resources. */
+  villager?: boolean;
+};
+
+/**
+ * Free villagers an expedition action locks for its duration.
+ * Last row of the resource section, directly under the time cost.
+ */
+export const getActionVillagerCostLine = (
+  actionId: string,
+  state: GameState,
+): React.ReactNode | null => {
+  const required =
+    gameActions[actionId]?.expeditionVillagersRequired?.(state) ?? 0;
+  if (!(required > 0)) return null;
+  const satisfied = (state.villagers?.free ?? 0) >= required;
+  return (
+    <IconCostLine
+      className={satisfied ? undefined : "text-muted-foreground"}
+      icon={<VillagerCostGlyph />}
+    >
+      {villagerCostLabel(
+        getUiTooltip(
+          "freeVillagerCost",
+          englishCountFallback(
+            required,
+            "-{{count}} Free Villager",
+            "-{{count}} Free Villagers",
+          ),
+          { count: required },
+        ),
+      )}
+    </IconCostLine>
+  );
+};
+
+/** True when the resource section has a cost, a time cost, or a villager cost. */
+export function actionTooltipHasResourceSection(
+  actionId: string,
+  state: GameState,
+  costCount: number,
+): boolean {
+  if (costCount > 0) return true;
+  if (getExecutionTime(actionId, state) > 0) return true;
+  return (gameActions[actionId]?.expeditionVillagersRequired?.(state) ?? 0) > 0;
+}
+
+function ActionTooltipCostLine({ cost }: { cost: ActionTooltipCostRow }) {
+  const muted = cost.satisfied ? undefined : "text-muted-foreground";
+  if (cost.villager) {
+    return (
+      <IconCostLine className={muted} icon={<VillagerCostGlyph />}>
+        {villagerCostLabel(cost.text)}
+      </IconCostLine>
+    );
+  }
+  return <div className={muted}>{cost.text}</div>;
+}
+
+/**
+ * Resource section rows: resource costs, then time, then villager cost.
+ * Villager cost is always the last row.
+ */
+export function ActionTooltipResourceRows({
+  actionId,
+  state,
+  costs,
+}: {
+  actionId: string;
+  state: GameState;
+  costs: ActionTooltipCostRow[];
+}): React.ReactNode {
+  const resourceCosts = costs.filter((cost) => !cost.villager);
+  const villagerCosts = costs.filter((cost) => cost.villager);
+  return (
+    <>
+      {resourceCosts.map((cost, index) => (
+        <ActionTooltipCostLine key={`cost-${index}`} cost={cost} />
+      ))}
+      {getActionDurationLine(actionId, state)}
+      {villagerCosts.map((cost, index) => (
+        <ActionTooltipCostLine key={`villager-cost-${index}`} cost={cost} />
+      ))}
+      {getActionVillagerCostLine(actionId, state)}
+    </>
+  );
+}
 
 const FOCUS_ELIGIBLE_ACTIONS = [
   "exploreCave",
@@ -361,12 +495,16 @@ export const getResourceGainTooltip = (
       })()
       : null;
 
+  const expeditionVillagers =
+    gameActions[actionId]?.expeditionVillagersRequired?.(state) ?? 0;
+
   if (
     gains.length === 0 &&
     costs.length === 0 &&
     !isBombAtMax &&
     !isVeinfireElixirAtMax &&
-    !veinrootPctLine
+    !veinrootPctLine &&
+    !(expeditionVillagers > 0)
   ) {
     return null;
   }
@@ -379,12 +517,17 @@ export const getResourceGainTooltip = (
     ? FOCUS_TOOLTIP_HIGHLIGHT_CLASS
     : undefined;
 
+  const hasResourceSection = actionTooltipHasResourceSection(
+    actionId,
+    state,
+    costs.length,
+  );
+
   const headerBlockAboveVein =
     gains.length > 0 ||
-    costs.length > 0 ||
     isBombAtMax ||
     isVeinfireElixirAtMax ||
-    getExecutionTime(actionId, state) > 0;
+    hasResourceSection;
 
   const gainsBlock = (
     <>
@@ -431,34 +574,34 @@ export const getResourceGainTooltip = (
   const hasGainsSection =
     isBombAtMax || isVeinfireElixirAtMax || gains.length > 0;
 
-  const durationLine = getActionDurationLine(actionId, state);
-  const hasDuration = durationLine != null;
+  const costRows = costs.map((cost) => ({
+    text: getUiTooltip("costLine", "-{{amount}} {{resource}}", {
+      amount: formatNumber(cost.amount),
+      resource: formatResourceName(cost.resource),
+    }),
+    satisfied: cost.hasEnough,
+  }));
+
+  const costBlock = (
+    <ActionTooltipResourceRows
+      actionId={actionId}
+      state={state}
+      costs={costRows}
+    />
+  );
+  const rewardBlock = hasResourceSection
+    ? gainsBlock
+    : wrapTooltipHeaderWithTrailing(gainsBlock, headerTrailing);
 
   return (
     <div className="text-xs">
-      {hasGainsSection
-        ? wrapTooltipHeaderWithTrailing(gainsBlock, headerTrailing)
+      {hasResourceSection
+        ? wrapTooltipHeaderWithTrailing(costBlock, headerTrailing)
         : null}
-      {(isBombAtMax || isVeinfireElixirAtMax) &&
-        gains.length === 0 &&
-        (costs.length > 0 || hasDuration) && (
-          <div className="border-t border-border my-1" />
-        )}
-      {gains.length > 0 && (costs.length > 0 || hasDuration) && (
+      {hasResourceSection && hasGainsSection && (
         <div className="border-t border-border my-1" />
       )}
-      {costs.map((cost, index) => (
-        <div
-          key={`cost-${index}`}
-          className={cost.hasEnough ? "" : "text-muted-foreground"}
-        >
-          {getUiTooltip("costLine", "-{{amount}} {{resource}}", {
-            amount: formatNumber(cost.amount),
-            resource: formatResourceName(cost.resource),
-          })}
-        </div>
-      ))}
-      {durationLine}
+      {hasGainsSection ? rewardBlock : null}
       {veinrootPctLine != null && (
         <>
           {headerBlockAboveVein && (

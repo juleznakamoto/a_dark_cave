@@ -555,7 +555,7 @@ export function getActionCostDisplay(
 export function getActionCostBreakdown(
   actionId: string,
   state: GameState,
-): Array<{ text: string; satisfied: boolean }> {
+): Array<{ text: string; satisfied: boolean; villager?: boolean }> {
   // Handle dynamic totem costs
   if (actionId === "boneTotems") {
     const dynamicCost = getBoneTotemsCost(state);
@@ -606,6 +606,7 @@ export function getActionCostBreakdown(
           { count: dynamicCost },
         ),
         satisfied: totalVillagers >= dynamicCost,
+        villager: true,
       },
     ];
   }
