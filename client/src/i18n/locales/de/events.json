@@ -2932,5 +2932,14 @@
       "accept": "Er verbessert den Ofen und geht vor der Morgendämmerung. Stahlschmiede erzeugen von nun an mehr.",
       "sendAway": "Er sieht dich enttäuscht an, dann geht er. Er sagt, er komme vielleicht wieder."
     }
+  },
+  "wanderersLantern": {
+    "choices": {
+      "take": {
+        "label": "Mitnehmen"
+      }
+    },
+    "message": "Nahe dem Höhleneingang findest du eine rostige Laterne, geformt, um an der Kleidung zu hängen. Sie muss einem Wanderer gehört haben.",
+    "title": "Eine rostige Laterne"
   }
 }

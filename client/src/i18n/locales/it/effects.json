@@ -497,6 +497,10 @@
     "mountain_village_map": {
       "description": "Mappa grezza che segna un sentiero verso i valichi alti, verso un villaggio di montagna.",
       "name": "Mappa del villaggio di montagna"
+    },
+    "wanderers_lantern": {
+      "description": "Dona a chi la indossa un po' di fortuna e la possibilità di notare ciò che il buio nasconderebbe.",
+      "name": "Lanterna del viandante"
     }
   },
   "weapons": {

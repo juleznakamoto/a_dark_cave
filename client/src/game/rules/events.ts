@@ -7,6 +7,7 @@ import type {
   LogEntry,
 } from "./eventTypes";
 import { storyEvents } from "./eventsStory";
+import { wanderersLanternEvents } from "./eventsWanderersLantern";
 import { choiceEvents } from "./eventsChoices";
 import { woodcutterEvents } from "./eventsWoodcutter";
 import { shopItemEvents } from "./eventsShopItems";
@@ -108,6 +109,7 @@ export const gameEvents: Record<string, GameEvent> = {
   ...ladyMountainsEvents,
   ...brimstoneFluxEvents,
   ...cartographerEvents,
+  ...wanderersLanternEvents,
 };
 
 /** Priority order for event rolls (higher first). Static priorities — sorted once at module load. */

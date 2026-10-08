@@ -56,6 +56,7 @@ import CooldownButton, {
 import { ConstructionQueueSlot } from "@/components/game/ConstructionQueueSlot";
 import { ActionButtonSlot } from "@/components/game/GameActionButtonStack";
 import { Button } from "@/components/ui/button";
+import { CheckmarkIcon } from "@/components/ui/checkmark-icon";
 import {
   getCurrentPopulation,
   getDisgracedPriorFoodUpkeepPerCycle,
@@ -2612,11 +2613,11 @@ export default function VillagePanel() {
                                 <span
                                   className={
                                     presetSaveConfirmed
-                                      ? "inline-flex items-center justify-center text-xxs leading-none text-green-500"
+                                      ? "inline-flex items-center justify-center text-[12px] leading-none text-green-500"
                                       : "inline-flex items-center justify-center font-noto-symbols-2 text-[12px] leading-none translate-y-0.5"
                                   }
                                 >
-                                  {presetSaveConfirmed ? "✓" : "🖫"}
+                                  {presetSaveConfirmed ? <CheckmarkIcon /> : "🖫"}
                                 </span>
                               </Button>
                             </TooltipWrapper>

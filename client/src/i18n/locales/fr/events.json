@@ -2932,5 +2932,14 @@
       "accept": "Il améliore le four et part avant l'aube. Les forgerons d'acier produisent plus désormais.",
       "sendAway": "Il vous regarde, déçu, puis part. Il dit qu'il reviendra peut-être."
     }
+  },
+  "wanderersLantern": {
+    "choices": {
+      "take": {
+        "label": "La prendre"
+      }
+    },
+    "message": "Près de l'entrée de la grotte, vous trouvez une lanterne rouillée, faite pour être accrochée à vos vêtements. Elle a dû appartenir à un vagabond.",
+    "title": "Une lanterne rouillée"
   }
 }

@@ -23,6 +23,7 @@ import {
 } from "@/game/copyInviteLink";
 import { REFERRAL_REWARD_GOLD } from "@/game/socialPromptAuto";
 import { InviteFriendsTooltip } from "@/components/game/InviteFriendsMenuItem";
+import { CheckmarkIcon } from "@/components/ui/checkmark-icon";
 import { ResourceCoinIcon } from "@/components/ui/resource-coin-icon";
 import { ResourceInsightIcon } from "@/components/ui/resource-insight-icon";
 import AchievementMiniRingChart from "@/achievements/AchievementMiniRingChart";
@@ -281,8 +282,11 @@ function ShareResourceRow({
       <span className="text-right font-mono tabular-nums text-gray-300">
         {formatNumber(value)}
       </span>
-      <span className="text-right text-green-500 leading-none" aria-hidden>
-        {meetsMilestone ? "✓" : null}
+      <span
+        className="inline-flex items-center justify-end text-green-500"
+        aria-hidden
+      >
+        {meetsMilestone ? <CheckmarkIcon /> : null}
       </span>
     </div>
   );

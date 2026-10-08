@@ -195,6 +195,7 @@ import {
   tWithFallback,
 } from "@/i18n/resolveGameText";
 import { hasLogEntryText } from "@/i18n/logDisplay";
+import { WANDERERS_LANTERN_EVENT_ID } from "@/game/wanderersLantern";
 import {
   detectRewards,
   rewardPayloadHasPositiveChanges,
@@ -404,6 +405,30 @@ export const createEventsSlice: GameStoreCreator<Partial<GameStore>> = (set, get
               : entry.choices || [];
             if (logChoices && logChoices.length > 0) {
               get().setEventDialog(true, entry);
+              return;
+            }
+            // Wanderer's Lantern is granted on trigger. Show that text on the
+            // outcome dialog instead of opening a choice dialog first.
+            if (entry.eventId === WANDERERS_LANTERN_EVENT_ID) {
+              const rewards = detectRewards(
+                updatedChanges,
+                state,
+                WANDERERS_LANTERN_EVENT_ID,
+                { trackLosses: true },
+              );
+              if (rewardPayloadHasPositiveChanges(rewards)) {
+                beginDialogHandoff(set);
+                scheduleRewardDialogWhenClear(
+                  get,
+                  {
+                    rewards,
+                    successLog: entry.message,
+                    variant: "success",
+                    title: entry.title,
+                  },
+                  200,
+                );
+              }
             }
             return;
           }

@@ -403,6 +403,18 @@ export const toolEffects: Record<string, EffectDefinition> = {
       },
     },
   },
+
+  wanderers_lantern: {
+    id: "wanderers_lantern",
+    name: "Wanderer's Lantern",
+    description:
+      "It lends its wearer a little luck, and the chance to notice what the dark would hide.",
+    bonuses: {
+      generalBonuses: {
+        luck: 2,
+      },
+    },
+  },
 };
 
 // Weapon effects

@@ -497,6 +497,10 @@
     "stone_pickaxe": {
       "description": "Einfache Spitzhacke für den Bergbau",
       "name": "Steinspitzhacke"
+    },
+    "wanderers_lantern": {
+      "description": "Sie schenkt ihrem Träger ein wenig Glück und die Chance, zu sehen, was die Dunkelheit sonst verbirgt.",
+      "name": "Laterne des Wanderers"
     }
   },
   "weapons": {

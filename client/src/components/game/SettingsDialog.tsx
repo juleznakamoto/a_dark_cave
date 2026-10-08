@@ -22,6 +22,13 @@ import {
 } from "@/game/devSaveIds";
 import { applyDevSaveToStore } from "@/game/devSaves";
 import { useSteamEditionActive } from "@/hooks/useSteamEditionActive";
+import { Input } from "@/components/ui/input";
+import {
+  hasWanderersLanternCode,
+  matchesWanderersLanternCode,
+  isWanderersLanternEdition,
+  markWanderersLanternCodeEntered,
+} from "@/game/wanderersLantern";
 import { AudioGlyphIcon, GameUiIcon } from "@/components/game/GameUiIcon";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -360,6 +367,7 @@ export default function SettingsDialog({
     devGameMode,
     setDevGameMode,
     activeDevSaveId,
+    giftCodeEntered,
   } = useGameStore(
     useShallow((s) => ({
       musicMuted: s.musicMuted,
@@ -373,8 +381,22 @@ export default function SettingsDialog({
       devGameMode: s.devGameMode,
       setDevGameMode: s.setDevGameMode,
       activeDevSaveId: s.activeDevSaveId,
+      giftCodeEntered: hasWanderersLanternCode(s),
     })),
   );
+  const [giftCode, setGiftCode] = useState("");
+  const [giftCodeInvalid, setGiftCodeInvalid] = useState(false);
+  const showGiftCode = isWanderersLanternEdition(devGameMode);
+
+  const redeemGiftCode = () => {
+    if (!matchesWanderersLanternCode(giftCode)) {
+      setGiftCodeInvalid(true);
+      return;
+    }
+    useGameStore.setState((state) => markWanderersLanternCodeEntered(state));
+    setGiftCode("");
+    setGiftCodeInvalid(false);
+  };
 
   const toggleMusic = () => {
     const next = !musicMuted;
@@ -575,6 +597,47 @@ export default function SettingsDialog({
               </a>
             </div>
           )}
+          {showGiftCode ? (
+            <form
+              className="space-y-1 pt-1"
+              onSubmit={(event) => {
+                event.preventDefault();
+                redeemGiftCode();
+              }}
+            >
+              <div className="flex items-center gap-2">
+                <Input
+                  value={giftCode}
+                  onChange={(event) => {
+                    setGiftCode(event.target.value);
+                    setGiftCodeInvalid(false);
+                  }}
+                  placeholder={t("settings.giftCodePlaceholder")}
+                  aria-label={t("settings.giftCode")}
+                  autoComplete="off"
+                  spellCheck={false}
+                  className="h-8 text-sm"
+                  data-testid="settings-gift-code"
+                />
+                <Button
+                  type="submit"
+                  size="xs"
+                  button_id="settings-gift-code-redeem"
+                >
+                  {t("settings.giftCodeRedeem")}
+                </Button>
+              </div>
+              {giftCodeInvalid ? (
+                <p className="text-xs text-muted-foreground">
+                  {t("settings.giftCodeInvalid")}
+                </p>
+              ) : giftCodeEntered ? (
+                <p className="text-xs text-muted-foreground">
+                  {t("settings.giftCodeAccepted")}
+                </p>
+              ) : null}
+            </form>
+          ) : null}
         </div>
       </DialogContent>
     </Dialog>

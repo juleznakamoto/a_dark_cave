@@ -12,7 +12,12 @@
     "gameModeDemoEnd": "试玩结束",
     "gameModeSteamEndCruelOn": "Steam 结束 (残酷开)",
     "gameModeSteamEndCruelOff": "Steam 结束 (残酷关)",
-    "gameModeCrazyGamesDemo": "CrazyGames 试玩"
+    "gameModeCrazyGamesDemo": "CrazyGames 试玩",
+    "giftCode": "礼物码",
+    "giftCodePlaceholder": "代码",
+    "giftCodeRedeem": "兑换",
+    "giftCodeInvalid": "这个代码没有用",
+    "giftCodeAccepted": "代码已接受"
   },
   "textScale": {
     "label": "文字大小",

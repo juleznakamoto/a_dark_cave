@@ -2934,5 +2934,14 @@
     },
     "message": "Młoda kobieta podchodzi do ciebie ze łzami spływającymi po twarzy. 'Oboje moi rodzice zostali ofiarowani temu przeklętemu monolitowi,' płacze. 'To barbarzyństwo musi się skończyć!'",
     "title": "Prośba młodej kobiety"
+  },
+  "wanderersLantern": {
+    "choices": {
+      "take": {
+        "label": "Weź ją"
+      }
+    },
+    "message": "Przy wejściu do jaskini znajdujesz zardzewiałą latarnię, którą można zawiesić na ubraniu. Musiała należeć do wędrowca.",
+    "title": "Zardzewiała latarnia"
   }
 }

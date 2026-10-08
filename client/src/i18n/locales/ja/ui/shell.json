@@ -12,7 +12,12 @@
     "gameModeDemoEnd": "デモ終了",
     "gameModeSteamEndCruelOn": "Steam終了（残酷オン）",
     "gameModeSteamEndCruelOff": "Steam終了（残酷オフ）",
-    "gameModeCrazyGamesDemo": "CrazyGamesデモ"
+    "gameModeCrazyGamesDemo": "CrazyGamesデモ",
+    "giftCode": "ギフトコード",
+    "giftCodePlaceholder": "コード",
+    "giftCodeRedeem": "使う",
+    "giftCodeInvalid": "そのコードは何もしない",
+    "giftCodeAccepted": "コードを受け付けました"
   },
   "textScale": {
     "label": "文字サイズ",

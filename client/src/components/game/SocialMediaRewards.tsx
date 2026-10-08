@@ -8,6 +8,7 @@ import {
 } from "@/game/socialPlatforms";
 import { claimSocialFollowReward } from "@/game/claimSocialFollowReward";
 import { SocialPlatformGlyph } from "@/components/game/SocialPlatformGlyph";
+import { CheckmarkIcon } from "@/components/ui/checkmark-icon";
 import {
   getSocialPlatformRewardEntry,
   isSocialRewardClaimed,
@@ -76,7 +77,9 @@ export default function SocialMediaRewards() {
                     resource: t(`resources.${platform.reward.resource}`),
                   })}
                 </span>
-                {isClaimed && <span className="text-xs text-muted-foreground">✓</span>}
+                {isClaimed && (
+                  <CheckmarkIcon className="text-muted-foreground" />
+                )}
 
               </div>
             </div>

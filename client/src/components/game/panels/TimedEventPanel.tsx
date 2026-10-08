@@ -14,6 +14,7 @@ import {
 } from "@/game/state";
 import { useGameStoreWithoutTickClock } from "@/game/useGameStoreWithoutTickClock";
 import { Button } from "@/components/ui/button";
+import { CheckmarkIcon } from "@/components/ui/checkmark-icon";
 import {
   gameActionButtonGridClassName,
   gameActionDisabledLabelClassName,
@@ -575,11 +576,7 @@ export default function TimedEventPanel() {
                 choice.relevant_stats.map((stat) => (
                   <RelevantStatIcon key={stat} stat={stat} />
                 ))}
-              {isPurchased && (
-                <span className="inline-flex items-center justify-center text-[12px] leading-none">
-                  ✓
-                </span>
-              )}
+              {isPurchased && <CheckmarkIcon className="-mx-1" />}
             </span>
           )}
         </span>

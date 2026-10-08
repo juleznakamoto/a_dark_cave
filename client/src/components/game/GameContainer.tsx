@@ -130,6 +130,7 @@ import { useIOSChromeViewportShell } from "@/hooks/useIOSChromeViewportShell";
 import { usePanelResize } from "./panelResize";
 import PanelResizeHandle from "./PanelResizeHandle";
 import { GameUiIcon, MapTabIcon } from "@/components/game/GameUiIcon";
+import { useCompactEndTabs } from "@/components/game/useCompactEndTabs";
 import {
   getTimedEventTabLabelKind,
   TIMED_EVENT_TAB_LABEL_DEFAULTS,
@@ -1179,6 +1180,17 @@ export default function GameContainer() {
     return () => window.removeEventListener("keydown", onKeyDown, true);
   }, [flags.gameStarted, visibleHotkeyTabs, applyHotkeyTab]);
 
+  const mapTabLabel = t("tabs.map", { ns: "common" });
+  const achievementsTabLabel = t("tabs.achievements", { ns: "common" });
+  const compactEndTabs = useCompactEndTabs({
+    rowRef: tabButtonRowRef,
+    mapLabel: mapTabLabel,
+    achievementsLabel: achievementsTabLabel,
+    mapVisible: mapTabVisible,
+    achievementsVisible: showAchievementsTab,
+    active: flags.gameStarted,
+  });
+
   const panelResize = usePanelResize();
   const iosChromeViewportStyle = useIOSChromeViewportShell();
 
@@ -1375,6 +1387,7 @@ export default function GameContainer() {
             <section className="order-3 md:order-2 flex-1 min-w-0 flex flex-col min-h-0 overflow-hidden md:pl-0">
               {/* Horizontal Game Tabs */}
               <nav className={`relative pl-2 pr-2 flex-shrink-0 ${GAME_CHROME_RULE_TABS_NAV}`}>
+                {compactEndTabs.measure}
                 {useLimelightNav ? (
                   // Alternative LimelightNav design
                   <LimelightNav
@@ -1530,9 +1543,17 @@ export default function GameContainer() {
                               setActiveTab("map");
                             }}
                             data-testid="tab-map"
-                            aria-label={t("tabs.map", { ns: "common" })}
+                            aria-label={
+                              compactEndTabs.icons.mapIcon
+                                ? mapTabLabel
+                                : undefined
+                            }
                           >
-                            <MapTabIcon />
+                            {compactEndTabs.icons.mapIcon ? (
+                              <MapTabIcon />
+                            ) : (
+                              mapTabLabel
+                            )}
                           </button>
                         )}
 
@@ -1552,12 +1573,21 @@ export default function GameContainer() {
                               setActiveTab("achievements");
                             }}
                             data-testid="tab-achievements"
+                            aria-label={
+                              compactEndTabs.icons.achievementsIcon
+                                ? achievementsTabLabel
+                                : undefined
+                            }
                           >
-                            <GameUiIcon
-                              name="achievements"
-                              sizeClassName={TAB_ICON_SIZE}
-                              className={TAB_ICON_ALIGN_CLASS}
-                            />
+                            {compactEndTabs.icons.achievementsIcon ? (
+                              <GameUiIcon
+                                name="achievements"
+                                sizeClassName={TAB_ICON_SIZE}
+                                className={TAB_ICON_ALIGN_CLASS}
+                              />
+                            ) : (
+                              achievementsTabLabel
+                            )}
                           </button>
                         )}
 

@@ -497,6 +497,10 @@
     "stone_pickaxe": {
       "description": "Pioche rudimentaire pour miner",
       "name": "Pioche de pierre"
+    },
+    "wanderers_lantern": {
+      "description": "Elle accorde à celui qui la porte un peu de chance, et la possibilité de voir ce que l'obscurité cacherait.",
+      "name": "Lanterne du vagabond"
     }
   },
   "weapons": {

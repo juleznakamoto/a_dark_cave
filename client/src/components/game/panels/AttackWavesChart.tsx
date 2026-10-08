@@ -23,6 +23,7 @@ import {
   getResourcesFromActionCost,
 } from "@/game/rules";
 import CooldownButton from "@/components/CooldownButton";
+import { ActionTooltipResourceRows } from "@/game/rules/tooltips";
 import { useDemoEndCatalogActive } from "@/hooks/useSteamEditionActive";
 import { useUiTranslation } from "@/i18n/useUiTranslation";
 import {
@@ -191,18 +192,11 @@ export default function AttackWavesChart({
               disabled={!canExecuteAction(PROVOKE_ACTION_ID, state)}
               tooltip={
                 <div className="text-xs whitespace-nowrap">
-                  {getActionCostBreakdown(PROVOKE_ACTION_ID, state).map(
-                    (row, index) => (
-                      <div
-                        key={index}
-                        className={
-                          row.satisfied ? "" : "text-muted-foreground"
-                        }
-                      >
-                        {row.text}
-                      </div>
-                    ),
-                  )}
+                  <ActionTooltipResourceRows
+                    actionId={PROVOKE_ACTION_ID}
+                    state={state}
+                    costs={getActionCostBreakdown(PROVOKE_ACTION_ID, state)}
+                  />
                 </div>
               }
               onMouseEnter={() => {
@@ -245,18 +239,11 @@ export default function AttackWavesChart({
               disabled={!canExecuteAction(PROVOKE_ACTION_ID, state)}
               tooltip={
                 <div className="text-xs whitespace-nowrap">
-                  {getActionCostBreakdown(PROVOKE_ACTION_ID, state).map(
-                    (row, index) => (
-                      <div
-                        key={index}
-                        className={
-                          row.satisfied ? "" : "text-muted-foreground"
-                        }
-                      >
-                        {row.text}
-                      </div>
-                    ),
-                  )}
+                  <ActionTooltipResourceRows
+                    actionId={PROVOKE_ACTION_ID}
+                    state={state}
+                    costs={getActionCostBreakdown(PROVOKE_ACTION_ID, state)}
+                  />
                 </div>
               }
               onMouseEnter={() => {

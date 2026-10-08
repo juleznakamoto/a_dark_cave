@@ -12,7 +12,12 @@
     "gameModeDemoEnd": "Demo End",
     "gameModeSteamEndCruelOn": "Steam End (Cruel On)",
     "gameModeSteamEndCruelOff": "Steam End (Cruel Off)",
-    "gameModeCrazyGamesDemo": "CrazyGames Demo"
+    "gameModeCrazyGamesDemo": "CrazyGames Demo",
+    "giftCode": "Gift code",
+    "giftCodePlaceholder": "Code",
+    "giftCodeRedeem": "Redeem",
+    "giftCodeInvalid": "That code does nothing",
+    "giftCodeAccepted": "Code accepted"
   },
   "textScale": {
     "label": "Text size",

@@ -60,11 +60,14 @@ import {
   isVeinfireElixirAtLimit,
 } from "@/game/resourceLimits";
 import { getExecutionTime } from "./executionTime";
+import { CheckmarkIcon } from "@/components/ui/checkmark-icon";
+import { XMarkIcon } from "@/components/ui/x-mark-icon";
 
 /** Noto Sans Symbols 2 — white circle with upper-right quadrant for time costs. */
 const DURATION_COST_GLYPH = "\u25F7";
 /** Advance of the clock glyph at text-[1.2em] (720/1000 of that em). */
-const COST_MARK_SLOT = "inline-flex w-[0.864em] shrink-0 items-center justify-center";
+const COST_MARK_SLOT =
+  "inline-flex w-[0.864em] min-w-[0.864em] shrink-0 items-center justify-center";
 
 function VillagerCostGlyph() {
   return (
@@ -99,8 +102,8 @@ function IconCostLine({
   );
 }
 
-/** The person mark replaces the leading minus on action villager costs. */
-function villagerCostLabel(text: string): string {
+/** The icon column replaces the leading minus on cost rows. */
+function costLabelWithoutSign(text: string): string {
   return text.replace(/^[-−]\s*/, "");
 }
 
@@ -153,7 +156,7 @@ export const getActionVillagerCostLine = (
       className={satisfied ? undefined : "text-muted-foreground"}
       icon={<VillagerCostGlyph />}
     >
-      {villagerCostLabel(
+      {costLabelWithoutSign(
         getUiTooltip(
           "freeVillagerCost",
           englishCountFallback(
@@ -184,11 +187,24 @@ function ActionTooltipCostLine({ cost }: { cost: ActionTooltipCostRow }) {
   if (cost.villager) {
     return (
       <IconCostLine className={muted} icon={<VillagerCostGlyph />}>
-        {villagerCostLabel(cost.text)}
+        {costLabelWithoutSign(cost.text)}
       </IconCostLine>
     );
   }
-  return <div className={muted}>{cost.text}</div>;
+  return (
+    <IconCostLine
+      className={muted}
+      icon={
+        cost.satisfied ? (
+          <CheckmarkIcon className="origin-center scale-[1.2]" />
+        ) : (
+          <XMarkIcon className="origin-center scale-[1.2]" />
+        )
+      }
+    >
+      {costLabelWithoutSign(cost.text)}
+    </IconCostLine>
+  );
 }
 
 /**

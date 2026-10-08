@@ -2932,5 +2932,14 @@
       "accept": "Ele melhora a fornalha e parte antes do amanhecer. Os forjadores de aço produzem mais a partir de agora.",
       "sendAway": "Ele olha para você, decepcionado, e vai embora. Diz que talvez volte."
     }
+  },
+  "wanderersLantern": {
+    "choices": {
+      "take": {
+        "label": "Pegar"
+      }
+    },
+    "message": "Perto da entrada da caverna você encontra uma lanterna enferrujada, feita para pendurar na roupa. Deve ter pertencido a um andarilho.",
+    "title": "Uma lanterna enferrujada"
   }
 }

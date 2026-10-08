@@ -1,4 +1,5 @@
 import { describe, expect, it } from "vitest";
+import { isAchievementsGameTabUnlocked } from "@/achievements/configs/overall";
 import {
   isBastionTabVisible,
   isForestTabVisible,
@@ -111,5 +112,6 @@ describe("dev save catalog", () => {
     expect(isForestTabVisible(state)).toBe(true);
     expect(state.buildings.darkEstate).toBeGreaterThan(0);
     expect(isBastionTabVisible(state)).toBe(true);
+    expect(isAchievementsGameTabUnlocked(state)).toBe(true);
   });
 });

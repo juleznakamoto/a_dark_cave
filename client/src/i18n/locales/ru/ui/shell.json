@@ -12,7 +12,12 @@
     "gameModeDemoEnd": "Конец демо",
     "gameModeSteamEndCruelOn": "Финал Steam (Жестокий вкл.)",
     "gameModeSteamEndCruelOff": "Финал Steam (Жестокий выкл.)",
-    "gameModeCrazyGamesDemo": "Демо CrazyGames"
+    "gameModeCrazyGamesDemo": "Демо CrazyGames",
+    "giftCode": "Код подарка",
+    "giftCodePlaceholder": "Код",
+    "giftCodeRedeem": "Активировать",
+    "giftCodeInvalid": "Этот код ничего не даёт",
+    "giftCodeAccepted": "Код принят"
   },
   "textScale": {
     "label": "Размер текста",

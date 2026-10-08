@@ -59,6 +59,8 @@ import { FOCUS_ELIGIBLE_ACTIONS } from "@/game/rules/actionEffects";
 import { getFocusTooltipHeaderTrailing } from "@/game/rules/focusTooltipIndicator";
 import { resolveActionLabel } from "@/i18n/actionLabels";
 import { useTranslation } from "react-i18next";
+import { WanderersLanternFirstRow } from "@/components/game/WanderersLanternButton";
+import { ownsWanderersLantern } from "@/game/wanderersLantern";
 
 export default function CavePanel() {
   const { t } = useTranslation(["ui", "common"]);
@@ -516,7 +518,13 @@ export default function CavePanel() {
                   ? getDemoEndHiddenActionTeasers(craftActions, visibleCraftIds)
                   : { teasers: [], showEllipsis: false };
 
-              if (!hasAnyVisibleActions && craftTeasers.length === 0) return null;
+              if (
+                !hasAnyVisibleActions &&
+                craftTeasers.length === 0 &&
+                !(groupIndex === 0 && ownsWanderersLantern(state))
+              ) {
+                return null;
+              }
 
               return (
                 <div key={groupIndex} className={GAME_TAB_SECTION_STACK}>
@@ -539,7 +547,12 @@ export default function CavePanel() {
                         return shouldShowAction(action.id, state) || !!state.executionStartTimes?.[action.id];
                       });
 
-                      if (visibleActions.length === 0) return null;
+                      const showLantern =
+                        groupIndex === 0 &&
+                        subGroupIndex === 0 &&
+                        ownsWanderersLantern(state);
+
+                      if (visibleActions.length === 0 && !showLantern) return null;
 
                       const orderedActions = isCraftSection
                         ? orderCraftOnceRow(
@@ -559,14 +572,28 @@ export default function CavePanel() {
                         subGroupIndex === 0 &&
                         visibleActions.length < teaseableCount;
 
-                      return (
-                        <div key={subGroupIndex} className={gameActionButtonGridClassName("w-full")}>
+                      const buttons = (
+                        <>
                           {orderedActions.map((action) =>
                             renderButton(action.id, action.label),
                           )}
                           {showExploreEllipsis ? (
                             <RedactedMoreHint tooltipId="cave-explore-more-redacted" />
                           ) : null}
+                        </>
+                      );
+
+                      if (showLantern) {
+                        return (
+                          <WanderersLanternFirstRow key={subGroupIndex}>
+                            {buttons}
+                          </WanderersLanternFirstRow>
+                        );
+                      }
+
+                      return (
+                        <div key={subGroupIndex} className={gameActionButtonGridClassName("w-full")}>
+                          {buttons}
                         </div>
                       );
                     })}

@@ -497,6 +497,10 @@
     "stone_pickaxe": {
       "description": "用于采矿的粗糙镐子",
       "name": "石镐"
+    },
+    "wanderers_lantern": {
+      "description": "它给佩戴者一点幸运，以及看见黑暗本会藏起之物的可能。",
+      "name": "流浪者的油灯"
     }
   },
   "weapons": {

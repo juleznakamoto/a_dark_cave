@@ -175,6 +175,10 @@ function withBastionProgress(base: GameState): GameState {
         ...base.weapons,
         ashen_dagger: true,
       },
+      relics: {
+        ...base.relics,
+        survivors_notes: true,
+      },
     },
     ["bastion"],
   );

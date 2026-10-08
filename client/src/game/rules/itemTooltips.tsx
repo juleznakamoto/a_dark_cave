@@ -35,6 +35,12 @@ import {
 } from "@/game/bastionStats";
 import { capitalizeWords, formatNumber } from "@/lib/utils";
 import {
+  WANDERERS_LANTERN_ACTIVE_MS,
+  WANDERERS_LANTERN_COOLDOWN_MS,
+  WANDERERS_LANTERN_SILVER_AMOUNT,
+  WANDERERS_LANTERN_SILVER_CHANCE,
+} from "@/game/wanderersLantern";
+import {
   getActionDescription,
   getActionLabel,
   getEffectDescription,
@@ -834,6 +840,7 @@ export function renderItemTooltip(
         useGameStore.getState().relics?.obsidian_orb) ||
       itemId === "bone_dice" ||
       itemId === "ebon_grace" ||
+      itemId === "wanderers_lantern" ||
       (itemType === "weapon" && itemId === "nightshade_bow") ||
       unlockEffectLine,
     );
@@ -1141,6 +1148,20 @@ export function renderItemTooltip(
             </div>
           </>
         )}
+      {showEffects && itemId === "wanderers_lantern" && (
+        <div>
+          {getUiTooltip(
+            "wanderersLanternEffect",
+            "Active for {{active}} minutes: each action has a {{percent}}% chance to find {{amount}} Silver. Cooldown: {{cooldown}} minutes.",
+            {
+              active: WANDERERS_LANTERN_ACTIVE_MS / 60_000,
+              cooldown: WANDERERS_LANTERN_COOLDOWN_MS / 60_000,
+              percent: Math.round(WANDERERS_LANTERN_SILVER_CHANCE * 100),
+              amount: WANDERERS_LANTERN_SILVER_AMOUNT,
+            },
+          )}
+        </div>
+      )}
       {showEffects && itemId === "bone_dice" && (
         <div>
           {getUiTooltip(

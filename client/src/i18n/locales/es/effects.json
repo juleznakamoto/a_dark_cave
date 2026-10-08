@@ -497,6 +497,10 @@
     "stone_pickaxe": {
       "description": "Pico rudimentario para minar",
       "name": "Pico de piedra"
+    },
+    "wanderers_lantern": {
+      "description": "Concede a quien la lleva un poco de suerte y la posibilidad de ver lo que la oscuridad ocultaría.",
+      "name": "Linterna del vagabundo"
     }
   },
   "weapons": {

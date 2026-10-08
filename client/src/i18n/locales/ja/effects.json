@@ -497,6 +497,10 @@
     "stone_pickaxe": {
       "description": "採掘のための粗雑な鶴嘴",
       "name": "石の鶴嘴"
+    },
+    "wanderers_lantern": {
+      "description": "身に着ける者に少しの幸運と、闇が隠すものを見つける機会を与える。",
+      "name": "流浪者のランタン"
     }
   },
   "weapons": {

@@ -2567,3 +2567,97 @@ html[data-tab-hidden] .exclusive-promo-shockwave-ring:not(.exclusive-promo-shock
 .animate-bubbly-bottom {
   animation: bubbly-bottom .75s ease-in-out forwards;
 }
+
+/* Small composited glow behind the Wanderer's Lantern. Transform and opacity only. */
+.wanderers-lantern__glow {
+  position: absolute;
+  inset: -7px;
+  border-radius: 9999px;
+  background: radial-gradient(circle,
+      rgba(250, 204, 21, 0.55) 0%,
+      rgba(251, 146, 60, 0.22) 42%,
+      transparent 70%);
+  opacity: 0;
+  pointer-events: none;
+  transform: scale(0.92);
+  will-change: transform, opacity;
+}
+
+.wanderers-lantern--ready .wanderers-lantern__glow {
+  animation: wanderers-lantern-flicker 2.6s ease-in-out infinite;
+}
+
+.wanderers-lantern--ready:hover .wanderers-lantern__glow {
+  animation: none;
+  opacity: 0.95;
+  transform: scale(1.08);
+}
+
+.wanderers-lantern--active .wanderers-lantern__glow {
+  background: radial-gradient(circle,
+      rgba(255, 226, 90, 0.9) 0%,
+      rgba(250, 190, 40, 0.5) 42%,
+      transparent 70%);
+  opacity: 1;
+  transform: scale(1);
+  animation: none;
+}
+
+.wanderers-lantern--burst .wanderers-lantern__glow {
+  animation: wanderers-lantern-flicker-burst 0.7s ease-out forwards;
+}
+
+@keyframes wanderers-lantern-flicker {
+
+  0%,
+  100% {
+    opacity: 0.35;
+    transform: scale(0.9);
+  }
+
+  50% {
+    opacity: 0.7;
+    transform: scale(1.06);
+  }
+}
+
+@keyframes wanderers-lantern-flicker-burst {
+  0% {
+    opacity: 0.8;
+    transform: scale(1.05);
+  }
+
+  40% {
+    opacity: 1;
+    transform: scale(1.28);
+  }
+
+  100% {
+    opacity: 0.95;
+    transform: scale(1.12);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+
+  /* Keyframes set opacity. animation: none has to match the selector that
+     starts the flicker, or those keyframes keep winning over opacity. */
+  .wanderers-lantern--ready .wanderers-lantern__glow,
+  .wanderers-lantern--burst .wanderers-lantern__glow {
+    animation: none;
+    opacity: 0.6;
+    transform: none;
+  }
+
+  .wanderers-lantern--ready:hover .wanderers-lantern__glow {
+    animation: none;
+    opacity: 0.7;
+    transform: none;
+  }
+
+  .wanderers-lantern--active .wanderers-lantern__glow {
+    animation: none;
+    opacity: 0.65;
+    transform: none;
+  }
+}

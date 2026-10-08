@@ -2932,5 +2932,14 @@
       "accept": "Mejora el horno y se va antes del amanecer. Los forjadores de acero producen más a partir de ahora.",
       "sendAway": "Te mira decepcionado y se va. Dice que quizá vuelva."
     }
+  },
+  "wanderersLantern": {
+    "choices": {
+      "take": {
+        "label": "Llevarla"
+      }
+    },
+    "message": "Cerca de la entrada de la cueva encuentras una linterna oxidada, hecha para colgar de la ropa. Debió pertenecer a un vagabundo.",
+    "title": "Una linterna oxidada"
   }
 }

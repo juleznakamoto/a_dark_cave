@@ -2932,5 +2932,14 @@
       "accept": "Migliora la fornace e se ne va prima dell'alba. I forgiatori d'acciaio producono di più d'ora in poi.",
       "sendAway": "Ti guarda deluso, poi se ne va. Dice che forse tornerà."
     }
+  },
+  "wanderersLantern": {
+    "choices": {
+      "take": {
+        "label": "Prendila"
+      }
+    },
+    "message": "Vicino all'ingresso della caverna trovi una lanterna arrugginita, fatta per essere appesa ai vestiti. Dev'essere appartenuta a un viandante.",
+    "title": "Una lanterna arrugginita"
   }
 }

@@ -12,7 +12,12 @@
     "gameModeDemoEnd": "Demo-Ende",
     "gameModeSteamEndCruelOn": "Steam-Ende (Grausam an)",
     "gameModeSteamEndCruelOff": "Steam-Ende (Grausam aus)",
-    "gameModeCrazyGamesDemo": "CrazyGames-Demo"
+    "gameModeCrazyGamesDemo": "CrazyGames-Demo",
+    "giftCode": "Geschenkcode",
+    "giftCodePlaceholder": "Code",
+    "giftCodeRedeem": "Einlösen",
+    "giftCodeInvalid": "Dieser Code bewirkt nichts",
+    "giftCodeAccepted": "Code akzeptiert"
   },
   "textScale": {
     "label": "Textgröße",

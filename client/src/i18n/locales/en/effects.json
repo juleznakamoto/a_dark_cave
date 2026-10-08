@@ -497,6 +497,10 @@
     "stone_pickaxe": {
       "description": "Rudimentary pickaxe for mining",
       "name": "Stone Pickaxe"
+    },
+    "wanderers_lantern": {
+      "description": "It lends its wearer a little luck, and the chance to notice what the dark would hide.",
+      "name": "Wanderer's Lantern"
     }
   },
   "weapons": {

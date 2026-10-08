@@ -497,6 +497,10 @@
     "mountain_village_map": {
       "description": "Mapa rude marcado com um caminho para os altos passos, rumo a uma aldeia na montanha.",
       "name": "Mapa da aldeia da montanha"
+    },
+    "wanderers_lantern": {
+      "description": "Dá a quem a usa um pouco de sorte e a chance de notar o que a escuridão esconderia.",
+      "name": "Lanterna do andarilho"
     }
   },
   "weapons": {

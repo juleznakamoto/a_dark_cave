@@ -2932,5 +2932,14 @@
     },
     "message": "A young woman approaches you with tears streaming down her face. 'Both my parents were sacrificed to that cursed monolith,' she cries. 'This barbaric behavior has to stop!'",
     "title": "The Young Woman's Plea"
+  },
+  "wanderersLantern": {
+    "choices": {
+      "take": {
+        "label": "Take it"
+      }
+    },
+    "message": "Near the cave's entrance you find a rusty lantern, shaped to hang from your clothes. It must have belonged to a wanderer.",
+    "title": "A Rusty Lantern"
   }
 }

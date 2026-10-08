@@ -25,7 +25,8 @@ describe("action villager cost tooltip", () => {
     const { container } = render(<>{node}</>);
     const text = container.textContent ?? "";
 
-    const foodAt = text.indexOf("-50 Food");
+    const foodAt = text.indexOf("50 Food");
+    expect(text).not.toContain("-50 Food");
     const timeAt = text.indexOf("20s");
     const villagerAt = text.indexOf("2 Free Villagers");
     expect(text).not.toContain("-2 Free Villagers");
@@ -69,5 +70,52 @@ describe("action villager cost tooltip", () => {
     expect(text).not.toContain("-1 Villager");
     expect(timeAt).toBeGreaterThanOrEqual(0);
     expect(villagerAt).toBeGreaterThan(timeAt);
+  });
+
+  it("aligns resource costs with the time and villager text and marks a met cost", () => {
+    const state = gameStateSchema.parse({
+      tools: { iron_lantern: true },
+      resources: { food: 50 },
+      villagers: { free: 2 },
+    });
+    const { container } = render(
+      <ActionTooltipResourceRows
+        actionId="descendFurther"
+        state={state}
+        costs={[
+          { text: "-50 Food", satisfied: true },
+          { text: "-10 Wood", satisfied: false },
+        ]}
+      />,
+    );
+
+    const row = (label: string) =>
+      Array.from(container.querySelectorAll("div")).find(
+        (el) =>
+          el.querySelector(":scope > span:last-child")?.textContent === label,
+      );
+
+    const textColumn = (line: Element | undefined) =>
+      line?.querySelector(":scope > span:last-child");
+    const markColumn = (line: Element | undefined) =>
+      line?.querySelector(":scope > span:first-child");
+
+    const food = row("50 Food");
+    const wood = row("10 Wood");
+    const time = row("20s");
+    const villagers = row("2 Free Villagers");
+
+    expect(textColumn(food)?.textContent).toBe("50 Food");
+    expect(textColumn(wood)?.textContent).toBe("10 Wood");
+    expect(textColumn(time)?.className).toBe(textColumn(food)?.className);
+    expect(textColumn(villagers)?.className).toBe(textColumn(food)?.className);
+    expect(markColumn(food)?.querySelector("svg path")?.getAttribute("d")).toContain(
+      "18.7",
+    );
+    expect(markColumn(wood)?.querySelector("svg path")?.getAttribute("d")).toBe(
+      "M7 7 17 17",
+    );
+    expect(food?.className).not.toContain("text-muted-foreground");
+    expect(wood?.className).toContain("text-muted-foreground");
   });
 });

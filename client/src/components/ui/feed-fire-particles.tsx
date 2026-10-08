@@ -13,6 +13,8 @@ export interface Spark {
   lifetime: number;
   offsetX: number;
   createdAt: number;
+  /** Rise from the button center instead of a horizontal line of origins. */
+  fromCenter?: boolean;
 }
 
 interface FeedFireParticlesProps {
@@ -30,12 +32,16 @@ export function SuccessParticles({
   return (
     <>
       {sparks.map((spark) => {
-        const startX = rect.left + spark.offsetX;
-        const startY = rect.top + 15;
+        const startX = spark.fromCenter
+          ? rect.left + rect.width / 2
+          : rect.left + spark.offsetX;
+        const startY = spark.fromCenter
+          ? rect.top + rect.height / 2
+          : rect.top + 15;
 
         const endX = startX + Math.cos(spark.angle) * spark.distance;
         const endY =
-          startY - Math.abs(Math.sin(spark.angle) * spark.distance); // always upwards
+          startY - Math.abs(Math.sin(spark.angle) * spark.distance);
 
         return (
           <motion.div
@@ -80,19 +86,29 @@ export function useFeedFireParticles() {
   const idRef = useRef(0);
 
   const colors = ["#ffb347", "#ff9234", "#ffcd94", "#ff6f3c", "#ff4500"]; // ember-like colors
+  const goldColors = ["#fff4c2", "#ffe566", "#f5c542", "#e8b923", "#ffd56a"];
 
-  const spawnParticles = (count: number, buttonRef: React.RefObject<HTMLButtonElement>) => {
+  const spawnParticles = (
+    count: number,
+    buttonRef: React.RefObject<HTMLButtonElement>,
+    options?: { fromCenter?: boolean },
+  ) => {
     if (!buttonRef.current) return;
 
+    const fromCenter = options?.fromCenter === true;
+    const palette = fromCenter ? goldColors : colors;
     const buttonWidth = buttonRef.current.offsetWidth;
     const newSparks: Spark[] = Array.from({ length: count }).map(() => ({
       id: idRef.current++,
       angle: (Math.random() * 120 - 150) * (Math.PI / 180),
       distance: Math.random() * 180 + 40,
-      color: colors[Math.floor(Math.random() * colors.length)],
+      color: palette[Math.floor(Math.random() * palette.length)],
       lifetime: 0.8 + Math.random() * 1.2,
-      offsetX: buttonWidth * 0.5 + (Math.random() * 74 - 37),
+      offsetX: fromCenter
+        ? buttonWidth / 2
+        : buttonWidth * 0.5 + (Math.random() * 74 - 37),
       createdAt: Date.now(),
+      fromCenter,
     }));
 
     setSparks((prev) => [...prev, ...newSparks]);

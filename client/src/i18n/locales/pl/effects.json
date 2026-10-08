@@ -497,6 +497,10 @@
     "stone_pickaxe": {
       "description": "Prymitywny kilof do górnictwa",
       "name": "Kamienny kilof"
+    },
+    "wanderers_lantern": {
+      "description": "Daje noszącemu odrobinę szczęścia i szansę dostrzec to, co mrok inaczej by ukrył.",
+      "name": "Latarnia wędrowca"
     }
   },
   "weapons": {

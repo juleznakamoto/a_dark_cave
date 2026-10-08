@@ -14,6 +14,7 @@ import {
 } from "@/lib/edition";
 import { resolveDevMode } from "@/game/devMultipliers";
 import { isDemoPlayFrozen } from "@/game/demoLimit";
+import { wanderersLanternSilverPatch } from "@/game/wanderersLantern";
 import { gameActions, shouldShowAction, canExecuteAction } from "@/game/rules";
 import {
   EventManager,
@@ -266,6 +267,8 @@ export const createActionsSlice: GameStoreCreator<Partial<GameStore>> = (set, ge
         }));
         // Trigger effects update
         StateManager.scheduleEffectsUpdate(get);
+        const feedFireSilver = wanderersLanternSilverPatch(get());
+        if (feedFireSilver) set(feedFireSilver);
       }
       return;
     }
@@ -446,6 +449,9 @@ export const createActionsSlice: GameStoreCreator<Partial<GameStore>> = (set, ge
           : baseLog,
       };
     });
+
+    const actionSilver = wanderersLanternSilverPatch(get());
+    if (actionSilver) set(actionSilver);
 
     // Action SFX only for manual clicks  -  Prior automation stays silent.
     const playActionSfx = meta?.executionSource !== "prior";
