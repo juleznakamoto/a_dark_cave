@@ -55,7 +55,9 @@
     "sync:resend-marketing": "tsx scripts/sync-resend-marketing-contacts.ts",
     "import:resend-legacy-segments": "tsx scripts/import-legacy-resend-segments.ts",
     "rebuild:resend-marketing": "tsx scripts/rebuild-resend-marketing-contacts.ts",
-    "import:resend-batches": "tsx scripts/import-resend-contact-batches.ts"
+    "import:resend-batches": "tsx scripts/import-resend-contact-batches.ts",
+    "clear:resend-contacts": "tsx scripts/clear-resend-contacts.ts",
+    "upload:resend-contacts": "tsx scripts/upload-resend-contact-csv.ts"
   },
   "dependencies": {
     "@radix-ui/react-checkbox": "^1.1.5",
