@@ -1,14 +1,19 @@
 {
   "cartographer": {
     "title": "El cartógrafo",
-    "message": "Un joven llega a la aldea. Su mochila está llena de mapas e instrumentos extraños. Dice que quiere cartografiar el mundo y se ofrece a enseñarte a dibujar mapas detallados.",
+    "message": "Un joven llega a la aldea. Su mochila está llena de mapas e instrumentos extraños. Dice que quiere cartografiar el mundo y se ofrece a enseñarte a dibujar mapas detallados por {{silverCost}} de plata. 'Si no puedes pagar ahora, volveré', dice.",
     "choices": {
       "accept": {
-        "label": "Aceptar"
+        "label": "Pagar {{silverCost}} de plata",
+        "cost": "{{silverCost}} plata"
+      },
+      "refuse": {
+        "label": "Rechazar"
       }
     },
     "log": {
-      "outcome0": "Se queda y te lo enseña. Ahora puedes dibujar un mapa detallado de la aldea."
+      "outcome0": "Le pagas. Se queda y te lo enseña. Ahora puedes dibujar un mapa detallado de la aldea.",
+      "outcome1": "Lo despides sin pagar. 'Volveré', dice, y se marcha de la aldea."
     }
   },
   "alchemistArrives": {

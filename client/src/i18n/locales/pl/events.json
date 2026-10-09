@@ -18,14 +18,19 @@
   },
   "cartographer": {
     "title": "Kartograf",
-    "message": "Do wioski przybywa młody mężczyzna. Jego plecak jest pełen map i dziwnych przyrządów. Mówi, że chce nanieść świat na mapę, i proponuje, że nauczy cię rysować szczegółowe mapy.",
+    "message": "Do wioski przybywa młody mężczyzna. Jego plecak jest pełen map i dziwnych przyrządów. Mówi, że chce nanieść świat na mapę, i proponuje, że nauczy cię rysować szczegółowe mapy za {{silverCost}} srebra. 'Jeśli nie możesz zapłacić teraz, wrócę', mówi.",
     "choices": {
       "accept": {
-        "label": "Przyjmij"
+        "label": "Zapłać {{silverCost}} srebra",
+        "cost": "{{silverCost}} srebra"
+      },
+      "refuse": {
+        "label": "Odmów"
       }
     },
     "log": {
-      "outcome0": "Zostaje i uczy cię. Od teraz potrafisz rysować szczegółową mapę tej wioski."
+      "outcome0": "Płacisz mu. Zostaje i uczy cię. Od teraz potrafisz rysować szczegółową mapę tej wioski.",
+      "outcome1": "Odsyłasz go bez zapłaty. 'Wrócę', mówi i opuszcza wioskę."
     }
   },
   "alchemistArrives": {

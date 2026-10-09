@@ -1,14 +1,19 @@
 {
   "cartographer": {
     "title": "Le cartographe",
-    "message": "Un jeune homme arrive au village. Son sac à dos est plein de cartes et d'étranges instruments. Il dit vouloir cartographier le monde et propose de t'apprendre à dessiner des cartes détaillées.",
+    "message": "Un jeune homme arrive au village. Son sac à dos est plein de cartes et d'étranges instruments. Il dit vouloir cartographier le monde et propose de t'apprendre à dessiner des cartes détaillées pour {{silverCost}} argent. 'Si tu ne peux pas payer maintenant, je reviendrai', dit-il.",
     "choices": {
       "accept": {
-        "label": "Accepter"
+        "label": "Payer {{silverCost}} argent",
+        "cost": "{{silverCost}} argent"
+      },
+      "refuse": {
+        "label": "Refuser"
       }
     },
     "log": {
-      "outcome0": "Il reste et te l'apprend. Tu peux désormais dessiner une carte détaillée du village."
+      "outcome0": "Tu le paies. Il reste et te l'apprend. Tu peux désormais dessiner une carte détaillée du village.",
+      "outcome1": "Tu le renvoies sans payer. 'Je reviendrai', dit-il, et il quitte le village."
     }
   },
   "alchemistArrives": {

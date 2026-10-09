@@ -1,14 +1,19 @@
 {
   "cartographer": {
     "title": "Der Kartograph",
-    "message": "Ein junger Mann kommt ins Dorf. Sein Rucksack ist voller Karten und seltsamer Instrumente. Er sagt, er wolle die Welt kartieren, und bietet an, dir das Zeichnen detaillierter Karten beizubringen.",
+    "message": "Ein junger Mann kommt ins Dorf. Sein Rucksack ist voller Karten und seltsamer Instrumente. Er sagt, er wolle die Welt kartieren, und bietet an, dir für {{silverCost}} Silber das Zeichnen detaillierter Karten beizubringen. 'Wenn du jetzt nicht zahlen kannst, komme ich wieder', sagt er.",
     "choices": {
       "accept": {
-        "label": "Annehmen"
+        "label": "{{silverCost}} Silber zahlen",
+        "cost": "{{silverCost}} Silber"
+      },
+      "refuse": {
+        "label": "Ablehnen"
       }
     },
     "log": {
-      "outcome0": "Er bleibt und bringt es dir bei. Von nun an kannst du das Dorf selbst kartieren."
+      "outcome0": "Du bezahlst ihn. Er bleibt und bringt es dir bei. Von nun an kannst du das Dorf selbst kartieren.",
+      "outcome1": "Du schickst ihn fort, ohne zu zahlen. 'Ich komme wieder', sagt er und verlässt das Dorf."
     }
   },
   "alchemistArrives": {

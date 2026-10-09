@@ -1,14 +1,19 @@
 {
   "cartographer": {
     "title": "Il cartografo",
-    "message": "Un giovane arriva al villaggio. Il suo zaino è pieno di mappe e strani strumenti. Dice di voler mappare il mondo e si offre di insegnarti a disegnare mappe dettagliate.",
+    "message": "Un giovane arriva al villaggio. Il suo zaino è pieno di mappe e strani strumenti. Dice di voler mappare il mondo e si offre di insegnarti a disegnare mappe dettagliate per {{silverCost}} argento. 'Se non puoi pagare ora, tornerò', dice.",
     "choices": {
       "accept": {
-        "label": "Accetta"
+        "label": "Paga {{silverCost}} argento",
+        "cost": "{{silverCost}} argento"
+      },
+      "refuse": {
+        "label": "Rifiuta"
       }
     },
     "log": {
-      "outcome0": "Resta e te lo insegna. Ora puoi disegnare una mappa dettagliata del villaggio."
+      "outcome0": "Lo paghi. Resta e te lo insegna. Ora puoi disegnare una mappa dettagliata del villaggio.",
+      "outcome1": "Lo mandi via senza pagare. 'Tornerò', dice, e lascia il villaggio."
     }
   },
   "alchemistArrives": {

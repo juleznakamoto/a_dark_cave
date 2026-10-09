@@ -1,14 +1,19 @@
 {
   "cartographer": {
     "title": "O Cartógrafo",
-    "message": "Um jovem chega à vila. Sua mochila está cheia de mapas e instrumentos estranhos. Ele diz que quer mapear o mundo e se oferece para ensinar você a desenhar mapas detalhados.",
+    "message": "Um jovem chega à vila. Sua mochila está cheia de mapas e instrumentos estranhos. Ele diz que quer mapear o mundo e se oferece para ensinar você a desenhar mapas detalhados por {{silverCost}} de prata. 'Se não puder pagar agora, eu volto', diz ele.",
     "choices": {
       "accept": {
-        "label": "Aceitar"
+        "label": "Pagar {{silverCost}} de prata",
+        "cost": "{{silverCost}} prata"
+      },
+      "refuse": {
+        "label": "Recusar"
       }
     },
     "log": {
-      "outcome0": "Ele fica e te ensina. Agora você pode desenhar um mapa detalhado da vila."
+      "outcome0": "Você paga a ele. Ele fica e te ensina. Agora você pode desenhar um mapa detalhado da vila.",
+      "outcome1": "Você o manda embora sem pagar. 'Eu volto', diz ele, e deixa a vila."
     }
   },
   "alchemistArrives": {

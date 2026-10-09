@@ -18,14 +18,19 @@
   },
   "cartographer": {
     "title": "The Cartographer",
-    "message": "A young man arrives at the village. His backpack is full of maps and strange instruments. He says he wants to map the world, and offers to teach you how to draw detailed maps.",
+    "message": "A young man arrives at the village. His backpack is full of maps and strange instruments. He says he wants to map the world, and offers to teach you how to draw detailed maps for {{silverCost}} silver. 'If you cannot pay now, I will come back,' he says.",
     "choices": {
       "accept": {
-        "label": "Accept"
+        "label": "Pay {{silverCost}} Silver",
+        "cost": "{{silverCost}} silver"
+      },
+      "refuse": {
+        "label": "Refuse"
       }
     },
     "log": {
-      "outcome0": "He stays and teaches you. You can draw a detailed map of the village now."
+      "outcome0": "You pay him. He stays and teaches you. You can draw a detailed map of the village now.",
+      "outcome1": "You send him away without paying. 'I will come back,' he says, and leaves the village."
     }
   },
   "alchemistArrives": {
