@@ -1,12 +1,14 @@
 import { GameState } from "@shared/schema";
 import type { GameEvent } from "./eventTypes";
 import {
+  countOwnedInsightBlessings,
   ensureInsightBlessingOfferState,
+  FIRST_INSIGHT_BLESSING_MIN_INSIGHT,
   getInsightBlessingCost,
   getInsightBlessingCostLabel,
   hasUnownedInsightBlessings,
 } from "./insightBlessings";
-import { isInsightUnlocked } from "./insightReveal";
+import { getInsightAmount, isInsightUnlocked } from "./insightReveal";
 import { formatNumber } from "@/lib/utils";
 
 export const insightBlessingEvents: Record<string, GameEvent> = {
@@ -15,7 +17,9 @@ export const insightBlessingEvents: Record<string, GameEvent> = {
     condition: (state: GameState) =>
       isInsightUnlocked(state) &&
       (state.buildings.darkEstate ?? 0) >= 1 &&
-      hasUnownedInsightBlessings(state),
+      hasUnownedInsightBlessings(state) &&
+      (countOwnedInsightBlessings(state) > 0 ||
+        getInsightAmount(state) >= FIRST_INSIGHT_BLESSING_MIN_INSIGHT),
     timeProbability: 45,
     priority: 4,
     repeatable: true,

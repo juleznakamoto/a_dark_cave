@@ -18,6 +18,9 @@ export const INSIGHT_BLESSING_COSTS = [
   500, 750, 1000, 1500, 2000, 2500,
 ] as const;
 
+/** The first Quiet Offering only appears while the player holds at least this much Insight. */
+export const FIRST_INSIGHT_BLESSING_MIN_INSIGHT = 300;
+
 export type InsightBlessingOfferState = {
   /** Up to 3 slots; null when empty after the list is exhausted. */
   slots: Array<InsightBlessingId | null>;
