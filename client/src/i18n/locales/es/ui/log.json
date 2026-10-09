@@ -16,6 +16,8 @@
       "one": "Un aldeano sucumbe al hambre.",
       "other": "{{count}} aldeanos mueren de hambre."
     },
+    "villagersFreezing": "Los aldeanos se están congelando.",
+    "villagersStarving": "Los aldeanos pasan hambre.",
     "boostApplied": "Impulso aplicado.",
     "investmentComplete": {
       "success": "Inversión de {{amount}} de oro completada: Éxito. Has ganado {{payout}} de oro.",

@@ -16,6 +16,8 @@
       "one": "Um aldeão sucumbe à fome.",
       "other": "{{count}} aldeões morrem de fome."
     },
+    "villagersFreezing": "Os aldeões estão congelando.",
+    "villagersStarving": "Os aldeões estão passando fome.",
     "boostApplied": "Impulso aplicado.",
     "investmentComplete": {
       "success": "Investimento de {{amount}} de Ouro concluído: Sucesso. Você ganhou {{payout}} de Ouro.",

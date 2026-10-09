@@ -16,6 +16,8 @@
       "one": "Un villageois succombe à la famine.",
       "other": "{{count}} villageois meurent de faim."
     },
+    "villagersFreezing": "Les villageois gèlent.",
+    "villagersStarving": "Les villageois sont affamés.",
     "boostApplied": "Boost appliqué.",
     "investmentComplete": {
       "success": "Investissement de {{amount}} d'or terminé : Succès. Vous avez gagné {{payout}} d'or.",

@@ -16,6 +16,8 @@
       "one": "One villager succumbs to starvation.",
       "other": "{{count}} villagers starve to death."
     },
+    "villagersFreezing": "The villagers are freezing.",
+    "villagersStarving": "The villagers are starving.",
     "boostApplied": "Boost applied.",
     "investmentComplete": {
       "success": "{{amount}} Gold investment complete: Success. You gained {{payout}} Gold.",

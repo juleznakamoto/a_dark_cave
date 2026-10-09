@@ -16,6 +16,8 @@
       "one": "Ein Dorfbewohner erliegt dem Hunger.",
       "other": "{{count}} Dorfbewohner verhungern."
     },
+    "villagersFreezing": "Die Dorfbewohner frieren.",
+    "villagersStarving": "Die Dorfbewohner hungern.",
     "boostApplied": "Verstärkung angewendet.",
     "investmentComplete": {
       "success": "{{amount}} Gold-Investition abgeschlossen: Erfolg. Du hast {{payout}} Gold erhalten.",

@@ -16,6 +16,8 @@
       "one": "村人1人が飢えに屈した。",
       "other": "村人{{count}}人が飢え死にした。"
     },
+    "villagersFreezing": "村人たちが凍えている。",
+    "villagersStarving": "村人たちが飢えている。",
     "boostApplied": "加速を適用した。",
     "investmentComplete": {
       "success": "{{amount}}金貨の投資完了：成功。{{payout}}金貨を得た。",

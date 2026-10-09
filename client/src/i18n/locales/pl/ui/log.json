@@ -16,6 +16,8 @@
       "one": "Jeden wieśniak umiera z głodu.",
       "other": "{{count}} wieśniaków umiera z głodu."
     },
+    "villagersFreezing": "Wieśniacy marzną.",
+    "villagersStarving": "Wieśniacy głodują.",
     "boostApplied": "Zastosowano wzmocnienie.",
     "investmentComplete": {
       "success": "Inwestycja {{amount}} złota zakończona: sukces. Zyskujesz {{payout}} złota.",

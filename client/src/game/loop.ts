@@ -46,6 +46,7 @@ import {
 } from "./rules/skillUpgrades";
 import { CRUEL_MODE, cruelModeScale, getMaxStoneHutLevel, getMaxWoodenHutLevel } from "./cruelMode";
 import { getMadnessDeathChancePerCycle } from "./rules/effectsStats";
+import { buildVillagerScarcityLogEntries } from "./villagerScarcityLog";
 import {
   processPlayTimeAutoPrompts,
   resetPlayTimeAutoPromptHandoff,
@@ -709,6 +710,7 @@ export function startGameLoop() {
 
         if (!currentState.idleModeState?.isActive) {
           runProductionCycle();
+          logVillagerScarcity();
           handleStarvationCheck();
           handleFreezingCheck();
           handleMadnessCheck();
@@ -1233,6 +1235,14 @@ function runProductionCycle(): void {
       }
     },
   );
+}
+
+/** One freezing/starving line per empty resource, after the cycle's resources have settled. */
+function logVillagerScarcity(): void {
+  const state = useGameStore.getState();
+  for (const entry of buildVillagerScarcityLogEntries(state)) {
+    state.addLogEntry(entry);
+  }
 }
 
 function handleStarvationCheck() {

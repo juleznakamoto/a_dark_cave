@@ -16,6 +16,8 @@
       "one": "Один житель умирает от голода.",
       "other": "{{count}} жителей умирают от голода."
     },
+    "villagersFreezing": "Жители замерзают.",
+    "villagersStarving": "Жители голодают.",
     "boostApplied": "Бонус применён.",
     "investmentComplete": {
       "success": "Инвестиция {{amount}} золота завершена: Успех. Вы получили {{payout}} золота.",

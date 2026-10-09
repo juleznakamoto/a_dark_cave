@@ -16,6 +16,8 @@
       "one": "一名村民因饥饿而死亡。",
       "other": "{{count}} 名村民因饥饿而死亡。"
     },
+    "villagersFreezing": "村民们正在挨冻。",
+    "villagersStarving": "村民们正在挨饿。",
     "boostApplied": "加速已应用。",
     "investmentComplete": {
       "success": "{{amount}} 黄金投资完成：成功。你获得了 {{payout}} 黄金。",
