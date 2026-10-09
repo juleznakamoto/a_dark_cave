@@ -16,6 +16,7 @@ export { createInitialState, defaultGameState } from "./createInitialState";
 export {
   isVisibleModalDialogOpen,
   isModalDialogOpen,
+  shouldKeepBackgroundMusicDuringFreeze,
   shouldBlockGameHotkeys,
   shouldFreezeTimedEventTabCountdown,
   scheduleMadnessDialogWhenClear,

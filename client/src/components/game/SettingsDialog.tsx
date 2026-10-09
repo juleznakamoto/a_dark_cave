@@ -339,7 +339,8 @@ function DevSaveSelector({
 /**
  * Settings dialog opened from the Profile menu. Houses audio (ambience + sound effects),
  * language, email preferences, and account deletion. Blocking: while open, the
- * simulation is frozen and no new event/combat dialogs spawn over it — its
+ * simulation is frozen and no new event/combat dialogs spawn over it. Background
+ * music keeps playing so the music slider can be heard. Its
  * `settingsDialogOpen` store flag is part of `isNonRewardBlockingModalOpen` in
  * `state.ts` (and registered in `dialogRegistry.ts` so it is never persisted).
  */
@@ -427,7 +428,13 @@ export default function SettingsDialog({
       setSfxMuted(false);
       audioManager.sfxMute(false);
     }
+    audioManager.previewSfxVolume();
   };
+
+  useEffect(() => {
+    if (!isOpen) return;
+    audioManager.warmSfxVolumePreview();
+  }, [isOpen]);
 
   const steamEditionActive = useSteamEditionActive();
   const showAccountSettings = !steamEditionActive && !!currentUser;

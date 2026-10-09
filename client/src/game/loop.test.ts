@@ -2,6 +2,7 @@ import { describe, it, expect, beforeEach, afterEach, vi } from "vitest";
 import {
   useGameStore,
   isModalDialogOpen,
+  shouldKeepBackgroundMusicDuringFreeze,
   syncTimedEventTabPauseTracking,
   getTimedEventTabEffectiveRemainingMs,
 } from "./state";
@@ -83,6 +84,35 @@ describe('Game Loop Production', () => {
     const updatedState = useGameStore.getState();
     expect(updatedState.eventDialog.isOpen).toBe(true);
     expect(updatedState.isPaused || updatedState.eventDialog.isOpen).toBe(true);
+  });
+
+  it("keeps background music when only settings is open", () => {
+    useGameStore.setState({
+      settingsDialogOpen: true,
+      isPaused: false,
+    });
+    expect(
+      shouldKeepBackgroundMusicDuringFreeze(useGameStore.getState()),
+    ).toBe(true);
+  });
+
+  it("ducks background music when settings is open during another freeze", () => {
+    useGameStore.setState({
+      settingsDialogOpen: true,
+      isPaused: true,
+    });
+    expect(
+      shouldKeepBackgroundMusicDuringFreeze(useGameStore.getState()),
+    ).toBe(false);
+
+    useGameStore.setState({
+      settingsDialogOpen: true,
+      isPaused: false,
+      shopDialogOpen: true,
+    });
+    expect(
+      shouldKeepBackgroundMusicDuringFreeze(useGameStore.getState()),
+    ).toBe(false);
   });
 
   it("does not pause simulation while only a timed event tab is active", () => {

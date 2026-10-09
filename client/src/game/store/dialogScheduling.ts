@@ -43,6 +43,19 @@ export function isModalDialogOpen(state: GameStore): boolean {
 }
 
 /**
+ * Settings is the only reason the sim is frozen. Background music stays up so
+ * the music slider can be heard. Pause, idle, demo end, and any other modal
+ * still duck it.
+ */
+export function shouldKeepBackgroundMusicDuringFreeze(state: GameStore): boolean {
+  if (!state.settingsDialogOpen) return false;
+  if (state.isPaused || state.idleModeState?.isActive || isDemoPlayFrozen(state)) {
+    return false;
+  }
+  return !isModalDialogOpen({ ...state, settingsDialogOpen: false });
+}
+
+/**
  * True when tab keyboard shortcuts should be ignored.
  * Unlike `isModalDialogOpen`, an active timed-event tab alone does not block hotkeys -
  * players should still switch tabs with 1–9 / arrows while a visit is open.

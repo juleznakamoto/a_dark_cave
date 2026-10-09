@@ -3,6 +3,7 @@ import {
   StateManager,
   isModalDialogOpen,
   isVisibleModalDialogOpen,
+  shouldKeepBackgroundMusicDuringFreeze,
   shouldFreezeTimedEventTabCountdown,
   syncTimedEventTabPauseTracking,
   getTimedEventTabEffectiveRemainingMs,
@@ -535,9 +536,12 @@ export function startGameLoop() {
 
     if (isSimulationFrozen) {
       commitFlushedAttackWaveTimers(state.attackWaveTimers);
-      // Fade BGM out on pause; keep event ambience beds (cube, etc.) playing
+      // Fade BGM out on pause. Settings alone leaves it playing so the
+      // music slider can be heard. Event ambience beds stay up either way.
       if (!state.isPausedPreviously && (!state.sfxMuted || !state.musicMuted)) {
-        audioManager.pauseForSimulation(EVENT_AMBIENCE_FADE_SECONDS);
+        audioManager.pauseForSimulation(EVENT_AMBIENCE_FADE_SECONDS, {
+          keepBackgroundMusic: shouldKeepBackgroundMusicDuringFreeze(state),
+        });
         useGameStore.setState({ isPausedPreviously: true });
       }
       // Freeze production timer while paused so it can resume from remaining time.

@@ -23,6 +23,10 @@ import { logger } from './logger';
 import { publicUrl } from './publicUrl';
 import { EVENT_AMBIENCE_FADE_SECONDS, SOUND_VOLUME } from './soundVolumes';
 
+/** Settings SFX slider preview: shortest one-shot (hunt bow snap, 0.35s). */
+const SFX_VOLUME_PREVIEW = "hunt";
+const SFX_VOLUME_PREVIEW_URL = "/sounds/hunt.mp3";
+
 export {
   EVENT_AMBIENCE_FADE_SECONDS,
   EVENT_DIALOG_AMBIENCE_FADE_SECONDS,
@@ -52,6 +56,8 @@ export class AudioManager {
   /** Bumps on every visibility change so a late suspend cannot win over show. */
   private visibilityEpoch = 0;
   private visibilityBound = false;
+  /** Hunt preview is loading; ignore extra slider events until it can play. */
+  private sfxPreviewPending = false;
 
   private constructor() {
     this.bindPageVisibility();
@@ -395,13 +401,18 @@ export class AudioManager {
   /**
    * Simulation pause (modal / user pause): fade BGM out and stop other loops,
    * while preserving any active event ambience bed.
+   * `keepBackgroundMusic` leaves the track running (settings volume slider).
    */
   pauseForSimulation(
     musicFadeOutSeconds: number = EVENT_AMBIENCE_FADE_SECONDS,
+    options?: { keepBackgroundMusic?: boolean },
   ): void {
+    const keepBackgroundMusic = options?.keepBackgroundMusic === true;
     if (this.isSoundPlaying('backgroundMusic')) {
       this.wasBackgroundMusicPlaying = !this.isMusicMuted;
-      this.stopLoopingSound('backgroundMusic', musicFadeOutSeconds);
+      if (!keepBackgroundMusic) {
+        this.stopLoopingSound('backgroundMusic', musicFadeOutSeconds);
+      }
     } else if (!this.isMusicMuted && this.wasBackgroundMusicPlaying) {
       // Keep resume intent if BGM already faded for event ambience
     } else if (!this.activeEventAmbience) {
@@ -570,8 +581,10 @@ export class AudioManager {
     // Event dialog still owns the mix. Do not pull BGM back underneath it.
     if (this.activeEventAmbience) return;
 
-    // Only resume background music if it was playing AND music is not muted
+    // Only resume background music if it was playing AND music is not muted.
+    // Settings leaves BGM at the slider level; don't restart that fade.
     if (this.wasBackgroundMusicPlaying && !this.isMusicMuted) {
+      if (this.isBackgroundMusicAtTargetVolume()) return;
       this.playLoopingSound(
         'backgroundMusic',
         this.backgroundMusicVolume,
@@ -579,6 +592,60 @@ export class AudioManager {
         musicFadeInSeconds,
       );
     }
+  }
+
+  /** True when BGM is already audible at the current music slider level. */
+  private isBackgroundMusicAtTargetVolume(): boolean {
+    if (!this.isSoundPlaying('backgroundMusic')) return false;
+    const target = this.effectiveVolume(
+      'backgroundMusic',
+      this.backgroundMusicVolume,
+    );
+    return Math.abs(this.getCurrentVolume('backgroundMusic') - target) < 0.02;
+  }
+
+  /** Decode the settings SFX preview so the first slider move is instant. */
+  warmSfxVolumePreview(): void {
+    if (this.sounds.has(SFX_VOLUME_PREVIEW) || this.sfxPreviewPending) return;
+    const url =
+      this.soundUrls.get(SFX_VOLUME_PREVIEW) ??
+      publicUrl(SFX_VOLUME_PREVIEW_URL);
+    this.soundUrls.set(SFX_VOLUME_PREVIEW, url);
+    void this.loadSound(SFX_VOLUME_PREVIEW, url).catch((error) => {
+      logger.warn("Failed to preload SFX volume preview:", error);
+    });
+  }
+
+  /**
+   * Play a short hunt snap so the SFX slider can be heard. While that snap is
+   * still playing, setSfxVolume updates it live instead of stacking copies.
+   */
+  previewSfxVolume(): void {
+    if (this.isMutedGlobally || this.sfxMasterVolume <= 0) return;
+    if (this.sfxPreviewPending || this.isSoundPlaying(SFX_VOLUME_PREVIEW)) return;
+
+    if (!this.sounds.has(SFX_VOLUME_PREVIEW)) {
+      const url =
+        this.soundUrls.get(SFX_VOLUME_PREVIEW) ??
+        publicUrl(SFX_VOLUME_PREVIEW_URL);
+      this.soundUrls.set(SFX_VOLUME_PREVIEW, url);
+      this.sfxPreviewPending = true;
+      void this.loadSound(SFX_VOLUME_PREVIEW, url)
+        .then(() => {
+          if (this.isMutedGlobally || this.sfxMasterVolume <= 0) return;
+          if (this.isSoundPlaying(SFX_VOLUME_PREVIEW)) return;
+          this.playSound(SFX_VOLUME_PREVIEW, SOUND_VOLUME.hunt);
+        })
+        .catch((error) => {
+          logger.warn("Failed to load SFX volume preview:", error);
+        })
+        .finally(() => {
+          this.sfxPreviewPending = false;
+        });
+      return;
+    }
+
+    this.playSound(SFX_VOLUME_PREVIEW, SOUND_VOLUME.hunt);
   }
 
   /** @deprecated Use musicMute and sfxMute separately */
