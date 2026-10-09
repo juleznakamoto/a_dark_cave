@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState, type CSSProperties } from "react";
 import { Helmet } from "react-helmet-async";
 import { Button } from "@/components/ui/button";
 import { FooterSocialIcon } from "@/components/game/FooterSocialIcon";
@@ -14,6 +14,7 @@ import { useTranslation } from "react-i18next";
 import { useLocale } from "@/i18n/useLocale";
 import { OG_LOCALE_TAGS, SUPPORTED_LOCALES } from "@/i18n/locales";
 import { GAME_CHROME_NO_BG_HOVER } from "@/components/game/gameChrome";
+import { VOLUME_SLIDER_TRACK } from "@/components/game/volumeSlider";
 import { useFullscreen } from "@/hooks/useFullscreen";
 import { clearStaleChunkReloadGuard } from "@/lib/hardReload";
 import { mountFiraSansFontFace } from "@/lib/firaSansFontFace";
@@ -149,6 +150,159 @@ function StartScreenGlobeIcon({ className }: { className?: string }) {
   );
 }
 
+/** Phones and tablets have no hover, so they only get mute. A mouse can open the slider. */
+const FINE_HOVER_QUERY = "(hover: hover) and (pointer: fine)";
+
+function useFineHoverPointer(): boolean {
+  const [fineHover, setFineHover] = useState(
+    () =>
+      typeof window !== "undefined" &&
+      window.matchMedia(FINE_HOVER_QUERY).matches,
+  );
+
+  useEffect(() => {
+    const media = window.matchMedia(FINE_HOVER_QUERY);
+    const onChange = () => setFineHover(media.matches);
+    onChange();
+    media.addEventListener("change", onChange);
+    return () => media.removeEventListener("change", onChange);
+  }, []);
+
+  return fineHover;
+}
+
+/**
+ * Mute stays visible. On a mouse, the slider appears on hover or keyboard
+ * focus. On a phone or tablet there is no slider: a tap only mutes.
+ */
+function StartAudioControl({
+  label,
+  muted,
+  volume,
+  sliderTestId,
+  buttonTestId,
+  buttonLabel,
+  iconName,
+  onToggle,
+  onVolumeChange,
+}: {
+  label: string;
+  muted: boolean;
+  volume: number;
+  sliderTestId: string;
+  buttonTestId: string;
+  buttonLabel: string;
+  iconName: "music" | "musicMuted" | "sound" | "soundMuted";
+  onToggle: () => void;
+  onVolumeChange: (volume: number) => void;
+}) {
+  const rootRef = useRef<HTMLDivElement>(null);
+  const [holdOpen, setHoldOpen] = useState(false);
+  const fineHover = useFineHoverPointer();
+
+  useEffect(() => {
+    if (!fineHover) return;
+    const onPointerDown = (event: PointerEvent) => {
+      const root = rootRef.current;
+      if (!root) return;
+      const inside = event.target instanceof Node && root.contains(event.target);
+      const onSlider =
+        inside &&
+        event.target instanceof Element &&
+        Boolean(event.target.closest('input[type="range"]'));
+      if (onSlider) setHoldOpen(true);
+    };
+    const onPointerUp = () => {
+      setHoldOpen(false);
+    };
+    document.addEventListener("pointerdown", onPointerDown, true);
+    document.addEventListener("pointerup", onPointerUp, true);
+    return () => {
+      document.removeEventListener("pointerdown", onPointerDown, true);
+      document.removeEventListener("pointerup", onPointerUp, true);
+    };
+  }, [fineHover]);
+
+  return (
+    <div ref={rootRef} className="group/vol relative">
+      <Button
+        variant="ghost"
+        size="xs"
+        onClick={onToggle}
+        data-testid={buttonTestId}
+        className={START_FOOTER_ICON_BTN}
+        aria-label={buttonLabel}
+      >
+        <AudioGlyphIcon name={iconName} sizeClassName={START_FOOTER_ICON} />
+      </Button>
+      {fineHover && (
+        <div
+          className={
+            "absolute bottom-full left-1/2 z-20 -translate-x-1/2 pb-1 transition-opacity duration-150 " +
+            (holdOpen
+              ? "pointer-events-auto opacity-100 delay-0"
+              : "pointer-events-none opacity-0 delay-0 [@media(hover:hover)_and_(pointer:fine)]:group-hover/vol:pointer-events-auto [@media(hover:hover)_and_(pointer:fine)]:group-hover/vol:opacity-100 [@media(hover:hover)_and_(pointer:fine)]:group-hover/vol:delay-200 group-has-[:focus-visible]/vol:pointer-events-auto group-has-[:focus-visible]/vol:opacity-100 group-has-[:focus-visible]/vol:delay-0")
+          }
+        >
+          <StartVolumeSlider
+            label={label}
+            muted={muted}
+            volume={volume}
+            testId={sliderTestId}
+            onChange={onVolumeChange}
+          />
+        </div>
+      )}
+    </div>
+  );
+}
+
+/** Rotated range so the track stands up: quiet at the bottom, loud at the top. */
+function StartVolumeSlider({
+  label,
+  muted,
+  volume,
+  testId,
+  onChange,
+}: {
+  label: string;
+  muted: boolean;
+  volume: number;
+  testId: string;
+  onChange: (volume: number) => void;
+}) {
+  const shown = muted ? 0 : volume;
+  const nudge = (key: "ArrowUp" | "ArrowDown") => {
+    if (muted) return;
+    const delta = key === "ArrowUp" ? 0.05 : -0.05;
+    onChange(Math.max(0, Math.min(1, Math.round((shown + delta) * 100) / 100)));
+  };
+
+  return (
+    <div className="relative h-16 w-7 md:h-[4.5rem] md:w-8">
+      <input
+        type="range"
+        min={0}
+        max={1}
+        step={0.01}
+        value={shown}
+        disabled={muted}
+        aria-label={label}
+        aria-orientation="vertical"
+        data-testid={testId}
+        style={{ "--slider-fill": `${shown * 100}%` } as CSSProperties}
+        onChange={(event) => onChange(Number(event.target.value))}
+        onKeyDown={(event) => {
+          if (event.key !== "ArrowUp" && event.key !== "ArrowDown") return;
+          event.preventDefault();
+          nudge(event.key);
+        }}
+        className={`absolute left-1/2 top-1/2 h-4 w-16 -translate-x-1/2 -translate-y-1/2 -rotate-90 touch-none md:w-[4.5rem] ${VOLUME_SLIDER_TRACK}${muted ? " opacity-40 cursor-not-allowed" : ""}`}
+      />
+    </div>
+  );
+}
+
 export interface StartScreenPreferences {
   cruelMode: boolean;
   musicMuted: boolean;
@@ -187,8 +341,8 @@ export default function StartScreen({
   const isCruelMode = initialPreferences.cruelMode;
   const [musicMuted, setMusicMuted] = useState(initialPreferences.musicMuted);
   const [sfxMuted, setSfxMuted] = useState(initialPreferences.sfxMuted);
-  const musicVolume = initialPreferences.musicVolume;
-  const sfxVolume = initialPreferences.sfxVolume;
+  const [musicVolume, setMusicVolume] = useState(initialPreferences.musicVolume);
+  const [sfxVolume, setSfxVolume] = useState(initialPreferences.sfxVolume);
   const [showParticles, setShowParticles] = useState(false);
   const [buttonFadeInDone, setButtonFadeInDone] = useState(false);
   const buttonFadeRef = useRef<HTMLDivElement>(null);
@@ -315,7 +469,14 @@ export default function StartScreen({
     if (playerChoseAudioRef.current) return;
     setMusicMuted(initialPreferences.musicMuted);
     setSfxMuted(initialPreferences.sfxMuted);
-  }, [initialPreferences.musicMuted, initialPreferences.sfxMuted]);
+    setMusicVolume(initialPreferences.musicVolume);
+    setSfxVolume(initialPreferences.sfxVolume);
+  }, [
+    initialPreferences.musicMuted,
+    initialPreferences.sfxMuted,
+    initialPreferences.musicVolume,
+    initialPreferences.sfxVolume,
+  ]);
 
   const applyAudioPrefs = useCallback((mod: AudioModule) => {
     const prefs = audioPrefsRef.current;
@@ -360,19 +521,28 @@ export default function StartScreen({
   }, [applyAudioPrefs, musicMuted, sfxMuted, musicVolume, sfxVolume]);
 
   const rememberAudioChoice = useCallback(
-    (next: { musicMuted: boolean; sfxMuted: boolean }) => {
+    (next: {
+      musicMuted: boolean;
+      sfxMuted: boolean;
+      musicVolume: number;
+      sfxVolume: number;
+    }) => {
       playerChoseAudioRef.current = true;
-      audioPrefsRef.current = { ...audioPrefsRef.current, ...next };
-      activityPrefsRef.current = { ...activityPrefsRef.current, ...next };
+      audioPrefsRef.current = next;
+      activityPrefsRef.current = { cruelMode: isCruelMode, ...next };
       setMusicMuted(next.musicMuted);
       setSfxMuted(next.sfxMuted);
+      setMusicVolume(next.musicVolume);
+      setSfxVolume(next.sfxVolume);
       writeStartAudioChoice(next);
       const audio = audioRef.current;
       if (!audio) return;
+      audio.audioManager.setMusicVolume(next.musicVolume);
+      audio.audioManager.setSfxVolume(next.sfxVolume);
       audio.audioManager.musicMute(next.musicMuted, { resume: false });
       audio.audioManager.sfxMute(next.sfxMuted);
     },
-    [],
+    [isCruelMode],
   );
 
   startWindIfAllowedRef.current = (mod) => {
@@ -658,8 +828,8 @@ export default function StartScreen({
       cruelMode: isCruelMode,
       musicMuted: audioPrefsRef.current.musicMuted,
       sfxMuted: audioPrefsRef.current.sfxMuted,
-      musicVolume,
-      sfxVolume,
+      musicVolume: audioPrefsRef.current.musicVolume,
+      sfxVolume: audioPrefsRef.current.sfxVolume,
     };
     onMakeFireStart?.(preferences);
 
@@ -683,15 +853,29 @@ export default function StartScreen({
     const next = !audioPrefsRef.current.musicMuted;
     // Start screen must not start BGM on unmute; Make Fire starts it explicitly.
     rememberAudioChoice({
+      ...audioPrefsRef.current,
       musicMuted: next,
-      sfxMuted: audioPrefsRef.current.sfxMuted,
+    });
+  };
+
+  const changeMusicVolume = (volume: number) => {
+    rememberAudioChoice({
+      ...audioPrefsRef.current,
+      musicVolume: volume,
+    });
+  };
+
+  const changeSfxVolume = (volume: number) => {
+    rememberAudioChoice({
+      ...audioPrefsRef.current,
+      sfxVolume: volume,
     });
   };
 
   const toggleSfx = () => {
     const next = !audioPrefsRef.current.sfxMuted;
     rememberAudioChoice({
-      musicMuted: audioPrefsRef.current.musicMuted,
+      ...audioPrefsRef.current,
       sfxMuted: next,
     });
     if (next || executedRef.current) {
@@ -1083,34 +1267,30 @@ export default function StartScreen({
               <StartScreenGlobeIcon className={START_FOOTER_ICON} />
             </button>
           )}
-          <Button
-            variant="ghost"
-            size="xs"
-            onClick={toggleMusic}
-            data-testid="button-start-toggle-music"
-            className={START_FOOTER_ICON_BTN}
-            aria-label={
+          <StartAudioControl
+            label={t("settings.music")}
+            muted={musicMuted}
+            volume={musicVolume}
+            sliderTestId="slider-start-music"
+            buttonTestId="button-start-toggle-music"
+            buttonLabel={
               musicMuted ? t("footer.unmuteMusic") : t("footer.muteMusic")
             }
-          >
-            <AudioGlyphIcon
-              name={musicMuted ? "musicMuted" : "music"}
-              sizeClassName={START_FOOTER_ICON}
-            />
-          </Button>
-          <Button
-            variant="ghost"
-            size="xs"
-            onClick={toggleSfx}
-            data-testid="button-start-toggle-sfx"
-            className={START_FOOTER_ICON_BTN}
-            aria-label={sfxMuted ? t("footer.unmuteSfx") : t("footer.muteSfx")}
-          >
-            <AudioGlyphIcon
-              name={sfxMuted ? "soundMuted" : "sound"}
-              sizeClassName={START_FOOTER_ICON}
-            />
-          </Button>
+            iconName={musicMuted ? "musicMuted" : "music"}
+            onToggle={toggleMusic}
+            onVolumeChange={changeMusicVolume}
+          />
+          <StartAudioControl
+            label={t("settings.sound")}
+            muted={sfxMuted}
+            volume={sfxVolume}
+            sliderTestId="slider-start-sfx"
+            buttonTestId="button-start-toggle-sfx"
+            buttonLabel={sfxMuted ? t("footer.unmuteSfx") : t("footer.muteSfx")}
+            iconName={sfxMuted ? "soundMuted" : "sound"}
+            onToggle={toggleSfx}
+            onVolumeChange={changeSfxVolume}
+          />
         </div>
         <div className="flex flex-wrap justify-end items-center gap-x-3 gap-y-1.5">
           {steamDesktopEditionActive && (

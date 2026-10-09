@@ -13,8 +13,8 @@ export type VillagerBlockingState = GameState & {
 
 /**
  * True when a button that locks free villagers for its duration is on screen
- * or already running. The village "available" and "on a mission" rows stay
- * hidden until that mechanic exists.
+ * or already running. The village "on a mission" row stays hidden until that
+ * mechanic exists. The free-villager ("available") row is always shown.
  */
 export function hasVisibleVillagerBlockingAction(
   state: VillagerBlockingState,

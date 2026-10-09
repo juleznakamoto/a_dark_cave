@@ -4,11 +4,19 @@ export const START_AUDIO_CHOICE_KEY = "adc-start-audio";
 export interface StartAudioChoice {
   musicMuted: boolean;
   sfxMuted: boolean;
+  /** 0–1. Missing on choices saved before the start-screen sliders. */
+  musicVolume?: number;
+  sfxVolume?: number;
 }
 
 export interface StartAudioVisit {
   musicMuted: boolean;
   sfxMuted: boolean;
+}
+
+function clampStartVolume(value: unknown): number | undefined {
+  if (typeof value !== "number" || !Number.isFinite(value)) return undefined;
+  return Math.min(1, Math.max(0, value));
 }
 
 export function parseStartAudioChoice(raw: string | null): StartAudioChoice | null {
@@ -21,7 +29,14 @@ export function parseStartAudioChoice(raw: string | null): StartAudioChoice | nu
     ) {
       return null;
     }
-    return { musicMuted: value.musicMuted, sfxMuted: value.sfxMuted };
+    const musicVolume = clampStartVolume(value.musicVolume);
+    const sfxVolume = clampStartVolume(value.sfxVolume);
+    return {
+      musicMuted: value.musicMuted,
+      sfxMuted: value.sfxMuted,
+      ...(musicVolume !== undefined ? { musicVolume } : {}),
+      ...(sfxVolume !== undefined ? { sfxVolume } : {}),
+    };
   } catch {
     return null;
   }
@@ -59,7 +74,9 @@ export function startAudioForVisit(
     };
   }
   const choice = readStartAudioChoice();
-  if (choice) return choice;
+  if (choice) {
+    return { musicMuted: choice.musicMuted, sfxMuted: choice.sfxMuted };
+  }
   return firstVisit;
 }
 

@@ -5,6 +5,7 @@ import {
   isMakeFireTarget,
   isStartAudioGesture,
   isStartAudioToggleTarget,
+  readStartAudioChoice,
   startAudioForVisit,
   writeStartAudioChoice,
 } from "./startScreenAudioChoice";
@@ -38,6 +39,44 @@ describe("startAudioForVisit", () => {
     ).toEqual({
       musicMuted: true,
       sfxMuted: true,
+    });
+  });
+
+  it("keeps stored slider levels without changing the switch result", () => {
+    writeStartAudioChoice({
+      musicMuted: false,
+      sfxMuted: false,
+      musicVolume: 0.25,
+      sfxVolume: 0.5,
+    });
+
+    expect(startAudioForVisit(null)).toEqual({
+      musicMuted: false,
+      sfxMuted: false,
+    });
+    expect(readStartAudioChoice()).toEqual({
+      musicMuted: false,
+      sfxMuted: false,
+      musicVolume: 0.25,
+      sfxVolume: 0.5,
+    });
+  });
+
+  it("drops volume fields that are not numbers", () => {
+    localStorage.setItem(
+      START_AUDIO_CHOICE_KEY,
+      JSON.stringify({
+        musicMuted: true,
+        sfxMuted: false,
+        musicVolume: "loud",
+        sfxVolume: 2,
+      }),
+    );
+
+    expect(readStartAudioChoice()).toEqual({
+      musicMuted: true,
+      sfxMuted: false,
+      sfxVolume: 1,
     });
   });
 

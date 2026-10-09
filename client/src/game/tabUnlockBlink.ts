@@ -24,7 +24,7 @@ export type TabUnlockBlinkId = keyof typeof TAB_UNLOCK_BLINK_SEEN_KEYS;
 /** Fade-in length when a location tab first appears. */
 export const TAB_UNLOCK_FADE_MS = 3000;
 /** After the new-tab glow has run this long without a click, switch to the timed-event green pulse. */
-export const TAB_UNLOCK_GREEN_PULSE_MS = 15_000;
+export const TAB_UNLOCK_GREEN_PULSE_MS = 20_000;
 
 export function getTabUnlockAttentionClass(options: {
   isAnimating: boolean;

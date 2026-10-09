@@ -18,7 +18,10 @@ import {
   shouldBootGameSurface,
 } from "./startupBootSurface";
 import { type StartupLocation } from "./startupIntent";
-import { startAudioForVisit } from "./startScreenAudioChoice";
+import {
+  readStartAudioChoice,
+  startAudioForVisit,
+} from "./startScreenAudioChoice";
 
 export type StartupResolution =
   | { surface: "game" }
@@ -83,10 +86,15 @@ function createStartResolution(
       ? { musicMuted: false, sfxMuted: false }
       : { musicMuted: true, sfxMuted: true },
   );
+  // A save header already supplied volumes. With no save, keep slider levels
+  // from an earlier visit.
+  const stored = savedAudio ? null : readStartAudioChoice();
   const resolvedPreferences: StartScreenPreferences = {
     ...preferences,
     musicMuted: audio.musicMuted,
     sfxMuted: audio.sfxMuted,
+    musicVolume: stored?.musicVolume ?? preferences.musicVolume,
+    sfxVolume: stored?.sfxVolume ?? preferences.sfxVolume,
   };
   const devSteamMode =
     (!isSteamBuild &&

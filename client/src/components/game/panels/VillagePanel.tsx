@@ -2630,20 +2630,17 @@ export default function VillagePanel() {
                   {story.seen?.hasVillagers && (
                     <>
                       {renderVillagersSummaryRow()}
-                      {showVillagerMissionRows && (
-                        <>
-                          {renderVillagerStatRow(
-                            "villagers-available",
-                            t("village.villagersAvailable"),
-                            freeVillagers,
-                          )}
-                          {renderVillagerStatRow(
-                            "villagers-on-mission",
-                            t("village.villagersOnMission"),
-                            onMissionCount,
-                          )}
-                        </>
+                      {renderVillagerStatRow(
+                        "villagers-available",
+                        t("village.villagersAvailable"),
+                        freeVillagers,
                       )}
+                      {showVillagerMissionRows &&
+                        renderVillagerStatRow(
+                          "villagers-on-mission",
+                          t("village.villagersOnMission"),
+                          onMissionCount,
+                        )}
                       {visiblePopulationJobs.map((job) =>
                         renderPopulationControl(
                           job.id,
