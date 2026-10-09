@@ -2560,6 +2560,25 @@ html[data-tab-hidden] .exclusive-promo-shockwave-ring:not(.exclusive-promo-shock
   animation: improve-text-flash 0.35s ease-out forwards;
 }
 
+/* Job /max: three quick flashes when an Insight upgrade raises the cap.
+   0% and 100% color come from the element's own text color. */
+@keyframes villager-cap-flash {
+  15% {
+    color: #fff;
+    text-shadow: 0 0 10px rgba(255, 255, 255, 0.95);
+  }
+}
+
+.villager-cap-flash {
+  animation: villager-cap-flash 0.4s ease-out 3;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .villager-cap-flash {
+    animation: none;
+  }
+}
+
 .animate-bubbly-top {
   animation: bubbly-top .75s ease-in-out forwards;
 }

@@ -78,6 +78,7 @@ import {
   INSIGHT_BADGE_TOOLTIP_TRIGGER_CLASS,
 } from "@/components/game/BuildingActionBadge";
 import { VillagerCapUpgradeBadge } from "@/components/game/VillagerCapUpgradeBadge";
+import { VillagerJobCap } from "@/components/game/VillagerJobCap";
 import { formatCompactDuration, formatNumber } from "@/lib/utils";
 import {
   arePresetsVisible,
@@ -1457,15 +1458,16 @@ export default function VillagePanel() {
             </span>
           </Button>
         </div>
-        <span
-          translate="no"
-          className={cn(
-            VILLAGER_COUNT_CAP_CLASS,
-            !atCap && "text-muted-foreground",
-          )}
-        >
-          {showCap ? `/${cap}` : ""}
-        </span>
+        {showCap ? (
+          <VillagerJobCap
+            jobId={jobId}
+            cap={cap}
+            atCap={atCap}
+            className={VILLAGER_COUNT_CAP_CLASS}
+          />
+        ) : (
+          <span translate="no" className={VILLAGER_COUNT_CAP_CLASS} />
+        )}
         {renderCapUpgradeSlot(capUpgradeGroupId, jobId)}
         <span className={villagerCountLabelClass}>
           {label}{" "}

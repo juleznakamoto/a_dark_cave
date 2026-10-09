@@ -58,6 +58,14 @@ export class AudioManager {
   private visibilityBound = false;
   /** Hunt preview is loading; ignore extra slider events until it can play. */
   private sfxPreviewPending = false;
+  /**
+   * Bumps on every play or stop. Howler emits `fade` on a timer, and also when
+   * a new fade interrupts the old one, so a pause fade-out must not stop a
+   * track that has already been asked to play again.
+   */
+  private loopFadeGeneration = new Map<string, number>();
+  /** Fade-outs whose completion handler will call stop(). */
+  private fadeOutStopPending = new Set<string>();
 
   private constructor() {
     this.bindPageVisibility();
@@ -278,6 +286,12 @@ export class AudioManager {
       return;
     }
 
+    // Drop any pause fade-out before touching the Howl. Its fade callback
+    // otherwise stops the track after this play (outcome dialogs close while
+    // that fade is still running: feast, woodcutter, and the same handoff).
+    this.fadeOutStopPending.delete(name);
+    this.bumpLoopFadeGeneration(name);
+
     try {
       this.requestedVolumes.set(name, volume);
       const effective = this.effectiveVolume(name, volume);
@@ -288,8 +302,11 @@ export class AudioManager {
       // Already playing: cancel any in-progress fade-out and move to target volume
       if (sound.playing && sound.playing()) {
         sound.off('fade');
-        if (fadeInDuration > 0) {
-          sound.fade(this.getCurrentVolume(name), effective, fadeInDuration * 1000);
+        const current = this.getCurrentVolume(name);
+        // volume() cancels Howler's scheduled gain ramp. A from===to fade never
+        // finishes, and the ramp to silence would keep going underneath it.
+        if (fadeInDuration > 0 && Math.abs(current - effective) >= 0.02) {
+          sound.fade(current, effective, fadeInDuration * 1000);
         } else {
           sound.volume(effective);
         }
@@ -311,28 +328,42 @@ export class AudioManager {
     }
   }
 
+  private bumpLoopFadeGeneration(name: string): number {
+    const next = (this.loopFadeGeneration.get(name) ?? 0) + 1;
+    this.loopFadeGeneration.set(name, next);
+    return next;
+  }
+
   stopLoopingSound(name: string, fadeOutDuration: number = 0): void {
     const sound = this.sounds.get(name);
     if (!sound) return;
+
+    const generation = this.bumpLoopFadeGeneration(name);
 
     if (fadeOutDuration > 0) {
       try {
         // Clear any stale fade handlers from previous stop/play cycles
         sound.off('fade');
         if (!(sound.playing && sound.playing())) {
+          this.fadeOutStopPending.delete(name);
           sound.stop();
           return;
         }
+        this.fadeOutStopPending.add(name);
         const currentVolume = this.getCurrentVolume(name);
         sound.fade(currentVolume, 0, fadeOutDuration * 1000);
         sound.once('fade', () => {
+          if (this.loopFadeGeneration.get(name) !== generation) return;
+          this.fadeOutStopPending.delete(name);
           sound.stop();
         });
       } catch (error) {
+        this.fadeOutStopPending.delete(name);
         logger.warn(`Error fading sound ${name}:`, error);
         sound.stop();
       }
     } else {
+      this.fadeOutStopPending.delete(name);
       try {
         sound.off('fade');
         sound.stop();
@@ -596,6 +627,11 @@ export class AudioManager {
 
   /** True when BGM is already audible at the current music slider level. */
   private isBackgroundMusicAtTargetVolume(): boolean {
+    // Pause fade-outs still report the slider volume at the start (and for the
+    // whole fade when the slider is low). Feast and woodcutter outcome dialogs
+    // close in that window. Skipping the resume lets the fade finish and stop
+    // the track, and nothing asks it to start again.
+    if (this.fadeOutStopPending.has('backgroundMusic')) return false;
     if (!this.isSoundPlaying('backgroundMusic')) return false;
     const target = this.effectiveVolume(
       'backgroundMusic',

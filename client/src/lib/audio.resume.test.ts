@@ -73,6 +73,83 @@ describe("settings volume controls", () => {
     expect(stop).not.toHaveBeenCalled();
   });
 
+  it("cancels a pause fade-out when the outcome dialog closes while volume still reads full", async () => {
+    const fadeListeners: Array<() => void> = [];
+    const stop = vi.fn();
+    const setVolume = vi.fn();
+    let volume = 0.3;
+    const fake = {
+      playing: () => true,
+      loop: () => fake,
+      volume: (value?: number) => {
+        if (typeof value === "number") {
+          volume = value;
+          setVolume(value);
+          return fake;
+        }
+        return volume;
+      },
+      off: (event: string) => {
+        if (event === "fade") fadeListeners.length = 0;
+      },
+      once: (event: string, fn: () => void) => {
+        if (event === "fade") fadeListeners.push(fn);
+      },
+      fade: vi.fn(),
+      stop,
+      play: vi.fn(),
+    };
+    (
+      audioManager as unknown as { sounds: Map<string, unknown> }
+    ).sounds.set("backgroundMusic", fake);
+
+    audioManager.musicMute(false, { resume: false });
+    audioManager.setMusicVolume(1);
+    await audioManager.startBackgroundMusic(0.3);
+    setVolume.mockClear();
+
+    audioManager.pauseForSimulation(2);
+    expect(fadeListeners).toHaveLength(1);
+    const pauseFadeStop = fadeListeners[0]!;
+
+    // Outcome dialogs (feast, woodcutter) close before Howler has stepped the
+    // fade, so volume() still reports the slider level.
+    await audioManager.resumeSounds(2);
+
+    expect(setVolume).toHaveBeenCalledWith(0.3);
+    pauseFadeStop();
+    expect(stop).not.toHaveBeenCalled();
+  });
+
+  it("still stops background music when a pause fade-out finishes with no resume", () => {
+    const fadeListeners: Array<() => void> = [];
+    const stop = vi.fn();
+    const fake = {
+      playing: () => true,
+      loop: () => fake,
+      volume: () => 0.3,
+      off: (event: string) => {
+        if (event === "fade") fadeListeners.length = 0;
+      },
+      once: (event: string, fn: () => void) => {
+        if (event === "fade") fadeListeners.push(fn);
+      },
+      fade: vi.fn(),
+      stop,
+      play: vi.fn(),
+    };
+    (
+      audioManager as unknown as { sounds: Map<string, unknown> }
+    ).sounds.set("backgroundMusic", fake);
+
+    audioManager.pauseForSimulation(2);
+    const pauseFadeStop = fadeListeners[0]!;
+    // once() is removed by Howler before the handler runs; keep our copy.
+    pauseFadeStop();
+
+    expect(stop).toHaveBeenCalledTimes(1);
+  });
+
   it("does not restart background music that is already at the slider volume", async () => {
     vi.spyOn(
       audioManager as unknown as { isSoundPlaying: () => boolean },
