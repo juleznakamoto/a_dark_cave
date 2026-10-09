@@ -3,9 +3,13 @@ import type { GameEvent } from "./eventTypes";
 import { GameState } from "@shared/schema";
 import { riddleFogDurationMs, cruelModeScale } from "../cruelMode";
 import { stackTimedDebuff } from "@/game/stateHelpers";
-import { btpLootAmount } from "@/game/btpLoot";
-
 const RIDDLE_REWARD = 150;
+/** Store builds (BTP) pay a flat 200, not the usual double of the web amount. */
+const RIDDLE_REWARD_BTP = 200;
+
+function riddleGoldReward(state: { BTP?: number }): number {
+  return state.BTP === 1 ? RIDDLE_REWARD_BTP : RIDDLE_REWARD;
+}
 
 // Original riddle choices
 const ORIGINAL_CHOICES: Record<string, RiddleChoice[]> = {
@@ -152,7 +156,7 @@ function createRiddleEvent(
       return (state: GameState) => ({
         resources: {
           ...state.resources,
-          gold: state.resources.gold + btpLootAmount(RIDDLE_REWARD, state),
+          gold: state.resources.gold + riddleGoldReward(state),
         },
         events: {
           ...state.events,
