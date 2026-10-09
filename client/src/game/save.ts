@@ -83,6 +83,48 @@ class InvalidLocalSaveError extends Error {
   }
 }
 
+/** Session flag: the active save was unreadable and moved aside. */
+export const SAVE_QUARANTINE_NOTICE_KEY = "adc_save_quarantined";
+
+export function quarantinedSaveKey(activeKey = getSaveKey()): string {
+  return `${activeKey}:quarantine`;
+}
+
+export function consumeSaveQuarantineNotice(): boolean {
+  try {
+    if (sessionStorage.getItem(SAVE_QUARANTINE_NOTICE_KEY) !== "1") return false;
+    sessionStorage.removeItem(SAVE_QUARANTINE_NOTICE_KEY);
+    return true;
+  } catch {
+    return false;
+  }
+}
+
+/**
+ * Keep the undecodable bytes, then drop them from the active slot so the
+ * next boot can start a game. Deleting without a backup would lose the only copy.
+ */
+async function quarantineUndecodableSave(
+  db: NonNullable<GameSaveDatabase>,
+  raw: unknown,
+): Promise<void> {
+  const activeKey = getSaveKey();
+  try {
+    await db.put("saves", raw, quarantinedSaveKey(activeKey));
+    await db.delete("saves", activeKey);
+  } catch (error) {
+    logger.error("[SAVE] Failed to quarantine undecodable save:", error);
+    throw new InvalidLocalSaveError();
+  }
+  clearStartupSaveHeader();
+  try {
+    sessionStorage.setItem(SAVE_QUARANTINE_NOTICE_KEY, "1");
+  } catch {
+    // ignore
+  }
+  logger.error("[SAVE] Quarantined an undecodable local save");
+}
+
 const SAVE_SKIPPED: SaveGameResult = {
   localSaved: false,
   cloudSaved: false,
@@ -410,9 +452,11 @@ async function getLocalSave(
     const raw = await db.get("saves", getSaveKey());
     const decoded = decodeLocalSave(raw);
     if (raw !== undefined && raw !== null && !decoded) {
-      throw new InvalidLocalSaveError();
+      await quarantineUndecodableSave(db, raw);
+      local = undefined;
+    } else {
+      local = decoded ?? undefined;
     }
-    local = decoded ?? undefined;
   }
   // Steam build: reconcile IndexedDB with this edition's Cloud file (newer wins).
   // The full game never auto-adopts a Demo-origin blob (old shared filename).

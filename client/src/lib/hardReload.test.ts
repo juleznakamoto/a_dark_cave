@@ -4,6 +4,7 @@ import { peekResumeGame } from "@/game/startupBootSurface";
 import {
   HARD_RELOAD_CACHE_BUST_PARAM,
   MODULE_LOAD_RETRY_KEY,
+  pointFatalRecoveryAtTitle,
   canAutoReloadForStaleChunk,
   clearStaleChunkReloadGuard,
   isStaleChunkLoadFailure,
@@ -200,6 +201,18 @@ describe("tryOneModuleLoadRecovery", () => {
   afterEach(() => {
     sessionStorage.clear();
     vi.unstubAllGlobals();
+  });
+
+  it("points a fatal recovery at the title without leaving a hash host", () => {
+    const web = new URL("https://a-dark-cave.com/game?x=1");
+    pointFatalRecoveryAtTitle(web);
+    expect(web.pathname).toBe("/");
+    expect(web.search).toBe("");
+
+    const portal = new URL("https://files.example/wrap/index.html#/game");
+    pointFatalRecoveryAtTitle(portal);
+    expect(portal.pathname).toBe("/wrap/index.html");
+    expect(portal.hash).toBe("#/");
   });
 
   it("reloads once for a stuck spinner", () => {

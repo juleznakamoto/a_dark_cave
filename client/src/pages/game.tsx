@@ -7,10 +7,11 @@ import { initSessionTracker } from "@/lib/sessionTracker";
 import { isLocalOnlyEdition } from "@/lib/edition";
 import { useSteamEditionActive } from "@/hooks/useSteamEditionActive";
 import PageLoadSpinner from "@/components/ui/page-load-spinner";
-import PageErrorScreen from "@/components/ui/page-error-screen";
 import { clearStaleChunkReloadGuard } from "@/lib/hardReload";
+import { escapeFailedGameBoot } from "@/lib/fatalErrorScreen";
 import { runGameplayInitialization } from "@/game/gameplayInitOrchestrator";
 import { DestroyedChromeScope } from "@/components/game/gameChrome";
+import SaveQuarantineNotice from "@/components/game/SaveQuarantineNotice";
 
 type GameProps = {
   /** Parent cover (Make Fire frame) can stay up until this fires. */
@@ -30,16 +31,11 @@ export default function Game({
 }: GameProps = {}) {
   const setShopDialogOpen = useGameStore((state) => state.setShopDialogOpen);
   const [isInitialized, setIsInitialized] = useState(false);
-  const [initError, setInitError] = useState(false);
   const [emailConfirmedDialogOpen, setEmailConfirmedDialogOpen] =
     useState(false);
   const steamEditionActive = useSteamEditionActive();
   const onReadyToPaintRef = useRef(onReadyToPaint);
   onReadyToPaintRef.current = onReadyToPaint;
-
-  useEffect(() => {
-    clearStaleChunkReloadGuard();
-  }, []);
 
   useEffect(() => {
     logger.log("[GAME PAGE] Initializing game");
@@ -68,6 +64,9 @@ export default function Game({
         if (result.showEmailConfirmedDialog) {
           setEmailConfirmedDialogOpen(true);
         }
+        // Only a finished boot may re-arm the one-shot chunk retry.
+        // Clearing on mount let a hung init reload forever.
+        clearStaleChunkReloadGuard();
         setIsInitialized(true);
         void result.background.catch((error) => {
           logger.error("[GAME PAGE] Background gameplay init failed:", error);
@@ -75,7 +74,10 @@ export default function Game({
       })
       .catch((error) => {
         logger.error("[GAME PAGE] Failed to initialize game:", error);
-        if (!cancelled) setInitError(true);
+        if (!cancelled) {
+          onReadyToPaintRef.current?.();
+          escapeFailedGameBoot();
+        }
       });
 
     return () => {
@@ -85,14 +87,10 @@ export default function Game({
   }, [setShopDialogOpen]);
 
   useLayoutEffect(() => {
-    if (isInitialized || initError) {
+    if (isInitialized) {
       onReadyToPaintRef.current?.();
     }
-  }, [isInitialized, initError]);
-
-  if (initError) {
-    return <PageErrorScreen />;
-  }
+  }, [isInitialized]);
 
   if (!isInitialized) {
     return suppressLoadingSpinner ? null : <PageLoadSpinner />;
@@ -100,6 +98,7 @@ export default function Game({
 
   return (
     <div>
+      <SaveQuarantineNotice />
       <GameContainer />
 
       {!steamEditionActive && (

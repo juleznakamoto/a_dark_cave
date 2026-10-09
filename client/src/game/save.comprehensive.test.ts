@@ -1557,13 +1557,57 @@ describe('Save Game System - Comprehensive Tests', () => {
       await expect(loadGame()).rejects.toThrow('Failed to open database');
     });
 
-    it('reports an existing corrupt local save as a non-retryable error', async () => {
+    it('quarantines an undecodable local save so a new game can start', async () => {
+      const notice = new Map<string, string>();
+      vi.stubGlobal('sessionStorage', {
+        getItem: (key: string) => notice.get(key) ?? null,
+        setItem: (key: string, value: string) => {
+          notice.set(key, value);
+        },
+        removeItem: (key: string) => {
+          notice.delete(key);
+        },
+      });
       mockGet.mockResolvedValue('not-a-valid-save');
 
-      await expect(loadGameResult()).resolves.toMatchObject({
-        status: 'error',
-        retryable: false,
+      try {
+        await expect(loadGame()).resolves.toBeNull();
+        expect(mockPut).toHaveBeenCalledWith(
+          'saves',
+          'not-a-valid-save',
+          'mainSave:quarantine',
+        );
+        expect(mockDelete).toHaveBeenCalledWith('saves', 'mainSave');
+        expect(notice.get('adc_save_quarantined')).toBe('1');
+      } finally {
+        vi.unstubAllGlobals();
+      }
+    });
+
+    it('keeps the active save when the quarantine backup cannot be written', async () => {
+      const notice = new Map<string, string>();
+      vi.stubGlobal('sessionStorage', {
+        getItem: (key: string) => notice.get(key) ?? null,
+        setItem: (key: string, value: string) => {
+          notice.set(key, value);
+        },
+        removeItem: (key: string) => {
+          notice.delete(key);
+        },
       });
+      mockStores.saves.mainSave = 'not-a-valid-save';
+      mockPut.mockImplementationOnce(async () => {
+        throw new Error('disk full');
+      });
+
+      try {
+        await expect(loadGame()).rejects.toThrow(/could not be decoded/);
+        expect(mockDelete).not.toHaveBeenCalled();
+        expect(mockStores.saves.mainSave).toBe('not-a-valid-save');
+        expect(notice.get('adc_save_quarantined')).toBeUndefined();
+      } finally {
+        vi.unstubAllGlobals();
+      }
     });
 
     it('should handle concurrent load and save operations', async () => {

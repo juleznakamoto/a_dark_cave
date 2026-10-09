@@ -111,6 +111,10 @@
   },
   "errorScreen": {
     "message": "Estamos cavando mais fundo. Volte em breve.",
-    "reload": "Recarregar o jogo"
+    "reload": "Recarregar o jogo",
+    "repeatMessage": "Recarregar não trouxe o fogo de volta. Você pode voltar à caverna e acender fogo de novo.",
+    "returnToCave": "Voltar à caverna",
+    "saveKept": "O último save não abriu, então este é um jogo novo. O save antigo continua neste aparelho.",
+    "saveKeptDismiss": "Continuar"
   }
 }

@@ -45,7 +45,11 @@
   },
   "errorScreen": {
     "message": "Nous creusons plus profond. Revenez bientôt.",
-    "reload": "Recharger le jeu"
+    "reload": "Recharger le jeu",
+    "repeatMessage": "Recharger n'a pas ranimé le feu. Tu peux retourner à la grotte et faire du feu à nouveau.",
+    "returnToCave": "Retourner à la grotte",
+    "saveKept": "La dernière sauvegarde n'a pas pu s'ouvrir, donc une nouvelle partie commence. L'ancienne sauvegarde reste sur cet appareil.",
+    "saveKeptDismiss": "Continuer"
   },
   "footer": {
     "trader": "Marchand",

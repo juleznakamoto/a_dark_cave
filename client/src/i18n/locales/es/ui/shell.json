@@ -45,7 +45,11 @@
   },
   "errorScreen": {
     "message": "Estamos cavando más hondo. Vuelve pronto.",
-    "reload": "Recargar el juego"
+    "reload": "Recargar el juego",
+    "repeatMessage": "Recargar no devolvió el fuego. Puedes volver a la cueva y encender fuego otra vez.",
+    "returnToCave": "Volver a la cueva",
+    "saveKept": "No se pudo abrir la última partida, así que esta es una nueva. La partida antigua sigue en este dispositivo.",
+    "saveKeptDismiss": "Continuar"
   },
   "footer": {
     "trader": "Mercader",

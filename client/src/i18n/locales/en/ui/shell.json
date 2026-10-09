@@ -45,7 +45,11 @@
   },
   "errorScreen": {
     "message": "We are digging deeper. Please check back soon.",
-    "reload": "Reload game"
+    "reload": "Reload game",
+    "repeatMessage": "Reloading did not bring the fire back. You can return to the cave and make fire again.",
+    "returnToCave": "Return to the cave",
+    "saveKept": "The last save could not be opened, so this is a new game. The old save is still on this device.",
+    "saveKeptDismiss": "Continue"
   },
   "footer": {
     "trader": "Trader",

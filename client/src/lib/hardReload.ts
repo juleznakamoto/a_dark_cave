@@ -215,24 +215,57 @@ export function shouldMarkResumeOnHardReload(
   }
 }
 
+export type HardReloadOptions = {
+  /**
+   * When false, do not mark the next boot to skip Make Fire.
+   * Fatal-screen recovery uses this so a crashed game is not opened again.
+   */
+  resume?: boolean;
+  /**
+   * Leave a non-play URL (for example `/game`) and open the title.
+   * Hash-routed editions only reset the hash, so a portal host path stays put.
+   */
+  toTitle?: boolean;
+};
+
+/** Point a fatal-screen navigation at the title without leaving a portal host. */
+export function pointFatalRecoveryAtTitle(url: URL): void {
+  if (url.hash.startsWith("#/")) {
+    url.hash = "#/";
+    url.search = "";
+    return;
+  }
+  const path = url.pathname || "/";
+  // `/index.html` and other files stay. App routes such as `/game` go to `/`.
+  if (path !== "/" && !path.includes(".")) {
+    url.pathname = "/";
+  }
+  url.search = "";
+}
+
 /**
  * Force the browser to load a fresh HTML/JS bundle after a deploy.
  * Navigates with a cache-bust query param; stale caches are cleared after the
  * new page loads so we do not delete assets the current session still needs.
  * On a play route, marks resume so a started web save reopens Game instead of
  * Make Fire (same flag as the version-update reload).
+ * Pass `{ resume: false, toTitle: true }` from the fatal screen so the next
+ * boot is the title, not the crash that was just reloaded.
  */
-export async function hardReload(): Promise<void> {
+export async function hardReload(options?: HardReloadOptions): Promise<void> {
   try {
     sessionStorage.setItem(HARD_RELOAD_PENDING_KEY, "1");
   } catch {
     // ignore
   }
-  if (shouldMarkResumeOnHardReload()) {
+  if (options?.resume !== false && shouldMarkResumeOnHardReload()) {
     setResumeGame();
   }
 
   const url = new URL(window.location.href);
+  if (options?.toTitle) {
+    pointFatalRecoveryAtTitle(url);
+  }
   url.searchParams.set(HARD_RELOAD_CACHE_BUST_PARAM, Date.now().toString());
   window.location.replace(url.toString());
 }

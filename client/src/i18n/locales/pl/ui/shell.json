@@ -45,7 +45,11 @@
   },
   "errorScreen": {
     "message": "Kopiemy głębiej. Wróć wkrótce.",
-    "reload": "Przeładuj grę"
+    "reload": "Przeładuj grę",
+    "repeatMessage": "Ponowne wczytanie nie przywróciło ognia. Możesz wrócić do jaskini i ponownie rozpalić ogień.",
+    "returnToCave": "Wróć do jaskini",
+    "saveKept": "Ostatniego zapisu nie dało się otworzyć, więc to nowa gra. Stary zapis zostaje na tym urządzeniu.",
+    "saveKeptDismiss": "Dalej"
   },
   "footer": {
     "trader": "Handlarz",

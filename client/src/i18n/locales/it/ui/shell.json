@@ -111,6 +111,10 @@
   },
   "errorScreen": {
     "message": "Stiamo scavando più a fondo. Torna presto.",
-    "reload": "Ricarica il gioco"
+    "reload": "Ricarica il gioco",
+    "repeatMessage": "Ricaricare non ha riportato il fuoco. Puoi tornare alla caverna e accendere di nuovo il fuoco.",
+    "returnToCave": "Torna alla caverna",
+    "saveKept": "L'ultimo salvataggio non si è aperto, quindi questa è una nuova partita. Il vecchio salvataggio resta su questo dispositivo.",
+    "saveKeptDismiss": "Continua"
   }
 }

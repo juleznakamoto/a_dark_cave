@@ -45,7 +45,11 @@
   },
   "errorScreen": {
     "message": "Wir graben tiefer. Bitte schau bald wieder vorbei.",
-    "reload": "Spiel neu laden"
+    "reload": "Spiel neu laden",
+    "repeatMessage": "Neu laden hat das Feuer nicht zurückgebracht. Du kannst zur Höhle zurückkehren und erneut Feuer machen.",
+    "returnToCave": "Zurück zur Höhle",
+    "saveKept": "Der letzte Spielstand ließ sich nicht öffnen, deshalb beginnt ein neues Spiel. Der alte Spielstand bleibt auf diesem Gerät.",
+    "saveKeptDismiss": "Weiter"
   },
   "footer": {
     "trader": "Händler",
