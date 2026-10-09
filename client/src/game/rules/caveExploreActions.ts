@@ -607,8 +607,9 @@ export const caveExploreActions: Record<string, Action> = {
         "resources.stone": "random(5,10)",
         "resources.coal": "random(5,10)",
         "resources.iron": "random(5,10)",
-        "resources.obsidian": "random(0,2)",
+        "resources.sulfur": "random(5,10)",
         "resources.silver": `random(2,${6 * multiplier})`,
+        "resources.gold": `random(1,${2 * multiplier})`,
         ...getInheritedItems("descendFurther"),
         "story.seen.descendedFurther": true,
       };
@@ -633,7 +634,6 @@ export const caveExploreActions: Record<string, Action> = {
       const multiplier = state.BTP === 1 ? 2 : 1;
       return {
         "resources.obsidian": "random(1,4)",
-        "resources.adamant": "random(0,2)",
         "resources.silver": `random(2,${8 * multiplier})`,
         "resources.gold": `random(2,${4 * multiplier})`,
         ...getInheritedItems("exploreRuins"),
@@ -661,7 +661,6 @@ export const caveExploreActions: Record<string, Action> = {
       return {
         "resources.obsidian": "random(1,6)",
         "resources.adamant": "random(1,4)",
-        "resources.moonstone": "random(0,1)",
         "resources.silver": `random(2,${10 * multiplier})`,
         "resources.gold": `random(2,${6 * multiplier})`,
 
