@@ -18,6 +18,22 @@ import {
 
 /** Snap (n/segments)*100 back onto an integer bucket (5/12 is not exact in float). */
 const SEGMENT_UNIT_SNAP = 1e-9;
+/** Matches `duration-500` on each segment's width transition. */
+const SEGMENT_WIDTH_TRANSITION_MS = 500;
+/** Matches the per-segment `transitionDelay` while the bar animates. */
+const SEGMENT_WIDTH_STAGGER_MS = 20;
+
+/**
+ * How long to wait after the displayed fill reaches a segment before flashing.
+ * The width transition (and its stagger) is the visible fill; the flash follows it.
+ */
+export function getSegmentFillFlashDelayMs(
+  index: number,
+  changeOnlyGrow: boolean,
+): number {
+  if (changeOnlyGrow || index < 0) return 0;
+  return SEGMENT_WIDTH_TRANSITION_MS + index * SEGMENT_WIDTH_STAGGER_MS;
+}
 
 function getFilledUnits(displayValue: number, segments: number): number {
   if (segments <= 0) return 0;
@@ -34,6 +50,15 @@ export function getSegmentFill(
   index: number,
 ): number {
   return Math.min(1, Math.max(0, getFilledUnits(displayValue, segments) - index));
+}
+
+/** How many segments are fully filled (a partial tip does not count). */
+function getCompletedSegmentCount(percent: number, segments: number): number {
+  if (segments <= 0) return 0;
+  return Math.min(
+    segments,
+    Math.max(0, Math.floor(getFilledUnits(percent, segments) + SEGMENT_UNIT_SNAP)),
+  );
 }
 
 /** Segment currently filling (or just completed at a bucket boundary). */
@@ -80,6 +105,11 @@ interface SegmentedProgressProps {
   /** Skip the increase glow sweep. */
   disableGlow?: boolean;
   /**
+   * Flash each newly completed segment three times, after its fill animation.
+   * Stages already filled on mount stay still (footer demo progress).
+   */
+  flashOnFill?: boolean;
+  /**
    * 1px outside ring on filled segments (box-shadow). Estate/shader bars keep
    * this; compact list bars (achievements) usually turn it off.
    */
@@ -115,6 +145,7 @@ export function SegmentedProgress({
   growSparkTipGlow = true,
   sparkClassName,
   disableGlow = false,
+  flashOnFill = false,
   showRim = true,
   rimFilledClassName = "shadow-[0_0_0_1px_theme(colors.orange.600/0.8)]",
   renderFill,
@@ -146,6 +177,75 @@ export function SegmentedProgress({
   const startTimeRef = useRef(0);
   const prevValueRef = useRef(initialValue);
   const tipMarkerRef = useRef<HTMLDivElement>(null);
+  /** Per-segment flash restarts. 0 means that stage has not flashed. */
+  const [fillFlashGeneration, setFillFlashGeneration] = useState<number[]>([]);
+  const completedCountRef = useRef<number | null>(null);
+  /** New stages waiting until their fill animation finishes. */
+  const pendingFlashRef = useRef<Set<number>>(new Set());
+  const flashTimersRef = useRef<Map<number, number>>(new Map());
+
+  useEffect(() => {
+    return () => {
+      flashTimersRef.current.forEach((timer) => clearTimeout(timer));
+      flashTimersRef.current.clear();
+    };
+  }, []);
+
+  useEffect(() => {
+    if (!flashOnFill) return;
+    const completedNow = getCompletedSegmentCount(value, segments);
+    const previous = completedCountRef.current;
+    completedCountRef.current = completedNow;
+    if (previous === null) return;
+    if (completedNow <= previous) {
+      if (completedNow < previous) {
+        for (let index = completedNow; index < previous; index += 1) {
+          pendingFlashRef.current.delete(index);
+          const timer = flashTimersRef.current.get(index);
+          if (timer !== undefined) {
+            clearTimeout(timer);
+            flashTimersRef.current.delete(index);
+          }
+        }
+        // A stage that already flashed stays mounted until its generation is
+        // cleared. Drop it with the fill so an emptied cell does not keep blinking.
+        setFillFlashGeneration((generations) => {
+          if (completedNow >= generations.length) return generations;
+          let changed = false;
+          const next = generations.slice();
+          for (let index = completedNow; index < previous; index += 1) {
+            if ((next[index] ?? 0) === 0) continue;
+            next[index] = 0;
+            changed = true;
+          }
+          return changed ? next : generations;
+        });
+      }
+      return;
+    }
+    for (let index = previous; index < Math.min(segments, completedNow); index += 1) {
+      pendingFlashRef.current.add(index);
+    }
+  }, [flashOnFill, value, segments]);
+
+  useEffect(() => {
+    if (!flashOnFill) return;
+    const displayed = getCompletedSegmentCount(displayValue, segments);
+    pendingFlashRef.current.forEach((index) => {
+      if (index >= displayed || flashTimersRef.current.has(index)) return;
+      const delay = getSegmentFillFlashDelayMs(index, changeOnlyGrow);
+      const timer = window.setTimeout(() => {
+        flashTimersRef.current.delete(index);
+        if (!pendingFlashRef.current.delete(index)) return;
+        setFillFlashGeneration((generations) => {
+          const next = generations.slice();
+          next[index] = (next[index] ?? 0) + 1;
+          return next;
+        });
+      }, delay);
+      flashTimersRef.current.set(index, timer);
+    });
+  }, [flashOnFill, displayValue, segments, changeOnlyGrow]);
 
   const sparkPalette = useMemo(
     () => resolveSparkPalette(sparkClassName),
@@ -273,7 +373,10 @@ export function SegmentedProgress({
           >
             {Array.from({ length: segments }).map((_, index) => {
               const fill = getSegmentFill(displayValue, segments, index);
-              const delay = isInitialized && !changeOnlyGrow ? index * 20 : 0;
+              const delay =
+                isInitialized && !changeOnlyGrow
+                  ? index * SEGMENT_WIDTH_STAGGER_MS
+                  : 0;
               const showSegmentGlow =
                 glowKey > 0 && index === glowSegmentIndex && fill > 0;
               // Anchor sparks to the real fill tip (not displayValue% of the
@@ -355,6 +458,14 @@ export function SegmentedProgress({
                           ? rimFilledClassName
                           : "shadow-[0_0_0_1px_transparent]",
                       )}
+                    />
+                  ) : null}
+                  {flashOnFill && (fillFlashGeneration[index] ?? 0) > 0 ? (
+                    <div
+                      key={fillFlashGeneration[index]}
+                      data-testid={`segment-fill-flash-${index}`}
+                      className="demo-stage-flash pointer-events-none absolute inset-0 z-[3] rounded-[4px]"
+                      aria-hidden
                     />
                   ) : null}
                 </div>

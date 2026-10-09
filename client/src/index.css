@@ -2573,8 +2573,33 @@ html[data-tab-hidden] .exclusive-promo-shockwave-ring:not(.exclusive-promo-shock
   animation: villager-cap-flash 0.4s ease-out 3;
 }
 
+/* Footer demo progress: three blinks after a stage fills in. */
+@keyframes demo-stage-flash {
+  0% {
+    opacity: 0;
+    box-shadow: 0 0 0 transparent;
+  }
+
+  35% {
+    opacity: 1;
+    box-shadow: 0 0 8px rgba(74, 222, 128, 0.95);
+  }
+
+  100% {
+    opacity: 0;
+    box-shadow: 0 0 0 transparent;
+  }
+}
+
+.demo-stage-flash {
+  background-color: #4ade80;
+  opacity: 0;
+  animation: demo-stage-flash 0.55s ease-out 3;
+}
+
 @media (prefers-reduced-motion: reduce) {
-  .villager-cap-flash {
+  .villager-cap-flash,
+  .demo-stage-flash {
     animation: none;
   }
 }
