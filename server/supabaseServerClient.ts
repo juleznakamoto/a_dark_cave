@@ -1,8 +1,13 @@
-import { createClient, type SupabaseClientOptions } from "@supabase/supabase-js";
+import {
+  createClient,
+  type SupabaseClient,
+  type SupabaseClientOptions,
+} from "@supabase/supabase-js";
 import type { RealtimeClientOptions } from "@supabase/realtime-js";
 import { WebSocket } from "ws";
 
-type ServerSupabaseOptions = SupabaseClientOptions<string>;
+/** Match default `createClient` schema typing (`"public"`), not `string`. */
+type ServerSupabaseOptions = SupabaseClientOptions<"public">;
 
 function nodeMajorVersion(): number | null {
   if (typeof process === "undefined" || !process.versions?.node) {
@@ -37,7 +42,7 @@ export function createServerSupabaseClient(
   supabaseUrl: string,
   supabaseKey: string,
   options: ServerSupabaseOptions = {},
-) {
+): SupabaseClient {
   const { auth: authOverrides, realtime: realtimeOverrides, ...rest } = options;
   const nodeRealtime = realtimeOptionsForNode().realtime;
 
