@@ -17,6 +17,10 @@ It is a single Node package serving an **Express API + Vite React SPA**. Almost
 all game logic lives in the client. **Supabase** handles auth/cloud saves.
 **Stripe** handles payments.
 
+**Production hosting:** **https://a-dark-cave.com** is deployed from **Replit** Autoscale
+(`.replit` → `npm run build`, then `NODE_ENV=production node dist/index.js`). Ship web
+releases by syncing the repo in Replit and redeploying there.
+
 ---
 
 ## Top-level layout
