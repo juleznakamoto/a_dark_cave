@@ -6,12 +6,12 @@ directories:
   output: release
   buildResources: build-resources
 
-# Files included in the packaged app. The compiled Electron code, the built SPA,
-# the Steam App ID, and the steamworks.js native module are required at runtime.
+# Files included in the packaged app. package.json and steamworks.js are shared.
+# The SPA, Electron main, and steam_appid.txt are added per edition by
+# scripts/package-steam-edition.mjs (dist/web-steam-*, dist/electron-steam-*).
+# Those folders stay out of this list so one edition cannot delete files another
+# electron-builder is still packing.
 files:
-  - dist-electron/**/*
-  - dist/public/**/*
-  - steam_appid.txt
   - package.json
   - node_modules/steamworks.js/**/*
 

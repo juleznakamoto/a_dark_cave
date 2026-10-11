@@ -22,7 +22,7 @@
     "trailer": "node scripts/launch-trailer-window.mjs",
     "trailer:steam": "cross-env ADC_TRAILER=1 electron . --trailer",
     "electron:dev": "npm run build:steam && npm run electron:build && electron .",
-    "electron:package": "npm run build:steam && npm run electron:build && electron-builder --win",
+    "electron:package": "node scripts/package-steam-full.mjs",
     "electron:package:demo": "node scripts/package-steam-demo.mjs",
     "electron:package:playtest": "node scripts/package-steam-playtest.mjs",
     "steam:stage": "powershell -ExecutionPolicy Bypass -File scripts/steam-upload.ps1 -StageOnly",

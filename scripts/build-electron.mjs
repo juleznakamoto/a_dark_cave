@@ -6,8 +6,18 @@
  */
 import { build } from "esbuild";
 import { rmSync } from "node:fs";
+import { join, resolve, sep } from "node:path";
 
-const OUTDIR = "dist-electron";
+const repoRoot = import.meta.dirname
+  ? join(import.meta.dirname, "..")
+  : process.cwd();
+const override = process.env.ADC_ELECTRON_OUT_DIR;
+const OUTDIR = override
+  ? resolve(repoRoot, override)
+  : join(repoRoot, "dist-electron");
+if (OUTDIR !== repoRoot && !OUTDIR.startsWith(repoRoot + sep)) {
+  throw new Error("ADC_ELECTRON_OUT_DIR must stay inside the repo");
+}
 const isSteamDemoBuild = process.env.ADC_STEAM_DEMO === "1";
 const isSteamPlaytestBuild = process.env.ADC_STEAM_PLAYTEST === "1";
 
@@ -24,6 +34,7 @@ const shared = {
   format: "cjs",
   bundle: true,
   target: "node20",
+  absWorkingDir: repoRoot,
   external: ["electron", "steamworks.js"],
   sourcemap: false,
   logLevel: "info",
@@ -52,4 +63,4 @@ await build({
 });
 
 // eslint-disable-next-line no-console
-console.log(`Electron main + preload bundled to dist-electron/${variantLabel}`);
+console.log(`Electron main + preload bundled to ${OUTDIR}${variantLabel}`);

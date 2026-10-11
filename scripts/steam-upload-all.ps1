@@ -234,7 +234,8 @@ if (-not $SkipBuild -and -not $UploadOnly) {
   foreach ($edition in $editions) {
     Write-Host ""
     Write-Host "Building Steam $($edition.Name)..." -ForegroundColor Cyan
-    Invoke-Expression $edition.PackageCmd
+    # cmd /c waits for npm and keeps npm.ps1's exit from ending this script.
+    cmd.exe /c $edition.PackageCmd
     if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
     Copy-WinUnpackedToStage $edition.StageDir
   }

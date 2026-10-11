@@ -31,6 +31,18 @@ const isItchBuild = process.env.VITE_ITCH === "1";
 const isRelativeHtmlBuild = isCrazyGamesBuild || isItchBuild;
 const useOfflineStubs = isSteamBuild || isRelativeHtmlBuild;
 const clientRoot = path.resolve(import.meta.dirname, "client");
+const repoRoot = path.resolve(import.meta.dirname);
+
+/** Steam packagers set this so each edition has its own Vite output. */
+function resolveWebOutDir(): string {
+  const override = process.env.ADC_WEB_OUT_DIR;
+  if (!override) return path.resolve(repoRoot, "dist/public");
+  const resolved = path.resolve(repoRoot, override);
+  if (resolved !== repoRoot && !resolved.startsWith(repoRoot + path.sep)) {
+    throw new Error("ADC_WEB_OUT_DIR must stay inside the repo");
+  }
+  return resolved;
+}
 
 function relativePortalHtmlPlugin(): Plugin {
   return {
@@ -94,7 +106,7 @@ export default defineConfig(async ({ mode }) => ({
   },
   root: clientRoot,
   build: {
-    outDir: path.resolve(import.meta.dirname, "dist/public"),
+    outDir: resolveWebOutDir(),
     emptyOutDir: true,
     minify: "terser",
     terserOptions: {
