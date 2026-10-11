@@ -248,7 +248,7 @@ export const caveCraftWeapons: Record<string, Action> = {
     },
     cost: {
       "relics.frostglass": true,
-      "resources.steel": 1000,
+      "resources.steel": 2500,
     },
     effects: {
       "weapons.frostglass_sword": true,
@@ -305,7 +305,7 @@ export const caveCraftWeapons: Record<string, Action> = {
     },
     cost: {
       "relics.bloodstone": true,
-      "resources.wood": 2500,
+      "resources.wood": 5000,
     },
     effects: {
       "weapons.bloodstone_staff": true,
