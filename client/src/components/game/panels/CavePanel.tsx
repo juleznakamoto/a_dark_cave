@@ -357,7 +357,7 @@ export default function CavePanel() {
       );
       const tooltipContent = composeActionTooltip({
         header: tooltipHeader,
-        headerTrailing: resourceGainTooltip ? undefined : focusTrailing,
+        headerTrailing: resourceGainTooltip ? undefined : tooltipHeaderTrailing,
         description: craftDescription,
         effects: revealedEffects,
         style:
