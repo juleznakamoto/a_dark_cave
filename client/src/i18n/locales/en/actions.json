@@ -388,6 +388,9 @@
   "craftHighpriestRobe": {
     "label": "High Priest's Robe"
   },
+  "craftFurCloak": {
+    "label": "Fur Cloak"
+  },
   "craftHunterCloak": {
     "label": "Hunter Cloak"
   },

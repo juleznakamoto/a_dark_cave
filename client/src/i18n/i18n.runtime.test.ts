@@ -7,6 +7,7 @@ import {
 import { getEnUiCatalogString } from "./enUiCatalog";
 import {
   getActionLabel,
+  getTooltipActionLabel,
   getActionLogMessage,
   getCatalogString,
   getEffectName,
@@ -361,6 +362,20 @@ describe("i18n runtime", () => {
       "Wooden Hut",
     );
     expect(label).not.toBe("Wooden Hut");
+  });
+
+  it("names group bonuses and jobs in the active language", async () => {
+    await i18n.changeLanguage("de");
+    expect(getTooltipActionLabel("caveExplore")).toBe("Höhle erkunden");
+    expect(getTooltipActionLabel("building")).toBe("Gebäude");
+    expect(getTooltipActionLabel("hunter")).toBe("Jäger");
+    expect(getTooltipActionLabel("hunt")).toBe("Jagen");
+
+    await i18n.changeLanguage("en");
+    expect(getTooltipActionLabel("caveExplore")).toBe("Cave Explore");
+    expect(getTooltipActionLabel("building")).toBe("Buildings");
+    expect(getTooltipActionLabel("hunter")).toBe("Hunter");
+    expect(getTooltipActionLabel("hunt")).toBe("Hunt");
   });
 
   it("uses Gather Wood until forest unlock, then Chop Wood", async () => {

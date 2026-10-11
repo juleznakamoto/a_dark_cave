@@ -6,6 +6,10 @@ import { craftActionIdToItemKey } from "./craftItemDescription";
 import { clothingEffects, toolEffects, weaponEffects } from "./effects";
 import { renderItemTooltip } from "./itemTooltips";
 import { isCraftOnceAction, isBuildingAction } from "./insightReveal";
+import {
+  getWeaponUpgradeHighlightId,
+  getWeaponUpgradeMarginalEffectLines,
+} from "./weaponUpgradeTooltip";
 
 const EFFECTS_ONLY_DISPLAY = {
   showTitle: false,
@@ -45,6 +49,17 @@ export function getRevealedEffectsTooltipContent(
     const itemKey = craftActionIdToItemKey(actionId);
     const itemType = getCraftItemType(itemKey);
     if (!itemType) return null;
+    if (getWeaponUpgradeHighlightId(itemKey)) {
+      const lines = getWeaponUpgradeMarginalEffectLines(itemKey);
+      if (lines.length === 0) return null;
+      return (
+        <div>
+          {lines.map((line, i) => (
+            <div key={i}>{line}</div>
+          ))}
+        </div>
+      );
+    }
     return renderItemTooltip(itemKey, itemType, undefined, EFFECTS_ONLY_DISPLAY);
   }
 

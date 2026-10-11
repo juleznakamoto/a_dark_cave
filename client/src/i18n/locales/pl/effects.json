@@ -186,6 +186,10 @@
       "description": "Berło zaginionego króla, promieniujące mocą i szaleństwem. Działania górnicze mają 5% szans na podwojenie nagrody.",
       "name": "Berło Pustego Króla"
     },
+    "fur_cloak": {
+      "description": "Gruby futrzany płaszcz, który tłumi każdy krok",
+      "name": "Futrzany płaszcz"
+    },
     "hunter_cloak": {
       "description": "Gibki skórzany płaszcz, który ucisza każdy ruch",
       "name": "Płaszcz myśliwego"

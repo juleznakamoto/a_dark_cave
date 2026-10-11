@@ -494,7 +494,7 @@ export const weaponEffects: Record<string, EffectDefinition> = {
     bonuses: {
       actionBonuses: {
         hunt: {
-          resourceMultiplier: 4,
+          resourceMultiplier: 3.75,
           executionTimeReduction: 2.5,
         },
       },
@@ -680,7 +680,7 @@ export const weaponEffects: Record<string, EffectDefinition> = {
     bonuses: {
       actionBonuses: {
         hunt: {
-          resourceMultiplier: 5.5,
+          resourceMultiplier: 5,
           executionTimeReduction: 3,
         },
       },
@@ -1120,6 +1120,20 @@ export const clothingEffects: Record<string, EffectDefinition> = {
     },
   },
 
+  fur_cloak: {
+    id: "fur_cloak",
+    name: "Fur Cloak",
+    description: "Thick fur cloak that softens each step",
+    bonuses: {
+      actionBonuses: {
+        hunt: {
+          resourceMultiplier: 1.25,
+          executionTimeReduction: 0.25,
+        },
+      },
+    },
+  },
+
   hunter_cloak: {
     id: "hunter_cloak",
     name: "Hunter Cloak",
@@ -1127,7 +1141,8 @@ export const clothingEffects: Record<string, EffectDefinition> = {
     bonuses: {
       actionBonuses: {
         hunt: {
-          resourceMultiplier: 1.25,
+          resourceMultiplier: 1.5,
+          executionTimeReduction: 0.5,
         },
       },
     },
@@ -1162,7 +1177,7 @@ export const clothingEffects: Record<string, EffectDefinition> = {
           executionTimeReduction: 3,
         },
         hunt: {
-          executionTimeReduction: 2,
+          executionTimeReduction: 1.5,
         },
         chopWood: {
           executionTimeReduction: 1,

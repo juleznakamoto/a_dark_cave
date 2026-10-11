@@ -388,6 +388,9 @@
   "craftHighpriestRobe": {
     "label": "Hohepriesterrobe"
   },
+  "craftFurCloak": {
+    "label": "Pelzumhang"
+  },
   "craftHunterCloak": {
     "label": "Jägerumhang"
   },

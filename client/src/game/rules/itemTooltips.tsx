@@ -30,10 +30,16 @@ import {
 } from "./buildingTooltipSections";
 import { ActionTooltipSeparator } from "./actionTooltipLayout";
 import {
+  getWeaponHierarchyChain,
+  getWeaponInheritedUnlockLines,
+  getWeaponUpgradeLevelSections,
+  type WeaponUpgradeLevelSection,
+} from "./weaponUpgradeTooltip";
+import {
   getFortificationMarginalStats,
   type FortificationBuildingKey,
 } from "@/game/bastionStats";
-import { capitalizeWords, formatNumber } from "@/lib/utils";
+import { formatNumber } from "@/lib/utils";
 import {
   WANDERERS_LANTERN_ACTIVE_MS,
   WANDERERS_LANTERN_COOLDOWN_MS,
@@ -45,6 +51,7 @@ import {
   getActionLabel,
   getEffectDescription,
   getEffectName,
+  getTooltipActionLabel,
   tWithFallback,
 } from "@/i18n/resolveGameText";
 import {
@@ -301,6 +308,27 @@ function getFortificationLevelEffectSections(
     }
   }
   return sections;
+}
+
+function renderPriorLevelSections(
+  sections: WeaponUpgradeLevelSection[],
+): React.ReactNode | null {
+  const visible = sections.filter((section) => section.effects.length > 0);
+  if (visible.length === 0) return null;
+
+  return (
+    <>
+      {visible.map((section) => (
+        <div key={`level-${section.level}`} className="text-muted-foreground">
+          <ActionTooltipSeparator />
+          <div>{section.label}</div>
+          {section.effects.map((effect, effectIdx) => (
+            <div key={effectIdx}>{effect}</div>
+          ))}
+        </div>
+      ))}
+    </>
+  );
 }
 
 function renderLeveledEffectsBlock(
@@ -831,6 +859,18 @@ export function renderItemTooltip(
     effect.bonuses?.actionBonuses &&
     Object.keys(effect.bonuses.actionBonuses).length > 0,
   );
+  const isUpgradeChainItem = getWeaponHierarchyChain(itemId) != null;
+  const inheritedUnlockLines =
+    showEffects && isUpgradeChainItem
+      ? getWeaponInheritedUnlockLines(itemId)
+      : [];
+  const upgradeLevelSections =
+    showEffects && isUpgradeChainItem
+      ? getWeaponUpgradeLevelSections(itemId)
+      : [];
+  const hasUpgradeChain =
+    inheritedUnlockLines.length > 0 ||
+    upgradeLevelSections.some((section) => section.effects.length > 0);
   const hasAnyEffects =
     showEffects &&
     Boolean(
@@ -842,7 +882,8 @@ export function renderItemTooltip(
       itemId === "ebon_grace" ||
       itemId === "wanderers_lantern" ||
       (itemType === "weapon" && itemId === "nightshade_bow") ||
-      unlockEffectLine,
+      unlockEffectLine ||
+      hasUpgradeChain,
     );
 
   if (
@@ -1181,10 +1222,7 @@ export function renderItemTooltip(
       {showEffects && hasActionBonusEffects && effect.bonuses?.actionBonuses &&
         Object.entries(effect.bonuses.actionBonuses).map(
           ([actionId, bonus]) => {
-            const actionLabel = getActionLabel(
-              actionId,
-              capitalizeWords(actionId),
-            );
+            const actionLabel = getTooltipActionLabel(actionId);
             return (
               <div key={actionId}>
                 {bonus.resourceMultiplier && bonus.resourceMultiplier !== 1 && (
@@ -1265,7 +1303,11 @@ export function renderItemTooltip(
         renderNightshadePoisonTooltip(
           useGameStore.getState() as unknown as GameState,
         )}
+      {inheritedUnlockLines.map((line) => (
+        <div key={line}>{line}</div>
+      ))}
       {unlockEffectLine && <div>{unlockEffectLine}</div>}
+      {renderPriorLevelSections(upgradeLevelSections)}
       {hasDescription && (
         <>
           {(hasTitle ||

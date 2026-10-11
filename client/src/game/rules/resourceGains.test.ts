@@ -521,6 +521,31 @@ describe('Resource Gain Tests', () => {
       // Use a more lenient check since the multiplier is applied to the random range
       expect(expectedWith.food.min).toBeGreaterThan(expectedWithout.food.min);
       expect(expectedWith.food.max).toBeGreaterThan(expectedWithout.food.max);
+      expect(getActionBonuses("hunt", stateWithCloak).resourceMultiplier).toBe(1.5);
+      expect(getActionBonuses("hunt", stateWithCloak).executionTimeReduction).toBe(0.5);
+    });
+
+    it("hunt with both cloaks uses only the hunter cloak", () => {
+      const state = createTestState({
+        flags: { forestUnlocked: true },
+      });
+      const withBoth = createTestState({
+        flags: { forestUnlocked: true },
+        clothing: {
+          ...state.clothing,
+          fur_cloak: true,
+          hunter_cloak: true,
+        },
+      });
+      const withFur = createTestState({
+        flags: { forestUnlocked: true },
+        clothing: { ...state.clothing, fur_cloak: true },
+      });
+
+      expect(getActionBonuses("hunt", withFur).resourceMultiplier).toBe(1.25);
+      expect(getActionBonuses("hunt", withFur).executionTimeReduction).toBe(0.25);
+      expect(getActionBonuses("hunt", withBoth).resourceMultiplier).toBe(1.5);
+      expect(getActionBonuses("hunt", withBoth).executionTimeReduction).toBe(0.5);
     });
 
     it('mineStone with different pickaxes shows progression', () => {

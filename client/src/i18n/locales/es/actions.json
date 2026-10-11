@@ -388,6 +388,9 @@
   "craftHighpriestRobe": {
     "label": "Túnica de sumo sacerdote"
   },
+  "craftFurCloak": {
+    "label": "Capa de piel"
+  },
   "craftHunterCloak": {
     "label": "Capa de cazador"
   },

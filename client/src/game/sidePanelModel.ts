@@ -16,7 +16,9 @@ import {
 } from "@/game/population";
 import { hasBonusComposition } from "@/game/rules/bonusComposition";
 import {
+  CLOAK_HIERARCHY,
   getAllActionBonuses,
+  getBestCloakId,
   getDisplayTools,
   getDoubleGainChance,
   getMadnessComponents,
@@ -404,7 +406,10 @@ export function getSidePanelModel(state: GameState): SidePanelModel {
     combatItemRows,
     toolIds,
     weaponIds,
-    clothingIds: trueKeys(state.clothing),
+    clothingIds: trueKeys(state.clothing).filter((key) => {
+      if (!(CLOAK_HIERARCHY as readonly string[]).includes(key)) return true;
+      return getBestCloakId(state.clothing) === key;
+    }),
     relicIds,
     mapFragmentCount,
     showMapFragmentRow:

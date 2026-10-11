@@ -29,7 +29,7 @@ import {
   getBuilderLevel,
 } from "@/game/constructionQueueSlots";
 // Tool hierarchy definitions
-const AXE_HIERARCHY = [
+export const AXE_HIERARCHY = [
   "stone_axe",
   "iron_axe",
   "steel_axe",
@@ -37,7 +37,7 @@ const AXE_HIERARCHY = [
   "adamant_axe",
   "blacksteel_axe",
 ];
-const PICKAXE_HIERARCHY = [
+export const PICKAXE_HIERARCHY = [
   "stone_pickaxe",
   "iron_pickaxe",
   "steel_pickaxe",
@@ -45,7 +45,7 @@ const PICKAXE_HIERARCHY = [
   "adamant_pickaxe",
   "blacksteel_pickaxe",
 ];
-const LANTERN_HIERARCHY = [
+export const LANTERN_HIERARCHY = [
   "lantern",
   "iron_lantern",
   "steel_lantern",
@@ -54,7 +54,7 @@ const LANTERN_HIERARCHY = [
   "blacksteel_lantern",
 ];
 
-const BOW_HIERARCHY = [
+export const BOW_HIERARCHY = [
   "crude_bow",
   "huntsman_bow",
   "long_bow",
@@ -63,7 +63,21 @@ const BOW_HIERARCHY = [
   "blacksteel_bow",
 ];
 
-const SWORD_HIERARCHY = [
+/** Only the highest owned cloak applies. Lower tiers stay owned for the upgrade tooltip. */
+export const CLOAK_HIERARCHY = ["fur_cloak", "hunter_cloak"] as const;
+
+export function getBestCloakId(
+  clothing: GameState["clothing"] | undefined,
+): (typeof CLOAK_HIERARCHY)[number] | null {
+  if (!clothing) return null;
+  for (let i = CLOAK_HIERARCHY.length - 1; i >= 0; i--) {
+    const id = CLOAK_HIERARCHY[i];
+    if (clothing[id]) return id;
+  }
+  return null;
+}
+
+export const SWORD_HIERARCHY = [
   "iron_sword",
   "steel_sword",
   "obsidian_sword",
@@ -197,11 +211,17 @@ export const getDisplayTools = (state: GameState): Record<string, boolean> => {
 export const getActiveEffects = (state: GameState): EffectDefinition[] => {
   const activeEffects: EffectDefinition[] = [];
 
-  // Check clothing effects
+  // Check clothing effects. Cloak tiers do not stack: only the best owned cloak counts.
+  const bestCloakId = getBestCloakId(state.clothing);
   Object.entries(state.clothing || {}).forEach(([key, value]) => {
-    if (value && clothingEffects[key]) {
-      activeEffects.push(clothingEffects[key]);
+    if (!value || !clothingEffects[key]) return;
+    if (
+      (CLOAK_HIERARCHY as readonly string[]).includes(key) &&
+      key !== bestCloakId
+    ) {
+      return;
     }
+    activeEffects.push(clothingEffects[key]);
   });
 
   // Check relic effects (relics are also in clothingEffects for now)

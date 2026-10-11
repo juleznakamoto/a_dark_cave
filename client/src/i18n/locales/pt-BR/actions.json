@@ -372,6 +372,9 @@
   "craftHighpriestRobe": {
     "label": "Manto do Sumo Sacerdote"
   },
+  "craftFurCloak": {
+    "label": "Capa de pele"
+  },
   "craftHunterCloak": {
     "label": "Capa do Caçador"
   },

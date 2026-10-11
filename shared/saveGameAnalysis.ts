@@ -43,6 +43,10 @@ export const CLOTHING_REBUILD_FROM_STORY_SEEN = [
     seenKeys: ["hasExplorerPack", "actionCraftExplorerPack"],
   },
   {
+    clothingKey: "fur_cloak",
+    seenKeys: ["hasFurCloak", "actionCraftFurCloak"],
+  },
+  {
     clothingKey: "hunter_cloak",
     seenKeys: ["hasHunterCloak", "actionCraftHunterCloak"],
   },

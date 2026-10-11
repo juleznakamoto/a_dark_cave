@@ -178,6 +178,10 @@
       "description": "失落之王的权杖，散发力量与疯狂。采矿行动有 5% 几率使奖励翻倍。",
       "name": "空洞王权杖"
     },
+    "fur_cloak": {
+      "description": "厚实的毛皮斗篷，让每一步都变得轻柔",
+      "name": "毛皮斗篷"
+    },
     "hunter_cloak": {
       "description": "柔韧的皮斗篷，让每个动作都悄无声息",
       "name": "猎人斗篷"

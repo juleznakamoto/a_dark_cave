@@ -458,11 +458,33 @@ export const caveCraftTools: Record<string, Action> = {
     cooldown: 0,
   },
 
+  craftFurCloak: {
+    id: "craftFurCloak",
+    label: "Fur Cloak",
+    show_when: {
+      "flags.forestUnlocked": true,
+      "buildings.blacksmith": 1,
+      "clothing.fur_cloak": false,
+      "clothing.hunter_cloak": false,
+    },
+    cost: {
+      "resources.fur": 250,
+    },
+    effects: {
+      "clothing.fur_cloak": true,
+      "story.seen.hasFurCloak": true,
+      "story.seen.actionCraftFurCloak": true,
+    },
+    executionTime: 15,
+    cooldown: 0,
+  },
+
   craftHunterCloak: {
     id: "craftHunterCloak",
     label: "Hunter Cloak",
     show_when: {
       "buildings.tannery": 1,
+      "clothing.fur_cloak": true,
       "clothing.hunter_cloak": false,
     },
     cost: {
@@ -791,6 +813,15 @@ export function handleCraftExplorerPack(
   result: ActionResult,
 ): ActionResult {
   const effectUpdates = applyActionEffects("craftExplorerPack", state);
+  Object.assign(result.stateUpdates, effectUpdates);
+  return result;
+}
+
+export function handleCraftFurCloak(
+  state: GameState,
+  result: ActionResult,
+): ActionResult {
+  const effectUpdates = applyActionEffects("craftFurCloak", state);
   Object.assign(result.stateUpdates, effectUpdates);
   return result;
 }

@@ -166,6 +166,10 @@
       "description": "Cetro do rei perdido, irradiando poder e loucura. As ações de mineração têm 5% de chance de dobrar as recompensas.",
       "name": "Cetro do Rei Oco"
     },
+    "fur_cloak": {
+      "description": "Capa grossa de pele que abafa cada passo",
+      "name": "Capa de pele"
+    },
     "hunter_cloak": {
       "description": "Capa de couro flexível que silencia cada movimento",
       "name": "Capa do Caçador"

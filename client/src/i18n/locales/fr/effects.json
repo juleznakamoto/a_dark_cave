@@ -178,6 +178,10 @@
       "description": "Sceptre du roi perdu, irradiant pouvoir et folie. Les actions de minage ont 5 % de chances de doubler les récompenses.",
       "name": "Sceptre du Roi creux"
     },
+    "fur_cloak": {
+      "description": "Épaisse cape de fourrure qui étouffe chaque pas",
+      "name": "Cape de fourrure"
+    },
     "hunter_cloak": {
       "description": "Cape de cuir souple qui étouffe chaque mouvement",
       "name": "Cape de chasseur"

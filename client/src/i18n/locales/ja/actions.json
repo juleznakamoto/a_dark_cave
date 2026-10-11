@@ -388,6 +388,9 @@
   "craftHighpriestRobe": {
     "label": "大祭司のローブ"
   },
+  "craftFurCloak": {
+    "label": "毛皮の外套"
+  },
   "craftHunterCloak": {
     "label": "猟師の外套"
   },

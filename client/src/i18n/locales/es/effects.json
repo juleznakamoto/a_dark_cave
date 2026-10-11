@@ -178,6 +178,10 @@
       "description": "Cetro del rey perdido, irradiando poder y locura. Las acciones de minería tienen un 5% de probabilidad de duplicar las recompensas.",
       "name": "Cetro del Rey Hueco"
     },
+    "fur_cloak": {
+      "description": "Capa gruesa de piel que amortigua cada paso",
+      "name": "Capa de piel"
+    },
     "hunter_cloak": {
       "description": "Capa de cuero flexible que silencia cada movimiento",
       "name": "Capa de cazador"

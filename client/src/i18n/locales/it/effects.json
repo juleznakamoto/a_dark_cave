@@ -166,6 +166,10 @@
       "description": "Scettro del re perduto, che irradia potere e follia. Le azioni di estrazione hanno il 5% di probabilità di raddoppiare le ricompense.",
       "name": "Scettro del Re Cavo"
     },
+    "fur_cloak": {
+      "description": "Spesso mantello di pelliccia che attutisce ogni passo",
+      "name": "Mantello di pelliccia"
+    },
     "hunter_cloak": {
       "description": "Mantello di cuoio morbido che attutisce ogni movimento",
       "name": "Mantello del Cacciatore"

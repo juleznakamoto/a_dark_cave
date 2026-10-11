@@ -388,6 +388,9 @@
   "craftHighpriestRobe": {
     "label": "Szata arcykapłana"
   },
+  "craftFurCloak": {
+    "label": "Futrzany płaszcz"
+  },
   "craftHunterCloak": {
     "label": "Płaszcz myśliwego"
   },

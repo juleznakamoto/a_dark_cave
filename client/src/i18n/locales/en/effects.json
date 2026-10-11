@@ -186,6 +186,10 @@
       "description": "Scepter of the lost king, radiating power and madness. Mining actions have a 5% chance to double rewards.",
       "name": "Hollow King Scepter"
     },
+    "fur_cloak": {
+      "description": "Thick fur cloak that softens each step",
+      "name": "Fur Cloak"
+    },
     "hunter_cloak": {
       "description": "Supple leather cloak that silences every movement",
       "name": "Hunter Cloak"

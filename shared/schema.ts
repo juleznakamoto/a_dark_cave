@@ -200,6 +200,7 @@ export const gameStateSchema = z.object({
   clothing: z
     .object({
       explorer_pack: z.boolean().default(false),
+      fur_cloak: z.boolean().default(false),
       hunter_cloak: z.boolean().default(false),
       grenadier_bag: z.boolean().default(false),
       flask_harness: z.boolean().default(false),

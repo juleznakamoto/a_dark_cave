@@ -487,3 +487,25 @@ export function getBonusSidebarLabel(actionId: string): string {
   }
   return tWithFallback("ui", `bonuses.${actionId}`, fallback);
 }
+
+/**
+ * Group bonuses with no actions catalog entry.
+ * Item tooltips use the same phrase as the side panel.
+ */
+const TOOLTIP_BONUS_GROUP_LABELS = new Set(["caveExplore"]);
+
+/** Action name inside item effect lines. */
+export function getTooltipActionLabel(actionId: string): string {
+  if (TOOLTIP_BONUS_GROUP_LABELS.has(actionId)) {
+    return getBonusSidebarLabel(actionId);
+  }
+  // Every build* action shares this key. The side panel calls that group Buildings.
+  if (actionId === "building") {
+    return tWithFallback("ui", "sidePanel.buildings", "Buildings");
+  }
+  // Hunter output is a job, not an action.
+  if (actionId === "hunter") {
+    return getVillagerJobName(actionId, "Hunter");
+  }
+  return getActionLabel(actionId, formatBonusActionFallback(actionId));
+}

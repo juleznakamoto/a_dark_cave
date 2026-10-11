@@ -19,7 +19,12 @@ import { ActionButtonSlot } from "@/components/game/GameActionButtonStack";
 import { ConstructionBoostBadge } from "@/components/game/ConstructionBoostBadge";
 import { isConstructionBoostAvailable } from "@/game/constructionQueueSlots";
 import { isCraftDescriptionVisible, isCraftOnceAction } from "@/game/rules/insightReveal";
-import { getCraftItemDescription } from "@/game/rules/craftItemDescription";
+import {
+  craftActionIdToItemKey,
+  getCraftItemDescription,
+} from "@/game/rules/craftItemDescription";
+import { getWeaponUpgradeHighlightId } from "@/game/rules/weaponUpgradeTooltip";
+import { BuildingUpgradeTooltipIcon } from "@/game/rules/buildingUpgradeTooltipIndicator";
 import { getRevealedEffectsForActionTooltip } from "@/game/rules/insightRevealTooltip";
 import { composeActionTooltip } from "@/game/rules/actionTooltipLayout";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
@@ -151,6 +156,7 @@ export default function CavePanel() {
         {
           actions: [
             { id: "craftExplorerPack", label: "Explorer's Pack" },
+            { id: "craftFurCloak", label: "Fur Cloak" },
             { id: "craftHunterCloak", label: "Hunter Cloak" },
             { id: "craftLoggersGloves", label: "Logger's Gloves" },
             { id: "craftGrenadierBag", label: "Grenadier's Bag" },
@@ -272,9 +278,17 @@ export default function CavePanel() {
     const hasExpeditionRequirement =
       (action.expeditionVillagersRequired?.(state) ?? 0) > 0;
     const focusTrailing = getFocusTooltipHeaderTrailing(actionId, state);
+    const weaponUpgradeHighlightId = isCraftAction
+      ? getWeaponUpgradeHighlightId(craftActionIdToItemKey(actionId))
+      : null;
+    const tooltipHeaderTrailing = weaponUpgradeHighlightId ? (
+      <BuildingUpgradeTooltipIcon />
+    ) : (
+      focusTrailing
+    );
     const resourceGainTooltip =
       isChopWood || isMineAction || isCaveExploreAction || isCraftAction
-        ? getResourceGainTooltip(actionId, state, focusTrailing)
+        ? getResourceGainTooltip(actionId, state, tooltipHeaderTrailing)
         : null;
 
     // Check if this action is affected by focus mode (only actions that get 2x bonus)
@@ -380,9 +394,14 @@ export default function CavePanel() {
                     : undefined
           }
           onMouseEnter={() => {
-            setHighlightedResources(
-              getResourcesFromActionCost(actionId, state),
-            );
+            const highlights = getResourcesFromActionCost(actionId, state);
+            if (
+              weaponUpgradeHighlightId &&
+              !highlights.includes(weaponUpgradeHighlightId)
+            ) {
+              highlights.push(weaponUpgradeHighlightId);
+            }
+            setHighlightedResources(highlights);
           }}
           onMouseLeave={() => {
             setHighlightedResources([]);
