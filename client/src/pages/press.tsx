@@ -13,7 +13,6 @@ import {
   PRESS_PERMISSIONS,
   PRESS_SCREENSHOTS,
   PRESS_TRAILER_FILE_HREF,
-  PRESS_TRAILER_YOUTUBE_URL,
   PRESS_VIDEOS,
   PRESS_ZIP_HREF,
   pressLinksInGroup,
@@ -303,15 +302,6 @@ export default function Press() {
             />
           </div>
           <p className="m-0">
-            <a
-              href={PRESS_TRAILER_YOUTUBE_URL}
-              target="_blank"
-              rel="noopener noreferrer"
-              className={linkClassName}
-            >
-              YouTube
-            </a>
-            {" · "}
             <a
               href={PRESS_TRAILER_FILE_HREF}
               download={PRESS_VIDEOS[0]?.fileName}

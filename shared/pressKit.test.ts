@@ -116,6 +116,8 @@ describe("press kit copy", () => {
     expect(html).toContain(PRESS_LOCKED_LINE);
     expect(html).toContain("Short boilerplate");
     expect(html).toContain("/press-kit/a_dark_cave_press_kit.zip");
+    expect(html).toContain("/press-kit/video/a_dark_cave_gameplay_trailer.mp4");
+    expect(html).not.toContain("G8Gm7o4cZfQ");
     expect(html).toContain("support@a-dark-cave.com");
   });
 });
