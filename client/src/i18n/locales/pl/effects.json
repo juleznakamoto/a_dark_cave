@@ -568,6 +568,10 @@
       "description": "Doskonały łuk o większym zasięgu i celności",
       "name": "Długi łuk"
     },
+    "manhunter_bow": {
+      "description": "Łuk łowcy ludzi, naciągnięty do polowania na ludzi",
+      "name": "Łuk łowcy ludzi"
+    },
     "master_bow": {
       "description": "Ostateczny łuk, niezrównany w mocy i panowaniu",
       "name": "Mistrzowski łuk"

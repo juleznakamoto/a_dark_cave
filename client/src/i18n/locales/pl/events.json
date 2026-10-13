@@ -237,6 +237,47 @@
       "outcome3": "Twoje wahanie drażni stwora. Syknąwszy z niezadowoleniem, cofa się w cienie."
     }
   },
+  "theHunter": {
+    "title": "Łowca",
+    "message": {
+      "level1": "Na skraju wsi pojawia się wysoki mężczyzna. Porusza się bez dźwięku. Mówi, że jest łowcą i że potrzebuje kości na groty strzał. Mówi, że zabijają pewniej niż żelazo. Ma mięso na wymianę. Oferuje {{foodReward}} żywności.",
+      "level1Repeat": "Łowca wraca, tak cichy jak przedtem. Wciąż chce kości na groty. Mięso jest już pocięte, a skóry nie przynosi. Oferuje {{foodReward}} żywności.",
+      "level2": "Łowca wrócił z kolejnym tobołem, obdartym i porcjowanym. Ma dużo mięsa na wymianę. Mówi, że musi wyciąć bardzo wiele grotów. Oferuje {{foodReward}} żywności.",
+      "level2Repeat": "Łowca stoi tam, gdzie stał. Oferuje chude mięso. Mówi, że wciąż potrzebuje więcej grotów. Oferuje {{foodReward}} żywności.",
+      "level3": "Łowca wraca jeszcze raz. Mówi, że zabijania zostało jeszcze wiele i że potrzebuje więcej kości na groty. Oferuje dużo świeżego mięsa. Oferuje {{foodReward}} żywności.",
+      "level3Repeat": "Cichy łowca pojawia się znowu. Oferuje świeże mięso, i jest go bardzo dużo. Oferuje {{foodReward}} żywności.",
+      "level4": "Łowca wraca. Mówi, że potrzebuje więcej kości na swoje zabójcze groty. Oferuje blade, chude mięso, bez żadnego futra. Oferuje {{foodReward}} żywności.",
+      "level4Repeat": "Łowca przychodzi znów, z dużą ilością mięsa. Wciąż potrzebuje kości na groty. Oferuje {{foodReward}} żywności.",
+      "level5": "Łowca pojawia się i stawia duży tobół mięsa. Wciąż jest ciepłe. Mówi, że był zajęty i że ma jeszcze dużo pracy. Ale potrzebuje więcej kości. Oferuje {{foodReward}} żywności.",
+      "level5Repeat": "Łowca czeka na skraju wsi. Mięso, które oferuje, pachnie czysto, i jest go stanowczo za dużo. Wciąż chce kości na groty. Oferuje {{foodReward}} żywności."
+    },
+    "choices": {
+      "giveBones": {
+        "label": "Sprzedaj {{boneCost}} kości",
+        "cost": "{{boneCost}} kości"
+      },
+      "refuse": {
+        "label": "Odmów handlu"
+      }
+    },
+    "log": {
+      "outcome1": "Bierze kości bez słowa i zostawia mięso. Potem go nie ma.",
+      "outcome2": "Odmawiasz. Kiwa głową raz i odchodzi tak cicho, jak przyszedł.",
+      "outcome3": "Nie odpowiadasz. Czeka, potem odchodzi bez dźwięku."
+    }
+  },
+  "theHunterCabin": {
+    "title": "Chata w lesie",
+    "message": "Niektórzy łowcy wracają niespokojni. Głęboko w lesie znaleźli dużą drewnianą chatę, a obok coś, co wygląda jak rzeźnia. Bali się podejść bliżej. Roztropniej wrócić tam liczniejszym oddziałem.",
+    "choices": {
+      "continue": {
+        "label": "Kontynuuj"
+      }
+    },
+    "log": {
+      "outcome1": "Łowcy znaczą miejsce. Większą grupę można wysłać, gdy będziesz gotów."
+    }
+  },
   "brimstoneFlux1": {
     "title": "Siarkowy przypływ",
     "message": "Do wioski przybywa niski, brodaty człowiek o ogromnych ramionach. Mówi, że zna hutę i może na jakiś czas poprawić produkcję stali. Potrzebuje siarki i trochę złota.",

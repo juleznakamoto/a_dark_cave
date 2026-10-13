@@ -564,6 +564,13 @@
       "mapFragmentHunt": "Mientras cazas, algo llama tu atención en el barro. Un trozo manchado de agua, quizá parte de un mapa."
     }
   },
+  "woodenCabin": {
+    "label": "Cabaña de madera",
+    "log": {
+      "success": "La cabaña pertenece al cazador que te vendió carne. El matadero está lleno de ganchos, y ninguno sostuvo un ciervo. Cazaba personas, y la comida que intercambiaba era su carne. En la cabaña encuentras el arco del tratante.",
+      "failure": "Al acercarte a la cabaña, salen flechas de la oscuridad de la puerta. Cada disparo mata. Las puntas son de hueso. {{count}} aldeanos mueren antes de que el resto huya."
+    }
+  },
   "invest": {
     "label": "Invertir"
   },

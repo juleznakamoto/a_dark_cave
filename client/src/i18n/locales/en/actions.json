@@ -564,6 +564,13 @@
       "mapFragmentHunt": "While hunting, something catches your eye in the mud. A water-stained scrap, perhaps part of a map."
     }
   },
+  "woodenCabin": {
+    "label": "Wooden Cabin",
+    "log": {
+      "success": "The cabin belongs to the hunter who sold you meat. The slaughterhouse is hung with hooks, and none of them held deer. He was hunting people, and the food he traded was their flesh. In the cabin you find the trader's bow.",
+      "failure": "As you approach the cabin, arrows come from the dark of the doorway. Every shot is a kill. The arrowheads are made of bone. {{count}} villagers die before the rest flee."
+    }
+  },
   "invest": {
     "label": "Invest"
   },

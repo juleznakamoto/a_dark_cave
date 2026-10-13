@@ -548,6 +548,13 @@
       "mapFragmentHunt": "Durante a caçada, algo chama sua atenção na lama. Um pedaço manchado de água, talvez parte de um mapa."
     }
   },
+  "woodenCabin": {
+    "label": "Cabana de Madeira",
+    "log": {
+      "success": "A cabana pertence ao caçador que lhe vendeu carne. O matadouro está cheio de ganchos, e nenhum segurou um cervo. Ele caçava pessoas, e a comida que trocava era a carne delas. Na cabana você encontra o arco do mercador.",
+      "failure": "Ao se aproximar da cabana, flechas vêm da escuridão da porta. Cada tiro mata. As pontas são de osso. {{count}} aldeões morrem antes que o resto fuja."
+    }
+  },
   "invest": {
     "label": "Investir"
   },

@@ -548,6 +548,13 @@
       "mapFragmentHunt": "Mentre cacci, qualcosa attira il tuo sguardo nel fango. Un brandello macchiato d'acqua, forse parte di una mappa."
     }
   },
+  "woodenCabin": {
+    "label": "Capanna di Legno",
+    "log": {
+      "success": "La capanna appartiene al cacciatore che ti ha venduto la carne. Il macello è pieno di ganci, e nessuno ha retto un cervo. Dava la caccia alle persone, e il cibo che scambiava era la loro carne. Nella capanna trovi l'arco del mercante.",
+      "failure": "Mentre ti avvicini alla capanna, dal buio della porta arrivano frecce. Ogni colpo uccide. Le punte sono d'osso. {{count}} abitanti muoiono prima che gli altri fuggano."
+    }
+  },
   "invest": {
     "label": "Investi"
   },

@@ -568,6 +568,10 @@
       "description": "优良长弓，射程更远，精度更高",
       "name": "长弓"
     },
+    "manhunter_bow": {
+      "description": "为人猎而张弦的弓",
+      "name": "猎人之弓"
+    },
     "master_bow": {
       "description": "终极之弓，威力与掌控无可匹敌",
       "name": "大师弓"

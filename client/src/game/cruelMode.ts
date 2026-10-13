@@ -174,6 +174,7 @@ export const CRUEL_MODE = {
     collapsedTower: { failureDeaths: { randMax: 9, base: 2, whenCruel: 4 } },
     forestCave: { failureDeaths: { randMax: 8, base: 2, whenCruel: 3 } },
     risingSmoke: { failureDeaths: { randMax: 10, base: 3, whenCruel: 4 } },
+    woodenCabin: { failureDeaths: { randMax: 3, base: 2, whenCruel: 2 } },
   },
 
   particles: {

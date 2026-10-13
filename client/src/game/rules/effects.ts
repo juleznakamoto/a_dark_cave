@@ -453,6 +453,26 @@ export const weaponEffects: Record<string, EffectDefinition> = {
     },
   },
 
+  manhunter_bow: {
+    id: "manhunter_bow",
+    name: "Manhunter Bow",
+    description: "Bow of the manhunter, strung for hunting people.",
+    bonuses: {
+      actionBonuses: {
+        hunt: {
+          resourceMultiplier: 2,
+        },
+        hunter: {
+          resourceBonus: { food: 1 },
+        },
+      },
+      generalBonuses: {
+        strength: 4,
+        madness: 3,
+      },
+    },
+  },
+
   long_bow: {
     id: "long_bow",
     name: "Long Bow",

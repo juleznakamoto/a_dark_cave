@@ -564,6 +564,13 @@
       "mapFragmentHunt": "Beim Jagen fällt dir im Schlamm etwas auf. Ein wasserbeflecktes Stück Papier, vielleicht Teil einer Karte."
     }
   },
+  "woodenCabin": {
+    "label": "Blockhaus",
+    "log": {
+      "success": "Das Blockhaus gehört dem Jäger, der euch Fleisch verkauft hat. Im Schlachthaus hängen Haken, und an keinem hing ein Reh. Er hat Menschen gejagt, und die Nahrung, die er tauschte, war ihr Fleisch. Im Haus findet ihr den Bogen des Händlers.",
+      "failure": "Als ihr euch dem Blockhaus nähert, kommen Pfeile aus dem Dunkel der Tür. Jeder Schuss tötet. Die Pfeilspitzen sind aus Knochen. {{count}} Dorfbewohner sterben, bevor der Rest flieht."
+    }
+  },
   "invest": {
     "label": "Investieren"
   },

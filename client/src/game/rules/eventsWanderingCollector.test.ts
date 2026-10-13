@@ -90,6 +90,7 @@ describe("collectorRejectedItems", () => {
       "shadow_flute",
       "hollow_king_scepter",
       "unnamed_book",
+      "manhunter_bow",
     ]);
   });
 });

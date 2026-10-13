@@ -397,6 +397,14 @@ export const getPopulationProduction = (
         }
       });
     }
+
+    if (state.weapons?.manhunter_bow) {
+      baseProduction.forEach((prod) => {
+        if (prod.resource === "food" && prod.baseAmount > 0) {
+          prod.totalAmount += 1 * count;
+        }
+      });
+    }
   }
 
   // Apply Flame's Touch, Brimstone Infusion, and timed brimstone flux to steel

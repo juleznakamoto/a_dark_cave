@@ -161,6 +161,7 @@ export default function ForestPanel() {
       actions: [
         { id: "chopWood", label: "Chop Wood" },
         { id: "hunt", label: "Hunt" },
+        { id: "woodenCabin", label: "Wooden Cabin" },
         { id: "layTrap", label: "Lay Trap" },
         { id: "banditLair", label: "Bandit Lair" },
         { id: "forestCave", label: "Forest Cave" },

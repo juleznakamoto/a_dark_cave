@@ -91,6 +91,7 @@ export const mergeStateUpdates = (
       prevState.insightBlessingOfferState,
     boneDevourerState:
       stateUpdates.boneDevourerState || prevState.boneDevourerState,
+    theHunterState: stateUpdates.theHunterState || prevState.theHunterState,
     greatFeastState: stateUpdates.greatFeastState || prevState.greatFeastState,
     solsticeState: stateUpdates.solsticeState || prevState.solsticeState,
     bloodMoonState: stateUpdates.bloodMoonState || prevState.bloodMoonState,

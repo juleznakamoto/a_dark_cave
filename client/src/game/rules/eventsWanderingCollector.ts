@@ -1,6 +1,10 @@
 import type { GameEvent, EventChoice } from "./eventTypes";
 import type { GameState } from "@shared/schema";
-import { getClothingOrRelicEffectName } from "@/i18n/resolveGameText";
+import {
+  getClothingOrRelicEffectName,
+  getEffectName,
+} from "@/i18n/resolveGameText";
+import { weaponEffects } from "./effects";
 import {
   COLLECTOR_MAX_OFFERS,
   clearCollectorItemRejectedInSeen,
@@ -103,11 +107,30 @@ export function shouldEndCollectorVisitAfterTrade(
   return (buyDone || !buyAvailable) && (sellDone || !sellAvailable);
 }
 
+function collectorOfferLabel(itemId: string): string {
+  if (getCollectorItemCategory(itemId) === "weapons") {
+    return getEffectName(
+      "weapons",
+      itemId,
+      weaponEffects[itemId]?.name ?? itemId,
+    );
+  }
+  return getClothingOrRelicEffectName(itemId);
+}
+
 function grantCollectorItem(
   state: GameState,
   itemId: string,
 ): Partial<GameState> {
   const category = getCollectorItemCategory(itemId);
+  if (category === "weapons") {
+    return {
+      weapons: {
+        ...state.weapons,
+        [itemId]: true,
+      } as GameState["weapons"],
+    };
+  }
   if (category === "clothing") {
     return {
       clothing: {
@@ -128,6 +151,14 @@ function removeCollectorItem(
   state: GameState,
   itemId: string,
 ): Partial<GameState> {
+  if (getCollectorItemCategory(itemId) === "weapons") {
+    return {
+      weapons: {
+        ...state.weapons,
+        [itemId]: false,
+      } as GameState["weapons"],
+    };
+  }
   if (state.clothing && (state.clothing as Record<string, boolean>)[itemId]) {
     return {
       clothing: {
@@ -224,7 +255,7 @@ export const wanderingCollectorEvents: Record<string, GameEvent> = {
       for (const itemId of selectedToSellToPlayer) {
         choices.push({
           id: `buy_${itemId}`,
-          label: getClothingOrRelicEffectName(itemId),
+          label: collectorOfferLabel(itemId),
           cost: `${goldCost} gold`,
           effect: (innerState: GameState) => {
             const gold = (innerState.resources.gold || 0) - goldCost;
@@ -251,7 +282,7 @@ export const wanderingCollectorEvents: Record<string, GameEvent> = {
       for (const itemId of selectedToBuyFromPlayer) {
         choices.push({
           id: `sell_${itemId}`,
-          label: getClothingOrRelicEffectName(itemId),
+          label: collectorOfferLabel(itemId),
           effect: (innerState: GameState) => {
             const removed = removeCollectorItem(innerState, itemId);
             return {

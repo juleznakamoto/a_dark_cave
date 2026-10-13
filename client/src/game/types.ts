@@ -82,6 +82,7 @@ export interface ActionEffectUpdates {
   story?: Partial<GameState["story"]>;
   feastState?: GameState["feastState"];
   boneDevourerState?: GameState["boneDevourerState"];
+  theHunterState?: GameState["theHunterState"];
   greatFeastState?: GameState["greatFeastState"];
   solsticeState?: GameState["solsticeState"];
   bloodMoonState?: GameState["bloodMoonState"];

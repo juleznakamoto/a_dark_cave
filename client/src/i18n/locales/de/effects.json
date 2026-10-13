@@ -568,6 +568,10 @@
       "description": "Überlegener Bogen mit größerer Reichweite und Genauigkeit",
       "name": "Langbogen"
     },
+    "manhunter_bow": {
+      "description": "Bogen des Menschenjägers, bespannt zum Jagen von Menschen",
+      "name": "Menschenjägerbogen"
+    },
     "master_bow": {
       "description": "Ultimativer Bogen, unerreicht in Kraft und Kontrolle",
       "name": "Meisterbogen"

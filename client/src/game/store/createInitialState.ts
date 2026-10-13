@@ -72,6 +72,9 @@ export const createInitialState = (): GameState => ({
   boneDevourerState: {
     lastAcceptedLevel: 0,
   },
+  theHunterState: {
+    lastAcceptedLevel: 0,
+  },
   greatFeastState: {
     isActive: false,
     endTime: 0,

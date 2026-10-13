@@ -568,6 +568,10 @@
       "description": "Arco superior con mayor alcance y precisión",
       "name": "Arco largo"
     },
+    "manhunter_bow": {
+      "description": "Arco del cazador de hombres, encordado para cazar personas",
+      "name": "Arco del cazador de hombres"
+    },
     "master_bow": {
       "description": "Arco definitivo, incomparable en potencia y control",
       "name": "Arco maestro"

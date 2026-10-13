@@ -568,6 +568,10 @@
       "description": "Superior bow with extended reach and accuracy",
       "name": "Long Bow"
     },
+    "manhunter_bow": {
+      "description": "Bow of the manhunter, strung for hunting people.",
+      "name": "Manhunter Bow"
+    },
     "master_bow": {
       "description": "Ultimate bow, unmatched in power and control",
       "name": "Master Bow"

@@ -568,6 +568,10 @@
       "description": "Arc supérieur à portée et précision accrues",
       "name": "Arc long"
     },
+    "manhunter_bow": {
+      "description": "Arc du chasseur d'hommes, cordé pour chasser les gens",
+      "name": "Arc du chasseur d'hommes"
+    },
     "master_bow": {
       "description": "Arc ultime, inégalé en puissance et en maîtrise",
       "name": "Arc de maître"

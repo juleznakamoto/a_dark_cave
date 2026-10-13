@@ -183,6 +183,7 @@ export const gameStateSchema = z.object({
       blacksteel_bow: z.boolean().default(false),
       crude_bow: z.boolean().default(false),
       huntsman_bow: z.boolean().default(false),
+      manhunter_bow: z.boolean().default(false),
       long_bow: z.boolean().default(false),
       war_bow: z.boolean().default(false),
       master_bow: z.boolean().default(false),
@@ -556,6 +557,13 @@ export const gameStateSchema = z.object({
       lastAcceptedLevel: 0,
     }),
   boneDevourerState: z
+    .object({
+      lastAcceptedLevel: z.number().default(0),
+    })
+    .default({
+      lastAcceptedLevel: 0,
+    }),
+  theHunterState: z
     .object({
       lastAcceptedLevel: z.number().default(0),
     })

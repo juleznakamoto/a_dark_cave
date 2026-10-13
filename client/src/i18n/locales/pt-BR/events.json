@@ -220,6 +220,47 @@
       "outcome3": "Sua indecisão frustra a criatura. Ela sibila de desagrado e recua para as sombras."
     }
   },
+  "theHunter": {
+    "title": "O caçador",
+    "message": {
+      "level1": "Um homem alto aparece na beira da vila. Ele se move sem fazer som. Diz que é caçador e que precisa de ossos para pontas de flecha. Diz que elas matam com mais certeza que o ferro. Tem carne para trocar. Ele oferece {{foodReward}} Comida.",
+      "level1Repeat": "O caçador volta, tão quieto quanto antes. Ainda quer osso para pontas de flecha. A carne já está cortada, e ele não traz couro. Oferece {{foodReward}} Comida.",
+      "level2": "O caçador voltou com outro fardo, esfolado e porcionado. Tem carne de sobra para a troca. Diz que precisa talhar muitas pontas de flecha. Oferece {{foodReward}} Comida.",
+      "level2Repeat": "O caçador está onde esteve antes. Oferece carne magra. Diz que ainda precisa de mais pontas de flecha. Oferece {{foodReward}} Comida.",
+      "level3": "O caçador volta mais uma vez. Diz que ainda há muita matança a fazer, e que precisa de mais ossos para pontas de flecha. Oferece muita carne fresca. Oferece {{foodReward}} Comida.",
+      "level3Repeat": "O caçador silencioso aparece de novo. Oferece carne fresca, e há muita. Oferece {{foodReward}} Comida.",
+      "level4": "O caçador volta. Diz que precisa de mais ossos para suas pontas de flecha mortais. Oferece carne pálida e magra, sem pelo algum. Oferece {{foodReward}} Comida.",
+      "level4Repeat": "O caçador vem outra vez, com muita carne. Ainda precisa de osso para as pontas de flecha. Oferece {{foodReward}} Comida.",
+      "level5": "O caçador aparece e pousa um grande fardo de carne. Ainda está quente. Diz que andou ocupado e que ainda tem muito trabalho. Mas precisa de mais osso. Oferece {{foodReward}} Comida.",
+      "level5Repeat": "O caçador espera na beira da vila. A carne que oferece cheira limpa, e há demais. Ainda quer osso para as pontas de flecha. Oferece {{foodReward}} Comida."
+    },
+    "choices": {
+      "giveBones": {
+        "label": "Vender {{boneCost}} Ossos",
+        "cost": "{{boneCost}} ossos"
+      },
+      "refuse": {
+        "label": "Recusar a troca"
+      }
+    },
+    "log": {
+      "outcome1": "Ele pega os ossos sem uma palavra e deixa a carne. Depois some.",
+      "outcome2": "Você recusa. Ele assente uma vez e vai embora tão quieto quanto chegou.",
+      "outcome3": "Você não responde. Ele espera, depois vai embora sem um som."
+    }
+  },
+  "theHunterCabin": {
+    "title": "Uma cabana na floresta",
+    "message": "Alguns dos caçadores voltam inquietos. No fundo da floresta encontraram uma grande cabana de madeira, e ao lado o que parece um matadouro. Tiveram medo de chegar perto. Talvez seja mais prudente voltar com mais homens.",
+    "choices": {
+      "continue": {
+        "label": "Continuar"
+      }
+    },
+    "log": {
+      "outcome1": "Os caçadores marcam o lugar. Um grupo maior pode ser enviado quando você estiver pronto."
+    }
+  },
   "boneDiceChoice": {
     "choices": {
       "doNothing": {

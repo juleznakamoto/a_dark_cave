@@ -182,6 +182,7 @@ import {
   handleSearchMountainLady,
   handleExploreMountainVillage,
 } from "@/game/rules/forestScoutActions";
+import { handleWoodenCabin } from "@/game/rules/forestWoodenCabin";
 
 import {
   handleBoneTotems,
@@ -697,6 +698,8 @@ export function executeGameAction(
       return handleSteelDelivery(state, result);
     case "risingSmoke":
       return handleRisingSmoke(state, result);
+    case "woodenCabin":
+      return handleWoodenCabin(state, result);
     case "banditLair":
       return handleBanditLair(state, result);
     case "canyonBridge":

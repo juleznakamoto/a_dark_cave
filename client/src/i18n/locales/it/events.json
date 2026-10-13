@@ -220,6 +220,47 @@
       "outcome3": "La tua indecisione frustra la creatura. Sibila contrariata e si ritira nell'ombra."
     }
   },
+  "theHunter": {
+    "title": "Il cacciatore",
+    "message": {
+      "level1": "Un uomo alto compare al limitare del villaggio. Si muove senza un suono. Dice di essere un cacciatore e di aver bisogno di ossa per punte di freccia. Dice che uccidono più sicuramente del ferro. Ha carne da scambiare. Offre {{foodReward}} Cibo.",
+      "level1Repeat": "Il cacciatore torna, silenzioso come prima. Vuole ancora ossa per punte di freccia. La carne è già tagliata, e non porta alcuna pelle. Offre {{foodReward}} Cibo.",
+      "level2": "Il cacciatore è tornato con un altro fagotto, scuoiato e porzionato. Ha molta carne da scambiare. Dice che deve intagliare moltissime punte di freccia. Offre {{foodReward}} Cibo.",
+      "level2Repeat": "Il cacciatore sta dove stava prima. Offre carne magra. Dice che gli servono ancora altre punte di freccia. Offre {{foodReward}} Cibo.",
+      "level3": "Il cacciatore torna ancora. Dice che c'è ancora molta uccisione da fare, e che gli servono altre ossa per punte di freccia. Offre molta carne fresca. Offre {{foodReward}} Cibo.",
+      "level3Repeat": "Il cacciatore silenzioso compare di nuovo. Offre carne fresca, e ce n'è moltissima. Offre {{foodReward}} Cibo.",
+      "level4": "Il cacciatore torna. Dice che gli servono altre ossa per le sue punte di freccia mortali. Offre carne pallida e magra, senza alcuna pelliccia. Offre {{foodReward}} Cibo.",
+      "level4Repeat": "Il cacciatore torna, con molta carne. Gli servono ancora ossa per le punte di freccia. Offre {{foodReward}} Cibo.",
+      "level5": "Il cacciatore compare e posa un grosso fagotto di carne. È ancora calda. Dice di essere stato occupato e di avere ancora molto lavoro. Ma gli servono altre ossa. Offre {{foodReward}} Cibo.",
+      "level5Repeat": "Il cacciatore aspetta al limitare del villaggio. La carne che offre ha un odore pulito, e ce n'è davvero troppa. Vuole ancora ossa per le punte di freccia. Offre {{foodReward}} Cibo."
+    },
+    "choices": {
+      "giveBones": {
+        "label": "Vendi {{boneCost}} Ossa",
+        "cost": "{{boneCost}} ossa"
+      },
+      "refuse": {
+        "label": "Rifiuta lo scambio"
+      }
+    },
+    "log": {
+      "outcome1": "Prende le ossa senza una parola e lascia la carne. Poi non c'è più.",
+      "outcome2": "Rifiuti. Annuisce una volta e se ne va silenzioso come è arrivato.",
+      "outcome3": "Non rispondi. Aspetta, poi se ne va senza un suono."
+    }
+  },
+  "theHunterCabin": {
+    "title": "Una capanna nel bosco",
+    "message": "Alcuni dei cacciatori tornano inquieti. Nel fitto del bosco hanno trovato una grande capanna di legno, e accanto qualcosa che sembra un macello. Hanno avuto paura di avvicinarsi. Forse è più saggio tornarci con più uomini.",
+    "choices": {
+      "continue": {
+        "label": "Continua"
+      }
+    },
+    "log": {
+      "outcome1": "I cacciatori segnano il posto. Si potrà mandare un gruppo più numeroso quando sarai pronto."
+    }
+  },
   "boneDiceChoice": {
     "choices": {
       "doNothing": {

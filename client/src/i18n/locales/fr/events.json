@@ -220,6 +220,47 @@
       "outcome3": "Votre indécision frustre la créature. Elle siffle de mécontentement et se retire dans l'ombre."
     }
   },
+  "theHunter": {
+    "title": "Le chasseur",
+    "message": {
+      "level1": "Un homme grand apparaît à la lisière du village. Il se déplace sans un bruit. Il dit qu'il est chasseur, et qu'il lui faut des os pour des pointes de flèche. Elles tuent plus sûrement que le fer, dit-il. Il a de la viande à échanger. Il offre {{foodReward}} de nourriture.",
+      "level1Repeat": "Le chasseur revient, aussi silencieux qu'avant. Il veut encore des os pour des pointes de flèche. La viande est déjà découpée, et il n'apporte pas de peau. Il offre {{foodReward}} de nourriture.",
+      "level2": "Le chasseur est de retour avec un autre ballot, dépouillé et portionné. Il a beaucoup de viande à échanger. Il dit qu'il doit tailler un grand nombre de pointes de flèche. Il offre {{foodReward}} de nourriture.",
+      "level2Repeat": "Le chasseur se tient là où il se tenait. Il offre de la viande maigre. Il dit qu'il lui faut encore des pointes de flèche. Il offre {{foodReward}} de nourriture.",
+      "level3": "Le chasseur revient encore. Il dit qu'il reste beaucoup à tuer, et qu'il lui faut plus d'os pour des pointes de flèche. Il offre beaucoup de viande fraîche. Il offre {{foodReward}} de nourriture.",
+      "level3Repeat": "Le chasseur silencieux apparaît de nouveau. Il offre de la viande fraîche, et il y en a énormément. Il offre {{foodReward}} de nourriture.",
+      "level4": "Le chasseur revient. Il dit qu'il lui faut plus d'os pour ses pointes de flèche mortelles. Il offre une viande pâle et maigre, sans aucune fourrure. Il offre {{foodReward}} de nourriture.",
+      "level4Repeat": "Le chasseur revient, chargé de beaucoup de viande. Il lui faut encore des os pour les pointes de flèche. Il offre {{foodReward}} de nourriture.",
+      "level5": "Le chasseur apparaît et pose un gros ballot de viande. Elle est encore tiède. Il dit qu'il a été occupé, et qu'il a encore beaucoup de travail. Mais il lui faut plus d'os. Il offre {{foodReward}} de nourriture.",
+      "level5Repeat": "Le chasseur attend à la lisière du village. La viande qu'il offre a une odeur nette, et il y en a bien trop. Il veut encore des os pour les pointes de flèche. Il offre {{foodReward}} de nourriture."
+    },
+    "choices": {
+      "giveBones": {
+        "label": "Vendre {{boneCost}} Os",
+        "cost": "{{boneCost}} os"
+      },
+      "refuse": {
+        "label": "Refuser l'échange"
+      }
+    },
+    "log": {
+      "outcome1": "Il prend les os sans un mot et laisse la viande. Puis il n'est plus là.",
+      "outcome2": "Vous refusez. Il hoche une fois la tête et s'en va aussi silencieusement qu'il est venu.",
+      "outcome3": "Vous ne répondez pas. Il attend, puis s'en va sans un bruit."
+    }
+  },
+  "theHunterCabin": {
+    "title": "Une cabane dans les bois",
+    "message": "Certains des chasseurs reviennent inquiets. Au fond des bois, ils ont trouvé une grande cabane de bois, et à côté ce qui ressemble à un abattoir. Ils ont eu peur de s'approcher. Il vaudrait mieux y retourner avec plus d'hommes.",
+    "choices": {
+      "continue": {
+        "label": "Continuer"
+      }
+    },
+    "log": {
+      "outcome1": "Les chasseurs marquent l'endroit. Un groupe plus nombreux pourra partir quand vous serez prêt."
+    }
+  },
   "boneDiceChoice": {
     "choices": {
       "doNothing": {

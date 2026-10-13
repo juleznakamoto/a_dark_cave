@@ -220,6 +220,47 @@
       "outcome3": "Deine Unentschlossenheit verärgert die Kreatur. Sie zischt missbilligend und zieht sich in die Schatten zurück."
     }
   },
+  "theHunter": {
+    "title": "Der Jäger",
+    "message": {
+      "level1": "Am Rand des Dorfes erscheint ein großer Mann. Er bewegt sich ohne ein Geräusch. Er sagt, er sei ein Jäger und brauche Knochen für Pfeilspitzen. Sie töten sicherer als Eisen, sagt er. Er hat Fleisch zum Tausch. Er bietet {{foodReward}} Nahrung.",
+      "level1Repeat": "Der Jäger kehrt zurück, so still wie zuvor. Er will noch immer Knochen für Pfeilspitzen. Das Fleisch ist schon zerlegt, und er bringt kein Fell mit. Er bietet {{foodReward}} Nahrung.",
+      "level2": "Der Jäger ist wieder da, mit einem weiteren Bündel, abgezogen und portioniert. Er hat reichlich Fleisch zum Tausch. Er sagt, er müsse sehr viele Pfeilspitzen schneiden. Er bietet {{foodReward}} Nahrung.",
+      "level2Repeat": "Der Jäger steht, wo er zuvor stand. Er bietet mageres Fleisch. Er sagt, er brauche noch mehr Pfeilspitzen. Er bietet {{foodReward}} Nahrung.",
+      "level3": "Der Jäger kehrt noch einmal zurück. Er sagt, es gebe noch viel zu töten, und er brauche mehr Knochen für Pfeilspitzen. Er bietet reichlich frisches Fleisch. Er bietet {{foodReward}} Nahrung.",
+      "level3Repeat": "Der stille Jäger erscheint wieder. Er bietet frisches Fleisch, und es ist sehr viel. Er bietet {{foodReward}} Nahrung.",
+      "level4": "Der Jäger kehrt zurück. Er sagt, er brauche mehr Knochen für seine tödlichen Pfeilspitzen. Er bietet blasses, mageres Fleisch, ohne jedes Fell. Er bietet {{foodReward}} Nahrung.",
+      "level4Repeat": "Der Jäger kommt wieder und trägt viel Fleisch. Er braucht noch immer Knochen für die Pfeilspitzen. Er bietet {{foodReward}} Nahrung.",
+      "level5": "Der Jäger erscheint und setzt ein großes Bündel Fleisch ab. Es ist noch warm. Er sagt, er sei beschäftigt gewesen und habe noch viel Arbeit. Aber er braucht mehr Knochen. Er bietet {{foodReward}} Nahrung.",
+      "level5Repeat": "Der Jäger wartet am Rand des Dorfes. Das Fleisch, das er anbietet, riecht sauber, und es ist viel zu viel. Er will noch immer Knochen für die Pfeilspitzen. Er bietet {{foodReward}} Nahrung."
+    },
+    "choices": {
+      "giveBones": {
+        "label": "{{boneCost}} Knochen verkaufen",
+        "cost": "{{boneCost}} Knochen"
+      },
+      "refuse": {
+        "label": "Handel ablehnen"
+      }
+    },
+    "log": {
+      "outcome1": "Er nimmt die Knochen ohne ein Wort und lässt das Fleisch da. Dann ist er fort.",
+      "outcome2": "Du lehnst ab. Er nickt einmal und geht so leise, wie er gekommen ist.",
+      "outcome3": "Du gibst keine Antwort. Er wartet, dann geht er ohne ein Geräusch."
+    }
+  },
+  "theHunterCabin": {
+    "title": "Ein Blockhaus im Wald",
+    "message": "Einige der Jäger kehren unruhig zurück. Tief im Wald fanden sie ein großes Blockhaus, und daneben etwas, das wie ein Schlachthaus aussieht. Sie hatten Angst, näher heranzugehen. Es ist vielleicht klüger, mit mehr Männern zurückzukehren.",
+    "choices": {
+      "continue": {
+        "label": "Weiter"
+      }
+    },
+    "log": {
+      "outcome1": "Die Jäger markieren den Ort. Eine größere Gruppe kann aufbrechen, sobald du bereit bist."
+    }
+  },
   "boneDiceChoice": {
     "choices": {
       "doNothing": {

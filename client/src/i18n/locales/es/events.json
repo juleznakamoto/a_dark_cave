@@ -220,6 +220,47 @@
       "outcome3": "Tu indecisión frustra a la criatura. Sisea con disgusto y se retira a las sombras."
     }
   },
+  "theHunter": {
+    "title": "El cazador",
+    "message": {
+      "level1": "Un hombre alto aparece al borde de la aldea. Se mueve sin hacer ruido. Dice que es cazador y que necesita huesos para puntas de flecha. Dice que matan con más certeza que el hierro. Tiene carne para intercambiar. Ofrece {{foodReward}} de comida.",
+      "level1Repeat": "El cazador vuelve, tan callado como antes. Sigue queriendo hueso para puntas de flecha. La carne ya está cortada, y no trae piel. Ofrece {{foodReward}} de comida.",
+      "level2": "El cazador ha vuelto con otro fardo, desollado y porcionado. Tiene carne de sobra para el trueque. Dice que debe tallar muchísimas puntas de flecha. Ofrece {{foodReward}} de comida.",
+      "level2Repeat": "El cazador está donde estuvo antes. Ofrece carne magra. Dice que aún necesita más puntas de flecha. Ofrece {{foodReward}} de comida.",
+      "level3": "El cazador vuelve una vez más. Dice que aún queda mucha matanza, y que necesita más huesos para puntas de flecha. Ofrece mucha carne fresca. Ofrece {{foodReward}} de comida.",
+      "level3Repeat": "El cazador silencioso aparece de nuevo. Ofrece carne fresca, y hay muchísima. Ofrece {{foodReward}} de comida.",
+      "level4": "El cazador vuelve. Dice que necesita más huesos para sus puntas de flecha mortales. Ofrece carne pálida y magra, sin pelo alguno. Ofrece {{foodReward}} de comida.",
+      "level4Repeat": "El cazador viene otra vez, con mucha carne. Aún necesita hueso para las puntas de flecha. Ofrece {{foodReward}} de comida.",
+      "level5": "El cazador aparece y deja un gran fardo de carne. Aún está caliente. Dice que ha estado ocupado y que todavía le queda mucho trabajo. Pero necesita más hueso. Ofrece {{foodReward}} de comida.",
+      "level5Repeat": "El cazador espera al borde de la aldea. La carne que ofrece huele limpia, y hay demasiada. Sigue queriendo hueso para las puntas de flecha. Ofrece {{foodReward}} de comida."
+    },
+    "choices": {
+      "giveBones": {
+        "label": "Vender {{boneCost}} huesos",
+        "cost": "{{boneCost}} huesos"
+      },
+      "refuse": {
+        "label": "Rechazar el trato"
+      }
+    },
+    "log": {
+      "outcome1": "Toma los huesos sin una palabra y deja la carne. Luego se va.",
+      "outcome2": "Rechazas. Asiente una vez y se marcha tan callado como llegó.",
+      "outcome3": "No respondes. Espera, y luego se va sin hacer ruido."
+    }
+  },
+  "theHunterCabin": {
+    "title": "Una cabaña en el bosque",
+    "message": "Algunos de los cazadores vuelven inquietos. En lo hondo del bosque encontraron una gran cabaña de madera, y junto a ella lo que parece un matadero. Tuvieron miedo de acercarse. Quizá sea más prudente volver con más hombres.",
+    "choices": {
+      "continue": {
+        "label": "Continuar"
+      }
+    },
+    "log": {
+      "outcome1": "Los cazadores marcan el lugar. Se puede enviar un grupo mayor cuando estés listo."
+    }
+  },
   "boneDiceChoice": {
     "choices": {
       "doNothing": {

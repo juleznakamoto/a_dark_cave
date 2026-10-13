@@ -564,6 +564,13 @@
       "mapFragmentHunt": "En chassant, quelque chose attire votre regard dans la boue. Un morceau taché d'eau, peut-être une partie d'une carte."
     }
   },
+  "woodenCabin": {
+    "label": "Cabane de bois",
+    "log": {
+      "success": "La cabane appartient au chasseur qui vous a vendu de la viande. L'abattoir est garni de crochets, et aucun n'a porté de cerf. Il chassait des gens, et la nourriture qu'il échangeait était leur chair. Dans la cabane, vous trouvez l'arc du marchand.",
+      "failure": "Alors que vous approchez de la cabane, des flèches viennent de l'obscurité de la porte. Chaque tir tue. Les pointes sont en os. {{count}} villageois meurent avant que les autres ne fuient."
+    }
+  },
   "invest": {
     "label": "Investir"
   },

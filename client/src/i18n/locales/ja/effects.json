@@ -568,6 +568,10 @@
       "description": "より長い射程と精度を持つ優れた弓",
       "name": "長弓"
     },
+    "manhunter_bow": {
+      "description": "人を狩るために張られた、人狩りの弓",
+      "name": "人狩りの弓"
+    },
     "master_bow": {
       "description": "力と制御において比類ない、究極の弓",
       "name": "達人の弓"

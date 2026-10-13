@@ -237,6 +237,47 @@
       "outcome3": "Your indecision frustrates the creature. It hisses in displeasure and retreats into the shadows."
     }
   },
+  "theHunter": {
+    "title": "The Hunter",
+    "message": {
+      "level1": "A tall man appears at the edge of the village. He moves without a sound. He says he is a hunter, and that he needs bones for arrowheads. He says they kill more surely than iron. He has meat to trade. He offers {{foodReward}} Food.",
+      "level1Repeat": "The hunter returns, as quiet as before. He still wants bone for arrowheads. The meat is already cut, and he brings no hide. He offers {{foodReward}} Food.",
+      "level2": "The hunter is back with another bundle, skinned and portioned. He has plenty of meat for trade. He says he must cut a great many arrowheads. He offers {{foodReward}} Food.",
+      "level2Repeat": "THe hunter stands where he stood before. He offers lean meat. He says he still needs more arrowheads. He offers {{foodReward}} Food.",
+      "level3": "The hunter returns once more. He says there is still a great deal of killing to do, and he needs more bones for arrowheads. He offers plenty of fresh meat. He offers {{foodReward}} Food.",
+      "level3Repeat": "The silent hunter appears again. He offers fresh meat, and there is a great deal of it. He offers {{foodReward}} Food.",
+      "level4": "The hunter returns. He says he neads more bones for his deadly arrowheads. He offers pale and lean meat, without any fur. He offers {{foodReward}} Food.",
+      "level4Repeat": "THe hunter comes again, carrying lots of meat. He still needs bone for the arrowheads. He offers {{foodReward}} Food.",
+      "level5": "The hunter appears and sets down a large bundle of meat. It is still warm. He says he has been busy, and that he still has a lot of work to do. But he needs more bone. He offers {{foodReward}} Food.",
+      "level5Repeat": "The hunter waits at the edge of the village. The meat he offers smells clean, and there is far too much of it. He still wants bone for the arrowheads. He offers {{foodReward}} Food."
+    },
+    "choices": {
+      "giveBones": {
+        "label": "Sell {{boneCost}} Bones",
+        "cost": "{{boneCost}} bones"
+      },
+      "refuse": {
+        "label": "Refuse trade"
+      }
+    },
+    "log": {
+      "outcome1": "He takes the bones without a word and leaves the meat. Then he is gone.",
+      "outcome2": "You refuse. He nods once and leaves as quietly as he came.",
+      "outcome3": "You give no answer. He waits, then leaves without a sound."
+    }
+  },
+  "theHunterCabin": {
+    "title": "A Cabin in the Woods",
+    "message": "Some of the hunters return uneasy. Deep in the woods they found a large wooden cabin, and beside it what looks like a slaughterhouse. They were afraid to go closer. It may be wiser to go back with more men.",
+    "choices": {
+      "continue": {
+        "label": "Continue"
+      }
+    },
+    "log": {
+      "outcome1": "The hunters mark the place. A larger party can be sent when you are ready."
+    }
+  },
   "brimstoneFlux1": {
     "title": "The Brimstone Flux",
     "message": "A small, bearded man with enormous arms arrives at the village. He says he knows the foundry and can help improve your steel production for a time. He needs sulfur, and a little gold.",

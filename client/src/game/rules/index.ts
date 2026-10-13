@@ -40,6 +40,7 @@ import { forestSacrificeActions } from "./forestSacrificeActions";
 import { forestTradeActions } from "./forestTradeActions";
 import { caveExploreActions } from "./caveExploreActions";
 import { forestScoutActions } from "./forestScoutActions";
+import { forestWoodenCabinActions } from "./forestWoodenCabin";
 import { forestResearchActions } from "./forestResearchActions";
 import { getFinanceExpeditionTier } from "./financeExpedition";
 import { bastionActions } from "./bastionActions";
@@ -57,6 +58,7 @@ registerActions({
   ...forestSacrificeActions,
   ...forestTradeActions,
   ...forestScoutActions,
+  ...forestWoodenCabinActions,
   ...forestResearchActions,
   ...bastionActions,
 });

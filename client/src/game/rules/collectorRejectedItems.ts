@@ -1,6 +1,6 @@
 import type { GameState } from "@shared/schema";
 
-/** Clothing/relic ids the wandering collector trades in. */
+/** Clothing, relic, and weapon ids the wandering collector trades in. */
 export const COLLECTOR_ITEMS = [
   "bloodstained_belt",
   "tarnished_amulet",
@@ -16,6 +16,7 @@ export const COLLECTOR_ITEMS = [
   "shadow_flute",
   "hollow_king_scepter",
   "unnamed_book",
+  "manhunter_bow",
 ] as const;
 
 export type CollectorItemId = (typeof COLLECTOR_ITEMS)[number];
@@ -43,9 +44,12 @@ export function isCollectorItem(itemId: string): itemId is CollectorItemId {
   return (COLLECTOR_ITEMS as readonly string[]).includes(itemId);
 }
 
+const COLLECTOR_WEAPON_ITEMS = new Set<string>(["manhunter_bow"]);
+
 export function getCollectorItemCategory(
   itemId: string,
-): "clothing" | "relics" {
+): "clothing" | "relics" | "weapons" {
+  if (COLLECTOR_WEAPON_ITEMS.has(itemId)) return "weapons";
   return COLLECTOR_CLOTHING_ITEMS.has(itemId) ? "clothing" : "relics";
 }
 
@@ -57,6 +61,9 @@ export function isCollectorItemOwned(
     return true;
   }
   if (state.relics && (state.relics as Record<string, boolean>)[itemId]) {
+    return true;
+  }
+  if (state.weapons && (state.weapons as Record<string, boolean>)[itemId]) {
     return true;
   }
   return false;

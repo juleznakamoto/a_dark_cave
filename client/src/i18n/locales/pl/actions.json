@@ -564,6 +564,13 @@
       "mapFragmentHunt": "Podczas polowania coś przykuwa wzrok w błocie. Przesiąknięty wodą strzęp, być może część mapy."
     }
   },
+  "woodenCabin": {
+    "label": "Drewniana chata",
+    "log": {
+      "success": "Chata należy do łowcy, który sprzedał ci mięso. W rzeźni wiszą haki i na żadnym nie wisiał jeleń. Polował na ludzi, a jedzenie, które wymieniał, było ich ciałem. W chacie znajdujesz łuk handlarza.",
+      "failure": "Gdy zbliżasz się do chaty, z ciemności drzwi lecą strzały. Każdy strzał zabija. Groty są z kości. {{count}} wieśniaków ginie, zanim reszta ucieka."
+    }
+  },
   "invest": {
     "label": "Zainwestuj"
   },
