@@ -163,7 +163,7 @@ function SteamDemoProgressBar() {
 
   return (
     <div
-      className="pointer-events-none absolute inset-0 z-[1] flex items-center justify-center px-16 sm:px-24"
+      className="pointer-events-none absolute inset-0 z-20 flex items-center justify-center px-16 sm:px-24"
       aria-hidden={false}
     >
       <div className="pointer-events-auto flex items-center gap-1">
@@ -173,7 +173,7 @@ function SteamDemoProgressBar() {
               tooltip={hint}
               tooltipId="footer-demo-progress-info"
               side="top"
-              className="inline-flex items-center gap-1 text-neutral-400 opacity-80 transition-[opacity,color] hover:text-white hover:opacity-100"
+              className="group/demo-progress inline-flex items-center gap-1 text-neutral-400 opacity-80 transition-[opacity,color] hover:text-white hover:opacity-100"
               tooltipTriggerClassName="inline-flex items-center gap-1"
             >
               <span
@@ -181,11 +181,11 @@ function SteamDemoProgressBar() {
                 data-testid="footer-demo-progress-info"
                 aria-label={hint}
               >
-                <span className="whitespace-nowrap text-xs font-medium leading-none tracking-wide">
+                <span className="whitespace-nowrap text-xs font-medium leading-none tracking-wide group-hover/demo-progress:text-white">
                   {label}
                 </span>
                 <span
-                  className="inline-flex shrink-0 items-center justify-center font-noto-symbols-2 text-[0.8rem] font-normal leading-none"
+                  className="inline-flex shrink-0 translate-y-[5px] items-center justify-center font-noto-symbols-2 text-[0.8rem] font-normal leading-none group-hover/demo-progress:text-white"
                   aria-hidden
                 >
                   🛈

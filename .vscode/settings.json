@@ -1,4 +1,24 @@
 {
+  "files.watcherExclude": {
+    "**/node_modules/**": true,
+    "**/dist/**": true,
+    "**/dist-electron/**": true,
+    "**/release/**": true,
+    "**/steam/content/**": true,
+    "**/steam/staged-full/**": true,
+    "**/steam/staged-demo/**": true,
+    "**/steam/staged-playtest/**": true
+  },
+  "search.exclude": {
+    "**/node_modules": true,
+    "**/dist": true,
+    "**/dist-electron": true,
+    "**/release": true,
+    "**/steam/content": true,
+    "**/steam/staged-full": true,
+    "**/steam/staged-demo": true,
+    "**/steam/staged-playtest": true
+  },
   "files.associations": {
     "client/src/i18n/locales/de/**/*.json": "jsonc",
     "client/src/i18n/locales/fr/**/*.json": "jsonc",
