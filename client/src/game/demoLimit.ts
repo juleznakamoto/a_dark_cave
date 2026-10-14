@@ -132,6 +132,9 @@ export function isDemoBlockedAction(actionId: string): boolean {
   return isDemoEdition() && DEMO_BLOCKED_ACTION_IDS.has(actionId);
 }
 
+/** @deprecated Use {@link isDemoBlockedAction}. */
+export const isDemoBlockedBuildAction = isDemoBlockedAction;
+
 /**
  * After the demo hut cap, hide a building tier whose show_when needs that many huts.
  * Tiers that were already available (fewer huts) stay.
