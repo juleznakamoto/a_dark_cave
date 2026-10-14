@@ -112,6 +112,7 @@ import { CircularProgress } from "@/components/ui/circular-progress";
 import { useState, useEffect, useRef, useCallback } from "react";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import {
+  RedactedBar,
   RedactedLockedHint,
   RedactedMoreHint,
 } from "@/components/game/RedactedHint";
@@ -215,6 +216,18 @@ const HEADER_SLOT_SIZE_CLASS = GAME_PANEL_HEADER_INSIGHT_BADGE_CLASS;
 const HEADER_SLOT_INSIGHT_BUTTON_CLASS = HEADER_SLOT_SIZE_CLASS;
 /** Interactive preset slot / save controls — must receive native clicks (no pointer-events-none). */
 const HEADER_SLOT_BUTTON_CLASS = `${HEADER_SLOT_SIZE_CLASS} p-0 inline-flex items-center justify-center leading-none transition-colors appearance-none [-webkit-appearance:none]`;
+
+/** See what's coming: one short bar per header slot, no insight badge or slot chrome. */
+function DemoEndHeaderSlotRedacted({ testId }: { testId: string }) {
+  return (
+    <span
+      data-testid={testId}
+      className="game-panel-header-slot inline-flex items-center justify-center"
+    >
+      <RedactedBar />
+    </span>
+  );
+}
 
 /** − / count / + columns — shared by summary, stat, and job rows. */
 const VILLAGER_COUNT_BUTTON_SIZE_CLASS = "villager-count-button";
@@ -1560,6 +1573,21 @@ export default function VillagePanel() {
                       {catalogActive ? <DemoEndPromoBadge kind="build" /> : null}
                     </h3>
                     {(() => {
+                      if (catalogActive) {
+                        return (
+                          <div className={GAME_PANEL_HEADER_SLOT_ROW_CLASS}>
+                            {Array.from(
+                              { length: getVisibleQueueSlotCount() },
+                              (_, i) => (
+                                <DemoEndHeaderSlotRedacted
+                                  key={`queue-slot-${i + 1}-redacted`}
+                                  testId={`queue-slot-${i + 1}-redacted`}
+                                />
+                              ),
+                            )}
+                          </div>
+                        );
+                      }
                       const nextUnlockCost = getNextQueueSlotUnlockCost(state);
                       const visibleSlots = getVisibleQueueSlotCount();
                       const nextUnlockIndex =
@@ -2359,6 +2387,21 @@ export default function VillagePanel() {
                   </div>
                   {(arePresetsVisible(state) || catalogActive) &&
                     (() => {
+                      if (catalogActive) {
+                        return (
+                          <div className={GAME_PANEL_HEADER_SLOT_ROW_CLASS}>
+                            {Array.from(
+                              { length: getVisiblePresetSlotCount() },
+                              (_, i) => (
+                                <DemoEndHeaderSlotRedacted
+                                  key={`village-preset-slot-${i + 1}-redacted`}
+                                  testId={`village-preset-slot-${i + 1}-redacted`}
+                                />
+                              ),
+                            )}
+                          </div>
+                        );
+                      }
                       const presetState = {
                         buildings: state.buildings,
                         villagerPresetsPurchased,
