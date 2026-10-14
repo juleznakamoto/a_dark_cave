@@ -1,9 +1,6 @@
 import { GameState } from "@shared/schema";
 import type { ActionResult } from "@/game/types";
 import { isHutBuildOverCap } from "@/game/cruelMode";
-import { DEMO_WOODEN_HUT_LIMIT } from "@/game/demoLimit";
-import { captureDemoVisibleBuildingIds } from "@/game/demoBuildingRoster";
-import { isDemoEdition } from "@/lib/edition";
 import { logger } from "@/lib/logger";
 import { villageBuildActions } from "./villageBuildActions";
 import { calculateAdjustedCost } from "./costCalculation";
@@ -160,17 +157,6 @@ export function handleBuildWoodenHut(
     ...state.buildings,
     woodenHut: state.buildings.woodenHut + 1,
   };
-
-  // Freeze the building buttons that were already on screen. The 8th hut
-  // must not reveal the next tier (coinhouse, timber mill, another hut, …).
-  if (
-    isDemoEdition() &&
-    state.buildings.woodenHut + 1 === DEMO_WOODEN_HUT_LIMIT &&
-    state.demoVisibleBuildingIds == null
-  ) {
-    result.stateUpdates.demoVisibleBuildingIds =
-      captureDemoVisibleBuildingIds(state);
-  }
 
   // Add completion message for first wooden hut
   if (state.buildings.woodenHut === 0) {

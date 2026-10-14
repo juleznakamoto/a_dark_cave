@@ -10,7 +10,6 @@ vi.mock("@/lib/edition", async (importOriginal) => {
 });
 
 import { shouldShowAction } from "./index";
-import { handleBuildWoodenHut } from "./villageBuildHandlers";
 import { isDemoEdition } from "@/lib/edition";
 
 const isDemoEditionMock = vi.mocked(isDemoEdition);
@@ -57,27 +56,31 @@ describe("demo building cap", () => {
     expect(shouldShowAction("buildWoodenHut", state)).toBe(true);
   });
 
-  it("does not reveal a later building after the roster is frozen", () => {
-    const beforeClerksHut = stateWith({
-      woodenHut: 7,
-      clerksHut: 0,
-      scriptorium: 0,
-      cabin: 0,
-    });
-    const built = handleBuildWoodenHut(beforeClerksHut, { stateUpdates: {} });
-    const roster = built.stateUpdates.demoVisibleBuildingIds ?? [];
-    const afterClerksHut = stateWith({
+  it("shows buildings the player qualifies for even when an old roster omitted them", () => {
+    const state = stateWith({
       woodenHut: 8,
+      blacksmith: 1,
+      shallowPit: 0,
+      foundry: 0,
+      tannery: 0,
       clerksHut: 1,
       scriptorium: 0,
-      cabin: 0,
+      coinhouse: 0,
     });
-    afterClerksHut.demoVisibleBuildingIds = roster;
+    state.tools.iron_pickaxe = true;
+    state.demoVisibleBuildingIds = [
+      "buildConsecratedPaleCross",
+      "buildDarkEstate",
+      "buildStorehouse",
+      "buildTradePost",
+      "buildHeartfire",
+      "buildBuildersLodge",
+    ];
 
-    expect(roster).toContain("buildCabin");
-    expect(roster).not.toContain("buildScriptorium");
-    expect(roster).not.toContain("buildCoinhouse");
-    expect(shouldShowAction("buildScriptorium", afterClerksHut)).toBe(false);
-    expect(shouldShowAction("buildCabin", afterClerksHut)).toBe(true);
+    expect(shouldShowAction("buildShallowPit", state)).toBe(true);
+    expect(shouldShowAction("buildTannery", state)).toBe(true);
+    expect(shouldShowAction("buildScriptorium", state)).toBe(true);
+    expect(shouldShowAction("buildFoundry", state)).toBe(false);
+    expect(shouldShowAction("buildCoinhouse", state)).toBe(false);
   });
 });

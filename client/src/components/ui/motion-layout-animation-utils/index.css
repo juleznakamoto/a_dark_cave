@@ -1,0 +1,29 @@
+/* Header switch. Track is grey while off and green while on. */
+.layout-toggle {
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+  width: 1.75rem;
+  height: 0.875rem;
+  margin: 0;
+  padding: 1px;
+  border: none;
+  border-radius: 999px;
+  background-color: #6b7280;
+  pointer-events: none;
+  transition: background-color 0.2s ease;
+}
+
+.layout-toggle[data-state="on"] {
+  background-color: oklch(64.58% 0.1746 147.27);
+}
+
+.layout-toggle__handle {
+  width: 0.75rem;
+  height: 0.75rem;
+  flex: 0 0 auto;
+  border-radius: 999px;
+  background-color: #f5f5f5;
+  box-shadow: 0 1px 2px rgb(0 0 0 / 0.35);
+}

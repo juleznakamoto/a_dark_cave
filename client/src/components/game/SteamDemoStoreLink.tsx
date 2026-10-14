@@ -1,7 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { FooterSocialIcon } from "@/components/game/FooterSocialIcon";
 import { GameUiIcon } from "@/components/game/GameUiIcon";
-import { Toggle } from "@/components/ui/toggle";
+import { LayoutAnimation } from "@/components/ui/motion-layout-animation";
 import {
   useCrazyGamesEditionActive,
   useDemoEditionActive,
@@ -65,14 +65,11 @@ export function DemoEndHeaderLink() {
   });
 
   return (
-    <Toggle
+    <LayoutAnimation
       checked={hintsOn}
-      color="green"
-      size="small"
-      direction="label-first"
       data-testid="header-see-whats-coming"
       aria-label={label}
-      onChange={(event) => setDemoNextHintsEnabled(event.target.checked)}
+      onCheckedChange={setDemoNextHintsEnabled}
       className={`${HEADER_STORE_LINK_CLASS} whitespace-nowrap py-0`}
     >
       <GameUiIcon
@@ -81,7 +78,7 @@ export function DemoEndHeaderLink() {
         className="text-green-500 opacity-100"
       />
       <span className={HEADER_STORE_LABEL_CLASS}>{label}</span>
-    </Toggle>
+    </LayoutAnimation>
   );
 }
 

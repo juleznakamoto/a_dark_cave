@@ -50,8 +50,6 @@ import {
   isDemoBuildingTierLocked,
   isDemoPlayFrozen,
 } from "@/game/demoLimit";
-import { registerDemoBuildingRosterCapture } from "@/game/demoBuildingRoster";
-
 // Register all actions with the central registry
 registerActions({
   ...villageBuildActions,
@@ -221,10 +219,6 @@ export const shouldShowAction = (
       return false;
     }
     if (atDemoHutCap && actionId === "buildWoodenHut") {
-      return false;
-    }
-    const roster = state.demoVisibleBuildingIds;
-    if (atDemoHutCap && roster && !roster.includes(actionId)) {
       return false;
     }
   }
@@ -917,14 +911,3 @@ export function getEventChoiceCostBreakdown(
 
   return breakdown;
 }
-
-registerDemoBuildingRosterCapture((state) =>
-  Object.entries(getGameActions())
-    .filter(
-      ([actionId, action]) =>
-        action.building === true &&
-        actionId !== "buildWoodenHut" &&
-        shouldShowAction(actionId, state),
-    )
-    .map(([actionId]) => actionId),
-);

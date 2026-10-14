@@ -122,8 +122,8 @@ export const gameStateSchema = z.object({
    */
   demoNextHintsEnabled: z.boolean().default(true),
   /**
-   * Demo: building buttons visible before the 8th wooden hut.
-   * Null until that hut is built. After that, new building buttons stay hidden.
+   * Legacy. Older demo saves stored the building buttons on screen at the hut cap.
+   * Visibility ignores this list. Buildings that need 8 wooden huts stay hidden.
    */
   demoVisibleBuildingIds: z.array(z.string()).nullable().default(null),
   flags: z

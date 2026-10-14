@@ -14,7 +14,6 @@ import {
 } from "@/lib/edition";
 import { resolveDevMode } from "@/game/devMultipliers";
 import { isDemoPlayFrozen } from "@/game/demoLimit";
-import { captureDemoVisibleBuildingIds } from "@/game/demoBuildingRoster";
 import { gameActions, shouldShowAction, canExecuteAction } from "@/game/rules";
 import {
   EventManager,
@@ -355,28 +354,20 @@ export const createDialogsSlice: GameStoreCreator<Partial<GameStore>> = (set, ge
   },
 
   dismissDemoEndDialog: () => {
-    const state = get();
     set({
       galaxyTimeUpDialogOpen: false,
       demoEndDialogDismissed: true,
       demoContinuePlaying: true,
       demoNextHintsEnabled: true,
-      demoVisibleBuildingIds:
-        state.demoVisibleBuildingIds ??
-        captureDemoVisibleBuildingIds(state),
     });
   },
 
   continueDemoPlay: () => {
-    const state = get();
     set({
       galaxyTimeUpDialogOpen: false,
       demoEndDialogDismissed: true,
       demoContinuePlaying: true,
       demoNextHintsEnabled: false,
-      demoVisibleBuildingIds:
-        state.demoVisibleBuildingIds ??
-        captureDemoVisibleBuildingIds(state),
     });
   },
 
