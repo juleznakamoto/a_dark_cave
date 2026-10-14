@@ -124,4 +124,66 @@ describe("demo building cap", () => {
     expect(canExecuteAction("buildDeepeningPit", state)).toBe(true);
     expect(canExecuteAction("buildBlackMonolith", state)).toBe(true);
   });
+
+  const blockedCrafts = [
+    "craftSteelPickaxe",
+    "craftObsidianAxe",
+    "craftObsidianPickaxe",
+    "craftObsidianLantern",
+    "craftObsidianSword",
+    "craftObsidianOrb",
+    "craftWarBow",
+  ] as const;
+
+  function stateReadyToCraftBlockedGear(): GameState {
+    const state = stateWith({
+      blacksmith: 1,
+      foundry: 1,
+      advancedBlacksmith: 1,
+    });
+    state.tools.iron_axe = true;
+    state.tools.iron_pickaxe = true;
+    state.tools.iron_lantern = true;
+    state.tools.steel_axe = true;
+    state.tools.steel_pickaxe = true;
+    state.tools.steel_lantern = true;
+    state.weapons.steel_sword = true;
+    state.weapons.long_bow = true;
+    state.schematics.obsidian_orb_schematic = true;
+    state.story.seen.exploredRuins = true;
+    state.resources.wood = 5000;
+    state.resources.steel = 1000;
+    state.resources.obsidian = 20000;
+    state.resources.silver = 2000;
+    return state;
+  }
+
+  it("hides the steel pickaxe and obsidian crafts in the demo", () => {
+    const withoutPickaxe = stateReadyToCraftBlockedGear();
+    withoutPickaxe.tools.steel_pickaxe = false;
+    expect(shouldShowAction("craftSteelPickaxe", withoutPickaxe)).toBe(false);
+    expect(canExecuteAction("craftSteelPickaxe", withoutPickaxe)).toBe(false);
+
+    const state = stateReadyToCraftBlockedGear();
+    for (const actionId of blockedCrafts) {
+      if (actionId === "craftSteelPickaxe") continue;
+      expect(shouldShowAction(actionId, state), actionId).toBe(false);
+      expect(canExecuteAction(actionId, state), actionId).toBe(false);
+    }
+  });
+
+  it("still allows the steel pickaxe and obsidian crafts in the full game", () => {
+    isDemoEditionMock.mockReturnValue(false);
+    const withoutPickaxe = stateReadyToCraftBlockedGear();
+    withoutPickaxe.tools.steel_pickaxe = false;
+    expect(shouldShowAction("craftSteelPickaxe", withoutPickaxe)).toBe(true);
+    expect(canExecuteAction("craftSteelPickaxe", withoutPickaxe)).toBe(true);
+
+    const state = stateReadyToCraftBlockedGear();
+    for (const actionId of blockedCrafts) {
+      if (actionId === "craftSteelPickaxe") continue;
+      expect(shouldShowAction(actionId, state), actionId).toBe(true);
+      expect(canExecuteAction(actionId, state), actionId).toBe(true);
+    }
+  });
 });

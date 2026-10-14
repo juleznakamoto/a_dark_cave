@@ -112,14 +112,24 @@ export function isDemoPlayFrozen(state: {
   return isDemoLimitReachedFromState(state);
 }
 
-/** Builds that stay out of demo editions even when their normal requirements are met. */
-const DEMO_BLOCKED_BUILD_ACTION_IDS = new Set([
+/**
+ * Actions that stay out of demo editions even when their normal requirements are met.
+ * Steel pickaxe and every obsidian craft, including the War Bow, are full-game only.
+ */
+const DEMO_BLOCKED_ACTION_IDS = new Set([
   "buildDeepeningPit",
   "buildBlackMonolith",
+  "craftSteelPickaxe",
+  "craftObsidianAxe",
+  "craftObsidianPickaxe",
+  "craftObsidianLantern",
+  "craftObsidianSword",
+  "craftObsidianOrb",
+  "craftWarBow",
 ]);
 
-export function isDemoBlockedBuildAction(actionId: string): boolean {
-  return isDemoEdition() && DEMO_BLOCKED_BUILD_ACTION_IDS.has(actionId);
+export function isDemoBlockedAction(actionId: string): boolean {
+  return isDemoEdition() && DEMO_BLOCKED_ACTION_IDS.has(actionId);
 }
 
 /**

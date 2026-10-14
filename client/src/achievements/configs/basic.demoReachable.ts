@@ -5,8 +5,9 @@ import type { GameState } from "@shared/schema";
 
 /**
  * Tools a demo player can own before the wooden-hut cap:
- * stone (cave), iron (blacksmith, required for hut 3), steel (foundry +
- * steel axe, required for the altar that unlocks hut 8).
+ * stone (cave), iron (blacksmith, required for hut 3), steel axe and lantern
+ * (foundry; the steel axe is required for the altar that unlocks hut 8).
+ * The steel pickaxe stays out of the demo.
  */
 export const DEMO_REACHABLE_TOOL_KEYS = [
   "stone_axe",
@@ -15,7 +16,6 @@ export const DEMO_REACHABLE_TOOL_KEYS = [
   "iron_pickaxe",
   "iron_lantern",
   "steel_axe",
-  "steel_pickaxe",
   "steel_lantern",
 ] as const;
 
