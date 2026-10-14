@@ -112,6 +112,16 @@ export function isDemoPlayFrozen(state: {
   return isDemoLimitReachedFromState(state);
 }
 
+/** Builds that stay out of demo editions even when their normal requirements are met. */
+const DEMO_BLOCKED_BUILD_ACTION_IDS = new Set([
+  "buildDeepeningPit",
+  "buildBlackMonolith",
+]);
+
+export function isDemoBlockedBuildAction(actionId: string): boolean {
+  return isDemoEdition() && DEMO_BLOCKED_BUILD_ACTION_IDS.has(actionId);
+}
+
 /**
  * After the demo hut cap, hide a building tier whose show_when needs that many huts.
  * Tiers that were already available (fewer huts) stay.

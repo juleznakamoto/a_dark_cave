@@ -47,6 +47,7 @@ import { bastionActions } from "./bastionActions";
 import { getExecutionTime } from "./executionTime";
 import {
   DEMO_WOODEN_HUT_LIMIT,
+  isDemoBlockedBuildAction,
   isDemoBuildingTierLocked,
   isDemoPlayFrozen,
 } from "@/game/demoLimit";
@@ -165,6 +166,8 @@ export const shouldShowAction = (
   if (actionId === "feedFire") {
     return (state.buildings.heartfire || 0) > 0;
   }
+
+  if (isDemoBlockedBuildAction(actionId)) return false;
 
   const action = getGameActions()[actionId];
   if (!action?.show_when) return false;
@@ -329,6 +332,7 @@ export function getResourcesFromActionCost(
 // Utility function to check if requirements are met for an action
 export function canExecuteAction(actionId: string, state: GameState): boolean {
   if (isDemoPlayFrozen(state)) return false;
+  if (isDemoBlockedBuildAction(actionId)) return false;
 
   const action = getGameActions()[actionId];
   if (!action) return false;

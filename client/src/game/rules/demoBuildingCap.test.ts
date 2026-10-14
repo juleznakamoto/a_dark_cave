@@ -9,7 +9,7 @@ vi.mock("@/lib/edition", async (importOriginal) => {
   };
 });
 
-import { shouldShowAction } from "./index";
+import { canExecuteAction, shouldShowAction } from "./index";
 import { isDemoEdition } from "@/lib/edition";
 
 const isDemoEditionMock = vi.mocked(isDemoEdition);
@@ -82,5 +82,46 @@ describe("demo building cap", () => {
     expect(shouldShowAction("buildScriptorium", state)).toBe(true);
     expect(shouldShowAction("buildFoundry", state)).toBe(false);
     expect(shouldShowAction("buildCoinhouse", state)).toBe(false);
+  });
+
+  it("hides Deepening Pit and Black Monolith in the demo", () => {
+    const state = stateWith({
+      woodenHut: 4,
+      shallowPit: 1,
+      deepeningPit: 0,
+      blackMonolith: 0,
+    });
+    state.tools.steel_pickaxe = true;
+    state.flags.monolithUnlocked = true;
+    state.resources.wood = 5000;
+    state.resources.stone = 5000;
+    state.resources.iron = 1000;
+    state.resources.adamant = 1000;
+
+    expect(shouldShowAction("buildDeepeningPit", state)).toBe(false);
+    expect(shouldShowAction("buildBlackMonolith", state)).toBe(false);
+    expect(canExecuteAction("buildDeepeningPit", state)).toBe(false);
+    expect(canExecuteAction("buildBlackMonolith", state)).toBe(false);
+  });
+
+  it("still allows Deepening Pit and Black Monolith in the full game", () => {
+    isDemoEditionMock.mockReturnValue(false);
+    const state = stateWith({
+      woodenHut: 4,
+      shallowPit: 1,
+      deepeningPit: 0,
+      blackMonolith: 0,
+    });
+    state.tools.steel_pickaxe = true;
+    state.flags.monolithUnlocked = true;
+    state.resources.wood = 5000;
+    state.resources.stone = 5000;
+    state.resources.iron = 1000;
+    state.resources.adamant = 1000;
+
+    expect(shouldShowAction("buildDeepeningPit", state)).toBe(true);
+    expect(shouldShowAction("buildBlackMonolith", state)).toBe(true);
+    expect(canExecuteAction("buildDeepeningPit", state)).toBe(true);
+    expect(canExecuteAction("buildBlackMonolith", state)).toBe(true);
   });
 });
