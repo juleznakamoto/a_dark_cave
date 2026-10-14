@@ -174,7 +174,7 @@ function SteamDemoProgressBar() {
               tooltip={hint}
               tooltipId="footer-demo-progress-info"
               side="top"
-              className="inline-flex items-center gap-1 opacity-80 transition-opacity hover:opacity-100"
+              className="inline-flex items-center gap-1 text-neutral-400 opacity-80 transition-[opacity,color] hover:text-white hover:opacity-100"
               tooltipTriggerClassName="inline-flex items-center gap-1"
             >
               <span
@@ -182,10 +182,13 @@ function SteamDemoProgressBar() {
                 data-testid="footer-demo-progress-info"
                 aria-label={hint}
               >
-                <span className="whitespace-nowrap text-xs font-medium leading-none tracking-wide text-neutral-400">
+                <span className="whitespace-nowrap text-xs font-medium leading-none tracking-wide">
                   {label}
                 </span>
-                <span className={GAME_INFO_GLYPH_CLASS} aria-hidden>
+                <span
+                  className="inline-flex shrink-0 items-center justify-center font-noto-symbols-2 text-[0.8rem] font-normal leading-none"
+                  aria-hidden
+                >
                   🛈
                 </span>
               </span>
