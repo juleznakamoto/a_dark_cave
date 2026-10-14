@@ -100,7 +100,8 @@ export const isGalaxyDemoLimitReachedFromState = isDemoLimitReachedFromState;
 
 /**
  * Demo play is frozen: DEV Demo End, or a capped demo at the wooden-hut limit.
- * Continue playing clears the freeze. New building buttons that need the cap stay hidden.
+ * Continue playing and See what's coming both clear the freeze.
+ * New building buttons that need the cap stay hidden.
  */
 export function isDemoPlayFrozen(state: {
   buildings?: { woodenHut?: number };

@@ -355,10 +355,15 @@ export const createDialogsSlice: GameStoreCreator<Partial<GameStore>> = (set, ge
   },
 
   dismissDemoEndDialog: () => {
+    const state = get();
     set({
       galaxyTimeUpDialogOpen: false,
       demoEndDialogDismissed: true,
+      demoContinuePlaying: true,
       demoNextHintsEnabled: true,
+      demoVisibleBuildingIds:
+        state.demoVisibleBuildingIds ??
+        captureDemoVisibleBuildingIds(state),
     });
   },
 

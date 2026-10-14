@@ -124,8 +124,7 @@ function SkillUpgradeRow({
   description,
 }: SkillUpgradeRowProps) {
   const setHighlightedResources = useGameStore((s) => s.setHighlightedResources);
-  const catalogActive = useDemoEndCatalogActive();
-  const canUpgrade = canAfford && !catalogActive;
+  const canUpgrade = canAfford;
   const openShop = useEstateGoldShopClick(canUpgrade);
   const costLine = formatTooltipCostLine(upgradeCost, "gold");
   return (
@@ -507,8 +506,7 @@ export default function EstatePanel({
   );
   const woodProduction = totalEffects.wood || 0;
   const foodProduction = totalEffects.food || 0;
-  const canActivateIdle =
-    !catalogActive && woodProduction > 0 && foodProduction > 0;
+  const canActivateIdle = woodProduction > 0 && foodProduction > 0;
 
   const handleActivateIdleMode = async () => {
     if (isDemoPlayFrozen(useGameStore.getState())) return;
@@ -663,7 +661,6 @@ export default function EstatePanel({
   const nextLengthUpgrade =
     SLEEP_LENGTH_UPGRADES[sleepUpgrades.lengthLevel + 1];
   const canUpgradeLength =
-    !catalogActive &&
     sleepUpgrades.lengthLevel < MAX_SLEEP_LENGTH_LEVEL &&
     resources.gold >= (nextLengthUpgrade?.cost || 0);
   const openShopForLength = useEstateGoldShopClick(canUpgradeLength);
@@ -673,7 +670,6 @@ export default function EstatePanel({
   const nextIntensityUpgrade =
     SLEEP_INTENSITY_UPGRADES[sleepUpgrades.intensityLevel + 1];
   const canUpgradeIntensity =
-    !catalogActive &&
     sleepUpgrades.intensityLevel < MAX_SLEEP_INTENSITY_LEVEL &&
     resources.gold >= (nextIntensityUpgrade?.cost || 0);
   const openShopForIntensity = useEstateGoldShopClick(canUpgradeIntensity);
@@ -783,7 +779,6 @@ export default function EstatePanel({
                 className="focus-glow-hover"
                 button_id="activate-focus"
                 disabled={
-                  catalogActive ||
                   !focusState?.points ||
                   focusState.points === 0 ||
                   focusState?.isActive

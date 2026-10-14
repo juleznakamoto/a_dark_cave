@@ -427,6 +427,7 @@ export interface GameStore extends Omit<GameState, "focusState" | "merchantTrade
   setLeaderboardDialogOpen: (isOpen: boolean) => void;
   setShareDialogOpen: (isOpen: boolean) => void;
   setGalaxyTimeUpDialogOpen: (isOpen: boolean) => void;
+  /** Close the demo-end dialog, keep playing, and show the what's-next teasers. */
   dismissDemoEndDialog: () => void;
   /** Close the demo-end dialog and keep this save running. */
   continueDemoPlay: () => void;

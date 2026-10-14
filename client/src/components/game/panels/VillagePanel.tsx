@@ -900,9 +900,7 @@ export default function VillagePanel() {
       const currentLevel = state.heartfireState?.level || 0;
       const woodCost = 50 * (currentLevel + 1);
       const canExecute =
-        !catalogActive &&
-        state.resources.wood >= woodCost &&
-        currentLevel < 5;
+        state.resources.wood >= woodCost && currentLevel < 5;
 
       const tooltipContent =
         currentLevel < 5 ? (
@@ -1351,9 +1349,7 @@ export default function VillagePanel() {
       (jobId === "gatherer" || areVillagerCapsEnabled(state));
     const atCap = showCap && currentCount >= cap;
     const canAssignMore =
-      !catalogActive &&
-      villagers.free > 0 &&
-      (!showCap || currentCount < cap);
+      villagers.free > 0 && (!showCap || currentCount < cap);
     const capUpgradeGroupId = capUpgradeGroupByJobId.get(jobId);
 
     const productionEntries =
@@ -1393,13 +1389,11 @@ export default function VillagePanel() {
               stopHold(true);
             }}
             onTouchCancel={() => stopHold(true)}
-            disabled={catalogActive || currentCount === 0}
+            disabled={currentCount === 0}
             variant="outline"
             size="xs"
             compactChrome
-            className={villagerCountButtonClassName(
-              catalogActive || currentCount === 0,
-            )}
+            className={villagerCountButtonClassName(currentCount === 0)}
             style={{
               touchAction: "manipulation",
             }}
@@ -1408,7 +1402,7 @@ export default function VillagePanel() {
             <span
               className={cn(
                 "leading-none tabular-nums",
-                (catalogActive || currentCount === 0) && "opacity-60",
+                currentCount === 0 && "opacity-60",
               )}
             >
               -
@@ -2376,9 +2370,7 @@ export default function VillagePanel() {
                         getNextPurchasablePresetSlotIndex(presetState);
                       const nextUnlockCost = getNextPresetUnlockCost(presetState);
                       const showPresetUnlock =
-                        !catalogActive &&
-                        nextUnlockIndex !== null &&
-                        nextUnlockCost !== null;
+                        nextUnlockIndex !== null && nextUnlockCost !== null;
                       const canUnlockPreset = showPresetUnlock
                         ? canPurchasePresetSlot(state, insightRevealing)
                         : false;
@@ -2453,20 +2445,6 @@ export default function VillagePanel() {
                               i,
                             );
                             const presetTooltipId = `preset-slot-${slot}`;
-
-                            if (catalogActive && !isUnlocked) {
-                              return (
-                                <span
-                                  key={`preset-slot-${slot}`}
-                                  data-testid={`village-preset-slot-${slot}-redacted`}
-                                >
-                                  <RedactedLockedHint
-                                    label={String(slot)}
-                                    tooltipId={`village-preset-slot-${slot}-redacted`}
-                                  />
-                                </span>
-                              );
-                            }
 
                             if (isBuildingLocked) {
                               return (
@@ -2572,7 +2550,6 @@ export default function VillagePanel() {
                                   style={{
                                     touchAction: "manipulation",
                                   }}
-                                  disabled={catalogActive}
                                   onClick={() => applyVillagerJobPreset(slot)}
                                 >
                                   <span
@@ -2612,7 +2589,6 @@ export default function VillagePanel() {
                                 style={{
                                   touchAction: "manipulation",
                                 }}
-                                disabled={catalogActive}
                                 onClick={handlePresetSave}
                               >
                                 <span
