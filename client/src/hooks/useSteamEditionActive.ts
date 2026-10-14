@@ -77,7 +77,20 @@ export function useSteamDemoActive(): boolean {
   );
 }
 
-/** CrazyGames folder, `/crazygames` path, or DEV Game Mode CrazyGames Demo. */
+/**
+ * Demo has ended: DEV Demo End, or a capped demo at the hut limit.
+ * Stays true after Continue playing, unlike {@link useDemoPlayFrozen}.
+ */
+export function useDemoEnded(): boolean {
+  const woodenHut = useGameStore((s) => s.buildings.woodenHut ?? 0);
+  const devGameMode = useGameStore((s) => s.devGameMode);
+  const demoEdition = useDemoEditionActive();
+  if (import.meta.env.DEV && !isSteamBuild && devGameMode === "demoEnd") {
+    return true;
+  }
+  return demoEdition && woodenHut >= DEMO_WOODEN_HUT_LIMIT;
+}
+
 /** Demo play is frozen: DEV Demo End, or a capped demo at the hut limit. */
 export function useDemoPlayFrozen(): boolean {
   const woodenHut = useGameStore((s) => s.buildings.woodenHut ?? 0);
@@ -98,6 +111,7 @@ export function useDemoEndCatalogActive(): boolean {
   return useDemoPlayFrozen();
 }
 
+/** CrazyGames folder, `/crazygames` path, or DEV Game Mode CrazyGames Demo. */
 export function useCrazyGamesEditionActive(): boolean {
   const devGameMode = useGameStore((s) => s.devGameMode);
   return (

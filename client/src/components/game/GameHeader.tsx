@@ -1,6 +1,9 @@
 import { useState } from "react";
 import { GameHeaderControls, GameHeaderRewardsShortcut } from "./ProfileMenu";
-import { SteamDemoHeaderStoreLink } from "./SteamDemoStoreLink";
+import {
+  DemoEndHeaderLink,
+  SteamDemoHeaderStoreLink,
+} from "./SteamDemoStoreLink";
 import { GAME_CHROME_NO_BG_HOVER, GAME_CHROME_RULE_BOTTOM } from "./gameChrome";
 import { logger } from "@/lib/logger";
 
@@ -52,8 +55,9 @@ export default function GameHeader() {
           A Dark Cave
         </button>
         <div className="pointer-events-none absolute inset-0 flex items-center justify-center">
-          <div className="pointer-events-auto">
+          <div className="pointer-events-auto flex items-center gap-2">
             <SteamDemoHeaderStoreLink />
+            <DemoEndHeaderLink />
             <GameHeaderRewardsShortcut />
           </div>
         </div>

@@ -1206,7 +1206,9 @@ html[data-adc-chrome-stage="0"] {
   height: calc(var(--adc-prior-badge-size) * var(--adc-control-scale, 1));
 }
 
-/* Abort: fixed 16px host so tooltip wrappers cannot shift the disc. */
+/* Abort: fixed 16px host so tooltip wrappers cannot shift the disc.
+   Opacity stays 1. The action button underneath fades its label while
+   running; this disc must not pick up that fade. */
 .button-corner-badge-16 {
   position: absolute;
   bottom: -8px;
@@ -1219,6 +1221,7 @@ html[data-adc-chrome-stage="0"] {
   line-height: 0;
   z-index: 30;
   pointer-events: auto;
+  opacity: 1;
 }
 
 .action-button-corner-badge {

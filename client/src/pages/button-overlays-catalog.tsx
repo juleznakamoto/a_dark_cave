@@ -300,7 +300,7 @@ export function ButtonOverlaysCatalog() {
               <div className="button-corner-badge-16">
                 <button
                   type="button"
-                  className="flex h-4 w-4 items-center justify-center rounded-full bg-red-950 text-white shadow-sm border border-red-800/50"
+                  className="flex h-4 w-4 items-center justify-center rounded-full border border-red-800 bg-red-950 text-white opacity-100 shadow-sm"
                   aria-label="Abort"
                 >
                   <X className="h-3 w-3 stroke-[3]" />
@@ -397,7 +397,7 @@ export function ButtonOverlaysCatalog() {
           <div className="button-corner-badge-16">
             <button
               type="button"
-              className="flex h-4 w-4 items-center justify-center rounded-full bg-red-950 text-white shadow-sm border border-red-800/50"
+              className="flex h-4 w-4 items-center justify-center rounded-full border border-red-800 bg-red-950 text-white opacity-100 shadow-sm"
               aria-label="Abort"
             >
               <X className="h-3 w-3 stroke-[3]" />

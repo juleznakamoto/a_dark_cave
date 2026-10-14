@@ -580,9 +580,7 @@ const CooldownButton = forwardRef<HTMLButtonElement, CooldownButtonProps>(
           {buttonContent}
         </TooltipWrapper>
         {showAbortOverlay && (
-          <div
-            className={`button-corner-badge-16 ${!canAffordAbort ? "opacity-40" : ""}`}
-          >
+          <div className="button-corner-badge-16">
             <TooltipWrapper
               tooltip={abortTooltip}
               tooltipId={`${buttonId}-abort`}
@@ -591,7 +589,12 @@ const CooldownButton = forwardRef<HTMLButtonElement, CooldownButtonProps>(
             >
               <button
                 type="button"
-                className="flex h-4 w-4 items-center justify-center rounded-full bg-red-950 text-white shadow-sm border border-red-800/50 hover:bg-red-900 transition-colors cursor-pointer"
+                className={cn(
+                  // Stay fully opaque. The action button label fades while the
+                  // action runs; this disc sits on that button and must not.
+                  "flex h-4 w-4 items-center justify-center rounded-full border border-red-800 bg-red-950 text-white opacity-100 shadow-sm transition-colors hover:bg-red-900",
+                  canAffordAbort ? "cursor-pointer" : "cursor-not-allowed",
+                )}
                 data-testid={testId ? `${testId}-abort` : undefined}
                 aria-label={abortTooltip}
                 onPointerDown={(e) => e.stopPropagation()}

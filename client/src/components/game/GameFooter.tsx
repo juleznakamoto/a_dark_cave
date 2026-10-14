@@ -24,7 +24,6 @@ import {
   handleDonateHeartAnimationEnd,
   pumpDonateHeart,
 } from "@/lib/exclusivePromoShockwave";
-import { AppWindow } from "lucide-react";
 import { SegmentedProgress } from "@/components/ui/progress-bar";
 import { TooltipWrapper } from "@/components/game/TooltipWrapper";
 import {
@@ -41,7 +40,6 @@ import { usePeriodicPlayTimeTooltip } from "@/hooks/usePeriodicPlayTimeTooltip";
 import {
   GAME_CHROME_NO_BG_HOVER,
   GAME_CHROME_RULE_TOP,
-  GAME_INFO_TRIGGER_CLASS,
 } from "./gameChrome";
 import { useCoinHoverParticles } from "@/components/ui/coin-hover-particles";
 import { FOOTER_TRADER_PARTICLE_CONFIG } from "@/components/ui/bubbly-button.particles";
@@ -142,9 +140,6 @@ function FooterSteamWishlistCallout({
 function SteamDemoProgressBar() {
   const { t } = useTranslation("ui");
   const woodenHut = useGameStore((s) => s.buildings.woodenHut ?? 0);
-  const setGalaxyTimeUpDialogOpen = useGameStore(
-    (s) => s.setGalaxyTimeUpDialogOpen,
-  );
   const buildings = { woodenHut };
   const segments = getDemoProgressSegmentCount();
   const completed = getDemoProgressCompleted(buildings);
@@ -153,9 +148,6 @@ function SteamDemoProgressBar() {
   const label = demoEnded
     ? t("footer.demoEnded", { defaultValue: "Demo ended" })
     : t("footer.demoProgress", { defaultValue: "Demo Progress" });
-  const openEndedLabel = t("footer.demoEndedOpen", {
-    defaultValue: "Open the demo end screen",
-  });
   const hint = t("footer.demoProgressHint", {
     count: DEMO_WOODEN_HUT_LIMIT,
     defaultValue: "You can build up to {{count}} wooden huts in the demo.",
@@ -192,23 +184,6 @@ function SteamDemoProgressBar() {
                 </span>
               </span>
             </TooltipWrapper>
-            {demoEnded && (
-              <TooltipWrapper
-                tooltip={openEndedLabel}
-                tooltipId="footer-demo-ended-open"
-                className={`${GAME_INFO_TRIGGER_CLASS} opacity-80 transition-opacity hover:opacity-100`}
-              >
-                <button
-                  type="button"
-                  aria-label={openEndedLabel}
-                  data-testid="footer-demo-ended-open"
-                  onClick={() => setGalaxyTimeUpDialogOpen(true)}
-                  className="inline-flex items-center justify-center text-neutral-400 hover:text-neutral-200"
-                >
-                  <AppWindow className="h-3.5 w-3.5" aria-hidden />
-                </button>
-              </TooltipWrapper>
-            )}
           </div>
           <div className="w-full max-w-[min(9rem,25vw)] min-w-[4rem] opacity-80 sm:max-w-[10rem]">
             <SegmentedProgress

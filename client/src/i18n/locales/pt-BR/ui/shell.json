@@ -65,7 +65,6 @@
     "demoProgress": "Progresso da demo",
     "demoProgressHint": "Você pode construir até {{count}} casebres de madeira na demo.",
     "demoEnded": "Demo encerrada",
-    "demoEndedOpen": "Abrir a tela de fim da demo",
     "feedback": "Feedback",
     "openFeedback": "Abrir o formulário de feedback",
     "progress": "Progresso",

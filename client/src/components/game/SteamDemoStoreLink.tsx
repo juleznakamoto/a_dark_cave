@@ -1,12 +1,15 @@
 import { Button } from "@/components/ui/button";
 import { FooterSocialIcon } from "@/components/game/FooterSocialIcon";
+import { GameUiIcon } from "@/components/game/GameUiIcon";
 import { TooltipWrapper } from "@/components/game/TooltipWrapper";
 import {
   useCrazyGamesEditionActive,
   useDemoEditionActive,
   useDemoEndCatalogActive,
+  useDemoEnded,
 } from "@/hooks/useSteamEditionActive";
 import { useUiTranslation } from "@/i18n/useUiTranslation";
+import { useGameStore } from "@/game/state";
 import { STEAM_STORE_UTM_CONTENT } from "@/lib/gameFooterSocialLinks";
 import { openFullGameStore } from "@/lib/openFullGameStore";
 import { GAME_CHROME_NO_BG_HOVER } from "./gameChrome";
@@ -62,6 +65,40 @@ export function SteamDemoHeaderStoreLink() {
         </span>
       </Button>
     </TooltipWrapper>
+  );
+}
+
+/** Reopens the demo-end screen after the hut cap. Sits to the right of the wishlist link. */
+export function DemoEndHeaderLink() {
+  const demoEnded = useDemoEnded();
+  const setGalaxyTimeUpDialogOpen = useGameStore(
+    (s) => s.setGalaxyTimeUpDialogOpen,
+  );
+  const { t } = useUiTranslation();
+
+  if (!demoEnded) return null;
+
+  const label = t("galaxy.seeWhatsNextButton", {
+    defaultValue: "See what's coming",
+  });
+
+  return (
+    <Button
+      type="button"
+      variant="ghost"
+      size="xs"
+      button_id="header-see-whats-coming"
+      data-testid="header-see-whats-coming"
+      onClick={() => setGalaxyTimeUpDialogOpen(true)}
+      className={`flex h-7 shrink-0 items-center gap-1 whitespace-nowrap rounded-full border border-white px-2 text-xs font-medium tracking-wide text-white ${GAME_CHROME_NO_BG_HOVER}`}
+    >
+      <GameUiIcon
+        name="unlockedPadlock"
+        sizeClassName="h-3.5 w-3.5"
+        className="opacity-100"
+      />
+      {label}
+    </Button>
   );
 }
 
