@@ -164,7 +164,7 @@ function SteamDemoProgressBar() {
 
   return (
     <div
-      className="pointer-events-none absolute inset-0 z-20 flex items-center justify-center px-16 sm:px-24"
+      className="pointer-events-none absolute inset-0 z-[1] flex items-center justify-center px-16 sm:px-24"
       aria-hidden={false}
     >
       <div className="pointer-events-auto flex items-center gap-1">
