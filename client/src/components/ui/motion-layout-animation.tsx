@@ -31,7 +31,7 @@ export function LayoutAnimation({
       disabled={disabled}
       data-state={isOn ? "on" : "off"}
       className="layout-toggle"
-      style={{ justifyContent: `flex-${isOn ? "start" : "end"}` }}
+      style={{ justifyContent: `flex-${isOn ? "end" : "start"}` }}
       onClick={() => {
         const next = !isOn;
         onCheckedChange?.(next);

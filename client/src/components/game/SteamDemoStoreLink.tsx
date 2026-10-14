@@ -65,7 +65,7 @@ export function DemoEndHeaderLink() {
   });
 
   return (
-    <label className={`${HEADER_STORE_LINK_CLASS} whitespace-nowrap py-0`}>
+    <div className={`${HEADER_STORE_LINK_CLASS} whitespace-nowrap py-0`}>
       <GameUiIcon
         name="unlockedPadlock"
         sizeClassName="h-3.5 w-3.5"
@@ -78,7 +78,7 @@ export function DemoEndHeaderLink() {
         aria-label={label}
         data-testid="header-see-whats-coming"
       />
-    </label>
+    </div>
   );
 }
 
